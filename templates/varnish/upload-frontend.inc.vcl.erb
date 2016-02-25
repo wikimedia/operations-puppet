@@ -1,6 +1,5 @@
 // Varnish VCL include file for upload frontends
 include "upload-common.inc.vcl";
-include "errorpage.inc.vcl";
 
 sub cluster_fe_recv_pre_purge { }
 
@@ -90,7 +89,7 @@ sub cluster_fe_deliver {
 	set resp.http.Timing-Allow-Origin = "*";
 }
 
-sub vcl_error {
+sub cluster_fe_err_synth {
 	// Handle CORS preflight requests
         if (obj.status == 667) {
 		set obj.status = 200;
@@ -106,6 +105,4 @@ sub vcl_error {
 
 		return (deliver);
 	}
-
-	call errorpage;
 }

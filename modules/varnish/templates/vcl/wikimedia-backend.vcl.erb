@@ -58,7 +58,10 @@ sub vcl_deliver {
 
 sub vcl_error {
 	call wm_common_error;
-	/* Function vcl_error in <%= @vcl %>.inc.vcl will be appended here */
+	if (obj.status > 400 && obj.status != 413) {
+		call synth_errorpage;
+	}
+	return (deliver);
 }
 
 /* Include the VCL file for this role */

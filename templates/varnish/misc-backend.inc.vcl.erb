@@ -1,4 +1,3 @@
-include "errorpage.inc.vcl";
 include "misc-common.inc.vcl";
 
 sub cluster_be_recv {
@@ -79,7 +78,3 @@ sub cluster_be_fetch {
 }
 
 sub cluster_be_deliver { }
-
-sub vcl_error {
-    call errorpage;
-}

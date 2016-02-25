@@ -1,10 +1,3 @@
-sub errorpage {
-	if (obj.status > 400 && obj.status != 413) {
-		call synth_errorpage;
-	}
-	return (deliver);
-}
-
 sub synth_errorpage {
 	set obj.http.Content-Type = "text/html; charset=utf-8";
 	synthetic {"<!DOCTYPE html>

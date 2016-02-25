@@ -1,7 +1,5 @@
 // Varnish VCL include file for upload frontends
 
-include "errorpage.inc.vcl";
-
 sub cluster_fe_recv_pre_purge { }
 
 sub cluster_fe_recv {
@@ -21,7 +19,4 @@ sub cluster_fe_miss { }
 sub cluster_fe_pass { }
 sub cluster_fe_fetch { }
 sub cluster_fe_deliver { }
-
-sub vcl_error {
-	call errorpage;
-}
+sub cluster_fe_err_synth { }
