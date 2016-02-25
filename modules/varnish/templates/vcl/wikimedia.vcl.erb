@@ -142,7 +142,7 @@ include "directors.<%= @inst %>.vcl";
 
 <% end -%>
 <% @varnish_directors.keys.sort.each do |director_name|
-director = @varnish_directors[director_name] 
+director = @varnish_directors[director_name]
 if (!@dynamic_directors or director['dynamic'] != 'yes')
 	backends = director['backends']
 	if (!backends.empty?)
@@ -162,7 +162,7 @@ director <%= director_name %> <%= director['type'] %> {
 <% 	end -%>
 }
 <% end #if !empty -%>
-<% end #if !dynamic -%> 
+<% end #if !dynamic -%>
 <% end #director loop -%>
 
 # Functions
@@ -443,7 +443,7 @@ sub vcl_recv {
 		set req.grace = 60m;
 	}
 	<% end -%>
-	
+
 <% if @vcl_config.fetch("layer", "") == "frontend" -%>
 	call rewrite_proxy_urls;
 <% end -%>
@@ -453,7 +453,7 @@ sub vcl_recv {
 <% end -%>
 
 	if ( req.http.host ~ "^varnishcheck" ) {
-		error 200 "OK"; 
+		error 200 "OK";
 	}
 
 	if (req.url ~ "^/beacon\/[^/?]+") {
@@ -514,7 +514,7 @@ sub vcl_hit {
 		purge;
 		error 204 "Purged";
 	}
-	
+
 	/* Function vcl_hit in <%= @vcl %>.inc.vcl will be appended here */
 }
 
