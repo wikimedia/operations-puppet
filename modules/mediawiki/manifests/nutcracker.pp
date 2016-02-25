@@ -5,7 +5,7 @@ class mediawiki::nutcracker {
     include ::nutcracker::monitoring
     include ::passwords::redis
 
-    $nutcracker_pools = {
+    $pools = {
         'memcached'     => {
             auto_eject_hosts     => true,
             distribution         => 'ketama',
@@ -46,20 +46,30 @@ class mediawiki::nutcracker {
             server_map           => hiera('mediawiki::redis_servers::eqiad'),
         },
 
-        'redis_codfw'           =>  {
-            auto_eject_hosts     => true,
-            distribution         => 'ketama',
-            redis                => true,
-            redis_auth           => $passwords::redis::main_password,
-            hash                 => 'md5',
-            listen               => '/var/run/nutcracker/redis_codfw.sock 0666',
-            server_connections   => 1,
-            server_failure_limit => 3,
-            server_retry_timeout => to_milliseconds('30s'),
-            timeout              => 1000,
-            server_map           => hiera('mediawiki::redis_servers::codfw'),
-        },
     }
+
+    if member(hiera('datacenters', []), 'codfw') {
+        $additional_pools = {
+            'redis_codfw'           =>  {
+                auto_eject_hosts     => true,
+                distribution         => 'ketama',
+                redis                => true,
+                redis_auth           => $passwords::redis::main_password,
+                hash                 => 'md5',
+                listen               => '/var/run/nutcracker/redis_codfw.sock 0666',
+                server_connections   => 1,
+                server_failure_limit => 3,
+                server_retry_timeout => to_milliseconds('30s'),
+                timeout              => 1000,
+                server_map           => hiera('mediawiki::redis_servers::codfw'),
+            },
+        }
+    }
+    else {
+        $additional_pools = {}
+    }
+
+    $nutcracker_pools = merge($pools, $additional_pools)
 
     class { '::nutcracker':
         mbuf_size => '64k',
