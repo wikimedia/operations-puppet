@@ -40,56 +40,41 @@ sub cluster_be_hash {
 }
 
 <% if @site_tier == "one" -%>
-// BITS: legacy bits.wm.o domain support
-sub bitscompat_1be_mangle {
-	// Transform backend url: /<sitename>/load.php -> /w/load.php
-	// Set host header for backend to <sitename>
-	if (req.url ~ "^/([a-zA-Z0-9-]+\.)?([a-zA-Z0-9-]+\.)?([a-zA-Z0-9-]+)\.<%= Regexp.escape(@vcl_config.fetch('top_domain')) %>/load\.php") {
-		set bereq.http.host = regsub(req.url, "^/([^/]+)/(.*)$", "\1");
-		set bereq.url = regsub(req.url, "^/([^/]+)/load\.php(.*)?", "/w/load.php\2");
+sub misspass_mangle {
+	// BITS: legacy bits.wm.o domain support
+	if (req.http.host == "<%= @vcl_config.fetch('bits_domain') %>") {
+		// Transform backend url: /<sitename>/load.php -> /w/load.php
+		// Set host header for backend to <sitename>
+		if (req.url ~ "^/([a-zA-Z0-9-]+\.)?([a-zA-Z0-9-]+\.)?([a-zA-Z0-9-]+)\.<%= Regexp.escape(@vcl_config.fetch('top_domain')) %>/load\.php") {
+			set bereq.http.host = regsub(req.url, "^/([^/]+)/(.*)$", "\1");
+			set bereq.url = regsub(req.url, "^/([^/]+)/load\.php(.*)?", "/w/load.php\2");
+		}
+		return (fetch);
 	}
-}
 
-// Mobile hostname mangling for MediaWiki
-sub mobile_hostname_1be_mangle {
+	// Mobile hostname mangling for MediaWiki
 	if (req.http.X-Subdomain) {
 		set bereq.http.host = req.http.x-dt-host;
 	}
-}
 
-// RB request mangling
-sub restbase_1be_mangle {
+	// RB request mangling
 	if (req.url ~ "^/api/rest_v1/") {
 		set bereq.url = "/" + req.http.host + regsub(req.url, "^/api/rest_v1/", "/v1/");
 	}
 }
+<% else -%>
+sub misspass_mangle { }
 <% end -%>
 
 sub cluster_be_hit { }
 
 sub cluster_be_miss {
-<% if @site_tier == "one" -%>
-	// BITS: legacy bits.wm.o domain support
-	if (req.http.host == "<%= @vcl_config.fetch('bits_domain') %>") {
-		call bitscompat_1be_mangle;
-		return (fetch);
-	}
-	call mobile_hostname_1be_mangle;
-	call restbase_1be_mangle;
-<% end -%>
+	call misspass_mangle;
 	call text_common_misspass_restore_cookie;
 }
 
 sub cluster_be_pass {
-<% if @site_tier == "one" -%>
-	// BITS: legacy bits.wm.o domain support
-	if (req.http.host == "<%= @vcl_config.fetch('bits_domain') %>") {
-		call bitscompat_1be_mangle;
-		return (pass);
-	}
-	call mobile_hostname_1be_mangle;
-	call restbase_1be_mangle;
-<% end -%>
+	call misspass_mangle;
 	call text_common_misspass_restore_cookie;
 }
 
