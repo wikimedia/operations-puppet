@@ -226,25 +226,25 @@ sub cluster_fe_recv {
 		unset req.http.If-Modified-Since;
 	}
 
-	call common_recv;
+	call text_common_recv;
 }
 
 sub cluster_fe_hash {
-	call common_hash;
+	call text_common_hash;
 }
 
 sub cluster_fe_hit { }
 
 sub cluster_fe_miss {
-	call restore_cookie;
+	call text_common_misspass_restore_cookie;
 }
 
 sub cluster_fe_pass {
-	call restore_cookie;
+	call text_common_misspass_restore_cookie;
 }
 
 sub cluster_fe_fetch {
-	call common_fetch;
+	call text_common_fetch;
 
 	return (deliver);
 }
