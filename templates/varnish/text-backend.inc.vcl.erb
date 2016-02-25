@@ -49,17 +49,17 @@ sub misspass_mangle {
 			set bereq.http.host = regsub(req.url, "^/([^/]+)/(.*)$", "\1");
 			set bereq.url = regsub(req.url, "^/([^/]+)/load\.php(.*)?", "/w/load.php\2");
 		}
-		return (fetch);
 	}
+	else {
+		// Mobile hostname mangling for MediaWiki
+		if (req.http.X-Subdomain) {
+			set bereq.http.host = req.http.x-dt-host;
+		}
 
-	// Mobile hostname mangling for MediaWiki
-	if (req.http.X-Subdomain) {
-		set bereq.http.host = req.http.x-dt-host;
-	}
-
-	// RB request mangling
-	if (req.url ~ "^/api/rest_v1/") {
-		set bereq.url = "/" + req.http.host + regsub(req.url, "^/api/rest_v1/", "/v1/");
+		// RB request mangling
+		if (req.url ~ "^/api/rest_v1/") {
+			set bereq.url = "/" + req.http.host + regsub(req.url, "^/api/rest_v1/", "/v1/");
+		}
 	}
 }
 <% else -%>
