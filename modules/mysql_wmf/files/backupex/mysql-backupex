@@ -1,0 +1,128 @@
+#!/bin/bash
+
+set -e
+
+script_name="$(basename $0)"
+description="${script_name} [-p <password_file>] [-P <parallelism>] [--dry-run] <basedir>"
+function usage() {
+    echo "$description
+
+Wrapper for innobackupex to automate full and
+incremental backups of InnoDB MySQL databases.
+
+Example:
+To start, just choose a <basedir> for which there are not yet any innobackupex backups.
+  ${script_name} /path/to/basedir
+
+Once there are backups in basedir, the next run of ${script_name} will do an incremental backup.
+  ${script_name} /path/to/basedir
+
+Make sure you never write any files in <basedir> yourself.
+If this script finds files in basedir that were not created by innobackupex,
+incremental backups will break.
+"
+}
+
+innobackupex=/usr/bin/innobackupex
+
+dry_run='false'
+
+while test "$#" -gt 0; do
+    case "$1" in
+        --help|-h)
+            usage
+            exit 0
+            ;;
+        --password-file|-p)
+            shift
+            innobackupex="${innobackupex} --defaults-extra-file=${1}"
+            ;;
+        --parallel|-P)
+            shift
+            innobackupex="${innobackupex} --parallel=${1}"
+            ;;
+        --dry-run|-n)
+            dry_run='true'
+            ;;
+        *)
+            basedir=$1
+            ;;
+    esac
+    shift
+done
+
+if [ -z "${basedir}" ]; then
+    echo "Error: must provide <basedir>." >&2
+    echo "  ${description}" >&2
+    exit 1
+fi
+
+# Logs a message with a header to stdout.
+#
+# Usage:
+#   log "my message here"
+function log {
+    message=$1
+
+    # if message was not passed in, read message from stdin
+    if [ -z "${message}" ]; then
+        while read data; do
+            header="$(date '+%Y%-m-%dT%H:%M:%S') ${HOSTNAME} ${script_name}[$$]"
+            echo "${header} ${data}"
+        done
+        # else just echo the message
+    else
+        header="$(date '+%Y%-m-%dT%H:%M:%S') ${HOSTNAME} ${script_name}[$$]"
+        echo "${header} ${message}"
+    fi
+}
+
+# Logs a command and then runs it.
+# If the global $dry_run == 'true', then the command
+# will only be logged, and not run.
+#
+# Usage:
+#   run "ls -l /"
+function run {
+    log "${1}"
+    # if not in --dry-run mode, then run the command
+    if [ "x${dry_run}" != "xtrue" ]; then
+        $1
+    fi
+}
+
+
+if [ "x${dry_run}" == "xtrue" ]; then
+    log "NOTE: --dry-run mode enabled, actions will only be logged."
+fi
+
+
+
+# Use flock with this script so that only one backup can happen at a time.
+(
+    flock -n 9 || (log "Cannot run $script_name, it is already running." && exit 1)
+
+    # Create an xtrabackup of a MySQL database.
+    # If there are already backups in $basedir, then
+    # this will do an incremental backup starting from the most
+    # recent backup in $basedir
+    if [ -d $basedir ]; then
+        # Check if there are any already existing backups
+        latest_backup="${basedir}/$(ls -r ${basedir} | head -n 1)"
+    else
+        run "mkdir -p ${basedir}"
+    fi
+
+    # If no backups were found in $basedir, then do a full backup
+    if [ -z "${latest_backup}" ]; then
+        log "Starting first full backup in ${basedir}..."
+        time run "$innobackupex $basedir"
+        log "Done taking first full backup in ${basedir}."
+    # else do an incremental backup starting at $latest_backup
+    else
+        log "Starting incremental backup starting from $latest_backup..."
+        time run "$innobackupex --incremental --incremental-basedir=$latest_backup $basedir"
+        log "Done incremental backup starting from $latest_backup."
+    fi
+
+) 9>/var/lock/$script_name

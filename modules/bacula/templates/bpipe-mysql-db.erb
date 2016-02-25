@@ -1,6 +1,11 @@
 #!/bin/sh
 # This file is managed by puppet. DO NOT EDIT
 
+<%
+# Let's be polite and not use all available processors
+num_processors_for_backup = Integer(@processorcount)/2 > 1 ? Integer(@processorcount)/2 : 1
+-%>
+
 <% if @xtrabackup -%>
 INNOBACKUPEX="/usr/bin/innobackupex"
 XBSTREAM="/usr/bin/xbstream -x -C <%= @xbstream_dir -%> "
@@ -16,7 +21,7 @@ DATE=$(date "+%Y%m%d%H%M")
 <% end -%>
 
 # Let's be polite and not use all available processors
-PIGZ="/usr/bin/pigz -p <%= Integer(@processorcount)/2 > 1 ? Integer(@processorcount/2) : 1 %> "
+PIGZ="/usr/bin/pigz -p <%= num_processors_for_backup %> "
 PIGZD="/usr/bin/pigz -d"
 <% if @pigz_level -%>
 PIGZ="$PIGZ --<%= @pigz_level -%>"
@@ -39,7 +44,7 @@ MYSQLDUMP="$MYSQLDUMP --dump-slave=1 "
 for database in `$MYSQL -B -N -e "show databases"`
 do
 <% if @xtrabackup -%>
-echo "bpipe:/XTRABACKUP/$database:$INNOBACKUPEX --stream=xbstream --parallel=<%= Integer(@processorcount)/2 > 1 ? Integer(@processorcount/2) : 1 %> --databases=$database /dev/null | $PIGZ:$PIGZD | $XBSTREAM ; $INNOBACKUPEX --apply-log @xbstream_dir"
+echo "bpipe:/XTRABACKUP/$database:$INNOBACKUPEX --stream=xbstream --parallel=<%= num_processors_for_backup %> --databases=$database /dev/null | $PIGZ:$PIGZD | $XBSTREAM ; $INNOBACKUPEX --apply-log @xbstream_dir"
 <% else -%>
 <% if @local_dump_dir -%>
 echo "bpipe:/MYSQLDUMP/$database.dump:$MYSQLDUMP --create-options -c $database | $TEE $LOCALDUMPDIR/$database-$DATE.dump |  $PIGZ:$PIGZD | $MYSQL $database"
@@ -50,7 +55,7 @@ echo "bpipe:/MYSQLDUMP/$database.dump:$MYSQLDUMP --create-options -c $database |
 done
 <% else -%>
 <% if @xtrabackup -%>
-echo "bpipe:/XTRABACKUP/all:$INNOBACKUPEX --stream=xbstream --parallel=<%= Integer(@processorcount)/2 > 1 ? Integer(@processorcount/2) : 1 %> /dev/null | $PIGZ:$PIGZD | $XBSTREAM ; $INNOBACKUPEX --apply-log <%= @xbstream_dir -%>"
+echo "bpipe:/XTRABACKUP/all:$INNOBACKUPEX --stream=xbstream --parallel=<%= num_processors_for_backup %> /dev/null | $PIGZ:$PIGZD | $XBSTREAM ; $INNOBACKUPEX --apply-log <%= @xbstream_dir -%>"
 <% else -%>
 <% if @local_dump_dir -%>
 echo "bpipe:/MYSQLDUMP/all:$MYSQLDUMP --alldatabases --create-options -c | $TEE $LOCALDUMPDIR/all-$DATE.dump | $PIGZ:$PIGZD | $MYSQL"
