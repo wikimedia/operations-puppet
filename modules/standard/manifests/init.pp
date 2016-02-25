@@ -12,7 +12,7 @@ class standard(
     unless $::fqdn in $::standard::ntp::wmf_all_peers {
         include standard::ntp::client
     }
-    include role::diamond
+    include standard::diamond
 
     if $has_ganglia {
         include ::ganglia
