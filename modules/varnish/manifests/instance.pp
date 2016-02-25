@@ -74,7 +74,7 @@ define varnish::instance(
         group   => 'root',
         mode    => '0444',
         require => File["/etc/varnish/${vcl}.inc.vcl"],
-        content => template("${module_name}/vcl/wikimedia.vcl.erb"),
+        content => template("${module_name}/vcl/wikimedia-${layer}.vcl.erb"),
     }
 
     file { "/etc/varnish/${vcl}.inc.vcl":
