@@ -206,7 +206,32 @@ sub wm_common_recv_after_access {
 	<% end -%>
 }
 
-sub vcl_fetch {
+sub wm_common_hit {
+	set req.http.X-CDIS = "hit";
+	if (req.request == "PURGE") {
+		purge;
+		error 204 "Purged";
+	}
+}
+
+sub wm_common_miss {
+	set req.http.X-CDIS = "miss";
+	if (req.request == "PURGE") {
+		purge;
+		error 204 "Cache miss";
+	}
+}
+
+sub wm_common_pass {
+	if (req.http.X-CDIS) {
+		// _pass can theoretically be called after moving through _hit or _miss
+		set req.http.X-CDIS = req.http.X-CDIS + "+pass";
+	} else {
+		set req.http.X-CDIS = "pass";
+	}
+}
+
+sub wm_common_fetch {
 <% if @vcl_config.fetch("ttl_fixed", false) -%>
 	// Fixed TTL (rare/questionable, only used on upload backend right now)
 	// Note the ttl_cap comes after this and takes precedence!
@@ -236,48 +261,6 @@ sub vcl_fetch {
 	if (beresp.http.content-type ~ "json|text|html|script|xml|icon|ms-fontobject|ms-opentype|x-font") {
 		set beresp.do_gzip = true;
 	}
-<% end -%>
-
-	/* Function vcl_fetch in <%= @vcl %>.inc.vcl will be appended here */
-}
-
-sub vcl_hit {
-	set req.http.X-CDIS = "hit";
-	if (req.request == "PURGE") {
-		purge;
-		error 204 "Purged";
-	}
-	
-	/* Function vcl_hit in <%= @vcl %>.inc.vcl will be appended here */
-}
-
-sub vcl_miss {
-	set req.http.X-CDIS = "miss";
-	if (req.request == "PURGE") {
-		purge;
-		error 204 "Cache miss";
-	}
-
-	/* Function vcl_miss in <%= @vcl %>.inc.vcl will be appended here */
-}
-
-sub vcl_pass {
-	if (req.http.X-CDIS) {
-		// _pass can theoretically be called after moving through _hit or _miss
-		set req.http.X-CDIS = req.http.X-CDIS + "+pass";
-	} else {
-		set req.http.X-CDIS = "pass";
-	}
-
-// All cache clusters are dual-tier/layer, and all tier-two backends and all
-// frontends have exactly two backends: "backend" and "backend_random".  The
-// regular backend is a chash on the URL to help with cacheable objects,
-// whereas the randomized one avoids focusing pass/hit-for-pass traffic onto a
-// single node in the varnish-backend layers.  All pass and hit-for-pass
-// traffic comes through vcl_pass, so we set backend_random here for all such
-// requests.
-<% if @vcl_config.fetch("layer", "") == "frontend" || @site_tier == "two" -%>
-	set req.backend = backend_random;
 <% end -%>
 }
 
