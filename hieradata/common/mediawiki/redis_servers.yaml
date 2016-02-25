@@ -38,9 +38,6 @@ eqiad:
   shard13:
     host: 10.64.48.101
     port: 6379
-  shard14:
-    host: 10.64.48.102
-    port: 6379
   shard15:
     host: 10.64.48.103
     port: 6379
@@ -53,6 +50,12 @@ eqiad:
   shard18:
     host: 10.64.48.96
     port: 6379
+
+# Hosts temporarily removed from the pool for maintenance
+# shard14:
+#   host: 10.64.48.102
+#   port: 6379
+
 
 codfw:
   shard01:
