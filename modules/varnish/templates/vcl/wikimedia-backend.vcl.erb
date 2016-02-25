@@ -39,5 +39,15 @@ sub vcl_fetch {
 	/* Function vcl_fetch in <%= @vcl %>.inc.vcl will be appended here */
 }
 
+sub vcl_deliver {
+	call wm_common_deliver;
+	/* Function vcl_deliver in <%= @vcl %>.inc.vcl will be appended here */
+}
+
+sub vcl_error {
+	call wm_common_error;
+	/* Function vcl_error in <%= @vcl %>.inc.vcl will be appended here */
+}
+
 /* Include the VCL file for this role */
 include "<%= @vcl %>.inc.vcl";
