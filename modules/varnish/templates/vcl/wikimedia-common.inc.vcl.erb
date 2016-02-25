@@ -10,6 +10,9 @@ import header;
 
 include "errorpage.inc.vcl";
 
+// per-cluster/layer VCL file; defines cluster_[fb]e_ funcs
+include "<%= @vcl %>.inc.vcl";
+
 <%
 def backend_option(backend, option, default)
 	if @varnish_backend_options.kind_of?(Array)
