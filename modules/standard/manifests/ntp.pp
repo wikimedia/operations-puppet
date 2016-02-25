@@ -1,4 +1,4 @@
-class role::ntp {
+class standard::ntp {
     # These are our servers - they all peer to each other
     #   and sync to upstream NTP pool servers.
     $wmf_peers = {
