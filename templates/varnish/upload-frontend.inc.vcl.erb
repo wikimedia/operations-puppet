@@ -14,7 +14,7 @@ sub cluster_fe_recv {
 		error 403 "HTTP method not allowed";
 	}
 
-	call common_recv;
+	call upload_common_recv;
 
 	// Look for a "download" request parameter
 	if (req.url ~ "(?i)(\?|&)download(=|&|$)") {
@@ -31,7 +31,7 @@ sub cluster_fe_recv {
 sub cluster_fe_hash { }
 
 sub cluster_fe_hit {
-	call common_hit;
+	call upload_common_hit;
 }
 
 sub cluster_fe_miss {
@@ -76,7 +76,7 @@ sub cluster_fe_fetch {
 }
 
 sub cluster_fe_deliver {
-	call common_deliver;
+	call upload_common_deliver;
 
 	unset resp.http.X-MediaWiki-Original;
 
