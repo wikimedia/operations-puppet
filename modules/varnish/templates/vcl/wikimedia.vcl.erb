@@ -227,6 +227,7 @@ sub https_deliver_hsts {
 <% end -%>
 // ^ end frontend + https_redirects block
 
+<% if @vcl_config.fetch("layer", "") == "frontend" -%>
 // We shouldn't even legally be receiving proxy-style requests, as we're not a
 // proxy from any client's point of view.  Just in case, we support it anyways
 // according to RFC7230 rules: we ignore any Host header sent along with it
@@ -238,6 +239,7 @@ sub rewrite_proxy_urls {
 		set req.url = regsub(req.url, "(?i)^https?://[^/]+", "");
 	}
 }
+<% end -%>
 
 sub recv_purge {
 	/* Support HTTP PURGE */
