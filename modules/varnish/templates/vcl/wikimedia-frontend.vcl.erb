@@ -1,2 +1,224 @@
 // common frontend code for all clusters
+
+// only used in recv_fe_ip_processing on frontends
+import netmapper;
+import ipcast;
+
 include "wikimedia-common.inc.vcl";
+include "analytics.inc.vcl";
+
+// start HTTPS block
+<% if @vcl_config.fetch("https_redirects", false) -%>
+
+// *** HTTPS recv code - domain-based 301/302->HTTPS decisions happen here
+// if GET/HEAD filter is modified/removed later, keep in mind we need to not affect
+//   the PURGE traffic here, as purge is called after this.
+sub https_recv_redirect {
+	if (req.http.X-Forwarded-Proto != "https") {
+		if (req.request == "GET" || req.request == "HEAD") {
+			// This is all of our unified cert wildcard domains which are TLS-clean (cert matches all extant hostnames within)
+			// The lone exception now is wikimedia.org, in the next block
+			if (req.http.Host ~ "(?i)((^|\.)(wikipedia|wikibooks|wikinews|wikiquote|wikisource|wikiversity|wikivoyage|wikidata|wikimediafoundation|wiktionary|mediawiki)\.org|^w\.wiki)$") {
+				set req.http.Location = "https://" + req.http.Host + req.url;
+				error 751 "TLS Redirect";
+			}
+			// wikimedia.org has multi-level subdomains used for HTTP for which we have no certs, so they must be avoided here:
+			// Ref: T102826 + T102827
+			else if(req.http.Host ~ "(?i)^([^.]+\.)?(m\.)?wikimedia\.org$") {
+				set req.http.Location = "https://" + req.http.Host + req.url;
+				error 751 "TLS Redirect";
+			}
+		}
+<% if @vcl_config.fetch("secure_post", true) -%>
+		if (req.request == "POST" && !(req.http.Host ~ "(?i)\.beta\.wmflabs\.org$")) {
+			error 403 "Insecure POST Forbidden - use HTTPS";
+		}
+<% end %>
+	}
+}
+
+// *** HTTPS error code - implements 301 response for recv code
+sub https_error_redirect {
+	if (obj.status == 751) {
+		set obj.http.Location = req.http.Location;
+		set obj.status = 301;
+		set obj.http.Content-Length = "0"; // T64245
+		return(deliver);
+	}
+}
+
+// *** HTTPS deliver code - domain-based HSTS headers
+sub https_deliver_hsts {
+	// The reason we don't need the stricter domain restrictions here,
+	// like we do on the recv side for redirects, is that in order for
+	// HSTS to reach a client, the client implicitly has to have already
+	// successfully reached us over HTTPS for the given domainname.
+	if (req.http.X-Forwarded-Proto == "https") {
+		// This is the same regex as the first one in https_recv_redirect (all unified except wikimedia.org)
+		if (req.http.Host ~ "(?i)((^|\.)(wikipedia|wikibooks|wikinews|wikiquote|wikisource|wikiversity|wikivoyage|wikidata|wikimediafoundation|wiktionary|mediawiki)\.org|^w\.wiki)$") {
+			set resp.http.Strict-Transport-Security = "max-age=31536000; includeSubDomains; preload";
+		}
+		else {
+			set resp.http.Strict-Transport-Security = "max-age=31536000";
+		}
+	}
+}
+
+<% end -%>
+// ^ end HTTPS block
+
+// We shouldn't even legally be receiving proxy-style requests, as we're not a
+// proxy from any client's point of view.  Just in case, we support it anyways
+// according to RFC7230 rules: we ignore any Host header sent along with it
+// and set a new Host header based on the host part we strip from the abs URI.
+// ref: http://tools.ietf.org/html/rfc7230#section-5.4
+sub rewrite_proxy_urls {
+	if(req.url ~ "(?i)^https?://[^/]") {
+		set req.http.Host = regsub(req.url, "(?i)^https?://([^/]+).*$", "\1");
+		set req.url = regsub(req.url, "(?i)^https?://[^/]+", "");
+	}
+}
+
+// Must be done at the top of vcl_recv, in our varnish-frontend layer only,
+// and should be guarded against running on request restarts.
+sub recv_fe_ip_processing {
+	// this subroutine "owns" these 3 headers - nothing else in our VCL or
+	// anywhere in our network should be setting them.
+	unset req.http.X-Trusted-Proxy;
+	unset req.http.X-Carrier;
+	unset req.http.X-Carrier-Meta;
+
+	// unset this one just because it's well-known and some default
+	// software configs may look at it, and an external client may spoof
+	// it. We don't set or use this header internally (we use X-Client-IP)
+	unset req.http.X-Real-IP;
+
+	if (client.ip !~ wikimedia_nets) {
+		// Ensure we only accept XFP from our own networks.  Ideally
+		// it should only be set by our nginx TLS terminator
+		// specifically, but there are known cases where internal apps
+		// set XFP to fake HTTPS when making a request to our public
+		// endpoints from the inside.
+		unset req.http.X-Forwarded-Proto;
+	}
+
+	if (client.ip !~ local_host) {
+		// only the local nginx TLS terminator should set this one at
+		// all - there are no other internal exceptions to that rule
+		unset req.http.X-Client-IP;
+	}
+
+	if (req.http.X-Forwarded-For) {
+		// To make further parsing/sanitizing simpler, convert all whitespace
+		// in XFF to single spaces, and make sure all commas have a space
+		// suffix but no space prefix.
+		set req.http.X-Forwarded-For = regsuball(req.http.X-Forwarded-For, "[ \t]+", " ");
+		set req.http.X-Forwarded-For = regsuball(req.http.X-Forwarded-For, " ?, ?", ", ");
+
+		// Now fully-sanitize it to only the strict form "X(, X)*", where X is
+		// a string of legal characters in IPv[46] addresses.  Note
+		// that injections can still leave well-formed junk on the
+		// left, but it's up to the trusted proxy code to ignore that,
+		// e.g.:
+		// "junk2, 123.123.123.123" -> "2, 123.123.123.123"
+		set req.http.X-Forwarded-For = regsub(req.http.X-Forwarded-For,
+			"^.*?([0-9A-Fa-f:.]+(, [0-9A-Fa-f:.]+)*)? ?$", "\1");
+
+		// Clear header if empty after all the above, to avoid messing
+		// up our normal XFF-append code later
+		if (req.http.X-Forwarded-For == "") {
+			unset req.http.X-Forwarded-For;
+		}
+	}
+
+	// There are two possible cases here: either nginx acted as our TLS
+	// proxy and already set X-Client-IP (as well as appended the same value
+	// to XFF), or the traffic was direct to varnish-fe, in which case
+	// XCIP is not yet set and XFF is directly from external.
+	if (!req.http.X-Client-IP) {
+		// direct-to-port-80 case, set XCIP ourselves
+		set req.http.X-Client-IP = client.ip;
+		set req.http.X-Trusted-Proxy = netmapper.map("proxies", req.http.X-Client-IP);
+		// normalize to boolean post-netmapper (varnish-3.0.4...)
+		if (req.http.X-Trusted-Proxy == "") {
+			unset req.http.X-Trusted-Proxy;
+		}
+		if (req.http.X-Trusted-Proxy && req.http.X-Forwarded-For) {
+			// get last from trusted-proxy-supplied XFF
+			set req.http.maybe-xcip = regsub(req.http.X-Forwarded-For, "^([^,]+, )+", "");
+			if(ipcast.ip(req.http.maybe-xcip, "127.0.0.1") !~ wikimedia_nets) {
+				set req.http.X-Client-IP = req.http.maybe-xcip;
+			}
+			unset req.http.maybe-xcip;
+		}
+	} else {
+		// XCIP from nginx, XFF set/appended by nginx and contains at
+		// least XCIP at the end, possibly prepended by other addrs
+		// set externally by some proxy.
+		set req.http.X-Trusted-Proxy = netmapper.map("proxies", req.http.X-Client-IP);
+		// normalize to boolean post-netmapper (varnish-3.0.4...)
+		if (req.http.X-Trusted-Proxy == "") {
+			unset req.http.X-Trusted-Proxy;
+		}
+		if (req.http.X-Trusted-Proxy) {
+			// We want the second-to-last XFF entry here, assuming
+			// there's two or more IPs.  Note that with the
+			// regsub's below if there was only one (which would
+			// alias XCIP by definition), there would be no commas
+			// to match and XCIP gets reset to its original value.
+			set req.http.maybe-xcip = regsub(req.http.X-Forwarded-For, ", [^,]+$", "");
+			set req.http.maybe-xcip = regsub(req.http.maybe-xcip, "^([^,]+, )+", "");
+			if(ipcast.ip(req.http.maybe-xcip, "127.0.0.1") !~ wikimedia_nets) {
+				set req.http.X-Client-IP = req.http.maybe-xcip;
+			}
+			unset req.http.maybe-xcip;
+		}
+	}
+
+	// Now check carrier database for setting X-Carrier based on XCIP
+	set req.http.X-Carrier = netmapper.map("carriers", req.http.X-Client-IP);
+	// normalize to boolean post-netmapper (varnish-3.0.4...)
+	if (req.http.X-Carrier == "") {
+		unset req.http.X-Carrier;
+	}
+	else {
+		// Split X-Carrier data from raw form with optional trailing metadata,
+		// such as "123-45|wap|mobile", so that X-Carrier contains only
+		// MCC-MNC and X-Carrier-Meta contains the trailing attributes
+		set req.http.X-Carrier-Meta = regsub(req.http.X-Carrier, "^[^|]*\|?", "");
+		if (req.http.X-Carrier-Meta != "") {
+			set req.http.X-Carrier = regsub(req.http.X-Carrier, "\|.*$", "");
+		}
+		else {
+			unset req.http.X-Carrier-Meta;
+		}
+	}
+
+	// From this (very early) point forward, regardless of cache tier/layer:
+	// req.http.X-Client-IP ->
+	//     This is our standard notion of the Client/UA's real IP, after
+	//     decoding XFF for our internal infrastructure addresses as well
+	//     as any trusted proxies.
+	// req.http.X-Trusted-Proxy ->
+	//     If the traffic pass through a trusted proxy in our "proxies"
+	//     database (such as OperaMini), this will be the official name of
+	//     the trusted proxy.  Otherwise it will be unset (boolean false).
+	// req.http.X-Carrier ->
+	//     If X-Client-IP matches a network in our "carriers" database,
+	//     this will contain the MCC-MNC code for that carrier.  Otherwise
+	//     it will be undefined.
+	// req.http.X-Carrier-Meta ->
+	//     If X-Carrier is defined: for some carriers, the database
+	//     contains extra metadata in the form of one or more labels like
+	//     "wap" or "residential".  They'll be separated by "|" if more
+	//     than one, and this header is undefined if there was no such
+	//     metadata.
+}
+
+sub vcl_init {
+	// again, netmapper only used in frontends, for recv_fe_ip_processing
+	// args here are map-name (for .map()), data file, and seconds between mtime checks for reload
+	netmapper.init("proxies", "/var/netmapper/proxies.json", 89);
+	netmapper.init("carriers", "/var/netmapper/carriers.json", 89);
+	/* Function vcl_init in <%= @vcl %>.inc.vcl will be appended here */
+}
