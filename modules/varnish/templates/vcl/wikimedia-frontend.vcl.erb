@@ -223,5 +223,35 @@ sub vcl_init {
 	/* Function vcl_init in <%= @vcl %>.inc.vcl will be appended here */
 }
 
+sub vcl_recv {
+	if (req.restarts == 0) {
+		// IP processing is req->req mangling that shouldn't be re-done on restart
+		call recv_fe_ip_processing;
+	}
+
+	call wm_common_recv;
+
+	call rewrite_proxy_urls;
+
+<% if @vcl_config.fetch("https_redirects", false) -%>
+	call https_recv_redirect;
+<% end -%>
+
+	if (req.url ~ "^/beacon\/[^/?]+") {
+		// Logging beacon endpoints
+		//
+		// They are handled by log tailers (varnishkafka and varnishncsa) that filter the
+		// Varnish shm log for reqs to these endpoints and forward them to log processors
+		// for storage and analysis.
+		error 204;
+	}
+
+	if(req.restarts == 0) {
+		call analytics_recv;
+	}
+
+	/* Function vcl_recv in <%= @vcl %>.inc.vcl will be appended here */
+}
+
 /* Include the VCL file for this role */
 include "<%= @vcl %>.inc.vcl";
