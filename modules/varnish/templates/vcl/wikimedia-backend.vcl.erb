@@ -1,6 +1,9 @@
 // common backend code for all clusters
 include "wikimedia-common_<%= @vcl %>.inc.vcl";
 
+/* Include the VCL file for this role */
+include "<%= @vcl %>.inc.vcl";
+
 sub vcl_recv {
 	if (client.ip !~ wikimedia_nets) {
 		// Do not allow direct access to non-frontend layers
@@ -63,6 +66,3 @@ sub vcl_error {
 	}
 	return (deliver);
 }
-
-/* Include the VCL file for this role */
-include "<%= @vcl %>.inc.vcl";

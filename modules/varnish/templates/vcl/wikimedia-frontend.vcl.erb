@@ -7,6 +7,9 @@ import ipcast;
 include "wikimedia-common_<%= @vcl %>.inc.vcl";
 include "analytics.inc.vcl";
 
+/* Include the VCL file for this role */
+include "<%= @vcl %>.inc.vcl";
+
 // start HTTPS block
 <% if @vcl_config.fetch("https_redirects", false) -%>
 
@@ -350,6 +353,3 @@ sub vcl_error {
 
 	return (deliver);
 }
-
-/* Include the VCL file for this role */
-include "<%= @vcl %>.inc.vcl";
