@@ -57,6 +57,13 @@ class role::analytics_cluster::hadoop::worker {
     # configure hive too.
     include role::analytics_cluster::hive::client
 
+    # Spark Python stopped working in Spark 1.5.0 with Oozie,
+    # for complicated reasons.  We need to be able to set
+    # SPARK_HOME in an oozie launcher, and that SPARK_HOME
+    # needs to point at a locally installed spark directory
+    # in order load Spark Python dependencies.
+    include cdh::spark
+
     # Install MaxMind databases for geocoding UDFs
     include geoip
 
