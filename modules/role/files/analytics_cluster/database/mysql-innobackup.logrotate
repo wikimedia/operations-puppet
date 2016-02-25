@@ -1,0 +1,11 @@
+# This file is managed by Puppet.
+# Rotate mysql-innobackup logs.
+#
+/var/log/mysql-innobackup.log {
+       notifempty
+       maxage 30
+       rotate 2
+       dateext
+       compress
+       missingok
+}
