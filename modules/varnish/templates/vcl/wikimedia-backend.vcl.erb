@@ -63,3 +63,6 @@ sub vcl_error {
 	}
 	return (deliver);
 }
+
+/* Include the VCL file for this role */
+include "<%= @vcl %>.inc.vcl";
