@@ -32,11 +32,11 @@ sub cluster_be_recv {
 
 <% end %> // end site_tier == one
 
-	call common_recv;
+	call text_common_recv;
 }
 
 sub cluster_be_hash {
-	call common_hash;
+	call text_common_hash;
 }
 
 <% if @site_tier == "one" -%>
@@ -77,7 +77,7 @@ sub cluster_be_miss {
 	call mobile_hostname_1be_mangle;
 	call restbase_1be_mangle;
 <% end -%>
-	call restore_cookie;
+	call text_common_misspass_restore_cookie;
 }
 
 sub cluster_be_pass {
@@ -90,7 +90,7 @@ sub cluster_be_pass {
 	call mobile_hostname_1be_mangle;
 	call restbase_1be_mangle;
 <% end -%>
-	call restore_cookie;
+	call text_common_misspass_restore_cookie;
 }
 
 sub cluster_be_fetch {
@@ -115,7 +115,7 @@ sub cluster_be_fetch {
 		}
 	}
 
-	call common_fetch;
+	call text_common_fetch;
 
 	return (deliver);
 }

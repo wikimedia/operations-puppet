@@ -18,7 +18,7 @@ sub pick_large_object_stevedore {
 }
 
 sub cluster_be_recv {
-	call common_recv;
+	call upload_common_recv;
 
 	// Make sure high range requests don't block on large objects being retrieved
 	if (req.http.Range
@@ -31,7 +31,7 @@ sub cluster_be_recv {
 sub cluster_be_hash { }
 
 sub cluster_be_hit {
-	call common_hit;
+	call upload_common_hit;
 }
 
 sub cluster_be_miss {
@@ -79,5 +79,5 @@ sub cluster_be_fetch {
 }
 
 sub cluster_be_deliver {
-	call common_deliver;
+	call upload_common_deliver;
 }
