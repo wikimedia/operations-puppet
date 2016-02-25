@@ -1,5 +1,16 @@
 // common backend code for all clusters
 include "wikimedia-common.inc.vcl";
 
+sub vcl_recv {
+	if (client.ip !~ wikimedia_nets) {
+		// Do not allow direct access to non-frontend layers
+		error 403 "Access denied";
+	}
+
+	call wm_common_recv;
+
+	/* Function vcl_recv in <%= @vcl %>.inc.vcl will be appended here */
+}
+
 /* Include the VCL file for this role */
 include "<%= @vcl %>.inc.vcl";
