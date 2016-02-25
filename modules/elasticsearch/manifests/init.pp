@@ -92,6 +92,7 @@ class elasticsearch($cluster_name,
                     $load_fixed_bitset_filters_eagerly = true) {
 
     include ::elasticsearch::packages
+    include ::elasticsearch::https
 
     # Check arguments
     if $cluster_name == 'elasticsearch' {

@@ -1,0 +1,32 @@
+# Note: This file is managed by puppet.
+global
+	log 127.0.0.1	local0
+	log 127.0.0.1	local1 notice
+	#log loghost	local0 info
+	maxconn 4096
+	#debug
+	#quiet
+	user haproxy
+	group haproxy
+  ssl-default-bind-ciphers ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES128-GCM-SHA256
+  ssl-default-bind-options force-tlsv12
+
+defaults
+	log	global
+	mode	http
+	option	httplog
+	option	dontlognull
+	retries	3
+	option redispatch
+	maxconn	2000
+	timeout	connect 50000
+	timeout	client 500000
+	timeout server 500000
+
+frontend elasticsearch-ssl
+  bind *:9243 ssl crt /etc/haproxy/ssl/certs/cert.pem
+  reqadd X-Forwarded-Proto:\ https
+  default_backend elasticsearch-backend
+
+backend elasticsearch-backend
+  server local localhost:9200 check
