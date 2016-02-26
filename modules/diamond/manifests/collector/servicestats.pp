@@ -1,4 +1,4 @@
-# == Class: diamond::collector::servicestats
+# == Define: diamond::collector::servicestats
 #
 # ServiceStats will report system-level statistics for services ran by systemd
 # and upstart. Default metrics include: CPU %, memory % and uptime.
