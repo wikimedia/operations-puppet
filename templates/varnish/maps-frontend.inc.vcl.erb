@@ -9,7 +9,7 @@ sub cluster_fe_recv {
 		&& req.http.referer !~ "(?i)^https?://(maps|phabricator|wikitech|incubator)\.wikimedia\.org/"
 		&& req.http.referer !~ "(?i)^https?://(localhost|127\.0\.0\.1)(:\d+)?/"
 	) {
-		error 403 "Access Denied";
+		<%= error_synth(403, "Access Denied") %>
 	}
 }
 
@@ -17,6 +17,6 @@ sub cluster_fe_hash { }
 sub cluster_fe_hit { }
 sub cluster_fe_miss { }
 sub cluster_fe_pass { }
-sub cluster_fe_fetch { }
+sub cluster_fe_backend_response { }
 sub cluster_fe_deliver { }
 sub cluster_fe_err_synth { }
