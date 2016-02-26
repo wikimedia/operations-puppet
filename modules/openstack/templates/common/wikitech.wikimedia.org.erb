@@ -110,6 +110,8 @@
     Alias /wiki3 /srv/org/wikimedia/controller/wikis/w3/index.php
     <% end %>
 
+    Include "sites-enabled/public-wiki-rewrites.incl"
+
     ErrorDocument 404 /w/404.php
 
     ErrorLog /var/log/apache2/error.log
