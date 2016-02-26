@@ -6331,6 +6331,48 @@ host restbase1009 {
     filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
+host restbase1010 {
+    hardware ethernet 14:02:EC:3F:4D:74;
+    fixed-address restbase1010.eqiad.wmnet;
+    option pxelinux.pathprefix "jessie-installer/";
+    filename "jessie-installer/debian-installer/amd64/pxelinux.0";
+}
+
+host restbase1011 {
+    hardware ethernet 14:02:EC:41:23:14;
+    fixed-address restbase1011.eqiad.wmnet;
+    option pxelinux.pathprefix "jessie-installer/";
+    filename "jessie-installer/debian-installer/amd64/pxelinux.0";
+}
+
+host restbase1012 {
+    hardware ethernet 14:02:EC:40:83:74;
+    fixed-address restbase1012.eqiad.wmnet;
+    option pxelinux.pathprefix "jessie-installer/";
+    filename "jessie-installer/debian-installer/amd64/pxelinux.0";
+}
+
+host restbase1013 {
+    hardware ethernet 14:02:EC:40:83:88;
+    fixed-address restbase1013.eqiad.wmnet;
+    option pxelinux.pathprefix "jessie-installer/";
+    filename "jessie-installer/debian-installer/amd64/pxelinux.0";
+}
+
+host restbase1014 {
+    hardware ethernet 14:02:EC:3F:4D:94;
+    fixed-address restbase1014.eqiad.wmnet;
+    option pxelinux.pathprefix "jessie-installer/";
+    filename "jessie-installer/debian-installer/amd64/pxelinux.0";
+}
+
+host restbase1015 {
+    hardware ethernet 14:02:EC:3F:2D:E8;
+    fixed-address restbase1015.eqiad.wmnet;
+    option pxelinux.pathprefix "jessie-installer/";
+    filename "jessie-installer/debian-installer/amd64/pxelinux.0";
+}
+
 host restbase2001 {
     hardware ethernet 3c:a8:2a:0a:ec:a0;
     fixed-address restbase2001.codfw.wmnet;
