@@ -66,17 +66,23 @@ class role::statistics::cruncher inherits role::statistics {
     include geowiki::job::monitoring
 
 
-    # Use the statistics::limn::data::generate define
-    # to set up cron jobs to generate and generate limn files
-    # from research db and push them
-    statistics::limn::data::generate { 'mobile':     }
-    statistics::limn::data::generate { 'flow':       }
-    statistics::limn::data::generate { 'edit':       }
-    statistics::limn::data::generate { 'language':   }
-    statistics::limn::data::generate { 'extdist':    }
-    statistics::limn::data::generate { 'ee':         }
-    statistics::limn::data::generate { 'multimedia': }
-
+    # Set up reportupdater to create several reports on mysql research db.
+    include statistics::user
+    class { 'reportupdater':
+        user               => $statistics::user::username,
+        working_path       => $::statistics::working_path,
+        log_path           => '/var/log/limn-data',
+        output_path        => "${::statistics::working_path}/limn-public-data",
+        rsync_to           => 'stat1001.eqiad.wmnet::www/limn-public-data/',
+        generator          => 'generate',
+    }
+    reportupdater::job { 'mobile':     }
+    reportupdater::job { 'flow':       }
+    reportupdater::job { 'edit':       }
+    reportupdater::job { 'language':   }
+    reportupdater::job { 'extdist':    }
+    reportupdater::job { 'ee':         }
+    reportupdater::job { 'multimedia': }
 }
 
 
@@ -127,6 +133,16 @@ class role::statistics::private inherits role::statistics {
         pass  => $::passwords::mysql::research::pass,
         group => 'statistics-privatedata-users',
         mode  => '0440',
+    }
+
+    # Set up reportupdater to create browser reports on hive db.
+    include statistics::user
+    class { 'reportupdater':
+        user               => $statistics::user::username,
+        working_path       => $::statistics::working_path,
+    }
+    reportupdater::job { 'browser':
+        repository => 'reportupdater-queries',
     }
 }
 
