@@ -161,6 +161,14 @@ class _WMFRewriteContext(WSGIContext):
         return resp
 
     def handle_request(self, env, start_response):
+        try:
+            return self._handle_request(self, env, start_response)
+        except UnicodeDecodeError as e:
+            self.logger.exception('Failed to decode request')
+            resp = webob.exc.HTTPBadRequest('Failed to decode request')
+            return resp(env, start_response)
+
+    def _handle_request(self, env, start_response):
         req = webob.Request(env)
 
         # Double (or triple, etc.) slashes in the URL should be ignored; collapse them. fixes T34864
