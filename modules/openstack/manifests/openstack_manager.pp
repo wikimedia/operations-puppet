@@ -59,8 +59,12 @@ class openstack::openstack_manager(
         before => Service['apache2'],
     }
 
+    $webserver_ip = $webserver_hostname ? {
+        'wikitech.wikimedia.org'        => '208.80.154.136',
+        'labtestwikitech.wikimedia.org' => '208.80.153.14'
+    }
     apache::site { $webserver_hostname:
-        content => template("openstack/${$openstack_version}/${webserver_hostname}.erb"),
+        content => template("openstack/${$openstack_version}/wikitech.wikimedia.org.erb"),
     }
 
     file {

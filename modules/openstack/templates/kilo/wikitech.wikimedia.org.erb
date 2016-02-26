@@ -86,12 +86,12 @@
     <Location /server-status>
         SetHandler server-status
         <IfVersion >= 2.4>
-                Require host wikitech.wikimedia.org
+                Require host <%= @webserver_hostname %>
         </IfVersion>
         <IfVersion < 2.4>
                 Order deny,allow
                 Deny from all
-                Allow from 208.80.154.136
+                Allow from <%= @webserver_ip %>
         </IfVersion>
     </Location>
     <Directory /a/backup/public>
