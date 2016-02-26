@@ -133,7 +133,7 @@ groups:
     description: users with some sudo permissions on jenkins and nodepool hosts
     members: [bd808, cscott, dduvall, demon, krinkle, reedy, marktraceur,
               twentyafterfour, zfilipin, thcipriani, legoktm, jzerebecki,
-              hashar]
+              hashar, mobrovac]
     privileges: ['ALL = (jenkins) NOPASSWD: ALL',
                  'ALL = (jenkins-slave) NOPASSWD: ALL',
                  'ALL = (gerritslave) NOPASSWD: ALL',
