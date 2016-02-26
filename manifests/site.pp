@@ -1230,7 +1230,7 @@ node 'iron.wikimedia.org' {
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
     }
-    role bastionhost::opsonly, ipmi, access_new_install
+    role bastionhost::opsonly, access_new_install
 }
 
 # Analytics Kafka Brokers
@@ -2121,7 +2121,7 @@ node 'mx2001.wikimedia.org' {
 
 # salt master
 node 'neodymium.eqiad.wmnet' {
-    role salt::masters::production, deployment::salt_masters, debdeploy::master
+    role salt::masters::production, deployment::salt_masters, debdeploy::master, ipmi
     include standard
 }
 
