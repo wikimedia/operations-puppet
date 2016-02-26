@@ -66,17 +66,47 @@ class role::statistics::cruncher inherits role::statistics {
     include geowiki::job::monitoring
 
 
-    # Use the statistics::limn::data::generate define
-    # to set up cron jobs to generate and generate limn files
-    # from research db and push them
-    statistics::limn::data::generate { 'mobile':     }
-    statistics::limn::data::generate { 'flow':       }
-    statistics::limn::data::generate { 'edit':       }
-    statistics::limn::data::generate { 'language':   }
-    statistics::limn::data::generate { 'extdist':    }
-    statistics::limn::data::generate { 'ee':         }
-    statistics::limn::data::generate { 'multimedia': }
+    # Set up reportupdater to be executed on this machine
+    # and rsync the output base path to stat1001.
+    include statistics::user
+    $output_base_path = "${::statistics::working_path}/limn-public-data"
+    class { 'reportupdater':
+        user        => $::statistics::user::username,
+        source_path => $::statistics::working_path,
+        public_path => $output_base_path,
+        rsync_to    => 'stat1001.eqiad.wmnet::www/limn-public-data/',
+    }
 
+    # Set up various jobs to be executed by reportupdater
+    # creating several reports on mysql research db.
+    reportupdater::job { 'mobile':
+        repository  => 'limn-mobile-data',
+        output_path => "${output_base_path}/mobile/datafiles",
+    }
+    reportupdater::job { 'flow':
+        repository  => 'limn-flow-data',
+        output_path => "${output_base_path}/flow/datafiles",
+    }
+    reportupdater::job { 'edit':
+        repository  => 'limn-edit-data',
+        output_path => "${output_base_path}/metrics",
+    }
+    reportupdater::job { 'language':
+        repository  => 'limn-language-data',
+        output_path => "${output_base_path}/metrics/beta-feature-enables",
+    }
+    reportupdater::job { 'extdist':
+        repository  => 'limn-extdist-data',
+        output_path => "${output_base_path}/extdist/datafiles",
+    }
+    reportupdater::job { 'ee':
+        repository  => 'limn-ee-data',
+        output_path => "${output_base_path}/metrics/echo",
+    }
+    reportupdater::job { 'multimedia':
+        repository  => 'limn-multimedia-data',
+        output_path => "${output_base_path}/metrics/beta-feature-enables",
+    }
 }
 
 
@@ -128,6 +158,16 @@ class role::statistics::private inherits role::statistics {
         group => 'statistics-privatedata-users',
         mode  => '0440',
     }
+
+    # Set up reportupdater to be executed on this machine.
+    include statistics::user
+    class { 'reportupdater':
+        user        => $::statistics::user::username,
+        source_path => $::statistics::working_path,
+    }
+
+    # Set up a job to create browser reports on hive db.
+    reportupdater::job { 'browser': }
 }
 
 
