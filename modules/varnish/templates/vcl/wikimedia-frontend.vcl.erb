@@ -1,10 +1,15 @@
 // common frontend code for all clusters
 
+<% if @varnish_version4 -%>
+vcl 4.0;
+<% else -%>
+import ipcast;
+<% end -%>
+
 // only used in recv_fe_ip_processing on frontends
 import netmapper;
-import ipcast;
 
-include "wikimedia-common_<%= @vcl %>.inc.vcl";
+include "<%= @varnish_include_path %>wikimedia-common_<%= @vcl %>.inc.vcl";
 include "analytics.inc.vcl";
 
 /* Include the VCL file for this role */
@@ -18,23 +23,23 @@ include "<%= @vcl %>.inc.vcl";
 //   the PURGE traffic here, as purge is called after this.
 sub https_recv_redirect {
 	if (req.http.X-Forwarded-Proto != "https") {
-		if (req.request == "GET" || req.request == "HEAD") {
+		if (<%= @req_method %> == "GET" || <%= @req_method %> == "HEAD") {
 			// This is all of our unified cert wildcard domains which are TLS-clean (cert matches all extant hostnames within)
 			// The lone exception now is wikimedia.org, in the next block
 			if (req.http.Host ~ "(?i)((^|\.)(wikipedia|wikibooks|wikinews|wikiquote|wikisource|wikiversity|wikivoyage|wikidata|wikimediafoundation|wiktionary|mediawiki)\.org|^w\.wiki)$") {
 				set req.http.Location = "https://" + req.http.Host + req.url;
-				error 751 "TLS Redirect";
+				<%= error_synth(751, "TLS Redirect") %>
 			}
 			// wikimedia.org has multi-level subdomains used for HTTP for which we have no certs, so they must be avoided here:
 			// Ref: T102826 + T102827
 			else if(req.http.Host ~ "(?i)^([^.]+\.)?(m\.)?wikimedia\.org$") {
 				set req.http.Location = "https://" + req.http.Host + req.url;
-				error 751 "TLS Redirect";
+				<%= error_synth(751, "TLS Redirect") %>
 			}
 		}
 <% if @vcl_config.fetch("secure_post", true) -%>
-		if (req.request == "POST" && !(req.http.Host ~ "(?i)\.beta\.wmflabs\.org$")) {
-			error 403 "Insecure POST Forbidden - use HTTPS";
+		if (<%= @req_method %> == "POST" && !(req.http.Host ~ "(?i)\.beta\.wmflabs\.org$")) {
+			<%= error_synth(403, "Insecure POST Forbidden - use HTTPS") %>
 		}
 <% end %>
 	}
@@ -42,10 +47,10 @@ sub https_recv_redirect {
 
 // *** HTTPS error code - implements 301 response for recv code
 sub https_error_redirect {
-	if (obj.status == 751) {
-		set obj.http.Location = req.http.Location;
-		set obj.status = 301;
-		set obj.http.Content-Length = "0"; // T64245
+	if (<%= @resp_obj %>.status == 751) {
+		set <%= @resp_obj %>.http.Location = req.http.Location;
+		set <%= @resp_obj %>.status = 301;
+		set <%= @resp_obj %>.http.Content-Length = "0"; // T64245
 		return(deliver);
 	}
 }
@@ -149,7 +154,7 @@ sub recv_fe_ip_processing {
 		if (req.http.X-Trusted-Proxy && req.http.X-Forwarded-For) {
 			// get last from trusted-proxy-supplied XFF
 			set req.http.maybe-xcip = regsub(req.http.X-Forwarded-For, "^([^,]+, )+", "");
-			if(ipcast.ip(req.http.maybe-xcip, "127.0.0.1") !~ wikimedia_nets) {
+			if(<%= @std_ipcast %>.ip(req.http.maybe-xcip, "127.0.0.1") !~ wikimedia_nets) {
 				set req.http.X-Client-IP = req.http.maybe-xcip;
 			}
 			unset req.http.maybe-xcip;
@@ -171,7 +176,7 @@ sub recv_fe_ip_processing {
 			// to match and XCIP gets reset to its original value.
 			set req.http.maybe-xcip = regsub(req.http.X-Forwarded-For, ", [^,]+$", "");
 			set req.http.maybe-xcip = regsub(req.http.maybe-xcip, "^([^,]+, )+", "");
-			if(ipcast.ip(req.http.maybe-xcip, "127.0.0.1") !~ wikimedia_nets) {
+			if(<%= @std_ipcast %>.ip(req.http.maybe-xcip, "127.0.0.1") !~ wikimedia_nets) {
 				set req.http.X-Client-IP = req.http.maybe-xcip;
 			}
 			unset req.http.maybe-xcip;
@@ -219,6 +224,7 @@ sub recv_fe_ip_processing {
 }
 
 sub vcl_init {
+	call wm_common_directors_init;
 	// again, netmapper only used in frontends, for recv_fe_ip_processing
 	// args here are map-name (for .map()), data file, and seconds between mtime checks for reload
 	netmapper.init("proxies", "/var/netmapper/proxies.json", 89);
@@ -246,7 +252,7 @@ sub vcl_recv {
 		// They are handled by log tailers (varnishkafka and varnishncsa) that filter the
 		// Varnish shm log for reqs to these endpoints and forward them to log processors
 		// for storage and analysis.
-		error 204;
+		<%= error_synth(204, "") %>
 	}
 
 	if(req.restarts == 0) {
@@ -264,6 +270,13 @@ sub vcl_hash {
 	call cluster_fe_hash;
 	// default vcl_hash invokes here!
 }
+
+<% if @varnish_version4 -%>
+// http://book.varnish-software.com/4.0/chapters/Cache_Invalidation.html
+sub vcl_purge {
+	return (synth(204, "Purged"));
+}
+<% end -%>
 
 sub vcl_hit {
 	call wm_common_hit;
@@ -284,17 +297,25 @@ sub vcl_pass {
 	// pass-traffic should not use consistent hashing, to avoid unecessary
 	// traffic focus on one node and keep things performant, *if* we're
 	// fairly sure that all layers/tiers make equivalent pass decisions...
+	<% if @varnish_version4 -%>
+	set req.backend_hint = backend_random.backend();
+	<% else -%>
 	set req.backend = backend_random;
+	<% end -%>
 <% end -%>
 
 	call cluster_fe_pass;
-	return (pass); // no default VCL (which is just "return (pass)" anyways)
+	return (<%= @fetch_pass %>); // no default VCL (which is just "return (<%= @fetch_pass %>)" anyways)
 }
 
+<% if @varnish_version4 -%>
+sub vcl_backend_response {
+<% else -%>
 sub vcl_fetch {
-	call wm_common_fetch;
-	call cluster_fe_fetch;
-	// default vcl_fetch invokes here, unless cluster VCL unconditionally returns!
+<% end -%>
+	call wm_common_backend_response;
+	call cluster_fe_backend_response;
+	// default vcl_(fetch|backend_response) invokes here, unless cluster VCL unconditionally returns!
 }
 
 sub vcl_deliver {
@@ -336,8 +357,37 @@ sub vcl_deliver {
 	return (deliver); // no default VCL (which is just "return (deliver)" anyways)
 }
 
+<% if @varnish_version4 -%>
+
+// Varnish4 vcl_synth+vcl_backend_error
+
+sub vcl_synth {
+<% if @vcl_config.fetch("https_redirects", false) -%>
+	call https_error_redirect;
+<% end -%>
+	call cluster_fe_err_synth;
+	if (resp.status > 400 && resp.status != 413) {
+		call synth_errorpage;
+	}
+	return (deliver);
+}
+
+sub vcl_backend_error {
+	// retry 503 once in frontend instances, to paper over transient issues
+	if (beresp.status == 503 && bereq.retries == 0) {
+		return(retry);
+	}
+	if (beresp.status > 400 && beresp.status != 413) {
+		call backend_error_errorpage;
+	}
+	return (deliver);
+}
+
+<% else -%>
+
+// Varnish3 vcl_error
 sub vcl_error {
-	call wm_common_error;
+	call wm_common_v3_purge_error;
 
 <% if @vcl_config.fetch("https_redirects", false) -%>
 	call https_error_redirect;
@@ -356,3 +406,5 @@ sub vcl_error {
 
 	return (deliver);
 }
+
+<% end -%>

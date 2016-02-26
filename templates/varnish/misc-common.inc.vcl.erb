@@ -18,7 +18,7 @@ sub misc_recv_pass {
     }
 }
 
-sub misc_fetch_large_objects {
+sub misc_backend_response_large_objects {
     // Stream objects >= 1MB in size
     if (std.integer(beresp.http.Content-Length, 1048576) >= 1048576 || beresp.http.Content-Length ~ "^[0-9]{8}") {
         set beresp.do_stream = true;
