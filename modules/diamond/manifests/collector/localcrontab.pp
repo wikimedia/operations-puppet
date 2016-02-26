@@ -8,8 +8,6 @@
 #       administrative users.
 #     - localcrontab.other: Number of other crontabs.
 
-include stdlib
-
 define diamond::collector::localcrontab(
     $settings = {},
     $ensure   = present,
