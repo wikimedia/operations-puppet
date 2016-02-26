@@ -1,13 +1,21 @@
+<% if @varnish_version4 -%>
+vcl 4.0;
+<% end -%>
+
 // common backend code for all clusters
-include "wikimedia-common_<%= @vcl %>.inc.vcl";
+include "<%= @varnish_include_path %>wikimedia-common_<%= @vcl %>.inc.vcl";
 
 /* Include the VCL file for this role */
 include "<%= @vcl %>.inc.vcl";
 
+sub vcl_init {
+	call wm_common_directors_init;
+}
+
 sub vcl_recv {
 	if (client.ip !~ wikimedia_nets) {
 		// Do not allow direct access to non-frontend layers
-		error 403 "Access denied";
+		<%= error_synth(403, "Access denied") %>
 	}
 
 	call wm_common_recv_early;
@@ -16,7 +24,11 @@ sub vcl_recv {
 	// tier-one caches must select an applayer backend
 	call cluster_be_recv_applayer_backend;
 <% else -%>
+	<% if @varnish_version4 -%>
+        set req.backend_hint = cache_<%= @cache_route %>.backend();
+	<% else -%>
 	set req.backend = cache_<%= @cache_route %>;
+	<% end -%>
 <% end -%>
 
 	call wm_common_recv_grace;
@@ -25,13 +37,20 @@ sub vcl_recv {
 	call wm_common_recv_purge;
 	call cluster_be_recv;
 
-	return (lookup); // no default VCL
+	return (<%= @hash_lookup %>); // no default VCL
 }
 
 sub vcl_hash {
 	call cluster_be_hash;
 	// default vcl_hash invokes here!
 }
+
+<% if @varnish_version4 -%>
+// http://book.varnish-software.com/4.0/chapters/Cache_Invalidation.html
+sub vcl_purge {
+	return (synth(204, "Purged"));
+}
+<% end -%>
 
 sub vcl_hit {
 	call wm_common_hit;
@@ -53,18 +72,26 @@ sub vcl_pass {
 	// pass-traffic should not use consistent hashing, to avoid unecessary
 	// traffic focus on one node and keep things performant, *if* we're
 	// fairly sure that all layers/tiers make equivalent pass decisions...
+	<% if @varnish_version4 -%>
+	set req.backend_hint = cache_<%= @cache_route %>_random.backend();
+	<% else -%>
 	set req.backend = cache_<%= @cache_route %>_random;
+	<% end -%>
 <% end -%>
 <% end -%>
 
 	call cluster_be_pass;
-	return (pass); // no default VCL (which is just "return (pass)" anyways)
+	return (<%= @fetch_pass %>); // no default VCL (which is just "return (<%= @fetch_pass %>)" anyways)
 }
 
+<% if @varnish_version4 -%>
+sub vcl_backend_response {
+<% else -%>
 sub vcl_fetch {
-	call wm_common_fetch;
-	call cluster_be_fetch;
-	// default vcl_fetch invokes here, unless cluster VCL unconditionally returns!
+<% end -%>
+	call wm_common_backend_response;
+	call cluster_be_backend_response;
+	// default vcl_(fetch|backend_response) invokes here, unless cluster VCL unconditionally returns!
 }
 
 sub vcl_deliver {
@@ -73,10 +100,33 @@ sub vcl_deliver {
 	return (deliver); // no default VCL (which is just "return (deliver)" anyways)
 }
 
+<% if @varnish_version4 -%>
+
+// Varnish4 vcl_synth+vcl_backend_error
+
+sub vcl_synth {
+	if (resp.status > 400 && resp.status != 413) {
+		call synth_errorpage;
+	}
+	return (deliver);
+}
+
+sub vcl_backend_error {
+	if (beresp.status > 400 && beresp.status != 413) {
+		call backend_error_errorpage;
+	}
+	return (deliver);
+}
+
+<% else -%>
+
+// Varnish3 vcl_error
 sub vcl_error {
-	call wm_common_error;
+	call wm_common_v3_purge_error;
 	if (obj.status > 400 && obj.status != 413) {
 		call synth_errorpage;
 	}
 	return (deliver);
 }
+
+<% end -%>

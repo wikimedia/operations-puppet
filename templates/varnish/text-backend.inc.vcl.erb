@@ -92,7 +92,7 @@ sub cluster_be_pass {
 	call text_common_misspass_restore_cookie;
 }
 
-sub cluster_be_fetch {
+sub cluster_be_backend_response {
 	// Make sure Set-Cookie responses are not cacheable, and log violations
 	// FIXME: exceptions are ugly; maybe get rid of the whole thing?
 	if (beresp.ttl > 0s && beresp.http.Set-Cookie &&
@@ -114,7 +114,7 @@ sub cluster_be_fetch {
 		}
 	}
 
-	call text_common_fetch;
+	call text_common_backend_response;
 
 	return (deliver);
 }

@@ -14,6 +14,12 @@ define role::cache::instances (
     $cluster_nodes
 ) {
 
+    if hiera('varnish_version4', false) {
+        $chash_dir = 'vslp'
+    } else {
+        $chash_dir = 'chash'
+    }
+
     $cache_route_table = hiera('cache::route_table')
     $cache_route = $cache_route_table[$::site]
 
@@ -28,7 +34,7 @@ define role::cache::instances (
     $backend_caches = {
         'cache_eqiad' => {
             'dynamic'  => 'yes',
-            'type'     => 'chash',
+            'type'     => $chash_dir,
             'dc'       => 'eqiad',
             'service'  => 'varnish-be',
             'backends' => $cluster_nodes['eqiad'],
@@ -42,7 +48,7 @@ define role::cache::instances (
         },
         'cache_codfw' => {
             'dynamic'  => 'yes',
-            'type'     => 'chash',
+            'type'     => $chash_dir,
             'dc'       => 'codfw',
             'service'  => 'varnish-be',
             'backends' => $cluster_nodes['codfw'],
@@ -101,7 +107,7 @@ define role::cache::instances (
         directors          => {
             'cache_local' => {
                 'dynamic'  => 'yes',
-                'type'     => 'chash',
+                'type'     => $chash_dir,
                 'dc'       => $::site,
                 'service'  => 'varnish-be',
                 'backends' => $cluster_nodes[$::site],

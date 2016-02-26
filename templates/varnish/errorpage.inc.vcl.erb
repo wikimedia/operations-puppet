@@ -1,11 +1,29 @@
-sub synth_errorpage {
-	set obj.http.Content-Type = "text/html; charset=utf-8";
+sub backend_error_errorpage {
+	set <%= @beresp_obj %>.http.Content-Type = "text/html; charset=utf-8";
 
-	synthetic std.fileread("/etc/varnish/errorpage.html") +
+	synthetic<% if @varnish_version4 -%>(<% end -%>
+		std.fileread("/etc/varnish/errorpage.html") +
+		"Request from " + <%= @bereq_req %>.http.X-Client-IP +
+		" via " + server.hostname + " " + server.identity +
+		", Varnish XID " + <%= @bereq_req %>.xid + "<br>" +
+		regsub(<%= @beresp_obj %>.http.X-Cache, ".+", "Upstream caches: \0<br>") +
+		"Error: " + <%= @beresp_obj %>.status + ", " +
+		<% if @varnish_version4 -%> <%= @beresp_obj %>.reason <% else -%> <%= @beresp_obj %>.response <% end -%> +
+		" at " + now + "</code></p></div></html>"
+	<% if @varnish_version4 -%>)<% end -%>;
+}
+
+sub synth_errorpage {
+	set <%= @resp_obj %>.http.Content-Type = "text/html; charset=utf-8";
+
+	synthetic<% if @varnish_version4 -%>(<% end -%>
+		std.fileread("/etc/varnish/errorpage.html") +
 		"Request from " + req.http.X-Client-IP +
 		" via " + server.hostname + " " + server.identity +
 		", Varnish XID " + req.xid + "<br>" +
-		regsub(obj.http.X-Cache, ".+", "Upstream caches: \0<br>") +
-		"Error: " + obj.status + ", " + obj.response + " at " + now +
-		"</code></p></div></html>";
+		regsub(<%= @resp_obj %>.http.X-Cache, ".+", "Upstream caches: \0<br>") +
+		"Error: " + <%= @resp_obj %>.status + ", " +
+		<% if @varnish_version4 -%> <%= @resp_obj %>.reason <% else -%> <%= @resp_obj %>.response <% end -%> +
+		" at " + now + "</code></p></div></html>"
+	<% if @varnish_version4 -%>)<% end -%>;
 }

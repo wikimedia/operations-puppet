@@ -8,6 +8,24 @@ import std;
 #   being set from different code.
 import header;
 
+<% if @varnish_version4 -%>
+import directors;
+
+# This is actually only needed if a vslp backend is defined. We could make
+# this import conditional on existing vslp backend definitions.
+import vslp;
+<% end %>
+
+<%
+def error_synth(status_code, message)
+        if @varnish_version4
+                return "return (synth(#{status_code}, \"#{message}\"));\n"
+        else
+                return "error #{status_code} \"#{message}\";\n"
+        end
+end
+-%>
+
 include "errorpage.inc.vcl";
 
 <%
@@ -92,6 +110,10 @@ probe wdqs {
 
 # Backends
 
+<% if @varnish_testing
+@varnish_backends = []
+end -%>
+
 # List of Puppet generated backends
 <%
 @varnish_backends.each do |backend|
@@ -123,44 +145,89 @@ backend <%= name %> {
 # }
 if @use_dynamic_directors and @dynamic_directors -%>
 include "directors.<%= @inst %>.vcl";
-
 <% end -%>
+
+sub wm_common_directors_init {
+<% if not @varnish_version4 -%>
+}
+<% end -%>
+
 <% @varnish_directors.keys.sort.each do |director_name|
 director = @varnish_directors[director_name]
 if (!@dynamic_directors or director['dynamic'] != 'yes')
 	backends = director['backends']
 	if (!backends.empty?)
 -%>
+
+<% if @varnish_version4 -%>
+<% if director['type'] == 'vslp' -%>
+// Yes, the vslp director gets instantiated with vslp.vslp() instead of
+// directors.vslp(). Nobody said this would have been pretty.
+new <%= director_name %> = vslp.<%= director['type'] %>();
+<% else -%>
+new <%= director_name %> = directors.<%= director['type'] %>();
+<% end %>
+<% else -%>
 director <%= director_name %> <%= director['type'] %> {
+<% end -%>
+
 <% if director['type'] == 'chash' -%>
 	.retries = <%= chash_def_retries(99, backends.size) %>;
 <% end -%>
+
 <%
 	backends.each do |backend|
 		name = /^[0-9\.]+$/.match(backend) ? "ipv4_" + backend.gsub(".", "_") : "be_" + backend.split(".")[0].gsub("-", "_")
 -%>
+        <% if @varnish_version4 -%>
+        <% if director['type'] == 'vslp' -%>
+        # VSLP has no per-backend weighting. We might want to add it as a
+        # functionality to the vmod.
+        # See https://phabricator.wikimedia.org/T126206
+        <%= director_name %>.add_backend(<%= name %>);
+        <% else -%>
+        <%= director_name %>.add_backend(<%= name %>, <%= backend_option(backend, "weight", 10) %>);
+        <% end -%>
+        <% else -%>
 	{
 		.backend = <%= name %>;
 		.weight = <%= backend_option(backend, "weight", 10) %>;
 	}
+	<% end -%>
 <% 	end -%>
-}
+
+        <% if director['type'] == 'vslp' -%>
+        # We should think about this value, probably setting it in a
+        # backend-count-sensitive manner.
+        <%= director_name %>.init_hashcircle(150);
+        <% end -%>
+
+<% if not @varnish_version4 -%>
+} # end of director block
+<% end -%>
 <% end #if !empty -%>
 <% end #if !dynamic -%>
 <% end #director loop -%>
+<% if @varnish_version4 -%>
+} # end wm_common_directors_init
+<% end -%>
 
 # Functions
 
 sub wm_common_recv_purge {
 	/* Support HTTP PURGE */
-	if (req.request == "PURGE") {
+	if (<%= @req_method %> == "PURGE") {
 		if (client.ip !~ local_host) {
-			error 405 "Denied";
+			<%= error_synth(405, "Denied") %>
 		} elsif (req.http.Host ~ "<%= @vcl_config.fetch('purge_host_regex') %>") {
 			set req.hash_ignore_busy = true;
-			return (lookup);
+			<% if @varnish_version4 -%>
+				return (purge);
+			<% else -%>
+				return (lookup);
+			<% end -%>
 		} else {
-			error 204 "Domain not cached here";
+			<%= error_synth(204, "Domain not cached here") %>
 		}
 	}
 }
@@ -179,38 +246,52 @@ sub wm_common_recv_early {
 		}
 	}
 
-	if (req.request !~ "<%= @vcl_config.fetch("allowed_methods", "^(GET|HEAD|POST|PURGE)$") %>"
-		&& !(req.request == "OPTIONS" && req.http.Origin)) {
-		error 403 "HTTP method not allowed.";
+	if (<%= @req_method %> !~ "<%= @vcl_config.fetch("allowed_methods", "^(GET|HEAD|POST|PURGE)$") %>"
+		&& !(<%= @req_method %> == "OPTIONS" && req.http.Origin)) {
+		<%= error_synth(403, "HTTP method not allowed.") %>
 	}
 
 	if ( req.http.host ~ "^varnishcheck" ) {
-		error 200 "OK";
+		<%= error_synth(200, "OK") %>
 	}
 }
 
 sub wm_common_recv_grace {
+        <% if @varnish_version4 -%>
+        if (std.healthy(req.backend_hint)) {
+                # TODO: This is now handled in vcl_hit.
+                # set req.grace = 5m;
+        } else {
+                # TODO: This is now handled in vcl_hit.
+                # set req.grace = 60m;
+        }
+        <% else -%>
 	if (req.backend.healthy) {
 		set req.grace = 5m;
 	} else {
 		set req.grace = 60m;
 	}
+	<% end -%>
 }
 
 sub wm_common_hit {
 	set req.http.X-CDIS = "hit";
+	<% if not @varnish_version4 -%>
 	if (req.request == "PURGE") {
 		purge;
 		error 204 "Purged";
 	}
+	<% end -%>
 }
 
 sub wm_common_miss {
 	set req.http.X-CDIS = "miss";
+	<% if not @varnish_version4 -%>
 	if (req.request == "PURGE") {
 		purge;
 		error 204 "Cache miss";
 	}
+	<% end -%>
 }
 
 sub wm_common_pass {
@@ -222,7 +303,7 @@ sub wm_common_pass {
 	}
 }
 
-sub wm_common_fetch {
+sub wm_common_backend_response {
 <% if @vcl_config.fetch("ttl_fixed", false) -%>
 	// Fixed TTL (rare/questionable, only used on upload backend right now)
 	// Note the ttl_cap comes after this and takes precedence!
@@ -267,8 +348,12 @@ sub wm_common_deliver {
 	}
 }
 
-sub wm_common_error {
+// This is not needed with Varnish 4, the Connection header is set to
+// keep-alive by default
+<% if not @varnish_version4 -%>
+sub wm_common_v3_purge_error {
 	if (obj.status == 204 && req.request == "PURGE") {
 		set obj.http.Connection = "keep-alive";
 	}
 }
+<% end -%>
