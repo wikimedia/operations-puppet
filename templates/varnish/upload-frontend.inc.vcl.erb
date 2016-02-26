@@ -49,7 +49,7 @@ sub cluster_fe_miss {
 
 sub cluster_fe_pass { }
 
-sub cluster_fe_fetch {
+sub cluster_fe_backend_response {
 	if (beresp.http.Content-Range) {
 		// Varnish itself doesn't ask for ranges, so this must have been
 		// a passed range request
