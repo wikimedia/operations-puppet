@@ -66,17 +66,44 @@ class role::statistics::cruncher inherits role::statistics {
     include geowiki::job::monitoring
 
 
-    # Use the statistics::limn::data::generate define
-    # to set up cron jobs to generate and generate limn files
-    # from research db and push them
-    statistics::limn::data::generate { 'mobile':     }
-    statistics::limn::data::generate { 'flow':       }
-    statistics::limn::data::generate { 'edit':       }
-    statistics::limn::data::generate { 'language':   }
-    statistics::limn::data::generate { 'extdist':    }
-    statistics::limn::data::generate { 'ee':         }
-    statistics::limn::data::generate { 'multimedia': }
+    # Set up reportupdater to be executed on this machine
+    # and rsync the output base path to stat1001.
+    class { 'reportupdater':
+        base_path => "${::statistics::working_path}/reportupdater"
+        user      => $::statistics::user::username,
+        rsync_to  => 'stat1001.eqiad.wmnet::www/limn-public-data/',
+    }
 
+    # Set up various jobs to be executed by reportupdater
+    # creating several reports on mysql research db.
+    reportupdater::job { 'mobile':
+        repository => 'limn-mobile-data',
+        output_dir => 'mobile/datafiles',
+    }
+    reportupdater::job { 'flow':
+        repository => 'limn-flow-data',
+        output_dir =>  'flow/datafiles',
+    }
+    reportupdater::job { 'edit':
+        repository => 'limn-edit-data',
+        output_dir => 'metrics',
+    }
+    reportupdater::job { 'language':
+        repository => 'limn-language-data',
+        output_dir => 'metrics/beta-feature-enables',
+    }
+    reportupdater::job { 'extdist':
+        repository => 'limn-extdist-data',
+        output_dir => 'extdist/datafiles',
+    }
+    reportupdater::job { 'ee':
+        repository => 'limn-ee-data',
+        output_dir => 'metrics/echo',
+    }
+    reportupdater::job { 'multimedia':
+        repository => 'limn-multimedia-data',
+        output_dir => 'metrics/beta-feature-enables',
+    }
 }
 
 
@@ -127,6 +154,16 @@ class role::statistics::private inherits role::statistics {
         pass  => $::passwords::mysql::research::pass,
         group => 'statistics-privatedata-users',
         mode  => '0440',
+    }
+
+    # Set up reportupdater to be executed on this machine.
+    class { 'reportupdater':
+        base_path => "${::statistics::working_path}/reportupdater",
+        user      => $::statistics::user::username,
+    }
+    # Set up a job to create browser reports on hive db.
+    reportupdater::job { 'browser':
+        repository  => 'reportupdater-queries',
     }
 }
 
