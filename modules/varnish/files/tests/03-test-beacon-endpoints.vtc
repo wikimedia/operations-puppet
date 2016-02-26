@@ -1,0 +1,21 @@
+varnishtest "WMF Backend"
+
+server s1 {
+    rxreq
+    txresp
+} -start
+
+varnish v1 -arg "-p vcc_err_unref=false" -vcl+backend {
+    backend ipv4_127_0_0_1 {
+        .host = "${s1_addr}"; .port = "${s1_port}";
+    }
+
+    include "/usr/share/varnish/tests/wikimedia_maps-frontend.vcl";
+} -start
+
+client c1 {
+    # Logging beacon endpoints
+    txreq -url "/beacon/something"
+    rxresp
+    expect resp.status == 204
+} -run
