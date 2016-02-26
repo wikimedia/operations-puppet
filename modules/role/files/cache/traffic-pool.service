@@ -1,5 +1,8 @@
 # traffic-pool.service
 #
+# On shutdown, *before* nginx/varnish are stopped, this will depool the node
+# for all services and then sleep 45 seconds
+#
 # On startup, *after* nginx/varnish have been started successfully, iff the
 # file /var/lib/traffic-pool/pool-once exists, this will delete that file,
 # sleep 45 seconds, and then pool the node for all services.  The file is
@@ -8,26 +11,9 @@
 # depooled when booting up under unknown conditions (e.g. post-crash, or
 # after being offline for a long period for hardware repairs).
 #
-# On shutdown, *before* nginx/varnish are stopped, this will depool the node
-# for all services and then sleep 45 seconds
-#
-# Due to BindsTo= (which is a stronger version of Requires=), the shutdown
-# depool will also occur if any of the nginx/varnish service units fail
-# randomly.
-#
-# Note: this must sometimes be manually re-armed after other manual actions!
-# For example, if this unit stops (depools) because the nginx service
-# failed, and you fix the nginx service and repool the service manually with
-# confctl, you should also "service traffic-pool start" to re-arm the
-# automatic depool on the next crash or shutdown.  There's not really a way
-# to make that happen automagically that doesn't cause other bad/surprising
-# side effects.  For that reason, this service should probably be monitored
-# and alerted if it's down on the host.
-#
 
 [Unit]
 Description=Traffic Services Pool Control
-BindsTo=varnish.service varnish-frontend.service nginx.service
 After=varnish.service varnish-frontend.service nginx.service
 
 [Service]
