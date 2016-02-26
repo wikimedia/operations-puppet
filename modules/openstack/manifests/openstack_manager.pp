@@ -53,6 +53,12 @@ class openstack::openstack_manager(
         }
     }
 
+    file { '/etc/apache2/sites-enabled/public-wiki-rewrites.incl':
+        ensure => present,
+        source => 'puppet:///modules/mediawiki/apache/sites/public-wiki-rewrites.incl',
+        before => Service['apache2'],
+    }
+
     apache::site { $webserver_hostname:
         content => template("openstack/${$openstack_version}/${webserver_hostname}.erb"),
     }

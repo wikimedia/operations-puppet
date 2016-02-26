@@ -30,6 +30,8 @@
     RewriteCond %{SERVER_PORT} !^443$
     RewriteRule ^/(.*)$ https://<%= @webserver_hostname %>/$1 [L,R]
 
+    Include "sites-enabled/public-wiki-rewrites.incl"
+
     ErrorLog /var/log/apache2/error.log
 
     # Possible values include: debug, info, notice, warn, error, crit,
@@ -56,6 +58,8 @@
     RewriteRule ^/view/(.*)$ https://<%= @webserver_hostname %>/wiki/$1 [L,R]
     RewriteCond %{HTTP_HOST}   !^<%= @webserver_hostname.gsub(%r[\.],'\\.') %> [NC]
     RewriteRule ^/(.*)         https://<%= @webserver_hostname %>/$1 [L,R]
+
+    Include "sites-enabled/public-wiki-rewrites.incl"
 
     DocumentRoot /srv/mediawiki/docroot/wikimedia.org
     <Directory />
