@@ -119,6 +119,7 @@ class role::cache::text {
         'bits_domain'        => $::role::cache::base::bits_domain,
         'top_domain'         => $::role::cache::base::top_domain,
         'do_gzip'            => true,
+        'pass_random'        => true,
     }
 
     $be_vcl_config = merge($common_vcl_config, {

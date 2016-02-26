@@ -280,9 +280,12 @@ sub vcl_miss {
 sub vcl_pass {
 	call wm_common_pass;
 
+<% if @vcl_config.fetch("pass_random", false) -%>
 	// pass-traffic should not use consistent hashing, to avoid unecessary
-	// traffic focus on one node and keep things performant
+	// traffic focus on one node and keep things performant, *if* we're
+	// fairly sure that all layers/tiers make equivalent pass decisions...
 	set req.backend = backend_random;
+<% end -%>
 
 	call cluster_fe_pass;
 	return (pass); // no default VCL (which is just "return (pass)" anyways)

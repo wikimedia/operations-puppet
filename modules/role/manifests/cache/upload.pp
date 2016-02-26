@@ -81,16 +81,25 @@ class role::cache::upload {
         'do_gzip'          => true,
     }
 
+    # Note pass_random true in BE, false in FE below.
+    # upload VCL has known FE->BE differentials on pass decisions:
+    # 1. FEs pass all range reqs, BEs pass only those which start >32MB
+    # 2. FEs pass all objs >32MB in size, BEs do not
+    # Because of this, pass_random does more harm than good in the
+    # upload-frontend case.  All tiers of backend share the same policies.
+
     $be_vcl_config = merge($common_vcl_config, {
         'layer'            => 'backend',
         'ttl_fixed'        => '30d',
         'ttl_cap'          => '30d',
+        'pass_random'      => true,
     })
 
     $fe_vcl_config = merge($common_vcl_config, {
         'layer'            => 'frontend',
         'https_redirects'  => true,
         'ttl_cap'          => '1h',
+        'pass_random'      => false,
     })
 
     $storage_size_bigobj = floor($::role::cache::2layer::storage_size / 6)
