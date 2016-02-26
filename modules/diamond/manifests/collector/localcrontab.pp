@@ -1,16 +1,12 @@
-# == Define: diamond::collector::extendedexim
+# == Define: diamond::collector::localcrontab
 #
-# Exim collector. Collects queue properties and paniclog size.
+# crontab collector.  Collects number of crontabs.
 #
-# Queue properties:
-#     - queue.oldest: age of oldest e-mail in queue (seconds)
-#     - queue.youngest: age of youngest e-mail in queue (seconds)
-#     - queue.size: total size of the queue (bytes)
-#     - queue.length: total number of e-mails in the queue
-#     - queue.num_frozen: number of frozen e-mails in the queue
-#
-# Paniclog properties:
-#     - paniclog.length: number of lines in /var/log/exim4/paniclog
+# Properties:
+#     - localcrontab.total: Total number of crontabs.
+#     - localcrontab.administrative: Number of crontabs of
+#       administrative users.
+#     - localcrontab.other: Number of other crontabs.
 
 include stdlib
 
