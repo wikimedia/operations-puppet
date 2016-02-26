@@ -1,0 +1,24 @@
+varnishtest "Custom synth errorpage"
+
+server s1 {
+    rxreq
+    txresp
+} -start
+
+varnish v1 -arg "-p vcc_err_unref=false" -vcl+backend {
+	backend ipv4_127_0_0_1 {
+		.host = "${s1_addr}"; .port = "${s1_port}";
+	}
+
+	include "/usr/share/varnish/tests/wikimedia_maps-frontend.vcl";
+} -start
+
+client c1 {
+	txreq -req PUT -url "/?foo=bar"
+	rxresp
+	expect resp.status == 403
+	expect resp.body ~ "<title>Wikimedia Error</title>"
+	expect resp.body ~ "Request from 127.0.0.1 via"
+	expect resp.body ~ ", Varnish XID [0-9]"
+	expect resp.body ~ "Error: 403, HTTP method not allowed. at [A-Z]"
+} -run
