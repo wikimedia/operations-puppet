@@ -12,8 +12,6 @@
 # Paniclog properties:
 #     - paniclog.length: number of lines in /var/log/exim4/paniclog
 
-include stdlib
-
 define diamond::collector::extendedexim(
     $settings = {},
     $ensure   = present,
