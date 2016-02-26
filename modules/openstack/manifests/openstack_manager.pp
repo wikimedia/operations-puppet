@@ -53,11 +53,15 @@ class openstack::openstack_manager(
         }
     }
 
+    file { '/etc/apache2/sites-enabled/public-wiki-rewrites.incl':
+        ensure => present,
+        source => 'puppet:///modules/mediawiki/apache/sites/public-wiki-rewrites.incl',
+        before => Service['apache2'],
+    }
     $webserver_ip = $webserver_hostname ? {
         'wikitech.wikimedia.org'        => '208.80.154.136',
         'labtestwikitech.wikimedia.org' => '208.80.153.14'
     }
-
     apache::site { $webserver_hostname:
         content => template('openstack/common/wikitech.wikimedia.org.erb'),
     }
