@@ -163,8 +163,8 @@ sub cluster_fe_pass {
 	call text_common_misspass_restore_cookie;
 }
 
-sub cluster_fe_fetch {
-	call text_common_fetch;
+sub cluster_fe_backend_response {
+	call text_common_backend_response;
 
 	return (deliver);
 }
