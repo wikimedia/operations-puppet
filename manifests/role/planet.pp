@@ -32,6 +32,15 @@ class role::planet {
             'wikimedia'     => '&#1608;&#1610;&#1603;&#1610;&#1605;&#1610;&#1583;&#1610;&#1575;',
             'planetarium'   => '&#1576;&#1604;&#1575;&#1606;&#1610;&#1578;&#1575;&#1585;&#1610;&#1608;&#1605;',
         },
+        bg => {
+            'subscribe'     => 'Абониране',
+            'subscriptions' => 'Абонамент',
+            'lastupdated'   => 'за последно са актуализирани',
+            'alltimesutc'   => 'All times are UTC.',
+            'poweredby'     => 'работи по софтуера на',
+            'wikimedia'     => 'Уикимедия',
+            'planetarium'   => 'планетарий',
+        },
         ca => {
             'subscribe'     => 'Subscriure\'s',
             'subscriptions' => 'Subscripcions',
@@ -158,6 +167,16 @@ class role::planet {
             'poweredby'     => '&#1056;&#1072;&#1073;&#1086;&#1090;&#1072;&#1077;&#1090; &#1085;&#1072;',
             'wikimedia'     => '&#1042;&#1080;&#1082;&#1080;&#1084;&#1077;&#1076;&#1080;&#1072;',
             'planetarium'   => '&#1055;&#1083;&#1072;&#1085;&#1077;&#1090;&#1072;&#1088;&#1080;&#1081;',
+
+        },
+        sq => {
+            'subscribe'     => 'Abonoj',
+            'subscriptions' => 'Abonimet',
+            'lastupdated'   => 'Last updated',
+            'alltimesutc'   => 'All times are UTC.',
+            'poweredby'     => 'Mundësuar nga',
+            'wikimedia'     => 'Wikimedia',
+            'planetarium'   => 'Planetarium',
 
         },
         sr => {
