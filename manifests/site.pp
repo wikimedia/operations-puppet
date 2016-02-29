@@ -879,6 +879,16 @@ node 'dbproxy1004.eqiad.wmnet' {
     }
 }
 
+node 'dbproxy1005.eqiad.wmnet' {
+    class { 'role::mariadb::proxy::master':
+        shard          => 'm5',
+        primary_name   => 'db1009',
+        primary_addr   => '10.64.0.13',
+        secondary_name => 'db2030',
+        secondary_addr => '10.192.16.18',
+    }
+}
+
 node 'eeden.wikimedia.org' {
     role authdns::server
 
