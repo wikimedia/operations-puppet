@@ -8,7 +8,7 @@ class role::dataset::secondary {
 
     $rsync = {
         'public' => true,
-        # 'peers'  => true,
+        'peers'  => true,
     }
     $grabs = {
     }
