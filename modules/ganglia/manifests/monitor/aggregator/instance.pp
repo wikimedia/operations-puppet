@@ -15,8 +15,9 @@ define ganglia::monitor::aggregator::instance($monitored_site) {
     }
     $id = $ganglia::configuration::clusters[$cluster]['id'] + $ganglia::configuration::id_prefix[$monitored_site]
     $desc = $ganglia::configuration::clusters[$cluster]['name']
+    $desc_safe = regsubst($desc, '/', '_', 'G')
     $gmond_port = $ganglia::configuration::base_port + $id
-    $cname = "${desc} ${::site}"
+    $cname = "${desc_safe} ${::site}"
     if $monitored_site in $sites {
         $ensure = 'present'
     } else {
