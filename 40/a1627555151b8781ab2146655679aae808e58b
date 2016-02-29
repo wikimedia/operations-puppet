@@ -1,0 +1,10 @@
+Code-Review+1: Krinkle <krinklemail@gmail.com>
+Verified+2: jenkins-bot
+Code-Review+1: BBlack <bblack@wikimedia.org>
+Code-Review+2: Ema <ema@wikimedia.org>
+Verified+2: Ema <ema@wikimedia.org>
+Submitted-by: Ema <ema@wikimedia.org>
+Submitted-at: Mon, 29 Feb 2016 14:14:55 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/273480
+Project: operations/puppet
+Branch: refs/heads/production
