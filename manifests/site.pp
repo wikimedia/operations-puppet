@@ -224,18 +224,6 @@ node 'bast4001.wikimedia.org' {
     }
 }
 
-# IPsec testing
-node /^(berkelium|curium)\.eqiad\.wmnet$/ {
-    $cluster = 'misc'
-    include standard
-    interface::add_ip6_mapped { 'main': }
-    rsyslog::conf { 'remote_logstash':
-        content  => '*.* @logstash1002.eqiad.wmnet:10514',
-        priority => 32,
-    }
-    role ipsec
-}
-
 node 'bohrium.eqiad.wmnet' {
     role piwik
     include standard
