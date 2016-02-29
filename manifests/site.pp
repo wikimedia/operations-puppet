@@ -2551,7 +2551,7 @@ node 'titanium.wikimedia.org' {
 
 # test system for performance team (T117888)
 node 'tungsten.eqiad.wmnet' {
-    role testsystem
+    role testsystem, xhgui
 }
 
 node 'uranium.wikimedia.org' {
