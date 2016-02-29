@@ -1,5 +1,36 @@
 C{
 #include <string.h>
+#include <inttypes.h>
+
+/******************************************************************************
+* raw_normalize_path(sp, "..."):
+*
+* Rewrites the path part of the URL, decoding some %-encoded characters into
+* the actual characters they represent.  This stops conversion when it first
+* runs into a literal '?' or '#', indicating the end of the path part of the
+* URL.  This sort of canonicalization helps with cache fragmentation and PURGE
+* issues in general, but the set of decoded characters can be
+* application/service -specific.
+*
+* By default this function only decodes the Unreserved Set of universally-safe
+* characters, which are [-A-Za-z0-9_.~].  If an argument string is provided,
+* all of the characters in that string are also decoded.
+*
+* As a general rule, it would never be wise to decode any of the following:
+* Anything unprintable in US-ASCII (0x00 - 0x1F, 0x7F - 0xFF).
+* Any of these four: ' ' (0x20), '#' (0x23), '%' (0x25), '?' (0x3F)
+*
+* Combining all of the information above, the total set of potentially useful
+* characters to place in an argument string which aren't already converted by
+* default would be:
+* !"$&'()*+,-./;<=>@[\]^_{|}~
+* or in C string form with a couple of required escapes:
+* "!\"$&'()*+,-./;<=>@[\\]^_{|}~"
+*
+* Whether it's safe to decode any these within the path segment is really up
+* to application-layer semantics.  In the absence of known application-layer
+* semantics, we can't assume we can decode any of them safely.
+******************************************************************************/
 
 /* DIY hexadecimal conversion, since it is simple enough for a fixed
  * width, and all the relevant standard C library functions promise to
@@ -12,14 +43,11 @@ C{
 #define NP_IS_HEX(c) (NP_HEX_DIGIT(c) != -1)
 #define NP_HEXCHAR(c1, c2) (char)( (NP_HEX_DIGIT(c1) << 4) | NP_HEX_DIGIT(c2) )
 
-void raw_normalize_path(struct sess *sp, const int doslash) {
-	/* Rewrite the path part of the URL, replacing unnecessarily escaped
-	 * punctuation with the actual characters. The character list is from
-	 * MediaWiki's wfUrlencode(), so the URLs produced here will be the same as
-	 * the ones produced by MediaWiki in href attributes. Doing this reduces
-	 * cache fragmentation and fixes T29935, i.e. stale cache entries due to
-	 * MediaWiki purging only the wfUrlencode'd version of the URL.
-	 */
+// note these evaluate their argument twice!
+#define NP_SET(_x)   (decode_ok[_x >> 6] |= (1 << (63 - (_x & 63))))
+#define NP_CHECK(_x) (decode_ok[_x >> 6] &  (1 << (63 - (_x & 63))))
+
+void raw_normalize_path(struct sess *sp, const char* addtl_chars) {
 	const char * url = VRT_r_req_url(sp);
 	assert(url);
 
@@ -29,25 +57,34 @@ void raw_normalize_path(struct sess *sp, const int doslash) {
 	const size_t lastConvertIdx = urlLength > 2 ? urlLength - 3 : 0;
 	int dirty = 0;
 
-	/* Allocate destination memory from the stack using the C99
-	 * variable-length automatic feature. We know the length in advance
-	 * because this function can only shorten the input string.
-	 */
+	// default decoding map: [-A-Za-z0-9_.~]
+	// X in commnts below is unprintable, except where it's obviously the real X
+	uint64_t decode_ok[4] = {
+		// 0x00 - 0x3F:
+		//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX !"#$%&'()*+,-./0123456789:;<=>?
+		0b0000000000000000000000000000000000000000000001101111111111000000,
+		// 0x40 - 0x7F:
+		//@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~X
+		0b0111111111111111111111111110000101111111111111111111111111100010,
+		// 0x80 - 0xBF: (all unprintable)
+		0b0000000000000000000000000000000000000000000000000000000000000000,
+		// 0xC0 - 0xFF: (all unprintable)
+		0b0000000000000000000000000000000000000000000000000000000000000000,
+	};
+
+	if(addtl_chars) {
+		// Turn on bits for the additional characters requested
+		char addtl;
+		while ((addtl = *addtl_chars++))
+			NP_SET(addtl);
+	}
+
+	// We know the length in advance because this function can only shorten the input string
 	char destBuffer[urlLength + 1];
 	while (url[i] && url[i] != '?' && url[i] != '#') {
 		if (i <= lastConvertIdx && url[i] == '%' && NP_IS_HEX(url[i+1]) && NP_IS_HEX(url[i+2])) {
 			const char c = NP_HEXCHAR(url[i+1], url[i+2]);
-			if (c == ';'
-				|| c == '@'
-				|| c == '$'
-				|| c == '!'
-				|| c == '*'
-				|| c == '('
-				|| c == ')'
-				|| c == ','
-				|| c == ':'
-				|| (doslash && c == '/'))
-			{
+			if (NP_CHECK(c)) {
 				destBuffer[outPos++] = c;
 				dirty = 1;
 				i += 3;
@@ -75,13 +112,20 @@ void raw_normalize_path(struct sess *sp, const int doslash) {
 #undef NP_IS_HEX
 #undef NP_HEX_DIGIT
 #undef NP_HEXCHAR
+#undef NP_SET
+#undef NP_CHECK
 
 }C
 
+// Use raw_normalize_path to decode certain charaters in the path part
+// of the URL.  The character list is from MediaWiki's wfUrlencode(), so the
+// URLs produced here will be the same as the ones produced by
+// MediaWiki in href attributes.
 sub normalize_mediawiki_path {
-	C{ raw_normalize_path(sp, 1); }C
+	C{ raw_normalize_path(sp, ";@$!*(),/:"); }C
 }
 
+// RB initially has the same set as MW, minus the forward slash
 sub normalize_rest_path {
-	C{ raw_normalize_path(sp, 0); }C
+	C{ raw_normalize_path(sp, ";@$!*(),:"); }C
 }
