@@ -1,6 +1,0 @@
-ENABLED=1
-
-EXTRAOPTS=""
-for file in $(ls -1 /etc/haproxy/conf.d); do
-    EXTRAOPTS="${EXTRAOPTS} -f /etc/haproxy/conf.d/${file}"
-done
