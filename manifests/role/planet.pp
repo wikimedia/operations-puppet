@@ -174,7 +174,7 @@ class role::planet {
             'subscriptions' => 'Abonimet',
             'lastupdated'   => 'Last updated',
             'alltimesutc'   => 'All times are UTC.',
-            'poweredby'     => 'Mundësuar nga',
+            'poweredby'     => 'Mund&euml;suar nga',
             'wikimedia'     => 'Wikimedia',
             'planetarium'   => 'Planetarium',
 
