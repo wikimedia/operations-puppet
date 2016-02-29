@@ -6,9 +6,10 @@ class ganglia::monitor {
 
     $id = $ganglia::configuration::clusters[$cluster]['id'] + $ganglia::configuration::id_prefix[$::site]
     $desc = $ganglia::configuration::clusters[$cluster]['name']
+    $desc_safe = regsubst($desc, '/', '_', 'G')
     $gmond_port = $ganglia::configuration::base_port + $id
 
-    $cname = "${desc} ${::site}"
+    $cname = "${desc_safe} ${::site}"
     $aggregator_hosts = $ganglia::configuration::aggregator_hosts[$::site]
 
     class { 'ganglia::monitor::config':
