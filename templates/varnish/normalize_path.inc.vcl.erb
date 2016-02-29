@@ -54,8 +54,8 @@ void raw_normalize_path(struct sess *sp, const int doslash) {
 				} else {
 					destBuffer[outPos++] = url[i];
 				}
-			} else if (url[i] == '?') {
-				/* Reached the query part. Just copy the rest of the URL
+			} else if (url[i] == '?' || url[i] = '#') {
+				/* Reached the query/frag part. Just copy the rest of the URL
 				 * to the destination.
 				 */
 				memcpy(destBuffer + outPos, url + i, sizeof(char) * (urlLength - i));
