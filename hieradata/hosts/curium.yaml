@@ -1,7 +1,0 @@
-# IPsec testing
-role::ipsec::hosts:
-  - 'berkelium.eqiad.wmnet'
-  - 'curium.eqiad.wmnet'
-debdeploy::grains:
-  debdeploy-ipsec-test:
-    value: standard
