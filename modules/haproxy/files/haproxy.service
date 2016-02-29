@@ -1,0 +1,21 @@
+[Unit]
+Description=HAProxy Load Balancer
+Documentation=man:haproxy(1)
+Documentation=file:/usr/share/doc/haproxy/configuration.txt.gz
+After=network.target syslog.service
+Wants=syslog.service
+
+[Service]
+Environment=CONFIG=/etc/haproxy/haproxy.cfg
+EnvironmentFile=-/etc/default/haproxy
+ExecStartPre=/usr/local/bin/generate_haproxy_default.sh
+ExecStartPre=/usr/sbin/haproxy -f ${CONFIG} -c -q
+ExecStart=/usr/sbin/haproxy-systemd-wrapper -f ${CONFIG} -p /run/haproxy.pid
+$EXTRAOPTS
+ExecReload=/usr/sbin/haproxy -c -f ${CONFIG}
+ExecReload=/bin/kill -USR2 $MAINPID
+KillMode=mixed
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
