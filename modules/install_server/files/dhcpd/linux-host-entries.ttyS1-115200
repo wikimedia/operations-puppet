@@ -3123,16 +3123,22 @@ host magnesium {
 host mc1001 {
     hardware ethernet 00:1b:21:7a:88:0b;
     fixed-address mc1001.eqiad.wmnet;
+    option pxelinux.pathprefix "jessie-installer/";
+    filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host mc1002 {
     hardware ethernet 00:1b:21:70:8d:4f;
     fixed-address mc1002.eqiad.wmnet;
+    option pxelinux.pathprefix "jessie-installer/";
+    filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host mc1003 {
     hardware ethernet 00:1b:21:70:8d:41;
     fixed-address mc1003.eqiad.wmnet;
+    option pxelinux.pathprefix "jessie-installer/";
+    filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host mc1004 {
