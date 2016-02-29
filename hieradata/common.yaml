@@ -237,7 +237,7 @@ ganglia_clusters:
     sites:
       eqiad: []
   restbase_test:
-    name: "Restbase test/staging"
+    name: "Restbase test"
     id: 55
     sites:
       eqiad: []
