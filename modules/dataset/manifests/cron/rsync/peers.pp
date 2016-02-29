@@ -8,10 +8,6 @@ class dataset::cron::rsync::peers($enable=true) {
         $ensure = 'absent'
     }
 
-    file { '/usr/local/bin/rsync-dumps.sh':
-        ensure => $ensure,
-    }
-
     file { '/usr/local/bin/rsync-dumps.py':
         ensure => $ensure,
         mode   => '0755',
