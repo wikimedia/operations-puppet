@@ -9,7 +9,7 @@ class dataset::cron::rsync::peers($enable=true) {
     }
 
     file { '/usr/local/bin/rsync-dumps.py':
-        ensure => $ensure,
+        ensure => 'present',
         mode   => '0755',
         owner  => 'root',
         group  => 'root',
