@@ -86,6 +86,12 @@ class base::environment(
         content => $wikimedia_cluster,
     }
 
+    file { '/etc/profile.d/field.sh':
+        source => 'puppet:///modules/base/environment/field.sh',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0444',
+    }
 
     ### Core dumps
 
