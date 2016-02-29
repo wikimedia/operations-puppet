@@ -112,4 +112,4 @@ glanceconfig:
   db_host: 'labtestcontrol2001.wikimedia.org'
   bind_ip: "%{::ipaddress_eth0}"
 
-openstack::horizon::service::webservice_hostname: 'labtesthorizon.wikimedia.org'
+openstack::horizon::service::webserver_hostname: 'labtesthorizon.wikimedia.org'
