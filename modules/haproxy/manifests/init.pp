@@ -1,7 +1,7 @@
 # Class haproxy
 
 class haproxy(
-    $template  = 'haproxy/haproxy.cfg.erb',
+    $template = 'haproxy/haproxy.cfg.erb',
 ) {
 
     package { [
@@ -18,14 +18,6 @@ class haproxy(
         mode   => '0755',
     }
 
-    file { '/etc/default/haproxy':
-        ensure  => present,
-        mode    => '0444',
-        owner   => 'root',
-        group   => 'root',
-        content => template('haproxy/default.erb'),
-    }
-
     file { '/etc/haproxy/haproxy.cfg':
         ensure  => present,
         mode    => '0444',
@@ -39,6 +31,37 @@ class haproxy(
         group  => 'root',
         mode   => '0755',
         source => 'puppet:///modules/haproxy/check_haproxy',
+    }
+
+    if os_version('debian >= jessie') {
+
+        # defaults file cannot be dynamic anymore on systemd
+        # pregenerate them on systemd start/reload
+        file { '/usr/local/bin/generate_haproxy_default.sh':
+            ensure => present,
+            owner  => 'root',
+            group  => 'root',
+            mode   => '0755',
+            source => 'puppet:///modules/haproxy/generate_haproxy_default.sh',
+        }
+
+        file { '/lib/systemd/system/haproxy.service':
+            ensure   => present,
+            mode     => '0644',
+            owner    => 'root',
+            group    => 'root',
+            source   => 'puppet:///modules/haproxy/haproxy.service',
+            requires => File['/usr/local/bin/generate_haproxy_default.sh'],
+        }
+    }
+    else {
+        file { '/etc/default/haproxy':
+            ensure  => present,
+            mode    => '0444',
+            owner   => 'root',
+            group   => 'root',
+            content => template('haproxy/default.erb'),
+        }
     }
 
     nrpe::monitor_service { 'haproxy':
