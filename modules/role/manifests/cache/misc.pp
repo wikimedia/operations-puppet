@@ -48,6 +48,11 @@ class role::cache::misc {
                 'type' => 'random',
                 'backends' => ['californium.wikimedia.org'],
             },
+            'labtestweb2001' => {
+                'dynamic' => 'no',
+                'type' => 'random',
+                'backends' => ['labtestweb2001.wikimedia.org'],
+            },
             'dataset1001' => {
                 'dynamic' => 'no',
                 'type' => 'random',
