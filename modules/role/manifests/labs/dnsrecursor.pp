@@ -310,6 +310,11 @@ class role::labs::dnsrecursor {
         require => File['/var/zones']
     }
 
+    class {'::toollabs::cnames':
+        require => File['/var/zones'],
+        notify  => Service['pdns-recursor'],
+    }
+
     ::dnsrecursor::monitor { $listen_addresses: }
 
     ferm::service { 'recursor_udp_dns_rec':
