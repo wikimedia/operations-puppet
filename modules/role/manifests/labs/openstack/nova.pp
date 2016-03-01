@@ -84,6 +84,14 @@ class role::labs::openstack::nova::manager {
         rule   => 'proto tcp dport ssh saddr $DEPLOYMENT_HOSTS ACCEPT;',
     }
 
+    # allow keystone to query the wikitech db
+    # mysql access from iron
+    ferm::service { 'mysql_keystone':
+        proto  => 'tcp',
+        port   => '3306',
+        srange => '@resolve($keystone_host)',
+    }
+
     class { '::openstack::openstack_manager':
         novaconfig         => $novaconfig,
         webserver_hostname => $sitename,
