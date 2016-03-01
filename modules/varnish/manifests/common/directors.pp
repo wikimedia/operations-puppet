@@ -9,18 +9,7 @@ define varnish::common::directors(
 {
     $conftool_namespace = '/conftool/v1/pools'
 
-    # backends in the primary DC don't need this, so we bail out
     require varnish::common::director_scripts
-
-    $director_list = $instance ? {
-        /frontend/ => keys($directors),
-        /backend/  => keys($directors),
-        default    => undef
-    }
-
-    if $director_list == undef {
-        fail("Invalid instance type ${instance}")
-    }
 
     $def_dc = $instance ? {
         /frontend/ => $::site,
