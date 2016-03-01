@@ -234,8 +234,7 @@ sub vcl_recv {
 
 	call wm_common_recv_early;
 
-	// frontend caches always have "backend" defined to varnish-backend instances
-	set req.backend = backend;
+	set req.backend = cache_local;
 
 	call wm_common_recv_grace;
 
@@ -289,7 +288,7 @@ sub vcl_pass {
 	// pass-traffic should not use consistent hashing, to avoid unecessary
 	// traffic focus on one node and keep things performant, *if* we're
 	// fairly sure that all layers/tiers make equivalent pass decisions...
-	set req.backend = backend_random;
+	set req.backend = cache_local_random;
 <% end -%>
 
 	call cluster_fe_pass;

@@ -30,12 +30,12 @@ class role::cache::upload {
             },
         },
         'two' => {
-            'backend' => {
+            'cache_remote' => {
                 'dynamic'  => 'yes',
                 'type'     => 'chash',
                 'backends' => $cluster_nodes['eqiad'],
             },
-            'backend_random' => {
+            'cache_remote_random' => {
                 'dynamic'  => 'yes',
                 'type'     => 'random',
                 'backends' => $cluster_nodes['eqiad'],
@@ -146,12 +146,12 @@ class role::cache::upload {
         runtime_parameters => ['default_ttl=2592000'],
         storage            => "-s malloc,${memory_storage_size}G",
         directors          => {
-            'backend'        => {
+            'cache_local' => {
                 'dynamic'  => 'yes',
                 'type'     => 'chash',
                 'backends' => $site_cluster_nodes,
             },
-            'backend_random' => {
+            'cache_local_random' => {
                 'dynamic'  => 'yes',
                 'type'     => 'random',
                 'backends' => $site_cluster_nodes,
