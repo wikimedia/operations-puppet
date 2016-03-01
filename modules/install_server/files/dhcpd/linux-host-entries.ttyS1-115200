@@ -3367,6 +3367,8 @@ host mira {
 host ms1001 {
     hardware ethernet 78:2b:cb:0a:13:f3;
     fixed-address ms1001.wikimedia.org;
+    option pxelinux.pathprefix "jessie-installer/";
+    filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host ms1003 {
