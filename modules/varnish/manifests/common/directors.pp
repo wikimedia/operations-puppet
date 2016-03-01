@@ -11,11 +11,6 @@ define varnish::common::directors(
 
     require varnish::common::director_scripts
 
-    $def_dc = $instance ? {
-        /frontend/ => $::site,
-        default    => $::mw_primary,
-    }
-
     $service_name = $instance ? {
         'frontend' => 'varnish-frontend',
         'backend'  => 'varnish',
@@ -24,9 +19,8 @@ define varnish::common::directors(
 
     # usual old trick
     $group = hiera('cluster', $::cluster)
-    $def_service = 'varnish-be'
 
-    $keyspaces_str = inline_template("<%= @directors.values.map{ |v| \"#{@conftool_namespace}/#{v['dc'] || @def_dc}/#{@group}/#{v['service'] || @def_service}\" }.join('|') %>")
+    $keyspaces_str = inline_template("<%= @directors.values.map{ |v| \"#{@conftool_namespace}/#{v['dc']}/#{@group}/#{v['service']\" }.join('|') %>")
     $keyspaces = sort(unique(split($keyspaces_str, '\|')))
     confd::file { "/etc/varnish/directors.${instance}.vcl":
         ensure     => present,

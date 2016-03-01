@@ -33,13 +33,16 @@ class role::cache::upload {
             'cache_remote' => {
                 'dynamic'  => 'yes',
                 'type'     => 'chash',
+                'dc'       => 'eqiad',
+                'service'  => 'varnish-be',
                 'backends' => $cluster_nodes['eqiad'],
             },
             'cache_remote_random' => {
                 'dynamic'  => 'yes',
                 'type'     => 'random',
-                'backends' => $cluster_nodes['eqiad'],
+                'dc'       => 'eqiad',
                 'service'  => 'varnish-be-rand',
+                'backends' => $cluster_nodes['eqiad'],
             },
         }
     }
@@ -149,13 +152,16 @@ class role::cache::upload {
             'cache_local' => {
                 'dynamic'  => 'yes',
                 'type'     => 'chash',
+                'dc'       => $::site,
+                'service'  => 'varnish-be',
                 'backends' => $site_cluster_nodes,
             },
             'cache_local_random' => {
                 'dynamic'  => 'yes',
                 'type'     => 'random',
-                'backends' => $site_cluster_nodes,
+                'dc'       => $::site,
                 'service'  => 'varnish-be-rand',
+                'backends' => $site_cluster_nodes,
             },
         },
         vcl_config         => $fe_vcl_config,
