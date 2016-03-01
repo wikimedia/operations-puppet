@@ -17,6 +17,12 @@ sub pick_large_object_stevedore {
 	}
 }
 
+<% if @site_tier == "one" -%>
+sub cluster_be_recv_applayer_backend {
+	set req.backend = swift;
+}
+<% end -%>
+
 sub cluster_be_recv {
 	call upload_common_recv;
 

@@ -173,7 +173,7 @@ sub wm_common_recv_purge {
 	}
 }
 
-sub wm_common_recv {
+sub wm_common_recv_early {
 	unset req.http.X-CDIS; // clear internal cache-disposition header
 
 	// XFF-appending is non-idempotent for restart purposes..
@@ -195,20 +195,14 @@ sub wm_common_recv {
 	if ( req.http.host ~ "^varnishcheck" ) {
 		error 200 "OK";
 	}
+}
 
-	<% if @vcl_config.fetch("has_def_backend", "yes") == "yes" -%>
-	/* Select the default backend/director, which is always the one named 'backend'.
-	 * If an instance has no default 'backend', it must declare has_def_backend==no,
-	 * and its own VCL must handle all possible req.backend cases.
-	 */
-	set req.backend = backend;
-
+sub wm_common_recv_grace {
 	if (req.backend.healthy) {
 		set req.grace = 5m;
 	} else {
 		set req.grace = 60m;
 	}
-	<% end %>
 }
 
 sub wm_common_hit {

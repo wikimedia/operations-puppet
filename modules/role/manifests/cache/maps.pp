@@ -22,7 +22,7 @@ class role::cache::maps {
 
     $varnish_be_directors = {
         'one' => {
-            'backend'   => {
+            'kartotherian'   => {
                 'dynamic'  => 'no',
                 'type'     => 'random',
                 # XXX note explicit abnormal hack: service only exists in codfw, but eqiad is Tier-1 in general

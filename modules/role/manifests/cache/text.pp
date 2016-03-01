@@ -26,7 +26,7 @@ class role::cache::text {
 
     $varnish_be_directors = {
         'one' => {
-            'backend'          => {
+            'appservers'       => {
                 'dynamic'  => 'no',
                 'type'     => 'random',
                 'backends' => $role::cache::configuration::backends[$::realm]['appservers'][$::mw_primary],

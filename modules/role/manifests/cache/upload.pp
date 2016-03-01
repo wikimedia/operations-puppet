@@ -23,7 +23,7 @@ class role::cache::upload {
 
     $varnish_be_directors = {
         'one' => {
-            'backend'   => {
+            'swift'   => {
                 'dynamic'  => 'no',
                 'type'     => 'random',
                 'backends' => $role::cache::configuration::backends[$::realm]['swift'][$::mw_primary],

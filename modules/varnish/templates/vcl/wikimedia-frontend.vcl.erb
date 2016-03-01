@@ -232,7 +232,12 @@ sub vcl_recv {
 		call recv_fe_ip_processing;
 	}
 
-	call wm_common_recv;
+	call wm_common_recv_early;
+
+	// frontend caches always have "backend" defined to varnish-backend instances
+	set req.backend = backend;
+
+	call wm_common_recv_grace;
 
 	call rewrite_proxy_urls;
 

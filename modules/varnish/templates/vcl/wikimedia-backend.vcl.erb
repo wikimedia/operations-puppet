@@ -10,7 +10,18 @@ sub vcl_recv {
 		error 403 "Access denied";
 	}
 
-	call wm_common_recv;
+	call wm_common_recv_early;
+
+<% if @site_tier == "one" -%>
+	// tier-one caches must select an applayer backend
+	call cluster_be_recv_applayer_backend;
+<% else -%>
+	// tier-two caches always have "backend" defined to tier-one varnish-backend instances
+	set req.backend = backend;
+<% end -%>
+
+	call wm_common_recv_grace;
+
 	call wm_common_recv_purge;
 	call cluster_be_recv;
 

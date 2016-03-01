@@ -2,9 +2,8 @@
 
 include "text-common.inc.vcl";
 
-sub cluster_be_recv {
 <% if @site_tier == "one" -%>
-
+sub cluster_be_recv_applayer_backend {
 	if (req.url ~ "^/w/api\.php") {
 		if (req.http.X-Wikimedia-Debug == "1") {
 			set req.backend = appservers_debug;
@@ -30,7 +29,7 @@ sub cluster_be_recv {
 		if (req.http.X-Wikimedia-Debug == "1") {
 			set req.backend = appservers_debug;
 		} else {
-			set req.backend = backend; // appservers.svc
+			set req.backend = appservers;
 		}
 	}
 
@@ -39,9 +38,10 @@ sub cluster_be_recv {
 		set req.backend = security_audit;
 	}
 <% end %>
-
+}
 <% end %> // end site_tier == one
 
+sub cluster_be_recv {
 	call text_common_recv;
 }
 
