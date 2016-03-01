@@ -30,6 +30,9 @@ ALLOWED_HOSTS = ['horizon.wikimedia.org', ]
 #CSRF_COOKIE_SECURE = True
 #SESSION_COOKIE_SECURE = True
 
+# SESSION_TIMEOUT is in seconds and defaults to 1800.  This is seven days:
+SESSION_TIMEOUT = 604800
+
 # Overrides for OpenStack API versions. Use this setting to force the
 # OpenStack dashboard to use a specific API version for a given service API.
 # NOTE: The version should be formatted as it appears in the URL for the
