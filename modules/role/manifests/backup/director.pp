@@ -197,8 +197,8 @@ class role::backup::director {
     bacula::director::fileset { 'var-lib-grafana':
         includes => [ '/var/lib/grafana' ],
     }
-    bacula::director::fileset { 'srv-phab-repos':
-        includes => [ '/srv/phab/repos' ],
+    bacula::director::fileset { 'srv-repos':
+        includes => [ '/srv/repos' ],
     }
 
     # The console should be on the director

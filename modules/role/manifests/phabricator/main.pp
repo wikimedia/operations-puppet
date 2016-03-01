@@ -53,7 +53,7 @@ class role::phabricator::main {
             'metamta.domain'                        => $domain,
             'metamta.maniphest.public-create-email' => "task@${domain}",
             'metamta.reply-handler-domain'          => $domain,
-            'repository.default-local-path'         => '/srv/phab/repos',
+            'repository.default-local-path'         => '/srv/repos',
             'phd.taskmasters'                       => 10,
             'events.listeners'                      => [],
             'diffusion.allow-http-auth'             => true,
@@ -101,7 +101,7 @@ class role::phabricator::main {
     }
 
     # Backup repositories
-    backup::set { 'srv-phab-repos': }
+    backup::set { 'srv-repos': }
 
     class { 'exim4':
         variant => 'heavy',
