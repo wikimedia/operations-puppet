@@ -50,7 +50,7 @@ maybe_do_createdirs(){
     lastrun=`$python dumpadmin.py -s lastrun --configfile $configfile`
     show "lastrun is $lastrun for ${showtype}"
     if [[ -z "$lastrun" || "$lastrun" < "$startdate_yyyymmdd" ]]; then
-        getcommandargs "8" "stages_create_hugewikis"
+        getcommandargs "8" "$stagesfile"
         if [ $dryrun -ne 0 ]; then
             show "would execute ${python} ${commandargs}"
         else
