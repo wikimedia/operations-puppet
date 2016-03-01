@@ -74,7 +74,8 @@ groups:
               pcoombe, mholloway-shell, madhuvishy, niedzielski, neilpquinn-wmf,
               gpaumier, moushira, aklapper, qchris, tjones, srijan, addshore,
               jminor, pt1979, asherman, etonkovidova, sbisson, zhousquared,
-              atgomez, jgirault, jdrewniak, matmarex, elukey, jdcc, akumar, mnoushad, ppchelko]
+              atgomez, jgirault, jdrewniak, matmarex, elukey, jdcc, akumar, mnoushad,
+              ppchelko, nschaaf]
   cassandra-test-roots:
     gid: 708
     description: users with root on cassandra hosts
@@ -115,7 +116,7 @@ groups:
               daisy, tomasz, mholloway-shell, madhuvishy, ebernhardson, niedzielski,
               neilpquinn-wmf, tbayer, moushira, dbrant, maxsem, srijan, krenair,
               jminor, asherman, etonkovidova, sbisson, addshore, matmarex, elukey,
-              nikerabbit]
+              nikerabbit, nschaaf]
   ldap-admins:
     gid: 715
     description: ldap admins
@@ -1840,3 +1841,11 @@ users:
     ssh_keys:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC1iu4OcsLv8Nb+sWHDs9RZ4X9mtBpyf+fhJGrbKjFjaXDRVB5h/CXrqsMz8GJH44HJPBj5Gf/4bwvqRy7MLJGwpHjDJv1xeEOc0Oq5Aa/6/k6h8h0tCDWIGw/ghTOX+u9TZBAr4UHnBHjippEi+9G/jougFjQ2Hu9P62yYU69/mqdmXfLV0JnAXZl13vrzrjLyNWvH64tpwly9HLQXFCpxCI5DKUsmeGeJ7N5+o7XKRTDF4+vtCC3Ro3+FnoIzZP8iV+MzDwt4Z51wtmDY3IDl0PBNjI1OjWBrsCaGB6t3nm/5/mq3ggffgcQIXgjYTB6lxjkbYS0tO2oroFopnaVgx65mENIsWaX/YVpI7VOWN5ylVGljkDVZ+iYX7soDOwiBafZyDdQZ9VSNZDvOnt/sbbWCyYWhcreUfXehiNPLKjxugf7LUaXOqePeyg4swKuwQXzyHssdROjNcNScQn8ze0rety9UQwmkEu8TuSSwXBRxUR8uQhtuk9cxUlRw3qs5yljMVcL33JKF7aQ9b84pV2ARqSouD/zAOQSSrjIAdctlAHR5lYmXn1f3Gz5BMgK0vwcgknGsMHAndW/yejYQi8lQGGgq3MCTMcpvf5qJLgCA/myn/C2XQ20snyJg0Ci7lZpQR0r8EZd4kPD3IiYcWlLcLy3aROcnGGZtPl/jkw== rcoccioli@wikimedia.org
     uid: 14150
+  nschaaf:
+    ensure: present
+    gid: 500
+    name: nschaaf
+    realname: Nathaniel Schaaf
+    ssh_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDIaXtdgL5Xj5c9XLGxkVQYLAZfbgqQWuRaX2VajopwH4mqFvNuZWiPFMF53t+H4eUdF+/1LfA0DSebuYrzP83LgZH69UVXxwl4xNeyZtjNRf577eojl9nb+TIZhPCQpwLLKRyDu50uRUXfKJ4rXlVFE3r103+6OmVgIc8+SLF3X1umJsv9wDnclBLIrdd0wieUasyaosUjp211BALftpf6CZ6KlqCOwBjcyJ5bxyDJ0SBBEzksROEYJm6QshYgJs9aywcWsfpQPskP4tavHkL2ppQ7VfNm2zxyVRyrbXqXH+55pWwusQW5vVChnkhpVKO7p/7BYJNF+YZlwip5JpyRTOgC5OmXFmL3GP6ib62RWi7YaMxg4jS1JkbvzL6js2+P8k6UcE7Cu/KfIAkwqYMymw217oNx8hXfrOVOr3PcMhhKd9BsTrQd0xonlSyZQxbOdxnUm7oYApkCBoYt+tYdwU+RX/kvdrz2QULgrGJaxjBf8ZrT8G15Efm89fkGRWZ8sQfT4m6C91lFvOrX53G2igY2BfWBd9dIvw3v1/ZG2gHsEs4G2I/9wZDFrR5itedjzW3lMU47sVTNC/dl5wcR/Xc70AjT6AA3fispIJZWIYjAAnBgKyRXawJf5wc2II+AjZvAvHBgKSsRlk/DTzLghvM9XwFX843DgaO/CZgfbQ== nschaaf@wikimedia.org
+    uid: 13973
