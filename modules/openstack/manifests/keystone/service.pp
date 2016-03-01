@@ -28,6 +28,12 @@ class openstack::keystone::service($openstack_version=$::openstack::version, $ke
             owner   => 'root',
             group   => 'root',
             require => Package['keystone'];
+        '/usr/lib/python2.7/dist-packages/keystone/auth/plugins/wmtotp.py'
+            source  => "puppet:///modules/openstack/${openstack_version}/keystone/totp/wmtotp.py",
+            mode    => '0644',
+            owner   => 'root',
+            group   => 'root',
+            require => Package['keystone'];
     }
 
     if $::fqdn == hiera('labs_nova_controller') {
