@@ -13,6 +13,22 @@ class role::cache::2layer(
         }
     }
 
+    # mma: mmap addrseses for fixed persistent storage on x86_64 Linux:
+    #  This scheme fits 4x fixed memory mappings of up to 4TB each
+    #  into the range 0x500000000000 - 0x5FFFFFFFFFFF, which on
+    #  x86_64 Linux is in the middle of the user address space and thus
+    #  unlikely to ever be used by normal, auto-addressed allocations,
+    #  as those grow in from the edges (typically from the top, but
+    #  possibly from the bottom depending).  Regardless of which
+    #  direction heap grows from, there's 32TB or more for normal
+    #  allocations to chew through before they reach our fixed range.
+    $mma = [
+        '0x500000000000',
+        '0x540000000000',
+        '0x580000000000',
+        '0x5C0000000000',
+    ]
+
     # everything from here down is related to backend storage/weight config
 
     $storage_size = $::hostname ? {
@@ -33,22 +49,6 @@ class role::cache::2layer(
         { backend_match => '^cp30(0[3-9]|1[0-4])\.', weight => 128 },
         { backend_match => '^cp301[5-8]\.',          weight => 63  },
         { backend_match => '.',                      weight => 100 },
-    ]
-
-    # mma: mmap addrseses for fixed persistent storage on x86_64 Linux:
-    #  This scheme fits 4x fixed memory mappings of up to 4TB each
-    #  into the range 0x500000000000 - 0x5FFFFFFFFFFF, which on
-    #  x86_64 Linux is in the middle of the user address space and thus
-    #  unlikely to ever be used by normal, auto-addressed allocations,
-    #  as those grow in from the edges (typically from the top, but
-    #  possibly from the bottom depending).  Regardless of which
-    #  direction heap grows from, there's 32TB or more for normal
-    #  allocations to chew through before they reach our fixed range.
-    $mma = [
-        '0x500000000000',
-        '0x540000000000',
-        '0x580000000000',
-        '0x5C0000000000',
     ]
 
     $filesystems = unique($storage_parts)
