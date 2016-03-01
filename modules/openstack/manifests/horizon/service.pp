@@ -12,6 +12,12 @@ class openstack::horizon::service(
         ensure  => present,
         require => Class['openstack::repo',  '::apache::mod::wsgi'];
     }
+    package { 'python-keystoneclient':
+        ensure  => present,
+    }
+    package { 'python-openstack-auth':
+        ensure  => present,
+    }
 
     include ::apache
     include ::apache::mod::ssl
@@ -83,6 +89,41 @@ class openstack::horizon::service(
         group   => 'horizon',
         require => Package['openstack-dashboard'],
         mode    => '0444',
+    }
+
+    file { '/usr/share/openstack-dashboard/openstack_dashboard/static/dashboard/img/favicon.ico':
+        source  => 'puppet:///modules/openstack/horizon/Wikimedia_labs.ico',
+        owner   => 'horizon',
+        group   => 'horizon',
+        require => Package['openstack-dashboard'],
+        mode    => '0444',
+    }
+
+    # Homemade totp plugin for keystoneclient
+    file { '/usr/lib/python2.7/dist-packages/keystoneclient/auth/identity/v3/wmtotp.py':
+        source  => "puppet:///modules/openstack/${openstack_version}/keystoneclient/wmtotp.py",
+        owner   => 'root',
+        group   => 'root',
+        require => Package['python-keystoneclient'],
+        mode    => '0644',
+    }
+
+    # Homemade totp plugin for openstack_auth
+    file { '/usr/lib/python2.7/dist-packages/openstack_auth/plugin/wmtotp.py':
+        source  => "puppet:///modules/openstack/${openstack_version}/horizon/wmtotp.py",
+        owner   => 'root',
+        group   => 'root',
+        require => Package['python-openstack-auth'],
+        mode    => '0644',
+    }
+
+    # Replace the standard horizon login form to support 2fa
+    file { '/usr/lib/python2.7/dist-packages/openstack_auth/forms.py':
+        source  => "puppet:///modules/openstack/${openstack_version}/horizon/forms.py",
+        owner   => 'root',
+        group   => 'root',
+        require => Package['python-openstack-auth'],
+        mode    => '0644',
     }
 
     apache::site { $webserver_hostname:
