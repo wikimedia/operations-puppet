@@ -179,7 +179,7 @@ class role::eventlogging::processor inherits role::eventlogging {
     }
 
     eventlogging::service::processor { 'server-side-0':
-        format         => '%{seqId}d EventLogging %j',
+        format         => hiera('eventlogging_server_side_processor_format', '%{seqId}d EventLogging %j'),
         sid            => $kafka_consumer_group,
         etcd_uri       => $etcd_uri,
         input          => "${kafka_server_side_raw_uri}&zookeeper_connect=${kafka_zookeeper_url}&${kafka_consumer_args}",
@@ -200,7 +200,7 @@ class role::eventlogging::processor inherits role::eventlogging {
         ['client-side-0']
     )
     eventlogging::service::processor { $client_side_processors:
-        format         => '%q %{recvFrom}s %{seqId}d %t %h %{userAgent}i',
+        format         => hiera('eventlogging_client_side_processor_format', '%q %{recvFrom}s %{seqId}d %t %h %{userAgent}i'),
         input          => "${kafka_client_side_raw_uri}&zookeeper_connect=${kafka_zookeeper_url}&${kafka_consumer_args}",
         etcd_uri       => $etcd_uri,
         sid            => $kafka_consumer_group,
