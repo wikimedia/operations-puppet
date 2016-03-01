@@ -4,6 +4,7 @@
 mediawiki_memcached_servers:
   - '10.64.0.180:11211:1 "shard01"'
   - '10.64.0.181:11211:1 "shard02"'
+  - '10.64.0.182:11211:1 "shard03"'
   - '10.64.0.183:11211:1 "shard04"'
   - '10.64.0.184:11211:1 "shard05"'
   - '10.64.0.185:11211:1 "shard06"'
@@ -19,9 +20,6 @@ mediawiki_memcached_servers:
   - '10.64.48.104:11211:1 "shard16"'
   - '10.64.48.95:11211:1 "shard17"'
   - '10.64.48.96:11211:1 "shard18"'
-
-# Hosts temporarily removed from the pool for maintenance
-#  - '10.64.0.182:11211:1'
 
 #
 # Ganglia
