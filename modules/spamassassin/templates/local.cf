@@ -84,6 +84,10 @@ shortcircuit SUBJECT_IN_WHITELIST    on
 #
 shortcircuit ALL_TRUSTED             on
 
+#   loads the whitelist from string in the init.pp file.
+
+whitelist_from <%= @whitelist_from %>
+
 #   and a well-trained bayes DB can save running rules, too
 #
 # shortcircuit BAYES_99                spam
