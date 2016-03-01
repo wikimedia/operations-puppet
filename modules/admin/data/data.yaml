@@ -446,6 +446,7 @@ groups:
     description: Group of users running penetration tests
     gid: 768
     members: [akumar, mnoushad]
+    privileges: ['ALL = NOPASSWD: /usr/bin/nmap *']
   restbase-admins:
     gid: 769
     description: group of restbase admins
