@@ -1,6 +1,7 @@
 # install the private key needed to contact newly-installed servers
 #  to set up the initial puppet run.
 # This key is dangerous, do not deploy widely!
+# Also install a convenience script to ssh in using this key
 class role::access_new_install {
     file { '/root/.ssh/new_install':
         owner   => 'root',
@@ -13,5 +14,11 @@ class role::access_new_install {
         group   => 'root',
         mode    => '0444',
         content => secret('ssh/new_install/new_install.pub'),
+    }
+    file { '/usr/local/bin/install_console':
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => 'puppet:///files/misc/scripts/install_console',
     }
 }

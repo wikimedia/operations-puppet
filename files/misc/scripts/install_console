@@ -1,0 +1,20 @@
+#!/bin/sh
+# log using new_install key, useful when debugging during installation or
+# before the first puppet run
+
+set -e
+set -u
+
+if [ "$(id -u)" -ne 0 ]; then
+    echo "run $0 as root"
+    exit 1
+fi
+
+if [ "$#" -le 0 ]; then
+    echo "usage: $0 host"
+    exit 1
+fi
+
+exec ssh -i /root/.ssh/new_install \
+    -o UserKnownHostsFile=/dev/null \
+    -o StrictHostKeyChecking=no $@
