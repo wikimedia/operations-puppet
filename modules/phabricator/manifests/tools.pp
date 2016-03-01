@@ -47,7 +47,7 @@ class phabricator::tools (
             command => $dump_script,
             user    => root,
             hour    => '2',
-            require => Git::Install['phabricator/tools'],
+            require => File[$dump_script],
         }
     }
 
