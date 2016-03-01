@@ -200,7 +200,7 @@ class role::eventlogging::processor inherits role::eventlogging {
         ['client-side-0']
     )
     eventlogging::service::processor { $client_side_processors:
-        format         => '%q %{recvFrom}s %{seqId}d %t %h %{userAgent}i',
+        format         => '%q %{recvFrom}s %{seqId}d %t %o %{userAgent}i',
         input          => "${kafka_client_side_raw_uri}&zookeeper_connect=${kafka_zookeeper_url}&${kafka_consumer_args}",
         etcd_uri       => $etcd_uri,
         sid            => $kafka_consumer_group,
