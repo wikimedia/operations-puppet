@@ -1372,6 +1372,13 @@ node /labstore200[12]\.codfw\.wmnet/ {
     role labs::nfs::fileserver
 }
 
+# New https://www.mediawiki.org/wiki/Gerrit
+node 'lead.wikimedia.org' {
+    # Note: whenever moving Gerrit out of ytterbium, you will need
+    # to update the role::zuul::configuration variable 'gerrit_server'
+    include standard
+}
+
 node 'lithium.eqiad.wmnet' {
     role backup::host, syslog::centralserver
     include standard
