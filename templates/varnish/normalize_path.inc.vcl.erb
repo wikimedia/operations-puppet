@@ -27,7 +27,6 @@ void raw_normalize_path(struct sess *sp, const int doslash) {
 	const size_t urlLength = strlen(url);
 	// index for the last position %XX can start at:
 	const size_t lastConvertIdx = urlLength > 2 ? urlLength - 3 : 0;
-	char c;
 	int dirty = 0;
 
 	/* Allocate destination memory from the stack using the C99
@@ -35,9 +34,9 @@ void raw_normalize_path(struct sess *sp, const int doslash) {
 	 * because this function can only shorten the input string.
 	 */
 	char destBuffer[urlLength + 1];
-	for (i = 0, outPos = 0; i < urlLength; i++) {
+	while (url[i] && url[i] != '?' && url[i] != '#') {
 		if (i <= lastConvertIdx && url[i] == '%' && NP_IS_HEX(url[i+1]) && NP_IS_HEX(url[i+2])) {
-			c = NP_HEXCHAR(url[i+1], url[i+2]);
+			const char c = NP_HEXCHAR(url[i+1], url[i+2]);
 			if (c == ';'
 				|| c == '@'
 				|| c == '$'
@@ -51,22 +50,18 @@ void raw_normalize_path(struct sess *sp, const int doslash) {
 			{
 				destBuffer[outPos++] = c;
 				dirty = 1;
-				i += 2;
+				i += 3;
 			} else {
-				destBuffer[outPos++] = url[i];
+				destBuffer[outPos++] = url[i++];
 			}
-		} else if (url[i] == '?' || url[i] = '#') {
-			/* Reached the query/frag part. Just copy the rest of the URL
-			 * to the destination.
-			 */
-			memcpy(destBuffer + outPos, url + i, sizeof(char) * (urlLength - i));
-			outPos += urlLength - i;
-			i = urlLength;
 		} else {
-			destBuffer[outPos++] = url[i];
+			destBuffer[outPos++] = url[i++];
 		}
 	}
-	destBuffer[outPos] = '\0';
+
+	// copy remainder (query/frag + terminal NUL)
+	const unsigned bytesLeftover = 1 + urlLength - i;
+	memcpy(destBuffer + outPos, url + i, bytesLeftover)
 
 	/* Set req.url. This will copy our stack buffer into the workspace.
 	 * VRT_l_req_url() is varadic, and concatenates its arguments. The
