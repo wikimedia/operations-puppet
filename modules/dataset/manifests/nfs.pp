@@ -22,7 +22,7 @@ class dataset::nfs($enable=true) {
     }
 
     service { 'nfs-kernel-server':
-        ensure  => $::nfs_ensure,
+        ensure  => $service_ensure,
         require => [
             Package['nfs-kernel-server'],
             File['/etc/exports'],
