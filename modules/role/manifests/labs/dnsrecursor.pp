@@ -54,7 +54,7 @@ class role::labs::dnsrecursor {
             listen_addresses         => $listen_addresses,
             allow_from               => $all_networks,
             additional_forward_zones => "wmflabs=${labs_auth_dns}, 68.10.in-addr.arpa=${labs_auth_dns}",
-            auth_zones               => 'labsdb=/var/zones/labsdb',
+            auth_zones               => 'labsdb=/var/zones/labsdb,tools.eqiad.wmflabs=/var/zones/tools.eqiad.wmflabs',
             lua_hooks                => $lua_hooks,
     }
 
