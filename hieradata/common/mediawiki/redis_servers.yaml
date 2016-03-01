@@ -5,9 +5,6 @@ eqiad:
   shard02:
     host: 10.64.0.181
     port: 6379
-  shard03:
-    host: 10.64.0.182
-    port: 6379
   shard04:
     host: 10.64.0.183
     port: 6379
@@ -55,7 +52,9 @@ eqiad:
     port: 6379
 
 # Hosts temporarily removed for maintenance
-
+#  shard03:
+#    host: 10.64.0.182
+#    port: 6379
 
 codfw:
   shard01:
