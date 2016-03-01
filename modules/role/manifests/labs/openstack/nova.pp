@@ -88,7 +88,7 @@ class role::labs::openstack::nova::manager {
     ferm::service { 'mysql_keystone':
         proto  => 'tcp',
         port   => '3306',
-        srange => '@resolve($keystone_host)',
+        srange => "@resolve($keystone_host)",
     }
 
     class { '::openstack::openstack_manager':
