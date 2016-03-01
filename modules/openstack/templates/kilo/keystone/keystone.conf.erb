@@ -204,3 +204,15 @@ use = egg:Paste#urlmap
 use = egg:Paste#urlmap
 /v2.0 = admin_api
 / = admin_version_api
+
+[auth]
+methods = external,password,token,wmtotp
+
+wmtotp=password = keystone.auth.plugins.wmtotp.Wmtotp
+
+[oath]
+
+dbuser = <%= @keystoneconfig["oath_dbuser"] %>
+dbpass = <%= @keystoneconfig["oath_dbpass"] %>
+dbname = <%= @keystoneconfig["oath_dbname"] %>
+dbhost = <%= @keystoneconfig["oath_dbhost"] %>

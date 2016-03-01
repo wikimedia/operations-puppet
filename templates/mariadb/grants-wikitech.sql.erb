@@ -14,3 +14,7 @@ GRANT ALL PRIVILEGES
     ON `labswiki`.* TO 'wikiadmin'@'10.64.16.132'
     IDENTIFIED BY '<%= @wikiadmin_pass %>';
 
+-- queries from horizon.wikimedia.org
+GRANT select
+    ON `labswiki`.* TO 'oathreader'@'208.80.153.248'
+    IDENTIFIED BY '<%= @oathreader_pass %>';
