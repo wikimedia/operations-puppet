@@ -111,7 +111,9 @@ sub cluster_fe_recv_pre_purge {
 			}
 		}
 	}
+}
 
+sub cluster_fe_recv {
 	// BITS: legacy bits.wm.o domain support
 	if (req.http.host == "<%= @vcl_config.fetch('bits_domain') %>") {
 		if (req.url ~ "^/event\.gif") {
@@ -126,9 +128,7 @@ sub cluster_fe_recv_pre_purge {
 	} else {
 		call normalize_mediawiki_path;
 	}
-}
 
-sub cluster_fe_recv {
 	call mobile_redirect;
 
 	# normalize all /static to the same hostname for caching
