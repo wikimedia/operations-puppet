@@ -780,10 +780,8 @@ class role::mariadb::parsercache {
         shard => 'parsercache',
     }
 
-    $basedir = $hostname ? {
-        /pc100[123]/ => '/a',
-        default      => '/srv',
-    }
+    # old servers used to be installed on /a
+    $basedir = '/srv'
 
     class { 'mariadb::config':
         prompt   => 'PARSERCACHE',

@@ -95,21 +95,6 @@ host etherpad1001 {
     filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
-host pc1001 {
-    hardware ethernet 00:22:bd:d3:38:62;
-    fixed-address pc1001.eqiad.wmnet;
-}
-
-host pc1002 {
-    hardware ethernet 00:22:BD:D3:60:4A;
-    fixed-address pc1002.eqiad.wmnet;
-}
-
-host pc1003 {
-    hardware ethernet 88:43:E1:C2:51:50;
-    fixed-address pc1003.eqiad.wmnet;
-}
-
 host planet1001 {
     hardware ethernet aa:00:00:19:24:b9;
     fixed-address planet1001.eqiad.wmnet;

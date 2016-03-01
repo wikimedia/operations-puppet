@@ -17,7 +17,7 @@ EXCLUDE=("nobody" \
          "gerrit2" \    # ytterbium.wikimedia.org
          "releases" \   # tin.eqiad.wmnet/mira.codfw.wmnet
          "reprepro" \   # bromine.eqiad.wmnet
-         "mysql" \      # pc1001.eqiad.wmnet
+         "mysql" \      # pc1001.eqiad.wmnet (still needed?)
          "dbmon" \      # db1044.eqiad.wmnet
          "parsoid-rt" \ # ruthenium.eqiad.wmnet T90966
          "datasets" );  # snapshot*, dataset*, ms1001
