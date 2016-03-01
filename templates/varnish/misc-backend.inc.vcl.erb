@@ -52,13 +52,11 @@ sub cluster_be_recv {
         set req.backend = krypton;
     } elsif (req.http.Host == "hue.wikimedia.org") {
         set req.backend = analytics1027;
-    }
-    elsif (req.http.Host == "yarn.wikimedia.org") {
+    } elsif (req.http.Host == "yarn.wikimedia.org") {
         // Disabling this as it exposes the YARN ResourceManager REST interface
         // set req.backend = analytics1001;
         error 404 "Public access disabled. See https://wikitech.wikimedia.org/wiki/Analytics/Cluster/Access#ssh_tunnel.28s.29 for access instructions";
-    }
-    elsif (req.http.Host ~ ".*\.planet\.wikimedia\.org" || req.http.Host == "planet.wikimedia.org") {
+    } elsif (req.http.Host ~ ".*\.planet\.wikimedia\.org" || req.http.Host == "planet.wikimedia.org") {
         set req.backend = planet1001;
     } elsif (req.http.Host == "etherpad.wikimedia.org") {
         set req.backend = etherpad1001;
