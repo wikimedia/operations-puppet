@@ -85,6 +85,7 @@ class role::labs::openstack::nova::manager {
     }
 
     # allow keystone to query the wikitech db
+    $keystone_host = hiera('labs_keystone_host')
     ferm::service { 'mysql_keystone':
         proto  => 'tcp',
         port   => '3306',
