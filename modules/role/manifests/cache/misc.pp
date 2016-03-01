@@ -259,22 +259,12 @@ class role::cache::misc {
     }
 
     $fe_vcl_config = merge($common_vcl_config, {
-        'layer'            => 'frontend',
+        'layer' => 'frontend',
     })
 
-    $be_one_vcl_config = merge($common_vcl_config, {
-        'layer'           => 'backend',
-        'has_def_backend' => 'no',
+    $be_vcl_config = merge($common_vcl_config, {
+        'layer' => 'backend',
     })
-
-    $be_two_vcl_config = merge($common_vcl_config, {
-        'layer'           => 'backend',
-    })
-
-    $be_vcl_config = $::site_tier ? {
-        'one'   => $be_one_vcl_config,
-        default => $be_two_vcl_config,
-    }
 
     varnish::instance { 'misc-backend':
         name            => '',
