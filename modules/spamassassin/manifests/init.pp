@@ -49,6 +49,7 @@ class spamassassin(
     $bayes_auto_learn = 1,
     $short_report_template = false,
     $trusted_networks = [],
+    $whitelist_from = '*@equinix.com',
     $spamd_user  = 'debian-spamd',
     $spamd_group = 'debian-spamd',
     $custom_scores = {},
