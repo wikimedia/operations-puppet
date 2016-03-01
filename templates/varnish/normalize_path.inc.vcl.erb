@@ -21,6 +21,8 @@ void raw_normalize_path(struct sess *sp, const int doslash) {
 	 * MediaWiki purging only the wfUrlencode'd version of the URL.
 	 */
 	const char * url = VRT_r_req_url(sp);
+	assert(url);
+
 	size_t i, outPos;
 	const size_t urlLength = strlen(url);
 	// index for the last position %XX can start at:
@@ -33,47 +35,45 @@ void raw_normalize_path(struct sess *sp, const int doslash) {
 	 * because this function can only shorten the input string.
 	 */
 	char destBuffer[urlLength + 1];
-	if (url) {
-		for (i = 0, outPos = 0; i < urlLength; i++) {
-			if (i <= lastConvertIdx && url[i] == '%' && NP_IS_HEX(url[i+1]) && NP_IS_HEX(url[i+2])) {
-				c = NP_HEXCHAR(url[i+1], url[i+2]);
-				if (c == ';'
-					|| c == '@'
-					|| c == '$'
-					|| c == '!'
-					|| c == '*'
-					|| c == '('
-					|| c == ')'
-					|| c == ','
-					|| c == ':'
-					|| (doslash && c == '/'))
-				{
-					destBuffer[outPos++] = c;
-					dirty = 1;
-					i += 2;
-				} else {
-					destBuffer[outPos++] = url[i];
-				}
-			} else if (url[i] == '?' || url[i] == '#') {
-				/* Reached the query/frag part. Just copy the rest of the URL
-				 * to the destination.
-				 */
-				memcpy(destBuffer + outPos, url + i, sizeof(char) * (urlLength - i));
-				outPos += urlLength - i;
-				i = urlLength;
+	for (i = 0, outPos = 0; i < urlLength; i++) {
+		if (i <= lastConvertIdx && url[i] == '%' && NP_IS_HEX(url[i+1]) && NP_IS_HEX(url[i+2])) {
+			c = NP_HEXCHAR(url[i+1], url[i+2]);
+			if (c == ';'
+				|| c == '@'
+				|| c == '$'
+				|| c == '!'
+				|| c == '*'
+				|| c == '('
+				|| c == ')'
+				|| c == ','
+				|| c == ':'
+				|| (doslash && c == '/'))
+			{
+				destBuffer[outPos++] = c;
+				dirty = 1;
+				i += 2;
 			} else {
 				destBuffer[outPos++] = url[i];
 			}
+		} else if (url[i] == '?' || url[i] == '#') {
+			/* Reached the query/frag part. Just copy the rest of the URL
+			 * to the destination.
+			 */
+			memcpy(destBuffer + outPos, url + i, sizeof(char) * (urlLength - i));
+			outPos += urlLength - i;
+			i = urlLength;
+		} else {
+			destBuffer[outPos++] = url[i];
 		}
-		destBuffer[outPos] = '\0';
+	}
+	destBuffer[outPos] = '\0';
 
-		/* Set req.url. This will copy our stack buffer into the workspace.
-		 * VRT_l_req_url() is varadic, and concatenates its arguments. The
-		 * vrt_magic_string_end marks the end of the list.
-		 */
-		if (dirty) {
-			VRT_l_req_url(sp, destBuffer, vrt_magic_string_end);
-		}
+	/* Set req.url. This will copy our stack buffer into the workspace.
+	 * VRT_l_req_url() is varadic, and concatenates its arguments. The
+	 * vrt_magic_string_end marks the end of the list.
+	 */
+	if (dirty) {
+		VRT_l_req_url(sp, destBuffer, vrt_magic_string_end);
 	}
 }
 
