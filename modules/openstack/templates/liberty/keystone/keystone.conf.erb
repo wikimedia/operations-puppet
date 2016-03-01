@@ -406,3 +406,15 @@ user_id_attribute = <%= @keystoneconfig["ldap_user_id_attribute"] %>
 user_name_attribute = <%= @keystoneconfig["ldap_user_name_attribute"] %>
 user = <%= @keystoneconfig["ldap_user_dn"] %>
 password = <%= @keystoneconfig["ldap_user_pass"] %>
+
+[auth]
+methods = external,password,token,wmtotp
+
+wmtotp=password = keystone.auth.plugins.wmtotp.Wmtotp
+
+[oath]
+
+dbuser = <%= @keystoneconfig["oath_dbuser"] %>
+dbpass = <%= @keystoneconfig["oath_dbpass"] %>
+dbname = <%= @keystoneconfig["oath_dbname"] %>
+dbhost = <%= @keystoneconfig["oath_dbhost"] %>
