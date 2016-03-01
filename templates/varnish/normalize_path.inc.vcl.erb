@@ -12,7 +12,7 @@ C{
 #define NP_IS_HEX(c) (NP_HEX_DIGIT(c) != -1)
 #define NP_HEXCHAR(c1, c2) (char)( (NP_HEX_DIGIT(c1) << 4) | NP_HEX_DIGIT(c2) )
 
-void raw_normalize_path(struct sess *sp) {
+void raw_normalize_path(struct sess *sp, const int doslash) {
 	/* Rewrite the path part of the URL, replacing unnecessarily escaped
 	 * punctuation with the actual characters. The character list is from
 	 * MediaWiki's wfUrlencode(), so the URLs produced here will be the same as
@@ -45,8 +45,8 @@ void raw_normalize_path(struct sess *sp) {
 					|| c == '('
 					|| c == ')'
 					|| c == ','
-					|| c == '/'
-					|| c == ':')
+					|| c == ':'
+					|| (doslash && c == '/'))
 				{
 					destBuffer[outPos++] = c;
 					dirty = 1;
@@ -83,6 +83,10 @@ void raw_normalize_path(struct sess *sp) {
 
 }C
 
-sub normalize_path {
-	C{ raw_normalize_path(sp); }C
+sub normalize_mediawiki_path {
+	C{ raw_normalize_path(sp, 1); }C
+}
+
+sub normalize_rest_path {
+	C{ raw_normalize_path(sp, 0); }C
 }
