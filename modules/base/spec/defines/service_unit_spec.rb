@@ -17,8 +17,9 @@ describe 'base::service_unit' do
       end
 
       it 'should execute daemon-reload' do
-        should contain_file('/etc/systemd/system/nginx.service').that_notifies('Exec[systemd reload for nginx]').that_notifies('Service[nginx]')
-        should contain_exec('systemd reload for nginx').that_comes_before('Service[nginx]')
+        should contain_exec('systemd reload for nginx')
+                   .that_comes_before('Service[nginx]')
+                   .that_subscribes_to('File[/lib/systemd/system/nginx.service]')
       end
     end
 

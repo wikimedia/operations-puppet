@@ -1,0 +1,6 @@
+---
+k8s_users:
+  - name: client-infrastructure
+    token: test-token
+k8s::etcd_hosts:
+  - etcd.example.net
