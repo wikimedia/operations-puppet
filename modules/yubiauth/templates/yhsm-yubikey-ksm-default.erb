@@ -1,0 +1,44 @@
+# Should the YubiHSM YubiKey KSM server be started?
+#
+# Since you MUST configure YHSM_KSM_KEYHANDLES, we default to 'false' here.
+#
+# Valid values: "true" or "false"
+YHSM_KSM_ENABLE="true"
+
+# The device name of the YubiHSM. For a production setting, a name that is
+# invariant of system state when the YubiHSM is inserted is recommended
+# (e.g. "/dev/serial/by-id/usb-Yubico_Yubico_YubiHSM_xxxx-if00").
+YHSM_DAEMON_DEVICE="<%= @yhsmdevice %>"
+
+# The key handles to be used when trying to decrypt a YubiKey OTP.
+# More than one is supported to facilitate multiple generations, or multiple
+# origins, of keys.
+#
+# This is a required field without a default, but an example would be
+# "0x20" or "0x20 1234" or even "KEY1 0x20 KEY3" where KEY1 and KEY3 will be
+# converted to integer values.
+YHSM_KSM_KEYHANDLES="1"
+
+# If you have protected the key store of your YubiHSM with a 'master key'
+# (recommended), the key store must be unlocked before any validations can
+# be performed. Either log in to your server after every reboot and unlock
+# the key store manually (recommended), or enter the 'master key' in this
+# variable to have the startup script unlock the key store for you (less
+# secure). To unlock manually, use /usr/sbin/yhsm-keystore-unlock.
+#
+# If you also have configured your YubiHSM with 'admin YubiKeys' (recommended),
+# you _have_ to log in and unlock the YubiHSM manually after every reboot,
+# so you might as well leave this field empty.
+YHSM_KSM_UNLOCK_PASSPHRASE=""
+
+# The directory where the AEADs with your YubiKey's secret AES keys is located.
+DAEMON_ARGS="$DAEMON_ARGS --aead-dir /var/cache/yubikey-ksm/aeads"
+
+# The address to listen on. As a restrictive default, "127.0.0.1" is used.
+DAEMON_ARGS="$DAEMON_ARGS --addr 127.0.0.1"
+
+# The port to listen on.  Default is 8002.
+DAEMON_ARGS="$DAEMON_ARGS --port 8003 --debug"
+
+[ "x$YHSM_KSM_DEVICE" != "x" ] && DAEMON_ARGS="$DAEMON_ARGS -D $YHSM_KSM_DEVICE"
+[ "x$YHSM_KSM_KEYHANDLES" != "x" ] && DAEMON_ARGS="$DAEMON_ARGS --key-handles $YHSM_KSM_KEYHANDLES"
