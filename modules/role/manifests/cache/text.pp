@@ -136,7 +136,7 @@ class role::cache::text {
     varnish::instance { 'text-backend':
         name               => '',
         vcl                => 'text-backend',
-        extra_vcl          => ['text-common'],
+        extra_vcl          => ['text-common', 'normalize_path'],
         ports              => [ 3128 ],
         admin_port         => 6083,
         runtime_parameters => ['default_ttl=2592000'],
