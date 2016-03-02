@@ -14,10 +14,15 @@ define role::cache::instances (
     $cluster_nodes
 ) {
 
-    if ($::site_tier == 'one') {
-        $be_directors = $app_directors
-    } else {
-        $be_directors = {
+    # ideally this could be built with "map"...
+    # also, in theory all caches sites should be listed here for flexibility,
+    # but as we'll only have other DCs backending to eqiad and/or codfw for
+    # now, there's no sense generating the extra churn in terms of reload-vcl
+    # on confd changes, etc, for now.  Add more here if we need to use them as
+    # cache backend targets for other DCs.  The next-most-likely future
+    # scenario for that is backending an asia pop to ulsfo.
+    $backend_caches = {
+        'eqiad' => {
             'cache_eqiad' => {
                 'dynamic'  => 'yes',
                 'type'     => 'chash',
@@ -32,8 +37,27 @@ define role::cache::instances (
                 'service'  => 'varnish-be-rand',
                 'backends' => $cluster_nodes['eqiad'],
             },
-        }
+        },
+        'codfw' => {
+            'cache_codfw' => {
+                'dynamic'  => 'yes',
+                'type'     => 'chash',
+                'dc'       => 'codfw',
+                'service'  => 'varnish-be',
+                'backends' => $cluster_nodes['codfw'],
+            },
+            'cache_codfw_random' => {
+                'dynamic'  => 'yes',
+                'type'     => 'random',
+                'dc'       => 'codfw',
+                'service'  => 'varnish-be-rand',
+                'backends' => $cluster_nodes['codfw'],
+            },
+        },
     }
+
+    $our_backend_caches = hash_deselect_re($::site, $backend_caches)
+    $be_directors = merge($app_directors, $our_backend_caches)
 
     varnish::instance { "${title}-backend":
         name               => '',
