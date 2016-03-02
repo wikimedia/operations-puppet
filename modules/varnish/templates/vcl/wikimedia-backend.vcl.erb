@@ -12,11 +12,11 @@ sub vcl_recv {
 
 	call wm_common_recv_early;
 
-<% if @site_tier == "one" -%>
+<% if @cache_route == 'direct' -%>
 	// tier-one caches must select an applayer backend
 	call cluster_be_recv_applayer_backend;
 <% else -%>
-	set req.backend = cache_eqiad;
+	set req.backend = cache_<%= @cache_route %>;
 <% end -%>
 
 	call wm_common_recv_grace;
@@ -49,11 +49,11 @@ sub vcl_pass {
 	call wm_common_pass;
 
 <% if @vcl_config.fetch("pass_random", false) -%>
-<% if @site_tier == "two" -%>
+<% if @cache_route != 'direct' -%>
 	// pass-traffic should not use consistent hashing, to avoid unecessary
 	// traffic focus on one node and keep things performant, *if* we're
 	// fairly sure that all layers/tiers make equivalent pass decisions...
-	set req.backend = cache_eqiad_random;
+	set req.backend = cache_<%= @cache_route %>_random;
 <% end -%>
 <% end -%>
 
