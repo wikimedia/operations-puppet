@@ -1,11 +1,8 @@
-server_name: program-dashboard.wmflabs.org
-server_admin: education@wikimedia.org
-
-app::directory: /srv/programdashboard
-app::environment: production
-app::owner: programdashboard
-app::group: programdashboard
-app::dependencies:
+directory: /srv/programdashboard
+environment: production
+owner: programdashboard
+group: programdashboard
+dependencies:
   - git-core
   - ruby2.1
   - ruby2.1-dev
