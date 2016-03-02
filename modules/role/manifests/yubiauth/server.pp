@@ -7,6 +7,7 @@ class role::yubiauth::server {
     include base::firewall
 
     include yubiauth::yhsm_daemon
+    include yubiauth::yhsm_yubikey_ksm
 
     system::role { 'role::yubiauth':
         ensure      => 'present',
