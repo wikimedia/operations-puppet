@@ -2,7 +2,7 @@
 
 sub upload_common_recv {
 	if (req.http.host != "<%= @vcl_config.fetch('upload_domain') %>") {
-		error 403 "Requested target domain not allowed.";
+		error 403 "Requested target domain not allowed";
 	}
 }
 
