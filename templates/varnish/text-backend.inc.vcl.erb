@@ -53,7 +53,7 @@ sub cluster_be_hash {
 	call text_common_hash;
 }
 
-<% if @site_tier == "one" -%>
+<% if @cache_route == 'direct' -%>
 sub misspass_mangle {
 	// BITS: legacy bits.wm.o domain support
 	if (req.http.host == "<%= @vcl_config.fetch('bits_domain') %>") {
