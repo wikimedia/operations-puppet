@@ -130,6 +130,12 @@ class role::mariadb::misc(
     class { 'role::mariadb::grants':
         shard => $shard,
     }
+
+    if ($master and $shard == 'm5') {
+        class { 'mariadb::heartbeat':
+            shard => $shard,
+        }
+    }
 }
 
 # Phab pretty much requires its own sandbox
