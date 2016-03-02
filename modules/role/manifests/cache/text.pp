@@ -127,7 +127,7 @@ class role::cache::text {
         fe_vcl_config  => $fe_vcl_config,
         be_vcl_config  => $be_vcl_config,
         fe_extra_vcl   => ['text-common', 'zero', 'normalize_path', 'geoip'],
-        be_extra_vcl   => ['text-common'],
+        be_extra_vcl   => ['text-common', 'normalize_path'],
         be_storage     => $::role::cache::2layer::persistent_storage_args,
         fe_def_beopts  => $fe_def_beopts,
         be_def_beopts  => $be_def_beopts,

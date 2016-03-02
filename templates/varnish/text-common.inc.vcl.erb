@@ -1,5 +1,7 @@
 // Common functions for the Text/Mobile Varnish clusters
 
+include "normalize_path.inc.vcl";
+
 sub text_common_misspass_restore_cookie {
 	// Restore the original Cookie header for upstream
 	// Assumes client header X-Orig-Cookie has been filtered!
@@ -53,6 +55,15 @@ sub pass_authorization {
 	// https://phabricator.wikimedia.org/diffusion/EOAU/browse/master/backend/MWOAuthUtils.php;8029ef146211a1016b1f8e676944c3750f78b0eb$89
 	if (req.http.Authorization ~ "^OAuth ") {
 		return (pass);
+	}
+}
+
+sub text_normalize_path {
+	// Don't decode percent-encoded slashes in paths for REST APIs
+	if (req.url ~ "^/api/rest_v1/" || req.http.host ~ "cxserver|citoid|restbase|^rest\.") {
+		call normalize_rest_path;
+	} else {
+		call normalize_mediawiki_path;
 	}
 }
 
