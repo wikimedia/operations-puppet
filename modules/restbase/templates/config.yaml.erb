@@ -59,7 +59,7 @@ default_project: &default_project
             host: <%= @purge_host %>
             port: <%= @purge_port %>
         # Cache headers for purged end points.
-        purged_cache_control: s-maxage=3600, max-age=3600
+        purged_cache_control: s-maxage=1, max-age=1
 
 # A different project template, sharing configuration options.
 wikimedia.org: &wikimedia.org
