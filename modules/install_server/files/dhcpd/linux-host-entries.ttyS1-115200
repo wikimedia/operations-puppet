@@ -1175,6 +1175,8 @@ host cp4020 {
 host dataset1001 {
     hardware ethernet 78:2b:cb:76:42:ee;
     fixed-address dataset1001.wikimedia.org;
+    option pxelinux.pathprefix "jessie-installer/";
+    filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host db1001 {
