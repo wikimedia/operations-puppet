@@ -66,12 +66,12 @@ class role::mariadb::ferm {
 
     # tendril monitoring
     ferm::rule { 'mariabdb_monitoring':
-        rule => 'saddr @resolve((neon.wikimedia.org iron.wikimedia.org)) proto tcp dport (3306) ACCEPT;',
+        rule => 'saddr @resolve(neon.wikimedia.org) proto tcp dport (3306) ACCEPT;',
     }
 
     # for DBA purposes
     ferm::rule { 'mariabdb_dba':
-        rule => 'saddr @resolve((neon.wikimedia.org iron.wikimedia.org db1011.eqiad.wmnet)) proto tcp dport (3307) ACCEPT;',
+        rule => 'saddr @resolve((neon.wikimedia.org db1011.eqiad.wmnet)) proto tcp dport (3307) ACCEPT;',
     }
 }
 
@@ -539,7 +539,7 @@ class role::mariadb::sanitarium {
     ferm::service { 'mysqld_sanitarium':
         proto  => 'tcp',
         port   => '3311:3317',
-        srange => '(($INTERNAL @resolve(iron.wikimedia.org)))',
+        srange => '$INTERNAL',
     }
 
     ferm::service { 'gmond_udp':
