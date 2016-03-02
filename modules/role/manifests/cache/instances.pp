@@ -14,6 +14,32 @@ define role::cache::instances (
     $cluster_nodes
 ) {
 
+    # The contents of this hash control our DC->DC routing for varnish backend
+    # daemons.  There should be a key for every cache datacenter, and the
+    # values can be another datacenter or 'direct', which means contact the
+    # applayer directly.
+    # Currently, the possible datacenter-name values for non-direct are limited
+    # to 'eqiad', and 'codfw' because they're the only ones defined in
+    # 'backend_caches' below
+    # Note that it is possible to create permanent or temporary-race-condition
+    # loops by making poor changes to this hash!  Keeping in mind that the
+    # state here will be applied to cache daemons asynchronously, the general
+    # rules of safety would be:
+    # 1. Obviously, a commit should not create actual loops which do not
+    #    eventually resolve to 'direct'
+    # 2. A single commit->deploy should only change one single value at a time
+    #    unless you're absolutely certain of what you're doing, as changing
+    #    multiple values could cause a race-condition of intermediate states.
+
+    $cache_route_table = {
+        'eqiad' => 'direct',
+        'codfw' => 'eqiad',
+        'ulsfo' => 'eqiad',
+        'esams' => 'eqiad',
+    }
+
+    $cache_route = $cache_route_table[$::site]
+
     # ideally this could be built with "map"...
     # also, in theory all caches sites should be listed here for flexibility,
     # but as we'll only have other DCs backending to eqiad and/or codfw for
@@ -21,6 +47,7 @@ define role::cache::instances (
     # on confd changes, etc, for now.  Add more here if we need to use them as
     # cache backend targets for other DCs.  The next-most-likely future
     # scenario for that is backending an asia pop to ulsfo.
+
     $backend_caches = {
         'eqiad' => {
             'cache_eqiad' => {
