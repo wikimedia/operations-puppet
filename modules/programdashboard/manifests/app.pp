@@ -19,12 +19,17 @@
 # [*group*]
 #   Group owner of the deployment directory.
 #
+# [*deployer_keys*]
+#   SSH keys to authorize for the deployment owner. When used in Labs, deploy
+#   access can be granted by redefining this in Hiera:<project>.
+#
 class programdashboard::app(
     $dependencies,
     $directory,
     $environment,
     $owner,
     $group,
+    $deployer_keys,
 ) {
     require programdashboard
 
@@ -48,6 +53,11 @@ class programdashboard::app(
         owner  => $owner,
         group  => $group,
         mode   => '0750',
+    }
+
+    ssh::userkey { $owner:
+        content => join($deployer_keys, "\n"),
+        require => User[$owner],
     }
 
     $server_name = $::programdashboard::server_name
