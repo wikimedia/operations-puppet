@@ -69,6 +69,17 @@ class openstack::horizon::service(
         mode    => '0440',
     }
 
+    # With luck, in the future all horizon policy files will be identical to the service policies
+    #  like this one is.
+    file { '/etc/openstack-dashboard/keystone_policy.json':
+        source  => "puppet:///modules/openstack/${openstack_version}/keystone/policy.json",
+        owner   => 'horizon',
+        group   => 'horizon',
+        notify  => Service['apache2'],
+        require => Package['openstack-dashboard'],
+        mode    => '0440',
+    }
+
     file { '/usr/share/openstack-dashboard/openstack_dashboard/static/dashboard/img/logo.png':
         source  => 'puppet:///modules/openstack/horizon/216px-Wikimedia_labs_dashboard_logo.png',
         owner   => 'horizon',
