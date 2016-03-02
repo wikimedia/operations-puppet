@@ -1,6 +1,9 @@
 # do not use a proxy, since the service issues internal
 # requests only
 proxy:
+# the RESTBase URI to use
+# NOTE: effective in older versions only!
+restbase_uri: <%= @restbase_uri %>/%DOMAIN%/v1
 # the request template to use when contacting RESTBase
 restbase_req:
   uri: <%= @restbase_uri %>/{domain}/v1/page/html/{title}
@@ -12,5 +15,4 @@ mwapi_req:
   uri: <%= @mwapi_uri %>
   headers:
     host: '{request.params.domain}'
-    content-type: application/json
     user-agent: <%= @user_agent %>
