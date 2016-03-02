@@ -70,14 +70,6 @@ class phabricator::vcs (
         notify  => Service['ssh-phab'],
     }
 
-    file { '/etc/init/ssh-phab.conf':
-        content => template('phabricator/sshd-phab.conf'),
-        mode    => '0644',
-        owner   => 'root',
-        group   => 'root',
-        require => Package['openssh-server'],
-    }
-
     # phd.user owns repo resources and both vcs and web user
     # must sudo to phd to for repo work.
     sudo::user { $vcs_user:
@@ -94,9 +86,26 @@ class phabricator::vcs (
         require    => File['/usr/local/bin/git-http-backend'],
     }
 
+    if $::initsystem == 'upstart' {
+        $init_file = '/etc/init/ssh-phab.conf'
+        $init_template = template('phabricator/sshd-phab.conf')
+    } else {
+        $init_file = '/etc/systemd/system/ssh-phab.service'
+        $init_template = template('phabricator/ssh-phab.service')
+    }
+
+    file { $init_file:
+        content => $init_template,
+        mode    => '0644',
+        owner   => 'root',
+        group   => 'root',
+        require => Package['openssh-server'],
+    }
+
     service { 'ssh-phab':
         ensure     => running,
+        provider   => $::initsystem,
         hasrestart => true,
-        require    => File['/etc/init/ssh-phab.conf'],
+        require    => File[$init_file],
     }
 }
