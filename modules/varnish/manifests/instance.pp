@@ -1,4 +1,5 @@
 define varnish::instance(
+    $layer,
     $vcl_config,
     $backend_options,
     $ports,
@@ -13,8 +14,6 @@ define varnish::instance(
 ) {
 
     include varnish::common
-
-    $layer = $vcl_config['layer']
 
     $runtime_params = join(prefix($runtime_parameters, '-p '), ' ')
     if $name == '' {

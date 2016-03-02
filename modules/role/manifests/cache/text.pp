@@ -111,12 +111,9 @@ class role::cache::text {
         'pass_random'        => true,
     }
 
-    $be_vcl_config = merge($common_vcl_config, {
-        'layer'              => 'backend',
-    })
+    $be_vcl_config = $common_vcl_config
 
     $fe_vcl_config = merge($common_vcl_config, {
-        'layer'              => 'frontend',
         'enable_geoiplookup' => true,
         'https_redirects'    => true,
         'secure_post'        => false,
@@ -124,6 +121,7 @@ class role::cache::text {
 
     varnish::instance { 'text-backend':
         name               => '',
+        layer              => 'backend',
         vcl                => 'text-backend',
         extra_vcl          => ['text-common'],
         ports              => [ 3128 ],
@@ -169,6 +167,7 @@ class role::cache::text {
 
     varnish::instance { 'text-frontend':
         name               => 'frontend',
+        layer              => 'frontend',
         vcl                => 'text-frontend',
         extra_vcl          => ['text-common', 'zero', 'normalize_path', 'geoip'],
         ports              => [ 80 ],
