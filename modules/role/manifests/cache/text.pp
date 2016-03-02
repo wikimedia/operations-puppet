@@ -3,103 +3,103 @@ class role::cache::text {
         description => 'text Varnish cache server',
     }
 
+    require geoip
+    require geoip::dev # for VCL compilation using libGeoIP
+    include role::cache::2layer
+    include role::cache::ssl::unified
+    if $::role::cache::configuration::has_ganglia {
+        include varnish::monitoring::ganglia::vhtcpd
+    }
+
     class { 'varnish::htcppurger':
         mc_addrs => [ '239.128.0.112' ],
     }
-
-    include role::cache::2layer
 
     class { 'lvs::realserver':
         realserver_ips => $lvs::configuration::service_ips['text'][$::site]
     }
 
-    $cluster_nodes = hiera('cache::text::nodes')
-    $site_cluster_nodes = $cluster_nodes[$::site]
-
-    # 1/8 of total mem
-    $memory_storage_size = ceiling(0.125 * $::memorysize_mb / 1024.0)
-
-    include role::cache::ssl::unified
-
-    require geoip
-    require geoip::dev # for VCL compilation using libGeoIP
-
-    $varnish_be_directors = {
-        'one' => {
-            'appservers'       => {
-                'dynamic'  => 'no',
-                'type'     => 'random',
-                'backends' => $role::cache::configuration::backends[$::realm]['appservers'][$::mw_primary],
-            },
-            'api'              => {
-                'dynamic'  => 'no',
-                'type'     => 'random',
-                'backends' => $role::cache::configuration::backends[$::realm]['api'][$::mw_primary],
-            },
-            'rendering'        => {
-                'dynamic'  => 'no',
-                'type'     => 'random',
-                'backends' => $role::cache::configuration::backends[$::realm]['rendering'][$::mw_primary],
-            },
-            'security_audit'   => {
-                'dynamic'  => 'no',
-                'type'     => 'random',
-                'backends' => $role::cache::configuration::backends[$::realm]['security_audit'][$::mw_primary],
-            },
-            'appservers_debug'   => {
-                'dynamic'  => 'no',
-                'type'     => 'random',
-                'backends' => $role::cache::configuration::backends[$::realm]['appservers_debug'][$::mw_primary],
-            },
-            'restbase_backend' => {
-                'dynamic'  => 'no',
-                'type'     => 'random',
-                'backends' => $role::cache::configuration::backends[$::realm]['restbase'][$::mw_primary],
-            },
-            'cxserver_backend' => { # LEGACY: should be removed eventually
-                'dynamic'  => 'no',
-                'type'     => 'random',
-                'backends' => $::role::cache::configuration::backends[$::realm]['cxserver'][$::mw_primary],
-            },
-            'citoid_backend'   => { # LEGACY: should be removed eventually
-                'dynamic'  => 'no',
-                'type'     => 'random',
-                'backends' => $::role::cache::configuration::backends[$::realm]['citoid'][$::mw_primary],
-            },
+    $app_directors = {
+        'appservers'       => {
+            'dynamic'  => 'no',
+            'type'     => 'random',
+            'backends' => $role::cache::configuration::backends[$::realm]['appservers'][$::mw_primary],
         },
-        'two' => {
-            'cache_eqiad' => {
-                'dynamic'  => 'yes',
-                'type'     => 'chash',
-                'dc'       => 'eqiad',
-                'service'  => 'varnish-be',
-                'backends' => $cluster_nodes['eqiad'],
-            },
-            'cache_eqiad_random' => {
-                'dynamic'  => 'yes',
-                'type'     => 'random',
-                'dc'       => 'eqiad',
-                'service'  => 'varnish-be-rand',
-                'backends' => $cluster_nodes['eqiad'],
-            },
+        'api'              => {
+            'dynamic'  => 'no',
+            'type'     => 'random',
+            'backends' => $role::cache::configuration::backends[$::realm]['api'][$::mw_primary],
+        },
+        'rendering'        => {
+            'dynamic'  => 'no',
+            'type'     => 'random',
+            'backends' => $role::cache::configuration::backends[$::realm]['rendering'][$::mw_primary],
+        },
+        'security_audit'   => {
+            'dynamic'  => 'no',
+            'type'     => 'random',
+            'backends' => $role::cache::configuration::backends[$::realm]['security_audit'][$::mw_primary],
+        },
+        'appservers_debug'   => {
+            'dynamic'  => 'no',
+            'type'     => 'random',
+            'backends' => $role::cache::configuration::backends[$::realm]['appservers_debug'][$::mw_primary],
+        },
+        'restbase_backend' => {
+            'dynamic'  => 'no',
+            'type'     => 'random',
+            'backends' => $role::cache::configuration::backends[$::realm]['restbase'][$::mw_primary],
+        },
+        'cxserver_backend' => { # LEGACY: should be removed eventually
+            'dynamic'  => 'no',
+            'type'     => 'random',
+            'backends' => $::role::cache::configuration::backends[$::realm]['cxserver'][$::mw_primary],
+        },
+        'citoid_backend'   => { # LEGACY: should be removed eventually
+            'dynamic'  => 'no',
+            'type'     => 'random',
+            'backends' => $::role::cache::configuration::backends[$::realm]['citoid'][$::mw_primary],
         },
     }
 
-    if $::role::cache::configuration::has_ganglia {
-        include varnish::monitoring::ganglia::vhtcpd
+    $app_be_opts = [
+        {
+            'backend_match'   => '^appservers-debug\.svc\.eqiad\.wmnet$',
+            'max_connections' => 20,
+        },
+        {
+            'backend_match'   => '^restbase\.svc\.|^deployment-restbase',
+            'port'            => 7231,
+            'max_connections' => 5000,
+        },
+        { # LEGACY: should be removed eventually
+            'backend_match' => '^cxserver',
+            'port'          => 8080,
+            'probe'         => false,
+        },
+        { # LEGACY: should be removed eventually
+            'backend_match' => '^citoid',
+            'port'          => 1970,
+            'probe'         => false,
+        },
+    ]
+
+    $fe_def_beopts = {
+        'port'                  => 3128,
+        'connect_timeout'       => '5s',
+        'first_byte_timeout'    => '185s',
+        'between_bytes_timeout' => '2s',
+        'max_connections'       => 100000,
+        'probe'                 => 'varnish',
     }
 
-    $fe_be_opts = array_concat(
-        $::role::cache::2layer::backend_scaled_weights,
-        [{
-            'port'                  => 3128,
-            'connect_timeout'       => '5s',
-            'first_byte_timeout'    => '185s',
-            'between_bytes_timeout' => '2s',
-            'max_connections'       => 100000,
-            'probe'                 => 'varnish',
-        }]
-    )
+    $be_def_beopts = {
+        'port'                  => 80,
+        'connect_timeout'       => '5s',
+        'first_byte_timeout'    => '180s',
+        'between_bytes_timeout' => '4s',
+        'max_connections'       => 1000,
+    }
 
     $common_vcl_config = {
         'cache4xx'           => '1m',
@@ -119,79 +119,19 @@ class role::cache::text {
         'secure_post'        => false,
     })
 
-    varnish::instance { 'text-backend':
-        name               => '',
-        layer              => 'backend',
-        vcl                => 'text-backend',
-        extra_vcl          => ['text-common'],
-        ports              => [ 3128 ],
-        admin_port         => 6083,
-        runtime_parameters => ['default_ttl=2592000'],
-        storage            => $::role::cache::2layer::persistent_storage_args,
-        directors          => $varnish_be_directors[$::site_tier],
-        vcl_config         => $be_vcl_config,
-        backend_options    => array_concat($::role::cache::2layer::backend_scaled_weights, [
-            {
-                'backend_match' => '^cp[0-9]+\.eqiad\.wmnet$',
-                'port'          => 3128,
-                'probe'         => 'varnish',
-            },
-            {
-                'backend_match'   => '^appservers-debug\.svc\.eqiad\.wmnet$',
-                'max_connections' => 20,
-            },
-            {
-                'backend_match'   => '^restbase\.svc\.|^deployment-restbase',
-                'port'            => 7231,
-                'max_connections' => 5000,
-            },
-            { # LEGACY: should be removed eventually
-                'backend_match' => '^cxserver',
-                'port'          => 8080,
-                'probe'         => false,
-            },
-            { # LEGACY: should be removed eventually
-                'backend_match' => '^citoid',
-                'port'          => 1970,
-                'probe'         => false,
-            },
-            {
-                'port'                  => 80,
-                'connect_timeout'       => '5s',
-                'first_byte_timeout'    => '180s',
-                'between_bytes_timeout' => '4s',
-                'max_connections'       => 1000,
-            },
-        ]),
-    }
-
-    varnish::instance { 'text-frontend':
-        name               => 'frontend',
-        layer              => 'frontend',
-        vcl                => 'text-frontend',
-        extra_vcl          => ['text-common', 'zero', 'normalize_path', 'geoip'],
-        ports              => [ 80 ],
-        admin_port         => 6082,
-        runtime_parameters => ['default_ttl=2592000'],
-        storage            => "-s malloc,${memory_storage_size}G",
-        directors          => {
-            'cache_local' => {
-                'dynamic'  => 'yes',
-                'type'     => 'chash',
-                'dc'       => $::site,
-                'service'  => 'varnish-be',
-                'backends' => $site_cluster_nodes,
-            },
-            'cache_local_random' => {
-                'dynamic'  => 'yes',
-                'type'     => 'random',
-                'dc'       => $::site,
-                'service'  => 'varnish-be-rand',
-                'backends' => $site_cluster_nodes,
-            },
-        },
-        vcl_config         => $fe_vcl_config,
-        backend_options    => $fe_be_opts,
+    role::cache::instances { 'text':
+        fe_mem_gb      => ceiling(0.125 * $::memorysize_mb / 1024.0),
+        runtime_params => ['default_ttl=2592000'],
+        app_directors  => $app_directors,
+        app_be_opts    => $app_be_opts,
+        fe_vcl_config  => $fe_vcl_config,
+        be_vcl_config  => $be_vcl_config,
+        fe_extra_vcl   => ['text-common', 'zero', 'normalize_path', 'geoip'],
+        be_extra_vcl   => ['text-common'],
+        be_storage     => $::role::cache::2layer::persistent_storage_args,
+        fe_def_beopts  => $fe_def_beopts,
+        be_def_beopts  => $be_def_beopts,
+        cluster_nodes  => hiera('cache::text::nodes'),
     }
 
     # varnishkafka statsv listens for special stats related requests
