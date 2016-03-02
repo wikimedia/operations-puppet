@@ -32,14 +32,14 @@ class role::cache::maps {
             },
         },
         'two' => {
-            'cache_remote' => {
+            'cache_eqiad' => {
                 'dynamic'  => 'yes',
                 'type'     => 'chash',
                 'dc'       => 'eqiad',
                 'service'  => 'varnish-be',
                 'backends' => $cluster_nodes['eqiad'],
             },
-            'cache_remote_random' => {
+            'cache_eqiad_random' => {
                 'dynamic'  => 'yes',
                 'type'     => 'random',
                 'dc'       => 'eqiad',
