@@ -12,4 +12,5 @@ mwapi_req:
   uri: <%= @mwapi_uri %>
   headers:
     host: '{request.params.domain}'
+    content-type: application/json
     user-agent: <%= @user_agent %>
