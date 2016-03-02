@@ -46,12 +46,4 @@ class statistics::rsyncd($path, $hosts_allow)
         list        => 'yes',
         hosts_allow => $hosts_allow,
     }
-
-    # Allow rsyncd traffic from internal networks.
-    # and stat* public IPs.
-    ferm::service { 'rsync':
-        proto  => 'tcp',
-        port   => '873',
-        srange => '($INTERNAL)',
-    }
 }

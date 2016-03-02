@@ -24,6 +24,14 @@ class role::statistics {
         working_path => $working_path,
     }
 
+    # Allow rsyncd traffic from internal networks.
+    # and stat* public IPs.
+    ferm::service { 'rsync':
+        proto  => 'tcp',
+        port   => '873',
+        srange => '($INTERNAL)',
+    }
+
     # Set umask for wikidev users so that newly-created files are g+w
     file { '/etc/profile.d/umask-wikidev.sh':
         ensure => 'present',
