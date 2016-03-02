@@ -34,6 +34,7 @@ define keyholder::agent(
     $trusted_group,
     $key_fingerprint,
     $key_file = "${name}_rsa",
+    $key_content = undef,
 ) {
     file { "/etc/keyholder-auth.d/${name}.yml":
         content => inline_template("---\n<% [*@trusted_group].each do |g| %><%= g %>: ['<%= @key_fingerprint %>']\n<% end %>"),
@@ -43,8 +44,14 @@ define keyholder::agent(
     }
 
     # lint:ignore:puppet_url_without_modules
-    keyholder::private_key { $key_file:
-        source  => "puppet:///private/ssh/tin/${key_file}",
+    if $key_content {
+        keyholder::private_key { $key_file:
+            content  => $key_content,
+        }
+    } else {
+        keyholder::private_key { $key_file:
+            source  => "puppet:///private/ssh/tin/${key_file}",
+        }
     }
     # lint:endignore
 }
