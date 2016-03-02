@@ -4,184 +4,155 @@ class role::cache::misc {
     }
 
     include role::cache::2layer
+    include role::cache::ssl::misc
 
     class { 'lvs::realserver':
         realserver_ips => $lvs::configuration::service_ips['misc_web'][$::site],
     }
 
-    $cluster_nodes = hiera('cache::misc::nodes')
-    $site_cluster_nodes = $cluster_nodes[$::site]
-
-    include role::cache::ssl::misc
-
-    $memory_storage_size = 8
-
-    $varnish_be_directors = {
-        'one' => {
-            'analytics1001' => { # Hadoop Yarn ResourceManager GUI
-                'dynamic' => 'no',
-                'type' => 'random',
-                'backends' => ['analytics1001.eqiad.wmnet'],
-            },
-            'analytics1027' => { # Hue (Hadoop GUI)
-                'dynamic' => 'no',
-                'type' => 'random',
-                'backends' => ['analytics1027.eqiad.wmnet'],
-            },
-            'antimony' => {
-                'dynamic' => 'no',
-                'type' => 'random',
-                'backends' => ['antimony.wikimedia.org'],
-            },
-            'bromine' => { # ganeti VM for misc. static HTML sites
-                'dynamic' => 'no',
-                'type' => 'random',
-                'backends' => ['bromine.eqiad.wmnet'],
-            },
-            'bohrium' => {
-                'dynamic' => 'no',
-                'type' => 'random',
-                'backends' => ['bohrium.eqiad.wmnet'],
-            },
-            'californium' => {
-                'dynamic' => 'no',
-                'type' => 'random',
-                'backends' => ['californium.wikimedia.org'],
-            },
-            'labtestweb2001' => {
-                'dynamic' => 'no',
-                'type' => 'random',
-                'backends' => ['labtestweb2001.wikimedia.org'],
-            },
-            'dataset1001' => {
-                'dynamic' => 'no',
-                'type' => 'random',
-                'backends' => ['dataset1001.wikimedia.org'],
-            },
-            'etherpad1001' => {
-                'dynamic' => 'no',
-                'type' => 'random',
-                'backends' => ['etherpad1001.eqiad.wmnet'],
-            },
-            'gallium' => { # CI server
-                'dynamic' => 'no',
-                'type' => 'random',
-                'backends' => ['gallium.wikimedia.org' ],
-            },
-            'graphite1001' => {
-                'dynamic' => 'no',
-                'type' => 'random',
-                'backends' => ['graphite1001.eqiad.wmnet'],
-            },
-            'iridium' => { # main phab
-                'dynamic' => 'no',
-                'type' => 'random',
-                'backends' => ['iridium.eqiad.wmnet'],
-            },
-            'krypton' => { # ganeti VM for misc. PHP apps
-                'dynamic' => 'no',
-                'type' => 'random',
-                'backends' => ['krypton.eqiad.wmnet'],
-            },
-            'magnesium' => { # RT and racktables
-                'dynamic' => 'no',
-                'type' => 'random',
-                'backends' => ['magnesium.wikimedia.org'],
-            },
-            'neon' => { # monitoring tools (icinga et al)
-                'dynamic' => 'no',
-                'type' => 'random',
-                'backends' => ['neon.wikimedia.org'],
-            },
-            'netmon1001' => { # servermon
-                'dynamic' => 'no',
-                'type' => 'random',
-                'backends' => ['netmon1001.wikimedia.org'],
-            },
-            'noc' => { # noc.wikimedia.org and dbtree.wikimedia.org
-                'dynamic' => 'no',
-                'type' => 'random',
-                'backends' => ['mw1152.eqiad.wmnet'],
-            },
-            'palladium' => {
-                'dynamic' => 'no',
-                'type' => 'random',
-                'backends' => ['palladium.eqiad.wmnet'],
-            },
-            'planet1001' => {
-                'dynamic' => 'no',
-                'type' => 'random',
-                'backends' => ['planet1001.eqiad.wmnet'],
-            },
-            'ruthenium' => { # parsoid rt test server
-                'dynamic' => 'no',
-                'type' => 'random',
-                'backends' => ['ruthenium.eqiad.wmnet'],
-            },
-            'rutherfordium' => { # people.wikimedia.org
-                'dynamic' => 'no',
-                'type' => 'random',
-                'backends' => ['rutherfordium.eqiad.wmnet'],
-            },
-            'stat1001' => { # metrics and metrics-api
-                'dynamic' => 'no',
-                'type' => 'random',
-                'backends' => ['stat1001.eqiad.wmnet'],
-            },
-            'terbium' => { # noc.wikimedia.org
-                'dynamic' => 'no',
-                'type' => 'random',
-                'backends' => ['terbium.eqiad.wmnet'],
-            },
-            'mendelevium' => { # OTRS
-                'dynamic'  => 'no',
-                'type'     => 'random',
-                'backends' => ['mendelevium.eqiad.wmnet'],
-            },
-            'ytterbium' => { # Gerrit
-                'dynamic' => 'no',
-                'type' => 'random',
-                'backends' => ['ytterbium.wikimedia.org'],
-            },
-            'logstash' => {
-                'dynamic'  => 'no',
-                'type' => 'hash', # maybe-wrong? but current value before this commit! XXX
-                'backends' => [
-                    'logstash1001.eqiad.wmnet',
-                    'logstash1002.eqiad.wmnet',
-                    'logstash1003.eqiad.wmnet',
-                ],
-            },
-            'wdqs' => {
-                'dynamic' => 'no',
-                'type'    => 'random',
-                backends  => ['wdqs1001.eqiad.wmnet', 'wdqs1002.eqiad.wmnet'],
-            },
+    $app_directors = {
+        'analytics1001' => { # Hadoop Yarn ResourceManager GUI
+            'dynamic' => 'no',
+            'type' => 'random',
+            'backends' => ['analytics1001.eqiad.wmnet'],
         },
-        'two' => {
-            'cache_eqiad' => {
-                'dynamic'  => 'yes',
-                'type'     => 'chash',
-                'dc'       => 'eqiad',
-                'service'  => 'varnish-be',
-                'backends' => $cluster_nodes['eqiad'],
-            },
-            'cache_eqiad_random' => {
-                'dynamic'  => 'yes',
-                'type'     => 'random',
-                'dc'       => 'eqiad',
-                'service'  => 'varnish-be-rand',
-                'backends' => $cluster_nodes['eqiad'],
-            },
+        'analytics1027' => { # Hue (Hadoop GUI)
+            'dynamic' => 'no',
+            'type' => 'random',
+            'backends' => ['analytics1027.eqiad.wmnet'],
+        },
+        'antimony' => {
+            'dynamic' => 'no',
+            'type' => 'random',
+            'backends' => ['antimony.wikimedia.org'],
+        },
+        'bromine' => { # ganeti VM for misc. static HTML sites
+            'dynamic' => 'no',
+            'type' => 'random',
+            'backends' => ['bromine.eqiad.wmnet'],
+        },
+        'bohrium' => {
+            'dynamic' => 'no',
+            'type' => 'random',
+            'backends' => ['bohrium.eqiad.wmnet'],
+        },
+        'californium' => {
+            'dynamic' => 'no',
+            'type' => 'random',
+            'backends' => ['californium.wikimedia.org'],
+        },
+        'labtestweb2001' => {
+            'dynamic' => 'no',
+            'type' => 'random',
+            'backends' => ['labtestweb2001.wikimedia.org'],
+        },
+        'dataset1001' => {
+            'dynamic' => 'no',
+            'type' => 'random',
+            'backends' => ['dataset1001.wikimedia.org'],
+        },
+        'etherpad1001' => {
+            'dynamic' => 'no',
+            'type' => 'random',
+            'backends' => ['etherpad1001.eqiad.wmnet'],
+        },
+        'gallium' => { # CI server
+            'dynamic' => 'no',
+            'type' => 'random',
+            'backends' => ['gallium.wikimedia.org' ],
+        },
+        'graphite1001' => {
+            'dynamic' => 'no',
+            'type' => 'random',
+            'backends' => ['graphite1001.eqiad.wmnet'],
+        },
+        'iridium' => { # main phab
+            'dynamic' => 'no',
+            'type' => 'random',
+            'backends' => ['iridium.eqiad.wmnet'],
+        },
+        'krypton' => { # ganeti VM for misc. PHP apps
+            'dynamic' => 'no',
+            'type' => 'random',
+            'backends' => ['krypton.eqiad.wmnet'],
+        },
+        'magnesium' => { # RT and racktables
+            'dynamic' => 'no',
+            'type' => 'random',
+            'backends' => ['magnesium.wikimedia.org'],
+        },
+        'neon' => { # monitoring tools (icinga et al)
+            'dynamic' => 'no',
+            'type' => 'random',
+            'backends' => ['neon.wikimedia.org'],
+        },
+        'netmon1001' => { # servermon
+            'dynamic' => 'no',
+            'type' => 'random',
+            'backends' => ['netmon1001.wikimedia.org'],
+        },
+        'noc' => { # noc.wikimedia.org and dbtree.wikimedia.org
+            'dynamic' => 'no',
+            'type' => 'random',
+            'backends' => ['mw1152.eqiad.wmnet'],
+        },
+        'palladium' => {
+            'dynamic' => 'no',
+            'type' => 'random',
+            'backends' => ['palladium.eqiad.wmnet'],
+        },
+        'planet1001' => {
+            'dynamic' => 'no',
+            'type' => 'random',
+            'backends' => ['planet1001.eqiad.wmnet'],
+        },
+        'ruthenium' => { # parsoid rt test server
+            'dynamic' => 'no',
+            'type' => 'random',
+            'backends' => ['ruthenium.eqiad.wmnet'],
+        },
+        'rutherfordium' => { # people.wikimedia.org
+            'dynamic' => 'no',
+            'type' => 'random',
+            'backends' => ['rutherfordium.eqiad.wmnet'],
+        },
+        'stat1001' => { # metrics and metrics-api
+            'dynamic' => 'no',
+            'type' => 'random',
+            'backends' => ['stat1001.eqiad.wmnet'],
+        },
+        'terbium' => { # noc.wikimedia.org
+            'dynamic' => 'no',
+            'type' => 'random',
+            'backends' => ['terbium.eqiad.wmnet'],
+        },
+        'mendelevium' => { # OTRS
+            'dynamic'  => 'no',
+            'type'     => 'random',
+            'backends' => ['mendelevium.eqiad.wmnet'],
+        },
+        'ytterbium' => { # Gerrit
+            'dynamic' => 'no',
+            'type' => 'random',
+            'backends' => ['ytterbium.wikimedia.org'],
+        },
+        'logstash' => {
+            'dynamic'  => 'no',
+            'type' => 'hash', # maybe-wrong? but current value before this commit! XXX
+            'backends' => [
+                'logstash1001.eqiad.wmnet',
+                'logstash1002.eqiad.wmnet',
+                'logstash1003.eqiad.wmnet',
+            ],
+        },
+        'wdqs' => {
+            'dynamic' => 'no',
+            'type'    => 'random',
+            backends  => ['wdqs1001.eqiad.wmnet', 'wdqs1002.eqiad.wmnet'],
         },
     }
 
-    $be_opts = array_concat($::role::cache::2layer::backend_scaled_weights, [
-        {
-            'backend_match' => '^cp[0-9]+\.eqiad\.wmnet$',
-            'port'          => 3128,
-            'probe'         => 'varnish',
-        },
+    $app_be_opts = array_concat($::role::cache::2layer::backend_scaled_weights, [
         {
             'backend_match' => '^(antimony|ytterbium)',
             'port'          => 8080,
@@ -218,26 +189,24 @@ class role::cache::misc {
             'backend_match'         => '^mendelevium',
             'between_bytes_timeout' => '60s',
         },
-        {
-            'port'                  => 80,
-            'connect_timeout'       => '5s',
-            'first_byte_timeout'    => '185s',
-            'between_bytes_timeout' => '4s',
-            'max_connections'       => 100,
-        }
     ])
 
-    $fe_be_opts = array_concat(
-        $::role::cache::2layer::backend_scaled_weights,
-        [{
-            'port'                  => 3128,
-            'connect_timeout'       => '5s',
-            'first_byte_timeout'    => '185s',
-            'between_bytes_timeout' => '2s',
-            'max_connections'       => 100000,
-            'probe'                 => 'varnish',
-        }]
-    )
+    $fe_def_beopts = {
+        'port'                  => 3128,
+        'connect_timeout'       => '5s',
+        'first_byte_timeout'    => '185s',
+        'between_bytes_timeout' => '2s',
+        'max_connections'       => 100000,
+        'probe'                 => 'varnish',
+    }
+
+    $be_def_beopts = {
+        'port'                  => 80,
+        'connect_timeout'       => '5s',
+        'first_byte_timeout'    => '185s',
+        'between_bytes_timeout' => '4s',
+        'max_connections'       => 100,
+    }
 
     $common_vcl_config = {
         'cache4xx'         => '1m',
@@ -247,45 +216,19 @@ class role::cache::misc {
         'pass_random'      => true,
     }
 
-    varnish::instance { 'misc-backend':
-        name            => '',
-        layer           => 'backend',
-        vcl             => 'misc-backend',
-        extra_vcl       => ['misc-common'],
-        ports           => [ 3128 ],
-        admin_port      => 6083,
-        storage         => $::role::cache::2layer::persistent_storage_args,
-        vcl_config      => $common_vcl_config,
-        directors       => $varnish_be_directors[$::site_tier],
-        backend_options => $be_opts,
-    }
-
-    varnish::instance { 'misc-frontend':
-        name            => 'frontend',
-        layer           => 'frontend',
-        vcl             => 'misc-frontend',
-        extra_vcl       => ['misc-common'],
-        ports           => [ 80 ],
-        admin_port      => 6082,
-        storage         => "-s malloc,${memory_storage_size}G",
-        vcl_config      => $common_vcl_config,
-        directors       => {
-            'cache_local' => {
-                'dynamic'  => 'yes',
-                'type'     => 'chash',
-                'dc'       => $::site,
-                'service'  => 'varnish-be',
-                'backends' => $site_cluster_nodes,
-            },
-            'cache_local_random' => {
-                'dynamic'  => 'yes',
-                'type'     => 'random',
-                'dc'       => $::site,
-                'service'  => 'varnish-be-rand',
-                'backends' => $site_cluster_nodes,
-            },
-        },
-        backend_options => $fe_be_opts,
+    role::cache::instances { 'misc':
+        fe_mem_gb      => 8,
+        runtime_params => [],
+        app_directors  => $app_directors,
+        app_be_opts    => $app_be_opts,
+        fe_vcl_config  => $common_vcl_config,
+        be_vcl_config  => $common_vcl_config,
+        fe_extra_vcl   => ['misc-common'],
+        be_extra_vcl   => ['misc-common'],
+        fe_def_beopts  => $fe_def_beopts,
+        be_def_beopts  => $be_def_beopts,
+        be_storage     => $::role::cache::2layer::persistent_storage_args,
+        cluster_nodes  => hiera('cache::misc::nodes'),
     }
 
     # Install a varnishkafka producer to send
