@@ -70,7 +70,7 @@ class phabricator (
 
     # base dependencies to ensure the phabricator deployment root exists
     # save as a var since this will be required by many resources in this class
-    $base_requirements = [Package[$deploy_target], File[$phabdir]]
+    $base_requirements = [Package[$deploy_target]]
 
     #A combination of static and dynamic conf parameters must be merged
     $module_path = get_module_path($module_name)
@@ -132,10 +132,10 @@ class phabricator (
         }
     }
 
-    scap::target { $deploy_target:
-        deploy_user       => $deploy_user,
-        public_key_source => $deploy_key,
-        service_name      => 'phd',
+    class { '::phabricator::deployment::target':
+        deploy_user     => $deploy_user,
+        deploy_key      => $deploy_key,
+        deploy_target   => $deploy_target,
     }
 
     file { $phabdir:

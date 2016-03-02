@@ -43,6 +43,7 @@ define scap::target(
     $service_name = undef,
     $package_name = $title,
     $manage_user = true,
+    $sudo_rules = [],
 ) {
     # Include scap3 package and ssh ferm rules.
     include scap
@@ -86,10 +87,11 @@ define scap::target(
             "ALL=(root) NOPASSWD: /usr/sbin/service ${service_name} *",
         ],
     }
+
     if !defined(Sudo::User["scap_${deploy_user}"]) {
         sudo::user { "scap_${deploy_user}":
             user       => $deploy_user,
-            privileges => $privileges,
+            privileges => concat($privileges, $sudo_rules),
         }
     }
 
