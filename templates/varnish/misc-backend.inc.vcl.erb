@@ -1,6 +1,5 @@
 include "misc-common.inc.vcl";
 
-<% if @site_tier == "one" -%>
 sub cluster_be_recv_applayer_backend {
     if (req.http.Host == "git.wikimedia.org") {
         set req.backend = antimony;
@@ -64,7 +63,6 @@ sub cluster_be_recv_applayer_backend {
         error 404 "Domain not served here";
     }
 }
-<% end -%>
 
 sub cluster_be_recv {
     call misc_recv_pass;
