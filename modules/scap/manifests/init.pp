@@ -5,7 +5,7 @@
 class scap {
 
     package { 'scap':
-        ensure => '3.0.2-1',
+        ensure => '3.0.3-1',
     }
 
     file { '/etc/scap.cfg':
