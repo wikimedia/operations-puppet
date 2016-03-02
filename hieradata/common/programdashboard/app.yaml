@@ -2,6 +2,7 @@ directory: /srv/programdashboard
 environment: production
 owner: programdashboard
 group: programdashboard
+deployer_keys: []
 dependencies:
   - git-core
   - ruby2.1
