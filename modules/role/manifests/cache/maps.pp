@@ -53,7 +53,7 @@ class role::cache::maps {
         include varnish::monitoring::ganglia::vhtcpd
     }
 
-    $fe_t1_be_opts = array_concat(
+    $fe_be_opts = array_concat(
         $::role::cache::2layer::backend_scaled_weights,
         [{
             'port'                  => 3128,
@@ -64,20 +64,6 @@ class role::cache::maps {
             'probe'                 => 'varnish',
         }]
     )
-
-    $fe_t2_be_opts = array_concat(
-        [{
-            'backend_match'         => '^cp[0-9]+\.eqiad.wmnet$',
-            'between_bytes_timeout' => '4s',
-            'max_connections'       => 1000,
-        }],
-        $fe_t1_be_opts
-    )
-
-    $fe_be_opts = $::site_tier ? {
-        'one'   => $fe_t1_be_opts,
-        default => $fe_t2_be_opts,
-    }
 
     $common_vcl_config = {
         'cache4xx'         => '1m',
