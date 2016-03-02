@@ -2,7 +2,6 @@
 
 include "text-common.inc.vcl";
 
-<% if @site_tier == "one" -%>
 sub cluster_be_recv_applayer_backend {
 	if (req.http.Host ~ "cxserver" ) { # LEGACY: to be removed eventually
 		set req.backend = cxserver_backend;
@@ -39,7 +38,6 @@ sub cluster_be_recv_applayer_backend {
 	}
 <% end %>
 }
-<% end %> // end site_tier == one
 
 sub cluster_be_recv {
 	call text_common_recv;
