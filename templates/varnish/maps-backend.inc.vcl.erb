@@ -1,5 +1,7 @@
 // Varnish VCL include file for maps backends
 
+sub cluster_be_recv_pre_purge { }
+
 <% if @site_tier == "one" -%>
 sub cluster_be_recv_applayer_backend {
 	set req.backend = kartotherian;
