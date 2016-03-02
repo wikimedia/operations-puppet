@@ -3,65 +3,44 @@ class role::cache::upload {
         description => 'upload Varnish cache server',
     }
 
+    include role::cache::2layer
+    include role::cache::ssl::unified
+    if $::role::cache::configuration::has_ganglia {
+        include varnish::monitoring::ganglia::vhtcpd
+    }
+
     class { 'varnish::htcppurger':
         mc_addrs => [ '239.128.0.112', '239.128.0.113' ],
     }
-
-    include role::cache::2layer
 
     class { 'lvs::realserver':
         realserver_ips => $lvs::configuration::service_ips['upload'][$::site],
     }
 
-    $cluster_nodes = hiera('cache::upload::nodes')
-    $site_cluster_nodes = $cluster_nodes[$::site]
-
-    # 1/12 of total mem
-    $memory_storage_size = ceiling(0.08333 * $::memorysize_mb / 1024.0)
-
-    include role::cache::ssl::unified
-
-    $varnish_be_directors = {
-        'one' => {
-            'swift'   => {
-                'dynamic'  => 'no',
-                'type'     => 'random',
-                'backends' => $role::cache::configuration::backends[$::realm]['swift'][$::mw_primary],
-            },
+    $app_directors = {
+        'swift'   => {
+            'dynamic'  => 'no',
+            'type'     => 'random',
+            'backends' => $role::cache::configuration::backends[$::realm]['swift'][$::mw_primary],
         },
-        'two' => {
-            'cache_eqiad' => {
-                'dynamic'  => 'yes',
-                'type'     => 'chash',
-                'dc'       => 'eqiad',
-                'service'  => 'varnish-be',
-                'backends' => $cluster_nodes['eqiad'],
-            },
-            'cache_eqiad_random' => {
-                'dynamic'  => 'yes',
-                'type'     => 'random',
-                'dc'       => 'eqiad',
-                'service'  => 'varnish-be-rand',
-                'backends' => $cluster_nodes['eqiad'],
-            },
-        }
     }
 
-    if $::role::cache::configuration::has_ganglia {
-        include varnish::monitoring::ganglia::vhtcpd
+    $fe_def_beopts = {
+        'port'                  => 3128,
+        'connect_timeout'       => '5s',
+        'first_byte_timeout'    => '35s',
+        'between_bytes_timeout' => '2s',
+        'max_connections'       => 100000,
+        'probe'                 => 'varnish',
     }
 
-    $fe_be_opts = array_concat(
-        $::role::cache::2layer::backend_scaled_weights,
-        [{
-            'port'                  => 3128,
-            'connect_timeout'       => '5s',
-            'first_byte_timeout'    => '35s',
-            'between_bytes_timeout' => '2s',
-            'max_connections'       => 100000,
-            'probe'                 => 'varnish',
-        }]
-    )
+    $be_def_beopts = {
+        'port'                  => 80,
+        'connect_timeout'       => '5s',
+        'first_byte_timeout'    => '35s',
+        'between_bytes_timeout' => '4s',
+        'max_connections'       => 1000,
+    }
 
     $common_vcl_config = {
         'cache4xx'         => '1m',
@@ -98,60 +77,19 @@ class role::cache::upload {
         "-s bigobj2=file,/srv/${::role::cache::2layer::storage_parts[1]}/varnish.bigobj2,${storage_size_bigobj}G",
     ], ' ')
 
-    varnish::instance { 'upload-backend':
-        name               => '',
-        layer              => 'backend',
-        vcl                => 'upload-backend',
-        extra_vcl          => ['upload-common'],
-        ports              => [ 3128 ],
-        admin_port         => 6083,
-        runtime_parameters => ['default_ttl=2592000'],
-        storage            => $upload_storage_args,
-        directors          => $varnish_be_directors[$::site_tier],
-        vcl_config         => $be_vcl_config,
-        backend_options    => array_concat($::role::cache::2layer::backend_scaled_weights, [
-            {
-                'backend_match' => '^cp[0-9]+\.eqiad.wmnet$',
-                'port'          => 3128,
-                'probe'         => 'varnish',
-            },
-            {
-                'port'                  => 80,
-                'connect_timeout'       => '5s',
-                'first_byte_timeout'    => '35s',
-                'between_bytes_timeout' => '4s',
-                'max_connections'       => 1000,
-            },
-        ]),
-    }
-
-    varnish::instance { 'upload-frontend':
-        name               => 'frontend',
-        layer              => 'frontend',
-        vcl                => 'upload-frontend',
-        extra_vcl          => ['upload-common'],
-        ports              => [ 80 ],
-        admin_port         => 6082,
-        runtime_parameters => ['default_ttl=2592000'],
-        storage            => "-s malloc,${memory_storage_size}G",
-        directors          => {
-            'cache_local' => {
-                'dynamic'  => 'yes',
-                'type'     => 'chash',
-                'dc'       => $::site,
-                'service'  => 'varnish-be',
-                'backends' => $site_cluster_nodes,
-            },
-            'cache_local_random' => {
-                'dynamic'  => 'yes',
-                'type'     => 'random',
-                'dc'       => $::site,
-                'service'  => 'varnish-be-rand',
-                'backends' => $site_cluster_nodes,
-            },
-        },
-        vcl_config         => $fe_vcl_config,
-        backend_options    => $fe_be_opts,
+    role::cache::instances { 'upload':
+        fe_mem_gb      => ceiling(0.08333 * $::memorysize_mb / 1024.0),
+        runtime_params => ['default_ttl=2592000'],
+        app_directors  => $app_directors,
+        app_be_opts    => [],
+        fe_vcl_config  => $fe_vcl_config,
+        be_vcl_config  => $be_vcl_config,
+        fe_extra_vcl   => ['upload-common'],
+        be_extra_vcl   => ['upload-common'],
+        be_storage     => $upload_storage_args,
+        fe_def_beopts  => $fe_def_beopts,
+        be_def_beopts  => $be_def_beopts,
+        cluster_nodes  => hiera('cache::upload::nodes'),
     }
 
     # Install a varnishkafka producer to send
