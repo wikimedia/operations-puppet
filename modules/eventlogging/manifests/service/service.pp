@@ -118,13 +118,6 @@ define eventlogging::service::service(
         ]
     }
 
-    # Allow traffic to eventlogging-service on $port
-    ferm::service { $service_name:
-        proto  => 'tcp',
-        port   => $port,
-        srange => '$INTERNAL',
-    }
-
     # Generate icinga alert if eventlogging-service-$basename is not running.
     nrpe::monitor_service { $service_name:
         description  => "Check that ${service_name} is running",

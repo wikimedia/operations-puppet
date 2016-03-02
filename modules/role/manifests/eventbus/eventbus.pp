@@ -50,6 +50,13 @@ class role::eventbus::eventbus {
         statsd_prefix     => 'eventbus',
     }
 
+    # Allow traffic to eventlogging-service on $port
+    ferm::service { 'eventlogging-service-eventbus':
+        proto  => 'tcp',
+        port   => '8085',
+        srange => '$INTERNAL',
+    }
+
     if $::realm == 'production' {
         include lvs::realserver
     }
