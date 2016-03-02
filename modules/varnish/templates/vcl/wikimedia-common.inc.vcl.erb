@@ -163,12 +163,12 @@ sub wm_common_recv_purge {
 	/* Support HTTP PURGE */
 	if (req.request == "PURGE") {
 		if (client.ip !~ local_host) {
-			error 405 "Denied.";
+			error 405 "Denied";
 		} elsif (req.http.Host ~ "<%= @vcl_config.fetch('purge_host_regex') %>") {
 			set req.hash_ignore_busy = true;
 			return (lookup);
 		} else {
-			error 204 "Domain not cached here.";
+			error 204 "Domain not cached here";
 		}
 	}
 }

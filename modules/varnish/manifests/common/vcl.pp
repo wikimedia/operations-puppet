@@ -22,6 +22,13 @@ class varnish::common::vcl {
         content => template('varnish/analytics.inc.vcl.erb'),
     }
 
+    file { '/etc/varnish/errorpage.html':
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        source  => 'puppet:///files/varnish/errorpage.html',
+    }
+
     # VCL unit tests
     file { '/usr/local/sbin/varnish-test-geoip':
         owner  => 'root',
