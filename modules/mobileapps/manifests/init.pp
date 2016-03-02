@@ -11,10 +11,19 @@
 # === Parameters
 #
 # [*restbase_uri*]
-#   The host/IP where to reach RESTBase
+#   The host/IP where to reach RESTBase. Default:
+#   http://restbase.svc.${::site}.wmnet:7231
+# [*mwapi_uri*]
+#   The host/IP where to reach the MW API. Default:
+#   http://api.svc.${::mw_primary}.wmnet
+# [*user_agent*]
+#   The user agent header to send to other services. Default: WMF Mobile Content
+#   Service
 #
 class mobileapps(
-    $restbase_uri = 'http://restbase.svc.eqiad.wmnet:7231/%DOMAIN%/v1',
+    $restbase_uri = "http://restbase.svc.${::site}.wmnet:7231",
+    $mwapi_uri    = "http://api.svc.${::mw_primary}.wmnet",
+    $user_agent   = 'WMF Mobile Content Service',
 ) {
     service::node { 'mobileapps':
         port            => 8888,
