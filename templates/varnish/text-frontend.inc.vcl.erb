@@ -3,7 +3,6 @@
 include "text-common.inc.vcl";
 include "zero.inc.vcl";
 include "geoip.inc.vcl";
-include "normalize_path.inc.vcl";
 
 // Note that analytics.inc.vcl will set an X-Analytics value of proxy=IORG
 // without inspecting whether there's an existing proxy=<proxy> key-
@@ -111,6 +110,9 @@ sub cluster_fe_recv_pre_purge {
 			}
 		}
 	}
+
+	// Normalize paths before purging
+	call text_normalize_path;
 }
 
 sub cluster_fe_recv {
@@ -120,13 +122,6 @@ sub cluster_fe_recv {
 			error 204;
 		}
 		return (lookup);
-	}
-
-	// Don't decode percent-encoded slashes in paths for REST APIs
-	if (req.url ~ "^/api/rest_v1/" || req.http.host ~ "cxserver|citoid|restbase|^rest\.") {
-		call normalize_rest_path;
-	} else {
-		call normalize_mediawiki_path;
 	}
 
 	call mobile_redirect;

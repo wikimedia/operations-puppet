@@ -2,6 +2,12 @@
 
 include "text-common.inc.vcl";
 
+sub cluster_be_recv_pre_purge {
+	if (req.request == "PURGE") {
+		call text_normalize_path;
+	}
+}
+
 <% if @site_tier == "one" -%>
 sub cluster_be_recv_applayer_backend {
 	if (req.url ~ "^/w/api\.php") {
