@@ -1,5 +1,7 @@
 include "misc-common.inc.vcl";
 
+sub cluster_be_recv_pre_purge { }
+
 sub cluster_be_recv {
 <% if @site_tier == "one" -%>
     if (req.http.Host == "git.wikimedia.org") {
