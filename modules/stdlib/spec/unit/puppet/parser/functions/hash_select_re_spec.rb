@@ -1,0 +1,28 @@
+#! /usr/bin/env ruby -S rspec
+require 'spec_helper'
+
+describe "the hash_select_re function" do
+  let(:scope) { PuppetlabsSpec::PuppetInternals.scope }
+
+  it "should exist" do
+    Puppet::Parser::Functions.function("hash_select_re").should == "function_hash_select_re"
+  end
+
+  it "should raise a ParseError if there are less than 2 arguments" do
+    lambda { scope.function_hash_select_re(['a']) }.should( raise_error(Puppet::ParseError))
+  end
+
+  it "should raise a ParseError if there are more than 2 arguments" do
+    lambda { scope.function_hash_select_re(['a', 'b', 'c']) }.should( raise_error(Puppet::ParseError))
+  end
+
+  it "should select the right keys (simple)" do
+    result = scope.function_hash_select_re(['^a',{'abc'=>1,'def'=>2,'asdf'=>3}])
+    result.should(eq({'abc'=>1,'asdf'=>3}))
+  end
+
+  it "should select the right keys (neg lookahead)" do
+    result = scope.function_hash_select_re(['^(?!)a',{'abc'=>1,'def'=>2,'asdf'=>3}])
+    result.should(eq({'def'=>2}))
+  end
+end
