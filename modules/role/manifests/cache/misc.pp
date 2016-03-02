@@ -247,34 +247,28 @@ class role::cache::misc {
         'pass_random'      => true,
     }
 
-    $fe_vcl_config = merge($common_vcl_config, {
-        'layer' => 'frontend',
-    })
-
-    $be_vcl_config = merge($common_vcl_config, {
-        'layer' => 'backend',
-    })
-
     varnish::instance { 'misc-backend':
         name            => '',
+        layer           => 'backend',
         vcl             => 'misc-backend',
         extra_vcl       => ['misc-common'],
         ports           => [ 3128 ],
         admin_port      => 6083,
         storage         => $::role::cache::2layer::persistent_storage_args,
-        vcl_config      => $be_vcl_config,
+        vcl_config      => $common_vcl_config,
         directors       => $varnish_be_directors[$::site_tier],
         backend_options => $be_opts,
     }
 
     varnish::instance { 'misc-frontend':
         name            => 'frontend',
+        layer           => 'frontend',
         vcl             => 'misc-frontend',
         extra_vcl       => ['misc-common'],
         ports           => [ 80 ],
         admin_port      => 6082,
         storage         => "-s malloc,${memory_storage_size}G",
-        vcl_config      => $fe_vcl_config,
+        vcl_config      => $common_vcl_config,
         directors       => {
             'cache_local' => {
                 'dynamic'  => 'yes',

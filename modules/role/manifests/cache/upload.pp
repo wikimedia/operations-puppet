@@ -78,14 +78,12 @@ class role::cache::upload {
     # upload-frontend case.  All tiers of backend share the same policies.
 
     $be_vcl_config = merge($common_vcl_config, {
-        'layer'            => 'backend',
         'ttl_fixed'        => '30d',
         'ttl_cap'          => '30d',
         'pass_random'      => true,
     })
 
     $fe_vcl_config = merge($common_vcl_config, {
-        'layer'            => 'frontend',
         'https_redirects'  => true,
         'ttl_cap'          => '1h',
         'pass_random'      => false,
@@ -102,6 +100,7 @@ class role::cache::upload {
 
     varnish::instance { 'upload-backend':
         name               => '',
+        layer              => 'backend',
         vcl                => 'upload-backend',
         extra_vcl          => ['upload-common'],
         ports              => [ 3128 ],
@@ -128,6 +127,7 @@ class role::cache::upload {
 
     varnish::instance { 'upload-frontend':
         name               => 'frontend',
+        layer              => 'frontend',
         vcl                => 'upload-frontend',
         extra_vcl          => ['upload-common'],
         ports              => [ 80 ],
