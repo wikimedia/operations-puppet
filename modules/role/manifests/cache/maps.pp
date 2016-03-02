@@ -73,17 +73,15 @@ class role::cache::maps {
         'pass_random'      => true,
     }
 
-    $be_vcl_config = merge($common_vcl_config, {
-        'layer'            => 'backend',
-    })
+    $be_vcl_config = $common_vcl_config
 
     $fe_vcl_config = merge($common_vcl_config, {
-        'layer'            => 'frontend',
         'https_redirects'  => true,
     })
 
     varnish::instance { 'maps-backend':
         name               => '',
+        layer              => 'backend',
         vcl                => 'maps-backend',
         ports              => [ 3128 ],
         admin_port         => 6083,
@@ -110,6 +108,7 @@ class role::cache::maps {
 
     varnish::instance { 'maps-frontend':
         name               => 'frontend',
+        layer              => 'frontend',
         vcl                => 'maps-frontend',
         ports              => [ 80 ],
         admin_port         => 6082,
