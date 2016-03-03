@@ -33,7 +33,8 @@ module.exports = function (config) {
 		type: 'raw',
 		stream: require('/srv/deployment/ocg/ocg/node_modules/gelf-stream').forBunyan(
 			"<%= @graylog_host %>", <%= @graylog_port %>
-		)
+        ),
+        level: 'warn'
 	});
 
 	return config;
