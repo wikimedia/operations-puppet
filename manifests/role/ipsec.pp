@@ -6,14 +6,7 @@ class role::ipsec ($hosts = undef) {
         $targets = $hosts
     } else {
         if $::hostname =~ /^cp/ {
-            # if $cluster == 'cache_text', $ipsec_cluster = 'cache::ipsec::text'
-            # This duplication of nodelist data in the ::ipsec:: case in
-            # hieradata is so that we can depool cache nodes in the primary
-            # hieradata lists without de-configuring the ipsec associations,
-            # which could cause a traffic-leaking race.  This will go away once
-            # etcd replaces hieradata comments for varnish-level depooling.
-
-            $ipsec_cluster = regsubst(hiera('cluster'), '_', '::ipsec::')
+            $ipsec_cluster = regsubst(hiera('cluster'), '_', '::')
             $cluster_nodes = hiera("${ipsec_cluster}::nodes")
             $kafka_nodes = hiera('cache::ipsec::kafka::nodes')
 
