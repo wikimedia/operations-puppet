@@ -63,16 +63,6 @@ $other_site = $site ? {
     default => '(undefined)'
 }
 
-$site_tier = $::realm ? {
-    production => $::site ? {
-        'eqiad' => 'one',
-        'codfw' => 'two', # temporary, see T110065
-        'esams' => 'two',
-        'ulsfo' => 'two',
-    },
-    default => 'one',
-}
-
 $mw_primary = $::realm ? {
     'production' => 'eqiad',
     default => $::site
