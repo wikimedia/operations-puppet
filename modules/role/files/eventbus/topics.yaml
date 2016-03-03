@@ -21,5 +21,5 @@ mediawiki.page_restore:
 mediawiki.revision_visibility_set:
   schema_name: revision_visibility_set
 
-mediawiki.revision_create:
+wmf.revision_create:
   schema_name: revision_create
