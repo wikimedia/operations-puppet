@@ -10,7 +10,13 @@ sub cluster_be_recv_pre_purge {
 
 <% if @site_tier == "one" -%>
 sub cluster_be_recv_applayer_backend {
-	if (req.url ~ "^/w/api\.php") {
+	if (req.http.Host ~ "cxserver" ) { # LEGACY: to be removed eventually
+		set req.backend = cxserver_backend;
+	} else if (req.http.Host ~ "citoid" ) { # LEGACY: to be removed eventually
+		set req.backend = citoid_backend;
+	} else if (req.http.Host ~ "restbase|^rest\." ) { # LEGACY: to be removed eventually
+		set req.backend = restbase_backend;
+	} else if (req.url ~ "^/w/api\.php") {
 		if (req.http.X-Wikimedia-Debug == "1") {
 			set req.backend = appservers_debug;
 		} else {
@@ -23,12 +29,6 @@ sub cluster_be_recv_applayer_backend {
 			set req.backend = rendering;
 		}
 	} else if (req.url ~ "^/api/rest_v1/") {
-		set req.backend = restbase_backend;
-	} else if (req.http.Host ~ "cxserver" ) { # LEGACY: to be removed eventually
-		set req.backend = cxserver_backend;
-	} else if (req.http.Host ~ "citoid" ) { # LEGACY: to be removed eventually
-		set req.backend = citoid_backend;
-	} else if (req.http.Host ~ "restbase|^rest\." ) { # LEGACY: to be removed eventually
 		set req.backend = restbase_backend;
 	} else {
 		// default MW backend
