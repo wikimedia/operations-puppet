@@ -21,6 +21,7 @@ my $user = "";
 my $pass = "";
 my $sock = "";
 my $master_server_id = "";
+my $shard = "";
 
 my $sql_lag_warn = 30;
 my $sql_lag_crit = 60;
@@ -77,6 +78,10 @@ foreach my $arg (@ARGV)
 	elsif ($arg =~ /^--master-server-id=(.+)$/)
 	{
 		$master_server_id = $1;
+	}
+	elsif ($arg =~ /^--shard=(.+)$/)
+	{
+		$shard = $1;
 	}
 	elsif ($arg =~ /^--set=(.+)$/)
 	{
@@ -187,11 +192,25 @@ if ($check eq "slave_sql_lag")
 		printf("%s %s not a slave", $OK, $check);
 		exit($EOK);
 	}
-
-	if ($master_server_id eq "") {
-		$master_server_id = $status->{Master_Server_Id};
+        my @values = ();
+	my $query = "SELECT TIMESTAMPDIFF(MICROSECOND,ts,UTC_TIMESTAMP(6)) AS lag FROM heartbeat.heartbeat WHERE ";
+	if ($shard eq "") {
+		if ($master_server_id eq "") {
+			$master_server_id = $status->{Master_Server_Id};
+		}
+		$query .= "server_id = ?";
+		push @values, $master_server_id;
+	} else {
+		if ($master_server_id eq "") {
+                        $query .= "shard = ? ORDER BY ts DESC LIMIT 1"
+		} else {
+			$query .= "server_id = ? and shard = ?
+                        push @values, $master_server_id;
+                }
+		push @values, $shard;
 	}
-	my $heartbeat = $db->selectrow_hashref("SELECT TIMESTAMPDIFF(MICROSECOND,ts,UTC_TIMESTAMP(6)) AS lag FROM heartbeat.heartbeat WHERE server_id = $master_server_id");
+
+	my $heartbeat = $db->selectrow_hashref($query, undef, @values);
 
 	my $lag = $heartbeat->{lag}?$heartbeat->{lag}/1000000:$status->{Seconds_Behind_Master};
 
