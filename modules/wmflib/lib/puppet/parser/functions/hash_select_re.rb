@@ -27,7 +27,8 @@ do not match the provided regex.
       raise(Puppet::ParseError, 'hash_select_re(): Argument 2 must be a hash')
     end
 
-    in_hash.select { |k, _v| pattern.match(k) }
+    # https://bibwild.wordpress.com/2012/04/12/ruby-hash-select-1-8-7-and-1-9-3-simultaneously-compatible/
+    Hash[ in_hash.select { |k, _v| pattern.match(k) } ]
   end
 end
 
