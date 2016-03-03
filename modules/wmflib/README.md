@@ -103,6 +103,33 @@ Otherwise, the return value is 'stopped'.
     }
 
 
+## hash_deselect_re
+
+`hash_deselect_re( string $regex, hash $input )`
+
+Does exactly the opposite of hash_select_re below: keys matching
+the regex are *excluded* from the new hash.
+
+
+## hash_select_re
+
+`hash_select_re( string $regex, hash $input )`
+
+This creates a new hash from the input hash, but only copies the
+keys which match the regex.  In other words, it does the
+equivalent of this in Ruby pseudo-code:
+
+  return input.select { |k, _v| regex.match(k) }
+
+### Example
+
+   hash_select_re('^a', {"abc" => 1, "def" => 2, "asdf" => 3})
+
+will produce:
+
+   {"abc" => 1, "asdf" => 3}
+
+
 ## ini
 
 `ini( hash $ini_settings [, hash $... ] )`
