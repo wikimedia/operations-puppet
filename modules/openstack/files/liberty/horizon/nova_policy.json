@@ -20,6 +20,7 @@
     "compute_extension:admin_actions:pause": [["rule:admin_or_projectadmin"]],
     "compute_extension:admin_actions:unpause": [["rule:admin_or_projectadmin"]],
     "compute_extension:admin_actions:suspend": "!",
+    "compute_extension:shelve": "!",
     "compute_extension:admin_actions:resume": [["rule:admin_or_projectadmin"]],
     "compute_extension:admin_actions:lock": [["rule:admin_api"]],
     "compute_extension:admin_actions:unlock": [["rule:admin_api"]],
