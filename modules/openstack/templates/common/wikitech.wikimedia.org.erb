@@ -92,6 +92,8 @@
     </Location>
     <Directory /a/backup/public>
         php_flag engine off
+        Options Indexes
+        IndexOptions FancyIndexing
         <IfVersion >= 2.4>
             Require all granted
         </IfVersion>
