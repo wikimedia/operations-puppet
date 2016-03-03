@@ -22,14 +22,19 @@
 # [*log_dir*]
 #   Local root log directory. The service's logs will be placed in its
 #   subdirectory. Default: /var/log
-
+#
+# [*use_dev_pkgs*]
+#   Whether the development packages declared for services should be installed.
+#   Default: false
+#
 class service::configuration(
     $http_proxy    = undef,
     $statsd_host   = 'localhost',
     $statsd_port   = 8125,
     $logstash_host = 'localhost',
     $logstash_port = 12201,
-    $log_dir   = '/var/log',
-    ){
+    $log_dir       = '/var/log',
+    $use_dev_pkgs  = false,
+){
     # No op for now.
 }
