@@ -1,0 +1,3 @@
+---
+# install dev packages for services
+service::configuration::use_dev_pkgs: true

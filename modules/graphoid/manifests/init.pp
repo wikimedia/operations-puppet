@@ -30,14 +30,9 @@ class graphoid(
     $allowed_domains = {},
 ) {
 
-    if os_version('debian >= jessie') {
-        $libjpeg62 = 'libjpeg62-turbo'
-    } else {
-        $libjpeg62 = 'libjpeg62'
-    }
+    require ::graphoid::packages
 
-    $packages = ['libcairo2', 'libgif4', $libjpeg62, 'libpango1.0-0']
-    require_package($packages)
+    requires_os('debian >= jessie')
 
     service::node { 'graphoid':
         port            => 19000,
@@ -50,7 +45,6 @@ class graphoid(
         },
         has_spec        => true,
         healthcheck_url => '',
-        require         => Package[$packages],
     }
 
 }
