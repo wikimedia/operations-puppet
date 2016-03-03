@@ -2467,7 +2467,8 @@ node /^snapshot1001\.eqiad\.wmnet/ {
     # to modules/dataset/files/exports. One must also manually
     # run `exportfs -r` on dataset1001. (T111586)
 
-    role snapshot, snapshot::dumps::hugewikis
+    # role snapshot, snapshot::dumps::hugewikis
+    role snapshot
     include standard
 }
 
@@ -2476,12 +2477,14 @@ node /^snapshot1002\.eqiad\.wmnet/ {
     # to modules/dataset/files/exports. One must also manually
     # run `exportfs -r` on dataset1001. (T111586)
 
-    role snapshot, snapshot::dumps::regularwikis
+    # role snapshot, snapshot::dumps::regularwikis
+    role snapshot
     include standard
 }
 
 node /^snapshot1004\.eqiad\.wmnet/ {
-    role snapshot, snapshot::dumps::monitor, snapshot::dumps::regularwikis
+    # role snapshot, snapshot::dumps::monitor, snapshot::dumps::regularwikis
+    role snapshot, snapshot::dumps::monitor
     include standard
 }
 
