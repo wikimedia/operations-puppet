@@ -45,3 +45,5 @@ elasticsearch::graylog_hosts:
   - logstash1001.eqiad.wmnet
   - logstash1002.eqiad.wmnet
   - logstash1003.eqiad.wmnet
+
+base::puppet::dns_alt_names: 'search.svc.codfw.wmnet'
