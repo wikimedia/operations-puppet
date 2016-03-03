@@ -9,9 +9,7 @@ class redis::multidc::instances($shards, $settings, $map) {
 
     # TODO: maybe define a variable that can be tested separately from
     # mw_primary if we're switching just part of the datacenter
-    # Disable replica temporarily while we troubleshoot the IPsec issues
-    #$replica_map = redis_add_replica($map, $ip, $shards, $::mw_primary)
-    $replica_map = $map
+    $replica_map = redis_add_replica($map, $ip, $shards, $::mw_primary)
 
     redis::instance{ $instances:
         ensure   => present,
