@@ -29,12 +29,7 @@ class mathoid(
     $render_no_check=true,
 ) {
 
-    # Pending fix for <https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=742347>
-    # require_package('node-jsdom')
-
-    if $png_generation {
-        require_package('openjdk-7-jre-headless')
-    }
+    require ::mathoid::packages
 
     service::node { 'mathoid':
         port            => 10042,
@@ -49,4 +44,5 @@ class mathoid(
         healthcheck_url => '',
         has_spec        => true,
     }
+
 }
