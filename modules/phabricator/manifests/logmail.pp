@@ -29,9 +29,6 @@
 # [*monthday*]
 #    day of the month script is executed
 #
-# [*weekday*]
-#    day of the week script is executed
-#
 
 define phabricator::logmail (
     $script_name,
@@ -40,8 +37,7 @@ define phabricator::logmail (
     $basedir  = '/usr/local/bin',
     $hour        = '0',
     $minute      = '0',
-    $monthday    = undef,
-    $weekday     = undef,
+    $monthday    = '1',
 ) {
 
 
@@ -59,7 +55,6 @@ define phabricator::logmail (
         user     => 'root',
         hour     => $hour,
         minute   => $minute,
-        weekday  => $weekday,
         monthday => $monthday,
     }
 }
