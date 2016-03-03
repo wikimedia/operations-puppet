@@ -15,11 +15,11 @@ describe "the hash_deselect_re function" do
 
   it "should select the right keys (simple)" do
     result = scope.function_hash_deselect_re(['^a', {'abc' => 1, 'def' => 2, 'asdf' => 3}])
-    result.should(eq({'abc' => 1, 'asdf' => 3}))
+    result.should(eq({'def' => 2}))
   end
 
   it "should select the right keys (neg lookahead)" do
     result = scope.function_hash_deselect_re(['^(?!a)', {'abc' => 1, 'def' => 2, 'asdf' => 3}])
-    result.should(eq({'def' => 2}))
+    result.should(eq({'abc' => 1, 'asdf' => 3}))
   end
 end
