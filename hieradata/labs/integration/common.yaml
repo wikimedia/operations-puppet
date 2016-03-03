@@ -9,3 +9,5 @@ contint::zuul_merger_hosts:
     - '::1'  # uses quotes for hiera
     - 127.0.0.1
 puppetmaster::autosigner: true
+# install dev packages for services
+service::configuration::use_dev_pkgs: true

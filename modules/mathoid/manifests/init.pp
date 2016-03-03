@@ -32,8 +32,9 @@ class mathoid(
     # Pending fix for <https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=742347>
     # require_package('node-jsdom')
 
-    if $png_generation {
-        require_package('openjdk-7-jre-headless')
+    service::packages { 'mathoid':
+        pkgs     => ['librsvg2-2'],
+        dev_pkgs => ['librsvg2-dev'],
     }
 
     service::node { 'mathoid':
@@ -48,5 +49,6 @@ class mathoid(
         },
         healthcheck_url => '',
         has_spec        => true,
+        require         => Service::Packages['mathoid'],
     }
 }
