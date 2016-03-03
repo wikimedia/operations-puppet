@@ -43,7 +43,6 @@ class role::cache::maps {
         'first_byte_timeout'    => '35s',
         'between_bytes_timeout' => '4s',
         'max_connections'       => 1000,
-        'probe'                 => 'maps',
     }
 
     $common_vcl_config = {
