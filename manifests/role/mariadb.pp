@@ -131,7 +131,7 @@ class role::mariadb::misc(
         shard => $shard,
     }
 
-    if ($master and $shard == 'm5') {
+    if $master {
         class { 'mariadb::heartbeat':
             shard => $shard,
         }
@@ -207,6 +207,12 @@ class role::mariadb::misc::phabricator(
         include coredb_mysql::snapshot
     }
 
+    if $master {
+        class { 'mariadb::heartbeat':
+            shard => $shard,
+        }
+    }
+
     unless $master {
         mariadb::monitor_replication { [ $shard ]:
             multisource => false,
@@ -254,6 +260,12 @@ class role::mariadb::misc::eventlogging(
 
     class { 'role::mariadb::grants':
         shard => $shard,
+    }
+
+    if $master {
+        class { 'mariadb::heartbeat':
+            shard => $shard,
+        }
     }
 }
 
@@ -382,6 +394,7 @@ class role::mariadb::analytics {
         contact_group => 'admins', # only show on nagios/irc
     }
 }
+
 class role::mariadb::analytics::custom_repl_slave {
 
     file { '/usr/local/bin/eventlogging_sync.sh':
