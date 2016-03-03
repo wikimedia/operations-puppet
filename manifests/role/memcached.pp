@@ -112,6 +112,9 @@ class role::memcached {
 
     $redis_ports = join($::redis::multidc::instances::instances, ' ')
 
+    # Firewall rules
+    include ::ferm::ipsec_allow
+
     ferm::service { 'redis_memcached_role':
         proto => 'tcp',
         port  => inline_template('(<%= @redis_ports %>)'),

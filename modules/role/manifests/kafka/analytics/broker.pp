@@ -113,17 +113,7 @@ class role::kafka::analytics::broker {
         srange => '$ALL_NETWORKS',
     }
 
-    #firewall allow ipsec esp
-    ferm::rule { 'kafka-ipsec-esp':
-        rule   => 'proto esp { saddr $ALL_NETWORKS ACCEPT; }'
-    }
-
-    #firewall allow ipsec ike udp 500
-    ferm::service { 'kafka-ipsec-ike':
-        proto  => 'udp',
-        port   => '500',
-        srange => '$ALL_NETWORKS',
-    }
+    include ::ferm::ipsec_allow
 
     # Historically there was only one kafka cluster in eqiad.
     # This cluster was named 'eqiad'.  For the metrics, let's display
