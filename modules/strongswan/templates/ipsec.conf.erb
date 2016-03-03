@@ -2,6 +2,9 @@
 def individual_node(node)
     result = []
     if @fqdn != node
+      # dead peer detection: need clear|restart on opposite sides of each
+      #  peering, so use hostname > hostname comparison for consistency
+      dpdaction = @fqdn > node ? "restart" : "clear"
       left_ipv4 = scope.function_ipresolve([@fqdn, 4])
       right_ipv4 = scope.function_ipresolve([node, 4])
       begin
@@ -17,6 +20,7 @@ def individual_node(node)
           result << "\tleftcert=#{@puppet_certname}.pem"
           result << "\tright=#{right_ipv4}"
           result << "\trightid=\"CN=#{node}\""
+          result << "\tdpdaction=#{dpdaction}"
           result << ""
       end
       if left_ipv6 != "" and right_ipv6 != ""
@@ -25,6 +29,7 @@ def individual_node(node)
           result << "\tleftcert=#{@puppet_certname}.pem"
           result << "\tright=#{right_ipv6}"
           result << "\trightid=\"CN=#{node}\""
+          result << "\tdpdaction=#{dpdaction}"
           result << ""
       end
     end
@@ -51,8 +56,6 @@ conn %default
 	mobike=no # no need for multi-home/roam, I don't think?
 	keyingtries=%forever # don't give up after serial keying failures
 	margintime=13m # default is 9m (double this value must be less than "lifetime", which is def 1h)
-	# dead peer detection: restart for tier two, clear for tier one (apparently both sides as "restart" breaks things)
-	dpdaction=<%= @site_tier == "one" ? "clear" : "restart" %>
 
 # Connections
 <% @hosts.each do |node| -%>
