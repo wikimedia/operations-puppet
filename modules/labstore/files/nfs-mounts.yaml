@@ -6,11 +6,6 @@ private:
     gid: 50088
     mounts:
       project: true
-  analytics:
-    gid: 50090
-    mounts:
-      project: true
-      statistics: true
   bots:
     gid: 50064
     mounts:
