@@ -47,3 +47,10 @@ elasticsearch::recover_after_nodes: 24
 debdeploy::grains:
   debdeploy-elastic-eqiad:
     value: standard
+
+elasticsearch::graylog_hosts:
+  - logstash1001.eqiad.wmnet
+  - logstash1002.eqiad.wmnet
+  - logstash1003.eqiad.wmnet
+
+base::puppet::dns_alt_names: 'search.svc.eqiad.wmnet'
