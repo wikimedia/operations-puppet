@@ -670,7 +670,6 @@ node /^db10(01)\.eqiad\.wmnet/ {
 node 'db1016.eqiad.wmnet' {
     class { 'role::mariadb::misc':
         shard  => 'm1',
-        master => true,
     }
 }
 
@@ -684,9 +683,10 @@ node /^db20(10|30)\.codfw\.wmnet/ {
 }
 
 ## m2 shard
-node /^db10(20)\.eqiad\.wmnet/ {
+node 'db1020.eqiad.wmnet' {
     class { 'role::mariadb::misc':
-        shard => 'm2',
+        shard  => 'm2',
+        master => true,
     }
 }
 
