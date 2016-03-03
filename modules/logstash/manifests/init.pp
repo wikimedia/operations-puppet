@@ -50,8 +50,14 @@ class logstash(
         require => Package['logstash'],
     }
 
+    file { '/lib/systemd/system/logstash.service':
+        content => template('logstash/logstash.service.erb'),
+        notify  => Service['logstash'],
+    }
+
     service { 'logstash':
         ensure     => running,
+        provider   => systemd,
         enable     => true,
         hasstatus  => true,
         hasrestart => true,

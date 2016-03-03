@@ -1,0 +1,19 @@
+[Unit]
+Description=Logstash
+Requires=elasticsearch.service
+
+[Install]
+WantedBy=multi-user.target
+
+[Service]
+User=logstash
+Group=logstash
+WorkingDirectory=/opt/logstash
+Restart=always
+Type=simple
+PIDFile=/var/run/logstash.pid
+LimitNOFILE=16384
+EnvironmentFile=/etc/default/logstash
+ExecStart=/opt/logstash/bin/logstash agent -f /etc/logstash/conf.d -l /var/log/logstash/logstash.log ${LS_OPTS}
+StandardOutput=journal
+StandardError=journal
