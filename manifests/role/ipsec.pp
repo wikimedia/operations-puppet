@@ -6,14 +6,7 @@ class role::ipsec ($hosts = undef) {
         $targets = $hosts
     } else {
         if $::hostname =~ /^cp/ {
-            # if $cluster == 'cache_text', $ipsec_cluster = 'cache::ipsec::text'
-            # This duplication of nodelist data in the ::ipsec:: case in
-            # hieradata is so that we can depool cache nodes in the primary
-            # hieradata lists without de-configuring the ipsec associations,
-            # which could cause a traffic-leaking race.  This will go away once
-            # etcd replaces hieradata comments for varnish-level depooling.
-
-            $ipsec_cluster = regsubst(hiera('cluster'), '_', '::ipsec::')
+            $ipsec_cluster = regsubst(hiera('cluster'), '_', '::')
             $cluster_nodes = hiera("${ipsec_cluster}::nodes")
             $kafka_nodes = hiera('cache::ipsec::kafka::nodes')
 
@@ -35,9 +28,9 @@ class role::ipsec ($hosts = undef) {
             }
         } elsif $::hostname =~ /^kafka10/ {
             # kafka brokers (only in eqiad for now) associate with all tier-two caches
-            $text    = hiera('cache::ipsec::text::nodes')
-            $misc    = hiera('cache::ipsec::misc::nodes')
-            $upload  = hiera('cache::ipsec::upload::nodes')
+            $text    = hiera('cache::text::nodes')
+            $misc    = hiera('cache::misc::nodes')
+            $upload  = hiera('cache::upload::nodes')
             $targets = array_concat(
                 $text['esams'], $text['ulsfo'], $text['codfw'],
                 $misc['esams'], $misc['ulsfo'], $misc['codfw'],
