@@ -496,6 +496,7 @@ class role::mariadb::core(
     $p_s           = 'off',
     $ssl           = 'on',
     $binlog_format = 'MIXED',
+    $master        = false,
     ) {
 
     system::role { 'role::mariadb::core':
@@ -534,6 +535,12 @@ class role::mariadb::core(
         multisource   => false,
         is_critical   => $replication_is_critical,
         contact_group => $contact_group,
+    }
+
+    if $master {
+        class { 'mariadb::heartbeat':
+            shard => $shard,
+        }
     }
 }
 
