@@ -20,7 +20,7 @@ define varnish::common::directors(
     # usual old trick
     $group = hiera('cluster', $::cluster)
 
-    $keyspaces_str = inline_template("<%= @directors.values.map{ |v| \"#{@conftool_namespace}/#{v['dc']}/#{@group}/#{v['service']\" }.join('|') %>")
+    $keyspaces_str = inline_template("<%= @directors.values.map{ |v| \"#{@conftool_namespace}/#{v['dc']}/#{@group}/#{v['service']}\" }.join('|') %>")
     $keyspaces = sort(unique(split($keyspaces_str, '\|')))
     confd::file { "/etc/varnish/directors.${instance}.vcl":
         ensure     => present,
