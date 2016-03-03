@@ -34,3 +34,5 @@ elasticsearch::bulk_thread_pool_executors: 6
 # Use only 1 merge thread (instead of 3) to avoid updates interfering with
 # actual searches
 elasticsearch::merge_threads: 1
+
+elasticsearch::https::ensure: present
