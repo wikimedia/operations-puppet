@@ -984,6 +984,10 @@ node 'eventlog1001.eqiad.wmnet', 'eventlog2001.codfw.wmnet' {
         logging::mediawiki::errors
 
     include standard
+
+    if $::hostname == 'eventlog1001' {
+        include base::firewall
+    }
 }
 
 # virtual machine for mailman list server
