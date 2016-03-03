@@ -23,11 +23,13 @@ class snapshot::dumps::configs(
                     pagesPerChunkHistory  => '311181,1142420,1627923,3122803',
                     pagesPerChunkAbstract => '1200000',
                     chunksForAbstract     => '4',
+                    checkpointTime        => '720',
                 },
                 eswiki => {
                     pagesPerChunkHistory  => '229078,854374,2324057,3860337',
                     pagesPerChunkAbstract => '1500000',
                     chunksForAbstract     => '4',
+                    checkpointTime        => '720',
                 },
                 dewiki => {
                     pagesPerChunkHistory  => '425449,1451596,3087456,4274631',
@@ -60,6 +62,7 @@ class snapshot::dumps::configs(
                     pagesPerChunkHistory  => '442893,1049883,1381705,2929437',
                     pagesPerChunkAbstract => '1200000',
                     chunksForAbstract     => '4',
+                    checkpointTime        => '720',
                 },
                 jawiki => {
                   pagesPerChunkHistory  => '168815,480631,943865,1760565',
@@ -75,6 +78,7 @@ class snapshot::dumps::configs(
                     pagesPerChunkHistory  => '2421529,4883997,8784997,8199134',
                     pagesPerChunkAbstract => '5800000',
                     chunksForAbstract     => '4',
+                    checkpointTime        => '720',
                 },
                 zhwiki => {
                     pagesPerChunkHistory  => '231819,564192,1300322,3112369',
