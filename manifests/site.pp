@@ -487,7 +487,17 @@ node /^db20(16|34|42|48|55|62|69|70)\.codfw\.wmnet/ {
 }
 
 # s2 (large wikis) core production slave dbs on eqiad
-node /^db10(18|21|24|36|54|60|63|67)\.eqiad\.wmnet/ {
+node 'db1018.eqiad.wmnet' {
+    class { 'role::mariadb::core':
+        shard         => 's2',
+        master        => true,
+        p_s           => 'on',
+        binlog_format => 'STATEMENT',
+    }
+    include base::firewall
+}
+
+node /^db10(21|24|36|54|60|63|67)\.eqiad\.wmnet/ {
     class { 'role::mariadb::core':
         shard => 's2',
         p_s   => 'on',
@@ -907,7 +917,17 @@ node /es201[123]\.codfw\.wmnet/ {
 # External Storage, Shard 2 (es2) databases
 
 ## eqiad servers
-node /^es101[135]\.eqiad\.wmnet/ {
+node 'es1015.eqiad.wmnet' {
+    class { 'role::mariadb::core':
+        shard         => 'es2',
+        master        => true,
+        p_s           => 'on',
+        binlog_format => 'ROW',
+    }
+    include base::firewall
+}
+
+node /^es101[13]\.eqiad\.wmnet/ {
     class { 'role::mariadb::core':
         shard         => 'es2',
         p_s           => 'on',
@@ -938,8 +958,18 @@ node /es201[456]\.codfw\.wmnet/ {
 
 # External Storage, Shard 3 (es3) databases
 
+node 'es1019.eqiad.wmnet' {
+    class { 'role::mariadb::core':
+        shard         => 'es3',
+        master        => true,
+        p_s           => 'on',
+        binlog_format => 'ROW',
+    }
+    include base::firewall
+}
+
 ## eqiad servers
-node /^es101[479]\.eqiad\.wmnet/ {
+node /^es101[47]\.eqiad\.wmnet/ {
     class { 'role::mariadb::core':
         shard         => 'es3',
         p_s           => 'on',
