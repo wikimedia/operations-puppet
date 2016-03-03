@@ -5,10 +5,6 @@
 # be produced to topics.
 #
 
-# TODO: page_edit will be deprecated in favor of revision_create.
-mediawiki.page_edit:
-  schema_name: page_edit
-
 mediawiki.page_delete:
   schema_name: page_delete
 
