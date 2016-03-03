@@ -164,7 +164,7 @@ class _WMFRewriteContext(WSGIContext):
         try:
             return self._handle_request(env, start_response)
         except UnicodeDecodeError as e:
-            self.logger.exception('Failed to decode request %r', e)
+            self.logger.exception('Failed to decode request %r', env)
             resp = webob.exc.HTTPBadRequest('Failed to decode request')
             return resp(env, start_response)
 
