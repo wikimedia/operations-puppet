@@ -13,6 +13,7 @@ elasticsearch::graylog_hosts: undef
 # Needed to keep from trying to join cirrussearch cluster
 elasticsearch::unicast_hosts:
   - deployment-logstash2.deployment-prep.eqiad.wmflabs
+elasticsearch::https::ensure: absent
 elasticsearch::auto_create_index: '+logstash-*,-*'
 
 # Logstash specific
