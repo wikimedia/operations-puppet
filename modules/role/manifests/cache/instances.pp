@@ -53,7 +53,14 @@ define role::cache::instances (
         },
     }
 
-    $our_backend_caches = hash_deselect_re("^cache_${::site}", $backend_caches)
+    # temporary hack for cache_maps, because it's not fully deployed T109162
+    if $title == 'maps' {
+        $becaches_filtered = hash_deselect_re('^cache_codfw', $backend_caches)
+    } else {
+        $becaches_filtered = $backend_caches
+    }
+
+    $our_backend_caches = hash_deselect_re("^cache_${::site}", $becaches_filtered)
     $be_directors = merge($app_directors, $our_backend_caches)
 
     varnish::instance { "${title}-backend":
