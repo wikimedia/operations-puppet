@@ -26,13 +26,7 @@ class phabricator::tools (
 
     file { '/etc/phabtools.conf':
         content => template('phabricator/phabtools.conf.erb'),
-        require => Git::Install['phabricator/tools'],
-    }
-
-    git::install { 'phabricator/tools':
-        directory => $directory,
-        git_tag   => 'HEAD',
-        lock_file => '/srv/phab/tools.lock',
+        require => Package[$deploy_target],
     }
 
     if ($dump) {
