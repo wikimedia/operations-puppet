@@ -188,7 +188,8 @@ class role::phabricator::main {
         script_name  => 'project_changes.sh',
         rcpt_address => [ 'aklapper@wikimedia.org', 'krenair@gmail.com' ],
         sndr_address => 'aklapper@wikimedia.org',
-        monthday     => [1, 8, 15, 22, 29],
+        monthday     => '*',
+        weekday      => 1, # Monday
         require      => Package[$deploy_target],
     }
 }
