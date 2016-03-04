@@ -16,6 +16,18 @@ class role::labs::novaproxy(
         srange => "@resolve((${proxy_nodes}))",
     }
 
+    ferm::service{ 'http':
+        proto => 'tcp',
+        port  => '80',
+        desc  => 'HTTP webserver for the entire world',
+    }
+
+    ferm::service{ 'https':
+        proto => 'tcp',
+        port  => '443',
+        desc  => 'HTTPS webserver for the entire world',
+    }
+
     if $::hostname != $active_proxy {
         $redis_replication = {
             "${::hostname}" => $active_proxy
