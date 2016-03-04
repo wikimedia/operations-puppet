@@ -41,37 +41,46 @@ cache::maps::nodes:
       - '127.0.0.1'
 cache::text::apps:
   appservers:
+    route: eqiad
     backends:
       eqiad:
         - '10.68.17.170' # deployment-mediawiki01
         - '10.68.16.127' # deployment-mediawiki02
   api:
+    route: eqiad
     backends:
       eqiad:
         - '10.68.17.170' # deployment-mediawiki01
         - '10.68.16.127' # deployment-mediawiki02
   rendering:
+    route: eqiad
     backends:
       eqiad:
         - '10.68.17.170' # deployment-mediawiki01
         - '10.68.16.127' # deployment-mediawiki02
   security_audit:
+    route: eqiad
     backends:
       eqiad: '10.68.17.55' # deployment-mediawiki03
   appservers_debug:
+    route: eqiad
     backends:
       eqiad: '10.68.17.170' # deployment-mediawiki01
   cxserver:
+    route: eqiad
     backends:
       eqiad: 'cxserver-beta.wmflabs.org'
   citoid:
+    route: eqiad
     backends:
       eqiad: 'citoid.wmflabs.org'
   restbase:
+    route: eqiad
     backends:
       eqiad: 'deployment-restbase01.eqiad.wmflabs'
 cache::upload::apps:
   swift:
+    route: eqiad
     backends:
       # ms emulator set in July 2013. Beta does not have Swift yet.
       # instance is an unpuppetized hack with nginx proxy.
