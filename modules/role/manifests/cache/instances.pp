@@ -8,8 +8,8 @@ define role::cache::instances (
     $be_vcl_config,
     $fe_extra_vcl,
     $be_extra_vcl,
-    $fe_def_beopts,
-    $be_def_beopts,
+    $fe_cache_be_opts,
+    $be_cache_be_opts,
     $be_storage,
     $cluster_nodes
 ) {
@@ -32,6 +32,7 @@ define role::cache::instances (
             'dc'       => 'eqiad',
             'service'  => 'varnish-be',
             'backends' => $cluster_nodes['eqiad'],
+            'be_opts'  => $be_cache_be_opts,
         },
         'cache_eqiad_random' => {
             'dynamic'  => 'yes',
@@ -39,6 +40,7 @@ define role::cache::instances (
             'dc'       => 'eqiad',
             'service'  => 'varnish-be-rand',
             'backends' => $cluster_nodes['eqiad'],
+            'be_opts'  => $be_cache_be_opts,
         },
         'cache_codfw' => {
             'dynamic'  => 'yes',
@@ -46,6 +48,7 @@ define role::cache::instances (
             'dc'       => 'codfw',
             'service'  => 'varnish-be',
             'backends' => $cluster_nodes['codfw'],
+            'be_opts'  => $be_cache_be_opts,
         },
         'cache_codfw_random' => {
             'dynamic'  => 'yes',
@@ -53,6 +56,7 @@ define role::cache::instances (
             'dc'       => 'codfw',
             'service'  => 'varnish-be-rand',
             'backends' => $cluster_nodes['codfw'],
+            'be_opts'  => $be_cache_be_opts,
         },
     }
 
@@ -77,15 +81,6 @@ define role::cache::instances (
         storage            => $be_storage,
         vcl_config         => $be_vcl_config,
         directors          => $be_directors,
-        backend_options    => array_concat(
-            $app_be_opts,
-            {
-                'backend_match' => '^cp[0-9]+\.',
-                'port'          => 3128,
-                'probe'         => 'varnish',
-            },
-            $be_def_beopts
-        ),
     }
 
     varnish::instance { "${title}-frontend":
@@ -104,6 +99,7 @@ define role::cache::instances (
                 'dc'       => $::site,
                 'service'  => 'varnish-be',
                 'backends' => $cluster_nodes[$::site],
+                'be_opts'  => $fe_cache_be_opts,
             },
             'cache_local_random' => {
                 'dynamic'  => 'yes',
@@ -111,9 +107,9 @@ define role::cache::instances (
                 'dc'       => $::site,
                 'service'  => 'varnish-be-rand',
                 'backends' => $cluster_nodes[$::site],
+                'be_opts'  => $fe_cache_be_opts,
             },
         },
         vcl_config         => $fe_vcl_config,
-        backend_options    => $fe_def_beopts,
     }
 }
