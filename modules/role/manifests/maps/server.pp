@@ -71,6 +71,27 @@ class role::maps::server {
         port   => '9160',
         srange => "(${cassandra_hosts_ferm})",
     }
+
+    # Kartotherian
+    ferm::service { 'kartotherian':
+        proto   => 'tcp',
+        port    => '6533',
+        srange  => '$INTERNAL',
+    }
+
+    # Tilerator
+    ferm::service { 'tilerator':
+        proto   => 'tcp',
+        port    => '6534',
+        srange  => '$INTERNAL',
+    }
+
+    # TileratorUI
+    ferm::service { 'tilerator':
+        proto   => 'tcp',
+        port    => '6535',
+        srange  => '$INTERNAL',
+    }
 }
 
 # Sets up a maps server master
