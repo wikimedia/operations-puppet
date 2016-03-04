@@ -50,6 +50,11 @@ class role::dataset::primary {
         dest   => 'stat1002.eqiad.wmnet::srv/log/webrequest/archive/dumps.wikimedia.org/',
     }
 
+    class { '::dataset::cron::wikitech_dumps':
+        enable => true,
+        url    => 'https://wikitech.wikimedia.org/dumps/',
+    }
+
     # This will make these files available at
     # http://dumps.wikimedia.org/other/pageviews/
     #
