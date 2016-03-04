@@ -11,7 +11,7 @@ if [ "`whoami`" = "gitpuppet" ]; then
 	#  on worker and ignore our command.
 		<%- @workers.each do |workerhash| -%>
 		<%- if workerhash['worker'] == @fqdn then next end -%>
-	ssh -t -t <%= workerhash['worker'] -%> 'cd /var/lib/git/operations/puppet && git fetch --verbose --update-head-ok && git reset --hard origin/production'
+	ssh -t -t <%= workerhash['worker'] -%> 'cd /var/lib/git/operations/puppet && git fetch --verbose --update-head-ok && git reset --hard origin/production' 2>&1 | tee -a /var/log/puppet-post-merge.log
 		<%- end -%>
 	<%- end -%>
 fi
