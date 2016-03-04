@@ -162,15 +162,7 @@ class dynamicproxy (
 
         nginx::site { 'proxymanager':
             content => template('dynamicproxy/proxymanager.conf.erb'),
-            require => [Ferm::Service['proxymanager'],
-                        File['/etc/nginx/lua/list-proxy-entries.lua']],
-        }
-
-        ferm::service { 'proxymanager':
-            proto  => 'tcp',
-            port   => '8081',
-            desc   => 'Proxymanager service for Labs instances',
-            srange => '$INTERNAL',
+            require => File['/etc/nginx/lua/list-proxy-entries.lua']],
         }
     }
 
@@ -189,18 +181,6 @@ class dynamicproxy (
 
     # Also monitor local redis
     include ::redis::client::python
-
-    ferm::service{ 'http':
-        proto => 'tcp',
-        port  => '80',
-        desc  => 'HTTP webserver for the entire world',
-    }
-
-    ferm::service{ 'https':
-        proto => 'tcp',
-        port  => '443',
-        desc  => 'HTTPS webserver for the entire world',
-    }
 
     $graphite_metric_prefix = "${::labsproject}.${::hostname}.reqstats"
 
