@@ -1,7 +1,6 @@
 define varnish::instance(
     $layer,
     $vcl_config,
-    $backend_options,
     $ports,
     $admin_port,
     $name='',
@@ -25,13 +24,7 @@ define varnish::instance(
         $extraopts = "-n ${name}"
     }
 
-    # Initialize variables for templates
-    $backends_str = inline_template("<%= @directors.map{|k,v|  v['backends'] }.flatten.join('|') %>")
-    $varnish_backends = sort(unique(split($backends_str, '\|')))
-
     $varnish_directors = $directors
-    $varnish_backend_options = $backend_options
-    # $cluster_option is referenced directly
     $dynamic_directors = hiera('varnish::dynamic_directors', true)
 
     # Install VCL include files shared by all instances
