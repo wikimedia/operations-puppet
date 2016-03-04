@@ -78,7 +78,6 @@ define role::cache::instances (
         vcl_config         => $be_vcl_config,
         directors          => $be_directors,
         backend_options    => array_concat(
-            $::role::cache::2layer::backend_scaled_weights,
             $app_be_opts,
             {
                 'backend_match' => '^cp[0-9]+\.',
@@ -115,9 +114,6 @@ define role::cache::instances (
             },
         },
         vcl_config         => $fe_vcl_config,
-        backend_options    => array_concat(
-            $::role::cache::2layer::backend_scaled_weights,
-            $fe_def_beopts
-        ),
+        backend_options    => $fe_def_beopts,
     }
 }

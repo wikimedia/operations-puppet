@@ -41,16 +41,6 @@ class role::cache::2layer(
         default                 => 6,   # 6 is the bare min, for e.g. virtuals
     }
 
-    # This scales backend weights proportional to node storage size,
-    # with the default value of 100 corresponding to the most
-    # common/current case of 360G storage size on Intel S3700's.
-    $backend_scaled_weights = [
-        { backend_match => '^cp10(08|4[34])\.',      weight => 32  },
-        { backend_match => '^cp30(0[3-9]|1[0-4])\.', weight => 128 },
-        { backend_match => '^cp301[5-8]\.',          weight => 63  },
-        { backend_match => '.',                      weight => 100 },
-    ]
-
     $filesystems = unique($storage_parts)
     varnish::setup_filesystem { $filesystems: }
     Varnish::Setup_filesystem <| |> -> Varnish::Instance <| |>
