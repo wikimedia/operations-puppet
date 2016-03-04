@@ -17,18 +17,7 @@ class role::cache::maps {
         realserver_ips => $lvs::configuration::service_ips['maps'][$::site],
     }
 
-    $app_directors = {
-        'kartotherian'   => {
-            'dynamic'  => 'no',
-            'type'     => 'random',
-            # XXX note explicit abnormal hack: service only exists in codfw, but eqiad is Tier-1 in general
-            # XXX this means traffic is moving x-dc without crypto!
-            # XXX this also means users mapped to codfw frontends bounce traffic [codfw->eqiad->codfw] on their way in!
-            'backends' => $role::cache::configuration::backends[$::realm]['kartotherian']['codfw'],
-        },
-    }
-
-    $fe_def_beopts = {
+    $fe_cache_be_opts = {
         'port'                  => 3128,
         'connect_timeout'       => '5s',
         'first_byte_timeout'    => '35s',
@@ -37,12 +26,31 @@ class role::cache::maps {
         'probe'                 => 'varnish',
     }
 
-    $be_def_beopts = {
-        'port'                  => 6533,
+    $be_cache_be_opts = {
+        'port'                  => 3128,
         'connect_timeout'       => '5s',
         'first_byte_timeout'    => '35s',
         'between_bytes_timeout' => '4s',
         'max_connections'       => 1000,
+        'probe'                 => 'varnish',
+    }
+
+    $app_directors = {
+        'kartotherian'   => {
+            'dynamic'  => 'no',
+            'type'     => 'random',
+            # XXX note explicit abnormal hack: service only exists in codfw, but eqiad is Tier-1 in general
+            # XXX this means traffic is moving x-dc without crypto!
+            # XXX this also means users mapped to codfw frontends bounce traffic [codfw->eqiad->codfw] on their way in!
+            'backends' => $role::cache::configuration::backends[$::realm]['kartotherian']['codfw'],
+            'be_opts' => {
+                'port'                  => 6533,
+                'connect_timeout'       => '5s',
+                'first_byte_timeout'    => '35s',
+                'between_bytes_timeout' => '4s',
+                'max_connections'       => 1000,
+            },
+        },
     }
 
     $common_vcl_config = {
@@ -60,18 +68,18 @@ class role::cache::maps {
     })
 
     role::cache::instances { 'maps':
-        fe_mem_gb      => 12,
-        runtime_params => ['default_ttl=86400'],
-        app_directors  => $app_directors,
-        app_be_opts    => [],
-        fe_vcl_config  => $fe_vcl_config,
-        be_vcl_config  => $be_vcl_config,
-        fe_extra_vcl   => [],
-        be_extra_vcl   => [],
-        be_storage     => $::role::cache::2layer::persistent_storage_args,
-        fe_def_beopts  => $fe_def_beopts,
-        be_def_beopts  => $be_def_beopts,
-        cluster_nodes  => hiera('cache::maps::nodes'),
+        fe_mem_gb        => 12,
+        runtime_params   => ['default_ttl=86400'],
+        app_directors    => $app_directors,
+        app_be_opts      => [],
+        fe_vcl_config    => $fe_vcl_config,
+        be_vcl_config    => $be_vcl_config,
+        fe_extra_vcl     => [],
+        be_extra_vcl     => [],
+        be_storage       => $::role::cache::2layer::persistent_storage_args,
+        fe_cache_be_opts => $fe_cache_be_opts,
+        be_cache_be_opts => $be_cache_be_opts,
+        cluster_nodes    => hiera('cache::maps::nodes'),
     }
 
     # Install a varnishkafka producer to send
