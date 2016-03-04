@@ -40,6 +40,12 @@ class reportupdater(
         mode   => '0775',
     }
 
+    # Add logrotate for $log_path/*.log.
+    logrotate::conf { 'reportupdater':
+        content  => template('reportupdater/logrotate.erb')
+        reuquire => File[$log_path],
+    }
+
     # Ensure reportupdater is cloned and latest version.
     git::clone { 'analytics/reportupdater':
         ensure    => 'latest',
