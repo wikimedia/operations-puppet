@@ -141,7 +141,6 @@ director <%= director_name %> <%= director['type'] %> {
 -%>
 	{
 		.backend = <%= name %>;
-		.weight = <%= backend_option(backend, "weight", 10) %>;
 	}
 <% 	end -%>
 }
