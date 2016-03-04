@@ -35,11 +35,12 @@ class role::cache::upload {
         'probe'                 => 'varnish',
     }
 
+    $apps = hiera('cache::upload::apps')
     $app_directors = {
         'swift'   => {
             'dynamic'  => 'no',
             'type'     => 'random',
-            'backends' => $role::cache::configuration::backends[$::realm]['swift'][$::mw_primary],
+            'backends' => $apps['swift']['backends'][$::mw_primary],
             'be_opts'  => {
                 'port'                  => 80,
                 'connect_timeout'       => '5s',
