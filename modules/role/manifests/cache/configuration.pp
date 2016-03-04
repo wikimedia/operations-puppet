@@ -16,9 +16,6 @@ class role::cache::configuration {
             'appservers_debug' => {
                 'eqiad' => ['appservers-debug.svc.eqiad.wmnet'],
             },
-            'parsoid' => {
-                'eqiad' => ['parsoid.svc.eqiad.wmnet'],
-            },
             'cxserver' => {
                 'eqiad' => ['cxserver.svc.eqiad.wmnet'],
             },
@@ -61,9 +58,6 @@ class role::cache::configuration {
             },
             'appservers_debug' => {
                 'eqiad' => [ '10.68.17.170' ],  # deployment-mediawiki01
-            },
-            'parsoid' => {
-                'eqiad' => [ '10.68.16.120' ],  # deployment-parsoid05
             },
             'cxserver' => {
                 'eqiad' => ['cxserver-beta.wmflabs.org'],
