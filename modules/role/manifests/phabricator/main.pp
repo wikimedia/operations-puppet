@@ -161,6 +161,11 @@ class role::phabricator::main {
         rule => 'saddr (0.0.0.0/0 ::/0) daddr (10.64.32.186/32 208.80.154.250/32 2620:0:861:103:10:64:32:186/128 2620:0:861:ed1a::3:16/128) proto tcp dport (22) ACCEPT;',
     }
 
+    # Allow SSH from deployment hosts
+    ferm::rule { 'deployment-ssh':
+        rule   => 'proto tcp dport ssh saddr $DEPLOYMENT_HOSTS ACCEPT;',
+    }
+
     # redirect bugzilla URL patterns to phabricator
     # handles translation of bug numbers to maniphest task ids
     phabricator::redirector { "redirector.${domain}":
