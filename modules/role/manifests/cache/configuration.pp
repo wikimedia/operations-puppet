@@ -24,6 +24,7 @@ class role::cache::configuration {
             },
             'restbase' => {
                 'eqiad' => ['restbase.svc.eqiad.wmnet'],
+                'codfw' => ['restbase.svc.codfw.wmnet'],
             },
             'swift' => {
                 'eqiad' => ['ms-fe.svc.eqiad.wmnet'],
