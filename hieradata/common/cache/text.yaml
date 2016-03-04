@@ -41,3 +41,32 @@ nodes:
     - 'cp4016.ulsfo.wmnet'
     - 'cp4017.ulsfo.wmnet'
     - 'cp4018.ulsfo.wmnet'
+apps:
+  appservers:
+    backends:
+      eqiad: 'appservers.svc.eqiad.wmnet'
+      codfw: 'appservers.svc.codfw.wmnet'
+  appservers_debug:
+    backends:
+      eqiad: 'appservers-debug.svc.eqiad.wmnet'
+  api:
+    backends:
+      eqiad: 'api.svc.eqiad.wmnet'
+      codfw: 'api.svc.codfw.wmnet'
+  rendering:
+    backends:
+      eqiad: 'rendering.svc.eqiad.wmnet'
+      codfw: 'rendering.svc.codfw.wmnet'
+  restbase:
+    backends:
+      eqiad: 'restbase.svc.eqiad.wmnet'
+      codfw: 'restbase.svc.codfw.wmnet'
+  cxserver:
+    backends:
+      eqiad: 'cxserver.svc.eqiad.wmnet'
+  citoid:
+    backends:
+      eqiad: 'citoid.svc.eqiad.wmnet'
+  security_audit:
+    backends:
+      eqiad: []
