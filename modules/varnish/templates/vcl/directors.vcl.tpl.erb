@@ -18,7 +18,7 @@ if director['dynamic'] == 'yes' -%>
 director <%= director_name %> <%= director['type'] %> {
 <%- keyspace = "#{@conftool_namespace}/#{director['dc']}/#{@group}/#{director['service']}" -%>
 	<%- if director['type'] == 'chash' %>
-	.retries = <%= chash_def_retries(99, director['backends'].size) %>;
+	.retries = <%= chash_def_retries(99, [*director['backends']].size) %>;
 	<% end -%>
 	{{range $node := ls "<%= keyspace %>/"}}{{ $key := printf "<%= keyspace %>/%s" $node }}{{ $data := json (getv $key) }}{{ if eq $data.pooled "yes"}}
 	{
