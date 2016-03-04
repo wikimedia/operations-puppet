@@ -2561,6 +2561,8 @@ host iridium {
 host iron {
     hardware ethernet 78:2b:cb:09:0d:5c;
     fixed-address iron.wikimedia.org;
+    option pxelinux.pathprefix "jessie-installer/";
+    filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host kafka1001 {
