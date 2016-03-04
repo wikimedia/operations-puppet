@@ -17,15 +17,7 @@ class role::cache::upload {
         realserver_ips => $lvs::configuration::service_ips['upload'][$::site],
     }
 
-    $app_directors = {
-        'swift'   => {
-            'dynamic'  => 'no',
-            'type'     => 'random',
-            'backends' => $role::cache::configuration::backends[$::realm]['swift'][$::mw_primary],
-        },
-    }
-
-    $fe_def_beopts = {
+    $fe_cache_be_opts = {
         'port'                  => 3128,
         'connect_timeout'       => '5s',
         'first_byte_timeout'    => '35s',
@@ -34,12 +26,28 @@ class role::cache::upload {
         'probe'                 => 'varnish',
     }
 
-    $be_def_beopts = {
-        'port'                  => 80,
+    $be_cache_be_opts = {
+        'port'                  => 3128,
         'connect_timeout'       => '5s',
         'first_byte_timeout'    => '35s',
         'between_bytes_timeout' => '4s',
         'max_connections'       => 1000,
+        'probe'                 => 'varnish',
+    }
+
+    $app_directors = {
+        'swift'   => {
+            'dynamic'  => 'no',
+            'type'     => 'random',
+            'backends' => $role::cache::configuration::backends[$::realm]['swift'][$::mw_primary],
+            'be_opts'  => {
+                'port'                  => 80,
+                'connect_timeout'       => '5s',
+                'first_byte_timeout'    => '35s',
+                'between_bytes_timeout' => '4s',
+                'max_connections'       => 1000,
+            }
+        },
     }
 
     $common_vcl_config = {
@@ -78,18 +86,18 @@ class role::cache::upload {
     ], ' ')
 
     role::cache::instances { 'upload':
-        fe_mem_gb      => ceiling(0.08333 * $::memorysize_mb / 1024.0),
-        runtime_params => ['default_ttl=2592000'],
-        app_directors  => $app_directors,
-        app_be_opts    => [],
-        fe_vcl_config  => $fe_vcl_config,
-        be_vcl_config  => $be_vcl_config,
-        fe_extra_vcl   => ['upload-common'],
-        be_extra_vcl   => ['upload-common'],
-        be_storage     => $upload_storage_args,
-        fe_def_beopts  => $fe_def_beopts,
-        be_def_beopts  => $be_def_beopts,
-        cluster_nodes  => hiera('cache::upload::nodes'),
+        fe_mem_gb        => ceiling(0.08333 * $::memorysize_mb / 1024.0),
+        runtime_params   => ['default_ttl=2592000'],
+        app_directors    => $app_directors,
+        app_be_opts      => [],
+        fe_vcl_config    => $fe_vcl_config,
+        be_vcl_config    => $be_vcl_config,
+        fe_extra_vcl     => ['upload-common'],
+        be_extra_vcl     => ['upload-common'],
+        be_storage       => $upload_storage_args,
+        fe_cache_be_opts => $fe_cache_be_opts,
+        be_cache_be_opts => $be_cache_be_opts,
+        cluster_nodes    => hiera('cache::upload::nodes'),
     }
 
     # Install a varnishkafka producer to send
