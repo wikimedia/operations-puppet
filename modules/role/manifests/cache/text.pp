@@ -45,53 +45,54 @@ class role::cache::text {
         'max_connections'       => 1000,
     }
 
+    $apps = hiera('cache::text::apps')
     $app_directors = {
         'appservers'       => {
             'dynamic'  => 'no',
             'type'     => 'random',
-            'backends' => $role::cache::configuration::backends[$::realm]['appservers'][$::mw_primary],
+            'backends' => $apps['appservers']['backends'][$::mw_primary],
             'be_opts'  => $app_def_be_opts,
         },
         'api'              => {
             'dynamic'  => 'no',
             'type'     => 'random',
-            'backends' => $role::cache::configuration::backends[$::realm]['api'][$::mw_primary],
+            'backends' => $apps['api']['backends'][$::mw_primary],
             'be_opts'  => $app_def_be_opts,
         },
         'rendering'        => {
             'dynamic'  => 'no',
             'type'     => 'random',
-            'backends' => $role::cache::configuration::backends[$::realm]['rendering'][$::mw_primary],
+            'backends' => $apps['rendering']['backends'][$::mw_primary],
             'be_opts'  => $app_def_be_opts,
         },
         'security_audit'   => {
             'dynamic'  => 'no',
             'type'     => 'random',
-            'backends' => $role::cache::configuration::backends[$::realm]['security_audit'][$::mw_primary],
+            'backends' => $apps['security_audit']['backends'][$::mw_primary],
             'be_opts'  => $app_def_be_opts,
         },
         'appservers_debug'   => {
             'dynamic'  => 'no',
             'type'     => 'random',
-            'backends' => $role::cache::configuration::backends[$::realm]['appservers_debug'][$::mw_primary],
+            'backends' => $apps['appservers_debug']['backends'][$::mw_primary],
             'be_opts'  => merge($app_def_be_opts, { 'max_connections' => 20 }),
         },
         'restbase_backend' => {
             'dynamic'  => 'no',
             'type'     => 'random',
-            'backends' => $role::cache::configuration::backends[$::realm]['restbase'][$::mw_primary],
+            'backends' => $apps['restbase']['backends'][$::mw_primary],
             'be_opts'  => merge($app_def_be_opts, { 'port' => 7231, 'max_connections' => 5000 }),
         },
         'cxserver_backend' => { # LEGACY: should be removed eventually
             'dynamic'  => 'no',
             'type'     => 'random',
-            'backends' => $::role::cache::configuration::backends[$::realm]['cxserver'][$::mw_primary],
+            'backends' => $apps['cxserver']['backends'][$::mw_primary],
             'be_opts'  => merge($app_def_be_opts, { 'port' => 8080 }),
         },
         'citoid_backend'   => { # LEGACY: should be removed eventually
             'dynamic'  => 'no',
             'type'     => 'random',
-            'backends' => $::role::cache::configuration::backends[$::realm]['citoid'][$::mw_primary],
+            'backends' => $apps['citoid']['backends'][$::mw_primary],
             'be_opts'  => merge($app_def_be_opts, { 'port' => 1970 }),
         },
     }
