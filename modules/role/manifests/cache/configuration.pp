@@ -1,6 +1,4 @@
 class role::cache::configuration {
-    include lvs::configuration
-
     $backends = {
         'production' => {
             'appservers'        => {
