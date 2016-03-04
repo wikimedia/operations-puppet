@@ -65,7 +65,8 @@ define reportupdater::job(
 
     cron { "reportupdater_${repository}-${title}":
         command => "python ${::reportupdater::path}/update_reports.py ${query_path} ${output_path} >> ${log_file} 2>&1",
-        user    => $user,
+        user    => $::reportupdater::user,
         minute  => 0,
+        require => Git::Clone[$repository_name],
     }
 }
