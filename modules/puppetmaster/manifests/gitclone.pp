@@ -49,6 +49,12 @@ class puppetmaster::gitclone {
             owner   => 'root',
             group   => 'puppet',
             mode    => '0750';
+        '/var/log/puppet-post-merge.log':
+            ensure  => file,
+            replace => false,
+            owner   => 'gitpuppet',
+            group   => 'gitpuppet',
+            mode    => '0640';
     }
 
     if ! $is_labs_puppet_master {
