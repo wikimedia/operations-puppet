@@ -40,7 +40,7 @@ class role::cache::upload {
         'swift'   => {
             'dynamic'  => 'no',
             'type'     => 'random',
-            'backends' => $apps['swift']['backends'][$::mw_primary],
+            'backends' => $apps['swift']['backends'][$apps['swift']['route']],
             'be_opts'  => {
                 'port'                  => 80,
                 'connect_timeout'       => '5s',

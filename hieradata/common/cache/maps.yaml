@@ -4,5 +4,6 @@ nodes:
     - 'cp1044.eqiad.wmnet'
 apps:
   kartotherian:
+    route: 'codfw'
     backends:
       codfw: 'kartotherian.svc.codfw.wmnet'
