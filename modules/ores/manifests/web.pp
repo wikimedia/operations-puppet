@@ -6,7 +6,7 @@ class ores::web(
     require ores::base
 
     # ORES is a python3 application \o/
-    require_package('uwsgi-plugin-python3')
+    ensure_package('uwsgi-plugin-python3')
 
     uwsgi::app { 'ores-web':
         settings => {
