@@ -83,7 +83,7 @@ probe wdqs {
 #         'type'     => 'chash', # required
 #         'dc'       => 'eqiad', # required if dynamic==yes
 #         'service'  => 'foo',   # required if dynamic==yes
-#         'backends' => [ "backend1", "backend2" ], # required
+#         'backends' => [ "backend1", "backend2" ], # required: array or single value
 #         'be_opts'  => { # every option but 'probe' is required!
 #             'port' = 80,
 #             'connect_timeout' = '2s',
@@ -99,7 +99,7 @@ probe wdqs {
 @varnish_directors.keys.sort.each do |director_name|
 	director = @varnish_directors[director_name]
 	be_opts	= director['be_opts']
-	director['backends'].each do |backend|
+	[*director['backends']].each do |backend|
 		name = /^[0-9\.]+$/.match(backend) ? "ipv4_" + backend.gsub(".", "_") : "be_" + backend.split(".")[0].gsub("-", "_")
 		probe_str = be_opts.key?('probe') ? ".probe = " + be_opts['probe'] + ";" : "";
 -%>
@@ -126,7 +126,7 @@ include "directors.<%= @inst %>.vcl";
 <% @varnish_directors.keys.sort.each do |director_name|
 director = @varnish_directors[director_name]
 if (!@dynamic_directors or director['dynamic'] != 'yes')
-	backends = director['backends']
+	backends = [*director['backends']]
 	if (!backends.empty?)
 -%>
 director <%= director_name %> <%= director['type'] %> {
