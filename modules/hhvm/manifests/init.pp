@@ -101,7 +101,7 @@ class hhvm(
 
         # HHVM specific
         hhvm         => {
-            dynamic_extension_path   => '/usr/lib/x86_64-linux-gnu/hhvm/extensions/current',
+            dynamic_extension_path   => '/usr/lib/x86_64-linux-gnu/hhvm/extensions/20150212',
             dynamic_extensions       => [ 'luasandbox.so', 'tidy.so', 'wikidiff2.so' ],
             enable_obj_destruct_call => true,
             enable_zend_compat       => true,
