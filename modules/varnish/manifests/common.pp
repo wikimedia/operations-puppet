@@ -43,10 +43,29 @@ class varnish::common {
         force   => true,
     }
 
-    file { '/usr/local/lib/python2.7/dist-packages/varnishlog.py':
-        source => 'puppet:///modules/varnish/varnishlog.py',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0444',
+    if (hiera('varnish_version4', false)) {
+        # varnishlog4.py depends on varnishapi. Install it.
+        file { '/usr/local/lib/python2.7/dist-packages/varnishapi.py':
+            source => 'puppet:///modules/varnish/varnishapi.py',
+            owner  => 'root',
+            group  => 'root',
+            mode   => '0444',
+        }
+
+        # Install varnishlog4.py, compatible with Varnish 4
+        file { '/usr/local/lib/python2.7/dist-packages/varnishlog.py':
+            source  => 'puppet:///modules/varnish/varnishlog4.py',
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0444',
+            require => File['/usr/local/lib/python2.7/dist-packages/varnishapi.py'],
+        }
+    } else {
+        file { '/usr/local/lib/python2.7/dist-packages/varnishlog.py':
+            source  => 'puppet:///modules/varnish/varnishlog.py',
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0444',
+        }
     }
 }
