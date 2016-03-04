@@ -1,9 +1,9 @@
 # https://annual.wikimedia.org/
 # microsite for the WMF annual report
 # http://wikimediafoundation.org/wiki/Annual_Report
-class role::annualreport {
+class role::microsites::annualreport {
 
-    system::role { 'role::annualreport': description => 'WMF Annual report server - annual.wikimedia.org' }
+    system::role { 'role::microsites::annualreport': description => 'WMF Annual report server - annual.wikimedia.org' }
 
     include ::annualreport
     include base::firewall
