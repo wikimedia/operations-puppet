@@ -5,11 +5,27 @@
 def usage(error='')
   msg = <<-end
 hiera_lookup: hiera lookup tool
-Usage: hiera_lookup --fqdn=FQDN [--site=SITE] [--roles=ROLE1,ROLE2] KEY
 
-If site is not provided, it will be derived from the FQDN whenever possible
+Usage:
+     hiera_lookup [OPTIONS] KEY
 
-Example: hiera_lookup --fqdn=mw1020.eqiad.wmnet --roles=mediawiki::appserver admin::groups
+Mandatory arguments:
+
+  --fqdn=<FQDN>  Fully Qualified Domain Name
+  KEY            Key to lookup in hiera
+
+Optional arguments:
+
+  -v                          Verbose mode
+  --site=<SITE>               Wikimedia site (ex: eqiad)
+  --roles=<ROLE>[,<ROLE>]...  Puppet role(s) class(es)
+  -h, --help                  Display this help and exit
+
+If SITE is not provided, it will be derived from the FQDN whenever possible.
+
+Example:
+  hiera_lookup --fqdn=mw1020.eqiad.wmnet --roles=mediawiki::appserver admin::groups
+
 end
     msg << error
 end
