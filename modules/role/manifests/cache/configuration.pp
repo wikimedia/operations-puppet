@@ -1,8 +1,6 @@
 class role::cache::configuration {
     include lvs::configuration
 
-    $has_ganglia = $::standard::has_ganglia
-
     $backends = {
         'production' => {
             'appservers'        => {
