@@ -1,4 +1,5 @@
-class role::peopleweb {
+# let users publish their own HTML in their home dirs
+class role::microsites::peopleweb {
 
     include standard
 
@@ -18,25 +19,5 @@ class role::peopleweb {
     }
 
     backup::set {'home': }
-}
-
-class role::peopleweb::migration {
-
-    $sourceip='10.64.32.13'
-
-    ferm::service { 'peopleweb-migration-rysnc':
-        proto  => 'tcp',
-        port   => '873',
-        srange => "${sourceip}/32",
-    }
-
-    include rsync::server
-
-    rsync::server::module { 'people-homes':
-        path        => '/home',
-        read_only   => 'no',
-        hosts_allow => $sourceip,
-    }
-
 }
 
