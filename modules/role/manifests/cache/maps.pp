@@ -40,10 +40,7 @@ class role::cache::maps {
         'kartotherian'   => {
             'dynamic'  => 'no',
             'type'     => 'random',
-            # XXX note explicit abnormal hack: service only exists in codfw, but eqiad is Tier-1 in general
-            # XXX this means traffic is moving x-dc without crypto!
-            # XXX this also means users mapped to codfw frontends bounce traffic [codfw->eqiad->codfw] on their way in!
-            'backends' => $apps['kartotherian']['backends']['codfw'],
+            'backends' => $apps['kartotherian']['backends'][$apps['kartotherian']['route']],
             'be_opts' => {
                 'port'                  => 6533,
                 'connect_timeout'       => '5s',
