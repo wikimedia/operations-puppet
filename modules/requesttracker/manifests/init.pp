@@ -19,7 +19,7 @@ class requesttracker (
     include requesttracker::packages
     include requesttracker::config
     include requesttracker::forms
-    include requesttracker::plugins
+    # include requesttracker::plugins
     include requesttracker::aliases
 
     class { 'requesttracker::apache':
