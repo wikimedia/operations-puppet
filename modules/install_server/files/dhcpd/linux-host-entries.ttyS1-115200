@@ -267,6 +267,8 @@ host bast1001 {
 host bast2001 {
     hardware ethernet 90:B1:1C:00:9D:EB;
     fixed-address bast2001.wikimedia.org;
+    option pxelinux.pathprefix "jessie-installer/";
+    filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host bast4001 {
