@@ -3,7 +3,7 @@
 # This role provisions the Wikimedia Transparency Report static site,
 # hosted at <http://transparency.wikimedia.org>.
 #
-class role::transparency {
+class role::microsites::transparency {
     include ::apache
     include ::apache::mod::rewrite
     include ::apache::mod::headers
