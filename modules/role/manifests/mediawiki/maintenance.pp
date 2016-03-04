@@ -29,5 +29,7 @@ class role::mediawiki::maintenance {
     # (T17434) Periodical run of currently disabled special pages
     include mediawiki::maintenance::updatequerypages
 
+    # Readline support for PHP maintenance scripts (T126262)
+    require_package('php5-readline')
 }
 
