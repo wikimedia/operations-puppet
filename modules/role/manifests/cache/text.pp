@@ -7,7 +7,7 @@ class role::cache::text {
     require geoip::dev # for VCL compilation using libGeoIP
     include role::cache::2layer
     include role::cache::ssl::unified
-    if $::role::cache::configuration::has_ganglia {
+    if $::standard::has_ganglia {
         include varnish::monitoring::ganglia::vhtcpd
     }
 
