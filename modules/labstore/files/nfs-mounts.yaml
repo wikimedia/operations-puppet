@@ -222,10 +222,6 @@ private:
       home: true
       project: true
       scratch: true
-  wikistats:
-    gid: 50338
-    mounts:
-       project: true
   wmt:
     gid: 52488
     mounts:
