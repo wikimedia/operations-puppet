@@ -26,6 +26,8 @@ elasticsearch::recover_after_nodes: 1
 archiva::proxy::ssl_enabled: false
 archiva::proxy::certificate_name: ssl-cert-snakeoil
 statsite::instance::graphite_host: 'labmon1001.eqiad.wmnet'
+
+# Cache-layer stuff
 cache::route_table:
     eqiad: 'direct'
 cache::text::nodes:
@@ -37,6 +39,43 @@ cache::upload::nodes:
 cache::maps::nodes:
     eqiad:
       - '127.0.0.1'
+cache::text::apps:
+  appservers:
+    backends:
+      eqiad:
+        - '10.68.17.170' # deployment-mediawiki01
+        - '10.68.16.127' # deployment-mediawiki02
+  api:
+    backends:
+      eqiad:
+        - '10.68.17.170' # deployment-mediawiki01
+        - '10.68.16.127' # deployment-mediawiki02
+  rendering:
+    backends:
+      eqiad:
+        - '10.68.17.170' # deployment-mediawiki01
+        - '10.68.16.127' # deployment-mediawiki02
+  security_audit:
+    backends:
+      eqiad: '10.68.17.55' # deployment-mediawiki03
+  appservers_debug:
+    backends:
+      eqiad: '10.68.17.170' # deployment-mediawiki01
+  cxserver:
+    backends:
+      eqiad: 'cxserver-beta.wmflabs.org'
+  citoid:
+    backends:
+      eqiad: 'citoid.wmflabs.org'
+  restbase:
+    backends:
+      eqiad: 'deployment-restbase01.eqiad.wmflabs'
+cache::upload::apps:
+  swift:
+    backends:
+      # ms emulator set in July 2013. Beta does not have Swift yet.
+      # instance is an unpuppetized hack with nginx proxy.
+      eqiad: '10.68.16.189' # deployment-upload.eqiad.wmflabs
 role::cache::base::zero_site: 'http://zero.wikimedia.beta.wmflabs.org'
 role::cache::base::purge_host_only_upload_re: '^upload\.beta\.wmflabs\.org$'
 role::cache::base::purge_host_not_upload_re: '^(?!upload\.beta\.wmflabs\.org)'
@@ -48,6 +87,7 @@ role::cache::2layer::storage_parts:
   - vdb
   - vdb
 varnish::dynamic_directors: false
+
 zookeeper_hosts:
   "${::fqdn}": 1
 nrpe::allowed_hosts: '10.68.16.195'
