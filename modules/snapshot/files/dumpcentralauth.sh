@@ -85,7 +85,7 @@ for t in $tables; do
         echo -n "$mysqldump" -u "$wikiadmin" -p"$wikipass" -h "$host" --opt --quick --skip-add-locks --skip-lock-tables centralauth "$t"
         echo  "| $gzip > $outputfile"
     else
-        echo "dumping $t into $outputfile"
+        # echo "dumping $t into $outputfile"
         "$mysqldump" -u "$wikiadmin" -p"$wikipass" -h "$host" --opt --quick --skip-add-locks --skip-lock-tables centralauth "$t" | "$gzip" > "$outputfile"
     fi
 done
