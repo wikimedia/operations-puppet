@@ -1,0 +1,15 @@
+[Unit]
+Description=Ganglia monitor aggregator
+Documentation=https://wikitech.wikimedia.org/wiki/Ganglia
+After=network.target
+
+[Service]
+Type=simple
+User=ganglia
+ExecStart=/usr/sbin/gmond -c /etc/ganglia/aggregators/%I.conf -p /var/run/gmond-%I.pid
+EnvironmentFile=/etc/conf.d/ganglia-monitor-aggregator.%I
+SyslogIdentifier=ganglia-monitor-aggregator-%i
+
+[Install]
+WantedBy=multi-user.target
+
