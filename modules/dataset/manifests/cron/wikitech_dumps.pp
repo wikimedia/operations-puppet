@@ -27,7 +27,7 @@ class dataset::cron::wikitech_dumps(
 
     # the index.html files we get from wikitech are icky,
     # best to toss them when done
-    $cleanup = "rm ${wikitechdir}/index.html*"
+    $cleanup = "find ${wikitechdir} -name 'index.html*' -exec rm {} \\;"
 
     cron { 'wikitech-dumps-grab':
         ensure  => $ensure,
