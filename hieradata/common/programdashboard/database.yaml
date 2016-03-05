@@ -1,0 +1,2 @@
+datadir: /srv/sqldata
+tmpdir: /srv/tmp

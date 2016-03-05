@@ -1,0 +1,46 @@
+# Use for Analytics Cluster misc meta stores (Hive, Oozie, etc.)
+
+[client]
+port   = 3306
+socket = /tmp/mysql.sock
+
+[mysqld]
+
+log_error=/var/log/mysql.err
+
+log_bin
+binlog_format = MIXED
+log_slave_updates
+skip-external-locking
+skip-name-resolve
+temp-pool
+log_basename=program-dashboard
+
+user      = mysql
+socket    = /tmp/mysql.sock
+port      = 3306
+datadir   = <%= @datadir %>
+tmpdir    = <%= @tmpdir %>
+server_id = <%= @server_id %>
+read_only = <%= (@read_only == 'off' or not @read_only) ? 0 : 1 %>
+
+max_allowed_packet = 64M
+sync_binlog        = 1
+expire_logs_days   = 7
+
+innodb_file_per_table          = 1
+innodb_log_file_size           = 64M
+innodb_flush_method            = O_DIRECT
+innodb_flush_log_at_trx_commit = 1
+innodb_buffer_pool_size        = <%= (@memoryfree_mb * 0.9).floor %>M
+innodb_buffer_pool_instances   = <%= (@memoryfree_mb * 0.9 / 1024).ceil %>
+
+query_cache_type        = 1
+query_cache_size        = 16M
+
+[mysqldump]
+
+quick
+max_allowed_packet = 16M
+
+#!includedir /etc/mysql/conf.d/
