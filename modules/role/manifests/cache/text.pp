@@ -45,54 +45,53 @@ class role::cache::text {
         'max_connections'       => 1000,
     }
 
-    $apps = hiera('cache::text::apps')
     $app_directors = {
         'appservers'       => {
             'dynamic'  => 'no',
             'type'     => 'random',
-            'backends' => $apps['appservers']['backends'][$apps['appservers']['route']],
+            'backends' => cache_app_route('appservers'),
             'be_opts'  => $app_def_be_opts,
         },
         'api'              => {
             'dynamic'  => 'no',
             'type'     => 'random',
-            'backends' => $apps['api']['backends'][$apps['api']['route']],
+            'backends' => cache_app_route('api'),
             'be_opts'  => $app_def_be_opts,
         },
         'rendering'        => {
             'dynamic'  => 'no',
             'type'     => 'random',
-            'backends' => $apps['rendering']['backends'][$apps['rendering']['route']],
+            'backends' => cache_app_route('rendering'),
             'be_opts'  => $app_def_be_opts,
         },
         'security_audit'   => {
             'dynamic'  => 'no',
             'type'     => 'random',
-            'backends' => $apps['security_audit']['backends'][$apps['security_audit']['route']],
+            'backends' => cache_app_route('security_audit'),
             'be_opts'  => $app_def_be_opts,
         },
         'appservers_debug'   => {
             'dynamic'  => 'no',
             'type'     => 'random',
-            'backends' => $apps['appservers_debug']['backends'][$apps['appservers_debug']['route']],
+            'backends' => cache_app_route('appservers_debug'),
             'be_opts'  => merge($app_def_be_opts, { 'max_connections' => 20 }),
         },
         'restbase_backend' => {
             'dynamic'  => 'no',
             'type'     => 'random',
-            'backends' => $apps['restbase']['backends'][$apps['restbase']['route']],
+            'backends' => cache_app_route('restbase'),
             'be_opts'  => merge($app_def_be_opts, { 'port' => 7231, 'max_connections' => 5000 }),
         },
         'cxserver_backend' => { # LEGACY: should be removed eventually
             'dynamic'  => 'no',
             'type'     => 'random',
-            'backends' => $apps['cxserver']['backends'][$apps['cxserver']['route']],
+            'backends' => cache_app_route('cxserver'),
             'be_opts'  => merge($app_def_be_opts, { 'port' => 8080 }),
         },
         'citoid_backend'   => { # LEGACY: should be removed eventually
             'dynamic'  => 'no',
             'type'     => 'random',
-            'backends' => $apps['citoid']['backends'][$apps['citoid']['route']],
+            'backends' => cache_app_route('citoid'),
             'be_opts'  => merge($app_def_be_opts, { 'port' => 1970 }),
         },
     }
