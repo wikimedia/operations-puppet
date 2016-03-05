@@ -23,15 +23,16 @@ class dataset::cron::wikitech_dumps(
     }
 
     $wget = '/usr/bin/wget'
-    $wgetargs = "-e robots=off -k -nH --wait 30 -np -m ${url} -P ${wikitechdir}"
+    $wgetargs = "-nv -e robots=off -k -nH --wait 30 -np -m ${url} -P ${wikitechdir}"
 
     # the index.html files we get from wikitech are icky,
     # best to toss them when done
-    $cleanup = "find ${wikitechdir} -name 'index.html*' -exec rm {} \\;"
+    $cleanuphtml = "find ${wikitechdir} -name 'index.html*' -exec rm {} \\;"
+    $cleanupold = "find ${wikitechdir} -type f -mtime +90 -exec rm {} \\;"
 
     cron { 'wikitech-dumps-grab':
         ensure  => $ensure,
-        command => "${wget} ${wgetargs}; ${cleanup}",
+        command => "${wget} ${wgetargs}; ${cleanuphtml}; ${cleanupold}",
         user    => $user,
         minute  => '20',
         hour    => '3',
