@@ -136,6 +136,15 @@ class openstack::horizon::service(
         mode    => '0644',
     }
 
+    # Monkeypatches for Horizon customization
+    file { '/usr/lib/python2.7/dist-packages/horizon/overrides.py':
+        source  => "puppet:///modules/openstack/${openstack_version}/horizon/overrides.py",
+        owner   => 'root',
+        group   => 'root',
+        require => Package['python-openstack-auth'],
+        mode    => '0644',
+    }
+
     apache::site { $webserver_hostname:
         content => template("openstack/${$openstack_version}/horizon/${webserver_hostname}.erb"),
         require => File['/etc/openstack-dashboard/local_settings.py'],
