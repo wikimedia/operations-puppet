@@ -35,9 +35,15 @@ class ganglia::monitor::aggregator($sites) {
 
     site_instances{ $sites: }
 
+    if os_version('debian >= jessie') {
+       $ganglia_provider = 'systemd'
+    } else {
+       $ganglia_provider = 'upstart'
+    }
+
     service { 'ganglia-monitor-aggregator':
         ensure   => running,
-        provider => 'upstart',
+        provider => $ganglia_provider,
         name     => 'ganglia-monitor-aggregator',
     }
 }
