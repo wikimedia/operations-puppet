@@ -1,0 +1,10 @@
+[Unit]
+Description=Ganglia aggregator
+
+[Service]
+TimeoutStartSec=0
+ExecStart=/usr/sbin/gmond
+
+[Install]
+WantedBy=multi-user.target
+
