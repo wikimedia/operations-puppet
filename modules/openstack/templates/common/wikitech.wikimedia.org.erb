@@ -30,8 +30,6 @@
     RewriteCond %{SERVER_PORT} !^443$
     RewriteRule ^/(.*)$ https://<%= @webserver_hostname %>/$1 [L,R]
 
-    Include "sites-enabled/public-wiki-rewrites.incl"
-
     ErrorLog /var/log/apache2/error.log
 
     # Possible values include: debug, info, notice, warn, error, crit,
@@ -58,8 +56,6 @@
     RewriteRule ^/view/(.*)$ https://<%= @webserver_hostname %>/wiki/$1 [L,R]
     RewriteCond %{HTTP_HOST}   !^<%= @webserver_hostname.gsub(%r[\.],'\\.') %> [NC]
     RewriteRule ^/(.*)         https://<%= @webserver_hostname %>/$1 [L,R]
-
-    Include "sites-enabled/public-wiki-rewrites.incl"
 
     DocumentRoot /srv/mediawiki/docroot/wikimedia.org
     <Directory />
@@ -103,11 +99,15 @@
         </IfVersion>
     </Directory>
 
+    # Primary wiki redirector:
+    Alias /wiki /srv/mediawiki/docroot/wikimedia.org/w/index.php
+    RewriteRule ^/w/$ /w/index.php
+
+    Include "sites-enabled/public-wiki-rewrites.incl"
 
     Alias /w/images /srv/org/wikimedia/controller/wikis/images
-    Alias /w /srv/mediawiki/docroot/wikimedia.org/w
-    Alias /wiki /srv/mediawiki/docroot/wikimedia.org/w/index.php
     Alias /dumps /a/backup/public
+
     <% if @realm == "labs" %>
     # Add additional wikis for development
     Alias /w2 /srv/org/wikimedia/controller/wikis/w2
