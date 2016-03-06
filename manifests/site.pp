@@ -1100,8 +1100,9 @@ node 'hafnium.eqiad.wmnet' {
     include base::firewall
 }
 
-# debug_proxy hosts
+# debug_proxy hosts; Varnish backend for X-Wikimedia-Debug reqs
 node /^(hassaleh|hassium)\.(codfw|eqiad)\.wmnet$/ {
+    role debug_proxy
     include standard
 }
 
