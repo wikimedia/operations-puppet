@@ -181,7 +181,6 @@ class toollabs (
 
     $active_redis = hiera('active_redis')
     $active_redis_ip = ipresolve($active_redis, 4, $::nameservers[0])
-    # puppetized until we can setup proper DNS for .labsdb entries
     file { '/etc/hosts':
         content => template('toollabs/hosts.erb'),
         owner   => 'root',
