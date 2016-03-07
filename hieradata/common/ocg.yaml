@@ -1,4 +1,4 @@
 temp_dir: "/mnt/tmpfs"
-redis_host: "rdb1002.eqiad.wmnet"
+redis_host: "rdb1007.eqiad.wmnet"
 statsd_host: "statsd.eqiad.wmnet"
 graylog_host: "logstash1002.eqiad.wmnet"
