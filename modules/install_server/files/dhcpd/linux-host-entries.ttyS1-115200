@@ -6529,6 +6529,13 @@ host silver {
     fixed-address silver.wikimedia.org;
 }
 
+host sinistra {
+    hardware ethernet 14:18:77:4E:31:59;
+    fixed-address sinistra.codfw.wmnet;
+    option pxelinux.pathprefix "jessie-installer/";
+    filename "jessie-installer/debian-installer/amd64/pxelinux.0";
+}
+
 host snapshot1001 {
     hardware ethernet d0:67:e5:f9:17:a3;
     fixed-address snapshot1001.eqiad.wmnet;
