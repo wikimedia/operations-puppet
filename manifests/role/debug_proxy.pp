@@ -14,5 +14,6 @@ class role::debug_proxy {
     class { '::debug_proxy':
         backend_regexp  => '^mw[12]017',
         backend_aliases => { '1' => 'mw1017.eqiad.wmnet' },
+        resolver        => join($::nameservers, ' '),
     }
 }

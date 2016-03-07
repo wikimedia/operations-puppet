@@ -13,6 +13,7 @@ server {
     server_name  _;
     access_log   /var/log/nginx/debug_proxy_access.log;
     error_log    /var/log/nginx/debug_proxy_error.log;
+    resolver     <%= @resolver %>;
 
     location / {
         if ($debug_backend = invalid) {
