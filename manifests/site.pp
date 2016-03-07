@@ -2074,8 +2074,14 @@ node 'mw2152.codfw.wmnet' {
     role mediawiki::videoscaler
 }
 
-#mw2153-mw2199 are appservers
-node /^mw21(5[3-9]|[6-9][0-9])\.codfw\.wmnet$/ {
+#mw2153-62 are jobrunners
+node /^mw21(5[3-9]|6[0-2])\.codfw\.wmnet$/ {
+    role mediawiki::jobrunner
+    include base::firewall
+}
+
+#mw2163-mw2199 are appservers
+node /^mw21(6[3-9]|[6-9][0-9])\.codfw\.wmnet$/ {
     role mediawiki::appserver
     include base::firewall
 }
