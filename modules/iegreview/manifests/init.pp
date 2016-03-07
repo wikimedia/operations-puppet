@@ -49,7 +49,7 @@ class iegreview(
     $mysql_host           = 'localhost',
     $mysql_db             = 'iegreview',
     $smtp_host            = 'localhost',
-    $parsoid_url          = 'http://parsoid.svc.eqiad.wmnet:8000/enwiki/',
+    $parsoid_url          = "http://parsoid.svc.${::parsoid_site}.wmnet:8000/enwiki/",
     $require_upstream_ssl = false,
 ) {
     include ::apache
