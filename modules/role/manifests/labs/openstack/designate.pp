@@ -7,13 +7,15 @@ class role::labs::openstack::designate::server {
     $keystone_host   = hiera('labs_keystone_host')
     $nova_controller = hiera('labs_nova_controller')
     $designate_host  = hiera('labs_designate_hostname')
+    $osm_host        = hiera('labs_osm_host')
+    $horizon_host    = hiera('labs_horizon_host')
 
     $keystoneconfig  = hiera_hash('keystoneconfig', {})
     $designateconfig = hiera_hash('designateconfig', {})
 
     $controller_ip   = ipresolve($nova_controller,4)
-    $horizon_ip      = ipresolve('horizon.wikimedia.org',4)
-    $wikitech_ip     = ipresolve('wikitech.wikimedia.org',4)
+    $horizon_ip      = ipresolve($horizon_host,4)
+    $wikitech_ip     = ipresolve($osm_host,4)
 
     $dnsconfig             = hiera_hash('labsdnsconfig', {})
     $dns_host              = $dnsconfig['host']

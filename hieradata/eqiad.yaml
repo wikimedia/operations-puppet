@@ -84,6 +84,9 @@ labs_glance_controller: &labsglancecontroller "labcontrol1001.wikimedia.org"
 labs_puppet_master: &labspuppetmaster "labs-puppetmaster-eqiad.wikimedia.org"
 labs_keystone_host: &labskeystonehost "labcontrol1001.wikimedia.org"
 
+labs_osm_host: "wikitech.wikimedia.org"
+labs_horizon_host: "horizon.wikimedia.org"
+
 # These are the old, soon-to-be-phased-out dns servers:
 labs_ldap_dns_host: &labsldapdnshost "labs-ns0.wikimedia.org"
 labs_ldap_dns_host_secondary: &labsldapdnshostsecondary "labs-ns1.wikimedia.org"
