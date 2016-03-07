@@ -90,7 +90,7 @@ class restbase(
     $salt_key       = 'secretkey',
     $page_size      = 250,
     $config_template = 'restbase/config.yaml.erb',
-    $parsoid_uri    = 'http://parsoid.svc.eqiad.wmnet:8000',
+    $parsoid_uri    = "http://parsoid.${::site}.eqiad.wmnet:8000",
     $logstash_host  = 'localhost',
     $logstash_port  = 12201,
     $logging_name   = 'restbase',
