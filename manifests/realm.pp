@@ -63,10 +63,13 @@ $other_site = $site ? {
     default => '(undefined)'
 }
 
-$mw_primary = $::realm ? {
-    'production' => 'eqiad',
-    default => $::site
-}
+
+$app_routes = hiera('discovery::app_routes')
+
+# Shortcut variables to use e.g. in hiera
+$mw_primary = $app_routes['mediawiki']
+$parsoid_site = $app_routes['parsoid']
+$rb_site = $app_routes['restbase']
 
 $network_zone = $main_ipaddress ? {
     /^10./  => 'internal',
