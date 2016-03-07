@@ -45,6 +45,20 @@ host fermium {
     filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
+host hassaleh {
+    hardware ethernet TODO;
+    fixed-address hassaleh.codfw.wmnet;
+    option pxelinux.pathprefix "jessie-installer/";
+    filename "jessie-installer/debian-installer/amd64/pxelinux.0";
+}
+
+host hassium {
+    hardware ethernet TODO;
+    fixed-address hassium.eqiad.wmnet;
+    option pxelinux.pathprefix "jessie-installer/";
+    filename "jessie-installer/debian-installer/amd64/pxelinux.0";
+}
+
 host krypton {
     hardware ethernet aa:00:00:7e:e0:22;
     fixed-address krypton.eqiad.wmnet;
