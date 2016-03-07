@@ -5,6 +5,10 @@ dburi: 'mysql+pymysql://<%= @db_user -%>:<%= @db_pass -%>@<%= @db_host -%>/<%= @
 # http://docs.openstack.org/infra/nodepool/configuration.html#elements-dir
 #elements-dir: /etc/nodepool/elements
 
+nodepoold:
+    delete-delay: 0  # seconds
+
+
 # Directory where Nodepool / diskimage-builder stores created images.
 # http://docs.openstack.org/infra/nodepool/configuration.html#images-dir
 images-dir: '<%= @dib_images_dir -%>'
