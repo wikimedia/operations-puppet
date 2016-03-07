@@ -1928,8 +1928,8 @@ node /^mw10(1[7-9]|2[0-5])\.eqiad\.wmnet$/ {
     include base::firewall
 }
 
-# mw1026-mw1113 are appservers
-node /^mw1(02[6-9]|0[3-9][0-9]|10[0-9]|11[0-3])\.eqiad\.wmnet$/ {
+# mw1070-mw1113 are appservers
+node /^mw1(0[7-9][0-9]|10[0-9]|11[0-3])\.eqiad\.wmnet$/ {
     role mediawiki::appserver
     include base::firewall
 }
