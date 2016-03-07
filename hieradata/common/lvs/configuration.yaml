@@ -96,6 +96,7 @@ lvs_service_ips:
     eqiad: 10.2.2.31
   parsoid: &ip_block011
     eqiad: 10.2.2.28
+    codfw: 10.2.1.28
   mathoid: &ip_block016
     eqiad: 10.2.2.20
   citoid: &ip_block017
@@ -470,7 +471,7 @@ lvs_services:
         eqiad:
           hostname: ms-fe.eqiad.wmnet
   parsoid:
-    description: Parsoid wikitext parser for VisualEditor
+    description: "Parsoid wikitext parser for VisualEditor (%{::site})"
     class: low-traffic
     sites:
     - eqiad
@@ -494,6 +495,8 @@ lvs_services:
       sites:
         eqiad:
           hostname: parsoid.svc.eqiad.wmnet
+        codfw:
+          hostname: parsoid.svc.codfw.wmnet
   search:
     description: Elasticsearch search for MediaWiki
     class: low-traffic
