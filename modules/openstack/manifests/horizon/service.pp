@@ -79,6 +79,14 @@ class openstack::horizon::service(
         require => Package['openstack-dashboard'],
         mode    => '0440',
     }
+    file { '/etc/openstack-dashboard/designate_policy.json':
+        source  => "puppet:///modules/openstack/${openstack_version}/designate/policy.json",
+        owner   => 'horizon',
+        group   => 'horizon',
+        notify  => Service['apache2'],
+        require => Package['openstack-dashboard'],
+        mode    => '0440',
+    }
 
     file { '/usr/share/openstack-dashboard/openstack_dashboard/static/dashboard/img/logo.png':
         source  => 'puppet:///modules/openstack/horizon/216px-Wikimedia_labs_dashboard_logo.png',
