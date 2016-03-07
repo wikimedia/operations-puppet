@@ -16,13 +16,13 @@ sub cluster_be_recv_applayer_backend {
 	} else if (req.http.Host ~ "restbase|^rest\." ) { # LEGACY: to be removed eventually
 		set req.backend = restbase_backend;
 	} else if (req.url ~ "^/w/api\.php") {
-		if (req.http.X-Wikimedia-Debug == "1") {
+		if (req.http.X-Wikimedia-Debug) {
 			set req.backend = appservers_debug;
 		} else {
 			set req.backend = api;
 		}
 	} else if (req.url ~ "^/w/thumb(_handler)?\.php") {
-		if (req.http.X-Wikimedia-Debug == "1") {
+		if (req.http.X-Wikimedia-Debug) {
 			set req.backend = appservers_debug;
 		} else {
 			set req.backend = rendering;
@@ -31,7 +31,7 @@ sub cluster_be_recv_applayer_backend {
 		set req.backend = restbase_backend;
 	} else {
 		// default MW backend
-		if (req.http.X-Wikimedia-Debug == "1") {
+		if (req.http.X-Wikimedia-Debug) {
 			set req.backend = appservers_debug;
 		} else {
 			set req.backend = appservers;
