@@ -63,10 +63,22 @@ $other_site = $site ? {
     default => '(undefined)'
 }
 
-$mw_primary = $::realm ? {
-    'production' => 'eqiad',
-    default => $::site
+if $::realm == 'production' {
+    $master_dc = {
+        'mediawiki' => 'eqiad',
+        'parsoid'   => 'eqiad',
+        'restbase'  => 'eqiad',
+    }
 }
+else {
+    $master_dc = {
+        'mediawiki' => $::site,
+        'parsoid'   => $::site,
+        'restbase'  => $::site,
+    }
+}
+
+$mw_primary = $master_dc['mediawiki']
 
 $network_zone = $main_ipaddress ? {
     /^10./  => 'internal',
