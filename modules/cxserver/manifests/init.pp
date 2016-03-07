@@ -18,7 +18,7 @@
 # [*jwt_secret*]
 #   JWT secret token.
 class cxserver(
-    $restbase_url = 'http://restbase.svc.eqiad.wmnet:7231/@lang.wikipedia.org/v1/page/html/@title',
+    $restbase_url = "http://restbase.svc.${::rb_primary}.wmnet:7231/@lang.wikipedia.org/v1/page/html/@title",
     $apertium = 'http://apertium.svc.eqiad.wmnet:2737',
     $yandex_url = undef,
     $yandex_api_key = undef,

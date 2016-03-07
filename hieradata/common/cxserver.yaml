@@ -1,6 +1,6 @@
 yandex_url: https://translate.yandex.net
 no_proxy_list:
-  - restbase.svc.eqiad.wmnet
+  - restbase.svc.%{::rb_primary}.wmnet
   - apertium.svc.eqiad.wmnet
 registry:
   source:
