@@ -70,16 +70,19 @@ sub https_deliver_hsts {
 <% end -%>
 // ^ end HTTPS block
 
-// We shouldn't even legally be receiving proxy-style requests, as we're not a
-// proxy from any client's point of view.  Just in case, we support it anyways
-// according to RFC7230 rules: we ignore any Host header sent along with it
-// and set a new Host header based on the host part we strip from the abs URI.
-// ref: http://tools.ietf.org/html/rfc7230#section-5.4
-sub rewrite_proxy_urls {
+sub normalize_request {
+	// We shouldn't even legally be receiving proxy-style requests, as we're not a
+	// proxy from any client's point of view.  Just in case, we support it anyways
+	// according to RFC7230 rules: we ignore any Host header sent along with it
+	// and set a new Host header based on the host part we strip from the abs URI.
+	// ref: http://tools.ietf.org/html/rfc7230#section-5.4
 	if(req.url ~ "(?i)^https?://[^/]") {
 		set req.http.Host = regsub(req.url, "(?i)^https?://([^/]+).*$", "\1");
 		set req.url = regsub(req.url, "(?i)^https?://[^/]+", "");
 	}
+
+	// Strip :port from req.http.host and normalize to lowercase
+	set req.http.Host = std.tolower(regsub(req.http.host, ':.*$', ''));
 }
 
 // Must be done at the top of vcl_recv, in our varnish-frontend layer only,
@@ -228,6 +231,9 @@ sub vcl_init {
 
 sub vcl_recv {
 	if (req.restarts == 0) {
+		// This unwraps proxy-style URLs, strips :port from Host:, and downcases Host:
+		call normalize_request;
+
 		// IP processing is req->req mangling that shouldn't be re-done on restart
 		call recv_fe_ip_processing;
 	}
@@ -237,8 +243,6 @@ sub vcl_recv {
 	set req.backend = cache_local;
 
 	call wm_common_recv_grace;
-
-	call rewrite_proxy_urls;
 
 <% if @vcl_config.fetch("https_redirects", false) -%>
 	call https_recv_redirect;
