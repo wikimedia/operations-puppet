@@ -1,0 +1,5 @@
+app_routes:
+  mediawiki: 'eqiad'
+  parsoid: "%{::site}"
+  restbase: "%{::site}"
+
