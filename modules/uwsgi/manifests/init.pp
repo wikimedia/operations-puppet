@@ -17,9 +17,11 @@ class uwsgi {
     package { [ 'uwsgi', 'uwsgi-dbg' ]: }
     package { $plugins: }
 
-    exec { 'remove_uwsgi_initd':
-        command => '/usr/sbin/update-rc.d -f uwsgi remove',
-        onlyif  => '/usr/sbin/update-rc.d -n -f uwsgi remove | /bin/grep -Pq rc..d',
+    # Stop the default uwsgi service since it is incompatible with
+    # our multi instance setup
+    service { 'uwsgi':
+        ensure  => stopped,
+        enable  => false,
         require => Package['uwsgi'],
     }
 
