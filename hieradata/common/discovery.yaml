@@ -5,4 +5,7 @@ app_routes:
   mediawiki: 'eqiad'
   parsoid: "%{::site}"
   restbase: "%{::site}"
-
+  mobileapps: "%{::site}"
+  graphoid: "%{::site}"
+  mathoid: "%{::site}"
+  aqs: 'eqiad'
