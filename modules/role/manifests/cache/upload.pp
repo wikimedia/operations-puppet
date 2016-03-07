@@ -49,6 +49,18 @@ class role::cache::upload {
                 'max_connections'       => 1000,
             }
         },
+        'swift-thumbs'   => {
+            'dynamic'  => 'no',
+            'type'     => 'random',
+            'backends' => $apps['swift-thumbs']['backends'][$apps['swift-thumbs']['route']],
+            'be_opts'  => {
+                'port'                  => 80,
+                'connect_timeout'       => '5s',
+                'first_byte_timeout'    => '35s',
+                'between_bytes_timeout' => '4s',
+                'max_connections'       => 1000,
+            }
+        },
     }
 
     $common_vcl_config = {
