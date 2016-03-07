@@ -83,7 +83,7 @@ sub normalize_request {
 	}
 
 	// Strip :port from req.http.host and normalize to lowercase
-	set req.http.Host = std.tolower(regsub(req.http.Host, ':.*$', ''));
+	set req.http.Host = std.tolower(regsub(req.http.Host, ":.*$", ""));
 }
 
 // Must be done at the top of vcl_recv, in our varnish-frontend layer only,
