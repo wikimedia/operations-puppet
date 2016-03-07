@@ -8,11 +8,17 @@ set -u
 # the important part here)
 set -E
 
+# A pipeline's return status is the value of the last (rightmost)
+# command to exit with a non-zero status, or zero if all commands exit
+# success fully.
+set -o pipefail
+
 # ftpsync script for Debian
 # Based losely on a number of existing scripts, written by an
 # unknown number of different people over the years.
 #
-# Copyright (C) 2008-2012 Joerg Jaspert <joerg@debian.org>
+# Copyright (C) 2008-2016 Joerg Jaspert <joerg@debian.org>
+# Copyright (C) 2016 Peter Palfrader
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License as
@@ -36,7 +42,7 @@ BASEDIR=${BASEDIR:-"$(readlink -f $(dirname "$0")/..)"}
 # Script version. DO NOT CHANGE, *unless* you change the master copy maintained
 # by Joerg Jaspert and the Debian mirroradm group.
 # This is used to track which mirror is using which script version.
-VERSION="20150425"
+VERSION="20160306"
 
 # Source our common functions
 . "${BASEDIR}/etc/common"
@@ -68,7 +74,7 @@ VERSION="20150425"
 # "ssh $USER@$HOST sync:all sync:archive:bpo sync:callback" will do the
 # trick.
 check_commandline() {
-    while [ $# -gt 0 ]; do
+    while [[ $# -gt 0 ]]; do
         case "$1" in
             sync:stage1)
                 SYNCSTAGE1="true"
@@ -107,15 +113,15 @@ cleanup() {
     # all done. Mail the log, exit.
     log "Mirrorsync done";
 
-    if [ -n "${MAILTO}" ]; then
+    if [[ -n ${MAILTO} ]]; then
         # In case rsync had something on stderr
-        if [ -s "${LOGDIR}/rsync-${NAME}.error" ]; then
+        if [[ -s ${LOGDIR}/rsync-${NAME}.error ]]; then
             mail -E -s "[${PROGRAM}@$(hostname -s)] ($$) rsync ERROR on $(date +"%Y.%m.%d-%H:%M:%S")" ${MAILTO} < "${LOGDIR}/rsync-${NAME}.error"
         fi
-        if [ "x${ERRORSONLY}x" = "xfalsex" ]; then
+        if [[ ${ERRORSONLY} = false ]]; then
             # And the normal log
             MAILFILES="${LOG}"
-            if [ "x${FULLLOGS}x" = "xtruex" ]; then
+            if [[ ${FULLLOGS} = true ]]; then
                 # Someone wants full logs including rsync
                 MAILFILES="${MAILFILES} ${LOGDIR}/rsync-${NAME}.log"
             fi
@@ -137,13 +143,13 @@ check_rsync() {
 
     # Lets get a statistical value
     SPEED="unknown"
-    if [ -f "${LOGDIR}/rsync-${NAME}.log" ]; then
+    if [[ -f ${LOGDIR}/rsync-${NAME}.log ]]; then
         SPEED=$(
             SPEEDLINE=$(egrep '[0-9.,]+ bytes/sec' "${LOGDIR}/rsync-${NAME}.log" | tail -n 1)
             set "nothing" ${SPEEDLINE}
             echo ${8:-""}
         )
-        if [ -n "${SPEED}" ]; then
+        if [[ -n ${SPEED} ]]; then
             SPEED=${SPEED%%.*}
             SPEED=${SPEED//,}
             SPEED=$(( $SPEED / 1024 ))
@@ -165,6 +171,156 @@ check_rsync() {
     esac
 }
 
+# Write a tracefile
+tracefile() {
+    local TRACEFILE=${1:-"${TO}/${TRACE}"}
+
+    case ${EXTENDEDTRACE} in
+        none)
+            log "No trace file wanted. Not creating one"
+            ;;
+        touch)
+            log "Just touching the trace file"
+            touch "${TRACEFILE}"
+            ;;
+        date|terse|full)
+            log "Creating a ${EXTENDEDTRACE} trace file"
+            tracedir=$(dirname "${TRACEFILE}")
+            if [[ -d ${tracedir} ]]; then
+                {
+                    LC_ALL=POSIX LANG=POSIX date -u
+                    if [[ date != ${EXTENDEDTRACE} ]]; then
+                        rfc822date=$(LC_ALL=POSIX LANG=POSIX date -u -R)
+                        echo "Date: ${rfc822date}"
+                        echo "Date-Started: ${DATE_STARTED}"
+
+                        FILESOA=$(awk -F": " ' $1=="Archive serial" {print $2}' ${TO}/project/trace/master || echo unknown )
+                        echo "Archive serial: ${FILESOA}"
+
+                        echo "Used ftpsync version: ${VERSION}"
+                        echo "Running on host: ${TRACEHOST}"
+                        if [[ full = ${EXTENDEDTRACE} ]]; then
+                            ARCHLIST=""
+                            if [[ ${ARCH_INCLUDE} ]]; then
+                                AINCLUDE="^${ARCH_INCLUDE// /\$|^}$"
+                                for ARCH in ${GLOBALARCHLIST}; do
+                                    if [[ ${ARCH} =~ ${AINCLUDE} ]]; then
+                                        ARCHLIST="${ARCHLIST} ${ARCH}"
+                                    fi
+                                done
+                            else
+                                AEXCLUDE="^${ARCH_EXCLUDE// /\$|^}$"
+                                for ARCH in ${GLOBALARCHLIST}; do
+                                    if ! [[ ${ARCH} =~ ${AEXCLUDE} ]]; then
+                                        ARCHLIST="${ARCHLIST} ${ARCH}"
+                                    fi
+                                done
+                            fi
+                            out="GUESSED:{${ARCHLIST}}"
+                            echo "Architectures: ${out}"
+                            echo "Upstream-mirror: ${RSYNC_HOST}"
+                            echo "SSL: ${RSYNC_SSL}"
+                            total=0
+                            if [[ -e ${LOGDIR}/rsync-${NAME}.log ]]; then
+                                for bytes in $(awk -F': '   '$1 == "Total bytes received" {print $2} ' "${LOGDIR}/rsync-${NAME}.log"); do
+                                    bytes=${bytes//,}
+                                    total=$(( total + bytes ))
+                                done
+                                echo "Total bytes received in rsync: ${total}"
+                            fi
+                            total_time=$(( STATS_TOTAL_RSYNC_TIME1 + STATS_TOTAL_RSYNC_TIME2 ))
+                            echo "Total time spent in stage1 rsync: ${STATS_TOTAL_RSYNC_TIME1}"
+                            echo "Total time spent in stage2 rsync: ${STATS_TOTAL_RSYNC_TIME2}"
+                            echo "Total time spent in rsync: ${total_time}"
+                            if [[ 0 != ${total_time} ]]; then
+                                rate=$(( total / total_time ))
+                                echo "Average rate: ${rate} B/s"
+                            fi
+                        fi # full trace
+                    fi # other traces
+                } > "${TRACEFILE}.new"
+                mv "${TRACEFILE}.new" "${TRACEFILE}"
+
+                if [[ full = ${EXTENDEDTRACE} ]] || [[ -e ${TO}/${TRACEHIERARCHY}.mirror ]]; then
+                    {
+                        if [[ -e ${TO}/${TRACEHIERARCHY}.mirror ]]; then
+                            cat ${TO}/${TRACEHIERARCHY}.mirror
+                        fi
+                        echo "$(basename "${TRACEFILE}") ${MIRRORNAME} ${TRACEHOST} ${RSYNC_HOST}"
+                    } > "${TO}/${TRACEHIERARCHY}".new
+                    mv "${TO}/${TRACEHIERARCHY}".new "${TO}/${TRACEHIERARCHY}"
+                    cp "${TO}/${TRACEHIERARCHY}" "${TO}/${TRACEHIERARCHY}.mirror"
+
+                    (cd ${tracedir} && ls -1rt) | grep -E -v '^_|^master$' > "${TO}/${TRACELIST}"
+                else
+                    rm -f "${TO}/${TRACEHIERARCHY}" "${TO}/${TRACELIST}"
+                fi
+            fi
+            ;;
+        *)
+            error "Unsupported EXTENDEDTRACE value configured in ${BASEDIR}/etc/${NAME}.conf, please fix"
+            ;;
+    esac
+
+}
+
+arch_imexclude() {
+    local param="$1" arch="$2"
+    EXCLUDE="${EXCLUDE} --${param}=/dists/**/binary-${arch}/ --${param}=/dists/**/installer-${arch}/ --${param}=/dists/**/Contents-${arch}.gz --${param}=/dists/**/Contents-udeb-${arch}.gz --${param}=/dists/**/Contents-${arch}.diff/ --${param}=/indices/**/arch-${arch}.files --${param}=/indices/**/arch-${arch}.list.gz --${param}=/pool/**/*_${arch}.deb --${param}=/pool/**/*_${arch}.udeb --${param}=/pool/**/*_${arch}.changes"
+}
+
+arch_exclude() {
+    arch_imexclude exclude "$1"
+}
+
+arch_include() {
+    arch_imexclude include "$1"
+}
+
+# Learn which archs to include/exclude based on ARCH_EXCLUDE and ARCH_INCLUDE
+# settings.
+#
+# Updates SOURCE_EXCLUDE (if not set already), and sets
+# EXCLUDE (which might also have --include statementss
+# followed by a --exclude *_*.<things>.
+set_exclude_include_archs() {
+  local exclude_sources=false
+
+  if [[ -n "${ARCH_EXCLUDE}" ]] && [[ -n "${ARCH_INCLUDE}" ]]; then
+    echo >&2 "ARCH_EXCLUDE and ARCH_INCLUDE are mutually exclusive.  Set only one."
+    exit 1
+  fi
+
+  if [[ -n "${ARCH_EXCLUDE}" ]]; then
+    for ARCH in ${ARCH_EXCLUDE}; do
+        arch_exclude ${ARCH}
+        if [[ ${ARCH} = source ]]; then
+            exclude_sources=true
+        fi
+    done
+  elif [[ -n "${ARCH_INCLUDE}" ]]; then
+      local include_arch_all=false
+      exclude_sources=true
+      for ARCH in ${ARCH_INCLUDE}; do
+          arch_include ${ARCH}
+          if [[ ${ARCH} = source ]]; then
+              exclude_sources=false
+          else
+              include_arch_all=true
+          fi
+      done
+      if [[ true = ${include_arch_all} ]]; then
+          arch_include all
+      fi
+      arch_exclude '*'
+  fi
+
+  # we do not want sources, and SOURCE_EXCLUDE is not set in the config yet.
+  if [[ true = ${exclude_sources} ]] && [[ -z ${SOURCE_EXCLUDE} ]]; then
+      SOURCE_EXCLUDE=" --exclude=/dists/**/source/ --exclude=/pool/**/*.tar.* --exclude=/pool/**/*.diff.* --exclude=/pool/**/*.dsc "
+  fi
+}
+
 ########################################################################
 ########################################################################
 
@@ -172,7 +328,7 @@ check_rsync() {
 # As what are we called?
 NAME="$(basename $0)"
 # The original command line arguments need to be saved!
-if [ $# -gt 0 ]; then
+if [[ $# -gt 0 ]]; then
     ORIGINAL_COMMAND=$*
 else
     ORIGINAL_COMMAND=""
@@ -180,7 +336,7 @@ fi
 
 SSH_ORIGINAL_COMMAND=${SSH_ORIGINAL_COMMAND:-""}
 # Now, check if we got told about stuff via ssh
-if [ -n "${SSH_ORIGINAL_COMMAND}" ]; then
+if [[ -n ${SSH_ORIGINAL_COMMAND} ]]; then
     # We deliberately add "nothing" and ignore it right again, to avoid
     # people from outside putting some set options in the first place,
     # making us parse them...
@@ -193,7 +349,7 @@ fi
 
 # Now, we can locally override all the above variables by just putting
 # them into the .ssh/authorized_keys file forced command.
-if [ -n "${ORIGINAL_COMMAND}" ]; then
+if [[ -n ${ORIGINAL_COMMAND} ]]; then
     set ${ORIGINAL_COMMAND}
     check_commandline $*
 fi
@@ -201,38 +357,19 @@ fi
 # If we have been told to do stuff for a different archive than default,
 # set the name accordingly.
 ARCHIVE=${ARCHIVE:-""}
-if [ -n "${ARCHIVE}" ]; then
+if [[ -n ${ARCHIVE} ]]; then
     NAME="${NAME}-${ARCHIVE}"
 fi
 
 # Now source the config for the archive we run on.
 # (Yes, people can also overwrite the options above in the config file
 # if they want to)
-if [ -f "${BASEDIR}/etc/${NAME}.conf" ]; then
+if [[ -f ${BASEDIR}/etc/${NAME}.conf ]]; then
     . "${BASEDIR}/etc/${NAME}.conf"
 else
     echo "Nono, you can't tell us about random archives. Bad boy!"
     exit 1
 fi
-
-########################################################################
-# Config options go here. Feel free to overwrite them in the config    #
-# file if you need to.                                                 #
-# On debian.org machines the defaults should be ok.                    #
-#                                                                      #
-# The following extra variables can be defined in the config file:     #
-#                                                                      #
-# ARCH_EXCLUDE                                                         #
-#  can be used to exclude a complete architecture from                 #
-# mirrorring. Use as space seperated list.                             #
-# Possible values are:                                                 #
-# alpha amd64 arm arm64 armel armhf hppa hurd-i386 i386 ia64 mips      #
-# mipsel powerpc ppc64el s390 s390x sparc kfreebsd-i386 kfreebsd-amd64 #
-# source                                                               #
-# eg. ARCH_EXCLUDE="arm arm64 armel mipsel mips s390 s390x sparc"      #
-#                                                                      #
-# An unset value will mirror all architectures                         #
-########################################################################
 
 ########################################################################
 # There should be nothing to edit here, use the config file            #
@@ -250,7 +387,7 @@ TO=${TO:-"/srv/mirrors/debian/"}
 PROGRAM=${PROGRAM:-"${NAME}"}
 
 # Where to send mails about mirroring to?
-if [ "x$(hostname -d)x" != "xdebian.orgx" ]; then
+if [[ $(hostname -d) != debian.org ]]; then
     # We are not on a debian.org host
     MAILTO=${MAILTO:-"root"}
 else
@@ -277,6 +414,8 @@ UIPRETRIES=${UIPRETRIES:-3}
 UPDATEREQUIRED="${TO}/Archive-Update-Required-${MIRRORNAME}"
 # Trace file for mirror stats and checks (make sure we get full hostname)
 TRACE=${TRACE:-"project/trace/${MIRRORNAME}"}
+TRACEHIERARCHY=${TRACEHIERARCHY:-"project/trace/_hierarchy"}
+TRACELIST=${TRACELIST:-"project/trace/_traces"}
 # The trace file can have different format/contents. Here you can select
 # what it will be.
 # Possible values are
@@ -296,7 +435,7 @@ TRACEHOST=${TRACEHOST:-$(hostname -f)}
 RSYNC=${RSYNC:-rsync}
 # Rsync filter rules. Used to protect various files we always want to keep, even if we otherwise delete
 # excluded files
-RSYNC_FILTER=${RSYNC_FILTER:-"--filter=protect_Archive-Update-in-Progress-${MIRRORNAME} --filter=protect_${TRACE} --filter=protect_Archive-Update-Required-${MIRRORNAME}"}
+RSYNC_FILTER=${RSYNC_FILTER:-"--filter=protect_Archive-Update-in-Progress-${MIRRORNAME} --filter=protect_${TRACE} --filter=protect_${TRACE}-stage1 --exclude=${TRACEHIERARCHY} --filter=protect_${TRACEHIERARCHY} --exclude=${TRACELIST} --filter=protect_${TRACELIST} --filter=protect_Archive-Update-Required-${MIRRORNAME}"}
 # limit I/O bandwidth. Value is KBytes per second, unset or 0 is unlimited
 RSYNC_BW=${RSYNC_BW:-0}
 RSYNC_PROTOCOL=$(rsync_protocol)
@@ -304,7 +443,7 @@ RSYNC_PROTOCOL=$(rsync_protocol)
 # Set the delete method to --delete-delay if protocol version is 30 or
 # greater (meaning rsync 3.0.0 or greater is used). Use --delete-after
 # otherwise.
-if [ 30 -le $RSYNC_PROTOCOL ]; then
+if [[ 30 -le $RSYNC_PROTOCOL ]]; then
     RSYNC_DELETE_METHOD=delay
 else
     RSYNC_DELETE_METHOD=after
@@ -337,7 +476,7 @@ unset RSYNC_OPTION_REGEX
 # We have no default host to sync from, but will error out if its unset
 RSYNC_HOST=${RSYNC_HOST:-""}
 # Error out if we have no host to sync from
-if [ -z "${RSYNC_HOST}" ]; then
+if [[ -z ${RSYNC_HOST} ]]; then
     error "Missing a host to mirror from, please set RSYNC_HOST variable in ${BASEDIR}/etc/${NAME}.conf"
 fi
 
@@ -367,21 +506,31 @@ CALLBACKKEY=${CALLBACKKEY:-"none"}
 # General excludes. Don't list architecture specific stuff here, use ARCH_EXCLUDE for that!
 EXCLUDE=${EXCLUDE:-""}
 
+# collect some stats
+STATS_TOTAL_RSYNC_TIME1=0
+STATS_TOTAL_RSYNC_TIME2=0
+
 # The temp directory used by rsync --delay-updates is not
 # world-readable remotely. Always exclude it to avoid errors.
 EXCLUDE="${EXCLUDE} --exclude=.~tmp~/"
 
 SOURCE_EXCLUDE=${SOURCE_EXCLUDE:-""}
 ARCH_EXCLUDE=${ARCH_EXCLUDE:-""}
-# Exclude architectures defined in $ARCH_EXCLUDE
-for ARCH in ${ARCH_EXCLUDE}; do
-    EXCLUDE="${EXCLUDE} --exclude=binary-${ARCH}/ --exclude=installer-${ARCH}/ --exclude=Contents-${ARCH}.gz --exclude=Contents-udeb-${ARCH}.gz --exclude=Contents-${ARCH}.diff/ --exclude=arch-${ARCH}.files --exclude=arch-${ARCH}.list.gz --exclude=*_${ARCH}.deb --exclude=*_${ARCH}.udeb --exclude=*_${ARCH}.changes"
-    if [ "${ARCH}" = "source" ]; then
-        if [ -z ${SOURCE_EXCLUDE} ]; then
-            SOURCE_EXCLUDE=" --exclude=source/ --exclude=*.tar.gz --exclude=*.diff.gz --exclude=*.tar.bz2 --exclude=*.tar.xz --exclude=*.diff.bz2 --exclude=*.dsc "
-        fi
-    fi
-done
+ARCH_INCLUDE=${ARCH_INCLUDE:-""}
+
+RSYNC_SSL=${RSYNC_SSL:-"false"}
+RSYNC_SSL_PORT=${RSYNC_SSL_PORT:-"1873"}
+RSYNC_SSL_CAPATH=${RSYNC_SSL_CAPATH:-"/etc/ssl/certs"}
+RSYNC_SSL_METHOD=${RSYNC_SSL_METHOD:-"stunnel4"}
+
+if [[ true != ${RSYNC_SSL} ]]; then
+  RSYNC_SSL_OPTIONS=""
+else
+  export RSYNC_SSL_PORT
+  export RSYNC_SSL_CAPATH
+  export RSYNC_SSL_METHOD
+  RSYNC_SSL_OPTIONS="-e ${BASEDIR}/bin/rsync-ssl-tunnel"
+fi
 
 # Hooks
 HOOK1=${HOOK1:-""}
@@ -397,6 +546,12 @@ HUB=${HUB:-"false"}
 # Really nothing to see below here. Only code follows.                 #
 ########################################################################
 ########################################################################
+GLOBALARCHLIST="source amd64 arm64 armel armhf hurd-i386 i386 ia64 kfreebsd-amd64 kfreebsd-i386 mips mips64el mipsel powerpc ppc64el s390 s390x sparc"
+
+DATE_STARTED=$(LC_ALL=POSIX LANG=POSIX date -u -R)
+
+# Exclude architectures defined in $ARCH_EXCLUDE
+set_exclude_include_archs
 
 # Some sane defaults
 cd "${BASEDIR}"
@@ -417,7 +572,7 @@ touch "${UPDATEREQUIRED}"
 
 # Check to see if another sync is in progress
 if ! ( set -o noclobber; echo "$$" > "${LOCK}") 2> /dev/null; then
-    if [ ${BASH_VERSINFO[0]} -gt 3 ] || [ -L /proc/self ]; then
+    if [[ ${BASH_VERSINFO[0]} -gt 3 ]] || [[ -L /proc/self ]]; then
         # We have a recent enough bash version, lets do it the easy way,
         # the lock will contain the right pid, thanks to $BASHPID
         if ! $(kill -0 $(< ${LOCK}) 2>/dev/null); then
@@ -434,7 +589,7 @@ if ! ( set -o noclobber; echo "$$" > "${LOCK}") 2> /dev/null; then
         stamptime=$(date --reference="${LOCK}" +%s)
         unixtime=$(date +%s)
         difference=$(( $unixtime - $stamptime ))
-        if [ ${difference} -ge ${LOCKTIMEOUT} ]; then
+        if [[ ${difference} -ge ${LOCKTIMEOUT} ]]; then
             # Took longer than LOCKTIMEOUT minutes? Assume it broke and take the lock
             echo "$$" > "${LOCK}"
         else
@@ -457,12 +612,12 @@ log "Mirrorsync start"
 # Look who pushed us and note that in the log.
 SSH_CONNECTION=${SSH_CONNECTION:-""}
 PUSHFROM="${SSH_CONNECTION%%\ *}"
-if [ -n "${PUSHFROM}" ]; then
+if [[ -n ${PUSHFROM} ]]; then
     log "We got pushed from ${PUSHFROM}"
 fi
 
-if [ "xtruex" = "x${SYNCCALLBACK}x" ]; then
-    if [ "xnonex" = "x${CALLBACKHOST}x" ] || [ "xnonex" = "x${CALLBACKKEY}x" ]; then
+if [[ true = ${SYNCCALLBACK} ]]; then
+    if [[ none = ${CALLBACKHOST} ]] || [[ none = ${CALLBACKKEY} ]]; then
         SYNCCALLBACK="false"
         error "We are asked to call back, but we do not know where to and do not have a key, ignoring callback"
     fi
@@ -476,7 +631,7 @@ hook $HOOK
 
 # Now, we might want to sync from anonymous too.
 # This is that deep in this script so hook1 could, if wanted, change things!
-if [ -z ${RSYNC_USER} ]; then
+if [[ -z ${RSYNC_USER} ]]; then
     RSYNCPTH="${RSYNC_HOST}"
 else
     RSYNCPTH="${RSYNC_USER}@${RSYNC_HOST}"
@@ -488,20 +643,23 @@ export RSYNC_PROXY
 
 UPDATE_RETRIES=0
 
-while [ -e "${UPDATEREQUIRED}" ]; do
+while [[ -e ${UPDATEREQUIRED} ]]; do
     log "Running mirrorsync, update is required, ${UPDATEREQUIRED} exists"
 
     # if we want stage1 *or* all
-    if [ "xtruex" = "x${SYNCSTAGE1}x" ] || [ "xtruex" = "x${SYNCALL}x" ]; then
-        while [ -e "${UPDATEREQUIRED}" ]; do
+    if [[ true = ${SYNCSTAGE1} ]] || [[ true = ${SYNCALL} ]]; then
+        while [[ -e ${UPDATEREQUIRED} ]]; do
             rm -f "${UPDATEREQUIRED}"
-            log "Running stage1: ${RSYNC} ${RSYNC_OPTIONS} ${RSYNC_OPTIONS1} ${EXCLUDE} ${SOURCE_EXCLUDE}  ${RSYNCPTH}::${RSYNC_PATH} ${TO}"
+            log "Running stage1: ${RSYNC} ${RSYNC_SSL_OPTIONS} ${RSYNC_OPTIONS} ${RSYNC_OPTIONS1} ${EXCLUDE} ${SOURCE_EXCLUDE}  ${RSYNCPTH}::${RSYNC_PATH} ${TO}"
 
             set +e
             # Step one, sync everything except Packages/Releases
-            ${RSYNC} ${RSYNC_OPTIONS} ${RSYNC_OPTIONS1} ${EXCLUDE} ${SOURCE_EXCLUDE} \
+            rsync_started=$(date +%s)
+            ${RSYNC} ${RSYNC_SSL_OPTIONS} ${RSYNC_OPTIONS} ${RSYNC_OPTIONS1} ${EXCLUDE} ${SOURCE_EXCLUDE} \
                 ${RSYNCPTH}::${RSYNC_PATH} "${TO}" >>"${LOGDIR}/rsync-${NAME}.log" 2>>"${LOGDIR}/rsync-${NAME}.error"
             result=$?
+            rsync_ended=$(date +%s)
+            STATS_TOTAL_RSYNC_TIME1=$(( STATS_TOTAL_RSYNC_TIME1 + rsync_ended - rsync_started ))
             set -e
 
             log "Back from rsync with returncode ${result}"
@@ -516,9 +674,9 @@ while [ -e "${UPDATEREQUIRED}" ]; do
     check_rsync $result "Sync step 1 went wrong, got errorcode ${result}. Logfile: ${LOG}"
     GO=$?
     set -e
-    if [ ${GO} -eq 2 ] && [ -e "${UPDATEREQUIRED}" ]; then
+    if [[ ${GO} -eq 2 ]] && [[ -e ${UPDATEREQUIRED} ]]; then
         log "We got error ${result} from rsync, but a second push went in hence ignoring this error for now"
-    elif [ ${GO} -ne 0 ]; then
+    elif [[ ${GO} -ne 0 ]]; then
         exit 3
     fi
 
@@ -529,7 +687,7 @@ while [ -e "${UPDATEREQUIRED}" ]; do
     hook $HOOK
 
     # if we want stage2 *or* all
-    if [ "xtruex" = "x${SYNCSTAGE2}x" ] || [ "xtruex" = "x${SYNCALL}x" ]; then
+    if [[ true = ${SYNCSTAGE2} ]] || [[ true = ${SYNCALL} ]]; then
         upstream_uip=false
         for aupfile in "${TO}/Archive-Update-in-Progress-"*; do
             case "$aupfile" in
@@ -540,7 +698,7 @@ while [ -e "${UPDATEREQUIRED}" ]; do
                     :
                     ;;
                 *)
-                    if [ -f "$aupfile" ]; then
+                    if [[ -f $aupfile ]]; then
                         # Remove the file, it will be synced again if
                         # upstream is still not done
                         rm -f "$aupfile"
@@ -552,9 +710,9 @@ while [ -e "${UPDATEREQUIRED}" ]; do
             esac
         done
 
-        if [ "xtruex" = "x${upstream_uip}x" ]; then
+        if [[ true = ${upstream_uip} ]]; then
             log "Upstream archive update in progress, skipping stage2"
-            if [ ${UPDATE_RETRIES} -lt ${UIPRETRIES} ]; then
+            if [[ ${UPDATE_RETRIES} -lt ${UIPRETRIES} ]]; then
                 log "Retrying update in ${UIPSLEEP}"
                 touch "${UPDATEREQUIRED}"
                 UPDATE_RETRIES=$(($UPDATE_RETRIES+1))
@@ -566,14 +724,17 @@ while [ -e "${UPDATEREQUIRED}" ]; do
                 result=1
             fi
         else
-            log "Running stage2: ${RSYNC} ${RSYNC_OPTIONS} ${RSYNC_OPTIONS2} ${EXCLUDE} ${SOURCE_EXCLUDE} ${RSYNCPTH}::${RSYNC_PATH} ${TO}"
+            log "Running stage2: ${RSYNC} ${RSYNC_SSL_OPTIONS} ${RSYNC_OPTIONS} ${RSYNC_OPTIONS2} ${EXCLUDE} ${SOURCE_EXCLUDE} ${RSYNCPTH}::${RSYNC_PATH} ${TO}"
 
             set +e
             # We are lucky, it worked. Now do step 2 and sync again, this time including
             # the packages/releases files
-            ${RSYNC} ${RSYNC_OPTIONS} ${RSYNC_OPTIONS2} ${EXCLUDE} ${SOURCE_EXCLUDE} \
+            rsync_started=$(date +%s)
+            ${RSYNC} ${RSYNC_SSL_OPTIONS} ${RSYNC_OPTIONS} ${RSYNC_OPTIONS2} ${EXCLUDE} ${SOURCE_EXCLUDE} \
                 ${RSYNCPTH}::${RSYNC_PATH} "${TO}" >>"${LOGDIR}/rsync-${NAME}.log" 2>>"${LOGDIR}/rsync-${NAME}.error"
             result=$?
+            rsync_ended=$(date +%s)
+            STATS_TOTAL_RSYNC_TIME2=$(( STATS_TOTAL_RSYNC_TIME2 + rsync_ended - rsync_started ))
             set -e
 
             log "Back from rsync with returncode ${result}"
@@ -587,9 +748,9 @@ while [ -e "${UPDATEREQUIRED}" ]; do
     check_rsync $result "Sync step 2 went wrong, got errorcode ${result}. Logfile: ${LOG}"
     GO=$?
     set -e
-    if [ ${GO} -eq 2 ] && [ -e "${UPDATEREQUIRED}" ]; then
+    if [[ ${GO} -eq 2 ]] && [[ -e ${UPDATEREQUIRED} ]]; then
         log "We got error ${result} from rsync, but a second push went in hence ignoring this error for now"
-    elif [ ${GO} -ne 0 ]; then
+    elif [[ ${GO} -ne 0 ]]; then
         exit 4
     fi
 
@@ -602,47 +763,13 @@ done
 
 # We only update our tracefile when we had a stage2 or an all sync.
 # Otherwise we would update it after stage1 already, which is wrong.
-
-if [ "xtruex" = "x${SYNCSTAGE2}x" ] || [ "xtruex" = "x${SYNCALL}x" ]; then
-    case ${EXTENDEDTRACE} in
-        none)
-            log "No trace file wanted. Not creating one"
-            ;;
-        touch)
-            log "Just touching the trace file"
-            touch "${TO}/${TRACE}"
-            ;;
-        date|terse|full)
-            log "Creating a ${EXTENDEDTRACE} trace file"
-            if [ -d "$(dirname "${TO}/${TRACE}")" ]; then
-                {
-                    LC_ALL=POSIX LANG=POSIX date -u
-                    if [ "xdatex" != "x${EXTENDEDTRACE}x" ]; then
-                        echo "Used ftpsync version: ${VERSION}"
-                        echo "Running on host: ${TRACEHOST}"
-                        if [ "xfullx" = "x${EXTENDEDTRACE}x" ]; then
-                            GLOBALARCHLIST="source amd64 arm64 armel armhf hurd-i386 i386 ia64 kfreebsd-amd64 kfreebsd-i386 mips mipsel powerpc ppc64el s390 s390x sparc"
-
-                            AEXCLUDE="^${ARCH_EXCLUDE// /\$|^}$"
-                            ARCHLIST=""
-                            for ARCH in ${GLOBALARCHLIST}; do
-                                if ! [[ ${ARCH} =~ ${AEXCLUDE} ]]; then
-                                    ARCHLIST="${ARCHLIST} ${ARCH}"
-                                fi
-                            done
-                            out="GUESSED:{${ARCHLIST}}"
-                            echo "Architectures: ${out}"
-                            echo "Upstream-mirror: ${RSYNC_HOST}"
-                        fi # full trace
-                    fi # other traces
-                } > "${TO}/${TRACE}.new"
-                mv "${TO}/${TRACE}.new" "${TO}/${TRACE}"
-            fi
-            ;;
-        *)
-            error "Unsupported EXTENDEDTRACE value configured in ${BASEDIR}/etc/${NAME}.conf, please fix"
-            ;;
-    esac
+if [[ true = ${SYNCSTAGE2} ]] || [[ true = ${SYNCALL} ]]; then
+    tracefile
+    if [[ true = ${SYNCALL} ]]; then
+        rm -f "${TO}/${TRACE}-stage1"
+    fi
+elif [[ true = ${SYNCSTAGE1} ]]; then
+    tracefile "${TO}/${TRACE}-stage1"
 fi
 
 
@@ -652,7 +779,7 @@ HOOK=(
 )
 hook $HOOK
 
-if [ "xtruex" = "x${SYNCCALLBACK}x" ]; then
+if [[ true = ${SYNCCALLBACK} ]]; then
     set +e
     callback ${CALLBACKUSER} ${CALLBACKHOST} "${CALLBACKKEY}"
     set -e
@@ -663,20 +790,20 @@ rm -f "${LOCK}"
 
 # Check if there is a newer version of ftpsync. If so inform the admin, but not
 # more than once every third day.
-if [ -r "${TO}/project/ftpsync/LATEST.VERSION" ]; then
+if [[ -r ${TO}/project/ftpsync/LATEST.VERSION ]]; then
     LATEST=$(< "${TO}/project/ftpsync/LATEST.VERSION")
     if ! [[ ${LATEST} =~ [0-9]+ ]]; then
         LATEST=0
     fi
-    if [ ${LATEST} -gt ${VERSION} ]; then
-        if [ -n "${MAILTO}" ]; then
+    if [[ ${LATEST} -gt ${VERSION} ]]; then
+        if [[ -n ${MAILTO} ]]; then
             difference=0
-            if [ -f "${LOGDIR}/ftpsync.newversion" ]; then
+            if [[ -f ${LOGDIR}/ftpsync.newversion ]]; then
                 stamptime=$(< "${LOGDIR}/ftpsync.newversion")
                 unixtime=$(date +%s)
                 difference=$(( $unixtime - $stamptime ))
             fi
-            if [ ${difference} -ge 259200 ]; then
+            if [[ ${difference} -ge 259200 ]]; then
                 # Only warn every third day
                 mail -s "[$(hostname -s)] Update for ftpsync available" ${MAILTO} <<EOF
 Hello admin,
@@ -704,11 +831,11 @@ EOF
     fi
 fi
 
-if [ x${HUB} = "xtrue" ]; then
+if [[ ${HUB} = true ]]; then
     # Trigger slave mirrors if we had a push for stage2 or all, or if its mhop
-    if [ "xtruex" = "x${SYNCSTAGE2}x" ] || [ "xtruex" = "x${SYNCALL}x" ] || [ "xtruex" = "x${SYNCMHOP}x" ]; then
+    if [[ true = ${SYNCSTAGE2} ]] || [[ true = ${SYNCALL} ]] || [[ true = ${SYNCMHOP} ]]; then
         RUNMIRRORARGS=""
-        if [ -n "${ARCHIVE}" ]; then
+        if [[ -n ${ARCHIVE} ]]; then
             # We tell runmirrors about the archive we are running on.
             RUNMIRRORARGS="-a ${ARCHIVE}"
         fi
@@ -716,14 +843,14 @@ if [ x${HUB} = "xtrue" ]; then
         # the way it works with mhop based on that.
         RUNMIRRORARGS="${RUNMIRRORARGS} -f"
 
-        if [ "xtruex" = "x${SYNCSTAGE1}x" ]; then
+        if [[ true = ${SYNCSTAGE1} ]]; then
             # This is true when we have a mhop sync. A normal multi-stage push sending stage1 will
             # not get to this point.
             # So if that happens, tell runmirrors we are doing mhop
             RUNMIRRORARGS="${RUNMIRRORARGS} -k mhop"
-        elif [ "xtruex" = "x${SYNCSTAGE2}x" ]; then
+        elif [[ true = ${SYNCSTAGE2} ]]; then
             RUNMIRRORARGS="${RUNMIRRORARGS} -k stage2"
-        elif [ "xtruex" = "x${SYNCALL}x" ]; then
+        elif [[ true = ${SYNCALL} ]]; then
             RUNMIRRORARGS="${RUNMIRRORARGS} -k all"
         fi
         log "Trigger slave mirrors using ${RUNMIRRORARGS}"
