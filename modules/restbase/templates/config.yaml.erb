@@ -1,5 +1,5 @@
 # RESTBase wikimedia config
-
+<% mw_primary = scope.lookupvar('::mw_primary') %>
 # First, load & parametrize project templates. These are referenced / shared
 # between domains in the root_spec further down.
 default_project: &default_project
@@ -45,7 +45,7 @@ default_project: &default_project
         parsoid:
           host: <%= @parsoid_uri %>
         action:
-          apiUriTemplate: http://api.svc.eqiad.wmnet/w/api.php
+          apiUriTemplate: http://api.svc.<%= mw_primary %>.wmnet/w/api.php
         graphoid:
           host: <%= @graphoid_uri %>
         mathoid:

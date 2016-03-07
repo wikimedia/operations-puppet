@@ -10,7 +10,7 @@ restbase::cassandra_datacenters:
     - "eqiad"
     - "codfw"
 restbase::statsd_host: statsd.eqiad.wmnet
-restbase::parsoid_uri: http://parsoid.svc.eqiad.wmnet:8000
+restbase::parsoid_uri: http://parsoid.svc.%{::parsoid_primary}.wmnet:8000
 restbase::graphoid_uri: http://graphoid.svc.eqiad.wmnet:19000
 restbase::mobileapps_uri: http://mobileapps.svc.eqiad.wmnet:8888
 restbase::mathoid_uri: http://mathoid.svc.eqiad.wmnet:10042
