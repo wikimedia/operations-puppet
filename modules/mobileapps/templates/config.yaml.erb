@@ -9,6 +9,7 @@ restbase_req:
   uri: <%= @restbase_uri %>/{domain}/v1/page/html/{title}
   headers:
     user-agent: <%= @user_agent %>
+    accept: text/html; charset=utf-8; profile="mediawiki.org/specs/html/1.2.0"
 # the request template to use when contacting the MW API
 mwapi_req:
   method: post
