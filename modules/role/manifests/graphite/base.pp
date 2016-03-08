@@ -242,4 +242,10 @@ class role::graphite::base(
         proto => 'tcp',
         port  => 'http',
     }
+
+    ferm::service { 'carbon_pickled':
+        proto => 'tcp',
+        port  => '2004',
+        srange => '$INTERNAL',
+    }
 }
