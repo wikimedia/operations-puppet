@@ -51,11 +51,11 @@ Puppet::Type.type(:package).provide(
 
     FileUtils.chown_R(deploy_user, nil, deploy_root)
 
-    Puppet.debug "scap pkg [#{repo}] root=#{deploy_root}, user=#{deploy_user}"
+    Puppet.debug "scap pkg [#{repo_path}] root=#{deploy_root}, user=#{deploy_user}"
 
     uid = Etc.getpwnam(deploy_user).uid
 
-    execute([self.class.command(:deploy_local), '--repo', repo, '-D', 'log_json:False'],
+    execute([self.class.command(:deploy_local), '--repo', repo_path, '-D', 'log_json:False'],
             :uid => uid, :failonfail => true)
   end
 
