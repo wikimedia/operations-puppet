@@ -73,6 +73,10 @@ def output(msg, verbose):
         print '-> ', msg
 
 
+def log(msg):
+    output(msg, verbose='-v' in sys.argv)
+
+
 class EmailParsingError(Exception):
     pass
 
@@ -82,9 +86,6 @@ class EmailStatusError(Exception):
 
 
 def main():
-
-    log = lambda m: output(m, verbose='-v' in sys.argv)
-
     # if stdin is empty we bail to avoid a loop
     # of looking for EOF that never comes
     if sys.stdin.isatty():
