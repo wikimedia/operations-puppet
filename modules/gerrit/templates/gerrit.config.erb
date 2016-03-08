@@ -10,10 +10,10 @@
     useRecursiveMerge = true
 [database]
     type = MYSQL
-    hostname = <%= @dbhost %>
-    database = <%= @dbname %>
-    username = <%= @dbuser %>
-    url = jdbc:mysql://<%= @dbhost %>/<%= @dbname %>?characterSetResults=utf8&characterEncoding=utf8&connectionCollation=utf8_unicode_ci
+    hostname = <%= @db_host %>
+    database = <%= @db_name %>
+    username = <%= @db_user %>
+    url = jdbc:mysql://<%= @db_host %>/<%= @db_name %>?characterSetResults=utf8&characterEncoding=utf8&connectionCollation=utf8_unicode_ci
 [auth]
     type = LDAP
     cookieSecure = true
@@ -39,7 +39,7 @@
     javaHome = /usr/lib/jvm/java-7-openjdk-amd64/jre
     heapLimit = 20g
 [sshd]
-    listenAddress = *:<%= @sshport %>
+    listenAddress = *:<%= @ssh_port %>
     threads = 8
     batchThreads = 2
     idleTimeout = 864000
