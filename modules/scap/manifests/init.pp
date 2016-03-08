@@ -9,10 +9,10 @@ class scap ($deployment_server = 'deployment') {
     }
 
     file { '/etc/scap.cfg':
-        source => template('scap/scap.cfg.erb'),
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0444',
+        content => template('scap/scap.cfg.erb'),
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
     }
 
     require_package([
