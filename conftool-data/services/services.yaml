@@ -99,6 +99,13 @@ scb:
       weight: 10
     datacenters:
     - eqiad
+  changeprop:
+    datacenters:
+    - eqiad
+    default_values:
+      pooled: 'yes'
+      weight: 10
+    port: '7272'
 restbase:
   restbase:
     port: 7231

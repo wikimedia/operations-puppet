@@ -16,6 +16,7 @@ lvs::realserver::realserver_ips:
 - 10.2.2.18
 - 10.2.2.19
 - 10.2.2.20
+- 10.2.2.24
 service::configuration::http_proxy: http://url-downloader.wikimedia.org:8080
 service::configuration::statsd_host: statsd.eqiad.wmnet
 service::configuration::logstash_host: logstash1001.eqiad.wmnet
