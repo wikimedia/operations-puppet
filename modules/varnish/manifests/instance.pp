@@ -1,3 +1,16 @@
+define varnish::wikimedia_vcl($varnish_testing, $template_path) {
+    if $varnish_testing  {
+        $varnish_include_path = '/usr/share/varnish/tests/'
+    }
+
+    file { $title:
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        content => template($template_path),
+    }
+}
+
 define varnish::instance(
     $layer,
     $vcl_config,
@@ -75,6 +88,23 @@ define varnish::instance(
         mode    => '0444',
         require => File["/etc/varnish/${vcl}.inc.vcl"],
         content => template("${module_name}/vcl/wikimedia-${layer}.vcl.erb"),
+    }
+
+    # These versions of wikimedia-common_${vcl}.vcl and wikimedia_${vcl}.vcl
+    # are exactly the same as those under /etc/varnish but without any
+    # backends defined. The goal is to make it possible to run the VTC test
+    # files under /usr/share/varnish/tests without having to modify any VCL
+    # file by hand.
+    varnish::wikimedia_vcl { "/usr/share/varnish/tests/wikimedia-common_${vcl}.inc.vcl":
+        require         => File['/usr/share/varnish/tests'],
+        varnish_testing => true,
+        template_path   => "${module_name}/vcl/wikimedia-common.inc.vcl.erb",
+    }
+
+    varnish::wikimedia_vcl { "/usr/share/varnish/tests/wikimedia_${vcl}.vcl":
+        require         => File['/usr/share/varnish/tests'],
+        varnish_testing => true,
+        template_path   => "${module_name}/vcl/wikimedia-${layer}.vcl.erb",
     }
 
     file { "/etc/varnish/${vcl}.inc.vcl":
