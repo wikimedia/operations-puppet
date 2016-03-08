@@ -20,10 +20,6 @@ repo_config:
   eventlogging/eventlogging:
     upstream: https://gerrit.wikimedia.org/r/eventlogging
     checkout_submodules: true
-  # eventlogging/eventbus is the eventlogging codebase, but as a
-  # separate deploy target so that eventlogging-service-eventbus
-  # deployments can be scheduled separately from other eventlogging
-  # codebase deployments.
   eventlogging/eventbus:
     upstream: https://gerrit.wikimedia.org/r/eventlogging
     checkout_submodules: true
@@ -117,3 +113,5 @@ repo_config:
     upstream: https://gerrit.wikimedia.org/r/analytics/aqs/deploy
     service_name: aqs
     checkout_submodules: true
+  changeprop/deploy:
+    upstream: change-propagation/deploy
