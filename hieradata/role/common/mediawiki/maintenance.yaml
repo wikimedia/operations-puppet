@@ -1,0 +1,37 @@
+admin::groups:
+  - restricted
+  - deployment
+  - ldap-admins
+base::resolving::domain_search:
+  - wikimedia.org
+  - eqiad.wmnet
+  - esams.wikimedia.org
+  - codfw.wmnet
+mediawiki::maintenance::pagetriage::ensure: %{::role::mediawiki::maintenance::job_default}
+mediawiki::maintenance::translationnotifications::ensure: %{::role::mediawiki::maintenance::job_default}
+mediawiki::maintenance::updatetranslationstats::ensure: %{::role::mediawiki::maintenance::job_default}
+mediawiki::maintenance::wikidata::ensure: %{::role::mediawiki::maintenance::job_default}
+mediawiki::maintenance::echo_mail_batch::ensure: %{::role::mediawiki::maintenance::job_default}
+mediawiki::maintenance::parsercachepurging::ensure: %{::role::mediawiki::maintenance::job_default}
+mediawiki::maintenance::cleanup_upload_stash::ensure: %{::role::mediawiki::maintenance::job_default}
+mediawiki::maintenance::tor_exit_node::ensure: %{::role::mediawiki::maintenance::job_default}
+mediawiki::maintenance::update_flaggedrev_stats::ensure: %{::role::mediawiki::maintenance::job_default}
+mediawiki::maintenance::refreshlinks::ensure: %{::role::mediawiki::maintenance::job_default}
+mediawiki::maintenance::update_special_pages::ensure: %{::role::mediawiki::maintenance::job_default}
+mediawiki::maintenance::update_article_count::ensure: %{::role::mediawiki::maintenance::job_default}
+mediawiki::maintenance::purge_abusefilter::ensure: %{::role::mediawiki::maintenance::job_default}
+mediawiki::maintenance::purge_checkuser::ensure: %{::role::mediawiki::maintenance::job_default}
+mediawiki::maintenance::purge_securepoll::ensure: %{::role::mediawiki::maintenance::job_default}
+mediawiki::maintenance::jobqueue_stats::ensure: %{::role::mediawiki::maintenance::job_default}
+mediawiki::maintenance::updatequerypages::ensure: %{::role::mediawiki::maintenance::job_default}
+mediawiki::maintenance::cirrussearch::ensure: %{::role::mediawiki::maintenance::job_default}
+tendril::maintenance::ensure: %{::role::mediawiki::maintenance::job_default}
+hhvm::extra::cli:
+  hhvm:
+    server:
+      # Limit number of child processes running at once
+      # Also, use light processes, that are more efficient
+      light_process_count: 2
+    mysql:
+      # Kill queries only after 1 day
+      read_timeout: 86400000
