@@ -2046,6 +2046,7 @@ node /^mw20[5-7][0-9]\.codfw\.wmnet$/ {
     include base::firewall
 }
 
+
 # ROW B codfw appservers: mw2080-mw2147
 #mw2080-mw2085 are jobrunners
 node /^mw208[0-5]\.codfw\.wmnet$/ {
@@ -2061,8 +2062,21 @@ node /^mw208[6-9]\.codfw\.wmnet$/ {
     role mediawiki::imagescaler
 }
 
-#mw2090-mw2119 are appservers
-node /^mw2(09[0-9]|1[0-1][0-9])\.codfw\.wmnet$/ {
+#mw2090 is terbium's equivalent
+node 'mw2090.codfw.wmnet' {
+    role mariadb::maintenance, mediawiki::maintenance, backup::host
+
+    include ldap::role::client::labs
+
+    package { 'python-mysqldb':
+        ensure => installed,
+    }
+
+    backup::set {'home': }
+}
+
+#mw2091-mw2119 are appservers
+node /^mw2(09[1-9]|1[0-1][0-9])\.codfw\.wmnet$/ {
     role mediawiki::appserver
     include base::firewall
 }

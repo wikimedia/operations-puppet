@@ -41,7 +41,6 @@ appserver:
   mw2047.codfw.wmnet: [apache2]
   mw2048.codfw.wmnet: [apache2]
   mw2049.codfw.wmnet: [apache2]
-  mw2090.codfw.wmnet: [apache2]
   mw2091.codfw.wmnet: [apache2]
   mw2092.codfw.wmnet: [apache2]
   mw2093.codfw.wmnet: [apache2]
