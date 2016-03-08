@@ -9,6 +9,7 @@ admin::groups:
 - mathoid-roots
 - zotero-admin
 - mobileapps-admin
+- changeprop-admin
 service::configuration::log_dir: /srv/log
 graphoid::domains:
 - mediawiki.org
