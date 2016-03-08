@@ -1,3 +1,8 @@
 cluster: cache_upload
 admin::groups:
   - perf-roots
+route_table:
+  eqiad: 'direct'
+  codfw: 'eqiad'
+  ulsfo: 'codfw'
+  esams: 'eqiad'
