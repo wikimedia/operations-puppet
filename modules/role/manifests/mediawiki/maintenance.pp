@@ -8,6 +8,11 @@ class role::mediawiki::maintenance {
         target => '/srv/mediawiki'
     }
 
+    if ($::site != $::mw_primary) {
+        Cron {
+            ensure => absent
+        }
+    }
     include mediawiki::maintenance::pagetriage
     include mediawiki::maintenance::translationnotifications
     include mediawiki::maintenance::updatetranslationstats
@@ -32,4 +37,3 @@ class role::mediawiki::maintenance {
     # Readline support for PHP maintenance scripts (T126262)
     require_package('php5-readline')
 }
-
