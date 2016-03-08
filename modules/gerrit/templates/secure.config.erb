@@ -1,11 +1,11 @@
 [database]
-	password = <%= scope.lookupvar('gerrit::instance::dbpass') %>
+	password = <%= @db_pass %>
 [ldap]
 	username = <%= @ldap_proxyagent %>
 	password = <%= @ldap_proxyagent_pass %>
 [auth]
-	registerEmailPrivateKey = <%= scope.lookupvar('gerrit::instance::email_key') %>
+	registerEmailPrivateKey = <%= @email_key %>
 [bugzilla]
-	password = <%= scope.lookupvar('gerrit::instance::bzpass') %>
+	password = <%= @bz_pass %>
 [its-phabricator]
-	certificate = <%= scope.lookupvar('gerrit::instance::phabcert') %>
+	certificate = <%= @phab_cert %>
