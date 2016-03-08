@@ -194,7 +194,7 @@ sub wm_common_recv_early {
 
 	if (req.request !~ "<%= @vcl_config.fetch("allowed_methods", "^(GET|HEAD|POST|PURGE)$") %>"
 		&& !(req.request == "OPTIONS" && req.http.Origin)) {
-		error 403 "HTTP method not allowed";
+		error 405 "Method not allowed";
 	}
 
 	if ( req.http.host ~ "^varnishcheck" ) {

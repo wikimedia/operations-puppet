@@ -11,7 +11,7 @@ sub cluster_fe_recv {
 
 	if (req.request != "GET" && req.request != "HEAD") {
 		// We only deal with GET, HEAD at this point
-		error 403 "HTTP method not allowed";
+		error 405 "Method not allowed";
 	}
 
 	call upload_common_recv;
