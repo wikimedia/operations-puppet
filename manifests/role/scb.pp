@@ -6,6 +6,7 @@ class role::scb {
     include role::graphoid
     include role::citoid
     include role::cxserver
+    include role::changeprop
 
     include standard
     include base::firewall

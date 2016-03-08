@@ -9,12 +9,13 @@ admin::groups:
 - mathoid-roots
 - zotero-admin
 - mobileapps-admin
+- changeprop-admin
 lvs::realserver::realserver_ips:
-- 10.2.2.14 # mobileapps.svc.eqiad.wmnet
-- 10.2.2.15 # graphoid.svc.eqiad.wmnet
-- 10.2.2.18 # cxserver.svc.eqiad.wmnet
-- 10.2.2.19 # citoid.svc.eqiad.wmnet
-- 10.2.2.20 # mathoid.svc.eqiad.wmnet
+- 10.2.2.14
+- 10.2.2.15
+- 10.2.2.18
+- 10.2.2.19
+- 10.2.2.20
 service::configuration::http_proxy: http://url-downloader.wikimedia.org:8080
 service::configuration::statsd_host: statsd.eqiad.wmnet
 service::configuration::logstash_host: logstash1001.eqiad.wmnet
@@ -34,24 +35,22 @@ graphoid::domains:
 - wiktionary.org
 graphoid::allowed_domains:
   https:
-    - mediawiki.org
-    - wikibooks.org
-    - wikidata.org
-    - wikimedia.org
-    - wikimediafoundation.org
-    - wikinews.org
-    - wikipedia.org
-    - wikiquote.org
-    - wikisource.org
-    - wikiversity.org
-    - wikivoyage.org
-    - wiktionary.org
+  - mediawiki.org
+  - wikibooks.org
+  - wikidata.org
+  - wikimedia.org
+  - wikimediafoundation.org
+  - wikinews.org
+  - wikipedia.org
+  - wikiquote.org
+  - wikisource.org
+  - wikiversity.org
+  - wikivoyage.org
+  - wiktionary.org
   wikirawupload:
-    - upload.wikimedia.org
+  - upload.wikimedia.org
   wikidatasparql:
-    - query.wikidata.org
+  - query.wikidata.org
 debdeploy::grains:
   debdeploy-scb:
     value: standard
-
-
