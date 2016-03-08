@@ -14,8 +14,8 @@
 
     "use_low_ttl": "rule:admin",
 
-    "get_quotas": "",
-    "get_quota": "",
+    "get_quotas": "rule:admin_or_member",
+    "get_quota": "rule:admin_or_member",
     "set_quota": "rule:admin",
     "reset_quotas": "rule:admin",
 
@@ -35,21 +35,21 @@
     "get_tenant": "rule:admin_or_member",
     "count_tenants": "rule:admin",
 
-    "create_domain": "rule:admin_or_projectadmin",
+    "create_domain": "rule:admin",
     "get_domains": "rule:admin_or_member",
     "get_domain": "rule:admin_or_member",
     "get_domain_servers": "rule:admin_or_member",
     "find_domains": "rule:admin_or_projectadmin",
     "find_domain": "rule:admin_or_projectadmin",
-    "update_domain": "rule:admin_or_projectadmin",
-    "delete_domain": "rule:admin_or_projectadmin",
+    "update_domain": "rule:admin",
+    "delete_domain": "rule:admin",
     "abandon_domain": "rule:admin",
     "count_domains": "rule:admin_or_projectadmin",
-    "touch_domain": "rule:admin_or_projectadmin",
+    "touch_domain": "rule:admin",
 
     "create_record": "rule:admin_or_projectadmin",
-    "get_records": "",
-    "get_record": "",
+    "get_records": "rule:admin_or_projectadmin",
+    "get_record": "rule:admin_or_projectadmin",
     "find_records": "rule:admin_or_projectadmin",
     "find_record": "rule:admin_or_projectadmin",
     "update_record": "rule:admin_or_projectadmin",
