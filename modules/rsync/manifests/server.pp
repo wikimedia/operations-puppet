@@ -13,6 +13,7 @@
 class rsync::server(
   $use_xinetd = false,  # this parameter should not be used.  xinetd is not available.
   $address    = '0.0.0.0',
+  $timeout    = '300',
   $motd_file  = 'UNSET',
   $log_file   = 'UNSET',
   $use_chroot = 'yes',
