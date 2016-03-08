@@ -2140,7 +2140,8 @@ node 'mx2001.wikimedia.org' {
 
 # salt master
 node 'neodymium.eqiad.wmnet' {
-    role salt::masters::production, deployment::salt_masters, debdeploy::master, ipmi, access_new_install
+    role salt::masters::production, deployment::salt_masters,
+         debdeploy::master, ipmi, access_new_install, mariadb::client
     include standard
 }
 
@@ -2335,7 +2336,7 @@ node 'ruthenium.eqiad.wmnet' {
 
 # salt master fallback
 node 'sarin.codfw.wmnet' {
-    role salt::masters::production
+    role salt::masters::production, mariadb::client
     include standard
 }
 
