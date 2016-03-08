@@ -390,12 +390,6 @@ node /^cp40(1[129]|20)\.ulsfo\.wmnet$/ {
     include standard # ex-mobile
 }
 
-# T118763 (temporary in use)
-node 'cygnus.codfw.wmnet' {
-    role pentest::tools
-    include standard
-}
-
 node 'dataset1001.wikimedia.org' {
 
     role dataset::primary, dumps
@@ -2523,12 +2517,6 @@ node /(subra|suhail)\.codfw\.wmnet/ {
     role poolcounter
     include standard
     include base::firewall
-}
-
-# T118763 (temporary in use)
-node 'technetium.eqiad.wmnet' {
-    role pentest::tools
-    include standard
 }
 
 # https://wikitech.wikimedia.org/wiki/Terbium
