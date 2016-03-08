@@ -483,6 +483,12 @@ groups:
                'ALL = NOPASSWD: /usr/sbin/service parsoid-vd-client *',
                'ALL = NOPASSWD: /usr/sbin/service diffservice *',
                'ALL = NOPASSWD: /bin/journalctl *']
+  changeprop-admin:
+    description: Group of changeprop admins
+    gid: 7081
+    members: [mobrovac]
+    privileges: ['ALL = NOPASSWD: /usr/sbin/service changeprop *',
+                 'ALL = (changeprop) NOPASSWD: ALL']
 users:
   rush:
     ensure: present

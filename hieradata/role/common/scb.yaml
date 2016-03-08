@@ -9,6 +9,7 @@ admin::groups:
 - mathoid-roots
 - zotero-admin
 - mobileapps-admin
+- changeprop-admin
 lvs::realserver::realserver_ips:
 - 10.2.2.14 # mobileapps.svc.eqiad.wmnet
 - 10.2.2.15 # graphoid.svc.eqiad.wmnet
