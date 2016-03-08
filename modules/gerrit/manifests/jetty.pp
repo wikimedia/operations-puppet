@@ -1,19 +1,31 @@
-class gerrit::jetty ($ldap_hosts,
-    $ldap_base_dn,
-    $url,
-    $dbhost,
-    $dbname,
-    $dbuser,
+class gerrit::jetty ($url,
+    $db_host,
     $hostname,
-    $sshport,
-    $ldap_proxyagent,
-    $ldap_proxyagent_pass,
+    $ssh_port,
     $replication,
     $smtp_host,
-    $ssh_key) {
+    $ssh_key,
+    $db_name = 'reviewdb',
+    $db_user = 'gerrit',
+    $ssh_port = '29418') {
 
-    include gerrit::crons
     include nrpe
+
+    # Private config
+    include passwords::gerrit
+    $email_key = $passwords::gerrit::gerrit_email_key
+    $db_pass = $passwords::gerrit::gerrit_db_pass
+    $bz_pass = $passwords::gerrit::gerrit_bz_pass
+    $phab_cert = $passwords::gerrit::gerrit_phab_cert
+
+    # Setup LDAP
+    include ldap::role::config::labs
+    $ldapconfig = $ldap::role::config::labs::ldapconfig
+
+    $ldap_hosts = $ldapconfig['servernames']
+    $ldap_base_dn = $ldapconfig['basedn']
+    $ldap_proxyagent = $ldapconfig['proxyagent']
+    $ldap_proxyagent_pass = $ldapconfig['proxypass']
 
     package { 'openjdk-7-jre':
         ensure => latest,
