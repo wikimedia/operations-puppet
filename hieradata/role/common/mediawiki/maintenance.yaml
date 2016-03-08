@@ -1,0 +1,37 @@
+admin::groups:
+  - restricted
+  - deployment
+  - ldap-admins
+base::resolving::domain_search:
+  - wikimedia.org
+  - eqiad.wmnet
+  - esams.wikimedia.org
+  - codfw.wmnet
+mediawiki::maintenance::pagetriage::ensure: "%{::mw_primary}"
+mediawiki::maintenance::translationnotifications::ensure: "%{::mw_primary}"
+mediawiki::maintenance::updatetranslationstats::ensure: "%{::mw_primary}"
+mediawiki::maintenance::wikidata::ensure: "%{::mw_primary}"
+mediawiki::maintenance::echo_mail_batch::ensure: "%{::mw_primary}"
+mediawiki::maintenance::parsercachepurging::ensure: "%{::mw_primary}"
+mediawiki::maintenance::cleanup_upload_stash::ensure: "%{::mw_primary}"
+mediawiki::maintenance::tor_exit_node::ensure: "%{::mw_primary}"
+mediawiki::maintenance::update_flaggedrev_stats::ensure: "%{::mw_primary}"
+mediawiki::maintenance::refreshlinks::ensure: "%{::mw_primary}"
+mediawiki::maintenance::update_special_pages::ensure: "%{::mw_primary}"
+mediawiki::maintenance::update_article_count::ensure: "%{::mw_primary}"
+mediawiki::maintenance::purge_abusefilter::ensure: "%{::mw_primary}"
+mediawiki::maintenance::purge_checkuser::ensure: "%{::mw_primary}"
+mediawiki::maintenance::purge_securepoll::ensure: "%{::mw_primary}"
+mediawiki::maintenance::jobqueue_stats::ensure: "%{::mw_primary}"
+mediawiki::maintenance::updatequerypages::ensure: "%{::mw_primary}"
+mediawiki::maintenance::cirrussearch::ensure: "%{::mw_primary}"
+tendril::maintenance::ensure: "%{::mw_primary}"
+hhvm::extra::cli:
+  hhvm:
+    server:
+      # Limit number of child processes running at once
+      # Also, use light processes, that are more efficient
+      light_process_count: 2
+    mysql:
+      # Kill queries only after 1 day
+      read_timeout: 86400000

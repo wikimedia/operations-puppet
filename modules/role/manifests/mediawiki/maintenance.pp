@@ -32,4 +32,3 @@ class role::mediawiki::maintenance {
     # Readline support for PHP maintenance scripts (T126262)
     require_package('php5-readline')
 }
-
