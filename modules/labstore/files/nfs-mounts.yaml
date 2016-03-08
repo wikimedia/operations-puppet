@@ -34,7 +34,7 @@ private:
   wikidata-query:
     gid: 52354
     mounts:
-      home: true
+      scratch: true
   cvresearch:
     gid: 50118
     mounts:
