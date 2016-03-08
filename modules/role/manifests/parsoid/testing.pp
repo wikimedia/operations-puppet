@@ -61,11 +61,11 @@ class role::parsoid::testing {
 
     # Use this parsoid instance for parsoid rt-testing
     file { '/srv/parsoid/src/localsettings.js':
-        source => 'puppet:///modules/testreduce/parsoid-rt-client.rttest.localsettings.js',
-        owner  => 'root',
-        group  => 'wikidev',
-        mode   => '0444',
-        before => Service['parsoid'],
+        content => template('testreduce/parsoid-rt-client.rttest.localsettings.js.erb'),
+        owner   => 'root',
+        group   => 'wikidev',
+        mode    => '0444',
+        before  => Service['parsoid'],
     }
 
     service { 'parsoid':

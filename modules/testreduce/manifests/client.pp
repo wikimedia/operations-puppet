@@ -9,11 +9,11 @@ define testreduce::client(
     $instance_name
 ) {
     file { "/etc/testreduce/${instance_name}.config.js":
-        source => "puppet:///modules/testreduce/${instance_name}.config.js",
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0444',
-        notify => Service[$instance_name],
+        content => template("testreduce/${instance_name}.config.js.erb"),
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        notify  => Service[$instance_name],
     }
 
     file { "/lib/systemd/system/${instance_name}.service":
