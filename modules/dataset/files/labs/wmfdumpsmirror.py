@@ -273,7 +273,7 @@ class DirDeleter(object):
 
         if self.emptydirpath is None:
             self.emptydirpath = maketempdir()
-
+            os.chmod(self.emptydirpath, 0755)
         excludes = ["--exclude=/{0}/".format(dirname) for dirname in project_dirs_rsynced]
         command = ["/usr/bin/rsync", "-a", "--delete"]
         command.extend(excludes)
