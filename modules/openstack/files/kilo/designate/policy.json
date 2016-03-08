@@ -14,8 +14,8 @@
 
     "use_low_ttl": "rule:admin",
 
-    "get_quotas": "rule:admin_or_member",
-    "get_quota": "rule:admin_or_member",
+    "get_quotas": "",
+    "get_quota": "",
     "set_quota": "rule:admin",
     "reset_quotas": "rule:admin",
 
