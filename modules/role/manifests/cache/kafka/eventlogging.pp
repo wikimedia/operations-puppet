@@ -6,7 +6,9 @@ class role::cache::kafka::eventlogging(
     varnishkafka::instance { 'eventlogging':
         brokers                     => $kafka_brokers,
         # Note that this format uses literal tab characters.
-        format                      => '%q	%l	%n	%{%FT%T}t	%{X-Client-IP@ip}o	"%{User-agent}i"',
+        # The '-' in this string used to be %{X-Client-IP@ip}o.
+        # EventLogging clientIp logging has been removed as part of T128407.
+        format                      => '%q	%l	%n	%{%FT%T}t	-	"%{User-agent}i"',
         format_type                 => 'string',
         topic                       => 'eventlogging-client-side',
         varnish_name                => $varnish_name,
