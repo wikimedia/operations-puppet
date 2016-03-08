@@ -26,6 +26,7 @@ class openstack::common(
         'python-keystone',
         'python-novaclient',
         'python-openstackclient',
+        'python-designateclient',
         'radvd',
     ]
 
