@@ -1,6 +1,1 @@
 cluster: cache_maps
-cache::route_table:
-  eqiad: 'direct'
-  codfw: 'eqiad'
-  ulsfo: 'codfw'
-  esams: 'eqiad'
