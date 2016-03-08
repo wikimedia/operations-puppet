@@ -27,6 +27,8 @@ sub cluster_be_recv_applayer_backend {
         set req.backend = ruthenium;
     } elsif (req.http.Host == "horizon.wikimedia.org") {
         set req.backend = californium;
+    } elsif (req.http.Host == "labsconsole.wikimedia.org") {
+        set req.backend = californium;
     } elsif (req.http.Host == "labtesthorizon.wikimedia.org") {
         set req.backend = labtestweb2001;
     } elsif (req.http.Host == "phabricator.wikimedia.org" || req.http.Host == "phab.wmfusercontent.org" || req.http.Host == "bugzilla.wikimedia.org" || req.http.Host == "bugs.wikimedia.org") {

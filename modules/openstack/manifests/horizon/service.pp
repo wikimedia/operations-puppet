@@ -2,7 +2,7 @@
 # http://docs.openstack.org/developer/horizon/
 class openstack::horizon::service(
     $openstack_version  = $::openstack::version,
-    $webserver_hostname = 'horizon.wikimedia.org',
+    $webserver_hostname = 'labsconsole.wikimedia.org',
     $novaconfig)
 {
     # basic horizon packages and config
@@ -185,6 +185,11 @@ class openstack::horizon::service(
 
     apache::site { $webserver_hostname:
         content => template("openstack/${$openstack_version}/horizon/${webserver_hostname}.erb"),
+        require => File['/etc/openstack-dashboard/local_settings.py'],
+    }
+    # Redirect for the old site name
+    apache::site { 'horizon.wikimedia.org':
+        content => template("openstack/${$openstack_version}/horizon/horizon.wikimedia.org.erb"),
         require => File['/etc/openstack-dashboard/local_settings.py'],
     }
 }
