@@ -48,8 +48,8 @@
     "touch_domain": "rule:admin_or_projectadmin",
 
     "create_record": "rule:admin_or_projectadmin",
-    "get_records": "rule:admin_or_member",
-    "get_record": "rule:admin_or_member",
+    "get_records": "",
+    "get_record": "",
     "find_records": "rule:admin_or_projectadmin",
     "find_record": "rule:admin_or_projectadmin",
     "update_record": "rule:admin_or_projectadmin",
