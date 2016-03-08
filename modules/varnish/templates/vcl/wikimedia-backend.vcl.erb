@@ -1,5 +1,5 @@
 // common backend code for all clusters
-include "wikimedia-common_<%= @vcl %>.inc.vcl";
+include "<%= @varnish_include_path %>wikimedia-common_<%= @vcl %>.inc.vcl";
 
 /* Include the VCL file for this role */
 include "<%= @vcl %>.inc.vcl";

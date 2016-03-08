@@ -105,6 +105,10 @@ probe wdqs {
 
 # Puppet-generated the Backend host definitions, regardless of 'dynamic'
 
+if @varnish_testing
+	@varnish_directors = {}
+end
+
 be_seen = {}
 @varnish_directors.keys.sort.each do |director_name|
 	director = @varnish_directors[director_name]

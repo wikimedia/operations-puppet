@@ -1,0 +1,26 @@
+varnishtest "Maps backend basic caching"
+
+server s1 {
+    rxreq
+    txresp
+} -start
+
+varnish v1 -arg "-p vcc_err_unref=false" -vcl+backend {
+    backend kartotherian {
+        .host = "${s1_addr}"; .port = "${s1_port}";
+    }
+
+    include "/usr/share/varnish/tests/wikimedia_maps-backend.vcl";
+} -start
+
+client c1 {
+    txreq -url "/?foo=bar"
+    rxresp
+    expect resp.status == 200
+
+    delay 1
+
+    txreq -url "/?foo=bar"
+    rxresp
+    expect resp.http.age == 1
+} -run

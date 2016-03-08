@@ -4,7 +4,7 @@
 import netmapper;
 import ipcast;
 
-include "wikimedia-common_<%= @vcl %>.inc.vcl";
+include "<%= @varnish_include_path %>wikimedia-common_<%= @vcl %>.inc.vcl";
 include "analytics.inc.vcl";
 
 /* Include the VCL file for this role */
