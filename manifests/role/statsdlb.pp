@@ -13,6 +13,13 @@ class role::statsdlb {
         backend_ports => range(8126, 8131),
     }
 
+    # load balancer frontend, backend ports 8126-8131 are only accessed from localhost
+    ferm::service { 'statsdlb':
+        proto  => 'udp',
+        port   => '8125',
+        srange => '$INTERNAL',
+    }
+
     nrpe::monitor_service { 'statsdlb':
         description  => 'statsdlb process',
         nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1: -C statsdlb',
