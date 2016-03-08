@@ -1487,6 +1487,41 @@ host db1073 {
     fixed-address db1073.eqiad.wmnet;
 }
 
+host db1074 {
+    hardware ethernet 14:02:EC:3D:4D:A4;
+    fixed-address db1074.eqiad.wmnet;
+    option pxelinux.pathprefix "jessie-installer/";
+    filename "jessie-installer/debian-installer/amd64/pxelinux.0";
+}
+
+host db1075 {
+    hardware ethernet 14:02:EC:3D:4D:A0;
+    fixed-address db1075.eqiad..wmnet;
+    option pxelinux.pathprefix "jessie-installer/";
+    filename "jessie-installer/debian-installer/amd64/pxelinux.0";
+}
+
+host db1076 {
+    hardware ethernet 14:02:EC:3F:DA:DC;
+    fixed-address db1076.eqiad.wmnet;
+    option pxelinux.pathprefix "jessie-installer/";
+    filename "jessie-installer/debian-installer/amd64/pxelinux.0";
+}
+
+host db1077 {
+    hardware ethernet 14:02:EC:3D:4D:C8;
+    fixed-address db1077.eqiad.wmnet;
+    option pxelinux.pathprefix "jessie-installer/";
+    filename "jessie-installer/debian-installer/amd64/pxelinux.0";
+}
+
+host db1078 {
+    hardware ethernet 14:02:EC:3D:6D:58;
+    fixed-address db1078.wmnet;
+    option pxelinux.pathprefix "jessie-installer/";
+    filename "jessie-installer/debian-installer/amd64/pxelinux.0";
+}
+
 host db2001 {
     hardware ethernet 78:2b:cb:6b:dd:4c;
     fixed-address db2001.codfw.wmnet;
@@ -2727,6 +2762,13 @@ host labsdb1006 {
 host labsdb1007 {
     hardware ethernet d4:be:d9:f0:0d:81;
     fixed-address labsdb1007.eqiad.wmnet;
+}
+
+host labsdb1008 {
+        hardware ethernet 14:02:EC:3D:5D:CC;
+        fixed-address labsdb1008.eqiad.wmnet;
+        option pxelinux.pathprefix "jessie-installer/";
+        filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host labservices1001 {
