@@ -117,3 +117,6 @@ repo_config:
     upstream: https://gerrit.wikimedia.org/r/analytics/aqs/deploy
     service_name: aqs
     checkout_submodules: true
+  changeprop/deploy:
+    upstream: https://gerrit.wikimedia.org/r/mediawiki/services/change-propagation/deploy
+    checkout_submodules: true
