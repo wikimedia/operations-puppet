@@ -1,0 +1,10 @@
+user_agent: ChangePropagation/WMF
+spec:
+  title: "The Change Propagation root"
+  paths:
+    /{domain:a}/{api:sys}/queue:
+      x-modules:
+        - path: src/sys/kafka.js
+          options:
+            uri: <%= @zk_uri %>
+            templates: {}
