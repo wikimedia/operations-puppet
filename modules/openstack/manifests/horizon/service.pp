@@ -12,10 +12,11 @@ class openstack::horizon::service(
         ensure  => present,
         require => Class['openstack::repo',  '::apache::mod::wsgi'];
     }
-    package { 'python-keystoneclient':
-        ensure  => present,
-    }
-    package { 'python-openstack-auth':
+
+    package { [ 'python-keystoneclient',
+                 'python-openstack-auth',
+                 'python-designate-client',
+                 'python-designate-dashboard' ]:
         ensure  => present,
     }
 
@@ -142,6 +143,29 @@ class openstack::horizon::service(
         group   => 'root',
         require => Package['python-openstack-auth'],
         mode    => '0644',
+    }
+
+    # Install the designate dashboard
+    file { '/usr/share/openstack-dashboard/openstack_dashboard/local/enabled/_70_dns_add_group.py':
+        ensure => 'directory',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0644',
+        require => Package['python-designate-dashboard', 'openstack-dashboard'],
+    }
+    file { '/usr/share/openstack-dashboard/openstack_dashboard/local/enabled/_70_dns_add_group.py':
+        source  => "puppet:///modules/openstack/${openstack_version}/designate/dashboard/_70_dns_add_group.py",
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0644',
+        require => Package['python-designate-dashboard', 'openstack-dashboard'],
+    }
+    file { '/usr/share/openstack-dashboard/openstack_dashboard/local/enabled/_71_dns_project.py':
+        source  => "puppet:///modules/openstack/${openstack_version}/designate/dashboard/_71_dns_project.py",
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0644',
+        require => Package['python-designate-dashboard', 'openstack-dashboard'],
     }
 
     # Monkeypatches for Horizon customization
