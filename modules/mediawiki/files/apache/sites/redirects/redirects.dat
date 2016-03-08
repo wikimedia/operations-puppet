@@ -394,7 +394,6 @@ rewrite	wikimania.wikimedia.org	//wikimania%{TIME_YEAR}.wikimedia.org
 
 # Labs redirects -> wikitech
 funnel	labs.wikimedia.org	https://wikitech.wikimedia.org
-funnel	labsconsole.wikimedia.org	https://wikitech.wikimedia.org
 
 # wikimedia.com redirect
 funnel	*wikimedia.com	//www.wikimedia.org
