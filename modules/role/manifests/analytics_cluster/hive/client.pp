@@ -8,15 +8,7 @@ class role::analytics_cluster::hive::client {
     # Automatically include this in Hive client classpaths.
     $hcatalog_jar = 'file:///usr/lib/hive-hcatalog/share/hcatalog/hive-hcatalog-core.jar'
 
-    # TODO Remove this: https://phabricator.wikimedia.org/T114769
-    # If refinery is included on this node, then add
-    # refinery-hive.jar to the auxpath as well.
-    if $::hostname == 'stat1002' {
-        $auxpath = "${hcatalog_jar},file:///srv/deployment/analytics/refinery/artifacts/refinery-hive.jar"
-    }
-    else {
-        $auxpath = $hcatalog_jar
-    }
+    $auxpath = $hcatalog_jar
 
     # You must set at least:
     #   metastore_host
