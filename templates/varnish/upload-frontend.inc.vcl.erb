@@ -9,11 +9,6 @@ sub cluster_fe_recv {
 		error 667 "CORS";
 	}
 
-	if (req.request != "GET" && req.request != "HEAD") {
-		// We only deal with GET, HEAD at this point
-		error 405 "Method not allowed";
-	}
-
 	call upload_common_recv;
 
 	// Look for a "download" request parameter
