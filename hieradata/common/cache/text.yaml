@@ -43,7 +43,7 @@ nodes:
     - 'cp4018.ulsfo.wmnet'
 apps:
   appservers:
-    route: 'eqiad'
+    route: 'codfw'
     backends:
       eqiad: 'appservers.svc.eqiad.wmnet'
       codfw: 'appservers.svc.codfw.wmnet'
@@ -63,7 +63,7 @@ apps:
       eqiad: 'rendering.svc.eqiad.wmnet'
       codfw: 'rendering.svc.codfw.wmnet'
   restbase:
-    route: 'eqiad'
+    route: 'split'
     backends:
       eqiad: 'restbase.svc.eqiad.wmnet'
       codfw: 'restbase.svc.codfw.wmnet'
