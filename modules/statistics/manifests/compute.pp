@@ -53,7 +53,6 @@ class statistics::compute {
     ensure_packages ([
         'python-geoip',
         'libapache2-mod-python',
-        'python-django',
         'python-mysqldb',
         'python-yaml',
         'python-dateutil',
