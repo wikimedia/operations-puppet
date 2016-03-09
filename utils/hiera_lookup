@@ -22,9 +22,12 @@ Optional arguments:
   -h, --help                  Display this help and exit
 
 If SITE is not provided, it will be derived from the FQDN whenever possible.
+For Wmflabs a FQDN should be: <hostname>.<project>.<site>.wmflabs
 
-Example:
+Examples:
   hiera_lookup --fqdn=mw1020.eqiad.wmnet --roles=mediawiki::appserver admin::groups
+  hiera_lookup --fqdn=host.tools.eqiad.wmflabs classes
+
 
 end
     msg << error
@@ -50,9 +53,22 @@ def get_scope()
   abort(usage "Error: --fqdn=FQDN is required.") unless scope['::fqdn']
   scope['::hostname'] = scope['::fqdn'][/^[^.]+/]
   scope['::realm'] = scope['::fqdn'].include?('labs') ? 'labs' : 'production'
+
+  # Detect labs project/site
+  if scope['::realm'] == 'labs'
+    bits = scope['::fqdn'].split('.')
+    unless bits.length == 4
+      Kernel.abort('labs FQDN must be <hostname>.<project>.<site>.wmflabs')
+    end
+    scope['::labsproject'] = bits[1]
+    scope['::site'] = bits[2]
+  end
+
   # Attempt at determining the site
-  scope['::site'] ||= scope['::realm'] == 'labs' ? 'eqiad' : scope['::fqdn'].split('.')[-2]
-  abort(usage "\nError: --site=SITE is required if the FQDN doesn't contain it") if scope['::site'] == 'wikimedia'
+  scope['::site'] ||= scope['::fqdn'].split('.')[-2]
+  if scope['::site'] == 'wikimedia' || scope['::site'].nil?
+    abort(usage "\nError: --site=SITE is required if the FQDN doesn't contain it")
+  end
 
   # Transform roles in the form puppet expects
   if scope['::roles']
