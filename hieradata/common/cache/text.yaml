@@ -48,7 +48,7 @@ apps:
       eqiad: 'appservers.svc.eqiad.wmnet'
       codfw: 'appservers.svc.codfw.wmnet'
   appservers_debug:
-    route: 'codfw'
+    route: 'split'
     backends:
       eqiad: 'hassium.eqiad.wmnet'
       codfw: 'hassaleh.codfw.wmnet'
