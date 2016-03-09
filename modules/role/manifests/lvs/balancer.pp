@@ -58,10 +58,16 @@ class role::lvs::balancer {
             $sip['rendering'][$::site],
             $sip['swift'][$::site],
             $sip['parsoid'][$::site],
+            $sip['mathoid'][$::site],
+            $sip['citoid'][$::site],
+            $sip['cxserver'][$::site],
             $sip['search'][$::site],
-            $sip['kartotherian'][$::site],
             $sip['restbase'][$::site],
+            $sip['zotero'][$::site],
+            $sip['graphoid'][$::site],
+            $sip['mobileapps'][$::site],
             $sip['apertium'][$::site],
+            $sip['kartotherian'][$::site],
             ],
 
         # esams + ulsfo
