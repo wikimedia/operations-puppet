@@ -19,6 +19,13 @@ class ganglia::monitor::service() {
             source => "puppet:///modules/${module_name}/systemd/ganglia-monitor-aggregator@.service",
             before => Service['ganglia-monitor'],
         }
+        file { '/etc/init/ganglia-monitor-aggregators.conf':
+            owner  => 'root',
+            group  => 'root',
+            mode   => '0444',
+            source => "puppet:///modules/${module_name}/systemd/ganglia-monitor-aggregators.conf",
+            before => Service['ganglia-monitor'],
+        }
     }
 
     service { 'ganglia-monitor':
