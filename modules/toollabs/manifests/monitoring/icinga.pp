@@ -25,4 +25,11 @@ class toollabs::monitoring::icinga {
         critical      => false,
         host          => 'tools.wmflabs.org',
     }
+
+    monitoring::service { 'paws_main_page':
+        description   => 'PAWS Main page',
+        check_command => 'check_http_url!paws.wmflabs.org!/paws/hub/login',
+        host          => 'paws.wmflabs.org',
+        contact_group => 'team-paws',
+    }
 }
