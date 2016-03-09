@@ -1,0 +1,74 @@
+#!/usr/bin/env stap
+
+# h2_spdy_stats.stp - gather statistics on client-side h2/spdy support
+#
+# To target systems running 4.4.0-1-amd64, compile on a development machine as
+# follows:
+#
+#  stap -v -r 4.4.0-1-amd64 -m h2_spdy_stats h2_spdy_stats.stp -p 4
+#
+# The resulting module can be executed on the target system by a user belonging
+# to the stapdev and stapusr groups with staprun:
+#
+#  staprun -v h2_spdy_stats.ko
+#
+# These packages need to be installed on the target system:
+#
+#  systemtap-runtime libssl1.0.0-dbg
+#
+
+# Copyright 2016 Emanuele Rocca
+# Copyright 2016 Wikimedia Foundation, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+global bin
+
+# ALPN
+probe process("/usr/lib/x86_64-linux-gnu/libssl.so.1.0.0").function("SSL_select_next_proto") {
+    value  = text_str(user_string($client))
+
+    if (value =~ "h2") {
+        if (value =~ "spdy") {
+            bin["both"]++
+        } else {
+            bin["h2"]++
+        }
+    } else if (value =~ "spdy") {
+        bin["alpn_spdy"]++
+    }
+}
+
+# NPN
+probe process("/usr/lib/x86_64-linux-gnu/libssl.so.1.0.0").function("SSL_get0_next_proto_negotiated") {
+    if ($s->s3->next_proto_neg_seen && $s->next_proto_negotiated_len > 0) {
+        value = text_str(user_string_n($s->next_proto_negotiated, $s->next_proto_negotiated_len))
+        if (value =~ "http/1.1") {
+            bin["npn_http1"]++
+        }
+        if (value =~ "spdy") {
+            bin["npn_spdy"]++
+        }
+    }
+}
+
+probe process("/usr/lib/x86_64-linux-gnu/libssl.so.1.0.0").function("SSL_accept") {
+    bin["total"]++
+}
+
+probe end {
+    printf("\n")
+    foreach (key in bin) {
+        printf("%s: %d\n", key, bin[key])
+    }
+}
