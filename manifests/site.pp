@@ -2371,11 +2371,11 @@ node 'scandium.eqiad.wmnet' {
 
 }
 
-node /^sca100[12]\.eqiad\.wmnet$/ {
+node /^sca[12]00[12]\.(eqiad|codfw)\.wmnet$/ {
     role sca
 }
 
-node /^scb100[12]\.eqiad\.wmnet$/ {
+node /^scb[12]00[12]\.(eqiad|codfw)\.wmnet$/ {
     role scb
 }
 
