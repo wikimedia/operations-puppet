@@ -15,8 +15,10 @@ class k8s::docker {
         require => Apt::Repository['docker'],
     }
 
+    # Pin a version of docker-engine so we have the same
+    # across the fleet
     package { 'docker-engine':
-        ensure  => present,
+        ensure  => '1.9.1-0~jessie',
         require => Package['docker.io'],
     }
 
