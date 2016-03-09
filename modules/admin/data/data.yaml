@@ -483,6 +483,11 @@ groups:
                'ALL = NOPASSWD: /usr/sbin/service parsoid-vd-client *',
                'ALL = NOPASSWD: /usr/sbin/service diffservice *',
                'ALL = NOPASSWD: /bin/journalctl *']
+  labtestweb-roots:
+    gid: 774
+    description: allows full sudo on labtestweb server, first generated from T129097.
+    members: [krenair]
+    privileges: ['ALL = (ALL) NOPASSWD: ALL']
 users:
   rush:
     ensure: present
