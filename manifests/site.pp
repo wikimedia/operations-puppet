@@ -104,8 +104,8 @@ node 'analytics1021.eqiad.wmnet' {
 
 # analytics1026 is spare, for now is just an analytics client.
 node 'analytics1026.eqiad.wmnet' {
-    include standard
     role analytics_cluster::client
+    include standard
 }
 
 # analytics1027 hosts hue.wikimedia.org, and is used for launching
