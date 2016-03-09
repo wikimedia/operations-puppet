@@ -15,7 +15,6 @@ class openstack::horizon::service(
 
     package { [ 'python-keystoneclient',
                 'python-openstack-auth',
-                'python-designateclient',
                 'python-designate-dashboard' ]:
         ensure  => present,
     }
