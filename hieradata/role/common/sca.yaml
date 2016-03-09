@@ -3,16 +3,7 @@ admin::groups:
   - cxserver-admin
   - zotero-admin
   - apertium-admins
-
-lvs::realserver::realserver_ips:
-  - '10.2.2.16' # zotero.svc.eqiad.wmnet
-  - '10.2.2.18' # cxserver.svc.eqiad.wmnet
-
-service::configuration::http_proxy: http://url-downloader.wikimedia.org:8080
-service::configuration::statsd_host: statsd.eqiad.wmnet
-service::configuration::logstash_host: logstash1001.eqiad.wmnet
 service::configuration::log_dir: /srv/log
-
 graphoid::domains:
   - mediawiki.org
   - wikibooks.org
@@ -26,7 +17,6 @@ graphoid::domains:
   - wikiversity.org
   - wikivoyage.org
   - wiktionary.org
-
 debdeploy::grains:
   debdeploy-sca:
     value: standard
