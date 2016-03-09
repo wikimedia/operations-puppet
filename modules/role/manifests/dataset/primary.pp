@@ -109,7 +109,7 @@ class role::dataset::primary {
     dataset::cron::job { 'unique_devices':
         ensure      => present,
         source      => 'stat1002.eqiad.wmnet::hdfs-archive/unique_devices',
-        destination => '/data/xmldatadumps/public/other/uniques_devices',
+        destination => '/data/xmldatadumps/public/other/unique_devices',
         minute      => '31',
     }
 }
