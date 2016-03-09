@@ -1326,7 +1326,7 @@ node 'labcontrol1002.wikimedia.org' {
 }
 
 node 'labtestweb2001.wikimedia.org' {
-    role labs::openstack::nova::manager, mariadb::wikitech, horizon
+    role labs::openstack::nova::manager, mariadb::wikitech, horizon, labtestweb
     include base::firewall
     include standard
 }
