@@ -56,6 +56,7 @@ sca:
       weight: 10
     datacenters:
     - eqiad
+    - codfw
   zotero:
     port: 1969
     default_values:
@@ -63,6 +64,7 @@ sca:
       weight: 10
     datacenters:
     - eqiad
+    - codfw
 scb:
   mobileapps:
     port: 8888
@@ -71,6 +73,7 @@ scb:
       weight: 10
     datacenters:
     - eqiad
+    - codfw
   mathoid:
     port: 10042
     default_values:
@@ -78,6 +81,7 @@ scb:
       weight: 10
     datacenters:
     - eqiad
+    - codfw
   graphoid:
     port: 19000
     default_values:
@@ -85,6 +89,7 @@ scb:
       weight: 10
     datacenters:
     - eqiad
+    - codfw
   citoid:
     port: 1970
     default_values:
@@ -92,6 +97,7 @@ scb:
       weight: 10
     datacenters:
     - eqiad
+    - codfw
   cxserver:
     port: 8080
     default_values:
@@ -99,6 +105,7 @@ scb:
       weight: 10
     datacenters:
     - eqiad
+    - codfw
 restbase:
   restbase:
     port: 7231
