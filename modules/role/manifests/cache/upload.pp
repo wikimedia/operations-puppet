@@ -35,11 +35,12 @@ class role::cache::upload {
         'probe'                 => 'varnish',
     }
 
+    $apps = hiera('cache::upload::apps')
     $app_directors = {
         'swift'   => {
             'dynamic'  => 'no',
             'type'     => 'random',
-            'backends' => cache_app_route('swift'),
+            'backends' => $apps['swift']['backends'][$apps['swift']['route']],
             'be_opts'  => {
                 'port'                  => 80,
                 'connect_timeout'       => '5s',
@@ -51,7 +52,7 @@ class role::cache::upload {
         'swift_thumbs'   => {
             'dynamic'  => 'no',
             'type'     => 'random',
-            'backends' => cache_app_route('swift_thumbs'),
+            'backends' => $apps['swift_thumbs']['backends'][$apps['swift_thumbs']['route']],
             'be_opts'  => {
                 'port'                  => 80,
                 'connect_timeout'       => '5s',
