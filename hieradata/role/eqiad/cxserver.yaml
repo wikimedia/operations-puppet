@@ -1,0 +1,3 @@
+no_proxy_list:
+  - restbase.svc.eqiad.wmnet
+  - apertium.svc.eqiad.wmnet

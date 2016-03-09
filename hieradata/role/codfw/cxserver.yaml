@@ -1,0 +1,3 @@
+no_proxy_list:
+  - restbase.svc.codfw.wmnet
+  - apertium.svc.codfw.wmnet
