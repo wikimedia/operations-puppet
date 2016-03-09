@@ -465,7 +465,7 @@ groups:
   analytics-search-users:
     gid: 771
     description: Group of users for managing search related analytics jobs
-    members: [ebernhardson, smalyshev, dcausse, gehel]
+    members: [ebernhardson, smalyshev, dcausse, gehel, ironholds, bearloga]
     privileges: ['ALL = (analytics-search) NOPASSWD: ALL']
   parsoid-test-roots:
     gid: 772
