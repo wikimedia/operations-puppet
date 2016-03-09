@@ -168,7 +168,7 @@ sub wm_common_recv_purge {
 	/* Support HTTP PURGE */
 	if (req.request == "PURGE") {
 		if (client.ip !~ local_host) {
-			error 405 "Denied";
+			error 405 "Method not allowed";
 		} elsif (req.http.Host ~ "<%= @vcl_config.fetch('purge_host_regex') %>") {
 			set req.hash_ignore_busy = true;
 			return (lookup);
