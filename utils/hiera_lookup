@@ -83,14 +83,20 @@ end
 
 $DIR = ENV['PUPPETDIR'] || File.expand_path('../..', __FILE__)
 $LOAD_PATH << File.join($DIR, 'modules/wmflib/lib')
-cfg = File.join($DIR, 'modules/puppetmaster/files/production.hiera.yaml')
+
+scope = get_scope()
+
+cfg = File.join($DIR, "modules/puppetmaster/files/#{scope['::realm']}.hiera.yaml")
+if !File.exist?(cfg)
+  Kernel.abort("Hiera cfg file not found for realm '#{scope['::realm']}': #{cfg}")
+end
 
 key = ARGV.pop()
 abort(usage "\nError: KEY is required") if key.match('^--')
 
 hiera = Hiera.new(:config => cfg)
-if not verbose || get_scope().include?('::debug')
+if not verbose || scope.include?('::debug')
     Hiera.logger = "noop"
 end
 
-puts hiera.lookup(key, nil, get_scope(), nil, :priority)
+puts hiera.lookup(key, nil, scope, nil, :priority)
