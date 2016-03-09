@@ -30,6 +30,12 @@ class role::analytics_cluster::refinery::camus {
         minute => '5',
     }
 
+    # Import eventbus topics into /wmf/data/raw/eventbus
+    # once every hour.
+    camus::job { 'eventbus':
+        minute => '5',
+    }
+
     # Import mediawiki_* topics into /wmf/data/raw/mediawiki
     # once every hour.  This data is expected to be Avro binary.
     camus::job { 'mediawiki':
