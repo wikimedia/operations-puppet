@@ -23,6 +23,7 @@ class dataset::cron::wikitech_dumps(
     }
 
     $wget = '/usr/bin/wget'
+    $wgetreject = "--reject-regex '(.*)\?(.*)'"
     $wgetargs = "-nv -e robots=off -k -nH --wait 30 -np -m ${url} -P ${wikitechdir}"
 
     # the index.html files we get from wikitech are icky,
@@ -32,7 +33,7 @@ class dataset::cron::wikitech_dumps(
 
     cron { 'wikitech-dumps-grab':
         ensure  => $ensure,
-        command => "${wget} ${wgetargs}; ${cleanuphtml}; ${cleanupold}",
+        command => "${wget} ${wgetreject} ${wgetargs}; ${cleanuphtml}; ${cleanupold}",
         user    => $user,
         minute  => '20',
         hour    => '3',
