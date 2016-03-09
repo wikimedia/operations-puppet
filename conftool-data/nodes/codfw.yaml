@@ -275,3 +275,9 @@ restbase:
   restbase2004.codfw.wmnet: [restbase]
   restbase2005.codfw.wmnet: [restbase]
   restbase2006.codfw.wmnet: [restbase]
+sca:
+  sca2001.codfw.wmnet: [cxserver, zotero]
+  sca2002.codfw.wmnet: [cxserver, zotero]
+scb:
+  scb2001.codfw.wmnet: [mobileapps, mathoid, graphoid, citoid, cxserver]
+  scb2002.codfw.wmnet: [mobileapps, mathoid, graphoid, citoid, cxserver]
