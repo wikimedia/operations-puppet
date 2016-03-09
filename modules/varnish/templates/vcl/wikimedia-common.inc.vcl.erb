@@ -193,7 +193,7 @@ sub wm_common_recv_early {
 	}
 
 	if (req.request !~ "<%= @vcl_config.fetch("allowed_methods", "^(GET|HEAD|POST|PURGE)$") %>"
-		&& !(req.request == "OPTIONS" && req.http.Origin)) {
+		|| (req.request == "OPTIONS" && !req.http.Origin)) {
 		error 405 "Method not allowed";
 	}
 
