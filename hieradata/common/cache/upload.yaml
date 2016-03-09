@@ -48,7 +48,7 @@ nodes:
     - 'cp4015.ulsfo.wmnet'
 apps:
   swift:
-    route: 'eqiad'
+    route: 'codfw'
     backends:
       eqiad: 'ms-fe.svc.eqiad.wmnet'
       codfw: 'ms-fe.svc.codfw.wmnet'
