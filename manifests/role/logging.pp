@@ -107,7 +107,7 @@ class role::logging::mediawiki::errors {
     class { 'mediawiki::monitoring::errors': }
 
     ferm::service { 'mediawiki-exceptions-logging':
-        proto  => 'tcp',
+        proto  => 'udp',
         port   => '8423',
         srange => '@resolve(fluorine.eqiad.wmnet)',
     }
