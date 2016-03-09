@@ -146,7 +146,7 @@ class role::eventlogging::forwarder inherits role::eventlogging {
         proto   => 'tcp',
         notrack => true,
         port    => '8600',
-        srange  => '@resolve(hafnium.eqiad.wmnet)',
+        srange  => '@resolve((hafnium.eqiad.wmnet graphite1001.eqiad.wmnet))',
     }
 }
 
