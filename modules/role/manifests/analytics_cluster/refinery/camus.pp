@@ -13,8 +13,8 @@ class role::analytics_cluster::refinery::camus {
     # the camus::job declaration.
     Camus::Job {
         kafka_brokers => suffix($role::kafka::analytics::config::brokers_array, ':9092'),
-        camus_jar     => "${role::analytics_cluster::refinery::path}/artifacts/org/wikimedia/analytics/camus-wmf/camus-wmf-0.1.0-wmf6.jar",
-        check_jar     => "${role::analytics_cluster::refinery::path}/artifacts/org/wikimedia/analytics/refinery/refinery-job-0.0.26.jar",
+        camus_jar     => "${role::analytics_cluster::refinery::path}/artifacts/org/wikimedia/analytics/camus-wmf/camus-wmf-0.1.0-wmf7.jar",
+        check_jar     => "${role::analytics_cluster::refinery::path}/artifacts/org/wikimedia/analytics/refinery/refinery-job-0.0.27.jar",
     }
 
     # Import webrequest_* topics into /wmf/data/raw/webrequest
