@@ -1,6 +1,5 @@
-# == Define dataset::cron::pageviews
-# Regularly copies over files with from $source to $destination.
-# using the current definition of pageviews, from an rsyncable location.
+# == Define dataset::cron::job
+# Regularly copies files from $source to $destination.
 #
 define dataset::cron::job(
     $source,
