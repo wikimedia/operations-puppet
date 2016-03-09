@@ -1209,6 +1209,7 @@ node 'graphite1002.eqiad.wmnet' {
 node 'graphite2001.codfw.wmnet' {
     role graphite::production, statsdlb
     include standard
+    include base::firewall
 }
 
 node 'install2001.wikimedia.org' {
