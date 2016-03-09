@@ -1,0 +1,9 @@
+[Unit]
+Description=prometheus-node-exporter
+
+[Service]
+User=prometheus
+Group=prometheus-node-exporter
+EnvironmentFile=-/etc/default/prometheus-node-exporter
+ExecStart=/usr/bin/prometheus-node-exporter $ARGS
+Restart=on-failure
