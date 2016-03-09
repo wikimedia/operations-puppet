@@ -22,6 +22,6 @@ admin::groups:
 #
 cache::route_table:
   eqiad: 'direct'
-  codfw: 'direct'
+  codfw: 'eqiad'
   ulsfo: 'codfw'
   esams: 'eqiad'
