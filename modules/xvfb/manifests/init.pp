@@ -42,11 +42,17 @@ class xvfb(
     }
 
     base::service_unit { 'xvfb':
-        ensure  => present,
-        refresh => true,
-        upstart => true,
-        systemd => true,
-        require => [
+        ensure         => present,
+        refresh        => true,
+        upstart        => true,
+        systemd        => true,
+        service_params => {
+            # enable is needed to have the service to start on boot time.
+            enable     => true,
+            hasstatus  => true,
+            hasrestart => true,
+        },
+        require        => [
             Package['xvfb'],
             User['xvfb']
         ],
