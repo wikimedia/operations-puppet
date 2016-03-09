@@ -1,6 +1,2 @@
 admin::groups:
-  - deployment
-
-apache::logrotate::rotate: 12
-
-openstack::version: 'liberty'
+  - labtestweb-roots
