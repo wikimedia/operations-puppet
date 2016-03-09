@@ -99,21 +99,27 @@ lvs_service_ips:
     codfw: 10.2.1.28
   mathoid: &ip_block016
     eqiad: 10.2.2.20
+    codfw: 10.2.1.20
   citoid: &ip_block017
     eqiad: 10.2.2.19
+    codfw: 10.2.1.19
   cxserver: &ip_block018
     eqiad: 10.2.2.18
+    codfw: 10.2.1.18
   graphoid: &ip_block019
     eqiad: 10.2.2.15
+    codfw: 10.2.1.15
   restbase: &ip_block020
     eqiad: 10.2.2.17
     codfw: 10.2.1.17
   zotero: &ip_block021
     eqiad: 10.2.2.16
+    codfw: 10.2.1.16
   kartotherian: &ip_block022
     codfw: 10.2.1.13
   mobileapps: &ip_block023
     eqiad: 10.2.2.14
+    codfw: 10.2.1.14
   git-ssh: &ip_block024
     eqiad:
       git-ssh4: 208.80.154.250
@@ -594,6 +600,7 @@ lvs_services:
     class: low-traffic
     sites:
     - eqiad
+    - codfw
     ip: *ip_block016
     port: 10042
     bgp: 'yes'
@@ -618,6 +625,7 @@ lvs_services:
     class: low-traffic
     sites:
     - eqiad
+    - codfw
     ip: *ip_block017
     port: 1970
     bgp: 'yes'
@@ -643,6 +651,7 @@ lvs_services:
     class: low-traffic
     sites:
     - eqiad
+    - codfw
     ip: *ip_block018
     port: 8080
     bgp: 'yes'
@@ -667,6 +676,7 @@ lvs_services:
     class: low-traffic
     sites:
     - eqiad
+    - codfw
     ip: *ip_block019
     port: 19000
     bgp: 'yes'
@@ -719,6 +729,7 @@ lvs_services:
     class: low-traffic
     sites:
     - eqiad
+    - codfw
     ip: *ip_block021
     port: 1969
     bgp: 'yes'
@@ -756,6 +767,7 @@ lvs_services:
     class: low-traffic
     sites:
     - eqiad
+    - codfw
     ip: *ip_block023
     port: 8888
     bgp: 'yes'
