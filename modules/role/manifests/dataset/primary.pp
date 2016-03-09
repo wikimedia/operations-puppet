@@ -33,18 +33,31 @@ class role::dataset::primary {
         source => 'stat1002.eqiad.wmnet::hdfs-archive/pagecounts-raw/*/*/',
     }
 
-    class { '::dataset::cron::mediacounts':
-        enable => true,
-        source => 'stat1002.eqiad.wmnet::hdfs-archive/mediacounts',
+    # Copies over the mediacounts files
+    # from an rsyncable location.
+    dataset::cron::job { 'mediacounts':
+        ensure      => present,
+        source      => 'stat1002.eqiad.wmnet::hdfs-archive/mediacounts',
+        destination => '/data/xmldatadumps/public/other/mediacounts',
+        minute      => '41',
     }
 
-    # TODO: Make this class use dataset::cron::job define instead.
-    class { '::dataset::cron::pagecounts_all_sites':
-        enable => true,
-        source => 'stat1002.eqiad.wmnet::hdfs-archive/pagecounts-all-sites',
+    # Copies over the webstats/ files (AKA pagecounts_all_sites)
+    # from an rsyncable location.
+    #
+    # These *-all-sites datasets recreates the webstatscollector
+    # logic in Hadoop and Hive, except that this dataset includes
+    # requests to mobile and zero sites.
+    #
+    # See: https://github.com/wikimedia/analytics-refinery/tree/master/oozie/webstats.
+    #      https://wikitech.wikimedia.org/wiki/Analytics/Pagecounts-all-sites
+    dataset::cron::job { 'pagecounts_all_sites':
+        ensure      => present,
+        source      => 'stat1002.eqiad.wmnet::hdfs-archive/pagecounts-all-sites',
+        destination => '/data/xmldatadumps/public/other/pagecounts-all-sites',
+        minute      => '51',
     }
 
-    # TODO: Make this class use dataset::cron::job define instead.
     class { '::dataset::cron::rsync::nginxlogs':
         enable => true,
         dest   => 'stat1002.eqiad.wmnet::srv/log/webrequest/archive/dumps.wikimedia.org/',
