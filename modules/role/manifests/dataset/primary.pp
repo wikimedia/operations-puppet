@@ -91,5 +91,26 @@ class role::dataset::primary {
         destination => '/data/xmldatadumps/public/other/pageviews',
         minute      => '51',
     }
+
+    # This will make these files available at
+    # http://dumps.wikimedia.org/other/uniques_devices/
+    #
+    # Copies over files with unique devices statistics per project,
+    # using the last access cookie method, from an rsyncable location.
+    #
+    # These statistics are computed from the webrequest logs by the
+    # last access cookie uniques definition:
+    # https://meta.wikimedia.org/wiki/Research:Unique_Devices
+    #
+    # See: https://github.com/wikimedia/analytics-refinery/tree/master/oozie/last_access_uniques
+    #           (docs on the jobs that create the table and archive the files)
+    #      https://wikitech.wikimedia.org/wiki/Analytics/Data/Unique_Devices
+    #           (docs on the table from which these statistics are computed)
+    dataset::cron::job { 'unique_devices':
+        ensure      => present,
+        source      => 'stat1002.eqiad.wmnet::hdfs-archive/unique_devices',
+        destination => '/data/xmldatadumps/public/other/uniques_devices',
+        minute      => '31',
+    }
 }
 
