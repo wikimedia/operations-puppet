@@ -17,6 +17,7 @@ class role::icinga(
     include icinga::nsca::daemon
     include icinga::monitor::wikidata
     include icinga::monitor::ores
+    include icinga::monitor::paws
     include icinga::monitor::ripeatlas
     include icinga::monitor::legal
     include icinga::monitor::certs
