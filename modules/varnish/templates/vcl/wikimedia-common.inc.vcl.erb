@@ -235,9 +235,15 @@ sub wm_common_pass {
 	} else {
 		set req.http.X-CDIS = "pass";
 	}
+
+	set req.http.X-Pass-Stream = 1;
 }
 
 sub wm_common_fetch {
+	if (req.http.X-Pass-Stream) {
+		set beresp.do_stream = true;
+	}
+
 <% if @vcl_config.fetch("ttl_fixed", false) -%>
 	// Fixed TTL (rare/questionable, only used on upload backend right now)
 	// Note the ttl_cap comes after this and takes precedence!
