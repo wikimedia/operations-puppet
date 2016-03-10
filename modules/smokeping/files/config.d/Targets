@@ -161,9 +161,9 @@ menu = Hosts
 title = Sampled Hosts
 
 +++ bast2001
-menu = bast2001
-title = bast2001.wikimedia.org
-host = bast2001.wikimedia.org
+menu = install2001
+title = install2001.wikimedia.org
+host = install2001.wikimedia.org
 
 + esams
 
