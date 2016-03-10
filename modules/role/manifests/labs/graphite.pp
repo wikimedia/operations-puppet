@@ -20,4 +20,16 @@ class role::labs::graphite {
     }
 
     include role::statsite
+
+    ferm::service { 'carbon_c_relay-local_relay_udp':
+        proto   => 'udp',
+        port    => '1903',
+        srange  => '@resolve(graphite.wmflabs.org)',
+    }
+
+    ferm::service { 'carbon_c_relay-local_relay_tcp':
+        proto   => 'tcp',
+        port    => '1903',
+        srange  => '@resolve(graphite.wmflabs.org)',
+    }
 }
