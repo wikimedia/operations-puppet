@@ -15,5 +15,17 @@ class role::graphite::production {
           ],
         }
     }
+
+    ferm::service { 'carbon_c_relay-local_relay_udp':
+        proto   => 'udp',
+        port    => '1903',
+        srange  => '@resolve((graphite1001.eqiad.wmnet graphite2001.codfw.wmnet:1903))',
+    }
+
+    ferm::service { 'carbon_c_relay-local_relay_tcp':
+        proto   => 'tcp',
+        port    => '1903',
+        srange  => '@resolve((graphite1001.eqiad.wmnet graphite2001.codfw.wmnet:1903))',
+    }
 }
 
