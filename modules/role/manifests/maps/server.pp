@@ -66,7 +66,8 @@ class role::maps::server {
     }
 
     # Cassandra Thrift interface, used by cqlsh
-    ferm::service { 'cassandra-cql':
+    # TODO: Is that really true? Since CQL 3.0 it should not be. Revisit
+    ferm::service { 'cassandra-cql-thrift':
         proto  => 'tcp',
         port   => '9160',
         srange => "(${cassandra_hosts_ferm})",
@@ -141,7 +142,7 @@ class role::maps::master {
         owner   => 'root',
         group   => 'root',
         mode    => '0400',
-        content => template('maps/grants.sql.erb'),
+        content => template('role/maps/grants.sql.erb'),
     }
     # Cassandra grants
     $cassandra_kartotherian_pass = hiera('maps::cassandra_kartotherian_pass')
@@ -151,7 +152,7 @@ class role::maps::master {
         owner   => 'root',
         group   => 'root',
         mode    => '0400',
-        content => template('maps/grants.cql.erb'),
+        content => template('role/maps/grants.cql.erb'),
     }
 }
 
