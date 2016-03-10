@@ -102,14 +102,18 @@ define service::node(
 ) {
     case $deployment {
         'scap3': {
-            service::deploy::scap{ $repo:
-                service_name => $title,
-                before       => Base::Service_unit[$title],
+            if ! defined(Service::Deploy::Trebuchet[$repo]) {
+                service::deploy::scap{ $repo:
+                    service_name => $title,
+                    before       => Base::Service_unit[$title],
+                }
             }
         }
         default: {
-            service::deploy::trebuchet{ $repo:
-                before => Base::Service_unit[$title]
+            if ! defined(Service::Deploy::Trebuchet[$repo]) {
+                service::deploy::trebuchet{ $repo:
+                    before => Base::Service_unit[$title]
+                }
             }
         }
     }
