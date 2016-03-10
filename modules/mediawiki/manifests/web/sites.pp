@@ -1,5 +1,6 @@
 class mediawiki::web::sites (
-    $domain_suffix = 'org'
+    $domain_suffix = 'org',
+    $portal_dir = 'portal'
 ) {
     tag 'mediawiki', 'mw-apache-config'
 
@@ -39,6 +40,7 @@ class mediawiki::web::sites (
         priority => 0,
     }
 
+    $rewrite_portal = $portal_dir != 'portal'
     apache::site { 'wwwportals':
         content  => template('mediawiki/apache/sites/wwwportals.conf.erb'),
         priority => 1,
