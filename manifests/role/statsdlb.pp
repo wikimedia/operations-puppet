@@ -15,9 +15,10 @@ class role::statsdlb {
 
     # load balancer frontend, backend ports 8126-8131 are only accessed from localhost
     ferm::service { 'statsdlb':
-        proto  => 'udp',
-        port   => '8125',
-        srange => '$INTERNAL',
+        proto   => 'udp',
+        port    => '8125',
+        notrack => true,
+        srange  => '$ALL_NETWORKS',
     }
 
     nrpe::monitor_service { 'statsdlb':
