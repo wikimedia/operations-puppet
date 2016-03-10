@@ -1,0 +1,1034 @@
+{
+  "annotations": {
+    "enable": true,
+    "list": [
+      {
+        "datasource": "graphite",
+        "enable": true,
+        "iconColor": "rgb(209, 244, 243)",
+        "iconSize": 10,
+        "lineColor": "rgba(39, 183, 204, 0.71)",
+        "name": "Show deployments",
+        "showLine": true,
+        "target": "exclude(aliasByNode(deploy.*.count,-2),\"all\")"
+      }
+    ]
+  },
+  "editable": true,
+  "hideControls": false,
+  "id": 136,
+  "links": [],
+  "originalTitle": "Swift",
+  "refresh": false,
+  "rows": [
+    {
+      "collapse": false,
+      "editable": true,
+      "height": "300px",
+      "panels": [
+        {
+          "aliasColors": {},
+          "annotate": {
+            "enable": false
+          },
+          "bars": false,
+          "datasource": "graphite",
+          "fill": 1,
+          "grid": {
+            "leftLogBase": 1,
+            "leftMax": null,
+            "leftMin": null,
+            "max": null,
+            "min": null,
+            "rightLogBase": 1,
+            "rightMax": null,
+            "rightMin": null,
+            "threshold1": null,
+            "threshold1Color": "rgba(216, 200, 27, 0.27)",
+            "threshold2": null,
+            "threshold2Color": "rgba(234, 112, 112, 0.22)"
+          },
+          "height": "",
+          "id": 10,
+          "interactive": true,
+          "leftYAxisLabel": "req/s",
+          "legend": {
+            "avg": true,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": true
+          },
+          "legend_counts": true,
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null",
+          "options": false,
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "resolution": 100,
+          "scale": 1,
+          "seriesOverrides": [],
+          "span": 6,
+          "spyable": true,
+          "stack": true,
+          "steppedLine": false,
+          "targets": [
+            {
+              "refId": "A",
+              "target": "alias(movingAverage(sumSeries(swift.$DC-prod.*.proxy-server.object.GET.2*.timing.sample_rate), 5), 'GET 2xx')"
+            },
+            {
+              "refId": "B",
+              "target": "alias(movingAverage(sumSeries(swift.$DC-prod.*.proxy-server.object.HEAD.2*.timing.sample_rate), 5), 'HEAD 2xx')"
+            }
+          ],
+          "timeFrom": null,
+          "timeShift": null,
+          "timezone": "browser",
+          "title": "object not state-changing",
+          "tooltip": {
+            "query_as_alias": true,
+            "shared": true,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "x-axis": true,
+          "y-axis": true,
+          "y_formats": [
+            "short",
+            "short"
+          ],
+          "zerofill": true
+        },
+        {
+          "aliasColors": {},
+          "annotate": {
+            "enable": false
+          },
+          "bars": false,
+          "datasource": "graphite",
+          "fill": 1,
+          "grid": {
+            "leftLogBase": 1,
+            "leftMax": null,
+            "leftMin": null,
+            "max": null,
+            "min": null,
+            "rightLogBase": 1,
+            "rightMax": null,
+            "rightMin": null,
+            "threshold1": null,
+            "threshold1Color": "rgba(216, 200, 27, 0.27)",
+            "threshold2": null,
+            "threshold2Color": "rgba(234, 112, 112, 0.22)"
+          },
+          "height": "",
+          "id": 7,
+          "interactive": true,
+          "leftYAxisLabel": "req/s",
+          "legend": {
+            "avg": true,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": true
+          },
+          "legend_counts": true,
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null",
+          "options": false,
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "resolution": 100,
+          "scale": 1,
+          "seriesOverrides": [],
+          "span": 6,
+          "spyable": true,
+          "stack": true,
+          "steppedLine": false,
+          "targets": [
+            {
+              "refId": "A",
+              "target": "alias(movingAverage(sumSeries(swift.$DC-prod.*.proxy-server.object.PUT.2*.timing.sample_rate), 5), 'PUT 2xx')"
+            },
+            {
+              "refId": "B",
+              "target": "alias(movingAverage(sumSeries(swift.$DC-prod.*.proxy-server.object.DELETE.2*.timing.sample_rate), 5), 'DELETE 2xx')"
+            },
+            {
+              "refId": "C",
+              "target": "alias(movingAverage(sumSeries(swift.$DC-prod.*.proxy-server.object.POST.2*.timing.sample_rate), 5), 'POST 2xx')"
+            }
+          ],
+          "timeFrom": null,
+          "timeShift": null,
+          "timezone": "browser",
+          "title": "object state-changing",
+          "tooltip": {
+            "query_as_alias": true,
+            "shared": true,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "x-axis": true,
+          "y-axis": true,
+          "y_formats": [
+            "short",
+            "short"
+          ],
+          "zerofill": true
+        },
+        {
+          "aliasColors": {},
+          "annotate": {
+            "enable": false
+          },
+          "bars": false,
+          "datasource": "graphite",
+          "fill": 1,
+          "grid": {
+            "leftLogBase": 1,
+            "leftMax": null,
+            "leftMin": null,
+            "max": null,
+            "min": null,
+            "rightLogBase": 1,
+            "rightMax": null,
+            "rightMin": null,
+            "threshold1": null,
+            "threshold1Color": "rgba(216, 200, 27, 0.27)",
+            "threshold2": null,
+            "threshold2Color": "rgba(234, 112, 112, 0.22)"
+          },
+          "height": "",
+          "id": 21,
+          "interactive": true,
+          "leftYAxisLabel": "req/s",
+          "legend": {
+            "avg": true,
+            "current": false,
+            "hideEmpty": false,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": true
+          },
+          "legend_counts": true,
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null",
+          "options": false,
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "resolution": 100,
+          "scale": 1,
+          "seriesOverrides": [],
+          "span": 6,
+          "spyable": true,
+          "stack": true,
+          "steppedLine": false,
+          "targets": [
+            {
+              "refId": "A",
+              "target": "alias(sumSeries(swift.$DC-prod.*.proxy-server.*.GET.4*.timing.sample_rate), 'GET 4xx')"
+            },
+            {
+              "refId": "B",
+              "target": "alias(sumSeries(swift.$DC-prod.*.proxy-server.*.HEAD.4*.timing.sample_rate), 'HEAD 4xx')"
+            },
+            {
+              "refId": "C",
+              "target": "alias(sumSeries(swift.$DC-prod.*.proxy-server.*.DELETE.4*.timing.sample_rate), 'DELETE 4xx')"
+            },
+            {
+              "refId": "D",
+              "target": "alias(sumSeries(swift.$DC-prod.*.proxy-server.*.PUT.4*.timing.sample_rate), 'PUT 4xx')"
+            },
+            {
+              "refId": "E",
+              "target": "alias(sumSeries(swift.$DC-prod.*.proxy-server.*.POST.4*.timing.sample_rate), 'POST 4xx')"
+            }
+          ],
+          "timeFrom": null,
+          "timeShift": null,
+          "timezone": "browser",
+          "title": "client errors",
+          "tooltip": {
+            "query_as_alias": true,
+            "shared": true,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "x-axis": true,
+          "y-axis": true,
+          "y_formats": [
+            "short",
+            "short"
+          ],
+          "zerofill": true
+        },
+        {
+          "aliasColors": {},
+          "annotate": {
+            "enable": false
+          },
+          "bars": false,
+          "datasource": "graphite",
+          "fill": 1,
+          "grid": {
+            "leftLogBase": 1,
+            "leftMax": null,
+            "leftMin": 0,
+            "max": null,
+            "min": null,
+            "rightLogBase": 1,
+            "rightMax": null,
+            "rightMin": 0,
+            "threshold1": null,
+            "threshold1Color": "rgba(216, 200, 27, 0.27)",
+            "threshold2": null,
+            "threshold2Color": "rgba(234, 112, 112, 0.22)"
+          },
+          "height": "",
+          "id": 22,
+          "interactive": true,
+          "leftYAxisLabel": "req/s",
+          "legend": {
+            "avg": true,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": true
+          },
+          "legend_counts": true,
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null as zero",
+          "options": false,
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "resolution": 100,
+          "scale": 1,
+          "seriesOverrides": [],
+          "span": 6,
+          "spyable": true,
+          "stack": true,
+          "steppedLine": false,
+          "targets": [
+            {
+              "refId": "A",
+              "target": "alias(sumSeries(swift.$DC-prod.*.proxy-server.*.GET.5*.timing.sample_rate), 'GET 5xx')"
+            },
+            {
+              "refId": "B",
+              "target": "alias(sumSeries(swift.$DC-prod.*.proxy-server.*.HEAD.5*.timing.sample_rate), 'HEAD 5xx')"
+            },
+            {
+              "refId": "C",
+              "target": "alias(sumSeries(swift.$DC-prod.*.proxy-server.*.DELETE.select metric), 'DELETE 5xx')"
+            },
+            {
+              "refId": "D",
+              "target": "alias(sumSeries(swift.$DC-prod.*.proxy-server.*.PUT.5*.timing.sample_rate), 'PUT 5xx')"
+            },
+            {
+              "refId": "E",
+              "target": "alias(sumSeries(swift.$DC-prod.*.proxy-server.*.POST.5*.timing.sample_rate), 'POST 5xx')"
+            },
+            {
+              "refId": "F",
+              "target": "alias(sumSeries(swift.$DC-prod.*.proxy-server.errors.rate), 'proxy-server errors')"
+            }
+          ],
+          "timeFrom": null,
+          "timeShift": null,
+          "timezone": "browser",
+          "title": "server errors",
+          "tooltip": {
+            "query_as_alias": true,
+            "shared": true,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "x-axis": true,
+          "y-axis": true,
+          "y_formats": [
+            "short",
+            "short"
+          ],
+          "zerofill": true
+        }
+      ],
+      "showTitle": true,
+      "title": "frontend (swift-proxy)"
+    },
+    {
+      "collapse": false,
+      "editable": true,
+      "height": "250px",
+      "panels": [
+        {
+          "aliasColors": {},
+          "annotate": {
+            "enable": false
+          },
+          "bars": false,
+          "datasource": "graphite",
+          "fill": 1,
+          "grid": {
+            "leftLogBase": 1,
+            "leftMax": null,
+            "leftMin": null,
+            "max": null,
+            "min": null,
+            "rightLogBase": 1,
+            "rightMax": null,
+            "rightMin": null,
+            "threshold1": null,
+            "threshold1Color": "rgba(216, 200, 27, 0.27)",
+            "threshold2": null,
+            "threshold2Color": "rgba(234, 112, 112, 0.22)"
+          },
+          "height": "",
+          "id": 8,
+          "interactive": true,
+          "leftYAxisLabel": "avail %",
+          "legend": {
+            "avg": true,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": true
+          },
+          "legend_counts": true,
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "connected",
+          "options": false,
+          "percentage": true,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "resolution": 100,
+          "scale": 1,
+          "seriesOverrides": [],
+          "span": 6,
+          "spyable": true,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "hide": false,
+              "refId": "A",
+              "target": "alias(keepLastValue(swift.$DC-prod.dispersion.container.pct_found), 'container')"
+            },
+            {
+              "refId": "B",
+              "target": "alias(keepLastValue(swift.$DC-prod.dispersion.object.pct_found), 'object')"
+            }
+          ],
+          "timeFrom": null,
+          "timeShift": null,
+          "timezone": "browser",
+          "title": "swift-dispersion (availability)",
+          "tooltip": {
+            "query_as_alias": true,
+            "shared": true,
+            "value_type": "cumulative"
+          },
+          "type": "graph",
+          "x-axis": true,
+          "y-axis": true,
+          "y_formats": [
+            "percent",
+            "short"
+          ],
+          "zerofill": true
+        },
+        {
+          "aliasColors": {},
+          "annotate": {
+            "enable": false
+          },
+          "bars": false,
+          "datasource": "graphite",
+          "fill": 1,
+          "grid": {
+            "leftLogBase": 1,
+            "leftMax": null,
+            "leftMin": null,
+            "max": null,
+            "min": null,
+            "rightLogBase": 1,
+            "rightMax": null,
+            "rightMin": null,
+            "threshold1": null,
+            "threshold1Color": "rgba(216, 200, 27, 0.27)",
+            "threshold2": null,
+            "threshold2Color": "rgba(234, 112, 112, 0.22)"
+          },
+          "height": "",
+          "id": 9,
+          "interactive": true,
+          "leftYAxisLabel": "",
+          "legend": {
+            "avg": true,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": true
+          },
+          "legend_counts": true,
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null",
+          "options": false,
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "resolution": 100,
+          "scale": 1,
+          "seriesOverrides": [
+            {
+              "alias": "containers",
+              "yaxis": 2
+            },
+            {
+              "alias": "objects",
+              "yaxis": 2
+            },
+            {
+              "alias": "avg cpu",
+              "yaxis": 2
+            }
+          ],
+          "span": 6,
+          "spyable": true,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "refId": "A",
+              "target": "alias(swift.$DC-prod.stats.AUTH_mw.bytes, 'used')"
+            },
+            {
+              "refId": "B",
+              "target": "alias(swift.$DC-prod.stats.AUTH_mw.containers, 'containers')"
+            },
+            {
+              "refId": "C",
+              "target": "alias(swift.$DC-prod.stats.AUTH_mw.objects, 'objects')"
+            }
+          ],
+          "timeFrom": null,
+          "timeShift": null,
+          "timezone": "browser",
+          "title": "mediawiki prod",
+          "tooltip": {
+            "query_as_alias": true,
+            "shared": true,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "x-axis": true,
+          "y-axis": true,
+          "y_formats": [
+            "bytes",
+            "short"
+          ],
+          "zerofill": true
+        }
+      ],
+      "showTitle": true,
+      "title": "cluster"
+    },
+    {
+      "collapse": false,
+      "editable": true,
+      "height": "250px",
+      "panels": [
+        {
+          "aliasColors": {},
+          "annotate": {
+            "enable": false
+          },
+          "bars": false,
+          "datasource": "graphite",
+          "fill": 1,
+          "grid": {
+            "leftLogBase": 1,
+            "leftMax": null,
+            "leftMin": null,
+            "max": null,
+            "min": null,
+            "rightLogBase": 1,
+            "rightMax": null,
+            "rightMin": null,
+            "threshold1": null,
+            "threshold1Color": "rgba(216, 200, 27, 0.27)",
+            "threshold2": null,
+            "threshold2Color": "rgba(234, 112, 112, 0.22)"
+          },
+          "height": "",
+          "id": 17,
+          "interactive": true,
+          "leftYAxisLabel": "",
+          "legend": {
+            "avg": true,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": true
+          },
+          "legend_counts": true,
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null",
+          "options": false,
+          "percentage": true,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "resolution": 100,
+          "scale": 1,
+          "seriesOverrides": [
+            {
+              "alias": "InErrors",
+              "yaxis": 2
+            },
+            {
+              "alias": "NoPorts",
+              "yaxis": 2
+            },
+            {
+              "alias": "RcvbufErrors",
+              "yaxis": 2
+            }
+          ],
+          "span": 6,
+          "spyable": true,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "refId": "A",
+              "target": "alias(sumSeries(servers.ms-fe1*.network.*.tx_byte), 'tx')"
+            },
+            {
+              "refId": "B",
+              "target": "alias(sumSeries(servers.ms-fe1*.network.*.rx_byte), 'rx')"
+            }
+          ],
+          "timeFrom": null,
+          "timeShift": null,
+          "timezone": "browser",
+          "title": "network IO (frontend)",
+          "tooltip": {
+            "query_as_alias": true,
+            "shared": true,
+            "value_type": "cumulative"
+          },
+          "type": "graph",
+          "x-axis": true,
+          "y-axis": true,
+          "y_formats": [
+            "Bps",
+            "short"
+          ],
+          "zerofill": true
+        },
+        {
+          "aliasColors": {},
+          "annotate": {
+            "enable": false
+          },
+          "bars": false,
+          "datasource": "graphite",
+          "fill": 1,
+          "grid": {
+            "leftLogBase": 1,
+            "leftMax": null,
+            "leftMin": 0,
+            "max": null,
+            "min": null,
+            "rightLogBase": 1,
+            "rightMax": null,
+            "rightMin": 0,
+            "threshold1": null,
+            "threshold1Color": "rgba(216, 200, 27, 0.27)",
+            "threshold2": null,
+            "threshold2Color": "rgba(234, 112, 112, 0.22)"
+          },
+          "height": "",
+          "id": 23,
+          "interactive": true,
+          "leftYAxisLabel": "",
+          "legend": {
+            "avg": true,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": true
+          },
+          "legend_counts": true,
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null",
+          "options": false,
+          "percentage": true,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "resolution": 100,
+          "scale": 1,
+          "seriesOverrides": [
+            {
+              "alias": "InErrors",
+              "yaxis": 2
+            },
+            {
+              "alias": "NoPorts",
+              "yaxis": 2
+            },
+            {
+              "alias": "RcvbufErrors",
+              "yaxis": 2
+            }
+          ],
+          "span": 6,
+          "spyable": true,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "refId": "A",
+              "target": "alias(sumSeries(servers.ms-be1*.network.*.tx_byte), 'tx')"
+            },
+            {
+              "refId": "B",
+              "target": "alias(sumSeries(servers.ms-be1*.network.*.rx_byte), 'rx')"
+            }
+          ],
+          "timeFrom": null,
+          "timeShift": null,
+          "timezone": "browser",
+          "title": "network IO (backend)",
+          "tooltip": {
+            "query_as_alias": true,
+            "shared": true,
+            "value_type": "cumulative"
+          },
+          "type": "graph",
+          "x-axis": true,
+          "y-axis": true,
+          "y_formats": [
+            "Bps",
+            "short"
+          ],
+          "zerofill": true
+        },
+        {
+          "aliasColors": {},
+          "annotate": {
+            "enable": false
+          },
+          "bars": false,
+          "datasource": "graphite",
+          "fill": 0,
+          "grid": {
+            "leftLogBase": 1,
+            "leftMax": null,
+            "leftMin": 0,
+            "max": null,
+            "min": null,
+            "rightLogBase": 1,
+            "rightMax": null,
+            "rightMin": 0,
+            "threshold1": null,
+            "threshold1Color": "rgba(216, 200, 27, 0.27)",
+            "threshold2": null,
+            "threshold2Color": "rgba(234, 112, 112, 0.22)"
+          },
+          "height": "",
+          "id": 24,
+          "interactive": true,
+          "leftYAxisLabel": "",
+          "legend": {
+            "avg": true,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": true
+          },
+          "legend_counts": true,
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null",
+          "options": false,
+          "percentage": true,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "resolution": 100,
+          "scale": 1,
+          "seriesOverrides": [
+            {
+              "alias": "InErrors",
+              "yaxis": 2
+            },
+            {
+              "alias": "NoPorts",
+              "yaxis": 2
+            },
+            {
+              "alias": "RcvbufErrors",
+              "yaxis": 2
+            }
+          ],
+          "span": 6,
+          "spyable": true,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "refId": "A",
+              "target": "aliasByNode(movingAverage(highestMax(servers.ms-be1*.loadavg.01, 3),10),1)"
+            },
+            {
+              "refId": "B",
+              "target": "aliasByNode(movingAverage(highestMax(servers.ms-fe1*.loadavg.01, 3), 10), 1)"
+            }
+          ],
+          "timeFrom": null,
+          "timeShift": null,
+          "timezone": "browser",
+          "title": "top3 load (1m, fe+be)",
+          "tooltip": {
+            "query_as_alias": true,
+            "shared": true,
+            "value_type": "cumulative"
+          },
+          "type": "graph",
+          "x-axis": true,
+          "y-axis": true,
+          "y_formats": [
+            "short",
+            "short"
+          ],
+          "zerofill": true
+        },
+        {
+          "aliasColors": {},
+          "annotate": {
+            "enable": false
+          },
+          "bars": false,
+          "datasource": "graphite",
+          "fill": 0,
+          "grid": {
+            "leftLogBase": 1,
+            "leftMax": null,
+            "leftMin": 0,
+            "max": null,
+            "min": null,
+            "rightLogBase": 1,
+            "rightMax": null,
+            "rightMin": 0,
+            "threshold1": null,
+            "threshold1Color": "rgba(216, 200, 27, 0.27)",
+            "threshold2": null,
+            "threshold2Color": "rgba(234, 112, 112, 0.22)"
+          },
+          "height": "",
+          "id": 25,
+          "interactive": true,
+          "leftYAxisLabel": "",
+          "legend": {
+            "avg": true,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": true
+          },
+          "legend_counts": true,
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null",
+          "options": false,
+          "percentage": true,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "resolution": 100,
+          "scale": 1,
+          "seriesOverrides": [
+            {
+              "alias": "InErrors",
+              "yaxis": 2
+            },
+            {
+              "alias": "NoPorts",
+              "yaxis": 2
+            },
+            {
+              "alias": "RcvbufErrors",
+              "yaxis": 2
+            }
+          ],
+          "span": 6,
+          "spyable": true,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "refId": "A",
+              "target": "aliasByNode(highestAverage(servers.ms-be1*.iostat.sd[a-z].iops,10),1,3)"
+            }
+          ],
+          "timeFrom": null,
+          "timeShift": null,
+          "timezone": "browser",
+          "title": "top10 busy disks",
+          "tooltip": {
+            "query_as_alias": true,
+            "shared": true,
+            "value_type": "cumulative"
+          },
+          "type": "graph",
+          "x-axis": true,
+          "y-axis": true,
+          "y_formats": [
+            "short",
+            "short"
+          ],
+          "zerofill": true
+        }
+      ],
+      "showTitle": true,
+      "title": "system stats"
+    }
+  ],
+  "schemaVersion": 7,
+  "sharedCrosshair": false,
+  "style": "light",
+  "tags": [
+    "operations",
+    "featured",
+    "source:puppet.git",
+    "readonly"
+  ],
+  "templating": {
+    "list": [
+      {
+        "allFormat": "glob",
+        "current": {
+          "tags": [],
+          "text": "codfw",
+          "value": "codfw"
+        },
+        "datasource": null,
+        "includeAll": true,
+        "multi": false,
+        "multiFormat": "glob",
+        "name": "DC",
+        "options": [
+          {
+            "selected": false,
+            "text": "All",
+            "value": "{codfw,eqiad,esams}"
+          },
+          {
+            "selected": true,
+            "text": "codfw",
+            "value": "codfw"
+          },
+          {
+            "selected": false,
+            "text": "eqiad",
+            "value": "eqiad"
+          },
+          {
+            "selected": false,
+            "text": "esams",
+            "value": "esams"
+          }
+        ],
+        "query": "swift.*",
+        "refresh_on_load": false,
+        "regex": "/(.*)-prod/",
+        "type": "query"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-4h",
+    "to": "now-1m"
+  },
+  "timepicker": {
+    "collapse": false,
+    "enable": true,
+    "notice": false,
+    "now": true,
+    "nowDelay": "1m",
+    "refresh_intervals": [
+      "1m",
+      "5m",
+      "15m",
+      "30m",
+      "1h",
+      "1d"
+    ],
+    "status": "Stable",
+    "time_options": [
+      "1h",
+      "4h",
+      "1d",
+      "3d",
+      "1w"
+    ],
+    "type": "timepicker"
+  },
+  "timezone": "utc",
+  "title": "Swift",
+  "version": 1
+}
