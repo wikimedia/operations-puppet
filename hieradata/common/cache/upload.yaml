@@ -55,5 +55,5 @@ apps:
   swift_thumbs:
     route: 'eqiad'
     backends:
-      eqiad: 'ms-fe.svc.eqiad.wmnet'
-      codfw: 'ms-fe.svc.codfw.wmnet'
+      eqiad: 'ms-fe-thumbs.svc.eqiad.wmnet'
+      codfw: 'ms-fe-thumbs.svc.codfw.wmnet'
