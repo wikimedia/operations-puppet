@@ -1198,6 +1198,7 @@ node 'hooft.esams.wikimedia.org' {
 node 'graphite1001.eqiad.wmnet' {
     role graphite::production, statsdlb, performance, graphite::alerts, restbase::alerts, graphite::alerts::reqstats, elasticsearch::alerts
     include standard
+    include base::firewall
 }
 
 # graphite test machine, currently with SSD caching + spinning disks
