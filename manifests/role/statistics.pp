@@ -165,9 +165,16 @@ class role::statistics::private inherits role::statistics {
     }
 
     # Set up reportupdater to be executed on this machine.
+    # Reportupdater on stat1002 launches Hadoop jobs, and
+    # the 'hdfs' user is the only 'system' user that has
+    # access to required files in Hadoop.
     class { 'reportupdater':
         base_path => "${::statistics::working_path}/reportupdater",
-        user      => $::statistics::user::username,
+        user      => 'hdfs',
+        # We know that this is included on stat1002, but unfortunetly
+        # it is done so outside of this role.  Perhaps
+        # reportupdater should have its own role!
+        require   => Class['cdh::hadoop'],
     }
     # Set up a job to create browser reports on hive db.
     reportupdater::job { 'browser':
