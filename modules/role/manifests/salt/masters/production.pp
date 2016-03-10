@@ -25,4 +25,15 @@ class role::salt::masters::production {
         salt_master_pubkey_type => 'prod',
     }
 
+    ferm::service { 'salt_master_job_publisher':
+        proto  => 'tcp',
+        port   => '4505',
+        srange => '$INTERNAL',
+    }
+
+    ferm::service { 'salt_master_minion_returns':
+        proto  => 'tcp',
+        port   => '4506',
+        srange => '$INTERNAL',
+    }
 }
