@@ -191,6 +191,7 @@ nfs_mounts:
   scratch: false
   dumps: false
 mediawiki::web::sites::domain_suffix: "beta.wmflabs.org"
+mediawiki::web::sites::portal_dir: "portal-master"
 
 #
 # Zookeeper Cluster in Beta

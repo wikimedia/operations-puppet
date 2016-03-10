@@ -15,6 +15,7 @@ import logging
 import subprocess
 import sys
 
+PATH_PORTAL = '<%= @stage_dir %>/portal-master'
 PATH_MWCORE = '<%= @stage_dir %>/php-master'
 PATH_MWEXT = '<%= @stage_dir %>/php-master/extensions'
 PATH_MWSKIN = '<%= @stage_dir %>/php-master/skins'
@@ -62,6 +63,7 @@ def main():
         update_repo(name='mwextupdate', path=PATH_MWEXT),
         pull_repo(name='mwskinpull', path=PATH_MWSKIN),
         update_repo(name='mwskinupdate', path=PATH_MWSKIN),
+        pull_repo(name='portal', path-PATH_PORTAL)
     ]
 
     logger.info("Executions completed %s", exit_codes)
