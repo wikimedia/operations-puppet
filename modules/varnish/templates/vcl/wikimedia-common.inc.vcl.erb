@@ -116,7 +116,7 @@ be_seen = {}
 	[*director['backends']].each do |backend|
 		next if be_seen.key?(backend)
 		be_seen[backend] = 1
-		name = /^[0-9\.]+$/.match(backend) ? "ipv4_" + backend.gsub(".", "_") : "be_" + backend.split(".")[0].gsub("-", "_")
+		name = /^[0-9\.]+$/.match(backend) ? 'ipv4_' + backend.gsub('.', '_') : 'be_' + backend.gsub(/\.wmnet$/, '').gsub(/[^a-z0-9]/, '_')
 -%>
 backend <%= name %> {
 	.host = "<%= backend %>";
