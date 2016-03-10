@@ -46,6 +46,20 @@ class beta::autoupdater {
         require   => Git::Clone['operations/mediawiki-config'],
     }
 
+    git::clone { 'beta-portal':
+        directory => "${stage_dir}/portal-master",
+        origin    => 'https://gerrit.wikimedia.org/r/p/wikimedia/portals.git',
+        branch    => 'master',
+        owner     => 'jenkins-deploy',
+        group     => 'wikidev',
+        require   => Git::Clone['operations/mediawiki-config'],
+    }
+
+    file { "${stage_dir}/docroot/wwwportal/${::mediawiki::web::sites::portal_dir}":
+        ensure => 'link',
+        target => '../../portal-master'
+    }
+
     file { "${stage_dir}/php-master/LocalSettings.php":
         ensure  => present,
         owner   => 'jenkins-deploy',

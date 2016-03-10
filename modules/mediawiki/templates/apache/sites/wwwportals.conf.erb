@@ -21,7 +21,10 @@
     RewriteRule . - [E=RW_PROTO:http]
 
     # Front page...
-    RewriteRule ^/$ /portal/wikipedia.org/index.html [L]
+    RewriteRule ^/$ /<%= @portal_dir %>/wikipedia.org/index.html [L]
+    <% if @rewrite_portal @>
+        RewriteRule ^/portal/(.*)$ /<%= @portal_dir %>/$1 [L]
+    <% end %>
     RewriteRule ^/portal/.*$ - [L]
     <Location ~ "^/$|^/portal/">
         Header set Cache-Control "s-maxage=3600, must-revalidate, max-age=0"
@@ -87,10 +90,16 @@
     RewriteRule . - [E=RW_PROTO:http]
 
     # Front page...
-    RewriteRule ^/$ /portal/wiktionary.org/index.html [L]
-    <Location ~ "^/$|^/portal/">
+    RewriteRule ^/$ /<%= @<%= @portal_dir %>%>/wiktionary.org/index.html [L]
+    <% if @rewrite_portal @>
+        RewriteRule ^/portal/(.*)$ /<%= @portal_dir %>/$1 [L]
+    <% end %>
+    <Location ~ "^/$|^/<%= @portal_dir %>/">
         Header set Cache-Control "s-maxage=3600, must-revalidate, max-age=0"
     </Location>
+    <% if @rewrite_portal %>
+        RewriteRule ^/portal/(.*)$ /<%= @portal_dir %>/$1 [L]
+    <% end %>
 
     # search-redirect.php, let it through
     RewriteRule ^/search-redirect.php /w/search-redirect.php [L]
@@ -115,7 +124,10 @@
     RewriteRule . - [E=RW_PROTO:http]
 
     # Front page...
-    RewriteRule ^/$ /portal/wikinews.org/index.html [L]
+    RewriteRule ^/$ /<%= @portal_dir %>/wikinews.org/index.html [L]
+    <% if @rewrite_portal @>
+        RewriteRule ^/portal/(.*)$ /<%= @portal_dir %>/$1 [L]
+    <% end %>
     <Location ~ "^/$|^/portal/">
         Header set Cache-Control "s-maxage=3600, must-revalidate, max-age=0"
     </Location>
@@ -143,7 +155,10 @@
     RewriteRule . - [E=RW_PROTO:http]
 
     # Front page...
-    RewriteRule ^/$ /portal/wikiquote.org/index.html [L]
+    RewriteRule ^/$ /<%= @portal_dir %>/wikiquote.org/index.html [L]
+    <% if @rewrite_portal @>
+        RewriteRule ^/portal/(.*)$ /<%= @portal_dir %>/$1 [L]
+    <% end %>
     <Location ~ "^/$|^/portal/">
         Header set Cache-Control "s-maxage=3600, must-revalidate, max-age=0"
     </Location>
@@ -171,7 +186,10 @@
     RewriteRule . - [E=RW_PROTO:http]
 
     # Front page...
-    RewriteRule ^/$ /portal/wikiversity.org/index.html [L]
+    RewriteRule ^/$ /<%= @portal_dir %>/wikiversity.org/index.html [L]
+    <% if @rewrite_portal @>
+        RewriteRule ^/portal/(.*)$ /<%= @portal_dir %>/$1 [L]
+    <% end %>
     <Location ~ "^/$|^/portal/">
         Header set Cache-Control "s-maxage=3600, must-revalidate, max-age=0"
     </Location>
@@ -199,7 +217,10 @@
     RewriteRule . - [E=RW_PROTO:http]
 
     # Front page...
-    RewriteRule ^/$ /portal/wikibooks.org/index.html [L]
+    RewriteRule ^/$ /<%= @portal_dir %>/wikibooks.org/index.html [L]
+    <% if @rewrite_portal @>
+        RewriteRule ^/portal/(.*)$ /<%= @portal_dir %>/$1 [L]
+    <% end %>
     <Location ~ "^/$|^/portal/">
         Header set Cache-Control "s-maxage=3600, must-revalidate, max-age=0"
     </Location>
@@ -227,7 +248,10 @@
     RewriteRule . - [E=RW_PROTO:http]
 
     # Front page...
-    RewriteRule ^/$ /portal/wikivoyage.org/index.html [L]
+    RewriteRule ^/$ /<%= @portal_dir %>/wikivoyage.org/index.html [L]
+    <% if @rewrite_portal @>
+        RewriteRule ^/portal/(.*)$ /<%= @portal_dir %>/$1 [L]
+    <% end %>
     <Location ~ "^/$|^/portal/">
         Header set Cache-Control "s-maxage=3600, must-revalidate, max-age=0"
     </Location>
