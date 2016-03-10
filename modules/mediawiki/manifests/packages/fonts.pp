@@ -54,6 +54,7 @@ class mediawiki::packages::fonts {
         'ttf-kochi-gothic',          # T66002
         'ttf-kochi-mincho',          # T66002
         'ttf-lyx',                   # T40299
+        'fonts-gujr-extra',          # T129500
     ]:
         ensure => present,
     }
