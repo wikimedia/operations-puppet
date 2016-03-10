@@ -682,533 +682,1262 @@ registry:
     Yandex:
       af:
         - ba
-        - hy
+        - bs
+        - eu
         - fa
+        - ht
+        - hy
+        - is
+        - la
+        - mn
+        - mt
         - pl
         - sq
+        - sw
+        - tg
+        - tl
         - ru
+        - ur
         - uz
       ar:
         - ba
-        - hy
+        - bs
+        - eu
         - fa
+        - ht
+        - hy
+        - is
+        - la
+        - mn
+        - mt
         - pl
         - sq
+        - sw
+        - tg
+        - tl
         - ru
+        - ur
         - uz
       az:
         - ba
-        - hy
+        - bs
+        - eu
         - fa
+        - ht
+        - hy
+        - is
+        - la
+        - mn
+        - mt
         - pl
         - sq
+        - sw
+        - tg
+        - tl
         - ru
+        - ur
         - uz
       ba:
-        - hy
+        - bs
+        - eu
         - fa
+        - ht
+        - hy
+        - is
+        - la
+        - mn
+        - mt
         - pl
         - sq
+        - sw
+        - tg
+        - tl
         - ru
+        - ur
         - uz
       'be-tarask':
         - ba
+        - bs
+        - eu
         - fa
+        - ht
         - hy
+        - is
+        - la
+        - mn
+        - mt
         - pl
         - sq
+        - sw
+        - tg
+        - tl
         - ru
+        - ur
         - uz
       be:
         - ba
+        - bs
+        - eu
         - fa
+        - ht
         - hy
+        - is
+        - la
+        - mn
+        - mt
         - pl
         - sq
+        - sw
+        - tg
+        - tl
         - ru
+        - ur
         - uz
       bg:
         - ba
+        - bs
+        - eu
         - fa
+        - ht
         - hy
+        - is
+        - la
+        - mn
+        - mt
         - pl
         - sq
+        - sw
+        - tg
+        - tl
         - ru
+        - ur
         - uz
       bs:
         - ba
+        - bs
+        - eu
         - fa
+        - ht
         - hy
+        - is
+        - la
+        - mn
+        - mt
         - pl
         - sq
+        - sw
+        - tg
+        - tl
         - ru
+        - ur
         - uz
       ca:
         - ba
+        - bs
+        - eu
         - fa
+        - ht
         - hy
+        - is
+        - la
+        - mn
+        - mt
         - pl
         - sq
+        - sw
+        - tg
+        - tl
         - ru
+        - ur
         - uz
       cs:
         - ba
+        - bs
+        - eu
         - fa
+        - ht
         - hy
+        - is
+        - la
+        - mn
+        - mt
         - pl
         - sq
+        - sw
+        - tg
+        - tl
         - ru
+        - ur
         - uz
       cy:
         - ba
+        - bs
+        - eu
         - fa
+        - ht
         - hy
+        - is
+        - la
+        - mn
+        - mt
         - pl
         - sq
+        - sw
+        - tg
+        - tl
         - ru
+        - ur
         - uz
       da:
         - ba
+        - bs
+        - eu
         - fa
+        - ht
         - hy
+        - is
+        - la
+        - mn
+        - mt
         - pl
         - sq
+        - sw
+        - tg
+        - tl
         - ru
+        - ur
         - uz
       de:
         - ba
+        - bs
+        - eu
         - fa
+        - ht
         - hy
+        - is
+        - la
+        - mn
+        - mt
         - pl
         - sq
+        - sw
+        - tg
+        - tl
         - ru
+        - ur
         - uz
       el:
         - ba
+        - bs
+        - eu
         - fa
+        - ht
         - hy
+        - is
+        - la
+        - mn
+        - mt
         - pl
         - sq
+        - sw
+        - tg
+        - tl
         - ru
+        - ur
         - uz
       en:
         - ba
+        - bs
+        - eu
         - fa
+        - ht
         - hy
+        - is
+        - la
+        - mn
+        - mt
         - pl
         - sq
+        - sw
+        - tg
+        - tl
         - ru
+        - ur
         - uz
       es:
         - ba
+        - bs
+        - eu
         - fa
+        - ht
         - hy
+        - is
+        - la
+        - mn
+        - mt
         - pl
         - sq
+        - sw
+        - tg
+        - tl
         - ru
+        - ur
         - uz
       et:
         - ba
+        - bs
+        - eu
         - fa
+        - ht
         - hy
+        - is
+        - la
+        - mn
+        - mt
         - pl
         - sq
+        - sw
+        - tg
+        - tl
         - ru
+        - ur
         - uz
       eu:
         - ba
+        - bs
         - fa
+        - ht
         - hy
+        - is
+        - la
+        - mn
+        - mt
         - pl
         - sq
+        - sw
+        - tg
+        - tl
         - ru
+        - ur
         - uz
       fa:
         - ba
+        - bs
+        - eu
+        - ht
         - hy
+        - is
+        - la
+        - mn
+        - mt
         - pl
         - sq
+        - sw
+        - tg
+        - tl
         - ru
+        - ur
         - uz
       fi:
         - ba
+        - bs
+        - eu
         - fa
+        - ht
         - hy
+        - is
+        - la
+        - mn
+        - mt
         - pl
         - sq
+        - sw
+        - tg
+        - tl
         - ru
+        - ur
         - uz
       fr:
         - ba
+        - bs
+        - eu
         - fa
+        - ht
         - hy
+        - is
+        - la
+        - mn
+        - mt
         - pl
         - sq
+        - sw
+        - tg
+        - tl
         - ru
+        - ur
         - uz
       ga:
         - ba
+        - bs
+        - eu
         - fa
+        - ht
         - hy
+        - is
+        - la
+        - mn
+        - mt
         - pl
         - sq
+        - sw
+        - tg
+        - tl
         - ru
+        - ur
         - uz
       gl:
         - ba
+        - bs
+        - eu
         - fa
+        - ht
         - hy
+        - is
+        - la
+        - mn
+        - mt
         - pl
         - sq
+        - sw
+        - tg
+        - tl
         - ru
+        - ur
         - uz
       he:
         - ba
+        - bs
+        - eu
         - fa
+        - ht
         - hy
+        - is
+        - la
+        - mn
+        - mt
         - pl
         - sq
+        - sw
+        - tg
+        - tl
         - ru
+        - ur
         - uz
       hi:
         - ba
+        - bs
+        - eu
         - fa
+        - ht
         - hy
+        - is
+        - la
+        - mn
+        - mt
         - pl
         - sq
+        - sw
+        - tg
+        - tl
         - ru
+        - ur
         - uz
       hr:
         - ba
+        - bs
+        - eu
         - fa
+        - ht
         - hy
+        - is
+        - la
+        - mn
+        - mt
         - pl
         - sq
+        - sw
+        - tg
+        - tl
         - ru
+        - ur
         - uz
       ht:
         - ba
+        - bs
+        - eu
         - fa
         - hy
+        - is
+        - la
+        - mn
+        - mt
         - pl
         - sq
+        - sw
+        - tg
+        - tl
         - ru
+        - ur
         - uz
       hu:
         - ba
+        - bs
+        - eu
         - fa
+        - ht
         - hy
+        - is
+        - la
+        - mn
+        - mt
         - pl
         - sq
+        - sw
+        - tg
+        - tl
         - ru
+        - ur
         - uz
       hy:
         - ba
+        - bs
+        - eu
         - fa
+        - ht
+        - is
+        - la
+        - mn
+        - mt
         - pl
         - sq
+        - sw
+        - tg
+        - tl
         - ru
+        - ur
         - uz
       id:
         - ba
+        - bs
+        - eu
         - fa
+        - ht
         - hy
+        - is
+        - la
+        - mn
+        - mt
         - pl
         - sq
+        - sw
+        - tg
+        - tl
         - ru
+        - ur
         - uz
       is:
         - ba
+        - bs
+        - eu
         - fa
+        - ht
         - hy
+        - la
+        - mn
+        - mt
         - pl
         - sq
+        - sw
+        - tg
+        - tl
         - ru
+        - ur
         - uz
       it:
         - ba
+        - bs
+        - eu
         - fa
+        - ht
         - hy
+        - is
+        - la
+        - mn
+        - mt
         - pl
         - sq
+        - sw
+        - tg
+        - tl
         - ru
+        - ur
         - uz
       ja:
         - ba
+        - bs
+        - eu
         - fa
+        - ht
         - hy
+        - is
+        - la
+        - mn
+        - mt
         - pl
         - sq
+        - sw
+        - tg
+        - tl
         - ru
+        - ur
         - uz
       ka:
         - ba
+        - bs
+        - eu
         - fa
+        - ht
         - hy
+        - is
+        - la
+        - mn
+        - mt
         - pl
         - sq
+        - sw
+        - tg
+        - tl
         - ru
+        - ur
         - uz
       kk:
         - ba
+        - bs
+        - eu
         - fa
+        - ht
         - hy
+        - is
+        - la
+        - mn
+        - mt
         - pl
         - sq
+        - sw
+        - tg
+        - tl
         - ru
+        - ur
         - uz
       ko:
         - ba
+        - bs
+        - eu
         - fa
+        - ht
         - hy
+        - is
+        - la
+        - mn
+        - mt
         - pl
         - sq
+        - sw
+        - tg
+        - tl
         - ru
+        - ur
         - uz
       ky:
         - ba
+        - bs
+        - eu
         - fa
+        - ht
         - hy
+        - is
+        - la
+        - mn
+        - mt
         - pl
         - sq
+        - sw
+        - tg
+        - tl
         - ru
+        - ur
         - uz
       la:
         - ba
+        - bs
+        - eu
         - fa
+        - ht
         - hy
+        - is
+        - mn
+        - mt
         - pl
         - sq
+        - sw
+        - tg
+        - tl
         - ru
+        - ur
         - uz
       lt:
         - ba
+        - bs
+        - eu
         - fa
+        - ht
         - hy
+        - is
+        - la
+        - mn
+        - mt
         - pl
         - sq
+        - sw
+        - tg
+        - tl
         - ru
+        - ur
         - uz
       lv:
         - ba
+        - bs
+        - eu
         - fa
+        - ht
         - hy
+        - is
+        - la
+        - mn
+        - mt
         - pl
         - sq
+        - sw
+        - tg
+        - tl
         - ru
+        - ur
         - uz
       mg:
         - ba
+        - bs
+        - eu
         - fa
+        - ht
         - hy
+        - is
+        - la
+        - mn
+        - mt
         - pl
         - sq
+        - sw
+        - tg
+        - tl
         - ru
+        - ur
         - uz
       mk:
         - ba
+        - bs
+        - eu
         - fa
+        - ht
         - hy
+        - is
+        - la
+        - mn
+        - mt
         - pl
         - sq
+        - sw
+        - tg
+        - tl
         - ru
+        - ur
         - uz
       mn:
         - ba
+        - bs
+        - eu
         - fa
+        - ht
         - hy
+        - is
+        - la
+        - mn
+        - mt
         - pl
         - sq
+        - sw
+        - tg
+        - tl
         - ru
+        - ur
         - uz
       ms:
         - ba
+        - bs
+        - eu
         - fa
+        - ht
         - hy
+        - is
+        - la
+        - mn
+        - mt
         - pl
         - sq
+        - sw
+        - tg
+        - tl
         - ru
+        - ur
         - uz
       mt:
         - ba
+        - bs
+        - eu
         - fa
+        - ht
         - hy
+        - is
+        - la
+        - mn
         - pl
         - sq
+        - sw
+        - tg
+        - tl
         - ru
+        - ur
         - uz
       nl:
         - ba
+        - bs
+        - eu
         - fa
+        - ht
         - hy
+        - is
+        - la
+        - mn
+        - mt
         - pl
         - sq
+        - sw
+        - tg
+        - tl
         - ru
+        - ur
         - uz
       'no':
         - ba
+        - bs
+        - eu
         - fa
+        - ht
         - hy
+        - is
+        - la
+        - mn
+        - mt
         - pl
         - sq
+        - sw
+        - tg
+        - tl
         - ru
+        - ur
         - uz
       pl:
         - ba
+        - bs
+        - eu
         - fa
+        - ht
         - hy
-        - pl
+        - is
+        - la
+        - mn
+        - mt
         - sq
+        - sw
+        - tg
+        - tl
         - ru
+        - ur
         - uz
       pt:
         - ba
+        - bs
+        - eu
         - fa
+        - ht
         - hy
+        - is
+        - la
+        - mn
+        - mt
         - pl
         - sq
+        - sw
+        - tg
+        - tl
         - ru
+        - ur
         - uz
       ro:
         - ba
+        - bs
+        - eu
         - fa
+        - ht
         - hy
+        - is
+        - la
+        - mn
+        - mt
         - pl
         - sq
+        - sw
+        - tg
+        - tl
         - ru
+        - ur
         - uz
       ru:
         - ba
+        - bs
+        - eu
         - fa
+        - ht
         - hy
+        - is
+        - la
+        - mn
+        - mt
         - pl
         - sq
+        - sw
+        - tg
+        - tl
+        - ur
         - uz
       sk:
         - ba
+        - bs
+        - eu
         - fa
+        - ht
         - hy
+        - is
+        - la
+        - mn
+        - mt
         - pl
         - sq
+        - sw
+        - tg
+        - tl
         - ru
+        - ur
         - uz
       sl:
         - ba
+        - bs
+        - eu
         - fa
+        - ht
         - hy
+        - is
+        - la
+        - mn
+        - mt
         - pl
         - sq
+        - sw
+        - tg
+        - tl
         - ru
+        - ur
         - uz
       sq:
         - ba
+        - bs
+        - eu
         - fa
+        - ht
         - hy
+        - is
+        - la
+        - mn
+        - mt
         - pl
+        - sq
+        - sw
+        - tg
+        - tl
         - ru
+        - ur
         - uz
       sr:
         - ba
+        - bs
+        - eu
         - fa
+        - ht
         - hy
+        - is
+        - la
+        - mn
+        - mt
         - pl
         - sq
+        - sw
+        - tg
+        - tl
         - ru
+        - ur
         - uz
       sv:
         - ba
+        - bs
+        - eu
         - fa
+        - ht
         - hy
+        - is
+        - la
+        - mn
+        - mt
         - pl
         - sq
+        - sw
+        - tg
+        - tl
         - ru
+        - ur
         - uz
       sw:
         - ba
+        - bs
+        - eu
         - fa
+        - ht
         - hy
+        - is
+        - la
+        - mn
+        - mt
         - pl
         - sq
+        - sw
+        - tg
+        - tl
         - ru
+        - ur
         - uz
       tg:
         - ba
+        - bs
+        - eu
         - fa
+        - ht
         - hy
+        - is
+        - la
+        - mn
+        - mt
         - pl
         - sq
+        - sw
+        - tl
         - ru
+        - ur
         - uz
       th:
         - ba
+        - bs
+        - eu
         - fa
+        - ht
         - hy
+        - is
+        - la
+        - mn
+        - mt
         - pl
         - sq
+        - sw
+        - tg
+        - tl
         - ru
+        - ur
         - uz
       tl:
         - ba
+        - bs
+        - eu
         - fa
+        - ht
         - hy
+        - is
+        - la
+        - mn
+        - mt
         - pl
         - sq
+        - sw
+        - tg
         - ru
+        - ur
         - uz
       tr:
         - ba
+        - bs
+        - eu
         - fa
+        - ht
         - hy
+        - is
+        - la
+        - mn
+        - mt
         - pl
         - sq
+        - sw
+        - tg
+        - tl
         - ru
+        - ur
         - uz
       tt:
         - ba
+        - bs
+        - eu
         - fa
+        - ht
         - hy
+        - is
+        - la
+        - mn
+        - mt
         - pl
         - sq
+        - sw
+        - tg
+        - tl
         - ru
+        - ur
         - uz
       uk:
         - ba
+        - bs
+        - eu
         - fa
+        - ht
         - hy
+        - is
+        - la
+        - mn
+        - mt
         - pl
         - sq
+        - sw
+        - tg
+        - tl
         - ru
+        - ur
         - uz
       ur:
         - ba
+        - bs
+        - eu
         - fa
+        - ht
         - hy
+        - is
+        - la
+        - mn
+        - mt
         - pl
         - sq
+        - sw
+        - tg
+        - tl
         - ru
         - uz
       uz:
         - ba
+        - bs
+        - eu
         - fa
+        - ht
         - hy
+        - is
+        - la
+        - mn
+        - mt
         - pl
         - sq
+        - sw
+        - tg
+        - tl
         - ru
+        - ur
       vi:
         - ba
+        - bs
+        - eu
         - fa
+        - ht
         - hy
+        - is
+        - la
+        - mn
+        - mt
         - pl
         - sq
+        - sw
+        - tg
+        - tl
         - ru
+        - ur
         - uz
       zh:
         - ba
+        - bs
+        - eu
         - fa
+        - ht
         - hy
+        - is
+        - la
+        - mn
+        - mt
         - pl
         - sq
+        - sw
+        - tg
+        - tl
         - ru
+        - ur
         - uz
   dictionary:
     Dictd:
