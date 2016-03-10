@@ -1,6 +1,7 @@
 class k8s::apiserver(
     $etcd_servers,
     $master_host,
+    $users = hiera('k8s_users'),
 ) {
     require_package('kube-apiserver')
 
@@ -13,7 +14,6 @@ class k8s::apiserver(
         mode   => '0700',
     }
 
-    $users = hiera('k8s_users')
     file { '/etc/kubernetes/tokenauth':
         content => template('k8s/tokenauth.csv.erb'),
         owner   => 'kubernetes',
