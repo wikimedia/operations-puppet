@@ -66,7 +66,8 @@ class role::maps::server {
     }
 
     # Cassandra Thrift interface, used by cqlsh
-    ferm::service { 'cassandra-cql':
+    # TODO: Is that really true? Since CQL 3.0 it should not be. Revisit
+    ferm::service { 'cassandra-cql-thrift':
         proto  => 'tcp',
         port   => '9160',
         srange => "(${cassandra_hosts_ferm})",
