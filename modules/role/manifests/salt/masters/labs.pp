@@ -38,4 +38,15 @@ class role::salt::masters::labs {
         salt_master_privkey     => secret('salt/labsmaster.pem'),
     }
 
+    ferm::service { 'salt_master_job_publisher':
+        proto  => 'tcp',
+        port   => '4505',
+        srange => '$INTERNAL',
+    }
+
+    ferm::service { 'salt_master_minion_returns':
+        proto  => 'tcp',
+        port   => '4506',
+        srange => '$INTERNAL',
+    }
 }
