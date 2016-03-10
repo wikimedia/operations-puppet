@@ -181,4 +181,8 @@ class role::grafana {
     grafana::dashboard { 'varnish-http-errors':
         source => 'puppet:///files/grafana/dashboards/varnish-http-errors',
     }
+
+    grafana::dashboard { 'swift':
+        source => 'puppet:///files/grafana/dashboards/swift',
+    }
 }
