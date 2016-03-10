@@ -50,7 +50,6 @@ apps:
   swift:
     route: 'codfw'
     backends:
-      eqiad: 'ms-fe.svc.eqiad.wmnet'
       codfw: 'ms-fe.svc.codfw.wmnet'
   swift_thumbs:
     route: 'eqiad'
