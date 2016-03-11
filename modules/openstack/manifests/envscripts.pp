@@ -4,6 +4,7 @@ class openstack::envscripts(
     $designateconfig
     ) {
 
+    $nova_region = $::site
     # Handy script to set up environment for commandline nova magic
     file { '/root/novaenv.sh':
         content => template('openstack/novaenv.sh.erb'),
