@@ -15,14 +15,6 @@ class openstack::adminscripts(
         ensure => present,
     }
 
-    # Handy script to set up environment for commandline nova magic
-    file { '/root/novaenv.sh':
-        content => template('openstack/novaenv.sh.erb'),
-        mode    => '0755',
-        owner   => 'root',
-        group   => 'root',
-    }
-
     # Script to cold-migrate instances between compute nodes
     file { '/root/cold-nova-migrate':
         ensure => present,

@@ -135,9 +135,15 @@ class role::labs::openstack::nova::controller {
 
     include role::labs::openstack::nova::common
     $novaconfig = $role::labs::openstack::nova::common::novaconfig
+    $designateconfig = hiera_hash('designateconfig', {})
 
     class { '::openstack::adminscripts':
         novaconfig => $novaconfig
+    }
+
+    class { '::openstack::envscripts':
+        novaconfig => $novaconfig,
+        designateconfig => $designateconfig
     }
 
     class { '::openstack::spreadcheck':
