@@ -577,7 +577,7 @@ lvs_services:
     monitors:
       ProxyFetch:
         url:
-        - http://ocg.svc.eqiad.wmnet/?command=health
+        - http://localhost/?command=health
       IdleConnection:
         timeout-clean-reconnect: 3
         max-delay: 300
@@ -601,7 +601,7 @@ lvs_services:
     monitors:
       ProxyFetch:
         url:
-        - http://mathoid.svc.eqiad.wmnet/_info
+        - http://localhost/_info
       IdleConnection:
         timeout-clean-reconnect: 3
         max-delay: 300
@@ -625,7 +625,7 @@ lvs_services:
     monitors:
       ProxyFetch:
         url:
-        - http://citoid.svc.eqiad.wmnet
+        - http://localhost/_info
       IdleConnection:
         timeout-clean-reconnect: 3
         max-delay: 300
@@ -633,7 +633,7 @@ lvs_services:
       cluster: scb
       service: citoid
     icinga:
-      check_command: check_http_lvs_on_port!citoid.svc.eqiad.wmnet!1970!/
+      check_command: check_http_lvs_on_port!citoid.svc.eqiad.wmnet!1970!/_info
       contact_group: admins,parsoid
       sites:
         eqiad:
@@ -650,7 +650,7 @@ lvs_services:
     monitors:
       ProxyFetch:
         url:
-        - http://cxserver.svc.eqiad.wmnet/_info
+        - http://localhost/_info
       IdleConnection:
         timeout-clean-reconnect: 3
         max-delay: 300
@@ -674,7 +674,7 @@ lvs_services:
     monitors:
       ProxyFetch:
         url:
-        - http://graphoid.svc.eqiad.wmnet/_info
+        - http://localhost/_info
       IdleConnection:
         timeout-clean-reconnect: 3
         max-delay: 300
@@ -700,7 +700,7 @@ lvs_services:
     monitors:
       ProxyFetch:
         url:
-        - "http://restbase.svc.%{::site}.wmnet"
+        - http://localhost/
       IdleConnection:
         timeout-clean-reconnect: 3
         max-delay: 300
@@ -800,7 +800,7 @@ lvs_services:
     monitors:
       ProxyFetch:
         url:
-        - "http://aqs.svc.%{::site}.wmnet"
+        - http://localhost/
       IdleConnection:
         timeout-clean-reconnect: 3
         max-delay: 300
@@ -832,7 +832,7 @@ lvs_services:
     monitors:
       ProxyFetch:
         url:
-        - "http://eventbus.svc.%{::site}.wmnet/v1/topics"
+        - http://localhost/v1/topics
       IdleConnection:
         max-delay: 300
         timeout-clean-reconnect: 3
