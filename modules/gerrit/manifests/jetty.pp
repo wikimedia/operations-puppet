@@ -7,7 +7,9 @@ class gerrit::jetty ($url,
     $ssh_key,
     $db_name = 'reviewdb',
     $db_user = 'gerrit',
-    $ssh_port = '29418') {
+    $ssh_port = '29418',
+    $git_dir = 'git'
+    ) {
 
     include nrpe
 
