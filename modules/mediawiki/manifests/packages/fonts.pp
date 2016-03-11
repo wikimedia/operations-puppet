@@ -30,6 +30,7 @@ class mediawiki::packages::fonts {
         'ttf-alee',
         'ttf-bengali-fonts',
         'ttf-devanagari-fonts',
+        'ttf-gujarati-fonts',
         'ttf-kannada-fonts',
         'ttf-malayalam-fonts',
         'ttf-oriya-fonts',
@@ -61,7 +62,6 @@ class mediawiki::packages::fonts {
         package { [
             'fonts-crosextra-carlito',
             'fonts-crosextra-caladea',
-            'fonts-gujr-extra', # T129500
     ]:
             ensure => present,
         }
