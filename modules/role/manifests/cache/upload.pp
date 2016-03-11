@@ -68,7 +68,6 @@ class role::cache::upload {
         'purge_host_regex' => $::role::cache::base::purge_host_only_upload_re,
         'upload_domain'    => $::role::cache::base::upload_domain,
         'allowed_methods'  => '^(GET|HEAD|OPTIONS|PURGE)$',
-        'do_gzip'          => true,
     }
 
     # Note pass_random true in BE, false in FE below.

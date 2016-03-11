@@ -262,12 +262,10 @@ sub wm_common_fetch {
 
 	set beresp.grace = 60m;
 
-<% if @vcl_config.fetch("do_gzip", false) -%>
 	// Compress compressible things if the backend didn't already
 	if (beresp.http.content-type ~ "json|text|html|script|xml|icon|ms-fontobject|ms-opentype|x-font") {
 		set beresp.do_gzip = true;
 	}
-<% end -%>
 }
 
 sub wm_common_deliver {
