@@ -205,6 +205,75 @@ def run_module_spec(module_name)
     end
 end
 
+namespace :varnish do
+
+    def glob_vcl_files
+        Dir.glob("{templates,modules}/**/*.vcl*").sort
+    end
+
+    desc "Attempt to compile VCL to C language"
+    task :vcl2c do
+
+        require "erb"
+
+        class VclContext
+
+            # Scope hack
+            attr_reader :sip
+            attr_reader :scope
+
+            def initialize
+                # Those should be per template fixtures
+                @sip = '127.0.0.1'
+                @vcl_config = {
+                    'bits_domain' => 'bits.wikimedia.org',
+                    'static_host' => 'en.wikipedia.org',
+                    'upload_domain' => 'upload.wikimedia.org',
+                    'purge_host_regex' => '^(?!upload\.wikimedia\.org)',
+                }
+                @cache_route = 'fake_cache_route'
+                @varnish_directors = {}
+                @directors = {}
+                @name = 'Some_name'
+                @hostname = 'hostname.example.org'
+
+                # Handle scope.lookupvar()
+                s = Class.new do
+                    def lookupvar(var)
+                        vars = {
+                            '::network::constants::all_networks_lo' => [
+                                '127.0.0.0/8', '::1/128'
+                            ],
+                        }
+                        vars[var]
+                    end
+                end
+                @scope = s.new
+            end
+        end
+
+        bad = 0
+        glob_vcl_files.each do |vcl_file|
+            template = ERB.new(File.read(vcl_file), nil, '-')
+            template.filename = vcl_file
+            begin
+                # Inject fixture in the context and render
+                renderer = template.def_class(VclContext).new
+                renderer.result
+            rescue NameError, NoMethodError, SyntaxError => e
+                bad += 1
+                puts "#{vcl_file} FAILED:"
+                puts e.to_s.gsub(/^/, 'ERR> ')
+            else
+                puts "#{vcl_file} PASSED"
+            end
+        end
+        if bad > 0
+            puts "\nERR> #{bad} template(s) can not be expanded\n\n"
+            fail
+        end
+    end
+end
 
 # lint
 # amass profit
