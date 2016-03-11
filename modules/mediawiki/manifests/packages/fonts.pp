@@ -30,7 +30,6 @@ class mediawiki::packages::fonts {
         'ttf-alee',
         'ttf-bengali-fonts',
         'ttf-devanagari-fonts',
-        'ttf-gujarati-fonts',
         'ttf-kannada-fonts',
         'ttf-malayalam-fonts',
         'ttf-oriya-fonts',
