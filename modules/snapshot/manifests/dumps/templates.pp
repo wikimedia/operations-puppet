@@ -3,13 +3,6 @@ class snapshot::dumps::templates($enable=true) {
 
         include snapshot::dirs
 
-        file { "${snapshot::dirs::dumpsdir}/templs":
-            ensure => 'directory',
-            path   => "${snapshot::dirs::dumpsdir}/templs",
-            mode   => '0755',
-            owner  => 'root',
-            group  => 'root',
-        }
         file { "${snapshot::dirs::dumpsdir}/templs/download-index.html":
             ensure => 'present',
             path   => "${snapshot::dirs::dumpsdir}/templs/download-index.html",

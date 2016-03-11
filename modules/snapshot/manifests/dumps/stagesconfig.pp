@@ -34,21 +34,6 @@ class snapshot::dumps::stagesconfig(
     }
 
     if ($enable) {
-        file { "${snapshot::dirs::dumpsdir}/stages":
-            ensure => 'directory',
-            path   => "${snapshot::dirs::dumpsdir}/stages",
-            mode   => '0755',
-            owner  => 'root',
-            group  => 'root',
-        }
-        file { "${snapshot::dirs::dumpsdir}/cache":
-            ensure => 'directory',
-            path   => "${snapshot::dirs::dumpsdir}/cache",
-            mode   => '0755',
-            owner  => 'datasets',
-            group  => 'root',
-        }
-
         snapshot::dumps::stagesconf { 'stages_normal':
             stagestype => 'normal',
             stages     => $stages,

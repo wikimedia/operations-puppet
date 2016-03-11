@@ -115,13 +115,6 @@ class snapshot::dumps::configs(
     }
 
     if ($enable) {
-        file { "${snapshot::dirs::dumpsdir}/confs":
-            ensure => 'directory',
-            path   => "${snapshot::dirs::dumpsdir}/confs",
-            mode   => '0755',
-            owner  => 'root',
-            group  => 'root',
-        }
         snapshot::dumps::wikiconf { 'wikidump.conf':
             configtype => 'smallwikis',
             config     => $config,
