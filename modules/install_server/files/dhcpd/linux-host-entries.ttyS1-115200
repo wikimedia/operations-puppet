@@ -6208,6 +6208,20 @@ host rdb2004 {
     filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
+host rdb2005 {
+    hardware ethernet 14:02:ec:42:b7:14;
+    fixed-address rdb2005.codfw.wmnet;
+    option pxelinux.pathprefix "jessie-installer/";
+    filename "jessie-installer/debian-installer/amd64/pxelinux.0";
+}
+
+host rdb2006 {
+    hardware ethernet 14:02:ec:42:05:cc;
+    fixed-address rdb2006.codfw.wmnet;
+    option pxelinux.pathprefix "jessie-installer/";
+    filename "jessie-installer/debian-installer/amd64/pxelinux.0";
+}
+
 host rcs1001 {
     hardware ethernet 78:2B:CB:1F:18:B0;
     fixed-address rcs1001.eqiad.wmnet;
