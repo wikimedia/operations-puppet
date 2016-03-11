@@ -525,3 +525,6 @@ SITE_BRANDING_LINK = 'https://wikitech.wikimedia.org/wiki/Help:FAQ'
 HORIZON_IMAGES_ALLOW_UPLOAD = False
 
 DESIGNATE = { 'records_use_fips': True }
+
+# WMF-specific dynamicproxy settings
+PROXY_API_URL = 'http://<%= @novaconfig['dynamicproxy_ip'] %>:5668'

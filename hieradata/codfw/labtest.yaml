@@ -75,7 +75,8 @@ novaconfig:
   zone: codfw
   scheduler_pool:
     - labtestvirt2001
-
+  # labs-dynamicproxy-test.openstack.eqiad.wmflabs
+  dynamicproxy_ip: '208.80.155.240'
 
 keystoneconfig:
   db_name: 'keystone'

@@ -302,6 +302,8 @@ novaconfig:
   dhcp_start: '10.68.16.4'
   network_public_ip: '208.80.155.255'
   dmz_cidr: '208.80.155.0/22,10.0.0.0/8'
+  # novaproxy-01.project-proxy.eqiad.wmflabs
+  dynamicproxy_ip: '208.80.155.156'
 
 keystoneconfig:
   db_name: 'keystone'
