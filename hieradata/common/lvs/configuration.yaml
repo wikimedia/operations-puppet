@@ -483,7 +483,7 @@ lvs_services:
     monitors:
       ProxyFetch:
         url:
-        - http://localhost:8000/
+        - http://localhost/
       IdleConnection:
         timeout-clean-reconnect: 3
         max-delay: 300
@@ -511,7 +511,7 @@ lvs_services:
     monitors:
       ProxyFetch:
         url:
-        - http://localhost:9200/
+        - http://localhost/
       IdleConnection:
         timeout-clean-reconnect: 3
         max-delay: 300
