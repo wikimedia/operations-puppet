@@ -2293,7 +2293,7 @@ node /^rdb100[1-9]\.eqiad\.wmnet/ {
     role jobqueue_redis
 }
 
-node /^rdb200[1-4]\.codfw\.wmnet/ {
+node /^rdb200[1-6]\.codfw\.wmnet/ {
     role jobqueue_redis
 }
 
