@@ -126,7 +126,6 @@ class role::kafka::analytics::broker {
     }
     class { '::kafka::server::jmxtrans':
         group_prefix => $group_prefix,
-        ganglia      => hiera('ganglia_aggregators', undef),
         statsd       => hiera('statsd', undef),
         jmx_port     => $::role::kafka::analytics::config::jmx_port,
         require      => Class['::kafka::server'],
