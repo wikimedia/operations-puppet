@@ -205,6 +205,53 @@ def run_module_spec(module_name)
     end
 end
 
+namespace :varnish do
+
+    def glob_vcl_files
+        Dir.glob("{templates,modules}/**/*.vcl*").sort
+    end
+
+    desc "Attempt to compile VCL to C language"
+    task :vcl2c do
+
+        require "erb"
+
+        class VclErbRenderer
+            def initialize()
+                # Those should be per template fixtures
+                @sip = '127.0.0.1'
+                @vcl_config = {
+                    'bits_domain' => 'bits.wikimedia.org',
+                    'static_host' => 'en.wikipedia.org',
+                    'upload_domain' => 'upload.wikimedia.org',
+                }
+                @cache_route = 'fake_cache_route'
+            end
+        end
+
+        bad = 0
+        erb_trim_mode = '-'
+        glob_vcl_files.each do |vcl_file|
+            erb = ERB.new(File.read(vcl_file), erb_trim_mode)
+            erb.filename = vcl_file
+            begin
+                renderer = erb.def_class(VclErbRenderer).new()
+                puts renderer.public_methods
+                renderer.result()
+            rescue SyntaxError, NoMethodError => e
+                bad += 1
+                puts "#{vcl_file} FAILED:"
+                puts e.message.gsub(/^/, 'ERR> ')
+            else
+                puts "#{vcl_file} PASSED"
+            end
+        end
+        if bad > 0
+            puts "\nERR> #{bad} templates can not be expanded\n\n"
+            fail
+        end
+    end
+end
 
 # lint
 # amass profit
