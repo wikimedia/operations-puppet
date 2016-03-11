@@ -7,14 +7,14 @@
 # === Parameters
 #
 # [*svg_generation*]
-#   Enable SVG generation
+#   Enable SVG generation. Default: true
 # [*img_generation*]
-#   Enable IMG generation.
+#   Enable IMG generation. Default: true
 # [*png_generation*]
-#   Enable PNG generation. This is done via shelling out to Java and temporary
-#   files, so it might be insecure.
+#   Enable PNG generation, accomplished via a librsvg2 node binding. Default:
+#   true
 # [*speakText_generation*]
-#   Enable speakText generation.
+#   Enable speakText generation. Default: false
 # [*textvcinfo_generation*]
 #   Enable texvcinfo generation. Default: true
 # [*render_no_check*]
@@ -23,7 +23,7 @@
 class mathoid(
     $svg_generation=true,
     $img_generation=true,
-    $png_generation=false,
+    $png_generation=true,
     $speakText_generation=false,
     $texvcinfo_generation=true,
     $render_no_check=true,
