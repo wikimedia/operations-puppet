@@ -28,28 +28,11 @@ class snapshot::dumps::pagetitles(
         group  => root,
     }
 
-    file { "${snapshot::dirs::wikiqueriesdir}/confs":
-        ensure => 'directory',
-        path   => "${snapshot::dirs::wikiqueriesdir}/confs",
-        mode   => '0755',
-        owner  => $user,
-        group  => root,
-    }
-
-    file { "${snapshot::dirs::wikiqueriesdir}/confs/wq.conf":
-        ensure  => 'present',
-        path    => "${snapshot::dirs::wikiqueriesdir}/confs/wq.conf",
-        mode    => '0644',
-        owner   => $user,
-        group   => root,
-        content => template('snapshot/wq.conf.erb'),
-    }
-
     cron { 'pagetitles-ns0':
         ensure      => $ensure,
         environment => 'MAILTO=ops-dumps@wikimedia.org',
         user        => $user,
-        command     => "cd ${snapshot::dirs::wikiqueriesdir}; python wikiqueries.py --configfile confs/wq.conf  --filenameformat '{w}-{d}-all-titles-in-ns-0.gz' --outdir '${snapshot::dirs::datadir}/public/other/pagetitles/{d}' --query 'select page_title from page where page_namespace=0;'",
+        command     => "cd ${snapshot::dirs::dumpsdir}; python onallwikis.py --configfile confs/wikidump.conf  --filenameformat '{w}-{d}-all-titles-in-ns-0.gz' --outdir '${snapshot::dirs::datadir}/public/other/pagetitles/{d}' --query \"'select page_title from page where page_namespace=0;'\"",
         minute      => '10',
         hour        => '8',
         require     => File["${snapshot::dirs::datadir}/public/other/pagetitles"],
@@ -59,7 +42,7 @@ class snapshot::dumps::pagetitles(
         ensure      => $ensure,
         environment => 'MAILTO=ops-dumps@wikimedia.org',
         user        => $user,
-        command     => "cd ${snapshot::dirs::wikiqueriesdir}; python wikiqueries.py --configfile confs/wq.conf  --filenameformat '{w}-{d}-all-media-titles.gz' --outdir '${snapshot::dirs::datadir}/public/other/mediatitles/{d}' --query 'select page_title from page where page_namespace=6;'",
+        command     => "cd ${snapshot::dirs::dumpsdir}; python onallwikis.py --configfile confs/wikidump.conf  --filenameformat '{w}-{d}-all-media-titles.gz' --outdir '${snapshot::dirs::datadir}/public/other/mediatitles/{d}' --query \"'select page_title from page where page_namespace=6;'\"",
         minute      => '50',
         hour        => '8',
         require     => File["${snapshot::dirs::datadir}/public/other/mediatitles"],
