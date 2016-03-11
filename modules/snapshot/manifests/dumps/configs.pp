@@ -112,6 +112,12 @@ class snapshot::dumps::configs(
             keep          => '30',
             chunksEnabled => '0',
         },
+        media => {
+            dblist        => "${snapshot::dirs::apachedir}/dblists/all.dblist",
+            skipdblist    => "${snapshot::dirs::dumpsdir}/dblists/globalusage.dblist",
+            keep          => '30',
+            chunksEnabled => '0',
+        },
     }
 
     if ($enable) {
@@ -131,6 +137,10 @@ class snapshot::dumps::configs(
         }
         snapshot::dumps::wikiconf { 'wikidump.conf.monitor':
             configtype => 'monitor',
+            config     => $config,
+        }
+        snapshot::dumps::wikiconf { 'wikidump.conf.media':
+            configtype => 'media',
             config     => $config,
         }
     }
