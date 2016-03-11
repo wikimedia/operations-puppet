@@ -25,7 +25,7 @@ class base::monitoring::host(
     $contact_group = hiera('contactgroups', 'admins'),
     # the -A -i ... part is a gross hack to workaround Varnish partitions
     # that are purposefully at 99%. Better ideas are welcome.
-    $nrpe_check_disk_options = '-w 6% -c 3% -l -e -A -i "/srv/sd[a-b][1-3]"',
+    $nrpe_check_disk_options = '-w 6% -c 3% -l -e -A -i "/srv/sd[a-b][1-3]" --exclude-type=tracefs',
     $nrpe_check_disk_critical = false,
 ) {
     include base::puppet::params # In order to be able to use some variables
