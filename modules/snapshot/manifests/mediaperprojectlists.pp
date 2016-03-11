@@ -21,6 +21,15 @@ class snapshot::mediaperprojectlists(
         content => template('snapshot/create-media-per-project-lists.sh.erb'),
     }
 
+    file { "${snapshot::dirs::dumpsdir}/confs/wikidump.conf.media":
+        ensure  => 'present',
+        path    => "${snapshot::dirs::dumpsdir}/confs/wikidump.conf.media",
+        mode    => '0644',
+        owner   => $user,
+        group   => root,
+        content => template('snapshot/wikidump.conf.media.erb'),
+    }
+
     file { "${snapshot::dirs::wikiqueriesdir}/confs/wq.conf.media":
         ensure  => 'present',
         path    => "${snapshot::dirs::wikiqueriesdir}/confs/wq.conf.media",
