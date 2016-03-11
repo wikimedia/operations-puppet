@@ -205,6 +205,105 @@ def run_module_spec(module_name)
     end
 end
 
+namespace :varnish do
+
+    def glob_vcl_files
+        Dir.glob("{templates,modules}/**/*.vcl*").sort
+    end
+
+    desc "Attempt to compile VCL to C language"
+    task :vcl2c do
+
+        require "erb"
+
+        class VclContext
+
+            # Scope hack
+            attr_reader :sip
+            attr_reader :scope
+
+            def initialize
+                # Yeah we shouldn't hardcode this
+                # This directory should also somehow passed to our .vtc files
+                # varnish v1 -arg "-p vcl_dir=/tmp/varnishtests/ -p vcc_err_unref=false" -vcl+backend
+                # include "/tmp/varnishtests/wikimedia_maps-backend.vcl";
+                #
+                @dstdir = "/tmp/varnishtests/"
+
+                # Those should be per template fixtures
+                @sip = '127.0.0.1'
+                @vcl_config = {
+                    'bits_domain' => 'bits.wikimedia.org',
+                    'static_host' => 'en.wikipedia.org',
+                    'upload_domain' => 'upload.wikimedia.org',
+                    'purge_host_regex' => '^(?!upload\.wikimedia\.org)',
+                }
+                @cache_route = 'fake_cache_route'
+                @varnish_directors = {}
+                @directors = {}
+                @name = 'Some_name'
+                @hostname = 'hostname.example.org'
+                @ipaddress = '127.0.0.1'
+
+                # Yeah we shouldn't hardcode these
+                @layer = 'backend'
+                @vcl = 'maps-backend'
+
+                # Handle scope.lookupvar()
+                s = Class.new do
+                    def lookupvar(var)
+                        vars = {
+                            '::network::constants::all_networks_lo' => [
+                                '127.0.0.0/8', '::1/128'
+                            ],
+                        }
+                        vars[var]
+                    end
+                end
+                @scope = s.new
+            end
+        end
+
+        bad = 0
+        glob_vcl_files.each do |vcl_file|
+            template = ERB.new(File.read(vcl_file), nil, '-')
+            template.filename = vcl_file
+            begin
+                # Inject fixture in the context and render
+                renderer = template.def_class(VclContext).new
+                renderer.result
+
+                # because ruby
+                vcl = renderer.instance_variable_get(:@vcl)
+                layer = renderer.instance_variable_get(:@layer)
+                dstdir = renderer.instance_variable_get(:@dstdir)
+
+                destfile = File.basename(template.filename, ".erb")
+                if destfile == "wikimedia-common.inc.vcl"
+                    destfile = "wikimedia-common_" + vcl  + ".inc.vcl"
+                end
+                if destfile == "wikimedia-" + layer + ".vcl"
+                    destfile = "wikimedia_" + vcl + ".vcl"
+                end
+                if destfile == "wikimedia-common.inc.vcl"
+                    destfile = "wikimedia-common_" + vcl + ".inc.vcl"
+                end
+
+                File.write(dstdir + destfile, renderer.result)
+            rescue NameError, NoMethodError, SyntaxError => e
+                bad += 1
+                puts "#{vcl_file} FAILED:"
+                puts e.to_s.gsub(/^/, 'ERR> ')
+            else
+                puts "#{vcl_file} PASSED"
+            end
+        end
+        if bad > 0
+            puts "\nERR> #{bad} template(s) can not be expanded\n\n"
+            fail
+        end
+    end
+end
 
 # lint
 # amass profit
