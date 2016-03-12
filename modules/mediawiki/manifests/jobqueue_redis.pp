@@ -21,7 +21,7 @@
 define mediawiki::jobqueue_redis(
     $port    = $title,
     $slaveof = undef
-) {
+    ) {
     include ::passwords::redis
 
     ferm::service { "redis-server-${port}":
@@ -30,10 +30,16 @@ define mediawiki::jobqueue_redis(
         srange => '$ALL_NETWORKS',
     }
 
-    $slaveof_actual = $slaveof ? {
-        /^\S+ \d+$/ => $slaveof,
-        /^\S+$/     => "${slaveof} ${port}",
-        default     => undef,
+    if is_hash($slaveof) {
+        $map = $slaveof
+        $slaveof_actual = undef
+    } else {
+        $map = {}
+        $slaveof_actual = $slaveof ? {
+            /^\S+ \d+$/ => $slaveof,
+            /^\S+$/     => "${slaveof} ${port}",
+            default     => undef,
+        }
     }
 
     redis::instance { $port:
@@ -54,5 +60,6 @@ define mediawiki::jobqueue_redis(
             dbfilename                  => "${::hostname}-${port}.rdb",
             slaveof                     => $slaveof_actual,
         },
+        map      => $map,
     }
 }
