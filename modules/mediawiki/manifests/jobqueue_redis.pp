@@ -20,8 +20,9 @@
 #
 define mediawiki::jobqueue_redis(
     $port    = $title,
-    $slaveof = undef
-) {
+    $slaveof = undef,
+    $map     = {},
+    ) {
     include ::passwords::redis
 
     ferm::service { "redis-server-${port}":
@@ -54,5 +55,6 @@ define mediawiki::jobqueue_redis(
             dbfilename                  => "${::hostname}-${port}.rdb",
             slaveof                     => $slaveof_actual,
         },
+        map      => $map,
     }
 }
