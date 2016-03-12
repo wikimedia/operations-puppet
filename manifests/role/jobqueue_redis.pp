@@ -5,18 +5,31 @@ class role::jobqueue_redis {
     system::role { 'role::jobqueue_redis': }
 
     $password = $passwords::redis::main_password
-    $slaveof = hiera('jobqueue_redis_slaveof', undef)
-    $instances = apply_format("localhost:%s/${password}", range(6378, 6382))
+    $shards = hiera('redis::shards')
+    $ip = $::main_ipaddress
 
-    # Aggregator backend
-    mediawiki::jobqueue_redis { 6378: slaveof => $slaveof }
+    if empty(redis_get_instances($ip, $shards)) {
+        # Local slave
+        $slaveof = ipresolve(hiera('jobqueue_redis_slaveof'), 4)
+        # The instances are the same we'd find on its master
+        $instances = redis_get_instances($slaveof, $shards)
+        mediawiki::jobqueue_redis { $instances: slaveof => $slaveof}
+    } else {
+        # Local master
+        # Encrypt the replication
+        if os_version('Debian >= jessie') {
+            class { 'redis::multidc::ipsec':
+                shards => $shards
+            }
+        }
+        $instances = redis_get_instances($ip, $shards)
+        # find out the replication topology
+        $slaves_map = redis_add_replica({}, $ip, $shards, $::mw_primary)
+        mediawiki::jobqueue_redis {$instances: map => $slaves_map}
+    }
 
-    # Queues
-    mediawiki::jobqueue_redis { 6379: slaveof => $slaveof }
-    mediawiki::jobqueue_redis { 6380: slaveof => $slaveof }
-    mediawiki::jobqueue_redis { 6381: slaveof => $slaveof }
-
+    $uris = apply_format("localhost:%s/${password}", $instances)
     diamond::collector { 'Redis':
-        settings => { instances => join($instances, ', ') }
+        settings => { instances => join($uris, ', ') }
     }
 }

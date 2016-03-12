@@ -1,1 +1,1 @@
-jobqueue_redis_slaveof: rdb1005
+jobqueue_redis_slaveof: rdb1005.eqiad.wmnet
