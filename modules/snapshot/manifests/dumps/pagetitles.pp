@@ -28,6 +28,15 @@ class snapshot::dumps::pagetitles(
         group  => root,
     }
 
+    cron { 'titles-cleanup':
+        ensure      => $ensure,
+        environment => 'MAILTO=ops-dumps@wikimedia.org',
+        user        => $user,
+        command     => "find ${snapshot::dirs::datadir}/public/other/pagetitles/ -type dir -maxdepth 1 -mtime +90 -exec rm -rf {} \\; ; find ${snapshot::dirs::datadir}/public/other/mediatitles/ -type dir -maxdepth 1 -mtime +90 -exec rm -rf {} \\;",
+        minute      => '0',
+        hour        => '8',
+    }
+
     cron { 'pagetitles-ns0':
         ensure      => $ensure,
         environment => 'MAILTO=ops-dumps@wikimedia.org',
@@ -47,4 +56,5 @@ class snapshot::dumps::pagetitles(
         hour        => '8',
         require     => File["${snapshot::dirs::datadir}/public/other/mediatitles"],
     }
+
 }
