@@ -32,7 +32,7 @@ class snapshot::dumps::pagetitles(
         ensure      => $ensure,
         environment => 'MAILTO=ops-dumps@wikimedia.org',
         user        => $user,
-        command     => "find ${snapshot::dirs::datadir}/public/other/pagetitles/ -type dir -maxdepth 1 -mtime +90 -exec rm -rf {} \\; ; find ${snapshot::dirs::datadir}/public/other/mediatitles/ -type dir -maxdepth 1 -mtime +90 -exec rm -rf {} \\;",
+        command     => "find ${snapshot::dirs::datadir}/public/other/pagetitles/ -type d -maxdepth 1 -mtime +90 -exec rm -rf {} \\; ; find ${snapshot::dirs::datadir}/public/other/mediatitles/ -type d -maxdepth 1 -mtime +90 -exec rm -rf {} \\;",
         minute      => '0',
         hour        => '8',
     }
