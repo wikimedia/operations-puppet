@@ -183,6 +183,14 @@ class openstack::horizon::service(
         mode    => '0644',
     }
 
+    # Arbitrary handy script that needs to be on the horizon host because it only works with Liberty
+    file { '/root/makedomain':
+        source  => "puppet:///modules/openstack/${openstack_version}/virtscripts/makedomain",
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0644',
+    }
+
     apache::site { $webserver_hostname:
         content => template("openstack/${$openstack_version}/horizon/${webserver_hostname}.erb"),
         require => File['/etc/openstack-dashboard/local_settings.py'],
