@@ -124,6 +124,7 @@ class role::phabricator::main {
             ops-ulsfo   => '*',
             domains     => 'markmonitor.com,wikimedia.org',
             procurement => 'cdw.com,cyrusone.com,dasher.com,dell.com,globalsign.com,optiv.com,unitedlayer.com,us.ntt.net,wikimedia.org,zayo.com',
+            maint-announce => 'cyrusone.com,teliasonera.com,equinix.com,wikimedia.org,unitedlayer.com,evoswitch.com,ntt.net,gtt.net',
         },
 
         phab_bot                => {
