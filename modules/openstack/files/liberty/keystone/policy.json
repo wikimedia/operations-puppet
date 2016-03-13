@@ -17,14 +17,14 @@
     "identity:update_region": "rule:admin_required",
     "identity:delete_region": "rule:admin_required",
  
-    "identity:get_service": "rule:admin_required",
-    "identity:list_services": "rule:admin_required",
+    "identity:get_service": "",
+    "identity:list_services": "",
     "identity:create_service": "rule:admin_required",
     "identity:update_service": "rule:admin_required",
     "identity:delete_service": "rule:admin_required",
  
-    "identity:get_endpoint": "rule:admin_required",
-    "identity:list_endpoints": "rule:admin_required",
+    "identity:get_endpoint": "",
+    "identity:list_endpoints": "",
     "identity:create_endpoint": "rule:admin_required",
     "identity:update_endpoint": "rule:admin_required",
     "identity:delete_endpoint": "rule:admin_required",
