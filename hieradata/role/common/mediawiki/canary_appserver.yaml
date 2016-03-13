@@ -7,6 +7,7 @@ admin::groups:
   - perf-roots
 hhvm::extra::fcgi:
   hhvm:
+    enable_reusable_tc: true
     mysql:
       connect_timeout: 3000
     stats:
