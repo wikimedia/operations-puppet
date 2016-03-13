@@ -41,23 +41,27 @@ define role::cache::instances (
             'service'  => 'varnish-be-rand',
             'backends' => $cluster_nodes['eqiad'],
             'be_opts'  => $be_cache_be_opts,
-        },
-        'cache_codfw' => {
+        }
+    }
+
+    # no labs in codfw
+    if $::realm == 'production' {
+        $backend_caches['cache_codfw'] = {
             'dynamic'  => 'yes',
             'type'     => 'chash',
             'dc'       => 'codfw',
             'service'  => 'varnish-be',
             'backends' => $cluster_nodes['codfw'],
             'be_opts'  => $be_cache_be_opts,
-        },
-        'cache_codfw_random' => {
+        }
+        $backend_caches['cache_codfw_random'] = {
             'dynamic'  => 'yes',
             'type'     => 'random',
             'dc'       => 'codfw',
             'service'  => 'varnish-be-rand',
             'backends' => $cluster_nodes['codfw'],
             'be_opts'  => $be_cache_be_opts,
-        },
+        }
     }
 
     # temporary hack for cache_maps, because it's not fully deployed T109162
