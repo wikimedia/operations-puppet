@@ -61,7 +61,7 @@ default_project: &default_project
         related:
           cache_control: s-maxage=86400, max-age=3600
         # Cache headers for purged end points.
-        purged_cache_control: s-maxage=43200, max-age=0, must-revalidate
+        purged_cache_control: s-maxage=172800, max-age=0, must-revalidate
 
 # A different project template, sharing configuration options.
 wikimedia.org: &wikimedia.org
