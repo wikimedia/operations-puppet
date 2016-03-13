@@ -66,8 +66,12 @@ define role::cache::instances (
         },
     }
 
-    # temporary hack for cache_maps, because it's not fully deployed T109162
-    if $title == 'maps' {
+    # the maps conditional here is a temporary hack for
+    # cache_maps, because it's not fully deployed (T109162).
+    # the production conditional is sad (vs using hiera), but I
+    # don't know of a better way to factor this out at the moment,
+    # and it may all change later...
+    if $title == 'maps' or $::realm != 'production' {
         $becaches_filtered = hash_deselect_re('^cache_codfw', $backend_caches)
     } else {
         $becaches_filtered = $backend_caches
