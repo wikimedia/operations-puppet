@@ -99,12 +99,14 @@ define service::node(
     $auto_refresh    = true,
     $init_restart    = true,
     $deployment      = undef,
+    $deployment_user = $title,
 ) {
     case $deployment {
         'scap3': {
             if ! defined(Service::Deploy::Trebuchet[$repo]) {
                 service::deploy::scap{ $repo:
                     service_name => $title,
+                    user         => $deployment_user,
                     before       => Base::Service_unit[$title],
                 }
             }

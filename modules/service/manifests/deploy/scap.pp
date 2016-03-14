@@ -24,9 +24,16 @@ define service::deploy::scap(
     $user            = 'deploy-service',
     $service_name    = undef,
 ) {
+    if $user == 'deploy-service' {
+        $manage_user = true
+    } else {
+        $manage_user = false
+    }
+
     scap::target { $title:
         public_key_source => $public_key_file,
         deploy_user       => $user,
         service_name      => $service_name,
+        manage_user       => $manage_user,
     }
 }
