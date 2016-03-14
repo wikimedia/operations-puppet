@@ -38,4 +38,16 @@ class cassandra::logging(
         target  => '/srv/deployment/cassandra/logstash-logback-encoder/lib/jackson-databind-2.4.0.jar',
         require => Package['cassandra/logstash-logback-encoder'],
     }
+
+    file { '/usr/share/cassandra/lib/commons-compiler-2.7.8.jar':
+        ensure  => 'link',
+        target  => '/srv/deployment/cassandra/logstash-logback-encoder/lib/commons-compiler-2.7.8.jar',
+        require => Package['cassandra/logstash-logback-encoder'],
+    }
+
+    file { '/usr/share/cassandra/lib/janino-2.7.8.jar':
+        ensure  => 'link',
+        target  => '/srv/deployment/cassandra/logstash-logback-encoder/lib/janino-2.7.8.jar',
+        require => Package['cassandra/logstash-logback-encoder'],
+    }
 }

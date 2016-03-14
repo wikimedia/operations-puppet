@@ -51,6 +51,13 @@
     <host><%= @logstash_host %></host>
     <port><%= @logstash_port %></port>
     <customFields>{"program":"cassandra"}</customFields>
+    <filter class="ch.qos.logback.core.filter.EvaluatorFilter">
+      <evaluator>
+        <expression>return logger.equals("org.apache.cassandra.utils.StatusLogger");</expression>
+      </evaluator>
+      <OnMismatch>NEUTRAL</OnMismatch>
+      <OnMatch>DENY</OnMatch>
+    </filter>
   </appender>
 
   <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
