@@ -51,4 +51,11 @@ class role::maps::master {
         port   => '6379',
         srange => "(${maps_hosts_ferm})",
     }
+
+    # access to postgres master from postgres slaves
+    ferm::service { 'postgres_maps':
+        proto  => 'tcp',
+        port   => '6379',
+        srange => "(${maps_hosts_ferm})",
+    }
 }
