@@ -47,7 +47,7 @@ define ganglia::monitor::aggregator::instance($monitored_site) {
     # on jessie/systemd each instance is a separate service
     # which is spawned from a common service template
     if os_version('debian >= jessie') {
-        service { "ganglia-monitor-aggregator-instance-${id}":
+        service { "ganglia-monitor-aggregator@${id}.service":
             ensure   => running,
             provider => systemd,
             enable   => true,
