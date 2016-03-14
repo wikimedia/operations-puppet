@@ -44,6 +44,18 @@ class role::authdns::server {
         nameservers => $role::authdns::data::nameservers,
         gitrepo     => $role::authdns::data::gitrepo,
     }
+
+    ferm::service { 'udp_dns_auth':
+        proto => 'udp',
+        notrack => true,
+        port  => '53',
+    }
+
+    ferm::service { 'tcp_dns_auth':
+        proto => 'tcp',
+        notrack => true,
+        port  => '53',
+    }
 }
 
 # This is for the monitoring host to monitor the shared public addrs
