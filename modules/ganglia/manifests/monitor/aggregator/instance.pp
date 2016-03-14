@@ -43,4 +43,14 @@ define ganglia::monitor::aggregator::instance($monitored_site) {
         content => template("${module_name}/gmond.conf.erb"),
         notify  => Service['ganglia-monitor-aggregator'],
     }
+
+    # on jessie/systemd each instance is a separate service
+    # which is spawned from a common service template
+    if os_version('debian >= jessie') {
+        service { "ganglia-monitor-aggregator-instance-${id}":
+            ensure   => running,
+            provider => systemd,
+            enable   => true,
+        }
+    }
 }
