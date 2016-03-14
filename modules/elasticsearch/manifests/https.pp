@@ -15,7 +15,6 @@ class elasticsearch::https (
     ::base::expose_puppet_certs { '/etc/nginx':
         ensure          => $ensure,
         provide_private => true,
-        ssldir          => '/var/lib/puppet/client/ssl',
     }
 
     ::nginx::site { 'elasticsearch-ssl-termination':

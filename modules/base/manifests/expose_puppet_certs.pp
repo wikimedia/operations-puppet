@@ -27,7 +27,7 @@ define base::expose_puppet_certs(
     $provide_private = false,
     $user            = 'root',
     $group           = 'root',
-    $ssldir          = '/var/lib/puppet/ssl',
+    $ssldir          = puppet_ssldir(),
 ) {
     validate_absolute_path($ssldir)
 
