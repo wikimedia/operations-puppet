@@ -64,6 +64,10 @@
 #   If this value is set to 'scap3' then deploy via scap3, otherwise, use trebuchet
 #   Default: undef
 #
+# [*deployment_user*]
+#   The user that will own the service code. Only applicable when
+#   $deployment ='scap3'. Default: $title
+#
 # === Examples
 #
 # To set up a service named myservice on port 8520 and with a templated
@@ -99,12 +103,14 @@ define service::node(
     $auto_refresh    = true,
     $init_restart    = true,
     $deployment      = undef,
+    $deployment_user = $title,
 ) {
     case $deployment {
         'scap3': {
             if ! defined(Service::Deploy::Trebuchet[$repo]) {
                 service::deploy::scap{ $repo:
                     service_name => $title,
+                    user         => $deployment_user,
                     before       => Base::Service_unit[$title],
                 }
             }
