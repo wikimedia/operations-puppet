@@ -42,15 +42,13 @@ class ganglia::monitor::aggregator($sites) {
 
     site_instances{ $sites: }
 
-    if os_version('debian >= jessie') {
-      $ganglia_provider = 'systemd'
-    } else {
-      $ganglia_provider = 'upstart'
-    }
-
-    service { 'ganglia-monitor-aggregator':
-        ensure   => running,
-        provider => $ganglia_provider,
-        name     => 'ganglia-monitor-aggregator',
+    # with systemd each instance is a separate service spawned from a template
+    # this is the old service that started multiple aggregators with upstart
+    if $::initsystem == 'upstart' {
+        service { 'ganglia-monitor-aggregator':
+            ensure   => running,
+            provider => upstart,
+            name     => 'ganglia-monitor-aggregator',
+        }
     }
 }
