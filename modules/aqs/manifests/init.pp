@@ -61,17 +61,21 @@ class aqs(
 ) {
 
     service::node { 'aqs':
-        port            => $port,
-        repo            => 'analytics/aqs/deploy',
-        config          => template('aqs/config.yaml.erb'),
-        full_config     => true,
-        no_file         => 200000,
-        healthcheck_url => '/analytics.wikimedia.org/v1',
-        has_spec        => true,
-        local_logging   => false,
-        auto_refresh    => false,
-        init_restart    => false,
-        deployment      => 'scap3',
+        port                   => $port,
+        repo                   => 'analytics/aqs/deploy',
+        config                 => template('aqs/config.yaml.erb'),
+        full_config            => true,
+        no_file                => 200000,
+        healthcheck_url        => '/analytics.wikimedia.org/v1',
+        has_spec               => true,
+        local_logging          => false,
+        auto_refresh           => false,
+        init_restart           => false,
+        deployment             => 'scap3',
+        # deployment_user set here since default values have changed to use
+        # $title as the deployment_user instead of 'deploy_service'.
+        deployment_user        => 'deploy-service',
+        deployment_manage_user => true,
     }
 
 }
