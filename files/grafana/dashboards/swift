@@ -166,10 +166,6 @@
             {
               "refId": "B",
               "target": "alias(movingAverage(sumSeries(swift.$DC-prod.*.proxy-server.object.DELETE.2*.timing.sample_rate), 5), 'DELETE 2xx')"
-            },
-            {
-              "refId": "C",
-              "target": "alias(movingAverage(sumSeries(swift.$DC-prod.*.proxy-server.object.POST.2*.timing.sample_rate), 5), 'POST 2xx')"
             }
           ],
           "timeFrom": null,
@@ -948,7 +944,7 @@
       "title": "system stats"
     }
   ],
-  "schemaVersion": 7,
+  "schemaVersion": 10,
   "sharedCrosshair": false,
   "style": "light",
   "tags": [
@@ -1001,7 +997,7 @@
     ]
   },
   "time": {
-    "from": "now-4h",
+    "from": "now-3h",
     "to": "now-1m"
   },
   "timepicker": {
@@ -1030,5 +1026,5 @@
   },
   "timezone": "utc",
   "title": "Swift",
-  "version": 1
+  "version": 2
 }
