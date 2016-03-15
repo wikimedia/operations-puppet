@@ -8,8 +8,8 @@ class elasticsearch::https (
     $ensure = 'absent',
 ){
 
-    class { 'nginx::ssl':
-        ensure   => $ensure,
+    class { [ 'nginx', 'nginx::ssl' ]:
+        ensure => $ensure,
     }
 
     ::base::expose_puppet_certs { '/etc/nginx':
