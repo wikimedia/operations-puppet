@@ -1,0 +1,6 @@
+# Configure regular backups of the analytics-meta MySQL instance
+# in the Analytics Cluster to back up via rsync to
+# analytics1002.  This works because the analytics1002 has the
+# role::analyitcs_cluster::database::meta::backup_dest class
+# applied to it.
+dest: analytics1002.eqiad.wmnet::backup/mysql/analytics-meta
