@@ -25,7 +25,6 @@ from __future__ import print_function
 from threading import Timer
 import logging
 import os
-import stat
 
 
 UPDATE_INTERVAL = 5  # seconds
@@ -57,7 +56,7 @@ def get_udp2log_ports():
             p_index = False
             try:
                 p_index = cmd.index('-p')
-            except ValueError, e:
+            except ValueError:
                 continue
             ports.append(int(cmd[p_index + 1]))
     return ports
