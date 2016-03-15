@@ -75,6 +75,9 @@ define varnish::instance(
         }
     }
 
+    # Hieradata switch to shut users out of a DC/cluster. T129424
+    $traffic_shutdown = hiera('cache::traffic_shutdown', false)
+
     file { "/etc/varnish/wikimedia-common_${vcl}.inc.vcl":
         owner   => 'root',
         group   => 'root',
