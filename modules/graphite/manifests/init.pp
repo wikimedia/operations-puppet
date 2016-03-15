@@ -41,9 +41,11 @@ class graphite(
                 '127.0.0.1:2703=g',
                 '127.0.0.1:2803=h',
             ],
-            'backends' => [
-                'localhost:1903',
-            ],
+            'forward_clusters' => {
+              'default' => [
+                  'localhost:1903',
+              ],
+            },
             'cluster_tap' => {},
             'cluster_routes' => {},
     }
