@@ -40,6 +40,8 @@ define ganglia::monitor::aggregator::instance($monitored_site) {
     # Run these instances in the foreground
     $daemonize = 'no'
 
+    # FIXME - the 'notify' part needs to be different on systemd
+    # each aggregator is a separate service now
     file { "/etc/ganglia/aggregators/${id}.conf":
         ensure  => $ensure,
         require => File['/etc/ganglia/aggregators'],
