@@ -54,7 +54,14 @@ node 'analytics1001.eqiad.wmnet' {
 # analytics1002 is the Hadoop standby NameNode and ResourceManager.
 node 'analytics1002.eqiad.wmnet' {
     role analytics_cluster::hadoop::standby,
-        analytics_cluster::users
+        analytics_cluster::users,
+        # analytics1002 is usually inactive, and it has a
+        # decent amount of disk space.  We use it to
+        # store backups of the analytics_cluster::database::meta
+        # (MySQL analytics-meta) instance.  If you move this,
+        # make sure /srv/backup/mysql/analytics-meta has
+        # enough space to store backups.
+        analytics_cluster::database::meta::backup_dest
 
     include standard
     include base::firewall
@@ -68,6 +75,10 @@ node 'analytics1002.eqiad.wmnet' {
 node 'analytics1015.eqiad.wmnet' {
     role analytics_cluster::client,
         analytics_cluster::database::meta,
+        # Back up analytics-meta MySQL instance
+        # to analytics1002. $dest is configured in
+        # hieradata/role/eqiad/analytics_cluster/database/meta/backup.yaml
+        analytics_cluster::database::meta::backup,
         analytics_cluster::hive::metastore::database,
         analytics_cluster::oozie::server::database,
         analytics_cluster::hive::metastore,
