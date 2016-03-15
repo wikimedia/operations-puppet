@@ -1,10 +1,11 @@
-cluster backends
+<% @c_relay_settings['forward_clusters'].each do |name, endpoints| -%>
+cluster <%= name %>
   forward
-  <% @c_relay_settings['backends'].each do |b| -%>
-      <%= b %>
-  <% end -%>
+    <% endpoints.each do |e| -%>
+      <%= e %>
+    <% end -%>
   ;
-
+<% end -%>
 
 <% @c_relay_settings['cluster_tap'].each do |tap| -%>
 # duplicate (tap) this metric to <%= tap[1] %>
@@ -23,7 +24,7 @@ match <%= route[0] %>
 
 <% end -%>
 
-# catch-all, send to backends if it made this far
+# catch-all, send to 'default' cluster if it made this far
 match *
-  send to backends
+  send to default
   ;
