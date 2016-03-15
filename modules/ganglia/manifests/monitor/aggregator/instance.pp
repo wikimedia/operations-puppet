@@ -1,3 +1,4 @@
+# an instance of a ganglia monitor aggregator service
 define ganglia::monitor::aggregator::instance($monitored_site) {
 
     # not needed anymore and breaks on systemd
@@ -40,17 +41,24 @@ define ganglia::monitor::aggregator::instance($monitored_site) {
     # Run these instances in the foreground
     $daemonize = 'no'
 
+    # with systemd each aggregator instance is a separate service
+    $aggsvcname = $::initsystem ? {
+        'upstart' => 'ganglia-monitor-aggregator',
+        'systemd' => "ganglia-monitor-aggregator@${id}.service",
+        default   => 'ganglia-monitor-aggregator',
+    }
+
     file { "/etc/ganglia/aggregators/${id}.conf":
         ensure  => $ensure,
         require => File['/etc/ganglia/aggregators'],
         mode    => '0444',
         content => template("${module_name}/gmond.conf.erb"),
-        notify  => Service['ganglia-monitor-aggregator'],
+        notify  => Service[$aggsvcname],
     }
 
-    # on jessie/systemd each instance is a separate service
+    # on systemd each instance is a separate service
     # which is spawned from a common service template
-    if os_version('debian >= jessie') {
+    if $::initsystem == 'systemd' {
         service { "ganglia-monitor-aggregator@${id}.service":
             ensure   => running,
             provider => systemd,
