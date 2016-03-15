@@ -57,6 +57,14 @@ sca:
     datacenters:
     - eqiad
     - codfw
+  apertium:
+    port: 2737
+    default_values:
+      pooled: 'no'
+      weight: 10
+    datacenters:
+    - eqiad
+    - codfw
 scb:
   mobileapps:
     port: 8888
