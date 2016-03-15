@@ -8,6 +8,3 @@ service::configuration::http_proxy: http://url-downloader.eqiad.wikimedia.org:80
 service::configuration::statsd_host: statsd.eqiad.wmnet
 service::configuration::logstash_host: logstash1001.eqiad.wmnet
 citoid::zotero_host: zotero.svc.eqiad.wmnet
-cxserver::no_proxy_list:
-  - restbase.svc.eqiad.wmnet
-  - apertium.svc.eqiad.wmnet
