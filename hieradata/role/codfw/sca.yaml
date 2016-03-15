@@ -1,3 +1,4 @@
 lvs::realserver::realserver_ips:
+  - '10.2.1.11' # apertium.svc.codfw.wmnet
   - '10.2.1.16' # zotero.svc.codfw.wmnet
 zotero::http_proxy: url-downloader.codfw.wikimedia.org:8080
