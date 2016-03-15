@@ -45,6 +45,9 @@ debdeploy::grains:
   debdeploy-scb:
     value: standard
 citoid::zotero_port: 1969
+cxserver::no_proxy_list:
+  - "restbase.svc.%{::rb_site}.wmnet"
+  - "apertium.svc.%{::site}.wmnet"
 cxserver::yandex_url: https://translate.yandex.net
 cxserver::registry:
   source:
