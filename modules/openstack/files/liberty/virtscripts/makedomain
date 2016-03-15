@@ -29,8 +29,6 @@ from keystoneclient import session as keystone_session
 from designateclient.v2 import client
 
 def createdomain(url, user, password, project, domain, ttl=120):
-    args = argparser.parse_args()
-
     auth = generic.Password(
         auth_url=url,
         username=user,
@@ -44,7 +42,7 @@ def createdomain(url, user, password, project, domain, ttl=120):
         auth_url=url,
         username=user,
         password=password,
-        tenant_name=args.project)
+        tenant_name=project)
 
     targetSession = keystone_session.Session(auth=auth)
     targetClient = client.Client(session=targetSession)
