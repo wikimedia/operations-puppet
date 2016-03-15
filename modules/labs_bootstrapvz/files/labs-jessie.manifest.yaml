@@ -1,4 +1,5 @@
 ---
+name: debian-jessie
 provider:
   name: kvm
 bootstrapper:
@@ -128,12 +129,12 @@ plugins:
       -
         src: /etc/bootstrap-vz/firstscripts/firstboot.sh
         dst: /root/firstboot.sh
-        permissions: 755
+        permissions: "755"
         owner: root
       -
         src: /etc/bootstrap-vz/firstscripts/firstbootrc
         dst: /etc/rc.local
-        permissions: 755
+        permissions: "755"
         owner: root
       -
         src: /etc/bootstrap-vz/cloud.cfg
@@ -204,7 +205,7 @@ plugins:
       -
         src: /etc/ssl/certs/ca-certificates.crt
         dst: /etc/ssl/certs/ca-certificates.crt
-  image_commands:
+  commands:
     # Current implementation does not specify an order between image_commands and
     #  file_copy.  This section should not depend on anything existing from
     #  file_copy; hence the touch below.
