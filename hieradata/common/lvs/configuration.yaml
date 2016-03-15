@@ -123,8 +123,8 @@ lvs_service_ips:
   eventbus: &ip_block026
     eqiad: 10.2.2.23
   apertium: &ip_block027
-    eqiad: 10.2.1.11
-    codfw: 10.2.2.11
+    eqiad: 10.2.2.11
+    codfw: 10.2.1.11
 lvs_services:
   text:
     description: "Main wiki platform LVS service, text.%{::site}.wikimedia.org (Varnish)"
