@@ -43,10 +43,10 @@ class Rsyncer(object):
                 # this host rsyncs everything except a specific list of dirs
                 dir_args = ["--exclude=/" + d.strip('/') + "/"
                             for d in excludes]
-                for h in targets:
-                    if 'dirs' in hosts[h]:
+                for targ in targets:
+                    if 'dirs' in hosts[targ]:
                         dir_args.extend(["--exclude=/" + d.strip('/') + "/"
-                                         for d in hosts[h]['dirs']])
+                                         for d in hosts[targ]['dirs']])
 
             elif 'dirs' in hosts[self.host]:
                 # this host keeps data in a specific list of dirs and must
@@ -73,22 +73,22 @@ class Rsyncer(object):
     def check_output(self, command):
         process = subprocess.Popen(command, stdout=subprocess.PIPE,
                                    stderr=subprocess.STDOUT)
-        output, unused_err = process.communicate()
+        output, err_unused = process.communicate()
         retcode = process.poll()
         if retcode:
             raise subprocess.CalledProcessError(retcode, command)
         return output
 
     def do_rsync(self, src, dest, targets, dir_args):
-        for t in targets:
+        for targ in targets:
             command = ["/usr/bin/pgrep", "-u", "root",
-                       "-f", "%s::%s" % (t, dest)]
+                       "-f", "%s::%s" % (targ, dest)]
             result = subprocess.call(command)
             if result != 1:  # already running or some error
                 continue
 
             command = (["/usr/bin/rsync"] + self.rsync_args + self.excludes +
-                       dir_args + [src, "%s::%s" % (t, dest)])
+                       dir_args + [src, "%s::%s" % (targ, dest)])
             if self.dryrun:
                 print " ".join(command)
             else:
@@ -106,7 +106,7 @@ class Rsyncer(object):
                                    "DUMPS RSYNC " + self.host,
                                    'ops-dumps' + '@' + 'wikimedia' + '.org']
                         proc = subprocess.Popen(command, stdin=subprocess.PIPE)
-                        (out, errs) = proc.communicate(input=output)
+                        (out_unused, errs) = proc.communicate(input=output)
                         if errs:
                             # give up and hope something else sees this
                             print errs
@@ -123,7 +123,8 @@ def usage(message):
         sys.stderr.write(help_message)
         sys.exit(1)
 
-if __name__ == '__main__':
+
+def do_main():
     dryrun = False
     list_only = False
     max_bandwidth = 40000
@@ -140,7 +141,7 @@ if __name__ == '__main__':
         else:
             usage("unknown option: " + sys.argv[i])
 
-    r = Rsyncer(max_bandwidth, dryrun, list_only)
+    rsync = Rsyncer(max_bandwidth, dryrun, list_only)
 
     # The rsync commands we would expect to see on...
     #
@@ -208,4 +209,8 @@ if __name__ == '__main__':
             }
         }
     }
-    r.rsync_all(host_info)
+    rsync.rsync_all(host_info)
+
+
+if __name__ == '__main__':
+    do_main()
