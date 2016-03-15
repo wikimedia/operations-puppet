@@ -33,10 +33,6 @@ node 'alsafi.wikimedia.org' {
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
     }
-
-    class { 'ganglia::monitor::aggregator':
-        sites =>  'codfw',
-    }
 }
 
 # analytics1001 is the Hadoop master node:
