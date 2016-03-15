@@ -65,10 +65,12 @@ class DumpList(object):
         if self.output_dir and self.output_dir.endswith(os.sep):
             self.output_dir = self.output_dir[:-1 * len(os.sep)]
         self.files_wanted_pattern = re.compile(
-            '(\.gz|\.bz2|\.7z|\.html|\.txt|\.xml)$')
+            r'(\.gz|\.bz2|\.7z|\.html|\.txt|\.xml)$')
         self.ymd_pattern = re.compile('^2[0-1][0-9]{6}$')
         self.projects_url = projects_url
         self.top_level = top_level
+        self.contents = None
+        self.projects = []
 
     def get_projlist_from_urlorconf(self):
         """try to retrieve the list of known projects from a specified
@@ -138,7 +140,7 @@ class DumpList(object):
             if not exists(tempdir):
                 os.makedirs(tempdir)
             outfd = open(dblist, "wt")
-            outfd.write(self.contents)
+            outfd.write(contents)
             outfd.close()
         except:
             # we can still do our work so don't die, but do complain
@@ -202,9 +204,9 @@ class DumpList(object):
         if isdir(os.path.join(dir_to_check, day)):
             try:
                 statusfile = os.path.join(dir_to_check, day, "status.html")
-                fd = open(statusfile, "r")
-                text = fd.read()
-                fd.close()
+                fdesc = open(statusfile, "r")
+                text = fdesc.read()
+                fdesc.close()
             except:
                 # if there is no status file, the dir could have any
                 # kind of random junk in it so don't risk it
@@ -319,12 +321,12 @@ class DumpList(object):
         """call this once at the beginning of any run to truncate
         all output files before beginning to write to them"""
         fname_templs = self.list_file_templs()
-        for t in fname_templs:
-            for n in self.dumps_num_list:
-                f = self.fillin_fname_templ(t, n)
+        for templ in fname_templs:
+            for num in self.dumps_num_list:
+                fname = self.fillin_fname_templ(templ, num)
                 try:
-                    fd = open(self.get_abs_outdirpath(f + ".tmp"), "wt")
-                    fd.close()
+                    fdesc = open(self.get_abs_outdirpath(fname + ".tmp"), "wt")
+                    fdesc.close()
                 except:
                     pass
 
@@ -366,9 +368,9 @@ class DumpList(object):
             if self.file_list_templ:
                 fnames_to_write = self.get_fnames_from_dir(os.path.join(
                     project_path, dirs[index]))
-            for dn in self.dumps_num_list:
-                if index < int(dn):
-                    self.write_filenames(dn, os.path.join(
+            for dnum in self.dumps_num_list:
+                if index < int(dnum):
+                    self.write_filenames(dnum, os.path.join(
                         project_path, dirs[index]), fnames_to_write)
             index = index + 1
 
@@ -379,15 +381,15 @@ class DumpList(object):
             line = line[len(self.config.public_dir):]
         return line
 
-    def convert_fnames_for_rsyncin(self, f):
+    def convert_fnames_for_rsyncin(self, fname):
         """prep list of filenames so that it can be passed
         to rsync --list-only"""
 
         # to make this work we have to feed it a file with the filenames
         # with the publicdir stripped off the front, if it's there
-        fpath = self.get_abs_outdirpath(f)
+        fpath = self.get_abs_outdirpath(fname)
         infd = open(fpath, "r")
-        outfd = open(fpath + ".relpath",  "w")
+        outfd = open(fpath + ".relpath", "w")
         lines = infd.readlines()
         infd.close()
         for line in lines:
@@ -397,10 +399,10 @@ class DumpList(object):
                 outfd.write(line)
         outfd.close()
 
-    def do_rsync_list_only(self, f):
+    def do_rsync_list_only(self, fname):
         """produce long listing of files from a specific dump run,
         by passing the file list to rsync --list-only"""
-        fpath = self.get_abs_outdirpath(f)
+        fpath = self.get_abs_outdirpath(fname)
         command = ["/usr/bin/rsync", "--list-only", "--no-h",
                    "--files-from", fpath + ".relpath",
                    self.config.public_dir,
@@ -408,7 +410,7 @@ class DumpList(object):
         command_string = " ".join(command)
         proc = Popen(command_string, shell=True, stderr=PIPE)
         # output will be None, we can ignore it
-        output, error = proc.communicate()
+        output_unused, error = proc.communicate()
         if proc.returncode:
             raise DumpListError(
                 "command '" + command_string +
@@ -426,8 +428,8 @@ class DumpList(object):
         """write the html and txt files in the top level dirextory to
         the appropriate output files."""
         fnames_to_write = self.get_toplevelfiles()
-        for dn in self.dumps_num_list:
-            self.write_filenames(dn, None, fnames_to_write, skip_dirs=True)
+        for dnum in self.dumps_num_list:
+            self.write_filenames(dnum, None, fnames_to_write, skip_dirs=True)
 
     def gen_dumpfile_dirlists(self):
         """produce all files of dir lists and file lists from
@@ -435,16 +437,16 @@ class DumpList(object):
         self.truncate_outfiles()
         if self.top_level:
             self.write_toplevelfiles()
-        for p in self.projects:
-            self.write_file_dir_lists_for_proj(p)
+        for proj in self.projects:
+            self.write_file_dir_lists_for_proj(proj)
 
         fname_templs = self.list_file_templs()
-        for t in fname_templs:
-            for n in self.dumps_num_list:
-                f = self.fillin_fname_templ(t, n)
+        for templ in fname_templs:
+            for num in self.dumps_num_list:
+                fdesc = self.fillin_fname_templ(templ, num)
                 # do this last so that if someone is using the file
                 # in the meantime, they  aren't interrupted
-                fpath = self.get_abs_outdirpath(f)
+                fpath = self.get_abs_outdirpath(fdesc)
                 if exists(fpath + ".tmp"):
                     if exists(fpath):
                         os.rename(fpath, fpath + ".old")
@@ -454,8 +456,8 @@ class DumpList(object):
                                         "Something is wrong." % fpath + ".tmp")
 
                 if self.rsynclists:
-                    self.convert_fnames_for_rsyncin(f)
-                    self.do_rsync_list_only(f)
+                    self.convert_fnames_for_rsyncin(fdesc)
+                    self.do_rsync_list_only(fdesc)
 
 
 def usage(message=None):
@@ -562,8 +564,8 @@ def do_main():
     else:
         dumps_num_list = [d.strip() for d in dumps_num.split(',')]
 
-    for d in dumps_num_list:
-        if not d.isdigit() or not int(d):
+    for dnum in dumps_num_list:
+        if not dnum.isdigit() or not int(dnum):
             usage("dumpsnumber must be a number or a comma-separated"
                   " list of numbers each greater than 0")
 
@@ -586,11 +588,11 @@ def do_main():
               " of dumps to write to the given output file")
 
     config = WikiConfig(configfile)
-    dl = DumpList(config, dumps_num_list, relative, rsynclists,
-                  dir_list_templ, file_list_templ, output_dir,
-                  projects_url, top_level)
-    dl.load_projectlist()
-    dl.gen_dumpfile_dirlists()
+    dlist = DumpList(config, dumps_num_list, relative, rsynclists,
+                     dir_list_templ, file_list_templ, output_dir,
+                     projects_url, top_level)
+    dlist.load_projectlist()
+    dlist.gen_dumpfile_dirlists()
 
 
 if __name__ == "__main__":
