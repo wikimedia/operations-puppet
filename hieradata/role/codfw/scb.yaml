@@ -4,7 +4,4 @@ lvs::realserver::realserver_ips:
 - 10.2.1.18 # cxserver.svc.codfw.wmnet
 - 10.2.1.19 # citoid.svc.codfw.wmnet
 - 10.2.1.20 # mathoid.svc.codfw.wmnet
-service::configuration::http_proxy: http://url-downloader.codfw.wikimedia.org:8080
-service::configuration::statsd_host: statsd.eqiad.wmnet # On purpose for now use the eqiad ones
-service::configuration::logstash_host: logstash1001.eqiad.wmnet # On purpose for now use the eqiad ones
 citoid::zotero_host: zotero.svc.codfw.wmnet

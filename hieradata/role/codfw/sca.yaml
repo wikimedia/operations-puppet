@@ -1,6 +1,3 @@
 lvs::realserver::realserver_ips:
   - '10.2.1.16' # zotero.svc.codfw.wmnet
-service::configuration::http_proxy: http://url-downloader.codfw.wikimedia.org:8080
-service::configuration::statsd_host: statsd.eqiad.wmnet  # On purpose for now use the eqiad ones
-service::configuration::logstash_host: logstash1001.eqiad.wmnet  # On purpose for now use the eqiad ones
 zotero::http_proxy: url-downloader.codfw.wikimedia.org:8080
