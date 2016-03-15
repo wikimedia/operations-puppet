@@ -14,10 +14,10 @@ class DumpListError(Exception):
 
 class WikiConfig(object):
 
-    def __init__(self, ConfigFile):
+    def __init__(self, configfile):
         home = os.path.dirname(sys.argv[0])
         self.files = [
-            os.path.join(home, configFile),
+            os.path.join(home, configfile),
             "/etc/wikidump.conf",
             os.path.join(os.getenv("HOME"), ".wikidump.conf")]
         defaults = {
@@ -33,9 +33,9 @@ class WikiConfig(object):
             self.conf.add_section('output')
         if not self.conf.has_section('wiki'):
             self.conf.add_section('wiki')
-        self.publicDir = self.conf.get("output", "public")
-        self.tempDir = self.conf.get("output", "temp")
-        self.dbList = sorted(filter(None, [db.strip() for db in open(
+        self.public_dir = self.conf.get("output", "public")
+        self.temp_dir = self.conf.get("output", "temp")
+        self.db_list = sorted(filter(None, [db.strip() for db in open(
             self.conf.get("wiki", "dblist")).readlines()]))
 
 
@@ -47,74 +47,74 @@ class DumpList(object):
     list of numbers of dumps desired, and the corresponding
     lists are produced for all dumps in one pass."""
 
-    def __init__(self, config, dumpsNumberList, relative,
-                 rsynclists, dirListTemplate, fileListTemplate,
-                 outputDir, projectsUrl, topLevel):
+    def __init__(self, config, dumps_num_list, relative,
+                 rsynclists, dir_list_templ, file_list_templ,
+                 output_dir, projects_url, top_level):
         """constructor; besides the obvious, sets up the list of
         filetypes we want to include in our list, see
-        self.filesWantedPattern"""
+        self.files_wantedPattern"""
 
         self.config = config
-        self.dumpsNumberList = dumpsNumberList
-        self.maxDnum = max(self.dumpsNumberList)
+        self.dumps_num_list = dumps_num_list
+        self.max_dump_num = max(self.dumps_num_list)
         self.relative = relative
         self.rsynclists = rsynclists
-        self.dirListTemplate = dirListTemplate
-        self.fileListTemplate = fileListTemplate
-        self.outputDir = outputDir
-        if self.outputDir and self.outputDir.endswith(os.sep):
-            self.outputDir = self.outputDir[:-1 * len(os.sep)]
-        self.filesWantedPattern = re.compile(
+        self.dir_list_templ = dir_list_templ
+        self.file_list_templ = file_list_templ
+        self.output_dir = output_dir
+        if self.output_dir and self.output_dir.endswith(os.sep):
+            self.output_dir = self.output_dir[:-1 * len(os.sep)]
+        self.files_wanted_pattern = re.compile(
             '(\.gz|\.bz2|\.7z|\.html|\.txt|\.xml)$')
-        self.ymdPattern = re.compile('^2[0-1][0-9]{6}$')
-        self.projectsUrl = projectsUrl
-        self.topLevel = topLevel
+        self.ymd_pattern = re.compile('^2[0-1][0-9]{6}$')
+        self.projects_url = projects_url
+        self.top_level = top_level
 
-    def getProjectListFromUrlOrConfig(self):
+    def get_projlist_from_urlorconf(self):
         """try to retrieve the list of known projects from a specified
         url; if there was no url given, try contents read from the filename
         given for 'dblist' in the config file"""
         contents = ""
-        if self.projectsUrl:
+        if self.projects_url:
             try:
                 # e.g. http://noc.wikimedia.org/conf/all.dblist
-                infd = urllib.urlopen(self.projectsUrl)
+                infd = urllib.urlopen(self.projects_url)
                 self.contents = infd.read()
                 infd.close()
             except:
                 sys.stderr.write("Warning: Failed to retrieve project"
                                  " list via http, using old list\n")
 
-        elif self.config.dbList:
+        elif self.config.db_list:
             try:
-                contents = '\n'.join(self.config.dbList) + '\n'
+                contents = '\n'.join(self.config.db_list) + '\n'
             except:
                 sys.stderr.write("Warning: Failed to retrieve good"
                                  " project list from %s as specified"
                                  " in config file, using old list\n"
-                                 % self.config.dbList)
+                                 % self.config.db_list)
 
         return contents
 
-    def getTempDir(self):
+    def get_tempdir(self):
         """returns the full path to a directory for temporary files"""
-        tempdir = self.config.tempDir
+        tempdir = self.config.temp_dir
         if not tempdir:
-            tempdir = self.getAbsOutDir('tmp')
+            tempdir = self.get_abs_outdirpath('tmp')
         return tempdir
 
-    def getProjectListCopyFileName(self):
+    def get_projectlist_copy_fname(self):
         """returns name we use for the local copy of the project list"""
         return "all.dblist"
 
-    def getProjectListFromOldFile(self):
+    def get_proj_list_from_old_file(self):
         """We try to save a temp copy of the list of known projects
         on every run; retrieve that copy"""
 
         contents = ""
 
-        tempdir = self.getTempDir()
-        dblist = os.path.join(tempdir, self.getProjectListCopyFileName())
+        tempdir = self.get_tempdir()
+        dblist = os.path.join(tempdir, self.get_projectlist_copy_fname())
 
         # read previous contents, if any...
         try:
@@ -126,11 +126,11 @@ class DumpList(object):
                              " previous run is unavailable\n" % dblist)
         return contents
 
-    def saveProjectList(self, contents):
+    def save_projectlist(self, contents):
         """save local copy of the project list we presumably
         retrieved from elsewhere"""
-        tempdir = self.getTempDir()
-        dblist = os.path.join(tempdir, self.getProjectListCopyFileName())
+        tempdir = self.get_tempdir()
+        dblist = os.path.join(tempdir, self.get_projectlist_copy_fname())
 
         try:
             # ok it passes the smell test (or we filled it with
@@ -145,19 +145,19 @@ class DumpList(object):
             sys.stderr.write("Warning: Failed to save project list"
                              " to file %s\n" % dblist)
 
-    def loadProjectList(self):
+    def load_projectlist(self):
         """Get and store the list of all projects known to us; this
         includes closed projects but may not include all projects
         that ever existed, for example tlhwik."""
 
         self.projects = []
-        oldContents = self.getProjectListFromOldFile()
-        if len(oldContents):
-            oldProjects = oldContents.splitlines()
+        old_contents = self.get_proj_list_from_old_file()
+        if len(old_contents):
+            old_projects = old_contents.splitlines()
         else:
-            oldProjects = []
+            old_projects = []
 
-        self.contents = self.getProjectListFromUrlOrConfig()
+        self.contents = self.get_projlist_from_urlorconf()
         if len(self.contents):
             self.projects = self.contents.splitlines()
         else:
@@ -166,43 +166,43 @@ class DumpList(object):
         # check that this list is not comlete crap compared to the
         # previous list, if any, before we get started. arbitrarily:
         # a change of more than 5% in size
-        if (len(oldProjects) and
-                float(len(self.projects)) / float(len(oldProjects)) < .95):
+        if (len(old_projects) and
+                float(len(self.projects)) / float(len(old_projects)) < .95):
             sys.stderr.write("Warning: New list of projects is much"
                              " smaller than previous run, %s"
                              " compared to %s\n" % (len(self.projects),
-                                                    len(oldProjects)))
+                                                    len(old_projects)))
             sys.stderr.write("Warning: Using old list; remove old list"
                              " %s to override\n"
-                             % os.path.join(self.getTempDir(),
-                                            self.getProjectListCopyFileName()))
+                             % os.path.join(self.get_tempdir(),
+                                            self.get_projectlist_copy_fname()))
 
-            self.projects = oldProjects
-            self.contents = oldContents
+            self.projects = old_projects
+            self.contents = old_contents
 
         if not len(self.projects):
             raise DumpListError("List of projects is empty, giving up")
 
-        self.saveProjectList(self.contents)
+        self.save_projectlist(self.contents)
 
-    def getAbsPubDirPath(self, name):
+    def get_abs_pubdirpath(self, name):
         """return full path to the location of public dumps,
         as specified in the config file for the entry 'publicdir'"""
-        return os.path.join(self.config.publicDir, name)
+        return os.path.join(self.config.public_dir, name)
 
-    def getAbsOutDirPath(self, name):
+    def get_abs_outdirpath(self, name):
         """return full path to the location where output files will
         be written"""
-        if self.outputDir:
-            return os.path.join(self.outputDir, name)
+        if self.output_dir:
+            return os.path.join(self.output_dir, name)
         else:
-            return os.path.join(self.config.publicDir, name)
+            return os.path.join(self.config.public_dir, name)
 
-    def getDirStatus(self, dirToCheck, day):
-        if isdir(os.path.join(dirToCheck, day)):
+    def get_dir_status(self, dir_to_check, day):
+        if isdir(os.path.join(dir_to_check, day)):
             try:
-                statusFile = os.path.join(dirToCheck, day, "status.html")
-                fd = open(statusFile, "r")
+                statusfile = os.path.join(dir_to_check, day, "status.html")
+                fd = open(statusfile, "r")
                 text = fd.read()
                 fd.close()
             except:
@@ -212,11 +212,11 @@ class DumpList(object):
             return text
         return None
 
-    def getFirstDir(self, dirs, dirToCheck):
+    def get_first_dir(self, dirs, dir_to_check):
         if not dirs:
             return False
         for day in dirs:
-            text = self.getDirStatus(dirToCheck, day)
+            text = self.get_dir_status(dir_to_check, day)
             if text is None:
                 continue
             if "failed" not in text:
@@ -225,7 +225,7 @@ class DumpList(object):
         # no dump in there that's not failed. meh.
         # try again and take the first one we can read
         for day in dirs:
-            text = self.getDirStatus(dirToCheck, day)
+            text = self.get_dir_status(dir_to_check, day)
             if text is None:
                 continue
             return day
@@ -233,64 +233,64 @@ class DumpList(object):
         # no dumps with status we can read. give up
         return False
 
-    def listDumpsForProject(self, project):
+    def list_dump_for_proj(self, project):
         """get list of dump directories for a given project
         ordered by good dumps first, most recent to oldest, then
         failed dumps most rcent to oldest, and finally incomplete
         dumps most recent to oldest"""
-        dirToCheck = self.getAbsPubDirPath(project)
-        if not exists(dirToCheck):
+        dir_to_check = self.get_abs_pubdirpath(project)
+        if not exists(dir_to_check):
             return []
 
-        dirs = os.listdir(dirToCheck)
+        dirs = os.listdir(dir_to_check)
         # dirs have the format yyyymmdd and we want only those and
         # listed most recent first by date, not by ctime or mtime.
-        dirs = [d for d in dirs if self.ymdPattern.search(d)]
+        dirs = [d for d in dirs if self.ymd_pattern.search(d)]
         dirs.sort()
         dirs.reverse()
 
-        dirsFailed = []
-        dirsComplete = []
-        dirsOther = []
+        dirs_failed = []
+        dirs_complete = []
+        dirs_other = []
 
-        dirsReported = []
+        dirs_reported = []
 
-        dirFirst = self.getFirstDir(dirs, dirToCheck)
-        if not dirFirst:
+        dir_first = self.get_first_dir(dirs, dir_to_check)
+        if not dir_first:
             # never dumped
-            return dirsReported
+            return dirs_reported
 
         for day in dirs:
-            if day == dirFirst:
+            if day == dir_first:
                 continue
-            text = self.getDirStatus(dirToCheck, day)
+            text = self.get_dir_status(dir_to_check, day)
             if text is None:
                 continue
 
             if "failed" in text:
-                dirsFailed.append(day)
+                dirs_failed.append(day)
             elif "Dump complete" in text:
-                dirsComplete.append(day)
+                dirs_complete.append(day)
             else:
-                dirsOther.append(day)
+                dirs_other.append(day)
 
-        dirsReported.append(dirFirst)
-        dirsReported.extend(dirsComplete)
-        dirsReported.extend(dirsOther)
-        dirsReported.extend(dirsFailed)
-        return dirsReported
+        dirs_reported.append(dir_first)
+        dirs_reported.extend(dirs_complete)
+        dirs_reported.extend(dirs_other)
+        dirs_reported.extend(dirs_failed)
+        return dirs_reported
 
-    def listFileTemplates(self):
+    def list_file_templs(self):
         """list the templates for filenames that were provided
         by the caller, i.e. the template for the lists of files of
         the last n dumps, and the template for the lists of dirs
         of the last n dumps"""
-        filenameTempls = []
-        filenameTempls.extend(filter(None, [self.dirListTemplate,
-                                            self.fileListTemplate]))
-        return filenameTempls
+        fname_templs = []
+        fname_templs.extend(filter(None, [self.dir_list_templ,
+                                            self.file_list_templ]))
+        return fname_templs
 
-    def fillInFilenameTemplate(self, templ, number):
+    def fillin_fname_templ(self, templ, number):
         """given a filename template which expects to have a number
         plugged into it someplace (indicated by a '%s'), make
         the substitution and return the new name"""
@@ -299,152 +299,152 @@ class DumpList(object):
         else:
             return templ
 
-    def getFileNamesFromDir(self, dirName):
+    def get_fnames_from_dir(self, dir_name):
         """given a dump directory (the full path to a specific run),
         get the names of the files we want to list; we only pick
         up the files that are part of the public run, not scratch or other
         files, and the filenames are either full paths or are relative
         to the base directory of the public dumps, depending on
         user-specified options."""
-        filesWanted = []
-        if self.fileListTemplate:
-            dirContents = os.listdir(dirName)
-            filesWanted = ([os.path.join(dirName, f) for f in dirContents
-                           if self.filesWantedPattern.search(f)])
+        files_wanted = []
+        if self.file_list_templ:
+            dir_contents = os.listdir(dir_name)
+            files_wanted = ([os.path.join(dir_name, f) for f in dir_contents
+                           if self.files_wanted_pattern.search(f)])
             if self.relative:
-                filesWanted = [self.stripPublicDir(f) for f in filesWanted]
-        return filesWanted
+                files_wanted = [self.strip_pubdir(f) for f in files_wanted]
+        return files_wanted
 
-    def truncateOutputFiles(self):
+    def truncate_outfiles(self):
         """call this once at the beginning of any run to truncate
         all output files before beginning to write to them"""
-        filenameTempls = self.listFileTemplates()
-        for t in filenameTempls:
-            for n in self.dumpsNumberList:
-                f = self.fillInFilenameTemplate(t, n)
+        fname_templs = self.list_file_templs()
+        for t in fname_templs:
+            for n in self.dumps_num_list:
+                f = self.fillin_fname_templ(t, n)
                 try:
-                    fd = open(self.getAbsOutDirPath(f + ".tmp"), "wt")
+                    fd = open(self.get_abs_outdirpath(f + ".tmp"), "wt")
                     fd.close()
                 except:
                     pass
 
-    def writeFileNames(self, num, dirName, fileNamesToWrite,
-                       skipDirs=False):
+    def write_filenames(self, num, dir_name, fnames_to_write,
+                       skip_dirs=False):
         """write supplied list of filenames from the project dump
         of a particular run into files named as specified by the
         user, and write the project dump directory name into
         separate files named as specified by the user"""
-        if self.fileListTemplate:
-            outputFileName = self.getAbsOutDirPath(
-                self.fillInFilenameTemplate(
-                    self.fileListTemplate, num) + ".tmp")
-            filesfd = open(outputFileName, "a")
-            filesfd.write('\n'.join(fileNamesToWrite))
+        if self.file_list_templ:
+            output_fname = self.get_abs_outdirpath(
+                self.fillin_fname_templ(
+                    self.file_list_templ, num) + ".tmp")
+            filesfd = open(output_fname, "a")
+            filesfd.write('\n'.join(fnames_to_write))
             filesfd.write('\n')
             filesfd.close()
-        if self.dirListTemplate and not skipDirs:
-            outputFileName = self.getAbsOutDirPath(
-                self.fillInFilenameTemplate(
-                    self.dirListTemplate, num) + ".tmp")
+        if self.dir_list_templ and not skip_dirs:
+            output_fname = self.get_abs_outdirpath(
+                self.fillin_fname_templ(
+                    self.dir_list_templ, num) + ".tmp")
             if self.relative:
-                dirName = self.stripPublicDir(dirName)
-            dirsfd = open(outputFileName, "a")
-            dirsfd.write(dirName + '\n')
+                dir_name = self.strip_pubdir(dir_name)
+            dirsfd = open(output_fname, "a")
+            dirsfd.write(dir_name + '\n')
             dirsfd.close()
 
-    def writeFileAndDirListsForProject(self, project):
+    def write_file_dir_lists_for_proj(self, project):
         """for a given project, write all dirs and all files from
         the last n dumps to various files with n varying as
         specified by the user"""
-        dirs = self.listDumpsForProject(project)
-        fileNamesToWrite = None
+        dirs = self.list_dump_for_proj(project)
+        fnames_to_write = None
         index = 0
-        projectPath = self.getAbsPubDirPath(project)
+        project_path = self.get_abs_pubdirpath(project)
         while index < len(dirs):
-            if index >= self.maxDnum:
+            if index >= self.max_dump_num:
                 break
-            if self.fileListTemplate:
-                fileNamesToWrite = self.getFileNamesFromDir(os.path.join(
-                    projectPath, dirs[index]))
-            for dn in self.dumpsNumberList:
+            if self.file_list_templ:
+                fnames_to_write = self.get_fnames_from_dir(os.path.join(
+                    project_path, dirs[index]))
+            for dn in self.dumps_num_list:
                 if index < int(dn):
-                    self.writeFileNames(dn, os.path.join(
-                        projectPath, dirs[index]), fileNamesToWrite)
+                    self.write_filenames(dn, os.path.join(
+                        project_path, dirs[index]), fnames_to_write)
             index = index + 1
 
-    def stripPublicDir(self, line):
+    def strip_pubdir(self, line):
         """remove the path to the public dumps directory from
         the beginning of the suppplied line, if it exists"""
-        if line.startswith(self.config.publicDir + os.sep):
-            line = line[len(self.config.publicDir):]
+        if line.startswith(self.config.public_dir + os.sep):
+            line = line[len(self.config.public_dir):]
         return line
 
-    def convertFileNamesForRsyncInput(self, f):
+    def convert_fnames_for_rsyncin(self, f):
         """prep list of filenames so that it can be passed
         to rsync --list-only"""
 
         # to make this work we have to feed it a file with the filenames
         # with the publicdir stripped off the front, if it's there
-        fpath = self.getAbsOutDirPath(f)
+        fpath = self.get_abs_outdirpath(f)
         infd = open(fpath, "r")
         outfd = open(fpath + ".relpath",  "w")
         lines = infd.readlines()
         infd.close()
         for line in lines:
             if not self.relative:
-                outfd.write(self.stripPublicDir(line))
+                outfd.write(self.strip_pubdir(line))
             else:
                 outfd.write(line)
         outfd.close()
 
-    def doRsyncListOnly(self, f):
+    def do_rsync_list_only(self, f):
         """produce long listing of files from a specific dump run,
         by passing the file list to rsync --list-only"""
-        fpath = self.getAbsOutDirPath(f)
+        fpath = self.get_abs_outdirpath(f)
         command = ["/usr/bin/rsync", "--list-only", "--no-h",
                    "--files-from", fpath + ".relpath",
-                   self.config.publicDir,
+                   self.config.public_dir,
                    "dummy", ">", fpath + ".rsync"]
-        commandString = " ".join(command)
-        proc = Popen(commandString, shell=True, stderr=PIPE)
+        command_string = " ".join(command)
+        proc = Popen(command_string, shell=True, stderr=PIPE)
         # output will be None, we can ignore it
         output, error = proc.communicate()
         if proc.returncode:
             raise DumpListError(
-                "command '" + commandString +
+                "command '" + command_string +
                 ("' failed with return code %s " % proc.returncode) +
                 " and error '" + error + "'")
 
-    def getTopLevelFiles(self):
+    def get_toplevelfiles(self):
         # list *html and *txt files in top level dir
         # test, with "" does this work?
-        filesInDir = [f for f in os.listdir(self.getAbsPubDirPath(""))
+        files_in_dir = [f for f in os.listdir(self.get_abs_pubdirpath(""))
                       if f.endswith(".html") or f.endswith(".txt")]
-        return filesInDir
+        return files_in_dir
 
-    def writeTopLevelFiles(self):
+    def write_toplevelfiles(self):
         """write the html and txt files in the top level dirextory to
         the appropriate output files."""
-        fileNamesToWrite = self.getTopLevelFiles()
-        for dn in self.dumpsNumberList:
-            self.writeFileNames(dn, None, fileNamesToWrite, skipDirs=True)
+        fnames_to_write = self.get_toplevelfiles()
+        for dn in self.dumps_num_list:
+            self.write_filenames(dn, None, fnames_to_write, skip_dirs=True)
 
-    def generateDumpFileAndDirLists(self):
+    def gen_dumpfile_dirlists(self):
         """produce all files of dir lists and file lists from
         all desired dump runs for all projects"""
-        self.truncateOutputFiles()
-        if self.topLevel:
-            self.writeTopLevelFiles()
+        self.truncate_outfiles()
+        if self.top_level:
+            self.write_toplevelfiles()
         for p in self.projects:
-            self.writeFileAndDirListsForProject(p)
+            self.write_file_dir_lists_for_proj(p)
 
-        filenameTempls = self.listFileTemplates()
-        for t in filenameTempls:
-            for n in self.dumpsNumberList:
-                f = self.fillInFilenameTemplate(t, n)
+        fname_templs = self.list_file_templs()
+        for t in fname_templs:
+            for n in self.dumps_num_list:
+                f = self.fillin_fname_templ(t, n)
                 # do this last so that if someone is using the file
                 # in the meantime, they  aren't interrupted
-                fpath = self.getAbsOutDirPath(f)
+                fpath = self.get_abs_outdirpath(f)
                 if exists(fpath + ".tmp"):
                     if exists(fpath):
                         os.rename(fpath, fpath + ".old")
@@ -454,8 +454,8 @@ class DumpList(object):
                                         "Something is wrong." % fpath + ".tmp")
 
                 if self.rsynclists:
-                    self.convertFileNamesForRsyncInput(f)
-                    self.doRsyncListOnly(f)
+                    self.convert_fnames_for_rsyncin(f)
+                    self.do_rsync_list_only(f)
 
 
 def usage(message=None):
@@ -512,16 +512,17 @@ python list-last-n-good-dumps.py --dumpsnumber 3,5
     sys.stderr.write(usage_message)
     sys.exit(1)
 
-if __name__ == "__main__":
-    configFile = "wikidump.conf"
-    dumpsNumber = "5"
+
+def do_main():
+    configfile = "wikidump.conf"
+    dumps_num = "5"
     relative = False
     rsynclists = False
-    topLevel = False
-    dirListTemplate = None
-    fileListTemplate = None
-    projectsUrl = None
-    outputDir = None
+    top_level = False
+    dir_list_templ = None
+    file_list_templ = None
+    projects_url = None
+    output_dir = None
 
     try:
         (options, remainder) = getopt.gnu_getopt(
@@ -534,59 +535,63 @@ if __name__ == "__main__":
         usage("Unknown option specified")
 
     if len(remainder):
-        usage("Unknown option specified: %s", remainder)
+        usage("Unknown option specified: %s" % remainder[0])
 
     for (opt, val) in options:
         if opt == "--configfile":
-            configFile = val
+            configfile = val
         elif opt == "projectlisturl":
-            projectsUrl = val
+            projects_url = val
         elif opt == '--dumpsnumber':
-            dumpsNumber = val
+            dumps_num = val
         elif opt == '--outputdir':
-            outputDir = val
+            output_dir = val
         elif opt == '--relpath':
             relative = True
         elif opt == '--rsynclists':
             rsynclists = True
         elif opt == "--dirlisting":
-            dirListTemplate = val
+            dir_list_templ = val
         elif opt == "--filelisting":
-            fileListTemplate = val
+            file_list_templ = val
         elif opt == "--toplevel":
-            topLevel = True
+            top_level = True
 
-    if ',' not in dumpsNumber:
-        dumpsNumberList = [dumpsNumber.strip()]
+    if ',' not in dumps_num:
+        dumps_num_list = [dumps_num.strip()]
     else:
-        dumpsNumberList = [d.strip() for d in dumpsNumber.split(',')]
+        dumps_num_list = [d.strip() for d in dumps_num.split(',')]
 
-    for d in dumpsNumberList:
+    for d in dumps_num_list:
         if not d.isdigit() or not int(d):
             usage("dumpsnumber must be a number or a comma-separated"
                   " list of numbers each greater than 0")
 
-    if not dirListTemplate and not fileListTemplate:
+    if not dir_list_templ and not file_list_templ:
         usage("At least one of --dirlisting or"
               " --filelisting must be specified")
 
-    if (fileListTemplate and len(dumpsNumberList) > 1 and
-            '%s' not in fileListTemplate):
+    if (file_list_templ and len(dumps_num_list) > 1 and
+            '%s' not in file_list_templ):
         usage("In order to write more than one output file with"
               " dump runs, the value specified for filelisting"
               " must contain '%s' which will be replaced by the"
               " number of dumps to write to the given output file")
 
-    if (fileListTemplate and len(dumpsNumberList) > 1 and
-            '%s' not in fileListTemplate):
+    if (file_list_templ and len(dumps_num_list) > 1 and
+            '%s' not in file_list_templ):
         usage("In order to write more than one output file with"
               " dump runs, the value specified for dirlisting must"
               " contain '%s' which will be replaced by the number"
               " of dumps to write to the given output file")
 
-    config = WikiConfig(configFile)
-    dl = DumpList(config, dumpsNumberList, relative, rsynclists,
-                  dirListTemplate, fileListTemplate, outputDir,
-                  projectsUrl, topLevel)
-    dl.loadProjectList()
-    dl.generateDumpFileAndDirLists()
+    config = WikiConfig(configfile)
+    dl = DumpList(config, dumps_num_list, relative, rsynclists,
+                  dir_list_templ, file_list_templ, output_dir,
+                  projects_url, top_level)
+    dl.load_projectlist()
+    dl.gen_dumpfile_dirlists()
+
+
+if __name__ == "__main__":
+    do_main()
