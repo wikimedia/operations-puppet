@@ -122,6 +122,9 @@ lvs_service_ips:
     eqiad: 10.2.2.12
   eventbus: &ip_block026
     eqiad: 10.2.2.23
+  apertium: &ip_block027
+    eqiad: 10.2.1.11
+    codfw: 10.2.2.11
 lvs_services:
   text:
     description: "Main wiki platform LVS service, text.%{::site}.wikimedia.org (Varnish)"
@@ -833,6 +836,33 @@ lvs_services:
       ProxyFetch:
         url:
         - http://localhost/v1/topics
+      IdleConnection:
+        max-delay: 300
+        timeout-clean-reconnect: 3
+  apertium:
+    description: "Machine Translation service. apertium.svc.%{::site}.wmnet"
+    class: low-traffic
+    sites:
+    - codfw
+    - eqiad
+    ip: *ip_block027
+    port: 2737
+    bgp: 'yes'
+    depool-threshold: '.5'
+    conftool:
+      cluster: sca
+      service: zotero
+    icinga:
+      check_command: "check_http_lvs_on_port!apertium.svc.eqiad.wmnet!2737!/listPairs"
+      sites:
+        eqiad:
+          hostname: apertium.svc.eqiad.wmnet
+        codfw:
+          hostname: apertium.svc.codfw.wmnet
+    monitors:
+      ProxyFetch:
+        url:
+        - http://localhost/listPairs
       IdleConnection:
         max-delay: 300
         timeout-clean-reconnect: 3
