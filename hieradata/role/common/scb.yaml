@@ -726,1720 +726,3989 @@ cxserver::registry:
     Yandex:
       af:
         - ba
+        - be
         - bs
+        - cs
+        - et
         - eu
         - fa
+        - fi
+        - ga
         - ht
         - hy
+        - id
         - is
+        - ka
+        - kk
+        - ky
         - la
+        - lv
+        - mg
+        - mk
         - mn
+        - ms
         - mt
         - pl
+        - ro
+        - ru
+        - sk
+        - sl
         - sq
         - sw
         - tg
+        - th
         - tl
-        - ru
+        - tt
         - ur
         - uz
+        - vi
       ar:
+        - af
         - ba
+        - be
         - bs
+        - cs
+        - et
         - eu
         - fa
+        - fi
+        - ga
         - ht
         - hy
+        - id
         - is
+        - ka
+        - kk
+        - ky
         - la
+        - lv
+        - mg
+        - mk
         - mn
+        - ms
         - mt
         - pl
+        - ro
+        - ru
+        - sk
+        - sl
         - sq
         - sw
         - tg
+        - th
         - tl
-        - ru
+        - tt
         - ur
         - uz
+        - vi
       az:
+        - af
         - ba
+        - be
         - bs
+        - cs
+        - et
         - eu
         - fa
+        - fi
+        - ga
         - ht
         - hy
+        - id
         - is
+        - ka
+        - kk
+        - ky
         - la
+        - lv
+        - mg
+        - mk
         - mn
+        - ms
         - mt
         - pl
+        - ro
+        - ru
+        - sk
+        - sl
         - sq
         - sw
         - tg
+        - th
         - tl
-        - ru
+        - tt
         - ur
         - uz
+        - vi
       ba:
+        - af
+        - be
         - bs
+        - cs
+        - et
         - eu
         - fa
+        - fi
+        - ga
         - ht
         - hy
+        - id
         - is
+        - ka
+        - kk
+        - ky
         - la
+        - lv
+        - mg
+        - mk
         - mn
+        - ms
         - mt
         - pl
+        - ro
+        - ru
+        - sk
+        - sl
         - sq
         - sw
         - tg
+        - th
         - tl
-        - ru
+        - tt
         - ur
         - uz
+        - vi
       'be-tarask':
+        - af
         - ba
+        - be
         - bs
+        - cs
+        - et
         - eu
         - fa
+        - fi
+        - ga
         - ht
         - hy
+        - id
         - is
+        - ka
+        - kk
+        - ky
         - la
+        - lv
+        - mg
+        - mk
         - mn
+        - ms
         - mt
         - pl
+        - ro
+        - ru
+        - sk
+        - sl
         - sq
         - sw
         - tg
+        - th
         - tl
-        - ru
+        - tt
         - ur
         - uz
+        - vi
       be:
+        - af
         - ba
         - bs
+        - cs
+        - et
         - eu
         - fa
+        - fi
+        - ga
         - ht
         - hy
+        - id
         - is
+        - ka
+        - kk
+        - ky
         - la
+        - lv
+        - mg
+        - mk
         - mn
+        - ms
         - mt
         - pl
+        - ro
+        - ru
+        - sk
+        - sl
         - sq
         - sw
         - tg
+        - th
         - tl
-        - ru
+        - tt
         - ur
         - uz
+        - vi
       bg:
+        - af
         - ba
+        - be
         - bs
+        - cs
+        - et
         - eu
         - fa
+        - fi
+        - ga
         - ht
         - hy
+        - id
         - is
+        - ka
+        - kk
+        - ky
         - la
+        - lv
+        - mg
+        - mk
         - mn
+        - ms
         - mt
         - pl
+        - ro
+        - ru
+        - sk
+        - sl
         - sq
         - sw
         - tg
+        - th
         - tl
-        - ru
+        - tt
         - ur
         - uz
+        - vi
       bs:
+        - af
         - ba
-        - bs
+        - be
+        - cs
+        - et
         - eu
         - fa
+        - fi
+        - ga
         - ht
         - hy
+        - id
         - is
+        - ka
+        - kk
+        - ky
         - la
+        - lv
+        - mg
+        - mk
         - mn
+        - ms
         - mt
         - pl
+        - ro
+        - ru
+        - sk
+        - sl
         - sq
         - sw
         - tg
+        - th
         - tl
-        - ru
+        - tt
         - ur
         - uz
+        - vi
       ca:
+        - af
         - ba
+        - be
         - bs
+        - cs
+        - et
         - eu
         - fa
+        - fi
+        - ga
         - ht
         - hy
+        - id
         - is
+        - ka
+        - kk
+        - ky
         - la
+        - lv
+        - mg
+        - mk
         - mn
+        - ms
         - mt
         - pl
+        - ro
+        - ru
+        - sk
+        - sl
         - sq
         - sw
         - tg
+        - th
         - tl
-        - ru
+        - tt
         - ur
         - uz
+        - vi
       cs:
+        - af
         - ba
+        - be
         - bs
+        - et
         - eu
         - fa
+        - fi
+        - ga
         - ht
         - hy
+        - id
         - is
+        - ka
+        - kk
+        - ky
         - la
+        - lv
+        - mg
+        - mk
         - mn
+        - ms
         - mt
         - pl
+        - ro
+        - ru
+        - sk
+        - sl
         - sq
         - sw
         - tg
+        - th
         - tl
-        - ru
+        - tt
         - ur
         - uz
+        - vi
       cy:
+        - af
         - ba
+        - be
         - bs
+        - cs
+        - et
         - eu
         - fa
+        - fi
+        - ga
         - ht
         - hy
+        - id
         - is
+        - ka
+        - kk
+        - ky
         - la
+        - lv
+        - mg
+        - mk
         - mn
+        - ms
         - mt
         - pl
+        - ro
+        - ru
+        - sk
+        - sl
         - sq
         - sw
         - tg
+        - th
         - tl
-        - ru
+        - tt
         - ur
         - uz
+        - vi
       da:
+        - af
         - ba
+        - be
         - bs
+        - cs
+        - et
         - eu
         - fa
+        - fi
+        - ga
         - ht
         - hy
+        - id
         - is
+        - ka
+        - kk
+        - ky
         - la
+        - lv
+        - mg
+        - mk
         - mn
+        - ms
         - mt
         - pl
+        - ro
+        - ru
+        - sk
+        - sl
         - sq
         - sw
         - tg
+        - th
         - tl
-        - ru
+        - tt
         - ur
         - uz
+        - vi
       de:
+        - af
         - ba
+        - be
         - bs
+        - cs
+        - et
         - eu
         - fa
+        - fi
+        - ga
         - ht
         - hy
+        - id
         - is
+        - ka
+        - kk
+        - ky
         - la
+        - lv
+        - mg
+        - mk
         - mn
+        - ms
         - mt
         - pl
+        - ro
+        - ru
+        - sk
+        - sl
         - sq
         - sw
         - tg
+        - th
         - tl
-        - ru
+        - tt
         - ur
         - uz
+        - vi
       el:
+        - af
         - ba
+        - be
         - bs
+        - cs
+        - et
         - eu
         - fa
+        - fi
+        - ga
         - ht
         - hy
+        - id
         - is
+        - ka
+        - kk
+        - ky
         - la
+        - lv
+        - mg
+        - mk
         - mn
+        - ms
         - mt
         - pl
+        - ro
+        - ru
+        - sk
+        - sl
         - sq
         - sw
         - tg
+        - th
         - tl
-        - ru
+        - tt
         - ur
         - uz
+        - vi
       en:
+        - af
         - ba
+        - be
         - bs
+        - cs
+        - et
         - eu
         - fa
+        - fi
+        - ga
         - ht
         - hy
+        - id
         - is
+        - ka
+        - kk
+        - ky
         - la
+        - lv
+        - mg
+        - mk
         - mn
+        - ms
         - mt
         - pl
+        - ro
+        - ru
+        - sk
+        - sl
         - sq
         - sw
         - tg
+        - th
         - tl
-        - ru
+        - tt
         - ur
         - uz
+        - vi
       es:
+        - af
         - ba
+        - be
         - bs
+        - cs
+        - et
         - eu
         - fa
+        - fi
+        - ga
         - ht
         - hy
+        - id
         - is
+        - ka
+        - kk
+        - ky
         - la
+        - lv
+        - mg
+        - mk
         - mn
+        - ms
         - mt
         - pl
+        - ro
+        - ru
+        - sk
+        - sl
         - sq
         - sw
         - tg
+        - th
         - tl
-        - ru
+        - tt
         - ur
         - uz
+        - vi
       et:
+        - af
         - ba
+        - be
         - bs
+        - cs
         - eu
         - fa
+        - fi
+        - ga
         - ht
         - hy
+        - id
         - is
+        - ka
+        - kk
+        - ky
         - la
+        - lv
+        - mg
+        - mk
         - mn
+        - ms
         - mt
         - pl
+        - ro
+        - ru
+        - sk
+        - sl
         - sq
         - sw
         - tg
+        - th
         - tl
-        - ru
+        - tt
         - ur
         - uz
+        - vi
       eu:
+        - af
         - ba
+        - be
         - bs
+        - cs
+        - et
         - fa
+        - fi
+        - ga
         - ht
         - hy
+        - id
         - is
+        - ka
+        - kk
+        - ky
         - la
+        - lv
+        - mg
+        - mk
         - mn
+        - ms
         - mt
         - pl
+        - ro
+        - ru
+        - sk
+        - sl
         - sq
         - sw
         - tg
+        - th
         - tl
-        - ru
+        - tt
         - ur
         - uz
+        - vi
       fa:
+        - af
         - ba
+        - be
         - bs
+        - cs
+        - et
         - eu
+        - fi
+        - ga
         - ht
         - hy
+        - id
         - is
+        - ka
+        - kk
+        - ky
         - la
+        - lv
+        - mg
+        - mk
         - mn
+        - ms
         - mt
         - pl
+        - ro
+        - ru
+        - sk
+        - sl
         - sq
         - sw
         - tg
+        - th
         - tl
-        - ru
+        - tt
         - ur
         - uz
+        - vi
       fi:
+        - af
         - ba
+        - be
         - bs
+        - cs
+        - et
         - eu
         - fa
+        - fi
+        - ga
         - ht
         - hy
+        - id
         - is
+        - ka
+        - kk
+        - ky
         - la
+        - lv
+        - mg
+        - mk
         - mn
+        - ms
         - mt
         - pl
+        - ro
+        - ru
+        - sk
+        - sl
         - sq
         - sw
         - tg
+        - th
         - tl
-        - ru
+        - tt
         - ur
         - uz
+        - vi
       fr:
+        - af
         - ba
+        - be
         - bs
+        - cs
+        - et
         - eu
         - fa
+        - fi
+        - ga
         - ht
         - hy
+        - id
         - is
+        - ka
+        - kk
+        - ky
         - la
+        - lv
+        - mg
+        - mk
         - mn
+        - ms
         - mt
         - pl
+        - ro
+        - ru
+        - sk
+        - sl
         - sq
         - sw
         - tg
+        - th
         - tl
-        - ru
+        - tt
         - ur
         - uz
+        - vi
       ga:
+        - af
         - ba
+        - be
         - bs
+        - cs
+        - et
         - eu
         - fa
+        - fi
         - ht
         - hy
+        - id
         - is
+        - ka
+        - kk
+        - ky
         - la
+        - lv
+        - mg
+        - mk
         - mn
+        - ms
         - mt
         - pl
+        - ro
+        - ru
+        - sk
+        - sl
         - sq
         - sw
         - tg
+        - th
         - tl
-        - ru
+        - tt
         - ur
         - uz
+        - vi
       gl:
+        - af
         - ba
+        - be
         - bs
+        - cs
+        - et
         - eu
         - fa
+        - fi
+        - ga
         - ht
         - hy
+        - id
         - is
+        - ka
+        - kk
+        - ky
         - la
+        - lv
+        - mg
+        - mk
         - mn
+        - ms
         - mt
         - pl
+        - ro
+        - ru
+        - sk
+        - sl
         - sq
         - sw
         - tg
+        - th
         - tl
-        - ru
+        - tt
         - ur
         - uz
+        - vi
       he:
+        - af
         - ba
+        - be
         - bs
+        - cs
+        - et
         - eu
         - fa
+        - fi
+        - ga
         - ht
         - hy
+        - id
         - is
+        - ka
+        - kk
+        - ky
         - la
+        - lv
+        - mg
+        - mk
         - mn
+        - ms
         - mt
         - pl
+        - ro
+        - ru
+        - sk
+        - sl
         - sq
         - sw
         - tg
+        - th
         - tl
-        - ru
+        - tt
         - ur
         - uz
+        - vi
       hi:
+        - af
         - ba
+        - be
         - bs
+        - cs
+        - et
         - eu
         - fa
+        - fi
+        - ga
         - ht
         - hy
+        - id
         - is
+        - ka
+        - kk
+        - ky
         - la
+        - lv
+        - mg
+        - mk
         - mn
+        - ms
         - mt
         - pl
+        - ro
+        - ru
+        - sk
+        - sl
         - sq
         - sw
         - tg
+        - th
         - tl
-        - ru
+        - tt
         - ur
         - uz
+        - vi
       hr:
+        - af
         - ba
+        - be
         - bs
+        - cs
+        - et
         - eu
         - fa
+        - fi
+        - ga
         - ht
         - hy
+        - id
         - is
+        - ka
+        - kk
+        - ky
         - la
+        - lv
+        - mg
+        - mk
         - mn
+        - ms
         - mt
         - pl
+        - ro
+        - ru
+        - sk
+        - sl
         - sq
         - sw
         - tg
+        - th
         - tl
-        - ru
+        - tt
         - ur
         - uz
+        - vi
       ht:
+        - af
         - ba
+        - be
         - bs
+        - cs
+        - et
         - eu
         - fa
+        - fi
+        - ga
         - hy
+        - id
         - is
+        - ka
+        - kk
+        - ky
         - la
+        - lv
+        - mg
+        - mk
         - mn
+        - ms
         - mt
         - pl
+        - ro
+        - ru
+        - sk
+        - sl
         - sq
         - sw
         - tg
+        - th
         - tl
-        - ru
+        - tt
         - ur
         - uz
+        - vi
       hu:
+        - af
         - ba
+        - be
         - bs
+        - cs
+        - et
         - eu
         - fa
+        - fi
+        - ga
         - ht
         - hy
+        - id
         - is
+        - ka
+        - kk
+        - ky
         - la
+        - lv
+        - mg
+        - mk
         - mn
+        - ms
         - mt
         - pl
+        - ro
+        - ru
+        - sk
+        - sl
         - sq
         - sw
         - tg
+        - th
         - tl
-        - ru
+        - tt
         - ur
         - uz
+        - vi
       hy:
+        - af
         - ba
+        - be
         - bs
+        - cs
+        - et
         - eu
         - fa
+        - fi
+        - ga
         - ht
+        - id
         - is
+        - ka
+        - kk
+        - ky
         - la
+        - lv
+        - mg
+        - mk
         - mn
+        - ms
         - mt
         - pl
+        - ro
+        - ru
+        - sk
+        - sl
         - sq
         - sw
         - tg
+        - th
         - tl
-        - ru
+        - tt
         - ur
         - uz
+        - vi
       id:
+        - af
         - ba
+        - be
         - bs
+        - cs
+        - et
         - eu
         - fa
+        - fi
+        - ga
         - ht
         - hy
         - is
+        - ka
+        - kk
+        - ky
         - la
+        - lv
+        - mg
+        - mk
         - mn
+        - ms
         - mt
         - pl
+        - ro
+        - ru
+        - sk
+        - sl
         - sq
         - sw
         - tg
+        - th
         - tl
-        - ru
+        - tt
         - ur
         - uz
+        - vi
       is:
+        - af
         - ba
+        - be
         - bs
+        - cs
+        - et
         - eu
         - fa
+        - fi
+        - ga
         - ht
         - hy
+        - id
+        - ka
+        - kk
+        - ky
         - la
+        - lv
+        - mg
+        - mk
         - mn
+        - ms
         - mt
         - pl
+        - ro
+        - ru
+        - sk
+        - sl
         - sq
         - sw
         - tg
+        - th
         - tl
-        - ru
+        - tt
         - ur
         - uz
+        - vi
       it:
+        - af
         - ba
+        - be
         - bs
+        - cs
+        - et
         - eu
         - fa
+        - fi
+        - ga
         - ht
         - hy
+        - id
         - is
+        - ka
+        - kk
+        - ky
         - la
+        - lv
+        - mg
+        - mk
         - mn
+        - ms
         - mt
         - pl
+        - ro
+        - ru
+        - sk
+        - sl
         - sq
         - sw
         - tg
+        - th
         - tl
-        - ru
+        - tt
         - ur
         - uz
+        - vi
       ja:
+        - af
         - ba
+        - be
         - bs
+        - cs
+        - et
         - eu
         - fa
+        - fi
+        - ga
         - ht
         - hy
+        - id
         - is
+        - ka
+        - kk
+        - ky
         - la
+        - lv
+        - mg
+        - mk
         - mn
+        - ms
         - mt
         - pl
+        - ro
+        - ru
+        - sk
+        - sl
         - sq
         - sw
         - tg
+        - th
         - tl
-        - ru
+        - tt
         - ur
         - uz
+        - vi
       ka:
+        - af
         - ba
+        - be
         - bs
+        - cs
+        - et
         - eu
         - fa
+        - fi
+        - ga
         - ht
         - hy
+        - id
         - is
+        - kk
+        - ky
         - la
+        - lv
+        - mg
+        - mk
         - mn
+        - ms
         - mt
         - pl
+        - ro
+        - ru
+        - sk
+        - sl
         - sq
         - sw
         - tg
+        - th
         - tl
-        - ru
+        - tt
         - ur
         - uz
+        - vi
       kk:
+        - af
         - ba
+        - be
         - bs
+        - cs
+        - et
         - eu
         - fa
+        - fi
+        - ga
         - ht
         - hy
+        - id
         - is
+        - ka
+        - ky
         - la
+        - lv
+        - mg
+        - mk
         - mn
+        - ms
         - mt
         - pl
+        - ro
+        - ru
+        - sk
+        - sl
         - sq
         - sw
         - tg
+        - th
         - tl
-        - ru
+        - tt
         - ur
         - uz
+        - vi
       ko:
+        - af
         - ba
+        - be
         - bs
+        - cs
+        - et
         - eu
         - fa
+        - fi
+        - ga
         - ht
         - hy
+        - id
         - is
+        - ka
+        - kk
+        - ky
         - la
+        - lv
+        - mg
+        - mk
         - mn
+        - ms
         - mt
         - pl
+        - ro
+        - ru
+        - sk
+        - sl
         - sq
         - sw
         - tg
+        - th
         - tl
-        - ru
+        - tt
         - ur
         - uz
+        - vi
       ky:
+        - af
         - ba
+        - be
         - bs
+        - cs
+        - et
         - eu
         - fa
+        - fi
+        - ga
         - ht
         - hy
+        - id
         - is
+        - ka
+        - kk
         - la
+        - lv
+        - mg
+        - mk
         - mn
+        - ms
         - mt
         - pl
+        - ro
+        - ru
+        - sk
+        - sl
         - sq
         - sw
         - tg
+        - th
         - tl
-        - ru
+        - tt
         - ur
         - uz
+        - vi
       la:
+        - af
         - ba
+        - be
         - bs
+        - cs
+        - et
         - eu
         - fa
+        - fi
+        - ga
         - ht
         - hy
+        - id
         - is
+        - ka
+        - kk
+        - ky
+        - lv
+        - mg
+        - mk
         - mn
+        - ms
         - mt
         - pl
+        - ro
+        - ru
+        - sk
+        - sl
         - sq
         - sw
         - tg
+        - th
         - tl
-        - ru
+        - tt
         - ur
         - uz
+        - vi
       lt:
+        - af
         - ba
+        - be
         - bs
+        - cs
+        - et
         - eu
         - fa
+        - fi
+        - ga
         - ht
         - hy
+        - id
         - is
+        - ka
+        - kk
+        - ky
         - la
+        - lv
+        - mg
+        - mk
         - mn
+        - ms
         - mt
         - pl
+        - ro
+        - ru
+        - sk
+        - sl
         - sq
         - sw
         - tg
+        - th
         - tl
-        - ru
+        - tt
         - ur
         - uz
+        - vi
       lv:
+        - af
         - ba
+        - be
         - bs
+        - cs
+        - et
         - eu
         - fa
+        - fi
+        - ga
         - ht
         - hy
+        - id
         - is
+        - ka
+        - kk
+        - ky
         - la
+        - mg
+        - mk
         - mn
+        - ms
         - mt
         - pl
+        - ro
+        - ru
+        - sk
+        - sl
         - sq
         - sw
         - tg
+        - th
         - tl
-        - ru
+        - tt
         - ur
         - uz
+        - vi
       mg:
+        - af
         - ba
+        - be
         - bs
+        - cs
+        - et
         - eu
         - fa
+        - fi
+        - ga
         - ht
         - hy
+        - id
         - is
+        - ka
+        - kk
+        - ky
         - la
+        - lv
+        - mk
         - mn
+        - ms
         - mt
         - pl
+        - ro
+        - ru
+        - sk
+        - sl
         - sq
         - sw
         - tg
+        - th
         - tl
-        - ru
+        - tt
         - ur
         - uz
+        - vi
       mk:
+        - af
         - ba
+        - be
         - bs
+        - cs
+        - et
         - eu
         - fa
+        - fi
+        - ga
         - ht
         - hy
+        - id
         - is
+        - ka
+        - kk
+        - ky
         - la
+        - lv
+        - mg
         - mn
+        - ms
         - mt
         - pl
+        - ro
+        - ru
+        - sk
+        - sl
         - sq
         - sw
         - tg
+        - th
         - tl
-        - ru
+        - tt
         - ur
         - uz
+        - vi
       mn:
+        - af
         - ba
+        - be
         - bs
+        - cs
+        - et
         - eu
         - fa
+        - fi
+        - ga
         - ht
         - hy
+        - id
         - is
+        - ka
+        - kk
+        - ky
         - la
-        - mn
+        - lv
+        - mg
+        - mk
+        - ms
         - mt
         - pl
+        - ro
+        - ru
+        - sk
+        - sl
         - sq
         - sw
         - tg
+        - th
         - tl
-        - ru
+        - tt
         - ur
         - uz
+        - vi
       ms:
+        - af
         - ba
+        - be
         - bs
+        - cs
+        - et
         - eu
         - fa
+        - fi
+        - ga
         - ht
         - hy
+        - id
         - is
+        - ka
+        - kk
+        - ky
         - la
+        - lv
+        - mg
+        - mk
         - mn
         - mt
         - pl
+        - ro
+        - ru
+        - sk
+        - sl
         - sq
         - sw
         - tg
+        - th
         - tl
-        - ru
+        - tt
         - ur
         - uz
+        - vi
       mt:
+        - af
         - ba
+        - be
         - bs
+        - cs
+        - et
         - eu
         - fa
+        - fi
+        - ga
         - ht
         - hy
+        - id
         - is
+        - ka
+        - kk
+        - ky
         - la
+        - lv
+        - mg
+        - mk
         - mn
+        - ms
         - pl
+        - ro
+        - ru
+        - sk
+        - sl
         - sq
         - sw
         - tg
+        - th
         - tl
-        - ru
+        - tt
         - ur
         - uz
+        - vi
       nl:
+        - af
         - ba
+        - be
         - bs
+        - cs
+        - et
         - eu
         - fa
+        - fi
+        - ga
         - ht
         - hy
+        - id
         - is
+        - ka
+        - kk
+        - ky
         - la
+        - lv
+        - mg
+        - mk
         - mn
+        - ms
         - mt
         - pl
+        - ro
+        - ru
+        - sk
+        - sl
         - sq
         - sw
         - tg
+        - th
         - tl
-        - ru
+        - tt
         - ur
         - uz
+        - vi
       'no':
+        - af
         - ba
+        - be
         - bs
+        - cs
+        - et
         - eu
         - fa
+        - fi
+        - ga
         - ht
         - hy
+        - id
         - is
+        - ka
+        - kk
+        - ky
         - la
+        - lv
+        - mg
+        - mk
         - mn
+        - ms
         - mt
         - pl
+        - ro
+        - ru
+        - sk
+        - sl
         - sq
         - sw
         - tg
+        - th
         - tl
-        - ru
+        - tt
         - ur
         - uz
+        - vi
       pl:
+        - af
         - ba
+        - be
         - bs
+        - cs
+        - et
         - eu
         - fa
+        - fi
+        - ga
         - ht
         - hy
+        - id
         - is
+        - ka
+        - kk
+        - ky
         - la
+        - lv
+        - mg
+        - mk
         - mn
+        - ms
         - mt
+        - ro
+        - ru
+        - sk
+        - sl
         - sq
         - sw
         - tg
+        - th
         - tl
-        - ru
+        - tt
         - ur
         - uz
+        - vi
       pt:
+        - af
         - ba
+        - be
         - bs
+        - cs
+        - et
         - eu
         - fa
+        - fi
+        - ga
         - ht
         - hy
+        - id
         - is
+        - ka
+        - kk
+        - ky
         - la
+        - lv
+        - mg
+        - mk
         - mn
+        - ms
         - mt
         - pl
+        - ro
+        - ru
+        - sk
+        - sl
         - sq
         - sw
         - tg
+        - th
         - tl
-        - ru
+        - tt
         - ur
         - uz
+        - vi
       ro:
+        - af
         - ba
+        - be
         - bs
+        - cs
+        - et
         - eu
         - fa
+        - fi
+        - ga
         - ht
         - hy
+        - id
         - is
+        - ka
+        - kk
+        - ky
         - la
+        - lv
+        - mg
+        - mk
         - mn
+        - ms
         - mt
         - pl
+        - ru
+        - sk
+        - sl
         - sq
         - sw
         - tg
+        - th
         - tl
-        - ru
+        - tt
         - ur
         - uz
+        - vi
       ru:
+        - af
         - ba
+        - be
         - bs
+        - cs
+        - et
         - eu
         - fa
+        - fi
+        - ga
         - ht
         - hy
+        - id
         - is
+        - ka
+        - kk
+        - ky
         - la
+        - lv
+        - mg
+        - mk
         - mn
+        - ms
         - mt
         - pl
+        - ro
+        - sk
+        - sl
         - sq
         - sw
         - tg
+        - th
         - tl
+        - tt
         - ur
         - uz
+        - vi
       sk:
+        - af
         - ba
+        - be
         - bs
+        - cs
+        - et
         - eu
         - fa
+        - fi
+        - ga
         - ht
         - hy
+        - id
         - is
+        - ka
+        - kk
+        - ky
         - la
+        - lv
+        - mg
+        - mk
         - mn
+        - ms
         - mt
         - pl
+        - ro
+        - ru
+        - sl
         - sq
         - sw
         - tg
+        - th
         - tl
-        - ru
+        - tt
         - ur
         - uz
+        - vi
       sl:
+        - af
         - ba
+        - be
         - bs
+        - cs
+        - et
         - eu
         - fa
+        - fi
+        - ga
         - ht
         - hy
+        - id
         - is
+        - ka
+        - kk
+        - ky
         - la
+        - lv
+        - mg
+        - mk
         - mn
+        - ms
         - mt
         - pl
+        - ro
+        - ru
+        - sk
         - sq
         - sw
         - tg
+        - th
         - tl
-        - ru
+        - tt
         - ur
         - uz
+        - vi
       sq:
+        - af
         - ba
+        - be
         - bs
+        - cs
+        - et
         - eu
         - fa
+        - fi
+        - ga
         - ht
         - hy
+        - id
         - is
+        - ka
+        - kk
+        - ky
         - la
+        - lv
+        - mg
+        - mk
         - mn
+        - ms
         - mt
         - pl
-        - sq
+        - ro
+        - ru
+        - sk
+        - sl
         - sw
         - tg
+        - th
         - tl
-        - ru
+        - tt
         - ur
         - uz
+        - vi
       sr:
+        - af
         - ba
+        - be
         - bs
+        - cs
+        - et
         - eu
         - fa
+        - fi
+        - ga
         - ht
         - hy
+        - id
         - is
+        - ka
+        - kk
+        - ky
         - la
+        - lv
+        - mg
+        - mk
         - mn
+        - ms
         - mt
         - pl
+        - ro
+        - ru
+        - sk
+        - sl
         - sq
         - sw
         - tg
+        - th
         - tl
-        - ru
+        - tt
         - ur
         - uz
+        - vi
       sv:
+        - af
         - ba
+        - be
         - bs
+        - cs
+        - et
         - eu
         - fa
+        - fi
+        - ga
         - ht
         - hy
+        - id
         - is
+        - ka
+        - kk
+        - ky
         - la
+        - lv
+        - mg
+        - mk
         - mn
+        - ms
         - mt
         - pl
+        - ro
+        - ru
+        - sk
+        - sl
         - sq
         - sw
         - tg
+        - th
         - tl
-        - ru
+        - tt
         - ur
         - uz
+        - vi
       sw:
+        - af
         - ba
+        - be
         - bs
+        - cs
+        - et
         - eu
         - fa
+        - fi
+        - ga
         - ht
         - hy
+        - id
         - is
+        - ka
+        - kk
+        - ky
         - la
+        - lv
+        - mg
+        - mk
         - mn
+        - ms
         - mt
         - pl
-        - sq
-        - sw
-        - tg
-        - tl
+        - ro
         - ru
+        - sk
+        - sl
+        - sq
+        - tg
+        - th
+        - tl
+        - tt
         - ur
         - uz
+        - vi
       tg:
+        - af
         - ba
+        - be
         - bs
+        - cs
+        - et
         - eu
         - fa
+        - fi
+        - ga
         - ht
         - hy
+        - id
         - is
+        - ka
+        - kk
+        - ky
         - la
+        - lv
+        - mg
+        - mk
         - mn
+        - ms
         - mt
         - pl
+        - ro
+        - ru
+        - sk
+        - sl
         - sq
         - sw
+        - th
         - tl
-        - ru
+        - tt
         - ur
         - uz
+        - vi
       th:
+        - af
         - ba
+        - be
         - bs
+        - cs
+        - et
         - eu
         - fa
+        - fi
+        - ga
         - ht
         - hy
+        - id
         - is
+        - ka
+        - kk
+        - ky
         - la
+        - lv
+        - mg
+        - mk
         - mn
+        - ms
         - mt
         - pl
+        - ro
+        - ru
+        - sk
+        - sl
         - sq
         - sw
         - tg
         - tl
-        - ru
+        - tt
         - ur
         - uz
+        - vi
       tl:
+        - af
         - ba
+        - be
         - bs
+        - cs
+        - et
         - eu
         - fa
+        - fi
+        - ga
         - ht
         - hy
+        - id
         - is
+        - ka
+        - kk
+        - ky
         - la
+        - lv
+        - mg
+        - mk
         - mn
+        - ms
         - mt
         - pl
+        - ro
+        - ru
+        - sk
+        - sl
         - sq
         - sw
         - tg
-        - ru
+        - th
+        - tt
         - ur
         - uz
+        - vi
       tr:
+        - af
         - ba
+        - be
         - bs
+        - cs
+        - et
         - eu
         - fa
+        - fi
+        - ga
         - ht
         - hy
+        - id
         - is
+        - ka
+        - kk
+        - ky
         - la
+        - lv
+        - mg
+        - mk
         - mn
+        - ms
         - mt
         - pl
+        - ro
+        - ru
+        - sk
+        - sl
         - sq
         - sw
         - tg
+        - th
         - tl
-        - ru
+        - tt
         - ur
         - uz
+        - vi
       tt:
+        - af
         - ba
+        - be
         - bs
+        - cs
+        - et
         - eu
         - fa
+        - fi
+        - ga
         - ht
         - hy
+        - id
         - is
+        - ka
+        - kk
+        - ky
         - la
+        - lv
+        - mg
+        - mk
         - mn
+        - ms
         - mt
         - pl
+        - ro
+        - ru
+        - sk
+        - sl
         - sq
         - sw
         - tg
+        - th
         - tl
-        - ru
         - ur
         - uz
+        - vi
       uk:
+        - af
         - ba
+        - be
         - bs
+        - cs
+        - et
         - eu
         - fa
+        - fi
+        - ga
         - ht
         - hy
+        - id
         - is
+        - ka
+        - kk
+        - ky
         - la
+        - lv
+        - mg
+        - mk
         - mn
+        - ms
         - mt
         - pl
+        - ro
+        - ru
+        - sk
+        - sl
         - sq
         - sw
         - tg
+        - th
         - tl
-        - ru
+        - tt
         - ur
         - uz
+        - vi
       ur:
+        - af
         - ba
+        - be
         - bs
+        - cs
+        - et
         - eu
         - fa
+        - fi
+        - ga
         - ht
         - hy
+        - id
         - is
+        - ka
+        - kk
+        - ky
         - la
+        - lv
+        - mg
+        - mk
         - mn
+        - ms
         - mt
         - pl
+        - ro
+        - ru
+        - sk
+        - sl
         - sq
         - sw
         - tg
+        - th
         - tl
-        - ru
+        - tt
         - uz
+        - vi
       uz:
+        - af
         - ba
+        - be
         - bs
+        - cs
+        - et
         - eu
         - fa
+        - fi
+        - ga
         - ht
         - hy
+        - id
         - is
+        - ka
+        - kk
+        - ky
         - la
+        - lv
+        - mg
+        - mk
         - mn
+        - ms
         - mt
         - pl
+        - ro
+        - ru
+        - sk
+        - sl
         - sq
         - sw
         - tg
+        - th
         - tl
-        - ru
+        - tt
         - ur
+        - vi
       vi:
+        - af
         - ba
+        - be
         - bs
+        - cs
+        - et
         - eu
         - fa
+        - fi
+        - ga
         - ht
         - hy
+        - id
         - is
+        - ka
+        - kk
+        - ky
         - la
+        - lv
+        - mg
+        - mk
         - mn
+        - ms
         - mt
         - pl
+        - ro
+        - ru
+        - sk
+        - sl
         - sq
         - sw
         - tg
+        - th
         - tl
-        - ru
+        - tt
         - ur
         - uz
       zh:
+        - af
         - ba
+        - be
         - bs
+        - cs
+        - et
         - eu
         - fa
+        - fi
+        - ga
         - ht
         - hy
+        - id
         - is
+        - ka
+        - kk
+        - ky
         - la
+        - lv
+        - mg
+        - mk
         - mn
+        - ms
         - mt
         - pl
+        - ro
+        - ru
+        - sk
+        - sl
         - sq
         - sw
         - tg
+        - th
         - tl
-        - ru
+        - tt
         - ur
         - uz
+        - vi
     defaults:
+        'af-ba': source-mt
+        'af-be': source-mt
         'af-bs': source-mt
+        'af-cs': source-mt
+        'af-et': source-mt
         'af-eu': source-mt
+        'af-fa': source-mt
+        'af-fi': source-mt
+        'af-ga': source-mt
         'af-ht': source-mt
+        'af-hy': source-mt
+        'af-id': source-mt
         'af-is': source-mt
+        'af-ka': source-mt
+        'af-kk': source-mt
+        'af-ky': source-mt
         'af-la': source-mt
-        'af-mn': source-mt
+        'af-lv': source-mt
+        'af-mg': source-mt
+        'af-mk': source-mt
+         'af-mn': source-mt
+        'af-ms': source-mt
         'af-mt': source-mt
+        'af-pl': source-mt
+        'af-ro': source-mt
+        'af-sk': source-mt
+        'af-sl': source-mt
+        'af-sq': source-mt
         'af-sw': source-mt
         'af-tg': source-mt
+        'af-th': source-mt
         'af-tl': source-mt
+        'af-tt': source-mt
         'af-ur': source-mt
+        'af-uz': source-mt
+        'af-vi': source-mt
+        'ar-af': source-mt
+        'ar-ba': source-mt
+        'ar-be': source-mt
         'ar-bs': source-mt
+        'ar-cs': source-mt
+        'ar-et': source-mt
         'ar-eu': source-mt
+        'ar-fa': source-mt
+        'ar-fi': source-mt
+        'ar-ga': source-mt
         'ar-ht': source-mt
+        'ar-hy': source-mt
+        'ar-id': source-mt
         'ar-is': source-mt
+        'ar-ka': source-mt
+        'ar-kk': source-mt
+        'ar-ky': source-mt
         'ar-la': source-mt
+        'ar-lv': source-mt
+        'ar-mg': source-mt
+        'ar-mk': source-mt
         'ar-mn': source-mt
+        'ar-ms': source-mt
         'ar-mt': source-mt
+        'ar-pl': source-mt
+        'ar-ro': source-mt
+        'ar-sk': source-mt
+        'ar-sl': source-mt
+        'ar-sq': source-mt
         'ar-sw': source-mt
         'ar-tg': source-mt
+        'ar-th': source-mt
         'ar-tl': source-mt
+        'ar-tt': source-mt
         'ar-ur': source-mt
+        'ar-uz': source-mt
+        'ar-vi': source-mt
+        'az-af': source-mt
+        'az-ba': source-mt
+        'az-be': source-mt
         'az-bs': source-mt
+        'az-cs': source-mt
+        'az-et': source-mt
         'az-eu': source-mt
+        'az-fa': source-mt
+        'az-fi': source-mt
+        'az-ga': source-mt
         'az-ht': source-mt
+        'az-hy': source-mt
+        'az-id': source-mt
         'az-is': source-mt
+        'az-ka': source-mt
+        'az-kk': source-mt
+        'az-ky': source-mt
         'az-la': source-mt
+        'az-lv': source-mt
+        'az-mg': source-mt
+        'az-mk': source-mt
         'az-mn': source-mt
+        'az-ms': source-mt
         'az-mt': source-mt
+        'az-pl': source-mt
+        'az-ro': source-mt
+        'az-sk': source-mt
+        'az-sl': source-mt
+        'az-sq': source-mt
         'az-sw': source-mt
         'az-tg': source-mt
+        'az-th': source-mt
         'az-tl': source-mt
+        'az-tt': source-mt
         'az-ur': source-mt
+        'az-uz': source-mt
+        'az-vi': source-mt
+        'ba-af': source-mt
+        'ba-be': source-mt
         'ba-bs': source-mt
+        'ba-cs': source-mt
+        'ba-et': source-mt
         'ba-eu': source-mt
+        'ba-fa': source-mt
+        'ba-fi': source-mt
+        'ba-ga': source-mt
         'ba-ht': source-mt
+        'ba-hy': source-mt
+        'ba-id': source-mt
         'ba-is': source-mt
+        'ba-ka': source-mt
+        'ba-kk': source-mt
+        'ba-ky': source-mt
         'ba-la': source-mt
+        'ba-lv': source-mt
+        'ba-mg': source-mt
+        'ba-mk': source-mt
         'ba-mn': source-mt
+        'ba-ms': source-mt
         'ba-mt': source-mt
+        'ba-pl': source-mt
+        'ba-ro': source-mt
+        'ba-sk': source-mt
+        'ba-sl': source-mt
+        'ba-sq': source-mt
         'ba-sw': source-mt
         'ba-tg': source-mt
+        'ba-th': source-mt
         'ba-tl': source-mt
+        'ba-tt': source-mt
         'ba-ur': source-mt
+        'ba-uz': source-mt
+        'ba-vi': source-mt
+        'be-tarask-af': source-mt
+        'be-tarask-ba': source-mt
+        'be-tarask-be': source-mt
         'be-tarask-bs': source-mt
+        'be-tarask-cs': source-mt
+        'be-tarask-et': source-mt
         'be-tarask-eu': source-mt
+        'be-tarask-fa': source-mt
+        'be-tarask-fi': source-mt
+        'be-tarask-ga': source-mt
         'be-tarask-ht': source-mt
+        'be-tarask-hy': source-mt
+        'be-tarask-id': source-mt
         'be-tarask-is': source-mt
+        'be-tarask-ka': source-mt
+        'be-tarask-kk': source-mt
+        'be-tarask-ky': source-mt
         'be-tarask-la': source-mt
+        'be-tarask-lv': source-mt
+        'be-tarask-mg': source-mt
+        'be-tarask-mk': source-mt
         'be-tarask-mn': source-mt
+        'be-tarask-ms': source-mt
         'be-tarask-mt': source-mt
+        'be-tarask-pl': source-mt
+        'be-tarask-ro': source-mt
+        'be-tarask-sk': source-mt
+        'be-tarask-sl': source-mt
+        'be-tarask-sq': source-mt
         'be-tarask-sw': source-mt
         'be-tarask-tg': source-mt
+        'be-tarask-th': source-mt
         'be-tarask-tl': source-mt
+        'be-tarask-tt': source-mt
         'be-tarask-ur': source-mt
+        'be-tarask-uz': source-mt
+        'be-tarask-vi': source-mt
+        'be-af': source-mt
+        'be-ba': source-mt
+        'be-be': source-mt
         'be-bs': source-mt
+        'be-cs': source-mt
+        'be-et': source-mt
         'be-eu': source-mt
+        'be-fa': source-mt
+        'be-fi': source-mt
+        'be-ga': source-mt
         'be-ht': source-mt
+        'be-hy': source-mt
+        'be-id': source-mt
         'be-is': source-mt
+        'be-ka': source-mt
+        'be-kk': source-mt
+        'be-ky': source-mt
         'be-la': source-mt
+        'be-lv': source-mt
+        'be-mg': source-mt
+        'be-mk': source-mt
         'be-mn': source-mt
+        'be-ms': source-mt
         'be-mt': source-mt
+        'be-pl': source-mt
+        'be-ro': source-mt
+        'be-sk': source-mt
+        'be-sl': source-mt
+        'be-sq': source-mt
         'be-sw': source-mt
         'be-tg': source-mt
+        'be-th': source-mt
         'be-tl': source-mt
+        'be-tt': source-mt
         'be-ur': source-mt
+        'be-uz': source-mt
+        'be-vi': source-mt
+        'bs-af': source-mt
+        'bs-ba': source-mt
+        'bs-be': source-mt
+        'bs-cs': source-mt
+        'bs-et': source-mt
         'bs-eu': source-mt
+        'bs-fa': source-mt
+        'bs-fi': source-mt
+        'bs-ga': source-mt
         'bs-ht': source-mt
+        'bs-hy': source-mt
+        'bs-id': source-mt
         'bs-is': source-mt
+        'bs-ka': source-mt
+        'bs-kk': source-mt
+        'bs-ky': source-mt
         'bs-la': source-mt
+        'bs-lv': source-mt
+        'bs-mg': source-mt
+        'bs-mk': source-mt
         'bs-mn': source-mt
+        'bs-ms': source-mt
         'bs-mt': source-mt
+        'bs-pl': source-mt
+        'bs-ro': source-mt
+        'bs-sk': source-mt
+        'bs-sl': source-mt
+        'bs-sq': source-mt
         'bs-sw': source-mt
         'bs-tg': source-mt
+        'bs-th': source-mt
         'bs-tl': source-mt
+        'bs-tt': source-mt
         'bs-ur': source-mt
+        'bs-uz': source-mt
+        'bs-vi': source-mt
+        'ca-af': source-mt
+        'ca-ba': source-mt
+        'ca-be': source-mt
         'ca-bs': source-mt
+        'ca-cs': source-mt
+        'ca-et': source-mt
         'ca-eu': source-mt
+        'ca-fa': source-mt
+        'ca-fi': source-mt
+        'ca-ga': source-mt
         'ca-ht': source-mt
+        'ca-hy': source-mt
+        'ca-id': source-mt
         'ca-is': source-mt
+        'ca-ka': source-mt
+        'ca-kk': source-mt
+        'ca-ky': source-mt
         'ca-la': source-mt
+        'ca-lv': source-mt
+        'ca-mg': source-mt
+        'ca-mk': source-mt
         'ca-mn': source-mt
+        'ca-ms': source-mt
         'ca-mt': source-mt
+        'ca-pl': source-mt
+        'ca-ro': source-mt
+        'ca-sk': source-mt
+        'ca-sl': source-mt
+        'ca-sq': source-mt
         'ca-sw': source-mt
         'ca-tg': source-mt
+        'ca-th': source-mt
         'ca-tl': source-mt
+        'ca-tt': source-mt
         'ca-ur': source-mt
+        'ca-uz': source-mt
+        'ca-vi': source-mt
+        'cs-af': source-mt
+        'cs-ba': source-mt
         'cs-bs': source-mt
+        'cs-be': source-mt
+        'cs-et': source-mt
         'cs-eu': source-mt
+        'cs-fa': source-mt
+        'cs-fi': source-mt
+        'cs-ga': source-mt
         'cs-ht': source-mt
+        'cs-hy': source-mt
+        'cs-id': source-mt
         'cs-is': source-mt
+        'cs-ka': source-mt
+        'cs-kk': source-mt
+        'cs-ky': source-mt
         'cs-la': source-mt
+        'cs-lv': source-mt
+        'cs-mg': source-mt
+        'cs-mk': source-mt
         'cs-mn': source-mt
+        'cs-ms': source-mt
         'cs-mt': source-mt
+        'cs-pl': source-mt
+        'cs-ro': source-mt
+        'cs-sk': source-mt
+        'cs-sl': source-mt
+        'cs-sq': source-mt
         'cs-sw': source-mt
         'cs-tg': source-mt
+        'cs-th': source-mt
         'cs-tl': source-mt
+        'cs-tt': source-mt
         'cs-ur': source-mt
+        'cs-uz': source-mt
+        'cs-vi': source-mt
+        'cy-af': source-mt
+        'cy-ba': source-mt
         'cy-bs': source-mt
+        'cy-be': source-mt
+        'cy-et': source-mt
         'cy-eu': source-mt
+        'cy-fa': source-mt
+        'cy-fi': source-mt
+        'cy-ga': source-mt
         'cy-ht': source-mt
+        'cy-hy': source-mt
+        'cy-id': source-mt
         'cy-is': source-mt
+        'cy-ka': source-mt
+        'cy-kk': source-mt
+        'cy-ky': source-mt
         'cy-la': source-mt
+        'cy-lv': source-mt
+        'cy-mg': source-mt
+        'cy-mk': source-mt
         'cy-mn': source-mt
+        'cy-ms': source-mt
         'cy-mt': source-mt
+        'cy-pl': source-mt
+        'cy-ro': source-mt
+        'cy-sk': source-mt
+        'cy-sl': source-mt
+        'cy-sq': source-mt
         'cy-sw': source-mt
         'cy-tg': source-mt
+        'cy-th': source-mt
         'cy-tl': source-mt
+        'cy-tt': source-mt
         'cy-ur': source-mt
+        'cy-uz': source-mt
+        'cy-vi': source-mt
+        'da-af': source-mt
+        'da-ba': source-mt
         'da-bs': source-mt
+        'da-be': source-mt
+        'da-et': source-mt
         'da-eu': source-mt
+        'da-fa': source-mt
+        'da-fi': source-mt
+        'da-ga': source-mt
         'da-ht': source-mt
+        'da-hy': source-mt
+        'da-id': source-mt
         'da-is': source-mt
+        'da-ka': source-mt
+        'da-kk': source-mt
+        'da-ky': source-mt
         'da-la': source-mt
+        'da-lv': source-mt
+        'da-mg': source-mt
+        'da-mk': source-mt
         'da-mn': source-mt
+        'da-ms': source-mt
         'da-mt': source-mt
+        'da-pl': source-mt
+        'da-ro': source-mt
+        'da-sk': source-mt
+        'da-sl': source-mt
+        'da-sq': source-mt
         'da-sw': source-mt
         'da-tg': source-mt
+        'da-th': source-mt
         'da-tl': source-mt
+        'da-tt': source-mt
         'da-ur': source-mt
+        'da-uz': source-mt
+        'da-vi': source-mt
+        'de-af': source-mt
+        'de-ba': source-mt
+        'de-be': source-mt
         'de-bs': source-mt
+        'de-et': source-mt
         'de-eu': source-mt
+        'de-fa': source-mt
+        'de-fi': source-mt
+        'de-ga': source-mt
         'de-ht': source-mt
+        'de-hy': source-mt
+        'de-id': source-mt
         'de-is': source-mt
+        'de-ka': source-mt
+        'de-kk': source-mt
+        'de-ky': source-mt
         'de-la': source-mt
+        'de-lv': source-mt
+        'de-mg': source-mt
+        'de-mk': source-mt
         'de-mn': source-mt
+        'de-ms': source-mt
         'de-mt': source-mt
+        'de-pl': source-mt
+        'de-ro': source-mt
+        'de-sk': source-mt
+        'de-sl': source-mt
+        'de-sq': source-mt
         'de-sw': source-mt
         'de-tg': source-mt
+        'de-th': source-mt
         'de-tl': source-mt
+        'de-tt': source-mt
         'de-ur': source-mt
+        'de-uz': source-mt
+        'de-vi': source-mt
+        'el-af': source-mt
+        'el-ba': source-mt
         'el-bs': source-mt
+        'el-be': source-mt
+        'el-et': source-mt
         'el-eu': source-mt
+        'el-fa': source-mt
+        'el-fi': source-mt
+        'el-ga': source-mt
         'el-ht': source-mt
+        'el-hy': source-mt
+        'el-id': source-mt
         'el-is': source-mt
+        'el-ka': source-mt
+        'el-kk': source-mt
+        'el-ky': source-mt
         'el-la': source-mt
+        'el-lv': source-mt
+        'el-mg': source-mt
+        'el-mk': source-mt
         'el-mn': source-mt
+        'el-ms': source-mt
         'el-mt': source-mt
+        'el-pl': source-mt
+        'el-ro': source-mt
+        'el-sk': source-mt
+        'el-sl': source-mt
+        'el-sq': source-mt
         'el-sw': source-mt
         'el-tg': source-mt
+        'el-th': source-mt
         'el-tl': source-mt
+        'el-tt': source-mt
         'el-ur': source-mt
+        'el-uz': source-mt
+        'el-vi': source-mt
+        'en-af': source-mt
+        'en-ba': source-mt
+        'en-be': source-mt
         'en-bs': source-mt
+        'en-et': source-mt
         'en-eu': source-mt
+        'en-fa': source-mt
+        'en-fi': source-mt
+        'en-ga': source-mt
         'en-ht': source-mt
+        'en-hy': source-mt
+        'en-id': source-mt
         'en-is': source-mt
+        'en-ka': source-mt
+        'en-kk': source-mt
+        'en-ky': source-mt
         'en-la': source-mt
+        'en-lv': source-mt
+        'en-mg': source-mt
+        'en-mk': source-mt
         'en-mn': source-mt
+        'en-ms': source-mt
         'en-mt': source-mt
+        'en-pl': source-mt
+        'en-ro': source-mt
+        'en-sk': source-mt
+        'en-sl': source-mt
+        'en-sq': source-mt
         'en-sw': source-mt
         'en-tg': source-mt
+        'en-th': source-mt
         'en-tl': source-mt
+        'en-tt': source-mt
         'en-ur': source-mt
+        'en-uz': source-mt
+        'en-vi': source-mt
+        'es-af': source-mt
+        'es-ba': source-mt
+        'es-be': source-mt
         'es-bs': source-mt
+        'es-et': source-mt
         'es-eu': source-mt
+        'es-fa': source-mt
+        'es-fi': source-mt
+        'es-ga': source-mt
         'es-ht': source-mt
+        'es-hy': source-mt
+        'es-id': source-mt
         'es-is': source-mt
+        'es-ka': source-mt
+        'es-kk': source-mt
+        'es-ky': source-mt
         'es-la': source-mt
+        'es-lv': source-mt
+        'es-mg': source-mt
+        'es-mk': source-mt
         'es-mn': source-mt
+        'es-ms': source-mt
         'es-mt': source-mt
+        'es-pl': source-mt
+        'es-ro': source-mt
+        'es-sk': source-mt
+        'es-sl': source-mt
+        'es-sq': source-mt
         'es-sw': source-mt
         'es-tg': source-mt
+        'es-th': source-mt
         'es-tl': source-mt
+        'es-tt': source-mt
         'es-ur': source-mt
+        'es-uz': source-mt
+        'es-vi': source-mt
+        'et-af': source-mt
+        'et-ba': source-mt
+        'et-be': source-mt
         'et-bs': source-mt
         'et-eu': source-mt
+        'et-fa': source-mt
+        'et-fi': source-mt
+        'et-ga': source-mt
         'et-ht': source-mt
+        'et-hy': source-mt
+        'et-id': source-mt
         'et-is': source-mt
+        'et-ka': source-mt
+        'et-kk': source-mt
+        'et-ky': source-mt
         'et-la': source-mt
+        'et-lv': source-mt
+        'et-mg': source-mt
+        'et-mk': source-mt
         'et-mn': source-mt
+        'et-ms': source-mt
         'et-mt': source-mt
+        'et-pl': source-mt
+        'et-ro': source-mt
+        'et-sk': source-mt
+        'et-sl': source-mt
+        'et-sq': source-mt
         'et-sw': source-mt
         'et-tg': source-mt
+        'et-th': source-mt
         'et-tl': source-mt
+        'et-tt': source-mt
         'et-ur': source-mt
+        'et-uz': source-mt
+        'et-vi': source-mt
+        'eu-af': source-mt
+        'eu-ba': source-mt
+        'eu-be': source-mt
         'eu-bs': source-mt
+        'eu-fa': source-mt
+        'eu-fi': source-mt
+        'eu-ga': source-mt
         'eu-ht': source-mt
+        'eu-hy': source-mt
+        'eu-id': source-mt
         'eu-is': source-mt
+        'eu-ka': source-mt
+        'eu-kk': source-mt
+        'eu-ky': source-mt
         'eu-la': source-mt
+        'eu-lv': source-mt
+        'eu-mg': source-mt
+        'eu-mk': source-mt
         'eu-mn': source-mt
+        'eu-ms': source-mt
         'eu-mt': source-mt
+        'eu-pl': source-mt
+        'eu-ro': source-mt
+        'eu-sk': source-mt
+        'eu-sl': source-mt
+        'eu-sq': source-mt
         'eu-sw': source-mt
         'eu-tg': source-mt
+        'eu-th': source-mt
         'eu-tl': source-mt
+        'eu-tt': source-mt
         'eu-ur': source-mt
+        'eu-uz': source-mt
+        'eu-vi': source-mt
+        'fa-af': source-mt
+        'fa-ba': source-mt
+        'fa-be': source-mt
         'fa-bs': source-mt
         'fa-eu': source-mt
+        'fa-fi': source-mt
+        'fa-ga': source-mt
         'fa-ht': source-mt
+        'fa-hy': source-mt
+        'fa-id': source-mt
         'fa-is': source-mt
+        'fa-ka': source-mt
+        'fa-kk': source-mt
+        'fa-ky': source-mt
         'fa-la': source-mt
+        'fa-lv': source-mt
+        'fa-mg': source-mt
+        'fa-mk': source-mt
         'fa-mn': source-mt
+        'fa-ms': source-mt
         'fa-mt': source-mt
+        'fa-pl': source-mt
+        'fa-ro': source-mt
+        'fa-sk': source-mt
+        'fa-sl': source-mt
+        'fa-sq': source-mt
         'fa-sw': source-mt
         'fa-tg': source-mt
+        'fa-th': source-mt
         'fa-tl': source-mt
+        'fa-tt': source-mt
         'fa-ur': source-mt
+        'fa-uz': source-mt
+        'fa-vi': source-mt
+        'fi-af': source-mt
+        'fi-ba': source-mt
+        'fi-be': source-mt
         'fi-bs': source-mt
+        'fi-fi': source-mt
         'fi-eu': source-mt
+        'fi-fa': source-mt
+        'fi-ga': source-mt
         'fi-ht': source-mt
+        'fi-hy': source-mt
+        'fi-id': source-mt
         'fi-is': source-mt
+        'fi-ka': source-mt
+        'fi-kk': source-mt
+        'fi-ky': source-mt
         'fi-la': source-mt
+        'fi-lv': source-mt
+        'fi-mg': source-mt
+        'fi-mk': source-mt
         'fi-mn': source-mt
+        'fi-ms': source-mt
         'fi-mt': source-mt
+        'fi-pl': source-mt
+        'fi-ro': source-mt
+        'fi-sk': source-mt
+        'fi-sl': source-mt
+        'fi-sq': source-mt
         'fi-sw': source-mt
         'fi-tg': source-mt
+        'fi-th': source-mt
         'fi-tl': source-mt
+        'fi-tt': source-mt
         'fi-ur': source-mt
+        'fi-uz': source-mt
+        'fi-vi': source-mt
+        'fr-af': source-mt
+        'fr-ba': source-mt
+        'fr-be': source-mt
         'fr-bs': source-mt
         'fr-eu': source-mt
+        'fr-fa': source-mt
+        'fr-fi': source-mt
+        'fr-ga': source-mt
         'fr-ht': source-mt
+        'fr-hy': source-mt
+        'fr-id': source-mt
         'fr-is': source-mt
+        'fr-ka': source-mt
+        'fr-kk': source-mt
+        'fr-ky': source-mt
         'fr-la': source-mt
+        'fr-lv': source-mt
+        'fr-mg': source-mt
+        'fr-mk': source-mt
         'fr-mn': source-mt
+        'fr-ms': source-mt
         'fr-mt': source-mt
+        'fr-pl': source-mt
+        'fr-ro': source-mt
+        'fr-sk': source-mt
+        'fr-sl': source-mt
+        'fr-sq': source-mt
         'fr-sw': source-mt
         'fr-tg': source-mt
+        'fr-th': source-mt
         'fr-tl': source-mt
+        'fr-tt': source-mt
         'fr-ur': source-mt
+        'fr-uz': source-mt
+        'fr-vi': source-mt
+        'ga-af': source-mt
+        'ga-ba': source-mt
+        'ga-be': source-mt
         'ga-bs': source-mt
+        'ga-et': source-mt
         'ga-eu': source-mt
+        'ga-fa': source-mt
+        'ga-fi': source-mt
         'ga-ht': source-mt
+        'ga-hy': source-mt
+        'ga-id': source-mt
         'ga-is': source-mt
+        'ga-ka': source-mt
+        'ga-kk': source-mt
+        'ga-ky': source-mt
         'ga-la': source-mt
+        'ga-lv': source-mt
+        'ga-mg': source-mt
+        'ga-mk': source-mt
         'ga-mn': source-mt
+        'ga-ms': source-mt
         'ga-mt': source-mt
+        'ga-pl': source-mt
+        'ga-ro': source-mt
+        'ga-sk': source-mt
+        'ga-sl': source-mt
+        'ga-sq': source-mt
         'ga-sw': source-mt
         'ga-tg': source-mt
+        'ga-th': source-mt
         'ga-tl': source-mt
+        'ga-tt': source-mt
         'ga-ur': source-mt
+        'ga-uz': source-mt
+        'ga-vi': source-mt
+        'gl-af': source-mt
+        'gl-ba': source-mt
+        'gl-be': source-mt
         'gl-bs': source-mt
+        'gl-et': source-mt
         'gl-eu': source-mt
+        'gl-fa': source-mt
+        'gl-fi': source-mt
+        'gl-ga': source-mt
         'gl-ht': source-mt
+        'gl-hy': source-mt
+        'gl-id': source-mt
         'gl-is': source-mt
+        'gl-ka': source-mt
+        'gl-kk': source-mt
+        'gl-ky': source-mt
         'gl-la': source-mt
+        'gl-lv': source-mt
+        'gl-mg': source-mt
+        'gl-mk': source-mt
         'gl-mn': source-mt
+        'gl-ms': source-mt
         'gl-mt': source-mt
+        'gl-pl': source-mt
+        'gl-ro': source-mt
+        'gl-sk': source-mt
+        'gl-sl': source-mt
+        'gl-sq': source-mt
         'gl-sw': source-mt
         'gl-tg': source-mt
+        'gl-th': source-mt
         'gl-tl': source-mt
+        'gl-tt': source-mt
         'gl-ur': source-mt
+        'gl-uz': source-mt
+        'gl-vi': source-mt
+        'he-af': source-mt
+        'he-ba': source-mt
+        'he-be': source-mt
         'he-bs': source-mt
+        'he-et': source-mt
         'he-eu': source-mt
+        'he-fa': source-mt
+        'he-fi': source-mt
+        'he-ga': source-mt
         'he-ht': source-mt
+        'he-hy': source-mt
+        'he-id': source-mt
         'he-is': source-mt
+        'he-ka': source-mt
+        'he-kk': source-mt
+        'he-ky': source-mt
         'he-la': source-mt
+        'he-lv': source-mt
+        'he-mg': source-mt
+        'he-mk': source-mt
         'he-mn': source-mt
+        'he-ms': source-mt
         'he-mt': source-mt
+        'he-pl': source-mt
+        'he-ro': source-mt
+        'he-sk': source-mt
+        'he-sl': source-mt
+        'he-sq': source-mt
         'he-sw': source-mt
         'he-tg': source-mt
+        'he-th': source-mt
         'he-tl': source-mt
+        'he-tt': source-mt
         'he-ur': source-mt
+        'he-uz': source-mt
+        'he-vi': source-mt
+        'hi-af': source-mt
+        'hi-ba': source-mt
+        'hi-be': source-mt
         'hi-bs': source-mt
+        'hi-et': source-mt
         'hi-eu': source-mt
+        'hi-fa': source-mt
+        'hi-fi': source-mt
+        'hi-ga': source-mt
         'hi-ht': source-mt
+        'hi-hy': source-mt
+        'hi-id': source-mt
         'hi-is': source-mt
+        'hi-ka': source-mt
+        'hi-kk': source-mt
+        'hi-ky': source-mt
         'hi-la': source-mt
+        'hi-lv': source-mt
+        'hi-mg': source-mt
+        'hi-mk': source-mt
         'hi-mn': source-mt
+        'hi-ms': source-mt
         'hi-mt': source-mt
+        'hi-pl': source-mt
+        'hi-ro': source-mt
+        'hi-sk': source-mt
+        'hi-sl': source-mt
+        'hi-sq': source-mt
         'hi-sw': source-mt
         'hi-tg': source-mt
+        'hi-th': source-mt
         'hi-tl': source-mt
+        'hi-tt': source-mt
         'hi-ur': source-mt
+        'hi-uz': source-mt
+        'hi-vi': source-mt
+        'hr-af': source-mt
+        'hr-ba': source-mt
+        'hr-be': source-mt
         'hr-bs': source-mt
         'hr-eu': source-mt
+        'hr-fa': source-mt
+        'hr-ga': source-mt
         'hr-ht': source-mt
+        'hr-hy': source-mt
+        'hr-id': source-mt
         'hr-is': source-mt
+        'hr-ka': source-mt
+        'hr-kk': source-mt
+        'hr-ky': source-mt
         'hr-la': source-mt
+        'hr-lv': source-mt
+        'hr-mg': source-mt
+        'hr-mk': source-mt
         'hr-mn': source-mt
+        'hr-ms': source-mt
         'hr-mt': source-mt
+        'hr-pl': source-mt
+        'hr-ro': source-mt
+        'hr-sk': source-mt
+        'hr-sl': source-mt
+        'hr-sq': source-mt
         'hr-sw': source-mt
         'hr-tg': source-mt
+        'hr-th': source-mt
         'hr-tl': source-mt
+        'hr-tt': source-mt
         'hr-ur': source-mt
+        'hr-uz': source-mt
+        'hr-vi': source-mt
+        'ht-af': source-mt
+        'ht-ba': source-mt
+        'ht-be': source-mt
         'ht-bs': source-mt
         'ht-eu': source-mt
+        'ht-fa': source-mt
+        'ht-ga': source-mt
+        'ht-hy': source-mt
+        'ht-id': source-mt
         'ht-is': source-mt
+        'ht-ka': source-mt
+        'ht-kk': source-mt
+        'ht-ky': source-mt
         'ht-la': source-mt
+        'ht-lv': source-mt
+        'ht-mg': source-mt
+        'ht-mk': source-mt
         'ht-mn': source-mt
+        'ht-ms': source-mt
         'ht-mt': source-mt
+        'ht-pl': source-mt
+        'ht-ro': source-mt
+        'ht-sk': source-mt
+        'ht-sl': source-mt
+        'ht-sq': source-mt
         'ht-sw': source-mt
         'ht-tg': source-mt
+        'ht-th': source-mt
         'ht-tl': source-mt
+        'ht-tt': source-mt
         'ht-ur': source-mt
+        'ht-uz': source-mt
+        'ht-vi': source-mt
+        'hu-af': source-mt
+        'hu-ba': source-mt
+        'hu-be': source-mt
         'hu-bs': source-mt
         'hu-eu': source-mt
-        'hu-ht': source-mt
+        'hu-fa': source-mt
+        'hu-ga': source-mt
+        'hu-hy': source-mt
+        'hu-id': source-mt
         'hu-is': source-mt
+        'hu-ka': source-mt
+        'hu-kk': source-mt
+        'hu-ky': source-mt
         'hu-la': source-mt
+        'hu-lv': source-mt
+        'hu-mg': source-mt
+        'hu-mk': source-mt
         'hu-mn': source-mt
+        'hu-ms': source-mt
         'hu-mt': source-mt
+        'hu-pl': source-mt
+        'hu-ro': source-mt
+        'hu-sk': source-mt
+        'hu-sl': source-mt
+        'hu-sq': source-mt
         'hu-sw': source-mt
         'hu-tg': source-mt
+        'hu-th': source-mt
         'hu-tl': source-mt
+        'hu-tt': source-mt
         'hu-ur': source-mt
+        'hu-uz': source-mt
+        'hu-vi': source-mt
+        'hy-af': source-mt
+        'hy-ba': source-mt
+        'hy-be': source-mt
         'hy-bs': source-mt
         'hy-eu': source-mt
-        'hy-ht': source-mt
+        'hy-fa': source-mt
+        'hy-ga': source-mt
+        'hy-id': source-mt
         'hy-is': source-mt
+        'hy-ka': source-mt
+        'hy-kk': source-mt
+        'hy-ky': source-mt
         'hy-la': source-mt
+        'hy-lv': source-mt
+        'hy-mg': source-mt
+        'hy-mk': source-mt
         'hy-mn': source-mt
+        'hy-ms': source-mt
         'hy-mt': source-mt
+        'hy-pl': source-mt
+        'hy-ro': source-mt
+        'hy-sk': source-mt
+        'hy-sl': source-mt
+        'hy-sq': source-mt
         'hy-sw': source-mt
         'hy-tg': source-mt
+        'hy-th': source-mt
         'hy-tl': source-mt
+        'hy-tt': source-mt
         'hy-ur': source-mt
+        'hy-uz': source-mt
+        'hy-vi': source-mt
+        'id-af': source-mt
+        'id-ba': source-mt
+        'id-be': source-mt
         'id-bs': source-mt
         'id-eu': source-mt
-        'id-ht': source-mt
+        'id-fa': source-mt
+        'id-ga': source-mt
         'id-is': source-mt
+        'id-ka': source-mt
+        'id-kk': source-mt
+        'id-ky': source-mt
         'id-la': source-mt
+        'id-lv': source-mt
+        'id-mg': source-mt
+        'id-mk': source-mt
         'id-mn': source-mt
+        'id-ms': source-mt
         'id-mt': source-mt
+        'id-pl': source-mt
+        'id-ro': source-mt
+        'id-sk': source-mt
+        'id-sl': source-mt
+        'id-sq': source-mt
         'id-sw': source-mt
         'id-tg': source-mt
+        'id-th': source-mt
         'id-tl': source-mt
+        'id-tt': source-mt
         'id-ur': source-mt
+        'id-uz': source-mt
+        'id-vi': source-mt
+        'is-af': source-mt
+        'is-ba': source-mt
+        'is-be': source-mt
         'is-bs': source-mt
         'is-eu': source-mt
-        'is-ht': source-mt
+        'is-fa': source-mt
+        'is-ga': source-mt
+        'is-ka': source-mt
+        'is-kk': source-mt
+        'is-ky': source-mt
         'is-la': source-mt
+        'is-lv': source-mt
+        'is-mg': source-mt
+        'is-mk': source-mt
         'is-mn': source-mt
+        'is-ms': source-mt
         'is-mt': source-mt
+        'is-pl': source-mt
+        'is-ro': source-mt
+        'is-sk': source-mt
+        'is-sl': source-mt
+        'is-sq': source-mt
         'is-sw': source-mt
         'is-tg': source-mt
+        'is-th': source-mt
         'is-tl': source-mt
+        'is-tt': source-mt
         'is-ur': source-mt
+        'is-uz': source-mt
+        'is-vi': source-mt
+        'it-bs': source-mt
+        'it-af': source-mt
+        'it-ba': source-mt
+        'it-be': source-mt
         'it-bs': source-mt
         'it-eu': source-mt
-        'it-ht': source-mt
-        'it-is': source-mt
+        'it-fa': source-mt
+        'it-ga': source-mt
+        'it-ka': source-mt
+        'it-kk': source-mt
+        'it-ky': source-mt
         'it-la': source-mt
+        'it-lv': source-mt
+        'it-mg': source-mt
+        'it-mk': source-mt
         'it-mn': source-mt
+        'it-ms': source-mt
         'it-mt': source-mt
+        'it-pl': source-mt
+        'it-ro': source-mt
+        'it-sk': source-mt
+        'it-sl': source-mt
+        'it-sq': source-mt
         'it-sw': source-mt
         'it-tg': source-mt
+        'it-th': source-mt
         'it-tl': source-mt
+        'it-tt': source-mt
         'it-ur': source-mt
+        'it-uz': source-mt
+        'it-vi': source-mt
+        'ja-af': source-mt
+        'ja-ba': source-mt
+        'ja-be': source-mt
         'ja-bs': source-mt
         'ja-eu': source-mt
-        'ja-ht': source-mt
-        'ja-is': source-mt
+        'ja-fa': source-mt
+        'ja-ga': source-mt
+        'ja-ka': source-mt
+        'ja-kk': source-mt
+        'ja-ky': source-mt
         'ja-la': source-mt
+        'ja-lv': source-mt
+        'ja-mg': source-mt
+        'ja-mk': source-mt
         'ja-mn': source-mt
+        'ja-ms': source-mt
         'ja-mt': source-mt
+        'ja-pl': source-mt
+        'ja-ro': source-mt
+        'ja-sk': source-mt
+        'ja-sl': source-mt
+        'ja-sq': source-mt
         'ja-sw': source-mt
         'ja-tg': source-mt
+        'ja-th': source-mt
         'ja-tl': source-mt
+        'ja-tt': source-mt
         'ja-ur': source-mt
+        'ja-uz': source-mt
+        'ja-vi': source-mt
+        'ka-af': source-mt
+        'ka-ba': source-mt
+        'ka-be': source-mt
         'ka-bs': source-mt
         'ka-eu': source-mt
-        'ka-ht': source-mt
-        'ka-is': source-mt
+        'ka-fa': source-mt
+        'ka-ga': source-mt
+        'ka-ka': source-mt
+        'ka-kk': source-mt
+        'ka-ky': source-mt
         'ka-la': source-mt
+        'ka-lv': source-mt
+        'ka-mg': source-mt
+        'ka-mk': source-mt
         'ka-mn': source-mt
+        'ka-ms': source-mt
         'ka-mt': source-mt
+        'ka-pl': source-mt
+        'ka-ro': source-mt
+        'ka-sk': source-mt
+        'ka-sl': source-mt
+        'ka-sq': source-mt
         'ka-sw': source-mt
         'ka-tg': source-mt
+        'ka-th': source-mt
         'ka-tl': source-mt
+        'ka-tt': source-mt
         'ka-ur': source-mt
+        'ka-uz': source-mt
+        'ka-vi': source-mt
+        'kk-af': source-mt
+        'kk-ba': source-mt
+        'kk-be': source-mt
         'kk-bs': source-mt
         'kk-eu': source-mt
-        'kk-ht': source-mt
-        'kk-is': source-mt
+        'kk-fa': source-mt
+        'kk-ga': source-mt
+        'kk-ka': source-mt
+        'kk-ky': source-mt
         'kk-la': source-mt
+        'kk-lv': source-mt
+        'kk-mg': source-mt
+        'kk-mk': source-mt
         'kk-mn': source-mt
+        'kk-ms': source-mt
         'kk-mt': source-mt
+        'kk-pl': source-mt
+        'kk-ro': source-mt
+        'kk-sk': source-mt
+        'kk-sl': source-mt
+        'kk-sq': source-mt
         'kk-sw': source-mt
         'kk-tg': source-mt
+        'kk-th': source-mt
         'kk-tl': source-mt
+        'kk-tt': source-mt
         'kk-ur': source-mt
+        'kk-uz': source-mt
+        'kk-vi': source-mt
+        'ko-af': source-mt
+        'ko-ba': source-mt
+        'ko-be': source-mt
         'ko-bs': source-mt
         'ko-eu': source-mt
-        'ko-ht': source-mt
-        'ko-is': source-mt
+        'ko-fa': source-mt
+        'ko-ga': source-mt
+        'ko-ka': source-mt
+        'ko-kk': source-mt
+        'ko-ky': source-mt
         'ko-la': source-mt
+        'ko-lv': source-mt
+        'ko-mg': source-mt
+        'ko-mk': source-mt
         'ko-mn': source-mt
+        'ko-ms': source-mt
         'ko-mt': source-mt
+        'ko-pl': source-mt
+        'ko-ro': source-mt
+        'ko-sk': source-mt
+        'ko-sl': source-mt
+        'ko-sq': source-mt
         'ko-sw': source-mt
         'ko-tg': source-mt
+        'ko-th': source-mt
         'ko-tl': source-mt
+        'ko-tt': source-mt
         'ko-ur': source-mt
+        'ko-uz': source-mt
+        'ko-vi': source-mt
+        'ky-bs': source-mt
+        'ky-af': source-mt
+        'ky-ba': source-mt
+        'ky-be': source-mt
         'ky-bs': source-mt
         'ky-eu': source-mt
-        'ky-ht': source-mt
-        'ky-is': source-mt
+        'ky-fa': source-mt
+        'ky-ga': source-mt
+        'ky-ka': source-mt
+        'ky-kk': source-mt
         'ky-la': source-mt
+        'ky-lv': source-mt
+        'ky-mg': source-mt
+        'ky-mk': source-mt
         'ky-mn': source-mt
+        'ky-ms': source-mt
         'ky-mt': source-mt
+        'ky-pl': source-mt
+        'ky-ro': source-mt
+        'ky-sk': source-mt
+        'ky-sl': source-mt
+        'ky-sq': source-mt
         'ky-sw': source-mt
         'ky-tg': source-mt
+        'ky-th': source-mt
         'ky-tl': source-mt
+        'ky-tt': source-mt
         'ky-ur': source-mt
+        'ky-uz': source-mt
+        'ky-vi': source-mt
+        'la-af': source-mt
+        'la-ba': source-mt
+        'la-be': source-mt
         'la-bs': source-mt
         'la-eu': source-mt
-        'la-ht': source-mt
-        'la-is': source-mt
+        'la-fa': source-mt
+        'la-ga': source-mt
+        'la-ka': source-mt
+        'la-kk': source-mt
+        'la-ky': source-mt
+        'la-lv': source-mt
+        'la-mg': source-mt
+        'la-mk': source-mt
         'la-mn': source-mt
+        'la-ms': source-mt
         'la-mt': source-mt
+        'la-pl': source-mt
+        'la-ro': source-mt
+        'la-sk': source-mt
+        'la-sl': source-mt
+        'la-sq': source-mt
         'la-sw': source-mt
         'la-tg': source-mt
+        'la-th': source-mt
         'la-tl': source-mt
+        'la-tt': source-mt
         'la-ur': source-mt
+        'la-uz': source-mt
+        'la-vi': source-mt
+        'lt-af': source-mt
+        'lt-ba': source-mt
+        'lt-be': source-mt
         'lt-bs': source-mt
         'lt-eu': source-mt
-        'lt-ht': source-mt
-        'lt-is': source-mt
+        'lt-fa': source-mt
+        'lt-ga': source-mt
+        'lt-ka': source-mt
+        'lt-kk': source-mt
+        'lt-ky': source-mt
         'lt-la': source-mt
+        'lt-lv': source-mt
+        'lt-mg': source-mt
+        'lt-mk': source-mt
         'lt-mn': source-mt
+        'lt-ms': source-mt
         'lt-mt': source-mt
+        'lt-pl': source-mt
+        'lt-ro': source-mt
+        'lt-sk': source-mt
+        'lt-sl': source-mt
+        'lt-sq': source-mt
         'lt-sw': source-mt
         'lt-tg': source-mt
+        'lt-th': source-mt
         'lt-tl': source-mt
+        'lt-tt': source-mt
         'lt-ur': source-mt
+        'lt-uz': source-mt
+        'lt-vi': source-mt
+        'lv-af': source-mt
+        'lv-ba': source-mt
+        'lv-be': source-mt
         'lv-bs': source-mt
         'lv-eu': source-mt
-        'lv-ht': source-mt
-        'lv-is': source-mt
+        'lv-fa': source-mt
+        'lv-ga': source-mt
+        'lv-ka': source-mt
+        'lv-kk': source-mt
+        'lv-ky': source-mt
         'lv-la': source-mt
+        'lv-mg': source-mt
+        'lv-mk': source-mt
         'lv-mn': source-mt
+        'lv-ms': source-mt
         'lv-mt': source-mt
+        'lv-pl': source-mt
+        'lv-ro': source-mt
+        'lv-sk': source-mt
+        'lv-sl': source-mt
+        'lv-sq': source-mt
         'lv-sw': source-mt
         'lv-tg': source-mt
+        'lv-th': source-mt
         'lv-tl': source-mt
+        'lv-tt': source-mt
         'lv-ur': source-mt
+        'lv-uz': source-mt
+        'lv-vi': source-mt
+        'mg-af': source-mt
+        'mg-ba': source-mt
+        'mg-be': source-mt
         'mg-bs': source-mt
         'mg-eu': source-mt
-        'mg-ht': source-mt
-        'mg-is': source-mt
+        'mg-fa': source-mt
+        'mg-ga': source-mt
+        'mg-ka': source-mt
+        'mg-kk': source-mt
+        'mg-ky': source-mt
         'mg-la': source-mt
+        'mg-lv': source-mt
+        'mg-mk': source-mt
         'mg-mn': source-mt
+        'mg-ms': source-mt
         'mg-mt': source-mt
+        'mg-pl': source-mt
+        'mg-ro': source-mt
+        'mg-sk': source-mt
+        'mg-sl': source-mt
+        'mg-sq': source-mt
         'mg-sw': source-mt
         'mg-tg': source-mt
+        'mg-th': source-mt
         'mg-tl': source-mt
+        'mg-tt': source-mt
         'mg-ur': source-mt
+        'mg-uz': source-mt
+        'mg-vi': source-mt
+        'mk-af': source-mt
+        'mk-ba': source-mt
+        'mk-be': source-mt
         'mk-bs': source-mt
         'mk-eu': source-mt
-        'mk-ht': source-mt
-        'mk-is': source-mt
+        'mk-fa': source-mt
+        'mk-ga': source-mt
+        'mk-ka': source-mt
+        'mk-kk': source-mt
+        'mk-ky': source-mt
         'mk-la': source-mt
+        'mk-lv': source-mt
+        'mk-mg': source-mt
         'mk-mn': source-mt
+        'mk-ms': source-mt
         'mk-mt': source-mt
+        'mk-pl': source-mt
+        'mk-ro': source-mt
+        'mk-sk': source-mt
+        'mk-sl': source-mt
+        'mk-sq': source-mt
         'mk-sw': source-mt
         'mk-tg': source-mt
+        'mk-th': source-mt
         'mk-tl': source-mt
+        'mk-tt': source-mt
         'mk-ur': source-mt
+        'mk-uz': source-mt
+        'mk-vi': source-mt
+        'mn-af': source-mt
+        'mn-ba': source-mt
+        'mn-be': source-mt
         'mn-bs': source-mt
         'mn-eu': source-mt
-        'mn-ht': source-mt
-        'mn-is': source-mt
+        'mn-fa': source-mt
+        'mn-ga': source-mt
+        'mn-ka': source-mt
+        'mn-kk': source-mt
+        'mn-ky': source-mt
         'mn-la': source-mt
+        'mn-lv': source-mt
+        'mn-mg': source-mt
+        'mn-ms': source-mt
         'mn-mt': source-mt
+        'mn-pl': source-mt
+        'mn-ro': source-mt
+        'mn-sk': source-mt
+        'mn-sl': source-mt
+        'mn-sq': source-mt
         'mn-sw': source-mt
         'mn-tg': source-mt
+        'mn-th': source-mt
         'mn-tl': source-mt
+        'mn-tt': source-mt
         'mn-ur': source-mt
+        'mn-uz': source-mt
+        'mn-vi': source-mt
         'ms-bs': source-mt
         'ms-eu': source-mt
         'ms-ht': source-mt
@@ -2451,254 +4720,694 @@ cxserver::registry:
         'ms-tg': source-mt
         'ms-tl': source-mt
         'ms-ur': source-mt
+        'mt-af': source-mt
+        'mt-ba': source-mt
+        'mt-be': source-mt
         'mt-bs': source-mt
         'mt-eu': source-mt
-        'mt-ht': source-mt
-        'mt-is': source-mt
+        'mt-fa': source-mt
+        'mt-ga': source-mt
+        'mt-ka': source-mt
+        'mt-kk': source-mt
+        'mt-ky': source-mt
         'mt-la': source-mt
+        'mt-lv': source-mt
+        'mt-mg': source-mt
         'mt-mn': source-mt
+        'mt-ms': source-mt
+        'mt-pl': source-mt
+        'mt-ro': source-mt
+        'mt-sk': source-mt
+        'mt-sl': source-mt
+        'mt-sq': source-mt
         'mt-sw': source-mt
         'mt-tg': source-mt
+        'mt-th': source-mt
         'mt-tl': source-mt
+        'mt-tt': source-mt
         'mt-ur': source-mt
+        'mt-uz': source-mt
+        'mt-vi': source-mt
+        'nl-af': source-mt
+        'nl-ba': source-mt
+        'nl-be': source-mt
         'nl-bs': source-mt
         'nl-eu': source-mt
-        'nl-ht': source-mt
-        'nl-is': source-mt
+        'nl-fa': source-mt
+        'nl-ga': source-mt
+        'nl-ka': source-mt
+        'nl-kk': source-mt
+        'nl-ky': source-mt
         'nl-la': source-mt
+        'nl-lv': source-mt
+        'nl-mg': source-mt
         'nl-mn': source-mt
+        'nl-ms': source-mt
         'nl-mt': source-mt
+        'nl-pl': source-mt
+        'nl-ro': source-mt
+        'nl-sk': source-mt
+        'nl-sl': source-mt
+        'nl-sq': source-mt
         'nl-sw': source-mt
         'nl-tg': source-mt
+        'nl-th': source-mt
         'nl-tl': source-mt
+        'nl-tt': source-mt
         'nl-ur': source-mt
+        'nl-uz': source-mt
+        'nl-vi': source-mt
+        'no-af': source-mt
+        'no-ba': source-mt
+        'no-be': source-mt
         'no-bs': source-mt
         'no-eu': source-mt
-        'no-ht': source-mt
-        'no-is': source-mt
+        'no-fa': source-mt
+        'no-ga': source-mt
+        'no-ka': source-mt
+        'no-kk': source-mt
+        'no-ky': source-mt
         'no-la': source-mt
+        'no-lv': source-mt
+        'no-mg': source-mt
         'no-mn': source-mt
+        'no-ms': source-mt
         'no-mt': source-mt
+        'no-pl': source-mt
+        'no-ro': source-mt
+        'no-sk': source-mt
+        'no-sl': source-mt
+        'no-sq': source-mt
         'no-sw': source-mt
         'no-tg': source-mt
+        'no-th': source-mt
         'no-tl': source-mt
+        'no-tt': source-mt
         'no-ur': source-mt
+        'no-uz': source-mt
+        'no-vi': source-mt
+        'pl-af': source-mt
+        'pl-ba': source-mt
+        'pl-be': source-mt
         'pl-bs': source-mt
         'pl-eu': source-mt
-        'pl-ht': source-mt
-        'pl-is': source-mt
+        'pl-fa': source-mt
+        'pl-ga': source-mt
+        'pl-ka': source-mt
+        'pl-kk': source-mt
+        'pl-ky': source-mt
         'pl-la': source-mt
+        'pl-lv': source-mt
+        'pl-mg': source-mt
         'pl-mn': source-mt
+        'pl-ms': source-mt
         'pl-mt': source-mt
+        'pl-pl': source-mt
+        'pl-ro': source-mt
+        'pl-sk': source-mt
+        'pl-sl': source-mt
+        'pl-sq': source-mt
         'pl-sw': source-mt
         'pl-tg': source-mt
+        'pl-th': source-mt
         'pl-tl': source-mt
+        'pl-tt': source-mt
         'pl-ur': source-mt
+        'pl-uz': source-mt
+        'pl-vi': source-mt
+        'pt-af': source-mt
+        'pt-ba': source-mt
+        'pt-be': source-mt
         'pt-bs': source-mt
+        'pt-et': source-mt
         'pt-eu': source-mt
-        'pt-ht': source-mt
-        'pt-is': source-mt
+        'pt-fa': source-mt
+        'pt-ga': source-mt
+        'pt-ka': source-mt
+        'pt-kk': source-mt
+        'pt-ky': source-mt
         'pt-la': source-mt
+        'pt-lv': source-mt
+        'pt-mg': source-mt
         'pt-mn': source-mt
+        'pt-ms': source-mt
         'pt-mt': source-mt
+        'pt-ro': source-mt
+        'pt-sk': source-mt
+        'pt-sl': source-mt
+        'pt-sq': source-mt
         'pt-sw': source-mt
         'pt-tg': source-mt
+        'pt-th': source-mt
         'pt-tl': source-mt
+        'pt-tt': source-mt
         'pt-ur': source-mt
+        'pt-uz': source-mt
+        'pt-vi': source-mt
+        'ro-af': source-mt
+        'ro-ba': source-mt
+        'ro-be': source-mt
         'ro-bs': source-mt
         'ro-eu': source-mt
-        'ro-ht': source-mt
-        'ro-is': source-mt
+        'ro-fa': source-mt
+        'ro-ga': source-mt
+        'ro-ka': source-mt
+        'ro-kk': source-mt
+        'ro-ky': source-mt
         'ro-la': source-mt
+        'ro-lv': source-mt
+        'ro-mg': source-mt
         'ro-mn': source-mt
+        'ro-ms': source-mt
         'ro-mt': source-mt
+        'ro-ro': source-mt
+        'ro-sk': source-mt
+        'ro-sl': source-mt
+        'ro-sq': source-mt
         'ro-sw': source-mt
         'ro-tg': source-mt
+        'ro-th': source-mt
         'ro-tl': source-mt
+        'ro-tt': source-mt
         'ro-ur': source-mt
+        'ro-uz': source-mt
+        'ro-vi': source-mt
+        'ru-af': source-mt
+        'ru-ba': source-mt
+        'ru-be': source-mt
         'ru-bs': source-mt
+        'ru-et': source-mt
         'ru-eu': source-mt
-        'ru-ht': source-mt
-        'ru-is': source-mt
+        'ru-fa': source-mt
+        'ru-fi': source-mt
+        'ru-ga': source-mt
+        'ru-ka': source-mt
+        'ru-kk': source-mt
+        'ru-ky': source-mt
         'ru-la': source-mt
+        'ru-lv': source-mt
+        'ru-mg': source-mt
         'ru-mn': source-mt
+        'ru-ms': source-mt
         'ru-mt': source-mt
+        'ru-pl': source-mt
+        'ru-ro': source-mt
+        'ru-sk': source-mt
+        'ru-sl': source-mt
+        'ru-sq': source-mt
         'ru-sw': source-mt
         'ru-tg': source-mt
+        'ru-th': source-mt
         'ru-tl': source-mt
+        'ru-tt': source-mt
         'ru-ur': source-mt
+        'ru-uz': source-mt
+        'ru-vi': source-mt
+        'sk-af': source-mt
+        'sk-ba': source-mt
+        'sk-be': source-mt
         'sk-bs': source-mt
+        'sk-et': source-mt
         'sk-eu': source-mt
-        'sk-ht': source-mt
-        'sk-is': source-mt
+        'sk-fa': source-mt
+        'sk-fi': source-mt
+        'sk-ga': source-mt
+        'sk-ka': source-mt
+        'sk-kk': source-mt
+        'sk-ky': source-mt
         'sk-la': source-mt
+        'sk-lv': source-mt
+        'sk-mg': source-mt
         'sk-mn': source-mt
+        'sk-ms': source-mt
         'sk-mt': source-mt
+        'sk-pl': source-mt
+        'sk-ro': source-mt
+        'sk-sk': source-mt
+        'sk-sl': source-mt
+        'sk-sq': source-mt
         'sk-sw': source-mt
         'sk-tg': source-mt
+        'sk-th': source-mt
         'sk-tl': source-mt
+        'sk-tt': source-mt
         'sk-ur': source-mt
+        'sk-uz': source-mt
+        'sk-vi': source-mt
+        'sl-af': source-mt
+        'sl-ba': source-mt
+        'sl-be': source-mt
         'sl-bs': source-mt
+        'sl-et': source-mt
         'sl-eu': source-mt
-        'sl-ht': source-mt
-        'sl-is': source-mt
+        'sl-fa': source-mt
+        'sl-fi': source-mt
+        'sl-ga': source-mt
+        'sl-ka': source-mt
+        'sl-kk': source-mt
+        'sl-ky': source-mt
         'sl-la': source-mt
+        'sl-lv': source-mt
+        'sl-mg': source-mt
         'sl-mn': source-mt
+        'sl-ms': source-mt
         'sl-mt': source-mt
+        'sl-pl': source-mt
+        'sl-ro': source-mt
+        'sl-sk': source-mt
+        'sl-sq': source-mt
         'sl-sw': source-mt
         'sl-tg': source-mt
+        'sl-th': source-mt
         'sl-tl': source-mt
+        'sl-tt': source-mt
         'sl-ur': source-mt
+        'sl-uz': source-mt
+        'sl-vi': source-mt
+        'sq-af': source-mt
+        'sq-ba': source-mt
+        'sq-be': source-mt
         'sq-bs': source-mt
+        'sq-et': source-mt
         'sq-eu': source-mt
-        'sq-ht': source-mt
-        'sq-is': source-mt
+        'sq-fa': source-mt
+        'sq-fi': source-mt
+        'sq-ga': source-mt
+        'sq-ka': source-mt
+        'sq-kk': source-mt
+        'sq-ky': source-mt
         'sq-la': source-mt
+        'sq-lv': source-mt
+        'sq-mg': source-mt
         'sq-mn': source-mt
+        'sq-ms': source-mt
         'sq-mt': source-mt
+        'sq-pl': source-mt
+        'sq-ro': source-mt
+        'sq-sk': source-mt
+        'sq-sl': source-mt
         'sq-sw': source-mt
         'sq-tg': source-mt
+        'sq-th': source-mt
         'sq-tl': source-mt
+        'sq-tt': source-mt
         'sq-ur': source-mt
+        'sq-uz': source-mt
+        'sq-vi': source-mt
+        'sr-af': source-mt
+        'sr-ba': source-mt
+        'sr-be': source-mt
         'sr-bs': source-mt
+        'sr-et': source-mt
         'sr-eu': source-mt
-        'sr-ht': source-mt
-        'sr-is': source-mt
+        'sr-fa': source-mt
+        'sr-fi': source-mt
+        'sr-ga': source-mt
+        'sr-ka': source-mt
+        'sr-kk': source-mt
+        'sr-ky': source-mt
         'sr-la': source-mt
+        'sr-lv': source-mt
+        'sr-mg': source-mt
         'sr-mn': source-mt
+        'sr-ms': source-mt
         'sr-mt': source-mt
+        'sr-pl': source-mt
+        'sr-ro': source-mt
+        'sr-sk': source-mt
+        'sr-sl': source-mt
+        'sr-sq': source-mt
         'sr-sw': source-mt
         'sr-tg': source-mt
+        'sr-th': source-mt
         'sr-tl': source-mt
+        'sr-tt': source-mt
         'sr-ur': source-mt
+        'sr-uz': source-mt
+        'sr-vi': source-mt
+        'sv-af': source-mt
+        'sv-ba': source-mt
+        'sv-be': source-mt
         'sv-bs': source-mt
+        'sv-et': source-mt
         'sv-eu': source-mt
-        'sv-ht': source-mt
-        'sv-is': source-mt
+        'sv-fa': source-mt
+        'sv-fi': source-mt
+        'sv-ga': source-mt
+        'sv-ka': source-mt
+        'sv-kk': source-mt
+        'sv-ky': source-mt
         'sv-la': source-mt
+        'sv-lv': source-mt
+        'sv-mg': source-mt
         'sv-mn': source-mt
+        'sv-ms': source-mt
         'sv-mt': source-mt
+        'sv-pl': source-mt
+        'sv-ro': source-mt
+        'sv-sk': source-mt
+        'sv-sl': source-mt
+        'sv-sq': source-mt
         'sv-sw': source-mt
         'sv-tg': source-mt
+        'sv-th': source-mt
         'sv-tl': source-mt
+        'sv-tt': source-mt
         'sv-ur': source-mt
+        'sv-uz': source-mt
+        'sv-vi': source-mt
+        'sw-af': source-mt
+        'sw-ba': source-mt
+        'sw-be': source-mt
         'sw-bs': source-mt
+        'sw-et': source-mt
         'sw-eu': source-mt
-        'sw-ht': source-mt
-        'sw-is': source-mt
+        'sw-fa': source-mt
+        'sw-fi': source-mt
+        'sw-ga': source-mt
+        'sw-ka': source-mt
+        'sw-kk': source-mt
+        'sw-ky': source-mt
         'sw-la': source-mt
+        'sw-lv': source-mt
+        'sw-mg': source-mt
         'sw-mn': source-mt
+        'sw-ms': source-mt
         'sw-mt': source-mt
+        'sw-pl': source-mt
+        'sw-ro': source-mt
+        'sw-sk': source-mt
+        'sw-sl': source-mt
+        'sw-sq': source-mt
         'sw-tg': source-mt
+        'sw-th': source-mt
         'sw-tl': source-mt
+        'sw-tt': source-mt
         'sw-ur': source-mt
+        'sw-uz': source-mt
+        'sw-vi': source-mt
+        'tg-af': source-mt
+        'tg-ba': source-mt
+        'tg-be': source-mt
         'tg-bs': source-mt
+        'tg-et': source-mt
         'tg-eu': source-mt
-        'tg-ht': source-mt
-        'tg-is': source-mt
+        'tg-fa': source-mt
+        'tg-fi': source-mt
+        'tg-ga': source-mt
+        'tg-ka': source-mt
+        'tg-kk': source-mt
+        'tg-ky': source-mt
         'tg-la': source-mt
+        'tg-lv': source-mt
+        'tg-mg': source-mt
         'tg-mn': source-mt
+        'tg-ms': source-mt
         'tg-mt': source-mt
+        'tg-pl': source-mt
+        'tg-ro': source-mt
+        'tg-sk': source-mt
+        'tg-sl': source-mt
+        'tg-sq': source-mt
         'tg-sw': source-mt
+        'tg-th': source-mt
         'tg-tl': source-mt
+        'tg-tt': source-mt
         'tg-ur': source-mt
+        'tg-uz': source-mt
+        'tg-vi': source-mt
+        'th-af': source-mt
+        'th-ba': source-mt
+        'th-be': source-mt
         'th-bs': source-mt
+        'th-et': source-mt
         'th-eu': source-mt
-        'th-ht': source-mt
-        'th-is': source-mt
+        'th-fa': source-mt
+        'th-fi': source-mt
+        'th-ga': source-mt
+        'th-ka': source-mt
+        'th-kk': source-mt
+        'th-ky': source-mt
         'th-la': source-mt
+        'th-lv': source-mt
+        'th-mg': source-mt
         'th-mn': source-mt
+        'th-ms': source-mt
         'th-mt': source-mt
+        'th-pl': source-mt
+        'th-ro': source-mt
+        'th-sk': source-mt
+        'th-sl': source-mt
+        'th-sq': source-mt
         'th-sw': source-mt
         'th-tg': source-mt
         'th-tl': source-mt
+        'th-tt': source-mt
         'th-ur': source-mt
+        'th-uz': source-mt
+        'th-vi': source-mt
+        'tl-af': source-mt
+        'tl-ba': source-mt
+        'tl-be': source-mt
         'tl-bs': source-mt
+        'tl-et': source-mt
         'tl-eu': source-mt
-        'tl-ht': source-mt
-        'tl-is': source-mt
+        'tl-fa': source-mt
+        'tl-fi': source-mt
+        'tl-ga': source-mt
+        'tl-ka': source-mt
+        'tl-kk': source-mt
+        'tl-ky': source-mt
         'tl-la': source-mt
+        'tl-lv': source-mt
+        'tl-mg': source-mt
         'tl-mn': source-mt
+        'tl-ms': source-mt
         'tl-mt': source-mt
+        'tl-pl': source-mt
+        'tl-ro': source-mt
+        'tl-sk': source-mt
+        'tl-sl': source-mt
+        'tl-sq': source-mt
         'tl-sw': source-mt
+        'tl-th': source-mt
         'tl-tg': source-mt
+        'tl-tt': source-mt
         'tl-ur': source-mt
+        'tl-uz': source-mt
+        'tl-vi': source-mt
+        'tr-af': source-mt
+        'tr-ba': source-mt
+        'tr-be': source-mt
         'tr-bs': source-mt
+        'tr-et': source-mt
         'tr-eu': source-mt
-        'tr-ht': source-mt
-        'tr-is': source-mt
+        'tr-fa': source-mt
+        'tr-fi': source-mt
+        'tr-ga': source-mt
+        'tr-ka': source-mt
+        'tr-kk': source-mt
+        'tr-ky': source-mt
         'tr-la': source-mt
+        'tr-lv': source-mt
+        'tr-mg': source-mt
         'tr-mn': source-mt
+        'tr-ms': source-mt
         'tr-mt': source-mt
+        'tr-pl': source-mt
+        'tr-ro': source-mt
+        'tr-sk': source-mt
+        'tr-sl': source-mt
+        'tr-sq': source-mt
         'tr-sw': source-mt
+        'tr-th': source-mt
         'tr-tg': source-mt
         'tr-tl': source-mt
+        'tr-tt': source-mt
         'tr-ur': source-mt
+        'tr-uz': source-mt
+        'tr-vi': source-mt
+        'tt-af': source-mt
+        'tt-ba': source-mt
+        'tt-be': source-mt
         'tt-bs': source-mt
+        'tt-et': source-mt
         'tt-eu': source-mt
-        'tt-ht': source-mt
-        'tt-is': source-mt
+        'tt-fa': source-mt
+        'tt-fi': source-mt
+        'tt-ga': source-mt
+        'tt-ka': source-mt
+        'tt-kk': source-mt
+        'tt-ky': source-mt
         'tt-la': source-mt
+        'tt-lv': source-mt
+        'tt-mg': source-mt
         'tt-mn': source-mt
+        'tt-ms': source-mt
         'tt-mt': source-mt
+        'tt-pl': source-mt
+        'tt-ro': source-mt
+        'tt-sk': source-mt
+        'tt-sl': source-mt
+        'tt-sq': source-mt
         'tt-sw': source-mt
+        'tt-th': source-mt
         'tt-tg': source-mt
         'tt-tl': source-mt
         'tt-ur': source-mt
+        'tt-uz': source-mt
+        'tt-vi': source-mt
+        'uk-af': source-mt
+        'uk-ba': source-mt
+        'uk-be': source-mt
         'uk-bs': source-mt
+        'uk-et': source-mt
         'uk-eu': source-mt
-        'uk-ht': source-mt
-        'uk-is': source-mt
+        'uk-fa': source-mt
+        'uk-fi': source-mt
+        'uk-ga': source-mt
+        'uk-ka': source-mt
+        'uk-kk': source-mt
+        'uk-ky': source-mt
         'uk-la': source-mt
+        'uk-lv': source-mt
+        'uk-mg': source-mt
         'uk-mn': source-mt
+        'uk-ms': source-mt
         'uk-mt': source-mt
+        'uk-pl': source-mt
+        'uk-ro': source-mt
+        'uk-sk': source-mt
+        'uk-sl': source-mt
+        'uk-sq': source-mt
         'uk-sw': source-mt
+        'uk-th': source-mt
         'uk-tg': source-mt
         'uk-tl': source-mt
+        'uk-tt': source-mt
         'uk-ur': source-mt
+        'uk-uz': source-mt
+        'uk-vi': source-mt
+        'ur-af': source-mt
+        'ur-ba': source-mt
+        'ur-be': source-mt
         'ur-bs': source-mt
+        'ur-et': source-mt
         'ur-eu': source-mt
-        'ur-ht': source-mt
-        'ur-is': source-mt
+        'ur-fa': source-mt
+        'ur-fi': source-mt
+        'ur-ga': source-mt
+        'ur-ka': source-mt
+        'ur-kk': source-mt
+        'ur-ky': source-mt
         'ur-la': source-mt
+        'ur-lv': source-mt
+        'ur-mg': source-mt
         'ur-mn': source-mt
+        'ur-ms': source-mt
         'ur-mt': source-mt
+        'ur-pl': source-mt
+        'ur-ro': source-mt
+        'ur-sk': source-mt
+        'ur-sl': source-mt
+        'ur-sq': source-mt
         'ur-sw': source-mt
+        'ur-th': source-mt
         'ur-tg': source-mt
         'ur-tl': source-mt
+        'ur-tt': source-mt
+        'ur-uz': source-mt
+        'ur-vi': source-mt
+        'uz-af': source-mt
+        'uz-ba': source-mt
+        'uz-be': source-mt
         'uz-bs': source-mt
+        'uz-et': source-mt
         'uz-eu': source-mt
-        'uz-ht': source-mt
-        'uz-is': source-mt
+        'uz-fa': source-mt
+        'uz-fi': source-mt
+        'uz-ga': source-mt
+        'uz-ka': source-mt
+        'uz-kk': source-mt
+        'uz-ky': source-mt
         'uz-la': source-mt
+        'uz-lv': source-mt
+        'uz-mg': source-mt
         'uz-mn': source-mt
+        'uz-ms': source-mt
         'uz-mt': source-mt
+        'uz-pl': source-mt
+        'uz-ro': source-mt
+        'uz-sk': source-mt
+        'uz-sl': source-mt
+        'uz-sq': source-mt
         'uz-sw': source-mt
+        'uz-th': source-mt
         'uz-tg': source-mt
         'uz-tl': source-mt
+        'uz-tt': source-mt
         'uz-ur': source-mt
+        'uz-vi': source-mt
+        'vi-af': source-mt
+        'vi-ba': source-mt
+        'vi-be': source-mt
         'vi-bs': source-mt
+        'vi-et': source-mt
         'vi-eu': source-mt
-        'vi-ht': source-mt
-        'vi-is': source-mt
+        'vi-fa': source-mt
+        'vi-fi': source-mt
+        'vi-ga': source-mt
+        'vi-ka': source-mt
+        'vi-kk': source-mt
+        'vi-ky': source-mt
         'vi-la': source-mt
+        'vi-lv': source-mt
+        'vi-mg': source-mt
         'vi-mn': source-mt
+        'vi-ms': source-mt
         'vi-mt': source-mt
+        'vi-pl': source-mt
+        'vi-ro': source-mt
+        'vi-sk': source-mt
+        'vi-sl': source-mt
+        'vi-sq': source-mt
         'vi-sw': source-mt
+        'vi-th': source-mt
         'vi-tg': source-mt
         'vi-tl': source-mt
+        'vi-tt': source-mt
         'vi-ur': source-mt
+        'vi-uz': source-mt
+        'zh-af': source-mt
+        'zh-ba': source-mt
+        'zh-be': source-mt
         'zh-bs': source-mt
+        'zh-et': source-mt
         'zh-eu': source-mt
-        'zh-ht': source-mt
-        'zh-is': source-mt
+        'zh-fa': source-mt
+        'zh-fi': source-mt
+        'zh-ga': source-mt
+        'zh-ka': source-mt
+        'zh-kk': source-mt
+        'zh-ky': source-mt
         'zh-la': source-mt
+        'zh-lv': source-mt
+        'zh-mg': source-mt
         'zh-mn': source-mt
+        'zh-ms': source-mt
         'zh-mt': source-mt
+        'zh-pl': source-mt
+        'zh-ro': source-mt
+        'zh-sk': source-mt
+        'zh-sl': source-mt
+        'zh-sq': source-mt
         'zh-sw': source-mt
+        'zh-th': source-mt
         'zh-tg': source-mt
         'zh-tl': source-mt
+        'zh-tt': source-mt
         'zh-ur': source-mt
+        'zh-uz': source-mt
   dictionary:
     Dictd:
       en:
