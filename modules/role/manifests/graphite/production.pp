@@ -9,10 +9,19 @@ class role::graphite::production {
         storage_dir      => '/var/lib/carbon',
         auth             => true,
         c_relay_settings => {
-          backends => [
-            'graphite1001.eqiad.wmnet:1903',
-            'graphite2001.codfw.wmnet:1903',
-          ],
+            forward_clusters => {
+                'default'   => [
+                  'graphite1001.eqiad.wmnet:1903',
+                  'graphite2001.codfw.wmnet:1903',
+                ],
+                'big_users' => [
+                  'graphite1003.eqiad.wmnet:1903',
+                  'graphite2002.codfw.wmnet:1903',
+                ]
+            },
+            cluster_routes   => [
+                ['^cassandra\.', 'big_users'],
+            ]
         }
     }
 
