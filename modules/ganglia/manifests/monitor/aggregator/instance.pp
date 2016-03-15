@@ -1,6 +1,10 @@
 define ganglia::monitor::aggregator::instance($monitored_site) {
-    Ganglia::Monitor::Aggregator::Instance[$title] ->
-    Service['ganglia-monitor-aggregator']
+
+    # not needed anymore and breaks on systemd
+    if $::initsystem == 'upstart' {
+        Ganglia::Monitor::Aggregator::Instance[$title] ->
+        Service['ganglia-monitor-aggregator']
+    }
 
     include ganglia::configuration
     include network::constants
