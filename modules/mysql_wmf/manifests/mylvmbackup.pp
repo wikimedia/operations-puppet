@@ -81,7 +81,7 @@ define mysql_wmf::mylvmbackup(
         ensure  => $ensure,
         owner   => 'root',
         group   => 'root',
-        mode    => '0444',
+        mode    => '0544',
         content => template('mysql_wmf/mylvmbackup-prebackup.erb'),
         require => Package['mylvmbackup'],
     }
