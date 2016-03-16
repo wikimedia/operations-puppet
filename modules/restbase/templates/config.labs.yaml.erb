@@ -54,6 +54,16 @@ wikimedia.org: &wikimedia.org
 root_spec: &root_spec
   title: "The RESTBase root"
   # Some more general RESTBase info
+  x-sub-request-filters:
+    - type: default
+      name: http
+      options:
+        allow:
+          - pattern: /^https?:\/\/[a-zA-Z0-9\.]+\/w\/api\.php/
+            forward_headers: true
+          - pattern: <%= @parsoid_uri %>
+            forward_headers: true
+          - pattern: /^https?:\/\//
   paths:
     # list taken from Parsoid's beta config
     /{domain:aa.wikipedia.beta.wmflabs.org}: *default_project
