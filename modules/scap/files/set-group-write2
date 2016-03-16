@@ -2,7 +2,7 @@
 BINDIR=/usr/local/bin
 . /etc/profile.d/mediawiki.sh
 
-mwVersionNums=$(mwversionsinuse)
+mwVersionNums=$(scap wikiversions-inuse)
 for mwVerNum in ${mwVersionNums[@]}; do
 	find "$MEDIAWIKI_STAGING_DIR"/php-"$mwVerNum" -group wikidev -not -perm -020 -exec chmod g+w '{}' ';'
 done
