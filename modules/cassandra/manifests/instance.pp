@@ -205,6 +205,22 @@ define cassandra::instance(
         }
     }
 
+    file { "/etc/cassandra/instances.d":
+        ensure  => directory,
+        owner   => 'cassandra',
+        group   => 'cassandra',
+        mode    => '0755',
+        require => Package['cassandra']
+    }
+
+    file { "/etc/cassandra/instances.d/${tls_hostname}.yaml":
+        content => template("${module_name}/instance.yaml.erb"),
+        owner   => 'cassandra',
+        group   => 'cassandra',
+        mode    => '0400',
+        require => Package['cassandra'],
+    }
+
     base::service_unit { $service_name:
         ensure        => present,
         template_name => 'cassandra',
