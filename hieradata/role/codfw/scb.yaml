@@ -4,4 +4,4 @@ lvs::realserver::realserver_ips:
 - 10.2.1.18 # cxserver.svc.codfw.wmnet
 - 10.2.1.19 # citoid.svc.codfw.wmnet
 - 10.2.1.20 # mathoid.svc.codfw.wmnet
-citoid::zotero_host: zotero.svc.codfw.wmnet
+

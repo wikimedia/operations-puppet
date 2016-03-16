@@ -45,6 +45,7 @@ debdeploy::grains:
   debdeploy-scb:
     value: standard
 citoid::zotero_port: 1969
+citoid::zotero_host: "zotero.svc.%{::site}.wmnet"
 cxserver::no_proxy_list:
   - "restbase.svc.%{::rb_site}.wmnet"
   - "apertium.svc.%{::site}.wmnet"
