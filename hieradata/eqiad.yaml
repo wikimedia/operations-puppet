@@ -156,4 +156,4 @@ ldap_labs_hostname: ldap-labs.eqiad.wikimedia.org
 # analytics1002.  This works because the analytics1002 has the
 # role::analyitcs_cluster::database::meta::backup_dest class
 # applied to it.
-role::analytics_cluster::database::meta::backup::dest: analytics1002.eqiad.wmnet::backup/mysql/analytics-meta
+analytics_cluster_meta_database_backup_rsync_dest: analytics1002.eqiad.wmnet::backup/mysql/analytics-meta
