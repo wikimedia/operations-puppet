@@ -1560,6 +1560,8 @@ host db2007 {
 host db2008 {
     hardware ethernet 78:2b:cb:66:ce:4b;
     fixed-address db2008.codfw.wmnet;
+    option pxelinux.pathprefix "jessie-installer/";
+    filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host db2009 {
