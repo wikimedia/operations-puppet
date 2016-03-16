@@ -41,7 +41,7 @@ class mediawiki::scap {
     # the current MediaWiki deployment tree from the deployment server.
 
     exec { 'fetch_mediawiki':
-        command => "${scap_bin_dir}/sync-common",
+        command => "${scap_bin_dir}/scap pull",
         creates => "${mediawiki_deployment_dir}/docroot",
         require => [ File[$mediawiki_deployment_dir], Package['scap'] ],
         timeout => 30 * 60,  # 30 minutes
