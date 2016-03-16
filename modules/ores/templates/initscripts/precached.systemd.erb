@@ -1,12 +1,10 @@
 [Unit]
 Description=Precached daemon
-After=network.target
 
 [Service]
 User=www-data
 Group=www-data
-WorkingDirectory=<%= @working_dir %>
-ExecStart=<%= @venv_path %>/bin/ores stream.wikimedia.org --config ores.wmflabs.org.yaml --verbose
+ExecStart=/srv/ores/venv/bin/ores precached stream.wikimedia.org https://ores.wmflabs.org --config /srv/ores/config/config/00-main.yaml
 
 [Install]
 WantedBy=multi-user.target
