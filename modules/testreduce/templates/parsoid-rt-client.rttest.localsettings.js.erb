@@ -19,7 +19,7 @@ exports.setup = function(parsoidConfig) {
 
 	// Use the API backends directly without hitting the text varnishes.
 	// API requests are not cacheable anyway.
-	parsoidConfig.defaultAPIProxyURI = 'http://api.svc.<%= scope.lookupvar['::mw_primary'] %>.wmnet;
+	parsoidConfig.defaultAPIProxyURI = 'http://api.svc.<%= scope.lookupvar('::mw_primary') %>.wmnet;
 
 	// Turn on the batching API
 	parsoidConfig.useBatchAPI = true;
