@@ -105,8 +105,9 @@ class toollabs (
         options => 'rw,bind',
         require => File["${sysdir}/gridengine",
                         '/var/lib/gridengine'],
-        before  => Package['gridengine-common'],
     }
+
+    Mount['/var/lib/gridengine'] -> Package <| title == 'gridengine-common' |>
 
     # this is a link to shared folder
     file { '/shared':
