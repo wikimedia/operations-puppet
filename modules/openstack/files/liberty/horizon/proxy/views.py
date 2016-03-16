@@ -163,7 +163,10 @@ class IndexView(tables.DataTableView):
 
 
 class CreateProxyForm(forms.SelfHandlingForm):
-    record = forms.CharField(max_length=255, label=_("Hostname"))
+    record = forms.RegexField(max_length=255, label=_("Hostname"),
+                              regex="^([a-zA-Z]|[a-zA-Z][a-zA-Z0-9\-]*[a-zA-Z0-9])$",
+                              error_messages={"invalid":
+                                              "This must be a simple hostname without dots or special characters."})
     domain = forms.ChoiceField(widget=forms.Select(), label=_("Domain"))
     backendInstance = forms.ChoiceField(widget=forms.Select(), label=_("Backend instance"))
     backendPort = forms.CharField(widget=TextInput(attrs={'type': 'number'}), label=_("Backend port"))
