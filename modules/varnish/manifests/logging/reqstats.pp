@@ -34,9 +34,16 @@ define varnish::logging::reqstats(
         $varnish_service_name = 'varnish'
     }
 
+    if (hiera('varnish_version4', false)) {
+        # Use v4 version of varnishreqstats
+        $varnish4_python_suffix = '4'
+    } else {
+        $varnish4_python_suffix = ''
+    }
+
     if ! defined(File['/usr/local/bin/varnishreqstats']) {
         file { '/usr/local/bin/varnishreqstats':
-            source  => 'puppet:///modules/varnish/varnishreqstats',
+            source  => "puppet:///modules/varnish/varnishreqstats${varnish4_python_suffix}",
             owner   => 'root',
             group   => 'root',
             mode    => '0555',
