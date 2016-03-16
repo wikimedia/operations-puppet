@@ -89,7 +89,8 @@ define mysql_wmf::mylvmbackup(
     # --backuptype none will mean no copy of the lvm snapshot will be made
     # by mylvmbackup.  Instead, this is handled by the prebackup hook,
     # which just rsyncs the lvm snapshot to a destination.
-    $command = "/usr/bin/mylvmbackup --hooksdir ${hooksdir} --vgname ${vgname} --lvname ${lvname} --mountdir ${mountdir} --backuptype none 2>&1 >> /var/log/mylvmbackup/${title}.log"
+    # Use flock to make sure this only ever runs one mylvmbackup at a time.
+    $command = "/usr/bin/flock -n /var/lock/mylvmbackup-${title} -c '/usr/bin/mylvmbackup --hooksdir ${hooksdir} --vgname ${vgname} --lvname ${lvname} --mountdir ${mountdir} --backuptype none 2>&1 >> /var/log/mylvmbackup/${title}.log'"
     cron { "mylvmbackup-${title}":
         ensure   => $ensure,
         command  => $command,
