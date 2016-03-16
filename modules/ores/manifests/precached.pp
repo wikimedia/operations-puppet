@@ -1,12 +1,19 @@
 # = Class: ores::precached
 # Run a pre-caching daemon that listens to RCStream
 class ores::precached {
-    require ores::base
+    include ores::base
 
     $working_dir = $::ores::base::config_path
     $venv_path  = $::ores::base::venv_path
 
     base::service_unit { 'precached':
-        systemd => true,
+        require       => Class['ores::web'],
+        template_name => 'precached',
+        systemd       => true,
+        service_params => {
+            enable     => true,
+            hasstatus  => true,
+            hasrestart => true,
+        },
     }
 }
