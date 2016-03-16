@@ -9,10 +9,14 @@ hhvm::extra::fcgi:
   hhvm:
     mysql:
       connect_timeout: 3000
+  curl:
+    namedPools: cirrus
 hhvm::extra::cli:
   hhvm:
     mysql:
       connect_timeout: 3000
+  curl:
+    namedPools: cirrus
 apache::logrotate::rotate: 12
 nutcracker::verbosity: "4"
 
