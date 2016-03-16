@@ -14,10 +14,14 @@ hhvm::extra::fcgi:
       sql: true
       sql_table: true
       web: true
+  curl:
+    namedPools: cirrus
 hhvm::extra::cli:
   hhvm:
     mysql:
       connect_timeout: 3000
+  curl:
+    namedPools: cirrus
 apache::logrotate::rotate: 12
 nutcracker::verbosity: "4"
 

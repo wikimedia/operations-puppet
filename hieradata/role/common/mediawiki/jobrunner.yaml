@@ -11,3 +11,5 @@ mediawiki::jobrunner::runners_html: 1
 nutcracker::verbosity: "4"
 hhvm::extra::fcgi:
   max_execution_time: 1200
+  curl:
+    namedPools: cirrus
