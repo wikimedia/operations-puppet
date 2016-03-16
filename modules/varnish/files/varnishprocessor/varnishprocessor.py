@@ -26,8 +26,6 @@ import io
 import socket
 import urlparse
 
-import varnishlog
-
 
 class VarnishLogProcessor:
     description = 'Varnish Log Processor'
