@@ -36,9 +36,16 @@ define varnish::logging::statsd(
         $service_unit_name = 'varnishstatsd-default'
     }
 
+    if (hiera('varnish_version4', false)) {
+        # Use v4 version of varnishstatsd
+        $varnish4_python_suffix = '4'
+    } else {
+        $varnish4_python_suffix = ''
+    }
+
     if ! defined(File['/usr/local/bin/varnishstatsd']) {
         file { '/usr/local/bin/varnishstatsd':
-            source  => 'puppet:///modules/varnish/varnishstatsd',
+            source  => "puppet:///modules/varnish/varnishstatsd${varnish4_python_suffix}",
             owner   => 'root',
             group   => 'root',
             mode    => '0555',
