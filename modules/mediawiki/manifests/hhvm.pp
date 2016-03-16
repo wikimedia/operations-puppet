@@ -40,6 +40,14 @@ class mediawiki::hhvm {
                 },
                 pcre_cache_type => 'lru',
             },
+            curl => {
+                namedPools => 'cirrus-eqiad, cirrus-codfw',
+            },
+        },
+        cli_settings => {
+            curl => {
+                namedPools => 'cirrus-eqiad, cirrus-codfw',
+            },
         },
     }
 
