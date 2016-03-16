@@ -82,6 +82,16 @@ wiktionary: &wiktionary_project
 root_spec: &root_spec
   title: "The RESTBase root"
   # Some more general RESTBase info
+  x-sub-request-filters:
+    - type: default
+      name: http
+      options:
+        allow:
+          - pattern: http://api.svc.<%= mw_primary %>.wmnet/w/api.php
+            forward_headers: true
+          - pattern: <%= @parsoid_uri %>
+            forward_headers: true
+          - pattern: /^https?:\/\//
   paths:
 
     # wikipedia
