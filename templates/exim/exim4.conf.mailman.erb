@@ -65,6 +65,9 @@ spamd_address = 127.0.0.1 783
 never_users = root : daemon : bin
 ignore_bounce_errors_after = 0h
 
+add_environment = <; PATH=/bin:/usr/bin
+keep_environment =
+
 # TLS
 tls_certificate = /etc/ssl/localcerts/lists.wikimedia.org.chained.crt
 tls_privatekey = /etc/ssl/private/lists.wikimedia.org.key

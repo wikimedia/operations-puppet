@@ -79,6 +79,9 @@ av_scanner = clamd:/var/run/clamav/clamd.ctl
 never_users = root : daemon : bin
 ignore_bounce_errors_after = 0h
 
+add_environment = <; PATH=/bin:/usr/bin
+keep_environment =
+
 ###############################
 # Access Control Lists (ACLs) #
 ###############################
