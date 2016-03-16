@@ -7,3 +7,4 @@ service::configuration::log_dir: /srv/log
 debdeploy::grains:
   debdeploy-sca:
     value: standard
+zotero::http_proxy: "url-downloader.%{::site}.wikimedia.org:8080"
