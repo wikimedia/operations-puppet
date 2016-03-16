@@ -35,6 +35,7 @@ root_helper = sudo designate-rootwrap /etc/designate/rootwrap.conf
 #network_api = neutron
 
 # we have a lot of instances, so raise quotas:
+quota_domains = 25
 quota_domain_records = 5000
 quota_recordset_records = 5000
 
