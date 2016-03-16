@@ -163,7 +163,7 @@ class IndexView(tables.DataTableView):
 
 
 class CreateProxyForm(forms.SelfHandlingForm):
-    record = forms.CharField(max_length=255, label=_("Record"))
+    record = forms.CharField(max_length=255, label=_("Hostname"))
     domain = forms.ChoiceField(widget=forms.Select(), label=_("Domain"))
     backendInstance = forms.ChoiceField(widget=forms.Select(), label=_("Backend instance"))
     backendPort = forms.CharField(widget=TextInput(attrs={'type': 'number'}), label=_("Backend port"))
