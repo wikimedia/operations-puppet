@@ -66,6 +66,12 @@ class DeleteProxy(tables.DeleteAction):
         record = obj_id[:obj_id.find('.')]
         domain = obj_id[obj_id.find('.') + 1:]
 
+        # First let's make sure that this proxy is really ours to delete.
+        fqdn = "%s.%s" % (record, domain)
+        existing_domains = [proxy.domain for proxy in get_proxy_list(request)]
+        if fqdn not in existing_domains:
+            raise Exception("Proxy \'%s\' is to be deleted but is not owned by this view." % domain)
+
         if domain == 'wmflabs.org.':
             auth = identity_generic.Password(
                 auth_url=base.url_for(request, 'identity'),
@@ -141,6 +147,21 @@ class Proxy():
         self.backends = backends
 
 
+def get_proxy_list(request):
+    try:
+        resp = requests.get(base.url_for(request, 'proxy') + '/mapping')
+        if resp.status_code == 400 and resp.text == 'No such project':
+            proxies = []
+        elif not resp:
+            raise Exception("Got status " + str(resp.status_code))
+        else:
+            proxies = [Proxy(route['domain'], route['backends']) for route in resp.json()['routes']]
+    except Exception:
+        proxies = []
+        exceptions.handle(request, _("Unable to retrieve proxies: " + resp.text))
+    return proxies
+
+
 class IndexView(tables.DataTableView):
     table_class = ProxyTable
     template_name = 'project/proxy/index.html'
@@ -148,18 +169,7 @@ class IndexView(tables.DataTableView):
 
     def get_data(self):
         resp = None
-        try:
-            resp = requests.get(base.url_for(self.request, 'proxy') + '/mapping')
-            if resp.status_code == 400 and resp.text == 'No such project':
-                proxies = []
-            elif not resp:
-                raise Exception("Got status " + str(resp.status_code))
-            else:
-                proxies = [Proxy(route['domain'], route['backends']) for route in resp.json()['routes']]
-        except Exception:
-            proxies = []
-            exceptions.handle(self.request, _("Unable to retrieve proxies: " + resp.text))
-        return proxies
+        return get_proxy_list(self.request)
 
 
 class CreateProxyForm(forms.SelfHandlingForm):
