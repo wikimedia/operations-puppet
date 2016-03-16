@@ -99,6 +99,29 @@ enabled_extensions_v1 = diagnsotics, quotas, reports, sync
 # Can be one or more of : reports, quotas
 enabled_extensions_v2 = quotas, reports
 
+# Default per-page limit for the V2 API, a value of None means show all results
+# by default.  We need to override because the default is a miserly '20'
+default_limit_v2 = 1000
+
+# Max page size in the V2 API
+#max_limit_v2 = 1000
+
+# Enable Admin API (experimental)
+#enable_api_admin = False
+
+# Enabled Admin API extensions
+# Can be one or more of : reports, quotas, counts, tenants, target_sync
+# zone export is in zones extension
+#enabled_extensions_admin =
+
+# Default per-page limit for the Admin API, a value of None means show all results
+# by default.  We need to override because the default is a miserly '20'
+default_limit_admin = 1000
+
+# Max page size in the Admin API
+#max_limit_admin = 1000
+
+
 #-----------------------
 # Keystone Middleware
 #-----------------------
