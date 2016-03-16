@@ -277,3 +277,11 @@ lvs_temp_bgp_disable:
   __regex: !ruby/regexp /^lvs10(0[7-9]|1[0-2])\.eqiad\.wmnet$/
   lvs::configuration::bgp: no
 
+# Larger jobrunners might need a different configuration
+jobrunner_large_eqiad:
+  __regex: !ruby/regexp /^mw116[1-9]\.eqiad\.wmnet$/
+  mediawiki::jobrunner::runners_basic: 30
+
+jobrunner_large_codfw:
+  __regex: !ruby/regexp /^mw21(5[3-9]|6[0-2])\.codfw\.wmnet$/
+  mediawiki::jobrunner::runners_basic: 30
