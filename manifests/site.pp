@@ -1405,7 +1405,7 @@ node 'labstore1003.eqiad.wmnet' {
     role labs::nfs::extras
 }
 
-node /labstore200[12]\.codfw\.wmnet/ {
+node /labstore200[1-4]\.codfw\.wmnet/ {
     $cluster = 'labsnfs'
     role labs::nfs::fileserver
 }
