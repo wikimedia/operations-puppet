@@ -71,7 +71,7 @@ done
 echo "git clone updated."
 
 # Get all MW message cache versions (and a wiki DB name for each)
-mwVerDbSets=$(mwversionsinuse --withdb)
+mwVerDbSets=$(scap wikiversions-inuse --withdb)
 if [ -z "$mwVerDbSets" ]; then
 	$BINDIR/dologmsg "!log $LOGNAME@$HOSTNAME LocalisationUpdate failed: mwversionsinuse returned empty list"
 	echo "Obtaining MediaWiki version list FAILED"
@@ -104,7 +104,7 @@ do
 		${SCAPDIR}/refreshCdbJsonFiles --directory="$MEDIAWIKI_STAGING_DIR/php-$mwVerNum/cache/l10n"
 
 		echo "Syncing to Apaches at `date --rfc-3339=seconds`"
-		sudo -u mwdeploy -n -- $SCAPDIR/sync-l10n --verbose $mwVerNum
+		sudo -u mwdeploy -n -- $SCAPDIR/scap sync-l10n --verbose $mwVerNum
 		if [[ $? -ne 0 ]]; then
 			echo "Failed to sync-l10n '$mwVerNum'"
 			exit 1
