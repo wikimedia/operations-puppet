@@ -87,8 +87,8 @@ sync() {
         echo >&2 "No such file: ${target}"
         return 1
     elif [ -d "$target" ]; then
-        DOLOGMSGNOLOG="$QUIET" sync-dir "$target" "$message"
+        DOLOGMSGNOLOG="$QUIET" scap sync-dir "$target" "$message"
     else
-        DOLOGMSGNOLOG="$QUIET" sync-file "$target" "$message"
+        DOLOGMSGNOLOG="$QUIET" scap sync-file "$target" "$message"
     fi
 }

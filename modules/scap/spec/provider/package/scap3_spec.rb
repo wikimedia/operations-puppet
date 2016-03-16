@@ -20,14 +20,14 @@ describe provider_class do
 
     # Stub the existance of our deploy-local command
     allow(@provider.class).to receive(:command).
-      with(:deploy_local).
-      and_return('/usr/bin/deploy-local')
+      with(:scap).
+      and_return('/usr/bin/scap')
   end
 
   describe '#install' do
     it 'should specify the right repo' do
       expect(@provider).to receive(:execute).
-        with(['/usr/bin/deploy-local', '--repo', 'foo/deploy', '-D', 'log_json:False'],
+        with(['/usr/bin/scap', 'deploy-local', '--repo', 'foo/deploy', '-D', 'log_json:False'],
              uid: 666, failonfail: true)
       @provider.install
     end

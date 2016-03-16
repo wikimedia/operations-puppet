@@ -30,7 +30,7 @@ Puppet::Type.type(:package).provide(
 
   has_feature :installable, :uninstallable, :install_options
 
-  commands :deploy_local => '/usr/bin/deploy-local', :git => '/usr/bin/git'
+  commands :scap => '/usr/bin/scap', :git => '/usr/bin/git'
 
   BASE_PATH = '/srv/deployment'
 
@@ -57,7 +57,7 @@ Puppet::Type.type(:package).provide(
 
     uid = Etc.getpwnam(deploy_user).uid
 
-    execute([self.class.command(:deploy_local), '--repo', repo_path, '-D', 'log_json:False'],
+    execute([self.class.command(:scap), 'deploy-local', '--repo', repo_path, '-D', 'log_json:False'],
             :uid => uid, :failonfail => true)
   end
 
