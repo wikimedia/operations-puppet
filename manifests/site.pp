@@ -653,7 +653,7 @@ node /^db10(31)\.eqiad\.wmnet/ {
     include base::firewall
 }
 
-node /^db20(09)\.codfw\.wmnet/ {
+node /^db20(08|09)\.codfw\.wmnet/ {
 
     $cluster = 'mysql'
     class { 'role::mariadb::core':
