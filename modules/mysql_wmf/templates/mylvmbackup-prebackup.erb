@@ -4,4 +4,4 @@
 # default backup types.  This allows us to do incremental backups
 # directly from mysql data directories.
 
-/usr/bin/rsync --progress --delete -av <%= @mountdir %>/ <%= @dest %>/
+/usr/bin/rsync --delete -rt <%= @mountdir %>/ <%= @dest %>/
