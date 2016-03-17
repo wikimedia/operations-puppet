@@ -89,6 +89,7 @@ define role::cache::instances (
         ),
     }
 
+    # lint:ignore:arrow_alignment
     varnish::instance { "${title}-frontend":
         name               => 'frontend',
         layer              => 'frontend',
@@ -120,4 +121,5 @@ define role::cache::instances (
             $fe_def_beopts
         ),
     }
+    # lint:endignore
 }

@@ -88,6 +88,7 @@ define mysql_multi_instance::instance(
       nrpe_command => "/usr/lib/nagios/plugins/percona/check_mysql_slave_running -H localhost -S /tmp/mysql.${port}.sock -l nagios -p ${mysql_check_pass} "
     }
 
+    # lint:ignore:arrow_alignment
     mysql_multi_instance::config {"my.cnf.${port}" :
       settings => {
         'client' => {
@@ -165,4 +166,5 @@ define mysql_multi_instance::instance(
         }
       }
     }
+    # lint:endignore
 }

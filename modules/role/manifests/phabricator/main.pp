@@ -26,6 +26,7 @@ class role::phabricator::main {
     $phab_root_dir = '/srv/phab'
     $deploy_target = 'phabricator/deployment'
 
+    # lint:ignore:arrow_alignment
     class { '::phabricator':
         deploy_target    => $deploy_target,
         phabdir          => $phab_root_dir,
@@ -58,6 +59,7 @@ class role::phabricator::main {
             'diffusion.ssh-host'                     => 'git-ssh.wikimedia.org',
         },
     }
+    # lint:endignore
 
     # This exists to offer git services
     interface::ip { 'role::phabricator::main::ipv4':

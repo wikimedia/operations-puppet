@@ -139,9 +139,9 @@ class phabricator (
     }
 
     file { $phabdir:
-        ensure      => 'link',
-        target      => $deploy_root,
-        require     => Package[$deploy_target],
+        ensure  => 'link',
+        target  => $deploy_root,
+        require => Package[$deploy_target],
     }
 
     file { "${phabdir}/phabricator/scripts/":

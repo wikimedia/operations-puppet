@@ -20,6 +20,7 @@ class mediawiki::hhvm {
         $::processorcount*4)
 
     class { '::hhvm':
+        # lint:ignore:arrow_alignment
         user          => $::mediawiki::users::web,
         group         => $::mediawiki::users::web,
         fcgi_settings => {
@@ -41,6 +42,7 @@ class mediawiki::hhvm {
                 pcre_cache_type => 'lru',
             },
         },
+        # lint:endignore
     }
 
 

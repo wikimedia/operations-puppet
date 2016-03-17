@@ -22,13 +22,13 @@ class role::labs::openstack::designate::server {
     $dns_host_secondary_ip = ipresolve ($dns_host_secondary)
 
     class { 'openstack::designate::service':
-        active_server      => $designate_host,
-        nova_controller    => $nova_controller,
-        keystone_host      => $keystone_host,
-        keystoneconfig     => $keystoneconfig,
-        designateconfig    => $designateconfig,
-        primary_pdns_ip    => $dns_host_ip,
-        secondary_pdns_ip  => $dns_host_secondary_ip,
+        active_server     => $designate_host,
+        nova_controller   => $nova_controller,
+        keystone_host     => $keystone_host,
+        keystoneconfig    => $keystoneconfig,
+        designateconfig   => $designateconfig,
+        primary_pdns_ip   => $dns_host_ip,
+        secondary_pdns_ip => $dns_host_secondary_ip,
     }
 
     # Poke a firewall hole for the designate api

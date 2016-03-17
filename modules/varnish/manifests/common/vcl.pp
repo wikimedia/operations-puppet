@@ -16,10 +16,10 @@ class varnish::common::vcl {
     }
 
     file { '/etc/varnish/errorpage.html':
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        source  => 'puppet:///files/varnish/errorpage.html',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0444',
+        source => 'puppet:///files/varnish/errorpage.html',
     }
 
     # VCL unit tests
