@@ -25,6 +25,14 @@ elasticsearch:
     datacenters:
     - eqiad
     - codfw
+  elasticsearch-ssl:
+    port: 9243
+    default_values:
+      pooled: 'no'
+      weight: 10
+    datacenters:
+    - eqiad
+    - codfw
 rcstream:
   nginx:
     port: 80
