@@ -44,6 +44,7 @@ class apache::mod::perl            { apache::mod_conf { 'perl':           } <- p
 class apache::mod::php5            { apache::mod_conf { 'php5':           } <- package { 'libapache2-mod-php5':      } }
 class apache::mod::python          { apache::mod_conf { 'python':         } <- package { 'libapache2-mod-python':    } }
 class apache::mod::rpaf            { apache::mod_conf { 'rpaf':           } <- package { 'libapache2-mod-rpaf':      } }
+class apache::mod::security        { apache::mod_conf { 'security':       } <- package { 'libapache2-mod-security2': } }
 class apache::mod::uwsgi           { apache::mod_conf { 'uwsgi':          } <- package { 'libapache2-mod-uwsgi':     } }
 class apache::mod::wsgi            { apache::mod_conf { 'wsgi':           } <- package { 'libapache2-mod-wsgi':      } }
 # lint:endignore
