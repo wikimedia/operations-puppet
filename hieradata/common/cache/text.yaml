@@ -63,7 +63,7 @@ apps:
       eqiad: 'rendering.svc.eqiad.wmnet'
       codfw: 'rendering.svc.codfw.wmnet'
   restbase:
-    route: 'codfw'
+    route: 'eqiad'
     backends:
       eqiad: 'restbase.svc.eqiad.wmnet'
       codfw: 'restbase.svc.codfw.wmnet'
