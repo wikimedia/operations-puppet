@@ -15,6 +15,7 @@ end
 <% @directors.keys.sort.each do |director_name|
 director = @directors[director_name]
 if director['dynamic'] == 'yes' -%>
+<% if not @varnish_version4 -%>
 director <%= director_name %> <%= director['type'] %> {
 <%- keyspace = "#{@conftool_namespace}/#{director['dc']}/#{@group}/#{director['service']}" -%>
 	<%- if director['type'] == 'chash' %>
@@ -26,5 +27,20 @@ director <%= director_name %> <%= director['type'] %> {
 		.weight = {{ $data.weight }};
 	}{{end}}{{end}}
 }
-<% end %>
-<% end %>
+<% else -%>
+<% if director['type'] == 'vslp' -%>
+new <%= director_name %> = vslp.<%= director['type'] %>();
+<% else -%>
+new <%= director_name %> = directors.<%= director['type'] %>();
+<% end -%>
+<%- keyspace = "#{@conftool_namespace}/#{director['dc']}/#{@group}/#{director['service']}" -%>
+	{{range $node := ls "<%= keyspace %>/"}}{{ $key := printf "<%= keyspace %>/%s" $node }}{{ $data := json (getv $key) }}{{ if eq $data.pooled "yes"}}
+	<% if director['type'] == 'vslp' -%>
+    <%= director_name %>.add_backend(be_{{ $parts := split $node "." }}{{ index $parts 0 }});
+    <% else -%>
+    <%= director_name %>.add_backend(be_{{ $parts := split $node "." }}{{ index $parts 0 }}, {{ $data.weight }});
+    <% end -%>
+	{{end}}{{end}}
+<% end # if not @varnish_version4 %>
+<% end # if director['dynamic'] == 'yes' %>
+<% end # directors loop %>
