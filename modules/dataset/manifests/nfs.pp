@@ -9,11 +9,14 @@ class dataset::nfs($enable=true) {
         $role_ensure = 'absent'
     }
 
+    $dataset_clients_snapshots = hiera('dataset_clients_snapshots')
+    $dataset_clients_other = hiera('dataset_clients_other')
+
     file { '/etc/exports':
         mode    => '0444',
         owner   => 'root',
         group   => 'root',
-        source  => 'puppet:///modules/dataset/exports',
+        content => template('dataset/nfs_exports.erb'),
         require => Package['nfs-kernel-server'],
     }
 
@@ -22,11 +25,12 @@ class dataset::nfs($enable=true) {
     }
 
     service { 'nfs-kernel-server':
-        ensure  => $service_ensure,
-        require => [
+        ensure    => $service_ensure,
+        require   => [
             Package['nfs-kernel-server'],
             File['/etc/exports'],
         ],
+        subscribe => File['/etc/exports'],
     }
 
     file { '/etc/default/nfs-common':
