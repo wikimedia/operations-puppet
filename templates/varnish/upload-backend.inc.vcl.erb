@@ -61,7 +61,7 @@ sub cluster_be_miss {
 
 sub cluster_be_pass { }
 
-sub cluster_be_fetch {
+sub cluster_be_backend_response {
 	// Stream large objects, >= 1 MB
 	if (std.integer(beresp.http.Content-Length, 0) >= 1048576 || beresp.http.Content-Length ~ "^[0-9]{9}") {
 		set beresp.do_stream = true;
