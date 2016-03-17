@@ -491,7 +491,7 @@ groups:
   statistics-web-roots:
     gid: 775
     description: root access on analytics website hosts (stats.wm,metrics.wm,datasets.wm)
-    members: []
+    members: [mforns, nuria]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
 users:
   rush:
