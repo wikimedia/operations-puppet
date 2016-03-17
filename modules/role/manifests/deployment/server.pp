@@ -35,7 +35,7 @@ class role::deployment::server(
     $deployable_networks = $::network::constants::deployable_networks
 
     if $::realm != 'labs' {
-        include role::releases::upload
+        include role::microsites::releases::upload
         # backup /home dirs on deployment servers
         include role::backup::host
         backup::set {'home': }
