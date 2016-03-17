@@ -18,6 +18,7 @@ class statistics::user {
         system     => true
     }
 
+    # lint:ignore:arrow_alignment
     git::userconfig { 'stats':
         homedir  => $homedir,
         settings => {
@@ -34,6 +35,7 @@ class statistics::user {
         },
         require  => User[$username],
     }
+    # lint:endignore
 
     # Render the .git-credentials file with the stats user's http password.
     # This password is set from https://gerrit.wikimedia.org/r/#/settings/http-password.

@@ -61,9 +61,10 @@ define scap::target(
     }
 
     package { $package_name:
-        install_options => [{ owner => $deploy_user}],
-        provider => 'scap3',
-        require  => [Package['scap'], User[$deploy_user]],
+        install_options => [{
+                  owner => $deploy_user}],
+        provider        => 'scap3',
+        require         => [Package['scap'], User[$deploy_user]],
     }
 
     if !defined(Ssh::Userkey[$deploy_user]) {
