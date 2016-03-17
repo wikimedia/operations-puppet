@@ -146,14 +146,14 @@ class openstack::horizon::service(
 
     # Install the designate dashboard
     file { '/usr/share/openstack-dashboard/openstack_dashboard/local':
-        ensure => 'directory',
+        ensure  => 'directory',
         owner   => 'root',
         group   => 'root',
         mode    => '0644',
         require => Package['python-designate-dashboard', 'openstack-dashboard'],
     }
     file { '/usr/share/openstack-dashboard/openstack_dashboard/local/enabled':
-        ensure => 'directory',
+        ensure  => 'directory',
         owner   => 'root',
         group   => 'root',
         mode    => '0644',
