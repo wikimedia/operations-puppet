@@ -20,6 +20,7 @@ class mediawiki::hhvm {
         $::processorcount*4)
 
     class { '::hhvm':
+        # lint:ignore:arrow_alignment
         user          => $::mediawiki::users::web,
         group         => $::mediawiki::users::web,
         fcgi_settings => {
@@ -49,6 +50,7 @@ class mediawiki::hhvm {
                 namedPools => 'cirrus-eqiad,cirrus-codfw',
             },
         },
+        # lint:endignore
     }
 
 
