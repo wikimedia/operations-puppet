@@ -6,7 +6,7 @@ port   = 3306
 socket = /tmp/mysql.sock
 <% if @ssl == 'on' %>
 # ssl
-ssl-ca=/etc/mysql/ssl/cacert.pem
+ssl-ca=/etc/mysql/ssl/ca.crt
 ssl-cert=/etc/mysql/ssl/server-cert.pem
 ssl-key=/etc/mysql/ssl/server-key.pem
 # skip server cert validation until we generate one cert per server
@@ -97,7 +97,7 @@ innodb_write_io_threads        = 8
 <% end %>
 <% if @ssl == 'on' %>
 # ssl
-ssl-ca=/etc/mysql/ssl/cacert.pem
+ssl-ca=/etc/mysql/ssl/ca.crt
 ssl-cert=/etc/mysql/ssl/server-cert.pem
 ssl-key=/etc/mysql/ssl/server-key.pem
 ssl-cipher=TLSv1.2
