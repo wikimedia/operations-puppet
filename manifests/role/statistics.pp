@@ -170,7 +170,7 @@ class role::statistics::private inherits role::statistics {
     # access to required files in Hadoop.
     class { 'reportupdater':
         base_path => "${::statistics::working_path}/reportupdater",
-        rsync_to  => 'stat1001.eqiad.wmnet::www/limn-public-data/',
+        rsync_to  => 'stat1001.eqiad.wmnet::www/limn-public-data/metrics/',
         user      => 'hdfs',
         # We know that this is included on stat1002, but unfortunetly
         # it is done so outside of this role.  Perhaps
