@@ -149,6 +149,7 @@ ganglia_clusters:
     id: 37
     sites:
       eqiad: []
+      codfw: []
   redis:
     name: "Redis"
     id: 39
