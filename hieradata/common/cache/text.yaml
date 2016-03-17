@@ -68,7 +68,7 @@ apps:
       eqiad: 'restbase.svc.eqiad.wmnet'
       codfw: 'restbase.svc.codfw.wmnet'
   cxserver:
-    route: 'eqiad'
+    route: 'codfw'
     backends:
       eqiad: 'cxserver.svc.eqiad.wmnet'
   citoid:
