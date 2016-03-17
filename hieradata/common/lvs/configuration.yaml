@@ -534,6 +534,33 @@ lvs_services:
           hostname: search.svc.eqiad.wmnet
         codfw:
           hostname: search.svc.codfw.wmnet
+  search-https:
+    description: Elasticsearch search for MediaWiki - HTTPS
+    class: low-traffic
+    sites:
+    - eqiad
+    - codfw
+    ip: *ip_block013
+    port: 9243
+    bgp: 'no' # BGP already defined for plain HTTP, no need to re-define it here
+    depool-threshold: '.5'
+    monitors:
+      ProxyFetch:
+        url:
+        - https://localhost/
+      IdleConnection:
+        timeout-clean-reconnect: 3
+        max-delay: 300
+    conftool:
+      cluster: elasticsearch
+      service: elasticsearch
+    icinga:
+      check_command: check_https_on_port!9243
+      sites:
+        eqiad:
+          hostname: search.svc.eqiad.wmnet
+        codfw:
+          hostname: search.svc.codfw.wmnet
   stream:
     description: Websocket/streaming services
     class: high-traffic2
