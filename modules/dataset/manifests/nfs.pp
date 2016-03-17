@@ -13,7 +13,7 @@ class dataset::nfs($enable=true) {
         mode    => '0444',
         owner   => 'root',
         group   => 'root',
-        source  => 'puppet:///modules/dataset/exports',
+        content => template('dataset/nfs_exports.erb'),
         require => Package['nfs-kernel-server'],
     }
 
@@ -27,6 +27,7 @@ class dataset::nfs($enable=true) {
             Package['nfs-kernel-server'],
             File['/etc/exports'],
         ],
+        subscribe => File['/etc/exports'],
     }
 
     file { '/etc/default/nfs-common':

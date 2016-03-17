@@ -2507,8 +2507,7 @@ node 'stat1003.eqiad.wmnet' {
 
 node /^snapshot1001\.eqiad\.wmnet/ {
     # NOTE: New snapshot hosts must also be manually added
-    # to modules/dataset/files/exports. One must also manually
-    # run `exportfs -r` on dataset1001. (T111586)
+    # to hiera common.yaml dataset_clients_snapshots.
 
     role snapshot, snapshot::dumps::hugewikis
     include standard
@@ -2516,19 +2515,24 @@ node /^snapshot1001\.eqiad\.wmnet/ {
 
 node /^snapshot1002\.eqiad\.wmnet/ {
     # NOTE: New snapshot hosts must also be manually added
-    # to modules/dataset/files/exports. One must also manually
-    # run `exportfs -r` on dataset1001. (T111586)
+    # to hiera common.yaml dataset_clients_snapshots.
 
     role snapshot, snapshot::dumps::regularwikis
     include standard
 }
 
 node /^snapshot1004\.eqiad\.wmnet/ {
+    # NOTE: New snapshot hosts must also be manually added
+    # to hiera common.yaml dataset_clients_snapshots.
+
     role snapshot, snapshot::dumps::monitor, snapshot::dumps::regularwikis
     include standard
 }
 
 node /^snapshot1003\.eqiad\.wmnet/ {
+    # NOTE: New snapshot hosts must also be manually added
+    # to hiera common.yaml dataset_clients_snapshots.
+
     role snapshot, snapshot::cron::primary
     include standard
 }
