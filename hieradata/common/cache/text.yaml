@@ -72,7 +72,7 @@ apps:
     backends:
       eqiad: 'cxserver.svc.eqiad.wmnet'
   citoid:
-    route: 'eqiad'
+    route: 'codfw'
     backends:
       eqiad: 'citoid.svc.eqiad.wmnet'
   security_audit:
