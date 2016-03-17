@@ -22,7 +22,7 @@ class role::analytics_cluster::database::meta {
 
     class { 'mariadb::config':
         config    => $config_template,
-        password  => undef,
+        password  => false,
         datadir   => '/var/lib/mysql',
         require   => Class['mariadb::packages_wmf'],
     }
