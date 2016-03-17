@@ -20,6 +20,9 @@
 #   See: --mountdir option for mylvmbackup.
 #   Default: /var/cache/mylvmbackup/mnt/${title}
 #
+# [*socket*]
+#   Path to mysql socket.  Default: /tmp/mysql.sock
+#
 # ...standard cron resource parameters...
 #
 # == Usage
@@ -35,6 +38,7 @@ define mysql_wmf::mylvmbackup(
     $vgname   = "${::hostname}-vg",
     $lvname   = 'mysql',
     $mountdir = "/var/cache/mylvmbackup/mnt/${title}",
+    $socket   = '/tmp/mysql.sock',
     $hour     = undef,
     $minute   = undef,
     $month    = undef,
@@ -90,7 +94,7 @@ define mysql_wmf::mylvmbackup(
     # by mylvmbackup.  Instead, this is handled by the prebackup hook,
     # which just rsyncs the lvm snapshot to a destination.
     # Use flock to make sure this only ever runs one mylvmbackup at a time.
-    $command = "/usr/bin/flock -n /var/lock/mylvmbackup-${title} -c '/usr/bin/mylvmbackup --hooksdir ${hooksdir} --vgname ${vgname} --lvname ${lvname} --mountdir ${mountdir} --backuptype none 2>&1 >> /var/log/mylvmbackup/${title}.log'"
+    $command = "/usr/bin/flock -n /var/lock/mylvmbackup-${title} -c '/usr/bin/mylvmbackup --socket ${socket} --hooksdir ${hooksdir} --vgname ${vgname} --lvname ${lvname} --mountdir ${mountdir} --backuptype none 2>&1 >> /var/log/mylvmbackup/${title}.log'"
     cron { "mylvmbackup-${title}":
         ensure   => $ensure,
         command  => $command,
