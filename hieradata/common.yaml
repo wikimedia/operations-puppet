@@ -192,6 +192,7 @@ ganglia_clusters:
     id: 46
     sites:
       eqiad: []
+      codfw: []
   openldap_corp_mirror:
     name: "Corp OIT LDAP mirror"
     id: 47
@@ -232,6 +233,7 @@ ganglia_clusters:
     id: 53
     sites:
       eqiad: []
+      codfw: []
   aqs:
     name: "Analytics Query Service"
     id: 54
