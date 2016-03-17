@@ -142,7 +142,7 @@ class role::labs::openstack::nova::controller {
     }
 
     class { '::openstack::envscripts':
-        novaconfig => $novaconfig,
+        novaconfig      => $novaconfig,
         designateconfig => $designateconfig
     }
 

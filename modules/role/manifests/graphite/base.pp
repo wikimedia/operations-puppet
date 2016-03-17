@@ -227,14 +227,14 @@ class role::graphite::base(
     }
 
     ferm::service { 'carbon_c_relay-frontend_relay_udp':
-        proto => 'udp',
-        port  => '2003',
+        proto  => 'udp',
+        port   => '2003',
         srange => '$INTERNAL',
     }
 
     ferm::service { 'carbon_c_relay-frontend_relay_tcp':
-        proto => 'tcp',
-        port  => '2003',
+        proto  => 'tcp',
+        port   => '2003',
         srange => '$INTERNAL',
     }
 
@@ -244,8 +244,8 @@ class role::graphite::base(
     }
 
     ferm::service { 'carbon_pickled':
-        proto => 'tcp',
-        port  => '2004',
+        proto  => 'tcp',
+        port   => '2004',
         srange => '$INTERNAL',
     }
 }

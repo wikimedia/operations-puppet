@@ -17,8 +17,8 @@ class deployment::redis($deployment_server) {
     } else {
         redis::instance{ 6379:
             settings => {
-                daemonize       => false,
-                bind            => '0.0.0.0',
+                daemonize => false,
+                bind      => '0.0.0.0',
             }
         }
     }

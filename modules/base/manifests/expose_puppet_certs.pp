@@ -40,14 +40,14 @@ define base::expose_puppet_certs(
     }
 
     file { "${target_basedir}/ssl":
-        ensure  => ensure_directory($ensure),
-        mode    => '0555',
+        ensure => ensure_directory($ensure),
+        mode   => '0555',
     }
 
     file { "${target_basedir}/ssl/cert.pem":
-        ensure  => $ensure,
-        mode    => '0444',
-        source  => "${ssldir}/certs/${puppet_cert_name}.pem",
+        ensure => $ensure,
+        mode   => '0444',
+        source => "${ssldir}/certs/${puppet_cert_name}.pem",
     }
 
     $private_key_ensure = $ensure ? {
@@ -59,8 +59,8 @@ define base::expose_puppet_certs(
     }
 
     file { "${target_basedir}/ssl/server.key":
-        ensure  => $private_key_ensure,
-        mode    => '0400',
-        source  => "${ssldir}/private_keys/${puppet_cert_name}.pem",
+        ensure => $private_key_ensure,
+        mode   => '0400',
+        source => "${ssldir}/private_keys/${puppet_cert_name}.pem",
     }
 }
