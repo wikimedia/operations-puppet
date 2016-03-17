@@ -45,10 +45,19 @@ class role::cache::2layer(
     varnish::setup_filesystem { $filesystems: }
     Varnish::Setup_filesystem <| |> -> Varnish::Instance <| |>
 
+    $varnish_version4 = hiera('varnish_version4', false)
+    if ($varnish_version4) {
+        # https://www.varnish-cache.org/docs/trunk/phk/persistent.html
+        $persistent_name = 'deprecated_persistent'
+    }
+    else {
+        $persistent_name = 'persistent'
+    }
+
     # This is the "normal" persistent storage varnish args, for consuming all available space
     # (upload uses something more complex than this based on our storage vars above as well!)
     $persistent_storage_args = join([
-        "-s main1=persistent,/srv/${storage_parts[0]}/varnish.main1,${storage_size}G,${mma[0]}",
-        "-s main2=persistent,/srv/${storage_parts[1]}/varnish.main2,${storage_size}G,${mma[1]}",
+        "-s main1=${persistent_name},/srv/${storage_parts[0]}/varnish.main1,${storage_size}G,${mma[0]}",
+        "-s main2=${persistent_name},/srv/${storage_parts[1]}/varnish.main2,${storage_size}G,${mma[1]}",
     ], ' ')
 }

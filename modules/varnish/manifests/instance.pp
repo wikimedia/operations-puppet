@@ -37,6 +37,56 @@ define varnish::instance(
         $extraopts = "-n ${name}"
     }
 
+    # $varnish_version4 is used to distinguish between v4 and v3 versions of
+    # VCL code, as well as to pass the right parameters to varnishd. See
+    # varnish.systemd.erb
+    $varnish_version4 = hiera('varnish_version4', false)
+
+    if $varnish_version4 {
+        # https://www.varnish-cache.org/docs/4.0/whats-new/upgrading.html#req-request-is-now-req-method
+        $req_method = 'req.method'
+
+        $bereq_method = 'bereq.method'
+
+        # http://www.gossamer-threads.com/lists/varnish/misc/32514
+        $bereq_retries = 'bereq.retries'
+
+        # Use the following X_Y variables anywhere the upgrade from v3 to v4
+        # requires replacing the string X with Y.
+
+        # https://www.varnish-cache.org/docs/4.0/whats-new/upgrading.html#req-not-available-in-vcl-backend-response
+        $bereq_req = 'bereq'
+
+        # https://www.varnish-cache.org/docs/4.0/whats-new/upgrading.html#obj-in-vcl-error-replaced-by-beresp-in-vcl-backend-error
+        $beresp_obj = 'beresp'
+
+        # https://www.varnish-cache.org/docs/4.0/whats-new/upgrading.html#obj-is-now-read-only
+        $resp_obj = 'resp'
+
+        # https://www.varnish-cache.org/docs/4.0/whats-new/upgrading.html#some-return-values-have-been-replaced
+        # vcl_recv must now return hash instead of lookup
+        $hash_lookup = 'hash'
+
+        # vcl_pass must now return fetch instead of pass
+        $fetch_pass = 'fetch'
+
+        # The 'ip' function has been added to the Varnish Standard Module in
+        # v4. No need to use ipcast.
+        $std_ipcast = 'std'
+    }
+    else {
+        $req_method = 'req.request'
+        $bereq_method = 'req.request'
+        $bereq_retries = 'req.restarts'
+
+        $bereq_req = 'req'
+        $beresp_obj = 'obj'
+        $resp_obj = 'obj'
+        $hash_lookup = 'lookup'
+        $fetch_pass = 'pass'
+        $std_ipcast = 'ipcast'
+    }
+
     $varnish_directors = $directors
     $dynamic_directors = hiera('varnish::dynamic_directors', true)
 
