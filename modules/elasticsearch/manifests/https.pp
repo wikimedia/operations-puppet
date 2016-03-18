@@ -5,10 +5,14 @@
 # == Parameters:
 # - ensure: self explanatory
 class elasticsearch::https (
-    $ensure = 'absent',
+    $ensure = absent,
 ){
 
     class { [ 'nginx', 'nginx::ssl' ]:
+        ensure => $ensure,
+    }
+
+    diamond::collector::nginx { 'elasticsearch':
         ensure => $ensure,
     }
 
