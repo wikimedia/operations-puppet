@@ -46,6 +46,10 @@ class snapshot::cron(
         user      => $miscdumpsuser,
         filesonly => $filesonly,
     }
+    class { '::snapshot::cron::shorturls':
+        user      => $miscdumpsuser,
+        filesonly => $filesonly,
+    }
     class { '::snapshot::addschanges':
         user      => $miscdumpsuser,
         filesonly => $filesonly,

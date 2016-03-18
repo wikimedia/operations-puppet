@@ -26,6 +26,7 @@ class dumps::generation::server::dirs(
     $incrsdir                     = "${miscdatasetsdir}/incr"
     $mediatitlesdir               = "${miscdatasetsdir}/mediatitles"
     $pagetitlesdir                = "${miscdatasetsdir}/pagetitles"
+    $shorturlsdir                 = "${miscdatasetsdir}/shorturls"
     $otherwikibasedir             = "${miscdatasetsdir}/wikibase"
     $otherwikibasewikidatadir     = "${miscdatasetsdir}/wikibase/wikidatawiki"
     $otherwikidatadir             = "${miscdatasetsdir}/wikidata"
@@ -41,7 +42,7 @@ class dumps::generation::server::dirs(
     # subdirs for various generated dumps
     file { [ $cirrussearchdir, $xlationdir, $categoriesrdfdir,
         $categoriesrdfdailydir, $globalblocksdir, $medialistsdir, $incrsdir,
-        $mediatitlesdir, $pagetitlesdir]:
+        $mediatitlesdir, $pagetitlesdir, $shorturlsdir ]:
 
         ensure => 'directory',
         mode   => '0755',
