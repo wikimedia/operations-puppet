@@ -50,7 +50,7 @@
   <appender name="UDP" class="net.logstash.logback.appender.LogstashSocketAppender">
     <host><%= @logstash_host %></host>
     <port><%= @logstash_port %></port>
-    <customFields>{"program":"cassandra"}</customFields>
+    <customFields>{"program":"cassandra", "cluster":"<%= @cluster_name %>"}</customFields>
   </appender>
 
   <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
