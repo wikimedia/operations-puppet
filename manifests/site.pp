@@ -502,7 +502,7 @@ node 'db1018.eqiad.wmnet' {
     include base::firewall
 }
 
-node /^db10(21|24|36|54|60|63|67)\.eqiad\.wmnet/ {
+node /^db10(21|24|36|54|60|63|67|74|76)\.eqiad\.wmnet/ {
     class { 'role::mariadb::core':
         shard => 's2',
         p_s   => 'on',
@@ -522,7 +522,7 @@ node /^db20(17|35|41|49|56|63|64)\.codfw\.wmnet/ {
 }
 
 # s3 (default) core production slave dbs on eqiad
-node /^db10(15|27|35|44)\.eqiad\.wmnet/ {
+node /^db10(15|27|35|44|75|77|78)\.eqiad\.wmnet/ {
     class { 'role::mariadb::core':
         shard => 's3',
         p_s   => 'on',
