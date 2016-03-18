@@ -17,6 +17,10 @@ class role::snapshot::cron::primary {
         enable => true,
         user   => 'datasets',
     }
+    class { 'snapshot::dumps::shorturls':
+      enable => true,
+      user   => 'datasets',
+    }
     class { 'snapshot::addschanges':
         enable => true,
         user   => 'datasets',
