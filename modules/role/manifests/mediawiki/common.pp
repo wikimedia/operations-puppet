@@ -9,14 +9,14 @@ class role::mediawiki::common {
         desc  => 'Skip outgoing connection tracking for Nutcracker',
         table => 'raw',
         chain => 'OUTPUT',
-        rule  => 'proto tcp sport (6379 11212) NOTRACK;',
+        rule  => 'proto tcp sport (6378:6382 11212) NOTRACK;',
     }
 
     ferm::rule { 'skip_nutcracker_conntrack_in':
         desc  => 'Skip incoming connection tracking for Nutcracker',
         table => 'raw',
         chain => 'PREROUTING',
-        rule  => 'proto tcp dport (6379 11212) NOTRACK;',
+        rule  => 'proto tcp dport (6378:6382 11212) NOTRACK;',
     }
 
     ferm::service{ 'ssh_pybal':
