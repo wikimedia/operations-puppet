@@ -37,6 +37,8 @@ class mha::manager inherits role::coredb::config {
     $shardlist = inline_template('<%= topology.keys.join(',') %>')
     $shards    = split($shardlist, ',')
 
+    # FIXME - defined type defined inside a class
+    # lint:ignore:nested_classes_or_defines
     define mha_shard_config(
         $shard  = {},
         $site   = '',
@@ -51,6 +53,7 @@ class mha::manager inherits role::coredb::config {
         }
     }
 
+    # FIXME - defined type defined inside a class
     define mha_dc_switch( $shard={} ) {
         file { "/etc/mha/${name}-dc.cnf":
             owner   => 'root',
@@ -61,6 +64,7 @@ class mha::manager inherits role::coredb::config {
         }
     }
 
+    # FIXME - defined type defined inside a class
     define mha_coredb_config( $topology={} ) {
         $shard = $topology[$name]
         if $shard['primary_site'] and $shard['primary_site'] != 'both' {
@@ -83,6 +87,7 @@ class mha::manager inherits role::coredb::config {
 
         }
     }
+    # lint:endignore
 
     mha_coredb_config { $shards: topology => $topology }
 }
