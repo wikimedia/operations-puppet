@@ -1,7 +1,6 @@
 # manifests/role/gerrit.pp
 
-class role::gerrit {
-    class production {
+class role::gerrit::production {
         system::role { 'role::gerrit::production': description => 'Gerrit master' }
         include role::backup::host
         include base::firewall
