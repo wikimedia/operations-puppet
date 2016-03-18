@@ -64,4 +64,11 @@ class role::piwik {
         description   => 'piwik.wikimedia.org',
         check_command => 'check_http_url!piwik.wikimedia.org!/',
     }
+
+    file_line { 'enable_php_opcache':
+        line   => 'opcache.enable=1',
+        match  => '^;?opcache.enable\s*\=',
+        path   => '/etc/php5/apache2/php.ini',
+        notify => Class['::apache'],
+    }
 }
