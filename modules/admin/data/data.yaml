@@ -202,7 +202,7 @@ groups:
   statistics-admins:
     posix_name: stats
     description: access files created by stats user cron jobs
-    members: [ezachte, ironholds, milimetric, joal, mforns, bearloga]
+    members: [ezachte, ironholds, milimetric, joal, mforns, bearloga, nuria]
     privileges: ['ALL = (stats) NOPASSWD: ALL']
   oit:
     gid: 727

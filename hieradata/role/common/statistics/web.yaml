@@ -1,7 +1,7 @@
 cluster: analytics
 admin::groups:
   - statistics-web-users
-  - statistics-web-roots
+  - statistics-admins
 debdeploy::grains:
   debdeploy-stat:
     value: standard
