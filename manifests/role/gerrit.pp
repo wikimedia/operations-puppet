@@ -1,7 +1,6 @@
 # manifests/role/gerrit.pp
 
-class role::gerrit {
-    class production {
+class role::gerrit::production {
         system::role { 'role::gerrit::production': description => 'Gerrit master' }
         include role::backup::host
         include base::firewall
@@ -87,7 +86,6 @@ class role::gerrit {
                 # their own Stars, Pull requests, Issues etc. as well as duplicate
                 # results in Code Search. See T70054.
             }
-        }
     }
 
     # Include this role on *any* production host that wants to
