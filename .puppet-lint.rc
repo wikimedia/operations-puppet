@@ -2,9 +2,6 @@
 # 2.8 will requires $::globalname. Skip for now.
 --no-variable_scope-check
 
-# We really like nesting classes:
---no-nested_classes_or_defines-check
-
 # Lot of long lines (ssh keys for example).
 --no-80chars-check
 
