@@ -12,6 +12,10 @@ class elasticsearch::https (
         ensure => $ensure,
     }
 
+    diamond::collector::nginx { 'elasticsearch':
+        ensure => $ensure,
+    }
+
     ::base::expose_puppet_certs { '/etc/nginx':
         ensure          => $ensure,
         provide_private => true,
