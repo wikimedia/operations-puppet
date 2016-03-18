@@ -6,11 +6,7 @@ server s1 {
 } -start
 
 varnish v1 -arg "-p vcc_err_unref=false" -vcl+backend {
-    backend cache_local  {
-        .host = "${s1_addr}"; .port = "${s1_port}";
-    }
-
-    backend cache_local_random  {
+    backend ipv4_127_0_0_2  {
         .host = "${s1_addr}"; .port = "${s1_port}";
     }
 

@@ -6,7 +6,7 @@ server s1 {
 } -start
 
 varnish v1 -arg "-p vcc_err_unref=false" -vcl+backend {
-    backend kartotherian {
+    backend be_kartotherian {
         .host = "${s1_addr}"; .port = "${s1_port}";
     }
 
