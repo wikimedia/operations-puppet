@@ -25,6 +25,9 @@ mt:
     key: '<%= @yandex_api_key %>'
   <% end -%>
 
+# Read config from cxserver/deploy
+sources: config.prod.yaml
+
 # registry to use from config.prod.yaml
 <% if @ordered_registry -%>
 registry: <%= @ordered_registry %>
