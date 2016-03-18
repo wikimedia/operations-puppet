@@ -19,7 +19,7 @@ class ores::base(
     require_package('enchant')
 
     # Spellcheck packages for supported languages
-    require_package('aspell-id',
+    require_package('aspell-ar', 'aspell-id', 'aspell-pl',
                     'hunspell-vi',
                     'myspell-de-at', 'myspell-de-ch', 'myspell-de-de',
                     'myspell-en-au', 'myspell-en-gb', 'myspell-en-us',
