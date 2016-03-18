@@ -9,7 +9,6 @@ import diamond.collector
 import urllib2
 import json
 import subprocess
-import os
 
 
 class WDQSUpdaterCollector(diamond.collector.Collector):
