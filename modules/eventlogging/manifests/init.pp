@@ -41,7 +41,6 @@
 class eventlogging {
     require_package([
         'python-dateutil',
-        'python-etcd',
         'python-jsonschema',
         'python-kafka',
         'python-mysqldb',
