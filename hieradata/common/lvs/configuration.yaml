@@ -526,7 +526,7 @@ lvs_services:
         max-delay: 300
     conftool:
       cluster: elasticsearch
-      service: elasticsearch-ssl
+      service: elasticsearch
     icinga:
       check_command: check_http_on_port!9200
       sites:
@@ -553,7 +553,7 @@ lvs_services:
         max-delay: 300
     conftool:
       cluster: elasticsearch
-      service: elasticsearch
+      service: elasticsearch-ssl
     icinga:
       check_command: check_https_on_port!9243
       sites:
