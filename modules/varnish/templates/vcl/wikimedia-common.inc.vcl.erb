@@ -105,10 +105,6 @@ probe wdqs {
 
 # Puppet-generated the Backend host definitions, regardless of 'dynamic'
 
-if @varnish_testing
-	@varnish_directors = {}
-end
-
 be_seen = {}
 @varnish_directors.keys.sort.each do |director_name|
 	director = @varnish_directors[director_name]
@@ -118,6 +114,8 @@ be_seen = {}
 		be_seen[backend] = 1
 		name = /^[0-9\.]+$/.match(backend) ? "ipv4_" + backend.gsub(".", "_") : "be_" + backend.split(".")[0].gsub("-", "_")
 -%>
+
+<% if not @varnish_testing -%>
 backend <%= name %> {
 	.host = "<%= backend %>";
 	.port = "<%= be_opts['port'] %>";
@@ -129,6 +127,7 @@ backend <%= name %> {
 	.probe = <%= be_opts['probe'] %>;
 <% end -%>
 }
+<% end -%>
 
 <% end # backend loop -%>
 <% end # director loop -%>
