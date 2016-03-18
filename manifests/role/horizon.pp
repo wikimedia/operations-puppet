@@ -14,7 +14,7 @@ class role::horizon {
     }
 
     class { '::openstack::envscripts':
-        novaconfig => $novaconfig,
+        novaconfig      => $novaconfig,
         designateconfig => $designateconfig
     }
 }
