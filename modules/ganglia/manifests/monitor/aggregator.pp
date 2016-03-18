@@ -1,3 +1,4 @@
+# sets up a Ganglia Aggregator service
 class ganglia::monitor::aggregator($sites) {
     require ganglia::monitor::packages
     include ganglia::configuration
@@ -30,14 +31,6 @@ class ganglia::monitor::aggregator($sites) {
             before => Service['ganglia-monitor-aggregator'],
         }
 
-    }
-
-    define site_instances() {
-        # Instantiate aggregators for all clusters for this site ($title)
-        $cluster_list = suffix(keys($ganglia::configuration::clusters), "_${title}")
-        instance { $cluster_list:
-            monitored_site => $title
-        }
     }
 
     site_instances{ $sites: }
