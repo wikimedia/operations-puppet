@@ -12,7 +12,6 @@ https://www.kernel.org/doc/Documentation/filesystems/nfs/knfsd-stats.txt
 """
 
 import diamond.collector
-import os
 import subprocess
 
 
