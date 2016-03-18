@@ -1,8 +1,8 @@
 #!/usr/bin/python
 
 #####################################################################
-### THIS FILE IS MANAGED BY PUPPET
-### puppet:///modules/ldap/scripts/modify-ldap-group
+# THIS FILE IS MANAGED BY PUPPET
+# puppet:///modules/ldap/scripts/modify-ldap-group
 #####################################################################
 
 import sys
@@ -22,23 +22,47 @@ except ImportError:
 
 def main():
     parser = OptionParser(conflict_handler="resolve")
-    parser.set_usage('modify-ldap-group [options] <groupname> [--rename <newusergroup>]\nexample: modify-ldap-group --gid=501 wikidev')
+    parser.set_usage(
+        'modify-ldap-group [options] <groupname> [--rename <newusergroup>]\nexample: modify-ldap-group --gid=501 wikidev')
 
     ldapSupportLib = ldapsupportlib.LDAPSupportLib()
     ldapSupportLib.addParserOptions(parser, "scriptuser")
 
-    parser.add_option("-m", "--directorymanager", action="store_true", dest="directorymanager", help="Use the Directory Manager's credentials, rather than your own")
-    parser.add_option("--gid", action="store", dest="gidNumber", help="Set the group's gid")
-    parser.add_option("--rename", action="store_true", dest="rename", help="Rename the user")
-    parser.add_option("--addmembers", action="store", dest="addMembers", help="Add a comma separated list of users to this group")
-    parser.add_option("--deletemembers", action="store", dest="deleteMembers", help="Delete a comma separated list of users from this")
+    parser.add_option(
+        "-m",
+        "--directorymanager",
+        action="store_true",
+        dest="directorymanager",
+        help="Use the Directory Manager's credentials, rather than your own")
+    parser.add_option(
+        "--gid",
+        action="store",
+        dest="gidNumber",
+        help="Set the group's gid")
+    parser.add_option(
+        "--rename",
+        action="store_true",
+        dest="rename",
+        help="Rename the user")
+    parser.add_option(
+        "--addmembers",
+        action="store",
+        dest="addMembers",
+        help="Add a comma separated list of users to this group")
+    parser.add_option(
+        "--deletemembers",
+        action="store",
+        dest="deleteMembers",
+        help="Delete a comma separated list of users from this")
     (options, args) = parser.parse_args()
 
     if len(args) != 1:
         if options.rename and len(args) != 2:
-            parser.error("modify-ldap-group expects exactly two arguments when using rename.")
+            parser.error(
+                "modify-ldap-group expects exactly two arguments when using rename.")
         elif not options.rename:
-            parser.error("modify-ldap-group expects exactly one argument, unless using --rename.")
+            parser.error(
+                "modify-ldap-group expects exactly one argument, unless using --rename.")
 
     ldapSupportLib.setBindInfoByOptions(options, parser)
 
@@ -49,7 +73,10 @@ def main():
     # w00t We're in!
     try:
         groupname = args[0]
-        PosixData = ds.search_s("ou=groups," + base, ldap.SCOPE_SUBTREE, "(&(objectclass=posixGroup)(cn=" + groupname + "))")
+        PosixData = ds.search_s(
+            "ou=groups," + base,
+            ldap.SCOPE_SUBTREE,
+            "(&(objectclass=posixGroup)(cn=" + groupname + "))")
         if not PosixData:
             raise ldap.NO_SUCH_OBJECT()
         dn = PosixData[0][0]
@@ -73,21 +100,28 @@ def main():
                 raw_members = options.addMembers.split(',')
                 for raw_member in raw_members:
                     try:
-                        user=ds.search_s("ou=people," + base, ldap.SCOPE_SUBTREE, "uid=%s" % raw_member, ("dn",))
+                        user = ds.search_s(
+                            "ou=people," + base, ldap.SCOPE_SUBTREE, "uid=%s" %
+                            raw_member, ("dn",))
                         if len(user) == 0:
-                            sys.stderr.write(raw_member + " doesn't exist, and won't be added to the group.\n")
+                            sys.stderr.write(
+                                raw_member + " doesn't exist, and won't be added to the group.\n")
                             return
                         if len(user) > 1:
-                            sys.stderr.write(raw_member + " exist multiple times, this is so wrong, abandon all hope\n")
+                            sys.stderr.write(
+                                raw_member + " exist multiple times, this is so wrong, abandon all hope\n")
                             return
                     except Exception as e:
-                        sys.stderr.write("Failed to search user in LDAP. Error: %s\n" % str(e))
+                        sys.stderr.write(
+                            "Failed to search user in LDAP. Error: %s\n" %
+                            str(e))
                         raise e
                     membertoadd = user[0][0]
                     # member expects DNs
                     if 'member' in NewPosixData.keys():
                         if membertoadd in NewPosixData['member']:
-                            sys.stderr.write(raw_member + " is already a member of the group, skipping.\n")
+                            sys.stderr.write(
+                                raw_member + " is already a member of the group, skipping.\n")
                         else:
                             NewPosixData['member'].append(membertoadd)
                     else:
@@ -100,17 +134,20 @@ def main():
                         if membertoremove in NewPosixData['member']:
                             NewPosixData['member'].remove(membertoremove)
                         else:
-                                    sys.stderr.write(raw_member + " isn't a member of the group, skipping.\n")
+                            sys.stderr.write(
+                                raw_member + " isn't a member of the group, skipping.\n")
                     else:
-                                    sys.stderr.write("This group contains no members.\n")
+                        sys.stderr.write("This group contains no members.\n")
 
             if PosixData == NewPosixData:
                 sys.stderr.write("No changes to make; exiting.\n")
             else:
                 modlist = ldap.modlist.modifyModlist(PosixData, NewPosixData)
                 ds.modify_s(dn, modlist)
-    except ldap.UNWILLING_TO_PERFORM, msg:
-        sys.stderr.write("LDAP was unwilling to modify the group. Error was: %s\n" % msg[0]["info"])
+    except ldap.UNWILLING_TO_PERFORM as msg:
+        sys.stderr.write(
+            "LDAP was unwilling to modify the group. Error was: %s\n" %
+            msg[0]["info"])
         ds.unbind()
         sys.exit(1)
     except ldap.NO_SUCH_OBJECT:
@@ -128,7 +165,8 @@ def main():
         sys.exit(1)
     except Exception:
         try:
-            sys.stderr.write("There was a general error, this is unexpected; see traceback.\n")
+            sys.stderr.write(
+                "There was a general error, this is unexpected; see traceback.\n")
             traceback.print_exc(file=sys.stderr)
             ds.unbind()
         except Exception:

@@ -1,8 +1,8 @@
 #!/usr/bin/python
 
 #####################################################################
-### THIS FILE IS MANAGED BY PUPPET
-### puppet:///modules/ldap/scripts/change-ldap-passwd
+# THIS FILE IS MANAGED BY PUPPET
+# puppet:///modules/ldap/scripts/change-ldap-passwd
 #####################################################################
 
 import sys
@@ -28,8 +28,17 @@ def main():
     ldapSupportLib = ldapsupportlib.LDAPSupportLib()
     ldapSupportLib.addParserOptions(parser, "scriptuser")
 
-    parser.add_option("-m", "--directorymanager", action="store_true", dest="directorymanager", help="Use the Directory Manager's credentials, rather than your own")
-    parser.add_option("--random", action="store_true", dest="random", help="Choose a random password, and return it.")
+    parser.add_option(
+        "-m",
+        "--directorymanager",
+        action="store_true",
+        dest="directorymanager",
+        help="Use the Directory Manager's credentials, rather than your own")
+    parser.add_option(
+        "--random",
+        action="store_true",
+        dest="random",
+        help="Choose a random password, and return it.")
     (options, args) = parser.parse_args()
 
     if len(args) != 1:
@@ -62,12 +71,15 @@ def main():
         ds.modify_s(dn, mod_attrs)
         if options.random:
             print newpass
-    except ldap.UNWILLING_TO_PERFORM, msg:
-        sys.stderr.write("LDAP was unwilling to change the user's password. Error was: %s\n" % msg[0]["info"])
+    except ldap.UNWILLING_TO_PERFORM as msg:
+        sys.stderr.write(
+            "LDAP was unwilling to change the user's password. Error was: %s\n" %
+            msg[0]["info"])
         ds.unbind()
         sys.exit(1)
     except ldap.NO_SUCH_OBJECT:
-        sys.stderr.write("The user you are trying to modify does not exists.\n")
+        sys.stderr.write(
+            "The user you are trying to modify does not exists.\n")
         ds.unbind()
         sys.exit(1)
     except ldap.PROTOCOL_ERROR:
@@ -77,7 +89,8 @@ def main():
         sys.exit(1)
     except Exception:
         try:
-            sys.stderr.write("There was a general error, this is unexpected; see traceback.\n")
+            sys.stderr.write(
+                "There was a general error, this is unexpected; see traceback.\n")
             traceback.print_exc(file=sys.stderr)
             ds.unbind()
         except Exception:

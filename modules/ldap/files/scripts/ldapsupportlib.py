@@ -1,8 +1,8 @@
 #!/usr/bin/python
 
 #####################################################################
-### THIS FILE IS MANAGED BY PUPPET
-### puppet:///modules/ldap/scripts/ldapsupportlib.py
+# THIS FILE IS MANAGED BY PUPPET
+# puppet:///modules/ldap/scripts/ldapsupportlib.py
 #####################################################################
 
 import os
@@ -30,10 +30,29 @@ class LDAPSupportLib:
         self.defaults = {}
 
     def addParserOptions(self, parser, default="proxy"):
-        parser.add_option("-s", "--self", action="store_true", dest="useself", help="Use your credentials")
-        parser.add_option("-D", "--bindas", action="store", dest="bindas", help="Specify user to bind as")
-        parser.add_option("-m", "--directorymanager", action="store_true", dest="directorymanager", help="Use the Directory Manager's credentials")
-        parser.add_option("--scriptuser", action="store_true", dest="scriptuser", help="Use the scriptusers' credentials")
+        parser.add_option(
+            "-s",
+            "--self",
+            action="store_true",
+            dest="useself",
+            help="Use your credentials")
+        parser.add_option(
+            "-D",
+            "--bindas",
+            action="store",
+            dest="bindas",
+            help="Specify user to bind as")
+        parser.add_option(
+            "-m",
+            "--directorymanager",
+            action="store_true",
+            dest="directorymanager",
+            help="Use the Directory Manager's credentials")
+        parser.add_option(
+            "--scriptuser",
+            action="store_true",
+            dest="scriptuser",
+            help="Use the scriptusers' credentials")
         self.defaults['authuser'] = "proxy"
         if (default == "user"):
             self.defaults['authuser'] = "user"
@@ -43,7 +62,13 @@ class LDAPSupportLib:
             self.defaults['authuser'] = "scriptuser"
 
     def getUsers(self, ds, username):
-        PosixData = ds.search_s("ou=people," + self.base, ldap.SCOPE_SUBTREE, "(&(objectclass=inetOrgPerson)(uid=" + username + "))", attrlist=['*', '+'])
+        PosixData = ds.search_s(
+            "ou=people," + self.base,
+            ldap.SCOPE_SUBTREE,
+            "(&(objectclass=inetOrgPerson)(uid=" + username + "))",
+            attrlist=[
+                '*',
+                '+'])
         return PosixData
 
     def getKeys(self, ds, username):
@@ -68,7 +93,8 @@ class LDAPSupportLib:
             if self.defaults['authuser'] == "scriptuser":
                 options.scriptuser = True
         if options.useself:
-            self.binddn = "uid=" + os.environ['USER'] + ",ou=people," + self.base
+            self.binddn = "uid=" + \
+                os.environ['USER'] + ",ou=people," + self.base
             self.bindpw = getpass.getpass()
         elif options.directorymanager:
             self.binddn = "cn=Directory Manager"
@@ -114,7 +140,9 @@ class LDAPSupportLib:
             if self.sslType == "start_tls":
                 ds.start_tls_s()
         except Exception:
-            sys.stderr.write("Unable to connect to LDAP host: %s\n" % self.ldapHost)
+            sys.stderr.write(
+                "Unable to connect to LDAP host: %s\n" %
+                self.ldapHost)
             traceback.print_exc(file=sys.stderr)
             sys.exit(1)
 
@@ -122,7 +150,8 @@ class LDAPSupportLib:
             ds.simple_bind_s(self.binddn, self.bindpw)
             return ds
         except ldap.CONSTRAINT_VIOLATION:
-            sys.stderr.write("You typed your password incorrectly too many times, and are now locked out. Please try again later.\n")
+            sys.stderr.write(
+                "You typed your password incorrectly too many times, and are now locked out. Please try again later.\n")
             sys.exit(1)
         except ldap.INVALID_DN_SYNTAX:
             sys.stderr.write("The bind DN is incorrect... \n")
@@ -130,10 +159,12 @@ class LDAPSupportLib:
         except ldap.NO_SUCH_OBJECT:
             sys.stderr.write("Unable to locate the bind DN account.\n")
             sys.exit(1)
-        except ldap.UNWILLING_TO_PERFORM, msg:
-            sys.stderr.write("The LDAP server was unwilling to perform the action requested.\nError was: %s\n" % msg[0]["info"])
+        except ldap.UNWILLING_TO_PERFORM as msg:
+            sys.stderr.write(
+                "The LDAP server was unwilling to perform the action requested.\nError was: %s\n" %
+                msg[0]["info"])
             sys.exit(1)
         except ldap.INVALID_CREDENTIALS:
             sys.stderr.write("Password incorrect.\n")
-            #traceback.print_exc(file=sys.stderr)
+            # traceback.print_exc(file=sys.stderr)
             sys.exit(1)

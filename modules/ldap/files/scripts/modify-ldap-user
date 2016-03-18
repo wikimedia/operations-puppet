@@ -1,8 +1,8 @@
 #!/usr/bin/python
 
 #####################################################################
-### THIS FILE IS MANAGED BY PUPPET
-### puppet:///modules/ldap/scripts/modify-ldap-user
+# THIS FILE IS MANAGED BY PUPPET
+# puppet:///modules/ldap/scripts/modify-ldap-user
 #####################################################################
 
 import sys
@@ -22,29 +22,74 @@ except ImportError:
 
 def main():
     parser = OptionParser(conflict_handler="resolve")
-    parser.set_usage('modify-ldap-user [options] <username> [--rename <newusername>]\nexample: modify-ldap-user --replacekeys=http://ryandlane.com/static/pubkey.key laner')
+    parser.set_usage(
+        'modify-ldap-user [options] <username> [--rename <newusername>]\nexample: modify-ldap-user --replacekeys=http://ryandlane.com/static/pubkey.key laner')
 
     ldapSupportLib = ldapsupportlib.LDAPSupportLib()
     ldapSupportLib.addParserOptions(parser, "scriptuser")
 
-    parser.add_option("-m", "--directorymanager", action="store_true", dest="directorymanager", help="Use the Directory Manager's credentials, rather than your own")
-    parser.add_option("--shell", action="store", dest="loginShell", help="Set the user's shell")
-    parser.add_option("--gid", action="store", dest="gidNumber", help="Set the user's gid")
-    parser.add_option("--uid", action="store", dest="uidNumber", help="Set the user's uid")
-    parser.add_option("--cn", action="store", dest="cn", help="Set the user's CN")
-    parser.add_option("--mail", action="store", dest="mail", help="Set the user's email address")
-    parser.add_option("--firstname", action="store", dest="givenName", help="Set the user's first name")
-    parser.add_option("--lastname", action="store", dest="sn", help="Set the user's last name")
-    parser.add_option("--replacekeys", action="store", dest="replaceKeyLocation", help="Replaces all of the user's keys")
-    parser.add_option("--addkeys", action="store", dest="addKeyLocation", help="Adds keys to the user's entry")
-    parser.add_option("--rename", action="store_true", dest="rename", help="Rename the user")
+    parser.add_option(
+        "-m",
+        "--directorymanager",
+        action="store_true",
+        dest="directorymanager",
+        help="Use the Directory Manager's credentials, rather than your own")
+    parser.add_option(
+        "--shell",
+        action="store",
+        dest="loginShell",
+        help="Set the user's shell")
+    parser.add_option(
+        "--gid",
+        action="store",
+        dest="gidNumber",
+        help="Set the user's gid")
+    parser.add_option(
+        "--uid",
+        action="store",
+        dest="uidNumber",
+        help="Set the user's uid")
+    parser.add_option(
+        "--cn",
+        action="store",
+        dest="cn",
+        help="Set the user's CN")
+    parser.add_option("--mail", action="store", dest="mail",
+                      help="Set the user's email address")
+    parser.add_option(
+        "--firstname",
+        action="store",
+        dest="givenName",
+        help="Set the user's first name")
+    parser.add_option(
+        "--lastname",
+        action="store",
+        dest="sn",
+        help="Set the user's last name")
+    parser.add_option(
+        "--replacekeys",
+        action="store",
+        dest="replaceKeyLocation",
+        help="Replaces all of the user's keys")
+    parser.add_option(
+        "--addkeys",
+        action="store",
+        dest="addKeyLocation",
+        help="Adds keys to the user's entry")
+    parser.add_option(
+        "--rename",
+        action="store_true",
+        dest="rename",
+        help="Rename the user")
     (options, args) = parser.parse_args()
 
     if len(args) != 1:
         if options.rename and len(args) != 2:
-            parser.error("modify-ldap-user expects exactly two arguments when using rename.")
+            parser.error(
+                "modify-ldap-user expects exactly two arguments when using rename.")
         elif not options.rename:
-            parser.error("modify-ldap-user expects exactly one argument, unless using --rename.")
+            parser.error(
+                "modify-ldap-user expects exactly one argument, unless using --rename.")
 
     ldapSupportLib.setBindInfoByOptions(options, parser)
 
@@ -55,7 +100,10 @@ def main():
     # w00t We're in!
     try:
         username = args[0]
-        PosixData = ds.search_s("ou=people," + base, ldap.SCOPE_SUBTREE, "(&(objectclass=inetOrgPerson)(uid=" + username + "))")
+        PosixData = ds.search_s(
+            "ou=people," + base,
+            ldap.SCOPE_SUBTREE,
+            "(&(objectclass=inetOrgPerson)(uid=" + username + "))")
         if not PosixData:
             raise ldap.NO_SUCH_OBJECT()
         dn = PosixData[0][0]
@@ -64,7 +112,8 @@ def main():
         if options.rename:
             newusername = args[1]
             if newusername == "root":
-                sys.stderr.write("You are not allowed to rename a user to root.\n")
+                sys.stderr.write(
+                    "You are not allowed to rename a user to root.\n")
                 sys.exit(1)
 
             # Rename the entry
@@ -72,7 +121,10 @@ def main():
             ds.rename_s(dn, newrdn)
 
             # Fix the user's home directory
-            PosixData = ds.search_s("ou=people," + base, ldap.SCOPE_SUBTREE, "(&(objectclass=inetOrgPerson)(uid=" + newusername + "))")
+            PosixData = ds.search_s(
+                "ou=people," + base,
+                ldap.SCOPE_SUBTREE,
+                "(&(objectclass=inetOrgPerson)(uid=" + newusername + "))")
             dn = PosixData[0][0]
             PosixData = PosixData[0][1]
             NewPosixData = copy.deepcopy(PosixData)
@@ -91,12 +143,14 @@ def main():
             if options.addKeyLocation:
                 keys = hdm.fetchKeys(options.addKeyLocation)
                 NewPosixData['sshPublicKey'].extend(keys)
-                NewPosixData['sshPublicKey'] = hdm.uniqueKeys(NewPosixData['sshPublicKey'])
+                NewPosixData['sshPublicKey'] = hdm.uniqueKeys(
+                    NewPosixData['sshPublicKey'])
             if options.loginShell:
                 NewPosixData['loginShell'] = options.loginShell
             if options.uidNumber:
                 if int(options.uidNumber) < 500:
-                    sys.stderr.write("Setting uid to less than 500 is not allowed.\n")
+                    sys.stderr.write(
+                        "Setting uid to less than 500 is not allowed.\n")
                     sys.exit(1)
                 NewPosixData['uidNumber'] = options.uidNumber
             if options.gidNumber:
@@ -119,8 +173,10 @@ def main():
                 if options.replaceKeyLocation or options.addKeyLocation:
                     # Update the keys
                     hdm.writeKeys(username, NewPosixData['sshPublicKey'])
-    except ldap.UNWILLING_TO_PERFORM, msg:
-        sys.stderr.write("LDAP was unwilling to create the user. Error was: %s\n" % msg[0]["info"])
+    except ldap.UNWILLING_TO_PERFORM as msg:
+        sys.stderr.write(
+            "LDAP was unwilling to create the user. Error was: %s\n" %
+            msg[0]["info"])
         ds.unbind()
         sys.exit(1)
     except ldap.NO_SUCH_OBJECT:
@@ -134,7 +190,8 @@ def main():
         sys.exit(1)
     except Exception:
         try:
-            sys.stderr.write("There was a general error, this is unexpected; see traceback.\n")
+            sys.stderr.write(
+                "There was a general error, this is unexpected; see traceback.\n")
             traceback.print_exc(file=sys.stderr)
             ds.unbind()
         except Exception:

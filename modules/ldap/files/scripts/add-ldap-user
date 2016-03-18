@@ -1,8 +1,8 @@
 #!/usr/bin/python
 
 #####################################################################
-### THIS FILE IS MANAGED BY PUPPET
-### puppet:///modules/ldap/scripts/add-ldap-user
+# THIS FILE IS MANAGED BY PUPPET
+# puppet:///modules/ldap/scripts/add-ldap-user
 #####################################################################
 
 import sys
@@ -26,21 +26,65 @@ except ImportError:
 
 def main():
     parser = OptionParser(conflict_handler="resolve")
-    parser.set_usage('add-ldap-user [options] <username> <key(s)>\nexample: add-ldap-user laner http://ryandlane.com/static/pubkey.key')
+    parser.set_usage(
+        'add-ldap-user [options] <username> <key(s)>\nexample: add-ldap-user laner http://ryandlane.com/static/pubkey.key')
 
     ldapSupportLib = ldapsupportlib.LDAPSupportLib()
     ldapSupportLib.addParserOptions(parser, "scriptuser")
 
-    parser.add_option("-m", "--directorymanager", action="store_true", dest="directorymanager", help="Use the Directory Manager's credentials, rather than your own")
-    parser.add_option("--shell", action="store", dest="loginShell", default="/usr/local/bin/sillyshell", help="The user's shell (default: /usr/bin/sillyshell)")
-    parser.add_option("--gid", action="store", dest="gidNumber", default="550", help="The user's gid (default: 550)")
-    parser.add_option("--uid", action="store", dest="uidNumber", help="The user's uid (default: next available uid)")
-    parser.add_option("--home", action="store", dest="homeDirectory", help="The user's home directory (default /home/username)")
-    parser.add_option("--cn", action="store", dest="cn", help="The user's CN (default: firstname + lastname, or username, if first/last not set)")
-    parser.add_option("--firstname", action="store", dest="givenName", help="The user's first name (default: username)")
-    parser.add_option("--lastname", action="store", dest="sn", help="The user's last name (default: username)")
-    parser.add_option("--mail", action="store", dest="mail", help="The user's email address")
-    parser.add_option("--dry-run", action="store_true", dest="dryRun", help="Dry run mode (no changes)")
+    parser.add_option(
+        "-m",
+        "--directorymanager",
+        action="store_true",
+        dest="directorymanager",
+        help="Use the Directory Manager's credentials, rather than your own")
+    parser.add_option(
+        "--shell",
+        action="store",
+        dest="loginShell",
+        default="/usr/local/bin/sillyshell",
+        help="The user's shell (default: /usr/bin/sillyshell)")
+    parser.add_option(
+        "--gid",
+        action="store",
+        dest="gidNumber",
+        default="550",
+        help="The user's gid (default: 550)")
+    parser.add_option(
+        "--uid",
+        action="store",
+        dest="uidNumber",
+        help="The user's uid (default: next available uid)")
+    parser.add_option(
+        "--home",
+        action="store",
+        dest="homeDirectory",
+        help="The user's home directory (default /home/username)")
+    parser.add_option(
+        "--cn",
+        action="store",
+        dest="cn",
+        help="The user's CN (default: firstname + lastname, or username, if first/last not set)")
+    parser.add_option(
+        "--firstname",
+        action="store",
+        dest="givenName",
+        help="The user's first name (default: username)")
+    parser.add_option(
+        "--lastname",
+        action="store",
+        dest="sn",
+        help="The user's last name (default: username)")
+    parser.add_option(
+        "--mail",
+        action="store",
+        dest="mail",
+        help="The user's email address")
+    parser.add_option(
+        "--dry-run",
+        action="store_true",
+        dest="dryRun",
+        help="Dry run mode (no changes)")
     (options, args) = parser.parse_args()
 
     if len(args) != 2:
@@ -87,7 +131,14 @@ def main():
 
         dn = 'uid=' + username + ',ou=people,' + base
         uid = username
-        objectClasses = ['person', 'organizationalPerson', 'inetorgperson', 'ldapPublicKey', 'shadowaccount', 'posixaccount', 'top']
+        objectClasses = [
+            'person',
+            'organizationalPerson',
+            'inetorgperson',
+            'ldapPublicKey',
+            'shadowaccount',
+            'posixaccount',
+            'top']
         loginShell = options.loginShell
         if options.homeDirectory:
             homeDirectory = options.homeDirectory
@@ -96,7 +147,8 @@ def main():
         if options.uidNumber:
             uidNumber = options.uidNumber
             if int(uidNumber) < 500:
-                sys.stderr.write("Setting uidnumber to less than 500 is not allowed\n")
+                sys.stderr.write(
+                    "Setting uidnumber to less than 500 is not allowed\n")
                 sys.exit(1)
         else:
             # Find the next uid
@@ -146,12 +198,18 @@ def main():
             for key in userEntry.keys():
                 print "%s -> %s" % (key, userEntry[key])
 
-        userdict = {uid: {"uidNumber": int(uidNumber), "gidNumber": int(gidNumber), "sshPublicKey": keys}}
+        userdict = {
+            uid: {
+                "uidNumber": int(uidNumber),
+                "gidNumber": int(gidNumber),
+                "sshPublicKey": keys}}
         hdm = homedirectorymanager.HomeDirectoryManager()
         hdm.dryRun = dryRun
         hdm.createHomeDir(userdict)
-    except ldap.UNWILLING_TO_PERFORM, msg:
-        sys.stderr.write("LDAP was unwilling to create the user. Error was: %s\n" % msg[0]["info"])
+    except ldap.UNWILLING_TO_PERFORM as msg:
+        sys.stderr.write(
+            "LDAP was unwilling to create the user. Error was: %s\n" %
+            msg[0]["info"])
         ds.unbind()
         sys.exit(1)
     except ldap.TYPE_OR_VALUE_EXISTS:
@@ -166,7 +224,8 @@ def main():
         sys.exit(1)
     except Exception:
         try:
-            sys.stderr.write("There was a general error, this is unexpected; see traceback.\n")
+            sys.stderr.write(
+                "There was a general error, this is unexpected; see traceback.\n")
             traceback.print_exc(file=sys.stderr)
             ds.unbind()
         except Exception:

@@ -1,8 +1,8 @@
 #!/usr/bin/python
 
 #####################################################################
-### THIS FILE IS MANAGED BY PUPPET
-### puppet:///modules/ldap/scripts/delete-ldap-group
+# THIS FILE IS MANAGED BY PUPPET
+# puppet:///modules/ldap/scripts/delete-ldap-group
 #####################################################################
 
 import sys
@@ -25,7 +25,12 @@ def main():
     ldapSupportLib = ldapsupportlib.LDAPSupportLib()
     ldapSupportLib.addParserOptions(parser, "scriptuser")
 
-    parser.add_option("-m", "--directorymanager", action="store_true", dest="directorymanager", help="Use the Directory Manager's credentials, rather than your own")
+    parser.add_option(
+        "-m",
+        "--directorymanager",
+        action="store_true",
+        dest="directorymanager",
+        help="Use the Directory Manager's credentials, rather than your own")
     (options, args) = parser.parse_args()
 
     if len(args) != 1:
@@ -42,12 +47,15 @@ def main():
         groupname = args[0]
         dn = 'cn=' + groupname + ',ou=groups,' + base
         ds.delete_s(dn)
-    except ldap.UNWILLING_TO_PERFORM, msg:
-        sys.stderr.write("LDAP was unwilling to delete the group. Error was: %s\n" % msg[0]["info"])
+    except ldap.UNWILLING_TO_PERFORM as msg:
+        sys.stderr.write(
+            "LDAP was unwilling to delete the group. Error was: %s\n" %
+            msg[0]["info"])
         ds.unbind()
         sys.exit(1)
     except ldap.NO_SUCH_OBJECT:
-        sys.stderr.write("The group you are trying to delete does not exists.\n")
+        sys.stderr.write(
+            "The group you are trying to delete does not exists.\n")
         ds.unbind()
         sys.exit(1)
     except ldap.PROTOCOL_ERROR:
@@ -57,7 +65,8 @@ def main():
         sys.exit(1)
     except Exception:
         try:
-            sys.stderr.write("There was a general error, this is unexpected; see traceback.\n")
+            sys.stderr.write(
+                "There was a general error, this is unexpected; see traceback.\n")
             traceback.print_exc(file=sys.stderr)
             ds.unbind()
         except Exception:

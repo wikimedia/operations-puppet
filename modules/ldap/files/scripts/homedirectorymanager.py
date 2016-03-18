@@ -1,8 +1,8 @@
 #!/usr/bin/python
 
 #####################################################################
-### THIS FILE IS MANAGED BY PUPPET
-### puppet:///modules/ldap/scripts/homedirectorymanager.py
+# THIS FILE IS MANAGED BY PUPPET
+# puppet:///modules/ldap/scripts/homedirectorymanager.py
 #####################################################################
 
 import sys
@@ -64,7 +64,13 @@ class HomeDirectoryManager:
 
         self.dryRun = False
 
-        self.updates = {'create': [], 'chgrp': [], 'chown': [], 'rename': [], 'delete': [], 'key': []}
+        self.updates = {
+            'create': [],
+            'chgrp': [],
+            'chown': [],
+            'rename': [],
+            'delete': [],
+            'key': []}
 
         self.UsersData = None
 
@@ -85,16 +91,33 @@ class HomeDirectoryManager:
 
     def run(self):
         parser = OptionParser(conflict_handler="resolve")
-        parser.set_usage("homedirectorymanager.py [options]\n\nexample: homedirectorymanager.py --dry-run")
+        parser.set_usage(
+            "homedirectorymanager.py [options]\n\nexample: homedirectorymanager.py --dry-run")
 
         ldapSupportLib = ldapsupportlib.LDAPSupportLib()
         ldapSupportLib.addParserOptions(parser)
 
-        parser.add_option("--dry-run", action="store_true", dest="dryRun", help="Show what would be done, but don't actually do anything")
-        parser.add_option("--basedir", dest="basedir", help="Base directory to manage home directories (default: /home)")
-        parser.add_option("--group", dest="group", help="Only manage home directories for users in the provided group (default: manage all users)")
-        parser.add_option("--loglevel", dest="loglevel", help="Change level of logging; NONE, INFO, DEBUG (default: INFO)")
-        parser.add_option("--logfile", dest="logfile", help="Log file to write to (default: stdout)")
+        parser.add_option(
+            "--dry-run",
+            action="store_true",
+            dest="dryRun",
+            help="Show what would be done, but don't actually do anything")
+        parser.add_option(
+            "--basedir",
+            dest="basedir",
+            help="Base directory to manage home directories (default: /home)")
+        parser.add_option(
+            "--group",
+            dest="group",
+            help="Only manage home directories for users in the provided group (default: manage all users)")
+        parser.add_option(
+            "--loglevel",
+            dest="loglevel",
+            help="Change level of logging; NONE, INFO, DEBUG (default: INFO)")
+        parser.add_option(
+            "--logfile",
+            dest="logfile",
+            help="Log file to write to (default: stdout)")
         (self.options, args) = parser.parse_args()
 
         self.dryRun = self.options.dryRun
@@ -129,7 +152,10 @@ class HomeDirectoryManager:
                 if self.GroupData:
                     GroupData = self.GroupData
                 else:
-                    GroupData = ds.search_s("ou=groups," + base, ldap.SCOPE_SUBTREE, "(&(objectclass=posixGroup)(cn=" + self.group + "))")
+                    GroupData = ds.search_s(
+                        "ou=groups," + base,
+                        ldap.SCOPE_SUBTREE,
+                        "(&(objectclass=posixGroup)(cn=" + self.group + "))")
                     GroupData = GroupData[0]
                 try:
                     groupdns = GroupData[1]['member']
@@ -148,7 +174,8 @@ class HomeDirectoryManager:
                     if dn not in groupdns:
                         continue
                 uid = user[1]['uid'][0]
-                # uidNumber and gidNumber come back from LDAP as strings, we need ints here.
+                # uidNumber and gidNumber come back from LDAP as strings, we
+                # need ints here.
                 uidNumber = int(user[1]['uidNumber'][0])
                 gidNumber = int(user[1]['gidNumber'][0])
                 # Not all users have an sshkey, if not continue
@@ -167,19 +194,22 @@ class HomeDirectoryManager:
                 AllUsers[uid]["sshPublicKey"] = sshPublicKey
                 AllUsers[uid]["modifyTimestamp"] = modifyTimestamp[0]
 
-            #self.changeGid(AllUsers)
-            #self.changeUid(AllUsers)
-            #self.moveUsers(AllUsers)
+            # self.changeGid(AllUsers)
+            # self.changeUid(AllUsers)
+            # self.moveUsers(AllUsers)
             self.updateKeys(AllUsers)
             self.createHomeDir(AllUsers)
 
-        except ldap.UNWILLING_TO_PERFORM, msg:
-            sys.stderr.write("The search returned an error. Error was: %s\n" % msg[0]["info"])
+        except ldap.UNWILLING_TO_PERFORM as msg:
+            sys.stderr.write(
+                "The search returned an error. Error was: %s\n" %
+                msg[0]["info"])
             ds.unbind()
             return 1
         except Exception:
             try:
-                sys.stderr.write("There was a general error, please contact an administrator via the helpdesk. Please include the following stack trace with your report:\n")
+                sys.stderr.write(
+                    "There was a general error, please contact an administrator via the helpdesk. Please include the following stack trace with your report:\n")
                 traceback.print_exc(file=sys.stderr)
                 ds.unbind()
             except Exception:
@@ -207,15 +237,17 @@ class HomeDirectoryManager:
                 continue
 
             self.updates['create'].append(user)
-            self.log("Creating a home directory for %s at %s%s" % (user, self.basedir, user))
-            self.mkdir(self.basedir + user, 0700)
-            self.mkdir(self.basedir + user + '/.ssh', 0700)
+            self.log(
+                "Creating a home directory for %s at %s%s" %
+                (user, self.basedir, user))
+            self.mkdir(self.basedir + user, 0o700)
+            self.mkdir(self.basedir + user + '/.ssh', 0o700)
             self.writeKeys(user, users[user]['sshPublicKey'])
-            self.chmod(self.basedir + user + '/.ssh/authorized_keys', 0600)
+            self.chmod(self.basedir + user + '/.ssh/authorized_keys', 0o600)
             for skeldir, skels in self.skelFiles.iteritems():
                 for skel in skels:
                     self.copy(skeldir + skel, self.basedir + user + "/")
-                    self.chmod(self.basedir + user + "/" + skel, 0600)
+                    self.chmod(self.basedir + user + "/" + skel, 0o600)
             newGid = users[user]['gidNumber']
             newUid = users[user]['uidNumber']
             self.chown(self.basedir + user, newUid, newGid)
@@ -226,7 +258,9 @@ class HomeDirectoryManager:
                     self.chown(os.path.join(root, name), newUid, newGid)
 
         if alreadyCreated != []:
-            self.log("The following users already have a home directory in the SAVE directory: " + ", ".join(alreadyCreated))
+            self.log(
+                "The following users already have a home directory in the SAVE directory: " +
+                ", ".join(alreadyCreated))
 
     def fetchKeys(self, location):
         keys = []
@@ -255,12 +289,19 @@ class HomeDirectoryManager:
 
     # Write a list of keys to the user's authorized_keys file
     def writeKeys(self, user, keys):
-        self.writeFile(self.basedir + user + '/.ssh/authorized_keys', "\n".join(keys) + "\n")
+        self.writeFile(
+            self.basedir +
+            user +
+            '/.ssh/authorized_keys',
+            "\n".join(keys) +
+            "\n")
 
     # Moved deleted users to SAVE
     def moveUsers(self, users):
         for userdir in os.listdir(self.basedir):
-            if os.path.isdir(self.basedir + userdir) and userdir not in self.excludedFromModification:
+            if os.path.isdir(
+                    self.basedir +
+                    userdir) and userdir not in self.excludedFromModification:
                 try:
                     stat = os.stat(self.basedir + userdir)
                     uidNumber = stat.st_uid
@@ -287,28 +328,45 @@ class HomeDirectoryManager:
         # User has been deleted, move user's home directory to SAVE
         self.updates['delete'].append(userdir)
         if os.path.isdir(self.savedir + userdir):
-            self.log(userdir + " exists at both " + self.basedir + userdir + " and " + self.savedir + userdir)
+            self.log(
+                userdir +
+                " exists at both " +
+                self.basedir +
+                userdir +
+                " and " +
+                self.savedir +
+                userdir)
         else:
             self.rename(self.basedir + userdir, self.savedir + userdir)
 
     # Changes the group ownership of a directory when a user's gid changes
     def changeGid(self, users):
         for userdir in os.listdir(self.basedir):
-            if not os.path.isdir(self.basedir + userdir) or userdir in self.excludedFromModification:
+            if not os.path.isdir(
+                    self.basedir +
+                    userdir) or userdir in self.excludedFromModification:
                 continue
 
             stat = os.stat(self.basedir + userdir)
             gid = stat.st_gid
-            if userdir not in users.keys() or users[userdir]["gidNumber"] == gid:
+            if userdir not in users.keys() or users[userdir][
+                    "gidNumber"] == gid:
                 continue
 
             newGid = users[userdir]["gidNumber"]
             self.updates['chgrp'].append(userdir)
-            self.log("Changing group ownership of %s%s to %s; was set to %s" % (self.basedir, userdir, newGid, gid))
+            self.log(
+                "Changing group ownership of %s%s to %s; was set to %s" %
+                (self.basedir, userdir, newGid, gid))
 
             # Python doesn't have a recursive chown, so we have to walk the directory
             # and change everything manually
-            self.logDebug("Doing chgrp for: " + self.basedir + userdir + " with gid: " + str(gid))
+            self.logDebug(
+                "Doing chgrp for: " +
+                self.basedir +
+                userdir +
+                " with gid: " +
+                str(gid))
             self.chown(self.basedir + userdir, -1, newGid)
             for root, dirs, files in os.walk(self.basedir + userdir):
                 for name in files:
@@ -319,17 +377,22 @@ class HomeDirectoryManager:
     # Changes the ownership of a directory when a user's uid changes
     def changeUid(self, users):
         for userdir in os.listdir(self.basedir):
-            if not os.path.isdir(self.basedir + userdir) or userdir in self.excludedFromModification:
+            if not os.path.isdir(
+                    self.basedir +
+                    userdir) or userdir in self.excludedFromModification:
                 continue
 
             stat = os.stat(self.basedir + userdir)
             uid = stat.st_uid
-            if userdir not in users.keys() or users[userdir]["uidNumber"] == uid:
+            if userdir not in users.keys() or users[userdir][
+                    "uidNumber"] == uid:
                 continue
 
             newUid = users[userdir]["uidNumber"]
             self.updates['chown'].append(userdir)
-            self.log("Changing ownership of %s%s to %s; was set to %s" % (self.basedir, userdir, newUid, uid))
+            self.log(
+                "Changing ownership of %s%s to %s; was set to %s" %
+                (self.basedir, userdir, newUid, uid))
             # Python doesn't have a recursive chown, so we have to walk the directory
             # and change everything manually
             self.chown(self.basedir + userdir, newUid, -1)
@@ -341,7 +404,9 @@ class HomeDirectoryManager:
 
     def updateKeys(self, users):
         for userdir in os.listdir(self.basedir):
-            if not os.path.isdir(self.basedir + userdir) or userdir in self.excludedFromModification:
+            if not os.path.isdir(
+                    self.basedir +
+                    userdir) or userdir in self.excludedFromModification:
                 continue
             if userdir not in users.keys():
                 continue
@@ -350,19 +415,24 @@ class HomeDirectoryManager:
             mtime = stat.st_mtime
             d_mtime = datetime.datetime.utcfromtimestamp(mtime)
             d_ldap_mtime = users[userdir]["modifyTimestamp"]
-            d_ldap_mtime = datetime.datetime.strptime(d_ldap_mtime[0:-1], "%Y%m%d%H%M%S")
+            d_ldap_mtime = datetime.datetime.strptime(
+                d_ldap_mtime[0:-1], "%Y%m%d%H%M%S")
             if d_ldap_mtime != d_mtime:
                 # Either the user's entry has been updated, or someone
                 # has been manually mucking with the keys, either way
                 # let's overwrite them
                 self.writeKeys(userdir, users[userdir]['sshPublicKey'])
                 self.updates['key'].append(userdir)
-                self.log("Updating keys for %s at %s" % (userdir, self.basedir + userdir))
-                os.utime(self.basedir + userdir + "/.ssh/authorized_keys", (atime, time.mktime(d_ldap_mtime.timetuple())))
+                self.log(
+                    "Updating keys for %s at %s" %
+                    (userdir, self.basedir + userdir))
+                os.utime(self.basedir + userdir + "/.ssh/authorized_keys",
+                         (atime, time.mktime(d_ldap_mtime.timetuple())))
 
     def log(self, logstring):
         if self.loglevel >= INFO:
-            log = datetime.datetime.now().strftime("%m/%d/%Y - %H:%M:%S - ") + logstring + "\n"
+            log = datetime.datetime.now().strftime(
+                "%m/%d/%Y - %H:%M:%S - ") + logstring + "\n"
             if self.logfile:
                 lf = open(self.logfile, 'a')
                 lf.write(log)
@@ -371,23 +441,42 @@ class HomeDirectoryManager:
                 print log
 
     def log_project(self, user, update_type, project_list):
-        self.updates = {'create': [], 'chgrp': [], 'chown': [], 'rename': [], 'delete': [], 'keys': []}
+        self.updates = {
+            'create': [],
+            'chgrp': [],
+            'chown': [],
+            'rename': [],
+            'delete': [],
+            'keys': []}
         if update_type == 'create':
-            self.log("Created a home directory for %s in project(s): %s" % (user, ','.join(project_list)))
+            self.log(
+                "Created a home directory for %s in project(s): %s" %
+                (user, ','.join(project_list)))
         if update_type == 'key':
-            self.log("User %s may have been modified in LDAP or locally, updating key in project(s): %s" % (user, ','.join(project_list)))
+            self.log(
+                "User %s may have been modified in LDAP or locally, updating key in project(s): %s" %
+                (user, ','.join(project_list)))
         if update_type == 'delete':
-            self.log("Deleting home directory for %s in project(s): %s" % (user, ','.join(project_list)))
+            self.log(
+                "Deleting home directory for %s in project(s): %s" %
+                (user, ','.join(project_list)))
         if update_type == 'chown':
-            self.log("User %s has a new uid, changing ownership in project(s): %s" % (user, ','.join(project_list)))
+            self.log(
+                "User %s has a new uid, changing ownership in project(s): %s" %
+                (user, ','.join(project_list)))
         if update_type == 'chgrp':
-            self.log("User %s has a new gid, changing ownership in project(s): %s" % (user, ','.join(project_list)))
+            self.log(
+                "User %s has a new gid, changing ownership in project(s): %s" %
+                (user, ','.join(project_list)))
         if update_type == 'rename':
-            self.log("User %s has been renamed, moving home directory in project(s): %s" % (user, ','.join(project_list)))
+            self.log(
+                "User %s has been renamed, moving home directory in project(s): %s" %
+                (user, ','.join(project_list)))
 
     def logDebug(self, logstring):
         if self.loglevel >= DEBUG:
-            log = datetime.datetime.now().strftime("%m/%d/%Y - %H:%M:%S - ") + "(Debug) " + logstring + "\n"
+            log = datetime.datetime.now().strftime("%m/%d/%Y - %H:%M:%S - ") + \
+                "(Debug) " + logstring + "\n"
             if self.logfile:
                 lf = open(self.logfile, 'a')
                 lf.write(log)

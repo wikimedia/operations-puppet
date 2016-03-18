@@ -77,7 +77,8 @@ def main():
         config = yaml.safe_load(f)
 
     conn = connect(config['servers'][0], config['user'], config['password'])
-    if args.enable_servicegroups and args.username.startswith(PROJECT_NAME + '.'):
+    if args.enable_servicegroups and args.username.startswith(
+            PROJECT_NAME + '.'):
         groupname = 'cn=%s,ou=servicegroups,%s' % (
             args.username, config['basedn']
         )
