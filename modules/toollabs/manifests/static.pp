@@ -6,7 +6,7 @@ class toollabs::static(
     $web_domain = 'tools.wmflabs.org',
     $ssl_certificate_name = 'star.wmflabs.org',
     $ssl_settings = ssl_ciphersuite('nginx', 'compat'),
-) inherits toollabs {
+) {
     include toollabs::infrastructure
 
     if $ssl_certificate_name != false {
