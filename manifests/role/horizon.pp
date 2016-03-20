@@ -6,6 +6,7 @@ class role::horizon {
     class { 'openstack::horizon::service':
         openstack_version => $::openstack_version,
         novaconfig        => $novaconfig,
+        designateconfig   => $designateconfig,
     }
 
     ferm::service { 'horizon_http':

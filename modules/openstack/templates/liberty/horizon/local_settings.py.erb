@@ -1,6 +1,6 @@
 #####################################################################
 ### THIS FILE IS MANAGED BY PUPPET
-### puppet:///modules/openstack/templates/icehouse/horizon/local_settings.py.erb
+### puppet:///modules/openstack/templates/liberty/horizon/local_settings.py.erb
 #####################################################################
 import os
 
@@ -525,3 +525,6 @@ SITE_BRANDING_LINK = 'https://horizon.wikimedia.org'
 HORIZON_IMAGES_ALLOW_UPLOAD = False
 
 DESIGNATE = { 'records_use_fips': True }
+
+WMFLABSDOTORG_ADMIN_USERNAME = '<%= @designateconfig['wmflabsdotorg_admin'] %>'
+WMFLABSDOTORG_ADMIN_PASSWORD = '<%= @designateconfig['wmflabsdotorg_pass'] %>'
