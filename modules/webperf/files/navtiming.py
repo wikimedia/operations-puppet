@@ -64,6 +64,19 @@ for continent, countries in iso_3166_continent.items():
     for country in countries:
         iso_3166_countries[country] = continent
 
+# Map of ISO 3166 => Country name for the world's top 30 most populous
+# countries as of 1 January 2016.
+iso_3166_top_30 = {
+    'BD': 'Bangladesh', 'BR': 'Brazil', 'CD': 'DR_Congo', 'CN': 'China',
+    'CO': 'Colombia', 'DE': 'Germany', 'EG': 'Egypt', 'ES': 'Spain',
+    'ET': 'Ethiopia', 'FR': 'France', 'GB': 'United_Kingdom',
+    'ID': 'Indonesia', 'IN': 'India', 'IR': 'Iran', 'IT': 'Italy',
+    'JP': 'Japan', 'KE': 'Kenya', 'KR': 'South_Korea', 'MM': 'Myanmar',
+    'MX': 'Mexico', 'NG': 'Nigeria', 'PH': 'Philippines', 'PK': 'Pakistan',
+    'RU': 'Russia', 'TH': 'Thailand', 'TR': 'Turkey', 'TZ': 'Tanzania',
+    'US': 'United_States', 'VN': 'Vietnam', 'ZA': 'South_Africa',
+}
+
 
 def parse_ua(ua):
     """Return a tuple of browser_family and browser_major, or None.
@@ -239,7 +252,9 @@ def handle_navigation_timing(meta):
         site = 'desktop'
     auth = 'anonymous' if event.get('isAnon') else 'authenticated'
 
-    continent = iso_3166_countries.get(event.get('originCountry'))
+    country_code = event.get('originCountry')
+    continent = iso_3166_countries.get(country_code)
+    country_name = iso_3166_top_30.get(country_code)
 
     if 'sslNegotiation' in metrics:
         metrics = {'sslNegotiation': metrics['sslNegotiation']}
@@ -262,6 +277,9 @@ def handle_navigation_timing(meta):
 
         if continent is not None:
             dispatch_stat(prefix, metric, 'by_continent', continent, value)
+
+        if country_name is not None:
+            dispatch_stat(prefix, metric, 'by_country', country_name, value)
 
 
 if __name__ == '__main__':
