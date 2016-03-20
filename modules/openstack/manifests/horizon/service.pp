@@ -3,7 +3,8 @@
 class openstack::horizon::service(
     $openstack_version  = $::openstack::version,
     $webserver_hostname = 'horizon.wikimedia.org',
-    $novaconfig)
+    $novaconfig,
+    $designateconfig)
 {
     # basic horizon packages and config
     include openstack::repo
