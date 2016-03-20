@@ -17,6 +17,41 @@ import yaml
 
 handlers = {}
 
+# Map of continent code => ISO 3166 country codes
+# https://dev.maxmind.com/geoip/legacy/codes/country_continent/
+iso_3166_continent = {
+    'AF': ['AO', 'BF', 'BI', 'BJ', 'BW', 'CD', 'CF', 'CG', 'CI', 'CM', 'CV',
+           'DJ', 'DZ', 'EG', 'EH', 'ER', 'ET', 'GA', 'GH', 'GM', 'GN', 'GQ',
+           'GW', 'KE', 'KM', 'LR', 'LS', 'LY', 'MA', 'MG', 'ML', 'MR', 'MU',
+           'MW', 'MZ', 'NA', 'NE', 'NG', 'RE', 'RW', 'SC', 'SD', 'SH', 'SL',
+           'SN', 'SO', 'ST', 'SZ', 'TD', 'TG', 'TN', 'TZ', 'UG', 'YT', 'ZA',
+           'ZM', 'ZW'],
+    'AS': ['AE', 'AF', 'AM', 'AP', 'AZ', 'BD', 'BH', 'BN', 'BT', 'CC', 'CN',
+           'CX', 'CY', 'GE', 'HK', 'ID', 'IL', 'IN', 'IO', 'IQ', 'IR', 'JO',
+           'JP', 'KG', 'KH', 'KP', 'KR', 'KW', 'KZ', 'LA', 'LB', 'LK', 'MM',
+           'MN', 'MO', 'MV', 'MY', 'NP', 'OM', 'PH', 'PK', 'PS', 'QA', 'SA',
+           'SG', 'SY', 'TH', 'TJ', 'TL', 'TM', 'TW', 'UZ', 'VN', 'YE'],
+    'EU': ['AD', 'AL', 'AT', 'AX', 'BA', 'BE', 'BG', 'BY', 'CH', 'CZ', 'DE',
+           'DK', 'EE', 'ES', 'EU', 'FI', 'FO', 'FR', 'FX', 'GB', 'GG', 'GI',
+           'GR', 'HR', 'HU', 'IE', 'IM', 'IS', 'IT', 'JE', 'LI', 'LT', 'LU',
+           'LV', 'MC', 'MD', 'ME', 'MK', 'MT', 'NL', 'NO', 'PL', 'PT', 'RO',
+           'RS', 'RU', 'SE', 'SI', 'SJ', 'SK', 'SM', 'TR', 'UA', 'VA'],
+    'NA': ['AG', 'AI', 'AN', 'AW', 'BB', 'BL', 'BM', 'BS', 'BZ', 'CA', 'CR',
+           'CU', 'DM', 'DO', 'GD', 'GL', 'GP', 'GT', 'HN', 'HT', 'JM', 'KN',
+           'KY', 'LC', 'MF', 'MQ', 'MS', 'MX', 'NI', 'PA', 'PM', 'PR', 'SV',
+           'TC', 'TT', 'US', 'VC', 'VG', 'VI'],
+    'OC': ['AS', 'AU', 'CK', 'FJ', 'FM', 'GU', 'KI', 'MH', 'MP', 'NC', 'NF',
+           'NR', 'NU', 'NZ', 'PF', 'PG', 'PN', 'PW', 'SB', 'TK', 'TO', 'TV',
+           'UM', 'VU', 'WF', 'WS'],
+    'SA': ['AR', 'BO', 'BR', 'CL', 'CO', 'EC', 'FK', 'GF', 'GY', 'PE', 'PY',
+           'SR', 'UY', 'VE']
+}
+
+iso_3166_countries = {}
+for continent, countries in iso_3166_continent.items():
+    for country in countries:
+        iso_3166_countries[country] = continent
+
 
 def parse_ua(ua):
     """Return a tuple of browser_family and browser_major, or None.
@@ -192,9 +227,7 @@ def handle_navigation_timing(meta):
         site = 'desktop'
     auth = 'anonymous' if event.get('isAnon') else 'authenticated'
 
-    # Currently unused:
-    # bits_cache = meta.get('recvFrom', '').split('.')[0]
-    # wiki = meta.get('wiki', '')
+    continent = iso_3166_countries.get(event.get('originCountry'))
 
     if 'sslNegotiation' in metrics:
         metrics = {'sslNegotiation': metrics['sslNegotiation']}
@@ -214,6 +247,10 @@ def handle_navigation_timing(meta):
 
         if is_sane_experimental(value):
             dispatch_stat(prefix_experimental, metric, 'overall', value)
+
+        if continent is not None:
+            dispatch_stat(prefix, metric, 'by_continent', continent, value)
+
 
 if __name__ == '__main__':
     ap = argparse.ArgumentParser(description='NavigationTiming subscriber')
