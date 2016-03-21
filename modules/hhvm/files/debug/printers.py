@@ -1043,8 +1043,6 @@ def build_libstdcxx_dictionary():
 
     # For _GLIBCXX_BEGIN_NAMESPACE_VERSION.
     vers = '(__7::)?'
-    # For _GLIBCXX_BEGIN_NAMESPACE_CONTAINER.
-    container = '(__cxx1998::' + vers + ')?'
 
     # libstdc++ objects requiring pretty-printing.
     # In order from:
