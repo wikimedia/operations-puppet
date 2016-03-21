@@ -65,9 +65,11 @@ for continent, countries in iso_3166_continent.items():
         iso_3166_countries[country] = continent
 
 # Map of ISO 3166-1 country codes to country name, with entries for the world's
-# 40 most populous countries as of 1 January 2016. About 83% of the world's
-# population lives in one of these countries.
-iso_3166_top_40 = {
+# 40 most populous countries as of 1 January 2016, plus Australia. About 83% of
+# the world's population lives in one of these countries. Australia is included
+# because it has a large user base while being remote from anywhere else.
+# Australia
+iso_3166_top_40_plus_australia = {
     'AR': 'Argentina',      'BD': 'Bangladesh',       'BR': 'Brazil',
     'CA': 'Canada',         'CD': 'DR Congo',         'CN': 'China',
     'CO': 'Colombia',       'DE': 'Germany',          'DZ': 'Algeria',
@@ -81,7 +83,7 @@ iso_3166_top_40 = {
     'SA': 'Saudi Arabia',   'SD': 'Sudan',            'TH': 'Thailand',
     'TR': 'Turkey',         'TZ': 'Tanzania',         'UA': 'Ukraine',
     'UG': 'Uganda',         'US': 'United States',    'VN': 'Vietnam',
-    'ZA': 'South Africa',
+    'ZA': 'South Africa',   'AU': 'Australia',
 }
 
 
@@ -261,7 +263,7 @@ def handle_navigation_timing(meta):
 
     country_code = event.get('originCountry')
     continent = iso_3166_countries.get(country_code)
-    country_name = iso_3166_top_40.get(country_code)
+    country_name = iso_3166_top_40_plus_australia.get(country_code)
 
     if 'sslNegotiation' in metrics:
         metrics = {'sslNegotiation': metrics['sslNegotiation']}
