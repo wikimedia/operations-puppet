@@ -18,5 +18,6 @@ class citoid( $zotero_host,
         config          => template('citoid/config.yaml.erb'),
         healthcheck_url => '',
         has_spec        => true,
+        deployment      => 'scap3',
     }
 }
