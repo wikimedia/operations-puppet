@@ -41,7 +41,6 @@ Looks for configuration file: /etc/phab_epipe.conf
     host        = <phab_host>
 
 """
-import base64
 import os
 import re
 import subprocess
@@ -276,8 +275,8 @@ def main():
                         else:
                             err = 'Unknown email body format: from %s to %s'
                             dest = str(dest_addresses)
-                            raise EmailParsingError(error % (src_address,
-                                                             dest))
+                            raise EmailParsingError(err % (src_address,
+                                                           dest))
 
                 else:
                     log('attaching file')
@@ -393,7 +392,6 @@ def main():
         # email parsing logic.
         userinfo = phab.user.query(emails=[src_addy])
         if userinfo.response:
-            from email.mime.image import MIMEImage
             from email.mime.multipart import MIMEMultipart
             from email.mime.text import MIMEText
             body += "\n\n#%s" % (address_routing[route_address],)
