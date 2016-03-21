@@ -42,7 +42,7 @@ iso_3166_continent = {
         'ME', 'MK', 'MT', 'NL', 'NO', 'PL', 'PT', 'RO', 'RS', 'RU', 'SE', 'SI',
         'SJ', 'SK', 'SM', 'TR', 'UA', 'VA'
     ],
-    'North_America': [
+    'North America': [
         'AG', 'AI', 'AN', 'AW', 'BB', 'BL', 'BM', 'BS', 'BZ', 'CA', 'CR', 'CU',
         'DM', 'DO', 'GD', 'GL', 'GP', 'GT', 'HN', 'HT', 'JM', 'KN', 'KY', 'LC',
         'MF', 'MQ', 'MS', 'MX', 'NI', 'PA', 'PM', 'PR', 'SV', 'TC', 'TT', 'US',
@@ -53,7 +53,7 @@ iso_3166_continent = {
         'NU', 'NZ', 'PF', 'PG', 'PN', 'PW', 'SB', 'TK', 'TO', 'TV', 'UM', 'VU',
         'WF', 'WS'
     ],
-    'South_America': [
+    'South America': [
         'AR', 'BO', 'BR', 'CL', 'CO', 'EC', 'FK', 'GF', 'GY', 'PE', 'PY', 'SR',
         'UY', 'VE'
     ]
@@ -64,17 +64,24 @@ for continent, countries in iso_3166_continent.items():
     for country in countries:
         iso_3166_countries[country] = continent
 
-# Map of ISO 3166 => Country name for the world's top 30 most populous
-# countries as of 1 January 2016.
-iso_3166_top_30 = {
-    'BD': 'Bangladesh', 'BR': 'Brazil', 'CD': 'DR_Congo', 'CN': 'China',
-    'CO': 'Colombia', 'DE': 'Germany', 'EG': 'Egypt', 'ES': 'Spain',
-    'ET': 'Ethiopia', 'FR': 'France', 'GB': 'United_Kingdom',
-    'ID': 'Indonesia', 'IN': 'India', 'IR': 'Iran', 'IT': 'Italy',
-    'JP': 'Japan', 'KE': 'Kenya', 'KR': 'South_Korea', 'MM': 'Myanmar',
-    'MX': 'Mexico', 'NG': 'Nigeria', 'PH': 'Philippines', 'PK': 'Pakistan',
-    'RU': 'Russia', 'TH': 'Thailand', 'TR': 'Turkey', 'TZ': 'Tanzania',
-    'US': 'United_States', 'VN': 'Vietnam', 'ZA': 'South_Africa',
+# Map of ISO 3166-1 country codes to country name, with entries for the world's
+# 40 most populous countries as of 1 January 2016. About 83% of the world's
+# population lives in one of these countries.
+iso_3166_top_40 = {
+    'AR': 'Argentina',      'BD': 'Bangladesh',       'BR': 'Brazil',
+    'CA': 'Canada',         'CD': 'DR Congo',         'CN': 'China',
+    'CO': 'Colombia',       'DE': 'Germany',          'DZ': 'Algeria',
+    'EG': 'Egypt',          'ES': 'Spain',            'ET': 'Ethiopia',
+    'FR': 'France',         'GB': 'United Kingdom',   'ID': 'Indonesia',
+    'IN': 'India',          'IQ': 'Iraq',             'IR': 'Iran',
+    'IT': 'Italy',          'JP': 'Japan',            'KE': 'Kenya',
+    'KR': 'South Korea',    'MA': 'Morocco',          'MM': 'Myanmar',
+    'MX': 'Mexico',         'NG': 'Nigeria',          'PH': 'Philippines',
+    'PK': 'Pakistan',       'PL': 'Poland',           'RU': 'Russia',
+    'SA': 'Saudi Arabia',   'SD': 'Sudan',            'TH': 'Thailand',
+    'TR': 'Turkey',         'TZ': 'Tanzania',         'UA': 'Ukraine',
+    'UG': 'Uganda',         'US': 'United States',    'VN': 'Vietnam',
+    'ZA': 'South Africa',
 }
 
 
@@ -178,7 +185,7 @@ def parse_ua(ua):
 def dispatch_stat(*args):
     args = list(args)
     value = args.pop()
-    name = '.'.join(args)
+    name = '.'.join(arg.replace(' ', '_') for arg in args)
     stat = '%s:%s|ms' % (name, value)
     sock.sendto(stat.encode('utf-8'), addr)
 
@@ -254,7 +261,7 @@ def handle_navigation_timing(meta):
 
     country_code = event.get('originCountry')
     continent = iso_3166_countries.get(country_code)
-    country_name = iso_3166_top_30.get(country_code)
+    country_name = iso_3166_top_40.get(country_code)
 
     if 'sslNegotiation' in metrics:
         metrics = {'sslNegotiation': metrics['sslNegotiation']}
