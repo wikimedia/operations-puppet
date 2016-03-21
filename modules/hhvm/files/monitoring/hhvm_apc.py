@@ -6,7 +6,6 @@
   Diamond collector for HHVM APC stats.
 
 """
-import json
 import re
 import urllib2
 
