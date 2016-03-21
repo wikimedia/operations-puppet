@@ -2203,6 +2203,11 @@ node /^ocg100[123]\.eqiad\.wmnet$/ {
     role ocg
 }
 
+node /^oresdb100[12]\.eqiad\.wmnet$/ {
+    role ores::redis
+    include ::standard
+}
+
 # VisualEditor performance testing rig
 node 'osmium.eqiad.wmnet' {
     role ve
