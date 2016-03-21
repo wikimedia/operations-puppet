@@ -19,9 +19,10 @@
 
 from socket import getfqdn
 import warnings
-warnings.filterwarnings('ignore')
 import apt
 from xml.dom.minidom import Document
+
+warnings.filterwarnings('ignore')
 
 
 # shamelessly stolen from /usr/lib/update-notifier/apt_check.py ported/modified
