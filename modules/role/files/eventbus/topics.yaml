@@ -5,7 +5,50 @@
 # be produced to topics.
 #
 
+# Topics here are prefixd with DCs in order to differentiate
+# the source of events in aggregate Kafka clusters in each DC.
+# That is, the main (local) Kafka cluster in each DC will only have
+# the topics prefixed with that DC, whereas the aggregate clusters
+# will replicate topics from main local and main remote clusters.
+# This allows (with extra effort) consumers to balance themselves between
+# DCs.  For some backround, see:
+# - https://phabricator.wikimedia.org/T127718
+# - https://phabricator.wikimedia.org/T123954
+
+
+eqiad.mediawiki.page_delete:
+  schema_name: page_delete
+codfw.mediawiki.page_delete:
+  schema_name: page_delete
+
+eqiad.mediawiki.page_move:
+  schema_name: page_move
+codfw.mediawiki.page_move:
+  schema_name: page_move
+
+eqiad.mediawiki.page_restore:
+  schema_name: page_restore
+codfw.mediawiki.page_restore:
+  schema_name: page_restore
+
+eqiad.mediawiki.revision_visibility_set:
+  schema_name: revision_visibility_set
+codfw.mediawiki.revision_visibility_set:
+  schema_name: revision_visibility_set
+
+eqiad.mediawiki.revision_create:
+  schema_name: revision_create
+codfw.mediawiki.revision_create:
+  schema_name: revision_create
+
+eqiad.wmf.resource_change:
+  schema_name: resource_change
+codfw.wmf.resource_change:
+  schema_name: resource_change
+
 # TODO: page_edit will be deprecated in favor of revision_create.
+# TODO: Remove these non DC prefixed topic configs when
+#       Mediawiki begins producing to DC named topics.
 mediawiki.page_edit:
   schema_name: page_edit
 
