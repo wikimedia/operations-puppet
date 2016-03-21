@@ -6,7 +6,6 @@
 # Written on 2010/08/14 by Mark Bergsma <mark@wikimedia.org>
 
 import os.path
-import stat
 import sys
 import tempfile
 
@@ -55,7 +54,8 @@ def filterServices(sourcePath, newFile, hosts):
 
 if __name__ == '__main__':
     if len(sys.argv) < 3:
-        print "\n\tUsage:\n\t\t%s <hosts.cfg> <resources1.cfg> [ <resources2.cfg> ... ]\n" % sys.argv[0]
+        print("\n\tUsage:\n\t\t%s <hosts.cfg> <resources1.cfg> "
+              "[ <resources2.cfg> ... ]\n" % sys.argv[0])
         sys.exit(0)
 
     hosts = readHostsFile(sys.argv[1])
