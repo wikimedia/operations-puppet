@@ -1041,11 +1041,6 @@ def build_libstdcxx_dictionary():
 
     libstdcxx_printer = Printer("libstdc++-v6")
 
-    # For _GLIBCXX_BEGIN_NAMESPACE_VERSION.
-    vers = '(__7::)?'
-    # For _GLIBCXX_BEGIN_NAMESPACE_CONTAINER.
-    container = '(__cxx1998::' + vers + ')?'
-
     # libstdc++ objects requiring pretty-printing.
     # In order from:
     # http://gcc.gnu.org/onlinedocs/libstdc++/latest-doxygen/a01847.html
