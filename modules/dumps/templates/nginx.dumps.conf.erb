@@ -23,9 +23,10 @@ server {
       limit_conn addr 3;
    }
 
-   rewrite ^/other/(iOS|PlayBook|win8|android)(|/.*)$ $scheme://releases.wikimedia.org/mobile/$1$2  break;
-   rewrite ^/(other/)?mediawiki(|/.*)$                $scheme://releases.wikimedia.org/mediawiki$2 break;
-   rewrite ^/fundraising(|/.*)$                       /other/fundraising$1 permanent;
+   rewrite ^/other/(iOS|PlayBook|win8|android)(|/.*)$ https://releases.wikimedia.org/mobile/$1$2  break;
+   rewrite ^/(other/)?mediawiki(|/.*)$                https://releases.wikimedia.org/mediawiki$2 break;
+   rewrite ^/fundraising(|/.*)$                       https://dumps.wikimedia.org/other/fundraising$1 permanent;
+   rewrite ^                                          https://dumps.wikimedia.org$request_uri? permanent;
 
    # for now we proxy for html (openzim style) dumps
    location /htmldumps {
