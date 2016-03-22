@@ -1,5 +1,6 @@
 class docker::engine(
     $version = '1.9.1-0~jessie',
+    $declare_service = true,
 ) {
     apt::repository { 'docker':
         uri        => 'https://apt.dockerproject.org/repo',
@@ -44,5 +45,12 @@ class docker::engine(
         mode    => '0440',
         notify  => Service['docker'],
         require => File['/root/.docker'],
+    }
+
+    if $declare_service {
+        service { 'docker':
+            ensure    => running,
+            subscribe => Package['docker-engine'],
+        }
     }
 }
