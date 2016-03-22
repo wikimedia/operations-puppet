@@ -9,6 +9,11 @@ sub cluster_fe_recv {
 		error 667 "CORS";
 	}
 
+	// Homepage redirect to commons
+	if (req.url == "/") {
+		error 666 "Moved Permanently";
+	}
+
 	call upload_common_recv;
 
 	// Look for a "download" request parameter
@@ -86,7 +91,7 @@ sub cluster_fe_deliver {
 
 sub cluster_fe_err_synth {
 	// Handle CORS preflight requests
-        if (obj.status == 667) {
+	if (obj.status == 667) {
 		set obj.status = 200;
 		set obj.response = "OK";
 		set obj.http.Connection = "keep-alive";
@@ -98,6 +103,15 @@ sub cluster_fe_err_synth {
 		set obj.http.Access-Control-Allow-Methods = "GET, HEAD, OPTIONS";
 		set obj.http.Access-Control-Max-Age = "86400";
 
+		return (deliver);
+	}
+
+	// Homepage redirect to commons
+	if (obj.status == 666) {
+		set obj.status = 301;
+		set obj.http.Location = "https://commons.wikimedia.org/";
+		set obj.http.Connection = "keep-alive";
+		set obj.http.Content-Length = "0";
 		return (deliver);
 	}
 }
