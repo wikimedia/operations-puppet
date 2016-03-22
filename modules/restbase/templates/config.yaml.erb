@@ -7,6 +7,7 @@ default_project: &default_project
     - path: projects/wmf_default.yaml
       options: &default_options
         table:
+          backend: cassandra
           hosts: [<%= Array(@seeds).join(',') %>]
           keyspace: system
           localDc: <%= @cassandra_localDc %>
