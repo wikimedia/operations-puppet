@@ -93,15 +93,14 @@ if 'cnames' in config:
         )
 
     output += """
-function nxdomain(dq)
-    print("Intercepting NXDOMAIN for: ",dq.qname:toString())
-    if cnamemapping[dq.qname]
+function preresolve(remoteip, domain, qtype)
+    if cnamemapping[domain]
     then
-        dq.rcode=0 -- make it a normal answer
-        dq:addAnswer(pdns.CNAME, cnamemapping[dq.qname])
-        return true
+        return 0, {
+            {qtype=pdns.CNAME, content=cnamemapping[domain], ttl=300, place="1"},
+        }
     end
-    return false
+    return -1, {}
 end
 """
 
