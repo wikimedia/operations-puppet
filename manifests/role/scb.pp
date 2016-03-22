@@ -7,6 +7,8 @@ class role::scb {
     include role::citoid
     include role::cxserver
     include role::changeprop
+    include role::ores::web
+    include role::ores::worker
 
     include standard
     include base::firewall
