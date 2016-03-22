@@ -9,6 +9,9 @@ class role::analytics_cluster::refinery {
     # by the CDH packages.
     Class['role::analytics_cluster::hadoop::client'] -> Class['role::analytics_cluster::refinery']
 
+    # Clone mediawiki/event-schemas so refinery can use them.
+    include ::eventschemas
+
     # Some refinery python scripts use docopt for CLI parsing.
     if !defined(Package['python-docopt']) {
         package { 'python-docopt':
