@@ -38,6 +38,12 @@
 #   Path to ERb template to reconfigure logging.  You probably don't need to
 #   change this.  Default: eventlogging/log.cfg.erb
 #
+# [*reload_on]
+#   Reload eventlogging-service if any of the provided Puppet
+#   resources have changed.  This should be an array of alreday
+#   declared puppet resources.  E.g.
+#   [File['/path/to/topicconfig.yaml'], Class['::something::else']]
+#
 define eventlogging::service::service(
     $schemas_path,
     $topic_config,
@@ -50,6 +56,7 @@ define eventlogging::service::service(
     $statsd              = 'localhost:8125',
     $statsd_prefix       = "eventlogging.service.${title}",
     $statsd_use_hostname = false,
+    $reload_on           = undef,
 )
 {
     include ::rsyslog
@@ -116,6 +123,18 @@ define eventlogging::service::service(
             File["/etc/rsyslog.d/80-${service_name}.conf"],
             Package['python-tornado'],
         ]
+    }
+
+    # eventlogging-service can be SIGHUPed via service reload.
+    # E.g. if topic config or schemas change, a reload
+    # will cause eventlogging-service to reload these.
+    # Note that this does not restart the service, so no
+    # requests in flight should be lost.
+    # This will only happen if $reload_on is provided.
+    exec { "reload ${service_name}":
+        command     => "/bin/systemctl reload ${service_name}",
+        refreshonly => true,
+        subscribe   => $reload_on,
     }
 
     # Generate icinga alert if eventlogging-service-$basename is not running.
