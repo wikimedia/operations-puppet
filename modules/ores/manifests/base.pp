@@ -32,13 +32,6 @@ class ores::base(
                     'myspell-pt',
                     'myspell-uk')
 
-    file { '/srv':
-        ensure => directory,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0775',
-    }
-
     file { [
         '/srv/ores',
     ]:
