@@ -97,7 +97,7 @@ define mysql_wmf::mylvmbackup(
     # PATH seems to be funky in flock subshell(?), and mylvmbackup runs
     # commands like lvm and mount unqualfied.  Reconstruct PATH inside
     # of the flock command appropriately.
-    $command = "/usr/bin/flock -n /var/lock/mylvmbackup-${title} -c 'PATH=/usr/bin:/sbin:/bin /usr/bin/mylvmbackup --socket ${socket} --hooksdir ${hooksdir} --vgname ${vgname} --lvname ${lvname} --mountdir ${mountdir} --backuptype none 2>&1 >> /var/log/mylvmbackup/${title}.log'"
+    $command = "/usr/bin/flock -n /var/lock/mylvmbackup-${title} -c 'PATH=/usr/bin:/sbin:/bin /usr/bin/mylvmbackup --socket ${socket} --hooksdir ${hooksdir} --vgname ${vgname} --lvname ${lvname} --mountdir ${mountdir} --backuptype none &>> /var/log/mylvmbackup/${title}.log'"
     cron { "mylvmbackup-${title}":
         ensure   => $ensure,
         command  => $command,
