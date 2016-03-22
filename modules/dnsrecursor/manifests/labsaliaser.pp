@@ -3,7 +3,6 @@ class dnsrecursor::labsaliaser(
     $password,
     $projects,
     $nova_api_url,
-    $cnames,
     $alias_file,
 ) {
 
@@ -15,7 +14,6 @@ class dnsrecursor::labsaliaser(
         'projects'     => $projects,
         'output_path'  => $alias_file,
         'nova_api_url' => $nova_api_url,
-        'cnames'       => $cnames,
     }
 
     file { '/etc/labs-dns-alias.yaml':
