@@ -2382,7 +2382,7 @@ node /^sca[12]00[12]\.(eqiad|codfw)\.wmnet$/ {
 }
 
 node /^scb[12]00[12]\.(eqiad|codfw)\.wmnet$/ {
-    role scb
+    role scb, ores::web, ores::worker
 }
 
 # Codfw, eqiad ldap servers, aka ldap-$::site
