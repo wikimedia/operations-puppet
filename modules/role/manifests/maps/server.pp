@@ -4,6 +4,8 @@ class role::maps::server {
     include standard
     include ::postgresql::postgis
     include ::cassandra
+    include ::cassandra::metrics
+    include ::cassandra::logging
     include ::kartotherian
     include ::tilerator
 
