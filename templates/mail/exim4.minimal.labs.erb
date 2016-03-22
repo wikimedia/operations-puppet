@@ -13,6 +13,9 @@ local_from_check = false
 # No frozen messages please
 ignore_bounce_errors_after = 0h
 
+add_environment = <; PATH=/bin:/usr/bin
+keep_environment =
+
 # Logging
 log_selector = +address_rewrite +all_parents +delivery_size +deliver_time +incoming_interface +incoming_port +smtp_confirmation +smtp_protocol_error +smtp_syntax_error
 message_logs = false
