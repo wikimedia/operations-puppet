@@ -20,9 +20,11 @@ We just let all errors crash the script since that makes it
 exit with a non zero status code and thus prevents login, which
 is the behavior we want
 """
+import argparse
 import ldap
 import yaml
-import argparse
+import sys
+
 
 with open('/etc/wmflabs-project') as f:
     PROJECT_NAME = f.read().strip()
@@ -30,6 +32,8 @@ with open('/etc/wmflabs-project') as f:
 
 def connect(server, username, password):
     conn = ldap.initialize('ldap://%s:389' % server)
+    conn.set_option(ldap.OPT_NETWORK_TIMEOUT, 3.0)
+    conn.set_option(ldap.OPT_TIMEOUT, 5)
     conn.protocol_version = ldap.VERSION3
     conn.start_tls_s()
     conn.simple_bind_s(username, password)
@@ -62,6 +66,16 @@ def get_group_keys(conn, groupname):
         return []
 
 
+def robust_connect(servers, user, password, position=0):
+    try:
+        return connect(servers[position], user, password)
+    except ldap.SERVER_DOWN as e:
+        if position == len(servers) + 1:
+            return
+        position += 1
+        return robust_connect(servers, user, password, position)
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('username', help='Username to list ssh keys for')
@@ -76,7 +90,13 @@ def main():
     with open('/etc/ldap.yaml') as f:
         config = yaml.safe_load(f)
 
-    conn = connect(config['servers'][0], config['user'], config['password'])
+    conn = robust_connect(config['servers'],
+                          config['user'],
+                          config['password'])
+
+    if not conn:
+        sys.exit(1)
+
     if args.enable_servicegroups and args.username.startswith(PROJECT_NAME + '.'):
         groupname = 'cn=%s,ou=servicegroups,%s' % (
             args.username, config['basedn']
