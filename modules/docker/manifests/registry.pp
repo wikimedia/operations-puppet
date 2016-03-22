@@ -23,7 +23,7 @@ class docker::registry(
             },
         },
         'http'     => {
-            'addr' => ':5000',
+            'addr' => ':443',
             'host' => $::fqdn,
             'tls'  => {
                 # FIXME: YOU SHOULD FEEL BAD ABOUT HARDCODING
