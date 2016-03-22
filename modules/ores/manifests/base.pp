@@ -32,21 +32,11 @@ class ores::base(
                     'myspell-pt',
                     'myspell-uk')
 
-    file { '/srv':
+    file { '/srv/ores':
         ensure => directory,
-        owner  => 'root',
-        group  => 'root',
+        owner  => 'www-data',
+        group  => 'www-data',
         mode   => '0775',
-    }
-
-    file { [
-        '/srv/ores',
-    ]:
-        ensure  => directory,
-        owner   => 'www-data',
-        group   => 'www-data',
-        mode    => '0775',
-        require => File['/srv'],
     }
 
     git::clone { 'ores-wm-config':
