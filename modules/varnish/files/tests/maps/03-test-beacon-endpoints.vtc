@@ -1,4 +1,4 @@
-varnishtest "Maps frontend basic caching"
+varnishtest "WMF Frontend beacon endpoints"
 
 server s1 {
     rxreq
@@ -6,7 +6,7 @@ server s1 {
 } -start
 
 varnish v1 -arg "-p vcc_err_unref=false" -vcl+backend {
-    backend ipv4_127_0_0_2  {
+    backend vtc_backend {
         .host = "${s1_addr}"; .port = "${s1_port}";
     }
 
@@ -14,13 +14,8 @@ varnish v1 -arg "-p vcc_err_unref=false" -vcl+backend {
 } -start
 
 client c1 {
-    txreq -url "/?foo=bar"
+    # Logging beacon endpoints
+    txreq -url "/beacon/something"
     rxresp
-    expect resp.status == 200
-
-    delay 1
-
-    txreq -url "/?foo=bar"
-    rxresp
-    expect resp.http.age == 1
+    expect resp.status == 204
 } -run
