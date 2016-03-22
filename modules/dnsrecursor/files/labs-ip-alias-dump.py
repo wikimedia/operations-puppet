@@ -94,7 +94,8 @@ if 'cnames' in config:
 
     output += """
 function preresolve(remoteip, domain, qtype)
-    if cnamemapping[domain]
+
+    if qtype == pdns.CNAME and cnamemapping[domain]
     then
         return 0, {
             {qtype=pdns.CNAME, content=cnamemapping[domain], ttl=300, place="1"},
