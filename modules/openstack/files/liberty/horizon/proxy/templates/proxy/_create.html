@@ -1,0 +1,12 @@
+{% extends "horizon/common/_modal_form.html" %}
+{% load i18n %}
+
+{% block form_attrs %}enctype="multipart/form-data"{% endblock %}
+
+
+{% block modal-body-right %}
+  <h3>{% trans "Description:" %}</h3>
+  <p>
+     {% trans "We can put some useful text explaining the form here." %}
+  </p>
+{% endblock %}
