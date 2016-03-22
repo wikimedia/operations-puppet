@@ -150,6 +150,12 @@ director <%= director_name %> <%= director['type'] %> {
 <%
 	backends.each do |backend|
 		name = /^[0-9\.]+$/.match(backend) ? "ipv4_" + backend.gsub(".", "_") : "be_" + backend.split(".")[0].gsub("-", "_")
+
+		# Override backend name for test VCL files. This way we can use
+		# "vtc_backend" as the backend name in our VTC tests.
+		if @varnish_testing
+			name = "vtc_backend";
+		end
 -%>
 	{
 		.backend = <%= name %>;
