@@ -10,6 +10,7 @@
 #
 class role::eventbus::eventbus {
     require ::eventlogging
+    require ::eventschemas
     require ::role::kafka::main::config
 
     # eventlogging code for eventbus is configured to deploy
@@ -43,11 +44,19 @@ class role::eventbus::eventbus {
         eventlogging_path => $eventlogging_path,
         # TODO: Deploy mediawiki/event-schemas separately
         # from the submodule in EventLogging repo?
-        schemas_path      => "${eventlogging_path}/config/schemas/jsonschema",
+        schemas_path      => "${::eventschemas::path}/jsonschema",
         topic_config      => '/etc/eventbus/topics.yaml',
         outputs           => $outputs,
         statsd            => hiera('statsd'),
         statsd_prefix     => 'eventbus',
+        # The service will be reloaded (SIGHUPed, not restarted)
+        # if any of these resources change.
+        reload_on         => [
+            # Reload if mediawiki/event-schemas has a change.
+            Class['::eventschemas'],
+            # Reload if topic config has a change.
+            File['/etc/eventbus/topics.yaml'],
+        ]
     }
 
     # Allow traffic to eventlogging-service on $port
