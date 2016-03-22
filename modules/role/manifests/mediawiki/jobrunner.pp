@@ -9,11 +9,4 @@ class role::mediawiki::jobrunner {
         check_command => 'check_http_jobrunner',
         retries       => 2,
     }
-
-    # Bump safety margin until T130364 analysed further
-    sysctl::parameters { 'jobrunner_conntrack':
-        values => {
-            'net.ipv4.netfilter.ip_conntrack_max' => '524288',
-        },
-    }
 }
