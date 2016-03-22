@@ -175,6 +175,23 @@ class openstack::horizon::service(
         require => Package['python-designate-dashboard', 'openstack-dashboard'],
     }
 
+    # Proxy panel
+    file { '/usr/lib/python2.7/dist-packages/wikimediaproxydashboard':
+        source  => "puppet:///modules/openstack/${openstack_version}/horizon/proxy",
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0644',
+        require => Package['python-designate-dashboard', 'openstack-dashboard'],
+        recurse => true
+    }
+    file { '/usr/share/openstack-dashboard/openstack_dashboard/local/enabled/_1922_project_proxy_panel.py':
+        source  => "puppet:///modules/openstack/${openstack_version}/horizon/proxy_enable.py",
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0644',
+        require => Package['python-designate-dashboard', 'openstack-dashboard'],
+    }
+
     # Monkeypatches for Horizon customization
     file { '/usr/lib/python2.7/dist-packages/horizon/overrides.py':
         source  => "puppet:///modules/openstack/${openstack_version}/horizon/overrides.py",
