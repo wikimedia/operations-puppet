@@ -80,7 +80,7 @@ class VarnishCallbackHandler:
         while self.keep_running:
             ret = self.vap.Dispatch(self.vap_callback)
             if ret == 0:
-                time.sleep(0.1)
+                time.sleep(0.01)
 
     def vap_callback(self, vap, cbd, priv):
         """Callback passed to varnishapi.VarnishLog.Dispatch.
