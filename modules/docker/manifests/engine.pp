@@ -42,7 +42,7 @@ class docker::engine(
         owner   => 'root',
         group   => 'docker',
         mode    => '0440',
-        notify  => Base::Service_unit['docker'],
+        notify  => Service['docker'],
         require => File['/root/.docker'],
     }
 }
