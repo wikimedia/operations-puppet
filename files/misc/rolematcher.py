@@ -1,5 +1,5 @@
-# -*- coding: utf-8 -*-
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
 '''
 This script parses the packet-loss.log file and for each server entry
@@ -17,6 +17,7 @@ PacketLossLogTailer.py is the regular point of entry.
 
 import re
 import urllib2
+import httplib
 import json
 import sys
 
@@ -90,7 +91,8 @@ def parse(data):
     for row in data:
         # pybal outputs python dictionaries but we are not going to use eval(),
         # hence make the dictionary JSON compatible.
-        row = row.strip().replace('"', '').replace("'", '"').replace('True', 'true').replace('False', 'false')
+        row = row.strip().replace('"', '').replace("'", '"')
+        row = row.replace('True', 'true').replace('False', 'false')
         if row == '':
             sections.append(section)
             section = []
@@ -178,20 +180,23 @@ def init():
                             elements['%s-%s' % (dc, role)] = True
                             matchers.append(matcher)
                     else:
-                        matcher = RoleMatcher('%s_%s_%s' % (dc, role, prefix), '%s([0-9]+)\.%s' % (prefix, suffix), start, end)
+                        matcher = RoleMatcher('%s_%s_%s' % (dc, role, prefix),
+                                              '%s([0-9]+)\.%s' % (prefix, suffix), start, end)
                         matchers.append(matcher)
     return matchers
 
 
 if __name__ == '__main__':
     if len(sys.argv) != 2:
-        print 'Please specify path to packetloss log file, call this file only for testing purposes.'
+        print('Please specify path to packetloss log file, '
+              'call this file only for testing purposes.')
         sys.exit(-1)
     else:
         path = sys.argv[1]
 
     matchers = init()
-    line_matcher = re.compile('^\[(?P<date>[^]]+)\] (?P<server>[^ ]+) lost: \((?P<percentloss>[^ ]+) \+\/- (?P<margin>[^)]+)\)%')
+    line_matcher = re.compile('^\[(?P<date>[^]]+)\] (?P<server>[^ ]+) lost: '
+                              '\((?P<percentloss>[^ ]+) \+\/- (?P<margin>[^)]+)\)%')
     fh = open(path, 'r')
     for line in fh:
         regMatch = line_matcher.match(line)
