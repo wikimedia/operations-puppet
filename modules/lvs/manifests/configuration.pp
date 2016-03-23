@@ -53,7 +53,10 @@ class lvs::configuration {
 
     $pybal = {
         'bgp' => hiera('lvs::configuration::bgp', 'yes'),
+        # FIXME - top-scope var without namespace, will break in puppet 2.8
+        # lint:ignore:variable_scope
         'bgp-peer-address' => $hostname ? {
+        # lint:endignore
             /^lvs100[1-3]$/ => '208.80.154.196', # cr1-eqiad
             /^lvs100[4-6]$/ => '208.80.154.197', # cr2-eqiad
             /^lvs100[789]$/ => '208.80.154.196', # cr1-eqiad

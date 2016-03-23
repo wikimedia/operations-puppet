@@ -118,7 +118,10 @@ class role::cache::text {
         fe_mem_gb        => ceiling(0.125 * $::memorysize_mb / 1024.0),
         runtime_params   => ['default_ttl=2592000'],
         app_directors    => $app_directors,
+        # FIXME - top-scope var without namespace, will break in puppet 2.8
+        # lint:ignore:variable_scope
         app_be_opts      => $app_be_opts,
+        # lint:endignore
         fe_vcl_config    => $fe_vcl_config,
         be_vcl_config    => $be_vcl_config,
         fe_extra_vcl     => ['text-common', 'zero', 'normalize_path', 'geoip'],
