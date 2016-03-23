@@ -73,4 +73,8 @@ class scap::master(
             'ALL = (root) NOPASSWD: /usr/local/bin/scap-master-sync',
         ]
     }
+
+
+    $agent_keys = hiera_hash('keyholder::agents', undef)
+    create_resources('keyholder::agent', $agent_keys)
 }
