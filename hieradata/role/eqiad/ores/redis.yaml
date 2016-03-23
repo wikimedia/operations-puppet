@@ -1,0 +1,3 @@
+ores::redis::clients:
+  - scb1001.eqiad.wmnet
+  - scb1002.eqiad.wmnet
