@@ -7,11 +7,6 @@ class role::deployment::server(
     # Can't include this while scap is present on the deployment server:
     # include misc::deployment::scripts
     include role::deployment::mediawiki
-    # NOTE: keyholder_group for role::deployment::services
-    #       is overridden in hieradata/common/deployment/server.yaml
-    include role::deployment::services
-    include eventlogging::deployment::source
-    include phabricator::deployment::source
 
     class { 'deployment::deployment_server':
         deployment_group => $deployment_group,
