@@ -4,16 +4,15 @@
 #
 class role::kafka::analytics::burrow {
 
-    # Include the kafka config role to get all configuration data
-    include role::kafka::analytics::config
+    $config = kafka_config('analytics')
 
     # One of the params for Class: burrow is consumer_groups, this is configured
     # through hiera and hence not explicitly passed here
     class { '::burrow':
-        zookeeper_hosts    => $role::kafka::analytics::config::zookeeper_hosts,
-        zookeeper_path     => $role::kafka::analytics::config::zookeeper_chroot,
-        kafka_cluster_name => $role::kafka::analytics::config::cluster_name,
-        kafka_brokers      => $role::kafka::analytics::config::brokers_array,
+        zookeeper_hosts    => $config['zookeeper']['hosts'],
+        zookeeper_path     => $config['zookeeper']['chroot'],
+        kafka_cluster_name => $config['name'],
+        kafka_brokers      => $config['brokers']['array'],
         smtp_server        => 'mx1001.wikimedia.org',
         from_email         => "burrow@${::fqdn}",
         to_emails          => ['analytics-alerts@wikimedia.org']
