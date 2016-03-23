@@ -84,7 +84,10 @@ class puppetmaster(
     include puppetmaster::gitpuppet
     include puppetmaster::monitoring
 
+    # FIXME - top-scope var without namespace ($is_labs_puppet_master), will break in puppet 2.8
+    # lint:ignore:variable_scope
     if $is_labs_puppet_master {
+    # lint:endignore
         include puppetmaster::labs
         require_package('ruby-httpclient')
 

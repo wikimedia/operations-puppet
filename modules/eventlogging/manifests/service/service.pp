@@ -92,7 +92,10 @@ define eventlogging::service::service(
 
     # Rsyslog configuration that routes logs to a file.
     file { "/etc/rsyslog.d/80-${service_name}.conf":
+        # FIXME - top-scope var without namespace, will break in puppet 2.8
+        # lint:ignore:variable_scope
         ensure  => $ensure,
+        # lint:endignore
         content => template('eventlogging/rsyslog.conf.erb'),
         mode    => '0444',
         notify  => Service['rsyslog'],
@@ -101,13 +104,19 @@ define eventlogging::service::service(
     # output with $programname prefix so that rsyslog
     # can properly route logs.
     file { $log_config_file:
+        # FIXME - top-scope var without namespace, will break in puppet 2.8
+        # lint:ignore:variable_scope
         ensure  => $ensure,
+        # lint:endignore
         content => template('eventlogging/log.cfg.erb'),
         mode    => '0444',
     }
     # Python argparse config file for eventlogging-service
     file { $config_file:
+        # FIXME - top-scope var without namespace, will break in puppet 2.8
+        # lint:ignore:variable_scope
         ensure  => $ensure,
+        # lint:endignore
         content => template('eventlogging/service.erb'),
         mode    => '0444',
         require => File[$log_config_file],

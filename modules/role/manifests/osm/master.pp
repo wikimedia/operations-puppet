@@ -51,7 +51,10 @@ class role::osm::master {
         require          => Postgresql::Spatialdb['gis']
     }
 
+    # FIXME - top-scope var without namespace ($osm_slave_v4), will break in puppet 2.8
+    # lint:ignore:variable_scope
     if $osm_slave_v4 {
+    # lint:endignore
         postgresql::user { "replication@${::osm_slave}-v4":
             ensure   => 'present',
             user     => 'replication',
@@ -63,7 +66,10 @@ class role::osm::master {
             database => 'replication',
         }
     }
+    # FIXME - top-scope var without namespace ($osm_slave_v6), will break in puppet 2.8
+    # lint:ignore:variable_scope
     if $osm_slave_v6 {
+    # lint:endignore
         postgresql::user { "replication@${::osm_slave}-v6":
             ensure   => 'present',
             user     => 'replication',
