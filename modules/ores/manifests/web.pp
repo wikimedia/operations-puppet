@@ -19,7 +19,7 @@ class ores::web(
                 venv        => $ores::base::venv_path,
                 processes   => inline_template("<%= @processorcount.to_i * ${workers_per_core} %>"),
                 # lint:ignore:single_quote_string_with_variables
-                route-if    => 'equal:${HTTP_X_FORWARDED_PROTO};http redirect-permanent:https://${HTTP_HOST}${REQUEST_URI}',
+                route-if    => 'equal:${HTTP_X_FORWARDED_PROTO};http redirect-permanent:https://ores.wmflabs.org${REQUEST_URI}',
                 # lint:endignore
             }
         }
