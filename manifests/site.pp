@@ -363,12 +363,12 @@ node /^cp30(19|2[0-2])\.esams\.wmnet$/ {
     role cache::misc, ipsec
 }
 
-node /^cp30[34][01]\.esams\.wmnet$/ {
+node /^cp30[34][0123]\.esams\.wmnet$/ {
     interface::add_ip6_mapped { 'main': }
     role cache::text, ipsec
 }
 
-node /^cp30[34][2-9]\.esams\.wmnet$/ {
+node /^cp30[34][4-9]\.esams\.wmnet$/ {
     interface::add_ip6_mapped { 'main': }
     role cache::upload, ipsec
 }
