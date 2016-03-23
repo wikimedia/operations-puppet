@@ -808,7 +808,10 @@ class role::mariadb::parsercache {
         shard => 'parsercache',
     }
 
+    # FIXME - top-scope var without namespace, will break in puppet 2.8
+    # lint:ignore:variable_scope
     $basedir = $hostname ? {
+    # lint:endignore
         /pc100[123]/ => '/a',
         default      => '/srv',
     }

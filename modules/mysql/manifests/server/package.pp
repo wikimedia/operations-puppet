@@ -17,7 +17,10 @@ class mysql::server::package (
     }
 
     package { 'mysql-server':
+        # FIXME - top-scope var without namespace, will break in puppet 2.8
+        # lint:ignore:variable_scope
         ensure  => $package_ensure,
+        # lint:endignore
         name    => $package_name,
         require => $package_source,
     }
