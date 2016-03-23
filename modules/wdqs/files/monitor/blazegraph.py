@@ -22,7 +22,7 @@ class BlazegraphCollector(diamond.collector.Collector):
         """
         config = super(BlazegraphCollector, self).get_default_config()
         config.update({
-            'url':     'http://localhost:9999/bigdata/',
+            'url': 'http://localhost:9999/bigdata/',
             'counters': ["/Query Engine/queryDoneCount"],
         })
         return config
