@@ -5,14 +5,13 @@
 # See modules/role/manifests/kafka/README.md for more information.
 #
 class role::kafka::main::broker {
-    include role::kafka::main::config
 
     require_package('openjdk-7-jdk')
 
-    # Make these local for convenience
-    $cluster_name   = $::role::kafka::main::config::cluster_name
-    $zookeeper_url  = $::role::kafka::main::config::zookeeper_url
-    $brokers_string = $::role::kafka::main::config::brokers_string
+    $config         = kafka_config('main')
+    $cluster_name   = $config['name']
+    $zookeeper_url  = $config['zookeeper']['url']
+    $brokers_string = $config['brokers']['string']
 
     system::role { 'role::kafka::main::broker':
         description => "Kafka Broker Server in the ${cluster_name} cluster",
@@ -41,11 +40,11 @@ class role::kafka::main::broker {
 
     class { '::kafka::server':
         log_dirs                     => ['/srv/kafka/data'],
-        brokers                      => $::role::kafka::main::config::brokers_config,
-        zookeeper_hosts              => $::role::kafka::main::config::zookeeper_hosts,
-        zookeeper_chroot             => $::role::kafka::main::config::zookeeper_chroot,
+        brokers                      => $config['brokers']['hash'],
+        zookeeper_hosts              => $config['zookeeper']['hosts'],
+        zookeeper_chroot             => $config['zookeeper']['chroot'],
         nofiles_ulimit               => $nofiles_ulimit,
-        jmx_port                     => $::role::kafka::analytics::config::jmx_port,
+        jmx_port                     => $config['jmx_port'],
 
         # Enable auto creation of topics.
         auto_create_topics_enable    => true,
@@ -56,7 +55,7 @@ class role::kafka::main::broker {
         # if it is online and the leader.  - otto
         auto_leader_rebalance_enable => false,
 
-        default_replication_factor   => min(3, size($::role::kafka::main::config::brokers_array)),
+        default_replication_factor   => min(3, $config['brokers']['size']),
         # Start with a low number of (auto created) partitions per
         # topic.  This can be increased manually for high volume
         # topics if necessary.
@@ -79,14 +78,14 @@ class role::kafka::main::broker {
     class { '::kafka::server::jmxtrans':
         group_prefix => $group_prefix,
         statsd       => hiera('statsd', undef),
-        jmx_port     => $::role::kafka::analytics::config::jmx_port,
+        jmx_port     => $config['jmx_port'],
         require      => Class['::kafka::server'],
     }
 
     # Monitor kafka in production
     if $::realm == 'production' {
         class { '::kafka::server::monitoring':
-            jmx_port     => $::role::kafka::analytics::config::jmx_port,
+            jmx_port     => $config['jmx_port'],
             group_prefix => $group_prefix,
         }
     }
