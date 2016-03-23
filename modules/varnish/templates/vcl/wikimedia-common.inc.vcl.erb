@@ -133,7 +133,7 @@ backend <%= name %> {
 <% end # director loop -%>
 
 <%
-if @use_dynamic_directors and @dynamic_directors and not @varnish_testing -%>
+if @use_dynamic_directors and @dynamic_directors -%>
 include "directors.<%= @inst %>.vcl";
 
 <% end -%>
