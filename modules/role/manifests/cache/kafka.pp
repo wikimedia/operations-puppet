@@ -2,8 +2,6 @@
 # Base class for instances of varnishkafka on cache servers.
 #
 class role::cache::kafka {
-    require role::kafka::analytics::config
-    $kafka_brokers = $::role::kafka::analytics::config::brokers_array
 
     # Make sure varnishkafka rsyslog file is in place properly.
     rsyslog::conf { 'varnishkafka':
