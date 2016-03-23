@@ -14,7 +14,10 @@ class role::cache::kafka::webrequest(
 ) inherits role::cache::kafka
 {
     varnishkafka::instance { 'webrequest':
+        # FIXME - top-scope var without namespace, will break in puppet 2.8
+        # lint:ignore:variable_scope
         brokers                      => $kafka_brokers,
+        # lint:endignore
         topic                        => $topic,
         format_type                  => 'json',
         compression_codec            => 'snappy',

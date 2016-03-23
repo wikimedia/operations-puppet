@@ -49,7 +49,10 @@ class puppet::self::master(
     # If localhost, then just name the cert 'localhost'.
     $certname = $server ? {
         'localhost' => 'localhost',
+        # FIXME - top-scope var without namespace, will break in puppet 2.8
+        # lint:ignore:variable_scope
         default     => $fqdn
+        # lint:endignore
     }
 
     # We'd best be sure that our ldap config is set up properly

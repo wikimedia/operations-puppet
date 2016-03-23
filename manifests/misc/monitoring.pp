@@ -281,6 +281,8 @@ class misc::monitoring::view::hadoop($master, $worker_regex, $ensure = 'present'
             },
             # Worker Node /proc/diskstat bytes written per second
             {
+            # FIXME - top-scope var without namespace ($worker_regex), will break in puppet 2.8
+            # lint:ignore:variable_scope
                 'host_regex'   => $worker_regex,
                 'metric_regex' => "diskstat_(${kafka_log_disks_regex})_write_bytes_per_sec",
                 'type'         => 'stack',
@@ -303,6 +305,7 @@ class misc::monitoring::view::hadoop($master, $worker_regex, $ensure = 'present'
                 'metric_regex' => "diskstat_(${kafka_log_disks_regex})_io_time",
                 'type'         => 'line',
             },
+            # lint:endignore
             # Worker Node 15 minute load average
             {
                 'host_regex'   => $worker_regex,

@@ -65,7 +65,10 @@ class labs_vmbuilder($vmbuilder_version) {
                     ],
     }
 
+    # FIXME - top-scope var without namespace, will break in puppet 2.8
+    # lint:ignore:variable_scope
     $projectregex = "s/${labsproject}/_PROJECT_/g"
+    # lint:endignore
     $fqdnregex    = "s/${::fqdn}/_FQDN_/g"
 
     # We can't just use $::servername here because the master

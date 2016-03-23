@@ -216,7 +216,10 @@ class role::cache::misc {
         fe_mem_gb        => 8,
         runtime_params   => [],
         app_directors    => $app_directors,
+        # FIXME - top-scope var without namespace, will break in puppet 2.8
+        # lint:ignore:variable_scope
         app_be_opts      => $app_be_opts,
+        # lint:endignore
         fe_vcl_config    => $common_vcl_config,
         be_vcl_config    => $common_vcl_config,
         fe_extra_vcl     => ['misc-common'],
