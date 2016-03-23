@@ -17,7 +17,10 @@ class mysql::ruby (
   $package_name     = $mysql::params::ruby_package_name,
   $package_provider = $mysql::params::ruby_package_provider,
   $package_ensure   = 'present'
+# FIXME - class inheriting from params class
+# lint:ignore:class_inherits_from_params_class
 ) inherits mysql::params {
+# lint:endignore
 
   package{ 'ruby_mysql':
     ensure   => $package_ensure,

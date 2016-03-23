@@ -16,7 +16,10 @@
 class mysql::python(
   $package_name   = $mysql::params::python_package_name,
   $package_ensure = 'present'
+# FIXME - class inheriting from params class
+# lint:ignore:class_inherits_from_params_class
 ) inherits mysql::params {
+# lint:endignore
 
   package { 'python-mysqldb':
     ensure => $package_ensure,
