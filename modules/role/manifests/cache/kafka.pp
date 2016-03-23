@@ -2,8 +2,6 @@
 # Base class for instances of varnishkafka on cache servers.
 #
 class role::cache::kafka {
-    require role::kafka::analytics::config
-    $kafka_brokers = $::role::kafka::analytics::config::brokers_array
 
     # APT pinning for Varnish 3
     if (hiera('varnish_version4', false)) {

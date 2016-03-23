@@ -26,8 +26,8 @@ class role::eventlogging {
         description => 'EventLogging',
     }
 
-    # Infer Kafka cluster configuration from this class
-    class { 'role::kafka::analytics::config': }
+    # Get the Kafka configuration
+    $kafka_config = kafka_config('analytics')
 
     # EventLogging for analytics processing is deployed
     # as the eventlogging/analytics scap target.
@@ -47,15 +47,15 @@ class role::eventlogging {
     $statsd_host         = hiera('eventlogging_statsd_host',      'statsd.eqiad.wmnet')
 
     # Hardcoded temporarily to remove kafka1012 and permit its maintenance.
-    #$kafka_brokers_array = $role::kafka::analytics::config::brokers_array
+    #$kafka_brokers_array = $kafka_config['brokers']['array']
     $kafka_brokers_array = $::realm ? {
         'production' => [
             'kafka1013.eqiad.wmnet', 'kafka1014.eqiad.wmnet', 'kafka1018.eqiad.wmnet',
             'kafka1020.eqiad.wmnet', 'kafka1022.eqiad.wmnet',
         ],
-        default => $role::kafka::analytics::config::brokers_array
+        default => $kafka_config['brokers']['array']
     }
-    $kafka_zookeeper_url = $role::kafka::analytics::config::zookeeper_url
+    $kafka_zookeeper_url = $kafka_config['zookeeper']['url']
 
     # By default, the EL Kafka writer writes events to
     # schema based topic names like eventlogging_SCHEMA,
