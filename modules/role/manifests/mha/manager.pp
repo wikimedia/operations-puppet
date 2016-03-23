@@ -1,4 +1,7 @@
+# FIXME -  class inherits across module namespaces
+# lint:ignore:inherits_across_namespaces
 class mha::manager inherits role::coredb::config {
+# lint:endignore
     include mha::node
     include passwords::misc::scripts
 
