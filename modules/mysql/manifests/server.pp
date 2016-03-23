@@ -23,7 +23,10 @@ class mysql::server (
   $enabled          = true,
   $manage_service   = false,
   $use_apparmor     = true,
+# FIXME - class inheriting from params class
+# lint:ignore:class_inherits_from_params_class
 ) inherits mysql::params {
+# lint:endignore
 
   Class['mysql::server::package'] -> Class['mysql::config']
 
