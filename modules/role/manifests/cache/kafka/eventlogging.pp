@@ -4,7 +4,10 @@ class role::cache::kafka::eventlogging(
 ) inherits role::cache::kafka
 {
     varnishkafka::instance { 'eventlogging':
+        # FIXME - top-scope var without namespace, will break in puppet 2.8
+        # lint:ignore:variable_scope
         brokers                     => $kafka_brokers,
+        # lint:endignore
         # Note that this format uses literal tab characters.
         # The '-' in this string used to be %{X-Client-IP@ip}o.
         # EventLogging clientIp logging has been removed as part of T128407.

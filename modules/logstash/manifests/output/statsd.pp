@@ -54,7 +54,10 @@ define logstash::output::statsd(
     logstash::conf { "output-statsd-${title}":
         ensure   => $ensure,
         content  => template('logstash/output/statsd.erb'),
+        # FIXME - top-scope var without namespace, will break in puppet 2.8
+        # lint:ignore:variable_scope
         priority => $priority,
+        # lint:endignore
     }
 }
 # vim:sw=4 ts=4 sts=4 et:

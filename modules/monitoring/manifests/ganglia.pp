@@ -94,9 +94,12 @@ define monitoring::ganglia(
     # standard format
     $ganglia_group = $group ? {
         /.+/    => $group,
+        # FIXME - top-scope var without namespace ($cluster), will break in puppet 2.8
+        # lint:ignore:variable_scope
         default => $cluster ? {
             'misc'  => undef,
             default => "${cluster}_${::site}"
+        # lint:endignore
         }
     }
 

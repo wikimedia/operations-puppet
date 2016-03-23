@@ -57,7 +57,10 @@ class puppetmaster::gitclone {
             mode    => '0640';
     }
 
+    # FIXME - top-scope var without namespace, will break in puppet 2.8
+    # lint:ignore:variable_scope
     if ! $is_labs_puppet_master {
+    # lint:endignore
         # Set up private repo.
         # Note that puppet does not actually clone the repo -- puppetizing that
         # turns out to be a big, insecure mess.  On a new puppetmaster you will
