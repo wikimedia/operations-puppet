@@ -3,18 +3,19 @@
 # For now, this just mirrors from main-eqiad to analytics-eqiad.
 #
 class role::kafka::analytics::mirror {
-    include role::kafka::analytics::config
-    include role::kafka::main::config
 
     require_package('openjdk-7-jdk')
 
-    $mirror_name = 'analytics-eqiad'
+    $analytics_config = kafka_config('analytics')
+    $main_config      = kafka_config('main')
+    $mirror_name      = 'analytics-eqiad'
+
     kafka::mirror::consumer { 'main-eqiad':
         mirror_name   => $mirror_name,
-        zookeeper_url => $role::kafka::main::config::zookeeper_url,
+        zookeeper_url => $main_config['zookeeper']['url'],
     }
     kafka::mirror { $mirror_name:
-        destination_brokers    => $role::kafka::analytics::config::brokers_string,
+        destination_brokers    => $analytics_config['brokers']['string'],
         # Only mirror mediawiki.* topics for now.
         whitelist              => 'mediawiki\..+',
         queue_buffering_max_ms => 1000,
@@ -36,7 +37,7 @@ class role::kafka::analytics::mirror {
     # Monitor kafka in production
     if $::realm == 'production' {
         kafka::mirror::monitoring { $mirror_name:
-            group_prefix        => $group_prefix,
+            group_prefix => $group_prefix,
         }
     }
 }

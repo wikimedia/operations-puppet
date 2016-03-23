@@ -277,14 +277,14 @@ class role::logstash::apifeatureusage {
 #
 class role::logstash::eventlogging {
     include ::role::logstash
-    include ::role::kafka::analytics::config
 
     $topic = 'eventlogging_EventError'
+    $kafka_config = kafka_config('analytics')
 
     logstash::input::kafka { $topic:
         tags       => [$topic, 'kafka'],
         type       => 'eventlogging',
-        zk_connect => $role::kafka::analytics::config::zookeeper_url,
+        zk_connect => $kafka_config['zookeeper']['url'],
     }
 
     logstash::conf { 'filter_eventlogging':
