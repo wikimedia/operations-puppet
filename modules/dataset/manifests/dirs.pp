@@ -4,7 +4,7 @@ class dataset::dirs {
     $datadir                  = '/data/xmldatadumps'
     $publicdir                = '/data/xmldatadumps/public'
     $otherdir                 = '/data/xmldatadumps/public/other'
-    $analyticsdir             = '/data/xmldatadumps/public/analytics'
+    $analyticsdir             = '/data/xmldatadumps/public/other/analytics'
     $othermiscdir             = '/data/xmldatadumps/public/other/misc'
     $otherdir_wikidata_legacy = '/data/xmldatadumps/public/other/wikidata'
     $otherdir_wikibase        = '/data/xmldatadumps/public/other/wikibase/'
