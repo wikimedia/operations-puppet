@@ -5,14 +5,13 @@
 # See modules/role/manifests/kafka/README.md for more information.
 #
 class role::kafka::analytics::broker {
-    include ::role::kafka::analytics::config
 
     require_package('openjdk-7-jdk')
 
-    # Make these local for convenience
-    $cluster_name   = $::role::kafka::analytics::config::cluster_name
-    $zookeeper_url  = $::role::kafka::analytics::config::zookeeper_url
-    $brokers_string = $::role::kafka::analytics::config::brokers_string
+    $config         = kafka_config('analytics')
+    $cluster_name   = $config['name']
+    $zookeeper_url  = $config['zookeeper']['url']
+    $brokers_string = $config['brokers']['string']
 
     system::role { 'role::kafka::analytics::broker':
         description => "Kafka Broker Server in the ${cluster_name} cluster",
@@ -55,11 +54,11 @@ class role::kafka::analytics::broker {
 
     class { '::kafka::server':
         log_dirs                        => $log_dirs,
-        brokers                         => $::role::kafka::analytics::config::brokers_config,
-        zookeeper_hosts                 => $::role::kafka::analytics::config::zookeeper_hosts,
-        zookeeper_chroot                => $::role::kafka::analytics::config::zookeeper_chroot,
+        brokers                         => $config['brokers']['hash'],
+        zookeeper_hosts                 => $config['zookeeper']['hosts'],
+        zookeeper_chroot                => $config['zookeeper']['chroot'],
         nofiles_ulimit                  => $nofiles_ulimit,
-        jmx_port                        => $::role::kafka::analytics::config::jmx_port,
+        jmx_port                        => $config['jmx_port'],
 
         # Enable auto creation of topics.
         auto_create_topics_enable       => true,
@@ -70,7 +69,7 @@ class role::kafka::analytics::broker {
         # if it is online and the leader.  - otto
         auto_leader_rebalance_enable    => false,
 
-        default_replication_factor      => min(3, size($::role::kafka::analytics::config::brokers_array)),
+        default_replication_factor      => min(3, $config['brokers']['size']),
         # Start with a low number of (auto created) partitions per
         # topic.  This can be increased manually for high volume
         # topics if necessary.
@@ -127,14 +126,14 @@ class role::kafka::analytics::broker {
     class { '::kafka::server::jmxtrans':
         group_prefix => $group_prefix,
         statsd       => hiera('statsd', undef),
-        jmx_port     => $::role::kafka::analytics::config::jmx_port,
+        jmx_port     => $config['jmx_port'],
         require      => Class['::kafka::server'],
     }
 
     # Monitor kafka in production
     if $::realm == 'production' {
         class { '::kafka::server::monitoring':
-            jmx_port            => $::role::kafka::analytics::config::jmx_port,
+            jmx_port            => $config['jmx_port'],
             nagios_servicegroup => "analytics_${::site}",
             group_prefix        => $group_prefix,
         }
