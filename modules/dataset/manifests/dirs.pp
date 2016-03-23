@@ -1,13 +1,14 @@
 class dataset::dirs {
     # Please note that this is incomplete, but new directories
     # should be defined in puppet (here).
-    $datadir = '/data/xmldatadumps'
-    $publicdir = '/data/xmldatadumps/public'
-    $otherdir = '/data/xmldatadumps/public/other'
-    $othermiscdir = '/data/xmldatadumps/public/other/misc'
+    $datadir                  = '/data/xmldatadumps'
+    $publicdir                = '/data/xmldatadumps/public'
+    $otherdir                 = '/data/xmldatadumps/public/other'
+    $analyticsdir             = '/data/xmldatadumps/public/analytics'
+    $othermiscdir             = '/data/xmldatadumps/public/other/misc'
     $otherdir_wikidata_legacy = '/data/xmldatadumps/public/other/wikidata'
-    $otherdir_wikibase = '/data/xmldatadumps/public/other/wikibase/'
-    $relative_wikidatawiki = 'other/wikibase/wikidatawiki'
+    $otherdir_wikibase        = '/data/xmldatadumps/public/other/wikibase/'
+    $relative_wikidatawiki    = 'other/wikibase/wikidatawiki'
 
     file { $datadir:
         ensure => 'directory',
@@ -24,6 +25,13 @@ class dataset::dirs {
     }
 
     file { $otherdir:
+        ensure => 'directory',
+        mode   => '0755',
+        owner  => 'datasets',
+        group  => 'datasets',
+    }
+
+    file { $analyticsdir:
         ensure => 'directory',
         mode   => '0755',
         owner  => 'datasets',
