@@ -7,12 +7,12 @@ class role::deployment::server(
     # Can't include this while scap is present on the deployment server:
     # include misc::deployment::scripts
     include role::deployment::mediawiki
-    # NOTE: keyholder_group for role::deployment::services
-    #       is overridden in hieradata/common/deployment/server.yaml
-    include role::deployment::services
-    include eventlogging::deployment::source
-    include phabricator::deployment::source
-    include snapshot::deployment::source
+
+    # scap::server will ensure that all keyholder::agents
+    # declared in hiera will exist.  scap::server is
+    # for generic repository deployment and does not have
+    # anything to do with Mediawiki.
+    include scap::server
 
     class { 'deployment::deployment_server':
         deployment_group => $deployment_group,
