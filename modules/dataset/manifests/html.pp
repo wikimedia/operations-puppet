@@ -30,9 +30,9 @@ class dataset::html(
         }
     }
     if ($analytics) {
-        file { "${dataset::dirs::publicdir}/analytics/index.html":
+        file { "${dataset::dirs::publicdir}/other/analytics/index.html":
             ensure => 'present',
-            path   => "${dataset::dirs::publicdir}/analytics/index.html",
+            path   => "${dataset::dirs::publicdir}/other/analytics/index.html",
             mode   => '0644',
             owner  => 'root',
             group  => 'root',
