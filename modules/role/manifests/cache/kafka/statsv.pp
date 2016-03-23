@@ -16,7 +16,10 @@ class role::cache::kafka::statsv(
     $format  = "%{fake_tag0@hostname?${::fqdn}}x %{%FT%T@dt}t %{X-Client-IP@ip}o %{@uri_path}U %{@uri_query}q %{User-Agent@user_agent}i"
 
     varnishkafka::instance { 'statsv':
+        # FIXME - top-scope var without namespace, will break in puppet 2.8
+        # lint:ignore:variable_scope
         brokers                     => $kafka_brokers,
+        # lint:endignore
         format                      => $format,
         format_type                 => 'json',
         topic                       => 'statsv',

@@ -9,7 +9,10 @@ class role::postgres::slave {
     }
 
     class {'postgresql::slave':
+        # FIXME - top-scope var without namespace, will break in puppet 2.8
+        # lint:ignore:variable_scope
         master_server    => $postgres_master,
+        # lint:endignore
         replication_pass => $passwords::postgres::replication_pass,
         includes         => 'tuning.conf',
         datadir          => $role::postgres::common::datadir,
