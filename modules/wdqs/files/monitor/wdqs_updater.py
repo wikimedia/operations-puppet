@@ -28,7 +28,7 @@ class WDQSUpdaterCollector(diamond.collector.Collector):
         """
         config = super(WDQSUpdaterCollector, self).get_default_config()
         config.update({
-            'runner':     '/srv/wdqs/blazegraph/jolokia.sh',
+            'runner': '/srv/wdqs/blazegraph/jolokia.sh',
             'counters': ["updates/MeanRate", "batch-progress/MeanRate"],
             'sudo_user': 'blazegraph',
         })
