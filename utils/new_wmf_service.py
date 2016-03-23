@@ -57,7 +57,8 @@ QUESTIONS = [
     {
         'qname': 'repo',
         'qstring': 'Repo name in gerrit',
-        'validator': lambda x: True if re.match('^http(s)?://gerrit.wikimedia.org/r/', x) else False,
+        'validator': (lambda x: True if
+                      re.match('^http(s)?://gerrit.wikimedia.org/r/', x) else False),
         'transformer': lambda x: x,
     },
     {
@@ -69,7 +70,8 @@ QUESTIONS = [
     {
         'qname': 'lvs_hostname',
         'qstring': 'LVS Hostname',
-        'validator': lambda x: True if re.match('^[a-z0-9]+\.svc\.(eqiad|codfw)\.wmnet$', x) else False,
+        'validator': (lambda x: True if
+                      re.match('^[a-z0-9]+\.svc\.(eqiad|codfw)\.wmnet$', x) else False),
         'transformer': lambda x: x,
     },
     {
@@ -103,7 +105,8 @@ def ordered_load(stream, Loader=yaml.Loader, object_pairs_hook=OrderedDict):
     return yaml.load(stream, OrderedLoader)
 
 
-def ordered_dump(data, stream=None, Dumper=yaml.Dumper, anchor_template=yaml.Dumper.ANCHOR_TEMPLATE, **kwds):
+def ordered_dump(data, stream=None, Dumper=yaml.Dumper,
+                 anchor_template=yaml.Dumper.ANCHOR_TEMPLATE, **kwds):
         class OrderedDumper(Dumper):
             ANCHOR_TEMPLATE = anchor_template
 
@@ -277,7 +280,8 @@ class role::%(name)s {
                 'service': self.service_name,
             },
             'icinga': {
-                'check_command': 'check_http_lvs_on_port!%s!%s!/_info' % (self.lvs_hostname, self.port),
+                'check_command': ('check_http_lvs_on_port!%s!%s!/_info' %
+                                  (self.lvs_hostname, self.port)),
                 'sites': {
                     'eqiad': {
                         'hostname': self.lvs_hostname,
