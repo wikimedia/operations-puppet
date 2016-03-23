@@ -494,6 +494,12 @@ groups:
     members: [krenair]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
 
+  deploy-phabricator:
+    description: Group of phabricator deployers
+    gid: 776
+    members: [twentyafterfour,demon,rush]
+    privileges: []
+
 users:
   rush:
     ensure: present
