@@ -15,6 +15,7 @@ class scap::master(
     include rsync::server
     include network::constants
     include mediawiki::scap
+    include scap::deploy_host
 
     package { 'dsh':
         ensure => present,
