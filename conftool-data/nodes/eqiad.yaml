@@ -255,8 +255,6 @@ imagescaler:
   mw1159.eqiad.wmnet: [apache2]
   mw1160.eqiad.wmnet: [apache2]
 restbase:
-  restbase1003.eqiad.wmnet: [restbase]
-  restbase1004.eqiad.wmnet: [restbase]
   restbase1005.eqiad.wmnet: [restbase]
   restbase1006.eqiad.wmnet: [restbase]
   restbase1007.eqiad.wmnet: [restbase]
@@ -264,6 +262,8 @@ restbase:
   restbase1009.eqiad.wmnet: [restbase]
   restbase1010.eqiad.wmnet: [restbase]
   restbase1011.eqiad.wmnet: [restbase]
+  restbase1012.eqiad.wmnet: [restbase]
+  restbase1013.eqiad.wmnet: [restbase]
 elasticsearch:
   elastic1001.eqiad.wmnet: [elasticsearch, elasticsearch-ssl]
   elastic1002.eqiad.wmnet: [elasticsearch, elasticsearch-ssl]
