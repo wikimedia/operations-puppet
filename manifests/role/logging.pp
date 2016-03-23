@@ -122,13 +122,14 @@ class role::logging::mediawiki::errors {
 # from this class, and configure the outputs there.
 #
 class role::logging::kafkatee::webrequest {
-    require role::kafka::analytics::config
+
+    $kafka_config = kafka_config('analytics')
 
     # Install kafkatee configured to consume from
     # the Analytics Kafka cluster.  The webrequest logs are
     # in json, so we output them in the format they are received.
     class { '::kafkatee':
-        kafka_brokers   => $role::kafka::analytics::config::brokers_array,
+        kafka_brokers   => $kafka_config['brokers']['array'],
         output_encoding => 'json',
         output_format   => undef,
     }
