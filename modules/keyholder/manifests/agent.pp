@@ -35,18 +35,26 @@ define keyholder::agent(
     $key_fingerprint,
     $key_file = "${name}_rsa",
     $key_content = undef,
+    $key_secret = undef,
 ) {
+    Group[$trusted_group] -> Keyholder::Private_Key[$key_file]
+
     file { "/etc/keyholder-auth.d/${name}.yml":
         content => inline_template("---\n<% [*@trusted_group].each do |g| %><%= g %>: ['<%= @key_fingerprint %>']\n<% end %>"),
         owner   => 'root',
         group   => 'keyholder',
         mode    => '0440',
+        require => Group[$trusted_group],
     }
-
+    
     # lint:ignore:puppet_url_without_modules
     if $key_content {
         keyholder::private_key { $key_file:
             content  => $key_content,
+        }
+    } elsif $key_secret {
+        keyholder::private_key { $key_file:
+            content => secret($key_secret)
         }
     } else {
         keyholder::private_key { $key_file:
