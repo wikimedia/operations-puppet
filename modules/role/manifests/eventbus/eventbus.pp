@@ -10,7 +10,8 @@
 #
 class role::eventbus::eventbus {
     require ::eventschemas
-    require ::role::kafka::main::config
+
+    $config = kafka_config('main')
 
     # eventlogging code for eventbus is configured to deploy
     # from the eventlogging/eventbus deploy target
@@ -28,7 +29,7 @@ class role::eventbus::eventbus {
         eventlogging_path => '/srv/deployment/eventlogging/eventbus',
     }
 
-    $kafka_brokers_array = $role::kafka::main::config::brokers_array
+    $kafka_brokers_array = $config['brokers']['array']
     $kafka_base_uri      = inline_template('kafka:///<%= @kafka_brokers_array.join(":9092,") + ":9092" %>')
 
     $outputs = [
