@@ -201,7 +201,7 @@ class role::cache::misc {
             'dynamic'  => 'no',
             'type'     => 'random',
             'backends' => ['wdqs1001.eqiad.wmnet', 'wdqs1002.eqiad.wmnet'],
-            'be_opts'  => merge($app_def_be_opts, { 'probe' => 'wdqs' }),
+            'be_opts'  => merge($app_def_be_opts, { 'probe' => 'wdqs', 'between_bytes_timeout' => '60s' }),
         },
     }
 
