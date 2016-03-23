@@ -17,7 +17,10 @@ class role::ganglia::web {
     class { 'ganglia::gmetad::rrdcached':
         rrdpath       => $rrd_rootdir,
         gmetad_socket => $gmetad_socket,
+        # FIXME - top-scope var without namespace, will break in puppet 2.8
+        # lint:ignore:variable_scope
         gweb_socket   => $gwebsocket,
+        # lint:endignore
         journal_dir   => '/srv/rrdcached_journal',
     }
 

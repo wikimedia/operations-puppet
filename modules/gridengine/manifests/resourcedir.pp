@@ -12,12 +12,16 @@ define gridengine::resourcedir(
 
     file { $confdir:
         ensure  => directory,
+        # FIXME - top-scope var without namespace ($local)
+        # will break in puppet 2.8
+        # lint:ignore:variable_scope
         force   => $local,
         owner   => 'sgeadmin',
         group   => 'sgeadmin',
         mode    => '0775',
         recurse => $local,
         purge   => $local,
+        # lint:endignore
     }
 
     file { $trackerdir:

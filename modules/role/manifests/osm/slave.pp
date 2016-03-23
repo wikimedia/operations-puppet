@@ -13,7 +13,10 @@ class role::osm::slave {
     }
 
     class {'postgresql::slave':
+        # FIXME - top-scope var without namespace ($osm_master), will break in puppet 2.8
+        # lint:ignore:variable_scope
         master_server    => $osm_master,
+        # lint:endignore
         replication_pass => $passwords::osm::replication_pass,
         includes         => 'tuning.conf',
         datadir          => $role::osm::common::datadir,
