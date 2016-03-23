@@ -56,7 +56,10 @@ class mysql::config(
   $restart           = $mysql::params::restart,
   $purge_conf_dir    = false,
   $multi_instance    = false
+# FIXME - class inheriting from params class
+# lint:ignore:class_inherits_from_params_class
 ) inherits mysql::params {
+# lint:endignore
 
   File {
     owner  => 'root',
