@@ -16,6 +16,10 @@ class scap::master(
     include network::constants
     include mediawiki::scap
 
+    # scap::server will ensure that all keyholder::agents
+    # declared in hiera will exist.
+    include scap::server
+
     package { 'dsh':
         ensure => present,
     }
