@@ -1,1 +1,1 @@
-jobqueue_redis_slaveof: rdb2002.codfw.wmnet
+jobqueue_redis_slaveof: rdb2003.codfw.wmnet
