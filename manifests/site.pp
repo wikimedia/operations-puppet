@@ -911,6 +911,7 @@ node /es200[1234]\.codfw\.wmnet/ {
 
 ## codfw servers
 node /es201[123]\.codfw\.wmnet/ {
+    $cluster = 'mysql'
     class { 'role::mariadb::core':
         shard         => 'es1',
         p_s           => 'on',
@@ -953,6 +954,7 @@ node /es200[567]\.codfw\.wmnet/ {
 
 ## codfw servers
 node /es201[456]\.codfw\.wmnet/ {
+    $cluster = 'mysql'
     class { 'role::mariadb::core':
         shard         => 'es2',
         p_s           => 'on',
@@ -995,6 +997,7 @@ node /es20(08|09|10)\.codfw\.wmnet/ {
 
 ## codfw servers
 node /es201[789]\.codfw\.wmnet/ {
+    $cluster = 'mysql'
     class { 'role::mariadb::core':
         shard         => 'es3',
         p_s           => 'on',
