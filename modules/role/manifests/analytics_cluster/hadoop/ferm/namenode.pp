@@ -7,6 +7,12 @@ class role::analytics_cluster::hadoop::ferm::namenode {
         srange => '$ANALYTICS_NETWORKS',
     }
 
+    ferm::service{ 'hadoop-hdfs-zkfc':
+        proto  => 'tcp',
+        port   => '8019',
+        srange => '$ANALYTICS_NETWORKS',
+    }
+
     ferm::service{ 'hadoop-hdfs-namenode-http-ui':
         proto  => 'tcp',
         port   => '50070',
