@@ -370,7 +370,7 @@ node /^cp301[5678]\.esams\.wmnet$/ {
 
 node /^cp30(19|2[0-2])\.esams\.wmnet$/ {
     interface::add_ip6_mapped { 'main': }
-    role cache::misc, ipsec
+    include standard # to be decommed
 }
 
 node /^cp30[34][0123]\.esams\.wmnet$/ {

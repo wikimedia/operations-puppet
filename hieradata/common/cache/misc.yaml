@@ -14,10 +14,6 @@ nodes:
     - 'cp3008.esams.wmnet'
     - 'cp3009.esams.wmnet'
     - 'cp3010.esams.wmnet'
-    - 'cp3019.esams.wmnet'
-    - 'cp3020.esams.wmnet'
-    - 'cp3021.esams.wmnet'
-    - 'cp3022.esams.wmnet'
   ulsfo:
     - 'cp4001.ulsfo.wmnet'
     - 'cp4002.ulsfo.wmnet'
