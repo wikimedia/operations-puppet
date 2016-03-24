@@ -1828,6 +1828,10 @@ node 'maps-test2001.codfw.wmnet' {
 
 node /^maps-test200[2-4]\.codfw\.wmnet/ {
     role maps::server, maps::slave
+
+    if $::hostname == 'maps-test2002' {
+        include base::firewall
+    }
 }
 
 node /^mc(10[01][0-9])\.eqiad\.wmnet/ {
