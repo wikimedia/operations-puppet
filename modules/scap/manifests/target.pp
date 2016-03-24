@@ -57,6 +57,11 @@ define scap::target(
             system     => true,
             managehome => true,
         }
+        group { $deploy_user:
+            ensure => present,
+            name   => $deploy_user,
+            system => true,
+        }
     } else {
         User[$deploy_user] -> Scap::Target[$title]
     }
@@ -72,6 +77,25 @@ define scap::target(
         ssh::userkey { $deploy_user:
             source => $public_key_source,
         }
+    }
+
+    # XXX: Temporary work-around for switching services from Trebuchet to Scap3
+    # The Scap3 provider doesn't touch the target dir if it's already a git repo
+    # which means that even after switching the provider we end up with the
+    # wrong user (root) owning it. Therefore, as a temporary measure we chown
+    # the target dir's parent so that the subsequent invocation of deploy-local
+    # is able to create the needed dirs and symlinks
+    $chown_user = "${deploy_user}:${deploy_user}"
+    $name_array = split($package_name, '/')
+    $pkg_root = inline_template(
+        '<%= @name_array[0,@name_array.size - 1].join("/") %>'
+    )
+    $chown_target = "/srv/deployment/${pkg_root}"
+    exec { "chown ${package_name} for ${deploy_user}":
+        command => "/bin/chown -R ${chown_user} ${chown_target}",
+        # perform the chown only if root is the effective owner
+        onlyif  => "/usr/bin/test -O /srv/deployment/${package_name}",
+        require => [User[$deploy_user], Group[$deploy_user]]
     }
 
     # Allow deploy user user to sudo -u $user, and to sudo /usr/sbin/service
