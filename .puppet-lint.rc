@@ -1,7 +1,3 @@
-# We still use the 2.6 way of referencing variables
-# 2.8 will requires $::globalname. Skip for now.
---no-variable_scope-check
-
 # Lot of long lines (ssh keys for example).
 --no-80chars-check
 
