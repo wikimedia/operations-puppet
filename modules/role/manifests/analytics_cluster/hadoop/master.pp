@@ -49,6 +49,11 @@ class role::analytics_cluster::hadoop::master {
             require      => Class['cdh::hadoop::master'],
             critical     => true,
         }
+        nrpe::monitor_service { 'hadoop-hdfs-zkfc':
+            description  => 'Hadoop HDFS Zookeeper failover controller',
+            nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C java -a "org.apache.hadoop.hdfs.tools.DFSZKFailoverController"',
+            require      => Class['cdh::hadoop::master'],
+        }
         nrpe::monitor_service { 'hadoop-yarn-resourcemanager':
             description  => 'Hadoop ResourceManager',
             nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C java -a "org.apache.hadoop.yarn.server.resourcemanager.ResourceManager"',
