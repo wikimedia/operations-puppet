@@ -481,8 +481,6 @@ node /^db10(53|57)\.eqiad\.wmnet/ {
 }
 
 node /^db20(16|34|42|48|55|62|69|70)\.codfw\.wmnet/ {
-
-    $cluster = 'mysql'
     class { 'role::mariadb::core':
         shard         => 's1',
         p_s           => 'on',
@@ -511,8 +509,6 @@ node /^db10(21|24|36|54|60|63|67|74|76)\.eqiad\.wmnet/ {
 }
 
 node /^db20(17|35|41|49|56|63|64)\.codfw\.wmnet/ {
-
-    $cluster = 'mysql'
     class { 'role::mariadb::core':
         shard         => 's2',
         p_s           => 'on',
@@ -531,8 +527,6 @@ node /^db10(15|27|35|44|75|77|78)\.eqiad\.wmnet/ {
 }
 
 node /^db20(18|36|43|50|57)\.codfw\.wmnet/ {
-
-    $cluster = 'mysql'
     class { 'role::mariadb::core':
         shard         => 's3',
         p_s           => 'on',
@@ -557,8 +551,6 @@ node /^db10(42)\.eqiad\.wmnet/ {
 
 # s4 (commons) core production slave dbs on codfw
 node /^db20(19|37|44|51|58|65)\.codfw\.wmnet/ {
-
-    $cluster = 'mysql'
     class { 'role::mariadb::core':
         shard         => 's4',
         p_s           => 'on',
@@ -583,8 +575,6 @@ node /^db10(49)\.eqiad\.wmnet/ {
 
 # s5 (wikidata/dewiki) core production slave dbs on codfw
 node /^db20(23|38|45|52|59|66)\.codfw\.wmnet/ {
-
-    $cluster = 'mysql'
     class { 'role::mariadb::core':
         shard         => 's5',
         p_s           => 'on',
@@ -610,8 +600,6 @@ node /^db10(22|50)\.eqiad\.wmnet/ {
 
 # s6 core production slave dbs on codfw
 node /^db20(28|39|46|53|60|67)\.codfw\.wmnet/ {
-
-    $cluster = 'mysql'
     class { 'role::mariadb::core':
         shard         => 's6',
         p_s           => 'on',
@@ -627,8 +615,6 @@ node /^db10(28|34|39|62)\.eqiad\.wmnet/ {
     }
 }
 node /^db10(41)\.eqiad\.wmnet/ {
-
-    $cluster = 'mysql'
     class { 'role::mariadb::core':
         shard => 's7',
         p_s   => 'on',
@@ -638,8 +624,6 @@ node /^db10(41)\.eqiad\.wmnet/ {
 
 # s7 (centralauth, meta et al.) core production slave dbs on codfw
 node /^db20(29|40|47|54|61|68)\.codfw\.wmnet/ {
-
-    $cluster = 'mysql'
     class { 'role::mariadb::core':
         shard         => 's7',
         p_s           => 'on',
@@ -655,8 +639,6 @@ node /^db10(29)\.eqiad\.wmnet/ {
 }
 
 node /^db10(31)\.eqiad\.wmnet/ {
-
-    $cluster = 'mysql'
     class { 'role::mariadb::core':
         shard => 'x1',
         p_s   => 'on',
@@ -665,8 +647,6 @@ node /^db10(31)\.eqiad\.wmnet/ {
 }
 
 node /^db20(08|09)\.codfw\.wmnet/ {
-
-    $cluster = 'mysql'
     class { 'role::mariadb::core':
         shard         => 'x1',
         p_s           => 'on',
@@ -689,8 +669,6 @@ node 'db1016.eqiad.wmnet' {
 }
 
 node /^db20(10|30)\.codfw\.wmnet/ {
-
-    $cluster = 'mysql'
     class { 'role::mariadb::misc':
         shard => 'm1',
     }
@@ -706,8 +684,6 @@ node 'db1020.eqiad.wmnet' {
 }
 
 node /^db20(11)\.codfw\.wmnet/ {
-
-    $cluster = 'mysql'
     class { 'role::mariadb::misc':
         shard => 'm2',
     }
@@ -731,8 +707,6 @@ node 'db1048.eqiad.wmnet' {
 }
 
 node /^db20(12)\.codfw\.wmnet/ {
-
-    $cluster = 'mysql'
     class { 'role::mariadb::misc::phabricator':
         shard     => 'm3',
         mariadb10 => true,
@@ -799,7 +773,6 @@ node 'dbstore1002.eqiad.wmnet' {
 }
 
 node 'dbstore2001.codfw.wmnet' {
-    $cluster = 'mysql'
     # 24h delay on all repl streams
     class { 'role::mariadb::dbstore':
         lag_warn     => 90000,
@@ -812,7 +785,6 @@ node 'dbstore2001.codfw.wmnet' {
 }
 
 node 'dbstore2002.codfw.wmnet' {
-    $cluster = 'mysql'
     role mariadb::dbstore
     include base::firewall
 }
