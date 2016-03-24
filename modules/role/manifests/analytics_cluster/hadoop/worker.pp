@@ -51,11 +51,10 @@ class role::analytics_cluster::hadoop::worker {
         }
     }
 
-    # Install hive client on worker nodes to get
-    # hive-hcatalog package.  hive-catalog depends
-    # on hive package, so we might as well
-    # configure hive too.
-    include role::analytics_cluster::hive::client
+    # Install hive-hcatalog package on worker nodes to get
+    # hcatalog jars, including Hive JsonSerde for using
+    # JSON backed Hive tables.
+    require_package('hive-hcatalog')
 
     # Spark Python stopped working in Spark 1.5.0 with Oozie,
     # for complicated reasons.  We need to be able to set
