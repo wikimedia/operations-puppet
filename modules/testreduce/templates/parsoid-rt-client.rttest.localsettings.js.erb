@@ -8,6 +8,9 @@
 'use strict';
 
 exports.setup = function(parsoidConfig) {
+	// Point at WMF's wikis
+	parsoidConfig.loadWMF = true;
+
 	// The URL of your MediaWiki API endpoint.
 	if (process.env.PARSOID_MOCKAPI_URL) {
 		parsoidConfig.setMwApi({
