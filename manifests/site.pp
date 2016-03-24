@@ -350,7 +350,7 @@ node /^cp20(06|1[28]|25)\.codfw\.wmnet$/ {
 
 node /^cp300[3-6]\.esams\.wmnet$/ {
     interface::add_ip6_mapped { 'main': }
-    role cache::text, ipsec
+    include standard # ex-mobile
 }
 
 node /^cp30(0[789]|10)\.esams\.wmnet$/ {
@@ -360,12 +360,12 @@ node /^cp30(0[789]|10)\.esams\.wmnet$/ {
 
 node /^cp301[1-4]\.esams\.wmnet$/ {
     interface::add_ip6_mapped { 'main': }
-    role cache::text, ipsec
+    include standard # to be decommed
 }
 
 node /^cp301[5678]\.esams\.wmnet$/ {
     interface::add_ip6_mapped { 'main': }
-    include standard # ex-mobile
+    include standard # to be decommed
 }
 
 node /^cp30(19|2[0-2])\.esams\.wmnet$/ {

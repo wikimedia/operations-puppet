@@ -18,14 +18,6 @@ nodes:
     - 'cp1067.eqiad.wmnet'
     - 'cp1068.eqiad.wmnet'
   esams:
-    - 'cp3003.esams.wmnet'
-    - 'cp3004.esams.wmnet'
-    - 'cp3005.esams.wmnet'
-    - 'cp3006.esams.wmnet'
-    # - 'cp3011.esams.wmnet' # T92306
-    - 'cp3012.esams.wmnet'
-    - 'cp3013.esams.wmnet'
-    - 'cp3014.esams.wmnet'
     - 'cp3030.esams.wmnet'
     - 'cp3031.esams.wmnet'
     - 'cp3032.esams.wmnet'
