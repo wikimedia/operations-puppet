@@ -23,6 +23,11 @@ host analytics1002 {
     fixed-address analytics1002.eqiad.wmnet;
 }
 
+host analytics1003 {
+    hardware ethernet F0:1F:AF:E7:EF:41;
+    fixed-address analytics1003.eqiad.wmnet;
+}
+
 host analytics1015 {
     hardware ethernet 90:b1:1c:09:7f:f6;
     fixed-address analytics1015.eqiad.wmnet;
