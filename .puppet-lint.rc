@@ -1,10 +1,11 @@
+# WONTFIX - We want at least 100.
 # Lot of long lines (ssh keys for example).
 --no-80chars-check
 
-# Misc rules, some of them might use to be enabled later.
+# TO BE FIXED - T93645 - please help
 --no-autoloader_layout-check
 --no-puppet_url_without_modules-check
 
-# We dont have much documentation yet:
+# T127797 - needs at least one comment line for each class
 --no-documentation-check
 
