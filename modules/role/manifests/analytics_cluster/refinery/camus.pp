@@ -43,6 +43,6 @@ class role::analytics_cluster::refinery::camus {
         minute  => '15',
         # refinery-camus contains some custom decoder classes which
         # are needed to import Avro binary data.
-        libjars => "${role::analytics_cluster::refinery::path}/artifacts/org/wikimedia/analytics/refinery/refinery-camus-0.0.23.jar",
+        libjars => "${role::analytics_cluster::refinery::path}/artifacts/org/wikimedia/analytics/refinery/refinery-camus-0.0.28.jar",
     }
 }
