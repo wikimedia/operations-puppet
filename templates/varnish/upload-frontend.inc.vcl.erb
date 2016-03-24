@@ -30,19 +30,12 @@ sub cluster_fe_recv {
 
 sub cluster_fe_hash { }
 
-sub cluster_fe_hit {
-	call upload_common_hit;
-}
+sub cluster_fe_hit { }
 
 sub cluster_fe_miss {
 	// Convert range requests into pass
 	if (req.http.Range) {
 		set bereq.http.Range = req.http.Range;
-		return (pass);
-	}
-
-	// Make sure If-Cached requests won't pollute the cache
-	if (req.http.If-Cached) {
 		return (pass);
 	}
 }

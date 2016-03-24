@@ -40,9 +40,7 @@ sub cluster_be_recv {
 
 sub cluster_be_hash { }
 
-sub cluster_be_hit {
-	call upload_common_hit;
-}
+sub cluster_be_hit { }
 
 sub cluster_be_miss {
 	// Convert range requests into pass when over a certain threshold
@@ -52,10 +50,6 @@ sub cluster_be_miss {
 		set bereq.http.Range = req.http.Range;
 		std.log("Passing high range request: " + req.http.Range);
 		return (pass);
-	}
-
-	if (req.http.If-Cached) {
-		error 412 "Entity not in cache";
 	}
 }
 
