@@ -121,8 +121,6 @@ groups:
     description: codfw memcached
 
 # MySQL
-  es_eqiad:
-    description: eqiad External Storage
   mysql_eqiad:
     description: eqiad mysql core
   mysql_codfw:
