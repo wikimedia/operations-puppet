@@ -38,7 +38,7 @@
             "featured"
           ],
           "title": "Featured dashboards",
-          "limit": 14
+          "limit": 100
         },
         {
           "id": 3,
@@ -46,7 +46,7 @@
           "type": "dashlist",
           "mode": "starred",
           "title": "Starred dashboards",
-          "limit": 14
+          "limit": 100
         }
       ]
     }
