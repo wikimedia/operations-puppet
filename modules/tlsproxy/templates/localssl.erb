@@ -50,6 +50,9 @@ server {
 		# This sets AE:gzip for all SPDY requests, see comments in main nginx.conf
 		proxy_set_header Accept-Encoding $accept_encoding;
 
+		# Don't clobber the Server header from the backend.
+		proxy_pass_header Server;
+
 		proxy_redirect off;
 		proxy_buffering off;
 	}
