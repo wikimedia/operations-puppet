@@ -234,7 +234,7 @@ def handle_navigation_timing(meta):
         ('mediaWikiLoadComplete', 'mediaWikiLoadComplete'),
         ('redirecting', 'redirecting'),
         ('sending', 'fetchStart'),
-        ('totalPageLoadTime', 'loadEventEnd'),
+        ('loadEventEnd', 'loadEventEnd'),
         ('responseStart', 'responseStart'),
         ('firstPaint', 'firstPaint'),
     ):
