@@ -24,6 +24,11 @@ class role::analytics_cluster::hadoop::standby {
             require      => Class['cdh::hadoop::namenode::standby'],
             critical     => true,
         }
+        nrpe::monitor_service { 'hadoop-hdfs-zkfc':
+            description  => 'Hadoop HDFS Zookeeper failover controller',
+            nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C java -a "org.apache.hadoop.hdfs.tools.DFSZKFailoverController"',
+            require      => Class['cdh::hadoop::namenode::standby'],
+        }
     }
 
     # Firewall
