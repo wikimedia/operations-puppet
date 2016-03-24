@@ -3,4 +3,6 @@ class role::toollabs::docker::builder {
 
     require role::labs::lvm::srv
     class { '::docker::engine': }
+
+    class { '::docker::baseimages': }
 }

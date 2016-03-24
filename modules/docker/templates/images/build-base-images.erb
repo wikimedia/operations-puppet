@@ -1,0 +1,9 @@
+#!/bin/bash
+# This script builds all the base images we need and pushes
+# them to the appropriate docker registry
+
+# Build debian jessie image!
+/usr/bin/bootstrap-vz /srv/images/base/jessie.yaml
+
+# Push it to the repository
+docker push <%= @docker_registry %>/jessie-wikimedia
