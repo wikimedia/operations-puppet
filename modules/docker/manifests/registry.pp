@@ -73,8 +73,8 @@ class docker::registry(
 
     # Allow docker-registry to bind to 443 despite not running as root
     exec { 'setcap':
-        command   => 'setcap "cap_net_bind_service=+ep" /usr/bin/docker-registry',
-        unless    => 'setcap -v "cap_net_bind_service=+ep" /usr/bin/docker-registry',
+        command   => '/sbin/setcap "cap_net_bind_service=+ep" /usr/bin/docker-registry',
+        unless    => '/sbin/setcap -v "cap_net_bind_service=+ep" /usr/bin/docker-registry',
         subscribe => Package['docker-registry'],
         notify    => Service['docker-registry'],
     }
