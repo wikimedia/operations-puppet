@@ -3,8 +3,10 @@
 include "text-common.inc.vcl";
 
 sub cluster_be_recv_pre_purge {
+	// PURGE requests don't pass through frontends, so make sure rewrites are
+	// applied here.
 	if (req.request == "PURGE") {
-		call text_normalize_path;
+		call text_common_pre_purge;
 	}
 }
 

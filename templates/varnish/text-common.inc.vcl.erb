@@ -58,12 +58,21 @@ sub pass_authorization {
 	}
 }
 
-sub text_normalize_path {
+sub text_common_pre_purge {
 	// Don't decode percent-encoded slashes in paths for REST APIs
 	if (req.url ~ "^/api/rest_v1/" || req.http.host ~ "cxserver|citoid|restbase|^rest\.") {
 		call normalize_rest_path;
 	} else {
 		call normalize_mediawiki_path;
+	}
+
+	# normalize all /static to the same hostname for caching
+	if (req.url ~ "^/static/") { set req.http.host = "<%= @vcl_config.fetch("static_host") %>"; }
+
+	# normalize all /w/static.php to the same wiki host for caching
+	# ignore urls without hash query as those are affected by multiversion
+	if (req.url ~ "^/w/(skins|resources|extensions)/.+\?[a-fA-F0-9]+$" ) {
+		set req.http.host = "<%= @vcl_config.fetch("static_host") %>";
 	}
 }
 
