@@ -1,5 +1,5 @@
-class ldap::role::client::labs($ldapincludes=['openldap', 'utils']) {
-    include ldap::role::config::labs
+class role::ldap::client::labs($ldapincludes=['openldap', 'utils']) {
+    include role::ldap::config::labs
 
     if ( $::realm == 'labs' ) {
         $includes = ['openldap', 'pam', 'nss', 'sudo', 'utils']
