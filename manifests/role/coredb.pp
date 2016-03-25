@@ -265,6 +265,13 @@ class role::coredb::common(
 
     system::role { 'dbcore': description => "Shard ${shard} Core Database server" }
 
+    ::base::expose_puppet_certs { '/etc/mysql':
+        ensure          => present,
+        provide_private => true,
+        user            => 'mysql',
+        group           => 'mysql',
+    }
+
     include standard,
         mha::node,
         cpufrequtils
