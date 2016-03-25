@@ -113,6 +113,15 @@ sub cluster_fe_recv_pre_purge {
 
 	// Normalize paths before purging
 	call text_normalize_path;
+
+	# normalize all /static to the same hostname for caching
+	if (req.url ~ "^/static/") { set req.http.host = "<%= @vcl_config.fetch("static_host") %>"; }
+
+	# normalize all /w/static.php to the same wiki host for caching
+	# ignore urls without hash query as those are affected by multiversion
+	if (req.url ~ "^/w/(skins|resources|extensions)/.+\?[a-fA-F0-9]+$" ) {
+		set req.http.host = "<%= @vcl_config.fetch("static_host") %>";
+	}
 }
 
 sub cluster_fe_recv {
@@ -125,15 +134,6 @@ sub cluster_fe_recv {
 	}
 
 	call mobile_redirect;
-
-	# normalize all /static to the same hostname for caching
-	if (req.url ~ "^/static/") { set req.http.host = "<%= @vcl_config.fetch("static_host") %>"; }
-
-	# normalize all /w/static.php to the same wiki host for caching
-	# ignore urls without hash query as those are affected by multiversion
-	if (req.url ~ "^/w/(skins|resources|extensions)/.+\?[a-fA-F0-9]+$" ) {
-		set req.http.host = "<%= @vcl_config.fetch("static_host") %>";
-	}
 
 	// Users that just logged out, should not get a 304 for their
 	// (locally cached) logged in pages.
