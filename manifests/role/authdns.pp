@@ -31,6 +31,7 @@ class role::authdns::data {
 class role::authdns::server {
     system::role { 'authdns': description => 'Authoritative DNS server' }
 
+    include base::firewall
     include authdns::ganglia
     include role::authdns::data
 
