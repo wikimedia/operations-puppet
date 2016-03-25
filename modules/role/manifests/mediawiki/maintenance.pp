@@ -26,6 +26,10 @@ class role::mediawiki::maintenance {
     include mediawiki::maintenance::jobqueue_stats
     include mediawiki::maintenance::cirrussearch
 
+    # backup home directories to bacula, people work on these
+    include backup::host
+    backup::set {'home': }
+
     # (T17434) Periodical run of currently disabled special pages
     include mediawiki::maintenance::updatequerypages
 

@@ -2075,11 +2075,10 @@ node /^mw208[6-9]\.codfw\.wmnet$/ {
 
 #mw2090 is terbium's equivalent
 node 'mw2090.codfw.wmnet' {
-    role mariadb::maintenance, mediawiki::maintenance, backup::host
+    role mariadb::maintenance, mediawiki::maintenance
 
     include ldap::role::client::labs
 
-    backup::set {'home': }
 }
 
 #mw2091-mw2119 are appservers
@@ -2551,11 +2550,9 @@ node /(subra|suhail)\.codfw\.wmnet/ {
 
 # https://wikitech.wikimedia.org/wiki/Terbium
 node 'terbium.eqiad.wmnet' {
-    role mariadb::maintenance, mediawiki::maintenance, backup::host
+    role mariadb::maintenance, mediawiki::maintenance
 
     include ldap::role::client::labs
-
-    backup::set {'home': }
 }
 
 # deployment servers
