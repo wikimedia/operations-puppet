@@ -179,7 +179,7 @@ define service::node(
 
     user { $title:
         gid    => $title,
-        home   => '/nonexistent',
+        home   => undef,
         shell  => '/bin/false',
         system => true,
         before => Service[$title],
