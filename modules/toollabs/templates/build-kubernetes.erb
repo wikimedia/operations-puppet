@@ -1,0 +1,15 @@
+#!/bin/bash
+TAG="<%= @tag %>"
+OUTPUTPATH="<%= @output_base_path %>/<%= @tag %>"
+
+cd /srv/build/kubernetes
+git fetch
+git checkout ${TAG}
+
+KUBE_SKIP_CONFIRMATIONS=y ./build/release.sh
+
+mkdir -p $OUTPUTPATH
+cp _output/release-tars/kubernetes.tar.gz $OUTPUTPATH
+
+cd $OUTPUTPATH
+tar xvf kubernetes.tar.gz
