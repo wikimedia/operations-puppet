@@ -5,4 +5,8 @@ class role::toollabs::docker::builder {
     class { '::docker::engine': }
 
     class { '::docker::baseimages': }
+
+    # Temporarily build kubernetes too! We'll eventually have this
+    # be done somewhere else.
+    include ::toollabs::kubebuilder
 }
