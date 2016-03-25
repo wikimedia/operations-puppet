@@ -49,7 +49,7 @@ define scap::target(
     include scap
     include scap::ferm
 
-    if $manage_user {
+    if $manage_user and !defined(User[$deploy_user]) {
         user { $deploy_user:
             ensure     => present,
             shell      => '/bin/bash',
