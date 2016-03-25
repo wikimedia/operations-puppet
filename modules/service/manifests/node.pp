@@ -107,8 +107,8 @@ define service::node(
     $auto_refresh           = true,
     $init_restart           = true,
     $deployment             = undef,
-    $deployment_user        = $title,
-    $deployment_manage_user = false,
+    $deployment_user        = "${title}-deploy",
+    $deployment_manage_user = true,
 ) {
     case $deployment {
         'scap3': {
@@ -179,7 +179,7 @@ define service::node(
 
     user { $title:
         gid    => $title,
-        home   => undef,
+        home   => '/nonexistent',
         shell  => '/bin/false',
         system => true,
         before => Service[$title],
