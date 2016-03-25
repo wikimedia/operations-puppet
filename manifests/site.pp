@@ -2079,10 +2079,6 @@ node 'mw2090.codfw.wmnet' {
 
     include ldap::role::client::labs
 
-    package { 'python-mysqldb':
-        ensure => installed,
-    }
-
     backup::set {'home': }
 }
 
@@ -2558,10 +2554,6 @@ node 'terbium.eqiad.wmnet' {
     role mariadb::maintenance, mediawiki::maintenance, backup::host
 
     include ldap::role::client::labs
-
-    package { 'python-mysqldb':
-        ensure => installed,
-    }
 
     backup::set {'home': }
 
