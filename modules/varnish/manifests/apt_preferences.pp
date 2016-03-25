@@ -15,7 +15,7 @@ class varnish::apt_preferences {
     } else {
         # Prefer v3 varnish packages
         apt::pin { 'varnish':
-            package  => 'varnish varnish-dbg libvarnishapi1 libvarnishapi-dev',
+            package  => 'varnish varnish-dbg varnish-doc libvarnishapi1 libvarnishapi-dev',
             pin      => 'version 3.*',
             priority => 1002,
         }
