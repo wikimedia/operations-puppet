@@ -1,0 +1,8 @@
+#!/bin/bash
+TAG="<%= @tag %>"
+
+cd /srv/build/kubernetes
+git fetch
+git checkout ${TAG}
+
+KUBE_SKIP_CONFIRMATIONS=y ./build/release.sh
