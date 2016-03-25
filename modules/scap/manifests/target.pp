@@ -49,6 +49,16 @@ define scap::target(
     include scap
     include scap::ferm
 
+    if $manage_user and !defined(Group[$deploy_user]) {
+        group { $deploy_user:
+            ensure => present,
+            system => true,
+            before => User[$deploy_user],
+        }
+    } else {
+        Group[$deploy_user] -> Scap::Target[$title]
+    }
+
     if $manage_user and !defined(User[$deploy_user]) {
         user { $deploy_user:
             ensure     => present,
