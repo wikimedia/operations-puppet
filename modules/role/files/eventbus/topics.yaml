@@ -24,5 +24,5 @@ mediawiki.revision_visibility_set:
 mediawiki.revision_create:
   schema_name: revision_create
 
-wmf.resource_change:
+resource_change:
   schema_name: resource_change
