@@ -40,7 +40,11 @@
 # [*debug_logging*]
 #  Enable debug logging. Defaults to none. Example: "--debug spf"
 #  See: http://wiki.apache.org/spamassassin/DebugChannels
-
+#
+# [*proxy*]
+#  Enable proxy for sa-update. Useful for hosts without direct internet acces.
+#  Defaults to undef
+#
 class spamassassin(
     $required_score = '5.0',
     $max_children = 8,
@@ -53,6 +57,7 @@ class spamassassin(
     $spamd_group = 'debian-spamd',
     $custom_scores = {},
     $debug_logging = '',
+    $proxy=undef,
 ) {
     package { 'spamassassin':
         ensure => present,
@@ -90,5 +95,17 @@ class spamassassin(
     nrpe::monitor_service { 'spamd':
         description  => 'spamassassin',
         nrpe_command => '/usr/lib/nagios/plugins/check_procs -w 1:20 -c 1:40 -a spamd',
+    }
+
+    # If we need a proxy to reach the internet, we need a slightly modified
+    # crontab entry
+    if $proxy {
+        file { '/etc/cron.daily/spamassassin':
+            ensure  => present,
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0755',
+            content => template('spamassasin/sa-update-cron.erb'),
+        }
     }
 }
