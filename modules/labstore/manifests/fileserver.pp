@@ -17,7 +17,7 @@ class labstore::fileserver(
 
     if $use_ldap {
         $ldapincludes = ['openldap', 'nss', 'utils']
-        class { 'ldap::role::client::labs': ldapincludes => $ldapincludes }
+        class { 'role::ldap::client::labs': ldapincludes => $ldapincludes }
     }
 
     require_package('lvm2')

@@ -1,4 +1,4 @@
-class ldap::role::config::labs {
+class role::ldap::config::labs {
     include passwords::ldap::labs
 
     $basedn = 'dc=wikimedia,dc=org'
