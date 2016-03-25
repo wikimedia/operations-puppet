@@ -72,9 +72,6 @@ class aqs(
         auto_refresh           => false,
         init_restart           => false,
         deployment             => 'scap3',
-        # deployment_user set here since default values have changed to use
-        # $title as the deployment_user instead of 'deploy_service'.
-        deployment_user        => 'deploy-service',
         deployment_manage_user => true,
     }
 
