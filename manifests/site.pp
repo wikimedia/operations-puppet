@@ -2619,11 +2619,13 @@ node /^labvirt101[0-1].eqiad.wmnet/ {
     include standard
 }
 
-# Wikidata query service
-node /^wdqs100[1-2]\.eqiad\.wmnet$/ {
-    role wdqs
+# mediawiki maintenance server (like terbium)
+node 'wasat.codfw.wmnet' {
 
-    $nagios_contact_group = 'admins,wdqs-admins'
+    role backup::host
+    backup::set {'home'}
+
+    include standard
 }
 
 # https://www.mediawiki.org/wiki/Parsoid
