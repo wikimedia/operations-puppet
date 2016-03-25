@@ -44,8 +44,9 @@ class role::ci::slave {
 
     contint::tmpfs { 'tmpfs for jenkins CI slave':
         mount_point => '/var/lib/jenkins-slave/tmpfs',
-        size        => '256M',
+        size        => '384M',
     }
+
     nrpe::monitor_service { 'ci_tmpfs':
         description  => 'CI tmpfs disk space',
         nrpe_command => '/usr/lib/nagios/plugins/check_disk -w 20% -c 5% -e -p /var/lib/jenkins-slave/tmpfs',
