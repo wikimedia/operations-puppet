@@ -2603,11 +2603,7 @@ node /^labvirt101[0-1].eqiad.wmnet/ {
 
 # mediawiki maintenance server (like terbium)
 node 'wasat.codfw.wmnet' {
-
-    role backup::host
-    backup::set {'home': }
-
-    include standard
+    role mediawiki::maintenance
 }
 
 # Wikidata query service
