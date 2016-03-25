@@ -59,6 +59,7 @@ class otrs::mail(
             'DEAR_SOMETHING'    => '1.500',
         },
         debug_logging         => '--debug spf',
+        proxy                 => "webproxy.${::site}.wmnet:8080",
     }
 
     mailalias { 'root':
