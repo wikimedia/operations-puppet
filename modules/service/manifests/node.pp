@@ -179,10 +179,19 @@ define service::node(
 
     user { $title:
         gid    => $title,
-        home   => undef,
-        shell  => '/bin/false',
+        home   => "/home/${title}",
+        shell  => '/bin/bash',
         system => true,
         before => Service[$title],
+    }
+
+    # create the user's home; Puppet 3.x doesn't create it
+    file { "/home/${title}":
+        ensure  => directory,
+        owner   => $title,
+        group   => $title,
+        mode    => '0755',
+        require => [User[$title], Group[$title]]
     }
 
     # Configuration, directories
