@@ -34,4 +34,13 @@ class role::mediawiki::maintenance {
 
     # T84075 - SUL audit / legoktm
     require_package('python-mysqldb')
+
+    # T112660 - kafka support
+    # The eventlogging code is useful for scripting
+    # EventLogging consumers.  Install this but don't
+    # run any daemons.  To use eventlogging code,
+    # add /srv/deployment/eventlogging/eventlogging
+    # to your PYTHONPATh or sys.path.
+    include ::eventlogging::package
+
 }

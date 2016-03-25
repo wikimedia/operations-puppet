@@ -2556,13 +2556,6 @@ node 'terbium.eqiad.wmnet' {
     include ldap::role::client::labs
 
     backup::set {'home': }
-
-    # The eventlogging code is useful for scripting
-    # EventLogging consumers.  Install this but don't
-    # run any daemons.  To use eventlogging code,
-    # add /srv/deployment/eventlogging/eventlogging
-    # to your PYTHONPATh or sys.path.
-    include ::eventlogging::package
 }
 
 # deployment servers
