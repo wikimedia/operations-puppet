@@ -1,11 +1,12 @@
-# == Define scap::target
+# == Define: scap::target
 #
 # Sets up a scap3 target for a deployment repository.
 # This will include ths scap package and ferm fules,
 # ensure that the $deploy_user has proper sudo rules
 # and public key installed.
 #
-# == Params
+# === Parameters
+#
 # [*deploy_user*]
 #   user that will be used for deployments
 #
@@ -24,6 +25,10 @@
 #   Specify whether to create a User resource for the $deploy_user.
 #   This should be set to false if you have defined the user elsewhere.
 #   Default: true
+#
+# [*sudo_rules*]
+#   An array of additional sudo rules pertaining to the service to install on
+#   the target node. Default: []
 #
 # Usage:
 #
@@ -87,22 +92,34 @@ define scap::target(
     # Allow deploy user user to sudo -u $user, and to sudo /usr/sbin/service
     # if $service_name is defined.
     #
+    # Two sets of privileges are defined: one for scap to able to sudo -u $user,
+    # which should be defined only once per node, and another for restarting
+    # whichever services are being deployed.
+    #
     # NOTE: sudo -u $user is currently needed by scap3.
     # TODO: Remove this when it is no longer needed.
-    $privileges = $service_name ? {
-        undef   => [
-            "ALL=(${deploy_user}) NOPASSWD: ALL",
-        ],
-        default => [
-            "ALL=(${deploy_user}) NOPASSWD: ALL",
-            "ALL=(root) NOPASSWD: /usr/sbin/service ${service_name} *",
-        ],
-    }
 
     if !defined(Sudo::User["scap_${deploy_user}"]) {
         sudo::user { "scap_${deploy_user}":
             user       => $deploy_user,
-            privileges => concat($privileges, $sudo_rules),
+            privileges => ["ALL=(${deploy_user}) NOPASSWD: ALL"],
+        }
+    }
+
+    if $service_name {
+        $privileges = array_concat([
+            "ALL=(root) NOPASSWD: /usr/sbin/service ${service_name} *",
+        ], $sudo_rules)
+        $rule_name = "scap_${deploy_user}_${service_name}"
+    } else {
+        $privileges = $sudo_rules
+        $rule_name = regsubst("${deploy_user}_${title}", '/', '_', 'G')
+    }
+
+    if size($privileges) > 0 {
+        sudo::user { $rule_name:
+            user       => $deploy_user,
+            privileges => $privileges,
         }
     }
 
