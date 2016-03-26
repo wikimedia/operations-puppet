@@ -4,7 +4,7 @@ class role::labs::ores::lb {
         mountat => '/srv',
     }
     $realservers = hiera('role::labs::ores::lb::realservers')
-    $cache = hiera('role::labs::ores::lb::cache', '')
+    $cache = str2bool(hiera('role::labs::ores::lb::cache', ''))
 
     if $cache {
         file { [
