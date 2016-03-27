@@ -139,4 +139,12 @@ class role::kafka::analytics::broker {
             group_prefix        => $group_prefix,
         }
     }
+
+    # Bump safety margin until T131028 is triaged
+    sysctl::parameters { 'kafka_conntrack':
+        values => {
+            'net.ipv4.netfilter.ip_conntrack_max' => '524288',
+        }
+    }
+
 }
