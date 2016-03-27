@@ -17,7 +17,6 @@
 Send an alert email to project admins about a puppet failure.  This is
 meant to be run on the affected instance.
 """
-import argparse
 import calendar
 import time
 import ldap
