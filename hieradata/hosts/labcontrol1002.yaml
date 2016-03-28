@@ -1,2 +1,2 @@
-labs_ldap_dns_host: &labsldapdnshost "labs-ns1.wikimedia.org"
+labs_ldap_dns_host: &labsldapdnshost "labs-ns1-former-placeholder.wikimedia.org"
 cluster: virt
