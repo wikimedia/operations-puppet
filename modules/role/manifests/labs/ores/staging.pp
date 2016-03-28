@@ -7,10 +7,7 @@ class role::labs::ores::staging {
     include ::ores::worker
     include ::ores::flower
 
-    class { '::ores::lb':
-        realservers => [ 'localhost:8080' ],
-        cache       => false,
-    }
+    include ::role::labs::ores::lb
 
     class { '::ores::redis':
         cache_maxmemory => '512M',
