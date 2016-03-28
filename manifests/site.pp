@@ -2073,9 +2073,9 @@ node /^mw208[6-9]\.codfw\.wmnet$/ {
     role mediawiki::imagescaler
 }
 
-#mw2090 is terbium's equivalent
+#mw2090 was terbium's equivalent, replaced by wasat
 node 'mw2090.codfw.wmnet' {
-    role mariadb::maintenance
+    role spare
 
 }
 
@@ -2601,7 +2601,7 @@ node /^labvirt101[0-1].eqiad.wmnet/ {
 
 # mediawiki maintenance server (like terbium)
 node 'wasat.codfw.wmnet' {
-    role mediawiki::maintenance
+    role mariadb::maintenance, mediawiki::maintenance
 }
 
 # Wikidata query service
