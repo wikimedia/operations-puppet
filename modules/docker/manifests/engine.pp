@@ -19,7 +19,7 @@ class docker::engine(
 
     $docker_username = hiera('docker::username')
     $docker_password = hiera('docker::password')
-    $docker_registry = hiera('docker::registry_url')
+    $docker_registry = hiera('docker::registry')
 
     # uses strict_encode64 since encode64 adds newlines?!
     $docker_auth = inline_template("<%= require 'base64'; Base64.strict_encode64('${docker_username}:${docker_password}') -%>")
