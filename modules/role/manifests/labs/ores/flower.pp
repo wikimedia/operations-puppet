@@ -1,4 +1,4 @@
 class role::labs::ores::flower {
     include ::ores::flower
-    include ::ores::redisproxy
+    include ::role::labs::ores::redisproxy
 }
