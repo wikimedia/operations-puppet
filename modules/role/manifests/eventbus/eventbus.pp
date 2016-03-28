@@ -34,8 +34,16 @@ class role::eventbus::eventbus {
     $kafka_brokers_array = $role::kafka::main::config::brokers_array
     $kafka_base_uri      = inline_template('kafka:///<%= @kafka_brokers_array.join(":9092,") + ":9092" %>')
 
+    # When events are produced to kafka,
+    # topic produced to will be interpolated from the event
+    # and this format.  We use datacenter prefixed topic names.
+    $topic_format = $::realm ? {
+        'production' => "${::site}.{meta[topic]}"
+        default      => 'datacenter1.{meta[topic]}',
+    }
+
     $outputs = [
-        "${kafka_base_uri}?async=False"
+        "${kafka_base_uri}?async=False&topic=${::site}&topic=${topic_format}"
     ]
 
     $eventlogging_path = '/srv/deployment/eventlogging/eventbus'
