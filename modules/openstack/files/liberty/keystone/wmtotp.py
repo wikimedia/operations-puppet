@@ -107,5 +107,7 @@ class Wmtotp(auth.AuthMethodHandler):
         else:
             LOG.debug("OATH: user '%s' does not have 2FA enabled.",
                       user_info.user_ref['name'])
+            msg = _('2FA is not enabled; login forbidden')
+            raise exception.Unauthorized(msg)
 
         auth_context['user_id'] = user_info.user_id
