@@ -7,7 +7,8 @@
 #               disabled EPN, changed UNKNOWN error value to 3,
 #               and fixed an undef var in an error string concat...
 #               This script still sucks, but this makes it barely work
-#     faidon - 2016-03-28 - set %uplinks to WMF's transits
+#     faidon - 2016-03-28 - set %uplinks to WMF's transits; removed
+#               whois support
 #
 # check_bgpstate.pl - nagios plugin 
 #
@@ -41,8 +42,6 @@ use Getopt::Long;
 &Getopt::Long::config('auto_abbrev');
 
 
-# whois programm for RIPE database queries
-my $whois = '/usr/bin/whois';
 my $status;
 my $TIMEOUT = 30;
 
@@ -93,7 +92,6 @@ my $bgpcritical =0;
 my $bgpdown =0;
 my $bgpidle =0;
 my $bgpmessage;
-my $asname;
 my $remoteas;
 my @output;
 
@@ -180,25 +178,8 @@ foreach $key (keys %bgpStatus) {
        if (exists($uplinks{$bgpStatus{$key}{$snmpbgpPeerRemoteAs}}) ) {
           $bgpcritical++;
        }
-       @output = `$whois -T aut-num AS$bgpStatus{$key}{$snmpbgpPeerRemoteAs}`;
-
-   $asname = "";
-   foreach (@output) {
-     if (m/as-name/) {
-        $asname = $_;
-        $asname =~ s/as-name://;
-        last;
-     }
-     if ( $asname =~ "" && m/descr/ ) {
-        $asname = $_;
-        $asname =~ s/descr://;
-     }
-   }
-   $asname =~ s/^\s*//;
-   $asname =~ s/\s*$//;
        $bgpmessage .= sprintf("Peering with AS%s not established -> %s<BR>",
-                           $bgpStatus{$key}{$snmpbgpPeerRemoteAs},
-			   $asname);
+                           $bgpStatus{$key}{$snmpbgpPeerRemoteAs});
    }
 }
    
