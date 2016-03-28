@@ -34,8 +34,16 @@ class role::eventbus::eventbus {
     $kafka_brokers_array = $role::kafka::main::config::brokers_array
     $kafka_base_uri      = inline_template('kafka:///<%= @kafka_brokers_array.join(":9092,") + ":9092" %>')
 
+
     $outputs = [
-        "${kafka_base_uri}?async=False"
+        # When events are produced to kafka, the
+        # topic produced to will be interpolated from the event
+        # and this format.  We use datacenter prefixed topic names.
+        # E.g.
+        #   meta[topic] == mediawiki.revision_create
+        # in eqiad will be produced to
+        #   eqiad.mediawiki.revsion_create
+        "${kafka_base_uri}?async=False&topic=${::site}.{meta[topic]}"
     ]
 
     $eventlogging_path = '/srv/deployment/eventlogging/eventbus'
