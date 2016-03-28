@@ -61,7 +61,7 @@ class role::authdns::server {
     ferm::service { 'authdns_update_ssh':
         proto  => 'tcp',
         port   => '22',
-        srange => "@resolve((${authdns_ns_ferm}))",
+        srange => "(@resolve((${authdns_ns_ferm})) @resolve((${authdns_ns_ferm}), AAAA))",
     }
 }
 
