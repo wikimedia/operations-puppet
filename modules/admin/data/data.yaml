@@ -120,7 +120,7 @@ groups:
   ldap-admins:
     gid: 715
     description: ldap admins
-    members: [robla, reedy, demon]
+    members: [reedy, demon]
     privileges: ['ALL = NOPASSWD: /usr/local/sbin/add-ldap-user',
                  'ALL = NOPASSWD: /usr/local/sbin/delete-ldap-user',
                  'ALL = NOPASSWD: /usr/local/sbin/modify-ldap-user',
