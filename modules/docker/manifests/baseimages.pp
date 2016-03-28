@@ -6,6 +6,7 @@ class docker::baseimages {
     require ::docker::engine
 
     require_package('python-bootstrap-vz')
+    require_package('debootstrap')
 
     file { '/srv/images':
         ensure => directory,
