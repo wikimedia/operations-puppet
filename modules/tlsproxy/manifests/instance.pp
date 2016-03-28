@@ -18,4 +18,22 @@ class tlsproxy::instance {
         source => 'puppet:///modules/tlsproxy/logrotate',
         tag    => 'nginx',
     }
+
+    # systemd unit fragment for additional security restrictions:
+    $sysd_sec_conf = '/lib/systemd/system/nginx.service.d/security.conf'
+
+    file { $sysd_sec_conf:
+        ensure => present,
+        mode   => '0444',
+        owner  => root,
+        group  => root,
+        source => 'puppet:///modules/tlsproxy/nginx-security.conf',
+        before => Class['nginx'],
+    }
+
+    exec { "systemd reload for $sysd_sec_conf":
+        refreshonly => true,
+        command     => '/bin/systemctl daemon-reload',
+        subscribe   => File[$sysd_sec_conf],
+    }
 }
