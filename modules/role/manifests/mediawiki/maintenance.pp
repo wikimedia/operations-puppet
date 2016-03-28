@@ -36,9 +36,6 @@ class role::mediawiki::maintenance {
     # Readline support for PHP maintenance scripts (T126262)
     require_package('php5-readline')
 
-    # T84075 - SUL audit / legoktm
-    require_package('python-mysqldb')
-
     # T112660 - kafka support
     # The eventlogging code is useful for scripting
     # EventLogging consumers.  Install this but don't
