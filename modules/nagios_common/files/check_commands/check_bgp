@@ -7,6 +7,7 @@
 #               disabled EPN, changed UNKNOWN error value to 3,
 #               and fixed an undef var in an error string concat...
 #               This script still sucks, but this makes it barely work
+#     faidon - 2016-03-28 - set %uplinks to WMF's transits
 #
 # check_bgpstate.pl - nagios plugin 
 #
@@ -46,10 +47,15 @@ my $status;
 my $TIMEOUT = 30;
 
 # critical bgp sessions
-my %uplinks = ( 1273, 'Uplink ECRC',
-                1755, 'Uplink EBONE',
-                3300, 'Uplink AUCS'
-	      );
+my %uplinks = (
+                1257, 'Tele2',
+                1299, 'TeliaSonera',
+                2914, 'NTT',
+                6461, 'Zayo',
+                6908, 'Datahop',
+                13030, 'Init7',
+                38930, 'FiberRing',
+              );
 
 my %ERRORS = ('UNKNOWN' , '3',
               'OK' , '0',
