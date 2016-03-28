@@ -8,7 +8,7 @@
 #               and fixed an undef var in an error string concat...
 #               This script still sucks, but this makes it barely work
 #     faidon - 2016-03-28 - set %uplinks to WMF's transits; removed
-#               whois support
+#               whois support; force SNMP v2c (enables GETBULK)
 #
 # check_bgpstate.pl - nagios plugin 
 #
@@ -139,7 +139,8 @@ foreach $snmpoid (@snmpoids) {
    ($session, $error) = Net::SNMP->session(
       -hostname  => $hostname,
       -community => $community,
-      -port      => $port
+      -port      => $port,
+      -version   => '2',
    );
 
    if (!defined($session)) {
