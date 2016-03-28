@@ -15,6 +15,7 @@ define authdns::monitoring::global($address, $prefixlen=undef) {
     @monitoring::service { $hostlabel:
         host          => $hostlabel,
         description   => 'Auth DNS',
-        check_command => 'check_dns!www.wikipedia.org'
+        check_command => 'check_dns!www.wikipedia.org',
+        critical      => true,
     }
 }
