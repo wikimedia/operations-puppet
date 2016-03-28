@@ -46,6 +46,7 @@ class labstore::account_services {
         owner  => 'root',
         group  => 'root',
         mode   => '0555',
+        notify => Base::Service_unit['create-dbusers'],
     }
 
     # To delete users from all the labsdb mysql databases
@@ -62,6 +63,7 @@ class labstore::account_services {
     } else {
         $service_ensure = 'absent'
     }
+
     base::service_unit { 'create-dbusers':
         ensure  => $service_ensure,
         systemd => true,
