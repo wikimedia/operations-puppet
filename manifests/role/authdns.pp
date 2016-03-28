@@ -56,6 +56,13 @@ class role::authdns::server {
         proto => 'tcp',
         port  => '53',
     }
+
+    $authdns_ns_ferm = join($role::authdns::data::nameservers, ' ')
+    ferm::service { 'authdns_update_ssh':
+        proto  => 'tcp',
+        port   => '22',
+        srange => "@resolve((${authdns_ns_ferm}))",
+    }
 }
 
 # This is for the monitoring host to monitor the shared public addrs
