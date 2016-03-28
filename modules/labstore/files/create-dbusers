@@ -10,6 +10,8 @@ This script does the following:
     nothing. This needs to be fixed with appropriate solution
     later on - either by recreating the replica.my.cnf or...
     something else
+  - perms for grant files (how the user gets the creds + password)
+    are 0400 and chattr +i making them user readonly and immutable.
 """
 import logging
 import argparse
@@ -23,7 +25,8 @@ import random
 import configparser
 import io
 import time
-
+import sys
+import subprocess
 
 class User:
     def __init__(self, project, name, uid, kind):
@@ -110,12 +113,20 @@ class User:
         return users
 
     def write_user_file(self, path, content):
+        logging.debug('writing path %s' % (path,))
         f = os.open(path, os.O_CREAT | os.O_WRONLY | os.O_NOFOLLOW)
         try:
             os.write(f, content.encode('utf-8'))
             # uid == gid
             os.fchown(f, self.uid, self.uid)
             os.fchmod(f, 0o400)
+            subprocess.check_output(['/usr/bin/chattr',
+                                     '+i',
+                                     path])
+        except:
+
+            os.remove(path)
+            raise
         finally:
             os.close(f)
 
@@ -195,6 +206,8 @@ if __name__ == '__main__':
                            default='tools')
     argparser.add_argument('--interval', help='Seconds between between runs',
                            default=300)
+    argparser.add_argument('--once', help='Run once and exit',
+                           action='store_true')
     args = argparser.parse_args()
 
     loglvl = logging.DEBUG if args.debug else logging.INFO
@@ -210,7 +223,9 @@ if __name__ == '__main__':
     )
 
     pid = os.getpid()
+    logging.info('starting pid %s create-dbusers run' % (pid,))
     logging.debug(str(args))
+
     while True:
         server = ldap3.Server(config['ldap']['host'])
         with ldap3.Connection(
@@ -219,8 +234,6 @@ if __name__ == '__main__':
             auto_bind=True,
             password=config['ldap']['password']
         ) as conn:
-
-            logging.info('starting pid %s create-dbusers run' % (pid,))
             users = User.from_ldap_users(conn, args.project)
             servicegroups = User.from_ldap_servicegroups(conn, args.project)
             all_users = users + servicegroups
@@ -236,5 +249,8 @@ if __name__ == '__main__':
                     else:
                         logging.debug('missing replica.my.cnf for user %s despite grants present in db', u.name)
             logging.info('completed pid %s create-dbusers run' % (pid,))
+
+        if args.once:
+            break
 
         time.sleep(args.interval)
