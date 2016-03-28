@@ -14,6 +14,7 @@ class docker::engine(
     # across the fleet
     package { 'docker-engine':
         ensure  => $version,
+        require => Apt::Repository['docker'],
     }
 
     $docker_username = hiera('docker::username')
