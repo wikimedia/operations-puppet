@@ -23,17 +23,8 @@ class role::eventbus::eventbus {
         manage_user       => false,
     }
 
-    file { '/etc/eventbus':
-        ensure => 'directory',
-    }
-
-    file { '/etc/eventbus/topics.yaml':
-        source => 'puppet:///modules/role/eventbus/topics.yaml',
-    }
-
     $kafka_brokers_array = $role::kafka::main::config::brokers_array
     $kafka_base_uri      = inline_template('kafka:///<%= @kafka_brokers_array.join(":9092,") + ":9092" %>')
-
 
     $outputs = [
         # When events are produced to kafka, the
@@ -53,7 +44,7 @@ class role::eventbus::eventbus {
         # TODO: Deploy mediawiki/event-schemas separately
         # from the submodule in EventLogging repo?
         schemas_path      => "${::eventschemas::path}/jsonschema",
-        topic_config      => '/etc/eventbus/topics.yaml',
+        topic_config      => "${::eventschemas::path}/config/eventbus-topics.yaml",
         outputs           => $outputs,
         statsd            => hiera('statsd'),
         statsd_prefix     => 'eventbus',
