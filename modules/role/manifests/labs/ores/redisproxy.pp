@@ -1,4 +1,4 @@
-class ores::redisproxy(
+class role::labs::ores::redisproxy(
     $server,
 ) {
     host { 'ores-redis':
