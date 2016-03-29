@@ -12,7 +12,6 @@ class role::mw_rc_irc {
     }
 
     include mw_rc_irc::ircserver
-    include mw_rc_irc::apache
 
     # IRCd - public access
     ferm::service { 'ircd_public':
@@ -25,12 +24,6 @@ class role::mw_rc_irc {
         proto  => 'udp',
         port   => '9390',
         srange => '$MW_APPSERVER_NETWORKS',
-    }
-
-    # Apache - redirecting people who try http to wiki page on meta
-    ferm::service { 'irc_apache':
-        proto => 'tcp',
-        port  => '80',
     }
 
 }
