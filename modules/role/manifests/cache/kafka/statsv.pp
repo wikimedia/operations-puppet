@@ -15,6 +15,13 @@ class role::cache::kafka::statsv(
 {
     $format  = "%{fake_tag0@hostname?${::fqdn}}x %{%FT%T@dt}t %{X-Client-IP@ip}o %{@uri_path}U %{@uri_query}q %{User-Agent@user_agent}i"
 
+    # Set varnish.arg.q or varnish.arg.m according to Varnish version
+    if (hiera('varnish_version4', false)) {
+        $varnish_opts = { 'q' => 'ReqURL ~ "^/beacon/statsv\?"' }
+    } else {
+        $varnish_opts = { 'm' => 'RxURL:^/beacon/statsv\?' }
+    }
+
     varnishkafka::instance { 'statsv':
         # FIXME - top-scope var without namespace, will break in puppet 2.8
         # lint:ignore:variable_scope
@@ -25,9 +32,7 @@ class role::cache::kafka::statsv(
         topic                       => 'statsv',
         varnish_name                => $varnish_name,
         varnish_svc_name            => $varnish_svc_name,
-        varnish_opts                => {
-            'm' => 'RxURL:^/beacon/statsv\?',
-        },
+        varnish_opts                => $varnish_opts,
         # -1 means all brokers in the ISR must ACK this request.
         topic_request_required_acks => '-1',
     }

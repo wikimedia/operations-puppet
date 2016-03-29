@@ -13,6 +13,13 @@ class role::cache::kafka::webrequest(
     $varnish_svc_name = 'varnish-frontend'
 ) inherits role::cache::kafka
 {
+    # Set varnish.arg.q or varnish.arg.m according to Varnish version
+    if (hiera('varnish_version4', false)) {
+        $varnish_opts = { 'q' => 'ReqMethod ~ "^(?!PURGE$)"' }
+    } else {
+        $varnish_opts = { 'm' => 'RxRequest:^(?!PURGE$)' }
+    }
+
     varnishkafka::instance { 'webrequest':
         # FIXME - top-scope var without namespace, will break in puppet 2.8
         # lint:ignore:variable_scope
@@ -23,6 +30,7 @@ class role::cache::kafka::webrequest(
         compression_codec            => 'snappy',
         varnish_name                 => $varnish_name,
         varnish_svc_name             => $varnish_svc_name,
+        varnish_opts                 => $varnish_opts,
         # Note: fake_tag tricks varnishkafka into allowing hardcoded string into a JSON field.
         # Hardcoding the $fqdn into hostname rather than using %l to account for
         # possible slip ups where varnish only writes the short hostname for %l.
