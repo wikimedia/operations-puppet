@@ -482,9 +482,9 @@ groups:
                'ALL = NOPASSWD: /usr/sbin/service parsoid-vd-client *',
                'ALL = NOPASSWD: /usr/sbin/service diffservice *',
                'ALL = NOPASSWD: /bin/journalctl *']
-  labtestweb-roots:
+  labtest-roots:
     gid: 774
-    description: allows full sudo on labtestweb server, first generated from T129097.
+    description: allows full sudo on labtest cluster, T131166
     members: [krenair]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
   changeprop-admin:
