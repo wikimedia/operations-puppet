@@ -5,6 +5,7 @@ class tlsproxy::instance {
 
     $nginx_worker_connections = '32768'
     $nginx_ssl_conf = ssl_ciphersuite('nginx', 'compat')
+    $do_spdy = hiera('tlsproxy::localssl::do_spdy', true)
 
     class { 'nginx': managed => false, }
 
