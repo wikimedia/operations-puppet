@@ -323,11 +323,6 @@ node /^cp10(5[2-5]|6[5-8])\.eqiad\.wmnet$/ {
     role cache::text, ipsec
 }
 
-node 'cp1056.eqiad.wmnet', 'cp1057.eqiad.wmnet', 'cp1069.eqiad.wmnet', 'cp1070.eqiad.wmnet' {
-    interface::add_ip6_mapped { 'main': }
-    include standard # to be decommed
-}
-
 node /^cp20(0[147]|1[0369]|23)\.codfw\.wmnet$/ {
     interface::add_ip6_mapped { 'main': }
     role cache::text, ipsec
