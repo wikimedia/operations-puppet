@@ -2153,6 +2153,7 @@ node 'neodymium.eqiad.wmnet' {
     role salt::masters::production, deployment::salt_masters,
       debdeploy::master, ipmi, access_new_install, mariadb::client
     include standard
+    include base::firewall
 }
 
 # Icinga
