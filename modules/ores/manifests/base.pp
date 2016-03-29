@@ -1,6 +1,6 @@
 class ores::base(
     $branch = 'deploy',
-    $config_path = '/srv/ores/config',
+    $config_path = '/srv/ores/deploy',
     $venv_path = '/srv/ores/venv',
 ) {
     # Let's use a virtualenv for maximum flexibility - we can convert
@@ -39,13 +39,10 @@ class ores::base(
         mode   => '0775',
     }
 
-    git::clone { 'ores-wm-config':
-        ensure    => present,
-        origin    => 'https://github.com/wiki-ai/ores-wikimedia-config.git',
-        directory => $config_path,
-        branch    => $branch,
-        owner     => 'www-data',
-        group     => 'www-data',
-        require   => File['/srv/ores'],
+    file { $config_path:
+        ensure  => directory,
+        owner   => 'www-data',
+        group   => 'www-data',
+        require => File['/srv/ores'],
     }
 }
