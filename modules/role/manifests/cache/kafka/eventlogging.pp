@@ -3,6 +3,13 @@ class role::cache::kafka::eventlogging(
     $varnish_svc_name = 'varnish',
 ) inherits role::cache::kafka
 {
+    # Set varnish.arg.q or varnish.arg.m according to Varnish version
+    if (hiera('varnish_version4', false)) {
+        $varnish_opts = { 'q' => 'ReqURL ~ "^/(beacon/)?event(\.gif)?\?"' }
+    } else {
+        $varnish_opts = { 'm' => 'RxURL:^/(beacon/)?event(\.gif)?\?' }
+    }
+
     varnishkafka::instance { 'eventlogging':
         # FIXME - top-scope var without namespace, will break in puppet 2.8
         # lint:ignore:variable_scope
@@ -16,9 +23,7 @@ class role::cache::kafka::eventlogging(
         topic                       => 'eventlogging-client-side',
         varnish_name                => $varnish_name,
         varnish_svc_name            => $varnish_svc_name,
-        varnish_opts                => {
-            'm' => 'RxURL:^/(beacon/)?event(\.gif)?\?',
-        },
+        varnish_opts                => $varnish_opts,
         topic_request_required_acks => '1',
     }
 }
