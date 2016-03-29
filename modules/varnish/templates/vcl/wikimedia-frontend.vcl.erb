@@ -345,7 +345,7 @@ sub vcl_deliver {
 	std.collect(resp.http.X-Varnish);
 
 	// Set CP ('Connection Properties') cookie
-	if (req.http.X-Connection-Properties ~ "SPDY=3") {
+	if (req.http.X-Connection-Properties ~ "SPDY=3|H2=1") {
 		if (req.http.X-Orig-Cookie !~ "(^|;\s*)CP=H2" && req.http.Cookie !~ "(^|;\s*)CP=H2") {
 			header.append(resp.http.Set-Cookie, "CP=H2; Path=/");
 		}
