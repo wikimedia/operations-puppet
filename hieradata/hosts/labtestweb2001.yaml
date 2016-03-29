@@ -1,6 +1,5 @@
 admin::groups:
   - deployment
-  - labtestweb-roots
 
 apache::logrotate::rotate: 12
 
