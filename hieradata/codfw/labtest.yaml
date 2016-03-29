@@ -119,3 +119,6 @@ glanceconfig:
   bind_ip: "%{::ipaddress_eth0}"
 
 openstack::horizon::service::webserver_hostname: 'labtesthorizon.wikimedia.org'
+
+admin::groups:
+  - labtest-roots
