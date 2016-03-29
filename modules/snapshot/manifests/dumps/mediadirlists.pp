@@ -12,6 +12,24 @@ class snapshot::dumps::mediadirlists(
         $ensure = 'absent'
     }
 
+    file { '/usr/local/bin/runphpscriptletonallwikis.py':
+        ensure => 'present',
+        path   => '/usr/local/bin/runphpscriptletonallwikis.py',
+        mode   => '0755',
+        owner  => $user,
+        group  => root,
+        source => 'puppet:///modules/snapshot/runphpscriptletonallwikis.py',
+    }
+
+    file { '/usr/local/bin/listwikiuploaddirs.py':
+        ensure => 'present',
+        path   => '/usr/local/bin/listwikiuploaddirs.py',
+        mode   => '0755',
+        owner  => $user,
+        group  => root,
+        source => 'puppet:///modules/snapshot/listwikiuploaddirs.py',
+    }
+
     file { '/usr/local/bin/create-mediadir-list.sh':
         ensure  => 'present',
         path    => '/usr/local/bin/create-mediadir-list.sh',
