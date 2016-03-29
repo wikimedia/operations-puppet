@@ -90,4 +90,9 @@ class role::kafka::main::broker {
             group_prefix => $group_prefix,
         }
     }
+
+    # Monitor TCP Connection States
+    diamond::collector { 'TcpConnStates':
+        source => 'puppet:///modules/diamond/collector/tcpconnstates.py',
+    }
 }
