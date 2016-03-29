@@ -9,8 +9,8 @@ upstream local_fe_<%= @basename %> {
 
 # SSL proxying
 server {
-	listen [::]:443 <%= @default_server ? "default_server deferred backlog=4096 reuseport ipv6only=on " : "" %>ssl <% if @do_spdy %>spdy<% end %>;
-	listen 443 <%= @default_server ? "default_server deferred backlog=4096 reuseport " : "" %>ssl <% if @do_spdy %>spdy<% end %>;
+	listen [::]:443 <%= @default_server ? "default_server deferred backlog=4096 reuseport ipv6only=on " : "" %>ssl <% if @do_spdy %>spdy<% else %>http2<% end %>;
+	listen 443 <%= @default_server ? "default_server deferred backlog=4096 reuseport " : "" %>ssl <% if @do_spdy %>spdy<% else %>http2<% end %>;
 	ssl on;
 	server_name <%= ([@server_name] + @server_aliases).join(" ") %>;
 
@@ -45,7 +45,11 @@ server {
 		proxy_set_header X-Client-IP $remote_addr;
 		proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
 		proxy_set_header X-Forwarded-Proto https;
+<% if @do_spdy -%>
 		proxy_set_header X-Connection-Properties "SPDY=$spdy_version; SSR=$session_reused; SSL=$ssl_protocol; C=$ssl_cipher;";
+<% else -%>
+		proxy_set_header X-Connection-Properties "H2=$h2; SSR=$session_reused; SSL=$ssl_protocol; C=$ssl_cipher;";
+<% end -%>
 
 		# This sets AE:gzip for all SPDY requests, see comments in main nginx.conf
 		proxy_set_header Accept-Encoding $accept_encoding;
