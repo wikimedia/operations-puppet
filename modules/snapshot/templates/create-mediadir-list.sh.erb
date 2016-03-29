@@ -10,7 +10,7 @@ outputfile="uploaddirs.txt"
 DATE=`date +%Y%m%d`
 
 # generate the new file
-python <%= scope.lookupvar('snapshot::dirs::wikiqueriesdir') -%>/listwikiuploaddirs.py \
+python /usr/local/bin/listwikiuploaddirs.py \
     --allwikis <%= scope.lookupvar('snapshot::dirs::apachedir') -%>/dblists/all.dblist \
     --closedwikis <%= scope.lookupvar('snapshot::dirs::apachedir') -%>/dblists/closed.dblist \
     --privatewikis <%= scope.lookupvar('snapshot::dirs::apachedir') -%>/dblists/private.dblist \
