@@ -63,3 +63,4 @@ admin::groups:
   - udp2log-users
   - wdqs-admins
   - zotero-admin
+  - labtest-roots
