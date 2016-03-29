@@ -1834,6 +1834,7 @@ node 'magnesium.wikimedia.org' {
 
 node 'maps-test2001.codfw.wmnet' {
     role maps::server, maps::master
+    include base::firewall
 }
 
 node /^maps-test200[2-4]\.codfw\.wmnet/ {
