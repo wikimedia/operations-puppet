@@ -27,7 +27,7 @@
     <%- end -%>
     RewriteRule ^/<%= @portal_dir %>/.*$ - [L]
     <Location ~ "^/$|^/<%= @portal_dir %>/">
-        Header set Cache-Control "s-maxage=3600, must-revalidate, max-age=0"
+        Header set Cache-Control "s-maxage=86400, max-age=86400"
     </Location>
 
     # search-redirect.php, let it through
@@ -95,7 +95,7 @@
         RewriteRule ^/portal/(.*)$ /<%= @portal_dir %>/$1 [L]
     <%- end -%>
     <Location ~ "^/$|^/<%= @portal_dir %>/">
-        Header set Cache-Control "s-maxage=3600, must-revalidate, max-age=0"
+        Header set Cache-Control "s-maxage=86400, max-age=86400"
     </Location>
 
     # search-redirect.php, let it through
@@ -126,7 +126,7 @@
         RewriteRule ^/portal/(.*)$ /<%= @portal_dir %>/$1 [L]
     <%- end -%>
     <Location ~ "^/$|^/<%= @portal_dir %>/">
-        Header set Cache-Control "s-maxage=3600, must-revalidate, max-age=0"
+        Header set Cache-Control "s-maxage=86400, max-age=86400"
     </Location>
 
     # search-redirect.php, let it through
@@ -157,7 +157,7 @@
         RewriteRule ^/portal/(.*)$ /<%= @portal_dir %>/$1 [L]
     <%- end -%>
     <Location ~ "^/$|^/<%= @portal_dir %>/">
-        Header set Cache-Control "s-maxage=3600, must-revalidate, max-age=0"
+        Header set Cache-Control "s-maxage=86400, max-age=86400"
     </Location>
 
     # search-redirect.php, let it through
@@ -188,7 +188,7 @@
         RewriteRule ^/portal/(.*)$ /<%= @portal_dir %>/$1 [L]
     <%- end -%>
     <Location ~ "^/$|^/<%= @portal_dir %>/">
-        Header set Cache-Control "s-maxage=3600, must-revalidate, max-age=0"
+        Header set Cache-Control "s-maxage=86400, max-age=86400"
     </Location>
 
     # search-redirect.php, let it through
@@ -219,7 +219,7 @@
         RewriteRule ^/portal/(.*)$ /<%= @portal_dir %>/$1 [L]
     <%- end -%>
     <Location ~ "^/$|^/<%= @portal_dir %>/">
-        Header set Cache-Control "s-maxage=3600, must-revalidate, max-age=0"
+        Header set Cache-Control "s-maxage=86400, max-age=86400"
     </Location>
 
     # search-redirect.php, let it through
@@ -250,7 +250,7 @@
         RewriteRule ^/portal/(.*)$ /<%= @portal_dir %>/$1 [L]
     <%- end -%>
     <Location ~ "^/$|^/<%= @portal_dir %>/">
-        Header set Cache-Control "s-maxage=3600, must-revalidate, max-age=0"
+        Header set Cache-Control "s-maxage=86400, max-age=86400"
     </Location>
 
     # search-redirect.php, let it through
