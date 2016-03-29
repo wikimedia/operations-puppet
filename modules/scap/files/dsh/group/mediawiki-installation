@@ -1,10 +1,17 @@
 # !all names added here must be FQDN's now (T93983) !
 
-mira.codfw.wmnet
-silver.wikimedia.org
+# deployment
 tin.eqiad.wmnet
-terbium.eqiad.wmnet
+mira.codfw.wmnet
 
+# maintenance
+terbium.eqiad.wmnet
+wasat.codfw.wmnet
+
+# wikitech
+silver.wikimedia.org
+
+# eqiad
 snapshot1001.eqiad.wmnet
 snapshot1002.eqiad.wmnet
 snapshot1003.eqiad.wmnet
