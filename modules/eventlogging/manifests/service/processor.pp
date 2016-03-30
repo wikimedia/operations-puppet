@@ -64,7 +64,7 @@ define eventlogging::service::processor(
     $sid            = $title,
     $ensure         = present,
 ) {
-    include ::eventlogging
+    require ::eventlogging::server
 
     $basename = regsubst($title, '\W', '-', 'G')
     file { "/etc/eventlogging.d/processors/${basename}":

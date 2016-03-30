@@ -2473,7 +2473,7 @@ node 'stat1002.eqiad.wmnet' {
     # The eventlogging code is useful for scripting
     # EventLogging consumers.  Install this on
     # stat1002, but don't run any daemons.
-    include ::eventlogging::package
+    include ::eventlogging
 }
 
 # stat1003 is a general purpose number cruncher for
