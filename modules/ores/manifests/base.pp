@@ -1,7 +1,8 @@
 class ores::base(
-    $branch = 'deploy',
-    $config_path = '/srv/ores/config',
+    $config_path = '/srv/ores/deploy',
     $venv_path = '/srv/ores/venv',
+    $user = 'www-data',
+    $group = 'www-data',
 ) {
     # Let's use a virtualenv for maximum flexibility - we can convert
     # this to deb packages in the future if needed. We also install build tools
@@ -34,18 +35,9 @@ class ores::base(
 
     file { '/srv/ores':
         ensure => directory,
-        owner  => 'www-data',
-        group  => 'www-data',
+        owner  => $user,
+        group  => $group,
         mode   => '0775',
     }
 
-    git::clone { 'ores-wm-config':
-        ensure    => present,
-        origin    => 'https://github.com/wiki-ai/ores-wikimedia-config.git',
-        directory => $config_path,
-        branch    => $branch,
-        owner     => 'www-data',
-        group     => 'www-data',
-        require   => File['/srv/ores'],
-    }
 }
