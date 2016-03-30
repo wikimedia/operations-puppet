@@ -41,6 +41,9 @@ new <%= director_name %> = directors.<%= director['type'] %>();
     <%= director_name %>.add_backend(be_{{ $parts := split $node "." }}{{ index $parts 0 }}, {{ $data.weight }});
     <% end -%>
 	{{end}}{{end}}
+<% if director['type'] == 'vslp' -%>
+<%= director_name %>.init_hashcircle(150);
+<% end -%>
 <% end # if not @varnish_version4 %>
 <% end # if director['dynamic'] == 'yes' %>
 <% end # directors loop %>
