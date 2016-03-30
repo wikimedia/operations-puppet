@@ -1,0 +1,13 @@
+ARGS="-storage.local.path <%= @storage_path %> -storage.local.retention <%= @storage_retention %>"
+
+# if using sysv init, temporary fix for https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=817403
+do_reload()
+{
+    log_daemon_msg "Reloading $DESC configuration files" "$NAME"
+    $HELPER $HELPER_ARGS --running || return 1
+    helper_pid=$(cat $PIDFILE)
+    [ -z "$helper_pid" ] && return 1
+    start-stop-daemon --stop --signal 1 --quiet \
+        --ppid "$helper_pid" --exec "$DAEMON"
+    log_end_msg $?
+}
