@@ -27,7 +27,6 @@ class network::constants {
                     '2620:0:860:1:208:80:153:5',        # bast2001.wikimedia.org
                     '91.198.174.113',                   # bast3001.esams.wikimedia.org
                     '2620:0:862:1:91:198:174:113',      # bast3001.esams.wikimedia.org
-                    '2620:0:862:1:a6ba:dbff:fe30:d770', # bast3001.esams.wikimedia.org SLAAC
                     '198.35.26.5',                      # bast4001.wikimedia.org
                     '2620:0:863:1:198:35:26:5',         # bast4001.wikimedia.org
                     '2620:0:863:1:92b1:1cff:fe4d:4249', # bast4001.wikimedia.org SLAAC
@@ -58,7 +57,6 @@ class network::constants {
                     '2620:0:860:1:208:80:153:5',        # bast2001.wikimedia.org
                     '91.198.174.113',                   # bast3001.esams.wikimedia.org
                     '2620:0:862:1:91:198:174:113',      # bast3001.esams.wikimedia.org
-                    '2620:0:862:1:a6ba:dbff:fe30:d770', # bast3001.esams.wikimedia.org SLAAC
                     '198.35.26.5',                      # bast4001.wikimedia.org
                     '2620:0:863:1:198:35:26:5',         # bast4001.wikimedia.org
                     '2620:0:863:1:92b1:1cff:fe4d:4249', # bast4001.wikimedia.org SLAAC
