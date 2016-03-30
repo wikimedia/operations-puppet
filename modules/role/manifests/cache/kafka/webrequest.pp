@@ -16,8 +16,10 @@ class role::cache::kafka::webrequest(
     # Set varnish.arg.q or varnish.arg.m according to Varnish version
     if (hiera('varnish_version4', false)) {
         $varnish_opts = { 'q' => 'ReqMethod ~ "^(?!PURGE$)"' }
+        $conf_template = 'varnishkafka/varnishkafka_v4.conf.erb'
     } else {
         $varnish_opts = { 'm' => 'RxRequest:^(?!PURGE$)' }
+        $conf_template = 'varnishkafka/varnishkafka.conf.erb'
     }
 
     varnishkafka::instance { 'webrequest':
@@ -55,6 +57,7 @@ class role::cache::kafka::webrequest(
         # this often.  This is set at 15 so that
         # stats will be fresh when polled from gmetad.
         log_statistics_interval      => 15,
+        conf_template                => $conf_template,
     }
 
     if $::standard::has_ganglia {
