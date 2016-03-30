@@ -4,7 +4,7 @@
 # into StatsD.
 #
 class role::webperf {
-    include ::eventlogging::package
+    include ::eventlogging
     include ::webperf::statsv
 
     $eventlogging_host = 'eventlog1001.eqiad.wmnet'
