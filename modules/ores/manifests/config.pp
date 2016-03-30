@@ -4,7 +4,7 @@ define ores::config(
 ) {
     require ::ores::base
 
-    file { "${::ores::base::config_path}/config/${priority}-${title}.yaml":
+    file { "${::ores::base::config_path}/deploy/${priority}-${title}.yaml":
         content => ordered_yaml($config),
         owner   => 'www-data',
         group   => 'www-data',
