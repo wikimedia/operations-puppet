@@ -276,6 +276,13 @@ host bast2001 {
     filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
+host bast3001 {
+    hardware ethernet a4:ba:db:30:d7:70;
+    fixed-address bast3001.wikimedia.org;
+    option pxelinux.pathprefix "jessie-installer/";
+    filename "jessie-installer/debian-installer/amd64/pxelinux.0";
+}
+
 host bast4001 {
     hardware ethernet 90:b1:1c:4d:42:49;
     fixed-address bast4001.wikimedia.org;
@@ -2547,11 +2554,6 @@ host heze {
 host holmium {
     hardware ethernet 90:B1:1C:00:A1:0E;
     fixed-address holmium.wikimedia.org;
-}
-
-host hooft {
-    hardware ethernet a4:ba:db:30:d7:70;
-    fixed-address hooft.esams.wikimedia.org;
 }
 
 host hp1001 {
