@@ -25,5 +25,8 @@ class role::cache::kafka::eventlogging(
         varnish_svc_name            => $varnish_svc_name,
         varnish_opts                => $varnish_opts,
         topic_request_required_acks => '1',
+        if (hiera('varnish_version4', true)) {
+            $conf_template = 'varnishkafka/varnishkafka_v4.conf.erb',
+        }
     }
 }

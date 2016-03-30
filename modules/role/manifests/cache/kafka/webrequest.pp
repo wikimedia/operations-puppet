@@ -55,6 +55,9 @@ class role::cache::kafka::webrequest(
         # this often.  This is set at 15 so that
         # stats will be fresh when polled from gmetad.
         log_statistics_interval      => 15,
+        if (hiera('varnish_version4', true)) {
+            $conf_template = 'varnishkafka/varnishkafka_v4.conf.erb',
+        }
     }
 
     if $::standard::has_ganglia {
