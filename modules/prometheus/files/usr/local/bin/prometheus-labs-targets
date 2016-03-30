@@ -1,0 +1,57 @@
+#!/usr/bin/python3
+# Generate prometheus targets for a given project from wikitech's nova
+# instances list.
+
+import argparse
+import codecs
+import json
+import logging
+import sys
+import urllib.parse
+import urllib.request
+import yaml
+
+
+def project_instances(project):
+    req = urllib.request.urlopen(
+            'https://wikitech.wikimedia.org/w/api.php?' +
+            urllib.parse.urlencode({
+                'action': 'query',
+                'list': 'novainstances',
+                'niregion': 'eqiad',
+                'format': 'json',
+                'niproject': project,
+                })
+            )
+
+    reader = codecs.getreader('utf-8')
+    data = json.load(reader(req))
+    for instance in data['query']['novainstances']:
+        yield instance
+
+
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--project', dest='project')
+    parser.add_argument('--port', dest='port', default='9100')
+    args = parser.parse_args()
+
+    if args.project is None:
+        try:
+            with open('/etc/wmflabs-project') as f:
+                args.project = f.read().strip()
+        except IOError as e:
+            parser.error('unable to detect project from /etc/wmflabs-project: %r' % e)
+            return 1
+
+    scrape_configs = []
+    targets = {'targets': []}
+    for instance in project_instances(args.project):
+        targets['targets'].append("%s:%s" % (instance['name'], args.port))
+    targets['targets'] = sorted(targets['targets'])
+    scrape_configs.append(targets)
+    print(yaml.dump(scrape_configs, default_flow_style=False))
+
+
+if __name__ == '__main__':
+  sys.exit(main())

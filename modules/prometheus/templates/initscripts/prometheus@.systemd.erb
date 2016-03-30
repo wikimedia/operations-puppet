@@ -1,0 +1,11 @@
+[Unit]
+Description=prometheus server (instance %i)
+
+[Service]
+User=prometheus
+Group=prometheus
+ExecStart=/usr/bin/prometheus -storage.local.path <%= @metrics_path %> -web.listen-address <%= @listen_address %> -web.external-url <%= @external_url %> -storage.local.retention <%= @storage_retention %> -config.file <%= @base_path %>/prometheus.yml
+Restart=on-failure
+RestartSec=2s
+TimeoutStopSec=10m
+ExecReload=/bin/kill -HUP $MAINPID
