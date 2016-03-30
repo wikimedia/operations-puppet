@@ -9,12 +9,10 @@
 # [*schemas_path*]
 #   Path to schemas repository.  JSONSchema files will be preloaded
 #   and cached out of this directory.
-#   Default: $eventlogging::package::path/config/schemas/jsonschema
 #
 # [*topic_config*]
 #   Path to topic config file.  This file specifies what schema names
 #   are allowed to be produced to which topics.
-#   Default: /etc/eventlogging.d/topics.yaml
 #
 # [*port*]
 #   Port on which this service will listen.  Default: 8085.
@@ -61,7 +59,7 @@ define eventlogging::service::service(
 {
     include ::rsyslog
     include service::monitoring
-    require ::eventlogging
+    include ::eventlogging::server
 
     # Additional packages needed for eventlogging-service.
 
@@ -86,7 +84,7 @@ define eventlogging::service::service(
     # This will be written to by rsyslog matching
     # for $service_name.
     $_log_file = $log_file ? {
-        undef => "${eventlogging::log_dir}/${service_name}.log",
+        undef => "${eventlogging::server::log_dir}/${service_name}.log",
         default => $_log_file,
     }
 

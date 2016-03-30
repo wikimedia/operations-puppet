@@ -28,7 +28,7 @@ define eventlogging::service::reporter(
     $port = 8125,
     $ensure = present,
 ) {
-    include ::eventlogging
+    include ::eventlogging::server
 
     $basename = regsubst($title, '\W', '-', 'G')
     file { "/etc/eventlogging.d/reporters/${basename}":
