@@ -59,7 +59,9 @@ define eventlogging::service::service(
 {
     include ::rsyslog
     include service::monitoring
-    include ::eventlogging::server
+    class { 'eventlogging::server':
+        eventlogging_path => $eventlogging_path,
+    }
 
     # Additional packages needed for eventlogging-service.
 
