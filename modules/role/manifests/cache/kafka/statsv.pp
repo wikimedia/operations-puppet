@@ -20,6 +20,7 @@ class role::cache::kafka::statsv(
         $varnish_opts = { 'q' => 'ReqURL ~ "^/beacon/statsv\?"' }
     } else {
         $varnish_opts = { 'm' => 'RxURL:^/beacon/statsv\?' }
+        $conf_template = 'varnishkafka/varnishkafka_v4.conf.erb'
     }
 
     varnishkafka::instance { 'statsv':
@@ -35,6 +36,7 @@ class role::cache::kafka::statsv(
         varnish_opts                => $varnish_opts,
         # -1 means all brokers in the ISR must ACK this request.
         topic_request_required_acks => '-1',
+        conf_template               => $conf_template,
     }
 
     if $::standard::has_ganglia {

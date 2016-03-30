@@ -25,5 +25,6 @@ class role::cache::kafka::eventlogging(
         varnish_svc_name            => $varnish_svc_name,
         varnish_opts                => $varnish_opts,
         topic_request_required_acks => '1',
+        conf_template               => $conf_template,
     }
 }
