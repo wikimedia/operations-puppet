@@ -113,3 +113,6 @@ repo_config:
     checkout_submodules: true
   dumps/dumps:
     upstream: https://gerrit.wikimedia.org/r/operations/dumps
+  ores/deploy:
+    upstream: https://phabricator.wikimedia.org/diffusion/1880/mediawiki-services-ores-deploy.git
+    checkout_submodules: true
