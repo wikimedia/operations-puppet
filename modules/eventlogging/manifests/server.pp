@@ -44,7 +44,16 @@
 #
 # TODO: Port this to Jessie/Systemd.
 #
-class eventlogging::server {
+# == Parameters
+#
+# [*eventlogging_path*]
+#   Path to eventlogging codebase
+#   Default: /srv/deployment/eventlogging/eventlogging
+#
+class eventlogging::server(
+    $eventlogging_path   = '/srv/deployment/eventlogging/eventlogging',
+)
+{
     require ::eventlogging
 
     group { 'eventlogging':
@@ -115,21 +124,36 @@ class eventlogging::server {
 
         # Upstart job definitions.
         file { '/etc/init/eventlogging':
-            source  => 'puppet:///modules/eventlogging/init',
-            recurse => true,
+            ensure  => 'directory',
+            recurse => true
             purge   => true,
             force   => true,
-            require => [
-                File['/etc/eventlogging.d'],
-                File['/etc/eventlogging.d/consumers'],
-                File['/etc/eventlogging.d/forwarders'],
-                File['/etc/eventlogging.d/multiplexers'],
-                File['/etc/eventlogging.d/processors'],
-                File['/etc/eventlogging.d/reporters'],
-                File['/etc/eventlogging.d/services'],
-                Package['eventlogging/eventlogging'],
-            ]
         }
+        file { '/etc/init/eventlogging/init.conf':
+            content => template('eventlogging/upstart/init.conf.erb'),
+        }
+        file { '/etc/init/eventlogging/consumer.conf':
+            content => template('eventlogging/upstart/consumer.conf.erb'),
+            require => File['/etc/eventlogging.d/consumers'],
+        }
+        file { '/etc/init/eventlogging/forwarder.conf':
+            content => template('eventlogging/upstart/forwarder.conf.erb'),
+            require => File['/etc/eventlogging.d/forwarders'],
+        }
+        file { '/etc/init/eventlogging/multiplexer.conf':
+            content => template('eventlogging/upstart/multiplexer.conf.erb'),
+            require => File['/etc/eventlogging.d/multiplexers'],
+        }
+        file { '/etc/init/eventlogging/processor.conf':
+            content => template('eventlogging/upstart/processor.conf.erb'),
+            require => File['/etc/eventlogging.d/processors'],
+        }
+        file { '/etc/init/eventlogging/reporter.conf':
+            content => template('eventlogging/upstart/reporter.conf.erb'),
+            require => File['/etc/eventlogging.d/reporters'],
+        }
+        # daemon service http service is not supported using upstart.
+        # See: eventlogging::service::service
 
         # 'eventlogging/init' is the master upstart task; it walks
         # </etc/eventlogging.d> and starts a job for each instance
