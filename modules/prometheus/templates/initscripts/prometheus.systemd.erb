@@ -1,0 +1,11 @@
+[Unit]
+Description=prometheus server
+
+[Service]
+User=prometheus
+Group=prometheus
+EnvironmentFile=-/etc/default/prometheus
+ExecStart=/usr/bin/prometheus $ARGS
+Restart=on-failure
+RestartSec=10s
+ExecReload=/bin/kill -HUP $MAINPID
