@@ -44,7 +44,7 @@ def metric_init(params):
                 'units': (slope == 'positive' and 'N/s' or 'N'),
                 'slope': slope,
                 'format': '%u',
-                'description': properties['description'].encode('ascii'),
+                'description': properties['description'].encode('ascii').replace("'", '"'),
                 'groups': "varnish " + (instance == "varnish" and
                                         "(default instance)" or instance)
             }
