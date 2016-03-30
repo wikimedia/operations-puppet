@@ -161,10 +161,18 @@ class openstack::horizon::service(
         require => Package['python-designate-dashboard', 'openstack-dashboard'],
     }
     file { '/usr/share/openstack-dashboard/openstack_dashboard/local/enabled/_70_dns_add_group.py':
-        ensure  => absent,
+        source  => "puppet:///modules/openstack/${openstack_version}/designate/dashboard/_70_dns_add_group.py",
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0644',
+        require => Package['python-designate-dashboard', 'openstack-dashboard'],
     }
     file { '/usr/share/openstack-dashboard/openstack_dashboard/local/enabled/_71_dns_project.py':
-        ensure  => absent,
+        source  => "puppet:///modules/openstack/${openstack_version}/designate/dashboard/_71_dns_project.py",
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0644',
+        require => Package['python-designate-dashboard', 'openstack-dashboard'],
     }
 
     # Proxy panel
@@ -177,7 +185,11 @@ class openstack::horizon::service(
         recurse => true
     }
     file { '/usr/share/openstack-dashboard/openstack_dashboard/local/enabled/_1922_project_proxy_panel.py':
-        ensure  => absent,
+        source  => "puppet:///modules/openstack/${openstack_version}/horizon/proxy_enable.py",
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0644',
+        require => Package['python-designate-dashboard', 'openstack-dashboard'],
     }
 
     # Monkeypatches for Horizon customization
