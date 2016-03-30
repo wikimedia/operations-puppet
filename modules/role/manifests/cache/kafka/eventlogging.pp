@@ -6,8 +6,10 @@ class role::cache::kafka::eventlogging(
     # Set varnish.arg.q or varnish.arg.m according to Varnish version
     if (hiera('varnish_version4', false)) {
         $varnish_opts = { 'q' => 'ReqURL ~ "^/(beacon/)?event(\.gif)?\?"' }
+        $conf_template = 'varnishkafka/varnishkafka.conf.erb'
     } else {
         $varnish_opts = { 'm' => 'RxURL:^/(beacon/)?event(\.gif)?\?' }
+        $conf_template = 'varnishkafka/varnishkafka_v4.conf.erb'
     }
 
     varnishkafka::instance { 'eventlogging':
@@ -25,5 +27,6 @@ class role::cache::kafka::eventlogging(
         varnish_svc_name            => $varnish_svc_name,
         varnish_opts                => $varnish_opts,
         topic_request_required_acks => '1',
+        conf_template               => $conf_template,
     }
 }
