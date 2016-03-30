@@ -24,10 +24,12 @@ def get_open_port():
 def register(port):
     """Register with the master proxy."""
     proxy = get_active_proxy()
+    # Use IP rather than host, to avoid DNS related issues
+    current_ip = socket.gethostbyname(socket.getfqdn())
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     try:
         sock.connect((proxy, 8282))
-        sock.sendall("register\n.*\nhttp://%s:%u\n" % (socket.getfqdn(), port))
+        sock.sendall("register\n.*\nhttp://%s:%u\n" % (current_ip, port))
         res = sock.recv(1024)
         if res != 'ok':
             sys.stderr.write('port registration failed!')
