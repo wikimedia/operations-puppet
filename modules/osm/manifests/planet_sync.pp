@@ -51,7 +51,7 @@ define osm::planet_sync(
                 $proxy='webproxy.eqiad.wmnet:8080',
                 $flat_nodes=false,
                 $expire_levels='15',
-                $memory_limit=floor($::memoryfree_mb)/10,
+                $memory_limit=floor($::memorysize_mb)/12,
                 $num_threads=$::processorcount,
 ) {
     include ::osm::users
