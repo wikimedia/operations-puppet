@@ -248,7 +248,7 @@ class CreateProxyForm(forms.SelfHandlingForm):
             c.records.create(domainid, record)
 
         d = {
-            "backends": [data.get('backendInstance') + ':' + data.get('backendPort')],
+            "backends": ['http://' + data.get('backendInstance') + '.eqiad.wmflabs:' + data.get('backendPort')],
             "domain": data.get('record') + '.' + data.get('domain')
         }
 
