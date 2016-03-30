@@ -1,0 +1,5 @@
+<% require 'yaml' %>
+<%= { 'global'         => @global_config,
+      'rule_files'     => @rule_files,
+      'scrape_configs' => @scrape_configs
+    }.to_yaml %>
