@@ -25,7 +25,7 @@ class role::maps::server {
         owner  => 'root',
         group  => 'root',
         mode   => '0444',
-        source => 'puppet:///files/postgres/tuning.conf',
+        source => 'puppet:///modules/role/maps/tuning.conf',
     }
     sysctl::parameters { 'postgres_shmem':
         values => {
