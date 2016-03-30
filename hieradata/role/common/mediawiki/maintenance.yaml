@@ -5,7 +5,7 @@ admin::groups:
 base::resolving::domain_search:
   - wikimedia.org
   - eqiad.wmnet
-  - esams.wikimedia.org
+  - esams.wmnet
   - codfw.wmnet
 hhvm::extra::cli:
   hhvm:
