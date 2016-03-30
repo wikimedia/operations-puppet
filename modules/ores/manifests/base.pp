@@ -1,6 +1,6 @@
 class ores::base(
     $branch = 'deploy',
-    $config_path = '/srv/ores/config',
+    $config_path = '/srv/ores/deploy',
     $venv_path = '/srv/ores/venv',
 ) {
     # Let's use a virtualenv for maximum flexibility - we can convert
@@ -32,20 +32,41 @@ class ores::base(
                     'myspell-pt',
                     'myspell-uk')
 
-    file { '/srv/ores':
-        ensure => directory,
-        owner  => 'www-data',
-        group  => 'www-data',
-        mode   => '0775',
+    # Deployment configurations
+    include scap
+    scap::target { 'ores/deploy':
+        deploy_user       => 'deploy-service',
+        public_key_source => 'puppet:///modules/service/servicedeploy_rsa.pub',
+        sudo_rules        => [
+            'ALL=(root) NOPASSWD: /usr/sbin/service uwsgi-ores-web *',
+            'ALL=(root) NOPASSWD: /usr/sbin/service celery-ores-worker *',
+            'ALL=(root) NOPASSWD: /usr/sbin/service flower-ores *',
+        ],
     }
 
-    git::clone { 'ores-wm-config':
-        ensure    => present,
-        origin    => 'https://github.com/wiki-ai/ores-wikimedia-config.git',
-        directory => $config_path,
-        branch    => $branch,
-        owner     => 'www-data',
-        group     => 'www-data',
-        require   => File['/srv/ores'],
+    file { '/srv/ores/deploy-cache':
+        ensure  => directory,
+        owner   => 'deploy-service',
+        group   => 'deploy-service',
+        mode    => '0775',
+        recurse => true,
     }
+
+    file { '/srv/ores':
+        ensure  => directory,
+        owner   => 'deploy-service',
+        group   => 'deploy-service',
+        mode    => '0775',
+        recurse => true,
+    }
+
+
+    file { '/srv/deployment/ores':
+        ensure  => directory,
+        owner   => 'deploy-service',
+        group   => 'deploy-service',
+        mode    => '0775',
+        recurse => true,
+    }
+
 }
