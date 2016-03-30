@@ -138,6 +138,22 @@ class role::maps::master {
         mode    => '0400',
         content => template('role/maps/grants.cql.erb'),
     }
+
+    $maps_hosts = hiera('maps::hosts')
+    $maps_hosts_ferm = join($maps_hosts, ' ')
+
+    ferm::service { 'tilerator_redis':
+        proto  => 'tcp',
+        port   => '6379',
+        srange => "(${maps_hosts_ferm})",
+    }
+
+    # Access to postgres master from postgres slaves
+    ferm::service { 'postgres_maps':
+        proto  => 'tcp',
+        port   => '5432',
+        srange => "(${maps_hosts_ferm})",
+    }
 }
 
 # Sets up a maps server slave
