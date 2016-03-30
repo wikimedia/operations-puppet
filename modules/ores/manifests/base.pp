@@ -32,6 +32,35 @@ class ores::base(
                     'myspell-pt',
                     'myspell-uk')
 
+    # Deployment configurations
+    include scap
+    scap::target { 'ores/deploy':
+        deploy_user       => 'deploy-service',
+        public_key_source => 'puppet:///modules/service/servicedeploy_rsa.pub',
+        sudo_rules        => [
+            'ALL=(root) NOPASSWD: /usr/sbin/service uwsgi-ores-web *',
+            'ALL=(root) NOPASSWD: /usr/sbin/service celery-ores-worker *',
+            'ALL=(root) NOPASSWD: /usr/sbin/service flower-ores *',
+        ],
+    }
+
+    file { '/srv/ores/deploy-cache':
+        ensure  => directory,
+        owner   => 'deploy-service',
+        group   => 'deploy-service',
+        mode    => '0775',
+        recurse => true,
+    }
+
+    file { '/srv/deployment/ores':
+        ensure  => directory,
+        owner   => 'deploy-service',
+        group   => 'deploy-service',
+        mode    => '0775',
+        recurse => true,
+    }
+
+
     file { '/srv/ores':
         ensure => directory,
         owner  => 'www-data',
