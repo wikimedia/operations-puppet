@@ -253,7 +253,7 @@ class CreateProxyForm(forms.SelfHandlingForm):
                 request.user.project_name,
                 data.get('backendPort')
             )],
-            "domain": data.get('record') + '.' + data.get('domain')
+            "domain": data.get('record') + '.' + data.get('domain')..rstrip('.')
         }
 
         try:
