@@ -65,6 +65,8 @@ class DeleteProxy(tables.DeleteAction):
     def delete(self, request, obj_id):
         record = obj_id[:obj_id.find('.')]
         domain = obj_id[obj_id.find('.') + 1:]
+        if not domain.endswith('.'):
+            domain += '.'
 
         # First let's make sure that this proxy is really ours to delete.
         fqdn = "%s.%s" % (record, domain)
