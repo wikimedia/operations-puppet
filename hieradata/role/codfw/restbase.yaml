@@ -5,10 +5,6 @@ restbase::seeds:
     - restbase2002-a.codfw.wmnet
     - restbase2002-b.codfw.wmnet
     - restbase2002-c.codfw.wmnet
-    - restbase2003.codfw.wmnet
-    - restbase2004.codfw.wmnet
-    - restbase2005.codfw.wmnet
-    - restbase2006.codfw.wmnet
 
 lvs::realserver::realserver_ips:
   - '10.2.1.17' # restbase.svc.codfw.wmnet
