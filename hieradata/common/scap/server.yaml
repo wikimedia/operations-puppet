@@ -57,3 +57,6 @@ sources:
   # cxserver is the ContentTranslation server.
   cxserver/deploy:
     repository: cxserver/deploy
+
+  # ores is the Objective Revision Evaluation Service
+  ores/deploy: {}
