@@ -1,7 +1,6 @@
 base::resolving::domain_search:
   - wikimedia.org
-  - esams.wmnet
   - eqiad.wmnet
   - codfw.wmnet
+  - esams.wmnet
   - ulsfo.wmnet
-  - esams.wikimedia.org
