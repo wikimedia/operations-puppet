@@ -194,9 +194,10 @@ class CreateProxyForm(forms.SelfHandlingForm):
         return results
 
     def populate_domains(self, request):
-        results = [(None, 'Select a domain'), ('wmflabs.org.', 'wmflabs.org.')]
-        for domain in designateapi.designateclient(request).domains.list():
-            results.append((domain.name, domain.name))
+        results = [('wmflabs.org.',, 'wmflabs.org.')]
+        #results = [(None, 'Select a domain'), ('wmflabs.org.', 'wmflabs.org.')]
+        #for domain in designateapi.designateclient(request).domains.list():
+            #results.append((domain.name, domain.name))
         return results
 
     def clean(self):
