@@ -151,13 +151,15 @@ backend <%= name %> {
 <% end # director loop -%>
 
 <%
-if @use_dynamic_directors and @dynamic_directors -%>
+if @use_dynamic_directors and @dynamic_directors and not @varnish_version4 -%>
 include "directors.<%= @inst %>.vcl";
 <% end -%>
 
 sub wm_common_directors_init {
 <% if not @varnish_version4 -%>
 }
+<% else if @use_dynamic_directors and @dynamic_directors -%>
+include "directors.<%= @inst %>.vcl";
 <% end -%>
 
 <% @varnish_directors.keys.sort.each do |director_name|
