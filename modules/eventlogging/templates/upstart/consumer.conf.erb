@@ -14,7 +14,8 @@ stop on eventlogging.stop
 setuid eventlogging
 setgid eventlogging
 
-exec eventlogging-consumer "@$CONFIG"
+env PYTHONPATH=<%= @eventlogging_path %>
+exec <%= @eventlogging_path %>/bin/eventlogging-consumer "@$CONFIG"
 
 respawn
 respawn limit unlimited  # Keep trying to restart.
