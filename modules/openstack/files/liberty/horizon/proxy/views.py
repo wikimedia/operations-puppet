@@ -65,12 +65,13 @@ class DeleteProxy(tables.DeleteAction):
     def delete(self, request, obj_id):
         record = obj_id[:obj_id.find('.')]
         domain = obj_id[obj_id.find('.') + 1:]
+        if not domain.endswith('.'):
+            domain += '.'
 
         # First let's make sure that this proxy is really ours to delete.
-        fqdn = "%s.%s" % (record, domain)
         existing_domains = [proxy.domain for proxy in get_proxy_list(request)]
-        if fqdn not in existing_domains:
-            raise Exception("Proxy \'%s\' is to be deleted but is not owned by this view." % domain)
+        if obj_id not in existing_domains:
+            raise Exception("Proxy \'%s\' is to be deleted but is not owned by this view." % obj_id)
 
         if domain == 'wmflabs.org.':
             auth = identity_generic.Password(
