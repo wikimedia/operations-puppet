@@ -8,6 +8,7 @@ class role::cache::kafka::eventlogging(
         $varnish_opts = { 'q' => 'ReqURL ~ "^/(beacon/)?event(\.gif)?\?"' }
     } else {
         $varnish_opts = { 'm' => 'RxURL:^/(beacon/)?event(\.gif)?\?' }
+        $conf_template = 'varnishkafka/varnishkafka_v4.conf.erb'
     }
 
     varnishkafka::instance { 'eventlogging':
@@ -25,5 +26,6 @@ class role::cache::kafka::eventlogging(
         varnish_svc_name            => $varnish_svc_name,
         varnish_opts                => $varnish_opts,
         topic_request_required_acks => '1',
+        conf_template               => $conf_template,
     }
 }
