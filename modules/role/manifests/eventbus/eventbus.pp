@@ -9,7 +9,6 @@
 # https://phabricator.wikimedia.org/T119042 works.
 #
 class role::eventbus::eventbus {
-    require ::eventlogging
     require ::eventschemas
     require ::role::kafka::main::config
 
