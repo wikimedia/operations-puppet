@@ -14,6 +14,7 @@ stop on eventlogging.stop
 setuid eventlogging
 setgid eventlogging
 
-exec eventlogging-reporter "@$CONFIG"
+env PYTHONPATH=<%= @eventlogging_path %>
+exec <%= @eventlogging_path %>/bin/eventlogging-reporter "@$CONFIG"
 
 respawn
