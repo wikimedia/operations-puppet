@@ -151,4 +151,9 @@ class role::kafka::analytics::broker {
     diamond::collector { 'TcpConnStates':
         source => 'puppet:///modules/diamond/collector/tcpconnstates.py',
     }
+
+    # Monitor Ferm/Netfilter Connection Flows
+    diamond::collector { 'NfConntrackCount':
+        source => 'puppet:///modules/diamond/collector/nf_conntrack_counter.py',
+    }
 }
