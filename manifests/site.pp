@@ -1187,7 +1187,7 @@ node 'labtestservices2001.wikimedia.org' {
 }
 
 # bastion in the Netherlands
-node 'hooft.esams.wikimedia.org' {
+node 'bast3001.wikimedia.org' {
     $ganglia_aggregator = true
 
     interface::add_ip6_mapped { 'main':
