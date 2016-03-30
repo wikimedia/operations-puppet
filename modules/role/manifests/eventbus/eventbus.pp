@@ -50,12 +50,8 @@ class role::eventbus::eventbus {
         statsd_prefix     => 'eventbus',
         # The service will be reloaded (SIGHUPed, not restarted)
         # if any of these resources change.
-        reload_on         => [
-            # Reload if mediawiki/event-schemas has a change.
-            Class['::eventschemas'],
-            # Reload if topic config has a change.
-            File['/etc/eventbus/topics.yaml'],
-        ]
+        # Reload if mediawiki/event-schemas has a change.
+        reload_on         =>  Class['::eventschemas'],
     }
 
     # Allow traffic to eventlogging-service on $port
