@@ -204,10 +204,10 @@ host = asw-esams.mgmt.esams.wmnet
 menu = Hosts
 title = Sampled Hosts
 
-+++ hooft
-menu = hooft
-title = hooft.esams.wikimedia.org
-host = hooft.esams.wikimedia.org
++++ bast3001
+menu = bast3001
+title = bast3001.wikimedia.org
+host = bast3001.wikimedia.org
 
 + ulsfo
 
