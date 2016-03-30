@@ -34,7 +34,7 @@ define eventlogging::service::multiplexer(
     $sid     = $title,
     $ensure  = present,
 ) {
-    include ::eventlogging
+    include ::eventlogging::server
 
     $basename = regsubst($title, '\W', '-', 'G')
     file { "/etc/eventlogging.d/multiplexers/${basename}":
