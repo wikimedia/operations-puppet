@@ -1,7 +1,6 @@
 class ores::base(
-    $branch = 'deploy',
-    $config_path = '/srv/ores/config',
-    $venv_path = '/srv/ores/venv',
+    $config_path = '/srv/deployment/ores/deploy',
+    $venv_path = '/srv/deployment/ores/venv',
 ) {
     # Let's use a virtualenv for maximum flexibility - we can convert
     # this to deb packages in the future if needed. We also install build tools
@@ -33,18 +32,4 @@ class ores::base(
                     'myspell-pt',
                     'myspell-ru',
                     'myspell-uk')
-
-    file { '/srv/ores':
-        ensure => directory,
-        owner  => 'www-data',
-        group  => 'www-data',
-        mode   => '0775',
-    }
-
-    file { $config_path:
-        ensure  => directory,
-        owner   => 'www-data',
-        group   => 'www-data',
-        require => File['/srv/ores'],
-    }
 }
