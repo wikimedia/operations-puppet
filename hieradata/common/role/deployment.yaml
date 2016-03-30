@@ -120,3 +120,5 @@ repo_config:
   changeprop/deploy:
     upstream: https://gerrit.wikimedia.org/r/mediawiki/services/change-propagation/deploy
     checkout_submodules: true
+  dumps/deploy:
+    upstream: https://gerrit.wikimedia.org/r/operations/dumps
