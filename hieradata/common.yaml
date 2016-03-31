@@ -379,3 +379,28 @@ kafka_clusters:
       kafka2002.codfw.wmnet:
         id: 2002
 deployment_server: tin.eqiad.wmnet
+
+
+#### TODO: THIS SHOULD MOVE ELSEWHERE!  It doesn't belong in a role, since it
+#### doesn't work in labs.  Not sure!
+
+# scap::source declarations.  These are created
+# by the scap::server class.  Each source listed here
+# will be cloned on the scap deploy server.
+scap::sources:
+
+  # Source code for taking XML dumps and snapshots of Mediawiki.
+  dumps/dumps:
+    repository: operations/dumps
+    scap_repository: operations/dumps/scap
+
+  # eventbus runs eventlogging-service.
+  # See: https://wikitech.wikimedia.org/wiki/EventBus
+  eventlogging/eventbus:
+    repository: eventlogging
+    scap_repository: eventlogging/scap/eventbus
+
+  # eventlogging/analytics is the original EventLogging server deployment.
+  eventlogging/analytics:
+    repository: eventlogging
+    scap_repository: eventlogging/scap/analytics
