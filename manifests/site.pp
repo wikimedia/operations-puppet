@@ -2270,10 +2270,6 @@ node 'rcs1001.eqiad.wmnet', 'rcs1002.eqiad.wmnet' {
         interface => 'eth0',
     }
     role rcstream
-
-    if $::hostname == 'rcs1002' {
-        include base::firewall
-    }
 }
 
 node /^rdb100[1-9]\.eqiad\.wmnet/ {
