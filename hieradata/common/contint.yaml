@@ -3,6 +3,7 @@
 # Use ip address since the value is injected in an iptables rule and ferm
 # @resolve has undefined behavior.
 nodepool_host: '10.64.20.18'  # labnodepool1001.eqiad.wmnet
+phabricator_host: '10.64.32.150' # iridium.eqiad.wmnet
 
 # Hosts running zuul-merger process
 #
