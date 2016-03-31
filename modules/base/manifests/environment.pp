@@ -93,6 +93,14 @@ class base::environment(
         mode   => '0444',
     }
 
+    # script to generate ssh fingerprints of the server
+    file { '/usr/local/bin/gen_fingerprints':
+        source => 'puppet:///modules/base/environment/gen_fingerprints',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+    }
+
     ### Core dumps
 
     # Write core dumps to /var/tmp/core/core.<host>.<executable>.<pid>.<timestamp>.
