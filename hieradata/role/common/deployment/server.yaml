@@ -39,3 +39,16 @@ keyholder::agents:
       - aqs-admins
     key_fingerprint: 6d:54:92:8b:39:10:f5:9b:84:40:36:ef:3c:9a:6d:d8
     key_file: servicedeploy_rsa
+
+# scap::source declarations.  These are created
+# by the scap::server class.  Each source listed here
+# will be cloned on the scap deploy server.
+scap::sources:
+  eventlogging/eventbus:
+    repository: eventlogging
+    # TODO: Set scap_repository to true once
+    #       eventlogging/eventbus/scap exists.
+  # eventlogging/analytics will supercede eventlogging/eventlogging.
+  # See: T118772
+  eventlogging/analytics:
+    repository: eventlogging

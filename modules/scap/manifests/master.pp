@@ -17,7 +17,7 @@ class scap::master(
     include mediawiki::scap
 
     # scap::server will ensure that all keyholder::agents
-    # declared in hiera will exist.
+    # and all scap::sources declared in hiera will exist.
     include scap::server
 
     package { 'dsh':
