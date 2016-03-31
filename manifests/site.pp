@@ -2354,6 +2354,7 @@ node 'ruthenium.eqiad.wmnet' {
 node 'sarin.codfw.wmnet' {
     role salt::masters::production, mariadb::client
     include standard
+    include base::firewall
 }
 
 # T95046 install/deploy scandium as zuul merger (ci) server
