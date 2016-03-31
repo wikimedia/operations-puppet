@@ -2,7 +2,7 @@ class snapshot::dumps::dumplists(
     $enable = true,
     $user   = undef,
 ) {
-    include snapshot::dirs
+    include snapshot::dumps::dirs
 
     if ($enable) {
         $ensure = 'present'

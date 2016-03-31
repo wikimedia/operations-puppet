@@ -18,54 +18,54 @@ class snapshot::dumps::dblists($enable=true, $hugewikis_enable=false) {
 
         $globalusage_dblist = 'commonswiki'
 
-        include snapshot::dirs
+        include snapshot::dumps::dirs
 
         if ($hugewikis_enable) {
             # this host will run enwiki dumps
-            file { "${snapshot::dirs::dumpsdir}/dblists/hugewikis.dblist":
+            file { "${snapshot::dumps::dirs::dumpsdir}/dblists/hugewikis.dblist":
                 ensure  => 'present',
-                path    => "${snapshot::dirs::dumpsdir}/dblists/hugewikis.dblist",
+                path    => "${snapshot::dumps::dirs::dumpsdir}/dblists/hugewikis.dblist",
                 mode    => '0644',
                 owner   => 'root',
                 group   => 'root',
                 content => "${hugewikis_dblist}\n",
             }
         }
-        file { "${snapshot::dirs::dumpsdir}/dblists/bigwikis.dblist":
+        file { "${snapshot::dumps::dirs::dumpsdir}/dblists/bigwikis.dblist":
             ensure  => 'present',
-            path    => "${snapshot::dirs::dumpsdir}/dblists/bigwikis.dblist",
+            path    => "${snapshot::dumps::dirs::dumpsdir}/dblists/bigwikis.dblist",
             mode    => '0644',
             owner   => 'root',
             group   => 'root',
             content => "${bigwikis_dblist}\n",
         }
-        file { "${snapshot::dirs::dumpsdir}/dblists/skip.dblist":
+        file { "${snapshot::dumps::dirs::dumpsdir}/dblists/skip.dblist":
             ensure  => 'present',
-            path    => "${snapshot::dirs::dumpsdir}/dblists/skip.dblist",
+            path    => "${snapshot::dumps::dirs::dumpsdir}/dblists/skip.dblist",
             mode    => '0644',
             owner   => 'root',
             group   => 'root',
             content => "${skip_dblist}\n",
         }
-        file { "${snapshot::dirs::dumpsdir}/dblists/skipmonitor.dblist":
+        file { "${snapshot::dumps::dirs::dumpsdir}/dblists/skipmonitor.dblist":
             ensure  => 'present',
-            path    => "${snapshot::dirs::dumpsdir}/dblists/skipmonitor.dblist",
+            path    => "${snapshot::dumps::dirs::dumpsdir}/dblists/skipmonitor.dblist",
             mode    => '0644',
             owner   => 'root',
             group   => 'root',
             content => "${excludewikis_dblist}\n",
         }
-        file { "${snapshot::dirs::dumpsdir}/dblists/skipnone.dblist":
+        file { "${snapshot::dumps::dirs::dumpsdir}/dblists/skipnone.dblist":
             ensure  => 'present',
-            path    => "${snapshot::dirs::dumpsdir}/dblists/skipnone.dblist",
+            path    => "${snapshot::dumps::dirs::dumpsdir}/dblists/skipnone.dblist",
             mode    => '0644',
             owner   => 'root',
             group   => 'root',
             content => "${skipnone_dblist}\n",
         }
-        file { "${snapshot::dirs::dumpsdir}/dblists/globalusage.dblist":
+        file { "${snapshot::dumps::dirs::dumpsdir}/dblists/globalusage.dblist":
             ensure  => 'present',
-            path    => "${snapshot::dirs::dumpsdir}/dblists/globalusage.dblist",
+            path    => "${snapshot::dumps::dirs::dumpsdir}/dblists/globalusage.dblist",
             mode    => '0644',
             owner   => 'root',
             group   => 'root',
@@ -75,9 +75,9 @@ class snapshot::dumps::dblists($enable=true, $hugewikis_enable=false) {
         $warning = "The files in this directory are maintained by puppet!\n"
         $location = "puppet:///modules/snapshot/dumps/dblists.pp\n"
 
-        file { "${snapshot::dirs::dumpsdir}/dblists/README":
+        file { "${snapshot::dumps::dirs::dumpsdir}/dblists/README":
             ensure  => 'present',
-            path    => "${snapshot::dirs::dumpsdir}/dblists/README",
+            path    => "${snapshot::dumps::dirs::dumpsdir}/dblists/README",
             mode    => '0644',
             owner   => 'root',
             group   => 'root',

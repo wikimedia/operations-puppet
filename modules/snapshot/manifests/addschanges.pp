@@ -2,7 +2,7 @@ class snapshot::addschanges(
     $enable=true,
     $user=undef,
 ) {
-    include snapshot::dirs
+    include snapshot::dumps::dirs
 
     if ($enable) {
         $ensure = 'present'
@@ -22,7 +22,7 @@ class snapshot::addschanges(
         ensure      => $ensure,
         environment => 'MAILTO=ops-dumps@wikimedia.org',
         user        => $user,
-        command     => "python ${snapshot::dirs::addschangesdir}/generateincrementals.py --configfile ${snapshot::dirs::addschangesdir}/confs/addschanges.conf",
+        command     => "python ${snapshot::dumps::dirs::addschangesdir}/generateincrementals.py --configfile ${snapshot::dumps::dirs::addschangesdir}/confs/addschanges.conf",
         minute      => '50',
         hour        => '23',
     }
