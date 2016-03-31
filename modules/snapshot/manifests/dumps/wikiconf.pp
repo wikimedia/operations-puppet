@@ -3,11 +3,11 @@ define snapshot::dumps::wikiconf(
     $config     = undef,
     ) {
 
-    include snapshot::dirs
+    include snapshot::dumps::dirs
 
-    file { "${snapshot::dirs::dumpsdir}/confs/${title}":
+    file { "${snapshot::dumps::dirs::dumpsdir}/confs/${title}":
         ensure  => 'present',
-        path    => "${snapshot::dirs::dumpsdir}/confs/${title}",
+        path    => "${snapshot::dumps::dirs::dumpsdir}/confs/${title}",
         mode    => '0755',
         owner   => 'root',
         group   => 'root',
