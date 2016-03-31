@@ -68,6 +68,7 @@ define git::clone(
         default       => 'https://gerrit.wikimedia.org/r/p/%s.git',
     }
 
+
     $remote = $origin ? {
         undef   => sprintf($default_url_format, $title),
         default => $origin,
