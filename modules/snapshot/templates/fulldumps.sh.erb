@@ -38,7 +38,7 @@ show (){
 getcommandargs(){
     slots="$1"
     stagesfile="$2"
-    commandargs="./dumpscheduler.py --slots ${slots} --commands ${dumpsdir}/stages/${stagesfile} --cache ${dumpsdir}/cache/running_cache.txt --directory $dumpsdir"
+    commandargs="${scriptsdir}/dumpscheduler.py --slots ${slots} --commands ${dumpsdir}/stages/${stagesfile} --cache ${dumpsdir}/cache/running_cache.txt --directory $dumpsdir"
 }
 
 maybe_do_createdirs(){
@@ -116,8 +116,10 @@ show "no dumpscheduler running so proceeding"
 
 python="/usr/bin/python"
 
-dumpsdir="<%= scope.lookupvar('snapshot::dirs::dumpsdir') %>"
-cd $dumpsdir
+dumpsdir="<%= scope.lookupvar('snapshot::dumps::dirs::dumpsdir') %>"
+scriptsdir="<%= scope.lookupvar('snapshot::dumps::dirs::scriptsdir') %>"
+#soon: scriptsdir="<%= scope.lookupvar('snapshot::deployment::common::scriptsdir') %>"
+cd $scriptsdir
 
 today=`/bin/date +%d`
 if [[ "$today" < "$startdate" || "$today" > "$enddate" ]]; then
