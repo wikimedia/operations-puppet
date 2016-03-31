@@ -2539,6 +2539,7 @@ node 'terbium.eqiad.wmnet' {
     role mariadb::maintenance, mediawiki::maintenance
 
     include ldap::role::client::labs
+    include base::firewall
 }
 
 # deployment servers
