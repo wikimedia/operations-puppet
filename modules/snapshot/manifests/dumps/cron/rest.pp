@@ -14,6 +14,6 @@ class snapshot::dumps::cron::rest(
         command     => '/usr/local/bin/fulldumps.sh 01 14 regular > /dev/null',
         minute      => '05',
         hour        => '02',
-        monthday    => '01-14',
+        monthday    => '04-14',
     }
 }
