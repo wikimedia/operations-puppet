@@ -28,15 +28,15 @@ class snapshot::cirrussearch(
 
     $scriptPath = '/usr/local/bin/dumpcirrussearch.sh'
     file { $scriptPath:
-        mode   => '0755',
-        owner  => 'root',
-        group  => 'root',
-        source => 'puppet:///modules/snapshot/dumpcirrussearch.sh',
+        mode    => '0755',
+        owner   => 'root',
+        group   => 'root',
+        content => template('snapshot/dumpcirrussearch.sh.erb'),
     }
 
     cron { 'cirrussearch-dump':
         ensure      => $ensure,
-        command     => "${scriptPath} --config ${snapshot::dirs::dumpsdir}/confs/wikidump.conf",
+        command     => "${scriptPath} --config ${snapshot::dumps::dirs::dumpsdir}/confs/wikidump.conf",
         environment => 'MAILTO=ops-dumps@wikimedia.org',
         user        => $user,
         minute      => '15',

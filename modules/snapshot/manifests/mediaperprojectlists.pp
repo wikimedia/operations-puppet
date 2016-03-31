@@ -2,7 +2,7 @@ class snapshot::mediaperprojectlists(
     $enable = true,
     $user   = undef,
 ) {
-    include snapshot::dirs
+    include snapshot::dumps::dirs
     include snapshot::wikiqueryskip
 
     if ($enable) {
@@ -21,9 +21,9 @@ class snapshot::mediaperprojectlists(
         content => template('snapshot/create-media-per-project-lists.sh.erb'),
     }
 
-    file { "${snapshot::dirs::wikiqueriesdir}/confs/wq.conf.media":
+    file { "${snapshot::dumps::dirs::wikiqueriesdir}/confs/wq.conf.media":
         ensure  => 'present',
-        path    => "${snapshot::dirs::wikiqueriesdir}/confs/wq.conf.media",
+        path    => "${snapshot::dumps::dirs::wikiqueriesdir}/confs/wq.conf.media",
         mode    => '0644',
         owner   => $user,
         group   => root,
