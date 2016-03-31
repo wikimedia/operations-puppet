@@ -93,7 +93,8 @@ class Wmtotp(auth.AuthMethodHandler):
             if 'totp' in auth_payload['user']:
                 (p, d) = oath.accept_totp(
                     base64.b16encode(base64.b32decode(secret)),
-                    auth_payload['user']['totp'])
+                    auth_payload['user']['totp'],
+                    forward_drift=2, backward_drift=2)
                 if p:
                     LOG.debug("OATH: 2FA passed")
                 else:
