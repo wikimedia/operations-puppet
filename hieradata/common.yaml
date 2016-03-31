@@ -379,3 +379,22 @@ kafka_clusters:
       kafka2002.codfw.wmnet:
         id: 2002
 deployment_server: tin.eqiad.wmnet
+
+
+#### TODO: THIS SHOULD MOVE ELSEWHERE!  It doesn't belong in a role, since it
+#### doesn't work in labs.  Not sure!
+
+# scap::source declarations.  These are created
+# by the scap::server class.  Each source listed here
+# will be cloned on the scap deploy server.
+scap::sources:
+  eventlogging/eventbus:
+    repository: eventlogging
+    # TODO: Set scap_repository to true once
+    #       eventlogging/eventbus/scap exists.
+  # eventlogging/analytics will supercede eventlogging/eventlogging.
+  # See: T118772
+  eventlogging/analytics:
+    repository: eventlogging
+    # This is just for testing, DO NOT MERGE LIKE THIS:
+    scap_repository: analytics/log2udp2
