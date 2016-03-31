@@ -3,18 +3,18 @@ class snapshot::dumps::configs(
     $hugewikis_enable = true,
 ) {
 
-    include snapshot::dirs
+    include snapshot::dumps::dirs
 
     $config = {
         smallwikis => {
-            dblist        => "${snapshot::dirs::apachedir}/dblists/all.dblist",
-            skipdblist    => "${snapshot::dirs::dumpsdir}/dblists/skip.dblist",
+            dblist        => "${snapshot::dumps::dirs::apachedir}/dblists/all.dblist",
+            skipdblist    => "${snapshot::dumps::dirs::dumpsdir}/dblists/skip.dblist",
             keep          => '12',
             chunksEnabled => '0',
         },
         bigwikis => {
-            dblist           => "${snapshot::dirs::dumpsdir}/dblists/bigwikis.dblist",
-            skipdblist       => "${snapshot::dirs::dumpsdir}/dblists/skipnone.dblist",
+            dblist           => "${snapshot::dumps::dirs::dumpsdir}/dblists/bigwikis.dblist",
+            skipdblist       => "${snapshot::dumps::dirs::dumpsdir}/dblists/skipnone.dblist",
             keep             => '10',
             chunksEnabled    => '1',
             recombineHistory => '0',
@@ -93,8 +93,8 @@ class snapshot::dumps::configs(
             },
         },
         hugewikis => {
-            dblist           => "${snapshot::dirs::dumpsdir}/dblists/hugewikis.dblist",
-            skipdblist       => "${snapshot::dirs::dumpsdir}/dblists/skipnone.dblist",
+            dblist           => "${snapshot::dumps::dirs::dumpsdir}/dblists/hugewikis.dblist",
+            skipdblist       => "${snapshot::dumps::dirs::dumpsdir}/dblists/skipnone.dblist",
             keep             => '9',
             chunksEnabled    => '1',
             recombineHistory => '0',
@@ -107,14 +107,14 @@ class snapshot::dumps::configs(
             },
         },
         monitor => {
-            dblist        => "${snapshot::dirs::apachedir}/dblists/all.dblist",
-            skipdblist    => "${snapshot::dirs::dumpsdir}/dblists/skipmonitor.dblist",
+            dblist        => "${snapshot::dumps::dirs::apachedir}/dblists/all.dblist",
+            skipdblist    => "${snapshot::dumps::dirs::dumpsdir}/dblists/skipmonitor.dblist",
             keep          => '30',
             chunksEnabled => '0',
         },
         media => {
-            dblist        => "${snapshot::dirs::apachedir}/dblists/all.dblist",
-            skipdblist    => "${snapshot::dirs::dumpsdir}/dblists/globalusage.dblist",
+            dblist        => "${snapshot::dumps::dirs::apachedir}/dblists/all.dblist",
+            skipdblist    => "${snapshot::dumps::dirs::dumpsdir}/dblists/globalusage.dblist",
             keep          => '30',
             chunksEnabled => '0',
         },

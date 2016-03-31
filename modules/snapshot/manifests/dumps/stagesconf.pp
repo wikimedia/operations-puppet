@@ -3,11 +3,11 @@ define snapshot::dumps::stagesconf(
     $stages     = undef,
     ) {
 
-    include snapshot::dirs
+    include snapshot::dumps::dirs
 
-    file { "${snapshot::dirs::dumpsdir}/stages/${title}":
+    file { "${snapshot::dumps::dirs::dumpsdir}/stages/${title}":
         ensure  => 'present',
-        path    => "${snapshot::dirs::dumpsdir}/stages/${title}",
+        path    => "${snapshot::dumps::dirs::dumpsdir}/stages/${title}",
         mode    => '0755',
         owner   => 'root',
         group   => 'root',
