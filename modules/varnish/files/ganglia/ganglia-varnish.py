@@ -39,21 +39,33 @@ def metric_init(params):
 
     metrics = []
     for instance in instances:
+        if instance == "varnish":
+            groups = "varnish (default instance)"
+        else:
+            groups = "varnish " + instance
+
         for metric, properties in stats_cache[instance].iteritems():
             if metric == "timestamp" or metric.startswith(("VBE.", "LCK.")):
                 continue
-            slope = (properties['flag'] == 'i' and 'both' or 'positive')
+
+            # Use slope=both for metrics that can go both up and down
+            if properties['flag'] in ('i', 'g'):
+                slope = 'both'
+                units = 'N'
+            else:
+                slope = 'positive'
+                units = 'N/s'
+
             metric_properties = {
                 'name': instance + "." + metric.encode('ascii'),
                 'call_back': get_value,
                 'time_max': 15,
                 'value_type': 'uint',
-                'units': (slope == 'positive' and 'N/s' or 'N'),
+                'units': units,
                 'slope': slope,
                 'format': '%u',
                 'description': fix_description(properties['description']),
-                'groups': "varnish " + (instance == "varnish" and
-                                        "(default instance)" or instance)
+                'groups': groups
             }
             metrics.append(metric_properties)
 
