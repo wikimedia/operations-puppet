@@ -3,16 +3,16 @@
 # puppet:///modules/snapshot/wq.conf.erb
 #############################################################
 [wiki]
-mediawiki=<%= scope.lookupvar('snapshot::dirs::apachedir') %>
-allwikislist=<%= scope.lookupvar('snapshot::dirs::apachedir') -%>/dblists/all.dblist
-privatewikislist=<%= scope.lookupvar('snapshot::dirs::apachedir') -%>/dblists/private.dblist
-closedwikislist=<%= scope.lookupvar('snapshot::dirs::apachedir') -%>/dblists/closed.dblist
-skipwikislist=<%= scope.lookupvar('snapshot::dirs::wikiqueriesdir') -%>/dblists/skip.dblist
+mediawiki=<%= scope.lookupvar('snapshot::dumps::dirs::apachedir') %>
+allwikislist=<%= scope.lookupvar('snapshot::dumps::dirs::apachedir') -%>/dblists/all.dblist
+privatewikislist=<%= scope.lookupvar('snapshot::dumps::dirs::apachedir') -%>/dblists/private.dblist
+closedwikislist=<%= scope.lookupvar('snapshot::dumps::dirs::apachedir') -%>/dblists/closed.dblist
+skipwikislist=<%= scope.lookupvar('snapshot::dumps::dirs::wikiqueriesdir') -%>/dblists/skip.dblist
 adminsettings=private/PrivateSettings.php
 
 [output]
-wikiqueriesdir=<%= scope.lookupvar('snapshot::dirs::datadir') -%>/public/other/pagetitles
-temp=<%= scope.lookupvar('snapshot::dirs::datadir') -%>/temp
+wikiqueriesdir=<%= scope.lookupvar('snapshot::dumps::dirs::datadir') -%>/public/other/pagetitles
+temp=<%= scope.lookupvar('snapshot::dumps::dirs::datadir') -%>/temp
 fileperms=0644
 
 [database]
@@ -22,4 +22,4 @@ php=/usr/bin/php5
 mysql=/usr/bin/mysql
 gzip=/bin/gzip
 bzip2=/bin/bzip2
-multiversion=<%= scope.lookupvar('snapshot::dirs::apachedir') -%>/multiversion/MWScript.php
+multiversion=<%= scope.lookupvar('snapshot::dumps::dirs::apachedir') -%>/multiversion/MWScript.php
