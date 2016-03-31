@@ -12,15 +12,12 @@ class role::eventbus::eventbus {
     require ::eventschemas
     require ::role::kafka::main::config
 
-    # eventlogging code for eventbus is configured to deploy
-    # from the eventlogging/eventbus deploy target
-    # via scap/scap.cfg on the deployment host.
-    scap::target { 'eventlogging/eventbus':
-        deploy_user       => 'eventlogging',
-        public_key_source => "puppet:///modules/eventlogging/deployment/eventlogging_rsa.pub.${::realm}",
-        service_name      => 'eventlogging-service-eventbus',
-        manage_user       => false,
+    eventlogging::deployment::target { 'eventbus':
+        service_name        => 'eventlogging-service-eventbus',
     }
+    # eventlogging::deployment::target { 'eventbus':
+    # Will deploy eventlogging code here.
+    $eventlogging_path = '/srv/deployment/eventlogging/eventbus'
 
     $kafka_brokers_array = $role::kafka::main::config::brokers_array
     $kafka_base_uri      = inline_template('kafka:///<%= @kafka_brokers_array.join(":9092,") + ":9092" %>')
@@ -36,7 +33,6 @@ class role::eventbus::eventbus {
         "${kafka_base_uri}?async=False&topic=${::site}.{meta[topic]}"
     ]
 
-    $eventlogging_path = '/srv/deployment/eventlogging/eventbus'
     # TODO: Allow configuration of more than one service daemon process?
     eventlogging::service::service { 'eventbus':
         eventlogging_path => $eventlogging_path,
