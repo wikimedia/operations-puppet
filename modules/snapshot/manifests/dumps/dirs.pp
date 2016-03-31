@@ -22,9 +22,10 @@ class snapshot::dumps::dirs (
       group  => 'root',
     }
 
-    file { "${dumpsdir}/dblists":
+    $dblistsdir = "${dumpsdir}/dblists"
+    file { "$dblistsdir":
       ensure => 'directory',
-      path   => "${dumpsdir}/dblists",
+      path   => "$dblistsdir",
       mode   => '0755',
       owner  => 'root',
       group  => 'root',
