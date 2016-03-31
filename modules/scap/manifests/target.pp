@@ -40,6 +40,7 @@
 #   scap::target { 'eventlogging/eventlogging':
 #       deploy_user => 'eventlogging',
 #       public_key_source => "puppet:///modules/eventlogging/deployment/eventlogging_rsa.pub.${::realm}",
+#       manage_user => false,
 #   }
 #
 define scap::target(
