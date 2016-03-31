@@ -8,7 +8,7 @@ class role::deployment::server(
     # include misc::deployment::scripts
     include role::deployment::mediawiki
 
-    # scap::server will ensure that all keyholder::agents
+    # scap::server will ensure that all keyholder::agents and scap::sources
     # declared in hiera will exist.  scap::server is
     # for generic repository deployment and does not have
     # anything to do with Mediawiki.
