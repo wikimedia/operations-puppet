@@ -16,6 +16,13 @@ varnishstat_path = "/usr/bin/varnishstat"
 instances = ['']
 
 
+def fix_description(value):
+    # Encode into ascii and remove single quotes
+    value = value.encode('ascii').replace("'", "")
+    # Remove brackets
+    return value.replace("(", "").replace(")", "")
+
+
 def metric_init(params):
     global varnishstat_path, instances, stats_cache
 
@@ -44,7 +51,7 @@ def metric_init(params):
                 'units': (slope == 'positive' and 'N/s' or 'N'),
                 'slope': slope,
                 'format': '%u',
-                'description': properties['description'].encode('ascii').replace("'", '"'),
+                'description': fix_description(properties['description']),
                 'groups': "varnish " + (instance == "varnish" and
                                         "(default instance)" or instance)
             }
