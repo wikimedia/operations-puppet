@@ -34,6 +34,15 @@ class contint::firewall {
         port   => '4730',
         srange => $nodepool_host,
     }
+
+    # Let Phabricator talk to Gearman (T131375)
+    $nodepool_host = hiera('contint::phabricator_host')
+    ferm::service { 'gearman_from_phabricator':
+        proto  => 'tcp',
+        port   => '4730',
+        srange => $phabricator_host,
+    }
+
     ferm::service { 'jenkins_zeromq_from_nodepool':
         proto  => 'tcp',
         port   => '8888',
