@@ -10,7 +10,7 @@ class role::deployment::server(
     # NOTE: keyholder_group for role::deployment::services
     #       is overridden in hieradata/common/deployment/server.yaml
     include role::deployment::services
-    include eventlogging::deployment::source
+    include role::eventbus::deployment::source
     include phabricator::deployment::source
 
     class { 'deployment::deployment_server':
