@@ -213,6 +213,13 @@ kafka_clusters:
             deployment-kafka02.deployment-prep.eqiad.wmflabs:
                 id: 1
 
+# NOTE: The production keyholder::agents and scap::sources used by
+# The scap::server class are in role/common/deployment/server.yaml,
+# since scap::server is included by role::deployment::server.
+
+# deployment-prep keyholder::agent declarations.  These are created
+# by the scap::server class.  Each agent listed here
+# will be present and useable by scap on the scap deploy server.
 keyholder::agents:
   phabricator:
     trusted_group: project-%{::labsproject}
@@ -226,3 +233,19 @@ keyholder::agents:
     trusted_group: deploy-service
     key_fingerprint: 6d:54:92:8b:39:10:f5:9b:84:40:36:ef:3c:9a:6d:d8
     key_file: servicedeploy_rsa
+
+# deployment-prep scap::source declarations.  These are created
+# by the scap::server class.  Each source listed here
+# will be cloned on the scap deploy server.
+scap::sources:
+
+  # eventbus runs eventlogging-service.
+  # See: https://wikitech.wikimedia.org/wiki/EventBus
+  eventlogging/eventbus:
+    repository: eventlogging
+    scap_repository: eventlogging/scap/eventbus
+
+  # eventlogging/analytics is the original EventLogging server deployment.
+  eventlogging/analytics:
+    repository: eventlogging
+    scap_repository: eventlogging/scap/analytics
