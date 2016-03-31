@@ -5,18 +5,6 @@ class role::cache::kafka {
     require role::kafka::analytics::config
     $kafka_brokers = $::role::kafka::analytics::config::brokers_array
 
-    # Make sure varnishkafka rsyslog file is in place properly.
-    rsyslog::conf { 'varnishkafka':
-        source   => 'puppet:///files/varnish/varnishkafka_rsyslog.conf',
-        priority => 70,
-    }
-
-    # Make sure that Rsyslog::Conf['varnishkafka'] happens
-    # before the first varnishkafka::instance
-    # so that logs will go to rsyslog the first time puppet
-    # sets up varnishkafka.
-    Rsyslog::Conf['varnishkafka'] -> Varnishkafka::Instance <|  |>
-
     # APT pinning for Varnish 3
     if (hiera('varnish_version4', false)) {
         apt::pin { 'varnishkafka':
