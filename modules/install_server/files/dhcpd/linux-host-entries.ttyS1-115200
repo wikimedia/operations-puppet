@@ -263,7 +263,7 @@ host bast2001 {
 }
 
 host bast3001 {
-    hardware ethernet a4:ba:db:30:d7:70;
+    hardware ethernet a4:ba:db:30:d5:99;
     fixed-address bast3001.wikimedia.org;
     option pxelinux.pathprefix "jessie-installer/";
     filename "jessie-installer/debian-installer/amd64/pxelinux.0";
@@ -3690,13 +3690,6 @@ host ms-fe3001 {
 host ms-fe3002 {
     hardware ethernet 24:B6:FD:F5:B3:E4;
     fixed-address ms-fe3002.esams.wmnet;
-}
-
-host multatuli {
-    hardware ethernet a4:ba:db:30:d5:99;
-    fixed-address multatuli.wikimedia.org;
-    option pxelinux.pathprefix "jessie-installer/";
-    filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host mw1001 {
