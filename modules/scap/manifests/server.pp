@@ -4,8 +4,8 @@
 # deployment server.  Legacy scap and mediawiki deployment dependencies are in
 # scap::master.
 #
-# This class creates keyholder::agent resources based on
-# the contents of the 'keyholder::agents' hiera variable.
+# This class creates keyholder::agent and scap::source resources based on
+# the contents of the 'keyholder::agents' and 'scap::sources' hiera variables.
 #
 class scap::server {
     require ::keyholder
@@ -23,4 +23,12 @@ class scap::server {
 
     # Create an instance of keyholder::agent for each of the key specs in hiera:
     create_resources('keyholder::agent', $agent_keys)
+
+    # Each repository listed in scap::sources hiera variable
+    # will be cloned via declaration of the scap::source define.
+    # You should use scap::target directly on your target hosts that
+    # are declared with $package_name matching the keys in the
+    # scap::sources hiera variable.
+    $scap_sources = hiera_hash('scap::sources', {})
+    create_resources('scap::source', $scap_sources)
 }
