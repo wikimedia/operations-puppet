@@ -11,7 +11,7 @@ class snapshot::dumps::cron::huge(
         ensure      => 'present',
         environment => 'MAILTO=ops-dumps@wikimedia.org',
         user        => $user,
-        command     => "${snapshot::dumps::dirs::dumpsdir}/fulldumps.sh 01 14 hugewikis >/dev/null",
+        command     => '/usr/local/bin/fulldumps.sh 01 14 hugewikis >/dev/null',
         minute      => '05',
         hour        => '02',
         monthday    => '01-14',
