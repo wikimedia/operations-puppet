@@ -91,13 +91,19 @@ function sign_salt {
     log "Seeking the SALT node key to add"
     log "This is the time to start a puppet run on the host."
     while true; do
-        if ! __salt_key status ${nodename} "accepted"; then
+        if __salt_key status ${nodename} "missing"; then
             echo -n "."
             sleep $SLEEPTIME
             continue
-        fi
-
-        if __salt_key accept ${nodename} "done"; then
+        elif __salt_key status ${nodename} "pending"; then
+            if __salt_key accept ${nodename} "done"; then
+                echo "+"
+                break
+            else
+                echo -n '|'
+                sleep $SLEEPTIME
+            fi
+        elif __salt_key status ${nodename} "accepted"; then
             echo "+"
             break
         fi
