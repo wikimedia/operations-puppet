@@ -73,4 +73,13 @@ class snapshot::dumps::dirs (
         owner  => 'root',
         group  => 'root',
     }
+
+    $scriptssdir = '/srv/dumps'
+    file { $scriptsdir:
+      ensure => 'directory',
+      path   => $scriptsdir,
+      mode   => '0755',
+      owner  => 'root',
+      group  => 'root',
+    }
 }
