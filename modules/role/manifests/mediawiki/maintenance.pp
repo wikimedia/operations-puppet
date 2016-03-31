@@ -30,6 +30,12 @@ class role::mediawiki::maintenance {
     include backup::host
     backup::set {'home': }
 
+    ferm::service { 'mediawiki-maintenance-http':
+        proto   => 'tcp',
+        notrack => true,
+        port    => 'http',
+    }
+
     # (T17434) Periodical run of currently disabled special pages
     include mediawiki::maintenance::updatequerypages
 
