@@ -1,15 +1,18 @@
-class snapshot::dirs {
-    $dumpsdir = '/srv/dumps'
+class snapshot::dumps::dirs (
+    $user = undef,
+    $group = undef,
+) {
+    $dumpsdir = '/etc/dumps'
+    file { $dumpsdir:
+      ensure => 'directory',
+      path   => $dumpsdir,
+      mode   => '0755',
+      owner  => 'root',
+      group  => 'root',
+    }
+
     $datadir = '/mnt/data/xmldatadumps'
     $apachedir = '/srv/mediawiki'
-
-    file { $dumpsdir:
-        ensure => 'directory',
-        path   => $dumpsdir,
-        mode   => '0755',
-        owner  => 'root',
-        group  => 'root',
-    }
 
     file { "${dumpsdir}/confs":
       ensure => 'directory',
@@ -43,32 +46,11 @@ class snapshot::dirs {
       group  => 'root',
     }
 
-    file { "${snapshot::dirs::dumpsdir}/templs":
+    file { "${dumpsdir}/templs":
       ensure => 'directory',
-      path   => "${snapshot::dirs::dumpsdir}/templs",
+      path   => "${dumpsdir}/templs",
       mode   => '0755',
       owner  => 'root',
       group  => 'root',
     }
-
-    $addschangesdir = '/srv/addschanges'
-
-    file { $addschangesdir:
-        ensure => 'directory',
-        path   => $addschangesdir,
-        mode   => '0644',
-        owner  => 'root',
-        group  => 'root',
-    }
-
-    $wikiqueriesdir = '/srv/wikiqueries'
-
-    file { $wikiqueriesdir:
-        ensure => 'directory',
-        path   => $wikiqueriesdir,
-        mode   => '0644',
-        owner  => 'root',
-        group  => 'root',
-    }
-
 }

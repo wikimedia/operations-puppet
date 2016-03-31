@@ -2,7 +2,7 @@ class snapshot::dumps::stagesconfig(
     $enable = true,
 ) {
 
-    include snapshot::dirs
+    include snapshot::dumps::dirs
 
     $firststage_args = '--cutoff today'
     $rest_args= '--date last --onepass'
