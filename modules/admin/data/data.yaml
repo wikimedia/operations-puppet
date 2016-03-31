@@ -4,7 +4,7 @@ groups:
     members: [ananthrk, avar, bsitu, cmcmahon, csalvia, diederik, edenhill, erik, gage,
               handrade, howief, jdouglas, jgonera, jsahleen, mah, maryana, mglaser, mvolz,
               mwalker, nimishg, rainman, ssmith, swalling, sumanah, werdna, rmoen,
-              johnflewis, marc, jkrauska, akumar, mnoushad]
+              johnflewis, marc, jkrauska, akumar, mnoushad, spage]
   wikidev:
     gid: 500
     description: container group for primary user groups.
@@ -45,7 +45,7 @@ groups:
               brion, cscott, csteipp, demon, ebernhardson, esanders, gilles,
               gjg, gwicke, halfak, hashar, hoo, kaldari, kartik, khorn, krinkle, manybubbles,
               maxsem, mattflaschen, marktraceur, milimetric, mlitn, andyrussg,
-              nikerabbit, reedy, robla, spage, ssastry, tomasz, yurik,
+              nikerabbit, reedy, robla, ssastry, tomasz, yurik,
               tgr, phuedx, bsimmers, ejegg, twentyafterfour, legoktm, catrope, krenair,
               mobrovac, nuria, thcipriani, joal, eevans, mforns, dpatrick, dcausse,
               bsitzmann, mholloway-shell, jzerebecki, dduvall, gehel, madhuvishy, dereckson]
@@ -185,7 +185,7 @@ groups:
     members: [haithams, ezachte, milimetric, dartar, yurik,
               halfak, awight, dr0ptp4kt, tnegrin, nuria, leila,
               ironholds, kleduc, ellery, nettrom, mforns,
-              spage, bmansurov, tbayer, joal, ashwinpp,
+              bmansurov, tbayer, joal, ashwinpp,
               madhuvishy, tjones, legoktm, dcausse, bearloga,
               dpatrick, atgomez]
   statistics-users:
@@ -235,7 +235,7 @@ groups:
               halfak, dr0ptp4kt, tnegrin, ironholds, bearloga, cwdent, elukey,
               kleduc, nuria, haithams, otto, deskana, zhousquared,
               bsitzmann, dbrant, declerambaul, ellery, nettrom, leila,
-              ezachte, mforns, reedy, west1, phuedx, awight, spage, junikowski,
+              ezachte, mforns, reedy, west1, phuedx, awight, junikowski,
               joal, jamesur, akosiaris, jhobs, lpintscher, jkatz, madhuvishy, gpaumier,
               andyrussg, niedzielski, maxsem, hoo, daniel, tbayer, krinkle, tgr,
               csteipp, smalyshev, ebernhardson, addshore, jminor, chedasaurus, neilpquinn-wmf,
@@ -944,12 +944,11 @@ users:
         robla@wikimedia.org]
     uid: 1233
   spage:
-    ensure: present
+    ensure: absent
     gid: 500
     name: spage
     realname: S Page
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQColhx7+65SMkm4j4iPu2WmHoeO3TpC5Iabvr5neBmqQbSQB0PE7AImy1p3+Sd5e8Seqdi0QIPyu2Jw3NqlOibn81snUExcRBaV8cKvN+c6oBJWVL/OILopKNS1MZynNPVOSjVzmpLNID5U3slEpopyS3aNMhI0BD93QAq0xE3/5kaFf19mkOEjJbaUcEevWTwI95NQKVovJ3y1R5v8e+GaFk86F+EJ4i99GZ+TzmN3VFMy5HfnjMOVGcR+WYyZ87Oa2CTdF1lbV6W9EwZD3eTbuDPZH1VW215Spw8MpFPQznJSkDLhwrg6GH14XuDOA9edf+npYsnYgnWUWF/k1syDlZgQvK3xp9or9Ld4fumAw7a2lQijbrP1SBn14H6tSBK4XGN5ciKPbfj9c9z3C0WVjXZsaQn1hmF1kWu4Kdnx7uYh3RlFnImpvGSRESHN/xuqhdF6o8/KiF7ByDion6ac5VKX40PplUFindsDiJ5GPnsbQWZ+0FbRcMCjE37t5P5NRR/Vfhr0X6fJHqlw1DXGciURVsCXF1E645ZqGZ2jC3PjgxgEVnGgSoaYWoWcX3vpwBIz5syglOgq7k1VDA3F0zitcIkem5uRFlwWgDo/y9DdIW4HNb9cVgMN2dZYQRlNnvKudLni3mjk+R8nie5C13lNHfgz7HMFwufrcxaMkQ==
-        spage@wikimedia.org]
+    ssh_keys: []
     uid: 2479
   ssastry:
     ensure: present
