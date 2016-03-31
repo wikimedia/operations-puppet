@@ -140,13 +140,6 @@ class role::kafka::analytics::broker {
         }
     }
 
-    # Bump safety margin until T131028 is triaged
-    sysctl::parameters { 'kafka_conntrack':
-        values => {
-            'net.ipv4.netfilter.ip_conntrack_max' => '524288',
-        }
-    }
-
     # Monitor TCP Connection States
     diamond::collector { 'TcpConnStates':
         source => 'puppet:///modules/diamond/collector/tcpconnstates.py',
