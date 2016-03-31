@@ -11,9 +11,9 @@ class snapshot::dumps::cron(
         $ensure = 'absent'
     }
 
-    file { "${snapshot::dumps::dirs::dumpsdir}/fulldumps.sh":
+    file { "/usr/local/bin/fulldumps.sh":
         ensure  => 'present',
-        path    => "${snapshot::dumps::dirs::dumpsdir}/fulldumps.sh",
+        path    => "/usr/local/bin/fulldumps.sh",
         mode    => '0755',
         owner   => $user,
         group   => root,
