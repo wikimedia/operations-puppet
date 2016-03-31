@@ -1,9 +1,9 @@
 class snapshot::wikiqueryskip {
-    include snapshot::dirs
+    include snapshot::dumps::dirs
 
-    file { "${snapshot::dirs::wikiqueriesdir}/dblists":
+    file { "${snapshot::dumps::dirs::wikiqueriesdir}/dblists":
         ensure => 'directory',
-        path   => "${snapshot::dirs::wikiqueriesdir}/dblists",
+        path   => "${snapshot::dumps::dirs::wikiqueriesdir}/dblists",
         mode   => '0755',
         owner  => 'root',
         group  => 'root',
@@ -11,9 +11,9 @@ class snapshot::wikiqueryskip {
 
     $skipdbs = ['labswiki','labtestwiki']
     $skipdbs_dblist = join($skipdbs, "\n")
-    file { "${snapshot::dirs::wikiqueriesdir}/dblists/skip.dblist":
+    file { "${snapshot::dumps::dirs::wikiqueriesdir}/dblists/skip.dblist":
         ensure  => 'present',
-        path    => "${snapshot::dirs::wikiqueriesdir}/dblists/skip.dblist",
+        path    => "${snapshot::dumps::dirs::wikiqueriesdir}/dblists/skip.dblist",
         mode    => '0644',
         owner   => 'root',
         group   => 'root',
