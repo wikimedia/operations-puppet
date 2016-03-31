@@ -128,7 +128,6 @@ Style/FormatString:
     - 'modules/bacula/Rakefile'
     - 'modules/base/Rakefile'
     - 'modules/base/lib/facter/lldp.rb'
-    - 'modules/ganglia/lib/puppet/parser/functions/ganglia_aggregator_config.rb'
     - 'modules/install_server/Rakefile'
     - 'modules/mirrors/Rakefile'
     - 'modules/nrpe/Rakefile'
@@ -210,7 +209,6 @@ Style/NestedTernaryOperator:
 Style/Not:
   Exclude:
     - 'modules/base/files/monitoring/check_puppetrun'
-    - 'modules/ganglia/lib/puppet/parser/functions/ganglia_aggregator_config.rb'
     - 'modules/puppetmaster/files/puppetstoredconfigclean.rb'
     - 'modules/wmflib/lib/hiera/backend/proxy_backend.rb'
     - 'modules/wmflib/lib/puppet/parser/functions/role.rb'
@@ -262,7 +260,6 @@ Style/PredicateName:
 # Configuration parameters: AllowMultipleReturnValues.
 Style/RedundantReturn:
   Exclude:
-    - 'modules/ganglia/lib/puppet/parser/functions/ganglia_aggregator_config.rb'
     - 'modules/graphite/lib/puppet/parser/functions/configparser_format.rb'
     - 'modules/wmflib/lib/hiera/backend/mwyaml_backend.rb'
     - 'modules/wmflib/lib/hiera/backend/nuyaml_backend.rb'
