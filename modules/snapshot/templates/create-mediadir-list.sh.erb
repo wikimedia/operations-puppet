@@ -5,18 +5,18 @@
 # puppet:///modules/snapshot/create-mediadir-list.sh.erb
 #############################################################
 
-outputdir="<%= scope.lookupvar('snapshot::dirs::datadir') -%>/public/other/imageinfo/"
+outputdir="<%= scope.lookupvar('snapshot::dumps::dirs::datadir') -%>/public/other/imageinfo/"
 outputfile="uploaddirs.txt"
 DATE=`date +%Y%m%d`
 
 # generate the new file
 python /usr/local/bin/listwikiuploaddirs.py \
-    --allwikis <%= scope.lookupvar('snapshot::dirs::apachedir') -%>/dblists/all.dblist \
-    --closedwikis <%= scope.lookupvar('snapshot::dirs::apachedir') -%>/dblists/closed.dblist \
-    --privatewikis <%= scope.lookupvar('snapshot::dirs::apachedir') -%>/dblists/private.dblist \
-    --skipwikis <%= scope.lookupvar('snapshot::dirs::wikiqueriesdir') -%>/dblists/skip.dblist \
+    --allwikis <%= scope.lookupvar('snapshot::dumps::dirs::apachedir') -%>/dblists/all.dblist \
+    --closedwikis <%= scope.lookupvar('snapshot::dumps::dirs::apachedir') -%>/dblists/closed.dblist \
+    --privatewikis <%= scope.lookupvar('snapshot::dumps::dirs::apachedir') -%>/dblists/private.dblist \
+    --skipwikis <%= scope.lookupvar('snapshot::dumps::dirs::wikiqueriesdir') -%>/dblists/skip.dblist \
     --wmfhack --multiversion \
-    --scriptpath <%= scope.lookupvar('snapshot::dirs::apachedir') -%>/multiversion \
+    --scriptpath <%= scope.lookupvar('snapshot::dumps::dirs::apachedir') -%>/multiversion \
   > "${outputdir}${outputfile}.${DATE}"
 if [ $? -ne 0 ]; then
     echo "Failed to generate list of media dirs, exiting early."

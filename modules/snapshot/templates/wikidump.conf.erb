@@ -5,16 +5,16 @@
 
 [wiki]
 dblist=<%= @config[@configtype]['dblist'] %>
-privatelist=<%= scope.lookupvar('snapshot::dirs::apachedir') -%>/dblists/private.dblist
-flaggedrevslist=<%= scope.lookupvar('snapshot::dirs::apachedir') -%>/dblists/flaggedrevs.dblist
-closedlist=<%= scope.lookupvar('snapshot::dirs::apachedir') -%>/dblists/closed.dblist
-biglist=<%= scope.lookupvar('snapshot::dirs::apachedir') -%>/dblists/big.dblist
+privatelist=<%= scope.lookupvar('snapshot::dumps::dirs::apachedir') -%>/dblists/private.dblist
+flaggedrevslist=<%= scope.lookupvar('snapshot::dumps::dirs::apachedir') -%>/dblists/flaggedrevs.dblist
+closedlist=<%= scope.lookupvar('snapshot::dumps::dirs::apachedir') -%>/dblists/closed.dblist
+biglist=<%= scope.lookupvar('snapshot::dumps::dirs::apachedir') -%>/dblists/big.dblist
 skipdblist=<%= @config[@configtype]['skipdblist'] %>
-wikidatalist=<%= scope.lookupvar('snapshot::dirs::apachedir') -%>/dblists/wikidata.dblist
-globalusagelist=<%= scope.lookupvar('snapshot::dirs::dumpsdir') -%>/dblists/globalusage.dblist
-wikidataclientlist=<%= scope.lookupvar('snapshot::dirs::apachedir') -%>/dblists/wikidataclient.dblist
-nonflowlist=<%= scope.lookupvar('snapshot::dirs::apachedir') -%>/dblists/nonflow.dblist
-dir=<%= scope.lookupvar('snapshot::dirs::apachedir') %>
+wikidatalist=<%= scope.lookupvar('snapshot::dumps::dirs::apachedir') -%>/dblists/wikidata.dblist
+globalusagelist=<%= scope.lookupvar('snapshot::dumps::dirs::dumpsdir::dblists') -%>/globalusage.dblist
+wikidataclientlist=<%= scope.lookupvar('snapshot::dumps::dirs::apachedir') -%>/dblists/wikidataclient.dblist
+nonflowlist=<%= scope.lookupvar('snapshot::dumps::dirs::apachedir') -%>/dblists/nonflow.dblist
+dir=<%= scope.lookupvar('snapshot::dumps::dirs::apachedir') %>
 adminsettings=private/PrivateSettings.php
 forcenormal=0
 
@@ -22,10 +22,10 @@ forcenormal=0
 #halt=1
 
 [output]
-public=<%= scope.lookupvar('snapshot::dirs::datadir') -%>/public
-private=<%= scope.lookupvar('snapshot::dirs::datadir') -%>/private
-temp=<%= scope.lookupvar('snapshot::dirs::datadir') -%>/temp
-templatedir=<%= scope.lookupvar('snapshot::dirs::dumpsdir') -%>/templs
+public=<%= scope.lookupvar('snapshot::dumps::dirs::datadir') -%>/public
+private=<%= scope.lookupvar('snapshot::dumps::dirs::datadir') -%>/private
+temp=<%= scope.lookupvar('snapshot::dumps::dirs::datadir') -%>/temp
+templatedir=<%= scope.lookupvar('snapshot::dumps::dirs::dumpsdir') -%>/templs
 index=backup-index.html
 webroot=http://download.wikimedia.org
 fileperms=0644
