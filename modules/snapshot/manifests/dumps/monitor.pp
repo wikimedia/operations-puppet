@@ -3,6 +3,6 @@ class snapshot::dumps::monitor( $ensure = present ) {
     ensure    => $ensure,
     systemd   => true,
     upstart   => true,
-    subscribe => File["${snapshot::dirs::dumpsdir}/confs/wikidump.conf.monitor"],
+    subscribe => File["${snapshot::dumps::dirs::dumpsdir}/confs/wikidump.conf.monitor"],
   }
 }

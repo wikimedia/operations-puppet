@@ -2,7 +2,7 @@ class snapshot::dumps::cron(
     $enable = true,
     $user   = undef,
 ) {
-    include snapshot::dirs
+    include snapshot::dumps::dirs
 
     if ($enable) {
         $ensure = 'present'
@@ -11,9 +11,9 @@ class snapshot::dumps::cron(
         $ensure = 'absent'
     }
 
-    file { '/srv/dumps/fulldumps.sh':
+    file { "${snapshot::dumps::dirs::dumpsdir}/fulldumps.sh":
         ensure  => 'present',
-        path    => "${snapshot::dirs::dumpsdir}/fulldumps.sh",
+        path    => "${snapshot::dumps::dirs::dumpsdir}/fulldumps.sh",
         mode    => '0755',
         owner   => $user,
         group   => root,

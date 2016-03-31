@@ -4,7 +4,7 @@
 #
 # Marius Hoch < hoo@online.de >
 
-configfile="/srv/dumps/confs/wikidump.conf"
+configfile="<%= scope.lookupvar('snapshot::dirs::dumpsdir') -%>/confs/wikidump.conf"
 
 today=`date +'%Y%m%d'`
 daysToKeep=70
