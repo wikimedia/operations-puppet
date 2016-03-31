@@ -11,7 +11,7 @@ class snapshot::dumps::cron::rest(
         ensure      => 'present',
         environment => 'MAILTO=ops-dumps@wikimedia.org',
         user        => $user,
-        command     => "${snapshot::dumps::dirs::dumpsdir}/fulldumps.sh 01 14 regular > /dev/null",
+        command     => "/usr/local/bin/fulldumps.sh 01 14 regular > /dev/null",
         minute      => '05',
         hour        => '02',
         monthday    => '01-14',
