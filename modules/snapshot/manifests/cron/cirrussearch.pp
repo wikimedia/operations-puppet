@@ -31,7 +31,7 @@ class snapshot::cron::cirrussearch(
         mode    => '0755',
         owner   => 'root',
         group   => 'root',
-        content => template('snapshot/dumpcirrussearch.sh.erb'),
+        content => template('snapshot/cron/dumpcirrussearch.sh.erb'),
     }
 
     cron { 'cirrussearch-dump':

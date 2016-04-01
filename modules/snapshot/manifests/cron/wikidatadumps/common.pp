@@ -3,7 +3,7 @@ class snapshot::cron::wikidatadumps::common {
         mode    => '0755',
         owner   => 'root',
         group   => 'root',
-        content => template('snapshot/wikidatadumps-shared.sh.erb'),
+        content => template('snapshot/cron/wikidatadumps-shared.sh.erb'),
     }
 
     file { '/var/log/wikidatadump':

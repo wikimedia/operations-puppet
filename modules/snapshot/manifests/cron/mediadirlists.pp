@@ -38,7 +38,7 @@ class snapshot::cron::mediadirlists (
         mode    => '0755',
         owner   => $user,
         group   => root,
-        content => template('snapshot/create-mediadir-list.sh.erb'),
+        content => template('snapshot/cron/create-mediadir-list.sh.erb'),
     }
 
     cron { 'list-media-dirs':
