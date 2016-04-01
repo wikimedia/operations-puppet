@@ -21,7 +21,7 @@ class snapshot::cron::mediaperprojectlists(
         mode    => '0755',
         owner   => $user,
         group   => root,
-        content => template('snapshot/create-media-per-project-lists.sh.erb'),
+        content => template('snapshot/cron/create-media-per-project-lists.sh.erb'),
     }
 
     file { "${confsdir}/wq.conf.media":
@@ -30,7 +30,7 @@ class snapshot::cron::mediaperprojectlists(
         mode    => '0644',
         owner   => $user,
         group   => root,
-        content => template('snapshot/wq.conf.media.erb'),
+        content => template('snapshot/cron/wq.conf.media.erb'),
     }
 
     cron { 'list-media-per-project':

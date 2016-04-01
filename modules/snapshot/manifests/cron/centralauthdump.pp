@@ -15,7 +15,7 @@ class snapshot::cron::centralauthdump(
         mode    => '0755',
         owner   => 'root',
         group   => 'root',
-        content => template('snapshot/dumpcentralauth.sh.erb'),
+        content => template('snapshot/cron/dumpcentralauth.sh.erb'),
     }
 
     # used by script to find the name of the corresponding db.php file

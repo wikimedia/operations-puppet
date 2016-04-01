@@ -17,7 +17,7 @@ class snapshot::cron::dumplists(
         mode    => '0755',
         owner   => $user,
         group   => root,
-        content => template('snapshot/list-last-good-dumps.sh.erb'),
+        content => template('snapshot/cron/list-last-good-dumps.sh.erb'),
     }
     file { '/usr/local/bin/list-last-n-good-dumps.py':
         ensure => 'present',
