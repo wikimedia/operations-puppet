@@ -2520,6 +2520,11 @@ host graphite2001 {
     fixed-address graphite2001.codfw.wmnet;
 }
 
+host graphite2002 {
+    hardware ethernet 14:18:77:5B:2C:CA;
+    fixed-address graphite2002.codfw.wmnet;
+}
+
 host hafnium {
     hardware ethernet 78:2b:cb:1f:17:48;
     fixed-address hafnium.eqiad.wmnet;
