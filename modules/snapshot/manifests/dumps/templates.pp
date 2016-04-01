@@ -2,58 +2,59 @@ class snapshot::dumps::templates($enable=true) {
     if ($enable) {
 
         include snapshot::dumps::dirs
+        $templsdir = "${snapshot::dumps::dirs::dumpsdir}/templs"
 
-        file { "${snapshot::dumps::dirs::dumpsdir}/templs/download-index.html":
+        file { "${templsdir}/download-index.html":
             ensure => 'present',
-            path   => "${snapshot::dumps::dirs::dumpsdir}/templs/download-index.html",
+            path   => "${templsdir}/download-index.html",
             mode   => '0644',
             owner  => 'root',
             group  => 'root',
             source => 'puppet:///modules/snapshot/dumps/templates/download-index.html',
         }
-        file { "${snapshot::dumps::dirs::dumpsdir}/templs/dvd.html":
+        file { "${templsdir}/dvd.html":
             ensure => 'present',
-            path   => "${snapshot::dumps::dirs::dumpsdir}/templs/dvd.html",
+            path   => "${templsdir}/dvd.html",
             mode   => '0644',
             owner  => 'root',
             group  => 'root',
             source => 'puppet:///modules/snapshot/dumps/templates/dvd.html',
         }
-        file { "${snapshot::dumps::dirs::dumpsdir}/templs/errormail.txt":
+        file { "${templsdir}/errormail.txt":
             ensure => 'present',
-            path   => "${snapshot::dumps::dirs::dumpsdir}/templs/errormail.txt",
+            path   => "${templsdir}/errormail.txt",
             mode   => '0644',
             owner  => 'root',
             group  => 'root',
             source => 'puppet:///modules/snapshot/dumps/templates/errormail.txt',
         }
-        file { "${snapshot::dumps::dirs::dumpsdir}/templs/feed.xml":
+        file { "${templsdir}/feed.xml":
             ensure => 'present',
-            path   => "${snapshot::dumps::dirs::dumpsdir}/templs/feed.xml",
+            path   => "${templsdir}/feed.xml",
             mode   => '0644',
             owner  => 'root',
             group  => 'root',
             source => 'puppet:///modules/snapshot/dumps/templates/feed.xml',
         }
-        file { "${snapshot::dumps::dirs::dumpsdir}/templs/legal.html":
+        file { "${templsdir}/legal.html":
             ensure => 'present',
-            path   => "${snapshot::dumps::dirs::dumpsdir}/templs/legal.html",
+            path   => "${templsdir}/legal.html",
             mode   => '0644',
             owner  => 'root',
             group  => 'root',
             source => 'puppet:///modules/snapshot/dumps/templates/legal.html',
         }
-        file { "${snapshot::dumps::dirs::dumpsdir}/templs/progress.html":
+        file { "${templsdir}/progress.html":
             ensure => 'present',
-            path   => "${snapshot::dumps::dirs::dumpsdir}/templs/progress.html",
+            path   => "${templsdir}/progress.html",
             mode   => '0644',
             owner  => 'root',
             group  => 'root',
             source => 'puppet:///modules/snapshot/dumps/templates/progress.html',
         }
-        file { "${snapshot::dumps::dirs::dumpsdir}/templs/report.html":
+        file { "${templsdir}/report.html":
             ensure => 'present',
-            path   => "${snapshot::dumps::dirs::dumpsdir}/templs/report.html",
+            path   => "${templsdir}/report.html",
             mode   => '0644',
             owner  => 'root',
             group  => 'root',
@@ -63,9 +64,9 @@ class snapshot::dumps::templates($enable=true) {
         $warning = "The files in this directory are maintained by puppet!\n"
         $location = "puppet:///modules/snapshot/dumps/templates\n"
 
-        file { "${snapshot::dumps::dirs::dumpsdir}/templs/README":
+        file { "${templsdir}/README":
             ensure  => 'present',
-            path    => "${snapshot::dumps::dirs::dumpsdir}/templs/README",
+            path    => "${templsdir}/README",
             mode    => '0644',
             owner   => 'root',
             group   => 'root',
