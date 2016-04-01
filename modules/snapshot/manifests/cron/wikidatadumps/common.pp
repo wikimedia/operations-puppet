@@ -1,4 +1,4 @@
-class snapshot::wikidatadumps::common {
+class snapshot::cron::wikidatadumps::common {
     file { '/usr/local/bin/wikidatadumps-shared.sh':
         mode    => '0755',
         owner   => 'root',

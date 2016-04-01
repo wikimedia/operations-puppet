@@ -1,4 +1,4 @@
-class snapshot::centralauthdump(
+class snapshot::cron::centralauthdump(
     $enable = true,
     $user   = undef,
 ) {
