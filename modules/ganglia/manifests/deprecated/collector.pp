@@ -38,4 +38,15 @@ class ganglia::deprecated::collector {
         hasstatus => false,
     }
 
+    ferm::service { 'gmetad_netmon1001_xml':
+        proto  => 'tcp',
+        port   => '8653',
+        srange => '@resolve((cp1048.eqiad.wmnet cp1062.eqiad.wmnet))',
+    }
+
+    ferm::service { 'gmetad_netmon1001':
+        proto  => 'tcp',
+        port   => '8654',
+        srange => '@resolve((cp1048.eqiad.wmnet cp1062.eqiad.wmnet))',
+    }
 }
