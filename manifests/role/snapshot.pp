@@ -45,7 +45,7 @@ class role::snapshot::cron::primary {
         enable => true,
         user   => 'datasets',
     }
-    class { 'snapshot::dumps::pagetitles':
+    class { 'snapshot::cron::pagetitles':
         enable => true,
         user   => 'datasets',
     }
@@ -53,11 +53,11 @@ class role::snapshot::cron::primary {
         enable => true,
         user   => 'datasets',
     }
-    class { 'snapshot::dumps::dumplists':
+    class { 'snapshot::cron::dumplists':
         enable => true,
         user   => 'datasets',
     }
-    class { 'snapshot::dumps::mediadirlists':
+    class { 'snapshot::cron::mediadirlists':
         enable => true,
         user   => 'datasets',
     }
@@ -74,19 +74,19 @@ class role::snapshot::cron::primary {
 class role::snapshot::cron::secondary {
     include role::snapshot::common
 
-    class { 'snapshot::wikidatadumps::json':
+    class { 'snapshot::cron::wikidatadumps::json':
         enable => false,
         user   => 'datasets',
     }
-    class { 'snapshot::wikidatadumps::ttl':
+    class { 'snapshot::cron::wikidatadumps::ttl':
         enable => false,
         user   => 'datasets',
     }
-    class { 'snapshot::centralauthdump':
+    class { 'snapshot::cron::centralauthdump':
         enable => false,
         user   => 'datasets',
     }
-    class { 'snapshot::dumps::pagetitles':
+    class { 'snapshot::cron::pagetitles':
         enable => false,
         user   => 'datasets',
     }
@@ -94,19 +94,19 @@ class role::snapshot::cron::secondary {
         enable => false,
         user   => 'datasets',
     }
-    class { 'snapshot::dumps::dumplists':
+    class { 'snapshot::cron::dumplists':
         enable => false,
         user   => 'datasets',
     }
-    class { 'snapshot::dumps::mediadirlists':
+    class { 'snapshot::cron::mediadirlists':
         enable => false,
         user   => 'datasets',
     }
-    class { 'snapshot::mediaperprojectlists':
+    class { 'snapshot::cron::mediaperprojectlists':
         enable => false,
         user   => 'datasets',
     }
-    class { 'snapshot::cirrussearch':
+    class { 'snapshot::cron::cirrussearch':
         enable => false,
         user   => 'datasets',
     }

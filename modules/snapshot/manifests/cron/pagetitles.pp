@@ -1,4 +1,4 @@
-class snapshot::dumps::pagetitles(
+class snapshot::cron::pagetitles(
     $enable=true,
     $user=undef,
 ) {

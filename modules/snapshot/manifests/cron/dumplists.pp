@@ -1,4 +1,4 @@
-class snapshot::dumps::dumplists(
+class snapshot::cron::dumplists(
     $enable = true,
     $user   = undef,
 ) {

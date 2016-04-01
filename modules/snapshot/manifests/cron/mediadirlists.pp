@@ -1,4 +1,4 @@
-class snapshot::dumps::mediadirlists (
+class snapshot::cron::mediadirlists (
     $enable = true,
     $user   = undef,
 ) {
