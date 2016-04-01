@@ -13,4 +13,10 @@ class role::yubiauth::server {
         ensure      => 'present',
         description => 'Yubi 2FA authentication server',
     }
+
+    ferm::service { 'yubikey-validation-server':
+        proto  => 'tcp',
+        port   => '80',
+        srange => '$BASTION_HOSTS',
+    }
 }
