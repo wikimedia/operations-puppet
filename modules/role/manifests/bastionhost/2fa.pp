@@ -10,6 +10,8 @@ class role::bastionhost::2fa {
 
     backup::set {'home': }
 
+    require_package('libpam-yubico')
+
     ferm::service { 'ssh':
         desc  => 'SSH open from everywhere, this is a bastion host',
         prio  => '01',
