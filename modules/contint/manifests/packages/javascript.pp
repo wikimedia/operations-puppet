@@ -1,6 +1,6 @@
 # == Class contint::packages::javascript
 #
-# Install npm/grunt-cli from npmjs.com with pinned versions
+# Install npm from npmjs.com with pinned versions
 #
 class contint::packages::javascript {
 
@@ -11,12 +11,11 @@ class contint::packages::javascript {
         notify => Exec['pin npm'],
     }
 
-    # DO NOT CHANGE VERSIONS WITHOUT INVOLVING Krinkle OR hashar
+    # DO NOT CHANGE VERSION WITHOUT INVOLVING Krinkle OR hashar
     #
     # https://wikitech.wikimedia.org/wiki/Nova_Resource:Integration/Setup
     $versions = {
         'npm'       => '2.15.2',
-        'grunt-cli' => '0.1.13',
     }
 
     $npm_options = $::lsbdistcodename ? {
@@ -39,12 +38,6 @@ class contint::packages::javascript {
     exec { 'pin npm':
         command => "/usr/bin/npm install ${npm_options} -g npm@${versions['npm']}",
         onlyif  => "/usr/bin/test \"`/usr/bin/npm --version`\" != \"${versions['npm']}\"",
-        require => Package['npm'],
-    }
-
-    exec { 'pin grunt-cli':
-        command => "/usr/bin/npm install -g grunt-cli@${versions['grunt-cli']}",
-        onlyif  => "/usr/bin/test \"`/usr/bin/grunt --version`\" != \"grunt-cli v${versions['grunt-cli']}\"",
         require => Package['npm'],
     }
 
