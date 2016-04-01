@@ -26,7 +26,7 @@ class snapshot::cron::wikidatadumps::common {
         mode   => '0644',
         owner  => 'root',
         group  => 'root',
-        source => 'puppet:///modules/snapshot/dcatconfig.json',
+        source => 'puppet:///modules/snapshot/cron/dcatconfig.json',
     }
 }
 

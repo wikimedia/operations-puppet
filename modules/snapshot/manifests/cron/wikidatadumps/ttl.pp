@@ -21,7 +21,7 @@ class snapshot::cron::wikidatadumps::ttl(
         mode    => '0755',
         owner   => 'root',
         group   => 'root',
-        source  => 'puppet:///modules/snapshot/dumpwikidatattl.sh',
+        source  => 'puppet:///modules/snapshot/cron/dumpwikidatattl.sh',
         require => Class['snapshot::cron::wikidatadumps::common'],
     }
 
