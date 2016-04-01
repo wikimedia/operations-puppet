@@ -1,4 +1,4 @@
-class snapshot::wikiqueryskip {
+class snapshot::cron::wikiqueryskip {
     include snapshot::dumps::dirs
     $dblistsdir = "${snapshot::dumps::dirs::wikiqueriesdir}/dblists"
     file { $dblistsdir:

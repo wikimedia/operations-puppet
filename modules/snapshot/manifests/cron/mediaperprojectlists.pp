@@ -1,4 +1,4 @@
-class snapshot::mediaperprojectlists(
+class snapshot::cron::mediaperprojectlists(
     $enable = true,
     $user   = undef,
 ) {
