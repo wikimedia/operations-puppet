@@ -15,7 +15,7 @@ class contint::packages::javascript {
     #
     # https://wikitech.wikimedia.org/wiki/Nova_Resource:Integration/Setup
     $versions = {
-        'npm'       => '2.14.12',
+        'npm'       => '2.15.2',
         'grunt-cli' => '0.1.13',
     }
 
