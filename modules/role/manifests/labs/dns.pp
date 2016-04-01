@@ -12,6 +12,25 @@ class role::labs::dns {
         pdns_db_password       => $dnsconfig['db_pass'],
     }
 
+    # install mysql locally on all dns servers
+    include role::mariadb::grants
+    include passwords::misc::scripts
+    include role::mariadb::monitor::dba
+    include role::mariadb::ferm
+
+    class { 'mariadb::packages_wmf':
+        mariadb10 => true,
+    }
+
+    class { 'mariadb::config':
+        prompt    => 'DNS',
+        config    => 'mariadb/dns.my.cnf.erb',
+        password  => $passwords::misc::scripts::mysql_root_pass,
+        datadir   => '/srv/sqldata',
+        tmpdir    => '/srv/tmp',
+        read_only => 'off',
+    }
+
     ferm::service { 'udp_dns_rec':
         proto => 'udp',
         port  => '53',
