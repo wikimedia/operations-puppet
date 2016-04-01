@@ -5,16 +5,16 @@
 
 [wiki]
 dblist=<%= @config[@configtype]['dblist'] %>
-privatelist=<%= scope.lookupvar('snapshot::dumps::dirs::apachedir') -%>/dblists/private.dblist
-flaggedrevslist=<%= scope.lookupvar('snapshot::dumps::dirs::apachedir') -%>/dblists/flaggedrevs.dblist
-closedlist=<%= scope.lookupvar('snapshot::dumps::dirs::apachedir') -%>/dblists/closed.dblist
-biglist=<%= scope.lookupvar('snapshot::dumps::dirs::apachedir') -%>/dblists/big.dblist
+privatelist=<%= @apachedir -%>/dblists/private.dblist
+flaggedrevslist=<%= @apachedir -%>/dblists/flaggedrevs.dblist
+closedlist=<%= @apachedir -%>/dblists/closed.dblist
+biglist=<%= @apachedir -%>/dblists/big.dblist
 skipdblist=<%= @config[@configtype]['skipdblist'] %>
-wikidatalist=<%= scope.lookupvar('snapshot::dumps::dirs::apachedir') -%>/dblists/wikidata.dblist
-globalusagelist=<%= scope.lookupvar('snapshot::dumps::dirs::dblistsdir') -%>/globalusage.dblist
-wikidataclientlist=<%= scope.lookupvar('snapshot::dumps::dirs::apachedir') -%>/dblists/wikidataclient.dblist
-nonflowlist=<%= scope.lookupvar('snapshot::dumps::dirs::apachedir') -%>/dblists/nonflow.dblist
-dir=<%= scope.lookupvar('snapshot::dumps::dirs::apachedir') %>
+wikidatalist=<%= @apachedir -%>/dblists/wikidata.dblist
+globalusagelist=<%= @dblistsdir -%>/globalusage.dblist
+wikidataclientlist=<%= @apachedir -%>/dblists/wikidataclient.dblist
+nonflowlist=<%= @apachedir -%>/dblists/nonflow.dblist
+dir=<%= @apachedir %>
 adminsettings=private/PrivateSettings.php
 forcenormal=0
 

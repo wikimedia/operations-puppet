@@ -12,6 +12,9 @@ class snapshot::mediaperprojectlists(
         $ensure = 'absent'
     }
 
+    $apachedir = $snapshot::dumps::dirs::apachedir
+    $confsdir = "${snapshot::dumps::dirs::wikiqueriesdir}/confs"
+
     file { '/usr/local/bin/create-media-per-project-lists.sh':
         ensure  => 'present',
         path    => '/usr/local/bin/create-media-per-project-lists.sh',
@@ -20,7 +23,6 @@ class snapshot::mediaperprojectlists(
         group   => root,
         content => template('snapshot/create-media-per-project-lists.sh.erb'),
     }
-    $confsdir = "${snapshot::dumps::dirs::wikiqueriesdir}/confs"
 
     file { "${confsdir}/wq.conf.media":
         ensure  => 'present',

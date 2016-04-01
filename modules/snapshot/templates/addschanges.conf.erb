@@ -6,10 +6,10 @@
 # configuration file for adds/changes dumps
 
 [wiki]
-mediawiki=<%= scope.lookupvar('snapshot::dumps::dirs::apachedir') %>
-allwikislist=<%= scope.lookupvar('snapshot::dumps::dirs::apachedir') -%>/dblists/all.dblist
-privatewikislist=<%= scope.lookupvar('snapshot::dumps::dirs::apachedir') -%>/dblists/private.dblist
-closedwikislist=<%= scope.lookupvar('snapshot::dumps::dirs::apachedir') -%>/dblists/closed.dblist
+mediawiki=<%= @apachedir %>
+allwikislist=<%= @apachedir -%>/dblists/all.dblist
+privatewikislist=<%= @apachedir -%>/dblists/private.dblist
+closedwikislist=<%= @apachedir -%>/dblists/closed.dblist
 skipwikislist=<%= scope.lookupvar('snapshot::dumps::dirs::addschangesdir') -%>/dblists/skip.dblist
 adminsettings=private/PrivateSettings.php
 
@@ -32,7 +32,7 @@ gzip=/bin/gzip
 bzip2=/bin/bzip2
 checkforbz2footer=/usr/local/bin/checkforbz2footer
 writeuptopageid=/usr/local/bin/writeuptopageid
-multiversion=<%= scope.lookupvar('snapshot::dumps::dirs::apachedir') -%>/multiversion/MWScript.php
+multiversion=@apachedir/multiversion/MWScript.php
 
 [cleanup]
 keep=35
