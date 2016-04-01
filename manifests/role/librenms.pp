@@ -69,6 +69,11 @@ class role::librenms {
         require     => Class['::librenms'],
     }
 
+    ferm::service { 'librenms-rsyslog':
+        proto => 'udp',
+        port  => '514',
+    }
+
     ferm::service { 'librenms-http':
         proto => 'tcp',
         port  => '80',
