@@ -25,7 +25,7 @@ class snapshot::cron::dumplists(
         mode   => '0755',
         owner  => $user,
         group  => root,
-        source => 'puppet:///modules/snapshot/dumps/list-last-n-good-dumps.py',
+        source => 'puppet:///modules/snapshot/cron/list-last-n-good-dumps.py',
     }
 
     # fixme there is an implicit dependency on

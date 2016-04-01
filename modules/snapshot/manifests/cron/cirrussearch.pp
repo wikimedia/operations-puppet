@@ -23,7 +23,7 @@ class snapshot::cron::cirrussearch(
         mode   => '0444',
         owner  => 'root',
         group  => 'root',
-        source => 'puppet:///modules/snapshot/logrotate.cirrusdump',
+        source => 'puppet:///modules/snapshot/cron/logrotate.cirrusdump',
     }
 
     $scriptPath = '/usr/local/bin/dumpcirrussearch.sh'

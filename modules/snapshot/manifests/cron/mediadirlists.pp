@@ -18,7 +18,7 @@ class snapshot::cron::mediadirlists (
         mode   => '0755',
         owner  => $user,
         group  => root,
-        source => 'puppet:///modules/snapshot/runphpscriptletonallwikis.py',
+        source => 'puppet:///modules/snapshot/cron/runphpscriptletonallwikis.py',
     }
 
     file { '/usr/local/bin/listwikiuploaddirs.py':
@@ -27,7 +27,7 @@ class snapshot::cron::mediadirlists (
         mode   => '0755',
         owner  => $user,
         group  => root,
-        source => 'puppet:///modules/snapshot/listwikiuploaddirs.py',
+        source => 'puppet:///modules/snapshot/cron/listwikiuploaddirs.py',
     }
 
     $apachedir = $snapshot::dumps::dirs::apachedir
