@@ -8,6 +8,12 @@ from subprocess import Popen, PIPE
 from os.path import exists, isdir
 
 
+#############################################################
+# This file is maintained by puppet!
+# puppet:///modules/snapshot/cron/list-last-n-good-dumps.py
+#############################################################
+
+
 class DumpListError(Exception):
     pass
 

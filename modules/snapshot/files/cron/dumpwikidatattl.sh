@@ -1,5 +1,8 @@
 #!/bin/bash
-#
+#############################################################
+# This file is maintained by puppet!
+# puppet:///modules/snapshot/cron/dumpwikidatattl.sh
+##############################################################
 # Generate a json dump for Wikidata and remove old ones.
 #
 # Marius Hoch < hoo@online.de >

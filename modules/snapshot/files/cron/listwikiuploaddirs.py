@@ -4,6 +4,12 @@ import getopt
 from subprocess import Popen, PIPE
 
 
+#############################################################
+# This file is maintained by puppet!
+# puppet:///modules/snapshot/cron/listwikiuploaddirs.py
+#############################################################
+
+
 def get_wikis(all_wikis_file, closed_wikis_file,
               private_wikis_file, skip_wikis_file):
 

@@ -3,6 +3,12 @@ import getopt
 from subprocess import Popen, PIPE
 
 
+#############################################################
+# This file is maintained by puppet!
+# puppet:///modules/snapshot/cron/runphpscriptletonallwikis.py
+#############################################################
+
+
 class PhpRunner(object):
     """Run a maintenance 'scriptlet' on all wikis
     The maintenance class framework is set up already;
