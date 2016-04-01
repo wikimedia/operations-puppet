@@ -1172,19 +1172,6 @@ node 'bast3001.wikimedia.org' {
     }
 }
 
-node 'hooft.esams.wikimedia.org' {
-
-    interface::add_ip6_mapped { 'main':
-        interface => 'eth0',
-    }
-    role bastionhost::general, installserver::tftp_server
-
-    class { 'ganglia::monitor::aggregator':
-        sites =>  'esams',
-    }
-
-}
-
 # Primary graphite machines
 node 'graphite1001.eqiad.wmnet' {
     role graphite::production, statsdlb, performance, graphite::alerts, restbase::alerts, graphite::alerts::reqstats, elasticsearch::alerts
