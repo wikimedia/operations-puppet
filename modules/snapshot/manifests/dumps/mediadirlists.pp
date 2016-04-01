@@ -30,6 +30,8 @@ class snapshot::dumps::mediadirlists (
         source => 'puppet:///modules/snapshot/listwikiuploaddirs.py',
     }
 
+    $apachedir = $snapshot::dumps::dirs::apachedir
+
     file { '/usr/local/bin/create-mediadir-list.sh':
         ensure  => 'present',
         path    => '/usr/local/bin/create-mediadir-list.sh',

@@ -9,14 +9,16 @@ outputdir="<%= scope.lookupvar('snapshot::dumps::dirs::datadir') -%>/public/othe
 outputfile="uploaddirs.txt"
 DATE=`date +%Y%m%d`
 
+apachedir=<%= scope.lookupvar('snapshot::dumps::dirs::apachedir') %>
+
 # generate the new file
 python /usr/local/bin/listwikiuploaddirs.py \
-    --allwikis <%= scope.lookupvar('snapshot::dumps::dirs::apachedir') -%>/dblists/all.dblist \
-    --closedwikis <%= scope.lookupvar('snapshot::dumps::dirs::apachedir') -%>/dblists/closed.dblist \
-    --privatewikis <%= scope.lookupvar('snapshot::dumps::dirs::apachedir') -%>/dblists/private.dblist \
+    --allwikis ${apachedir}/dblists/all.dblist \
+    --closedwikis ${apachedir}/dblists/closed.dblist \
+    --privatewikis ${apachedir}/dblists/private.dblist \
     --skipwikis <%= scope.lookupvar('snapshot::dumps::dirs::wikiqueriesdir') -%>/dblists/skip.dblist \
     --wmfhack --multiversion \
-    --scriptpath <%= scope.lookupvar('snapshot::dumps::dirs::apachedir') -%>/multiversion \
+    --scriptpath ${apachedir}/multiversion \
   > "${outputdir}${outputfile}.${DATE}"
 if [ $? -ne 0 ]; then
     echo "Failed to generate list of media dirs, exiting early."

@@ -4,6 +4,7 @@ define snapshot::dumps::wikiconf(
     ) {
 
     include snapshot::dumps::dirs
+    $apachedir = $snapshot::dumps::dirs::apachedir
 
     file { "${snapshot::dumps::dirs::dumpsdir}/confs/${title}":
         ensure  => 'present',

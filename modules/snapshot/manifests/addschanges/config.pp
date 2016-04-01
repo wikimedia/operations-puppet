@@ -4,6 +4,7 @@ class snapshot::addschanges::config(
 
     include snapshot::dumps::dirs
 
+    $apachedir = $snapshot::dumps::dirs::apachedir
     $confsdir = "${snapshot::dumps::dirs::addschangesdir}/confs"
     $dblistsdir = "${snapshot::dumps::dirs::addschangesdir}/dblists"
 
