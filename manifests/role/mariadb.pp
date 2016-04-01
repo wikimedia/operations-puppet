@@ -19,6 +19,7 @@ class role::mariadb::grants(
     include passwords::nodepool
     include passwords::testreduce::mysql
     include passwords::racktables
+    include passwords::prometheus
 
     $root_pass       = $passwords::misc::scripts::mysql_root_pass
     $repl_pass       = $passwords::misc::scripts::mysql_repl_pass
@@ -27,6 +28,7 @@ class role::mariadb::grants(
     $tendril_pass    = $passwords::tendril::db_pass
     $racktables_user = $passwords::racktables::racktables_db_user
     $racktables_pass = $passwords::racktables::racktables_db_pass
+    $prometheus_pass = $passwords::prometheus::db_pass
 
     file { '/etc/mysql/production-grants.sql':
         ensure  => present,

@@ -41,3 +41,11 @@ GRANT PROCESS, REPLICATION CLIENT, SELECT, SHOW DATABASES
 GRANT REPLICATION SLAVE
     ON *.* TO 'repl'@'10.%'
     IDENTIFIED BY '<%= @repl_pass %>';
+
+-- Grants for 'prometheus'@'localhost' (prometheus monitoring)
+
+GRANT PROCESS, REPLICATION CLIENT
+    ON *.* TO 'prometheus'@'localhost'
+    IDENTIFIED BY '<%= @prometheus_pass %>';
+GRANT SELECT
+    ON heartbeat.heartbeat TO 'prometheus'@'localhost';
