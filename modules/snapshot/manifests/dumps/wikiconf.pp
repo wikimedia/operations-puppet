@@ -12,6 +12,6 @@ define snapshot::dumps::wikiconf(
         mode    => '0755',
         owner   => 'root',
         group   => 'root',
-        content => template('snapshot/wikidump.conf.erb'),
+        content => template('snapshot/dumps/wikidump.conf.erb'),
     }
 }
