@@ -54,4 +54,9 @@ class role::torrus {
         description   => 'torrus.wikimedia.org UI',
         check_command => 'check_https_url_for_string_on_host!torrus.wikimedia.org!misc-web-lb.wikimedia.org!/torrus!\'Torrus Top: Wikimedia\'',
     }
+
+    ferm::service { 'torrus-http':
+        proto => 'tcp',
+        port  => '80',
+    }
 }
