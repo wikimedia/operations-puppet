@@ -17,7 +17,7 @@ class snapshot::cron::wikidatadumps::json(
         owner   => 'root',
         group   => 'root',
         source  => 'puppet:///modules/snapshot/dumpwikidatajson.sh',
-        require => Class['snapshot::wikidatadumps::common'],
+        require => Class['snapshot::cron::wikidatadumps::common'],
     }
 
     cron { 'wikidatajson-dump':
