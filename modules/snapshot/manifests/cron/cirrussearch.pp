@@ -1,4 +1,4 @@
-class snapshot::cirrussearch(
+class snapshot::cron::cirrussearch(
     $enable = true,
     $user   = undef,
 ) {

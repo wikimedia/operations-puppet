@@ -1,9 +1,9 @@
-class snapshot::mediaperprojectlists(
+class snapshot::cron::mediaperprojectlists(
     $enable = true,
     $user   = undef,
 ) {
     include snapshot::dumps::dirs
-    include snapshot::wikiqueryskip
+    include snapshot::cron::wikiqueryskip
 
     if ($enable) {
         $ensure = 'present'

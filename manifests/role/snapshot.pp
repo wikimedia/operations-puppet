@@ -33,15 +33,15 @@ class role::snapshot::dumps::monitor {
 class role::snapshot::cron::primary {
     include role::snapshot::common
 
-    class { 'snapshot::wikidatadumps::json':
+    class { 'snapshot::cron::wikidatadumps::json':
         enable => true,
         user   => 'datasets',
     }
-    class { 'snapshot::wikidatadumps::ttl':
+    class { 'snapshot::cron::wikidatadumps::ttl':
         enable => true,
         user   => 'datasets',
     }
-    class { 'snapshot::centralauthdump':
+    class { 'snapshot::cron::centralauthdump':
         enable => true,
         user   => 'datasets',
     }
@@ -61,11 +61,11 @@ class role::snapshot::cron::primary {
         enable => true,
         user   => 'datasets',
     }
-    class { 'snapshot::mediaperprojectlists':
+    class { 'snapshot::cron::mediaperprojectlists':
         enable => true,
         user   => 'datasets',
     }
-    class { 'snapshot::cirrussearch':
+    class { 'snapshot::cron::cirrussearch':
         enable => true,
         user   => 'datasets',
     }

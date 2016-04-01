@@ -1,8 +1,8 @@
-class snapshot::wikidatadumps::ttl(
+class snapshot::cron::wikidatadumps::ttl(
     $enable = true,
     $user   = undef,
 ) {
-    include snapshot::wikidatadumps::common
+    include snapshot::cron::wikidatadumps::common
 
     if ($enable == true) {
         $ensure = 'present'

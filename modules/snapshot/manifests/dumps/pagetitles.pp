@@ -3,7 +3,7 @@ class snapshot::dumps::pagetitles(
     $user=undef,
 ) {
     include snapshot::dumps::dirs
-    include snapshot::wikiqueryskip
+    include snapshot::cron::wikiqueryskip
 
     if ($enable) {
         $ensure = 'present'
