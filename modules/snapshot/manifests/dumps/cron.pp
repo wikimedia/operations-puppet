@@ -17,6 +17,6 @@ class snapshot::dumps::cron(
         mode    => '0755',
         owner   => $user,
         group   => root,
-        content => template('snapshot/fulldumps.sh.erb'),
+        content => template('snapshot/dumps/fulldumps.sh.erb'),
     }
 }

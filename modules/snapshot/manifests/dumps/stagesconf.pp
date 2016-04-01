@@ -11,6 +11,6 @@ define snapshot::dumps::stagesconf(
         mode    => '0755',
         owner   => 'root',
         group   => 'root',
-        content => template('snapshot/dumpstages.erb'),
+        content => template('snapshot/dumps/dumpstages.erb'),
     }
 }
