@@ -4,34 +4,37 @@ class snapshot::addschanges::config(
 
     include snapshot::dumps::dirs
 
+    $confsdir = "${snapshot::dumps::dirs::addschangesdir}/confs"
+    $dblistsdir = "${snapshot::dumps::dirs::addschangesdir}/dblists"
+
     if ($enable) {
-        file { "${snapshot::dumps::dirs::addschangesdir}/confs":
+        file { $confsdir:
             ensure => 'directory',
-            path   => "${snapshot::dumps::dirs::addschangesdir}/confs",
+            path   => $confsdir,
             mode   => '0755',
             owner  => 'root',
             group  => 'root',
         }
-        file { "${snapshot::dumps::dirs::addschangesdir}/confs/addschanges.conf":
+        file { "${confsdir}/addschanges.conf":
             ensure  => 'present',
-            path    => "${snapshot::dumps::dirs::addschangesdir}/confs/addschanges.conf",
+            path    => "${confsdir}/addschanges.conf",
             mode    => '0755',
             owner   => 'root',
             group   => 'root',
             content => template('snapshot/addschanges.conf.erb'),
         }
-        file { "${snapshot::dumps::dirs::addschangesdir}/dblists":
+        file { $dblistsdir:
             ensure => 'directory',
-            path   => "${snapshot::dumps::dirs::addschangesdir}/dblists",
+            path   => dblistsdir,
             mode   => '0755',
             owner  => 'root',
             group  => 'root',
         }
         $skipdbs = ['labswiki','labtestwiki']
         $skipdbs_dblist = join($skipdbs, "\n")
-        file { "${snapshot::dumps::dirs::addschangesdir}/dblists/skip.dblist":
+        file { "${dblistsdir}/skip.dblist":
             ensure  => 'present',
-            path    => "${snapshot::dumps::dirs::addschangesdir}/dblists/skip.dblist",
+            path    => "${dblistsdir}/skip.dblist",
             mode    => '0755',
             owner   => 'root',
             group   => 'root',
