@@ -1179,6 +1179,10 @@ node 'hooft.esams.wikimedia.org' {
     }
     role bastionhost::general, installserver::tftp_server
 
+    class { 'ganglia::monitor::aggregator':
+        sites =>  'esams',
+    }
+
 }
 
 # Primary graphite machines
