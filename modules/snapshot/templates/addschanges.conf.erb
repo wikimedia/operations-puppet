@@ -6,17 +6,17 @@
 # configuration file for adds/changes dumps
 
 [wiki]
-mediawiki=<%= scope.lookupvar('snapshot::dirs::apachedir') %>
-allwikislist=<%= scope.lookupvar('snapshot::dirs::apachedir') -%>/dblists/all.dblist
-privatewikislist=<%= scope.lookupvar('snapshot::dirs::apachedir') -%>/dblists/private.dblist
-closedwikislist=<%= scope.lookupvar('snapshot::dirs::apachedir') -%>/dblists/closed.dblist
-skipwikislist=<%= scope.lookupvar('snapshot::dirs::addschangesdir') -%>/dblists/skip.dblist
+mediawiki=<%= scope.lookupvar('snapshot::dumps::dirs::apachedir') %>
+allwikislist=<%= scope.lookupvar('snapshot::dumps::dirs::apachedir') -%>/dblists/all.dblist
+privatewikislist=<%= scope.lookupvar('snapshot::dumps::dirs::apachedir') -%>/dblists/private.dblist
+closedwikislist=<%= scope.lookupvar('snapshot::dumps::dirs::apachedir') -%>/dblists/closed.dblist
+skipwikislist=<%= scope.lookupvar('snapshot::dumps::dirs::addschangesdir') -%>/dblists/skip.dblist
 adminsettings=private/PrivateSettings.php
 
 [output]
-incrementalsdir=<%= scope.lookupvar('snapshot::dirs::datadir') -%>/public/other/incr
-templatedir=<%= scope.lookupvar('snapshot::dirs::addschangesdir') -%>/templs
-temp=<%= scope.lookupvar('snapshot::dirs::datadir') -%>/temp
+incrementalsdir=<%= scope.lookupvar('snapshot::dumps::dirs::datadir') -%>/public/other/incr
+templatedir=<%= scope.lookupvar('snapshot::dumps::dirs::addschangesdir') -%>/templs
+temp=<%= scope.lookupvar('snapshot::dumps::dirs::datadir') -%>/temp
 webroot=http://download.wikimedia.org
 fileperms=0644
 # revisions must be at least this much older than time of current run
@@ -32,7 +32,7 @@ gzip=/bin/gzip
 bzip2=/bin/bzip2
 checkforbz2footer=/usr/local/bin/checkforbz2footer
 writeuptopageid=/usr/local/bin/writeuptopageid
-multiversion=<%= scope.lookupvar('snapshot::dirs::apachedir') -%>/multiversion/MWScript.php
+multiversion=<%= scope.lookupvar('snapshot::dumps::dirs::apachedir') -%>/multiversion/MWScript.php
 
 [cleanup]
 keep=35
