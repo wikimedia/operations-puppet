@@ -2578,6 +2578,7 @@ node 'wasat.codfw.wmnet' {
     role mariadb::maintenance, mediawiki::maintenance
 
     include ldap::role::client::labs
+    include base::firewall
 }
 
 # Wikidata query service
