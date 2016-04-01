@@ -6,10 +6,11 @@ class snapshot::dumps::configs(
     include snapshot::dumps::dirs
 
     $dblistsdir = $snapshot::dumps::dirs::dblistsdir
+    $apachedir = $snapshot::dumps::dirs::apachedir
 
     $config = {
         smallwikis => {
-            dblist        => "${snapshot::dumps::dirs::apachedir}/dblists/all.dblist",
+            dblist        => "${apachedir}/dblists/all.dblist",
             skipdblist    => "${dblistsdir}/skip.dblist",
             keep          => '12',
             chunksEnabled => '0',
@@ -109,13 +110,13 @@ class snapshot::dumps::configs(
             },
         },
         monitor => {
-            dblist        => "${snapshot::dumps::dirs::apachedir}/dblists/all.dblist",
+            dblist        => "${apachedir}/dblists/all.dblist",
             skipdblist    => "${dblistsdir}/skipmonitor.dblist",
             keep          => '30',
             chunksEnabled => '0',
         },
         media => {
-            dblist        => "${snapshot::dumps::dirs::apachedir}/dblists/all.dblist",
+            dblist        => "${apachedir}/dblists/all.dblist",
             skipdblist    => "${dblistsdir}/globalusage.dblist",
             keep          => '30',
             chunksEnabled => '0',
