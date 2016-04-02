@@ -1,8 +1,5 @@
 class role::labs::ores::staging {
-    class { 'ores::base':
-        branch => 'master',
-    }
-
+    include ::ores::base
     include ::ores::web
     include ::ores::worker
     include ::ores::flower
@@ -12,6 +9,24 @@ class role::labs::ores::staging {
     class { '::ores::redis':
         cache_maxmemory => '512M',
         queue_maxmemory => '256M',
+    }
+
+    file { '/srv/ores':
+        ensure => directory,
+        owner  => 'www-data',
+        group  => 'www-data',
+        mode   => '0775',
+    }
+
+    git::clone { 'ores-wm-config':
+        ensure    => present,
+        origin    => 'https://github.com/wiki-ai/ores-wikimedia-config.git',
+        directory => $ores::base::config_path,
+        branch    => 'master',
+        owner     => 'www-data',
+        group     => 'www-data',
+        require   => File['/srv/ores'],
+        before    => Class['ores::config'],
     }
 
     ores::config { 'staging':
