@@ -53,6 +53,7 @@ class role::phabricator::main {
                               "${phab_root_dir}/libext/misc/" ],
         settings         => {
             'darkconsole.enabled'                    => false,
+            'differential.allow-self-accept'         => true,
             'phabricator.base-uri'                   => "https://${domain}",
             'security.alternate-file-domain'         => "https://${altdom}",
             'mysql.user'                             => $passwords::mysql::phabricator::app_user,
