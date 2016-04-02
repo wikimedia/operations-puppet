@@ -42,6 +42,7 @@ class role::phabricator::main {
                               'PhutilMediaWikiAuthAdapter.php'],
         settings         => {
             'darkconsole.enabled'                    => false,
+            'differential.always-allow-close'        => true,
             'phabricator.base-uri'                   => "https://${domain}",
             'security.alternate-file-domain'         => "https://${altdom}",
             'mysql.user'                             => $role::phabricator::config::mysql_appuser,
