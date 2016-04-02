@@ -21,6 +21,7 @@ class ores::web(
                 # lint:ignore:single_quote_string_with_variables
                 route-if    => 'equal:${HTTP_X_FORWARDED_PROTO};http redirect-permanent:https://${HTTP_HOST}${REQUEST_URI}',
                 # lint:endignore
+                die-on-term => true,
             }
         }
     }
