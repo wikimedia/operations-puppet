@@ -51,7 +51,6 @@ METRICS = (
     'domContentLoadedEventStart',
     'domContentLoadedEventEnd',
     'domInteractive',
-    'domLoading',
     'fetchStart',
     'firstPaint',
     'loadEventEnd',
