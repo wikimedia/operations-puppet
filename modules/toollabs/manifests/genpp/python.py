@@ -42,8 +42,10 @@ environ_packages = {
         'mysql.connector',
         'mysqldb',
         'newt',
+        'numpy',                # T131675
         'nose',
         'opencv',
+        'pandas',               # T131675
         'pil',                  # T108210
         'problem-report',
         'psycopg2',
