@@ -7,7 +7,7 @@
 
 DATE=`/bin/date '+%Y%m%d'`
 outputdir="<%= scope.lookupvar('snapshot::dirs::datadir') -%>/public/other/imageinfo/$DATE"
-wqdir="<%= scope.lookupvar('snapshot::dirs::wikiqueriesdir') %>"
+wqdir="<%= scope.lookupvar('snapshot::dumps::dirs::wikiqueriesdir') %>"
 errors=0
 
 python "$wqdir/listmediaperproject.py" --outputdir "$outputdir" \
