@@ -71,8 +71,12 @@ class toollabs::genpp::python_exec_jessie {
         'python3-newt',         # 0.52.17
         'python-nose',          # 1.3.4
         'python3-nose',         # 1.3.4
+        'python-numpy',         # 1:1.8.2
+        'python3-numpy',        # 1:1.8.2
         'python-opencv',        # 2.4.9.1
         # python3-opencv is not available
+        'python-pandas',        # 0.14.1
+        'python3-pandas',       # 0.14.1
         'python-pil',           # 2.6.1
         'python3-pil',          # 2.6.1
         # python-problem-report is not available

@@ -71,8 +71,12 @@ class toollabs::genpp::python_exec_precise {
         # python3-newt is not available
         'python-nose',          # 1.1.2
         'python3-nose',         # 1.1.2
+        'python-numpy',         # 1:1.6.1
+        'python3-numpy',        # 1:1.6.1
         'python-opencv',        # 2.3.1
         # python3-opencv is not available
+        'python-pandas',        # 0.7.0
+        # python3-pandas is not available
         # python-pil is not available
         # python3-pil is not available
         'python-problem-report', # 2.0.1
