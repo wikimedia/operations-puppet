@@ -25,7 +25,7 @@ class nagios_common::commands(
         'libnet-ssleay-perl',
         'libio-socket-ssl-perl',
         'libio-socket-inet6-perl',
-        # check_bgp
+        # check_bgp/check_jnx_alarms
         'libnet-snmp-perl',
         'libtime-duration-perl',
         ]:
@@ -49,6 +49,7 @@ class nagios_common::commands(
         'check_to_check_nagios_paging',
         'check_ifstatus_nomon',
         'check_bgp',
+        'check_jnx_alarms',
         'check_ores_workers',
     ] :
         require    => File["${config_dir}/commands"],
