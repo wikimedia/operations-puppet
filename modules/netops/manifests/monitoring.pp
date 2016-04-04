@@ -21,6 +21,7 @@ class netops::monitoring {
         'cr2-eqiad'     => { ipv4 => '208.80.154.197',  ipv6 => '2620:0:861:ffff::2', bgp => true, },
         'mr1-eqiad'     => { ipv4 => '208.80.154.199',  ipv6 => '2620:0:861:ffff::6', },
         'mr1-eqiad.oob' => { ipv4 => '198.32.107.153',  ipv6 => '2607:f6f0:205::153', },
+        'pfw-eqiad'     => { ipv4 => '208.80.154.218',  },
         # eqord
         'cr1-eqord'     => { ipv4 => '208.80.154.198',  ipv6 => '2620:0:861:ffff::5', bgp => true, },
         # codfw
@@ -28,6 +29,7 @@ class netops::monitoring {
         'cr2-codfw'     => { ipv4 => '208.80.153.193',  ipv6 => '2620:0:860:ffff::2', bgp => true, },
         'mr1-codfw'     => { ipv4 => '208.80.153.196',  ipv6 => '2620:0:860:ffff::6', },
         'mr1-codfw.oob' => { ipv4 => '216.117.46.36',   },
+        'pfw-codfw'     => { ipv4 => '208.80.153.195',  },
         # eqdfw
         'cr1-eqdfw'     => { ipv4 => '208.80.153.198',  ipv6 => '2620:0:860:ffff::6', bgp => true, },
         # esams
