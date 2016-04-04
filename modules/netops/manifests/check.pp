@@ -8,7 +8,7 @@
 #   The SNMP community to use to poll the device.
 #
 # [*ipv4*]
-#   The IPv4 address of the device. Optional.
+#   The IPv4 address of the device. Required.
 #
 # [*ipv6*]
 #   The IPv6 address of the device. Optional.
@@ -28,18 +28,17 @@
 
 define netops::check(
     $snmp_community,
-    $ipv4=undef,
+    $ipv4,
     $ipv6=undef,
     $bgp=false,
     $interfaces=false,
 ) {
 
-    if $ipv4 {
-        @monitoring::host { "${title} IPv4":
-            ip_address => $ipv4,
-            group      => 'routers',
-        }
+    @monitoring::host { $title:
+        ip_address => $ipv4,
+        group      => 'routers',
     }
+
     if $ipv6 {
         @monitoring::host { "${title} IPv6":
             ip_address => $ipv6,
