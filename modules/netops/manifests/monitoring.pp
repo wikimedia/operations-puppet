@@ -12,8 +12,9 @@ class netops::monitoring {
     include passwords::network
 
     # core/mgmt routers
-    $defaults = {
+    $routers_defaults = {
         snmp_community => $passwords::network::snmp_ro_community,
+        group          => 'routers',
         alarms         => true,
         interfaces     => true,
     }
@@ -42,7 +43,7 @@ class netops::monitoring {
         'cr2-ulsfo' => { ipv4 => '198.35.26.193',   ipv6 => '2620:0:863:ffff::2', bgp => true, },
         'mr1-ulsfo' => { ipv4 => '198.35.26.194',   ipv6 => '2620:0:863:ffff::6',   },
     }
-    create_resources(netops::check, $routers, $defaults)
+    create_resources(netops::check, $routers, $routers_defaults)
 
     # OOB interfaces -- no SNMP for these
     $oob = {
@@ -52,4 +53,33 @@ class netops::monitoring {
         'mr1-ulsfo.oob' => { ipv4 => '209.237.234.242', },
     }
     create_resources(netops::check, $oob)
+
+    # access/management/peering switches
+    $switches_defaults = {
+        snmp_community => $passwords::network::snmp_ro_community,
+        group          => 'switches',
+        alarms         => true,
+    }
+    $switches = {
+        # eqiad
+        'asw-a-eqiad.mgmt.eqiad.wmnet'   => { ipv4 => '10.65.0.17',   },
+        'asw2-a5-eqiad.mgmt.eqiad.wmnet' => { ipv4 => '10.65.0.20',   },
+        'asw-b-eqiad.mgmt.eqiad.wmnet'   => { ipv4 => '10.65.0.18',   },
+        'asw-c-eqiad.mgmt.eqiad.wmnet'   => { ipv4 => '10.65.0.23',   },
+        'asw-d-eqiad.mgmt.eqiad.wmnet'   => { ipv4 => '10.65.0.24',   },
+        'msw1-eqiad.mgmt.eqiad.wmnet'    => { ipv4 => '10.65.0.10',   },
+        'psw1-eqiad.mgmt.eqiad.wmnet'    => { ipv4 => '10.65.0.21',   },
+        # codfw
+        'asw-a-codfw.mgmt.codfw.wmnet'   => { ipv4 => '10.193.0.16',  },
+        'asw-b-codfw.mgmt.codfw.wmnet'   => { ipv4 => '10.193.0.17',  },
+        'asw-c-codfw.mgmt.codfw.wmnet'   => { ipv4 => '10.193.0.18',  },
+        'asw-d-codfw.mgmt.codfw.wmnet'   => { ipv4 => '10.193.0.19',  },
+        'msw1-codfw.mgmt.codfw.wmnet'    => { ipv4 => '10.193.0.3',   },
+        # esams
+        'asw-esams.mgmt.esams.wmnet'     => { ipv4 => '10.21.0.104',  },
+        'csw2-esams.mgmt.esams.wmnet'    => { ipv4 => '10.21.0.105',  },
+        # ulsfo
+        'asw-ulsfo.mgmt.ulsfo.wmnet'     => { ipv4 => '10.128.128.6', },
+    }
+    create_resources(netops::check, $switches, $switches_defaults)
 }

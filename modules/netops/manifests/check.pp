@@ -33,6 +33,7 @@ define netops::check(
     $ipv4,
     $ipv6=undef,
     $snmp_community=undef,
+    $group='routers',
     $alarms=false,
     $bgp=false,
     $interfaces=false,
@@ -40,20 +41,20 @@ define netops::check(
 
     @monitoring::host { $title:
         ip_address => $ipv4,
-        group      => 'routers',
+        group      => $group,
     }
 
     if $ipv6 {
         @monitoring::host { "${title} IPv6":
             ip_address => $ipv6,
-            group      => 'routers',
+            group      => $group,
         }
     }
 
     if $alarms {
         @monitoring::service { "${title} Juniper alarms":
             host          => $title,
-            group         => 'routers',
+            group         => $group,
             description   => 'Juniper alarms',
             check_command => "check_jnx_alarms!${snmp_community}",
         }
@@ -62,7 +63,7 @@ define netops::check(
     if $interfaces {
         @monitoring::service { "${title} interfaces":
             host          => $title,
-            group         => 'routers',
+            group         => $group,
             description   => 'Router interfaces',
             check_command => "check_ifstatus_nomon!${snmp_community}",
         }
@@ -71,7 +72,7 @@ define netops::check(
     if $bgp {
         @monitoring::service { "${title} BGP status":
             host          => $title,
-            group         => 'routers',
+            group         => $group,
             description   => 'BGP status',
             check_command => "check_bgp!${snmp_community}",
         }
