@@ -10,6 +10,9 @@
 # [*snmp_community*]
 #   The SNMP community to use to poll the device
 #
+# [*alarms*]
+#   Whether to perform chassis alarms checks. Defaults to false.
+#
 # [*interfaces*]
 #   Whether to perform interface status checks. Defaults to false.
 #
@@ -26,12 +29,22 @@
 define netops::check(
     $ipv4,
     $snmp_community,
+    $alarms=false,
     $bgp=false,
     $interfaces=false,
 ) {
     @monitoring::host { $title:
         ip_address => $ipv4,
         group      => 'routers',
+    }
+
+    if $alarms {
+        @monitoring::service { "${title} Juniper alarms":
+            host          => $title,
+            group         => 'routers',
+            description   => 'Juniper alarms',
+            check_command => "check_jnx_alarms!${snmp_community}",
+        }
     }
 
     if $interfaces {
