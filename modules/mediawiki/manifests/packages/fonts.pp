@@ -3,6 +3,8 @@
 # Provisions font packages used by MediaWiki.
 #
 class mediawiki::packages::fonts {
+    requires_os('ubuntu >= trusty || Debian >= jessie')
+
     package { [
         'fonts-arabeyes',
         'fonts-arphic-ukai',
@@ -54,16 +56,10 @@ class mediawiki::packages::fonts {
         'ttf-kochi-gothic',          # T66002
         'ttf-kochi-mincho',          # T66002
         'ttf-lyx',                   # T40299
+        'fonts-crosextra-carlito',   # T84842
+        'fonts-crosextra-caladea',   # T84842
+
     ]:
         ensure => present,
-    }
-    # T84842
-    if os_version('ubuntu >= trusty || debian >= jessie') {
-        package { [
-            'fonts-crosextra-carlito',
-            'fonts-crosextra-caladea',
-    ]:
-            ensure => present,
-        }
     }
 }
