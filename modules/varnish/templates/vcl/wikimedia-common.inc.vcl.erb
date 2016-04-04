@@ -103,7 +103,7 @@ probe wdqs {
 #         'dc'       => 'eqiad', # required if dynamic==yes
 #         'service'  => 'foo',   # required if dynamic==yes
 #         'backends' => [ "backend1", "backend2" ], # required: array or single value
-#         'be_opts'  => { # every option but 'probe' is required!
+#         'be_opts'  => { # every option but 'probe' and 'between_bytes_timeout' is required!
 #             'port' = 80,
 #             'connect_timeout' = '2s',
 #             'first_byte_timeout' = '4s',
@@ -139,7 +139,9 @@ backend <%= name %> {
 	.port = "<%= be_opts['port'] %>";
 	.connect_timeout = <%= be_opts['connect_timeout'] %>;
 	.first_byte_timeout = <%= be_opts['first_byte_timeout'] %>;
+<% if be_opts.key?('between_bytes_timeout') -%>
 	.between_bytes_timeout = <%= be_opts['between_bytes_timeout'] %>;
+<% end -%>
 	.max_connections = <%= be_opts['max_connections'] %>;
 <% if be_opts.key?('probe') -%>
 	.probe = <%= be_opts['probe'] %>;

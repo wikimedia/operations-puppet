@@ -14,7 +14,6 @@ class role::cache::misc {
         'port'                  => 3128,
         'connect_timeout'       => '5s',
         'first_byte_timeout'    => '185s',
-        'between_bytes_timeout' => '2s',
         'max_connections'       => 100000,
         'probe'                 => 'varnish',
     }
@@ -23,7 +22,6 @@ class role::cache::misc {
         'port'                  => 3128,
         'connect_timeout'       => '5s',
         'first_byte_timeout'    => '185s',
-        'between_bytes_timeout' => '4s',
         'max_connections'       => 100,
         'probe'                 => 'varnish',
     }
@@ -32,7 +30,6 @@ class role::cache::misc {
         'port'                  => 80,
         'connect_timeout'       => '5s',
         'first_byte_timeout'    => '185s',
-        'between_bytes_timeout' => '4s',
         'max_connections'       => 100,
     }
 
@@ -179,7 +176,7 @@ class role::cache::misc {
             'dynamic'  => 'no',
             'type'     => 'random',
             'backends' => ['mendelevium.eqiad.wmnet'],
-            'be_opts'  => merge($app_def_be_opts, { 'between_bytes_timeout' => '60s' })
+            'be_opts'  => $app_def_be_opts,
         },
         'ytterbium' => { # Gerrit
             'dynamic' => 'no',
@@ -201,7 +198,7 @@ class role::cache::misc {
             'dynamic'  => 'no',
             'type'     => 'random',
             'backends' => ['wdqs1001.eqiad.wmnet', 'wdqs1002.eqiad.wmnet'],
-            'be_opts'  => merge($app_def_be_opts, { 'probe' => 'wdqs', 'between_bytes_timeout' => '60s' }),
+            'be_opts'  => merge($app_def_be_opts, { 'probe' => 'wdqs' }),
         },
     }
 

@@ -21,7 +21,6 @@ class role::cache::upload {
         'port'                  => 3128,
         'connect_timeout'       => '5s',
         'first_byte_timeout'    => '35s',
-        'between_bytes_timeout' => '2s',
         'max_connections'       => 100000,
         'probe'                 => 'varnish',
     }
@@ -30,7 +29,6 @@ class role::cache::upload {
         'port'                  => 3128,
         'connect_timeout'       => '5s',
         'first_byte_timeout'    => '35s',
-        'between_bytes_timeout' => '4s',
         'max_connections'       => 1000,
         'probe'                 => 'varnish',
     }
@@ -45,7 +43,6 @@ class role::cache::upload {
                 'port'                  => 80,
                 'connect_timeout'       => '5s',
                 'first_byte_timeout'    => '35s',
-                'between_bytes_timeout' => '4s',
                 'max_connections'       => 1000,
             }
         },
@@ -57,7 +54,6 @@ class role::cache::upload {
                 'port'                  => 80,
                 'connect_timeout'       => '5s',
                 'first_byte_timeout'    => '35s',
-                'between_bytes_timeout' => '4s',
                 'max_connections'       => 1000,
             }
         },
