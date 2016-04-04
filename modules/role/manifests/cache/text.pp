@@ -157,4 +157,9 @@ class role::cache::text {
         metric_prefix => "varnish.${::site}.text.frontend.request",
         statsd        => hiera('statsd'),
     }
+
+    # ResourceLoader browser cache hit rate and request volume stats.
+    ::varnish::logging::rls { 'rls':
+        statsd_server => 'statsd.eqiad.wmnet',
+    }
 }

@@ -11,9 +11,19 @@ class role::cache::base(
     include standard
     include nrpe
     include lvs::configuration
-    include role::cache::statsd
     include network::constants
     include conftool::scripts
+
+    # Client connection stats from the 'X-Connection-Properties'
+    # header set by the SSL terminators.
+    ::varnish::logging::xcps { 'xcps':
+        statsd_server => 'statsd.eqiad.wmnet',
+    }
+
+    ::varnish::logging::statsd { 'default':
+        statsd_server => 'statsd.eqiad.wmnet',
+        key_prefix    => "varnish.${::site}.backends",
+    }
 
     # Only production needs system perf tweaks and NFS client disable
     if $::realm == 'production' {
