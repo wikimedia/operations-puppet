@@ -16,11 +16,16 @@ class snapshot::deployment::dirs {
       source => 'puppet:///modules/snapshot/deployment/scap.cfg'
     }
 
-    $target_list = 'snapshot1005.eqiad.wmnet\n'
+    $targets = [
+                'snapshot1005.eqiad.wmnet',
+                'snapshot1006.eqiad.wmnet',
+                'snapshot1007.eqiad.wmnet'
+                ]
+    $target_str = join($targets, "\n"),
     file { "${repodir}/scap/dumps_targets":
       mode    => '0644',
       owner   => root,
       group   => root,
-      content => $target_list,
+      content => "${target_str}\n"),
     }
 }
