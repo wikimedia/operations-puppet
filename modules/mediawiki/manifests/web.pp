@@ -1,6 +1,7 @@
 class mediawiki::web {
     tag 'mediawiki', 'mw-apache-config'
 
+    requires_os('ubuntu >= trusty || Debian >= jessie')
     include ::apache
     include ::mediawiki
     include ::mediawiki::users
@@ -33,7 +34,5 @@ class mediawiki::web {
         },
     }
 
-    if os_version('ubuntu >= trusty') {
-        apache::def { 'HHVM': }
-    }
+    apache::def { 'HHVM': }
 }
