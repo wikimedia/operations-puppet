@@ -14,6 +14,7 @@ class netops::monitoring {
     # core/mgmt routers
     $defaults = {
         snmp_community => $passwords::network::snmp_ro_community,
+        alarms         => true,
         interfaces     => true,
     }
     $routers = {
