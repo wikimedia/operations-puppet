@@ -226,20 +226,20 @@ def handle_navigation_timing(meta):
     event = meta['event']
     metrics = {}
 
-    for metric, marker in (
-        ('dnsLookup', 'dnsLookup'),
-        ('loadEventStart', 'loadEventStart'),
-        ('mediaWikiLoadStart', 'mediaWikiLoadStart'),
-        ('mediaWikiLoadEnd', 'mediaWikiLoadEnd'),
-        ('mediaWikiLoadComplete', 'mediaWikiLoadComplete'),
-        ('redirecting', 'redirecting'),
-        ('fetchStart', 'fetchStart'),
-        ('loadEventEnd', 'loadEventEnd'),
-        ('responseStart', 'responseStart'),
-        ('firstPaint', 'firstPaint'),
+    for metric in (
+        'dnsLookup',
+        'fetchStart',
+        'firstPaint',
+        'loadEventEnd',
+        'loadEventStart',
+        'mediaWikiLoadComplete',
+        'mediaWikiLoadEnd',
+        'mediaWikiLoadStart',
+        'redirecting',
+        'responseStart',
     ):
-        if marker in event:
-            metrics[metric] = event[marker]
+        if metric in event:
+            metrics[metric] = event[metric]
 
     for difference, minuend, subtrahend in (
         ('waiting', 'responseStart', 'requestStart'),
