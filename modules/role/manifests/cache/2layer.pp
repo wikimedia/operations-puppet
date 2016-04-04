@@ -4,8 +4,6 @@ class role::cache::2layer(
 ) {
     include role::cache::base
 
-    include role::cache::statsd::frontend
-
     # Ganglia monitoring
     if $::standard::has_ganglia {
         class { 'varnish::monitoring::ganglia':
