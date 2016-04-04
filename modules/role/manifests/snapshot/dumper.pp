@@ -2,6 +2,9 @@
 # meaning sql/xml dumps every couple of weeks or so
 class role::snapshot::dumper {
 
+    # mw packages and dependencies, dataset server nfs mount
+    include snapshot::dumps::packages
+
     # config, stages files, dblists, html templates
     include snapshot::dumps
 
