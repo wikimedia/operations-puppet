@@ -10,6 +10,9 @@
 # [*ipv4*]
 #   The IPv4 address of the device. Optional.
 #
+# [*ipv6*]
+#   The IPv6 address of the device. Optional.
+#
 # [*interfaces*]
 #   Whether to perform interface status checks. Defaults to false.
 #
@@ -26,13 +29,20 @@
 define netops::check(
     $snmp_community,
     $ipv4=undef,
+    $ipv6=undef,
     $bgp=false,
     $interfaces=false,
 ) {
 
     if $ipv4 {
-        @monitoring::host { $title:
+        @monitoring::host { "${title} IPv4":
             ip_address => $ipv4,
+            group      => 'routers',
+        }
+    }
+    if $ipv6 {
+        @monitoring::host { "${title} IPv6":
+            ip_address => $ipv6,
             group      => 'routers',
         }
     }
