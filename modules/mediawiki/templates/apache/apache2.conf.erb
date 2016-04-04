@@ -1,10 +1,6 @@
 ServerRoot "/etc/apache2"
 PidFile ${APACHE_PID_FILE}
 
-<IfVersion < 2.4>
-  LockFile /var/lock/apache2/accept.lock
-</IfVersion>
-
 Timeout 200
 
 KeepAlive on
