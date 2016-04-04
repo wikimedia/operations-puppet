@@ -1,27 +1,16 @@
 class snapshot::dumps(
     $enable    = true,
-    $hugewikis = false,
 ) {
-
-    if ($enable) {
-        $ensure = 'present'
-    }
-    else {
-        $ensure = 'absent'
-    }
-
     class { 'snapshot::dumps::configs':
-        enable           => $enable,
-        hugewikis_enable => $hugewikis,
+        enable => $enable,
     }
     class { 'snapshot::dumps::dblists':
-        enable           => $enable,
-        hugewikis_enable => $hugewikis,
+        enable => $enable,
     }
     class { 'snapshot::dumps::templates':
-        enable => 'enable'
+      enable => $enable,
     }
     class { 'snapshot::dumps::stagesconfig':
-        enable => 'enable'
+        enable => $enable,
     }
 }
