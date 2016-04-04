@@ -2500,6 +2500,12 @@ node /^snapshot1003\.eqiad\.wmnet/ {
     include standard
 }
 
+node /^snapshot1005\.eqiad\.wmnet/ {
+    # start setup and rollout of new role on new hosts
+    role snapshot::dumper
+    include standard
+}
+
 # codfw poolcounters
 node /(subra|suhail)\.codfw\.wmnet/ {
     role poolcounter
