@@ -27,11 +27,13 @@ AUTHENTICATION_PLUGINS = ['openstack_auth.plugin.wmtotp.WmtotpPlugin', 'openstac
 # https://docs.djangoproject.com/en/1.4/ref/settings/#secure-proxy-ssl-header
 # SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTOCOL', 'https')
 
-# SESSION_TIMEOUT is in seconds and defaults to 1800.  Change to two hours.
-#  It might be nice to increase this to a day, or even longer... but that's
-#  currently impossible due to
+# SESSION_TIMEOUT is in seconds and defaults to 1800.  Change to one day.
+#  Note that due to
 #   https://bugs.launchpad.net/django-openstack-auth/+bug/1562452
-SESSION_TIMEOUT = 7200
+#  this may be shortened to two hours.  As of 2016-04-04 there's a
+#  live hack in place on californium to alleviate that bug, but
+#  this will revert when we upgrade to M, and then start working again on N.
+SESSION_TIMEOUT = 86400
 SESSION_COOKIE_AGE = 7200
 CSRF_COOKIE_SECURE = True
 SESSION_COOKIE_SECURE = True
