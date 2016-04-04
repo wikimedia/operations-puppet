@@ -39,7 +39,7 @@ import whisper
 METRICS = (
     'responseStart',  # Time to user agent receiving first byte
     'firstPaint',     # Time to initial render
-    'domComplete',    # Time to DOM Comlete event
+    'domInteractive', # Time to DOM Ready event
     'loadEventEnd',   # Time to load event completion
     'saveTiming',     # Time to first byte for page edits
 )
