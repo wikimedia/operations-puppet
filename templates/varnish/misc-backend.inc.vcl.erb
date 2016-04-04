@@ -14,9 +14,9 @@ sub cluster_be_recv_applayer_backend {
     } elsif (req.http.Host == "performance.wikimedia.org" || req.http.Host == "graphite.wikimedia.org") {
         set req.backend = graphite1001;
     } elsif (req.http.Host == "logstash.wikimedia.org"){
-        set req.backend = logstash;
+        set req.backend = logstash_director;
     } elsif (req.http.Host == "query.wikidata.org"){
-        set req.backend = wdqs;
+        set req.backend = wdqs_director;
     } elsif (req.http.Host == "releases.wikimedia.org") {
         set req.backend = bromine;
     } elsif (req.http.Host == "piwik.wikimedia.org") {
