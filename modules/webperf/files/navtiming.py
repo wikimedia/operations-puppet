@@ -228,6 +228,7 @@ def handle_navigation_timing(meta):
 
     for metric in (
         'dnsLookup',
+        'domComplete',
         'fetchStart',
         'firstPaint',
         'loadEventEnd',
