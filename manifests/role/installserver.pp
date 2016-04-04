@@ -52,8 +52,14 @@ class role::installserver {
         rule => 'proto udp dport tftp { saddr $ALL_NETWORKS ACCEPT; }'
     }
 
+    if os_version('ubuntu >= trusty') or os_version('debian >= jessie') {
+        $config_content = template('caching-proxy/squid.conf.erb')
+    } else {
+        $config_content = template('squid3/precise_acls_conf.erb', 'caching-proxy/squid.conf.erb')
+    }
+
     class { 'squid3':
-        config_source => 'puppet:///files/caching-proxy/squid3-apt-proxy.conf',
+        config_content => $config_content,
     }
 
     cron { 'squid-logrotate':
