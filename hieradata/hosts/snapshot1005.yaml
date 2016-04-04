@@ -1,0 +1,4 @@
+snapshot::dumps:
+    runtype: hugewikis
+    maxjobs: 28
+snapshot::cron::misc: false

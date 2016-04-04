@@ -2,8 +2,13 @@
 # meaning sql/xml dumps every couple of weeks or so
 class role::snapshot::dumper {
 
-    # set up scap3 deployment of dump scripts except for
-    # all the misc cron jobs (not handled in this class)
+    # config, stages files, dblists, html templates
+    include snapshot::dumps
+
+    # scap3 deployment of dump scripts
     include dataset::user
     include snapshot::deployment
+
+    # cron job for running the dumps
+    class { 'snapshot::dumps::cron': user => 'datasets' }
 }

@@ -1,6 +1,5 @@
 class snapshot::dumps::configs(
     $enable           = true,
-    $hugewikis_enable = true,
 ) {
 
     include snapshot::dumps::dirs
@@ -132,11 +131,9 @@ class snapshot::dumps::configs(
             configtype => 'bigwikis',
             config     => $config,
         }
-        if ($hugewikis_enable) {
-            snapshot::dumps::wikiconf { 'wikidump.conf.hugewikis':
-                configtype => 'hugewikis',
-                config     => $config,
-            }
+        snapshot::dumps::wikiconf { 'wikidump.conf.hugewikis':
+          configtype => 'hugewikis',
+          config     => $config,
         }
         snapshot::dumps::wikiconf { 'wikidump.conf.monitor':
             configtype => 'monitor',
