@@ -37,5 +37,8 @@ class mediawiki::web {
         },
     }
 
-    apache::def { 'HHVM': }
+    # Not needed anymore. TODO: remove at a later stage
+    apache::def { 'HHVM':
+        ensure => absent
+    }
 }
