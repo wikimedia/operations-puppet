@@ -18,7 +18,11 @@
 class mediawiki (
     $log_aggregator = 'udplog:8420',
     $forward_syslog = undef,
-) {
+    ) {
+
+    # Simplicity over support: precise is going out of support in April 2017 anyways
+    requires_os('ubuntu >= trusty || Debian >= jessie')
+
     include ::mediawiki::cgroup
     include ::mediawiki::packages
     include ::mediawiki::scap
@@ -27,15 +31,10 @@ class mediawiki (
     include ::mediawiki::php
     include ::mediawiki::mwrepl
 
-    if os_version('ubuntu >= trusty') {
-        include ::mediawiki::hhvm
-    }
+    include ::mediawiki::hhvm
 
-    # Set the Salt grain 'php' to the name of the PHP runtime, to make
-    # it easier to select a subset of MediaWiki servers. For example:
-    #   $ salt -G php:hhvm cmd.run 'apt-show-versions hhvm'
-    $php = $::lsbdistcodename ? { trusty => 'hhvm', default => 'php5' }
-    salt::grain { 'php': value => $php }
+    # We've set the 'php' grain in the past, but we don't really need it anymore
+    salt::grain { 'php': ensure => absent }
 
     # /var/log/mediawiki contains log files for the MediaWiki jobrunner
     # and for various periodic jobs that are managed by cron.
