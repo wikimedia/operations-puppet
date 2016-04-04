@@ -6,7 +6,7 @@
 #############################################################
 
 DATE=`/bin/date '+%Y%m%d'`
-outputdir="<%= scope.lookupvar('snapshot::dirs::datadir') -%>/public/other/imageinfo/$DATE"
+outputdir="<%= scope.lookupvar('snapshot::dumps::dirs::datadir') -%>/public/other/imageinfo/$DATE"
 wqdir="<%= scope.lookupvar('snapshot::dumps::dirs::wikiqueriesdir') %>"
 errors=0
 
