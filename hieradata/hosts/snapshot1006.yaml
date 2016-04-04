@@ -1,0 +1,4 @@
+snapshot::dumps:
+    runtype: regular
+    maxjobs: 28
+snapshot::cron::misc: false

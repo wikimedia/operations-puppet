@@ -38,7 +38,7 @@ show (){
 getcommandargs(){
     slots="$1"
     stagesfile="$2"
-    commandargs="${scriptsdir}/dumpscheduler.py --slots ${slots} --commands ${dumpsdir}/stages/${stagesfile} --cache ${dumpsdir}/cache/running_cache.txt --directory $dumpsdir"
+    commandargs="${repodir}/dumpscheduler.py --slots ${slots} --commands ${dumpsdir}/stages/${stagesfile} --cache ${dumpsdir}/cache/running_cache.txt --directory $dumpsdir"
 }
 
 maybe_do_createdirs(){
@@ -117,9 +117,8 @@ show "no dumpscheduler running so proceeding"
 python="/usr/bin/python"
 
 dumpsdir="<%= scope.lookupvar('snapshot::dumps::dirs::dumpsdir') %>"
-scriptsdir="<%= scope.lookupvar('snapshot::dumps::dirs::scriptsdir') %>"
-#soon: scriptsdir="<%= scope.lookupvar('snapshot::deployment::common::scriptsdir') %>"
-cd $scriptsdir
+repodir="<%= scope.lookupvar('snapshot::deployment::dirs::repodir') %>"
+cd $repodir
 
 today=`/bin/date +%d`
 if [[ "$today" < "$startdate" || "$today" > "$enddate" ]]; then
@@ -133,6 +132,8 @@ fi
 case $wikitype in
     'hugewikis')
         maybe_do_createdirs "wikidump.conf.hugewikis" "stages_create_hugewikis" "hugewikis"
+        maybe_do_createdirs "wikidump.conf.bigwikis" "stages_create_bigwikis" "bigwikis"
+        maybe_do_createdirs "wikidump.conf" "stages_create_smallwikis" "smallwikis"
         ;;
     'regular')
         maybe_do_createdirs "wikidump.conf.bigwikis" "stages_create_bigwikis" "bigwikis"
@@ -144,27 +145,28 @@ case $wikitype in
         ;;
 esac
 
+maxjobs=<%= scope.lookupvar('snapshot::dumps::cron::maxjobs') %>
 case $wikitype in
     'hugewikis')
-        maybe_do_dumps "wikidump.conf.hugewikis" "stages_normal_nocreate_hugewikis" "hugewikis" "27"
+        maybe_do_dumps "wikidump.conf.hugewikis" "stages_normal_nocreate_hugewikis" "hugewikis" "$maxjobs"
         # After huge wikis are done, check and do some of the rest if needed
         # If not all the big wikis are done we will start a dump run covering small and big wikis
         # Only wikis without complete dumps will be updated.
-        maybe_do_dumps "wikidump.conf.bigwikis" "stages_normal_nocreate" "bigwikis" "16"
+        maybe_do_dumps "wikidump.conf.bigwikis" "stages_normal_nocreate" "bigwikis" "$maxjobs"
 	if [ $? -ne 0 ]; then
             # If we did not start a dump run above for small and big wikis, and the small wikis
             # are not done, start such a run now.  Only wikis without complete dumps will be updated.
-            maybe_do_dumps "wikidump.conf" "stages_normal_nocreate" "smallwikis" "16"
+            maybe_do_dumps "wikidump.conf" "stages_normal_nocreate" "smallwikis" "$maxjobs"
         fi
         ;;
     'regular')
         # If not all the big wikis are done we will start a dump run covering small and big wikis
         # Only wikis without complete dumps will be updated.
-        maybe_do_dumps "wikidump.conf.bigwikis" "stages_normal_nocreate" "bigwikis" "8"
+        maybe_do_dumps "wikidump.conf.bigwikis" "stages_normal_nocreate" "bigwikis" "$maxjobs"
 	if [ $? -ne 0 ]; then
             # If we did not start a dump run above for small and big wikis, and the small wikis
             # are not done, start such a run now.  Only wikis without complete dumps will be updated.
-            maybe_do_dumps "wikidump.conf" "stages_normal_nocreate" "smallwikis" "8"
+            maybe_do_dumps "wikidump.conf" "stages_normal_nocreate" "smallwikis" "$maxjobs"
         fi
         ;;
     '*')
