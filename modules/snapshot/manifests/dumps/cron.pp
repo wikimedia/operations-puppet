@@ -3,6 +3,7 @@ class snapshot::dumps::cron(
     $user   = undef,
 ) {
     include snapshot::dumps::dirs
+    include snapshot::deployment::dirs
 
     if ($enable) {
         $ensure = 'present'
