@@ -6,15 +6,13 @@
 # instead.
 #
 class mediawiki::packages::php5 {
-    if os_version('ubuntu < trusty') {
-        require_package('php-apc')
+    requires_os('ubuntu >= trusty || Debian >= jessie')
+
+    # We don't need php-apc on php > 5.3
+    package { 'php-apc':
+        ensure => absent,
     }
-    else {
-        # We don't need php-apc on trusty
-        package { 'php-apc':
-            ensure => absent,
-        }
-    }
+
     # Run-time
     package { [
         'php5-cli',
@@ -44,14 +42,5 @@ class mediawiki::packages::php5 {
         'php5-xmlrpc',
     ]:
         ensure => present,
-    }
-
-    if os_version('ubuntu precise') {
-        package { [
-            'php5-igbinary',   # No longer in use
-            'php5-wmerrors',   # Not packaged for Trusty
-        ]:
-            ensure => present,
-        }
     }
 }
