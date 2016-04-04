@@ -4,14 +4,14 @@
 #
 # === Parameters
 #
-# [*snmp_community*]
-#   The SNMP community to use to poll the device.
-#
 # [*ipv4*]
 #   The IPv4 address of the device. Required.
 #
 # [*ipv6*]
 #   The IPv6 address of the device. Optional.
+#
+# [*snmp_community*]
+#   The SNMP community to use to poll the device. Optional
 #
 # [*interfaces*]
 #   Whether to perform interface status checks. Defaults to false.
@@ -27,9 +27,9 @@
 #  }
 
 define netops::check(
-    $snmp_community,
     $ipv4,
     $ipv6=undef,
+    $snmp_community=undef,
     $bgp=false,
     $interfaces=false,
 ) {
