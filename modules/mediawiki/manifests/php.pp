@@ -4,13 +4,10 @@
 #
 class mediawiki::php {
     include ::mediawiki::packages
+    requires_os('ubuntu >= trusty || Debian >= jessie')
 
-    if os_version('ubuntu >= trusty || debian >= Jessie') {
-        $php_module_conf_dir = '/etc/php5/mods-available'
-        mediawiki::php_enmod { ['fss', 'mail']: }
-    } else {
-        $php_module_conf_dir = '/etc/php5/conf.d'
-    }
+    $php_module_conf_dir = '/etc/php5/mods-available'
+    mediawiki::php_enmod { ['fss', 'mail']: }
 
     file { '/etc/php5/apache2/php.ini':
         source  => 'puppet:///modules/mediawiki/php/php.ini',
@@ -39,31 +36,5 @@ class mediawiki::php {
     file { "${php_module_conf_dir}/mail.ini":
         ensure  => absent,
         require => Package['php-mail'],
-    }
-
-    if os_version('ubuntu precise') {
-        file { '/etc/php5/conf.d/igbinary.ini':
-            source  => 'puppet:///modules/mediawiki/php/igbinary.ini',
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0444',
-            require => Package['php5-igbinary'],
-        }
-
-        file { '/etc/php5/conf.d/wmerrors.ini':
-            content => template('mediawiki/php/wmerrors.ini.erb'),
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0444',
-            require => Package['php5-wmerrors'],
-        }
-
-        file { '/etc/php5/conf.d/apc.ini':
-            source  => 'puppet:///modules/mediawiki/php/apc.ini',
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0444',
-            require => Package['php-apc'],
-        }
     }
 }
