@@ -2500,7 +2500,7 @@ node /^snapshot1003\.eqiad\.wmnet/ {
     include standard
 }
 
-node /^snapshot1005\.eqiad\.wmnet/ {
+node /^snapshot100[5-7]\.eqiad\.wmnet/ {
     # start setup and rollout of new role on new hosts
     role snapshot::dumper
     include standard
