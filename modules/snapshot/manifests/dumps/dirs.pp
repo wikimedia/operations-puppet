@@ -84,4 +84,6 @@ class snapshot::dumps::dirs (
       owner  => 'root',
       group  => 'root',
     }
+
+    $repodir = '/srv/deployment/dumps/dumps'
 }
