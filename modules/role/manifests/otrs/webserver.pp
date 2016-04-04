@@ -62,11 +62,6 @@ class role::otrs::webserver {
         check_command => 'check_smtp',
     }
 
-    monitoring::service { 'https':
-        description   => 'HTTPS',
-        check_command => 'check_ssl_http!ticket.wikimedia.org',
-    }
-
     # can conflict with ferm module
     if ! defined(Package['libnet-dns-perl']){
         package { 'libnet-dns-perl':
