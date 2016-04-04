@@ -12,6 +12,7 @@ class role::deployment::server(
     include role::deployment::services
     include eventlogging::deployment::source
     include phabricator::deployment::source
+    include snapshot::deployment::source
 
     class { 'deployment::deployment_server':
         deployment_group => $deployment_group,
