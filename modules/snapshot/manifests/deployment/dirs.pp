@@ -4,9 +4,9 @@ class snapshot::deployment::dirs {
     file { "${repodir}/scap":
       ensure => 'directory',
       path   => "${repodir}/scap",
-      mode   => '0755',
-      owner  => root,
-      group  => root,
+      mode   => '0775',
+      owner  => trebuchet,
+      group  => wikidev,
     }
 
     file { "${repodir}/scap/scap.cfg":
