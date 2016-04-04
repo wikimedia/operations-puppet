@@ -1,3 +1,6 @@
+# === Class mediawiki::web
+#
+# Installs and configures a web environment for mediawiki
 class mediawiki::web {
     tag 'mediawiki', 'mw-apache-config'
 
