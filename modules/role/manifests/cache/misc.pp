@@ -184,7 +184,7 @@ class role::cache::misc {
             'backends' => ['ytterbium.wikimedia.org'],
             'be_opts'  => merge($app_def_be_opts, { 'port' => 8080 }),
         },
-        'logstash' => {
+        'logstash_director' => {
             'dynamic'  => 'no',
             'type' => 'hash', # maybe-wrong? but current value before this commit! XXX
             'backends' => [
@@ -194,7 +194,7 @@ class role::cache::misc {
             ],
             'be_opts'  => merge($app_def_be_opts, { 'probe' => 'logstash' }),
         },
-        'wdqs' => {
+        'wdqs_director' => {
             'dynamic'  => 'no',
             'type'     => 'random',
             'backends' => ['wdqs1001.eqiad.wmnet', 'wdqs1002.eqiad.wmnet'],
