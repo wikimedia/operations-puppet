@@ -209,5 +209,7 @@ groups:
 # Network
   routers:
     description: IP routers
+  switches:
+    description: IP switches
   storage:
     description: Storage equipment
