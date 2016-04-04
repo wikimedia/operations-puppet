@@ -13,6 +13,9 @@
 # [*ipv6*]
 #   The IPv6 address of the device. Optional.
 #
+# [*alarms*]
+#   Whether to perform chassis alarms checks. Defaults to false.
+#
 # [*interfaces*]
 #   Whether to perform interface status checks. Defaults to false.
 #
@@ -30,6 +33,7 @@ define netops::check(
     $snmp_community,
     $ipv4=undef,
     $ipv6=undef,
+    $alarms=false,
     $bgp=false,
     $interfaces=false,
 ) {
@@ -44,6 +48,15 @@ define netops::check(
         @monitoring::host { "${title} IPv6":
             ip_address => $ipv6,
             group      => 'routers',
+        }
+    }
+
+    if $alarms {
+        @monitoring::service { "${title} Juniper alarms":
+            host          => $title,
+            group         => 'routers',
+            description   => 'Juniper alarms',
+            check_command => "check_jnx_alarms!${snmp_community}",
         }
     }
 

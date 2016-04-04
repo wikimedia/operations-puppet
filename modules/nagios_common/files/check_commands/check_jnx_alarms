@@ -1,0 +1,133 @@
+#!/usr/bin/perl
+
+# Copyright 2016 Faidon Liambotis
+# Copyright 2016 Wikimedia Foundation, Inc.
+#
+# This nagios plugin is free software, and comes with ABSOLUTELY NO WARRANTY.
+# It may be used, redistributed and/or modified under the terms of the GNU
+# General Public Licence (see http://www.fsf.org/licensing/licenses/gpl.txt).
+#
+# Example usage:
+#   check_jnx_alarms -H cr1-eqdfw.wikimedia.org -c s3cr3t
+
+package Local::CheckJnxAlarms;
+
+use strict;
+use warnings;
+use Nagios::Plugin::Getopt;
+use Nagios::Plugin::Functions;
+use Net::SNMP;
+
+my %name2oid = (
+
+    # jnxAlarms
+    'jnxAlarms'                => '1.3.6.1.4.1.2636.3.4',
+    'jnxCraftAlarms'           => '1.3.6.1.4.1.2636.3.4.2',
+    'jnxAlarmRelayMode'        => '1.3.6.1.4.1.2636.3.4.2.1',
+    'jnxYellowAlarms'          => '1.3.6.1.4.1.2636.3.4.2.2',
+    'jnxYellowAlarmState'      => '1.3.6.1.4.1.2636.3.4.2.2.1',
+    'jnxYellowAlarmCount'      => '1.3.6.1.4.1.2636.3.4.2.2.2',
+    'jnxYellowAlarmLastChange' => '1.3.6.1.4.1.2636.3.4.2.2.3',
+    'jnxRedAlarms'             => '1.3.6.1.4.1.2636.3.4.2.3',
+    'jnxRedAlarmState'         => '1.3.6.1.4.1.2636.3.4.2.3.1',
+    'jnxRedAlarmCount'         => '1.3.6.1.4.1.2636.3.4.2.3.2',
+    'jnxRedAlarmLastChange'    => '1.3.6.1.4.1.2636.3.4.2.3.3',
+);
+
+# this not exactly great; this isn't a very OO-package, but ePN restricts the
+# use of global variables, so package variables should do, for now.
+our $ng;
+our ( @crit, @warn, @ok );
+
+sub init {
+    ( @crit, @warn, @ok ) = ();
+
+    $ng = Nagios::Plugin::Getopt->new(
+        usage   => 'Usage: %s -H <host> --c <community> [...]',
+        version => 1,
+        blurb   => 'Checks the state of a router\'s BGP peerings',
+    );
+
+    $ng->arg(
+        spec     => 'host|H=s',
+        help     => 'Hostname or IP address of the server to check against',
+        required => 1,
+    );
+    $ng->arg(
+        spec    => 'port|p=i',
+        help    => 'SNMP port, default: %s',
+        default => 161,
+    );
+    $ng->arg(
+        spec    => 'community|c=s',
+        help    => 'SNMP community to use, default: %s',
+        default => 'public',
+    );
+    $ng->arg(
+        spec    => 'snmpver=i',
+        help    => 'SNMP version to use (1 or 2), default: %s',
+        default => 2,
+    );
+
+    $ng->getopts;
+
+    return;
+}
+
+sub collect {
+
+    my ( $session, $error ) = Net::SNMP->session(
+        -hostname  => $ng->host,
+        -community => $ng->community,
+        -port      => $ng->port,
+        -version   => $ng->snmpver,
+    );
+    unless ( defined $session ) {
+        nagios_exit( CRITICAL, $error );
+    }
+
+    my ( %alarms, @text );
+    foreach my $type (qw/red yellow/) {
+        my $identifier = 'jnx' . ucfirst($type) . 'AlarmCount';
+        my $oid        = $name2oid{$identifier};
+        my $response   = $session->get_table(
+            -baseoid        => $oid,
+            -maxrepetitions => 15,
+        ) or nagios_exit( CRITICAL, $session->error );
+
+        my $value = ( values %{$response} )[0];
+        $alarms{$type} = $value;
+
+        push @text, "$value $type alarms";
+    }
+
+    push @warn, @text if $alarms{'yellow'} > 0;
+    push @crit, @text if $alarms{'red'} > 0;
+    push @ok,   @text;
+
+    return;
+}
+
+sub run {
+    init;
+    collect;
+
+    print join( "\n", @ok ), "\n" if $ng->verbose;
+
+    nagios_exit(
+        check_messages(
+            critical => \@crit,
+            warning  => \@warn,
+            ok       => \@ok,
+            join     => ', ',
+        )
+    );
+    return;
+}
+
+# call run() if are we running interactively or via ePN
+__PACKAGE__->run() if ( !caller || (caller)[0] eq 'Embed::Persistent' );
+
+1;
+
+# vim: ts=4 sw=4 sts=4 et
