@@ -1,6 +1,6 @@
 class snapshot::dumps::packages {
     include ::mediawiki
-    include mediawiki::nutcracker
+    # include mediawiki::nutcracker
     include mediawiki::scap
 
     require_package('mwbzutils')
