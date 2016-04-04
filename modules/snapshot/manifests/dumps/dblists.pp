@@ -22,16 +22,13 @@ class snapshot::dumps::dblists($enable=true, $hugewikis_enable=false) {
 
         $dblistsdir = $snapshot::dumps::dirs::dblistsdir
 
-        if ($hugewikis_enable) {
-            # this host will run enwiki dumps
-            file { "${dblistsdir}/hugewikis.dblist":
-                ensure  => 'present',
-                path    => "${dblistsdir}/hugewikis.dblist",
-                mode    => '0644',
-                owner   => 'root',
-                group   => 'root',
-                content => "${hugewikis_dblist}\n",
-            }
+        file { "${dblistsdir}/hugewikis.dblist":
+            ensure  => 'present',
+            path    => "${dblistsdir}/hugewikis.dblist",
+            mode    => '0644',
+            owner   => 'root',
+            group   => 'root',
+            content => "${hugewikis_dblist}\n",
         }
         file { "${dblistsdir}/bigwikis.dblist":
             ensure  => 'present',
