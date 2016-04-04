@@ -70,7 +70,7 @@ class role::url_downloader {
     if os_version('ubuntu >= trusty') or os_version('debian >= jessie') {
         $config_content = template('url_downloader/squid.conf.erb')
     } else {
-        $config_content = template('url_downloader/precise_acls_conf.erb', 'url_downloader/squid.conf.erb')
+        $config_content = template('squid3/precise_acls_conf.erb', 'url_downloader/squid.conf.erb')
     }
 
     class { 'squid3':
