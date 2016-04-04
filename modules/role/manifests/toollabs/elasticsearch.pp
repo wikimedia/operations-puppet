@@ -3,12 +3,9 @@
 # Provisions Elasticsearch node with nginx reverse proxy
 #
 class role::toollabs::elasticsearch {
+
     include ::base::firewall
     include ::elasticsearch
-
-    class { '::nginx':
-        variant => 'light',
-    }
 
     $auth_realm = 'Elasticsearch protected actions'
     $auth_file = '/etc/nginx/elasticsearch.htpasswd'
