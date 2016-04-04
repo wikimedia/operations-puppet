@@ -117,7 +117,7 @@ show "no dumpscheduler running so proceeding"
 python="/usr/bin/python"
 
 dumpsdir="<%= scope.lookupvar('snapshot::dumps::dirs::dumpsdir') %>"
-repodir="<%= scope.lookupvar('snapshot::deployment::dirs::repodir') %>"
+repodir="<%= scope.lookupvar('snapshot::dumps::dirs::repodir') %>"
 cd $repodir
 
 today=`/bin/date +%d`
