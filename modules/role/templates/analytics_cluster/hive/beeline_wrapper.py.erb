@@ -1,0 +1,63 @@
+#!/usr/bin/env python
+# This script is a wrapper script around Beeline - which is a commandline
+# interface to HiveServer2.
+#
+# Beeline on it's own requires the database connection string to be
+# specified everytime we launch it, which is not very user friendly.
+# This script tries to set some good defaults to make this easy,
+# while retaining the same interface as beeline.
+#
+# Beeline is installed at /usr/bin/beeline, and this wrapper is
+# at /usr/local/bin which takes PATH precedence, such that when you invoke
+# beeline this wrapper is launched. If you want to use the beeline script
+# directly, use the one at /usr/bin.
+#
+# USAGE: beeline --help
+
+import os
+import sys
+
+# Let's set beeline defaults for user, database url and outputformat
+DEFAULT_OPTIONS = {'-n': os.environ['USER'],
+                   '-u': 'jdbc:hive2://<%= @hiveserver_host %>:' +
+                         '<%= @hiveserver_port %>',
+                   '--outputformat': 'tsv2', }
+
+# Let's parse out arguments to see if values are set for the default
+# options we have, if not add them to the argument list
+ARGS = sys.argv[1:]
+for option in DEFAULT_OPTIONS.keys():
+
+    # Assume it's a short option, set up boolean flags for checking if
+    # option is not present in the list, and one for whether it is a long
+    # option.
+    option_absent = option not in ARGS
+    is_long_option = False
+
+    # Check if this is a long (--optionName) or short (-o) option
+    if '--' in option[:2]:
+        is_long_option = True
+        # This is a long option which follow the syntax --optionName=Value
+        # so we are looking through the list of args to see if the substring
+        # --optionName is available anywhere in the list
+
+        # Can be written in one line as follows: May be too fancy?
+        # option_absent = not filter(lambda x: x > -1,
+        #     [ARGS.index(val) if option in val else -1 for val in ARGS])
+        option_absent = True
+        for val in ARGS:
+            if option in val:
+                option_absent = False
+                break
+
+    # If the option is not present, look up our DEFAULT_OPTIONS dict and add it
+    if option_absent and is_long_option:
+        # Beeline expects long options to follow the --longOption=Value format,
+        # so we must treat them differently.
+        ARGS = ARGS + ['{}={}'.format(option, DEFAULT_OPTIONS[option])]
+    else:
+        ARGS = ARGS + [option, DEFAULT_OPTIONS[option]]
+
+# Pass args to the beeline process and replace the current process with
+# beeline by using the exec call
+os.execvp('beeline', ['beeline'] + ARGS)
