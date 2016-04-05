@@ -8,12 +8,13 @@ start on (local-filesystems and net-device-up IFACE!=lo)
 pre-start script
   [ ! -r /etc/default/hhvm ] && { stop; exit 0; }
   . /etc/default/hhvm
-  mkdir -p -m0755 "${HHVM_RUN_DIR:=/run/hhvm}"
-  mkdir -p -m0750 "${HHVM_RUN_DIR}/cache"
-  mkdir -p -m0775 "${HHVM_LOG_DIR:=/var/log/hhvm}"
-  mkdir -p -m0775 "${HHVM_TMP_DIR:=/var/tmp/hhvm}"
-  chown -R "${HHVM_USER:=www-data}:${HHVM_GROUP:=www-data}" "$HHVM_RUN_DIR" "$HHVM_TMP_DIR"
-  chown -R "syslog:${HHVM_GROUP}" "$HHVM_LOG_DIR"
+  mkdir -p -m0755 "${HHVM_RUN_DIR:=/var/run/hhvm}"
+  mkdir -p -m0750 "<%= @cache_dir %>"
+  mkdir -p -m0775 "<%= @log_dir %>"
+  mkdir -p -m0775 "<%= @tmp_dir %>"
+  chown -R "${HHVM_USER:=www-data}:${HHVM_GROUP:=www-data}" "${HHVM_RUN_DIR:=/run/hhvm}"
+  chown -R "${HHVM_USER:=www-data}:${HHVM_GROUP:=www-data}" "<%= @cache_dir %>" "<%= @tmp_dir %>"
+  chown -R "syslog:${HHVM_GROUP}" "<%= @log_dir %>"
 end script
 
 # Decomment this to start HHVM with memory profiling capabilities enabled but inactive.
@@ -44,7 +45,7 @@ post-stop script
   rm -f /var/run/hhvm/hhvm.pid
 
   # Check if HHVM wrote a stack trace before exiting.
-  TRACE="${HHVM_LOG_DIR:-/var/log/hhvm}/stacktrace.${PID}.log"
+  TRACE="<%= @log_dir %>/stacktrace.${PID}.log"
   [ -r "$TRACE" ] || exit 0
 
   # If a stack trace exists and a handler is defined, invoke it.
