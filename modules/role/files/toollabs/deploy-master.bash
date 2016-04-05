@@ -22,6 +22,18 @@ wget -O /usr/local/bin/kube-scheduler $URL_PREFIX/$VERSION/kube-scheduler
 wget -O /usr/local/bin/kube-controller-manager $URL_PREFIX/$VERSION/kube-controller-manager
 wget -O /usr/local/bin/kubectl $URL_PREFIX/$VERSION/kubectl
 
+# Owned by the kubernetes user than root!
+chown kubernetes /usr/local/bin/kube-apiserver
+chown kubernetes /usr/local/bin/kube-scheduler
+chown kubernetes /usr/local/bin/kube-controller-manager
+
+# Make them executable
+chmod u+x /usr/local/bin/kube-apiserver /usr/local/bin/kube-scheduler
+chmod u+x /usr/local/bin/kube-controller-manager
+
+# Executable by all!
+chmod +x /usr/local/bin/kubectl
+
 # Start services again, and hope!
 service kube-apiserver start
 service controller-manager start

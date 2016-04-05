@@ -17,5 +17,8 @@ service kubeproxy stop
 # Download the new things!
 wget -O /usr/local/bin/kube-proxy $URL_PREFIX/$VERSION/kube-proxy
 
+# Make it executable!
+chmod u+x /usr/local/bin/kube-proxy
+
 # Start services again, and hope!
 service kube-proxy start

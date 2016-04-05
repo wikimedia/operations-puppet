@@ -19,6 +19,10 @@ service kubeproxy stop
 wget -O /usr/local/bin/kubelet $URL_PREFIX/$VERSION/kubelet
 wget -O /usr/local/bin/kube-proxy $URL_PREFIX/$VERSION/kube-proxy
 
+# Make them executable!
+chmod u+x /usr/local/bin/kubelet
+chmod u+x /usr/local/bin/kube-proxy
+
 # Start services again, and hope!
 service kubelet start
 service kube-proxy start
