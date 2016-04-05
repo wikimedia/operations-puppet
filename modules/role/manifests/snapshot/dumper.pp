@@ -13,5 +13,5 @@ class role::snapshot::dumper {
     include snapshot::deployment
 
     # cron job for running the dumps
-    class { 'snapshot::dumps::cron': user => 'datasets' }
+    include role::snapshot::cron
 }
