@@ -4,6 +4,8 @@ class role::snapshot::dumper {
 
     # mw packages and dependencies, dataset server nfs mount
     include snapshot::dumps::packages
+    # explicit include of this for now, experimental (jessie)
+    include mediawiki::hhvm
 
     # config, stages files, dblists, html templates
     include snapshot::dumps
