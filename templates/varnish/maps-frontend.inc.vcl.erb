@@ -8,6 +8,8 @@ sub cluster_fe_recv {
 		&& req.http.referer !~ "(?i)^https?://([-a-zA-Z0-9.]+\.)?(mediawiki|wikivoyage|wikivoyage-ev|wmflabs|wikidata)\.org(/|$)"
 		&& req.http.referer !~ "(?i)^https?://(maps|phabricator|wikitech|incubator)\.wikimedia\.org(/|$)"
 		&& req.http.referer !~ "(?i)^https?://test2?\.(m\.)?wikipedia\.org(/|$)"
+		// Vagrant support
+		&& req.http.referer !~ "(?i)^https?://([-a-zA-Z0-9.]+\.)?wmftest\.net(:\d+)?(/|$)"
 		&& req.http.referer !~ "(?i)^https?://(localhost|127\.0\.0\.1)(:\d+)?(/|$)"
 	) {
 		<%= error_synth(403, "Access Denied") -%>
