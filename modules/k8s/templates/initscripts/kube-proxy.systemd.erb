@@ -2,7 +2,7 @@
 Description=Kubernetes Proxy
 
 [Service]
-ExecStart=/usr/bin/kube-proxy \
+ExecStart=/usr/local/bin/kube-proxy \
     --kubeconfig=/etc/kubernetes/kubeconfig \
     --proxy-mode=iptables \
     --masquerade-all=true
