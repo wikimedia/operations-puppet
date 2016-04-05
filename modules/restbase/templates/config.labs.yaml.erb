@@ -36,6 +36,9 @@ default_project: &default_project
           purge:
             host: <%= @purge_host %>
             port: <%= @purge_port %>
+          eventlogging_service:
+            uri: http://deployment-eventlogging04.deployment-prep.eqiad.wmflabs:8085/v1/events
+            topic: resource_change
         related:
           cache_control: s-maxage=86400, max-age=86400
         # Cache headers for purged end points.
