@@ -13,7 +13,7 @@ VERSION="$2"
 
 # Stop all the running services!
 service kubelet stop 
-service kubeproxy stop
+service kube-proxy stop
 
 # Download the new things!
 wget -O /usr/local/bin/kubelet $URL_PREFIX/$VERSION/kubelet
