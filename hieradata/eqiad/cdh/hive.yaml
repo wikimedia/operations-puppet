@@ -2,6 +2,8 @@
 # Analytics Cluster Hive Configuration
 #
 metastore_host: analytics1015.eqiad.wmnet
+server_host: analytics1015.eqiad.wmnet
+server_port: 10000
 
 # The WMF webrequest table uses HCatalog's JSON Serde.
 # Automatically include this in Hive client classpaths.
