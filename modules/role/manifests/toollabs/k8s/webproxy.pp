@@ -20,4 +20,11 @@ class role::toollabs::k8s::webproxy {
         master_host => $master_host,
     }
 
+    # Deployment script (for now!)
+    file { '/usr/local/bin/deploy-proxy':
+        source => 'file:///modules/role/toollabs/deploy-proxy.bash',
+        mode   => '0555',
+        owner  => 'root',
+        group  => 'root',
+    }
 }
