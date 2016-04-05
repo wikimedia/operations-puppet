@@ -29,5 +29,3 @@ logstash::cluster_hosts:
 debdeploy::grains:
   debdeploy-logstash:
     value: standard
-
-elasticsearch::https::ensure: 'absent'
