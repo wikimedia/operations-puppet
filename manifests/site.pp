@@ -2480,7 +2480,10 @@ node /^snapshot1002\.eqiad\.wmnet/ {
     # NOTE: New snapshot hosts must also be manually added
     # to hiera common.yaml dataset_clients_snapshots.
 
-    role snapshot, snapshot::dumps::regularwikis
+    role snapshot
+    class { 'snapshot::dumps::cron':
+        user => 'datasets',
+    }
     include standard
 }
 
