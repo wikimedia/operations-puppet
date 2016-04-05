@@ -22,7 +22,7 @@ class role::toollabs::k8s::webproxy {
 
     # Deployment script (for now!)
     file { '/usr/local/bin/deploy-proxy':
-        source => 'file:///modules/role/toollabs/deploy-proxy.bash',
+        source => 'puppet:///modules/role/toollabs/deploy-proxy.bash',
         mode   => '0555',
         owner  => 'root',
         group  => 'root',
