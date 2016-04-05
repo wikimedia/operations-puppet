@@ -60,6 +60,9 @@ class hhvm(
     $fcgi_settings = {},
     $cli_settings  = {},
     $base_jit_size = to_bytes('400 Mb'),
+    $log_dir       = '/var/log/hhvm',
+    $tmp_dir       = '/var/tmp/hhvm',
+    $cache_dir     = '/var/cache/hhvm'
     ) {
     requires_os('ubuntu >= trusty')
 
@@ -121,11 +124,11 @@ class hhvm(
                 slow_query_threshold => to_milliseconds('10s'),
             },
             debug                    => {
-                core_dump_report_directory => '/var/log/hhvm',
+                core_dump_report_directory => $log_dir,
             },
             server                   => {
                 light_process_count       => 5,
-                light_process_file_prefix => '/var/tmp/hhvm',
+                light_process_file_prefix => $tmp_dir,
                 apc                      => {
                     expire_on_sets     => true,  # Purge on expiration
                     ttl_limit          => to_seconds('2 days'),
@@ -149,7 +152,11 @@ class hhvm(
             jit_a_cold_size   => $a_cold_size,
             jit_a_frozen_size => $a_frozen_size,
             perf_pid_map      => true,  # See <http://www.brendangregg.com/perf.html#JIT%20Symbols>
-            repo              => { central => { path => '/var/cache/hhvm/fcgi.hhbc.sq3' } },
+            repo              => {
+                central => {
+                    path => "${cache_dir}/fcgi.hhbc.sq3"
+                }
+            },
             admin_server      => { port => 9001 },
             server            => {
                 port                   => 9000,
@@ -169,7 +176,7 @@ class hhvm(
             jit          => false,
             perf_pid_map => false,
             repo         => {
-                central => { path => '/var/cache/hhvm/cli.hhbc.sq3' },
+                central => { path => "${cache_dir}/cli.hhbc.sq3" },
                 local   => { mode => '--' },
             }
         }
@@ -196,7 +203,7 @@ class hhvm(
         notify  => Service['hhvm'],
     }
 
-    file { '/var/cache/hhvm/cli.hhbc.sq3':
+    file { "${cache_dir}/cli.hhbc.sq3":
         ensure => present,
         mode   => '0644',
         owner  => $user,
@@ -204,7 +211,7 @@ class hhvm(
         before => File['/etc/hhvm/php.ini'],
     }
 
-    file { '/var/cache/hhvm/fcgi.hhbc.sq3':
+    file { "${cache_dir}/fcgi.hhbc.sq3":
         ensure => present,
         mode   => '0644',
         owner  => $user,
@@ -224,11 +231,10 @@ class hhvm(
     }
 
     file { '/etc/init/hhvm.conf':
-        source => 'puppet:///modules/hhvm/hhvm.conf',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0444',
-        notify => Service['hhvm'],
+        content => template('hhvm/initscripts/hhvm.upstart.erb'),
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
     }
 
     service { 'hhvm':
@@ -259,11 +265,11 @@ class hhvm(
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-        require => File['/var/log/hhvm'],
+        require => File[$log_dir],
         before  => Service['hhvm'],
     }
 
-    file { '/var/log/hhvm':
+    file { '$log_dir':
         ensure => directory,
         owner  => 'syslog',
         group  => $group,
@@ -271,7 +277,7 @@ class hhvm(
         before => Service['hhvm'],
     }
 
-    file { [ '/run/hhvm', '/var/cache/hhvm', '/tmp/heaps' ]:
+    file { [ '/run/hhvm', $cache_dir, '/tmp/heaps' ]:
         ensure => directory,
         owner  => $user,
         group  => $group,
