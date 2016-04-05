@@ -115,7 +115,6 @@ class elasticsearch($cluster_name,
     }
 
     include ::elasticsearch::packages
-    include ::elasticsearch::https
 
     file { '/etc/elasticsearch/elasticsearch.yml':
         ensure  => file,
