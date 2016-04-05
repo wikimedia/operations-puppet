@@ -2,8 +2,6 @@ class k8s::apiserver(
     $etcd_servers,
     $master_host,
 ) {
-    require_package('kube-apiserver')
-
     include k8s::users
 
     file { '/etc/kubernetes':
