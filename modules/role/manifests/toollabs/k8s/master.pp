@@ -26,4 +26,12 @@ class role::toollabs::k8s::master {
         proto => 'tcp',
         port  => '6443',
     }
+
+    # Deployment script (for now!)
+    file { '/usr/local/bin/deploy-master':
+        source => 'file:///modules/role/toollabs/deploy-master.bash',
+        mode   => '0555',
+        owner  => 'root',
+        group  => 'root',
+    }
 }
