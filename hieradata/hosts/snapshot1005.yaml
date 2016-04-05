@@ -1,3 +1,4 @@
 snapshot::dumps::runtype: hugewikis
 snapshot::dumps::maxjobs: 28
 snapshot::cron::misc: false
+snapshot::dumps::repodir: /srv/deployment/dumps/dumps

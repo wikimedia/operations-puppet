@@ -8,8 +8,8 @@ After=network.target
 
 [Service]
 User=datasets
-WorkingDirectory=<%= scope.lookupvar('snapshot::deployment::dirs::repodir') -%>
-ExecStart=/bin/bash <%= scope.lookupvar('snapshot::deployment::dirs::repodir') -%>/monitor --configfile confs/wikidump.conf.monitor
+WorkingDirectory=<%= @repodir -%>
+ExecStart=/bin/bash <%= @repodir -%>/monitor --configfile confs/wikidump.conf.monitor
 
 [Install]
 WantedBy=multi-user.target
