@@ -307,6 +307,7 @@ class toollabs::exec_environ {
         'texinfo',                     # T58994
         'texlive',
         'ufraw-batch',                 # T59008
+        'virtualenvwrapper',           # T131840
         'whois',                       # T98555
         'xsltproc',                    # T68962.
         'xvfb',                        # T100268
