@@ -60,17 +60,18 @@ class hhvm(
     $fcgi_settings = {},
     $cli_settings  = {},
     $base_jit_size = to_bytes('400 Mb'),
-) {
+    ) {
     requires_os('ubuntu >= trusty')
 
 
     ## Packages
+    $ext_pkgs = [ 'hhvm-luasandbox', 'hhvm-tidy', 'hhvm-wikidiff2' ]
 
     package { 'hhvm':
         ensure => present,
     }
 
-    package { [ 'hhvm-luasandbox', 'hhvm-tidy', 'hhvm-wikidiff2' ]:
+    package { $ext_pkgs:
         ensure => present,
     }
 
@@ -233,7 +234,7 @@ class hhvm(
     service { 'hhvm':
         ensure    => 'running',
         provider  => 'upstart',
-        subscribe => Package['hhvm', 'hhvm-luasandbox', 'hhvm-wikidiff2'],
+        subscribe => Package[$ext_pkgs],
     }
 
     file { '/etc/hhvm':
