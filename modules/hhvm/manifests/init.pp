@@ -7,7 +7,7 @@
 #
 #   /etc/hhvm
 #   |__ php.ini      # Settings for CLI mode
-#   |__ fcgi.ini     # Settings for FastCGI mode
+#   |__ server.ini     # Settings for FastCGI mode
 #
 # The CLI configs are located in the paths HHVM automatically loads by
 # default. This makes it easy to invoke HHVM from the command line,
@@ -195,7 +195,7 @@ class hhvm(
         mode    => '0444',
     }
 
-    file { '/etc/hhvm/fcgi.ini':
+    file { '/etc/hhvm/server.ini':
         content => php_ini($common_defaults, $fcgi_defaults, $fcgi_settings, $fcgi_hiera),
         owner   => 'root',
         group   => 'root',
@@ -216,7 +216,7 @@ class hhvm(
         mode   => '0644',
         owner  => $user,
         group  => $group,
-        before => File['/etc/hhvm/fcgi.ini'],
+        before => File['/etc/hhvm/server.ini'],
     }
 
 
