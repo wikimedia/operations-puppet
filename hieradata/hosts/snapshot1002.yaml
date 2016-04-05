@@ -1,6 +1,6 @@
 debdeploy::grains:
   debdeploy-snapshot:
     value: canary
-snapshot::dumps::runtype: regular
+snapshot::dumps::runtype: none
 snapshot::dumps::maxjobs: 8
 snapshot::cron::misc: false
