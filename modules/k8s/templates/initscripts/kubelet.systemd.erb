@@ -2,7 +2,7 @@
 Description=Kubelet
 
 [Service]
-ExecStart=/usr/bin/kubelet \
+ExecStart=/usr/local/bin/kubelet \
     --config=/etc/kubernetes/manifests \
     --kubeconfig=/etc/kubernetes/kubeconfig \
     --api-servers=https://<%= @master_host %>:6443 \
