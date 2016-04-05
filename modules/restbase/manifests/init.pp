@@ -75,6 +75,9 @@
 # [*purge_port*]
 #   The port the vhtcp daemon listens to. Default: 4827
 #
+# [*eventlogging_service_uri*]
+#   Eventlogging service URI. Default: http://eventbus.svc.eqiad.wmnet:8085/v1/events
+#
 # [*monitor_domain*]
 #   The domain to monitor during the service's operation.
 #   Default: en.wikipedia.org
@@ -105,6 +108,8 @@ class restbase(
     'http://aqs.svc.eqiad.wmnet:7232/analytics.wikimedia.org/v1',
     $purge_host     = '239.128.0.112',
     $purge_port     = 4827,
+    $eventlogging_service_uri =
+    'http://eventbus.svc.eqiad.wmnet:8085/v1/events',
     $monitor_domain = 'en.wikipedia.org',
 ) {
 
