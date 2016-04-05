@@ -2468,15 +2468,7 @@ node 'stat1003.eqiad.wmnet' {
     }
 }
 
-node /^snapshot1001\.eqiad\.wmnet/ {
-    # NOTE: New snapshot hosts must also be manually added
-    # to hiera common.yaml dataset_clients_snapshots.
-
-    role snapshot, snapshot::dumps::hugewikis
-    include standard
-}
-
-node /^snapshot1002\.eqiad\.wmnet/ {
+node /^snapshot100[1-2]\.eqiad\.wmnet/ {
     # NOTE: New snapshot hosts must also be manually added
     # to hiera common.yaml dataset_clients_snapshots.
 
@@ -2488,7 +2480,7 @@ node /^snapshot1004\.eqiad\.wmnet/ {
     # NOTE: New snapshot hosts must also be manually added
     # to hiera common.yaml dataset_clients_snapshots.
 
-    role snapshot, snapshot::dumps::monitor, snapshot::dumps::regularwikis
+    role snapshot, snapshot::cron, snapshot::dumps::monitor
     include standard
 }
 
