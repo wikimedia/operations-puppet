@@ -85,5 +85,5 @@ class snapshot::dumps::dirs (
       group  => 'root',
     }
 
-    $repodir = '/srv/deployment/dumps/dumps'
+    $repodir = hiera('snapshot::dumps::repodir','/srv/dumps')
 }
