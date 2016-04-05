@@ -20,6 +20,7 @@ class role::graphite::base(
     $auth             = true,
     $hostname         = 'graphite.wikimedia.org',
     $c_relay_settings = {},
+    $cluster_servers  = undef,
 ) {
     include ::passwords::graphite
 
@@ -187,6 +188,7 @@ class role::graphite::base(
         secret_key        => $::passwords::graphite::secret_key,
         storage_dir       => $carbon_storage_dir,
         documentation_url => '//wikitech.wikimedia.org/wiki/Graphite',
+        cluster_servers   => $cluster_servers,
         cors_origins      => [ 'https?://(grafana|grafana-admin).wikimedia.org' ],
     }
 
