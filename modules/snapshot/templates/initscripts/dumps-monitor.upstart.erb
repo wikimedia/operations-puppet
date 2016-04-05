@@ -12,6 +12,6 @@ setgid "datasets"
 
 respawn
 
-chdir <%= scope.lookupvar('snapshot::deployment::dirs::repodir') -%>
+chdir <%= @repodir -%>
 
-exec /bin/bash <%= scope.lookupvar('snapshot::deployment::dirs::repodir') -%>/monitor --configfile confs/wikidump.conf.monitor
+exec /bin/bash <%= @repodir -%>/monitor --configfile confs/wikidump.conf.monitor
