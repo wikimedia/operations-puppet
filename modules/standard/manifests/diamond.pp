@@ -13,11 +13,11 @@ class standard::diamond {
         }
         default: {
             $host          = '10.64.32.155' # graphite1001
-            $port          = '8125'
+            $port          = '2003'
             $path_prefix   = 'servers'
             $keep_logs_for = '5'
             $service       = true
-            $handler       = 'diamond.handler.stats_d.StatsdHandler'
+            $handler       = 'diamond.handler.graphite.GraphiteHandler'
         }
     }
 
