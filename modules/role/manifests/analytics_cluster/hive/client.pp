@@ -27,4 +27,18 @@ class role::analytics_cluster::hive::client {
         # default to using Snappy for parquet formatted tables
         parquet_compression       => 'SNAPPY',
     }
+
+    # Set up a wrapper script for beeline, the command line
+    # interface to HiveServer2 and install it at
+    # /usr/local/bin/beeline
+
+    $hiveserver_host = hiera('hive_server_host', $::cdh::hive::metastore_host)
+    $hiveserver_port = hiera('hive_server_port', '10000')
+
+    file { '/usr/local/bin/beeline':
+        content => template('role/analytics_cluster/hive/beeline_wrapper.py.erb'),
+        mode    => '0755',
+        owner   => 'root',
+        group   => 'root',
+    }
 }
