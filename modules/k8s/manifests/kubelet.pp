@@ -3,7 +3,6 @@ class k8s::kubelet(
     $cluster_dns_ip = '192.168.0.100',
 ) {
     include ::k8s::infrastructure_config
-    require_package('kubelet')
 
     file { [
         '/etc/kubernetes/',
