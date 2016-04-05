@@ -1,0 +1,2 @@
+hive_server_host: analytics1015.eqiad.wmnet
+hive_server_port: 10000
