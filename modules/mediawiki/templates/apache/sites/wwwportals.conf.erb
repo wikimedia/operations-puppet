@@ -55,6 +55,10 @@
     RewriteRule ^/wiki\.cgi$ %{ENV:RW_PROTO}://en.wikipedia.<%= @domain_suffix %>/wiki/%1 [R=302,L]
     RewriteRule ^/wiki\.cgi$ %{ENV:RW_PROTO}://en.wikipedia.<%= @domain_suffix %>/ [R=302,L]
 
+    # Prevent the catch-all redirect below from breaking the apple-app-site-association alias
+    RewriteRule /apple-app-site-association - [L]
+    Alias /apple-app-site-association /srv/mediawiki/docroot/wikipedia.org/apple-app-site-association
+
     # Everything else
     RewriteRule ^(.*)$ %{ENV:RW_PROTO}://en.wikipedia.<%= @domain_suffix %>$1 [R=301,L]
 
