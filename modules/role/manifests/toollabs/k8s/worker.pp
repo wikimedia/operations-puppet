@@ -37,7 +37,7 @@ class role::toollabs::k8s::worker {
 
     # Deployment script (for now!)
     file { '/usr/local/bin/deploy-worker':
-        source => 'file:///modules/role/toollabs/deploy-worker.bash',
+        source => 'puppet:///modules/role/toollabs/deploy-worker.bash',
         mode   => '0555',
         owner  => 'root',
         group  => 'root',

@@ -29,7 +29,7 @@ class role::toollabs::k8s::master {
 
     # Deployment script (for now!)
     file { '/usr/local/bin/deploy-master':
-        source => 'file:///modules/role/toollabs/deploy-master.bash',
+        source => 'puppet:///modules/role/toollabs/deploy-master.bash',
         mode   => '0555',
         owner  => 'root',
         group  => 'root',
