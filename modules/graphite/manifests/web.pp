@@ -37,6 +37,10 @@
 #   An optional array of HTTP Origin header values or regexp patterns
 #   for which graphite-web should set CORS headers.
 #
+# [*cluster_servers*]
+#   An optional array of servers running graphite-web to be queried for
+#   metrics.
+#
 class graphite::web(
     $admin_pass,
     $secret_key,
@@ -47,6 +51,7 @@ class graphite::web(
     $documentation_url = 'http://graphite.readthedocs.org/',
     $remote_user_auth  = false,
     $cors_origins      = undef,
+    $cluster_servers   = undef,
 ) {
     include ::graphite
 
