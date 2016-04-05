@@ -4,7 +4,7 @@ Description=Kubernetes Scheduler
 [Service]
 User=kubernetes
 Group=kubernetes
-ExecStart=/usr/bin/kube-scheduler \
+ExecStart=/usr/local/bin/kube-scheduler \
     --master=http://127.0.0.1:8080
 
 [Install]
