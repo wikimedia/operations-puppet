@@ -6611,8 +6611,8 @@ host snapshot1004 {
 host snapshot1005 {
     hardware ethernet 14:02:EC:3E:F6:04;
     fixed-address snapshot1005.eqiad.wmnet;
-    option pxelinux.pathprefix "jessie-installer/";
-    filename "jessie-installer/debian-installer/amd64/pxelinux.0";
+    option pxelinux.pathprefix "trusty-installer/";
+    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host snapshot1006 {
