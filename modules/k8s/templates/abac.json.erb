@@ -2,7 +2,7 @@
 <%- @users.each do |user| -%>
 <%- if user['type'] == 'namespaced' -%>
 <%- @namespace_allowed_resources.each do |resource| -%>
-{"apiVersion": "abac.authorization.kubernetes.io/v1beta1", "kind": "Policy", "spec": {"user":"<%= user['name'] %>", "namespace": "user['name']", "resource": "<%= resource %>", "apiGroup": "*" }}
+{"apiVersion": "abac.authorization.kubernetes.io/v1beta1", "kind": "Policy", "spec": {"user":"<%= user['name'] %>", "namespace": "<%= user['name'] %>", "resource": "<%= resource %>", "apiGroup": "*" }}
 <%- end -%>
 <%- elsif user['type'] == 'infrastructure' or user['type'] == 'admin' -%>
 {"apiVersion": "abac.authorization.kubernetes.io/v1beta1", "kind": "Policy", "spec": {"user":"<%= user['name'] %>", "namespace": "*", "resource": "*", "apiGroup": "*" }}
