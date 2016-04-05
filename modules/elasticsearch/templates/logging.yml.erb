@@ -69,7 +69,7 @@ appender:
   # ship_to_logstash needs to also be added to rootLogger to actually ship logs
   ship_to_logstash:
     type: biz.paluch.logging.gelf.log4j.GelfLogAppender
-    host: udp:<%= @graylog_host %>
+    host: "udp:<%= @graylog_host %>"
     port: <%= @graylog_port %>
     originHost: <%= @hostname %>
     facility: elasticsearch
