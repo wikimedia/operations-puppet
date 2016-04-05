@@ -91,6 +91,10 @@ yearmonth=`/bin/date +%Y%m`
 startdate_yyyymmdd="${yearmonth}${startdate}"
 enddate="$2"
 wikitype="$3"
+if [ "$wikitype" == 'none' ]; then
+    # do nothing
+    exit 0
+fi
 
 if [ "$4" == "dryrun" ]; then
     dryrun=1
@@ -118,6 +122,10 @@ python="/usr/bin/python"
 
 dumpsdir="<%= scope.lookupvar('snapshot::dumps::dirs::dumpsdir') %>"
 repodir="<%= scope.lookupvar('snapshot::dumps::dirs::repodir') %>"
+if [ -z "$repodir" ]; then
+    #fallback
+    repodir="/srv/dumps"
+fi
 cd $repodir
 
 today=`/bin/date +%d`
