@@ -1,0 +1,3 @@
+snapshot::dumps::runtype: none
+snapshot::dumps::maxjobs: 0
+snapshot::cron::misc: true
