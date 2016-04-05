@@ -59,6 +59,7 @@ class role::elasticsearch::server{
         include ::elasticsearch::ganglia
     }
 
+    include ::elasticsearch::https
     include elasticsearch::monitor::diamond
     include ::elasticsearch::log::hot_threads
     include ::elasticsearch::nagios::check

@@ -12,7 +12,7 @@
 #   unless the service is accessed directly by FQDN.
 
 class elasticsearch::https (
-    $ensure           = absent,
+    $ensure           = present,
     $certificate_name = $::fqdn,
 ){
 
