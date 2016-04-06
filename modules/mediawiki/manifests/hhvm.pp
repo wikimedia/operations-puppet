@@ -3,7 +3,7 @@
 # Configures HHVM to serve MediaWiki in FastCGI mode.
 #
 class mediawiki::hhvm {
-    requires_os('ubuntu >= trusty')
+#    requires_os('ubuntu >= trusty')
 
     include ::hhvm::admin
     include ::hhvm::monitoring
@@ -42,7 +42,17 @@ class mediawiki::hhvm {
                 pcre_cache_type => 'lru',
             },
             curl => {
-                namedPools => 'cirrus-eqiad,cirrus-codfw',
+                namedPools   => {
+                    # having a `blank` as key here is a ugly hack to allow having
+                    # `curl.namedPools='cirrus-eqiad,cirrus-codfw'` and `curl.namedPools.cirrus-[codfw|eqiad].size=20`
+                    ' '          => 'cirrus-eqiad,cirrus-codfw',
+                    cirrus-codfw => {
+                        size => '20',
+                    },
+                    cirrus-eqiad => {
+                        size => '20',
+                    },
+                }
             },
         },
         cli_settings => {
