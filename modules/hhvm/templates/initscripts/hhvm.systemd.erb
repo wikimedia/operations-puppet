@@ -1,0 +1,14 @@
+[Unit]
+Description=HHVM PHP/Hack runtime
+After=network.target
+
+[Service]
+Environment=CONFIG_FILE=/etc/hhvm/server.ini
+Environment=ADDITIONAL_ARGS=
+Environment=RUN_AS_USER=www-data
+EnvironmentFile=-/etc/default/hhvm
+ExecStart=/usr/bin/hhvm --mode server --config $CONFIG_FILE --user $RUN_AS_USER $ADDITIONAL_ARGS
+ExecStopPost=/usr/local/bin/check-hhvm-stacktraces
+
+[Install]
+WantedBy=multi-user.target
