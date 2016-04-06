@@ -493,6 +493,9 @@ groups:
     description: allows full sudo on labtest cluster, T131166
     members: [krenair]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
+  varnish:
+    description: allows reading varnish VSL files
+    members: [bblack, ema, ganglia]
 
 users:
   rush:

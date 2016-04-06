@@ -7,3 +7,5 @@ apps:
     route: 'codfw'
     backends:
       codfw: 'kartotherian.svc.codfw.wmnet'
+admin::groups:
+  - varnish
