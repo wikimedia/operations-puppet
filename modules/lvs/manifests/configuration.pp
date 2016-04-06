@@ -51,6 +51,13 @@ class lvs::configuration {
         $v6_ip = '::'
     }
 
+    $lvs_grain = $hostname ? {
+        /^lvs100[123789]$/ => 'primary',
+        /^lvs200[123]$/    => 'primary',
+        /^lvs[34]00[12]$/  => 'primary',
+        default => 'secondary'
+    }
+
     $pybal = {
         'bgp' => hiera('lvs::configuration::bgp', 'yes'),
         # FIXME - top-scope var without namespace, will break in puppet 2.8

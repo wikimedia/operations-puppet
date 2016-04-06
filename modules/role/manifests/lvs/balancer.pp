@@ -87,6 +87,12 @@ class role::lvs::balancer {
 
     include standard
 
+    salt::grain { 'lvs':
+        grain   => 'lvs',
+        value   => $lvs::configuration::lvs_grain,
+        replace => true,
+    }
+
     # temporary experimental component used here as it includes a newer Linux kernel
     if $::operatingsystem == 'Debian' {
         apt::repository { 'wikimedia-experimental':
