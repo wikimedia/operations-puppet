@@ -6,7 +6,6 @@ admin::groups:
   - wdqs-admins
   - eventlogging-admins
   - aqs-admins
-  - deploy-phabricator
 debdeploy::grains:
   debdeploy-deployment:
     value: standard
@@ -25,10 +24,6 @@ hhvm::extra::cli:
       light_process_file_prefix:
 
 keyholder::agents:
-  phabricator:
-    trusted_group: deploy-phabricator
-    key_fingerprint: 39:b3:2c:a7:b2:80:65:ff:0c:97:e1:22:88:6c:59:10
-    key_secret: phabricator/phab_deploy_private_key
   eventlogging:
     trusted_group: eventlogging-admins
     key_fingerprint: b6:4e:1a:1b:4b:70:ef:91:31:cd:a3:18:9a:ca:41:44
