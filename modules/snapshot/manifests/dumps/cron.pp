@@ -30,7 +30,7 @@ class snapshot::dumps::cron(
         user        => $user,
         command     => "/usr/local/bin/fulldumps.sh 01 14 ${runtype} > /dev/null",
         minute      => '05',
-        hour        => '02',
-        monthday    => '06-14',
+        hour        => [8, 20],
+        monthday    => '01-14',
     }
 }
