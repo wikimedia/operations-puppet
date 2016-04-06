@@ -43,7 +43,7 @@ sub set_last_access_cookie__ {
 	header.append(resp.http.Set-Cookie,
 		"WMF-Last-Access="
 		+ req.http.X-NowDay
-		+ ";Path=/;HttpOnly;Expires="
+		+ ";Path=/;HttpOnly;secure;Expires="
 		+ std.time(std.time2integer(now + 32d, 0) / 43200 * 43200, now)
 	);
 }
