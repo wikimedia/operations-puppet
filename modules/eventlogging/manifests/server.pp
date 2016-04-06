@@ -54,7 +54,7 @@ class eventlogging::server(
     $eventlogging_path   = '/srv/deployment/eventlogging/eventlogging',
 )
 {
-    require ::eventlogging
+    require ::eventlogging::dependencies
 
     group { 'eventlogging':
         ensure => present,

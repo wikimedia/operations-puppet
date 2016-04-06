@@ -993,7 +993,12 @@ node 'eventlog1001.eqiad.wmnet', 'eventlog2001.codfw.wmnet' {
         eventlogging::processor,
         eventlogging::consumer::mysql,
         eventlogging::consumer::files,
-        logging::mediawiki::errors
+        logging::mediawiki::errors,
+        # TODO: This is in trial mode while we migrate away
+        # from manifests/role classes into module/role, and
+        # use scap3 for deployment.
+        eventlogging::analytics
+
 
     include standard
     include base::firewall

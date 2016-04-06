@@ -12,6 +12,9 @@ class role::eventbus::eventbus {
     require ::eventschemas
     require ::role::kafka::main::config
 
+    # eventlogging code for eventbus is configured to deploy
+    # from the eventlogging/eventbus deploy target
+    # via scap/scap.cfg on the deployment host.
     eventlogging::deployment::target { 'eventbus':
         service_name        => 'eventlogging-service-eventbus',
     }

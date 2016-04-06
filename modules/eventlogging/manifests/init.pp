@@ -1,29 +1,14 @@
-# == Class: eventlogging
+# == Class eventlogging
 #
-# EventLogging is a platform for modeling, logging and processing
-# arbitrary schemaed JSON data.
+# TODO: Implement the following as part of T118772:
 #
-# This class only installs dependencies and sets up eventlogging code
-# deployment.  If you want to configure an eventlogging server that
-# will run eventlogging service daemons, include the eventlogging::server
-# class, or use one or more of the eventlogging::service::* defines.
+# Currently, this class only installs EventLogging dependencies
+# and ensures that an unmanaged cloned at /usr/local/src/eventlogging
+# exists.  If you want to update eventlogging code, you must manually
+# pull it.
 #
 class eventlogging {
-    # Install all eventlogging dependencies from .debs.
-    require_package([
-        'python-dateutil',
-        'python-jsonschema',
-        'python-kafka',
-        'python-mysqldb',
-        'python-pygments',
-        'python-pykafka',
-        'python-pymongo',
-        'python-six',
-        'python-sqlalchemy',
-        'python-statsd',
-        'python-yaml',
-        'python-zmq',
-    ])
+    include eventlogging::dependencies
 
     # TEMPORARY HACK!!!
     # TODO: use scap everywhere: T118772

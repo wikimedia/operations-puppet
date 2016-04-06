@@ -76,7 +76,7 @@ class role::eventlogging {
     $kafka_server_side_raw_uri = "${kafka_base_uri}?topic=eventlogging-server-side"
     $kafka_client_side_raw_uri = "${kafka_base_uri}?topic=eventlogging-client-side"
 
-    class { '::eventlogging': }
+    include ::eventlogging
 
     # This check was written for eventlog1001, so only include it there.,
     if $::hostname == 'eventlog1001' {
