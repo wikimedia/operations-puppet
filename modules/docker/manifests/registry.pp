@@ -23,20 +23,9 @@ class docker::registry(
             },
         },
         'http'     => {
-            'addr' => ':443',
+            'addr' => '127.0.0.1:5000',
             'host' => $::fqdn,
-            'tls'  => {
-                # FIXME: YOU SHOULD FEEL BAD ABOUT HARDCODING
-                'certificate' => '/var/lib/docker-registry/ssl/certs/cert.pem',
-                'key'         => '/var/lib/docker-registry/ssl/private_keys/server.key'
-            },
         },
-        'auth'     => {
-            'htpasswd' => {
-                'realm' => 'docker-auth',
-                'path'  => '/etc/docker/registry/htpasswd',
-            }
-        }
     }
 
     file { $datapath:
@@ -85,5 +74,8 @@ class docker::registry(
             '/etc/docker',
             '/etc/docker/registry/config.yml'
         ]
+    }
+    nginx::site { 'registry':
+        content => template('docker/registry-nginx.conf.erb'),
     }
 }
