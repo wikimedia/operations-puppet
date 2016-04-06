@@ -38,7 +38,7 @@ show (){
 getcommandargs(){
     slots="$1"
     stagesfile="$2"
-    commandargs="${repodir}/dumpscheduler.py --slots ${slots} --commands ${dumpsdir}/stages/${stagesfile} --cache ${dumpsdir}/cache/running_cache.txt --directory $dumpsdir"
+    commandargs="${repodir}/dumpscheduler.py --slots ${slots} --commands ${dumpsdir}/stages/${stagesfile} --cache ${dumpsdir}/cache/running_cache.txt --directory $repodir"
 }
 
 maybe_do_createdirs(){
@@ -108,7 +108,7 @@ mypgroup=`ps --no-headers -o pgrp -p $$`
 fullpids=`pgrep -f fulldumps.sh`
 for pid in $fullpids; do
     pgroup=`ps --no-headers -o pgrp -p $pid`
-    if [ "$pgroup" -ne "$mypgroup" ]; then
+    if [ "$pgroup" != "$mypgroup" ]; then
         show "exiting because already running"
         exit 0
     fi
