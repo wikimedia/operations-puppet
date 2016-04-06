@@ -16,22 +16,28 @@ class toollabs::bastion inherits toollabs {
     include toollabs::dev_environ
     include toollabs::exec_environ
 
+    if $::operatingsystem == 'Ubuntu' {
+        package { 'cgroup-bin':
+            ensure => present,
+    }
+
+    package { [
+        'toollabs-webservice',
+        'mosh']:
+            ensure => present;
+    }
+
+    motd::script { 'bastion-banner':
+        ensure => present,
+        source => "puppet:///modules/toollabs/40-${::labsproject}-bastion-banner",
+    }
+
     file { '/etc/ssh/ssh_config':
         ensure => file,
         mode   => '0444',
         owner  => 'root',
         group  => 'root',
         source => 'puppet:///modules/toollabs/submithost-ssh_config',
-    }
-
-    # webservice-new command
-    package { 'toollabs-webservice':
-        ensure => latest,
-    }
-
-    motd::script { 'bastion-banner':
-        ensure => present,
-        source => "puppet:///modules/toollabs/40-${::labsproject}-bastion-banner",
     }
 
     file { "${toollabs::store}/submithost-${::fqdn}":
@@ -43,10 +49,6 @@ class toollabs::bastion inherits toollabs {
         content => "${::ipaddress}\n",
     }
 
-    # Because it rocks
-    package { 'mosh':
-        ensure => present,
-    }
     # Display tips.
     file { '/etc/profile.d/motd-tips.sh':
         ensure  => absent,
