@@ -46,11 +46,6 @@ class role::otrs::webserver {
         port  => '80',
     }
 
-    ferm::service { 'otrs_https':
-        proto => 'tcp',
-        port  => '443',
-    }
-
     ferm::service { 'otrs_smtp':
         proto  => 'tcp',
         port   => '25',
