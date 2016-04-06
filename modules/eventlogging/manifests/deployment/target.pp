@@ -8,6 +8,9 @@
 #
 # == Parameters
 #
+# [*package_name*]
+#   The name of the scap3 deployment package Default: eventlogging/$title
+#
 # [*service_name*]
 #   service_name to pass to scap::target for sudo rules.  Default: undef
 #
@@ -30,16 +33,15 @@
 #   }
 #
 define eventlogging::deployment::target(
+    $package_name = "eventlogging/${title}",
     $service_name = undef,
     $sudo_rules   = undef,
 ) {
     # Install eventlogging dependencies from .deb packages.
-    include eventlogging
+    include eventlogging::dependencies
 
-    # eventlogging code for eventbus is configured to deploy
-    # from the eventlogging/eventbus deploy target
-    # via scap/scap.cfg on the deployment host.
     scap::target { "eventlogging/${title}":
+        package_name      => $package_name,
         deploy_user       => 'eventlogging',
         public_key_source => "puppet:///modules/eventlogging/deployment/eventlogging_rsa.pub.${::realm}",
         service_name      => $service_name,
