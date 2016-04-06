@@ -44,7 +44,11 @@ idle_timelimit 540
 # Limit user names to this regex. This needs to be kept in sync with OpenStackManager's regex.
 validnames /^[a-z][.a-z0-9_-]*$/i
 
-<% if @realm == "labs" %>map passwd loginshell "/bin/bash"<% end %>
+<%- if @shell_override %>
+map passwd loginshell "<%= @shell_override %>"
+<%- elsif @realm == "labs" %>
+map passwd loginshell "/bin/bash"
+<%- end %>
 
 pagesize <%= @ldapconfig["pagesize"] %>
 nss_min_uid <%= @ldapconfig["nss_min_uid"] %>
