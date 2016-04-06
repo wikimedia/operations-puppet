@@ -47,12 +47,10 @@ class ldap::client::nss(
         source => $nsswitch_conf_source,
     }
 
-    # Allow labs projects to give people custom shells
-    $shell_override = hiera('user_login_shell', false)
     file { '/etc/ldap.conf':
-        notify  => Service['nscd','nslcd'],
-        require => File['/etc/nslcd.conf', '/etc/nscd.conf'],
         content => template('ldap/ldap.conf.erb'),
+        require => File['/etc/nslcd.conf', '/etc/nscd.conf'],
+        notify  => Service['nscd','nslcd'],
     }
 
     # So scripts don't have to parse the ldap.conf format
@@ -68,12 +66,13 @@ class ldap::client::nss(
         content => ordered_yaml($client_readable_config),
     }
 
-
+    # Allow labs projects to give people custom shells
+    $shell_override = hiera('user_login_shell', false)
     file { '/etc/nslcd.conf':
+        content => template('ldap/nslcd.conf.erb'),
+        mode    => '0440',
         require => Package['nslcd'],
         notify  => Service[nslcd],
-        mode    => '0440',
-        content => template('ldap/nslcd.conf.erb'),
     }
 }
 
