@@ -13,10 +13,11 @@ class snapshot::dumps::dirs (
 
     $datadir = '/mnt/data/xmldatadumps'
     $apachedir = '/srv/mediawiki'
+    $confsdir = '${dumpsdir}/confs"
 
-    file { "${dumpsdir}/confs":
+    file { $confsdir:
       ensure => 'directory',
-      path   => "${dumpsdir}/confs",
+      path   => "$confsdir,
       mode   => '0755',
       owner  => 'root',
       group  => 'root',
