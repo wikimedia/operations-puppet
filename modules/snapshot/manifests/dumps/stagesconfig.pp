@@ -3,14 +3,15 @@ class snapshot::dumps::stagesconfig(
 ) {
 
     include snapshot::dumps::dirs
+    $confsdir = $snapshot::dumps::dirs::confsdir
 
     $firststage_args = '--cutoff today'
-    $rest_args= '--date last --onepass'
+    $rest_args = '--date last --onepass'
     $wikiargs = '/bin/bash ./worker --skipdone --exclusive --log'
 
-    $args_smallwikis = "${wikiargs} --configfile confs/wikidump.conf"
-    $args_bigwikis = "${wikiargs} --configfile confs/wikidump.conf.bigwikis"
-    $args_hugewikis = "${wikiargs} --configfile confs/wikidump.conf.hugewikis"
+    $args_smallwikis = "${wikiargs} --configfile ${confsdir}/wikidump.conf"
+    $args_bigwikis = "${wikiargs} --configfile ${confsdir}/wikidump.conf.bigwikis"
+    $args_hugewikis = "${wikiargs} --configfile ${confsdir}/wikidump.conf.hugewikis"
 
     $jobs_to_skip = join(['metahistorybz2dump',
                           'metahistorybz2dumprecombine',
