@@ -46,7 +46,7 @@ maybe_do_createdirs(){
     stagesfile="$2"
     showtype="$3"
 
-    configfile="${dumpsdir}/confs/${conffile}"
+    configfile="${confsdir}/${conffile}"
     lastrun=`$python dumpadmin.py -s lastrun --configfile $configfile`
     show "lastrun is $lastrun for ${showtype}"
     if [[ -z "$lastrun" || "$lastrun" < "$startdate_yyyymmdd" ]]; then
@@ -65,7 +65,7 @@ maybe_do_dumps (){
     showtype="$3"
     slots="$4"
 
-    configfile="${dumpsdir}/confs/${conffile}"
+    configfile="${confsdir}/${conffile}"
     alldone=`$python dumpadmin.py -s alldone --configfile $configfile`
     show "alldone is ${alldone} for ${showtype}"
     if [ -z "$alldone" ]; then
@@ -122,6 +122,8 @@ python="/usr/bin/python"
 
 dumpsdir="<%= scope.lookupvar('snapshot::dumps::dirs::dumpsdir') %>"
 repodir="<%= scope.lookupvar('snapshot::dumps::dirs::repodir') %>"
+confsdir="<%= scope.lookupvar('snapshot::dumps::dirs::confsdir') %>"
+
 if [ -z "$repodir" -o ! -e "$repodir" ]; then
     #fallback
     repodir="/srv/dumps"
