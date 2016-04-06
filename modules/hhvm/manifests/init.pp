@@ -64,7 +64,7 @@ class hhvm(
     $tmp_dir       = '/var/tmp/hhvm',
     $cache_dir     = '/var/cache/hhvm'
     ) {
-    requires_os('ubuntu >= trusty')
+    requires_os('ubuntu >= trusty || Debian >= jessie')
 
 
     ## Packages
@@ -223,25 +223,30 @@ class hhvm(
     ## Service
 
     file { '/etc/default/hhvm':
-        content => template('hhvm/hhvm.default.erb'),
+        content => template("hhvm/hhvm.default.${::initsystem}.erb"),
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
         notify  => Service['hhvm'],
     }
 
-    file { '/etc/init/hhvm.conf':
-        content => template('hhvm/initscripts/hhvm.upstart.erb'),
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        notify  => Service['hhvm'],
-    }
-
-    service { 'hhvm':
-        ensure    => 'running',
-        provider  => 'upstart',
+    base::service_unit { 'hhvm':
+        ensure    => present,
+        systemd   => true,
+        upstart   => true,
         subscribe => Package[$ext_pkgs],
+    }
+
+    if $::initsystem == 'systemd' {
+        # Post-stop script to collect stacktraces
+        file { '/usr/local/bin/check-hhvm-stacktraces':
+            ensure => present,
+            mode   => '0550',
+            owner  => $user,
+            group  => $group,
+            source => 'puppet:///modules/hhvm/check-hhvm-stacktraces.sh',
+            before => Base::Service_unit['hhvm'],
+        }
     }
 
     file { '/etc/hhvm':
