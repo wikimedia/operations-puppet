@@ -52,6 +52,8 @@ class wikilabels::web (
                 http-socket => '0.0.0.0:8080',
                 venv        => $venv_path,
                 processes   => inline_template('<%= @processorcount.to_i * 4 %>'),
+                die-on-term => true,
+                harakiri    => 30,
             }
         }
     }
