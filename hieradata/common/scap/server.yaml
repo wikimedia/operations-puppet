@@ -36,10 +36,9 @@ keyholder_agents:
 sources:
 
   # Source code for taking XML dumps and snapshots of Mediawiki.
-  # TODO: Uncomment this when the scap_repository exists.
-  # dumps/dumps:
-  #   repository: operations/dumps
-  #   scap_repository: operations/dumps/scap
+  dumps/dumps:
+    repository: operations/dumps
+    scap_repository: operations/dumps/scap
 
   # eventbus runs eventlogging-service.
   # See: https://wikitech.wikimedia.org/wiki/EventBus
