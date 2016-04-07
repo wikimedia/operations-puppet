@@ -50,11 +50,3 @@ sources:
   eventlogging/analytics:
     repository: eventlogging
     scap_repository: eventlogging/scap/analytics
-
-  # eventlogging/common is a default deployment of eventlogging to
-  # places that don't need service management or regular updates.
-  # This is meant to be used for CLI uses of eventlogging.  webperf
-  # and stat1002 and others use this.
-  eventlogging/common:
-    repository: eventlogging
-    scap_repository: eventlogging/scap/common
