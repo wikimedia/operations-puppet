@@ -35,6 +35,8 @@ class varnish::common::vcl {
     # VTC tests
     file { '/usr/share/varnish/tests/':
         source  => 'puppet:///modules/varnish/tests',
+        owner   => 'root',
+        group   => 'root',
         recurse => true,
     }
 }
