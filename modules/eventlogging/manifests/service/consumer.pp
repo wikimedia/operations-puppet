@@ -54,7 +54,7 @@ define eventlogging::service::consumer(
     $group  = 'root',
     $mode   = '0644',
 ) {
-    include ::eventlogging::server
+    Class['eventlogging::server'] -> Eventlogging::Service::Consumer[$title]
 
     $basename = regsubst($title, '\W', '-', 'G')
     file { "/etc/eventlogging.d/consumers/${basename}":
