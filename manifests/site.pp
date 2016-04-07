@@ -2154,6 +2154,7 @@ node 'netmon1001.wikimedia.org' {
     include standard
     include passwords::network
     include ganglia::deprecated::collector
+    include base::firewall
 
     interface::add_ip6_mapped { 'main': }
 
