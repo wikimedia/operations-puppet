@@ -3,6 +3,11 @@ include "misc-common.inc.vcl";
 sub cluster_fe_recv_pre_purge { }
 
 sub cluster_fe_recv {
+    if (req.http.Host == "yarn.wikimedia.org") {
+        // Disabling this as it exposes the YARN ResourceManager REST interface
+        error 404 "Public access disabled. See https://wikitech.wikimedia.org/wiki/Analytics/Cluster/Access#ssh_tunnel.28s.29 for access instructions";
+    }
+
     if (req.http.Host == "git.wikimedia.org") {
         // gitblit requires the following request headers:
         set req.http.X-Forwarded-Proto = "https";

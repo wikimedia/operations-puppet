@@ -34,12 +34,6 @@ class role::cache::misc {
     }
 
     $app_directors = {
-        'analytics1001' => { # Hadoop Yarn ResourceManager GUI
-            'dynamic' => 'no',
-            'type' => 'random',
-            'backends' => ['analytics1001.eqiad.wmnet'],
-            'be_opts'  => merge($app_def_be_opts, { 'port' => 8088 }),
-        },
         'analytics1027' => { # Hue (Hadoop GUI)
             'dynamic' => 'no',
             'type' => 'random',
