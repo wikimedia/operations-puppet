@@ -493,6 +493,10 @@ groups:
     description: allows full sudo on labtest cluster, T131166
     members: [krenair]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
+  deploy-phabricator:
+    gid: 777
+    description: Group of phabricator deployers
+    members: [twentyafterfour, demon, rush, thcipriani]
 
 users:
   rush:
