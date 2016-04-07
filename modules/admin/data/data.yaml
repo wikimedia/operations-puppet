@@ -498,6 +498,10 @@ groups:
     description: users who have root on swift servers
     members: [gilles]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
+  deploy-phabricator:
+    gid: 778
+    description: Group of phabricator deployers
+    members: [twentyafterfour, demon, rush, thcipriani]
 
 users:
   rush:
