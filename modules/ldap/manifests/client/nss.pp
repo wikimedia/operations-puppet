@@ -2,6 +2,7 @@ class ldap::client::nss(
     $ldapconfig = undef,
     $nsswitch_conf_source = 'puppet:///modules/ldap/nsswitch.conf',
 ) {
+
     package { [ 'libnss-ldapd',
                 'nss-updatedb',
                 'libnss-db',
@@ -9,20 +10,9 @@ class ldap::client::nss(
                 'nslcd' ]:
         ensure => latest,
     }
+
     package { [ 'libnss-ldap' ]:
         ensure => purged,
-    }
-
-    service { 'nscd':
-        ensure    => running,
-        subscribe => File['/etc/ldap/ldap.conf'],
-        require   => Package['nscd'],
-    }
-
-    service { 'nslcd':
-        ensure    => running,
-        subscribe => File['/etc/ldap/ldap.conf'],
-        require   => Package['nslcd'],
     }
 
     File {
@@ -72,7 +62,18 @@ class ldap::client::nss(
         content => template('ldap/nslcd.conf.erb'),
         mode    => '0440',
         require => Package['nslcd'],
-        notify  => Service[nslcd],
+        notify  => Service['nscd','nslcd'],
+    }
+
+    service { 'nscd':
+        ensure    => running,
+        subscribe => File['/etc/ldap/ldap.conf'],
+        require   => Package['nscd'],
+    }
+
+    service { 'nslcd':
+        ensure    => running,
+        subscribe => File['/etc/ldap/ldap.conf'],
+        require   => Package['nslcd'],
     }
 }
-
