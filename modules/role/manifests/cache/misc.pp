@@ -33,138 +33,199 @@ class role::cache::misc {
         'max_connections'       => 100,
     }
 
+    # misc-cluster specific (for now!):
+    #   every director must have exactly one of...
+    #     'req_host' => request hostname (or array of them)
+    #     'req_host_re' => request hostname regex
+    # ...and for sanity's sake, there should be no overlap among them
     $app_directors = {
         'analytics1027' => { # Hue (Hadoop GUI)
             'dynamic'  => 'no',
             'type'     => 'random',
             'backends' => ['analytics1027.eqiad.wmnet'],
             'be_opts'  => merge($app_def_be_opts, { 'port' => 8888 }),
+            'req_host' => 'hue.wikimedia.org',
         },
         'antimony' => {
             'dynamic'  => 'no',
             'type'     => 'random',
             'backends' => ['antimony.wikimedia.org'],
             'be_opts'  => merge($app_def_be_opts, { 'port' => 8080 }),
+            'req_host' => 'git.wikimedia.org',
         },
         'bromine' => { # ganeti VM for misc. static HTML sites
             'dynamic'  => 'no',
             'type'     => 'random',
             'backends' => ['bromine.eqiad.wmnet'],
             'be_opts'  => $app_def_be_opts,
+            'req_host' => [
+                'static-bugzilla.wikimedia.org',
+                'annual.wikimedia.org',
+                'transparency.wikimedia.org',
+                '15.wikipedia.org',
+                'releases.wikimedia.org'
+            ],
         },
         'bohrium' => {
             'dynamic'  => 'no',
             'type'     => 'random',
             'backends' => ['bohrium.eqiad.wmnet'],
             'be_opts'  => $app_def_be_opts,
+            'req_host' => 'piwik.wikimedia.org',
         },
         'californium' => {
             'dynamic'  => 'no',
             'type'     => 'random',
             'backends' => ['californium.wikimedia.org'],
             'be_opts'  => $app_def_be_opts,
+            'req_host' => 'horizon.wikimedia.org',
         },
         'labtestweb2001' => {
             'dynamic'  => 'no',
             'type'     => 'random',
             'backends' => ['labtestweb2001.wikimedia.org'],
             'be_opts'  => $app_def_be_opts,
+            'req_host' => 'labtesthorizon.wikimedia.org',
         },
         'dataset1001' => {
             'dynamic'  => 'no',
             'type'     => 'random',
             'backends' => ['dataset1001.wikimedia.org'],
             'be_opts'  => $app_def_be_opts,
+            'req_host' => 'download.wikimedia.org',
         },
         'etherpad1001' => {
             'dynamic'  => 'no',
             'type'     => 'random',
             'backends' => ['etherpad1001.eqiad.wmnet'],
             'be_opts'  => merge($app_def_be_opts, { 'port' => 9001 }),
+            'req_host' => 'etherpad.wikimedia.org',
         },
         'gallium' => { # CI server
             'dynamic'  => 'no',
             'type'     => 'random',
             'backends' => ['gallium.wikimedia.org' ],
             'be_opts'  => $app_def_be_opts,
+            'req_host' => [
+                'doc.wikimedia.org',
+                'integration.wikimedia.org'
+            ],
         },
         'graphite1001' => {
             'dynamic'  => 'no',
             'type'     => 'random',
             'backends' => ['graphite1001.eqiad.wmnet'],
             'be_opts'  => $app_def_be_opts,
+            'req_host' => [
+                'performance.wikimedia.org',
+                'graphite.wikimedia.org'
+            ],
         },
         'iridium' => { # main phab
             'dynamic'  => 'no',
             'type'     => 'random',
             'backends' => ['iridium.eqiad.wmnet'],
             'be_opts'  => $app_def_be_opts,
+            'req_host' => [
+                'phabricator.wikimedia.org',
+                'phab.wmfusercontent.org',
+                'bugzilla.wikimedia.org',
+                'bugs.wikimedia.org'
+            ],
         },
         'krypton' => { # ganeti VM for misc. PHP apps
             'dynamic'  => 'no',
             'type'     => 'random',
             'backends' => ['krypton.eqiad.wmnet'],
             'be_opts'  => $app_def_be_opts,
+            'req_host' => [
+                'scholarships.wikimedia.org',
+                'iegreview.wikimedia.org',
+                'racktables.wikimedia.org',
+                'grafana.wikimedia.org',
+                'grafana-admin.wikimedia.org'
+            ],
         },
         'magnesium' => { # RT and racktables
             'dynamic'  => 'no',
             'type'     => 'random',
             'backends' => ['magnesium.wikimedia.org'],
             'be_opts'  => $app_def_be_opts,
+            'req_host' => 'rt.wikimedia.org',
         },
         'netmon1001' => { # servermon
             'dynamic'  => 'no',
             'type'     => 'random',
             'backends' => ['netmon1001.wikimedia.org'],
             'be_opts'  => $app_def_be_opts,
+            'req_host' => [
+                'servermon.wikimedia.org',
+                'smokeping.wikimedia.org',
+                'torrus.wikimedia.org'
+            ],
         },
         'noc' => { # noc.wikimedia.org and dbtree.wikimedia.org
             'dynamic'  => 'no',
             'type'     => 'random',
             'backends' => ['mw1152.eqiad.wmnet'],
             'be_opts'  => $app_def_be_opts,
+            'req_host' => [
+                'noc.wikimedia.org',
+                'dbtree.wikimedia.org'
+            ],
         },
         'palladium' => {
             'dynamic'  => 'no',
             'type'     => 'random',
             'backends' => ['palladium.eqiad.wmnet'],
             'be_opts'  => $app_def_be_opts,
+            'req_host' => 'config-master.wikimedia.org',
         },
         'planet1001' => {
-            'dynamic'  => 'no',
-            'type'     => 'random',
-            'backends' => ['planet1001.eqiad.wmnet'],
-            'be_opts'  => $app_def_be_opts,
+            'dynamic'     => 'no',
+            'type'        => 'random',
+            'backends'    => ['planet1001.eqiad.wmnet'],
+            'be_opts'     => $app_def_be_opts,
+            'req_host_re' => '(?i)^([^.]+\.)?planet\.wikimedia\.org$'
         },
         'ruthenium' => { # parsoid rt test server
             'dynamic'  => 'no',
             'type'     => 'random',
             'backends' => ['ruthenium.eqiad.wmnet'],
             'be_opts'  => merge($app_def_be_opts, { 'port' => 8001 }),
+            'req_host' => 'parsoid-tests.wikimedia.org',
         },
         'rutherfordium' => { # people.wikimedia.org
             'dynamic'  => 'no',
             'type'     => 'random',
             'backends' => ['rutherfordium.eqiad.wmnet'],
             'be_opts'  => $app_def_be_opts,
+            'req_host' => 'people.wikimedia.org',
         },
         'stat1001' => { # metrics and metrics-api
             'dynamic'  => 'no',
             'type'     => 'random',
             'backends' => ['stat1001.eqiad.wmnet'],
             'be_opts'  => $app_def_be_opts,
+            'req_host' => [
+                'metrics.wikimedia.org',
+                'stats.wikimedia.org',
+                'datasets.wikimedia.org'
+            ],
         },
         'mendelevium' => { # OTRS
             'dynamic'  => 'no',
             'type'     => 'random',
             'backends' => ['mendelevium.eqiad.wmnet'],
             'be_opts'  => $app_def_be_opts,
+            'req_host' => 'ticket.wikimedia.org',
         },
         'ytterbium' => { # Gerrit
             'dynamic'  => 'no',
             'type'     => 'random',
             'backends' => ['ytterbium.wikimedia.org'],
             'be_opts'  => merge($app_def_be_opts, { 'port' => 8080 }),
+            'req_host' => 'gerrit.wikimedia.org',
         },
         'logstash_director' => {
             'dynamic'  => 'no',
@@ -175,6 +236,7 @@ class role::cache::misc {
                 'logstash1003.eqiad.wmnet',
             ],
             'be_opts'  => merge($app_def_be_opts, { 'probe' => 'logstash' }),
+            'req_host' => 'logstash.wikimedia.org',
         },
         'wdqs_director' => {
             'dynamic'  => 'no',
@@ -184,6 +246,7 @@ class role::cache::misc {
                 'wdqs1002.eqiad.wmnet'
             ],
             'be_opts'  => merge($app_def_be_opts, { 'probe' => 'wdqs' }),
+            'req_host' => 'query.wikidata.org',
         },
     }
 
