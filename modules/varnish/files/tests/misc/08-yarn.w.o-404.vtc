@@ -1,0 +1,35 @@
+varnishtest "yarn.wikimedia.org: public access disabled"
+
+server s1 {
+    rxreq
+    txresp
+} -start
+
+varnish v1 -arg "-p vcc_err_unref=false" -vcl+backend {
+    backend vtc_backend {
+        .host = "${s1_addr}"; .port = "${s1_port}";
+    }
+
+    # We deny access to yarn at the frontend layer
+    include "/usr/share/varnish/tests/wikimedia_misc-frontend.vcl";
+} -start
+
+client c1 {
+    txreq -hdr "Host: yarn.wikimedia.org" -hdr "X-Forwarded-Proto: https"
+    rxresp
+    expect resp.status == 404
+}
+
+varnish v1 -expect cache_miss == 0
+varnish v1 -expect cache_hit == 0
+varnish v1 -expect n_object == 0
+
+client c1 -run
+varnish v1 -expect cache_miss == 0
+varnish v1 -expect cache_hit == 0
+varnish v1 -expect n_object == 0
+
+client c1 -run
+varnish v1 -expect cache_miss == 0
+varnish v1 -expect cache_hit == 0
+varnish v1 -expect n_object == 0
