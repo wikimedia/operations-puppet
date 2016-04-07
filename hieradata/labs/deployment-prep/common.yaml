@@ -247,6 +247,9 @@ scap::server::keyholder_agents:
 # will be cloned on the scap deploy server.
 scap::server::sources:
 
+  phabricator/deployment:
+    repository: phabricator/deployment
+
   # eventbus runs eventlogging-service.
   # See: https://wikitech.wikimedia.org/wiki/EventBus
   eventlogging/eventbus:
