@@ -1,7 +1,8 @@
 # Default scap::server configuration.  This is used in production.
 # If you are setting up scap::server in labs, these will be used
 # unless you override them for your labs project.
-# See hieradata/labs/deployment-prep/scap/server.yaml as an example.
+# See the overrides in hieradata/labs/deployment-prep/common.yaml
+# for an example.
 
 # keyholder::agent declarations.  These are created
 # by the scap::server class.  Each agent listed here
