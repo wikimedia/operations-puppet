@@ -46,7 +46,7 @@ class wikilabels::web (
         settings => {
             uwsgi => {
                 plugins     => 'python3',
-                'wsgi-file' => "${config_path}/labels.wmflabs.org.wsgi",
+                'wsgi-file' => "${config_path}/labels_web.py",
                 master      => true,
                 chdir       => $config_path,
                 http-socket => '0.0.0.0:8080',
