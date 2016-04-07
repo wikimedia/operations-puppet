@@ -1,0 +1,12 @@
+[Unit]
+Description=Devpi Server
+
+[Service]
+User=devpi
+Group=devpi
+ExecStart=/srv/devpi/venv/bin/devpi-server \
+    --serverdir /srv/devpi/server \
+    --restrict-modify root
+
+[Install]
+WantedBy=multi-user.target
