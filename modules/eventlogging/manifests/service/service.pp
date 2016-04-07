@@ -24,10 +24,6 @@
 #   each listening on a different port and load balanced.  This
 #   may be easier to monitor.
 #
-# [*eventlogging_path*]
-#   Path to eventlogging codebase
-#   Default: /srv/deployment/eventlogging/eventlogging
-#
 # [*log_file*]
 #   Output log file for this service.
 #   Default: $eventlogging::log_dir/eventlogging-service-${basename}.log
@@ -48,7 +44,6 @@ define eventlogging::service::service(
     $outputs,
     $port                = 8085,
     $num_processes       = undef, # default 1
-    $eventlogging_path   = '/srv/deployment/eventlogging/eventlogging',
     $log_file            = undef,
     $log_config_template = 'eventlogging/log.cfg.erb',
     $statsd              = 'localhost:8125',
@@ -57,13 +52,13 @@ define eventlogging::service::service(
     $reload_on           = undef,
 )
 {
+    Class['eventlogging::server'] -> Eventlogging::Service::Service[$title]
+
     include ::rsyslog
     include service::monitoring
-    class { 'eventlogging::server':
-        eventlogging_path => $eventlogging_path,
-    }
 
-    # Additional packages needed for eventlogging-service.
+    # Additional packages needed for eventlogging-service that are not
+    # provided by the eventlogging::dependencies class.
 
     # Can't use require_package here because we need to specify version
     # from jessie-backports:
@@ -75,6 +70,10 @@ define eventlogging::service::service(
     }
     # This allows tornado to automatically send stats to statsd.
     require_package('python-sprockets-mixins-statsd')
+
+    # eventlogging will run out of the path configured in the
+    # eventlogging::server class.
+    $eventlogging_path = $eventlogging::server::eventlogging_path
 
     $basename = regsubst($title, '\W', '-', 'G')
     # $service_name is used in log.cfg.erb and in rsyslog.conf.erb
