@@ -51,6 +51,8 @@ class lvs::configuration {
         $v6_ip = '::'
     }
 
+    # NOTE: This is for informational purposes only. The actual configuration
+    # that decides primary/secondary is done at the BGP level on the routers.
     $lvs_grain = $::hostname ? {
         /^lvs100[123789]$/ => 'primary',
         /^lvs200[123]$/    => 'primary',
