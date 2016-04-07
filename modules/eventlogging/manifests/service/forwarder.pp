@@ -39,7 +39,7 @@ define eventlogging::service::forwarder(
     $count      = false,
     $ensure     = present,
 ) {
-    include ::eventlogging::server
+    Class['eventlogging::server'] -> Eventlogging::Service::Forwarder[$title]
 
     $basename = regsubst($title, '\W', '-', 'G')
     file { "/etc/eventlogging.d/forwarders/${basename}":

@@ -22,6 +22,12 @@ class role::eventbus::eventbus {
     # Will deploy eventlogging code here.
     $eventlogging_path = '/srv/deployment/eventlogging/eventbus'
 
+    # Include eventlogging server configuration, including
+    # /etc/eventlogging.d directories and eventlogging user and group.
+    class { 'eventlogging::server':
+        eventlogging_path => $eventlogging_path,
+    }
+
     $kafka_brokers_array = $role::kafka::main::config::brokers_array
     $kafka_base_uri      = inline_template('kafka:///<%= @kafka_brokers_array.join(":9092,") + ":9092" %>')
 

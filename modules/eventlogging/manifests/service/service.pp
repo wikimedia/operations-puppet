@@ -59,11 +59,10 @@ define eventlogging::service::service(
 {
     include ::rsyslog
     include service::monitoring
-    class { 'eventlogging::server':
-        eventlogging_path => $eventlogging_path,
-    }
+    Class['eventlogging::server'] -> Eventlogging::Service::Service[$title]
 
-    # Additional packages needed for eventlogging-service.
+    # Additional packages needed for eventlogging-service that are not
+    # provided by the eventlogging::dependencies class.
 
     # Can't use require_package here because we need to specify version
     # from jessie-backports:
