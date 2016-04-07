@@ -40,7 +40,7 @@ sub cluster_be_recv_applayer_backend {
         set req.backend = noc;
     } elsif (req.http.Host == "config-master.wikimedia.org") {
         set req.backend = palladium;
-    } elsif (req.http.Host ~ ".*\.planet\.wikimedia\.org" || req.http.Host == "planet.wikimedia.org") {
+    } elsif (req.http.Host ~ "(?i)^([^.]+\.)?planet\.wikimedia\.org$") {
         set req.backend = planet1001;
     } elsif (req.http.Host == "parsoid-tests.wikimedia.org") {
         set req.backend = ruthenium;
