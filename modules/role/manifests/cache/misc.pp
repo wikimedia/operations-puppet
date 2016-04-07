@@ -112,12 +112,6 @@ class role::cache::misc {
             'backends' => ['magnesium.wikimedia.org'],
             'be_opts'  => $app_def_be_opts,
         },
-        'neon' => { # monitoring tools (icinga et al)
-            'dynamic' => 'no',
-            'type' => 'random',
-            'backends' => ['neon.wikimedia.org'],
-            'be_opts'  => $app_def_be_opts,
-        },
         'netmon1001' => { # servermon
             'dynamic' => 'no',
             'type' => 'random',
@@ -158,12 +152,6 @@ class role::cache::misc {
             'dynamic' => 'no',
             'type' => 'random',
             'backends' => ['stat1001.eqiad.wmnet'],
-            'be_opts'  => $app_def_be_opts,
-        },
-        'terbium' => { # noc.wikimedia.org
-            'dynamic' => 'no',
-            'type' => 'random',
-            'backends' => ['terbium.eqiad.wmnet'],
             'be_opts'  => $app_def_be_opts,
         },
         'mendelevium' => { # OTRS (search is really slow, hence bbt=60s below)
