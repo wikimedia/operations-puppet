@@ -2,6 +2,7 @@
 # PAM configuration for the Secure Shell service
 
 # Standard Un*x authentication.
+auth    sufficient      pam_yubico.so mode=client id=1 key=<%= @api_key %> debug authfile=/etc/yubikeys urllist=http://auth1001.eqiad.wmnet/wsapi/2.0/verify
 @include common-auth
 
 # Disallow non-root logins when /etc/nologin exists.

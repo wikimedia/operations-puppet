@@ -7,6 +7,7 @@ class role::bastionhost::2fa {
     include standard
     include base::firewall
     include role::backup::host
+    include passwords::yubiauth
 
     backup::set {'home': }
 
@@ -18,6 +19,8 @@ class role::bastionhost::2fa {
         proto => 'tcp',
         port  => 'ssh',
     }
+
+    $api_key = $passwords::yubiauth::api_key
 
     file { '/etc/pam.d/sshd':
         ensure  => present,
