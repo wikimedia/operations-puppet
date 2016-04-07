@@ -82,6 +82,11 @@ class role::eventlogging {
 
     eventlogging::deployment::target { 'analytics': }
 
+    class { 'eventlogging::server':
+        # TODO: change this to eventlogging/analytics
+        eventlogging_path => '/srv/deployment/eventlogging/eventlogging'
+    }
+
     # This check was written for eventlog1001, so only include it there.,
     if $::hostname == 'eventlog1001' {
 
