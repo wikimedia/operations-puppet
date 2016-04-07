@@ -994,6 +994,9 @@ node 'eventlog1001.eqiad.wmnet' {
         eventlogging::consumer::mysql,
         eventlogging::consumer::files,
         logging::mediawiki::errors
+
+    include standard
+    include base::firewall
 }
 
 # EventLogging Analytics does not (yet?) run in codfw.
