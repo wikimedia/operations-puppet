@@ -21,7 +21,7 @@ class role::restbase {
 
 class role::restbase::alerts {
     monitoring::graphite_threshold { 'restbase_request_5xx_rate':
-        description   => 'RESTBase html revision 5xx req/s https://grafana.wikimedia.org/dashboard/db/restbase?from=now-6h&panelId=14&fullscreen',
+        description   => 'RESTBase html revision 5xx req/s https://grafana.wikimedia.org/dashboard/db/restbase',
         metric        => 'transformNull(restbase.external.v1_page_html_-title-_-revision--_tid-.GET.5xx.sample_rate, 0)',
         from          => '10min',
         warning       => '1', # 1 5xx/s
@@ -31,7 +31,7 @@ class role::restbase::alerts {
     }
 
     monitoring::graphite_threshold { 'restbase_html_storage_hit_latency':
-        description   => 'RESTBase HTML revision request mean storage latency ms https://grafana.wikimedia.org/dashboard/db/restbase?from=now-6h&panelId=11&fullscreen',
+        description   => 'RESTBase HTML revision request mean storage latency ms https://grafana.wikimedia.org/dashboard/db/restbase',
         metric        => 'movingMedian(restbase.external.sys_key-rev-value_-bucket-_-key--_revision--_tid-.GET.2xx.mean, 15)',
         from          => '10min',
         warning       => '25', # 25ms
@@ -41,7 +41,7 @@ class role::restbase::alerts {
     }
 
     monitoring::graphite_threshold { 'restbase_html_storage_hit_latency_99p':
-        description   => 'RESTBase HTML revision request 99p storage latency ms https://grafana.wikimedia.org/dashboard/db/restbase?from=now-6h&panelId=11&fullscreen',
+        description   => 'RESTBase HTML revision request 99p storage latency ms https://grafana.wikimedia.org/dashboard/db/restbase',
         metric        => 'movingMedian(restbase.external.sys_key-rev-value_-bucket-_-key--_revision--_tid-.GET.2xx.p99, 15)',
         from          => '10min',
         warning       => '1500', # 1.5s
