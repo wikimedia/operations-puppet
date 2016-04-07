@@ -24,10 +24,6 @@
 #   each listening on a different port and load balanced.  This
 #   may be easier to monitor.
 #
-# [*eventlogging_path*]
-#   Path to eventlogging codebase
-#   Default: /srv/deployment/eventlogging/eventlogging
-#
 # [*log_file*]
 #   Output log file for this service.
 #   Default: $eventlogging::log_dir/eventlogging-service-${basename}.log
@@ -48,7 +44,6 @@ define eventlogging::service::service(
     $outputs,
     $port                = 8085,
     $num_processes       = undef, # default 1
-    $eventlogging_path   = '/srv/deployment/eventlogging/eventlogging',
     $log_file            = undef,
     $log_config_template = 'eventlogging/log.cfg.erb',
     $statsd              = 'localhost:8125',
@@ -59,11 +54,10 @@ define eventlogging::service::service(
 {
     include ::rsyslog
     include service::monitoring
-    class { 'eventlogging::server':
-        eventlogging_path => $eventlogging_path,
-    }
+    Class['eventlogging::server'] -> Eventlogging::Service::Service[$title]
 
-    # Additional packages needed for eventlogging-service.
+    # Additional packages needed for eventlogging-service that are not
+    # provided by the eventlogging::dependencies class.
 
     # Can't use require_package here because we need to specify version
     # from jessie-backports:
@@ -149,7 +143,7 @@ define eventlogging::service::service(
     # Generate icinga alert if eventlogging-service-$basename is not running.
     nrpe::monitor_service { $service_name:
         description  => "Check that ${service_name} is running",
-        nrpe_command => "/usr/lib/nagios/plugins/check_procs -c 1:1 -C python -a '${eventlogging_path}/bin/eventlogging-service @${config_file}'",
+        nrpe_command => "/usr/lib/nagios/plugins/check_procs -c 1:1 -C python -a '${eventlogging::server::eventlogging_path}/bin/eventlogging-service @${config_file}'",
         require      => Base::Service_unit[$service_name],
     }
 

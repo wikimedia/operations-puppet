@@ -18,9 +18,15 @@ class role::eventbus::eventbus {
     eventlogging::deployment::target { 'eventbus':
         service_name        => 'eventlogging-service-eventbus',
     }
-    # eventlogging::deployment::target { 'eventbus':
-    # Will deploy eventlogging code here.
-    $eventlogging_path = '/srv/deployment/eventlogging/eventbus'
+
+    # Include eventlogging server configuration, including
+    # /etc/eventlogging.d directories and eventlogging user and group.
+    class { 'eventlogging::server':
+        # eventlogging::deployment::target { 'eventbus':
+        # Will deploy eventlogging code to
+        # /srv/deployment/eventlogging/eventbus.
+        eventlogging_path => '/srv/deployment/eventlogging/eventbus',
+    }
 
     $kafka_brokers_array = $role::kafka::main::config::brokers_array
     $kafka_base_uri      = inline_template('kafka:///<%= @kafka_brokers_array.join(":9092,") + ":9092" %>')
@@ -38,9 +44,6 @@ class role::eventbus::eventbus {
 
     # TODO: Allow configuration of more than one service daemon process?
     eventlogging::service::service { 'eventbus':
-        eventlogging_path => $eventlogging_path,
-        # TODO: Deploy mediawiki/event-schemas separately
-        # from the submodule in EventLogging repo?
         schemas_path      => "${::eventschemas::path}/jsonschema",
         topic_config      => "${::eventschemas::path}/config/eventbus-topics.yaml",
         outputs           => $outputs,
