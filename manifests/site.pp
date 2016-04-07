@@ -987,18 +987,20 @@ node 'etherpad1001.eqiad.wmnet' {
 
 # Receives log data from Kafka processes it, and broadcasts
 # to Kafka Schema based topics.
-node 'eventlog1001.eqiad.wmnet', 'eventlog2001.codfw.wmnet' {
+node 'eventlog1001.eqiad.wmnet' {
     role eventlogging,
         eventlogging::forwarder,
         eventlogging::processor,
         eventlogging::consumer::mysql,
         eventlogging::consumer::files,
         logging::mediawiki::errors
+}
 
+# EventLogging Analytics does not (yet?) run in codfw.
+node 'eventlog2001.codfw.wmnet' {
     include standard
     include base::firewall
 }
-
 
 # virtual machine for mailman list server
 node 'fermium.wikimedia.org' {
