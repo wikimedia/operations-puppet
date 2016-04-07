@@ -19,4 +19,12 @@ class role::bastionhost::2fa {
         port  => 'ssh',
     }
 
+    file { '/etc/pam.d/sshd':
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0440',
+        content => template('role/bastionhost/pam-sshd.erb'),
+        require => Package['openssh-server'],
+    }
 }
