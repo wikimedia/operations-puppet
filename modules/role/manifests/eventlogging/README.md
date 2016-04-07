@@ -10,9 +10,5 @@ class, and also a scap::target for deploying the eventlogging code.
   role sets up and manages EventLogging daemon processes for processing
   Analytics events.
 
-- common: (TODO) A minimal role that only installs dependencies and the
-  codebase. For historical reasons, this is symlinked to
-  /srv/deployment/eventlogging/eventlogging on targets.
-
 TODO: Move eventbus/eventbus.pp role here to role::eventlogging::eventbus.
 
