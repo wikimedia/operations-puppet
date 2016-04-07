@@ -3,19 +3,18 @@
 # TODO: Move these into role module as
 # role::eventlogging::analytics::* classes
 #
-# These role classes configure various eventlogging services.
+# These role classes configure various eventlogging services for
+# processing analytics EventLogging data.
 # The setup is described in detail on
 # <https://wikitech.wikimedia.org/wiki/EventLogging>. End-user
 # documentation is available in the form of a guide, located at
 # <https://www.mediawiki.org/wiki/Extension:EventLogging/Guide>.
 #
 # There exist two APIs for generating events: efLogServerSideEvent() in
-# PHP and mw.eventLog.logEvent() in JavaScript. Events generated in PHP
-# are sent by the app servers directly to eventlog* servers on UDP port 8421.
-# JavaScript-generated events are URL-encoded and sent to our servers by
-# means of an HTTP/S request to bits, which a varnishkafka instance
-# forwards to Kafka.  These event streams are parsed,
-# validated, and multiplexed into an output streams in Kafka.
+# PHP and mw.eventLog.logEvent() in JavaScript. Events are URL-encoded
+# and sent to our servers by means of an HTTP/S request to varnish,
+# where a varnishkafka instance forwards to Kafka.  These event streams are
+# parsed, validated, and multiplexed into an output streams in Kafka.
 
 
 # == Class role::eventlogging
@@ -29,6 +28,13 @@ class role::eventlogging {
 
     # Infer Kafka cluster configuration from this class
     class { 'role::kafka::analytics::config': }
+
+    # EventLogging for analytics processing is deployed
+    # as the eventlogging/analytics scap target.
+    eventlogging::deployment::target { 'analytics': }
+    class { 'eventlogging::server':
+        eventlogging_path => '/srv/deployment/eventlogging/analytics'
+    }
 
     # Event data flows through several processes.
     # By default, all processing is performed
@@ -75,17 +81,6 @@ class role::eventlogging {
 
     $kafka_server_side_raw_uri = "${kafka_base_uri}?topic=eventlogging-server-side"
     $kafka_client_side_raw_uri = "${kafka_base_uri}?topic=eventlogging-client-side"
-
-    # TODO: This include will be removed once eventlogging code is using
-    # the deploy out of /srv/deployment/eventlogging/analytics.
-    include ::eventlogging
-
-    eventlogging::deployment::target { 'analytics': }
-
-    class { 'eventlogging::server':
-        # TODO: change this to eventlogging/analytics
-        eventlogging_path => '/srv/deployment/eventlogging/eventlogging'
-    }
 
     # This check was written for eventlog1001, so only include it there.,
     if $::hostname == 'eventlog1001' {
