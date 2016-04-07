@@ -985,24 +985,20 @@ node 'etherpad1001.eqiad.wmnet' {
     role etherpad
 }
 
-# Receives log data from Kafka and Apaches (udp 8421),
-# processes it, and broadcasts to Kafka Schema based topics.
+# Receives log data from Kafka processes it, and broadcasts
+# to Kafka Schema based topics.
 node 'eventlog1001.eqiad.wmnet', 'eventlog2001.codfw.wmnet' {
     role eventlogging,
         eventlogging::forwarder,
         eventlogging::processor,
         eventlogging::consumer::mysql,
         eventlogging::consumer::files,
-        logging::mediawiki::errors,
-        # TODO: This is in trial mode while we migrate away
-        # from manifests/role classes into module/role, and
-        # use scap3 for deployment.
-        eventlogging::analytics
-
+        logging::mediawiki::errors
 
     include standard
     include base::firewall
 }
+
 
 # virtual machine for mailman list server
 node 'fermium.wikimedia.org' {

@@ -76,7 +76,11 @@ class role::eventlogging {
     $kafka_server_side_raw_uri = "${kafka_base_uri}?topic=eventlogging-server-side"
     $kafka_client_side_raw_uri = "${kafka_base_uri}?topic=eventlogging-client-side"
 
+    # TODO: This include will be removed once eventlogging code is using
+    # the deploy out of /srv/deployment/eventlogging/analytics.
     include ::eventlogging
+
+    eventlogging::deployment::target { 'analytics': }
 
     # This check was written for eventlog1001, so only include it there.,
     if $::hostname == 'eventlog1001' {
