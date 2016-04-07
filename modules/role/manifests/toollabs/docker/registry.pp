@@ -7,9 +7,9 @@ class role::toollabs::docker::registry {
         skip_private => true,
         before       => Class['::docker::registry'],
     }
-
+    
     $builder = ipresolve(hiera('docker::builder_host'), 4, $::nameservers[0])
-
+    
     class { '::docker::registry':
         datapath             => '/srv/registry',
         allow_push_from      => $builder,
