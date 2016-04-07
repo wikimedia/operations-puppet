@@ -60,7 +60,6 @@ define eventlogging::service::consumer(
     file { "/etc/eventlogging.d/consumers/${basename}":
         ensure  => $ensure,
         content => template('eventlogging/consumer.erb'),
-        notify  => Service['eventlogging/init'],
         owner   => $owner,
         group   => $group,
         mode    => $mode,

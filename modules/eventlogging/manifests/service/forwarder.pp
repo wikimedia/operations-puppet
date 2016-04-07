@@ -45,6 +45,5 @@ define eventlogging::service::forwarder(
     file { "/etc/eventlogging.d/forwarders/${basename}":
         ensure  => $ensure,
         content => template('eventlogging/forwarder.erb'),
-        notify  => Service['eventlogging/init'],
     }
 }
