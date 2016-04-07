@@ -229,7 +229,7 @@ class role::cache::misc {
         },
         'logstash_director' => {
             'dynamic'  => 'no',
-            'type'     => 'hash', # maybe-wrong? but current value before this commit! XXX
+            'type'     => 'random',
             'backends' => [
                 'logstash1001.eqiad.wmnet',
                 'logstash1002.eqiad.wmnet',
