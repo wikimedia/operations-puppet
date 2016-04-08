@@ -1,10 +1,10 @@
-# == Class: role::statsdlb
+# == Class: role::statsd
 #
 # Provisions a statsdlb instance that listens for StatsD metrics on
 # on UDP port 8125 and forwards to backends on UDP ports 8126+,
 # as well as the set of statsite backends that listen on these ports.
 #
-class role::statsdlb {
+class role::statsd {
 
     # statsdlb
 
@@ -14,7 +14,7 @@ class role::statsdlb {
     }
 
     # load balancer frontend, backend ports 8126-8131 are only accessed from localhost
-    ferm::service { 'statsdlb':
+    ferm::service { 'statsd':
         proto   => 'udp',
         port    => '8125',
         notrack => true,
