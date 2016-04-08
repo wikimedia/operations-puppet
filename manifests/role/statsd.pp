@@ -1,16 +1,26 @@
 # == Class: role::statsd
 #
-# Provisions a statsdlb instance that listens for StatsD metrics on
+# Provisions a statsd-proxy instance that listens for StatsD metrics
 # on UDP port 8125 and forwards to backends on UDP ports 8126+,
 # as well as the set of statsite backends that listen on these ports.
 #
 class role::statsd {
 
-    # statsdlb
-
     class { '::statsdlb':
+        ensure        => absent,
         server_port   => 8125,
         backend_ports => range(8126, 8131),
+        before        => Class['::statsd_proxy'],
+    }
+
+    class { '::statsd_proxy':
+        server_port   => 8125,
+        backend_ports => range(8126, 8131),
+    }
+
+    nrpe::monitor_service { 'statsd-proxy':
+        description  => 'statsd-proxy process',
+        nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1: -C statsd-proxy',
     }
 
     # load balancer frontend, backend ports 8126-8131 are only accessed from localhost
@@ -19,11 +29,6 @@ class role::statsd {
         port    => '8125',
         notrack => true,
         srange  => '$ALL_NETWORKS',
-    }
-
-    nrpe::monitor_service { 'statsdlb':
-        description  => 'statsdlb process',
-        nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1: -C statsdlb',
     }
 
     class { '::statsite': }
