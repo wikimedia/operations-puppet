@@ -17,6 +17,12 @@ class role::ve {
         mode   => '0555',
     }
 
+    ferm::service { 've-xvfb':
+        proto   => 'tcp',
+        port    => '6099',
+        srange  => '$INTERNAL',
+    }
+
     apache::site { 'devwiki':
         source   => 'puppet:///files/ve/devwiki.conf',
         priority => 4,
