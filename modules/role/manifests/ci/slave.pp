@@ -33,31 +33,7 @@ class role::ci::slave {
         require  => User['jenkins-slave'],
     }
 
-    # user and private key for Travis integration
-    # RT: 8866
-    user { 'npmtravis':
-        home       => '/home/npmtravis',
-        managehome => true,
-        system     => true,
-    }
-
-    file { '/home/npmtravis/.ssh':
-        ensure  => directory,
-        owner   => 'npmtravis',
-        mode    => '0500',
-        require => User['npmtravis'],
-    }
-
-    file { '/home/npmtravis/.ssh/npmtravis_id_rsa':
-        ensure  => present,
-        owner   => 'npmtravis',
-        mode    => '0400',
-        content => secret('ssh/ci/npmtravis_id_rsa'),
-        require => File['/home/npmtravis/.ssh'],
-    }
-
     # Ganglia diskstat plugin is being evaluated on contint production slaves
     # servers merely to evaluate it for the standard role. -- hashar, 23-Oct-2013
     ganglia::plugin::python { 'diskstat': }
 }
-
