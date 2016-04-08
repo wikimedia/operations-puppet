@@ -10,6 +10,7 @@ import socket
 import subprocess
 import time
 import uuid
+import yaml
 
 
 app = flask.Flask(__name__)
@@ -82,7 +83,7 @@ def ldap_query_check():
     conn = ldap.initialize('ldap://%s:389' % config['servers'][0])
     conn.protocol_version = ldap.VERSION3
     conn.start_tls_s()
-    conn.simple_bind_s(config['server'], config['password'])
+    conn.simple_bind_s(config['user'], config['password'])
 
     query = '(cn=testlabs)'
     base = 'ou=projects,dc=wikimedia,dc=org'
