@@ -22,6 +22,15 @@ class apt(
         ensure => installed,
     }
 
+    file { '/etc/cron.daily/apt-show-versions':
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0755',
+        source  => 'puppet:///modules/apt/apt-show-versions.crondaily',
+        require => Package['apt-show-versions'],
+    }
+
     package { 'python-apt':
         ensure => installed,
     }
