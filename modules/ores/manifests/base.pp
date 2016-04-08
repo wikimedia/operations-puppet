@@ -30,6 +30,7 @@ class ores::base(
                     'myspell-it',
                     'myspell-nl',
                     'myspell-pt',
+                    'myspell-ru',
                     'myspell-uk')
 
     file { '/srv/ores':
