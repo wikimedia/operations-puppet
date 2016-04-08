@@ -14,14 +14,14 @@ class toollabs::monitoring::icinga {
 
     monitoring::service { 'nfs-on-labs-instances':
         description   => 'NFS read/writeable on labs instances',
-        check_command => 'check_http_url_at_address_for_string!tools-checker.wmflabs.org!/nfs/home!OK',
+        check_command => 'check_http_url_at_address_for_string!checker.tools.wmflabs.org!/nfs/home!OK',
         critical      => true,
         host          => 'tools.wmflabs.org',
     }
 
     monitoring::service { 'nfs-showmount-on-labs-instances':
         description   => 'showmount succeeds on a labs instance',
-        check_command => 'check_http_url_at_address_for_string!tools-checker.wmflabs.org!/nfs/showmount!OK',
+        check_command => 'check_http_url_at_address_for_string!checker.tools.wmflabs.org!/nfs/showmount!OK',
         critical      => false,
         host          => 'tools.wmflabs.org',
     }
