@@ -8,6 +8,7 @@ class contint::website(
   # Need to send Vary: X-Forwarded-Proto since most sites are forced to HTTPS
   # and behind a varnish cache. See also T62822
   include ::apache::mod::headers
+  include ::apache::mod::rewrite
 
   # Static files in these docroots are in integration/docroot.git
 
