@@ -21,6 +21,11 @@ class role::labs::graphite {
 
     include role::statsite
 
+    ferm::service { 'http-graphite-wmflabs':
+        port  => 80,
+        proto => 'tcp',
+    }
+
     ferm::service { 'carbon_c_relay-local_relay_udp':
         proto  => 'udp',
         port   => '1903',
