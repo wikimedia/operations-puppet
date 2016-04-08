@@ -2,6 +2,10 @@
 class role::ganeti {
     include ::ganeti
 
+    system::role { 'role::ganeti':
+        description => 'Ganeti Node',
+    }
+
     # Ganeti needs intracluster SSH root access
     ssh::userkey { 'root-ganeti':
         ensure => present,
