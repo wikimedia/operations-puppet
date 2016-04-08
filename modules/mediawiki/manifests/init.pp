@@ -36,7 +36,7 @@ class mediawiki (
     # We've set the 'php' grain in the past, but we don't really need it anymore
     salt::grain { 'php':
         ensure => absent,
-        value  => 'bogus',
+        value  => 'hhvm',
     }
 
     # /var/log/mediawiki contains log files for the MediaWiki jobrunner
