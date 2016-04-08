@@ -106,7 +106,8 @@ class icinga::plugins {
 
     class { [
         'nagios_common::commands',
-        'nagios_common::check::ganglia'
+        'nagios_common::check::ganglia',
+        'nagios_common::check::redis'
     ] :
     }
 

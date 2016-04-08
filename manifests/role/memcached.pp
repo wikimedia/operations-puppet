@@ -110,10 +110,19 @@ class role::memcached {
         }
     }
 
-    $redis_ports = join($::redis::multidc::instances::instances, ' ')
+
+    # Monitoring
+
+    # Declare monitoring for all redis instances
+    redis::monitoring::instance { $::redis::multidc::instances:
+        settings => $base_settings,
+        map      => $::redis::multidc::replica_map,
+    }
 
     # Firewall rules
     include ::ferm::ipsec_allow
+
+    $redis_ports = join($::redis::multidc::instances::instances, ' ')
 
     ferm::service { 'redis_memcached_role':
         proto => 'tcp',
