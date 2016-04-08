@@ -8,8 +8,13 @@ die() { local st="$?"; echo "$@" >&2; exit $st; }
 
 . /etc/default/hhvm || die
 
-read PID <"${HHVM_RUN_DIR:-/run/hhvm}/hhvm.pid"
-case $PID in ''|*[!0-9]*)
+if [ -x /bin/systemctl ]; then
+    PID=$(/bin/systemctl show -p MainPID hhvm.service | cut -d= -f2)
+else
+    read PID <"${HHVM_RUN_DIR:-/run/hhvm}/hhvm.pid"
+fi;
+
+case $PID in 0|''|*[!0-9]*)
     die "Can't find PID file of HHVM." ;;
 esac
 
