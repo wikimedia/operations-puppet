@@ -37,4 +37,16 @@ class role::labs::graphite {
         port   => '1903',
         srange => '@resolve(labmon1001.eqiad.wmnet)',
     }
+
+    ferm::service { 'statsite_udp':
+        proto   => 'udp',
+        port    => '8125',
+        srange  => '$INTERNAL',
+    }
+
+    ferm::service { 'statsite_tcp':
+        proto   => 'udp',
+        port    => '8125',
+        srange  => '$INTERNAL',
+    }
 }
