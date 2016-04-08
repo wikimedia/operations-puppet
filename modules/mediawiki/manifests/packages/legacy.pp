@@ -24,7 +24,7 @@ class mediawiki::packages::legacy {
 
     # Third-party PHP extensions
     package { [
-        'php5-apc',
+        'php-apc',
         'php5-curl',
         'php5-geoip',
         'php5-igbinary',
