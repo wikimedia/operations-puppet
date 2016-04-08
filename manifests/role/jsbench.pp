@@ -21,6 +21,12 @@ class role::jsbench {
         ensure => directory,
     }
 
+    ferm::service { 've-xvfb':
+        proto  => 'tcp',
+        port   => '6099',
+        srange => '$INTERNAL',
+    }
+
     user { 'jsbench':
         ensure     => present,
         comment    => 'Chromium service user for jsbench',
