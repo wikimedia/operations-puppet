@@ -12,6 +12,20 @@ ssl-key=/etc/mysql/ssl/server-key.pem
 # skip server cert validation until we generate one cert per server
 # it would check the cert's common name against the host
 # ssl-verify-server-cert
+<% elsif @ssl == 'puppet-cert' %>
+# ssl
+ssl-ca=/etc/ssl/certs/Puppet_Internal_CA.pem
+ssl-cert=/etc/mysql/ssl/cert.pem
+ssl-key=/etc/mysql/ssl/server.key
+ssl-verify-server-cert
+<% elsif @ssl == 'multiple-ca' %>
+# ssl
+ssl-ca=/etc/mysql/ssl/ca.crt
+ssl-cert=/etc/mysql/ssl/cert.pem
+ssl-key=/etc/mysql/ssl/server.key
+# skip server cert validation until we generate one cert per server
+# it would check the cert's common name against the host
+# ssl-verify-server-cert
 <% end %>
 
 [mysqld]
@@ -100,6 +114,18 @@ innodb_write_io_threads        = 8
 ssl-ca=/etc/mysql/ssl/cacert.pem
 ssl-cert=/etc/mysql/ssl/server-cert.pem
 ssl-key=/etc/mysql/ssl/server-key.pem
+ssl-cipher=TLSv1.2
+<% elsif @ssl == 'puppet-cert' %>
+# ssl
+ssl-ca=/etc/ssl/certs/Puppet_Internal_CA.pem
+ssl-cert=/etc/mysql/ssl/cert.pem
+ssl-key=/etc/mysql/ssl/server.key
+ssl-cipher=TLSv1.2
+<% elsif @ssl == 'multiple-ca' %>
+# ssl
+ssl-ca=/etc/mysql/ssl/ca.crt
+ssl-cert=/etc/mysql/ssl/cert.pem
+ssl-key=/etc/mysql/ssl/server.key
 ssl-cipher=TLSv1.2
 <% end %>
 <% if @p_s == 'on' %>
