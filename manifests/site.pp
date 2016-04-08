@@ -1322,6 +1322,7 @@ node 'labtestweb2001.wikimedia.org' {
 node 'labmon1001.eqiad.wmnet' {
     role labs::graphite
     include standard
+    include base::firewall
 }
 
 node 'labnet1001.eqiad.wmnet' {
