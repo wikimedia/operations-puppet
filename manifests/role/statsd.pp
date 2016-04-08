@@ -6,13 +6,6 @@
 #
 class role::statsd {
 
-    class { '::statsdlb':
-        ensure        => absent,
-        server_port   => 8125,
-        backend_ports => range(8126, 8131),
-        before        => Class['::statsd_proxy'],
-    }
-
     class { '::statsd_proxy':
         server_port   => 8125,
         backend_ports => range(8126, 8131),
