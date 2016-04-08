@@ -29,6 +29,7 @@ def do_wait(procs):
     """
     for p, f, cmd in procs:
         if p.wait() > 0:
+            f.seek(0)
             raise Exception("command: ", cmd, "output: ", f.read())
         f.seek(0)
         print f.read().strip()
