@@ -10,7 +10,7 @@ class contint::packages::labs {
     include contint::packages
 
     # Fonts needed for browser tests screenshots (T71535)
-    if os_version('ubuntu >= trusty | Debian >= jessie') {
+    if os_version('ubuntu >= trusty || Debian >= jessie') {
         include mediawiki::packages::fonts
     }
 
