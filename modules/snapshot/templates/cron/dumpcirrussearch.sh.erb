@@ -116,3 +116,7 @@ cat $allList | while read wiki; do
 	fi
 done
 
+# Maintain a 'current' symlink always pointing at the most recently completed dump
+if [ "$dryrun" == "false" ]; then
+	ln -sf "$targetDir" "$targetDirBase/current"
+fi
