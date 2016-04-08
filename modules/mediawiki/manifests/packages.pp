@@ -1,5 +1,14 @@
+# === Class mediawiki::packages
+#
+# Packages needed for mediawiki
 class mediawiki::packages {
-    include ::mediawiki::packages::php5
+    # Precise is still used on CI slaves for PHP 5.3 tests
+    if os_version('ubuntu < trusty') {
+        include ::mediawiki::packages::legacy
+    } else {
+        include ::mediawiki::packages::php5
+    }
+
     include ::mediawiki::packages::math
     include ::mediawiki::packages::tex
     require ::apt

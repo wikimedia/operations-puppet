@@ -1,17 +1,8 @@
-# === Class mediawiki::packages::php5
+# === Class mediawiki::packages::legacy
 #
-# This class declares packages that make up Wikimedia's PHP5-based
-# MediaWiki deployment stack. As of August 2014, this is the most common
-# configuration in production, but new installs are configured for HHVM
-# instead.
-#
-class mediawiki::packages::php5 {
-    requires_os('ubuntu >= trusty || Debian >= jessie')
-
-    # We don't need php-apc on php > 5.3
-    package { 'php-apc':
-        ensure => absent,
-    }
+# This class declares packages that are used on legacy versions of ubuntu
+class mediawiki::packages::legacy {
+    requires_os('ubuntu < trusty')
 
     # Run-time
     package { [
@@ -33,13 +24,16 @@ class mediawiki::packages::php5 {
 
     # Third-party PHP extensions
     package { [
+        'php5-apc',
         'php5-curl',
         'php5-geoip',
+        'php5-igbinary',
         'php5-intl',
         'php5-memcached',
         'php5-mysql',
         'php5-redis',
         'php5-xmlrpc',
+        'php5-wmerrors',
     ]:
         ensure => present,
     }

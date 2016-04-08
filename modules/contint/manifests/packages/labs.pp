@@ -8,8 +8,11 @@ class contint::packages::labs {
     require contint::packages::apt
 
     include contint::packages
+
     # Fonts needed for browser tests screenshots (T71535)
-    include mediawiki::packages::fonts
+    if os_version('ubuntu >= trusty | Debian >= jessie') {
+        include mediawiki::packages::fonts
+    }
 
     # Required for javascript testing
     include ::contint::packages::javascript
