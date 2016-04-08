@@ -1180,7 +1180,7 @@ node 'bast3001.wikimedia.org' {
 
 # Primary graphite machines
 node 'graphite1001.eqiad.wmnet' {
-    role graphite::production, statsdlb, performance, graphite::alerts, restbase::alerts, graphite::alerts::reqstats, elasticsearch::alerts
+    role graphite::production, statsd, performance, graphite::alerts, restbase::alerts, graphite::alerts::reqstats, elasticsearch::alerts
     include standard
     include base::firewall
 }
@@ -1193,7 +1193,7 @@ node 'graphite1002.eqiad.wmnet' {
 
 # Primary graphite machines
 node 'graphite2001.codfw.wmnet' {
-    role graphite::production, statsdlb
+    role graphite::production, statsd
     include standard
     include base::firewall
 }
