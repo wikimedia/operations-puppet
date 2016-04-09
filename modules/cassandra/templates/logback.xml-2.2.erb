@@ -90,13 +90,6 @@ appender reference in the root level section below.
     <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
       <level>INFO</level>
     </filter>
-    <filter class="ch.qos.logback.core.filter.EvaluatorFilter">
-      <evaluator>
-        <expression>return logger.equals("org.apache.cassandra.utils.StatusLogger");</expression>
-      </evaluator>
-      <OnMismatch>NEUTRAL</OnMismatch>
-      <OnMatch>DENY</OnMatch>
-    </filter>
   </appender>
 
   <!-- ASYNCLOG assynchronous appender to debug.log (all levels) -->
@@ -136,6 +129,11 @@ appender reference in the root level section below.
     <appender-ref ref="LogbackMetrics" />
     -->
   </root>
+
+  <logger name="org.apache.cassandra.utils.StatusLogger" additivity="false">
+    <appender-ref ref="SYSTEMLOG" />
+    <appender-ref ref="STDOUT"/>
+  </logger>
 
   <logger name="org.apache.cassandra" level="DEBUG"/>
   <logger name="com.thinkaurelius.thrift" level="ERROR"/>
