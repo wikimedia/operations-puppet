@@ -33,7 +33,7 @@ task :teardown do
   extra_modules.each do |x|
       FileUtils.rm('spec/fixtures/modules/%s' % x, :force => true)
   end
-  FileUtils.rmdir('spec/fixtures/modules')
+  FileUtils.rm('spec/fixtures/modules')
 end
 
 RSpec::Core::RakeTask.new(:realspec) do |t|

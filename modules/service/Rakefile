@@ -34,7 +34,7 @@ task :test_checker  do
   sh "nosetests spec/checker/"
 end
 
-task :spec_standalone => [ :setup, :test_checker, :realspec, :teardown]
+task :spec => [ :setup, :test_checker, :realspec, :teardown]
 
-task :default => :spec_standalone do
+task :default => :spec do
 end
