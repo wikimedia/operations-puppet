@@ -51,6 +51,8 @@ def cluster_status(columns=None):
 def set_setting(setting, value, settingtype="transient"):
         es = Elasticsearch(args.server)
         res = es.cluster.put_settings(
+            timeout=args.timeout,
+            master_timeout=args.master_timeout,
             body={
                 settingtype: {
                     setting: value
@@ -64,7 +66,15 @@ def set_setting(setting, value, settingtype="transient"):
 
 
 def set_allocation_state(status):
-    return set_setting("cluster.routing.allocation.enable", status)
+    for attempt in range(REPLICATION_ENABLE_ATTEMPTS):
+        try:
+            if set_setting("cluster.routing.allocation.enable", status):
+                return True
+        except:
+            time.sleep(3)
+            print "failed! -- retrying (%d/%d)" % (attempt,
+                                                   REPLICATION_ENABLE_ATTEMPTS)
+    return False
 
 
 def set_banned_nodes(nodelist, node_type):
@@ -221,23 +231,13 @@ def es_restart_fast(while_down):
 
     # Turn replication back on so things will recover fully
     printu("Enabling all replication...")
-    for attempt in range(REPLICATION_ENABLE_ATTEMPTS):
-        try:
-            if not set_allocation_state("all"):
-                print "failed! -- You will still need to enable replication",
-                print "again with `es-tool start-replication`"
-                return os.EX_UNAVAILABLE
-            else:
-                break
-        except ConnectionError:
-            print "failed! -- retrying (%d/%d)" % (attempt,
-                                                   REPLICATION_ENABLE_ATTEMPTS)
-            time.sleep(3)
-    else:
-        print "failed! -- You will still need to enable replication again",
-        print "with `es-tool start-replication`"
+
+    if not set_allocation_state("all"):
+        print "failed! -- You will still need to enable replication",
+        print "again with `es-tool start-replication`"
         return os.EX_UNAVAILABLE
-    printu("ok\n")
+    else:
+        printu("ok\n")
 
     # Wait a bit
     time.sleep(5)
@@ -345,6 +345,11 @@ parser.add_argument("node", metavar='NODE', type=str, nargs="?", default="",
                     help="IP address or hostname, used by (un)ban-node")
 parser.add_argument("--server", metavar='S', type=str, default="localhost",
                     help="Server to work on, default localhost")
+parser.add_argument("--timeout", metavar='T', type=int, default=10,
+                    help="Timeout (in second), default 10")
+parser.add_argument("--master_timeout", metavar='MT', type=int, default=30,
+                    help="Timeout to connect to the master node (in second), "
+                         "default 30")
 args = parser.parse_args()
 
 try:
