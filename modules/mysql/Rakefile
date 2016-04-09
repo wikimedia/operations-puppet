@@ -1,1 +1,4 @@
 require 'puppetlabs_spec_helper/rake_tasks'
+
+task :spec => :spec_standalone do
+end

@@ -189,19 +189,24 @@ def run_module_spec(module_name)
         # The following is a customized replacement for 'spec_prep'.
         # We do not want to use upstream modules which are usually installed
         # using `rake spec_prep`, instead we symlink to our own modules.
-        directory_name = "spec/fixtures"
-        Dir.mkdir(directory_name) unless File.exists?(directory_name)
+        fixture_directory = "spec/fixtures"
+        fixture_directory_exists = File.exists?(fixture_directory)
+        Dir.mkdir(fixture_directory) unless fixture_directory_exists
         link_name = "spec/fixtures/modules"
-        system("ln -s ../../../../modules #{link_name}") unless File.exists?(link_name)
+        link_exists = File.exists?(link_name)
+        system("ln -s ../../../../modules #{link_name}") unless link_exists
 
         # We also need to create an empty site.pp file in the manifests dir.
-        directory_name = "spec/fixtures/manifests"
-        Dir.mkdir(directory_name) unless File.exists?(directory_name)
+        manifests_directory = "spec/fixtures/manifests"
+        manifests_directory_exists = File.exists?(manifests_directory)
+        Dir.mkdir(manifests_directory) unless manifests_directory_exists
         site_file_name = "spec/fixtures/manifests/site.pp"
-        system("touch #{site_file_name}") unless File.exists?(site_file_name)
+        site_file_name_exists = File.exists?(site_file_name)
+        system("touch #{site_file_name}") unless site_file_name_exists
 
         puts "Invoking tests on module #{module_name}"
-        system('rake spec_standalone')
+        system('rake spec')
+        system("rm #{link_name}") unless link_exists
     end
 end
 
