@@ -28,3 +28,6 @@
 # Jetbrain's IDEA editor settings
 /.idea
 /*.iml
+
+# Rake generated folders
+spec/
