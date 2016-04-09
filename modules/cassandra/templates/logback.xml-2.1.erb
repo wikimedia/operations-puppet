@@ -51,13 +51,6 @@
     <host><%= @logstash_host %></host>
     <port><%= @logstash_port %></port>
     <customFields>{"program":"cassandra", "cluster":"<%= @cluster_name %>"}</customFields>
-    <filter class="ch.qos.logback.core.filter.EvaluatorFilter">
-      <evaluator>
-        <expression>return logger.equals("org.apache.cassandra.utils.StatusLogger");</expression>
-      </evaluator>
-      <OnMismatch>NEUTRAL</OnMismatch>
-      <OnMatch>DENY</OnMatch>
-    </filter>
   </appender>
 
   <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
@@ -79,5 +72,9 @@
     <appender-ref ref="UDP" />
   </root>
 
+  <logger name="org.apache.cassandra.utils.StatusLogger" additivity="false">
+    <appender-ref ref="STDOUT"/>
+    <appender-ref ref="FILE" />
+  </logger>
   <logger name="com.thinkaurelius.thrift" level="ERROR"/>
 </configuration>
