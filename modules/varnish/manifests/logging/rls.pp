@@ -37,4 +37,10 @@ define varnish::logging::rls( $statsd_server = 'statsd' ) {
             enable => true,
         },
     }
+
+    nrpe::monitor_service { 'varnishrls':
+        ensure       => present,
+        description  => 'Varnish traffic logger - varnishrls',
+        nrpe_command => '/usr/lib/nagios/plugins/check_procs -w 1:1 -a "/usr/local/bin/varnishrls" -u root',
+    }
 }
