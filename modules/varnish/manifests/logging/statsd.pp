@@ -64,4 +64,10 @@ define varnish::logging::statsd(
             enable => true,
         },
     }
+
+    nrpe::monitor_service { "varnishstatsd":
+        ensure       => present,
+        description  => "Varnish traffic logger - varnishstatsd",
+        nrpe_command => "/usr/lib/nagios/plugins/check_procs -w 1:1 -a '/usr/local/bin/varnishstatsd' -u root",
+    }
 }

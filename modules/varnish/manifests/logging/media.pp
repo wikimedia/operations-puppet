@@ -37,4 +37,10 @@ define varnish::logging::media( $statsd_server = 'statsd' ) {
             enable => true,
         },
     }
+
+    nrpe::monitor_service { "varnishmedia":
+        ensure       => present,
+        description  => "Varnish traffic logger - varnishmedia",
+        nrpe_command => "/usr/lib/nagios/plugins/check_procs -w 1:1 -a '/usr/local/bin/varnishmedia' -u root",
+    }
 }
