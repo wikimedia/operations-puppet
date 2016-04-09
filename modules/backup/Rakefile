@@ -23,7 +23,7 @@ end
 task :teardown do
   symlinks.each { |x| FileUtils.rm(x[0], :force => true) }
   FileUtils.rmdir('spec/fixtures/modules/%s' % modulename)
-  FileUtils.rmdir('spec/fixtures/modules')
+  FileUtils.rm('spec/fixtures/modules')
 end
 
 RSpec::Core::RakeTask.new(:realspec) do |t|

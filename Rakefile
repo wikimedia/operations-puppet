@@ -201,7 +201,7 @@ def run_module_spec(module_name)
         system("touch #{site_file_name}") unless File.exists?(site_file_name)
 
         puts "Invoking tests on module #{module_name}"
-        system('rake spec_standalone')
+        system('rake spec')
     end
 end
 
