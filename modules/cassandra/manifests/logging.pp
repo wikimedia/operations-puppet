@@ -39,15 +39,10 @@ class cassandra::logging(
         require => Package['cassandra/logstash-logback-encoder'],
     }
 
-    file { '/usr/share/cassandra/lib/commons-compiler-2.7.8.jar':
-        ensure  => 'link',
-        target  => '/srv/deployment/cassandra/logstash-logback-encoder/lib/commons-compiler-2.7.8.jar',
-        require => Package['cassandra/logstash-logback-encoder'],
-    }
-
-    file { '/usr/share/cassandra/lib/janino-2.7.8.jar':
-        ensure  => 'link',
-        target  => '/srv/deployment/cassandra/logstash-logback-encoder/lib/janino-2.7.8.jar',
-        require => Package['cassandra/logstash-logback-encoder'],
+    # removes unnecessary dependencies, deprecates T128787; the following code can be removed once it's run on each node
+    # note! the source dependency jar files needs to be removed from somewhere (maybe trebuchet?? I don't know where) 
+    $useless = ['/usr/share/cassandra/lib/commons-compiler-2.7.8.jar', '/usr/share/cassandra/lib/janino-2.7.8.jar']
+    file { $useless:
+        ensure  => 'absent',
     }
 }
