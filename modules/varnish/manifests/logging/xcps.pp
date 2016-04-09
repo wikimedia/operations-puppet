@@ -37,4 +37,10 @@ define varnish::logging::xcps( $statsd_server = 'statsd' ) {
             enable => true,
         },
     }
+
+    nrpe::monitor_service { 'varnishxcps':
+        ensure       => present,
+        description  => 'Varnish traffic logger - varnishxcps',
+        nrpe_command => '/usr/lib/nagios/plugins/check_procs -w 1:1 -a "/usr/local/bin/varnishxcps" -u root',
+    }
 }
