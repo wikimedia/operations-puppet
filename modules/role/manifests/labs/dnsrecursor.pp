@@ -68,6 +68,7 @@ class role::labs::dnsrecursor {
             'toolserver-legacy',
             'project-proxy',
             'telnet',
+            'wikitextexp',
         ],
         nova_api_url => "http://${nova_controller_hostname}:35357/v2.0",
         alias_file   => $alias_file,
