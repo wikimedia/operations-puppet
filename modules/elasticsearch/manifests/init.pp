@@ -7,6 +7,7 @@
 #       never name your cluster "elasticsearch" because that is the default
 #       and you don't want servers without any configuration to join your
 #       cluster.
+# - $version: The version of elasticsearch that should be installed.
 # - $heap_memory:   amount of memory to allocate to elasticsearch.  Defaults to
 #       "2G".  Should be set to about half of ram or a 30G, whichever is
 #       smaller.
@@ -73,6 +74,7 @@
 #   }
 #
 class elasticsearch($cluster_name,
+                    $version,
                     $heap_memory = '2G',
                     $multicast_group = '224.2.2.4',
                     $plugins_dir = '/srv/deployment/elasticsearch/plugins',

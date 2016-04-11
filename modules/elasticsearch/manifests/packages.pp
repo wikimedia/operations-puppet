@@ -8,7 +8,7 @@ class elasticsearch::packages {
     require_package('openjdk-7-jdk')
 
     package { 'elasticsearch':
-        ensure  => present,
+        ensure  => $::elasticsearch::version,
         require => Package['openjdk-7-jdk'],
     }
 
