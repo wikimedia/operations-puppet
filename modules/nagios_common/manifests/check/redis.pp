@@ -14,7 +14,7 @@ class nagios_common::check::redis(
     require ::passwords::redis
 
     file { '/etc/icinga/.redis_secret':
-        ensure  => directory,
+        ensure  => present,
         owner   => $owner,
         group   => $group,
         mode    => '0400',
