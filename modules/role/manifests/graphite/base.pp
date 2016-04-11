@@ -229,13 +229,13 @@ class role::graphite::base(
     ferm::service { 'carbon_c_relay-frontend_relay_udp':
         proto  => 'udp',
         port   => '2003',
-        srange => '$INTERNAL',
+        srange => '$ALL_NETWORKS',
     }
 
     ferm::service { 'carbon_c_relay-frontend_relay_tcp':
         proto  => 'tcp',
         port   => '2003',
-        srange => '$INTERNAL',
+        srange => '$ALL_NETWORKS',
     }
 
     ferm::service { 'graphite-http':
