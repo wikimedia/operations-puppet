@@ -66,6 +66,18 @@ class role::gerrit::production {
                     'push'      => '+refs/*:refs/*',
                     'mirror'    => true,
                 },
+                'lead' => {
+                    # Note: This is in single quotes on purpose. ${name} is not
+                    # expected to be expanded by puppet but rather by gerrit
+                    #
+                    # lint:ignore:single_quote_string_with_variables
+                    'url'       => 'gerritslave@lead.wikimedia.org:/srv/gerrit/git/${name}.git',
+                    # lint:endignore
+                    'threads'   => '4',
+                    'authGroup' => 'mediawiki-replication',
+                    'push'      => '+refs/*:refs/*',
+                    'mirror'    => true,
+                },
                 'github'  => {
                     # Note: This is in single quotes on purpose. ${name} is not
                     # expected to be expanded by puppet but rather by gerrit
