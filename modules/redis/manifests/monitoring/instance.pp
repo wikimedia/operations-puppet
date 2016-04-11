@@ -12,10 +12,8 @@ define redis::monitoring::instance(
     $lag_warning = 60,
     $lag_critical = 600,
 ) {
-
-    require nagios_common::commands
-
     $port = $title
+
     # Check if slaveof in settings, and not empty
     if has_key($settings, 'slaveof') {
         $slaveof = $settings['slaveof']
