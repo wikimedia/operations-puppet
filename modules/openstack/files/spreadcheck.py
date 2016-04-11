@@ -41,6 +41,8 @@ def classify_instances(creds, project, classifier):
     classification = defaultdict(list)
 
     for server in servers:
+        if getattr(server, 'status') != 'ACTIVE':
+            continue
         name, host = server.name, getattr(server, 'hostId')
         for prefix in classifier:
             if name.startswith(project + '-' + prefix):
