@@ -7,6 +7,7 @@
        notifempty
        dateext
        compress
+       delaycompress
        missingok
        create 644 syslog adm
        rotate 7
