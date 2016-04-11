@@ -1,17 +1,11 @@
 # manifest to setup a gitblit instance
 
-# Setup apache for the git viewer and replicated git repos
+# Setup replicated git repos
 # Also needs gerrit::replicationdest installed
 class gitblit(
     $host           = '',
     $git_repo_owner = 'gerritslave',
 ) {
-    include ::apache::mod::headers
-    include ::apache::mod::proxy
-    include ::apache::mod::proxy_http
-    include ::apache::mod::rewrite
-    include ::apache::mod::ssl
-
     group { 'gitblit':
         ensure => present,
     }
@@ -23,10 +17,6 @@ class gitblit(
         home       => '/var/lib/gitblit',
         system     => true,
         managehome => false,
-    }
-
-    apache::site { $host:
-        content => template("gitblit/${host}.erb"),
     }
 
     file { '/var/lib/git':
@@ -54,19 +44,10 @@ class gitblit(
         source  => 'puppet:///modules/gitblit/gitblit.conf',
     }
 
-    file { '/var/www/robots.txt':
-        mode    => '0444',
-        owner   => 'root',
-        group   => 'root',
-        content => "User-agent: *\nDisallow: /\n",
-    }
-
     service { 'gitblit':
         ensure    => running,
         provider  => 'upstart',
         subscribe => File['/var/lib/gitblit/data/gitblit.properties'],
         require   => File['/etc/init/gitblit.conf'],
     }
-
-
 }
