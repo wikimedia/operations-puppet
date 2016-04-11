@@ -14,11 +14,6 @@ class role::gitblit {
         rule => 'proto tcp dport 8080 { saddr $INTERNAL ACCEPT; }'
     }
 
-    monitoring::service { 'gitblit_web':
-        description   => 'git.wikimedia.org',
-        check_command => 'check_http_url!git.wikimedia.org!/tree/mediawiki%2Fvendor.git',
-    }
-
     nrpe::monitor_service { 'gitblit_process':
         description  => 'gitblit process',
         nrpe_command => "/usr/lib/nagios/plugins/check_procs -w 1:1 -c 1:1 --ereg-argument-array '^/usr/bin/java .*-jar gitblit.jar'"
