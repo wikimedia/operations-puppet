@@ -454,7 +454,7 @@ rewrite	techblog.wikimedia.org	//blog.wikimedia.org
 funnel	dev.wikimedia.org	//www.mediawiki.org/wiki/API:Data_and_developer_hub
 
 # T97341
-override	wikimedia.org/stopsurveillance	https://policy.wikimedia.org/policy-landing/privacy/
+override	wikimedia.org/stopsurveillance	https://policy.wikimedia.org/stopsurveillance/
 
 # rewrite old-bugzilla to the static version
 rewrite	old-bugzilla.wikimedia.org	//static-bugzilla.wikimedia.org
