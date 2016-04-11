@@ -19,4 +19,11 @@ class gerrit::replicationdest( $ssh_key, $slaveuser = 'gerritslave' ) {
         ensure  => present,
         content => $ssh_key,
     }
+
+    # Add ytterbium to ssh exceptions for git replication
+    ferm::service { 'ytterbium_ssh_git':
+        proto  => 'tcp',
+        port   => '22',
+        srange => '@resolve((ytterbium.wikimedia.org gerrit.wikimedia.org))',
+    }
 }
