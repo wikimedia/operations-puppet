@@ -1448,6 +1448,8 @@ node 'lead.wikimedia.org' {
     # Note: whenever moving Gerrit out of ytterbium, you will need
     # to update the role::zuul::configuration variable 'gerrit_server'
     include standard
+
+    role gerrit::production::replicationdest
 }
 
 node 'lithium.eqiad.wmnet' {

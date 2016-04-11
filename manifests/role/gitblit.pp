@@ -18,9 +18,4 @@ class role::gitblit {
         description  => 'gitblit process',
         nrpe_command => "/usr/lib/nagios/plugins/check_procs -w 1:1 -c 1:1 --ereg-argument-array '^/usr/bin/java .*-jar gitblit.jar'"
     }
-
-    # Add ytterbium to ssh exceptions for git replication
-    ferm::rule { 'ytterbium_ssh_git':
-        rule => 'proto tcp dport ssh { saddr (208.80.154.80 208.80.154.81 2620:0:861:3:92b1:1cff:fe2a:e60 2620:0:861:3:208:80:154:80 2620:0:861:3:208:80:154:81) ACCEPT; }'
-    }
 }
