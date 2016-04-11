@@ -114,7 +114,7 @@ class role::memcached {
     # Monitoring
 
     # Declare monitoring for all redis instances
-    redis::monitoring::instance { $::redis::multidc::instances:
+    redis::monitoring::instance { $::redis::multidc::instances::instances:
         settings => $base_settings,
         map      => $::redis::multidc::replica_map,
     }
