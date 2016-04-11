@@ -12,12 +12,12 @@ define redis::monitoring::instance(
     $lag_warning = 60,
     $lag_critical = 600,
 ) {
-    $port = $title
+    $port = $name
 
     # Check if slaveof in settings, and not empty
     if has_key($settings, 'slaveof') {
         $slaveof = $settings['slaveof']
-    } elsif (has_key($map, $title) and has_key($map[$title], 'slaveof')) {
+    } elsif (has_key($map, $port) and has_key($map[$port], 'slaveof')) {
         $slaveof = $map[$title]['slaveof']
     }
     else {
@@ -27,13 +27,13 @@ define redis::monitoring::instance(
     if ($slaveof) {
         monitoring::service{ "redis.tcp_${port}":
             description   => 'Redis status',
-            check_command => "check_redis_replication!${title}!${lag_warning}!${lag_critical}"
+            check_command => "check_redis_replication!${port}!${lag_warning}!${lag_critical}"
 
         }
     } else {
         monitoring::service{ "redis.tcp_${port}":
             description   => 'Redis status',
-            check_command => "check_redis!${title}"
+            check_command => "check_redis!${port}"
         }
     }
 }
