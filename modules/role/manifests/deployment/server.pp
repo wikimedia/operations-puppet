@@ -129,4 +129,7 @@ class role::deployment::server(
     # determining the state of git repos during deployments.
 
     require_package 'percona-toolkit', 'tig'
+
+    # Bug T126262
+    require_package 'php5-readline'
 }
