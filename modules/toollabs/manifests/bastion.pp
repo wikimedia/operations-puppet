@@ -11,6 +11,7 @@
 # Sample Usage:
 #
 class toollabs::bastion inherits toollabs {
+
     include gridengine::admin_host
     include gridengine::submit_host
     include toollabs::dev_environ
@@ -31,6 +32,14 @@ class toollabs::bastion inherits toollabs {
     motd::script { 'bastion-banner':
         ensure => present,
         source => "puppet:///modules/toollabs/40-${::labsproject}-bastion-banner",
+    }
+
+    file {'/etc/security/limits.conf':
+        ensure => file,
+        mode   => '0444',
+        owner  => 'root',
+        group  => 'root',
+        source => 'puppet:///modules/toollabs/limits.conf',
     }
 
     file { '/etc/ssh/ssh_config':
