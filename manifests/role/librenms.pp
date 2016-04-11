@@ -12,6 +12,9 @@ class role::librenms {
     package { 'librenms/librenms':
         provider => 'trebuchet',
     }
+    package { 'php5-ldap':
+        ensure => present,
+    }
 
     $config = {
         'title_image'      => '//upload.wikimedia.org/wikipedia/commons/thumb/2/2b/Wmf_logo_horiz_pms.svg/140px-Wmf_logo_horiz_pms.svg.png',
@@ -50,7 +53,24 @@ class role::librenms {
             'kernel time sync enabled',
         ],
 
-        'auth_mechanism'   => 'mysql',
+        'auth_mechanism'   => 'ldap',
+        'auth_ldap_server'  => "ldap-eqiad.wikimedia.org",
+        'auth_ldap_port'    => 389,
+
+        # This is dumb -- the code requires us to specify the dn rather
+        #  than doing a search, so logins will require 'shell name' rather
+        #  than the more-traditional 'wikitech name'
+        'auth_ldap_prefix'  => "uid=",
+        'auth_ldap_suffix'  => ",ou=people,dc=wikimedia,dc=org",
+        'login_message'     => 'Log in with your ldap "shell name" and password.',
+
+        # In our schema, a group is a list of user dns called 'member'
+        'auth_ldap_groupbase' => "ou=groups,dc=wikimedia,dc=org",
+        'auth_ldap_groupmemberattr' => 'member',
+        'auth_ldap_groupmembertype' => 'fulldn',
+
+        # Give all ops full read/write permissions
+        'auth_ldap_groups'    => {'ops' => {'level' => 10}},
     }
 
     class { '::librenms':
