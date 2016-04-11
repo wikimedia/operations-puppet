@@ -11,13 +11,25 @@ define redis::monitoring::instance(
     $map = {},
     $lag_warning = 60,
     $lag_critical = 600,
-) {
+    ) {
+
+    validate_ensure($ensure)
+    validate_hash($settings)
+    validate_hash($map)
+
+    if $title =~ /^[1-9]\d*/ {
+        # Listen on TCP port
+        $instance_name = "tcp_${title}"
+        $port          = $title
+    } else {
+        fail('redis::monitoring::instance title must be a TCP port.')
+    }
     $port = $title
 
     # Check if slaveof in settings, and not empty
     if has_key($settings, 'slaveof') {
         $slaveof = $settings['slaveof']
-    } elsif (has_key($map, $title) and has_key($map[$title], 'slaveof')) {
+    } elsif (has_key($map, $port) and has_key($map[$port], 'slaveof')) {
         $slaveof = $map[$title]['slaveof']
     }
     else {
@@ -25,15 +37,15 @@ define redis::monitoring::instance(
     }
 
     if ($slaveof) {
-        monitoring::service{ "redis.tcp_${port}":
+        monitoring::service{ "redis.${instance_name}":
             description   => 'Redis status',
-            check_command => "check_redis_replication!${title}!${lag_warning}!${lag_critical}"
+            check_command => "check_redis_replication!${port}!${lag_warning}!${lag_critical}"
 
         }
     } else {
-        monitoring::service{ "redis.tcp_${port}":
+        monitoring::service{ "redis.${instance_name}":
             description   => 'Redis status',
-            check_command => "check_redis!${title}"
+            check_command => "check_redis!${instance_name}"
         }
     }
 }
