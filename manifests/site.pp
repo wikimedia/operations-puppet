@@ -1824,6 +1824,10 @@ node /^mc20[01][0-9]\.codfw\.wmnet/ {
     role memcached
 }
 
+node 'meitnerium.wikimedia.org' {
+    include standard
+}
+
 # OTRS - ticket.wikimedia.org
 node 'mendelevium.eqiad.wmnet' {
     role otrs::webserver
