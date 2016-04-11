@@ -128,5 +128,8 @@ class role::deployment::server(
     # tig is a ncurses-based git utility which is useful for
     # determining the state of git repos during deployments.
 
-    require_package 'percona-toolkit', 'tig'
+    require_package 'percona-toolkit', 'tig', 'php5-readline'
+
+    # Bug T126262
+    require_package 'php5-readline'
 }
