@@ -24,7 +24,6 @@ define redis::monitoring::instance(
     } else {
         fail('redis::monitoring::instance title must be a TCP port.')
     }
-    $port = $title
 
     # Check if slaveof in settings, and not empty
     if has_key($settings, 'slaveof') {
