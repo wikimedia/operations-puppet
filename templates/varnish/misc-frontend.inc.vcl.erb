@@ -43,7 +43,22 @@ sub cluster_fe_miss { }
 sub cluster_fe_pass { }
 
 sub cluster_fe_backend_response {
-    call misc_backend_response_large_objects;
+<% if ! @varnish_version4 -%>
+    // Stream objects >= 1MB or no CL - (varnish4 defaults do_stream=true)
+    if (std.integer(beresp.http.Content-Length, 1048576) >= 1048576 || beresp.http.Content-Length ~ "^[0-9]{8}") {
+        set beresp.do_stream = true;
+    }
+<% end -%>
+
+    // hit_for_pass on objects >= 10MB or no CL
+    if (std.integer(beresp.http.Content-Length, 10485760) >= 10485760 || beresp.http.Content-Length ~ "^[0-9]{9}") {
+<% if @varnish_version4 -%>
+        set beresp.uncacheable = true;
+        return (deliver);
+<% else -%>
+        return (hit_for_pass);
+<% end -%>
+    }
 }
 
 sub cluster_fe_deliver { }
