@@ -2527,6 +2527,16 @@ node 'stat1003.eqiad.wmnet' {
     }
 }
 
+node 'stat1004.eqiad.wmnet' {
+    # stat1004 contains all the tools and libraries to access
+    # the Analytics Cluster services.
+
+    role analytics_cluster::client, analytics_cluster::refinery
+
+    include standard
+    include base::firewall
+}
+
 node /^snapshot100[1-2]\.eqiad\.wmnet/ {
     # NOTE: New snapshot hosts must also be manually added
     # to hiera common.yaml dataset_clients_snapshots.
