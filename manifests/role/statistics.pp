@@ -219,14 +219,28 @@ class role::statistics::migration {
 
     include rsync::server
 
-    file { [ '/a/stat1001', '/a/stat1001/home' ]:
+    file { [ '/srv/stat1001', '/srv/stat1001/home',
+        '/srv/stat1001/var', '/srv/stat1001/var/www',
+        '/srv/stat1001/srv',
+        ]:
         ensure => 'directory',
     }
 
     rsync::server::module { 'home':
-        path        => '/a/stat1001/home',
+        path        => '/srv/stat1001/home',
         read_only   => 'no',
         hosts_allow => $sourceip,
     }
 
+    rsync::server::module { 'varwww':
+        path        => '/srv/stat1001/var/www',
+        read_only   => 'no',
+        hosts_allow => $sourceip,
+    }
+
+    rsync::server::module { 'srv':
+        path        => '/srv/stat1001/srv',
+        read_only   => 'no',
+        hosts_allow => $sourceip,
+    }
 }
