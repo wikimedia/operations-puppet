@@ -116,7 +116,7 @@ class role::memcached {
     # Declare monitoring for all redis instances
     redis::monitoring::instance { $::redis::multidc::instances::instances:
         settings => $base_settings,
-        map      => $::redis::multidc::replica_map,
+        map      => $::redis::multidc::instances::replica_map,
     }
 
     # Firewall rules
