@@ -18,8 +18,14 @@
 class toollabs::exec_environ {
     include locales::extended
     include identd
-    include ::mediawiki::packages::fonts
     include ::redis::client::python
+
+    # Mediawiki fontlist no longer supports precise systems
+    if os_version('ubuntu precise') {
+        include ::toollabs::legacy::fonts
+    } else {
+        include ::mediawiki::packages::fonts
+    }
 
     package { [
         # Please keep all packages in each group sorted in alphabetical order
