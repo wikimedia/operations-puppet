@@ -4,6 +4,8 @@ After=varnish<%= /\w/.match(@instance_name) ? "-#{@instance_name}" : '' -%>.serv
 
 [Service]
 ExecStart=/usr/local/bin/varnishstatsd <%= /\w/.match(@instance_name) ? "--varnish-instance_name=#{@instance_name}" : ""  %> --statsd-server=<%= @statsd_server %> --key-prefix=<%= @key_prefix %>
+Restart=always
+RestartSec=5s
 
 [Install]
 WantedBy=multi-user.target
