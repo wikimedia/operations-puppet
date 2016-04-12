@@ -6,8 +6,6 @@ admin::groups:
   - wdqs-admins
   - eventlogging-admins
   - aqs-admins
-  - deploy-phabricator
-
 debdeploy::grains:
   debdeploy-deployment:
     value: standard
