@@ -32,4 +32,15 @@ class role::jobqueue_redis {
     diamond::collector { 'Redis':
         settings => { instances => join($uris, ', ') }
     }
+
+    # Firewall rules
+    include ::ferm::ipsec_allow
+
+    $redis_ports = join($instances, ' ')
+
+    ferm::service { 'redis_jobqueue_role':
+        proto => 'tcp',
+        port  => inline_template('(<%= @redis_ports %>)'),
+    }
+
 }
