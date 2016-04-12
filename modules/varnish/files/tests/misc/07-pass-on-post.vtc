@@ -18,13 +18,13 @@ varnish v1 -arg "-p vcc_err_unref=false" -vcl+backend {
 } -start
 
 client c1 {
-    txreq -req POST -hdr "Host: performance.wikimedia.org"
+    txreq -req POST -hdr "X-Forwarded-Proto: https" -hdr "Host: performance.wikimedia.org"
     rxresp
     expect resp.status == 200
 }
 
 client c2 {
-    txreq -req HEAD -hdr "Host: performance.wikimedia.org"
+    txreq -req HEAD -hdr "X-Forwarded-Proto: https" -hdr "Host: performance.wikimedia.org"
     rxresp
     expect resp.status == 200
 }

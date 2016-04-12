@@ -1,4 +1,4 @@
-varnishtest "gerrit.wikimedia.org: no caching"
+varnishtest "etherpad.wikimedia.org: no caching"
 
 server s1 {
     rxreq
@@ -16,7 +16,7 @@ varnish v1 -arg "-p vcc_err_unref=false" -vcl+backend {
 } -start
 
 client c1 {
-    txreq -hdr "Host: gerrit.wikimedia.org"
+    txreq -hdr "X-Forwarded-Proto: https" -hdr "Host: etherpad.wikimedia.org"
     rxresp
     expect resp.status == 200
 }
