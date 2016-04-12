@@ -87,13 +87,6 @@ class role::cache::misc {
             'be_opts'  => $app_def_be_opts,
             'req_host' => 'labtesthorizon.wikimedia.org',
         },
-        'dataset1001' => {
-            'dynamic'  => 'no',
-            'type'     => 'random',
-            'backends' => ['dataset1001.wikimedia.org'],
-            'be_opts'  => $app_def_be_opts,
-            'req_host' => 'download.wikimedia.org',
-        },
         'etherpad1001' => {
             'dynamic'  => 'no',
             'type'     => 'random',
