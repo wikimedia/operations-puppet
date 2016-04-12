@@ -2209,7 +2209,7 @@ node /^oresrdb100[12]\.eqiad\.wmnet$/ {
 
 # VisualEditor performance testing rig
 node 'osmium.eqiad.wmnet' {
-    role ve
+    role ve, bastionhost::migration
     include ::standard
 }
 
