@@ -18,8 +18,15 @@
 define varnish::logging::xcps( $statsd_server = 'statsd' ) {
     include varnish::common
 
+    if (hiera('varnish_version4', false)) {
+        # Use v4 version of varnishxcps
+        $varnish4_python_suffix = '4'
+    } else {
+        $varnish4_python_suffix = ''
+    }
+
     file { '/usr/local/bin/varnishxcps':
-        source  => 'puppet:///modules/varnish/varnishxcps',
+        source  => "puppet:///modules/varnish/varnishxcps${varnish4_python_suffix}",
         owner   => 'root',
         group   => 'root',
         mode    => '0555',
