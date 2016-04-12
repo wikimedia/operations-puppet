@@ -2209,7 +2209,7 @@ node /^oresrdb100[12]\.eqiad\.wmnet$/ {
 
 # VisualEditor performance testing rig
 node 'osmium.eqiad.wmnet' {
-    role ve, bastionhost::migration
+    role ve
     include ::standard
 }
 
@@ -2572,7 +2572,7 @@ node 'titanium.wikimedia.org' {
 
 # test system for performance team (T117888)
 node 'tungsten.eqiad.wmnet' {
-    role testsystem, xhgui
+    role testsystem, xhgui, bastionhost::migration
 }
 
 node 'uranium.wikimedia.org' {
