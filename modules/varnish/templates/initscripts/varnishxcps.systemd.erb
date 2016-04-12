@@ -4,6 +4,8 @@ After=varnish-frontend.service
 
 [Service]
 ExecStart=/usr/local/bin/varnishxcps --statsd-server=<%= @statsd_server %>
+Restart=always
+RestartSec=5s
 
 [Install]
 WantedBy=multi-user.target
