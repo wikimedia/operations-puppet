@@ -13,7 +13,6 @@ class base::standard_packages {
     $packages = [
         'acct',
         'ack-grep',
-        'apt-transport-https',
         'atop',
         'coreutils',
         'debian-goodies',
@@ -46,7 +45,7 @@ class base::standard_packages {
         ensure => latest,
     }
 
-    require_package('gdb')
+    require_package('gdb', 'apt-transport-https')
     require_package('git')
 
     # This should be in $packages, but moved here temporarily because it's
