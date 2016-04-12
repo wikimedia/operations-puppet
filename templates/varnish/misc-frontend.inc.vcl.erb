@@ -30,7 +30,7 @@ sub cluster_fe_recv {
     ) {
         if (req.http.X-Forwarded-Proto != "https") {
             set req.http.Location = "https://" + req.http.Host + req.url;
-            <%= error_synth(755, "TLS Redirect") -%>
+            <%= error_synth(751, "TLS Redirect") -%>
         }
     }
 
@@ -63,11 +63,4 @@ sub cluster_fe_backend_response {
 
 sub cluster_fe_deliver { }
 
-sub cluster_fe_err_synth {
-    // If status is 755, then we are forcing a redirect to https.
-    if (<%= @resp_obj -%>.status == 755) {
-        set <%= @resp_obj -%>.http.Location = req.http.Location;
-        set <%= @resp_obj -%>.status = 301;
-        return(deliver);
-    }
-}
+sub cluster_fe_err_synth { }
