@@ -51,6 +51,8 @@ Puppet::Type.type(:package).provide(
 
     FileUtils.chown_R(deploy_user, nil, deploy_root)
 
+    FileUtils.cd(BASE_PATH)
+
     Puppet.debug "scap pkg [#{repo_path}] root=#{deploy_root}, user=#{deploy_user}"
 
     uid = Etc.getpwnam(deploy_user).uid
