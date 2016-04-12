@@ -14,6 +14,10 @@ class role::jobqueue_redis {
         # The instances are the same we'd find on its master
         $instances = redis_get_instances($slaveof, $shards)
         mediawiki::jobqueue_redis { $instances: slaveof => $slaveof}
+        # Monitoring
+        mediawiki::monitoring::instance { $instances:
+            settings => {slaveof => $slaveof}
+        }
     } else {
         # Local master
         # Encrypt the replication
@@ -26,6 +30,8 @@ class role::jobqueue_redis {
         # find out the replication topology
         $slaves_map = redis_add_replica({}, $ip, $shards, $::mw_primary)
         mediawiki::jobqueue_redis {$instances: map => $slaves_map}
+        # Monitoring
+        mediawiki::monitoring::instance { $instances: map => $slaves_map}
     }
 
     $uris = apply_format("localhost:%s/${password}", $instances)
