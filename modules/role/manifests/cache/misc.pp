@@ -146,13 +146,6 @@ class role::cache::misc {
                 'grafana-admin.wikimedia.org'
             ],
         },
-        'magnesium' => { # RT and racktables
-            'dynamic'  => 'no',
-            'type'     => 'random',
-            'backends' => ['magnesium.wikimedia.org'],
-            'be_opts'  => $app_def_be_opts,
-            'req_host' => 'rt.wikimedia.org',
-        },
         'netmon1001' => { # servermon
             'dynamic'  => 'no',
             'type'     => 'random',
