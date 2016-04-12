@@ -50,7 +50,7 @@ apps:
       eqiad: 'api.svc.eqiad.wmnet'
       codfw: 'api.svc.codfw.wmnet'
   rendering:
-    route: 'eqiad'
+    route: 'codfw'
     backends:
       eqiad: 'rendering.svc.eqiad.wmnet'
       codfw: 'rendering.svc.codfw.wmnet'
