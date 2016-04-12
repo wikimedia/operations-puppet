@@ -405,10 +405,7 @@ sub vcl_backend_error {
 // Varnish3 vcl_error
 sub vcl_error {
 	call wm_common_v3_purge_error;
-
-<% if @vcl_config.fetch("https_redirects", false) -%>
 	call https_error_redirect;
-<% end -%>
 
 	// retry 503 once in frontend instances, to paper over transient issues
 	if (obj.status == 503 && req.restarts == 0) {
