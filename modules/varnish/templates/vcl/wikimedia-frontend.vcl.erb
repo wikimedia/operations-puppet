@@ -45,6 +45,9 @@ sub https_recv_redirect {
 	}
 }
 
+<% end -%>
+// ^ end HTTPS block
+
 // *** HTTPS error code - implements 301 response for recv code
 sub https_error_redirect {
 	if (<%= @resp_obj %>.status == 751) {
@@ -71,9 +74,6 @@ sub https_deliver_hsts {
 		}
 	}
 }
-
-<% end -%>
-// ^ end HTTPS block
 
 sub normalize_request {
 	// We shouldn't even legally be receiving proxy-style requests, as we're not a
@@ -357,9 +357,7 @@ sub vcl_deliver {
 		}
 	}
 
-<% if @vcl_config.fetch("https_redirects", false) -%>
 	call https_deliver_hsts;
-<% end -%>
 
 	call analytics_deliver;
 
@@ -382,9 +380,7 @@ sub vcl_deliver {
 // Varnish4 vcl_synth+vcl_backend_error
 
 sub vcl_synth {
-<% if @vcl_config.fetch("https_redirects", false) -%>
 	call https_error_redirect;
-<% end -%>
 	call cluster_fe_err_synth;
 	if (resp.status > 400 && resp.status != 413) {
 		call synth_errorpage;
