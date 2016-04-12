@@ -22,7 +22,7 @@ import sys
 
 
 numbers = re.compile('([0-9]+)')
-base_url = 'http://config-master.wikimedia.org/pybal'
+base_url = 'https://config-master.wikimedia.org/pybal'
 dcs = {
     'eqiad': ['apaches', 'api', 'bits', 'https', 'mobile', 'rendering', 'text', 'upload'],
     'esams': ['bits', 'https', 'text', 'upload'],
