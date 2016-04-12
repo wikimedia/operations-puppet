@@ -7,7 +7,7 @@
   Grep for Lua or CSS and JS code fragments on (per default) MediaWiki wiki pages
 
   positional arguments:
-    term             text to search for
+    term             regex to search for
 
   optional arguments:
     -h, --help       show this help message and exit
@@ -18,7 +18,9 @@
     --title TITLE    restrict search to pages with this title
 
   mwgrep will grep the MediaWiki namespace across Wikimedia wikis. specify
-  --user to search the user namespace instead.
+  --user to search the user namespace instead. See the lucene documentation
+  for org.apache.lucene.util.automaton.RegExp for supported syntax. The current
+  lucene version is available from `curl search.svc.eqiad.wmnet:9200`.
 
 """
 import sys
@@ -95,11 +97,15 @@ args = ap.parse_args()
 
 filters = [
     {'term': {'namespace': str(args.ns)}},
-    {'script': {
-		'file': 'mwgrep',
-		'lang': 'groovy',
-		'params': { 'query': args.term }
-	}},
+    {'source_regex': {
+        'regex': args.term,
+        'field': 'source_text',
+        'ngram_field': 'source_text.trigram',
+        'max_inspect': 10000,
+        'max_determinized_states': 20000,
+        'case_sensitive': true,
+        'locale': 'en',
+    }},
 ]
 
 if args.ns == NS_USER or args.ns == NS_MEDIAWIKI:
