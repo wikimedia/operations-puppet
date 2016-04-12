@@ -59,6 +59,13 @@ host hassium {
     filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
+host kraz {
+    hardware ethernet aa:00:00:5f:b1:02;
+    fixed-address kraz.codfw.wmnet;
+    option pxelinux.pathprefix "jessie-installer/";
+    filename "jessie-installer/debian-installer/amd64/pxelinux.0";
+}
+
 host krypton {
     hardware ethernet aa:00:00:7e:e0:22;
     fixed-address krypton.eqiad.wmnet;

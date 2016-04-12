@@ -1129,6 +1129,13 @@ node 'holmium.wikimedia.org' {
     include ldap::role::client::labs
 }
 
+# irc.wikimedia.org (replaces argon)
+node 'kraz.codfw.wmnet' {
+    role mw_rc_irc
+
+    interface::add_ip6_mapped { 'main': }
+}
+
 # labservices1001 hosts openstack-designate, the labs DNS service.
 node 'labservices1001.wikimedia.org' {
     role labs::dns, labs::openstack::designate::server, labs::dnsrecursor
