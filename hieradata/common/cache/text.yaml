@@ -35,7 +35,7 @@ nodes:
     - 'cp4018.ulsfo.wmnet'
 apps:
   appservers:
-    route: 'eqiad'
+    route: 'codfw'
     backends:
       eqiad: 'appservers.svc.eqiad.wmnet'
       codfw: 'appservers.svc.codfw.wmnet'
@@ -45,7 +45,7 @@ apps:
       eqiad: 'hassium.eqiad.wmnet'
       codfw: 'hassaleh.codfw.wmnet'
   api:
-    route: 'eqiad'
+    route: 'codfw'
     backends:
       eqiad: 'api.svc.eqiad.wmnet'
       codfw: 'api.svc.codfw.wmnet'
