@@ -1023,6 +1023,7 @@ node 'fluorine.eqiad.wmnet' {
     $cluster = 'misc'
 
     include standard
+    include role::statistics::migration
 
     class { 'role::logging::mediawiki':
         monitor       => false,

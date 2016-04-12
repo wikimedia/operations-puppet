@@ -204,3 +204,29 @@ class role::statistics::web inherits role::statistics {
     }
 
 }
+
+
+# setup rsync to copy home dirs for server upgrade
+class role::statistics::migration {
+
+    $sourceip='10.64.21.101'
+
+    ferm::service { 'stat-migration-rsync':
+        proto  => 'tcp',
+        port   => '873',
+        srange => "${sourceip}/32",
+    }
+
+    include rsync::server
+
+    file { [ '/a/stat1001', '/a/stat1001/home' ]:
+        ensure => 'directory',
+    }
+
+    rsync::server::module { 'home':
+        path        => '/a/stat1001/home',
+        read_only   => 'no',
+        hosts_allow => $sourceip,
+    }
+
+}
