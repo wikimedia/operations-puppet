@@ -2,7 +2,7 @@
 # MediaWiki should be reached to the master datacenter,
 # while other services should be polled locally
 app_routes:
-  mediawiki: 'eqiad'
+  mediawiki: 'codfw'
   parsoid: "%{::site}"
   restbase: "%{::site}"
   mobileapps: "%{::site}"
