@@ -4,6 +4,7 @@ After=varnish-frontend.service
 
 [Service]
 ExecStart=/usr/local/bin/varnishmedia --statsd-server=<%= @statsd_server %>
+Restart=always
 
 [Install]
 WantedBy=multi-user.target
