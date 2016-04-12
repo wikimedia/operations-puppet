@@ -206,13 +206,6 @@ class role::cache::misc {
             'be_opts'  => $app_def_be_opts,
             'req_host' => 'ticket.wikimedia.org',
         },
-        'ytterbium' => { # Gerrit
-            'dynamic'  => 'no',
-            'type'     => 'random',
-            'backends' => ['ytterbium.wikimedia.org'],
-            'be_opts'  => merge($app_def_be_opts, { 'port' => 8080 }),
-            'req_host' => 'gerrit.wikimedia.org',
-        },
         'logstash_director' => {
             'dynamic'  => 'no',
             'type'     => 'random',
