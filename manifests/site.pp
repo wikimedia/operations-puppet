@@ -2307,10 +2307,7 @@ node /^rdb100[1-9]\.eqiad\.wmnet/ {
 
 node /^rdb200[1-6]\.codfw\.wmnet/ {
     role jobqueue_redis
-
-    if $::hostname == 'rdb2001' {
-        include base::firewall
-    }
+    include base::firewall
 }
 
 # restbase eqiad cluster
