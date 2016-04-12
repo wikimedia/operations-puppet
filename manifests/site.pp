@@ -2322,6 +2322,7 @@ node 'rcs1001.eqiad.wmnet', 'rcs1002.eqiad.wmnet' {
 
 node /^rdb100[1-9]\.eqiad\.wmnet/ {
     role jobqueue_redis
+    include base::firewall
 }
 
 node /^rdb200[1-6]\.codfw\.wmnet/ {
