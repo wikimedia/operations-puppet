@@ -42,7 +42,10 @@ class MediaVarnishLogProcessor(varnishprocessor.VarnishLogProcessor):
 
     def process_transaction(self, transaction):
         """Process a single completed transaction."""
-        status_code = transaction['TxStatus']
+        status_code = transaction.get('TxStatus')
+        if status_code is None:
+            return
+
         metric_keys = ['reqs.all', 'resps.' + status_code]
 
         if 'RxHeader' in transaction:
