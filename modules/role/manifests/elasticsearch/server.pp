@@ -71,13 +71,4 @@ class role::elasticsearch::server{
         mode    => '0755',
         require => Package['elasticsearch'],
     }
-
-    file { '/etc/elasticsearch/scripts/mwgrep.groovy':
-        ensure  => file,
-        owner   => 'root',
-        group   => 'root',
-        content => '_source["text"].contains(query)',
-        mode    => '0444',
-        require => Package['elasticsearch'],
-    }
 }
