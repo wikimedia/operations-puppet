@@ -25,12 +25,6 @@ define mediawiki::jobqueue_redis(
     ) {
     include ::passwords::redis
 
-    ferm::service { "redis-server-${port}":
-        proto  => 'tcp',
-        port   => $port,
-        srange => '$ALL_NETWORKS',
-    }
-
     $slaveof_actual = $slaveof ? {
         /^\S+ \d+$/ => $slaveof,
         /^\S+$/     => "${slaveof} ${port}",
