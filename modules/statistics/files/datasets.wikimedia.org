@@ -4,6 +4,12 @@ NameVirtualHost *:80
 
   DocumentRoot /srv/datasets.wikimedia.org
 
+  RewriteEngine on
+  RewriteCond %{HTTP:X-Forwarded-Proto} !https
+  RewriteRule ^/(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,E=ProtoRedirect]
+  Header always merge Vary X-Forwarded-Proto env=ProtoRedirect
+  Header always set Strict-Transport-Security "max-age=31536000"
+
   <Directory /srv/datasets.wikimedia.org >
     Options Indexes FollowSymLinks MultiViews
     AllowOverride None
