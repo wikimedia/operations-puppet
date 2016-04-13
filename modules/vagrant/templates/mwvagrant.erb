@@ -5,4 +5,4 @@
 # Adding `alias vagrant=/usr/local/bin/mwvagrant` to your shell will make
 # usage more natural.
 
-exec sudo -u mwvagrant -n -- /usr/bin/env VAGRANT_HOME="<%= @vagrant_home %>" MWV_ENVIRONMENT="labs" /usr/bin/vagrant "$@"
+exec sudo --preserve-env -u mwvagrant -n -- /usr/bin/env VAGRANT_HOME="<%= @vagrant_home %>" MWV_ENVIRONMENT="labs" /usr/bin/vagrant "$@"
