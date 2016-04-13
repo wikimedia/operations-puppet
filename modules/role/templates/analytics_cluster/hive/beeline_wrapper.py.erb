@@ -53,4 +53,4 @@ for option in DEFAULT_OPTIONS.keys():
 
 # Pass args to the beeline process and replace the current process with
 # beeline by using the exec call
-os.execvp('beeline', ['beeline'] + ARGS)
+os.execv('beeline', ['/usr/bin/beeline'] + ARGS)
