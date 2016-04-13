@@ -60,8 +60,13 @@ mapreduce_map_java_opts:                    -Xmx1638m  # 0.8 * 2G
 mapreduce_reduce_memory_mb:                 4096       # 2 * 2G
 mapreduce_reduce_java_opts:                 -Xmx3276m  # 0.8 * 2 * 2G
 
+# This is the heap zize of YARN daemons ResourceManager and NodeManagers.
+# This setting is used to configure the max heap size for both.
+# The default is 1000m, we increase it to 2048m in production.
+yarn_heapsize:                              2048
+
 # Yarn ApplicationMaster container size and  max heap size (-Xmx)
-yarn_app_mapreduce_am_resource_mb:           4096      # 2 * 2G
+yarn_app_mapreduce_am_resource_mb:          4096      # 2 * 2G
 yarn_app_mapreduce_am_command_opts:         -Xmx3276m  # 0.8 * 2 * 2G
 
 # Save 8G for OS and other processes.
