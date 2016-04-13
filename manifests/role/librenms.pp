@@ -71,8 +71,8 @@ class role::librenms {
         'auth_ldap_groupmembertype' => 'fulldn',
 
         # Give all ops full read/write permissions
-        'auth_ldap_group'  => ['cn=ops,ou=groups,dc=wikimedia,dc=org'],
-        'auth_ldap_groups' => {'ops' => {'level' => 10}},
+        'auth_ldap_group'  => ['cn=ops,ou=groups,dc=wikimedia,dc=org', 'cn=librenms-readers,ou=groups,dc=wikimedia,dc=org'],
+        'auth_ldap_groups' => {'ops' => {'level' => 10}, 'librenms-readers' => {'level' => 5}},
     }
 
     class { '::librenms':
