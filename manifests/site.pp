@@ -186,7 +186,7 @@ node 'bast1001.wikimedia.org' {
 
     $cluster = 'misc'
     $ganglia_aggregator = true
-    role bastionhost::general, bastionhost::migration
+    role bastionhost::general
 }
 
 # Bastion in Texas
