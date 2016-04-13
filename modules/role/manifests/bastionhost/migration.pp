@@ -1,7 +1,7 @@
 # setup rsync to copy home dirs for server upgrade
 class role::bastionhost::migration {
 
-    $sourceip='10.64.0.22' # tungsten
+    $sourceip='208.80.154.149'
 
     ferm::service { 'bast-home-rsync':
         proto  => 'tcp',
