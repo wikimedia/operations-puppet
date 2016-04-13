@@ -513,7 +513,17 @@ node /^db10(21|24|36|54|60|63|67|74|76)\.eqiad\.wmnet/ {
     include base::firewall
 }
 
-node /^db20(17|35|41|49|56|63|64)\.codfw\.wmnet/ {
+node /^db20(17)\.codfw\.wmnet/ {
+    class { 'role::mariadb::core':
+        shard         => 's2',
+        p_s           => 'on',
+        binlog_format => 'ROW',
+        ssl           => 'multiple-ca',
+    }
+    include base::firewall
+}
+
+node /^db20(35|41|49|56|63|64)\.codfw\.wmnet/ {
     class { 'role::mariadb::core':
         shard         => 's2',
         p_s           => 'on',
