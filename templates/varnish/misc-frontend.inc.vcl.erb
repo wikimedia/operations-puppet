@@ -24,7 +24,6 @@ sub cluster_fe_recv {
     if (
            req.http.Host != "git.wikimedia.org"
         && req.http.Host != "graphite.wikimedia.org"
-        && req.http.Host != "datasets.wikimedia.org"
     ) {
         if (req.http.X-Forwarded-Proto != "https") {
             set req.http.Location = "https://" + req.http.Host + req.url;
