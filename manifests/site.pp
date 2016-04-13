@@ -180,13 +180,14 @@ node 'baham.wikimedia.org' {
 
 # Bastion in Virginia
 node 'bast1001.wikimedia.org' {
+
+    role bastionhost::general
+
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
     }
 
     $cluster = 'misc'
-    $ganglia_aggregator = true
-    role bastionhost::general
 }
 
 # Bastion in Texas
