@@ -29,4 +29,17 @@ class keyholder::monitoring( $ensure = present ) {
         nrpe_command => "/usr/bin/sudo ${plugin_path}",
         require      => Sudo::User['nagios_check_keyholder'],
     }
+
+    sudo::user { 'diamond_check_keyholder':
+        ensure     => $ensure,
+        user       => 'diamond',
+        privileges => [ "ALL = NOPASSWD: ${plugin_path}" ],
+        require    => File[$plugin_path],
+    }
+
+    diamond::collector::nagios { 'keyholder_status':
+        ensure  => $ensure,
+        command => [ '/usr/bin/sudo', $plugin_path ],
+        require => Sudo::User['diamond_check_keyholder']
+    }
 }
