@@ -32,4 +32,14 @@ class role::puppetmaster::frontend {
             'dbserver'          => 'm1-master.eqiad.wmnet',
         }
     }
+
+    ferm::service { 'puppetmaster-backend':
+        proto => 'tcp',
+        port  => 8141,
+    }
+
+    ferm::service { 'puppetmaster-frontend':
+        proto => 'tcp',
+        port  => 8140,
+    }
 }
