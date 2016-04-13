@@ -1,0 +1,38 @@
+# dsh group for mediawiki installation
+# This file is used by scap, and is mantained by puppet.
+
+# Non load-balanced hosts
+
+# deployment
+tin.eqiad.wmnet
+mira.codfw.wmnet
+
+# maintenance
+terbium.eqiad.wmnet
+wasat.codfw.wmnet
+
+# wikitech
+silver.wikimedia.org
+
+# snapshots
+snapshot1001.eqiad.wmnet
+snapshot1002.eqiad.wmnet
+snapshot1003.eqiad.wmnet
+snapshot1004.eqiad.wmnet
+snapshot1005.eqiad.wmnet
+snapshot1006.eqiad.wmnet
+snapshot1007.eqiad.wmnet
+
+# Eqiad main
+<%= @appserver_eqiad.keys.sort.join("\n") %>
+
+# Eqiad api
+<%= @api_eqiad.keys.sort.join("\n") %>
+
+# Codfw main
+<%= @appserver_codfw.keys.sort.join("\n") %>
+
+# Codfw api
+<%= @api_codfw.keys.sort.join("\n") %>
+
+

@@ -26,11 +26,33 @@ class scap::dsh (
         mode   => '0444',
     }
     file { '/etc/dsh/group':
+        ensure => directory,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+    }
+
+    $appserver_eqiad = conftool('dc=eqiad,cluster=appserver,service=apache2','all')
+    $appserver_codfw = conftool('dc=codfw,cluster=appserver,service=apache2','all')
+    $api_eqiad = conftool('dc=eqiad,cluster=api_appserver,service=apache2','all')
+    $api_codfw = conftool('dc=codfw,cluster=api_appserver,service=apache2','all')
+    $parsoid_eqiad = conftool('dc=eqiad,cluster=parsoid,service=parsoid','all')
+    $parsoid_codfw = conftool('dc=codfw,cluster=parsoid,service=parsoid','all')
+
+    file { '/etc/dsh/group/mediawiki-installation':
+        ensure  => present,
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-        source  => $group_source,
-        recurse => true,
+        content => template('scap/dsh/mediawiki-installation.erb')
+    }
+
+    file { '/etc/dsh/group/parsoid':
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        content => template('scap/dsh/parsoid.erb')
     }
 
     file { '/etc/dsh/group/scap-proxies':
