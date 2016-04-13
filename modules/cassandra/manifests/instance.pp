@@ -206,11 +206,10 @@ define cassandra::instance(
     }
 
     file { '/etc/cassandra-instances.d':
-        ensure  => directory,
-        owner   => 'cassandra',
-        group   => 'cassandra',
-        mode    => '0700',
-        require => Package['cassandra']
+        ensure => directory,
+        owner  => 'cassandra',
+        group  => 'cassandra',
+        mode   => '0700',
     }
 
     file { "/etc/cassandra-instances.d/${tls_hostname}.yaml":
@@ -218,7 +217,6 @@ define cassandra::instance(
         owner   => 'cassandra',
         group   => 'cassandra',
         mode    => '0400',
-        require => Package['cassandra'],
     }
 
     base::service_unit { $service_name:
