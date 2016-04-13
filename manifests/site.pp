@@ -462,9 +462,16 @@ node /^db10(33)\.eqiad\.wmnet/ {
 # MariaDB 10
 
 # s1 (enwiki) core production slave dbs on eqiad
-node /^db10(51|55|66|72|73)\.eqiad\.wmnet/ {
+node /^db10(55|66|72|73)\.eqiad\.wmnet/ {
     class { 'role::mariadb::core':
         shard => 's1',
+    }
+}
+
+node /^db10(51)\.eqiad\.wmnet/ {
+    class { 'role::mariadb::core':
+        shard => 's1',
+        ssl   => 'puppet-cert',
     }
 }
 
@@ -490,6 +497,7 @@ node /^db20(16|34|42|48|55|62|69|70)\.codfw\.wmnet/ {
         shard         => 's1',
         p_s           => 'on',
         binlog_format => 'ROW',
+        ssl           => 'puppet-cert',
     }
     include base::firewall
 }
