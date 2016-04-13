@@ -25,7 +25,6 @@ sub cluster_fe_recv {
            req.http.Host != "git.wikimedia.org"
         && req.http.Host != "graphite.wikimedia.org"
         && req.http.Host != "datasets.wikimedia.org"
-        && req.http.Host != "transparency.wikimedia.org"
         && req.http.Host != "stats.wikimedia.org"
     ) {
         if (req.http.X-Forwarded-Proto != "https") {
