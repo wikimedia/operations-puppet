@@ -80,7 +80,6 @@ class role::cache::upload {
     })
 
     $fe_vcl_config = merge($common_vcl_config, {
-        'https_redirects'  => true,
         'ttl_cap'          => '1h',
         'pass_random'      => false,
     })

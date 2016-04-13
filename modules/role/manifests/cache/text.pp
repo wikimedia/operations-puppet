@@ -107,7 +107,6 @@ class role::cache::text {
 
     $fe_vcl_config = merge($common_vcl_config, {
         'enable_geoiplookup' => true,
-        'https_redirects'    => true,
         'secure_post'        => false,
     })
 
