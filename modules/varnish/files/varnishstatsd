@@ -97,6 +97,18 @@ statuses = collections.OrderedDict()
 buf = io.BytesIO()
 
 
+def log_value_err(callback):
+    def wrapper(transaction_id, tag, record, remote_party):
+        try:
+            return callback(transaction_id, tag, record, remote_party)
+        except ValueError as err:
+            print locals()
+            return
+
+    return wrapper
+
+
+@log_value_err
 def vsl_callback(transaction_id, tag, record, remote_party):
     global buf
 
