@@ -58,7 +58,7 @@ define monitoring::graphite_threshold(
     $until                 = undef,
     $percentage            = 1,
     $under                 = false,
-    $graphite_url          = 'http://graphite.wikimedia.org',
+    $graphite_url          = 'https://graphite.wikimedia.org',
     $timeout               = 10,
     $host                  = $::hostname,
     $retries               = 3,

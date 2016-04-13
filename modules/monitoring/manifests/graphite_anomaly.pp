@@ -50,7 +50,7 @@ define monitoring::graphite_anomaly(
     $warning,
     $critical,
     $check_window          = 100,
-    $graphite_url          = 'http://graphite.wikimedia.org',
+    $graphite_url          = 'https://graphite.wikimedia.org',
     $timeout               = 10,
     $over                  = false,
     $under                 = false,
