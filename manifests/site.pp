@@ -2611,7 +2611,7 @@ node 'titanium.wikimedia.org' {
 
 # test system for performance team (T117888)
 node 'tungsten.eqiad.wmnet' {
-    role testsystem, xhgui
+    role testsystem, xhgui, bastionhost::migration
 }
 
 node 'uranium.wikimedia.org' {
