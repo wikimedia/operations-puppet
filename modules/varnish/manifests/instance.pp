@@ -173,6 +173,12 @@ define varnish::instance(
         notify  => Exec["load-new-vcl-file${instancesuffix}"],
     }
 
+    varnish::wikimedia_vcl { "/usr/share/varnish/tests/${vcl}.inc.vcl":
+        require         => File['/usr/share/varnish/tests'],
+        varnish_testing => true,
+        template_path   => "varnish/${vcl}.inc.vcl.erb",
+    }
+
     # The defaults file is also parsed by /usr/share/varnish/reload-vcl,
     #   even under systemd where the init part itself does not.  This
     #   situation should be cleaned up later after all varnishes are on
