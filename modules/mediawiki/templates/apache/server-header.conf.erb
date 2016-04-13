@@ -1,0 +1,5 @@
+# Make the Server response header equal to the host's FQDN.
+<IfModule security2_module>
+    ServerTokens Full
+    SecServerSignature "<%= scope['::fqdn'] %>"
+</IfModule>

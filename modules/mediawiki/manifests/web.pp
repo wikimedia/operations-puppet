@@ -38,4 +38,12 @@ class mediawiki::web {
     }
 
     apache::def { 'HHVM': }
+
+    if $::hostname == 'mw1017' {
+        include ::apache::mod::security2
+
+        apache::conf { 'server_header':
+            content  => template('mediawiki/apache/server-header.conf.erb'),
+        }
+    }
 }
