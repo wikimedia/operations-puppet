@@ -21,13 +21,9 @@ sub cluster_fe_recv {
         unset req.http.X-WEBAUTH-USER;
     }
 
-    if (
-           req.http.Host != "git.wikimedia.org"
-    ) {
-        if (req.http.X-Forwarded-Proto != "https") {
-            set req.http.Location = "https://" + req.http.Host + req.url;
-            <%= error_synth(751, "TLS Redirect") -%>
-        }
+    if (req.http.X-Forwarded-Proto != "https") {
+        set req.http.Location = "https://" + req.http.Host + req.url;
+        <%= error_synth(751, "TLS Redirect") -%>
     }
 
     call misc_recv_pass;
