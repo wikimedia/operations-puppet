@@ -22,7 +22,6 @@ class network::constants {
             'bastion_hosts' => [
                     '208.80.154.149',                   # bast1001.wikimedia.org
                     '2620:0:861:2:208:80:154:149',      # bast1001.wikimedia.org
-                    '2620:0:861:2:7a2b:cbff:fe09:11ba', # bast1001.wikimedia.org SLAAC
                     '208.80.153.5',                     # bast2001.wikimedia.org
                     '2620:0:860:1:208:80:153:5',        # bast2001.wikimedia.org
                     '91.198.174.112',                   # bast3001.wikimedia.org
@@ -52,7 +51,6 @@ class network::constants {
             'bastion_hosts' => [
                     '208.80.154.149',                   # bast1001.wikimedia.org
                     '2620:0:861:2:208:80:154:149',      # bast1001.wikimedia.org
-                    '2620:0:861:2:7a2b:cbff:fe09:11ba', # bast1001.wikimedia.org SLAAC
                     '208.80.153.5',                     # bast2001.wikimedia.org
                     '2620:0:860:1:208:80:153:5',        # bast2001.wikimedia.org
                     '91.198.174.112',                   # bast3001.wikimedia.org
