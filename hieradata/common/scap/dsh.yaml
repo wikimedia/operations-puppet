@@ -16,3 +16,43 @@ scap_masters:
   - "tin.eqiad.wmnet"
   - "mira.codfw.wmnet"
 
+groups:
+  mediawiki-installation:
+    conftool:
+      - {'cluster': 'appserver', 'service': 'apache2'}
+      - {'cluster': 'api_appserver', 'service': 'apache2'}
+    hosts:
+      - tin.eqiad.wmnet
+      - mira.codfw.wmnet
+      - terbium.eqiad.wmnet
+      - wasat.codfw.wmnet
+      - silver.wikimedia.org
+      - labtestweb2001.wikimedia.org
+      - snapshot1001.eqiad.wmnet
+      - snapshot1002.eqiad.wmnet
+      - snapshot1003.eqiad.wmnet
+      - snapshot1004.eqiad.wmnet
+      - snapshot1005.eqiad.wmnet
+      - snapshot1006.eqiad.wmnet
+      - snapshot1007.eqiad.wmnet
+  parsoid:
+    conftool:
+      - {'cluster': 'parsoid', 'service': 'parsoid'}
+    hosts:
+      - ruthenium.eqiad.wmnet
+  mediawiki-api-canaries:
+    hosts:
+      - mw1276.eqiad.wmnet
+      - mw1277.eqiad.wmnet
+      - mw1278.eqiad.wmnet
+      - mw1279.eqiad.wmnet
+  mediawiki-appserver-canaries:
+    hosts:
+      - mw1017.eqiad.wmnet
+      - mw1099.eqiad.wmnet
+      - mw1261.eqiad.wmnet
+      - mw1262.eqiad.wmnet
+      - mw1263.eqiad.wmnet
+      - mw1264.eqiad.wmnet
+      - mw1265.eqiad.wmnet
+      
