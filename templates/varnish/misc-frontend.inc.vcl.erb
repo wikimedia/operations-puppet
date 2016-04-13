@@ -15,11 +15,6 @@ sub cluster_fe_recv {
         unset req.http.X-WEBAUTH-USER;
     }
 
-    if (req.http.X-Forwarded-Proto != "https") {
-        set req.http.Location = "https://" + req.http.Host + req.url;
-        <%= error_synth(751, "TLS Redirect") -%>
-    }
-
     if (req.http.Host == "git.wikimedia.org") {
         // gitblit requires this and X-F-P:https
         set req.http.X-Forwarded-Port = "443";
