@@ -10,4 +10,11 @@ class role::pybal_config {
             'config-master.wikimedia.org',
             ]
     }
+
+    ferm::service { 'pybal_conf-http':
+        proto  => 'tcp',
+        port   => 80,
+        srange => '$ALL_NETWORKS',
+    }
+
 }
