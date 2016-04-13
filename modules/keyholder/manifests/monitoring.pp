@@ -29,4 +29,9 @@ class keyholder::monitoring( $ensure = present ) {
         nrpe_command => "/usr/bin/sudo ${plugin_path}",
         require      => Sudo::User['nagios_check_keyholder'],
     }
+
+    diamond::collector { 'Keyholder':
+        source  => 'puppet:///modules/keyholder/collector.py',
+        require => File[$plugin_path],
+    }
 }
