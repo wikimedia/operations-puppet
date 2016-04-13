@@ -26,11 +26,31 @@ class scap::dsh (
         mode   => '0444',
     }
     file { '/etc/dsh/group':
+        ensure => directory,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+    }
+
+    $appservers = conftool({cluster => 'appserver', service => 'apache2'})
+    $api = conftool({cluster => 'api_appserver', service => 'apache2'})
+    $parsoid = conftool({cluster => 'parsoid', service => 'parsoid'})
+
+
+    file { '/etc/dsh/group/mediawiki-installation':
+        ensure  => present,
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-        source  => $group_source,
-        recurse => true,
+        content => template('scap/dsh/mediawiki-installation.erb')
+    }
+
+    file { '/etc/dsh/group/parsoid':
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        content => template('scap/dsh/parsoid.erb')
     }
 
     file { '/etc/dsh/group/scap-proxies':

@@ -1,0 +1,9 @@
+# dsh group for parsoid
+# This file is used by scap, and is mantained by puppet.
+<%-
+def extract(l)
+    l.map{ |x| x['name'] unless x['value']['pooled'] == 'inactive' }.sort.join("\n")
+end
+-%>
+
+<%= extract(@parsoid) %>
