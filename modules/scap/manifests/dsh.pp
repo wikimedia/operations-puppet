@@ -26,12 +26,16 @@ class scap::dsh (
         mode   => '0444',
     }
     file { '/etc/dsh/group':
+        ensure  => directory,
         owner   => 'root',
         group   => 'root',
-        mode    => '0444',
-        source  => $group_source,
+        mode    => '0555',
         recurse => true,
     }
+
+    # Base dsh groups currently used
+    $groups = hiera('scap::dsh::groups', {})
+    create_resources('scap::dsh::group', $groups)
 
     file { '/etc/dsh/group/scap-proxies':
         content => join($scap_proxies, "\n"),
