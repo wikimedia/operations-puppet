@@ -29,4 +29,15 @@ class keyholder::monitoring( $ensure = present ) {
         nrpe_command => "/usr/bin/sudo ${plugin_path}",
         require      => Sudo::User['nagios_check_keyholder'],
     }
+
+    if $::realm == 'labs' {
+        cron { 'shinken_check_keyholder':
+            ensure  => $ensure,
+            command => "/usr/bin/sudo ${plugin_path}",
+            hour    => '*',
+            minute  => '*/10',
+            user    => 'nagios',
+            require => Sudo::User['nagios_check_keyholder']
+        }
+    }
 }
