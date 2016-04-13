@@ -39,8 +39,9 @@ class role::jobqueue_redis {
     $redis_ports = join($instances, ' ')
 
     ferm::service { 'redis_jobqueue_role':
-        proto => 'tcp',
-        port  => inline_template('(<%= @redis_ports %>)'),
+        proto   => 'tcp',
+        notrack => true,
+        port    => inline_template('(<%= @redis_ports %>)'),
     }
 
 }
