@@ -477,10 +477,19 @@ node /^db1065\.eqiad\.wmnet/ {
 
 # This mess will be eventually cleaned up and all
 # servers will be on the following node:
-node /^db10(53|57)\.eqiad\.wmnet/ {
+node /^db10(53)\.eqiad\.wmnet/ {
     class { 'role::mariadb::core':
         shard => 's1',
         p_s   => 'on',
+    }
+    include base::firewall
+}
+
+node /^db10(57)\.eqiad\.wmnet/ {
+    class { 'role::mariadb::core':
+        shard => 's1',
+        p_s   => 'on',
+        ssl   => 'puppet-cert',
     }
     include base::firewall
 }
@@ -490,6 +499,7 @@ node /^db20(16|34|42|48|55|62|69|70)\.codfw\.wmnet/ {
         shard         => 's1',
         p_s           => 'on',
         binlog_format => 'ROW',
+        ssl           => 'puppet-cert',
     }
     include base::firewall
 }
