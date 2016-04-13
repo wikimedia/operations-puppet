@@ -24,7 +24,6 @@ sub cluster_fe_recv {
     if (
            req.http.Host != "git.wikimedia.org"
         && req.http.Host != "graphite.wikimedia.org"
-        && req.http.Host != "parsoid-tests.wikimedia.org"
         && req.http.Host != "datasets.wikimedia.org"
         && req.http.Host != "transparency.wikimedia.org"
         && req.http.Host != "stats.wikimedia.org"
