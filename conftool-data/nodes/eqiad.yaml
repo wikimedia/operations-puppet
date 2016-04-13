@@ -88,7 +88,6 @@ appserver:
   mw1077.eqiad.wmnet: [apache2]
   mw1078.eqiad.wmnet: [apache2]
   mw1079.eqiad.wmnet: [apache2]
-  mw1080.eqiad.wmnet: [apache2]
   mw1081.eqiad.wmnet: [apache2]
   mw1082.eqiad.wmnet: [apache2]
   mw1083.eqiad.wmnet: [apache2]
