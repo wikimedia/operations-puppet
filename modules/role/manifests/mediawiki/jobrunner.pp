@@ -9,4 +9,14 @@ class role::mediawiki::jobrunner {
         check_command => 'check_http_jobrunner',
         retries       => 2,
     }
+
+    # Monitor TCP Connection States
+    diamond::collector { 'TcpConnStates':
+        source => 'puppet:///modules/diamond/collector/tcpconnstates.py',
+    }
+
+    # Monitor Ferm/Netfilter Connection Flows
+    diamond::collector { 'NfConntrackCount':
+        source => 'puppet:///modules/diamond/collector/nf_conntrack_counter.py',
+    }
 }
