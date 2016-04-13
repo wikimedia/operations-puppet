@@ -55,19 +55,13 @@ class role::cache::maps {
         'pass_random'      => true,
     }
 
-    $be_vcl_config = $common_vcl_config
-
-    $fe_vcl_config = merge($common_vcl_config, {
-        'https_redirects'  => true,
-    })
-
     role::cache::instances { 'maps':
         fe_mem_gb        => 12,
         runtime_params   => ['default_ttl=86400'],
         app_directors    => $app_directors,
         app_be_opts      => [],
-        fe_vcl_config    => $fe_vcl_config,
-        be_vcl_config    => $be_vcl_config,
+        fe_vcl_config    => $common_vcl_config,
+        be_vcl_config    => $common_vcl_config,
         fe_extra_vcl     => [],
         be_extra_vcl     => [],
         be_storage       => $::role::cache::2layer::persistent_storage_args,
