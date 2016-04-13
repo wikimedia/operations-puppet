@@ -13,25 +13,36 @@ active_keys() {
   /usr/bin/ssh-add -l 2>/dev/null | /usr/bin/cut -d' ' -f 3 | /usr/bin/sort
 }
 
+ret=0
+
 [ -S "$SSH_AUTH_SOCK" ] || {
   echo "CRITICAL: Cannot connect to keyholder-proxy socket $SSH_AUTH_SOCK."
-  exit 2
+  ret=2
 }
 
 [ -r /etc/keyholder.d ] || {
   echo "UNKNOWN: You do not have permission to list /etc/keyholder.d."
-  exit 3
+  ret=3
 }
 
 [ -w "$SSH_AUTH_SOCK" ] || {
   echo "UNKNOWN: You do not have permission to communicate with the keyholder socket."
-  exit 3
+  ret=3
 }
 
 [ "$(configured_keys)" == "$(active_keys)" ] || {
   echo "CRITICAL: Keyholder is not armed. Run 'keyholder arm' to arm it."
-  exit 2
+  ret=2
 }
 
-echo "OK: Keyholder is armed with all configured keys."
-exit 0
+[ $ret -gt 0 ] || {
+  echo "OK: Keyholder is armed with all configured keys."
+}
+
+[ ! -f /etc/wmflabs-project ] || {
+  STATS_PREFIX="`cat /etc/wmflabs-project`.`cat /etc/wmflabs-instancename`"
+  echo -n "${STATS_PREFIX}.keyholder.status:${ret}|g" |
+      nc -w 1 -u labmon1001.eqiad.wmnet 8125
+}
+
+exit $ret
