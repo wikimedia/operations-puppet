@@ -253,6 +253,8 @@ host baham {
 host bast1001 {
     hardware ethernet 78:2b:cb:09:11:ba;
     fixed-address bast1001.wikimedia.org;
+    option pxelinux.pathprefix "jessie-installer/";
+    filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host bast2001 {
