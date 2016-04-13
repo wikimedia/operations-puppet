@@ -597,10 +597,19 @@ node /^db10(30|37|61)\.eqiad\.wmnet/ {
     }
 }
 
-node /^db10(22|50)\.eqiad\.wmnet/ {
+node /^db10(22)\.eqiad\.wmnet/ {
     class { 'role::mariadb::core':
         shard => 's6',
         p_s   => 'on',
+    }
+    include base::firewall
+}
+
+node /^db10(50)\.eqiad\.wmnet/ {
+    class { 'role::mariadb::core':
+        shard => 's6',
+        p_s   => 'on',
+        ssl   => 'puppet-cert',
     }
     include base::firewall
 }
@@ -611,6 +620,7 @@ node /^db20(28|39|46|53|60|67)\.codfw\.wmnet/ {
         shard         => 's6',
         p_s           => 'on',
         binlog_format => 'ROW',
+        ssl           => 'puppet-cert',
     }
     include base::firewall
 }
@@ -625,6 +635,7 @@ node /^db10(41)\.eqiad\.wmnet/ {
     class { 'role::mariadb::core':
         shard => 's7',
         p_s   => 'on',
+        ssl   => 'puppet-cert',
     }
     include base::firewall
 }
@@ -635,6 +646,7 @@ node /^db20(29|40|47|54|61|68)\.codfw\.wmnet/ {
         shard         => 's7',
         p_s           => 'on',
         binlog_format => 'ROW',
+        ssl           => 'puppet-cert',
     }
     include base::firewall
 }
