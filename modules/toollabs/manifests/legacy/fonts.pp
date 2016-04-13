@@ -52,14 +52,8 @@ class toollabs::legacy::fonts {
         'culmus-fancy',              # T40946
         'fonts-lklug-sinhala',       # T57462
         'fonts-vlgothic',            # T66002
-        'fonts-dejavu-core',         # T65206
-        'fonts-dejavu-extra',        # T65206
         'ttf-kochi-gothic',          # T66002
         'ttf-kochi-mincho',          # T66002
-        'fonts-lyx',                 # T40299
-        'fonts-crosextra-carlito',   # T84842
-        'fonts-crosextra-caladea',   # T84842
-
     ]:
         ensure => present,
     }
