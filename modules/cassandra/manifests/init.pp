@@ -434,4 +434,11 @@ class cassandra(
         mode    => '0444',
         require => Package['cassandra'],
     }
+
+    file { '/etc/cassandra-instances.d':
+        ensure => directory,
+        owner  => 'cassandra',
+        group  => 'cassandra',
+        mode   => '0700',
+    }
 }

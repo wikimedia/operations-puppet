@@ -210,6 +210,7 @@ define cassandra::instance(
         owner   => 'cassandra',
         group   => 'cassandra',
         mode    => '0400',
+        require => File['/etc/cassandra-instances.d'],
     }
 
     base::service_unit { $service_name:
