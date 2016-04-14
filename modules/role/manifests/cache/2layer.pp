@@ -30,11 +30,9 @@ class role::cache::2layer(
     # everything from here down is related to backend storage/weight config
 
     $storage_size = $::hostname ? {
-        /^cp10(08|4[34])$/      => 117, # Intel X-25M 160G
-        /^cp30(19|2[012])$/     => 220, # Seagate ST9250610NS - 250G
-        /^cp400[1234]$/         => 220, # Seagate ST9250610NS - 250G
-        /^cp30(0[3-9]|1[0-4])$/ => 460, # Intel M320 600G via H710
-        /^cp301[5-8]$/          => 225, # Intel M320 300G via H710
+        /^cp10(08|4[34])$/      => 117, # Intel X-25M 160G (this is all semi-prod / decommed-ish stuff)
+        /^cp30(0[3-9]|10)$/     => 460, # Intel M320 600G via H710
+        /^cp400[1234]$/         => 220, # Seagate ST9250610NS - 250G (only non-SSD left!)
         /^cp[0-9]{4}$/          => 360, # Intel S3700 400G (prod default)
         default                 => 6,   # 6 is the bare min, for e.g. virtuals
     }
