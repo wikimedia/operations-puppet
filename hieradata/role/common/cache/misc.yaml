@@ -19,7 +19,7 @@ cluster: cache_misc
 #    multiple values could cause a race-condition of intermediate states.
 #
 cache::route_table:
-  eqiad: 'direct'
+  eqiad: 'codfw'
   codfw: 'direct'
   ulsfo: 'codfw'
   esams: 'codfw'
