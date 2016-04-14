@@ -34,6 +34,7 @@ class package_builder(
         'zip',
         'unzip',
         'debian-archive-keyring',
+        'gnome-pkg-tools',
     ])
 
     if $::operatingsystem == 'Ubuntu' {
