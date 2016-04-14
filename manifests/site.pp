@@ -165,8 +165,7 @@ node 'auth1001.eqiad.wmnet' {
 }
 
 node 'auth2001.codfw.wmnet' {
-    include base::firewall
-    include standard
+    role yubiauth::server
 }
 
 node 'baham.wikimedia.org' {
