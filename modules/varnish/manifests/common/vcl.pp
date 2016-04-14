@@ -21,7 +21,7 @@ class varnish::common::vcl {
         owner  => 'root',
         group  => 'root',
         mode   => '0444',
-        source => 'puppet:///files/varnish/errorpage.html',
+        source => 'puppet:///modules/varnish/errorpage.html',
     }
 
     # VCL unit tests
