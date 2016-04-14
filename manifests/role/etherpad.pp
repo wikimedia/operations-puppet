@@ -31,6 +31,6 @@ class role::etherpad{
     }
 
     diamond::collector { 'EtherpadStatus':
-        source   => 'puppet:///modules/etherpad/files/etherpad.py',
+        source   => 'puppet:///modules/etherpad/etherpad.py',
     }
 }
