@@ -16,6 +16,7 @@ class base {
 
     include passwords::root
     include base::grub
+    include base::initramfs
     include base::resolving
     include ::rsyslog
     include base::remote_syslog
