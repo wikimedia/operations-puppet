@@ -496,7 +496,7 @@ groups:
   swift-roots:
     gid: 777
     description: users who have root on swift servers
-    members: []
+    members: [gilles]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
 
 users:
