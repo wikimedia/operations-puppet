@@ -33,7 +33,9 @@ module Puppet::Parser::Functions
     labsp = lookupvar('::labsproject')
     if realm == 'labs'
       "#{prefix}-#{labsp}"
-    elsif prefix == 'analytics' && site == 'eqiad'
+    # There is only one analytics cluster, it lives in eqiad.
+    # For historical reasons, the name of this cluster is 'eqiad'.
+    elsif prefix == 'analytics'
       'eqiad'
     else
       "#{prefix}-#{site}"
