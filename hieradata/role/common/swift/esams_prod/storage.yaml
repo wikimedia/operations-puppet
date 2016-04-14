@@ -1,4 +1,0 @@
-cluster: swift
-nagios_group: swift
-admin::groups:
-  - swift-roots
