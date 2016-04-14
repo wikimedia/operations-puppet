@@ -60,7 +60,7 @@ class role::ganeti {
         }
         nrpe::monitor_service{ 'ganeti-noded':
             description  => 'ganeti-noded running',
-            nrpe_command => '/usr/lib/nagios/plugins/check_procs -w 1:1 -c 1:1 -u root -C ganeti-noded'
+            nrpe_command => '/usr/lib/nagios/plugins/check_procs -w 1:2 -c 1:2 -u root -C ganeti-noded'
         }
 
         # Ganeti confd provides a HA and fast way to query cluster configuration
