@@ -22,4 +22,4 @@ cache::route_table:
   eqiad: 'direct'
   codfw: 'direct'
   ulsfo: 'codfw'
-  esams: 'eqiad'
+  esams: 'codfw'
