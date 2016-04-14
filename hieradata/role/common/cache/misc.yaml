@@ -20,6 +20,6 @@ cluster: cache_misc
 #
 cache::route_table:
   eqiad: 'direct'
-  codfw: 'eqiad'
+  codfw: 'direct'
   ulsfo: 'codfw'
   esams: 'eqiad'
