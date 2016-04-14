@@ -3,6 +3,10 @@
 #
 class role::cache::kafka {
 
+    $kafka_config = kafka_config('analytics')
+    # NOTE: This is used by inheriting classes role::cache::kafka::*
+    $kafka_brokers = $kafka_config['brokers']['array']
+
     # APT pinning for Varnish 3
     if (hiera('varnish_version4', false)) {
         apt::pin { 'varnishkafka':
