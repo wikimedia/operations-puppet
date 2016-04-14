@@ -69,15 +69,6 @@ class role::graphite::alerts::reqstats {
         nagios_critical => false,
     }
 
-    monitoring::graphite_threshold { 'reqstats-5xx-parsoid':
-        description     => 'Parsoid HTTP 5xx reqs/min',
-        metric          => 'sumSeries(varnish.*.parsoid.frontend.request.client.status.5xx.sum)',
-        warning         => $settings['warning'],
-        critical        => $settings['critical'],
-        from            => $settings['cron'],
-        nagios_critical => false,
-    }
-
     monitoring::graphite_threshold { 'reqstats-5xx-maps':
         description     => 'Maps HTTP 5xx reqs/min',
         metric          => 'sumSeries(varnish.*.maps.frontend.request.client.status.5xx.sum)',
