@@ -47,7 +47,7 @@ class role::memcached {
     }
 
     file { '/etc/logrotate.d/memkeys':
-        source  => 'puppet:///files/memcached/memkeys.logrotate',
+        source  => 'puppet:///modules/memcached/memkeys.logrotate',
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
@@ -56,7 +56,7 @@ class role::memcached {
     }
 
     file { '/usr/local/sbin/memkeys-snapshot':
-        source => 'puppet:///files/memcached/memkeys-snapshot',
+        source => 'puppet:///modules/memcached/memkeys-snapshot',
         owner  => 'root',
         group  => 'root',
         mode   => '0555',
