@@ -1,5 +1,3 @@
-admin::groups:
-  - swift-roots
 # used by ferm
 proxyhosts:
   - ms-fe1001.eqiad.wmnet
