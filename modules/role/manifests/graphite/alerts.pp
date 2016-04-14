@@ -38,7 +38,7 @@ class role::graphite::alerts {
     # https://logstash.wikimedia.org/#/dashboard/elasticsearch/memcached
     monitoring::graphite_threshold { 'mediawiki-memcached-threshold':
         description => 'MediaWiki memcached error rate',
-        metric      => 'logstash.rate.mediawiki.memcached.ERROR.sum',
+        metric      => 'transformNull(logstash.rate.mediawiki.memcached.ERROR.sum, 0)',
         # Nominal error rate in production is <150/min
         warning     => 1000,
         critical    => 5000,
