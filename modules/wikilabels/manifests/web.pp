@@ -14,9 +14,6 @@ class wikilabels::web (
     ensure_packages(['virtualenv', 'python3-dev', 'libffi-dev',
         'libpq-dev', 'g++', 'libmemcached-dev'])
 
-    # Wikilabels is a python3 application
-    ensure_packages(['uwsgi-plugin-python3'])
-
     file { '/srv':
         ensure => directory,
         owner  => 'root',

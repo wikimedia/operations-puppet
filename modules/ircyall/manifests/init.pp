@@ -17,10 +17,6 @@ class ircyall(
         },
     }
 
-    package { 'uwsgi-plugin-python3':
-        ensure => present,
-    }
-
     package { [
         'python3-flask',
         'python3-redis',
@@ -42,7 +38,7 @@ class ircyall(
                 'socket'    => '/run/uwsgi/ircyall-web.sock',
             }
         },
-        require  => Package['python3-ircyall', 'uwsgi-plugin-python3'],
+        require  => Package['python3-ircyall'],
     }
 
     nginx::site { 'ircyall-web-nginx':
