@@ -5,3 +5,5 @@ lvs::realserver::realserver_ips:
 debdeploy::grains:
   debdeploy-swift-fe-codfw:
     value: standard
+admin::groups:
+  - swift-roots
