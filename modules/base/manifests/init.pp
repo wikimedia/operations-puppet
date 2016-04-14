@@ -34,6 +34,10 @@ class base {
     include base::kernel
     include base::debdeploy
 
+    if os_version('debian >= jessie') {
+        include base::initramfs
+    }
+
     # include base::monitor::host.
     # if contactgroups is set, then use it
     # as the monitor host's contact group.
