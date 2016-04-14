@@ -4,6 +4,7 @@ class role::swift::proxy {
     }
 
     include standard
+    include admin
     include base::firewall
     include ::swift::params
     include ::swift

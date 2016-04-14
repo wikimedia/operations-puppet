@@ -4,6 +4,7 @@ class role::swift::storage {
     }
 
     include standard
+    include admin
     include base::firewall
     include ::swift::params
     include ::swift
