@@ -9,9 +9,9 @@ class uwsgi {
     # 'uwsgi-plugins-all'. But I'm going to go out on a limb here and predict
     # that we won't use any except these two.  -- OL
     if os_version('debian >= jessie') {
-        $plugins = [ 'uwsgi-plugin-python', 'uwsgi-plugin-rack-ruby2.1' ]
+        $plugins = [ 'uwsgi-plugin-python', 'uwsgi-plugin-python3', 'uwsgi-plugin-rack-ruby2.1' ]
     } else {
-        $plugins = [ 'uwsgi-plugin-python', 'uwsgi-plugin-rack-ruby1.9.1' ]
+        $plugins = [ 'uwsgi-plugin-python', 'uwsgi-plugin-python3', 'uwsgi-plugin-rack-ruby1.9.1' ]
     }
 
     package { [ 'uwsgi', 'uwsgi-dbg' ]: }
