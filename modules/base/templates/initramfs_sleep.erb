@@ -1,0 +1,11 @@
+#!/bin/sh
+#
+# Workaround for boot-time race condition assembling raid arrays:
+# https://phabricator.wikimedia.org/T131961
+#
+# This file is managed by Puppet.
+
+echo "Waiting <%= @localtop_sleep -%> for disks to show up (T131961)"
+sleep <%= @localtop_sleep -%>
+
+exit 0
