@@ -2613,6 +2613,7 @@ node 'titanium.wikimedia.org' {
 # test system for performance team (T117888)
 node 'tungsten.eqiad.wmnet' {
     role testsystem, xhgui
+    include base::firewall
 }
 
 node 'uranium.wikimedia.org' {
