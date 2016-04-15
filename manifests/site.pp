@@ -543,10 +543,19 @@ node /^db20(35|41|49|56|63|64)\.codfw\.wmnet/ {
 }
 
 # s3 (default) core production slave dbs on eqiad
-node /^db10(15|27|35|44|75|77|78)\.eqiad\.wmnet/ {
+node /^db10(15|27|35|44)\.eqiad\.wmnet/ {
     class { 'role::mariadb::core':
         shard => 's3',
         p_s   => 'on',
+    }
+    include base::firewall
+}
+
+node /^db10(75|77|78)\.eqiad\.wmnet/ {
+    class { 'role::mariadb::core':
+        shard => 's3',
+        p_s   => 'on',
+        ssl   => 'puppet-cert',
     }
     include base::firewall
 }
@@ -556,6 +565,7 @@ node /^db20(18|36|43|50|57)\.codfw\.wmnet/ {
         shard         => 's3',
         p_s           => 'on',
         binlog_format => 'ROW',
+        ssl           => 'puppet-cert',
     }
     include base::firewall
 }
