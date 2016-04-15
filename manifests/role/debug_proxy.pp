@@ -19,4 +19,10 @@ class role::debug_proxy {
         resolver        => join($::nameservers, ' '),
     }
     # lint:endignore
+
+    ferm::service { 'debug_proxy':
+        proto  => 'tcp',
+        port   => '80',
+        srange => '$INTERNAL',
+    }
 }
