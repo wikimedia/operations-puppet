@@ -1,0 +1,39 @@
+path ~ ^/catalog/([^/]+)$
+method find
+allow $1
+
+path ~ ^/node/([^/]+)$
+method find
+allow $1
+
+path /certificate_revocation_list/ca
+method find
+allow *
+
+path ~ ^/report/([^/]+)$
+method save
+allow $1
+
+path /file
+allow *
+
+path /certificate/ca
+auth any
+method find
+allow *
+
+path /certificate/
+auth any
+method find
+allow *
+
+path /certificate_request
+auth any
+allow *
+method find, save
+
+path /resource_type
+auth any
+
+path /
+auth any
