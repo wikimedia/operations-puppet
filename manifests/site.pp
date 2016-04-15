@@ -570,6 +570,7 @@ node /^db10(42)\.eqiad\.wmnet/ {
     class { 'role::mariadb::core':
         shard => 's4',
         p_s   => 'on',
+        ssl   => 'puppet-cert',
     }
     include base::firewall
 }
@@ -580,6 +581,7 @@ node /^db20(19|37|44|51|58|65)\.codfw\.wmnet/ {
         shard         => 's4',
         p_s           => 'on',
         binlog_format => 'ROW',
+        ssl           => 'puppet-cert',
     }
     include base::firewall
 }
