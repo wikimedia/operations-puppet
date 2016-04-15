@@ -140,3 +140,5 @@ cdh::hadoop::users::groups: project-%{::labsproject}
 labsldapconfig:
   hostname: ldap-labs.eqiad.wikimedia.org
   secondary_hostname: ldap-labs.codfw.wikimedia.org
+
+puppetmaster::auth_conf_template: 'auth-labs-master.conf.erb'

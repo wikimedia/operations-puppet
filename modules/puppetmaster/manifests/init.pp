@@ -39,6 +39,7 @@ class puppetmaster(
             ],
             $is_labs_master=false,
             $hiera_config=$::realm,
+            $auth_conf_template='auth-prod-master.conf.erb',
             ){
 
     $gitdir = '/var/lib/git'
@@ -98,5 +99,13 @@ class puppetmaster(
 
     class { '::puppetmaster::hiera':
         source => "puppet:///modules/puppetmaster/${hiera_config}.hiera.yaml",
+    }
+
+    $horizon_host_ip = ipresolve(hiera('labs_horizon_host'), 4)
+    file { '/etc/puppet/auth.conf':
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        content => template("puppetmaster/${$auth_conf_template}"),
     }
 }
