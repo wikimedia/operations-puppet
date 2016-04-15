@@ -21,4 +21,11 @@ class puppetmaster::labs {
         user    => 'gitpuppet',
         minute  => '*/1',
     }
+
+    file { '/etc/puppet/auth.conf':
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        source => 'puppet:///modules/puppetmaster/auth-labs-master.conf',
+    }
 }
