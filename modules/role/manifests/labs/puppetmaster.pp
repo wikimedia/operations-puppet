@@ -33,6 +33,7 @@ class role::labs::puppetmaster {
             'ldaptls'           => true,
             'autosign'          => true,
         };
+        'is_labs_master'    => true,
     }
 
     if ! defined(Class['puppetmaster::certmanager']) {

@@ -34,7 +34,8 @@ class puppetmaster(
                 '*.ulsfo.wmnet',
                 '*.esams.wmnet',
                 '*.codfw.wmnet',
-            ]
+            ],
+            $is_labs_master=false,
             ){
 
     $gitdir = '/var/lib/git'
@@ -84,10 +85,7 @@ class puppetmaster(
     include puppetmaster::gitpuppet
     include puppetmaster::monitoring
 
-    # FIXME - top-scope var without namespace ($is_labs_puppet_master), will break in puppet 2.8
-    # lint:ignore:variable_scope
-    if $is_labs_puppet_master {
-    # lint:endignore
+    if $is_labs_master {
         include puppetmaster::labs
         require_package('ruby-httpclient')
 
