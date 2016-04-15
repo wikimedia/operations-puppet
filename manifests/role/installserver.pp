@@ -79,6 +79,10 @@ class role::installserver {
         proto => 'tcp',
         port  => 'http'
     }
+    ferm::service { 'https':
+        proto => 'tcp',
+        port  => 'https'
+    }
 
     include install_server::dhcp_server
     ferm::rule { 'dhcp':
