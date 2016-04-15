@@ -16,6 +16,7 @@
 class install_server::web_server {
     include ::nginx
 
+    require sslcert::dhparam
     $nginx_ssl_conf = ssl_ciphersuite('nginx', 'compat')
     file { '/etc/nginx/nginx.conf':
         content => template('install_server/nginx.conf.erb'),
