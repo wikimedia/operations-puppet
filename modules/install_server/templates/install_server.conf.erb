@@ -1,0 +1,13 @@
+server {
+   listen 80 default_server;
+   listen [::]:80 ipv6only=on default_server;
+   server_name <%= @fqdn -%>;
+
+   root /srv;
+
+   location / {
+      index index.html index.htm;
+      autoindex on;
+      charset utf-8;
+   }
+}
