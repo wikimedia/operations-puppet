@@ -200,6 +200,9 @@ class role::backup::director {
     bacula::director::fileset { 'srv-repos':
         includes => [ '/srv/repos' ],
     }
+    bacula::director::fileset { 'yubiauth-aeads':
+        includes => [ '/var/cache/yubikey-ksm/aeads' ],
+    }
 
     # The console should be on the director
     class { 'bacula::console':
