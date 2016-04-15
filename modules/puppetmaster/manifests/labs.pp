@@ -21,4 +21,12 @@ class puppetmaster::labs {
         user    => 'gitpuppet',
         minute  => '*/1',
     }
+
+    $horizon_host_ip = ipresolve(hiera('labs_horizon_host'), 4)
+    file { '/etc/puppet/auth.conf':
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        content => template('puppetmaster/auth-labs-master.conf.erb'),
+    }
 }
