@@ -20,9 +20,10 @@ class role::labs::puppetmaster {
     $allow_from = flatten([$labs_ranges, '208.80.154.14', $labs_metal])
 
     class { '::puppetmaster':
-        server_name => hiera('labs_puppet_master'),
-        allow_from  => $allow_from,
-        config      => {
+        server_name    => hiera('labs_puppet_master'),
+        allow_from     => $allow_from,
+        is_labs_master => true,
+        config         => {
             'thin_storeconfigs' => false,
             'node_terminus'     => 'ldap',
             'ldapserver'        => $ldapconfig['servernames'][0],
