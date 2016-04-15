@@ -1,7 +1,9 @@
 # Class: puppetmaster::gitclone
 #
 # This class handles the repositories from which the puppetmasters pull
-class puppetmaster::gitclone {
+class puppetmaster::gitclone(
+            $is_labs_master = false
+            ){
 
     class  { '::puppetmaster::base_repo':
         gitdir   => $::puppetmaster::gitdir,
@@ -57,10 +59,7 @@ class puppetmaster::gitclone {
             mode    => '0640';
     }
 
-    # FIXME - top-scope var without namespace, will break in puppet 2.8
-    # lint:ignore:variable_scope
-    if ! $is_labs_puppet_master {
-    # lint:endignore
+    if ! $is_labs_master {
         # Set up private repo.
         # Note that puppet does not actually clone the repo -- puppetizing that
         # turns out to be a big, insecure mess.  On a new puppetmaster you will
