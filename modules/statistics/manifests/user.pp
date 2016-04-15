@@ -25,7 +25,7 @@ class statistics::user {
             'user' => {
                 'name'  => 'Statistics User',
                 # TODO: use a better email than this :(
-                'email' => 'otto@wikimedia.org',
+                'email' => 'analytics-alerts@wikimedia.org',
             },
             # Enable automated git/gerrit authentication via http
             # by using .git-credential file store.
