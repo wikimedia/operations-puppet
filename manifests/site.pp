@@ -473,6 +473,7 @@ node /^db1065\.eqiad\.wmnet/ {
         shard => 's1',
         p_s   => 'on',
     }
+    include base::firewall
 }
 
 # This mess will be eventually cleaned up and all
