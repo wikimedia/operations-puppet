@@ -1134,6 +1134,7 @@ node 'hafnium.eqiad.wmnet' {
 node /^(hassaleh|hassium)\.(codfw|eqiad)\.wmnet$/ {
     role debug_proxy
     include standard
+    include base::firewall
 }
 
 # poolcounter - careful
