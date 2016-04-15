@@ -33,10 +33,18 @@ class zotero( $http_proxy = undef ) {
         before => Service['zotero'],
     }
 
-    package { [ 'zotero/translation-server', 'zotero/translators' ]:
-        ensure   => present,
-        provider => 'trebuchet',
-        before   => Service['zotero'],
+    scap::target { 'zotero/translators':
+        deploy_user       => 'deploy-service',
+        public_key_source => 'puppet:///modules/service/servicedeploy_rsa.pub',
+        service_name      => 'zotero',
+        before            => Service['zotero'],
+    }
+
+    scap::target { 'zotero/translation-server':
+        deploy_user       => 'deploy-service',
+        public_key_source => 'puppet:///modules/service/servicedeploy_rsa.pub',
+        service_name      => 'zotero',
+        before            => Service['zotero'],
     }
 
     file { '/srv/deployment/zotero/translation-server/defaults/preferences/defaults.js':
@@ -45,7 +53,7 @@ class zotero( $http_proxy = undef ) {
         group   => 'root',
         mode    => '0444',
         content => template('zotero/defaults.js.erb'),
-        require => Package['zotero/translation-server'],
+        require => Scap::Target['zotero/translation-server'],
         notify  => Service['zotero'],
     }
 
