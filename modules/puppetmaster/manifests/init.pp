@@ -94,6 +94,21 @@ class puppetmaster(
     if $is_labs_master {
         include puppetmaster::labs
         require_package('ruby-httpclient')
+
+        $horizon_host_ip = ipresolve(hiera('labs_horizon_host'), 4)
+        file { '/etc/puppet/auth.conf':
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0444',
+            content => template("puppetmaster/auth-labs-master.conf.erb"),
+        }
+    } else {
+        file { '/etc/puppet/auth.conf':
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0444',
+            content => template("puppetmaster/auth-prod-master.conf.erb"),
+        }
     }
 
     class { '::puppetmaster::hiera':
