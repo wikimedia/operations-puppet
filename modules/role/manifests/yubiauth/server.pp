@@ -5,9 +5,12 @@
 class role::yubiauth::server {
     include standard
     include base::firewall
+    include ::role::backup::host
 
     include yubiauth::yhsm_daemon
     include yubiauth::yhsm_yubikey_ksm
+
+    backup::set { 'yubiauth-aeads' : }
 
     system::role { 'role::yubiauth':
         ensure      => 'present',
