@@ -102,11 +102,14 @@ define scap::target(
         '<%= @name_array[0,@name_array.size - 1].join("/") %>'
     )
     $chown_target = "/srv/deployment/${pkg_root}"
-    exec { "chown ${chown_target} for ${deploy_user}":
-        command => "/bin/chown -R ${chown_user} ${chown_target}",
-        # perform the chown only if root is the effective owner
-        onlyif  => "/usr/bin/test -O /srv/deployment/${package_name}",
-        require => [User[$deploy_user], Group[$deploy_user]]
+    $exec_name = "chown ${chown_target} for ${deploy_user}"
+    if !defined(Exec[$exec_name]) {
+        exec { $exec_name:
+            command => "/bin/chown -R ${chown_user} ${chown_target}",
+            # perform the chown only if root is the effective owner
+            onlyif  => "/usr/bin/test -O /srv/deployment/${package_name}",
+            require => [User[$deploy_user], Group[$deploy_user]]
+        }
     }
 
     # Allow deploy user user to sudo -u $user, and to sudo /usr/sbin/service
@@ -133,10 +136,10 @@ define scap::target(
         $rule_name = "scap_${deploy_user}_${service_name}"
     } else {
         $privileges = $sudo_rules
-        $rule_name = regsubst("${deploy_user}_${title}", '/', '_', 'G')
+        $rule_name = regsubst("scap_${deploy_user}_${title}", '/', '_', 'G')
     }
 
-    if size($privileges) > 0 {
+    if size($privileges) > 0 and !defined(Sudo::User[$rule_name]) {
         sudo::user { $rule_name:
             user       => $deploy_user,
             privileges => $privileges,
