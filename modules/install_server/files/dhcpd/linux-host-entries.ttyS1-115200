@@ -269,6 +269,8 @@ host bast3001 {
     fixed-address bast3001.wikimedia.org;
     option pxelinux.pathprefix "jessie-installer/";
     filename "jessie-installer/debian-installer/amd64/pxelinux.0";
+
+    next-server 208.80.154.10; # carbon (tftp server)
 }
 
 host bast4001 {
@@ -276,6 +278,8 @@ host bast4001 {
     fixed-address bast4001.wikimedia.org;
     option pxelinux.pathprefix "jessie-installer/";
     filename "jessie-installer/debian-installer/amd64/pxelinux.0";
+
+    next-server 208.80.153.4; # install2001 (tftp server)
 }
 
 host beryllium {
@@ -296,6 +300,8 @@ host californium {
 host carbon {
     hardware ethernet 78:2b:cb:09:0e:a0;
     fixed-address carbon.wikimedia.org;
+
+    next-server 208.80.153.4; # install2001 (tftp server)
 }
 
 host cerium {
@@ -2567,6 +2573,8 @@ host hydrogen {
 host install2001 {
     hardware ethernet D4:AE:52:AA:06:C3;
     fixed-address install2001.wikimedia.org;
+
+    next-server 208.80.154.10; # carbon (tftp server)
 }
 
 host iridium {
