@@ -1207,8 +1207,6 @@ node 'labtestmetal2001.codfw.wmnet' {
 }
 
 node 'labtestcontrol2001.wikimedia.org' {
-    $is_puppet_master      = true
-
     include standard
     role labs::openstack::nova::controller,
           labs::puppetmaster
@@ -1338,8 +1336,6 @@ node 'krypton.eqiad.wmnet' {
 }
 
 node 'labcontrol1001.wikimedia.org' {
-    $is_puppet_master      = true
-
     role labs::openstack::nova::controller,
           labs::puppetmaster,
           salt::masters::labs,
@@ -1360,8 +1356,6 @@ node 'labcontrol1001.wikimedia.org' {
 #  basically repeated use of 'keystone endpoint-list,'
 #  'keystone endpoint-create' and 'keystone endpoint-delete.'
 node 'labcontrol1002.wikimedia.org' {
-    $is_puppet_master      = true
-
     role labs::openstack::nova::controller,
           labs::puppetmaster,
           salt::masters::labs,
