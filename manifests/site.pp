@@ -739,6 +739,7 @@ node /^db10(28|34|39|62)\.eqiad\.wmnet/ {
     class { 'role::mariadb::core':
         shard => 's7',
     }
+    include base::firewall
 }
 node /^db10(41)\.eqiad\.wmnet/ {
     class { 'role::mariadb::core':
