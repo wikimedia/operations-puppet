@@ -1,0 +1,35 @@
+# This is basically a copy of the un-puppetized nginx.conf from carbon that was
+# in-use at the time, which probably came from the debian package.  I've just
+# stripped commented-out things and added our basic SSL params.
+
+user www-data;
+worker_processes 4;
+pid /var/run/nginx.pid;
+
+events {
+    worker_connections 768;
+}
+
+http {
+    sendfile on;
+    tcp_nopush on;
+    tcp_nodelay on;
+    keepalive_timeout 65;
+    types_hash_max_size 2048;
+
+    include /etc/nginx/mime.types;
+    default_type application/octet-stream;
+
+    access_log /var/log/nginx/access.log;
+    error_log /var/log/nginx/error.log;
+
+    gzip on;
+    gzip_disable "msie6";
+
+    ssl_session_cache shared:SSL:100m;
+    ssl_session_timeout 15m;
+    <%= @nginx_ssl_conf.join("\n")  %>
+
+    include /etc/nginx/conf.d/*.conf;
+    include /etc/nginx/sites-enabled/*;
+}
