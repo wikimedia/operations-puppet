@@ -18,7 +18,6 @@ import xml.etree.ElementTree
 import itertools
 import sys
 import yaml
-from datetime import datetime
 
 if len(sys.argv) == 1:
     print("Usage: %s hostname [hostname ...]" % sys.argv[0])

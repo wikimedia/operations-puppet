@@ -13,7 +13,6 @@ Example:
 
 '''
 import yaml
-import smtplib
 import subprocess
 
 with open("jobs.yaml", 'r') as stream:

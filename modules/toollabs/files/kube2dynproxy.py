@@ -3,7 +3,6 @@ import requests
 import argparse
 import redis
 import logging
-import os
 import yaml
 import json
 
@@ -75,7 +74,7 @@ class KubeClient(object):
                 s.route = route
                 s.action = 'DELETED'
                 services.append(s)
-            except ValueError as e:
+            except ValueError:
                 log.warning("Could not find service %s, skipping", service)
                 # TODO: remove it from the redis list anyways?
 
