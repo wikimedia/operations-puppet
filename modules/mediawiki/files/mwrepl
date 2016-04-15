@@ -23,8 +23,14 @@ if [[ $# -gt 1 ]]; then
 	usage "Too many arguments"
 elif [[ $# -eq 0 ]]; then
 	WIKI=testwiki
+elif [ ${1:0:1} = "-" ]; then
+	usage "Unknown argument: $1"
 else
 	WIKI=$1
+fi
+
+if ! expanddblist all | grep "^${WIKI}\$" > /dev/null; then
+	usage "Unknown wiki: $WIKI"
 fi
 
 if [ "$(whoami)" != "$MEDIAWIKI_WEB_USER" ] ; then
