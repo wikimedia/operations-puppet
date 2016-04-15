@@ -18,6 +18,7 @@ class lvs::balancer(
     include pybal
     include pybal::confd
     include cpufrequtils # defaults to "performance", Ubuntu default is "ondemand"
+    include initramfs
 
     # ethtool is also a package needed but it is included from base
 
@@ -33,12 +34,7 @@ class lvs::balancer(
         owner   => 'root',
         group   => 'root',
         content => template('lvs/lvs.conf.erb'),
-        notify  => Exec['update-initramfs-lvs-balancer']
-    }
-
-    exec { 'update-initramfs-lvs-balancer':
-        command     => '/usr/sbin/update-initramfs -u',
-        refreshonly => true
+        notify  => Exec['update-initramfs']
     }
 
     # Bind balancer IPs to the loopback interface
