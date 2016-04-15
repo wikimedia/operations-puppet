@@ -47,7 +47,15 @@ class zotero( $http_proxy = undef ) {
         before            => Service['zotero'],
     }
 
-    file { '/srv/deployment/zotero/translation-server/defaults/preferences/defaults.js':
+    # /srv/deployment/zotero/translation-server/defaults/preferences/defaults.js
+    # should be symlinked to this file
+    file { '/etc/zotero':
+        ensure => directory,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+    }
+    file { '/etc/zotero/defaults.js':
         ensure  => present,
         owner   => 'root',
         group   => 'root',
