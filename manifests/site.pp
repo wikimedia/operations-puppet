@@ -1019,6 +1019,7 @@ node /^es101[268]\.eqiad\.wmnet/ {
     class { 'role::mariadb::core':
         shard => 'es1',
     }
+    include base::firewall
 }
 
 ## codfw servers (decommissioning)
