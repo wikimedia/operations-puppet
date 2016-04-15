@@ -27,20 +27,6 @@ class eventlogging::monitoring::graphite($kafka_brokers_graphite_wildcard) {
         contact_group => 'analytics'
     }
 
-    # Alarms if 15% of Navigation Timing event throughput goes under 1 req/sec
-    # in a 15 min period
-    # https://meta.wikimedia.org/wiki/Schema:NavigationTiming
-    monitoring::graphite_threshold { 'eventlogging_NavigationTiming_throughput':
-        description   => 'Throughput of EventLogging NavigationTiming events',
-        metric        => "kafka.${kafka_brokers_graphite_wildcard}.kafka.server.BrokerTopicMetrics.MessagesInPerSec.eventlogging_NavigationTiming.OneMinuteRate",
-        warning       => 1,
-        critical      => 0,
-        percentage    => 15, # At least 3 of the 15 readings
-        from          => '15min',
-        contact_group => 'analytics',
-        under         => true
-    }
-
     # Warn/Alert if the difference between raw and valid EventLogging
     # alerts gets too big.  We put a 10 minute lag because of metrics
     # not being correct in graphite before.
