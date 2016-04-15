@@ -43,5 +43,6 @@ class mathoid(
         },
         healthcheck_url => '',
         has_spec        => true,
+        deployment      => 'scap3',
     }
 }
