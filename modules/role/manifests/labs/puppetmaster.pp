@@ -32,6 +32,7 @@ class role::labs::puppetmaster {
             'ldappassword'      => $ldapconfig['proxypass'],
             'ldaptls'           => true,
             'autosign'          => true,
+            'is_labs_master'    => true,
         };
     }
 
