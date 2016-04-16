@@ -19,13 +19,13 @@ class tlsproxy::ocsp {
     # fetch of data has a 12H lifetime with the windows we're seeing from
     # GlobalSign today.
     #
-    # The crit/warn values of 29100 and 14700 correspond are "8h5m" and
-    # "4h5m", so those are basically warning if 4 updates in a row failed
-    # for a given cert, and critical if 8 updates in a row failed (at which
-    # point we have 4h left to fix the situation before the validity window
+    # The crit/warn values of 18300 and 11100 correspond to "5h5m" and
+    # "3h5m", so those are basically warning if 3 updates in a row failed
+    # for a given cert, and critical if 5 updates in a row failed (at which
+    # point we have ~7h left to fix the situation before the validity window
     # expires).
 
-    $check_args = '-c 29100 -w 14700 -d /var/cache/ocsp -g "*.ocsp"'
+    $check_args = '-c 18300 -w 11100 -d /var/cache/ocsp -g "*.ocsp"'
     nrpe::monitor_service { 'ocsp-freshness':
         description  => 'Freshness of OCSP Stapling files',
         nrpe_command => "/usr/lib/nagios/plugins/check-fresh-files-in-dir.py ${check_args}",
