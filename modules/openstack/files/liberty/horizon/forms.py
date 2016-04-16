@@ -51,11 +51,17 @@ class Login(django_auth_forms.AuthenticationForm):
     region = forms.ChoiceField(label=_("Region"), required=False)
     username = forms.CharField(
         label=_("User Name"),
-        widget=forms.TextInput(attrs={"autofocus": "autofocus"}))
+        widget=forms.TextInput(attrs={"autofocus": "autofocus"}),
+        help_text="This username and password are the same as those used "
+                  "to log in at wikitech.wikimedia.org.")
     password = forms.CharField(label=_("Password"),
                                widget=forms.PasswordInput(render_value=False))
     totptoken = forms.CharField(label=_("Totp Token"),
-                                widget=forms.TextInput())
+                                widget=forms.TextInput(),
+                                help_text="Login requires two-factor "
+                                          "authentication.  To enable 2fa, "
+                                          "visit Preferences->User "
+                                          "Profile in your Wikitech account")
 
     def __init__(self, *args, **kwargs):
         super(Login, self).__init__(*args, **kwargs)
