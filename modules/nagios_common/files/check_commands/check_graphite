@@ -292,6 +292,7 @@ class SeriesThreshold(Threshold):
     Checks a series of metrics to see if they individually are within acceptable thresholds
     '''
     parser_name = 'check_series_threshold'
+    allow_undefined = False
 
     def parse_result(self, result):
         '''
@@ -329,9 +330,16 @@ class SeriesThreshold(Threshold):
         :raises: NagiosException on non-OK statuses
         '''
         messages = {'OK': [], 'CRITICAL': [], 'WARNING':[]}
+        if self.allow_undefined:
+            messages['UNKNOWN'] = []
+
         for target, datapoints in seriespoints.iteritems():
             if datapoints['_total'] == 0:
-                raise NagiosException('UNKNOWN', 'No valid datapoints found for %s' % target)
+                if self.allow_undefined:
+                    messages['UNKNOWN'].append((target, 'No valid datapoints found'))
+                    continue
+                else:
+                    raise NagiosException('UNKNOWN', 'No valid datapoints found for %s' % target)
 
             lengths = {}
             t = datapoints['_total']
@@ -339,8 +347,13 @@ class SeriesThreshold(Threshold):
                 lengths[key] = len(datapoints[key])
                 # Very simple count, no timeseries evaluation, no flap detection.
             if t < lengths['UNKNOWN']:
-                raise NagiosException(
-                    'UNKNOWN', 'More than half of the datapoints for %s are undefined' % target)
+                if self.allow_undefined:
+                    messages['UNKNOWN'].append((target,
+                        'More than half of the datapoints are undefined'))
+                    continue
+                else:
+                    raise NagiosException(
+                        'UNKNOWN', 'More than half of the datapoints for %s are undefined' % target)
             for key in ['CRITICAL', 'WARNING']:
                 if lengths[key] >= t * self.perc / 100.0:
                     perc = lengths[key] * 100.0 / t
@@ -362,10 +375,12 @@ class SeriesThreshold(Threshold):
             return message
 
     def format_message(self, messages):
-        if not (messages['CRITICAL'] or messages['WARNING']):
+        if not (messages['CRITICAL'] or messages['WARNING'] or messages['UNKNOWN']):
             return 'All targets OK'
         sign = '<' if self.under else '>'
         message = ''
+        if messages['UNKNOWN']:
+            message += ' '.join(['%s (%s)' % (k, v) for k, v in messages['UNKNOWN']])
         if messages['CRITICAL']:
             message += ' '.join(['%s (%s%3.2f%%)' % (k, sign, v) for k, v in messages['CRITICAL']])
         if messages['WARNING']:
@@ -374,6 +389,16 @@ class SeriesThreshold(Threshold):
             message += ' '.join(['%s (%s%3.2f%%)' % (k, sign, v) for k, v in messages['WARNING']])
         return message
 
+    @classmethod
+    def create_parser(cls, parser):
+        p = super(SeriesThreshold, cls).create_parser(parser)
+        p.add_argument('-a', '--allow-undefined', dest='allow_undefined', action='store_true',
+                       default=False, help='Whether to allow undefined datapoints')
+        return p
+
+    def get_all(self, args):
+        super(SeriesThreshold, self).get_all(args)
+        self.allow_undefined = args.allow_undefined
 
 class Anomaly(GraphiteCheck):
 
