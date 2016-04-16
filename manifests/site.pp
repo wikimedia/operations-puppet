@@ -231,7 +231,7 @@ node 'californium.wikimedia.org' {
 
 # DHCP / TFTP
 node 'carbon.wikimedia.org' {
-    role installserver
+    role installserver, sslcert::letsencrypt
     $cluster = 'misc'
 
     interface::add_ip6_mapped { 'main':
