@@ -9,7 +9,7 @@
             ],
             "exclude": [
                 "AssembleUploadChunks",
-                "MessageIndexRebuildJob",
+                "TranslationsUpdateJob",
                 "RestbaseUpdateJobOnEdit",
                 "RestbaseUpdateJobOnDependencyChange",
                 "PublishStashedFile",
@@ -58,7 +58,7 @@
         "translate": {
             "runners": <%= @runners_translate %>,
             "include": [
-                "MessageIndexRebuildJob"
+                "TranslationsUpdateJob"
             ]
         },
         "upload": {
