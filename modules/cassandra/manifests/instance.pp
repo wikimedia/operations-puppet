@@ -81,6 +81,7 @@ define cassandra::instance(
 
     $tls_cluster_name       = $::cassandra::tls_cluster_name
     $application_username   = $::cassandra::application_username
+    $target_version         = $::cassandra::target_version
 
     file { $config_directory:
         ensure  => directory,
@@ -110,7 +111,7 @@ define cassandra::instance(
 
     file { "${config_directory}/cassandra-env.sh":
         ensure  => present,
-        content => template("${module_name}/cassandra-env.sh.erb"),
+        content => template("${module_name}/cassandra-env.sh-${target_version}.erb"),
         owner   => 'cassandra',
         group   => 'cassandra',
         mode    => '0444',
@@ -119,7 +120,7 @@ define cassandra::instance(
 
     file { "${config_directory}/cassandra.yaml":
         ensure  => present,
-        content => template("${module_name}/cassandra.yaml.erb"),
+        content => template("${module_name}/cassandra.yaml-${target_version}.erb"),
         owner   => 'cassandra',
         group   => 'cassandra',
         mode    => '0444',
@@ -137,7 +138,7 @@ define cassandra::instance(
 
     file { "${config_directory}/logback.xml":
         ensure  => present,
-        content => template("${module_name}/logback.xml.erb"),
+        content => template("${module_name}/logback.xml-${target_version}.erb"),
         owner   => 'cassandra',
         group   => 'cassandra',
         mode    => '0444',
