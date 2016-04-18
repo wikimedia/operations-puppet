@@ -16,6 +16,10 @@ class toollabs::services(
         ensure => latest,
     }
 
+    package { 'toollabs-webservice':
+        ensure => latest,
+    }
+
     service { 'webservicemonitor':
         ensure    => ensure_service($active),
         subscribe => Package['tools-manifest'],
