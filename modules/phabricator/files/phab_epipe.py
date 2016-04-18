@@ -264,19 +264,13 @@ def main():
                         continue
                     else:
                         for e in msgparts:
-                            known_body_types = ['text/plain']
-                            # text/plain; charset="utf-8"
-                            # Inconsistent content-types so we
-                            # try to match only basic string
-                            type = e['Content-Type'].split(';')[0]
-                            if type in known_body_types:
+                            if e.get_content_type() == 'text/plain':
                                 body = e.get_payload(decode=True)
                                 break
                         else:
                             err = 'Unknown email body format: from %s to %s'
                             dest = str(dest_addresses)
-                            raise EmailParsingError(err % (src_address,
-                                                           dest))
+                            raise EmailParsingError(err % (src_address, dest))
 
                 else:
                     log('attaching file')
