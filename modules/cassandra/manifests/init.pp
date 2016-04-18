@@ -223,6 +223,10 @@
 # [*auto_bootstrap*]
 #   Control whether new nodes joining the cluster will get data they own.
 #   Default: true
+#
+# [*target_version*]
+#   The Cassandra version to configure for.  Valid choices are '2.1' and '2.2'.
+#   Default: 2.1
 
 class cassandra(
     $cluster_name                     = 'Test Cluster',
@@ -273,10 +277,7 @@ class cassandra(
     $application_username             = undef,
     $application_password             = undef,
     $auto_bootstrap                   = true,
-
-    $yaml_template                    = "${::module}/cassandra.yaml.erb",
-    $env_template                     = "${::module}/cassandra-env.sh.erb",
-    $rackdc_template                  = "${::module}/cassandra-rackdc.properties.erb",
+    $target_version                   = '2.1',
 
     $logstash_host                    = 'logstash1003.eqiad.wmnet',
     $logstash_port                    = 11514,
@@ -339,6 +340,10 @@ class cassandra(
 
     if (empty($data_file_directories)) {
         fail('data_file_directories must not be empty')
+    }
+
+    if (!($target_version in ['2.1', '2.2'])) {
+        fail("${target_version} is not a valid Cassandra target version!")
     }
 
     # Choose real authenticator and authorizor values
