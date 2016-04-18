@@ -98,8 +98,8 @@ def check_output_errtext(args):
     p = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     (p_out, p_err) = p.communicate()
     if p.returncode != 0:
-        sys.stderr.write("Command %s failed with exit code %i, stderr:\n%s" %
-                         (" ".join(args), p.returncode, p_err))
+        raise Exception("Command %s failed with exit code %i, stderr:\n%s" %
+                        (" ".join(args), p.returncode, p_err))
     return (p_out, p_err)
 
 
