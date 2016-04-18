@@ -14,11 +14,10 @@ class role::labs::puppetmaster {
     $labs_metal = hiera('labs_baremetal_servers', [])
     $ldapconfig = $ldap::role::config::labs::ldapconfig
     $basedn = $ldapconfig['basedn']
-    $horizon_host_ip = ipresolve(hiera('labs_horizon_host'), 4)
 
 
     # Only allow puppet access from the instances
-    $allow_from = flatten([$labs_ranges, '208.80.154.14', $horizon_host_ip, $labs_metal])
+    $allow_from = flatten([$labs_ranges, '208.80.154.14', $labs_metal])
 
     class { '::puppetmaster':
         server_name    => hiera('labs_puppet_master'),
