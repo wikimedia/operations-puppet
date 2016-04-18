@@ -23,10 +23,12 @@ class toollabs::bastion inherits toollabs {
         }
     }
 
-    package { [
-        'toollabs-webservice',
-        'mosh']:
-            ensure => present,
+    package { 'toollabs-webservice':
+        ensure => latest,
+    }
+
+    package { 'mosh':
+        ensure => present,
     }
 
     motd::script { 'bastion-banner':
