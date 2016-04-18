@@ -2280,13 +2280,47 @@ node 'palladium.eqiad.wmnet' {
 
 # parser cache databases
 # eqiad
-node /pc100[4-6]\.eqiad\.wmnet/ {
-    role mariadb::parsercache
+node 'pc1004.eqiad.wmnet' {
+    class { 'role::mariadb::parsercache':
+        shard  => 'pc1',
+    }
+
+    include base::firewall
+}
+node 'pc1005.eqiad.wmnet' {
+    class { 'role::mariadb::parsercache':
+        shard  => 'pc2',
+    }
+
+    include base::firewall
+}
+node 'pc1006.eqiad.wmnet' {
+    class { 'role::mariadb::parsercache':
+        shard  => 'pc3',
+    }
+
     include base::firewall
 }
 # codfw
-node /pc200[4-6]\.codfw\.wmnet/ {
-    role mariadb::parsercache
+node 'pc2004.codfw.wmnet' {
+    class { 'role::mariadb::parsercache':
+        shard  => 'pc1',
+    }
+
+    include base::firewall
+}
+node 'pc2005.codfw.wmnet' {
+    class { 'role::mariadb::parsercache':
+        shard  => 'pc2',
+    }
+
+    include base::firewall
+}
+node 'pc2006.codfw.wmnet' {
+    class { 'role::mariadb::parsercache':
+        shard  => 'pc3',
+    }
+
     include base::firewall
 }
 
