@@ -172,6 +172,7 @@ ganglia_clusters:
     id: 42
     sites:
       eqiad: []
+      codfw: []
   logstash:
     name: "Logstash cluster"
     id: 43
