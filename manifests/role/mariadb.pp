@@ -131,10 +131,9 @@ class role::mariadb::misc(
         shard => $shard,
     }
 
-    if $master {
-        class { 'mariadb::heartbeat':
-            shard => $shard,
-        }
+    class { 'mariadb::heartbeat':
+        shard   => $shard,
+        enabled => $master,
     }
 }
 
@@ -207,10 +206,9 @@ class role::mariadb::misc::phabricator(
         include coredb_mysql::snapshot
     }
 
-    if $master {
-        class { 'mariadb::heartbeat':
-            shard => $shard,
-        }
+    class { 'mariadb::heartbeat':
+        shard   => $shard,
+        enabled => $master,
     }
 
     unless $master {
@@ -262,10 +260,9 @@ class role::mariadb::misc::eventlogging(
         shard => $shard,
     }
 
-    if $master {
-        class { 'mariadb::heartbeat':
-            shard => $shard,
-        }
+    class { 'mariadb::heartbeat':
+        shard   => $shard,
+        enabled => $master,
     }
 }
 
@@ -537,10 +534,9 @@ class role::mariadb::core(
         contact_group => $contact_group,
     }
 
-    if $master {
-        class { 'mariadb::heartbeat':
-            shard => $shard,
-        }
+    class { 'mariadb::heartbeat':
+        shard   => $shard,
+        enabled => $master,
     }
 }
 
@@ -787,7 +783,10 @@ class role::mariadb::proxy::slaves(
 }
 
 # parsercache (pc) specific configuration
-class role::mariadb::parsercache {
+class role::mariadb::parsercache
+    $shard,
+    $master = false,
+    ) {
 
     include standard
 
@@ -821,6 +820,11 @@ class role::mariadb::parsercache {
         tmpdir   => "${basedir}/tmp",
         ssl      => 'on',
         p_s      => 'off',
+    }
+
+    class { 'mariadb::heartbeat':
+        shard   => $shard,
+        enabled => $master,
     }
 
     # mysql monitoring access from tendril (db1011)
