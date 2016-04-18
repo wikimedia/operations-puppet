@@ -26,7 +26,7 @@ class gitblit(
         group  => $git_repo_owner,
     }
 
-    file { '/var/lib/gitblit':
+    file { [ '/var/lib/gitblit', '/var/lib/gitblit/data' ]:
         ensure => directory,
         mode   => '0644',
         owner  => 'gitblit',
