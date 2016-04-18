@@ -32,8 +32,6 @@ class openstack::nova::network($openstack_version=$::openstack::version, $novaco
                                         private_ip => '10.68.18.109' },
         'deployment-stream'         => {public_ip  => '208.80.155.138',
                                         private_ip => '10.68.17.106' },
-        'deployment-cache-mobile04' => {public_ip  => '208.80.155.139',
-                                        private_ip => '10.68.18.110' },
         'relic'                     => {public_ip  => '208.80.155.197',
                                         private_ip => '10.68.16.162' },
         'tools-webproxy'            => {public_ip  => '208.80.155.131',
