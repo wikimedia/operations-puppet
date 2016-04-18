@@ -1262,6 +1262,13 @@ node 'graphite1002.eqiad.wmnet' {
     include base::firewall
 }
 
+# graphite additional machine, for additional space
+node 'graphite1003.eqiad.wmnet' {
+    role graphite::production, statsd
+    include standard
+    include base::firewall
+}
+
 # Primary graphite machines
 node 'graphite2001.codfw.wmnet' {
     role graphite::production, statsd
