@@ -4,8 +4,13 @@ After=network.target
 
 [Service]
 User=cassandra
-<% if @blacklist %>
-ExecStart=/usr/bin/java -jar /usr/local/lib/cassandra-metrics-collector/cassandra-metrics-collector.jar --graphite-host <%= @graphite_host %> --graphite-port <%= @graphite_port %> --filter-config <%= @filter_file %>
+<% if @target_cassandra_version == "2.1" -%>
+Environment="CLASSPATH=/usr/local/lib/cassandra-metrics-collector/cassandra-metrics-collector.jar"
 <% else %>
-ExecStart=/usr/bin/java -jar /usr/local/lib/cassandra-metrics-collector/cassandra-metrics-collector.jar --graphite-host <%= @graphite_host %> --graphite-port <%= @graphite_port %>
+Environment="CLASSPATH=/usr/local/lib/cassandra-metrics-collector/cassandra-metrics-collector.jar:/usr/share/cassandra/apache-cassandra.jar"
+<% end %>
+<% if @blacklist %>
+ExecStart=/usr/bin/java org.wikimedia.cassandra.metrics.service.Service --graphite-host <%= @graphite_host %> --graphite-port <%= @graphite_port %> --filter-config <%= @filter_file %>
+<% else %>
+ExecStart=/usr/bin/java org.wikimedia.cassandra.metrics.service.Service --graphite-host <%= @graphite_host %> --graphite-port <%= @graphite_port %>
 <% end %>
