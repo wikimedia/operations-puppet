@@ -19,6 +19,8 @@ class gitblit(
         managehome => false,
     }
 
+    require_package('openjdk-7-jre')
+
     file { '/var/lib/git':
         ensure => directory,
         mode   => '0644',
