@@ -59,7 +59,7 @@ def parse_options():
         if 'certificates' in defaults:
             defaults['certificates'] = defaults['certificates'].split(',')
         elif 'certificate' in defaults:
-            defaults['certificates'] = [ defaults['certificate'] ]
+            defaults['certificates'] = [defaults['certificate']]
             del defaults['certificate']
 
     parser.set_defaults(**defaults)
