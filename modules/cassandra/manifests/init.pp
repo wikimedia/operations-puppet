@@ -223,6 +223,10 @@
 # [*auto_bootstrap*]
 #   Control whether new nodes joining the cluster will get data they own.
 #   Default: true
+#
+# [*target_version*]
+#   The Cassandra version to configure for.  Valid choices are '2.1 and '2.2'.
+#   Default: 2.1
 
 class cassandra(
     $cluster_name                     = 'Test Cluster',
@@ -273,9 +277,10 @@ class cassandra(
     $application_username             = undef,
     $application_password             = undef,
     $auto_bootstrap                   = true,
+    $target_version                   = '2.1',
 
-    $yaml_template                    = "${::module}/cassandra.yaml.erb",
-    $env_template                     = "${::module}/cassandra-env.sh.erb",
+    $yaml_template                    = "${::module}/cassandra.yaml-${target_version}.erb",
+    $env_template                     = "${::module}/cassandra-env.sh-${target_version}.erb",
     $rackdc_template                  = "${::module}/cassandra-rackdc.properties.erb",
 
     $logstash_host                    = 'logstash1003.eqiad.wmnet',

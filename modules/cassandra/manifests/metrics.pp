@@ -34,6 +34,8 @@ class cassandra::metrics(
         validate_array($blacklist)
     }
 
+    $target_cassandra_version = $::cassandra::target_version
+
     $filter_file   = '/etc/cassandra-metrics-collector/filter.yaml'
     $collector_jar = '/usr/local/lib/cassandra-metrics-collector/cassandra-metrics-collector.jar'
 
