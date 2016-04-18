@@ -2381,6 +2381,7 @@ node /^restbase200[1-6]\.codfw\.wmnet$/ {
 node 'rhenium.wikimedia.org' {
     role pmacct
     include standard
+    include base::firewall
 }
 
 node 'rubidium.wikimedia.org' {
