@@ -51,9 +51,23 @@ class gitblit(
         source  => 'puppet:///modules/gitblit/gitblit.conf',
     }
 
+    if os_version('debian >= jessie') {
+
+        $gitblit_provider='systemd'
+
+        file { '/etc/systemd/system/gitblit.service':
+            owner  => 'root',
+            group  => 'root',
+            mode   => '0555',
+            source => 'puppet:///modules/gitblit/gitblit.service',
+        }
+    } else {
+        $gitblit_provider='upstart'
+    }
+
     service { 'gitblit':
         ensure    => running,
-        provider  => 'upstart',
+        provider  => $gitblit_provider,
         subscribe => File['/var/lib/gitblit/data/gitblit.properties'],
         require   => File['/etc/init/gitblit.conf'],
     }
