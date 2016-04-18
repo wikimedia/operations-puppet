@@ -34,8 +34,18 @@ class cassandra::metrics(
         validate_array($blacklist)
     }
 
+    $target_cassandra_version = $::cassandra::target_version
+
     $filter_file   = '/etc/cassandra-metrics-collector/filter.yaml'
     $collector_jar = '/usr/local/lib/cassandra-metrics-collector/cassandra-metrics-collector.jar'
+
+    # Backward incompatible changes to cassandra-metrics-collector were needed
+    # to support Cassandra 2.2; Use the apropos version of the collector.
+    if $target_cassandra_version == '2.1' {
+        $collector_version = '2.0.0-20151001.182133-1'
+    } else {
+        $collector_version = '3.0.0-20160426.185952-1'
+    }
 
     package { 'cassandra/metrics-collector':
         ensure   => present,
@@ -66,7 +76,7 @@ class cassandra::metrics(
 
     file { $collector_jar:
         ensure  => 'link',
-        target  => '/srv/deployment/cassandra/metrics-collector/lib/cassandra-metrics-collector-2.0.0-20151001.182133-1-jar-with-dependencies.jar',
+        target  => '/srv/deployment/cassandra/metrics-collector/lib/cassandra-metrics-collector-${collector_version}-jar-with-dependencies.jar',
         require => Package['cassandra/metrics-collector'],
     }
 
