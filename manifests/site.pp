@@ -560,7 +560,19 @@ node /^db10(75|77|78)\.eqiad\.wmnet/ {
     include base::firewall
 }
 
-node /^db20(18|36|43|50|57)\.codfw\.wmnet/ {
+# potentially causing replication lag
+# specially due to new s3 servers
+node 'db2018.codfw.wmnet' {
+    class { 'role::mariadb::core':
+        shard         => 's3',
+        p_s           => 'on',
+        binlog_format => 'MIXED',
+        ssl           => 'puppet-cert',
+    }
+    include base::firewall
+}
+
+node /^db20(36|43|50|57)\.codfw\.wmnet/ {
     class { 'role::mariadb::core':
         shard         => 's3',
         p_s           => 'on',
