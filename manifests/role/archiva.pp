@@ -11,6 +11,10 @@ class role::archiva {
 
     require_package('openjdk-7-jdk')
 
+    class { '::archiva':
+        require => Package['openjdk-7-jdk'],
+    }
+
     # Set up a reverse proxy for the archiva service.
     class { '::archiva::proxy': }
 
