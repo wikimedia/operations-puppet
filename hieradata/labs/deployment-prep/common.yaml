@@ -92,7 +92,9 @@ cassandra::rpc_address: '%{::ipaddress_eth0}'
 cassandra::seeds:
   - deployment-restbase01.deployment-prep.eqiad.wmflabs
   - deployment-restbase02.deployment-prep.eqiad.wmflabs
-cassandra::logging::logstash_host: deployment-logstash2.deployment-prep.eqiad.wmflabs
+cassandra::logstash_host: deployment-logstash2.deployment-prep.eqiad.wmflabs
+cassandra::target_version: '2.2'
+cassandra::metrics::graphite_host: labmon1001.eqiad.wmnet
 restbase::seeds:
   - 10.68.16.128
   - 10.68.17.189
