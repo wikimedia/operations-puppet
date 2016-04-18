@@ -5,11 +5,9 @@ After=network.target
 [Service]
 User=gitblit
 Group=gitblit
-Environment="ARGS=-server -Xmx8g -Djava.awt.headless=true -jar"
-EnvironmentFile=-/etc/sysconfig/gitblit
-WorkingDirectory=/opt/gitblit
-ExecStart=/usr/bin/java \$ARGS gitblit.jar --baseFolder /var/lib/gitblit/data
-ExecStop=/usr/bin/java \$ARGS gitblit.jar --baseFolder /var/lib/gitblit/data --stop
+WorkingDirectory=/var/lib/gitblit
+ExecStart=/usr/lib/jvm/java-7-openjdk-amd64/jre/bin/java -server -Xmx8g -Djava.awt.headless=true -jar gitblit.jar --baseFolder /var/lib/gitblit/data
+ExecStop=/usr/lib/jvm/java-7-openjdk-amd64/jre/bin/java -server -Xmx8g -Djava.awt.headless=true -jar gitblit.jar --baseFolder /var/lib/gitblit/data --stop
 
 [Install]
 WantedBy=multi-user.target
