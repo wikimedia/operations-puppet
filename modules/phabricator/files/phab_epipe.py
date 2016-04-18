@@ -256,7 +256,7 @@ def main():
             for payload in msg.get_payload():
                 log('content type: %s' % (payload.get_content_type(),))
                 if payload.get_content_type() == 'text/plain':
-                    body = payload.get_payload()
+                    body = payload.get_payload(decode=True)
                 elif payload.get_content_type() == 'multipart/alternative':
                     msgparts = payload.get_payload()
                     if not isinstance(msgparts, list):
@@ -270,7 +270,7 @@ def main():
                             # try to match only basic string
                             type = e['Content-Type'].split(';')[0]
                             if type in known_body_types:
-                                body = e.get_payload()
+                                body = e.get_payload(decode=True)
                                 break
                         else:
                             err = 'Unknown email body format: from %s to %s'
@@ -283,7 +283,7 @@ def main():
                     attached.append(payload)
 
         else:
-            body = msg.get_payload()
+            body = msg.get_payload(decode=True)
         return body, attached
 
     # If maint is true then reject all email interaction
