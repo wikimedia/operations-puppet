@@ -131,10 +131,9 @@ class role::mariadb::misc(
         shard => $shard,
     }
 
-    if $master {
-        class { 'mariadb::heartbeat':
-            shard => $shard,
-        }
+    class { 'mariadb::heartbeat':
+        shard   => $shard,
+        enabled => $master,
     }
 }
 
@@ -207,10 +206,9 @@ class role::mariadb::misc::phabricator(
         include coredb_mysql::snapshot
     }
 
-    if $master {
-        class { 'mariadb::heartbeat':
-            shard => $shard,
-        }
+    class { 'mariadb::heartbeat':
+        shard   => $shard,
+        enabled => $master,
     }
 
     unless $master {
@@ -262,10 +260,9 @@ class role::mariadb::misc::eventlogging(
         shard => $shard,
     }
 
-    if $master {
-        class { 'mariadb::heartbeat':
-            shard => $shard,
-        }
+    class { 'mariadb::heartbeat':
+        shard   => $shard,
+        enabled => $master,
     }
 }
 
@@ -537,10 +534,9 @@ class role::mariadb::core(
         contact_group => $contact_group,
     }
 
-    if $master {
-        class { 'mariadb::heartbeat':
-            shard => $shard,
-        }
+    class { 'mariadb::heartbeat':
+        shard   => $shard,
+        enabled => $master,
     }
 }
 
@@ -787,7 +783,9 @@ class role::mariadb::proxy::slaves(
 }
 
 # parsercache (pc) specific configuration
-class role::mariadb::parsercache {
+class role::mariadb::parsercache(
+    $shard,
+    ) {
 
     include standard
 
@@ -797,7 +795,7 @@ class role::mariadb::parsercache {
     include passwords::misc::scripts
 
     system::role { 'role::mariadb::parsercache':
-        description => 'Parser Cache DB Server',
+        description => "Parser Cache DB Server $shard",
     }
 
     class { 'mariadb::packages_wmf':
@@ -821,6 +819,12 @@ class role::mariadb::parsercache {
         tmpdir   => "${basedir}/tmp",
         ssl      => 'on',
         p_s      => 'off',
+    }
+
+    $heartbeat_enabled = ($::mw_primary in $::domain)
+    class { 'mariadb::heartbeat':
+        shard   => $shard,
+        enabled => $heartbeat_enabled,
     }
 
     # mysql monitoring access from tendril (db1011)
