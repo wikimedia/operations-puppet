@@ -7,6 +7,7 @@
 class apache::mod {}
 
 # Modules that are bundled with the apache2 package
+# lint:ignore:autoloader_layout  FIXable?
 class apache::mod::actions         { apache::mod_conf { 'actions':        } }
 class apache::mod::alias           { apache::mod_conf { 'alias':          } }
 class apache::mod::auth_basic      { apache::mod_conf { 'auth_basic':     } }
@@ -33,9 +34,11 @@ class apache::mod::rewrite         { apache::mod_conf { 'rewrite':        } }
 class apache::mod::setenvif        { apache::mod_conf { 'setenvif':       } }
 class apache::mod::ssl             { apache::mod_conf { 'ssl':            } }
 class apache::mod::userdir         { apache::mod_conf { 'userdir':        } }
+# lint:endignore
 
 # Modules that depend on additional packages
 # lint:ignore:right_to_left_relationship
+# lint:ignore:autoloader_layout  FIXable?
 class apache::mod::authz_svn       { apache::mod_conf { 'authz_svn':      } <- package { 'libapache2-svn':           } }
 class apache::mod::fastcgi         { apache::mod_conf { 'fastcgi':        } <- package { 'libapache2-mod-fastcgi':   } }
 class apache::mod::fcgid           { apache::mod_conf { 'fcgid':          } <- package { 'libapache2-mod-fcgid':     } }
