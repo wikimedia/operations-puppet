@@ -16,7 +16,7 @@ Looks for configuration file: /etc/phab_epipe.conf
     security = users
     # if 'true' will reject all email to phab
     maint = false
-    # saves every message overwriting /tmp/rawmail
+    # saves every message to /tmp/phabmail_*
     save = false
     # saves particular messages from a comma
     # separated list of users
@@ -48,6 +48,7 @@ import sys
 import syslog
 from email.parser import Parser
 from email.utils import parseaddr
+from tempfile import NamedTemporaryFile
 import ConfigParser
 
 from phabricator import Phabricator
@@ -284,23 +285,16 @@ def main():
     if defaults['maint'].lower() == 'true':
         raise EmailStatusError('Email interaction is currently disabled.')
 
-    if '-s' in sys.argv:
-        save = '/tmp/maildump'
-    elif 'save' in defaults:
-        save = defaults['save']
-    else:
-        save = False
-
     if 'debug' in defaults:
         defaults['debug'] = defaults['debug'].lower().split(',')
 
     # Reading in the message
     stdin = sys.stdin.read()
 
-    if save:
-        log('saving raw email to %s' % save)
-        with open(save, 'w') as r:
-            r.write(stdin)
+    if '-s' in sys.argv or defaults.get('save', False):
+        with NamedTemporaryFile(prefix='phabmail_', delete=False) as temp:
+            log('saving raw email to %s' % temp.name)
+            temp.write(stdin)
 
     # ['Received', 'DKIM-Signature', 'X-Google-DKIM-Signature',
     # 'X-Gm-Message-State', 'X-Received', 'Received',
@@ -316,14 +310,14 @@ def main():
     else:
         cc_addresses = []
 
-    # Some email clients do crazy things and it is very
-    # difficult to debug without the raw message.  In these (rare)
-    # cases we can add the sender to debug to log
-    if 'debug' in defaults:
-        src = src_addy.lower().strip()
-        if src in defaults['debug']:
-            with open('/tmp/%s' % (src_addy + '.txt'), 'w') as r:
-                r.write(stdin)
+    # Some email clients do crazy things and it is very difficult to debug
+    # without the raw message. In these (rare) cases we can add the sender to
+    # debug to log
+    src = src_addy.lower().strip()
+    if src in defaults.get('debug', []):
+        prefix = "phabmail_%s_" % src
+        with NamedTemporaryFile(prefix=prefix, delete=False) as temp:
+            temp.write(stdin)
 
     # does this email have a direct to task addresss
     dtask = extract_direct_task(dest_addresses + cc_addresses)
