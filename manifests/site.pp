@@ -920,9 +920,7 @@ node /^elastic10[0-3][0-9]\.eqiad\.wmnet/ {
 node /^elastic20[0-3][0-9]\.codfw\.wmnet/ {
     role elasticsearch::server
     include base::firewall
-    class { 'standard':
-        has_ganglia => false,
-    }
+    include standard
 }
 
 # External Storage, Shard 1 (es1) databases
