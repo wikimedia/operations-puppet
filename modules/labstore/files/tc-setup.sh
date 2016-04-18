@@ -13,6 +13,7 @@
 modules='act_mirr ifb'
 nfs_write='7000kbps'
 nfs_read='9500kbps'
+nfs_dumps_read='15000kbps'
 eth0_egress='30000kbps'
 
 function ensure_mod {
@@ -85,6 +86,8 @@ $TC class add dev ifb0 parent 1: classid 1:2 htb rate $nfs_read
 
 $TC class add dev ifb0 parent 1: classid 1:3 htb rate $nfs_read
 
+$TC class add dev ifb0 parent 1: classid 1:4 htb rate $nfs_dumps_read
+
 $TC filter add dev ifb0 parent 1: protocol ip prio 0 u32 \
 	  match ip src 10.64.37.6 flowid 1:1
 
@@ -93,3 +96,6 @@ $TC filter add dev ifb0 parent 1: protocol ip prio 0 u32 \
 
 $TC filter add dev ifb0 parent 1: protocol ip prio 0 u32 \
 	  match ip src 10.64.37.10 flowid 1:3
+
+$TC filter add dev ifb0 parent 1: protocol ip prio 0 u32 \
+	  match ip src 10.64.4.10 flowid 1:4
