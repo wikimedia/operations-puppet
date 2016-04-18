@@ -9,15 +9,7 @@ class role::archiva {
 
     include base::firewall
 
-    if !defined(Package['openjdk-7-jdk']) {
-        package { 'openjdk-7-jdk':
-            ensure => 'installed',
-        }
-    }
-
-    class { '::archiva':
-        require => Package['openjdk-7-jdk'],
-    }
+    require_package('openjdk-7-jdk')
 
     # Set up a reverse proxy for the archiva service.
     class { '::archiva::proxy': }
