@@ -1,7 +1,9 @@
 #
 
 # class to satify includes
+# lint:ignore:autoloader_layout
 class role::cache::configuration {
+# lint:endignore
         $active_nodes = {
             'production' => {
                 'text' => {
