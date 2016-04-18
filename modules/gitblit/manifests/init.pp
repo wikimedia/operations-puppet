@@ -26,6 +26,13 @@ class gitblit(
         group  => $git_repo_owner,
     }
 
+    file { '/var/lib/gitblit':
+        ensure => directory,
+        mode   => '0644',
+        owner  => 'gitblit',
+        group  => 'gitblit',
+    }
+
     file { '/var/lib/gitblit/data/gitblit.properties':
         owner  => 'gitblit',
         group  => 'gitblit',
