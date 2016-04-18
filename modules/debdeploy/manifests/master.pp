@@ -1,3 +1,4 @@
+# sets up a debdeploy master
 class debdeploy::master {
 
     package { 'debdeploy-master':
