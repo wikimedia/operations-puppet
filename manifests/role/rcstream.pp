@@ -49,15 +49,13 @@ class role::rcstream {
     diamond::collector::nginx { 'rcstream': }
 
     ferm::service { 'rcstream':
-        proto  => 'tcp',
-        port   => '80',
-        srange => '$INTERNAL',
+        proto => 'tcp',
+        port  => '80',
     }
 
     ferm::service { 'rcstream_ssl':
         proto  => 'tcp',
         port   => '443',
-        srange => '$INTERNAL',
     }
 
     ferm::service { 'rcstream_redis':
