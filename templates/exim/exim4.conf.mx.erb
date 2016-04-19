@@ -6,8 +6,13 @@
 
 CONFDIR=/etc/exim4
 
-# wiki-mail-eqiad and wiki-mail-codfw
-WIKI_INTERFACE=<; 208.80.154.91 ; 2620:0:861:3:208:80:154:91 ; 208.80.153.46 ; 2620:0:860:2:208:80:153:46
+<% if @site == "eqiad" -%>
+# wiki-mail-eqiad
+WIKI_INTERFACE=<; 208.80.154.91 ; 2620:0:861:3:208:80:154:91
+<% elsif @site == "codfw" -%>
+# wiki-mail-codfw
+WIKI_INTERFACE=<; 208.80.153.46 ; 2620:0:860:2:208:80:153:46
+<% end %>
 
 OTRSQUERY=SELECT value0 FROM system_address WHERE value0='${quote_mysql:$local_part@$domain}' AND valid_id=1;
 
