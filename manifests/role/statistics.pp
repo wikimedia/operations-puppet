@@ -219,27 +219,27 @@ class role::statistics::migration {
 
     include rsync::server
 
-    file { [ '/srv/stat1001', '/srv/stat1001/home',
-        '/srv/stat1001/var', '/srv/stat1001/var/www',
-        '/srv/stat1001/srv',
+    file { [ '/mnt/hdfs/stat1001', '/mnt/hdfs/stat1001/home',
+        '/mnt/hdfs/stat1001/var', '/mnt/hdfs/stat1001/var/www',
+        '/mnt/hdfs/stat1001/mnt/hdfs',
         ]:
         ensure => 'directory',
     }
 
     rsync::server::module { 'home':
-        path        => '/srv/stat1001/home',
+        path        => '/mnt/hdfs/stat1001/home',
         read_only   => 'no',
         hosts_allow => $sourceip,
     }
 
     rsync::server::module { 'varwww':
-        path        => '/srv/stat1001/var/www',
+        path        => '/mnt/hdfs/stat1001/var/www',
         read_only   => 'no',
         hosts_allow => $sourceip,
     }
 
-    rsync::server::module { 'srv':
-        path        => '/srv/stat1001/srv',
+    rsync::server::module { 'mnt/hdfs':
+        path        => '/mnt/hdfs/stat1001/mnt/hdfs',
         read_only   => 'no',
         hosts_allow => $sourceip,
     }
