@@ -20,9 +20,15 @@ class mw_rc_irc::ircserver {
             source  => 'puppet:///modules/mw_rc_irc/upstart/ircd.conf',
     }
 
+    if os_version('debian >= jessie') {
+        $ircd_provider = 'systemd'
+    } else {
+        $ircd_provider = 'upstart'
+    }
+
     service { 'ircd':
         ensure   => running,
-        provider => 'upstart',
+        provider => $ircd_provider,
         require  => File['/etc/init/ircd.conf'],
     }
 
