@@ -8,7 +8,7 @@ class role::analytics_cluster::database::meta {
     class { 'mariadb::packages_wmf':
         mariadb10 => true
     }
-    # TODO: This will be included once analytics1015 has been productionized
+    # TODO: This will be included once analytics1003 has been productionized
     # - otto 2015-09-15
     #include role::mariadb::monitor
 

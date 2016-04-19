@@ -63,12 +63,17 @@ node 'analytics1002.eqiad.wmnet' {
     include base::firewall
 }
 
-# NOTE: This node will be replaced as part of
+# NOTE: This node is being decomissioned.
 # https://phabricator.wikimedia.org/T110090.
+node 'analytics1015.eqiad.wmnet' {
+    include standard
+    include base::firewall
+}
+
 # This node hosts Oozie and Hive servers,
 # as well as a MySQL instance that stores
 # meta data associated with those services.
-node 'analytics1015.eqiad.wmnet' {
+node 'analytics1003.eqiad.wmnet' {
     role analytics_cluster::client,
         analytics_cluster::database::meta,
         # Back up analytics-meta MySQL instance
@@ -80,15 +85,6 @@ node 'analytics1015.eqiad.wmnet' {
         analytics_cluster::hive::metastore,
         analytics_cluster::hive::server,
         analytics_cluster::oozie::server
-
-    include standard
-    include base::firewall
-}
-
-# This node is replacing analytics1015.
-node 'analytics1003.eqiad.wmnet' {
-    role analytics_cluster::client,
-        analytics_cluster::database::meta
 
     include standard
     include base::firewall
