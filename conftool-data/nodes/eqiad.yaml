@@ -254,8 +254,6 @@ imagescaler:
   mw1159.eqiad.wmnet: [apache2]
   mw1160.eqiad.wmnet: [apache2]
 restbase:
-  restbase1005.eqiad.wmnet: [restbase]
-  restbase1006.eqiad.wmnet: [restbase]
   restbase1007.eqiad.wmnet: [restbase]
   restbase1008.eqiad.wmnet: [restbase]
   restbase1009.eqiad.wmnet: [restbase]

@@ -5,14 +5,6 @@ cassandra::start_rpc: 'false'
 # cassandra cluster configs between cassandra & clients
 
 cassandra::seeds:
-    - restbase1005.eqiad.wmnet
-    - restbase1005-a.eqiad.wmnet
-    - restbase1005-b.eqiad.wmnet
-    - restbase1005-c.eqiad.wmnet
-    - restbase1006.eqiad.wmnet
-    - restbase1006-a.eqiad.wmnet
-    - restbase1006-b.eqiad.wmnet
-    - restbase1006-c.eqiad.wmnet
     - restbase1007.eqiad.wmnet
     - restbase1007-a.eqiad.wmnet
     - restbase1007-b.eqiad.wmnet
