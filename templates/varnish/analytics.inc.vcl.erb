@@ -52,7 +52,7 @@ sub set_last_access_cookie__ {
  *     header.append(resp.http.Set-Cookie,
  *         "WMF-Last-Access="
  *         + req.http.X-NowDay
- *         + ";Path=/;HttpOnly;Expires="
+ *         + ";Path=/;HttpOnly;secure;Expires="
  *         + (now + 32d)
  *     );
  * However, varnish3 is buggy wrt str + (time + duration), so we're forced to
@@ -65,7 +65,7 @@ sub set_last_access_cookie__ { C{
     Vmod_Func_header.append(sp, HDR_RESP, "\013Set-Cookie:",
         "WMF-Last-Access=",
         VRT_GetHdr(sp, HDR_REQ, "\011X-NowDay:"),
-        ";Path=/;HttpOnly;Expires=",
+        ";Path=/;HttpOnly;secure;Expires=",
         VRT_time_string(sp, (double)(
             ((time_t)VRT_r_now(sp) + 2764800) / 43200 * 43200
         )),
