@@ -30,4 +30,7 @@ $conf['metric_groups_initially_collapsed'] = true;
 
 $conf['cachefile'] = '/var/cache/ganglia/ganglia_metrics.cache';
 
+# Disable the feature that allows events to be overlaid on graphs.
+# It's expensive and we don't use it.
+$conf['overlay_events'] = false;
 ?>
