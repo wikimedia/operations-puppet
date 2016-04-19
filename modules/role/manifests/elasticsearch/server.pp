@@ -2,7 +2,11 @@
 #
 # This class sets up Elasticsearch in a WMF-specific way.
 #
-class role::elasticsearch::server{
+class role::elasticsearch::server (
+    $multicast_enabled = hiera('elasticsearch::multicast_enabled', true),
+){
+
+    validate_bool($multicast_enabled)
 
     if ($::realm == 'production' and hiera('elasticsearch::rack', undef) == undef) {
         fail("Don't know rack for ${::hostname} and rack awareness should be turned on")
@@ -36,6 +40,7 @@ class role::elasticsearch::server{
     }
 
     ferm::service { 'elastic-zen-discovery':
+        ensure => $multicast_enabled,
         proto  => 'udp',
         port   => '54328',
         srange => '$INTERNAL',
