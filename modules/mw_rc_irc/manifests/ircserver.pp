@@ -16,14 +16,26 @@ class mw_rc_irc::ircserver {
             owner   => 'irc',
             group   => 'irc',
             content => template('mw_rc_irc/motd.erb');
-        '/etc/init/ircd.conf':
-            source  => 'puppet:///modules/mw_rc_irc/upstart/ircd.conf',
     }
 
     if os_version('debian >= jessie') {
+
         $ircd_provider = 'systemd'
+
+        file { '/etc/systemd/system/ircd.service':
+            owner  => 'root',
+            group  => 'root',
+            mode   => '0555',
+            source => 'puppet:///modules/mw_rc_irc/systemd/ircd.service',
+        }
+
     } else {
+
         $ircd_provider = 'upstart'
+
+        file { '/etc/init/ircd.conf':
+            source => 'puppet:///modules/mw_rc_irc/upstart/ircd.conf',
+        }
     }
 
     service { 'ircd':
