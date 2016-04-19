@@ -87,6 +87,9 @@ node 'analytics1015.eqiad.wmnet' {
 
 # This node is replacing analytics1015.
 node 'analytics1003.eqiad.wmnet' {
+    role analytics_cluster::client,
+        analytics_cluster::database::meta,
+
     include standard
     include base::firewall
 }
