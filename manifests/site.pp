@@ -85,6 +85,12 @@ node 'analytics1015.eqiad.wmnet' {
     include base::firewall
 }
 
+# This node is replacing analytics1015.
+node 'analytics1003.eqiad.wmnet' {
+    include standard
+    include base::firewall
+}
+
 # analytics1028-analytics1057 are Hadoop worker nodes.
 #
 # NOTE:  If you add, remove or move Hadoop nodes, you should edit
