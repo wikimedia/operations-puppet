@@ -52,7 +52,8 @@ class ganglia::web(
 
     # Increase the default memory limit
     file_line { 'php.ini-memory':
-        line   => 'memory_limit = 256M',
+        line   => 'memory_limit = 768M',
+        match  => '^memory_limit\s*=',
         path   => '/etc/php5/apache2/php.ini',
         notify => Class['::apache']
     }
