@@ -10,6 +10,7 @@
 /var/log/graphite-web/*.log {
     daily
     compress
+    delaycompress
     size 300M
     rotate 0
     missingok
