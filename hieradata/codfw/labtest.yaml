@@ -53,10 +53,10 @@ novaconfig:
   libvirt_type: 'kvm'
   my_ip: "%{::ipaddress_eth0}"
   network_public_interface: 'eth0'
-  network_flat_interface: 'eth1.1102'
+  network_flat_interface: 'eth1.2102'
   network_flat_tagged_base_interface: 'eth1'
-  network_flat_interface_vlan: '1102'
-  flat_network_bridge: 'br1102'
+  network_flat_interface_vlan: '2102'
+  flat_network_bridge: 'br2102'
   fixed_range: '10.196.16.0/21'
   dhcp_start: '10.196.16.4'
   network_public_ip: '208.80.155.255'
