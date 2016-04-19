@@ -12,7 +12,7 @@
     "compute:stop": "rule:admin_or_projectadmin",
     "compute:snapshot": "!",
     "compute:get_all": [],
-
+    "compute:get_console_output": "rule:admin_or_member",
 
     "admin_api": [["is_admin:True"]],
     "compute_extension:accounts": [["rule:admin_api"]],

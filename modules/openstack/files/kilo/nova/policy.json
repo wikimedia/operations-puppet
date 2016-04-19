@@ -1,6 +1,6 @@
 {
     "context_is_admin":  "role:admin",
-    "admin_or_member":  "is_admin:True or project_id:%(project_id)s",
+    "admin_or_member":  "is_admin:True or role:projectadmin or role:user",
     "admin_or_projectadmin":  "is_admin:True or role:projectadmin",
     "default": "rule:admin_or_projectadmin",
 
@@ -10,11 +10,13 @@
     "compute:create:attach_network": "rule:admin_or_projectadmin",
     "compute:create:attach_volume": "rule:admin_or_projectadmin",
     "compute:create:forced_host": "is_admin:True",
+    "compute:get": "rule:admin_or_member",
     "compute:get_all": "",
     "compute:get_all_tenants": "",
     "compute:start": "rule:admin_or_projectadmin",
     "compute:stop": "rule:admin_or_projectadmin",
     "compute:unlock_override": "rule:admin_api",
+    "compute:get_console_output": "rule:admin_or_member",
 
     "compute:shelve": "rule:admin_or_projectadmin",
     "compute:shelve_offload": "rule:admin_or_projectadmin",
@@ -92,7 +94,7 @@
     "compute_extension:hosts": "rule:admin_api",
     "compute_extension:hypervisors": "rule:admin_api",
     "compute_extension:image_size": "rule:admin_or_member",
-    "compute_extension:instance_actions": "rule:admin_or_projectadmin",
+    "compute_extension:instance_actions": "rule:admin_or_member",
     "compute_extension:instance_actions:events": "rule:admin_api",
     "compute_extension:instance_usage_audit_log": "rule:admin_api",
     "compute_extension:keypairs": "rule:admin_or_projectadmin",
