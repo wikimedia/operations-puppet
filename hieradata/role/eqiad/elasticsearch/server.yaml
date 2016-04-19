@@ -3,6 +3,11 @@ elasticsearch::cluster_name: production-search-eqiad
 
 # ES-specific: Not default
 elasticsearch::multicast_group: 224.2.2.5
+elasticsearch::multicast_enabled: true # multicast should be disabled once all nodes are using unicast (after reboot)
+elasticsearch::unicast_hosts: # this should be set to the list of master eligible nodes
+  - elastic1001.eqiad.wmnet
+  - elastic1008.eqiad.wmnet
+  - elastic1013.eqiad.wmnet
 
 lvs::realserver::realserver_ips: "10.2.2.30"
 

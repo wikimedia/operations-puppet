@@ -35,6 +35,7 @@ class role::elasticsearch::server{
         srange  => "@resolve((${elastic_nodes_ferm}))",
     }
 
+    # TODO: remove this ferm::service once multicast discovery is disabled.
     ferm::service { 'elastic-zen-discovery':
         proto  => 'udp',
         port   => '54328',
