@@ -28,7 +28,7 @@ class eventlogging::monitoring::graphite($kafka_brokers_graphite_wildcard) {
     # Alarms if 15% of Navigation Timing event throughput goes under 1 req/sec
     # in a 15 min period
     # https://meta.wikimedia.org/wiki/Schema:NavigationTiming
-    $navigation_timing_events_rate_metric = "kafka.cluster.analytics-eqiad.kafka.${kafka_brokers_graphite_wildcard}.kafka.server.BrokerTopicMetrics.MessagesInPerSec.eventlogging_NavigationTiming.OneMinuteRate"
+    $navigation_timing_events_rate_metric = "sumSeries(kafka.cluster.analytics-eqiad.kafka.${kafka_brokers_graphite_wildcard}.kafka.server.BrokerTopicMetrics.MessagesInPerSec.eventlogging_NavigationTiming.OneMinuteRate)"
     monitoring::graphite_threshold { 'eventlogging_NavigationTiming_throughput':
         description   => 'Throughput of EventLogging NavigationTiming events',
         metric        => $navigation_timing_events_rate_metric,
