@@ -993,6 +993,7 @@ node 'eeden.wikimedia.org' {
 
 # neon-like monitoring host in eqiad
 node 'einsteinium.wikimedia.org' {
+    role icinga
     include standard
     include base::firewall
 }
