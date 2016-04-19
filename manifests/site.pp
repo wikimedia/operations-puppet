@@ -994,6 +994,12 @@ node 'eeden.wikimedia.org' {
     include standard
 }
 
+# neon-like monitoring host in eqiad
+node 'einsteinium.wikimedia.org' {
+    include standard
+    include base::firewall
+}
+
 node /^elastic10[0-3][0-9]\.eqiad\.wmnet/ {
     role elasticsearch::server
     include base::firewall
@@ -2721,6 +2727,12 @@ node /^snapshot100[5-7]\.eqiad\.wmnet/ {
 # codfw poolcounters
 node /(subra|suhail)\.codfw\.wmnet/ {
     role poolcounter
+    include standard
+    include base::firewall
+}
+
+# neon-like monitoring host in codfw
+node 'tegmen.wikimedia.org' {
     include standard
     include base::firewall
 }
