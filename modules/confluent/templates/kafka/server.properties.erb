@@ -1,0 +1,234 @@
+hm# NOTE: This file is managed by Puppet.
+
+############################# Server Basics #############################
+
+# The id of the broker. This must be set to a unique integer for each broker.
+broker.id=<%= @id %>
+
+# Always require a static broker id.
+broker.id.generation.enable=false
+
+<% if @inter_broker_protocol_version -%>
+# Specify which version of the inter-broker protocol will be used. This is
+# typically bumped after all brokers were upgraded to a new version.
+inter.broker.protocol.version=<%= @inter_broker_protocol_version %>
+
+<% end -%>
+######################### Socket Server Settings ########################
+
+<% if @port -%>
+# The port the socket server listens on
+port=<%= @port %>
+
+<% end -%>
+<% if @listeners -%>
+listeners=<%= Array(@listeners).join(',') %>
+
+<% end -%>
+<% if @num_network_threads -%>
+# The number of threads handling network requests
+num.network.threads=<%= @num_network_threads %>
+
+<% end -%>
+<% if @num_io_threads -%>
+# The number of threads doing disk I/O
+num.io.threads=<%= @num_io_threads %>
+
+<% end -%>
+<% if @socket_send_buffer_bytes -%>
+# The send buffer (SO_SNDBUF) used by the socket server
+socket.send.buffer.bytes=<%= @socket_send_buffer_bytes %>
+
+<% end -%>
+<% if @socket_receive_buffer_bytes -%>
+# The receive buffer (SO_RCVBUF) used by the socket server
+socket.receive.buffer.bytes=<%= @socket_receive_buffer_bytes %>
+
+<% end -%>
+<% if @socket_request_max_bytes -%>
+# The maximum size of a request that the socket server will accept
+# (protection against OOM)
+socket.request.max.bytes=<%= @socket_request_max_bytes %>
+
+<% end -%>
+############################# Log Basics #############################
+
+# A comma seperated list of directories under which to store log files
+log.dirs=<%= Array(@log_dirs).join(',') %>
+
+# The default number of log partitions per topic. More partitions allow greater
+# parallelism for consumption, but this will also result in more files across
+# the brokers.
+num.partitions=<%= @num_partitions %>
+
+# The default replication factor for automatically created topics.
+# Default to the number of brokers in this cluster.
+default.replication.factor=<%= @default_replication_factor %>
+
+# Enable auto creation of topic on the server. If this is set to true
+# then attempts to produce, consume, or fetch metadata for a non-existent
+# topic will automatically create it with the default replication factor
+# and number of partitions.
+auto.create.topics.enable=<%= @auto_create_topics_enable %>
+
+# If this is enabled the controller will automatically try to balance
+# leadership for partitions among the brokers by periodically returning
+# leadership to the "preferred" replica for each partition if it is available.
+auto.leader.rebalance.enable=<%= @auto_leader_rebalance_enable %>
+
+<% if @replica_lag_time_max_ms -%>
+# If a follower hasn't sent any fetch requests for this window of time,
+# the leader will remove the follower from ISR and treat it as dead.
+replica.lag.time.max.ms=<%= @replica_lag_time_max_ms %>
+
+<% end -%>
+<% if @num_recovery_threads_per_data_dir -%>
+# The number of threads per data directory to be used for log recovery at
+# startup and flushing at shutdown. This value is recommended to be increased
+# for installations with data dirs located in RAID array.
+num.recovery.threads.per.data.dir=<%= @num_recovery_threads_per_data_dir %>
+
+<% end -%>
+<% if @replica_socket_timeout_ms -%>
+# The socket timeout for network requests to the leader for replicating data.
+replica.socket.timeout.ms=<%= @replica_socket_timeout_ms %>
+
+<% end -%>
+<% if @replica_socket_receive_buffer_bytes -%>
+# The socket receive buffer for network requests to the leader for replicating data.
+replica.socket.receive.buffer.bytes=<%= @replica_socket_receive_buffer_bytes %>
+
+<% end -%>
+# Number of threads used to replicate messages from leaders. Increasing this
+# value can increase the degree of I/O parallelism in the follower broker.
+# This is useful to temporarily increase if you have a broker that needs
+# to catch up on messages to get back into the ISR.
+num.replica.fetchers=<%= @num_replica_fetchers %>
+
+<% if @replica_fetch_max_bytes -%>
+# The number of byes of messages to attempt to fetch for each partition in the
+# fetch requests the replicas send to the leader.
+replica.fetch.max.bytes=<%= @replica_fetch_max_bytes %>
+
+<% end -%>
+<% if @log_flush_interval_messages or @log_flush_interval_ms -%>
+############################# Log Flush Policy #############################
+
+# Messages are immediately written to the filesystem but by default we only
+# fsync() to sync the OS cache lazily. The following configurations control the
+# flush of data to disk.
+# There are a few important trade-offs here:
+#    1. Durability: Unflushed data may be lost if you are not using replication.
+#    2. Latency: Very large flush intervals may lead to latency spikes when the
+#       flush does occur as there will be a lot of data to flush.
+#    3. Throughput: The flush is generally the most expensive operation, and a
+#       small flush interval may lead to exceessive seeks.
+# The settings below allow one to configure the flush policy to flush data
+# after a period of time or every N messages (or both). This can be done
+# globally and overridden on a per-topic basis.
+
+<% if @log_flush_interval_messages -%>
+# The number of messages accumulated on a log partition before messages
+# are flushed to disk.
+log.flush.interval.messages=<%= @log_flush_interval_messages %>
+
+<% end -%>
+<% if @log_flush_interval_ms -%>
+# The maximum time in ms that a message in any topic is kept in memory before
+# flushed to disk. If not set, the value in log.flush.scheduler.interval.ms
+# is used.
+log.flush.interval.ms=<%= @log_flush_interval_ms %>
+
+<% end -%>
+<% end # if any Log Flush Policy settings -%>
+<% if (@log_retention_hours or
+       @log_retention_bytes or
+       @log_segment_bytes or
+       @log_retention_check_interval_ms or
+       @log_cleanup_policy or
+       @offsets_retention_minutes) -%>
+############################# Log Retention Policy #############################
+
+# The following configurations control the disposal of log segments. The policy
+# can be set to delete segments after a period of time, or after a given size
+# has accumulated. A segment will be deleted whenever *either* of these
+# criteria are met. Deletion always happens from the end of the log.
+
+<% if @log_retention_hours -%>
+# The minimum age of a log file to be eligible for deletion
+log.retention.hours=<%= @log_retention_hours %>
+
+<% end -%>
+<% if @log_retention_bytes -%>
+# A size-based retention policy for logs. Segments are pruned from the log as
+# long as the remaining segments don't drop below log.retention.bytes.
+log.retention.bytes=<%= @log_retention_bytes %>
+
+<% end -%>
+<% if @log_segment_bytes -%>
+# The maximum size of a log segment file. When this size is reached a new log
+# segment will be created.
+log.segment.bytes=<%= @log_segment_bytes %>
+
+<% end -%>
+<% if @log_retention_check_interval_ms -%>
+# The interval at which log segments are checked to see if they can be deleted
+# according to the retention policies
+log.retention.check.interval.ms=<%= @log_retention_check_interval_ms %>
+
+<% end -%>
+<% if @log_cleanup_policy -%>
+# The default cleanup policy for segments beyond the retention window,
+# must be either "delete" or "compact"
+log.cleanup.policy=<%= @log_cleanup_policy %>
+
+<% end -%>
+<% if @offsets_retention_minutes -%>
+# Log retention window in minutes for offsets topic.  If an offset
+# commit for a consumer group has not been recieved in this amount of
+# time, Kafka will drop the offset commit and consumers in the group
+# will have to start a new.  This can be overridden in an offset commit
+# request.
+offsets.retention.minutes=<%= @offsets_retention_minutes %>
+
+<% end -%>
+<% end # if any Log Retention Policy settings -%>
+############################# Zookeeper #############################
+
+# Zookeeper connection string (see zookeeper docs for details).
+# This is a comma separated host:port pairs, each corresponding to a zk
+# server. e.g. "127.0.0.1:3000,127.0.0.1:3001,127.0.0.1:3002".
+# You can also append an optional chroot string to the urls to specify the
+# root directory for all kafka znodes.
+zookeeper.connect=<%= @zookeeper_connect %>
+
+# The maximum amount of time in ms that the client waits to establish a
+# connection to zookeeper
+zookeeper.connection.timeout.ms=<%= @zookeeper_connection_timeout_ms %>
+
+# Zookeeper session timeout. If the server fails to heartbeat to Zookeeper
+# within this period of time it is considered dead. If you set this too low
+# the server may be falsely considered dead; if you set it too high it may
+# take too long to recognize a truly dead server.
+zookeeper.session.timeout.ms=<%= @zookeeper_session_timeout_ms %>
+
+##################### Confluent Proactive Support ######################
+
+# If set to true, then the feature to collect and report support metrics
+# ("Metrics") is enabled.  If set to false, the feature is disabled.
+#
+confluent.support.metrics.enable=false
+
+# The customer ID under which support metrics will be collected and
+# reported.
+#
+# When the customer ID is set to "anonymous" (the default), then only a
+# reduced set of metrics is being collected and reported.
+#
+# Confluent customers
+# -------------------
+# If you are a Confluent customer, then you should replace the default
+# value with your actual Confluent customer ID.  Doing so will ensure
+# that additional support metrics will be collected and reported.
+#
+confluent.support.customer.id=anonymous
