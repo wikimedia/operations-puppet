@@ -21,6 +21,7 @@ class mw_rc_irc::ircserver {
     if os_version('debian >= jessie') {
 
         $ircd_provider = 'systemd'
+        $ircd_require  = '/etc/systemd/system/ircd.service'
 
         file { '/etc/systemd/system/ircd.service':
             owner  => 'root',
@@ -32,6 +33,7 @@ class mw_rc_irc::ircserver {
     } else {
 
         $ircd_provider = 'upstart'
+        $ircd_require  = '/etc/init/ircd.conf'
 
         file { '/etc/init/ircd.conf':
             source => 'puppet:///modules/mw_rc_irc/upstart/ircd.conf',
@@ -41,7 +43,7 @@ class mw_rc_irc::ircserver {
     service { 'ircd':
         ensure   => running,
         provider => $ircd_provider,
-        require  => File['/etc/init/ircd.conf'],
+        require  => File[$ircd_require],
     }
 
     diamond::collector { 'IRCDStats':
