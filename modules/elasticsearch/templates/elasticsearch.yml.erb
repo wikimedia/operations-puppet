@@ -317,7 +317,11 @@ discovery.zen.ping.multicast.group: <%= @multicast_group %>
 #
 # 1. Disable multicast discovery (enabled by default):
 #
+<% if @multicast_enabled -%>
 #discovery.zen.ping.multicast.enabled: false
+<% else -%>
+discovery.zen.ping.multicast.enabled: false
+<% end -%>
 #
 # 2. Configure an initial list of master nodes in the cluster
 #    to perform discovery when new nodes (master or data) are started:
