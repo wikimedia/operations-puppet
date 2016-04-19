@@ -50,6 +50,16 @@ class ganglia::web(
         require => Package['ganglia-webfrontend'],
     }
 
+    # Comment out the lines that add the 'Content-Disposition: inline; filename=...'
+    # header to responses to requests for CSV or JSON data. This should be a patch
+    # in the ganglia-webfrontend package, probably. -- Ori 18-Apr-2016
+    exec { 'comment_out_content_disposition_headers':
+        command => '/bin/sed -i "/header(\"Content-Disposition/s/^/#/" graph.php',
+        onlyif  => '/bin/grep -q "^    header(\"Content-Disposition" graph.php',
+        cwd     => '/usr/share/ganglia-webfrontend',
+        require => Package['ganglia-webfrontend'],
+    }
+
     # Increase the default memory limit
     file_line { 'php.ini-memory':
         line   => 'memory_limit = 768M',
