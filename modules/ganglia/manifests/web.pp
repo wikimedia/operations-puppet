@@ -32,6 +32,13 @@ class ganglia::web(
         content => template("ganglia/${ganglia_servername}.erb"),
     }
 
+    file { '/var/cache/ganglia':
+        ensure => ensure_directory($ensure),
+        owner  => 'www-data',
+        group  => 'www-data',
+        mode   => '0755',
+    }
+
     file { '/etc/ganglia-webfrontend/conf.php':
         ensure  => $ensure,
         mode    => '0444',
