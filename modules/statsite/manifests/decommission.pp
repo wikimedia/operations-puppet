@@ -7,14 +7,14 @@ class statsite::decommission {
         ensure => purged,
     }
 
-    if os_version('ubuntu >= precise') {
-        file { '/etc/statsite':
-            ensure  => absent,
-            recurse => true,
-            purge   => true,
-            force   => true,
-        }
+    file { '/etc/statsite':
+        ensure  => absent,
+        recurse => true,
+        purge   => true,
+        force   => true,
+    }
 
+    if $::initsystem == 'upstart' {
         file { '/sbin/statsitectl':
             ensure => absent,
         }
@@ -41,13 +41,6 @@ class statsite::decommission {
                           File['/sbin/statsitectl'],
                           File['/etc/statsite'],
                           File['/etc/init/statsite'] ],
-        }
-    }
-
-    if os_version('debian >= jessie') {
-        service { 'statsite':
-            ensure => 'stopped',
-            before => Package['statsite'],
         }
     }
 }

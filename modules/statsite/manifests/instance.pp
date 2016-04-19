@@ -28,7 +28,7 @@ define statsite::instance(
 ) {
     $stream_cmd = "python /usr/lib/statsite/sinks/graphite.py ${graphite_host} ${graphite_port} \"\""
 
-    if os_version('ubuntu >= precise') {
+    if $::initsystem == 'upstart' {
         file { "/etc/statsite/${port}.ini":
             content => template('statsite/statsite.ini.erb'),
             require => Package['statsite'],
@@ -36,11 +36,27 @@ define statsite::instance(
         }
     }
 
-    if os_version('debian >= jessie') {
-        file { '/etc/statsite.ini':
+    if $::initsystem == 'systemd' {
+        $instance_service_path = "/lib/systemd/system/statsite@${port}.service"
+        $template_service_path = '/lib/systemd/system/statsite@.service'
+
+        file { $instance_service_path:
+            ensure  => 'link',
+            target  => $template_service_path,
+            require => File[$template_service_path],
+        }
+
+        file { "/etc/statsite/${port}.ini":
             content => template('statsite/statsite.ini.erb'),
             require => Package['statsite'],
-            notify  => Service['statsite'],
+            notify  => Service["statsite@${port}"],
+        }
+
+        service { "statsite@${port}":
+            ensure   => 'running',
+            provider => 'systemd',
+            enable   => true,
+            require  => File[$instance_service_path],
         }
     }
 }

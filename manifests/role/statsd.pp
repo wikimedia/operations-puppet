@@ -59,10 +59,12 @@ class role::statsd {
         input_counter => "statsd.${::hostname}-8131.received",
     }
 
-    nrpe::monitor_service { 'statsite_backends':
-        description  => 'statsite backend instances',
-        nrpe_command => '/sbin/statsitectl check',
-        require      => Service['statsite'],
+    if $::initsystem == 'upstart' {
+        nrpe::monitor_service { 'statsite_backends':
+            description  => 'statsite backend instances',
+            nrpe_command => '/sbin/statsitectl check',
+            require      => Service['statsite'],
+        }
     }
 
     diamond::collector { 'UDPCollector': }

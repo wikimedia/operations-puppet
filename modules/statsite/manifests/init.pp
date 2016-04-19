@@ -32,7 +32,7 @@ class statsite {
         mode   => '0555',
     }
 
-    if os_version('ubuntu >= precise') {
+    if $::initsystem == 'upstart' {
         file { '/sbin/statsitectl':
             source => 'puppet:///modules/statsite/statsitectl',
             mode   => '0755',
@@ -62,10 +62,25 @@ class statsite {
         }
     }
 
-    if os_version('debian >= jessie') {
-        service { 'statsite':
-            ensure  => 'running',
-            require => Package['statsite'],
+    if $::initsystem == 'systemd' {
+        # stop the default service and rely on statsite::instance to do the
+        # right thing
+        exec { 'mask_statsite':
+            command => '/bin/systemctl mask statsite.service',
+            creates => '/etc/systemd/system/statsite.service',
+            before  => Package['statsite'],
+        }
+
+        base::service_unit { 'statsite@':
+            ensure          => present,
+            systemd         => true,
+            declare_service => false,
+        }
+
+        base::service_unit { 'statsite-instances':
+            ensure          => present,
+            systemd         => true,
+            declare_service => false,
         }
     }
 }
