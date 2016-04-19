@@ -1,0 +1,45 @@
+# NOTE: This file is managed by Puppet.
+
+KAFKA_CONFIG=/etc/kafka
+
+<% if @java_home -%>
+JAVA_HOME="<%= @java_home %>"
+<% end -%>
+
+# Extra Java options
+<% if @java_opts -%>
+JAVA_OPTS="<%= @java_opts %>"
+<% else -%>
+#JAVA_OPTS=""
+<% end -%>
+
+# Extra classpath entries
+<% if @classpath -%>
+CLASSPATH="<%= @classpath %>"
+<% else -%>
+#CLASSPATH=""
+<% end -%>
+
+# The default JMX_PORT for Kafka Brokers is 9999.
+# Set JMX_PORT to something else to override this.
+JMX_PORT=<%= @jmx_port %>
+#KAFKA_JMX_OPTS=${KAFKA_JMX_OPTS:="-Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false"}
+
+<% if @jvm_performance_opts -%>
+KAFKA_JVM_PERFORMANCE_OPTS="<%= @jvm_performance_opts %>"
+<% else -%>
+# Default GC settings.
+# KAFKA_JVM_PERFORMANCE_OPTS="-server -XX:+UseG1GC -XX:MaxGCPauseMillis=20 -XX:InitiatingHeapOccupancyPercent=35 -XX:+DisableExplicitGC -Djava.awt.headless=true"
+# LinkedIn recommended GC settings.  See: http://kafka.apache.org/documentation.html#java
+# You need Java 7 u51 or greater to use the G1 GC.
+#KAFKA_JVM_PERFORMANCE_OPTS="-Xmx6g -Xms6g -XX:MetaspaceSize=96m -XX:+UseG1GC -XX:MaxGCPauseMillis=20 -XX:InitiatingHeapOccupancyPercent=35 -XX:G1HeapRegionSize=16M -XX:MinMetaspaceFreeRatio=50 -XX:MaxMetaspaceFreeRatio=80"
+<% end -%>
+
+# Memory sizes, and logging configuration
+<% if @heap_opts -%>
+KAFKA_HEAP_OPTS="<%= @heap_opts %>"
+<% else -%>
+#KAFKA_HEAP_OPTS="-Xmx1G -Xms1G"
+<% end -%>
+#KAFKA_LOG4J_OPTS="-Dlog4j.configuration=file:${KAFKA_CONFIG}/log4j.properties"
+# KAFKA_OPTS="-XX:GCLogFileSize=50M -XX:+UseGCLogFileRotation -XX:NumberOfGCLogFiles=5"

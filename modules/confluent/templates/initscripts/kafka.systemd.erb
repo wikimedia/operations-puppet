@@ -1,0 +1,23 @@
+# NOTE: This file is managed by Puppet.
+
+[Unit]
+Description=Kafka Broker
+
+[Service]
+User=kafka
+Group=kafka
+
+# Set java.awt.headless=true if JAVA_OPTS is not set so the
+# Xalan XSL transformer can work without X11 display on JDK 1.4+
+Environment="JAVA_OPTS=-Djava.awt.headless=true"
+
+# Load any environment overrides from this file.
+EnvironmentFile=-/etc/default/kafka
+
+# Increase limit on number of open files.
+LimitNOFILE=<%= @nofiles_ulimit %>
+
+ExecStart=/usr/bin/kafka-server-start ${KAFKA_CONFIG}/server.properties
+
+[Install]
+WantedBy=multi-user.target
