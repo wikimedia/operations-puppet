@@ -2722,6 +2722,12 @@ node /(subra|suhail)\.codfw\.wmnet/ {
     include base::firewall
 }
 
+# neon-like monitoring host in eqiad
+node 'einsteinium.wikimedia.org' {
+    include standard
+    include base::firewall
+}
+
 # https://wikitech.wikimedia.org/wiki/Terbium
 node 'terbium.eqiad.wmnet' {
     role mariadb::maintenance, mediawiki::maintenance
