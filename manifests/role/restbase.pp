@@ -80,15 +80,20 @@ class role::restbase::alerts {
         contact_group => 'team-services',
     }
 
-    monitoring::graphite_threshold { 'restbase_cassandra_highest_sstables_per_read':
-        description   => 'RESTBase Cassandra highest SSTables per-read http://grafana.wikimedia.org/#/dashboard/db/restbase-cassandra-cf-sstables-per-read',
-        metric        => 'highestMax(cassandra.restbase10*.org.apache.cassandra.metrics.ColumnFamily.all.SSTablesPerReadHistogram.99percentile, 1)',
-        from          => '10min',
-        warning       => '35',
-        critical      => '50',
-        percentage    => '50',
-        contact_group => 'team-services',
-    }
+    # With instance sizes in-flux, and expansions taking place, it is proving
+    # difficult to provide meaningful thresholds that are entirely immune from
+    # false positives.  Hopefully we can re-enable this in the near future,
+    # when things have settled a bit, or when an alternative form of alerting
+    # can be found.
+    # monitoring::graphite_threshold { 'restbase_cassandra_highest_sstables_per_read':
+    #     description   => 'RESTBase Cassandra highest SSTables per-read http://grafana.wikimedia.org/#/dashboard/db/restbase-cassandra-cf-sstables-per-read',
+    #     metric        => 'highestMax(cassandra.restbase10*.org.apache.cassandra.metrics.ColumnFamily.all.SSTablesPerReadHistogram.99percentile, 1)',
+    #     from          => '10min',
+    #     warning       => '35',
+    #     critical      => '50',
+    #     percentage    => '50',
+    #     contact_group => 'team-services',
+    # }
 
     monitoring::graphite_threshold { 'restbase_cassandra_highest_tombstones_scanned':
         description   => 'RESTBase Cassandra highest tombstones scanned http://grafana.wikimedia.org/#/dashboard/db/restbase-cassandra-cf-tombstones-scanned',
