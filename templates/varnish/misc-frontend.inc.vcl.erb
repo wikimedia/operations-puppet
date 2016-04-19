@@ -20,6 +20,13 @@ sub cluster_fe_recv {
         set req.http.X-Forwarded-Port = "443";
     }
 
+    // STS-preload checker doesn't like [45]xx responses, but 3xx is OK, so
+    // re-use the TLS-redirector code and send them to the wikimedia site.
+    if (req.http.Host == "wmfusercontent.org") {
+        set req.http.Location = "https://www.wikimedia.org";
+        <%= error_synth(751, "TLS Redirect") -%>
+    }
+
     call misc_recv_pass;
 }
 
