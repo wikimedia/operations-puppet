@@ -44,6 +44,13 @@
 #       to undef meaning don't set it.
 # - $rack: rack this node is on.  Can be used for allocation awareness.
 #       Defaults to undef meaning don't set it.
+# - $multicast_enabled: Should multicast be enabled. See
+#       https://www.elastic.co/guide/en/elasticsearch/reference/1.7/modules-discovery-zen.html
+#       for more documentation.
+#       Note: It make sense to have multicast configuration separated from
+#       unicast. It is valid to have both unicast and multicast enabled at the
+#       same time and can be useful as a transition state.
+#       Defaults to 'true'
 # - $unicast_hosts: hosts to seed Elasticsearch's unicast discovery mechanism.
 #       In an environment without reliable multicast (OpenStack) add all the
 #       hosts in the cluster to this list.  Elasticsearch will still use
@@ -87,6 +94,7 @@ class elasticsearch($cluster_name,
                     $awareness_attributes = undef,
                     $row = undef,
                     $rack = undef,
+                    $multicast_enabled = true,
                     $unicast_hosts = undef,
                     $filter_cache_size = '10%',
                     $bulk_thread_pool_executors = undef,
@@ -101,6 +109,8 @@ class elasticsearch($cluster_name,
     if $cluster_name == 'elasticsearch' {
         fail('$cluster_name must not be set to "elasticsearch"')
     }
+
+    validate_bool($multicast_enabled)
 
     # if no graylog_host is given, do not send logs
     $send_logs_to_logstash = is_array($graylog_hosts)
