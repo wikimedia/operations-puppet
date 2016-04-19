@@ -179,7 +179,7 @@ def get_service_defaults():
     try:
         with open(os.path.expanduser('~/service.manifest')) as f:
             manifest = yaml.load(f)
-            if 'version' in manifest and manifest['version'] >= 2:
+            if manifest is not None and 'version' in manifest and manifest['version'] >= 2:
                 # Refuse to touch webservice-new webservices
                 raise Exception('v2 service.manifest detected, please use webservice-new')
             if manifest is not None and 'web' in manifest:
