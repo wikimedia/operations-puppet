@@ -18,10 +18,16 @@ class mw_rc_irc::irc_echo(
         require => File['/usr/local/bin/udpmxircecho.py'],
     }
 
+    if os_version('debian >= jessie') {
+        $ircecho_provider = 'systemd'
+    } else {
+        $ircecho_provider = 'upstart'
+    }
+
     # Ensure that the service is running.
     service { 'ircecho':
         ensure   => running,
-        provider => 'upstart',
+        provider => $ircecho_provider,
         require  => File['/etc/init/ircecho.conf'],
     }
 }
