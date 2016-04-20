@@ -10,9 +10,8 @@
 # [*deploy_user*]
 #   user that will be used for deployments
 #
-# [*public_key_source*]
-#   puppet source argument to pass to ssh::userkey for installing
-#   $deploy_user's public ssh key.
+# [*key_name*]
+#   a unique name for the keyholder_key that will be used to access this target
 #
 # [*service_name*]
 #   service name that should be allowed to be restarted via sudo by
@@ -34,22 +33,21 @@
 #
 #   scap::target { 'mockbase':
 #       deploy_user => 'deploy-mockbase',
-#       public_key_source => 'puppet://modules/mockbase/deploy-test_rsa.pub'
+#       key_name => 'deploy-mockbase',
 #   }
 #
 #   scap::target { 'eventlogging/eventlogging':
 #       deploy_user => 'eventlogging',
-#       public_key_source => "puppet:///modules/eventlogging/deployment/eventlogging_rsa.pub.${::realm}",
 #       manage_user => false,
 #   }
 #
 define scap::target(
     $deploy_user,
-    $public_key_source,
     $service_name = undef,
     $package_name = $title,
     $manage_user = true,
     $sudo_rules = [],
+    $key_name = $title,
 ) {
     # Include scap3 package and ssh ferm rules.
     include scap
@@ -84,9 +82,12 @@ define scap::target(
         require         => [Package['scap'], User[$deploy_user]],
     }
 
-    if !defined(Ssh::Userkey[$deploy_user]) {
-        ssh::userkey { $deploy_user:
-            source => $public_key_source,
+    $key_res = "${deploy_user}/${key_name}"
+    if defined(User[$deploy_user]) and !defined(Ssh::Userkey[$key_res]) {
+        ssh::userkey { $key_res:
+            skey    => $key_name,
+            user    => $deploy_user,
+            content => keyholder_pubkey($key_name),
         }
     }
 
