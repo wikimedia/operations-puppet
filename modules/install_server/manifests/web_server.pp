@@ -17,14 +17,15 @@ class install_server::web_server {
     include ::nginx
 
     require sslcert::dhparam
-    $nginx_ssl_conf = ssl_ciphersuite('nginx', 'compat')
+    $ssl_settings = ssl_ciphersuite('nginx', 'compat', '365')
+
     file { '/etc/nginx/nginx.conf':
         content => template('install_server/nginx.conf.erb'),
         tag     => 'nginx',
     }
 
     nginx::site { 'apt.wikimedia.org':
-        source  => 'puppet:///modules/install_server/apt.wikimedia.org.conf',
+        content => template('install_server/apt.wikimedia.org.conf.erb'),
     }
 
     # prevent a /srv root autoindex; empty for now.
