@@ -100,13 +100,6 @@ sub text_common_hash {
 			hash_data("disableImages=1");
 		}
 
-		// Split the cache if the NetSpeed cookie is set and if its value is 'B'. The only other
-		// permissable value is 'A', which is equivalent to not having the cookie at all, so we
-		// don't need to update the hash in that case.
-		if (req.http.X-Orig-Cookie ~ "(^|;\s*)NetSpeed=B" || req.http.Cookie ~ "(^|;\s*)NetSpeed=B") {
-			hash_data("NetSpeed=B");
-		}
-
 		// Split the cache for the beta variant of the mobile site.
 		if (req.http.X-Orig-Cookie ~ "(^|;\s*)optin=beta" || req.http.Cookie ~ "(^|;\s*)optin=beta") {
 			hash_data("optin=beta");
