@@ -66,7 +66,7 @@ class role::labs::openstack::nova::manager {
         check_command => "check_ssl_http!${certificate}",
     }
 
-    $ssl_settings = ssl_ciphersuite('apache-2.2', 'compat', '365')
+    $ssl_settings = ssl_ciphersuite('apache', 'compat', '365')
 
     ferm::service { 'wikitech_http':
         proto => 'tcp',

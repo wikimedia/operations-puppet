@@ -7,7 +7,7 @@ class role::requesttracker {
 
     sslcert::certificate { 'rt.wikimedia.org': }
 
-    $ssl_settings = ssl_ciphersuite('apache-2.2', 'compat', '365')
+    $ssl_settings = ssl_ciphersuite('apache', 'compat', '365')
 
     class { '::requesttracker':
         apache_site => 'rt.wikimedia.org',
