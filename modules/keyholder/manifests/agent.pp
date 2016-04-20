@@ -54,7 +54,7 @@ define keyholder::agent(
         }
     } elsif $key_secret {
         keyholder::private_key { $key_file:
-            content => secret($key_secret)
+            content => keyholder_key($key_secret, true)
         }
     } else {
         keyholder::private_key { $key_file:

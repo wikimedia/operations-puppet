@@ -50,6 +50,7 @@ define scap::target(
     $package_name = $title,
     $manage_user = true,
     $sudo_rules = [],
+    $key_name = undef,
 ) {
     # Include scap3 package and ssh ferm rules.
     include scap
@@ -84,10 +85,14 @@ define scap::target(
         require         => [Package['scap'], User[$deploy_user]],
     }
 
-    if !defined(Ssh::Userkey[$deploy_user]) {
-        ssh::userkey { $deploy_user:
-            source => $public_key_source,
+    if ($key_name) {
+        $key_resource = "${deploy_user}/${key_name}"
+        if !defined(Ssh::Userkey[$key_resource]) {
+            ssh::userkey { $key_resource:
+                source => keyholder_pubkey($key_name, true),
+            }
         }
+
     }
 
     # XXX: Temporary work-around for switching services from Trebuchet to Scap3
