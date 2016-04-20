@@ -261,6 +261,8 @@ restbase:
   restbase1011.eqiad.wmnet: [restbase]
   restbase1012.eqiad.wmnet: [restbase]
   restbase1013.eqiad.wmnet: [restbase]
+  restbase1014.eqiad.wmnet: [restbase]
+  restbase1015.eqiad.wmnet: [restbase]
 elasticsearch:
   elastic1001.eqiad.wmnet: [elasticsearch, elasticsearch-ssl]
   elastic1002.eqiad.wmnet: [elasticsearch, elasticsearch-ssl]
