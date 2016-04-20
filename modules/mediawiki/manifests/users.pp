@@ -25,7 +25,7 @@ class mediawiki::users(
     }
 
     ssh::userkey { 'mwdeploy':
-        content => $mwdeploy_pub_key,
+        content => keyholder_pubkey('mwdeploy'),
     }
 
     # Grant mwdeploy sudo rights to run anything as itself, apache and the
