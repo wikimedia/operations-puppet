@@ -11,11 +11,7 @@ class mailman::webui {
 
     $lists_servername = hiera('mailman::lists_servername')
 
-    if os_version ( 'debian >= jessie') {
-        $ssl_settings = ssl_ciphersuite('apache-2.4', 'mid', '365')
-    } else {
-        $ssl_settings = ssl_ciphersuite('apache-2.2', 'compat', '365')
-    }
+    $ssl_settings = ssl_ciphersuite('apache', 'mid', '365')
 
     apache::site { 'lists.wikimedia.org':
         content => template('mailman/lists.wikimedia.org.erb'),

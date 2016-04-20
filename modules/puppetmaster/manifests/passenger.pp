@@ -25,7 +25,7 @@ class puppetmaster::passenger(
         ensure => present,
     }
 
-    $ssl_settings = ssl_ciphersuite('apache-2.2', 'compat')
+    $ssl_settings = ssl_ciphersuite('apache', 'compat')
 
     apache::site { 'puppetmaster.wikimedia.org':
         content => template('puppetmaster/puppetmaster.erb'),
