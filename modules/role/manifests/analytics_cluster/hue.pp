@@ -49,6 +49,15 @@ class role::analytics_cluster::hue {
         port   => '8888',
         srange => '$INTERNAL',
     }
+
+    # Include icinga alerts if production realm.
+    if $::realm == 'production' {
+        nrpe::monitor_service { 'hue':
+            description  => 'Hue Server',
+            nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C python2.7 -a "/usr/lib/hue/build/env/bin/hue"',
+            require      => Class['cdh::hue'],
+        }
+    }
 }
 
 # TODO: Hue database backup.
