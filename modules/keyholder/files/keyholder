@@ -26,9 +26,9 @@ show_usage() {
 }
 
 is_valid_private_key() {
-  # Check that $1 is a passphrase-protected private key file.
+  # Check that $1 is a valid private key file.
   [ -f "$1" ] && /usr/bin/openssl rsa -in "$1" -check -pubout -passin pass: 2>&1 | \
-    /bin/grep -q "bad password"
+    /bin/grep -q "RSA key ok"
 }
 
 is_root()       { [ "$EUID" -eq 0 -o ! -z "$SUDO_COMMAND" ] ; }
