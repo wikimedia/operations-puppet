@@ -148,6 +148,7 @@ Examples:
 END
               ) do |args|
 
+    Puppet::Parser::Functions.function(:os_version)
 
     if args.length < 2 || args.length > 3
       fail(ArgumentError, 'ssl_ciphersuite() requires at least 2 arguments')
@@ -229,7 +230,11 @@ END
       end
       unless hsts_days.nil?
         hsts_seconds = hsts_days * 86400
-        output.push("add_header Strict-Transport-Security \"max-age=#{hsts_seconds}\";")
+        if function_os_version(['debian >= jessie'])
+            output.push("add_header Strict-Transport-Security \"max-age=#{hsts_seconds}\" always;")
+        else
+            output.push("add_header Strict-Transport-Security \"max-age=#{hsts_seconds}\";")
+        end
       end
     end
     return output
