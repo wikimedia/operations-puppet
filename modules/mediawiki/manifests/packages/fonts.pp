@@ -39,7 +39,7 @@ class mediawiki::packages::fonts {
         'ttf-punjabi-fonts',
         'ttf-tamil-fonts',
         'ttf-telugu-fonts',
-        'ttf-ubuntu-font-family',
+        'ttf-ubuntu-font-family',    # T32288, T103325
         'ttf-wqy-zenhei',
         'xfonts-100dpi',
         'xfonts-75dpi',
