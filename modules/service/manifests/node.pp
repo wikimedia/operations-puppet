@@ -61,7 +61,8 @@
 #  crashes. Default: true
 #
 # [*deployment*]
-#   If this value is set to 'scap3' then deploy via scap3, otherwise, use trebuchet
+#   If this value is set to 'scap3' then deploy via scap3, otherwise,
+#   use trebuchet
 #   Default: undef
 #
 # [*deployment_user*]
@@ -108,16 +109,18 @@ define service::node(
     $init_restart           = true,
     $deployment             = undef,
     $deployment_user        = 'deploy-service',
+    $deployment_key         = 'servicedeploy',
     $deployment_manage_user = true,
 ) {
     case $deployment {
         'scap3': {
             if ! defined(Service::Deploy::Trebuchet[$repo]) {
-                service::deploy::scap{ $repo:
+                scap::target { $repo:
                     service_name => $title,
-                    user         => $deployment_user,
-                    before       => Base::Service_unit[$title],
+                    deploy_user  => $deployment_user,
+                    key_name     => $deployment_key,
                     manage_user  => $deployment_manage_user,
+                    before       => Base::Service_unit[$title],
                 }
             }
         }
