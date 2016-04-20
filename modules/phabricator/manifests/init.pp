@@ -65,7 +65,7 @@ class phabricator (
     $serveralias      = '',
     $deploy_user      = 'phab-deploy',
     $deploy_target    = 'phabricator/deployment',
-    $deploy_key       = "puppet:///modules/phabricator/phab-deploy-key.${::realm}",
+    $deploy_key       = 'phabricator',
 ) {
 
     $deploy_root = "/srv/deployment/${deploy_target}"

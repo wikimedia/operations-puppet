@@ -26,7 +26,7 @@ show_usage() {
 }
 
 is_valid_private_key() {
-  # Check that $1 is a passphrase-protected private key file.
+  # Check that $1 is a valid private key file.
   [ -f "$1" ] && /usr/bin/openssl rsa -in "$1" -check -pubout -passin pass: 2>&1 | \
     /bin/grep -q "bad password"
 }
@@ -51,10 +51,12 @@ case "$command" in
     ;;
   arm)
     requires_root
+    KEYS=""
     for key in /etc/keyholder.d/*; do
-      is_valid_private_key "$key" || ( echo "$key is not an acceptable key. Does it have a passphrase?"; continue )
-      $0 add "$key"
+      is_valid_private_key "$key" || echo "$key is not an acceptable key. Does it have a passphrase?"
+      KEYS="$KEYS $key"
     done
+    $0 add $KEYS
     ;;
   disarm)
     requires_root
