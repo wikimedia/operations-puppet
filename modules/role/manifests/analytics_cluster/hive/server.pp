@@ -16,4 +16,12 @@ class role::analytics_cluster::hive::server {
         srange => '$INTERNAL',
     }
 
+    # Include icinga alerts if production realm.
+    if $::realm == 'production' {
+        nrpe::monitor_service { 'hive-server2':
+            description  => 'Hive Server',
+            nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C java -a "org.apache.hive.service.server.HiveServer2"',
+            require      => Class['cdh::hive::server'],
+        }
+    }
 }
