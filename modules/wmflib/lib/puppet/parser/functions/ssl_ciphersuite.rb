@@ -229,7 +229,7 @@ END
       end
       unless hsts_days.nil?
         hsts_seconds = hsts_days * 86400
-        output.push("add_header Strict-Transport-Security \"max-age=#{hsts_seconds}\";")
+        output.push("add_header Strict-Transport-Security \"max-age=#{hsts_seconds}\" always;")
       end
     end
     return output
