@@ -1,0 +1,65 @@
+[global]
+
+[default]
+intro = '<%= @banner %>\n'
+timer = <%= @timer %>
+login_script     : ''
+
+# example: %u@%h
+prompt          : "<%= @prompt %>"
+prompt_short    : 0
+
+history_size     : 100
+history_file     : "/home/%u/.lshell_history"
+
+
+# count invalid commands and terminate on this count
+# -1 disables
+warning_counter : -1
+# set to 1 to count forbidden commands for enforcement
+# 0 disables and only warns as "*** unknown syntax"
+strict          : 0
+
+
+aliases         : {'ll':'ls -l',
+                   'vim':'rvim'}
+
+# These are paths the user can access
+path        : [
+<% @path.each do |p| -%>
+                '<%= p %>',
+<% end -%>
+    ]
+
+sudo_commands   : ['']
+
+# include all commands as allowed in $path
+allowed_cmd_path    : [
+<% @allowed_cmd_path.each do |cpath| -%>
+                '<%= cpath %>',
+<% end -%>
+    ]
+
+# command whitelist
+<% if @allowed_cmds.empty? %>
+allowed		: 'all'
+<% else %>
+allowed         : [
+<% @allowed_cmds.each do |cmd| -%>
+                    '<%= cmd %>',
+<% end -%>
+    ]
+<% end -%>
+
+forbidden    : [
+<% @forbidden.each do |cmd| -%>
+                '<%= cmd %>',
+<% end -%>
+    ]
+
+# allow users in some groups to issue all commands
+<% @exempt_grps.each do |group| -%>
+[grp:<%= group -%>]
+intro = '\n<%= group -%>: lshell standard user shell except all commands available.\n'
+allowed    : 'all'
+<% end -%>
