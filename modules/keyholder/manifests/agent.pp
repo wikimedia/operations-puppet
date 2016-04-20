@@ -7,59 +7,49 @@
 # [*name*]
 #   Used for service names, socket names, and default key name
 #
-# [*key_file*]
-#   The name of the key file stored in puppet private
-#   Should exist prior to running a defined resource
-#
 # [*trusted_group*]
 #   The name or GID of the trusted user group with which the agent
 #   should be shared. It is the caller's responsibility to ensure
 #   the group exists. An array of group identifiers can also be provided
 #   to allow access by multiple groups.
 #
-# [*key_fingerprint*]
-#   Fingerprint of the public half of the private keyfile specified
-#   by $key_file
+# [*ensure*]
+#   If 'present', config will be enabled; if 'absent', disabled.
+#   The default is 'present'.
 #
 # === Examples
 #
 #  keyholder::agent { 'mwdeploy':
-#      key_file         => 'mwdeploy_key_rsa',
 #      trusted_group   => ['wikidev', 'mwdeploy'],
-#      key_fingerprint => '00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00'
-#      require         => Group['wikidev'],
+#      ensure => 'present',
 #  }
 #
 define keyholder::agent(
     $trusted_group,
-    $key_fingerprint,
-    $key_file = "${name}_rsa",
-    $key_content = undef,
-    $key_secret = undef,
+    $ensure,
 ) {
+    validate_ensure($ensure)
+
     require ::keyholder
     require ::keyholder::monitoring
 
-    file { "/etc/keyholder-auth.d/${name}.yml":
-        content => inline_template("---\n<% [*@trusted_group].each do |g| %><%= g %>: ['<%= @key_fingerprint %>']\n<% end %>"),
+    $key_name = regsubst($title, '\W', '_', 'G')
+    $key_content = keyholder_key($key_name, true)
+    $fingerprint = keyholder_fingerprint($key_name)
+
+    file { "/etc/keyholder.d/${key_name}":
+        ensure  => $ensure,
+        content => $key_content,
         owner   => 'root',
         group   => 'keyholder',
         mode    => '0440',
     }
 
-    # lint:ignore:puppet_url_without_modules
-    if $key_content {
-        keyholder::private_key { $key_file:
-            content  => $key_content,
-        }
-    } elsif $key_secret {
-        keyholder::private_key { $key_file:
-            content => secret($key_secret)
-        }
-    } else {
-        keyholder::private_key { $key_file:
-            source  => "puppet:///private/ssh/tin/${key_file}",
-        }
+    file { "/etc/keyholder-auth.d/${key_name}.yml":
+        ensure  => $ensure,
+        content => inline_template('---\n<%= [*@trusted_group].map { |g| "#{g}: [#{@fingerprint}]" }.join("\n") %>\n'),
+        owner   => 'root',
+        group   => 'keyholder',
+        mode    => '0440',
     }
-    # lint:endignore
 }
