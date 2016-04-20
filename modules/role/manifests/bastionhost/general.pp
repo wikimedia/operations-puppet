@@ -9,6 +9,9 @@ class role::bastionhost::general {
     include base::firewall
     include role::backup::host
 
+    # Used by parsoid deployers
+    include scap::dsh
+
     backup::set {'home': }
 
     ferm::service { 'ssh':
@@ -19,4 +22,3 @@ class role::bastionhost::general {
     }
 
 }
-
