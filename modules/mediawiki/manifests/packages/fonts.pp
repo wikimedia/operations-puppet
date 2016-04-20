@@ -30,15 +30,6 @@ class mediawiki::packages::fonts {
         'fonts-unfonts-extra',
         'texlive-fonts-recommended',
         'ttf-alee',
-        'ttf-bengali-fonts',
-        'ttf-devanagari-fonts',
-        'ttf-gujarati-fonts',
-        'ttf-kannada-fonts',
-        'ttf-malayalam-fonts',
-        'ttf-oriya-fonts',
-        'ttf-punjabi-fonts',
-        'ttf-tamil-fonts',
-        'ttf-telugu-fonts',
         'ttf-ubuntu-font-family',    # T32288, T103325
         'ttf-wqy-zenhei',
         'xfonts-100dpi',
@@ -61,5 +52,13 @@ class mediawiki::packages::fonts {
 
     ]:
         ensure => present,
+    }
+
+    if os_version('ubuntu >= trusty') {
+        require_package('ttf-bengali-fonts', 'ttf-devanagari-fonts', 'ttf-gujarati-fonts', 'ttf-kannada-fonts', 'ttf-malayalam-fonts', 'ttf-oriya-fonts', 'ttf-punjabi-fonts', 'ttf-tamil-fonts', 'ttf-telugu-fonts')
+    }
+
+    if os_version('debian >= jessie') {
+        require_package('fonts-beng', 'fonts-deva', 'fonts-gujr', 'fonts-knda', 'fonts-mlym', 'fonts-orya', 'fonts-guru', 'fonts-taml', 'fonts-telu')
     }
 }
