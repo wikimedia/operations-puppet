@@ -10,9 +10,8 @@
 # [*deploy_user*]
 #   user that will be used for deployments
 #
-# [*public_key_source*]
-#   puppet source argument to pass to ssh::userkey for installing
-#   $deploy_user's public ssh key.
+# [*key_name*]
+#   a unique name for the keyholder_key that will be used to access this target
 #
 # [*service_name*]
 #   service name that should be allowed to be restarted via sudo by
@@ -34,22 +33,21 @@
 #
 #   scap::target { 'mockbase':
 #       deploy_user => 'deploy-mockbase',
-#       public_key_source => 'puppet://modules/mockbase/deploy-test_rsa.pub'
+#       key_name => 'deploy-mockbase',
 #   }
 #
 #   scap::target { 'eventlogging/eventlogging':
 #       deploy_user => 'eventlogging',
-#       public_key_source => "puppet:///modules/eventlogging/deployment/eventlogging_rsa.pub.${::realm}",
 #       manage_user => false,
 #   }
 #
 define scap::target(
     $deploy_user,
-    $public_key_source,
     $service_name = undef,
     $package_name = $title,
     $manage_user = true,
     $sudo_rules = [],
+
 ) {
     # Include scap3 package and ssh ferm rules.
     include scap
@@ -72,6 +70,11 @@ define scap::target(
             home       => '/var/lib/scap',
             system     => true,
             managehome => true,
+        }
+
+        ssh::userkey { $deploy_user:
+            ensure  => 'present',
+            content => keyholder_pubkey($deploy_user),
         }
     } else {
         User[$deploy_user] -> Scap::Target[$title]
@@ -96,12 +99,6 @@ define scap::target(
                   owner => $deploy_user}],
         provider        => 'scap3',
         require         => [Package['scap'], User[$deploy_user]],
-    }
-
-    if !defined(Ssh::Userkey[$deploy_user]) {
-        ssh::userkey { $deploy_user:
-            source => $public_key_source,
-        }
     }
 
     # XXX: Temporary work-around for switching services from Trebuchet to Scap3
