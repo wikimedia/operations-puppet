@@ -1,4 +1,4 @@
-# == Function: ssl_ciphersuite( string $servercode, string $encryption_type, int $hsts_days )
+# == Function: ssl_ciphersuite( string $server, string $encryption_type, int $hsts_days )
 #
 # Outputs the ssl configuration directives for use with either Nginx
 # or Apache using our selection of ciphers and SSL options.
@@ -7,9 +7,7 @@
 #
 # Takes three arguments:
 #
-# - The servercode, or which browser-version combination to
-#   support. At the moment only 'apache-2.2', 'apache-2.4' and 'nginx'
-#   are supported.
+# - The server to configure for: 'apache' or 'nginx'
 # - The compatibility mode, trades security vs compatibility.
 #   Note that due to POODLE, SSLv3 is universally disabled and none of these
 #   options are compatible with SSLv3-only clients such as IE6/XP.
@@ -41,7 +39,7 @@
 #
 # == Examples
 #
-#     ssl_ciphersuite('apache-2.4', 'compat')
+#     ssl_ciphersuite('apache', 'compat')
 #     ssl_ciphersuite('nginx', 'strong')
 #
 # == License
@@ -135,15 +133,15 @@ module Puppet::Parser::Functions
               :doc  => <<-END
 Outputs the ssl configuration part of the webserver config.
 Function parameters are:
- servercode - either nginx, apache-2.2 or apache-2.4
+ server - either nginx or apache
  encryption_type - strong, mid, or compat
  hsts_days  - how many days should the STS header live. If not expressed, HSTS will
               be disabled
 
 Examples:
 
-   ssl_ciphersuite('apache-2.4', 'compat') # Compatible config for apache 2.4
-   ssl_ciphersuite('apache-2.4', 'mid') # PFS-only for apache2.4
+   ssl_ciphersuite('apache', 'compat') # Compatible config for apache
+   ssl_ciphersuite('apache', 'mid') # PFS-only for apache
    ssl_ciphersuite('nginx', 'strong', '365') # PFS-only, AEAD-only, TLSv1.2-only
 END
               ) do |args|
@@ -154,19 +152,22 @@ END
       fail(ArgumentError, 'ssl_ciphersuite() requires at least 2 arguments')
     end
 
-    servercode = args.shift
-    case servercode
-    when 'apache-2.4' then
-      server = 'apache'
-      server_version = 24
-    when 'apache-2.2' then
-      server = 'apache'
-      server_version = 22
+    server = args.shift
+    case server
+    when 'apache' then
+      if function_os_version(['debian >= jessie || ubuntu >= trusty'])
+        server_version = 24
+      else
+        server_version = 22
+      end
     when 'nginx' then
-      server = 'nginx'
-      server_version = nil
+      if function_os_version(['debian >= jessie'])
+        server_version = 19
+      else
+        server_version = 11
+      end
     else
-      fail(ArgumentError, "ssl_ciphersuite(): unknown server string '#{servercode}'")
+      fail(ArgumentError, "ssl_ciphersuite(): unknown server string '#{server}'")
     end
 
     ciphersuite = args.shift
@@ -230,7 +231,7 @@ END
       end
       unless hsts_days.nil?
         hsts_seconds = hsts_days * 86400
-        if function_os_version(['debian >= jessie'])
+        if server_version >= 18
             output.push("add_header Strict-Transport-Security \"max-age=#{hsts_seconds}\" always;")
         else
             output.push("add_header Strict-Transport-Security \"max-age=#{hsts_seconds}\";")
