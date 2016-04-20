@@ -50,6 +50,7 @@ define scap::target(
     $package_name = $title,
     $manage_user = true,
     $sudo_rules = [],
+    $key_name = undef,
 ) {
     # Include scap3 package and ssh ferm rules.
     include scap
@@ -84,9 +85,14 @@ define scap::target(
         require         => [Package['scap'], User[$deploy_user]],
     }
 
-    if !defined(Ssh::Userkey[$deploy_user]) {
-        ssh::userkey { $deploy_user:
-            source => $public_key_source,
+    if $key_name {
+        $key_res = "${deploy_user}/${key_name}"
+        if defined(User[$deploy_user]) and !defined(Ssh::Userkey[$key_res]) {
+            ssh::userkey { $key_res:
+                skey    => $key_name,
+                user    => $deploy_user,
+                content => keyholder_pubkey($key_name, true),
+            }
         }
     }
 

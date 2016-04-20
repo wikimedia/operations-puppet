@@ -32,7 +32,7 @@
 #
 define keyholder::agent(
     $trusted_group,
-    $key_fingerprint,
+    $key_fingerprint = undef,
     $key_file = "${name}_rsa",
     $key_content = undef,
     $key_secret = undef,
@@ -40,26 +40,29 @@ define keyholder::agent(
     require ::keyholder
     require ::keyholder::monitoring
 
-    file { "/etc/keyholder-auth.d/${name}.yml":
-        content => inline_template("---\n<% [*@trusted_group].each do |g| %><%= g %>: ['<%= @key_fingerprint %>']\n<% end %>"),
-        owner   => 'root',
-        group   => 'keyholder',
-        mode    => '0440',
-    }
-
     # lint:ignore:puppet_url_without_modules
     if $key_content {
+        $fingerprint = $key_fingerprint
         keyholder::private_key { $key_file:
             content  => $key_content,
         }
     } elsif $key_secret {
+        $fingerprint = keyholder_fingerprint($key_secret)
         keyholder::private_key { $key_file:
-            content => secret($key_secret)
+            content => keyholder_key($key_secret, true)
         }
     } else {
+        $fingerprint = $key_fingerprint
         keyholder::private_key { $key_file:
             source  => "puppet:///private/ssh/tin/${key_file}",
         }
     }
     # lint:endignore
+
+    file { "/etc/keyholder-auth.d/${name}.yml":
+        content => inline_template("---\n<% [*@trusted_group].each do |g| %><%= g %>: ['<%= @fingerprint %>']\n<% end %>"),
+        owner   => 'root',
+        group   => 'keyholder',
+        mode    => '0440',
+    }
 }
