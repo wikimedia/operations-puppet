@@ -9,7 +9,7 @@ class toolserver_legacy {
     include ::apache
     include ::apache::mod::rewrite
 
-    $ssl_settings = ssl_ciphersuite('apache-2.2', 'compat')
+    $ssl_settings = ssl_ciphersuite('apache', 'compat')
 
     system::role { 'toolserver_legacy': description => 'Toolserver legacy server' }
 
