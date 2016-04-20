@@ -1,4 +1,4 @@
-# == Function: ssl_ciphersuite( string $servercode, string $encryption_type, int $hsts_days )
+# == Function: ssl_ciphersuite( string $server, string $encryption_type, int $hsts_days )
 #
 # Outputs the ssl configuration directives for use with either Nginx
 # or Apache using our selection of ciphers and SSL options.
@@ -7,9 +7,7 @@
 #
 # Takes three arguments:
 #
-# - The servercode, or which browser-version combination to
-#   support. At the moment only 'apache-2.2', 'apache-2.4' and 'nginx'
-#   are supported.
+# - The server to configure for: 'apache' or 'nginx'
 # - The compatibility mode, trades security vs compatibility.
 #   Note that due to POODLE, SSLv3 is universally disabled and none of these
 #   options are compatible with SSLv3-only clients such as IE6/XP.
@@ -41,7 +39,7 @@
 #
 # == Examples
 #
-#     ssl_ciphersuite('apache-2.4', 'compat')
+#     ssl_ciphersuite('apache', 'compat')
 #     ssl_ciphersuite('nginx', 'strong')
 #
 # == License
@@ -135,15 +133,15 @@ module Puppet::Parser::Functions
               :doc  => <<-END
 Outputs the ssl configuration part of the webserver config.
 Function parameters are:
- servercode - either nginx, apache-2.2 or apache-2.4
+ server - either nginx or apache
  encryption_type - strong, mid, or compat
  hsts_days  - how many days should the STS header live. If not expressed, HSTS will
               be disabled
 
 Examples:
 
-   ssl_ciphersuite('apache-2.4', 'compat') # Compatible config for apache 2.4
-   ssl_ciphersuite('apache-2.4', 'mid') # PFS-only for apache2.4
+   ssl_ciphersuite('apache', 'compat') # Compatible config for apache
+   ssl_ciphersuite('apache', 'mid') # PFS-only for apache
    ssl_ciphersuite('nginx', 'strong', '365') # PFS-only, AEAD-only, TLSv1.2-only
 END
               ) do |args|
@@ -154,19 +152,34 @@ END
       fail(ArgumentError, 'ssl_ciphersuite() requires at least 2 arguments')
     end
 
-    servercode = args.shift
-    case servercode
-    when 'apache-2.4' then
-      server = 'apache'
-      server_version = 24
-    when 'apache-2.2' then
-      server = 'apache'
-      server_version = 22
-    when 'nginx' then
-      server = 'nginx'
-      server_version = nil
+    server = args.shift
+    if server != 'apache' && server != 'nginx'
+      fail(ArgumentError, "ssl_ciphersuite(): unknown server string '#{server}'")
+    end
+
+    if args.length == 1
+      hsts_secs = args.shift.to_i * 86400
     else
-      fail(ArgumentError, "ssl_ciphersuite(): unknown server string '#{servercode}'")
+      hsts_secs = nil
+    end
+
+    # OS / Server -dependant feature flags:
+    if function_os_version(['debian >= jessie'])
+      compat_only = false
+      nginx_always_ok = true
+      dhe_ok = true
+    elsif function_os_version('['ubuntu >= trusty'])
+      compat_only = false
+      nginx_always_ok = false
+      if server == 'nginx'
+        dhe_ok = true
+      elsif server == 'apache'
+        dhe_ok = false
+      end
+    else # precise, or worse/unknown
+      compat_only = true
+      nginx_always_ok = false
+      dhe_ok = false
     end
 
     ciphersuite = args.shift
@@ -174,66 +187,48 @@ END
       fail(ArgumentError, "ssl_ciphersuite(): unknown ciphersuite '#{ciphersuite}'")
     end
 
-    # Apache-2.2 has all kinds of problems with suites > compat, and should be eliminated
-    #  by upgrades to trusty/jessie.
-    if ciphersuite != 'compat' && server == 'apache' && server_version < 24
-      fail(ArgumentError, 'ssl_ciphersuite(): apache 2.2 can only be used with "compat"')
+    if compat_only && ciphersuite != 'compat'
+      fail(ArgumentError, 'ssl_ciphersuite(): OS and/or http server too old, must use "compat"')
     end
 
-    # We can't do proper DH params for DHE suites on any of our current apache
-    # builds, actually, because they weren't built against openssl-1.0.2.
-    # Disabling for now, until we come up with a better way to configure this
-    if server == 'apache'
-      cipherlist = ciphersuites[ciphersuite].reject{|x| x =~ /^(DHE|EDH)-/}.join(":")
-      set_dhparam = false
-    else
+    if dhe_ok
       cipherlist = ciphersuites[ciphersuite].join(":")
-      set_dhparam = true
-    end
-
-    if args.length == 1
-      hsts_days = args.shift.to_i
     else
-      hsts_days = nil
+      cipherlist = ciphersuites[ciphersuite].reject{|x| x =~ /^(DHE|EDH)-/}.join(":")
     end
 
     output = []
 
     if server == 'apache'
-      case ciphersuite
-      when 'strong' then
+      if ciphersuite == 'strong'
         output.push('SSLProtocol all -SSLv2 -SSLv3 -TLSv1 -TLSv1.1')
       else
         output.push('SSLProtocol all -SSLv2 -SSLv3')
       end
       output.push("SSLCipherSuite #{cipherlist}")
       output.push('SSLHonorCipherOrder On')
-      if set_dhparam
+      if dhe_ok
         output.push('SSLOpenSSLConfCmd DHParameters "/etc/ssl/dhparam.pem"')
       end
-      unless hsts_days.nil?
-        hsts_seconds = hsts_days * 86400
-        output.push("Header always set Strict-Transport-Security \"max-age=#{hsts_seconds}\"")
+      unless hsts_secs.nil?
+        output.push("Header always set Strict-Transport-Security \"max-age=#{hsts_secs}\"")
       end
-    else
-      # nginx
-      case ciphersuite
-      when 'strong' then
+    else # nginx
+      if ciphersuite == 'strong'
         output.push('ssl_protocols TLSv1.2;')
       else
         output.push('ssl_protocols TLSv1 TLSv1.1 TLSv1.2;')
       end
       output.push("ssl_ciphers #{cipherlist};")
       output.push('ssl_prefer_server_ciphers on;')
-      if set_dhparam
+      if dhe_ok
         output.push('ssl_dhparam /etc/ssl/dhparam.pem;')
       end
-      unless hsts_days.nil?
-        hsts_seconds = hsts_days * 86400
-        if function_os_version(['debian >= jessie'])
-            output.push("add_header Strict-Transport-Security \"max-age=#{hsts_seconds}\" always;")
+      unless hsts_secs.nil?
+        if nginx_always_ok
+            output.push("add_header Strict-Transport-Security \"max-age=#{hsts_secs}\" always;")
         else
-            output.push("add_header Strict-Transport-Security \"max-age=#{hsts_seconds}\";")
+            output.push("add_header Strict-Transport-Security \"max-age=#{hsts_secs}\";")
         end
       end
     end

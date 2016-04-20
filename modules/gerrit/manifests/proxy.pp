@@ -2,7 +2,7 @@ class gerrit::proxy($host        = '',
 $ssl_cert    = '',
 $ssl_cert_key= '') {
 
-    $ssl_settings = ssl_ciphersuite('apache-2.2', 'compat', '365')
+    $ssl_settings = ssl_ciphersuite('apache', 'compat', '365')
 
     apache::site { 'gerrit.wikimedia.org':
         content => template('gerrit/gerrit.wikimedia.org.erb'),

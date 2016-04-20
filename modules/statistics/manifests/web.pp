@@ -5,7 +5,7 @@
 class statistics::web {
     Class['::statistics'] -> Class['::statistics::web']
 
-    $ssl_settings = ssl_ciphersuite('apache-2.2', 'compat', '365')
+    $ssl_settings = ssl_ciphersuite('apache', 'compat', '365')
 
     # make sure /var/log/apache2 is readable by wikidevs for debugging.
     # This won't make the actual log files readable, only the directory.

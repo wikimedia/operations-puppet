@@ -7,11 +7,7 @@ class librenms::web(
 
     include ::apache::mod::ssl
 
-    if os_version('debian >= jessie || ubuntu >= trusty') {
-        $ssl_settings = ssl_ciphersuite('apache-2.4', 'compat', '365')
-    } else {
-        $ssl_settings = ssl_ciphersuite('apache-2.2', 'compat', '365')
-    }
+    $ssl_settings = ssl_ciphersuite('apache', 'compat', '365')
 
     apache::site { $sitename:
         content => template('librenms/apache.conf.erb'),
