@@ -341,9 +341,7 @@ or Apache using our selection of ciphers and SSL options.
 
 Takes three arguments:
 
-- The servercode, or which browser-version combination to
-  support. At the moment only 'apache-2.2', 'apache-2.4' and 'nginx'
-  are supported.
+- The server to configure for: 'apache' or 'nginx'
 - The compatibility mode,indicating the degree of compatibility we
   want to retain with older browsers (basically, IE6, IE7 and
   Android prior to 3.0)
@@ -356,7 +354,7 @@ configuration part.
 
 ### Examples
 
-    ssl_ciphersuite('apache-2.4', 'compat')
+    ssl_ciphersuite('apache', 'compat')
     ssl_ciphersuite('nginx', 'strong')
 
 
