@@ -1382,6 +1382,17 @@ node 'graphite2001.codfw.wmnet' {
     include base::firewall
 }
 
+# partially replaces carbon (T132757)
+node 'install1001.wikimedia.org' {
+    $cluster = 'misc'
+
+    interface::add_ip6_mapped { 'main':
+        interface => 'eth0',
+    }
+
+    include standard
+}
+
 node 'install2001.wikimedia.org' {
     role installserver::tftp_server
     $cluster = 'misc'
