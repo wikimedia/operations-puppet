@@ -17,3 +17,11 @@ phabricator:
       "weight": 10
     datacenters:
       - eqiad
+labs:
+  labs-dns-recursor:
+    port: 53
+    default_values:
+      "pooled": "no"
+      "weight": 10
+    datacenters:
+      - eqiad

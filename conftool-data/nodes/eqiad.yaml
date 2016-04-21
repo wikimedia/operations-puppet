@@ -305,6 +305,9 @@ swift:
   ms-fe1004.eqiad.wmnet: [swift-fe]
 phabricator:
   iridium-vcs.eqiad.wmnet: [git-ssh]
+labs:
+  labs-recursor0.wikimedia.org: [labs-dns-recursor]
+  labs-recursor1.wikimedia.org: [labs-dns-recursor]
 aqs:
   aqs1001.eqiad.wmnet: [aqs]
   aqs1002.eqiad.wmnet: [aqs]
