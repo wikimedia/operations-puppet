@@ -29,7 +29,10 @@ server {
 
     location <%= @location %> {
         <%- if @location != '/' -%>
+        rewrite             ^<%= @location %>/?$ /rcstream_status break;
         rewrite             <%= @location %>(/.*)$ $1 break;
+        <%- else -%>
+        rewrite             ^/$ /rcstream_status break;
         <%- end -%>
         proxy_pass          http://websockets;
         proxy_redirect      off;
