@@ -1,4 +1,4 @@
-# == Class: reprepro::distribution
+# == Class: aptrepo::distribution
 #
 #   Configures a reprepro distribution
 #
@@ -10,7 +10,7 @@
 #
 # === Example
 #
-#   class { 'reprepro::distribution':
+#   class { 'aptrepo::distribution':
 #     basedir => 'foo',
 #     settings => {
 #       'distro1' => {
@@ -21,7 +21,7 @@
 #   }
 #
 
-class reprepro::distribution (
+class aptrepo::distribution (
     $basedir,
     $settings,
 ) {
@@ -30,6 +30,6 @@ class reprepro::distribution (
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-        content => template('reprepro/distributions.erb'),
+        content => template('aptrepo/distributions.erb'),
     }
 }
