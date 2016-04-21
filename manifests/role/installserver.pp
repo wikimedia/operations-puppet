@@ -10,7 +10,6 @@
 #
 # Requires:
 #
-#   Class['install_server::apt_repository']
 #   Class['install_server::preseed_server']
 #   Class['install_server::tftp_server']
 #   Class['install_server::web_server']
@@ -30,7 +29,6 @@ class role::installserver {
 
     include base::firewall
     include role::backup::host
-    include install_server::apt_repository
     include install_server::preseed_server
 
     # mirrors stuff. these should be moved to their own role class eventually
