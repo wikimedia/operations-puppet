@@ -20,7 +20,7 @@ server {
     error_log    /var/log/nginx/rcstream_<%= 'ssl_' if @use_ssl %>error.log;
 
     <%- if @use_ssl -%>
-    ssl_certificate      /etc/ssl/localcerts/<%= @server_name %>.crt;
+    ssl_certificate      /etc/ssl/localcerts/<%= @server_name %>.chained.crt;
     ssl_certificate_key  /etc/ssl/private/<%= @server_name %>.key;
     ssl_session_cache    shared:SSL:50m;
     ssl_session_timeout  5m;
