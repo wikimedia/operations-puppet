@@ -1,6 +1,6 @@
-# == Class: reprepro
+# == Class: aptrepo
 #
-#   Configures reprepro on a server
+#   Configures apt.wikimedia.org and reprepro on a server
 #
 # === Parameters
 #
@@ -19,11 +19,11 @@
 #
 # === Example
 #
-#   class { 'reprepro':
+#   class { 'aptrepo':
 #       basedir => "/tmp/reprepro",
 #   }
 #
-class reprepro (
+class aptrepo (
     $basedir,
     $homedir         = '/var/lib/reprepro',
     $user            = 'reprepro',
@@ -119,7 +119,7 @@ class reprepro (
         owner   => $user,
         group   => $group,
         mode    => '0444',
-        content => template('reprepro/incoming.erb'),
+        content => template('aptrepo/incoming.erb'),
     }
 
     file { "${basedir}/conf/log":
@@ -127,7 +127,7 @@ class reprepro (
         owner   => $user,
         group   => $group,
         mode    => '0755',
-        content => template('reprepro/log.erb'),
+        content => template('aptrepo/log.erb'),
     }
 
     file { "${homedir}/.gnupg":
@@ -139,7 +139,7 @@ class reprepro (
     }
 
     ssh::userkey { 'reprepro':
-        content => template('reprepro/authorized_keys.erb'),
+        content => template('aptrepo/authorized_keys.erb'),
     }
 
     file { '/usr/local/bin/reprepro-ssh-upload':
@@ -148,7 +148,7 @@ class reprepro (
         group   => 'root',
         mode    => '0555',
         require => User['reprepro'],
-        source  => 'puppet:///modules/reprepro/reprepro-ssh-upload',
+        source  => 'puppet:///modules/aptrepo/reprepro-ssh-upload',
     }
 
     if $gpg_secring != undef {
@@ -172,4 +172,71 @@ class reprepro (
             require => User['reprepro'],
         }
     }
+
+    # apt repository managements tools
+    package { [
+        'dpkg-dev',
+        'dctrl-tools',
+        'gnupg',
+        ]:
+        ensure => present,
+    }
+
+    # TODO: add something that sets up /etc/environment for reprepro
+
+    file { '/srv/wikimedia':
+        ensure => directory,
+        mode   => '0755',
+        owner  => 'root',
+        group  => 'root',
+    }
+
+    # Allow wikidev users to upload to /srv/wikimedia/incoming
+    file { '/srv/wikimedia/incoming':
+        ensure => directory,
+        mode   => '1775',
+        owner  => 'root',
+        group  => 'wikidev',
+    }
+
+    # reprepro configuration
+    file { '/srv/wikimedia/conf':
+        ensure => directory,
+        mode   => '0755',
+        owner  => 'root',
+        group  => 'root',
+    }
+
+    file { '/srv/wikimedia/conf/log':
+        ensure => present,
+        mode   => '0755',
+        owner  => 'root',
+        group  => 'root',
+        source => 'puppet:///modules/aptrepo/log',
+    }
+
+    file { '/srv/wikimedia/conf/distributions':
+        ensure => present,
+        mode   => '0444',
+        owner  => 'root',
+        group  => 'root',
+        source => 'puppet:///modules/aptrepo/distributions',
+    }
+
+    file { '/srv/wikimedia/conf/updates':
+        ensure => present,
+        mode   => '0444',
+        owner  => 'root',
+        group  => 'root',
+        source => 'puppet:///modules/aptrepo/updates',
+    }
+
+    file { '/srv/wikimedia/conf/incoming':
+        ensure => present,
+        mode   => '0444',
+        owner  => 'root',
+        group  => 'root',
+        source => 'puppet:///modules/aptrepo/incoming',
+    }
 }
+
