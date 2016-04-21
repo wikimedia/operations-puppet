@@ -1,23 +1,9 @@
 <VirtualHost *:80>
     ServerName <%= @ganglia_servername %>
     ServerAlias <%= @ganglia_serveralias %>
-    DocumentRoot <%= @doc_root %>
-    ServerAdmin noc@wikimedia.org
-
-    <Directory "<%= @doc_root %>">
-    Options FollowSymLinks
-    AllowOverride None
-    Require all granted
-    </Directory>
-
-    Alias /latest <%= @ganglia_webdir %>
-
-    RedirectMatch ^/$ http://<%= @ganglia_servername %>/latest
-    CustomLog /var/log/apache2/ganglia.wikimedia.org-access.log wmf
-    ErrorLog /var/log/apache2/ganglia.wikimedia.org-error.log
-    LogLevel warn
+    RewriteEngine on
+    RewriteRule ^/(.*)$ https://<%= @ganglia_servername %>/$1 [R=301]
 </VirtualHost>
-<% if @ganglia_ssl_cert %>
 <VirtualHost *:443>
     ServerName <%= @ganglia_servername %>
     ServerAlias <%= @ganglia_serveralias %>
@@ -43,4 +29,3 @@
     ErrorLog /var/log/apache2/ganglia.wikimedia.org-error.log
     LogLevel warn
 </VirtualHost>
-<% end %>
