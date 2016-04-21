@@ -13,8 +13,6 @@
 #   Url to Yandex service.
 # [*yandex_api_key*]
 #   API key for Yandex service.
-# [*registry*]
-#   Registry to use for language pairs for Content Translation.
 # [*jwt_secret*]
 #   JWT secret token.
 class cxserver(
@@ -22,15 +20,11 @@ class cxserver(
     $apertium = "http://apertium.svc.${::site}.wmnet:2737",
     $yandex_url = undef,
     $yandex_api_key = undef,
-    $registry = undef,
     $jwt_secret = undef,
     $no_proxy_list = undef,
 ) {
     if $no_proxy_list {
         validate_array($no_proxy_list)
-    }
-    if $registry {
-        $ordered_registry = ordered_json($registry)
     }
 
     service::node { 'cxserver':
