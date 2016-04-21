@@ -44,12 +44,12 @@ nodes:
     - 'cp4015.ulsfo.wmnet'
 apps:
   swift:
-    route: 'codfw'
+    route: 'eqiad'
     backends:
       eqiad: 'ms-fe.svc.eqiad.wmnet'
       codfw: 'ms-fe.svc.codfw.wmnet'
   swift_thumbs:
-    route: 'codfw'
+    route: 'eqiad'
     backends:
       eqiad: 'ms-fe-thumbs.svc.eqiad.wmnet'
       codfw: 'ms-fe-thumbs.svc.codfw.wmnet'
