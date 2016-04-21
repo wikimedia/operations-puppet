@@ -77,7 +77,7 @@ Alias /icinga /usr/share/icinga/htdocs
 
         RewriteEngine on
         RewriteCond %{SERVER_PORT} !^443$
-        RewriteRule ^/(.*)$ https://icinga.wikimedia.org/$1 [L,R]
+        RewriteRule ^/(.*)$ https://icinga.wikimedia.org/$1 [L,R=301]
 
     ErrorLog /var/log/apache2/icinga.log
     LogLevel warn
