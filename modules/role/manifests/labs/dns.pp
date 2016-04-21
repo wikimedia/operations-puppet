@@ -4,6 +4,8 @@ class role::labs::dns {
     }
     $dnsconfig = hiera_hash('labsdnsconfig', {})
 
+    include lvs::realserver
+
     class { '::labs_dns':
         dns_auth_ipaddress     => $::ipaddress_eth0,
         dns_auth_query_address => $::ipaddress_eth0,

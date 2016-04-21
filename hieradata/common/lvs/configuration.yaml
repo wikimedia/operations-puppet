@@ -124,6 +124,8 @@ lvs_service_ips:
     eqiad:
       git-ssh4: 208.80.154.250
       git-ssh6: 2620:0:861:ed1a::3:16
+  labs-auth-dns: &ip_block027
+    eqiad: 208.80.154.251
   aqs: &ip_block025
     eqiad: 10.2.2.12
   eventbus: &ip_block026
@@ -842,6 +844,22 @@ lvs_services:
     conftool:
       cluster: phabricator
       service: git-ssh
+  labs-auth-dns:
+    description: Authoritative dns for labs -- public and private
+    class: low-traffic
+    sites:
+    - eqiad
+    ip: *ip_block027
+    port: 53
+    bgp: 'yes'
+    depool-threshold: '.9'
+    monitors:
+      IdleConnection:
+        timeout-clean-reconnect: 3
+        max-delay: 30
+    conftool:
+      cluster: labs
+      service: labs-auth-dns
   aqs:
     description: "Analytics Query Service, aqs.svc.%{::site}.wmnet"
     class: low-traffic
