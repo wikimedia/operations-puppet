@@ -23,7 +23,7 @@ class releases::reprepro {
     $homedir = '/var/lib/reprepro'
     $incomingdir = "${basedir}/incoming"
 
-    class { '::reprepro':
+    class { '::aptrepo':
         basedir         => $basedir,
         homedir         => $homedir,
         options         => ["outdir ${outdir}"],
@@ -40,7 +40,7 @@ class releases::reprepro {
         owner   => 'reprepro',
         group   => 'reprepro',
         mode    => '0755',
-        require => Class['::reprepro'],
+        require => Class['::aptrepo'],
     }
 
     file { $incomingdir:
@@ -48,10 +48,10 @@ class releases::reprepro {
         owner   => 'reprepro',
         group   => 'reprepro',
         mode    => '0755',
-        require => Class['::reprepro'],
+        require => Class['::aptrepo'],
     }
 
-    class { '::reprepro::distribution':
+    class { '::aptrepo::distribution':
         basedir  => $basedir,
         settings => {
             'precise' => {
