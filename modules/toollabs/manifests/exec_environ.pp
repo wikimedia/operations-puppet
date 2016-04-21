@@ -160,7 +160,7 @@ class toollabs::exec_environ {
 
         # Fonts for vCat tool.
         'fonts-ipafont-gothic',        # Japanese fonts.
-        'ttf-indic-fonts',             # Many Indic languages.
+        'ttf-indic-fonts-core',        # Many Indic languages.
 
         # tcl packages
         'mysqltcl',
