@@ -49,7 +49,7 @@ class mediawiki::packages::fonts {
         'fonts-lyx',                 # T40299
         'fonts-crosextra-carlito',   # T84842
         'fonts-crosextra-caladea',   # T84842
-
+        'fonts-gujr-extra',          # T129500
     ]:
         ensure => present,
     }
