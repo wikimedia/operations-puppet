@@ -36,7 +36,7 @@ NameVirtualHost *:80
 
     RewriteEngine on
     RewriteCond %{SERVER_PORT} !^443$
-    RewriteRule ^/(.*)$ https://<%= @host %>/$1 [L,R,NE]
+    RewriteRule ^/(.*)$ https://<%= @host %>/$1 [L,R=301,NE]
 </VirtualHost>
 
 NameVirtualHost *:443
