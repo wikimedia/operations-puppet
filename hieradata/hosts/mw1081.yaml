@@ -8,4 +8,3 @@ hhvm::extra::fcgi:
       # Also, use light processes, that are more efficient
       light_process_count: "%{processorcount}"
 
-standard::has_admin: false
