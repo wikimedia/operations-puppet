@@ -17,12 +17,24 @@ class role::memcached {
         default => '1.4.15-0wmf1',
     }
 
+    if $::hostname == 'mc2010' {
+        $extended_options = [
+            'slab_reassign',
+            'maxconns_fast',
+            'hash_algorithm=murmur3',
+        ]
+    } else {
+        $extended_options = [
+            'slab_reassign'
+        ]
+    }
+
     class { '::memcached':
         size          => $memcached_size,
         port          => 11211,
         version       => $version,
         extra_options => {
-            '-o' => 'slab_reassign',
+            '-o' => join($extended_options, ","),
             '-D' => ':',
         }
     }
