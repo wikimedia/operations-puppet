@@ -25,7 +25,5 @@ mt:
     key: '<%= @yandex_api_key %>'
   <% end -%>
 
-# registry to use from config.prod.yaml
-<% if @ordered_registry -%>
-registry: <%= @ordered_registry %>
-<% end -%>
+# registry to use
+registry: ./registry.wikimedia.yaml
