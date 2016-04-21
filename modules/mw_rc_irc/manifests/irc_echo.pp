@@ -4,7 +4,11 @@ class mw_rc_irc::irc_echo(
     $ircpassword,
 ) {
 
-    package { 'python-irclib': ensure => latest; }
+    if os_version('debian >= jessie') {
+        require_package('python-irc')
+    } else {
+        require_package('python-irclib')
+    }
 
     file { '/usr/local/bin/udpmxircecho.py':
         content => template('mw_rc_irc/udpmxircecho.py.erb'),
