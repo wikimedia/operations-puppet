@@ -172,4 +172,72 @@ class reprepro (
             require => User['reprepro'],
         }
     }
+
+    # apt repository managements tools
+    package { [
+        'dpkg-dev',
+        'dctrl-tools',
+        'gnupg',
+        'reprepro',
+        ]:
+        ensure => present,
+    }
+
+    # TODO: add something that sets up /etc/environment for reprepro
+
+    file { '/srv/wikimedia':
+        ensure => directory,
+        mode   => '0755',
+        owner  => 'root',
+        group  => 'root',
+    }
+
+    # Allow wikidev users to upload to /srv/wikimedia/incoming
+    file { '/srv/wikimedia/incoming':
+        ensure => directory,
+        mode   => '1775',
+        owner  => 'root',
+        group  => 'wikidev',
+    }
+
+    # reprepro configuration
+    file { '/srv/wikimedia/conf':
+        ensure => directory,
+        mode   => '0755',
+        owner  => 'root',
+        group  => 'root',
+    }
+
+    file { '/srv/wikimedia/conf/log':
+        ensure => present,
+        mode   => '0755',
+        owner  => 'root',
+        group  => 'root',
+        source => 'puppet:///modules/reprepro/log',
+    }
+
+    file { '/srv/wikimedia/conf/distributions':
+        ensure => present,
+        mode   => '0444',
+        owner  => 'root',
+        group  => 'root',
+        source => 'puppet:///modules/reprepro/distributions',
+    }
+
+    file { '/srv/wikimedia/conf/updates':
+        ensure => present,
+        mode   => '0444',
+        owner  => 'root',
+        group  => 'root',
+        source => 'puppet:///modules/reprepro/updates',
+    }
+
+    file { '/srv/wikimedia/conf/incoming':
+        ensure => present,
+        mode   => '0444',
+        owner  => 'root',
+        group  => 'root',
+        source => 'puppet:///modules/reprepro/incoming',
+    }
 }
+
