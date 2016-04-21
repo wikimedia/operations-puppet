@@ -1,4 +1,4 @@
-# Class: install_server::apt_repository
+# Class: reprepro::apt_repository
 #
 # This class installs apt repository managements tools
 #
@@ -10,9 +10,9 @@
 # Requires:
 #
 # Sample Usage:
-#   include install_server::apt_repository
+#   include reprepro::apt_repository
 
-class install_server::apt_repository {
+class reprepro::apt_repository {
     package { [
         'dpkg-dev',
         'dctrl-tools',
@@ -44,27 +44,27 @@ class install_server::apt_repository {
         mode   => '0755',
         owner  => 'root',
         group  => 'root',
-        source => 'puppet:///modules/install_server/reprepro/log',
+        source => 'puppet:///modules/reprepro/log',
     }
     file { '/srv/wikimedia/conf/distributions':
         ensure => present,
         mode   => '0444',
         owner  => 'root',
         group  => 'root',
-        source => 'puppet:///modules/install_server/reprepro/distributions',
+        source => 'puppet:///modules/reprepro/distributions',
     }
     file { '/srv/wikimedia/conf/updates':
         ensure => present,
         mode   => '0444',
         owner  => 'root',
         group  => 'root',
-        source => 'puppet:///modules/install_server/reprepro/updates',
+        source => 'puppet:///modules/reprepro/updates',
     }
     file { '/srv/wikimedia/conf/incoming':
         ensure => present,
         mode   => '0444',
         owner  => 'root',
         group  => 'root',
-        source => 'puppet:///modules/install_server/reprepro/incoming',
+        source => 'puppet:///modules/reprepro/incoming',
     }
 }
