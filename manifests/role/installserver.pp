@@ -30,22 +30,9 @@ class role::installserver {
 
     include base::firewall
     include role::backup::host
+    include role::installserver::mirrors
     include install_server::apt_repository
     include install_server::preseed_server
-
-    # mirrors stuff. these should be moved to their own role class eventually
-    include mirrors::serve
-    include mirrors::ubuntu
-    nrpe::monitor_service {'check_ubuntu_mirror':
-        description  => 'Ubuntu mirror in sync with upstream',
-        nrpe_command => '/usr/local/lib/nagios/plugins/check_apt_mirror /srv/mirrors/ubuntu',
-    }
-
-    include mirrors::debian
-    nrpe::monitor_service {'check_debian_mirror':
-        description  => 'Debian mirror in sync with upstream',
-        nrpe_command => '/usr/local/lib/nagios/plugins/check_apt_mirror /srv/mirrors/debian',
-    }
 
     include mirrors::tails
 
