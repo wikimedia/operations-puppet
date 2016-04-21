@@ -11,8 +11,8 @@
 
     SSLEngine on
     SSLCertificateFile /etc/ssl/localcerts/<%= @sitename %>.crt
+    SSLCertificateChainFile /etc/ssl/localcerts/<%= @sitename %>.chain.crt
     SSLCertificateKeyFile /etc/ssl/private/<%= @sitename %>.key
-    SSLCACertificatePath /etc/ssl/certs
     <%= @ssl_settings.join("\n") %>
 
     DocumentRoot <%= @install_dir %>/html
