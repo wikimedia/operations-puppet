@@ -1,6 +1,18 @@
 server {
    listen 80 default_server;
    listen [::]:80 ipv6only=on default_server;
+   server_name apt.wikimedia.org;
+
+   root /srv;
+
+   location / {
+      index index.html index.htm;
+      autoindex on;
+      charset utf-8;
+   }
+}
+
+server {
    listen 443 default_server ssl;
    listen [::]:443 ipv6only=on default_server ssl;
    server_name apt.wikimedia.org;

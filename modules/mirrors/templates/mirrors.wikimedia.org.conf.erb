@@ -1,6 +1,18 @@
 server {
    listen 80;
    listen [::]:80;
+   server_name mirrors.wikimedia.org;
+
+   root /srv/mirrors;
+
+   location / {
+      index index.html;
+      autoindex on;
+      charset utf-8;
+   }
+}
+
+server {
    listen 443 ssl;
    listen [::]:443 ssl;
    server_name mirrors.wikimedia.org;
