@@ -1,6 +1,6 @@
-# == Class: reprepro
+# == Class: aptrepo
 #
-#   Configures reprepro on a server
+#   Configures apt.wikimedia.org and reprepro on a server
 #
 # === Parameters
 #
@@ -19,11 +19,13 @@
 #
 # === Example
 #
-#   class { 'reprepro':
+#   class { 'aptrepo':
 #       basedir => "/tmp/reprepro",
 #   }
 #
-class reprepro (
+# TODO: add something that sets up /etc/environment for reprepro
+#
+class aptrepo (
     $basedir,
     $homedir         = '/var/lib/reprepro',
     $user            = 'reprepro',
@@ -60,42 +62,34 @@ class reprepro (
 
     file { $basedir:
         ensure  => directory,
-        owner   => $user,
-        group   => $group,
+        owner   => 'root',
+        group   => 'root',
         mode    => '0755',
         require => User['reprepro'],
     }
 
     file { "${basedir}/conf":
         ensure  => directory,
-        owner   => $user,
-        group   => $group,
-        mode    => '0555',
-        require => User['reprepro'],
-    }
-
-    file { "${basedir}/db":
-        ensure  => directory,
-        owner   => $user,
-        group   => $group,
+        owner   => 'root',
+        group   => 'root',
         mode    => '0755',
         require => User['reprepro'],
     }
 
-    file { "${basedir}/logs":
-        ensure  => directory,
-        owner   => $user,
-        group   => $group,
-        mode    => '0755',
-        require => User['reprepro'],
+    file { "${basedir}/conf/distributions":
+        ensure => present,
+        mode   => '0444',
+        owner  => 'root',
+        group  => 'root',
+        source => 'puppet:///modules/aptrepo/distributions',
     }
 
-    file { "${basedir}/tmp":
-        ensure  => directory,
-        owner   => $user,
-        group   => $group,
-        mode    => '0755',
-        require => User['reprepro'],
+    file { "${basedir}/conf/updates":
+        ensure => present,
+        mode   => '0444',
+        owner  => 'root',
+        group  => 'root',
+        source => 'puppet:///modules/aptrepo/updates',
     }
 
     file { "${basedir}/conf/options":
@@ -115,19 +109,51 @@ class reprepro (
     }
 
     file { "${basedir}/conf/incoming":
-        ensure  => file,
-        owner   => $user,
-        group   => $group,
-        mode    => '0444',
-        content => template('reprepro/incoming.erb'),
+        ensure => present,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0444',
+        source => 'puppet:///modules/aptrepo/incoming',
     }
 
     file { "${basedir}/conf/log":
-        ensure  => file,
+        ensure => file,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+        source => 'puppet:///modules/aptrepo/log',
+    }
+
+    file { "${basedir}/db":
+        ensure  => directory,
         owner   => $user,
         group   => $group,
         mode    => '0755',
-        content => template('reprepro/log.erb'),
+        require => User['reprepro'],
+    }
+
+    # Allow wikidev users to upload to /srv/wikimedia/incoming
+    file { "${basedir}/incoming":
+        ensure => directory,
+        mode   => '1775',
+        owner  => 'root',
+        group  => 'wikidev',
+    }
+
+    file { "${basedir}/logs":
+        ensure  => directory,
+        owner   => $user,
+        group   => $group,
+        mode    => '0755',
+        require => User['reprepro'],
+    }
+
+    file { "${basedir}/tmp":
+        ensure  => directory,
+        owner   => $user,
+        group   => $group,
+        mode    => '0755',
+        require => User['reprepro'],
     }
 
     file { "${homedir}/.gnupg":
@@ -139,7 +165,7 @@ class reprepro (
     }
 
     ssh::userkey { 'reprepro':
-        content => template('reprepro/authorized_keys.erb'),
+        content => template('aptrepo/authorized_keys.erb'),
     }
 
     file { '/usr/local/bin/reprepro-ssh-upload':
@@ -148,7 +174,7 @@ class reprepro (
         group   => 'root',
         mode    => '0555',
         require => User['reprepro'],
-        source  => 'puppet:///modules/reprepro/reprepro-ssh-upload',
+        source  => 'puppet:///modules/aptrepo/reprepro-ssh-upload',
     }
 
     if $gpg_secring != undef {
@@ -172,4 +198,15 @@ class reprepro (
             require => User['reprepro'],
         }
     }
+
+    # apt repository managements tools
+    package { [
+        'dpkg-dev',
+        'dctrl-tools',
+        'gnupg',
+        ]:
+        ensure => present,
+    }
+
 }
+
