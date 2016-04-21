@@ -511,9 +511,15 @@ class role::mariadb::core(
         mariadb10 => true,
     }
 
+    if ($shard in ['es1', 'es2', 'es3']) {
+        $config = 'mariadb/production-es.my.cnf.erb'
+    } else {
+        $config = 'mariadb/production.my.cnf.erb'
+    }
+
     class { 'mariadb::config':
         prompt        => "PRODUCTION ${shard}",
-        config        => 'mariadb/production.my.cnf.erb',
+        config        => $config,
         password      => $passwords::misc::scripts::mysql_root_pass,
         datadir       => '/srv/sqldata',
         tmpdir        => '/srv/tmp',
