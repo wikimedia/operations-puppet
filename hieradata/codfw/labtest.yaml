@@ -70,7 +70,7 @@ novaconfig:
   ldap_host: 'labtestservices2001.wikimedia.org'
   puppet_host: *labsnovacontroller
   puppet_db_host: *labsnovacontroller
-  dhcp_domain: 'codfw.wmflabs'
+  dhcp_domain: 'codfw.labtest'
   live_migration_uri: 'qemu://%s.codfw.wmnet/system?pkipath=/var/lib/nova'
   zone: codfw
   scheduler_pool:
