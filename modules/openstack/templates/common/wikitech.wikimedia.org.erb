@@ -28,7 +28,7 @@
 
     RewriteEngine on
     RewriteCond %{SERVER_PORT} !^443$
-    RewriteRule ^/(.*)$ https://<%= @webserver_hostname %>/$1 [L,R]
+    RewriteRule ^/(.*)$ https://<%= @webserver_hostname %>/$1 [L,R=301]
 
     ErrorLog /var/log/apache2/error.log
 
