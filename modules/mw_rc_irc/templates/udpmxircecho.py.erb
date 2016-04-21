@@ -2,7 +2,12 @@
 #
 # usage: udpmxircecho.py nickname server
 import sys
+<% if scope.function_os_version(['debian >= jessie']) %>
+from irc.bot import SingleServerIRCBot
+<% else %>
 from ircbot import SingleServerIRCBot
+<% end %>
+
 import threading, socket
 
 
