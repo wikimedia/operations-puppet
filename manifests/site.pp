@@ -789,6 +789,7 @@ node 'db1031.eqiad.wmnet' {
         master        => false,
         p_s           => 'on',
         binlog_format => 'ROW',
+        ssl           => 'puppet-cert',
     }
     include base::firewall
 }
@@ -804,6 +805,7 @@ node 'db2009.codfw.wmnet' {
         master        => true,
         p_s           => 'on',
         binlog_format => 'ROW',
+        ssl           => 'puppet-cert',
     }
     include base::firewall
 }
@@ -813,6 +815,7 @@ node /^db20(08)\.codfw\.wmnet/ {
         shard         => 'x1',
         p_s           => 'on',
         binlog_format => 'ROW',
+        ssl           => 'puppet-cert',
     }
     include base::firewall
 }
