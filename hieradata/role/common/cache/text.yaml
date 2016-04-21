@@ -21,7 +21,7 @@ admin::groups:
 #    multiple values could cause a race-condition of intermediate states.
 #
 cache::route_table:
-  eqiad: 'codfw'
+  eqiad: 'direct'
   codfw: 'direct'
   ulsfo: 'codfw'
   esams: 'codfw'
