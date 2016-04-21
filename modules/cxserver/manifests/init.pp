@@ -13,24 +13,23 @@
 #   Url to Yandex service.
 # [*yandex_api_key*]
 #   API key for Yandex service.
-# [*registry*]
-#   Registry to use for language pairs for Content Translation.
 # [*jwt_secret*]
 #   JWT secret token.
+# [*no_proxy_list*]
+#   List of no_proxy values.
+# [*registry*]
+#   registry file to use.
 class cxserver(
     $restbase_url = "http://restbase.svc.${::rb_site}.wmnet:7231/@lang.wikipedia.org/v1/page/html/@title",
     $apertium = "http://apertium.svc.${::site}.wmnet:2737",
     $yandex_url = undef,
     $yandex_api_key = undef,
-    $registry = undef,
     $jwt_secret = undef,
     $no_proxy_list = undef,
+    $registry = 'registry.wikimedia.yaml',
 ) {
     if $no_proxy_list {
         validate_array($no_proxy_list)
-    }
-    if $registry {
-        $ordered_registry = ordered_json($registry)
     }
 
     service::node { 'cxserver':
