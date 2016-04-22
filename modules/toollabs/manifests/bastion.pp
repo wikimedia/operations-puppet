@@ -20,6 +20,23 @@ class toollabs::bastion inherits toollabs {
     if $::operatingsystem == 'Ubuntu' {
 
         # lint:ignore:arrow_alignment
+        cgred::group {'user-daemons':
+            config => {
+                cpu    => {
+                    'cpu.shares' => '512',
+            },
+                memory => {
+                    'memory.limit_in_bytes' => '1152921504606846975',
+            },
+        },
+            rules  => [
+                '*:/usr/lib/openssh/sftp-server  cpu    /daemon',
+                '*:/usr/lib/openssh/sftp-server  memory /daemon',
+                '*:/usr/bin/mosh-server          memory /daemon',
+            ],
+        }
+
+        # lint:ignore:arrow_alignment
         cgred::group {'scripts':
             config => {
                 cpu    => {
