@@ -30,7 +30,7 @@ OPTIONS=""
 [ -x $CGCONFIG_DIR ] || exit 1
 
 CGRED_DIR_PERM=$(/usr/bin/stat -c %a $CGRED_DIR)
-if [ "$CGRED_DIR_PERM" != "500" ]; then
+if [ "$CGRED_DIR_PERM" != "555" ]; then
     echo "${CGCONFIG_DIR} permissions are not 500"
     exit 1
 fi
