@@ -20,6 +20,24 @@ class toollabs::bastion inherits toollabs {
     if $::operatingsystem == 'Ubuntu' {
 
         # lint:ignore:arrow_alignment
+        cgred::group {'shell':
+            config => {
+                memory => {
+                    'memory.limit_in_bytes' => '2305843009213693951',
+                },
+            },
+            rules  => [
+                '*:/bin/sh             memory     /shell',
+                '*:/bin/dash           memory     /shell',
+                '*:/bin/bash           memory     /shell',
+                '*:/usr/bin/zsh        memory     /shell',
+                '*:/usr/bin/screen     memory     /shell',
+                '*:/usr/bin/tmux       memory     /shell',
+                '*:/usr/bin/lshell     memory     /shell',
+            ],
+        }
+
+        # lint:ignore:arrow_alignment
         cgred::group {'user-daemons':
             config => {
                 cpu    => {
