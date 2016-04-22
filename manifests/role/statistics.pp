@@ -205,6 +205,14 @@ class role::statistics::web inherits role::statistics {
 
 }
 
+# (stat1001 maintenance)
+# This role should be put under modules probably but it makes sense to have all
+# of them in here to avoid confusion.
+class role::statistics::web::maintenance {
+    #  include statistics maintenance web sites
+    include statistics::sites::maintenance
+}
+
 
 # setup rsync to copy home dirs for server upgrade
 class role::statistics::migration {
