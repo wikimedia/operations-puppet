@@ -12,12 +12,34 @@ class role::memcached {
         'labs'       => 3000,
     }
 
-    $version = os_version('debian >= jessie || ubuntu >= trusty') ? {
-        true    => 'present',
-        default => '1.4.15-0wmf1',
+    # mc2009 will get the 1.4.25-2 package version
+    # deployed manually, this workaround should avoid
+    # disabling puppet for the whole duration of the test.
+    if $::hostname == 'mc2009' {
+        $version = os_version('debian >= jessie || ubuntu >= trusty') ? {
+            true    => 'present',
+            default => '1.4.25-2',
+        }
+    } else {
+        $version = os_version('debian >= jessie || ubuntu >= trusty') ? {
+            true    => 'present',
+            default => '1.4.15-0wmf1',
+        }
     }
 
-    if $::hostname == 'mc2010' {
+    # mc2009 is configured with the latest
+    # memcached options from version 1.4.25-2
+    if $::hostname == 'mc2009' {
+        $extended_options = [
+            'slab_reassign',
+            'lru_crawler',
+            'maxconns_fast',
+            'hash_algorithm=murmur3',
+            'slab_automove',
+            'lru_crawler',
+            'lru_maintainer'
+        ]
+    } elsif $::hostname == 'mc2010' {
         $extended_options = [
             'slab_reassign',
             'lru_crawler',
