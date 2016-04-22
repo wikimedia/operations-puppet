@@ -19,10 +19,6 @@ class toollabs::bastion inherits toollabs {
 
     if $::operatingsystem == 'Ubuntu' {
 
-        package { 'cgroup-bin':
-            ensure => present,
-        }
-
         # lint:ignore:arrow_alignment
         cgred::group {'scripts':
             config => {
