@@ -76,9 +76,12 @@ class puppet::self::config(
         }
     }
 
-    File <| title == '/etc/puppet/puppet.conf.d/10-main.conf' |> {
+    # ensure '10-main.conf is removed when 10-self.conf is present'
+    Base::Puppet::Config <| title == 'main' |> {
         ensure => absent,
     }
+    Base::Puppet::Config['main'] ~> Exec['compile puppet.conf']
+    Base::Puppet::Config['main'] ~> Base::Puppet::Config['self']
 
     base::puppet::config { 'self':
         prio    => 10,
