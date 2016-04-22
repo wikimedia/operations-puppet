@@ -18,7 +18,7 @@ class cgred {
         '/etc/cgconfig.d/',
         '/etc/cgrules.d/']:
             ensure => directory,
-            mode   => '0554',
+            mode   => '0555',
             owner  => 'root',
             group  => 'root',
     }
