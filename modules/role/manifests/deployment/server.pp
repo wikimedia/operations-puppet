@@ -14,10 +14,6 @@ class role::deployment::server(
     # anything to do with Mediawiki.
     include scap::server
 
-    class { 'deployment::deployment_server':
-        deployment_group => $deployment_group,
-    }
-
     # set umask for wikidev users so that newly-created files are g+w
     file { '/etc/profile.d/umask-wikidev.sh':
         ensure => present,
@@ -50,17 +46,6 @@ class role::deployment::server(
         srange => '$MW_APPSERVER_NETWORKS',
     }
 
-
-    $deployable_networks_ferm = join($deployable_networks, ' ')
-
-    # T113351
-    ferm::service { 'http_deployment_server':
-        desc   => 'http on trebuchet deployment servers, for serving actual files to deploy',
-        proto  => 'tcp',
-        port   => '80',
-        srange => "(${deployable_networks_ferm})",
-    }
-
     ### End firewall rules
 
     #T83854
@@ -70,60 +55,25 @@ class role::deployment::server(
         remote_branch => 'readonly/master'
     }
 
-    ### Trebuchet
-    file { '/srv/deployment':
-        ensure => directory,
-        owner  => 'trebuchet',
-        group  => $deployment_group,
-    }
-
-    apache::site { 'deployment':
-        content => template('role/deployment/apache-vhost.erb'),
-        require => File['/srv/deployment'],
+    class { 'role::deployment::apache':
+        apache_fqdn => $apache_fqdn,
     }
 
     $deployment_server = hiera('deployment_server', 'tin.eqiad.wmnet')
-    class { '::deployment::redis':
-        deployment_server => $deployment_server
-    }
-
     $deploy_ensure = $deployment_server ? {
         $::fqdn => 'absent',
         default => 'present'
     }
-
-    class { '::deployment::rsync':
-        deployment_server => $deployment_server,
-        cron_ensure       => $deploy_ensure,
-    }
-
     motd::script { 'inactive_warning':
         ensure   => $deploy_ensure,
         priority => 01,
         source   => 'puppet:///modules/role/deployment/inactive.motd',
     }
 
-    # Bacula backups (T125527)
-    backup::set { 'srv-deployment': }
-
-    # Used by the trebuchet salt returner
-    ferm::service { 'deployment-redis':
-        proto  => 'tcp',
-        port   => '6379',
-        srange => "(${deployable_networks_ferm})",
+    class { '::role::deployment::trebuchet_server':
+        apache_fqdn      => $apache_fqdn,
+        deployment_group => $deployment_group,
     }
-
-    sudo::group { "${deployment_group}_deployment_server":
-        group      => $deployment_group,
-        privileges => [
-            'ALL = (root) NOPASSWD: /usr/bin/salt-call -l quiet --out=json pillar.data',
-            'ALL = (root) NOPASSWD: /usr/bin/salt-call -l quiet publish.runner deploy.fetch *',
-            'ALL = (root) NOPASSWD: /usr/bin/salt-call -l quiet publish.runner deploy.checkout *',
-            'ALL = (root) NOPASSWD: /usr/bin/salt-call -l quiet --out=json publish.runner deploy.restart *',
-        ],
-    }
-    ### End Trebuchet
-
 
     # tig is a ncurses-based git utility which is useful for
     # determining the state of git repos during deployments.
