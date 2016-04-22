@@ -19,6 +19,20 @@ class toollabs::bastion inherits toollabs {
 
     if $::operatingsystem == 'Ubuntu' {
 
+        # misc group for on-the-fly classification
+        # of expensive processes as opposed to kill
+        # lint:ignore:arrow_alignment
+        cgred::group {'throttle':
+            config => {
+                cpu => {
+                    'cpu.shares' => '128',
+                },
+                memory => {
+                    'memory.limit_in_bytes' => '1152921504606846975',
+                },
+            },
+        }
+
         # lint:ignore:arrow_alignment
         cgred::group {'shell':
             config => {
