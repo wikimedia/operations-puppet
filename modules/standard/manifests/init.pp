@@ -17,6 +17,8 @@ class standard(
 
     if $has_ganglia {
         include ::ganglia
+    } else {
+        include ::ganglia::monitor::decommission
     }
 
     # Some instances have their own exim definition that
