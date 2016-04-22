@@ -1,0 +1,9 @@
+group <%= @name %> {
+    <% @config.each_pair do |controller, values| %>
+    <%= controller %> {
+        <% values.each_pair do |key, value| %>
+            <%= key %>="<%= value %>";
+        <% end %>
+    }
+    <% end %>
+}
