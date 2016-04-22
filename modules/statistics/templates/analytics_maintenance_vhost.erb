@@ -1,0 +1,19 @@
+# Simple httpd configuration to show a maintenance/sorry page.
+# No https configured.
+
+<VirtualHost *:80>
+    ServerName  "datasets.wikimedia.org"
+    ServerAlias "stats.wikimedia.org"
+    ServerAlias "metrics.wikimedia.org"
+
+    DocumentRoot "<%= @docroot %>"
+
+    <Directory />
+        Require all denied
+        AllowOverride None
+    </Directory>
+
+    <Directory "<%= @docroot %>">
+        Require all granted
+    </Directory>
+</VirtualHost>
