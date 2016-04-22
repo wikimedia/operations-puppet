@@ -48,6 +48,67 @@ class toollabs::bastion inherits toollabs {
                 '*:/usr/bin/perl5.18.2      memory   /scripts',
             ],
         }
+
+        # lint:ignore:arrow_alignment
+        cgred::group {'utilities':
+            config => {
+                cpu    => {
+                    'cpu.shares' => '512',
+                },
+                memory => {
+                    'memory.limit_in_bytes' => '2305843009213693951',
+                },
+            },
+            rules  => [
+                '*:/usr/bin/vim               memory  /utilities',
+                '*:/usr/bin/vim.basic         memory  /utilities',
+                '*:/usr/bin/vim.diff          memory  /utilities',
+                '*:/usr/bin/vim.tiny          memory  /utilities',
+                '*:/usr/bin/nano              memory  /utilities',
+                '*:/bin/tar                   cpu     /utilities',
+                '*:/bin/tar                   memory  /utilities',
+                '*:/bin/gzip                  cpu     /utilities',
+                '*:/bin/gzip                  memory  /utilities',
+                '*:/bin/gzip                  memory  /utilities',
+                '*:/usr/bin/nano              memory  /utilities',
+                '*:/usr/bin/md5sum            cpu     /utilities',
+                '*:/usr/bin/md5sum            memory  /utilities',
+                '*:/usr/bin/sha1sum           cpu     /utilities',
+                '*:/usr/bin/sha1sum           memory  /utilities',
+                '*:/usr/bin/sha224sum         cpu     /utilities',
+                '*:/usr/bin/sha224sum         memory  /utilities',
+                '*:/usr/bin/sha256sum         cpu     /utilities',
+                '*:/usr/bin/sha256sum         memory  /utilities',
+                '*:/usr/bin/sha384sum         cpu     /utilities',
+                '*:/usr/bin/sha384sum         memory  /utilities',
+                '*:/usr/bin/sha512sum         cpu     /utilities',
+                '*:/usr/bin/sha512sum         memory  /utilities',
+                '*:/usr/bin/make              cpu     /utilities',
+                '*:/usr/bin/make              memory  /utilities',
+                '*:/usr/bin/gcc               cpu     /utilities',
+                '*:/usr/bin/gcc               memory  /utilities',
+                '*:/usr/bin/g++               cpu     /utilities',
+                '*:/usr/bin/g++               memory  /utilities',
+                '*:/usr/bin/gcc-4.8           cpu     /utilities',
+                '*:/usr/bin/gcc-4.8           memory  /utilities',
+                '*:/usr/bin/find              cpu     /utilities',
+                '*:/usr/bin/find              memory  /utilities',
+                '*:/usr/bin/top               cpu     /utilities',
+                '*:/usr/bin/top               memory  /utilities',
+                '*:/usr/bin/htop              cpu     /utilities',
+                '*:/usr/bin/htop              memory  /utilities',
+                '*:/usr/bin/sort              cpu     /utilities',
+                '*:/usr/bin/sort              memory  /utilities',
+                '*:/usr/bin/sed               cpu     /utilities',
+                '*:/usr/bin/sed               memory  /utilities',
+                '*:/usr/bin/mawk              cpu     /utilities',
+                '*:/usr/bin/mawk              memory  /utilities',
+                '*:/usr/bin/awk               cpu     /utilities',
+                '*:/usr/bin/awk               memory  /utilities',
+                '*:/usr/bin/wc                cpu     /utilities',
+                '*:/usr/bin/wc                memory  /utilities',
+            ],
+        }
     }
 
     package { 'toollabs-webservice':
