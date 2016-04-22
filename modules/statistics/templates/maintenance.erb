@@ -1,0 +1,16 @@
+# Simple httpd configuration to show a maintenance/sorry page.
+# No https configured.
+
+<VirtualHost *:80>
+    ServerName "<%= @servername %>"
+    DocumentRoot "<%= @docroot %>"
+
+    <Directory />
+        Order Deny,Allow
+        AllowOverride All
+    </Directory>
+
+    <Directory "<%= @docroot %>">
+        Allow from all
+    </Directory>
+</VirtualHost>
