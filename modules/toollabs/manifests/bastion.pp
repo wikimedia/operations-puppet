@@ -18,8 +18,39 @@ class toollabs::bastion inherits toollabs {
     include toollabs::exec_environ
 
     if $::operatingsystem == 'Ubuntu' {
+
         package { 'cgroup-bin':
             ensure => present,
+        }
+
+        # lint:ignore:arrow_alignment
+        cgred::group {'scripts':
+            config => {
+                cpu    => {
+                    'cpu.shares' => '512',
+                },
+                memory => {
+                    'memory.limit_in_bytes' => '2305843009213693951',
+                },
+            },
+            rules  => [
+                '*:/usr/bin/ruby            cpu      /scripts',
+                '*:/usr/bin/ruby            memory   /scripts',
+                '*:/usr/bin/ruby1.9.1       cpu      /scripts',
+                '*:/usr/bin/ruby1.9.3       memory   /scripts',
+                '*:/usr/bin/python          cpu      /scripts',
+                '*:/usr/bin/python          memory   /scripts',
+                '*:/usr/bin/python2.7       cpu      /scripts',
+                '*:/usr/bin/python2.7       memory   /scripts',
+                '*:/usr/bin/python3         cpu      /scripts',
+                '*:/usr/bin/python3         memory   /scripts',
+                '*:/usr/bin/python3.4       cpu      /scripts',
+                '*:/usr/bin/python3.4       memory   /scripts',
+                '*:/usr/bin/perl            cpu      /scripts',
+                '*:/usr/bin/perl            memory   /scripts',
+                '*:/usr/bin/perl5.18.2      cpu      /scripts',
+                '*:/usr/bin/perl5.18.2      memory   /scripts',
+            ],
         }
     }
 
