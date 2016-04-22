@@ -19,6 +19,25 @@ class toollabs::bastion inherits toollabs {
 
     if $::operatingsystem == 'Ubuntu' {
 
+        # lint:ignore:arrow_alignment
+        cgred::group {'shell':
+            order  => '01',
+            config => {
+                memory => {
+                    'memory.limit_in_bytes' => '4611686018427387903',
+                },
+            },
+            rules  => [
+                '*:/bin/sh             memory     /shell',
+                '*:/bin/dash           memory     /shell',
+                '*:/bin/bash           memory     /shell',
+                '*:/usr/bin/zsh        memory     /shell',
+                '*:/usr/bin/screen     memory     /shell',
+                '*:/usr/bin/tmux       memory     /shell',
+                '*:/usr/bin/lshell     memory     /shell',
+            ],
+        }
+
         # misc group for on-the-fly classification
         # of expensive processes as opposed to kill
         # lint:ignore:arrow_alignment
@@ -34,24 +53,6 @@ class toollabs::bastion inherits toollabs {
         }
 
         # lint:ignore:arrow_alignment
-        cgred::group {'shell':
-            config => {
-                memory => {
-                    'memory.limit_in_bytes' => '2305843009213693951',
-                },
-            },
-            rules  => [
-                '*:/bin/sh             memory     /shell',
-                '*:/bin/dash           memory     /shell',
-                '*:/bin/bash           memory     /shell',
-                '*:/usr/bin/zsh        memory     /shell',
-                '*:/usr/bin/screen     memory     /shell',
-                '*:/usr/bin/tmux       memory     /shell',
-                '*:/usr/bin/lshell     memory     /shell',
-            ],
-        }
-
-        # lint:ignore:arrow_alignment
         cgred::group {'user-daemons':
             config => {
                 cpu    => {
@@ -62,9 +63,9 @@ class toollabs::bastion inherits toollabs {
             },
         },
             rules  => [
-                '*:/usr/lib/openssh/sftp-server  cpu    /daemon',
-                '*:/usr/lib/openssh/sftp-server  memory /daemon',
-                '*:/usr/bin/mosh-server          memory /daemon',
+                '*:/usr/bin/mosh-server             memory /daemon',
+                '*:/usr/lib/openssh/sftp-server     cpu    /daemon',
+                '%                                  memory /daemon',
             ],
         }
 
@@ -80,21 +81,21 @@ class toollabs::bastion inherits toollabs {
             },
             rules  => [
                 '*:/usr/bin/ruby            cpu      /scripts',
-                '*:/usr/bin/ruby            memory   /scripts',
+                '%                          memory   /scripts',
                 '*:/usr/bin/ruby1.9.1       cpu      /scripts',
-                '*:/usr/bin/ruby1.9.3       memory   /scripts',
+                '%                          memory   /scripts',
                 '*:/usr/bin/python          cpu      /scripts',
-                '*:/usr/bin/python          memory   /scripts',
+                '%                          memory   /scripts',
                 '*:/usr/bin/python2.7       cpu      /scripts',
-                '*:/usr/bin/python2.7       memory   /scripts',
+                '%                          memory   /scripts',
                 '*:/usr/bin/python3         cpu      /scripts',
-                '*:/usr/bin/python3         memory   /scripts',
+                '%                          memory   /scripts',
                 '*:/usr/bin/python3.4       cpu      /scripts',
-                '*:/usr/bin/python3.4       memory   /scripts',
+                '%                          memory   /scripts',
                 '*:/usr/bin/perl            cpu      /scripts',
-                '*:/usr/bin/perl            memory   /scripts',
+                '%                          memory   /scripts',
                 '*:/usr/bin/perl5.18.2      cpu      /scripts',
-                '*:/usr/bin/perl5.18.2      memory   /scripts',
+                '%                          memory   /scripts',
             ],
         }
 
@@ -115,47 +116,45 @@ class toollabs::bastion inherits toollabs {
                 '*:/usr/bin/vim.tiny          memory  /utilities',
                 '*:/usr/bin/nano              memory  /utilities',
                 '*:/bin/tar                   cpu     /utilities',
-                '*:/bin/tar                   memory  /utilities',
+                '%                            memory  /utilities',
                 '*:/bin/gzip                  cpu     /utilities',
-                '*:/bin/gzip                  memory  /utilities',
-                '*:/bin/gzip                  memory  /utilities',
-                '*:/usr/bin/nano              memory  /utilities',
+                '%                            memory  /utilities',
                 '*:/usr/bin/md5sum            cpu     /utilities',
-                '*:/usr/bin/md5sum            memory  /utilities',
+                '%                            memory  /utilities',
                 '*:/usr/bin/sha1sum           cpu     /utilities',
-                '*:/usr/bin/sha1sum           memory  /utilities',
+                '%                            memory  /utilities',
                 '*:/usr/bin/sha224sum         cpu     /utilities',
-                '*:/usr/bin/sha224sum         memory  /utilities',
+                '%                            memory  /utilities',
                 '*:/usr/bin/sha256sum         cpu     /utilities',
-                '*:/usr/bin/sha256sum         memory  /utilities',
+                '%                            memory  /utilities',
                 '*:/usr/bin/sha384sum         cpu     /utilities',
-                '*:/usr/bin/sha384sum         memory  /utilities',
+                '%                            memory  /utilities',
                 '*:/usr/bin/sha512sum         cpu     /utilities',
-                '*:/usr/bin/sha512sum         memory  /utilities',
+                '%                            memory  /utilities',
                 '*:/usr/bin/make              cpu     /utilities',
-                '*:/usr/bin/make              memory  /utilities',
+                '%                            memory  /utilities',
                 '*:/usr/bin/gcc               cpu     /utilities',
-                '*:/usr/bin/gcc               memory  /utilities',
+                '%                            memory  /utilities',
                 '*:/usr/bin/g++               cpu     /utilities',
-                '*:/usr/bin/g++               memory  /utilities',
+                '%                            memory  /utilities',
                 '*:/usr/bin/gcc-4.8           cpu     /utilities',
-                '*:/usr/bin/gcc-4.8           memory  /utilities',
+                '%                            memory  /utilities',
                 '*:/usr/bin/find              cpu     /utilities',
-                '*:/usr/bin/find              memory  /utilities',
+                '%                            memory  /utilities',
                 '*:/usr/bin/top               cpu     /utilities',
-                '*:/usr/bin/top               memory  /utilities',
+                '%                            memory  /utilities',
                 '*:/usr/bin/htop              cpu     /utilities',
-                '*:/usr/bin/htop              memory  /utilities',
+                '%                            memory  /utilities',
                 '*:/usr/bin/sort              cpu     /utilities',
-                '*:/usr/bin/sort              memory  /utilities',
+                '%                            memory  /utilities',
                 '*:/usr/bin/sed               cpu     /utilities',
-                '*:/usr/bin/sed               memory  /utilities',
+                '%                            memory  /utilities',
                 '*:/usr/bin/mawk              cpu     /utilities',
-                '*:/usr/bin/mawk              memory  /utilities',
+                '%                            memory  /utilities',
                 '*:/usr/bin/awk               cpu     /utilities',
-                '*:/usr/bin/awk               memory  /utilities',
+                '%                            memory  /utilities',
                 '*:/usr/bin/wc                cpu     /utilities',
-                '*:/usr/bin/wc                memory  /utilities',
+                '%                            memory  /utilities',
             ],
         }
     }

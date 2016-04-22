@@ -17,10 +17,12 @@ class cgred {
     file { [
         '/etc/cgconfig.d/',
         '/etc/cgrules.d/']:
-            ensure => directory,
-            mode   => '0555',
-            owner  => 'root',
-            group  => 'root',
+            ensure  => directory,
+            mode    => '0555',
+            owner   => 'root',
+            group   => 'root',
+            recurse => true,
+            purge   => true,
     }
 
     file { '/etc/cgrules.d/README':

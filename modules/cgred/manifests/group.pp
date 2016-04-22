@@ -18,11 +18,31 @@
 #            '*:foo.sh subsystem /cgroup',
 #        ]
 #    }
+#
+#
+# The docs say 'First rule which matches the criteria will be executed.'
+#
+# - This applies even across different subsystems
+# - Use the '%' keyword char to apply multiple lines upon first match.
+# - Keep in mind cgroups are inherited by child processes
+#
+# Example that results in membership only in cpu shell cgroup:
+#
+#  *:/bin/bash           cpu         /shell
+#  *:/bin/bash           memory      /shell
+#
+# Example that results in membershp in cpu and memory shell cgroup:
+#
+#  *:/bin/bash           cpu         /shell
+#  %                     memory      /shell
+#
+# See: man cgrules.conf
 
 define cgred::group (
     $ensure = 'present',
     $config = {},
     $rules  = [],
+    $order  = '50',
 )
     {
 
@@ -37,7 +57,7 @@ define cgred::group (
         notify  => Base::Service_unit['cgrulesengd'],
     }
 
-    file {"/etc/cgrules.d/${name}.conf":
+    file {"/etc/cgrules.d/${order}-${name}.conf":
         ensure  => $ensure,
         mode    => '0444',
         owner   => 'root',
