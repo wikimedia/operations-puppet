@@ -11,13 +11,6 @@ class role::labs::ores::staging {
         queue_maxmemory => '256M',
     }
 
-    file { '/srv/ores':
-        ensure => directory,
-        owner  => 'www-data',
-        group  => 'www-data',
-        mode   => '0775',
-    }
-
     git::clone { 'ores-wm-config':
         ensure    => present,
         origin    => 'https://github.com/wiki-ai/ores-wikimedia-config.git',
@@ -26,7 +19,7 @@ class role::labs::ores::staging {
         owner     => 'www-data',
         group     => 'www-data',
         require   => File['/srv/ores'],
-        before    => Class['ores::config'],
+        before    => Ores::Config['staging'],
     }
 
     ores::config { 'staging':
