@@ -166,6 +166,20 @@ sub analytics_deliver {
     call analytics_last_access_deliver_;
     call analytics_provenance_deliver_;
 
+    # We check allowed values inbound in X-Analytics header
+    #
+    # At this time there are only two values we let clients send:
+    # pageview=1 and preview=1 and they are mutually exclusive
+    # https://wikitech.wikimedia.org/wiki/X-Analytics#Keys
+
+    # Any value that we decide clients can send in the future should be
+    # whitelisted here
+    if (req.http.X-Analytics~"(^|;)pageview=1(;|$)"){
+            set resp.http.X-Analytics = resp.http.X-Analytics + ";pageview=1";
+    } else if (req.http.X-Analytics~"(^|;)preview=1(;|$)"){
+            set resp.http.X-Analytics = resp.http.X-Analytics + ";preview=1";
+    }
+
     if (req.http.X-Carrier) {
         set resp.http.X-Analytics = resp.http.X-Analytics + ";zero=" + req.http.X-Carrier;
         if (req.http.X-Carrier-Meta) {
