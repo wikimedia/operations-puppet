@@ -94,6 +94,7 @@ rewrite	nb.wikivoyage.org	//no.wikivoyage.org
 rewrite	nb.wikisource.org	//no.wikisource.org
 rewrite	nb.wikinews.org	//no.wikinews.org
 funnel	nb.wikiversity.org	//beta.wikiversity.org/wiki/Hovedside
+rewrite	yue.wikipedia.org	//zh-yue.wikipedia.org
 
 # renamed chapter wiki - T40763
 
