@@ -107,7 +107,6 @@ class graphite::web(
                 'socket'      => '/run/uwsgi/graphite-web.sock',
                 'stats'       => '/run/uwsgi/graphite-web-stats.sock',
                 'wsgi-file'   => '/usr/share/graphite-web/graphite.wsgi',
-                'die-on-term' => true,
                 'master'      => true,
                 'processes'   => $uwsgi_processes,
             },
