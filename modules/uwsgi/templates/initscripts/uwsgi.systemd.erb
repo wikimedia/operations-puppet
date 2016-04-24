@@ -3,7 +3,7 @@
 Description = <%= @title %> uwsgi app
 
 [Service]
-ExecStart = /usr/bin/uwsgi --autoload --ini <%= @inipath %>
+ExecStart = /usr/bin/uwsgi --die-on-term --autoload --ini <%= @inipath %>
 User = www-data
 Group = www-data
 

@@ -32,13 +32,12 @@ class coal( $endpoint ) {
     uwsgi::app { 'coal':
         settings => {
             uwsgi => {
-                'plugins'     => 'python',
-                'socket'      => '/run/uwsgi/coal.sock',
-                'wsgi-file'   => '/usr/local/bin/coal-web',
-                'callable'    => 'app',
-                'die-on-term' => true,
-                'master'      => true,
-                'processes'   => 8,
+                'plugins'   => 'python',
+                'socket'    => '/run/uwsgi/coal.sock',
+                'wsgi-file' => '/usr/local/bin/coal-web',
+                'callable'  => 'app',
+                'master'    => true,
+                'processes' => 8,
             },
         },
     }
