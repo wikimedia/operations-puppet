@@ -1,11 +1,14 @@
 # uWSGI configuration for <%= @name %>
 # This file is managed by Puppet.
-
-<%=
-    @settings.sort.map { |section,items|
-            ["[#{section}]"].concat items.sort.map { |k,v|
-                v = v.is_a?(Array) ? v.join(',') : ( v == :undef ? '' : v )
-                "#{k} = #{v}"
-            }.push []
-    }.join("\n")
-%>
+<%- @settings.sort.each do |section, items| -%>
+[<%= section %>]
+    <%- items.sort.each do |key, value| -%>
+        <%- if value.is_a?(Array) then -%>
+            <%- value.each do |value_item| %>
+                <%= key %>=<%= value_item %>
+            <%- end -%>
+        <%- else %>
+            <%= key %>=<%= value %>
+        <%- end -%>
+    <%- end -%>
+<%- end -%>
