@@ -199,8 +199,6 @@ rewrite	www.wikipedia.net	//www.wikipedia.org
 
 rewrite	en.wikipedia.com	//en.wikipedia.org
 
-rewrite	*wikipedia.co.uk	//en.wikipedia.org # XXX doesn't work; expired domain
-
 rewrite	*.wikipedia.com	//*.wikipedia.org
 rewrite	*.wikipedia.net	//*.wikipedia.org
 rewrite	*.wikipedia.info	//*.wikipedia.org
@@ -212,7 +210,6 @@ rewrite	wiki-pedia.org	//www.wikipedia.org
 
 # wikipedia typo domains to www. instead of en - RT #4679,#4681
 funnel	*wiikipedia.com	//www.wikipedia.org
-funnel	*wekipedia.com	//www.wikipedia.org
 funnel	*wikiepdia.com	//www.wikipedia.org
 funnel	*wikiepdia.org	//www.wikipedia.org
 funnel	*wikiipedia.org	//www.wikipedia.org
@@ -271,11 +268,9 @@ rewrite	species.wikipedia.org	//species.wikimedia.org
 # Wikiversity
 
 rewrite	*.wikiversity.com	//*.wikiversity.org
-rewrite	*.wikiversity.net	//*.wikiversity.org
 rewrite	*.wikiversity.info	//*.wikiversity.org
 
 rewrite	wikiversity.com	//www.wikiversity.org
-rewrite	wikiversity.net	//www.wikiversity.org
 rewrite	wikiversity.info	//www.wikiversity.org
 
 # Wikivoyage
@@ -311,10 +306,8 @@ rewrite	*.wikimediafoundation.org	//wikimediafoundation.org
 rewrite	*wikimediacommons.net	//commons.wikimedia.org
 rewrite	*wikimediacommons.info	//commons.wikimedia.org
 rewrite	*wikimediacommons.mobi	//commons.wikimedia.org
-rewrite	*wikimediacommons.eu	//commons.wikimedia.org
 rewrite	*wikimediacommons.org	//commons.wikimedia.org
 rewrite	*wikimediacommons.jp.net	//commons.wikimedia.org
-rewrite	*wikimediacommons.pt	//commons.wikimedia.org
 rewrite	*wikimediacommons.co.uk	//commons.wikimedia.org
 
 rewrite	commons.wikipedia.org	//commons.wikimedia.org
@@ -409,9 +402,6 @@ funnel	*wikimedia.us	//www.wikimedia.org
 # tartupeedia.ee (WMEE-owned domain) - T46893
 funnel	*tartupeedia.ee	//et.wikipedia.org/wiki/Portaal:Tartupeedia
 
-# indiawikipedia.com - RT #1395
-funnel	*indiawikipedia.com	http://wikimedia.in/wikipedia.html
-
 # wikipedia.in
 funnel	*wikipedia.in	http://wikimedia.in/wikipedia.html
 
@@ -423,14 +413,6 @@ funnel	moon.wikimedia.org	//meta.wikimedia.org/wiki/Wikipedia_to_the_Moon
 
 # wikipediazero.org - T82495
 funnel	*wikipediazero.org	//wikimediafoundation.org/wiki/Wikipedia_Zero
-
-# wikimediastories.com/net/org - T82390
-funnel	*wikimediastories.com	//wikimediafoundation.org/wiki/Thank_You_All
-funnel	*wikimediastories.net	//wikimediafoundation.org/wiki/Thank_You_All
-funnel	*wikimediastories.org	//wikimediafoundation.org/wiki/Thank_You_All
-funnel	*wikipediastories.com	//wikimediafoundation.org/wiki/Thank_You_All
-funnel	*wikipediastories.net	//wikimediafoundation.org/wiki/Thank_You_All
-funnel	*wikipediastories.org	//wikimediafoundation.org/wiki/Thank_You_All
 
 # jobs/careers - T82975
 rewrite	*careers.wikimedia.org	//wikimediafoundation.org/wiki/Job_openings
