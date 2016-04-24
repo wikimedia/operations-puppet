@@ -39,7 +39,7 @@
 ##
 
 tool="$1"
-port="$2"
+port="${PORT:-$2}" # If PORT is not set, then use $2
 prefix=$(/bin/cat /etc/wmflabs-project)
 user="$prefix.$tool"
 home=$(getent passwd $user | cut -d : -f 6 | sed -e 's/\/$//')
@@ -133,4 +133,3 @@ eval exec /usr/bin/java \"$LOGGING_CONFIG\" $JAVA_OPTS $CATALINA_OPTS \
   -Dcatalina.home=\"$CATALINA_HOME\" \
   -Djava.io.tmpdir=\"$CATALINA_TMPDIR\" \
   org.apache.catalina.startup.Bootstrap -config "$conf.run" start
-
