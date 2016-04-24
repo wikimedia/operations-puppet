@@ -244,8 +244,8 @@ def certs_fetch_ocsp(out_temp, args):
     if not v_res:
         raise Exception("Did not find cert validity in output:\n%s" %
                         (ocsp_text))
-    cert_notbefore = ossl_parse_stamp(res.group(1))
-    cert_notafter = ossl_parse_stamp(res.group(2))
+    cert_notbefore = ossl_parse_stamp(v_res.group(1))
+    cert_notafter = ossl_parse_stamp(v_res.group(2))
     cert_notbefore_compare = now_dt + datetime.timedelta(0, o_start)
     if cert_notbefore > cert_notbefore_compare:
         raise Exception("OCSP cert validity starts > %i secs in the future!" %
