@@ -11,6 +11,11 @@
 server {
     listen 80;
 
+    # Enforce HTTPS only
+    if ($http_x_forwarded_proto != "https") {
+          rewrite ^(.*)$ https://$http_host$1 permanent;
+    }
+
     location / {
         return 302 https://www.mediawiki.org/wiki/Special:ExtensionDistributor;
     }
