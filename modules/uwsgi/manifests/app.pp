@@ -6,7 +6,9 @@
 #
 # [*settings*]
 #   Hash of hashes, representing the app configuration. Each key of the
-#   top-level hash is used as a section in the app's ini file.
+#   top-level hash is used as a section in the app's ini file. If a second
+#   level key has a value that is an Array, that key is repeated for each
+#   value of the array
 #
 # === Examples
 #
@@ -18,6 +20,7 @@
 #          'wsgi-file'   => '/usr/share/graphite-web/graphite.wsgi',
 #          'master'      => true,
 #          'processes'   => 4,
+#          'env'         => ['MYSQL_HOST=localhost', 'STATSD_PREFIX=wat'],
 #      },
 #    },
 #  }
