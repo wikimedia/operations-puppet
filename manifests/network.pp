@@ -31,7 +31,6 @@ class network::constants {
                     '2620:0:863:1:92b1:1cff:fe4d:4249', # bast4001.wikimedia.org SLAAC
                     '208.80.154.151',                   # iron.wikimedia.org
                     '2620:0:861:2:208:80:154:151',      # iron.wikimedia.org
-                    '2620:0:861:2:7a2b:cbff:fe09:d5c',  # iron.wikimedia.org SLAAC
                 ],
             'monitoring_hosts' => [
                     '208.80.154.14',                    # neon.wikimedia.org
@@ -60,7 +59,6 @@ class network::constants {
                     '2620:0:863:1:92b1:1cff:fe4d:4249', # bast4001.wikimedia.org SLAAC
                     '208.80.154.151',                   # iron.wikimedia.org
                     '2620:0:861:2:208:80:154:151',      # iron.wikimedia.org
-                    '2620:0:861:2:7a2b:cbff:fe09:d5c',  # iron.wikimedia.org SLAAC
                 ],
             'monitoring_hosts' => [
                     '208.80.154.14',                    # neon.wikimedia.org
