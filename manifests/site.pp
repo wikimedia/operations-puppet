@@ -1452,7 +1452,7 @@ node 'krypton.eqiad.wmnet' {
     # kafka::analytics::burrow is a Kafka consumer lag monitor.
     # Running this here because krypton is a 'misc' Jessie
     # <s>monitoring host</s> (not really, it's just misc apps)
-    role wikimania_scholarships, iegreview, grafana, kafka::analytics::burrow, racktables, requesttracker
+    role wikimania_scholarships, iegreview, grafana, kafka::analytics::burrow, racktables, requesttracker::server
     include standard
 }
 
@@ -1976,7 +1976,7 @@ node 'magnesium.wikimedia.org' {
 
     $cluster = 'misc'
 
-    role requesttracker
+    role requesttracker::server
     include standard
 
     interface::add_ip6_mapped { 'main':
