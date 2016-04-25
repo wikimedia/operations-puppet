@@ -35,6 +35,8 @@ class role::ci::slave::labs {
     }
 
     # Trebuchet replacement on labs
+    include contint::composer
+    include contint::phpunit
     include contint::slave_scripts
 
     # Include package unsafe for production
