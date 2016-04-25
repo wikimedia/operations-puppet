@@ -1,4 +1,4 @@
-# == Class: role::piwik
+# == Class: role::piwik::server
 #
 # piwik is an open-source analytics platform.
 # It powers <https://piwik.wikimedia.org>.
@@ -21,7 +21,7 @@
 # Q: Where did the package come from?
 # A: http://debian.piwik.org/, imported to jessie-wikimedia.
 #
-class role::piwik {
+class role::piwik::server {
     include ::apache::mod::authnz_ldap
     include ::apache::mod::headers
     include ::apache::mod::php5
@@ -33,7 +33,7 @@ class role::piwik {
     require_package('piwik')
     require_package('mysql-server')
 
-    system::role { 'role::piwik':
+    system::role { 'role::piwik::server':
         description => 'Analytics piwik server',
     }
 

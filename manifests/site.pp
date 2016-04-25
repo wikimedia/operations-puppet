@@ -197,7 +197,7 @@ node 'bast4001.wikimedia.org' {
 }
 
 node 'bohrium.eqiad.wmnet' {
-    role piwik
+    role piwik::server
     include standard
 }
 
