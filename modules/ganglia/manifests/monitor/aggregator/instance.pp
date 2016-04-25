@@ -23,11 +23,6 @@ define ganglia::monitor::aggregator::instance($monitored_site) {
     $desc_safe = regsubst($desc, '/', '_', 'G')
     $gmond_port = $ganglia::configuration::base_port + $id
     $cname = "${desc_safe} ${::site}"
-    if $monitored_site in $sites {
-        $ensure = 'present'
-    } else {
-        $ensure = 'absent'
-    }
 
     # This will only be realized if base::firewall (well ferm..) is included
     ferm::rule { "aggregator-udp-${id}":
@@ -48,18 +43,20 @@ define ganglia::monitor::aggregator::instance($monitored_site) {
         default   => 'ganglia-monitor-aggregator',
     }
 
-    file { "/etc/ganglia/aggregators/${id}.conf":
-        ensure  => $ensure,
-        require => File['/etc/ganglia/aggregators'],
-        mode    => '0444',
-        content => template("${module_name}/gmond.conf.erb"),
-        notify  => Service[$aggsvcname],
-    }
-
     # on systemd each instance is a separate service
     # which is spawned from a common service template
-    # and we only want to run it if the site is a monitored site
+    # and we only want to run it and create the config
+    # if the site is a monitored site
     if $monitored_site in $sites {
+
+        file { "/etc/ganglia/aggregators/${id}.conf":
+            ensure  => 'present',
+            require => File['/etc/ganglia/aggregators'],
+            mode    => '0444',
+            content => template("${module_name}/gmond.conf.erb"),
+            notify  => Service[$aggsvcname],
+        }
+
         if $::initsystem == 'systemd' {
             service { "ganglia-monitor-aggregator@${id}.service":
                 ensure   => running,
