@@ -41,19 +41,11 @@ define ganglia::monitor::aggregator::instance($monitored_site) {
     # Run these instances in the foreground
     $daemonize = 'no'
 
-    # with systemd each aggregator instance is a separate service
-    $aggsvcname = $::initsystem ? {
-        'upstart' => 'ganglia-monitor-aggregator',
-        'systemd' => "ganglia-monitor-aggregator@${id}.service",
-        default   => 'ganglia-monitor-aggregator',
-    }
-
     file { "/etc/ganglia/aggregators/${id}.conf":
         ensure  => $ensure,
         require => File['/etc/ganglia/aggregators'],
         mode    => '0444',
         content => template("${module_name}/gmond.conf.erb"),
-        notify  => Service[$aggsvcname],
     }
 
     # on systemd each instance is a separate service
