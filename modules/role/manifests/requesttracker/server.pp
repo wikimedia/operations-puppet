@@ -1,6 +1,6 @@
 #  Production RT
-class role::requesttracker {
-    system::role { 'requesttracker': description => 'RT' }
+class role::requesttracker::server {
+    system::role { 'requesttracker::server': description => 'RT server' }
 
     include passwords::misc::rt
     include base::firewall
@@ -46,36 +46,5 @@ class role::requesttracker {
         check_command => 'check_ssl_http!rt.wikimedia.org',
     }
 
-}
-
-#  Labs/testing RT
-class role::rt::labs {
-    system::role { 'role::rt::labs': description => 'RT (Labs)' }
-
-    include passwords::misc::rt
-
-    # FIXME: needs to reference a wmflabs certificate?
-    sslcert::certificate { 'rt.wikimedia.org': }
-
-    $datadir = '/srv/mysql'
-
-    class { '::requesttracker':
-        apache_site => $::fqdn,
-        dbuser      => $passwords::misc::rt::rt_mysql_user,
-        dbpass      => $passwords::misc::rt::rt_mysql_pass,
-        datadir     => $datadir,
-    }
-
-    class { 'mysql::server':
-        config_hash => {
-            'datadir' => $datadir,
-        }
-    }
-
-    exec { 'rt-db-initialize':
-        command => "/bin/echo '' | /usr/sbin/rt-setup-database --action init --dba root --prompt-for-dba-password",
-        unless  => '/usr/bin/mysqlshow rt4',
-        require => Class['::requesttracker', 'mysql::server'],
-    }
 }
 
