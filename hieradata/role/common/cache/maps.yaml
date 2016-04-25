@@ -19,7 +19,7 @@ cluster: cache_maps
 #    multiple values could cause a race-condition of intermediate states.
 #
 cache::route_table:
-  eqiad: 'direct'
-  codfw: 'eqiad'
+  eqiad: 'codfw'
+  codfw: 'direct'
   ulsfo: 'codfw'
   esams: 'eqiad'
