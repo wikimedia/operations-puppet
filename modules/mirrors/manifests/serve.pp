@@ -2,6 +2,18 @@ class mirrors::serve {
     # HTTP
     include ::nginx
 
+    letsencrypt::cert::integrated { 'mirrors':
+        subjects => 'mirrors.wikimedia.org',
+        pup_svc  => 'nginx',
+        cli_svc  => 'nginx',
+    }
+
+    letsencrypt::cert::integrated { 'ubuntu':
+        subjects => 'ubuntu.wikimedia.org',
+        pup_svc  => 'nginx',
+        cli_svc  => 'nginx',
+    }
+
     require sslcert::dhparam
     $ssl_settings = ssl_ciphersuite('nginx', 'compat', '365')
 
