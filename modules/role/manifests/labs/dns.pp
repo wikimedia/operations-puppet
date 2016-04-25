@@ -35,4 +35,9 @@ class role::labs::dns {
         chain => 'PREROUTING',
         rule  => 'proto udp dport 53 NOTRACK;',
     }
+
+    # This is just for the authoritative servers, not recursors
+    diamond::collector { 'PowerDNS':
+        ensure => present,
+    }
 }
