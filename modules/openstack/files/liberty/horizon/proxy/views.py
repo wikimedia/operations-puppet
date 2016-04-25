@@ -191,7 +191,7 @@ class CreateProxyForm(forms.SelfHandlingForm):
     def populate_instances(self, request):
         results = [(None, 'Select an instance')]
         for server in nova.novaclient(request).servers.list():
-            results.append((server.name, server.name))
+            results.append((server.networks['public'][0], server.name))
         return results
 
     def populate_domains(self, request):
@@ -250,9 +250,8 @@ class CreateProxyForm(forms.SelfHandlingForm):
             c.records.create(domainid, record)
 
         d = {
-            "backends": ['http://%s.%s.eqiad.wmflabs:%s' % (
+            "backends": ['http://%s:%s' % (
                 data.get('backendInstance'),
-                request.user.project_name,
                 data.get('backendPort')
             )],
             "domain": data.get('record') + '.' + data.get('domain').rstrip('.')
