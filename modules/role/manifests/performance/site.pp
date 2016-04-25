@@ -3,7 +3,7 @@
 # This role provisions <http://performance.wikimedia.org>, a static site with
 # web performance dashboards.
 #
-class role::performance {
+class role::performance::site {
     include ::apache
     include ::apache::mod::headers
     include ::apache::mod::proxy
