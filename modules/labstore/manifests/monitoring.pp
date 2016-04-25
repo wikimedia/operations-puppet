@@ -11,12 +11,16 @@
 class labstore::monitoring(
     $monitor_iface = 'eth0',
 ) {
+
+    $int_throughput_warn = '93750000'  # 750Mbps
+    $int_throughput_crit = '106250000' # 850Mbps
+
     monitoring::graphite_threshold { 'network_out_saturated':
         description => 'Outgoing network saturation',
         metric      => "servers.${::hostname}.network.${monitor_iface}.tx_byte",
         from        => '30min',
-        warning     => '75000000',  # roughly 600Mbps / 1Gbps
-        critical    => '100000000', # roughly 800Mbps / 1Gbps
+        warning     => $int_throughput_warn,
+        critical    => $int_throughput_crit,
         percentage  => '10',        # smooth over peaks
     }
 
@@ -24,8 +28,8 @@ class labstore::monitoring(
         description => 'Incoming network saturation',
         metric      => "servers.${::hostname}.network.${monitor_iface}.rx_byte",
         from        => '30min',
-        warning     => '75000000',  # roughly 600Mbps / 1Gbps
-        critical    => '100000000', # roughly 800Mbps / 1Gbps
+        warning     => $int_throughput_warn,
+        critical    => $int_throughput_crit,
         percentage  => '10',        # smooth over peaks
     }
 
