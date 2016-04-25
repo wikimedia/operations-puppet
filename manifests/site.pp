@@ -63,13 +63,6 @@ node 'analytics1002.eqiad.wmnet' {
     include base::firewall
 }
 
-# NOTE: This node is being decomissioned.
-# https://phabricator.wikimedia.org/T110090.
-node 'analytics1015.eqiad.wmnet' {
-    include standard
-    include base::firewall
-}
-
 # This node hosts Oozie and Hive servers,
 # as well as a MySQL instance that stores
 # meta data associated with those services.
@@ -103,16 +96,11 @@ node /analytics10(2[89]|3[0-9]|4[0-9]|5[0-7]).eqiad.wmnet/ {
     include standard
 }
 
-# This node was previously a Hadoop Worker, but is now waiting
-# to be repurposed (likely as a stat* type box).
-node 'analytics1017.eqiad.wmnet' {
+# This is an OOW dell.
+node 'analytics1015.eqiad.wmnet' {
     role spare
 }
 
-# This node is currently an analytics spare.
-node 'analytics1021.eqiad.wmnet' {
-    role spare
-}
 
 # analytics1026 is spare, for now is just an analytics client.
 node 'analytics1026.eqiad.wmnet' {
