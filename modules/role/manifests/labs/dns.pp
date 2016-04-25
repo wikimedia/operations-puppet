@@ -35,4 +35,21 @@ class role::labs::dns {
         chain => 'PREROUTING',
         rule  => 'proto udp dport 53 NOTRACK;',
     }
+
+    sudo::user { 'diamond_sudo_for_pdns':
+        user       => 'diamond',
+        privileges => ['ALL=(puppet) NOPASSWD: /usr/bin/pdns_control list']
+    }
+
+    # This is just for the authoritative servers, not recursors
+    diamond::collector { 'PowerDNS':
+        ensure   => present,
+        settings => {
+            # lint:ignore:quoted_booleans
+            # This is jammed straight into a config file, needs quoting.
+            use_sudo => 'true',
+            # lint:endignore
+        }
+        require  => Sudo::User['diamond_sudo_for_pdns'],
+    }
 }
