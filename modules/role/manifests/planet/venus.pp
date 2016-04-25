@@ -1,10 +1,10 @@
 # planet RSS feed aggregator 2.0 (planet-venus)
 
-class role::planet {
+class role::planet::venus {
 
     include base::firewall
 
-    system::role { 'role::planet': description => 'Planet (venus) weblog aggregator' }
+    system::role { 'role::planet::venus': description => 'Planet (venus) weblog aggregator' }
 
     # be flexible about labs vs. prod
     case $::realm {
