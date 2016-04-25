@@ -59,6 +59,13 @@ labels:
     min-ready: 10
     providers:
       - name: wmflabs-eqiad
+labels:
+  - name: ci-trusty-wikimedia
+    image: ci-trusty-wikimedia
+    ready-script: ready.sh
+    min-ready: 2  # Experimental T133203
+    providers:
+      - name: wmflabs-eqiad
 
 providers:
   - name: wmflabs-eqiad
@@ -76,9 +83,20 @@ providers:
     # 'eqiad.wmflabs' is magically added by wmflabs
     template-hostname: '{image.name}-{timestamp}'
     images:
+      # RelEng manually build and upload the images to Glance
       - name: ci-jessie-wikimedia
-        # RelEng manually build and upload the image to Glance
         base-image: ci-jessie-wikimedia
+        meta:
+            properties:
+                # Let Horizon/Wikitech display the image (T105015)
+                show: 'true'
+        min-ram: 0
+        name-filter: 'm1.medium'
+        setup: setup_node.sh
+        username: jenkins
+        private-key: /var/lib/nodepool/.ssh/id_rsa
+      - name: ci-trusty-wikimedia
+        base-image: ci-trusty-wikimedia
         meta:
             properties:
                 # Let Horizon/Wikitech display the image (T105015)
