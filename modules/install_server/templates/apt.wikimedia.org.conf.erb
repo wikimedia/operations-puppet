@@ -5,6 +5,8 @@ server {
 
    root /srv;
 
+   include /etc/acme/challenge-nginx.conf;
+
    location / {
       index index.html index.htm;
       autoindex on;
@@ -17,8 +19,8 @@ server {
    listen [::]:443 ipv6only=on default_server ssl;
    server_name apt.wikimedia.org;
 
-   ssl_certificate /etc/letsencrypt/live/apt.wikimedia.org/fullchain.pem;
-   ssl_certificate_key /etc/letsencrypt/live/apt.wikimedia.org/privkey.pem;
+   ssl_certificate /etc/acme/cert/apt.chained.crt;
+   ssl_certificate_key /etc/acme/key/apt.key;
    <%= @ssl_settings.join("\n")  %>
 
    root /srv;

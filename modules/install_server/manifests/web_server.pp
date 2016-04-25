@@ -16,6 +16,12 @@
 class install_server::web_server {
     include ::nginx
 
+    letsencrypt::cert::integrated { 'apt':
+        subjects => 'apt.wikimedia.org',
+        pup_svc => 'nginx',
+        cli_svc => 'nginx',
+    }
+
     require sslcert::dhparam
     $ssl_settings = ssl_ciphersuite('nginx', 'compat', '365')
 
