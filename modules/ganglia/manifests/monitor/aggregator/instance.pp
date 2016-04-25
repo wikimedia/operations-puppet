@@ -58,11 +58,14 @@ define ganglia::monitor::aggregator::instance($monitored_site) {
 
     # on systemd each instance is a separate service
     # which is spawned from a common service template
-    if $::initsystem == 'systemd' {
-        service { "ganglia-monitor-aggregator@${id}.service":
-            ensure   => running,
-            provider => systemd,
-            enable   => true,
+    # and we only want to run it if the site is a monitored site
+    if $monitored_site in $sites {
+        if $::initsystem == 'systemd' {
+            service { "ganglia-monitor-aggregator@${id}.service":
+                ensure   => running,
+                provider => systemd,
+                enable   => true,
+            }
         }
     }
 }
