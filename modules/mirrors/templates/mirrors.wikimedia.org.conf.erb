@@ -5,6 +5,8 @@ server {
 
    root /srv/mirrors;
 
+   include /etc/acme/challenge-nginx.conf;
+
    location / {
       index index.html;
       autoindex on;
@@ -17,8 +19,8 @@ server {
    listen [::]:443 ssl;
    server_name mirrors.wikimedia.org;
 
-   ssl_certificate /etc/letsencrypt/live/mirrors.wikimedia.org/fullchain.pem;
-   ssl_certificate_key /etc/letsencrypt/live/mirrors.wikimedia.org/privkey.pem;
+   ssl_certificate /etc/acme/cert/mirrors.chained.crt;
+   ssl_certificate_key /etc/acme/key/mirrors.key;
    <%= @ssl_settings.join("\n")  %>
 
    root /srv/mirrors;
