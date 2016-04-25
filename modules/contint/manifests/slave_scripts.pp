@@ -39,16 +39,13 @@ class contint::slave_scripts {
         target => '/srv/deployment/integration/composer/vendor/bin/composer',
     }
 
+    # We have migrated jobs to use composer instead
     git::clone { 'jenkins CI phpcs':
-        ensure             => 'latest',
+        ensure             => 'absent',
         directory          => '/srv/deployment/integration/phpcs',
-        origin             => 'https://gerrit.wikimedia.org/r/p/integration/phpcs.git',
-        recurse_submodules => true,
     }
     git::clone { 'jenkins CI phpunit':
-        ensure             => 'latest',
+        ensure             => 'absent',
         directory          => '/srv/deployment/integration/phpunit',
-        origin             => 'https://gerrit.wikimedia.org/r/p/integration/phpunit.git',
-        recurse_submodules => true,
     }
 }
