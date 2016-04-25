@@ -53,8 +53,6 @@ def cluster_status(columns=None):
 def set_setting(setting, value, settingtype="transient"):
         es = Elasticsearch(args.server)
         res = es.cluster.put_settings(
-            timeout=args.timeout,
-            master_timeout=args.master_timeout,
             body={
                 settingtype: {
                     setting: value
