@@ -4,9 +4,9 @@
 ## into its web directory root.  This means that puppet cannot fully automate
 ## the installation at this time & the actual tarball must be downloaded from
 ## http://racktables.org/ and unzipped into /srv/org/wikimedia/racktables
-class role::racktables {
+class role::racktables::server {
 
-    system::role { 'role::racktables': description => 'Racktables' }
+    system::role { 'role::racktables::server': description => 'Racktables server' }
 
     include standard
     include base::firewall
