@@ -1,3 +1,4 @@
+# configure sshd
 class ssh::server (
     $listen_port = '22',
     $listen_address = undef,
@@ -22,6 +23,14 @@ class ssh::server (
         $ssh_authorized_keys_file = $authorized_keys_file
     } else {
         $ssh_authorized_keys_file ='/etc/ssh/userkeys/%u'
+    }
+
+    file { '/usr/local/bin/compile_ssh_userkeys':
+        ensure => 'file',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+        source => 'puppet:///modules/ssh/compile_ssh_userkeys',
     }
 
     file { '/etc/ssh/userkeys':
