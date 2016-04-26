@@ -58,20 +58,4 @@ class udp2log(
             refreshonly => true
         }
     }
-
-    ferm::rule { 'udp2log_accept_all_wikimedia':
-        rule => 'saddr ($ALL_NETWORKS) proto udp ACCEPT;',
-    }
-
-    ferm::rule { 'udp2log_notrack':
-        table => 'raw',
-        chain => 'PREROUTING',
-        rule  => 'saddr ($ALL_NETWORKS) proto udp NOTRACK;',
-    }
-
-    # let monitoring host connect via NRPE
-    ferm::rule { 'udp2log_accept_icinga_nrpe':
-        rule => 'proto tcp dport 5666 { saddr $INTERNAL ACCEPT; }',
-        prio => 13,
-    }
 }

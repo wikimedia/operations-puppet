@@ -22,6 +22,22 @@ class role::logging::mediawiki($monitor = true, $log_directory = '/srv/mw-log' )
         default_instance => false,
     }
 
+    ferm::rule { 'udp2log_accept_all_wikimedia':
+        rule => 'saddr ($ALL_NETWORKS) proto udp ACCEPT;',
+    }
+
+    ferm::rule { 'udp2log_notrack':
+        table => 'raw',
+        chain => 'PREROUTING',
+        rule  => 'saddr ($ALL_NETWORKS) proto udp NOTRACK;',
+    }
+
+    # let monitoring host connect via NRPE
+    ferm::rule { 'udp2log_accept_icinga_nrpe':
+        rule => 'proto tcp dport 5666 { saddr $INTERNAL ACCEPT; }',
+        prio => 13,
+    }
+
     file { '/usr/local/bin/demux.py':
         mode   => '0544',
         owner  => 'root',
