@@ -263,8 +263,10 @@ class hhvm(
     rsyslog::conf { 'hhvm':
         source   => 'puppet:///modules/hhvm/hhvm.rsyslog.conf',
         priority => 20,
-        require  => File['/etc/logrotate.d/hhvm'],
-        before   => Service['hhvm'],
+        before   => [
+            Service['hhvm'],
+            File['/etc/logrotate.d/hhvm'],
+        ],
     }
 
     file { '/etc/logrotate.d/hhvm':
@@ -277,11 +279,12 @@ class hhvm(
     }
 
     file { $log_dir:
-        ensure => directory,
-        owner  => 'syslog',
-        group  => $group,
-        mode   => '0775',
-        before => Service['hhvm'],
+        ensure  => directory,
+        owner   => 'syslog',
+        group   => $group,
+        mode    => '0775',
+        require => Rsyslog::Conf['hhvm'],  # for syslog user
+        before  => Service['hhvm'],
     }
 
     file { [ '/run/hhvm', $cache_dir, '/tmp/heaps' ]:
