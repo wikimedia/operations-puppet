@@ -56,6 +56,8 @@ class role::labs::dnsrecursor {
             additional_forward_zones => "wmflabs=${labs_auth_dns}, 68.10.in-addr.arpa=${labs_auth_dns}",
             auth_zones               => 'labsdb=/var/zones/labsdb',
             lua_hooks                => $lua_hooks,
+            max_negative_ttl         => 900,
+            max_tcp_per_client       => 50,
     }
 
     $alias_file = '/etc/powerdns/labs-ip-alias.lua'
