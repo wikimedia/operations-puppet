@@ -41,7 +41,7 @@ class role::labs::dns {
         privileges => ['ALL=(root) NOPASSWD: /usr/bin/pdns_control list'],
     }
 
-    # This is just for the authoritative servers, not recursors
+    # For the authoritative servers
     diamond::collector { 'PowerDNS':
         ensure   => present,
         settings => {
@@ -51,5 +51,22 @@ class role::labs::dns {
             # lint:endignore
         },
         require  => Sudo::User['diamond_sudo_for_pdns'],
+    }
+
+    sudo::user { 'diamond_sudo_for_pdns_recursor':
+        user       => 'diamond',
+        privileges => ['ALL=(root) NOPASSWD: /usr/bin/rec_control get-all'],
+    }
+
+    # For the recursor
+    diamond::collector { 'PowerDNSRecursor':
+        source   => 'puppet:///modules/diamond/collector/powerdns_recursor.py',
+        settings => {
+            # lint:ignore:quoted_booleans
+            # This is jammed straight into a config file, needs quoting.
+            use_sudo => 'true',
+            # lint:endignore
+        },
+        require  => Sudo::User['diamond_sudo_for_pdns_recursor'],
     }
 }
