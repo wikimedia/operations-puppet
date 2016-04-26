@@ -19,6 +19,14 @@ mediawiki_memcached_servers:
 jobrunner_state: 'stopped'
 ganglia_aggregators: install2001.wikimedia.org:10649
 
+# List of Zookeeper service nodes in cofdw
+zookeeper_hosts:
+  conf2001.eqiad.wmnet: '1101'
+  conf2002.eqiad.wmnet: '1102'
+  conf2003.eqiad.wmnet: '1103'
+# Specific Kafka configuration (with chroot in the end)
+zookeeper_url: conf2001.eqiad.wmnet,conf2002.eqiad.wmnet,conf2003.eqiad.wmnet/kafka/main-codfw
+
 #
 # LABS
 #
