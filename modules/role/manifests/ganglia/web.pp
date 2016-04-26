@@ -2,9 +2,6 @@
 class role::ganglia::web {
     include role::ganglia::config
 
-    # to remove after absent-ification
-    sslcert::certificate { 'ganglia.wikimedia.org': ensure => absent; }
-
     letsencrypt::cert::integrated { 'ganglia':
         subjects   => 'ganglia.wikimedia.org',
         puppet_svc => 'apache2'
