@@ -167,6 +167,9 @@ ganglia_clusters:
     id: 41
     sites:
       eqiad: []
+      codfw: []
+      esams: []
+      ulsfo: []
   elasticsearch:
     name: "Elasticsearch cluster"
     id: 42
