@@ -2,7 +2,7 @@
 #
 # Configures HHVM to serve MediaWiki in FastCGI mode.
 #
-class mediawiki::hhvm {
+class mediawiki::hhvm($curl_pool_size = 20) {
     requires_os('ubuntu >= trusty')
 
     include ::hhvm::admin
@@ -45,10 +45,10 @@ class mediawiki::hhvm {
                 namedPools   => 'cirrus-eqiad,cirrus-codfw',
                 # ugly hack to work around colision in the hash
                 'namedPools.cirrus-codfw' => {
-                    size => '20',
+                    size => $curl_pool_size,
                 },
                 'namedPools.cirrus-eqiad' => {
-                    size => '20',
+                    size => $curl_pool_size,
                 },
             },
         },
