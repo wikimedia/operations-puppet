@@ -38,6 +38,14 @@ class role::cache::misc {
     #     'req_host' => request hostname (or array of them)
     #     'req_host_re' => request hostname regex
     # ...and for sanity's sake, there should be no overlap among them
+    #
+    # Maintenance flag:
+    # It is also possible to force a director to return a HTTP 503
+    # response to each request. This allows a better user experience
+    # during downtimes caused by maintenance (e.g. OS reimage).
+    # To use it, set the following flag in the target director:
+    # 'maintenance' => 'Error message to display to the user.'
+    #
     $app_directors = {
         'analytics1027' => { # Hue (Hadoop GUI)
             'dynamic'  => 'no',
