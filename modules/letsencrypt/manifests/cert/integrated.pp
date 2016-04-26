@@ -82,7 +82,7 @@ define letsencrypt::cert::integrated($subjects, $puppet_svc, $system_svc) {
     # Pre-setup with self-signed cert if necessary, to let $puppet_svc start
     exec { "acme-setup-self-${safe_title}":
         command => $base_cmd,
-        creates => "/etc/acme/certs/${safe_title}.crt",
+        creates => "/etc/acme/cert/${safe_title}.crt",
         before  => Service[$puppet_svc],
     }
 
