@@ -279,7 +279,7 @@ host bast4001 {
     option pxelinux.pathprefix "jessie-installer/";
     filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 
-    next-server 208.80.154.10; # carbon (tftp server)
+    next-server 208.80.153.4; # install2001 (tftp server)
 }
 
 host beryllium {
