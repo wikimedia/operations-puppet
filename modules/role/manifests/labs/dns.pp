@@ -38,7 +38,7 @@ class role::labs::dns {
 
     sudo::user { 'diamond_sudo_for_pdns':
         user       => 'diamond',
-        privileges => ['ALL=(puppet) NOPASSWD: /usr/bin/pdns_control list'],
+        privileges => ['ALL=(root) NOPASSWD: /usr/bin/pdns_control list'],
     }
 
     # This is just for the authoritative servers, not recursors
