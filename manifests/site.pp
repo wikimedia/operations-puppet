@@ -1349,7 +1349,7 @@ node 'graphite1001.eqiad.wmnet' {
 
 # graphite test machine, currently with SSD caching + spinning disks
 node 'graphite1002.eqiad.wmnet' {
-    role testsystem
+    role test::system
     include base::firewall
 }
 
@@ -2457,13 +2457,13 @@ node 'potassium.eqiad.wmnet' {
 
 # pybal-test200X VMs are used for pybal testing/development
 node /^pybal-test200[12]\.codfw\.wmnet$/ {
-    role testsystem
+    role test::system
 }
 
 # pybal-test2003 is used for pybal testing/development
 # and for redis multi-instance testing/development
 node 'pybal-test2003.codfw.wmnet' {
-    role testsystem
+    role test::system
 
     redis::instance { 6370: }
     redis::instance { 6371: }
@@ -2546,7 +2546,7 @@ node 'rutherfordium.eqiad.wmnet' {
 # Right now, both rt-server and rt-clients run on the same node
 # But, we are likely going to split them into different boxes soon.
 node 'ruthenium.eqiad.wmnet' {
-    role testsystem,
+    role test::system,
         parsoid::testing, parsoid::rt_server, parsoid::rt_client,
         parsoid::vd_server, parsoid::vd_client
 
@@ -2778,7 +2778,7 @@ node 'titanium.wikimedia.org' {
 
 # test system for performance team (T117888)
 node 'tungsten.eqiad.wmnet' {
-    role testsystem, xhgui
+    role test::system, xhgui
     include base::firewall
 }
 
