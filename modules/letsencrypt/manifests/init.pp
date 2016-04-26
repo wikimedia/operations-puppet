@@ -31,7 +31,7 @@
 #
 
 class letsencrypt {
-    require ::sslcert
+    include ::sslcert
 
     group { 'acme':
         ensure => present,
