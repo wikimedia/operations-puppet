@@ -19,6 +19,10 @@
 #       The database host, empty if sqlite3
 #   $db_port
 #       The database port, empty if sqlite3
+#   $managed_puppet_models
+#       Boolean. Defaults to false. Set this if you use this module in a
+#       development environment in order to have the module create the puppet
+#       tables for you. Do not use in production.
 #   $port
 #       Gunicorn's listening port
 #   $admins
@@ -50,6 +54,7 @@ class servermon(
     $db_password='',
     $db_host='',
     $db_port='',
+    $managed_puppet_models=false,
     $port=8090,
     $admins=undef,
     $debug=false,
