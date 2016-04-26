@@ -71,7 +71,21 @@
 #         }
 #       }
 #
-#   apache: XXX TODO config frag + instructions as above
+#   apache:
+#     An include file will exist as /etc/acme/challenge-apache.conf
+#     This defines an alias for '/.well-known/acme-challenge' and a <Directory>
+#     stanza to grant permissions there, and needs to be in the port 80 virtual
+#     host.  If port 80 redirects to HTTPS universally, you'll need to exclude
+#     the challenge path from the redirect, as in this example:
+#       <VirtualHost *:80>
+#         ServerName ....
+#         ...
+#         Include /etc/acme/challenge-apache.conf
+#         RewriteEngine on
+#         RewriteCond %{REQUEST_URI} !^/.well-known/acme-challenge/
+#         RewriteRule ^/(.*)$ https://example.wikimedia.org/$1 [R=301]
+#       </VirtualHost>
+#
 
 define letsencrypt::cert::integrated($subjects, $puppet_svc, $system_svc) {
     require ::letsencrypt
