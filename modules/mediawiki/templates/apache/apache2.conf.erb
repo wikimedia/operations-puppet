@@ -14,6 +14,11 @@ KeepAliveTimeout 2
 Include mods-enabled/*.load
 Include mods-enabled/*.conf
 
+# Ensure that mod_php is never use even if present
+<IfModule mod_php5.c>
+    php_admin_flag engine off
+</IfModule>
+
 Include conf-enabled/*.conf
 
 Include ports.conf
