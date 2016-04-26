@@ -39,6 +39,7 @@ max-mthreads=512
 local-address=<%= flatten_ips(@listen_addresses).sort.join(" ") %>
 local-port=53
 
+# available since: 3.6
 #loglevel=1
 log-common-errors=yes
 # suppress logging of questions and answers
@@ -81,6 +82,10 @@ max-tcp-per-client=<%= @max_tcp_per_client %>
 # Timeout in seconds when talking to TCP clients
 client-tcp-timeout=<%= @client_tcp_timeout %>
 
+# maximum number of packets to store statistics for
+# /usr/bin/rec_control top-remotes
+remotes-ringbuffer-entries=1000
+
 # where the controlsocket will live
 socket-dir=/var/run/
 
@@ -107,9 +112,6 @@ socket-dir=/var/run/
 
 # query-local-address6	Source IPv6 address for sending queries
 # query-local-address6=
-
-# remotes-ringbuffer-entries	maximum number of packets to store statistics for
-# remotes-ringbuffer-entries=0
 
 # serve-rfc1918	If we should be authoritative for RFC 1918 private IP space
 # serve-rfc1918=
