@@ -9,6 +9,12 @@ class requesttracker::apache($apache_site) {
         content => template('requesttracker/rt4.apache.erb'),
     }
 
+    letsencrypt::cert::integrated { 'rt':
+        subjects   => 'apt.wikimedia.org',
+        puppet_svc => 'apache',
+        system_svc => 'apache',
+    }
+
     # use this to have a NameVirtualHost *:443
     # avoid [warn] _default_ VirtualHost overlap
     file { '/etc/apache2/ports.conf':
