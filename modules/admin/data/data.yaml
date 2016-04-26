@@ -4,7 +4,7 @@ groups:
     members: [ananthrk, avar, bsitu, cmcmahon, csalvia, diederik, edenhill, erik, gage,
               handrade, howief, jdouglas, jgonera, jsahleen, mah, maryana, mglaser, mvolz,
               mwalker, nimishg, rainman, ssmith, swalling, sumanah, werdna, rmoen,
-              johnflewis, marc, jkrauska, akumar, mnoushad, spage, tnegrin]
+              johnflewis, marc, jkrauska, akumar, mnoushad, spage, tnegrin, msyed]
   wikidev:
     gid: 500
     description: container group for primary user groups.
@@ -66,7 +66,7 @@ groups:
   bastiononly:
     gid: 707
     description: these folks are allowed bastion _only_ access
-    members: [jforrester, jmorgan, msyed, dfoy, junikowski, cwdent,
+    members: [jforrester, jmorgan, dfoy, junikowski, cwdent,
               haithams, mhurd, dbrant, kleduc, bsitzmann, deskana, chedasaurus,
               jzerebecki, declerambaul, ellery, dduvall, nettrom, mforns, jkatz,
               bmansurov, west1, jhernandez, smalyshev, tbayer, zfilipin,
@@ -193,7 +193,7 @@ groups:
     description: Access statistics number crunching hosts. NO PRIVS.
     members: [dartar, halfak, ironholds, jdlrobson, jmorgan, bearloga,
               mattflaschen, mhurd, yurik, awight, jforrester,
-              marktraceur, msyed, nuria, leila, gilles, haithams,
+              marktraceur, nuria, leila, gilles, haithams,
               dbrant, tgr, dr0ptp4kt, brion, bsitzmann, amire80,
               deskana, jzerebecki, dduvall, nettrom, mforns, jkatz, ebernhardson,
               mlitn, tbayer, joal, tomasz, kartik, nikerabbit, pcoombe, madhuvishy,
@@ -1195,12 +1195,11 @@ users:
     ssh_keys: []
     uid: 2515
   msyed:
-    ensure: present
+    ensure: absent
     gid: 500
     name: msyed
     realname: Moiz Syed
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDDKH+F3be/hR2mp2CxoUGRo+MvdP/hsEqRZc7R/cUOJM6/kWJubxT5upjLiSt6JU8sIsAzqD5qprhYjdWl+y9HwZLpN7Jb1iUwStsCpFH3fq2/fKFoDpMF/10Hn24VUtaoE5NJoUThshJPF8zfysmbZElaCT58FvJt3KHKcIeAjeg6y5IvoDZtgVpbTYn0BxD0UyQ+qy6UmlPja6/oh5h4gTZNpZoP3SSMf99MO1jDC05EBqSYT/FeeylRqMUGYL9lyJxGkRyc7RQ654y6kFb3YmYgYxzYPghE3fvHToOByxoygsyJWWB3lXO7Lw0CLW68OrU94t4qR9IXjNt8Xv3d
-        msyed@wikimedia.org]
+    ssh_keys: []
     uid: 4206
   swalling:
     ensure: absent
