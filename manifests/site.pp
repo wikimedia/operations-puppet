@@ -267,7 +267,7 @@ node /^(chromium|hydrogen)\.wikimedia\.org$/ {
     }
 }
 
-# conf100x are zookeeper and etcd discovery service nodes
+# conf100x are zookeeper and etcd discovery service nodes in eqiad
 node /^conf100[123]\.eqiad\.wmnet$/ {
     role etcd, zookeeper::server
     include base::firewall
@@ -276,6 +276,14 @@ node /^conf100[123]\.eqiad\.wmnet$/ {
         include etcd::auth
         include etcd::auth::users
     }
+}
+
+# conf200x are zookeeper service nodes in codfw
+# Note: etcd is not running on these machines yet,
+# but will be probably done on a later stage.
+node /^conf200[123]\.codfw\.wmnet$/ {
+    role zookeeper::server
+    include base::firewall
 }
 
 # Debian package building host in production
