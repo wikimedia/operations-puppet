@@ -1,29 +1,36 @@
 # Class: dnsrecursor
-# Parameters:
-# - $listen_addresses:
-#       Addresses the DNS recursor should listen on for queries
-#       (default: [$::ipaddress])
-# - $allow_from:
-#       Prefixes from which to allow recursive DNS queries
+#
+# [*listen_addresses]
+#  Addresses the DNS recursor should listen on for queries
+#
+# [*allow_from]
+#  Prefixes from which to allow recursive DNS queries
+
 class dnsrecursor(
     $listen_addresses         = [$::ipaddress],
     $allow_from               = [],
     $additional_forward_zones = '',
     $auth_zones               = undef,
     $lua_hooks                = undef,
+    $max_cache_entries        = 1000000,
+    $max_negative_ttl         = 3600,
+    $max_tcp_clients          = 128,
+    $max_tcp_per_client       = 100,
+    $client_tcp_timeout       = 2,
 ) {
-    package { 'pdns-recursor':
-        ensure => 'present',
-    }
 
-    $forward_zones    = 'wmnet=208.80.154.238;208.80.153.231;91.198.174.239, 10.in-addr.arpa=208.80.154.238;208.80.153.231;91.198.174.239'
+    include network::constants
+    include metrics
+    $forward_zones = 'wmnet=208.80.154.238;208.80.153.231;91.198.174.239, 10.in-addr.arpa=208.80.154.238;208.80.153.231;91.198.174.239'
 
     system::role { 'dnsrecursor':
         ensure      => 'absent',
         description => 'Recursive DNS server',
     }
 
-    include network::constants
+    package { 'pdns-recursor':
+        ensure => 'present',
+    }
 
     file { '/etc/powerdns/recursor.conf':
         ensure  => 'present',
@@ -33,16 +40,6 @@ class dnsrecursor(
         mode    => '0444',
         notify  => Service['pdns-recursor'],
         content => template('dnsrecursor/recursor.conf.erb'),
-    }
-
-    service { 'pdns-recursor':
-        ensure    => 'running',
-        require   => [Package['pdns-recursor'],
-                      File['/etc/powerdns/recursor.conf']
-        ],
-        subscribe => File['/etc/powerdns/recursor.conf'],
-        pattern   => 'pdns_recursor',
-        hasstatus => false,
     }
 
     if $lua_hooks {
@@ -57,5 +54,13 @@ class dnsrecursor(
         }
     }
 
-    include metrics
+    service { 'pdns-recursor':
+        ensure    => 'running',
+        require   => [Package['pdns-recursor'],
+                      File['/etc/powerdns/recursor.conf']
+        ],
+        subscribe => File['/etc/powerdns/recursor.conf'],
+        pattern   => 'pdns_recursor',
+        hasstatus => false,
+    }
 }
