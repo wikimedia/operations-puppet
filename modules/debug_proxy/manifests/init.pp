@@ -39,10 +39,4 @@ class debug_proxy(
     }
 
     diamond::collector::nginx { 'debug_proxy': }
-
-    ferm::service { 'debug_proxy':
-        proto  => 'tcp',
-        port   => '80',
-        srange => '$INTERNAL',
-    }
 }
