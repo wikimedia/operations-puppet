@@ -12,6 +12,9 @@ sub cluster_be_recv_applayer_backend {
         else
             hostcmp = %Q[req.http.Host ~ "#{dir['req_host_re']}"]
         end
+        if dir.key?('maintenance')
+            error_synth(503, dir['maintenance'])
+        end
         if @varnish_version4
             if_stmts.push("if (#{hostcmp}) {\n        set req.backend_hint = #{dirname}.backend();\n    }")
         else
