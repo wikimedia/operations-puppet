@@ -1,0 +1,6 @@
+#!/bin/bash
+for f in $1/*; do
+    /bin/cat "${f}";
+    echo;
+done
+exit 0;

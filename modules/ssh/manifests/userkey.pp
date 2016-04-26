@@ -39,27 +39,26 @@
 define ssh::userkey(
   $ensure  = present,
   $user    = $title,
-  $skey    = undef,
+  $skey    = $title,
   $source  = undef,
   $content = undef,
-
 ) {
-    if $skey {
-        if !defined(File["/etc/ssh/userkeys/${user}.d/"]) {
-            file { "/etc/ssh/userkeys/${user}.d/":
-                ensure => directory,
-                force  => true,
-                owner  => 'root',
-                group  => 'root',
-                mode   => '0755',
-            }
+    $userkeys = "/etc/ssh/userkeys/${user}"
+    $userkeys_d = "/etc/ssh/userkeys/${user}.d"
+    $thiskey = "${userkeys_d}/${skey}"
+
+    if !defined(File[$userkeys_d]) {
+        file { $userkeys_d:
+            ensure => directory,
+            force  => true,
+            owner  => 'root',
+            group  => 'root',
+            mode   => '0755',
+            notify => Exec["compile_ssh_userkeys_${user}"],
         }
-        $path = "/etc/ssh/userkeys/${user}.d/${skey}"
-    } else {
-        $path = "/etc/ssh/userkeys/${user}"
     }
 
-    file { $path:
+    file { $thiskey:
         ensure  => $ensure,
         force   => true,
         owner   => 'root',
@@ -67,5 +66,27 @@ define ssh::userkey(
         mode    => '0444', # sshd drops perms before trying to read public keys
         content => $content,
         source  => $source,
+        require => File[$userkeys_d],
+        notify  => Exec["compile_ssh_userkeys_${user}"],
     }
+
+    # Compile /etc/ssh/userkeys/${user} from individual keys in
+    # /etc/ssh/userkeys/${user}.d/
+    if !defined(Exec["compile_ssh_userkeys_${user}"]) {
+        exec { "compile_ssh_userkeys_${user}":
+            path        => '/usr/bin:/bin',
+            command     => "/usr/local/bin/compile_ssh_userkeys ${userkeys_d} > ${userkeys}",
+            refreshonly => true,
+            user        => root,
+            subscribe   => File['/usr/local/bin/compile_ssh_userkeys'],
+        }
+
+        file { $userkeys:
+            ensure  => 'file',
+            owner   => $user,
+            mode    => '0644',
+            require => Exec["compile_ssh_userkeys_${user}"],
+        }
+    }
+
 }
