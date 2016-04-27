@@ -31,6 +31,14 @@ class install_server::apt_repository {
         group  => 'root',
     }
 
+    # Allow wikidev users to upload to /srv/wikimedia/incoming
+    file { '/srv/wikimedia/incoming':
+        ensure => directory,
+        mode   => '01775',
+        owner  => 'root',
+        group  => 'wikidev',
+    }
+
     # reprepro configuration
     file { '/srv/wikimedia/conf':
         ensure => directory,
