@@ -1,6 +1,6 @@
 # logrotate(8) config for <%= @title %>
 
-<%= @local_logdir %>/* {
+<%= @local_logdir %>/*.log {
     daily
     copytruncate
     missingok
