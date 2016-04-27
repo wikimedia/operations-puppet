@@ -1,5 +1,11 @@
 limit_conn_zone $binary_remote_addr zone=addr:10m;
 
+geo $connlimit {
+   default 3;
+   # altiscale hadoop cluster, see T133790
+   10.252.18.87 12;
+}
+
 server {
    listen [::]:80 default ipv6only=off;
    server_name dumps.wikimedia.org;
@@ -26,7 +32,7 @@ server {
       charset utf-8;
       limit_rate 2048k;
       limit_rate_after 1m;
-      limit_conn addr 3;
+      limit_conn addr $connlimit;
    }
 
    rewrite ^/other/(iOS|PlayBook|win8|android)(|/.*)$ $scheme://releases.wikimedia.org/mobile/$1$2  break;
