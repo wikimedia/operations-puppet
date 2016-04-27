@@ -5,6 +5,8 @@
 
 class mw_rc_irc::ircserver {
 
+    require_package('ircd-ratbox')
+
     file {
         '/usr/etc/ircd.conf':
             mode   => '0444',
