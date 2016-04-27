@@ -18,10 +18,6 @@ class labs_dns(
         ensure => 'present',
     }
 
-    system::role { 'labs_dns':
-        description => 'Authoritative DNS server (pdns/mysql)',
-    }
-
     file { '/etc/powerdns/pdns.conf':
         ensure  => 'present',
         require => Package['pdns-server'],
@@ -38,15 +34,5 @@ class labs_dns(
         ],
         subscribe  => File['/etc/powerdns/pdns.conf'],
         hasrestart => false,
-    }
-
-    # Monitoring
-    monitoring::host { $dns_auth_soa_name:
-        ip_address => $dns_auth_ipaddress,
-    }
-    monitoring::service { 'labs auth dns (designate)':
-        host          => $dns_auth_soa_name,
-        description   => 'Auth DNS for labs pdns',
-        check_command => 'check_dns!nagiostest.eqiad.wmflabs',
     }
 }
