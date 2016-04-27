@@ -517,6 +517,18 @@ class role::mariadb::core(
         $config = 'mariadb/production.my.cnf.erb'
     }
 
+    # Semi-sync replication
+    # off: for non-primary datacenter and read-only shard(s)
+    # slave: for slaves in the primary datacenter
+    # master: for masters in the primary datacenter
+    if ($::mw_primary != $::site or $shard == 'es1') {
+        $semi_sync = 'off'
+    } elsif ($master) {
+        $semi_sync = 'master'
+    } else {
+        $semi_sync = 'slave'
+    }
+
     class { 'mariadb::config':
         prompt        => "PRODUCTION ${shard}",
         config        => $config,
@@ -526,6 +538,7 @@ class role::mariadb::core(
         p_s           => $p_s,
         ssl           => $ssl,
         binlog_format => $binlog_format,
+        semi_sync     => $semi_sync,
     }
 
     $replication_is_critical = ($::mw_primary == $::site)
