@@ -1452,7 +1452,7 @@ node 'krypton.eqiad.wmnet' {
     # kafka::analytics::burrow is a Kafka consumer lag monitor.
     # Running this here because krypton is a 'misc' Jessie
     # <s>monitoring host</s> (not really, it's just misc apps)
-    role wikimania_scholarships, iegreview, grafana, kafka::analytics::burrow, racktables::server, requesttracker::server
+    role wikimania_scholarships, iegreview, grafana, kafka::analytics::burrow, racktables::server
     include standard
 }
 
