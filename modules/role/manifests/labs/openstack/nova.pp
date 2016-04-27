@@ -50,20 +50,27 @@ class role::labs::openstack::nova::manager {
     case $::realm {
         'production': {
             $sitename = 'wikitech.wikimedia.org'
+            $certificate = $sitename
+            sslcert::certificate { $sitename: }
         }
         'labtest': {
             $sitename = 'labtestwikitech.wikimedia.org'
+            sslcert::certificate { $sitename: ensure => absent }
+            $certificate = 'labtestwikitech'
+            letsencrypt::cert::integrated { $certificate:
+                subjects   => $sitename,
+                puppet_svc => 'apache2',
+                system_svc => 'apache2',
+            }
         }
         default: {
             notify {"unknown realm ${::realm}; https cert will not be installed.":}
         }
     }
-    $certificate = $sitename
 
-    sslcert::certificate { $certificate: }
     monitoring::service { 'https':
         description   => 'HTTPS',
-        check_command => "check_ssl_http!${certificate}",
+        check_command => "check_ssl_http!${sitename}",
     }
 
     $ssl_settings = ssl_ciphersuite('apache', 'compat', '365')

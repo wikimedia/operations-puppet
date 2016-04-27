@@ -44,15 +44,24 @@
     ServerAdmin noc@wikimedia.org
     ServerName <%= @webserver_hostname %>
 
+    RewriteEngine on
     SSLEngine on
+<% if @labtest -%>
+    SSLCertificateFile /etc/acme/cert/<%= @certificate %>.crt
+    SSLCertificateChainFile /etc/acme/cert/<%= @certificate %>.chain.crt
+    SSLCertificateKeyFile /etc/acme/key/<%= @certificate %>.key
+
+    Include /etc/acme/challenge-apache.conf
+    RewriteCond %{REQUEST_URI} !^/\.well-known/acme-challenge/
+<% else -%>
     SSLCertificateFile /etc/ssl/localcerts/<%= @certificate %>.crt
     SSLCertificateChainFile /etc/ssl/localcerts/<%= @certificate %>.chain.crt
     SSLCertificateKeyFile /etc/ssl/private/<%= @certificate %>.key
+<% end -%>
     <%= @ssl_settings.join("\n") %>
 
     RedirectMatch ^/$ https://<%= @webserver_hostname %>/wiki/
 
-    RewriteEngine on
     RewriteRule ^/view/(.*)$ https://<%= @webserver_hostname %>/wiki/$1 [L,R]
     RewriteCond %{HTTP_HOST}   !^<%= @webserver_hostname.gsub(%r[\.],'\\.') %> [NC]
     RewriteRule ^/(.*)         https://<%= @webserver_hostname %>/$1 [L,R]

@@ -62,6 +62,10 @@ class openstack::openstack_manager(
         'wikitech.wikimedia.org'        => '208.80.154.136',
         'labtestwikitech.wikimedia.org' => '208.80.153.14'
     }
+    $labtest = $webserver_hostname ? {
+        'wikitech.wikimedia.org'        => false,
+        'labtestwikitech.wikimedia.org' => true
+    }
     apache::site { $webserver_hostname:
         content => template('openstack/common/wikitech.wikimedia.org.erb'),
     }
