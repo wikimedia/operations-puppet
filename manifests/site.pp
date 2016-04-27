@@ -2107,8 +2107,8 @@ node /^mw10(1[7-9]|2[0-5])\.eqiad\.wmnet$/ {
     include base::firewall
 }
 
-# mw1070-mw1113 are appservers
-node /^mw1(0[7-9][0-9]|10[0-9]|11[0-3])\.eqiad\.wmnet$/ {
+# mw1090-mw1113 are appservers
+node /^mw1(09[0-9]|10[0-9]|11[0-3])\.eqiad\.wmnet$/ {
     role mediawiki::appserver
     include base::firewall
 }
@@ -2119,12 +2119,11 @@ node /^mw111[4-9]\.eqiad\.wmnet$/ {
     include base::firewall
 }
 
-# mw1120-1148 are api apaches
-node /^mw11([23][0-9]|4[0-8])\.eqiad\.wmnet$/ {
+# mw1131-1148 are api apaches
+node /^mw11(3[1-9]|4[0-8])\.eqiad\.wmnet$/ {
     role mediawiki::appserver::api
     include base::firewall
 }
-
 
 # mw1149-1151 are apaches
 node /^mw11(49|5[0-1])\.eqiad\.wmnet$/ {
