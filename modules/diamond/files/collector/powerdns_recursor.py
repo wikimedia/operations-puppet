@@ -18,7 +18,8 @@ from diamond.collector import str_to_bool
 
 class PowerDNSRecursorCollector(diamond.collector.Collector):
     def get_default_config_help(self):
-        config_help = super(PowerDNSRecursorCollector, self).get_default_config_help()
+        config_help = super(PowerDNSRecursorCollector, self)
+            .get_default_config_help()
         config_help.update({
             'bin': 'The path to the rec_control binary',
             'use_sudo': 'Use sudo?',
