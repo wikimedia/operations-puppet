@@ -277,8 +277,11 @@ def chk_ossl(file, which, subjects, check_ss, exp_days, exp_rand):
     if not re.search(subj_re, txt, re.M):
         return True
 
-    san_re = ('^\s*X509v3 Subject Alternative Name:\s*'
-              ',\s*'.join(['DNS:' + re.escape(s) for s in subjects]) + '\s*$')
+    san_re = (
+        '^\s*X509v3 Subject Alternative Name:\s*'
+        + (',\s*'.join(['DNS:' + re.escape(s) for s in subjects]))
+        + '\s*$'
+    )
     if not re.search(san_re, txt, re.M):
         return True
 
