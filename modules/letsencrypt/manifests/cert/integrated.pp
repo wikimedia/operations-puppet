@@ -46,6 +46,22 @@
 #   The system-level service name for the same as the above, for use in commands
 #   like: 'service $system_service reload'
 #
+# === Hieradata control: do_acme
+#
+# If the hieradata key 'do_acme' is set to false (default is true), the
+# self-signed cert creation steps will still occur before web service start,
+# allowing puppet to run successfully for all other purposes, but the actual
+# ACME fetch of a real cert from letsencrypt.org will be disabled, and the
+# service will only be provisioned with the self-signed cert.
+#
+# If you're provisioning a new replacement host for an existing service, or for
+# some other reason the public hostname the certificate for will not yet be
+# mapped to this host when you initially puppet it in a way that includes a
+# letsencrypt certificate, setting 'do_acme: false' is probably want you want to
+# do temporarily in hieradata/hosts/HOSTNAME.yaml .  You can then remove this
+# entry after the public name is mapped (in DNS, LVS, etc) to this host so that
+# it can answer challenges and obtain a real, signed certificate for itself.
+#
 # === Examples
 #
 # letsencrypt::cert::integrated { 'example':
@@ -100,12 +116,14 @@ define letsencrypt::cert::integrated($subjects, $puppet_svc, $system_svc) {
         before  => Service[$puppet_svc],
     }
 
-    # Post-setup and renewal - runs on every puppet run, creates a new ACME
-    # cert and reloads the webserver iff existing cert is self-signed from
-    # above or reaches expiry threshold (30-44 days left, deterministically
-    # random per unique certificate (will change on renewal)).
-    exec { "acme-setup-acme-${safe_title}":
-        command => "${base_cmd} -m acme -w ${system_svc}",
-        require => Service[$puppet_svc],
+    if hiera('do_acme', true) {
+        # Post-setup and renewal - runs on every puppet run, creates a new ACME
+        # cert and reloads the webserver iff existing cert is self-signed from
+        # above or reaches expiry threshold (30-44 days left, deterministically
+        # random per unique certificate (will change on renewal)).
+        exec { "acme-setup-acme-${safe_title}":
+            command => "${base_cmd} -m acme -w ${system_svc}",
+            require => Service[$puppet_svc],
+        }
     }
 }
