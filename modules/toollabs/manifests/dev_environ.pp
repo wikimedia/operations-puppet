@@ -132,23 +132,15 @@ class toollabs::dev_environ {
         mode    => '0444',
     }
 
-    file { '/usr/local/bin/webservice2':
-        ensure  => present,
-        source  => 'puppet:///modules/toollabs/webservice2',
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0555',
-        # Present on all hosts, defined for Puppet diamond collector.
-        require => Package['python-yaml'],
-    }
-
-    file { '/usr/local/bin/webservice':
-        ensure  => link,
-        target  => '/usr/local/bin/webservice2',
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0555',
-        require => File['/usr/local/bin/webservice2'],
+    file { [
+        '/usr/local/bin/webservice2',
+        '/usr/local/bin/webservice'
+    ]:
+        ensure => link,
+        target => '/usr/bin/webservice',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
     }
 
     # TODO: deploy scripts
