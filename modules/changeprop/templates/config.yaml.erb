@@ -1,10 +1,104 @@
-user_agent: ChangePropagation/WMF
-spec:
-  title: "The Change Propagation root"
-  paths:
-    /{domain:a}/{api:sys}/queue:
-      x-modules:
-        - path: src/sys/kafka.js
-          options:
-            uri: <%= @zk_uri %>
-            templates: {}
+<% mw_primary = scope.lookupvar('::mw_primary') %>
+
+# Log error messages and gracefully restart a worker if v8 reports using more
+# heap (note: not RSS).
+worker_heap_limit_mb: 300
+
+logging:
+  name: <%= @logging_name %>
+  level: <%= @logging_level %>
+  streams:
+  # XXX: Use gelf-stream -> logstash
+  - type: gelf
+    host: <%= @logstash_host %>
+    port: <%= @logstash_port %>
+
+# StatsD metrics collection
+metrics:
+  name: <%= @statsd_prefix %>
+  type: statsd # default, but lets be explicit
+  host: <%= @statsd_host %>
+  port: <%= @statsd_port %>
+  batch: true
+
+services:
+  - name: changeprop
+    # a relative path or the name of an npm package, if different from name
+    module: hyperswitch
+    # optionally, a version constraint of the npm package
+    # version: ^0.4.0
+    # per-service config
+    conf:
+      # the port to bind to
+      port: 7273
+      user_agent: Change-Prop
+      # IP address to bind to, all IPs by default
+      # interface: localhost # uncomment to only listen on localhost
+      # allow cross-domain requests to the API (default '*')
+      cors: '*'
+      # to disable use:
+      # cors: false
+      # to restrict to a particular domain, use:
+      # cors: restricted.domain.org
+      # URL of the outbound proxy to use (complete with protocol)
+      # proxy:
+      spec:
+        title: The Change Propagation root
+        x-sub-request-filters:
+          - type: default
+            name: http
+            options:
+              allow:
+                - pattern: <%= @restbase_uri %>
+                - pattern: <%= @mwapi_uri %>
+        paths:
+          /sys/links:
+            x-modules:
+              - path: sys/backlinks.js
+                options:
+                  templates:
+                    apiURITemplate: <%= @mwapi_uri %>
+          /sys/queue:
+            x-modules:
+              - path: sys/kafka.js
+                options:
+                  uri: <%= @zk_uri %>
+                  dc_name: <%= mw_primary %>
+                  templates:
+                    process_redlinks_create:
+                      topic: mediawiki.revision_create
+                      retry_limit: 1
+                      retry_delay: 1000
+                      match:
+                        rev_parent_id: undefined
+                      exec:
+                        method: post
+                        uri: '/sys/links/backlinks/{message.title}'
+                        body: '{{globals.message}}'
+
+                    process_redlinks_delete:
+                      topic: mediawiki.page_delete
+                      retry_limit: 1
+                      retry_delay: 1000
+                      exec:
+                        method: post
+                        uri: '/sys/links/backlinks/{message.title}'
+                        body: '{{globals.message}}'
+
+                    rerender_restbase:
+                      topic: resource_change
+                      retry_limit: 3
+                      retry_delay: 500
+                      retry_on:
+                        status:
+                          - '5xx'
+                          - 400
+                      match:
+                        meta:
+                          uri: '/https:\/\/([a-zA-Z0-9\.]+)\/wiki\/(.+)/'
+                        tags: [ 'change-prop', 'backlinks' ]
+                      exec:
+                        method: get
+                        uri: 'https://{{match.meta.uri[1]}}/api/rest_v1/page/html/{match.meta.uri[2]}'
+                        headers:
+                          cache-control: no-cache
