@@ -26,11 +26,10 @@ class toollabs::services(
     }
 
     file { '/usr/local/bin/webservice':
-        ensure  => present,
-        source  => 'puppet:///modules/toollabs/webservice2',
+        ensure  => link,
         owner   => 'root',
         group   => 'root',
         mode    => '0555',
-        require => Package['python-yaml'], # Present on all hosts, defined for puppet diamond collector
+        target  => '/usr/bin/webservice',
     }
 }
