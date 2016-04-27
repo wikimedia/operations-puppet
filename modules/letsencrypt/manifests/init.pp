@@ -78,6 +78,14 @@ class letsencrypt {
         source => 'puppet:///modules/letsencrypt/challenge-nginx.conf',
     }
 
+    file { '/etc/acme/challenge-apache.conf':
+        ensure => present,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0444',
+        source => 'puppet:///modules/letsencrypt/challenge-apache.conf',
+    }
+
     # LE Intermediate: current since ~2016-03-26
     sslcert::ca { 'Lets_Encrypt_Authority_X3':
         source  => 'puppet:///modules/letsencrypt/lets-encrypt-x3-cross-signed.pem'
