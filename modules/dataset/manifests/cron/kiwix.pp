@@ -1,4 +1,6 @@
-class dataset::cron::kiwix($enable=true) {
+class dataset::cron::kiwix(
+    $enable = true,
+) {
 
     if ($enable) {
         $ensure = 'present'
@@ -30,10 +32,20 @@ class dataset::cron::kiwix($enable=true) {
         mode   => '0644',
     }
 
+    file { '/usr/local/bin/kiwix-rsync-cron.sh':
+        mode   => '0755',
+        owner  => 'root',
+        group  => 'root',
+        source => 'puppet:///modules/dataset/kiwix-rsync-cron.sh',
+    }
+
     cron { 'kiwix-mirror-update':
-        ensure  => $ensure,
-        command => 'rsync -vzrlptD --bwlimit=40000 download.kiwix.org::download.kiwix.org/zim/wikipedia/ /data/xmldatadumps/public/other/kiwix/zim/wikipedia/ >/dev/null 2>&1',
-        user    => 'mirror',
-        minute  => '15',
+        ensure      => $ensure,
+        environment => 'MAILTO=ops-dumps@wikimedia.org',
+        command     => '/usr/local/bin/kiwix-rsync-cron.sh',
+        user        => 'mirror',
+        minute      => '15',
+        hour        => '*/2',
+        require     => File['/usr/local/bin/kiwix-rsync-cron.sh'],
     }
 }
