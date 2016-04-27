@@ -69,6 +69,26 @@ wait_timeout                   = 3600
 transaction-isolation          = REPEATABLE-READ
 use_stat_tables                = preferably
 
+# Semi-sync replication
+# TODO: use plugin_load_add once T133780 is fixed
+# In case MySQL doesn't start due to this plugin failing, comment the next
+# 'plugin_load' line and all the 'rpl_semi_sync_*' lines.
+<% if @semi_sync == 'both' %>
+plugin_load                        = rpl_semi_sync_master=semisync_master.so;rpl_semi_sync_slave=semisync_slave.so
+<% elsif @semi_sync == 'master' %>
+plugin_load                        = rpl_semi_sync_master=semisync_master.so
+<% elsif @semi_sync == 'slave' %>
+plugin_load                        = rpl_semi_sync_slave=semisync_slave.so
+<% end %>
+<% if @semi_sync == 'master' or @semi_sync == 'both' %>
+rpl_semi_sync_master_enabled       = 1
+rpl_semi_sync_master_timeout       = 100
+rpl_semi_sync_master_wait_no_slave = 0
+<% end %>
+<% if @semi_sync == 'slave' or @semi_sync == 'both' %>
+rpl_semi_sync_slave_enabled        = 1
+<% end %>
+
 sync_binlog                    = 1
 binlog_cache_size              = 1M
 max_binlog_size                = 1000M
