@@ -5,7 +5,7 @@
 
 class mw_rc_irc::ircserver {
 
-    require_package('ircd-ratbox')
+    require_package('ircd-ratbox', 'irssi')
 
     file {
         '/usr/etc/ircd.conf':
