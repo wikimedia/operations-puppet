@@ -64,7 +64,12 @@ notice()     { printf "$(tput setaf 4)%s$(tput sgr0)\n" "$1"; }
 repackage()  { sudo dpkg-buildpackage -b -uc; }
 psmem()      { sudo "$HOME/.bin/ps_mem.py" "${@}"; }
 where()      { find . -iname \*"$*"\* ; }
-reqs()       { curl -s 127.0.0.1/server-status | grep -Po '\d+(?= requests currently being processed)'; }
+reqs()       {
+  # Find the apache2 log file with the most recent mtime that isn't an error log.
+  local log_file="$(sudo find /var/log/apache2 -type f -name '*.log' \
+    -not -name '*error*' -printf '%T@ %p\n' | sort -n | tail -1 | cut -f2- -d" ")"
+  sudo tail -f "$log_file" | pv -lraN "apache2 reqs/sec (current/average)" >/dev/null
+}
 service()    { sudo service "$@"; }
 perf()       { sudo perf "$@"; }
 gdbh()       { sudo gdb -p "$(pidof -s hhvm)"; }
