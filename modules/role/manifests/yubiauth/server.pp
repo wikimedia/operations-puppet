@@ -30,7 +30,7 @@ class role::yubiauth::server {
     }
     else {
         cron { 'sync AEAD files from primary auth server':
-            command => "/usr/bin/rsync -avz ${auth_server_primary}::aead_sync /var/cache/yubikey-ksm/aeads",
+            command => "/usr/bin/rsync -az ${auth_server_primary}::aead_sync /var/cache/yubikey-ksm/aeads",
             user    => 'root',
             minute  => '*/30',
         }
