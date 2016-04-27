@@ -1,9 +1,10 @@
 CONFIG = {
-    'mode': 'django',
+    'mode': 'wsgi',
     'working_dir': '<%= @directory %>',
     'args': (
         '--bind=0.0.0.0:<%= @port %>',
         '--workers=4',
         '--timeout=10',
+	'wsgi',
     ),
 }
