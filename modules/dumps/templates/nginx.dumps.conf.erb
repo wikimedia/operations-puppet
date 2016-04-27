@@ -1,4 +1,4 @@
-limit_conn_zone $binary_remote_addr zone=addr:10m;
+limit_conn_zone $remote_addr$http_user_agent zone=addr:10m;
 
 server {
    listen [::]:80 default ipv6only=off;
