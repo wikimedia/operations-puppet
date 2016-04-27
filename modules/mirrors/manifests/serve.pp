@@ -3,13 +3,7 @@ class mirrors::serve {
     include ::nginx
 
     letsencrypt::cert::integrated { 'mirrors':
-        subjects   => 'mirrors.wikimedia.org',
-        puppet_svc => 'nginx',
-        system_svc => 'nginx',
-    }
-
-    letsencrypt::cert::integrated { 'ubuntu':
-        subjects   => 'ubuntu.wikimedia.org',
+        subjects   => 'mirrors.wikimedia.org,ubuntu.wikimedia.org',
         puppet_svc => 'nginx',
         system_svc => 'nginx',
     }
@@ -19,10 +13,6 @@ class mirrors::serve {
 
     nginx::site { 'mirrors':
         content => template('mirrors/mirrors.wikimedia.org.conf.erb'),
-    }
-
-    nginx::site { 'ubuntu':
-        content => template('mirrors/ubuntu.wikimedia.org.conf.erb'),
     }
 
     file { '/srv/mirrors/index.html':
