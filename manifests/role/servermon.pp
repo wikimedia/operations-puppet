@@ -35,7 +35,7 @@ class role::servermon {
 
     class { '::servermon':
         ensure      => 'present',
-        directory   => '/srv/deployment/servermon/servermon',
+        directory   => '/srv/deployment/servermon/servermon/servermon',
         db_engine   => 'mysql',
         db_name     => 'puppet',
         db_user     => $db_user,
