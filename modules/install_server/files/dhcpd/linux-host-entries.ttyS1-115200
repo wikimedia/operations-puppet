@@ -6753,6 +6753,13 @@ host tungsten {
     filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
+host ununpentium {
+    hardware ethernet aa:00:00:66:fb:d9;
+    fixed-address ununpentium.wikimedia.org;
+    option pxelinux.pathprefix "jessie-installer/";
+    filename "jessie-installer/debian-installer/amd64/pxelinux.0";
+}
+
 host uranium {
     hardware ethernet 84:2b:2b:fb:a6:67;
     fixed-address uranium.wikimedia.org;
