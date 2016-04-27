@@ -17,15 +17,21 @@ class mw_rc_irc::irc_echo(
         group   => 'irc';
     }
 
-    file { '/etc/init/ircecho.conf':
-        source  => 'puppet:///modules/mw_rc_irc/upstart/ircecho.conf',
-        require => File['/usr/local/bin/udpmxircecho.py'],
-    }
-
-    if os_version('debian >= jessie') {
+    if $::initsystem == 'systemd' {
         $ircecho_provider = 'systemd'
+
+        file { '/etc/systemd/system/ircecho.service':
+            source  => 'puppet:///modules/mw_rc_irc/systemd/ircecho.service',
+            require => File['/usr/local/bin/udpmxircecho.py'],
+
+        }
     } else {
         $ircecho_provider = 'upstart'
+
+        file { '/etc/init/ircecho.conf':
+            source  => 'puppet:///modules/mw_rc_irc/upstart/ircecho.conf',
+            require => File['/usr/local/bin/udpmxircecho.py'],
+        }
     }
 
     # Ensure that the service is running.
@@ -34,4 +40,3 @@ class mw_rc_irc::irc_echo(
         provider => $ircecho_provider,
         require  => File['/etc/init/ircecho.conf'],
     }
-}

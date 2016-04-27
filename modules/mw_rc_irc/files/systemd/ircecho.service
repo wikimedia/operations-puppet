@@ -1,0 +1,12 @@
+[Unit]
+Description=IRC bot for the MW RC IRCD
+After=network.target
+
+[Service]
+User=irc
+Group=irc
+ExecStart=/usr/local/bin/udpmxircecho.py rc-pmtpa localhost
+Restart=on-failure
+RestartSec=3
+[Install]
+WantedBy=multi-user.target
