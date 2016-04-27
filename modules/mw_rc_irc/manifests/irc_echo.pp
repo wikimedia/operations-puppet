@@ -19,6 +19,7 @@ class mw_rc_irc::irc_echo(
 
     if $::initsystem == 'systemd' {
         $ircecho_provider = 'systemd'
+        $ircecho_require = '/etc/systemd/system/ircecho.service'
 
         file { '/etc/systemd/system/ircecho.service':
             source  => 'puppet:///modules/mw_rc_irc/systemd/ircecho.service',
@@ -27,6 +28,7 @@ class mw_rc_irc::irc_echo(
         }
     } else {
         $ircecho_provider = 'upstart'
+        $ircecho_require = '/etc/init/ircecho.conf'
 
         file { '/etc/init/ircecho.conf':
             source  => 'puppet:///modules/mw_rc_irc/upstart/ircecho.conf',
@@ -38,6 +40,6 @@ class mw_rc_irc::irc_echo(
     service { 'ircecho':
         ensure   => running,
         provider => $ircecho_provider,
-        require  => File['/etc/init/ircecho.conf'],
+        require  => File[$ircecho_require],
     }
 }
