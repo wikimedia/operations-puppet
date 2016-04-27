@@ -1,7 +1,9 @@
 class role::labs::dns {
+
     system::role { 'role::labs::dns':
         description => 'DNS server for Labs instances',
     }
+
     $dnsconfig = hiera_hash('labsdnsconfig', {})
 
     class { '::labs_dns':
@@ -87,5 +89,22 @@ class role::labs::dns {
             # lint:endignore
         },
         require  => Sudo::User['diamond_sudo_for_pdns_recursor'],
+    }
+
+    $auth_soa_name = $dnsconfig['host']
+    monitoring::host { $auth_soa_name:
+        ip_address => $::ipaddress_eth0,
+    }
+
+    monitoring::service { "${auth_soa_name} Auth DNS UDP":
+        host          => $auth_soa_name,
+        description   => 'Check for gridmaster host resolution',
+        check_command => "check_dig!${auth_soa_name}!tools-grid-master.tools.eqiad.wmflabs",
+    }
+
+    monitoring::service { "${auth_soa_name} Auth DNS TCP":
+        host          => $auth_soa_name,
+        description   => 'Check for gridmaster host resolution',
+        check_command => "check_dig_tcp!${auth_soa_name}!tools-grid-master.tools.eqiad.wmflabs",
     }
 }
