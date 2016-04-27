@@ -2113,8 +2113,8 @@ node /^mw1(09[0-9]|10[0-9]|11[0-3])\.eqiad\.wmnet$/ {
     include base::firewall
 }
 
-# mw1114-mw1119 are canary api appservers
-node /^mw111[4-9]\.eqiad\.wmnet$/ {
+# mw1114-mw1120 are canary api appservers
+node /^mw11(1[4-9]|20)\.eqiad\.wmnet$/ {
     role mediawiki::appserver::canary_api
     include base::firewall
 }
