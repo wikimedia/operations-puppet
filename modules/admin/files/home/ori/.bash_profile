@@ -64,7 +64,12 @@ notice()     { printf "$(tput setaf 4)%s$(tput sgr0)\n" "$1"; }
 repackage()  { sudo dpkg-buildpackage -b -uc; }
 psmem()      { sudo "$HOME/.bin/ps_mem.py" "${@}"; }
 where()      { find . -iname \*"$*"\* ; }
-reqs()       { curl -s 127.0.0.1/server-status | grep -Po '\d+(?= requests currently being processed)'; }
+reqs()       {
+  # Find the apache2 log file with the most recent mtime that isn't an error log.
+  local log_file="$(sudo find /var/log/apache2 -type f -name '*.log' \
+    -not -name '*error*' -printf '%T@ %p\n' | sort -n | tail -1 | cut -f2- -d" ")"
+  sudo tail -f "$log_file" | pv -lraN "apache2 reqs/sec (current/average)" >/dev/null
+}
 service()    { sudo service "$@"; }
 perf()       { sudo perf "$@"; }
 gdbh()       { sudo gdb -p "$(pidof -s hhvm)"; }
@@ -75,9 +80,6 @@ lat()        { ls -lat *"${@:+.}${@}" | head; }
 sudo()       { command sudo -E "$@"; }
 hbnt()       { /usr/bin/comm -23 "$1" "$2"; } # Here but not there (lines in $1 that are not in $2)
 bhat()       { /usr/bin/comm -12 "$1" "$2"; } # Both here and there (lines common to both $1 and $2)
-
-# DWIM: If cd argument is a file, cd to the file's directory.
-cd()         { if [ ! -d "$1" ]; then builtin cd "$(dirname "$1")"; else builtin cd "$1"; fi; }
 
 cleanup()    {
   mkdir -p ~/old
