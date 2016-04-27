@@ -45,9 +45,16 @@
     ServerName <%= @webserver_hostname %>
 
     SSLEngine on
+<% if @realm == "production" -%>
     SSLCertificateFile /etc/ssl/localcerts/<%= @certificate %>.crt
     SSLCertificateChainFile /etc/ssl/localcerts/<%= @certificate %>.chain.crt
     SSLCertificateKeyFile /etc/ssl/private/<%= @certificate %>.key
+<% end -%>
+<% if @realm == "labtest" -%>
+    SSLCertificateFile /etc/acme/cert/<%= @certificate %>.crt
+    SSLCertificateChainFile /etc/acme/cert/<%= @certificate %>.chain.crt
+    SSLCertificateKeyFile /etc/acme/key/<%= @certificate %>.key
+<% end -%>
     <%= @ssl_settings.join("\n") %>
 
     RedirectMatch ^/$ https://<%= @webserver_hostname %>/wiki/
