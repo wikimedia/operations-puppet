@@ -5,7 +5,14 @@ class role::requesttracker::server {
     include passwords::misc::rt
     include base::firewall
 
-    sslcert::certificate { 'rt.wikimedia.org': }
+    # remove me after 1x puppet run
+    sslcert::certificate { 'rt.wikimedia.org': ensure => absent }
+
+    letsencrypt::cert::integrated { 'rt':
+        subjects   => 'rt.wikimedia.org',
+        puppet_svc => 'apache2',
+        system_svc => 'apache2',
+    }
 
     $ssl_settings = ssl_ciphersuite('apache', 'compat', '365')
 

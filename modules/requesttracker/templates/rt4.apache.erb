@@ -3,8 +3,9 @@
 <VirtualHost *:80>
 
   ServerName <%=@apache_site%>
-
+  Include /etc/acme/challenge-apache.conf
   RewriteEngine on
+  RewriteCond %{REQUEST_URI} !^/\.well-known/acme-challenge/
   RewriteRule ^/(.*)$ https://<%=@apache_site%>/$1 [R=301]
 
 </VirtualHost>
@@ -14,9 +15,9 @@
   ServerName <%=@apache_site%>
 
   SSLEngine on
-  SSLCertificateFile /etc/ssl/localcerts/rt.wikimedia.org.crt
-  SSLCertificateChainFile /etc/ssl/localcerts/rt.wikimedia.org.chain.crt
-  SSLCertificateKeyFile /etc/ssl/private/rt.wikimedia.org.key
+  SSLCertificateFile /etc/acme/cert/rt.crt
+  SSLCertificateChainFile /etc/acme/cert/rt.chain.crt
+  SSLCertificateKeyFile /etc/acme/key/rt.key
   <%= @ssl_settings.join("\n") %>
 
   AddDefaultCharset UTF-8
