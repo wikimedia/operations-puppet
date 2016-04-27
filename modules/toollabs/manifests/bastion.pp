@@ -2,15 +2,13 @@
 #
 # This role sets up an bastion/dev instance in the Tool Labs model.
 #
-# Parameters:
+# [*nproc]
+#  limits.conf nproc
 #
-# Actions:
-#
-# Requires:
-#
-# Sample Usage:
-#
-class toollabs::bastion inherits toollabs {
+
+class toollabs::bastion(
+        $nproc = 30,
+    ) inherits toollabs {
 
     include gridengine::admin_host
     include gridengine::submit_host
@@ -173,11 +171,11 @@ class toollabs::bastion inherits toollabs {
     }
 
     file {'/etc/security/limits.conf':
-        ensure => file,
-        mode   => '0444',
-        owner  => 'root',
-        group  => 'root',
-        source => 'puppet:///modules/toollabs/limits.conf',
+        ensure  => file,
+        mode    => '0444',
+        owner   => 'root',
+        group   => 'root',
+        content => template('toollabs/limits.conf.erb'),
     }
 
     file { '/etc/ssh/ssh_config':
@@ -213,6 +211,7 @@ class toollabs::bastion inherits toollabs {
         group   => 'root',
         content => template('toollabs/crontab.erb'),
     }
+
     file { '/usr/local/bin/killgridjobs.sh':
         ensure => file,
         owner  => 'root',
