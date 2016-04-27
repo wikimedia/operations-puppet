@@ -49,7 +49,6 @@ class mediawiki::packages::fonts {
         'fonts-lyx',                 # T40299
         'fonts-crosextra-carlito',   # T84842
         'fonts-crosextra-caladea',   # T84842
-        'fonts-gujr-extra',          # T129500
     ]:
         ensure => present,
     }
@@ -59,6 +58,6 @@ class mediawiki::packages::fonts {
     }
 
     if os_version('debian >= jessie') {
-        require_package('fonts-beng', 'fonts-deva', 'fonts-gujr', 'fonts-knda', 'fonts-mlym', 'fonts-orya', 'fonts-guru', 'fonts-taml', 'fonts-telu')
+        require_package('fonts-beng', 'fonts-deva', 'fonts-gujr', 'fonts-knda', 'fonts-mlym', 'fonts-orya', 'fonts-guru', 'fonts-taml', 'fonts-telu', 'fonts-gujr-extra')
     }
 }
