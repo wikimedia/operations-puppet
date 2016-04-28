@@ -409,15 +409,6 @@ node 'dataset1001.wikimedia.org' {
 
 # eqiad dbs
 
-node /^db10(38)\.eqiad\.wmnet/ {
-    class { 'role::coredb::s3':
-        # Many more tables than other shards.
-        # innodb_file_per_table=off to reduce file handles.
-        innodb_file_per_table => false,
-        mariadb               => true,
-    }
-}
-
 node /^db10(40)\.eqiad\.wmnet/ {
     class { 'role::coredb::s4':
         innodb_file_per_table => true,
@@ -539,6 +530,7 @@ node /^db20(35|41|49|56|63|64)\.codfw\.wmnet/ {
 }
 
 # s3 (default) core production dbs on eqiad
+# Lots of tables!
 # eqiad master
 node 'db1075.eqiad.wmnet' {
     class { 'role::mariadb::core':
@@ -551,7 +543,7 @@ node 'db1075.eqiad.wmnet' {
     include base::firewall
 }
 
-node /^db10(15|27|35|44|77|78)\.eqiad\.wmnet/ {
+node /^db10(15|27|35|38|44|77|78)\.eqiad\.wmnet/ {
     class { 'role::mariadb::core':
         shard => 's3',
         p_s   => 'on',
