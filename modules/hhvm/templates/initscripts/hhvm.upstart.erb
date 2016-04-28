@@ -10,11 +10,11 @@ pre-start script
   . /etc/default/hhvm
   mkdir -p -m0755 "${HHVM_RUN_DIR:=/var/run/hhvm}"
   mkdir -p -m0750 "<%= @cache_dir %>"
-  mkdir -p -m0775 "<%= @log_dir %>"
+  mkdir -p -m0755 "<%= @log_dir %>"
   mkdir -p -m0775 "<%= @tmp_dir %>"
   chown -R "${HHVM_USER:=www-data}:${HHVM_GROUP:=www-data}" "${HHVM_RUN_DIR:=/run/hhvm}"
   chown -R "${HHVM_USER:=www-data}:${HHVM_GROUP:=www-data}" "<%= @cache_dir %>" "<%= @tmp_dir %>"
-  chown -R "syslog:${HHVM_GROUP}" "<%= @log_dir %>"
+  chown "root:${HHVM_GROUP}" "<%= @log_dir %>"
 end script
 
 # Decomment this to start HHVM with memory profiling capabilities enabled but inactive.
