@@ -898,6 +898,7 @@ node 'db1069.eqiad.wmnet' {
 # tendril db
 node 'db1011.eqiad.wmnet' {
     role mariadb::tendril
+    include base::firewall
 }
 
 node 'dbstore1001.eqiad.wmnet' {
