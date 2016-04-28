@@ -1435,11 +1435,7 @@ node /kafka10(12|13|14|18|20|22)\.eqiad\.wmnet/ {
     include base::firewall
 }
 
-# Main Kafka Brokers in eqiad and codfw.
-# kafka1001,kafka1002.
-# kafka2001,kafka2002 in codfw are not yet configured while
-# we figure out where to put a zookeeper cluster in codfw.
-#
+# Kafka Brokers - main-eqiad
 # For now, eventlogging-service-eventbus is also colocated
 # on these brokers.
 node /kafka100[12]\.eqiad\.wmnet/ {
@@ -1449,6 +1445,16 @@ node /kafka100[12]\.eqiad\.wmnet/ {
         # This currently mirrors from main-eqiad to analytics-eqiad.
         kafka::analytics::mirror
 
+    include standard
+    include base::firewall
+}
+
+# Kafka Brokers - main-codfw
+# For now, eventlogging-service-eventbus is also colocated
+# on these brokers.
+node /kafka200[12]\.codfw\.wmnet/ {
+    role kafka::main::broker,
+        eventbus::eventbus
     include standard
     include base::firewall
 }
