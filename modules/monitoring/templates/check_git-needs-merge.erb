@@ -26,5 +26,5 @@ elif [ $outstanding -eq 0 ]; then
 else
     msg_start="There are ${outstanding} unmerged changes"
 fi;
-echo "${msg_start} in <%= @title -%> (dir ${basedir})."
+echo "${msg_start} in <%= @title -%> (dir ${basedir}, ref HEAD..${refname})."
 exit 2
