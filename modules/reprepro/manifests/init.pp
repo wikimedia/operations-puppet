@@ -157,7 +157,7 @@ class reprepro (
             owner   => $user,
             group   => $group,
             mode    => '0400',
-            source  => $gpg_secring,
+            content => $gpg_secring,
             require => User['reprepro'],
         }
     }
@@ -168,7 +168,7 @@ class reprepro (
             owner   => $user,
             group   => $group,
             mode    => '0400',
-            source  => $gpg_pubring,
+            content => $gpg_pubring,
             require => User['reprepro'],
         }
     }
