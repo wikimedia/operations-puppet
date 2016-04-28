@@ -30,6 +30,13 @@ class role::labs::dns {
         tmpdir    => '/srv/tmp',
         read_only => 'off',
     }
+    file { '/etc/mysql/production-grants.sql':
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0400',
+        content => template('mariadb/grants-dns.sql.erb'),
+    }
 
     ferm::service { 'udp_dns_rec':
         proto => 'udp',
