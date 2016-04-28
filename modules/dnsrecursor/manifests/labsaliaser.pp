@@ -6,7 +6,7 @@ class dnsrecursor::labsaliaser(
     $admin_project_name,
 ) {
 
-    require_package('python-novaclient')
+    require_package(['python-novaclient', 'python-keystoneclient'])
 
     $config = {
         'username'           => $username,
