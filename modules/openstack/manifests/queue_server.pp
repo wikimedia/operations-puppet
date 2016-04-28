@@ -8,6 +8,15 @@ class openstack::queue_server {
         require => Class['openstack::repo'];
     }
 
+    # Turn up the number of allowed file handles for rabbitmq
+    file { '/etc/default/rabbitmq-env.conf':
+        ensure => present,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0444',
+        source => 'puppet:///modules/openstack/rabbitmq/labs-rabbitmq.default',
+    }
+
     if $::fqdn == hiera('labs_nova_controller') {
         service { 'rabbitmq-server':
             ensure    => running,
