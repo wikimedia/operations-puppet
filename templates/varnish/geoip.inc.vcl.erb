@@ -118,8 +118,9 @@ C{
 
 		// If either the second- or top-level domain is less than three characters long,
 		// assume that the domain uses a two-part public suffix (like '.co.uk') and include
-		// one additional level in the result.
-		if ((pos - last) <= 3 || (last - second_last) <= 3) {
+		// one additional level in the result.  Also, if the name ends in
+		// '.beta.wmflabs.org', make a special case for that.
+		if (!strcmp(third_last, ".beta.wmflabs.org") || (pos - last) <= 3 || (last - second_last) <= 3) {
 			top_cookie_domain = third_last;
 		} else {
 			top_cookie_domain = second_last;
