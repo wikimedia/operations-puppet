@@ -2359,6 +2359,9 @@ node 'nobelium.eqiad.wmnet' {
 
 # Offline Content Generator
 node /^ocg100[123]\.eqiad\.wmnet$/ {
+    if ($::fqdn == 'ocg1003.eqiad.wmnet') {
+      $ocg_decommission = true
+    }
     role ocg
 }
 

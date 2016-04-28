@@ -13,6 +13,10 @@ module.exports = function (config) {
 
 	config.coordinator.hostname = "<%= @host_name %>";
 
+	<%- if @decommission == true %>
+	config.coordinator.decommission = "<%= @host_name %>";
+	<%- end -%>
+
 	config.redis.host = "<%= @redis_host %>";
 	config.redis.port = <%= @redis_port %>;
 	config.redis.password = "<%= @redis_password %>";
