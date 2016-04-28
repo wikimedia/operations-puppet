@@ -14,7 +14,7 @@ pre-start script
   mkdir -p -m0775 "<%= @tmp_dir %>"
   chown -R "${HHVM_USER:=www-data}:${HHVM_GROUP:=www-data}" "${HHVM_RUN_DIR:=/run/hhvm}"
   chown -R "${HHVM_USER:=www-data}:${HHVM_GROUP:=www-data}" "<%= @cache_dir %>" "<%= @tmp_dir %>"
-  chown -R "syslog:${HHVM_GROUP}" "<%= @log_dir %>"
+  chown "root:${HHVM_GROUP}" "<%= @log_dir %>"
 end script
 
 # Decomment this to start HHVM with memory profiling capabilities enabled but inactive.
