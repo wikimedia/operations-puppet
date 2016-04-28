@@ -60,7 +60,7 @@ groups:
     description: access to terbium, fluorine (private data) and bastion hosts
                  restricted folks use sudo to access apache / www-data resources
     members: [daniel, dartar, ellery, bearloga,
-              ezachte, hoo, jamesur, jdlrobson, khorn, tparscal, tnegrin, ssastry,
+              ezachte, hoo, jamesur, jdlrobson, khorn, tparscal, ssastry,
               ironholds, nuria, leila, santhosh, amire80, legoktm, addshore]
     privileges: ['ALL = (www-data,apache) NOPASSWD: ALL']
   bastiononly:
@@ -101,7 +101,7 @@ groups:
   udp2log-users:
     gid: 713
     description: general user tasks for udp2log (RT 5391)
-    members: [tnegrin, milimetric, demon, andyrussg]
+    members: [milimetric, demon, andyrussg]
   researchers:
     gid: 714
     description: Access statistics number crunching hosts (like
@@ -111,7 +111,7 @@ groups:
               dduvall, ellery, ezachte, gilles, haithams, halfak,
               ironholds, jforrester, jkatz, jmorgan, jzerebecki, kaldari,
               kleduc, leila, mattflaschen, milimetric, nettrom, bearloga,
-              nuria, ori, otto, springle, tnegrin, yurik, yuvipanda,
+              nuria, ori, otto, springle, yurik, yuvipanda,
               mforns, jdlrobson, dr0ptp4kt, tgr, marktraceur, jhernandez, joal,
               daisy, tomasz, mholloway-shell, madhuvishy, ebernhardson, niedzielski,
               neilpquinn-wmf, tbayer, moushira, dbrant, maxsem, srijan, krenair,
@@ -173,7 +173,7 @@ groups:
   statistics-web-users:
     gid: 724
     description: access for stats.wikimedia.org
-    members: [ezachte, joal, milimetric, tomasz, tnegrin]
+    members: [ezachte, joal, milimetric, tomasz]
   statistics-privatedata-users:
     gid: 725
     description: Access to stat boxes that host private data, including
@@ -183,7 +183,7 @@ groups:
                  you should put them in the analytics-privatedata-users
                  group.
     members: [haithams, ezachte, milimetric, dartar, yurik,
-              halfak, awight, dr0ptp4kt, tnegrin, nuria, leila,
+              halfak, awight, dr0ptp4kt, nuria, leila,
               ironholds, kleduc, ellery, nettrom, mforns,
               bmansurov, tbayer, joal, ashwinpp,
               madhuvishy, tjones, legoktm, dcausse, bearloga,
@@ -193,7 +193,7 @@ groups:
     description: Access statistics number crunching hosts. NO PRIVS.
     members: [dartar, halfak, ironholds, jdlrobson, jmorgan, bearloga,
               mattflaschen, mhurd, yurik, awight, jforrester,
-              tnegrin, marktraceur, msyed, nuria, leila, gilles, haithams,
+              marktraceur, msyed, nuria, leila, gilles, haithams,
               dbrant, tgr, dr0ptp4kt, brion, bsitzmann, amire80,
               deskana, jzerebecki, dduvall, nettrom, mforns, jkatz, ebernhardson,
               mlitn, tbayer, joal, tomasz, kartik, nikerabbit, pcoombe, madhuvishy,
@@ -232,7 +232,7 @@ groups:
                  Hadoop NameNodes.  Some files in HDFS have sensitive data in them.
                  Those files are group readable by the analytics-privatedata-users group.
     members: [dartar, milimetric, yurik, dfoy, aude, jforrester,
-              halfak, dr0ptp4kt, tnegrin, ironholds, bearloga, cwdent, elukey,
+              halfak, dr0ptp4kt, ironholds, bearloga, cwdent, elukey,
               kleduc, nuria, haithams, otto, deskana, zhousquared,
               bsitzmann, dbrant, declerambaul, ellery, nettrom, leila,
               ezachte, mforns, reedy, west1, phuedx, awight, junikowski,
@@ -1106,8 +1106,7 @@ users:
     gid: 500
     name: tnegrin
     realname: Toby Negrin
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDzsPbsUjMIWw5KMJQMlkjEHnlrknUJju/74vs47iVb1lW3oAgULPxww+MX3cswFx3zYY8vw6K6fLbTaUKnEGAnW7JX2+Lo5nDfov3D+Lbb4jn6HfutvFWWrvMblUmd4FCiCsYsCXFj7E5WSzNmIgIWHzbxSSeCUPiUiG9enyEEpJJj5GvtrBZbdcoTpfhJuwGpAb2PrSQOCfuqE4izwN9ZfWruVhFbv8JvKu1shrG2DtXro2HmIVUwwHVZ8YMoMOjBtQo7Ioe2bjNWM1Ev9lvamcToJHe5FsauMcxiNmf2NXolDO+9VaoCQak1w06lvEUMegsFb8XbssFbA3uF/pfT
-        tnegrin@Administrators-MacBook-Air.local]
+    ssh_keys: []
     uid: 3558
   ironholds:
     ensure: present
