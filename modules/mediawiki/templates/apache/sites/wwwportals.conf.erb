@@ -74,7 +74,6 @@
 </VirtualHost>
 
 <VirtualHost *:80>
-    ServerName m.wikipedia.<%= @domain_suffix %>
     ServerAlias zero.wikipedia.<%= @domain_suffix %>
     UseCanonicalName off
 
@@ -87,6 +86,42 @@
 
     # Everything will be redirected to the appropriate lang.m.wikipedia.org or lang.zero.wikipedia.org based on zero configuration @ meta
     RewriteRule ^/$ /w/mobilelanding.php [L]
+</VirtualHost>
+
+<VirtualHost *:80>
+    ServerName m.wikipedia.<%= @domain_suffix %>
+    UseCanonicalName off
+
+    DocumentRoot /srv/mediawiki/docroot/wwwportal
+    <IfModule mod_php5.c>
+        php_admin_flag engine on
+    </IfModule>
+
+    RewriteEngine On
+    RewriteRule . - [E=RW_PROTO:%{HTTP:X-Forwarded-Proto}]
+    RewriteCond %{ENV:RW_PROTO} !=https
+    RewriteRule . - [E=RW_PROTO:http]
+
+    # Front page...
+    RewriteRule ^/$ /<%= @portal_dir %>/wikipedia.org/index.html [L]
+    <%- if @rewrite_portal -%>
+        RewriteRule ^/portal/(.*)$ /<%= @portal_dir %>/$1 [L]
+    <%- end -%>
+
+    # We need to be able to update HTML on short notice
+    <Location ~ "^/$">
+        Header set Cache-Control "s-maxage=86400, must-revalidate, max-age=3600"
+    </Location>
+    # All other resources can be cached for a reasonably long time
+    <Location ~ "^/<%= @portal_dir %>/">
+        Header set Cache-Control "s-maxage=86400, max-age=86400"
+    </Location>
+
+    # search-redirect.php, let it through
+    RewriteRule ^/search-redirect.php /w/search-redirect.php [L]
+
+    # Everything else
+    RewriteRule ^(.*)$ %{ENV:RW_PROTO}://en.wikipedia.<%= @domain_suffix %>$1 [R=301,L]
 </VirtualHost>
 
 <VirtualHost *:80>
