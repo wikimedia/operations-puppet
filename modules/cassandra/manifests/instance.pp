@@ -210,7 +210,7 @@ define cassandra::instance(
         content => template("${module_name}/instance.yaml.erb"),
         owner   => 'cassandra',
         group   => 'cassandra',
-        mode    => '0400',
+        mode    => '0444',
         require => File['/etc/cassandra-instances.d'],
     }
 
