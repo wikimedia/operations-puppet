@@ -278,7 +278,7 @@ class hhvm(
 
     file { $log_dir:
         ensure => directory,
-        owner  => 'syslog',
+        owner  => 'root',
         group  => $group,
         mode   => '0775',
         before => Service['hhvm'],
