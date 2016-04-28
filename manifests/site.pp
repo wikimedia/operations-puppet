@@ -2785,9 +2785,15 @@ node 'tungsten.eqiad.wmnet' {
 
 # will replace magnesium (RT) (T123713)
 node 'ununpentium.wikimedia.org' {
-    role test::system
+    role requesttracker
     include base::firewall
+
+    interface::add_ip6_mapped { 'main':
+        interface => 'eth0',
+    }
+
 }
+
 node 'uranium.wikimedia.org' {
     $ganglia_aggregator = true
 
