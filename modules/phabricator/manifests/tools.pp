@@ -42,6 +42,7 @@ class phabricator::tools (
             command => $dump_script,
             user    => root,
             hour    => '2',
+            minute  => '0',
             require => Package[$deploy_target],
         }
     }
