@@ -12,6 +12,7 @@
 
 class ocg (
     $host_name = $::fqdn,
+    $decommission = hiera('ocg::decommission', false),
     $service_port = 8000,
     $redis_host = 'localhost',
     $redis_port = 6379,
