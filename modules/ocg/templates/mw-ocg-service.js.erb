@@ -12,6 +12,9 @@ module.exports = function (config) {
 	config = require("/srv/deployment/ocg/ocg/LocalSettings.js")(config);
 
 	config.coordinator.hostname = "<%= @host_name %>";
+	<%- if @decommission == true %>
+	config.coordinator.decommission = "<%= @host_name %>";
+	<%- end -%>
 
 	config.redis.host = "<%= @redis_host %>";
 	config.redis.port = <%= @redis_port %>;
