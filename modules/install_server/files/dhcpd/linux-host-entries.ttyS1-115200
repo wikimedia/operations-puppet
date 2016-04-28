@@ -6589,7 +6589,7 @@ host restbase2006 {
 }
 
 host restbase2007 {
-    hardware ethernet 14:02:ec:06:9a:fc;
+    hardware ethernet 14:02:ec:06:a9:dc;
     fixed-address restbase2007.codfw.wmnet;
     option pxelinux.pathprefix "jessie-installer/";
     filename "jessie-installer/debian-installer/amd64/pxelinux.0";
@@ -6603,7 +6603,7 @@ host restbase2008 {
 }
 
 host restbase2009 {
-    hardware ethernet 14:02:ec:06:a9:dc;
+    hardware ethernet 14:02:ec:06:9a:fc;
     fixed-address restbase2009.codfw.wmnet;
     option pxelinux.pathprefix "jessie-installer/";
     filename "jessie-installer/debian-installer/amd64/pxelinux.0";
