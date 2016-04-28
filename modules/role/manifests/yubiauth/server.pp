@@ -9,6 +9,7 @@ class role::yubiauth::server {
 
     include yubiauth::yhsm_daemon
     include yubiauth::yhsm_yubikey_ksm
+    include yubiauth::yubikey_val
 
     backup::set { 'yubiauth-aeads' : }
 
