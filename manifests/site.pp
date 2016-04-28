@@ -2661,6 +2661,7 @@ node 'stat1002.eqiad.wmnet' {
         elasticsearch::analytics
 
     include standard
+    include base::firewall
 
     # Include the MySQL research password at
     # /etc/mysql/conf.d/analytics-research-client.cnf
