@@ -276,9 +276,15 @@ class hhvm(
         before  => Service['hhvm'],
     }
 
+    $log_dir_owner = $::lsbdistid ? {
+        'Ubuntu' => 'syslog',
+        'Debian' => 'root',
+        default  => 'syslog',
+    }
+
     file { $log_dir:
         ensure => directory,
-        owner  => 'syslog',
+        owner  => $log_dir_owner,
         group  => $group,
         mode   => '0775',
         before => Service['hhvm'],
