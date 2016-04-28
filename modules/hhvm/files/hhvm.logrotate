@@ -8,7 +8,7 @@
     dateyesterday
     rotate 90
     missingok
-    create 0640 syslog deployment
+    create 0640 root deployment
     delaycompress
     sharedscripts
     postrotate
