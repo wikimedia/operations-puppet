@@ -306,6 +306,13 @@ class role::mariadb::tendril {
     include role::mariadb::grants
     include role::mariadb::monitor::dba
     include passwords::misc::scripts
+    include role::mariadb::ferm
+
+    ferm::service { 'memcached_tendril':
+        proto  => 'tcp',
+        port   => '11211',
+        srange => '@resolve(neon.wikimedia.org)',
+    }
 
     class { 'mariadb::config':
         prompt   => 'TENDRIL',
