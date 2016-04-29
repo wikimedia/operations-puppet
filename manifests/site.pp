@@ -691,7 +691,7 @@ node 'db1031.eqiad.wmnet' {
     include base::firewall
 }
 
-node /^db10(29)\.eqiad\.wmnet/ {
+node 'db1029.eqiad.wmnet' {
     class { 'role::mariadb::core':
         shard         => 'x1',
         binlog_format => 'ROW',
@@ -704,14 +704,6 @@ node 'db2033.codfw.wmnet' {
     class { 'role::mariadb::core':
         shard         => 'x1',
         master        => true,
-        binlog_format => 'ROW',
-    }
-    include base::firewall
-}
-
-node /^db20(08|09)\.codfw\.wmnet/ {
-    class { 'role::mariadb::core':
-        shard         => 'x1',
         binlog_format => 'ROW',
     }
     include base::firewall
