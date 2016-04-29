@@ -59,6 +59,7 @@ class role::labs::dnsrecursor {
             lua_hooks                => $lua_hooks,
             max_negative_ttl         => 900,
             max_tcp_per_client       => 50,
+            max_cache_entries        => 3000000,
     }
 
     $alias_file = '/etc/powerdns/labs-ip-alias.lua'
