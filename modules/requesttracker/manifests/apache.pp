@@ -1,7 +1,6 @@
 # sets up Apache site for a WMF RT install
 class requesttracker::apache($apache_site) {
     include ::apache
-    include ::apache::mod::php5  # WAT WHY
     include ::apache::mod::ssl
     include ::apache::mod::perl
 
