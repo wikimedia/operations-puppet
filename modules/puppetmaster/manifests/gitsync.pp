@@ -29,4 +29,16 @@ class puppetmaster::gitsync(
         group  => 'root',
         mode   => '0444',
     }
+
+    sudo::user { 'cherry_pick_count':
+        ensure     => present,
+        user       => 'diamond',
+        privileges => [ 'ALL = (root) NOPASSWD: git log --pretty=oneline --abbrev-commit origin/HEAD..HEAD' ]
+    }
+
+    diamond::collector { 'CherryPickCounter':
+        ensure  => present,
+        source  => 'puppet:///modules/puppetmaster/cherry-pick-counter-collector.py',
+        require => Sudo::User['cherry_pick_count']
+    }
 }

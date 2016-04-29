@@ -56,12 +56,6 @@ function rebase_repo() {
     echo "Local hacks:"
     git log --color --pretty=oneline --abbrev-commit origin/HEAD..HEAD |
     sed 's/^/  /'
-
-    # Send stats on how many cherry-picked commits there are to statsd
-    STATS_PREFIX="`cat /etc/wmflabs-project`.`cat /etc/wmflabs-instancename`"
-    CHERRY_PICKED_COUNT=`git log --pretty=oneline --abbrev-commit origin/HEAD..HEAD | wc -l`
-    echo -n "${STATS_PREFIX}.puppetmaster.cherrypicked_commits.${REPO_NAME}:${CHERRY_PICKED_COUNT}|g" |
-        nc -w 1 -u ${STATSD_HOST} 8125
 }
 
 rebase_repo ops-puppet /var/lib/git/operations/puppet production
