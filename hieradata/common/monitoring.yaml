@@ -63,6 +63,9 @@ groups:
   eventbus_eqiad:
     description: eventbus eqiad servers
 
+  eventbus_codfw:
+    description: eventbus codfw servers
+
 # Ganeti
   ganeti_eqiad:
     description: Ganeti virt cluster eqiad
