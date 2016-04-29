@@ -101,7 +101,7 @@ labs_ldap_dns_host_secondary: &labsldapdnshostsecondary "labs-ns1-former-placeho
 labsdnsconfig:
   host: 'labs-ns0.wikimedia.org'
   host_secondary: 'labs-ns1.wikimedia.org'
-  dbserver: 'm5-master.eqiad.wmnet'
+  dbserver: 'localhost'
   recursor: 'labs-recursor1.wikimedia.org'
   recursor_secondary: 'labs-recursor0.wikimedia.org'
 
