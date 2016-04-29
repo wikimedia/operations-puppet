@@ -43,6 +43,10 @@
 # [*repo*]
 #   The name of the repo to use for deployment. Default: ${title}/deploy
 #
+# [*starter_module*]
+#   The service's starter module loaded by service-runner on start-up. Default:
+#   ./src/app.js
+#
 # [*firejail*]
 #   Whether to use firejail when starting the service. Default: true
 #
@@ -101,6 +105,7 @@ define service::node(
     $healthcheck_url        = '/_info',
     $has_spec               = false,
     $repo                   = "${title}/deploy",
+    $starter_module         = './src/app.js',
     $firejail               = true,
     $starter_script         = 'src/server.js',
     $local_logging          = true,
