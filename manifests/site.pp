@@ -2468,6 +2468,7 @@ node /(dubnium|pollux)\.wikimedia\.org/ {
 node 'potassium.eqiad.wmnet' {
     role poolcounter
     include standard
+    include base::firewall
 }
 
 # pybal-test200X VMs are used for pybal testing/development
