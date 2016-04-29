@@ -1,10 +1,26 @@
 user_agent: ChangePropagation/WMF
 spec:
-  title: "The Change Propagation root"
+  x-sub-request-filters:
+    - type: default
+      name: http
+      options:
+        allow:
+          - pattern: /^https?:\/\//
+  title: The Change Propagation root
   paths:
-    /{domain:a}/{api:sys}/queue:
+    /{api:sys}/links:
+      x-modules:
+        - path: src/sys/backlinks.js
+          options:
+            templates:
+              mw_api:
+                  uri: <%= @mwapi_uri %>
+                  headers:
+                    host: '{{message.meta.domain}}'
+    /{api:sys}/queue:
       x-modules:
         - path: src/sys/kafka.js
           options:
             uri: <%= @zk_uri %>
+            dc_name: <%= scope.lookupvar('::site') %>
             templates: {}
