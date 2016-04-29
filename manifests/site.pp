@@ -1316,6 +1316,7 @@ node 'labtestmetal2001.codfw.wmnet' {
 
 node 'labtestcontrol2001.wikimedia.org' {
     include standard
+    include base::firewall
     role labs::openstack::nova::controller,
           labs::puppetmaster
 
