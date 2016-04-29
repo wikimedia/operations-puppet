@@ -90,8 +90,8 @@ HORIZON_CONFIG = {
 # multiple floating IP pools or complex network requirements.
 # HORIZON_CONFIG["simple_ip_management"] = False
 
-# Turn off browser autocompletion for the login form if so desired.
-# HORIZON_CONFIG["password_autocomplete"] = "off"
+# Turn on browser autocompletion for the login form
+HORIZON_CONFIG["password_autocomplete"] = "on"
 
 LOCAL_PATH = os.path.dirname(os.path.abspath(__file__))
 
