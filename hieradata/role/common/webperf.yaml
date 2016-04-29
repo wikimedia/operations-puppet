@@ -1,2 +1,5 @@
 admin::groups:
   - perf-roots
+debdeploy::grains:
+  debdeploy-webperf:
+    value: standard
