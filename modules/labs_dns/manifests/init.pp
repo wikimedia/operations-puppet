@@ -27,6 +27,14 @@ class labs_dns(
         content => template('labs_dns/pdns.conf.erb'),
     }
 
+    # Clean up any example configs that the pdns packages might have installed;
+    #  We don't want them accidentally used or merged into our puppetized config.
+    file { '/etc/powerdns/pdns.d/':
+        ensure        => directory,
+        purge         => true
+        recurselimit => 1,
+    }
+
     service { 'pdns':
         ensure     => 'running',
         require    => [ Package['pdns-server'],
