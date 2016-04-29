@@ -1,5 +1,5 @@
 # === Class mediawiki::web::mpm_config
-class mediawiki::web::mpm_config($mpm = 'prefork', $server_limit = undef, $workers_limit = undef){
+class mediawiki::web::mpm_config($mpm = 'worker', $server_limit = undef, $workers_limit = undef){
     case $mpm {
         'prefork': {
             $apache_server_limit = 256
