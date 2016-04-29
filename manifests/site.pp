@@ -2723,7 +2723,7 @@ node /^snapshot100[1-2]\.eqiad\.wmnet/ {
     # NOTE: New snapshot hosts must also be manually added
     # to hiera common.yaml dataset_clients_snapshots.
 
-    role snapshot, snapshot::cron
+    role snapshot::producer, snapshot::cron
     include standard
 }
 
@@ -2731,7 +2731,7 @@ node /^snapshot1004\.eqiad\.wmnet/ {
     # NOTE: New snapshot hosts must also be manually added
     # to hiera common.yaml dataset_clients_snapshots.
 
-    role snapshot, snapshot::cron, snapshot::dumps::monitor
+    role snapshot::producer, snapshot::cron, snapshot::dumps::monitor
     include standard
 }
 
@@ -2739,7 +2739,7 @@ node /^snapshot1003\.eqiad\.wmnet/ {
     # NOTE: New snapshot hosts must also be manually added
     # to hiera common.yaml dataset_clients_snapshots.
 
-    role snapshot, snapshot::cron::primary
+    role snapshot::producer, snapshot::cron::primary
     include standard
 }
 
