@@ -1,5 +1,7 @@
 class releases::reprepro::upload (
-    $private_key  = secret('releases/id_rsa.upload'),
+    # lint:ignore:puppet_url_without_modules
+    $private_key  = 'puppet:///private/releases/id_rsa.upload',
+    # lint:endignore
     $user         = 'releases',
     $group        = 'releases',
     $sudo_user    = '%wikidev',
@@ -36,7 +38,7 @@ class releases::reprepro::upload (
         group   => $group,
         mode    => '0600',
         require => User['releases'],
-        content => $private_key,
+        source  => $private_key,
     }
 
     file { "${homedir}/.ssh/config":
