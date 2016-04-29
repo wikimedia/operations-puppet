@@ -45,7 +45,7 @@ metrics:
 services:
   - name: <%= @title %>
     # a relative path or the name of an npm package, if different from name
-    module: ./src/app.js
+    module: <%= @starter_module %>
     # optionally, a version constraint of the npm package
     # version: ^0.4.0
     # per-service config
