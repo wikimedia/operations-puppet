@@ -776,26 +776,16 @@ node 'db1031.eqiad.wmnet' {
     }
     include base::firewall
 }
-
+//TODO: Upgrade to mariadb::core (10)
 node 'db1029.eqiad.wmnet' {
     include role::coredb::x1
 }
 
 # codfw
-node 'db2009.codfw.wmnet' {
+node 'db2033.codfw.wmnet' {
     class { 'role::mariadb::core':
         shard         => 'x1',
         master        => false,
-        p_s           => 'on',
-        binlog_format => 'ROW',
-        ssl           => 'puppet-cert',
-    }
-    include base::firewall
-}
-
-node /^db20(08|33)\.codfw\.wmnet/ {
-    class { 'role::mariadb::core':
-        shard         => 'x1',
         p_s           => 'on',
         binlog_format => 'ROW',
         ssl           => 'puppet-cert',
