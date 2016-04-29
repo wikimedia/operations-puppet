@@ -9,4 +9,4 @@ hhvm::extra::fcgi:
   hhvm:
     server:
       light_process_count: "10"
-
+apache::mpm::mpm: worker
