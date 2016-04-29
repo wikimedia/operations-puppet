@@ -19,6 +19,7 @@ class puppet::self::config(
     $certname             = $::fqdn,
     $enc_script_path      = undef,
     $autosign             = hiera('puppetmaster::autosigner', false),
+    $use_msgpack          = false,
 ) {
     include ldap::role::config::labs
 

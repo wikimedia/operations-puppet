@@ -22,3 +22,4 @@ postrun_command = /etc/puppet/etckeeper-commit-post
 pluginsync = true
 report = true
 reports = statsd
+<% if @use_mgspack %>preferred_serialization_format = msgpack<% end %>

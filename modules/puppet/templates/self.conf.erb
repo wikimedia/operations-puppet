@@ -15,6 +15,7 @@ prerun_command = /etc/puppet/etckeeper-commit-pre
 postrun_command = /etc/puppet/etckeeper-commit-post
 pluginsync = true
 report = true
+<% if @use_mgspack %>preferred_serialization_format = msgpack<% end %>
 <%
 # only set agent certname if not 'localhost',
 # i.e. not single self hosted puppetmaster.  (The original
