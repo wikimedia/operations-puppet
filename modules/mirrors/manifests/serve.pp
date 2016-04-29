@@ -8,7 +8,6 @@ class mirrors::serve {
         system_svc => 'nginx',
     }
 
-    require sslcert::dhparam
     $ssl_settings = ssl_ciphersuite('nginx', 'compat', '365')
 
     nginx::site { 'mirrors':

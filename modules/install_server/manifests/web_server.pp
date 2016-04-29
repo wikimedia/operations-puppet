@@ -22,7 +22,6 @@ class install_server::web_server {
         system_svc => 'nginx',
     }
 
-    require sslcert::dhparam
     $ssl_settings = ssl_ciphersuite('nginx', 'compat', '365')
 
     file { '/etc/nginx/nginx.conf':

@@ -32,6 +32,7 @@
 
 class letsencrypt {
     include ::sslcert
+    require sslcert::dhparam
 
     group { 'acme':
         ensure => present,
