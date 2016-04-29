@@ -3,6 +3,7 @@ class requesttracker::apache($apache_site) {
     include ::apache
     include ::apache::mod::ssl
     include ::apache::mod::perl
+    include ::apache::mod::rewrite
 
     apache::site { 'rt.wikimedia.org':
         content => template('requesttracker/rt4.apache.erb'),
