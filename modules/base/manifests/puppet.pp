@@ -2,6 +2,7 @@ class base::puppet(
     $server='puppet',
     $certname=undef,
     $dns_alt_names=undef,
+    $use_msgpack=false,
 ) {
 
     include passwords::puppet::database
@@ -17,6 +18,16 @@ class base::puppet(
     # facter needs this for proper "virtual"/"is_virtual" resolution
     package { 'virt-what':
         ensure => present,
+    }
+
+    # Install msgpack for more efficient serialization
+
+    if os_version('Ubuntu >= trusty || Debian >= jessie') {
+        require_package 'ruby-msgpack'
+    } elsif os_version('Ubuntu == precise') {
+        require_package 'libmsgpack-ruby1.8'
+    } else {
+        fail('Unsupported distribution')
     }
 
     file { '/etc/puppet/puppet.conf':
