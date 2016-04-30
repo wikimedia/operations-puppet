@@ -51,7 +51,12 @@ for project in projects:
         config['nova_api_url']
     )
 
-    for server in client.servers.list():
+    try:
+        servers = client.servers.list()
+    except:
+        print("Couldn't get instances for project %s! Are you sure %s is in this project?" % (project, config['username']))
+        continue
+    for server in servers:
         serverAddresses = {}
         try:
             private = [
