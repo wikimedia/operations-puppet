@@ -507,6 +507,18 @@ class role::mariadb::core(
     include passwords::misc::scripts
     include role::mariadb::ferm
 
+    # N.B.: NON $::mw_primary masters are considered slaves for now
+    $mysql_role = $master ? { true  => 'master', false => 'slave' }
+    salt::grain { 'mysql_role':
+        ensure => present,
+        value => $mysql_role,
+    }
+
+    salt::grain { 'mysql_shard':
+        ensure => present,
+        value => $shard,
+    }
+
     class { 'mariadb::packages_wmf':
         mariadb10 => true,
     }
