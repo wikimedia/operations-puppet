@@ -19,15 +19,26 @@ class role::salt::minions(
     }
     $client_id     = $::fqdn
 
+    $grains = {
+        realm   => $::realm,
+        site    => $::site,
+        cluster => hiera('cluster', $::cluster),
+    }
+
+    $hiera_grains = hiera('salt::additional_grains', {})
+    if ($hiera_grains.length > 0) {
+        $grains.merge!($hiera_grains)
+    }
+
+    if ($::salt_additional_grains and $::salt_additional_grains.length > 0) {
+        $grains.merge!($::salt_additional_grains)
+    }
+
     class { '::salt::minion':
         id            => $client_id,
         master        => $master,
         master_finger => $master_finger,
         master_key    => $salt_master_key,
-        grains        => {
-            realm   => $::realm,
-            site    => $::site,
-            cluster => hiera('cluster', $::cluster),
-        },
+        grains        => $grains,
     }
 }

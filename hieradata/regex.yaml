@@ -61,6 +61,8 @@ es_eqiad_rack_d4:
 mysql_eqiad:
   __regex: !ruby/regexp /^(db10[0-9][0-9]|dbstore100[1-2]|dbproxy100[1-8]|es101[1-9]|labsdb100[1-8])\.eqiad\.wmnet$/
   cluster: mysql
+  salt::additional_grains:
+      test_additional_grain: test_additional_grain_value
 
 mysql_codfw:
   __regex: !ruby/regexp /^(db20[0-9][0-9]|dbstore200[1-2]|es201[1-9])\.codfw\.wmnet$/
