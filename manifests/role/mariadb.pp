@@ -500,6 +500,11 @@ class role::mariadb::core(
         description => "Core DB Server ${shard}",
     }
 
+    $salt_additional_grains = {
+        'mysql_role' => $master ? { true  => 'master', false => 'slave' },
+        'mysql_shard' => $shard,
+    }
+
     include standard
     include role::mariadb::grants
     include role::mariadb::grants::core
