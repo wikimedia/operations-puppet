@@ -17,7 +17,7 @@
 #
 # [*replace*]
 #   If true, replaces the value in the grain. If false, it adds the value.
-#   Defaults to true.
+#   Defaults to false.
 #
 # === Examples
 #
