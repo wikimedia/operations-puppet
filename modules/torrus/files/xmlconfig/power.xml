@@ -2795,6 +2795,8 @@
 			</subtree>
 
 			<subtree name="codfw">
+				<apply-template name="codfw-pdus"/>
+
 				<subtree name="ps1-a1-codfw">
 					<param name="system-id" value="ps1-a1-codfw"/>
 					<param name="data-dir" value="/var/lib/torrus/collector_rrd"/>
