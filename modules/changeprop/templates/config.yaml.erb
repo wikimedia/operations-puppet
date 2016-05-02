@@ -23,4 +23,47 @@ spec:
           options:
             uri: <%= @zk_uri %>
             dc_name: <%= scope.lookupvar('::site') %>
-            templates: {}
+            templates:
+              summary_rerender:
+                topic: resource_change
+                retry_limit: 2
+                retry_delay: 500
+                retry_on:
+                  status:
+                    - '5xx'
+                match:
+                  meta:
+                    uri: '/^https?:\/\/[^\/]+\/api\/rest_v1\/page\/html\/([^\/]+)$/'
+                  tags:
+                    - restbase
+                match_not:
+                  meta:
+                    domain: '/wiktionary\.org$/'
+                exec:
+                  method: get
+                  # Don't encode title since it should be already encoded
+                  uri: '<%= @restbase_uri %>/{{message.meta.domain}}/v1/page/summary/{{match.meta.uri[1]}}'
+                  headers:
+                    cache-control: no-cache
+
+              definition_rerender:
+                topic: resource_change
+                retry_limit: 2
+                retry_delay: 500
+                retry_on:
+                  status:
+                    - '5xx'
+                match:
+                  meta:
+                    # These URIs are coming from RESTBase, so we know that article titles will be normalized
+                    # and main namespace articles will not have : (uri-encoded, so %3a or %3A)
+                    uri: '/^https?:\/\/[^\/]+\/api\/rest_v1\/page\/html\/((?:(?!%3a|%3A).)+)$/'
+                    domain: '/wiktionary\.org$/'
+                  tags:
+                    - restbase
+                exec:
+                  method: get
+                  # Don't encode title since it should be already encoded
+                  uri: '<%= @restbase_uri %>/{{message.meta.domain}}/v1/page/definition/{{match.meta.uri[1]}}'
+                  headers:
+                    cache-control: no-cache

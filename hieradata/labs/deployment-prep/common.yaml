@@ -15,6 +15,7 @@ service::configuration::logstash_host: deployment-logstash2.deployment-prep.eqia
 citoid::zotero_host: deployment-zotero01.deployment-prep.eqiad.wmflabs
 citoid::zotero_port: 1969
 changeprop::mwapi_uri: http://deployment-mediawiki02.deployment-prep.eqiad.wmflabs/w/api.php
+changeprop::restbase_uri: http://deployment-restbase02.deployment-prep.eqiad.wmflabs:7231
 graphoid::domains:
   - wmflabs.org
   - mediawiki.org
