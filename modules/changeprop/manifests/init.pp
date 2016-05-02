@@ -14,9 +14,14 @@
 # [*mwapi_uri*]
 #   The full URI of the MW API contact point. Default:
 #   http://api.svc.${::mw_primary}.wmnet/w/api.php
+#
+# [*restbase_uri*]
+#   The host/IP where to reach RESTBase. Default:
+#   http://restbase.svc.${::rb_site}.wmnet:7231
 class changeprop(
     $zk_uri,
     $mwapi_uri = "http://api.svc.${::mw_primary}.wmnet/w/api.php",
+    $restbase_uri = "http://restbase.svc.${::rb_site}.wmnet:7231",
 ) {
 
     service::node { 'changeprop':
