@@ -79,13 +79,6 @@ class mediawiki::jobrunner (
         provider => 'upstart',
     }
 
-    ferm::service { 'mediawiki-jobrunner':
-        proto   => 'tcp',
-        port    => $port,
-        notrack => true,
-        srange  => '$INTERNAL',
-    }
-
     file { '/etc/logrotate.d/mediawiki_jobrunner':
         source => 'puppet:///modules/mediawiki/logrotate.d_mediawiki_jobrunner',
         owner  => 'root',

@@ -19,4 +19,11 @@ class role::mediawiki::jobrunner {
     diamond::collector { 'NfConntrackCount':
         source => 'puppet:///modules/diamond/collector/nf_conntrack_counter.py',
     }
+
+    ferm::service { 'mediawiki-jobrunner':
+        proto   => 'tcp',
+        port    => '9005',
+        notrack => true,
+        srange  => '$INTERNAL',
+    }
 }
