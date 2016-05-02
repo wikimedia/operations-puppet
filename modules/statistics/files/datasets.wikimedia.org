@@ -1,4 +1,3 @@
-NameVirtualHost *:80
 <VirtualHost *:80>
   ServerName datasets.wikimedia.org
 
