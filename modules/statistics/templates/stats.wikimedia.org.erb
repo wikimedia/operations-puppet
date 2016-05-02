@@ -28,8 +28,7 @@
 
     <Directory "/srv/stats.wikimedia.org/htdocs/reportcard/staff">
         AllowOverride None
-        Order allow,deny
-        Allow from all
+        Require all granted
         AuthName "Password protected area"
         AuthType Basic
         AuthUserFile /etc/apache2/htpasswd.stats
@@ -37,8 +36,7 @@
     </Directory>
     <Directory "/srv/stats.wikimedia.org/htdocs/reportcard/extended">
         AllowOverride None
-        Order allow,deny
-        Allow from all
+        Require all granted
         AuthName "Password protected area"
         AuthType Basic
         AuthUserFile /etc/apache2/htpasswd.stats
@@ -46,8 +44,7 @@
     </Directory>
     <Directory "/srv/stats.wikimedia.org/htdocs/reportcard/pediapress">
         AllowOverride None
-        Order allow,deny
-        Allow from all
+        Require all granted
         AuthName "Password protected area"
         AuthType Basic
         AuthUserFile /etc/apache2/htpasswd.stats
@@ -61,8 +58,7 @@
         RewriteRule ^/(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,E=ProtoRedirect]
 
         AllowOverride None
-        Order allow,deny
-        Allow from all
+        Require all granted
         AuthName "Geowiki's 'foundation only' files"
         AuthType Basic
         AuthUserFile "<%= scope.lookupvar('::statistics::sites::stats::geowiki_private_htpasswd_file') %>"
