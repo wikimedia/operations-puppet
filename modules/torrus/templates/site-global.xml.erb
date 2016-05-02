@@ -30,6 +30,10 @@
 		last24h-small,last24h,lastweek,lastmonth,lastyear
 	</param>
 
+	<template name="codfw-pdus">
+		<param name="snmp-community" value="<%= scope.lookupvar("passwords::network::snmp_ro_community_pdus_codfw") %>"/>
+	</template>
+
 </datasources>
 
 <views>
