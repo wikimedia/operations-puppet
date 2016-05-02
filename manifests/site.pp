@@ -2612,6 +2612,13 @@ node 'silver.wikimedia.org' {
     interface::add_ip6_mapped { 'main': }
 }
 
+# mw logging host codfw - setup pending
+node 'sinistra.codfw.wmnet' {
+
+    include base::firewall
+    include standard
+}
+
 node /^(strontium|rhodium).eqiad.wmnet/ {
     role puppetmaster::backend
     include standard
