@@ -242,16 +242,31 @@ def es_restart_fast(while_down):
 
     # Wait a bit
     time.sleep(5)
+    es_wait_for_green()
+
+    return os.EX_OK
+
+
+def es_wait_for_green():
     print "Waiting for green (you can ctrl+c here if you have to)...\n"
-    while cluster_health() != "green":
-        print '\n'.join(cluster_status(columns=('status',
-                                                'initializing_shards',
-                                                'relocating_shards',
-                                                'unassigned_shards')))
+    while not is_cluster_healthy():
+        try:
+            print '\n'.join(cluster_status(columns=('status',
+                                                    'initializing_shards',
+                                                    'relocating_shards',
+                                                    'unassigned_shards')))
+        except:
+            printu("Cannot print cluster status\n")
         time.sleep(60)
     print "ok"
 
-    return os.EX_OK
+
+def is_cluster_healthy():
+    try:
+        return cluster_health() == "green"
+    except:
+        printu("Error while checking for cluster health\n")
+        return False
 
 
 def es_upgrade_fast():
@@ -333,6 +348,7 @@ commands = {
     "start-replication": es_start_replication,
     "stop-replication": es_stop_replication,
     "unban-node": es_unban_node,
+    "wait-for-green": es_wait_for_green,
     "status": lambda: '\n'.join(cluster_status()),
 }
 
