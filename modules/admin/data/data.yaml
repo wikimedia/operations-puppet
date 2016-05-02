@@ -142,7 +142,6 @@ groups:
                  'ALL = (nodepool) NOPASSWD: ALL',
                  'ALL = (zuul) NOPASSWD: ALL',
                  'ALL = NOPASSWD: /etc/init.d/jenkins',
-                 'ALL = NOPASSWD: /etc/init.d/postgresql-8.4',
                  'ALL = NOPASSWD: /usr/sbin/service nodepool start',
                  'ALL = NOPASSWD: /usr/sbin/service nodepool stop',
                  'ALL = NOPASSWD: /usr/sbin/service nodepool restart',
@@ -153,8 +152,7 @@ groups:
                  'ALL = NOPASSWD: /usr/sbin/service zuul-merger stop',
                  'ALL = NOPASSWD: /usr/sbin/service zuul-merger status',
                  'ALL = NOPASSWD: /bin/journalctl*',
-                 'ALL = NOPASSWD: /usr/local/sbin/puppet-run',
-                 'ALL = (postgres) NOPASSWD: /usr/bin/psql']
+                 'ALL = NOPASSWD: /usr/local/sbin/puppet-run']
   contint-roots:
     gid: 720
     description: users who have full root on jenkins servers
