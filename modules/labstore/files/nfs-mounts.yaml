@@ -108,6 +108,7 @@ private:
     mounts:
       project: true
       scratch: true
+      dumps: true
   megacron:
     gid: 51769
     mounts:
