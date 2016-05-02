@@ -2793,6 +2793,2787 @@
 					</subtree>
 				</subtree>
 			</subtree>
+
+			<subtree name="codfw">
+				<subtree name="ps1-a1-codfw">
+					<param name="system-id" value="ps1-a1-codfw"/>
+					<param name="data-dir" value="/var/lib/torrus/collector_rrd"/>
+					<apply-template name="snmp-defaults"/>
+					<param name="legend">
+						Location:Rack A1, codfw, Carrollton, USA;
+						Contact:noc@wikimedia.org;
+						Description:Sentry Smart CDU;
+					</param>
+					<param name="snmp-check-sysuptime" value="yes"/>
+					<param name="snmp-host" value="ps1-a1-codfw.mgmt.codfw.wmnet"/>
+					<param name="snmp-version" value="2c"/>
+					<param name="phases" value="3"/>
+					<subtree name="System">
+						<apply-template name="servertech-systemgroup"/>
+					</subtree>
+					<subtree name="Tower_A_Phase_X">
+						<param name="tower" value="1"/>
+						<param name="infeed" value="1"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_A"/>
+					</subtree>
+					<subtree name="Tower_A_Phase_Y">
+						<param name="tower" value="1"/>
+						<param name="infeed" value="2"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_A"/>
+					</subtree>
+					<subtree name="Tower_A_Phase_Z">
+						<param name="tower" value="1"/>
+						<param name="infeed" value="3"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_A"/>
+					</subtree>
+					<subtree name="Tower_B_Phase_X">
+						<param name="tower" value="2"/>
+						<param name="infeed" value="1"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_B"/>
+					</subtree>
+					<subtree name="Tower_B_Phase_Y">
+						<param name="tower" value="2"/>
+						<param name="infeed" value="2"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_B"/>
+					</subtree>
+					<subtree name="Tower_B_Phase_Z">
+						<param name="tower" value="2"/>
+						<param name="infeed" value="3"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_B"/>
+					</subtree>
+					<!-- Aggregates -->
+					<subtree name="Tower_A">
+						<param name="aggregate-id" value="tower1"/>
+						<param name="aggregate-name" value="Tower A"/>
+						<param name="tower" value="1"/>
+						<param name="precedence" value="60"/>
+						<apply-template name="servertech-infeed-aggr"/>
+						<!-- Define the RPN expressions for all leaves -->
+						<param name="tower-path" value="../Tower_A"/>
+						<apply-template name="servertech-tower-3ph-aggregate-expressions"/>
+					</subtree>
+					<subtree name="Tower_B">
+						<param name="aggregate-id" value="tower2"/>
+						<param name="aggregate-name" value="Tower B"/>
+						<param name="tower" value="2"/>
+						<param name="precedence" value="60"/>
+						<apply-template name="servertech-infeed-aggr"/>
+						<!-- Define the RPN expressions for all leaves -->
+						<param name="tower-path" value="../Tower_B"/>
+						<apply-template name="servertech-tower-3ph-aggregate-expressions"/>
+					</subtree>
+					<subtree name="Sensor_1">
+						<param name="envmon" value="1"/>
+						<param name="th" value="1"/>
+						<apply-template name="servertech-temphumidity"/>
+					</subtree>
+					<subtree name="Sensor_2">
+						<param name="envmon" value="1"/>
+						<param name="th" value="2"/>
+						<apply-template name="servertech-temphumidity"/>
+					</subtree>
+				</subtree>
+
+				<subtree name="ps1-a2-codfw">
+					<param name="system-id" value="ps1-a2-codfw"/>
+					<param name="data-dir" value="/var/lib/torrus/collector_rrd"/>
+					<apply-template name="snmp-defaults"/>
+					<param name="legend">
+						Location:Rack A2, codfw, Carrollton, USA;
+						Contact:noc@wikimedia.org;
+						Description:Sentry Smart CDU;
+					</param>
+					<param name="snmp-check-sysuptime" value="yes"/>
+					<param name="snmp-host" value="ps1-a2-codfw.mgmt.codfw.wmnet"/>
+					<param name="snmp-version" value="2c"/>
+					<param name="phases" value="3"/>
+					<subtree name="System">
+						<apply-template name="servertech-systemgroup"/>
+					</subtree>
+					<subtree name="Tower_A_Phase_X">
+						<param name="tower" value="1"/>
+						<param name="infeed" value="1"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_A"/>
+					</subtree>
+					<subtree name="Tower_A_Phase_Y">
+						<param name="tower" value="1"/>
+						<param name="infeed" value="2"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_A"/>
+					</subtree>
+					<subtree name="Tower_A_Phase_Z">
+						<param name="tower" value="1"/>
+						<param name="infeed" value="3"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_A"/>
+					</subtree>
+					<subtree name="Tower_B_Phase_X">
+						<param name="tower" value="2"/>
+						<param name="infeed" value="1"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_B"/>
+					</subtree>
+					<subtree name="Tower_B_Phase_Y">
+						<param name="tower" value="2"/>
+						<param name="infeed" value="2"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_B"/>
+					</subtree>
+					<subtree name="Tower_B_Phase_Z">
+						<param name="tower" value="2"/>
+						<param name="infeed" value="3"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_B"/>
+					</subtree>
+					<subtree name="Sensor_1">
+						<param name="envmon" value="1"/>
+						<param name="th" value="1"/>
+						<apply-template name="servertech-temphumidity"/>
+					</subtree>
+					<subtree name="Sensor_2">
+						<param name="envmon" value="1"/>
+						<param name="th" value="2"/>
+						<apply-template name="servertech-temphumidity"/>
+					</subtree>
+					<!-- Aggregates -->
+					<subtree name="Tower_A">
+						<param name="aggregate-id" value="tower1"/>
+						<param name="aggregate-name" value="Tower A"/>
+						<param name="tower" value="1"/>
+						<param name="precedence" value="60"/>
+						<apply-template name="servertech-infeed-aggr"/>
+						<!-- Define the RPN expressions for all leaves -->
+						<param name="tower-path" value="../Tower_A"/>
+						<apply-template name="servertech-tower-3ph-aggregate-expressions"/>
+					</subtree>
+					<subtree name="Tower_B">
+						<param name="aggregate-id" value="tower2"/>
+						<param name="aggregate-name" value="Tower B"/>
+						<param name="tower" value="2"/>
+						<param name="precedence" value="60"/>
+						<apply-template name="servertech-infeed-aggr"/>
+						<!-- Define the RPN expressions for all leaves -->
+						<param name="tower-path" value="../Tower_B"/>
+						<apply-template name="servertech-tower-3ph-aggregate-expressions"/>
+					</subtree>
+				</subtree>
+
+				<subtree name="ps1-a3-codfw">
+					<param name="system-id" value="ps1-a3-codfw"/>
+					<param name="data-dir" value="/var/lib/torrus/collector_rrd"/>
+					<apply-template name="snmp-defaults"/>
+					<param name="legend">
+						Location:Rack A3, codfw, Carrollton, USA;
+						Contact:noc@wikimedia.org;
+						Description:Sentry Smart CDU;
+					</param>
+					<param name="snmp-check-sysuptime" value="yes"/>
+					<param name="snmp-host" value="ps1-a3-codfw.mgmt.codfw.wmnet"/>
+					<param name="snmp-version" value="2c"/>
+					<param name="phases" value="3"/>
+					<subtree name="System">
+						<apply-template name="servertech-systemgroup"/>
+					</subtree>
+					<subtree name="Tower_A_Phase_X">
+						<param name="tower" value="1"/>
+						<param name="infeed" value="1"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_A"/>
+					</subtree>
+					<subtree name="Tower_A_Phase_Y">
+						<param name="tower" value="1"/>
+						<param name="infeed" value="2"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_A"/>
+					</subtree>
+					<subtree name="Tower_A_Phase_Z">
+						<param name="tower" value="1"/>
+						<param name="infeed" value="3"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_A"/>
+					</subtree>
+					<subtree name="Tower_B_Phase_X">
+						<param name="tower" value="2"/>
+						<param name="infeed" value="1"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_B"/>
+					</subtree>
+					<subtree name="Tower_B_Phase_Y">
+						<param name="tower" value="2"/>
+						<param name="infeed" value="2"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_B"/>
+					</subtree>
+					<subtree name="Tower_B_Phase_Z">
+						<param name="tower" value="2"/>
+						<param name="infeed" value="3"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_B"/>
+					</subtree>
+					<subtree name="Sensor_1">
+						<param name="envmon" value="1"/>
+						<param name="th" value="1"/>
+						<apply-template name="servertech-temphumidity"/>
+					</subtree>
+					<subtree name="Sensor_2">
+						<param name="envmon" value="1"/>
+						<param name="th" value="2"/>
+						<apply-template name="servertech-temphumidity"/>
+					</subtree>
+					<!-- Aggregates -->
+					<subtree name="Tower_A">
+						<param name="aggregate-id" value="tower1"/>
+						<param name="aggregate-name" value="Tower A"/>
+						<param name="tower" value="1"/>
+						<param name="precedence" value="60"/>
+						<apply-template name="servertech-infeed-aggr"/>
+						<!-- Define the RPN expressions for all leaves -->
+						<param name="tower-path" value="../Tower_A"/>
+						<apply-template name="servertech-tower-3ph-aggregate-expressions"/>
+					</subtree>
+					<subtree name="Tower_B">
+						<param name="aggregate-id" value="tower2"/>
+						<param name="aggregate-name" value="Tower B"/>
+						<param name="tower" value="2"/>
+						<param name="precedence" value="60"/>
+						<apply-template name="servertech-infeed-aggr"/>
+						<!-- Define the RPN expressions for all leaves -->
+						<param name="tower-path" value="../Tower_B"/>
+						<apply-template name="servertech-tower-3ph-aggregate-expressions"/>
+					</subtree>
+				</subtree>
+
+				<subtree name="ps1-a4-codfw">
+					<param name="system-id" value="ps1-a4-codfw"/>
+					<param name="data-dir" value="/var/lib/torrus/collector_rrd"/>
+					<apply-template name="snmp-defaults"/>
+					<param name="legend">
+						Location:Rack A4, codfw, Carrollton, USA;
+						Contact:noc@wikimedia.org;
+						Description:Sentry Smart CDU;
+					</param>
+					<param name="snmp-check-sysuptime" value="yes"/>
+					<param name="snmp-host" value="ps1-a4-codfw.mgmt.codfw.wmnet"/>
+					<param name="snmp-version" value="2c"/>
+					<param name="phases" value="3"/>
+					<subtree name="System">
+						<apply-template name="servertech-systemgroup"/>
+					</subtree>
+					<subtree name="Tower_A_Phase_X">
+						<param name="tower" value="1"/>
+						<param name="infeed" value="1"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_A"/>
+					</subtree>
+					<subtree name="Tower_A_Phase_Y">
+						<param name="tower" value="1"/>
+						<param name="infeed" value="2"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_A"/>
+					</subtree>
+					<subtree name="Tower_A_Phase_Z">
+						<param name="tower" value="1"/>
+						<param name="infeed" value="3"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_A"/>
+					</subtree>
+					<subtree name="Tower_B_Phase_X">
+						<param name="tower" value="2"/>
+						<param name="infeed" value="1"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_B"/>
+					</subtree>
+					<subtree name="Tower_B_Phase_Y">
+						<param name="tower" value="2"/>
+						<param name="infeed" value="2"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_B"/>
+					</subtree>
+					<subtree name="Tower_B_Phase_Z">
+						<param name="tower" value="2"/>
+						<param name="infeed" value="3"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_B"/>
+					</subtree>
+					<subtree name="Sensor_1">
+						<param name="envmon" value="1"/>
+						<param name="th" value="1"/>
+						<apply-template name="servertech-temphumidity"/>
+					</subtree>
+					<subtree name="Sensor_2">
+						<param name="envmon" value="1"/>
+						<param name="th" value="2"/>
+						<apply-template name="servertech-temphumidity"/>
+					</subtree>
+					<!-- Aggregates -->
+					<subtree name="Tower_A">
+						<param name="aggregate-id" value="tower1"/>
+						<param name="aggregate-name" value="Tower A"/>
+						<param name="tower" value="1"/>
+						<param name="precedence" value="60"/>
+						<apply-template name="servertech-infeed-aggr"/>
+						<!-- Define the RPN expressions for all leaves -->
+						<param name="tower-path" value="../Tower_A"/>
+						<apply-template name="servertech-tower-3ph-aggregate-expressions"/>
+					</subtree>
+					<subtree name="Tower_B">
+						<param name="aggregate-id" value="tower2"/>
+						<param name="aggregate-name" value="Tower B"/>
+						<param name="tower" value="2"/>
+						<param name="precedence" value="60"/>
+						<apply-template name="servertech-infeed-aggr"/>
+						<!-- Define the RPN expressions for all leaves -->
+						<param name="tower-path" value="../Tower_B"/>
+						<apply-template name="servertech-tower-3ph-aggregate-expressions"/>
+					</subtree>
+				</subtree>
+
+				<subtree name="ps1-a5-codfw">
+					<param name="system-id" value="ps1-a5-codfw"/>
+					<param name="data-dir" value="/var/lib/torrus/collector_rrd"/>
+					<apply-template name="snmp-defaults"/>
+					<param name="legend">
+						Location:Rack A5, codfw, Carrollton, USA;
+						Contact:noc@wikimedia.org;
+						Description:Sentry Smart CDU;
+					</param>
+					<param name="snmp-check-sysuptime" value="yes"/>
+					<param name="snmp-host" value="ps1-a5-codfw.mgmt.codfw.wmnet"/>
+					<param name="snmp-version" value="2c"/>
+					<param name="phases" value="3"/>
+					<subtree name="System">
+						<apply-template name="servertech-systemgroup"/>
+					</subtree>
+					<subtree name="Tower_A_Phase_X">
+						<param name="tower" value="1"/>
+						<param name="infeed" value="1"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_A"/>
+					</subtree>
+					<subtree name="Tower_A_Phase_Y">
+						<param name="tower" value="1"/>
+						<param name="infeed" value="2"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_A"/>
+					</subtree>
+					<subtree name="Tower_A_Phase_Z">
+						<param name="tower" value="1"/>
+						<param name="infeed" value="3"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_A"/>
+					</subtree>
+					<subtree name="Tower_B_Phase_X">
+						<param name="tower" value="2"/>
+						<param name="infeed" value="1"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_B"/>
+					</subtree>
+					<subtree name="Tower_B_Phase_Y">
+						<param name="tower" value="2"/>
+						<param name="infeed" value="2"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_B"/>
+					</subtree>
+					<subtree name="Tower_B_Phase_Z">
+						<param name="tower" value="2"/>
+						<param name="infeed" value="3"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_B"/>
+					</subtree>
+					<subtree name="Sensor_1">
+						<param name="envmon" value="1"/>
+						<param name="th" value="1"/>
+						<apply-template name="servertech-temphumidity"/>
+					</subtree>
+					<subtree name="Sensor_2">
+						<param name="envmon" value="1"/>
+						<param name="th" value="2"/>
+						<apply-template name="servertech-temphumidity"/>
+					</subtree>
+					<!-- Aggregates -->
+					<subtree name="Tower_A">
+						<param name="aggregate-id" value="tower1"/>
+						<param name="aggregate-name" value="Tower A"/>
+						<param name="tower" value="1"/>
+						<param name="precedence" value="60"/>
+						<apply-template name="servertech-infeed-aggr"/>
+						<!-- Define the RPN expressions for all leaves -->
+						<param name="tower-path" value="../Tower_A"/>
+						<apply-template name="servertech-tower-3ph-aggregate-expressions"/>
+					</subtree>
+					<subtree name="Tower_B">
+						<param name="aggregate-id" value="tower2"/>
+						<param name="aggregate-name" value="Tower B"/>
+						<param name="tower" value="2"/>
+						<param name="precedence" value="60"/>
+						<apply-template name="servertech-infeed-aggr"/>
+						<!-- Define the RPN expressions for all leaves -->
+						<param name="tower-path" value="../Tower_B"/>
+						<apply-template name="servertech-tower-3ph-aggregate-expressions"/>
+					</subtree>
+				</subtree>
+
+				<subtree name="ps1-a6-codfw">
+					<param name="system-id" value="ps1-a6-codfw"/>
+					<param name="data-dir" value="/var/lib/torrus/collector_rrd"/>
+					<apply-template name="snmp-defaults"/>
+					<param name="legend">
+						Location:Rack A6, codfw, Carrollton, USA;
+						Contact:noc@wikimedia.org;
+						Description:Sentry Switched CDU;
+					</param>
+					<param name="snmp-check-sysuptime" value="yes"/>
+					<param name="snmp-host" value="ps1-a6-codfw.mgmt.codfw.wmnet"/>
+					<param name="snmp-version" value="2c"/>
+					<param name="phases" value="3"/>
+					<subtree name="System">
+						<apply-template name="servertech-systemgroup"/>
+					</subtree>
+					<subtree name="Tower_A_Phase_X">
+						<param name="tower" value="1"/>
+						<param name="infeed" value="1"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_A"/>
+					</subtree>
+					<subtree name="Tower_A_Phase_Y">
+						<param name="tower" value="1"/>
+						<param name="infeed" value="2"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_A"/>
+					</subtree>
+					<subtree name="Tower_A_Phase_Z">
+						<param name="tower" value="1"/>
+						<param name="infeed" value="3"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_A"/>
+					</subtree>
+					<subtree name="Tower_B_Phase_X">
+						<param name="tower" value="2"/>
+						<param name="infeed" value="1"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_B"/>
+					</subtree>
+					<subtree name="Tower_B_Phase_Y">
+						<param name="tower" value="2"/>
+						<param name="infeed" value="2"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_B"/>
+					</subtree>
+					<subtree name="Tower_B_Phase_Z">
+						<param name="tower" value="2"/>
+						<param name="infeed" value="3"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_B"/>
+					</subtree>
+					<!-- Aggregates -->
+					<subtree name="Tower_A">
+						<param name="aggregate-id" value="tower1"/>
+						<param name="aggregate-name" value="Tower A"/>
+						<param name="tower" value="1"/>
+						<param name="precedence" value="60"/>
+						<apply-template name="servertech-infeed-aggr"/>
+						<!-- Define the RPN expressions for all leaves -->
+						<param name="tower-path" value="../Tower_A"/>
+						<apply-template name="servertech-tower-3ph-aggregate-expressions"/>
+					</subtree>
+					<subtree name="Tower_B">
+						<param name="aggregate-id" value="tower2"/>
+						<param name="aggregate-name" value="Tower B"/>
+						<param name="tower" value="2"/>
+						<param name="precedence" value="60"/>
+						<apply-template name="servertech-infeed-aggr"/>
+						<!-- Define the RPN expressions for all leaves -->
+						<param name="tower-path" value="../Tower_B"/>
+						<apply-template name="servertech-tower-3ph-aggregate-expressions"/>
+					</subtree>
+					<subtree name="Sensor_1">
+						<param name="envmon" value="1"/>
+						<param name="th" value="1"/>
+						<apply-template name="servertech-temphumidity"/>
+					</subtree>
+					<subtree name="Sensor_2">
+						<param name="envmon" value="1"/>
+						<param name="th" value="2"/>
+						<apply-template name="servertech-temphumidity"/>
+					</subtree>
+				</subtree>
+
+				<subtree name="ps1-a7-codfw">
+					<param name="system-id" value="ps1-a7-codfw"/>
+					<param name="data-dir" value="/var/lib/torrus/collector_rrd"/>
+					<apply-template name="snmp-defaults"/>
+					<param name="legend">
+						Location:Rack A7, codfw, Carrollton, USA;
+						Contact:noc@wikimedia.org;
+						Description:Sentry Smart CDU;
+					</param>
+					<param name="snmp-check-sysuptime" value="yes"/>
+					<param name="snmp-host" value="ps1-a7-codfw.mgmt.codfw.wmnet"/>
+					<param name="snmp-version" value="2c"/>
+					<param name="phases" value="3"/>
+					<subtree name="System">
+						<apply-template name="servertech-systemgroup"/>
+					</subtree>
+					<subtree name="Tower_A_Phase_X">
+						<param name="tower" value="1"/>
+						<param name="infeed" value="1"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_A"/>
+					</subtree>
+					<subtree name="Tower_A_Phase_Y">
+						<param name="tower" value="1"/>
+						<param name="infeed" value="2"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_A"/>
+					</subtree>
+					<subtree name="Tower_A_Phase_Z">
+						<param name="tower" value="1"/>
+						<param name="infeed" value="3"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_A"/>
+					</subtree>
+					<subtree name="Tower_B_Phase_X">
+						<param name="tower" value="2"/>
+						<param name="infeed" value="1"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_B"/>
+					</subtree>
+					<subtree name="Tower_B_Phase_Y">
+						<param name="tower" value="2"/>
+						<param name="infeed" value="2"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_B"/>
+					</subtree>
+					<subtree name="Tower_B_Phase_Z">
+						<param name="tower" value="2"/>
+						<param name="infeed" value="3"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_B"/>
+					</subtree>
+					<subtree name="Sensor_1">
+						<param name="envmon" value="1"/>
+						<param name="th" value="1"/>
+						<apply-template name="servertech-temphumidity"/>
+					</subtree>
+					<subtree name="Sensor_2">
+						<param name="envmon" value="1"/>
+						<param name="th" value="2"/>
+						<apply-template name="servertech-temphumidity"/>
+					</subtree>
+					<!-- Aggregates -->
+					<subtree name="Tower_A">
+						<param name="aggregate-id" value="tower1"/>
+						<param name="aggregate-name" value="Tower A"/>
+						<param name="tower" value="1"/>
+						<param name="precedence" value="60"/>
+						<apply-template name="servertech-infeed-aggr"/>
+						<!-- Define the RPN expressions for all leaves -->
+						<param name="tower-path" value="../Tower_A"/>
+						<apply-template name="servertech-tower-3ph-aggregate-expressions"/>
+					</subtree>
+					<subtree name="Tower_B">
+						<param name="aggregate-id" value="tower2"/>
+						<param name="aggregate-name" value="Tower B"/>
+						<param name="tower" value="2"/>
+						<param name="precedence" value="60"/>
+						<apply-template name="servertech-infeed-aggr"/>
+						<!-- Define the RPN expressions for all leaves -->
+						<param name="tower-path" value="../Tower_B"/>
+						<apply-template name="servertech-tower-3ph-aggregate-expressions"/>
+					</subtree>
+				</subtree>
+
+				<subtree name="ps1-a8-codfw">
+					<param name="system-id" value="ps1-a8-codfw"/>
+					<param name="data-dir" value="/var/lib/torrus/collector_rrd"/>
+					<apply-template name="snmp-defaults"/>
+					<param name="legend">
+						Location:Rack A8, codfw, Carrollton, USA;
+						Contact:noc@wikimedia.org;
+						Description:Sentry Smart CDU;
+					</param>
+					<param name="snmp-check-sysuptime" value="yes"/>
+					<param name="snmp-host" value="ps1-a8-codfw.mgmt.codfw.wmnet"/>
+					<param name="snmp-version" value="2c"/>
+					<param name="phases" value="3"/>
+					<subtree name="System">
+						<apply-template name="servertech-systemgroup"/>
+					</subtree>
+					<subtree name="Tower_A_Phase_X">
+						<param name="tower" value="1"/>
+						<param name="infeed" value="1"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_A"/>
+					</subtree>
+					<subtree name="Tower_A_Phase_Y">
+						<param name="tower" value="1"/>
+						<param name="infeed" value="2"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_A"/>
+					</subtree>
+					<subtree name="Tower_A_Phase_Z">
+						<param name="tower" value="1"/>
+						<param name="infeed" value="3"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_A"/>
+					</subtree>
+					<subtree name="Tower_B_Phase_X">
+						<param name="tower" value="2"/>
+						<param name="infeed" value="1"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_B"/>
+					</subtree>
+					<subtree name="Tower_B_Phase_Y">
+						<param name="tower" value="2"/>
+						<param name="infeed" value="2"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_B"/>
+					</subtree>
+					<subtree name="Tower_B_Phase_Z">
+						<param name="tower" value="2"/>
+						<param name="infeed" value="3"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_B"/>
+					</subtree>
+					<subtree name="Sensor_1">
+						<param name="envmon" value="1"/>
+						<param name="th" value="1"/>
+						<apply-template name="servertech-temphumidity"/>
+					</subtree>
+					<subtree name="Sensor_2">
+						<param name="envmon" value="1"/>
+						<param name="th" value="2"/>
+						<apply-template name="servertech-temphumidity"/>
+					</subtree>
+					<!-- Aggregates -->
+					<subtree name="Tower_A">
+						<param name="aggregate-id" value="tower1"/>
+						<param name="aggregate-name" value="Tower A"/>
+						<param name="tower" value="1"/>
+						<param name="precedence" value="60"/>
+						<apply-template name="servertech-infeed-aggr"/>
+						<!-- Define the RPN expressions for all leaves -->
+						<param name="tower-path" value="../Tower_A"/>
+						<apply-template name="servertech-tower-3ph-aggregate-expressions"/>
+					</subtree>
+					<subtree name="Tower_B">
+						<param name="aggregate-id" value="tower2"/>
+						<param name="aggregate-name" value="Tower B"/>
+						<param name="tower" value="2"/>
+						<param name="precedence" value="60"/>
+						<apply-template name="servertech-infeed-aggr"/>
+						<!-- Define the RPN expressions for all leaves -->
+						<param name="tower-path" value="../Tower_B"/>
+						<apply-template name="servertech-tower-3ph-aggregate-expressions"/>
+					</subtree>
+				</subtree>
+
+				<subtree name="ps1-b1-codfw">
+					<param name="system-id" value="ps1-b1-codfw"/>
+					<param name="data-dir" value="/var/lib/torrus/collector_rrd"/>
+					<apply-template name="snmp-defaults"/>
+					<param name="legend">
+						Location:Rack B1, codfw, Carrollton, USA;
+						Contact:noc@wikimedia.org;
+						Description:Sentry Smart CDU;
+					</param>
+					<param name="snmp-check-sysuptime" value="yes"/>
+					<param name="snmp-host" value="ps1-b1-codfw.mgmt.codfw.wmnet"/>
+					<param name="snmp-version" value="2c"/>
+					<param name="phases" value="3"/>
+					<subtree name="System">
+						<apply-template name="servertech-systemgroup"/>
+					</subtree>
+					<subtree name="Tower_A_Phase_X">
+						<param name="tower" value="1"/>
+						<param name="infeed" value="1"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_A"/>
+					</subtree>
+					<subtree name="Tower_A_Phase_Y">
+						<param name="tower" value="1"/>
+						<param name="infeed" value="2"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_A"/>
+					</subtree>
+					<subtree name="Tower_A_Phase_Z">
+						<param name="tower" value="1"/>
+						<param name="infeed" value="3"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_A"/>
+					</subtree>
+					<subtree name="Tower_B_Phase_X">
+						<param name="tower" value="2"/>
+						<param name="infeed" value="1"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_B"/>
+					</subtree>
+					<subtree name="Tower_B_Phase_Y">
+						<param name="tower" value="2"/>
+						<param name="infeed" value="2"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_B"/>
+					</subtree>
+					<subtree name="Tower_B_Phase_Z">
+						<param name="tower" value="2"/>
+						<param name="infeed" value="3"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_B"/>
+					</subtree>
+					<subtree name="Sensor_1">
+						<param name="envmon" value="1"/>
+						<param name="th" value="1"/>
+						<apply-template name="servertech-temphumidity"/>
+					</subtree>
+					<subtree name="Sensor_2">
+						<param name="envmon" value="1"/>
+						<param name="th" value="2"/>
+						<apply-template name="servertech-temphumidity"/>
+					</subtree>
+					<!-- Aggregates -->
+					<subtree name="Tower_A">
+						<param name="aggregate-id" value="tower1"/>
+						<param name="aggregate-name" value="Tower A"/>
+						<param name="tower" value="1"/>
+						<param name="precedence" value="60"/>
+						<apply-template name="servertech-infeed-aggr"/>
+						<!-- Define the RPN expressions for all leaves -->
+						<param name="tower-path" value="../Tower_A"/>
+						<apply-template name="servertech-tower-3ph-aggregate-expressions"/>
+					</subtree>
+					<subtree name="Tower_B">
+						<param name="aggregate-id" value="tower2"/>
+						<param name="aggregate-name" value="Tower B"/>
+						<param name="tower" value="2"/>
+						<param name="precedence" value="60"/>
+						<apply-template name="servertech-infeed-aggr"/>
+						<!-- Define the RPN expressions for all leaves -->
+						<param name="tower-path" value="../Tower_B"/>
+						<apply-template name="servertech-tower-3ph-aggregate-expressions"/>
+					</subtree>
+				</subtree>
+
+				<subtree name="ps1-b2-codfw">
+					<param name="system-id" value="ps1-b2-codfw"/>
+					<param name="data-dir" value="/var/lib/torrus/collector_rrd"/>
+					<apply-template name="snmp-defaults"/>
+					<param name="legend">
+						Location:Rack B2, codfw, Carrollton, USA;
+						Contact:noc@wikimedia.org;
+						Description:Sentry Smart CDU;
+					</param>
+					<param name="snmp-check-sysuptime" value="yes"/>
+					<param name="snmp-host" value="ps1-b2-codfw.mgmt.codfw.wmnet"/>
+					<param name="snmp-version" value="2c"/>
+					<param name="phases" value="3"/>
+					<subtree name="System">
+						<apply-template name="servertech-systemgroup"/>
+					</subtree>
+					<subtree name="Tower_A_Phase_X">
+						<param name="tower" value="1"/>
+						<param name="infeed" value="1"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_A"/>
+					</subtree>
+					<subtree name="Tower_A_Phase_Y">
+						<param name="tower" value="1"/>
+						<param name="infeed" value="2"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_A"/>
+					</subtree>
+					<subtree name="Tower_A_Phase_Z">
+						<param name="tower" value="1"/>
+						<param name="infeed" value="3"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_A"/>
+					</subtree>
+					<subtree name="Tower_B_Phase_X">
+						<param name="tower" value="2"/>
+						<param name="infeed" value="1"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_B"/>
+					</subtree>
+					<subtree name="Tower_B_Phase_Y">
+						<param name="tower" value="2"/>
+						<param name="infeed" value="2"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_B"/>
+					</subtree>
+					<subtree name="Tower_B_Phase_Z">
+						<param name="tower" value="2"/>
+						<param name="infeed" value="3"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_B"/>
+					</subtree>
+					<subtree name="Sensor_1">
+						<param name="envmon" value="1"/>
+						<param name="th" value="1"/>
+						<apply-template name="servertech-temphumidity"/>
+					</subtree>
+					<subtree name="Sensor_2">
+						<param name="envmon" value="1"/>
+						<param name="th" value="2"/>
+						<apply-template name="servertech-temphumidity"/>
+					</subtree>
+
+					<!-- Aggregates -->
+					<subtree name="Tower_A">
+						<param name="aggregate-id" value="tower1"/>
+						<param name="aggregate-name" value="Tower A"/>
+						<param name="tower" value="1"/>
+						<param name="precedence" value="60"/>
+						<apply-template name="servertech-infeed-aggr"/>
+						<!-- Define the RPN expressions for all leaves -->
+						<param name="tower-path" value="../Tower_A"/>
+						<apply-template name="servertech-tower-3ph-aggregate-expressions"/>
+					</subtree>
+					<subtree name="Tower_B">
+						<param name="aggregate-id" value="tower2"/>
+						<param name="aggregate-name" value="Tower B"/>
+						<param name="tower" value="2"/>
+						<param name="precedence" value="60"/>
+						<apply-template name="servertech-infeed-aggr"/>
+
+						<!-- Define the RPN expressions for all leaves -->
+						<param name="tower-path" value="../Tower_B"/>
+						<apply-template name="servertech-tower-3ph-aggregate-expressions"/>
+					</subtree>
+				</subtree>
+
+				<subtree name="ps1-b3-codfw">
+					<param name="system-id" value="ps1-b3-codfw"/>
+					<param name="data-dir" value="/var/lib/torrus/collector_rrd"/>
+					<apply-template name="snmp-defaults"/>
+					<param name="legend">
+						Location:Rack B3, codfw, Carrollton, USA;
+						Contact:noc@wikimedia.org;
+						Description:Sentry Switched CDU;
+					</param>
+					<param name="snmp-check-sysuptime" value="yes"/>
+					<param name="snmp-host" value="ps1-b3-codfw.mgmt.codfw.wmnet"/>
+					<param name="snmp-version" value="2c"/>
+					<param name="phases" value="3"/>
+					<subtree name="System">
+						<apply-template name="servertech-systemgroup"/>
+					</subtree>
+					<subtree name="Tower_A_Phase_X">
+						<param name="tower" value="1"/>
+						<param name="infeed" value="1"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_A"/>
+					</subtree>
+					<subtree name="Tower_A_Phase_Y">
+						<param name="tower" value="1"/>
+						<param name="infeed" value="2"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_A"/>
+					</subtree>
+					<subtree name="Tower_A_Phase_Z">
+						<param name="tower" value="1"/>
+						<param name="infeed" value="3"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_A"/>
+					</subtree>
+					<subtree name="Tower_B_Phase_X">
+						<param name="tower" value="2"/>
+						<param name="infeed" value="1"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_B"/>
+					</subtree>
+					<subtree name="Tower_B_Phase_Y">
+						<param name="tower" value="2"/>
+						<param name="infeed" value="2"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_B"/>
+					</subtree>
+					<subtree name="Tower_B_Phase_Z">
+						<param name="tower" value="2"/>
+						<param name="infeed" value="3"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_B"/>
+					</subtree>
+
+					<!-- Aggregates -->
+					<subtree name="Tower_A">
+						<param name="aggregate-id" value="tower1"/>
+						<param name="aggregate-name" value="Tower A"/>
+						<param name="tower" value="1"/>
+						<param name="precedence" value="60"/>
+						<apply-template name="servertech-infeed-aggr"/>
+
+						<!-- Define the RPN expressions for all leaves -->
+						<param name="tower-path" value="../Tower_A"/>
+						<apply-template name="servertech-tower-3ph-aggregate-expressions"/>
+					</subtree>
+					<subtree name="Tower_B">
+						<param name="aggregate-id" value="tower2"/>
+						<param name="aggregate-name" value="Tower B"/>
+						<param name="tower" value="2"/>
+						<param name="precedence" value="60"/>
+						<apply-template name="servertech-infeed-aggr"/>
+
+						<!-- Define the RPN expressions for all leaves -->
+						<param name="tower-path" value="../Tower_B"/>
+						<apply-template name="servertech-tower-3ph-aggregate-expressions"/>
+					</subtree>
+					<subtree name="Sensor_1">
+						<param name="envmon" value="1"/>
+						<param name="th" value="1"/>
+						<apply-template name="servertech-temphumidity"/>
+					</subtree>
+					<subtree name="Sensor_2">
+						<param name="envmon" value="1"/>
+						<param name="th" value="2"/>
+						<apply-template name="servertech-temphumidity"/>
+					</subtree>
+				</subtree>
+
+				<subtree name="ps1-b4-codfw">
+					<param name="system-id" value="ps1-b4-codfw"/>
+					<param name="data-dir" value="/var/lib/torrus/collector_rrd"/>
+					<apply-template name="snmp-defaults"/>
+					<param name="legend">
+						Location:Rack B4, codfw, Carrollton, USA;
+						Contact:noc@wikimedia.org;
+						Description:Sentry Switched CDU;
+					</param>
+					<param name="snmp-check-sysuptime" value="yes"/>
+					<param name="snmp-host" value="ps1-b4-codfw.mgmt.codfw.wmnet"/>
+					<param name="snmp-version" value="2c"/>
+					<param name="phases" value="3"/>
+					<subtree name="System">
+						<apply-template name="servertech-systemgroup"/>
+					</subtree>
+					<subtree name="Tower_A_Phase_X">
+						<param name="tower" value="1"/>
+						<param name="infeed" value="1"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_A"/>
+					</subtree>
+					<subtree name="Tower_A_Phase_Y">
+						<param name="tower" value="1"/>
+						<param name="infeed" value="2"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_A"/>
+					</subtree>
+					<subtree name="Tower_A_Phase_Z">
+						<param name="tower" value="1"/>
+						<param name="infeed" value="3"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_A"/>
+					</subtree>
+					<subtree name="Tower_B_Phase_X">
+						<param name="tower" value="2"/>
+						<param name="infeed" value="1"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_B"/>
+					</subtree>
+					<subtree name="Tower_B_Phase_Y">
+						<param name="tower" value="2"/>
+						<param name="infeed" value="2"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_B"/>
+					</subtree>
+					<subtree name="Tower_B_Phase_Z">
+						<param name="tower" value="2"/>
+						<param name="infeed" value="3"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_B"/>
+					</subtree>
+
+					<!-- Aggregates -->
+					<subtree name="Tower_A">
+						<param name="aggregate-id" value="tower1"/>
+						<param name="aggregate-name" value="Tower A"/>
+						<param name="tower" value="1"/>
+						<param name="precedence" value="60"/>
+						<apply-template name="servertech-infeed-aggr"/>
+						<!-- Define the RPN expressions for all leaves -->
+						<param name="tower-path" value="../Tower_A"/>
+						<apply-template name="servertech-tower-3ph-aggregate-expressions"/>
+					</subtree>
+					<subtree name="Tower_B">
+						<param name="aggregate-id" value="tower2"/>
+						<param name="aggregate-name" value="Tower B"/>
+						<param name="tower" value="2"/>
+						<param name="precedence" value="60"/>
+						<apply-template name="servertech-infeed-aggr"/>
+
+						<!-- Define the RPN expressions for all leaves -->
+						<param name="tower-path" value="../Tower_B"/>
+						<apply-template name="servertech-tower-3ph-aggregate-expressions"/>
+					</subtree>
+					<subtree name="Sensor_1">
+						<param name="envmon" value="1"/>
+						<param name="th" value="1"/>
+						<apply-template name="servertech-temphumidity"/>
+					</subtree>
+					<subtree name="Sensor_2">
+						<param name="envmon" value="1"/>
+						<param name="th" value="2"/>
+						<apply-template name="servertech-temphumidity"/>
+					</subtree>
+				</subtree>
+
+				<subtree name="ps1-b5-codfw">
+					<param name="system-id" value="ps1-b5-codfw"/>
+					<param name="data-dir" value="/var/lib/torrus/collector_rrd"/>
+					<apply-template name="snmp-defaults"/>
+					<param name="legend">
+						Location:Rack B5, codfw, Carrollton, USA;
+						Contact:noc@wikimedia.org;
+						Description:Sentry Smart CDU;
+					</param>
+					<param name="snmp-check-sysuptime" value="yes"/>
+					<param name="snmp-host" value="ps1-b5-codfw.mgmt.codfw.wmnet"/>
+					<param name="snmp-version" value="2c"/>
+					<param name="phases" value="3"/>
+					<subtree name="System">
+						<apply-template name="servertech-systemgroup"/>
+					</subtree>
+					<subtree name="Tower_A_Phase_X">
+						<param name="tower" value="1"/>
+						<param name="infeed" value="1"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_A"/>
+					</subtree>
+					<subtree name="Tower_A_Phase_Y">
+						<param name="tower" value="1"/>
+						<param name="infeed" value="2"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_A"/>
+					</subtree>
+					<subtree name="Tower_A_Phase_Z">
+						<param name="tower" value="1"/>
+						<param name="infeed" value="3"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_A"/>
+					</subtree>
+					<subtree name="Tower_B_Phase_X">
+						<param name="tower" value="2"/>
+						<param name="infeed" value="1"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_B"/>
+					</subtree>
+					<subtree name="Tower_B_Phase_Y">
+						<param name="tower" value="2"/>
+						<param name="infeed" value="2"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_B"/>
+					</subtree>
+					<subtree name="Tower_B_Phase_Z">
+						<param name="tower" value="2"/>
+						<param name="infeed" value="3"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_B"/>
+					</subtree>
+					<subtree name="Sensor_1">
+						<param name="envmon" value="1"/>
+						<param name="th" value="1"/>
+						<apply-template name="servertech-temphumidity"/>
+					</subtree>
+					<subtree name="Sensor_2">
+						<param name="envmon" value="1"/>
+						<param name="th" value="2"/>
+						<apply-template name="servertech-temphumidity"/>
+					</subtree>
+
+					<!-- Aggregates -->
+					<subtree name="Tower_A">
+						<param name="aggregate-id" value="tower1"/>
+						<param name="aggregate-name" value="Tower A"/>
+						<param name="tower" value="1"/>
+						<param name="precedence" value="60"/>
+						<apply-template name="servertech-infeed-aggr"/>
+
+						<!-- Define the RPN expressions for all leaves -->
+						<param name="tower-path" value="../Tower_A"/>
+						<apply-template name="servertech-tower-3ph-aggregate-expressions"/>
+					</subtree>
+					<subtree name="Tower_B">
+						<param name="aggregate-id" value="tower2"/>
+						<param name="aggregate-name" value="Tower B"/>
+						<param name="tower" value="2"/>
+						<param name="precedence" value="60"/>
+						<apply-template name="servertech-infeed-aggr"/>
+
+						<!-- Define the RPN expressions for all leaves -->
+						<param name="tower-path" value="../Tower_B"/>
+						<apply-template name="servertech-tower-3ph-aggregate-expressions"/>
+					</subtree>
+				</subtree>
+
+				<subtree name="ps1-b6-codfw">
+					<param name="system-id" value="ps1-b6-codfw"/>
+					<param name="data-dir" value="/var/lib/torrus/collector_rrd"/>
+					<apply-template name="snmp-defaults"/>
+					<param name="legend">
+						Location:Rack B6, codfw, Carrollton, USA;
+						Contact:noc@wikimedia.org;
+						Description:Sentry Smart CDU;
+					</param>
+					<param name="snmp-check-sysuptime" value="yes"/>
+					<param name="snmp-host" value="ps1-b6-codfw.mgmt.codfw.wmnet"/>
+					<param name="snmp-version" value="2c"/>
+					<param name="phases" value="3"/>
+					<subtree name="System">
+						<apply-template name="servertech-systemgroup"/>
+					</subtree>
+					<subtree name="Tower_A_Phase_X">
+						<param name="tower" value="1"/>
+						<param name="infeed" value="1"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_A"/>
+					</subtree>
+					<subtree name="Tower_A_Phase_Y">
+						<param name="tower" value="1"/>
+						<param name="infeed" value="2"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_A"/>
+					</subtree>
+					<subtree name="Tower_A_Phase_Z">
+						<param name="tower" value="1"/>
+						<param name="infeed" value="3"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_A"/>
+					</subtree>
+					<subtree name="Tower_B_Phase_X">
+						<param name="tower" value="2"/>
+						<param name="infeed" value="1"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_B"/>
+					</subtree>
+					<subtree name="Tower_B_Phase_Y">
+						<param name="tower" value="2"/>
+						<param name="infeed" value="2"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_B"/>
+					</subtree>
+					<subtree name="Tower_B_Phase_Z">
+						<param name="tower" value="2"/>
+						<param name="infeed" value="3"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_B"/>
+					</subtree>
+					<subtree name="Sensor_1">
+						<param name="envmon" value="1"/>
+						<param name="th" value="1"/>
+						<apply-template name="servertech-temphumidity"/>
+					</subtree>
+					<subtree name="Sensor_2">
+						<param name="envmon" value="1"/>
+						<param name="th" value="2"/>
+						<apply-template name="servertech-temphumidity"/>
+					</subtree>
+
+					<!-- Aggregates -->
+					<subtree name="Tower_A">
+						<param name="aggregate-id" value="tower1"/>
+						<param name="aggregate-name" value="Tower A"/>
+						<param name="tower" value="1"/>
+						<param name="precedence" value="60"/>
+						<apply-template name="servertech-infeed-aggr"/>
+
+						<!-- Define the RPN expressions for all leaves -->
+						<param name="tower-path" value="../Tower_A"/>
+						<apply-template name="servertech-tower-3ph-aggregate-expressions"/>
+					</subtree>
+					<subtree name="Tower_B">
+						<param name="aggregate-id" value="tower2"/>
+						<param name="aggregate-name" value="Tower B"/>
+						<param name="tower" value="2"/>
+						<param name="precedence" value="60"/>
+						<apply-template name="servertech-infeed-aggr"/>
+
+						<!-- Define the RPN expressions for all leaves -->
+						<param name="tower-path" value="../Tower_B"/>
+						<apply-template name="servertech-tower-3ph-aggregate-expressions"/>
+					</subtree>
+				</subtree>
+
+				<subtree name="ps1-b7-codfw">
+					<param name="system-id" value="ps1-b7-codfw"/>
+					<param name="data-dir" value="/var/lib/torrus/collector_rrd"/>
+					<apply-template name="snmp-defaults"/>
+					<param name="legend">
+						Location:Rack B7, codfw, Carrollton, USA;
+						Contact:noc@wikimedia.org;
+						Description:Sentry Smart CDU;
+					</param>
+					<param name="snmp-check-sysuptime" value="yes"/>
+					<param name="snmp-host" value="ps1-b7-codfw.mgmt.codfw.wmnet"/>
+					<param name="snmp-version" value="2c"/>
+					<param name="phases" value="3"/>
+					<subtree name="System">
+						<apply-template name="servertech-systemgroup"/>
+					</subtree>
+					<subtree name="Tower_A_Phase_X">
+						<param name="tower" value="1"/>
+						<param name="infeed" value="1"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_A"/>
+					</subtree>
+					<subtree name="Tower_A_Phase_Y">
+						<param name="tower" value="1"/>
+						<param name="infeed" value="2"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_A"/>
+					</subtree>
+					<subtree name="Tower_A_Phase_Z">
+						<param name="tower" value="1"/>
+						<param name="infeed" value="3"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_A"/>
+					</subtree>
+					<subtree name="Tower_B_Phase_X">
+						<param name="tower" value="2"/>
+						<param name="infeed" value="1"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_B"/>
+					</subtree>
+					<subtree name="Tower_B_Phase_Y">
+						<param name="tower" value="2"/>
+						<param name="infeed" value="2"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_B"/>
+					</subtree>
+					<subtree name="Tower_B_Phase_Z">
+						<param name="tower" value="2"/>
+						<param name="infeed" value="3"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_B"/>
+					</subtree>
+					<subtree name="Sensor_1">
+						<param name="envmon" value="1"/>
+						<param name="th" value="1"/>
+						<apply-template name="servertech-temphumidity"/>
+					</subtree>
+					<subtree name="Sensor_2">
+						<param name="envmon" value="1"/>
+						<param name="th" value="2"/>
+						<apply-template name="servertech-temphumidity"/>
+					</subtree>
+
+					<!-- Aggregates -->
+					<subtree name="Tower_A">
+						<param name="aggregate-id" value="tower1"/>
+						<param name="aggregate-name" value="Tower A"/>
+						<param name="tower" value="1"/>
+						<param name="precedence" value="60"/>
+						<apply-template name="servertech-infeed-aggr"/>
+						<!-- Define the RPN expressions for all leaves -->
+						<param name="tower-path" value="../Tower_A"/>
+						<apply-template name="servertech-tower-3ph-aggregate-expressions"/>
+					</subtree>
+					<subtree name="Tower_B">
+						<param name="aggregate-id" value="tower2"/>
+						<param name="aggregate-name" value="Tower B"/>
+						<param name="tower" value="2"/>
+						<param name="precedence" value="60"/>
+						<apply-template name="servertech-infeed-aggr"/>
+
+						<!-- Define the RPN expressions for all leaves -->
+						<param name="tower-path" value="../Tower_B"/>
+						<apply-template name="servertech-tower-3ph-aggregate-expressions"/>
+					</subtree>
+				</subtree>
+
+				<subtree name="ps1-b8-codfw">
+					<param name="system-id" value="ps1-b8-codfw"/>
+					<param name="data-dir" value="/var/lib/torrus/collector_rrd"/>
+					<apply-template name="snmp-defaults"/>
+					<param name="legend">
+						Location:Rack B8, codfw, Carrollton, USA;
+						Contact:noc@wikimedia.org;
+						Description:Sentry Smart CDU;
+					</param>
+					<param name="snmp-check-sysuptime" value="yes"/>
+					<param name="snmp-host" value="ps1-b8-codfw.mgmt.codfw.wmnet"/>
+					<param name="snmp-version" value="2c"/>
+					<param name="phases" value="3"/>
+					<subtree name="System">
+						<apply-template name="servertech-systemgroup"/>
+					</subtree>
+					<subtree name="Tower_A_Phase_X">
+						<param name="tower" value="1"/>
+						<param name="infeed" value="1"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_A"/>
+					</subtree>
+					<subtree name="Tower_A_Phase_Y">
+						<param name="tower" value="1"/>
+						<param name="infeed" value="2"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_A"/>
+					</subtree>
+					<subtree name="Tower_A_Phase_Z">
+						<param name="tower" value="1"/>
+						<param name="infeed" value="3"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_A"/>
+					</subtree>
+					<subtree name="Tower_B_Phase_X">
+						<param name="tower" value="2"/>
+						<param name="infeed" value="1"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_B"/>
+					</subtree>
+					<subtree name="Tower_B_Phase_Y">
+						<param name="tower" value="2"/>
+						<param name="infeed" value="2"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_B"/>
+					</subtree>
+					<subtree name="Tower_B_Phase_Z">
+						<param name="tower" value="2"/>
+						<param name="infeed" value="3"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_B"/>
+					</subtree>
+					<subtree name="Sensor_1">
+						<param name="envmon" value="1"/>
+						<param name="th" value="1"/>
+						<apply-template name="servertech-temphumidity"/>
+					</subtree>
+					<subtree name="Sensor_2">
+						<param name="envmon" value="1"/>
+						<param name="th" value="2"/>
+						<apply-template name="servertech-temphumidity"/>
+					</subtree>
+
+					<!-- Aggregates -->
+					<subtree name="Tower_A">
+						<param name="aggregate-id" value="tower1"/>
+						<param name="aggregate-name" value="Tower A"/>
+						<param name="tower" value="1"/>
+						<param name="precedence" value="60"/>
+						<apply-template name="servertech-infeed-aggr"/>
+
+						<!-- Define the RPN expressions for all leaves -->
+						<param name="tower-path" value="../Tower_A"/>
+						<apply-template name="servertech-tower-3ph-aggregate-expressions"/>
+					</subtree>
+					<subtree name="Tower_B">
+						<param name="aggregate-id" value="tower2"/>
+						<param name="aggregate-name" value="Tower B"/>
+						<param name="tower" value="2"/>
+						<param name="precedence" value="60"/>
+						<apply-template name="servertech-infeed-aggr"/>
+						<!-- Define the RPN expressions for all leaves -->
+						<param name="tower-path" value="../Tower_B"/>
+						<apply-template name="servertech-tower-3ph-aggregate-expressions"/>
+					</subtree>
+				</subtree>
+
+				<subtree name="ps1-c1-codfw">
+					<param name="system-id" value="ps1-c1-codfw"/>
+					<param name="data-dir" value="/var/lib/torrus/collector_rrd"/>
+					<apply-template name="snmp-defaults"/>
+					<param name="legend">
+						Location:Rack C1, codfw, Carrollton, USA;
+						Contact:noc@wikimedia.org;
+						Description:Sentry Smart CDU;
+					</param>
+					<param name="snmp-check-sysuptime" value="yes"/>
+					<param name="snmp-host" value="ps1-c1-codfw.mgmt.codfw.wmnet"/>
+					<param name="snmp-version" value="2c"/>
+					<param name="phases" value="3"/>
+					<subtree name="System">
+						<apply-template name="servertech-systemgroup"/>
+					</subtree>
+					<subtree name="Tower_A_Phase_X">
+						<param name="tower" value="1"/>
+						<param name="infeed" value="1"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_A"/>
+					</subtree>
+					<subtree name="Tower_A_Phase_Y">
+						<param name="tower" value="1"/>
+						<param name="infeed" value="2"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_A"/>
+					</subtree>
+					<subtree name="Tower_A_Phase_Z">
+						<param name="tower" value="1"/>
+						<param name="infeed" value="3"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_A"/>
+					</subtree>
+					<subtree name="Tower_B_Phase_X">
+						<param name="tower" value="2"/>
+						<param name="infeed" value="1"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_B"/>
+					</subtree>
+					<subtree name="Tower_B_Phase_Y">
+						<param name="tower" value="2"/>
+						<param name="infeed" value="2"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_B"/>
+					</subtree>
+					<subtree name="Tower_B_Phase_Z">
+						<param name="tower" value="2"/>
+						<param name="infeed" value="3"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_B"/>
+					</subtree>
+					<subtree name="Sensor_1">
+						<param name="envmon" value="1"/>
+						<param name="th" value="1"/>
+						<apply-template name="servertech-temphumidity"/>
+					</subtree>
+					<subtree name="Sensor_2">
+						<param name="envmon" value="1"/>
+						<param name="th" value="2"/>
+						<apply-template name="servertech-temphumidity"/>
+					</subtree>
+
+					<!-- Aggregates -->
+					<subtree name="Tower_A">
+						<param name="aggregate-id" value="tower1"/>
+						<param name="aggregate-name" value="Tower A"/>
+						<param name="tower" value="1"/>
+						<param name="precedence" value="60"/>
+						<apply-template name="servertech-infeed-aggr"/>
+						<!-- Define the RPN expressions for all leaves -->
+						<param name="tower-path" value="../Tower_A"/>
+						<apply-template name="servertech-tower-3ph-aggregate-expressions"/>
+					</subtree>
+					<subtree name="Tower_B">
+						<param name="aggregate-id" value="tower2"/>
+						<param name="aggregate-name" value="Tower B"/>
+						<param name="tower" value="2"/>
+						<param name="precedence" value="60"/>
+						<apply-template name="servertech-infeed-aggr"/>
+						<!-- Define the RPN expressions for all leaves -->
+						<param name="tower-path" value="../Tower_B"/>
+						<apply-template name="servertech-tower-3ph-aggregate-expressions"/>
+					</subtree>
+				</subtree>
+
+				<subtree name="ps1-c2-codfw">
+					<param name="system-id" value="ps1-c2-codfw"/>
+					<param name="data-dir" value="/var/lib/torrus/collector_rrd"/>
+					<apply-template name="snmp-defaults"/>
+					<param name="legend">
+						Location:Rack C2, codfw, Carrollton, USA;
+						Contact:noc@wikimedia.org;
+						Description:Sentry Smart CDU;
+					</param>
+					<param name="snmp-check-sysuptime" value="yes"/>
+					<param name="snmp-host" value="ps1-c2-codfw.mgmt.codfw.wmnet"/>
+					<param name="snmp-version" value="2c"/>
+					<param name="phases" value="3"/>
+					<subtree name="System">
+						<apply-template name="servertech-systemgroup"/>
+					</subtree>
+					<subtree name="Tower_A_Phase_X">
+						<param name="tower" value="1"/>
+						<param name="infeed" value="1"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_A"/>
+					</subtree>
+					<subtree name="Tower_A_Phase_Y">
+						<param name="tower" value="1"/>
+						<param name="infeed" value="2"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_A"/>
+					</subtree>
+					<subtree name="Tower_A_Phase_Z">
+						<param name="tower" value="1"/>
+						<param name="infeed" value="3"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_A"/>
+					</subtree>
+					<subtree name="Tower_B_Phase_X">
+						<param name="tower" value="2"/>
+						<param name="infeed" value="1"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_B"/>
+					</subtree>
+					<subtree name="Tower_B_Phase_Y">
+						<param name="tower" value="2"/>
+						<param name="infeed" value="2"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_B"/>
+					</subtree>
+					<subtree name="Tower_B_Phase_Z">
+						<param name="tower" value="2"/>
+						<param name="infeed" value="3"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_B"/>
+					</subtree>
+					<subtree name="Sensor_1">
+						<param name="envmon" value="1"/>
+						<param name="th" value="1"/>
+						<apply-template name="servertech-temphumidity"/>
+					</subtree>
+					<subtree name="Sensor_2">
+						<param name="envmon" value="1"/>
+						<param name="th" value="2"/>
+						<apply-template name="servertech-temphumidity"/>
+					</subtree>
+
+					<!-- Aggregates -->
+					<subtree name="Tower_A">
+						<param name="aggregate-id" value="tower1"/>
+						<param name="aggregate-name" value="Tower A"/>
+						<param name="tower" value="1"/>
+						<param name="precedence" value="60"/>
+						<apply-template name="servertech-infeed-aggr"/>
+						<!-- Define the RPN expressions for all leaves -->
+						<param name="tower-path" value="../Tower_A"/>
+						<apply-template name="servertech-tower-3ph-aggregate-expressions"/>
+					</subtree>
+					<subtree name="Tower_B">
+						<param name="aggregate-id" value="tower2"/>
+						<param name="aggregate-name" value="Tower B"/>
+						<param name="tower" value="2"/>
+						<param name="precedence" value="60"/>
+						<apply-template name="servertech-infeed-aggr"/>
+						<!-- Define the RPN expressions for all leaves -->
+						<param name="tower-path" value="../Tower_B"/>
+						<apply-template name="servertech-tower-3ph-aggregate-expressions"/>
+					</subtree>
+				</subtree>
+
+				<subtree name="ps1-c3-codfw">
+					<param name="system-id" value="ps1-c3-codfw"/>
+					<param name="data-dir" value="/var/lib/torrus/collector_rrd"/>
+					<apply-template name="snmp-defaults"/>
+					<param name="legend">
+						Location:Rack C3, codfw, Carrollton, USA;
+						Contact:noc@wikimedia.org;
+						Description:Sentry Smart CDU;
+					</param>
+					<param name="snmp-check-sysuptime" value="yes"/>
+					<param name="snmp-host" value="ps1-c3-codfw.mgmt.codfw.wmnet"/>
+					<param name="snmp-version" value="2c"/>
+					<param name="phases" value="3"/>
+
+					<subtree name="System">
+						<apply-template name="servertech-systemgroup"/>
+					</subtree>
+					<subtree name="Tower_A_Phase_X">
+						<param name="tower" value="1"/>
+						<param name="infeed" value="1"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_A"/>
+					</subtree>
+					<subtree name="Tower_A_Phase_Y">
+						<param name="tower" value="1"/>
+						<param name="infeed" value="2"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_A"/>
+					</subtree>
+					<subtree name="Tower_A_Phase_Z">
+						<param name="tower" value="1"/>
+						<param name="infeed" value="3"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_A"/>
+					</subtree>
+					<subtree name="Tower_B_Phase_X">
+						<param name="tower" value="2"/>
+						<param name="infeed" value="1"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_B"/>
+					</subtree>
+					<subtree name="Tower_B_Phase_Y">
+						<param name="tower" value="2"/>
+						<param name="infeed" value="2"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_B"/>
+					</subtree>
+					<subtree name="Tower_B_Phase_Z">
+						<param name="tower" value="2"/>
+						<param name="infeed" value="3"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_B"/>
+					</subtree>
+					<subtree name="Sensor_1">
+						<param name="envmon" value="1"/>
+						<param name="th" value="1"/>
+						<apply-template name="servertech-temphumidity"/>
+					</subtree>
+					<subtree name="Sensor_2">
+						<param name="envmon" value="1"/>
+						<param name="th" value="2"/>
+						<apply-template name="servertech-temphumidity"/>
+					</subtree>
+
+					<!-- Aggregates -->
+					<subtree name="Tower_A">
+						<param name="aggregate-id" value="tower1"/>
+						<param name="aggregate-name" value="Tower A"/>
+						<param name="tower" value="1"/>
+						<param name="precedence" value="60"/>
+						<apply-template name="servertech-infeed-aggr"/>
+
+						<!-- Define the RPN expressions for all leaves -->
+						<param name="tower-path" value="../Tower_A"/>
+						<apply-template name="servertech-tower-3ph-aggregate-expressions"/>
+					</subtree>
+					<subtree name="Tower_B">
+						<param name="aggregate-id" value="tower2"/>
+						<param name="aggregate-name" value="Tower B"/>
+						<param name="tower" value="2"/>
+						<param name="precedence" value="60"/>
+						<apply-template name="servertech-infeed-aggr"/>
+
+						<!-- Define the RPN expressions for all leaves -->
+						<param name="tower-path" value="../Tower_B"/>
+						<apply-template name="servertech-tower-3ph-aggregate-expressions"/>
+					</subtree>
+				</subtree>
+
+				<subtree name="ps1-c4-codfw">
+					<param name="system-id" value="ps1-c4-codfw"/>
+					<param name="data-dir" value="/var/lib/torrus/collector_rrd"/>
+					<apply-template name="snmp-defaults"/>
+					<param name="legend">
+						Location:Rack C4, codfw, Carrollton, USA;
+						Contact:noc@wikimedia.org;
+						Description:Sentry Smart CDU;
+					</param>
+					<param name="snmp-check-sysuptime" value="yes"/>
+					<param name="snmp-host" value="ps1-c4-codfw.mgmt.codfw.wmnet"/>
+					<param name="snmp-version" value="2c"/>
+					<param name="phases" value="3"/>
+					<subtree name="System">
+						<apply-template name="servertech-systemgroup"/>
+					</subtree>
+					<subtree name="Tower_A_Phase_X">
+						<param name="tower" value="1"/>
+						<param name="infeed" value="1"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_A"/>
+					</subtree>
+					<subtree name="Tower_A_Phase_Y">
+						<param name="tower" value="1"/>
+						<param name="infeed" value="2"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_A"/>
+					</subtree>
+					<subtree name="Tower_A_Phase_Z">
+						<param name="tower" value="1"/>
+						<param name="infeed" value="3"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_A"/>
+					</subtree>
+
+					<subtree name="Tower_B_Phase_X">
+						<param name="tower" value="2"/>
+						<param name="infeed" value="1"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_B"/>
+					</subtree>
+					<subtree name="Tower_B_Phase_Y">
+						<param name="tower" value="2"/>
+						<param name="infeed" value="2"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_B"/>
+					</subtree>
+					<subtree name="Tower_B_Phase_Z">
+						<param name="tower" value="2"/>
+						<param name="infeed" value="3"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_B"/>
+					</subtree>
+
+					<subtree name="Sensor_1">
+						<param name="envmon" value="1"/>
+						<param name="th" value="1"/>
+						<apply-template name="servertech-temphumidity"/>
+					</subtree>
+					<subtree name="Sensor_2">
+						<param name="envmon" value="1"/>
+						<param name="th" value="2"/>
+						<apply-template name="servertech-temphumidity"/>
+					</subtree>
+
+					<!-- Aggregates -->
+					<subtree name="Tower_A">
+						<param name="aggregate-id" value="tower1"/>
+						<param name="aggregate-name" value="Tower A"/>
+						<param name="tower" value="1"/>
+						<param name="precedence" value="60"/>
+						<apply-template name="servertech-infeed-aggr"/>
+
+						<!-- Define the RPN expressions for all leaves -->
+						<param name="tower-path" value="../Tower_A"/>
+						<apply-template name="servertech-tower-3ph-aggregate-expressions"/>
+					</subtree>
+					<subtree name="Tower_B">
+						<param name="aggregate-id" value="tower2"/>
+						<param name="aggregate-name" value="Tower B"/>
+						<param name="tower" value="2"/>
+						<param name="precedence" value="60"/>
+						<apply-template name="servertech-infeed-aggr"/>
+						<!-- Define the RPN expressions for all leaves -->
+						<param name="tower-path" value="../Tower_B"/>
+						<apply-template name="servertech-tower-3ph-aggregate-expressions"/>
+					</subtree>
+				</subtree>
+
+				<subtree name="ps1-c5-codfw">
+					<param name="system-id" value="ps1-c5-codfw"/>
+					<param name="data-dir" value="/var/lib/torrus/collector_rrd"/>
+					<apply-template name="snmp-defaults"/>
+					<param name="legend">
+						Location:Rack C5, codfw, Carrollton, USA;
+						Contact:noc@wikimedia.org;
+						Description:Sentry Smart CDU;
+					</param>
+					<param name="snmp-check-sysuptime" value="yes"/>
+					<param name="snmp-host" value="ps1-c5-codfw.mgmt.codfw.wmnet"/>
+					<param name="snmp-version" value="2c"/>
+					<param name="phases" value="3"/>
+					<subtree name="System">
+						<apply-template name="servertech-systemgroup"/>
+					</subtree>
+					<subtree name="Tower_A_Phase_X">
+						<param name="tower" value="1"/>
+						<param name="infeed" value="1"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_A"/>
+					</subtree>
+					<subtree name="Tower_A_Phase_Y">
+						<param name="tower" value="1"/>
+						<param name="infeed" value="2"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_A"/>
+					</subtree>
+					<subtree name="Tower_A_Phase_Z">
+						<param name="tower" value="1"/>
+						<param name="infeed" value="3"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_A"/>
+					</subtree>
+					<subtree name="Tower_B_Phase_X">
+						<param name="tower" value="2"/>
+						<param name="infeed" value="1"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_B"/>
+					</subtree>
+					<subtree name="Tower_B_Phase_Y">
+						<param name="tower" value="2"/>
+						<param name="infeed" value="2"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_B"/>
+					</subtree>
+					<subtree name="Tower_B_Phase_Z">
+						<param name="tower" value="2"/>
+						<param name="infeed" value="3"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_B"/>
+					</subtree>
+					<subtree name="Sensor_1">
+						<param name="envmon" value="1"/>
+						<param name="th" value="1"/>
+						<apply-template name="servertech-temphumidity"/>
+					</subtree>
+					<subtree name="Sensor_2">
+						<param name="envmon" value="1"/>
+						<param name="th" value="2"/>
+						<apply-template name="servertech-temphumidity"/>
+					</subtree>
+
+					<!-- Aggregates -->
+					<subtree name="Tower_A">
+						<param name="aggregate-id" value="tower1"/>
+						<param name="aggregate-name" value="Tower A"/>
+						<param name="tower" value="1"/>
+						<param name="precedence" value="60"/>
+						<apply-template name="servertech-infeed-aggr"/>
+
+						<!-- Define the RPN expressions for all leaves -->
+						<param name="tower-path" value="../Tower_A"/>
+						<apply-template name="servertech-tower-3ph-aggregate-expressions"/>
+					</subtree>
+					<subtree name="Tower_B">
+						<param name="aggregate-id" value="tower2"/>
+						<param name="aggregate-name" value="Tower B"/>
+						<param name="tower" value="2"/>
+						<param name="precedence" value="60"/>
+						<apply-template name="servertech-infeed-aggr"/>
+
+						<!-- Define the RPN expressions for all leaves -->
+						<param name="tower-path" value="../Tower_B"/>
+						<apply-template name="servertech-tower-3ph-aggregate-expressions"/>
+					</subtree>
+				</subtree>
+
+				<subtree name="ps1-c6-codfw">
+					<param name="system-id" value="ps1-c6-codfw"/>
+					<param name="data-dir" value="/var/lib/torrus/collector_rrd"/>
+					<apply-template name="snmp-defaults"/>
+					<param name="legend">
+						Location:Rack C6, codfw, Carrollton, USA;
+						Contact:noc@wikimedia.org;
+						Description:Sentry Smart CDU;
+					</param>
+					<param name="snmp-check-sysuptime" value="yes"/>
+					<param name="snmp-host" value="ps1-c6-codfw.mgmt.codfw.wmnet"/>
+					<param name="snmp-version" value="2c"/>
+					<param name="phases" value="3"/>
+					<subtree name="System">
+						<apply-template name="servertech-systemgroup"/>
+					</subtree>
+					<subtree name="Tower_A_Phase_X">
+						<param name="tower" value="1"/>
+						<param name="infeed" value="1"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_A"/>
+					</subtree>
+					<subtree name="Tower_A_Phase_Y">
+						<param name="tower" value="1"/>
+						<param name="infeed" value="2"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_A"/>
+					</subtree>
+					<subtree name="Tower_A_Phase_Z">
+						<param name="tower" value="1"/>
+						<param name="infeed" value="3"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_A"/>
+					</subtree>
+
+
+					<subtree name="Tower_B_Phase_X">
+						<param name="tower" value="2"/>
+						<param name="infeed" value="1"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_B"/>
+					</subtree>
+					<subtree name="Tower_B_Phase_Y">
+						<param name="tower" value="2"/>
+						<param name="infeed" value="2"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_B"/>
+					</subtree>
+					<subtree name="Tower_B_Phase_Z">
+						<param name="tower" value="2"/>
+						<param name="infeed" value="3"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_B"/>
+					</subtree>
+
+					<subtree name="Sensor_1">
+						<param name="envmon" value="1"/>
+						<param name="th" value="1"/>
+						<apply-template name="servertech-temphumidity"/>
+					</subtree>
+					<subtree name="Sensor_2">
+						<param name="envmon" value="1"/>
+						<param name="th" value="2"/>
+						<apply-template name="servertech-temphumidity"/>
+					</subtree>
+
+					<!-- Aggregates -->
+					<subtree name="Tower_A">
+						<param name="aggregate-id" value="tower1"/>
+						<param name="aggregate-name" value="Tower A"/>
+						<param name="tower" value="1"/>
+						<param name="precedence" value="60"/>
+						<apply-template name="servertech-infeed-aggr"/>
+
+						<!-- Define the RPN expressions for all leaves -->
+						<param name="tower-path" value="../Tower_A"/>
+						<apply-template name="servertech-tower-3ph-aggregate-expressions"/>
+					</subtree>
+					<subtree name="Tower_B">
+						<param name="aggregate-id" value="tower2"/>
+						<param name="aggregate-name" value="Tower B"/>
+						<param name="tower" value="2"/>
+						<param name="precedence" value="60"/>
+						<apply-template name="servertech-infeed-aggr"/>
+
+						<!-- Define the RPN expressions for all leaves -->
+						<param name="tower-path" value="../Tower_B"/>
+						<apply-template name="servertech-tower-3ph-aggregate-expressions"/>
+					</subtree>
+				</subtree>
+
+				<subtree name="ps1-c7-codfw">
+					<param name="system-id" value="ps1-c7-codfw"/>
+					<param name="data-dir" value="/var/lib/torrus/collector_rrd"/>
+					<apply-template name="snmp-defaults"/>
+					<param name="legend">
+						Location:Rack C7, codfw, Carrollton, USA;
+						Contact:noc@wikimedia.org;
+						Description:Sentry Smart CDU;
+					</param>
+					<param name="snmp-check-sysuptime" value="yes"/>
+					<param name="snmp-host" value="ps1-c7-codfw.mgmt.codfw.wmnet"/>
+					<param name="snmp-version" value="2c"/>
+					<param name="phases" value="3"/>
+					<subtree name="System">
+						<apply-template name="servertech-systemgroup"/>
+					</subtree>
+					<subtree name="Tower_A_Phase_X">
+						<param name="tower" value="1"/>
+						<param name="infeed" value="1"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_A"/>
+					</subtree>
+					<subtree name="Tower_A_Phase_Y">
+						<param name="tower" value="1"/>
+						<param name="infeed" value="2"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_A"/>
+					</subtree>
+					<subtree name="Tower_A_Phase_Z">
+						<param name="tower" value="1"/>
+						<param name="infeed" value="3"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_A"/>
+					</subtree>
+					<subtree name="Tower_B_Phase_X">
+						<param name="tower" value="2"/>
+						<param name="infeed" value="1"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_B"/>
+					</subtree>
+					<subtree name="Tower_B_Phase_Y">
+						<param name="tower" value="2"/>
+						<param name="infeed" value="2"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_B"/>
+					</subtree>
+					<subtree name="Tower_B_Phase_Z">
+						<param name="tower" value="2"/>
+						<param name="infeed" value="3"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_B"/>
+					</subtree>
+					<subtree name="Sensor_1">
+						<param name="envmon" value="1"/>
+						<param name="th" value="1"/>
+						<apply-template name="servertech-temphumidity"/>
+					</subtree>
+					<subtree name="Sensor_2">
+						<param name="envmon" value="1"/>
+						<param name="th" value="2"/>
+						<apply-template name="servertech-temphumidity"/>
+					</subtree>
+					<!-- Aggregates -->
+					<subtree name="Tower_A">
+						<param name="aggregate-id" value="tower1"/>
+						<param name="aggregate-name" value="Tower A"/>
+						<param name="tower" value="1"/>
+						<param name="precedence" value="60"/>
+						<apply-template name="servertech-infeed-aggr"/>
+
+						<!-- Define the RPN expressions for all leaves -->
+						<param name="tower-path" value="../Tower_A"/>
+						<apply-template name="servertech-tower-3ph-aggregate-expressions"/>
+					</subtree>
+					<subtree name="Tower_B">
+						<param name="aggregate-id" value="tower2"/>
+						<param name="aggregate-name" value="Tower B"/>
+						<param name="tower" value="2"/>
+						<param name="precedence" value="60"/>
+						<apply-template name="servertech-infeed-aggr"/>
+
+						<!-- Define the RPN expressions for all leaves -->
+						<param name="tower-path" value="../Tower_B"/>
+						<apply-template name="servertech-tower-3ph-aggregate-expressions"/>
+					</subtree>
+				</subtree>
+
+				<subtree name="ps1-c8-codfw">
+					<param name="system-id" value="ps1-c8-codfw"/>
+					<param name="data-dir" value="/var/lib/torrus/collector_rrd"/>
+					<apply-template name="snmp-defaults"/>
+					<param name="legend">
+						Location:Rack C8, codfw, Carrollton, USA;
+						Contact:noc@wikimedia.org;
+						Description:Sentry Smart CDU;
+					</param>
+					<param name="snmp-check-sysuptime" value="yes"/>
+					<param name="snmp-host" value="ps1-c8-codfw.mgmt.codfw.wmnet"/>
+					<param name="snmp-version" value="2c"/>
+					<param name="phases" value="3"/>
+					<subtree name="System">
+						<apply-template name="servertech-systemgroup"/>
+					</subtree>
+					<subtree name="Tower_A_Phase_X">
+						<param name="tower" value="1"/>
+						<param name="infeed" value="1"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_A"/>
+					</subtree>
+					<subtree name="Tower_A_Phase_Y">
+						<param name="tower" value="1"/>
+						<param name="infeed" value="2"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_A"/>
+					</subtree>
+					<subtree name="Tower_A_Phase_Z">
+						<param name="tower" value="1"/>
+						<param name="infeed" value="3"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_A"/>
+					</subtree>
+
+					<subtree name="Tower_B_Phase_X">
+						<param name="tower" value="2"/>
+						<param name="infeed" value="1"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_B"/>
+					</subtree>
+					<subtree name="Tower_B_Phase_Y">
+						<param name="tower" value="2"/>
+						<param name="infeed" value="2"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_B"/>
+					</subtree>
+					<subtree name="Tower_B_Phase_Z">
+						<param name="tower" value="2"/>
+						<param name="infeed" value="3"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_B"/>
+					</subtree>
+					<subtree name="Sensor_1">
+						<param name="envmon" value="1"/>
+						<param name="th" value="1"/>
+						<apply-template name="servertech-temphumidity"/>
+					</subtree>
+					<subtree name="Sensor_2">
+						<param name="envmon" value="1"/>
+						<param name="th" value="2"/>
+						<apply-template name="servertech-temphumidity"/>
+					</subtree>
+
+					<!-- Aggregates -->
+					<subtree name="Tower_A">
+						<param name="aggregate-id" value="tower1"/>
+						<param name="aggregate-name" value="Tower A"/>
+						<param name="tower" value="1"/>
+						<param name="precedence" value="60"/>
+						<apply-template name="servertech-infeed-aggr"/>
+
+						<!-- Define the RPN expressions for all leaves -->
+						<param name="tower-path" value="../Tower_A"/>
+						<apply-template name="servertech-tower-3ph-aggregate-expressions"/>
+					</subtree>
+					<subtree name="Tower_B">
+						<param name="aggregate-id" value="tower2"/>
+						<param name="aggregate-name" value="Tower B"/>
+						<param name="tower" value="2"/>
+						<param name="precedence" value="60"/>
+						<apply-template name="servertech-infeed-aggr"/>
+
+						<!-- Define the RPN expressions for all leaves -->
+						<param name="tower-path" value="../Tower_B"/>
+						<apply-template name="servertech-tower-3ph-aggregate-expressions"/>
+					</subtree>
+				</subtree>
+								<subtree name="ps1-d1-codfw">
+					<param name="system-id" value="ps1-d1-codfw"/>
+					<param name="data-dir" value="/var/lib/torrus/collector_rrd"/>
+					<apply-template name="snmp-defaults"/>
+					<param name="legend">
+						Location:Rack D1, codfw, Carrollton, USA;
+						Contact:noc@wikimedia.org;
+						Description:Sentry Smart CDU;
+					</param>
+					<param name="snmp-check-sysuptime" value="yes"/>
+					<param name="snmp-host" value="ps1-d1-codfw.mgmt.codfw.wmnet"/>
+					<param name="snmp-version" value="2c"/>
+					<param name="phases" value="3"/>
+					<subtree name="System">
+						<apply-template name="servertech-systemgroup"/>
+					</subtree>
+					<subtree name="Tower_A_Phase_X">
+						<param name="tower" value="1"/>
+						<param name="infeed" value="1"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_A"/>
+					</subtree>
+					<subtree name="Tower_A_Phase_Y">
+						<param name="tower" value="1"/>
+						<param name="infeed" value="2"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_A"/>
+					</subtree>
+					<subtree name="Tower_A_Phase_Z">
+						<param name="tower" value="1"/>
+						<param name="infeed" value="3"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_A"/>
+					</subtree>
+					<subtree name="Tower_B_Phase_X">
+						<param name="tower" value="2"/>
+						<param name="infeed" value="1"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_B"/>
+					</subtree>
+					<subtree name="Tower_B_Phase_Y">
+						<param name="tower" value="2"/>
+						<param name="infeed" value="2"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_B"/>
+					</subtree>
+					<subtree name="Tower_B_Phase_Z">
+						<param name="tower" value="2"/>
+						<param name="infeed" value="3"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_B"/>
+					</subtree>
+					<subtree name="Sensor_1">
+						<param name="envmon" value="1"/>
+						<param name="th" value="1"/>
+						<apply-template name="servertech-temphumidity"/>
+					</subtree>
+					<subtree name="Sensor_2">
+						<param name="envmon" value="1"/>
+						<param name="th" value="2"/>
+						<apply-template name="servertech-temphumidity"/>
+					</subtree>
+					<!-- Aggregates -->
+					<subtree name="Tower_A">
+						<param name="aggregate-id" value="tower1"/>
+						<param name="aggregate-name" value="Tower A"/>
+						<param name="tower" value="1"/>
+						<param name="precedence" value="60"/>
+						<apply-template name="servertech-infeed-aggr"/>
+						<!-- Define the RPN expressions for all leaves -->
+						<param name="tower-path" value="../Tower_A"/>
+						<apply-template name="servertech-tower-3ph-aggregate-expressions"/>
+					</subtree>
+					<subtree name="Tower_B">
+						<param name="aggregate-id" value="tower2"/>
+						<param name="aggregate-name" value="Tower B"/>
+						<param name="tower" value="2"/>
+						<param name="precedence" value="60"/>
+						<apply-template name="servertech-infeed-aggr"/>
+						<!-- Define the RPN expressions for all leaves -->
+						<param name="tower-path" value="../Tower_B"/>
+						<apply-template name="servertech-tower-3ph-aggregate-expressions"/>
+					</subtree>
+				</subtree>
+
+				<subtree name="ps1-d2-codfw">
+					<param name="system-id" value="ps1-d2-codfw"/>
+					<param name="data-dir" value="/var/lib/torrus/collector_rrd"/>
+					<apply-template name="snmp-defaults"/>
+					<param name="legend">
+						Location:Rack D2, codfw, Carrollton, USA;
+						Contact:noc@wikimedia.org;
+						Description:Sentry Smart CDU;
+					</param>
+					<param name="snmp-check-sysuptime" value="yes"/>
+					<param name="snmp-host" value="ps1-d2-codfw.mgmt.codfw.wmnet"/>
+					<param name="snmp-version" value="2c"/>
+					<param name="phases" value="3"/>
+					<subtree name="System">
+						<apply-template name="servertech-systemgroup"/>
+					</subtree>
+					<subtree name="Tower_A_Phase_X">
+						<param name="tower" value="1"/>
+						<param name="infeed" value="1"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_A"/>
+					</subtree>
+					<subtree name="Tower_A_Phase_Y">
+						<param name="tower" value="1"/>
+						<param name="infeed" value="2"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_A"/>
+					</subtree>
+					<subtree name="Tower_A_Phase_Z">
+						<param name="tower" value="1"/>
+						<param name="infeed" value="3"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_A"/>
+					</subtree>
+					<subtree name="Tower_B_Phase_X">
+						<param name="tower" value="2"/>
+						<param name="infeed" value="1"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_B"/>
+					</subtree>
+					<subtree name="Tower_B_Phase_Y">
+						<param name="tower" value="2"/>
+						<param name="infeed" value="2"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_B"/>
+					</subtree>
+					<subtree name="Tower_B_Phase_Z">
+						<param name="tower" value="2"/>
+						<param name="infeed" value="3"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_B"/>
+					</subtree>
+					<subtree name="Sensor_1">
+						<param name="envmon" value="1"/>
+						<param name="th" value="1"/>
+						<apply-template name="servertech-temphumidity"/>
+					</subtree>
+					<subtree name="Sensor_2">
+						<param name="envmon" value="1"/>
+						<param name="th" value="2"/>
+						<apply-template name="servertech-temphumidity"/>
+					</subtree>
+
+					<!-- Aggregates -->
+					<subtree name="Tower_A">
+						<param name="aggregate-id" value="tower1"/>
+						<param name="aggregate-name" value="Tower A"/>
+						<param name="tower" value="1"/>
+						<param name="precedence" value="60"/>
+						<apply-template name="servertech-infeed-aggr"/>
+						<!-- Define the RPN expressions for all leaves -->
+						<param name="tower-path" value="../Tower_A"/>
+						<apply-template name="servertech-tower-3ph-aggregate-expressions"/>
+					</subtree>
+					<subtree name="Tower_B">
+						<param name="aggregate-id" value="tower2"/>
+						<param name="aggregate-name" value="Tower B"/>
+						<param name="tower" value="2"/>
+						<param name="precedence" value="60"/>
+						<apply-template name="servertech-infeed-aggr"/>
+
+						<!-- Define the RPN expressions for all leaves -->
+						<param name="tower-path" value="../Tower_B"/>
+						<apply-template name="servertech-tower-3ph-aggregate-expressions"/>
+					</subtree>
+				</subtree>
+
+				<subtree name="ps1-d3-codfw">
+					<param name="system-id" value="ps1-d3-codfw"/>
+					<param name="data-dir" value="/var/lib/torrus/collector_rrd"/>
+					<apply-template name="snmp-defaults"/>
+					<param name="legend">
+						Location:Rack D3, codfw, Carrollton, USA;
+						Contact:noc@wikimedia.org;
+						Description:Sentry Switched CDU;
+					</param>
+					<param name="snmp-check-sysuptime" value="yes"/>
+					<param name="snmp-host" value="ps1-d3-codfw.mgmt.codfw.wmnet"/>
+					<param name="snmp-version" value="2c"/>
+					<param name="phases" value="3"/>
+					<subtree name="System">
+						<apply-template name="servertech-systemgroup"/>
+					</subtree>
+					<subtree name="Tower_A_Phase_X">
+						<param name="tower" value="1"/>
+						<param name="infeed" value="1"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_A"/>
+					</subtree>
+					<subtree name="Tower_A_Phase_Y">
+						<param name="tower" value="1"/>
+						<param name="infeed" value="2"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_A"/>
+					</subtree>
+					<subtree name="Tower_A_Phase_Z">
+						<param name="tower" value="1"/>
+						<param name="infeed" value="3"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_A"/>
+					</subtree>
+					<subtree name="Tower_B_Phase_X">
+						<param name="tower" value="2"/>
+						<param name="infeed" value="1"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_B"/>
+					</subtree>
+					<subtree name="Tower_B_Phase_Y">
+						<param name="tower" value="2"/>
+						<param name="infeed" value="2"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_B"/>
+					</subtree>
+					<subtree name="Tower_B_Phase_Z">
+						<param name="tower" value="2"/>
+						<param name="infeed" value="3"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_B"/>
+					</subtree>
+
+					<!-- Aggregates -->
+					<subtree name="Tower_A">
+						<param name="aggregate-id" value="tower1"/>
+						<param name="aggregate-name" value="Tower A"/>
+						<param name="tower" value="1"/>
+						<param name="precedence" value="60"/>
+						<apply-template name="servertech-infeed-aggr"/>
+
+						<!-- Define the RPN expressions for all leaves -->
+						<param name="tower-path" value="../Tower_A"/>
+						<apply-template name="servertech-tower-3ph-aggregate-expressions"/>
+					</subtree>
+					<subtree name="Tower_B">
+						<param name="aggregate-id" value="tower2"/>
+						<param name="aggregate-name" value="Tower B"/>
+						<param name="tower" value="2"/>
+						<param name="precedence" value="60"/>
+						<apply-template name="servertech-infeed-aggr"/>
+
+						<!-- Define the RPN expressions for all leaves -->
+						<param name="tower-path" value="../Tower_B"/>
+						<apply-template name="servertech-tower-3ph-aggregate-expressions"/>
+					</subtree>
+					<subtree name="Sensor_1">
+						<param name="envmon" value="1"/>
+						<param name="th" value="1"/>
+						<apply-template name="servertech-temphumidity"/>
+					</subtree>
+					<subtree name="Sensor_2">
+						<param name="envmon" value="1"/>
+						<param name="th" value="2"/>
+						<apply-template name="servertech-temphumidity"/>
+					</subtree>
+				</subtree>
+
+				<subtree name="ps1-d4-codfw">
+					<param name="system-id" value="ps1-d4-codfw"/>
+					<param name="data-dir" value="/var/lib/torrus/collector_rrd"/>
+					<apply-template name="snmp-defaults"/>
+					<param name="legend">
+						Location:Rack D4, codfw, Carrollton, USA;
+						Contact:noc@wikimedia.org;
+						Description:Sentry Switched CDU;
+					</param>
+					<param name="snmp-check-sysuptime" value="yes"/>
+					<param name="snmp-host" value="ps1-d4-codfw.mgmt.codfw.wmnet"/>
+					<param name="snmp-version" value="2c"/>
+					<param name="phases" value="3"/>
+					<subtree name="System">
+						<apply-template name="servertech-systemgroup"/>
+					</subtree>
+					<subtree name="Tower_A_Phase_X">
+						<param name="tower" value="1"/>
+						<param name="infeed" value="1"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_A"/>
+					</subtree>
+					<subtree name="Tower_A_Phase_Y">
+						<param name="tower" value="1"/>
+						<param name="infeed" value="2"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_A"/>
+					</subtree>
+					<subtree name="Tower_A_Phase_Z">
+						<param name="tower" value="1"/>
+						<param name="infeed" value="3"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_A"/>
+					</subtree>
+					<subtree name="Tower_B_Phase_X">
+						<param name="tower" value="2"/>
+						<param name="infeed" value="1"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_B"/>
+					</subtree>
+					<subtree name="Tower_B_Phase_Y">
+						<param name="tower" value="2"/>
+						<param name="infeed" value="2"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_B"/>
+					</subtree>
+					<subtree name="Tower_B_Phase_Z">
+						<param name="tower" value="2"/>
+						<param name="infeed" value="3"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_B"/>
+					</subtree>
+
+					<!-- Aggregates -->
+					<subtree name="Tower_A">
+						<param name="aggregate-id" value="tower1"/>
+						<param name="aggregate-name" value="Tower A"/>
+						<param name="tower" value="1"/>
+						<param name="precedence" value="60"/>
+						<apply-template name="servertech-infeed-aggr"/>
+						<!-- Define the RPN expressions for all leaves -->
+						<param name="tower-path" value="../Tower_A"/>
+						<apply-template name="servertech-tower-3ph-aggregate-expressions"/>
+					</subtree>
+					<subtree name="Tower_B">
+						<param name="aggregate-id" value="tower2"/>
+						<param name="aggregate-name" value="Tower B"/>
+						<param name="tower" value="2"/>
+						<param name="precedence" value="60"/>
+						<apply-template name="servertech-infeed-aggr"/>
+
+						<!-- Define the RPN expressions for all leaves -->
+						<param name="tower-path" value="../Tower_B"/>
+						<apply-template name="servertech-tower-3ph-aggregate-expressions"/>
+					</subtree>
+					<subtree name="Sensor_1">
+						<param name="envmon" value="1"/>
+						<param name="th" value="1"/>
+						<apply-template name="servertech-temphumidity"/>
+					</subtree>
+					<subtree name="Sensor_2">
+						<param name="envmon" value="1"/>
+						<param name="th" value="2"/>
+						<apply-template name="servertech-temphumidity"/>
+					</subtree>
+				</subtree>
+
+				<subtree name="ps1-d5-codfw">
+					<param name="system-id" value="ps1-d5-codfw"/>
+					<param name="data-dir" value="/var/lib/torrus/collector_rrd"/>
+					<apply-template name="snmp-defaults"/>
+					<param name="legend">
+						Location:Rack D5, codfw, Carrollton, USA;
+						Contact:noc@wikimedia.org;
+						Description:Sentry Smart CDU;
+					</param>
+					<param name="snmp-check-sysuptime" value="yes"/>
+					<param name="snmp-host" value="ps1-d5-codfw.mgmt.codfw.wmnet"/>
+					<param name="snmp-version" value="2c"/>
+					<param name="phases" value="3"/>
+					<subtree name="System">
+						<apply-template name="servertech-systemgroup"/>
+					</subtree>
+					<subtree name="Tower_A_Phase_X">
+						<param name="tower" value="1"/>
+						<param name="infeed" value="1"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_A"/>
+					</subtree>
+					<subtree name="Tower_A_Phase_Y">
+						<param name="tower" value="1"/>
+						<param name="infeed" value="2"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_A"/>
+					</subtree>
+					<subtree name="Tower_A_Phase_Z">
+						<param name="tower" value="1"/>
+						<param name="infeed" value="3"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_A"/>
+					</subtree>
+					<subtree name="Tower_B_Phase_X">
+						<param name="tower" value="2"/>
+						<param name="infeed" value="1"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_B"/>
+					</subtree>
+					<subtree name="Tower_B_Phase_Y">
+						<param name="tower" value="2"/>
+						<param name="infeed" value="2"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_B"/>
+					</subtree>
+					<subtree name="Tower_B_Phase_Z">
+						<param name="tower" value="2"/>
+						<param name="infeed" value="3"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_B"/>
+					</subtree>
+					<subtree name="Sensor_1">
+						<param name="envmon" value="1"/>
+						<param name="th" value="1"/>
+						<apply-template name="servertech-temphumidity"/>
+					</subtree>
+					<subtree name="Sensor_2">
+						<param name="envmon" value="1"/>
+						<param name="th" value="2"/>
+						<apply-template name="servertech-temphumidity"/>
+					</subtree>
+
+					<!-- Aggregates -->
+					<subtree name="Tower_A">
+						<param name="aggregate-id" value="tower1"/>
+						<param name="aggregate-name" value="Tower A"/>
+						<param name="tower" value="1"/>
+						<param name="precedence" value="60"/>
+						<apply-template name="servertech-infeed-aggr"/>
+
+						<!-- Define the RPN expressions for all leaves -->
+						<param name="tower-path" value="../Tower_A"/>
+						<apply-template name="servertech-tower-3ph-aggregate-expressions"/>
+					</subtree>
+					<subtree name="Tower_B">
+						<param name="aggregate-id" value="tower2"/>
+						<param name="aggregate-name" value="Tower B"/>
+						<param name="tower" value="2"/>
+						<param name="precedence" value="60"/>
+						<apply-template name="servertech-infeed-aggr"/>
+
+						<!-- Define the RPN expressions for all leaves -->
+						<param name="tower-path" value="../Tower_B"/>
+						<apply-template name="servertech-tower-3ph-aggregate-expressions"/>
+					</subtree>
+				</subtree>
+
+				<subtree name="ps1-d6-codfw">
+					<param name="system-id" value="ps1-d6-codfw"/>
+					<param name="data-dir" value="/var/lib/torrus/collector_rrd"/>
+					<apply-template name="snmp-defaults"/>
+					<param name="legend">
+						Location:Rack D6, codfw, Carrollton, USA;
+						Contact:noc@wikimedia.org;
+						Description:Sentry Smart CDU;
+					</param>
+					<param name="snmp-check-sysuptime" value="yes"/>
+					<param name="snmp-host" value="ps1-d6-codfw.mgmt.codfw.wmnet"/>
+					<param name="snmp-version" value="2c"/>
+					<param name="phases" value="3"/>
+					<subtree name="System">
+						<apply-template name="servertech-systemgroup"/>
+					</subtree>
+					<subtree name="Tower_A_Phase_X">
+						<param name="tower" value="1"/>
+						<param name="infeed" value="1"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_A"/>
+					</subtree>
+					<subtree name="Tower_A_Phase_Y">
+						<param name="tower" value="1"/>
+						<param name="infeed" value="2"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_A"/>
+					</subtree>
+					<subtree name="Tower_A_Phase_Z">
+						<param name="tower" value="1"/>
+						<param name="infeed" value="3"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_A"/>
+					</subtree>
+					<subtree name="Tower_B_Phase_X">
+						<param name="tower" value="2"/>
+						<param name="infeed" value="1"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_B"/>
+					</subtree>
+					<subtree name="Tower_B_Phase_Y">
+						<param name="tower" value="2"/>
+						<param name="infeed" value="2"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_B"/>
+					</subtree>
+					<subtree name="Tower_B_Phase_Z">
+						<param name="tower" value="2"/>
+						<param name="infeed" value="3"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_B"/>
+					</subtree>
+					<subtree name="Sensor_1">
+						<param name="envmon" value="1"/>
+						<param name="th" value="1"/>
+						<apply-template name="servertech-temphumidity"/>
+					</subtree>
+					<subtree name="Sensor_2">
+						<param name="envmon" value="1"/>
+						<param name="th" value="2"/>
+						<apply-template name="servertech-temphumidity"/>
+					</subtree>
+
+					<!-- Aggregates -->
+					<subtree name="Tower_A">
+						<param name="aggregate-id" value="tower1"/>
+						<param name="aggregate-name" value="Tower A"/>
+						<param name="tower" value="1"/>
+						<param name="precedence" value="60"/>
+						<apply-template name="servertech-infeed-aggr"/>
+
+						<!-- Define the RPN expressions for all leaves -->
+						<param name="tower-path" value="../Tower_A"/>
+						<apply-template name="servertech-tower-3ph-aggregate-expressions"/>
+					</subtree>
+					<subtree name="Tower_B">
+						<param name="aggregate-id" value="tower2"/>
+						<param name="aggregate-name" value="Tower B"/>
+						<param name="tower" value="2"/>
+						<param name="precedence" value="60"/>
+						<apply-template name="servertech-infeed-aggr"/>
+
+						<!-- Define the RPN expressions for all leaves -->
+						<param name="tower-path" value="../Tower_B"/>
+						<apply-template name="servertech-tower-3ph-aggregate-expressions"/>
+					</subtree>
+				</subtree>
+
+				<subtree name="ps1-d7-codfw">
+					<param name="system-id" value="ps1-d7-codfw"/>
+					<param name="data-dir" value="/var/lib/torrus/collector_rrd"/>
+					<apply-template name="snmp-defaults"/>
+					<param name="legend">
+						Location:Rack D7, codfw, Carrollton, USA;
+						Contact:noc@wikimedia.org;
+						Description:Sentry Smart CDU;
+					</param>
+					<param name="snmp-check-sysuptime" value="yes"/>
+					<param name="snmp-host" value="ps1-d7-codfw.mgmt.codfw.wmnet"/>
+					<param name="snmp-version" value="2c"/>
+					<param name="phases" value="3"/>
+					<subtree name="System">
+						<apply-template name="servertech-systemgroup"/>
+					</subtree>
+					<subtree name="Tower_A_Phase_X">
+						<param name="tower" value="1"/>
+						<param name="infeed" value="1"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_A"/>
+					</subtree>
+					<subtree name="Tower_A_Phase_Y">
+						<param name="tower" value="1"/>
+						<param name="infeed" value="2"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_A"/>
+					</subtree>
+					<subtree name="Tower_A_Phase_Z">
+						<param name="tower" value="1"/>
+						<param name="infeed" value="3"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_A"/>
+					</subtree>
+					<subtree name="Tower_B_Phase_X">
+						<param name="tower" value="2"/>
+						<param name="infeed" value="1"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_B"/>
+					</subtree>
+					<subtree name="Tower_B_Phase_Y">
+						<param name="tower" value="2"/>
+						<param name="infeed" value="2"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_B"/>
+					</subtree>
+					<subtree name="Tower_B_Phase_Z">
+						<param name="tower" value="2"/>
+						<param name="infeed" value="3"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_B"/>
+					</subtree>
+					<subtree name="Sensor_1">
+						<param name="envmon" value="1"/>
+						<param name="th" value="1"/>
+						<apply-template name="servertech-temphumidity"/>
+					</subtree>
+					<subtree name="Sensor_2">
+						<param name="envmon" value="1"/>
+						<param name="th" value="2"/>
+						<apply-template name="servertech-temphumidity"/>
+					</subtree>
+
+					<!-- Aggregates -->
+					<subtree name="Tower_A">
+						<param name="aggregate-id" value="tower1"/>
+						<param name="aggregate-name" value="Tower A"/>
+						<param name="tower" value="1"/>
+						<param name="precedence" value="60"/>
+						<apply-template name="servertech-infeed-aggr"/>
+						<!-- Define the RPN expressions for all leaves -->
+						<param name="tower-path" value="../Tower_A"/>
+						<apply-template name="servertech-tower-3ph-aggregate-expressions"/>
+					</subtree>
+					<subtree name="Tower_B">
+						<param name="aggregate-id" value="tower2"/>
+						<param name="aggregate-name" value="Tower B"/>
+						<param name="tower" value="2"/>
+						<param name="precedence" value="60"/>
+						<apply-template name="servertech-infeed-aggr"/>
+
+						<!-- Define the RPN expressions for all leaves -->
+						<param name="tower-path" value="../Tower_B"/>
+						<apply-template name="servertech-tower-3ph-aggregate-expressions"/>
+					</subtree>
+				</subtree>
+
+				<subtree name="ps1-d8-codfw">
+					<param name="system-id" value="ps1-d8-codfw"/>
+					<param name="data-dir" value="/var/lib/torrus/collector_rrd"/>
+					<apply-template name="snmp-defaults"/>
+					<param name="legend">
+						Location:Rack D8, codfw, Carrollton, USA;
+						Contact:noc@wikimedia.org;
+						Description:Sentry Smart CDU;
+					</param>
+					<param name="snmp-check-sysuptime" value="yes"/>
+					<param name="snmp-host" value="ps1-d8-codfw.mgmt.codfw.wmnet"/>
+					<param name="snmp-version" value="2c"/>
+					<param name="phases" value="3"/>
+					<subtree name="System">
+						<apply-template name="servertech-systemgroup"/>
+					</subtree>
+					<subtree name="Tower_A_Phase_X">
+						<param name="tower" value="1"/>
+						<param name="infeed" value="1"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_A"/>
+					</subtree>
+					<subtree name="Tower_A_Phase_Y">
+						<param name="tower" value="1"/>
+						<param name="infeed" value="2"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_A"/>
+					</subtree>
+					<subtree name="Tower_A_Phase_Z">
+						<param name="tower" value="1"/>
+						<param name="infeed" value="3"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_A"/>
+					</subtree>
+					<subtree name="Tower_B_Phase_X">
+						<param name="tower" value="2"/>
+						<param name="infeed" value="1"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_B"/>
+					</subtree>
+					<subtree name="Tower_B_Phase_Y">
+						<param name="tower" value="2"/>
+						<param name="infeed" value="2"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_B"/>
+					</subtree>
+					<subtree name="Tower_B_Phase_Z">
+						<param name="tower" value="2"/>
+						<param name="infeed" value="3"/>
+						<apply-template name="servertech-infeed"/>
+						<param name="tokenset-member" value="%system-id%_Tower_B"/>
+					</subtree>
+					<subtree name="Sensor_1">
+						<param name="envmon" value="1"/>
+						<param name="th" value="1"/>
+						<apply-template name="servertech-temphumidity"/>
+					</subtree>
+					<subtree name="Sensor_2">
+						<param name="envmon" value="1"/>
+						<param name="th" value="2"/>
+						<apply-template name="servertech-temphumidity"/>
+					</subtree>
+
+					<!-- Aggregates -->
+					<subtree name="Tower_A">
+						<param name="aggregate-id" value="tower1"/>
+						<param name="aggregate-name" value="Tower A"/>
+						<param name="tower" value="1"/>
+						<param name="precedence" value="60"/>
+						<apply-template name="servertech-infeed-aggr"/>
+
+						<!-- Define the RPN expressions for all leaves -->
+						<param name="tower-path" value="../Tower_A"/>
+						<apply-template name="servertech-tower-3ph-aggregate-expressions"/>
+					</subtree>
+					<subtree name="Tower_B">
+						<param name="aggregate-id" value="tower2"/>
+						<param name="aggregate-name" value="Tower B"/>
+						<param name="tower" value="2"/>
+						<param name="precedence" value="60"/>
+						<apply-template name="servertech-infeed-aggr"/>
+						<!-- Define the RPN expressions for all leaves -->
+						<param name="tower-path" value="../Tower_B"/>
+						<apply-template name="servertech-tower-3ph-aggregate-expressions"/>
+					</subtree>
+				</subtree>
+			</subtree>
+
 		</subtree>
 
 		<template name="servertech-tower-aggregate-expressions">
