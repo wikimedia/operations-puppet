@@ -37,5 +37,6 @@ class cxserver(
         config          => template('cxserver/config.yaml.erb'),
         healthcheck_url => '',
         has_spec        => true,
+        deployment      => 'scap3',
     }
 }
