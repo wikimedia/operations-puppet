@@ -12,29 +12,44 @@
 filename=wikidata-$today-all-BETA
 targetFileGzip=$targetDir/$filename.ttl.gz
 targetFileBzip2=$targetDir/$filename.ttl.bz2
+failureFile=/tmp/dumpwikidatattl-failure
 
 i=0
 shards=4
 
+rm -f $failureFile
+
 while [ $i -lt $shards ]; do
-	php $multiversionscript extensions/Wikidata/extensions/Wikibase/repo/maintenance/dumpRdf.php --wiki wikidatawiki --shard $i --sharding-factor $shards --format ttl 2>> /var/log/wikidatadump/dumpwikidatattl-$filename-$i.log | gzip > $tempDir/wikidataTTL.$i.gz &
+	(
+		set -o pipefail
+		php $multiversionscript extensions/Wikidata/extensions/Wikibase/repo/maintenance/dumpRdf.php --wiki wikidatawiki --shard $i --sharding-factor $shards --format ttl 2>> /var/log/wikidatadump/dumpwikidatattl-$filename-$i.log | gzip > $tempDir/wikidataTTL.$i.gz
+		if [ $? -gt 0 ]; then
+			echo 1 > $failureFile
+		fi
+	) &
 	let i++
 done
 
 wait
 
-i=0
-while [ $i -lt $shards ]; do
-	cat $tempDir/wikidataTTL.$i.gz >> $tempDir/wikidataTtl.gz
-	rm $tempDir/wikidataTTL.$i.gz
-	let i++
-done
+if [ -f $failureFile ]; then
+	# Something went wrong, let's clean up and give up for now. Leave logs in place.
+	rm -f $failureFile
+	rm $tempDir/wikidataTTL.*.gz
+else
+	i=0
+	while [ $i -lt $shards ]; do
+		cat $tempDir/wikidataTTL.$i.gz >> $tempDir/wikidataTtl.gz
+		rm $tempDir/wikidataTTL.$i.gz
+		let i++
+	done
 
-mv $tempDir/wikidataTtl.gz $targetFileGzip
+	mv $tempDir/wikidataTtl.gz $targetFileGzip
 
-gzip -dc $targetFileGzip | bzip2 -c > $tempDir/wikidataTtl.bz2
-mv $tempDir/wikidataTtl.bz2 $targetFileBzip2
+	gzip -dc $targetFileGzip | bzip2 -c > $tempDir/wikidataTtl.bz2
+	mv $tempDir/wikidataTtl.bz2 $targetFileBzip2
 
-pruneOldDirectories
-pruneOldLogs
-runDcat
+	pruneOldDirectories
+	pruneOldLogs
+	runDcat
+fi
