@@ -3,11 +3,7 @@
 sub cluster_be_recv_pre_purge { }
 
 sub cluster_be_recv_applayer_backend {
-<% if @varnish_version4 -%>
 	set req.backend_hint = kartotherian.backend();
-<% else -%>
-	set req.backend = kartotherian;
-<% end -%>
 }
 
 sub cluster_be_recv { }
