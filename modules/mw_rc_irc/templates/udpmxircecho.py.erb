@@ -28,7 +28,7 @@ class EchoReader(threading.Thread):
                                 if len(sp) == 2:
                                         channel = sp[0]
                                         text = sp[1]
-                                        text = text.lstrip()
+                                        text = text.lstrip().replace('\r','').replace('\n','')
 
                                         if channel not in self.bot.chans:
                                                 self.bot.chans.append(channel)
