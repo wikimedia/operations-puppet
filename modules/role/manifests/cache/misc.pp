@@ -197,16 +197,15 @@ class role::cache::misc {
             'req_host' => 'people.wikimedia.org',
         },
         'stat1001' => { # metrics and metrics-api
-            'dynamic'     => 'no',
-            'type'        => 'random',
-            'backends'    => ['stat1001.eqiad.wmnet'],
-            'be_opts'     => $app_def_be_opts,
-            'req_host'    => [
+            'dynamic'  => 'no',
+            'type'     => 'random',
+            'backends' => ['stat1001.eqiad.wmnet'],
+            'be_opts'  => $app_def_be_opts,
+            'req_host' => [
                 'metrics.wikimedia.org',
                 'stats.wikimedia.org',
                 'datasets.wikimedia.org'
             ],
-            'maintenance' => 'Website under maintenance, please check https://phabricator.wikimedia.org/T76348',
         },
         'mendelevium' => { # OTRS
             'dynamic'  => 'no',
