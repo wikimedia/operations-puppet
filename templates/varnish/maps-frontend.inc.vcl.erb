@@ -12,7 +12,7 @@ sub cluster_fe_recv {
 		&& req.http.referer !~ "(?i)^https?://([-a-zA-Z0-9.]+\.)?wmftest\.net(:\d+)?(/|$)"
 		&& req.http.referer !~ "(?i)^https?://(localhost|127\.0\.0\.1)(:\d+)?(/|$)"
 	) {
-		<%= error_synth(403, "Access Denied") -%>
+		return (synth(403, "Access Denied"));
 	}
 }
 
