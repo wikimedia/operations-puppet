@@ -54,3 +54,7 @@ sources:
   eventlogging/analytics:
     repository: eventlogging
     scap_repository: eventlogging/scap/analytics
+
+  # cxserver is the ContentTranslation server.
+  cxserver/deploy:
+    repository: cxserver/deploy
