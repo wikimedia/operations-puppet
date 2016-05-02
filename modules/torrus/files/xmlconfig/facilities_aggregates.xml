@@ -9,10 +9,10 @@
 
 				<param name="expr-Power_Measured_codfw" value="{/Power_strips/codfw/ps1-a1-codfw/System/Total_power},{/Power_strips/codfw/ps1-a2-codfw/System/Total_power},{/Power_strips/codfw/ps1-a3-codfw/System/Total_power},{/Power_strips/codfw/ps1-a4-codfw/System/Total_power},{/Power_strips/codfw/ps1-a5-codfw/System/Total_power},{/Power_strips/codfw/ps1-a6-codfw/System/Total_power},{/Power_strips/codfw/ps1-a7-codfw/System/Total_power},{/Power_strips/codfw/ps1-a8-codfw/System/Total_power},{/Power_strips/codfw/ps1-b1-codfw/System/Total_power},{/Power_strips/codfw/ps1-b2-codfw/System/Total_power},{/Power_strips/codfw/ps1-b3-codfw/System/Total_power},{/Power_strips/codfw/ps1-b4-codfw/System/Total_power},{/Power_strips/codfw/ps1-b5-codfw/System/Total_power},{/Power_strips/codfw/ps1-b6-codfw/System/Total_power},{/Power_strips/codfw/ps1-b7-codfw/System/Total_power},{/Power_strips/codfw/ps1-b8-codfw/System/Total_power},{/Power_strips/codfw/ps1-c1-codfw/System/Total_power},{/Power_strips/codfw/ps1-c2-codfw/System/Total_power},{/Power_strips/codfw/ps1-c3-codfw/System/Total_power},{/Power_strips/codfw/ps1-c4-codfw/System/Total_power},{/Power_strips/codfw/ps1-c5-codfw/System/Total_power},{/Power_strips/codfw/ps1-c6-codfw/System/Total_power},{/Power_strips/codfw/ps1-c7-codfw/System/Total_power},{/Power_strips/codfw/ps1-c8-codfw/System/Total_power},{/Power_strips/codfw/ps1-d1-codfw/System/Total_power},{/Power_strips/codfw/ps1-d2-codfw/System/Total_power},{/Power_strips/codfw/ps1-d3-codfw/System/Total_power},{/Power_strips/codfw/ps1-d4-codfw/System/Total_power},{/Power_strips/codfw/ps1-d5-codfw/System/Total_power},{/Power_strips/codfw/ps1-d6-codfw/System/Total_power},{/Power_strips/codfw/ps1-d7-codfw/System/Total_power},{/Power_strips/codfw/ps1-d8-codfw/System/Total_power},ADDNAN,ADDNAN,ADDNAN,ADDNAN,ADDNAN,ADDNAN,ADDNAN,ADDNAN,ADDNAN,ADDNAN,ADDNAN,ADDNAN,ADDNAN,ADDNAN,ADDNAN,ADDNAN,ADDNAN,ADDNAN,ADDNAN,ADDNAN,ADDNAN,ADDNAN,ADDNAN,ADDNAN,ADDNAN,ADDNAN,ADDNAN,ADDNAN,ADDNAN,ADDNAN,ADDNAN"/>
 
-				<param name="expr-Power_Measured" value="%expr-Power_Measured_eqiad%,0,ADDNAN"/>
+				<param name="expr-Power_Measured" value="%expr-Power_Measured_eqiad%,%expr-Power_Measured_codfw%,ADDNAN"/>
 
 				<param name="expr-Power_Estimated_eqiad" value="%expr-Power_Measured_eqiad%,0,ADDNAN"/>
-				<param name="expr-Power_Estimated_codfw" value="77000"/>
+				<param name="expr-Power_Estimated_codfw" value="%expr-Power_Measured_codfw%,0,ADDNAN"/>
 				<param name="expr-Power_Estimated_esams" value="10000"/>
 				<param name="expr-Power_Estimated_knams" value="300"/>
 				<param name="expr-Power_Estimated_ulsfo" value="5000"/>
@@ -86,7 +86,7 @@
 
 					<param name="ds-expr-eqiad" value="%expr-Power_Measured_eqiad%"/>
 					<param name="graph-legend-eqiad" value="eqiad"/>
-					<param name="line-style-eqiad" value="STACK"/>
+					<param name="line-style-eqiad" value="AREA"/>
 					<param name="line-color-eqiad" value="##green"/>
 					<param name="line-order-eqiad" value="1"/>
 
