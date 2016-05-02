@@ -5820,14 +5820,15 @@
 		<token-set name="ps1-c8-eqiad_Tower_B">
 			<param name="comment" value="ps1-c8-eqiad Tower B"/>
 		</token-set>
-		
-				<token-set name="ps1-d1-eqiad_Tower_A">
+
+		<token-set name="ps1-d1-eqiad_Tower_A">
 			<param name="comment" value="ps1-d1-eqiad Tower A"/>
 		</token-set>
+
 		<token-set name="ps1-d1-eqiad_Tower_B">
 			<param name="comment" value="ps1-d1-eqiad Tower B"/>
 		</token-set>
-		
+
 		<token-set name="ps1-d2-eqiad_Tower_A">
 			<param name="comment" value="ps1-d2-eqiad Tower A"/>
 		</token-set>
@@ -5875,6 +5876,231 @@
 		</token-set>
 		<token-set name="ps1-d8-eqiad_Tower_B">
 			<param name="comment" value="ps1-d8-eqiad Tower B"/>
+		</token-set>
+
+
+		<token-set name="ps1-a1-codfw_Tower_A">
+			<param name="comment" value="ps1-a1-codfw Tower A"/>
+		</token-set>
+		<token-set name="ps1-a1-codfw_Tower_B">
+			<param name="comment" value="ps1-a1-codfw Tower B"/>
+		</token-set>
+
+		<token-set name="ps1-a2-codfw_Tower_A">
+			<param name="comment" value="ps1-a2-codfw Tower A"/>
+		</token-set>
+		<token-set name="ps1-a2-codfw_Tower_B">
+			<param name="comment" value="ps1-a2-codfw Tower B"/>
+		</token-set>
+
+		<token-set name="ps1-a3-codfw_Tower_A">
+			<param name="comment" value="ps1-a3-codfw Tower A"/>
+		</token-set>
+		<token-set name="ps1-a3-codfw_Tower_B">
+			<param name="comment" value="ps1-a3-codfw Tower B"/>
+		</token-set>
+
+		<token-set name="ps1-a4-codfw_Tower_A">
+			<param name="comment" value="ps1-a4-codfw Tower A"/>
+		</token-set>
+		<token-set name="ps1-a4-codfw_Tower_B">
+			<param name="comment" value="ps1-a4-codfw Tower B"/>
+		</token-set>
+
+		<token-set name="ps1-a5-codfw_Tower_A">
+			<param name="comment" value="ps1-a5-codfw Tower A"/>
+		</token-set>
+		<token-set name="ps1-a5-codfw_Tower_B">
+			<param name="comment" value="ps1-a5-codfw Tower B"/>
+		</token-set>
+
+		<token-set name="ps1-a6-codfw_Tower_A">
+			<param name="comment" value="ps1-a6-codfw Tower A"/>
+		</token-set>
+		<token-set name="ps1-a6-codfw_Tower_B">
+			<param name="comment" value="ps1-a6-codfw Tower B"/>
+		</token-set>
+
+		<token-set name="ps1-a7-codfw_Tower_A">
+			<param name="comment" value="ps1-a7-codfw Tower A"/>
+		</token-set>
+		<token-set name="ps1-a7-codfw_Tower_B">
+			<param name="comment" value="ps1-a7-codfw Tower B"/>
+		</token-set>
+
+		<token-set name="ps1-a8-codfw_Tower_A">
+			<param name="comment" value="ps1-a8-codfw Tower A"/>
+		</token-set>
+		<token-set name="ps1-a8-codfw_Tower_B">
+			<param name="comment" value="ps1-a8-codfw Tower B"/>
+		</token-set>
+
+		<token-set name="ps1-b1-codfw_Tower_A">
+			<param name="comment" value="ps1-b1-codfw Tower A"/>
+		</token-set>
+		<token-set name="ps1-b1-codfw_Tower_B">
+			<param name="comment" value="ps1-b1-codfw Tower B"/>
+		</token-set>
+
+		<token-set name="ps1-b2-codfw_Tower_A">
+			<param name="comment" value="ps1-b2-codfw Tower A"/>
+		</token-set>
+		<token-set name="ps1-b2-codfw_Tower_B">
+			<param name="comment" value="ps1-b2-codfw Tower B"/>
+		</token-set>
+
+		<token-set name="ps1-b3-codfw_Tower_A">
+			<param name="comment" value="ps1-b3-codfw Tower A"/>
+		</token-set>
+		<token-set name="ps1-b3-codfw_Tower_B">
+			<param name="comment" value="ps1-b3-codfw Tower B"/>
+		</token-set>
+
+		<token-set name="ps1-b4-codfw_Tower_A">
+			<param name="comment" value="ps1-b4-codfw Tower A"/>
+		</token-set>
+		<token-set name="ps1-b4-codfw_Tower_B">
+			<param name="comment" value="ps1-b4-codfw Tower B"/>
+		</token-set>
+
+		<token-set name="ps1-b5-codfw_Tower_A">
+			<param name="comment" value="ps1-b5-codfw Tower A"/>
+		</token-set>
+		<token-set name="ps1-b5-codfw_Tower_B">
+			<param name="comment" value="ps1-b5-codfw Tower B"/>
+		</token-set>
+
+		<token-set name="ps1-b6-codfw_Tower_A">
+			<param name="comment" value="ps1-b6-codfw Tower A"/>
+		</token-set>
+		<token-set name="ps1-b6-codfw_Tower_B">
+			<param name="comment" value="ps1-b6-codfw Tower B"/>
+		</token-set>
+
+		<token-set name="ps1-b7-codfw_Tower_A">
+			<param name="comment" value="ps1-b7-codfw Tower A"/>
+		</token-set>
+		<token-set name="ps1-b7-codfw_Tower_B">
+			<param name="comment" value="ps1-b7-codfw Tower B"/>
+		</token-set>
+
+		<token-set name="ps1-b8-codfw_Tower_A">
+			<param name="comment" value="ps1-b8-codfw Tower A"/>
+		</token-set>
+		<token-set name="ps1-b8-codfw_Tower_B">
+			<param name="comment" value="ps1-b8-codfw Tower B"/>
+		</token-set>
+
+		<token-set name="ps1-c1-codfw_Tower_A">
+			<param name="comment" value="ps1-c1-codfw Tower A"/>
+		</token-set>
+		<token-set name="ps1-c1-codfw_Tower_B">
+			<param name="comment" value="ps1-c1-codfw Tower B"/>
+		</token-set>
+
+		<token-set name="ps1-c2-codfw_Tower_A">
+			<param name="comment" value="ps1-c2-codfw Tower A"/>
+		</token-set>
+		<token-set name="ps1-c2-codfw_Tower_B">
+			<param name="comment" value="ps1-c2-codfw Tower B"/>
+		</token-set>
+
+		<token-set name="ps1-c3-codfw_Tower_A">
+			<param name="comment" value="ps1-c3-codfw Tower A"/>
+		</token-set>
+		<token-set name="ps1-c3-codfw_Tower_B">
+			<param name="comment" value="ps1-c3-codfw Tower B"/>
+		</token-set>
+
+		<token-set name="ps1-c4-codfw_Tower_A">
+			<param name="comment" value="ps1-c4-codfw Tower A"/>
+		</token-set>
+		<token-set name="ps1-c4-codfw_Tower_B">
+			<param name="comment" value="ps1-c4-codfw Tower B"/>
+		</token-set>
+
+		<token-set name="ps1-c5-codfw_Tower_A">
+			<param name="comment" value="ps1-c5-codfw Tower A"/>
+		</token-set>
+		<token-set name="ps1-c5-codfw_Tower_B">
+			<param name="comment" value="ps1-c5-codfw Tower B"/>
+		</token-set>
+
+		<token-set name="ps1-c6-codfw_Tower_A">
+			<param name="comment" value="ps1-c6-codfw Tower A"/>
+		</token-set>
+		<token-set name="ps1-c6-codfw_Tower_B">
+			<param name="comment" value="ps1-c6-codfw Tower B"/>
+		</token-set>
+
+		<token-set name="ps1-c7-codfw_Tower_A">
+			<param name="comment" value="ps1-c7-codfw Tower A"/>
+		</token-set>
+		<token-set name="ps1-c7-codfw_Tower_B">
+			<param name="comment" value="ps1-c7-codfw Tower B"/>
+		</token-set>
+
+		<token-set name="ps1-c8-codfw_Tower_A">
+			<param name="comment" value="ps1-c8-codfw Tower A"/>
+		</token-set>
+		<token-set name="ps1-c8-codfw_Tower_B">
+			<param name="comment" value="ps1-c8-codfw Tower B"/>
+		</token-set>
+
+		<token-set name="ps1-d1-codfw_Tower_A">
+			<param name="comment" value="ps1-d1-codfw Tower A"/>
+		</token-set>
+		<token-set name="ps1-d1-codfw_Tower_B">
+			<param name="comment" value="ps1-d1-codfw Tower B"/>
+		</token-set>
+
+		<token-set name="ps1-d2-codfw_Tower_A">
+			<param name="comment" value="ps1-d2-codfw Tower A"/>
+		</token-set>
+		<token-set name="ps1-d2-codfw_Tower_B">
+			<param name="comment" value="ps1-d2-codfw Tower B"/>
+		</token-set>
+
+		<token-set name="ps1-d3-codfw_Tower_A">
+			<param name="comment" value="ps1-d3-codfw Tower A"/>
+		</token-set>
+		<token-set name="ps1-d3-codfw_Tower_B">
+			<param name="comment" value="ps1-d3-codfw Tower B"/>
+		</token-set>
+
+		<token-set name="ps1-d4-codfw_Tower_A">
+			<param name="comment" value="ps1-d4-codfw Tower A"/>
+		</token-set>
+		<token-set name="ps1-d4-codfw_Tower_B">
+			<param name="comment" value="ps1-d4-codfw Tower B"/>
+		</token-set>
+
+		<token-set name="ps1-d5-codfw_Tower_A">
+			<param name="comment" value="ps1-d5-codfw Tower A"/>
+		</token-set>
+		<token-set name="ps1-d5-codfw_Tower_B">
+			<param name="comment" value="ps1-d5-codfw Tower B"/>
+		</token-set>
+
+		<token-set name="ps1-d6-codfw_Tower_A">
+			<param name="comment" value="ps1-d6-codfw Tower A"/>
+		</token-set>
+		<token-set name="ps1-d6-codfw_Tower_B">
+			<param name="comment" value="ps1-d6-codfw Tower B"/>
+		</token-set>
+
+		<token-set name="ps1-d7-codfw_Tower_A">
+			<param name="comment" value="ps1-d7-codfw Tower A"/>
+		</token-set>
+		<token-set name="ps1-d7-codfw_Tower_B">
+			<param name="comment" value="ps1-d7-codfw Tower B"/>
+		</token-set>
+
+		<token-set name="ps1-d8-codfw_Tower_A">
+			<param name="comment" value="ps1-d8-codfw Tower A"/>
+		</token-set>
+		<token-set name="ps1-d8-codfw_Tower_B">
+			<param name="comment" value="ps1-d8-codfw Tower B"/>
 		</token-set>
 
 	</token-sets>
