@@ -145,6 +145,7 @@ groups:
                  'ALL = NOPASSWD: /etc/init.d/postgresql-8.4',
                  'ALL = NOPASSWD: /usr/sbin/service nodepool start',
                  'ALL = NOPASSWD: /usr/sbin/service nodepool stop',
+                 'ALL = NOPASSWD: /usr/sbin/service nodepool restart',
                  'ALL = NOPASSWD: /usr/sbin/service nodepool status',
                  'ALL = NOPASSWD: /usr/sbin/service zuul-merger reload',
                  'ALL = NOPASSWD: /usr/sbin/service zuul-merger restart',
