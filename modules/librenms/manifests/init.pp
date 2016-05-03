@@ -67,7 +67,6 @@ class librenms(
             'php-pear',
             'fping',
             'graphviz',
-            'imagemagick',
             'ipmitool',
             'mtr-tiny',
             'nmap',
@@ -79,6 +78,8 @@ class librenms(
         ]:
         ensure => present,
     }
+
+    include ::imagemagick::install
 
     cron { 'librenms-discovery-all':
         ensure  => present,
