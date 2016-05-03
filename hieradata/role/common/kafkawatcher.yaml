@@ -1,0 +1,6 @@
+kafkawatcher::memcached::memcache_topic:  'wancache-main-memcached-purge'
+kafkawatcher::memcached::kafka_server: 'kafka1012.eqiad.wmnet'
+admin::groups:
+  - perf-roots
+cluster: memcached
+contactgroups: perf-roots
