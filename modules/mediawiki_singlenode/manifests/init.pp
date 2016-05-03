@@ -32,7 +32,9 @@ class mediawiki_singlenode(
 
     require_package('php5-mysql')
 
-    package { [ 'imagemagick', 'php-apc', 'php5-cli' ] :
+    include ::imagemagick::install
+
+    package { [ 'php-apc', 'php5-cli' ] :
         ensure => latest,
     }
 
