@@ -54,3 +54,6 @@ sources:
   eventlogging/analytics:
     repository: eventlogging
     scap_repository: eventlogging/scap/analytics
+
+  # The {} acts as an empty hash to use defaults.
+  mobileapps/deploy: {}
