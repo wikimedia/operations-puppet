@@ -32,6 +32,10 @@ class role::labs::dns {
         tmpdir    => '/srv/tmp',
         read_only => 'off',
     }
+
+    $pdns_db_password       = $dnsconfig['db_pass']
+    $pdns_admin_db_password = $dnsconfig['db_admin_pass']
+    $designate_host = ipresolve(hiera('labs_designate_hostname'), 4)
     file { '/etc/mysql/production-grants-dns.sql':
         ensure  => present,
         owner   => 'root',
