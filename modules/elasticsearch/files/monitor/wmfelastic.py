@@ -48,6 +48,7 @@ class WMFElasticCollector(diamond.collector.Collector):
             "unassigned_shards",
             "initializing_shards",
             "relocating_shards",
+            "number_of_pending_tasks",
         ]
 
         # Metrics provided at cluster level
