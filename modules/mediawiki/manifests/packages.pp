@@ -13,8 +13,9 @@ class mediawiki::packages {
     include ::mediawiki::packages::tex
     require ::apt
 
+    include ::imagemagick::install
+
     package { [
-        'imagemagick',
         'python-imaging',
         'python-pygments',
         'tidy',
