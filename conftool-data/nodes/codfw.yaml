@@ -284,3 +284,6 @@ sca:
 scb:
   scb2001.codfw.wmnet: [mobileapps, mathoid, graphoid, citoid, cxserver]
   scb2002.codfw.wmnet: [mobileapps, mathoid, graphoid, citoid, cxserver]
+eventbus:
+  kafka2001.codfw.wmnet: [eventbus]
+  kafka2002.codfw.wmnet: [eventbus]
