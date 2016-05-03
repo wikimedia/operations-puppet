@@ -22,4 +22,5 @@ class statistics::web {
     include ::apache::mod::proxy
     include ::apache::mod::proxy_http
     include ::apache::mod::headers
+    include ::apache::mod::cgi
 }
