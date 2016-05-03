@@ -63,6 +63,18 @@ cassandra::seeds:
     - restbase2006-a.codfw.wmnet
     - restbase2006-b.codfw.wmnet
     - restbase2006-c.codfw.wmnet
+    - restbase2007.codfw.wmnet
+    - restbase2007-a.codfw.wmnet
+    - restbase2007-b.codfw.wmnet
+    - restbase2007-c.codfw.wmnet
+    - restbase2008.codfw.wmnet
+    - restbase2008-a.codfw.wmnet
+    - restbase2008-b.codfw.wmnet
+    - restbase2008-c.codfw.wmnet
+    - restbase2009.codfw.wmnet
+    - restbase2009-a.codfw.wmnet
+    - restbase2009-b.codfw.wmnet
+    - restbase2009-c.codfw.wmnet
 cassandra::max_heap_size: 12g
 # 1/4 heap size, no more than 100m/thread
 cassandra::heap_newsize: 2048m
