@@ -48,6 +48,8 @@ class ocg (
         target => '/usr/bin/nodejs',
     }
 
+    include ::imagemagick::install
+
     package {
         [
             'texlive-xetex',
@@ -69,7 +71,6 @@ class ocg (
             'fonts-baekmuk',
             'latex-xcolor',
             'lmodern',
-            'imagemagick',
             'poppler-utils',
             'libjpeg-progs',
             'librsvg2-bin',
