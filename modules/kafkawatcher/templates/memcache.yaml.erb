@@ -1,0 +1,7 @@
+listeners:
+    - topic: <%= @memcache_topic %>
+      server: <%= @kafka_server %>
+      handler: Memcached
+      params:
+        hostname: localhost
+        port: 11211
