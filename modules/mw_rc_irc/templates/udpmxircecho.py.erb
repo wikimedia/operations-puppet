@@ -20,10 +20,14 @@ class EchoReader(threading.Thread):
                 self.bot = bot
 
         def run(self):
+
                 udpsock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
                 udpsock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-                udpsock.bind(('', 9390))
-
+                try:
+                    udpsock.bind(('', 9390))
+                except socket.error, msg:
+                    sys.stderr.write("[ERROR] %s\n" % msg[1])
+                    sys.exit(2)
                 while True:
                         try:
                                 s = udpsock.recv(65535)
