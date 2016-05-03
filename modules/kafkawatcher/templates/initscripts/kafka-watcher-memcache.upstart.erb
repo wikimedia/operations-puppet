@@ -1,0 +1,12 @@
+description "Description=Kafka Watcher service for Memcached"
+
+start on (local-filesystems and net-device-up IFACE!=lo)
+stop on [!12345]
+
+setuid <%= @username %>
+console log
+chdir <%= @package_dir %>
+
+exec /usr/bin/python <%= @package_dir %>/kafka-watcher.py --config /etc/kafkawatcher/memcache.yaml
+respawn
+respawn limit 10 30

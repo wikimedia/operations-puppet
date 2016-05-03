@@ -1,0 +1,12 @@
+[Unit]
+Description=Kafka Watcher service for Memcached
+
+[Service]
+Type=simple
+WorkingDirectory=<%= @package_dir %>
+ExecStart=/usr/bin/python <%= @package_dir %>/kafka-watcher.py --config /etc/kafkawatcher/memcache.yaml
+User=<%= @username %>
+StandardOutput=journal+console
+Restart=always
+
+[Install]
