@@ -27,6 +27,9 @@ class toollabs::exec_environ {
         include ::mediawiki::packages::fonts
     }
 
+    # T65000
+    include ::imagemagick::install
+
     package { [
         # Please keep all packages in each group sorted in alphabetical order
 
@@ -262,7 +265,6 @@ class toollabs::exec_environ {
         'grep',
         'hugin-tools',                 # T108210
         'hunspell',                    # T125193
-        'imagemagick',                 # T65000
         'iotop',                       # useful for labs admins to monitor tools
         'ksh',
         'libaio1',                     # T70615
