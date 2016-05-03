@@ -5,11 +5,7 @@ import sys
 reload(sys)
 sys.setdefaultencoding('utf8')
 
-<% if scope.function_os_version(['debian >= jessie']) %>
 from irc.bot import SingleServerIRCBot
-<% else %>
-from ircbot import SingleServerIRCBot
-<% end %>
 
 import threading, socket
 
