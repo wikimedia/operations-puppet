@@ -2525,7 +2525,7 @@ node /^restbase10[01][0-9]\.eqiad\.wmnet$/ {
 }
 
 # restbase codfw cluster
-node /^restbase200[1-6]\.codfw\.wmnet$/ {
+node /^restbase200[1-9]\.codfw\.wmnet$/ {
     role restbase, cassandra
     include standard
 }
