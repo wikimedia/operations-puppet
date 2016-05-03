@@ -5,13 +5,18 @@
     ServerAdmin noc@wikimedia.org
 
     DocumentRoot /srv/stats.wikimedia.org/htdocs
-    <Directory /srv/stats.wikimedia.org/htdocs>
+    <Directory "/srv/stats.wikimedia.org/htdocs">
         Options Indexes FollowSymLinks MultiViews
         AllowOverride None
         Require all granted
     </Directory>
 
     # Allow CGI scripts for this site
+    <Directory "/srv/stats.wikimedia.org/cgi-bin">
+        Require all granted
+        AddHandler cgi-script .pl
+    </Directory>
+
     ScriptAlias /cgi-bin/ /srv/stats.wikimedia.org/cgi-bin/
 
     ErrorLog /var/log/apache2/error.log
