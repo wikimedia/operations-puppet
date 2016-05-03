@@ -167,7 +167,7 @@ class role::labs::dnsrecursor {
         'iswikisource', 'iswiktionary', 'itwikibooks', 'itwikinews',
         'itwikiquote', 'itwikisource', 'itwikiversity',
         'itwikivoyage', 'itwiktionary', 'iuwiki', 'iuwiktionary',
-        'jawiki', 'jawikibooks', 'jawikinews', 'jawikiquote',
+        'jawiki', 'jamwiki', 'jawikibooks', 'jawikinews', 'jawikiquote',
         'jawikisource', 'jawikiversity', 'jawiktionary', 'jbowiki',
         'jbowiktionary', 'jvwiki', 'jvwiktionary', 'kaawiki',
         'kabwiki', 'kawiki', 'kawikibooks', 'kawikiquote',
