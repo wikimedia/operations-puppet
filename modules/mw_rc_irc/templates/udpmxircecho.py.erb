@@ -21,7 +21,7 @@ class EchoReader(threading.Thread):
 
         def run(self):
                 udpsock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-
+                udpsock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
                 udpsock.bind(('', 9390))
 
                 while True:
