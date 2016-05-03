@@ -42,4 +42,4 @@ KAFKA_HEAP_OPTS="<%= @heap_opts %>"
 #KAFKA_HEAP_OPTS="-Xmx1G -Xms1G"
 <% end -%>
 #KAFKA_LOG4J_OPTS="-Dlog4j.configuration=file:${KAFKA_CONFIG}/log4j.properties"
-# KAFKA_OPTS="-XX:GCLogFileSize=50M -XX:+UseGCLogFileRotation -XX:NumberOfGCLogFiles=5"
+KAFKA_OPTS="-XX:GCLogFileSize=50M -XX:+UseGCLogFileRotation -XX:NumberOfGCLogFiles=5"
