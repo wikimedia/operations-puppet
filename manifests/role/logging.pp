@@ -184,7 +184,7 @@ class role::logging::kafkatee::webrequest {
     }
     kafkatee::input { 'kafka-webrequest_text':
         topic      => 'webrequest_text',
-        partitions => '0-11',
+        partitions => '0-23',
         options    => {
             'encoding' => 'json',
         },
@@ -192,7 +192,7 @@ class role::logging::kafkatee::webrequest {
     }
     kafkatee::input { 'kafka-webrequest_upload':
         topic      => 'webrequest_upload',
-        partitions => '0-11',
+        partitions => '0-23',
         options    => {
             'encoding' => 'json',
         },
