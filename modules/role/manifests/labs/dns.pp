@@ -32,6 +32,8 @@ class role::labs::dns {
         tmpdir    => '/srv/tmp',
         read_only => 'off',
     }
+
+    $pdns_db_password = $dnsconfig['db_pass']
     file { '/etc/mysql/production-grants-dns.sql':
         ensure  => present,
         owner   => 'root',
