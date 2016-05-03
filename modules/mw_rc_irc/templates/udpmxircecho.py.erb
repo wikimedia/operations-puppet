@@ -1,74 +1,76 @@
 #! /usr/bin/env python
 #
 # usage: udpmxircecho.py nickname server
-import sys
-reload(sys)
-sys.setdefaultencoding('utf8')
-
 <% if scope.function_os_version(['debian >= jessie']) %>
 from irc.bot import SingleServerIRCBot
 <% else %>
 from ircbot import SingleServerIRCBot
 <% end %>
-
-import threading, socket
+import threading
+import socket
+import sys
+reload(sys)
+sys.setdefaultencoding('utf8')
 
 
 class EchoReader(threading.Thread):
-        def __init__(self, bot):
-                threading.Thread.__init__(self)
-                self.bot = bot
+    def __init__(self, bot):
+        threading.Thread.__init__(self)
+        self.bot = bot
 
-        def run(self):
+    def run(self):
+        udpsock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        udpsock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 
-                udpsock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-                udpsock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-                try:
-                    udpsock.bind(('', 9390))
-                except socket.error, msg:
-                    sys.stderr.write("[ERROR] %s\n" % msg[1])
-                    sys.exit(2)
-                while True:
-                        try:
-                                s = udpsock.recv(65535)
-                                sp = s.split("\t")
-                                if len(sp) == 2:
-                                        channel = sp[0]
-                                        text = sp[1]
-                                        text = text.lstrip().replace('\r','').replace('\n','')
+        try:
+            udpsock.bind(('', 9390))
+        except socket.error, msg:
+            sys.stderr.write("[ERROR] %s\n" % msg[1])
+            sys.exit(2)
 
-                                        if channel not in self.bot.chans:
-                                                self.bot.chans.append(channel)
-                                                self.bot.connection.join(channel)
-                                        # this throws an exception if not connected.
-                                        self.bot.connection.privmsg(channel, text)
+        while True:
+            try:
+                s = udpsock.recv(65535)
+                sp = s.split("\t")
+                if len(sp) == 2:
+                    channel = sp[0]
+                    text = sp[1].lstrip().replace('\r', '').replace('\n', '')
 
-                        except EOFError:
-                                # Once the input is finished, the bot should exit
-                                sys.exit()
-                        except Exception as e:
-                                print e
+                    if channel not in self.bot.chans:
+                        self.bot.chans.append(channel)
+                        self.bot.connection.join(channel)
+                    # this throws an exception if not connected.
+                    self.bot.connection.privmsg(channel, text)
+            except EOFError:
+                # Once the input is finished, the bot should exit
+                sys.exit()
+            except Exception as e:
+                print e
+
 
 class EchoBot(SingleServerIRCBot):
-        def __init__(self, chans, nickname, server):
-                port = 6667
-                print "connecting to %s as %s on port %s" % (server, nickname, port)
-                SingleServerIRCBot.__init__(self, [(server, port)], nickname, "IRC echo bot")
-                self.chans = chans
+    def __init__(self, chans, nickname, server):
+        port = 6667
+        print "connecting to %s as %s on port %s" % (server, nickname, port)
+        server_list = [(server, port)]
+        realname = "IRC echo bot"
+        SingleServerIRCBot.__init__(self, server_list, nickname, realname)
+        self.chans = chans
 
-        def on_nicknameinuse(self, c, e):
-                print '%s nickname in use!' % (c.get_nickname(),)
-                c.nick(c.get_nickname() + "_")
+    def on_nicknameinuse(self, c, e):
+        print '%s nickname in use!' % (c.get_nickname(),)
+        c.nick(c.get_nickname() + "_")
 
-        def on_welcome(self, c, e):
-                print "got welcome"
-                c.oper("rc", "<%= @ircpassword %>")
+    def on_welcome(self, c, e):
+        print "got welcome"
+        c.oper("rc", "<%= @ircpassword %>")
 
-                for chan in self.chans:
-                        c.join(chan)
+        for chan in self.chans:
+            c.join(chan)
+
 
 def main():
-    bot = EchoBot([], sys.argv[1], sys.argv[2]);
+    bot = EchoBot([], sys.argv[1], sys.argv[2])
     sthr = EchoReader(bot)
     sthr.start()
     bot.start()
