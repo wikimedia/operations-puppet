@@ -56,4 +56,7 @@ class contint::packages::python {
         'python3-dev',
         'python3-tk',  # For pywikibot/core running tox-doc-trusty
     )
+    package { 'pypy':  # pywikibot/core T134235
+        ensure => present,
+    }
 }
