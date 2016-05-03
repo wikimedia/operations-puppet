@@ -69,6 +69,7 @@ class role::lvs::balancer {
             $sip['mobileapps'][$::site],
             $sip['apertium'][$::site],
             $sip['kartotherian'][$::site],
+            $sip['eventbus'][$::site],
             ],
 
         # esams + ulsfo

@@ -128,6 +128,7 @@ lvs_service_ips:
     eqiad: 10.2.2.12
   eventbus: &ip_block026
     eqiad: 10.2.2.23
+    codfw: 10.2.1.23
   apertium: &ip_block027
     eqiad: 10.2.2.11
     codfw: 10.2.1.11
@@ -885,10 +886,12 @@ lvs_services:
       cluster: eventbus
       service: eventbus
     icinga:
-      check_command: "check_http_lvs_on_port!eventbus.svc.eqiad.wmnet!8085!/v1/topics"
+      check_command: "check_http_lvs_on_port!eventbus.svc.%{::site}.wmnet!8085!/v1/topics"
       sites:
         eqiad:
           hostname: eventbus.svc.eqiad.wmnet
+        codfw:
+          hostname: eventbus.svc.codfw.wmnet
     monitors:
       ProxyFetch:
         url:
