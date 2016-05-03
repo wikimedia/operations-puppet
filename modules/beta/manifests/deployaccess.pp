@@ -9,10 +9,4 @@ class beta::deployaccess(
         priority => 50,
     }
 
-    # Allow eventlogging user to deploy.
-    security::access::config { 'beta-allow-eventlogging':
-        content  => "+ : eventlogging : ${bastion_ip}\n",
-        priority => 51,
-    }
-
 }

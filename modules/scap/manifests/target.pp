@@ -77,6 +77,20 @@ define scap::target(
         User[$deploy_user] -> Scap::Target[$title]
     }
 
+    if $::realm == 'labs' {
+        if !defined(Security::Access::Config["beta-allow-${deploy_user}"]) {
+            # Allow $deploy_user login from scap deployment host.
+            # adds an exception in /etc/security/access.conf
+            # to work around labs-specific restrictions
+            $deployment_host = hiera('scap::deployment_server')
+            $deployment_ip = ipresolve($deployment_host)
+            security::access::config { "beta-allow-${deploy_user}":
+                content  => "+ : ${deploy_user} : ${deployment_ip}\n",
+                priority => 60,
+            }
+        }
+    }
+
     package { $package_name:
         install_options => [{
                   owner => $deploy_user}],
