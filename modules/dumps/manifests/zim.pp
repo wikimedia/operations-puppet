@@ -2,8 +2,10 @@
 class dumps::zim {
 
     # imagemagick for ZIM dumps
+    include ::imagemagick::install
+
     # pixz for multi-threaded lzma compression
-    package { [ 'imagemagick', 'pixz' ]:
+    package { [ 'pixz' ]:
         ensure => present,
     }
 

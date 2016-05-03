@@ -22,9 +22,10 @@ class openstack::openstack_manager(
 
     include openstack::wikitechprivatesettings
 
+    include ::imagemagick::install
+
     package { [
         'php5-ldap',
-        'imagemagick',
         'librsvg2-bin',
         'nova-xvpvncproxy',
         'nova-novncproxy',

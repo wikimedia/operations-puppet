@@ -13,6 +13,8 @@ class statistics::compute {
 
     require_package('udp-filter')
 
+    include ::imagemagick::install
+
     ensure_packages([
         'emacs23',
         'mc',
@@ -23,7 +25,6 @@ class statistics::compute {
         'mercurial',
         'tofrodos',
         'git-review',
-        'imagemagick',
         # halfak wants make to manage dependencies
         'make',
         # for checking up on eventlogging
