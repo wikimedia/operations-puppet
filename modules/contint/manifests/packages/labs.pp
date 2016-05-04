@@ -14,13 +14,9 @@ class contint::packages::labs {
         include mediawiki::packages::fonts
     }
 
-    # Required for javascript testing
     include ::contint::packages::javascript
-
-    # Required for python testing
+    include ::contint::packages::php
     include ::contint::packages::python
-
-    # Required for ruby testing
     include ::contint::packages::ruby
 
     include phabricator::arcanist
@@ -34,10 +30,6 @@ class contint::packages::labs {
     }
 
     if os_version('ubuntu >= trusty') {
-        exec { '/usr/bin/apt-get -y build-dep hhvm':
-            onlyif => '/usr/bin/apt-get -s build-dep hhvm | /bin/grep -Pq "will be (installed|upgraded)"',
-        }
-
         # Work around PIL 1.1.7 expecting libs in /usr/lib T101550
         file { '/usr/lib/libjpeg.so':
             ensure => link,
@@ -49,16 +41,12 @@ class contint::packages::labs {
         }
 
         package { [
-            'hhvm-dev',
-
             # Android SDK
             'gcc-multilib',
             'lib32z1',
             'lib32stdc++6',
-
             # Android emulation
             'qemu',
-
             ]: ensure => present,
         }
 
