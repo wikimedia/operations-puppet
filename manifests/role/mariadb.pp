@@ -539,12 +539,6 @@ class role::mariadb::core(
         mariadb10 => true,
     }
 
-    if ($shard in ['es1', 'es2', 'es3']) {
-        $config = 'mariadb/production-es.my.cnf.erb'
-    } else {
-        $config = 'mariadb/production.my.cnf.erb'
-    }
-
     # Semi-sync replication
     # off: for non-primary datacenter and read-only shard(s)
     # slave: for slaves in the primary datacenter
@@ -560,7 +554,7 @@ class role::mariadb::core(
     # Read only forced on also for the masters of the primary datacenter
     class { 'mariadb::config':
         prompt           => "PRODUCTION ${shard}",
-        config           => $config,
+        config           => 'mariadb/production.my.cnf.erb',
         password         => $passwords::misc::scripts::mysql_root_pass,
         datadir          => '/srv/sqldata',
         tmpdir           => '/srv/tmp',
