@@ -54,6 +54,7 @@ class role::eventbus::eventbus {
         # if any of these resources change.
         # Reload if mediawiki/event-schemas has a change.
         reload_on     =>  Class['::eventschemas'],
+        num_processes => 8,
     }
 
     # Allow traffic to eventlogging-service on $port
