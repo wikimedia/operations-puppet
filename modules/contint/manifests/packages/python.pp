@@ -12,8 +12,12 @@ class contint::packages::python {
         'libxslt1-dev',  # For python lxml
         'libffi-dev', # For python requests[security]
         'libssl-dev', # python cryptography
-        'libcurl4-gnutls-dev', # For pycurl
     )
+    package { 'libcurl4-gnutls-dev':
+        # Conflict with HHVM build dependency libcurl4-openssl-dev.
+        # Was For pycurl which now build with openssl just fine.
+        ensure =>  absent,
+    }
 
     if os_version('debian jessie') {
         # Debian only has: Suggests: libgnutls28-dev
