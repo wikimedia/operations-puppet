@@ -1,4 +1,3 @@
-
 # == Class: changeprop
 #
 # This class installs and configures the change propagation service, a part of
