@@ -20,18 +20,26 @@
 # [*blacklist*]
 #   Array of strings, each is a regular expression of metric names to blacklist
 #   (i.e. don't send to graphite)
+#
+# [*whitelist*]
+#   Array of strings, each is a regular expression of metric names to whitelist
+#   (i.e. send to graphite, even if matched by a blacklist entry)
 
 class cassandra::metrics(
     $graphite_prefix = "cassandra.${::hostname}",
     $graphite_host   = 'localhost',
     $graphite_port   = '2003',
     $blacklist       = undef,
+    $whitelist       = undef,
 ) {
     validate_string($graphite_prefix)
     validate_string($graphite_host)
     validate_string($graphite_port)
     if $blacklist {
         validate_array($blacklist)
+    }
+    if $whitelist {
+        validate_array($whitelist)
     }
 
     $filter_file   = '/etc/cassandra-metrics-collector/filter.yaml'

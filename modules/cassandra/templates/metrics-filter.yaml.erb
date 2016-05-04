@@ -1,3 +1,10 @@
+<% if @whitelist %>
+whitelist:
+  <%- @whitelist.each do |x| -%>
+  - '<%= x %>'
+  <%- end -%>
+<% end %>
+
 <% if @blacklist %>
 blacklist:
   <%- @blacklist.each do |x| -%>
