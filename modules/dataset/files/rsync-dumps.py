@@ -70,31 +70,30 @@ class Rsyncer(object):
             self.do_rsync(host_info[job]['source'], host_info[job]['dest'],
                           targets, dir_args)
 
-    def check_output(self, command):
-        process = subprocess.Popen(command, stdout=subprocess.PIPE,
-                                   stderr=subprocess.STDOUT)
-        output, err_unused = process.communicate()
-        retcode = process.poll()
-        if retcode:
-            raise subprocess.CalledProcessError(retcode, command)
-        return output
-
     def do_rsync(self, src, dest, targets, dir_args):
         for targ in targets:
             command = ["/usr/bin/pgrep", "-u", "root",
                        "-f", "%s::%s" % (targ, dest)]
-            result = subprocess.call(command)
-            if result != 1:  # already running or some error
-                continue
+            try:
+                subprocess.check_output(command)
+            except subprocess.CalledProcessError as err:
+                if err.returncode == 1:
+                    # already running
+                    if self.dryrun:
+                        print "would skip rsync to", "%s::%s" % (targ, dest)
+                    continue
+                else:
+                    # genuine error
+                    raise
 
             command = (["/usr/bin/rsync"] + self.rsync_args + self.excludes +
                        dir_args + [src, "%s::%s" % (targ, dest)])
             if self.dryrun:
-                print " ".join(command)
+                print "would run", " ".join(command)
             else:
                 output = None
                 try:
-                    output = self.check_output(command)
+                    output = subprocess.check_output(command)
                 except subprocess.CalledProcessError:
                     # fixme might want to do something with error output
                     pass
