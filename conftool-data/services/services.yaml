@@ -144,6 +144,7 @@ eventbus:
     port: 8085
     datacenters:
     - eqiad
+    - codfw
     default_values:
       pooled: 'yes'
       weight: 10
