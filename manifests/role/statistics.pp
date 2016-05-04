@@ -197,6 +197,9 @@ class role::statistics::web inherits role::statistics {
     include statistics::sites::datasets
     include statistics::sites::metrics
     include statistics::sites::stats
+    # analytics.wikimedia.org will eventually supercede
+    # datasets and stats.
+    include statistics::sites::analytics
 
     ferm::service {'statistics-web':
         proto => 'tcp',
