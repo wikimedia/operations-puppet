@@ -115,6 +115,26 @@ cassandra_test_eqiad:
   cassandra::application_password: "%{passwords::cassandra::restbase}"
   restbase::cassandra_user: restb
   restbase::cassandra_password: "%{passwords::cassandra::restbase}"
+  cassandra::metrics::whitelist:
+    - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.CoordinatorReadLatency\..*$
+    - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.CoordinatorScanLatency\..*$
+    - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.EstimatedColumnCountHistogram\..*$
+    - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.EstimatedRowCount\..*$
+    - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.EstimatedRowSizeHistogram\..*$
+    - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.LiveDiskSpaceUsed\..*$
+    - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.LiveSSTableCount\..*$
+    - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.LiveScannedHistogram\..*$
+    - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.MaxRowSize\..*$
+    - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.MeanRowSize\..*$
+    - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.MinRowSize\..*$
+    - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.PendingCompactions\..*$
+    - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.PendingFlushes\..*$
+    - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.RangeLatency\..*$
+    - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.ReadLatency\..*$
+    - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.SSTablesPerReadHistogram\..*$
+    - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.TombstoneScannedHistogram\..*$
+    - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.TotalDiskSpaceUsed\..*$
+    - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.WriteLatency\..*$
   cassandra::metrics::blacklist:
       - .*\.15MinuteRate$
       - .*\.5MinuteRate$
@@ -173,6 +193,26 @@ cassandra_test_codfw:
   cassandra::application_password: "%{passwords::cassandra::restbase}"
   restbase::cassandra_user: restb
   restbase::cassandra_password: "%{passwords::cassandra::restbase}"
+  cassandra::metrics::whitelist:
+    - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.CoordinatorReadLatency\..*$
+    - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.CoordinatorScanLatency\..*$
+    - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.EstimatedColumnCountHistogram\..*$
+    - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.EstimatedRowCount\..*$
+    - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.EstimatedRowSizeHistogram\..*$
+    - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.LiveDiskSpaceUsed\..*$
+    - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.LiveSSTableCount\..*$
+    - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.LiveScannedHistogram\..*$
+    - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.MaxRowSize\..*$
+    - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.MeanRowSize\..*$
+    - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.MinRowSize\..*$
+    - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.PendingCompactions\..*$
+    - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.PendingFlushes\..*$
+    - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.RangeLatency\..*$
+    - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.ReadLatency\..*$
+    - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.SSTablesPerReadHistogram\..*$
+    - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.TombstoneScannedHistogram\..*$
+    - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.TotalDiskSpaceUsed\..*$
+    - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.WriteLatency\..*$
   cassandra::metrics::blacklist:
       - .*\.15MinuteRate$
       - .*\.5MinuteRate$

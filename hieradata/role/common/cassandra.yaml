@@ -84,6 +84,26 @@ cassandra::concurrent_writes: 18
 cassandra::concurrent_reads: 18
 cassandra::tls_cluster_name: services
 cassandra::internode_encryption: dc
+cassandra::metrics::whitelist:
+    - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.CoordinatorReadLatency\..*$
+    - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.CoordinatorScanLatency\..*$
+    - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.EstimatedColumnCountHistogram\..*$
+    - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.EstimatedRowCount\..*$
+    - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.EstimatedRowSizeHistogram\..*$
+    - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.LiveDiskSpaceUsed\..*$
+    - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.LiveSSTableCount\..*$
+    - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.LiveScannedHistogram\..*$
+    - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.MaxRowSize\..*$
+    - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.MeanRowSize\..*$
+    - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.MinRowSize\..*$
+    - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.PendingCompactions\..*$
+    - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.PendingFlushes\..*$
+    - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.RangeLatency\..*$
+    - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.ReadLatency\..*$
+    - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.SSTablesPerReadHistogram\..*$
+    - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.TombstoneScannedHistogram\..*$
+    - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.TotalDiskSpaceUsed\..*$
+    - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.WriteLatency\..*$
 cassandra::metrics::blacklist:
     - .*\.15MinuteRate$
     - .*\.5MinuteRate$
@@ -93,6 +113,7 @@ cassandra::metrics::blacklist:
     - .*\.meanRate$
     - .*\.min$
     - .*\.stddev$
+    - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\..*$
 
 cassandra::dc: "%{::site}"
 # NOTE: this is cassandra's logical cluster name, not related to cassandra's datacenters (eqiad/codfw)
