@@ -9,14 +9,7 @@ class role::ci::slave::labs {
         system::role { '::package_builder':
             description => 'CI package building',
         }
-        class { '::package_builder':
-            # We need /var/cache/pbuilder to be a symlink to /mnt
-            # before cowbuilder/pbuilder is installed
-            require  => Class['contint::packages::labs'],
-            # Cowdancer is confused by /var/cache/pbuilder being a symlink
-            # causing it to fail to properly --update cow images. T125999
-            basepath => '/mnt/pbuilder'
-        }
+        include ::contint::package_builder
     }
 
     include contint::worker_localhost
