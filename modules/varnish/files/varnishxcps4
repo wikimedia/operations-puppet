@@ -59,7 +59,7 @@ ap.add_argument('--key-prefix', help='metric key prefix',
 args = ap.parse_args()
 
 sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-key_value_pairs = re.compile('([A-Z]+)=([^;]+)')
+key_value_pairs = re.compile('([A-Z][A-Z0-9]*)=([^;]+)')
 stats = {}
 
 
