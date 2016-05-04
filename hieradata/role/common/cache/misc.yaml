@@ -23,4 +23,3 @@ cache::route_table:
   codfw: 'eqiad'
   ulsfo: 'codfw'
   esams: 'eqiad'
-tlsproxy::localssl::do_spdy: false
