@@ -204,7 +204,8 @@ class role::cache::misc {
             'req_host' => [
                 'metrics.wikimedia.org',
                 'stats.wikimedia.org',
-                'datasets.wikimedia.org'
+                'datasets.wikimedia.org',
+                'analytics.wikimedia.org',
             ],
         },
         'mendelevium' => { # OTRS
