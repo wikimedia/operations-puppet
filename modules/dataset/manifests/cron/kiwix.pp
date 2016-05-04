@@ -42,7 +42,7 @@ class dataset::cron::kiwix(
     cron { 'kiwix-mirror-update':
         ensure      => $ensure,
         environment => 'MAILTO=ops-dumps@wikimedia.org',
-        command     => '/usr/local/bin/kiwix-rsync-cron.sh',
+        command     => '/bin/bash /usr/local/bin/kiwix-rsync-cron.sh',
         user        => 'mirror',
         minute      => '15',
         hour        => '*/2',

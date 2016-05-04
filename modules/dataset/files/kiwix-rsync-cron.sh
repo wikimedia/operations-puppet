@@ -9,7 +9,7 @@ do_rsync (){
     srcpath=$1
     destpath=$2
 
-    running=`pgrep -f -x "/usr/bin/rsync -rlptq $bwlimit ${sourcehost}::${srcpath} ${destroot}/${destpath}"`
+    running=`/usr/bin/pgrep -f -x "/usr/bin/rsync -rlptq $bwlimit ${sourcehost}::${srcpath} ${destroot}/${destpath}"`
     if [ -z "$running" ]; then
         /usr/bin/rsync -rlptq "$bwlimit" "${sourcehost}::${srcpath}" "${destroot}/${destpath}"
     fi
