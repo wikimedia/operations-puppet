@@ -44,7 +44,7 @@ serverinfo {
 	/* use ts6: whether we want to use the TS6 protocol to other servers
 	 * or not.
 	 */
-	use_ts6 = yes;
+	use_ts6 = no;
 
 	/* sid: the unique server id of our server.  This must be three
 	 * characters long.  The first character must be a digit [0-9], the
@@ -218,52 +218,6 @@ listen {
 # The auth and operator blocks are in the private repo.
 .include "auth.conf"
 .include "operator.conf"
-
-/* connect {}: controls servers we connect to (OLD C:, N:, H:, L:) */
-connect "irc.wikimedia.org" {
-        /* the name must go above */
-
-        /* host: the host or IP to connect to.  If a hostname is used it
-         * must match the reverse dns of the server.
-         */
-        host = "kraz.wikimedia.org";
-
-        /* vhost: the host or IP to bind to for this connection.  If this
-         * is not specified, the default vhost (in serverinfo {}) is used.
-         */
-        #vhost = "192.168.0.50";
-
-        /* passwords: the passwords we send (OLD C:) and accept (OLD N:).
-         * The remote server will have these passwords reversed.
-         */
-        send_password = "TOBEREMOVED";
-        accept_password = "NOTUSED";
-
-        /* port: the port to connect to this server on */
-        port = 6666;
-
-        /* hub mask: the mask of servers that this server may hub. Multiple
-         * entries are permitted
-         */
-        hub_mask = "*";
-
-        /* leaf mask: the mask of servers this server may not hub.  Multiple
-         * entries are permitted.  Useful for forbidding EU -> US -> EU routes.
-         */
-        #leaf_mask = "*.uk";
-
-        /* class: the class this server is in */
-        class = "server";
-
-        /* flags: controls special options for this server
-         * encrypted    - marks the accept_password as being crypt()'d
-         * autoconn     - automatically connect to this server
-         * compressed   - compress traffic via ziplinks
-         * topicburst   - burst topics between servers
-         */
-        flags = compressed, topicburst;
-};
-
 
 /* The channel block contains options pertaining to channels */
 channel {
