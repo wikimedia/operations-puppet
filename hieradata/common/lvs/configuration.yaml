@@ -878,6 +878,7 @@ lvs_services:
     class: low-traffic
     sites:
     - eqiad
+    - codfw
     ip: *ip_block026
     port: 8085
     bgp: 'yes'
