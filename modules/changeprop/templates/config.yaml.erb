@@ -48,7 +48,7 @@ spec:
                     # These URIs are coming from RESTBase, so we know that article titles will be normalized
                     # and main namespace articles will not have : (uri-encoded, so %3a or %3A)
                     uri: '/^https?:\/\/[^\/]+\/api\/rest_v1\/page\/html\/((?:(?!%3a|%3A).)+)$/'
-                    domain: '/wiktionary\.org$/'
+                    domain: '/^en\.wiktionary\.org$/'
                   tags:
                     - restbase
                 exec:
