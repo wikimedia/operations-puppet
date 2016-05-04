@@ -25,42 +25,6 @@ class contint::packages::labs {
 
     include phabricator::arcanist
 
-    # Shell script wrappers to ease package building
-    # Package generated via the mirror operations/debs/jenkins-debian-glue.git
-
-    # jenkins-debian glue puppetization:
-    file { '/mnt/pbuilder':
-        ensure  => directory,
-        require => Mount['/mnt'],
-    }
-
-    file { '/var/cache/pbuilder':
-        ensure  => link,
-        target  => '/mnt/pbuilder',
-        require => File['/mnt/pbuilder'],
-    }
-
-    package { [
-        # Let git-buidpackage find the Ubuntu/Debian release names
-        'libdistro-info-perl',
-        ]:
-        ensure => present,
-    }
-    package { [
-        'jenkins-debian-glue',
-        'jenkins-debian-glue-buildenv',
-        'jenkins-debian-glue-buildenv-git',
-        'jenkins-debian-glue-buildenv-lintian',
-        'jenkins-debian-glue-buildenv-piuparts',
-        'jenkins-debian-glue-buildenv-taptools',
-        ]:
-            ensure  => latest,
-            # cowbuilder file hierarchy needs to be created after the symlink
-            # points to the mounted disk.
-            require => File['/var/cache/pbuilder'],
-    }
-    # end of jenkins-debian glue puppetization
-
     # For mediawiki/extensions/Collection/OfflineContentGenerator/bundler
     require_package('zip')
 
