@@ -35,11 +35,9 @@ class role::phabricator::main {
         mysql_admin_user => $role::phabricator::config::mysql_adminuser,
         mysql_admin_pass => $role::phabricator::config::mysql_adminpass,
         libraries        => [ "${phab_root_dir}/libext/Sprint/src",
-                              "${phab_root_dir}/libext/security/src" ],
-        extensions       => [ 'MediaWikiUserpageCustomField.php',
-                              'LDAPUserpageCustomField.php',
-                              'PhabricatorMediaWikiAuthProvider.php',
-                              'PhutilMediaWikiAuthAdapter.php'],
+                              "${phab_root_dir}/libext/security/src",
+                              "${phab_root_dir}/libext/misc/src" ],
+        extensions       => [ ],
         settings         => {
             'darkconsole.enabled'                    => false,
             'phabricator.base-uri'                   => "https://${domain}",
@@ -194,4 +192,3 @@ class role::phabricator::main {
         require      => Package[$deploy_target],
     }
 }
-
