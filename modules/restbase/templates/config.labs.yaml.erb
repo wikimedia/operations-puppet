@@ -23,7 +23,7 @@ default_project: &default_project
         parsoid:
           host: <%= @parsoid_uri %>
         action:
-          apiUriTemplate: "{{'http://{domain}/w/api.php'}}"
+          apiUriTemplate: http://deployment-mediawiki02.deployment-prep.eqiad.wmflabs/w/api.php
         graphoid:
           host: <%= @graphoid_uri %>
         mathoid:
