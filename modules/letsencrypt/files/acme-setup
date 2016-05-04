@@ -466,6 +466,11 @@ def main():
     if args.exp_rand * 2 >= args.exp_days:
         raise Exception('-r %s must be less than half of -d %s'
                         % (args.exp_rand, args.exp_days))
+
+    reg_id=re.compile('^[-a-zA-Z0-9_]+$')
+    if not reg_id.match(args.id):
+        raise Exception('-i must match ^[-a-zA-Z0-9_]+$ ')
+
     acme_user = pwd.getpwnam(args.acme_user)
     acme_setup(args.id, args.subjects, args.mode,
                args.exp_days, args.exp_rand, acme_user, args.svc)
