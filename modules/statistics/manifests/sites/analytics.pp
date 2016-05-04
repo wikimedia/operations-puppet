@@ -23,7 +23,7 @@ class statistics::sites::analytics {
 
     include apache::mod::headers
     apache::site { 'analytics':
-        source  => 'statistics/analytics.wikimedia.org.erb',
+        content => 'statistics/analytics.wikimedia.org.erb',
         require => File[$document_root],
     }
 }
