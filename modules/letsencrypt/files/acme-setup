@@ -258,8 +258,9 @@ def check_expiry(txt, exp_days, exp_rand):
             return True
         random.seed(s_res.group(1))
         exp_secs += random.randint(-1 * plusminus, plusminus)
-    cert_notafter_min = now + datetime.timedelta(seconds=exp_secs)
-    if cert_notafter < cert_notafter_min:
+    renew_at = cert_notafter - datetime.timedelta(seconds=exp_secs)
+    info('Cert renewal on or after ' + renew_at.isoformat())
+    if now >= renew_at:
         return True
 
     return False
