@@ -42,6 +42,10 @@ class role::analytics_cluster::hue {
         ssl_private_key         => false,
         ssl_certificate         => false,
         secure_proxy_ssl_header => true,
+        # External Database configuration (missing configuration in hiera)
+        $database_engine        => 'mysql',
+        $database_username      => 'hue',
+        $database_port          => '3306',
     }
 
     ferm::service{ 'hue_server':
