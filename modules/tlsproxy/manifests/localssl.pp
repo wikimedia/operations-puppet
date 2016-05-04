@@ -39,7 +39,6 @@ define tlsproxy::localssl(
 ) {
     require tlsproxy::instance
 
-    $do_spdy = hiera('tlsproxy::localssl::do_spdy', true)
     $keepalives_per_worker = hiera('tlsproxy::localssl::keepalives_per_worker', 0)
 
     # Ensure that exactly one definition exists with default_server = true

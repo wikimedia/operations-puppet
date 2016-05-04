@@ -90,25 +90,6 @@ http {
     # to be watched, experimented on, and tuned as more load comes in...
     ssl_buffer_size 1300;
 
-<% if @do_spdy -%>
-    # default zlib compression level for SPDY response headers
-    spdy_headers_comp 6;
-
-    # This is used to inject "Accept-Encoding: gzip" into all proxied SPDY requests
-    # The other half of the solution is in the per-server proxy configuration in the
-    # form of a line like: proxy_set_header Accept-Encoding $accept_encoding;
-    # This is based on: http://trac.nginx.org/nginx/ticket/542#comment:1
-    map $spdy $accept_encoding {
-        default gzip;
-        ''      $http_accept_encoding;
-    }
-
-    # When SPDY is not in use, '$spdy' is empty. Map that value to a zero.
-    map $spdy $spdy_version {
-        default $spdy;
-        '' '0';
-    }
-<% else -%>
     # TODO: not sure if this is still necessary with HTTP/2 and FF, as it was with SPDY
     # This is used to inject "Accept-Encoding: gzip" into all proxied HTTP/2 requests
     # The other half of the solution is in the per-server proxy configuration in the
@@ -125,7 +106,6 @@ http {
         default '1';
         '' '0';
     }
-<% end -%>
 
     # Nginx indicates session reuse with 'r' and '.', which is rather cryptic.
     # Map this value to '1' and '0' instead.
