@@ -12,7 +12,7 @@ class mw_rc_irc::ircserver {
             mode   => '0444',
             owner  => 'irc',
             group  => 'irc',
-            content => secret('misc/ircd.conf');
+            content => template('mw_rc_irc/ircd.conf');
         '/usr/etc/ircd.motd':
             mode    => '0444',
             owner   => 'irc',
