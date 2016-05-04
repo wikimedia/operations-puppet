@@ -19,12 +19,6 @@ class role::ci::slave::labs {
         }
     }
 
-    file { '/srv/localhost-worker':
-        ensure => directory,
-        mode   => '0775',
-        owner  => 'jenkins-deploy',
-        group  => 'root',
-    }
     include contint::worker_localhost
 
     contint::tmpfs { 'tmpfs for jenkins CI labs slave':
