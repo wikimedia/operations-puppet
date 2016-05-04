@@ -114,6 +114,7 @@ import argparse
 import tempfile
 import datetime
 import subprocess
+import string
 
 # Constants:
 ETC_DIR = '/etc/acme'
@@ -466,6 +467,11 @@ def main():
     if args.exp_rand * 2 >= args.exp_days:
         raise Exception('-r %s must be less than half of -d %s'
                         % (args.exp_rand, args.exp_days))
+
+    for letter in args.id:
+        if letter not in string.ascii_letters:
+            reise Exception('-i must only use ASCII letters')
+
     acme_user = pwd.getpwnam(args.acme_user)
     acme_setup(args.id, args.subjects, args.mode,
                args.exp_days, args.exp_rand, acme_user, args.svc)
