@@ -4,3 +4,6 @@
 
 # Don't auto create Hue users from LDAP in production.
 ldap_create_users_on_login: false
+
+# Colocated with the Hive and Oozie dbs
+database_host: 'analytics1003.eqiad.wmnet'
