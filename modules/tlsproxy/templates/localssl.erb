@@ -47,9 +47,6 @@ server {
 		proxy_set_header X-Forwarded-Proto https;
 		proxy_set_header X-Connection-Properties "H2=$h2; SSR=$session_reused; SSL=$ssl_protocol; C=$ssl_cipher;";
 
-		# This sets AE:gzip for all SPDY requests, see comments in main nginx.conf
-		proxy_set_header Accept-Encoding $accept_encoding;
-
 		# Don't clobber the Server header from the backend.
 		proxy_pass_header Server;
 
