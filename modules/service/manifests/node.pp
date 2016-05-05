@@ -248,6 +248,7 @@ define service::node(
         refresh        => $auto_refresh,
         service_params => {
             enable     => $enable,
+            ensure     => ensure_service($enable),
             hasstatus  => true,
             hasrestart => true,
         },
