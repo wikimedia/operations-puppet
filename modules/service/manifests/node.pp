@@ -8,6 +8,11 @@
 #
 # === Parameters
 #
+# [*enable*]
+#   Whether or not the systemd unit or upstart job for the service
+#   should be running. This is passed through to the underlying
+#   base::service_unit resource. Default: true.
+#
 # [*port*]
 #   Port on which to run the service
 #
@@ -98,6 +103,7 @@
 #
 define service::node(
     $port,
+    $enable                 = true,
     $config                 = undef,
     $full_config            = false,
     $no_workers             = 'ncpu',
@@ -241,7 +247,7 @@ define service::node(
         template_name  => 'node',
         refresh        => $auto_refresh,
         service_params => {
-            enable     => true,
+            enable     => $enable,
             hasstatus  => true,
             hasrestart => true,
         },
