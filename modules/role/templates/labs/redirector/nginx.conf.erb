@@ -1,0 +1,18 @@
+# This file is managed by Puppet
+# See modules/role/templates/labs/redirector/nginx.conf.erb
+
+server {
+  listen 80 default_server;
+  server_name _;
+  # Default vhost bounces the user to a wikitech page that explains things
+  # aren't quite right with the config.
+  return 302 <%= @default_url %>;
+}
+
+<% @redirects.each do | host, dest | %>
+server {
+  listen 80;
+  server_name <%= host %>;
+  return 301 <%= dest %>;
+}
+<% end %>
