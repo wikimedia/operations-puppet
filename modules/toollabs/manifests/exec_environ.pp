@@ -317,6 +317,7 @@ class toollabs::exec_environ {
         'ufraw-batch',                 # T59008
         'virtualenvwrapper',           # T131840
         'whois',                       # T98555
+        'xml2',                        # T134146.
         'xsltproc',                    # T68962.
         'xvfb',                        # T100268
         'zbar-tools',                  # T58996
