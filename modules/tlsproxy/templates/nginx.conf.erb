@@ -90,16 +90,6 @@ http {
     # to be watched, experimented on, and tuned as more load comes in...
     ssl_buffer_size 1300;
 
-    # TODO: not sure if this is still necessary with HTTP/2 and FF, as it was with SPDY
-    # This is used to inject "Accept-Encoding: gzip" into all proxied HTTP/2 requests
-    # The other half of the solution is in the per-server proxy configuration in the
-    # form of a line like: proxy_set_header Accept-Encoding $accept_encoding;
-    # This is based on: http://trac.nginx.org/nginx/ticket/542#comment:1
-    map $http2 $accept_encoding {
-        default gzip;
-        ''      $http_accept_encoding;
-    }
-
     # nginx's $http2 is either 'h2' or '' (empty string) for http/1
     # Map it to $h2 as a boolean string value '1' or '0' for use in headers
     map $http2 $h2 {
