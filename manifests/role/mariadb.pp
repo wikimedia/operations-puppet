@@ -508,7 +508,14 @@ class role::mariadb::core(
     include role::mariadb::ferm
 
     # N.B.: NON $::mw_primary masters are considered slaves for now
-    $mysql_role = $master ? { true  => 'master', false => 'slave' }
+    if ($shard == 'es1') {
+        $mysql_role = 'standalone'
+    } elsif $master == true {
+        $mysql_role = 'master'
+    } else {
+        $mysql_role = 'slave'
+    }
+
     salt::grain { 'mysql_role':
         ensure  => present,
         replace => true,
