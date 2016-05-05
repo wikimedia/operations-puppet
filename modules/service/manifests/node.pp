@@ -240,8 +240,14 @@ define service::node(
     }
 
     # service init script and activation
+    if $enabled {
+        $service_unit_ensure = 'present'
+    } else {
+        $service_unit_ensure = 'absent'
+    }
+
     base::service_unit { $title:
-        ensure         => present,
+        ensure         => $service_unit_ensure,
         systemd        => true,
         upstart        => true,
         template_name  => 'node',
