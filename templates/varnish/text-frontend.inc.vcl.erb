@@ -110,6 +110,30 @@ sub cluster_fe_recv_pre_purge {
 				set req.http.host = req.http.x-dt-host;
 			}
 		}
+
+		// X-RB-NOREDIR: redirect=false optimization: T134464
+		// RB sends the same content regardless of ?redirect=false, but
+		// switches status/headers from 302+Location to 200-Location.
+		// We can make this more-efficient by doing this in Varnish and
+		// sharing the cache object (stripping the parameter and doing
+		// the transform at deliver time).
+		unset req.http.X-RB-NOREDIR; // do not let clients interfere!
+		if (req.url ~ "^/api/rest_v1/.*[?&]redirect=") {
+			// extract the redirect= value to boolean X-RB-NOREDIR for later
+			set req.http.X-RB-NOREDIR = regsub(req.url, "^.+[?&]redirect=([^&]+).*$", "\1");
+			if (req.http.X-RB-NOREDIR ~ "(?i)^(false|no)$") {
+				set req.http.X-RB-NOREDIR = "1";
+			} else {
+				unset req.http.X-RB-NOREDIR;
+			}
+			// Remove the redirect=X parameter from req.url to avoid cache
+			// fragmentation using two regexes to cover distinct cases:
+			// (1) Simple strip if final query arg:
+			set req.url = regsub(req.url, "[?&]redirect=[^&]+$", "");
+			// (2) When not the final arg, we need to capture the leading
+			//     [?&] to reuse with the parameter that follows:
+			set req.url = regsub(req.url, "([?&])redirect=[^&]+&", "\1");
+		}
 	}
 
 	// Normalize paths before purging
@@ -167,6 +191,13 @@ sub cluster_fe_backend_response {
 
 sub cluster_fe_deliver {
 	call zero_deliver;
+
+	# Other half of X-RB-NOREDIR (see cluster_fe_recv_pre_purge)
+	if (req.http.X-RB-NOREDIR && resp.status == 302) {
+		set resp.status = 200;
+		set resp.response = "OK";
+		unset resp.http.Location;
+	}
 
 	// Strip s-maxage Cache-Control of wiki pages. The s-maxage still applies to Varnish (sent
 	// by MediaWiki $wgUseSquid, sends purges internally). But pages musn't be cached elsewhere.
