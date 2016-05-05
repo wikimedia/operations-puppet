@@ -19,6 +19,7 @@ class WDQSUpdaterCollector(diamond.collector.Collector):
             'runner': 'Path to Jolokia runner',
             'counters': 'List of counters to collect',
             'sudo_user': 'The user to use if using sudo',
+            'port': 'Jolokia port',
         })
         return chelp
 
@@ -31,6 +32,7 @@ class WDQSUpdaterCollector(diamond.collector.Collector):
             'runner': '/srv/wdqs/blazegraph/jolokia.sh',
             'counters': ["updates/MeanRate", "batch-progress/MeanRate"],
             'sudo_user': 'blazegraph',
+            'port': 8778,
         })
         return config
 
@@ -57,12 +59,8 @@ class WDQSUpdaterCollector(diamond.collector.Collector):
         self.log.error("No value found in data")
 
     def collect(self):
-        self.start_jolokia()
-        try:
-            for counter in self.config['counters']:
-                data = self.get_data(counter)
-                if data:
-                    self.publish(self.query_to_metric(counter),
-                                 data)
-        finally:
-            self.stop_jolokia()
+        self.url = "http://localhost:%d/jolokia/" % self.config['port']
+        for counter in self.config['counters']:
+            data = self.get_data(counter)
+            if data:
+                self.publish(self.query_to_metric(counter), data)
