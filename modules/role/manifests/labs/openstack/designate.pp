@@ -41,5 +41,6 @@ class role::labs::openstack::designate::server {
     # allow axfr traffic between mdns and pdns on the pdns hosts
     ferm::rule { 'mdns-axfr':
         rule => "saddr (${dns_host_ip} ${dns_host_secondary_ip} ) proto tcp dport (5354) ACCEPT;",
+        rule => "saddr (${dns_host_ip} ${dns_host_secondary_ip} ) proto udp dport (5354) ACCEPT;",
     }
 }
