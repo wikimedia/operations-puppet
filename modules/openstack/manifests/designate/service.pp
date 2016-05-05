@@ -17,6 +17,7 @@ class openstack::designate::service (
 
     $keystone_host_ip   = ipresolve($keystone_host,4)
     $nova_controller_ip = ipresolve($nova_controller)
+    $designate_host = $active_server
 
     require_package(
         'python-designateclient',
