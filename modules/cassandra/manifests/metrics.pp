@@ -74,7 +74,7 @@ class cassandra::metrics(
 
     file { $collector_jar:
         ensure  => 'link',
-        target  => '/srv/deployment/cassandra/metrics-collector/lib/cassandra-metrics-collector-2.0.0-20151001.182133-1-jar-with-dependencies.jar',
+        target  => '/srv/deployment/cassandra/metrics-collector/lib/cassandra-metrics-collector-2.1.0-20160504.150640-1-jar-with-dependencies.jar',
         require => Package['cassandra/metrics-collector'],
     }
 
