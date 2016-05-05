@@ -38,6 +38,8 @@ spec:
                   method: get
                   # Don't encode title since it should be already encoded
                   uri: '<%= @restbase_uri %>/{{message.meta.domain}}/v1/page/summary/{{match.meta.uri[1]}}'
+                  query:
+                    redirect: false
                   headers:
                     cache-control: no-cache
 
@@ -55,5 +57,7 @@ spec:
                   method: get
                   # Don't encode title since it should be already encoded
                   uri: '<%= @restbase_uri %>/{{message.meta.domain}}/v1/page/definition/{{match.meta.uri[1]}}'
+                  query:
+                    redirect: false
                   headers:
                     cache-control: no-cache
