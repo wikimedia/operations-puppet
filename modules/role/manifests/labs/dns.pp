@@ -68,6 +68,13 @@ class role::labs::dns {
         rule  => 'proto udp dport 53 NOTRACK;',
     }
 
+    # Allow mysql access from the designate host so it can send domain updates.
+    ferm::service { 'mysql_designate':
+        proto  => 'tcp',
+        port   => '3306',
+        srange => $designate_host,
+    }
+
     sudo::user { 'diamond_sudo_for_pdns':
         user       => 'diamond',
         privileges => ['ALL=(root) NOPASSWD: /usr/bin/pdns_control list'],
