@@ -252,7 +252,7 @@ node /^restbase-test200[1-3]\.codfw\.wmnet$/ {
 }
 
 node /^(chromium|hydrogen)\.wikimedia\.org$/ {
-    role dnsrecursor, url_downloader, ntp
+    role dnsrecursor, ntp
     include standard
 
     interface::add_ip6_mapped { 'main':
