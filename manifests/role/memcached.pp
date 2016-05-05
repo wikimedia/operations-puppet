@@ -27,9 +27,9 @@ class role::memcached {
         }
     }
 
-    # mc2009 is configured with the latest
-    # memcached options from version 1.4.25-2
-    if $::hostname == 'mc2009' {
+    # mc[12]009 is configured with the latest
+    # memcached options from version 1.4.25-2 (installed manually as perf test)
+    if $::hostname == 'mc2009' or $::hostname == 'mc1009' {
         $extended_options = [
             'slab_reassign',
             'lru_crawler',
