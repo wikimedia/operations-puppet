@@ -12,10 +12,10 @@ class role::memcached {
         'labs'       => 3000,
     }
 
-    # mc2009 will get the 1.4.25-2 package version
+    # mc2009 will get the 1.4.25-2~wmf1 package version
     # deployed manually, this workaround should avoid
     # disabling puppet for the whole duration of the test.
-    if $::hostname == 'mc2009' {
+    if $::hostname == 'mc2009' or $::hostname == 'mc1009' {
         $version =  '1.4.25-2~wmf1'
     } else {
         $version = os_version('debian >= jessie || ubuntu >= trusty') ? {
@@ -25,8 +25,8 @@ class role::memcached {
     }
 
     # mc2009 is configured with the latest
-    # memcached options from version 1.4.25-2
-    if $::hostname == 'mc2009' {
+    # memcached options from version 1.4.25-2~wmf1
+    if $::hostname == 'mc2009' or $::hostname == 'mc1009' {
         $extended_options = [
             'slab_reassign',
             'lru_crawler',
