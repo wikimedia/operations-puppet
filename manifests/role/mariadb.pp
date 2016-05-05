@@ -131,6 +131,8 @@ class role::mariadb::misc(
         shard => $shard,
     }
 
+    # TODO: detect the active datacenter in order to allow to set
+    # $master => true on the master in each datacenter.
     class { 'mariadb::heartbeat':
         shard   => $shard,
         enabled => $master,
@@ -206,6 +208,8 @@ class role::mariadb::misc::phabricator(
         include coredb_mysql::snapshot
     }
 
+    # TODO: detect the active datacenter in order to allow to set
+    # $master => true on the master in each datacenter.
     class { 'mariadb::heartbeat':
         shard   => $shard,
         enabled => $master,
@@ -218,7 +222,7 @@ class role::mariadb::misc::phabricator(
     }
 }
 
-# Eventlogging needs tobe sandboxed by itself. It can consume resources
+# Eventlogging needs to be sandboxed by itself. It can consume resources
 # unpredictably, especially during backfilling. It also benefits greatly
 # from a setup tuned for TokuDB.
 class role::mariadb::misc::eventlogging(
@@ -260,6 +264,8 @@ class role::mariadb::misc::eventlogging(
         shard => $shard,
     }
 
+    # TODO: detect the active datacenter in order to allow to set
+    # $master => true on the master in each datacenter once replicated.
     class { 'mariadb::heartbeat':
         shard   => $shard,
         enabled => $master,
@@ -507,7 +513,6 @@ class role::mariadb::core(
     include passwords::misc::scripts
     include role::mariadb::ferm
 
-    # N.B.: NON $::mw_primary masters are considered slaves for now
     if ($shard == 'es1') {
         $mysql_role = 'standalone'
     } elsif $master == true {
@@ -574,9 +579,10 @@ class role::mariadb::core(
         contact_group => $contact_group,
     }
 
+    $heartbeat_enabled = $master and ($::mw_primary == $::site)
     class { 'mariadb::heartbeat':
         shard   => $shard,
-        enabled => $master,
+        enabled => $heartbeat_enabled,
     }
 }
 
