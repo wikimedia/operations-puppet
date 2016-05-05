@@ -418,13 +418,6 @@ node 'dataset1001.wikimedia.org' {
 
 # eqiad dbs
 
-node /^db10(23)\.eqiad\.wmnet/ {
-    class { 'role::coredb::s6':
-        innodb_file_per_table => true,
-        mariadb               => true,
-    }
-}
-
 node /^db10(33)\.eqiad\.wmnet/ {
     class { 'role::coredb::s7':
         innodb_file_per_table => true,
@@ -673,7 +666,7 @@ node 'db1050.eqiad.wmnet' {
     include base::firewall
 }
 
-node /^db10(22|30|37|61)\.eqiad\.wmnet/ {
+node /^db10(22|23|30|37|61)\.eqiad\.wmnet/ {
     class { 'role::mariadb::core':
         shard => 's6',
         p_s   => 'on',
