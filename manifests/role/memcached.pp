@@ -16,10 +16,7 @@ class role::memcached {
     # deployed manually, this workaround should avoid
     # disabling puppet for the whole duration of the test.
     if $::hostname == 'mc2009' {
-        $version = os_version('debian >= jessie || ubuntu >= trusty') ? {
-            true    => 'present',
-            default => '1.4.25-2',
-        }
+        $version =  '1.4.25-2~wmf1'
     } else {
         $version = os_version('debian >= jessie || ubuntu >= trusty') ? {
             true    => 'present',
