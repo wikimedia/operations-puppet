@@ -454,7 +454,7 @@ node /^db10(51|52|53|55|65|66|72|73)\.eqiad\.wmnet/ {
 node 'db2016.codfw.wmnet' {
     class { 'role::mariadb::core':
         shard         => 's1',
-        master        => false,
+        master        => true,
         p_s           => 'on',
         binlog_format => 'STATEMENT',
         ssl           => 'puppet-cert',
@@ -499,7 +499,7 @@ node /^db10(21|24|36|54|60|63|67|74|76)\.eqiad\.wmnet/ {
 node 'db2017.codfw.wmnet' {
     class { 'role::mariadb::core':
         shard         => 's2',
-        master        => false,
+        master        => true,
         p_s           => 'on',
         binlog_format => 'STATEMENT',
         ssl           => 'multiple-ca',
@@ -545,7 +545,7 @@ node /^db10(15|27|35|38|44|77|78)\.eqiad\.wmnet/ {
 node 'db2018.codfw.wmnet' {
     class { 'role::mariadb::core':
         shard         => 's3',
-        master        => false,
+        master        => true,
         p_s           => 'on',
         binlog_format => 'STATEMENT',
         ssl           => 'puppet-cert',
@@ -590,7 +590,7 @@ node /^db10(19|40|56|59|64|68)\.eqiad\.wmnet/ {
 node 'db2019.codfw.wmnet' {
     class { 'role::mariadb::core':
         shard         => 's4',
-        master        => false,
+        master        => true,
         p_s           => 'on',
         binlog_format => 'STATEMENT',
         ssl           => 'puppet-cert',
@@ -635,7 +635,7 @@ node /^db10(26|45|58|70|71)\.eqiad\.wmnet/ {
 node 'db2023.codfw.wmnet' {
     class { 'role::mariadb::core':
         shard         => 's5',
-        master        => false,
+        master        => true,
         p_s           => 'on',
         binlog_format => 'STATEMENT',
         ssl           => 'puppet-cert',
@@ -680,7 +680,7 @@ node /^db10(22|23|30|37|61)\.eqiad\.wmnet/ {
 node 'db2028.codfw.wmnet' {
     class { 'role::mariadb::core':
         shard         => 's6',
-        master        => false,
+        master        => true,
         p_s           => 'on',
         binlog_format => 'STATEMENT',
         ssl           => 'puppet-cert',
@@ -725,7 +725,7 @@ node /^db10(28|34|39|62)\.eqiad\.wmnet/ {
 node 'db2029.codfw.wmnet' {
     class { 'role::mariadb::core':
         shard         => 's7',
-        master        => false,
+        master        => true,
         p_s           => 'on',
         binlog_format => 'STATEMENT',
         ssl           => 'puppet-cert',
@@ -764,7 +764,7 @@ node 'db1029.eqiad.wmnet' {
 node 'db2009.codfw.wmnet' {
     class { 'role::mariadb::core':
         shard         => 'x1',
-        master        => false,
+        master        => true,
         p_s           => 'on',
         binlog_format => 'ROW',
         ssl           => 'puppet-cert',
@@ -1050,6 +1050,17 @@ node /^es101[13]\.eqiad\.wmnet/ {
     include base::firewall
 }
 
+## codfw master
+node 'es2015.codfw.wmnet' {
+    class { 'role::mariadb::core':
+        shard         => 'es2',
+        master        => true,
+        p_s           => 'on',
+        binlog_format => 'ROW',
+    }
+    include base::firewall
+}
+
 ## codfw servers (decommissioning)
 node /es200[567]\.codfw\.wmnet/ {
     class { 'role::mariadb::core':
@@ -1060,8 +1071,8 @@ node /es200[567]\.codfw\.wmnet/ {
     include base::firewall
 }
 
-## codfw servers
-node /es201[456]\.codfw\.wmnet/ {
+## codfw slaves
+node /es201[46]\.codfw\.wmnet/ {
     class { 'role::mariadb::core':
         shard         => 'es2',
         p_s           => 'on',
@@ -1092,6 +1103,16 @@ node /^es101[47]\.eqiad\.wmnet/ {
     include base::firewall
 }
 
+node 'es2018.codfw.wmnet' {
+    class { 'role::mariadb::core':
+        shard         => 'es3',
+        master        => true,
+        p_s           => 'on',
+        binlog_format => 'ROW',
+    }
+    include base::firewall
+}
+
 ## codfw servers (decommissioning)
 node /es20(08|09|10)\.codfw\.wmnet/ {
     class { 'role::mariadb::core':
@@ -1103,7 +1124,7 @@ node /es20(08|09|10)\.codfw\.wmnet/ {
 }
 
 ## codfw servers
-node /es201[789]\.codfw\.wmnet/ {
+node /es201[79]\.codfw\.wmnet/ {
     class { 'role::mariadb::core':
         shard         => 'es3',
         p_s           => 'on',
