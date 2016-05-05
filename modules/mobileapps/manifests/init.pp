@@ -29,6 +29,5 @@ class mobileapps(
         config          => template('mobileapps/config.yaml.erb'),
         has_spec        => true,
         healthcheck_url => '',
-        deployment      => 'scap3',
     }
 }

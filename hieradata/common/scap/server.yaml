@@ -54,6 +54,3 @@ sources:
   eventlogging/analytics:
     repository: eventlogging
     scap_repository: eventlogging/scap/analytics
-
-  # The ~ tilde uses the default params to scap::source.  See the scap::source docs for usage info.
-  mobileapps/deploy: ~
