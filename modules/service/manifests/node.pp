@@ -259,12 +259,19 @@ define service::node(
         port  => $port,
     }
 
+    # Monitoring
+    $ensure_monitoring = $enable ? {
+        true  => 'present',
+        false => 'absent',
+    }
+
     if $has_spec {
         # Advanced monitoring
         include service::monitoring
 
         $monitor_url = "http://${::ipaddress}:${port}${healthcheck_url}"
         nrpe::monitor_service{ "endpoints_${title}":
+            ensure       => $ensure_monitoring,
             description  => "${title} endpoints health",
             nrpe_command => "/usr/local/lib/nagios/plugins/service_checker -t 5 ${::ipaddress} ${monitor_url}",
             subscribe    => File['/usr/local/lib/nagios/plugins/service_checker'],
@@ -277,6 +284,7 @@ define service::node(
     } else {
         # Basic monitoring
         monitoring::service { $title:
+            ensure        => $ensure_monitoring,
             description   => $title,
             check_command => "check_http_port_url!${port}!${healthcheck_url}",
         }
