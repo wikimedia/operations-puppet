@@ -26,6 +26,12 @@ spec:
             templates:
               summary_rerender:
                 topic: resource_change
+                retry_limit: 2
+                # 1 minute
+                retry_delay: 60000
+                retry_on:
+                  status:
+                    - '5xx'
                 match:
                   meta:
                     uri: '/^https?:\/\/[^\/]+\/api\/rest_v1\/page\/html\/([^\/]+)$/'
@@ -43,6 +49,12 @@ spec:
 
               definition_rerender:
                 topic: resource_change
+                retry_limit: 2
+                # 1 minute
+                retry_delay: 60000
+                retry_on:
+                  status:
+                    - '5xx'
                 match:
                   meta:
                     # These URIs are coming from RESTBase, so we know that article titles will be normalized
