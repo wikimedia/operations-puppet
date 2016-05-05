@@ -19,6 +19,7 @@ class phabricator::vcs (
     $settings              = {},
     $listen_addresses      = [],
     $ssh_port              = '22',
+    $proxy                 = "http://url-downloader.${::site}.wikimedia.org:8080",
 ) {
 
     $phd_user = $settings['phd.user']
@@ -47,7 +48,7 @@ class phabricator::vcs (
 
     # Configure all git repositories we host
     file { '/etc/gitconfig':
-        source  => 'puppet:///modules/phabricator/system.gitconfig',
+        content => template('phabricator/system.gitconfig.erb'),
         require => Package['git'],
         owner   => 'root',
         group   => 'root',
