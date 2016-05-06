@@ -34,6 +34,8 @@ def createdomain(url, user, password, project, domain, ttl=120):
         auth_url=url,
         username=user,
         password=password,
+        user_domain_name='Default',
+        project_domain_name='Default',
         tenant_name='wmflabsdotorg')
 
     createSession = keystone_session.Session(auth=auth)
@@ -43,6 +45,8 @@ def createdomain(url, user, password, project, domain, ttl=120):
         auth_url=url,
         username=user,
         password=password,
+        user_domain_name='Default',
+        project_domain_name='Default',
         tenant_name=project)
 
     targetSession = keystone_session.Session(auth=auth)

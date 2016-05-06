@@ -206,7 +206,7 @@ class openstack::horizon::service(
         source => "puppet:///modules/openstack/${openstack_version}/virtscripts/makedomain",
         owner  => 'root',
         group  => 'root',
-        mode   => '0644',
+        mode   => '0744',
     }
 
     apache::site { $webserver_hostname:
