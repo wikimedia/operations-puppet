@@ -217,6 +217,8 @@ kafka_clusters:
         brokers:
             deployment-kafka02.deployment-prep.eqiad.wmflabs:
                 id: 1
+            deployment-kafka03.deployment-prep.eqiad.wmflabs:
+                id: 2
 
 
 # NOTE: The production scap::server $keyholder_agents and $sources used by
