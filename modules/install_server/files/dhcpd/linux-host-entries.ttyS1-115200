@@ -3262,6 +3262,34 @@ host maerlant {
     filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
+host maps2001 {
+    hardware ethernet 1c:98:ec:2c:92:58;
+    fixed-address maps2001.codfw.wmnet;
+    option pxelinux.pathprefix "jessie-installer/";
+    filename "jessie-installer/debian-installer/amd64/pxelinux.0";
+}
+
+host maps2002 {
+    hardware ethernet 1c:98:ec:2c:82:e0;
+    fixed-address maps2002.codfw.wmnet;
+    option pxelinux.pathprefix "jessie-installer/";
+    filename "jessie-installer/debian-installer/amd64/pxelinux.0";
+}
+
+host maps2003 {
+    hardware ethernet 1c:98:ec:2c:82:a4;
+    fixed-address maps2003.codfw.wmnet;
+    option pxelinux.pathprefix "jessie-installer/";
+    filename "jessie-installer/debian-installer/amd64/pxelinux.0";
+}
+
+host maps2004 {
+    hardware ethernet 1c:98:ec:2c:82:8c;
+    fixed-address maps2004.codfw.wmnet;
+    option pxelinux.pathprefix "jessie-installer/";
+    filename "jessie-installer/debian-installer/amd64/pxelinux.0";
+}
+
 host maps-test2001 {
     hardware ethernet d4:be:d9:f0:20:c5;
     fixed-address maps-test2001.codfw.wmnet;
