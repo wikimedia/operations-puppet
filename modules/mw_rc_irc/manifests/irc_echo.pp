@@ -25,7 +25,7 @@ class mw_rc_irc::irc_echo(
     }
 
     file { '/usr/local/bin/udpmxircecho.py':
-        content => template('mw_rc_irc/udpmxircecho.py.erb'),
+        content => 'puppet:///modules/mw_rc_irc/udpmxircecho.py.erb',
         mode    => '0555',
         owner   => 'irc',
         group   => 'irc',
