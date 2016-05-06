@@ -17,6 +17,7 @@ class dnsrecursor(
     $max_tcp_clients          = 128,
     $max_tcp_per_client       = 100,
     $client_tcp_timeout       = 2,
+    $export_etc_hosts         = 'off',
 ) {
 
     include network::constants

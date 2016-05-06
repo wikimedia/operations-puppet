@@ -58,8 +58,9 @@ class role::labs::dnsrecursor {
             auth_zones               => 'labsdb=/var/zones/labsdb',
             lua_hooks                => $lua_hooks,
             max_negative_ttl         => 900,
-            max_tcp_per_client       => 50,
+            max_tcp_per_client       => 10,
             max_cache_entries        => 3000000,
+            client_tcp_timeout       => 1,
     }
 
     $alias_file = '/etc/powerdns/labs-ip-alias.lua'
