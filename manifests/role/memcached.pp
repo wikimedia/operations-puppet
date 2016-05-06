@@ -33,7 +33,6 @@ class role::memcached {
             'maxconns_fast',
             'hash_algorithm=murmur3',
             'slab_automove',
-            'lru_crawler',
             'lru_maintainer'
         ]
     } elsif $::hostname == 'mc2010' {
