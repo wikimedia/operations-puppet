@@ -1,6 +1,6 @@
 # This file is managed by puppet - don't edit it locally!
 # recursor.conf
-# https://doc.powerdns.com/md/recursor/settings/
+# https://doc.powerdns.com/3/recursor/settings/
 
 <%
     def flatten_ips(ips)
@@ -89,6 +89,10 @@ remotes-ringbuffer-entries=1000
 # where the controlsocket will live
 socket-dir=/var/run/
 
+# loads /etc/host entries on start
+# useful for debugging
+export-etc-hosts=<%= @export-etc-hosts %>
+
 # aaaa-additional-processing	turn on to do AAAA additional processing (slow)
 # aaaa-additional-processing=off
 
@@ -97,9 +101,6 @@ socket-dir=/var/run/
 
 # chroot	switch to chroot jail
 # chroot=
-
-# export-etc-hosts	If we should serve up contents from /etc/hosts
-# export-etc-hosts=off
 
 # hint-file	If set, load root hints from this file
 # hint-file=
