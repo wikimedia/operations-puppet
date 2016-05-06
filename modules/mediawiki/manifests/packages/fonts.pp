@@ -49,12 +49,13 @@ class mediawiki::packages::fonts {
         'fonts-lyx',                 # T40299
         'fonts-crosextra-carlito',   # T84842
         'fonts-crosextra-caladea',   # T84842
+        'fonts-smc',                 # T33950
     ]:
         ensure => present,
     }
 
     if os_version('ubuntu >= trusty') {
-        require_package('ttf-bengali-fonts', 'ttf-devanagari-fonts', 'ttf-gujarati-fonts', 'ttf-kannada-fonts', 'ttf-malayalam-fonts', 'ttf-oriya-fonts', 'ttf-punjabi-fonts', 'ttf-tamil-fonts', 'ttf-telugu-fonts')
+        require_package('ttf-bengali-fonts', 'ttf-devanagari-fonts', 'ttf-gujarati-fonts', 'ttf-kannada-fonts', 'ttf-oriya-fonts', 'ttf-punjabi-fonts', 'ttf-tamil-fonts', 'ttf-telugu-fonts')
     }
 
     if os_version('debian >= jessie') {
