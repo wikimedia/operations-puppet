@@ -1,16 +1,25 @@
 #! /usr/bin/env python
-#
-# usage: udpmxircecho.py nickname server
-<% if scope.function_os_version(['debian >= jessie']) %>
-from irc.bot import SingleServerIRCBot
-<% else %>
-from ircbot import SingleServerIRCBot
-<% end %>
+try:
+    from irc.bot import SingleServerIRCBot
+except ImportError:
+    from ircbot import SingleServerIRCBot
+import argparse
+import json
 import threading
 import socket
 import sys
 reload(sys)
 sys.setdefaultencoding('utf8')
+
+argparser = argparse.ArgumentParser()
+argparser.add_argument(
+    '--config-file',
+    help='Path to config file',
+    default='/etc/udpmxircecho-config.json',
+    type=argparse.FileType('r')
+)
+args = argparser.parse_args()
+config_data = json.load(args.config_file)
 
 
 class EchoReader(threading.Thread):
@@ -23,7 +32,7 @@ class EchoReader(threading.Thread):
         udpsock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 
         try:
-            udpsock.bind(('', 9390))
+            udpsock.bind(('', config_data['udp_port']))
         except socket.error, msg:
             sys.stderr.write("[ERROR] %s\n" % msg[1])
             sys.exit(2)
@@ -49,13 +58,15 @@ class EchoReader(threading.Thread):
 
 
 class EchoBot(SingleServerIRCBot):
-    def __init__(self, chans, nickname, server):
-        port = 6667
+    def __init__(self):
+        port = config_data['irc_port']
+        nickname = config_data['irc_nickname']
+        server = config_data['irc_server']
         print "connecting to %s as %s on port %s" % (server, nickname, port)
         server_list = [(server, port)]
-        realname = "IRC echo bot"
+        realname = config_data['irc_realname']
         SingleServerIRCBot.__init__(self, server_list, nickname, realname)
-        self.chans = chans
+        self.chans = []
 
     def on_nicknameinuse(self, c, e):
         print '%s nickname in use!' % (c.get_nickname(),)
@@ -63,14 +74,14 @@ class EchoBot(SingleServerIRCBot):
 
     def on_welcome(self, c, e):
         print "got welcome"
-        c.oper("rc", "<%= @ircpassword %>")
+        c.oper("rc", config_data['irc_oper_pass'])
 
         for chan in self.chans:
             c.join(chan)
 
 
 def main():
-    bot = EchoBot([], sys.argv[1], sys.argv[2])
+    bot = EchoBot()
     sthr = EchoReader(bot)
     sthr.start()
     bot.start()
