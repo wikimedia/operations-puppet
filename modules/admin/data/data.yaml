@@ -75,7 +75,7 @@ groups:
               gpaumier, moushira, aklapper, qchris, tjones, srijan, addshore,
               jminor, pt1979, asherman, etonkovidova, sbisson, zhousquared,
               atgomez, jgirault, jdrewniak, matmarex, elukey, jdcc, ppchelko,
-              nschaaf]
+              nschaaf, dstrine]
   cassandra-test-roots:
     gid: 708
     description: users with root on cassandra hosts
@@ -116,7 +116,7 @@ groups:
               daisy, tomasz, mholloway-shell, madhuvishy, ebernhardson, niedzielski,
               neilpquinn-wmf, tbayer, moushira, dbrant, maxsem, srijan, krenair,
               jminor, asherman, etonkovidova, sbisson, addshore, matmarex, elukey,
-              nikerabbit, nschaaf]
+              nikerabbit, nschaaf, dstrine]
   ldap-admins:
     gid: 715
     description: ldap admins
@@ -186,7 +186,7 @@ groups:
               ironholds, kleduc, ellery, nettrom, mforns,
               bmansurov, tbayer, joal, ashwinpp,
               madhuvishy, tjones, legoktm, dcausse, bearloga,
-              dpatrick, atgomez]
+              dpatrick, atgomez, dstrine]
   statistics-users:
     gid: 726
     description: Access statistics number crunching hosts. NO PRIVS.
@@ -196,7 +196,7 @@ groups:
               dbrant, tgr, dr0ptp4kt, brion, bsitzmann, amire80,
               deskana, jzerebecki, dduvall, nettrom, mforns, jkatz, ebernhardson,
               mlitn, tbayer, joal, tomasz, kartik, nikerabbit, pcoombe, madhuvishy,
-              neilpquinn-wmf, maxsem, jminor, dpatrick, atgomez]
+              neilpquinn-wmf, maxsem, jminor, dpatrick, atgomez, dstrine]
   statistics-admins:
     posix_name: stats
     description: access files created by stats user cron jobs
