@@ -93,10 +93,6 @@ labs_keystone_host: &labskeystonehost "labcontrol1001.wikimedia.org"
 labs_osm_host: "wikitech.wikimedia.org"
 labs_horizon_host: "californium.wikimedia.org"
 
-# These are the old, soon-to-be-phased-out dns servers:
-labs_ldap_dns_host: &labsldapdnshost "labs-ns0-former-placeholder.wikimedia.org"
-labs_ldap_dns_host_secondary: &labsldapdnshostsecondary "labs-ns1-former-placeholder.wikimedia.org"
-
 # These are the up-and-coming, better dns servers:
 labsdnsconfig:
   host: 'labs-ns0.wikimedia.org'

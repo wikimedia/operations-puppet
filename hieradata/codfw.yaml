@@ -32,8 +32,6 @@ labs_nova_controller: "labcontrol1001.wikimedia.org"
 labs_glance_controller: "labcontrol1001.wikimedia.org"
 labs_puppet_master: "labs-puppetmaster-eqiad.wikimedia.org"
 labs_keystone_host: "labcontrol1001.wikimedia.org"
-labs_ldap_dns_host: "labs-ns0-former-placeholder.wikimedia.org"
-labs_ldap_dns_host_secondary: "labs-ns0-former-placeholder.wikimedia.org"
 labs_certmanager_hostname: "labservices1001.wikimedia.org"
 
 # These are the up-and-coming, better dns servers:

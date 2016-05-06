@@ -1302,7 +1302,6 @@ node 'labtestcontrol2001.wikimedia.org' {
     #role labs::openstack::nova::controller,
     #      salt::masters::labs,
     #      deployment::salt_masters,
-    #      dns::ldap
     #include base::firewall
     #include ldap::role::client::labs
 }
