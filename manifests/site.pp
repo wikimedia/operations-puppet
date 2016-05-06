@@ -1452,8 +1452,7 @@ node 'labcontrol1001.wikimedia.org' {
     role labs::openstack::nova::controller,
           labs::puppetmaster,
           salt::masters::labs,
-          deployment::salt_masters,
-          dns::ldap
+          deployment::salt_masters
 
     include base::firewall
     include standard
@@ -1472,8 +1471,7 @@ node 'labcontrol1002.wikimedia.org' {
     role labs::openstack::nova::controller,
           labs::puppetmaster,
           salt::masters::labs,
-          deployment::salt_masters,
-          dns::ldap
+          deployment::salt_masters
 
     include base::firewall
     include standard
