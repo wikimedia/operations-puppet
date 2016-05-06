@@ -10,11 +10,26 @@ class mw_rc_irc::irc_echo(
         require_package('python-irclib')
     }
 
+    file { '/etc/udpmxircecho-config.json':
+        content => ordered_json({
+            irc_oper_pass => $ircpassword,
+            irc_nickname  => 'rc-pmtpa',
+            irc_server    => 'localhost',
+            irc_port      => 6667,
+            irc_realname  => 'IRC echo bot',
+            udp_port      => 9390
+        }),
+        mode    => '0444',
+        owner   => 'irc',
+        group   => 'irc'
+    }
+
     file { '/usr/local/bin/udpmxircecho.py':
         content => template('mw_rc_irc/udpmxircecho.py.erb'),
         mode    => '0555',
         owner   => 'irc',
-        group   => 'irc';
+        group   => 'irc',
+        require => File['/etc/udpmxircecho-config.json']
     }
 
     if $::initsystem == 'systemd' {
