@@ -555,15 +555,16 @@ class role::mariadb::core(
 
     # Read only forced on also for the masters of the primary datacenter
     class { 'mariadb::config':
-        prompt        => "PRODUCTION ${shard}",
-        config        => $config,
-        password      => $passwords::misc::scripts::mysql_root_pass,
-        datadir       => '/srv/sqldata',
-        tmpdir        => '/srv/tmp',
-        p_s           => $p_s,
-        ssl           => $ssl,
-        binlog_format => $binlog_format,
-        semi_sync     => $semi_sync,
+        prompt           => "PRODUCTION ${shard}",
+        config           => $config,
+        password         => $passwords::misc::scripts::mysql_root_pass,
+        datadir          => '/srv/sqldata',
+        tmpdir           => '/srv/tmp',
+        p_s              => $p_s,
+        ssl              => $ssl,
+        binlog_format    => $binlog_format,
+        semi_sync        => $semi_sync,
+        replication_role => $mysql_role,
     }
 
     mariadb::monitor_replication { [ $shard ]:
