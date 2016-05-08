@@ -1,0 +1,17 @@
+#!/bin/bash
+
+cd /srv/build/kubernetes
+
+source ./build/common.sh
+
+if [ "${KUBE_ADDON_PATHS[0]}" != "gcr.io/google_containers/pause:2.0" ]; then
+    echo '!!!!!!! WARNING !!!!!!!'
+    echo 'Either the pause container has changed or the hack we were using'
+    echo 'to detect the pause container version no longer works. Either way'
+    echo 'this requires manual intervention! Please follow the instructions'
+    echo 'at https://wikitech.wikimedia.org/wiki/Tools_k8s/Pause to fix'
+    echo 'this issue and continue the deploy'
+    exit 1
+fi
+
+echo 'Pause container still the same, all good!'
