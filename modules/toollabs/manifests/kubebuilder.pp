@@ -37,9 +37,9 @@ class toollabs::kubebuilder(
     }
 
     file { '/usr/local/bin/check-pause-container':
-        content => 'puppet:///modules/toollabs/check-pause-container',
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0544',
+        source => 'puppet:///modules/toollabs/check-pause-container',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0544',
     }
 }
