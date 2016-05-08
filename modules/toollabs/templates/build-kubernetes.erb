@@ -12,3 +12,6 @@ KUBE_FASTBUILD=true KUBE_SKIP_CONFIRMATIONS=y ./build/release.sh
 mkdir -p $OUTPUTPATH
 cp _output/release-stage/server/linux-amd64/kubernetes/server/bin/* $OUTPUTPATH
 cp _output/release-stage/client/linux-amd64/kubernetes/client/bin/* $OUTPUTPATH
+
+# Verify tha the pause container hasn't changed
+exec /usr/local/bin/check-pause-container
