@@ -17,7 +17,6 @@ class mediawiki::packages::legacy {
     package { [
         'php-luasandbox',
         'php-wikidiff2',
-        'php5-fss',
     ]:
         ensure => present,
     }
