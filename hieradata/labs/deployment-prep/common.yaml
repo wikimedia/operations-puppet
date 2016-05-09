@@ -199,27 +199,6 @@ nfs_mounts:
 mediawiki::web::sites::domain_suffix: "beta.wmflabs.org"
 mediawiki::web::sites::portal_dir: "portal-master"
 
-#
-# Zookeeper Cluster in Beta
-#
-zookeeper_hosts:
-    deployment-zookeeper01.eqiad.wmflabs: "1"
-
-#
-# Kafka clusters in Beta
-#
-kafka_clusters:
-    main-deployment-prep:
-        brokers:
-            deployment-kafka04.deployment-prep.eqiad.wmflabs:
-                id: 4
-    analytics-deployment-prep:
-        brokers:
-            deployment-kafka01.deployment-prep.eqiad.wmflabs:
-                id: 1
-            deployment-kafka03.deployment-prep.eqiad.wmflabs:
-                id: 2
-
 
 # NOTE: The production scap::server $keyholder_agents and $sources used by
 # The scap::server class are in common/scap/server.yaml.
