@@ -1354,6 +1354,13 @@ node 'graphite2001.codfw.wmnet' {
     include base::firewall
 }
 
+# graphite additional machine, for additional space
+node 'graphite2002.codfw.wmnet' {
+    role graphite::production, statsd
+    include standard
+    include base::firewall
+}
+
 # partially replaces carbon (T132757)
 node 'install1001.wikimedia.org' {
     role installserver::tftp_server
