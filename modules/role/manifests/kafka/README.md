@@ -29,17 +29,17 @@ It should be of the form:
 kafka_clusters:
   clusterA-eqiad:
     brokers:
-      kafka1.eqiad.wmnet:
-        id: 1
-      kafka2.eqiad.wmnet:
-        id: 2
+      kafka1001.eqiad.wmnet:
+        id: 1001
+      kafka1002.eqiad.wmnet:
+        id: 1002
         port: 9093
-  clusterB-eqiad:
+  clusterB-codfw:
     brokers:
-      kafka300.eqiad.wmnet:
-        id: 300
-      kafka301.eqiad.wmnet:
-        id: 301
+      kafka2001.codfw.wmnet:
+        id: 2001
+      kafka2002.codfw.wmnet:
+        id: 2002
         port: 9093
  # etc...
 ```
