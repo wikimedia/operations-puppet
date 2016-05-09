@@ -240,6 +240,11 @@ host antimony {
     fixed-address antimony.wikimedia.org;
 }
 
+host argon {
+    hardware ethernet 78:2b:cb:09:11:f0;
+    fixed-address argon.wikimedia.org;
+}
+
 host auth1001 {
     hardware ethernet C8:1F:66:BF:71:5A;
     fixed-address auth1001.eqiad.wmnet;
