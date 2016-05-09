@@ -60,7 +60,7 @@ sub pass_authorization {
 
 sub text_normalize_path {
 	// Don't decode percent-encoded slashes in paths for REST APIs
-	if (req.url ~ "^/api/rest_v1/" || req.http.host ~ "cxserver|citoid|restbase|^rest\.") {
+	if (req.url ~ "^/api/rest_v1/" || req.http.host ~ "^(rest|cxserver|citoid)\.wikimedia\.org$") {
 		call normalize_rest_path;
 	} else {
 		call normalize_mediawiki_path;
@@ -84,7 +84,7 @@ sub text_common_recv {
 	}
 
 	# LEGACY: to be removed eventually
-	if (req.http.Host ~ "cxserver|citoid|restbase|^rest\." ) {
+	if (req.http.Host ~ "^(rest|cxserver|citoid)\.wikimedia\.org$" ) {
 		return (pass);
 	}
 
