@@ -83,7 +83,11 @@ zookeeper_hosts:
 
 labs_nova_controller: &labsnovacontroller "labcontrol1001.wikimedia.org"
 # _spare is a duplicate/backup controller.  In theory it has the
-#  same state as the main controller
+#  same state as the main controller.
+# WARNING:  Base images are rsynced from the primary host to the spare with
+#  --delete.  Make sure to back-up or otherwise keep track
+#  of your base images before creating a new empty, primary host here or
+#  you'll lose your image backups.
 labs_nova_controller_spare: &labsnovacontrollerspare "labcontrol1002.wikimedia.org"
 
 labs_glance_controller: &labsglancecontroller "labcontrol1001.wikimedia.org"
