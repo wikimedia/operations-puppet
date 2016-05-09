@@ -16,6 +16,20 @@ class role::graphite::production {
         }
     }
 
+    include rsync::server
+
+    rsync::server::module { 'carbon':
+        path => '/var/lib/carbon',
+        uid  => '_graphite',
+        gid  => '_graphite',
+    }
+
+    ferm::service { 'rsync-graphite':
+        proto  => 'tcp',
+        port   => '873',
+        srange => '@resolve((graphite1001.eqiad.wmnet graphite1003.eqiad.wmnet graphite2001.codfw.wmnet graphite2002.codfw.wmnet))',
+    }
+
     ferm::service { 'carbon_c_relay-local_relay_udp':
         proto  => 'udp',
         port   => '1903',
