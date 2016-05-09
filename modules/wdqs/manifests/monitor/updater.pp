@@ -10,12 +10,14 @@ class wdqs::monitor::updater(
 
     diamond::collector { 'WDQSUpdater':
         settings => {
-            runner    => "${package_dir}/jolokia.sh",
             counters  => [
+                '"updates/Count"',
                 '"updates/MeanRate"',
+                '"updates/OneMinuteRate"',
+                '"batch-progress/Count"',
                 '"batch-progress/MeanRate"',
+                '"batch-progress/OneMinuteRate"',
             ],
-            sudo_user => $username,
         },
         source   => 'puppet:///modules/wdqs/monitor/wdqs_updater.py',
     }
