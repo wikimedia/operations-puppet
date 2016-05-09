@@ -16,8 +16,18 @@ class labstore::fileserver(
     $is_active = (hiera('active_labstore_host') == $::hostname)
 
     if $use_ldap {
-        $ldapincludes = ['openldap', 'nss', 'utils']
-        class { 'ldap::role::client::labs': ldapincludes => $ldapincludes }
+        include ldap::role::config::labs
+
+        $ldapconfig = $ldap::role::config::labs::ldapconfig
+
+        # Setup base ldap
+        class { 'ldap::client':
+            ldapconfig => $ldapconfig,
+        }
+
+        class { 'ldap::client::nss':
+            ldapconfig => $ldapconfig
+        }
     }
 
     require_package('lvm2')

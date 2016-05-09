@@ -1,5 +1,5 @@
 class ldap::client::nss(
-    $ldapconfig = undef,
+    $ldapconfig,
     $nsswitch_conf_source = 'puppet:///modules/ldap/nsswitch.conf',
 ) {
 

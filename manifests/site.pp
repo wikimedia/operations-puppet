@@ -1254,10 +1254,9 @@ node 'heze.codfw.wmnet' {
 
 # Holmium will soon be renamed labservices1002
 node 'holmium.wikimedia.org' {
-    role labs::dns, labs::openstack::designate::server, labs::dnsrecursor
+    role labs::dns, labs::openstack::designate::server, labs::dnsrecursor, ldap::admin
     include standard
     include base::firewall
-    include ldap::role::client::labs
 }
 
 # irc.wikimedia.org (replaces argon)
@@ -1270,10 +1269,9 @@ node 'kraz.wikimedia.org' {
 
 # labservices1001 hosts openstack-designate, the labs DNS service.
 node 'labservices1001.wikimedia.org' {
-    role labs::dns, labs::openstack::designate::server, labs::dnsrecursor
+    role labs::dns, labs::openstack::designate::server, labs::dnsrecursor, ldap::admin
     include standard
     include base::firewall
-    include ldap::role::client::labs
 }
 
 node 'labtestneutron2001.codfw.wmnet' {
@@ -1302,9 +1300,8 @@ node 'labtestcontrol2001.wikimedia.org' {
     #role labs::openstack::nova::controller,
     #      salt::masters::labs,
     #      deployment::salt_masters,
-    #      dns::ldap
+    #      dns::ldap, ldap::admin
     #include base::firewall
-    #include ldap::role::client::labs
 }
 
 node 'labtestservices2001.wikimedia.org' {
@@ -1453,11 +1450,11 @@ node 'labcontrol1001.wikimedia.org' {
           labs::puppetmaster,
           salt::masters::labs,
           deployment::salt_masters,
-          dns::ldap
+          dns::ldap,
+          ldap::admin
 
     include base::firewall
     include standard
-    include ldap::role::client::labs
 
     # Monitoring checks for toollabs that page
     include toollabs::monitoring::icinga
@@ -1473,11 +1470,11 @@ node 'labcontrol1002.wikimedia.org' {
           labs::puppetmaster,
           salt::masters::labs,
           deployment::salt_masters,
-          dns::ldap
+          dns::ldap,
+          ldap::admin
 
     include base::firewall
     include standard
-    include ldap::role::client::labs
 }
 
 node 'labtestweb2001.wikimedia.org' {
@@ -2125,11 +2122,10 @@ node /^mw11(49|5[0-1])\.eqiad\.wmnet$/ {
 
 # mw1152 is the experimental HAT script runner
 node 'mw1152.eqiad.wmnet' {
-    role mediawiki::maintenance, mariadb::maintenance, mediawiki::generic_monitoring
+    role mediawiki::maintenance, mariadb::maintenance, mediawiki::generic_monitoring, ldap::admin
     include role::noc
     include standard
     include base::firewall
-    include ldap::role::client::labs
 }
 
 # mw1153-1160 are imagescalers (trusty)
@@ -2754,9 +2750,8 @@ node 'tegmen.wikimedia.org' {
 
 # https://wikitech.wikimedia.org/wiki/Terbium
 node 'terbium.eqiad.wmnet' {
-    role mariadb::maintenance, mediawiki::maintenance
+    role mariadb::maintenance, mediawiki::maintenance, ldap::admin
 
-    include ldap::role::client::labs
     include base::firewall
 }
 
@@ -2822,9 +2817,8 @@ node /^labvirt101[0-1].eqiad.wmnet/ {
 
 # mediawiki maintenance server (like terbium)
 node 'wasat.codfw.wmnet' {
-    role mariadb::maintenance, mediawiki::maintenance
+    role mariadb::maintenance, mediawiki::maintenance, ldap::admin
 
-    include ldap::role::client::labs
     include base::firewall
 }
 
