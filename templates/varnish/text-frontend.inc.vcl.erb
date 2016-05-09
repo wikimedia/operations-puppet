@@ -75,16 +75,16 @@ sub cluster_fe_recv_pre_purge {
 		unset req.http.X-Subdomain;
 		unset req.http.x-dt-host; // desktop host, if mobile hostname on request
 
-		if (req.http.host ~ "^([a-zA-Z0-9-]+\.)?zero\." && req.http.host != "zero.wikimedia.org") {
+		if (req.http.host ~ "^([a-z0-9-]+\.)?zero\." && req.http.host != "zero.wikimedia.org") {
 			set req.http.X-Subdomain = "ZERO";
-		} else if (req.http.host ~ "^([a-zA-Z0-9-]+\.)?m\.") {
+		} else if (req.http.host ~ "^([a-z0-9-]+\.)?m\.") {
 			set req.http.X-Subdomain = "M";
 		}
 
 		// mobile-subdomains-only for tag-carrier and Host-rewrite
 		if (req.http.X-Subdomain) {
 			// Only do tag_carrier logic on first start, and only for (m|zero).wp
-			if (req.http.host ~ "^([a-zA-Z0-9-]+\.)?(m|zero)\.wikipedia\.") {
+			if (req.http.host ~ "^([a-z0-9-]+\.)?(m|zero)\.wikipedia\.") {
 				call tag_carrier;
 			}
 
@@ -99,7 +99,7 @@ sub cluster_fe_recv_pre_purge {
 				set req.http.x-dt-host = "www.wikidata.org";
 			} else {
 				// Replace <language>.(m|zero).<project>.org by <language>.<project>.org
-				set req.http.x-dt-host = regsub(req.http.host, "^([a-zA-Z0-9-]+)\.(m|zero)\.", "\1.");
+				set req.http.x-dt-host = regsub(req.http.host, "^([a-z0-9-]+)\.(m|zero)\.", "\1.");
 			}
 
 			if (req.url ~ "^/api/rest_v1/") {
