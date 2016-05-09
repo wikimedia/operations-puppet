@@ -111,4 +111,4 @@ UDebComponents:
 Suite: stable
 Architectures: amd64
 VerifyRelease: 670540C841468433
-ListShellHook: grep-dctrl -e -S '^confluent-kafka-2.11.7$'  || [ $? -eq 1 ]
+ListShellHook: grep-dctrl -e -P '^confluent-kafka-2\.11\.7$' || [ $? -eq 1 ]
