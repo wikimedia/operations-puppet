@@ -19,10 +19,6 @@ class ldap::client::utils($ldapconfig) {
         source => 'puppet:///modules/ldap/scripts/add-ldap-user',
     }
 
-    file { '/usr/local/sbin/add-labs-user':
-        ensure => absent,
-    }
-
     file { '/usr/local/sbin/modify-ldap-user':
         owner  => 'root',
         group  => 'root',
@@ -118,10 +114,6 @@ class ldap::client::utils($ldapconfig) {
         group  => 'root',
         mode   => '0444',
         source => 'puppet:///modules/ldap/scripts/ldapsupportlib.py',
-    }
-
-    file { '/etc/ldap/scriptconfig.py':
-        ensure => absent,
     }
 
     if ( $::realm != 'labs' ) {
