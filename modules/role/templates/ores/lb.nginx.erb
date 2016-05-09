@@ -1,7 +1,7 @@
 # THIS FILE IS MANAGED BY PUPPET
 upstream oresweb {
     <% @realservers.each do |realserver| %>
-    server <%= realserver %>;
+    server <%= realserver %> fail_timeout=60s;
     <% end %>
 }
 
