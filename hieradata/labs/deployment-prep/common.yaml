@@ -215,7 +215,7 @@ kafka_clusters:
                 id: 4
     analytics-deployment-prep:
         brokers:
-            deployment-kafka02.deployment-prep.eqiad.wmflabs:
+            deployment-kafka01.deployment-prep.eqiad.wmflabs:
                 id: 1
             deployment-kafka03.deployment-prep.eqiad.wmflabs:
                 id: 2
