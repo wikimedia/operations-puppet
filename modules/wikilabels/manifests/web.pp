@@ -54,4 +54,8 @@ class wikilabels::web (
             }
         }
     }
+
+    ::nginx::site { 'wikilabels':
+        content => template('wikilabels/nginx.erb'),
+    }
 }

@@ -1,0 +1,23 @@
+# THIS FILE IS MANAGED BY PUPPET
+upstream wikilabelsweb {
+    <% @realservers.each do |realserver| %>
+    server <%= realserver %>;
+    <% end %>
+}
+
+<% if @cache -%>
+proxy_cache_path /srv/nginx/cache/ keys_zone=wikilabels:64m;
+proxy_cache_valid 7d;
+
+proxy_temp_path /srv/nginx/tmp/;
+<% end %>
+
+server {
+    listen 80;
+
+    location / {
+        <% if @cache %>proxy_cache wikilabels;<% end %>
+        proxy_set_header Host $host;
+        add_header 'Access-Control-Allow-Origin' '*' always;
+    }
+}
