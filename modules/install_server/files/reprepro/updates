@@ -103,3 +103,13 @@ Suite: wheezy
 Architectures: amd64
 VerifyRelease: 37BBEE3F7AD95B3F
 ListShellHook: grep-dctrl -X -S grafana || [ $? -eq 1 ]
+
+Name: confluent
+Method: http://packages.confluent.io/deb/2.0
+Components: contrib>thirdparty
+UDebComponents:
+GetInRelease: no
+Suite: jessie
+Architectures: amd64 all
+VerifyRelease: 670540C841468433
+ListShellHook: grep-dctrl -e -S '^confluent-kafka-2.11.7$'  || [ $? -eq 1 ]
