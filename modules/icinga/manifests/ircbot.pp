@@ -9,6 +9,7 @@ class icinga::ircbot {
         '/var/log/icinga/irc-releng.log'    => '#wikimedia-releng',
         '/var/log/icinga/irc-labs.log'      => '#wikimedia-labs',
         '/var/log/icinga/irc-analytics.log' => '#wikimedia-analytics',
+        '/var/log/icinga/irc-ores.log'      => '#wikimedia-ai',
     }
     $ircecho_nick   = 'icinga-wm'
     $ircecho_server = 'chat.freenode.net'
