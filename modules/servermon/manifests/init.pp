@@ -73,7 +73,9 @@ class servermon(
     require_package('python-ldap')
 
     service { 'gunicorn':
-        ensure => ensure_service($ensure),
+        ensure    => ensure_service($ensure),
+        enable    => true,
+        hasstatus => false,
     }
 
     file { "${directory}/settings.py":
