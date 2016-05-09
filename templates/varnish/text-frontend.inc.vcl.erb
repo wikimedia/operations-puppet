@@ -194,10 +194,21 @@ sub cluster_fe_deliver {
 	call zero_deliver;
 
 	# Other half of X-RB-NOREDIR (see cluster_fe_recv_pre_purge)
-	if (resp.status == 302 && req.http.X-RB-NOREDIR) {
-		unset resp.http.Location;
-		set resp.status = 200;
-		set resp.response = "OK";
+	if (req.http.X-RB-NOREDIR) {
+		if (resp.status == 302) {
+			unset resp.http.Location;
+			set resp.status = 200;
+			set resp.response = "OK";
+		} elsif (resp.status == 301) {
+			// preserve the original client redirect preference on title redirects
+			if (resp.http.Location ~ "[?]") {
+				if (resp.http.Location !~ "[?&]redirect=") {
+					set resp.http.Location = resp.http.Location + "&redirect=false";
+				}
+			} else {
+				set resp.http.Location = resp.http.Location + "?redirect=false";
+			}
+		}
 	}
 
 	// Strip s-maxage Cache-Control of wiki pages. The s-maxage still applies to Varnish (sent
