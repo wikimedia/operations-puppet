@@ -243,7 +243,6 @@ sub wm_common_recv_purge {
 
 sub wm_common_recv_early {
 	unset req.http.X-CDIS; // clear internal cache-disposition header
-	unset req.http.X-Pass-Stream; // clear internal streaming-pass header
 
 	// XFF-appending is non-idempotent for restart purposes..
 	if (req.restarts == 0) {
