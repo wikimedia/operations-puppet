@@ -146,13 +146,6 @@ node 'antimony.wikimedia.org' {
     interface::add_ip6_mapped { 'main': }
 }
 
-# irc.wikimedia.org
-node 'argon.wikimedia.org' {
-    role mw_rc_irc
-
-    interface::add_ip6_mapped { 'main': }
-}
-
 node 'auth1001.eqiad.wmnet' {
     role yubiauth::server
 }
@@ -1230,7 +1223,7 @@ node 'holmium.wikimedia.org' {
     include ldap::role::client::labs
 }
 
-# irc.wikimedia.org (replaces argon)
+# irc.wikimedia.org (replaced argon)
 node 'kraz.wikimedia.org' {
     role mw_rc_irc
     include base::firewall
