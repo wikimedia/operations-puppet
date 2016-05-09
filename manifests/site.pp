@@ -1233,7 +1233,6 @@ node 'holmium.wikimedia.org' {
 # irc.wikimedia.org (replaces argon)
 node 'kraz.wikimedia.org' {
     role mw_rc_irc
-    include base::firewall
 
     interface::add_ip6_mapped { 'main': }
 }
