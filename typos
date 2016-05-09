@@ -7,3 +7,7 @@ ip_resolve
 kafak
 pmpta
 wikmedia
+[^1][[:digit:]]{3}\.eqiad\.wmnet
+[^2][[:digit:]]{3}\.codfw\.wmnet
+[^3][[:digit:]]{3}\.(esams|knams)\.wmnet
+[^4][[:digit:]]{3}\.ulsfo\.wmnet
