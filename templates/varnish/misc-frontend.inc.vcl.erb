@@ -36,13 +36,6 @@ sub cluster_fe_miss { }
 sub cluster_fe_pass { }
 
 sub cluster_fe_backend_response {
-<% if ! @varnish_version4 -%>
-    // Stream objects >= ~1MB or no CL - (varnish4 defaults do_stream=true)
-    if (!beresp.http.Content-Length || beresp.http.Content-Length ~ "^[0-9]{7}") {
-        set beresp.do_stream = true;
-    }
-<% end -%>
-
     // hit_for_pass on objects >= ~10MB or no CL
     if (!beresp.http.Content-Length || beresp.http.Content-Length ~ "^[0-9]{8}") {
 <% if @varnish_version4 -%>

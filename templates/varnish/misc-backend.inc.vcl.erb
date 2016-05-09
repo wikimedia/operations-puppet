@@ -38,13 +38,6 @@ sub cluster_be_miss { }
 sub cluster_be_pass { }
 
 sub cluster_be_backend_response {
-<% if ! @varnish_version4 -%>
-    // Stream objects >= ~1MB which have CL - (varnish4 defaults do_stream=true)
-    if (beresp.http.Content-Length ~ "^[0-9]{7}") {
-        set beresp.do_stream = true;
-    }
-<% end -%>
-
     // Do not cache explicit lengths >= ~1GB in backends in general
     if (beresp.http.Content-Length ~ "^[0-9]{10}") {
 <% if @varnish_version4 -%>
