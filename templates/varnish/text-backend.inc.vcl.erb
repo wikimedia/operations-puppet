@@ -9,11 +9,11 @@ sub cluster_be_recv_pre_purge {
 }
 
 sub cluster_be_recv_applayer_backend {
-	if (req.http.Host ~ "cxserver" ) { # LEGACY: to be removed eventually
+	if (req.http.Host == "cxserver.wikimedia.org" ) { # LEGACY: to be removed eventually
 		set req.backend = cxserver_backend;
-	} else if (req.http.Host ~ "citoid" ) { # LEGACY: to be removed eventually
+	} else if (req.http.Host == "citoid.wikimedia.org" ) { # LEGACY: to be removed eventually
 		set req.backend = citoid_backend;
-	} else if (req.http.Host ~ "restbase|^rest\." ) { # LEGACY: to be removed eventually
+	} else if (req.http.Host == "rest.wikimedia.org" ) { # LEGACY: to be removed eventually
 		set req.backend = restbase_backend;
 	} else if (req.url ~ "^/w/api\.php") {
 		if (req.http.X-Wikimedia-Debug) {
