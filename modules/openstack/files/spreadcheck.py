@@ -98,4 +98,4 @@ if __name__ == '__main__':
         sys.exit(2)
     else:
         print "OK: All critical toollabs instances are spread out enough"
-        sys.exit(1)
+        sys.exit(0)
