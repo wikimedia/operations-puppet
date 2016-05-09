@@ -150,7 +150,6 @@ sub text_common_backend_response {
 	) {
 		set req.http.X-CDIS = req.http.X-CDIS + "+chfp"; // +created-hit-for-pass
 		set beresp.ttl = 601s;
-		set beresp.do_stream = true;
 		return (hit_for_pass);
 	}
 }
