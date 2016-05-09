@@ -16,9 +16,7 @@ class WDQSUpdaterCollector(diamond.collector.Collector):
     def get_default_config_help(self):
         chelp = super(WDQSUpdaterCollector, self).get_default_config_help()
         chelp.update({
-            'runner': 'Path to Jolokia runner',
             'counters': 'List of counters to collect',
-            'sudo_user': 'The user to use if using sudo',
             'port': 'Jolokia port',
         })
         return chelp
@@ -29,22 +27,10 @@ class WDQSUpdaterCollector(diamond.collector.Collector):
         """
         config = super(WDQSUpdaterCollector, self).get_default_config()
         config.update({
-            'runner': '/srv/wdqs/blazegraph/jolokia.sh',
-            'counters': ["updates/MeanRate", "batch-progress/MeanRate"],
-            'sudo_user': 'blazegraph',
+            'counters': ["updates/Count", "batch-progress/Count"],
             'port': 8778,
         })
         return config
-
-    def start_jolokia(self):
-        cmdline = ['sudo', '-u', self.config['sudo_user'],
-                   '--', self.config['runner'], 'start']
-        self.url = subprocess.check_output(cmdline).strip().split("\n")[-1]
-
-    def stop_jolokia(self):
-        cmdline = ['sudo', '-u', self.config['sudo_user'],
-                   '--', self.config['runner'], 'stop']
-        subprocess.call(cmdline)
 
     def query_to_metric(self, qname):
         return qname.replace(' ', '_').replace('/', '.')
