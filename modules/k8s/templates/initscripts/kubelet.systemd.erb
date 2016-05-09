@@ -11,7 +11,7 @@ ExecStart=/usr/local/bin/kubelet \
     --tls-cert-file=/var/lib/kubernetes/ssl/certs/cert.pem \
     --cluster-domain=kube \
     --hostname-override=<%= @fqdn %> \
-    --pod-infra-container-image="<%= @pod_infra_container_image %>"
+    --pod-infra-container-image=<%= @pod_infra_container_image %>
 
 [Install]
 WantedBy=multi-user.target
