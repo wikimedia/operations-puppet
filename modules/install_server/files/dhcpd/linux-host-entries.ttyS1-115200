@@ -2649,6 +2649,8 @@ host graphite2001 {
 host graphite2002 {
     hardware ethernet 14:18:77:5B:2C:CA;
     fixed-address graphite2002.codfw.wmnet;
+    option pxelinux.pathprefix "jessie-installer/";
+    filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host hafnium {
