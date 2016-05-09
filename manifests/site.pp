@@ -598,7 +598,7 @@ node 'db2019.codfw.wmnet' {
     include base::firewall
 }
 
-node /^db20(37|44|51|58|65)\.codfw\.wmnet/ {
+node /^db20(37|44|51|65)\.codfw\.wmnet/ {
     class { 'role::mariadb::core':
         shard         => 's4',
         p_s           => 'on',

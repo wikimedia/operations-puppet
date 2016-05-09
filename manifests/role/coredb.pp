@@ -1,3 +1,5 @@
+## DEPRECATED: to be deleted once all hosts have been migrated to the
+## mariadb class; topology will be handled by orchestration
 ## for describing replication topology
 ## hosts must be added here in addition to site.pp
 class role::coredb::config {
