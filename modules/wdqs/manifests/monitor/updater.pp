@@ -10,20 +10,15 @@ class wdqs::monitor::updater(
 
     diamond::collector { 'WDQSUpdater':
         settings => {
-            runner    => "${package_dir}/jolokia.sh",
-            counters  => [
+            counters => [
+                '"updates/Count"',
                 '"updates/MeanRate"',
+                '"updates/OneMinuteRate"',
+                '"batch-progress/Count"',
                 '"batch-progress/MeanRate"',
+                '"batch-progress/OneMinuteRate"',
             ],
-            sudo_user => $username,
         },
         source   => 'puppet:///modules/wdqs/monitor/wdqs_updater.py',
-    }
-
-    sudo::user { 'diamond_to_blazegraph':
-        user       => 'diamond',
-        privileges => [
-            "ALL=(${username}) NOPASSWD: ${package_dir}/jolokia.sh"
-        ],
     }
 }
