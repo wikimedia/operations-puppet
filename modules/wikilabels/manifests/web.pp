@@ -51,6 +51,7 @@ class wikilabels::web (
                 processes   => inline_template('<%= @processorcount.to_i * 4 %>'),
                 die-on-term => true,
                 harakiri    => 30,
+                route       => '.* addheader:access-control-allow-origin: *',
             }
         }
     }
