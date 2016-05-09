@@ -32,6 +32,8 @@ class changeprop(
         healthcheck_url => '',
         has_spec        => true,
         deployment      => 'scap3',
+        auto_refresh    => false,
+        init_restart    => false,
     }
 
 }
