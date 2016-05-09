@@ -1008,16 +1008,6 @@ node /^es101[268]\.eqiad\.wmnet/ {
     include base::firewall
 }
 
-## codfw servers (decommissioning)
-node /es200[1234]\.codfw\.wmnet/ {
-    class { 'role::mariadb::core':
-        shard         => 'es1',
-        p_s           => 'on',
-        binlog_format => 'ROW',
-    }
-    include base::firewall
-}
-
 ## codfw servers
 node /es201[123]\.codfw\.wmnet/ {
     class { 'role::mariadb::core':
@@ -1050,16 +1040,6 @@ node /^es101[13]\.eqiad\.wmnet/ {
     include base::firewall
 }
 
-## codfw servers (decommissioning)
-node /es200[567]\.codfw\.wmnet/ {
-    class { 'role::mariadb::core':
-        shard         => 'es2',
-        p_s           => 'on',
-        binlog_format => 'ROW',
-    }
-    include base::firewall
-}
-
 ## codfw servers
 node /es201[456]\.codfw\.wmnet/ {
     class { 'role::mariadb::core':
@@ -1084,16 +1064,6 @@ node 'es1019.eqiad.wmnet' {
 
 ## eqiad servers
 node /^es101[47]\.eqiad\.wmnet/ {
-    class { 'role::mariadb::core':
-        shard         => 'es3',
-        p_s           => 'on',
-        binlog_format => 'ROW',
-    }
-    include base::firewall
-}
-
-## codfw servers (decommissioning)
-node /es20(08|09|10)\.codfw\.wmnet/ {
     class { 'role::mariadb::core':
         shard         => 'es3',
         p_s           => 'on',
