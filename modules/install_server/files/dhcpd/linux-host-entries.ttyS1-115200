@@ -214,6 +214,27 @@ host aqs1003 {
     filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
+host aqs1004 {
+    hardware ethernet 1c:98:ec:2a:94:e0;
+    fixed-address aqs1004.eqiad.wmnet;
+    option pxelinux.pathprefix "jessie-installer/";
+    filename "jessie-installer/debian-installer/amd64/pxelinux.0";
+}
+
+host aqs1005 {
+    hardware ethernet 1c:98:ec:2a:61:78;
+    fixed-address aqs1005.eqiad.wmnet;
+    option pxelinux.pathprefix "jessie-installer/";
+    filename "jessie-installer/debian-installer/amd64/pxelinux.0";
+}
+
+host aqs1006 {
+    hardware ethernet 1c:98:ec:2a:c4:9c;
+    fixed-address aqs1006.eqiad.wmnet;
+    option pxelinux.pathprefix "jessie-installer/";
+    filename "jessie-installer/debian-installer/amd64/pxelinux.0";
+}
+
 host antimony {
     hardware ethernet D4:AE:52:AF:56:93;
     fixed-address antimony.wikimedia.org;
