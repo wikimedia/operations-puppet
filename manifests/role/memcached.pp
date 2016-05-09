@@ -29,7 +29,6 @@ class role::memcached {
     if $::hostname == 'mc2009' or $::hostname == 'mc1009' {
         $extended_options = [
             'slab_reassign',
-            'lru_crawler',
             'maxconns_fast',
             'hash_algorithm=murmur3',
             'slab_automove',
