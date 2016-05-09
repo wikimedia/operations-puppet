@@ -40,6 +40,8 @@ module Puppet::Parser::Functions
       'Utopic'   => '14.10',
       'Vivid'    => '15.04',
       'Wily'     => '15.10',
+      'Xenial'   => '16.04',
+      'Yakkety'  => '16.10',
     },
     'Debian' => {
       'Wheezy'  => '7',
