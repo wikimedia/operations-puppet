@@ -1,0 +1,5 @@
+# NOTE: This file is managed by Puppet.
+
+<% @runtime_properties.keys.sort.each do |key| -%>
+<%= key %>=<%= @runtime_properties[key] %>
+<% end -%>
