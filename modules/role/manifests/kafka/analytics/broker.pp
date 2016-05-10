@@ -109,8 +109,11 @@ class role::kafka::analytics::broker {
 
         # Monitor kafka in production
         if $::realm == 'production' {
-            class { '::confluent::kafka::server::alerts':
+            class { '::confluent::kafka::broker::alerts':
                 nagios_servicegroup => "analytics_${::site}",
+                # TODO: tweak these
+                replica_maxlag_warning  => '1000000',
+                replica_maxlag_critical => '5000000',
             }
         }
     }
