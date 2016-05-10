@@ -2,7 +2,7 @@
 # This file is managed by Puppet!
 upstream local_fe_<%= @basename %> {
     server <%= @ipaddress %>:<%= @upstream_port %> max_fails=0;
-<% if @keepalives_per_worker.to_i > 0 -%>
+<% if @varnish_version4 and @keepalives_per_worker.to_i > 0 -%>
     keepalive <%= @keepalives_per_worker %>; # Note: commonly up to 48 workers!
 <% end -%>
 }
@@ -32,12 +32,12 @@ server {
 		proxy_pass http://local_fe_<%= @basename %>;
 <% if @varnish_version4 -%>
 		proxy_http_version 1.1;
-<% end -%>
-<% if @keepalives_per_worker.to_i > 0 -%>
-<% if not @varnish_version4 -%>
-		proxy_http_version 1.1;
-<% end -%>
+<% if @websocket_support -%>
+		proxy_set_header Upgrade $http_upgrade;
+		proxy_set_header Connection $connection_upgrade;
+<% elsif @keepalives_per_worker.to_i > 0 -%>
 		proxy_set_header Connection "";
+<% end -%>
 <% end -%>
 
 		# this should be in sync with Varnish's first_byte_timeout

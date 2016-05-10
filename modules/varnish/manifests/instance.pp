@@ -24,6 +24,8 @@ define varnish::instance(
         $extraopts = "-n ${name}"
     }
 
+    $websocket_support = hiera('cache::websocket_support', false)
+
     # $varnish_version4 is used to distinguish between v4 and v3 versions of
     # VCL code, as well as to pass the right parameters to varnishd. See
     # varnish.systemd.erb
