@@ -143,7 +143,7 @@ designateconfig:
   db_host:  'm5-master.eqiad.wmnet'
   db_name: 'designate'
   pool_manager_db_name: 'designate_pool_manager'
-  pdns_db_host: 'm5-master.eqiad.wmnet'
+  pdns_db_host: 'm5-master.eqiad.wmnet' # this is probably wrong
   dhcp_domain: 'eqiad'
   pdns_db_name: 'pdns'
   rabbit_host:  *labsnovacontroller
