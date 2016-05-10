@@ -1,0 +1,36 @@
+# Configuration file for jupyterhub
+
+c.Application.log_level = 'WARN'
+c.JupyterHub.admin_access = True
+
+c.JupyterHub.authenticator_class = 'ldapauthenticator.LDAPAuthenticator'
+c.LDAPAuthenticator.server_address = 'ldap-labs.eqiad.wikimedia.org'
+c.LDAPAuthenticator.bind_dn_template = \
+    'uid={username},ou=people,dc=wikimedia,dc=org'
+c.LDAPAuthenticator.allowed_groups = [
+    'cn=nda,ou=groups,dc=wikimedia,dc=org',
+    'cn=wmf,ou=groups,dc=wikimedia,dc=org'
+]
+
+c.JupyterHub.config_file = '<%= @venv_path %>/jupyterhub_config.py'
+c.JupyterHub.confirm_no_ssl = True
+c.JupyterHub.cookie_secret_file = '<%= @venv_path %>/jupyterhub_cookie_secret'
+
+c.JupyterHub.data_files_path = '<%= @venv_path %>/share/jupyter/hub'
+
+c.JupyterHub.db_url = 'sqlite:////<%= @venv_path %>/data/jupyterhub.sqlite'
+
+c.JupyterHub.hub_ip = '127.0.0.1'
+c.JupyterHub.hub_port = 8081
+c.JupyterHub.hub_prefix = '/hub/'
+c.JupyterHub.ip = '0.0.0.0'
+c.JupyterHub.port = 8000
+c.JupyterHub.proxy_api_port = 8001
+
+c.JupyterHub.spawner_class = 'systemdspawner.SystemdSpawner'
+# c.SystemdSpawner.cmd = ['<%= @venv_path %>/bin']
+# c.SystemdSpawner.user_workingdir = '<%= @venv_path %>/data/home/{USERNAME}'
+# c.SystemdSpawner.extra_paths = ['<%= @venv_path %>/bin']
+c.SystemdSpawner.environment = {
+    'HADOOP_CONF_DIR': '/etc/hadoop/conf.analytics-cluster/',
+}
