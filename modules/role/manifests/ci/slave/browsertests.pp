@@ -18,7 +18,9 @@ class role::ci::slave::browsertests {
     }
 
     # For CirrusSearch testing:
-    redis::instance { 6379:
+    $redis_port = 6379
+
+    redis::instance { $redis_port:
         settings => {
             bind                      => '0.0.0.0',
             appendonly                => true,
@@ -27,6 +29,18 @@ class role::ci::slave::browsertests {
             requirepass               => 'notsecure',
             auto_aof_rewrite_min_size => '32mb',
         },
+    }
+
+    file { '/mnt/redis':
+        ensure  => directory,
+        mode    => '0775',
+        owner   => 'redis',
+        group   => 'redis',
+        before  => Service["redis-instance-tcp_${redis_port}"],
+        require => [
+            Mount['/mnt'],
+            Package['redis-server'],
+        ],
     }
 }
 
