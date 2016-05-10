@@ -86,14 +86,17 @@ saltfinger="c5:b1:35:45:3e:0a:19:70:aa:5f:3a:cf:bf:a0:61:dd"
 if [ "${domain}" == "eqiad.wmflabs" ]
 then
 	master="labs-puppetmaster-eqiad.wikimedia.org"
+	ldaphosts="ldap://ldap-labs.eqiad.wikimedia.org:389 ldap://ldap-labs.codfw.wikimedia.org:389"
 fi
 if [ "${domain}" == "codfw.wmflabs" ]
 then
 	master="labs-puppetmaster-codfw.wikimedia.org"
+	ldaphosts="ldap://ldap-labs.codfw.wikimedia.org:389 ldap://ldap-labs.eqiad.wikimedia.org:389"
 fi
 if [ "${domain}" == "codfw.labtest" ]
 then
 	master="labtestcontrol2001.wikimedia.org"
+	ldaphosts="ldap://labtestservices2001.wikimedia.org:389"
 fi
 
 # Finish LDAP configuration
@@ -103,6 +106,8 @@ sed -i "s/_PROJECT_/${project}/g" /etc/sudo-ldap.conf
 sed -i "s/_PROJECT_/${project}/g" /etc/nslcd.conf
 sed -i "s/_FQDN_/${fqdn}/g" /etc/puppet/puppet.conf
 sed -i "s/_MASTER_/${master}/g" /etc/puppet/puppet.conf
+sed -i "s/^uri.*/uri             ${ldaphosts}/g" /etc/ldap.conf
+sed -i "s/^URI.*/URI             ${ldaphosts}/g" /etc/ldap/ldap.conf
 
 # Set resolv.conf and stop anyone else from messing with it.
 echo "" > /sbin/resolvconf
