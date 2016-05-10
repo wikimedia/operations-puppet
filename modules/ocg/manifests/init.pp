@@ -61,11 +61,8 @@ class ocg (
             'texlive-fonts-extra',
             'texlive-lang-all',
             'fonts-hosny-amiri',
-            'ttf-devanagari-fonts',
             'fonts-farsiweb',
             'fonts-nafees',
-            'ttf-indic-fonts-core',
-            'ttf-malayalam-fonts',
             'fonts-arphic-uming',
             'fonts-arphic-ukai',
             'fonts-droid',
@@ -81,6 +78,15 @@ class ocg (
         ]:
         ensure => present,
         before => Service['ocg']
+    }
+
+
+    if os_version('ubuntu >= trusty') {
+        require_package('ttf-devanagari-fonts', 'ttf-malayalam-fonts', 'ttf-indic-fonts-core')
+    }
+
+    if os_version('debian >= jessie') {
+        require_package('fonts-deva', 'fonts-mlym', 'fonts-beng', 'fonts-gujr', 'fonts-knda', 'fonts-orya', 'fonts-guru', 'fonts-taml', 'fonts-telu', 'fonts-gujr-extra')
     }
 
     if $::initsystem == 'systemd' {
