@@ -55,5 +55,8 @@ server {
 
 		proxy_redirect off;
 		proxy_buffering off;
+<% if @varnish_version4 -%>
+		proxy_request_buffering off;
+<% end -%>
 	}
 }
