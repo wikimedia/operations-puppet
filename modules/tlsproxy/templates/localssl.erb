@@ -1,11 +1,11 @@
 # Proxy site configuration file for <%= @name %>
 # This file is managed by Puppet!
-<% if @keepalives_per_worker.to_i > 0 -%>
 upstream local_fe_<%= @basename %> {
-    server <%= @ipaddress %>:<%= @upstream_port %>;
+    server <%= @ipaddress %>:<%= @upstream_port %> max_fails=0;
+<% if @keepalives_per_worker.to_i > 0 -%>
     keepalive <%= @keepalives_per_worker %>; # Note: commonly up to 48 workers!
-}
 <% end -%>
+}
 
 # SSL proxying
 server {
@@ -29,12 +29,10 @@ server {
 	keepalive_timeout 60;
 
 	location / {
-<% if @keepalives_per_worker.to_i > 0 -%>
 		proxy_pass http://local_fe_<%= @basename %>;
+<% if @keepalives_per_worker.to_i > 0 -%>
 		proxy_http_version 1.1;
 		proxy_set_header Connection "";
-<% else -%>
-		proxy_pass http://<%= @ipaddress %>:<%= @upstream_port %>;
 <% end -%>
 
 		# this should be in sync with Varnish's first_byte_timeout
