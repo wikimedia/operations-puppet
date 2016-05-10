@@ -120,7 +120,15 @@ make_resolv_conf() {
 }
 EOF
 
-nameserver=`/usr/bin/dig +short labs-recursor0.wikimedia.org`
+if [ "${domain}" == "codfw.labtest" ]
+then
+	# Just hardcode the IP for labtest-recursor0, in case we
+        #  can't dig yet
+	nameserver='208.80.153.51'
+else
+	nameserver=`/usr/bin/dig +short labs-recursor0.wikimedia.org`
+fi
+
 cat > /etc/resolv.conf <<EOF
 domain ${project}.${domain}
 search ${project}.${domain} ${domain}
