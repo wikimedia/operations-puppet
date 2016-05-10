@@ -17,6 +17,10 @@
 #   Package version to install, or 'present' for any version
 #   (default: 'present').
 #
+# [*growth_factor*]
+#   Multiplier for computing the sizes of memory chunks that items
+#   are stored in. Corresponds to memcached's -f parameter (default: '1.05').
+#
 # [*extra_options*]
 #   A hash of additional command-line options and values.
 #
@@ -33,6 +37,7 @@ class memcached(
     $port          = 11000,
     $ip            = '0.0.0.0',
     $version       = 'present',
+    $growth_factor = 1.05,
     $extra_options = {},
     ) {
 

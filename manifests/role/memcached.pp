@@ -20,18 +20,20 @@ class role::memcached {
         $version =  '1.4.25-2~wmf1'
     } else {
         $version = os_version('debian >= jessie || ubuntu >= trusty') ? {
-            true    => 'present',
-            default => '1.4.15-0wmf1',
+            true     => 'present',
+            default  => '1.4.15-0wmf1',
         }
     }
 
     # mc[12]009 are configured with the latest memcached (version 1.4.25-2~wmf1)
     # as part of a performance experiment. More info: T129963
     if $::hostname == 'mc2009' or $::hostname == 'mc1009' {
+        $growth_factor    = 1.05
         $extended_options = [
             'slab_reassign',
         ]
     } elsif $::hostname == 'mc2010' {
+        $growth_factor    = 1.05
         $extended_options = [
             'slab_reassign',
             'lru_crawler',
@@ -39,6 +41,7 @@ class role::memcached {
             'hash_algorithm=murmur3',
         ]
     } else {
+        $growth_factor    = 1.05
         $extended_options = [
             'slab_reassign'
         ]
@@ -48,6 +51,7 @@ class role::memcached {
         size          => $memcached_size,
         port          => 11211,
         version       => $version,
+        growth_factor => $growth_factor,
         extra_options => {
             '-o' => join($extended_options, ','),
             '-D' => ':',
