@@ -83,13 +83,42 @@ class ocg (
         before => Service['ocg']
     }
 
+    if $::initsystem == 'systemd' {
+        $ocg_provider = 'systemd'
+        $ocg_require = '/etc/systemd/system/ocg.service'
+
+        file { '/etc/systemd/system/ocg.service':
+            ensure  => present,
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0444',
+            source  => 'puppet:///modules/ocg/ocg.service',
+            require => User['ocg'],
+            notify  => Service['ocg'],
+        }
+
+    } else {
+        $ocg_provider = 'upstart'
+        $ocg_require = '/etc/init.ocg.conf'
+
+        file { '/etc/init/ocg.conf':
+            ensure  => present,
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0444',
+            content => template('ocg/ocg.upstart.conf.erb'),
+            require => User['ocg'],
+            notify  => Service['ocg'],
+        }
+    }
+
     service { 'ocg':
         ensure     => running,
-        provider   => upstart,
+        provider   => $ocg_provider,
         hasstatus  => false,
         hasrestart => false,
         require    => [
-            File['/etc/init/ocg.conf'],
+            File[$ocg_require],
             Package['ocg/ocg'],
         ],
     }
@@ -104,16 +133,6 @@ class ocg (
         group   => 'ocg',
         mode    => '0440',
         content => template('ocg/mw-ocg-service.js.erb'),
-        notify  => Service['ocg'],
-    }
-
-    file { '/etc/init/ocg.conf':
-        ensure  => present,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        content => template('ocg/ocg.upstart.conf.erb'),
-        require => User['ocg'],
         notify  => Service['ocg'],
     }
 
