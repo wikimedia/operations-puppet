@@ -99,7 +99,7 @@ class ocg (
 
     } else {
         $ocg_provider = 'upstart'
-        $ocg_require = '/etc/init.ocg.conf'
+        $ocg_require = '/etc/init/ocg.conf'
 
         file { '/etc/init/ocg.conf':
             ensure  => present,
