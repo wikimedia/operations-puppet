@@ -1,0 +1,47 @@
+# Configuration file for jupyterhub.
+
+c.Application.log_level = 'DEBUG'
+
+c.JupyterHub.admin_access = True
+
+c.JupyterHub.authenticator_class = 'ldapauthenticator.LDAPAuthenticator'
+c.LDAPAuthenticator.server_address = 'seaborgium.wikimedia.org'
+c.LDAPAuthenticator.bind_dn_template = \
+    'uid={username},ou=people,dc=wikimedia,dc=org'
+c.LDAPAuthenticator.allowed_groups = [
+    'cn=nda,ou=groups,dc=wikimedia,dc=org',
+]
+
+c.JupyterHub.config_file = 'jupyterhub_config.py'
+c.JupyterHub.confirm_no_ssl = True
+c.JupyterHub.cookie_secret = bytes.fromhex('GO AWAY DO NOT HACK ME')
+
+c.JupyterHub.data_files_path = '/usr/local/share/jupyter/hub'
+
+# FIXME What needs to go here?
+c.JupyterHub.db_kwargs = {
+    'pool_recycle': 60  # Do not keep connections for more than one minute
+}
+# c.JupyterHub.db_url = 'sqlite:///jupyterhub.sqlite'
+# c.JupyterHub.debug_db = False
+
+# c.JupyterHub.debug_proxy = False
+
+c.JupyterHub.hub_ip = '127.0.0.1'
+c.JupyterHub.hub_port = 8081
+c.JupyterHub.hub_prefix = '/hub/'
+c.JupyterHub.ip = '0.0.0.0'
+c.JupyterHub.port = 8000
+
+# c.JupyterHub.logo_file = ''
+# c.JupyterHub.pid_file = ''
+# c.JupyterHub.proxy_api_ip = '127.0.0.1'
+# c.JupyterHub.proxy_api_port = 0
+# c.JupyterHub.proxy_auth_token = ''
+# c.JupyterHub.proxy_check_interval = 30
+
+# c.JupyterHub.spawner_class = 'jupyterhub.spawner.LocalProcessSpawner'
+
+c.JupyterHub.statsd_host = 'labmon1001.eqiad.wmnet'
+c.JupyterHub.statsd_port = 8125
+c.JupyterHub.statsd_prefix = 'paws-internal'
