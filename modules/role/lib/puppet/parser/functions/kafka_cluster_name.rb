@@ -1,4 +1,4 @@
-# == Function: kakfa_cluster_name(string prefix[, string site])
+# == Function: kafka_cluster_name(string prefix[, string site])
 #
 # Determines the Kafka cluster name based on the supplied prefix.
 # NOTE: this function is WMF-specific and takes into account the fact that the

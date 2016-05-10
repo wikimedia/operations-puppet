@@ -1,4 +1,4 @@
-# == Function: kakfa_config(string cluster_prefix[, string site])
+# == Function: kafka_config(string cluster_prefix[, string site])
 #
 # Reworks various variables to be in a format suitable for supplying them
 # to the kafka module classes. If the optional site argument is given, the

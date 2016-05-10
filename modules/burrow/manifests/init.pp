@@ -1,5 +1,5 @@
 # == Define Class: burrow
-# Burrow is a consumer offset lag monitoring tool for Kakfa
+# Burrow is a consumer offset lag monitoring tool for Kafka
 # This module helps set up a burrow service that provides a
 # http endpoint to query, and will email notifications on
 # consumer groups statuses.
