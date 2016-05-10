@@ -1,0 +1,14 @@
+[Unit]
+Description=NCHP <%= @name %>
+
+[Service]
+ExecStart=<%= @base_dir %>/venv/bin/nchp
+    --config <%= @base_dir %>/venv/nchp_config.py
+WorkingDirectory=<%= @base_dir %>/venv
+EnvironmentFile=<%= @base_dir %>/venv/configproxy_auth_token
+PrivateTmp=yes
+PrivateDevices=yes
+ReadOnlyDirectories=/
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,16 @@
+[Unit]
+Description=JupyterHub
+
+[Service]
+ExecStart=<%= @base_dir %>/venv/bin/jupyterhub \
+    --config=<%= @base_dir %>/venv/jupyterhub_config.py \
+    --no-ssl
+WorkingDirectory=<%= @base_dir %>/venv
+EnvironmentFile=<%= @base_dir %>/venv/configproxy_auth_token
+PrivateTmp=yes
+PrivateDevices=yes
+ReadOnlyDirectories=/
+ReadWriteDirectories=<%= @base_dir %>/venv/data
+
+[Install]
+WantedBy=multi-user.target
