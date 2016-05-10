@@ -1,0 +1,13 @@
+#!/bin/bash
+# Installs JupyterHub onto the current node, with virtualenvs
+set -e
+
+PREFIX=/srv/paws-internal
+VENV=${PREFIX}/venv
+WHEELS=${PREFIX}/wheels
+
+virtualenv -p python3 ${VENV}
+${VENV}/bin/pip install \
+       --no-index \
+       --find-links=${WHEELS}/wheelhouse \
+       -r ${WHEELS}/frozen-requirements.txt
