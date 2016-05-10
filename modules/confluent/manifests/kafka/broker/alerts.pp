@@ -18,7 +18,7 @@ class confluent::kafka::broker::alerts(
     $replica_maxlag_critical = '10000',
 ) {
     require ::confluent::kafka::broker
-    require ::confluent::kafka::jmxtrans
+    require ::confluent::kafka::broker::jmxtrans
 
     $jmx_port     = $::confluent::kafka::broker::jmx_port
     $group_prefix = $::confluent::kafka::broker::jmxtrans::group_prefix
