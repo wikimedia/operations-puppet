@@ -28,5 +28,17 @@ class role::ci::slave::browsertests {
             auto_aof_rewrite_min_size => '32mb',
         },
     }
+
+    file { '/mnt/redis':
+        ensure  => directory,
+        mode    => '0775',
+        owner   => 'redis',
+        group   => 'redis',
+        before  => Service['redis-instance-tcp_6379'],
+        require => [
+            Mount['/mnt'],
+            Package['redis-server'],
+        ],
+    }
 }
 
