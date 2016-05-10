@@ -1,2 +1,5 @@
 ores::redis::queue_maxmemory: 1G
 ores::redis::cache_maxmemory: 6G
+debdeploy::grains:
+  debdeploy-oresrdb:
+    value: standard
