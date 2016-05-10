@@ -179,6 +179,16 @@ class role::cache::misc {
             'be_opts'     => $app_def_be_opts,
             'req_host_re' => '(?i)^([^.]+\.)?planet\.wikimedia\.org$'
         },
+        'rcstream' => {
+            'dynamic'  => 'no',
+            'type'     => 'random',
+            'backends' => [
+                'rcs1001.eqiad.wmnet',
+                'rcs1002.eqiad.wmnet',
+            ],
+            'be_opts'  => $app_def_be_opts,
+            'req_host' => 'stream.wikimedia.org',
+        },
         'ruthenium' => { # parsoid rt test server
             'dynamic'  => 'no',
             'type'     => 'random',
