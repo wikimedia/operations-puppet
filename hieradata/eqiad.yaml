@@ -96,6 +96,7 @@ labs_keystone_host: &labskeystonehost "labcontrol1001.wikimedia.org"
 
 labs_osm_host: "wikitech.wikimedia.org"
 labs_horizon_host: "californium.wikimedia.org"
+labs_host_ips: '10.64.20.0/24'
 
 # These are the up-and-coming, better dns servers:
 labsdnsconfig:

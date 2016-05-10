@@ -158,16 +158,16 @@ class role::labs::openstack::nova::controller {
     }
 
     # TOBE: hiera'd
-    $labs_vms = '10.68.16.0/21'
+    $labs_vms = novaconfig['fixed_range']
     $labs_metal = join(hiera('labs_baremetal_servers', []), ' ')
-    $wikitech = '208.80.154.136'
-    $horizon = '208.80.154.147'
+    $wikitech = ipresolve(hiera('labs_osm_host'),4)
+    $horizon = ipresolve(hiera('labs_horizon_host'),4)
     $api_host = ipresolve(hiera('labs_nova_api_host'),4)
     $spare_master = ipresolve(hiera('labs_nova_controller_spare'),4)
     $designate = ipresolve(hiera('labs_designate_hostname'),4)
     $designate_secondary = ipresolve(hiera('labs_designate_hostname_secondary'))
     $monitoring = '208.80.154.14'
-    $labs_nodes = '10.64.20.0/24'
+    $labs_nodes = hiera('labs_host_ips')
 
     # mysql access from iron
     ferm::service { 'mysql_iron':

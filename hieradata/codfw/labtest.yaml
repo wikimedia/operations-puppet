@@ -14,6 +14,7 @@ labs_nova_controller_spare: &labsnovacontrollerspare "labtestcontrol2001.wikimed
 
 labs_osm_host: "labtestwikitech.wikimedia.org"
 labs_horizon_host: "labtestweb2001.wikimedia.org"
+labs_host_ips: '10.192.20.0/24'
 
 labs_designate_hostname: &labsdesignatehostname "labtestservices2001.wikimedia.org"
 labs_designate_hostname_secondary: &labs_designate_hostname_secondary "labtestservices2001.wikimedia.org"
