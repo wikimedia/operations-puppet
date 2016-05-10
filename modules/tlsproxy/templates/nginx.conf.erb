@@ -120,6 +120,17 @@ http {
         '.' '0';
     }
 
+<% if @varnish_version4 and @websocket_support -%>
+    map $http_upgrade $connection_upgrade {
+        default upgrade;
+<% if @keepalives_per_worker.to_i > 0 -%>
+        ''      '';
+<% else -%>
+        ''      close;
+<% end -%>
+    }
+<% end -%>
+
     <%= @nginx_ssl_conf.join("\n")  %>
 
     include /etc/nginx/conf.d/*.conf;

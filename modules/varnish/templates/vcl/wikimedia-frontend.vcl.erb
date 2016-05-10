@@ -256,6 +256,10 @@ sub vcl_recv {
 	set req.backend = cache_local;
 <% end -%>
 
+<% if @varnish_version4 and @websocket_support -%>
+	call wm_common_websocket_recv;
+<% end -%>
+
 	call wm_common_recv_grace;
 
 	if (<%= @req_method %> != "PURGE") {
@@ -323,6 +327,12 @@ sub vcl_pass {
 	call cluster_fe_pass;
 	return (<%= @fetch_pass %>); // no default VCL (which is just "return (<%= @fetch_pass %>)" anyways)
 }
+
+<% if @varnish_version4 and @websocket_support -%>
+sub vcl_pipe {
+	call wm_common_websocket_pipe;
+}
+<% end -%>
 
 <% if @varnish_version4 -%>
 sub vcl_backend_response {
