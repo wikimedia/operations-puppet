@@ -26,7 +26,7 @@ class confluent::kafka::broker::alerts(
     # Generate icinga alert if Kafka Server is not running.
     nrpe::monitor_service { 'kafka':
         description  => 'Kafka Broker Server',
-        nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C java -a "kafka.Kafka /etc/kafka/server.properties"',
+        nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C java -a "Kafka /etc/kafka/server.properties"',
         critical     => true,
     }
 
