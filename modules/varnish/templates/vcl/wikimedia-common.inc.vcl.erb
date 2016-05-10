@@ -366,3 +366,17 @@ sub wm_common_v3_purge_error {
 	}
 }
 <% end -%>
+
+<% if @websocket_support -%>
+sub wm_common_websocket_recv {
+	if (req.http.upgrade ~ "(?i)websocket") {
+		return (pipe);
+	}
+}
+
+sub wm_common_websocket_pipe {
+	if (req.http.upgrade) {
+		set bereq.http.upgrade = req.http.upgrade;
+	}
+}
+<% end -%>

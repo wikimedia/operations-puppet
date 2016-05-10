@@ -3,6 +3,7 @@ class tlsproxy::instance {
     # Tune kernel settings
     include base::mysterious_sysctl
 
+    $websocket_support = hiera('cache::websocket_support', false)
     $nginx_worker_connections = '32768'
     $nginx_ssl_conf = ssl_ciphersuite('nginx', 'compat')
 

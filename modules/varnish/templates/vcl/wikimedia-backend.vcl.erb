@@ -31,6 +31,10 @@ sub vcl_recv {
 	<% end -%>
 <% end -%>
 
+<% if @websocket_support -%>
+	call wm_common_websocket_recv;
+<% end -%>
+
 	call wm_common_recv_grace;
 
 	call cluster_be_recv_pre_purge;
@@ -83,6 +87,12 @@ sub vcl_pass {
 	call cluster_be_pass;
 	return (<%= @fetch_pass %>); // no default VCL (which is just "return (<%= @fetch_pass %>)" anyways)
 }
+
+<% if @websocket_support -%>
+sub vcl_pipe {
+	call wm_common_websocket_pipe;
+}
+<% end -%>
 
 <% if @varnish_version4 -%>
 sub vcl_backend_response {

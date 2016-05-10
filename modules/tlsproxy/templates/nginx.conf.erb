@@ -104,6 +104,13 @@ http {
         '.' '0';
     }
 
+<% if @websocket_support -%>
+    map $http_upgrade $connection_upgrade {
+        default upgrade;
+        ''      close;
+    }
+<% end -%>
+
     <%= @nginx_ssl_conf.join("\n")  %>
 
     include /etc/nginx/conf.d/*.conf;
