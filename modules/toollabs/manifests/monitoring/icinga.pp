@@ -17,10 +17,8 @@ class toollabs::monitoring::icinga {
     # these checks are used to track uptime and availability via
     # catchpoint as well as for general alerting and administration.
     $test_entry_host = 'checker.tools.wmflabs.org'
-    $test_entry_host_ip = ipresolve($test_entry_host,4)
-
-    @monitoring::host { 'checker.tools.wmflabs.org':
-        host_fqdn => $test_entry_host_ip,
+    @monitoring::host { $test_entry_host:
+        host_fqdn => $test_entry_host,
     }
 
     # tests are pass/fail based on string return check
