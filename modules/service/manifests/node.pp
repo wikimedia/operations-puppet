@@ -237,6 +237,13 @@ define service::node(
             group   => 'root',
             mode    => '0444',
         }
+        # convenience script to pretty-print logs
+        file { "/usr/bin/tail-${title}":
+            content => template('service/node/tail-log.erb'),
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0755'
+        }
     }
 
     # service init script and activation
@@ -290,4 +297,5 @@ define service::node(
             check_command => "check_http_port_url!${port}!${healthcheck_url}",
         }
     }
+
 }
