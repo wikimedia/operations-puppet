@@ -103,7 +103,6 @@ designateconfig:
   db_host:  'labtestcontrol2001.wikimedia.org'
   db_name: 'designate'
   pool_manager_db_name: 'designate_pool_manager'
-  pdns_db_host: 'labtestcontrol2001.wikimedia.org'
   dhcp_domain: 'labtestcodfw'
   pdns_db_name: 'pdns'
   rabbit_host:  *labsnovacontroller
