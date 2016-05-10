@@ -2751,7 +2751,7 @@ node 'tungsten.eqiad.wmnet' {
 
 # will replace magnesium (RT) (T123713)
 node 'ununpentium.wikimedia.org' {
-    role requesttracker::server
+    # role requesttracker::server
 
     include standard
     include base::firewall
