@@ -119,7 +119,9 @@ class role::kafka::analytics::broker {
         # firewall Kafka Broker
         ferm::service { 'kafka-broker':
             proto  => 'tcp',
-            port   => $::confluent::kafka::broker::port,
+            # TODO: $::confluent::kafka::broker::port doesn't
+            # seem to work as expected.  Hardcoding this for now.
+            port   => 9092,
             srange => '$ALL_NETWORKS',
         }
     }
