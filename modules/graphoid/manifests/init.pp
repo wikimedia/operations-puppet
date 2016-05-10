@@ -37,11 +37,9 @@ class graphoid(
     service::node { 'graphoid':
         port            => 19000,
         config          => {
-            domains         => $domains,
-            domainMap       => $domain_map,
-            defaultProtocol => $protocol,
-            timeout         => $timeout,
-            allowedDomains  => $allowed_domains,
+            allowedDomains => $allowed_domains,
+            domainMap      => $domain_map,
+            timeout        => $timeout,
         },
         has_spec        => true,
         healthcheck_url => '',
