@@ -1,0 +1,3 @@
+graphite::web::cluster_servers:
+  - graphite1001.eqiad.wmnet
+  - graphite1003.eqiad.wmnet
