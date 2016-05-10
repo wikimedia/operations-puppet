@@ -1,4 +1,4 @@
-# == Class: role::performance
+# == Class: role::performance::site
 #
 # This role provisions <http://performance.wikimedia.org>, a static site with
 # web performance dashboards.
