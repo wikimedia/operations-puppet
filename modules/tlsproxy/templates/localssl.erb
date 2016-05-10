@@ -30,11 +30,9 @@ server {
 
 	location / {
 		proxy_pass http://local_fe_<%= @basename %>;
-		proxy_http_version 1.1;
 <% if @keepalives_per_worker.to_i > 0 -%>
+		proxy_http_version 1.1;
 		proxy_set_header Connection "";
-<% else -%>
-		proxy_set_header Connection close; # note: this is default
 <% end -%>
 
 		# this should be in sync with Varnish's first_byte_timeout
