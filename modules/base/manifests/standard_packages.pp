@@ -18,6 +18,7 @@ class base::standard_packages {
         'debian-goodies',
         'dstat',
         'ethtool',
+        'gdisk',
         'htop',
         'httpry',
         'iperf',
