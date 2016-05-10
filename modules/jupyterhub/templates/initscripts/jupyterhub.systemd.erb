@@ -1,0 +1,12 @@
+[Unit]
+Description=JupyterHub
+
+[Service]
+User=www-data
+Group=www-data
+ExecStart=/usr/local/bin/jupyterhub \
+    --config=/etc/jupyterhub/jupyterhub_config.py \
+    --no-ssl
+
+[Install]
+WantedBy=multi-user.target
