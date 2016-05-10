@@ -104,10 +104,11 @@ sed -i "s/_PROJECT_/${project}/g" /etc/security/access.conf
 sed -i "s/_PROJECT_/${project}/g" /etc/ldap/ldap.conf
 sed -i "s/_PROJECT_/${project}/g" /etc/sudo-ldap.conf
 sed -i "s/_PROJECT_/${project}/g" /etc/nslcd.conf
+sed -i "s%^uri.*%uri ${ldaphosts}%g" /etc/nslcd.conf
 sed -i "s/_FQDN_/${fqdn}/g" /etc/puppet/puppet.conf
 sed -i "s/_MASTER_/${master}/g" /etc/puppet/puppet.conf
-sed -i "s/^uri.*/uri             ${ldaphosts}/g" /etc/ldap.conf
-sed -i "s/^URI.*/URI             ${ldaphosts}/g" /etc/ldap/ldap.conf
+sed -i "s%^uri.*%uri             ${ldaphosts}%g" /etc/ldap.conf
+sed -i "s%^URI.*%URI             ${ldaphosts}%g" /etc/ldap/ldap.conf
 
 # Set resolv.conf and stop anyone else from messing with it.
 echo "" > /sbin/resolvconf
