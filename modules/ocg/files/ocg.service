@@ -1,0 +1,10 @@
+[Unit]
+Description=MediaWiki Collection Offline Content Generator
+After=network.target
+
+[Service]
+User=ocg
+Group=ocg
+ExecStart=/usr/bin/nodejs-ocg /srv/deployment/ocg/ocg/mw-ocg-service.js -c /etc/ocg/mw-ocg-service.js
+[Install]
+WantedBy=multi-user.target
