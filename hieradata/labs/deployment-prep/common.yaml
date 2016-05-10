@@ -38,6 +38,10 @@ graphoid::allowed_domains:
   wikidatasparql:
     - query.wikidata.org
     - wdqs-test.wmflabs.org
+graphoid::headers:
+  'Cache-Control': 'public, s-maxage=360, max-age=360'
+graphoid::error_headers:
+  'Cache-Control': 'public, s-maxage=30, max-age=30'
 lvs::configuration::lvs_services:
   apaches:
     description: "Main MediaWiki application server cluster"

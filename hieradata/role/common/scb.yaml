@@ -29,6 +29,10 @@ graphoid::allowed_domains:
     - upload.wikimedia.org
   wikidatasparql:
     - query.wikidata.org
+graphoid::headers:
+  'Cache-Control': 'public, s-maxage=3600, max-age=3600'
+graphoid::error_headers:
+  'Cache-Control': 'public, s-maxage=300, max-age=300'
 debdeploy::grains:
   debdeploy-scb:
     value: standard
