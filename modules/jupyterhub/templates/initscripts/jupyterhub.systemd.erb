@@ -1,0 +1,10 @@
+[Unit]
+Description=JupyterHub
+
+[Service]
+ExecStart=<%= @base_dir %>/venv/bin/jupyterhub \
+    --config=<%= @base_dir %>/jupyterhub_config.py \
+    --no-ssl
+
+[Install]
+WantedBy=multi-user.target
