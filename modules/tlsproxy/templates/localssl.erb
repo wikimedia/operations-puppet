@@ -31,7 +31,10 @@ server {
 	location / {
 		proxy_pass http://local_fe_<%= @basename %>;
 		proxy_http_version 1.1;
-<% if @keepalives_per_worker.to_i > 0 -%>
+<% if @websocket_support -%>
+		proxy_set_header Upgrade $http_upgrade;
+		proxy_set_header Connection $connection_upgrade;
+<% elsif @keepalives_per_worker.to_i > 0 -%>
 		proxy_set_header Connection "";
 <% else -%>
 		proxy_set_header Connection close; # note: this is default
