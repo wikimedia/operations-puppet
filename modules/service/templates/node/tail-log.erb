@@ -1,0 +1,13 @@
+#!/bin/bash
+
+# find the bunyan executable
+BUNYAN_BIN=$(find /srv/deployment/<%= @repo %>/node_modules -executable -iname bunyan -type f 2>/dev/null | head -n1);
+
+if [[ -n "${BUNYAN_BIN}" ]]; then
+	# bunyan is available, use it
+	tail <%= @local_logfile %> $@ | ${BUNYAN_BIN}
+else
+	# no bunyan? oh well, use jq
+	tail <%= @local_logfile %> $@ | jq .
+fi
+
