@@ -116,6 +116,12 @@ class role::kafka::analytics::broker {
                 replica_maxlag_critical => '5000000',
             }
         }
+        # firewall Kafka Broker
+        ferm::service { 'kafka-broker':
+            proto  => 'tcp',
+            port   => $::confluent::kafka::broker::port,
+            srange => '$ALL_NETWORKS',
+        }
     }
     else {
         # export ZOOKEEPER_URL and BROKER_LIST user environment variable.
@@ -195,14 +201,15 @@ class role::kafka::analytics::broker {
                 group_prefix        => $group_prefix,
             }
         }
+        # firewall Kafka Broker
+        ferm::service { 'kafka-broker':
+            proto  => 'tcp',
+            port   => $::kafka::server::broker_port,
+            srange => '$ALL_NETWORKS',
+        }
     }
 
-    # firewall Kafka Broker
-    ferm::service { 'kafka-broker':
-        proto  => 'tcp',
-        port   => $::kafka::server::broker_port,
-        srange => '$ALL_NETWORKS',
-    }
+
 
     include ::ferm::ipsec_allow
 
