@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<Configuration status="warn">
+    <Appenders>
+        <RollingFile name="RollingFile"
+            fileName="/var/log/druid/<%= @service %>.log"
+            filePattern="/var/log/druid/<%= @service %>.%i.log">
+            <PatternLayout>
+                <Pattern>%d{ISO8601} %p %c: %m%n</Pattern>
+            </PatternLayout>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="128 MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="4"/>
+        </RollingFile>
+    </Appenders>
+
+    <Loggers>
+        <Root level="info">
+            <AppenderRef ref="RollingFile"/>
+        </Root>
+    </Loggers>
+</Configuration>
