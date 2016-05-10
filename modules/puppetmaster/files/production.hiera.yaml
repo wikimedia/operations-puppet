@@ -12,6 +12,7 @@
   :datadir: /etc/puppet/private/hieradata
 :hierarchy:
   - "hosts/%{::hostname}"
+  - "private/hosts/%{::hostname}"
   - "regex/%{::fqdn}"
   - "%{::site}/%{::realm}"
   - "%{::site}"
