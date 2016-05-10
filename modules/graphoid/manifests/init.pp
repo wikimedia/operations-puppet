@@ -16,10 +16,18 @@
 # [*timeout*]
 #   The timeout (in ms) for requests. Default: 5000
 #
+# [*headers*]
+#   A map of headers that will be sent with each reply. Could be used for caching, etc. Default: false
+#
+# [*error_headers*]
+#   A map of headers that will be sent with each reply in case of an error. If not set, above headers will be used. Default: false
+#
 class graphoid(
     $allowed_domains = {},
-    $domain_map = {},
-    $timeout    = 5000,
+    $domain_map    = {},
+    $timeout       = 5000,
+    $headers       = false,
+    $error_headers = false,
 ) {
 
     require ::graphoid::packages
@@ -32,6 +40,8 @@ class graphoid(
             allowedDomains => $allowed_domains,
             domainMap      => $domain_map,
             timeout        => $timeout,
+            headers        => $headers,
+            errorHeaders   => $error_headers,
         },
         has_spec        => true,
         healthcheck_url => '',
