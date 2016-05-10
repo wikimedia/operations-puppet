@@ -16,6 +16,12 @@ class role::aptly {
     aptly::repo { "jessie-${::labsproject}":
         publish      => true,
     }
+
+    ferm::service { 'aptly':
+        proto  => 'tcp',
+        port   => '80',
+        srange => '$ALL_NETWORKS',
+    }
 }
 
 # = Class: role::aptly::client
