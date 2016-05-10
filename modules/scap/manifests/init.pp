@@ -5,7 +5,7 @@
 class scap ($deployment_server = 'deployment') {
 
     package { 'scap':
-        ensure => '3.1.0-1',
+        ensure => '3.2.0-1',
     }
 
     file { '/etc/scap.cfg':
