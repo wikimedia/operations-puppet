@@ -14,7 +14,10 @@ class role::ocg {
     include passwords::redis
     include ::ocg
     include ::ocg::nagios
-    include ::ocg::ganglia
+
+    if $::standard::has_ganglia {
+        include ::ocg::ganglia
+    }
 
     file { $::ocg::temp_dir:
         ensure => directory,
