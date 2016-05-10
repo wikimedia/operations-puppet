@@ -273,7 +273,7 @@ class confluent::kafka::broker(
     }
 
     # This is the message data directory,
-    # not to be confused with /var/log/kakfa
+    # not to be confused with /var/log/kafka
     # which contains daemon process logs.
     file { $log_dirs:
         ensure => 'directory',
