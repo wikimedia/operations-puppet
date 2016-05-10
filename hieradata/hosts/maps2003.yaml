@@ -1,0 +1,13 @@
+cassandra::rack: c5
+do_paging: false
+
+# the following variables can be moved back to
+# hieradata/role/codfw/maps/slave.yaml once maps-test* servers have been
+# decommissionned.
+
+postgresql::slave::master_server: maps2001.codfw.wmnet
+cassandra::seeds: [ 10.192.0.144, 10.192.16.179, 10.192.32.146, 10.192.48.57 ]
+maps::hosts: [ maps2001.codfw.wmnet, maps2002.codfw.wmnet, maps2003.codfw.wmnet, maps2004.codfw.wmnet ]
+# To be configured once we have an LVS endpoint ready
+#lvs::realserver::realserver_ips:
+#  - 10.2.1.13
