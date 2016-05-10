@@ -34,10 +34,6 @@ class icinga::monitor::certs {
         host          => 'eventdonations.wikimedia.org',
     }
 
-    # toolserver.org (redirect page to Tool Labs)
-    @monitoring::host { 'www.toolserver.org':
-        host_fqdn     => 'www.toolserver.org'
-    }
     monitoring::service { 'https_toolserver':
         description   => 'HTTPS-toolserver',
         check_command => 'check_ssl_http!www.toolserver.org',
@@ -55,9 +51,6 @@ class icinga::monitor::certs {
     }
 
     # *.wmflabs.org (labs wildcard cert, testing tools.wmflabs.org)
-    @monitoring::host { 'tools.wmflabs.org':
-        host_fqdn     => 'tools.wmflabs.org'
-    }
     monitoring::service { 'https_wmflabs':
         description   => 'HTTPS-wmflabs',
         check_command => 'check_ssl_http!tools.wmflabs.org',

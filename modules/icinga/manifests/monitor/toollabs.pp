@@ -1,4 +1,26 @@
-class toollabs::monitoring::icinga {
+# Tool Labs end points worth production monitoring
+#
+# * relevant cert expirary is monitored in
+#   icinga::monitor::certs
+
+class icinga::monitor::toollabs {
+
+    # toolserver.org (redirect page to Tool Labs)
+    @monitoring::host { 'www.toolserver.org':
+        host_fqdn     => 'www.toolserver.org'
+    }
+
+    # monitoring of https://meta.wikimedia.org/wiki/PAWS
+    @monitoring::host { 'paws.wmflabs.org':
+        host_fqdn => 'paws.wmflabs.org',
+    }
+
+    monitoring::service { 'paws_main_page':
+        description   => 'PAWS Main page',
+        check_command => 'check_http_url!paws.wmflabs.org!/paws/hub/login',
+        host          => 'paws.wmflabs.org',
+        contact_group => 'team-paws',
+    }
 
     # this homepage is served by a tool running within tools
     # itself. on a bastion 'become admin' to see source and

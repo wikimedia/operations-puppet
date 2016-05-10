@@ -1426,9 +1426,6 @@ node 'labcontrol1001.wikimedia.org' {
     include base::firewall
     include standard
     include ldap::role::client::labs
-
-    # Monitoring checks for toollabs that page
-    include toollabs::monitoring::icinga
 }
 
 # labcontrol1002 is a hot spare for 1001.  Switching it on
