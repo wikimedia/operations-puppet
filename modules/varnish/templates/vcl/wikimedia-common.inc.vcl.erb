@@ -296,7 +296,12 @@ sub wm_common_hit {
 }
 
 sub wm_common_miss {
-	set req.http.X-CDIS = "miss";
+	if (req.http.X-CDIS) {
+		// _miss can theoretically be called after moving through _hit
+		set req.http.X-CDIS = req.http.X-CDIS + "+miss";
+	} else {
+		set req.http.X-CDIS = "miss";
+	}
 <% if not @varnish_version4 -%>
 	if (req.request == "PURGE") {
 		purge;
@@ -307,7 +312,7 @@ sub wm_common_miss {
 
 sub wm_common_pass {
 	if (req.http.X-CDIS) {
-		// _pass can theoretically be called after moving through _hit or _miss
+		// _pass can theoretically be called after moving through _hit and/or _miss
 		set req.http.X-CDIS = req.http.X-CDIS + "+pass";
 	} else {
 		set req.http.X-CDIS = "pass";
