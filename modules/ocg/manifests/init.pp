@@ -49,6 +49,12 @@ class ocg (
         target => '/usr/bin/nodejs',
     }
 
+    if os_version('debian >= jessie || ubuntu >= wily') {
+        $imagemagick_dir = '/etc/ImageMagick-6'
+    } else {
+        $imagemagick_dir = '/etc/ImageMagick'
+    }
+
     include ::imagemagick::install
 
     package {
