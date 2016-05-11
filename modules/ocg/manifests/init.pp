@@ -92,6 +92,7 @@ class ocg (
     if $::initsystem == 'systemd' {
         $ocg_provider = 'systemd'
         $ocg_require = '/etc/systemd/system/ocg.service'
+        $ocg_log_grp = 'systemd-journal'
 
         file { '/etc/systemd/system/ocg.service':
             ensure  => present,
@@ -106,6 +107,7 @@ class ocg (
     } else {
         $ocg_provider = 'upstart'
         $ocg_require = '/etc/init/ocg.conf'
+        $ocg_log_grp = 'syslog'
 
         file { '/etc/init/ocg.conf':
             ensure  => present,
