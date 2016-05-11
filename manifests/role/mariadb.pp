@@ -495,7 +495,7 @@ class role::mariadb::grants::wikitech {
 class role::mariadb::core(
     $shard,
     $p_s           = 'off',
-    $ssl           = 'on',
+    $ssl           = 'puppet-cert',
     $binlog_format = 'MIXED',
     $master        = false,
     ) {
