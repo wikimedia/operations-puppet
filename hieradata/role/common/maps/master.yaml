@@ -1,5 +1,5 @@
 postgresql::master::pgversion: 9.4
-postgresql::master::datadir: /srv/postgresql/9.4/main
+postgresql::master::basedir: /srv/postgresql
 postgresql::master::includes: tuning.conf
 postgresql::master::checkpoint_segments: 768
 postgresql::master::wal_keep_segments: 768

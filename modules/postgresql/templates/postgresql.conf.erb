@@ -38,11 +38,7 @@
 # The default values of these variables are driven from the -D command-line
 # option or PGDATA environment variable, represented here as ConfigDir.
 
-<% if @datadir %>
-data_directory = '<%= @datadir %>' 	# use data in another directory
-<% else %>
-data_directory = '/var/lib/postgresql/<%= @pgversion %>/main'		# use data in another directory
-<% end %>
+data_directory = '<%= @final_datadir %>' 	# use data in another directory
 					# (change requires restart)
 hba_file = '/etc/postgresql/<%= @pgversion %>/main/pg_hba.conf'	# host-based authentication file
 					# (change requires restart)
