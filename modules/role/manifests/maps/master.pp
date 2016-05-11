@@ -29,6 +29,8 @@ class role::maps::master {
         require => Class['::postgresql::postgis'],
     }
 
+    # TODO: initial data load with osm2pgsql
+
     # PostgreSQL Replication
     $postgres_slaves = hiera('maps::postgres_slaves', undef)
     if $postgres_slaves {
@@ -46,6 +48,8 @@ class role::maps::master {
         minute        => '27',
     }
 
+    # TODO: https://github.com/kartotherian/osm-bright.tm2source#install -> execute appropriate sql scripts and shapefile import
+
     # Cassandra grants
     $cassandra_kartotherian_pass = hiera('maps::cassandra_kartotherian_pass')
     $cassandra_tilerator_pass = hiera('maps::cassandra_tilerator_pass')
@@ -56,6 +60,8 @@ class role::maps::master {
         mode    => '0400',
         content => template('role/maps/grants.cql.erb'),
     }
+
+    # TODO actually execute this grant
 
     # Ferm rules
     $maps_hosts = hiera('maps::hosts')
