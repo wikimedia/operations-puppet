@@ -83,7 +83,6 @@ class VarnishLogProcessor:
 
     def flush_stats(self):
         """Flush metrics to standard out or statsd server."""
-        print 'Flush'
         buf = io.BytesIO()
         while self.stats:
             key, value = self.stats.popitem()
