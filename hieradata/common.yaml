@@ -352,6 +352,7 @@ confluent_brokers:
   - kafka1012
   - kafka1013
   - kafka1014
+  - kafka1018
   - kafka1022
 
 kafka_clusters:
