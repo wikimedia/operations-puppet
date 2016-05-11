@@ -71,8 +71,9 @@
 
     /usr/share/mime/** r,
 
-    /etc/ImageMagick/** r,
+    <%= @imagemagick_dir %>/** r,
     /usr/share/ImageMagick*/** r,
+
     /usr/lib/x86_64-linux-gnu/ImageMagick*/** rm,
 
     # I think it needs this for glibc
