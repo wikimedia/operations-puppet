@@ -31,7 +31,6 @@ server {
 	location / {
 		proxy_pass http://local_fe_<%= @basename %>;
 		proxy_http_version 1.1;
-		proxy_ignore_client_abort on;
 <% if @keepalives_per_worker.to_i > 0 -%>
 		proxy_set_header Connection "";
 <% end -%>
