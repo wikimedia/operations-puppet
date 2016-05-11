@@ -134,7 +134,8 @@ class graphite::web(
     cron { 'update_graphite_index':
         command => '/usr/local/sbin/graphite-index',
         user    => 'www-data',
-        hour    => '*/5',
+        hour    => '*',
+        minute  => '*/5',
         require => File['/usr/local/sbin/graphite-index'],
     }
 
