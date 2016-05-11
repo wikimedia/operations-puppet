@@ -47,7 +47,7 @@ class mw_rc_irc::ircserver {
         file { '/etc/systemd/system/ircd.service':
             owner  => 'root',
             group  => 'root',
-            mode   => '0555',
+            mode   => '0444',
             source => 'puppet:///modules/mw_rc_irc/systemd/ircd.service',
         }
 
