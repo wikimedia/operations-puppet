@@ -71,8 +71,14 @@
 
     /usr/share/mime/** r,
 
+    <% if scope.function_os_version(['debian >= jessie']) %>
+    /etc/ImageMagick-6/** r,
+    /usr/share/ImageMagick-6/** r,
+    <% else %>
     /etc/ImageMagick/** r,
     /usr/share/ImageMagick*/** r,
+    <% end %>
+
     /usr/lib/x86_64-linux-gnu/ImageMagick*/** rm,
 
     # I think it needs this for glibc
