@@ -1,4 +1,3 @@
 debdeploy::grains:
   debdeploy-cp-codfw-misc:
     value: standard
-varnish_version4: true
