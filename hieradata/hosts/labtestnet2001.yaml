@@ -1,4 +1,3 @@
-do_paging: false
 debdeploy::grains:
   debdeploy-labtest:
     value: standard
