@@ -76,4 +76,15 @@ class base::sysctl {
         },
         priority => 60,
     }
+
+    # unprivileged bpf is a feature introduced in Linux 4.4: https://lwn.net/Articles/660331/
+    # We don't need it and it widens the attacks surface for local privilege escalation significantly,
+    # so we're disabling it by enabling kernel.unprivileged_bpf_disabled to
+    if ($kernelversion >= "4.4") {
+        sysctl::parameters { 'disable_unprivileged_bpf':
+            values => {
+            'kernel.unprivileged_bpf_disabled' => '1',
+            },
+        }
+    }
 }
