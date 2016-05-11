@@ -9,6 +9,13 @@ class role::maps::server {
     include ::kartotherian
     include ::tilerator
 
+    # Not the right place for this, but let's check if it is working first and
+    # see how to integrate this cleanly in the cassandra module next
+    file { '/srv/cassandra':
+        owner => 'cassandra',
+        group => 'cassandra',
+    }
+
     system::role { 'role::maps':
         description => 'A vector and raster map tile generation service',
     }
