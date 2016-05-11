@@ -4,7 +4,7 @@ groups:
     members: [ananthrk, avar, bsitu, cmcmahon, csalvia, diederik, edenhill, erik, gage,
               handrade, howief, jdouglas, jgonera, jsahleen, mah, maryana, mglaser, mvolz,
               mwalker, nimishg, rainman, ssmith, swalling, sumanah, werdna, rmoen,
-              johnflewis, marc, jkrauska, akumar, mnoushad, spage, tnegrin, msyed]
+              johnflewis, marc, jkrauska, akumar, mnoushad, spage, tnegrin, msyed, kleduc]
   wikidev:
     gid: 500
     description: container group for primary user groups.
@@ -72,7 +72,7 @@ groups:
     gid: 707
     description: these folks are allowed bastion _only_ access
     members: [jforrester, jmorgan, dfoy, junikowski, cwdent,
-              haithams, mhurd, dbrant, kleduc, bsitzmann, deskana, chedasaurus,
+              haithams, mhurd, dbrant, bsitzmann, deskana, chedasaurus,
               jzerebecki, declerambaul, ellery, dduvall, nettrom, mforns, jkatz,
               bmansurov, west1, jhernandez, smalyshev, tbayer, zfilipin,
               joal, thcipriani, daisy, ashwinpp, jhobs, tomasz, lpintscher,
@@ -115,7 +115,7 @@ groups:
     members: [awight, bmansurov, catrope, dartar, declerambaul, deskana,
               dduvall, ellery, ezachte, gilles, haithams, halfak,
               ironholds, jforrester, jkatz, jmorgan, jzerebecki, kaldari,
-              kleduc, leila, mattflaschen, milimetric, nettrom, bearloga,
+              leila, mattflaschen, milimetric, nettrom, bearloga,
               nuria, ori, otto, springle, yurik, yuvipanda,
               mforns, jdlrobson, dr0ptp4kt, tgr, marktraceur, jhernandez, joal,
               daisy, tomasz, mholloway-shell, madhuvishy, ebernhardson, niedzielski,
@@ -188,7 +188,7 @@ groups:
                  group.
     members: [haithams, ezachte, milimetric, dartar, yurik,
               halfak, awight, dr0ptp4kt, nuria, leila,
-              ironholds, kleduc, ellery, nettrom, mforns,
+              ironholds, ellery, nettrom, mforns,
               bmansurov, tbayer, joal, ashwinpp,
               madhuvishy, tjones, legoktm, dcausse, bearloga,
               dpatrick, atgomez, dstrine]
@@ -232,7 +232,7 @@ groups:
                  Those files are group readable by the analytics-privatedata-users group.
     members: [dartar, milimetric, yurik, dfoy, aude, jforrester,
               halfak, dr0ptp4kt, ironholds, bearloga, cwdent, elukey,
-              kleduc, nuria, haithams, otto, deskana, zhousquared,
+              nuria, haithams, otto, deskana, zhousquared,
               bsitzmann, dbrant, declerambaul, ellery, nettrom, leila,
               ezachte, mforns, reedy, west1, phuedx, awight, junikowski,
               joal, jamesur, akosiaris, jhobs, lpintscher, jkatz, madhuvishy, gpaumier,
@@ -1259,12 +1259,11 @@ users:
     ssh_keys: []
     uid: 1232
   kleduc:
-    ensure: present
+    ensure: absent
     gid: 500
     name: kleduc
     realname: Kevin Leduc
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDEN1wN2xn6tRzHBb0VrVMBE+ZQRvDFLyj2fPQpN2KQucMnXj8GlLzFJzXmW5Dwh0bAfhXUxAKudfAPLuRtnBz+gl/d17vmDRwgtqHIaMWWW8s9RFW3NmVj6wEA+KKV2A8MlHLaFUTL5egS7cAicK2EbEC4ej6+o4ONj/+Qo9h6niX8U0tMohTB/Ml6H08Oe9NJ6e3L8d/e9Acxmspc1id9bN8ek/MGwFGMYTC7WQHq8TVUgq5xpA6vbkct3sNON8ebHmaTR3ryPpr2Vpxz6h088eifDwRJMD5eSqFvLzt6iEdZEwNfqlbigGTwbbAUNBDNPNhzTZStDpa+T3OgIiOH
-        kleduc@wikimedia.org]
+    ssh_keys: []
     uid: 4906
   sumanah:
     ensure: absent
