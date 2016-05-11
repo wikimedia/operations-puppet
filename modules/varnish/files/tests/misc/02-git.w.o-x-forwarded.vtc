@@ -16,7 +16,7 @@ varnish v1 -arg "-p vcc_err_unref=false" -vcl+backend {
 } -start
 
 client c1 {
-    txreq -hdr "Host: git.wikimedia.org"
+    txreq -hdr "Host: git.wikimedia.org" -hdr "X-Forwarded-Proto: https"
     rxresp
     expect resp.status == 200
 } -run
