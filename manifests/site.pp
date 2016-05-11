@@ -426,9 +426,7 @@ node 'db1057.eqiad.wmnet' {
     class { 'role::mariadb::core':
         shard         => 's1',
         master        => true,
-        p_s           => 'on',
         binlog_format => 'STATEMENT',
-        ssl           => 'puppet-cert',
     }
     include base::firewall
 }
@@ -436,8 +434,6 @@ node 'db1057.eqiad.wmnet' {
 node /^db10(51|52|53|55|65|66|72|73)\.eqiad\.wmnet/ {
     class { 'role::mariadb::core':
         shard => 's1',
-        p_s   => 'on',
-        ssl   => 'puppet-cert',
     }
     include base::firewall
 }
@@ -448,9 +444,7 @@ node 'db2016.codfw.wmnet' {
     class { 'role::mariadb::core':
         shard         => 's1',
         master        => true,
-        p_s           => 'on',
         binlog_format => 'STATEMENT',
-        ssl           => 'puppet-cert',
     }
     include base::firewall
 }
@@ -458,9 +452,7 @@ node 'db2016.codfw.wmnet' {
 node /^db20(34|42|48|55|62|69|70)\.codfw\.wmnet/ {
     class { 'role::mariadb::core':
         shard         => 's1',
-        p_s           => 'on',
         binlog_format => 'ROW',
-        ssl           => 'puppet-cert',
     }
     include base::firewall
 }
@@ -471,9 +463,7 @@ node 'db1018.eqiad.wmnet' {
     class { 'role::mariadb::core':
         shard         => 's2',
         master        => true,
-        p_s           => 'on',
         binlog_format => 'STATEMENT',
-        ssl           => 'puppet-cert',
     }
     include base::firewall
 }
@@ -481,8 +471,6 @@ node 'db1018.eqiad.wmnet' {
 node /^db10(21|24|36|54|60|63|67|74|76)\.eqiad\.wmnet/ {
     class { 'role::mariadb::core':
         shard => 's2',
-        p_s   => 'on',
-        ssl   => 'puppet-cert',
     }
     include base::firewall
 }
@@ -493,7 +481,6 @@ node 'db2017.codfw.wmnet' {
     class { 'role::mariadb::core':
         shard         => 's2',
         master        => true,
-        p_s           => 'on',
         binlog_format => 'STATEMENT',
         ssl           => 'multiple-ca',
     }
@@ -503,9 +490,7 @@ node 'db2017.codfw.wmnet' {
 node /^db20(35|41|49|56|63|64)\.codfw\.wmnet/ {
     class { 'role::mariadb::core':
         shard         => 's2',
-        p_s           => 'on',
         binlog_format => 'ROW',
-        ssl           => 'puppet-cert',
     }
     include base::firewall
 }
@@ -517,9 +502,7 @@ node 'db1075.eqiad.wmnet' {
     class { 'role::mariadb::core':
         shard         => 's3',
         master        => true,
-        p_s           => 'on',
         binlog_format => 'STATEMENT',
-        ssl           => 'puppet-cert',
     }
     include base::firewall
 }
@@ -527,8 +510,6 @@ node 'db1075.eqiad.wmnet' {
 node /^db10(15|27|35|38|44|77|78)\.eqiad\.wmnet/ {
     class { 'role::mariadb::core':
         shard => 's3',
-        p_s   => 'on',
-        ssl   => 'puppet-cert',
     }
     include base::firewall
 }
@@ -539,9 +520,7 @@ node 'db2018.codfw.wmnet' {
     class { 'role::mariadb::core':
         shard         => 's3',
         master        => true,
-        p_s           => 'on',
         binlog_format => 'STATEMENT',
-        ssl           => 'puppet-cert',
     }
     include base::firewall
 }
@@ -549,9 +528,7 @@ node 'db2018.codfw.wmnet' {
 node /^db20(36|43|50|57)\.codfw\.wmnet/ {
     class { 'role::mariadb::core':
         shard         => 's3',
-        p_s           => 'on',
         binlog_format => 'ROW',
-        ssl           => 'puppet-cert',
     }
     include base::firewall
 }
@@ -562,9 +539,7 @@ node 'db1042.eqiad.wmnet' {
     class { 'role::mariadb::core':
         shard         => 's4',
         master        => true,
-        p_s           => 'on',
         binlog_format => 'STATEMENT',
-        ssl           => 'puppet-cert',
     }
     include base::firewall
 }
@@ -572,8 +547,6 @@ node 'db1042.eqiad.wmnet' {
 node /^db10(19|40|56|59|64|68)\.eqiad\.wmnet/ {
     class { 'role::mariadb::core':
         shard => 's4',
-        p_s   => 'on',
-        ssl   => 'puppet-cert',
     }
     include base::firewall
 }
@@ -584,9 +557,7 @@ node 'db2019.codfw.wmnet' {
     class { 'role::mariadb::core':
         shard         => 's4',
         master        => true,
-        p_s           => 'on',
         binlog_format => 'STATEMENT',
-        ssl           => 'puppet-cert',
     }
     include base::firewall
 }
@@ -594,9 +565,7 @@ node 'db2019.codfw.wmnet' {
 node /^db20(37|44|51|65)\.codfw\.wmnet/ {
     class { 'role::mariadb::core':
         shard         => 's4',
-        p_s           => 'on',
         binlog_format => 'ROW',
-        ssl           => 'puppet-cert',
     }
     include base::firewall
 }
@@ -607,9 +576,7 @@ node 'db1049.eqiad.wmnet' {
     class { 'role::mariadb::core':
         shard         => 's5',
         master        => true,
-        p_s           => 'on',
         binlog_format => 'STATEMENT',
-        ssl           => 'puppet-cert',
     }
     include base::firewall
 }
@@ -617,8 +584,6 @@ node 'db1049.eqiad.wmnet' {
 node /^db10(26|45|58|70|71)\.eqiad\.wmnet/ {
     class { 'role::mariadb::core':
         shard => 's5',
-        p_s   => 'on',
-        ssl   => 'puppet-cert',
     }
     include base::firewall
 }
@@ -629,9 +594,7 @@ node 'db2023.codfw.wmnet' {
     class { 'role::mariadb::core':
         shard         => 's5',
         master        => true,
-        p_s           => 'on',
         binlog_format => 'STATEMENT',
-        ssl           => 'puppet-cert',
     }
     include base::firewall
 }
@@ -639,9 +602,7 @@ node 'db2023.codfw.wmnet' {
 node /^db20(38|45|52|59|66)\.codfw\.wmnet/ {
     class { 'role::mariadb::core':
         shard         => 's5',
-        p_s           => 'on',
         binlog_format => 'ROW',
-        ssl           => 'puppet-cert',
     }
     include base::firewall
 }
@@ -652,9 +613,7 @@ node 'db1050.eqiad.wmnet' {
     class { 'role::mariadb::core':
         shard         => 's6',
         master        => true,
-        p_s           => 'on',
         binlog_format => 'STATEMENT',
-        ssl           => 'puppet-cert',
     }
     include base::firewall
 }
@@ -662,8 +621,6 @@ node 'db1050.eqiad.wmnet' {
 node /^db10(22|23|30|37|61)\.eqiad\.wmnet/ {
     class { 'role::mariadb::core':
         shard => 's6',
-        p_s   => 'on',
-        ssl   => 'puppet-cert',
     }
     include base::firewall
 }
@@ -674,9 +631,7 @@ node 'db2028.codfw.wmnet' {
     class { 'role::mariadb::core':
         shard         => 's6',
         master        => true,
-        p_s           => 'on',
         binlog_format => 'STATEMENT',
-        ssl           => 'puppet-cert',
     }
     include base::firewall
 }
@@ -684,9 +639,7 @@ node 'db2028.codfw.wmnet' {
 node /^db20(39|46|53|60|67)\.codfw\.wmnet/ {
     class { 'role::mariadb::core':
         shard         => 's6',
-        p_s           => 'on',
         binlog_format => 'ROW',
-        ssl           => 'puppet-cert',
     }
     include base::firewall
 }
@@ -697,9 +650,7 @@ node 'db1041.eqiad.wmnet' {
     class { 'role::mariadb::core':
         shard         => 's7',
         master        => true,
-        p_s           => 'on',
         binlog_format => 'STATEMENT',
-        ssl           => 'puppet-cert',
     }
     include base::firewall
 }
@@ -707,8 +658,6 @@ node 'db1041.eqiad.wmnet' {
 node /^db10(28|34|39|62)\.eqiad\.wmnet/ {
     class { 'role::mariadb::core':
         shard => 's7',
-        p_s   => 'on',
-        ssl   => 'puppet-cert',
     }
     include base::firewall
 }
@@ -719,9 +668,7 @@ node 'db2029.codfw.wmnet' {
     class { 'role::mariadb::core':
         shard         => 's7',
         master        => true,
-        p_s           => 'on',
         binlog_format => 'STATEMENT',
-        ssl           => 'puppet-cert',
     }
     include base::firewall
 }
@@ -729,9 +676,7 @@ node 'db2029.codfw.wmnet' {
 node /^db20(40|47|54|61|68)\.codfw\.wmnet/ {
     class { 'role::mariadb::core':
         shard         => 's7',
-        p_s           => 'on',
         binlog_format => 'ROW',
-        ssl           => 'puppet-cert',
     }
     include base::firewall
 }
@@ -742,9 +687,7 @@ node 'db1031.eqiad.wmnet' {
     class { 'role::mariadb::core':
         shard         => 'x1',
         master        => true,
-        p_s           => 'on',
         binlog_format => 'ROW',
-        ssl           => 'puppet-cert',
     }
     include base::firewall
 }
@@ -758,9 +701,7 @@ node 'db2033.codfw.wmnet' {
     class { 'role::mariadb::core':
         shard         => 'x1',
         master        => true,
-        p_s           => 'on',
         binlog_format => 'ROW',
-        ssl           => 'puppet-cert',
     }
     include base::firewall
 }
@@ -768,9 +709,7 @@ node 'db2033.codfw.wmnet' {
 node /^db20(08|09)\.codfw\.wmnet/ {
     class { 'role::mariadb::core':
         shard         => 'x1',
-        p_s           => 'on',
         binlog_format => 'ROW',
-        ssl           => 'puppet-cert',
     }
     include base::firewall
 }
@@ -1005,8 +944,8 @@ node /^es101[268]\.eqiad\.wmnet/ {
 node /es201[123]\.codfw\.wmnet/ {
     class { 'role::mariadb::core':
         shard         => 'es1',
-        p_s           => 'on',
         binlog_format => 'ROW',
+        ssl           => 'on',
     }
     include base::firewall
 }
@@ -1018,8 +957,8 @@ node 'es1015.eqiad.wmnet' {
     class { 'role::mariadb::core':
         shard         => 'es2',
         master        => true,
-        p_s           => 'on',
         binlog_format => 'ROW',
+        ssl           => 'on',
     }
     include base::firewall
 }
@@ -1027,8 +966,8 @@ node 'es1015.eqiad.wmnet' {
 node /^es101[13]\.eqiad\.wmnet/ {
     class { 'role::mariadb::core':
         shard         => 'es2',
-        p_s           => 'on',
         binlog_format => 'ROW',
+        ssl           => 'on',
     }
     include base::firewall
 }
@@ -1038,8 +977,8 @@ node 'es2015.codfw.wmnet' {
     class { 'role::mariadb::core':
         shard         => 'es2',
         master        => true,
-        p_s           => 'on',
         binlog_format => 'ROW',
+        ssl           => 'on',
     }
     include base::firewall
 }
@@ -1047,8 +986,8 @@ node 'es2015.codfw.wmnet' {
 node /es201[46]\.codfw\.wmnet/ {
     class { 'role::mariadb::core':
         shard         => 'es2',
-        p_s           => 'on',
         binlog_format => 'ROW',
+        ssl           => 'on',
     }
     include base::firewall
 }
@@ -1059,8 +998,8 @@ node 'es1019.eqiad.wmnet' {
     class { 'role::mariadb::core':
         shard         => 'es3',
         master        => true,
-        p_s           => 'on',
         binlog_format => 'ROW',
+        ssl           => 'on',
     }
     include base::firewall
 }
@@ -1069,8 +1008,8 @@ node 'es1019.eqiad.wmnet' {
 node /^es101[47]\.eqiad\.wmnet/ {
     class { 'role::mariadb::core':
         shard         => 'es3',
-        p_s           => 'on',
         binlog_format => 'ROW',
+        ssl           => 'on',
     }
     include base::firewall
 }
@@ -1080,8 +1019,8 @@ node 'es2018.codfw.wmnet' {
     class { 'role::mariadb::core':
         shard         => 'es3',
         master        => true,
-        p_s           => 'on',
         binlog_format => 'ROW',
+        ssl           => 'on',
     }
     include base::firewall
 }
@@ -1089,8 +1028,8 @@ node 'es2018.codfw.wmnet' {
 node /es201[79]\.codfw\.wmnet/ {
     class { 'role::mariadb::core':
         shard         => 'es3',
-        p_s           => 'on',
         binlog_format => 'ROW',
+        ssl           => 'on',
     }
     include base::firewall
 }
