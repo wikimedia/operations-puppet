@@ -56,6 +56,20 @@ class postgresql::server(
         require => Package["postgresql-${pgversion}"]
     }
 
+    # using an exec to create the complete hierarchy as intermediate
+    # directories might not exist
+    exec { 'postgresql-data-dir':
+        command => "/bin/mkdir -p ${datadir}",
+        creates => $datadir,
+    }
+    ->
+    file { $datadir:
+        ensure => directory,
+        owner  => 'postgres',
+        group  => 'postgres',
+        mode   => '0700',
+    }
+
     file { "/etc/postgresql/${pgversion}/main/postgresql.conf":
         ensure  => $ensure,
         content => template('postgresql/postgresql.conf.erb'),
