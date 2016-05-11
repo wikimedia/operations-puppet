@@ -39,6 +39,7 @@ define tlsproxy::localssl(
 ) {
     require tlsproxy::instance
 
+    $varnish_version4 = hiera('varnish_version4', false)
     $keepalives_per_worker = hiera('tlsproxy::localssl::keepalives_per_worker', 0)
 
     # Ensure that exactly one definition exists with default_server = true

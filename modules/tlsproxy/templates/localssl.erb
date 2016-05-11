@@ -30,8 +30,13 @@ server {
 
 	location / {
 		proxy_pass http://local_fe_<%= @basename %>;
-<% if @keepalives_per_worker.to_i > 0 -%>
+<% if @varnish_version4 -%>
 		proxy_http_version 1.1;
+<% end -%>
+<% if @keepalives_per_worker.to_i > 0 -%>
+<% if not @varnish_version4 -%>
+		proxy_http_version 1.1;
+<% end -%>
 		proxy_set_header Connection "";
 <% end -%>
 
