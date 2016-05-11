@@ -1,3 +1,4 @@
 debdeploy::grains:
   debdeploy-cp-eqiad-misc:
     value: standard
+varnish_version4: true
