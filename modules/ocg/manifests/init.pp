@@ -92,7 +92,7 @@ class ocg (
     if $::initsystem == 'systemd' {
         $ocg_provider = 'systemd'
         $ocg_require = '/etc/systemd/system/ocg.service'
-        $ocg_log_grp = 'systemd-journal'
+        $ocg_log_grp = 'adm'
 
         file { '/etc/systemd/system/ocg.service':
             ensure  => present,
