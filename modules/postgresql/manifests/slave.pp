@@ -30,6 +30,7 @@ class postgresql::slave(
     $includes=[],
     $pgversion='9.1',
     $ensure='present',
+    $basedir=undef,
     $datadir=undef
     ) {
 
@@ -37,6 +38,7 @@ class postgresql::slave(
         ensure    => $ensure,
         pgversion => $pgversion,
         includes  => [ $includes, 'slave.conf'],
+        basedir   => $basedir,
         datadir   => $datadir,
     }
 

@@ -32,8 +32,20 @@ class postgresql::server(
     $includes         = [],
     $listen_addresses = '*',
     $port             = '5432',
+    $basedir          = undef,
     $datadir          = undef,
 ) {
+
+    $final_basedir = $basedir ? {
+        undef   => '/var/lib/postgresql',
+        default => $basedir,
+    }
+
+    $final_datadir = $datadir ? {
+        undef   => "${final_basedir}/${pgversion}/main",
+        default => $datadir,
+    }
+
     package { [
         "postgresql-${pgversion}",
         "postgresql-${pgversion}-debversion",
@@ -45,6 +57,13 @@ class postgresql::server(
         ensure => $ensure,
     }
 
+    if $ensure == 'present' {
+        exec { 'postgres-init-db':
+            command => "/usr/lib/postgresql/${pgversion}/bin/pg_ctl initdb -D ${final_datadir}",
+            creates => "${final_datadir}/PG_VERSION",
+        }
+    }
+
     exec { 'pgreload':
         command     => "/usr/bin/pg_ctlcluster ${pgversion} main reload",
         user        => 'postgres',
@@ -54,6 +73,26 @@ class postgresql::server(
     service { 'postgresql':
         ensure  => ensure_service($ensure),
         require => Package["postgresql-${pgversion}"]
+    }
+
+    # There is no way to guess what directory hierarchy needs to be created if
+    # it is not the default. So we create it only if $datadir is undef.
+    if $datadir == undef {
+        file { [
+          $final_basedir,
+          "${final_basedir}/${pgversion}",
+        ]:
+            ensure => directory,
+            owner  => 'postgres',
+            group  => 'postgres',
+            mode   => '0755',
+        }
+        file { $datadir:
+            ensure => directory,
+            owner  => 'postgres',
+            group  => 'postgres',
+            mode   => '0700',
+        }
     }
 
     file { "/etc/postgresql/${pgversion}/main/postgresql.conf":

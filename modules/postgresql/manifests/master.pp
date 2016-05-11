@@ -38,6 +38,7 @@ class postgresql::master(
     $max_wal_senders=3,
     $checkpoint_segments=64,
     $wal_keep_segments=128,
+    $basedir=undef,
     $datadir=undef
     ) {
 
@@ -45,6 +46,7 @@ class postgresql::master(
         ensure    => $ensure,
         pgversion => $pgversion,
         includes  => [ $includes, 'master.conf'],
+        basedir   => $basedir,
         datadir   => $datadir,
     }
 
