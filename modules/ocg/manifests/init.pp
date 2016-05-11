@@ -49,6 +49,12 @@ class ocg (
         target => '/usr/bin/nodejs',
     }
 
+    if os_version('debian >= jessie || ubuntu >= wily') {
+        $imagemagick_dir = '/etc/ImageMagick-6'
+    } else {
+        $imagemagick_dir = '/etc/ImageMagick'
+    }
+
     include ::imagemagick::install
 
     package {
@@ -83,10 +89,12 @@ class ocg (
 
     if os_version('ubuntu >= trusty') {
         require_package('ttf-devanagari-fonts', 'ttf-malayalam-fonts', 'ttf-indic-fonts-core')
+
     }
 
     if os_version('debian >= jessie') {
         require_package('fonts-deva', 'fonts-mlym', 'fonts-beng', 'fonts-gujr', 'fonts-knda', 'fonts-orya', 'fonts-guru', 'fonts-taml', 'fonts-telu', 'fonts-gujr-extra')
+
     }
 
     if $::initsystem == 'systemd' {
