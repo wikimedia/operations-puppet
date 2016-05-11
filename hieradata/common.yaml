@@ -350,6 +350,7 @@ labs_metal:
 # Temporary config during 0.9 upgrade.
 confluent_brokers:
   - kafka1012
+  - kafka1013
   - kafka1022
 
 kafka_clusters:
