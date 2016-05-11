@@ -494,8 +494,7 @@ class role::mariadb::grants::wikitech {
 
 class role::mariadb::core(
     $shard,
-    $p_s           = 'off',
-    $ssl           = 'on',
+    $ssl           = 'puppet-cert',
     $binlog_format = 'MIXED',
     $master        = false,
     ) {
@@ -560,7 +559,7 @@ class role::mariadb::core(
         password      => $passwords::misc::scripts::mysql_root_pass,
         datadir       => '/srv/sqldata',
         tmpdir        => '/srv/tmp',
-        p_s           => $p_s,
+        p_s           => 'on',
         ssl           => $ssl,
         binlog_format => $binlog_format,
         semi_sync     => $semi_sync,
