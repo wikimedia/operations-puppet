@@ -356,6 +356,11 @@ confluent_brokers:
   - kafka1020
   - kafka1022
 
+# Temporary config during 0.9 upgrade.
+# Used to set inter.broker.protocol.version
+upgraded_brokers:
+  - kafka1012
+
 kafka_clusters:
   # This is the analytics Kafka cluster, named just 'eqiad' for
   # historical reasons.

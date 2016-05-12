@@ -57,11 +57,20 @@ class role::kafka::analytics::broker {
     # confluent puppet module.  This will only be here while we
     # perform the upgrade 1 broker at at ime.
     $confluent_brokers = hiera('confluent_brokers', [])
+    $upgraded_brokers = hiera('upgraded_brokers', [])
+
+    if $::hostname in $upgraded_brokers {
+        $inter_broker_protocol_version = undef
+    }
+    else {
+        $inter_broker_protocol_version = '0.8.2.X'
+    }
+
     if $::hostname in $confluent_brokers {
         class { '::confluent::kafka::broker':
 
             # NOTE: This will be removed once all brokers are on 0.9
-            inter_broker_protocol_version   => '0.8.2.X',
+            inter_broker_protocol_version   => $inter_broker_protocol_version,
 
             log_dirs                        => $log_dirs,
             brokers                         => $config['brokers']['hash'],
