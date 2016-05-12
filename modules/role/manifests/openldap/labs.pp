@@ -4,7 +4,8 @@ class role::openldap::labs {
     include passwords::openldap::labs
     include base::firewall
 
-    $ldap_labs_hostname = hiera('ldap_labs_hostname')
+    $ldapconfig = hiera_hash('labsldapconfig', {})
+    $ldap_labs_hostname = $ldapconfig['hostname']
 
     system::role { 'role::openldap::labs':
         description => 'LDAP servers for labs (based on OpenLDAP)'
