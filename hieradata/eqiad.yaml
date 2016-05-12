@@ -155,7 +155,9 @@ designateconfig:
 labs_baremetal_servers:
   - '10.64.20.12'
 
-ldap_labs_hostname: ldap-labs.eqiad.wikimedia.org
+labsldapconfig:
+  hostname: ldap-labs.eqiad.wikimedia.org
+  secondary_hostname: ldap-labs.codfw.wikimedia.org
 
 # Configure regular backups of the analytics-meta MySQL instance
 # in the Analytics Cluster to back up via rsync to
