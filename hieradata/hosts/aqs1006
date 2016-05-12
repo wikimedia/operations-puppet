@@ -1,0 +1,26 @@
+# Analytics Query Service - Testing node
+
+cassandra::seeds:
+    - aqs1004.eqiad.wmnet
+    - aqs1005.eqiad.wmnet
+    - aqs1006.eqiad.wmnet
+
+cassandra::instances:
+  a:
+    jmx_port: 7189
+    listen_address: 10.64.48.148 #aqs1006-a.eqiad.wmnet
+    rpc_address: 10.64.48.148
+    rpc_interface: eth0
+  b:
+    jmx_port: 7190
+    listen_address: 10.64.48.149 #aqs1006-b.eqiad.wmnet
+    rpc_address: 10.64.48.149
+    rpc_interface: eth0
+
+#
+# AQS service
+#
+aqs::seeds:
+    - aqs1004.eqiad.wmnet
+    - aqs1005.eqiad.wmnet
+    - aqs1006.eqiad.wmnet
