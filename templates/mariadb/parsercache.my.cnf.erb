@@ -61,7 +61,9 @@ use_stat_tables                = preferably
 sync_binlog                    = 0
 binlog_cache_size              = 1M
 max_binlog_size                = 1000M
-binlog_format                  = MIXED
+# statement-based replication and not row because performance and data
+# integrity problems should be similar, but it allows async dual masters
+binlog_format                  = STATEMENT
 expire_logs_days               = 1
 slave_transaction_retries      = 4294967295
 sql-mode                       = IGNORE_BAD_TABLE_OPTIONS
