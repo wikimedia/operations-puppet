@@ -32,6 +32,11 @@ class role::memcached {
         $extended_options = [
             'slab_reassign',
         ]
+    } elsif $::hostname == 'mc1007' {
+        $growth_factor    = 1.15
+        $extended_options = [
+            'slab_reassign',
+        ]
     } elsif $::hostname == 'mc2010' {
         $growth_factor    = 1.05
         $extended_options = [
