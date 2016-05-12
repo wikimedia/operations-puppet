@@ -3,7 +3,7 @@
 
 cluster carbon-cache
   carbon_ch replication 1
-  <% @c_relay_settings['carbon-cache'].each do |b| -%>
+  <% @c_relay_settings['carbon-cache'].sort.each do |b| -%>
       <%= b %>
   <% end -%>
   ;

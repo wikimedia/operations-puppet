@@ -1,13 +1,13 @@
-<% @c_relay_settings['forward_clusters'].each do |name, endpoints| -%>
+<% @c_relay_settings['forward_clusters'].sort.each do |name, endpoints| -%>
 cluster <%= name %>
   forward
-    <% endpoints.each do |e| -%>
+    <% endpoints.sort.each do |e| -%>
       <%= e %>
     <% end -%>
   ;
 <% end -%>
 
-<% @c_relay_settings['cluster_tap'].each do |tap| -%>
+<% @c_relay_settings['cluster_tap'].sort.each do |tap| -%>
 # duplicate (tap) this metric to <%= tap[1] %>
 match <%= tap[0] %>
   send to <%= tap[1] %>
@@ -15,7 +15,7 @@ match <%= tap[0] %>
 
 <% end -%>
 
-<% @c_relay_settings['cluster_routes'].each do |route| -%>
+<% @c_relay_settings['cluster_routes'].sort.each do |route| -%>
 # route this metric to <%= route[1] %>, don't send to backends
 match <%= route[0] %>
   send to <%= route[1] %>

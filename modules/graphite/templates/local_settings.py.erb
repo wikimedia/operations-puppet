@@ -49,7 +49,7 @@ DATABASES = {
 ## Carbon
 
 <%- if @cluster_servers -%>
-CLUSTER_SERVERS = [<%= @cluster_servers.map { |s| "\"#{s}\"" }.join(', ') %>]
+CLUSTER_SERVERS = [<%= @cluster_servers.map { |s| "\"#{s}\"" }.sort.join(', ') %>]
 <%- end -%>
 
 <%- carbon_settings = scope.lookupvar('::graphite::carbon_settings'); if carbon_settings.key? 'relay' -%>
