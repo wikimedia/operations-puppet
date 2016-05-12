@@ -110,6 +110,11 @@ sed -i "s/_MASTER_/${master}/g" /etc/puppet/puppet.conf
 sed -i "s%^uri.*%uri             ${ldaphosts}%g" /etc/ldap.conf
 sed -i "s%^URI.*%URI             ${ldaphosts}%g" /etc/ldap/ldap.conf
 
+# The labtest ldap password is the prod password prepended with lt-
+sed -i "s%^bindpw\s*%bindpw          lt-%g" /etc/ldap.conf
+sed -i "s%^bindpw\s*%BINDPW          lt-%g" /etc/ldap/ldap.conf
+sed -i "s%^bindpw\s*%bindpw lt-%g" /etc/nslcd.conf
+
 # Set resolv.conf and stop anyone else from messing with it.
 echo "" > /sbin/resolvconf
 mkdir /etc/dhcp/dhclient-enter-hooks.d
