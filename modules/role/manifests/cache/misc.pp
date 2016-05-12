@@ -244,6 +244,14 @@ class role::cache::misc {
         'pass_random'      => true,
     }
 
+    # We're testing file vs persistent as a factor in some varnish4 bugs observed...
+    $storage_parts = $::role::cache::2layer::storage_parts
+    $storage_size = $::role::cache::2layer::storage_size
+    $misc_storage_args = join([
+        "-s main1=file,/srv/${storage_parts[0]}/varnish.main1,${storage_size}G",
+        "-s main2=file,/srv/${storage_parts[1]}/varnish.main2,${storage_size}G",
+    ], ' ')
+
     role::cache::instances { 'misc':
         fe_mem_gb        => ceiling(0.5 * $::memorysize_mb / 1024.0),
         runtime_params   => [],
@@ -256,7 +264,7 @@ class role::cache::misc {
         be_vcl_config    => $common_vcl_config,
         fe_extra_vcl     => ['misc-common'],
         be_extra_vcl     => ['misc-common'],
-        be_storage       => $::role::cache::2layer::persistent_storage_args,
+        be_storage       => $misc_storage_args,
         fe_cache_be_opts => $fe_cache_be_opts,
         be_cache_be_opts => $be_cache_be_opts,
         cluster_nodes    => hiera('cache::misc::nodes'),
