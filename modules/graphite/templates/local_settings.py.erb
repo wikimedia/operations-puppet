@@ -49,7 +49,12 @@ DATABASES = {
 ## Carbon
 
 <%- if @cluster_servers -%>
-CLUSTER_SERVERS = [<%= @cluster_servers.map { |s| "\"#{s}\"" }.sort.join(', ') %>]
+  <% non_local_servers = @cluster_servers.length > 1 \
+         ? @cluster_servers.select { |x| x != @hostname \
+                                         && x != @fqdn \
+                                         && x != @ipaddress } \
+         : @cluster_servers %>
+CLUSTER_SERVERS = [<%= non_local_servers.map { |s| "\"#{s}\"" }.sort.join(', ') %>]
 <%- end -%>
 
 <%- carbon_settings = scope.lookupvar('::graphite::carbon_settings'); if carbon_settings.key? 'relay' -%>
