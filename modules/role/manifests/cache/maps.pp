@@ -56,7 +56,7 @@ class role::cache::maps {
     }
 
     role::cache::instances { 'maps':
-        fe_mem_gb        => 12,
+        fe_mem_gb        => ceiling(0.5 * $::memorysize_mb / 1024.0),
         runtime_params   => ['default_ttl=86400'],
         app_directors    => $app_directors,
         app_be_opts      => [],
