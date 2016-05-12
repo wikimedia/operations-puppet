@@ -109,7 +109,7 @@ class role::grafana {
     # This will be doable via a preference in the future. See:
     # <https://groups.io/org/groupsio/grafana/thread/home_dashboard_in_grafana_2_0/43631?threado=120>
     file { '/usr/share/grafana/public/dashboards/home.json':
-        source  => 'puppet:///files/grafana/home.json',
+        source  => 'puppet:///modules/grafana/home.json',
         require => Package['grafana'],
         notify  => Service['grafana-server'],
     }
@@ -133,7 +133,7 @@ class role::grafana {
     require_package('python-sqlalchemy')
 
     file { '/usr/local/sbin/grafana_create_anon_user':
-        source  => 'puppet:///files/grafana/grafana_create_anon_user',
+        source  => 'puppet:///modules/grafana/grafana_create_anon_user',
         owner   => 'root',
         group   => 'root',
         mode    => '0555',
@@ -179,10 +179,10 @@ class role::grafana {
     }
 
     grafana::dashboard { 'varnish-http-errors':
-        source => 'puppet:///files/grafana/dashboards/varnish-http-errors',
+        source => 'puppet:///modules/grafana/dashboards/varnish-http-errors',
     }
 
     grafana::dashboard { 'swift':
-        source => 'puppet:///files/grafana/dashboards/swift',
+        source => 'puppet:///modules/grafana/dashboards/swift',
     }
 }
