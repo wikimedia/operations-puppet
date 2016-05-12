@@ -1222,11 +1222,24 @@ node 'labtestcontrol2001.wikimedia.org' {
     role labs::openstack::nova::controller,
           labs::puppetmaster
 
-    #role labs::openstack::nova::controller,
-    #      salt::masters::labs,
-    #      deployment::salt_masters,
-    #include base::firewall
-    #include ldap::role::client::labs
+    # Labtest is weird; the mysql server is on labtestcontrol2001.  So
+    #  we need some special fw rules to allow that
+    $designate = ipresolve(hiera('labs_designate_hostname'),4)
+    $horizon = ipresolve(hiera('labs_horizon_host'),4)
+    $wikitech = ipresolve(hiera('labs_osm_host'),4)
+    $fwrules = {
+        mysql_designate => {
+            rule  => "saddr ${designate} proto tcp dport (3306) ACCEPT;",
+        },
+        mysql_horizon => {
+            rule  => "saddr ${horizon} proto tcp dport (3306) ACCEPT;",
+        },
+        mysql_wikitech => {
+            rule  => "saddr ${wikitech} proto tcp dport (3306) ACCEPT;",
+        },
+    }
+    create_resources (ferm::rule, $fwrules)
+
 }
 
 node 'labtestservices2001.wikimedia.org' {
