@@ -23,6 +23,7 @@ spec:
           options:
             uri: <%= @zk_uri %>
             dc_name: <%= scope.lookupvar('::site') %>
+            concurrency: <%= @concurrency %>
             templates:
               summary_rerender:
                 topic: resource_change
