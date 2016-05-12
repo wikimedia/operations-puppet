@@ -4,7 +4,7 @@ TAG="<%= @tag %>"
 OUTPUTPATH="<%= @output_base_path %>/<%= @tag %>"
 
 cd /srv/build/kubernetes
-git fetch
+git fetch --tags
 git checkout ${TAG}
 
 # KUBE_FASTBUILD will make it build only amd64 binaries, which is what we want
