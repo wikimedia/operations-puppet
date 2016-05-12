@@ -17,8 +17,6 @@ class ldap::role::config::labs {
         'domain'               => 'wikimedia',
         'proxyagent'           => "cn=proxyagent,ou=profile,${basedn}",
         'proxypass'            => $hieraldapconfig['proxypass'],
-        'writer_dn'            => "uid=novaadmin,ou=people,${basedn}",
-        'writer_pass'          => $passwords::ldap::labs::writerpass,
         'script_user_dn'       => "cn=scriptuser,ou=profile,${basedn}",
         'script_user_pass'     => $hieraldapconfig['script_user_pass'],
         'user_id_attribute'    => 'uid',
