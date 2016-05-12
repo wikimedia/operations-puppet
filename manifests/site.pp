@@ -482,7 +482,6 @@ node 'db2017.codfw.wmnet' {
         shard         => 's2',
         master        => true,
         binlog_format => 'STATEMENT',
-        ssl           => 'multiple-ca',
     }
     include base::firewall
 }
