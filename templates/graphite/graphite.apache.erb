@@ -12,6 +12,7 @@
         # uWSGI reverse-proxy
         uWSGIsocket /run/uwsgi/graphite-web.sock
         uWSGIForceWSGIScheme https
+        uWSGImaxVars 192
         SetHandler uwsgi-handler
     </Location>
 
