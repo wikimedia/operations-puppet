@@ -5,19 +5,15 @@ class role::labs::puppetmaster {
     include network::constants
     include ldap::role::config::labs
 
-    $labs_ranges = [
-        $network::constants::all_network_subnets['production']['eqiad']['private']['labs-instances1-a-eqiad']['ipv4'],
-        $network::constants::all_network_subnets['production']['eqiad']['private']['labs-instances1-b-eqiad']['ipv4'],
-        $network::constants::all_network_subnets['production']['eqiad']['private']['labs-instances1-c-eqiad']['ipv4'],
-        $network::constants::all_network_subnets['production']['eqiad']['private']['labs-instances1-d-eqiad']['ipv4'],
-    ]
     $labs_metal = hiera('labs_baremetal_servers', [])
     $ldapconfig = $ldap::role::config::labs::ldapconfig
     $basedn = $ldapconfig['basedn']
+    $novaconfig = hiera_hash('novaconfig', {}
+    $labs_instance_range = $novaconfig['fixed_range']
 
 
     # Only allow puppet access from the instances
-    $allow_from = flatten([$labs_ranges, '208.80.154.14', $labs_metal])
+    $allow_from = flatten([$labs_instance_range, '208.80.154.14', $labs_metal])
 
     class { '::puppetmaster':
         server_name    => hiera('labs_puppet_master'),
