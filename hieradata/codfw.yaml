@@ -42,7 +42,9 @@ labsdnsconfig:
   recursor: 'labs-recursor0.wikimedia.org'
   recursor_secondary: 'labs-recursor1.wikimedia.org'
 
-ldap_labs_hostname: ldap-labs.codfw.wikimedia.org
+labsldapconfig:
+  hostname: ldap-labs.codfw.wikimedia.org
+  secondary_hostname: ldap-labs.eqiad.wikimedia.org
 
 etcd_hosts:
     - conf1001.eqiad.wmnet
