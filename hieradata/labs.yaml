@@ -134,3 +134,7 @@ cdh::hadoop::datanode_mounts:
 # Default to creating home directories for all
 # users in the current Labs Project.
 cdh::hadoop::users::groups: project-%{::labsproject}
+
+labsldapconfig:
+  hostname: ldap-labs.eqiad.wikimedia.org
+  secondary_hostname: ldap-labs.codfw.wikimedia.org
