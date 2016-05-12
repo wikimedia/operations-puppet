@@ -231,8 +231,8 @@ host aqs1005 {
 host aqs1006 {
     hardware ethernet 1c:98:ec:2a:c4:9c;
     fixed-address aqs1006.eqiad.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
+    option pxelinux.pathprefix "jessie-installer/";
+    filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host antimony {
