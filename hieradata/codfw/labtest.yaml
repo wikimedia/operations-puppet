@@ -28,7 +28,9 @@ labs_glance_controller: &labsglancecontroller "labtestcontrol2001.wikimedia.org"
 labs_puppet_master: &labspuppetmaster "labtestcontrol2001.wikimedia.org"
 labs_keystone_host: &labskeystonehost "labtestcontrol2001.wikimedia.org"
 
-ldap_labs_hostname: labtestservices2001.wikimedia.org
+labsldapconfig:
+  hostname: labtestservices2001.wikimedia.org
+  secondary_hostname: labtestservices2001.wikimedia.org
 
 labsdnsconfig:
   host: 'labtest-ns0.wikimedia.org'

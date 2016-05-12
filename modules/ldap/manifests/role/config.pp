@@ -1,11 +1,8 @@
 class ldap::role::config::labs {
-    include passwords::ldap::labs
+    $hieraldapconfig = hiera_hash('labsldapconfig', {})
 
     $basedn = 'dc=wikimedia,dc=org'
-    $servernames = $::site ? {
-        'eqiad' => [ 'ldap-labs.eqiad.wikimedia.org', 'ldap-labs.codfw.wikimedia.org' ],
-        'codfw' => [ 'ldap-labs.codfw.wikimedia.org', 'ldap-labs.eqiad.wikimedia.org' ],
-    }
+    $servernames = [ $hieraldapconfig['hostname'], $hieraldapconfig['secondary_hostname'] ]
     $sudobasedn = $::realm ? {
         'labtest'       => "ou=sudoers,cn=${::labsproject},ou=projects,${basedn}",
         'labs'       => "ou=sudoers,cn=${::labsproject},ou=projects,${basedn}",
@@ -19,11 +16,10 @@ class ldap::role::config::labs {
         'users_rdn'            => 'ou=people',
         'domain'               => 'wikimedia',
         'proxyagent'           => "cn=proxyagent,ou=profile,${basedn}",
-        'proxypass'            => $passwords::ldap::labs::proxypass,
+        'proxypass'            => $hieraldapconfig['proxypass'],
         'writer_dn'            => "uid=novaadmin,ou=people,${basedn}",
-        'writer_pass'          => $passwords::ldap::labs::writerpass,
         'script_user_dn'       => "cn=scriptuser,ou=profile,${basedn}",
-        'script_user_pass'     => $passwords::ldap::labs::script_user_pass,
+        'script_user_pass'     => $hieraldapconfig['script_user_pass'],
         'user_id_attribute'    => 'uid',
         'tenant_id_attribute'  => 'cn',
         'ca'                   => 'ca-certificates.crt',

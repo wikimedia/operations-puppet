@@ -14,14 +14,14 @@ class labstore::account_services {
     # actively serving files
     $is_active = (hiera('active_labstore_host') == $::hostname)
 
-    include passwords::ldap::labs
+    $ldapconfig = hiera_hash('labsldapconfig', {})
     include passwords::mysql::labsdb
 
     $creds = {
         'ldap' => {
             'host'     => 'ldap-labs.eqiad.wikimedia.org',
             'username' => 'cn=proxyagent,ou=profile,dc=wikimedia,dc=org',
-            'password' => $::passwords::ldap::labs::proxypass,
+            'password' => $ldapconfig['proxypass'],
         },
         'mysql' => {
             'hosts' => [

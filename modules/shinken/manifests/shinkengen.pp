@@ -16,8 +16,8 @@ class shinken::shinkengen(
 ){
 
     include shinken
-    include passwords::ldap::labs
-    $ldap_pass = $passwords::ldap::labs::proxypass
+    $ldapconfig = hiera_hash('labsldapconfig', {})
+    $ldap_pass = $ldapconfig['proxypass']
 
     package { [
         'python3-ldap3', # Custom package of https://pypi.python.org/pypi/python3-ldap
