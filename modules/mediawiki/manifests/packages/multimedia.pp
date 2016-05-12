@@ -16,6 +16,7 @@ class mediawiki::packages::multimedia {
         'netpbm',
         'oggvideotools',
         'libimage-exiftool-perl',
+        'firejail',
     ]:
         ensure => present,
     }
