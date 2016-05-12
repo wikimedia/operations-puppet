@@ -136,6 +136,14 @@ node /aqs100[123]\.eqiad\.wmnet/ {
     role aqs
 }
 
+# Analytics Query Service - Testing
+# These nodes are not part of the official AQS cluster now because we are
+# currently testing Cassandra configurations on top of them. Hiera variables
+# have been placed for each host to override the role's default values.
+node /aqs100[456]\.eqiad\.wmnet/ {
+    role aqs
+}
+
 
 # git.wikimedia.org
 node 'antimony.wikimedia.org' {
