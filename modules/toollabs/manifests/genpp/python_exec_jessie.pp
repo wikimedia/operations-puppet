@@ -97,6 +97,8 @@ class toollabs::genpp::python_exec_jessie {
         'python3-pyinotify',    # 0.9.4
         'python-requests',      # 2.4.3
         'python3-requests',     # 2.4.3
+        'python-requests-oauthlib', # 0.4.0
+        'python3-requests-oauthlib', # 0.4.0
         'python-rsvg',          # 2.32.0
         # python3-rsvg is not available
         'python-scipy',         # 0.14.0

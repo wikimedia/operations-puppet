@@ -44,6 +44,7 @@ environ_packages = {
         'numpy',                # T131675
         'nose',
         'opencv',
+        'requests-oauthlib',    # T130529
         'pandas',               # T131675
         'pil',                  # T108210
         'problem-report',

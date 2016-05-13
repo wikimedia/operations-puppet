@@ -97,6 +97,8 @@ class toollabs::genpp::python_exec_precise {
         # python3-pyinotify is not available
         'python-requests',      # 0.8.2
         # python3-requests is not available
+        # python-requests-oauthlib is not available
+        # python3-requests-oauthlib is not available
         'python-rsvg',          # 2.32.0
         # python3-rsvg is not available
         'python-scipy',         # 0.9.0
