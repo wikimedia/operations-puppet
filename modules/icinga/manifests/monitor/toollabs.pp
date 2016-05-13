@@ -99,7 +99,7 @@ class icinga::monitor::toollabs {
 
     monitoring::service { 'tools-checker-toolscron':
         description   => 'check mtime mod from tools cron job',
-        check_command => "${checker}!/nfs/showmount!OK",
+        check_command => "${checker}!/toolscron!OK",
         host          => $test_entry_host,
     }
 
