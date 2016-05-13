@@ -2203,7 +2203,7 @@ host elastic1038 {
 }
 
 host elastic1039 {
-    hardware ethernet 14:02:EC:AE:3C;
+    hardware ethernet 14:02:EC:06:AE:3C;
     fixed-address elastic1039.eqiad.wmnet;
 }
 
