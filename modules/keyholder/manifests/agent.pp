@@ -40,8 +40,15 @@ define keyholder::agent(
     require ::keyholder
     require ::keyholder::monitoring
 
+    # Always add ops in the mix
+    if is_array($trusted_group) {
+        $real_trusted_groups = concat($trusted_group, 'ops')
+    } else {
+        $real_trusted_groups = [$trusted_group, 'ops']
+    }
+
     file { "/etc/keyholder-auth.d/${name}.yml":
-        content => inline_template("---\n<% [*@trusted_group].each do |g| %><%= g %>: ['<%= @key_fingerprint %>']\n<% end %>"),
+        content => inline_template("---\n<% [*@real_trusted_groups].each do |g| %><%= g %>: ['<%= @key_fingerprint %>']\n<% end %>"),
         owner   => 'root',
         group   => 'keyholder',
         mode    => '0440',
