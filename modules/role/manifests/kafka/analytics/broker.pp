@@ -81,7 +81,7 @@ class role::kafka::analytics::broker {
             # I don't trust auto.leader.rebalance :)
             auto_leader_rebalance_enable    => false,
 
-            default_replication_factor      => 3,
+            default_replication_factor      => min(3, $config['brokers']['size']),
 
             # The default for log segment bytes has changed in the puppet
             # module / packaging.  536870912 is what we have always used on
