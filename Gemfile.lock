@@ -61,6 +61,7 @@ PLATFORMS
 
 DEPENDENCIES
   puppet (~> 3.4.3)
+  puppet-lint (= 1.1.0)
   puppetlabs_spec_helper (< 2.0.0)
   rake (~> 10.4, >= 10.4.2)
   rspec-puppet (~> 2.3.2)
