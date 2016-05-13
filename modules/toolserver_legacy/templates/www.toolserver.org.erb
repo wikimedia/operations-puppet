@@ -10,6 +10,8 @@
     ServerAlias toolserver.org
     ServerAlias stable.toolserver.org
 
+    Include /etc/acme/challenge-apache.conf
+
     DocumentRoot /does/not/exist
     <Directory />
         Options FollowSymLinks
@@ -36,9 +38,9 @@
     ServerName www.toolserver.org
 
     SSLEngine on
-    SSLCertificateFile /etc/ssl/localcerts/toolserver.org.crt
-    SSLCertificateChainFile /etc/ssl/localcerts/toolserver.org.chain.crt
-    SSLCertificateKeyFile /etc/ssl/private/toolserver.org.key
+    SSLCertificateFile /etc/acme/cert/toolserver.crt
+    SSLCertificateChainFile /etc/acme/cert/toolserver.chain.crt
+    SSLCertificateKeyFile /etc/acme/key/toolserver.key
     <%= @ssl_settings.join("\n") %>
 
     DocumentRoot /var/www/html
