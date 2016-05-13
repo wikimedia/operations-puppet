@@ -33,14 +33,7 @@ sub cluster_be_recv {
 }
 
 sub cluster_be_hash { }
-
-sub cluster_be_hit {
-    # XXX debugging v4 CL:0 issues
-    if (obj.ttl < 0s) {
-        return (miss);
-    }
-}
-
+sub cluster_be_hit { }
 sub cluster_be_miss { }
 sub cluster_be_pass { }
 
