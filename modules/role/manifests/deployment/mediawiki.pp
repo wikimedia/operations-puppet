@@ -17,7 +17,7 @@ class role::deployment::mediawiki(
     require ::keyholder::monitoring
 
     keyholder::agent { $keyholder_user:
-        trusted_group   => $keyholder_group,
+        trusted_groups  => $keyholder_group,
         key_fingerprint => $key_fingerprint,
     }
 
