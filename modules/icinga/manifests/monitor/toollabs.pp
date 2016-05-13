@@ -38,6 +38,7 @@ class icinga::monitor::toollabs {
     # complex checks via a wsgi app running on a cluster for this purpose.
     # these checks are used to track uptime and availability via
     # catchpoint as well as for general alerting and administration.
+    # Grid contexual checks run as the 'toolschecker' user
     $test_entry_host = 'checker.tools.wmflabs.org'
     @monitoring::host { $test_entry_host:
         host_fqdn => $test_entry_host,
@@ -97,9 +98,11 @@ class icinga::monitor::toollabs {
         host          => $test_entry_host,
     }
 
+    # become toolschecker
+    # crontab -e (from a bastion)
     monitoring::service { 'tools-checker-toolscron':
         description   => 'check mtime mod from tools cron job',
-        check_command => "${checker}!/nfs/showmount!OK",
+        check_command => "${checker}!/toolscron!OK",
         host          => $test_entry_host,
     }
 
