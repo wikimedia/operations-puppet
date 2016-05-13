@@ -105,9 +105,10 @@ sub recv_fe_ip_processing {
 	}
 
 	if (client.ip !~ local_host) {
-		// only the local nginx TLS terminator should set this one at
-		// all - there are no other internal exceptions to that rule
+		// only the local nginx TLS terminator should set these at all -
+		// there are no other internal exceptions to that rule
 		unset req.http.X-Client-IP;
+		unset req.http.X-Connection-Properties;
 	}
 
 	if (req.http.X-Forwarded-For) {
