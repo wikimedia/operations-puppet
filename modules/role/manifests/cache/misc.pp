@@ -208,6 +208,13 @@ class role::cache::misc {
                 'analytics.wikimedia.org',
             ],
         },
+        'ununpentium' => { # rt.wikimedia.org
+            'dynamic'  => 'no',
+            'type'     => 'random',
+            'backends' => ['ununpentium.wikimedia.org'],
+            'be_opts'  => $app_def_be_opts,
+            'req_host' => 'rt.wikimedia.org',
+        },
         'mendelevium' => { # OTRS
             'dynamic'  => 'no',
             'type'     => 'random',
