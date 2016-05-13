@@ -94,6 +94,10 @@ class toollabs::bastion(
                 '%                          memory   /scripts',
                 '*:/usr/bin/perl5.18.2      cpu      /scripts',
                 '%                          memory   /scripts',
+                '*:/usr/bin/tclsh8.5        cpu      /scripts',
+                '%                          memory   /scripts',
+                '*:/usr/bin/tclsh8.6        cpu      /scripts',
+                '%                          memory   /scripts',
             ],
         }
 
