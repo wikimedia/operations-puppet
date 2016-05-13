@@ -11,11 +11,10 @@
 #   The name of the key file stored in puppet private
 #   Should exist prior to running a defined resource
 #
-# [*trusted_group*]
-#   The name or GID of the trusted user group with which the agent
+# [*trusted_groups*]
+#   An array of group names or GIDs of the trusted user groups with which the agent
 #   should be shared. It is the caller's responsibility to ensure
-#   the group exists. An array of group identifiers can also be provided
-#   to allow access by multiple groups.
+#   the groups exist.
 #
 # [*key_fingerprint*]
 #   Fingerprint of the public half of the private keyfile specified
@@ -31,8 +30,8 @@
 #  }
 #
 define keyholder::agent(
-    $trusted_group,
     $key_fingerprint,
+    $trusted_groups = ['ops'],
     $key_file = "${name}_rsa",
     $key_content = undef,
     $key_secret = undef,
@@ -40,8 +39,13 @@ define keyholder::agent(
     require ::keyholder
     require ::keyholder::monitoring
 
+    # Always add ops in the mix
+    if !('ops' in $trusted_groups) {
+        $real_trusted_groups = concat($trusted_groups, 'ops')
+    }
+
     file { "/etc/keyholder-auth.d/${name}.yml":
-        content => inline_template("---\n<% [*@trusted_group].each do |g| %><%= g %>: ['<%= @key_fingerprint %>']\n<% end %>"),
+        content => inline_template("---\n<% [*@real_trusted_groups].each do |g| %><%= g %>: ['<%= @key_fingerprint %>']\n<% end %>"),
         owner   => 'root',
         group   => 'keyholder',
         mode    => '0440',
