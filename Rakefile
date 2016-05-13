@@ -25,8 +25,22 @@
 # Continuous integration invokes 'bundle exec rake test'.
 
 require 'bundler/setup'
+require 'git'
 require 'puppet-lint/tasks/puppet-lint'
 require 'rubocop/rake_task'
+
+# Find files modified in HEAD
+def git_changed_in_head(file_exts=[])
+    g = Git.open('.')
+    diff = g.diff('HEAD^')
+    files = diff.name_status.select { |_, status| 'ACM'.include? status}.keys
+
+    if file_exts.empty?
+        files
+    else
+        files.select { |fname| fname.end_with?(*file_exts) }
+    end
+end
 
 RuboCop::RakeTask.new(:rubocop)
 
@@ -35,6 +49,11 @@ Rake::Task[:lint].clear
 PuppetLint::RakeTask.new :puppetlint do |config|
     config.fail_on_warnings = true  # be strict
     config.log_format = '%{path}:%{line} %{KIND} %{message} (%{check})'
+end
+PuppetLint::RakeTask.new :puppetlint_head do |config|
+    config.fail_on_warnings = true  # be strict
+    config.log_format = '%{path}:%{line} %{KIND} %{message} (%{check})'
+    config.pattern = git_changed_in_head ['.pp']
 end
 
 # Only care about color when using a tty.
@@ -60,10 +79,13 @@ end
 task :default => [:help]
 
 desc 'Run all build/tests commands (CI entry point)'
-task test: [:lint]
+task test: [:lint_head]
 
 desc 'Run all linting commands'
 task lint: [:rubocop, :puppetlint]
+
+desc 'Run all linting commands against HEAD'
+task lint_head: [:rubocop, :puppetlint_head]
 
 
 desc 'Show the help'
