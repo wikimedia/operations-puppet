@@ -35,6 +35,7 @@ private:
     gid: 52354
     mounts:
       scratch: true
+      dumps: true
   cvresearch:
     gid: 50118
     mounts:
