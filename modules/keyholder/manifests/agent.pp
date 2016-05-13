@@ -31,8 +31,8 @@
 #  }
 #
 define keyholder::agent(
-    $trusted_group,
     $key_fingerprint,
+    $trusted_group = [],
     $key_file = "${name}_rsa",
     $key_content = undef,
     $key_secret = undef,
@@ -40,8 +40,18 @@ define keyholder::agent(
     require ::keyholder
     require ::keyholder::monitoring
 
+    # Always add ops in the mix
+    if ! is_array($trusted_group) {
+        fail('trusted_group parameter should be an array')
+    }
+    if empty($trusted_group) {
+        $real_trusted_groups = ['ops']
+    } else {
+        $real_trusted_groups = concat($trusted_group, 'ops')
+    }
+
     file { "/etc/keyholder-auth.d/${name}.yml":
-        content => inline_template("---\n<% [*@trusted_group].each do |g| %><%= g %>: ['<%= @key_fingerprint %>']\n<% end %>"),
+        content => inline_template("---\n<% [*@real_trusted_groups].each do |g| %><%= g %>: ['<%= @key_fingerprint %>']\n<% end %>"),
         owner   => 'root',
         group   => 'keyholder',
         mode    => '0440',

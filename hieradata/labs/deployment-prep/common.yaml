@@ -112,7 +112,8 @@ mediawiki_memcached_servers:
     - 10.68.23.25:11211:1  # deployment-memc04
     - 10.68.23.49:11211:1  # deployment-memc05
 "varnish::packages::version": latest
-"keyholder::trusted_group": wikidev
+"keyholder::trusted_group":
+   - wikidev
 "base::environment::core_dump_pattern": '/data/project/cores/%{::instancename}-core.%h.%e.%p.%t'
 
 # T100509 Java7 on gallium does not support the hardned sshd MAC and KEX setup
@@ -203,16 +204,19 @@ mediawiki::web::sites::portal_dir: "portal-master"
 scap::server::keyholder_agents:
 
   phabricator:
-    trusted_group: project-%{::labsproject}
+    trusted_group:
+      - project-%{::labsproject}
     key_fingerprint: 39:b3:2c:a7:b2:80:65:ff:0c:97:e1:22:88:6c:59:10
     key_secret: phabricator/phab_deploy_private_key
 
   eventlogging:
-    trusted_group: project-%{::labsproject}
+    trusted_group:
+      - project-%{::labsproject}
     key_fingerprint: 02:9b:99:e2:f0:16:70:a3:d2:5a:e6:02:a3:73:0e:b0
 
   deploy-service:
-    trusted_group: deploy-service
+    trusted_group:
+      - deploy-service
     key_fingerprint: 6d:54:92:8b:39:10:f5:9b:84:40:36:ef:3c:9a:6d:d8
     key_file: servicedeploy_rsa
 
