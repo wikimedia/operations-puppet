@@ -18,7 +18,7 @@ num_workers: <%= @no_workers %>
 
 # Log error messages and gracefully restart a worker if v8 reports that it
 # uses more heap (note: not RSS) than this many mb.
-worker_heap_limit_mb: 300
+worker_heap_limit_mb: <%= @heap_limit %>
 
 # Logger info
 logging:

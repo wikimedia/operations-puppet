@@ -32,6 +32,11 @@
 #   Number of workers to start. Default: 'ncpu' (i.e. start as many workers as
 #   there are CPUs)
 #
+# [*heap_limit*]
+#   Maximum amount of heap memory each worker is allowed to have in MBs. If
+#   surpassed, the worker will be killed and a new one will be spawned. Default:
+#   300
+#
 # [*no_file*]
 #   Number of maximum allowed open files for the service, to be set by
 #   ulimit. Default: 10000
@@ -107,6 +112,7 @@ define service::node(
     $config                 = undef,
     $full_config            = false,
     $no_workers             = 'ncpu',
+    $heap_limit             = 300,
     $no_file                = 10000,
     $healthcheck_url        = '/_info',
     $has_spec               = false,
