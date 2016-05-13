@@ -1,6 +1,7 @@
 class k8s::apiserver(
     $etcd_servers,
     $master_host,
+    $docker_registry,
 ) {
     include k8s::users
 
