@@ -1,18 +1,14 @@
-# This rakefile is meant to trigger your local puppet-linter. To take
-# advantage of that powerful linter, you must have the puppet,
-# puppet-lint, rake (currently 10.4.2), bundler, and rubocop gems:
+# This rakefile is meant to run linters and tests.
 #
-#   $ sudo gem install puppet
-#   $ sudo gem install puppet-lint
-#   $ sudo gem install rake -v 10.4.2
-#   $ sudo gem install bundler rubocop
+# You will need 'bundler' to install dependencies:
 #
-# Then run the linter using rake (a ruby build helper):
+#  $ apt-get install bundler
+#  $ bundle install
 #
-#   $ rake lint
+# Then run the linter using rake (a ruby build helper) inside the env set by
+# bundler:
 #
-# A list of top errors can be obtained using:
-#   $ rake lint |rev |cut -d\  -f4- | rev | sort | uniq -c | sort -rn
+#   $ bundle exec rake puppetlint
 #
 # puppet-lint doc is at https://github.com/rodjek/puppet-lint
 #
@@ -26,11 +22,20 @@
 #
 #   $ rake spec
 #
+# Continuous integration invokes 'bundle exec rake test'.
 
 require 'bundler/setup'
+require 'puppet-lint/tasks/puppet-lint'
 require 'rubocop/rake_task'
 
 RuboCop::RakeTask.new(:rubocop)
+
+# Remane and customize puppet-lint built-in task
+Rake::Task[:lint].clear
+PuppetLint::RakeTask.new :puppetlint do |config|
+    config.fail_on_warnings = true  # be strict
+    config.log_format = '%{path}:%{line} %{KIND} %{message} (%{check})'
+end
 
 # Only care about color when using a tty.
 if Rake.application.tty_output?
@@ -53,6 +58,13 @@ unless respond_to? :console_color
 end
 
 task :default => [:help]
+
+desc 'Run all build/tests commands (CI entry point)'
+task test: [:lint]
+
+desc 'Run all linting commands'
+task lint: [:rubocop, :puppetlint]
+
 
 desc 'Show the help'
 task :help do
@@ -79,18 +91,11 @@ Validate syntax for all puppet manifests:
 Validate manifests/nfs.pp and manifests/apaches.pp
   rake \"validate[manifests/nfs.pp manifests/apaches.pp]\"
 
-Run puppet style checker:
-  rake lint
+Run puppet-lint style checker:
+  rake puppetlint
 "
 
 end
-
-task :run_puppet_lint do
-    system('puppet-lint .')
-end
-
-desc 'Run all build/tests commands (CI entry point)'
-task test: [:rubocop]
 
 desc "Build documentation"
 task :doc do
@@ -104,9 +109,6 @@ task :doc do
     puts "Running #{doc_cmd}"
     system(doc_cmd)
 end
-
-desc "Lint puppet files"
-task :lint => :run_puppet_lint
 
 desc "Validate puppet syntax (default: manifests/site.pp)"
 task :validate, [:files ] do |_t, args|
