@@ -11,4 +11,24 @@ class lvs::monitor {
     $yaml_tmp_var = template('lvs/monitor_lvs.erb')
     $monitors = parseyaml($yaml_tmp_var)
     create_resources(lvs::monitor_service_http_https, $monitors)
+
+    # Experimental load-balancer monitoring for services using service-checker
+    @monitoring::service { 'check_mobileapps_cluster':
+        host  => 'mobileapps.svc.eqiad.wmnet',
+        group => 'lvs',
+        description => 'Mobileapps LVS eqiad',
+        check_command => 'check_wmf_service!http://mobileapps.svc.eqiad.wmnet:8888!15',
+        critical => false,
+        contact_group => 'admins,team-services',
+    }
+
+    # Experimental load-balancer monitoring for services using service-checker
+    @monitoring::service { 'check_mobileapps_cluster':
+        host  => 'mobileapps.svc.codfw.wmnet',
+        group => 'lvs',
+        description => 'Mobileapps LVS eqiad',
+        check_command => 'check_wmf_service!http://mobileapps.svc.codfw.wmnet:8888!15',
+        critical => false,
+        contact_group => 'admins,team-services',
+    }    
 }
