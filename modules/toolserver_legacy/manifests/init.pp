@@ -13,7 +13,11 @@ class toolserver_legacy {
 
     system::role { 'toolserver_legacy': description => 'Toolserver legacy server' }
 
-    sslcert::certificate { 'toolserver.org': skip_private => true }
+    letsencrypt::cert::integrated { 'toolserver':
+        subjects   => 'toolserver.org,www.toolserver.org',
+        puppet_svc => 'apache2',
+        system_svc => 'apache2',
+    }
 
     apache::site { 'www.toolserver.org':
         content => template('toolserver_legacy/www.toolserver.org.erb'),
