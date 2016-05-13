@@ -16,6 +16,7 @@ GEM
       facter (~> 1.6)
       hiera (~> 1.0)
       rgen (~> 0.6.5)
+    puppet-lint (1.1.0)
     rainbow (2.0.0)
     rake (10.4.2)
     rgen (0.6.6)
@@ -49,6 +50,7 @@ PLATFORMS
 
 DEPENDENCIES
   puppet (~> 3.4.3)
+  puppet-lint (= 1.1.0)
   rake (~> 10.4, >= 10.4.2)
   rspec-puppet (~> 2.3.2)
   rubocop (~> 0.35.1)
