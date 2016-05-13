@@ -26,8 +26,10 @@ keyholder_agents:
     key_fingerprint: 6d:54:92:8b:39:10:f5:9b:84:40:36:ef:3c:9a:6d:d8
     key_file: servicedeploy_rsa
 
+  # Note: dumpsdeploy normally would have ops as trusted group,
+  # but ops is added implicitly anyway
   dumpsdeploy:
-    trusted_group: ops
+    trusted_group: []
     key_fingerprint: 86:c9:17:ab:b7:00:79:b5:8a:c5:b5:ee:29:24:c9:2f
 
 
