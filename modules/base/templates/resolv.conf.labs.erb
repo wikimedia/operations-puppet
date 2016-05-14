@@ -3,8 +3,8 @@
 ## source: modules/base/resolv.conf.labs.erb
 ## from:   base::resolving
 
-domain <%= @labsproject %>.<%= @site %>.wmflabs
-search <%= @labsproject %>.<%= @site %>.wmflabs <%= @site %>.wmflabs
+domain <%= @labsproject %>.<%= @site %>.<%= @labs_tld %>
+search <%= @labsproject %>.<%= @site %>.<%= @labs_tld %> <%= @site %>.<%= @labs_tld %>
 <% scope.lookupvar('::nameservers').each do |nsip| -%>
 nameserver <%= nsip %>
 <% end -%>

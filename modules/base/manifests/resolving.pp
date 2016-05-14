@@ -6,6 +6,7 @@ class base::resolving (
     }
     else {
         if $::realm == 'labs' {
+            $labs_tld = hiera('labs_tld')
             # Thanks to dhcp, resolvconf is constantly messing with our resolv.conf.  Disable it.
             file { '/sbin/resolvconf':
                 owner  => 'root',
