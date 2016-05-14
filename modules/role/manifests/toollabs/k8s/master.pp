@@ -11,6 +11,7 @@ class role::toollabs::k8s::master {
         master_host     => $master_host,
         etcd_servers    => $etcd_url,
         docker_registry => hiera('docker::registry'),
+        host_automounts => ['/var/run/nslcd/socket'],
     }
 
     class { 'k8s::scheduler': }
