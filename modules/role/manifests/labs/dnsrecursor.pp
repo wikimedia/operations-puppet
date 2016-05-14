@@ -51,10 +51,13 @@ class role::labs::dnsrecursor {
 
     $lua_hooks = ['/etc/powerdns/labs-ip-alias.lua', '/etc/powerdns/metaldns.lua']
 
+    $tld = hiera('labs_tld')
+    $private_reverse = hiera('labs_private_ips_reverse_dns')
+
     class { '::dnsrecursor':
             listen_addresses         => $listen_addresses,
             allow_from               => $all_networks,
-            additional_forward_zones => "wmflabs=${labs_auth_dns}, 68.10.in-addr.arpa=${labs_auth_dns}",
+            additional_forward_zones => "${tld}=${labs_auth_dns}, ${private_reverse}=${labs_auth_dns}",
             auth_zones               => 'labsdb=/var/zones/labsdb',
             lua_hooks                => $lua_hooks,
             max_negative_ttl         => 900,
