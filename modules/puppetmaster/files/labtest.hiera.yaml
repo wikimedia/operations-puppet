@@ -14,6 +14,7 @@
   - "labs/%{::labsproject}/host/%{::hostname}"
   - "labs/%{::labsproject}/common"
   - "%{::site}/labtest-instances"
+  - "private/%{::site}/labtest-instances"
   - "labs"
   - "secret/%{::labsproject}"
   - "private/%{::labsproject}"
