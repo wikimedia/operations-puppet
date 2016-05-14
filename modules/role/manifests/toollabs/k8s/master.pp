@@ -8,10 +8,15 @@ class role::toollabs::k8s::master {
     $etcd_url = join(prefix(suffix(hiera('k8s::etcd_hosts'), ':2379'), 'https://'), ',')
 
     class { 'k8s::apiserver':
-        master_host     => $master_host,
-        etcd_servers    => $etcd_url,
-        docker_registry => hiera('docker::registry'),
-        host_automounts => ['/var/run/nslcd/socket'],
+        master_host                => $master_host,
+        etcd_servers               => $etcd_url,
+        docker_registry            => hiera('docker::registry'),
+        host_automounts            => ['/var/run/nslcd/socket'],
+        host_path_prefixes_allowed => [
+            '/data/project/',
+            '/data/scratch/',
+            '/public/dumps/',
+        ]
     }
 
     class { 'k8s::scheduler': }
