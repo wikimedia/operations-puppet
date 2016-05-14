@@ -60,7 +60,7 @@ class gitblit(
         file { '/etc/systemd/system/gitblit.service':
             owner  => 'root',
             group  => 'root',
-            mode   => '0555',
+            mode   => '0444',
             source => 'puppet:///modules/gitblit/gitblit.service',
         }
     } else {
