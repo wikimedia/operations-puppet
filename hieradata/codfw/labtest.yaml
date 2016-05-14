@@ -8,6 +8,9 @@
 # no Icinga SMS for test machines
 do_paging: false
 
+labs_tld: "labtest"
+labs_private_ips_reverse_dns: "196.10.in-addr.arpa"
+
 # Should handle all being the same
 labs_nova_controller: &labsnovacontroller "labtestcontrol2001.wikimedia.org"
 labs_nova_controller_spare: &labsnovacontrollerspare "labtestcontrol2001.wikimedia.org"
