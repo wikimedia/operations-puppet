@@ -2,6 +2,7 @@ class k8s::apiserver(
     $etcd_servers,
     $master_host,
     $docker_registry,
+    $host_automounts = [],
 ) {
     include k8s::users
 
@@ -11,6 +12,8 @@ class k8s::apiserver(
         group  => 'kubernetes',
         mode   => '0700',
     }
+
+    $host_automounts_string = join($host_automounts, ',')
 
     $users = hiera('k8s_users')
     file { '/etc/kubernetes/tokenauth':
