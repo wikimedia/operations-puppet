@@ -1,1 +1,3 @@
 cluster: virt
+
+puppetmaster:hiera_config: labs

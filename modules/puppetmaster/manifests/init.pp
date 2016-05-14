@@ -20,6 +20,8 @@
 #        Array of hashes in the form. If loadfactor is omitted, it is assumed to
 #        be equal to 1
 #         [{ 'worker' => 'worker1.example.com', loadfactor => '1' }]
+#    - $hiera_config:
+#        Specifies which file to use for hiera.yaml.  Defaults to $::realm
 class puppetmaster(
             $server_name='puppet',
             $bind_address='*',
@@ -36,6 +38,7 @@ class puppetmaster(
                 '*.codfw.wmnet',
             ],
             $is_labs_master=false,
+            $hiera_config=$::realm,
             ){
 
     $gitdir = '/var/lib/git'
@@ -91,11 +94,8 @@ class puppetmaster(
     if $is_labs_master {
         include puppetmaster::labs
         require_package('ruby-httpclient')
-
-        $hiera_config = 'labs'
-    } else {
-        $hiera_config = $::realm
     }
+
     class { '::puppetmaster::hiera':
         source => "puppet:///modules/puppetmaster/${hiera_config}.hiera.yaml",
     }
