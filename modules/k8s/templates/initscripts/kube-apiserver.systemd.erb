@@ -8,14 +8,16 @@ ExecStart=/usr/local/bin/kube-apiserver \
     --etcd-servers=<%= @etcd_servers %> \
     --service-cluster-ip-range=192.168.0.0/24 \
     --token-auth-file=/etc/kubernetes/tokenauth \
-    --admission-control=NamespaceLifecycle,ServiceAccount,ResourceQuota,LimitRanger,UidEnforcer,RegistryEnforcer,HostAutomounter \
+    --admission-control=NamespaceLifecycle,ServiceAccount,ResourceQuota,LimitRanger,UidEnforcer,RegistryEnforcer,HostAutomounter,HostPathEnforcer \
     --authorization-mode=ABAC \
     --authorization-policy-file=/etc/kubernetes/abac \
     --tls-private-key-file=/var/lib/kubernetes/ssl/private_keys/server.key \
     --tls-cert-file=/var/lib/kubernetes/ssl/certs/cert.pem \
     --service-account-key-file=/var/lib/kubernetes/ssl/private_keys/server.key \
     --enforced-docker-registry=<%= @docker_registry %> \
-    --host-automounts=<%= @host_automounts_string %>
+    --host-automounts=<%= @host_automounts_string %> \
+    --host-paths-allowed=<%= @host_paths_allowed_string %> \
+    --host-path-prefixes-allowed=<%= @host_path_prefixes_allowed_string %>
 
 [Install]
 WantedBy=multi-user.target

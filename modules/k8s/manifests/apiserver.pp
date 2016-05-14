@@ -3,6 +3,8 @@ class k8s::apiserver(
     $master_host,
     $docker_registry,
     $host_automounts = [],
+    $host_paths_allowed = [],
+    $host_path_prefixes_allowed = [],
 ) {
     include k8s::users
 
@@ -14,6 +16,8 @@ class k8s::apiserver(
     }
 
     $host_automounts_string = join($host_automounts, ',')
+    $host_paths_allowed_string = join(concat($host_paths_allowed, $host_automounts), ',')
+    $host_path_prefixes_allowed_string = join($host_path_prefixes_allowed, ',')
 
     $users = hiera('k8s_users')
     file { '/etc/kubernetes/tokenauth':
