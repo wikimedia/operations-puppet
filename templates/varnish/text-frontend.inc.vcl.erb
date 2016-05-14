@@ -75,7 +75,7 @@ sub cluster_fe_recv_pre_purge {
 		unset req.http.X-Subdomain;
 		unset req.http.x-dt-host; // desktop host, if mobile hostname on request
 
-		if (req.http.host ~ "^([a-z0-9-]+\.)?zero\." && req.http.host != "zero.wikimedia.org") {
+		if (req.http.host ~ "^([a-z0-9-]+\.)?zero\." && req.http.host != "zero.wikimedia.<%= @vcl_config.fetch('top_domain') %>") {
 			set req.http.X-Subdomain = "ZERO";
 		} else if (req.http.host ~ "^([a-z0-9-]+\.)?m\.") {
 			set req.http.X-Subdomain = "M";
