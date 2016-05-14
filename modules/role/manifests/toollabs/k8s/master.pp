@@ -12,6 +12,11 @@ class role::toollabs::k8s::master {
         etcd_servers    => $etcd_url,
         docker_registry => hiera('docker::registry'),
         host_automounts => ['/var/run/nslcd/socket'],
+        host_path_prefixes_allowed => [
+            '/data/project/',
+            '/data/scratch/',
+            '/public/dumps/',
+        ],
     }
 
     class { 'k8s::scheduler': }
