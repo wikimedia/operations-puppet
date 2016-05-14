@@ -92,7 +92,11 @@ class puppetmaster(
         include puppetmaster::labs
         require_package('ruby-httpclient')
 
-        $hiera_config = 'labs'
+        if $::realm == 'labtest' {
+            $hiera_config = 'labtest'
+        } else {
+            $hiera_config = 'labs'
+        }
     } else {
         $hiera_config = $::realm
     }
