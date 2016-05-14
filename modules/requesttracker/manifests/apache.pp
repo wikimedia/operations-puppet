@@ -6,8 +6,14 @@ class requesttracker::apache($apache_site) {
     include ::apache::mod::rewrite
     include ::apache::mod::headers
 
+    if os_version('debian >= jessie') {
+        $rt_apache_conf = 'rt4.apache.httponly.erb'
+    } else {
+        $rt_apache_conf = 'rt4.apache.erb'
+    }
+
     apache::site { 'rt.wikimedia.org':
-        content => template('requesttracker/rt4.apache.erb'),
+        content => template($rt_apache_conf),
     }
 
     # use this to have a NameVirtualHost *:443
