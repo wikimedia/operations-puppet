@@ -1,4 +1,4 @@
-cluster: virt
+cluster: labs
 admin::groups:
   - deployment
 
