@@ -9,3 +9,5 @@ labsdnsconfig:
 labsldapconfig:
   hostname: "labtestservices2001.wikimedia.org"
   secondary_hostname: "labtestservices2001.wikimedia.org"
+
+labs_tld: "labtest"
