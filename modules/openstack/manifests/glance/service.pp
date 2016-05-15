@@ -38,8 +38,8 @@ class openstack::glance::service(
 
     file { $glance_data:
         ensure  => directory,
-        owner   => 'root',
-        group   => 'root',
+        owner   => 'glance',
+        group   => 'glance',
         require => Package['glance'],
         mode    => '0755',
     }
