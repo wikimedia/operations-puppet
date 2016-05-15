@@ -105,9 +105,14 @@ ganglia_clusters:
       eqiad: []
       codfw: []
       esams: []
-  virt:
-    name: "Virtualization cluster"
+  labvirt:
+    name: "Labs virt hosts"
     id: 29
+    sites:
+      eqiad: []
+  labs:
+    name: "Labs services"
+    id: 30
     sites:
       eqiad: []
   jobrunner:
