@@ -1,4 +1,4 @@
-cluster: virt
+cluster: labs
 
 labsdnsconfig:
   host: 'labs-ns1.wikimedia.org'
