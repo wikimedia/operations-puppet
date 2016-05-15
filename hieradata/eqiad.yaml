@@ -103,8 +103,8 @@ labsdnsconfig:
   host: 'labs-ns0.wikimedia.org'
   host_secondary: 'labs-ns1.wikimedia.org'
   dbserver: 'localhost'
-  recursor: 'labs-recursor1.wikimedia.org'
-  recursor_secondary: 'labs-recursor0.wikimedia.org'
+  recursor: 'labs-recursor0.wikimedia.org'
+  recursor_secondary: 'labs-recursor1.wikimedia.org'
 
 novaconfig:
   db_host: 'm5-master.eqiad.wmnet'
