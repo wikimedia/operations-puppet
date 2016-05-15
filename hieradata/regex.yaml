@@ -66,9 +66,13 @@ mysql_codfw:
   __regex: !ruby/regexp /^(db20[0-9][0-9]|dbstore200[1-2]|es201[1-9])\.codfw\.wmnet$/
   cluster: mysql
 
-virtualization:
-  __regex: !ruby/regexp /^(labnet|labvirt|virt)100[1-9]\.eqiad\.wmnet$/
-  cluster: "virt"
+labvirt:
+  __regex: !ruby/regexp /^labvirt10[0-9][0-9]\.eqiad\.wmnet$/
+  cluster: labvirt
+
+labs:
+  __regex: !ruby/regexp /^(labnet|labservices|labnodepool|labsdb|labstore|labcontrol)100[1-9]\.eqiad\.wmnet$/
+  cluster: labs
 
 cassandra_test_eqiad:
   __regex: !ruby/regexp /^(cerium|praseodymium|xenon)\.eqiad\.wmnet$/
