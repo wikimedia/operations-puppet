@@ -1,1 +1,4 @@
 cluster: virt
+
+admin::groups:
+  - contint-admins
