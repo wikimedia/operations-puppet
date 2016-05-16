@@ -21,7 +21,7 @@ class toolserver_legacy {
 
     apache::site { 'www.toolserver.org':
         content => template('toolserver_legacy/www.toolserver.org.erb'),
-        require => Sslcert::Certificate['toolserver.org'],
+        require => Letsencrypt::cert::integrated['toolserver'],
     }
 
     class { 'exim4':
