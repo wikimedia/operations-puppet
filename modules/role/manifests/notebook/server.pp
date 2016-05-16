@@ -1,3 +1,5 @@
+# stub role for experimental notebook servers
 class role::notebook::server {
-    # Hello I'm a stub, nice to meet you
+
+    include base::firewall
 }
