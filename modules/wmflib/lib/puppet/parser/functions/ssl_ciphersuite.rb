@@ -69,7 +69,7 @@ module Puppet::Parser::Functions
   # 1) Mac:  AEAD > ALL       (GCM > CBC)
   # 2) Kx:   ECDHE > DHE      (Server Perf, may help with DH>1024 compat)
   # 3) Mac:  SHA-2 > SHA-1
-  # 4) Enc:  AES128 > AES256  (>CAMELLIA128 > CAMELLIA256)
+  # 4) Enc:  AES128 > AES256
   # 5) Auth: ECDSA > RSA      (Server Performance)
   basic = {
     # Forward-Secret + AEAD
@@ -98,8 +98,6 @@ module Puppet::Parser::Functions
       'DHE-RSA-AES256-SHA256',
       'DHE-RSA-AES128-SHA',
       'DHE-RSA-AES256-SHA',
-      'DHE-RSA-CAMELLIA128-SHA',
-      'DHE-RSA-CAMELLIA256-SHA',
     ],
     # Only include this in "mid" for the mid-spec, because including it in
     # "compat" might block a successful negotiation by "upgrading" a working
