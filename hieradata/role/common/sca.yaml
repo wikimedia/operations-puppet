@@ -1,5 +1,6 @@
 cluster: sca
 admin::groups:
+  - sc-admins
   - cxserver-admin
   - zotero-admin
   - apertium-admins
