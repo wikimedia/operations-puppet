@@ -1,5 +1,6 @@
 cluster: scb
 admin::groups:
+- sc-admins
 - citoid-admin
 - citoid-roots
 - citoid-users
