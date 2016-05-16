@@ -562,7 +562,7 @@ node 'db2019.codfw.wmnet' {
     include base::firewall
 }
 
-node /^db20(37|44|51|65)\.codfw\.wmnet/ {
+node /^db20(37|44|51|58|65)\.codfw\.wmnet/ {
     class { 'role::mariadb::core':
         shard         => 's4',
         binlog_format => 'ROW',
@@ -581,7 +581,7 @@ node 'db1049.eqiad.wmnet' {
     include base::firewall
 }
 
-node /^db10(26|45|58|70|71)\.eqiad\.wmnet/ {
+node /^db10(26|45|70|71)\.eqiad\.wmnet/ {
     class { 'role::mariadb::core':
         shard => 's5',
     }
