@@ -1276,11 +1276,6 @@ host db1026 {
     fixed-address db1026.eqiad.wmnet;
 }
 
-host db1027 {
-    hardware ethernet 78:2b:cb:03:64:8c;
-    fixed-address db1027.eqiad.wmnet;
-}
-
 host db1028 {
     hardware ethernet 78:2b:cb:03:66:ee;
     fixed-address db1028.eqiad.wmnet;
