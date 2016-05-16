@@ -22,8 +22,7 @@ define varnish::instance(
     $storage='-s malloc,1G',
     $runtime_parameters=[],
     $directors={},
-    $extra_vcl = [],
-    $xff_sources=[]
+    $extra_vcl = []
 ) {
 
     include varnish::common
