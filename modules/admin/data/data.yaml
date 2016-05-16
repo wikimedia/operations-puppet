@@ -207,11 +207,6 @@ groups:
     description: office it folk
     members: []
     privileges: ['ALL = (syslog) NOPASSWD: ALL']
-  mathoid-roots:
-    gid: 729
-    description: root rights for mathoid
-    members: []
-    privileges: []
   mathoid-admin:
     gid: 730
     description: group of mathoid admins
@@ -253,11 +248,6 @@ groups:
     gid: 733
     description: Login access for EventLogging deployment and investigation
     members: [nuria, milimetric, mforns, joal, legoktm, otto, madhuvishy, elukey]
-  citoid-roots:
-    gid: 735
-    description: rights for debugging citoid
-    members: []
-    privileges: []
   citoid-admin:
     gid: 736
     description: group of citoid admins
