@@ -363,6 +363,7 @@ confluent_brokers:
 upgraded_brokers:
   - kafka1012
   - kafka1013
+  - kafka1014
 
 kafka_clusters:
   # This is the analytics Kafka cluster, named just 'eqiad' for
