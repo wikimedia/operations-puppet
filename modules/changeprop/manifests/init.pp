@@ -31,7 +31,7 @@ class changeprop(
 ) {
 
     service::node { 'changeprop':
-        enable          => false,  # Disabled by Ori on 2016-05-05 due to VE outage
+        enable          => true,
         port            => 7272,
         heap_limit      => 750,
         config          => template('changeprop/config.yaml.erb'),
