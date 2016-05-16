@@ -1,0 +1,112 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+"""
+  varnishxcache
+  ~~~~~~~~~~~
+
+  Accumulate X-Cache stats and report them to StatsD.
+
+  Usage: varnishxcache [--statsd-server SERVER] [--key-prefix PREFIX]
+
+    --statsd-server SERVER  statsd server (default: none; echo to stdout)
+    --key-prefix PREFIX     metric key prefix (default: varnish.xcache)
+
+  Copyright 2016 Brandon Black <bblack@wikimedia.org>
+  Copyright 2015 Ori Livneh <ori@wikimedia.org>
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+"""
+import argparse
+import io
+import re
+import socket
+import threading
+import urlparse
+
+import varnishlog
+
+
+def parse_statsd_server_string(server_string):
+    parsed = urlparse.urlparse('//' + server_string)
+    return parsed.hostname, parsed.port or 8125
+
+
+def parse_prefix_string(key_prefix):
+    key_prefix = key_prefix.strip('.')
+    if not key_prefix:
+        raise ValueError('Key prefix must not be empty')
+    return key_prefix
+
+
+ap = argparse.ArgumentParser(
+    description='X-Cache StatsD reporter',
+    epilog='If no statsd server is specified, prints stats to stdout instead.'
+)
+ap.add_argument('--statsd-server', help='statsd server',
+                type=parse_statsd_server_string, default=None)
+ap.add_argument('--key-prefix', help='metric key prefix',
+                type=parse_prefix_string, default='varnish.xcache')
+args = ap.parse_args()
+
+sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+key_value_pairs = re.compile(r'([A-Z][A-Z0-9]*)=([^;]+)')
+stats = {}
+
+re_legacy_format = re.compile(
+    r' (?:frontend )?'
+    r'(?:hit\+)?(?:miss\+)?(hit|miss|pass|int)(?:\+chfp)?\([0-9]+\)'
+)
+re_simplify = re.compile('cp[0-9]{4} (hit/[0-9]+|miss|pass|int)')
+state_finder = [
+    [re.compile(r'int'),        'int'],
+    [re.compile(r'hit$'),       'hit-front'],
+    [re.compile(r'hit,[^,]+$'), 'hit-local'],
+    [re.compile(r'hit'),        'hit-remote'],
+    [re.compile(r'pass'),       'pass'], # XXX Not correct, needs thinking...
+]
+
+
+def vsl_callback(transaction_id, tag, record, remote_party):
+    record = record.split(': ')[1]
+
+    # Translate legacy X-Cache lines, can be removed later...
+    record = re_legacy_format.sub(r' \1', record)
+
+    record = re_simplify.sub(r'\1', record)
+    state = 'miss'
+    for sf in state_finder:
+        if sf[0].search(record):
+            state = sf[1]
+            break
+    stats[state] = stats.get(state, 0) + 1
+
+    if sum(stats.values()) > 1e4:
+        buf = io.BytesIO()
+        while stats:
+            metric = '%s:%s|c\n' % stats.popitem()
+            buf.write(metric.encode('utf-8'))
+        buf.seek(io.SEEK_SET)
+        if args.statsd_server:
+            sock.sendto(buf.read(), args.statsd_server)
+        else:
+            print(buf.read().decode('utf-8', errors='replace').rstrip())
+
+    return 0
+
+
+varnishlog.varnishlog((
+    ('i', 'TxHeader'),
+    ('I', '^X-Cache: '),
+    ('n', 'frontend'),
+), vsl_callback)
