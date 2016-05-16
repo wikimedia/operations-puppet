@@ -501,6 +501,11 @@ groups:
     gid: 778
     description: Group of phabricator deployers
     members: [twentyafterfour, demon, rush, thcipriani]
+  sc-admins:
+    description: General service cluster admins - sc(a|b)
+    gid: 779
+    members: [mobrovac]
+    privileges: ['ALL = NOPASSWD: /usr/bin/puppet agent *']
 
 users:
   rush:
