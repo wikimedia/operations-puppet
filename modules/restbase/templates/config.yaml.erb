@@ -95,6 +95,10 @@ root_spec: &root_spec
             forward_headers: true
           - pattern: <%= @parsoid_uri %>
             forward_headers: true
+          - pattern: <%= @aqs_uri %>
+            forward_headers:
+                x-client-ip: true
+                user-agent: true
           - pattern: /^https?:\/\//
   paths:
 
