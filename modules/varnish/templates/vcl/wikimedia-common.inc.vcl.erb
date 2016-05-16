@@ -296,12 +296,7 @@ sub wm_common_hit {
 }
 
 sub wm_common_miss {
-	if (req.http.X-CDIS) {
-		// _miss can theoretically be called after moving through _hit
-		set req.http.X-CDIS = req.http.X-CDIS + "+miss";
-	} else {
-		set req.http.X-CDIS = "miss";
-	}
+	set req.http.X-CDIS = "miss";
 <% if not @varnish_version4 -%>
 	if (req.request == "PURGE") {
 		purge;
@@ -311,12 +306,7 @@ sub wm_common_miss {
 }
 
 sub wm_common_pass {
-	if (req.http.X-CDIS) {
-		// _pass can theoretically be called after moving through _hit and/or _miss
-		set req.http.X-CDIS = req.http.X-CDIS + "+pass";
-	} else {
-		set req.http.X-CDIS = "pass";
-	}
+	set req.http.X-CDIS = "pass";
 }
 
 sub wm_common_backend_response {
@@ -352,13 +342,17 @@ sub wm_common_backend_response {
 
 sub wm_common_deliver {
 	if (!req.http.X-CDIS) {
-		set req.http.X-CDIS = "int"; // internally-generated response (not a cache object hit, and not a miss|pass to a deeper layer either)
+		// internally-generated response (not a cache object hit, and not a miss|pass to a deeper layer either)
+		set req.http.X-CDIS = "int";
+	} else if(req.http.X-CDIS == "hit") {
+		// obj.hits isn't known in vcl_hit, and not useful for other states
+		set req.http.X-CDIS = "hit/" + obj.hits
 	}
 
 	if (resp.http.X-Cache) {
-		set resp.http.X-Cache = resp.http.X-Cache + ", <%= @hostname + (@name.empty? ? "" : " " + @name) %> " + req.http.X-CDIS + "(" + obj.hits + ")";
+		set resp.http.X-Cache = resp.http.X-Cache + ", <%= @hostname %> " + req.http.X-CDIS;
 	} else {
-		set resp.http.X-Cache = "<%= @hostname + (@name.empty? ? "" : " " + @name) %> " + req.http.X-CDIS + "(" + obj.hits + ")";
+		set resp.http.X-Cache = "<%= @hostname %> " + req.http.X-CDIS;
 	}
 }
 
