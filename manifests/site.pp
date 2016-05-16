@@ -2251,6 +2251,14 @@ node 'mx2001.wikimedia.org' {
     }
 }
 
+# Experimental Jupyter notebook servers
+node /notebook100[12].eqiad.wmnet/ {
+    role notebook::server
+
+    include standard
+    include admin
+}
+
 # salt master
 node 'neodymium.eqiad.wmnet' {
     role salt::masters::production, deployment::salt_masters,
