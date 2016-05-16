@@ -75,7 +75,6 @@ class role::cache::upload {
 
     $be_vcl_config = merge($common_vcl_config, {
         'ttl_fixed'        => '14d',
-        'ttl_cap'          => '14d',
         'pass_random'      => true,
     })
 
