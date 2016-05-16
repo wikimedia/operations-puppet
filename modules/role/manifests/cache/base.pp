@@ -43,6 +43,11 @@ class role::cache::base(
         statsd        => hiera('statsd'),
     }
 
+    ::varnish::logging::xcache { 'xcache':
+        key_prefix    => "varnish.${::site}.${cache_cluster}.xcache",
+        statsd_server => hiera('statsd'),
+    }
+
     # Only production needs system perf tweaks and NFS client disable
     if $::realm == 'production' {
         include role::cache::perf
