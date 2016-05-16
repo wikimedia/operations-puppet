@@ -496,6 +496,11 @@ groups:
     gid: 779
     members: [mobrovac]
     privileges: ['ALL = NOPASSWD: /usr/bin/puppet agent *']
+  notebook-roots:
+    description: root access on experimental notebook servers
+    gid: 780
+    members: []
+    privileges: ['ALL = (ALL) NOPASSWD: ALL']
 
 users:
   rush:
