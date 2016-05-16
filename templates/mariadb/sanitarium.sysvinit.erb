@@ -1,18 +1,23 @@
 #!/bin/bash
 
-# Manually specifying --defaults-file because mysqld_multi
-# will detect our /etc/mysql/my.cnf symlink as a second cnf
-# and try to start each instance twice.
+CURRENT_DIR=`pwd`
+INSTALL_DIR=/opt/wmf-mariadb10
 
 case "$1" in
     start)
-        mysqld_multi --defaults-file=/etc/my.cnf start 1-7
+        cd INSTALL_DIR
+        $INSTALL_DIR/bin/mysqld_multi start 1-7
+        cd CURRENT_DIR
         ;;
     stop)
-        mysqld_multi --defaults-file=/etc/my.cnf stop 1-7
+        cd INSTALL_DIR
+        $INSTALL_DIR/bin/mysqld_multi stop 1-7
+        cd CURRENT_DIR
         ;;
     status)
-        mysqld_multi --defaults-file=/etc/my.cnf report
+        cd INSTALL_DIR
+        $INSTALL_DIR/bin/mysqld_multi report
+        cd CURRENT_DIR
         ;;
     *)
         echo $"Usage: $0 {start|stop|status}"
