@@ -23,7 +23,11 @@ define admin::groupmembers(
     if !empty($members) {
         $joined_user_list = join($members,',')
     } else {
-        $joined_user_list = $default_member
+
+    $joined_user_list = $title? {
+        'all-users' => keys($phash['users']),
+        default     => $default_member,
+        }
     }
 
     if has_key($gdata, 'posix_name') {

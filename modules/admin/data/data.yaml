@@ -496,7 +496,11 @@ groups:
     gid: 779
     members: [mobrovac]
     privileges: ['ALL = NOPASSWD: /usr/bin/puppet agent *']
-
+  all-users:
+    description: Global group that includes all users
+    gid: 800
+    members: [] # members get populated automagically
+    privileges: [] # NO privileges to this group
 users:
   rush:
     ensure: present
