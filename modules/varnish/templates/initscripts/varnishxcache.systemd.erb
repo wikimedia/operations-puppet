@@ -1,0 +1,12 @@
+[Unit]
+Description=Varnish X-Cache StatsD reporter
+After=varnish-frontend.service
+Requires=varnish-frontend.service
+
+[Service]
+ExecStart=/usr/local/bin/varnishxcache --statsd-server=<%= @statsd_server %> --key-prefix=<%= @key_prefix %>
+Restart=always
+RestartSec=5s
+
+[Install]
+WantedBy=multi-user.target
