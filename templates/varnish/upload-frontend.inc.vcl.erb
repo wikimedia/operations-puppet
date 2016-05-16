@@ -47,7 +47,12 @@ sub cluster_fe_miss {
 	}
 }
 
-sub cluster_fe_pass { }
+sub cluster_fe_pass {
+	# Hack for a specific load problem...
+	if (req.url ~ "_Dallas\.ogg\.360p\.webm$") {
+		set req.backend = cache_local_random;
+	}
+}
 
 sub cluster_fe_backend_response {
 	if (beresp.http.Content-Range) {
