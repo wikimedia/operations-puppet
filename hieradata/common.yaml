@@ -366,6 +366,7 @@ upgraded_brokers:
   - kafka1014
   - kafka1018
   - kafka1020
+  - kafka1022
 
 kafka_clusters:
   # This is the analytics Kafka cluster, named just 'eqiad' for
