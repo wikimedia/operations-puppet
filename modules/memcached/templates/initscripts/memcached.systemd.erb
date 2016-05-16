@@ -3,7 +3,7 @@ Description=memcached daemon
 After=network.target
 
 [Service]
-ExecStart=/usr/bin/memcached -p <%= @port -%> -u nobody -m <%= @size %> -c 25000 -l <%= @ip %> -n 5 -f <%= @growth_factor -%> <% @extra_options.sort.each do |option,value| -%><%= option %> <%= value %><% end -%>
+ExecStart=/usr/bin/memcached -p <%= @port -%> -u nobody -m <%= @size %> -c 25000 -l <%= @ip %> -n 5 -f <%= @growth_factor -%> <% @extra_options.sort.each do |option,value| -%><%= option %> <%= value %> <% end -%>
 
 
 [Install]

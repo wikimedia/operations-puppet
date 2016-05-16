@@ -69,6 +69,7 @@ class memcached(
         ensure         => present,
         systemd        => true,
         strict         => false,
+        refresh        => false,
         service_params => {
             enable => true
         }
