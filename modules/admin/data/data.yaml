@@ -499,7 +499,7 @@ groups:
   notebook-roots:
     description: root access on experimental notebook servers
     gid: 780
-    members: []
+    members: [madhuvishy]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
 
 users:
