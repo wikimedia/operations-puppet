@@ -92,6 +92,10 @@ class role::statistics::cruncher inherits role::statistics {
         repository => 'limn-flow-data',
         output_dir =>  'flow/datafiles',
     }
+    reportupdater::job { 'flow-beta-feature':
+        repository => 'limn-flow-data',
+        output_dir =>  'metrics/beta-feature-enables',
+    }
     reportupdater::job { 'edit':
         repository => 'limn-edit-data',
         output_dir => 'metrics',
@@ -107,6 +111,10 @@ class role::statistics::cruncher inherits role::statistics {
     reportupdater::job { 'ee':
         repository => 'limn-ee-data',
         output_dir => 'metrics/echo',
+    }
+    reportupdater::job { 'ee-beta-feature':
+        repository => 'limn-ee-data',
+        output_dir => 'metrics/beta-feature-enables',
     }
     reportupdater::job { 'multimedia':
         repository => 'limn-multimedia-data',
