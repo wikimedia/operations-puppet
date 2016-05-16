@@ -2,12 +2,10 @@ cluster: scb
 admin::groups:
 - sc-admins
 - citoid-admin
-- citoid-roots
 - citoid-users
 - cxserver-admin
 - graphoid-admin
 - mathoid-admin
-- mathoid-roots
 - zotero-admin
 - mobileapps-admin
 - changeprop-admin
