@@ -2387,8 +2387,8 @@ node 'pc2006.codfw.wmnet' {
     include base::firewall
 }
 
-# virtual machine hosting https://wikitech.wikimedia.org/wiki/Planet.wikimedia.org
-node 'planet1001.eqiad.wmnet' {
+# virtual machines hosting https://wikitech.wikimedia.org/wiki/Planet.wikimedia.org
+node /^planet[12]001\.(eqiad|codfw)\.wmnet$/ {
     role planet::venus
 }
 
