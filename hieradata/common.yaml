@@ -349,25 +349,6 @@ labs_metal:
   promethium: {MAC: '90:b1:1c:2d:6f:0c', IPv4: 10.68.16.2, project: wikitextexp }
 
 
-# Temporary config during 0.9 upgrade.
-confluent_brokers:
-  - kafka1012
-  - kafka1013
-  - kafka1014
-  - kafka1018
-  - kafka1020
-  - kafka1022
-
-# Temporary config during 0.9 upgrade.
-# Used to set inter.broker.protocol.version
-upgraded_brokers:
-  - kafka1012
-  - kafka1013
-  - kafka1014
-  - kafka1018
-  - kafka1020
-  - kafka1022
-
 kafka_clusters:
   # This is the analytics Kafka cluster, named just 'eqiad' for
   # historical reasons.
