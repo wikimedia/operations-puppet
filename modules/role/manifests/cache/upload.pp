@@ -94,7 +94,7 @@ class role::cache::upload {
     ], ' ')
 
     role::cache::instances { 'upload':
-        fe_mem_gb        => ceiling(0.08333 * $::memorysize_mb / 1024.0),
+        fe_mem_gb        => ceiling(0.25 * $::memorysize_mb / 1024.0),
         runtime_params   => ['default_ttl=2592000'],
         app_directors    => $app_directors,
         app_be_opts      => [],
