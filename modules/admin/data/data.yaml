@@ -9,6 +9,11 @@ groups:
     gid: 500
     description: container group for primary user groups.
     members: []
+  all-users:
+    description: Global group that includes all users
+    gid: 600
+    members: [] # members get populated automagically
+    privileges: [] # NO privileges to this group!
   ops:
     gid: 700
     description: include everywhere ops folks
@@ -496,7 +501,6 @@ groups:
     gid: 779
     members: [mobrovac]
     privileges: ['ALL = NOPASSWD: /usr/bin/puppet agent *']
-
 users:
   rush:
     ensure: present
