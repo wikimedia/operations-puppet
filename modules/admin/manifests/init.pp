@@ -17,7 +17,10 @@ class admin(
     include sudo
 
     $module_path = get_module_path($module_name)
-    $data = loadyaml("${module_path}/data/data.yaml")
+    $base_data = loadyaml("${module_path}/data/data.yaml")
+    # Fill the all-users group with all active users
+    $data = add_all_users($base_data)
+
     $uinfo = $data['users']
     $users = keys($uinfo)
 
@@ -26,6 +29,7 @@ class admin(
 
     #this custom function eliminates the need for virtual users
     $user_set = unique_users($data, $all_groups)
+
 
     file { '/usr/local/sbin/enforce-users-groups':
         ensure => file,
