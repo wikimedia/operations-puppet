@@ -1,2 +1,6 @@
 admin::groups:
   - notebook-roots
+
+debdeploy::grains:
+  debdeploy-notebook:
+    value: standard
