@@ -42,6 +42,9 @@ class graphoid(
             timeout        => $timeout,
             headers        => $headers,
             errorHeaders   => $error_headers,
+            no_proxy_list  => inline_template(
+                '<%= @allowed_domains.map { |k, v| v }.flatten.sort.join(",") %>'
+            )
         },
         has_spec        => true,
         healthcheck_url => '',
