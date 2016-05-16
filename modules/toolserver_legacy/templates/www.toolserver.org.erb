@@ -37,6 +37,8 @@
     ServerAdmin noc@wikimedia.org
     ServerName www.toolserver.org
 
+    Include /etc/acme/challenge-apache.conf
+
     SSLEngine on
     SSLCertificateFile /etc/acme/cert/toolserver.crt
     SSLCertificateChainFile /etc/acme/cert/toolserver.chain.crt
