@@ -14,7 +14,6 @@ admin::groups:
   - cassandra-test-roots
   - chromium-admin
   - citoid-admin
-  - citoid-roots
   - citoid-users
   - contint-admins
   - contint-roots
@@ -36,7 +35,6 @@ admin::groups:
   - logstash-roots
   - maps-admins
   - mathoid-admin
-  - mathoid-roots
   - mobileapps-admin
   - mw-log-readers
   - ocg-render-admins
