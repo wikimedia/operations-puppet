@@ -2,4 +2,4 @@ phabricator:
   deployment:
     source:
       key_fingerprint: '36:75:c2:fa:34:02:c8:8c:ff:30:09:aa:f7:77:96:41'
-      trusted_group: 'project-phabricator'
+      trusted_groups: 'project-phabricator'
