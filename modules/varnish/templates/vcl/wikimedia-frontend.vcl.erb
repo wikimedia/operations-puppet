@@ -109,71 +109,68 @@ sub recv_fe_ip_processing {
 		unset req.http.X-Connection-Properties;
 	}
 
-	if (req.http.X-Forwarded-For) {
-		// To make further parsing/sanitizing simpler, convert all whitespace
-		// in XFF to single spaces, and make sure all commas have a space
-		// suffix but no space prefix.
-		set req.http.X-Forwarded-For = regsuball(req.http.X-Forwarded-For, "[ \t]+", " ");
-		set req.http.X-Forwarded-For = regsuball(req.http.X-Forwarded-For, " ?, ?", ", ");
+	// To make further parsing/sanitizing simpler, convert all whitespace
+	// in XFF to single spaces, and make sure all commas have a space
+	// suffix but no space prefix.
+	set req.http.X-Forwarded-For = regsuball(req.http.X-Forwarded-For, "[ \t]+", " ");
+	set req.http.X-Forwarded-For = regsuball(req.http.X-Forwarded-For, " ?, ?", ", ");
 
-		// Now fully-sanitize it to only the strict form "X(, X)*", where X is
-		// a string of legal characters in IPv[46] addresses.  Note
-		// that injections can still leave well-formed junk on the
-		// left, but it's up to the trusted proxy code to ignore that,
-		// e.g.:
-		// "junk2, 123.123.123.123" -> "2, 123.123.123.123"
-		set req.http.X-Forwarded-For = regsub(req.http.X-Forwarded-For,
-			"^.*?([0-9A-Fa-f:.]+(, [0-9A-Fa-f:.]+)*)? ?$", "\1");
-
-		// Clear header if empty after all the above, to avoid messing
-		// up our normal XFF-append code later
-		if (req.http.X-Forwarded-For == "") {
-			unset req.http.X-Forwarded-For;
-		}
-	}
+	// Now fully-sanitize it to only the strict form "X(, X)*", where X is
+	// a string of legal characters in IPv[46] addresses.  Note
+	// that injections can still leave well-formed junk on the
+	// left, but it's up to the trusted proxy code to ignore that,
+	// e.g.:
+	// "junk2, 123.123.123.123" -> "2, 123.123.123.123"
+	set req.http.X-Forwarded-For = regsub(req.http.X-Forwarded-For,
+		"^.*?([0-9A-Fa-f:.]+(, [0-9A-Fa-f:.]+)*)? ?$", "\1");
 
 	// There are two possible cases here: either nginx acted as our TLS
 	// proxy and already set X-Client-IP (as well as appended the same value
-	// to XFF), or the traffic was direct to varnish-fe, in which case
-	// XCIP is not yet set and XFF is directly from external.
+	// to XFF, and we appended nginx's IP to XFF already as well...), or the
+	// traffic was direct to varnish-fe, in which case XCIP is not yet set
+	// and XFF is external + our addition of client.ip.
+
 	if (!req.http.X-Client-IP) {
-		// direct-to-port-80 case, set XCIP ourselves
 		set req.http.X-Client-IP = client.ip;
-		set req.http.X-Trusted-Proxy = netmapper.map("proxies", req.http.X-Client-IP);
-		// normalize to boolean post-netmapper (varnish-3.0.4...)
-		if (req.http.X-Trusted-Proxy == "") {
-			unset req.http.X-Trusted-Proxy;
-		}
-		if (req.http.X-Trusted-Proxy && req.http.X-Forwarded-For) {
-			// get last from trusted-proxy-supplied XFF
-			set req.http.maybe-xcip = regsub(req.http.X-Forwarded-For, "^([^,]+, )+", "");
-			if(<%= @std_ipcast %>.ip(req.http.maybe-xcip, "127.0.0.1") !~ wikimedia_nets) {
-				set req.http.X-Client-IP = req.http.maybe-xcip;
-			}
-			unset req.http.maybe-xcip;
-		}
+		unset req.http.via-nginx;
 	} else {
-		// XCIP from nginx, XFF set/appended by nginx and contains at
-		// least XCIP at the end, possibly prepended by other addrs
-		// set externally by some proxy.
-		set req.http.X-Trusted-Proxy = netmapper.map("proxies", req.http.X-Client-IP);
-		// normalize to boolean post-netmapper (varnish-3.0.4...)
-		if (req.http.X-Trusted-Proxy == "") {
-			unset req.http.X-Trusted-Proxy;
+		set req.http.via-nginx = 1;
+	}
+
+	set req.http.X-Trusted-Proxy = netmapper.map("proxies", req.http.X-Client-IP);
+	// normalize to boolean post-netmapper (varnish-3.0.4...)
+	if (req.http.X-Trusted-Proxy == "") {
+		unset req.http.X-Trusted-Proxy;
+	}
+
+	if (req.http.X-Trusted-Proxy) {
+		// We need the right-most entry of XFF that was set externally
+		// to our software stack.  If this was direct-to-varnish, that
+		// means the 2nd entry in from the right (varnish already
+		// appended client.ip).  If this was nginx->varnish, we want
+		// the 3rd entry in from the right (nginx appended a client IP,
+		// then varnish appended nginx's IP).
+
+		// set maybe-xcip to XFF with final entry stripped (added by this varnish)
+		set req.http.maybe-xcip = regsub(req.http.X-Forwarded-For, ", [^,]+$", "");
+
+		// repeat final-strip if this was via-nginx to remove the one added by nginx
+		if (req.http.via-nginx) {
+			unset req.http.via-nginx;
+			set req.http.maybe-xcip = regsub(req.http.maybe-xcip, ", [^,]+$", "");
 		}
-		if (req.http.X-Trusted-Proxy) {
-			// We want the second-to-last XFF entry here, assuming
-			// there's two or more IPs.  Note that with the
-			// regsub's below if there was only one (which would
-			// alias XCIP by definition), there would be no commas
-			// to match and XCIP gets reset to its original value.
-			set req.http.maybe-xcip = regsub(req.http.X-Forwarded-For, ", [^,]+$", "");
-			set req.http.maybe-xcip = regsub(req.http.maybe-xcip, "^([^,]+, )+", "");
-			if(<%= @std_ipcast %>.ip(req.http.maybe-xcip, "127.0.0.1") !~ wikimedia_nets) {
-				set req.http.X-Client-IP = req.http.maybe-xcip;
-			}
-			unset req.http.maybe-xcip;
+
+		// set maybe-xcip to the right-most entry left in itself
+		set req.http.maybe-xcip = regsub(req.http.maybe-xcip, "^([^,]+, )+", "");
+
+		// if it's an outside IP, use it to set XCIP (otherwise leave
+		// XCIP alone and it's still the proxy's IP)
+		if(<%= @std_ipcast %>.ip(req.http.maybe-xcip, "127.0.0.1") !~ wikimedia_nets) {
+			set req.http.X-Client-IP = req.http.maybe-xcip;
 		}
+
+		// cleanup
+		unset req.http.maybe-xcip;
 	}
 
 	// Now check carrier database for setting X-Carrier based on XCIP
@@ -238,11 +235,10 @@ sub vcl_recv {
 		call normalize_request;
 
 		// IP processing is req->req mangling that shouldn't be re-done on restart
-		call recv_fe_ip_processing;
-
 <% if not @varnish_version4 -%>
 		call wm_common_recv_set_xff;
 <% end -%>
+		call recv_fe_ip_processing;
 	}
 
 	call wm_common_recv_early;
