@@ -70,9 +70,9 @@ define service::uwsgi(
     $deployment_user        = 'deploy-service',
     $deployment_manage_user = true,
 ) {
-    service::deploy::scap { $repo:
+    scap::target { $repo:
         service_name => $title,
-        user         => $deployment_user,
+        deploy_user  => $deployment_user,
         before       => Uwsgi::App[$title],
         manage_user  => $deployment_manage_user,
     }
