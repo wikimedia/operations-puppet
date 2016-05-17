@@ -5,6 +5,9 @@ datacenters:
   - esams
   - ulsfo
 
+# the datacenter that currently gets traffic
+active_datacenter: eqiad
+
 # Main statsd instance
 statsd: statsd.eqiad.wmnet:8125
 
