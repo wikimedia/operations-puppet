@@ -1,0 +1,14 @@
+<% @clusters.sort.each do |name, endpoints| -%>
+cluster <%= name %>
+  any_of
+    <% endpoints.sort.each do |e| -%>
+      <%= e %>
+    <% end -%>
+  ;
+<% end -%>
+
+match *
+  send to <%= @clusters.keys.sort.join(' ') %>
+  ;
+
+send statistics to <%= @clusters.keys.sort.join(' ') %> ;

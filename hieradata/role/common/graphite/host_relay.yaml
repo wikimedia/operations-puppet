@@ -1,0 +1,4 @@
+graphite::host_relay::clusters:
+  eqiad:
+    - graphite1001.eqiad.wmnet:2003
+    - graphite1003.eqiad.wmnet:2003
