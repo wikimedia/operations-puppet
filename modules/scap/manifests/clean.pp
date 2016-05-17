@@ -13,10 +13,14 @@ class scap::clean {
         '/usr/local/bin/scap-rebuild-cdbs',
         '/usr/local/bin/scap-recompile',
         '/usr/local/bin/sync-common',
-        '/srv/deployment/scap',
     ]
 
     file { $old_binstubs:
         ensure => absent,
+    }
+
+    file { '/srv/deployment/scap':
+        ensure => absent,
+        force  => true,
     }
 }
