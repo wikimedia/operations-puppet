@@ -13,6 +13,15 @@ JAVA=/usr/bin/java
 # headless allow graphs etc. to work even when an X server is present
 JAVA_ARGS="-Djava.awt.headless=true -Dhudson.plugins.git.GitSCM.verbose=true"
 
+# Prevents Jenkins 1.651.2+ from stripping parameters injected by the Gearman
+# plugin.
+#
+# References:
+#   https://phabricator.wikimedia.org/T133737
+#   https://jenkins.io/blog/2016/05/11/security-update/
+#   https://wiki.jenkins-ci.org/display/SECURITY/Jenkins+Security+Advisory+2016-05-11
+JAVA_ARGS="${JAVA_ARGS} -Dhudson.model.ParametersAction.keepUndefinedParameters=true"
+
 PIDFILE=/var/run/jenkins/jenkins.pid
 
 # user id to be invoked as (otherwise will run as root; not wise!)
