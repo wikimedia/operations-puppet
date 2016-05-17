@@ -13,26 +13,20 @@ keyholder_agents:
   phabricator:
     trusted_groups:
       - deploy-phabricator
-    key_fingerprint: 39:b3:2c:a7:b2:80:65:ff:0c:97:e1:22:88:6c:59:10
-    key_secret: phabricator/phab_deploy_private_key
 
   eventlogging:
     trusted_groups:
       - eventlogging-admins
-    key_fingerprint: b6:4e:1a:1b:4b:70:ef:91:31:cd:a3:18:9a:ca:41:44
 
   deploy-service:
     trusted_groups:
       - deploy-service
       - aqs-admins
-    key_fingerprint: 6d:54:92:8b:39:10:f5:9b:84:40:36:ef:3c:9a:6d:d8
-    key_file: servicedeploy_rsa
 
-  # Note: dumpsdeploy normally would have ops as trusted group,
-  # but ops is added implicitly anyway
   dumpsdeploy:
-    key_fingerprint: 86:c9:17:ab:b7:00:79:b5:8a:c5:b5:ee:29:24:c9:2f
-
+    trusted_groups:
+      - ops
+    key_name: dumps
 
 # scap::source declarations.  These are created
 # by the scap::server class.  Each source listed here
@@ -64,4 +58,3 @@ sources:
   # cxserver is the ContentTranslation server.
   cxserver/deploy:
     repository: cxserver/deploy
-
