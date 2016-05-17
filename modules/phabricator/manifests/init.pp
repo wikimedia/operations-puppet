@@ -65,7 +65,7 @@ class phabricator (
     $serveralias      = '',
     $deploy_user      = 'phab-deploy',
     $deploy_target    = 'phabricator/deployment',
-    $deploy_key       = "puppet:///modules/phabricator/phab-deploy-key.${::realm}",
+    $deploy_key       = 'phabricator',
 ) {
 
     $deploy_root = "/srv/deployment/${deploy_target}"
@@ -134,10 +134,12 @@ class phabricator (
         }
     }
 
-    class { '::phabricator::deployment::target':
-        deploy_user   => $deploy_user,
-        deploy_key    => $deploy_key,
-        deploy_target => $deploy_target,
+    scap::target { $deploy_target:
+        deploy_user => $deploy_user,
+        sudo_rules  => [
+            'ALL=(root) NOPASSWD: /usr/sbin/service phd *',
+            'ALL=(root) NOPASSWD: /usr/sbin/service apache2 *',
+        ]
     }
 
     file { $phabdir:
