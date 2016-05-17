@@ -60,14 +60,14 @@ class lvs::monitor_services($contacts = 'admins,team-services', $critical = fals
         host          => 'restbase.svc.eqiad.wmnet',
         group         => 'lvs',
         description   => 'Restbase LVS eqiad',
-        check_command => 'check_wmf_service!http://restbase.svc.eqiad.wmnet:7231!15',
+        check_command => 'check_wmf_service!http://restbase.svc.eqiad.wmnet:7231/en.wikipedia.org/v1!15',
     }
 
     monitoring::service { 'check_restbase_cluster_codfw':
         host          => 'restbase.svc.codfw.wmnet',
         group         => 'lvs',
         description   => 'Restbase LVS eqiad',
-        check_command => 'check_wmf_service!http://restbase.svc.codfw.wmnet:7231!15',
+        check_command => 'check_wmf_service!http://restbase.svc.codfw.wmnet:7231/en.wikipedia.org/v1!15',
     }
 
 
