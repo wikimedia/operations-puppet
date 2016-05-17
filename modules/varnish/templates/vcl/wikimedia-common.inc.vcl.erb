@@ -243,15 +243,13 @@ sub wm_common_recv_purge {
 
 <% if not @varnish_version4 -%>
 sub wm_common_recv_set_xff {
-	// XFF-appending is non-idempotent for restart purposes..
-	if (req.restarts == 0) {
-		// All layers need to update XFF with client.ip hop-by-hop so that it
-		// looks right to layers beneath, including the app layer
-		if (req.http.X-Forwarded-For) {
-			set req.http.X-Forwarded-For = req.http.X-Forwarded-For + ", " + client.ip;
-		} else {
-			set req.http.X-Forwarded-For = client.ip;
-		}
+	// XFF-appending is non-idempotent for restart purposes, should be in req.restarts == 0 block
+	// All layers need to update XFF with client.ip hop-by-hop so that it
+	// looks right to layers beneath, including the app layer
+	if (req.http.X-Forwarded-For) {
+		set req.http.X-Forwarded-For = req.http.X-Forwarded-For + ", " + client.ip;
+	} else {
+		set req.http.X-Forwarded-For = client.ip;
 	}
 }
 <% end -%>

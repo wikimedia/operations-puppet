@@ -239,11 +239,12 @@ sub vcl_recv {
 
 		// IP processing is req->req mangling that shouldn't be re-done on restart
 		call recv_fe_ip_processing;
-	}
 
 <% if not @varnish_version4 -%>
-	call wm_common_recv_set_xff;
+		call wm_common_recv_set_xff;
 <% end -%>
+	}
+
 	call wm_common_recv_early;
 
 <% if @varnish_version4 -%>

@@ -19,7 +19,9 @@ sub vcl_recv {
 	}
 
 <% if not @varnish_version4 -%>
-	call wm_common_recv_set_xff;
+	if (req.restarts == 0) {
+		call wm_common_recv_set_xff;
+	}
 <% end -%>
 	call wm_common_recv_early;
 
