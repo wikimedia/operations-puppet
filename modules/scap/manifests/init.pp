@@ -3,9 +3,6 @@
 # Common role for scap masters and targets
 
 class scap ($deployment_server = 'deployment') {
-    # Temporarily included to clean legacy code, should be removed once run
-    include scap::clean
-
     package { 'scap':
         ensure => '3.2.0-1',
     }
