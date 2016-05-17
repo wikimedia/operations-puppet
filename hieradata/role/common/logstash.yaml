@@ -4,7 +4,7 @@ admin::groups:
   - elasticsearch-roots
 
 # ES-specific
-# NOTE: multicast_group and cluster_name must be kept in sync with the backend
+# NOTE: cluster_name must be kept in sync with the backend
 # node config in hieradata/role/common/logstash/elasticsearch.yaml
 elasticsearch::auto_create_index: true
 elasticsearch::cluster_name: production-logstash-eqiad
@@ -15,7 +15,6 @@ elasticsearch::heap_memory: '4G'
 elasticsearch::holds_data: false
 elasticsearch::master_eligible: false
 elasticsearch::minimum_master_nodes: 2
-elasticsearch::multicast_group: 224.2.2.6
 elasticsearch::recover_after_nodes: 2
 elasticsearch::recover_after_time: '1m'
 elasticsearch::unicast_hosts:
