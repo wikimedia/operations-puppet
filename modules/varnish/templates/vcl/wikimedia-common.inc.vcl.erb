@@ -241,9 +241,8 @@ sub wm_common_recv_purge {
 	}
 }
 
-sub wm_common_recv_early {
-	unset req.http.X-CDIS; // clear internal cache-disposition header
-
+<% if not @varnish_version4 -%>
+sub wm_common_recv_set_xff {
 	// XFF-appending is non-idempotent for restart purposes..
 	if (req.restarts == 0) {
 		// All layers need to update XFF with client.ip hop-by-hop so that it
@@ -254,6 +253,11 @@ sub wm_common_recv_early {
 			set req.http.X-Forwarded-For = client.ip;
 		}
 	}
+}
+<% end -%>
+
+sub wm_common_recv_early {
+	unset req.http.X-CDIS; // clear internal cache-disposition header
 
 	// To pass this check, the method must be in allowed_methods (even OPTIONS must be there to be supported),
 	// Additionally, if OPTIONS is allowed, it must be accompanied by Origin:

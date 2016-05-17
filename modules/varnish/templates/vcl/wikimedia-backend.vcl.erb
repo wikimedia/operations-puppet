@@ -18,6 +18,9 @@ sub vcl_recv {
 		<%= error_synth(403, "Access denied") -%>
 	}
 
+<% if not @varnish_version4 -%>
+	call wm_common_recv_set_xff;
+<% end -%>
 	call wm_common_recv_early;
 
 <% if @cache_route == 'direct' -%>
