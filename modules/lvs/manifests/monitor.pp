@@ -13,22 +13,5 @@ class lvs::monitor {
     create_resources(lvs::monitor_service_http_https, $monitors)
 
     # Experimental load-balancer monitoring for services using service-checker
-    monitoring::service { 'check_mobileapps_cluster_eqiad':
-        host          => 'mobileapps.svc.eqiad.wmnet',
-        group         => 'lvs',
-        description   => 'Mobileapps LVS eqiad',
-        check_command => 'check_wmf_service!http://mobileapps.svc.eqiad.wmnet:8888!15',
-        critical      => false,
-        contact_group => 'admins,team-services',
-    }
-
-    # Experimental load-balancer monitoring for services using service-checker
-    monitoring::service { 'check_mobileapps_cluster_codfw':
-        host          => 'mobileapps.svc.codfw.wmnet',
-        group         => 'lvs',
-        description   => 'Mobileapps LVS eqiad',
-        check_command => 'check_wmf_service!http://mobileapps.svc.codfw.wmnet:8888!15',
-        critical      => false,
-        contact_group => 'admins,team-services',
-    }
+    include lvs::monitor_services
 }
