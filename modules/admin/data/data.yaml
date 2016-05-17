@@ -412,7 +412,7 @@ groups:
   aqs-admins:
     description: Group of admins for the Analytics Query Service
     gid: 764
-    members: [joal, milimetric, gwicke, eevans, mobrovac, otto]
+    members: [joal, milimetric, gwicke, eevans, mobrovac, otto, elukey]
     privileges: ['ALL = NOPASSWD: /usr/sbin/service cassandra *',
                  'ALL = (cassandra) NOPASSWD: ALL',
                  'ALL = NOPASSWD: /usr/sbin/service restbase *',
