@@ -215,12 +215,16 @@ class role::planet::venus {
     # since we are on a private IP now we need to proxy to fetch external URLs
     $planet_http_proxy = "http://url-downloader.${::site}.wikimedia.org:8080"
 
+    # set to the currently active DC. feed updates are only running here.
+    $planet_active_dc = 'eqiad'
+
     # the 'planet' class from modules/planet/init.pp does the setup
     class {'::planet':
         planet_domain_name => $planet_domain_name,
         planet_languages   => $planet_languages,
         planet_meta_link   => $planet_meta_link,
-        planet_http_proxy  => $planet_http_proxy
+        planet_http_proxy  => $planet_http_proxy,
+        planet_active_dc   => $planet_active_dc
     }
 
     ferm::service { 'planet-http':
