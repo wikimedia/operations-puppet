@@ -27,7 +27,7 @@ class WmtotpMethod(base.AuthMethod):
     """Construct a User/Password/totp based authentication method.
 
     :param string password: Password for authentication.
-    :param string totp: Totp token for authentication.
+    :param string totp: 2FA (TOTP) token for authentication.
     :param string username: Username for authentication.
     :param string user_id: User ID for authentication.
     :param string user_domain_id: User's domain ID for authentication.
@@ -91,7 +91,7 @@ class Wmtotp(base.AuthConstructor):
             cfg.StrOpt('user-domain-id', help="User's domain id"),
             cfg.StrOpt('user-domain-name', help="User's domain name"),
             cfg.StrOpt('password', secret=True, help="User's password"),
-            cfg.StrOpt('totp', secret=True, help="Totp token"),
+            cfg.StrOpt('totp', secret=True, help="2FA (TOTP) token"),
         ])
 
         return options
@@ -104,7 +104,7 @@ class Wmtotp(base.AuthConstructor):
         if not kwargs.get('totp') and (hasattr(sys.stdin, 'isatty') and
                                        sys.stdin.isatty()):
             try:
-                kwargs['totp'] = getpass.getpass('Totp token: ')
+                kwargs['totp'] = getpass.getpass('2FA (TOTP) token: ')
             except EOFError:
                 pass
 

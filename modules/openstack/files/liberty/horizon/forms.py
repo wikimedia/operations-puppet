@@ -56,10 +56,10 @@ class Login(django_auth_forms.AuthenticationForm):
                   "to log in at wikitech.wikimedia.org.")
     password = forms.CharField(label=_("Password"),
                                widget=forms.PasswordInput(render_value=False))
-    totptoken = forms.CharField(label=_("Totp Token"),
+    totptoken = forms.CharField(label=_("Two-factor authentication code"),
                                 widget=forms.TextInput(),
                                 help_text="Login requires two-factor "
-                                          "authentication.  To enable 2fa, "
+                                          "authentication.  To enable it, "
                                           "visit Preferences->User "
                                           "Profile in your Wikitech account")
 
