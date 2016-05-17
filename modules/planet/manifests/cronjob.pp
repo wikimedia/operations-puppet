@@ -8,8 +8,15 @@ define planet::cronjob {
     # randomize the minute crons run, using $title as seed
     $minute = fqdn_rand(60, $title)
 
+    # crons only running if in active datacenter
+    if $planet_active_dc in $domain {
+        $cron_ensure = 'present'
+    } else {
+        $cron_ensure = 'absent'
+    }
+
     cron { "update-${title}-planet":
-        ensure  => 'present',
+        ensure  => $cron_ensure,
         command => "http_proxy=\"${planet::planet_http_proxy}\" https_proxy=\$http_proxy ${planet_bin} -v ${planet_config} > ${planet_logfile} 2>&1",
         user    => 'planet',
         minute  => $minute,
