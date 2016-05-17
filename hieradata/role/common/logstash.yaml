@@ -15,7 +15,6 @@ elasticsearch::heap_memory: '2G'
 elasticsearch::holds_data: false
 elasticsearch::master_eligible: false
 elasticsearch::minimum_master_nodes: 2
-elasticsearch::multicast_group: 224.2.2.6
 elasticsearch::recover_after_nodes: 2
 elasticsearch::recover_after_time: '1m'
 elasticsearch::unicast_hosts:

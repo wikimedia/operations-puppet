@@ -50,7 +50,7 @@
 #       Note: It make sense to have multicast configuration separated from
 #       unicast. It is valid to have both unicast and multicast enabled at the
 #       same time and can be useful as a transition state.
-#       Defaults to 'true'
+#       Defaults to 'false'
 # - $unicast_hosts: hosts to seed Elasticsearch's unicast discovery mechanism.
 #       In an environment without reliable multicast (OpenStack) add all the
 #       hosts in the cluster to this list.  Elasticsearch will still use
@@ -94,7 +94,7 @@ class elasticsearch($cluster_name,
                     $awareness_attributes = undef,
                     $row = undef,
                     $rack = undef,
-                    $multicast_enabled = true,
+                    $multicast_enabled = false,
                     $unicast_hosts = undef,
                     $filter_cache_size = '10%',
                     $bulk_thread_pool_executors = undef,

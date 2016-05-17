@@ -163,7 +163,6 @@ role::deployment::mediawiki::key_fingerprint: f0:54:06:fa:17:27:97:a2:cc:69:a0:a
 "elasticsearch::heap_memory": 4G
 "elasticsearch::recover_after_nodes": 4
 "elasticsearch::statsd_host": labmon1001.eqiad.wmnet
-"elasticsearch::multicast_enabled": false
 "elasticsearch::unicast_hosts":
     - deployment-elastic05
     - deployment-elastic06
