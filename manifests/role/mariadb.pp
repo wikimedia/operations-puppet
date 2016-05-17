@@ -131,7 +131,6 @@ class role::mariadb::misc(
         shard => $shard,
     }
 
-    # TODO: move pt-heartbeat outside of the actual master
     class { 'mariadb::heartbeat':
         shard   => $shard,
         enabled => $master,
@@ -207,7 +206,6 @@ class role::mariadb::misc::phabricator(
         include coredb_mysql::snapshot
     }
 
-    # TODO: move pt-heartbeat outside of the actual master
     class { 'mariadb::heartbeat':
         shard   => $shard,
         enabled => $master,
@@ -263,10 +261,9 @@ class role::mariadb::misc::eventlogging(
         shard => $shard,
     }
 
-    # TODO: move pt-heartbeat outside of the actual master
     class { 'mariadb::heartbeat':
         shard   => $shard,
-        enabled => $master,
+        enabled => false,
     }
 }
 
@@ -579,7 +576,7 @@ class role::mariadb::core(
         contact_group => 'admins', # only show on nagios/irc
     }
 
-    $heartbeat_enabled = $master and ($::mw_primary == $::site)
+    $heartbeat_enabled = $master
     class { 'mariadb::heartbeat':
         shard   => $shard,
         enabled => $heartbeat_enabled,
