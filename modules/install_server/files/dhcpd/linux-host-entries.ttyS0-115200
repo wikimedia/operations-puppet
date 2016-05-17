@@ -145,6 +145,13 @@ host planet1001 {
     filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
+host planet2001 {
+    hardware ethernet aa:00:00:76:5e:11;
+    fixed-address planet2001.codfw.wmnet;
+    option pxelinux.pathprefix "jessie-installer/";
+    filename "jessie-installer/debian-installer/amd64/pxelinux.0";
+}
+
 host pollux {
     hardware ethernet aa:00:00:2d:a2:76;
     fixed-address pollux.wikimedia.org;
