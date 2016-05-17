@@ -46,8 +46,9 @@ class graphite(
                   'localhost:1903',
               ],
             },
-            'cluster_tap' => {},
-            'cluster_routes' => {},
+            'any_of_clusters' => {},
+            'cluster_tap' => [],
+            'cluster_routes' => [],
     }
 
     class { '::graphite::carbon_c_relay':

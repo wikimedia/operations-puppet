@@ -20,7 +20,7 @@ class role::graphite::production {
                 ]
             },
             cluster_routes   => [
-                ['^cassandra\.', 'big_users'],
+                ['^cassandra\.', ['big_users']],
             ]
         }
     }
