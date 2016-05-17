@@ -13,11 +13,16 @@
 #   see the role class for this
 # $planet_meta_link - a protocol relative link
 #   example: meta.wikimedia.org/wiki/Planet_Wikimedia
+# $planet_http_proxy - set proxy to be used for downloading feeds
+#   example: http://url-downloader.${::site}.wikimedia.org:8080
+# $planet_active_dc - currently active datacenter, updates will only run here
+#   example: eqiad
 class planet (
     $planet_domain_name,
     $planet_languages,
     $planet_meta_link,
     $planet_http_proxy,
+    $planet_active_dc,
 ) {
 
     # locales are essential for planet
