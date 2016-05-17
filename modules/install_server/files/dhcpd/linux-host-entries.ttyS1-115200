@@ -4945,6 +4945,110 @@ host mw1283 {
 	fixed-address mw1283.eqiad.wmnet;
 }
 
+host mw1284 {
+	hardware ethernet 14:18:77:61:31:70;
+	fixed-address mw1284.eqiad.wmnet;
+}
+
+host mw1285 {
+	hardware ethernet 14:18:77:61:4A:6F;
+	fixed-address mw1285.eqiad.wmnet;
+}
+
+host mw1286 {
+	hardware ethernet 14:18:77:61:41:B3;
+	fixed-address mw1286.eqiad.wmnet;
+}
+
+host mw1287 {
+	hardware ethernet 14:18:77:61:33:F1;
+	fixed-address mw1287.eqiad.wmnet;
+}
+
+host mw1288 {
+	hardware ethernet 14:18:77:61:37:62;
+	fixed-address mw1288.eqiad.wmnet;
+}
+
+host mw1289 {
+	hardware ethernet 14:18:77:61:4A:33;
+	fixed-address mw1289.eqiad.wmnet;
+}
+
+host mw1290 {
+	hardware ethernet 14:18:77:61:65:3C;
+	fixed-address mw1290.eqiad.wmnet;
+}
+
+host mw1291 {
+	hardware ethernet 14:18:77:61:3C:D3;
+	fixed-address mw1291.eqiad.wmnet;
+}
+
+host mw1292 {
+	hardware ethernet 14:18:77:61:B0:87;
+	fixed-address mw1292.eqiad.wmnet;
+}
+
+host mw1293 {
+	hardware ethernet 14:18:77:61:4A:5D;
+	fixed-address mw1293.eqiad.wmnet;
+}
+
+host mw1294 {
+	hardware ethernet 14:18:77:61:3B:BF;
+	fixed-address mw1294.eqiad.wmnet;
+}
+
+host mw1295 {
+	hardware ethernet 14:18:77:61:34:09;
+	fixed-address mw1295.eqiad.wmnet;
+}
+
+	hardware ethernet 14:18:77:61:34:8F;
+	fixed-address mw1296.eqiad.wmnet;
+}
+
+host mw1297 {
+	hardware ethernet 14:18:77:61:37:50;
+	fixed-address mw1297.eqiad.wmnet;
+}
+
+host mw1298 {
+	hardware ethernet 14:18:77:61:38:FA;
+	fixed-address mw1298.eqiad.wmnet;
+}
+
+host mw1299 {
+	hardware ethernet 14:18:77:61:43:09;
+	fixed-address mw1299.eqiad.wmnet;
+}
+
+host mw1300 {
+	hardware ethernet 14:18:77:61:3A:A9;
+	fixed-address mw1300.eqiad.wmnet;
+}
+
+host mw1301 {
+	hardware ethernet 14:18:77:61:64:3C;
+	fixed-address mw1301.eqiad.wmnet;
+}
+
+host mw1302 {
+	hardware ethernet 14:18:77:61:49:DF;
+	fixed-address mw1302.eqiad.wmnet;
+}
+
+host mw1303 {
+	hardware ethernet 14:18:77:61:49:7F;
+	fixed-address mw1303.eqiad.wmnet;
+}
+
+host mw1304 {
+	hardware ethernet 14:18:77:61:31:64;
+	fixed-address mw1304.eqiad.wmnet;
+}
+
 host mw2001 {
     hardware ethernet 78:2b:cb:2f:cf:57;
     fixed-address mw2001.codfw.wmnet;
