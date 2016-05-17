@@ -15,9 +15,7 @@ include "analytics.inc.vcl";
 /* Include the VCL file for this role */
 include "<%= @varnish_include_path %><%= @vcl %>.inc.vcl";
 
-// *** HTTPS recv code - domain-based 301/302->HTTPS decisions happen here
-// if GET/HEAD filter is modified/removed later, keep in mind we need to not affect
-//   the PURGE traffic here, as purge is called after this.
+// *** HTTPS-forcing recv code
 sub https_recv_redirect {
 	if (req.http.X-Forwarded-Proto != "https") {
 		if (<%= @req_method %> == "GET" || <%= @req_method %> == "HEAD") {
@@ -32,11 +30,11 @@ sub https_recv_redirect {
 				<%= error_synth(751, "TLS Redirect") -%>
 			}
 		}
+		else if (req.http.Host !~ "\.beta\.wmflabs\.org$") {
 <% if @vcl_config.fetch("secure_post", true) -%>
-		if (<%= @req_method %> == "POST" && !(req.http.Host ~ "\.beta\.wmflabs\.org$")) {
-			<%= error_synth(403, "Insecure POST Forbidden - use HTTPS") -%>
+			<%= error_synth(403, "Insecure Request Forbidden - use HTTPS") -%>
+<% end -%>
 		}
-<% end %>
 	}
 }
 
@@ -253,7 +251,9 @@ sub vcl_recv {
 
 	call wm_common_recv_grace;
 
-	call https_recv_redirect;
+	if (<%= req_method %> != "PURGE") {
+		call https_recv_redirect;
+	}
 
 	if (req.url ~ "^/beacon\/[^/?]+") {
 		// Logging beacon endpoints
