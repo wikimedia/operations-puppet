@@ -113,6 +113,14 @@ class keyholder {
         require  => Service['keyholder-agent'],
     }
 
+    if $::realm == 'labs' {
+        file { '/etc/keyholder-auth.d/keyholder.conf':
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0444',
+            content => 'REQUIRE_ENCRYPTED_KEYS="no"',
+        }
+    }
 
     # The `keyholder` script provides a simplified command-line
     # interface for managing the agent. See `keyholder --help`.
