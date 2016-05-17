@@ -7,10 +7,19 @@ cluster <%= name %>
   ;
 <% end -%>
 
+<% @c_relay_settings['any_of_clusters'].sort.each do |name, endpoints| -%>
+cluster <%= name %>
+  any_of
+    <% endpoints.sort.each do |e| -%>
+      <%= e %>
+    <% end -%>
+  ;
+<% end -%>
+
 <% @c_relay_settings['cluster_tap'].sort.each do |tap| -%>
 # duplicate (tap) this metric to <%= tap[1] %>
 match <%= tap[0] %>
-  send to <%= tap[1] %>
+  send to <%= tap[1].join(' ') %>
   ;
 
 <% end -%>
@@ -18,7 +27,7 @@ match <%= tap[0] %>
 <% @c_relay_settings['cluster_routes'].sort.each do |route| -%>
 # route this metric to <%= route[1] %>, don't send to backends
 match <%= route[0] %>
-  send to <%= route[1] %>
+  send to <%= route[1].join(' ') %>
   stop
   ;
 
