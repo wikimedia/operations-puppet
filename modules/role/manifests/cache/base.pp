@@ -14,6 +14,12 @@ class role::cache::base(
     include network::constants
     include conftool::scripts
 
+    $cache_cluster = hiera('cache::cluster')
+
+    system::role { "role::cache::${cache_cluster}":
+        description => "${cache_cluster} Varnish cache server",
+    }
+
     # Client connection stats from the 'X-Connection-Properties'
     # header set by the SSL terminators.
     ::varnish::logging::xcps { 'xcps':
@@ -23,6 +29,18 @@ class role::cache::base(
     ::varnish::logging::statsd { 'default':
         statsd_server => 'statsd.eqiad.wmnet',
         key_prefix    => "varnish.${::site}.backends",
+    }
+
+    # Install a varnishkafka producer to send
+    # varnish webrequest logs to Kafka.
+    class { 'role::cache::kafka::webrequest':
+        topic => "webrequest_${cache_cluster}",
+    }
+
+    # Parse varnishlogs for request statistics and send to statsd.
+    varnish::logging::reqstats { 'frontend':
+        metric_prefix => "varnish.${::site}.${cache_cluster}.frontend.request",
+        statsd        => hiera('statsd'),
     }
 
     # Only production needs system perf tweaks and NFS client disable

@@ -1,4 +1,5 @@
 cluster: cache_text
+cache::cluster: text
 admin::groups:
   - perf-roots
 # The contents of this hash control our DC->DC routing for varnish backend

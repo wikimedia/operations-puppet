@@ -1,8 +1,4 @@
 class role::cache::maps {
-    system::role { 'role::cache::maps':
-        description => 'maps Varnish cache server',
-    }
-
     include role::cache::2layer
     include role::cache::ssl::unified
     if $::standard::has_ganglia {
@@ -68,17 +64,5 @@ class role::cache::maps {
         fe_cache_be_opts => $fe_cache_be_opts,
         be_cache_be_opts => $be_cache_be_opts,
         cluster_nodes    => hiera('cache::maps::nodes'),
-    }
-
-    # Install a varnishkafka producer to send
-    # varnish webrequest logs to Kafka.
-    class { 'role::cache::kafka::webrequest':
-        topic => 'webrequest_maps',
-    }
-
-    # Parse varnishlogs for request statistics and send to statsd.
-    varnish::logging::reqstats { 'frontend':
-        metric_prefix => "varnish.${::site}.maps.frontend.request",
-        statsd        => hiera('statsd'),
     }
 }

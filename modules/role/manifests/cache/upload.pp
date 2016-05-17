@@ -1,8 +1,4 @@
 class role::cache::upload {
-    system::role { 'role::cache::upload':
-        description => 'upload Varnish cache server',
-    }
-
     include role::cache::2layer
     include role::cache::ssl::unified
     if $::standard::has_ganglia {
@@ -107,20 +103,8 @@ class role::cache::upload {
         cluster_nodes    => hiera('cache::upload::nodes'),
     }
 
-    # Install a varnishkafka producer to send
-    # varnish webrequest logs to Kafka.
-    class { 'role::cache::kafka::webrequest':
-        topic => 'webrequest_upload',
-    }
-
     # Media browser cache hit rate and request volume stats.
     ::varnish::logging::media { 'media':
         statsd_server => 'statsd.eqiad.wmnet',
-    }
-
-    # Parse varnishlogs for request statistics and send to statsd.
-    varnish::logging::reqstats { 'frontend':
-        metric_prefix => "varnish.${::site}.upload.frontend.request",
-        statsd        => hiera('statsd'),
     }
 }

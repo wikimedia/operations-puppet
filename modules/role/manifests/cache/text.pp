@@ -1,8 +1,4 @@
 class role::cache::text {
-    system::role { 'role::cache::text':
-        description => 'text Varnish cache server',
-    }
-
     require geoip
     require geoip::dev # for VCL compilation using libGeoIP
     include role::cache::2layer
@@ -143,18 +139,6 @@ class role::cache::text {
     # consumption.
     class { '::role::cache::kafka::eventlogging':
         varnish_name => 'frontend',
-    }
-
-    # Install a varnishkafka producer to send
-    # varnish webrequest logs to Kafka.
-    class { 'role::cache::kafka::webrequest':
-        topic => 'webrequest_text',
-    }
-
-    # Parse varnishlogs for request statistics and send to statsd.
-    varnish::logging::reqstats { 'frontend':
-        metric_prefix => "varnish.${::site}.text.frontend.request",
-        statsd        => hiera('statsd'),
     }
 
     # ResourceLoader browser cache hit rate and request volume stats.
