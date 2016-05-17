@@ -5,7 +5,6 @@
 #
 class mediawiki::users(
     $web = 'www-data',
-    $mwdeploy_pub_key = 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC/81k2eXC0lM00+kg+5+p3kAHoOwAcbBjktlM7DENrrWdvkSlJasPDtHsU0+7woyGz2hHpI0SA8eBAEngl1X7uX4w1HU/VcG6np/kVMVrXPtn+sy4JtYTEVLuGzUstoc8PNxEDKvEQS7WGNLZtrgY0xWYsd7grt5tI/8qvhHd7coT6EWOcisRVnGY20r+/IWgsREZarbiW+0CSdQS0UzBbKQX/Hv+1asfZ24Qmq+yvXc2GuP+ewAm5gh0+5dUBHt69Ocq3PwCvqEypOrwpaqTGJbjvGLyaRN+YBNwoVwwl3EICYOJVDnNr/UxmzBT9RAJMHcpj6XrYiCTL1P9MUXyP54nZGOeqodSVn/L62lCwlh92D+E9qa6QFk8ikjKUr34vSI5jmQnscfaVz0k96YZP9B3J6+FDZOC8E/3SGRONrf4Fd4EAZGLQnoSdmwDHGGiHs8cjKnj4SinMabFzE3ReMV5k+Kdp999ne/vC2aryDSgc+EIXz731FmjPFmG5mdb/obGWHtU58kAbTSxPGV38uh1xvOSaSshfhYqK14G57x0ieUxV3zSZmJ5BuN5JbthgVNkAlMEATT2S6Cw+bBY7xgsE/0Wv139y0ChmatFyNv3uVbnMMTtJTBQGz+9Qb4xWTw1mxCxR5PmNmEaNI9+o/uk8M7fNd1muQfOUQPQkBQ== Mediawiki deployment key',
 ) {
 
     # The mwdeploy account is used by various scripts in the MediaWiki
@@ -25,7 +24,7 @@ class mediawiki::users(
     }
 
     ssh::userkey { 'mwdeploy':
-        content => $mwdeploy_pub_key,
+        content => secret('keyholder/mwdeploy.pub'),
     }
 
     # Grant mwdeploy sudo rights to run anything as itself, apache and the
