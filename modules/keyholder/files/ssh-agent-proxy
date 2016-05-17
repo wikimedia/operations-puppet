@@ -88,15 +88,29 @@ def unpack_variable_length_string(buffer, offset=0):
     return string, offset + struct.calcsize(fmt)
 
 
+def get_key_fingerprints():
+    """Look up the key fingerprints for all keys held by keyholder"""
+    keymap = {}
+    lines = subprocess.check_output(['/usr/local/sbin/keyholder', 'list-keys'])
+    for line in lines.splitlines():
+        fingerprint, path, algo = line.split(' ', 3)
+        keyfile = os.path.basename(path)
+        keymap[keyfile] = fingerprint
+    return keymap
+
 def get_key_perms(path):
     """Recursively walk `path`, loading YAML configuration files."""
     key_perms = {}
+    fingerprints = get_key_fingerprints()
     for fname in glob.glob(os.path.join(path, '*.y*ml')):
         with open(fname) as yml:
             for group, keys in yaml.safe_load(yml).items():
                 for key in keys:
-                    key = key.replace(':', '')
-                    key_perms.setdefault(key, set()).add(group)
+                    if key not in fingerprints
+                        continue
+                    fingerprint = fingerprints[key]
+                    fingerprint.replace(':', '')
+                    key_perms.setdefault(fingerprint, set()).add(group)
     return key_perms
 
 
