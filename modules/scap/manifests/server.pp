@@ -43,9 +43,7 @@
 #   class { 'scap::server':
 #       keyholder_agents => {
 #           'deploy-service' => {
-#               'trusted_group' => 'deploy-service',
-#               'key_fingerprint' => 'xx:xx:xx:xx:xx:xx:xx:xx:xx:xx:xx:xx:xx:xx:xx:xx',
-#               'key_file' => 'servicedeploy_rsa',
+#               'trusted_groups' => 'deploy-service',
 #           },
 #       },
 #       sources => {

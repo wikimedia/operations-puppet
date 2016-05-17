@@ -38,8 +38,6 @@
 # [*deploy_target*]
 #     The name of the scap3 deployment repo, e.g. phabricator/deployment
 #
-# [*deploy_key*]
-#     The url of the public key for the deploy_user to deploy with scap
 
 # === Examples
 #
@@ -65,7 +63,6 @@ class phabricator (
     $serveralias      = '',
     $deploy_user      = 'phab-deploy',
     $deploy_target    = 'phabricator/deployment',
-    $deploy_key       = "puppet:///modules/phabricator/phab-deploy-key.${::realm}",
 ) {
 
     $deploy_root = "/srv/deployment/${deploy_target}"
@@ -134,10 +131,13 @@ class phabricator (
         }
     }
 
-    class { '::phabricator::deployment::target':
-        deploy_user   => $deploy_user,
-        deploy_key    => $deploy_key,
-        deploy_target => $deploy_target,
+    scap::target { $deploy_target:
+        deploy_user => $deploy_user,
+        key_name    => 'phabricator',
+        sudo_rules  => [
+            'ALL=(root) NOPASSWD: /usr/sbin/service phd *',
+            'ALL=(root) NOPASSWD: /usr/sbin/service apache2 *',
+        ]
     }
 
     file { $phabdir:

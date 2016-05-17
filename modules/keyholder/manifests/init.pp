@@ -25,7 +25,7 @@
 #
 #  $ SSH_AUTH_SOCK=/run/keyholder/proxy.sock ssh remote-host ...
 #
-class keyholder {
+class keyholder($require_encrypted_keys='yes') {
 
     require_package('python3', 'python3-yaml')
 
@@ -111,6 +111,13 @@ class keyholder {
         ensure   => running,
         provider => 'upstart',
         require  => Service['keyholder-agent'],
+    }
+
+    file { '/etc/keyholder-auth.d/keyholder.conf':
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        content => "REQUIRE_ENCRYPTED_KEYS='${require_encrypted_keys}'",
     }
 
 
