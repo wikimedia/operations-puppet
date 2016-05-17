@@ -47,6 +47,8 @@ class role::installserver {
         nrpe_command => '/usr/local/lib/nagios/plugins/check_apt_mirror /srv/mirrors/debian',
     }
 
+    include mirrors::tails
+
     include install_server::tftp_server
     ferm::rule { 'tftp':
         rule => 'proto udp dport tftp { saddr $ALL_NETWORKS ACCEPT; }'
