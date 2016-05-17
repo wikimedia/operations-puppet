@@ -2,7 +2,6 @@
 elasticsearch::cluster_name: relforge-eqiad
 
 # ES-specific: Not default
-elasticsearch::multicast_enabled: false
 elasticsearch::unicast_hosts: # this should be set to the list of master eligible nodes
   - relforge1001.eqiad.wmnet
   - relforge1002.eqiad.wmnet
