@@ -33,6 +33,13 @@ sub https_recv_redirect {
 		else if (req.http.Host !~ "\.beta\.wmflabs\.org$") {
 <% if @vcl_config.fetch("secure_post", true) -%>
 			<%= error_synth(403, "Insecure Request Forbidden - use HTTPS") -%>
+<% else -%>
+			// T105794 - "Insecure Post":
+			// 2016-06-12 - 10% failure for non-"secure_post" clusters (this code)
+			// 2016-07-12 - "secure_post" behavior as default, remove option and 10% code
+			if (std.random(0,100) < 10.0) {
+				<%= error_synth(403, "Insecure Request Forbidden - use HTTPS") -%>
+			}
 <% end -%>
 		}
 	}
