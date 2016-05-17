@@ -10,9 +10,13 @@
 # [*deploy_user*]
 #   user that will be used for deployments
 #
-# [*public_key_source*]
-#   puppet source argument to pass to ssh::userkey for installing
-#   $deploy_user's public ssh key.
+# [*key_name*]
+#   The name of a keyholder ssh key used to access this deployment target.
+#   This should correspond to a key which is defined in keyholder::agent
+#   (which are defined by hiera data in common::scap::server)
+#   Warning: If key_name is left undefined, then you must define the correct
+#   ssh::userkey for your deploy_user so that scap can connect to the target
+#   from the deployment server with a corresponding key in keyholder.
 #
 # [*service_name*]
 #   service name that should be allowed to be restarted via sudo by
@@ -34,18 +38,17 @@
 #
 #   scap::target { 'mockbase':
 #       deploy_user => 'deploy-mockbase',
-#       public_key_source => 'puppet://modules/mockbase/deploy-test_rsa.pub'
+#       key_name => 'deploy-mockbase',
 #   }
 #
 #   scap::target { 'eventlogging/eventlogging':
 #       deploy_user => 'eventlogging',
-#       public_key_source => "puppet:///modules/eventlogging/deployment/eventlogging_rsa.pub.${::realm}",
 #       manage_user => false,
 #   }
 #
 define scap::target(
     $deploy_user,
-    $public_key_source,
+    $key_name = $deploy_user,
     $service_name = undef,
     $package_name = $title,
     $manage_user = true,
@@ -55,27 +58,33 @@ define scap::target(
     include scap
     include scap::ferm
 
-    if $manage_user and !defined(Group[$deploy_user]) {
-        group { $deploy_user:
-            ensure => present,
-            system => true,
-            before => User[$deploy_user],
+    if $manage_user
+    {
+        if !defined(Group[$deploy_user]) {
+            group { $deploy_user:
+                ensure => present,
+                system => true,
+                before => User[$deploy_user],
+            }
         }
-    } else {
-        Group[$deploy_user] -> Scap::Target[$title]
+        if !defined(User[$deploy_user]) {
+            user { $deploy_user:
+                ensure     => present,
+                shell      => '/bin/bash',
+                home       => '/var/lib/scap',
+                system     => true,
+                managehome => true,
+            }
+        }
+        if !defined(Ssh::Userkey[$deploy_user]) {
+            ssh::userkey { $deploy_user:
+                ensure  => 'present',
+                content => secret("keyholder/${key_name}.pub"),
+            }
+        }
     }
 
-    if $manage_user and !defined(User[$deploy_user]) {
-        user { $deploy_user:
-            ensure     => present,
-            shell      => '/bin/bash',
-            home       => '/var/lib/scap',
-            system     => true,
-            managehome => true,
-        }
-    } else {
-        User[$deploy_user] -> Scap::Target[$title]
-    }
+
 
     if $::realm == 'labs' {
         if !defined(Security::Access::Config["scap-allow-${deploy_user}"]) {
@@ -96,12 +105,6 @@ define scap::target(
                   owner => $deploy_user}],
         provider        => 'scap3',
         require         => [Package['scap'], User[$deploy_user]],
-    }
-
-    if !defined(Ssh::Userkey[$deploy_user]) {
-        ssh::userkey { $deploy_user:
-            source => $public_key_source,
-        }
     }
 
     # XXX: Temporary work-around for switching services from Trebuchet to Scap3
