@@ -81,6 +81,7 @@ define cassandra::instance(
 
     $tls_cluster_name       = $::cassandra::tls_cluster_name
     $application_username   = $::cassandra::application_username
+    $native_transport_port  = $::cassandra::native_transport_port
 
     file { $config_directory:
         ensure  => directory,
