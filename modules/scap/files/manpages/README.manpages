@@ -50,7 +50,7 @@ export XML_CATALOG_FILES="/usr/local/etc/xml/catalog"
 FAQ:
 ----
 If you get an error like:
-a2x: ERROR: "xmllint" --nonet --noout --valid "/Users/amusso/projects/operations/puppet/files/misc/scripts/asciidoc/_annotated.1.xml" returned non-zero exit status 4
+a2x: ERROR: "xmllint" --nonet --noout --valid "/Users/amusso/projects/operations/puppet/modules/scap/files/manpages/asciidoc/_annotated.1.xml" returned non-zero exit status 4
 
 That is most probably because `xmllint` is unable to find the docbook catalog.
 You can use XML_CATALOG_FILES to add a XML catalog.
