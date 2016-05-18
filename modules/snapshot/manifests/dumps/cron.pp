@@ -21,6 +21,13 @@ class snapshot::dumps::cron(
         content => template('snapshot/dumps/fulldumps.sh.erb'),
     }
 
+    file { '/var/log/dumps':
+      ensure => 'directory',
+      path   => '/var/log/dumps',
+      mode   => '0755',
+      owner  => $user,
+    }
+
     # fixme there is an implicit dependency on
     # wikidump.conf.* plus some stage files, make explicit
     $runtype = hiera('snapshot::dumps::runtype', 'regular')
