@@ -509,7 +509,7 @@ groups:
   labnet-users:
     description: unprivileged access on labnet servers
     gid: 781
-    members: []
+    members: [thcipriani, hashar, dduvall, demon, twentyafterfour, zfilipin]
 
 users:
   rush:
