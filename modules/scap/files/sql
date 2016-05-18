@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# This file is managed by Puppet (files/misc/scripts/sql).
+# This file is managed by Puppet (modules/scap/files/sql).
 
 # Read configuration.
 . /etc/profile.d/mediawiki.sh
