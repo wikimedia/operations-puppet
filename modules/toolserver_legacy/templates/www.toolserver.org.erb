@@ -9,6 +9,7 @@
     ServerName www.toolserver.org
     ServerAlias toolserver.org
     ServerAlias stable.toolserver.org
+    ServerAlias wiki.toolserver.org
 
     Include /etc/acme/challenge-apache.conf
 
@@ -36,6 +37,9 @@
 <VirtualHost *:443>
     ServerAdmin noc@wikimedia.org
     ServerName www.toolserver.org
+    ServerAlias toolserver.org
+    ServerAlias stable.toolserver.org
+    ServerAlias wiki.toolserver.org
 
     Include /etc/acme/challenge-apache.conf
 
