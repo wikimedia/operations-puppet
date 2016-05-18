@@ -5050,6 +5050,16 @@ host mw1304 {
 	fixed-address mw1304.eqiad.wmnet;
 }
 
+host mw1305 {
+        hardware ethernet 14:18:77:61:38:F4;
+        fixed-address mw1305.eqiad.wmnet;
+}
+
+host mw1306 {
+        hardware ethernet 14:18:77:61:52:24;
+        fixed-address mw1306.eqiad.wmnet;
+}
+
 host mw2001 {
     hardware ethernet 78:2b:cb:2f:cf:57;
     fixed-address mw2001.codfw.wmnet;
