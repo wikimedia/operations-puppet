@@ -506,6 +506,10 @@ groups:
     gid: 780
     members: [madhuvishy]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
+  labnet-users:
+    description: unprivileged access on labnet servers
+    gid: 781
+    members: []
 
 users:
   rush:
