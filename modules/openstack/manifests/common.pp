@@ -9,7 +9,7 @@ class openstack::common(
             $instance_status_wiki_user,
             $instance_status_wiki_pass,
             $openstack_version=$::openstack::version,
-            ) {
+    ) {
 
     include openstack::repo
 
@@ -31,6 +31,14 @@ class openstack::common(
     ]
 
     require_package($packages)
+
+    # Allow unprivileged users to look at nova logs
+    file { '/var/log/nova':
+        ensure => directory,
+        owner  => 'nova',
+        group  => hiera('openstack::log_group', 'adm'),
+        mode   => '0750',
+    }
 
     file {
         '/etc/nova/nova.conf':
