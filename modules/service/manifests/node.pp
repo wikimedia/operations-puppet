@@ -244,7 +244,7 @@ define service::node(
             mode    => '0444',
         }
         # convenience script to pretty-print logs
-        file { "/usr/bin/tail-${title}":
+        file { "/usr/local/bin/tail-${title}":
             content => template('service/node/tail-log.erb'),
             owner   => 'root',
             group   => 'root',
@@ -284,11 +284,20 @@ define service::node(
         include service::monitoring
 
         $monitor_url = "http://${::ipaddress}:${port}${healthcheck_url}"
+        $check_command = "/usr/local/lib/nagios/plugins/service_checker -t 5 ${::ipaddress} ${monitor_url}"
         nrpe::monitor_service{ "endpoints_${title}":
             ensure       => $ensure_monitoring,
             description  => "${title} endpoints health",
-            nrpe_command => "/usr/local/lib/nagios/plugins/service_checker -t 5 ${::ipaddress} ${monitor_url}",
+            nrpe_command => $check_command,
             subscribe    => File['/usr/local/lib/nagios/plugins/service_checker'],
+        }
+        file { "/usr/local/bin/check-${title}":
+            content => inline_template(
+                '<%= ["!/bin/sh", @check_command].join("\n") %>'
+            ),
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0755',
         }
         # we also support smart-releases
         service::deployment_script { $name:
