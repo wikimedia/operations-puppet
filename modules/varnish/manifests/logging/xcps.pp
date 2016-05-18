@@ -12,14 +12,13 @@
 # === Examples
 #
 #  varnish::logging::xcps {
-#    statsd_server => 'statsd.eqiad.wmnet:8125
+#    statsd_server => 'statsd.eqiad.wmnet:8125'
 #  }
 #
 define varnish::logging::xcps( $statsd_server = 'statsd' ) {
     include varnish::common
 
     if (hiera('varnish_version4', false)) {
-        # Use v4 version of varnishxcps
         $varnish4_python_suffix = '4'
     } else {
         $varnish4_python_suffix = ''
@@ -41,7 +40,8 @@ define varnish::logging::xcps( $statsd_server = 'statsd' ) {
         template_name  => 'varnishxcps',
         require        => File['/usr/local/bin/varnishxcps'],
         service_params => {
-            enable => true,
+            require => Service['varnish-frontend'],
+            enable  => true,
         },
     }
 
