@@ -21,6 +21,7 @@ if [ "$#" -ne 3 ]; then
     exit 1
 fi
 
+# query openstack metadata service
 ip=`curl http://169.254.169.254/1.0/meta-data/local-ipv4 2> /dev/null`
 domain=`hostname -d | sed -r 's/.*\.([^.]+\.[^.]+)$/\1/'`
 for i in `seq 1 ${TIMEOUT}`; do
