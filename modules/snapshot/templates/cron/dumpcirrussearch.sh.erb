@@ -70,7 +70,7 @@ if [ -d "$targetDirBase" ]; then
 				echo rm $folder/*.json.gz
 				echo rmdir $folder
 			else
-				rm $folder/*.json.gz
+				rm -f $folder/*.json.gz
 				rmdir $folder
 			fi
 		fi
@@ -118,5 +118,6 @@ done
 
 # Maintain a 'current' symlink always pointing at the most recently completed dump
 if [ "$dryrun" == "false" ]; then
-	ln -sf "$targetDir" "$targetDirBase/current"
+        rm -f "$targetDirBase/current"
+	ln -s "$targetDir" "$targetDirBase/current"
 fi
