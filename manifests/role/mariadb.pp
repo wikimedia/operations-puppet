@@ -906,7 +906,10 @@ class role::mariadb::client {
         ssl      => 'on',
     }
 
-    package { 'percona-toolkit':
+    package {
+        [ 'percona-toolkit',
+          'parallel',
+        ]:
         ensure => latest,
     }
 }
