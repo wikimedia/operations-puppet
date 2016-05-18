@@ -13,6 +13,12 @@ proxy_temp_path /srv/nginx/tmp/;
 <% end %>
 
 server {
+  listen 80;
+  server_name _;
+  rewrite ^ https://$host$request_uri? permanent;
+}
+
+server {
     listen 80;
 
     location / {
