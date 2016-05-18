@@ -1,7 +1,7 @@
 #!/bin/sh
 #####################################################################
-### THIS FILE IS MANAGED BY PUPPET 
-### puppet:///files/misc/udp2log.init
+### THIS FILE IS MANAGED BY PUPPET
+### puppet:///modules/udp2log/udp2log.init
 #####################################################################
 
 # Start/stop the udp2log daemon.
