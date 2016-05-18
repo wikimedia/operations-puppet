@@ -1,8 +1,6 @@
 # Sets up the Wikimedia (read-only) IRCd
-
 # This is a modified ircd server and is not
 # suitable for a general ircd deployment
-
 class mw_rc_irc::ircserver {
 
     require_package('ircd-ratbox', 'irssi')
@@ -39,32 +37,17 @@ class mw_rc_irc::ircserver {
         content => template('mw_rc_irc/motd.erb');
     }
 
-    if os_version('debian >= jessie') {
-
-        $ircd_provider = 'systemd'
-        $ircd_require  = '/etc/systemd/system/ircd.service'
-
-        file { '/etc/systemd/system/ircd.service':
-            owner  => 'root',
-            group  => 'root',
-            mode   => '0444',
-            source => 'puppet:///modules/mw_rc_irc/systemd/ircd.service',
-        }
-
-    } else {
-
-        $ircd_provider = 'upstart'
-        $ircd_require  = '/etc/init/ircd.conf'
-
-        file { '/etc/init/ircd.conf':
-            source => 'puppet:///modules/mw_rc_irc/upstart/ircd.conf',
-        }
+    file { '/etc/systemd/system/ircd.service':
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0444',
+        source => 'puppet:///modules/mw_rc_irc/systemd/ircd.service',
     }
 
     service { 'ircd':
         ensure   => running,
-        provider => $ircd_provider,
-        require  => File[$ircd_require],
+        provider => 'systemd',
+        require  => File['/etc/systemd/system/ircd.service'],
     }
 
     diamond::collector { 'IRCDStats':
