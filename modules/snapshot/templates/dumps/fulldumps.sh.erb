@@ -54,7 +54,7 @@ maybe_do_createdirs(){
         if [ $dryrun -ne 0 ]; then
             show "would execute ${python} ${commandargs}"
         else
-            $python $commandargs
+            $python $commandargs 2>&1 >> $logfile
         fi
     fi
 }
@@ -73,7 +73,7 @@ maybe_do_dumps (){
         if [ $dryrun -ne 0 ]; then
             show "would execute ${python} ${commandargs}"
         else
-            $python $commandargs
+            $python $commandargs 2>&1 >> $logfile
         fi
 	return 0
     else
@@ -137,6 +137,16 @@ if [[ "$today" < "$startdate" || "$today" > "$enddate" ]]; then
     exit 0
 fi
 
+if -d "/var/log/dumps"; then
+    logdir="/var/log/dumps"
+else
+    logdir="/tmp"
+fi
+logfile="${logdir}/fulldumps_${today}_$$.log"
+
+# clean up old logs
+find "$logdir" -maxdepth 1 -name fulldumps_\* -a -ctime +90 --exec rm {} \;
+
 # create directories for the dump run for each group of wikis
 # (small, big, huge) as needed
 case $wikitype in
@@ -184,4 +194,5 @@ case $wikitype in
         exit 1
         ;;
 esac
+gzip $logfile
 exit 0
