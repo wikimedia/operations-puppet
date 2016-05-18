@@ -360,10 +360,14 @@ sub wm_common_deliver {
 		set req.http.X-CDIS = "hit/" + obj.hits;
 	}
 
-	if (resp.http.X-Cache) {
-		set resp.http.X-Cache = resp.http.X-Cache + ", <%= @hostname %> " + req.http.X-CDIS;
+	// X-Cache-Int gets appended-to as we traverse cache layers
+	if (resp.http.X-Cache-Int) {
+		set resp.http.X-Cache-Int = resp.http.X-Cache-Int + ", <%= @hostname %> " + req.http.X-CDIS;
+	} else if (resp.http.X-Cache) { // XXX legacy, remove after these are gone from caches
+		set resp.http.X-Cache-Int = resp.http.X-Cache + ", <%= @hostname %> " + req.http.X-CDIS;
+		unset resp.http.X-Cache;
 	} else {
-		set resp.http.X-Cache = "<%= @hostname %> " + req.http.X-CDIS;
+		set resp.http.X-Cache-Int = "<%= @hostname %> " + req.http.X-CDIS;
 	}
 	<% if not @varnish_version4 -%>
 	}

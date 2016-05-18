@@ -330,6 +330,18 @@ sub vcl_fetch {
 sub vcl_deliver {
 	call wm_common_deliver;
 
+	// At the frontends, copy X-Cache-Int to X-Cache and delete X-Cache-Int
+	// This prevents double-set from confusing varnishlog-based stats
+	// grepping for X-Cache: and seeing double-set on varnish4
+	<% if not @varnish_version4 -%>
+	if (req.request != "PURGE") {
+	<% end -%>
+	set resp.http.X-Cache = resp.http.X-Cache-Int;
+	unset resp.http.X-Cache-Int;
+	<% if not @varnish_version4 -%>
+	}
+	<% end -%>
+
 	std.collect(resp.http.Via);
 	std.collect(resp.http.X-Varnish);
 
