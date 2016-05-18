@@ -43,11 +43,9 @@ class role::cache::base(
         statsd        => hiera('statsd'),
     }
 
-    if $::hostname == 'cp1065' { # temporarily limit for live testing...
     ::varnish::logging::xcache { 'xcache':
         key_prefix    => "varnish.${::site}.${cache_cluster}.xcache",
         statsd_server => hiera('statsd'),
-    }
     }
 
     # Only production needs system perf tweaks and NFS client disable
