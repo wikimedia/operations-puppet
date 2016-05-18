@@ -32,6 +32,7 @@ import re
 import socket
 import threading
 import urlparse
+import time
 
 import varnishlog
 
@@ -56,6 +57,8 @@ ap.add_argument('--statsd-server', help='statsd server',
                 type=parse_statsd_server_string, default=None)
 ap.add_argument('--key-prefix', help='metric key prefix',
                 type=parse_prefix_string, default='varnish.clients')
+ap.add_argument('--interval', help='send interval',
+                type=int, default=30)
 args = ap.parse_args()
 
 sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -74,7 +77,9 @@ def vsl_callback(transaction_id, tag, record, remote_party):
         s = '.'.join((args.key_prefix, k, v)).lower()
         stats[s] = stats.get(s, 0) + 1
 
-    if sum(stats.values()) > 1e4:
+    now = time.time()
+    if now >= vsl_callback.next_pub:
+        vsl_callback.next_pub = now + args.interval
         buf = io.BytesIO()
         while stats:
             metric = '%s:%s|c\n' % stats.popitem()
@@ -87,6 +92,7 @@ def vsl_callback(transaction_id, tag, record, remote_party):
 
     return 0
 
+vsl_callback.next_pub = time.time() + args.interval
 
 varnishlog.varnishlog((
     ('I', 'ReqHeader:^X-Connection-Properties:'),
