@@ -42,7 +42,7 @@ class role::logging::mediawiki($monitor = true, $log_directory = '/srv/mw-log' )
         mode   => '0544',
         owner  => 'root',
         group  => 'root',
-        source => 'puppet:///files/misc/demux.py',
+        source => 'puppet:///modules/udp2log/demux.py',
     }
 
     $error_processor_host = $::realm ? {
