@@ -12,7 +12,7 @@ cassandra::instances:
   a:
     jmx_port: 7189
     listen_address: 10.64.32.189 #aqs1005-a.eqiad.wmnet
-    rpc_address: 110.64.32.189
+    rpc_address: 10.64.32.189
     rpc_interface: eth0
   b:
     jmx_port: 7190
