@@ -17,7 +17,7 @@ server {
 
     # Enforce HTTPS only
     if ($http_x_forwarded_proto != "https") {
-          rewrite ^(.*)$ https://$http_host$1;
+          rewrite ^(.*)$ https://$http_host$1 permanent;
     }
 
     location / {
