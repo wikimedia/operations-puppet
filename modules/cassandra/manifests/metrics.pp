@@ -87,7 +87,6 @@ class cassandra::metrics(
         ensure        => present,
         template_name => 'cassandra-metrics-collector',
         systemd       => true,
-        refresh       => false,
         require       => [
             File[$collector_jar],
             File[$filter_file],
