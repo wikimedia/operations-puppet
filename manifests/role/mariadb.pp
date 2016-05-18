@@ -576,10 +576,9 @@ class role::mariadb::core(
         contact_group => 'admins', # only show on nagios/irc
     }
 
-    $heartbeat_enabled = $master
     class { 'mariadb::heartbeat':
         shard   => $shard,
-        enabled => $heartbeat_enabled,
+        enabled => $master,
     }
 }
 
@@ -864,10 +863,9 @@ class role::mariadb::parsercache(
         p_s      => 'off',
     }
 
-    $heartbeat_enabled = true
     class { 'mariadb::heartbeat':
         shard   => $shard,
-        enabled => $heartbeat_enabled,
+        enabled => true,
     }
 
     # mysql monitoring access from tendril (db1011)
