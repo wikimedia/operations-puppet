@@ -97,7 +97,7 @@ define service::uwsgi(
     if $local_logging {
         file { $local_logdir:
             ensure => directory,
-            owner  => $title,
+            owner  => 'www-data',
             group  => 'root',
             mode   => '0755',
             before => Uwsgi::App[$title],
