@@ -1,0 +1,3 @@
+admin::groups:
+  - labnet-users
+openstack::log_group: labnet-users
