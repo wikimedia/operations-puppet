@@ -1,0 +1,35 @@
+#!/bin/bash
+#
+# This file is installed by puppet.
+#
+#  Block until a specified volume is available.  This
+#  is used during a puppet run to prevent premature config
+#  of a non-existent volume.
+#
+#  Args are server, volpath, timeout in seconds.  Example:
+#
+#     block-for-export labstore.svc.eqiad.wmnet project/testlabs 120
+#
+set -u
+
+NFS_SERVER=$1
+VOLUME=$2
+TIMEOUT=$3
+
+if [ "$#" -ne 3 ]; then
+    echo "Usage:  ${0} <server> <project> <timeout>"
+    exit 1
+fi
+
+ip=`curl http://169.254.169.254/1.0/meta-data/local-ipv4 2> /dev/null`
+domain=`hostname -d | sed -r 's/.*\.([^.]+\.[^.]+)$/\1/'`
+for i in `seq 1 ${TIMEOUT}`; do
+    prod_domain=`echo $domain | sed 's/wmflabs/wmnet/'`
+    echo $(showmount -e ${NFS_SERVER} | egrep ^/exp/${VOLUME}\\s), | fgrep -q $ip,
+    if [ $? -eq 0 ];  then
+        exit 0
+    fi
+    sleep 1
+done
+
+exit 2
