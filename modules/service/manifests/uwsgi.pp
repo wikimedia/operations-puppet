@@ -73,7 +73,7 @@ define service::uwsgi(
     service::deploy::scap { $repo:
         service_name => $title,
         user         => $deployment_user,
-        before       => Base::Service_unit[$title],
+        before       => Uwsgi::App[$title],
         manage_user  => $deployment_manage_user,
     }
 
@@ -100,7 +100,7 @@ define service::uwsgi(
             owner  => $title,
             group  => 'root',
             mode   => '0755',
-            before => Service[$title],
+            before => Uwsgi::App[$title],
         }
         file { "/etc/logrotate.d/${title}":
             content => template('service/logrotate.erb'),
