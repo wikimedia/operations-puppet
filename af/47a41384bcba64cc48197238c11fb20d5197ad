@@ -1,0 +1,10 @@
+Verified+2: jenkins-bot
+Code-Review+1: Santhosh <santhosh.thottingal@gmail.com>
+Code-Review+1: KartikMistry <kartik.mistry@gmail.com>
+Code-Review+2: Muehlenhoff <mmuhlenhoff@wikimedia.org>
+Verified+2: Muehlenhoff <mmuhlenhoff@wikimedia.org>
+Submitted-by: Muehlenhoff <mmuhlenhoff@wikimedia.org>
+Submitted-at: Thu, 19 May 2016 07:05:07 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/287181
+Project: operations/puppet
+Branch: refs/heads/production
