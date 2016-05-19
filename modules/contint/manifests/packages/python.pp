@@ -23,7 +23,7 @@ class contint::packages::python {
     # Bring in fresh pip. The Trusty package does not provide wheels cache
     # https://pip.pypa.io/en/latest/news.html
     package { 'pip':
-        ensure   => '7.1.0',
+        ensure   => '8.1.2',
         provider => 'pip',
         require  => Package['python-pip'],  # eggs and chicken
     }
