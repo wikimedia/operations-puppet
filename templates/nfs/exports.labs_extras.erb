@@ -11,3 +11,4 @@
 /srv/dumps  -rw,sec=sys,no_subtree_check,no_root_squash <%= Array(@dump_servers_ips).join(' ') %>
 /srv/dumps  *(ro,sec=sys,no_subtree_check,all_squash,nocrossmnt)
 /srv/statistics *(ro,sec=sys,no_subtree_check,all_squash,nocrossmnt)
+/srv/scratch *(rw,sec=sys,sync,no_subtree_check,root_squash)
