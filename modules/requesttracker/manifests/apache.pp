@@ -5,6 +5,7 @@ class requesttracker::apache($apache_site) {
     include ::apache::mod::perl
     include ::apache::mod::rewrite
     include ::apache::mod::headers
+    include ::apache::mod::fastcgi
 
     if os_version('debian >= jessie') {
         $rt_apache_conf = 'requesttracker/rt4.apache.httponly.erb'
