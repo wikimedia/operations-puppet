@@ -1492,11 +1492,12 @@ node 'labsdb1007.eqiad.wmnet' {
 }
 
 node /labstore100[12]\.eqiad\.wmnet/ {
+    include standard
     role labs::nfs::fileserver
 }
 
 node 'labstore1003.eqiad.wmnet' {
-    role labs::nfs::extras
+    role labs::nfs::misc
 }
 
 node /labstore200[1-4]\.codfw\.wmnet/ {
