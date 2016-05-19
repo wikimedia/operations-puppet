@@ -63,6 +63,4 @@ class labstore {
         mode   => '0555',
         source => 'puppet:///modules/labstore/nfs-kernel-server',
     }
-
 }
-
