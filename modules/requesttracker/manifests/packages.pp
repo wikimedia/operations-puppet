@@ -1,23 +1,27 @@
 # installs required packages for Request Tracker
-# changed from 'latest' to 'present' to avoid
-# surprise upgrades
+# changed from 'latest' to 'present' to avoid surprise upgrades
 
 class requesttracker::packages {
 
     package { 'request-tracker4':
-        ensure => 'latest',
+        ensure => 'present',
     }
 
     package { 'rt4-db-mysql':
-        ensure => 'latest',
+        ensure => 'present',
     }
 
     package { 'rt4-clients':
-        ensure => 'latest',
+        ensure => 'present',
     }
 
     package { 'libdbd-pg-perl':
-        ensure => 'latest',
+        ensure => 'present',
     }
+
+    package { 'perl-doc':
+        ensure => 'present',
+    }
+
 }
 
