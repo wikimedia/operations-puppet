@@ -327,20 +327,17 @@ sub vcl_fetch {
 	// default vcl_(fetch|backend_response) invokes here, unless cluster VCL unconditionally returns!
 }
 
-sub vcl_deliver {
-	call wm_common_deliver;
+// Common code in frontend vcl_deliver + vcl_synth
+sub deliver_synth_ {
+	call wm_common_xcache_deliver;
 
 	// At the frontends, copy X-Cache-Int to X-Cache and delete X-Cache-Int
 	// This prevents double-set from confusing varnishlog-based stats
 	// grepping for X-Cache: and seeing double-set on varnish4
-	<% if not @varnish_version4 -%>
-	if (req.request != "PURGE") {
-	<% end -%>
-	set resp.http.X-Cache = resp.http.X-Cache-Int;
-	unset resp.http.X-Cache-Int;
-	<% if not @varnish_version4 -%>
+	if (<%= req_method %> != "PURGE") {
+		set resp.http.X-Cache = resp.http.X-Cache-Int;
+		unset resp.http.X-Cache-Int;
 	}
-	<% end -%>
 
 	std.collect(resp.http.Via);
 	std.collect(resp.http.X-Varnish);
@@ -371,7 +368,10 @@ sub vcl_deliver {
 			set resp.http.X-Carrier-Meta = req.http.X-Carrier-Meta;
 		}
 	}
+}
 
+sub vcl_deliver {
+	call deliver_synth_;
 	call cluster_fe_deliver;
 	return (deliver); // no default VCL (which is just "return (deliver)" anyways)
 }
@@ -381,6 +381,7 @@ sub vcl_deliver {
 // Varnish4 vcl_synth+vcl_backend_error
 
 sub vcl_synth {
+	call deliver_synth_;
 	call https_error_redirect;
 	call cluster_fe_err_synth;
 	if (resp.status > 400 && resp.status != 413) {
