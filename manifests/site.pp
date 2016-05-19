@@ -699,8 +699,12 @@ node 'db1031.eqiad.wmnet' {
     include base::firewall
 }
 
-node 'db1029.eqiad.wmnet' {
-    include role::coredb::x1
+node /^db10(29)\.eqiad\.wmnet/ {
+    class { 'role::mariadb::core':
+        shard         => 'x1',
+        binlog_format => 'ROW',
+    }
+    include base::firewall
 }
 
 # codfw

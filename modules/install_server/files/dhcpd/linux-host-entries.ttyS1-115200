@@ -1284,6 +1284,8 @@ host db1028 {
 host db1029 {
     hardware ethernet 78:2b:cb:03:dd:32;
     fixed-address db1029.eqiad.wmnet;
+    option pxelinux.pathprefix "jessie-installer/";
+    filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host db1030 {
@@ -7035,4 +7037,3 @@ host ytterbium {
     hardware ethernet 90:B1:1C:2A:0E:60;
     fixed-address ytterbium.wikimedia.org;
 }
-
