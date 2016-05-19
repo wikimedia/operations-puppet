@@ -44,6 +44,27 @@ sub cluster_be_hit {
 sub cluster_be_miss { }
 sub cluster_be_pass { }
 
-sub cluster_be_backend_response { }
+sub cluster_be_backend_response {
+    // Do not cache explicit lengths >= ~1GB in backends in general
+    if (beresp.http.Content-Length ~ "^[0-9]{10}") {
+<% if @varnish_version4 -%>
+        set beresp.uncacheable = true;
+        return (deliver);
+<% else -%>
+        return (hit_for_pass);
+<% end -%>
+    }
+
+<% if @cache_route == 'direct' or @varnish_testing -%>
+    // Direct backend caches:
+    // Disable streaming if no Content-Length present.  This is the default in
+    // varnish3, but in varnish4 this should convert them to responses
+    // containing a Content-Length in the common case, so that upper caches
+    // can make size-based decisions.
+    if (!beresp.http.Content-Length) {
+        set beresp.do_stream = false;
+    }
+<% end -%>
+}
 
 sub cluster_be_deliver { }

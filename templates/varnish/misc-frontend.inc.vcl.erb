@@ -41,7 +41,18 @@ sub cluster_fe_hit {
 
 sub cluster_fe_miss { }
 sub cluster_fe_pass { }
-sub cluster_fe_backend_response { }
+
+sub cluster_fe_backend_response {
+    // hit_for_pass on objects >= ~10MB or no CL
+    if (!beresp.http.Content-Length || beresp.http.Content-Length ~ "^[0-9]{8}") {
+<% if @varnish_version4 -%>
+        set beresp.uncacheable = true;
+        return (deliver);
+<% else -%>
+        return (hit_for_pass);
+<% end -%>
+    }
+}
 
 sub cluster_fe_deliver { }
 
