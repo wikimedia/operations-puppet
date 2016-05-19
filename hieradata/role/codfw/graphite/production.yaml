@@ -1,3 +1,6 @@
 graphite::web::cluster_servers:
   - graphite2001.codfw.wmnet
   - graphite2002.codfw.wmnet
+
+lvs::realserver::realserver_ips:
+  - '10.2.1.24'

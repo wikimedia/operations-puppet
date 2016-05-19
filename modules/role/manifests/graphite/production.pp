@@ -25,6 +25,8 @@ class role::graphite::production {
         }
     }
 
+    include ::lvs::realserver
+
     $graphite_hosts = [
         'graphite1001.eqiad.wmnet',
         'graphite1003.eqiad.wmnet',
