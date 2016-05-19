@@ -100,7 +100,7 @@ sub vcl_fetch {
 }
 
 sub vcl_deliver {
-	call wm_common_deliver;
+	call wm_common_xcache_deliver;
 	call cluster_be_deliver;
 	return (deliver); // no default VCL (which is just "return (deliver)" anyways)
 }
@@ -110,6 +110,7 @@ sub vcl_deliver {
 // Varnish4 vcl_synth+vcl_backend_error
 
 sub vcl_synth {
+	call wm_common_xcache_deliver;
 	if (resp.status > 400 && resp.status != 413) {
 		call synth_errorpage;
 	}
