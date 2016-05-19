@@ -12,13 +12,19 @@ class statistics::sites::analytics {
 
     # /srv/analytics.wikimedia.org
     $document_root = "${$::statistics::working_path}/analytics.wikimedia.org"
-
     # Allow statistics-web-users to modify files in this directory.
     file { $document_root:
         ensure => 'directory',
         owner  => 'root',
         group  => 'statistics-web-users',
         mode   => '0775',
+    }
+
+    git::clone { 'analytics.wikimedia.org':
+        directory => $document_root,
+        origin    => 'https://gerrit.wikimedia.org/r/analytics/analytics.wikimedia.org',
+        branch    => 'master',
+        ensure    => 'latest'
     }
 
     include apache::mod::headers
