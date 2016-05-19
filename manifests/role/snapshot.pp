@@ -57,10 +57,6 @@ class role::snapshot::cron::primary {
         enable => true,
         user   => 'datasets',
     }
-    class { 'snapshot::cron::mediadirlists':
-        enable => true,
-        user   => 'datasets',
-    }
     class { 'snapshot::cron::mediaperprojectlists':
         enable => true,
         user   => 'datasets',
@@ -99,10 +95,6 @@ class role::snapshot::cron::secondary {
         user   => 'datasets',
     }
     class { 'snapshot::cron::mediadirlists':
-        enable => false,
-        user   => 'datasets',
-    }
-    class { 'snapshot::cron::mediaperprojectlists':
         enable => false,
         user   => 'datasets',
     }
