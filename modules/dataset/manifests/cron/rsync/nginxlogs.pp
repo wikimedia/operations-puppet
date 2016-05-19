@@ -11,13 +11,13 @@ class dataset::cron::rsync::nginxlogs (
         default => 'absent',
     }
 
-    $rsync_args = '-rt --bwlimit=50000'
+    $rsync_args = '-rt --perms --chmod=go+r --bwlimit=50000'
     cron { 'rsync_nginxlogs':
         ensure      => $ensure,
         user        => $user,
         minute      => 55,
         hour        => 4,
-        command     => "/usr/bin/rsync ${rsync_args} /var/log/nginx/ ${dest}",
+        command     => "/usr/bin/rsync ${rsync_args} /var/log/nginx/*.gz ${dest}",
         environment => 'MAILTO=ops-dumps@wikimedia.org',
         require     => User[$user],
     }
