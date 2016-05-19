@@ -7,4 +7,3 @@ cassandra::instances:
     listen_address: 10.64.0.202
     rpc_address: 10.64.0.202
     rpc_interface: eth0
-cassandra::target_version: '2.2'

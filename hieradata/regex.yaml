@@ -151,6 +151,7 @@ cassandra_test_eqiad:
       - .*\.stddev$
   restbase::logging_name: restbase-test
   cassandra::start_rpc: 'true'
+  cassandra::target_version: '2.2'
 
 cassandra_test_codfw:
   __regex: !ruby/regexp /^restbase-test200[1-3]\.codfw\.wmnet$/
@@ -229,6 +230,7 @@ cassandra_test_codfw:
       - .*\.stddev$
   restbase::logging_name: restbase-test
   cassandra::start_rpc: 'true'
+  cassandra::target_version: '2.2'
 
 swift_be_codfw_dell:
   __regex: !ruby/regexp /^ms-be20(0[0-9]|1[0-5])\.codfw\.wmnet$/
