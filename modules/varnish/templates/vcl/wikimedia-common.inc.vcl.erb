@@ -348,30 +348,33 @@ sub wm_common_backend_response {
 	}
 }
 
-sub wm_common_deliver {
-	<% if not @varnish_version4 -%>
-	if (req.request != "PURGE") {
-	<% end -%>
-	if (!req.http.X-CDIS) {
-		// internally-generated response (not a cache object hit, and not a miss|pass to a deeper layer either)
-		set req.http.X-CDIS = "int";
-	} else if(req.http.X-CDIS == "hit") {
-		// obj.hits isn't known in vcl_hit, and not useful for other states
-		set req.http.X-CDIS = "hit/" + obj.hits;
+// call just before wm_common_xcache_deliver, but only in vcl_deliver, not vcl_synth
+sub wm_common_deliver_hitcount {
+	if (<%= @req_method %> != "PURGE") {
+		if(req.http.X-CDIS == "hit") {
+			// obj.hits isn't known in vcl_hit, and not useful for other states
+			set req.http.X-CDIS = "hit/" + obj.hits;
+		}
 	}
+}
 
-	// X-Cache-Int gets appended-to as we traverse cache layers
-	if (resp.http.X-Cache-Int) {
-		set resp.http.X-Cache-Int = resp.http.X-Cache-Int + ", <%= @hostname %> " + req.http.X-CDIS;
-	} else if (resp.http.X-Cache) { // XXX legacy, remove after these are gone from caches
-		set resp.http.X-Cache-Int = resp.http.X-Cache + ", <%= @hostname %> " + req.http.X-CDIS;
-		unset resp.http.X-Cache;
-	} else {
-		set resp.http.X-Cache-Int = "<%= @hostname %> " + req.http.X-CDIS;
+sub wm_common_xcache_deliver {
+	if (<%= @req_method %> != "PURGE") {
+		if (!req.http.X-CDIS) {
+			// internally-generated response (not a cache object hit, and not a miss|pass to a deeper layer either)
+			set req.http.X-CDIS = "int";
+		}
+
+		// X-Cache-Int gets appended-to as we traverse cache layers
+		if (resp.http.X-Cache-Int) {
+			set resp.http.X-Cache-Int = resp.http.X-Cache-Int + ", <%= @hostname %> " + req.http.X-CDIS;
+		} else if (resp.http.X-Cache) { // XXX legacy, remove after these are gone from caches
+			set resp.http.X-Cache-Int = resp.http.X-Cache + ", <%= @hostname %> " + req.http.X-CDIS;
+			unset resp.http.X-Cache;
+		} else {
+			set resp.http.X-Cache-Int = "<%= @hostname %> " + req.http.X-CDIS;
+		}
 	}
-	<% if not @varnish_version4 -%>
-	}
-	<% end -%>
 }
 
 // This is not needed with Varnish 4, the Connection header is set to
