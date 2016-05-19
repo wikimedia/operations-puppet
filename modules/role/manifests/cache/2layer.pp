@@ -9,6 +9,12 @@ class role::cache::2layer(
         class { 'varnish::monitoring::ganglia':
             varnish_instances => [ '', 'frontend' ],
         }
+
+        # ganglia needs to be a member of the varnish group for gmond to read
+        # VSM files
+        user { 'ganglia':
+            groups => ["varnish"],
+        }
     }
 
     # mma: mmap addrseses for fixed persistent storage on x86_64 Linux:
