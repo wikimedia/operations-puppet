@@ -73,11 +73,17 @@ groups:
     description: Ganeti virt cluster codfw
 
 # Labs OpenStack Nova (labvirt***)
-  virt_eqiad:
+  labvirt_eqiad:
     description: eqiad virt servers
-  virt_codfw:
+  labvirt_codfw:
     description: codfw virt servers
 
+# Labs Services
+  labs_eqiad:
+    description: eqiad labs services
+  labs_codfw:
+    description: codfw labs services
+    
 # LVS
   lvs:
     description: LVS
