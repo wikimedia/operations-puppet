@@ -317,3 +317,7 @@ debdeploy_dbcore-codfw:
 lvs_temp_bgp_disable:
   __regex: !ruby/regexp /^lvs10(0[7-9]|1[0-2])\.eqiad\.wmnet$/
   lvs::configuration::bgp: no
+maps_test:
+  __regex: !ruby/regexp /^maps-test200[1-4]\.codfw\.wmnet$/
+  cassandra::version: '2.1.12'
+
