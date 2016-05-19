@@ -26,6 +26,7 @@ class role::analytics_cluster::client {
     ensure_packages([
         'ipython-notebook',
         'kafkacat',
+        'heirloom-mailx',
     ])
 
     # include maven to build jars for Hadoop.
