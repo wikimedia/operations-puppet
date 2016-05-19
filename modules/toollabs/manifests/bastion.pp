@@ -98,6 +98,8 @@ class toollabs::bastion(
                 '%                          memory   /scripts',
                 '*:/usr/bin/tclsh8.6        cpu      /scripts',
                 '%                          memory   /scripts',
+                '*:/shared/bin/node         cpu      /scripts',
+                '%                          memory   /scripts',
             ],
         }
 
