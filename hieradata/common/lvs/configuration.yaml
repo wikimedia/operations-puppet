@@ -124,6 +124,9 @@ lvs_service_ips:
   apertium: &ip_block027
     eqiad: 10.2.2.11
     codfw: 10.2.1.11
+  graphite: &ip_block028
+    eqiad: 10.2.2.24
+    codfw: 10.2.1.24
 lvs_services:
   text:
     description: "Main wiki platform LVS service, text.%{::site}.wikimedia.org (Varnish)"
@@ -919,3 +922,38 @@ lvs_services:
       IdleConnection:
         max-delay: 300
         timeout-clean-reconnect: 3
+  graphite-carbon:
+    description: Graphite traffic - line-oriented protocol
+    class: low-traffic
+    sites:
+    - eqiad
+    - codfw
+    ip: *ip_block027
+    port: 2003
+    bgp: 'yes'
+    depool-threshold: '.6'
+    monitors:
+      IdleConnection:
+        timeout-clean-reconnect: 3
+        max-delay: 300
+    conftool:
+      cluster: graphite
+      service: carbon
+  graphite-statsd:
+    description: Graphite traffic - statsd protocol
+    class: low-traffic
+    sites:
+    - eqiad
+    - codfw
+    ip: *ip_block027
+    protocol: udp
+    port: 8125
+    bgp: 'yes'
+    depool-threshold: '.6'
+    monitors:
+      IdleConnection:
+        timeout-clean-reconnect: 3
+        max-delay: 300
+    conftool:
+      cluster: graphite
+      service: statsd

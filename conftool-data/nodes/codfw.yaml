@@ -287,3 +287,6 @@ scb:
 eventbus:
   kafka2001.codfw.wmnet: [eventbus]
   kafka2002.codfw.wmnet: [eventbus]
+graphite:
+  graphite2001.codfw.wmnet: [carbon, statsd]
+  graphite2002.codfw.wmnet: [carbon, statsd]

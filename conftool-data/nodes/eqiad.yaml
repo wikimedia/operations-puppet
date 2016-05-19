@@ -285,3 +285,6 @@ aqs:
 eventbus:
   kafka1001.eqiad.wmnet: [eventbus]
   kafka1002.eqiad.wmnet: [eventbus]
+graphite:
+  graphite1001.eqiad.wmnet: [carbon, statsd]
+  graphite1003.eqiad.wmnet: [carbon, statsd]

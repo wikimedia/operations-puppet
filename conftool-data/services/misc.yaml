@@ -17,3 +17,20 @@ phabricator:
       "weight": 10
     datacenters:
       - eqiad
+graphite:
+  carbon:
+    port: 2003
+    default_values:
+      "pooled": "no"
+      "weight": 10
+    datacenters:
+      - eqiad
+      - codfw
+  statsd:
+    port: 8125
+    default_values:
+      "pooled": "no"
+      "weight": 10
+    datacenters:
+      - eqiad
+      - codfw
