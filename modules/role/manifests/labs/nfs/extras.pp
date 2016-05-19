@@ -1,15 +1,13 @@
 # == Class role::labs::nfs::extras
 #
-# The role class for the NFS server that makes dumps and other
-# datsets avaliable to labs from production - it serves as a readonly
-# server to Labs, while being populated from the actual dataset1001 server
-# in prod.
+# NFS misc server:
+# - dumps
+# - statistics data shuffle
+# - scratch
 #
-# The IPs of the servers allowed to populate it ($dump_servers_ips)
+# The IPs of the servers allowed to populate it dumps ($dump_servers_ips)
 # must be set at the node level or via hiera.
 #
-# This also exports /srv/statistics to allow statistics servers
-# a way to rsync public data in from production.
 #
 class role::labs::nfs::extras($dump_servers_ips) {
     include standard
@@ -33,12 +31,19 @@ class role::labs::nfs::extras($dump_servers_ips) {
     file { '/srv/statistics':
         ensure => 'directory',
     }
+
+    # This also exports /srv/statistics to allow statistics servers
+    # a way to rsync public data in from production.
     $statistics_servers = hiera('statistics_servers')
     rsync::server::module { 'statistics':
         path        => '/srv/statistics',
         read_only   => 'no',
         hosts_allow => $statistics_servers,
         require     => File['/srv/statistics']
+    }
+
+    file { '/srv/scratch':
+        ensure => 'directory',
     }
 
     # This has a flat exports list
@@ -51,4 +56,5 @@ class role::labs::nfs::extras($dump_servers_ips) {
         group   => 'root',
         mode    => '0444',
     }
+
 }
