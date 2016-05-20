@@ -203,6 +203,9 @@ class role::backup::director {
     bacula::director::fileset { 'yubiauth-aeads':
         includes => [ '/var/cache/yubikey-ksm/aeads' ],
     }
+    bacula::director::fileset { 'openldap':
+        includes => [ '/var/run/openldap-backup' ],
+    }
 
     # The console should be on the director
     class { 'bacula::console':

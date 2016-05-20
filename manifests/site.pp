@@ -2546,6 +2546,10 @@ node /^(seaborgium|serpens)\.wikimedia\.org$/ {
     role openldap::labs, backup::host
     include standard
     include base::firewall
+
+    if $::hostname == 'serpens' {
+        backup::mysqlset {'openldap_labs':}
+    }
 }
 
 # Silver is the new home of the wikitech web server.
