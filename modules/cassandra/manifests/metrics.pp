@@ -50,9 +50,9 @@ class cassandra::metrics(
     # Backward incompatible changes to cassandra-metrics-collector were needed
     # to support Cassandra 2.2; Use the apropos version of the collector.
     if $target_cassandra_version == '2.1' {
-        $collector_version = '2.1.0-20160504.150640-1'
+        $collector_version = '2.1.1-20160520.211019-1'
     } else {
-        $collector_version = '3.1.0-20160504.150912-1'
+        $collector_version = '3.1.1-20160520.203425-1'
     }
 
     package { 'cassandra/metrics-collector':
