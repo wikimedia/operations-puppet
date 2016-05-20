@@ -213,7 +213,6 @@ class role::mariadb::misc::phabricator(
 
     unless $master {
         mariadb::monitor_replication { [ $shard ]:
-            is_critical => false,
             multisource => false,
         }
     }
@@ -570,10 +569,16 @@ class role::mariadb::core(
         replication_role => $mysql_role,
     }
 
+    $replication_is_critical = ($::mw_primary == $::site)
+    $contact_group = $replication_is_critical ? {
+        true  => 'dba',
+        false => 'admins',
+    }
+
     mariadb::monitor_replication { [ $shard ]:
         multisource   => false,
-        is_critical   => false,
-        contact_group => 'dba',
+        is_critical   => $replication_is_critical,
+        contact_group => $contact_group,
     }
 
     class { 'mariadb::heartbeat':
