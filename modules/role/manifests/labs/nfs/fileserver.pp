@@ -4,7 +4,7 @@
 # services to Labs.
 #
 class role::labs::nfs::fileserver($monitor = 'eth0') {
-    include ::labstore::fileserver
+    include labstore::fileserver
 
     # Enable RPS to balance IRQs over CPUs
     interface::rps { $monitor: }
