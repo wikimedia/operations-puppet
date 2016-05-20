@@ -1,11 +1,12 @@
-# = Define: labstore::fileserver::cleanup_snapshots
-# Simple systemd based unit to clean up snapshot
+#
+# Systemd based unit to clean up snapshot
 # volumes created by replication
 #
 # Parameters:
 #   keep_free    = free space to keep (in terabytes)
 #   volume_group = volume group to clean
 #
+
 define labstore::fileserver::cleanup_snapshots(
     $keep_free,
     $volume_group = $title,
