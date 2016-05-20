@@ -6,8 +6,6 @@
 
 . /etc/profile.d/mediawiki.sh
 
-BINDIR=/usr/local/bin
-SCAPDIR=/usr/bin
 # The configuration in CommonSettings.php should match GITDIR and GITREPOS
 GITDIR=/var/lib/l10nupdate/mediawiki
 GITURL=https://gerrit.wikimedia.org/r/p/mediawiki
@@ -49,7 +47,7 @@ do
 		then
 			echo "Updated $path"
 		else
-			$BINDIR/dologmsg "!log $LOGNAME@$HOSTNAME LocalisationUpdate failed: git pull of $path failed"
+			/usr/local/bin/dologmsg "!log $LOGNAME@$HOSTNAME LocalisationUpdate failed: git pull of $path failed"
 			echo "Updating $path FAILED."
 			exit 1
 		fi
@@ -62,7 +60,7 @@ do
 		then
 			echo "Cloned $path"
 		else
-			$BINDIR/dologmsg "!log $LOGNAME@$HOSTNAME LocalisationUpdate failed: git clone of $path failed"
+			/usr/local/bin/dologmsg "!log $LOGNAME@$HOSTNAME LocalisationUpdate failed: git clone of $path failed"
 			echo "Cloning $path FAILED."
 			exit 1
 		fi
@@ -73,7 +71,7 @@ echo "git clone updated."
 # Get all MW message cache versions (and a wiki DB name for each)
 mwVerDbSets=$(scap wikiversions-inuse --withdb)
 if [ -z "$mwVerDbSets" ]; then
-	$BINDIR/dologmsg "!log $LOGNAME@$HOSTNAME LocalisationUpdate failed: mwversionsinuse returned empty list"
+	/usr/local/bin/dologmsg "!log $LOGNAME@$HOSTNAME LocalisationUpdate failed: mwversionsinuse returned empty list"
 	echo "Obtaining MediaWiki version list FAILED"
 	exit 1
 fi
@@ -101,17 +99,17 @@ do
 		echo "Completed at `date --rfc-3339=seconds`. Copying LC files to $MEDIAWIKI_STAGING_DIR"
 		cp --preserve=timestamps --force "$tempCacheDir"/l10n_cache-* $MEDIAWIKI_STAGING_DIR/php-"$mwVerNum"/cache/l10n
 		# Include JSON versions of the CDB files and add MD5 files
-		${SCAPDIR}/refreshCdbJsonFiles --directory="$MEDIAWIKI_STAGING_DIR/php-$mwVerNum/cache/l10n"
+		/usr/bin/scap cdb-json-refresh --directory="$MEDIAWIKI_STAGING_DIR/php-$mwVerNum/cache/l10n"
 
 		echo "Syncing to Apaches at `date --rfc-3339=seconds`"
-		sudo -u mwdeploy -n -- $SCAPDIR/scap sync-l10n --verbose $mwVerNum
+		sudo -u mwdeploy -n -- /usr/bin/scap sync-l10n --verbose $mwVerNum
 		if [[ $? -ne 0 ]]; then
 			echo "Failed to sync-l10n '$mwVerNum'"
 			exit 1
 		fi
 		echo "All done at `date --rfc-3339=seconds`"
 	else
-		$BINDIR/dologmsg "!log $LOGNAME@$HOSTNAME LocalisationUpdate failed ($mwVerNum) at `date --rfc-3339=seconds`"
+		/usr/local/bin/dologmsg "!log $LOGNAME@$HOSTNAME LocalisationUpdate failed ($mwVerNum) at `date --rfc-3339=seconds`"
 		echo "FAILED"
 	fi
 done
@@ -128,5 +126,5 @@ if [[ $LENGTH -lt 3600 ]]; then
 else
 	DURATION=$(date -ud @"$LENGTH" +'%-Hh %-Mm %-Ss')
 fi
-$BINDIR/deploy2graphite l10n $LENGTH
-$BINDIR/dologmsg "!log $LOGNAME@$HOSTNAME ResourceLoader cache refresh completed at $(date -ud @$ENDED) (duration $DURATION)"
+/usr/local/bin/deploy2graphite l10n $LENGTH
+/usr/local/bin/dologmsg "!log $LOGNAME@$HOSTNAME ResourceLoader cache refresh completed at $(date -ud @$ENDED) (duration $DURATION)"
