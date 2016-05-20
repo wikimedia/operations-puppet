@@ -573,7 +573,7 @@ class role::mariadb::core(
     mariadb::monitor_replication { [ $shard ]:
         multisource   => false,
         is_critical   => false,
-        contact_group => 'admins', # only show on nagios/irc
+        contact_group => 'dba',
     }
 
     class { 'mariadb::heartbeat':
