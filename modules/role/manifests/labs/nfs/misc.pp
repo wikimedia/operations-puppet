@@ -1,3 +1,4 @@
+#
 # NFS misc server:
 # - dumps
 # - statistics data shuffle
@@ -7,12 +8,19 @@
 # must be set at the node level or via hiera.
 #
 
-
 class role::labs::nfs::misc($dump_servers_ips) {
-    include standard
+
+    system::role { 'role::labs::nfs::misc':
+        description => 'Labs NFS service (misc)',
+    }
+
     include labstore
-    include labstore::monitoring
     include rsync::server
+    include labstore::backup_keys
+    include labstore::monitoring::interfaces
+    include labstore::monitoring::nfsd
+    # to be included post ldap integration
+    # include labstore::monitoring::ldap
 
     rsync::server::module { 'pagecounts':
         path        => '/srv/dumps/pagecounts',

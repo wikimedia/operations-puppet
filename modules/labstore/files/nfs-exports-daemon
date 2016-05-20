@@ -18,9 +18,6 @@
 #
 #  THIS FILE IS MANAGED BY PUPPET
 #
-#  Source: modules/labstore/nfs-project-exports-daemon
-#  From:   labstore::fileserver
-#
 
 from urllib.request import urlopen
 import ipaddress
