@@ -25,7 +25,7 @@ class role::labs::nfsclient(
 
     labstore::nfs_mount { 'scratch':
         project    => $::labsproject,
-        options    => ['rw', $mode],
+        options    => ['rw', 'soft', 'timeo=300', 'retrans=3'],
         mount_path => '/data/scratch',
         server     => $nfs_server,
         share_path => '/scratch',
@@ -33,7 +33,7 @@ class role::labs::nfsclient(
 
     labstore::nfs_mount { 'dumps':
         project    => $::labsproject,
-        options    => ['ro', $mode],
+        options    => ['ro', 'soft', 'timeo=300', 'retrans=3'],
         mount_path => '/public/dumps',
         share_path => '/dumps',
         server     => $misc_nfs,
