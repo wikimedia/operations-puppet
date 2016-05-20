@@ -22,6 +22,7 @@ class tilerator::ui {
     $cassandra_tileratorui_pass = hiera('maps::cassandra_tileratorui_pass')
     $pgsql_tileratorui_user = 'tileratorui'
     $pgsql_tileratorui_pass = hiera('maps::postgresql_tileratorui_pass')
+    $redis_server = hiera('maps::redis_server')
 
     service::node { 'tileratorui':
         port       => 6535,

@@ -1,6 +1,6 @@
 # tileratorui-specific settings
 
-redis: redis://maps-test2001.codfw.wmnet
+redis: <%= @redis_server %>
 
 variables:
   osmdb-user: '<%= @pgsql_tileratorui_user %>'
