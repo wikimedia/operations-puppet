@@ -5,25 +5,23 @@
 # capable of serving this function, but neither activates nor
 # enables it to do so by itself (as this requires manual
 # intervention at this time because of the shared storage).
-class labstore::fileserver(
-    $use_ldap = false,
-) {
-
-    include ::labstore
+class labstore::fileserver {
 
     # Set to true only for the labstore that is currently
     # actively serving files
     $is_active = (hiera('active_labstore_host') == $::hostname)
 
-    if $use_ldap {
-        $ldapincludes = ['openldap', 'nss', 'utils']
-        class { 'ldap::role::client::labs': ldapincludes => $ldapincludes }
-    }
+    include labstore
+    include labstore::fileserver::exports
+    include labstore::account_services
 
     require_package('lvm2')
     require_package('python3-paramiko')
     require_package('python3-pymysql')
     require_package('nfsd-ldap')
+
+    $ldapincludes = ['openldap', 'nss', 'utils']
+    class { 'ldap::role::client::labs': ldapincludes => $ldapincludes }
 
     file { '/etc/replication-rsync.conf':
         source => 'puppet:///modules/labstore/replication-rsync.conf',
@@ -106,9 +104,6 @@ class labstore::fileserver(
         mode   => '0550',
         source => 'puppet:///modules/labstore/start-nfs',
     }
-
-    include ::labstore::fileserver::exports
-    include ::labstore::account_services
 
     diamond::collector { 'NfsdCollector':
         source   => 'puppet:///modules/labstore/monitor/nfsd.py',
