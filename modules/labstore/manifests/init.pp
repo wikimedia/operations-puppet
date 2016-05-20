@@ -8,6 +8,13 @@
 class labstore {
 
     require_package('nfs-kernel-server')
+    require_package('lvm2')
+    require_package('python3-paramiko')
+    require_package('python3-pymysql')
+    require_package('nfsd-ldap')
+
+    $ldapincludes = ['openldap', 'nss', 'utils']
+    class { 'ldap::role::client::labs': ldapincludes => $ldapincludes }
 
     file { '/usr/local/sbin/set-stripe-cache':
         ensure => present,
@@ -32,7 +39,6 @@ class labstore {
 
     # Labstores need to be able to scp from one server
     # to the other (in order to do backups)
-
     ssh::userkey { 'root-labstore':
         ensure => present,
         user   => 'root',
@@ -62,5 +68,9 @@ class labstore {
         group  => 'root',
         mode   => '0555',
         source => 'puppet:///modules/labstore/nfs-kernel-server',
+    }
+
+    diamond::collector { 'NfsdCollector':
+        source   => 'puppet:///modules/labstore/monitor/nfsd.py',
     }
 }
