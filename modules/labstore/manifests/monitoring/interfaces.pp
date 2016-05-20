@@ -1,4 +1,3 @@
-# = Class: labstore::monitoring
 #
 # Generic monitoring for all labstore NFS servers
 # 
@@ -8,7 +7,8 @@
 #   Name of interface to monitor for network saturation.
 #   This should be the interface holding the IP address
 #   that serves NFS
-class labstore::monitoring(
+
+class labstore::monitoring::interfaces(
     $monitor_iface = 'eth0',
 ) {
 
