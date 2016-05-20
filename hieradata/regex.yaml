@@ -71,7 +71,7 @@ labvirt:
   cluster: labvirt
 
 labs:
-  __regex: !ruby/regexp /^(labnet|labservices|labnodepool|labsdb|labstore|labcontrol)100[1-9]\.eqiad\.wmnet$/
+  __regex: !ruby/regexp /^(labnet|labservices|labnodepool|labstore|labcontrol)100[1-9]\.eqiad\.wmnet$/
   cluster: labs
 
 cassandra_test_eqiad:
