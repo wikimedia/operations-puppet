@@ -1,9 +1,10 @@
-# = Define: labstore::fileserver::replicate
+#
 # Simple systemd based unit to replicate a given volume
 # from current host to destination
 #
-# $calendar is the systemd OnCalendar value for when to
-# schedule the backup.
+# [*calendar]
+#  the systemd OnCalendar value for when to
+#  schedule the backup.
 
 define labstore::fileserver::replicate(
     $src_path,
