@@ -53,13 +53,18 @@ class role::aqs {
     # Allow analytics networks to populate cassandra
     include network::constants
     $analytics_networks = join($network::constants::analytics_networks, ' ')
+
+    # In addition to the IP assigned to the Cassandra multi instances, these rules
+    # grant access from the actual AQS hosts
+    $aqs_hosts = hiera('aqs::hosts')
+    $aqs_hosts_ferm = join($aqs_hosts, ' ')
+
     # Cassandra CQL query interface
     ferm::service { 'cassandra-analytics-cql':
         proto  => 'tcp',
         port   => '9042',
-        srange => "(@resolve((${cassandra_hosts_ferm})) ${analytics_networks})",
+        srange => "(@resolve((${cassandra_hosts_ferm})) @resolve((${aqs_hosts_ferm})) ${analytics_networks})",
     }
-
 
     #
     # Set up AQS
