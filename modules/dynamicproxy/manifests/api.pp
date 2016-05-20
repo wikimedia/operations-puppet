@@ -31,7 +31,7 @@ class dynamicproxy::api(
         subscribe => File['/usr/local/bin/invisible-unicorn.py'],
     }
 
-    service { 'invisible-unicorn':
+    service { 'uwsgi-invisible-unicorn':
         ensure  => running,
     }
 
