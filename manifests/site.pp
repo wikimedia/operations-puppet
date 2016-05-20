@@ -1502,6 +1502,7 @@ node 'labstore1003.eqiad.wmnet' {
 
 node /labstore200[1-4]\.codfw\.wmnet/ {
     $cluster = 'labsnfs'
+    include standard
     role labs::nfs::fileserver
 }
 
