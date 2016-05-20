@@ -1,0 +1,5 @@
+#!/bin/bash
+mkdir -p /var/run/openldap-backup
+chmod 500 /var/run/openldap-backup
+umask 077
+/usr/sbin/slapcat > /var/run/openldap-backup/backup.ldif
