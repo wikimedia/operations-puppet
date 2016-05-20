@@ -373,6 +373,26 @@ class toollabs::exec_environ {
             ]:
             ensure => latest,
         }
+
+        # T135861: PHP 5.5 sessionclean cron job hanging on tool labs bastions
+        file { '/usr/lib/php5/sessionclean':
+            ensure  => 'present',
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0755',
+            source  => 'puppet:///modules/toollabs/sessionclean',
+            require => Package['php5-cli'],
+        }
+        # Using a file resource instead of a cron resource here as this is
+        # overwriting a file added by the php5-common deb.
+        file { '/etc/cron.d/php5':
+            ensure  => 'present',
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0644',
+            source  => 'puppet:///modules/toollabs/php5.cron.d',
+            require => Package['php5-cli'],
+        }
     } elsif $::lsbdistcodename == 'jessie' {
         include toollabs::genpp::python_exec_jessie
         # No obvious package available for libgdal
