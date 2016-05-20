@@ -8,6 +8,11 @@
 class labstore {
 
     require_package('nfs-kernel-server')
+    require_package('lvm2')
+    require_package('nfsd-ldap')
+
+    $ldapincludes = ['openldap', 'nss', 'utils']
+    class { 'ldap::role::client::labs': ldapincludes => $ldapincludes }
 
     file { '/usr/local/sbin/set-stripe-cache':
         ensure => present,
@@ -28,24 +33,6 @@ class labstore {
         user    => 'root',
         minute  => '*/5',
         require => File['/usr/local/sbin/set-stripe-cache'],
-    }
-
-    # Labstores need to be able to scp from one server
-    # to the other (in order to do backups)
-
-    ssh::userkey { 'root-labstore':
-        ensure => present,
-        user   => 'root',
-        skey   => 'labstore',
-        source => 'puppet:///modules/labstore/id_labstore.pub',
-    }
-
-    file { '/root/.ssh/id_labstore':
-        ensure  => present,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0400',
-        content => secret('labstore/id_labstore'),
     }
 
     file { '/etc/default/nfs-common':

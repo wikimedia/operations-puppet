@@ -1498,7 +1498,7 @@ node 'labsdb1007.eqiad.wmnet' {
 }
 
 node /labstore100[12]\.eqiad\.wmnet/ {
-    role labs::nfs::fileserver
+    role labs::nfs::primary
     include standard
 }
 
@@ -1507,9 +1507,15 @@ node 'labstore1003.eqiad.wmnet' {
     include standard
 }
 
-node /labstore200[1-4]\.codfw\.wmnet/ {
+node /labstore200[1-2]\.codfw\.wmnet/ {
     $cluster = 'labsnfs'
-    role labs::nfs::fileserver
+    role labs::nfs::backup
+    include standard
+}
+
+node /labstore200[3-4]\.codfw\.wmnet/ {
+    $cluster = 'labsnfs'
+    role labs::nfs::backup
     include standard
 }
 

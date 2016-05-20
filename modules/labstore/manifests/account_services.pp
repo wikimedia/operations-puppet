@@ -1,4 +1,4 @@
-# == Class: labstore::account_services
+#
 # Provides account services for labs user accounts,
 # currently in the labstore module because we put these
 # on the user's homedirs on NFS.
@@ -6,6 +6,7 @@
 # Currently provides:
 #   - MySQL replica / toolsdb accounts
 #
+
 class labstore::account_services {
 
     require_package('python3-yaml', 'python3-ldap3')
