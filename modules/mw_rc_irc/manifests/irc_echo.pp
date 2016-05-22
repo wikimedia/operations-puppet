@@ -38,4 +38,11 @@ class mw_rc_irc::irc_echo(
         provider => 'systemd',
         require  => File['/etc/systemd/system/ircecho.service'],
     }
+
+    # icinga check if bot process is running
+    nrpe::monitor_service { 'ircecho-process':
+        description  => 'ircecho bot process',
+        nrpe_command => "/usr/lib/nagios/plugins/check_procs -c 1:1 -C python --ereg-argument-array '/usr/local/bin/udpmxircecho.py'",
+    }
+
 }
