@@ -60,5 +60,6 @@ class mw_rc_irc::ircserver {
     monitoring::service { 'ircd':
         description   => 'ircd',
         check_command => 'check_ircd',
+        critical      => true,
     }
 }
