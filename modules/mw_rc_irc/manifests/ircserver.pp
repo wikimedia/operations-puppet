@@ -50,6 +50,12 @@ class mw_rc_irc::ircserver {
         require  => File['/etc/systemd/system/ircd.service'],
     }
 
+    # icinga check if server process is running
+    nrpe::monitor_service { "ircd-process":
+        description  => "irc server process",
+        nrpe_command => "/usr/lib/nagios/plugins/check_procs -c 1:1 -C irc --ereg-argument-array 'python /usr/bin/ircd -foreground'",
+    }
+
     diamond::collector { 'IRCDStats':
         source   => 'puppet:///modules/mw_rc_irc/monitor/ircd_stats.py',
         settings => {
