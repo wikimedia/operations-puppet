@@ -121,7 +121,7 @@ groups:
               daisy, tomasz, mholloway-shell, madhuvishy, ebernhardson, niedzielski,
               neilpquinn-wmf, tbayer, moushira, dbrant, maxsem, srijan, krenair,
               jminor, asherman, etonkovidova, sbisson, addshore, matmarex, elukey,
-              nikerabbit, nschaaf, dstrine]
+              nikerabbit, nschaaf, dstrine, kartik]
   ldap-admins:
     gid: 715
     description: ldap admins
