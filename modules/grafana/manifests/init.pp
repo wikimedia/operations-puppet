@@ -53,6 +53,14 @@ class grafana( $config ) {
         require => Package['grafana'],
     }
 
+    git::clone { 'operations/software/grafana/plugins/piechart-panel':
+        directory          => '/var/lib/grafana/plugins/piechart-panel',
+        owner              => 'grafana',
+        group              => 'grafana',
+        mode               => '0755',
+        require => Package['grafana'],
+    }
+
     service { 'grafana-server':
         ensure    => running,
         enable    => true,
