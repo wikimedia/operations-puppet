@@ -1,5 +1,10 @@
 # RESTBase wikimedia config
-<% mw_primary = scope.lookupvar('::mw_primary') %>
+<%
+  mw_primary = scope.lookupvar('::mw_primary')
+  rl_seeds = @hosts.select do |x|
+    x != @hostname && !x.start_with?(@hostname) && x != @ipaddress && x != @fqdn
+  end
+%>
 # First, load & parametrize project templates. These are referenced / shared
 # between domains in the root_spec further down.
 default_project: &default_project
@@ -917,6 +922,15 @@ metrics:
   host: <%= @statsd_host %>
   port: <%= @statsd_port %>
   batch: true
+
+<% if rl_seeds.size > 0 %>
+ratelimiter:
+  type: kademlia
+  listen:
+    address: <%= @ipaddress %>
+    port: 3050
+  seeds: ['<%= rl_seeds.join("','") %>']
+<% end %>
 
 app_base_path: /srv/deployment/restbase/deploy/restbase
 
