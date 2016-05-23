@@ -12,6 +12,14 @@ class role::restbase {
     include lvs::realserver
 
 
+    # RESTBase rate limiting DHT firewall rule
+    $rb_hosts_ferm = join(hiera('restbase::hosts'), ' ')
+    ferm::service { 'restbase-ratelimit':
+        proto  => 'tcp',
+        port   => '3050',
+        srange => "@resolve((${rb_hosts_ferm}))",
+    }
+
     ferm::service {'restbase_web':
         proto => 'tcp',
         port  => '7231',
