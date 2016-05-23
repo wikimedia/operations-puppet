@@ -8,7 +8,9 @@ class role::maps::master {
         ensure      => 'present',
         description => 'Maps Postgres master',
     }
-    redis::instance { 6379: }
+    redis::instance { '6379':
+        settings => { 'bind' => '0.0.0.0' },
+    }
 
     # DB passwords
     $kartotherian_pass = hiera('maps::postgresql_kartotherian_pass')
