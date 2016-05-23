@@ -6196,8 +6196,6 @@ host ocg1002{
 host ocg1003{
     hardware ethernet F0:1F:AF:E6:81:60;
     fixed-address ocg1003.eqiad.wmnet;
-    option pxelinux.pathprefix "jessie-installer/";
-    filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host oresrdb1001{
