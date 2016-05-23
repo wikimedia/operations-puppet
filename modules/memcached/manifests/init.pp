@@ -91,4 +91,10 @@ class memcached(
     if $::standard::has_ganglia {
         include ::memcached::ganglia
     }
+
+    diamond::collector { 'Memcached':
+        settings => {
+            hosts =>  "${ip}:${port}",
+        },
+    }
 }
