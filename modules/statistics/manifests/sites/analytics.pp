@@ -19,7 +19,8 @@ class statistics::sites::analytics {
         origin    => 'https://gerrit.wikimedia.org/r/analytics/analytics.wikimedia.org',
         owner     => 'root',
         group     => 'statistics-web-users',
-        mode      => '0775'
+        mode      => '0775',
+        ensure    => latest
     }
 
     include apache::mod::headers
