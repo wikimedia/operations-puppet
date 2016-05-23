@@ -121,7 +121,7 @@ groups:
               daisy, tomasz, mholloway-shell, madhuvishy, ebernhardson, niedzielski,
               neilpquinn-wmf, tbayer, moushira, dbrant, maxsem, srijan, krenair,
               jminor, asherman, etonkovidova, sbisson, addshore, matmarex, elukey,
-              nikerabbit, nschaaf, dstrine, kartik]
+              nikerabbit, nschaaf, dstrine]
   ldap-admins:
     gid: 715
     description: ldap admins
@@ -239,7 +239,7 @@ groups:
               andyrussg, niedzielski, maxsem, hoo, daniel, tbayer, krinkle, tgr,
               csteipp, smalyshev, ebernhardson, addshore, jminor, chedasaurus, neilpquinn-wmf,
               dcausse, bd808, tjones, mobrovac, jgirault, jdrewniak, ejegg, jdcc, ori,
-              bmansurov, atgomez, amire80]
+              bmansurov, atgomez, amire80, kartik]
   analytics-admins:
     gid: 732
     description: Admin access to analytics cluster.
