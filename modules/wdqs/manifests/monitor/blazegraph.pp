@@ -33,7 +33,7 @@ class wdqs::monitor::blazegraph {
         metric        => "varnish.eqiad.backends.be_${::hostname}.GET.p99",
         warning       => 120000, # 2 minutes
         critical      => 300000, # 5 minutes
-        from          => '1min',
+        from          => '10min',
         percentage    => 5,
         contact_group => 'wdqs-admins',
     }
