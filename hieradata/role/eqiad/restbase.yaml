@@ -13,6 +13,17 @@ restbase::seeds:
     - restbase1012-b.eqiad.wmnet
     - restbase1013-a.eqiad.wmnet
     - restbase1013-b.eqiad.wmnet
+# used for rate limiting
+restbase::hosts:
+  - restbase1007.eqiad.wmnet
+  - restbase1008.eqiad.wmnet
+  - restbase1009.eqiad.wmnet
+  - restbase1010.eqiad.wmnet
+  - restbase1011.eqiad.wmnet
+  - restbase1012.eqiad.wmnet
+  - restbase1013.eqiad.wmnet
+  - restbase1014.eqiad.wmnet
+  - restbase1015.eqiad.wmnet
 
 lvs::realserver::realserver_ips:
   - '10.2.2.17' # restbase.svc.eqiad.wmnet

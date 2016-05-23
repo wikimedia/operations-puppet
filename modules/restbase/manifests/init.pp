@@ -82,6 +82,10 @@
 #   The domain to monitor during the service's operation.
 #   Default: en.wikipedia.org
 #
+# [*hosts*]
+#   The list of RESTBase hosts used for setting up the rate-limiting DHT.
+#   Default: [$::ipaddress]
+#
 class restbase(
     $cassandra_user = 'cassandra',
     $cassandra_password = 'cassandra',
@@ -111,6 +115,7 @@ class restbase(
     $eventlogging_service_uri =
     'http://eventbus.svc.eqiad.wmnet:8085/v1/events',
     $monitor_domain = 'en.wikipedia.org',
+    $hosts          = [$:ipaddress],
 ) {
 
     service::node { 'restbase':
