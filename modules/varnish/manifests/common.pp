@@ -67,5 +67,10 @@ class varnish::common {
             group  => 'root',
             mode   => '0444',
         }
+
+        # We don't use varnishlog at all, and it can become an issue, see T135700
+        service { 'varnishlog':
+            ensure => 'stopped'
+        }
     }
 }
