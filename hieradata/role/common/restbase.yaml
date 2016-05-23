@@ -18,6 +18,8 @@ restbase::aqs_uri: "http://aqs.svc.%{::aqs_site}.wmnet:7232/analytics.wikimedia.
 restbase::cassandra_user: restb
 restbase::cassandra_password: "%{passwords::cassandra::restbase}"
 restbase::monitoring::monitor_domain: en.wikipedia.org
+# used for rate limiting, populated in respective DC hiera YAML files
+restbase::hosts: ['localhost']
 
 admin::groups:
   - restbase-roots
