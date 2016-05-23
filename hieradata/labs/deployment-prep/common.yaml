@@ -98,6 +98,10 @@ cassandra::metrics::graphite_host: labmon1001.eqiad.wmnet
 restbase::seeds:
   - 10.68.16.128
   - 10.68.17.189
+# used for rate limiting
+restbase::hosts:
+  - deployment-restbase01.deployment-prep.eqiad.wmflabs
+  - deployment-restbase02.deployment-prep.eqiad.wmflabs
 restbase::config_template: restbase/config.labs.yaml.erb
 restbase::parsoid_uri: http://deployment-parsoid05.deployment-prep.eqiad.wmflabs:8000
 restbase::statsd_host: labmon1001.eqiad.wmnet
