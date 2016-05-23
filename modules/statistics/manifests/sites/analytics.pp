@@ -15,11 +15,12 @@ class statistics::sites::analytics {
     # Allow statistics-web-users to modify files in this directory.
 
     git::clone { 'analytics.wikimedia.org':
+        ensure    => 'latest',
         directory => $document_root,
         origin    => 'https://gerrit.wikimedia.org/r/analytics/analytics.wikimedia.org',
         owner     => 'root',
         group     => 'statistics-web-users',
-        mode      => '0775'
+        mode      => '0775',
     }
 
     include apache::mod::headers
