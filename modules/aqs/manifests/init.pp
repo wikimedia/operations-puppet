@@ -72,7 +72,6 @@ class aqs(
         auto_refresh           => false,
         init_restart           => false,
         deployment             => 'scap3',
-        deployment_manage_user => true,
     }
 
 }

@@ -57,9 +57,6 @@
 #   The service's starter module loaded by service-runner on start-up. Default:
 #   ./src/app.js
 #
-# [*firejail*]
-#   Whether to use firejail when starting the service. Default: true
-#
 # [*starter_script*]
 #   The script used for starting the service. Default: src/server.js
 #
@@ -81,10 +78,6 @@
 # [*deployment_user*]
 #   The user that will own the service code. Only applicable when
 #   $deployment ='scap3'. Default: $title
-#
-# [*deployment_manage_user*]
-#   Boolean. Whether or not scap::target manages user. Only applicable
-#   when $deployment ='scap3'. Default: false
 #
 # === Examples
 #
@@ -108,24 +101,22 @@
 #
 define service::node(
     $port,
-    $enable                 = true,
-    $config                 = undef,
-    $full_config            = false,
-    $no_workers             = 'ncpu',
-    $heap_limit             = 300,
-    $no_file                = 10000,
-    $healthcheck_url        = '/_info',
-    $has_spec               = false,
-    $repo                   = "${title}/deploy",
-    $starter_module         = './src/app.js',
-    $firejail               = true,
-    $starter_script         = 'src/server.js',
-    $local_logging          = true,
-    $auto_refresh           = true,
-    $init_restart           = true,
-    $deployment             = undef,
-    $deployment_user        = 'deploy-service',
-    $deployment_manage_user = true,
+    $enable          = true,
+    $config          = undef,
+    $full_config     = false,
+    $no_workers      = 'ncpu',
+    $heap_limit      = 300,
+    $no_file         = 10000,
+    $healthcheck_url = '/_info',
+    $has_spec        = false,
+    $repo            = "${title}/deploy",
+    $starter_module  = './src/app.js',
+    $starter_script  = 'src/server.js',
+    $local_logging   = true,
+    $auto_refresh    = true,
+    $init_restart    = true,
+    $deployment      = undef,
+    $deployment_user = 'deploy-service',
 ) {
     case $deployment {
         'scap3': {
@@ -134,7 +125,7 @@ define service::node(
                     service_name => $title,
                     user         => $deployment_user,
                     before       => Base::Service_unit[$title],
-                    manage_user  => $deployment_manage_user,
+                    manage_user  => true,
                 }
             }
         }
