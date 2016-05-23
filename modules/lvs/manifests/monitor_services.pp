@@ -20,7 +20,7 @@ class lvs::monitor_services($contacts = 'admins,team-services', $critical = fals
     monitoring::service { 'check_mobileapps_cluster_codfw':
         host          => 'mobileapps.svc.codfw.wmnet',
         group         => 'lvs',
-        description   => 'Mobileapps LVS eqiad',
+        description   => 'Mobileapps LVS codfw',
         check_command => 'check_wmf_service!http://mobileapps.svc.codfw.wmnet:8888!15',
     }
 
@@ -35,7 +35,7 @@ class lvs::monitor_services($contacts = 'admins,team-services', $critical = fals
     monitoring::service { 'check_graphoid_cluster_codfw':
         host          => 'graphoid.svc.codfw.wmnet',
         group         => 'lvs',
-        description   => 'Graphoid LVS eqiad',
+        description   => 'Graphoid LVS codfw',
         check_command => 'check_wmf_service!http://graphoid.svc.codfw.wmnet:19000!15',
     }
 
@@ -50,7 +50,7 @@ class lvs::monitor_services($contacts = 'admins,team-services', $critical = fals
     monitoring::service { 'check_citoid_cluster_codfw':
         host          => 'citoid.svc.codfw.wmnet',
         group         => 'lvs',
-        description   => 'Citoid LVS eqiad',
+        description   => 'Citoid LVS codfw',
         check_command => 'check_wmf_service!http://citoid.svc.codfw.wmnet:1970!15',
     }
 
@@ -66,12 +66,12 @@ class lvs::monitor_services($contacts = 'admins,team-services', $critical = fals
     monitoring::service { 'check_restbase_cluster_codfw':
         host          => 'restbase.svc.codfw.wmnet',
         group         => 'lvs',
-        description   => 'Restbase LVS eqiad',
+        description   => 'Restbase LVS codfw',
         check_command => 'check_wmf_service!http://restbase.svc.codfw.wmnet:7231/en.wikipedia.org/v1!15',
     }
 
 
-    # Matoid
+    # Mathoid
     monitoring::service { 'check_mathoid_cluster_eqiad':
         host          => 'mathoid.svc.eqiad.wmnet',
         group         => 'lvs',
@@ -82,7 +82,7 @@ class lvs::monitor_services($contacts = 'admins,team-services', $critical = fals
     monitoring::service { 'check_mathoid_cluster_codfw':
         host          => 'mathoid.svc.codfw.wmnet',
         group         => 'lvs',
-        description   => 'Mathoid LVS eqiad',
+        description   => 'Mathoid LVS codfw',
         check_command => 'check_wmf_service!http://mathoid.svc.codfw.wmnet:10042!15',
     }
 
@@ -97,7 +97,7 @@ class lvs::monitor_services($contacts = 'admins,team-services', $critical = fals
     monitoring::service { 'check_cxserver_cluster_codfw':
         host          => 'cxserver.svc.codfw.wmnet',
         group         => 'lvs',
-        description   => 'Cxserver LVS eqiad',
+        description   => 'Cxserver LVS codfw',
         check_command => 'check_wmf_service!http://cxserver.svc.codfw.wmnet:8080!15',
     }
 
