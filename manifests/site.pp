@@ -2156,7 +2156,43 @@ node /^mw12(59|60)\.eqiad\.wmnet/ {
     role mediawiki::videoscaler
 }
 
-# ROW A codfw appservers: mw2061-mw2079
+# ROW A eqiad appservers
+#mw1261 - mw1275
+
+node /^mw126[1-5]\.eqiad\.wmnet$/ {
+    role mediawiki::canary_appserver
+    include base::firewal
+}
+
+node /^mw12(6[6-9]|7[0-5])\.eqiad\.wmnet$/ {
+    role mediawiki::appserver
+    include base::firewal
+}
+
+# ROW A eqiad api appserver
+# mw1276 - mw1290
+node /^mw127[6-9]\.eqiad\.wmnet$/ {
+    role mediawiki::appserver::canary_api
+    include base::firewal
+}
+
+node /^mw12(8[0-9]|90)\.eqiad\.wmnet$/ {
+    role mediawiki::appserver::api
+    include base::firewal
+}
+
+# ROW A eqiad imagescalers
+node /^mw129[1-8]\.eqiad\.wmnet$/ {
+    role mediawiki::imagescaler
+}
+
+# ROW A eqiad jobrunners
+node /^mw1(299|30[0-6])\.eqiad\.wmnet$/ {
+    role mediawiki::jobrunner
+    include base::firewall
+}
+
+# ROW A codfw appservers: mw2061-mw2079, plus mw2017
 
 # mw2017.codfw.wmnet is a codfw test appserver
 node 'mw2017.codfw.wmnet' {
