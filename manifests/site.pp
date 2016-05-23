@@ -722,7 +722,7 @@ node /^db20(08|09)\.codfw\.wmnet/ {
 }
 
 ## m1 shard
-node /^db10(01)\.eqiad\.wmnet/ {
+node 'db1001.eqiad.wmnet' {
     class { 'role::coredb::m1':
         mariadb => true,
     }
@@ -734,7 +734,7 @@ node 'db1016.eqiad.wmnet' {
     }
 }
 
-node /^db20(10|30)\.codfw\.wmnet/ {
+node 'db2010.codfw.wmnet' {
     class { 'role::mariadb::misc':
         shard => 'm1',
     }
@@ -749,7 +749,7 @@ node 'db1020.eqiad.wmnet' {
     }
 }
 
-node /^db20(11)\.codfw\.wmnet/ {
+node 'db2011.codfw.wmnet' {
     class { 'role::mariadb::misc':
         shard => 'm2',
     }
@@ -772,7 +772,7 @@ node 'db1048.eqiad.wmnet' {
     include base::firewall
 }
 
-node /^db20(12)\.codfw\.wmnet/ {
+node 'db2012.codfw.wmnet' {
     class { 'role::mariadb::misc::phabricator':
         shard     => 'm3',
         mariadb10 => true,
@@ -806,6 +806,13 @@ node 'db1009.eqiad.wmnet' {
         shard  => 'm5',
         master => true,
     }
+}
+
+node 'db2030.codfw.wmnet' {
+    class { 'role::mariadb::misc':
+        shard => 'm5',
+    }
+    include base::firewall
 }
 
 # sanitarium
