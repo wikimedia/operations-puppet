@@ -1224,6 +1224,8 @@ host db1015 {
 host db1016 {
     hardware ethernet 78:2b:cb:0a:0c:33;
     fixed-address db1016.eqiad.wmnet;
+    option pxelinux.pathprefix "jessie-installer/";
+    filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host db1018 {
@@ -1592,6 +1594,8 @@ host db2009 {
 host db2010 {
     hardware ethernet 78:2b:cb:6b:c6:ef;
     fixed-address db2010.codfw.wmnet;
+    option pxelinux.pathprefix "jessie-installer/";
+    filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host db2011 {
