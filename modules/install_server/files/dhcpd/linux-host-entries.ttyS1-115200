@@ -330,6 +330,8 @@ host cerium {
 host chromium {
     hardware ethernet 78:2b:cb:08:aa:48;
     fixed-address chromium.wikimedia.org;
+    option pxelinux.pathprefix "jessie-installer/";
+    filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host conf1001 {
