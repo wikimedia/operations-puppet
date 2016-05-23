@@ -1432,10 +1432,13 @@ node 'labcontrol1002.wikimedia.org' {
     include ldap::role::client::labs
 }
 
+# like silver (wikitech.wikimedia.org)
 node 'labtestweb2001.wikimedia.org' {
     role labs::openstack::nova::manager, mariadb::wikitech, horizon
     include base::firewall
     include standard
+
+    interface::add_ip6_mapped { 'main': }
 }
 
 # Labs Graphite and StatsD host
