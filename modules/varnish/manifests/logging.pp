@@ -36,4 +36,12 @@ define varnish::logging(
             nrpe_command => "/usr/lib/nagios/plugins/check_procs -c 1:1 -a varnishncsa-${name}.pid -u varnishlog",
         }
     }
+
+    # Varnish 3: make sure varnishlog is not running. T135700
+    if (!hiera('varnish_version4', false)) {
+        service { 'varnishlog':
+            ensure  => stopped,
+            require => Package['varnish'],
+        }
+    }
 }
