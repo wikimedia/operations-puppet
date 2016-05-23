@@ -103,15 +103,32 @@ class UpdateMetricThread(threading.Thread):
     def metric_of(self, name):
         val = 0
         mp = name.split("_")[0]
-        if (name.rsplit("_", 1)[1] == "rate" and
-                name.rsplit("_", 1)[0] in self.metric):
+        name_tail = name.rsplit("_", 1)
+        if (name_tail[1] == "rate" and
+                name_tail[0] in self.metric):
             _Lock.acquire()
-            name = name.rsplit("_", 1)[0]
+            name = name_tail[0]
             if name in self.last_metric:
                 num = self.metric[name]-self.last_metric[name]
                 period = self.metric[mp+"_time"]-self.last_metric[mp+"_time"]
                 try:
                     val = num/period
+                except ZeroDivisionError:
+                    val = 0
+            _Lock.release()
+        elif (name_tail[1] == "ratio" and
+                "hits" in name_tail[0] and
+                name_tail[0] in self.metric and
+                name_tail[0].replace("hits","misses") in self.metric):
+            _Lock.acquire()
+            hits_name = name_tail[0]
+            misses_name = hits_name.replace("hits","misses")
+            if hits_name in self.last_metric and
+                    misses_name in self.last_metric:
+                hits = self.metric[hits_name]-self.last_metric[hits_name]
+                misses = self.metric[misses_name]-self.last_metric[misses_name]
+                try:
+                    val = hits/(hits+misses)
                 except ZeroDivisionError:
                     val = 0
             _Lock.release()
@@ -260,6 +277,12 @@ def metric_init(params):
                 "units": "commands",
                 "slope": "both",
                 "description": "Sets per second",
+                }))
+    descriptors.append(create_desc(Desc_Skel, {
+                "name": mp+"_get_hits_ratio",
+                "units": "items",
+                "slope": "positive",
+                "description": "Get hits ratio (hits/(hits+misses)",
                 }))
 
     # Tokyo Tyrant
