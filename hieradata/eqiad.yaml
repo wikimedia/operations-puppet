@@ -122,6 +122,7 @@ novaconfig:
   scheduler_pool:
     - labvirt1001
     - labvirt1002
+    - labvirt1003
     - labvirt1004
     - labvirt1005
     - labvirt1006
