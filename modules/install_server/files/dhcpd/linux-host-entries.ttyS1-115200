@@ -4836,81 +4836,113 @@ host mw1259 {
 host mw1260 {
     hardware ethernet 18:03:73:f1:59:5a;
     fixed-address mw1260.eqiad.wmnet;
+    option pxelinux.pathprefix "jessie-installer/";
+    filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host mw1261 {
 	hardware ethernet 14:18:77:61:4B:03;
 	fixed-address mw1261.eqiad.wmnet;
+    option pxelinux.pathprefix "jessie-installer/";
+    filename "jessie-installer/debian-installer/amd64/pxelinux.0";    
 }
 
 host mw1262 {
 	hardware ethernet 14:18:77:61:3A:1C;
 	fixed-address mw1262.eqiad.wmnet;
+    option pxelinux.pathprefix "jessie-installer/";
+    filename "jessie-installer/debian-installer/amd64/pxelinux.0";    
 }
 
 host mw1263 {
 	hardware ethernet 14:18:77:61:3C:2D;
 	fixed-address mw1263.eqiad.wmnet;
+    option pxelinux.pathprefix "jessie-installer/";
+    filename "jessie-installer/debian-installer/amd64/pxelinux.0";    
 }
 
 host mw1264 {
 	hardware ethernet 14:18:77:61:3C:1B;
 	fixed-address mw1264.eqiad.wmnet;
+    option pxelinux.pathprefix "jessie-installer/";
+    filename "jessie-installer/debian-installer/amd64/pxelinux.0";    
 }
 
 host mw1265 {
 	hardware ethernet 14:18:77:61:38:14;
 	fixed-address mw1265.eqiad.wmnet;
+    option pxelinux.pathprefix "jessie-installer/";
+    filename "jessie-installer/debian-installer/amd64/pxelinux.0";    
 }
 
 host mw1266 {
 	hardware ethernet 14:18:77:61:39:8E;
 	fixed-address mw1266.eqiad.wmnet;
+    option pxelinux.pathprefix "jessie-installer/";
+    filename "jessie-installer/debian-installer/amd64/pxelinux.0";    
 }
 
 host mw1267 {
 	hardware ethernet 14:18:77:61:48:1F;
 	fixed-address mw1267.eqiad.wmnet;
+    option pxelinux.pathprefix "jessie-installer/";
+    filename "jessie-installer/debian-installer/amd64/pxelinux.0";    
 }
 
 host mw1268 {
 	hardware ethernet 14:18:77:61:33:99;
 	fixed-address mw1268.eqiad.wmnet;
+    option pxelinux.pathprefix "jessie-installer/";
+    filename "jessie-installer/debian-installer/amd64/pxelinux.0";    
 }
 
 host mw1269 {
 	hardware ethernet 14:18:77:61:3B:AD;
 	fixed-address mw1269.eqiad.wmnet;
+    option pxelinux.pathprefix "jessie-installer/";
+    filename "jessie-installer/debian-installer/amd64/pxelinux.0";    
 }
 
 host mw1270 {
 	hardware ethernet 14:18:77:61:3A:22;
 	fixed-address mw1270.eqiad.wmnet;
+    option pxelinux.pathprefix "jessie-installer/";
+    filename "jessie-installer/debian-installer/amd64/pxelinux.0";    
 }
 
 host mw1271 {
 	hardware ethernet 14:18:77:61:3E:47;
 	fixed-address mw1271.eqiad.wmnet;
+    option pxelinux.pathprefix "jessie-installer/";
+    filename "jessie-installer/debian-installer/amd64/pxelinux.0";    
 }
 
 host mw1272 {
 	hardware ethernet 14:18:77:61:31:6A;
 	fixed-address mw1272.eqiad.wmnet;
+    option pxelinux.pathprefix "jessie-installer/";
+    filename "jessie-installer/debian-installer/amd64/pxelinux.0";    
 }
 
 host mw1273 {
 	hardware ethernet 14:18:77:61:36:2B;
 	fixed-address mw1273.eqiad.wmnet;
+    option pxelinux.pathprefix "jessie-installer/";
+    filename "jessie-installer/debian-installer/amd64/pxelinux.0";    
 }
 
 host mw1274 {
 	hardware ethernet 14:18:77:61:35:A3;
 	fixed-address mw1274.eqiad.wmnet;
+    option pxelinux.pathprefix "jessie-installer/";
+    filename "jessie-installer/debian-installer/amd64/pxelinux.0";    
 }
 
 host mw1275 {
 	hardware ethernet 14:18:77:61:46:45;
 	fixed-address mw1275.eqiad.wmnet;
+    option pxelinux.pathprefix "jessie-installer/";
+    filename "jessie-installer/debian-installer/amd64/pxelinux.0";    
 }
 
 host mw1276 {
