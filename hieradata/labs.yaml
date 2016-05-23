@@ -12,12 +12,6 @@ discovery::app_routes:
   mathoid: "%{::site}"
   aqs: 'eqiad'
 
-
-# dns
-labsdnsconfig:
-  recursor: 'labs-recursor1.wikimedia.org'
-  recursor_secondary: 'labs-recursor0.wikimedia.org'
-
 # Additional base overrides
 standard::has_admin: false
 base::remote_syslog::enable: false
