@@ -56,7 +56,7 @@ class role::aqs {
 
     # In addition to the IP assigned to the Cassandra multi instances, these rules
     # grant access from the actual AQS hosts
-    $aqs_hosts_ferm = join(hiera('aqs::hosts'), ' ')
+    $aqs_hosts_ferm = join(hiera('aqs_hosts'), ' ')
 
     # Cassandra CQL query interface
     ferm::service { 'cassandra-analytics-cql':
