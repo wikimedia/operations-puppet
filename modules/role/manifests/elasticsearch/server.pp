@@ -65,6 +65,15 @@ class role::elasticsearch::server{
     include ::elasticsearch::log::hot_threads
     include ::elasticsearch::nagios::check
 
+
+    # elasticsearch/server.yaml disables disk check for elasticsearch partition
+    # we need specific settings, so we declare this check independantly.
+    nrpe::check_disk { '/var/lib/elasticsearch':
+        paths              => [ '/var/lib/elasticsearch'],
+        retries            => 30,
+        warning_threshold  => '18%',
+        critical_threshold => '15%',
+    }
     file { '/etc/elasticsearch/scripts':
         ensure  => directory,
         owner   => 'root',

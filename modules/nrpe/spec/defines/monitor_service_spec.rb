@@ -11,20 +11,18 @@ describe 'nrpe::monitor_service', :type => :define do
     end
 
     it do
-        pending "After refactoring nagios visit this again"
         should contain_nrpe__check('check_something').with(
             :command       => '/usr/local/bin/mycommand -i this -o that',
             :ensure        => 'present'
         )
     end
     it do
-        pending "After refactoring nagios visit this again"
-        should contain_monitor_service('something').with(
+        should contain_monitoring__service('something').with(
             :description   => 'this is a description',
             :contact_group => 'none',
             :retries       => 3,
             :ensure        => 'present',
-            :check_command => 'nrpe!check_something',
+            :check_command => 'nrpe_check!check_something!10',
             :critical      => 'false'
         )
     end

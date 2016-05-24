@@ -9,7 +9,12 @@ ssh::server::authorized_keys_file: /etc/ssh/userkeys/%u /etc/ssh/userkeys/%u.d/l
 "ssh::server::explicit_macs": false
 # the snapshots created by the backup process cannot be checked
 # by the check_disk nrpe plugin so need to be excluded.
-base::monitoring::host::nrpe_check_disk_options: -w 10% -c 5% -l -e -A -i /run/lock/storage-replicate-.*/snapshot -i /exp/.*
+base::monitoring::host::nrpe_check_disk_warning_threshold: 10%
+base::monitoring::host::nrpe_check_disk_critical_threshold: 5%
+base::monitoring::host::nrpe_check_disk_ignore:
+  - '/run/lock/storage-replicate-.*/snapshot'
+  - '/exp/.*'
+base::monitoring::host::nrpe_check_disk_exclude_types: []
 debdeploy::grains:
   debdeploy-labsnfs:
     value: standard

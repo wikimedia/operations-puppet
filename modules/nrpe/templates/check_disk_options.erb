@@ -1,0 +1,5 @@
+-w <%= @warning_threshold %> -c <%= @critical_threshold %> -l -e<% -%>
+<% if @all -%> -all<%- end -%>
+<% @ignore_ereg_path.each do |ignore_path| -%> --ignore-ereg-path="<%= ignore_path %>"<%- end -%>
+<% @exclude_types.each do |exclude_type| -%> --exclude-type=<%= exclude_type %><%- end -%>
+<% @paths.each do |path| -%> --path=<%= path %><%- end -%>
