@@ -24,6 +24,7 @@ class role::icinga(
     include icinga::monitor::certs
     include icinga::monitor::gsb
     include icinga::monitor::git
+    include icinga::monitor::commons
     include lvs::monitor
     include role::authdns::monitoring
     include netops::monitoring
