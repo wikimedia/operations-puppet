@@ -6,7 +6,9 @@
 # accomodate future tilerator needs that are not suited for the service module
 # classes as well as conform to a de-facto standard of having a module for every
 # service
-class tilerator {
+class tilerator(
+    $conf_sources = 'sources.prod.yaml',
+) {
     include tilerator::ui
 
     $cassandra_tilerator_user = 'tilerator'
