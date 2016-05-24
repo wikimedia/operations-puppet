@@ -1498,18 +1498,19 @@ node 'labsdb1007.eqiad.wmnet' {
 }
 
 node /labstore100[12]\.eqiad\.wmnet/ {
-    include standard
     role labs::nfs::fileserver
+    include standard
 }
 
 node 'labstore1003.eqiad.wmnet' {
     role labs::nfs::misc
+    include standard
 }
 
 node /labstore200[1-4]\.codfw\.wmnet/ {
     $cluster = 'labsnfs'
-    include standard
     role labs::nfs::fileserver
+    include standard
 }
 
 # New https://www.mediawiki.org/wiki/Gerrit
