@@ -66,7 +66,7 @@ groups:
                  restricted folks use sudo to access apache / www-data resources
     members: [daniel, dartar, ellery, bearloga,
               ezachte, hoo, jamesur, jdlrobson, khorn, tparscal, ssastry,
-              ironholds, nuria, leila, santhosh, amire80, legoktm, addshore]
+              ironholds, nuria, leila, santhosh, amire80, legoktm, addshore, foks]
     privileges: ['ALL = (www-data,apache) NOPASSWD: ALL']
   bastiononly:
     gid: 707
@@ -239,7 +239,7 @@ groups:
               andyrussg, niedzielski, maxsem, hoo, daniel, tbayer, krinkle, tgr,
               csteipp, smalyshev, ebernhardson, addshore, jminor, chedasaurus, neilpquinn-wmf,
               dcausse, bd808, tjones, mobrovac, jgirault, jdrewniak, ejegg, jdcc, ori,
-              bmansurov, atgomez, amire80, kartik]
+              bmansurov, atgomez, amire80, kartik, foks]
   analytics-admins:
     gid: 732
     description: Admin access to analytics cluster.
@@ -1897,3 +1897,11 @@ users:
     ssh_keys:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC3N4d9IDAb//Aq4NG4I2L5EXPpJDHnTg/+O1tOsuNWJUV9NvaNjzB5aZZ3hnZOS5OoTU6Lf0d8FWV5zmmVVj+RSGxxd4RrLFqFKlkbDJAyyGBsqKlYwMv0lgd/etbgx/5beW4zj6Y1wxG9pd+dpaDVDnG1JQEy7u3kaqRAylm1t5o0zMtxEhcOmxXM3hRI4h/YGC472bD4tP5pBb066zFgdEpNzRUKSAJwpx/WOqI7nhsPtXpzWsBXS7FwW1UvMUxpOLTTtfJv61u8f/Y20GPDiS2mUSG5ifNhQg0nhLIdLK6FZO5LGBKzbZ2oDYtM66ZrY7ClATaku3Hm1ZKO6SJR dstrine@wikimedia.org
     uid: 14098
+  foks:
+    ensure: present
+    gid: 500
+    name: foks
+    realname: Joe Sutherland
+    ssh_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDX368WOXX1gmidVWIIWDE/bawNJwPhglewYr78NGpDkpiwLs6L3WLZnVOm/9avx1g7Yxj/Hv4eJDZCJpgj9mi/PNsbU0tdw5a7KZQ+AlmnF7+PgAhyBW5GPo8uPhe73nrsiRizM/uqQLPKJkV2RvzFr3ic7uPDGfnltxbNbjhTw0YEeCTyS9dQQ+X6aQVpUBccgDNSQP6tQmZY7Sg8L17oEUqf93eZ052bhSOyt9DVL4LjPrioPc/KtmNaxvrxjzzt70Mz1z0I7jJa3uw3LDZe6Zo3vX6W+1TvNRISaEMv3YwqydsYu3BFJFRYJalO4Zf+8AhRtbs2tyv3V+gtuf7N jsutherland@wikimedia.org
+    uid: 14124
