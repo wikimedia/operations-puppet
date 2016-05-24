@@ -1178,7 +1178,6 @@ node 'helium.eqiad.wmnet' {
     role poolcounter, backup::director, backup::storage
 
     include standard
-    include base::firewall
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
     }
@@ -2419,7 +2418,6 @@ node /(dubnium|pollux)\.wikimedia\.org/ {
 node 'potassium.eqiad.wmnet' {
     role poolcounter
     include standard
-    include base::firewall
 }
 
 # pybal-test200X VMs are used for pybal testing/development
@@ -2715,7 +2713,6 @@ node /^snapshot100[5-7]\.eqiad\.wmnet/ {
 node /(subra|suhail)\.codfw\.wmnet/ {
     role poolcounter
     include standard
-    include base::firewall
 }
 
 # neon-like monitoring host in codfw
