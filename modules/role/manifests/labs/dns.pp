@@ -20,6 +20,14 @@ class role::labs::dns {
     include role::mariadb::monitor::dba
     include role::mariadb::ferm
 
+    # Note:  This will install mariadb but won't set up the
+    #  pdns database.  Manual steps are:
+    #
+    #  $ /opt/wmf-mariad/install
+    #  $ /opt/wmf/mariadb/scripts/mysql_install_db
+    #  Then export the 'pdns' db from a working labservices host and import
+    #  Then, run 'designate-manage powerdns sync' for the new host
+    #
     class { 'mariadb::packages_wmf':
         mariadb10 => true,
     }
@@ -31,6 +39,10 @@ class role::labs::dns {
         datadir   => '/srv/sqldata',
         tmpdir    => '/srv/tmp',
         read_only => 'off',
+    }
+
+    package { 'mysql-client':
+        ensure => present,
     }
 
     $pdns_db_password       = $dnsconfig['db_pass']
