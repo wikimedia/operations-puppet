@@ -2141,29 +2141,17 @@ node /^mw12(59|60)\.eqiad\.wmnet/ {
     role mediawiki::videoscaler
 }
 
-# ROW A codfw appservers: mw2001-mw2079
-#mw2001-mw2006 are jobrunners
-node /^mw200[0-6]\.codfw\.wmnet$/ {
-    if $::hostname == 'mw2001' {
-        $ganglia_aggregator = true
-    }
-    role mediawiki::jobrunner
-    include base::firewall
-}
+# ROW A codfw appservers: mw2061-mw2079
 
-#mw2007 is a videoscaler
-node 'mw2007.codfw.wmnet' {
-    role mediawiki::videoscaler
-}
-
-#mw2008-mw2049 are appservers
-node /^mw20(0[89]|[1-4][0-9])\.codfw\.wmnet$/ {
+# mw2017.codfw.wmnet is a codfw test appserver
+node 'mw2017.codfw.wmnet' {
     role mediawiki::appserver
     include base::firewall
 }
 
-#mw2050-2079 are api appservers
-node /^mw20[5-7][0-9]\.codfw\.wmnet$/ {
+
+#mw2061-2079 are api appservers
+node /^mw20[6-7][0-9]\.codfw\.wmnet$/ {
     role mediawiki::appserver::api
     include base::firewall
 }
