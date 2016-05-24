@@ -167,6 +167,14 @@ class graphite(
             group   => 'root',
         }
 
+        rsyslog::conf { 'graphite':
+            source   => 'puppet:///modules/graphite/rsyslog.conf',
+        }
+
+        logrotate::conf { 'graphite':
+            source => 'puppet:///modules/graphite/logrotate.conf',
+        }
+
         base::service_unit { 'carbon-cache@':
             ensure          => present,
             systemd         => true,
