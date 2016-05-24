@@ -11,6 +11,10 @@ class role::prometheus::labs_project {
     listen_address => '127.0.0.1:9901'
   }
 
+  prometheus::web { 'labs':
+    proxy_pass => 'http://127.0.0.1:9901/labs',
+  }
+
   $targets_file = '/srv/prometheus/labs/targets/node_project.yml'
 
   include ::prometheus::scripts
