@@ -21,12 +21,27 @@
 #
 # nrpe_check_disk_critical  - Make disk space alerts paging, defaults to not paging
 #
+# nrpe_check_disk_max_check_attempts - see: `nrpe::monitor_service:retries`
+#
+# nrpe_check_disk_warning_threshold  - see: `nrpe::check_disk::warning_threshold`
+#
+# nrpe_check_disk_critical_threshold - see: `nrpe::check_disk::critical_threshold`
+#
+# nrpe_check_disk_ignore             - see: `nrpe::check_disk::ignore_ereg_path`
+# nrpe_check_disk_exclude_types      - see: `nrpe::check_disk::exclude_types`
+# nrpe_check_disk_paths              - see: `nrpe::check_disk::paths`
 class base::monitoring::host(
     $contact_group = hiera('contactgroups', 'admins'),
     # the -A -i ... part is a gross hack to workaround Varnish partitions
     # that are purposefully at 99%. Better ideas are welcome.
     $nrpe_check_disk_options = '-w 6% -c 3% -l -e -A -i "/srv/sd[a-b][1-3]" --exclude-type=tracefs',
     $nrpe_check_disk_critical = false,
+    $nrpe_check_disk_max_check_attempts = 3,
+    $nrpe_check_disk_warning_threshold = '6%',
+    $nrpe_check_disk_critical_threshold = '3%',
+    $nrpe_check_disk_ignore = [ '/srv/sd[a-b][1-3]' ],
+    $nrpe_check_disk_exclude_types = [ 'tracefs' ],
+    $nrpe_check_disk_paths = [],
 ) {
     include base::puppet::params # In order to be able to use some variables
 
@@ -86,10 +101,12 @@ class base::monitoring::host(
         }
     }
 
-    nrpe::monitor_service { 'disk_space':
-        description  => 'Disk space',
-        critical     => $nrpe_check_disk_critical,
-        nrpe_command => "/usr/lib/nagios/plugins/check_disk ${nrpe_check_disk_options}",
+    nrpe::check_disk { 'default':
+        critical         => $nrpe_check_disk_critical,
+        ignore_ereg_path => $nrpe_check_disk_ignore,
+        options          => $nrpe_check_disk_options,
+        exclude_types    => [ 'tracefs' ],
+        paths            => $nrpe_check_disk_paths,
     }
 
     nrpe::monitor_service { 'dpkg':
@@ -102,7 +119,7 @@ class base::monitoring::host(
         description  => 'puppet last run',
         nrpe_command => "/usr/bin/sudo /usr/local/lib/nagios/plugins/check_puppetrun -w ${warninginterval} -c ${criticalinterval}",
     }
-    nrpe::monitor_service {'check_eth':
+    nrpe::monitor_service { 'check_eth':
         description  => 'configured eth',
         nrpe_command => '/usr/local/lib/nagios/plugins/check_eth',
     }
