@@ -61,7 +61,7 @@ class role::rcstream {
     ferm::service { 'rcstream_redis':
         proto  => 'tcp',
         port   => '6379',
-        srange => '$INTERNAL',
+        srange => '(($INTERNAL @resolve(wikitech.wikimedia.org) @resolve(labtestwikitech.wikimedia.org)))',
     }
 
     monitoring::service { 'https_rcstream':
