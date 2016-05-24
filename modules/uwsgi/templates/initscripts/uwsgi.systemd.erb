@@ -6,6 +6,7 @@ Description = <%= @title %> uwsgi app
 ExecStart = /usr/bin/uwsgi --die-on-term --autoload --ini <%= @inipath %>
 User = www-data
 Group = www-data
+SyslogIdentifier = uwsgi-<%= @title %>
 
 [Install]
 WantedBy = multi-user.target
