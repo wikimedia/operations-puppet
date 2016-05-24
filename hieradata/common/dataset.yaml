@@ -1,1 +1,4 @@
-base::monitoring::host::nrpe_check_disk_options: -w 6% -c 3% -l -e -p /
+base::monitoring::host::nrpe_check_disk_paths: [ '/' ]
+base::monitoring::host::nrpe_check_disk_all: false
+base::monitoring::host::nrpe_check_disk_exclude_types: []
+base::monitoring::host::nrpe_check_disk_ignore: []
