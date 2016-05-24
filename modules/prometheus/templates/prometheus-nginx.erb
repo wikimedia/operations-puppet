@@ -1,0 +1,8 @@
+# disable golang debugging from outside localhost
+location /<%= @title %>/debug {
+    return 403;
+}
+
+location /<%= @title %> {
+    proxy_pass <%= @proxy_pass %>;
+}
