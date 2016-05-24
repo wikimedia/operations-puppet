@@ -8,7 +8,7 @@ variables:
   cassandra-user: '<%= @cassandra_tilerator_user %>'
   cassandra-pswd: '<%= @cassandra_tilerator_pass %>'
 
-sources: sources.prod.yaml
+sources: <%= @conf_sources %>
 
 # Do not expose admin UI or handle job handling web requests
 daemonOnly: true

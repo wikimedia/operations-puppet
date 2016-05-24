@@ -8,5 +8,5 @@ variables:
   cassandra-user: '<%= @cassandra_tileratorui_user %>'
   cassandra-pswd: '<%= @cassandra_tileratorui_pass %>'
 
-sources: sources.prod.yaml
+sources: <%= @conf_sources %>
 uiOnly: true
