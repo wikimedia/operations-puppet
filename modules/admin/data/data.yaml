@@ -499,8 +499,15 @@ groups:
   sc-admins:
     description: General service cluster admins - sc(a|b)
     gid: 779
-    members: [mobrovac]
-    privileges: ['ALL = NOPASSWD: /usr/bin/puppet agent *']
+    members: [eevans, gwicke, mobrovac, ppchelko]
+    privileges: ['ALL = NOPASSWD: /usr/bin/puppet agent *',
+               'ALL = NOPASSWD: /usr/sbin/service changeprop *',
+               'ALL = NOPASSWD: /usr/sbin/service citoid *',
+               'ALL = NOPASSWD: /usr/sbin/service cxserver *',
+               'ALL = NOPASSWD: /usr/sbin/service graphoid *',
+               'ALL = NOPASSWD: /usr/sbin/service mathoid *',
+               'ALL = NOPASSWD: /usr/sbin/service mobileapps *',
+               'ALL = NOPASSWD: /usr/sbin/service zotero *']
   notebook-roots:
     description: root access on experimental notebook servers
     gid: 780
