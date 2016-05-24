@@ -2709,6 +2709,10 @@ node /^snapshot100[5-7]\.eqiad\.wmnet/ {
     # start setup and rollout of new role on new hosts
     role snapshot::dumper
     include standard
+
+    if $::hostname == 'snapshot1005' {
+        include base::firewall
+    }
 }
 
 # codfw poolcounters
