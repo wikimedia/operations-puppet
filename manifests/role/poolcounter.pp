@@ -1,5 +1,6 @@
 class role::poolcounter{
     include ::poolcounter
+    include base::firewall
 
     system::role { 'role::poolcounter':
         description => 'PoolCounter server',
