@@ -7,4 +7,4 @@ variables:
     cassandra-user: '<%= @cassandra_kartotherian_user %>'
     cassandra-pswd: '<%= @cassandra_kartotherian_pass %>'
 
-sources: sources.prod.yaml
+sources: <%= @conf_sources %>
