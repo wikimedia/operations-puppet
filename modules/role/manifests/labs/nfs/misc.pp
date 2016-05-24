@@ -9,7 +9,6 @@
 
 
 class role::labs::nfs::misc($dump_servers_ips) {
-    include standard
     include labstore
     include labstore::monitoring
     include rsync::server
