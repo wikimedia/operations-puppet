@@ -37,3 +37,9 @@ elasticsearch::merge_threads: 1
 
 # T130329
 base::monitoring::host::nrpe_check_disk_options: -w 18% -c 15% -l -e -A -i "/srv/sd[a-b][1-3]" --exclude-type=tracefs
+# We do expect Elastic search to get close to its high watermark. In most cases
+# it will rebalance shards fairly quickly and we do not need to react to this
+# alert. To reduce alert spam we increase the max_check_attempts.
+# retry_interval is configured by default at 1 minute, so we should get an
+# alert after max_check_attempts minutes.
+base::monitoring::host::nrpe_check_disk_max_check_attempts: 30
