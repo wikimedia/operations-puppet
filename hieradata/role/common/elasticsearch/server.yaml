@@ -36,4 +36,4 @@ elasticsearch::bulk_thread_pool_executors: 6
 elasticsearch::merge_threads: 1
 
 # T130329
-base::monitoring::host::nrpe_check_disk_options: -w 18% -c 15% -l -e -A -i "/srv/sd[a-b][1-3]" --exclude-type=tracefs
+base::monitoring::host::nrpe_check_disk_options: -w 18% -c 13% -l -e -A -i "/srv/sd[a-b][1-3]" --exclude-type=tracefs
