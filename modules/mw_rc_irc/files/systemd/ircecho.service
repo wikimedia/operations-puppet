@@ -1,6 +1,7 @@
 [Unit]
 Description=IRC bot for the MW RC IRCD
-After=network.target
+After=ircd.service
+Requires=ircd.service
 
 [Service]
 User=irc
