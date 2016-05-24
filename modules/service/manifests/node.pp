@@ -77,7 +77,11 @@
 #
 # [*deployment_user*]
 #   The user that will own the service code. Only applicable when
-#   $deployment ='scap3'. Default: $title
+#   $deployment =='scap3'. Default: $title
+#
+# [*deployment_config*]
+#   Whether Scap3 is used for deploying the config as well. Applicable only when
+#   $deployment == 'scap3'. Default: false
 #
 # === Examples
 #
@@ -117,6 +121,7 @@ define service::node(
     $init_restart    = true,
     $deployment      = undef,
     $deployment_user = 'deploy-service',
+    $deployment_config = false,
 ) {
     case $deployment {
         'scap3': {
@@ -197,17 +202,36 @@ define service::node(
     file { "/etc/${title}":
         ensure => directory,
         owner  => 'root',
-        group  => 'root',
-        mode   => '0755',
+        group  => $deployment ? {
+            'scap3' => $deployment_user,
+            default => 'root',
+        }
+        mode   => '0775',
     }
 
-    file { "/etc/${title}/config.yaml":
-        ensure  => present,
-        content => $complete_config,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        tag     => "${title}::config",
+    if $deployment == 'scap3' and $deployment_config {
+        # NOTE: this is a work-around need to switch config file deployments
+        # to Scap3. The previous praxis was to make the config owned by root,
+        # but that is not possible with Scap3, as it installs a symlink under
+        # the $deployment_user user. chown'ing it will allow Scap3 to remove
+        # the file and install its symlink
+        $chown_user = "${deployment_user}:${deployment_user}"
+        $chown_target = "/etc/${title}/config.yaml"
+        exec { "chown ${chown_target}":
+            command => "/bin/chown ${chown_user} ${chown_target}",
+            # perform the chown only if root is the effective owner
+            onlyif  => "/usr/bin/test -O ${chown_target}",
+            require => [User[$deployment_user], Group[$deployment_user]]
+        }
+    } else {
+        file { "/etc/${title}/config.yaml":
+            ensure  => present,
+            content => $complete_config,
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0444',
+            tag     => "${title}::config",
+        }
     }
 
     if $auto_refresh {
