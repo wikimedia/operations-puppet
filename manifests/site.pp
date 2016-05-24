@@ -1190,13 +1190,6 @@ node 'heze.codfw.wmnet' {
     include standard
 }
 
-node 'labservices1002.wikimedia.org' {
-    role labs::dns, labs::openstack::designate::server, labs::dnsrecursor
-    include standard
-    include base::firewall
-    include ldap::role::client::labs
-}
-
 # irc.wikimedia.org (replaced argon)
 node 'kraz.wikimedia.org' {
     role mw_rc_irc
@@ -1206,6 +1199,13 @@ node 'kraz.wikimedia.org' {
 
 # labservices1001 hosts openstack-designate, the labs DNS service.
 node 'labservices1001.wikimedia.org' {
+    role labs::dns, labs::openstack::designate::server, labs::dnsrecursor
+    include standard
+    include base::firewall
+    include ldap::role::client::labs
+}
+
+node 'labservices1002.wikimedia.org' {
     role labs::dns, labs::openstack::designate::server, labs::dnsrecursor
     include standard
     include base::firewall
