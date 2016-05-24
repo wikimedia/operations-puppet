@@ -2453,36 +2453,6 @@ host es2004 {
     fixed-address es2004.codfw.wmnet;
 }
 
-host es2005 {
-    hardware ethernet d4:ae:52:93:43:23;
-    fixed-address es2005.codfw.wmnet;
-}
-
-host es2006 {
-    hardware ethernet d4:ae:52:93:3b:3d;
-    fixed-address es2006.codfw.wmnet;
-}
-
-host es2007 {
-    hardware ethernet d4:ae:52:8b:d2:0a;
-    fixed-address es2007.codfw.wmnet;
-}
-
-host es2008 {
-    hardware ethernet d4:ae:52:93:47:03;
-    fixed-address es2008.codfw.wmnet;
-}
-
-host es2009 {
-    hardware ethernet d4:ae:52:b0:4e:b5;
-    fixed-address es2009.codfw.wmnet;
-}
-
-host es2010 {
-    hardware ethernet d4:ae:52:b0:3a:ca;
-    fixed-address es2010.codfw.wmnet;
-}
-
 host es2011 {
     hardware ethernet 14:18:77:54:48:37;
     fixed-address es2011.codfw.wmnet;
