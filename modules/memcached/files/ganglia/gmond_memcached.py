@@ -123,8 +123,8 @@ class UpdateMetricThread(threading.Thread):
             _Lock.acquire()
             hits_name = name_tail[0]
             misses_name = hits_name.replace("hits","misses")
-            if hits_name in self.last_metric and
-                    misses_name in self.last_metric:
+            if (hits_name in self.last_metric and
+                    misses_name in self.last_metric):
                 hits = self.metric[hits_name]-self.last_metric[hits_name]
                 misses = self.metric[misses_name]-self.last_metric[misses_name]
                 try:
