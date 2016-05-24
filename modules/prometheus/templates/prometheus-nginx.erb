@@ -1,0 +1,13 @@
+# disable golang debugging from outside localhost
+location /<%= @title %>/debug {
+    return 403;
+}
+
+# disable quit/reload from outside localhost
+location ~ ^/<%= @title %>/-/(quit|reload) {
+    return 403;
+}
+
+location /<%= @title %> {
+    proxy_pass <%= @proxy_pass %>;
+}
