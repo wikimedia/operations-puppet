@@ -656,7 +656,7 @@ node 'db1041.eqiad.wmnet' {
     include base::firewall
 }
 
-node /^db10(28|33|34|39|62)\.eqiad\.wmnet/ {
+node /^db10(28|33|34|39|62|79|86|94)\.eqiad\.wmnet/ {
     class { 'role::mariadb::core':
         shard => 's7',
     }
