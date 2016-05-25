@@ -29,6 +29,9 @@ class mw_rc_irc::irc_echo(
     }
 
     file { '/etc/systemd/system/ircecho.service':
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
         source  => 'puppet:///modules/mw_rc_irc/systemd/ircecho.service',
         require => File['/usr/local/bin/udpmxircecho.py'],
     }
