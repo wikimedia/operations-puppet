@@ -958,7 +958,7 @@ node /^es101[268]\.eqiad\.wmnet/ {
 }
 
 ## codfw servers
-node /es201[123]\.codfw\.wmnet/ {
+node /^es201[123]\.codfw\.wmnet/ {
     class { 'role::mariadb::core':
         shard         => 'es1',
         binlog_format => 'ROW',
@@ -1000,7 +1000,7 @@ node 'es2015.codfw.wmnet' {
     include base::firewall
 }
 
-node /es201[46]\.codfw\.wmnet/ {
+node /^es201[46]\.codfw\.wmnet/ {
     class { 'role::mariadb::core':
         shard         => 'es2',
         binlog_format => 'ROW',
@@ -1042,7 +1042,7 @@ node 'es2018.codfw.wmnet' {
     include base::firewall
 }
 
-node /es201[79]\.codfw\.wmnet/ {
+node /^es201[79]\.codfw\.wmnet/ {
     class { 'role::mariadb::core':
         shard         => 'es3',
         binlog_format => 'ROW',
@@ -1050,6 +1050,13 @@ node /es201[79]\.codfw\.wmnet/ {
     }
     include base::firewall
 }
+
+# Disaster recovery hosts for external storage
+node /^es200[1234]\.codfw\.wmnet/ {
+    include standard
+    include base::firewall
+}
+
 
 # Etherpad (virtual machine)
 node 'etherpad1001.eqiad.wmnet' {
