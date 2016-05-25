@@ -21,7 +21,9 @@ module Puppet::Parser::Functions
   newfunction(:require_package, :arity => -2) do |args|
     Puppet::Parser::Functions.function :create_resources
     args.flatten.each do |package_name|
-      class_name = 'packages::' + package_name.tr('-', '_')
+      # Puppet class names are alphanumeric + underscore
+      # 'g++' package would yield: 'packages::g__'
+      class_name = 'packages::' + package_name.tr('-+', '_')
 
       # Create host class
 
