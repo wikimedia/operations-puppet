@@ -18,6 +18,12 @@
 #   The host/IP where to reach RESTBase. Default:
 #   http://restbase.svc.${::rb_site}.wmnet:7231
 #
+# [*purge_host*]
+#   The vhtcpd daemon host to send purge requests to. Default: 239.128.0.112
+#
+# [*purge_port*]
+#   The port the vhtcp daemon listens to. Default: 4827
+#
 # [*concurrency*]
 #   The maximum number of tasks the service can execute at any given point in
 #   time. Default: 100
@@ -26,6 +32,8 @@ class changeprop(
     $zk_uri,
     $mwapi_uri    = "http://api.svc.${::mw_primary}.wmnet/w/api.php",
     $restbase_uri = "http://restbase.svc.${::rb_site}.wmnet:7231",
+    $purge_host   = '239.128.0.112',
+    $purge_port   = 4827,
     $concurrency  = 100,
 ) {
 
