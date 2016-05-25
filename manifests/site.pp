@@ -1051,6 +1051,13 @@ node /es201[79]\.codfw\.wmnet/ {
     include base::firewall
 }
 
+# Disaster recovery hosts for external storage
+node /es200[1234]\.codfw\.wmnet/ {
+    include standard
+    include base::firewall
+}
+
+
 # Etherpad (virtual machine)
 node 'etherpad1001.eqiad.wmnet' {
     role etherpad
