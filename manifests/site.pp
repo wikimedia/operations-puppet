@@ -433,7 +433,7 @@ node 'db1057.eqiad.wmnet' {
     include base::firewall
 }
 
-node /^db10(51|52|53|55|65|66|72|73)\.eqiad\.wmnet/ {
+node /^db10(51|52|53|55|65|66|72|73|80|83|89)\.eqiad\.wmnet/ {
     class { 'role::mariadb::core':
         shard => 's1',
     }
@@ -470,7 +470,7 @@ node 'db1018.eqiad.wmnet' {
     include base::firewall
 }
 
-node /^db10(21|24|36|54|60|63|67|74|76)\.eqiad\.wmnet/ {
+node /^db10(21|24|36|54|60|63|67|74|76|90)\.eqiad\.wmnet/ {
     class { 'role::mariadb::core':
         shard => 's2',
     }
@@ -545,7 +545,7 @@ node 'db1042.eqiad.wmnet' {
     include base::firewall
 }
 
-node /^db10(19|40|56|59|64|68)\.eqiad\.wmnet/ {
+node /^db10(19|40|56|59|64|68|81|84|91)\.eqiad\.wmnet/ {
     class { 'role::mariadb::core':
         shard => 's4',
     }
@@ -582,7 +582,7 @@ node 'db1049.eqiad.wmnet' {
     include base::firewall
 }
 
-node /^db10(26|45|70|71)\.eqiad\.wmnet/ {
+node /^db10(26|45|70|71|82|87|92)\.eqiad\.wmnet/ {
     class { 'role::mariadb::core':
         shard => 's5',
     }
@@ -619,7 +619,7 @@ node 'db1050.eqiad.wmnet' {
     include base::firewall
 }
 
-node /^db10(22|23|30|37|61)\.eqiad\.wmnet/ {
+node /^db10(22|23|30|37|61|85|88|93)\.eqiad\.wmnet/ {
     class { 'role::mariadb::core':
         shard => 's6',
     }
@@ -656,7 +656,7 @@ node 'db1041.eqiad.wmnet' {
     include base::firewall
 }
 
-node /^db10(28|33|34|39|62)\.eqiad\.wmnet/ {
+node /^db10(28|33|34|39|62|79|86|94)\.eqiad\.wmnet/ {
     class { 'role::mariadb::core':
         shard => 's7',
     }
