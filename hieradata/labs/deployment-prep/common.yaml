@@ -16,6 +16,7 @@ citoid::zotero_host: deployment-zotero01.deployment-prep.eqiad.wmflabs
 citoid::zotero_port: 1969
 changeprop::mwapi_uri: http://deployment-mediawiki02.deployment-prep.eqiad.wmflabs/w/api.php
 changeprop::restbase_uri: http://deployment-restbase02.deployment-prep.eqiad.wmflabs:7231
+changeprop::purge_host: deployment-cache-text04.deployment-prep.eqiad.wmflabs
 changeprop::concurrency: 20
 graphoid::allowed_domains:
   http:

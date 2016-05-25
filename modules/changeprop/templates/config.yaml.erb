@@ -8,6 +8,12 @@ spec:
           - pattern: /^https?:\/\//
   title: The Change Propagation root
   paths:
+    /{api:sys}/purge:
+      x-modules:
+        - path: src/sys/purge.js
+          options:
+            host: <%= @purge_host %>
+            port: <%= @purge_port %>
     /{api:sys}/links:
       x-modules:
         - path: src/sys/backlinks.js
@@ -78,3 +84,17 @@ spec:
                     redirect: false
                   headers:
                     cache-control: no-cache
+
+              purge_varnish:
+                topic: resource_change
+                match:
+                  meta:
+                    uri: '/^https?:\/\/[^\/]+\/api\/rest_v1\/(?<title>.+)$/'
+                  tags:
+                    - restbase
+                exec:
+                  method: post
+                  uri: '/sys/purge/'
+                  body:
+                    - meta:
+                        uri: '//{{message.meta.domain}}/api/rest_v1/{{match.meta.uri.title}}'
