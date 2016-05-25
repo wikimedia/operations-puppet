@@ -37,7 +37,7 @@ class base::monitoring::host(
         check_command => 'check_ssh',
     }
 
-    package { [ 'megacli', 'arcconf', 'mpt-status' ]:
+    package { [ 'megacli', 'arcconf', 'mpt-status', 'hpssacli' ]:
         ensure => 'latest',
     }
 
