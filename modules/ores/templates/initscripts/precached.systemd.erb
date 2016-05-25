@@ -8,5 +8,9 @@ Group=www-data
 WorkingDirectory=<%= @working_dir %>
 ExecStart=<%= @venv_path %>/bin/python <%= @working_dir %>/submodules/ores/utility precached stream.wikimedia.org <%= @host %> --config <%= @config_dir %> --verbose
 
+WatchdogSec=60
+RestartSec=30
+Restart=on-failure
+
 [Install]
 WantedBy=multi-user.target
