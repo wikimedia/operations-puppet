@@ -16,8 +16,11 @@ class mediawiki::packages::multimedia {
         'netpbm',
         'oggvideotools',
         'libimage-exiftool-perl',
-        'firejail',
     ]:
         ensure => present,
+    }
+
+    if os_version('debian >= jessie || ubuntu >= trusty') {
+        require_package('firejail')
     }
 }
