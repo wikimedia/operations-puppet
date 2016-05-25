@@ -118,4 +118,10 @@ class icinga::monitor::toollabs {
         check_command => "${checker}!/grid/start/precise!OK",
         host          => $test_entry_host,
     }
+
+    monitoring::service { 'tools-checker-webservices':
+        description   => 'Start and verify pages via webservices',
+        check_command => "${checker}!/service/start!OK",
+        host          => $test_entry_host,
+    }
 }
