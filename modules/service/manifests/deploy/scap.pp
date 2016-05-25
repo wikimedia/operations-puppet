@@ -9,7 +9,7 @@
 #   This is the public_key for the deploy-service user. The private part of this
 #   key should reside in the private puppet repo for the environment. By default
 #   this public key is set to the deploy-service user's public key for production
-#   private puppet—it should be overwritten using hiera in non-production
+#   private puppet. It should be overwritten using hiera in non-production
 #   environements.
 #
 # [*user*]
