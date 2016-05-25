@@ -6,9 +6,9 @@ After=network-online.target
 User=www-data
 Group=www-data
 WorkingDirectory=<%= @working_dir %>
-ExecStart=<%= @venv_path %>/bin/python <%= @working_dir %>/submodules/ores/utility precached stream.wikimedia.org <%= @host %> --config <%= @config_dir %> --verbose
+ExecStart=<%= @venv_path %>/bin/python <%= @working_dir %>/submodules/ores/utility precached stream.wikimedia.org <%= @host %> --config <%= @config_dir %>
 
-WatchdogSec=60
+WatchdogSec=120
 RestartSec=30
 Restart=on-failure
 
