@@ -63,7 +63,7 @@ mysql_eqiad:
   cluster: mysql
 
 mysql_codfw:
-  __regex: !ruby/regexp /^(db20[0-9][0-9]|dbstore200[1-2]|es201[1-9])\.codfw\.wmnet$/
+  __regex: !ruby/regexp /^(db20[0-9][0-9]|dbstore200[1-2]|es200[1-4]|es201[1-9])\.codfw\.wmnet$/
   cluster: mysql
 
 labvirt:
