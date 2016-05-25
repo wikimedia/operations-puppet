@@ -23,5 +23,4 @@ elasticsearch::unicast_hosts:
   - tools-elastic-02.tools.eqiad.wmflabs
   - tools-elastic-03.tools.eqiad.wmflabs
 
-send_puppet_failure_emails: false
 kubelet::pod_infra_container_image: 'docker-registry.tools.wmflabs.org/pause:2.0'
