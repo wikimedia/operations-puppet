@@ -728,7 +728,14 @@ node 'db1001.eqiad.wmnet' {
     }
 }
 
-node /^db(1016|2010)\.codfw\.wmnet/ {
+node 'db1016.eqiad.wmnet' {
+    class { 'role::mariadb::misc':
+        shard  => 'm1',
+    }
+    include base::firewall
+}
+
+node 'db2010.codfw.wmnet' {
     class { 'role::mariadb::misc':
         shard => 'm1',
     }
