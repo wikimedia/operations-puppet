@@ -41,12 +41,8 @@ default_project: &default_project
         mobileapps:
           host: <%= @mobileapps_uri %>
         events:
-          purge:
-            host: <%= @purge_host %>
-            port: <%= @purge_port %>
-          eventlogging_service:
-            uri: <%= @eventlogging_service_uri %>
-            topic: resource_change
+          uri: <%= @eventlogging_service_uri %>
+          topic: resource_change
         related:
           cache_control: s-maxage=86400, max-age=86400
         # Cache headers for purged end points.

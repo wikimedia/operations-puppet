@@ -112,7 +112,6 @@ restbase::graphoid_uri: http://deployment-sca01.deployment-prep.eqiad.wmflabs:19
 restbase::mobileapps_uri: http://appservice.wmflabs.org
 restbase::mathoid_uri: http://deployment-mathoid.deployment-prep.eqiad.wmflabs:10042
 restbase::aqs_uri: https://wikimedia.org/api/rest_v1/metrics
-restbase::purge_host: deployment-cache-text04.deployment-prep.eqiad.wmflabs
 restbase::eventlogging_service_uri: http://deployment-eventlogging04.deployment-prep.eqiad.wmflabs:8085/v1/events
 "mediawiki::log_aggregator": deployment-fluorine.eqiad.wmflabs:8420
 "mediawiki::forward_syslog": deployment-logstash2.deployment-prep.eqiad.wmflabs:10514
