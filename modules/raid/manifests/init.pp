@@ -14,8 +14,15 @@ class raid {
     # - Puppet with stringify_facts=false (if supported)
     $raid = split($::raid, ',')
 
+    $check_raid = '/usr/bin/sudo /usr/local/lib/nagios/plugins/check_raid'
+
     if 'megaraid' in $raid {
         require_package('megacli')
+
+        nrpe::monitor_service { 'raid_megaraid':
+            description  => 'MegaRAID',
+            nrpe_command => "${check_raid} megacli",
+        }
     }
 
     if 'mpt' in $raid {
@@ -29,17 +36,37 @@ class raid {
             content => "RUN_DAEMON=no\n",
             before  => Package['mpt-status'],
         }
+
+        nrpe::monitor_service { 'raid_mpt':
+            description  => 'MPT RAID',
+            nrpe_command => "${check_raid} mpt",
+        }
     }
     if 'md' in $raid {
         # if there is an "md" RAID configured, mdadm is already installed
+
+        nrpe::monitor_service { 'raid_md':
+            description  => 'MD RAID',
+            nrpe_command => "${check_raid} md",
+        }
     }
 
     if 'aac' in $raid {
         require_package('arcconf')
+
+        nrpe::monitor_service { 'raid_aac':
+            description  => 'Adaptec RAID',
+            nrpe_command => "${check_raid} aac",
+        }
     }
 
     if 'twe' in $raid {
         require_package('tw-cli')
+
+        nrpe::monitor_service { 'raid_twe':
+            description  => '3ware TW',
+            nrpe_command => "${check_raid} twe",
+        }
     }
 
     file { '/usr/local/lib/nagios/plugins/check_raid':
@@ -53,10 +80,5 @@ class raid {
     sudo::user { 'nagios_raid':
         user       => 'nagios',
         privileges => ['ALL = NOPASSWD: /usr/local/lib/nagios/plugins/check_raid'],
-    }
-
-    nrpe::monitor_service { 'raid':
-        description  => 'RAID',
-        nrpe_command => '/usr/bin/sudo /usr/local/lib/nagios/plugins/check_raid',
     }
 }
