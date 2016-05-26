@@ -914,6 +914,13 @@ node 'dbproxy1005.eqiad.wmnet' {
     }
 }
 
+# Analytics Druid servers.
+# https://wikitech.wikimedia.org/wiki/Analytics/Data_Lake#Druid
+node /^druid100[123].eqiad.wmnet$/ {
+    include base::firewall
+    include standard
+}
+
 node 'eeden.wikimedia.org' {
     role authdns::server
 
