@@ -2018,6 +2018,13 @@ host druid1002 {
     filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
+host druid1003 {
+    hardware ethernet 1C:98:EC:29:E2:78;
+    fixed-address druid1003.eqiad.wmnet;
+    option pxelinux.pathprefix "jessie-installer/";
+    filename "jessie-installer/debian-installer/amd64/pxelinux.0";
+}
+
 host eeden {
     hardware ethernet a4:ba:db:30:d8:80;
     fixed-address eeden.wikimedia.org;
