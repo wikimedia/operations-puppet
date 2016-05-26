@@ -1,0 +1,12 @@
+properties:
+  druid.processing.numThreads: 10
+  druid.processing.buffer.sizeBytes: 1073741824
+  druid.server.http.numThreads: 20
+  druid.server.maxSize: 2748779069440 # 2.5 TB
+  druid.segmentCache.locations: '[{"path":"/var/lib/druid/segment-cache","maxSize"\:2748779069440}]',
+  druid.historical.cache.useCache: true,
+  druid.historical.cache.populateCache: true
+
+env:
+  DRUID_HEAP_OPTS: -Xmx12g -Xms12g
+  DRUID_EXTRA_JVM_OPTS: -XX:NewSize=6g -XX:MaxNewSize=6g -XX:MaxDirectMemorySize=32g -XX:+UseConcMarkSweepGC -XX:+PrintGCDetails -XX:+PrintGCTimeStamps
