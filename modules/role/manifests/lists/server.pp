@@ -58,7 +58,9 @@ class role::lists::server {
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
+        # lint:ignore:puppet_url_without_modules
         source  => 'puppet:///files/exim/listserver_aliases',
+        # lint:endignore
         require => Class['exim4'],
     }
 
@@ -106,7 +108,9 @@ class role::lists::server {
         owner  => 'root',
         group  => 'root',
         mode   => '0755',
+        # lint:ignore:puppet_url_without_modules
         source => 'puppet:///files/icinga/check_mailman_queue',
+        # lint:endignore
     }
 
     sudo::user { 'nagios_mailman_queue':
@@ -130,7 +134,9 @@ class role::lists::server {
         owner  => 'root',
         group  => 'root',
         mode   => '0755',
+        # lint:ignore:puppet_url_without_modules
         source => 'puppet:///files/icinga/check_iostat',
+        # lint:endignore
     }
 
     # lint:ignore:quoted_booleans

@@ -55,7 +55,9 @@ class role::mail::mx(
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
+        # lint:ignore:puppet_url_without_modules
         source  => 'puppet:///files/exim/wikimedia_domains',
+        # lint:endignore
         require => Class['exim4'],
     }
 
@@ -64,7 +66,9 @@ class role::mail::mx(
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
+        # lint:ignore:puppet_url_without_modules
         source  => 'puppet:///files/exim/legacy_mailing_lists',
+        # lint:endignore
         require => Class['exim4'],
     }
     exim4::dkim { 'wikimedia.org':
