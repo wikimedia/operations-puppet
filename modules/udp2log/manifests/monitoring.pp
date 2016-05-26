@@ -28,7 +28,7 @@ class udp2log::monitoring {
         mode   => '0444',
         owner  => 'root',
         group  => 'root',
-        source => 'puppet:///files/misc/rolematcher.py',
+        source => 'puppet:///modules/udp2log/rolematcher.py',
     }
 
     file { 'PacketLossLogtailer.py':
@@ -36,7 +36,7 @@ class udp2log::monitoring {
         mode   => '0444',
         owner  => 'root',
         group  => 'root',
-        source => 'puppet:///files/misc/PacketLossLogtailer.py',
+        source => 'puppet:///modules/udp2log/PacketLossLogtailer.py',
     }
 
     # send udp2log socket stats to ganglia.
