@@ -10,8 +10,8 @@ setgid www-data
 # Needs the '=', otherwise doesn't work for chmod-socket. WTF?
 exec /usr/bin/uwsgi --plugin=python \
                     --master \
-                    --workers=16 \
-                    --harakiri=60 \
+                    --workers=1 \ # Only 1 worker, since we don't want to run parallel commands at gridengine
+                    --harakiri=60 \ # Timeout of 60s for all our stuff!
                     --harakiri-verbose \
                     --wsgi-file=/usr/local/lib/python2.7/dist-packages/toolschecker.py \
                     --callable=app \
