@@ -48,7 +48,7 @@ groups:
     description: replaces 'mortals' for software deployment
     members: [aaron, dr0ptp4kt, anomie, aude, awight, awjrichards, bd808,
               brion, cscott, csteipp, demon, ebernhardson, esanders, gilles,
-              gjg, gwicke, halfak, hashar, hoo, kaldari, kartik, khorn, krinkle, manybubbles,
+              gjg, gwicke, halfak, hashar, hoo, kaldari, kartik, khorn, krinkle,
               maxsem, mattflaschen, marktraceur, milimetric, mlitn, andyrussg,
               nikerabbit, reedy, robla, ssastry, tomasz, yurik,
               tgr, phuedx, bsimmers, ejegg, twentyafterfour, legoktm, catrope, krenair,
@@ -89,7 +89,7 @@ groups:
   elasticsearch-roots:
     gid: 709
     description: manage elasticsearch nodes
-    members: [manybubbles, demon, ebernhardson, dcausse, tomasz, gehel]
+    members: [demon, ebernhardson, dcausse, tomasz, gehel]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
   dataset-admins:
     gid: 710
@@ -172,7 +172,7 @@ groups:
   logstash-roots:
     gid: 722
     description: users with root access on logstash nodes (rt 6366, 6896)
-    members: [aaron, bd808, manybubbles, demon, reedy]
+    members: [aaron, bd808, demon, reedy]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
   statistics-web-users:
     gid: 724
@@ -867,7 +867,7 @@ users:
         krinkle @ krinkle-mbp003]
     uid: 2008
   manybubbles:
-    ensure: present
+    ensure: absent 
     gid: 500
     name: manybubbles
     realname: Nik Everett
