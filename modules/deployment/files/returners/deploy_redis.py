@@ -85,3 +85,8 @@ def _record(serv, function, timestamp, minion, ret_data):
         if 'status' in ret_data:
             serv.hset(minion_key, 'restart_status', ret_data['status'])
             serv.hset(minion_key, 'restart_timestamp', timestamp)
+
+
+if __name__ == '__main__':
+    # Make flake8 happy by defining globals
+    __pillar__ = dict()

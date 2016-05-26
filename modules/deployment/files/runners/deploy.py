@@ -4,8 +4,6 @@ Authn wrapper for deployment peer calls
 
 import salt.key
 import salt.client
-import re
-import yaml
 
 
 def fetch(repo):
@@ -61,3 +59,8 @@ def restart(repo, batch='10%', timeout=60):
         ret.append(data)
     print "Restart completed"
     return ret
+
+
+if __name__ == '__main__':
+    # Make flake8 happy by defining globals
+    __opts__ = dict()
