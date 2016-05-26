@@ -19,6 +19,9 @@ class role::access_new_install {
         owner  => 'root',
         group  => 'root',
         mode   => '0555',
+        # FIXME - move to module install_server?
+        # lint:ignore:puppet_url_without_modules
         source => 'puppet:///files/misc/scripts/install_console',
+        # lint:endignore
     }
 }

@@ -32,6 +32,7 @@ class role::otrs::webserver {
 
     # TODO: On purpose here since it references a file not in a module which is
     # used by other classes as well
+    # lint:ignore:puppet_url_without_modules
     file { '/etc/exim4/wikimedia_domains':
         ensure  => present,
         owner   => 'root',
@@ -40,6 +41,7 @@ class role::otrs::webserver {
         source  => 'puppet:///files/exim/wikimedia_domains',
         require => Class['exim4'],
     }
+    # lint:endignore
 
     ferm::service { 'otrs_http':
         proto => 'tcp',

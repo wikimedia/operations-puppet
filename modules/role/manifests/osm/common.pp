@@ -8,7 +8,10 @@ class role::osm::common {
         owner  => 'root',
         group  => 'root',
         mode   => '0444',
+        # move to a module?
+        # lint:ignore:puppet_url_without_modules
         source => 'puppet:///files/osm/tuning.conf',
+        # lint:endignore
     }
 
     sysctl::parameters { 'postgres_shmem':
