@@ -10,3 +10,8 @@ syslog facility = local3
 timeout = <%= @timeout %>
 address = <%= @address %>
 <% if @motd_file != 'UNSET' %>motd file = <%= @motd_file %><% end %>
+<%=
+    @rsyncd_conf.map { |k, v|
+        [ k, v ].join(' = ')
+    }.join("\n")
+%>
