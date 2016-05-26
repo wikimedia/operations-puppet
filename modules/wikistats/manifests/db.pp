@@ -19,7 +19,7 @@ class wikistats::db {
     # don't run out of disk
     cron {'mysql-dump-wikistats-clean':
         ensure  => 'present',
-        command => "find ${backupdir} -name \"*.sql.gz\" -mtime +7 -exec rm {} \;",
+        command => "find ${backupdir} -name \"*.sql.gz\" -mtime +7 -exec rm {} \\;",
         user    => 'root',
         hour    => '23',
         minute  => '23',
