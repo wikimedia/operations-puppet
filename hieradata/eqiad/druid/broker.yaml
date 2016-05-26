@@ -6,5 +6,5 @@ properties:
   druid.broker.http.readTimeout: PT5M
 
 env:
-  DRUID_HEAP_OPTS: -Xmx25g -Xms25g
-  DRUID_EXTRA_JVM_OPTS: -XX:NewSize=6g -XX:MaxNewSize=6g -XX:MaxDirectMemorySize=64g -XX:+UseConcMarkSweepGC -XX:+PrintGCDetails -XX:+PrintGCTimeStamps
+  DRUID_HEAP_OPTS: "-Xmx25g -Xms25g"
+  DRUID_EXTRA_JVM_OPTS: "-XX:NewSize=6g -XX:MaxNewSize=6g -XX:MaxDirectMemorySize=64g -XX:+UseConcMarkSweepGC -XX:+PrintGCDetails -XX:+PrintGCTimeStamps"
