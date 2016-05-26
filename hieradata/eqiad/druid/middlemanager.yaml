@@ -4,5 +4,5 @@ properties:
   druid.indexer.task.defaultHadoopCoordinates: cdh
 
 env:
-  DRUID_HEAP_OPTS: "-Xmx64m -Xms64m""
+  DRUID_HEAP_OPTS: "-Xmx64m -Xms64m"
   DRUID_EXTRA_JVM_OPTS: "-XX:+UseConcMarkSweepGC -XX:+PrintGCDetails -XX:+PrintGCTimeStamps"
