@@ -116,6 +116,8 @@ cassandra::metrics::blacklist:
     - .*\.min$
     - .*\.stddev$
     - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\..*$
+    - .*\.metrics\.Keyspace\..*$
+    - .*\.metrics\.Client\..*$
 
 cassandra::dc: "%{::site}"
 # NOTE: this is cassandra's logical cluster name, not related to cassandra's datacenters (eqiad/codfw)
