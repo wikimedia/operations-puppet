@@ -12,7 +12,9 @@ class role::ci::slave::labs {
         include ::contint::package_builder
     }
 
-    include contint::worker_localhost
+    class { 'contint::worker_localhost':
+        owner => 'jenkins-deploy',
+    }
 
     contint::tmpfs { 'tmpfs for jenkins CI labs slave':
         # Jobs expect the tmpfs to be in $HOME/tmpfs
