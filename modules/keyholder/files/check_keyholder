@@ -5,7 +5,7 @@ export SSH_AUTH_SOCK="/run/keyholder/proxy.sock"
 
 configured_keys() {
   # Get a sorted list of all key files in /etc/keyholder.d
-  /usr/bin/find /etc/keyholder.d -type f 2>/dev/null | /usr/bin/sort
+  /usr/bin/find /etc/keyholder.d -type f -not -name '*.pub' 2>/dev/null | /usr/bin/sort
 }
 
 active_keys() {
