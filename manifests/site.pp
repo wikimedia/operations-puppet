@@ -924,7 +924,8 @@ node /^druid100[123].eqiad.wmnet$/ {
     include base::firewall
     include standard
 
-    role analytics_cluster::druid::worker
+    role analytics_cluster::druid::worker,
+        analytics_cluster::hadoop::client
 }
 
 node 'eeden.wikimedia.org' {
