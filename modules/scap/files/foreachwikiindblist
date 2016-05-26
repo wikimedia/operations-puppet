@@ -1,0 +1,24 @@
+#!/bin/bash
+# Run a maintenance against multiple wikis.
+#
+# This script belongs in /usr/local/bin/ and should be in PATH.
+# Managed by Puppet. See modules/scap/files/foreachwikiindblist
+
+. /etc/profile.d/mediawiki.sh
+DBLIST=$(/usr/local/bin/expanddblist "$1")
+CMD=$2
+shift
+shift
+
+RUNNER=php5
+if [ "$(whoami)" != "$MEDIAWIKI_WEB_USER" ] ; then
+	RUNNER="sudo -u $MEDIAWIKI_WEB_USER $RUNNER"
+fi
+RUNNER="$RUNNER -ddisplay_errors=On $MEDIAWIKI_DEPLOYMENT_DIR/multiversion/MWScript.php"
+
+for x in $DBLIST; do
+	echo -----------------------------------------------------------------
+	echo $x
+	echo -----------------------------------------------------------------
+	$RUNNER $CMD --wiki=$x "${@}" | sed -u "s/^/$x:  /"
+done
