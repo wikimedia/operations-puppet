@@ -46,7 +46,7 @@ class raid {
         require_package('tw-cli')
     }
 
-    file { '/usr/local/bin/check-raid.py':
+    file { '/usr/local/lib/nagios/plugins/check_raid':
         ensure => present,
         owner  => 'root',
         group  => 'root',
@@ -56,11 +56,11 @@ class raid {
 
     sudo::user { 'nagios_raid':
         user       => 'nagios',
-        privileges => ['ALL = NOPASSWD: /usr/local/bin/check-raid.py'],
+        privileges => ['ALL = NOPASSWD: /usr/local/lib/nagios/plugins/check_raid'],
     }
 
     nrpe::monitor_service { 'raid':
         description  => 'RAID',
-        nrpe_command => '/usr/bin/sudo /usr/local/bin/check-raid.py',
+        nrpe_command => '/usr/bin/sudo /usr/local/lib/nagios/plugins/check_raid',
     }
 }
