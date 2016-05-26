@@ -238,7 +238,7 @@ class druid(
     notify { "extenstions: '${extensions}'": }
     $e = inline_template('extensions: "<%= @extensions %>" : <%= @extensions.class %>')
     notify { "${e}": }
-    $e2 = inline_template('extensions: "<%= @extensions.to_s %>" : <%= @extensions.class %>')
+    $e2 = inline_template('extensions to s: "<%= @extensions.to_s %>"')
     notify { "${e2}": }
 
     $default_properties = {
