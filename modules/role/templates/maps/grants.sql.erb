@@ -5,6 +5,9 @@ CREATE ROLE tileratorui  WITH LOGIN PASSWORD '<%= @tileratorui_pass %>';
 CREATE ROLE osmupdater WITH LOGIN PASSWORD '<%= @osmupdater_pass %>';
 CREATE ROLE osmimporter WITH LOGIN PASSWORD '<%= @osmimporter_pass %>';
 
+-- nagios role is used for icinga check
+CREATE ROLE nagios WITH LOGIN;
+
 GRANT SELECT ON ALL TABLES IN SCHEMA public TO kartotherian;
 GRANT SELECT ON ALL TABLES IN SCHEMA public TO tilerator;
 GRANT SELECT ON ALL TABLES IN SCHEMA public TO tileratorui;
