@@ -3,10 +3,12 @@
 class role::maps::server {
     include standard
     include ::postgresql::postgis
+    include ::role::postgres::monitoring
     include ::cassandra
     include ::cassandra::metrics
     include ::cassandra::logging
     include ::kartotherian
+    include ::kartotherian::nagios::check
     include ::tilerator
 
     system::role { 'role::maps':
