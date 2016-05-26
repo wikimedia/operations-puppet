@@ -1,8 +1,4 @@
 #!/usr/bin/python
-#####################################################################
-# THIS FILE IS MANAGED BY PUPPET
-# puppet:///modules/base/monitoring/check-raid.py
-#####################################################################
 
 import os
 import os.path
@@ -13,51 +9,56 @@ import glob
 
 
 def main():
+    try:
+        # following the model of self determination for OS and driver
+        # allow for a declarative override to ensure a specific driver
+        with open('/etc/nagios/raid_utility') as f:
+            hc_driver = f.read().strip()
+    except:
+        hc_driver = None
 
     try:
-        # following the model of self determination for OS and utility
-        # allow for a declarative override to ensure a specific utility
-        with open('/etc/nagios/raid_utility') as f:
-            hc_utility = f.read().strip()
+        argv_driver = sys.argv[1]
     except:
-        hc_utility = None
-        pass
+        argv_driver = None
 
     osName = os.uname()[0]
-    if hc_utility:
-        utility = hc_utility
+    if argv_driver:
+        driver = argv_utility
+    elif hc_driver:
+        driver = hc_utility
     elif osName == 'SunOS':
-        utility = 'zpool'
+        driver = 'zpool'
     elif osName == 'Linux':
-        utility = getLinuxUtility()
+        driver = autoDetectDriver()
     else:
-        print ('WARNING: operating system "%s" is not '
-               'supported by this check script' % (osName))
+        print('WARNING: operating system "%s" is not '
+              'supported by this check script' % (osName))
         sys.exit(1)
 
     try:
-        if utility is None:
+        if driver is None:
             print 'OK: no RAID installed'
             status = 0
-        elif utility == 'arcconf':
+        elif driver == 'aac':
             status = checkAdaptec()
-        elif utility == 'tw_cli':
+        elif driver == 'twe':
             status = check3ware()
-        elif utility == 'MegaCli':
+        elif driver == 'megacli':
             status = checkMegaSas()
-        elif utility == 'zpool':
+        elif driver == 'zpool':
             status = checkZfs()
-        elif utility == 'mptsas':
+        elif driver == 'mpt':
             status = checkmptsas()
-        elif utility == 'mdadm':
+        elif driver == 'md':
             status = checkSoftwareRaid()
         else:
-            print ('WARNING: %s is not yet supported '
-                   'by this check script' % (utility))
+            print('WARNING: %s is not yet supported '
+                  'by this check script' % (driver))
             status = 1
     except:
         error = sys.exc_info()[1]
-        print 'WARNING: check-raid.py encountered exception: ' + str(error)
+        print 'WARNING: encountered exception: ' + str(error)
         status = 1
 
     if status == 0:
@@ -65,10 +66,10 @@ def main():
     sys.exit(status)
 
 
-def getLinuxUtility():
+def autoDetectDriver():
     f = open("/proc/devices", "r")
     regex = re.compile('^\s*\d+\s+(\w+)')
-    utility = None
+    driver = None
     for line in f:
         m = regex.match(line)
         if m is None:
@@ -76,32 +77,29 @@ def getLinuxUtility():
         name = m.group(1)
 
         if name == 'aac':
-            utility = 'arcconf'
+            driver = 'aac'
             break
         elif name == 'twe':
-            utility = 'tw_cli'
-            break
-        elif name == 'megadev':
-            utility = 'megarc'
+            driver = 'twe'
             break
 
     f.close()
-    if utility is not None:
-        return utility
+    if driver is not None:
+        return driver
 
     if len(glob.glob("/sys/bus/pci/drivers/megaraid_sas/00*")) > 0:
-        return 'MegaCli'
+        return 'megacli'
 
     try:
         f = open("/proc/scsi/mptsas/0", "r")
-        return "mptsas"
+        return "mpt"
     except IOError:
         pass
 
     # Try mdadm
     devices = getSoftwareRaidDevices()
     if len(devices):
-        return 'mdadm'
+        return 'md'
 
     return None
 
@@ -262,8 +260,8 @@ def check3ware():
         proc.wait()
 
     if len(failedDrives) != 0:
-        print ('CRITICAL: %d failed drive(s): %s' %
-               (len(failedDrives), ', '.join(failedDrives)))
+        print('CRITICAL: %d failed drive(s): %s' %
+              (len(failedDrives), ', '.join(failedDrives)))
         return 2
 
     if numDrives == 0:
