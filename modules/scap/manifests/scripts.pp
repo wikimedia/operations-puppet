@@ -37,7 +37,7 @@ class scap::scripts {
         owner   => 'root',
         group   => 'root',
         mode    => '0555',
-        content => template('scap/foreachwikiindblist.erb'),
+        source => 'puppet:///modules/scap/foreachwikiindblist',
     }
     file { '/usr/local/bin/expanddblist':
         owner  => 'root',
