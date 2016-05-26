@@ -921,10 +921,11 @@ node 'dbproxy1005.eqiad.wmnet' {
 # Analytics Druid servers.
 # https://wikitech.wikimedia.org/wiki/Analytics/Data_Lake#Druid
 node /^druid100[123].eqiad.wmnet$/ {
+    role analytics_cluster::druid::worker,
+        analytics_cluster::hadoop::client
+
     include base::firewall
     include standard
-
-    role analytics_cluster::druid::worker
 }
 
 node 'eeden.wikimedia.org' {
