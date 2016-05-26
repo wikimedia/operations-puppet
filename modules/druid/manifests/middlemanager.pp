@@ -78,7 +78,6 @@ class druid::middlemanager(
         'druid.server.http.numThreads'      => 4,
 
         'druid.processing.buffer.sizeBytes' => 64000000,
-        'druid.processing.numThreads'       => 1,
 
     }
 

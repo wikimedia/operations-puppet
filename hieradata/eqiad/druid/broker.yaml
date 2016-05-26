@@ -1,6 +1,6 @@
 properties:
   druid.processing.numThreads: 10
-  druid.processing.buffer.sizeBytes: 2147483648
+  druid.processing.buffer.sizeBytes: 2147483647
   druid.server.http.numThreads: 20
   druid.broker.http.numConnections: 20
   druid.broker.http.readTimeout: PT5M

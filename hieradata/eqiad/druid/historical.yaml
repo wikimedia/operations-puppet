@@ -4,7 +4,7 @@ properties:
   druid.server.http.numThreads: 20
   druid.server.maxSize: 2748779069440 # 2.5 TB
   druid.segmentCache.locations: '[{"path":"/var/lib/druid/segment-cache","maxSize"\:2748779069440}]'
-  druid.historical.cache.useCache: true,
+  druid.historical.cache.useCache: true
   druid.historical.cache.populateCache: true
 
 env:
