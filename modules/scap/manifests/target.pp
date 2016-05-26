@@ -78,6 +78,8 @@ define scap::target(
             }
         }
         if !defined(Ssh::Userkey[$deploy_user]) {
+            $key_name_safe = regsubst($key_name, '\W', '_', 'G')
+
             ssh::userkey { $deploy_user:
                 ensure  => 'present',
                 content => secret("keyholder/${key_name}.pub"),
