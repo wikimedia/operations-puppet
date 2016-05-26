@@ -78,10 +78,17 @@ class role::grafana {
                 cookie_secure => true,
             },
 
-            # Don't send anonymous usage stats to stats.grafana.org.
             # We don't like it when software phones home.
+            # Don't send anonymous usage stats to stats.grafana.org,
+            # and don't check for updates automatically.
             'analytics'  => {
                 reporting_enabled => false,
+                check_for_updates => false,
+            },
+
+            # Also, don't allow publishing to raintank.io.
+            'snapshots'  => {
+                external_enabled => false,
             },
         },
     }
