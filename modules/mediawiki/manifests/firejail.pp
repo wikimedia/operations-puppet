@@ -3,6 +3,7 @@
 # This Puppet class provides profile data for firejail, a sandbox to restrict
 # an application environment. These profiles are used to contain the image
 # scaling process (since imagemagick has a high risk security profile).
+# It also provides a wrapper script to invoke imagemagick's convert via firejail.
 
 class mediawiki::firejail {
 
@@ -12,5 +13,12 @@ class mediawiki::firejail {
         owner  => 'root',
         group  => 'root',
         mode   => '0644',
+    }
+
+    file { '/usr/local/bin/mediawiki-firejail-convert':
+        source => 'puppet:///modules/mediawiki/mediawiki-firejail-convert',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
     }
 }
