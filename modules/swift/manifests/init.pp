@@ -40,7 +40,7 @@ class swift (
             uri        => 'http://ubuntu-cloud.archive.canonical.com/ubuntu',
             dist       => 'precise-updates/icehouse',
             components => 'main',
-            keyfile    => 'puppet:///files/misc/ubuntu-cloud.key',
+            keyfile    => 'puppet:///modules/swift/ubuntu-cloud.key',
             before     => Package['swift'],
         }
 
