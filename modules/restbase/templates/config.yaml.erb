@@ -887,7 +887,7 @@ info:
 
 # The main service setup. Each worker can offer one or more services.
 services:
-  - name: restbase
+  - name: <%= @logging_name %>
     module: hyperswitch
     conf:
       port: <%= @port %>
