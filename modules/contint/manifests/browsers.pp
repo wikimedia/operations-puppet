@@ -31,7 +31,7 @@ class contint::browsers {
     }
 
     package { $latest_packages:
-        ensure => latest,
+        ensure => present,  # Chromium on hold T136188
     }
 
 
