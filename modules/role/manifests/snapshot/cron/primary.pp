@@ -29,10 +29,6 @@ class role::snapshot::cron::primary {
         enable => true,
         user   => 'datasets',
     }
-    class { 'snapshot::cron::mediaperprojectlists':
-        enable => true,
-        user   => 'datasets',
-    }
     class { 'snapshot::cron::cirrussearch':
         enable => true,
         user   => 'datasets',
