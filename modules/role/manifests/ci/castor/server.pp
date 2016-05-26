@@ -7,7 +7,14 @@ class role::ci::castor::server {
     requires_realm( 'labs' )
 
     include role::labs::lvm::mnt
-    include rsync::server
+    class { 'rsync::server':
+        # Disable DNS lookup since wmflabs fails to set some for contintcloud
+        # and that is annoying in logs. That is solely needed for host
+        # allow/deny which we do not use. T136276
+        rsyncd_conf => {
+            'forward lookup' => 'no',
+        }
+    }
 
     file { '/mnt/jenkins-workspace/caches':
         ensure  => directory,
