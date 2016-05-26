@@ -101,5 +101,10 @@ class apache {
     }
 
     # manage logrotate periodicity and keeping period
-    include apache::logrotate
+    #
+    # The augeas rule in apache::logrotate needs /etc/logrotate.d/apache2 which
+    # is provided by apache2 package
+    class {'apache::logrotate':
+        require => Package['apache2'],
+    }
 }
