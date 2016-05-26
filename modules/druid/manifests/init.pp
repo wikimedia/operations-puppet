@@ -235,11 +235,6 @@ class druid(
         $metadata_extensions,
         $storage_extensions
     ))
-    notify { "extenstions: '${extensions}'": }
-    $e = inline_template('extensions: "<%= @extensions %>" : <%= @extensions.class %>')
-    notify { "${e}": }
-    $e2 = inline_template('extensions to s: "<%= @extensions.to_s %>"')
-    notify { "${e2}": }
 
     $default_properties = {
         'druid.indexer.logs.type'                     => 'file',

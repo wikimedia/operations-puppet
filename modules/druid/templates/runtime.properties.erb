@@ -1,5 +1,11 @@
 # NOTE: This file is managed by Puppet.
+<%
+# WMF's Puppet's version of Ruby's Array.to_s does not render
+# A useful sting.  Instead, the json library will be used to render
+# Array values.
+require 'json'
+-%>
 
 <% @runtime_properties.keys.sort.each do |key| -%>
-<%= key %>=<%= @runtime_properties[key] %>
+<%= key %>=<%= @runtime_properties[key].class == Array ? @runtime_properties[key].to_json : @runtime_properties[key] %>
 <% end -%>
