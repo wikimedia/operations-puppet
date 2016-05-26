@@ -22,6 +22,17 @@ class contint::browsers {
             'firefox',
             'phantomjs',
         ]
+        # Chromium on hold T136188
+        apt::pin { 'chromium-browser':
+            pin      => 'version 49.0.2623.108-0ubuntu0.14.04.1.1113',
+            priority => '1001',
+            before   => Package['chromium-browser'],
+        }
+        apt::pin { 'chromium-chromedriver':
+            pin      => 'version 49.0.2623.108-0ubuntu0.14.04.1.1113',
+            priority => '1001',
+            before   => Package['chromium-browser'],
+        }
     } else {
         $latest_packages = [
             'chromium-browser',
