@@ -1,0 +1,3 @@
+env:
+  DRUID_HEAP_OPTS: -Xmx10g -Xms10g
+  DRUID_EXTRA_JVM_OPTS:-XX:NewSize=512m -XX:MaxNewSize=512m -XX:+UseG1GC -XX:+PrintGCDetails -XX:+PrintGCTimeStamps
