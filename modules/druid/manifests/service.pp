@@ -3,7 +3,8 @@
 #
 # Each Druid service consists of
 # /etc/druid/$service/{env.sh,log4j2.xml,runtime.properties}.
-# This define renders each of those files, and then starts the service.
+# This define installs the service package and
+# renders each of those files, and then starts the service.
 #
 # == Parameters
 #
@@ -32,6 +33,8 @@ define druid::service(
     $should_subscribe = false,
 )
 {
+    require_package("druid-${service}")
+
     file { "/etc/druid/${service}/runtime.properties":
         content => template('druid/runtime.properties.erb'),
     }
