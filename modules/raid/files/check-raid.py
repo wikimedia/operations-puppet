@@ -10,14 +10,6 @@ import glob
 
 def main():
     try:
-        # following the model of self determination for OS and driver
-        # allow for a declarative override to ensure a specific driver
-        with open('/etc/nagios/raid_utility') as f:
-            hc_driver = f.read().strip()
-    except:
-        hc_driver = None
-
-    try:
         argv_driver = sys.argv[1]
     except:
         argv_driver = None
@@ -25,8 +17,6 @@ def main():
     osName = os.uname()[0]
     if argv_driver:
         driver = argv_driver
-    elif hc_driver:
-        driver = hc_driver
     elif osName == 'SunOS':
         driver = 'zpool'
     elif osName == 'Linux':
