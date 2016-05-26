@@ -1,11 +1,23 @@
-class contint::worker_localhost {
+# == class contint::worker_localhost
+#
+# Apache vhost for localhost testing (qunit/selenium)
+#
+# Parameters:
+#
+# **owner** Unix user that runs the jobs. Should be:
+#  Permanent slaves: jenkins-deploy
+#  Nodepool slaves: jenkins
+#
+class contint::worker_localhost(
+    $owner
+) {
 
     include ::apache::mod::rewrite
 
     file { '/srv/localhost-worker':
         ensure => directory,
         mode   => '0775',
-        owner  => 'jenkins-deploy',
+        owner  => $owner,
         group  => 'root',
     }
 
