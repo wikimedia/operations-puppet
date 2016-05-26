@@ -16,4 +16,5 @@ class apache::logrotate(
                     "set rule/rotate ${rotate}"
         ]
     }
+    Package['apache2'] ~> Augeas['Apache2 logs']
 }
