@@ -70,7 +70,7 @@ class role::cache::upload {
     # upload-frontend case.  All tiers of backend share the same policies.
 
     $be_vcl_config = merge($common_vcl_config, {
-        'ttl_fixed'        => '14d',
+        'ttl_fixed'        => '7d',
         'pass_random'      => true,
     })
 
