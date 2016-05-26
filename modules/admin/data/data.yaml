@@ -48,7 +48,7 @@ groups:
     description: replaces 'mortals' for software deployment
     members: [aaron, dr0ptp4kt, anomie, aude, awight, awjrichards, bd808,
               brion, cscott, csteipp, demon, ebernhardson, esanders, gilles,
-              gjg, gwicke, halfak, hashar, hoo, kaldari, kartik, khorn, krinkle, manybubbles,
+              gjg, gwicke, halfak, hashar, hoo, kaldari, kartik, khorn, krinkle,
               maxsem, mattflaschen, marktraceur, milimetric, mlitn, andyrussg,
               nikerabbit, reedy, robla, ssastry, tomasz, yurik,
               tgr, phuedx, bsimmers, ejegg, twentyafterfour, legoktm, catrope, krenair,
@@ -90,7 +90,7 @@ groups:
   elasticsearch-roots:
     gid: 709
     description: manage elasticsearch nodes
-    members: [manybubbles, demon, ebernhardson, dcausse, tomasz, gehel]
+    members: [demon, ebernhardson, dcausse, tomasz, gehel]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
   dataset-admins:
     gid: 710
@@ -173,7 +173,7 @@ groups:
   logstash-roots:
     gid: 722
     description: users with root access on logstash nodes (rt 6366, 6896)
-    members: [aaron, bd808, manybubbles, demon, reedy]
+    members: [aaron, bd808, demon, reedy]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
   statistics-web-users:
     gid: 724
@@ -886,8 +886,7 @@ users:
     gid: 500
     name: manybubbles
     realname: Nik Everett
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCvG6VYTnUwHQyLYFUv0g1EUfp+OByn2agzc6Y3oSj9JhjYT2zbzpfquCB5aL8mLv4A1J8iKVwWHGeib44QY8uggX/66xdRrvEZ6QaM3GkVehDS4MpKl8m61rnVfITSxmPg0n83pBDhKfXPzE6vzchBA7ZhonccObwpcr4jvpUrvFcgWDrhjbC+YeJ1YKz5lm6IPW0yeY6Ni/0LRNbIUkv0Bj1epsFqBPORO9GoWc9ydV3rDLJJGJJ5YhOlbFSjc6nblUDMwBToxov+5icnT22wNdlHizGPUafluw6Wf790Bls3Znoje0qY5KgC7zOoQWWR+3k1kZVpuOIVQU6U3/uP
-        manybubbles@manybubbles-laptop]
+    ssh_keys: []
     uid: 3304
   maxsem:
     ensure: present
