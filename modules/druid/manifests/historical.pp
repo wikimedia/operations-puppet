@@ -44,7 +44,6 @@
 #   The number of processing threads to have available for parallel processing
 #   of segments. Default: 1
 #
-#
 # [*druid.segmentCache.locations*]
 #   Segments assigned to a Historical node are first stored on the local file
 #   system (in a disk cache) and then served by the Historical node. These

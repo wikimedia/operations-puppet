@@ -101,6 +101,9 @@
 # [*druid.zk.paths.base*]
 #   Chroot to druid in zookeeper. Default: /druid
 #
+# [*druid.discovery.curator.path*]
+#   Default $properties['druid.zk.paths.base']/discovery
+#
 # [*druid.metadata.storage.type*]
 #   For Derby server on your Druid Coordinator (only viable in a cluster with
 #   single Coordinator, no fail-over).  Default: derby
