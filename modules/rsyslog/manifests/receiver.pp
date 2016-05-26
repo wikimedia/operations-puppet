@@ -20,7 +20,7 @@
 
 class rsyslog::receiver (
     $udp_port           = 514,
-    $log_retention_days = 30,
+    $log_retention_days = 90,
     $log_directory      = '/srv/syslog',
     $archive_directory  = '/srv/syslog/archive',
 ) {
