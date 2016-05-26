@@ -8,9 +8,11 @@ setuid <%= @labsproject %>.toolschecker
 setgid www-data
 
 # Needs the '=', otherwise doesn't work for chmod-socket. WTF?
+# Only 1 worker, since we don't want to run parallel commands at gridengine
+# Enforce a timeout of 60s for all our stuff, to prevent tests from clogging other tests
 exec /usr/bin/uwsgi --plugin=python \
                     --master \
-                    --workers=16 \
+                    --workers=1 \
                     --harakiri=60 \
                     --harakiri-verbose \
                     --wsgi-file=/usr/local/lib/python2.7/dist-packages/toolschecker.py \
