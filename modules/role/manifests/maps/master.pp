@@ -12,6 +12,8 @@ class role::maps::master {
     redis::instance { '6379':
         settings => { 'bind' => '0.0.0.0' },
     }
+    include ::nagios_common::check::redis
+
 
     # DB passwords
     $kartotherian_pass = hiera('maps::postgresql_kartotherian_pass')

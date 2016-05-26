@@ -1,5 +1,8 @@
 ALTER ROLE kartotherian SET statement_timeout = 15000;  -- limit query execution time
 
+-- nagios role is used for icinga check
+CREATE ROLE nagios WITH LOGIN;
+
 GRANT SELECT ON ALL TABLES IN SCHEMA public TO kartotherian;
 GRANT SELECT ON ALL TABLES IN SCHEMA public TO tilerator;
 GRANT SELECT ON ALL TABLES IN SCHEMA public TO tileratorui;
