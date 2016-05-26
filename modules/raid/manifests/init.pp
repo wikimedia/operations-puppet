@@ -25,6 +25,45 @@ class raid {
         }
     }
 
+    if 'hpsa' in $raid {
+        require_package('hpssacli')
+
+        file { '/usr/local/lib/nagios/plugins/check_hpssacli':
+            ensure => present,
+            owner  => 'root',
+            group  => 'root',
+            mode   => '0555',
+            source => 'puppet:///modules/raid/dsa-check-hpssacli',
+        }
+
+        sudo::user { 'nagios_hpssacli':
+            user       => 'nagios',
+            privileges => [
+                'ALL = NOPASSWD: /usr/sbin/hpssacli controller all show',
+                'ALL = NOPASSWD: /usr/sbin/hpssacli controller slot=[0129] ld all show',
+                'ALL = NOPASSWD: /usr/sbin/hpssacli controller slot=[0129] ld [0-9] show',
+                'ALL = NOPASSWD: /usr/sbin/hpssacli controller slot=[0129] pd all show',
+                'ALL = NOPASSWD: /usr/sbin/hpssacli controller slot=[0129] pd [0-9]\:[0-9] show',
+                'ALL = NOPASSWD: /usr/sbin/hpssacli controller slot=[0129] pd [0-9][EIC]\:[0-9]\:[0-9] show',
+                'ALL = NOPASSWD: /usr/sbin/hpssacli controller slot=[0129] pd [0-9][EIC]\:[0-9]\:[0-9][0-9] show',
+                'ALL = NOPASSWD: /usr/sbin/hpssacli controller slot=[0129] show status',
+                'ALL = NOPASSWD: /usr/sbin/hpacucli controller all show',
+                'ALL = NOPASSWD: /usr/sbin/hpacucli controller slot=[0129] ld all show',
+                'ALL = NOPASSWD: /usr/sbin/hpacucli controller slot=[0129] ld [0-9] show',
+                'ALL = NOPASSWD: /usr/sbin/hpacucli controller slot=[0129] pd all show',
+                'ALL = NOPASSWD: /usr/sbin/hpacucli controller slot=[0129] pd [0-9]\:[0-9] show',
+                'ALL = NOPASSWD: /usr/sbin/hpacucli controller slot=[0129] pd [0-9][EIC]\:[0-9]\:[0-9] show',
+                'ALL = NOPASSWD: /usr/sbin/hpacucli controller slot=[0129] pd [0-9][EIC]\:[0-9]\:[0-9][0-9] show',
+                'ALL = NOPASSWD: /usr/sbin/hpacucli controller slot=[0129] show status',
+            ],
+        }
+
+        nrpe::monitor_service { 'raid_hpssacli':
+            description  => 'HP RAID',
+            nrpe_command => '/usr/local/lib/nagios/plugins/check_hpssacli',
+        }
+    }
+
     if 'mpt' in $raid {
         require_package('mpt-status')
 
