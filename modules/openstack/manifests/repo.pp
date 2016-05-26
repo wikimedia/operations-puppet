@@ -11,7 +11,7 @@ class openstack::repo(
             dist       => "trusty-updates/${openstack_version}",
             components => 'main',
             # lint:ignore:puppet_url_without_modules
-            keyfile    => 'puppet:///files/misc/ubuntu-cloud.key';
+            keyfile    => 'puppet:///modules/openstack/ubuntu-cloud.key';
             # lint:endignore
         }
     }
