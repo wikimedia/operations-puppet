@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 
 import os
-import threading
 import time
 import urllib2
 import traceback
@@ -420,10 +419,6 @@ def metric_init(params):
 
         return descriptors
 
-
-def metric_cleanup():
-    '''Clean up the metric module.'''
-    _Worker_Thread.shutdown()
 
 if __name__ == '__main__':
     try:
