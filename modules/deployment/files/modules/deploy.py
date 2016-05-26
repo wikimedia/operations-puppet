@@ -170,7 +170,6 @@ def deployment_server_init():
     :rtype: int
     """
     ret_status = 0
-    serv = _get_redis_serv()
     is_deployment_server = __grains__.get('deployment_server')
     if not is_deployment_server:
         return ret_status
@@ -695,6 +694,7 @@ def _checkout_location(config, location, tag, reset=False, shadow=False):
     """
     # Call checkout on all repositories we depend on and add it to the stats
     # for reporting back. Deprecated.
+    depstats = []
     for dependency in config['dependencies']:
         depstats.append(__salt__['deploy.checkout'](dependency, reset))
 
@@ -792,3 +792,10 @@ def fixurl():
         if retval != 0:
             return retval
     return 0
+
+
+if __name__ == '__main__':
+    # Make flake8 happy by defining globals
+    __pillar__ = dict()
+    __grains__ = dict()
+    __salt__ = dict()
