@@ -7,6 +7,7 @@ class role::maps::server {
     include ::cassandra::metrics
     include ::cassandra::logging
     include ::kartotherian
+    include ::kartotherian::nagios::check
     include ::tilerator
 
     system::role { 'role::maps':
