@@ -9,17 +9,37 @@
 #  include raid
 
 class raid {
-    package { [ 'megacli', 'arcconf', 'mpt-status' ]:
-        ensure => 'latest',
+    # this line can be removed entirely on a system with:
+    # - Facter >= 2.0
+    # - Puppet with stringify_facts=false (if supported)
+    $raid = split($::raid, ',')
+
+    if 'megaraid' in $raid {
+        require_package('megacli')
     }
 
-    file { '/etc/default/mpt-statusd':
-        ensure  => present,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0555',
-        content => "RUN_DAEMON=no\n",
-        before  => Package['mpt-status'],
+    if 'mpt' in $raid {
+        require_package('mpt-status')
+
+        file { '/etc/default/mpt-statusd':
+            ensure  => present,
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0555',
+            content => "RUN_DAEMON=no\n",
+            before  => Package['mpt-status'],
+        }
+    }
+    if 'md' in $raid {
+        # if there is an "md" RAID configured, mdadm is already installed
+    }
+
+    if 'aac' in $raid {
+        require_package('arcconf')
+    }
+
+    if 'twe' in $raid {
+        require_package('tw-cli')
     }
 
     file { '/usr/local/bin/check-raid.py':
