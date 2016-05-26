@@ -121,6 +121,13 @@ class role::grafana {
         notify  => Service['grafana-server'],
     }
 
+    file { '/usr/share/grafana/public/img/grafana_icon.svg':
+        source  => 'puppet:///files/misc/wikimedia-logo.svg',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        require => Package['grafana'],
+    }
 
     # We disable account creation, because accounts are created
     # automagically based on the X-WEBAUTH-USER, which is either set
