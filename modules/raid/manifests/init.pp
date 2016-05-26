@@ -9,7 +9,7 @@
 #  include raid
 
 class raid {
-    package { [ 'megacli', 'arcconf', 'mpt-status' ]:
+    package { [ 'megacli', 'arcconf', 'mpt-status', 'hpssacli' ]:
         ensure => 'latest',
     }
 
