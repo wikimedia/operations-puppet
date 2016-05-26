@@ -30,6 +30,9 @@ class base::monitoring::host(
 ) {
     include base::puppet::params # In order to be able to use some variables
 
+    # RAID checks
+    include raid
+
     monitoring::host { $::hostname: }
 
     monitoring::service { 'ssh':
@@ -37,26 +40,6 @@ class base::monitoring::host(
         check_command => 'check_ssh',
     }
 
-    package { [ 'megacli', 'arcconf', 'mpt-status' ]:
-        ensure => 'latest',
-    }
-
-    file { '/etc/default/mpt-statusd':
-        ensure  => present,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0555',
-        content => "RUN_DAEMON=no\n",
-        before  => Package['mpt-status'],
-    }
-
-    file { '/usr/local/bin/check-raid.py':
-        ensure => present,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
-        source => 'puppet:///modules/base/monitoring/check-raid.py';
-    }
     file { '/usr/local/lib/nagios/plugins/check_puppetrun':
         ensure => present,
         owner  => 'root',
@@ -87,15 +70,9 @@ class base::monitoring::host(
         source => 'puppet:///modules/base/monitoring/check-fresh-files-in-dir.py',
     }
 
-    sudo::user { 'nagios':
-        privileges   => [
-                        'ALL = NOPASSWD: /usr/local/bin/check-raid.py',
-                        'ALL = NOPASSWD: /usr/local/lib/nagios/plugins/check_puppetrun',
-                        ],
-    }
-    nrpe::monitor_service { 'raid':
-        description  => 'RAID',
-        nrpe_command => '/usr/bin/sudo /usr/local/bin/check-raid.py',
+    sudo::user { 'nagios_puppetrun':
+        user       => 'nagios',
+        privileges  => ['ALL = NOPASSWD: /usr/local/lib/nagios/plugins/check_puppetrun'],
     }
 
     # Check for disk usage on the root partition for labs instances
