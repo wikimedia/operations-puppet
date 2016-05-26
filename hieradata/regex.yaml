@@ -153,6 +153,8 @@ cassandra_test_eqiad:
       - .*\.meanRate$
       - .*\.min$
       - .*\.stddev$
+      - .*\.metrics\.Keyspace\..*$
+      - .*\.metrics\.Client\..*$
   restbase::logging_name: restbase-test
   cassandra::start_rpc: 'true'
   cassandra::target_version: '2.2'
@@ -236,6 +238,8 @@ cassandra_test_codfw:
       - .*\.meanRate$
       - .*\.min$
       - .*\.stddev$
+      - .*\.metrics\.Keyspace\..*$
+      - .*\.metrics\.Client\..*$
   restbase::logging_name: restbase-test
   cassandra::start_rpc: 'true'
   cassandra::target_version: '2.2'
