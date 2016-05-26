@@ -58,4 +58,21 @@ describe 'rsync::server', :type => :class do
     }
   end
 
+  describe 'when passing configuration' do
+    let :params do
+      {
+        :rsyncd_conf => {
+          'forward lookup' => 'no',
+          'use chroot' => 'yes',
+        }
+      }
+    end
+
+    it {
+      should contain_file(fragment_file)
+        .with_content(/^use chroot = yes$/)
+        .with_content(/^forward lookup = no$/)
+    }
+  end
+
 end
