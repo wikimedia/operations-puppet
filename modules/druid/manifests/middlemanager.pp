@@ -32,6 +32,11 @@
 #   Maximum number of tasks the middle manager can accept.
 #   Default: 3
 #
+# [*druid.indexer.runner.startPort*]
+#   The port that peons begin running on.  Default: 8100.
+#   Note that ferm rules will be set up to allow incoming access to
+#   this + 900 ports.
+#
 # [*druid.indexer.runner.javaOpts*]
 #   -X Java options to run the peon in its own JVM.
 #   Note that this default sets Dhadoop.mapreduce.job.user.classpath.first=true.
@@ -65,6 +70,7 @@ class druid::middlemanager(
         'druid.port'                        => 8091,
         'druid.worker.capacity'             => 3,
 
+        'druid.indexer.runner.startPort'    => 8100,
         'druid.indexer.runner.javaOpts'     => '-server -Xmx128m -XX:+UseG1GC -XX:MaxGCPauseMillis=100 -Duser.timezone=UTC -Dfile.encoding=UTF-8 -Djava.util.logging.manager=org.apache.logging.log4j.jul.LogManager -Dhadoop.mapreduce.job.user.classpath.first=true',
 
         'druid.indexer.task.baseTaskDir'    => '/var/lib/druid/task',
@@ -73,6 +79,7 @@ class druid::middlemanager(
 
         'druid.processing.buffer.sizeBytes' => 64000000,
         'druid.processing.numThreads'       => 1,
+
     }
 
     $default_env = {
@@ -89,5 +96,14 @@ class druid::middlemanager(
         runtime_properties => $runtime_properties,
         env                => $environment,
         should_subscribe   => $should_subscribe,
+    }
+
+    # Allow incoming connections to druid.indexer.runner.startPort + 900
+    $peon_start_port = $runtime_properties['druid.indexer.runner.startPort']
+    $peon_end_port   = $runtime_properties['druid.indexer.runner.startPort'] + 900
+    ferm::service { "druid-middlemanager-indexer-task":
+        proto  => 'tcp',
+        port   =>  "${peon_start_port}:${peon_end_port}",
+        srange => '$ALL_NETWORKS',
     }
 }

@@ -19,13 +19,13 @@ class role::analytics_cluster::druid::common
     }
 
     $zookeeper_properties = {
-        'druid.zk.service.host' =>
-            join(keys(hiera(
-                'zookeeper_hosts',
-                # Default to running a single zk locally.
-                {'localhost:2181' => {'id' => '1'}}
-            )), ','),
-        'druid.zk.paths.base'   => $zookeeper_chroot,
+        'druid.zk.paths.base'          => $zookeeper_chroot,
+        'druid.discovery.curator.path' => "${zookeeper_chroot}/discovery",
+        'druid.zk.service.host'        => join(keys(hiera(
+            'zookeeper_hosts',
+            # Default to running a single zk locally.
+            {'localhost:2181' => {'id' => '1'}}
+        )), ','),
     }
 
     # Look up druid::properties out of hiera.  Since class path
