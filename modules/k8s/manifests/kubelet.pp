@@ -25,11 +25,6 @@ class k8s::kubelet(
         mode   => '0700',
     }
 
-    class { '::k8s::ssl':
-        provide_private => true,
-        notify          => Base::Service_unit['kubelet'],
-    }
-
     base::service_unit { 'kubelet':
         systemd   => true,
         subscribe => File['/etc/kubernetes/kubeconfig'],
