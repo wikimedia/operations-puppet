@@ -98,3 +98,95 @@ spec:
                   body:
                     - meta:
                         uri: '//{{message.meta.domain}}/api/rest_v1/{{match.meta.uri.title}}'
+
+                    # RESTBase update jobs
+                    mw_purge:
+                      topic: resource_change
+                      match:
+                        meta:
+                          uri: '/^https?:\/\/[^\/]+\/wiki\/(?<title>.+)$/'
+                        tags:
+                          - purge
+                      exec:
+                        method: get
+                        uri: '<%= @restbase_uri %>/{{message.meta.domain}}/v1/page/html/{{match.meta.uri.title}}'
+                        headers:
+                          cache-control: no-cache
+                          if-unmodified-since: '{{date(message.meta.dt)}}'
+                        query:
+                          redirect: false
+
+                    null_edit:
+                      topic: resource_change
+                      match:
+                        meta:
+                          uri: '/^https?:\/\/[^\/]+\/wiki\/(?<title>.+)$/'
+                        tags:
+                          - null_edit
+                      exec:
+                        method: get
+                        uri: '<%= @restbase_uri %>/{{message.meta.domain}}/v1/page/html/{{match.meta.uri.title}}'
+                        headers:
+                          cache-control: no-cache
+                          if-unmodified-since: '{{date(message.meta.dt)}}'
+                        query:
+                          redirect: false
+
+                    page_edit:
+                      topic: mediawiki.revision_create
+                      exec:
+                        method: get
+                        uri: '<%= @restbase_uri %>/{{message.meta.domain}}/v1/page/html/{message.page_title}/{{message.rev_id}}'
+                        headers:
+                          cache-control: no-cache
+                          x-restbase-parentrevision: '{{message.rev_parent_id}}'
+                          if-unmodified-since: '{{date(message.meta.dt)}}'
+                        query:
+                          redirect: false
+
+                    revision_visibility_change:
+                      topic: mediawiki.revision_visibility_set
+                      exec:
+                        method: get
+                        uri: '<%= @restbase_uri %>/{{message.meta.domain}}/v1/page/revision/{{message.revision_id}}'
+                        headers:
+                          cache-control: no-cache
+                        query:
+                          redirect: false
+
+                    page_delete:
+                      topic: mediawiki.page_delete
+                      exec:
+                        method: get
+                        uri: '<%= @restbase_uri %>/{{message.meta.domain}}/v1/page/title/{message.title}'
+                        headers:
+                          cache-control: no-cache
+                        query:
+                          redirect: false
+
+                    page_restore:
+                      topic: mediawiki.page_restore
+                      exec:
+                        method: get
+                        uri: '<%= @restbase_uri %>/{{message.meta.domain}}/v1/page/html/{message.title}'
+                        headers:
+                          cache-control: no-cache
+                        query:
+                          redirect: false
+
+                    page_move:
+                      topic: mediawiki.page_move
+                      exec:
+                        - method: get
+                          uri: '<%= @restbase_uri %>/{{message.meta.domain}}/v1/page/title/{message.old_title}'
+                          headers:
+                            cache-control: no-cache
+                          query:
+                            redirect: false
+                        - method: get
+                          uri: '<%= @restbase_uri %>/{{message.meta.domain}}/v1/page/html/{message.new_title}/{{message.new_revision_id}}'
+                          headers:
+                            cache-control: no-cache
+                            if-unmodified-since: '{{date(message.meta.dt)}}'
+                          query:
+                            redirect: false
