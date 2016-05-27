@@ -3,6 +3,7 @@ The MIT License
 
 Copyright (c) 2008 Gilad Raphaelli <gilad@raphaelli.com>
 Adapted for 5.1+ InnoDB status 2012 Asher Feldman <asher@wikimedia.org>
+Modified for Python >=2.7 by Bryan Davis <bd808@wikimedia.org>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -26,46 +27,10 @@ if using < python2.5, http://code.activestate.com/recipes/523034/ works as a
 pure python collections.defaultdict substitute
 """
 
-#from collections import defaultdict
-try:
-    from collections import defaultdict
-except:
-    class defaultdict(dict):
-        def __init__(self, default_factory=None, *a, **kw):
-            if (default_factory is not None and
-                not hasattr(default_factory, '__call__')):
-                raise TypeError('first argument must be callable')
-            dict.__init__(self, *a, **kw)
-            self.default_factory = default_factory
-        def __getitem__(self, key):
-            try:
-                return dict.__getitem__(self, key)
-            except KeyError:
-                return self.__missing__(key)
-        def __missing__(self, key):
-            if self.default_factory is None:
-                raise KeyError(key)
-            self[key] = value = self.default_factory()
-            return value
-        def __reduce__(self):
-            if self.default_factory is None:
-                args = tuple()
-            else:
-                args = self.default_factory,
-            return type(self), args, None, None, self.items()
-        def copy(self):
-            return self.__copy__()
-        def __copy__(self):
-            return type(self)(self.default_factory, self)
-        def __deepcopy__(self, memo):
-            import copy
-            return type(self)(self.default_factory,
-                              copy.deepcopy(self.items()))
-        def __repr__(self):
-            return 'defaultdict(%s, %s)' % (self.default_factory,
-                                            dict.__repr__(self))
-
+from collections import defaultdict
+import argparse
 import MySQLdb
+
 
 def longish(x):
     if len(x):
@@ -76,6 +41,7 @@ def longish(x):
     else:
         raise ValueError
 
+
 def hexlongish(x):
     if len(x):
         try:
@@ -85,16 +51,17 @@ def hexlongish(x):
     else:
         raise ValueError
 
+
 def parse_innodb_status(innodb_status_raw, innodb_version="51fb"):
     def sumof(status):
         def new(*idxs):
             return sum(map(lambda x: longish(status[x]), idxs))
-        #new.func_name = 'sumof'  #not ok in py2.3
         return new
 
     innodb_status = defaultdict(int)
     innodb_status['active_transactions']
 
+    in_merged = False
     for line in innodb_status_raw:
         istatus = line.split()
 
@@ -108,8 +75,8 @@ def parse_innodb_status(innodb_status_raw, innodb_version="51fb"):
 
         elif "RW-shared spins" in line:
             if innodb_version == "51fb":
-                innodb_status['spin_waits'] += isum(2,8)
-                innodb_status['os_waits'] += isum(5,11)
+                innodb_status['spin_waits'] += isum(2, 8)
+                innodb_status['os_waits'] += isum(5, 11)
             elif innodb_version == "55xdb":
                 innodb_status['spin_waits'] += longish(istatus[2])
                 innodb_status['os_waits'] += longish(istatus[7])
@@ -168,11 +135,11 @@ def parse_innodb_status(innodb_status_raw, innodb_version="51fb"):
             innodb_status['ibuf_merges'] = longish(istatus[10])
 
         elif 'merged operations' in line and innodb_version == "55xdb":
-            in_merged = 1
+            in_merged = True
 
-        elif 'delete mark' in line and 'in_merged' in vars() and innodb_version == "55xdb":
+        elif 'delete mark' in line and in_merged and innodb_version == "55xdb":
             innodb_status['ibuf_inserts'] = longish(istatus[1])
-            del in_merged
+            in_merged = False
 
         # LOG
         elif "log i/o's done" in line:
@@ -218,28 +185,28 @@ def parse_innodb_status(innodb_status_raw, innodb_version="51fb"):
             innodb_status['queries_queued'] = longish(istatus[4])
 
     # Some more stats
-    innodb_status['transactions_unpurged'] = innodb_status['transactions'] - innodb_status['transactions_purged']
-    innodb_status['log_bytes_unflushed'] = innodb_status['log_bytes_written'] - innodb_status['log_bytes_flushed']
+    innodb_status['transactions_unpurged'] = innodb_status[
+        'transactions'] - innodb_status['transactions_purged']
+    innodb_status['log_bytes_unflushed'] = innodb_status[
+        'log_bytes_written'] - innodb_status['log_bytes_flushed']
 
     return innodb_status
 
+
 if __name__ == '__main__':
-    from optparse import OptionParser
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "-H", "--Host", dest="host", help="Host running mysql", default="localhost")
+    parser.add_argument(
+        "-u", "--user", dest="user", help="user to connect as", default="")
+    parser.add_argument(
+        "-p", "--password", dest="passwd", help="password", default="")
+    args = parser.parse_args()
 
-    parser = OptionParser()
-    parser.add_option("-H", "--Host", dest="host", help="Host running mysql", default="localhost")
-    parser.add_option("-u", "--user", dest="user", help="user to connect as", default="")
-    parser.add_option("-p", "--password", dest="passwd", help="password", default="")
-    (options, args) = parser.parse_args()
-
-    try:
-        conn = MySQLdb.connect(user=options.user, host=options.host, passwd=options.passwd)
-
-        cursor = conn.cursor(MySQLdb.cursors.Cursor)
-        cursor.execute("SHOW ENGINE INNODB STATUS")
-        innodb_status = parse_innodb_status(cursor.fetchone()[0].split('\n'))
-        cursor.close()
-
-        conn.close()
-    except MySQLdb.OperationalError, (errno, errmsg):
-        raise
+    conn = MySQLdb.connect(
+        user=args.user, host=args.host, passwd=args.passwd)
+    cursor = conn.cursor(MySQLdb.cursors.Cursor)
+    cursor.execute("SHOW ENGINE INNODB STATUS")
+    innodb_status = parse_innodb_status(cursor.fetchone()[0].split('\n'))
+    cursor.close()
+    conn.close()
