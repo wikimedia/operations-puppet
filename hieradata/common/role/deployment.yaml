@@ -91,6 +91,9 @@ repo_config:
     checkout_submodules: true
   sentry/sentry:
     upstream: https://gerrit.wikimedia.org/r/operations/software/sentry
+  kartotherian/deploy:
+    upstream: https://gerrit.wikimedia.org/r/maps/kartotherian/deploy
+    checkout_submodules: true
   tilerator/deploy:
     upstream: https://gerrit.wikimedia.org/r/maps/tilerator/deploy
     checkout_submodules: true
