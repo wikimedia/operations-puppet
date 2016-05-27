@@ -41,7 +41,7 @@ DEFAULT_MSG_FOOTER for an example."""
 #######################################################
 #    Here's where we get the distributed defaults.    #
 
-from Defaults import *
+from Defaults import *  # noqa
 
 ##############################################################
 # Put YOUR site-specific configuration below, in mm_cfg.py . #
