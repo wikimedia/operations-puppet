@@ -12,8 +12,14 @@ class network::constants {
         '2a02:ec80::/32',
     ]
 
+    # are you really sure you want to use this? maybe what you really
+    # the trusted/production networks. See $production_networks for this.
     $all_networks = flatten([$external_networks, '10.0.0.0/8'])
     $all_networks_lo = flatten([$all_networks, '127.0.0.0/8', '::1/128'])
+
+    $production_networks_ipv4 = slice_network_constants('production', 'ipv4')
+    $production_networks_ipv6 = slice_network_constants('production', 'ipv6')
+    $production_networks = flatten([$production_networks_ipv4, $production_networks_ipv6])
 
     $special_hosts = {
         'production' => {
