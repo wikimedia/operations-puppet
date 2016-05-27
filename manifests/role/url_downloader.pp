@@ -57,10 +57,10 @@ class role::url_downloader {
             ]
     } elsif $::realm == 'labs' {
         $wikimedia = [
-            $network::constants::all_network_subnets['production']['eqiad']['private']['labs-instances1-a-eqiad']['ipv4'],
-            $network::constants::all_network_subnets['production']['eqiad']['private']['labs-instances1-b-eqiad']['ipv4'],
-            $network::constants::all_network_subnets['production']['eqiad']['private']['labs-instances1-c-eqiad']['ipv4'],
-            $network::constants::all_network_subnets['production']['eqiad']['private']['labs-instances1-d-eqiad']['ipv4'],
+            $network::constants::all_network_subnets['labs']['eqiad']['private']['labs-instances1-a-eqiad']['ipv4'],
+            $network::constants::all_network_subnets['labs']['eqiad']['private']['labs-instances1-b-eqiad']['ipv4'],
+            $network::constants::all_network_subnets['labs']['eqiad']['private']['labs-instances1-c-eqiad']['ipv4'],
+            $network::constants::all_network_subnets['labs']['eqiad']['private']['labs-instances1-d-eqiad']['ipv4'],
         ]
     } else {
         fail('Dont use this role outside of wikimedia')
