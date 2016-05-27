@@ -26,10 +26,6 @@ MA 02110-1301 USA
 """
 
 from __future__ import print_function
-import sys
-import os
-import time
-from optparse import OptionParser, OptionGroup
 import diamond.collector
 
 Iostats_version = '0.2'
@@ -213,24 +209,11 @@ class DeviceData:
         """attribute cache efficiency stats
         """
         nfs_stats = self.__nfs_data
-        getattr_stats = self.__rpc_data['GETATTR']
 
         if nfs_stats['inoderevalidates'] != 0:
-            getattr_ops = float(getattr_stats[1])
             opens = float(nfs_stats['vfsopen'])
-            revalidates = float(nfs_stats['inoderevalidates']) - opens
-            if revalidates != 0:
-                ratio = ((revalidates - getattr_ops) * 100) / revalidates
-            else:
-                ratio = 0.0
-
-            data_invalidates = float(nfs_stats['datainvalidates'])
-            attr_invalidates = float(nfs_stats['attrinvalidates'])
 
             data = {}
-
-            # data['inode_revalidations'] = revalidates
-            # data['inode_revalidations_cache_hit_pcnt'] = ratio
 
             data['open_operations'] = opens
             return data
@@ -239,7 +222,6 @@ class DeviceData:
         """directory stats
         """
         nfs_stats = self.__nfs_data
-        lookup_ops = self.__rpc_data['LOOKUP'][0]
         readdir_ops = self.__rpc_data['READDIR'][0]
         if 'READDIRPLUS' in self.__rpc_data:
             readdir_ops += self.__rpc_data['READDIRPLUS'][0]
@@ -285,16 +267,7 @@ class DeviceData:
         rtt = float(rpc_stats[6])
         exe = float(rpc_stats[7])
 
-        if ops == 0:
-            kb_per_op = 0.0
-            retrans_percent = 0.0
-            rtt_per_op = 0.0
-            exe_per_op = 0.0
-
         data = {}
-
-        # data['kilobytes_per_op'] = kb_per_op
-        # data['retrans_percent'] = retrans_percent
 
         data['ops'] = ops
         data['kilobytes'] = kilobytes
@@ -364,7 +337,6 @@ def parse_stats_file(filename):
 
 def nfs_iostat(new, devices):
     stats = {}
-    diff_stats = {}
     devicelist = devices
 
     for device in devicelist:
