@@ -26,11 +26,11 @@ define ganglia::monitor::aggregator::instance($monitored_site) {
 
     # This will only be realized if base::firewall (well ferm..) is included
     ferm::rule { "aggregator-udp-${id}":
-        rule => "proto udp dport ${gmond_port} { saddr \$ALL_NETWORKS ACCEPT; }",
+        rule => "proto udp dport ${gmond_port} { saddr \$ALL_NETWORK_SUBNETS ACCEPT; }",
     }
     # This will only be realized if base::firewall (well ferm..) is included
     ferm::rule { "aggregator-tcp-${id}":
-        rule => "proto tcp dport ${gmond_port} { saddr \$ALL_NETWORKS ACCEPT; }",
+        rule => "proto tcp dport ${gmond_port} { saddr \$ALL_NETWORK_SUBNETS ACCEPT; }",
     }
 
     # Run these instances in the foreground
