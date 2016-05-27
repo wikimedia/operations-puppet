@@ -29,6 +29,7 @@ from keystoneclient.auth.identity import generic
 from keystoneclient import session as keystone_session
 from designateclient.v2 import client
 
+
 def createdomain(url, user, password, project, domain, ttl=120):
     auth = generic.Password(
         auth_url=url,
@@ -57,7 +58,7 @@ def createdomain(url, user, password, project, domain, ttl=120):
     #  designate prevents subdomain creation elsewhere.
     zone = createClient.zones.create(domain, email='root@wmflabs.org', ttl=ttl)
     newzoneid = zone['id']
-    status='PENDING'
+    status = 'PENDING'
     # Wait for the domain to actually exist before we transfer it
     while status == 'PENDING':
         zone = createClient.zones.get(domain)
@@ -72,7 +73,7 @@ def createdomain(url, user, password, project, domain, ttl=120):
 
 if __name__ == "__main__":
     argparser = argparse.ArgumentParser('makesubdomain',
-        description='''Create a subdomain of wmflabs.org in a project''')
+                                        description='''Create a subdomain of wmflabs.org in a project''')
 
     argparser.add_argument(
         '--designate-user',
@@ -103,7 +104,7 @@ if __name__ == "__main__":
     args = argparser.parse_args()
 
     createdomain(args.keystone_url,
-            args.designate_user,
-            args.designate_pass,
-            args.project,
-            args.domain)
+                 args.designate_user,
+                 args.designate_pass,
+                 args.project,
+                 args.domain)

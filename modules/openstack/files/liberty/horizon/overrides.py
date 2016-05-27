@@ -1,9 +1,7 @@
 import socket
 from urlparse import urlparse
-import logging
 
 from designatedashboard.dashboards.project.dns_domains import tables as ddtables
-from django.core import urlresolvers
 from django.utils.translation import ugettext_lazy as _  # noqa
 from horizon import tables
 from openstack_dashboard.api import keystone
@@ -55,6 +53,7 @@ def recordIsProxy(request, record):
 
 # Disable the 'edit' and 'delete' button for proxies...
 class EditRecord(ddtables.EditRecord):
+
     def allowed(self, request, record=None):
         if recordIsProxy(request, record):
             return False
@@ -63,6 +62,7 @@ class EditRecord(ddtables.EditRecord):
 
 
 class DeleteRecord(ddtables.DeleteRecord):
+
     def allowed(self, request, record=None):
         if recordIsProxy(request, record):
             return False
@@ -86,6 +86,7 @@ class EditProxies(tables.LinkAction):
 
 
 class RecordsTableWithProxies(ddtables.RecordsTable):
+
     class Meta(object):
         name = "records"
         verbose_name = _("Records")
