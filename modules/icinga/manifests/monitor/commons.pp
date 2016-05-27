@@ -10,6 +10,7 @@ class icinga::monitor::commons {
         check_command => 'check_https_url_for_string!commons.wikimedia.org!/wiki/Main_Page!Picture of the day',
         host          => 'commons.wikimedia.org',
         contact_group => 'admins',
+        critical      => true,
     }
 
 }
