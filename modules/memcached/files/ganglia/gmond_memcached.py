@@ -119,10 +119,10 @@ class UpdateMetricThread(threading.Thread):
         elif (name_tail[1] == "ratio" and
                 "hits" in name_tail[0] and
                 name_tail[0] in self.metric and
-                name_tail[0].replace("hits","misses") in self.metric):
+                name_tail[0].replace("hits", "misses") in self.metric):
             _Lock.acquire()
             hits_name = name_tail[0]
-            misses_name = hits_name.replace("hits","misses")
+            misses_name = hits_name.replace("hits", "misses")
             if (hits_name in self.last_metric and
                     misses_name in self.last_metric):
                 hits = self.metric[hits_name]-self.last_metric[hits_name]
@@ -183,107 +183,101 @@ def metric_init(params):
     mp = params["metrix_prefix"]
 
     descriptors.append(create_desc(Desc_Skel, {
-                "name": mp+"_curr_items",
-                "units": "items",
-                "slope": "both",
-                "description": "Current number of items stored",
-                }))
+        "name": mp+"_curr_items",
+        "units": "items",
+        "slope": "both",
+        "description": "Current number of items stored",
+    }))
     descriptors.append(create_desc(Desc_Skel, {
-                "name": mp+"_cmd_get",
-                "units": "commands",
-                "slope": "positive",
-                "description": "Cumulative number of retrieval reqs",
-                }))
+        "name": mp+"_cmd_get",
+        "units": "commands",
+        "slope": "positive",
+        "description": "Cumulative number of retrieval reqs",
+    }))
     descriptors.append(create_desc(Desc_Skel, {
-                "name": mp+"_cmd_set",
-                "units": "commands",
-                "slope": "positive",
-                "description": "Cumulative number of storage reqs",
-                }))
+        "name": mp+"_cmd_set",
+        "units": "commands",
+        "slope": "positive",
+        "description": "Cumulative number of storage reqs",
+    }))
     descriptors.append(create_desc(Desc_Skel, {
-                "name": mp+"_bytes_read",
-                "units": "bytes",
-                "slope": "positive",
-                "description": "Total number of bytes read by this server " +
-                               " from network",
-                }))
+        "name": mp+"_bytes_read",
+        "units": "bytes",
+        "slope": "positive",
+        "description": "Total number of bytes read by this server from network",
+    }))
     descriptors.append(create_desc(Desc_Skel, {
-                "name": mp+"_bytes_written",
-                "units": "bytes",
-                "slope": "positive",
-                "description": "Total number of bytes sent by this server " +
-                               "to network",
-                }))
+        "name": mp+"_bytes_written",
+        "units": "bytes",
+        "slope": "positive",
+        "description": "Total number of bytes sent by this server to network",
+    }))
     descriptors.append(create_desc(Desc_Skel, {
-                "name": mp+"_bytes",
-                "units": "bytes",
-                "slope": "both",
-                "description": "Current number of bytes used to store items",
-                }))
+        "name": mp+"_bytes",
+        "units": "bytes",
+        "slope": "both",
+        "description": "Current number of bytes used to store items",
+    }))
     descriptors.append(create_desc(Desc_Skel, {
-                "name": mp+"_limit_maxbytes",
-                "units": "bytes",
-                "slope": "both",
-                "description": "Number of bytes this server is allowed to " +
-                               "use for storage",
-                }))
+        "name": mp+"_limit_maxbytes",
+        "units": "bytes",
+        "slope": "both",
+        "description": "Number of bytes this server is allowed to use for storage",
+    }))
     descriptors.append(create_desc(Desc_Skel, {
-                "name": mp+"_curr_connections",
-                "units": "connections",
-                "slope": "both",
-                "description": "Number of open connections",
-                }))
+        "name": mp+"_curr_connections",
+        "units": "connections",
+        "slope": "both",
+        "description": "Number of open connections",
+    }))
     descriptors.append(create_desc(Desc_Skel, {
-                "name": mp+"_evictions",
-                "units": "items",
-                "slope": "both",
-                "description": "Number of valid items removed from cache to " +
-                               "free memory for new items",
-                }))
+        "name": mp+"_evictions",
+        "units": "items",
+        "slope": "both",
+        "description": "Number of valid items removed from cache to free memory for new items",
+    }))
     descriptors.append(create_desc(Desc_Skel, {
-                "name": mp+"_get_hits",
-                "units": "items",
-                "slope": "positive",
-                "description": "Number of keys that have been requested and " +
-                               "found present",
-                }))
+        "name": mp+"_get_hits",
+        "units": "items",
+        "slope": "positive",
+        "description": "Number of keys that have been requested and found present",
+    }))
     descriptors.append(create_desc(Desc_Skel, {
-                "name": mp+"_get_misses",
-                "units": "items",
-                "slope": "positive",
-                "description": "Number of items that have been requested " +
-                               "and not found",
-                }))
+        "name": mp+"_get_misses",
+        "units": "items",
+        "slope": "positive",
+        "description": "Number of items that have been requested and not found",
+    }))
     descriptors.append(create_desc(Desc_Skel, {
-                "name": mp+"_get_hits_rate",
-                "units": "items",
-                "slope": "both",
-                "description": "Hits per second",
-                }))
+        "name": mp+"_get_hits_rate",
+        "units": "items",
+        "slope": "both",
+        "description": "Hits per second",
+    }))
     descriptors.append(create_desc(Desc_Skel, {
-                "name": mp+"_get_misses_rate",
-                "units": "items",
-                "slope": "both",
-                "description": "Misses per second",
-                }))
+        "name": mp+"_get_misses_rate",
+        "units": "items",
+        "slope": "both",
+        "description": "Misses per second",
+    }))
     descriptors.append(create_desc(Desc_Skel, {
-                "name": mp+"_cmd_get_rate",
-                "units": "commands",
-                "slope": "both",
-                "description": "Gets per second",
-                }))
+        "name": mp+"_cmd_get_rate",
+        "units": "commands",
+        "slope": "both",
+        "description": "Gets per second",
+    }))
     descriptors.append(create_desc(Desc_Skel, {
-                "name": mp+"_cmd_set_rate",
-                "units": "commands",
-                "slope": "both",
-                "description": "Sets per second",
-                }))
+        "name": mp+"_cmd_set_rate",
+        "units": "commands",
+        "slope": "both",
+        "description": "Sets per second",
+    }))
     descriptors.append(create_desc(Desc_Skel, {
-                "name": mp+"_get_hits_ratio",
-                "units": "items",
-                "slope": "positive",
-                "description": "Get hits ratio (hits/(hits+misses)",
-                }))
+        "name": mp+"_get_hits_ratio",
+        "units": "items",
+        "slope": "positive",
+        "description": "Get hits ratio (hits/(hits+misses)",
+    }))
 
     # Tokyo Tyrant
     if "type" in params and params["type"].lower().find("tokyo") == 0:
@@ -304,40 +298,36 @@ def metric_init(params):
                 d["name"] = mp+"_cmd_get_misses"
 
         descriptors.append(create_desc(Desc_Skel, {
-                    "name": mp+"_cmd_set_hits",
-                    "units": "items",
-                    "slope": "positive",
-                    "description": "Number of keys that have been stored " +
-                                   "and found present",
-                    }))
+            "name": mp+"_cmd_set_hits",
+            "units": "items",
+            "slope": "positive",
+            "description": "Number of keys that have been stored and found present",
+        }))
         descriptors.append(create_desc(Desc_Skel, {
-                    "name": mp+"_cmd_set_misses",
-                    "units": "items",
-                    "slope": "positive",
-                    "description": "Number of items that have been stored " +
-                                   "and not found",
-                    }))
+            "name": mp+"_cmd_set_misses",
+            "units": "items",
+            "slope": "positive",
+            "description": "Number of items that have been stored and not found",
+        }))
 
         descriptors.append(create_desc(Desc_Skel, {
-                    "name": mp+"_cmd_delete",
-                    "units": "commands",
-                    "slope": "positive",
-                    "description": "Cumulative number of delete reqs",
-                    }))
+            "name": mp+"_cmd_delete",
+            "units": "commands",
+            "slope": "positive",
+            "description": "Cumulative number of delete reqs",
+        }))
         descriptors.append(create_desc(Desc_Skel, {
-                    "name": mp+"_cmd_delete_hits",
-                    "units": "items",
-                    "slope": "positive",
-                    "description": "Number of keys that have been deleted " +
-                                   "and found present ",
-                    }))
+            "name": mp+"_cmd_delete_hits",
+            "units": "items",
+            "slope": "positive",
+            "description": "Number of keys that have been deleted and found present ",
+        }))
         descriptors.append(create_desc(Desc_Skel, {
-                    "name": mp+"_cmd_delete_misses",
-                    "units": "items",
-                    "slope": "positive",
-                    "description": "Number of items that have been deleted " +
-                                   "and not found",
-                    }))
+            "name": mp+"_cmd_delete_misses",
+            "units": "items",
+            "slope": "positive",
+            "description": "Number of items that have been deleted and not found",
+        }))
 
     return descriptors
 
