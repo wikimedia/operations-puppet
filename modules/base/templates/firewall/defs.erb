@@ -18,10 +18,12 @@ mw_appserver_networks = scope.lookupvar('network::constants::mw_appserver_networ
 @def $<%= service.upcase() -%> = (<%- addresses.each do |address| -%><%= address %> <% end -%>);
 	<%- end -%>
 <%- end -%>
-<%- all_network_subnets.sort.map do |realm, sites| -%>
-	<%- sites.sort.map do |site, spheres| -%>
-		<%- spheres.sort.map do |sphere, networks | -%>
-			<%- networks.sort.map do |network, families| -%>
+<%-
+all_descrs = Array.new()
+all_network_subnets.sort.map do |realm, sites|
+	sites.sort.map do |site, spheres|
+		spheres.sort.map do |sphere, networks |
+			networks.sort.map do |network, families| -%>
 
 # Realm: <%= realm %>, # Site: <%= site %>, # Sphere: <%= sphere %>, # Network: <%= network %>
 				<%-
@@ -33,10 +35,10 @@ mw_appserver_networks = scope.lookupvar('network::constants::mw_appserver_networ
 @def $<%= familydescr %> = (<%= address %>);
 				<%- end -%>
 @def $<%= descr %> = (<%- familydescrs.each do |fd|%>$<%= fd %> <% end -%>);
-			<%- end -%>
-		<%- end -%>
-	<%- end -%>
-<%- end -%>
+			<%- end
+		end
+	end
+end -%>
 
 @def $INTERNAL_V4 = (10.0.0.0/8);
 @def $INTERNAL_V6 = (2620:0:860:100::/56 2620:0:861:100::/56 2620:0:862:100::/56 2620:0:863:100::/56);
