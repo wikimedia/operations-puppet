@@ -7,6 +7,7 @@ class k8s::proxy(
 
     base::service_unit { 'kube-proxy':
         systemd   => true,
+        upstart   => true,
         subscribe => File['/etc/kubernetes/kubeconfig'],
     }
 }
