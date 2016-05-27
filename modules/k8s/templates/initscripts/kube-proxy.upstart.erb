@@ -1,0 +1,13 @@
+description "Kubernetes Proxy"
+
+start on started network-services
+
+setuid root
+setgid root
+
+exec /usr/local/bin/kube-proxy \
+    --kubeconfig=/etc/kubernetes/kubeconfig \
+    --proxy-mode=iptables \
+    --masquerade-all=true
+
+respawn
