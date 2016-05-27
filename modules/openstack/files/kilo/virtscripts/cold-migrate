@@ -18,7 +18,9 @@ import subprocess
 
 from novaclient.v1_1 import client
 
+
 class NovaInstance(object):
+
     def __init__(self, novaclient, instance_id):
         self.novaclient = novaclient
         self.instance_id = instance_id
@@ -54,14 +56,28 @@ class NovaInstance(object):
 
         imagedir = "/var/lib/nova/instances/%s" % self.instance_id
 
-        args = ["/usr/bin/rsync", "-S", "-av", "%s.eqiad.wmnet::nova_instance_rsync_controller/%s" % (source, self.instance_id), "/srv/migratetmp"]
+        args = [
+            "/usr/bin/rsync",
+            "-S",
+            "-av",
+            "%s.eqiad.wmnet::nova_instance_rsync_controller/%s" %
+            (source,
+             self.instance_id),
+            "/srv/migratetmp"]
         print " ".join(args)
         r = subprocess.call(args)
         if r:
             print ("rsync from source to local failed.")
             return(1)
 
-        args = ["rsync", "-S", "-av", "/srv/migratetmp/%s" % self.instance_id, "%s.eqiad.wmnet::nova_instance_rsync_controller/" % destination]
+        args = [
+            "rsync",
+            "-S",
+            "-av",
+            "/srv/migratetmp/%s" %
+            self.instance_id,
+            "%s.eqiad.wmnet::nova_instance_rsync_controller/" %
+            destination]
         print " ".join(args)
         r = subprocess.call(args)
         if r:
@@ -74,12 +90,12 @@ class NovaInstance(object):
         args = ["mysql", "--user=nova", "--password=%s" % mysql_password,
                 "--host", "m5-master.eqiad.wmnet", "nova",
                 "-e", "update instances set host=\"%s\" where uuid=\"%s\";" %
-                    (destination, self.instance_id)]
+                (destination, self.instance_id)]
         r = subprocess.call(args)
         if r:
             print ("Failed to update the instance's db record."
                    "Host not moved.  You will need to clean up files on %s" %
-                       destination)
+                   destination)
             host_moved = False
 
         self.instance.start()
@@ -89,7 +105,8 @@ class NovaInstance(object):
             print "Instance is active."
             confirm = ""
             while (confirm != "cleanup"):
-                confirm = raw_input("Verify that the instance is healthy, then type 'cleanup' to delete old instance files:  ")
+                confirm = raw_input(
+                    "Verify that the instance is healthy, then type 'cleanup' to delete old instance files:  ")
             print "Cleaning up old instance files on %s" % source
             args = ["ssh", "-i", "/root/.ssh/compute-hosts-key",
                     "nova@%s.eqiad.wmnet" % source,
@@ -109,8 +126,8 @@ class NovaInstance(object):
 
 if __name__ == "__main__":
     argparser = argparse.ArgumentParser('cold-migrate',
-        description='''Move an instance to a different compute node''',
-        epilog='''Note: The target node cannot be specified.  To avoid
+                                        description='''Move an instance to a different compute node''',
+                                        epilog='''Note: The target node cannot be specified.  To avoid
             a particular node, remove it from wmf_scheduler_hosts_pool
             in nova.conf.
 
@@ -152,7 +169,7 @@ if __name__ == "__main__":
     args = argparser.parse_args()
 
     sshargs = ["ssh", "-i", "/root/.ssh/compute-hosts-key",
-            "nova@%s.eqiad.wmnet" % args.destination, "true"]
+               "nova@%s.eqiad.wmnet" % args.destination, "true"]
     r = subprocess.call(sshargs)
     if r:
         print "Remote execution failed; this whole enterprise is doomed."

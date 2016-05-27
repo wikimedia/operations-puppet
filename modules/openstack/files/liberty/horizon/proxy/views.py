@@ -52,6 +52,7 @@ class CreateProxy(tables.LinkAction):
 
 
 class DeleteProxy(tables.DeleteAction):
+
     @staticmethod
     def action_present(count):
         return ungettext_lazy(u"Delete Proxy", u"Delete Proxies", count)
@@ -71,7 +72,8 @@ class DeleteProxy(tables.DeleteAction):
         # First let's make sure that this proxy is really ours to delete.
         existing_domains = [proxy.domain for proxy in get_proxy_list(request)]
         if obj_id not in existing_domains:
-            raise Exception("Proxy \'%s\' is to be deleted but is not owned by this view." % obj_id)
+            raise Exception(
+                "Proxy \'%s\' is to be deleted but is not owned by this view." % obj_id)
 
         if domain == 'wmflabs.org.':
             auth = identity_generic.Password(
@@ -84,8 +86,9 @@ class DeleteProxy(tables.DeleteAction):
             )
             c = designateclientv2.Client(session=keystone_session.Session(auth=auth))
 
-            # Delete the record from the wmflabsdotorg project. This is needed since wmflabs.org lives
-            #  in that project and designate (quite reasonably) prevents subdomain deletion elsewhere.
+            # Delete the record from the wmflabsdotorg project. This is needed
+            # since wmflabs.org lives in that project and designate (quite
+            # reasonably) prevents subdomain deletion elsewhere.
             zoneid = None
             for zone in c.zones.list():
                 if zone['name'] == 'wmflabs.org.':
@@ -143,6 +146,7 @@ class ProxyTable(tables.DataTable):
 
 
 class Proxy():
+
     def __init__(self, domain, backends):
         self.id = self.domain = domain
         self.backends = backends
@@ -156,7 +160,9 @@ def get_proxy_list(request):
         elif not resp:
             raise Exception("Got status " + str(resp.status_code))
         else:
-            proxies = [Proxy(route['domain'], route['backends']) for route in resp.json()['routes']]
+            proxies = [
+                Proxy(route['domain'], route['backends'])
+                for route in resp.json()['routes']]
     except Exception:
         proxies = []
         exceptions.handle(request, _("Unable to retrieve proxies: " + resp.text))
@@ -169,18 +175,23 @@ class IndexView(tables.DataTableView):
     page_title = _("Proxies")
 
     def get_data(self):
-        resp = None
         return get_proxy_list(self.request)
 
 
 class CreateProxyForm(forms.SelfHandlingForm):
-    record = forms.RegexField(max_length=255, label=_("Hostname"),
-                              regex="^([a-zA-Z]|[a-zA-Z][a-zA-Z0-9\-]*[a-zA-Z0-9])$",
-                              error_messages={"invalid":
-                                              "This must be a simple hostname without dots or special characters."})
+    record = forms.RegexField(
+        max_length=255, label=_("Hostname"),
+        regex="^([a-zA-Z]|[a-zA-Z][a-zA-Z0-9\-]*[a-zA-Z0-9])$",
+        error_messages={
+            "invalid": "This must be a simple hostname without dots or special characters."
+        })
     domain = forms.ChoiceField(widget=forms.Select(), label=_("Domain"))
     backendInstance = forms.ChoiceField(widget=forms.Select(), label=_("Backend instance"))
-    backendPort = forms.CharField(widget=TextInput(attrs={'type': 'number'}), label=_("Backend port"))
+    backendPort = forms.CharField(
+        widget=TextInput(
+            attrs={
+                'type': 'number'}),
+        label=_("Backend port"))
 
     def __init__(self, request, *args, **kwargs):
         kwargs['initial']['backendPort'] = 80
@@ -196,15 +207,16 @@ class CreateProxyForm(forms.SelfHandlingForm):
 
     def populate_domains(self, request):
         results = [('wmflabs.org.', 'wmflabs.org.')]
-        #results = [(None, 'Select a domain'), ('wmflabs.org.', 'wmflabs.org.')]
-        #for domain in designateapi.designateclient(request).domains.list():
-            #results.append((domain.name, domain.name))
+        # results = [(None, 'Select a domain'), ('wmflabs.org.', 'wmflabs.org.')]
+        # for domain in designateapi.designateclient(request).domains.list():
+        # results.append((domain.name, domain.name))
         return results
 
     def clean(self):
         cleaned_data = super(CreateProxyForm, self).clean()
 
-        # TODO: More useful error if domain is invalid? Currently we rely on designate schema check failing
+        # TODO: More useful error if domain is invalid? Currently we rely on
+        # designate schema check failing
 
         if not cleaned_data['backendPort'].isdigit() or int(cleaned_data['backendPort']) > 65535:
             self._errors['backendPort'] = self.error_class([_('Enter a valid port')])
@@ -225,8 +237,9 @@ class CreateProxyForm(forms.SelfHandlingForm):
             c = designateclientv2.Client(session=keystone_session.Session(auth=auth))
 
             LOG.warn('Got create client')
-            # Create the record in the wmflabsdotorg project. This is needed since wmflabs.org lives
-            #  in that project and designate prevents subdomain creation elsewhere.
+            # Create the record in the wmflabsdotorg project. This is needed
+            # since wmflabs.org lives in that project and designate prevents
+            # subdomain creation elsewhere.
             zoneid = None
             for zone in c.zones.list():
                 if zone['name'] == 'wmflabs.org.':
@@ -246,7 +259,12 @@ class CreateProxyForm(forms.SelfHandlingForm):
                     break
             else:
                 raise Exception("No domain ID")
-            record = Record(name=data.get('record') + '.' + data.get('domain'), type='A', data=proxyip)
+            record = Record(
+                name=data.get('record') +
+                '.' +
+                data.get('domain'),
+                type='A',
+                data=proxyip)
             c.records.create(domainid, record)
 
         d = {

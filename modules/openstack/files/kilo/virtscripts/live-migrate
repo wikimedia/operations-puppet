@@ -23,7 +23,9 @@ import subprocess
 
 from novaclient.v1_1 import client
 
+
 class NovaInstance(object):
+
     def __init__(self, novaclient, instance_id):
         self.novaclient = novaclient
         self.instance_id = instance_id
@@ -68,7 +70,7 @@ class NovaInstance(object):
         r = subprocess.call(args)
         if r:
             print ("Instance migrated but has unusual disk arrangement, so there will be "
-                  "no post-migration shrinking.")
+                   "no post-migration shrinking.")
             return(0)
 
         print "Instance has migrated.  Now suspending and recompressing..."
@@ -112,7 +114,7 @@ class NovaInstance(object):
 
 if __name__ == "__main__":
     argparser = argparse.ArgumentParser('live-migrate',
-        description='''Move an instance to a different compute node''')
+                                        description='''Move an instance to a different compute node''')
     argparser.add_argument(
         '--nova-user',
         help='username for nova auth',
@@ -144,7 +146,7 @@ if __name__ == "__main__":
     args = argparser.parse_args()
 
     sshargs = ["ssh", "-i", "/root/.ssh/compute-hosts-key",
-            "nova@%s.eqiad.wmnet" % args.destination, "true"]
+               "nova@%s.eqiad.wmnet" % args.destination, "true"]
     r = subprocess.call(sshargs)
     if r:
         print "Remote execution failed; this whole enterprise is doomed."

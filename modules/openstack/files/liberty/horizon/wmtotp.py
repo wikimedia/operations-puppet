@@ -12,10 +12,10 @@
 
 import logging
 
-from keystoneclient.auth.identity import v2 as v2_auth
 from keystoneclient.auth.identity import v3 as v3_auth
 
 from openstack_auth.plugin import base
+from openstack_auth import exceptions
 from openstack_auth import utils
 
 LOG = logging.getLogger(__name__)

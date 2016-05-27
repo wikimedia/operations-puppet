@@ -25,7 +25,9 @@ import time
 
 from novaclient.v1_1 import client
 
+
 class NovaInstance(object):
+
     def __init__(self, novaclient, instance_id):
         self.novaclient = novaclient
         self.instance_id = instance_id
@@ -33,7 +35,6 @@ class NovaInstance(object):
 
     def refresh_instance(self):
         self.instance = self.novaclient.servers.get(self.instance_id)
-
 
     def wait_for_status(self, desiredstatus):
         oldstatus = ""
@@ -88,7 +89,7 @@ class NovaInstance(object):
 
 if __name__ == "__main__":
     argparser = argparse.ArgumentParser('cold-migrate',
-        description='''Move an instance to a different compute node''')
+                                        description='''Move an instance to a different compute node''')
     argparser.add_argument(
         '--nova-user',
         help='username for nova auth',

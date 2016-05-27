@@ -1,6 +1,5 @@
 #!/usr/bin/python
 
-import fileinput
 import subprocess
 
 
@@ -30,7 +29,7 @@ def checkMatch(ec2ID, needle, haystackPath, site="eqiad"):
         return "failed"
 
 
-def checkMatchSsh(name, needle, haystackPath):
+def checkMatchSsh(ec2ID, needle, haystackPath, site="eqiad"):
     hostname = "%s.%s.wmflabs" % (ec2ID, site)
     args = ["salt", hostname, "file.search", haystackPath, needle]
     try:
