@@ -8,7 +8,6 @@ sudo for runner script
 import diamond.collector
 import urllib2
 import json
-import subprocess
 
 
 class WDQSUpdaterCollector(diamond.collector.Collector):
