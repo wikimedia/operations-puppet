@@ -105,8 +105,8 @@ class role::mariadb::misc(
     }
 
     $read_only = $master ? {
-        true  => 'off',
-        false => 'on',
+        true  => 0,
+        false => 1,
     }
 
     include standard
@@ -162,8 +162,8 @@ class role::mariadb::misc::phabricator(
     include role::mariadb::ferm
 
     $read_only = $master ? {
-        true  => 'off',
-        false => 'on',
+        true  => 0,
+        false => 1,
     }
     $data_partition = $::hostname ? {
         'db1043' => '/a',
@@ -242,8 +242,8 @@ class role::mariadb::misc::eventlogging(
     }
 
     $read_only = $master ? {
-        true  => 'off',
-        false => 'on',
+        true  => 0,
+        false => 1,
     }
 
     class { 'mariadb::config':
