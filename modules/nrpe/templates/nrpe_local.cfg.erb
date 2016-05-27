@@ -10,11 +10,3 @@ server_address=<%= @ipaddress %>
 <% end -%>
 
 command[check_ram]=/usr/lib/nagios/plugins/check_ram.sh 20 5 b
-
-# process checks, we can't make this generic because we don't pass args via nrpe (security)
-<%# text caches run an extra varnishncsa for statsv eventlogging -%>
-<% if @cluster == "cache_text" -%>
-command[check_varnishncsa]=/usr/lib/nagios/plugins/check_procs -w 3:3 -c 3:6 -C varnishncsa
-<% else -%>
-command[check_varnishncsa]=/usr/lib/nagios/plugins/check_procs -w 2:2 -c 2:6 -C varnishncsa
-<% end -%>
