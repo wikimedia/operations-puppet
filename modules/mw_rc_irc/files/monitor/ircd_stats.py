@@ -1,6 +1,5 @@
 import diamond.collector
 import socket
-import sys
 import re
 
 
