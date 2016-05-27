@@ -43,6 +43,11 @@ class varnish::common {
         force   => true,
     }
 
+    # We are not using varnishncsa, make sure it's stopped
+    service { 'varnishncsa':
+        ensure => 'stopped'
+    }
+
     if (hiera('varnish_version4', false)) {
         # varnishlog4.py depends on varnishapi. Install it.
         file { '/usr/local/lib/python2.7/dist-packages/varnishapi.py':
