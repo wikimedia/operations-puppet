@@ -33,24 +33,6 @@ class swift (
         },
     }
 
-    # this is on purpose not a >=. the cloud archive only exists for
-    # specific distributions, typically LTS releases.
-    if ($::lsbdistcodename == 'precise') {
-        apt::repository { 'ubuntucloud-icehouse':
-            uri        => 'http://ubuntu-cloud.archive.canonical.com/ubuntu',
-            dist       => 'precise-updates/icehouse',
-            components => 'main',
-            keyfile    => 'puppet:///files/misc/ubuntu-cloud.key',
-            before     => Package['swift'],
-        }
-
-        apt::pin { 'swift-icehouse':
-            package  => '*',
-            pin      => 'release n=precise-updates/icehouse',
-            priority => 1005,
-        }
-    }
-
     package { [
         'swift',
         'python-swift',
