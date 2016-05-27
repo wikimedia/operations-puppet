@@ -1,5 +1,10 @@
 class network::constants {
 
+    # Dummy resource to allow RSpec to work with hiera lookups. Without it RSpec
+    # will not load hiera settings and unrelated tests about functions in this
+    # module will fail. Any resource would be, but this class has none
+    notify { 'dummy': message => '' }
+
     # Note this name is misleading.  Most of these are "external" networks,
     # but some subnets of the IPv6 space are not externally routed, even if
     # they're externally route-able (the ones used for private vlans).
@@ -12,8 +17,14 @@ class network::constants {
         '2a02:ec80::/32',
     ]
 
+    # are you really sure you want to use this? maybe what you really
+    # the trusted/production networks. See $production_networks for this.
     $all_networks = flatten([$external_networks, '10.0.0.0/8'])
     $all_networks_lo = flatten([$all_networks, '127.0.0.0/8', '::1/128'])
+
+    $production_networks_ipv4 = slice_network_constants('production', {'af' => 'ipv4'})
+    $production_networks_ipv6 = slice_network_constants('production', {'af' => 'ipv6'})
+    $production_networks = flatten([$production_networks_ipv4, $production_networks_ipv6])
 
     $special_hosts = {
         'production' => {
