@@ -94,9 +94,6 @@ repo_config:
   kartotherian/deploy:
     upstream: https://gerrit.wikimedia.org/r/maps/kartotherian/deploy
     checkout_submodules: true
-  tilerator/deploy:
-    upstream: https://gerrit.wikimedia.org/r/maps/tilerator/deploy
-    checkout_submodules: true
   cassandra/logstash-logback-encoder:
     gitfat_enabled: true
     upstream: https://gerrit.wikimedia.org/r/operations/software/logstash-logback-encoder
