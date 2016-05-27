@@ -28,7 +28,7 @@
 # https://github.com/xcir/python-varnishapi
 # v0.9-varnish40
 
-from ctypes import *
+from ctypes import *  # noqa
 import getopt
 import time
 

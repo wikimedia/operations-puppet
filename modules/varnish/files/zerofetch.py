@@ -9,7 +9,6 @@
 #  netmapper's perspective.
 
 import os
-import string
 import argparse
 import tempfile
 import json

@@ -123,7 +123,7 @@ def metric_init(params):
     global CONF
 
     for k, v in params.iteritems():
-        CONF[key] = v
+        CONF[k] = v
 
     skel = {
         'name': 'XXX',
