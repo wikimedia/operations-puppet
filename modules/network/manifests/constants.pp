@@ -1,5 +1,3 @@
-# network.pp
-
 class network::constants {
 
     # Note this name is misleading.  Most of these are "external" networks,
