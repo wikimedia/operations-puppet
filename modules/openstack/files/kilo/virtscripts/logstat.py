@@ -91,13 +91,18 @@ class OpStat():
             outfile.write(self.type + ":\t" + str(self.count) + "\tAvg: " +
                           str(round(float(self.etime) / float(self.count), 3)) +
                           " ms\tMax: " + str(self.maxEtime) + " ms\t>" + str(self.SLA) + "ms: " +
-                          str(self.countOverSLA) + " (" + str(self.countOverSLA * 100 / self.count) + "%)\t>" +
+                          str(self.countOverSLA) +
+                          " (" + str(self.countOverSLA * 100 / self.count) + "%)\t>" +
                           str(self.SLA * 10) + "ms: " +
-                          str(self.countOver10SLA) + " (" + str(self.countOver10SLA * 100 / self.count) + "%)\n")
+                          str(self.countOver10SLA) +
+                          " (" + str(self.countOver10SLA * 100 / self.count) + "%)\n")
         if self.retEntries != 0:
-            outfile.write(self.type + ":\tReturned " + str(round(float(self.retEntries) / float(self.count), 1)) +
-                          " entries in average, max: " + str(self.maxEntries) + ", none: " + str(self.count0Entries) +
-                          ", single: " + str(self.count1Entry) + "\n")
+            outfile.write(
+                self.type + ":\tReturned " +
+                str(round(float(self.retEntries) / float(self.count), 1)) +
+                " entries in average, max: " +
+                str(self.maxEntries) + ", none: " + str(self.count0Entries) +
+                ", single: " + str(self.count1Entry) + "\n")
 
 
 class Usage(Exception):
@@ -120,7 +125,6 @@ def main(argv=None):
     doModify = True
     doModDN = True
 
-    IDs = {}
     if argv is None:
         argv = sys.argv
     try:
@@ -132,7 +136,7 @@ def main(argv=None):
         # option processing
         for option, value in opts:
             if option == "-v":
-                verbose = True
+                pass
             if option == "-r":
                 includeReplOps = True
             if option in ("-h", "--help"):

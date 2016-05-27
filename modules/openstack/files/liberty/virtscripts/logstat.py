@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #####################################################################
-### THIS FILE IS MANAGED BY PUPPET
-### puppet:///modules/openstack/kilo/virtscripts/logstat.py
+# THIS FILE IS MANAGED BY PUPPET
+# puppet:///modules/openstack/kilo/virtscripts/logstat.py
 #####################################################################
 # encoding: utf-8
 """
@@ -39,7 +39,6 @@ This program reads OpenDJ access logs and output statistics.
 import sys
 import getopt
 import re
-import string
 
 help_message = '''
 Usage: logstat.py [options] file [file ...]
@@ -52,7 +51,9 @@ options:
 
 '''
 
+
 class OpStat():
+
     def __init__(self, type, sla):
         self.type = type
         self.count = long(0)
@@ -88,24 +89,31 @@ class OpStat():
     def printStats(self, outfile):
         if self.count != 0:
             outfile.write(self.type + ":\t" + str(self.count) + "\tAvg: " +
-             str(round(float(self.etime) / float(self.count), 3)) +
-              " ms\tMax: " + str(self.maxEtime) + " ms\t>" + str(self.SLA) +"ms: " +
-               str(self.countOverSLA) + " (" + str(self.countOverSLA * 100 / self.count) + "%)\t>" +
-               str(self.SLA * 10) + "ms: " +
-               str(self.countOver10SLA) + " (" + str(self.countOver10SLA * 100 / self.count) + "%)\n")
+                          str(round(float(self.etime) / float(self.count), 3)) +
+                          " ms\tMax: " + str(self.maxEtime) + " ms\t>" + str(self.SLA) + "ms: " +
+                          str(self.countOverSLA) +
+                          " (" + str(self.countOverSLA * 100 / self.count) + "%)\t>" +
+                          str(self.SLA * 10) + "ms: " +
+                          str(self.countOver10SLA) +
+                          " (" + str(self.countOver10SLA * 100 / self.count) + "%)\n")
         if self.retEntries != 0:
-            outfile.write(self.type + ":\tReturned " + str(round(float(self.retEntries) / float(self.count), 1)) +
-             " entries in average, max: " + str(self.maxEntries) + ", none: "+ str(self.count0Entries) +
-             ", single: "+ str(self.count1Entry) +"\n")
+            outfile.write(
+                self.type + ":\tReturned " +
+                str(round(float(self.retEntries) / float(self.count), 1)) +
+                " entries in average, max: " + str(self.maxEntries) +
+                ", none: " + str(self.count0Entries) +
+                ", single: " + str(self.count1Entry) + "\n")
+
 
 class Usage(Exception):
+
     def __init__(self, msg):
         self.msg = msg
 
 
 def main(argv=None):
     output = ""
-    ops= ""
+    ops = ""
     includeReplOps = False
     sla = 100
     doSearch = True
@@ -117,19 +125,18 @@ def main(argv=None):
     doModify = True
     doModDN = True
 
-    IDs = {}
     if argv is None:
         argv = sys.argv
     try:
         try:
             opts, args = getopt.getopt(argv[1:], "a:ho:rs:v", ["help", "output="])
-        except getopt.error, msg:
+        except getopt.error as msg:
             raise Usage(msg)
 
         # option processing
         for option, value in opts:
             if option == "-v":
-                verbose = True
+                pass
             if option == "-r":
                 includeReplOps = True
             if option in ("-h", "--help"):
@@ -141,7 +148,7 @@ def main(argv=None):
             if option in ("-a", "--agreement"):
                 sla = int(value)
 
-    except Usage, err:
+    except Usage as err:
         print >> sys.stderr, sys.argv[0].split("/")[-1] + ": " + str(err.msg)
         print >> sys.stderr, "\t for help use --help"
         return 2
@@ -149,7 +156,7 @@ def main(argv=None):
     if output != "":
         try:
             outfile = open(output, "w")
-        except Usage, err:
+        except Usage as err:
             print >> sys.stderr, "Can't open output file: " + str(err.msg)
     else:
         outfile = sys.stdout
@@ -167,7 +174,7 @@ def main(argv=None):
         for op in opers:
             if op == "Search":
                 doSearch = True
-                continue;
+                continue
             if op == "Add":
                 doAdd = True
                 continue
@@ -189,7 +196,7 @@ def main(argv=None):
             if op == "ModDN":
                 doModDN = True
                 continue
-            print >> sys.stderr, "Invalid op name in stats: " + op +", ignored"
+            print >> sys.stderr, "Invalid op name in stats: " + op + ", ignored"
 
     searches = OpStat("Search", sla)
     adds = OpStat("Add", sla)
@@ -206,8 +213,7 @@ def main(argv=None):
         except err:
             print >> sys.stderr, "Can't open file: " + str(err.msg)
 
-
-        outfile.write("processing file: "+ logfile + "\n")
+        outfile.write("processing file: " + logfile + "\n")
         for i in infile:
             if re.search(" conn=-1 ", i) and not includeReplOps:
                 continue
