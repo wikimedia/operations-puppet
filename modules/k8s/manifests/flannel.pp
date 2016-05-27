@@ -5,5 +5,6 @@ class k8s::flannel(
 
     base::service_unit { 'flannel':
         systemd => true,
+        upstart => true,
     }
 }
