@@ -25,30 +25,33 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 """
 
-###  Changelog:
-###    v1.0.1 - 2010-07-21
-###       * Initial version
-###
-###    v1.0.2 - 2010-08-04
-###       * Added system variables: max_connections and query_cache_size
-###       * Modified some innodb status variables to become deltas
-###
-###  Requires:
-###       * yum install MySQL-python
-###       * DBUtil.py
+# Changelog:
+# v1.0.1 - 2010-07-21
+# * Initial version
+# ###
+# v1.0.2 - 2010-08-04
+# * Added system variables: max_connections and query_cache_size
+# * Modified some innodb status variables to become deltas
+# ###
+# Requires:
+# * yum install MySQL-python
+# * DBUtil.py
 
-###  Copyright Jamie Isaacs. 2010
-###  License to use, modify, and distribute under the GPL
-###  http://www.gnu.org/licenses/gpl.txt
+# Copyright Jamie Isaacs. 2010
+# License to use, modify, and distribute under the GPL
+# http://www.gnu.org/licenses/gpl.txt
 
-import sys
 import time
 import MySQLdb
 
 from DBUtil import parse_innodb_status
 
 import logging
-logging.basicConfig(level=logging.ERROR, format="%(asctime)s - %(name)s - %(levelname)s\t Thread-%(thread)d - %(message)s", filename='/tmp/gmond.log', filemode='w')
+logging.basicConfig(
+    level=logging.ERROR,
+    format="%(asctime)s - %(name)s - %(levelname)s\t Thread-%(thread)d - %(message)s",
+    filename='/tmp/gmond.log',
+    filemode='w')
 logging.debug('starting up')
 
 last_update = 0
@@ -58,10 +61,11 @@ mysql_stats_last = {}
 
 REPORT_INNODB = True
 REPORT_MASTER = True
-REPORT_SLAVE  = True
+REPORT_SLAVE = True
 INNODB_VERSION = '51fb'
 
 MAX_UPDATE_TIME = 15
+
 
 def update_stats(get_innodb=True, get_master=True, get_slave=True, innodb_version='51fb'):
     logging.debug('updating stats')
@@ -93,17 +97,17 @@ def update_stats(get_innodb=True, get_master=True, get_slave=True, innodb_versio
 
         cursor = conn.cursor(MySQLdb.cursors.Cursor)
         cursor.execute("SHOW VARIABLES")
-        #variables = dict(((k.lower(), v) for (k,v) in cursor))
+        # variables = dict(((k.lower(), v) for (k,v) in cursor))
         variables = {}
-        for (k,v) in cursor:
+        for (k, v) in cursor:
             variables[k.lower()] = v
         cursor.close()
 
         cursor = conn.cursor(MySQLdb.cursors.Cursor)
         cursor.execute("SHOW /*!50002 GLOBAL */ STATUS")
-        #global_status = dict(((k.lower(), v) for (k,v) in cursor))
+        # global_status = dict(((k.lower(), v) for (k,v) in cursor))
         global_status = {}
-        for (k,v) in cursor:
+        for (k, v) in cursor:
             global_status[k.lower()] = v
         cursor.close()
 
@@ -120,16 +124,17 @@ def update_stats(get_innodb=True, get_master=True, get_slave=True, innodb_versio
 
             # if the ganglia mysql users has been granted select access to an innodb table
             # in the global space, this will report data_free for the global space.
-            #cursor = conn.cursor(MySQLdb.cursors.Cursor)
+            # cursor = conn.cursor(MySQLdb.cursors.Cursor)
             # Disabled 2014-01-19 springle: too slow
-            #cursor.execute('SELECT DATA_FREE FROM information_schema.TABLES WHERE ENGINE="InnoDB" LIMIT 1')
-            #ibdata_free = ""
-            #res = cursor.fetchone()
-            #if res:
+            # cursor.execute('SELECT DATA_FREE '
+            #     'FROM information_schema.TABLES WHERE ENGINE="InnoDB" LIMIT 1')
+            # ibdata_free = ""
+            # res = cursor.fetchone()
+            # if res:
             #    ibdata_free = res[0]
-            #else:
+            # else:
             #    ibdata_free = False
-            #cursor.close()
+            # cursor.close()
             ibdata_free = False
 
         if get_master:
@@ -144,7 +149,7 @@ def update_stats(get_innodb=True, get_master=True, get_slave=True, innodb_versio
             slave_status = {}
             res = cursor.fetchone()
             if res:
-                for (k,v) in res.items():
+                for (k, v) in res.items():
                     slave_status[k.lower()] = v
             else:
                 get_slave = False
@@ -156,10 +161,9 @@ def update_stats(get_innodb=True, get_master=True, get_slave=True, innodb_versio
 
         conn.close()
 
-    except MySQLdb.OperationalError, (errno, errmsg):
+    except MySQLdb.OperationalError:
         logging.error('error updating stats')
         return False
-
 
     # process variables
     # http://dev.mysql.com/doc/refman/5.0/en/server-system-variables.html
@@ -245,7 +249,8 @@ def update_stats(get_innodb=True, get_master=True, get_slave=True, innodb_versio
 
             mysql_stats_last[key] = global_status[key]
 
-    mysql_stats['open_files_used'] = int(global_status['open_files']) / int(variables['open_files_limit'])
+    mysql_stats['open_files_used'] = int(
+        global_status['open_files']) / int(variables['open_files_limit'])
 
     innodb_delta = (
         'data_fsyncs',
@@ -273,26 +278,26 @@ def update_stats(get_innodb=True, get_master=True, get_slave=True, innodb_versio
         if ibdata_free:
             mysql_stats['innodb_free_space'] = long(ibdata_free) / 1048576
 
-
     # process master logs
     if get_master:
         mysql_stats['binlog_count'] = len(master_logs)
         mysql_stats['binlog_space_current'] = master_logs[-1][1]
-        #mysql_stats['binlog_space_total'] = sum((long(s[1]) for s in master_logs))
+        # mysql_stats['binlog_space_total'] = sum((long(s[1]) for s in master_logs))
         mysql_stats['binlog_space_total'] = 0
         for s in master_logs:
             mysql_stats['binlog_space_total'] += int(s[1])
-        mysql_stats['binlog_space_used'] = float(master_logs[-1][1]) / float(variables['max_binlog_size']) * 100
+        mysql_stats['binlog_space_used'] = float(
+            master_logs[-1][1]) / float(variables['max_binlog_size']) * 100
 
     # process slave status
     if get_slave:
         mysql_stats['slave_exec_master_log_pos'] = slave_status['exec_master_log_pos']
-        #mysql_stats['slave_io'] = 1 if slave_status['slave_io_running'].lower() == "yes" else 0
+        # mysql_stats['slave_io'] = 1 if slave_status['slave_io_running'].lower() == "yes" else 0
         if slave_status['slave_io_running'].lower() == "yes":
             mysql_stats['slave_io'] = 1
         else:
             mysql_stats['slave_io'] = 0
-        #mysql_stats['slave_sql'] = 1 if slave_status['slave_sql_running'].lower() =="yes" else 0
+        # mysql_stats['slave_sql'] = 1 if slave_status['slave_sql_running'].lower() =="yes" else 0
         if slave_status['slave_sql_running'].lower() == "yes":
             mysql_stats['slave_sql'] = 1
             if slave_status['slave_io_running'].lower() == "yes":
@@ -307,10 +312,11 @@ def update_stats(get_innodb=True, get_master=True, get_slave=True, innodb_versio
     logging.debug('success updating stats')
     logging.debug('mysql_stats: ' + str(mysql_stats))
 
+
 def get_stat(name):
     logging.info("getting stat: %s" % name)
     global mysql_stats
-    #logging.debug(mysql_stats)
+    # logging.debug(mysql_stats)
 
     global REPORT_INNODB
     global REPORT_MASTER
@@ -334,6 +340,7 @@ def get_stat(name):
     else:
         return 0
 
+
 def metric_init(params):
     global descriptors
     global mysql_conn_opts
@@ -346,294 +353,328 @@ def metric_init(params):
 
     REPORT_INNODB = str(params.get('get_innodb', True)) == "True"
     REPORT_MASTER = str(params.get('get_master', True)) == "True"
-    REPORT_SLAVE  = str(params.get('get_slave', True)) == "True"
+    REPORT_SLAVE = str(params.get('get_slave', True)) == "True"
     INNODB_VERSION = str(params.get('innodb_version', "51fb"))
 
     logging.debug("init: " + str(params))
 
     mysql_conn_opts = dict(
-        host = params.get('host', 'localhost'),
-        user = params.get('user'),
-        passwd = params.get('passwd'),
-        port = params.get('port', 3306),
-        unix_socket = params.get('unix_socket', '/tmp/mysql.sock'),
-        connect_timeout = params.get('timeout', 30),
+        host=params.get('host', 'localhost'),
+        user=params.get('user'),
+        passwd=params.get('passwd'),
+        port=params.get('port', 3306),
+        unix_socket=params.get('unix_socket', '/tmp/mysql.sock'),
+        connect_timeout=params.get('timeout', 30),
     )
 
     master_stats_descriptions = {}
     innodb_stats_descriptions = {}
-    slave_stats_descriptions  = {}
+    slave_stats_descriptions = {}
 
     misc_stats_descriptions = dict(
-        aborted_clients = {
-            'description': 'The number of connections that were aborted because the client died without closing the connection properly',
+        aborted_clients={
+            'description': (
+                'The number of connections that were aborted '
+                'because the client died without closing the connection '
+                'properly'),
             'units': 'clients',
         },
 
-        aborted_connects = {
+        aborted_connects={
             'description': 'The number of failed attempts to connect to the MySQL server',
             'units': 'conns',
         },
 
-        binlog_cache_disk_use = {
-            'description': 'The number of transactions that used the temporary binary log cache but that exceeded the value of binlog_cache_size and used a temporary file to store statements from the transaction',
+        binlog_cache_disk_use={
+            'description': (
+                'The number of transactions that used the '
+                'temporary binary log cache but that exceeded the value of '
+                'binlog_cache_size and used a temporary file to store '
+                'statements from the transaction'),
             'units': 'txns',
         },
 
-        binlog_cache_use = {
-            'description': ' The number of transactions that used the temporary binary log cache',
+        binlog_cache_use={
+            'description': 'The number of transactions that used the temporary binary log cache',
             'units': 'txns',
         },
 
-        bytes_received = {
+        bytes_received={
             'description': 'The number of bytes received from all clients',
             'units': 'bytes',
         },
 
-        bytes_sent = {
+        bytes_sent={
             'description': ' The number of bytes sent to all clients',
             'units': 'bytes',
         },
 
-        com_delete = {
+        com_delete={
             'description': 'The number of DELETE statements',
             'units': 'stmts',
         },
 
-        com_delete_multi = {
+        com_delete_multi={
             'description': 'The number of multi-table DELETE statements',
             'units': 'stmts',
         },
 
-        com_insert = {
+        com_insert={
             'description': 'The number of INSERT statements',
             'units': 'stmts',
         },
 
-        com_insert_select = {
+        com_insert_select={
             'description': 'The number of INSERT ... SELECT statements',
             'units': 'stmts',
         },
 
-        com_load = {
+        com_load={
             'description': 'The number of LOAD statements',
             'units': 'stmts',
         },
 
-        com_replace = {
+        com_replace={
             'description': 'The number of REPLACE statements',
             'units': 'stmts',
         },
 
-        com_replace_select = {
+        com_replace_select={
             'description': 'The number of REPLACE ... SELECT statements',
             'units': 'stmts',
         },
 
-        com_select = {
+        com_select={
             'description': 'The number of SELECT statements',
             'units': 'stmts',
         },
 
-        com_update = {
+        com_update={
             'description': 'The number of UPDATE statements',
             'units': 'stmts',
         },
 
-        com_update_multi = {
+        com_update_multi={
             'description': 'The number of multi-table UPDATE statements',
             'units': 'stmts',
         },
 
-        connections = {
-            'description': 'The number of connection attempts (successful or not) to the MySQL server',
+        connections={
+            'description': (
+                'The number of connection attempts '
+                '(successful or not) to the MySQL server'),
             'units': 'conns',
         },
 
-        created_tmp_disk_tables = {
-            'description': 'The number of temporary tables on disk created automatically by the server while executing statements',
+        created_tmp_disk_tables={
+            'description': (
+                'The number of temporary tables on disk created '
+                'automatically by the server while executing statements'),
             'units': 'tables',
         },
 
-        created_tmp_files = {
+        created_tmp_files={
             'description': 'The number of temporary files mysqld has created',
             'units': 'files',
         },
 
-        created_tmp_tables = {
-            'description': 'The number of in-memory temporary tables created automatically by the server while executing statement',
+        created_tmp_tables={
+            'description': (
+                'The number of in-memory temporary tables '
+                'created automatically by the server while executing statement'),
             'units': 'tables',
         },
 
-        #TODO in graphs: key_read_cache_miss_rate = key_reads / key_read_requests
+        # TODO in graphs: key_read_cache_miss_rate = key_reads / key_read_requests
 
-        key_read_requests = {
+        key_read_requests={
             'description': 'The number of requests to read a key block from the cache',
             'units': 'reqs',
         },
 
-        key_reads = {
+        key_reads={
             'description': 'The number of physical reads of a key block from disk',
             'units': 'reads',
         },
 
-        key_write_requests = {
+        key_write_requests={
             'description': 'The number of requests to write a key block to the cache',
             'units': 'reqs',
         },
 
-        key_writes = {
+        key_writes={
             'description': 'The number of physical writes of a key block to disk',
             'units': 'writes',
         },
 
-        max_used_connections = {
-            'description': 'The maximum number of connections that have been in use simultaneously since the server started',
+        max_used_connections={
+            'description': (
+                'The maximum number of connections that have '
+                'been in use simultaneously since the server started'),
             'units': 'conns',
             'slope': 'both',
         },
 
-        open_files = {
+        open_files={
             'description': 'The number of files that are open',
             'units': 'files',
             'slope': 'both',
         },
 
-        open_tables = {
+        open_tables={
             'description': 'The number of tables that are open',
             'units': 'tables',
             'slope': 'both',
         },
 
         # If Opened_tables is big, your table_cache value is probably too small.
-        opened_tables = {
+        opened_tables={
             'description': 'The number of tables that have been opened',
             'units': 'tables',
         },
 
-        queries = {
+        queries={
             'description': 'The number of actual queries executed by the server',
             'units': 'queries',
         },
 
-        questions = {
+        questions={
             'description': 'The number of statements that clients have sent to the server',
             'units': 'stmts',
         },
 
         # If this value is not 0, you should carefully check the indexes of your tables.
-        select_full_join = {
-            'description': 'The number of joins that perform table scans because they do not use indexes',
+        select_full_join={
+            'description': (
+                'The number of joins that perform table scans '
+                'because they do not use indexes'),
             'units': 'joins',
         },
 
-        select_full_range_join = {
+        select_full_range_join={
             'description': 'The number of joins that used a range search on a reference table',
             'units': 'joins',
         },
 
-        select_range = {
+        select_range={
             'description': 'The number of joins that used ranges on the first table',
             'units': 'joins',
         },
 
         # If this is not 0, you should carefully check the indexes of your tables.
-        select_range_check = {
-            'description': 'The number of joins without keys that check for key usage after each row',
+        select_range_check={
+            'description': (
+                'The number of joins without keys that check '
+                'for key usage after each row'),
             'units': 'joins',
         },
 
-        select_scan = {
+        select_scan={
             'description': 'The number of joins that did a full scan of the first table',
             'units': 'joins',
         },
 
-        slave_open_temp_tables = {
-            'description': 'The number of temporary tables that the slave SQL thread currently has open',
+        slave_open_temp_tables={
+            'description': (
+                'The number of temporary tables that the slave '
+                'SQL thread currently has open'),
             'units': 'tables',
             'slope': 'both',
         },
 
-        slave_retried_transactions = {
-            'description': 'The total number of times since startup that the replication slave SQL thread has retried transactions',
+        slave_retried_transactions={
+            'description': (
+                'The total number of times since startup that '
+                'the replication slave SQL thread has retried transactions'),
             'units': 'count',
         },
 
-        slow_launch_threads = {
-            'description': 'The number of threads that have taken more than slow_launch_time seconds to create',
+        slow_launch_threads={
+            'description': (
+                'The number of threads that have taken more '
+                'than slow_launch_time seconds to create'),
             'units': 'threads',
         },
 
-        slow_queries = {
-            'description': 'The number of queries that have taken more than long_query_time seconds',
+        slow_queries={
+            'description': (
+                'The number of queries that have taken more '
+                'than long_query_time seconds'),
             'units': 'queries',
         },
 
-        sort_range = {
+        sort_range={
             'description': 'The number of sorts that were done using ranges',
             'units': 'sorts',
         },
 
-        sort_rows = {
+        sort_rows={
             'description': 'The number of sorted rows',
             'units': 'rows',
         },
 
-        sort_scan = {
+        sort_scan={
             'description': 'The number of sorts that were done by scanning the table',
             'units': 'sorts',
         },
 
-        table_locks_immediate = {
-            'description': 'The number of times that a request for a table lock could be granted immediately',
+        table_locks_immediate={
+            'description': (
+                'The number of times that a request for a '
+                'table lock could be granted immediately'),
             'units': 'count',
         },
 
-        # If this is high and you have performance problems, you should first optimize your queries, and then either split your table or tables or use replication.
-        table_locks_waited = {
-            'description': 'The number of times that a request for a table lock could not be granted immediately and a wait was needed',
+        # If this is high and you have performance problems, you should first
+        # optimize your queries, and then either split your table or tables or use
+        # replication.
+        table_locks_waited={
+            'description': (
+                'The number of times that a request for a '
+                'table lock could not be granted immediately and a wait '
+                'was needed'),
             'units': 'count',
         },
 
-        threads_cached = {
+        threads_cached={
             'description': 'The number of threads in the thread cache',
             'units': 'threads',
             'slope': 'both',
         },
 
-        threads_connected = {
+        threads_connected={
             'description': 'The number of currently open connections',
             'units': 'threads',
             'slope': 'both',
         },
 
-        #TODO in graphs: The cache miss rate can be calculated as Threads_created/Connections
+        # TODO in graphs: The cache miss rate can be calculated as Threads_created/Connections
 
         # Threads_created is big, you may want to increase the thread_cache_size value.
-        threads_created = {
+        threads_created={
             'description': 'The number of threads created to handle connections',
             'units': 'threads',
         },
 
-        threads_running = {
+        threads_running={
             'description': 'The number of threads that are not sleeping',
             'units': 'threads',
             'slope': 'both',
         },
 
-        uptime = {
+        uptime={
             'description': 'The number of seconds that the server has been up',
             'units': 'secs',
             'slope': 'both',
         },
 
-        version = {
+        version={
             'description': "MySQL Version",
             'value_type': 'string',
             'format': '%s',
         },
 
-        max_connections = {
+        max_connections={
             'description': "The maximum permitted number of simultaneous client connections",
             'slope': 'zero',
         }
@@ -642,25 +683,25 @@ def metric_init(params):
 
     if REPORT_MASTER:
         master_stats_descriptions = dict(
-            binlog_count = {
+            binlog_count={
                 'description': "Number of binary logs",
                 'units': 'logs',
                 'slope': 'both',
             },
 
-            binlog_space_current = {
+            binlog_space_current={
                 'description': "Size of current binary log",
                 'units': 'bytes',
                 'slope': 'both',
             },
 
-            binlog_space_total = {
+            binlog_space_total={
                 'description': "Total space used by binary logs",
                 'units': 'bytes',
                 'slope': 'both',
             },
 
-            binlog_space_used = {
+            binlog_space_used={
                 'description': "Current binary log size / max_binlog_size",
                 'value_type': 'float',
                 'units': 'percent',
@@ -670,37 +711,43 @@ def metric_init(params):
 
     if REPORT_SLAVE:
         slave_stats_descriptions = dict(
-            slave_exec_master_log_pos = {
-                'description': "The position of the last event executed by the SQL thread from the master's binary log",
+            slave_exec_master_log_pos={
+                'description': (
+                    "The position of the last event executed "
+                    "by the SQL thread from the master's binary log"),
                 'units': 'bytes',
                 'slope': 'both',
             },
 
-            slave_io = {
-                'description': "Whether the I/O thread is started and has connected successfully to the master",
+            slave_io={
+                'description': (
+                    "Whether the I/O thread is started and "
+                    "has connected successfully to the master"),
                 'units': 'True/False',
                 'slope': 'both',
             },
 
-            slave_lag = {
+            slave_lag={
                 'description': "Replication Lag",
                 'units': 'secs',
                 'slope': 'both',
             },
 
-            slave_relay_log_pos = {
-                'description': "The position up to which the SQL thread has read and executed in the current relay log",
+            slave_relay_log_pos={
+                'description': (
+                    "The position up to which the SQL thread "
+                    "has read and executed in the current relay log"),
                 'units': 'bytes',
                 'slope': 'both',
             },
 
-            slave_sql = {
+            slave_sql={
                 'description': "Slave SQL Running",
                 'units': 'True/False',
                 'slope': 'both',
             },
 
-            slave_running = {
+            slave_running={
                 'description': "Slave Running",
                 'units': 'True/False',
                 'slope': 'both',
@@ -709,271 +756,271 @@ def metric_init(params):
 
     if REPORT_INNODB:
         innodb_stats_descriptions = dict(
-            innodb_active_transactions = {
+            innodb_active_transactions={
                 'description': "Active InnoDB transactions",
-                'value_type':'uint',
+                'value_type': 'uint',
                 'units': 'txns',
                 'slope': 'both',
             },
 
-            innodb_current_transactions = {
+            innodb_current_transactions={
                 'description': "Current InnoDB transactions",
-                'value_type':'uint',
+                'value_type': 'uint',
                 'units': 'txns',
                 'slope': 'both',
             },
 
-            innodb_buffer_pool_pages_data = {
+            innodb_buffer_pool_pages_data={
                 'description': "InnoDB",
-                'value_type':'uint',
+                'value_type': 'uint',
                 'units': 'pages',
             },
 
-            innodb_data_fsyncs = {
+            innodb_data_fsyncs={
                 'description': "The number of fsync() operations",
-                'value_type':'uint',
+                'value_type': 'uint',
                 'units': 'fsyncs',
             },
 
-            innodb_data_reads = {
+            innodb_data_reads={
                 'description': "The number of data reads",
-                'value_type':'uint',
+                'value_type': 'uint',
                 'units': 'reads',
             },
 
-            innodb_data_writes = {
+            innodb_data_writes={
                 'description': "The number of data writes",
-                'value_type':'uint',
+                'value_type': 'uint',
                 'units': 'writes',
             },
 
-            innodb_buffer_pool_pages_free = {
+            innodb_buffer_pool_pages_free={
                 'description': "InnoDB",
-                'value_type':'uint',
+                'value_type': 'uint',
                 'units': 'pages',
                 'slope': 'both',
             },
 
-            innodb_history_list = {
+            innodb_history_list={
                 'description': "InnoDB",
                 'units': 'length',
                 'slope': 'both',
             },
 
-            innodb_ibuf_inserts = {
+            innodb_ibuf_inserts={
                 'description': "InnoDB",
-                'value_type':'uint',
+                'value_type': 'uint',
                 'units': 'inserts',
             },
 
-            innodb_ibuf_merged = {
+            innodb_ibuf_merged={
                 'description': "InnoDB",
-                'value_type':'uint',
+                'value_type': 'uint',
                 'units': 'recs',
             },
 
-            innodb_ibuf_merges = {
+            innodb_ibuf_merges={
                 'description': "InnoDB",
-                'value_type':'uint',
+                'value_type': 'uint',
                 'units': 'merges',
             },
 
-            innodb_free_space = {
+            innodb_free_space={
                 'description': "InnoDB",
-                'value_type':'uint',
+                'value_type': 'uint',
                 'units': 'Mbytes',
             },
 
-            innodb_log_bytes_flushed = {
+            innodb_log_bytes_flushed={
                 'description': "InnoDB",
-                'value_type':'uint',
+                'value_type': 'uint',
                 'units': 'bytes',
             },
 
-            innodb_log_bytes_unflushed = {
+            innodb_log_bytes_unflushed={
                 'description': "InnoDB",
-                'value_type':'uint',
+                'value_type': 'uint',
                 'units': 'bytes',
                 'slope': 'both',
             },
 
-            innodb_log_bytes_written = {
+            innodb_log_bytes_written={
                 'description': "InnoDB",
-                'value_type':'uint',
+                'value_type': 'uint',
                 'units': 'bytes',
             },
 
-            innodb_log_writes = {
+            innodb_log_writes={
                 'description': "The number of physical writes to the log file",
-                'value_type':'uint',
+                'value_type': 'uint',
                 'units': 'writes',
             },
 
-            innodb_buffer_pool_pages_dirty = {
+            innodb_buffer_pool_pages_dirty={
                 'description': "InnoDB",
-                'value_type':'uint',
+                'value_type': 'uint',
                 'units': 'pages',
                 'slope': 'both',
             },
 
-            innodb_os_waits = {
+            innodb_os_waits={
                 'description': "InnoDB",
-                'value_type':'uint',
+                'value_type': 'uint',
                 'units': 'waits',
             },
 
-            innodb_pages_created = {
+            innodb_pages_created={
                 'description': "InnoDB",
-                'value_type':'uint',
+                'value_type': 'uint',
                 'units': 'pages',
             },
 
-            innodb_pages_read = {
+            innodb_pages_read={
                 'description': "InnoDB",
-                'value_type':'uint',
+                'value_type': 'uint',
                 'units': 'pages',
             },
 
-            innodb_pages_written = {
+            innodb_pages_written={
                 'description': "InnoDB",
-                'value_type':'uint',
+                'value_type': 'uint',
                 'units': 'pages',
             },
 
-            innodb_pending_aio_log_ios = {
+            innodb_pending_aio_log_ios={
                 'description': "InnoDB",
-                'value_type':'uint',
+                'value_type': 'uint',
                 'units': 'ops',
             },
 
-            innodb_pending_aio_sync_ios = {
+            innodb_pending_aio_sync_ios={
                 'description': "InnoDB",
-                'value_type':'uint',
+                'value_type': 'uint',
                 'units': 'ops',
             },
 
-            innodb_pending_buffer_pool_flushes = {
+            innodb_pending_buffer_pool_flushes={
                 'description': "The number of pending buffer pool page-flush requests",
-                'value_type':'uint',
+                'value_type': 'uint',
                 'units': 'reqs',
                 'slope': 'both',
             },
 
-            innodb_pending_chkp_writes = {
+            innodb_pending_chkp_writes={
                 'description': "InnoDB",
-                'value_type':'uint',
+                'value_type': 'uint',
                 'units': 'writes',
             },
 
-            innodb_pending_ibuf_aio_reads = {
+            innodb_pending_ibuf_aio_reads={
                 'description': "InnoDB",
-                'value_type':'uint',
+                'value_type': 'uint',
                 'units': 'reads',
             },
 
-            innodb_pending_log_flushes = {
+            innodb_pending_log_flushes={
                 'description': "InnoDB",
-                'value_type':'uint',
+                'value_type': 'uint',
                 'units': 'reqs',
             },
 
-            innodb_pending_log_writes = {
+            innodb_pending_log_writes={
                 'description': "InnoDB",
-                'value_type':'uint',
+                'value_type': 'uint',
                 'units': 'writes',
             },
 
-            innodb_pending_normal_aio_reads = {
+            innodb_pending_normal_aio_reads={
                 'description': "InnoDB",
-                'value_type':'uint',
+                'value_type': 'uint',
                 'units': 'reads',
             },
 
-            innodb_pending_normal_aio_writes = {
+            innodb_pending_normal_aio_writes={
                 'description': "InnoDB",
-                'value_type':'uint',
+                'value_type': 'uint',
                 'units': 'writes',
             },
 
-            innodb_buffer_pool_pages_total = {
+            innodb_buffer_pool_pages_total={
                 'description': "The total size of buffer pool, in pages",
-                'value_type':'uint',
+                'value_type': 'uint',
                 'units': 'pages',
                 'slope': 'both',
             },
 
-            innodb_queries_inside = {
+            innodb_queries_inside={
                 'description': "InnoDB",
-                'value_type':'uint',
+                'value_type': 'uint',
                 'units': 'queries',
             },
 
-            innodb_queries_queued = {
+            innodb_queries_queued={
                 'description': "InnoDB",
-                'value_type':'uint',
+                'value_type': 'uint',
                 'units': 'queries',
                 'slope': 'both',
             },
 
-            innodb_read_views = {
+            innodb_read_views={
                 'description': "InnoDB",
-                'value_type':'uint',
+                'value_type': 'uint',
                 'units': 'views',
             },
 
-            innodb_rows_deleted = {
+            innodb_rows_deleted={
                 'description': "InnoDB",
-                'value_type':'uint',
+                'value_type': 'uint',
                 'units': 'rows',
             },
 
-            innodb_rows_inserted = {
+            innodb_rows_inserted={
                 'description': "InnoDB",
-                'value_type':'uint',
+                'value_type': 'uint',
                 'units': 'rows',
             },
 
-            innodb_rows_read = {
+            innodb_rows_read={
                 'description': "InnoDB",
-                'value_type':'uint',
+                'value_type': 'uint',
                 'units': 'rows',
             },
 
-            innodb_rows_updated = {
+            innodb_rows_updated={
                 'description': "InnoDB",
-                'value_type':'uint',
+                'value_type': 'uint',
                 'units': 'rows',
             },
 
-            innodb_spin_rounds = {
+            innodb_spin_rounds={
                 'description': "InnoDB",
-                'value_type':'uint',
+                'value_type': 'uint',
                 'units': 'spins',
                 'slope': 'both',
             },
 
-            innodb_spin_waits = {
+            innodb_spin_waits={
                 'description': "InnoDB",
-                'value_type':'uint',
+                'value_type': 'uint',
                 'units': 'spins',
                 'slope': 'both',
             },
 
-            innodb_transactions = {
+            innodb_transactions={
                 'description': "InnoDB",
-                'value_type':'uint',
+                'value_type': 'uint',
                 'units': 'txns',
             },
 
-            innodb_transactions_purged = {
+            innodb_transactions_purged={
                 'description': "InnoDB",
-                'value_type':'uint',
+                'value_type': 'uint',
                 'units': 'txns',
             },
 
-            innodb_transactions_unpurged = {
+            innodb_transactions_unpurged={
                 'description': "InnoDB",
-                'value_type':'uint',
+                'value_type': 'uint',
                 'units': 'txns',
             },
         )
@@ -984,9 +1031,10 @@ def metric_init(params):
     time.sleep(MAX_UPDATE_TIME)
     update_stats(REPORT_INNODB, REPORT_MASTER, REPORT_SLAVE, INNODB_VERSION)
 
-    for stats_descriptions in (innodb_stats_descriptions, master_stats_descriptions, misc_stats_descriptions, slave_stats_descriptions):
+    for stats_descriptions in (innodb_stats_descriptions, master_stats_descriptions,
+                               misc_stats_descriptions, slave_stats_descriptions):
         for label in stats_descriptions:
-            if mysql_stats.has_key(label):
+            if label in mysql_stats:
 
                 d = {
                     'name': 'mysql_' + label,
@@ -1007,8 +1055,9 @@ def metric_init(params):
             else:
                 logging.error("skipped " + label)
 
-    #logging.debug(str(descriptors))
+    # logging.debug(str(descriptors))
     return descriptors
+
 
 def metric_cleanup():
     logging.shutdown()
@@ -1027,9 +1076,25 @@ if __name__ == '__main__':
     parser.add_option("--no-innodb", dest="get_innodb", action="store_false", default=True)
     parser.add_option("--no-master", dest="get_master", action="store_false", default=True)
     parser.add_option("--no-slave", dest="get_slave", action="store_false", default=True)
-    parser.add_option("-b", "--gmetric-bin", dest="gmetric_bin", help="path to gmetric binary", default="/usr/bin/gmetric")
-    parser.add_option("-c", "--gmond-conf", dest="gmond_conf", help="path to gmond.conf", default="/etc/ganglia/gmond.conf")
-    parser.add_option("-g", "--gmetric", dest="gmetric", help="submit via gmetric", action="store_true", default=False)
+    parser.add_option(
+        "-b",
+        "--gmetric-bin",
+        dest="gmetric_bin",
+        help="path to gmetric binary",
+        default="/usr/bin/gmetric")
+    parser.add_option(
+        "-c",
+        "--gmond-conf",
+        dest="gmond_conf",
+        help="path to gmond.conf",
+        default="/etc/ganglia/gmond.conf")
+    parser.add_option(
+        "-g",
+        "--gmetric",
+        dest="gmetric",
+        help="submit via gmetric",
+        action="store_true",
+        default=False)
     parser.add_option("-q", "--quiet", dest="quiet", action="store_true", default=False)
 
     (options, args) = parser.parse_args()
@@ -1051,5 +1116,6 @@ if __name__ == '__main__':
 
         if options.gmetric:
             cmd = "%s --conf=%s --value='%s' --units='%s' --type='%s' --name='%s' --slope='%s'" % \
-                (options.gmetric_bin, options.gmond_conf, v, d['units'], d['value_type'], d['name'], d['slope'])
+                (options.gmetric_bin, options.gmond_conf, v, d[
+                 'units'], d['value_type'], d['name'], d['slope'])
             os.system(cmd)
