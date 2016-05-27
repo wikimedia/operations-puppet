@@ -6,10 +6,7 @@
   Diamond collector for PyBal State.
 
 """
-import json
-import re
 import requests
-
 import diamond.collector
 
 

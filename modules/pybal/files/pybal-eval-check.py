@@ -7,7 +7,6 @@ import pwd
 import grp
 import sys
 import socket
-import syslog
 
 
 def die(msg):
@@ -27,7 +26,6 @@ def drop_privileges(uid_name='nobody',
 
     begin_uid = os.getuid()
     begin_gid = os.getgid()
-    begin_uid_name = pwd.getpwuid(begin_uid)[0]
     safe_uid = pwd.getpwnam(uid_name)[2]
     safe_gid = grp.getgrnam(gid_name)[2]
 
