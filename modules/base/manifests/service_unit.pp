@@ -80,7 +80,7 @@ define base::service_unit (
 
     # Validates the service name, and picks the valid init script
     $initscript = pick_initscript(
-        $name, $::initsystem, $systemd, $upstart, $sysvinit, $strict)
+        $::initsystem, $systemd, $upstart, $sysvinit, $strict)
 
     # we assume init scripts are templated
     if $initscript {
