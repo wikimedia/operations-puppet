@@ -104,6 +104,7 @@ class role::cache::text {
     $fe_vcl_config = merge($common_vcl_config, {
         'enable_geoiplookup' => true,
         'secure_post'        => false,
+        'ttl_cap'            => '1d',
     })
 
     role::cache::instances { 'text':
