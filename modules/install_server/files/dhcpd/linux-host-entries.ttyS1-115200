@@ -1546,6 +1546,118 @@ host db1078 {
     filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
+host db1079 {
+    hardware ethernet 14:02:EC:06:04:84;
+    fixed-address db1079.eqiad.wmnet;
+    option pxelinux.pathprefix "jessie-installer/";
+    filename "jessie-installer/debian-installer/amd64/pxelinux.0";
+}
+
+host db1080 {
+    hardware ethernet 1C:98:EC:2A:B1:FC;
+    fixed-address db1080.eqiad.wmnet;
+    option pxelinux.pathprefix "jessie-installer/";
+    filename "jessie-installer/debian-installer/amd64/pxelinux.0";
+}
+
+host db1081 {
+    hardware ethernet 1C:98:EC:2A:B1:40;
+    fixed-address db1081.eqiad.wmnet;
+    option pxelinux.pathprefix "jessie-installer/";
+    filename "jessie-installer/debian-installer/amd64/pxelinux.0";
+}
+
+host db1082 {
+    hardware ethernet 1C:98:EC:2A:B1:98;
+    fixed-address db1082.eqiad.wmnet;
+    option pxelinux.pathprefix "jessie-installer/";
+    filename "jessie-installer/debian-installer/amd64/pxelinux.0";
+}
+
+host db1083 {
+    hardware ethernet 1C:98:EC:2A:A1:C0;
+    fixed-address db1083.eqiad.wmnet;
+    option pxelinux.pathprefix "jessie-installer/";
+    filename "jessie-installer/debian-installer/amd64/pxelinux.0";
+}
+
+host db1084 {
+    hardware ethernet 14:02:EC:06:B1:D4;
+    fixed-address db1084.eqiad.wmnet;
+    option pxelinux.pathprefix "jessie-installer/";
+    filename "jessie-installer/debian-installer/amd64/pxelinux.0";
+}
+
+host db1085 {
+    hardware ethernet 14:02:EC:06:E3:CC;
+    fixed-address db1085.eqiad.wmnet;
+    option pxelinux.pathprefix "jessie-installer/";
+    filename "jessie-installer/debian-installer/amd64/pxelinux.0";
+}
+
+host db1086 {
+    hardware ethernet 1C:98:EC:2A:A1:18;
+    fixed-address db1086.eqiad.wmnet;
+    option pxelinux.pathprefix "jessie-installer/";
+    filename "jessie-installer/debian-installer/amd64/pxelinux.0";
+}
+
+host db1087 {
+    hardware ethernet 1C:98:EC:2A:A1:3C;
+    fixed-address db1087.eqiad.wmnet;
+    option pxelinux.pathprefix "jessie-installer/";
+    filename "jessie-installer/debian-installer/amd64/pxelinux.0";
+}
+
+host db1088 {
+    hardware ethernet 1C:98:EC:2A:D1:3C;
+    fixed-address db1088.eqiad.wmnet;
+    option pxelinux.pathprefix "jessie-installer/";
+    filename "jessie-installer/debian-installer/amd64/pxelinux.0";
+}
+
+host db1089 {
+    hardware ethernet 1C:98:EC:2A:A1:60;
+    fixed-address db1089.eqiad.wmnet;
+    option pxelinux.pathprefix "jessie-installer/";
+    filename "jessie-installer/debian-installer/amd64/pxelinux.0";
+}
+
+host db1090 {
+    hardware ethernet 1C:98:EC:2A:A1:50;
+    fixed-address db1090.eqiad.wmnet;
+    option pxelinux.pathprefix "jessie-installer/";
+    filename "jessie-installer/debian-installer/amd64/pxelinux.0";
+}
+
+host db1091 {
+    hardware ethernet 1C:98:EC:2A:A1:24;
+    fixed-address db1091.eqiad.wmnet;
+    option pxelinux.pathprefix "jessie-installer/";
+    filename "jessie-installer/debian-installer/amd64/pxelinux.0";
+}
+
+host db1092 {
+    hardware ethernet 1C:98:EC:2A:A1:38;
+    fixed-address db1092.eqiad.wmnet;
+    option pxelinux.pathprefix "jessie-installer/";
+    filename "jessie-installer/debian-installer/amd64/pxelinux.0";
+}
+
+host db1093 {
+    hardware ethernet 14:02:EC:06:E3:F4;
+    fixed-address db1093.eqiad.wmnet;
+    option pxelinux.pathprefix "jessie-installer/";
+    filename "jessie-installer/debian-installer/amd64/pxelinux.0";
+}
+
+host db1094 {
+    hardware ethernet 1C:98:EC:2A:A1:B0;
+    fixed-address db1094.eqiad.wmnet;
+    option pxelinux.pathprefix "jessie-installer/";
+    filename "jessie-installer/debian-installer/amd64/pxelinux.0";
+}
+
 host db2001 {
     hardware ethernet 78:2b:cb:6b:dd:4c;
     fixed-address db2001.codfw.wmnet;
