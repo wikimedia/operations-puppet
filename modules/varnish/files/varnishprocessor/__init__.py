@@ -1,1 +1,1 @@
-from .varnishprocessor import VarnishLogProcessor
+from .varnishprocessor import VarnishLogProcessor  # noqa
