@@ -866,6 +866,13 @@ users:
     ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDftk5lndsGU70RXMNRlwGOT2qr/SSBQZog07fs4F5wBL5Uevf0bZkwFokissYOO02cgYy2q6SyN64SppfnWXjOJtX7uv1gasfxmufNMx1c/JIl3m+DUodkGzXsECM66ykHSmaIjLvdpsqS5FJ7FzmkAOQsQVvnzK+Ltb7XyOd1zf6y90SB6wo03RHalLoAXEP0GmKPyv0Tzvad3wjSxS6FxTAFji7wtdSdwOxd4xOQ606h4H7J/JRHWJrmGX9yn8BLPDXXB/3a1lBasaZXEyhd+a2RXvnMgPdqfRSpQRD6gRsaMoj6UiKG1+RoUlttXaKb4COI8llG+Q3tVzWm6IJr
         krinkle @ krinkle-mbp003]
     uid: 2008
+  ladsgroup:
+    ensure: present
+    gid: 500
+    name: ladsgroup
+    realname: Amir Sarabadani
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC4VTfdeTSboPh/af2zT6ov13A7kSygXEspRgq3/d2BWcNFvwIIpgtpCnHzA6YPvuhrjksw34jk3OvuuQoTyWYfuwql8Wu8O9f32WD4dhrKhB8Rchxj6rrncBrGS5k0HeLr+HMrknVSSXGH60GAFNRGYLCGA+zBXLAja+xROTipIRHOF0SLlsfpY04HTrEtKcKdj8n9BnGpbT7vFp+AmXeSHg9DwRn6yvem3x1ghBFdfg+XwmIqsV4wR2b7GLX2Y6+ei53657v2VxVsORdfn4yV7FcjeVYnwNxMOVMfYcFCz+1LU9ROPDw5sCqyDPMtyQPxExiprKNT9UHkUj7aqE61o4AF1vSb9AEdUpjGgiMl+Dr8Sd+T2sNOq5uFxtWSfuNqgGHY+nOYPmSHsxthwXc7CH7x/eBDefUZwTdwX8Vf/FYOAyiviknCzwLoAbkQwRjOwFZVqJMwRwRyMToKODTTgOM0s3g/5P8n5AYwTLt1I6dLeC3nju3lywyeWb6DkFOB48mg561AU1soTnSKffse7AtJ5Ye3GFEBKxBCRJUpc7EVesOhjTdcmBWYeSSmwxHCjiCact4tyk8ZiLuRqd3EZ0KFT/6W5d4csrJUwBDNWo+7M69gVIMn/zDCy3ZViGMsqPFfXSrpKw8k0WtPBTKdHFPJ0KoLERctzkrNkfBTVw== Ladsgroup @ prod]
+    uid: 3182
   manybubbles:
     ensure: present
     gid: 500
