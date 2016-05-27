@@ -180,7 +180,7 @@ class PacketLossLogtailer(object):
         self.lock.acquire()
         try:
             mydata = self.deep_copy()
-            check_time = self.get_check_duration()
+            self.get_check_duration()
             self.reset_state()
             self.lock.release()
         except LogtailerStateException, e:
