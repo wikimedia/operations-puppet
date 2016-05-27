@@ -45,7 +45,6 @@
 
 import time
 import subprocess
-import traceback
 import logging
 import os
 import stat
@@ -529,7 +528,6 @@ def metric_cleanup():
 
 if __name__ == '__main__':
     from optparse import OptionParser
-    import os
 
     logging.debug('running from cmd line')
     parser = OptionParser()
