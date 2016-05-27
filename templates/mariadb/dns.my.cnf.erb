@@ -22,7 +22,9 @@ extra_port = 3307
 datadir    = <%= @datadir %>
 tmpdir     = <%= @tmpdir %>
 server_id  = <%= @server_id %>
+<% if @sql_mode -%>
 sql-mode   = <%= @sql_mode %>
+<% end -%>
 read_only  = <%= @read_only %>
 
 log_bin
