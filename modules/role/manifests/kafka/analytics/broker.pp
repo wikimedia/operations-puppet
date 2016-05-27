@@ -118,6 +118,15 @@ class role::kafka::analytics::broker {
 
     include ::ferm::ipsec_allow
 
+    # In case of mediawiki spikes we've been seeing up to 300k connections,
+    # so raise the connection table size on Kafka brokers (default is 256k)
+    sysctl::parameters { 'kafka_conntrack':
+        values => {
+            'net.netfilter.nf_conntrack_max'                   => 524288,
+        },
+        priority => 75,
+    }
+
     # Monitor TCP Connection States
     diamond::collector { 'TcpConnStates':
         source => 'puppet:///modules/diamond/collector/tcpconnstates.py',
