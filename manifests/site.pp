@@ -3,7 +3,6 @@
 
 import 'realm.pp' # These ones first
 import 'misc/*.pp'
-import 'network.pp'
 import 'role/*.pp'
 
 # Base nodes
