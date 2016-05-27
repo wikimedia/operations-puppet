@@ -35,7 +35,8 @@ auth = KeystonePassword(
     password=config['password'],
     tenant_name=config['admin_project_name']
 )
-keystoneClient = KeystoneClient(session=KeystoneSession(auth=auth), endpoint=config['nova_api_url'])
+keystoneClient = KeystoneClient(
+    session=KeystoneSession(auth=auth), endpoint=config['nova_api_url'])
 
 projects = []
 for tenant in keystoneClient.tenants.list():
@@ -55,10 +56,12 @@ for project in projects:
         serverAddresses = {}
         try:
             private = [
-                str(ip['addr']) for ip in server.addresses['public'] if ip['OS-EXT-IPS:type'] == 'fixed'
+                str(ip['addr']) for ip in server.addresses['public']
+                if ip['OS-EXT-IPS:type'] == 'fixed'
             ]
             public = [
-                str(ip['addr']) for ip in server.addresses['public'] if ip['OS-EXT-IPS:type'] == 'floating'
+                str(ip['addr']) for ip in server.addresses['public']
+                if ip['OS-EXT-IPS:type'] == 'floating'
             ]
             if public:
                 # Match all possible public IPs to all possible private ones
