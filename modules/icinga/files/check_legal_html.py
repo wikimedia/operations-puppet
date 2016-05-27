@@ -19,41 +19,41 @@ import sys
 import urllib2
 
 
-mobile_copyright = 'Content is available under \
-<a class="external" rel="nofollow" \
-href="//creativecommons.org/licenses/by-sa/3.0/">\
-CC BY-SA 3.0</a> unless otherwise noted.'
+mobile_copyright = 'Content\sis\savailable\sunder \
+<a\sclass=\"external\"\srel=\"nofollow\" \
+href="\/\/creativecommons.org/licenses/by-sa/3\.0/">\
+CC\sBY-SA\s3\.0</a>\sunless\sotherwise\snoted\.'
 
-mobile_terms = '<a href="//m.wikimediafoundation.org/wiki/Terms_of_Use">\
-Terms of Use</a>'
+mobile_terms = '<a\shref="\/\/m\.wikimediafoundation\.org\/wiki\/Terms_of_Use">\
+Terms\sof\sUse</a>'
 
-mobile_privacy = '<a href="//wikimediafoundation.org/wiki/Privacy_policy" \
-title="wmf:Privacy policy">Privacy</a>'
+mobile_privacy = '<a\shref="\/\/wikimediafoundation\.org\/wiki\/Privacy_policy"\sclass=\"\S+"\s\
+title="wmf:Privacy\spolicy">Privacy</a>'
 
-copyright = 'Text\sis available under the <a\s+rel="license"\s+\
-href="//en.wikipedia.org/wiki/Wikipedia:\
+copyright = 'Text\sis\savailable\sunder\sthe\s<a\srel="license"\s+\
+href="\/\/en.wikipedia.org\/wiki\/Wikipedia:\
 Text_of_Creative_Commons_Attribution-ShareAlike_3.0_Unported_License">\
-Creative Commons Attribution-ShareAlike License</a>\
-<a rel="license" href="//creativecommons.org/licenses/by-sa/3.0/"'
+Creative\sCommons\sAttribution-ShareAlike\sLicense</a>\
+<a\srel="license"\shref="\/\/creativecommons.org\/licenses\/by-sa\/3\.0/"'
 
-terms = 'additional terms may apply.  \
-By using this site, you agree to the \
-<a href="//wikimediafoundation.org/wiki/Terms_of_Use">Terms of Use</a>'
+terms = 'additional\sterms\smay\sapply\.  \
+By\susing\sthis\ssite,\syou\sagree\sto\sthe \
+<a\shref="\/\/wikimediafoundation.org\/wiki\/Terms_of_Use">Terms\sof\sUse</a>'
 
-privacy = '<a href="//wikimediafoundation.org/wiki/Privacy_policy">\
-Privacy policy</a>'
+privacy = '<a\shref="//wikimediafoundation.org/wiki/Privacy_policy">\
+Privacy\spolicy</a>'
 
-enwb_privacy = '<a href="//wikimediafoundation.org/wiki/Privacy_policy">\
-Privacy Policy.</a>'
+enwb_privacy = '<a\shref="\/\/wikimediafoundation\.org\/wiki\/Privacy_policy">\
+Privacy\sPolicy\.<\/a>'
 
-enwp_trademark = 'Wikipedia® is a registered trademark \
-of the <a href="//www.wikimediafoundation.org/">\
-Wikimedia Foundation, Inc.</a>, a non-profit organization.'
+enwp_trademark = 'Wikipedia®\sis\sa\sregistered\strademark \
+of\sthe\s<a\shref="\/\/www\.wikimediafoundation\.org/">\
+Wikimedia\sFoundation,\sInc\.</a>,\sa\snon-profit\sorganization\.'
 
-enwb_copyright = 'Text is available under the \
-<a href="//creativecommons.org/licenses/by-sa/3.0/">\
-Creative Commons Attribution-ShareAlike License.</a>; \
-additional terms may apply.'
+enwb_copyright = 'Text\sis\savailable\sunder\sthe \
+<a\shref="\/\/creativecommons\.org\/licenses\/by-sa\/3\.0\/">\
+Creative\sCommons\sAttribution-ShareAlike\sLicense.</a>; \
+additional\sterms\smay\sapply\.'
 
 
 def log(msg, enabled):
