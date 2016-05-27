@@ -72,3 +72,8 @@ def delete(minion):
         ret['status'] = 'done'
     print ret
     return ret
+
+
+if __name__ == '__main__':
+    # Make flake8 happy by defining globals
+    __opts__ = dict()
