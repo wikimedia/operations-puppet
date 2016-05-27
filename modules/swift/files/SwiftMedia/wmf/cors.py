@@ -1,5 +1,6 @@
 class CORS(object):
     """Poor man's Wildcard CORS support for Swift <= 1.7.4"""
+
     def __init__(self, app):
         self.app = app
 

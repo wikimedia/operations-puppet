@@ -8,13 +8,13 @@ import webob
 import webob.exc
 import re
 from eventlet.green import urllib2
-import time
 import urlparse
 from swift.common.utils import get_logger
 from swift.common.wsgi import WSGIContext
 
 
 class DumbRedirectHandler(urllib2.HTTPRedirectHandler):
+
     def http_error_301(self, req, fp, code, msg, headers):
         return None
 
@@ -36,9 +36,11 @@ class _WMFRewriteContext(WSGIContext):
         self.thumbhost = conf['thumbhost'].strip()
         self.user_agent = conf['user_agent'].strip()
         self.bind_port = conf['bind_port'].strip()
-        self.shard_container_list = [item.strip() for item in conf['shard_container_list'].split(',')]
-        # this parameter controls whether URLs sent to the thumbhost are sent as is (eg. upload/proj/lang/) or with the site/lang
-        # converted  and only the path sent back (eg en.wikipedia/thumb).
+        self.shard_container_list = [
+            item.strip() for item in conf['shard_container_list'].split(',')]
+        # this parameter controls whether URLs sent to the thumbhost are sent
+        # as is (eg. upload/proj/lang/) or with the site/lang converted  and
+        # only the path sent back (eg en.wikipedia/thumb).
         self.backend_url_format = conf['backend_url_format'].strip()  # asis, sitelang
 
     def handle404(self, reqorig, url, container, obj):
@@ -76,10 +78,13 @@ class _WMFRewriteContext(WSGIContext):
             encodedurl = urlparse.urlunsplit(urlobj)
 
             # if sitelang, we're supposed to mangle the URL so that
-            # http://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Little_kitten_.jpg/330px-Little_kitten_.jpg
-            # changes to http://commons.wikipedia.org/w/thumb_handler.php/a/a2/Little_kitten_.jpg/330px-Little_kitten_.jpg
+            # http://upload.wm.o/wikipedia/commons/thumb/a/a2/Foo_.jpg/330px-Foo_.jpg
+            # changes to
+            # http://commons.wp.o/w/thumb_handler.php/a/a2/Foo_.jpg/330px-Foo_.jpg
             if self.backend_url_format == 'sitelang':
-                match = re.match(r'^http://(?P<host>[^/]+)/(?P<proj>[^-/]+)/(?P<lang>[^/]+)/thumb/(?P<path>.+)', encodedurl)
+                match = re.match(
+                    r'^http://(?P<host>[^/]+)/(?P<proj>[^-/]+)/(?P<lang>[^/]+)/thumb/(?P<path>.+)',
+                    encodedurl)
                 if match:
                     proj = match.group('proj')
                     lang = match.group('lang')
@@ -92,25 +97,35 @@ class _WMFRewriteContext(WSGIContext):
                             proj = 'mediawiki'
                     hostname = '%s.%s.org' % (lang, proj)
                     if(proj == 'wikipedia' and lang == 'sources'):
-                        #yay special case
+                        # yay special case
                         hostname = 'wikisource.org'
                     # ok, replace the URL with just the part starting with thumb/
-                    # take off the first two parts of the path (eg /wikipedia/commons/); make sure the string starts with a /
-                    encodedurl = 'http://%s/w/thumb_handler.php/%s' % (hostname, match.group('path'))
+                    # take off the first two parts of the path
+                    # (eg /wikipedia/commons/); make sure the string starts
+                    # with a /
+                    encodedurl = 'http://%s/w/thumb_handler.php/%s' % (
+                        hostname, match.group('path'))
                     # add in the X-Original-URI with the swift got (minus the hostname)
-                    opener.addheaders.append(('X-Original-URI', list(urlparse.urlsplit(reqorig.url))[2]))
+                    opener.addheaders.append(
+                        ('X-Original-URI', list(urlparse.urlsplit(reqorig.url))[2]))
                 else:
-                    # ASSERT this code should never be hit since only thumbs should call the 404 handler
+                    # ASSERT this code should never be hit since only thumbs
+                    # should call the 404 handler
                     self.logger.warn("non-thumb in 404 handler! encodedurl = %s" % encodedurl)
                     resp = webob.exc.HTTPNotFound('Unexpected error')
                     return resp
             else:
-                # log the result of the match here to test and make sure it's sane before enabling the config
-                match = re.match(r'^http://(?P<host>[^/]+)/(?P<proj>[^-/]+)/(?P<lang>[^/]+)/thumb/(?P<path>.+)', encodedurl)
+                # log the result of the match here to test and make sure it's
+                # sane before enabling the config
+                match = re.match(
+                    r'^http://(?P<host>[^/]+)/(?P<proj>[^-/]+)/(?P<lang>[^/]+)/thumb/(?P<path>.+)',
+                    encodedurl)
                 if match:
                     proj = match.group('proj')
                     lang = match.group('lang')
-                    self.logger.warn("sitelang match has proj %s lang %s encodedurl %s" % (proj, lang, encodedurl))
+                    self.logger.warn(
+                        "sitelang match has proj %s lang %s encodedurl %s" % (
+                            proj, lang, encodedurl))
                 else:
                     self.logger.warn("no sitelang match on encodedurl: %s" % encodedurl)
 
@@ -142,12 +157,6 @@ class _WMFRewriteContext(WSGIContext):
         # get the Content-Type.
         uinfo = upcopy.info()
         c_t = uinfo.gettype()
-        content_length = uinfo.getheader('Content-Length', None)
-        # sometimes Last-Modified isn't present; use now() when that happens.
-        try:
-            last_modified = time.mktime(uinfo.getdate('Last-Modified'))
-        except TypeError:
-            last_modified = time.mktime(time.localtime())
 
         resp = webob.Response(app_iter=upcopy, content_type=c_t)
         # add in the headers if we've got them
@@ -163,7 +172,7 @@ class _WMFRewriteContext(WSGIContext):
     def handle_request(self, env, start_response):
         try:
             return self._handle_request(env, start_response)
-        except UnicodeDecodeError as e:
+        except UnicodeDecodeError:
             self.logger.exception('Failed to decode request %r', env)
             resp = webob.exc.HTTPBadRequest('Failed to decode request')
             return resp(env, start_response)
@@ -171,7 +180,8 @@ class _WMFRewriteContext(WSGIContext):
     def _handle_request(self, env, start_response):
         req = webob.Request(env)
 
-        # Double (or triple, etc.) slashes in the URL should be ignored; collapse them. fixes T34864
+        # Double (or triple, etc.) slashes in the URL should be ignored;
+        # collapse them. fixes T34864
         req.path_info = re.sub(r'/{2,}', '/', req.path_info)
 
         # Keep a copy of the original request so we can ask the scalers for it
@@ -216,7 +226,11 @@ class _WMFRewriteContext(WSGIContext):
         #         => http://msfe/v1/AUTH_<hash>/<proj>-<lang>-timeline-render/<relpath>
 
         # regular uploads
-        match = re.match(r'^/(?P<proj>[^/]+)/(?P<lang>[^/]+)/((?P<zone>transcoded|thumb)/)?(?P<path>((temp|archive)/)?[0-9a-f]/(?P<shard>[0-9a-f]{2})/.+)$', req.path)
+        match = re.match(
+            (r'^/(?P<proj>[^/]+)/(?P<lang>[^/]+)/'
+             r'((?P<zone>transcoded|thumb)/)?'
+             r'(?P<path>((temp|archive)/)?[0-9a-f]/(?P<shard>[0-9a-f]{2})/.+)$'),
+            req.path)
         if match:
             proj = match.group('proj')
             lang = match.group('lang')
@@ -230,7 +244,9 @@ class _WMFRewriteContext(WSGIContext):
         # timeline renderings
         if match is None:
             # /wikipedia/en/timeline/a876297c277d80dfd826e1f23dbfea3f.png
-            match = re.match(r'^/(?P<proj>[^/]+)/(?P<lang>[^/]+)/(?P<repo>timeline)/(?P<path>.+)$', req.path)
+            match = re.match(
+                r'^/(?P<proj>[^/]+)/(?P<lang>[^/]+)/(?P<repo>timeline)/(?P<path>.+)$',
+                req.path)
             if match:
                 proj = match.group('proj')  # wikipedia
                 lang = match.group('lang')  # en
@@ -243,7 +259,10 @@ class _WMFRewriteContext(WSGIContext):
         if match is None:
             # /math/c/9/f/c9f2055dadfb49853eff822a453d9ceb.png
             # /wikipedia/en/math/c/9/f/c9f2055dadfb49853eff822a453d9ceb.png (legacy)
-            match = re.match(r'^(/(?P<proj>[^/]+)/(?P<lang>[^/]+))?/(?P<repo>math)/(?P<path>(?P<shard1>[0-9a-f])/(?P<shard2>[0-9a-f])/.+)$', req.path)
+            match = re.match(
+                (r'^(/(?P<proj>[^/]+)/(?P<lang>[^/]+))?/(?P<repo>math)/'
+                 r'(?P<path>(?P<shard1>[0-9a-f])/(?P<shard2>[0-9a-f])/.+)$'),
+                req.path)
 
             if match:
                 proj = 'global'
@@ -321,7 +340,7 @@ class _WMFRewriteContext(WSGIContext):
             url = req.url[:]
             # Create a path to our object's name.
             req.path_info = "/v1/%s/%s/%s" % (self.account, container, urllib2.unquote(obj))
-            #self.logger.warn("new path is %s" % req.path_info)
+            # self.logger.warn("new path is %s" % req.path_info)
 
             # do_start_response just remembers what it got called with,
             # because our 404 handler will generate a different response.
@@ -331,7 +350,7 @@ class _WMFRewriteContext(WSGIContext):
 
             if 200 <= status < 300 or status == 304:
                 # We have it! Just return it as usual.
-                #headers['X-Swift-Proxy']= `headers`
+                # headers['X-Swift-Proxy']= `headers`
                 return webob.Response(status=status, headers=headers,
                                       app_iter=app_iter)(env, start_response)
             elif status == 404:
@@ -355,6 +374,7 @@ class _WMFRewriteContext(WSGIContext):
 
 
 class WMFRewrite(object):
+
     def __init__(self, app, conf):
         self.app = app
         self.conf = conf
