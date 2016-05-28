@@ -92,7 +92,7 @@ class RedisStore(object):
     def refresh_route(self, route):
         key = 'frontend:' + route.domain
         if not (self.redis.exists(key)):
-            print "Adding new key: %s " % key
+            print("Adding new key: %s " % key)
             self.update_route(route)
 
     def update_route(self, route, old_domain=None):
@@ -248,7 +248,7 @@ def update_redis_from_db():
 
     for project in projects:
         for route in project.routes:
-            print "Refreshing route:  %s " % route
+            print("Refreshing route:  %s " % route)
             redis_store.refresh_route(route)
 update_redis_from_db()
 
