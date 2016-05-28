@@ -26,6 +26,7 @@ class wikilabels::web (
         owner   => 'www-data',
         group   => 'www-data',
         mode    => '0775',
+        recurse => true,
         require => File['/srv'],
     }
 
