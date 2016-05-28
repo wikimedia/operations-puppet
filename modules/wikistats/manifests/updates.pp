@@ -39,7 +39,6 @@ class wikistats::updates {
                 'sc@12', # Scoutwikis
                 'ne@13', # Neoseeker
                 'wr@14', # Wikitravel
-                'or@14', # Orain
                 'et@15', # EditThis
                 'mt@16', # Metapedias
                 'un@17', # Uncylomedias
@@ -51,7 +50,6 @@ class wikistats::updates {
                 'wk@21', # Wikkii
                 're@22', # Referata
                 'ga@22', # Gamepedias
-                'pa@23', # Pardus
                 'w3@23', # W3C
                 ]: }
 
