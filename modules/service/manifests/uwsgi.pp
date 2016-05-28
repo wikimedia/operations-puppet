@@ -37,13 +37,16 @@
 # [*local_logging*]
 #   Whether to store log entries on the target node as well. Default: true
 #
+# [*deployment*]
+#   Method of deployment. Default: 'scap3'
+#
 # [*deployment_user*]
 #   The user that will own the service code. Only applicable when
-#   $deployment ='scap3'. Default: $title
+#   $deployment = 'scap3'. Default: 'deploy-service'
 #
 # [*deployment_manage_user*]
 #   Boolean. Whether or not scap::target manages user. Only applicable
-#   when $deployment ='scap3'. Default: false
+#   when $deployment = 'scap3'. Default: true
 #
 # === Examples
 #
@@ -67,14 +70,17 @@ define service::uwsgi(
     $repo                   = "${title}/deploy",
     $firejail               = true,
     $local_logging          = true,
+    $deployment             = 'scap3',
     $deployment_user        = 'deploy-service',
     $deployment_manage_user = true,
 ) {
-    scap::target { $repo:
-        service_name => $title,
-        deploy_user  => $deployment_user,
-        before       => Uwsgi::App[$title],
-        manage_user  => $deployment_manage_user,
+    if $deployment == 'scap3' {
+        scap::target { $repo:
+            service_name => $title,
+            deploy_user  => $deployment_user,
+            before       => Uwsgi::App[$title],
+            manage_user  => $deployment_manage_user,
+        }
     }
 
     # Import all common configuration
