@@ -34,6 +34,8 @@ class k8s::apiserver(
         'replicationcontrollers',
         'services',
         'secrets',
+        'deployments.extensions',
+        'configmaps',
     ]
 
     file { '/etc/kubernetes/abac':
