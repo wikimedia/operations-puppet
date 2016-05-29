@@ -6,16 +6,6 @@ class k8s::kubelet(
     include ::k8s::infrastructure_config
 
     file { [
-        '/etc/kubernetes/',
-        '/etc/kubernetes/manifests',
-    ]:
-        ensure => directory,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0755',
-    }
-
-    file { [
         '/var/run/kubernetes',
         '/var/lib/kubelet',
     ] :
