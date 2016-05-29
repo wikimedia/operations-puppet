@@ -20,6 +20,7 @@ define varnish::instance(
     $name='',
     $vcl = '',
     $storage='-s malloc,1G',
+    $jemalloc_conf=undef,
     $runtime_parameters=[],
     $directors={},
     $extra_vcl = []

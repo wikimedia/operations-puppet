@@ -11,6 +11,9 @@ KillMode=process
 <% if @vcl_config.fetch("enable_geoiplookup", false) -%>
 Environment="CC_COMMAND=exec cc -fpic -shared -Wl,-x -L/usr/local/lib/ -o %%o %%s -lGeoIP"
 <% end -%>
+<% if @jemalloc_conf -%>
+Environment=MALLOC_CONF=<%= @jemalloc_conf %>
+<% end -%>
 ExecReload=/usr/share/varnish/reload-vcl <%= @extraopts %> -q
 ExecStart=/usr/sbin/varnishd \
 -P %t/%p.pid \
