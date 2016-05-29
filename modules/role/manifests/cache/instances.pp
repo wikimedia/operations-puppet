@@ -1,6 +1,7 @@
 # This defines the pair of varnish::instance for a 2layer/2tier cache cluster
 define role::cache::instances (
     $fe_mem_gb,
+    $fe_jemalloc_conf,
     $runtime_params,
     $app_directors,
     $app_be_opts,
@@ -101,6 +102,7 @@ define role::cache::instances (
         admin_port         => 6082,
         runtime_parameters => $runtime_params,
         storage            => "-s malloc,${fe_mem_gb}G",
+        jemalloc_conf      => $fe_jemalloc_conf,
         directors          => {
             'cache_local' => {
                 'dynamic'  => 'yes',

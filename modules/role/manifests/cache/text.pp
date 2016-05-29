@@ -109,6 +109,7 @@ class role::cache::text {
 
     role::cache::instances { 'text':
         fe_mem_gb        => ceiling(0.25 * $::memorysize_mb / 1024.0),
+        fe_jemalloc_conf => 'lg_dirty_mult:8,lg_chunk_size:16',
         runtime_params   => ['default_ttl=2592000'],
         app_directors    => $app_directors,
         # FIXME - top-scope var without namespace, will break in puppet 2.8
