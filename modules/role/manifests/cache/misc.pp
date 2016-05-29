@@ -258,6 +258,7 @@ class role::cache::misc {
 
     role::cache::instances { 'misc':
         fe_mem_gb        => ceiling(0.5 * $::memorysize_mb / 1024.0),
+        fe_jemalloc_conf => 'lg_dirty_mult:8,lg_chunk_size:17',
         runtime_params   => [],
         app_directors    => $app_directors,
         # FIXME - top-scope var without namespace, will break in puppet 2.8
