@@ -114,6 +114,13 @@ scb:
     datacenters:
     - eqiad
     - codfw
+  ores:
+    port: 8081
+    default_values:
+      pooled: 'no'
+      weight: 10
+    datacenters:
+    - eqiad
 restbase:
   restbase:
     port: 7231
