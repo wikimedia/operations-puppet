@@ -13,8 +13,4 @@ class mediawiki::hhvm::housekeeping {
         mode   => '0555',
     }
 
-    # Temporary - remove the old script location
-    file { '/usr/local/bin/hhvm_cleanup_cache':
-        ensure => absent,
-    }
 }
