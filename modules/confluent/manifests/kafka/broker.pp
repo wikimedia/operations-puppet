@@ -124,9 +124,9 @@
 #
 # [*log_cleanup_policy*]
 #   Designates the retention policy to use on old log segments. 'delete' will
-#    discard old segments when their retention time or size limit has been
-#    reached. 'compact' will enable log compaction.
-#    Default: undef (delete)
+#   discard old segments when their retention time or size limit has been
+#   reached. 'compact' will enable log compaction.
+#   Default: delete
 #
 # [*offsets_retention_minutes*]
 #   Log retention window in minutes for offsets topic.
@@ -212,7 +212,7 @@ class confluent::kafka::broker(
     $log_segment_bytes                   = undef,
 
     $log_retention_check_interval_ms     = undef,
-    $log_cleanup_policy                  = undef,
+    $log_cleanup_policy                  = 'delete',
 
     $offsets_retention_minutes           = 10080,   # 1 week
 
