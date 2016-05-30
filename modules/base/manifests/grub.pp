@@ -2,6 +2,7 @@ class base::grub($ioscheduler = 'deadline') {
     # The shellvars_list lens is broken with backticks on older versions of
     # Augeas (< jessie), so keep a compatibility version with test/grep/sed
     if versioncmp($::augeasversion, '1.3.0') >= 0 {
+
         augeas { 'grub2':
             incl    => '/etc/default/grub',
             lens    => 'Shellvars_list.lns',
@@ -13,9 +14,8 @@ class base::grub($ioscheduler = 'deadline') {
                 # removes quiet, splash from default kopts
                 'rm GRUB_CMDLINE_LINUX_DEFAULT/value[. = "quiet"]',
                 'rm GRUB_CMDLINE_LINUX_DEFAULT/value[. = "splash"]',
-                # CFQ I/O scheduler is the default allow override
-                # with class default to deadline (the installer does this too)
-                "set GRUB_CMDLINE_LINUX/value[. = \"elevator=${ioscheduler}\"] elevator=deadline",
+                # Sets the ioscheduler to a specific value. Default is deadline
+                "set GRUB_CMDLINE_LINUX/value[. =~ glob(\"elevator=*\")] elevator=${ioscheduler}",
             ],
             notify  => Exec['update-grub'],
         }
@@ -38,7 +38,7 @@ class base::grub($ioscheduler = 'deadline') {
             notify  => Exec['update-grub'],
         }
 
-        # The CFQ I/O scheduler is rather # suboptimal for some of our I/O
+        # The CFQ I/O scheduler is rather suboptimal for some of our I/O
         # workloads. Override with deadline. (the installer does this too)
         exec { 'grub2 iosched deadline':
             path    => '/bin:/usr/bin',
