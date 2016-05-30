@@ -33,8 +33,11 @@ Facter.add('raid') do
     end
 
     supported_devs = [ 'aac', 'twe' ]
+    dev_re = Regexp.new(/^\s*\d+\s+(\w+)/)
     IO.foreach('/proc/devices') do |x|
-      if /^\s*\d+\s+(?<dev>\w+)/ =~ x
+      m = x.match(dev_re)
+      if m
+        dev = m[1]
         raids.push(dev) if supported_devs.include?(dev)
       end
     end
