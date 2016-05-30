@@ -1,9 +1,5 @@
 class ganglia::monitor::packages {
-    if !defined(Package['ganglia-monitor']) {
-        package { 'ganglia-monitor':
-            ensure => latest,
-        }
-    }
+    require_package('ganglia-monitor')
 
     file { ['/usr/lib/ganglia/python_modules',
             '/etc/ganglia/conf.d']:
