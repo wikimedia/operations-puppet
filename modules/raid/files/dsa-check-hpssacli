@@ -245,7 +245,7 @@ for my $slot (sort @controllers) {
 		} elsif ($type eq 'SAS' || $type eq 'SAS+') {
 			$key = 'PHY Transfer Rate';
 			if ($value{'Interface Type'} eq 'SATA') {
-				$expected = [ '1.5Gbps', '3.0Gbps' ];
+				$expected = [ '1.5Gbps', '3.0Gbps', '6.0Gbps' ];
 			} elsif ($value{'PHY Count'} eq '2') {
 				if (defined($value{'Redundant Path(s)'})) {
 					$expected = [ '3.0GBPS, 3.0GBPS', '6.0GBPS, 6.0GBPS',
