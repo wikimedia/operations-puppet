@@ -58,6 +58,8 @@
 #       its pings reach other servers.
 # - $bind_networks: networks to bind (both transport and http connectors)
 #       see https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-network.html#network-interface-values
+# - $publish_host: host to publish (both transport and http connectors)
+#       see https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-network.html
 # - $filter_cache_size: size of the filter cache.  See
 #       www.elasticsearch.org/guide/en/elasticsearch/reference/current/index-modules-cache.html
 #       for possible values.  Default is 10% like the Elasticsearch default.
@@ -99,6 +101,7 @@ class elasticsearch($cluster_name,
                     $multicast_enabled = true,
                     $unicast_hosts = undef,
                     $bind_networks = undef,
+                    $publish_host = undef,
                     $filter_cache_size = '10%',
                     $bulk_thread_pool_executors = undef,
                     $bulk_thread_pool_capacity = undef,

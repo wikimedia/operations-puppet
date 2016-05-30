@@ -13,6 +13,8 @@ elasticsearch::bind_networks:
   - _local_
   - _site_
 
+elasticsearch::publish_host: _eth0_
+
 elasticsearch::plugins_mandatory:
   - 'experimental-highlighter'
   - 'extra'
