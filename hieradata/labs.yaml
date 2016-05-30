@@ -12,6 +12,8 @@ discovery::app_routes:
   mathoid: "%{::site}"
   aqs: 'eqiad'
 
+# Labs has the memory cgroup controller enabled by default on all jessies
+base::grub::enable_memory_cgroup: true
 
 # dns
 labsdnsconfig:
