@@ -13,6 +13,11 @@ elasticsearch::bind_networks:
   - _local_
   - _site_
 
+elasticsearch::plugins_mandatory:
+  - 'experimental-highlighter'
+  - 'extra'
+  - 'analysis-icu'
+
 lvs::realserver::realserver_ips: "10.2.1.30"
 
 elasticsearch::cluster_hosts:
