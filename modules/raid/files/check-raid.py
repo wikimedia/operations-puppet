@@ -24,9 +24,9 @@ def main():
 
     osName = os.uname()[0]
     if argv_driver:
-        driver = argv_utility
+        driver = argv_driver
     elif hc_driver:
-        driver = hc_utility
+        driver = hc_driver
     elif osName == 'SunOS':
         driver = 'zpool'
     elif osName == 'Linux':
