@@ -103,7 +103,7 @@ define osm::planet_sync(
     }
     cron { "expire_old_planet_syncs-${name}":
         ensure  => $ensure,
-        command => "/usr/bin/find ${expire_dir} -mtime +5 -exec rm {} \\;",
+        command => "/usr/bin/find ${expire_dir} -mtime +30 -exec rm {} \\;",
         user    => 'osmupdater',
         hour    => $hour,
         minute  => $minute,
