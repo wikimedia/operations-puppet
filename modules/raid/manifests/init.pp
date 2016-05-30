@@ -26,7 +26,9 @@ class raid {
     }
 
     if 'mpt' in $raid {
-        require_package('mpt-status')
+        package { 'mpt-status':
+            ensure => present,
+        }
 
         file { '/etc/default/mpt-statusd':
             ensure  => present,
