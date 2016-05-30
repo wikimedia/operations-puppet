@@ -1,0 +1,6 @@
+/var/log/update-ocsp-all.log {
+    rotate 7
+    daily
+    compress
+    missingok
+}

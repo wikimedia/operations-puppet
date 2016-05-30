@@ -50,12 +50,18 @@ class sslcert::ocsp::init {
     }
 
     cron { 'update-ocsp-all':
-        command => '/usr/local/sbin/update-ocsp-all',
+        command => '/usr/local/sbin/update-ocsp-all >> /var/log/update-ocsp-all.log 2>&1',
         minute  => fqdn_rand(60, '1adf3dd699e51805'),
         hour    => '*',
         require => [
             File['/usr/local/sbin/update-ocsp-all'],
             File['/etc/update-ocsp.d'],
         ],
+    }
+
+    # Rotate /var/log/update-ocsp-all.log
+    logrotate::conf { 'update-ocsp-all':
+        ensure => present,
+        source => 'puppet:///modules/sslcert/update-ocsp-all-logrotate',
     }
 }
