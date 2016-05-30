@@ -1,2 +1,3 @@
 cassandra::rack: a5
 do_paging: false
+osm::planet_sync::num_threads: 4
