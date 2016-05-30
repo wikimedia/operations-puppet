@@ -149,6 +149,14 @@ for my $slot (sort @controllers) {
 					record('UNKNOWN');
 				}
 			}
+			if (/^ *LD Acceleration Method: (.*)$/) {
+				my $status = $1;
+				# can at least be "Controller Cache" or HP SSD Smart Path", both OK
+				if ($status eq 'All disabled') {
+					push @{$status{'Acceleration method'}}, "LD$logicaldrive disabled";
+					record('WARNING');
+				}
+			}
 		}
 	}
 
@@ -300,9 +308,12 @@ for my $slot (sort @controllers) {
 		if (/^ *(.*) Status: (.*)$/) {
 			my $system = $1;
 			my $status = $2;
+
+			# skip the cache check, we track the LD Acceleration Method above
+			next if ($system eq 'Cache');
+
 			push @{$status{$status}}, $system;
 			if ($status ne 'OK') {
-				next if ($params->{'no-battery'} && $system eq 'Cache');
 				next if ($params->{'no-battery'} && $system eq 'Battery/Capacitor');
 				record('WARNING');
 			};
