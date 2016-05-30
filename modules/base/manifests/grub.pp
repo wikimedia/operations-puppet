@@ -15,7 +15,7 @@ class base::grub($ioscheduler = 'deadline') {
                 'rm GRUB_CMDLINE_LINUX_DEFAULT/value[. = "splash"]',
                 # CFQ I/O scheduler is the default allow override
                 # with class default to deadline (the installer does this too)
-                "set GRUB_CMDLINE_LINUX/value[. = \"elevator=${ioscheduler}\"] elevator=deadline",
+                "set GRUB_CMDLINE_LINUX/value[. = \"elevator=deadline\"] elevator=${ioscheduler}",
             ],
             notify  => Exec['update-grub'],
         }
