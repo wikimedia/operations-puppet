@@ -50,11 +50,9 @@ Facter.add('raid') do
 
     raids.sort!.uniq!
 
-    if Facter.version < '2.0.0'
-      raids.join(',')
-    else
-      raids
-    end
+    # stringify the fact to support Facter < 2.0.0 and/or puppet < 4.0
+    # (in the default config, 3.7.5 can also support structured facts)
+    raids.join(',')
 
   end
 end
