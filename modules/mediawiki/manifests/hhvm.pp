@@ -3,7 +3,7 @@
 # Configures HHVM to serve MediaWiki in FastCGI mode.
 #
 class mediawiki::hhvm {
-    requires_os('ubuntu >= trusty')
+    requires_os('ubuntu >= trusty | Debian >= jessie')
 
     include ::hhvm::admin
     include ::hhvm::monitoring
@@ -71,29 +71,32 @@ class mediawiki::hhvm {
         mode   => '0555',
     }
 
+    if os_version('ubuntu >= trusty') {
+        # Provision an Upstart task (a short-running process) that runs
+        # when HHVM is started and that warms up the JIT by repeatedly
+        # requesting URLs read from /etc/hhvm/warmup.urls.
 
-    # Provision an Upstart task (a short-running process) that runs
-    # when HHVM is started and that warms up the JIT by repeatedly
-    # requesting URLs read from /etc/hhvm/warmup.urls.
+        $warmup_urls = [ 'http://en.wikipedia.org/wiki/Special:Random' ]
 
-    $warmup_urls = [ 'http://en.wikipedia.org/wiki/Special:Random' ]
+        file { '/etc/hhvm/warmup.urls':
+            content => join($warmup_urls, "\n"),
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0444',
+        }
 
-    file { '/etc/hhvm/warmup.urls':
-        content => join($warmup_urls, "\n"),
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
+        file { '/etc/init/hhvm-warmup.conf':
+            source  => 'puppet:///modules/mediawiki/hhvm-warmup.conf',
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0444',
+            require => File['/usr/local/bin/furl', '/etc/hhvm/warmup.urls'],
+            before  => Service['hhvm'],
+        }
     }
 
-    file { '/etc/init/hhvm-warmup.conf':
-        source  => 'puppet:///modules/mediawiki/hhvm-warmup.conf',
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        require => File['/usr/local/bin/furl', '/etc/hhvm/warmup.urls'],
-        before  => Service['hhvm'],
-    }
-
+    # Note: the warmup process should be revisited and is thus not implemented on
+    # Debian/systemd at the moment.
 
     # Use Debian's Alternatives system to mark HHVM as the default PHP
     # implementation for this system. This makes /usr/bin/php a symlink
