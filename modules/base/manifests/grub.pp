@@ -1,8 +1,16 @@
-class base::grub($ioscheduler = 'deadline') {
+class base::grub($ioscheduler = 'deadline', $enable_memory_cgroup = false) {
     # The augeas Shellvars_list lens can't handle backticks for
     # versions < 1.2.0 (practically every distro older than jessie).
     # We fallback to the legacy grep/sed method in that case.
-    if versioncmp($::augeasversion, '1.2.0') >= 0 {
+    if versioncmp($::augeasversion, '1.2.0') >= 0 and os_version('Debian >= jessie') {
+        $cgroup_line = $enable_memory_cgroup ? {
+            true => 'set GRUB_CMDLINE_LINUX/value[. = "cgroup_enable=memory"] cgroup_enable=memory',
+            false => 'rm GRUB_CMDLINE_LINUX/value[. = "cgroup_enable=memory"]'
+        }
+        $swapaccount_line = $enable_memory_cgroup ? {
+            true => 'set GRUB_CMDLINE_LINUX/value[. = "swapaccount=1"] swapaccount=1',
+            false => 'rm GRUB_CMDLINE_LINUX/value[. = "swapaccount=1"]'
+        }
 
         augeas { 'grub2':
             incl    => '/etc/default/grub',
@@ -17,9 +25,12 @@ class base::grub($ioscheduler = 'deadline') {
                 'rm GRUB_CMDLINE_LINUX_DEFAULT/value[. = "splash"]',
                 # Sets the ioscheduler to a specific value. Default is deadline
                 "set GRUB_CMDLINE_LINUX/value[. =~ glob(\"elevator=*\")] elevator=${ioscheduler}",
+                $cgroup_line,
+                $swapaccount_line,
             ],
             notify  => Exec['update-grub'],
         }
+
     } else {
         # Disable the 'quiet' kernel command line option so console messages
         # will be printed.
