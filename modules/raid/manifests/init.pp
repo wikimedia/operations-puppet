@@ -61,6 +61,7 @@ class raid {
         nrpe::monitor_service { 'raid_hpssacli':
             description  => 'HP RAID',
             nrpe_command => '/usr/local/lib/nagios/plugins/check_hpssacli',
+            timeout      => 20, # can take > 10s on servers with lots of disks
         }
     }
 
