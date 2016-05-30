@@ -72,11 +72,11 @@ http {
 
     # Enable a shared cache, since it is defined at this level
     # it will be used for all virtual hosts. 1m = 4000 active sessions,
-    # so we are allowing 400,000 active sessions.  Any fixed value here is
+    # so we are allowing 800,000 active sessions.  Any fixed value here is
     # probably less than ideal, as we'll want to vary it based on cluster
     # traffic levels and pybal node weightings, but for now we're just
     # experimenting with the fixed value to get ballpark ideas.
-    ssl_session_cache shared:SSL:100m;
+    ssl_session_cache shared:SSL:200m;
     ssl_session_timeout 15m;
 
     # Disable RFC5077 tickets (may revisit later when client support is better)
