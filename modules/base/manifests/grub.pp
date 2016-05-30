@@ -1,7 +1,7 @@
 class base::grub($ioscheduler = 'deadline') {
     # The shellvars_list lens is broken with backticks on older versions of
     # Augeas (< jessie), so keep a compatibility version with test/grep/sed
-    if versioncmp($::augeasversion, '1.3.0') >= 0 {
+    if versioncmp($::augeasversion, '1.2.0') >= 0 {
 
         augeas { 'grub2':
             incl    => '/etc/default/grub',
