@@ -99,50 +99,48 @@ class network::constants {
     $all_network_subnets = hiera('network::subnets')
 
     # Networks hosting MediaWiki application servers
+    # These are:
+    #  - public hosts in eqiad/codfw
+    #  - nobelium in eqiad labs support
+    #  - all private networks in eqiad/codfw
     if $::realm == 'production' {
-        # TODO: Revisit this structure in the future
-        $mw_appserver_networks =
-            [
-                '208.80.152.0/22',    # external
-                '2620:0:860::/46',    # all external previous was for silver
-                '10.64.37.14/32',     # nobelium, temporary mw install to copy over es indices
-                '2620:0:861:119:f21f:afff:fee8:b1fb/64', # same as ^
-                $all_network_subnets['production']['eqiad']['private']['private1-a-eqiad']['ipv4'],
-                $all_network_subnets['production']['eqiad']['private']['private1-a-eqiad']['ipv6'],
-                $all_network_subnets['production']['eqiad']['private']['private1-b-eqiad']['ipv4'],
-                $all_network_subnets['production']['eqiad']['private']['private1-b-eqiad']['ipv6'],
-                $all_network_subnets['production']['eqiad']['private']['private1-c-eqiad']['ipv4'],
-                $all_network_subnets['production']['eqiad']['private']['private1-c-eqiad']['ipv6'],
-                $all_network_subnets['production']['eqiad']['private']['private1-d-eqiad']['ipv4'],
-                $all_network_subnets['production']['eqiad']['private']['private1-d-eqiad']['ipv6'],
-                $all_network_subnets['production']['codfw']['private']['private1-a-codfw']['ipv4'],
-                $all_network_subnets['production']['codfw']['private']['private1-a-codfw']['ipv6'],
-                $all_network_subnets['production']['codfw']['private']['private1-b-codfw']['ipv4'],
-                $all_network_subnets['production']['codfw']['private']['private1-b-codfw']['ipv6'],
-                $all_network_subnets['production']['codfw']['private']['private1-c-codfw']['ipv4'],
-                $all_network_subnets['production']['codfw']['private']['private1-c-codfw']['ipv6'],
-                $all_network_subnets['production']['codfw']['private']['private1-d-codfw']['ipv4'],
-                $all_network_subnets['production']['codfw']['private']['private1-d-codfw']['ipv6'],
-            ]
+        $mw_appserver_networks = flatten([
+            slice_network_constants('production', {
+                'site'   => 'eqiad',
+                'sphere' => 'public',
+                }),
+            slice_network_constants('production', {
+                'site'   => 'codfw',
+                'sphere' => 'public',
+                }),
+            slice_network_constants('production', {
+                'site'        => 'eqiad',
+                'sphere'      => 'private',
+                'description' => 'private',
+                }),
+            slice_network_constants('production', {
+                'site'        => 'codfw',
+                'sphere'      => 'private',
+                'description' => 'private',
+                }),
+            slice_network_constants('production', {
+                'site'        => 'eqiad',
+                'sphere'      => 'private',
+                'description' => 'labs-support',
+                }),
+            ])
     } elsif $::realm == 'labs' {
         # rely on security groups in labs to restrict this
-        $mw_appserver_networks = ['10.0.0.0/8', '127.0.0.1']
+        $mw_appserver_networks = flatten([
+            slice_network_constants('labs'),
+            '127.0.0.1'])
     } elsif $::realm == 'labtest' {
         # This just a placeholder... .erb doesn't like this to be empty.
         $mw_appserver_networks = ['208.80.152.0/22']
     }
 
     # Analytics subnets
-    $analytics_networks = [
-        $all_network_subnets['production']['eqiad']['private']['analytics1-a-eqiad']['ipv4'],
-        $all_network_subnets['production']['eqiad']['private']['analytics1-a-eqiad']['ipv6'],
-        $all_network_subnets['production']['eqiad']['private']['analytics1-b-eqiad']['ipv4'],
-        $all_network_subnets['production']['eqiad']['private']['analytics1-b-eqiad']['ipv6'],
-        $all_network_subnets['production']['eqiad']['private']['analytics1-c-eqiad']['ipv4'],
-        $all_network_subnets['production']['eqiad']['private']['analytics1-c-eqiad']['ipv6'],
-        $all_network_subnets['production']['eqiad']['private']['analytics1-d-eqiad']['ipv4'],
-        $all_network_subnets['production']['eqiad']['private']['analytics1-d-eqiad']['ipv6'],
-    ]
+    $analytics_networks = slice_network_constants('production', { 'description' => 'analytics'})
 
     # Networks that trebuchet/git-deploy
     # will be able to deploy to.
