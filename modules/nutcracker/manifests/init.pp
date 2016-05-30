@@ -57,7 +57,11 @@ class nutcracker(
         notify  => Service['nutcracker'],
     }
 
-    if $ensure == 'present' and versioncmp($::puppetversion, '3.5') >= 0 {
+    if (
+        $ensure == 'present' and
+        versioncmp($::puppetversion, '3.5') >= 0 and
+        versioncmp($::serverversion, '3.5') >= 0
+        ) {
         File['/etc/nutcracker/nutcracker.yml'] {
           validate_cmd => '/usr/sbin/nutcracker --test-conf %',
         }
