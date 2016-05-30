@@ -1,4 +1,3 @@
-# TODO: At some point this should not be needed
-import '../../../manifests/role/backup.pp'
+class passwords::geoip {}
 
 include puppetmaster
