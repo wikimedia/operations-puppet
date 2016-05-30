@@ -12,9 +12,7 @@ Facter.add('raid') do
       raids.push('megaraid')
     end
 
-    if FileTest.exist?('/dev/mptctl') ||
-       FileTest.exist?('/dev/mpt0') ||
-       FileTest.exist?('/proc/mpt/summary') ||
+    if FileTest.exist?('/dev/mpt0') ||
        FileTest.exist?('/proc/scsi/mptsas/0')
       raids.push('mpt')
     end
