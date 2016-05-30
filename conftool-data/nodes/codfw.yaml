@@ -234,8 +234,8 @@ sca:
   sca2001.codfw.wmnet: [zotero, apertium]
   sca2002.codfw.wmnet: [zotero, apertium]
 scb:
-  scb2001.codfw.wmnet: [mobileapps, mathoid, graphoid, citoid, cxserver]
-  scb2002.codfw.wmnet: [mobileapps, mathoid, graphoid, citoid, cxserver]
+  scb2001.codfw.wmnet: [mobileapps, mathoid, graphoid, citoid, cxserver, ores]
+  scb2002.codfw.wmnet: [mobileapps, mathoid, graphoid, citoid, cxserver, ores]
 eventbus:
   kafka2001.codfw.wmnet: [eventbus]
   kafka2002.codfw.wmnet: [eventbus]
