@@ -47,6 +47,9 @@ define uwsgi::app(
             }
 
             base::service_unit { "uwsgi-${title}":
+                ensure        => absent,
+            }
+            base::service_unit { $title:
                 ensure        => present,
                 template_name => 'uwsgi',
                 systemd       => true,
@@ -56,8 +59,8 @@ define uwsgi::app(
 
             nrpe::monitor_service { "uwsgi-${title}":
                 description  => "${title} uWSGI web app",
-                nrpe_command => "/usr/sbin/service uwsgi-${title} status",
-                require      => Base::Service_unit["uwsgi-${title}"],
+                nrpe_command => "/usr/sbin/service ${title} status",
+                require      => Base::Service_unit[$title],
             }
         }
     }
