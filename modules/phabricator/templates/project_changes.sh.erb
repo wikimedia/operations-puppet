@@ -73,6 +73,38 @@ SELECT cltr.oldValue, cltr.newValue, prj.name, usr.userName
 END
 )
 
+#echo "result_archived_projects_open_tasks"
+# see https://phabricator.wikimedia.org/T133649
+result_archived_projects_open_tasks=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -u$sql_user $sql_name << END
+
+SELECT p.name, count(p.name) AS n
+    FROM phabricator_maniphest.edge edg
+    JOIN phabricator_maniphest.maniphest_task t
+    JOIN phabricator_project.project p
+    WHERE edg.dst LIKE 'PHID-PROJ-%'
+    AND edg.src LIKE 'PHID-TASK-%'
+    AND p.phid = edg.dst
+    AND p.status = 100
+    AND t.phid = edg.src
+    AND (t.status = "open" OR t.status = "stalled")
+    AND edg.src NOT IN
+    (SELECT edg2.src
+    FROM phabricator_maniphest.edge edg2
+    JOIN phabricator_maniphest.maniphest_task t2
+    JOIN phabricator_project.project p2
+    WHERE edg2.dst LIKE 'PHID-PROJ-%'
+    AND edg2.src LIKE 'PHID-TASK-%'
+    AND edg2.dst != "PHID-PROJ-onnxucoedheq3jevknyr"
+    AND p2.phid = edg2.dst
+    AND p2.status = 0
+    AND t2.phid = edg2.src
+    AND (t2.status = "open" OR t2.status = "stalled"))
+    GROUP BY p.name
+    ORDER BY n DESC;
+
+END
+)
+
 #echo "result_single_workboard_column"
 # see https://phabricator.wikimedia.org/T105865
 result_single_workboard_column=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -u$sql_user $sql_name << END
@@ -111,6 +143,10 @@ ${result_policy_locking_archiving_changes}
 
 PROJECT WORKBOARD COLUMN CHANGES:
 ${result_column_changes}
+
+
+ARCHIVED PROJECTS WITH OPEN TASKS:
+${result_archived_projects_open_tasks}
 
 
 PROJECT WORKBOARDS WITH A SINGLE COLUMN ONLY:
