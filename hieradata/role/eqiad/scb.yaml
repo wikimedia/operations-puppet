@@ -1,5 +1,5 @@
 lvs::realserver::realserver_ips:
-- 10.2.2.10 # changeprop.svc.eqiad.wmnet
+- 10.2.2.10 # ores.svc.eqiad.wmnet
 - 10.2.2.14 # mobileapps.svc.eqiad.wmnet
 - 10.2.2.15 # graphoid.svc.eqiad.wmnet
 - 10.2.2.18 # cxserver.svc.eqiad.wmnet
