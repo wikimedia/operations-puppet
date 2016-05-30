@@ -9,6 +9,7 @@ admin::groups:
 - zotero-admin
 - mobileapps-admin
 - changeprop-admin
+- ores-admin
 service::configuration::log_dir: /srv/log
 graphoid::allowed_domains:
   https:
