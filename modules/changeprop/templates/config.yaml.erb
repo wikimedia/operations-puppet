@@ -6,6 +6,8 @@ spec:
       options:
         allow:
           - pattern: /^https?:\/\//
+            forward_headers:
+              user-agent: true
   title: The Change Propagation root
   paths:
     /{api:sys}/purge:
