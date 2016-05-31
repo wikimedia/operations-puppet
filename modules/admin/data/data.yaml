@@ -201,7 +201,8 @@ groups:
               dbrant, tgr, dr0ptp4kt, brion, bsitzmann, amire80,
               deskana, jzerebecki, dduvall, nettrom, mforns, jkatz, ebernhardson,
               mlitn, tbayer, joal, tomasz, kartik, nikerabbit, pcoombe, madhuvishy,
-              neilpquinn-wmf, maxsem, jminor, dpatrick, atgomez, dstrine]
+              neilpquinn-wmf, maxsem, jminor, dpatrick, atgomez, dstrine,
+              ladsgroup]
   statistics-admins:
     posix_name: stats
     description: access files created by stats user cron jobs
@@ -223,7 +224,7 @@ groups:
     description: Gives generic client access to the Analytics (Hadoop) cluster.
         This will grant shell access on Hadoop client nodes (stat1002) and on
         Hadoop NameNodes.
-    members: [ashwinpp, ladsgroup]
+    members: [ashwinpp]
   analytics-privatedata-users:
     gid: 731
     description: Gives access to the Analytics (Hadoop) cluster as well as private data within.
