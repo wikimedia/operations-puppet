@@ -8,7 +8,7 @@ class ifttt::web(
     uwsgi::app { 'ifttt':
         settings => {
             uwsgi => {
-                plugins     => 'python2',
+                plugins     => 'python',
                 'wsgi-file' => "${ifttt::base::source_path}/app.py",
                 callable    => 'app',
                 master      => true,
