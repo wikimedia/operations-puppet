@@ -37,6 +37,12 @@
 # [*local_logging*]
 #   Whether to store log entries on the target node as well. Default: true
 #
+#
+# [*deployment*]
+#   What deployment system to use for deploying this service.
+#   Options: scap3, fabric
+#   Note: the fabric option will be removed onces ores.wmflabs.org stops using service::uwsgi
+#
 # [*deployment_user*]
 #   The user that will own the service code. Only applicable when
 #   $deployment ='scap3'. Default: $title
@@ -69,12 +75,15 @@ define service::uwsgi(
     $local_logging          = true,
     $deployment_user        = 'deploy-service',
     $deployment_manage_user = true,
+    $deployment             = 'scap3',
 ) {
-    scap::target { $repo:
-        service_name => $title,
-        deploy_user  => $deployment_user,
-        before       => Uwsgi::App[$title],
-        manage_user  => $deployment_manage_user,
+    if $deployment == 'scap3' {
+        scap::target { $repo:
+            service_name => $title,
+            deploy_user  => $deployment_user,
+            before       => Uwsgi::App[$title],
+            manage_user  => $deployment_manage_user,
+        }
     }
 
     # Import all common configuration
