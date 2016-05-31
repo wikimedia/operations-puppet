@@ -38,6 +38,7 @@ class ircyall(
                 'socket'    => '/run/uwsgi/ircyall-web.sock',
             }
         },
+        plugins  => 'python3',
         require  => Package['python3-ircyall'],
     }
 

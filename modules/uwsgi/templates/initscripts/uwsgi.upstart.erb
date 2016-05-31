@@ -4,7 +4,11 @@ description "<%= @title %> uwsgi app"
 setuid www-data
 setgid www-data
 
-exec /usr/bin/uwsgi --die-on-term --autoload --ini <%= @inipath %>
+exec /usr/bin/uwsgi \
+    --die-on-term \
+    --autoload \
+    --plugins '<%= @plugins %>' \
+    --ini <%= @inipath %>
 
 respawn
 

@@ -43,7 +43,6 @@ class wikilabels::web (
     uwsgi::app { 'wikilabels-web':
         settings => {
             uwsgi => {
-                plugins     => 'python3',
                 'wsgi-file' => "${config_path}/labels_web.py",
                 master      => true,
                 chdir       => $config_path,
@@ -53,6 +52,7 @@ class wikilabels::web (
                 die-on-term => true,
                 harakiri    => 30,
             }
-        }
+        },
+        plugins  => 'python3',
     }
 }

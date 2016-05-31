@@ -13,7 +13,6 @@ class dynamicproxy::api(
     uwsgi::app { 'invisible-unicorn':
         settings  => {
             uwsgi => {
-                plugins            => 'python3',
                 master             => true,
                 http-socket        => '0.0.0.0:5668',
                 mount              => '/dynamicproxy-api=/usr/local/bin/invisible-unicorn.py',
@@ -22,6 +21,7 @@ class dynamicproxy::api(
                 workers            => 4,
             }
         },
+        plugins   => 'python3',
         subscribe => File['/usr/local/bin/invisible-unicorn.py'],
     }
 

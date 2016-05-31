@@ -20,7 +20,8 @@ class quarry::web {
                 'processes' => 8,
                 'chdir'     => $clone_path,
             }
-        }
+        },
+        plugins  => 'python',
     }
 
     nginx::site { 'quarry-web-nginx':
