@@ -16,7 +16,7 @@ class role::memcached {
     # deployed manually. This workaround should avoid
     # disabling puppet for the whole duration of the test.
     # More info: T129963
-    if $::hostname == 'mc2009' or $::hostname == 'mc1009' {
+    if $::hostname == 'mc2009' or $::hostname =~ /mc10(09|10)/ {
         $version =  '1.4.25-2~wmf1'
     } else {
         $version = os_version('debian >= jessie || ubuntu >= trusty') ? {
@@ -27,7 +27,7 @@ class role::memcached {
 
     # mc[12]009 are configured with the latest memcached (version 1.4.25-2~wmf1)
     # as part of a performance experiment. More info: T129963
-    if $::hostname == 'mc2009' or $::hostname == 'mc1009' {
+    if $::hostname == 'mc2009' or $::hostname =~ /mc10(09|10)/ {
         $growth_factor    = 1.15
         $extended_options = [
             'slab_reassign',
