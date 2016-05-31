@@ -16,7 +16,8 @@ class kartotherian(
     $pgsql_kartotherian_pass = hiera('maps::postgresql_kartotherian_pass')
 
     service::node { 'kartotherian':
-        port   => 6533,
-        config => template('kartotherian/config.yaml.erb'),
+        port       => 6533,
+        config     => template('kartotherian/config.yaml.erb'),
+        deployment => 'scap3',
     }
 }

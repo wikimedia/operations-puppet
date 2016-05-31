@@ -54,6 +54,8 @@ sources:
   # The {} acts as an empty hash to use defaults.
   mobileapps/deploy: {}
 
+  kartotherian/deploy: {}
+
   # cxserver is the ContentTranslation server.
   cxserver/deploy:
     repository: cxserver/deploy
