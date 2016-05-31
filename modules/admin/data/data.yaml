@@ -223,7 +223,7 @@ groups:
     description: Gives generic client access to the Analytics (Hadoop) cluster.
         This will grant shell access on Hadoop client nodes (stat1002) and on
         Hadoop NameNodes.
-    members: [ashwinpp]
+    members: [ashwinpp, ladsgroup]
   analytics-privatedata-users:
     gid: 731
     description: Gives access to the Analytics (Hadoop) cluster as well as private data within.
