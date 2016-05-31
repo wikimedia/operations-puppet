@@ -1,5 +1,7 @@
 <%
 cvars = {
+  'mwapi'     => scope.lookupvar('service::configuration::mwapi_uri'),
+  'restbase'  => scope.lookupvar('service::configuration::restbase_uri'),
   'gelf_host' => scope.lookupvar('service::configuration::logstash_host'),
   'gelf_port' => scope.lookupvar('service::configuration::logstash_port'),
   'stat_host' => scope.lookupvar('service::configuration::statsd_host'),
@@ -62,3 +64,18 @@ services:
       # cors: restricted.domain.org
       # URL of the outbound proxy to use (complete with protocol)
       proxy: <%= cvars['proxy'] %>
+      # the template used for contacting the MW API
+      mwapi_req:
+        method: post
+        uri: <%= cvars['mwapi'] %>
+        headers:
+          host: '{{request.params.domain}}'
+          user-agent: '{{user-agent}}'
+        body: '{{ default(request.query, {}) }}'
+      # the template used for contacting RESTBase
+      restbase_req:
+        method: '{{request.method}}'
+        uri: <%= cvars['restbase'] %>/{{domain}}/v1/{+path}
+        query: '{{ default(request.query, {}) }}'
+        headers: '{{request.headers}}'
+        body: '{{request.body}}'
