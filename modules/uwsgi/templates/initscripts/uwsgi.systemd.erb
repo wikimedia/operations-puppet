@@ -3,7 +3,11 @@
 Description = <%= @title %> uwsgi app
 
 [Service]
-ExecStart = /usr/bin/uwsgi --die-on-term --autoload --ini <%= @inipath %>
+ExecStart = /usr/bin/uwsgi \
+    --die-on-term \
+    --autoload \
+    <% if @plugins -%> --plugins '<%= @plugins %>' \<% end -%>
+    --ini <%= @inipath %>
 User = www-data
 Group = www-data
 SyslogIdentifier = uwsgi-<%= @basename %>

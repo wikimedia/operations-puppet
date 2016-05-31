@@ -8,7 +8,6 @@ class ifttt::web(
     uwsgi::app { 'ifttt':
         settings => {
             uwsgi => {
-                plugins     => 'python',
                 'wsgi-file' => "${ifttt::base::source_path}/app.py",
                 callable    => 'app',
                 master      => true,
@@ -17,6 +16,7 @@ class ifttt::web(
                 venv        => $ifttt::base::venv_path,
                 processes   => inline_template("<%= @processorcount.to_i * ${workers_per_core} %>"),
             }
-        }
+        },
+        plugins => 'python',
     }
 }
