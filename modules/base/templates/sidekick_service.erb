@@ -1,0 +1,14 @@
+# Basic WMF unit for systemd "sidekicks"
+[Unit]
+Description=<%= @title %> - sidekick unit for <%= @parent %>
+BindsTo=<%= @parent %>.service
+After=<%= @parent %>.service
+
+[Service]
+
+ExecStart=<% if @start.start_with?"/"><%= @start %><% else %>/bin/bash -c "<%= @start %>"<% end %>
+ExecStop=<% if @stop.start_with?"/"><%= @stop %><% else %>/bin/bash -c "<%= @stop %>"<% end %>
+
+[Install]
+WantedBy=multi-user.target
+
