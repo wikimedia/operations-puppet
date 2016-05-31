@@ -108,7 +108,6 @@ class graphite::web(
     uwsgi::app { 'graphite-web':
         settings => {
             uwsgi => {
-                'plugins'   => 'python',
                 'socket'    => '/run/uwsgi/graphite-web.sock',
                 'stats'     => '/run/uwsgi/graphite-web-stats.sock',
                 'wsgi-file' => '/usr/share/graphite-web/graphite.wsgi',
@@ -116,6 +115,7 @@ class graphite::web(
                 'processes' => $uwsgi_processes,
             },
         },
+        plugins  => 'python',
         require  => File['/var/log/graphite-web'],
     }
 

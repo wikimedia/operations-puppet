@@ -116,7 +116,6 @@ define service::uwsgi(
     }
 
     $base_config = {
-            plugins     => 'python, python3',
             master      => true,
             http-socket => "0.0.0.0:${port}",
             processes   => $no_workers,
@@ -130,7 +129,8 @@ define service::uwsgi(
     uwsgi::app { $title:
         settings => {
             uwsgi => $complete_config,
-        }
+        },
+        plugins  => 'python, python3',
     }
 
 
