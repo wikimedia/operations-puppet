@@ -40,7 +40,7 @@ class role::maps::master {
     osm::planet_sync { 'gis':
         ensure        => present,
         flat_nodes    => true,
-        expire_levels => '16',
+        expire_levels => '15',
         num_threads   => $::processorcount/2,
         pg_password   => $osmupdater_pass,
         period        => 'day', # Remove thse as soon as we get down to minute
