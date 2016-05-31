@@ -145,7 +145,7 @@ $private_tables = [
     'archive_old',
     'blob_orphans',
     'blob_tracking',
-    'bot_password',
+    'bot_passwords',
     'bv2009_edits',
     'categorylinks_old',
     'click_tracking',
