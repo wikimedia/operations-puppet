@@ -15,8 +15,22 @@ class mediawiki::firejail {
         mode   => '0644',
     }
 
+    file { '/etc/firejail/mediawiki-converters.profile':
+        source => 'puppet:///modules/mediawiki/mediawiki-converters.profile',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0644',
+    }
+
     file { '/usr/local/bin/mediawiki-firejail-convert':
         source => 'puppet:///modules/mediawiki/mediawiki-firejail-convert',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+    }
+
+    file { '/usr/local/bin/mediawiki-firejail-ghostscript':
+        source => 'puppet:///modules/mediawiki/mediawiki-firejail-ghostscript',
         owner  => 'root',
         group  => 'root',
         mode   => '0555',
