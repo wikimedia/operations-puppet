@@ -31,10 +31,6 @@ class dynamicproxy::api(
         subscribe => File['/usr/local/bin/invisible-unicorn.py'],
     }
 
-    service { 'uwsgi-invisible-unicorn':
-        ensure  => running,
-    }
-
     file { '/etc/dynamicproxy-api':
             ensure => directory,
             owner  => 'www-data',
