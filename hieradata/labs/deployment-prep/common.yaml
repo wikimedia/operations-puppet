@@ -9,6 +9,8 @@ base::remote_syslog::central_host: "deployment-logstash2.deployment-prep.eqiad.w
 has_lvs: false
 "puppetmaster::scripts::keep_reports_minutes": 360
 puppetmaster::autosigner: true
+service::configuration::mwapi_uri: http://deployment-mediawiki02.deployment-prep.eqiad.wmflabs/w/api.php
+service::configuration::restbase_uri: http://deployment-restbase02.deployment-prep.eqiad.wmflabs:7231
 #service::configuration::http_proxy:
 service::configuration::statsd_host: labmon1001.eqiad.wmnet
 service::configuration::logstash_host: deployment-logstash2.deployment-prep.eqiad.wmflabs

@@ -4,6 +4,14 @@
 #
 # === Parameters
 #
+# [*mwapi_uri*]
+#   The host/IP where to reach the MW API. Default:
+#   http://api.svc.${::mw_primary}.wmnet/w/api.php
+#
+# [*restbase_uri*]
+#   The host/IP where to reach RESTBase. Default:
+#   http://restbase.svc.${::rb_site}.wmnet:7231
+#
 # [*http_proxy*]
 #   Full URL of the proxy to use
 #
@@ -28,6 +36,8 @@
 #   Default: false
 #
 class service::configuration(
+    $mwapi_uri     = "http://api.svc.${::mw_primary}.wmnet/w/api.php",
+    $restbase_uri  = "http://restbase.svc.${::rb_site}.wmnet:7231",
     $http_proxy    = undef,
     $statsd_host   = 'localhost',
     $statsd_port   = 8125,
