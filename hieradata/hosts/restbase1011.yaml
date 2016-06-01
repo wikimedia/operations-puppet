@@ -1,5 +1,4 @@
 cassandra::rack: 'a'
-cassandra::target_version: '2.2'
 cassandra::num_tokens: 256
 cassandra::instances:
   a:
