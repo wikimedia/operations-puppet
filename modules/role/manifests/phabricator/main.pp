@@ -186,7 +186,7 @@ class role::phabricator::main {
     # project changes mail (T85183)
     phabricator::logmail {'projectchanges':
         script_name  => 'project_changes.sh',
-        rcpt_address => [ 'aklapper@wikimedia.org', 'krenair@gmail.com' ],
+        rcpt_address => [ 'phabricator-reports@lists.wikimedia.org' ],
         sndr_address => 'aklapper@wikimedia.org',
         monthday     => '*',
         weekday      => 1, # Monday
