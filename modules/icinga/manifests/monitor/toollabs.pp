@@ -51,7 +51,7 @@ class icinga::monitor::toollabs {
         description   => 'toolschecker service itself needs to return OK',
         check_command => "${checker}!/self!OK",
         host          => $test_entry_host,
-        critical      => true,
+        critical      => false,
     }
 
     monitoring::service { 'tools-checker-dumps':
@@ -70,7 +70,7 @@ class icinga::monitor::toollabs {
         description   => 'Test LDAP for query',
         check_command => "${checker}!/ldap!OK",
         host          => $test_entry_host,
-        critical      => true,
+        critical      => false,
     }
 
     monitoring::service { 'tools-checker-puppetmaster-eqiad':
@@ -89,7 +89,7 @@ class icinga::monitor::toollabs {
         description   => 'NFS read/writeable on labs instances',
         check_command => "${checker}!/nfs/home!OK",
         host          => $test_entry_host,
-        critical      => true,
+        critical      => false,
     }
 
     # new instances will block on this for spinup if failing
