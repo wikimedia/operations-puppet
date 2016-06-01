@@ -41,3 +41,4 @@ cxserver::no_proxy_list:
   - "restbase.svc.%{::rb_site}.wmnet"
   - "apertium.svc.%{::site}.wmnet"
 cxserver::yandex_url: https://translate.yandex.net
+ores::web::redis_host: oresrdb1001.eqiad.wmnet.
