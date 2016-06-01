@@ -6,9 +6,14 @@ class hhvm::debug {
 
     ## Debugging symbols
 
+    $libboost_dbg_package = os_version('Debian >= jessie') ? {
+        true    => 'libboost1.55-dbg',
+        default => 'libboost1.54-dbg',
+    }
+
     package { [
         'hhvm-dbg',
-        'libboost1.54-dbg',
+        $libboost_dbg_package,
         'libc6-dbg',
         'libcurl3-dbg',
         'libevent-dbg',
@@ -36,6 +41,11 @@ class hhvm::debug {
     #   reports of things like call graphs.
     # - apache2-utils provides `ab`, an HTTP server benchmarking tool.
     # - perf-tools is <https://github.com/brendangregg/perf-tools>.
+
+    $perftools_package = os_version('Debian >= jessie') ? {
+        true    => 'perf-tools-unstable',
+        default => 'perf-tools',
+    }
 
     package { [ 'google-perftools', 'graphviz', 'gv', 'apache2-utils', 'perf-tools' ]:
         ensure => present,
@@ -93,13 +103,15 @@ class hhvm::debug {
 
     ## Misc
 
-    # Backported fix for pretty-printer bundled with libstdc++6-4.8-dbg.
-    # See <https://gcc.gnu.org/bugzilla/show_bug.cgi?id=58962> and
-    # <https://bugs.launchpad.net/ubuntu/+source/gcc-4.8/+bug/1256419>.
+    if os_version('Ubuntu == trusty') {
+        # Backported fix for pretty-printer bundled with libstdc++6-4.8-dbg.
+        # See <https://gcc.gnu.org/bugzilla/show_bug.cgi?id=58962> and
+        # <https://bugs.launchpad.net/ubuntu/+source/gcc-4.8/+bug/1256419>.
 
-    file { '/usr/share/gcc-4.8/python/libstdcxx/v6/printers.py':
-        source  => 'puppet:///modules/hhvm/debug/printers.py',
-        require => Package['libstdc++6-4.8-dbg'],
+        file { '/usr/share/gcc-4.8/python/libstdcxx/v6/printers.py':
+            source  => 'puppet:///modules/hhvm/debug/printers.py',
+            require => Package['libstdc++6-4.8-dbg'],
+        }
     }
 
 
