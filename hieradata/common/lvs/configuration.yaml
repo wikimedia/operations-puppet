@@ -173,7 +173,7 @@ lvs_services:
     monitors:
       ProxyFetch:
         url:
-        - https://en.wikipedia.org/wiki/Special:BlankPage
+        - https://varnishcheck.wikimedia.org/from/pybal
       IdleConnection:
         timeout-clean-reconnect: 3
         max-delay: 300
@@ -222,7 +222,7 @@ lvs_services:
     monitors:
       ProxyFetch:
         url:
-        - https://upload.wikimedia.org/monitoring/backend
+        - https://varnishcheck.wikimedia.org/from/pybal
       IdleConnection:
         timeout-clean-reconnect: 3
         max-delay: 300
@@ -263,7 +263,7 @@ lvs_services:
     monitors:
       ProxyFetch:
         url:
-        - https://maps.wikimedia.org/_info
+        - https://varnishcheck.wikimedia.org/from/pybal
       IdleConnection:
         timeout-clean-reconnect: 3
         max-delay: 300
@@ -361,6 +361,9 @@ lvs_services:
     bgp: 'no'
     depool-threshold: '.5'
     monitors:
+      ProxyFetch:
+        url:
+        - https://varnishcheck.wikimedia.org/from/pybal
       IdleConnection:
         timeout-clean-reconnect: 3
         max-delay: 300
