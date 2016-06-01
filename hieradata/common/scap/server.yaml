@@ -59,4 +59,6 @@ sources:
     repository: cxserver/deploy
 
   # ores is the Objective Revision Evaluation Service
-  ores/deploy: {}
+  ores/deploy:
+    repository: mediawiki/services/ores/deploy
+
