@@ -3,12 +3,13 @@
 class ores::web(
     $workers_per_core = 4,
     $redis_host = '127.0.0.1',
+    $port = 8081,
 ) {
     require ores::base
 
     $processes = $::processorcount * $workers_per_core
     service::uwsgi { 'ores':
-        port   => 8080,
+        port   => $port,
         config => {
             'wsgi-file' => "${ores::base::config_path}/ores_wsgi.py",
             chdir       => $ores::base::config_path,
