@@ -7,7 +7,8 @@ EXTRA_PARAMS=<%if @flat_nodes %>'--flat-nodes <%= @osmosis_dir %>/nodes.bin'<% e
 export JAVACMD_OPTIONS='-Dhttp.proxyHost=<%= @proxy.split(':')[0] %> -Dhttp.proxyPort=<%= @proxy.split(':')[1] %>'
 <% end -%>
 
-/usr/bin/osmosis \
+/usr/bin/flock -xn <%= @osmosis_dir %>/replicate-osm.lck \
+  /usr/bin/osmosis \
        --read-replication-interval \
        workingDirectory=<%= @osmosis_dir %> \
        --simplify-change \
