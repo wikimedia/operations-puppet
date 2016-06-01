@@ -1,0 +1,19 @@
+# Systemd job for Mediawiki's cgroup config
+# This file is managed by Puppet.
+[Unit]
+Description="Mw-cgroup"
+Before=hhvm.service
+
+[Service]
+Type=oneshot
+Environment=CGDIR=/sys/fs/cgroup/memory/mediawiki
+ExecStart=/bin/mkdir -p $CGDIR
+ExecStart=/bin/mkdir -p -m 0777 ${CGDIR}/job
+ExecStart=/bin/bash -c "echo '/usr/local/bin/cgroup-mediawiki-clean' > /sys/fs/cgroup/memory/release_agent"
+ExecStop=/bin/rmdir ${CGDIR}/job
+ExecStop=/bin/rmdir $CGDIR
+ExecStop=/bin/bash -c "echo '' > /sys/fs/cgroup/memory/release_agent"
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target

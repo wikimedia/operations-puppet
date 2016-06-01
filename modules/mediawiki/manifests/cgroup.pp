@@ -11,22 +11,6 @@ class mediawiki::cgroup {
         ensure => present,
     }
 
-    file { '/etc/init/mw-cgroup.conf':
-        source  => 'puppet:///modules/mediawiki/cgroup/mw-cgroup.conf',
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        require => Package['cgroup-bin'],
-        notify  => Service['mw-cgroup'],
-    }
-
-    service { 'mw-cgroup':
-        ensure   => running,
-        provider => 'upstart',
-        require  => File['/etc/init/mw-cgroup.conf'],
-    }
-
-
     # The cgroup-mediawiki-clean script is used as the release_agent
     # script for the cgroup. When the last task in the cgroup exits,
     # the kernel will run the script.
@@ -37,4 +21,11 @@ class mediawiki::cgroup {
         group  => 'root',
         mode   => '0755',
     }
+
+    base::service_unit { 'mw-cgroup':
+        ensure  => present,
+        systemd => true,
+        upstart => true,
+    }
+
 }
