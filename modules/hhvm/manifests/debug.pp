@@ -47,7 +47,7 @@ class hhvm::debug {
         default => 'perf-tools',
     }
 
-    package { [ 'google-perftools', 'graphviz', 'gv', 'apache2-utils', 'perf-tools' ]:
+    package { [ 'google-perftools', 'graphviz', 'gv', 'apache2-utils', $perftools_package ]:
         ensure => present,
     }
 
