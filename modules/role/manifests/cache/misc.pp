@@ -65,6 +65,7 @@ class role::cache::misc {
             'req_host' => [
                 'static-bugzilla.wikimedia.org',
                 'annual.wikimedia.org',
+                'endowment.wikimedia.org',
                 'transparency.wikimedia.org',
                 '15.wikipedia.org',
                 'releases.wikimedia.org'
