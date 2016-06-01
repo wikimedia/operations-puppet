@@ -115,7 +115,7 @@ allow *
 # Allow Horizon to ask the puppetmaster about available roles
 path /resource_type
 auth any
-allow <%= @horizon_host_ip %>
+allow <%= @horizon_host %>
 
 # deny everything else; this ACL is not strictly necessary, but
 # illustrates the default policy.

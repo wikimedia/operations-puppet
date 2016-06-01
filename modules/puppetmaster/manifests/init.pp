@@ -95,7 +95,7 @@ class puppetmaster(
         include puppetmaster::labs
         require_package('ruby-httpclient')
 
-        $horizon_host_ip = ipresolve(hiera('labs_horizon_host'), 4)
+        $horizon_host = hiera('labs_horizon_host')
         file { '/etc/puppet/auth.conf':
             owner   => 'root',
             group   => 'root',
