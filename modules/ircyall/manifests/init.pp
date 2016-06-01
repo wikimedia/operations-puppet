@@ -24,7 +24,7 @@ class ircyall(
         'python3-asyncio-redis',
         'python3-ircyall',
     ]:
-        ensure => latest
+        ensure => present
     }
 
     uwsgi::app { 'ircyall-web':
