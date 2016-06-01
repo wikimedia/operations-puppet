@@ -107,11 +107,11 @@ class aptrepo (
     }
 
     file { "${basedir}/conf/incoming":
-        ensure => present,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0444',
-        source => 'puppet:///modules/aptrepo/incoming',
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        content => template('aptrepo/incoming.erb'),
     }
 
     file { "${basedir}/conf/log":
