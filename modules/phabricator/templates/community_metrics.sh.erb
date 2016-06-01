@@ -46,7 +46,7 @@ END
 #echo "result_projectsboardmove"
 result_projectsboardmove=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -u$sql_user $sql_name << END
 
-SELECT COUNT(DISTINCT (edge.dst)) FROM phabricator_maniphest.edge INNER JOIN phabricator_maniphest.maniphest_transaction WHERE FROM_UNIXTIME(maniphest_transaction.dateModified,'%Y%m')=date_format(NOW() - INTERVAL 1 MONTH,'%Y%m') AND maniphest_transaction.transactionType = "projectcolumn" AND edge.type = 41 AND edge.src = maniphest_transaction.objectPHID AND edge.dst = SUBSTR(maniphest_transaction.newValue, INSTR(maniphest_transaction.newValue, 'projectPHID')+14, 30);
+SELECT COUNT(DISTINCT (edge.dst)) FROM phabricator_maniphest.edge INNER JOIN phabricator_maniphest.maniphest_transaction WHERE FROM_UNIXTIME(maniphest_transaction.dateModified,'%Y%m')=date_format(NOW() - INTERVAL 1 MNOTH,'%Y%m') AND maniphest_transaction.transactionType = "core:columns" AND edge.type = 41 AND edge.src = maniphest_transaction.objectPHID AND edge.dst = SUBSTR(maniphest_transaction.newValue, INSTR(maniphest_transaction.newValue, 'PHID-PROJ-'), 30);
 
 END
 )
