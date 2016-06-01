@@ -7,13 +7,14 @@
 #  schedule the backup.
 
 define labstore::fileserver::replicate(
+    $ensure = present,
     $src_path,
     $dest_path,
     $dest_host,
     $calendar,
 ) {
     base::service_unit { "replicate-${title}":
-        ensure          => present,
+        ensure          => $ensure,
         template_name   => 'replicate',
         systemd         => true,
         declare_service => false,
@@ -23,7 +24,7 @@ define labstore::fileserver::replicate(
     # Jessie hosts, so it is perfectly acceptable to presume
     # systemd.
     file { "/etc/systemd/system/replicate-${title}.timer":
-        ensure  => present,
+        ensure  => $ensure,
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
