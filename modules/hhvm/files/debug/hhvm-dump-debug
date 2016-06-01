@@ -6,11 +6,10 @@
 
 die() { local st="$?"; echo "$@" >&2; exit $st; }
 
-. /etc/default/hhvm || die
-
 if [ -x /bin/systemctl ]; then
     PID=$(/bin/systemctl show -p MainPID hhvm.service | cut -d= -f2)
 else
+    . /etc/default/hhvm || die
     read PID <"${HHVM_RUN_DIR:-/run/hhvm}/hhvm.pid"
 fi;
 
