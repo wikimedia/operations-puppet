@@ -5,9 +5,7 @@
 class wikistats::updates {
 
     # update scripts are PHP-cli
-    package { 'php5-cli':
-        ensure => latest,
-    }
+    require_package('php5-cli')
 
     # log dir for wikistats
     file { '/var/log/wikistats':
