@@ -20,10 +20,16 @@ define apache::mod_conf(
     $ensure   = present,
     $mod      = $title,
     $loadfile = "${title}.load",
-) {
+)
+{
     validate_ensure($ensure)
 
     include ::apache
+
+    $flags = os_version('Debian >= jessie') ? {
+        true    => '-f',
+        default => '',
+    }
 
     if $ensure == present {
         exec { "ensure_${ensure}_mod_${mod}":
@@ -34,7 +40,7 @@ define apache::mod_conf(
         }
     } else {
         exec { "ensure_${ensure}_mod_${mod}":
-            command => "/usr/sbin/a2dismod ${mod}",
+            command => "/usr/sbin/a2dismod ${flags} ${mod}",
             onlyif  => "/usr/bin/test -L /etc/apache2/mods-enabled/${loadfile}",
             require => Package['apache2'],
             notify  => Service['apache2'],
