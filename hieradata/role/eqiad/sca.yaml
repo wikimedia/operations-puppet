@@ -1,4 +1,3 @@
 lvs::realserver::realserver_ips:
   - '10.2.2.11' # apertium.svc.eqiad.wmnet
   - '10.2.2.16' # zotero.svc.eqiad.wmnet
-ores::scapdeploy::redis_host: oresrdb1001.eqiad.wmnet.
