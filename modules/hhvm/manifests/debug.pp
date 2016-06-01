@@ -6,9 +6,14 @@ class hhvm::debug {
 
     ## Debugging symbols
 
+    $libboost_dbg_package = os_version('Debian >= jessie') ? {
+        true    => 'libboost1.55-dbg',
+        default => 'libboost1.54-dbg',
+    }
+
     package { [
         'hhvm-dbg',
-        'libboost1.54-dbg',
+        $libboost_dbg_package,
         'libc6-dbg',
         'libcurl3-dbg',
         'libevent-dbg',
@@ -36,6 +41,11 @@ class hhvm::debug {
     #   reports of things like call graphs.
     # - apache2-utils provides `ab`, an HTTP server benchmarking tool.
     # - perf-tools is <https://github.com/brendangregg/perf-tools>.
+
+    $perftools_package = os_version('Debian >= jessie') ? {
+        true    => 'perf-tools-unstable',
+        default => 'perf-tools',
+    }
 
     package { [ 'google-perftools', 'graphviz', 'gv', 'apache2-utils', 'perf-tools' ]:
         ensure => present,
