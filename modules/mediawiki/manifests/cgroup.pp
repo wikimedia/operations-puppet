@@ -7,25 +7,8 @@
 # See also: <https://www.mediawiki.org/wiki/Manual:$wgShellCgroup>
 #
 class mediawiki::cgroup {
-    package { 'cgroup-bin':
-        ensure => present,
-    }
 
-    file { '/etc/init/mw-cgroup.conf':
-        source  => 'puppet:///modules/mediawiki/cgroup/mw-cgroup.conf',
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        require => Package['cgroup-bin'],
-        notify  => Service['mw-cgroup'],
-    }
-
-    service { 'mw-cgroup':
-        ensure   => running,
-        provider => 'upstart',
-        require  => File['/etc/init/mw-cgroup.conf'],
-    }
-
+    require_package 'cgroup-bin'
 
     # The cgroup-mediawiki-clean script is used as the release_agent
     # script for the cgroup. When the last task in the cgroup exits,
@@ -37,4 +20,11 @@ class mediawiki::cgroup {
         group  => 'root',
         mode   => '0755',
     }
+
+    base::service_unit { 'mw-cgroup':
+        ensure  => present,
+        systemd => true,
+        upstart => true,
+    }
+
 }

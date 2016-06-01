@@ -329,3 +329,6 @@ maps_test:
   __regex: !ruby/regexp /^maps-test200[1-4]\.codfw\.wmnet$/
   cassandra::version: '2.1.12'
 
+jessie_appservers:
+  __regex: !ruby/regexp /^mw1(26[2-9]|2[7-9][0-9]|3[0-9][0-9]\.eqiad\.wmnet$/
+  base::grub::enable_memory_cgroup: true
