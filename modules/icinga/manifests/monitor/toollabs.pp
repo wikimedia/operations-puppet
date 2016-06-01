@@ -45,7 +45,7 @@ class icinga::monitor::toollabs {
     }
 
     # tests are pass/fail based on string return check
-    $checker="check_http_url_at_address_for_string!${test_entry_host}"
+    $checker="check_http_url_at_address_for_string_with_timeout!300!${test_entry_host}"
 
     monitoring::service { 'tools-checker-self':
         description   => 'toolschecker service itself needs to return OK',
