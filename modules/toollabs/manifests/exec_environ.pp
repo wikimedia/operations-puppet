@@ -165,6 +165,9 @@ class toollabs::exec_environ {
         'fonts-ipafont-gothic',        # Japanese fonts.
         'ttf-indic-fonts-core',        # Many Indic languages.
 
+        # Fonts for latex
+        'texlive-fonts-extra',        # T137121
+
         # tcl packages
         'mysqltcl',
         'tcl-tls',                     # T58995
