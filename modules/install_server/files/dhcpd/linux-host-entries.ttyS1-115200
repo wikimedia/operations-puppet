@@ -3446,11 +3446,6 @@ host maps-test2004 {
     filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
-host magnesium {
-    hardware ethernet 78:2b:cb:09:0d:d1;
-    fixed-address magnesium.wikimedia.org;
-}
-
 host mc1001 {
     hardware ethernet 00:1b:21:7a:88:0b;
     fixed-address mc1001.eqiad.wmnet;
