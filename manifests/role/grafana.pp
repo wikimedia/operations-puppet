@@ -60,10 +60,10 @@ class role::grafana {
                 auto_sign_up => true,
             },
 
-            # Since we require ops / nda / wmf LDAP group membership
-            # to log in to Grafana, we can assume all users are trusted,
-            # and can assign to them the 'Editor' role (rather than
-            # 'Viewer', the default).
+            # Since we require ops / nda / wmf / grafana-admin LDAP group
+            # membership to log in to Grafana, we can assume all users are
+            # trusted, and can assign to them the 'Editor' role (rather
+            # than 'Viewer', the default).
             'users'      => {
                 auto_assign_org_role => 'Editor',
                 allow_org_create     => false,
@@ -101,7 +101,7 @@ class role::grafana {
     # LDAP configuration. Interpolated into the Apache site template
     # to provide mod_authnz_ldap-based user authentication.
     $auth_ldap = {
-        name          => 'nda/ops/wmf',
+        name          => 'nda/ops/wmf/grafana-admin',
         bind_dn       => 'cn=proxyagent,ou=profile,dc=wikimedia,dc=org',
         bind_password => $passwords::ldap::production::proxypass,
         url           => 'ldaps://ldap-labs.eqiad.wikimedia.org ldap-labs.codfw.wikimedia.org/ou=people,dc=wikimedia,dc=org?cn',
@@ -109,6 +109,7 @@ class role::grafana {
             'cn=ops,ou=groups,dc=wikimedia,dc=org',
             'cn=nda,ou=groups,dc=wikimedia,dc=org',
             'cn=wmf,ou=groups,dc=wikimedia,dc=org',
+            'cn=grafana-admin,ou=groups,dc=wikimedia,dc=org',
         ],
     }
 
