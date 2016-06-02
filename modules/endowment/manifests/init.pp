@@ -8,10 +8,6 @@ class endowment {
         source => 'puppet:///modules/endowment/endowment.wikimedia.org',
     }
 
-    apache::site { 'endowment.wikimedia.org':
-        source => 'puppet:///modules/endowment/endowment.wikimedia.org',
-    }
-
     git::clone { 'wikimedia/endowment':
         ensure    => 'latest',
         directory => '/srv/org/wikimedia/endowment',
