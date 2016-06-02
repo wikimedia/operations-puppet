@@ -2378,6 +2378,7 @@ node 'palladium.eqiad.wmnet' {
     role ipmi, access_new_install, puppetmaster::frontend, pybal_config
     include standard
     include role::conftool::master
+    include base::firewall
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
     }
