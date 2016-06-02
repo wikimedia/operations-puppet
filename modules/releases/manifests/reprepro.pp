@@ -43,14 +43,6 @@ class releases::reprepro {
         require => Class['::aptrepo'],
     }
 
-    file { $incomingdir:
-        ensure  => directory,
-        owner   => 'reprepro',
-        group   => 'reprepro',
-        mode    => '0755',
-        require => Class['::aptrepo'],
-    }
-
     class { '::aptrepo::distribution':
         basedir  => $basedir,
         settings => {
