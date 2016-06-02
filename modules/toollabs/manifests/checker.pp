@@ -85,4 +85,10 @@ class toollabs::checker inherits toollabs {
         ensure  => running,
         require => File['/run/toolschecker'],
     }
+
+
+    nginx::site { 'toolschecker-nginx':
+        require => Service['toolschecker'],
+        content => template('toollabs/toolschecker.nginx.erb'),
+    }
 }
