@@ -862,13 +862,6 @@ root_spec: &root_spec
     /{domain:wikisource.org}: *default_project
     /{domain:test.wikidata.org}: *default_project
     /{domain:www.wikidata.org}: *default_project
-    /{domain:office.wikimedia.org}:
-      <<: *default_project
-      x-route-filters:
-        - path: ./lib/mediawiki_auth_filter.js
-          options:
-            permissions:
-              - read
 
     # global domain
     /{domain:wikimedia.org}: *wikimedia.org
