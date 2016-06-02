@@ -1,0 +1,9 @@
+# This file is managed by Puppet.
+
+<%=
+    @settings.sort.map { |name,items|
+            ["\n"].concat items.sort.map { |k,v|
+                "#{k}: #{v}"
+            }.push []
+    }.join("\n")
+%>
