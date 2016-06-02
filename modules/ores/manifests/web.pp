@@ -17,9 +17,10 @@ class ores::web(
 
     $processes = $::processorcount * $workers_per_core
     service::uwsgi { 'ores':
-        port       => $port,
-        sudo_rules => $sudo_rules,
-        config     => {
+        port            => $port,
+        sudo_rules      => $sudo_rules,
+        healthcheck_url => '/',
+        config          => {
             'wsgi-file' => "${ores::base::config_path}/ores_wsgi.py",
             chdir       => $ores::base::config_path,
             plugins     => 'python3',
