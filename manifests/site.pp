@@ -711,11 +711,6 @@ node 'db2033.codfw.wmnet' {
     include base::firewall
 }
 
-# temp. used by dzahn for RT upgrade test
-node 'db2007.codfw.wmnet' {
-    role requesttracker::upgradetest
-}
-
 node /^db20(08|09)\.codfw\.wmnet/ {
     class { 'role::mariadb::core':
         shard         => 'x1',
