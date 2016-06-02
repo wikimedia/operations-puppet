@@ -1939,20 +1939,6 @@ node 'maerlant.wikimedia.org' {
     }
 }
 
-# RT and the other RT
-node 'magnesium.wikimedia.org' {
-
-    $cluster = 'misc'
-
-    role requesttracker::server
-    include standard
-
-    interface::add_ip6_mapped { 'main':
-        interface => 'eth0',
-    }
-
-}
-
 node 'maps-test2001.codfw.wmnet' {
     role maps::server, maps::master
     include base::firewall
@@ -2806,7 +2792,7 @@ node 'tungsten.eqiad.wmnet' {
     include base::firewall
 }
 
-# will replace magnesium (RT) (T123713)
+# replaced magnesium (RT) (T119112 T123713)
 node 'ununpentium.wikimedia.org' {
     role requesttracker::server
 
