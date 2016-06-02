@@ -892,3 +892,6 @@ enable_user_defined_functions: false
 # below their system default. The sysinternals 'clockres' tool can confirm your system's default
 # setting.
 windows_timer_interval: 1
+
+# Disable mmap'd data reads until further notice (causing loads of page faults)
+disk_access_mode: mmap_index_only
