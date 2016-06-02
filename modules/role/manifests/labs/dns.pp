@@ -41,6 +41,11 @@ class role::labs::dns {
         read_only => 'off',
     }
 
+    service { 'mariadb':
+        ensure  => running,
+        require => Class['mariadb::packages_wmf', 'mariadb::config'],
+    }
+
     package { 'mysql-client':
         ensure => present,
     }
