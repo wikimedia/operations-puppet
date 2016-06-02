@@ -52,7 +52,7 @@ class cassandra::metrics(
     if $target_cassandra_version == '2.1' {
         $collector_version = '2.1.1-20160520.211019-1'
     } else {
-        $collector_version = '3.1.1-20160520.203425-1'
+        $collector_version = '3.1.3-20160602.140523-1'
     }
 
     package { 'cassandra/metrics-collector':
