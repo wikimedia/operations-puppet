@@ -72,6 +72,7 @@ class statistics::compute {
         'python-dev',  # T83316
         'python3-dev', # T83316
         'python-kafka',
+        'python-pymysql',
     ])
 
     # FORTRAN packages (T89414)
