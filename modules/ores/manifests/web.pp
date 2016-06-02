@@ -41,7 +41,6 @@ class ores::web(
         },
     }
     if $redis_password {
-        notify{ "wegot redis": }
         $pass_config = {
             'score_caches' => {
                 'ores_redis' => {
