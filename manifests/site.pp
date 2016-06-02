@@ -214,7 +214,7 @@ node 'bohrium.eqiad.wmnet' {
 
 # virtual machine for static misc. services
 node 'bromine.eqiad.wmnet' {
-    role bugzilla::static, microsites::annualreport, microsites::transparency, microsites::releases
+    role bugzilla::static, microsites::annualreport, microsites::transparency, microsites::releases, microsites::endowment
     include standard
 }
 
