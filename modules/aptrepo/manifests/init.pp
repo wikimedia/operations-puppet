@@ -74,14 +74,6 @@ class aptrepo (
         mode   => '0755',
     }
 
-    file { "${basedir}/conf/distributions":
-        ensure => present,
-        mode   => '0444',
-        owner  => 'root',
-        group  => 'root',
-        source => 'puppet:///modules/aptrepo/distributions',
-    }
-
     file { "${basedir}/conf/updates":
         ensure => present,
         mode   => '0444',
