@@ -761,6 +761,11 @@ class role::mariadb::wikitech {
         port   => '3306',
         srange => '@resolve((tin.eqiad.wmnet mira.codfw.wmnet terbium.eqiad.wmnet mw1152.eqiad.wmnet))',
     }
+
+    service { 'mariadb':
+        ensure  => running,
+        require => Class['mariadb::packages_wmf', 'mariadb::config'],
+    }
 }
 
 class role::mariadb::proxy(
