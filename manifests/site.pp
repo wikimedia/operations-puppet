@@ -2465,6 +2465,10 @@ node /(dubnium|pollux)\.wikimedia\.org/ {
 
     role openldap::corp
     include standard
+
+    if $::hostname == 'pollux' {
+        backup::openldapset {'openldap_oit':}
+    }
 }
 
 # careful when moving poolcounters
