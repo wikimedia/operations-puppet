@@ -51,6 +51,8 @@ spec:
                     redirect: false
                   headers:
                     cache-control: no-cache
+                  # don't decode the response body to keep it off-heap
+                  encoding: null
 
               definition_rerender:
                 topic: resource_change
@@ -70,6 +72,8 @@ spec:
                     redirect: false
                   headers:
                     cache-control: no-cache
+                  # don't decode the response body to keep it off-heap
+                  encoding: null
 
               mobile_rerender:
                 topic: resource_change
@@ -86,6 +90,8 @@ spec:
                     redirect: false
                   headers:
                     cache-control: no-cache
+                  # don't decode the response body to keep it off-heap
+                  encoding: null
 
               purge_varnish:
                 topic: resource_change
@@ -117,6 +123,8 @@ spec:
                     if-unmodified-since: '{{date(message.meta.dt)}}'
                   query:
                     redirect: false
+                  # don't decode the response body to keep it off-heap
+                  encoding: null
 
               null_edit:
                 topic: resource_change
@@ -133,6 +141,8 @@ spec:
                     if-unmodified-since: '{{date(message.meta.dt)}}'
                   query:
                     redirect: false
+                  # don't decode the response body to keep it off-heap
+                  encoding: null
 
               page_edit:
                 topic: mediawiki.revision_create
@@ -145,6 +155,8 @@ spec:
                     if-unmodified-since: '{{date(message.meta.dt)}}'
                   query:
                     redirect: false
+                  # don't decode the response body to keep it off-heap
+                  encoding: null
 
               revision_visibility_change:
                 topic: mediawiki.revision_visibility_set
@@ -155,6 +167,8 @@ spec:
                     cache-control: no-cache
                   query:
                     redirect: false
+                  # don't decode the response body to keep it off-heap
+                  encoding: null
 
               page_delete:
                 topic: mediawiki.page_delete
@@ -165,6 +179,8 @@ spec:
                     cache-control: no-cache
                   query:
                     redirect: false
+                  # don't decode the response body to keep it off-heap
+                  encoding: null
 
               page_restore:
                 topic: mediawiki.page_restore
@@ -175,6 +191,8 @@ spec:
                     cache-control: no-cache
                   query:
                     redirect: false
+                  # don't decode the response body to keep it off-heap
+                  encoding: null
 
               page_move:
                 topic: mediawiki.page_move
@@ -185,6 +203,8 @@ spec:
                       cache-control: no-cache
                     query:
                       redirect: false
+                    # don't decode the response body to keep it off-heap
+                    encoding: null
                   - method: get
                     uri: '<%= @restbase_uri %>/{{message.meta.domain}}/v1/page/html/{message.new_title}/{{message.new_revision_id}}'
                     headers:
@@ -192,3 +212,5 @@ spec:
                       if-unmodified-since: '{{date(message.meta.dt)}}'
                     query:
                       redirect: false
+                    # don't decode the response body to keep it off-heap
+                    encoding: null
