@@ -17,8 +17,7 @@ exec /usr/bin/uwsgi --plugin=python \
                     --harakiri-verbose \
                     --wsgi-file=/usr/local/lib/python2.7/dist-packages/toolschecker.py \
                     --callable=app \
-                    --socket=/run/toolschecker/toolschecker.sock \
-                    --chmod-socket=664 \
+                    --http-socket=0.0.0.0:80 \
                     --die-on-term
 
 respawn
