@@ -2,7 +2,6 @@
 class role::requesttracker::upgradetest {
     system::role { 'role::requesttracker::upgradetest': description => 'temp test setup for RT migration to jessie' }
 
-    include standard
     include base::firewall
     include rsync::server
 

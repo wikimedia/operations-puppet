@@ -26,15 +26,9 @@ class role::requesttracker::server {
         }
     }
 
-    if os_version('debian >= jessie') {
-        $rt_dbhost = 'db2007.codfw.wmnet'
-    } else {
-        $rt_dbhost = 'm1-master.eqiad.wmnet'
-    }
-
     class { '::requesttracker':
         apache_site => 'rt.wikimedia.org',
-        dbhost      => $rt_dbhost,
+        dbhost      => 'm1-master.eqiad.wmnet',
         dbport      => '',
         dbuser      => $passwords::misc::rt::rt_mysql_user,
         dbpass      => $passwords::misc::rt::rt_mysql_pass,
