@@ -8,10 +8,18 @@ class ores::web(
 ) {
     require ores::base
 
+    # Need to be able to also restart the worker. The uwsgi service is
+    # hopefully temporary
+    $sudo_rules = [
+        'ALL=(root) NOPASSWD: /usr/sbin/service uwsgi-ores *',
+        'ALL=(root) NOPASSWD: /usr/sbin/service celery-ores-worker *',
+    ]
+
     $processes = $::processorcount * $workers_per_core
     service::uwsgi { 'ores':
-        port   => $port,
-        config => {
+        port       => $port,
+        sudo_rules => $sudo_rules,
+        config     => {
             'wsgi-file' => "${ores::base::config_path}/ores_wsgi.py",
             chdir       => $ores::base::config_path,
             plugins     => 'python3',
@@ -20,6 +28,7 @@ class ores::web(
             processes   => $processes,
         }
     }
+
     # lint:ignore:arrow_alignment
     $base_config = {
         'ores' => {

@@ -50,6 +50,10 @@
 # [*deployment_manage_user*]
 #   Boolean. Whether or not scap::target manages user. Only applicable
 #   when $deployment ='scap3'. Default: false
+
+# [*sudo_rules*]
+#   An array of string representing sudo rules in the sudoers format that you
+#   want the service to have. Default: empty array
 #
 # === Examples
 #
@@ -76,6 +80,7 @@ define service::uwsgi(
     $deployment_user        = 'deploy-service',
     $deployment_manage_user = true,
     $deployment             = 'scap3',
+    $sudo_rules             = [],
 ) {
     if $deployment == 'scap3' {
         scap::target { $repo:
@@ -83,6 +88,7 @@ define service::uwsgi(
             deploy_user  => $deployment_user,
             before       => Uwsgi::App[$title],
             manage_user  => $deployment_manage_user,
+            sudo_rules   => $sudo_rules,
         }
     }
 
