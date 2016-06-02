@@ -126,6 +126,7 @@ lvs_service_ips:
     codfw: 10.2.1.11
   ores: &ip_block028
     eqiad: 10.2.2.10
+    codfw: 10.2.1.10
 lvs_services:
   text:
     description: "Main wiki platform LVS service, text.%{::site}.wikimedia.org (Varnish)"
