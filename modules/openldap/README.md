@@ -46,3 +46,14 @@ objectClass: top
 cn: admin
 sn: admin
 userPassword: HASH_AS_ABOVE
+
+## Using slapadd ##
+
+If you got not admin user yet, using LDAP operations is not yet possible. You can break the
+chicken and egg problem by using slapadd.
+
+TL;DR
+
+sudo service slapd stop ; sudo -u openldap slapdadd -l ldiffile ; sudo service slapd start
+
+Get slapd stopped, switch privileges to the user openldap, load the server with an LDIF file and then start the server
