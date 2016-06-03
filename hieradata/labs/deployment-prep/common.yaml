@@ -178,9 +178,6 @@ role::deployment::mediawiki::key_fingerprint: f0:54:06:fa:17:27:97:a2:cc:69:a0:a
     - deployment-elastic06
     - deployment-elastic07
     - deployment-elastic08
-"elasticsearch::bind_networks":
-    - _local_
-    - _site_
 "elasticsearch::cluster_name": beta-search
 "elasticsearch::auto_create_index": '+apifeatureusage-*,-*'
 "elasticsearch::graylog_hosts":

@@ -12,11 +12,18 @@ elasticsearch::minimum_master_nodes: 2
 # More than 30G isn't very useful
 elasticsearch::heap_memory: '30G'
 
+elasticsearch::bind_networks:
+  - _local_
+  - _site_
+
+elasticsearch::publish_host: _eth0_
+
 # Production elasticsearch needs these plugins to be loaded in order
 # to work properly.  This will keep elasticsearch from starting
 # if these plugins are  not available.
 elasticsearch::plugins_mandatory:
-  - 'experimental highlighter'
+  - 'experimental-highlighter'
+  - 'extra'
   - 'analysis-icu'
 
 # But it'd save time if we just waited for all of them to come back so
