@@ -12,6 +12,7 @@
 #   - *options*: A list of options for reprepro (see conf/options file).
 #   - *uploaders*: A list of uploaders instructions (see "uploaders file")
 #   - *incomingdir*: Path considered for incoming uploads.
+#   - *incomingconf*: Name of a template with config options for incoming uploads. (conf/incoming)
 #   - *default_distro*: The default distribution if none specified.
 #   - *gpg_secring*: The GPG secret keyring for reprepro to use.
 #   - *gpg_pubring*: The GPG public keyring for reprepro to use.
@@ -34,6 +35,7 @@ class aptrepo (
     $options         = [],
     $uploaders       = [],
     $incomingdir     = 'incoming',
+    $incomingconf    = 'incoming',
     $default_distro  = 'jessie',
     $gpg_secring     = undef,
     $gpg_pubring     = undef,
@@ -103,7 +105,7 @@ class aptrepo (
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-        content => template('aptrepo/incoming.erb'),
+        content => template("aptrepo/${incomingconf}.erb"),
     }
 
     file { "${basedir}/conf/log":
