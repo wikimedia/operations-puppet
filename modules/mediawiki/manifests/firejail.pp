@@ -35,4 +35,18 @@ class mediawiki::firejail {
         group  => 'root',
         mode   => '0555',
     }
+
+    file { '/usr/local/bin/mediawiki-firejail-ffmpeg':
+        source => 'puppet:///modules/mediawiki/mediawiki-firejail-ffmpeg',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+    }
+
+    file { '/usr/local/bin/mediawiki-firejail-ffmpeg2theora':
+        source => 'puppet:///modules/mediawiki/mediawiki-firejail-ffmpeg2theora',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+    }
 }
