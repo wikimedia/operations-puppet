@@ -4,7 +4,8 @@ class role::aptrepo::wikimedia {
     $basedir = '/srv/wikimedia'
 
     class { '::aptrepo':
-        basedir => $basedir,
+        basedir      => $basedir,
+        incomingconf => 'incoming-wikimedia',
     }
 
     file { "${basedir}/conf/distributions":
