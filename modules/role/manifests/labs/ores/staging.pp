@@ -39,4 +39,18 @@ class role::labs::ores::staging {
         },
         priority => '99',
     }
+
+    file { '/srv/ores':
+        ensure => directory,
+        owner  => 'www-data',
+        group  => 'www-data',
+        mode   => '0775',
+    }
+
+    file { $ores::base::config_path:
+        ensure  => directory,
+        owner   => 'www-data',
+        group   => 'www-data',
+        require => File['/srv/ores'],
+    }
 }
