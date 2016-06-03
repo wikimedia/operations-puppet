@@ -10,14 +10,6 @@
 #   The URI (host:port) of the Zookeeper broker(s) controlling the Kafka cluster
 #   from which to receive the events.
 #
-# [*mwapi_uri*]
-#   The full URI of the MW API contact point. Default:
-#   http://api.svc.${::mw_primary}.wmnet/w/api.php
-#
-# [*restbase_uri*]
-#   The host/IP where to reach RESTBase. Default:
-#   http://restbase.svc.${::rb_site}.wmnet:7231
-#
 # [*purge_host*]
 #   The vhtcpd daemon host to send purge requests to. Default: 239.128.0.112
 #
@@ -30,12 +22,15 @@
 #
 class changeprop(
     $zk_uri,
-    $mwapi_uri    = "http://api.svc.${::mw_primary}.wmnet/w/api.php",
-    $restbase_uri = "http://restbase.svc.${::rb_site}.wmnet:7231",
     $purge_host   = '239.128.0.112',
     $purge_port   = 4827,
     $concurrency  = 30,
 ) {
+
+    include ::service::configuration
+
+    $restbase_uri = $::service::configuration::restbase_uri
+    $mwapi_uri = $::service::configuration::mwapi_uri
 
     service::node { 'changeprop':
         enable          => true,
