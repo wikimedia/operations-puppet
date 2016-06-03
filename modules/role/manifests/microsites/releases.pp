@@ -29,6 +29,3 @@ class role::microsites::releases {
     backup::set { 'srv-org-wikimedia': }
 }
 
-class role::releases::upload {
-    class { '::releases::reprepro::upload': }
-}
