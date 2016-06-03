@@ -1,4 +1,4 @@
-class labstore::fileserver::primary {
+class labstore::fileserver::secondary {
 
     requires_os('Debian >= jessie')
 
