@@ -1525,6 +1525,11 @@ node 'labstore1003.eqiad.wmnet' {
     include standard
 }
 
+node /labstore100[45]\.eqiad\.wmnet/ {
+    role labs::nfs::secondary
+    include standard
+}
+
 node /labstore200[1-2]\.codfw\.wmnet/ {
     role labs::nfs::backup
     include standard
