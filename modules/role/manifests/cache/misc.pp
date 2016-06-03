@@ -240,6 +240,13 @@ class role::cache::misc {
             'be_opts'  => merge($app_def_be_opts, { 'probe' => 'wdqs' }),
             'req_host' => 'query.wikidata.org',
         },
+        'ores' => {
+            'dynamic'  => 'no',
+            'type'     => 'random',
+            'backends' => [ 'ores.svc.eqiad.wmnet', ],
+            'be_opts'  => merge($app_def_be_opts, { 'port' => '8081' }),
+            'req_host' => 'ores.wikimedia.org',
+        },
     }
 
     $common_vcl_config = {
