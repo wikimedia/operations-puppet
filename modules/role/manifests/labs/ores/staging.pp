@@ -2,7 +2,6 @@ class role::labs::ores::staging {
     include ::ores::base
     include ::ores::web
     include ::ores::worker
-    include ::ores::flower
 
     include ::role::labs::ores::lb
 
