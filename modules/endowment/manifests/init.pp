@@ -8,9 +8,9 @@ class endowment {
         source => 'puppet:///modules/endowment/endowment.wikimedia.org',
     }
 
-    # git::clone { 'wikimedia/endowment':
-    #     ensure    => 'latest',
-    #     directory => '/srv/org/wikimedia/endowment',
-    #     branch    => 'master',
-    # }
+    git::clone { 'wikimedia/endowment':
+        ensure    => 'latest',
+        directory => '/srv/org/wikimedia/endowment',
+        branch    => 'master',
+    }
 }
