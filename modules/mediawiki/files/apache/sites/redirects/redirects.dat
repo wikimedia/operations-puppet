@@ -418,6 +418,9 @@ funnel	*wikipedia.in	http://wikimedia.in/wikipedia.html
 # coffee - keep for historic reasons:)
 funnel	coffee.wikimedia.org	//en.wikipedia.org/wiki/Hyper_Text_Coffee_Pot_Control_Protocol
 
+# moon - T136557
+funnel	moon.wikimedia.org	//meta.wikimedia.org/wiki/Wikipedia_to_the_Moon
+
 # wikipediazero.org - T82495
 funnel	*wikipediazero.org	//wikimediafoundation.org/wiki/Wikipedia_Zero
 
