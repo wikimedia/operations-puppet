@@ -46,98 +46,61 @@
 # loops and accidental listing of important domains such as en.wikipedia.org
 # as a source.
 #
+# The rules are split into two sections below based on whether the left hand
+# side is in the canonical set of domainnames.  Please maintain this split for
+# now, as we'll eventually be transitioning the non-canonical names to a
+# different solution ( T133548 ), leaving only the canonical ones in this file.
+#
+# Our current list of canonical domainnames for the wikis is the following:
+#
+# wikipedia.org
+# mediawiki.org
+# wikibooks.org
+# wikidata.org
+# wikimedia.org
+# wikimediafoundation.org
+# wikinews.org
+# wikiquote.org
+# wikisource.org
+# wikiversity.org
+# wikivoyage.org
+# wiktionary.org
+# w.wiki
+#
+# As a general rule, for all of these domains we support any single-level
+# hostname within them, and any single-level "*.m" hostname within them.  This
+# means, for example, that "foo.wikipedia.org" and "foo.m.wikipedia.org" are
+# supported, but "foo.bar.wikipedia.org" and "foo.bar.m.wikipedia.org" are
+# illegal.  The exceptions to this rule are:
+# 1. wikipedia.org also supports the single-level "*.zero" subdomain
+# 2. w.wiki is not wildcarded at all; it only supports that singular hostname
+#
+
+##############################################################################
+# -- NON-CANONICAL DOMAINS --
+##############################################################################
 
 # Shop redirects
-funnel	shop.wikimedia.org	//store.wikimedia.org
-funnel	shop.wikipedia.org	//store.wikimedia.org
-funnel	store.wikipedia.org	//store.wikimedia.org
 funnel	shop.wikipedia.com	//store.wikimedia.org
 funnel	store.wikipedia.com	//store.wikimedia.org
-
-funnel	sep11.wikipedia.org	https://wayback.archive.org/web/20030315000000*/http://sep11.wikipedia.org/wiki/In_Memoriam
 
 funnel	*wikijunior.com	//en.wikibooks.org/wiki/Wikijunior
 funnel	*wikijunior.org	//en.wikibooks.org/wiki/Wikijunior
 funnel	*wikijunior.net	//en.wikibooks.org/wiki/Wikijunior
 
 # Language aliases
-rewrite	be-x-old.wikisource.org	//be.wikisource.org # T43755
 
-rewrite	cz.wikipedia.org	//cs.wikipedia.org
 rewrite	cz.wikipedia.com	//cs.wikipedia.org
-rewrite	cz.wikibooks.org	//cs.wikibooks.org
 rewrite	cz.wikibooks.com	//cs.wikibooks.org
-rewrite	cz.wikiquote.org	//cs.wikiquote.org
 rewrite	cz.wikiquote.com	//cs.wikiquote.org
-rewrite	cz.wikisource.org	//cs.wikisource.org
 rewrite	cz.wikisource.com	//cs.wikisource.org
-rewrite	cz.wikiversity.org	//cs.wikiversity.org
 rewrite	cz.wikiversity.com	//cs.wikiversity.org
-rewrite	cz.wiktionary.org	//cs.wiktionary.org
 rewrite	cz.wiktionary.com	//cs.wiktionary.org
-rewrite	cz.wikinews.org	//cs.wikinews.org
 rewrite	cz.wikinews.com	//cs.wikinews.org
-rewrite	dk.wikipedia.org	//da.wikipedia.org
 rewrite	dk.wikipedia.com	//da.wikipedia.org
-rewrite	dk.wikibooks.org	//da.wikibooks.org
 rewrite	dk.wikibooks.com	//da.wikibooks.org
-rewrite	dk.wiktionary.org	//da.wiktionary.org
 rewrite	dk.wiktionary.com	//da.wiktionary.org
-rewrite	epo.wikipedia.org	//eo.wikipedia.org
-rewrite	jp.wikipedia.org	//ja.wikipedia.org
 rewrite	jp.wikipedia.com	//ja.wikipedia.org
-rewrite	nb.wikipedia.org	//no.wikipedia.org
-rewrite	nb.wiktionary.org	//no.wiktionary.org
-rewrite	nb.wikiquote.org	//no.wikiquote.org
-rewrite	nb.wikibooks.org	//no.wikibooks.org
-rewrite	nb.wikivoyage.org	//no.wikivoyage.org
-rewrite	nb.wikisource.org	//no.wikisource.org
-rewrite	nb.wikinews.org	//no.wikinews.org
-funnel	nb.wikiversity.org	//beta.wikiversity.org/wiki/Hovedside
-rewrite	yue.wikipedia.org	//zh-yue.wikipedia.org
-
-# renamed chapter wiki - T40763
-
-rewrite	chapcom.wikimedia.org	https://affcom.wikimedia.org
-rewrite	et.wikimedia.org	https://ee.wikimedia.org
-
-rewrite	be-x-old.wikipedia.org	https://be-tarask.wikipedia.org
-
-rewrite	zh-cfr.wikipedia.org	//zh-min-nan.wikipedia.org
-rewrite	minnan.wikipedia.org	//zh-min-nan.wikipedia.org
-rewrite	nan.wikipedia.org	//zh-min-nan.wikipedia.org
-
-rewrite	zh-tw.wikipedia.org	//zh.wikipedia.org
-
-# Education program
-
-funnel	educacao.wikimedia.org	//pt.wikipedia.org/wiki/Wikip%C3%A9dia:WU
-
-override	education.wikimedia.org/evaluating	//commons.wikimedia.org/wiki/File:Evaluating_Wikipedia_brochure.pdf
-override	education.wikimedia.org/illustrating	//commons.wikimedia.org/wiki/File:Illustrating_Wikipedia_brochure.pdf
-
-override	education.wikimedia.org/casestudies	//outreach.wikimedia.org/wiki/Education/Case_Studies
-
-override	education.wikimedia.org/content	//outreach.wikimedia.org/wiki/Education/Case_Studies/content
-override	education.wikimedia.org/copyediting	//outreach.wikimedia.org/wiki/Education/Case_Studies/copyediting
-override	education.wikimedia.org/definitions	//outreach.wikimedia.org/wiki/Education/Case_Studies/definitions
-override	education.wikimedia.org/featuredarticle	//outreach.wikimedia.org/wiki/Education/Case_Studies/featuredarticle
-override	education.wikimedia.org/fivecriteria	//outreach.wikimedia.org/wiki/Special:MyLanguage/Education/Case_Studies/fivecriteria
-override	education.wikimedia.org/illustrations	//outreach.wikimedia.org/wiki/Education/Case_Studies/illustrations
-override	education.wikimedia.org/milestones	//outreach.wikimedia.org/wiki/Education/Case_Studies/milestones
-override	education.wikimedia.org/peerreviews	//outreach.wikimedia.org/wiki/Education/Case_Studies/peerreviews
-override	education.wikimedia.org/photos	//outreach.wikimedia.org/wiki/Education/Case_Studies/photos
-override	education.wikimedia.org/reflectivepapers	//outreach.wikimedia.org/wiki/Education/Case_Studies/reflectivepapers
-override	education.wikimedia.org/translationarabic	//outreach.wikimedia.org/wiki/Education/Case_Studies/translationarabic
-override	education.wikimedia.org/translationspanish	//outreach.wikimedia.org/wiki/Education/Case_Studies/translationspanish
-override	education.wikimedia.org/videos	//outreach.wikimedia.org/wiki/Education/Case_Studies/videos
-override	education.wikimedia.org/writearticle	//outreach.wikimedia.org/wiki/Education/Case_Studies/writearticle
-
-override	education.wikimedia.org/syllabus	//outreach.wikimedia.org/wiki/Education/Syllabi
-override	education.wikimedia.org/welcometowikipedia	//commons.wikimedia.org/wiki/File:Welcome_to_Wikipedia_brochure_EN.pdf
-override	education.wikimedia.org/instructorbasics	//commons.wikimedia.org/wiki/File:Instructor_Basics_How_to_Use_Wikipedia_as_a_Teaching_Tool.pdf
-
-funnel	education.wikimedia.org	//outreach.wikimedia.org/wiki/Special:MyLanguage/Education
 
 # Localised TLDs
 
@@ -238,17 +201,13 @@ rewrite	wikibooks.com	//www.wikibooks.org
 rewrite	wikibooks.de	//de.wikibooks.org
 rewrite	www.wikibooks.de	//de.wikibooks.org
 
-rewrite	textbook.wikipedia.org	//www.wikibooks.org
-
 # Wikisource
 
-rewrite	sources.wikipedia.org	//wikisource.org
 rewrite	*.wikisource.com	//*.wikisource.org
 rewrite	wikisource.com	//wikisource.org
 
 # Wikiquote
 
-rewrite	quote.wikipedia.org	//en.wikiquote.org
 rewrite	wikiquote.com	//www.wikiquote.org
 rewrite	*.wikiquote.com	//*.wikiquote.org
 rewrite	wikiquote.net	//www.wikiquote.org
@@ -265,8 +224,6 @@ rewrite	*.wikinews.com	//*.wikinews.org
 rewrite	*wikispecies.com	//species.wikimedia.org
 rewrite	*wikispecies.org	//species.wikimedia.org
 rewrite	*wikispecies.net	//species.wikimedia.org
-
-rewrite	species.wikipedia.org	//species.wikimedia.org
 
 # Wikiversity
 
@@ -304,7 +261,6 @@ rewrite	voyagewiki.org	//www.wikivoyage.org
 rewrite	*wikimediafoundation.com	//wikimediafoundation.org
 rewrite	*wikimediafoundation.net	//wikimediafoundation.org
 rewrite	*wikimediafoundation.info	//wikimediafoundation.org
-rewrite	*.wikimediafoundation.org	//wikimediafoundation.org
 
 # Commons
 
@@ -317,6 +273,143 @@ rewrite	*wikimediacommons.jp.net	//commons.wikimedia.org
 rewrite	*wikimediacommons.pt	//commons.wikimedia.org
 rewrite	*wikimediacommons.co.uk	//commons.wikimedia.org
 
+# Other projects
+rewrite	quality.wikipedia.com	//quality.wikimedia.org
+rewrite	*mediawiki.com	//www.mediawiki.org
+
+# Wikimania
+rewrite	*wikimania.org	//wikimania%{TIME_YEAR}.wikimedia.org
+rewrite	*wikimania.com	//wikimania%{TIME_YEAR}.wikimedia.org
+
+# wikimedia.com redirect
+funnel	*wikimedia.com	//www.wikimedia.org
+
+# wikimedia.community redirect
+funnel	*wikimedia.community	//www.wikimedia.org
+
+# wikimedia.us redirect
+funnel	*wikimedia.us	//www.wikimedia.org
+
+# tartupeedia.ee (WMEE-owned domain) - T46893
+funnel	*tartupeedia.ee	//et.wikipedia.org/wiki/Portaal:Tartupeedia
+
+# indiawikipedia.com - RT #1395
+funnel	*indiawikipedia.com	http://wikimedia.in/wikipedia.html
+
+# wikipedia.in
+funnel	*wikipedia.in	http://wikimedia.in/wikipedia.html
+
+# wikipediazero.org - T82495
+funnel	*wikipediazero.org	//wikimediafoundation.org/wiki/Wikipedia_Zero
+
+# wikimediastories.com/net/org - T82390
+funnel	*wikimediastories.com	//wikimediafoundation.org/wiki/Thank_You_All
+funnel	*wikimediastories.net	//wikimediafoundation.org/wiki/Thank_You_All
+funnel	*wikimediastories.org	//wikimediafoundation.org/wiki/Thank_You_All
+funnel	*wikipediastories.com	//wikimediafoundation.org/wiki/Thank_You_All
+funnel	*wikipediastories.net	//wikimediafoundation.org/wiki/Thank_You_All
+funnel	*wikipediastories.org	//wikimediafoundation.org/wiki/Thank_You_All
+
+# pywikipedia.org (T60803).
+funnel	*pywikipedia.org	//tools.wmflabs.org/pywikibot/
+# pywikibot.org (T106311)
+funnel	*pywikibot.org	//tools.wmflabs.org/pywikibot/
+
+##############################################################################
+# -- CANONICAL DOMAINS --
+##############################################################################
+
+# Shop redirects
+funnel	shop.wikimedia.org	//store.wikimedia.org
+funnel	shop.wikipedia.org	//store.wikimedia.org
+funnel	store.wikipedia.org	//store.wikimedia.org
+
+funnel	sep11.wikipedia.org	https://wayback.archive.org/web/20030315000000*/http://sep11.wikipedia.org/wiki/In_Memoriam
+
+# Language aliases
+rewrite	be-x-old.wikisource.org	//be.wikisource.org # T43755
+
+rewrite	cz.wikipedia.org	//cs.wikipedia.org
+rewrite	cz.wikibooks.org	//cs.wikibooks.org
+rewrite	cz.wikiquote.org	//cs.wikiquote.org
+rewrite	cz.wikisource.org	//cs.wikisource.org
+rewrite	cz.wikiversity.org	//cs.wikiversity.org
+rewrite	cz.wiktionary.org	//cs.wiktionary.org
+rewrite	cz.wikinews.org	//cs.wikinews.org
+rewrite	dk.wikipedia.org	//da.wikipedia.org
+rewrite	dk.wikibooks.org	//da.wikibooks.org
+rewrite	dk.wiktionary.org	//da.wiktionary.org
+rewrite	epo.wikipedia.org	//eo.wikipedia.org
+rewrite	jp.wikipedia.org	//ja.wikipedia.org
+rewrite	nb.wikipedia.org	//no.wikipedia.org
+rewrite	nb.wiktionary.org	//no.wiktionary.org
+rewrite	nb.wikiquote.org	//no.wikiquote.org
+rewrite	nb.wikibooks.org	//no.wikibooks.org
+rewrite	nb.wikivoyage.org	//no.wikivoyage.org
+rewrite	nb.wikisource.org	//no.wikisource.org
+rewrite	nb.wikinews.org	//no.wikinews.org
+funnel	nb.wikiversity.org	//beta.wikiversity.org/wiki/Hovedside
+rewrite	yue.wikipedia.org	//zh-yue.wikipedia.org
+
+# renamed chapter wiki - T40763
+
+rewrite	chapcom.wikimedia.org	https://affcom.wikimedia.org
+rewrite	et.wikimedia.org	https://ee.wikimedia.org
+
+rewrite	be-x-old.wikipedia.org	https://be-tarask.wikipedia.org
+
+rewrite	zh-cfr.wikipedia.org	//zh-min-nan.wikipedia.org
+rewrite	minnan.wikipedia.org	//zh-min-nan.wikipedia.org
+rewrite	nan.wikipedia.org	//zh-min-nan.wikipedia.org
+
+rewrite	zh-tw.wikipedia.org	//zh.wikipedia.org
+
+# Education program
+
+funnel	educacao.wikimedia.org	//pt.wikipedia.org/wiki/Wikip%C3%A9dia:WU
+
+override	education.wikimedia.org/evaluating	//commons.wikimedia.org/wiki/File:Evaluating_Wikipedia_brochure.pdf
+override	education.wikimedia.org/illustrating	//commons.wikimedia.org/wiki/File:Illustrating_Wikipedia_brochure.pdf
+
+override	education.wikimedia.org/casestudies	//outreach.wikimedia.org/wiki/Education/Case_Studies
+
+override	education.wikimedia.org/content	//outreach.wikimedia.org/wiki/Education/Case_Studies/content
+override	education.wikimedia.org/copyediting	//outreach.wikimedia.org/wiki/Education/Case_Studies/copyediting
+override	education.wikimedia.org/definitions	//outreach.wikimedia.org/wiki/Education/Case_Studies/definitions
+override	education.wikimedia.org/featuredarticle	//outreach.wikimedia.org/wiki/Education/Case_Studies/featuredarticle
+override	education.wikimedia.org/fivecriteria	//outreach.wikimedia.org/wiki/Special:MyLanguage/Education/Case_Studies/fivecriteria
+override	education.wikimedia.org/illustrations	//outreach.wikimedia.org/wiki/Education/Case_Studies/illustrations
+override	education.wikimedia.org/milestones	//outreach.wikimedia.org/wiki/Education/Case_Studies/milestones
+override	education.wikimedia.org/peerreviews	//outreach.wikimedia.org/wiki/Education/Case_Studies/peerreviews
+override	education.wikimedia.org/photos	//outreach.wikimedia.org/wiki/Education/Case_Studies/photos
+override	education.wikimedia.org/reflectivepapers	//outreach.wikimedia.org/wiki/Education/Case_Studies/reflectivepapers
+override	education.wikimedia.org/translationarabic	//outreach.wikimedia.org/wiki/Education/Case_Studies/translationarabic
+override	education.wikimedia.org/translationspanish	//outreach.wikimedia.org/wiki/Education/Case_Studies/translationspanish
+override	education.wikimedia.org/videos	//outreach.wikimedia.org/wiki/Education/Case_Studies/videos
+override	education.wikimedia.org/writearticle	//outreach.wikimedia.org/wiki/Education/Case_Studies/writearticle
+
+override	education.wikimedia.org/syllabus	//outreach.wikimedia.org/wiki/Education/Syllabi
+override	education.wikimedia.org/welcometowikipedia	//commons.wikimedia.org/wiki/File:Welcome_to_Wikipedia_brochure_EN.pdf
+override	education.wikimedia.org/instructorbasics	//commons.wikimedia.org/wiki/File:Instructor_Basics_How_to_Use_Wikipedia_as_a_Teaching_Tool.pdf
+
+funnel	education.wikimedia.org	//outreach.wikimedia.org/wiki/Special:MyLanguage/Education
+
+# Wikibooks - T87039
+rewrite	textbook.wikipedia.org	//www.wikibooks.org
+
+# Wikisource
+rewrite	sources.wikipedia.org	//wikisource.org
+
+# Wikiquote
+rewrite	quote.wikipedia.org	//en.wikiquote.org
+
+# Wikispecies
+rewrite	species.wikipedia.org	//species.wikimedia.org
+
+# wikimediafoundation
+rewrite	*.wikimediafoundation.org	//wikimediafoundation.org
+
+# Commons
 rewrite	commons.wikipedia.org	//commons.wikimedia.org
 
 # Bookshelf Project
@@ -327,13 +420,11 @@ rewrite	bookshelf.wikimedia.org	//outreach.wikimedia.org/wiki/Bookshelf
 rewrite	meta.wikipedia.org	//meta.wikimedia.org
 
 rewrite	quality.wikipedia.org	//quality.wikimedia.org
-rewrite	quality.wikipedia.com	//quality.wikimedia.org
 
 rewrite	bugzilla.wikipedia.org	https://bugzilla.wikimedia.org
 rewrite	bugs.mediawiki.org	https://bugzilla.wikimedia.org
 rewrite	bugzilla.mediawiki.org	https://bugzilla.wikimedia.org
 
-rewrite	*mediawiki.com	//www.mediawiki.org
 rewrite	wiki.mediawiki.org	//www.mediawiki.org
 
 # Continuous Integration T83381, T83399
@@ -347,9 +438,6 @@ funnel	docs.wikimedia.org	https://doc.wikimedia.org
 rewrite	nostalgia.wikimedia.org	//nostalgia.wikipedia.org
 
 rewrite	mail.wikipedia.org	https://lists.wikimedia.org
-
-funnel	cs.wikimedia.org	http://www.wikimedia.cz
-funnel	cz.wikimedia.org	http://www.wikimedia.cz
 
 ###############
 ## projects
@@ -388,49 +476,21 @@ rewrite	uk.wikimedia.org	https://wikimedia.org.uk/
 
 rewrite	ve.wikimedia.org	http://wikimedia.org.ve
 
+funnel	cs.wikimedia.org	http://www.wikimedia.cz
+funnel	cz.wikimedia.org	http://www.wikimedia.cz
+
 # Wikimania
-rewrite	*wikimania.org	//wikimania%{TIME_YEAR}.wikimedia.org
-rewrite	*wikimania.com	//wikimania%{TIME_YEAR}.wikimedia.org
 rewrite	wikimania.wikimedia.org	//wikimania%{TIME_YEAR}.wikimedia.org
 
 # Labs redirects -> wikitech
 funnel	labs.wikimedia.org	https://wikitech.wikimedia.org
 funnel	labsconsole.wikimedia.org	https://wikitech.wikimedia.org
 
-# wikimedia.com redirect
-funnel	*wikimedia.com	//www.wikimedia.org
-
-# wikimedia.community redirect
-funnel	*wikimedia.community	//www.wikimedia.org
-
-# wikimedia.us redirect
-funnel	*wikimedia.us	//www.wikimedia.org
-
-# tartupeedia.ee (WMEE-owned domain) - T46893
-funnel	*tartupeedia.ee	//et.wikipedia.org/wiki/Portaal:Tartupeedia
-
-# indiawikipedia.com - RT #1395
-funnel	*indiawikipedia.com	http://wikimedia.in/wikipedia.html
-
-# wikipedia.in
-funnel	*wikipedia.in	http://wikimedia.in/wikipedia.html
-
 # coffee - keep for historic reasons:)
 funnel	coffee.wikimedia.org	//en.wikipedia.org/wiki/Hyper_Text_Coffee_Pot_Control_Protocol
 
 # moon - T136557
 funnel	moon.wikimedia.org	//meta.wikimedia.org/wiki/Wikipedia_to_the_Moon
-
-# wikipediazero.org - T82495
-funnel	*wikipediazero.org	//wikimediafoundation.org/wiki/Wikipedia_Zero
-
-# wikimediastories.com/net/org - T82390
-funnel	*wikimediastories.com	//wikimediafoundation.org/wiki/Thank_You_All
-funnel	*wikimediastories.net	//wikimediafoundation.org/wiki/Thank_You_All
-funnel	*wikimediastories.org	//wikimediafoundation.org/wiki/Thank_You_All
-funnel	*wikipediastories.com	//wikimediafoundation.org/wiki/Thank_You_All
-funnel	*wikipediastories.net	//wikimediafoundation.org/wiki/Thank_You_All
-funnel	*wikipediastories.org	//wikimediafoundation.org/wiki/Thank_You_All
 
 # jobs/careers - T82975
 rewrite	*careers.wikimedia.org	//wikimediafoundation.org/wiki/Job_openings
@@ -441,12 +501,6 @@ override	*careers.wikimedia.org/	//wikimediafoundation.org/wiki/Work_with_us
 override	*careers.wikipedia.org/	//wikimediafoundation.org/wiki/Work_with_us
 override	*jobs.wikimedia.org/	//wikimediafoundation.org/wiki/Work_with_us
 override	*jobs.wikipedia.org/	//wikimediafoundation.org/wiki/Work_with_us
-
-# pywikipedia.org (T60803).
-funnel	*pywikipedia.org	//tools.wmflabs.org/pywikibot/
-
-# pywikibot.org (T106311)
-funnel	*pywikibot.org	//tools.wmflabs.org/pywikibot/
 
 # w.wiki - upcoming URL shortener
 funnel	*w.wiki	//meta.wikimedia.org/wiki/Special:UrlShortener
