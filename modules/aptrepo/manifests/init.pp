@@ -13,6 +13,8 @@
 #   - *uploaders*: A list of uploaders instructions (see "uploaders file")
 #   - *incomingdir*: Path considered for incoming uploads.
 #   - *incomingconf*: Name of a template with config options for incoming uploads. (conf/incoming)
+#   - *incominguser*: The user name that owns the incoming directory.
+#   - *incominggroup*: The group name that owns the incoming directory.
 #   - *default_distro*: The default distribution if none specified.
 #   - *gpg_secring*: The GPG secret keyring for reprepro to use.
 #   - *gpg_pubring*: The GPG public keyring for reprepro to use.
@@ -36,6 +38,8 @@ class aptrepo (
     $uploaders       = [],
     $incomingdir     = 'incoming',
     $incomingconf    = 'incoming',
+    $incominguser    = 'reprepro',
+    $incominggroup   = 'reprepro',
     $default_distro  = 'jessie',
     $gpg_secring     = undef,
     $gpg_pubring     = undef,
@@ -124,12 +128,11 @@ class aptrepo (
         require => User['reprepro'],
     }
 
-    # Allow wikidev users to upload to /srv/wikimedia/incoming
     file { "${basedir}/incoming":
         ensure => directory,
         mode   => '1775',
-        owner  => 'root',
-        group  => 'wikidev',
+        owner  => $incominguser,
+        group  => $incominggroup,
     }
 
     file { "${basedir}/logs":

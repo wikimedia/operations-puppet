@@ -4,8 +4,11 @@ class role::aptrepo::wikimedia {
     $basedir = '/srv/wikimedia'
 
     class { '::aptrepo':
-        basedir      => $basedir,
-        incomingconf => 'incoming-wikimedia',
+        basedir       => $basedir,
+        incomingconf  => 'incoming-wikimedia',
+        incominguser  => 'root',
+        # Allow wikidev users to upload to /srv/wikimedia/incoming
+        incominggroup => 'wikidev',
     }
 
     file { "${basedir}/conf/distributions":
