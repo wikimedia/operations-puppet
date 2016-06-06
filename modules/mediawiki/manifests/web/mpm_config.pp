@@ -7,7 +7,7 @@ class mediawiki::web::mpm_config($mpm = 'worker', $server_limit = undef, $worker
                 $max_req_workers = min($workers_limit, $apache_server_limit)
             } else {
                 # Default if no override has been defined
-                $mem_available   = to_bytes($::memorytotal) * 0.7
+                $mem_available   = to_bytes($::memorysize) * 0.7
                 $mem_per_worker  = to_bytes('85M')
                 $max_req_workers = min(floor($mem_available /$mem_per_worker), $apache_server_limit)
             }
