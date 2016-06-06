@@ -1122,17 +1122,6 @@ node 'francium.eqiad.wmnet' {
     include admin
 }
 
-# git.wikimedia.org (until replaced by Diffusion)
-node 'furud.codfw.wmnet' {
-    role gitblit
-    include standard
-    include base::firewall
-
-    interface::add_ip6_mapped { 'main':
-        interface => 'eth0',
-    }
-}
-
 # Continuous Integration
 node 'gallium.wikimedia.org' {
     role ci::master,
