@@ -13,7 +13,7 @@ class role::requesttracker::server {
             system_svc => 'apache2',
         }
 
-        $ssl_settings = ssl_ciphersuite('apache', 'compat', '365')
+        $ssl_settings = ssl_ciphersuite('apache', 'compat', true)
 
         ferm::service { 'rt-https':
             proto => 'tcp',
