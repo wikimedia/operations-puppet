@@ -9,7 +9,7 @@ console output
 
 pre-start script
     mkdir -p /sys/fs/cgroup/memory/mediawiki
-    mkdir -m 0777 /sys/fs/cgroup/memory/mediawiki/job
+    mkdir -p -m 0777 /sys/fs/cgroup/memory/mediawiki/job
     echo "/usr/local/bin/cgroup-mediawiki-clean" > /sys/fs/cgroup/memory/release_agent
 end script
 
