@@ -1,4 +1,4 @@
-# == Function: ssl_ciphersuite( string $server, string $encryption_type, int $hsts_days )
+# == Function: ssl_ciphersuite( string $server, string $encryption_type, boolean $hsts )
 #
 # Outputs the ssl configuration directives for use with either Nginx
 # or Apache using our selection of ciphers and SSL options.
@@ -25,8 +25,9 @@
 #                 phones.  With a non-DHE server, compatibility is also lost
 #                 with Android 2.x, OpenSSL 0.9.8, and more Java6 clients.
 #   - compat:     Supports most legacy clients, PFS optional but preferred.
-# - An optional argument, that if non-nil will set HSTS to max-age of
-#   N days
+# - HSTS boolean - if true, will emit our standard HSTS header for canonical
+#   public domains (which is currently 1 year with preload and includeSub).
+#   Default false.
 #
 # For servers which support it (currently only nginx @ WMF), DHE cipher
 # variants that are appropriate for the compatibility mode selected will be
@@ -39,7 +40,7 @@
 #
 # == Examples
 #
-#     ssl_ciphersuite('apache', 'compat')
+#     ssl_ciphersuite('apache', 'compat', true)
 #     ssl_ciphersuite('nginx', 'strong')
 #
 # == License
@@ -125,6 +126,9 @@ module Puppet::Parser::Functions
     'compat'     => basic['strong'] + basic['mid'] + basic['compat'],
   }
 
+  # Our standard HSTS for all public canonical domains
+  hsts_val = "max-age=31536000; includeSubDomains; preload"
+
   newfunction(
               :ssl_ciphersuite,
               :type => :rvalue,
@@ -133,14 +137,13 @@ Outputs the ssl configuration part of the webserver config.
 Function parameters are:
  server - either nginx or apache
  encryption_type - strong, mid, or compat
- hsts_days  - how many days should the STS header live. If not expressed, HSTS will
-              be disabled
+ hsts - optional boolean, true emits our standard public HSTS
 
 Examples:
 
-   ssl_ciphersuite('apache', 'compat') # Compatible config for apache
-   ssl_ciphersuite('apache', 'mid') # PFS-only for apache
-   ssl_ciphersuite('nginx', 'strong', '365') # PFS-only, AEAD-only, TLSv1.2-only
+   ssl_ciphersuite('apache', 'compat', true) # Compatible config for apache
+   ssl_ciphersuite('apache', 'mid', true) # PFS-only for apache
+   ssl_ciphersuite('nginx', 'strong', true) # PFS-only, AEAD-only, TLSv1.2-only
 END
               ) do |args|
 
@@ -160,10 +163,9 @@ END
       fail(ArgumentError, "ssl_ciphersuite(): unknown ciphersuite '#{ciphersuite}'")
     end
 
+    do_hsts = false
     if args.length == 1
-      hsts_secs = args.shift.to_i * 86400
-    else
-      hsts_secs = 0
+      do_hsts = args.shift
     end
 
     # OS / Server -dependant feature flags:
@@ -211,8 +213,8 @@ END
       if dhe_ok
         output.push('SSLOpenSSLConfCmd DHParameters "/etc/ssl/dhparam.pem"')
       end
-      if hsts_secs != 0
-        output.push("Header always set Strict-Transport-Security \"max-age=#{hsts_secs}\"")
+      if do_hsts
+        output.push("Header always set Strict-Transport-Security \"#{hsts_val}\"")
       end
     else # nginx
       if ciphersuite == 'strong'
@@ -225,11 +227,11 @@ END
       if dhe_ok
         output.push('ssl_dhparam /etc/ssl/dhparam.pem;')
       end
-      if hsts_secs != 0
+      if do_hsts
         if nginx_always_ok
-            output.push("add_header Strict-Transport-Security \"max-age=#{hsts_secs}\" always;")
+            output.push("add_header Strict-Transport-Security \"#{hsts_val}\" always;")
         else
-            output.push("add_header Strict-Transport-Security \"max-age=#{hsts_secs}\";")
+            output.push("add_header Strict-Transport-Security \"#{hsts_val}\";")
         end
       end
     end

@@ -8,7 +8,7 @@ class mirrors::serve {
         system_svc => 'nginx',
     }
 
-    $ssl_settings = ssl_ciphersuite('nginx', 'compat', '365')
+    $ssl_settings = ssl_ciphersuite('nginx', 'compat', true)
 
     nginx::site { 'mirrors':
         content => template('mirrors/mirrors.wikimedia.org.conf.erb'),

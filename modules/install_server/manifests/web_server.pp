@@ -22,7 +22,7 @@ class install_server::web_server {
         system_svc => 'nginx',
     }
 
-    $ssl_settings = ssl_ciphersuite('nginx', 'compat', '365')
+    $ssl_settings = ssl_ciphersuite('nginx', 'compat', true)
 
     file { '/etc/nginx/nginx.conf':
         content => template('install_server/nginx.conf.erb'),
