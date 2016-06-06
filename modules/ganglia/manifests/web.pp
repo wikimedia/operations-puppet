@@ -16,7 +16,7 @@ class ganglia::web(
     $ganglia_ssl_cert = '/etc/ssl/localcerts/ganglia.wikimedia.org.crt'
     $ganglia_ssl_chain = '/etc/ssl/localcerts/ganglia.wikimedia.org.chain.crt'
     $ganglia_ssl_key = '/etc/ssl/private/ganglia.wikimedia.org.key'
-    $ssl_settings = ssl_ciphersuite('apache', 'compat', '365')
+    $ssl_settings = ssl_ciphersuite('apache', 'compat', true)
     # Apache's docroot. Used for populating robots.txt
     $doc_root = '/var/www'
 
