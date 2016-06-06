@@ -9,10 +9,6 @@
   ProxyPassReverse / http://localhost:3000/
 
   RewriteEngine On
-  RewriteCond %{HTTP:X-Forwarded-Proto} !https
-  RewriteRule ^/(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,E=ProtoRedirect]
-  Header always merge Vary X-Forwarded-Proto env=ProtoRedirect
-  Header always set Strict-Transport-Security "max-age=31536000"
 
   # The X-WEBAUTH-USER should only be set by us.
   RequestHeader unset X-WEBAUTH-USER

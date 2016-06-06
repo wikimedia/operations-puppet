@@ -11,12 +11,6 @@
     LogLevel warn
     CustomLog /var/log/apache2/access.log wmf
 
-    RewriteEngine On
-    RewriteCond %{HTTP:X-Forwarded-Proto} !https
-    RewriteRule ^/(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,E=ProtoRedirect]
-    Header always merge Vary X-Forwarded-Proto
-    Header always set Strict-Transport-Security "max-age=31536000"
-
     # The size of one of the site's JavaScript files exceeds some threshold,
     # causing Apache not to compute content-length and to use chunked encoding
     # instead. This causes the response to be uncacheable in Varnish.

@@ -5,13 +5,6 @@
         ServerName <%= @name %>.planet.<%= scope.lookupvar('planet::planet_domain_name') %>
         php_admin_flag engine off
 
-        RewriteEngine On
-        RewriteCond %{HTTP:X-Forwarded-Proto} !https
-        RewriteCond %{REQUEST_URI} !^/status$
-        RewriteRule ^/(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,E=ProtoRedirect]
-        Header always merge Vary X-Forwarded-Proto env=ProtoRedirect
-        Header always set Strict-Transport-Security "max-age=604800"
-
         <Directory /var/www/planet/<%= @name %>>
                 Require all granted
         </Directory>

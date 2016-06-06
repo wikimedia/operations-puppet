@@ -16,11 +16,8 @@
     RemoteIPInternalProxy <%= @trusted_proxies.join(' ') %>
   </IfModule>
 
-  # redirect/enforce http->https
   RewriteEngine on
-  RewriteCond %{HTTP:X-Forwarded-Proto} !https
-  RewriteRule ^/(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,E=ProtoRedirect,L]
-  Header always merge Vary X-Forwarded-Proto env=ProtoRedirect
+
 <% if !@serveralias.empty? -%>
   # Read robots.txt from disk for the alternative domain
   RewriteCond "%{HTTP_HOST}" "<%= @serveralias.gsub('.', '\.') %>"
@@ -30,9 +27,6 @@
     Require all granted
   </Files>
 <%- end %>
-
-  # enable HTTP Strict Transport Security
-  Header always set Strict-Transport-Security "max-age=31536000"
 
   <Location "/">
     <RequireAll>
