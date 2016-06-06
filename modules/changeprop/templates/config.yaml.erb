@@ -18,13 +18,15 @@ spec:
             port: <%= @purge_port %>
     /{api:sys}/links:
       x-modules:
-        - path: src/sys/backlinks.js
+        - path: src/sys/dep_updates.js
           options:
             templates:
               mw_api:
                   uri: <%= @mwapi_uri %>
                   headers:
                     host: '{{message.meta.domain}}'
+                  body:
+                    formatversion: 2
     /{api:sys}/queue:
       x-modules:
         - path: src/sys/kafka.js
@@ -192,3 +194,24 @@ spec:
                       if-unmodified-since: '{{date(message.meta.dt)}}'
                     query:
                       redirect: false
+
+                    transclusion_update:
+                      topic: mediawiki.revision_create
+                      exec:
+                        method: 'post'
+                        uri: '/sys/links/transcludes/{{message.page_title}}'
+                        body: '{{globals.message}}'
+
+                    on_transclusion_update:
+                      topic: resource_change
+                      match:
+                        meta:
+                          uri: '/https?:\/\/[^\/]+\/wiki\/(?<title>.+)/'
+                        tags: [ 'change-prop', 'transcludes' ]
+                      exec:
+                        method: get
+                        uri: '<%= @restbase_uri %>/{{message.meta.domain}}/v1/page/html/{{match.meta.uri.title}}'
+                        headers:
+                          cache-control: no-cache
+                        query:
+                          redirect: false
