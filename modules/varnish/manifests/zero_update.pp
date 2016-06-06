@@ -1,5 +1,5 @@
 # Zero-specific update stuff
-class varnish::zero_update($site, $auth_content) {
+class varnish::zero_update($site) {
     require 'varnish::netmapper_update_common'
 
     package { 'python-requests':
@@ -25,7 +25,7 @@ class varnish::zero_update($site, $auth_content) {
         owner   => 'netmap',
         group   => 'netmap',
         mode    => '0400',
-        content => $auth_content,
+        content => secret('misc/zerofetcher.auth'),
         require => File['/etc/zerofetcher'],
     }
 
