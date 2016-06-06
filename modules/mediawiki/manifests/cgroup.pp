@@ -25,6 +25,7 @@ class mediawiki::cgroup {
         ensure  => present,
         systemd => true,
         upstart => true,
+        refresh => false,
     }
 
 }
