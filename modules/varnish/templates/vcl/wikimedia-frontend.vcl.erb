@@ -51,14 +51,9 @@ sub https_error_redirect {
 // *** HTTPS deliver code - domain-based HSTS headers
 sub https_deliver_hsts {
 	if (req.http.X-Forwarded-Proto == "https") {
-		// This is almost the same regex as the first one for the
-		// redirects, but not wikimedia.org which we can't
-		// includeSub/preload yet: T132685
-		if (req.http.Host ~ "((^|\.)(wikipedia|wikibooks|wikinews|wikiquote|wikisource|wikiversity|wikivoyage|wikidata|wikimediafoundation|wiktionary|mediawiki|wmfusercontent)\.org|^w\.wiki)$") {
+		// Same regex as above in https_recv_redirect
+		if (req.http.Host ~ "((^|\.)(wikipedia|wikimedia|wikibooks|wikinews|wikiquote|wikisource|wikiversity|wikivoyage|wikidata|wikimediafoundation|wiktionary|mediawiki|wmfusercontent)\.org|^w\.wiki)$") {
 			set resp.http.Strict-Transport-Security = "max-age=31536000; includeSubDomains; preload";
-		}
-		else {
-			set resp.http.Strict-Transport-Security = "max-age=31536000";
 		}
 	}
 }
