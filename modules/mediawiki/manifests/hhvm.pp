@@ -16,7 +16,7 @@ class mediawiki::hhvm {
     #  - the memory of the system divided by a typical thread memory allocation
     #  - processor count * 4 (we have hyperthreading)
     $max_threads = min(
-        floor(to_bytes($::memorytotal) / to_bytes('120M')),
+        floor(to_bytes($::memorysize) / to_bytes('120M')),
         $::processorcount*4)
 
     class { '::hhvm':
