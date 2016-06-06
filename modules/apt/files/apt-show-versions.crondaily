@@ -1,7 +1,0 @@
-#!/bin/sh
-#
-# Note: This file is managed by Puppet
-
-[ -f /usr/bin/apt-show-versions ] || exit 0
-
-apt-show-versions -i > /dev/null 2>&1
