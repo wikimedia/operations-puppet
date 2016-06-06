@@ -54,7 +54,7 @@ class role::gerrit::production {
             replication  => {
                 # If adding a new entry, remember to add the fingerprint to gerrit2's known_hosts
 
-                'gitblit'    => {
+                'gitblit' => {
                     # Note: This is in single quotes on purpose. ${name} is not
                     # expected to be expanded by puppet but rather by gerrit
                     #
@@ -66,19 +66,7 @@ class role::gerrit::production {
                     'push'      => '+refs/*:refs/*',
                     'mirror'    => true,
                 },
-                'gitblitnew' => {
-                    # Note: This is in single quotes on purpose. ${name} is not
-                    # expected to be expanded by puppet but rather by gerrit
-                    #
-                    # lint:ignore:single_quote_string_with_variables
-                    'url'       => 'gerritslave@furud.codfw.wmnet:/var/lib/git/${name}.git',
-                    # lint:endignore
-                    'threads'   => '4',
-                    'authGroup' => 'mediawiki-replication',
-                    'push'      => '+refs/*:refs/*',
-                    'mirror'    => true,
-                },
-            #    'lead'    => {
+            #    'lead'  => {
                     # Note: This is in single quotes on purpose. ${name} is not
                     # expected to be expanded by puppet but rather by gerrit
                     #
@@ -90,7 +78,7 @@ class role::gerrit::production {
             #        'push'      => '+refs/*:refs/*',
             #        'mirror'    => true,
             #    },
-                'github'     => {
+                'github'  => {
                     # Note: This is in single quotes on purpose. ${name} is not
                     # expected to be expanded by puppet but rather by gerrit
                     #
