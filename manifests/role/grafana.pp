@@ -175,7 +175,7 @@ class role::grafana {
 
     monitoring::service { 'grafana':
         description   => 'grafana.wikimedia.org',
-        check_command => 'check_http_url!grafana.wikimedia.org!/',
+        check_command => 'check_http_unauthorized!grafana.wikimedia.org!/',
     }
 
     apache::site { 'grafana-admin.wikimedia.org':

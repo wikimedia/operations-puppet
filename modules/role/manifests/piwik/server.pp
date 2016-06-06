@@ -62,7 +62,7 @@ class role::piwik::server {
 
     monitoring::service { 'piwik':
         description   => 'piwik.wikimedia.org',
-        check_command => 'check_http_url!piwik.wikimedia.org!/',
+        check_command => 'check_http_unauthorized!piwik.wikimedia.org!/',
     }
 
     file_line { 'enable_php_opcache':
