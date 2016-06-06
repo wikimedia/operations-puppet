@@ -38,13 +38,6 @@ host fermium {
     filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
-host furud {
-    hardware ethernet aa:00:00:21:8b:88;
-    fixed-address furud.codfw.wmnet;
-    option pxelinux.pathprefix "jessie-installer/";
-    filename "jessie-installer/debian-installer/amd64/pxelinux.0";
-}
-
 host hassaleh {
     hardware ethernet aa:00:00:3f:8c:a0;
     fixed-address hassaleh.codfw.wmnet;
