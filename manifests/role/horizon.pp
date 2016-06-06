@@ -12,6 +12,7 @@ class role::horizon {
     ferm::service { 'horizon_http':
         proto => 'tcp',
         port  => '80',
+        srange => '$ALL_NETWORKS',
     }
 
     class { '::openstack::envscripts':
