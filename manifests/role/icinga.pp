@@ -43,7 +43,7 @@ class role::icinga(
         include icinga::ircbot
     }
 
-    $ssl_settings = ssl_ciphersuite('apache', 'compat', '365')
+    $ssl_settings = ssl_ciphersuite('apache', 'compat', true)
     sslcert::certificate { 'icinga.wikimedia.org': }
 
     monitoring::service { 'https':
