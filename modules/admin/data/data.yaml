@@ -408,7 +408,8 @@ groups:
   deploy-service:
     gid: 763
     description: Service deploy users
-    members: [eevans, gwicke, mobrovac, demon, twentyafterfour, thcipriani, dduvall, yurik, bsitzmann, mholloway-shell, kartik]
+    members: [eevans, gwicke, mobrovac, demon, twentyafterfour, thcipriani, dduvall,
+              yurik, bsitzmann, mholloway-shell, kartik, halfak, ladsgroup]
     privileges: []
 
   aqs-admins:
