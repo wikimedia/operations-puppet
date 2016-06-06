@@ -30,6 +30,7 @@ class toollabs::dev_environ {
             'libmysqlclient-dev',
             'libboost-python1.54-dev',
             'redis-tools',
+            'openjdk-8-jdk', # T121279
         ]:
             ensure  => latest,
         }

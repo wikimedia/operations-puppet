@@ -370,6 +370,7 @@ class toollabs::exec_environ {
             'python-flake8',
             'python3-flake8',
             'tcl-thread',
+            'openjdk-8-jre-headless',      # T121279
             ]:
             ensure => latest,
         }
