@@ -57,11 +57,9 @@ class contint::firewall {
     # ALLOWS:
 
     # web access
-    ferm::rule { 'allow_http':
-        rule => 'proto tcp dport http ACCEPT;'
+    ferm::service { 'allow_http':
+        proto => 'tcp',
+        port  => '80',
+        srange => '$ALL_NETWORKS',
     }
-    ferm::rule { 'allow_https':
-        rule => 'proto tcp dport https ACCEPT;'
-    }
-
 }
