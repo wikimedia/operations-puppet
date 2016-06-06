@@ -31,6 +31,16 @@ class role::maps::master {
         require => Class['::postgresql::postgis'],
     }
 
+    # some additional logging for the postgres master to help diagnose import
+    # performance issues
+    file { '/etc/postgresql/9.4/main/logging.conf':
+        ensure => 'present',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0444',
+        source => 'puppet:///modules/role/maps/logging.conf',
+    }
+
     # PostgreSQL Replication
     $postgres_slaves = hiera('maps::postgres_slaves', undef)
     if $postgres_slaves {
