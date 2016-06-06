@@ -11,7 +11,7 @@ class mailman::webui {
 
     $lists_servername = hiera('mailman::lists_servername')
 
-    $ssl_settings = ssl_ciphersuite('apache', 'mid', '365')
+    $ssl_settings = ssl_ciphersuite('apache', 'mid', true)
 
     apache::site { 'lists.wikimedia.org':
         content => template('mailman/lists.wikimedia.org.erb'),
