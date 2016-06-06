@@ -17,7 +17,6 @@ class role::iegreview {
         mysql_db             => 'iegreview',
         smtp_host            => $::mail_smarthost[0],
         parsoid_url          => "http://parsoid.svc.${::parsoid_site}.wmnet:8000/enwiki/",
-        require_upstream_ssl => true,
     }
 
     ferm::service { 'iegreview_http':

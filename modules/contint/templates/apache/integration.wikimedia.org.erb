@@ -13,16 +13,7 @@
 
     DocumentRoot /srv/org/wikimedia/integration
 
-    RewriteEngine On
-    RewriteRule ^/favicon\.ico$ /favicon.php [L]
-    # Force any request to HTTPS if not passed via https (misc web varnish)
-    RewriteCond %{HTTP:X-Forwarded-Proto} !https
-    RewriteRule (.) https://integration.wikimedia.org%{REQUEST_URI} [R=301]
-
     Redirect 301 /monitoring/ https://tools.wmflabs.org/nagf/?project=integration
-
-    Header always merge Vary X-Forwarded-Proto
-    Header always set Strict-Transport-Security "max-age=31536000"
 
     Include *_proxy
 

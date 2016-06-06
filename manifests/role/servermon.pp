@@ -31,8 +31,6 @@ class role::servermon {
     include passwords::ldap::wmf_cluster
     $proxypass = $passwords::ldap::wmf_cluster::proxypass
 
-    $ssl_settings = ssl_ciphersuite('apache', 'compat')
-
     class { '::servermon':
         ensure      => 'present',
         directory   => '/srv/deployment/servermon/servermon/servermon',
