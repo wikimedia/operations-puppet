@@ -54,7 +54,7 @@ class archiva::proxy(
         # Use puppet's stupidity to flatten these into a single array.
         $server_properties = [
             $archiva_server_properties,
-            ssl_ciphersuite('nginx', 'compat', '365'),
+            ssl_ciphersuite('nginx', 'compat', true),
             [
                 "ssl_certificate     ${ssl_certificate_chained};",
                 "ssl_certificate_key ${ssl_certificate_key};",

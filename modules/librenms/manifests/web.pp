@@ -7,7 +7,7 @@ class librenms::web(
 
     include ::apache::mod::ssl
 
-    $ssl_settings = ssl_ciphersuite('apache', 'compat', '365')
+    $ssl_settings = ssl_ciphersuite('apache', 'compat', true)
 
     apache::site { $sitename:
         content => template('librenms/apache.conf.erb'),
