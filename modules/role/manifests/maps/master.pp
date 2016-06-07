@@ -51,6 +51,7 @@ class role::maps::master {
         database => 'gis',
         require  => Postgresql::Spatialdb['gis'],
     }
+
     # Grants
     file { '/usr/local/bin/maps-grants.sql':
         owner   => 'root',
@@ -59,7 +60,7 @@ class role::maps::master {
         content => template('role/maps/grants.sql.erb'),
     }
 
-    # Db setup
+    # DB setup
     postgresql::spatialdb { 'gis':
         require => Class['::postgresql::postgis'],
     }
