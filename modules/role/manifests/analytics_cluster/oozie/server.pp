@@ -48,9 +48,10 @@ class role::analytics_cluster::oozie::server {
     # Include icinga alerts if production realm.
     if $::realm == 'production' {
         nrpe::monitor_service { 'oozie':
-            description  => 'Oozie Server',
-            nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C java -a "org.apache.catalina.startup.Bootstrap"',
-            require      => Class['cdh::hive::metastore'],
+            description   => 'Oozie Server',
+            nrpe_command  => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C java -a "org.apache.catalina.startup.Bootstrap"',
+            contact_group => 'admins,analytics',
+            require       => Class['cdh::hive::metastore'],
         }
     }
 }
