@@ -69,6 +69,11 @@ class eventlogging::server(
         managehome => false,
     }
 
+    ssh::userkey { 'eventlogging':
+        ensure  => 'present',
+        content => secret('keyholder/eventlogging.pub'),
+    }
+
     $eventlogging_directories = [
         '/etc/eventlogging.d',
         '/etc/eventlogging.d/consumers',
