@@ -1,0 +1,27 @@
+    # rewrites for old git.wikimedia.org URLs
+
+    # Danny_B commited these rules
+    AllowEncodedSlashes On
+
+    # replace all %2f in repo name with /
+    RewriteRule ^/(commit|log|summary|tree)/([a-z/]+)(\%2[Ff].*)\.git((\%2[Ff]|/).*)?$ /$1/$2$3.git$4 [N]
+
+    # https://git.wikimedia.org/summary/mediawiki%2Fcore.git (already rewritten to the following form) -> https://phabricator.wikimedia.org/r/p/mediawiki/core
+    # https://git.wikimedia.org/summary/mediawiki/core.git -> https://phabricator.wikimedia.org/r/p/mediawiki/core
+    RewriteRule ^/summary/([a-z/]+)\.git$ https://phabricator.wikimedia.org/r/p/$1 [NE,L,R=301]
+
+    # https://git.wikimedia.org/tree/mediawiki%2Fcore.git (already rewritten to the following form) -> https://phabricator.wikimedia.org/r/p/mediawiki/core;browse/
+    # https://git.wikimedia.org/tree/mediawiki/core.git -> https://phabricator.wikimedia.org/r/p/mediawiki/core;browse/
+    RewriteRule ^/tree/([a-z/]+)\.git$ https://phabricator.wikimedia.org/r/p/$1;browse/ [NE,L,R=301]
+
+    # https://git.wikimedia.org/tree/mediawiki%2Fcore.git/refs%2Fheads%2Fmaster -> https://phabricator.wikimedia.org/r/p/mediawiki/core;browse/master/
+    # https://git.wikimedia.org/tree/mediawiki/core.git/refs%2Fheads%2Fmaster -> https://phabricator.wikimedia.org/r/p/mediawiki/core;browse/master/
+    RewriteRule ^/tree/([a-z/]+)\.git(\%2[Ff]|/).+(\%2[Ff]|/)([a-z]+)$ https://phabricator.wikimedia.org/r/p/$1;browse/$4/ [NE,L,R=301]
+
+    # https://git.wikimedia.org/log/mediawiki%2Fcore.git/refs%2Fheads%2Fmaster (already rewritten to the following form) -> https://phabricator.wikimedia.org/r/p/mediawiki/core;history/master/
+    # https://git.wikimedia.org/log/mediawiki/core.git/refs%2Fheads%2Fmaster -> https://phabricator.wikimedia.org/r/p/mediawiki/core;history/master/
+    RewriteRule ^/log/([a-z/]+)\.git(\%2[Ff]|/).+(\%2[Ff]|/)([a-z]+)$ https://phabricator.wikimedia.org/r/p/$1;history/$4/ [NE,L,R=301]
+
+    # https://git.wikimedia.org/commit/mediawiki%2Fcore.git/4d294bceab9669ee7169248e92fe747a3b5fce7c (already rewritten to the following form) -> https://phabricator.wikimedia.org/r/revision/mediawiki/core;4d294bceab9669ee7169248e92fe747a3b5fce7c
+    # https://git.wikimedia.org/commit/mediawiki/core.git/4d294bceab9669ee7169248e92fe747a3b5fce7c -> https://phabricator.wikimedia.org/r/revision/mediawiki/core;4d294bceab9669ee7169248e92fe747a3b5fce7c
+    RewriteRule ^/commit/([a-z/]+)\.git(\%2[Ff]|/)([0-9a-f]+)$ https://phabricator.wikimedia.org/r/revision/$1;$3 [NE,L,R=301]
