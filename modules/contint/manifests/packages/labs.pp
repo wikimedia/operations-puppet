@@ -24,11 +24,6 @@ class contint::packages::labs {
     # For mediawiki/extensions/Collection/OfflineContentGenerator/bundler
     require_package('zip')
 
-    # For Selenium jobs recording (T113520)
-    package { 'libav-tools':
-        ensure => present,
-    }
-
     if os_version('ubuntu >= trusty') {
         # Work around PIL 1.1.7 expecting libs in /usr/lib T101550
         file { '/usr/lib/libjpeg.so':

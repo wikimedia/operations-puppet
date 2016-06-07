@@ -8,4 +8,10 @@ class contint::browsertests {
 
     # Provides phantomjs, firefox and xvfb
     include contint::browsers
+
+    # For Selenium jobs recording (T113520)
+    package { 'libav-tools':
+        ensure => present,
+    }
+
 }
