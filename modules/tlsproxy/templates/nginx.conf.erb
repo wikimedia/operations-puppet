@@ -76,7 +76,11 @@ http {
     # probably less than ideal, as we'll want to vary it based on cluster
     # traffic levels and pybal node weightings, but for now we're just
     # experimenting with the fixed value to get ballpark ideas.
-    ssl_session_cache shared:SSL:200m;
+<% if realm == 'labs' then -%>
+    ssl_session_cache shared:SSL:32m;
+<% else -%>
+    ssl_session_cache shared:SSL:2048m;
+<% end -%>
     ssl_session_timeout 15m;
 
     # Disable RFC5077 tickets (may revisit later when client support is better)
