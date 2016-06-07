@@ -72,10 +72,11 @@ class role::analytics_cluster::hadoop::client {
     # go ahead and include an icinga alert for the JournalNode process.
     if $::realm == 'production' and member($cdh::hadoop::journalnode_hosts, $::fqdn) {
         nrpe::monitor_service { 'hadoop-hdfs-journalnode':
-            description  => 'Hadoop JournalNode',
-            nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C java -a "org.apache.hadoop.hdfs.qjournal.server.JournalNode"',
-            require      => Class['cdh::hadoop'],
-            critical     => true,
+            description   => 'Hadoop JournalNode',
+            nrpe_command  => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C java -a "org.apache.hadoop.hdfs.qjournal.server.JournalNode"',
+            contact_group => 'admins,analytics',
+            require       => Class['cdh::hadoop'],
+            critical      => true,
         }
     }
 
