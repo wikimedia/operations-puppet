@@ -102,6 +102,7 @@ class role::kafka::analytics::broker {
     if $::realm == 'production' {
         class { '::confluent::kafka::broker::alerts':
             nagios_servicegroup     => "analytics_${::site}",
+            nrpe_contact_group      => 'admins,analytics',
             # TODO: tweak these
             replica_maxlag_warning  => '1000000',
             replica_maxlag_critical => '5000000',
