@@ -117,7 +117,6 @@ override	education.wikimedia.org/evaluating	//commons.wikimedia.org/wiki/File:Ev
 override	education.wikimedia.org/illustrating	//commons.wikimedia.org/wiki/File:Illustrating_Wikipedia_brochure.pdf
 
 override	education.wikimedia.org/casestudies	//outreach.wikimedia.org/wiki/Education/Case_Studies
-
 override	education.wikimedia.org/content	//outreach.wikimedia.org/wiki/Education/Case_Studies/content
 override	education.wikimedia.org/copyediting	//outreach.wikimedia.org/wiki/Education/Case_Studies/copyediting
 override	education.wikimedia.org/definitions	//outreach.wikimedia.org/wiki/Education/Case_Studies/definitions
@@ -475,6 +474,10 @@ override	svn.mediawiki.org/viewvc/mediawiki	https://phabricator.wikimedia.org/di
 override	svn.mediawiki.org/viewvc/mysql	https://phabricator.wikimedia.org/diffusion/SVNM/
 override	svn.mediawiki.org/viewvc/pywikipedia	https://phabricator.wikimedia.org/diffusion/SVNP/
 funnel	svn.mediawiki.org	https://phabricator.wikimedia.org/diffusion/
+
+# git.wikimedia.org -> Diffusion/Phabricator (T137224, T111465)
+override    git.wikimedia.org/repositories https://phabricator.wikimedia.org/diffusion/query/all/
+funnel      git.wikimedia.org https://phabricator.wikimedia.org/diffusion/
 
 # rewrite download.wiki(m|p)edia to dumps.wikimedia - T107575
 rewrite	download.wikimedia.org	https://dumps.wikimedia.org
