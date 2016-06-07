@@ -1,9 +1,9 @@
 # == Define eventlogging::deployment::target
 #
 # Abstracts use of scap::target for multiple eventlogging deployment targets.
-# A corresponding 'eventlogging/$title' scap::source in the scap::sources
-# hiera variable must be declared.
-# See: hieradata/role/common/deployment/server.yaml and
+# A corresponding 'eventlogging/$title' scap::source in the
+# scap::server::sources hiera variable must be declared.
+# See: hieradata/common/scap/server.yaml and
 #      modules/scap/manifests/deploy
 #
 # == Parameters
@@ -46,5 +46,11 @@ define eventlogging::deployment::target(
         service_name => $service_name,
         sudo_rules   => $sudo_rules,
         manage_user  => false,
+    }
+
+    # Needed because scap::target doesn't manage_user.
+    ssh::userkey { 'eventlogging':
+        ensure  => 'present',
+        content => secret('keyholder/eventlogging.pub'),
     }
 }
