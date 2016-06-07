@@ -1,0 +1,34 @@
+#!/usr/bin/env bash
+
+postgres_master=maps2001.codfw.wmnet
+
+while getopts "hH" opt; do
+  case "${opt}" in
+  h)  show_help
+      exit 0
+      ;;
+  H)  postgres_master="${OPTARG}"
+      ;;
+  esac
+done
+
+function show_help() {
+  echo "initialize-postgres-slave [-H <postgres_master>]"
+  echo "  postgres_master: hostname of the postgresql master, default to maps2001.codfw.wmnet"
+}
+
+service postgresql@9.4-main stop
+
+rm -rf /srv/postgresql/9.4/main
+
+mkdir /srv/postgresql/9.4/main
+chown postgres: /srv/postgresql/9.4/main/
+chmod 700 /srv/postgresql/9.4/main/
+
+sudo -u postgres pg_basebackup \
+    --xlog-method=stream \
+    --pgdata=/srv/postgresql/9.4/main/ \
+    --host=${postgres_master} \
+    --username=replication --password
+
+service postgresql@9.4-main start

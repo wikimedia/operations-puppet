@@ -19,6 +19,35 @@ class role::maps::master {
     $tileratorui_pass = hiera('maps::postgresql_tileratorui_pass')
     $osmimporter_pass = hiera('maps::postgresql_osmimporter_pass')
     $osmupdater_pass = hiera('maps::postgresql_osmupdater_pass')
+
+    # Users
+    postgresql::user { 'kartotherian':
+        ensure   => present,
+        password => $kartotherian_pass,
+        database => 'gis',
+    }
+    postgresql::user { 'tilerator':
+        ensure   => present,
+        password => $tilerator_pass,
+        database => 'gis',
+    }
+    postgresql::user { 'tileratorui':
+        ensure   => present,
+        password => $tileratorui_pass,
+        database => 'gis',
+    }
+    postgresql::user { 'osmimporter':
+        ensure   => present,
+        password => $osmimporter_pass,
+        database => 'gis',
+    }
+    postgresql::user { 'osmupdater':
+        ensure   => present,
+        password => $osmupdater_pass,
+        database => 'gis',
+    }
+
+
     # Grants
     file { '/usr/local/bin/maps-grants.sql':
         owner   => 'root',
