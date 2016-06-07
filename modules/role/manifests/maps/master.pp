@@ -19,7 +19,82 @@ class role::maps::master {
     $tileratorui_pass = hiera('maps::postgresql_tileratorui_pass')
     $osmimporter_pass = hiera('maps::postgresql_osmimporter_pass')
     $osmupdater_pass = hiera('maps::postgresql_osmupdater_pass')
+
+    # Users
+    postgresql::user { 'kartotherian':
+        user     => 'kartotherian',
+        password => $kartotherian_pass,
+        database => 'gis',
+        require  => Postgresql::Spatialdb['gis'],
+    }
+    postgresql::user { 'tilerator':
+        user     => 'tilerator',
+        password => $tilerator_pass,
+        database => 'gis',
+        require  => Postgresql::Spatialdb['gis'],
+    }
+    postgresql::user { 'tileratorui':
+        user     => 'tileratorui',
+        password => $tileratorui_pass,
+        database => 'gis',
+        require  => Postgresql::Spatialdb['gis'],
+    }
+    postgresql::user { 'osmimporter':
+        user     => 'osmimporter',
+        password => $osmimporter_pass,
+        database => 'gis',
+        require  => Postgresql::Spatialdb['gis'],
+    }
+    postgresql::user { 'osmupdater':
+        user     => 'osmupdater',
+        password => $osmupdater_pass,
+        database => 'gis',
+        require  => Postgresql::Spatialdb['gis'],
+    }
+
     # Grants
+    postgresql::grant { 'kartotherian':
+        user       => 'kartotherian',
+        database   => 'gis',
+        privileges => 'SELECT',
+        schema     => 'public',
+        require    => Postgresql::User['kartotherian'],
+    }
+    postgresql::grant { 'tilerator':
+        user       => 'tilerator',
+        database   => 'gis',
+        privileges => 'SELECT',
+        schema     => 'public',
+        require    => Postgresql::User['tilerator'],
+    }
+    postgresql::grant { 'tileratorui':
+        user       => 'tileratorui',
+        database   => 'gis',
+        privileges => 'SELECT',
+        schema     => 'public',
+        require    => Postgresql::User['tileratorui'],
+    }
+    postgresql::grant { 'osmupdater':
+        user       => 'osmupdater',
+        database   => 'gis',
+        privileges => 'SELECT, INSERT, UPDATE, DELETE',
+        schema     => 'public',
+        require    => Postgresql::User['osmupdater'],
+    }
+    postgresql::grant { 'osmimporter':
+        user       => 'osmimporter',
+        database   => 'gis',
+        privileges => 'SELECT, INSERT, UPDATE, DELETE',
+        schema     => 'public',
+        require    => Postgresql::User['osmimporter'],
+    }
+    postgresql::grant { 'osmimporter2':
+        user       => 'osmimporter',
+        database   => 'gis',
+        privileges => 'CREATE, TEMPORARY',
+        require    => Postgresql::User['osmimporter'],
+    }
+
     file { '/usr/local/bin/maps-grants.sql':
         owner   => 'root',
         group   => 'root',
@@ -27,7 +102,7 @@ class role::maps::master {
         content => template('role/maps/grants.sql.erb'),
     }
 
-    # Db setup
+    # DB setup
     postgresql::spatialdb { 'gis':
         require => Class['::postgresql::postgis'],
     }

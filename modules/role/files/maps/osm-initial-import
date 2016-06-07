@@ -1,0 +1,108 @@
+#!/usr/bin/env bash
+
+set -e
+
+download_dir="/srv/downloads/"
+osmosis_dir="/srv/osmosis"
+kartotherian_dir="/srv/deployment/kartotherian/deploy/"
+osm_bright_source_dir="${kartotherian_dir}/node_modules/osm-bright-source"
+replicate_lock="${osmosis_dir}/replicate-osm.lck"
+proxy=
+database_host=`hostname -f`
+log_file=/var/log/osm-initial-import.log
+dump_date="latest"
+
+while getopts "d:hH:p:x:" opt; do
+  case "${opt}" in
+  d)  dump_date="${OPTARG}"
+      ;;
+  h)  show_help
+      exit 0
+      ;;
+  H)  database_host="${OPTARG}"
+      ;;
+  p)  password_file="${OPTARG}"
+      ;;
+  x)  proxy="-x ${OPTARG}"
+      ;;
+  esac
+done
+
+filename="planet-${dump_date}.osm.pbf"
+
+function show_help() {
+  echo "osm-initial-import -d <date_of_import> [-H <database_host>] -p <password_file> -x <proxy>"
+  echo "  date_of_import: find the latest dump at https://planet.osm.org/pbf/"
+  echo "  database_host: hostname of the postgresql database, default to `hostname -f`"
+  echo "  password_file: a file containing the postgresql password of the osmimporter user"
+  echo "  proxy: proxy used to download PBF files"
+  echo ""
+  echo "WARNING: the import is going to run for a long, long time. You should probably run this from inside screen or similar"
+  echo ""
+  echo "  example: osm-initial-import -d 160530 -p ~/osmimporter_pass -x webproxy.eqiad.wmnet:8080"
+}
+
+function download_pbf() {
+  cd ${download_dir}
+  curl ${proxy} -O https://planet.openstreetmap.org/pbf/${filename}.md5
+  curl ${proxy} -O https://planet.openstreetmap.org/pbf/${filename}
+  md5sum -c ${filename}.md5
+  if [ $? -ne 0 ] ; then
+    echo "Download of PBF file failed, md5sum is invalid"
+    exit -1
+  fi
+}
+
+function ensure_sql_grants() {
+  cat /usr/local/bin/maps-grants.sql | sudo -u postgres psql -d gis -f -
+}
+
+function reset_postgres() {
+  sudo -u postgres psql -d gis -c 'DROP TABLE IF EXISTS admin, planet_osm_line, planet_osm_point, planet_osm_polygon, planet_osm_roads, water_polygons;'
+  ensure_sql_grants
+}
+
+function initial_osm_import() {
+  cd ${osmosis_dir}
+  PGPASSWORD="$(< ${password_file})" flock -xn ${replicate_lock} \
+    sudo -E -u osmupdater osm2pgsql \
+      --create --slim --flat-nodes nodes.bin -C 40000 --number-processes 8 \
+      --hstore --host ${database_host} -U osmimporter -d gis \
+      ${download_dir}/${filename} 2>&1 | tee ${log_file}
+
+  if [ ${PIPESTATUS[0]} -ne 0 ]; then
+    echo "osm2pgsql failed to complete initial import"
+    exit -1
+  fi
+}
+
+function import_water_lines() {
+  sudo -u osmimporter /usr/local/bin/import_waterlines
+}
+
+function custom_functions_and_indexes() {
+  sudo -u postgres psql -Xd gis -f "${osm_bright_source_dir}/node_modules/postgis-vt-util/lib.sql"
+  sudo -u postgres psql -Xd gis -f "${osm_bright_source_dir}/sql/admin.sql"
+  sudo -u postgres psql -Xd gis -f "${osm_bright_source_dir}/sql/functions.sql"
+  sudo -u postgres psql -Xd gis -f "${osm_bright_source_dir}/sql/water-indexes.sql"
+  sudo -u postgres psql -d gis -c 'SELECT populate_admin();'
+}
+
+function replicate_osm() {
+  # TODO: create appropriate state.txt file
+  sudo -u osmupdater /usr/local/bin/replicate-osm >> /tmp/osm2pgsql-initial.log
+}
+
+function cleanup() {
+  rm "${download_dir}/${filename}.md5"
+  rm "${download_dir}/${filename}"
+}
+
+download_pbf
+reset_postgres
+initial_osm_import
+import_water_lines
+ensure_sql_grants
+custom_functions_and_indexes
+replicate_osm
+cleanup
