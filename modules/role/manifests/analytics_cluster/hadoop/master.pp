@@ -44,26 +44,30 @@ class role::analytics_cluster::hadoop::master {
     if $::realm == 'production' {
         # Icinga process alerts for NameNode, ResourceManager and HistoryServer
         nrpe::monitor_service { 'hadoop-hdfs-namenode':
-            description  => 'Hadoop Namenode - Primary',
-            nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C java -a "org.apache.hadoop.hdfs.server.namenode.NameNode"',
-            require      => Class['cdh::hadoop::master'],
-            critical     => true,
+            description   => 'Hadoop Namenode - Primary',
+            nrpe_command  => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C java -a "org.apache.hadoop.hdfs.server.namenode.NameNode"',
+            contact_group => 'admins,analytics',
+            require       => Class['cdh::hadoop::master'],
+            critical      => true,
         }
         nrpe::monitor_service { 'hadoop-hdfs-zkfc':
-            description  => 'Hadoop HDFS Zookeeper failover controller',
-            nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C java -a "org.apache.hadoop.hdfs.tools.DFSZKFailoverController"',
-            require      => Class['cdh::hadoop::master'],
+            description   => 'Hadoop HDFS Zookeeper failover controller',
+            nrpe_command  => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C java -a "org.apache.hadoop.hdfs.tools.DFSZKFailoverController"',
+            contact_group => 'admins,analytics',
+            require       => Class['cdh::hadoop::master'],
         }
         nrpe::monitor_service { 'hadoop-yarn-resourcemanager':
-            description  => 'Hadoop ResourceManager',
-            nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C java -a "org.apache.hadoop.yarn.server.resourcemanager.ResourceManager"',
-            require      => Class['cdh::hadoop::master'],
-            critical     => true,
+            description   => 'Hadoop ResourceManager',
+            nrpe_command  => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C java -a "org.apache.hadoop.yarn.server.resourcemanager.ResourceManager"',
+            contact_group => 'admins,analytics',
+            require       => Class['cdh::hadoop::master'],
+            critical      => true,
         }
         nrpe::monitor_service { 'hadoop-mapreduce-historyserver':
-            description  => 'Hadoop HistoryServer',
-            nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C java -a "org.apache.hadoop.mapreduce.v2.hs.JobHistoryServer"',
-            require      => Class['cdh::hadoop::master'],
+            description   => 'Hadoop HistoryServer',
+            nrpe_command  => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C java -a "org.apache.hadoop.mapreduce.v2.hs.JobHistoryServer"',
+            contact_group => 'admins,analytics',
+            require       => Class['cdh::hadoop::master'],
         }
 
         # Allow nagios to run the check_hdfs_active_namenode as hdfs user.
@@ -73,9 +77,10 @@ class role::analytics_cluster::hadoop::master {
         }
         # Alert if there is no active NameNode
         nrpe::monitor_service { 'hadoop-hdfs-active-namenode':
-            description  => 'At least one Hadoop HDFS NameNode is active',
-            nrpe_command => '/usr/bin/sudo /usr/local/bin/check_hdfs_active_namenode',
-            require      => [
+            description   => 'At least one Hadoop HDFS NameNode is active',
+            nrpe_command  => '/usr/bin/sudo /usr/local/bin/check_hdfs_active_namenode',
+            contact_group => 'admins,analytics',
+            require       => [
                 Class['cdh::hadoop::master'],
                 Sudo::User['nagios-check_hdfs_active_namenode'],
             ],
