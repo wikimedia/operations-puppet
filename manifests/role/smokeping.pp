@@ -3,8 +3,8 @@ class role::smokeping {
 
     system::role { 'smokeping': description => 'smokeping server' }
 
-    include smokeping
-    include smokeping::web
+    include ::smokeping
+    include ::smokeping::web
 
     ferm::service { 'smokeping-http':
         proto => 'tcp',
