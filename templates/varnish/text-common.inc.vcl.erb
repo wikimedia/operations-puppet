@@ -130,7 +130,7 @@ sub text_common_backend_response {
 	//    avoids us accidentally replacing a good stale/grace object with
 	//    an hfp (and then repeatedly passing on potentially-cacheable
 	//    content) due to an isolated 5xx response, and the exception for
-	//    underlying cache hits (detected from X-Cache) is to avoid
+	//    underlying cache hits (detected from X-Cache-Int) is to avoid
 	//    creating a persist HFP object when a lower-level varnish
 	//    returned an expired object under grace-mode rules.
 	// 2) Token=1 + Vary:Cookie
@@ -142,7 +142,7 @@ sub text_common_backend_response {
 	    (
 		beresp.ttl <= 0s
 		&& beresp.status < 500
-		&& (!beresp.http.X-Cache || beresp.http.X-Cache !~ " hit\(")
+		&& (!beresp.http.X-Cache-Int || beresp.http.X-Cache-Int !~ " hit")
 	    ) || (
 		req.http.Cookie == "Token=1"
 		&& beresp.http.Vary ~ "(?i)(^|,)\s*Cookie\s*(,|$)"
