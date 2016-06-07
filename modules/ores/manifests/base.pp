@@ -28,6 +28,7 @@ class ores::base(
                     'myspell-he',
                     'myspell-hu',
                     'myspell-it',
+                    'myspell-nb',
                     'myspell-nl',
                     'myspell-pt',
                     'myspell-ru',
