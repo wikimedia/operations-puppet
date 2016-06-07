@@ -6,207 +6,148 @@
 host alsafi {
     hardware ethernet aa:00:00:c7:16:43;
     fixed-address alsafi.wikimedia.org;
-    option pxelinux.pathprefix "jessie-installer/";
-    filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host bohrium {
     hardware ethernet aa:00:00:1e:70:87;
     fixed-address bohrium.eqiad.wmnet;
-    option pxelinux.pathprefix "jessie-installer/";
-    filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host bromine {
     hardware ethernet aa:00:00:f1:36:3a;
     fixed-address bromine.eqiad.wmnet;
-    option pxelinux.pathprefix "jessie-installer/";
-    filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host dubnium {
     hardware ethernet aa:00:00:2f:d8:57;
     fixed-address dubnium.wikimedia.org;
-    option pxelinux.pathprefix "jessie-installer/";
-    filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host fermium {
     hardware ethernet aa:00:00:a4:ac:f1;
     fixed-address fermium.wikimedia.org;
-    option pxelinux.pathprefix "jessie-installer/";
-    filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host furud {
     hardware ethernet aa:00:00:21:8b:88;
     fixed-address furud.codfw.wmnet;
-    option pxelinux.pathprefix "jessie-installer/";
-    filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host hassaleh {
     hardware ethernet aa:00:00:3f:8c:a0;
     fixed-address hassaleh.codfw.wmnet;
-    option pxelinux.pathprefix "jessie-installer/";
-    filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host hassium {
     hardware ethernet aa:00:00:aa:c7:02;
     fixed-address hassium.eqiad.wmnet;
-    option pxelinux.pathprefix "jessie-installer/";
-    filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host kraz {
     hardware ethernet aa:00:00:e9:b4:28;
     fixed-address kraz.wikimedia.org;
-    option pxelinux.pathprefix "jessie-installer/";
-    filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host krypton {
     hardware ethernet aa:00:00:7e:e0:22;
     fixed-address krypton.eqiad.wmnet;
-    option pxelinux.pathprefix "jessie-installer/";
-    filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host labsdb1001 {
     hardware ethernet 00:22:BD:D3:61:8C;
     fixed-address labsdb1001.eqiad.wmnet;
+    option pxelinux.pathprefix "trusty-installer/";
+    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host labsdb1002 {
     hardware ethernet 00:22:BD:D3:63:F4;
     fixed-address labsdb1002.eqiad.wmnet;
+    option pxelinux.pathprefix "trusty-installer/";
+    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host labsdb1003 {
     hardware ethernet 88:43:E1:C2:54:98;
     fixed-address labsdb1003.eqiad.wmnet;
+    option pxelinux.pathprefix "trusty-installer/";
+    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host meitnerium {
     hardware ethernet aa:00:00:8c:71:ea;
     fixed-address meitnerium.wikimedia.org;
-    option pxelinux.pathprefix "jessie-installer/";
-    filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host mendelevium.eqiad.wmnet {
     hardware ethernet aa:00:00:58:6a:10;
     fixed-address mendelevium.eqiad.wmnet;
-    option pxelinux.pathprefix "jessie-installer/";
-    filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host mx1001.wikimedia.org {
     hardware ethernet aa:00:00:b2:f5:b7;
     fixed-address mx1001.wikimedia.org;
-    option pxelinux.pathprefix "jessie-installer/";
-    filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host mx2001.wikimedia.org {
     hardware ethernet aa:00:00:d2:18:cf;
     fixed-address mx2001.wikimedia.org;
-    option pxelinux.pathprefix "jessie-installer/";
-    filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host etherpad1001 {
     hardware ethernet AA:00:00:EE:AD:01;
     fixed-address etherpad1001.eqiad.wmnet;
-    option pxelinux.pathprefix "jessie-installer/";
-    filename "jessie-installer/debian-installer/amd64/pxelinux.0";
-}
-
-host pc1001 {
-    hardware ethernet 00:22:bd:d3:38:62;
-    fixed-address pc1001.eqiad.wmnet;
-}
-
-host pc1002 {
-    hardware ethernet 00:22:BD:D3:60:4A;
-    fixed-address pc1002.eqiad.wmnet;
-}
-
-host pc1003 {
-    hardware ethernet 88:43:E1:C2:51:50;
-    fixed-address pc1003.eqiad.wmnet;
 }
 
 host planet1001 {
     hardware ethernet aa:00:00:19:24:b9;
     fixed-address planet1001.eqiad.wmnet;
-    option pxelinux.pathprefix "jessie-installer/";
-    filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host planet2001 {
     hardware ethernet aa:00:00:76:5e:11;
     fixed-address planet2001.codfw.wmnet;
-    option pxelinux.pathprefix "jessie-installer/";
-    filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host pollux {
     hardware ethernet aa:00:00:2d:a2:76;
     fixed-address pollux.wikimedia.org;
-    option pxelinux.pathprefix "jessie-installer/";
-    filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host seaborgium {
     hardware ethernet aa:00:00:4d:be:84;
     fixed-address seaborgium.wikimedia.org;
-    option pxelinux.pathprefix "jessie-installer/";
-    filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host serpens {
     hardware ethernet aa:00:00:0e:a4:81;
     fixed-address serpens.wikimedia.org;
-    option pxelinux.pathprefix "jessie-installer/";
-    filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
 # ganeti VMs used for pybal testing/development
 host pybal-test2001 {
     hardware ethernet aa:00:00:16:8d:f9;
     fixed-address pybal-test2001.codfw.wmnet;
-    option pxelinux.pathprefix "jessie-installer/";
-    filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host pybal-test2002 {
     hardware ethernet aa:00:00:f8:8d:e1;
     fixed-address pybal-test2002.codfw.wmnet;
-    option pxelinux.pathprefix "jessie-installer/";
-    filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host pybal-test2003 {
     hardware ethernet aa:00:00:c9:59:b0;
     fixed-address pybal-test2003.codfw.wmnet;
-    option pxelinux.pathprefix "jessie-installer/";
-    filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host rutherfordium.eqiad.wmnet {
     hardware ethernet aa:00:00:94:f7:c2;
     fixed-address rutherfordium.eqiad.wmnet;
-    option pxelinux.pathprefix "jessie-installer/";
-    filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
 # ganeti VM used for d-i testing
 host d-i-test {
     hardware ethernet aa:00:00:3b:60:cb;
     fixed-address d-i-test.eqiad.wmnet;
-    option pxelinux.pathprefix "jessie-installer/";
-    filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
