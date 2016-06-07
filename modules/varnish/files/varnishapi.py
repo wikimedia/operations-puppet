@@ -631,6 +631,9 @@ class VarnishLog(VarnishAPI):
             self.vslq = self.lva.VSLQ_New(
                 self.vsl, z, self.__g_arg, self.__q_arg)
             self.error = 'Log reacquired'
+        else:
+            self.error = ''
+
         i = self.lib.VSLQ_Dispatch(
             self.vslq, VSLQ_dispatch_f(self.__callBack), None)
         return(i)
