@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+
+postgres_master=maps2001.codfw.wmnet
+
+service postgresql@9.4-main stop
+
+rm -rf /srv/postgresql/9.4/main
+
+mkdir /srv/postgresql/9.4/main
+chown postgres: /srv/postgresql/9.4/main/
+chmod 700 /srv/postgresql/9.4/main/
+
+###sudo -u postgres /usr/lib/postgresql/9.4/bin/initdb -D /srv/postgresql/9.4/main
+
+sudo -u postgres pg_basebackup \
+    --xlog-method=stream \
+    --pgdata=/srv/postgresql/9.4/main/ \
+    --host=${postgres_master} \
+    --username=replication --password
+
+service postgresql@9.4-main start
