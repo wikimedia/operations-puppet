@@ -1,0 +1,46 @@
+# This file is managed by Puppet
+# See modules/role/templates/toollabs/merlbot_proxy/nginx.conf.erb
+##
+# HTTP to HTTPS reverse proxy for MerlBot
+#
+# Copyright (c) 2016 Bryan Davis and the Wikimedia Foundation
+# License: Apache-2.0
+##
+
+server {
+    listen 80 default_server;
+    listen [::]:80 default_server;
+    server_name _;
+
+    location / {
+        # Access control
+        # We only want to allow requests from internal Labs hosts.
+        # Ideally we would only allow Tool Labs exec nodes, but there
+        # is no easy way to find those by IP.
+        allow 10.68.16.0/21; # All of Labs
+        allow 127.0.0.1;
+        deny all;
+
+        # Only allow if User-Agent contains "MerlBot"
+        if ($http_user_agent !~ (MerlBot)) {
+            return 403;
+        }
+
+        # Use these DNS servers to resolve proxied names
+        resolver <%= scope['::nameservers'].join(' ') %>;
+
+        # Act as a non-caching reverse proxy
+        proxy_http_version 1.1;
+        proxy_cache_bypass "1";
+        proxy_no_cache "1";
+        proxy_read_timeout 600s;
+        proxy_redirect off;
+
+        # Change the protocol to https when contacting upstream
+        proxy_pass https://$host$uri;
+
+        # Add a header just to remind folks that this is proxied
+        add_header Labs-TLS-Bandaid "on";
+    }
+}
+# vim:sw=4:ts=4:sts=4:et:ft=nginx:
