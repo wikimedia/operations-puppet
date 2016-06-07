@@ -117,7 +117,6 @@ override	education.wikimedia.org/evaluating	//commons.wikimedia.org/wiki/File:Ev
 override	education.wikimedia.org/illustrating	//commons.wikimedia.org/wiki/File:Illustrating_Wikipedia_brochure.pdf
 
 override	education.wikimedia.org/casestudies	//outreach.wikimedia.org/wiki/Education/Case_Studies
-
 override	education.wikimedia.org/content	//outreach.wikimedia.org/wiki/Education/Case_Studies/content
 override	education.wikimedia.org/copyediting	//outreach.wikimedia.org/wiki/Education/Case_Studies/copyediting
 override	education.wikimedia.org/definitions	//outreach.wikimedia.org/wiki/Education/Case_Studies/definitions
@@ -138,6 +137,12 @@ override	education.wikimedia.org/welcometowikipedia	//commons.wikimedia.org/wiki
 override	education.wikimedia.org/instructorbasics	//commons.wikimedia.org/wiki/File:Instructor_Basics_How_to_Use_Wikipedia_as_a_Teaching_Tool.pdf
 
 funnel	education.wikimedia.org	//outreach.wikimedia.org/wiki/Special:MyLanguage/Education
+
+# git.wikimedia.org -> Diffusion/Phabricator (T137224, T111465)
+override    git.wikimedia.org/repositories //phabricator.wikimedia.org/diffusion/query/all/
+
+# if none of the specific rules match we send people to Diffusion main page
+funnel      git.wikimedia.org/summary //phabricator.wikimedia.org/diffusion/
 
 # Localised TLDs
 
