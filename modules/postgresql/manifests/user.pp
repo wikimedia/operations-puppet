@@ -25,7 +25,7 @@
 # Based upon https://github.com/uggedal/puppet-module-postgresql
 #
 define postgresql::user(
-    $user,
+    $user = $name,
     $password,
     $database = 'template1',
     $type = 'host',
