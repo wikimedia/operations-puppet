@@ -75,8 +75,9 @@ class role::analytics_cluster::database::meta {
         }
 
         nrpe::monitor_service { 'mysql_analytics-meta_disk_space':
-            description  => 'MySQL disk space for analytics-meta instance',
-            nrpe_command => '/usr/lib/nagios/plugins/check_disk -w 10g -c 5g -l -p /var/lib/mysql',
+            description   => 'MySQL disk space for analytics-meta instance',
+            nrpe_command  => '/usr/lib/nagios/plugins/check_disk -w 10g -c 5g -l -p /var/lib/mysql',
+            contact_group => 'admins,analytics',
         }
     }
 }
