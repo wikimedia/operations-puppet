@@ -41,6 +41,7 @@
   limitations under the License.
 """
 
+import sys
 import time
 import signal
 import inspect
@@ -79,6 +80,9 @@ class VarnishCallbackHandler:
         """Loop and execute callback"""
         while self.keep_running:
             ret = self.vap.Dispatch(self.vap_callback)
+            if self.vap.error:
+                sys.stderr.write("Error in execute(): %s\n" % self.vap.error)
+
             if ret == 0:
                 time.sleep(0.01)
 
