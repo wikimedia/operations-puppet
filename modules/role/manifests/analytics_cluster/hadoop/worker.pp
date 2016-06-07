@@ -19,22 +19,25 @@ class role::analytics_cluster::hadoop::worker {
     if $::realm == 'production' {
         # Icinga process alerts for DataNode and NodeManager
         nrpe::monitor_service { 'hadoop-hdfs-datanode':
-            description  => 'Hadoop DataNode',
-            nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C java -a "org.apache.hadoop.hdfs.server.datanode.DataNode"',
-            require      => Class['cdh::hadoop::worker'],
+            description   => 'Hadoop DataNode',
+            nrpe_command  => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C java -a "org.apache.hadoop.hdfs.server.datanode.DataNode"',
+            contact_group => 'admins,analytics',
+            require       => Class['cdh::hadoop::worker'],
         }
         nrpe::monitor_service { 'hadoop-yarn-nodemanager':
-            description  => 'Hadoop NodeManager',
-            nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C java -a "org.apache.hadoop.yarn.server.nodemanager.NodeManager"',
-            require      => Class['cdh::hadoop::worker'],
+            description   => 'Hadoop NodeManager',
+            nrpe_command  => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C java -a "org.apache.hadoop.yarn.server.nodemanager.NodeManager"',
+            contact_group => 'admins,analytics',
+            require       => Class['cdh::hadoop::worker'],
         }
 
         # Alert on datanode mount disk space.  These mounts are ignored by the
         # base module's check_disk via the base::monitoring::host::nrpe_check_disk_options
         # override in worker.yaml hieradata.
         nrpe::monitor_service { 'disk_space_hadoop_worker':
-            description  => 'Disk space on Hadoop worker',
-            nrpe_command => '/usr/lib/nagios/plugins/check_disk --units GB -w 32 -c 16 -e -l  -r "/var/lib/hadoop/data"',
+            description   => 'Disk space on Hadoop worker',
+            nrpe_command  => '/usr/lib/nagios/plugins/check_disk --units GB -w 32 -c 16 -e -l  -r "/var/lib/hadoop/data"',
+            contact_group => 'admins,analytics',
         }
 
         # Make sure that this worker node has NodeManager running in a RUNNING state.
@@ -46,8 +49,9 @@ class role::analytics_cluster::hadoop::worker {
             mode   => '0755',
         }
         nrpe::monitor_service { 'hadoop_yarn_node_state':
-            description  => 'YARN NodeManager Node-State',
-            nrpe_command => '/usr/local/lib/nagios/plugins/check_hadoop_yarn_node_state',
+            description   => 'YARN NodeManager Node-State',
+            nrpe_command  => '/usr/local/lib/nagios/plugins/check_hadoop_yarn_node_state',
+            contact_group => 'admins,analytics',
         }
     }
 
