@@ -47,4 +47,10 @@ define eventlogging::deployment::target(
         sudo_rules   => $sudo_rules,
         manage_user  => false,
     }
+
+    # Needed because scap::target doesn't manage_user.
+    ssh::userkey { 'eventlogging':
+        ensure  => 'present',
+        content => secret('keyholder/eventlogging.pub'),
+    }
 }
