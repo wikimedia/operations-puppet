@@ -148,6 +148,8 @@ appserver:
   mw1256.eqiad.wmnet: [apache2]
   mw1257.eqiad.wmnet: [apache2]
   mw1258.eqiad.wmnet: [apache2]
+  mw1261.eqiad.wmnet: [apache2]
+  mw1262.eqiad.wmnet: [apache2]
 cache_text:
   cp1052.eqiad.wmnet: [varnish-fe, varnish-be, varnish-be-rand, nginx]
   cp1053.eqiad.wmnet: [varnish-fe, varnish-be, varnish-be-rand, nginx]
