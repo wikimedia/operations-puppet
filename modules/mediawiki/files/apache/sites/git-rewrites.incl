@@ -1,0 +1,4 @@
+    # rewrites for old git.wikimedia.org URLs
+    RewriteCond %{HTTP_HOST} =git.wikimedia.org
+    RewriteCond %{QUERY_STRING} ^(\w+)=(\w+)/(\w+).git$
+    RewriteRule ^/summary https://phabricator.wikimedia.org/r/p/%2/%3? [R=301,L,NE]
