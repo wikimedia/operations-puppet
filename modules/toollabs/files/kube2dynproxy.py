@@ -29,7 +29,9 @@ class KubeClient(object):
         self.session.auth = KubeAuth(token)
         self.capath = ca_cert
         self.conn = conn
-        self.base_params = {'labelSelector': 'toollabs=true'}
+        self.base_params = {
+            'labelSelector': 'tools.wmflabs.org/webservice=true'
+        }
         self.resourceVersion = 0
 
     def get_services(self):
