@@ -18,6 +18,9 @@ class contint::packages::python {
         # Debian only has: Suggests: libgnutls28-dev
         # Whereas on Ubuntu libgnutls-dev is a dependency
         require_package('libgnutls28-dev')
+
+        # librdkafka not available in Precise.
+        require_package('librdkafka-dev') # For confluent-kafka
     }
 
     # Bring in fresh pip. The Trusty package does not provide wheels cache
