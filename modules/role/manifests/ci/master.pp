@@ -19,6 +19,8 @@ class role::ci::master {
     include ::jenkins,
         contint::proxy_jenkins
 
+    backup::set { 'contint' : }
+
     nrpe::monitor_service { 'jenkins_zmq_publisher':
         description   => 'jenkins_zmq_publisher',
         contact_group => 'contint',
