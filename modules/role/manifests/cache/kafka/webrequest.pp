@@ -33,10 +33,20 @@ class role::cache::kafka::webrequest(
         varnish_name                 => $varnish_name,
         varnish_svc_name             => $varnish_svc_name,
         varnish_opts                 => $varnish_opts,
+        # Note: the newer version of Varnishkafka (compatible with Varnish 4)
+        # needs to specify if the timestamp formatter should output the time
+        # when the request started to be processed by Varnish (SLT_Timestamp Start)
+        # or the time of the response flush (SLT_Timestamp Resp).
+        # The "end:" prefix forces the latter and it is not be part of the final output.
+        if (hiera('varnish_version4', false)) {
+            $timestamp_formatter = '%{end:%FT%T@dt}t'
+        } else {
+            $timestamp_formatter = '%{%FT%T@dt}t'
+        }
         # Note: fake_tag tricks varnishkafka into allowing hardcoded string into a JSON field.
         # Hardcoding the $fqdn into hostname rather than using %l to account for
         # possible slip ups where varnish only writes the short hostname for %l.
-        format                       => "%{fake_tag0@hostname?${::fqdn}}x %{@sequence!num?0}n %{%FT%T@dt}t %{Varnish:time_firstbyte@time_firstbyte!num?0.0}x %{X-Client-IP@ip}o %{Varnish:handling@cache_status}x %{@http_status}s %{@response_size!num?0}b %{@http_method}m %{Host@uri_host}i %{@uri_path}U %{@uri_query}q %{Content-Type@content_type}o %{Referer@referer}i %{X-Forwarded-For@x_forwarded_for}i %{User-Agent@user_agent}i %{Accept-Language@accept_language}i %{X-Analytics@x_analytics}o %{Range@range}i %{X-Cache@x_cache}o",
+        format                       => "%{fake_tag0@hostname?${::fqdn}}x %{@sequence!num?0}n $timestamp_formatter %{Varnish:time_firstbyte@time_firstbyte!num?0.0}x %{X-Client-IP@ip}o %{Varnish:handling@cache_status}x %{@http_status}s %{@response_size!num?0}b %{@http_method}m %{Host@uri_host}i %{@uri_path}U %{@uri_query}q %{Content-Type@content_type}o %{Referer@referer}i %{X-Forwarded-For@x_forwarded_for}i %{User-Agent@user_agent}i %{Accept-Language@accept_language}i %{X-Analytics@x_analytics}o %{Range@range}i %{X-Cache@x_cache}o",
         message_send_max_retries     => 3,
         # At ~6000 msgs per second, 500000 messages is over 1 minute
         # of buffering, which should be more than enough.
