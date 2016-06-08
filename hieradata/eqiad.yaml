@@ -76,8 +76,6 @@ zookeeper_hosts:
   conf1001.eqiad.wmnet: '1101'
   conf1002.eqiad.wmnet: '1102'
   conf1003.eqiad.wmnet: '1103'
-# no connections per IP for zookeeper
-zookeeper::max_client_connections: 200
 
 #
 # Labs
