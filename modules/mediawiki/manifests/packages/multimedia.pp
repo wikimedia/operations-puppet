@@ -19,8 +19,4 @@ class mediawiki::packages::multimedia {
     ]:
         ensure => present,
     }
-
-    if os_version('debian >= jessie || ubuntu >= trusty') {
-        require_package('firejail')
-    }
 }
