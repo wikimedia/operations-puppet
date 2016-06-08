@@ -71,10 +71,10 @@ class role::ci::master {
     require contint::master_dir
 
     file { '/srv/ssd/jenkins':
-        ensure  => 'directory',
-        owner   => 'jenkins',
-        group   => 'jenkins',
-        mode    => '2775',  # group sticky bit
+        ensure => 'directory',
+        owner  => 'jenkins',
+        group  => 'jenkins',
+        mode   => '2775',  # group sticky bit
     }
 
     # Master does not run job anymore since June 2013. But better safe than

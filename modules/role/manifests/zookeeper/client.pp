@@ -29,8 +29,8 @@ class role::zookeeper::client {
 
     require_package('openjdk-7-jdk')
     class { '::zookeeper':
-        hosts      => $hosts,
-        version    => $version,
+        hosts   => $hosts,
+        version => $version,
     }
 }
 
