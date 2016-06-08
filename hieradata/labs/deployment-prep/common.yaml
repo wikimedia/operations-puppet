@@ -125,7 +125,7 @@ mediawiki_memcached_servers:
    - wikidev
 "base::environment::core_dump_pattern": '/data/project/cores/%{::instancename}-core.%h.%e.%p.%t'
 
-# T100509 Java7 on gallium does not support the hardned sshd MAC and KEX setup
+# T100509 Java7 on contint1001 does not support the hardned sshd MAC and KEX setup
 #         causing slaves to be unreacheable.
 ssh::server::disable_nist_kex: false
 ssh::server::explicit_macs: false
