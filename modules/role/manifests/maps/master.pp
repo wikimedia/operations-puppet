@@ -51,7 +51,7 @@ class role::maps::master {
         ensure        => present,
         flat_nodes    => true,
         expire_levels => '16',
-        num_threads   => 4,
+        num_threads   => $::processorcount / 2,
         pg_password   => $osmupdater_pass,
         period        => 'day', # Remove thse as soon as we get down to minute
         hour          => '1',
