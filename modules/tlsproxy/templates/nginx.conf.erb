@@ -79,9 +79,9 @@ http {
 <% if realm == 'labs' then -%>
     ssl_session_cache shared:SSL:32m;
 <% else -%>
-    ssl_session_cache shared:SSL:2048m;
+    ssl_session_cache shared:SSL:4096m;
 <% end -%>
-    ssl_session_timeout 75m;
+    ssl_session_timeout 25h;
 
     # Disable RFC5077 tickets (may revisit later when client support is better)
     ssl_session_tickets off;
