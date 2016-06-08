@@ -5,6 +5,9 @@
 nodepool_host: '10.64.20.18'  # labnodepool1001.eqiad.wmnet
 phabricator_host: '10.64.32.150' # iridium.eqiad.wmnet
 
+# Clients connecting to zuul-merger git daemon
+zuul_git_client: '10.64.0.237' # contint1001.eqiad.wmnet
+
 # Hosts running zuul-merger process
 #
 # Use ip addresses since the values are injected in iptables rules.
