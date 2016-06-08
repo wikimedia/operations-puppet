@@ -26,7 +26,7 @@
 #
 # [*concurrency*]
 #   The maximum number of tasks the service can execute at any given point in
-#   time. Default: 100
+#   time. Default: 30
 #
 class changeprop(
     $zk_uri,
@@ -34,7 +34,7 @@ class changeprop(
     $restbase_uri = "http://restbase.svc.${::rb_site}.wmnet:7231",
     $purge_host   = '239.128.0.112',
     $purge_port   = 4827,
-    $concurrency  = 100,
+    $concurrency  = 30,
 ) {
 
     service::node { 'changeprop':
