@@ -4,6 +4,22 @@ class role::cache::2layer(
 ) {
     include role::cache::base
 
+    $varnish_version4 = hiera('varnish_version4', false)
+
+    if $varnish_version4 {
+        salt::grain { 'varnish_version':
+            ensure  => present,
+            replace => true,
+            value   => 4,
+        }
+    } else {
+        salt::grain { 'varnish_version':
+            ensure  => present,
+            replace => true,
+            value   => 3,
+        }
+    }
+
     # Ganglia monitoring
     if $::standard::has_ganglia {
         class { 'varnish::monitoring::ganglia':
@@ -41,7 +57,6 @@ class role::cache::2layer(
     varnish::setup_filesystem { $filesystems: }
     Varnish::Setup_filesystem <| |> -> Varnish::Instance <| |>
 
-    $varnish_version4 = hiera('varnish_version4', false)
     if ($varnish_version4) {
         # https://www.varnish-cache.org/docs/trunk/phk/persistent.html
         $persistent_name = 'deprecated_persistent'
