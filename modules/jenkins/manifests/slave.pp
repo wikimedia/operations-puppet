@@ -18,6 +18,7 @@ class jenkins::slave(
         shell      => '/bin/bash',
         managehome => true,
         system     => true,
+        home       => '/var/lib/jenkins-slave',
     }
 
     file { $workdir:
