@@ -1,0 +1,8 @@
+admin::groups:
+  - contint-users
+  - contint-admins
+  - contint-roots
+ssh::server::disable_nist_kex: false
+ssh::server::explicit_macs: false
+cluster: misc
+contactgroups: 'admins,contint'
