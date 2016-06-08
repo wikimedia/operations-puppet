@@ -56,8 +56,6 @@ sources:
 
   kartotherian/deploy: {}
 
-  tilerator/deploy: {}
-
   # cxserver is the ContentTranslation server.
   cxserver/deploy:
     repository: cxserver/deploy
