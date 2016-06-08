@@ -409,6 +409,25 @@ node /^cp40(1[129]|20)\.ulsfo\.wmnet$/ {
     role cache::maps, ipsec
 }
 
+node 'darmstadtium.eqiad.wmnet' {
+    role ci::master,
+        ci::slave,
+        ci::website,
+        zuul::merger,
+        zuul::server
+
+    # T51846, let us sync VisualEditor in mediawiki/extensions.git
+    sudo::user { 'jenkins-slave':
+        privileges => [
+                       'ALL = (jenkins) NOPASSWD: /srv/deployment/integration/slave-scripts/bin/gerrit-sync-ve-push.sh',
+                       ]
+    }
+
+    include standard
+    include contint::firewall
+
+}
+
 node 'dataset1001.wikimedia.org' {
 
     role dataset::primary, dumps
