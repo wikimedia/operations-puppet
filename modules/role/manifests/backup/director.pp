@@ -206,6 +206,10 @@ class role::backup::director {
     bacula::director::fileset { 'openldap':
         includes => [ '/var/run/openldap-backup' ],
     }
+    bacula::director::fileset { 'contint':
+        includes => [ '/srv', '/var/lib/zuul', '/var/lib/jenkins' ]
+        excludes => [ '/srv/ssd', ],
+    }
 
     # The console should be on the director
     class { 'bacula::console':
