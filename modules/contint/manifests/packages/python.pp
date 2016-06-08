@@ -12,6 +12,7 @@ class contint::packages::python {
         'libxslt1-dev',  # For python lxml
         'libffi-dev', # For python requests[security]
         'libssl-dev', # python cryptography
+        'librdkafka-dev' # For confluent-kafka
     )
 
     if os_version('debian jessie') {
