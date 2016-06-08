@@ -5,6 +5,7 @@ class ores::web(
     $redis_host = '127.0.0.1',
     $redis_password = undef,
     $port = 8081,
+    $graphite_server = 'graphite1001.eqiad.wmnet',
 ) {
     require ores::base
 
@@ -32,6 +33,11 @@ class ores::web(
 
     # lint:ignore:arrow_alignment
     $base_config = {
+        'metrics_collectors' => {
+            'wmflabs_statsd' => {
+                'host' => $graphite_server,
+            }
+        },
         'ores' => {
             'data_paths' => {
                 'nltk' => "${::ores::base::config_path}/submodules/wheels/nltk/",
