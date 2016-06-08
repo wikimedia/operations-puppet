@@ -295,6 +295,7 @@ node /^conf200[123]\.codfw\.wmnet$/ {
 node 'contint1001.eqiad.wmnet' {
     include standard
     include contint::firewall
+    role backup::host
 
 }
 
