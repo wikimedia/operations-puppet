@@ -32,7 +32,7 @@ class role::ci::master {
         settings => {
             'user' => {
                 'name'  => 'Wikimedia Jenkins Bot',
-                'email' => 'jenkins@gallium.wikimedia.org',
+                'email' => 'jenkins@contint1001.eqiad.wmnet',
             },  # end of [user] section
             'core' => {
                 # T58717: avoid eating all RAM when repacking

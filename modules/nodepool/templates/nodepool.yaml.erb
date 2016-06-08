@@ -31,16 +31,16 @@ cron:
 
 # Zuul / Gearman server
 gearman-servers:
-  - host: zuul.eqiad.wmnet
+  - host: contint1001.eqiad.wmnet
     port: 4730
 
 # Jenkins masters emits jobs start/completion over zeromq
 zmq-publishers:
-  - tcp://gallium.wikimedia.org:8888
+  - tcp://contint1001.eqiad.wmnet:8888
 
 # CI systems to attach instances to
 targets:
-  - name: gallium.wikimedia.org
+  - name: contint1001.eqiad.wmnet
     jenkins:
       url: 'https://integration.wikimedia.org/ci/'
       user: '<%= @jenkins_api_user -%>'
