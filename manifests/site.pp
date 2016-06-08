@@ -293,6 +293,7 @@ node /^conf200[123]\.codfw\.wmnet$/ {
 
 # New CI master
 node 'contint1001.eqiad.wmnet' {
+    role ci::master
     include standard
     include contint::firewall
 
