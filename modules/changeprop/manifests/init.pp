@@ -42,6 +42,7 @@ class changeprop(
         port            => 7272,
         heap_limit      => 750,
         config          => template('changeprop/config.yaml.erb'),
+        no_workers      => 8,  # TEMP
         starter_module  => 'hyperswitch',
         healthcheck_url => '',
         has_spec        => true,
