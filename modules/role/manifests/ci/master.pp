@@ -13,7 +13,7 @@ class role::ci::master {
 
     # We require the CI website to be on the same box as the master
     # as of July 2013.  So make sure the website has been included on the node.
-    Class['role::ci::master'] -> Class['role::ci::website']
+    require role::ci::website
 
     # Load the Jenkins module, that setup a Jenkins master
     include ::jenkins,
@@ -129,4 +129,3 @@ class role::ci::master {
     backup::set {'var-lib-jenkins-config': }
 
 }
-
