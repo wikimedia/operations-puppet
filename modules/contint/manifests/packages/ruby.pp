@@ -49,4 +49,14 @@ class contint::packages::ruby {
             ]: ensure => present,
         }
     }
+
+    # JSDuck was built for Ubuntu ( T48236/ T82278 )
+    # It is a pain to rebuild for Jessie so give up (T95008), we will use
+    # bundler/rubygems instead
+    if $::operatingsystem == 'Ubuntu' {
+        package { 'ruby-jsduck':
+            ensure => present,
+        }
+    }
+
 }
