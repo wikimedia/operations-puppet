@@ -3,6 +3,7 @@
 <VirtualHost *:80>
     DocumentRoot /srv/xhgui/webroot
     Alias /xhgui /srv/xhgui/webroot
+    Alias /xhprof /srv/xhprof/xhprof_html
 
     <Location />
         AuthName "<%= @auth_ldap['name'] %>"
@@ -20,6 +21,16 @@
         Require ldap-group <%= group %>
         <% end -%>
     </Location>
+
+    <Directory /srv/xhprof/xhprof_html>
+        AllowOverride None
+        php_admin_flag engine on
+
+        RewriteEngine On
+        RewriteBase /xhprof
+        RewriteCond %{REQUEST_FILENAME} !-f
+        RewriteRule ^ index.php [QSA,L]
+    </Directory>
 
     <Directory /srv/xhgui/webroot>
         AllowOverride None
