@@ -1147,20 +1147,6 @@ node 'gallium.wikimedia.org' {
 
     include standard
     include contint::firewall
-
-    # gallium received a SSD drive (T82401) mount it
-    file { '/srv/ssd':
-        ensure => 'directory',
-        owner  => 'root',
-        group  => 'root',
-    }
-    mount { '/srv/ssd':
-        ensure  => mounted,
-        device  => '/dev/sdb1',
-        fstype  => 'xfs',
-        options => 'noatime,nodiratime,nobarrier,logbufs=8',
-        require => File['/srv/ssd'],
-    }
 }
 
 # Virtualization hosts
