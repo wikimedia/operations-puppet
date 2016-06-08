@@ -7,26 +7,11 @@
 
 class mediawiki::firejail {
 
-    # This profile is used to contain the convert command of imagemagick
-    file { '/etc/firejail/mediawiki-imagemagick.profile':
-        source => 'puppet:///modules/mediawiki/mediawiki-imagemagick.profile',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0644',
-    }
-
     file { '/etc/firejail/mediawiki-converters.profile':
         source => 'puppet:///modules/mediawiki/mediawiki-converters.profile',
         owner  => 'root',
         group  => 'root',
         mode   => '0644',
-    }
-
-    file { '/usr/local/bin/mediawiki-firejail-convert':
-        source => 'puppet:///modules/mediawiki/mediawiki-firejail-convert',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
     }
 
     file { '/usr/local/bin/mediawiki-firejail-ghostscript':
