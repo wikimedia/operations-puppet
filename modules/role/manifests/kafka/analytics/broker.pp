@@ -89,6 +89,8 @@ class role::kafka::analytics::broker {
         log_flush_interval_ms           => 3000,
         zookeeper_connection_timeout_ms => 16000,
         zookeeper_session_timeout_ms    => 16000,
+        # Setting maximum topic broker size to 10TB as mitigation for T136690
+        log_retention_bytes             => 10000000000000,
         # Use LinkedIn recommended settings with G1 garbage collector,
         jvm_performance_opts            => '-server -XX:PermSize=48m -XX:MaxPermSize=48m -XX:+UseG1GC -XX:MaxGCPauseMillis=20 -XX:InitiatingHeapOccupancyPercent=35',
     }
