@@ -54,4 +54,8 @@ class mediawiki::packages {
     package { 'timidity-daemon':
       ensure => absent,
     }
+
+    if os_version('debian >= jessie || ubuntu >= trusty') {
+        require_package('firejail')
+    }
 }
