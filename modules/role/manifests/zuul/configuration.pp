@@ -5,7 +5,7 @@ class role::zuul::configuration {
 
     $shared = {
         'production' => {
-            'gearman_server'      => '208.80.154.135',  # gallium.wikimedia.org
+            'gearman_server'      => '10.64.0.237',  # contint1001.eqiad.wmnet
             'gerrit_server'       => 'ytterbium.wikimedia.org',
             'gerrit_user'         => 'jenkins-bot',
             'url_pattern'         => 'https://integration.wikimedia.org/ci/job/{job.name}/{build.number}/console',
