@@ -72,6 +72,7 @@ etcd_hosts:
     - conf1003.eqiad.wmnet
 
 # List of Zookeeper service nodes in eqiad and their ids.
+# TODO: Move this to eqiad/zookeeper.yaml and update usages throughout puppet.
 zookeeper_hosts:
   conf1001.eqiad.wmnet: '1101'
   conf1002.eqiad.wmnet: '1102'

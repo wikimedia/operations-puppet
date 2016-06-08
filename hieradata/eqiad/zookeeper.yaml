@@ -1,2 +1,0 @@
-# Max number of connections per IP for Zookeeper
-max_client_connections: 200
