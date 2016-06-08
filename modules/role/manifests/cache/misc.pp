@@ -99,10 +99,10 @@ class role::cache::misc {
             'be_opts'  => merge($app_def_be_opts, { 'port' => 9001 }),
             'req_host' => 'etherpad.wikimedia.org',
         },
-        'gallium' => { # CI server
+        'contint1001' => { # CI server
             'dynamic'  => 'no',
             'type'     => 'random',
-            'backends' => ['gallium.wikimedia.org' ],
+            'backends' => ['contint1001.eqiad.wmnet' ],
             'be_opts'  => $app_def_be_opts,
             'req_host' => [
                 'doc.wikimedia.org',
