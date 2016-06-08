@@ -28,10 +28,14 @@ class role::zuul::merger {
 
     # We run a git-daemon process to exposes the zuul-merger git repositories.
     # The slaves fetch changes from it over the git:// protocol.
-    # It is only meant to be used from slaves, so only accept internal
-    # connections.
-    ferm::rule { 'git-daemon_internal':
-        rule => 'proto tcp dport 9418 { saddr $INTERNAL ACCEPT; }'
+    # It is only meant to be used from slaves, so only accept clients listed in hiera.
+    $zuul_git_clients = hiera('contint::zuul_git_clients')
+    $zuul_git_clients_ferm = join($zuul_git_clients, ' ')
+
+    ferm::service { 'git-daemon_internal':
+        proto  => 'tcp',
+        port   => '9418',
+        srange => "(${zuul_git_clients_ferm})",
     }
 
 }
