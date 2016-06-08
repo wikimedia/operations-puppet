@@ -103,6 +103,9 @@ if __name__ == "__main__":
 
     args = argparser.parse_args()
 
+    if not args.domain.endswith('.'):
+        args.domain = "%s." % args.domain
+
     createdomain(args.keystone_url,
                  args.designate_user,
                  args.designate_pass,
