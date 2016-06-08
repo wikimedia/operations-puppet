@@ -69,6 +69,19 @@ class role::xhgui {
         srange => '$INTERNAL',
     }
 
+    git::clone { 'operations/software/xhprof':
+        ensure    => 'latest',
+        directory => '/srv/xhprof',
+        branch    => 'wmf_deploy',
+    } ->
+
+    file { '/srv/xhprof/profiles':
+        ensure => directory,
+        owner  => 'www-data',
+        group  => 'www-data',
+        mode   => '0755',
+    }
+
     git::clone { 'operations/software/xhgui':
         ensure    => 'latest',
         directory => '/srv/xhgui',
