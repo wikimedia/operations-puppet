@@ -291,6 +291,13 @@ node /^conf200[123]\.codfw\.wmnet$/ {
     include base::firewall
 }
 
+# New CI master
+node 'contint1001.eqiad.wmnet' {
+    include standard
+    include contint::firewall
+
+}
+
 # Debian package building host in production
 node 'copper.eqiad.wmnet' {
     role package::builder

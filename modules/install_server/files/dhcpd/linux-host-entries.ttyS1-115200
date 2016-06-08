@@ -991,6 +991,11 @@ host cp4020 {
     fixed-address cp4020.ulsfo.wmnet;
 }
 
+host contint1001 {
+     hardware ethernet 14:18:77:5b:29:c7;
+     fixed-address continit1001.eqiad.wmnet;
+}
+
 host dataset1001 {
     hardware ethernet 78:2b:cb:76:42:ee;
     fixed-address dataset1001.wikimedia.org;
