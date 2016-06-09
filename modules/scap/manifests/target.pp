@@ -130,6 +130,14 @@ define scap::target(
             onlyif  => "/usr/bin/test -O /srv/deployment/${package_name}",
             require => [User[$deploy_user], Group[$deploy_user]]
         }
+
+        # DO NOT MERGE, for puppet compiler only
+        file { '/tmp/this-is-another-test-file':
+            ensure => present,
+            owner  => 'root',
+            group  => 'root',
+            mode   => '0444',
+        }
     }
 
     # Allow deploy user user to sudo -u $user, and to sudo /usr/sbin/service

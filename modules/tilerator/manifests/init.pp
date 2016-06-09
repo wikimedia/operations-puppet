@@ -22,6 +22,7 @@ class tilerator(
     # So there will never be LVS or anything else than health check requests to
     # this port
     service::node { 'tilerator':
+        deployment => 'scap3',
         port       => 6534,
         config     => template('tilerator/config.yaml.erb'),
         no_workers => $::processorcount / 2,
