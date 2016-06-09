@@ -21,6 +21,20 @@
         ],
     my_callback)
 
+  By default, varnishlog will group transactions by request. A specific
+  transaction grouping mode can be used to override the default.
+  For example:
+
+    varnishlog(
+        [
+            ('g', 'session'),
+            # ...
+        ],
+    my_callback)
+
+  See https://www.varnish-cache.org/docs/trunk/reference/vsl-query.html for
+  more details.
+
   This module depends on python-varnishapi:
   https://github.com/xcir/python-varnishapi
 
@@ -132,15 +146,23 @@ def parse_varnishlog_args(args):
             [ '-i', 'ReqURL', 'c', '-i', 'ReqMethod' ]"""
     vapi = varnishapi.VarnishAPI()
 
+    grouping = False
     parsed_args = []
     for switch, value in args:
         # eg: switch = "i", value = "ReqUrl"
         if switch == "i" and value not in vapi.VSL_tags_rev:
             raise Exception("Unknown Tag: %s" % value)
 
+        if switch == "g":
+            grouping = True
+
         parsed_args.append("-%s" % switch)
         if value:
             parsed_args.append(value)
+
+    if not grouping:
+        # Use request grouping by default. T137114
+        parsed_args += ["-g", "request"]
 
     return parsed_args
 
