@@ -24,6 +24,5 @@ server {
         <% if @cache %>proxy_cache ores;<% end %>
         proxy_pass http://oresweb;
         proxy_set_header Host $host;
-        add_header 'Access-Control-Allow-Origin' '*' always;
     }
 }
