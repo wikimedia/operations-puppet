@@ -3,6 +3,8 @@ class role::postgres::common {
 
     $datadir = '/srv/postgres/9.4/main'
 
+    # move file to module?
+    # lint:ignore:puppet_url_without_modules
     file { '/etc/postgresql/9.4/main/tuning.conf':
         ensure => 'present',
         owner  => 'root',
@@ -10,6 +12,7 @@ class role::postgres::common {
         mode   => '0444',
         source => 'puppet:///files/postgres/tuning.conf',
     }
+    # lint:endignore
 
     sysctl::parameters { 'postgres_shmem':
         values => {
