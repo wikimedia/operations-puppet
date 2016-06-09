@@ -72,6 +72,8 @@ class role::logstash (
 
     ## Global pre-processing (15)
 
+    # move files into module?
+    # lint:ignore:puppet_url_without_modules
     logstash::conf { 'filter_strip_ansi_color':
         source   => 'puppet:///files/logstash/filter-strip-ansi-color.conf',
         priority => 15,
@@ -127,6 +129,7 @@ class role::logstash (
         group  => 'root',
         mode   => '0444',
     }
+    # lint:endignore
 
     logstash::output::elasticsearch { 'logstash':
         host            => '127.0.0.1',
@@ -223,10 +226,12 @@ class role::logstash::puppetreports {
         srange => '$ALL_NETWORKS',
     }
 
+    # lint:ignore:puppet_url_without_modules
     logstash::conf { 'filter_puppet':
         source   => 'puppet:///files/logstash/filter-puppet.conf',
         priority => 50,
     }
+    # lint:endignore
 }
 
 
@@ -245,6 +250,7 @@ class role::logstash::apifeatureusage {
     }
 
     # Template for Elasticsearch index creation
+    # lint:ignore:puppet_url_without_modules
     file { '/etc/logstash/apifeatureusage-template.json':
         ensure => present,
         source => 'puppet:///files/logstash/apifeatureusage-template.json',
@@ -259,6 +265,7 @@ class role::logstash::apifeatureusage {
         source   => 'puppet:///files/logstash/filter-apifeatureusage.conf',
         priority => 55,
     }
+    # lint:endignore
 
     # Output destined for separate Elasticsearch cluster from Logstash cluster
     logstash::output::elasticsearch { 'apifeatureusage':
@@ -286,9 +293,10 @@ class role::logstash::eventlogging {
         type       => 'eventlogging',
         zk_connect => $kafka_config['zookeeper']['url'],
     }
-
+    # lint:ignore:puppet_url_without_modules
     logstash::conf { 'filter_eventlogging':
         source   => 'puppet:///files/logstash/filter-eventlogging.conf',
         priority => 50,
     }
+    # lint:endignore
 }

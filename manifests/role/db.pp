@@ -100,12 +100,15 @@ class role::db::labsdb( $instances = {} ) {
 class role::labsdb::manager {
     require_package(['python-mysqldb', 'python-yaml'])
 
+    # move file to module?
+    # lint:ignore:puppet_url_without_modules 
     file { '/usr/local/sbin/skrillex.py':
         owner  => 'root',
         group  => 'wikidev',
         mode   => '0550',
         source => 'puppet:///files/mysql/skrillex.py',
     }
+    # lint:endignore
 
     file { '/etc/skrillex.yaml':
         owner   => 'root',

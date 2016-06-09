@@ -10,6 +10,8 @@ class role::ve {
     include ::mediawiki::web::sites
     include ::mediawiki::web::prod_sites
 
+    # move files to module?
+    # lint:ignore:puppet_url_without_modules
     file { '/usr/local/bin/vb':
         source => 'puppet:///files/ve/vb',
         owner  => 'root',
@@ -21,4 +23,5 @@ class role::ve {
         source   => 'puppet:///files/ve/devwiki.conf',
         priority => 4,
     }
+    # lint:endignore
 }
