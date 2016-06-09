@@ -13,6 +13,11 @@ server {
 
     add_header X-Served-By <%= @hostname %> always;
 
+    # etag in nginx are based on mtime, which is not guaranteed to be the same
+    # across multiple servers so let's disable etags and use more robust
+    # caching mechanisms
+    etag off;
+
     error_page 503 @maintenance;
     location @maintenance {
         root <%= @package_dir %>/gui;
