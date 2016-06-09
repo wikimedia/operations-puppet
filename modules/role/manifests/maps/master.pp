@@ -1,6 +1,7 @@
 # Sets up a maps server master
 class role::maps::master {
     include ::postgresql::master
+    include postgresql_common
     include ::osm
     include ::osm::import_waterlines
 
