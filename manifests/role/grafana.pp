@@ -122,6 +122,8 @@ class role::grafana {
         notify  => Service['grafana-server'],
     }
 
+    # move file to module?
+    # lint:ignore:puppet_url_without_modules
     file { '/usr/share/grafana/public/img/grafana_icon.svg':
         source  => 'puppet:///files/misc/wikimedia-logo.svg',
         owner   => 'root',
@@ -129,6 +131,7 @@ class role::grafana {
         mode    => '0444',
         require => Package['grafana'],
     }
+    # lint:endignore
 
     # We disable account creation, because accounts are created
     # automagically based on the X-WEBAUTH-USER, which is either set

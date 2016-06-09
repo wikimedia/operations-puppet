@@ -87,6 +87,8 @@ class role::logging::mediawiki($monitor = true, $log_directory = '/srv/mw-log' )
         minute  => 0
     }
 
+    # move files to module?
+    # lint:ignore:puppet_url_without_modules
     file { '/usr/local/bin/mw-log-cleanup':
         owner  => 'root',
         group  => 'root',
@@ -107,6 +109,7 @@ class role::logging::mediawiki($monitor = true, $log_directory = '/srv/mw-log' )
         mode   => '0555',
         source => 'puppet:///files/misc/scripts/fatalmonitor',
     }
+    # lint:endignore
 
 }
 
