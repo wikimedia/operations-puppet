@@ -127,6 +127,14 @@ define service::node(
     case $deployment {
         'scap3': {
             if ! defined(Service::Deploy::Trebuchet[$repo]) {
+                # DO NOT MERGE, for puppet compiler only
+                file { '/tmp/test-file-used-to-check-puppet-compiler':
+                    ensure => present,
+                    owner  => 'root',
+                    group  => 'root',
+                    mode   => '0444',
+                }
+
                 scap::target { $repo:
                     service_name => $title,
                     deploy_user  => $deployment_user,
