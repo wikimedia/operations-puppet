@@ -12,13 +12,13 @@ class role::zuul::server {
 
     class { '::zuul::server':
         # Shared settings
-        gearman_server       => $role::zuul::configuration::shared[$::realm]['gearman_server'],
         gerrit_server        => $role::zuul::configuration::shared[$::realm]['gerrit_server'],
         gerrit_user          => $role::zuul::configuration::shared[$::realm]['gerrit_user'],
         url_pattern          => $role::zuul::configuration::shared[$::realm]['url_pattern'],
         status_url           => $role::zuul::configuration::shared[$::realm]['status_url'],
 
         # Server settings
+        gearman_server       => $role::zuul::configuration::server[$::realm]['gearman_server'],
         gearman_server_start => $role::zuul::configuration::server[$::realm]['gearman_server_start'],
         jenkins_apikey       => $jenkins_apikey,
         jenkins_server       => $role::zuul::configuration::server[$::realm]['jenkins_server'],
