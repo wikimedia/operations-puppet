@@ -403,6 +403,8 @@ class role::mariadb::analytics {
 
 class role::mariadb::analytics::custom_repl_slave {
 
+    # move files to module?
+    # lint:ignore:puppet_url_without_modules
     file { '/usr/local/bin/eventlogging_sync.sh':
         ensure => present,
         owner  => 'root',
@@ -418,6 +420,8 @@ class role::mariadb::analytics::custom_repl_slave {
         require => File['/usr/local/bin/eventlogging_sync.sh'],
         notify  => Service['eventlogging_sync'],
     }
+    # lint:endignore
+
     service { 'eventlogging_sync':
         ensure => running,
         enable => true,

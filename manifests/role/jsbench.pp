@@ -36,6 +36,8 @@ class role::jsbench {
         require    => File['/srv/profile'],
     }
 
+    # move files to module?
+    # lint:ignore:puppet_url_without_modules
     file { '/usr/local/bin/jsbench':
         source => 'puppet:///files/jsbench/jsbench',
         owner  => 'root',
@@ -53,4 +55,5 @@ class role::jsbench {
         source  => 'puppet:///files/jsbench/benchmarks',
         recurse => true,
     }
+    # lint:endignore
 }

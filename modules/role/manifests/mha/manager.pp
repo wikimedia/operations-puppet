@@ -23,6 +23,8 @@ class mha::manager inherits role::coredb::config {
         content => "${::mw_primary}\n",
     }
 
+    # move files to module?
+    # lint:ignore:puppet_url_without_modules
     file { '/usr/local/bin/master_ip_online_change':
         source => 'puppet:///files/mha/master_ip_online_change',
         owner  => 'root',
@@ -36,6 +38,7 @@ class mha::manager inherits role::coredb::config {
         group  => 'root',
         mode   => '0544',
     }
+    # lint:endignore
 
     $shardlist = inline_template('<%= topology.keys.join(',') %>')
     $shards    = split($shardlist, ',')
