@@ -4,7 +4,9 @@ EXPIRY_FILE=<%= @expire_dir %>/expire.list.$(date "+%Y%m%d%H%M")
 EXTRA_PARAMS=<%if @flat_nodes %>'--flat-nodes <%= @osmosis_dir %>/nodes.bin'<% end %>
 
 <% if @proxy -%>
-export JAVACMD_OPTIONS='-Dhttp.proxyHost=<%= @proxy.split(':')[0] %> -Dhttp.proxyPort=<%= @proxy.split(':')[1] %>'
+export JAVACMD_OPTIONS="\
+    -Dhttp.proxyHost=<%= @proxy.split(':')[0] %>  -Dhttp.proxyPort=<%= @proxy.split(':')[1] %> \
+    -Dhttps.proxyHost=<%= @proxy.split(':')[0] %> -Dhttps.proxyPort=<%= @proxy.split(':')[1] %>"
 <% end -%>
 
 /usr/bin/flock -xn <%= @osmosis_dir %>/replicate-osm.lck \
