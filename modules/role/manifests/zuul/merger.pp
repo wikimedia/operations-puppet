@@ -7,13 +7,13 @@ class role::zuul::merger {
 
     class { '::zuul::merger':
         # Shared settings
-        gearman_server      => $role::zuul::configuration::shared[$::realm]['gearman_server'],
         gerrit_server       => $role::zuul::configuration::shared[$::realm]['gerrit_server'],
         gerrit_user         => $role::zuul::configuration::shared[$::realm]['gerrit_user'],
         url_pattern         => $role::zuul::configuration::shared[$::realm]['url_pattern'],
         status_url          => $role::zuul::configuration::shared[$::realm]['status_url'],
 
         # Merger related
+        gearman_server      => $role::zuul::configuration::merger[$::realm]['gearman_server'],
         gerrit_ssh_key_file => $role::zuul::configuration::merger[$::realm]['gerrit_ssh_key_file'],
         git_dir             => $role::zuul::configuration::merger[$::realm]['git_dir'],
         git_email           => $role::zuul::configuration::merger[$::realm]['git_email'],
