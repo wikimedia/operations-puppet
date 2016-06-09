@@ -333,6 +333,10 @@ rewrite	bugzilla.wikipedia.org	https://bugzilla.wikimedia.org
 rewrite	bugs.mediawiki.org	https://bugzilla.wikimedia.org
 rewrite	bugzilla.mediawiki.org	https://bugzilla.wikimedia.org
 
+# T137252
+rewrite	phabricator.mediawiki.org //phabricator.wikimedia.org
+rewrite	phabricator.wikipedia.org //phabricator.wikimedia.org
+
 rewrite	*mediawiki.com	//www.mediawiki.org
 rewrite	wiki.mediawiki.org	//www.mediawiki.org
 
