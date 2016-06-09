@@ -25,5 +25,6 @@ class tilerator(
         port       => 6534,
         config     => template('tilerator/config.yaml.erb'),
         no_workers => $::processorcount / 2,
+        deployment => 'scap3',
     }
 }

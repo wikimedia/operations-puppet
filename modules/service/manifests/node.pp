@@ -126,7 +126,7 @@ define service::node(
 ) {
     case $deployment {
         'scap3': {
-            if ! defined(Service::Deploy::Trebuchet[$repo]) {
+            if ! defined(Service::Deploy::Trebuchet[$repo]) and ! defined(Scap::Target[$repo]) {
                 scap::target { $repo:
                     service_name => $title,
                     deploy_user  => $deployment_user,
