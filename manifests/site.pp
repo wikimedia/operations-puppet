@@ -1144,7 +1144,6 @@ node 'gallium.wikimedia.org' {
     role ci::master,
         ci::slave,
         ci::website,
-        zuul::merger,
         zuul::server
 
     # T51846, let us sync VisualEditor in mediawiki/extensions.git
