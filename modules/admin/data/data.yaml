@@ -510,7 +510,8 @@ groups:
                'ALL = NOPASSWD: /usr/sbin/service graphoid *',
                'ALL = NOPASSWD: /usr/sbin/service mathoid *',
                'ALL = NOPASSWD: /usr/sbin/service mobileapps *',
-               'ALL = NOPASSWD: /usr/sbin/service zotero *']
+               'ALL = NOPASSWD: /usr/sbin/service zotero *',
+               'ALL = NOPASSWD: /usr/bin/firejail --join=*']
   notebook-roots:
     description: root access on experimental notebook servers
     gid: 780
