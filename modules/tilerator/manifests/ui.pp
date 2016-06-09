@@ -31,5 +31,6 @@ class tilerator::ui(
         config     => template('tilerator/config_ui.yaml.erb'),
         no_workers => 0, # 0 on purpose to only have one instance running
         repo       => 'tilerator/deploy',
+        deployment => 'scap3',
     }
 }
