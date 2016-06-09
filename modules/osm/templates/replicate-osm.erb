@@ -18,6 +18,7 @@ export JAVACMD_OPTIONS="\
     | /usr/bin/osm2pgsql \
       --hstore \
       --slim \
+      --input-reader <%= @input_reader_format %> \
       --cache <%= @memory_limit %> \
       --number-processes <%= @num_threads %> \
       --expire-tiles <%= @expire_levels %> \
