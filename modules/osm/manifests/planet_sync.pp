@@ -30,6 +30,10 @@
 #      Memory in megabytes osm2pgsql should occupy
 #   $num_threads
 #      Number of threads to use during sync
+#   $input_reader_format
+#      Format passed to osm2pgsql as --input-reader parameter. osm2pgsql < 0.90
+#      needs 'libxml2' (which is default) and osm2pgsql >= 0.90 needs 'xml'.
+#      osm2pgsql == 0.90 is used on Jessie only at this point.
 #
 # Actions:
 #   sync with planet.osm
@@ -53,6 +57,10 @@ define osm::planet_sync(
                 $expire_levels='15',
                 $memory_limit=floor($::memorysize_mb)/12,
                 $num_threads=$::processorcount,
+                $input_reader_format = os_version('Debian >= Jessie')? {
+                    true    => 'xml',
+                    default => 'libxml2',
+                },
 ) {
     include ::osm::users
 
