@@ -21,6 +21,7 @@ class contint::firewall {
     # It is also used by Zuul merger daemons.
     $zuul_merger_hosts = hiera('contint::zuul_merger_hosts')
     $zuul_merger_hosts_ferm = join($zuul_merger_hosts, ' ')
+
     ferm::service { 'gearman_from_zuul_mergers':
         proto  => 'tcp',
         port   => '4730',
