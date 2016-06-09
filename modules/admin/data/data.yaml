@@ -4,7 +4,8 @@ groups:
     members: [ananthrk, avar, bsitu, cmcmahon, csalvia, diederik, edenhill, erik, gage,
               handrade, howief, jdouglas, jgonera, jsahleen, mah, maryana, mglaser, mvolz,
               mwalker, nimishg, rainman, ssmith, swalling, sumanah, werdna, rmoen,
-              johnflewis, marc, jkrauska, akumar, mnoushad, spage, tnegrin, msyed, kleduc]
+              johnflewis, marc, jkrauska, akumar, mnoushad, spage, tnegrin, msyed, kleduc,
+              manybubbles]
   wikidev:
     gid: 500
     description: container group for primary user groups.
@@ -867,7 +868,7 @@ users:
         krinkle @ krinkle-mbp003]
     uid: 2008
   manybubbles:
-    ensure: present
+    ensure: absent
     gid: 500
     name: manybubbles
     realname: Nik Everett
