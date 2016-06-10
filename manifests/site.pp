@@ -1236,6 +1236,7 @@ node 'labtestnet2001.codfw.wmnet' {
 
 node 'labtestmetal2001.codfw.wmnet' {
     include standard
+    include base::firewall
 }
 
 node 'labtestcontrol2001.wikimedia.org' {
