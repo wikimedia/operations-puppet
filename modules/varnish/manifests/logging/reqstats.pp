@@ -58,6 +58,7 @@ define varnish::logging::reqstats(
         strict         => false,
         template_name  => 'varnishreqstats',
         require        => File['/usr/local/bin/varnishreqstats'],
+        subscribe      => File['/usr/local/lib/python2.7/dist-packages/varnishlog.py'],
         service_params => {
             require => Service[$varnish_service_name],
             enable  => true,

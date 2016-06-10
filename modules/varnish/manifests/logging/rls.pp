@@ -33,6 +33,7 @@ define varnish::logging::rls( $statsd_server = 'statsd' ) {
         strict         => false,
         template_name  => 'varnishrls',
         require        => File['/usr/local/bin/varnishrls'],
+        subscribe      => File['/usr/local/lib/python2.7/dist-packages/varnishlog.py'],
         service_params => {
             enable => true,
         },
