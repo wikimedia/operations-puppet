@@ -241,8 +241,8 @@ class role::graphite::base(
 
     # This check goes to the backend, which is http.
     monitoring::service { 'graphite':
-        description   => 'graphite.wikimedia.org',
-        check_command => 'check_http_url!graphite.wikimedia.org!/render',
+        description   => $hostname,
+        check_command => "check_http_url!${hostname}!/render",
     }
 
     ferm::service { 'carbon_c_relay-frontend_relay_udp':
