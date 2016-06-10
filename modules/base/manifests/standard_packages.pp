@@ -47,7 +47,12 @@ class base::standard_packages {
     }
 
     require_package('gdb', 'apt-transport-https')
-    require_package('git')
+    require_package('git', 'pigz')
+
+    # pxz is not available on precise
+    if os_version('debian >= jessie || ubuntu >= trusty') {
+        require_package('pxz')
+    }
 
     # This should be in $packages, but moved here temporarily because it's
     # currently broken on jessie hosts...
