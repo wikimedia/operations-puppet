@@ -50,13 +50,6 @@ class role::cache::misc {
             'be_opts'  => merge($app_def_be_opts, { 'port' => 8888 }),
             'req_host' => 'hue.wikimedia.org',
         },
-        'antimony' => {
-            'dynamic'  => 'no',
-            'type'     => 'random',
-            'backends' => ['antimony.wikimedia.org'],
-            'be_opts'  => merge($app_def_be_opts, { 'port' => 8080 }),
-            'req_host' => 'git.wikimedia.org',
-        },
         'bromine' => { # ganeti VM for misc. static HTML sites
             'dynamic'  => 'no',
             'type'     => 'random',
@@ -128,7 +121,8 @@ class role::cache::misc {
                 'phabricator.wikimedia.org',
                 'phab.wmfusercontent.org',
                 'bugzilla.wikimedia.org',
-                'bugs.wikimedia.org'
+                'bugs.wikimedia.org',
+                'git.wikimedia.org'
             ],
         },
         'krypton' => { # ganeti VM for misc. PHP apps

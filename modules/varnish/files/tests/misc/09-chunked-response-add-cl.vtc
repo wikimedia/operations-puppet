@@ -16,10 +16,3 @@ varnish v1 -arg "-p vcc_err_unref=false" -vcl+backend {
     include "/usr/share/varnish/tests/wikimedia_misc-backend.vcl";
 } -start
 
-client c1 {
-    txreq -hdr "Host: git.wikimedia.org" -hdr "X-Forwarded-Proto: https"
-    rxresp
-    expect resp.status == 200
-    # We expect Content-Length to be set to 5 (hello) by varnish
-    expect resp.http.Content-Length == 5
-} -run
