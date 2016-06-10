@@ -361,8 +361,8 @@ sub wm_common_deliver_hitcount {
 sub wm_common_xcache_deliver {
 	if (<%= @req_method %> != "PURGE") {
 		if (!req.http.X-CDIS) {
-			// internally-generated response (not a cache object hit, and not a miss|pass to a deeper layer either)
-			set req.http.X-CDIS = "int";
+			// Should have been set by other code, and we want to know if that's buggy
+			set req.http.X-CDIS = "bug";
 		}
 
 		// X-Cache-Int gets appended-to as we traverse cache layers
