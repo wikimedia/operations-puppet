@@ -15,11 +15,6 @@ sub cluster_fe_recv {
         unset req.http.X-WEBAUTH-USER;
     }
 
-    if (req.http.Host == "git.wikimedia.org") {
-        // gitblit requires this and X-F-P:https
-        set req.http.X-Forwarded-Port = "443";
-    }
-
     // STS-preload checker doesn't like [45]xx responses, but 3xx is OK, so
     // re-use the TLS-redirector code and send them to the wikimedia site.
     if (req.http.Host == "wmfusercontent.org") {
