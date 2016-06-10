@@ -1138,7 +1138,8 @@ node 'gallium.wikimedia.org' {
     role ci::master,
         ci::slave,
         ci::website,
-        zuul::server
+        zuul::server,
+        backup::host
 
     # T51846, let us sync VisualEditor in mediawiki/extensions.git
     sudo::user { 'jenkins-slave':
