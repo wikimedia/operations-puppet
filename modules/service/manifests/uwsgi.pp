@@ -130,6 +130,13 @@ define service::uwsgi(
         $local_log_config = {}
     }
 
+    file { "/etc/${title}":
+        ensure => directory,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+    }
+
     $base_config = {
             plugins     => 'python, python3',
             master      => true,
