@@ -16,6 +16,12 @@ class contint::browsers {
             # phantomjs is not available on Jessie
         ]
     } elsif os_version('ubuntu >= trusty') {
+        # Firefox 47.0 breaks Selenium Webdriver T137561
+        apt::pin { 'firefox':
+            pin      => 'version 46.0.1+build1-0ubuntu0.14.04.3',
+            priority => '1001',
+            before   => Package['firefox'],
+        }
         $latest_packages = [
             'chromium-browser',
             'chromium-chromedriver',
