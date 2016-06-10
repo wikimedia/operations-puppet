@@ -22,23 +22,21 @@ usage() {
 if [[ $# -gt 1 ]]; then
 	usage "Too many arguments"
 elif [[ $# -eq 0 ]]; then
-	WIKI=testwiki
+	MW_WIKI=testwiki
 elif [ ${1:0:1} = "-" ]; then
 	usage "Unknown argument: $1"
 else
-	WIKI=$1
+	MW_WIKI=$1
 fi
 
-if ! expanddblist all | grep "^${WIKI}\$" > /dev/null; then
-	usage "Unknown wiki: $WIKI"
+if ! expanddblist all | grep "^${MW_WIKI}\$" > /dev/null; then
+	usage "Unknown wiki: $MW_WIKI"
 fi
 
-if [ "$(whoami)" != "$MEDIAWIKI_WEB_USER" ] ; then
-	HPHPD_INI="${HPHPD_INI_DIR:=/var/lib/hphpd}/$(whoami).hphpd.ini"
-	if [ ! -f "$HPHPD_INI" ]; then
-		sudo -u "$MEDIAWIKI_WEB_USER" cp "$HPHPD_INI_DIR/hphpd.ini" "$HPHPD_INI"
-	fi
-	sudo -u "$MEDIAWIKI_WEB_USER" hhvm -a --debug-config "$HPHPD_INI" "$MEDIAWIKI_DEPLOYMENT_DIR_DIR_USE/multiversion/MWScript.php" commandLine.inc "--wiki=$WIKI"
-else
-	hhvm -a "$MEDIAWIKI_DEPLOYMENT_DIR_DIR_USE/multiversion/MWScript.php" commandLine.inc "--wiki=$WIKI"
+PROLOGUE="MW_WIKI=${MW_WIKI} MEDIAWIKI_WEB_USER=${MEDIAWIKI_WEB_USER}"
+
+if [[ $USER != $MEDIAWIKI_WEB_USER ]]; then
+    PROLOGUE="/usr/bin/sudo -u ${MEDIAWIKI_WEB_USER} ${PROLOGUE}"
 fi
+
+$PROLOGUE /usr/bin/hhvm --mode=debug --debug-extension="${MEDIAWIKI_DEPLOYMENT_DIR_DIR_USE}/multiversion/MWMinimalScriptInit.php"
