@@ -321,12 +321,6 @@ node 'cp1008.wikimedia.org' {
     interface::add_ip6_mapped { 'main': }
 }
 
-# to be decommed shortly!
-node /^cp104[34]\.eqiad\.wmnet$/ {
-    interface::add_ip6_mapped { 'main': }
-    role spare # to be decommed (T133614)
-}
-
 node /^cp10(45|5[18]|61)\.eqiad\.wmnet$/ {
     interface::add_ip6_mapped { 'main': }
     role cache::misc, ipsec
