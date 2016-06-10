@@ -402,10 +402,12 @@ sub vcl_deliver {
 // Varnish4 vcl_synth+vcl_backend_error
 
 sub vcl_synth {
+	set req.http.X-CDIS = "int";
 	call deliver_synth_;
 	call https_error_redirect;
 	call cluster_fe_err_synth;
 	if (resp.status > 400 && resp.status != 413) {
+		set req.http.X-CDIS = "err";
 		call synth_errorpage;
 	}
 	return (deliver);
@@ -416,9 +418,8 @@ sub vcl_backend_error {
 	if (beresp.status == 503 && bereq.retries == 0) {
 		return(retry);
 	}
-	if (beresp.status > 400 && beresp.status != 413) {
-		call backend_error_errorpage;
-	}
+	set req.http.X-CDIS = "err";
+	call backend_error_errorpage;
 	return (deliver);
 }
 
@@ -431,11 +432,13 @@ sub vcl_error {
 		return(restart);
 	}
 
+	set req.http.X-CDIS = "int";
 	call wm_common_v3_purge_error;
 	call https_error_redirect;
 	call cluster_fe_err_synth;
 
 	if (obj.status > 400 && obj.status != 413) {
+		set req.http.X-CDIS = "err";
 		call synth_errorpage;
 	}
 
