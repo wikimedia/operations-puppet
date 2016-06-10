@@ -27,9 +27,8 @@ sub tag_carrier {
         }
 
         // X-CS needs the real data only for "special" pages we vary on, and
-        // can just be "ON" for normal wikitext fetches and such TBD: Beware
-        // of legit links happening to have :ZeroRatedMobileAccess
-        if (req.url ~ "(action=zeroconfig|:ZeroRatedMobileAccess)($|&|\?)" || req.http.host ~ "^(zero|m)\.") {
+        // can just be "ON" for normal wikitext fetches and such
+        if (req.url ~ "(action=zeroconfig)($|&|\?)" || req.http.host ~ "^(zero|m)\.") {
             set req.http.X-CS = req.http.X-CS2;
         } else {
             set req.http.X-CS = "ON";
