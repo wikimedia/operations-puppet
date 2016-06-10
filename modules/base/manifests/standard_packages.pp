@@ -49,7 +49,12 @@ class base::standard_packages {
     }
 
     require_package('gdb', 'apt-transport-https')
-    require_package('git')
+    require_package('git', 'pigz')
+
+    # pxz is not available on precise
+    if os_version('debian >= jessie || ubuntu >= trusty') {
+        require_package('pxz')
+    }
 
     # for hardware monitoring via IPMI (T125205)
     if os_version('debian >= jessie') {
