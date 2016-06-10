@@ -426,14 +426,13 @@ sub vcl_backend_error {
 
 // Varnish3 vcl_error
 sub vcl_error {
-	call wm_common_v3_purge_error;
-	call https_error_redirect;
-
 	// retry 503 once in frontend instances, to paper over transient issues
 	if (obj.status == 503 && req.restarts == 0) {
 		return(restart);
 	}
 
+	call wm_common_v3_purge_error;
+	call https_error_redirect;
 	call cluster_fe_err_synth;
 
 	if (obj.status > 400 && obj.status != 413) {
