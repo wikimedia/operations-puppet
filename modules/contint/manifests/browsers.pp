@@ -16,6 +16,11 @@ class contint::browsers {
             # phantomjs is not available on Jessie
         ]
     } elsif os_version('ubuntu >= trusty') {
+        # Chromium on hold T137561
+        apt::pin { 'firefox':
+            pin      => 'version 46.0.1+build1-0ubuntu0.14.04.3',
+            priority => '1001',
+        }
         $latest_packages = [
             'chromium-browser',
             'chromium-chromedriver',
