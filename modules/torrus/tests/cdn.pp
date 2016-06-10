@@ -44,7 +44,7 @@ class role::cache::configuration {
                     ]
                 },
                 'misc' => {
-                    'eqiad' => ['cp1043.eqiad.wmnet', 'cp1044.eqiad.wmnet'],
+                    'eqiad' => [],
                     'esams' => [],
                     'ulsfo' => [],
                 }
