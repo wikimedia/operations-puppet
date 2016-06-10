@@ -5849,6 +5849,11 @@ host mw2217 {
     fixed-address mw2217.codfw.wmnet;
 }
 
+host mw2218 {
+    hardware ethernet 14:18:77:69:C6:81;
+    fixed-address mw2218.codfw.wmnet;
+}
+
 host mw2219 {
     hardware ethernet 14:18:77:6A:1C:51;
     fixed-address mw2219.codfw.wmnet;
@@ -5948,6 +5953,62 @@ host mw2238 {
     hardware ethernet 14:18:77:69:F5:06;
     fixed-address mw2238.codfw.wmnet;
 }
+
+host mw2239 {
+    hardware ethernet 14:18:77:6A:0B:66;
+    fixed-address mw2239.codfw.wmnet;
+}
+
+host mw2240 {
+    hardware ethernet 14:18:77:6A:23:80;
+    fixed-address mw2240.codfw.wmnet;
+}
+
+host mw2241 {
+    hardware ethernet 14:18:77:69:FE:0B;
+    fixed-address mw2241.codfw.wmnet;
+}
+
+host mw2242 {
+    hardware ethernet 14:18:77:6A:38:0C;
+    fixed-address mw2242.codfw.wmnet;
+}
+
+host mw2244 {
+    hardware ethernet 14:18:77:66:7D:CD;
+    fixed-address mw2244.codfw.wmnet;
+}
+
+host mw2245 {
+    hardware ethernet 14:18:77:66:B2:0C;
+    fixed-address mw2245.codfw.wmnet;
+}
+
+host mw2246 {
+    hardware ethernet 14:18:77:66:78:1E;
+    fixed-address mw2246.codfw.wmnet;
+}
+
+host mw2247 {
+    hardware ethernet 14:18:77:66:79:E6;
+    fixed-address mw2247.codfw.wmnet;
+}
+
+host mw2248 {
+    hardware ethernet 14:18:77:66:55:40;
+    fixed-address mw2248.codfw.wmnet;
+}
+
+host mw2249 {
+    hardware ethernet 14:18:77:66:69:51;
+    fixed-address mw2249.codfw.wmnet;
+}
+
+host mw2250 {
+    hardware ethernet 14:18:77:6A:55:BB;
+    fixed-address mw2250.codfw.wmnet;
+}
+
 
 host neodymium {
     hardware ethernet 90:B1:1C:2D:79:8C;
