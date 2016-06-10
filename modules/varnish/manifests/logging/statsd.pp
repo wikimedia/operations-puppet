@@ -60,6 +60,7 @@ define varnish::logging::statsd(
         strict         => false,
         template_name  => 'varnishstatsd',
         require        => File['/usr/local/bin/varnishstatsd'],
+        subscribe      => File['/usr/local/lib/python2.7/dist-packages/varnishlog.py'],
         service_params => {
             enable => true,
         },

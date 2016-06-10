@@ -47,6 +47,7 @@ define varnish::logging::xcache(
         strict         => false,
         template_name  => 'varnishxcache',
         require        => File['/usr/local/bin/varnishxcache'],
+        subscribe      => File['/usr/local/lib/python2.7/dist-packages/varnishlog.py'],
         service_params => {
             require => Service['varnish-frontend'],
             enable  => true,

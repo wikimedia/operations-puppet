@@ -33,6 +33,7 @@ define varnish::logging::media( $statsd_server = 'statsd' ) {
         strict         => false,
         template_name  => 'varnishmedia',
         require        => File['/usr/local/bin/varnishmedia'],
+        subscribe      => File['/usr/local/lib/python2.7/dist-packages/varnishlog.py'],
         service_params => {
             enable => true,
         },

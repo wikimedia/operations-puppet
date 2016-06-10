@@ -23,6 +23,7 @@
 
   By default, varnishlog will group transactions by request. A specific
   transaction grouping mode can be used to override the default.
+
   For example:
 
     varnishlog(
