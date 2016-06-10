@@ -28,6 +28,12 @@ class role::labs::novaproxy(
         desc  => 'HTTPS webserver for the entire world',
     }
 
+    ferm::service { 'dynamicproxy-api-http':
+        port  => '5668',
+        proto => 'tcp',
+        desc  => 'API for adding / removing proxies from dynamicproxy domainproxy'
+    }
+
     if $::hostname != $active_proxy {
         $redis_replication = {
             "${::hostname}" => $active_proxy

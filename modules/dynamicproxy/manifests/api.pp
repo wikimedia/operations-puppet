@@ -1,12 +1,6 @@
 class dynamicproxy::api(
     $port = 5668,
 ) {
-    ferm::service { 'dynamicproxy-api-http':
-        port  => $port,
-        proto => 'tcp',
-        desc  => 'API for adding / removing proxies from dynamicproxy domainproxy'
-    }
-
     file { '/usr/local/bin/invisible-unicorn.py':
         source => 'puppet:///modules/dynamicproxy/invisible-unicorn.py',
         owner  => 'root',
