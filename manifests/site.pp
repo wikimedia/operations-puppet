@@ -2363,6 +2363,7 @@ node /^oresrdb100[12]\.eqiad\.wmnet$/ {
 node 'osmium.eqiad.wmnet' {
     role ve
     include ::standard
+    include base::firewall
 }
 
 # oxygen runs a kafkatee instance that consumes webrequest from Kafka
