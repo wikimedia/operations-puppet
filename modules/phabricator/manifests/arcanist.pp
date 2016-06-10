@@ -1,17 +1,18 @@
 # == Class: phabricator::arcanist
 #
+# Installs the phabricator client, arcanist, from git.
 # Clone the arcanist and libphutil repositories into /usr/local/share/, then
 # link /usr/local/bin/arc to the arc executable
 #
-class phabricator::arcanist() {
+class phabricator::arcanist {
     git::clone { 'phabricator/libphutil':
         directory => '/usr/local/share/libphutil',
-        branch    => 'stable',
+        branch    => 'wmf/stable',
     }
 
     git::clone { 'phabricator/arcanist':
         directory => '/usr/local/share/arcanist',
-        branch    => 'stable',
+        branch    => 'wmf/stable',
         require   => Git::Clone['phabricator/libphutil'],
     }
 
