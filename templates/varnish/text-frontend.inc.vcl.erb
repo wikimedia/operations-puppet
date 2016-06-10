@@ -81,13 +81,13 @@ sub cluster_fe_recv_pre_purge {
 			set req.http.X-Subdomain = "M";
 		}
 
-		// mobile-subdomains-only for tag-carrier and Host-rewrite
-		if (req.http.X-Subdomain) {
-			// Only do tag_carrier logic on first start, and only for (m|zero).wp
-			if (req.http.host ~ "^([a-z0-9-]+\.)?(m|zero)\.wikipedia\.") {
-				call tag_carrier;
-			}
+		// Only do tag_carrier logic for Wikipedia requests
+		if (req.http.host ~ "^([a-z0-9-]+\.)?wikipedia\.") {
+			call tag_carrier;
+		}
 
+		// mobile subdomains only for Host-rewrite
+		if (req.http.X-Subdomain) {
 			// Rewrite mobile hostnames to desktop hostnames as x-dt-host
 			if (req.http.host == "m.mediawiki.org") {
 				set req.http.x-dt-host = "www.mediawiki.org";
