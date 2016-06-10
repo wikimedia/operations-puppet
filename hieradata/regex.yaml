@@ -338,3 +338,7 @@ maps_test:
 jessie_appservers:
   __regex: !ruby/regexp /^mw1(26[1-9]|2[7-9][0-9]|3[0-9][0-9])\.eqiad\.wmnet$/
   base::grub::enable_memory_cgroup: true
+
+jessie_appservers_codfw:
+  __regex: !ruby/regexp /^mw22(1[5-9]|[2-9][0-9])\.codfw\.wmnet$/
+  base::grub::enable_memory_cgroup: true
