@@ -5,6 +5,14 @@ define ores::config(
     $group='www-data',
     $mode='0660',
 ) {
+
+    file { '/etc/ores/':
+        ensure => 'directory',
+        owner  => $owner,
+        group  => $group,
+        mode   => $mode,
+    }
+
     file { "/etc/ores/${priority}-${title}.yaml":
         content => ordered_yaml($config),
         owner   => $owner,
