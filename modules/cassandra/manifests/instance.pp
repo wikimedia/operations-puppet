@@ -236,6 +236,6 @@ define cassandra::instance(
     monitoring::service { "${service_name}-cql":
         description   => "${service_name} CQL ${listen_address}:9042",
         check_command => "check_tcp_ip!${listen_address}!9042",
-        contact_group => 'admins,team-services',
+        contact_group => 'admins,team-services,analytics',
     }
 }
