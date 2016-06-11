@@ -5,6 +5,7 @@ define ores::config(
     $group='www-data',
     $mode='0660',
 ) {
+
     file { "/etc/ores/${priority}-${title}.yaml":
         content => ordered_yaml($config),
         owner   => $owner,
