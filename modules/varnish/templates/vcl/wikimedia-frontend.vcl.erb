@@ -338,12 +338,12 @@ sub deliver_synth_ {
 	std.collect(resp.http.X-Varnish);
 
 	// Set CP ('Connection Properties') cookie
-	if (req.http.X-Connection-Properties ~ "SPDY=3|H2=1") {
+	if (req.http.X-Connection-Properties ~ "H2=1") {
 		if (req.http.X-Orig-Cookie !~ "(^|;\s*)CP=H2" && req.http.Cookie !~ "(^|;\s*)CP=H2") {
 			header.append(resp.http.Set-Cookie, "CP=H2; Path=/; secure");
 		}
 	} else {
-		// Explicitly unset the cookie if it exists. Support for SPDY in a browser session can
+		// Explicitly unset the cookie if it exists. Support for HTTP/2 in a browser session can
 		// flip if a device moves networks and thus behind a proxy.
 		if (req.http.X-Orig-Cookie ~ "(^|;\s*)CP=H2" || req.http.Cookie ~ "(^|;\s*)CP=H2") {
 			header.append(resp.http.Set-Cookie, "CP=H1; Expires=Thu, 01-Jan-1970 00:00:01 GMT; Path=/; secure");
