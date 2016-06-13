@@ -13,7 +13,7 @@ sub vcl_init {
 }
 
 sub vcl_recv {
-	if (client.ip !~ wikimedia_nets) {
+	if (client.ip !~ wikimedia_trust) {
 		// Do not allow direct access to non-frontend layers
 		<%= error_synth(403, "Access denied") -%>
 	}
