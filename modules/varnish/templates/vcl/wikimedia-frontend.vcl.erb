@@ -100,7 +100,7 @@ sub recv_fe_ip_processing {
 	// it. We don't set or use this header internally (we use X-Client-IP)
 	unset req.http.X-Real-IP;
 
-	if (client.ip !~ wikimedia_nets) {
+	if (client.ip !~ wikimedia_trust) {
 		// Ensure we only accept XFP from our own networks.  Ideally
 		// it should only be set by our nginx TLS terminator
 		// specifically, but there are known cases where internal apps
