@@ -109,7 +109,7 @@ class graphite::web(
         settings => {
             uwsgi => {
                 'plugins'   => 'python',
-                'socket'    => '/run/uwsgi/graphite-web.sock',
+                'http'      => '127.0.0.1:8383',
                 'stats'     => '/run/uwsgi/graphite-web-stats.sock',
                 'wsgi-file' => '/usr/share/graphite-web/graphite.wsgi',
                 'master'    => true,

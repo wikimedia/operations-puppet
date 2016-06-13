@@ -8,12 +8,7 @@
         Allow from all
 
 <%= @apache_auth -%>
-
-        # uWSGI reverse-proxy
-        uWSGIsocket /run/uwsgi/graphite-web.sock
-        uWSGIForceWSGIScheme https
-        uWSGImaxVars 192
-        SetHandler uwsgi-handler
+        ProxyPass http://127.0.0.1:8383/
     </Location>
 
     <Location ~ "/(render|metrics|events/get_data)">
