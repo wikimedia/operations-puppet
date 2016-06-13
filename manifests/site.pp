@@ -2253,8 +2253,8 @@ node /^mw22(1[5-9]|20)\.codfw\.wmnet$/ {
     include base::firewall
 }
 
-# mw2220-45 are appservers
-node /^mw22(20|3[0-9]|4[0-5])\.codfw\.wmnet$/ {
+# mw2221-45 are appservers
+node /^mw22(2[1-9]|3[0-9]|4[0-5])\.codfw\.wmnet$/ {
     role mediawiki::appserver
     include base::firewall
 }
