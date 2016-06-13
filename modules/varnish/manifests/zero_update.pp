@@ -14,6 +14,15 @@ class varnish::zero_update($site) {
         require => Package['python-requests'],
     }
 
+    # Generate icinga alert if zerofetch has not been running successfully.
+    # Warn after 4 hours, generate a critical alert after 24 hours.
+    $check_args = '-w 14400 -c 86400 -d /var/netmapper/ -g .update-success'
+    nrpe::monitor_service { 'zerofetch-freshness':
+        description  => 'Freshness of zerofetch successful run file',
+        nrpe_command => "/usr/lib/nagios/plugins/check-fresh-files-in-dir.py ${check_args}",
+        require      => File['/usr/lib/nagios/plugins/check-fresh-files-in-dir.py'],
+    }
+
     file { '/etc/zerofetcher':
         ensure => directory,
         owner  => 'root',
