@@ -52,12 +52,17 @@ acl local_host {
 	"<%= @ipaddress %>"; // note this matches nginx proxy_pass for TLS
 }
 
+// This is currently used in 3 places:
+// 1) frontends: only wikimedia_nets can fake X-F-P
+// 2) frontends: external trusted proxies aren't allowed to set XCIP to wikimedia_nets
+// 3) backends: port 3128 can only connect from wikimedia_nets
 acl wikimedia_nets {
 <% scope.lookupvar('::network::constants::all_networks_lo').each do |entry|
 	subnet, mask = entry.split("/", 2)
 -%>
 	"<%= subnet %>"/<%= mask %>;
 <% end -%>
+	! "10.68.0.0/16"; # temporary hack, do not treat labs like production
 }
 
 # Backend probes
