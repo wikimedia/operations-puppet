@@ -9,7 +9,6 @@ class standard::diamond {
             $path_prefix   = $::labsproject
             $keep_logs_for = '0' # Current day only
             $service       = true
-            $handler       = 'diamond.handler.graphite.GraphiteHandler'
         }
         default: {
             $host          = '10.64.32.155' # graphite1001
@@ -17,12 +16,10 @@ class standard::diamond {
             $path_prefix   = 'servers'
             $keep_logs_for = '5'
             $service       = true
-            $handler       = 'diamond.handler.graphite.GraphiteHandler'
         }
     }
 
     class { '::diamond':
-        handler       => $handler,
         path_prefix   => $path_prefix,
         keep_logs_for => $keep_logs_for,
         service       => $service,
