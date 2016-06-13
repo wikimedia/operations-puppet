@@ -15,6 +15,10 @@ discovery::app_routes:
 # Labs has the memory cgroup controller enabled by default on all jessies
 base::grub::enable_memory_cgroup: true
 
+# Disable diamond collection to graphite temporarily while we get new hardware for it
+# See T137753
+diamond::handler: diamond.handler.NullHandler
+
 # dns
 labsdnsconfig:
   recursor: 'labs-recursor0.wikimedia.org'

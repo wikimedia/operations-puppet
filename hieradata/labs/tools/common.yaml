@@ -24,3 +24,6 @@ elasticsearch::unicast_hosts:
   - tools-elastic-03.tools.eqiad.wmflabs
 
 kubelet::pod_infra_container_image: 'docker-registry.tools.wmflabs.org/pause:2.0'
+
+# Enable diamond collectors for tools. See T137753
+diamond::handler: diamond.handler.graphite.GraphiteHandler
