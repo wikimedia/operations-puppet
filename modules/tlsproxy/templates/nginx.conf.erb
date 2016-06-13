@@ -86,13 +86,22 @@ http {
     # Disable RFC5077 tickets (may revisit later when client support is better)
     ssl_session_tickets off;
 
-    # ssl_buffer_size: 1300 is a good magic value for minimizing TTFB, at the
-    # expense of server overhead and total throughput.  We may have to back
-    # this off if it becomes a significant server performance issue, and we
-    # may want to set it higher (e.g. 4k) specifically for the upload caches
-    # to trade a little TTFB for throughput.  This is something that will have
-    # to be watched, experimented on, and tuned as more load comes in...
-    ssl_buffer_size 1300;
+    # dynamic ssl_buffer_size from Cloudflare's patch
+    # ssl record size affects perf:
+    #   smaller => lower latency / better TTFB
+    #   larger => more throughput for large transfers
+    #   (before patch, we used a fixed "1300" favoring TTFB)
+    # Given current settings (same as CF defaults, except timeout):
+    #   the initial/after-idle record size is 1369
+    #   after ~53K (40 * 1369) data sent, upsize to 4229
+    #   after a further ~124K (40 * 4229) data sent, upsize to 16384
+    #   if output goes idle for 2s, reset to 1369
+    ssl_dyn_rec_enable on;    # default: off
+    ssl_dyn_rec_size_lo 1369; # default: 1369
+    ssl_dyn_rec_size_hi 4229; # default: 4229
+    ssl_buffer_size 16384;    # default: 16384
+    ssl_dyn_rec_threshold 40; # default: 40
+    ssl_dyn_rec_timeout 2s;   # default: 1s
 
     # nginx's $http2 is either 'h2' or '' (empty string) for http/1
     # Map it to $h2 as a boolean string value '1' or '0' for use in headers
