@@ -2,7 +2,7 @@
 
 include "text-common.inc.vcl";
 include "zero.inc.vcl";
-include "geoip.inc.vcl";
+<% if @vcl_config.fetch('enable_geoiplookup', false) -%>include "geoip.inc.vcl";<% end -%>
 
 // Note that analytics.inc.vcl will set an X-Analytics value of proxy=IORG
 // without inspecting whether there's an existing proxy=<proxy> key-
@@ -65,9 +65,11 @@ sub cluster_fe_recv_pre_purge {
 	// Disable Range requests for now.
 	unset req.http.Range;
 
+<% if @vcl_config.fetch('enable_geoiplookup', false) && @vcl_config.fetch('enable_set_cookie', true) -%>
 	if (req.url == "/geoiplookup" || req.http.host == "geoiplookup.wikimedia.org") {
 		error 668 "geoiplookup";
 	}
+<% end -%>
 
 	if (req.restarts == 0) {
 		// Always set or clear X-Subdomain and X-Orig-Cookie
@@ -225,11 +227,13 @@ sub cluster_fe_deliver {
 		}
 	}
 
+<% if @vcl_config.fetch('enable_geoiplookup', false) -%>
 	// Perform GeoIP look-up and send the result as a session cookie
 	if (req.http.X-Orig-Cookie !~ "(^|;\s*)GeoIP=[^;]"
 		&& req.http.Cookie !~ "(^|;\s*)GeoIP=[^;]") {
 		call geoip_cookie;
 	}
+<% end -%>
 }
 
 sub cluster_fe_err_synth {
@@ -241,6 +245,7 @@ sub cluster_fe_err_synth {
 		}
 	}
 
+<% if @vcl_config.fetch('enable_geoiplookup', false) -%>
 	// Support geoiplookup
 	if (obj.status == 668) {
 		call geoip_lookup;
@@ -248,6 +253,7 @@ sub cluster_fe_err_synth {
 		set obj.http.Connection = "keep-alive";
 		return (deliver);
 	}
+<% end -%>
 
 	// Support mobile redirects
 	if (obj.status == 666) {

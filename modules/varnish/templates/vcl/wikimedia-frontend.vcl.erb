@@ -10,7 +10,10 @@ import ipcast;
 import netmapper;
 
 include "<%= @varnish_include_path %>wikimedia-common_<%= @vcl %>.inc.vcl";
+
+<% if @vcl_config.fetch('enable_x_analytics', true) && @vcl_config.fetch('enable_set_cookie', true) -%>
 include "analytics.inc.vcl";
+<% end -%>
 
 /* Include the VCL file for this role */
 include "<%= @varnish_include_path %><%= @vcl %>.inc.vcl";
@@ -271,9 +274,11 @@ sub vcl_recv {
 		<%= error_synth(204, "") -%>
 	}
 
+<% if @vcl_config.fetch('enable_x_analytics', true) && @vcl_config.fetch('enable_set_cookie', true) -%>
 	if(req.restarts == 0) {
 		call analytics_recv;
 	}
+<% end -%>
 
 	call cluster_fe_recv_pre_purge;
 	call wm_common_recv_purge;
@@ -349,6 +354,7 @@ sub deliver_synth_ {
 	std.collect(resp.http.Via);
 	std.collect(resp.http.X-Varnish);
 
+<% if @vcl_config.fetch('enable_set_cookie', true) -%>
 	// Set CP ('Connection Properties') cookie
 	if (req.http.X-Connection-Properties ~ "H2=1") {
 		if (req.http.X-Orig-Cookie !~ "(^|;\s*)CP=H2" && req.http.Cookie !~ "(^|;\s*)CP=H2") {
@@ -361,10 +367,13 @@ sub deliver_synth_ {
 			header.append(resp.http.Set-Cookie, "CP=H1; Expires=Thu, 01-Jan-1970 00:00:01 GMT; Path=/; secure");
 		}
 	}
+<% end -%>
 
 	call https_deliver_hsts;
 
+<% if @vcl_config.fetch('enable_x_analytics', true) && @vcl_config.fetch('enable_set_cookie', true) -%>
 	call analytics_deliver;
+<% end -%>
 
 	// echo metadata about the client back to the client (analytics looks at this as well)
 	set resp.http.X-Client-IP = req.http.X-Client-IP;
@@ -381,6 +390,11 @@ sub vcl_deliver {
 	call wm_common_deliver_hitcount;
 	call deliver_synth_;
 	call cluster_fe_deliver;
+
+<% if not @vcl_config.fetch('enable_set_cookie', true) -%>
+	unset resp.http.Set-Cookie;
+<% end -%>
+
 	return (deliver); // no default VCL (which is just "return (deliver)" anyways)
 }
 
