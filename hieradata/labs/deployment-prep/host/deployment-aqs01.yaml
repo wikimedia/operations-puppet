@@ -1,2 +1,3 @@
 cassandra::seeds:
   - deployment-aqs01.deployment-prep.eqiad.wmflabs
+cassandra::target_version: '2.1'
