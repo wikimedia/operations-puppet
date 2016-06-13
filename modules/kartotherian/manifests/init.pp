@@ -8,6 +8,7 @@
 # service
 class kartotherian(
     $conf_sources = 'sources.prod.yaml',
+    $enable_spec  = true,
 ) {
 
     $cassandra_kartotherian_user = 'kartotherian'
@@ -19,5 +20,6 @@ class kartotherian(
         port       => 6533,
         config     => template('kartotherian/config.yaml.erb'),
         deployment => 'scap3',
+        has_spec   => $enable_spec,
     }
 }
