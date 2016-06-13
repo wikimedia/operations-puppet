@@ -136,5 +136,13 @@ def main():
     os.rmdir(tempdir)
 
 
+def update_success(fname):
+    """Update mtime of the given file"""
+    with open(fname, 'a'):
+        os.utime(fname, None)
+
 if __name__ == "__main__":
     main()
+    # If no exception has been risen by main(), this has been a successful run.
+    # Update mtime of success file.
+    update_success("/var/cache/ocsp/.update-success")
