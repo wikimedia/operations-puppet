@@ -135,6 +135,11 @@ def main():
     # Remove the tempdir, which should be empty now via rename-or-remove above
     os.rmdir(tempdir)
 
+    # This has been a successful run, update mtime of the success file
+    # (by default: /var/netmapper/.update-success)
+    success_file = os.path.join(args.directory, ".update-success")
+    with open(success_file, 'a'):
+        os.utime(success_file, None)
 
 if __name__ == "__main__":
     main()
