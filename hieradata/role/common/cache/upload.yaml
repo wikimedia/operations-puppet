@@ -2,6 +2,7 @@ cluster: cache_upload
 cache::cluster: upload
 admin::groups:
   - perf-roots
+cache::tune_for_media: true
 # The contents of this hash control our DC->DC routing for varnish backend
 # daemons.  There should be a key for every cache datacenter, and the
 # values can be another datacenter or 'direct', which means contact the
