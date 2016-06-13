@@ -194,6 +194,8 @@ class role::graphite::base(
 
 
     include ::apache
+    include ::apache::mod::proxy
+    include ::apache::mod::proxy_http
 
     if $auth {
         # Production
