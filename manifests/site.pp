@@ -2497,13 +2497,15 @@ node /^prometheus100[12]\.eqiad\.wmnet$/ {
 
 # pybal-test200X VMs are used for pybal testing/development
 node /^pybal-test200[12]\.codfw\.wmnet$/ {
-    role test::system
+    role pybaltest
+    include standard
 }
 
 # pybal-test2003 is used for pybal testing/development
 # and for redis multi-instance testing/development
 node 'pybal-test2003.codfw.wmnet' {
-    role test::system
+    role pybaltest
+    include standard
 
     redis::instance { 6370: }
     redis::instance { 6371: }
