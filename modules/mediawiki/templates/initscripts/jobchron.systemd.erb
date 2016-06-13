@@ -1,0 +1,14 @@
+[Unit]
+Description "Mediawiki job queue chron loop"
+After=hhvm.service
+
+[Service]
+EnvironmentFile="/etc/default/jobrunner"
+ExecStartPre=/bin/mkdir -p -m 0755 /var/log/mediawiki
+User=$JOBRUNNER_USER
+Group=$JOBRUNNER_GROUP
+ExecStart=/usr/bin/php /srv/deployment/jobrunner/jobrunner/redisJobChronService --config-file=$JOBRUNNER_CONFIG $DAEMON_OPTS
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

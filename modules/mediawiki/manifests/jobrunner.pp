@@ -36,21 +36,6 @@ class mediawiki::jobrunner (
         notify  => Service['jobrunner'],
     }
 
-    file { '/etc/init/jobrunner.conf':
-        source => 'puppet:///modules/mediawiki/jobrunner.conf',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0444',
-        notify => Service['jobrunner'],
-    }
-
-    file { '/etc/init/jobchron.conf':
-        source => 'puppet:///modules/mediawiki/jobchron.conf',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0444',
-        notify => Service['jobchron'],
-    }
 
     file { '/etc/jobrunner':
         ensure => directory,
@@ -69,15 +54,15 @@ class mediawiki::jobrunner (
     }
 
     $service_ensure = hiera('jobrunner_state', 'running')
-    service { 'jobrunner':
-        ensure   => $service_ensure,
-        provider => 'upstart',
+
+    # We declare the service, but override its status with
+    # $service_ensure
+    base::service_unit { ['jobrunner', 'jobchron']:
+        systemd        => true,
+        upstart        => true,
+        service_params => { ensure => $service_ensure },
     }
 
-    service { 'jobchron':
-        ensure   => $service_ensure,
-        provider => 'upstart',
-    }
 
     file { '/etc/logrotate.d/mediawiki_jobrunner':
         source => 'puppet:///modules/mediawiki/logrotate.d_mediawiki_jobrunner',
