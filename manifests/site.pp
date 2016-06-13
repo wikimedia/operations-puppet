@@ -2176,14 +2176,13 @@ node /^mw1(299|30[0-6])\.eqiad\.wmnet$/ {
     include base::firewall
 }
 
-# ROW A codfw appservers: mw2061-mw2079, plus mw2017
+# ROW A codfw appservers: mw2017, mw2061-mw2079, and mw2215-2250
 
 # mw2017.codfw.wmnet is a codfw test appserver
 node 'mw2017.codfw.wmnet' {
     role mediawiki::appserver
     include base::firewall
 }
-
 
 #mw2061-2079 are api appservers
 node /^mw20[6-7][0-9]\.codfw\.wmnet$/ {
@@ -2195,9 +2194,6 @@ node /^mw20[6-7][0-9]\.codfw\.wmnet$/ {
 # ROW B codfw appservers: mw2080-mw2147
 #mw2080-mw2085 are jobrunners
 node /^mw208[0-5]\.codfw\.wmnet$/ {
-    if $::hostname == 'mw2080' {
-        $ganglia_aggregator = true
-    }
     role mediawiki::jobrunner
     include base::firewall
 }
@@ -2243,9 +2239,35 @@ node /^mw21(6[3-9]|[6-9][0-9])\.codfw\.wmnet$/ {
     include base::firewall
 }
 
-#mw2200-2234 are api appservers
-node /^mw22([0-2][0-9]|3[0-4])\.codfw\.wmnet$/ {
+#mw2200-2214 are api appservers
+node /^mw22(0[0-9]|1[0-4])\.codfw\.wmnet$/ {
     role mediawiki::appserver::api
+    include base::firewall
+}
+
+# New Appservers, in row A3/A4
+
+#mw2215-2220 are api appservers
+node /^mw22(1[5-9]|20)\.codfw\.wmnet$/ {
+    role mediawiki::appserver::api
+    include base::firewall
+}
+
+# mw2220-45 are appservers
+node /^mw22(20|3[0-9]|4[0-5])\.codfw\.wmnet$/ {
+    role mediawiki::appserver
+    include base::firewall
+}
+
+
+# mw2246 is a videoscaler
+node 'mw2246.codfw.wmnet' {
+    role mediawiki::videoscaler
+}
+
+# mw2247-2250 are jobrunners
+node /^mw22(4[7-9]|50)\.codfw\.wmnet$/ {
+    role mediawiki::jobrunner
     include base::firewall
 }
 
