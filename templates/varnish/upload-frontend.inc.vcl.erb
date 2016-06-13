@@ -90,7 +90,25 @@ sub cluster_fe_deliver {
 	}
 
 	set resp.http.Access-Control-Allow-Origin = "*";
+
+	// Headers exposed for CORS:
+	// - Age, Content-Length, Date, X-Cache, X-Varnish: used by MultimediaViewer
+	//   for client-side performance metrics (1cb80099d97ad).
+	//
+	// - X-Content-Duration: used for OGG audio and video files (7077999966).
+	//   Firefox 41 dropped support for this header, but OGV.js still supports it.
+	//   See <https://bugzilla.mozilla.org/show_bug.cgi?id=1160695#c27> and
+	//   <https://github.com/brion/ogv.js/issues/88>.
+	//
+	// - Content-Range: indicates total file and actual range returned for RANGE
+	//   requests (939b436512). Used by ogv.js to eliminate an extra HEAD request
+	//   to get the the total file size.
 	set resp.http.Access-Control-Expose-Headers = "Age, Date, Content-Length, Content-Range, X-Content-Duration, X-Cache, X-Varnish";
+
+	// "Timing-Allow-Origin" is part of the Resource Timing specification
+	// (https://www.w3.org/TR/resource-timing/). Setting this header allows
+	// JavaScript with a different origin to access resource timing info
+	// (e9cbfd539edd3). See <https://phabricator.wikimedia.org/T76020>.
 	set resp.http.Timing-Allow-Origin = "*";
 }
 
