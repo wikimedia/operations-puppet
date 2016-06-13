@@ -5,6 +5,7 @@ class tlsproxy::instance {
 
     $nginx_worker_connections = '32768'
     $nginx_ssl_conf = ssl_ciphersuite('nginx', 'compat')
+    $nginx_tune_for_media = hiera('cache::tune_for_media', false)
 
     class { 'nginx': managed => false, }
 
