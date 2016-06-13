@@ -21,6 +21,10 @@ class standard::diamond {
         }
     }
 
+    # Enabled by default on prod, disabled on almost all labs instancex except specific ones
+    # FIXME: Get rid of this once we fix https://phabricator.wikimedia.org/T127957
+    $enabled = hiera('diamond_enabled', true)
+
     class { '::diamond':
         handler       => $handler,
         path_prefix   => $path_prefix,
@@ -29,7 +33,7 @@ class standard::diamond {
         settings      => {
             # lint:ignore:quoted_booleans
             # Diamond needs its bools in string-literals.
-            enabled => 'true',
+            enabled => "${enabled}",
             # lint:endignore
             host    => $host,
             port    => $port,
