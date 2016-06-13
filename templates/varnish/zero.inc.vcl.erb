@@ -33,28 +33,10 @@ sub tag_carrier {
         } else {
             set req.http.X-CS = "ON";
         }
-
-        // Only trigger Set-Cookie below if the cookie isn't already being sent by the client
-        if (req.http.X-ZeroTLS && req.http.Cookie ~ "ZeroOpts=tls") {
-            unset req.http.X-ZeroTLS;
-        }
     }
 }
 
 sub zero_deliver {
-    // This, and the supporting X-ZeroTLS bits above in tag_carrier set a cookie
-    // to tell the browser if contributory features would be zero-rated.
-    // Once a carrier's config above has had req.http.X-ZeroTLS set to 1 for
-    // 30 days after HTTPS enablement, then then specific block above can be removed
-    // because the origin will have populated the cache sufficiently.
-    // Notice that a cookie of ZeroOpts=   (empty value) tells the browser to
-    // not enable the contributory features, so we remove this first if it exists.
-    if (req.http.X-ZeroTLS) {
-        // We must use header.remove()/append() here because there can be multiple unrelated Set-Cookie headers
-        header.remove(resp.http.Set-Cookie,"ZeroOpts=");
-        header.append(resp.http.Set-Cookie,"ZeroOpts=tls");
-    }
-
     // Regardless of X-CS transform to "ON" for Vary and/or server-side
     // purposes, if a carrier was detected at all, set X-CS as an outbound
     // response header for the application to consume.
