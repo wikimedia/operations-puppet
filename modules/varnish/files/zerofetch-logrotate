@@ -1,0 +1,6 @@
+/var/log/zerofecth.log {
+    rotate 7
+    daily
+    compress
+    missingok
+}

@@ -38,7 +38,7 @@ class varnish::zero_update($site) {
         require => File['/etc/zerofetcher'],
     }
 
-    $cmd = "/usr/share/varnish/zerofetch.py -s \"${site}\" -a /etc/zerofetcher/zerofetcher.auth -d /var/netmapper"
+    $cmd = "/usr/share/varnish/zerofetch.py -s \"${site}\" -a /etc/zerofetcher/zerofetcher.auth -d /var/netmapper 2>&1 | logger -t zerofetch"
 
     exec { 'zero_update_initial':
         user    => 'netmap',
@@ -56,5 +56,15 @@ class varnish::zero_update($site) {
         minute  => $minutes,
         hour    => '*',
         require => File['/etc/zerofetcher/zerofetcher.auth'],
+    }
+
+    rsyslog::conf { 'zerofetch':
+        source   => 'puppet:///modules/varnish/zerofetch.rsyslog.conf',
+    }
+
+    # Rotate /var/log/zerofetch.log
+    logrotate::conf { 'zerofetch':
+        ensure => present,
+        source => 'puppet:///modules/varnish/zerofetch-logrotate',
     }
 }
