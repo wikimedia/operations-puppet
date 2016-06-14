@@ -5,5 +5,5 @@ timestamp=$(/bin/date +%s)
 pluginpath="/usr/lib/nagios/plugins"
 host=$1
 
-$pluginpath/check_http -H $host -I $host -u "http://oresweb/scores/testwiki/reverted/${timestamp}/"
+$pluginpath/check_http -f follow -H $host -I $host -u "http://oresweb/scores/testwiki/reverted/${timestamp}/"
 
