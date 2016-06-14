@@ -1,0 +1,9 @@
+{% load i18n %}
+
+<div class="row-fluid">
+  <div class="span12">
+    <h3>{% trans "Puppet Roles" %}</h3>
+    {{ table.render }}
+  </div>
+  {% include 'project/puppet/_hiera.html' %}
+</div>
