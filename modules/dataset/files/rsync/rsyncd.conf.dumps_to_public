@@ -43,4 +43,4 @@ exclude = **tmp/ **temp/ **bad/ **save/
 # added amazonaws.com, Oct 31 2012 -- atg
 # probably will never go live tbh
 # it will eventually be managed by folks at amazon
-hosts allow = 199.47.196.26 ftpmirror.your.org ec2-174-129-186-231.compute-1.amazonaws.com 69.31.98.2 crcdtn01.crc.nd.edu 69.28.137.74
+hosts allow = 199.47.196.26 ftpmirror.your.org ec2-174-129-186-231.compute-1.amazonaws.com 69.31.98.2 crcdtn01.crc.nd.edu wmrsync.crc.nd.edu 69.28.137.74

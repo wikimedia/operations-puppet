@@ -14,6 +14,7 @@ dumps::rsync_clients:
   - ec2-174-129-186-231.compute-1.amazonaws.com
   - ftpmirror-ae0-4.us.your.org
   - crcdtn01.crc.nd.edu
+  - wmrsync.crc.nd.edu
   - wikimedia.iconic.vi
 dumps::rsync_clients_ipv6:
   - odysseus.ip6.fi.muni.cz
