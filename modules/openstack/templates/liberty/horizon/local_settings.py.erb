@@ -532,3 +532,5 @@ DESIGNATE = { 'records_use_fips': True }
 WMFLABSDOTORG_ADMIN_USERNAME = '<%= @designateconfig['wmflabsdotorg_admin'] %>'
 WMFLABSDOTORG_ADMIN_PASSWORD = '<%= @designateconfig['wmflabsdotorg_pass'] %>'
 INSTANCE_TLD = '<%= scope.lookupvar('::site') %>.<%= @designateconfig['private_tld'] %>'
+
+PUPPETMASTER_API  = "https://<%= @novaconfig['controller_hostname'] %>:8140/puppet"

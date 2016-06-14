@@ -1,0 +1,29 @@
+{% extends "horizon/common/_modal_form.html" %}
+{% load i18n %}
+{% block title %}{% trans "Edit Hiera Configggg" %}{% endblock %}
+
+
+{% load i18n horizon humanize %}
+
+{% block form_attrs %}enctype="multipart/form-data"{% endblock %}
+
+{% block modal-header %}{% trans "Edit Hiera Config" %} {% endblock %}
+
+{% block modal-body %}
+<div class="row">
+ <div class="col-sm-6" style="width: {% if puppetrole.docs %}70{% else %}100{% endif %}%">
+  <h3>{{ ParamsCaption }}</h3>
+  <fieldset>
+   {% include "horizon/common/_form_fields.html" %}
+  </fieldset>
+ </div>
+ {% if puppetrole.docs %}
+  <div class="col-sm-6" style="width: 30%;">
+   <h3>{{ DocsCaption }}</h3>
+   <p>
+    <font size="1"><pre>{% trans "Some sort of explanation about hiera here"}</pre></font>
+   </p>
+  </div>
+ {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,11 @@
+{% load i18n %}
+
+<div class="row-fluid">
+   <h3>{% trans "Hiera Config" %}</h3>
+   <p>
+     <pre>{{ hiera }}</pre>
+   </p>
+   <a href="{{ edithieraurl }}" class="btn btn-primary ajax-modal">{% trans "Edit" %}</a>
+  </div>
+</div>
+
