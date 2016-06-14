@@ -240,6 +240,3 @@ scap::server::sources:
   eventlogging/analytics:
     repository: eventlogging
     scap_repository: eventlogging/scap/analytics
-
-# Enable diamond collectors for deployment-prep. See T137753
-diamond::handler: diamond.handler.graphite.GraphiteHandler
