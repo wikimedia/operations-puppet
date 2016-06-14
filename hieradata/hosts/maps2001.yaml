@@ -17,5 +17,3 @@ tilerator::ui::conf_sources: sources.prod2.yaml
 kartotherian::conf_sources: sources.prod2.yaml
 # enable specs only on maps2001 for testing
 kartotherian::enable_spec: true
-
-service::configuration::log_dir: /srv/log
