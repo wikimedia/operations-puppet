@@ -250,6 +250,17 @@ lvs_services:
     conftool:
       cluster: cache_maps
       service: varnish-fe
+    icinga:
+      uri: maps.wikimedia.org!/osm-intl/6/23/24.png
+      sites:
+        eqiad:
+          hostname: maps-lb.eqiad.wikimedia.org
+        codfw:
+          hostname: maps-lb.codfw.wikimedia.org
+        esams:
+          hostname: maps-lb.esams.wikimedia.org
+        ulsfo:
+          hostname: maps-lb.ulsfo.wikimedia.org
   maps-https:
     description: "Maps service maps-lb.%{::site}.wikimedia.org"
     class: high-traffic2
