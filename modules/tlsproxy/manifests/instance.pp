@@ -3,6 +3,7 @@ class tlsproxy::instance {
     # Tune kernel settings
     include base::mysterious_sysctl
 
+    $varnish_version4 = hiera('varnish_version4', false)
     $keepalives_per_worker = hiera('tlsproxy::localssl::keepalives_per_worker', 0)
     $websocket_support = hiera('cache::websocket_support', false)
     $nginx_worker_connections = '32768'
