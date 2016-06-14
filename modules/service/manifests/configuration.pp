@@ -29,7 +29,7 @@
 #
 # [*log_dir*]
 #   Local root log directory. The service's logs will be placed in its
-#   subdirectory. Default: /var/log
+#   subdirectory. Default: /srv/log
 #
 # [*use_dev_pkgs*]
 #   Whether the development packages declared for services should be installed.
@@ -43,7 +43,7 @@ class service::configuration(
     $statsd_port   = 8125,
     $logstash_host = 'localhost',
     $logstash_port = 12201,
-    $log_dir       = '/var/log',
+    $log_dir       = '/srv/log',
     $use_dev_pkgs  = false,
 ){
     # No op for now.
