@@ -807,6 +807,11 @@ lvs_services:
     conftool:
       cluster: maps
       service: kartotherian
+    icinga:
+      check_command: "check_http_lvs_on_port!kartotherian.svc.%{::site}.wmnet!6533!/osm-intl/6/23/24.png"
+      sites:
+        codfw:
+          hostname: kartotherian.svc.codfw.wmnet
   mobileapps:
     description: "A service for use by mobile apps. Provides DOM manipulation, aggregation, JSON flattening. mobileapps.svc.%{::site}.wmnet"
     class: low-traffic
