@@ -26,4 +26,3 @@ cache::route_table:
   esams: 'eqiad'
 varnish_version4: true
 cache::websocket_support: true
-tlsproxy::localssl::keepalives_per_worker: 2

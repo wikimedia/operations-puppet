@@ -26,4 +26,3 @@ cache::route_table:
   ulsfo: 'codfw'
   esams: 'eqiad'
 varnish_version4: true
-tlsproxy::localssl::keepalives_per_worker: 2
