@@ -55,8 +55,8 @@ sources:
   mobileapps/deploy: {}
 
   kartotherian/deploy: {}
-
   tilerator/deploy: {}
+  graphoid/deploy: {}
 
   # cxserver is the ContentTranslation server.
   cxserver/deploy:
