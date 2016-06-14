@@ -16,10 +16,16 @@ class kartotherian(
     $pgsql_kartotherian_user = 'kartotherian'
     $pgsql_kartotherian_pass = hiera('maps::postgresql_kartotherian_pass')
 
+    $monitor_url = $enable_spec ? {
+        true    => '',
+        default => '/_info',
+    }
+
     service::node { 'kartotherian':
-        port       => 6533,
-        config     => template('kartotherian/config.yaml.erb'),
-        deployment => 'scap3',
-        has_spec   => $enable_spec,
+        port            => 6533,
+        config          => template('kartotherian/config.yaml.erb'),
+        deployment      => 'scap3',
+        has_spec        => $enable_spec,
+        healthcheck_url => $monitor_url,
     }
 }
