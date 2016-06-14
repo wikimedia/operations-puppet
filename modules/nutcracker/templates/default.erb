@@ -1,4 +1,4 @@
 # Default settings for nutcracker.
 # This file is managed by Puppet.
-DAEMON_OPTS="--verbose=<%= @verbosity %>"
-<%- if @mbuf_size -%>DAEMON_OPTS="$DAEMON_OPTS --mbuf-size=<%= scope.function_to_bytes [@mbuf_size] %>"<%- end %>
+
+DAEMON_OPTS="--verbose=<%= @verbosity %><%- if @mbuf_size -%> --mbuf-size=<%= scope.function_to_bytes [@mbuf_size] %><%- end %>"
