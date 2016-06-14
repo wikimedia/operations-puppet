@@ -25,13 +25,13 @@ class mediawiki::hhvm {
         group         => $::mediawiki::users::web,
         fcgi_settings => {
             hhvm => {
-                xenon          => {
+                xenon           => {
                     period => to_seconds('10 minutes'),
                 },
-                error_handling => {
+                error_handling  => {
                     call_user_handler_on_fatals => true,
                 },
-                server         => {
+                server          => {
                     source_root           => '/srv/mediawiki/docroot',
                     error_document500     => '/srv/mediawiki/errorpages/hhvm-fatal-error.php',
                     error_document404     => '/srv/mediawiki/errorpages/404.php',
@@ -42,7 +42,7 @@ class mediawiki::hhvm {
                 pcre_cache_type => 'lru',
             },
             curl => {
-                namedPools   => 'cirrus-eqiad,cirrus-codfw',
+                namedPools                => 'cirrus-eqiad,cirrus-codfw',
                 # ugly hack to work around colision in the hash
                 'namedPools.cirrus-codfw' => {
                     size => '20',
@@ -52,7 +52,7 @@ class mediawiki::hhvm {
                 },
             },
         },
-        cli_settings => {
+        cli_settings  => {
             curl => {
                 namedPools => 'cirrus-eqiad,cirrus-codfw',
             },

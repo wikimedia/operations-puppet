@@ -11,7 +11,7 @@ class statistics::sites::analytics {
     require statistics::web
 
     # /srv/analytics.wikimedia.org
-    $document_root = "${$::statistics::working_path}/analytics.wikimedia.org"
+    $document_root = "${::statistics::working_path}/analytics.wikimedia.org"
     # Allow statistics-web-users to modify files in this directory.
 
     git::clone { 'analytics.wikimedia.org':

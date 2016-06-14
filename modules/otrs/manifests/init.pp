@@ -136,10 +136,10 @@ class otrs(
 
     # lint:ignore:arrow_alignment
     base::service_unit { 'otrs-daemon':
-        ensure  => present,
-        upstart => false,
-        systemd => true,
-        refresh => true,
+        ensure         => present,
+        upstart        => false,
+        systemd        => true,
+        refresh        => true,
         service_params => {
             enable     => true,
             hasstatus  => true,

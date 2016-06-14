@@ -115,7 +115,7 @@ class base::environment(
 
     # lint:ignore:arrow_alignment
     sysctl::parameters { 'core_dumps':
-        values  => { 'kernel.core_pattern' => $core_dump_pattern, },
+        values  => { 'kernel.core_pattern'        => $core_dump_pattern, },
         require => File['/var/tmp/core'],
     }
 
