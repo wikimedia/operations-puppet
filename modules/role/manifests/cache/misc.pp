@@ -181,7 +181,7 @@ class role::cache::misc {
         },
         'rcstream' => {
             'dynamic'  => 'no',
-            'type'     => 'random',
+            'type'     => 'hash',
             'backends' => [
                 'rcs1001.eqiad.wmnet',
                 'rcs1002.eqiad.wmnet',
