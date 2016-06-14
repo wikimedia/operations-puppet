@@ -3,6 +3,7 @@
 
 # HHVM's error log, managed by rsyslog.
 /var/log/hhvm/error.log {
+    su <%= @user %> <%= @group %>
     daily
     dateext
     dateyesterday
@@ -18,6 +19,7 @@
 
 # Delete local stack trace logs after one week.
 /var/log/hhvm/stacktrace.*.log.* {
+    su <%= @user %> <%= @group %>
     rotate 0
     maxage 7
     missingok
