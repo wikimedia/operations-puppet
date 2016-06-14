@@ -7,6 +7,7 @@ sub misc_recv_pass {
         || req.http.Host == "datasets.wikimedia.org" // No caching of datasets.  They can be larger than misc varnish can deal with.
         || req.http.Host == "config-master.wikimedia.org"
         || req.http.Host == "etherpad.wikimedia.org" // No caching of configs; scripts may want to know when things change
+        || req.http.Host == "stream.wikimedia.org"
     ) {
         return (pass);
     }
