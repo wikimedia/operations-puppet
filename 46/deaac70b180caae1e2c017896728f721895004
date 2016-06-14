@@ -1,0 +1,10 @@
+Code-Review+1: Hashar <hashar@free.fr>
+Code-Review+1: Andrew Bogott <abogott@wikimedia.org>
+Code-Review+1: Ori.livneh <ori@wikimedia.org>
+Code-Review+2: Filippo Giunchedi <fgiunchedi@wikimedia.org>
+Verified+2: Filippo Giunchedi <fgiunchedi@wikimedia.org>
+Submitted-by: Filippo Giunchedi <fgiunchedi@wikimedia.org>
+Submitted-at: Tue, 14 Jun 2016 09:20:30 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/291173
+Project: operations/puppet
+Branch: refs/heads/production
