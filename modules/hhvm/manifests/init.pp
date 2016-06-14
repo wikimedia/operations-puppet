@@ -274,7 +274,7 @@ class hhvm(
     }
 
     file { '/etc/logrotate.d/hhvm':
-        source  => 'puppet:///modules/hhvm/hhvm.logrotate',
+        conent  => template('hhvm/hhvm.logrotate.erb'),
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
