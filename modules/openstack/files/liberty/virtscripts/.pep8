@@ -1,3 +1,0 @@
-[pep8]
-# This is a third-party file, so I'm just turning off everything...
-ignore = W191,E225,E501,W239,E303,W209,E302,W293,E101,E128,E121,E703,W291,E131,E265
