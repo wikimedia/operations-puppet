@@ -104,7 +104,7 @@ define role::cache::instances (
         storage            => "-s malloc,${fe_mem_gb}G",
         jemalloc_conf      => $fe_jemalloc_conf,
         directors          => {
-            'cache_local' => {
+            'cache_local'        => {
                 'dynamic'  => 'yes',
                 'type'     => $chash_dir,
                 'dc'       => $::site,

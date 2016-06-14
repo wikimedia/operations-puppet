@@ -22,7 +22,7 @@ class statistics::user {
     git::userconfig { 'stats':
         homedir  => $homedir,
         settings => {
-            'user' => {
+            'user'       => {
                 'name'  => 'Statistics User',
                 # TODO: use a better email than this :(
                 'email' => 'analytics-alerts@wikimedia.org',

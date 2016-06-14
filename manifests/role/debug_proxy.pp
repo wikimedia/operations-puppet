@@ -15,7 +15,7 @@ class role::debug_proxy {
     # lint:ignore:arrow_alignment
     class { '::debug_proxy':
         backend_regexp  => '^((mw1017|mw1099)\.eqiad\.wmnet|(mw2017|mw2099)\.codfw\.wmnet)',
-        backend_aliases => { '1' => 'mw1017.eqiad.wmnet' },
+        backend_aliases => { '1'        => 'mw1017.eqiad.wmnet' },
         resolver        => join($::nameservers, ' '),
     }
     # lint:endignore

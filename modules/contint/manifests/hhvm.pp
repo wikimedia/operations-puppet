@@ -14,24 +14,24 @@ class contint::hhvm {
         # defined in the global Jenkins configuration and vary per build thanks
         # to $WORKSPACE.
         # lint:ignore:arrow_alignment
-        cli_settings => {
+        cli_settings   => {
             hhvm => {
                 repo  => {
-                    central => { path => '' },
-                    eval    => { mode => 'central' },
-                    local   => { mode => '--' },
+                    central => { path                    => '' },
+                    eval    => { mode                    => 'central' },
+                    local   => { mode                    => '--' },
                     journal => 'memory',
                 },
-                log   => { use_syslog => false },
-                debug => { core_dump_report => false },
+                log   => { use_syslog                => false },
+                debug => { core_dump_report                => false },
             },
         },
 
         # We will want to bypass the Repo since code keep changing?
-        fcgi_settings => {
+        fcgi_settings  => {
             hhvm => {
-                log   => { use_syslog => false },
-                debug => { core_dump_report => false },
+                log   => { use_syslog                => false },
+                debug => { core_dump_report                => false },
             },
         },
         # lint:endignore

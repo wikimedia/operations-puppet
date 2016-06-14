@@ -88,10 +88,10 @@ class apertium(
 
     # lint:ignore:arrow_alignment
     base::service_unit { 'apertium-apy':
-        ensure  => present,
-        upstart => true,
-        systemd => true,
-        refresh => true,
+        ensure         => present,
+        upstart        => true,
+        systemd        => true,
+        refresh        => true,
         service_params => {
             enable     => true,
             hasstatus  => true,

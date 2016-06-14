@@ -91,12 +91,12 @@ define mysql_multi_instance::instance(
     # lint:ignore:arrow_alignment
     mysql_multi_instance::config {"my.cnf.${port}" :
       settings => {
-        'client' => {
+        'client'    => {
           'port'   => $port,
           'socket' => "/tmp/mysql.${port}.sock",
         },
         # FIXME - make threads and io-capacity dynamic
-        'mysqld' => {
+        'mysqld'    => {
           'server_id'                      => $serverid,
           'read_only'                      => $read_only,
           'user'                           => 'mysql',
@@ -160,8 +160,8 @@ define mysql_multi_instance::instance(
           'quote-names'        => true,
           'max_allowed_packet' => '16M',
         },
-        'mysql' => {},
-        'isamchk'      => {
+        'mysql'     => {},
+        'isamchk'   => {
           'key_buffer' => '16M',
         }
       }
