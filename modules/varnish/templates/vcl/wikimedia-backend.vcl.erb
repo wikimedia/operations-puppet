@@ -36,11 +36,11 @@ sub vcl_recv {
 	<% end -%>
 <% end -%>
 
+	call wm_common_recv_grace;
+
 <% if @varnish_version4 and @websocket_support -%>
 	call wm_common_websocket_recv;
 <% end -%>
-
-	call wm_common_recv_grace;
 
 	call cluster_be_recv_pre_purge;
 	call wm_common_recv_purge;

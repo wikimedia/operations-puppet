@@ -256,15 +256,15 @@ sub vcl_recv {
 	set req.backend = cache_local;
 <% end -%>
 
-<% if @varnish_version4 and @websocket_support -%>
-	call wm_common_websocket_recv;
-<% end -%>
-
 	call wm_common_recv_grace;
 
 	if (<%= @req_method %> != "PURGE") {
 		call https_recv_redirect;
 	}
+
+<% if @varnish_version4 and @websocket_support -%>
+	call wm_common_websocket_recv;
+<% end -%>
 
 	if (req.url ~ "^/beacon\/[^/?]+") {
 		// Logging beacon endpoints
