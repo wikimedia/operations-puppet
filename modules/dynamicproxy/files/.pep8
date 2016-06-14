@@ -1,3 +1,0 @@
-[pep8]
-# 80 cols is too short
-max-line-length=100
