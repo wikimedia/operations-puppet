@@ -3,7 +3,6 @@ admin::groups:
   - sc-admins
   - zotero-admin
   - apertium-admins
-service::configuration::log_dir: /srv/log
 debdeploy::grains:
   debdeploy-sca:
     value: standard
