@@ -150,6 +150,15 @@ appserver:
   mw1258.eqiad.wmnet: [apache2]
   mw1261.eqiad.wmnet: [apache2]
   mw1262.eqiad.wmnet: [apache2]
+  mw1263.eqiad.wmnet: [apache2]
+  mw1264.eqiad.wmnet: [apache2]
+  mw1265.eqiad.wmnet: [apache2]
+  mw1266.eqiad.wmnet: [apache2]
+  mw1267.eqiad.wmnet: [apache2]
+  mw1268.eqiad.wmnet: [apache2]
+  mw1269.eqiad.wmnet: [apache2]  
+  mw1270.eqiad.wmnet: [apache2]
+  mw1271.eqiad.wmnet: [apache2]  
 cache_text:
   cp1052.eqiad.wmnet: [varnish-fe, varnish-be, varnish-be-rand, nginx]
   cp1053.eqiad.wmnet: [varnish-fe, varnish-be, varnish-be-rand, nginx]
@@ -228,6 +237,7 @@ imagescaler:
   mw1158.eqiad.wmnet: [apache2]
   mw1159.eqiad.wmnet: [apache2]
   mw1160.eqiad.wmnet: [apache2]
+  mw1291.eqiad.wmnet: [apache2]
 restbase:
   restbase1007.eqiad.wmnet: [restbase]
   restbase1008.eqiad.wmnet: [restbase]
