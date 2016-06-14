@@ -48,6 +48,7 @@ class graphoid(
         },
         has_spec        => true,
         healthcheck_url => '',
+        deployment      => 'scap3',
     }
 
 }
