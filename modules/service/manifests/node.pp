@@ -247,12 +247,21 @@ define service::node(
     }
 
     if $local_logging {
+        if !defined(File[$::service::configuration::log_dir]) {
+            file { $::service::configuration::log_dir:
+                ensure => directory,
+                owner  => 'root',
+                group  => 'root',
+                mode   => '0755',
+            }
+        }
         file { $local_logdir:
-            ensure => directory,
-            owner  => $title,
-            group  => 'root',
-            mode   => '0755',
-            before => Service[$title],
+            ensure  => directory,
+            owner   => $title,
+            group   => 'root',
+            mode    => '0755',
+            before  => Service[$title],
+            require => File[$::service::configuration::log_dir],
         }
         file { "/etc/logrotate.d/${title}":
             content => template('service/logrotate.erb'),
