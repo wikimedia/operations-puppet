@@ -17,9 +17,6 @@ class role::labs::shinken(
     shinken::config { 'basic-infra-checks':
         source => 'puppet:///modules/shinken/labs/basic-infra-checks.cfg',
     }
-    shinken::config { 'basic-instance-checks':
-        source => 'puppet:///modules/shinken/labs/basic-instance-checks.cfg',
-    }
 
     if $ircbot {
         include shinken::ircbot
