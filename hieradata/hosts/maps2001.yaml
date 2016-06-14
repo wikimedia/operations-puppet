@@ -15,3 +15,5 @@ maps::redis_server: redis://maps2001.codfw.wmnet
 tilerator::conf_sources: sources.prod2.yaml
 tilerator::ui::conf_sources: sources.prod2.yaml
 kartotherian::conf_sources: sources.prod2.yaml
+
+service::configuration::log_dir: /srv/log
