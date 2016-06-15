@@ -22,7 +22,7 @@ class labspuppetbackend(
                 'wsgi-file' => '/usr/local/lib/python3.4/dist-packages/labspuppetbackend.py',
                 callable    => 'app',
                 master      => true,
-                http-socket => '127.0.0.1:8100',
+                http-socket => "${::ipaddress}:8100",
                 env         => [
                     "MYSQL_HOST=${mysql_host}",
                     "MYSQL_DB=${mysql_db}",
