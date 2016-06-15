@@ -3,7 +3,7 @@ Description="Mediawiki job queue runner loop"
 After=hhvm.service
 
 [Service]
-EnvironmentFile="/etc/default/jobrunner"
+EnvironmentFile=/etc/default/jobrunner
 User=<%= scope.lookupvar('::mediawiki::users::web') %>
 Group=<%= scope.lookupvar('::mediawiki::users::web') %>
 SyslogIdentifier=jobrunner
