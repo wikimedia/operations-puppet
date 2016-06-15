@@ -93,7 +93,6 @@ class role::cache::upload {
         fe_jemalloc_conf => 'lg_dirty_mult:8,lg_chunk_size:17',
         runtime_params   => ['default_ttl=2592000'],
         app_directors    => $app_directors,
-        app_be_opts      => [],
         fe_vcl_config    => $fe_vcl_config,
         be_vcl_config    => $be_vcl_config,
         fe_extra_vcl     => ['upload-common'],

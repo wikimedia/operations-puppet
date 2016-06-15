@@ -56,7 +56,6 @@ class role::cache::maps {
         fe_jemalloc_conf => 'lg_dirty_mult:8,lg_chunk_size:17',
         runtime_params   => ['default_ttl=86400'],
         app_directors    => $app_directors,
-        app_be_opts      => [],
         fe_vcl_config    => $common_vcl_config,
         be_vcl_config    => $common_vcl_config,
         fe_extra_vcl     => [],

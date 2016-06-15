@@ -4,7 +4,6 @@ define role::cache::instances (
     $fe_jemalloc_conf,
     $runtime_params,
     $app_directors,
-    $app_be_opts,
     $fe_vcl_config,
     $be_vcl_config,
     $fe_extra_vcl,
