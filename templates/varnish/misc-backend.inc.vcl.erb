@@ -51,7 +51,6 @@ sub cluster_be_pass { }
 sub cluster_be_backend_response {
     // Do not cache explicit lengths >= ~1GB in backends in general
     if (beresp.http.Content-Length ~ "^[0-9]{10}") {
-	set req.http.X-CDIS = "pass";
 <% if @varnish_version4 -%>
         set beresp.uncacheable = true;
         return (deliver);
