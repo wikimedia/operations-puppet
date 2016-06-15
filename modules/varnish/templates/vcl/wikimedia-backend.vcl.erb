@@ -25,6 +25,18 @@ sub vcl_recv {
 <% end -%>
 	call wm_common_recv_early;
 
+	// Backend loop detection: if a mistake is made in the code or config
+	// for inter-cache routing, a request could loop infinitely between
+	// backend caches without some sort of protection like this.
+	if (req.http.X-LoopDetect) {
+		if (req.http.X-LoopDetect ~ "<%= @site %>") {
+			<%= error_synth(508, "Loop Detected") -%>
+		}
+		set req.http.X-LoopDetect = req.http.X-LoopDetect + ", <%= site %>";
+	} else {
+		set req.http.X-LoopDetect = "<%= site %>";
+	}
+
 <% if @cache_route == 'direct' -%>
 	// tier-one caches must select an applayer backend
 	call cluster_be_recv_applayer_backend;

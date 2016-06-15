@@ -240,6 +240,8 @@ sub vcl_recv {
 	error 403 "This server has been disabled, you probably ended up here because of hardcoded IPs or broken DNS caching";
 <% end -%>
 
+	unset req.http.X-LoopDetect; // no injection from outside our stack
+
 	if (req.restarts == 0) {
 		// This unwraps proxy-style URLs, strips :port from Host:, and downcases Host:
 		call normalize_request;
