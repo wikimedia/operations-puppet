@@ -15,7 +15,13 @@ class role::cache::kafka::webrequest(
 {
     # Set varnish.arg.q or varnish.arg.m according to Varnish version
     if (hiera('varnish_version4', false)) {
-        $varnish_opts = { 'q' => 'ReqMethod ~ "^(?!PURGE$)"' }
+        # Filter out PURGE requests and Pipe related traffic (like Websockets).
+        # A Varnish log containing Timestamp:Pipe don't carry Timestamp:Resp,
+        # used by Analytics to bucket data on Hadoop and to perform consistency
+        # checks. These requests indicate that Varnish tried to establish a pipe
+        # channel between the client and the backend, an information that
+        # can be discarded.
+        $varnish_opts = { 'q' => 'ReqMethod ne "PURGE" and not Timestamp:Pipe' }
         $conf_template = 'varnishkafka/varnishkafka_v4.conf.erb'
     } else {
         $varnish_opts = { 'm' => 'RxRequest:^(?!PURGE$)' }
