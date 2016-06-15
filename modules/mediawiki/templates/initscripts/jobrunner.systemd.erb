@@ -4,8 +4,8 @@ After=hhvm.service
 
 [Service]
 EnvironmentFile="/etc/default/jobrunner"
-User="<%= scope.lookupvar('::mediawiki::users::web') %>"
-Group="<%= scope.lookupvar('::mediawiki::users::web') %>"
+User=<%= scope.lookupvar('::mediawiki::users::web') %>
+Group=<%= scope.lookupvar('::mediawiki::users::web') %>
 SyslogIdentifier=jobrunner
 ExecStart=/usr/bin/php /srv/deployment/jobrunner/jobrunner/redisJobRunnerService --config-file=${JOBRUNNER_CONFIG} ${DAEMON_OPTS}
 Restart=always
