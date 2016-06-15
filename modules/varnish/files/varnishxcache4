@@ -74,10 +74,6 @@ stats = {
     'misspass': 0,
 }
 
-re_legacy_format = re.compile(
-    r' (?:frontend )?'
-    r'(?:hit\+)?(?:miss\+)?(hit|miss|pass|int)(?:\+chfp)?\([0-9]+\)'
-)
 re_simplify = re.compile('cp[0-9]{4} (hit|miss|pass|int)(?:/[0-9]+)?')
 state_finder = [
     [re.compile(r'hit$'),       'hit-front'],
@@ -91,9 +87,6 @@ state_finder = [
 
 def vsl_callback(transaction_id, tag, record, remote_party):
     record = record.split(': ')[1]
-
-    # Translate legacy X-Cache lines, can be removed later...
-    record = re_legacy_format.sub(r' \1', record)
 
     record = re_simplify.sub(r'\1', record)
     state = 'misspass'
