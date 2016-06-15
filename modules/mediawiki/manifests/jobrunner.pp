@@ -67,9 +67,9 @@ class mediawiki::jobrunner (
 
     if $::initsystem == 'systemd' {
         rsyslog::conf { 'jobrunner':
-            source  => 'puppet:///modules/mediawiki/jobrunner.rsyslog.conf',
-            priorty => 20,
-            require => File['/etc/logrotate.d/mediawiki_jobrunner'],
+            source   => 'puppet:///modules/mediawiki/jobrunner.rsyslog.conf',
+            priority => 20,
+            require  => File['/etc/logrotate.d/mediawiki_jobrunner'],
         }
     }
 
