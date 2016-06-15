@@ -1,0 +1,12 @@
+[Unit]
+Description=Swift proxy server
+
+[Service]
+Type=forking
+SyslogIdentifier=proxy-server
+ExecStart=/usr/bin/swift-init proxy-server start
+ExecStop=/usr/bin/swift-init proxy-server stop
+ExecReload=/usr/bin/swift-init proxy-server reload
+
+[Install]
+WantedBy=multi-user.target

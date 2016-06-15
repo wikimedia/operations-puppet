@@ -49,6 +49,15 @@ class swift::proxy (
         priority => 30,
     }
 
+    # stock Debian package uses start-stop-daemon --chuid and init.d script to
+    # start swift-proxy, our proxy binds to port 80 so it isn't going to work.
+    # Use 'swift-init' via systemd instead to properly drop permissions after
+    # binding to port 80.
+    base::service_unit { 'swift-proxy':
+        systemd => true,
+        refresh => false,
+    }
+
     file { '/usr/local/lib/python2.7/dist-packages/wmf/':
         owner   => 'root',
         group   => 'root',
