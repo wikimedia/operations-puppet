@@ -480,10 +480,12 @@ lvs_services:
       cluster: swift
       service: swift-fe
     icinga:
-      check_command: check_http_lvs!ms-fe.eqiad.wmnet!/monitoring/backend
+      check_command: "check_http_lvs!ms-fe.svc.%{::site}.wmnet!/monitoring/backend"
       sites:
         eqiad:
-          hostname: ms-fe.eqiad.wmnet
+          hostname: ms-fe.svc.eqiad.wmnet
+        codfw:
+          hostname: ms-fe.svc.codfw.wmnet
   parsoid:
     description: "Parsoid wikitext parser for VisualEditor (%{::site})"
     class: low-traffic
