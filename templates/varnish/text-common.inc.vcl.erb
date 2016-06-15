@@ -148,6 +148,7 @@ sub text_common_backend_response {
 		&& beresp.http.Vary ~ "(?i)(^|,)\s*Cookie\s*(,|$)"
 	    )
 	) {
+		set req.http.X-CDIS = "pass";
 		set beresp.ttl = 601s;
 		return (hit_for_pass);
 	}

@@ -45,6 +45,7 @@ sub cluster_fe_pass { }
 sub cluster_fe_backend_response {
     // hit_for_pass on objects >= ~10MB or no CL
     if (!beresp.http.Content-Length || beresp.http.Content-Length ~ "^[0-9]{8}") {
+	set req.http.X-CDIS = "pass";
 <% if @varnish_version4 -%>
         set beresp.uncacheable = true;
         return (deliver);
