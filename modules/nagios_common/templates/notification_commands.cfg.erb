@@ -68,7 +68,18 @@ define command{
 	command_line	echo "$NOTIFICATIONTYPE$ - $SERVICEDESC$ on $HOSTNAME$ is $SERVICESTATE$: $SERVICEOUTPUT$ $SERVICEACKAUTHOR$ $SERVICEACKCOMMENT$" >> <%= @irc_dir_path %>/irc-wikidata.log
 	}
 
-# IRC output for RelEng team
+# IRC output for interactive
+define command{
+	command_name	notify-host-by-irc-interactive
+	command_line	echo "$NOTIFICATIONTYPE$ - Host $HOSTALIAS$ is $HOSTSTATE$: $HOSTOUTPUT$ $HOSTACKAUTHOR$ $HOSTACKCOMMENT$" >> <%= @irc_dir_path %>/irc-interactive.log
+	}
+
+define command{
+	command_name	notify-service-by-irc-interactive
+	command_line	echo "$NOTIFICATIONTYPE$ - $SERVICEDESC$ on $HOSTNAME$ is $SERVICESTATE$: $SERVICEOUTPUT$ $SERVICEACKAUTHOR$ $SERVICEACKCOMMENT$" >> <%= @irc_dir_path %>/irc-interactive.log
+	}
+
+	# IRC output for RelEng team
 define command{
 	command_name	notify-host-by-irc-releng
 	command_line	echo "$NOTIFICATIONTYPE$ - Host $HOSTALIAS$ is $HOSTSTATE$: $HOSTOUTPUT$ $HOSTACKAUTHOR$ $HOSTACKCOMMENT$" >> <%= @irc_dir_path %>/irc-releng.log
