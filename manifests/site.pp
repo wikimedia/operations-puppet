@@ -1253,6 +1253,9 @@ node 'labtestcontrol2001.wikimedia.org' {
         mysql_wikitech => {
             rule  => "saddr ${wikitech} proto tcp dport (3306) ACCEPT;",
         },
+        labspuppetbackend_horizon => {
+            rule  => "saddr ${horizon} proto tcp dport (8100) ACCEPT;",
+        },
     }
     create_resources (ferm::rule, $fwrules)
 
