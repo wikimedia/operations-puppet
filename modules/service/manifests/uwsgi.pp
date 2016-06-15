@@ -55,6 +55,11 @@
 #   An array of string representing sudo rules in the sudoers format that you
 #   want the service to have. Default: empty array
 #
+# [*contact_groups*]
+#   Contact groups for alerting.
+#   Default: hiera('contactgroups', 'admins') - use 'contactgroups' hiera
+#            variable with a fallback to 'admins' if 'contactgroups' isn't set.
+#
 # === Examples
 #
 #    service::uwsgi { 'myservice':
@@ -81,6 +86,7 @@ define service::uwsgi(
     $deployment_manage_user = true,
     $deployment             = 'scap3',
     $sudo_rules             = [],
+    $contact_groups         = hiera('contactgroups', 'admins'),
 ) {
     if $deployment == 'scap3' {
         scap::target { $repo:
@@ -168,9 +174,10 @@ define service::uwsgi(
 
         $monitor_url = "http://${::ipaddress}:${port}${healthcheck_url}"
         nrpe::monitor_service{ "endpoints_${title}":
-            description  => "${title} endpoints health",
-            nrpe_command => "/usr/local/lib/nagios/plugins/service_checker -t 5 ${::ipaddress} ${monitor_url}",
-            subscribe    => File['/usr/local/lib/nagios/plugins/service_checker'],
+            description   => "${title} endpoints health",
+            nrpe_command  => "/usr/local/lib/nagios/plugins/service_checker -t 5 ${::ipaddress} ${monitor_url}",
+            subscribe     => File['/usr/local/lib/nagios/plugins/service_checker'],
+            contact_group => $contact_groups,
         }
         # we also support smart-releases
         # TODO: Enable has_autorestart
@@ -182,6 +189,7 @@ define service::uwsgi(
         monitoring::service { $title:
             description   => $title,
             check_command => "check_http_port_url!${port}!${healthcheck_url}",
+            contact_group => $contact_groups,
         }
     }
 }

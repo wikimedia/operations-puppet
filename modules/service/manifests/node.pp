@@ -84,6 +84,11 @@
 #   Whether Scap3 is used for deploying the config as well. Applicable only when
 #   $deployment == 'scap3'. Default: false
 #
+# [*contact_groups*]
+#   Contact groups for alerting.
+#   Default: hiera('contactgroups', 'admins') - use 'contactgroups' hiera
+#            variable with a fallback to 'admins' if 'contactgroups' isn't set.
+#
 # === Examples
 #
 # To set up a service named myservice on port 8520 and with a templated
@@ -123,6 +128,7 @@ define service::node(
     $deployment      = undef,
     $deployment_user = 'deploy-service',
     $deployment_config = false,
+    $contact_groups  = hiera('contactgroups', 'admins'),
 ) {
     case $deployment {
         'scap3': {
@@ -325,10 +331,11 @@ define service::node(
             mode    => '0755',
         }
         nrpe::monitor_service{ "endpoints_${title}":
-            ensure       => $ensure_monitoring,
-            description  => "${title} endpoints health",
-            nrpe_command => "/usr/local/bin/check-${title}",
-            subscribe    => File["/usr/local/bin/check-${title}"],
+            ensure        => $ensure_monitoring,
+            description   => "${title} endpoints health",
+            nrpe_command  => "/usr/local/bin/check-${title}",
+            subscribe     => File["/usr/local/bin/check-${title}"],
+            contact_group => $contact_groups,
         }
         # we also support smart-releases
         service::deployment_script { $name:
@@ -341,6 +348,7 @@ define service::node(
             ensure        => $ensure_monitoring,
             description   => $title,
             check_command => "check_http_port_url!${port}!${healthcheck_url}",
+            contact_group => $contact_groups,
         }
     }
 
