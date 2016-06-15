@@ -97,7 +97,7 @@ define role::cache::instances (
         layer              => 'frontend',
         vcl                => "${title}-frontend",
         extra_vcl          => $fe_extra_vcl,
-        ports              => [ 80 ],
+        ports              => [ 80, 3127 ],
         admin_port         => 6082,
         runtime_parameters => $runtime_params,
         storage            => "-s malloc,${fe_mem_gb}G",
