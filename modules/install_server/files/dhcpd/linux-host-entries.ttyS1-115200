@@ -3799,29 +3799,21 @@ host ms-be2021 {
 host ms-be3001 {
     hardware ethernet 24:B6:FD:F6:13:AC;
     fixed-address ms-be3001.esams.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host ms-be3002 {
     hardware ethernet 24:B6:FD:F6:17:3C;
     fixed-address ms-be3002.esams.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host ms-be3003 {
     hardware ethernet 24:B6:FD:F6:17:38;
     fixed-address ms-be3003.esams.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host ms-be3004 {
     hardware ethernet 24:B6:FD:F6:1C:3C;
     fixed-address ms-be3004.esams.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 # ms-be3004's primary NIC is broken and can't PXE(?). The secondary NIC works
@@ -3830,8 +3822,6 @@ host ms-be3004 {
 host ms-be3004-B {
     hardware ethernet 24:B6:FD:F6:1C:3D;
     fixed-address ms-be3004.esams.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host ms-fe1001 {
