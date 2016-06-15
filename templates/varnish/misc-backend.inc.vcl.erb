@@ -3,33 +3,7 @@ include "misc-common.inc.vcl";
 sub cluster_be_recv_pre_purge { }
 
 sub cluster_be_recv_applayer_backend {
-<%
-    if_stmts = []
-    @app_directors.keys.sort.each do |dirname|
-        dir = @app_directors[dirname]
-        if dir.key?('req_host')
-            hostcmp = [*dir['req_host']].map { |h| %Q[req.http.Host == "#{h}"] }.join(' || ')
-        else
-            hostcmp = %Q[req.http.Host ~ "#{dir['req_host_re']}"]
-        end
-        if dir.key?('maintenance')
-            action = error_synth(503, dir['maintenance'])
-        elsif @varnish_version4
-            if dir['type'] == 'hash'
-                action = "set req.backend_hint = #{dirname}.backend(req.http.X-Client-IP);\n"
-            else
-                action = "set req.backend_hint = #{dirname}.backend();\n"
-            end
-        else
-            action = "set req.backend = #{dirname};\n"
-        end
-        if_stmts.push("if (#{hostcmp}) {\n        #{action}    }")
-    end
-    all_ifs = if_stmts.join(' els')
-%>
-    <%= all_ifs -%> else {
-        <%= error_synth(404, "Domain not served here") -%>
-    }
+    <%= scope.function_vcl_app_directors([@app_directors]) -%>
 }
 
 sub cluster_be_recv {
