@@ -58,6 +58,14 @@ class lvs::balancer(
             'net.ipv4.vs.drop_entry'          => 1,
             # Also schedule ICMPs, like e.g. fragmentation needed (needs Linux 4.4.0)
             'net.ipv4.vs.schedule_icmp'       => 1,
+
+            # Add Echo Reply, Timestamp Reply, Info Reply, Address Mask Reply
+            # to the default rate limit bitmask. For the definition of the
+            # bitmask, see:
+            # https://www.kernel.org/doc/Documentation/networking/ip-sysctl.txt
+            'net.ipv4.icmp_ratemask'          => 350233, # 1010101100000011001
+            # Lower rate limit, as the default of 1000ms is way too large
+            'net.ipv4.icmp_ratelimit'         => 200,
         },
     }
 }
