@@ -30,13 +30,15 @@ sub vcl_recv {
 	// backend caches without some sort of protection like
 	// this.  The header may be re-used later for sideways
 	// Only-If-Cached support as well.
-	if (req.http.X-DCPath) {
-		if (req.http.X-DCPath ~ "<%= @site %>") {
-			<%= error_synth(508, "Loop Detected") -%>
+	if (req.restarts == 0) {
+		if (req.http.X-DCPath) {
+			if (req.http.X-DCPath ~ "<%= @site %>") {
+				<%= error_synth(508, "Loop Detected") -%>
+			}
+			set req.http.X-DCPath = req.http.X-DCPath + ", <%= site %>";
+		} else {
+			set req.http.X-DCPath = "<%= site %>";
 		}
-		set req.http.X-DCPath = req.http.X-DCPath + ", <%= site %>";
-	} else {
-		set req.http.X-DCPath = "<%= site %>";
 	}
 
 <% if @cache_route == 'direct' -%>
