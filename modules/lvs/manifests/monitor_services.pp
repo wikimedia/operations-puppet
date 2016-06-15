@@ -101,4 +101,13 @@ class lvs::monitor_services($contacts = 'admins,team-services', $critical = fals
         check_command => 'check_wmf_service!http://cxserver.svc.codfw.wmnet:8080!15',
     }
 
+    # Kartotherian
+    monitoring::service { 'check_kartotherian_cluster_codfw':
+        host          => 'kartotherian.svc.codfw.wmnet',
+        group         => 'lvs',
+        description   => 'Kartotherian LVS codfw',
+        check_command =>
+        'check_wmf_service!http://kartotherian.svc.codfw.wmnet:6533!15',
+    }
+
 }
