@@ -1,0 +1,15 @@
+[Unit]
+Description=OpenStack Swift proxy server
+ConditionFileNotEmpty=/etc/swift/proxy-server.conf
+ConditionFileNotEmpty=/etc/swift/account.ring.gz
+ConditionFileNotEmpty=/etc/swift/container.ring.gz
+Documentation=man:swift-proxy-server(1)
+
+
+[Service]
+ExecStart=/usr/bin/swift-proxy-server /etc/swift/proxy-server.conf
+Restart=on-failure
+LimitNOFILE=65535
+
+[Install]
+WantedBy=multi-user.target

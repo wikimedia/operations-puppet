@@ -50,6 +50,16 @@ class swift::proxy (
         ensure   => absent,
     }
 
+    # stock Debian package uses start-stop-daemon --chuid and init.d script to
+    # start swift-proxy, our proxy binds to port 80 so it isn't going to work.
+    # Use a modified version of 'swift-proxy' systemd unit from jessie-backports.
+    if os_version('debian >= jessie') {
+        base::service_unit { 'swift-proxy':
+            systemd => true,
+            refresh => false,
+        }
+    }
+
     file { '/usr/local/lib/python2.7/dist-packages/wmf/':
         owner   => 'root',
         group   => 'root',
