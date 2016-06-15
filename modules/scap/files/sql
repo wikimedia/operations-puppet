@@ -44,5 +44,11 @@ fi
 host=`echo $lbcode $hostcode | /usr/local/bin/mwscript eval.php --wiki="$lookupdb"`
 pass=`echo 'echo \$wgDBadminpassword;' | /usr/local/bin/mwscript eval.php --wiki="$lookupdb"`
 
+if [ $? -ne 0 ]; then
+    # PHP error, probably an invalid DB code
+    echo "Error looking up DB \"$db\"" 1>&2
+    exit 1
+fi
+
 # Execute mysql.
 exec mysql -u wikiadmin -p$pass -h $host -D $db "$@"
