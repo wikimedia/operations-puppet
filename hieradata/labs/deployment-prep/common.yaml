@@ -90,6 +90,7 @@ lvs::configuration::lvs_service_ips:
   text: {}
   upload: {}
   zotero: {}
+parsoid::settings_file: 'conf/wmf/betalabs.localsettings.js'
 cassandra::listen_address: '%{::ipaddress_eth0}'
 cassandra::rpc_address: '%{::ipaddress_eth0}'
 cassandra::seeds:
