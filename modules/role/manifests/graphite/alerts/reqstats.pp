@@ -10,7 +10,7 @@ class role::graphite::alerts::reqstats {
         metric          => 'sumSeries(varnish.eqiad.*.frontend.request.client.status.5xx.sum)',
         warning         => $settings['warning'],
         critical        => $settings['critical'],
-        from            => $settings['cron'],
+        from            => $settings['from'],
         nagios_critical => false,
     }
 
@@ -19,7 +19,7 @@ class role::graphite::alerts::reqstats {
         metric          => 'sumSeries(varnish.esams.*.frontend.request.client.status.5xx.sum)',
         warning         => $settings['warning'],
         critical        => $settings['critical'],
-        from            => $settings['cron'],
+        from            => $settings['from'],
         nagios_critical => false,
     }
 
@@ -28,7 +28,7 @@ class role::graphite::alerts::reqstats {
         metric          => 'sumSeries(varnish.codfw.*.frontend.request.client.status.5xx.sum)',
         warning         => $settings['warning'],
         critical        => $settings['critical'],
-        from            => $settings['cron'],
+        from            => $settings['from'],
         nagios_critical => false,
     }
 
@@ -37,7 +37,7 @@ class role::graphite::alerts::reqstats {
         metric          => 'sumSeries(varnish.ulsfo.*.frontend.request.client.status.5xx.sum)',
         warning         => $settings['warning'],
         critical        => $settings['critical'],
-        from            => $settings['cron'],
+        from            => $settings['from'],
         nagios_critical => false,
     }
 
@@ -47,7 +47,7 @@ class role::graphite::alerts::reqstats {
         metric          => 'sumSeries(varnish.*.text.frontend.request.client.status.5xx.sum)',
         warning         => $settings['warning'],
         critical        => $settings['critical'],
-        from            => $settings['cron'],
+        from            => $settings['from'],
         nagios_critical => false,
     }
 
@@ -56,7 +56,7 @@ class role::graphite::alerts::reqstats {
         metric          => 'sumSeries(varnish.*.uploads.frontend.request.client.status.5xx.sum)',
         warning         => $settings['warning'],
         critical        => $settings['critical'],
-        from            => $settings['cron'],
+        from            => $settings['from'],
         nagios_critical => false,
     }
 
@@ -65,7 +65,7 @@ class role::graphite::alerts::reqstats {
         metric          => 'sumSeries(varnish.*.misc.frontend.request.client.status.5xx.sum)',
         warning         => $settings['warning'],
         critical        => $settings['critical'],
-        from            => $settings['cron'],
+        from            => $settings['from'],
         nagios_critical => false,
     }
 
@@ -74,8 +74,8 @@ class role::graphite::alerts::reqstats {
         metric          => 'sumSeries(varnish.*.maps.frontend.request.client.status.5xx.sum)',
         warning         => $settings['warning'],
         critical        => $settings['critical'],
-        from            => $settings['cron'],
+        from            => $settings['from'],
         nagios_critical => false,
+        contact_group   => 'admins,interactive-team',
     }
 }
-
