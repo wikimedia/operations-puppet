@@ -10,6 +10,7 @@ class role::cache::ssl::misc {
         server_name    => 'wmfusercontent.org',
         server_aliases => ['*.wmfusercontent.org'],
         upstream_port  => 3127,
+        redir_port     => 8080,
     }
 
     tlsproxy::localssl { 'planet.wikimedia.org':
@@ -17,5 +18,6 @@ class role::cache::ssl::misc {
         server_name    => 'planet.wikimedia.org',
         server_aliases => ['*.planet.wikimedia.org'],
         upstream_port  => 3127,
+        redir_port     => 8080,
     }
 }
