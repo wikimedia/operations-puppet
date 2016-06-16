@@ -6,10 +6,18 @@
 # accomodate future tilerator needs that are not suited for the service module
 # classes as well as conform to a de-facto standard of having a module for every
 # service
+#
+# === Parameters
+#
+# [*contact_groups*]
+#   Contact groups for alerting.
+#   Default: 'admins'
+#
 class tilerator(
-    $conf_sources = 'sources.prod.yaml',
+    $conf_sources   = 'sources.prod.yaml',
+    $contact_groups = 'admins',
 ) {
-    include tilerator::ui
+    include ::tilerator::ui
 
     $cassandra_tilerator_user = 'tilerator'
     $cassandra_tilerator_pass = hiera('maps::cassandra_tilerator_pass')
@@ -22,9 +30,10 @@ class tilerator(
     # So there will never be LVS or anything else than health check requests to
     # this port
     service::node { 'tilerator':
-        port       => 6534,
-        config     => template('tilerator/config.yaml.erb'),
-        no_workers => $::processorcount / 2,
-        deployment => 'scap3',
+        port           => 6534,
+        config         => template('tilerator/config.yaml.erb'),
+        no_workers     => $::processorcount / 2,
+        deployment     => 'scap3',
+        contact_groups => $contact_groups,
     }
 }
