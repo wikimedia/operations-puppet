@@ -76,6 +76,6 @@ class role::graphite::alerts::reqstats {
         critical        => $settings['critical'],
         from            => $settings['cron'],
         nagios_critical => false,
-        contact_group   => 'admins,interactive-team',
+        contact_group   => 'admins,team-interactive',
     }
 }
