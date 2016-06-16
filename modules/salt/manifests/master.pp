@@ -65,6 +65,14 @@ class salt::master(
         salt_returner_roots => $salt_returner_roots,
     }
 
+    file { "${salt_module_roots['base']}/wmfpuppet.py":
+        ensure => present,
+        source => 'puppet:///modules/salt/wmfpuppet.py',
+        mode   => '0755',
+        owner  => 'root',
+        group  => 'root'
+    }
+
     sysctl::parameters { 'salt-master':
         values => {
             'net.core.somaxconn'          => 4096,
