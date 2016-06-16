@@ -11,6 +11,7 @@ class role::cache::ssl::unified {
             default_server => true,
             do_ocsp        => true,
             upstream_port  => 3127,
+            redir_port     => 8080,
         }
     }
     else {
@@ -21,6 +22,7 @@ class role::cache::ssl::unified {
             do_ocsp        => false,
             skip_private   => true,
             upstream_port  => 3127,
+            redir_port     => 8080,
         }
     }
 
