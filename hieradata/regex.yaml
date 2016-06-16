@@ -157,6 +157,7 @@ cassandra_test_eqiad:
       - .*\.metrics\.Keyspace\..*$
       - .*\.metrics\.Client\..*$
   restbase::logging_name: restbase-test
+  restbase::skip_updates: true
   cassandra::start_rpc: 'true'
   cassandra::target_version: '2.2'
 
@@ -243,6 +244,7 @@ cassandra_test_codfw:
       - .*\.metrics\.Keyspace\..*$
       - .*\.metrics\.Client\..*$
   restbase::logging_name: restbase-test
+  restbase::skip_updates: true
   cassandra::start_rpc: 'true'
   cassandra::target_version: '2.2'
 

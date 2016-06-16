@@ -31,6 +31,9 @@
 # [*config_template*]
 #   File to use as the configuration file template. Default: restbase/config.yaml.erb
 #
+# [*skip_updates*]
+#   Whether resource_change events should not be emitted by RESTBase. Default: false
+#
 # [*parsoid_uri*]
 #   URI to reach Parsoid. Default: http://parsoid.svc.eqiad.wmnet:8000
 #
@@ -91,6 +94,7 @@ class restbase(
     $salt_key       = 'secretkey',
     $page_size      = 250,
     $config_template = 'restbase/config.yaml.erb',
+    $skip_updates   = false,
     $parsoid_uri    = 'http://parsoid.svc.eqiad.wmnet:8000',
     $logstash_host  = 'localhost',
     $logstash_port  = 12201,
