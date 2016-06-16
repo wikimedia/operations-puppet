@@ -12,7 +12,7 @@ echo 'Stopping parsoid-rt testreduce clients ...'
 sudo service parsoid-rt-client stop
 
 echo 'Updating deploy repo checkout ...'
-cd /srv/parsoid
+cd /srv/deployment/parsoid/deploy
 # Ensure we are in the master branch -- the repo has been
 # left in a non-master checkout on occasion when a previous
 # git pull might have failed for whatever reason.
