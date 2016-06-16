@@ -131,6 +131,13 @@ class phabricator (
         }
     }
 
+    $gitblit_servername = $phab_settings['gitblit.hostname']
+
+    apache::site { 'gitblit-compatibility':
+        content => template('phabricator/gitblit-compatibility.conf.erb'),
+        require => $base_requirements,
+    }
+
     scap::target { $deploy_target:
         deploy_user => $deploy_user,
         key_name    => 'phabricator',
