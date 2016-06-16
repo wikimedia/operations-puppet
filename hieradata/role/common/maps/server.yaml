@@ -12,3 +12,7 @@ admin::groups:
   - tilerator-admin
 service::configuration::logstash_host: logstash1001.eqiad.wmnet
 service::configuration::statsd_host: statsd.eqiad.wmnet
+
+kartotherian::contact_groups: 'admins,team-interactive'
+tilerator::contact_groups: 'admins,team-interactive'
+tilerator::ui::contact_groups: 'admins,team-interactive'
