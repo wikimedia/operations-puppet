@@ -8,12 +8,14 @@ class role::cache::ssl::misc {
         do_ocsp        => true,
         certs          => ['ecc-star.wmfusercontent.org', 'star.wmfusercontent.org'],
         server_name    => 'wmfusercontent.org',
-        server_aliases => ['*.wmfusercontent.org'];
+        server_aliases => ['*.wmfusercontent.org'],
+        upstream_port  => 3127,
     }
 
     tlsproxy::localssl { 'planet.wikimedia.org':
         certs          => ['star.planet.wikimedia.org'],
         server_name    => 'planet.wikimedia.org',
-        server_aliases => ['*.planet.wikimedia.org'];
+        server_aliases => ['*.planet.wikimedia.org'],
+        upstream_port  => 3127,
     }
 }
