@@ -6,8 +6,17 @@
 # accomodate future kartotherian needs that are not suited for the service module
 # classes as well as conform to a de-facto standard of having a module for every
 # service
+#
+# === Parameters
+#
+# [*contact_groups*]
+#   Contact groups for alerting.
+#   Default: hiera('contactgroups', 'admins') - use 'contactgroups' hiera
+#            variable with a fallback to 'admins' if 'contactgroups' isn't set.
+#
 class kartotherian(
-    $conf_sources = 'sources.prod.yaml',
+    $conf_sources   = 'sources.prod.yaml',
+    $contact_groups = hiera('contactgroups', 'admins'),
 ) {
 
     $cassandra_kartotherian_user = 'kartotherian'
@@ -21,5 +30,6 @@ class kartotherian(
         deployment      => 'scap3',
         has_spec        => true,
         healthcheck_url => '',
+        contact_groups  => $contact_groups,
     }
 }
