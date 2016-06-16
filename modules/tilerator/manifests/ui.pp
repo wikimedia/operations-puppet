@@ -17,8 +17,22 @@
 # only meant to be used through an SSH tunnel
 # NOTE: The above is THE reason this service is separated from the tilerator
 # service
+#
+# === Parameters
+#
+# [*conf_sources*]
+#   Sources that will be added to the configuration file of the service. This
+#   defines the data transformation pipeline for the tile services. The actual
+#   file is loaded from the project directory (/srv/deployment/tilerator/deploy/src/)
+#   Default: 'sources.prod.yaml'
+#
+# [*contact_groups*]
+#   Contact groups for alerting.
+#   Default: 'admins'
+#
 class tilerator::ui(
-    $conf_sources = 'sources.prod.yaml',
+    $conf_sources   = 'sources.prod.yaml',
+    $contact_groups = 'admins',
 ) {
     $cassandra_tileratorui_user = 'tileratorui'
     $cassandra_tileratorui_pass = hiera('maps::cassandra_tileratorui_pass')
@@ -27,10 +41,11 @@ class tilerator::ui(
     $redis_server = hiera('maps::redis_server')
 
     service::node { 'tileratorui':
-        port       => 6535,
-        config     => template('tilerator/config_ui.yaml.erb'),
-        no_workers => 0, # 0 on purpose to only have one instance running
-        repo       => 'tilerator/deploy',
-        deployment => 'scap3',
+        port           => 6535,
+        config         => template('tilerator/config_ui.yaml.erb'),
+        no_workers     => 0, # 0 on purpose to only have one instance running
+        repo           => 'tilerator/deploy',
+        deployment     => 'scap3',
+        contact_groups => $contact_groups,
     }
 }
