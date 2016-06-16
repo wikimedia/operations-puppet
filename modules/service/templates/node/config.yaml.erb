@@ -22,6 +22,10 @@ num_workers: <%= @no_workers %>
 # uses more heap (note: not RSS) than this many mb.
 worker_heap_limit_mb: <%= @heap_limit %>
 
+# Number of milliseconds to wait for a heartbeat from a worker before killing
+# and restarting it
+worker_heartbeat_timeout: <%= @heartbeat_to %>
+
 # Logger info
 logging:
   name: <%= @title %>
@@ -48,6 +52,7 @@ services:
   - name: <%= @title %>
     # a relative path or the name of an npm package, if different from name
     module: <%= @starter_module %>
+    entrypoint: <%= @entrypoint %>
     # optionally, a version constraint of the npm package
     # version: ^0.4.0
     # per-service config
