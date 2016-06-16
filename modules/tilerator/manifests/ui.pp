@@ -17,8 +17,16 @@
 # only meant to be used through an SSH tunnel
 # NOTE: The above is THE reason this service is separated from the tilerator
 # service
+#
+# === Parameters
+#
+# [*contact_groups*]
+#   Contact groups for alerting.
+#   Default: 'admins'
+#
 class tilerator::ui(
-    $conf_sources = 'sources.prod.yaml',
+    $conf_sources   = 'sources.prod.yaml',
+    $contact_groups = 'admins',
 ) {
     $cassandra_tileratorui_user = 'tileratorui'
     $cassandra_tileratorui_pass = hiera('maps::cassandra_tileratorui_pass')
