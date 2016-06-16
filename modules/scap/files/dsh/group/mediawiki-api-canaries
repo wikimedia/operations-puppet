@@ -1,0 +1,14 @@
+# mw1114-mw1120 are canary api appservers
+mw1114.eqiad.wmnet
+mw1115.eqiad.wmnet
+mw1116.eqiad.wmnet
+mw1117.eqiad.wmnet
+mw1118.eqiad.wmnet
+mw1119.eqiad.wmnet
+mw1120.eqiad.wmnet
+
+# mw1276-mw1279 have role mediawiki::appserver::canary_api
+mw1276.eqiad.wmnet
+mw1277.eqiad.wmnet
+mw1278.eqiad.wmnet
+mw1279.eqiad.wmnet
