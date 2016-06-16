@@ -7,11 +7,12 @@
 if (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
   $_SERVER['REMOTE_ADDR'] = $_SERVER['HTTP_X_FORWARDED_FOR'];
 }
+*/
+
 if (!empty($_SERVER['HTTP_X_FORWARDED_PROTO'])
     && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https') {
   $_SERVER['HTTPS'] = true;
 }
-*/
 
 class redirector {
   protected $config;
