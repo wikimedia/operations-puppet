@@ -40,13 +40,11 @@ class swift::proxy (
     }
 
     logrotate::conf { 'swift-proxy':
-        ensure => present,
-        source => 'puppet:///modules/swift/swift-proxy.logrotate.conf',
+        ensure => absent,
     }
 
     rsyslog::conf { 'swift-proxy':
-        source   => 'puppet:///modules/swift/swift-proxy.rsyslog.conf',
-        priority => 30,
+        ensure   => absent,
     }
 
     file { '/usr/local/lib/python2.7/dist-packages/wmf/':

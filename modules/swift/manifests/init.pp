@@ -67,4 +67,20 @@ class swift (
         require => Package['swift'],
         mode    => '0755',
     }
+
+    file { '/var/log/swift':
+        ensure  => directory,
+        require => Package['swift'],
+        mode    => '0755',
+    }
+
+    logrotate::conf { 'swift':
+        ensure => present,
+        source => 'puppet:///modules/swift/swift.logrotate.conf',
+    }
+
+    rsyslog::conf { 'swift':
+        source   => 'puppet:///modules/swift/swift.rsyslog.conf',
+        priority => 40,
+    }
 }
