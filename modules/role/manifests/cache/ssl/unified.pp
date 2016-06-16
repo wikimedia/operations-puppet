@@ -6,6 +6,7 @@ class role::cache::ssl::unified {
         }
 
         tlsproxy::localssl { 'unified':
+            server_name    => 'www.wikimedia.org',
             certs          => ['ecc-uni.wikimedia.org', 'uni.wikimedia.org'],
             default_server => true,
             do_ocsp        => true,
@@ -13,6 +14,7 @@ class role::cache::ssl::unified {
     }
     else {
         tlsproxy::localssl { 'unified':
+            server_name    => 'www.wikimedia.beta.wmflabs.org',
             certs          => ['star.wmflabs.org'],
             default_server => true,
             do_ocsp        => false,
