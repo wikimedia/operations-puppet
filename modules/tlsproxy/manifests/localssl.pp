@@ -18,6 +18,11 @@
 # [*upstream_port*]
 #   TCP port to proxy to. Defaults to '80'
 #
+# [*redir_port*]
+#   TCP port to listen on as plain HTTP.  This listener will redirect GET/HEAD
+#   to HTTPS with 301 and deny all other methods with 403.  It does not proxy
+#   any traffic. Default is undefined.
+#
 # [*default_server*]
 #   Boolean. Adds the 'default_server' option to the listen statement.
 #   Exactly one instance should have this set to true.
@@ -34,6 +39,7 @@ define tlsproxy::localssl(
     $server_aliases = [],
     $default_server = false,
     $upstream_port  = '80',
+    $redir_port     = undef,
     $do_ocsp        = false,
     $skip_private   = false,
 ) {

@@ -60,3 +60,21 @@ server {
 <% end -%>
 	}
 }
+<% if @redir_port -%>
+server {
+	listen [::]:<%= @redir_port %> <%= @default_server ? "default_server deferred backlog=4096 reuseport ipv6only=on " : "" %>;
+	listen <%= @redir_port %> <%= @default_server ? "default_server deferred backlog=4096 reuseport " : "" %>;
+	server_name <%= ([@server_name] + @server_aliases).join(" ") %>;
+
+	error_log   /var/log/nginx/<%= @name %>.error.log;
+	access_log   off;
+
+	if ($request_method == GET) {
+		return 301 https://$host$request_uri;
+	}
+	if ($request_method == HEAD) {
+		return 301 https://$host$request_uri;
+	}
+	return 403 "Insecure Request Forbidden - use HTTPS";
+}
+<% end -%>
