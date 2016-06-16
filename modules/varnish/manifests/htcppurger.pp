@@ -31,7 +31,7 @@
 
 class varnish::htcppurger(
     $mc_addrs,
-    $varnishes = [ '127.0.0.1:80', '127.0.0.1:3128' ],
+    $varnishes = [ '127.0.0.1:3127', '127.0.0.1:3128' ],
 ) {
     Class[varnish::packages] -> Class[varnish::htcppurger]
 
