@@ -2887,12 +2887,13 @@ node /^wdqs100[1-2]\.eqiad\.wmnet$/ {
 
 # https://www.mediawiki.org/wiki/Parsoid
 node /^wtp10(0[1-9]|1[0-9]|2[0-4])\.eqiad\.wmnet$/ {
-    role parsoid::production
+    role parsoid
+    include standard
 }
 
 # https://www.mediawiki.org/wiki/Parsoid
 node /^wtp20(0[1-9]|1[0-9]|2[0-4])\.codfw\.wmnet$/ {
-    role parsoid::production
+    role parsoid
     include standard
 }
 
