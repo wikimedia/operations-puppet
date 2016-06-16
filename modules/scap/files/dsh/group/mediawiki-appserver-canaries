@@ -1,0 +1,17 @@
+# mw1017-mw1025 are canary appservers
+mw1017.eqiad.wmnet
+mw1018.eqiad.wmnet
+mw1019.eqiad.wmnet
+mw1020.eqiad.wmnet
+mw1021.eqiad.wmnet
+mw1022.eqiad.wmnet
+mw1023.eqiad.wmnet
+mw1024.eqiad.wmnet
+mw1025.eqiad.wmnet
+
+# mw1261-mw1265 have role mediawiki::canary_appserver
+mw1261.eqiad.wmnet
+mw1262.eqiad.wmnet
+mw1263.eqiad.wmnet
+mw1264.eqiad.wmnet
+mw1265.eqiad.wmnet
