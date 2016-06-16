@@ -24,7 +24,7 @@ class changeprop(
     $zk_uri,
     $purge_host   = '239.128.0.112',
     $purge_port   = 4827,
-    $concurrency  = 30,
+    $concurrency  = 50,
 ) {
 
     include ::service::configuration
