@@ -4,10 +4,12 @@ bind_port = 6001
 devices = /srv/swift-storage/
 workers = <%= @processorcount %>
 db_preallocation = on
+<% if @statsd_host -%>
 log_statsd_host = <%= @statsd_host %>
 log_statsd_port = 8125
 log_statsd_metric_prefix = <%= @statsd_metric_prefix %>
 log_statsd_sample_rate_factor = <%= @statsd_sample_rate_factor %>
+<% end -%>
 
 
 [pipeline:main]
