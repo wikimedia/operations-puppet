@@ -5964,6 +5964,11 @@ host mw2242 {
     fixed-address mw2242.codfw.wmnet;
 }
 
+host mw2243 {
+    hardware ethernet 14:18:77:66:A3:E8;
+    fixed-address mw2243.codfw.wmnet;
+}
+
 host mw2244 {
     hardware ethernet 14:18:77:66:7D:CD;
     fixed-address mw2244.codfw.wmnet;
