@@ -5,7 +5,8 @@ import os
 import json
 
 app = Flask(__name__)
-
+# Propogate exceptions to the uwsgi log
+app.config['PROPAGATE_EXCEPTIONS'] = True
 
 @app.before_request
 def before_request():
