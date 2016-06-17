@@ -1,3 +1,15 @@
+[remote "https://github.com/wikimedia/mediawiki"]
+        url = https://github.com/wikimedia/mediawiki.git
+        push = +refs/heads/*:refs/heads/*
+        push = +refs/tags/*:refs/tags/*
+        threads = 3
+
+[remote "https://github.com/wikimedia/operations-puppet"]
+        url = https://github.com/wikimedia/operations-puppet.git
+        push = +refs/heads/*:refs/heads/*
+        push = +refs/tags/*:refs/tags/*
+        threads = 3
+
 [http "https://github.com"]
     proxy = <%= @proxy %>
 
