@@ -1227,8 +1227,6 @@ host db1050 {
 host db1051 {
     hardware ethernet 90:B1:1C:2A:B0:2C;
     fixed-address db1051.eqiad.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host db1052 {
@@ -1239,126 +1237,89 @@ host db1052 {
 host db1053 {
     hardware ethernet 90:B1:1C:2A:D6:22;
     fixed-address db1053.eqiad.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host db1054 {
     hardware ethernet 90:B1:1C:2A:B2:F7;
     fixed-address db1054.eqiad.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host db1055 {
     hardware ethernet 90:B1:1C:2A:9B:F4;
     fixed-address db1055.eqiad.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host db1056 {
     hardware ethernet 90:B1:1C:2A:B0:06;
     fixed-address db1056.eqiad.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host db1057 {
     hardware ethernet 90:B1:1C:28:35:C6;
     fixed-address db1057.eqiad.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host db1059 {
     hardware ethernet 90:B1:1C:2A:D3:AE;
     fixed-address db1059.eqiad.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host db1060 {
     hardware ethernet 90:B1:1C:2A:D3:BA;
     fixed-address db1060.eqiad.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 host db1061 {
     hardware ethernet C8:1F:66:B8:1B:38;
     fixed-address db1061.eqiad.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host db1062 {
     hardware ethernet C8:1F:66:B8:1D:F4;
     fixed-address db1062.eqiad.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host db1063 {
     hardware ethernet C8:1F:66:B8:1A:40;
     fixed-address db1063.eqiad.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host db1064 {
     hardware ethernet C8:1F:66:B7:4B:96;
     fixed-address db1064.eqiad.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host db1065 {
     hardware ethernet C8:1F:66:B7:4B:36;
     fixed-address db1065.eqiad.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host db1066 {
     hardware ethernet C8:1F:66:E5:65:5E;
     fixed-address db1066.eqiad.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host db1067 {
     hardware ethernet C8:1F:66:E5:34:D1;
     fixed-address db1067.eqiad.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host db1068 {
     hardware ethernet C8:1F:66:E5:39:F5;
     fixed-address db1068.eqiad.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
-}
 
 host db1069 {
     hardware ethernet C8:1F:66:E5:E5:B0;
     fixed-address db1069.eqiad.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host db1070 {
     hardware ethernet C8:1F:66:E5:39:F1;
     fixed-address db1070.eqiad.wmnet;
-    option pxelinux.pathprefix "jessie-installer/";
-    filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host db1071 {
     hardware ethernet C8:1F:66:E5:E5:6C;
     fixed-address db1071.eqiad.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host db1072 {
@@ -1369,8 +1330,6 @@ host db1072 {
 host db1073 {
     hardware ethernet C8:1F:66:E5:F0:34;
     fixed-address db1073.eqiad.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host db1074 {
