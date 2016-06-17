@@ -1944,6 +1944,17 @@ node /^maps-test200[2-4]\.codfw\.wmnet/ {
     include base::firewall
 }
 
+node 'maps1001.eqiad.wmnet' {
+    role maps::server, maps::master
+    include base::firewall
+}
+
+# Waiting for master to be configured before configuring the slaves
+# node /^maps100[2-4]\.eqiad\.wmnet/ {
+#     role maps::server, maps::slave
+#     include base::firewall
+# }
+
 node 'maps2001.codfw.wmnet' {
     role maps::server, maps::master
     include base::firewall
