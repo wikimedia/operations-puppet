@@ -59,6 +59,15 @@ class role::otrs::webserver {
         check_command => 'check_smtp',
     }
 
+    nrpe::monitor_service{ 'clamd':
+        description  => 'clamd running',
+        nrpe_command => '/usr/lib/nagios/plugins/check_procs -w 1:1 -c 1:1 -u clamav -C clamd'
+    }
+    nrpe::monitor_service{ 'freshclam':
+        description  => 'freshclam running',
+        nrpe_command => '/usr/lib/nagios/plugins/check_procs -w 1:1 -c 1:1 -u clamav -C freshclam'
+    }
+
     # can conflict with ferm module
     if ! defined(Package['libnet-dns-perl']){
         package { 'libnet-dns-perl':
