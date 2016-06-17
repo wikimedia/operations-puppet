@@ -11,16 +11,16 @@ class icinga::monitor::ripeatlas {
         description           => 'IPv4 ping to eqiad',
         check_command         => 'check_ripe_atlas!1790945!50!19',
         host                  => 'ripe-atlas-eqiad',
-        normal_check_interval => 10,
-        retry_check_interval  => 5,
+        normal_check_interval => 5,
+        retry_check_interval  => 1,
         contact_group         => 'admins',
     }
     monitoring::service { 'atlas-ping-eqiad-ipv6':
         description           => 'IPv6 ping to eqiad',
         check_command         => 'check_ripe_atlas!1790947!50!19',
         host                  => 'ripe-atlas-eqiad',
-        normal_check_interval => 10,
-        retry_check_interval  => 5,
+        normal_check_interval => 5,
+        retry_check_interval  => 1,
         contact_group         => 'admins',
     }
 
@@ -33,8 +33,8 @@ class icinga::monitor::ripeatlas {
         description           => 'IPv4 ping to codfw',
         check_command         => 'check_ripe_atlas!1791210!50!19',
         host                  => 'ripe-atlas-codfw',
-        normal_check_interval => 10,
-        retry_check_interval  => 5,
+        normal_check_interval => 5,
+        retry_check_interval  => 1,
         contact_group         => 'admins',
     }
 
@@ -42,8 +42,8 @@ class icinga::monitor::ripeatlas {
         description           => 'IPv6 ping to codfw',
         check_command         => 'check_ripe_atlas!1791212!50!19',
         host                  => 'ripe-atlas-codfw',
-        normal_check_interval => 10,
-        retry_check_interval  => 5,
+        normal_check_interval => 5,
+        retry_check_interval  => 1,
         contact_group         => 'admins',
     }
 
@@ -56,8 +56,8 @@ class icinga::monitor::ripeatlas {
         description           => 'IPv4 ping to ulsfo',
         check_command         => 'check_ripe_atlas!1791307!50!19',
         host                  => 'ripe-atlas-ulsfo',
-        normal_check_interval => 10,
-        retry_check_interval  => 5,
+        normal_check_interval => 5,
+        retry_check_interval  => 1,
         contact_group         => 'admins',
     }
 
@@ -65,8 +65,8 @@ class icinga::monitor::ripeatlas {
         description           => 'IPv6 ping to ulsfo',
         check_command         => 'check_ripe_atlas!1791309!50!19',
         host                  => 'ripe-atlas-ulsfo',
-        normal_check_interval => 10,
-        retry_check_interval  => 5,
+        normal_check_interval => 5,
+        retry_check_interval  => 1,
         contact_group         => 'admins',
     }
 }
