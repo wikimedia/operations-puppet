@@ -1,0 +1,32 @@
+# Defined in the private repo
+#cassandra::super_password: some_password
+#maps::postgresql_tilerator_pass: some_password
+#maps::postgresql_tileratorui_pass: some_password
+#maps::postgresql_kartotherian_pass: some_password
+#maps::postgresql_osmimporter_pass: some_password
+#maps::postgresql_osmupdater_pass: some_password
+#maps::postgres_slaves:
+#  replication@maps1002-v4:
+#    user: replication
+#    password: some_password
+#    cidr: 10.64.16.42
+#    pgversion: 9.4
+#    attrs: REPLICATION
+#    database: replication
+#  replication@maps1003-v4:
+#    user: replication
+#    password: some_password
+#    cidr: 10.64.32.117
+#    pgversion: 9.4
+#    attrs: REPLICATION
+#    database: replication
+#  replication@maps1004-v4:
+#    user: replication
+#    password: some_password
+#    cidr: 10.64.48.154
+#    pgversion: 9.4
+#    attrs: REPLICATION
+#    database: replication
+#maps::cassandra_tilerator_pass: some_password
+#maps::cassandra_tileratorui_pass: some_password
+#maps::cassandra_kartotherian_pass: some_password
