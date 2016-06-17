@@ -77,7 +77,6 @@ labs:
 cassandra_test_eqiad:
   __regex: !ruby/regexp /^(cerium|praseodymium|xenon)\.eqiad\.wmnet$/
   cluster: restbase_test
-  cassandra::version: 2.2.6-wmf1
   cassandra::seeds:
       - cerium.eqiad.wmnet
       - cerium-a.eqiad.wmnet
@@ -164,7 +163,6 @@ cassandra_test_eqiad:
 cassandra_test_codfw:
   __regex: !ruby/regexp /^restbase-test200[1-3]\.codfw\.wmnet$/
   cluster: restbase_test
-  cassandra::version: 2.2.6-wmf1
   cassandra::seeds:
       - cerium.eqiad.wmnet
       - cerium-a.eqiad.wmnet

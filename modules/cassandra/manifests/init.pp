@@ -365,7 +365,7 @@ class cassandra(
     # We pin the version to a specific one
     $package_version = $target_version ? {
         '2.1' => hiera('cassandra::version', '2.1.13'),
-        '2.2' => hiera('cassandra::version', '2.2.6'),
+        '2.2' => hiera('cassandra::version', '2.2.6-wmf1'),
     }
     package { 'cassandra':
         ensure  => $package_version,
