@@ -39,12 +39,17 @@ es_codfw_rack_d5:
   elasticsearch::row:  D
 
 es_eqiad_rack_a3:
-  __regex: !ruby/regexp /^elastic10(0[0-4]|30|31)\.eqiad\.wmnet$/
+  __regex: !ruby/regexp /^elastic10((0[0-4]|30|31)|3[2-5])\.eqiad\.wmnet$/
   elasticsearch::rack: A3
   elasticsearch::row:  A
 
+es_eqiad_rack_b3:
+  __regex: !ruby/regexp /^elastic103[6-9]\.eqiad\.wmnet$/
+  elasticsearch::rack: B3
+  elasticsearch::row:  B
+
 es_eqiad_rack_c5:
-  __regex: !ruby/regexp /^elastic10(0[7-9]|1[0-2])\.eqiad\.wmnet$/
+  __regex: !ruby/regexp /^elastic10((0[7-9]|1[0-2])|4[0-3])\.eqiad\.wmnet$/
   elasticsearch::rack: C5
   elasticsearch::row:  C
 
