@@ -3796,6 +3796,36 @@ host ms-be2021 {
     filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
+host ms-be2022 {
+    hardware ethernet 14:02:ec:3d:50:a0;
+    fixed-address ms-be2022.codfw.wmnet;
+}
+
+host ms-be2023 {
+    hardware ethernet 14:02:ec:3c:cf:78;
+    fixed-address ms-be2022.codfw.wmnet;
+}
+
+host ms-be2024 {
+    hardware ethernet 14:02:ec:3c:ff:10;
+    fixed-address ms-be2024.codfw.wmnet;
+}
+
+host ms-be2025 {
+    hardware ethernet 14:02:ec:3c:6f:98;
+    fixed-address ms-be2025.codfw.wmnet;
+}
+
+host ms-be2026 {
+    hardware ethernet 14:02:ec:3c:de:98;
+    fixed-address ms-be2026.codfw.wmnet;
+}
+
+host ms-be2027 {
+    hardware ethernet 14:02:ec:3c:3f:e0;
+    fixed-address ms-be2027.codfw.wmnet;
+}
+
 host ms-be3001 {
     hardware ethernet 24:B6:FD:F6:13:AC;
     fixed-address ms-be3001.esams.wmnet;
