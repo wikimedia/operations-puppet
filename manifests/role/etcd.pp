@@ -23,5 +23,10 @@ class role::etcd {
         srange => '$ALL_NETWORKS',
     }
 
+}
 
+class role::etcd::backup {
+    require etcd::backup
+    include role::backup::host
+    backup::set { $::etcd::backup::backup_dir: }
 }

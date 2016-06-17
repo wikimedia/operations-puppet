@@ -279,6 +279,7 @@ node /^conf100[123]\.eqiad\.wmnet$/ {
     if ($::fqdn == 'conf1001.eqiad.wmnet') {
         include etcd::auth
         include etcd::auth::users
+        include role::etcd::backup
     }
 }
 
