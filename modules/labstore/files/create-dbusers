@@ -91,7 +91,7 @@ class User:
                 'ou=people,dc=wikimedia,dc=org',
                 '(%s)' % search_string,
                 ldap3.SEARCH_SCOPE_WHOLE_SUBTREE,
-                attributes=['uidNumber', 'cn']
+                attributes=['uid', 'uidNumber']
             )
             if len(conn.response) == 0:
                 logging.error(
@@ -104,7 +104,7 @@ class User:
             attrs = conn.response[0]['attributes']
             users.append(cls(
                 projectname,
-                attrs['cn'][0],
+                attrs['uid'][0],
                 attrs['uidNumber'][0],
                 'user'
             ))
