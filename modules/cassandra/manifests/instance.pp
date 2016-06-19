@@ -227,15 +227,4 @@ define cassandra::instance(
             File["${config_directory}/cassandra-rackdc.properties"],
         ],
     }
-
-    nrpe::monitor_systemd_unit_state { $service_name:
-        require => Service[$service_name],
-    }
-
-    # CQL query interface monitoring (T93886)
-    monitoring::service { "${service_name}-cql":
-        description   => "${service_name} CQL ${listen_address}:9042",
-        check_command => "check_tcp_ip!${listen_address}!9042",
-        contact_group => 'admins,team-services',
-    }
 }
