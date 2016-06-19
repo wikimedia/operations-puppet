@@ -228,14 +228,7 @@ define cassandra::instance(
         ],
     }
 
-    nrpe::monitor_systemd_unit_state { $service_name:
-        require => Service[$service_name],
-    }
-
-    # CQL query interface monitoring (T93886)
-    monitoring::service { "${service_name}-cql":
-        description   => "${service_name} CQL ${listen_address}:9042",
-        check_command => "check_tcp_ip!${listen_address}!9042",
-        contact_group => 'admins,team-services',
+    cassandra::instance::monitoring { $instance_name:
+        instances => $instances,
     }
 }
