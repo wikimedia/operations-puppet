@@ -8,6 +8,21 @@ class role::maps::server {
     include ::kartotherian
     include ::tilerator
 
+    $cassandra_instances = $::cassandra::instances
+
+    if $cassandra_instances {
+        $instance_names = keys($cassandra_instances)
+        ::cassandra::instance::monitoring{ $instance_names: }
+    } else {
+        $default_instances = {
+            'default' => {
+                'listen_address' => $::cassandra::listen_address,
+        }}
+        ::cassandra::instance::monitoring{ 'default':
+            instances => $default_instances,
+        }
+    }
+
     system::role { 'role::maps':
         description => 'A vector and raster map tile generation service',
     }
