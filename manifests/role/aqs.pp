@@ -21,6 +21,24 @@ class role::aqs {
     include ::cassandra::metrics
     include ::cassandra::logging
 
+    $cassandra_instances = $::cassandra::instances
+
+    if $cassandra_instances {
+        $instance_names = keys($cassandra_instances)
+        ::cassandra::instance::monitoring{ $instance_names: }
+    } else {
+        $default_instances = {
+            'default' => {
+                'listen_address' => $::cassandra::listen_address,
+        }}
+        ::cassandra::instance::monitoring{ 'default':
+            instances => $default_instances,
+        }
+    }
+
+    $cassandra_hosts = hiera('cassandra::seeds')
+    $cassandra_hosts_ferm = join($cassandra_hosts, ' ')
+
     $cassandra_hosts_ferm = join(hiera('cassandra::seeds'), ' ')
     $hadoop_hosts_ferm = join(hiera('analytics_hadoop_hosts'), ' ')
 
