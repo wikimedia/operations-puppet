@@ -1,6 +1,6 @@
 {"apiVersion": "abac.authorization.kubernetes.io/v1beta1", "kind": "Policy", "spec": {"user":"*", "nonResourcePath": "*", "readonly": true}}
 <%- @users.each do |user| -%>
-<%- if user['type'] == 'namespaced' -%>
+<%- if user['type'] == 'tool' -%>
 <%- @namespace_allowed_resources.each do |resource| -%>
 {"apiVersion": "abac.authorization.kubernetes.io/v1beta1", "kind": "Policy", "spec": {"user":"<%= user['name'] %>", "namespace": "<%= user['name'] %>", "resource": "<%= resource %>", "apiGroup": "*" }}
 <%- end -%>
