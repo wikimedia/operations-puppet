@@ -8,6 +8,14 @@ class role::maps::server {
     include ::kartotherian
     include ::tilerator
 
+    ::cassandra::instance::monitoring{ 'default':
+        instances => {
+            'default' => {
+                'listen_address' => $::cassandra::listen_address,
+            }
+        },
+    }
+
     system::role { 'role::maps':
         description => 'A vector and raster map tile generation service',
     }
