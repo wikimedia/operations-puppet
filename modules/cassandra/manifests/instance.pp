@@ -227,6 +227,4 @@ define cassandra::instance(
             File["${config_directory}/cassandra-rackdc.properties"],
         ],
     }
-
-    cassandra::monitoring { $instance_name: }
 }
