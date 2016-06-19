@@ -9,6 +9,21 @@ class role::cassandra {
     class { '::cassandra::metrics': }
     class { '::cassandra::logging': }
 
+    $cassandra_instances = $::cassandra::instances
+
+    if $cassandra_instances {
+        $instance_names = keys($cassandra_instances)
+        ::cassandra::instance::monitoring{ $instance_names: }
+    } else {
+        $default_instances = {
+            'default' => {
+                'listen_address' => $::cassandra::listen_address,
+        }}
+        ::cassandra::instance::monitoring{ 'default':
+            instances => $default_instances,
+        }
+    }
+
     # temporary collector, T78514
     diamond::collector { 'CassandraCollector':
         ensure => absent,
