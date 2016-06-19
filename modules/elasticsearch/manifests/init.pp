@@ -148,6 +148,14 @@ class elasticsearch($cluster_name,
         mode    => '0444',
         require => Package['elasticsearch'],
     }
+    file { '/etc/elasticsearch/elasticsearch.policy':
+        ensure  => file,
+        owner   => 'root',
+        group   => 'root',
+        content => template("${module_name}/elasticsearch.policy.erb"),
+        mode    => '0444',
+        require => Package['elasticsearch'],
+    }
     file { '/etc/default/elasticsearch':
         ensure  => file,
         owner   => 'root',
@@ -175,6 +183,7 @@ class elasticsearch($cluster_name,
             Package['elasticsearch'],
             File['/etc/elasticsearch/elasticsearch.yml'],
             File['/etc/elasticsearch/logging.yml'],
+            File['/etc/elasticsearch/elasticsearch.policy'],
             File['/etc/default/elasticsearch'],
         ],
     }
