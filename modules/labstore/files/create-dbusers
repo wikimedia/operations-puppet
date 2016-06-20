@@ -77,8 +77,8 @@ class User:
     @classmethod
     def from_ldap_users(cls, conn, projectname):
         conn.search(
-            'ou=groups,dc=wikimedia,dc=org',
-            '(cn=project-%s)' % projectname,
+            'ou=projects,dc=wikimedia,dc=org',
+            '(cn=%s)' % projectname,
             ldap3.SEARCH_SCOPE_WHOLE_SUBTREE,
             attributes=['member']
         )
