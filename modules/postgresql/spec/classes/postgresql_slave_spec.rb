@@ -32,7 +32,7 @@ describe 'postgresql::slave', :type => :class do
         :ensure           => 'present',
         :master_server    => 'test',
         :replication_pass => 'pass',
-        :datadir          => '/srv/postgres/9.1/main',
+        :root_dir          => '/srv/postgres',
         }
     }
     context 'ensure present' do
@@ -48,7 +48,11 @@ describe 'postgresql::slave', :type => :class do
                 with_ensure('present').
                 with_content(/host=test user=replication password=pass/)
         end
-        it { should contain_exec('pg_basebackup-test').with_command(/-h test -U replication -w/)}
+        it { should contain_exec('pg_basebackup-test')
+                        .with_command(/-h test -U replication -w/)
+                        .with_command(%r{-D \/srv\/postgres\/9\.1\/main})
+                        .with_unless('/usr/bin/test -f /srv/postgres/9.1/main/PG_VERSION')
+        }
     end
 end
 
