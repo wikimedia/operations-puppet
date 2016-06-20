@@ -12,6 +12,8 @@
 #       Defaults to 9.1. Valid values 8.4, 9.1 in Ubuntu
 #   ensure
 #       Defaults to present
+#   root_dir
+#       See $postgresql::server::root_dir
 #
 # Actions:
 #  Install/configure postgresql in a slave configuration
@@ -30,14 +32,16 @@ class postgresql::slave(
     $includes=[],
     $pgversion='9.1',
     $ensure='present',
-    $datadir=undef
+    $root_dir='/var/lib/postgresql',
     ) {
+
+    $data_dir = "${root_dir}/${pgversion}/main"
 
     class { 'postgresql::server':
         ensure    => $ensure,
         pgversion => $pgversion,
         includes  => [ $includes, 'slave.conf'],
-        datadir   => $datadir,
+        root_dir  => $root_dir,
     }
 
     file { "/etc/postgresql/${pgversion}/main/slave.conf":
@@ -49,12 +53,7 @@ class postgresql::slave(
         require => Class['postgresql::server'],
     }
 
-    if $datadir {
-        $basepath = $datadir
-    } else {
-        $basepath = "/var/lib/postgresql/${pgversion}/main"
-    }
-    file { "${basepath}/recovery.conf":
+    file { "${data_dir}/recovery.conf":
         ensure  => $ensure,
         owner   => 'root',
         group   => 'root',
@@ -70,9 +69,9 @@ class postgresql::slave(
     if $ensure == 'present' {
         exec { "pg_basebackup-${master_server}":
             environment => "PGPASSWORD=${replication_pass}",
-            command     => "/usr/bin/pg_basebackup -X stream -D ${basepath} -h ${master_server} -U replication -w",
+            command     => "/usr/bin/pg_basebackup -X stream -D ${data_dir} -h ${master_server} -U replication -w",
             user        => 'postgres',
-            unless      => "/usr/bin/test -f ${basepath}/PG_VERSION",
+            unless      => "/usr/bin/test -f ${data_dir}/PG_VERSION",
             require     => Class['postgresql::server'],
         }
     }
