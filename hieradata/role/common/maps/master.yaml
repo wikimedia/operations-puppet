@@ -1,5 +1,5 @@
 postgresql::master::pgversion: 9.4
-postgresql::master::datadir: /srv/postgresql/9.4/main
+postgresql::master::root_dir: /srv/postgresql
 postgresql::master::includes:
   - tuning.conf
   - logging.conf

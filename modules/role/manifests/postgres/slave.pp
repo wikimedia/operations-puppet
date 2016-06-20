@@ -15,7 +15,7 @@ class role::postgres::slave {
         # lint:endignore
         replication_pass => $passwords::postgres::replication_pass,
         includes         => 'tuning.conf',
-        datadir          => $role::postgres::common::datadir,
+        root_dir         => $role::postgres::common::root_dir,
     }
 
     class { 'postgresql::ganglia':

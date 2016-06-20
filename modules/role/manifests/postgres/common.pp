@@ -1,7 +1,7 @@
 class role::postgres::common {
     include standard
 
-    $datadir = '/srv/postgres/9.4/main'
+    $root_dir = '/srv/postgres'
 
     # move file to module?
     # lint:ignore:puppet_url_without_modules
