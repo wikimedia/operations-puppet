@@ -1,0 +1,82 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+"""
+  varnishrls
+  ~~~~~~~~~~
+
+  Accumulate browser cache hit ratio and total request volume statistics
+  for ResourceLoader requests (/w/load.php) and report to StatsD.
+
+  Usage: varnishrls [--statsd-server SERVER] [--key-prefix PREFIX]
+
+    --statsd-server SERVER  statsd server (default: none; echo to stdout)
+    --key-prefix PREFIX     metric key prefix (default: varnish.clients)
+
+  Copyright 2015 Ori Livneh <ori@wikimedia.org>
+  Copyright 2015 Gilles Dubuc <gilles@wikimedia.org>
+  Copyright 2016 Emanuele Rocca <ema@wikimedia.org>
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+"""
+from __future__ import division
+
+import re
+import varnishlog
+import varnishprocessor
+
+class ResourceLoaderVarnishLogProcessor(varnishprocessor.VarnishLogProcessor):
+    description = 'ResourceLoader Browser Cache Hit Ratio StatsD Reporter'
+    key_prefix = 'ResourceLoader'
+
+    def process_transaction(self, transaction):
+        """Process a single completed transaction."""
+        status_code = transaction['RespStatus']
+        metric_keys = ['reqs.all', 'resps.' + status_code]
+
+        if 'BerespHeader' in transaction:
+            metric_keys.append('reqs.if_none_match')
+
+        cache_control_header = transaction.get('BereqHeader')
+        cache_control = 'no'
+        if cache_control_header:
+            match = re.search(r'(?<=max-age=)\d+', cache_control_header)
+            if match:
+                cache_control = 'short' if match.group() == '300' else 'long'
+        metric_keys.append('responses.%s_cache_control.%s' %
+                           (cache_control, status_code))
+
+        for key in metric_keys:
+            self.stats[key] = self.stats.get(key, 0) + 1
+
+        if self.stats['reqs.all'] > 10000:
+            self.flush_stats()
+
+    def start(self):
+        varnishlog.varnishlog((
+            ('n', 'frontend'),     # Consider the frontend Varnish instance
+            ('c', None),           # Only consider interactions with the client
+            ('i', 'RespStatus'),   # Get RespStatus for the HTTP status code
+            ('i', 'BerespHeader'), # Get BerespHeader for If-None-Match header
+            ('i', 'BereqHeader'),  # Get BereqHeader for Cache-control header
+            ('i', 'ReqURL'),       # Get ReqURL to match /w/load.php
+            ('i', 'Timestamp'),    # Get Timestamp to delimit requests
+            ('C', ''),             # Use case-insensitive matching
+            ('I', '^(/w/load\.php'  # ...to match ResourceLoader ReqURLs
+                  '|if-none-match:' # ...or If-None-Match BerespHeaders
+                  '|cache-control:' # ...or Cache-control BereqHeaders
+                  '|([\d.]+ ?){6}$' # ...or Timestamp lines
+                  '|[1-5]\d{2}$)'), # ...or RxStatus codes
+        ), self.handle_log_record)
+
+lp = ResourceLoaderVarnishLogProcessor()
