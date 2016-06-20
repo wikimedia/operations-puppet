@@ -148,14 +148,14 @@ def main():
                     attributes = options.showattributes
                 print "+++ database=" + database
                 print "+++ filter=(&(objectclass=" + objectclass + ")(" + attribute + searchoperator + searchkey + ")) " + attributes
-            PosixData = ds.search_s(base, ldap.SCOPE_SUBTREE,
-                                    "(&(objectclass=" + objectclass + ")(" + attribute + searchoperator + searchkey + "))",
-                                    attrlist)
+            PosixData = getldapentries(ds, base, ldap.SCOPE_SUBTREE,
+                                       "(&(objectclass=" + objectclass + ")(" + attribute + searchoperator + searchkey + "))",
+                                       attrlist)
         else:
             if options.verbose:
                 print "(objectclass=" + objectclass + ")"
-            PosixData = ds.search_s(base, ldap.SCOPE_SUBTREE,
-                                    "(objectclass=" + objectclass + ")")
+            PosixData = getldapentries(ds, base, ldap.SCOPE_SUBTREE,
+                                       "(objectclass=" + objectclass + ")")
     except ldap.NO_SUCH_OBJECT:
         sys.stderr.write("Object not found. If you are trying to use * in your search, make sure that you wrap your string in single quotes to avoid shell expansion.\n")
         ds.unbind()
@@ -215,6 +215,21 @@ def main():
     ds.unbind()
 
 
+def getldapentries(ds, base, scope, filterstr='(objectClass=*)', attrlist=None):
+    cookie = ''
+    data = []
+    while True:
+        print repr(cookie)
+        print len(data)
+        msgid = ds.search_ext(base, scope, filterstr, attrlist, serverctrls=[ldap.controls.SimplePagedResultsControl(size=500, cookie=cookie)])
+        rtype, rdata, rmsgid, serverctrls = ds.result3(msgid)
+        data.extend(rdata)
+        cookie = [c.cookie for c in serverctrls if c.controlType == ldap.controls.SimplePagedResultsControl.controlType][0]
+        if cookie == '':
+            break
+    return data
+
+
 def showdatabase(objectbasedns, args):
     print ""
     if len(args) < 1:
@@ -248,9 +263,9 @@ def recursenetgroups(base, ds, members_array, triples, oldmembers=[]):
         members_array.remove(member)
 
         # get the triples and members for this member, and add them to the current members list
-        PosixData = ds.search_s(base,
-                                ldap.SCOPE_SUBTREE,
-                                "(&(objectclass=nisNetgroup)(cn=" + member + "))")
+        PosixData = getldapentries(ds, base,
+                                   ldap.SCOPE_SUBTREE,
+                                   "(&(objectclass=nisNetgroup)(cn=" + member + "))")
         for data in PosixData:
             if 'nisNetgroupTriple' in data[1]:
                 triples.extend(data[1]['nisNetgroupTriple'])
