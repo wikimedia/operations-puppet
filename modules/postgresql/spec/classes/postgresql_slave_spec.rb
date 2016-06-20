@@ -32,7 +32,7 @@ describe 'postgresql::slave', :type => :class do
         :ensure           => 'present',
         :master_server    => 'test',
         :replication_pass => 'pass',
-        :datadir          => '/srv/postgres/9.1/main',
+        :root_dir          => '/srv/postgres',
         }
     }
     context 'ensure present' do

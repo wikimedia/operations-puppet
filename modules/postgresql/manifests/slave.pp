@@ -12,6 +12,8 @@
 #       Defaults to 9.1. Valid values 8.4, 9.1 in Ubuntu
 #   ensure
 #       Defaults to present
+#   root_dir
+#       See $postgresql::server::root_dir
 #
 # Actions:
 #  Install/configure postgresql in a slave configuration
@@ -30,14 +32,16 @@ class postgresql::slave(
     $includes=[],
     $pgversion='9.1',
     $ensure='present',
-    $datadir=undef
+    $root_dir='/var/lib/postgresql',
     ) {
+
+    $data_dir = "${root_dir}/${pgversion}/main"
 
     class { 'postgresql::server':
         ensure    => $ensure,
         pgversion => $pgversion,
         includes  => [ $includes, 'slave.conf'],
-        datadir   => $datadir,
+        root_dir  => $root_dir,
     }
 
     file { "/etc/postgresql/${pgversion}/main/slave.conf":
@@ -49,12 +53,7 @@ class postgresql::slave(
         require => Class['postgresql::server'],
     }
 
-    if $datadir {
-        $basepath = $datadir
-    } else {
-        $basepath = "/var/lib/postgresql/${pgversion}/main"
-    }
-    file { "${basepath}/recovery.conf":
+    file { "${data_dir}/recovery.conf":
         ensure  => $ensure,
         owner   => 'root',
         group   => 'root',
