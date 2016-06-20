@@ -90,7 +90,7 @@ define prometheus::server (
         ensure => directory,
         mode   => '0750',
         owner  => 'prometheus',
-        group  => 'prometheus',
+        group  => 'root',
     }
 
     exec { "${service_name}-reload":
