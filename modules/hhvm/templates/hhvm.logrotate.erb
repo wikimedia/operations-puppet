@@ -9,7 +9,7 @@
     dateyesterday
     rotate 90
     missingok
-    create 0640 root deployment
+    create 0640 <%= @user %> <%= @group %>
     delaycompress
     sharedscripts
     postrotate
