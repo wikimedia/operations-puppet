@@ -17,6 +17,8 @@
 #       Defaults to 64. Refer to postgresql documentation for its meaning
 #   wal_keep_segments
 #       Defaults to 128. Refer to postgresql documentation for its meaning
+#   root_dir
+#       See $postgresql::server::root_dir
 #
 # Actions:
 #  Install/configure postgresql as a master. Also create replication users
@@ -38,14 +40,14 @@ class postgresql::master(
     $max_wal_senders=3,
     $checkpoint_segments=64,
     $wal_keep_segments=128,
-    $datadir=undef
-    ) {
+    $root_dir=$postgresql::defaults::root_dir,
+) inherits postgresql::defaults {
 
     class { 'postgresql::server':
         ensure    => $ensure,
         pgversion => $pgversion,
         includes  => [ $includes, 'master.conf'],
-        datadir   => $datadir,
+        root_dir  => $root_dir,
     }
 
     file { "/etc/postgresql/${pgversion}/main/master.conf":
