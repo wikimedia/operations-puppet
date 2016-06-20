@@ -73,6 +73,15 @@ class salt::master(
         group  => 'root'
     }
 
+    file { "${salt_module_roots['base']}/conftool.py":
+        ensure => present,
+        source => 'puppet:///modules/salt/conftool.py',
+        mode   => '0755',
+        owner  => 'root',
+        group  => 'root'
+    }
+
+
     sysctl::parameters { 'salt-master':
         values => {
             'net.core.somaxconn'          => 4096,
