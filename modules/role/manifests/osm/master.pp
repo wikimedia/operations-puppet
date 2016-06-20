@@ -7,7 +7,7 @@ class role::osm::master {
 
     class { 'postgresql::master':
         includes => 'tuning.conf',
-        datadir  => $role::osm::common::datadir,
+        root_dir => $role::osm::common::root_dir,
     }
 
     class { 'postgresql::ganglia':

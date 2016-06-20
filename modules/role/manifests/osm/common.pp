@@ -1,7 +1,7 @@
 class role::osm::common {
     include standard
 
-    $datadir = '/srv/postgres/9.1/main'
+    $root_dir = '/srv/postgres'
 
     file { '/etc/postgresql/9.1/main/tuning.conf':
         ensure => 'present',

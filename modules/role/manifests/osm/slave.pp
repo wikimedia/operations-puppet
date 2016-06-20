@@ -19,7 +19,7 @@ class role::osm::slave {
         # lint:endignore
         replication_pass => $passwords::osm::replication_pass,
         includes         => 'tuning.conf',
-        datadir          => $role::osm::common::datadir,
+        root_dir         => $role::osm::common::root_dir,
     }
 
     class { 'postgresql::ganglia':

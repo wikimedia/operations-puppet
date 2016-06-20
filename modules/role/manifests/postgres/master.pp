@@ -6,7 +6,7 @@ class role::postgres::master {
 
     class { 'postgresql::master':
         includes => 'tuning.conf',
-        datadir  => $role::postgres::common::datadir,
+        root_dir => $role::postgres::common::root_dir,
     }
 
     class { 'postgresql::ganglia':
