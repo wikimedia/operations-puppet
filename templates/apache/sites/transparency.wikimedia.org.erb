@@ -4,8 +4,21 @@
 <VirtualHost *:80>
     ServerName transparency.wikimedia.org
     DocumentRoot <%= @docroot %>
+    Alias /private <%= @docroot_private %>
 
     <Directory <%= @docroot %>>
         Require all granted
+    </Directory>
+
+    <Directory <%= @private_docroot%>>
+      AuthName "<%= @auth_ldap['name'] %>"
+      AuthType Basic
+      AuthBasicProvider ldap
+      AuthLDAPBindDN <%= @auth_ldap['bind_dn'] %>
+      AuthLDAPBindPassword <%= @auth_ldap['bind_password'] %>
+      AuthLDAPURL "<%= @auth_ldap['url'] %>"
+      <% @auth_ldap['groups'].each do |group| -%>
+      Require ldap-group <%= group %>
+      <% end -%>
     </Directory>
 </VirtualHost>
