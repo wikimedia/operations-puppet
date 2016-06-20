@@ -14,11 +14,15 @@ cassandra::instances:
     listen_address: 10.64.48.148 #aqs1006-a.eqiad.wmnet
     rpc_address: 10.64.48.148
     rpc_interface: eth0
+    rack: "rack3"
+    dc: "eqiad"
   b:
     jmx_port: 7190
     listen_address: 10.64.48.149 #aqs1006-b.eqiad.wmnet
     rpc_address: 10.64.48.149
     rpc_interface: eth0
+    rack: "rack3"
+    dc: "eqiad"
 
 cassandra::cluster_name: "Analytics Query Service Test"
 
