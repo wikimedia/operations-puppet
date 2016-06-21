@@ -3,6 +3,19 @@ class tlsproxy::instance {
     # Tune kernel settings
     include base::mysterious_sysctl
 
+    # Enable client/server TCP Fast Open (TFO)
+    #
+    # The values (bitmap) are:
+    # 1: Enables sending data in the opening SYN on the client w/ MSG_FASTOPEN
+    # 2: Enables TCP Fast Open on the server side, i.e., allowing data in
+    #    a SYN packet to be accepted and passed to the application before the
+    #    3-way hand shake finishes
+    sysctl::parameters { 'TCP Fast Open':
+        values => {
+            'net.ipv4.tcp_fastopen' => 3,
+        },
+    }
+
     $varnish_version4 = hiera('varnish_version4', false)
     $keepalives_per_worker = hiera('tlsproxy::localssl::keepalives_per_worker', 0)
     $websocket_support = hiera('cache::websocket_support', false)
