@@ -14,6 +14,7 @@ class role::syslog::centralserver {
         proto   => 'udp',
         port    => 514,
         notrack => true,
+        srange  => '$PRODUCTION_NETWORKS',
     }
 
     class { 'rsyslog::receiver': }
