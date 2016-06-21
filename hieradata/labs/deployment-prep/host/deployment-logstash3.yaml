@@ -1,0 +1,28 @@
+base::remote_syslog::enable: false
+
+# ES-specific
+elasticsearch::auto_create_index: true
+elasticsearch::cluster_name: labs-logstash-2.x-eqiad
+elasticsearch::expected_nodes: 1
+elasticsearch::heap_memory: '5G'
+elasticsearch::minimum_master_nodes: 1
+elasticsearch::recover_after_nodes: 1
+elasticsearch::recover_after_time: '1m'
+elasticsearch::graylog_hosts: undef
+# Needed for es2.x to bind the right network
+elasticsearch::bind_networks:
+  - _local_
+  - _site_
+elasticsearch::publish_host: _eth0_
+# Needed to keep from trying to join cirrussearch cluster
+elasticsearch::unicast_hosts:
+  - deployment-logstash3.deployment-prep.eqiad.wmflabs
+elasticsearch::auto_create_index: '+logstash-*,-*'
+
+# Logstash specific
+logstash::filter_workers: 1
+logstash::heap_memory_mb: 128
+
+logstash::cluster_hosts:
+  - deployment-logstash3.deployment-prep.eqiad.wmflabs
+
