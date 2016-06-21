@@ -1,6 +1,6 @@
 class drac {
     package {'python-paramiko':
-        ensure      => latest,
+        ensure      => present,
     }
 
     file {'/usr/local/sbin/drac':

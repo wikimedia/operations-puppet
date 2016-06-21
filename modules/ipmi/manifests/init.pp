@@ -2,7 +2,7 @@
 class ipmi {
 
     package { 'ipmitool':
-        ensure => 'latest',
+        ensure => present,
     }
 
     file { '/usr/local/sbin/ipmi_mgmt':
