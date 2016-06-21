@@ -32,7 +32,8 @@ define logstash::output::elasticsearch(
     $host            = '127.0.0.1',
     $flush_size      = 5000,
     $idle_flush_time = 1,
-    $index           = "${title}-%{+YYYY.MM.dd}",
+    $index_prefix    = $title,
+    $index           = undef,
     $port            = 9200,
     $guard_condition = undef,
     $manage_indices  = false,
@@ -41,6 +42,11 @@ define logstash::output::elasticsearch(
     $template_name   = $title,
 ) {
     require logstash::output::elasticsearch::scripts
+
+    $index_name = $index ? {
+        undef   => "${index_prefix}-%{+YYYY.MM.dd}",
+        default => $index,
+    }
 
     logstash::conf{ "output-elasticsearch-${title}":
         ensure   => $ensure,
@@ -55,7 +61,7 @@ define logstash::output::elasticsearch(
 
     cron { "logstash_delete_index_${title}":
         ensure  => $ensure_cron,
-        command => "/usr/local/bin/logstash_delete_index.sh ${host}:${port} \"${title}-$(date -d '-31days' +\\%Y.\\%m.\\%d)\"",
+        command => "/usr/local/bin/logstash_delete_index.sh ${host}:${port} \"${index_prefix}-$(date -d '-31days' +\\%Y.\\%m.\\%d)\"",
         user    => 'root',
         hour    => 0,
         minute  => 42,
@@ -64,7 +70,7 @@ define logstash::output::elasticsearch(
 
     cron { "logstash_optimize_index_${title}":
         ensure  => $ensure_cron,
-        command => "/usr/local/bin/logstash_optimize_index.sh ${host}:${port} \"${title}-$(date -d '-1days' +\\%Y.\\%m.\\%d)\"",
+        command => "/usr/local/bin/logstash_optimize_index.sh ${host}:${port} \"${index_prefix}-$(date -d '-1days' +\\%Y.\\%m.\\%d)\"",
         user    => 'root',
         hour    => 1,
         # Stagger execution on each node of cluster to avoid running in
@@ -75,7 +81,7 @@ define logstash::output::elasticsearch(
 
     cron { "logstash_clear_cache_${title}":
         ensure  => $ensure_cron,
-        command => "/usr/local/bin/logstash_clear_cache.sh ${host}:${port} '${title}-*'",
+        command => "/usr/local/bin/logstash_clear_cache.sh ${host}:${port} '${index_prefix}-*'",
         user    => 'root',
         minute  => 5 * fqdn_rand(12, "logstash_clear_cache_${title}"),
         require => File['/usr/local/bin/logstash_clear_cache.sh'],

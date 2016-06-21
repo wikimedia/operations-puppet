@@ -6,7 +6,7 @@ output {
         flush_size      => <%= @flush_size %>
         host            => "<%= @host %>"
         idle_flush_time => <%= @idle_flush_time %>
-        index           => "<%= @index %>"
+        index           => "<%= @index_name %>"
         port            => <%= @port %>
         protocol        => "http"
 <% if @template %>
