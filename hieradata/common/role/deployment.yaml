@@ -81,10 +81,6 @@ repo_config:
   cassandra/metrics-collector:
     gitfat_enabled: true
     upstream: https://gerrit.wikimedia.org/r/operations/software/cassandra-metrics-collector
-  wdqs/wdqs:
-    gitfat_enabled: true
-    upstream: https://gerrit.wikimedia.org/r/wikidata/query/deploy
-    checkout_submodules: true
   sentry/sentry:
     upstream: https://gerrit.wikimedia.org/r/operations/software/sentry
   cassandra/logstash-logback-encoder:

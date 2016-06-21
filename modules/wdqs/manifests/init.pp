@@ -75,7 +75,12 @@ class wdqs(
     }
 
     # WDQS Updater service
-    #$updater_options = hiera('wdqs::updater_options', '-n wdq -s')
     include wdqs::updater
 
+    # Deployment
+    scap::target { 'wdqs/wdqs':
+        service_name => 'wdqs-blazegraph',
+        deploy_user  => 'deploy-service',
+        manage_user  => true,
+    }
 }
