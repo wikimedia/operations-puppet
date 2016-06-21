@@ -5,9 +5,12 @@
 #
 # == Parameters:
 # - $statsd_host: Host to send statsd data to.
+# - $logstash_alt_host: Additional host to send logstash elasticsearch
+#    output to. Used for testing elasticsearch 2.3 deployment.
 #
 class role::logstash (
     $statsd_host,
+    $logstash_alt_host = undef,
 ) {
     include ::role::logstash::elasticsearch
     include ::logstash
@@ -138,6 +141,17 @@ class role::logstash (
         priority        => 90,
         template        => '/etc/logstash/elasticsearch-template.json',
         require         => File['/etc/logstash/elasticsearch-template.json'],
+    }
+
+    if ($logstash_alt_host) {
+        logstash::output::elasticsearch { 'logstash-alt':
+            host            => $logstash_alt_host,
+            guard_condition => '"es" in [tags]',
+            manage_indices  => true,
+            priority        => 90,
+            template        => '/etc/logstash/elasticsearch-template.json',
+            require         => File['/etc/logstash/elasticsearch-template.json'],
+        }
     }
 
     logstash::output::statsd { 'MW_channel_rate':
