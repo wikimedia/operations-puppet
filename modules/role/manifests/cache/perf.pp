@@ -68,4 +68,21 @@ class role::cache::perf {
     sysctl::parameters { 'tw_reuse':
         values => { 'net.ipv4.tcp_tw_reuse' => 1 },
     }
+
+    # tcp_notsent_lowat:
+    # Default is -1 (unset).  Setting this changes TCP sockets' writeability
+    # behavior.  The default behavior is to keep the socket writeable until the
+    # whole socket buffer fills.  With this set, even if there's buffer space,
+    # the kernel doesn't notify of writeability (e.g. via epoll()) until the
+    # amount of unsent data (as opposed to unacked) in the socket buffer is
+    # less than this value.  This reduces local buffer bloat on our server's
+    # sending side, which may help with HTTP/2 prioritization.  The magic value
+    # for tuning is debateable, but arguably even setting a conservative
+    # (higher) value here is better than not setting it all, in almost all
+    # cases for any kind of TCP traffic.  ~128K seems to be a common
+    # recommendation for something close-ish to optimal for internet-facing
+    # things.
+    sysctl::parameters { 'tcp_notsent_lowat':
+        values => { 'net.ipv4.tcp_notsent_lowat' => 131072 },
+    }
 }
