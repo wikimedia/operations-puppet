@@ -16,6 +16,7 @@ class network::constants {
         '185.15.56.0/22',
         '2a02:ec80::/32',
     ]
+    $internal_networks = slice_network_constants($::realm, {'sphere' => 'private'})
 
     # are you really sure you want to use this? maybe what you really
     # the trusted/production networks. See $production_networks for this.
