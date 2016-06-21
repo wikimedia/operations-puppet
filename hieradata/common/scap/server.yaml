@@ -66,3 +66,5 @@ sources:
   ores/deploy:
     repository: mediawiki/services/ores/deploy
 
+  wdqs/wdqs:
+    repository: wikidata/query/deploy
