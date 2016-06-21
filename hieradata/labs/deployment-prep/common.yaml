@@ -181,6 +181,8 @@ role::deployment::mediawiki::key_fingerprint: f0:54:06:fa:17:27:97:a2:cc:69:a0:a
 "elasticsearch::graylog_hosts":
   - deployment-logstash2.deployment-prep.eqiad.wmflabs
 role::logstash::statsd_host: labmon1001.eqiad.wmnet
+role::logstash::logstash_alt_host: deployment-logstash3.eqiad.wmflabs
+role::logstash::replicas: 0
 "mediawiki::redis_servers::eqiad":
   shard01:
     host: 10.68.16.177

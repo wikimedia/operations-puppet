@@ -5,9 +5,14 @@
 #
 # == Parameters:
 # - $statsd_host: Host to send statsd data to.
+# - $logstash_alt_host: Additional host to send logstash elasticsearch
+#    output to. Used for testing elasticsearch 2.3 deployment.
+# - $replicas: Number of times to replicate logs across the cluster
 #
 class role::logstash (
     $statsd_host,
+    $logstash_alt_host = undef,
+    $replicas = 2,
 ) {
     include ::role::logstash::elasticsearch
     include ::logstash
@@ -123,11 +128,11 @@ class role::logstash (
     ## Outputs (90)
     # Template for Elasticsearch index creation
     file { '/etc/logstash/elasticsearch-template.json':
-        ensure => present,
-        source => 'puppet:///files/logstash/elasticsearch-template.json',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0444',
+        ensure  => present,
+        content => template('logstash/elasticsearch-template.json'),
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
     }
     # lint:endignore
 
@@ -138,6 +143,19 @@ class role::logstash (
         priority        => 90,
         template        => '/etc/logstash/elasticsearch-template.json',
         require         => File['/etc/logstash/elasticsearch-template.json'],
+    }
+
+    if ($logstash_alt_host) {
+        logstash::output::elasticsearch { 'logstash-alt':
+            template_name   => 'logstash',
+            index_prefix    => 'logstash',
+            host            => $logstash_alt_host,
+            guard_condition => '"es" in [tags]',
+            manage_indices  => true,
+            priority        => 90,
+            template        => '/etc/logstash/elasticsearch-template.json',
+            require         => File['/etc/logstash/elasticsearch-template.json'],
+        }
     }
 
     logstash::output::statsd { 'MW_channel_rate':
