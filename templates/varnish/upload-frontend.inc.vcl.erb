@@ -71,7 +71,7 @@ sub cluster_fe_backend_response {
 <% stream_threshold = @cache_route == 'direct' ? 33554432 : 1048576 -%>
 	if (std.integer(beresp.http.Content-Length, 33554432) >= <%= stream_threshold %> || beresp.http.Content-Length ~ "^[0-9]{9}") {
 		set beresp.do_stream = true;
-		if (std.integer(beresp.http.Content-Length, 33554432) >= 33554432 || beresp.http.Content-Length ~ "^[0-9]{9}") {
+		if (std.integer(beresp.http.Content-Length, 50331648) >= 50331648 || beresp.http.Content-Length ~ "^[0-9]{9}") {
 			// don't attempt to cache these in the frontend
 			return (hit_for_pass);
 		}
