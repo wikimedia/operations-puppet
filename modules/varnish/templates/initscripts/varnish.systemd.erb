@@ -40,6 +40,8 @@ ExecStart=/usr/sbin/varnishd \
 -p listen_depth=4096 -p session_max=200000 -p vcc_err_unref=off \
 -p nuke_limit=300 \
 -p http_req_size=24576 \
+-p gzip_level=8 \
+-p gzip_memlevel=9 \
 <%= @runtime_params -%> \
 <%= @extraopts -%> \
 <% if @vcl_config.fetch("enable_geoiplookup", false) -%>-p cc_command=${CC_COMMAND}<% end %>
