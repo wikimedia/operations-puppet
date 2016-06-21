@@ -7,7 +7,7 @@ class icinga::web {
 
     # Apparently required for the web interface
     package { 'icinga-doc':
-        ensure => latest
+        ensure => present
     }
     include ::apache
     include ::apache::mod::php5
