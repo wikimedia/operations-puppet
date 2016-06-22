@@ -147,6 +147,19 @@ class role::cache::perf {
             'net.ipv4.tcp_synack_retries'        => 2,
             'net.ipv4.tcp_syn_retries'           => 2,
 
+            # TCP autocorking exists and defaults on from 3.14 onwards.  The
+            # idea is that some applications that should be doing a better job
+            # of local buffering or manual TCP_CORK aren't, and the kernel
+            # detects the common patterns for this and auto-corks for them
+            # (doesn't immediately send a small write, instead waits a bit to
+            # see if it can coalesce it with another).  Netstat counters for
+            # autocorking are running up at a huge rate (ballpark near our reqs
+            # or SYNs rate), which implies this is happening commonly to nginx
+            # outbound traffic.  My theory is this is probably a net loss and
+            # nginx and/or openssl know what they're doing and we'd benefit from
+            # the writes going out immediately and not autocorking...
+            'net.ipv4.tcp_autocorking'           => 0,
+
             # Pure perf hacks (documented above)
             'net.ipv4.tcp_notsent_lowat'         => 131072,
             'net.ipv4.tcp_slow_start_after_idle' => 0,
