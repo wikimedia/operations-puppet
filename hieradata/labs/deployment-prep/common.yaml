@@ -40,6 +40,8 @@ graphoid::allowed_domains:
   wikidatasparql:
     - query.wikidata.org
     - wdqs-test.wmflabs.org
+  geoshape:
+    - maps.wikimedia.org
 graphoid::headers:
   'Cache-Control': 'public, s-maxage=360, max-age=360'
 graphoid::error_headers:
