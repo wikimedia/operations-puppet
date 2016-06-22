@@ -107,11 +107,11 @@ cache::upload::apps:
 role::cache::base::zero_site: 'http://zero.wikimedia.beta.wmflabs.org'
 role::cache::base::purge_host_only_upload_re: '^upload\.beta\.wmflabs\.org$'
 role::cache::base::purge_host_not_upload_re: '^(?!upload\.beta\.wmflabs\.org)'
-role::cache::base::static_host: 'deployment.wikimedia.beta.wmflabs.org'
-role::cache::base::upload_domain: 'upload.beta.wmflabs.org'
-role::cache::base::bits_domain: 'bits.beta.wmflabs.org'
-role::cache::base::shortener_domain: 'w-beta.wmflabs.org'
-role::cache::base::top_domain: 'beta.wmflabs.org'
+role::cache::upload::upload_domain: 'upload.beta.wmflabs.org'
+role::cache::text::static_host: 'deployment.wikimedia.beta.wmflabs.org'
+role::cache::text::bits_domain: 'bits.beta.wmflabs.org'
+role::cache::text::shortener_domain: 'w-beta.wmflabs.org'
+role::cache::text::top_domain: 'beta.wmflabs.org'
 role::cache::2layer::storage_parts:
   - vdb
   - vdb

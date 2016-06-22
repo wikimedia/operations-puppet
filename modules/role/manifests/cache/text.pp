@@ -1,4 +1,10 @@
-class role::cache::text {
+class role::cache::text(
+    # static_host must serve MediaWiki (e.g. not wwwportal)
+    $static_host = 'en.wikipedia.org',
+    $bits_domain = 'bits.wikimedia.org',
+    $top_domain = 'org',
+    $shortener_domain = 'w.wiki',
+) {
     require geoip
     require geoip::dev # for VCL compilation using libGeoIP
     include role::cache::2layer
@@ -93,10 +99,10 @@ class role::cache::text {
     $common_vcl_config = {
         'cache4xx'         => '1m',
         'purge_host_regex' => $::role::cache::base::purge_host_not_upload_re,
-        'static_host'      => $::role::cache::base::static_host,
-        'bits_domain'      => $::role::cache::base::bits_domain,
-        'top_domain'       => $::role::cache::base::top_domain,
-        'shortener_domain' => $::role::cache::base::shortener_domain,
+        'static_host'      => $static_host,
+        'bits_domain'      => $bits_domain,
+        'top_domain'       => $top_domain,
+        'shortener_domain' => $shortener_domain,
         'pass_random'      => true,
     }
 

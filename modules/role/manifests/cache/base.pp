@@ -2,12 +2,6 @@ class role::cache::base(
     $zero_site = 'https://zero.wikimedia.org',
     $purge_host_only_upload_re = '^upload\.wikimedia\.org$',
     $purge_host_not_upload_re = '^(?!upload\.wikimedia\.org)',
-    # static_host must serve MediaWiki (e.g. not wwwportal)
-    $static_host = 'en.wikipedia.org',
-    $upload_domain = 'upload.wikimedia.org',
-    $bits_domain = 'bits.wikimedia.org',
-    $top_domain = 'org',
-    $shortener_domain = 'w.wiki',
 ) {
     include standard
     include nrpe

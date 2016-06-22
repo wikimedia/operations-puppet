@@ -1,4 +1,6 @@
-class role::cache::upload {
+class role::cache::upload(
+    $upload_domain = 'upload.wikimedia.org',
+) {
     include role::cache::2layer
     include role::cache::ssl::unified
     if $::standard::has_ganglia {
@@ -58,7 +60,7 @@ class role::cache::upload {
     $common_vcl_config = {
         'cache4xx'         => '1m',
         'purge_host_regex' => $::role::cache::base::purge_host_only_upload_re,
-        'upload_domain'    => $::role::cache::base::upload_domain,
+        'upload_domain'    => $upload_domain,
         'allowed_methods'  => '^(GET|HEAD|OPTIONS|PURGE)$',
     }
 
