@@ -876,8 +876,8 @@ node 'dbstore2002.codfw.wmnet' {
 node 'dbproxy1001.eqiad.wmnet' {
     class { 'role::mariadb::proxy::master':
         shard          => 'm1',
-        primary_name   => 'db1001',
-        primary_addr   => '10.64.0.5',
+        primary_name   => 'db1016',
+        primary_addr   => '10.64.0.20',
         secondary_name => 'db1016',
         secondary_addr => '10.64.0.20',
     }
