@@ -5,9 +5,9 @@ elasticsearch::cluster_name: production-search-eqiad
 elasticsearch::multicast_group: 224.2.2.5
 elasticsearch::multicast_enabled: false
 elasticsearch::unicast_hosts: # this should be set to the list of master eligible nodes
-  - elastic1001.eqiad.wmnet
-  - elastic1008.eqiad.wmnet
-  - elastic1013.eqiad.wmnet
+  - elastic1030.eqiad.wmnet
+  - elastic1036.eqiad.wmnet
+  - elastic1040.eqiad.wmnet
 
 lvs::realserver::realserver_ips: "10.2.2.30"
 
