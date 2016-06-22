@@ -96,13 +96,25 @@ class role::cache::perf {
             # will see drops in col 2 of /proc/net/softnet_stat
             'net.core.netdev_max_backlog'        => 60000,
 
-            # Increase the queue size of new TCP connections
-            'net.core.somaxconn'                 => 4096,   # 'mysterious'
-            'net.ipv4.tcp_max_syn_backlog'       => 262144, # 'mysterious'
-            'net.ipv4.tcp_max_tw_buckets'        => 360000, # 'mysterious'
+            # Our rate of incoming SYN on heaviest cp hosts peaks around
+            # 1-2K/sec.  For somaxconn, the SYN numbers should be multiplied
+            # out for a few seconds of headroom (bursts, and userspace delays)
+            # and then perhaps doubled again to handle the influx of depooling
+            # large datacenters.  Note somaxconn is just a parameter limit, the
+            # application still needs to set this explicitly (within the
+            # limit).
+            'net.core.somaxconn'                 => 16384,
+
+            # Our active connection concurrency peaks in the ~100K-200K range
+            # per cp host (e.g. text esams as shown in ipvsadm).  For
+            # max_syn_backlog, we probably want a small multiple of peak
+            # concurrency (maybe even just ~1x), as well as (again) dc failover
+            # and/or cp host depool headroom.
+            'net.ipv4.tcp_max_syn_backlog'       => 524288,
 
             # Decrease FD/socket usage
             'net.ipv4.tcp_tw_reuse'              => 1,
+            'net.ipv4.tcp_max_tw_buckets'        => 360000, # 'mysterious'
             'net.ipv4.tcp_fin_timeout'           => 3,      # 'mysterious'
             'net.ipv4.tcp_max_orphans'           => 262144, # 'mysterious'
             'net.ipv4.tcp_synack_retries'        => 2,      # 'mysterious'

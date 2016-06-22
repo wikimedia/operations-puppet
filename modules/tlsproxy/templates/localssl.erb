@@ -9,8 +9,8 @@ upstream local_fe_<%= @basename %> {
 
 # SSL proxying
 server {
-	listen [::]:443 <%= @default_server ? "default_server deferred backlog=4096 reuseport ipv6only=on " : "" %>ssl http2;
-	listen 443 <%= @default_server ? "default_server deferred backlog=4096 reuseport " : "" %>ssl http2;
+	listen [::]:443 <%= @default_server ? "default_server deferred backlog=16384 reuseport ipv6only=on " : "" %>ssl http2;
+	listen 443 <%= @default_server ? "default_server deferred backlog=16384 reuseport " : "" %>ssl http2;
 	ssl on;
 	server_name <%= ([@server_name] + @server_aliases).join(" ") %>;
 
