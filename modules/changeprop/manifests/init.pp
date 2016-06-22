@@ -13,6 +13,9 @@
 # [*purge_host*]
 #   The vhtcpd daemon host to send purge requests to. Default: 239.128.0.112
 #
+# [*ores_host*]
+#   The host where ORES service is running. Default: ores.svc.eqiad.wmnet
+#
 # [*purge_port*]
 #   The port the vhtcp daemon listens to. Default: 4827
 #
@@ -20,11 +23,13 @@
 #   The maximum number of tasks the service can execute at any given point in
 #   time. Default: 30
 #
+
 class changeprop(
     $zk_uri,
     $purge_host   = '239.128.0.112',
+    $ores_host    = 'ores.svc.eqiad.wmnet',
     $purge_port   = 4827,
-    $concurrency  = 50,
+    $concurrency  = 50
 ) {
 
     include ::service::configuration
