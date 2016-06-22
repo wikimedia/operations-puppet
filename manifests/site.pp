@@ -953,19 +953,11 @@ node /^elastic10[0-2][0-9]\.eqiad\.wmnet/ {
     include base::firewall
     include standard
 }
-node /^elastic103[0-1]\.eqiad\.wmnet/ {
+node /^elastic103[0-7]\.eqiad\.wmnet/ {
     role elasticsearch::server
     include base::firewall
     include standard
 }
-
-# Let's start by installing a single new node, add the others in a second step
-node 'elastic1032.eqiad.wmnet' {
-    role elasticsearch::server
-    include base::firewall
-    include standard
-}
-
 
 node /^elastic20[0-3][0-9]\.codfw\.wmnet/ {
     role elasticsearch::server
