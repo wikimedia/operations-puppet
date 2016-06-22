@@ -18,7 +18,6 @@ import argparse
 import ldap3
 import pymysql
 import yaml
-import re
 import os
 import string
 import random
@@ -48,11 +47,10 @@ class User:
     def homedir(self):
         prefix = '/srv/project/%s' % self.project
         if self.kind == 'user':
-            return os.path.join(prefix, 'home', self.name.lower())
+            return os.path.join(prefix, 'home', self.name)
         else:
             return os.path.join(
-                prefix, 'project',
-                re.sub(r'^%s\.' % self.project, '', self.name.lower())
+                prefix, 'project', self.name[len(self.project) + 1:]
             )
 
     def __repr__(self):
