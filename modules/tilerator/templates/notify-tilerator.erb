@@ -1,0 +1,12 @@
+#!/bin/bash
+
+/usr/bin/curl \
+  -d expdirpath=<%= @expire_dir %> \
+  -d expmask=<%= @expmask %> \
+  -d statefile=<%= @statefile %> \
+  -d fromZoom=<%= @from_zoom %> \
+  -d beforeZoom=<%= @before_zoom %> \
+  -d generatorId=<%= @generator_id %> \
+  -d storageId=<%= @storage_id %> \
+  -d deleteEmpty=<%= @delete_empty %> \
+  http://localhost:<%= @port %>/add

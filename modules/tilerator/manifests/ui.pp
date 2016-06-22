@@ -31,9 +31,49 @@
 #   Contact groups for alerting.
 #   Default: 'admins'
 #
+# [*port*]
+#   Port on which tileratorui listen
+#   Default: 6535
+#
+# [*expmask*]
+#   regex to match expiration files
+#   used in Tilerator notification
+#
+# [*statefile*]
+#   tilerator uses this file to record last imported data file
+#   used in Tilerator notification
+#
+# [*from_zoom*]
+#   new jobs will be created from this zoom
+#   used in Tilerator notification
+#
+# [*before_zoom*]
+#   and until (but not including) this zoom
+#   used in Tilerator notification
+#
+# [*generator_id*]
+#   copy tiles from ("gen" will only produce non-empty tiles)
+#   used in Tilerator notification
+#
+# [*storage_id*]
+#   copy tiles to
+#   used in Tilerator notification
+#
+# [*delete_empty*]
+#   if tile is empty, make sure we don't store it, if it was there before
+#   used in Tilerator notification
+#
 class tilerator::ui(
+    $port           = 6535,
     $conf_sources   = 'sources.prod.yaml',
     $contact_groups = 'admins',
+    $expmask        = 'expire\\.list\\.*',
+    $statefile      = '/srv/osm_expire/expire.state',
+    $from_zoom      = 10,
+    $before_zoom    = 16,
+    $generator_id   = 'gen',
+    $storage_id     = 'v3',
+    $delete_empty   = 1,
 ) {
     $cassandra_tileratorui_user = 'tileratorui'
     $cassandra_tileratorui_pass = hiera('maps::cassandra_tileratorui_pass')
@@ -42,11 +82,19 @@ class tilerator::ui(
     $redis_server = hiera('maps::redis_server')
 
     service::node { 'tileratorui':
-        port           => 6535,
+        port           => $port,
         config         => template('tilerator/config_ui.yaml.erb'),
         no_workers     => 0, # 0 on purpose to only have one instance running
         repo           => 'tilerator/deploy',
         deployment     => 'scap3',
         contact_groups => $contact_groups,
+    }
+
+    file { '/usr/local/bin/notify-tilerator':
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0555',
+        content => template('tilerator/notify-tilerator.erb'),
     }
 }
