@@ -25,4 +25,14 @@ export JAVACMD_OPTIONS="\
       --expire-output $EXPIRY_FILE \
       --username osmupdater \
       --database gis \
-      --append $EXTRA_PARAMS -
+      --append $EXTRA_PARAMS - && \
+    /usr/bin/curl \
+      -d expdirpath=<%= @expire_dir %>             \ # expiration files dir
+      -d expmask=expire\\.list\\.*                 \ # regex to match expiration files
+      -d statefile=<%= @expire_dir %>/expire.state \ # tilerator uses this file to record last imported data file
+      -d fromZoom=10                               \ # new jobs will be created from this zoom
+      -d beforeZoom=16                             \ # and until (but not including) this zoom
+      -d generatorId=gen                           \ # copy tiles from ("gen" will only produce non-empty tiles)
+      -d storageId=v3                              \ # copy tiles to
+      -d deleteEmpty=1                             \ # if tile is empty, make sure we don't store it, if it was there before
+      http://localhost:6535/add
