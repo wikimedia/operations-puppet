@@ -110,6 +110,7 @@ role::cache::base::purge_host_not_upload_re: '^(?!upload\.beta\.wmflabs\.org)'
 role::cache::base::static_host: 'deployment.wikimedia.beta.wmflabs.org'
 role::cache::base::upload_domain: 'upload.beta.wmflabs.org'
 role::cache::base::bits_domain: 'bits.beta.wmflabs.org'
+role::cache::base::shortener_domain: 'w-beta.wmflabs.org'
 role::cache::base::top_domain: 'beta.wmflabs.org'
 role::cache::2layer::storage_parts:
   - vdb

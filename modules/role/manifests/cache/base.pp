@@ -6,7 +6,8 @@ class role::cache::base(
     $static_host = 'en.wikipedia.org',
     $upload_domain = 'upload.wikimedia.org',
     $bits_domain = 'bits.wikimedia.org',
-    $top_domain = 'org'
+    $top_domain = 'org',
+    $shortener_domain = 'w.wiki',
 ) {
     include standard
     include nrpe
