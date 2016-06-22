@@ -953,7 +953,8 @@ node /^elastic10[0-3][0-9]\.eqiad\.wmnet/ {
     include base::firewall
     include standard
 }
-node /^elastic104[0-2]\.eqiad\.wmnet/ {
+
+node /^elastic104[0-7]\.eqiad\.wmnet/ {
     role elasticsearch::server
     include base::firewall
     include standard
