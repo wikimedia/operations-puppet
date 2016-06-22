@@ -34,6 +34,8 @@
 #      Format passed to osm2pgsql as --input-reader parameter. osm2pgsql < 0.90
 #      needs 'libxml2' (which is default) and osm2pgsql >= 0.90 needs 'xml'.
 #      osm2pgsql == 0.90 is used on Jessie only at this point.
+#   $postreplicate_command
+#      command to run after replication of OSM data
 #
 # Actions:
 #   sync with planet.osm
@@ -61,6 +63,7 @@ define osm::planet_sync(
                     true    => 'xml',
                     default => 'libxml2',
                 },
+                $postreplicate_command = undef,
 ) {
     include ::osm::users
 

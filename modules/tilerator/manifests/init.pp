@@ -19,6 +19,7 @@
 # [*contact_groups*]
 #   Contact groups for alerting.
 #   Default: 'admins'
+#
 class tilerator(
     $conf_sources   = 'sources.prod.yaml',
     $contact_groups = 'admins',
@@ -42,4 +43,5 @@ class tilerator(
         deployment     => 'scap3',
         contact_groups => $contact_groups,
     }
+
 }
