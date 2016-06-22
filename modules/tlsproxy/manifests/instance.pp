@@ -1,8 +1,5 @@
 # This defines the actual nginx daemon/instance which tlsproxy "sites" belong to
 class tlsproxy::instance {
-    # Tune kernel settings
-    include base::mysterious_sysctl
-
     # Enable client/server TCP Fast Open (TFO)
     #
     # The values (bitmap) are:

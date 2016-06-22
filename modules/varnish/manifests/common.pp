@@ -1,10 +1,6 @@
 class varnish::common {
     require varnish::packages
 
-    # Tune kernel settings
-    # TODO: Should be moved to a role class.
-    include base::mysterious_sysctl
-
     # Mount /var/lib/ganglia as tmpfs to avoid Linux flushing mlocked
     # shm memory to disk
     mount { '/var/lib/varnish':

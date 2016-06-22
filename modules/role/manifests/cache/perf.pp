@@ -37,15 +37,13 @@ class role::cache::perf {
         },
     }
 
-    # Disable TCP SSR (slow-start restart). SSR resets the congestion
-    # window of connections that have gone idle, which means it has a
-    # tendency to reset the congestion window of HTTP keepalive and SPDY
-    # connections, which are characterized by short bursts of activity
-    # separated by long idle times.
-    sysctl::parameters { 'disable_ssr':
-        values => { 'net.ipv4.tcp_slow_start_after_idle' => 0 },
-    }
-
+    # Extended notes/docs on network tunables below
+    # ---
+    # tcp_slow_start_after_idle: SSR resets the congestion window of
+    # connections that have gone idle, which means it has a tendency to reset
+    # the congestion window of HTTP keepalive and HTTP/2 connections, which are
+    # characterized by short bursts of activity separated by long idle times.
+    # ---
     # tcp_tw_(reuse|recycle): both are off by default
     # cf. http://vincent.bernat.im/en/blog/2014-tcp-time-wait-state-linux.html
     #    _recycle is dangerous: it violates RFCs, and probably breaks clients
@@ -58,17 +56,14 @@ class role::cache::perf {
     # connections from nginx to varnish-fe:80 - some of our caches reach
     # connection volume/rate spikes where this is a real issue.  Without this
     # setting, turning on keepalives for nginx->varnish tends to cause 502 Bad
-    # Gateway spikes (whereas without keepalives, clients were being delayed
-    # or queued slightly waiting indirectly on the TIME_WAIT slots).
+    # Gateway spikes (whereas without keepalives, clients were being delayed or
+    # queued slightly waiting indirectly on the TIME_WAIT slots).
     #    There may be better solutions for this problem in the big picture -
     # like balancing nginx->varnish local traffic across several local
     # listening ports for varnish-fe, or using unix domain sockets for these
-    # connections and avoiding IP entirely (if varnishd supported them).  Or
-    # of course implementing decent HTTPS support directly in varnish :P
-    sysctl::parameters { 'tw_reuse':
-        values => { 'net.ipv4.tcp_tw_reuse' => 1 },
-    }
-
+    # connections and avoiding IP entirely (if varnishd supported them).  Or of
+    # course implementing decent HTTPS support directly in varnish :P
+    # ---
     # tcp_notsent_lowat:
     # Default is -1 (unset).  Setting this changes TCP sockets' writeability
     # behavior.  The default behavior is to keep the socket writeable until the
@@ -82,7 +77,35 @@ class role::cache::perf {
     # cases for any kind of TCP traffic.  ~128K seems to be a common
     # recommendation for something close-ish to optimal for internet-facing
     # things.
-    sysctl::parameters { 'tcp_notsent_lowat':
-        values => { 'net.ipv4.tcp_notsent_lowat' => 131072 },
+    # ---
+
+    # Network tuning for high-load HTTP caches
+    # Ones marked 'mysterious' are of mysterious years-old origin, and need
+    # re-investigation to document their utility and/or re-tune them for new
+    # kernels and traffic levels.
+    sysctl::parameters { 'cache proxy network tuning':
+        values => {
+            # Increase the number of ephemeral ports
+            'net.ipv4.ip_local_port_range'       => [ 1024, 65535 ],
+
+            # Recommended to increase this for 1000 BT or higher
+            'net.core.netdev_max_backlog'        => 30000,  # 'mysterious'
+
+            # Increase the queue size of new TCP connections
+            'net.core.somaxconn'                 => 4096,   # 'mysterious'
+            'net.ipv4.tcp_max_syn_backlog'       => 262144, # 'mysterious'
+            'net.ipv4.tcp_max_tw_buckets'        => 360000, # 'mysterious'
+
+            # Decrease FD/socket usage
+            'net.ipv4.tcp_tw_reuse'              => 1,
+            'net.ipv4.tcp_fin_timeout'           => 3,      # 'mysterious'
+            'net.ipv4.tcp_max_orphans'           => 262144, # 'mysterious'
+            'net.ipv4.tcp_synack_retries'        => 2,      # 'mysterious'
+            'net.ipv4.tcp_syn_retries'           => 2,      # 'mysterious'
+
+            # Pure perf hacks
+            'net.ipv4.tcp_notsent_lowat'         => 131072,
+            'net.ipv4.tcp_slow_start_after_idle' => 0,
+        },
     }
 }
