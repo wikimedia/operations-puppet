@@ -96,6 +96,13 @@ class role::cache::perf {
             # will see drops in col 2 of /proc/net/softnet_stat
             'net.core.netdev_max_backlog'        => 60000,
 
+            # budget: Similar to the above, default 300, and is the #packets
+            # handled per NAPI polling cycle across all interfaces.  You can see
+            # effects of this being too low in col 3 of /proc/net/softnet_stat.
+            # Caches show some small numbers there, so, experimenting with
+            # raising this a bit for now
+            'net.core.netdev_budget'             => 1024,
+
             # Default:1 - setting this to zero defers timestamping until after
             # RPS.  It's more efficient this way, but timestamp doesn't account
             # for any tiny delays in queueing before RPS, which I don't think is
