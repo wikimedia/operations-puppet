@@ -50,6 +50,7 @@ class mediawiki::packages::fonts {
         'fonts-crosextra-carlito',   # T84842
         'fonts-crosextra-caladea',   # T84842
         'fonts-smc',                 # T33950
+        'fonts-hosny-amiri',         # T135347
     ]:
         ensure => present,
     }
