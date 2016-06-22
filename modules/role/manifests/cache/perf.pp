@@ -88,8 +88,13 @@ class role::cache::perf {
             # Increase the number of ephemeral ports
             'net.ipv4.ip_local_port_range'       => [ 1024, 65535 ],
 
-            # Recommended to increase this for 1000 BT or higher
-            'net.core.netdev_max_backlog'        => 30000,  # 'mysterious'
+            # All prod caches are 10GbE, standard recommendation is 300K for 10G
+            # and 30K for 1G.  Our inbound traffic max is closer to 1G levels,
+            # since we have 10G LVS splitting traffic to ~8 or more hosts for
+            # high-traffic clusters.  Still, we should double the 1GbE numbers
+            # at least, just in case of bursts and inequality, etc.  If low,
+            # will see drops in col 2 of /proc/net/softnet_stat
+            'net.core.netdev_max_backlog'        => 60000,
 
             # Increase the queue size of new TCP connections
             'net.core.somaxconn'                 => 4096,   # 'mysterious'
