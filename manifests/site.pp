@@ -731,13 +731,16 @@ node /^db20(08|09)\.codfw\.wmnet/ {
 }
 
 ## m1 shard
-node 'db1001.eqiad.wmnet' {
-    class { 'role::coredb::m1':
-        mariadb => true,
-    }
-}
 
 node 'db1016.eqiad.wmnet' {
+    class { 'role::mariadb::misc':
+        shard  => 'm1',
+        master => true,
+    }
+    include base::firewall
+}
+
+node 'db1001.eqiad.wmnet' {
     class { 'role::mariadb::misc':
         shard  => 'm1',
     }
