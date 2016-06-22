@@ -63,6 +63,14 @@ class role::ci::master {
         group  => 'jenkins',
     }
 
+    # Jenkins build records path is set to:
+    # ${JENKINS_HOME}/builds/${ITEM_FULL_NAME}
+    file { '/var/lib/jenkins/builds':
+        ensure => directory,
+        mode   => '2775', # group sticky bit
+        group  => 'jenkins',
+    }
+
     file { '/var/lib/jenkins/bin':
         ensure => directory,
         owner  => 'jenkins',
