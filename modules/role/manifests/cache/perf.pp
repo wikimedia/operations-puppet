@@ -96,6 +96,12 @@ class role::cache::perf {
             # will see drops in col 2 of /proc/net/softnet_stat
             'net.core.netdev_max_backlog'        => 60000,
 
+            # Default:1 - setting this to zero defers timestamping until after
+            # RPS.  It's more efficient this way, but timestamp doesn't account
+            # for any tiny delays in queueing before RPS, which I don't think is
+            # an issue in our case.
+            'net.core.netdev_tstamp_prequeue'    => 0,
+
             # Our rate of incoming SYN on heaviest cp hosts peaks around
             # 1-2K/sec.  For somaxconn, the SYN numbers should be multiplied
             # out for a few seconds of headroom (bursts, and userspace delays)
