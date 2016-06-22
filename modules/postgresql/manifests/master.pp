@@ -43,6 +43,8 @@ class postgresql::master(
     $root_dir='/var/lib/postgresql',
 ) {
 
+    $data_dir = "${root_dir}/${pgversion}/main"
+
     class { 'postgresql::server':
         ensure    => $ensure,
         pgversion => $pgversion,
@@ -57,5 +59,14 @@ class postgresql::master(
         mode    => '0444',
         content => template('postgresql/master.conf.erb'),
         require => Class['postgresql::server'],
+    }
+
+    if $ensure == 'present' {
+        exec { 'pg-initdb':
+            command => "/usr/lib/postgresql/${pgversion}/bin/initdb -D ${data_dir}",
+            user    => 'postgres',
+            unless  => "/usr/bin/test -f ${data_dir}/PG_VERSION",
+            require => Class['postgresql::server'],
+        }
     }
 }
