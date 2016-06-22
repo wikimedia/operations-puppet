@@ -1,4 +1,6 @@
 CREATE ROLE kartotherian  WITH LOGIN PASSWORD '<%= @kartotherian_pass %>';
+ALTER ROLE kartotherian SET statement_timeout = 15000;  -- limit query execution time
+
 CREATE ROLE tilerator  WITH LOGIN PASSWORD '<%= @tilerator_pass %>';
 CREATE ROLE tileratorui  WITH LOGIN PASSWORD '<%= @tileratorui_pass %>';
 
