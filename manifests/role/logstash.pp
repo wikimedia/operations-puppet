@@ -125,11 +125,21 @@ class role::logstash (
         priority => 70,
     }
 
+    logstash::conf { 'filter_normalize_fields':
+        source   => 'puppet:///files/logstash/filter-normalize_fields.conf',
+        priority => 70,
+    }
+
+    logstash::conf { 'filter_de_dot':
+        source   => 'puppet:///files/logstash/filter-de_dot.conf',
+        priority => 70,
+    }
+
     ## Outputs (90)
     # Template for Elasticsearch index creation
     file { '/etc/logstash/elasticsearch-template.json':
         ensure  => present,
-        content => template('logstash/elasticsearch-template.json'),
+        content => template('logstash/elasticsearch-template.json.erb'),
         owner   => 'root',
         group   => 'root',
         mode    => '0444',

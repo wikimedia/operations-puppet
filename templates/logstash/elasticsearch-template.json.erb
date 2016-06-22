@@ -56,7 +56,6 @@
         "geoip"  : {
           "type" : "object",
           "dynamic" : true,
-          "path" : "full",
           "properties" : {
             "location" : {
               "type" : "geo_point",
@@ -101,7 +100,6 @@
         "tags" : {
           "type" : "string",
           "index" : "not_analyzed",
-          "index_name" : "tag",
           "doc_values": true
         },
         "type" : {
