@@ -80,9 +80,6 @@ class role::cache::perf {
     # ---
 
     # Network tuning for high-load HTTP caches
-    # Ones marked 'mysterious' are of mysterious years-old origin, and need
-    # re-investigation to document their utility and/or re-tune them for new
-    # kernels and traffic levels.
     sysctl::parameters { 'cache proxy network tuning':
         values => {
             # Increase the number of ephemeral ports
@@ -112,15 +109,32 @@ class role::cache::perf {
             # and/or cp host depool headroom.
             'net.ipv4.tcp_max_syn_backlog'       => 524288,
 
-            # Decrease FD/socket usage
-            'net.ipv4.tcp_tw_reuse'              => 1,
-            'net.ipv4.tcp_max_tw_buckets'        => 360000, # 'mysterious'
-            'net.ipv4.tcp_fin_timeout'           => 3,      # 'mysterious'
-            'net.ipv4.tcp_max_orphans'           => 262144, # 'mysterious'
-            'net.ipv4.tcp_synack_retries'        => 2,      # 'mysterious'
-            'net.ipv4.tcp_syn_retries'           => 2,      # 'mysterious'
+            # Building on the metrics above - tw_buckets should be somewhere
+            # close to the concurrency/syn_backlog sort of level as well so that
+            # we properly timewait connections when necc.  Note that tw_reuse
+            # moderates the localhost<->localhost timewaits.  max_orphans should
+            # be close to the same value, I think, as most of the lingering TW
+            # will be orphans.
+            'net.ipv4.tcp_max_tw_buckets'        => 524288,
+            'net.ipv4.tcp_max_orphans'           => 524288,
+            'net.ipv4.tcp_tw_reuse'              => 1, # documented above
 
-            # Pure perf hacks
+            # FIN_WAIT_2 orphan time, def 60.  Reducing this reduces wasted
+            # sockets and memory, and there's no good reason to set it higher
+            # than roughly the maximum reasonable client RTT in our case.
+            'net.ipv4.tcp_fin_timeout'           => 3,
+
+            # Defaults are synack:5 and syn:6.  These control retries on SYN
+            # (outbound) and SYNACK (inbound) before giving up on connection
+            # establishment.  The defaults with the normal backoff timers can
+            # leave not-yet-connected sockets lingering for unacceptably-long
+            # times (1-2 minutes).  Aside from waste, that's also a potential
+            # DoS vector we'd rather not have.  The "2" value drops the maximum
+            # time windows down to ~7 seconds.
+            'net.ipv4.tcp_synack_retries'        => 2,
+            'net.ipv4.tcp_syn_retries'           => 2,
+
+            # Pure perf hacks (documented above)
             'net.ipv4.tcp_notsent_lowat'         => 131072,
             'net.ipv4.tcp_slow_start_after_idle' => 0,
         },
