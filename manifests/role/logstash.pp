@@ -125,6 +125,11 @@ class role::logstash (
         priority => 70,
     }
 
+    logstash::conf { 'filter_de_dot':
+        source   => 'puppet:///files/logstash/filter-do_dot.conf',
+        priority => 70,
+    }
+
     ## Outputs (90)
     # Template for Elasticsearch index creation
     file { '/etc/logstash/elasticsearch-template.json':
