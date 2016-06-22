@@ -55,7 +55,16 @@ def main():
                      "projects": "ou=projects," + base,
                      "projectroles": "ou=projects," + base}
     objectdefaulttypes = {"base": "none",
-                          "passwd": "uid",
+                          "passwd": [
+                            "uid",
+                            "sn",
+                            "cn",
+                            "givenName",
+                            "homeDirectory",
+                            "mail",
+                            "uidNumber",
+                            "gidNumber",
+                          ],
                           "group": "cn",
                           "netgroup": "cn",
                           "hosts": "associatedDomain",
@@ -83,11 +92,13 @@ def main():
 
     if options.helpme:
         print ""
-        print 'database'.ljust(17) + 'default type'.ljust(20) + 'objectclass'
-        print '============='.ljust(17) + '================='.ljust(20) + '============='
+        print 'database'.ljust(17) + 'default type'.ljust(70) + 'objectclass'
+        print '============='.ljust(17) + '================='.ljust(70) + '============='
 
         for a, b, c in zip(objectbasedns.keys(), objectdefaulttypes.values(), objectobjectclasses.values()):
-            print '%s%s%s' % (a.ljust(17), b.ljust(20), c)
+            if isinstance(b, list):
+                b = ','.join(b)
+            print '%s%s%s' % (a.ljust(17), b.ljust(70), c)
         sys.exit()
 
     if len(args) >= 1:
@@ -141,15 +152,20 @@ def main():
             attrlist = []
             if options.showattributes is not None:
                 attrlist = re.split(" ", options.showattributes)
+            if options.showattributes is None:
+                attributes = ""
+            else:
+                attributes = options.showattributes
+            if isinstance(attribute, list):
+                t = ["(%s%s*%s*)" % (attr, searchoperator, searchkey) for attr in attribute]
+                t = "(|" + ''.join(t) + ")"
+                ldapfilter = "(&(objectclass=" + objectclass + ")" + t + ")"
+            else:
+                ldapfilter = "(&(objectclass=" + objectclass + ")(" + attribute + searchoperator + searchkey + "))"
             if options.verbose:
-                if options.showattributes is None:
-                    attributes = ""
-                else:
-                    attributes = options.showattributes
                 print "+++ database=" + database
-                print "+++ filter=(&(objectclass=" + objectclass + ")(" + attribute + searchoperator + searchkey + ")) " + attributes
-            PosixData = ds.search_s(base, ldap.SCOPE_SUBTREE,
-                                    "(&(objectclass=" + objectclass + ")(" + attribute + searchoperator + searchkey + "))",
+                print "+++ filter=" + ldapfilter + attributes
+            PosixData = ds.search_s(base, ldap.SCOPE_SUBTREE, ldapfilter,
                                     attrlist)
         else:
             if options.verbose:
@@ -164,8 +180,8 @@ def main():
         sys.stderr.write("The search returned a protocol error, this shouldn't ever happen, please submit a trouble ticket.\n")
         ds.unbind()
         sys.exit(1)
-    except Exception:
-        sys.stderr.write("The search returned an error.\n")
+    except Exception as e:
+        sys.stderr.write("The search returned an error: %s.\n" % e)
         ds.unbind()
         sys.exit(1)
 
