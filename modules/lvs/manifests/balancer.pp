@@ -58,6 +58,12 @@ class lvs::balancer(
             'net.ipv4.vs.drop_entry'          => 1,
             # Also schedule ICMPs, like e.g. fragmentation needed (needs Linux 4.4.0)
             'net.ipv4.vs.schedule_icmp'       => 1,
+
+            # basic netdev tuning for 10GbE interfaces at full speed with RPS.
+            # See deeper details in role::cache::perf
+            'net.core.netdev_max_backlog'        => 300000,
+            'net.core.netdev_budget'             => 1024,
+            'net.core.netdev_tstamp_prequeue'    => 0,
         },
     }
 }
