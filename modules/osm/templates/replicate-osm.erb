@@ -26,3 +26,10 @@ export JAVACMD_OPTIONS="\
       --username osmupdater \
       --database gis \
       --append $EXTRA_PARAMS -
+
+if [ $? -ne 0 ] ; then
+  echo "Error while replicating OSM data"
+  exit -1
+fi
+
+<% if @postreplicate_command %><%= @postreplicate_command %><% end %>
