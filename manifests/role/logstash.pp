@@ -125,6 +125,12 @@ class role::logstash (
         priority => 70,
     }
 
+    logstash::conf { 'filter_de_dot':
+        source   => 'puppet:///files/logstash/filter-do_dot.conf',
+        priority => 70,
+    }
+
+
     ## Outputs (90)
     # Template for Elasticsearch index creation
     file { '/etc/logstash/elasticsearch-template.json':
@@ -138,7 +144,7 @@ class role::logstash (
 
     logstash::output::elasticsearch { 'logstash':
         host            => '127.0.0.1',
-        guard_condition => '"es" in [tags]',
+        guard_condition => '"es in [tags]',
         manage_indices  => true,
         priority        => 90,
         template        => '/etc/logstash/elasticsearch-template.json',
@@ -150,7 +156,7 @@ class role::logstash (
             template_name   => 'logstash',
             index_prefix    => 'logstash',
             host            => $logstash_alt_host,
-            guard_condition => '"es" in [tags]',
+            guard_condition => '"es2" in [tags]',
             manage_indices  => true,
             priority        => 90,
             template        => '/etc/logstash/elasticsearch-template.json',
