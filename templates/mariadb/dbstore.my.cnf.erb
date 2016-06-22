@@ -69,6 +69,9 @@ join_cache_level = 8
 
 plugin-load = ha_tokudb
 tokudb_cache_size = 24G
+# Tokudb will stop working when there is less than 1% of free disk space
+# (5% by default)
+tokudb_fs_reserve_percent = 1 
 
 skip-slave-start
 slave_transaction_retries = 4294967295
