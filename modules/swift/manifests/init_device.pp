@@ -7,7 +7,7 @@ define swift::init_device($partition_nr='1') {
     $dev_suffix    = regsubst($dev, '^\/dev\/(.*)$', '\1')
     $fs_label      = "swift-${dev_suffix}"
     $parted_cmd    = "parted --script --align optimal ${title}"
-    $parted_script = "mklabel gpt mkpart ${fs_label} 0 100%"
+    $parted_script = "mklabel gpt mkpart ${fs_label} 1M 100%"
 
     exec { "parted-${title}":
         path    => '/usr/bin:/bin:/usr/sbin:/sbin',
