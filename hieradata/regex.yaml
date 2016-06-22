@@ -59,7 +59,7 @@ es_eqiad_rack_d3:
   elasticsearch::row:  D
 
 es_eqiad_rack_d4:
-  __regex: !ruby/regexp /^elastic10(05|06|23|24|25|26|27|28|29)\.eqiad\.wmnet$/
+  __regex: !ruby/regexp /^elastic10(05|06|23|24|25|26|27|28|29|43|44|46|47)\.eqiad\.wmnet$/
   elasticsearch::rack: D4
   elasticsearch::row:  D
 
