@@ -2069,7 +2069,7 @@ node /^ms-be20(0[0-9]|1[0-5])\.codfw\.wmnet$/ {
 }
 
 # HP machines have different disk ordering T90922
-node /^ms-be20(1[6-9]|2[0-1])\.codfw\.wmnet$/ {
+node /^ms-be20(1[6-9]|2[0-7])\.codfw\.wmnet$/ {
     role swift::storage
 }
 

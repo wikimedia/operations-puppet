@@ -54,6 +54,12 @@ storagehosts:
   - ms-be2019.codfw.wmnet
   - ms-be2020.codfw.wmnet
   - ms-be2021.codfw.wmnet
+  - ms-be2022.codfw.wmnet
+  - ms-be2023.codfw.wmnet
+  - ms-be2024.codfw.wmnet
+  - ms-be2025.codfw.wmnet
+  - ms-be2026.codfw.wmnet
+  - ms-be2027.codfw.wmnet
   - ms-be3001.esams.wmnet
   - ms-be3002.esams.wmnet
   - ms-be3003.esams.wmnet
