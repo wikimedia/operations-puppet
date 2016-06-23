@@ -1,4 +1,4 @@
-class base::grub($ioscheduler = 'deadline', $enable_memory_cgroup = false) {
+class base::grub($ioscheduler = 'deadline', $enable_memory_cgroup = false, $tcpmhash_entries = 0) {
     # The augeas Shellvars_list lens can't handle backticks for
     # versions < 1.2.0 (practically every distro older than jessie).
     # We fallback to the legacy grep/sed method in that case.
@@ -10,6 +10,11 @@ class base::grub($ioscheduler = 'deadline', $enable_memory_cgroup = false) {
         $swapaccount_line = $enable_memory_cgroup ? {
             true => 'set GRUB_CMDLINE_LINUX/value[. = "swapaccount=1"] swapaccount=1',
             false => 'rm GRUB_CMDLINE_LINUX/value[. = "swapaccount=1"]'
+        }
+
+        $tcpmhash_line = $tcpmhash_entries ? {
+            0       => 'rm GRUB_CMDLINE_LINUX/value[. =~ glob("tcpmhash_entries=*")]',
+            default => "set GRUB_CMDLINE_LINUX/value[. =~ glob(\"tcpmhash_entries=*\")] tcpmhash_entries=${tcpmhash_entries}"
         }
 
         augeas { 'grub2':
@@ -27,6 +32,7 @@ class base::grub($ioscheduler = 'deadline', $enable_memory_cgroup = false) {
                 "set GRUB_CMDLINE_LINUX/value[. =~ glob(\"elevator=*\")] elevator=${ioscheduler}",
                 $cgroup_line,
                 $swapaccount_line,
+                $tcpmhash_line,
             ],
             notify  => Exec['update-grub'],
         }
