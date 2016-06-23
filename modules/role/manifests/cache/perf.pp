@@ -153,6 +153,27 @@ class role::cache::perf {
             # nginx and/or openssl know what they're doing and we'd benefit from
             # the writes going out immediately and not autocorking...
             'net.ipv4.tcp_autocorking'           => 0,
+
+            # EXPERIMENTAL!
+            # no_metrics_save: default 0.  Most tuning advice on the internet
+            # says set it to 1, our own base-level sysctls for all systems also
+            # set it to 1.  I think it's possible this advice is outdated and
+            # harmful.  The rationale for no_metrics_save is that if there's
+            # congestion/loss, congestion algorithms will cut down the cwnd of
+            # the active connection very aggressively, and are very slow at
+            # recovering from even small bursts of loss, and metrics cache will
+            # carry this over to new connections after a temporary loss burst
+            # that's already ended.  However, Linux 3.2+ implements PRR (RFC
+            # 6937), which mitigates these issues and allows faster/fuller
+            # recovery from loss bursts.  That should reduce the downsides of
+            # saving metrics significantly, and the upsides have always been a
+            # win because we remember (for an hour) past RTT, ssthresh, cwnd,
+            # etc, which often allow better initial connection conditions.
+            # Kernel boot param 'tcpmhash_entries' defaults to 16K on our
+            # caches, and sets hash table slots for this.  We'd probably be
+            # better off with a much larger hashtable (maybe 64K or 128K?), as
+            # the chains will be long on high-traffic cache hosts at 16K.
+            'net.ipv4.tcp_no_metrics_save'       => 0,
         },
     }
 }
