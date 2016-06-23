@@ -1,9 +1,0 @@
-/var/log/mylvmbackup/*.log
-{
-    rotate 4
-    weekly
-    missingok
-    notifempty
-    compress
-    nocreate
-}
