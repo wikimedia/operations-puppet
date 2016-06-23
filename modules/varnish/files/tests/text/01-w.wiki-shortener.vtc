@@ -1,0 +1,20 @@
+varnishtest "w.wiki shortener"
+
+server s1 {
+    rxreq
+    expect req.url == "/wiki/Special:UrlRedirector/test"
+    txresp
+} -start
+
+varnish v1 -arg "-p vcc_err_unref=false" -vcl+backend {
+    backend vtc_backend {
+        .host = "${s1_addr}"; .port = "${s1_port}";
+    }
+
+    include "/usr/share/varnish/tests/wikimedia_text-backend.vcl";
+} -start
+
+client c1 {
+    txreq -url "/test" -hdr "Host: w.wiki"
+    rxresp
+} -run
