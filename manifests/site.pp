@@ -938,7 +938,13 @@ node 'einsteinium.wikimedia.org' {
     include base::firewall
 }
 
-node /^elastic10[0-3][0-9]\.eqiad\.wmnet/ {
+node /^elastic101[7-9]\.eqiad\.wmnet/ {
+    role elasticsearch::server
+    include base::firewall
+    include standard
+}
+
+node /^elastic10[2-3][0-9]\.eqiad\.wmnet/ {
     role elasticsearch::server
     include base::firewall
     include standard
