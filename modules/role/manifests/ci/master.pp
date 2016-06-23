@@ -21,6 +21,15 @@ class role::ci::master {
 
     backup::set { 'contint' : }
 
+    # Nodepool spawn non ephemeral slaves which causes config-history plugin to
+    # pill up entries until it reaches the limit of 32k inodes. T126552
+    tidy { 'history of nodepool slaves config':
+        path    => '/var/lib/jenkins/config-history/nodes',
+        age     => '1d',
+        recurse => true,
+        matches => 'ci-*_deleted_*',
+    }
+
     nrpe::monitor_service { 'jenkins_zmq_publisher':
         description   => 'jenkins_zmq_publisher',
         contact_group => 'contint',
