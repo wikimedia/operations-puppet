@@ -6592,6 +6592,11 @@ host wdqs1002 {
     fixed-address wdqs1002.eqiad.wmnet;
 }
 
+host WMF4724 {
+    hardware ethernet 14:18:77:33:4A:C0;
+    fixed-address WMF4724.eqiad.wmnet;
+}
+
 host wtp1001 {
     hardware ethernet 90:B1:1C:2D:85:30;
     fixed-address wtp1001.eqiad.wmnet;
