@@ -2,7 +2,14 @@
 
 sub cluster_fe_recv_pre_purge { }
 
-sub cluster_fe_recv { }
+sub cluster_fe_recv {
+	if (req.url ~ "^/shape"
+		&& req.http.referer
+		&& req.http.referer !~ "(?i)^https?://[-a-zA-Z0-9.]+\.wmflabs\.org(/|$)"
+	) {
+		return (synth(403, "Access Denied"));
+	}
+}
 
 sub cluster_fe_hash { }
 sub cluster_fe_hit { }
