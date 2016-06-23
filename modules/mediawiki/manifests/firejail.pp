@@ -34,4 +34,11 @@ class mediawiki::firejail {
         group  => 'root',
         mode   => '0555',
     }
+
+    file { '/usr/local/bin/mediawiki-firejail-rsvg-convert':
+        source => 'puppet:///modules/mediawiki/mediawiki-firejail-rsvg-convert',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+    }
 }
