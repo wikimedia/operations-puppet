@@ -37,48 +37,6 @@ class role::cache::perf {
         },
     }
 
-    # Extended notes/docs on network tunables below
-    # ---
-    # tcp_slow_start_after_idle: SSR resets the congestion window of
-    # connections that have gone idle, which means it has a tendency to reset
-    # the congestion window of HTTP keepalive and HTTP/2 connections, which are
-    # characterized by short bursts of activity separated by long idle times.
-    # ---
-    # tcp_tw_(reuse|recycle): both are off by default
-    # cf. http://vincent.bernat.im/en/blog/2014-tcp-time-wait-state-linux.html
-    #    _recycle is dangerous: it violates RFCs, and probably breaks clients
-    # when many clients are behind a single NAT gateway, and affects the
-    # recycling of TIME_WAIT slots for both incoming and outgoing connections.
-    #    _reuse is not-so-dangerous: it only affects outgoing connections, and
-    # looks at timestamp and other state information to gaurantee that the
-    # reuse doesn't cause issues within reasonable constraints.
-    #    This helps prevent TIME_WAIT issues for our $localip<->$localip
-    # connections from nginx to varnish-fe:80 - some of our caches reach
-    # connection volume/rate spikes where this is a real issue.  Without this
-    # setting, turning on keepalives for nginx->varnish tends to cause 502 Bad
-    # Gateway spikes (whereas without keepalives, clients were being delayed or
-    # queued slightly waiting indirectly on the TIME_WAIT slots).
-    #    There may be better solutions for this problem in the big picture -
-    # like balancing nginx->varnish local traffic across several local
-    # listening ports for varnish-fe, or using unix domain sockets for these
-    # connections and avoiding IP entirely (if varnishd supported them).  Or of
-    # course implementing decent HTTPS support directly in varnish :P
-    # ---
-    # tcp_notsent_lowat:
-    # Default is -1 (unset).  Setting this changes TCP sockets' writeability
-    # behavior.  The default behavior is to keep the socket writeable until the
-    # whole socket buffer fills.  With this set, even if there's buffer space,
-    # the kernel doesn't notify of writeability (e.g. via epoll()) until the
-    # amount of unsent data (as opposed to unacked) in the socket buffer is
-    # less than this value.  This reduces local buffer bloat on our server's
-    # sending side, which may help with HTTP/2 prioritization.  The magic value
-    # for tuning is debateable, but arguably even setting a conservative
-    # (higher) value here is better than not setting it all, in almost all
-    # cases for any kind of TCP traffic.  ~128K seems to be a common
-    # recommendation for something close-ish to optimal for internet-facing
-    # things.
-    # ---
-
     # Network tuning for high-load HTTP caches
     sysctl::parameters { 'cache proxy network tuning':
         values => {
@@ -130,7 +88,21 @@ class role::cache::perf {
             # will be orphans.
             'net.ipv4.tcp_max_tw_buckets'        => 524288,
             'net.ipv4.tcp_max_orphans'           => 524288,
-            'net.ipv4.tcp_tw_reuse'              => 1, # documented above
+
+            # tcp_tw_(reuse|recycle): both are off by default
+            # http://vincent.bernat.im/en/blog/2014-tcp-time-wait-state-linux.html
+            #    _recycle is dangerous: it violates RFCs, and probably breaks
+            # clients when many clients are behind a single NAT gateway, and
+            # affects the recycling of TIME_WAIT slots for both incoming and
+            # outgoing connections.
+            #    _reuse is not-so-dangerous: it only affects outgoing
+            # connections, and looks at timestamp and other state information to
+            # gaurantee that the reuse doesn't cause issues within reasonable
+            # constraints.
+            #    This helps prevent TIME_WAIT issues for our $localip<->$localip
+            # connections from nginx to varnish-fe:80 - some of our caches reach
+            # connection volume/rate spikes where this is a real issue.
+            'net.ipv4.tcp_tw_reuse'              => 1,
 
             # FIN_WAIT_2 orphan time, def 60.  Reducing this reduces wasted
             # sockets and memory, and there's no good reason to set it higher
@@ -147,6 +119,28 @@ class role::cache::perf {
             'net.ipv4.tcp_synack_retries'        => 2,
             'net.ipv4.tcp_syn_retries'           => 2,
 
+            # tcp_slow_start_after_idle: SSR resets the congestion window of
+            # connections that have gone idle, which means it has a tendency to
+            # reset the congestion window of HTTP keepalive and HTTP/2
+            # connections, which are characterized by short bursts of activity
+            # separated by long idle times.
+            'net.ipv4.tcp_slow_start_after_idle' => 0,
+
+            # tcp_notsent_lowat: Default is -1 (unset).  The default behavior is
+            # to keep the socket writeable until the whole socket buffer fills.
+            # With this set, even if there's buffer space, the kernel doesn't
+            # notify of writeability (e.g. via epoll()) until the amount of
+            # unsent data (as opposed to unacked) in the socket buffer is less
+            # than this value.  This reduces local buffer bloat on our server's
+            # sending side, which may help with HTTP/2 prioritization.  The
+            # magic value for tuning is debateable, but arguably even setting a
+            # conservative (higher) value here is better than not setting it
+            # all, in almost all cases for any kind of TCP traffic.  ~128K seems
+            # to be a common recommendation for something close-ish to optimal
+            # for internet-facing things.
+            'net.ipv4.tcp_notsent_lowat'         => 131072,
+
+            # EXPERIMENTAL!
             # TCP autocorking exists and defaults on from 3.14 onwards.  The
             # idea is that some applications that should be doing a better job
             # of local buffering or manual TCP_CORK aren't, and the kernel
@@ -159,10 +153,6 @@ class role::cache::perf {
             # nginx and/or openssl know what they're doing and we'd benefit from
             # the writes going out immediately and not autocorking...
             'net.ipv4.tcp_autocorking'           => 0,
-
-            # Pure perf hacks (documented above)
-            'net.ipv4.tcp_notsent_lowat'         => 131072,
-            'net.ipv4.tcp_slow_start_after_idle' => 0,
         },
     }
 }
