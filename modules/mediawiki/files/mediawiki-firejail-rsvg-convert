@@ -1,0 +1,5 @@
+#! /usr/bin/python
+# -*- coding: utf-8 -*-
+
+import sys, subprocess
+subprocess.call(['/usr/bin/firejail', '--profile=/etc/firejail/mediawiki-converters.profile', '/usr/bin/rsvg-convert'] + sys.argv[1:])
