@@ -103,7 +103,7 @@ class role::cache::misc {
         'etherpadrestore' => {
             'dynamic'  => 'no',
             'type'     => 'random',
-            'backends' => ['etherpad1001.eqiad.wmnet'],
+            'backends' => ['etherpad1001b.eqiad.wmnet'],
             'be_opts'  => merge($app_def_be_opts, { 'port' => 9002 }),
             'req_host' => 'etherpad-restore.wikimedia.org',
         },
