@@ -1,8 +1,7 @@
 class base::grub($ioscheduler = 'deadline', $enable_memory_cgroup = false, $tcpmhash_entries = 0) {
-    # The augeas Shellvars_list lens can't handle backticks for
-    # versions < 1.2.0 (practically every distro older than jessie).
+    # The augeas Shellvars_list lens can't handle backticks for versions < 1.2
     # We fallback to the legacy grep/sed method in that case.
-    if versioncmp($::augeasversion, '1.2.0') >= 0 and os_version('Debian >= jessie') {
+    if versioncmp($::augeasversion, '1.2.0') >= 0 {
         $cgroup_line = $enable_memory_cgroup ? {
             true => 'set GRUB_CMDLINE_LINUX/value[. = "cgroup_enable=memory"] cgroup_enable=memory',
             false => 'rm GRUB_CMDLINE_LINUX/value[. = "cgroup_enable=memory"]'
