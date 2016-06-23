@@ -446,7 +446,7 @@ override	*jobs.wikipedia.org/	//wikimediafoundation.org/wiki/Work_with_us
 funnel	*pywikipedia.org	//tools.wmflabs.org/pywikibot/
 
 # w.wiki - upcoming URL shortener
-funnel	*w.wiki	//www.wikipedia.org
+funnel	*w.wiki	//meta.wikimedia.org/wiki/Special:UrlShortener
 
 # T84277
 override	wikimedia.org/research	https://wikimedia.qualtrics.com/SE/?SID=SV_6R04ammTX8uoJFP
