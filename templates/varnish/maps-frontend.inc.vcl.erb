@@ -2,7 +2,17 @@
 
 sub cluster_fe_recv_pre_purge { }
 
-sub cluster_fe_recv { }
+sub cluster_fe_recv {
+	if (req.url ~ "^/shape"
+		&& req.http.referer
+		&& req.http.referer !~ "(?i)^https?://[-a-zA-Z0-9.]+\.wmflabs\.org(/|$)"
+		// Vagrant support
+		&& req.http.referer !~ "(?i)^https?://([-a-zA-Z0-9.]+\.)?wmftest\.net(:\d+)?(/|$)"
+		&& req.http.referer !~ "(?i)^https?://(localhost|127\.0\.0\.1)(:\d+)?(/|$)"
+	) {
+		return (synth(403, "Access Denied"));
+	}
+}
 
 sub cluster_fe_hash { }
 sub cluster_fe_hit { }
