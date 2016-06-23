@@ -12,22 +12,6 @@ elasticsearch::unicast_hosts: # this should be set to the list of master eligibl
 lvs::realserver::realserver_ips: "10.2.2.30"
 
 elasticsearch::cluster_hosts:
-  - elastic1001.eqiad.wmnet
-  - elastic1002.eqiad.wmnet
-  - elastic1003.eqiad.wmnet
-  - elastic1004.eqiad.wmnet
-  - elastic1005.eqiad.wmnet
-  - elastic1006.eqiad.wmnet
-  - elastic1007.eqiad.wmnet
-  - elastic1008.eqiad.wmnet
-  - elastic1009.eqiad.wmnet
-  - elastic1010.eqiad.wmnet
-  - elastic1011.eqiad.wmnet
-  - elastic1012.eqiad.wmnet
-  - elastic1013.eqiad.wmnet
-  - elastic1014.eqiad.wmnet
-  - elastic1015.eqiad.wmnet
-  - elastic1016.eqiad.wmnet
   - elastic1017.eqiad.wmnet
   - elastic1018.eqiad.wmnet
   - elastic1019.eqiad.wmnet
