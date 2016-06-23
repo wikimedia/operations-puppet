@@ -78,9 +78,7 @@ sub misspass_mangle {
 		// Redirect url shortener w.wiki urls to meta (T133485)
 		if (req.http.host == "<%= @vcl_config.fetch('shortener_domain') %>") {
 			set bereq.http.host = "meta.wikimedia.<%= @vcl_config.fetch('top_domain') %>";
-			if (req.url == "/") {
-				set bereq.url = "/wiki/Special:UrlShortener";
-			} else {
+			if (req.url != "/") {
 				set bereq.url = "/wiki/Special:UrlRedirector" + req.url;
 			}
 		}
