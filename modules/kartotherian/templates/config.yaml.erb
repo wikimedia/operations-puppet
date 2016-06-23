@@ -8,3 +8,12 @@ variables:
     cassandra-pswd: '<%= @cassandra_kartotherian_pass %>'
 
 sources: <%= @conf_sources %>
+
+# TODO: allowUserQueries should be removed when geoshapes are enabled in prod
+geoshapes:
+    allowUserQueries: true
+    host: localhost
+    database: gis
+    user: '<%= @pgsql_kartotherian_user %>'
+    password: '<%= @pgsql_kartotherian_pass %>'
+    table: planet_osm_polygon
