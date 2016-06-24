@@ -77,12 +77,10 @@ class role::url_downloader {
         config_content => $config_content,
     }
 
-    # Restrict the service to WMF only networks using the $ALL_NETWORKS ferm
-    # macro
     ferm::service { 'url_downloader':
         proto  => 'tcp',
         port   => $url_downloader_port,
-        srange => '$ALL_NETWORKS',
+        srange => '$PRODUCTION_NETWORKS',
     }
 
     # Monitoring
