@@ -22,6 +22,9 @@ cassandra::instances:
 
 cassandra::cluster_name: "Analytics Query Service Test"
 
+# Enabling Thrift RCP server to test Bulk loading from Hadoop
+cassandra::start_rpc: 'true'
+
 #
 # AQS service
 #
