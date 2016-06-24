@@ -230,7 +230,7 @@ class role::backup::director {
     ferm::service { 'bacula-director':
         proto  => 'tcp',
         port   => '9101',
-        srange => '$ALL_NETWORKS',
+        srange => '$PRODUCTION_NETWORKS',
     }
 
 }

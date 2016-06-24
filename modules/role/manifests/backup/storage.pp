@@ -57,6 +57,6 @@ class role::backup::storage() {
     ferm::service { 'bacula-storage-demon':
         proto  => 'tcp',
         port   => '9103',
-        srange => '$ALL_NETWORKS',
+        srange => '$PRODUCTION_NETWORKS',
     }
 }
