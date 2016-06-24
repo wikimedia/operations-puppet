@@ -12,9 +12,11 @@ class contint::packages::labs {
     include ::mediawiki::packages
     include ::mediawiki::packages::multimedia  # T76661
 
-    # Fonts needed for browser tests screenshots (T71535)
     if os_version('ubuntu >= trusty || Debian >= jessie') {
+        # Fonts needed for browser tests screenshots (T71535)
         include mediawiki::packages::fonts
+        # No Android SDK jobs on Precise
+        include ::contint::packages::androidsdk
     }
 
     include ::contint::packages::analytics
@@ -76,16 +78,6 @@ class contint::packages::labs {
         file { '/usr/lib/libz.so':
             ensure => link,
             target => '/usr/lib/x86_64-linux-gnu/libz.so',
-        }
-
-        package { [
-            # Android SDK
-            'gcc-multilib',
-            'lib32z1',
-            'lib32stdc++6',
-            # Android emulation
-            'qemu',
-            ]: ensure => present,
         }
 
         exec {'jenkins-deploy kvm membership':
