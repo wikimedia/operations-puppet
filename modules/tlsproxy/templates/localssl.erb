@@ -9,6 +9,9 @@ upstream local_fe_<%= @basename %> {
 
 # SSL proxying
 server {
+	# Enabling TCP Fast Open is safe for HTTP over TLS. There is no idempotency
+	# concern replaying TLS Client Hello.
+	# https://tools.ietf.org/html/rfc7413#section-6.3.2
 	listen [::]:443 <%= @default_server ? "default_server deferred backlog=16384 reuseport ipv6only=on fastopen=#{fastopen_pending_max} " : "" %>ssl http2;
 	listen 443 <%= @default_server ? "default_server deferred backlog=16384 reuseport fastopen=#{fastopen_pending_max} " : "" %>ssl http2;
 	ssl on;
@@ -62,6 +65,10 @@ server {
 }
 <% if @redir_port -%>
 server {
+	# Enable TCP Fast Open for http -> https redirects since there are no
+	# idempotency concerns with HTTPS.
+	# Note that TFO is *not* safe in general for non-TLS HTTP. See
+	# https://tools.ietf.org/html/rfc7413#section-6.3.1
 	listen [::]:<%= @redir_port %> <%= @default_server ? "default_server deferred backlog=4096 reuseport ipv6only=on fastopen=#{fastopen_pending_max} " : "" %>;
 	listen <%= @redir_port %> <%= @default_server ? "default_server deferred backlog=4096 reuseport fastopen=#{fastopen_pending_max} " : "" %>;
 	server_name <%= ([@server_name] + @server_aliases).join(" ") %>;
