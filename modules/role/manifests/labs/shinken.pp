@@ -24,4 +24,7 @@ class role::labs::shinken(
     if $ircbot {
         include shinken::ircbot
     }
+
+    include beta::monitoring::shinken
+    include toollabs::monitoring::shinken
 }
