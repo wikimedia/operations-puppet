@@ -59,5 +59,23 @@ class role::graphite::production {
         port   => '1903',
         srange => "@resolve((${graphite_hosts_ferm}))",
     }
+
+    ferm::service { 'carbon_c_relay-frontend_relay_udp':
+        proto  => 'udp',
+        port   => '2003',
+        srange => '$ALL_NETWORKS',
+    }
+
+    ferm::service { 'carbon_c_relay-frontend_relay_tcp':
+        proto  => 'tcp',
+        port   => '2003',
+        srange => '$ALL_NETWORKS',
+    }
+
+    ferm::service { 'carbon_pickled':
+        proto  => 'tcp',
+        port   => '2004',
+        srange => '$INTERNAL',
+    }
 }
 
