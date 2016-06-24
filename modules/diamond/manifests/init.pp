@@ -117,7 +117,24 @@ class diamond(
 
     diamond::collector { 'Network': }
 
-    diamond::collector { 'TCP': }
+    diamond::collector { 'TCP':
+        settings          => {
+            allowed_names => [
+              'ListenOverflows', 'ListenDrops',
+              'TCPLoss', 'TCPTimeouts',
+              'TCPFastRetrans', 'TCPLostRetransmit',
+              'TCPForwardRetrans', 'TCPSlowStartRetrans',
+              'CurrEstab', 'TCPAbortOnMemory',
+              'TCPBacklogDrop', 'AttemptFails',
+              'EstabResets', 'InErrs',
+              'ActiveOpens', 'PassiveOpens',
+              'TCPFastOpenActive', 'TCPFastOpenActiveFail',
+              'TCPFastOpenPassive', 'TCPFastOpenPassiveFail',
+              'TCPFastOpenListenOverflow', 'TCPFastOpenCookieReqd',
+              'TCPSynRetrans', 'TCPOrigDataSent'
+            ]
+        }
+    }
 
     diamond::collector { 'Ntpd': }
 
