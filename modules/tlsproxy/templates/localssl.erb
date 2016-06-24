@@ -9,8 +9,8 @@ upstream local_fe_<%= @basename %> {
 
 # SSL proxying
 server {
-	listen [::]:443 <%= @default_server ? "default_server deferred backlog=16384 reuseport ipv6only=on " : "" %>ssl http2 fastopen=<%= @fastopen_pending_max %>;
-	listen 443 <%= @default_server ? "default_server deferred backlog=16384 reuseport " : "" %>ssl http2 fastopen=<%= @fastopen_pending_max %>;
+	listen [::]:443 <%= @default_server ? "default_server deferred backlog=16384 reuseport ipv6only=on fastopen=#{fastopen_pending_max} " : "" %>ssl http2;
+	listen 443 <%= @default_server ? "default_server deferred backlog=16384 reuseport fastopen=#{fastopen_pending_max} " : "" %>ssl http2;
 	ssl on;
 	server_name <%= ([@server_name] + @server_aliases).join(" ") %>;
 
@@ -62,8 +62,8 @@ server {
 }
 <% if @redir_port -%>
 server {
-	listen [::]:<%= @redir_port %> <%= @default_server ? "default_server deferred backlog=4096 reuseport ipv6only=on " : "" %> fastopen=<%= @fastopen_pending_max %>;
-	listen <%= @redir_port %> <%= @default_server ? "default_server deferred backlog=4096 reuseport " : "" %> fastopen=<%= @fastopen_pending_max %>;
+	listen [::]:<%= @redir_port %> <%= @default_server ? "default_server deferred backlog=4096 reuseport ipv6only=on fastopen=#{fastopen_pending_max} " : "" %>;
+	listen <%= @redir_port %> <%= @default_server ? "default_server deferred backlog=4096 reuseport fastopen=#{fastopen_pending_max} " : "" %>;
 	server_name <%= ([@server_name] + @server_aliases).join(" ") %>;
 
 	error_log   /var/log/nginx/<%= @name %>.error.log;
