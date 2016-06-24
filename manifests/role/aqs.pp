@@ -51,6 +51,14 @@ class role::aqs {
         srange => "(@resolve((${cassandra_hosts_ferm})) @resolve((${aqs_hosts_ferm})) ${analytics_networks})",
     }
 
+    # Thrift RCP port
+    # Usage: bulk loading from Hadoop to Cassandra
+    ferm::service { 'cassandra-analytics-cql':
+        proto  => 'tcp',
+        port   => '9160',
+        srange => "(@resolve(${analytics_networks}))",
+    }
+
     #
     # Set up AQS
     #
