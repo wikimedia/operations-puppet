@@ -36,7 +36,7 @@ class role::installserver {
 
     include install_server::tftp_server
     ferm::rule { 'tftp':
-        rule => 'proto udp dport tftp { saddr $ALL_NETWORKS ACCEPT; }'
+        rule => 'proto udp dport tftp { saddr $PRODUCTION_NETWORKS ACCEPT; }'
     }
 
     if os_version('ubuntu >= trusty') or os_version('debian >= jessie') {
@@ -58,7 +58,7 @@ class role::installserver {
     }
 
     ferm::rule { 'proxy':
-        rule => 'proto tcp dport 8080 { saddr $ALL_NETWORKS ACCEPT; }'
+        rule => 'proto tcp dport 8080 { saddr $PRODUCTION_NETWORKS ACCEPT; }'
     }
 
     include install_server::web_server
@@ -73,7 +73,7 @@ class role::installserver {
 
     include install_server::dhcp_server
     ferm::rule { 'dhcp':
-        rule => 'proto udp dport bootps { saddr $ALL_NETWORKS ACCEPT; }'
+        rule => 'proto udp dport bootps { saddr $PRODUCTION_NETWORKS ACCEPT; }'
     }
 
     # Backup
