@@ -367,6 +367,8 @@ groups:
     members: [smalyshev, hoo, jzerebecki]
     privileges: ['ALL = NOPASSWD: /usr/sbin/service wdqs-blazegraph *',
                  'ALL = NOPASSWD: /usr/sbin/service wdqs-updater *',
+                 'ALL = NOPASSWD: /bin/systemctl enable wdqs-updater',
+                 'ALL = NOPASSWD: /bin/systemctl disable wdqs-updater',
                  'ALL = (blazegraph) NOPASSWD: ALL',
                  'ALL = NOPASSWD: /bin/journalctl *']
   mailman-admins:
