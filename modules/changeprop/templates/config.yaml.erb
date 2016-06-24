@@ -16,17 +16,17 @@ spec:
           options:
             host: <%= @purge_host %>
             port: <%= @purge_port %>
-    /{api:sys}/links:
-      x-modules:
-        - path: src/sys/dep_updates.js
-          options:
-            templates:
-              mw_api:
-                  uri: <%= @mwapi_uri %>
-                  headers:
-                    host: '{{message.meta.domain}}'
-                  body:
-                    formatversion: 2
+#    /{api:sys}/links:
+#      x-modules:
+#        - path: src/sys/dep_updates.js
+#          options:
+#            templates:
+#              mw_api:
+#                  uri: <%= @mwapi_uri %>
+#                  headers:
+#                    host: '{{message.meta.domain}}'
+#                  body:
+#                    formatversion: 2
     /{api:sys}/queue:
       x-modules:
         - path: src/sys/kafka.js
