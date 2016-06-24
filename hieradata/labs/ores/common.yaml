@@ -1,2 +1,0 @@
-# Enable diamond collectors for ores. See T137753
-diamond::handler: diamond.handler.graphite.GraphiteHandler
