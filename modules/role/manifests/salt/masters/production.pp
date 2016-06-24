@@ -28,12 +28,12 @@ class role::salt::masters::production {
     ferm::service { 'salt_master_job_publisher':
         proto  => 'tcp',
         port   => '4505',
-        srange => '$ALL_NETWORKS',
+        srange => '$PRODUCTION_NETWORKS',
     }
 
     ferm::service { 'salt_master_minion_returns':
         proto  => 'tcp',
         port   => '4506',
-        srange => '$ALL_NETWORKS',
+        srange => '$PRODUCTION_NETWORKS',
     }
 }
