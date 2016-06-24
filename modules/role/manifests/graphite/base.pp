@@ -244,27 +244,6 @@ class role::graphite::base(
         description   => $hostname,
         check_command => "check_http_url!${hostname}!/render",
     }
-
-    ferm::service { 'carbon_c_relay-frontend_relay_udp':
-        proto  => 'udp',
-        port   => '2003',
-        srange => '$ALL_NETWORKS',
-    }
-
-    ferm::service { 'carbon_c_relay-frontend_relay_tcp':
-        proto  => 'tcp',
-        port   => '2003',
-        srange => '$ALL_NETWORKS',
-    }
-
-    ferm::service { 'graphite-http':
-        proto => 'tcp',
-        port  => 'http',
-    }
-
-    ferm::service { 'carbon_pickled':
-        proto  => 'tcp',
-        port   => '2004',
-        srange => '$INTERNAL',
-    }
 }
+
+
