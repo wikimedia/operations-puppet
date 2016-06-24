@@ -48,6 +48,9 @@ define tlsproxy::localssl(
     $varnish_version4 = hiera('varnish_version4', false)
     $keepalives_per_worker = hiera('tlsproxy::localssl::keepalives_per_worker', 0)
     $websocket_support = hiera('cache::websocket_support', false)
+    # Maximum number of pending TCP Fast Open requests before falling back to
+    # regular 3WHS. https://tools.ietf.org/html/rfc7413#section-5.1
+    $fastopen_pending_max = hiera('tlsproxy::localssl::fastopen_pending_max', 150)
 
     # Ensure that exactly one definition exists with default_server = true
     # if multiple defines have default_server set to true, this
