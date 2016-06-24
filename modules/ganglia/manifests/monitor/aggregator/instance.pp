@@ -24,13 +24,15 @@ define ganglia::monitor::aggregator::instance($monitored_site) {
     $gmond_port = $ganglia::configuration::base_port + $id
     $cname = "${desc_safe} ${::site}"
 
-    # This will only be realized if base::firewall (well ferm..) is included
+    # The following 2 rules are limited on purpose to only allow production
+    # networks to reach the ganglia aggregators. ganglia has been tried in labs
+    # and failed so for now we will be limiting ganglia aggregation to just
+    # production
     ferm::rule { "aggregator-udp-${id}":
-        rule => "proto udp dport ${gmond_port} { saddr \$ALL_NETWORK_SUBNETS ACCEPT; }",
+        rule => "proto udp dport ${gmond_port} { saddr \$PRODUCTION_NETWORKS ACCEPT; }",
     }
-    # This will only be realized if base::firewall (well ferm..) is included
     ferm::rule { "aggregator-tcp-${id}":
-        rule => "proto tcp dport ${gmond_port} { saddr \$ALL_NETWORK_SUBNETS ACCEPT; }",
+        rule => "proto tcp dport ${gmond_port} { saddr \$PRODUCTION_NETWORKS ACCEPT; }",
     }
 
     # Run these instances in the foreground
