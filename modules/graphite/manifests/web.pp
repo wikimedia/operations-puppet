@@ -108,13 +108,12 @@ class graphite::web(
     uwsgi::app { 'graphite-web':
         settings => {
             uwsgi => {
-                'plugins'     => 'python',
-                'http'        => '127.0.0.1:8383',
-                'stats'       => '/run/uwsgi/graphite-web-stats.sock',
-                'wsgi-file'   => '/usr/share/graphite-web/graphite.wsgi',
-                'master'      => true,
-                'processes'   => $uwsgi_processes,
-                'buffer-size' => '16384',
+                'plugins'   => 'python',
+                'socket'    => '/run/uwsgi/graphite-web.sock',
+                'stats'     => '/run/uwsgi/graphite-web-stats.sock',
+                'wsgi-file' => '/usr/share/graphite-web/graphite.wsgi',
+                'master'    => true,
+                'processes' => $uwsgi_processes,
             },
         },
         require  => File['/var/log/graphite-web'],
