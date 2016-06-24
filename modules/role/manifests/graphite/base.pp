@@ -194,6 +194,7 @@ class role::graphite::base(
 
 
     include ::apache
+    include ::apache::mod::uwsgi
 
     if $auth {
         # Production
