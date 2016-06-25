@@ -1349,7 +1349,7 @@ node 'install2001.wikimedia.org' {
 }
 
 # Phabricator
-node 'iridium.eqiad.wmnet' {
+node /^(iridium|phab2001)\.(codfw|eqiad)\.wmnet$/
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
     }
