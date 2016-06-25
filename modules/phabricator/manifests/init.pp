@@ -26,8 +26,6 @@
 #     maintenance
 #     Requires: mysql_admin_user
 #
-# [*extensions*]
-#     Array of extensions to load
 #
 # [*serveralias*]
 #     Alternative domain on which to respond too
@@ -55,7 +53,6 @@ class phabricator (
     $timezone         = 'UTC',
     $trusted_proxies  = [],
     $libraries        = [],
-    $extensions       = [],
     $settings         = {},
     $mysql_admin_user = '',
     $mysql_admin_pass = '',
@@ -165,22 +162,6 @@ class phabricator (
             require => $base_requirements,
         }
         $phab_settings['load-libraries'] = $libraries
-    }
-
-    if ($extensions) {
-        file { "${phabdir}/phabricator/src/extensions":
-            ensure  => 'directory',
-            path    => "${phabdir}/phabricator/src/extensions",
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0755',
-            require => $base_requirements,
-        }
-
-        phabricator::extension { $extensions:
-            rootdir => $phabdir,
-            require => $base_requirements,
-        }
     }
 
     file { '/etc/php5/apache2/php.ini':

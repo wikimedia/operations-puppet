@@ -11,7 +11,6 @@ class role::phabricator::labs {
         libraries     => ["${phab_root_dir}/libext/Sprint/src",
                           "${phab_root_dir}/libext/security/src",
                           "${phab_root_dir}/libext/misc/"],
-        extensions    => [ ],
         settings      => {
             'darkconsole.enabled'             => true,
             'phabricator.base-uri'            => "https://${::hostname}.wmflabs.org",
