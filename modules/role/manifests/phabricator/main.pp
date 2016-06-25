@@ -37,7 +37,6 @@ class role::phabricator::main {
         libraries        => [ "${phab_root_dir}/libext/Sprint/src",
                               "${phab_root_dir}/libext/security/src",
                               "${phab_root_dir}/libext/misc/" ],
-        extensions       => [ ],
         settings         => {
             'darkconsole.enabled'                    => false,
             'phabricator.base-uri'                   => "https://${domain}",
