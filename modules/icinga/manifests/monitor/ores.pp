@@ -5,6 +5,10 @@ class icinga::monitor::ores {
         host_fqdn => 'ores.wmflabs.org',
     }
 
+    @monitoring::host { 'ores.wikimedia.org':
+        host_fqdn => 'ores.wikimedia.org',
+    }
+
     monitoring::service { 'ores_main_page':
         description   => 'ORES home page',
         check_command => 'check_http',
@@ -13,10 +17,17 @@ class icinga::monitor::ores {
     }
 
     # T121656
-    monitoring::service { 'ores_worker':
-        description   => 'ORES worker',
-        check_command => 'check_ores_workers',
+    monitoring::service { 'ores_worker_labs':
+        description   => 'ORES worker labs',
+        check_command => 'check_ores_workers!oresweb',
         host          => 'ores.wmflabs.org',
+        contact_group => 'team-ores',
+    }
+
+    monitoring::service { 'ores_worker_production':
+        description   => 'ORES worker production',
+        check_command => 'check_ores_workers!ores.wikimedia.org',
+        host          => 'ores.wikimedia.org',
         contact_group => 'team-ores',
     }
 
