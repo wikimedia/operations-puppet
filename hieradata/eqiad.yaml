@@ -129,6 +129,7 @@ novaconfig:
     - labvirt1007
     - labvirt1008
     - labvirt1009
+    - labvirt1011
 
 keystoneconfig:
   auth_port: '35357'
