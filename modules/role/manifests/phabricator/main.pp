@@ -54,7 +54,6 @@ class role::phabricator::main {
             'events.listeners'                       => [],
             'diffusion.allow-http-auth'              => true,
             'diffusion.ssh-host'                     => 'git-ssh.wikimedia.org',
-            'gitblit.hostname'                       => 'git.wikimedia.org',
         },
     }
     # lint:endignore
