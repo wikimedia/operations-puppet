@@ -27,8 +27,8 @@
 #     Requires: mysql_admin_user
 #
 #
-# [*serveralias*]
-#     Alternative domain on which to respond too
+# [*serveraliases*]
+#     Alternative domains on which to respond too
 #
 # [*deploy_user*]
 #     The username that is used for scap deployments
@@ -57,7 +57,7 @@ class phabricator (
     $mysql_admin_user = '',
     $mysql_admin_pass = '',
     $serveradmin      = '',
-    $serveralias      = '',
+    $serveraliases    = [],
     $deploy_user      = 'phab-deploy',
     $deploy_target    = 'phabricator/deployment',
 ) {
@@ -117,8 +117,24 @@ class phabricator (
         require => $base_requirements,
     }
 
+    # git.wikimedia.org hosts rewrite rules to redirect old gitblit urls to
+    # equivilent diffusion urls.
+
+    $gitblit_servername = $phab_settings['gitblit.hostname']
+
+    file { '/srv/git.wikimedia.org':
+        ensure => 'directory',
+        owner  => 'root',
+        group  => 'root',
+    }
+
+    apache::site { 'git.wikimedia.org':
+        content => template('phabricator/gitblit_vhost.conf.erb'),
+        require => File['/srv/git.wikimedia.org'],
+    }
+
     # Robots.txt disallowing to crawl the alias domain
-    if $serveralias {
+    if $serveraliases {
         file {"${phabdir}/robots.txt":
             ensure  => present,
             owner   => 'root',

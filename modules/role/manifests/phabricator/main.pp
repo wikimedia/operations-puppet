@@ -30,7 +30,9 @@ class role::phabricator::main {
     class { '::phabricator':
         deploy_target    => $deploy_target,
         phabdir          => $phab_root_dir,
-        serveralias      => $altdom,
+        serveraliases    => [ $altdom,
+                              'bugzilla.wikimedia.org',
+                              'bugs.wikimedia.org' ],
         trusted_proxies  => $cache_misc_nodes[$::site],
         mysql_admin_user => $role::phabricator::config::mysql_adminuser,
         mysql_admin_pass => $role::phabricator::config::mysql_adminpass,
@@ -54,6 +56,7 @@ class role::phabricator::main {
             'events.listeners'                       => [],
             'diffusion.allow-http-auth'              => true,
             'diffusion.ssh-host'                     => 'git-ssh.wikimedia.org',
+            'gitblit.hostname'                       => 'git.wikimedia.org',
         },
     }
     # lint:endignore
