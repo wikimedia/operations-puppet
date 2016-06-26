@@ -3,9 +3,9 @@
 
 <VirtualHost *:80>
   ServerName <%= @phab_servername.gsub('http://', '').gsub('https://', '') %>
-<% if !@serveralias.empty? -%>
-  ServerAlias <%= @serveralias %>
-<%- end %>
+<%- @serveraliases.each do |name| -%>
+  ServerAlias <%= name %>
+<% end -%>
 <% if !@serveradmin.empty? -%>
   ServerAdmin <%= @serveradmin %>
 <%- end %>
@@ -18,10 +18,13 @@
 
   RewriteEngine on
 
-<% if !@serveralias.empty? -%>
+<% if !@serveraliases.empty? -%>
+<%- @serveraliases.each do |name| -%>
   # Read robots.txt from disk for the alternative domain
-  RewriteCond "%{HTTP_HOST}" "<%= @serveralias.gsub('.', '\.') %>"
+  RewriteCond "%{HTTP_HOST}" "<%= name.gsub('.', '\.') %>"
   RewriteRule ^/robots.txt$ <%= @phabdir %>/robots.txt [L]
+
+<%- end %>
 
   <Files "robots.txt">
     Require all granted
