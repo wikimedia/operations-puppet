@@ -60,6 +60,6 @@ class mediawiki::packages::fonts {
     }
 
     if os_version('debian >= jessie') {
-        require_package('fonts-beng', 'fonts-deva', 'fonts-gujr', 'fonts-knda', 'fonts-mlym', 'fonts-orya', 'fonts-guru', 'fonts-taml', 'fonts-telu', 'fonts-gujr-extra')
+        require_package('fonts-beng', 'fonts-deva', 'fonts-gujr', 'fonts-knda', 'fonts-mlym', 'fonts-orya', 'fonts-guru', 'fonts-taml', 'fonts-telu', 'fonts-gujr-extra', 'fonts-noto-cjk')
     }
 }
