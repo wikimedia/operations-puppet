@@ -8,8 +8,6 @@
 # - $vhost: Apache vhost name
 # - $serveradmin: Email address for contacting server administrator
 # - $auth_type: Vhost auth type. One of ldap, local, none
-# - $es_host: Elasticsearch host to proxy to
-# - $es_port: Elasticsearch port to proxy to
 # - $require_ssl: Require SSL connection to vhost?
 # - $auth_realm: HTTP basic auth realm description
 # - $auth_file: Path to htpasswd file for $auth_type == 'local'
@@ -21,8 +19,6 @@ class role::kibana (
     $vhost,
     $serveradmin,
     $auth_type,
-    $es_host       = '127.0.0.1',
-    $es_port       = 9200,
     $require_ssl   = true,
     $auth_realm    = undef,
     $auth_file     = undef,
@@ -36,9 +32,6 @@ class role::kibana (
     include ::apache::mod::proxy
     include ::apache::mod::proxy_http
     include ::apache::mod::rewrite
-
-    # Directory trebuchet puts Kibana files in
-    $deploy_dir = '/srv/deployment/kibana/kibana'
 
     if $auth_type == 'ldap' {
         include ::apache::mod::authnz_ldap
@@ -58,7 +51,7 @@ class role::kibana (
     $apache_auth = template("kibana/apache-auth-${auth_type}.erb")
 
     class { '::kibana':
-        default_route => '/dashboard/elasticsearch/default',
+        default_app_id => 'dashboard/default',
     }
 
     ferm::service { 'kibana_frontend':
