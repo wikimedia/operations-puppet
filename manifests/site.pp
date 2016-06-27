@@ -2489,6 +2489,14 @@ node 'potassium.eqiad.wmnet' {
     include standard
 }
 
+node /^prometheus200[12]\.codfw\.wmnet$/ {
+    role prometheus::ops
+}
+
+node /^prometheus100[12]\.eqiad\.wmnet$/ {
+    role prometheus::ops
+}
+
 # pybal-test200X VMs are used for pybal testing/development
 node /^pybal-test200[12]\.codfw\.wmnet$/ {
     role test::system
