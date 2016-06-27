@@ -26,3 +26,8 @@ logstash::heap_memory_mb: 128
 logstash::cluster_hosts:
   - deployment-logstash3.deployment-prep.eqiad.wmflabs
 
+# Kibana
+role::kibana::vhost: kibana4.wmflabs.org
+role::kibana::serveradmin: root@deployment-logstash3.deployment-prep.eqiad.wmflabs
+role::kibana::auth_type: none
+
