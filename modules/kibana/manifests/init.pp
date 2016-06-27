@@ -4,34 +4,38 @@
 # types of time-stamped data. It integrates with ElasticSearch and LogStash.
 #
 # == Parameters:
-# - $default_route: Default landing page. You can specify files, scripts or
+# - $default_app_id: Default landing page. You can specify files, scripts or
 #     saved dashboards here. Default: '/dashboard/file/default.json'.
 #
 # == Sample usage:
 #
 #   class { 'kibana':
-#       default_route => '/dashboard/elasticsearch/default',
+#       default_app_id => 'dashboard/default',
 #   }
 #
 class kibana (
-    $default_route = '/dashboard/file/default.json'
+    $default_app_id = 'dashboard/default'
 ) {
-    package { 'kibana':
-        provider => 'trebuchet',
-    }
+    require_package('kibana')
 
-    file { '/etc/kibana':
-        ensure => directory,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0755',
-    }
-
-    file { '/etc/kibana/config.js':
-        ensure  => present,
-        content => template('kibana/config.js'),
+    # kibana 4
+    file { '/opt/kibana/config/kibana.yml':
+        ensure  => file,
         owner   => 'root',
         group   => 'root',
-        mode    => '0644',
+        content => ordered_yaml({
+            'kibana.defaultAppId' => $default_app_id,
+        }),
+        mode    => '0444',
+        require => Package['kibana'],
+    }
+
+    service { 'kibana':
+        ensure  => running,
+        enable  => true,
+        require => [
+            Package['kibana'],
+            File['/opt/kibana/config/kibana.yml'],
+        ],
     }
 }

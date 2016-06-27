@@ -68,8 +68,6 @@ repo_config:
     upstream: https://gerrit.wikimedia.org/r/wikimedia/wikimania-scholarships
   librenms/librenms:
     upstream: https://gerrit.wikimedia.org/r/operations/software/librenms
-  kibana/kibana:
-    upstream: https://gerrit.wikimedia.org/r/operations/software/kibana
   servermon/servermon:
     service_name: gunicorn
   iegreview/iegreview:
