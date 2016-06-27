@@ -21,6 +21,29 @@
 # [*listen_address*]
 #   Address to listen on, in the form [address]:port. Required to support
 #   multiple instances listening on disjoint ports.
+#
+# [*scrape_interval*]
+#   How often to scrape (poll) targets via HTTP.
+#
+# [*base_path*]
+#   Where to store metrics/configuration/etc
+#
+# [*storage_retention*]
+#   How long to save data for, old data will be expunged from disk eventually.
+#
+# [*global_config_extra*]
+#   An hash with the global key => value prometheus configuration.
+#
+# [*scrape_configs_extra*]
+#   A list of hashes used to configure additional scraping jobs. Each job has a
+#   list of targets to scrape metrics from. Targets are usually configured
+#   statically or dynamically via Service Discovery.
+#
+# [*rule_files_extra*]
+#   A list of files (shell globs accepted) to look for recording and alerting
+#   rules. See also https://prometheus.io/docs/querying/rules/ and
+#   https://prometheus.io/docs/alerting/rules/. Note that defining alerting
+#   rules won't trigger any notifications of any kind.
 
 define prometheus::server (
     $listen_address,
@@ -31,6 +54,8 @@ define prometheus::server (
     $scrape_configs_extra = [],
     $rule_files_extra = [],
 ) {
+    include prometheus
+
     requires_os('debian >= jessie')
 
     require_package('prometheus')
