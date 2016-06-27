@@ -122,13 +122,7 @@ class phabricator (
 
     # Robots.txt disallowing to crawl the alias domain
     if $serveralias {
-        file {"${phabdir}/robots.txt":
-            ensure  => present,
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0444',
-            content => "User-agent: *\nDisallow: /\n",
-        }
+        robotstxt::disallowall { $phabdir: }
     }
 
     scap::target { $deploy_target:
