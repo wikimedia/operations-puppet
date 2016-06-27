@@ -2899,6 +2899,11 @@ node 'ytterbium.wikimedia.org' {
     interface::add_ip6_mapped { 'main': }
 }
 
+# T138650 - tools for the security team
+node 'zosma.codfw.wmnet' {
+    role security::tools
+}
+
 node default {
     if $::realm == 'production' {
         include standard
