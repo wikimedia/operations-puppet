@@ -5,7 +5,7 @@ groups:
               handrade, howief, jdouglas, jgonera, jsahleen, mah, maryana, mglaser, mvolz,
               mwalker, nimishg, rainman, ssmith, swalling, sumanah, werdna, rmoen,
               johnflewis, marc, jkrauska, akumar, mnoushad, spage, tnegrin, msyed, kleduc,
-              manybubbles]
+              manybubbles, haithams]
   wikidev:
     gid: 500
     description: container group for primary user groups.
@@ -74,7 +74,7 @@ groups:
     gid: 707
     description: these folks are allowed bastion _only_ access
     members: [jforrester, jmorgan, dfoy, junikowski, cwdent,
-              haithams, mhurd, dbrant, bsitzmann, deskana, chedasaurus,
+              mhurd, dbrant, bsitzmann, deskana, chedasaurus,
               jzerebecki, declerambaul, ellery, dduvall, nettrom, mforns, jkatz,
               bmansurov, west1, jhernandez, smalyshev, tbayer, zfilipin,
               joal, thcipriani, daisy, ashwinpp, jhobs, tomasz, lpintscher,
@@ -115,7 +115,7 @@ groups:
                  statistics-users) and also provides access to research mysql
                  credentials on stat1003 (currently the only such host)
     members: [awight, bmansurov, catrope, dartar, declerambaul, deskana,
-              dduvall, ellery, ezachte, gilles, haithams, halfak,
+              dduvall, ellery, ezachte, gilles, halfak,
               ironholds, jforrester, jkatz, jmorgan, jzerebecki, kaldari,
               leila, mattflaschen, milimetric, nettrom, bearloga,
               nuria, ori, otto, springle, yurik, yuvipanda,
@@ -188,7 +188,7 @@ groups:
                  stat1002 to access webrequest logs in the Hadoop cluster
                  you should put them in the analytics-privatedata-users
                  group.
-    members: [haithams, ezachte, milimetric, dartar, yurik,
+    members: [ezachte, milimetric, dartar, yurik,
               halfak, awight, dr0ptp4kt, nuria, leila,
               ironholds, ellery, nettrom, mforns,
               bmansurov, tbayer, joal, ashwinpp,
@@ -199,7 +199,7 @@ groups:
     description: Access statistics number crunching hosts. NO PRIVS.
     members: [dartar, halfak, ironholds, jdlrobson, jmorgan, bearloga,
               mattflaschen, mhurd, yurik, awight, jforrester,
-              marktraceur, nuria, leila, gilles, haithams,
+              marktraceur, nuria, leila, gilles,
               dbrant, tgr, dr0ptp4kt, brion, bsitzmann, amire80,
               deskana, jzerebecki, dduvall, nettrom, mforns, jkatz, ebernhardson,
               mlitn, tbayer, joal, tomasz, kartik, nikerabbit, pcoombe, madhuvishy,
@@ -235,7 +235,7 @@ groups:
                  Those files are group readable by the analytics-privatedata-users group.
     members: [dartar, milimetric, yurik, dfoy, aude, jforrester,
               halfak, dr0ptp4kt, ironholds, bearloga, cwdent, elukey,
-              nuria, haithams, otto, deskana, zhousquared,
+              nuria, otto, deskana, zhousquared,
               bsitzmann, dbrant, declerambaul, ellery, nettrom, leila,
               ezachte, mforns, reedy, west1, phuedx, awight, junikowski,
               joal, jamesur, akosiaris, jhobs, lpintscher, jkatz, madhuvishy, gpaumier,
@@ -1248,12 +1248,11 @@ users:
     ]
     uid: 2029
   haithams:
-    ensure: present
+    ensure: absent
     gid: 500
     name: haithams
     realname: Haitham Shammaa
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCxKhgMrYubz2ciXFpB6F8jRVl9ChDPjXF0kISApj9DGvISJHPSm9vKTNxylGGf22dTPjBoBn9l9UzetJagP0qHcG3BbdjIl3xSpnq6grQ/HOqqHUqrqSJDD+aYHLlgMy3P6GeoOlW2oclRBaLpwONNzW+yDL6lnBA1LkyZ1+tq/Y9PEhrRQTdgZvQ0U+oz2M0me0UIfOJa+R2xTnlwFr8qez4ZCSWJtLyPKcZhRDZLTayRta5nh13bJaeCClf1ssXK9duAVSIMZ4+AF4/zt8OD0EpQikzOed3sXBlN0bV7ZcxAyCxcSSmFJ5zmROCZ7eazNZd5jUw45y5gcSWWpdEL
-        hshammaa@wikimedia.org]
+    ssh_keys: []
     uid: 5001
   mhurd:
     ensure: present
