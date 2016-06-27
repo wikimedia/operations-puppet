@@ -10,28 +10,27 @@
 # == Sample usage:
 #
 #   class { 'kibana':
-#       default_route => '/dashboard/elasticsearch/default',
+#       default_app_id => 'dashboard/default',
 #   }
 #
 class kibana (
-    $default_route = '/dashboard/file/default.json'
+    $default_app_id = 'dashboard/default'
 ) {
-    package { 'kibana':
-        provider => 'trebuchet',
-    }
+    require_package('kibana')
 
-    file { '/etc/kibana':
-        ensure => directory,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0755',
-    }
-
-    file { '/etc/kibana/config.js':
-        ensure  => present,
-        content => template('kibana/config.js'),
+    # kibana 4
+    file { '/opt/kibana/config/kibana.yml':
+        ensure  => file,
         owner   => 'root',
         group   => 'root',
-        mode    => '0644',
+        content => template('kibana/kibana.yml.erb')
+        mode    => '0444',
+        require => Package['kibana'],
     }
+
+    # kibana 3
+    file { '/etc/kibana':
+        ensure => absent,
+    }
+
 }
