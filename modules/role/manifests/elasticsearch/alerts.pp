@@ -13,8 +13,8 @@ class role::elasticsearch::alerts {
         description   => 'CirrusSearch codfw 95th percentile latency',
         metric        => 'transformNull(MediaWiki.CirrusSearch.codfw.requestTime.p95, 0)',
         from          => '10min',
-        warning       => '500',
-        critical      => '1000',
+        warning       => '1000',
+        critical      => '1500',
         percentage    => '20',
         contact_group => 'team-discovery',
     }
