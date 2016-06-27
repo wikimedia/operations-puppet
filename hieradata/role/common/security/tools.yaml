@@ -1,0 +1,3 @@
+debdeploy::grains:
+  debdeploy-sectools:
+    value: standard

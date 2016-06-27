@@ -2896,7 +2896,12 @@ node 'ytterbium.wikimedia.org' {
     role gerrit::production
     include standard
 
-    interface::add_ip6_mapped { 'main': }
+     interface::add_ip6_mapped { 'main': }
+}
+
+# T138650 - tools for the security team
+node 'zosma.codfw.wmnet' {
+    role security::tools
 }
 
 node default {
