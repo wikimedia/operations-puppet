@@ -8,7 +8,7 @@
   ServerName <%= @vhost %>
   ServerAdmin <%= @serveradmin %>
 
-  DocumentRoot <%= @deploy_dir %>/src
+  DocumentRoot /dev/null
 
   RewriteEngine on
 <%- if @require_ssl -%>
@@ -30,79 +30,23 @@
     </IfVersion>
   </Directory>
 
-  <Directory /etc/kibana>
-    <IfVersion >= 2.4>
-      Require all granted
-    </IfVersion>
-    <IfVersion < 2.4>
-      Order Allow,Deny
-      Allow from all
-    </IfVersion>
-  </Directory>
-
-  <Directory <%= @deploy_dir %>/src>
-    <IfVersion >= 2.4>
-      Require all granted
-    </IfVersion>
-    <IfVersion < 2.4>
-      Order Allow,Deny
-      Allow from all
-    </IfVersion>
-  </Directory>
-
   <Location />
 <%= @apache_auth -%>
   </Location>
 
-  Alias /config.js /etc/kibana/config.js
-
   ProxyRequests Off
 
-  <Proxy http://<%= @es_host %>:<%= @es_port %>>
+  <Proxy http://localhost:5601>
     ProxySet connectiontimeout=5 timeout=90 retry=0
   </Proxy>
 
   # Tell caches that we are using http authentication
   Header set Vary Authorization
 
-  # Allow caching of static content for 1 hour
-  # We will override this below for dynamic content
-  Header set Cache-Control "public, must-revalidate, max-age=3600"
-
-  # Elasticsearch searches
-  <LocationMatch "^/(_search|.*/_search)$">
-    ProxyPassMatch http://<%= @es_host %>:<%= @es_port %>/$1
-    ProxyPassReverse http://<%= @es_host %>:<%= @es_port %>/$1
-    # Disallow caching of search results
-    Header set Cache-Control "private, must-revalidate, max-age=0"
-    Header set Expires "Thu, 01 Jan 1970 00:00:00 GMT"
-  </LocationMatch>
-
-  # Elasticsearch meta-data requests
-  <LocationMatch "^/(_nodes|_aliases|.*/_aliases|_mapping|.*/_mapping)$">
-    ProxyPassMatch http://<%= @es_host %>:<%= @es_port %>/$1
-    ProxyPassReverse http://<%= @es_host %>:<%= @es_port %>/$1
-    # Allow caching for 1 minute
-    Header set Cache-Control "public, must-revalidate, max-age=60"
-  </LocationMatch>
-
-  # Storage/retrieval of saved dashboards via elasticsearch
-  <LocationMatch "^/(kibana-int/dashboard/|kibana-int/temp)(.*)$">
-    ProxyPassMatch http://<%= @es_host %>:<%= @es_port %>/$1$2
-    ProxyPassReverse http://<%= @es_host %>:<%= @es_port %>/$1$2
-    # Allow caching for 5 minutes
-    Header set Cache-Control "public, must-revalidate, max-age=900"
-  </LocationMatch>
-
-  # Expose the cluster status for internal health checks
-  RewriteRule ^/status$ http://<%= @es_host %>:<%= @es_port %>/ [P]
+  # Expose the status api without authenticating
+  # Due to varnish frontend, all requests are seen by Apache as being internal
+  # so using IP ranges is not any more restrictive than "all"
   <Location /status>
-    # Disallow caching of status checks
-    Header set Cache-Control "private, must-revalidate, max-age=0"
-    Header set Expires "Thu, 01 Jan 1970 00:00:00 GMT"
-    # Allow access this URI without authenticating
-    # Due to varnish frontend, all reqests are seen by Apache as being internal
-    # so using IP ranges is not any more restrictive than "all".
     <IfVersion >= 2.4>
       Require all granted
     </IfVersion>
