@@ -151,3 +151,8 @@ host d-i-test {
     fixed-address d-i-test.eqiad.wmnet;
 }
 
+host zosma {
+    hardware ethernet aa:00:00:8c:75:b0;
+    fixed-address zosma.codfw.wmnet;
+}
+
