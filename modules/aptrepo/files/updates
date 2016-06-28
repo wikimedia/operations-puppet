@@ -86,6 +86,16 @@ Architectures: amd64
 VerifyRelease: D27D666CD88E42B4
 ListShellHook: grep-dctrl -X -S logstash || [ $? -eq 1 ]
 
+Name: kibana
+Method: http://packages.elastic.co/kibana/4.5/debian
+Components: main>thirdparty
+UDebComponents:
+Suite: stable
+GetInRelease: no
+Architectures: amd64
+VerifyRelease: D27D666CD88E42B4
+ListShellHook: grep-dctrl -X -S kibana || [ $? -eq 1 ]
+
 Name: tor
 Method: http://deb.torproject.org/torproject.org/
 Components: main>thirdparty
