@@ -27,6 +27,10 @@ logstash::cluster_hosts:
   - logstash1004.eqiad.wmnet
   - logstash1005.eqiad.wmnet
   - logstash1006.eqiad.wmnet
+elasticsearch::bind_networks:
+  - _local_
+  - _site_
+elasticsearch::publish_host: _eth0_
 debdeploy::grains:
   debdeploy-logstash:
     value: standard
