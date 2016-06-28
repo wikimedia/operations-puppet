@@ -132,7 +132,13 @@ class diamond(
               'TCPFastOpenPassive', 'TCPFastOpenPassiveFail',
               'TCPFastOpenListenOverflow', 'TCPFastOpenCookieReqd',
               'TCPSynRetrans', 'TCPOrigDataSent'
-            ]
+            ],
+            gauges        => [
+              'CurrEstab', 'MaxConn',
+              'TCPFastOpenActive', 'TCPFastOpenActiveFail',
+              'TCPFastOpenPassive', 'TCPFastOpenPassiveFail',
+              'TCPFastOpenListenOverflow', 'TCPFastOpenCookieReqd'
+            ],
         }
     }
 
