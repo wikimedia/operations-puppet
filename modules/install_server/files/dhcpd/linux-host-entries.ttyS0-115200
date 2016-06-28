@@ -74,17 +74,17 @@ host meitnerium {
     fixed-address meitnerium.wikimedia.org;
 }
 
-host mendelevium.eqiad.wmnet {
+host mendelevium {
     hardware ethernet aa:00:00:58:6a:10;
     fixed-address mendelevium.eqiad.wmnet;
 }
 
-host mx1001.wikimedia.org {
+host mx1001 {
     hardware ethernet aa:00:00:b2:f5:b7;
     fixed-address mx1001.wikimedia.org;
 }
 
-host mx2001.wikimedia.org {
+host mx2001 {
     hardware ethernet aa:00:00:d2:18:cf;
     fixed-address mx2001.wikimedia.org;
 }
@@ -140,7 +140,7 @@ host pybal-test2003 {
     fixed-address pybal-test2003.codfw.wmnet;
 }
 
-host rutherfordium.eqiad.wmnet {
+host rutherfordium {
     hardware ethernet aa:00:00:94:f7:c2;
     fixed-address rutherfordium.eqiad.wmnet;
 }
