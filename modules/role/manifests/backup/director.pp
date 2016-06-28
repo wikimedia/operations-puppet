@@ -210,6 +210,9 @@ class role::backup::director {
         includes => [ '/srv', '/var/lib/zuul', '/var/lib/jenkins' ],
         excludes => [ '/srv/ssd', '/var/lib/jenkins/builds', ],
     }
+    bacula::director::fileset { 'etcd':
+        includes => [ '/srv/backups/etcd' ]
+    }
 
     # The console should be on the director
     class { 'bacula::console':
@@ -228,4 +231,3 @@ class role::backup::director {
     }
 
 }
-

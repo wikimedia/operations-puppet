@@ -26,5 +26,5 @@ class role::etcd {
     # Back up etcd
     require etcd::backup
     include role::backup::host
-    backup::set { $::etcd::backup::backup_dir: }
+    backup::set { 'etcd': }
 }
