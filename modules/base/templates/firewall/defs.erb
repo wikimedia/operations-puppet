@@ -1,5 +1,4 @@
 <%-
-external_networks = scope.lookupvar('network::constants::external_networks')
 domain_networks = scope.lookupvar('network::constants::domain_networks')
 all_networks = scope.lookupvar('network::constants::all_networks')
 all_network_subnets = scope.lookupvar('network::constants::all_network_subnets')
@@ -14,7 +13,6 @@ mw_appserver_networks = scope.lookupvar('network::constants::mw_appserver_networ
 # $DOMAIN_NETWORKS is a set of all networks belonging to a domain.
 # a domain is a realm currently, but the notion is more generic than that on purpose
 @def $DOMAIN_NETWORKS = (<%- domain_networks.each do |net| -%><%= net %> <% end -%>);
-@def $EXTERNAL_NETWORKS = (<%- external_networks.each do |external_net| -%><%= external_net %> <% end -%>);
 @def $ALL_NETWORKS = (<%- all_networks.each do |net| -%><%= net %> <% end -%>);
 
 # $PRODUCTION_NETWORKS is a set of all production networks
