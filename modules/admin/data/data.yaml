@@ -528,6 +528,11 @@ groups:
     members: [halfak, ladsgroup]
     privileges: ['ALL = NOPASSWD: /usr/sbin/service uwsgi-ores *',
                  'ALL = NOPASSWD: /usr/sbin/service celery-ores-worker *']
+  sectools-roots:
+    description: root access on servers for security tools
+    gid: 783
+    members: []
+    privileges: ['ALL = (ALL) NOPASSWD: ALL']
 users:
   rush:
     ensure: present
