@@ -51,7 +51,7 @@ class role::otrs::webserver {
     ferm::service { 'otrs_smtp':
         proto  => 'tcp',
         port   => '25',
-        srange => '($EXTERNAL_NETWORKS)',
+        srange => '@resolve((mx1001.wikimedia.org mx2001.wikimedia.org))',
     }
 
     monitoring::service { 'smtp':
