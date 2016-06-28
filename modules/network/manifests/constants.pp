@@ -23,6 +23,8 @@ class network::constants {
     $domain_networks = slice_network_constants($::realm)
     # $production_networks will always contain just the production networks
     $production_networks = slice_network_constants('production')
+    # $labs_networks will always contain just the labs networks
+    $labs_networks = slice_network_constants('labs')
 
     $special_hosts = {
         'production' => {
