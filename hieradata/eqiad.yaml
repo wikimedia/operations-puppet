@@ -166,3 +166,38 @@ labsldapconfig:
 # role::analyitcs_cluster::database::meta::backup_dest class
 # applied to it.
 analytics_cluster_meta_database_backup_rsync_dest: analytics1002.eqiad.wmnet::backup/mysql/analytics-meta
+
+# List of hosts in the Analytics Hadoop cluster
+analytics_hadoop_hosts:
+    - analytics1001.eqiad.wmnet
+    - analytics1001.eqiad.wmnet
+    - analytics1028.eqiad.wmnet
+    - analytics1029.eqiad.wmnet
+    - analytics1030.eqiad.wmnet
+    - analytics1031.eqiad.wmnet
+    - analytics1032.eqiad.wmnet
+    - analytics1033.eqiad.wmnet
+    - analytics1034.eqiad.wmnet
+    - analytics1035.eqiad.wmnet
+    - analytics1036.eqiad.wmnet
+    - analytics1037.eqiad.wmnet
+    - analytics1038.eqiad.wmnet
+    - analytics1039.eqiad.wmnet
+    - analytics1040.eqiad.wmnet
+    - analytics1041.eqiad.wmnet
+    - analytics1042.eqiad.wmnet
+    - analytics1043.eqiad.wmnet
+    - analytics1044.eqiad.wmnet
+    - analytics1045.eqiad.wmnet
+    - analytics1046.eqiad.wmnet
+    - analytics1047.eqiad.wmnet
+    - analytics1048.eqiad.wmnet
+    - analytics1049.eqiad.wmnet
+    - analytics1050.eqiad.wmnet
+    - analytics1051.eqiad.wmnet
+    - analytics1052.eqiad.wmnet
+    - analytics1053.eqiad.wmnet
+    - analytics1054.eqiad.wmnet
+    - analytics1055.eqiad.wmnet
+    - analytics1056.eqiad.wmnet
+    - analytics1057.eqiad.wmnet
