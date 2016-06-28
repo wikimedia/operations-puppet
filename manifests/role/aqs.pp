@@ -23,6 +23,8 @@ class role::aqs {
 
     $cassandra_hosts = hiera('cassandra::seeds')
     $cassandra_hosts_ferm = join($cassandra_hosts, ' ')
+    $hadoop_hosts = hiera('analytics_hadoop_hosts')
+    $hadoop_hosts_ferm = join($hadoop_hosts, ' ')
 
     # Cassandra intra-node messaging
     ferm::service { 'cassandra-analytics-intra-node':
@@ -34,7 +36,7 @@ class role::aqs {
     ferm::service { 'cassandra-analytics-jmx-rmi':
         proto  => 'tcp',
         port   => '7199',
-        srange => "@resolve((${cassandra_hosts_ferm}))",
+        srange => "@resolve((${cassandra_hosts_ferm})) @resolve((${hadoop_hosts_ferm}))",
     }
     # Allow analytics networks to populate cassandra
     include network::constants
