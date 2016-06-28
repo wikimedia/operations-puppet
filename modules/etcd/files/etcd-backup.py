@@ -51,7 +51,7 @@ def rotate_logs(cluster, backup_root, num_logs):
             log.debug("Removing old backup dir %s", backupdir)
             shutil.rmtree(backupdir)
 
-    if backupdirs[-1] != backup_dir:
+    if len(backupdirs) == 0 or backupdirs[-1] != backup_dir:
         log.info("Not rotating backups and no unrotated one present")
         return
 
