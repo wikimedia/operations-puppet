@@ -10,11 +10,11 @@ class role::elasticsearch::alerts {
     }
 
     monitoring::graphite_threshold { 'cirrussearch_codfw_95th_percentile':
-        description   => 'CirrusSearch codfw 95th percentile latency',
-        metric        => 'transformNull(MediaWiki.CirrusSearch.codfw.requestTime.p95, 0)',
+        description   => 'CirrusSearch codfw 95th percentile latency - more_like',
+        metric        => 'transformNull(MediaWiki.CirrusSearch.codfw.requestTimeMs.more_like.p95, 0)',
         from          => '10min',
-        warning       => '1000',
-        critical      => '1500',
+        warning       => '1200',
+        critical      => '2000',
         percentage    => '20',
         contact_group => 'team-discovery',
     }
