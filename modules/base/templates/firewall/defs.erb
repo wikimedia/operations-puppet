@@ -5,6 +5,7 @@ all_networks = scope.lookupvar('network::constants::all_networks')
 all_network_subnets = scope.lookupvar('network::constants::all_network_subnets')
 special_hosts = scope.lookupvar('network::constants::special_hosts')
 production_networks = scope.lookupvar('network::constants::production_networks')
+labs_networks = scope.lookupvar('network::constants::production_labs')
 analytics_networks = scope.lookupvar('network::constants::analytics_networks')
 mw_appserver_networks = scope.lookupvar('network::constants::mw_appserver_networks')
 -%>
@@ -17,6 +18,8 @@ mw_appserver_networks = scope.lookupvar('network::constants::mw_appserver_networ
 
 # $PRODUCTION_NETWORKS is meant to be a set of all production networks
 @def $PRODUCTION_NETWORKS = (<%- production_networks.each do |net| -%><%= net %> <% end -%>);
+# $LABS_NETWORKS is meant to be a set of all labs networks
+@def $LABS_NETWORKS = (<%- labs_networks.each do |net| -%><%= net %> <% end -%>);
 
 @def $ANALYTICS_NETWORKS = (<%- analytics_networks.each do |net| -%><%= net %> <% end -%>);
 @def $MW_APPSERVER_NETWORKS = (<%- mw_appserver_networks.each do |net| -%><%= net %> <% end -%>);
