@@ -31,7 +31,7 @@ class wdqs::service(
         } else {
             # This is to have file resource on $package_dir in any case
             file { $package_dir:
-                ensure  => directory,
+                ensure  => present,
                 require => Package['wdqs'],
             }
         }
