@@ -16,6 +16,12 @@ class network::constants {
     $all_networks = flatten([$external_networks, '10.0.0.0/8'])
     $all_networks_lo = flatten([$all_networks, '127.0.0.0/8', '::1/128'])
 
+    # $domain_networks is a set of all networks belonging to a domain.
+    # a domain is a realm currently, but the notion is more generic than that on
+    # purpose.
+    # TODO: Figure out a way this can be per-project networks in labs
+    $domain_networks = slice_network_constants($::realm)
+    # $production_networks will always contain just the production networks
     $production_networks = slice_network_constants('production')
 
     $special_hosts = {
