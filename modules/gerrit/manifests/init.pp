@@ -1,6 +1,6 @@
 # Manifest to setup a Gerrit instance
 
-class gerrit::instance(
+class gerrit(
     $db_host     = '',
     $host        = '',
     $ssh_key     = '',
