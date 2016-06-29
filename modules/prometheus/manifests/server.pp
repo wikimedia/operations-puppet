@@ -93,6 +93,12 @@ define prometheus::server (
     ]
     $rule_files = concat($rule_files_default, $rule_files_extra)
 
+    $prometheus_config = {
+      'global'         => $global_config,
+      'rule_files'     => $rule_files,
+      'scrape_configs' => $scrape_configs,
+    }
+
     file { "${rules_path}/alerts_default.conf":
         ensure  => file,
         mode    => '0444',
@@ -108,7 +114,7 @@ define prometheus::server (
         owner   => 'root',
         group   => 'root',
         notify  => Exec["${service_name}-reload"],
-        content => template('prometheus/prometheus.yml.erb'),
+        content => ordered_yaml($prometheus_config),
     }
 
     file { [$base_path, $metrics_path, $targets_path, $rules_path]:
