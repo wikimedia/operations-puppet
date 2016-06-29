@@ -1066,7 +1066,13 @@ node /^es201[79]\.codfw\.wmnet/ {
 }
 
 # Disaster recovery hosts for external storage
-node /^es200[1234]\.codfw\.wmnet/ {
+node 'es2001.codfw.wmnet' {
+    role mariadb::otrsbackups
+    include standard
+    include base::firewall
+}
+
+node /^es200[234]\.codfw\.wmnet/ {
     include standard
     include base::firewall
 }
