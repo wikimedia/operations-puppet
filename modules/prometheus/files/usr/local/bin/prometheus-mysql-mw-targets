@@ -1,0 +1,95 @@
+#!/usr/bin/env php
+
+# TODO:
+# - unit testing
+# - better separation of cli/functions
+
+<?php
+// init vars to avoid warnings
+$wgDBname = '';
+$wgDBuser = '';
+$wgDBpassword = '';
+
+
+function targets_for_shard($shard, $servers) {
+  $res = array();
+  $master = array_keys($servers)[0];
+  $slaves = array_slice(array_keys($servers), 0);
+  $res[] = array(
+    'labels' => array(
+        'shard' => $shard,
+        'role' => 'master',
+       ),
+    'targets' => array($master),
+  );
+  $res[] = array(
+    'labels' => array(
+        'shard' => $shard,
+        'role' => 'slave',
+       ),
+    'targets' => $slaves,
+  );
+  return $res;
+}
+
+function targets_from_LBFactoryConf($conf, $target_suffix) {
+  $target_config = array();
+
+  foreach ($conf['sectionLoads'] as $shard => $servers) {
+    # yay special cases
+    if ($shard == 'DEFAULT') {
+      $shard = 's3';
+    }
+
+    # ignore if it doesn't look like a mw production shard (e.g. labs)
+    if (!preg_match('/^s[0-9]+$/', $shard)) {
+      continue;
+    }
+
+    if ($target_suffix != '') {
+      foreach ($servers as $k => $v) {
+        $new_key = $k . $target_suffix;
+        $servers[$new_key] = $v;
+        unset($servers[$k]);
+      }
+    }
+
+    $targets = targets_for_shard($shard, $servers);
+    $target_config = array_merge($target_config, $targets);
+  }
+
+  return $target_config;
+}
+
+
+$options = getopt('h', array(
+  'db-config:',
+  'target-suffix:',
+  'help')
+);
+
+if (array_key_exists('help', $options)) {
+  echo "usage: --db-config <path> [--target-suffix <string>]\n";
+  echo "\n";
+  echo "  Output prometheus targets used for MySQL monitoring, based on\n";
+  echo "  MediaWiki configuration.\n\n";
+  exit(1);
+}
+
+if (!array_key_exists('db-config', $options)) {
+  echo "--db-config required\n";
+  exit(1);
+}
+
+if (!array_key_exists('target-suffix', $options)) {
+  $options['target-suffix'] = '';
+}
+
+require $options['db-config'];
+
+$file_sd_config = targets_from_LBFactoryConf($wgLBFactoryConf,
+                                             $options['target-suffix']);
+
+echo json_encode($file_sd_config, JSON_PRETTY_PRINT);
+echo "\n";
+?>
