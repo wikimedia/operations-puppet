@@ -1,14 +1,14 @@
 # modules/role/manifests/gerrit/production.pp
-class role::gerrit::production {
+class role::gerrit::production($host) {
         system::role { 'role::gerrit::production': description => 'Gerrit master' }
         include role::backup::host
         include base::firewall
 
-        sslcert::certificate { 'gerrit.wikimedia.org': }
+        sslcert::certificate { $host: }
 
         monitoring::service { 'https':
             description   => 'HTTPS',
-            check_command => 'check_ssl_http!gerrit.wikimedia.org',
+            check_command => "check_ssl_http!${host}",
         }
 
         backup::set { 'var-lib-gerrit2-review_site-git': }
@@ -45,13 +45,9 @@ class role::gerrit::production {
         ]
 
         class { '::gerrit':
-            db_host      => 'm2-master.eqiad.wmnet',
-            host         => 'gerrit.wikimedia.org',
-            ssh_key      => 'ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAxOlshfr3UaPr8gQ8UVskxHAGG9xb55xDyfqlK7vsAs/p+OXpRB4KZOxHWqI40FpHhW+rFVA0Ugk7vBK13oKCB435TJlHYTJR62qQNb2DVxi5rtvZ7DPnRRlAvdGpRft9JsoWdgsXNqRkkStbkA5cqotvVHDYAgzBnHxWPM8REokQVqil6S/yHkIGtXO5J7F6I1OvYCnG1d1GLT5nDt+ZeyacLpZAhrBlyFD6pCwDUhg4+H4O3HGwtoh5418U4cvzRgYOQQXsU2WW5nBQHE9LXVLoL6UeMYY4yMtaNw207zN6kXcMFKyTuF5qlF5whC7cmM4elhAO2snwIw4C3EyQgw== gerrit@production',
-            ssl_cert     => 'gerrit.wikimedia.org',
-            ssl_cert_key => 'gerrit.wikimedia.org',
-            smtp_host    => $::mail_smarthost[0],
-            replication  => {
+            host        => $host,
+            smtp_host   => $::mail_smarthost[0],
+            replication => {
                 # If adding a new entry, remember to add the fingerprint to gerrit2's known_hosts
                 'github' => {
                     # Note: This is in single quotes on purpose. ${name} is not
@@ -73,5 +69,4 @@ class role::gerrit::production {
                 # results in Code Search. See T70054.
             }
         }
-
 }
