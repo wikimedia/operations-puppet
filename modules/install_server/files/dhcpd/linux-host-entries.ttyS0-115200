@@ -114,6 +114,11 @@ host prometheus2001 {
     fixed-address prometheus2001.codfw.wmnet;
 }
 
+host prometheus2002 {
+    hardware ethernet aa:00:00:aa:73:4f;
+    fixed-address prometheus2002.codfw.wmnet;
+}
+
 host seaborgium {
     hardware ethernet aa:00:00:4d:be:84;
     fixed-address seaborgium.wikimedia.org;
