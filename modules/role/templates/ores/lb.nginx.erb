@@ -25,4 +25,11 @@ server {
         proxy_pass http://oresweb;
         proxy_set_header Host $host;
     }
+
+    <% @realservers.each do |realserver| %>
+    location /<%= realserver.split(':')[0] %>/ {
+        proxy_pass http://<%= realserver %>;
+        proxy_set_header Host $host;
+    }
+    <% end %>
 }
