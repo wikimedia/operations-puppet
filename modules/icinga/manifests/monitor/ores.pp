@@ -16,6 +16,19 @@ class icinga::monitor::ores {
         contact_group => 'team-ores',
     }
 
+    $realservers = hiera('role::labs::ores::lb::realservers')
+
+    define monitor_ores_labs_web_node ($realserver = $title) {
+        monitoring::service { "ores_web_node_labs_${realserver}":
+            description   => "ORES web node labs ${realserver}",
+            check_command => "check_ores_workers!oresweb/${split($realserver, ':')[0]}",
+            host          => 'ores.wmflabs.org',
+            contact_group => 'team-ores',
+        }
+    }
+
+    monitor_ores_labs_web_node { $realservers: }
+
     # T121656
     monitoring::service { 'ores_worker_labs':
         description   => 'ORES worker labs',
