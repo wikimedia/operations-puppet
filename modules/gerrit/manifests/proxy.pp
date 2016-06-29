@@ -1,10 +1,12 @@
-class gerrit::proxy($host        = '',
-$ssl_cert    = '',
-$ssl_cert_key= '') {
+class gerrit::proxy(
+    $host         = $::gerrit::host,
+    $ssl_cert     = 'ssl-cert-snakeoil',
+    $ssl_cert_key = 'ssl-cert-snakeoil'
+    ) {
 
     $ssl_settings = ssl_ciphersuite('apache', 'compat', true)
 
-    apache::site { 'gerrit.wikimedia.org':
+    apache::site { $host:
         content => template('gerrit/gerrit.wikimedia.org.erb'),
     }
 

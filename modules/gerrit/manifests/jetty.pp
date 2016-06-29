@@ -1,10 +1,9 @@
-class gerrit::jetty ($url,
+class gerrit::jetty(
     $db_host,
-    $hostname,
-    $ssh_port,
     $replication,
     $smtp_host,
     $ssh_key,
+    $url = "https://${::gerrit::host}/r",
     $db_name = 'reviewdb',
     $db_user = 'gerrit',
     $ssh_port = '29418',
@@ -112,12 +111,13 @@ class gerrit::jetty ($url,
         require => File['/var/lib/gerrit2/review_site/etc'],
     }
 
-    file { '/var/lib/gerrit2/review_site/etc/mail/ChangeSubject.vm':
+    file { '/var/lib/gerrit2/review_site/etc/mail':
         owner   => 'gerrit2',
         group   => 'gerrit2',
         mode    => '0444',
-        source  => 'puppet:///modules/gerrit/mail/ChangeSubject.vm',
-        require => Exec['install_gerrit_jetty'],
+        recurse => true,
+        source  => 'puppet:///modules/gerrit/mail',
+        require => File['/var/lib/gerrit2/review_site/etc'],
     }
 
     file { '/var/lib/gerrit2/review_site/etc/GerritSite.css':
@@ -139,47 +139,9 @@ class gerrit::jetty ($url,
         owner   => 'gerrit2',
         group   => 'gerrit2',
         mode    => '0755',
+        source  => 'puppet:///modules/gerrit/its',
         require => File['/var/lib/gerrit2/review_site/etc'],
-    }
-
-    file { '/var/lib/gerrit2/review_site/etc/its/action.config':
-        source  => 'puppet:///modules/gerrit/its/action.config',
-        owner   => 'gerrit2',
-        group   => 'gerrit2',
-        mode    => '0755',
-        require => File['/var/lib/gerrit2/review_site/etc/its'],
-    }
-
-    file { '/var/lib/gerrit2/review_site/etc/its/templates':
-        ensure  => directory,
-        owner   => 'gerrit2',
-        group   => 'gerrit2',
-        mode    => '0755',
-        require => File['/var/lib/gerrit2/review_site/etc/its'],
-    }
-
-    file { '/var/lib/gerrit2/review_site/etc/its/templates/DraftPublished.vm':
-        source  => 'puppet:///modules/gerrit/its/templates/DraftPublished.vm',
-        owner   => 'gerrit2',
-        group   => 'gerrit2',
-        mode    => '0755',
-        require => File['/var/lib/gerrit2/review_site/etc/its/templates'],
-    }
-
-    file { '/var/lib/gerrit2/review_site/etc/its/templates/PatchSetCreated.vm':
-        source  => 'puppet:///modules/gerrit/its/templates/PatchSetCreated.vm',
-        owner   => 'gerrit2',
-        group   => 'gerrit2',
-        mode    => '0755',
-        require => File['/var/lib/gerrit2/review_site/etc/its/templates'],
-    }
-
-    file { '/var/lib/gerrit2/review_site/etc/its/templates/DraftPublishedPhabricator.vm':
-        ensure  => absent,
-    }
-
-    file { '/var/lib/gerrit2/review_site/etc/its/templates/PatchSetCreatedPhabricator.vm':
-        ensure  => absent,
+        recurse => true,
     }
 
     file { '/var/lib/gerrit2/review_site/static/page-bkg.cache.jpg':
