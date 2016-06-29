@@ -1,15 +1,15 @@
-class gerrit::jetty ($url,
+class gerrit::jetty(
     $db_host,
-    $hostname,
-    $ssh_port,
     $replication,
-    $smtp_host,
     $ssh_key,
+    $smtp_host = ${::mail_smarthost[0]},
     $db_name = 'reviewdb',
     $db_user = 'gerrit',
     $ssh_port = '29418',
     $git_dir = 'git'
     ) {
+
+    $url = "https://${::gerrit::host}/r";
 
     include nrpe
 
