@@ -1,6 +1,5 @@
 class gerrit::jetty ($url,
     $db_host,
-    $hostname,
     $ssh_port,
     $replication,
     $smtp_host,
