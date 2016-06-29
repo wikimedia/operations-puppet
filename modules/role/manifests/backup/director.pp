@@ -213,6 +213,9 @@ class role::backup::director {
     bacula::director::fileset { 'etcd':
         includes => [ '/srv/backups/etcd' ]
     }
+    bacula::director::fileset { 'otrsdb':
+        includes => [ '/srv/backups/m2' ]
+    }
 
     # The console should be on the director
     class { 'bacula::console':
