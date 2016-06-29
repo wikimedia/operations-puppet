@@ -879,6 +879,8 @@ class role::mariadb::parsercache(
     }
 }
 
+# the contents of the next 2 classes should go over to
+# db_maintenance module on puppet db-classes refactoring
 class role::mariadb::maintenance {
     # TODO: check if both of these are still needed
     include mysql
@@ -894,6 +896,47 @@ class role::mariadb::maintenance {
         tendril_user     => 'watchdog',
         tendril_password => $passwords::tendril::db_pass,
     }
+}
+
+class role::mariadb::otrsbackups {
+    include role::backup::host
+    include passwords::mysql::dump
+
+    file { '/srv/backups':
+        ensure => directory,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0600', # implicitly 0700 for dirs
+    }
+
+    file { '/etc/mysql/conf.d/dumps.cnf':
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0400',
+        content => "[client]\nuser=${passwords::mysql::dump::user}\npassword=${passwords::mysql::dump::pass}\n",
+    }
+
+    file { '/usr/local/bin/dumps-otrs.sh':
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        content => template('mariadb/dumps-otrs.sh.erb'),
+    }
+
+    cron { 'otrsbackups':
+        minute  => '0',
+        hour    => '0',
+        date    => '*',
+        weekday => '3',
+        command => '/usr/local/bin/dumps-otrs.sh',
+        user    => 'root',
+        require => [ File['/usr/local/bin/dumps-otrs.sh',
+                     File['/srv/backups'],
+                   ],
+    }
+
+    backup::set {'otrsdb': }
 }
 
 # hosts with client utilities to conect to remote servers
