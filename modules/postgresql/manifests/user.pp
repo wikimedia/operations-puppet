@@ -40,11 +40,16 @@ define postgresql::user(
     $ensure = 'present'
     ) {
 
+    $pg_hba_file = "/etc/postgresql/${pgversion}/main/pg_hba.conf"
+
     # Check if our user exists and store it
     $userexists = "/usr/bin/psql --tuples-only -c \'SELECT rolname FROM pg_catalog.pg_roles;\' | /bin/grep \'^ ${user}\'"
     # Check if our user doesn't own databases, so we can safely drop
     $user_dbs = "/usr/bin/psql --tuples-only --no-align -c \'SELECT COUNT(*) FROM pg_catalog.pg_database JOIN pg_authid ON pg_catalog.pg_database.datdba = pg_authid.oid WHERE rolname = '${user}';\' | grep -e '^0$'"
     $pass_set = "/usr/bin/psql -c \"ALTER ROLE ${user} WITH ${attrs} PASSWORD '${password}';\""
+
+    # xpath expression to identify the user entry in pg_hba.conf
+    $xpath = "/files${pg_hba_file}/*[type='${type}'][database='${database}'][user='${user}'][address='${cidr}'][method='${method}']"
 
     if $ensure == 'present' {
         exec { "create_user-${name}":
@@ -65,16 +70,18 @@ define postgresql::user(
             onlyif  => $userexists,
         }
 
-        $changes = [  "set 01/type \'${type}\'",
-                      "set 01/database \'${database}\'",
-                      "set 01/user \'${user}\'",
-                      "set 01/address \'${cidr}\'",
-                      "set 01/method \'${method}\'",
-                ]
+        $changes = [
+            "set 01/type \'${type}\'",
+            "set 01/database \'${database}\'",
+            "set 01/user \'${user}\'",
+            "set 01/address \'${cidr}\'",
+            "set 01/method \'${method}\'",
+        ]
+
         augeas { "hba_create-${name}":
-            context => "/files/etc/postgresql/${pgversion}/main/pg_hba.conf/",
+            context => "/files${pg_hba_file}/",
             changes => $changes,
-            onlyif  => "match /files/etc/postgresql/${pgversion}/main/pg_hba.conf/*/user[. = \'${user}\'] size == 0",
+            onlyif  => "match ${xpath} size == 0",
             notify  => Exec['pgreload'],
         }
     } elsif $ensure == 'absent' {
@@ -85,10 +92,10 @@ define postgresql::user(
         }
 
         augeas { "hba_drop-${name}":
-            context => "/files/etc/postgresql/${pgversion}/main/pg_hba.conf/",
-            changes => "rm /files/etc/postgresql/${pgversion}/main/pg_hba.conf/*[user = \'${user}\' ] and [database = \'${database}\'] and [ address = \'${cidr}\']",
+            context => "/files${pg_hba_file}/",
+            changes => "rm ${xpath}",
             # only if the user exists
-            onlyif  => "match /files/etc/postgresql/${pgversion}/main/pg_hba.conf/*/user[. = \'${user}\'] size > 0",
+            onlyif  => "match ${xpath} size > 0",
             notify  => Exec['pgreload'],
         }
     }
