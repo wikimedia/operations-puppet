@@ -83,6 +83,12 @@ subnets:
         private1-d-codfw:
           ipv4: 10.192.48.0/22
           ipv6: 2620:0:860:104::/64
+        labs-hosts1-b-codfw:
+          ipv4: 10.192.20.0/24
+          ipv6: 2620:0:860:118::/64
+        labs-support1-b-codfw:
+          ipv4: 10.192.21.0/24
+          ipv6: 2620:0:860:122::/64
     esams:
       public:
         public1-esams:
