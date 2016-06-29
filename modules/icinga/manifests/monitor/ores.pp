@@ -16,6 +16,10 @@ class icinga::monitor::ores {
         contact_group => 'team-ores',
     }
 
+    $realservers = hiera('role::labs::ores::lb::realservers')
+
+    monitor_ores_labs_web_node { $realservers: }
+
     # T121656
     monitoring::service { 'ores_worker_labs':
         description   => 'ORES worker labs',
