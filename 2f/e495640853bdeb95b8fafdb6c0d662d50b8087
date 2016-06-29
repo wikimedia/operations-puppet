@@ -1,0 +1,7 @@
+Code-Review+2: Dzahn <dzahn@wikimedia.org>
+Verified+2: jenkins-bot
+Submitted-by: Dzahn <dzahn@wikimedia.org>
+Submitted-at: Wed, 29 Jun 2016 21:07:12 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/296629
+Project: operations/puppet
+Branch: refs/heads/production
