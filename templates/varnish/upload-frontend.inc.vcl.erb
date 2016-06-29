@@ -113,6 +113,14 @@ sub cluster_fe_deliver {
 	// JavaScript with a different origin to access resource timing info
 	// (e9cbfd539edd3). See <https://phabricator.wikimedia.org/T76020>.
 	set resp.http.Timing-Allow-Origin = "*";
+
+	// Restrict uploads from loading external resources. (T117618)
+	// Currently experimental and testing on test/test2.wikipedia.org only.
+	if (req.url ~ "^/wikipedia/test") {
+		set.resp.http.Content-Security-Policy-Report-Only = "default-src 'none'; style-src 'unsafe-inline' data:; font-src data:; img-src data:; media-src data:; sandbox; report-uri https://test.wikipedia.org/w/api.php?reportonly=1&src=image"
+		set.resp.http.X-Content-Security-Policy-Report-Only = "default-src 'none'; style-src 'unsafe-inline' data:; font-src data:; img-src data:; media-src data:; sandbox; report-uri https://test.wikipedia.org/w/api.php?reportonly=1&src=image"
+		set.resp.http.X-Webkit-CSP-Report-Only = "default-src 'none'; style-src 'unsafe-inline' data:; font-src data:; img-src data:; media-src data:; sandbox; report-uri https://test.wikipedia.org/w/api.php?reportonly=1&src=image"
+	}
 }
 
 sub cluster_fe_err_synth {
