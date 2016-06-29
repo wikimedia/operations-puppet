@@ -1,6 +1,0 @@
-# THIS FILE IS MANAGED BY PUPPET
-#
-# puppet:///modules/gerrit/robots-txt-disallow
-#
-User-agent: *
-Disallow: /
