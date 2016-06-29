@@ -12,7 +12,7 @@
 # this way you can test changes in robots.txt in labs
 # before using the production PHP file
 # this was to stop manual deployments and we also puppetize
-# robots.txt for other services like gitblit/doc/etc.
+# robots.txt for other services like doc/etc.
 #
 # drawback: this must be kept in sync with prod if desired
 # but also gives the freedom to have different robots rules

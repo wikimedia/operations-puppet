@@ -147,16 +147,6 @@ node /aqs100[456]\.eqiad\.wmnet/ {
     role aqs
 }
 
-
-# git.wikimedia.org
-node 'antimony.wikimedia.org' {
-    role gitblit
-    include base::firewall
-    include standard
-
-    interface::add_ip6_mapped { 'main': }
-}
-
 node 'auth1001.eqiad.wmnet' {
     role yubiauth::server
 }
