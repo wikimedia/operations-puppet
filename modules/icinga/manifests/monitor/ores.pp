@@ -16,6 +16,10 @@ class icinga::monitor::ores {
         contact_group => 'team-ores',
     }
 
+    $web_nodes = [ 'ores-web-03', 'ores-web-05' ]
+
+    ::icinga::monitor::ores_labs_web_node { $web_nodes: }
+
     # T121656
     monitoring::service { 'ores_worker_labs':
         description   => 'ORES worker labs',
