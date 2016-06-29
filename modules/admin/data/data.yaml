@@ -531,7 +531,7 @@ groups:
   sectools-roots:
     description: root access on servers for security tools
     gid: 783
-    members: []
+    members: [dpatrick]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
 users:
   rush:
