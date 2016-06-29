@@ -1541,8 +1541,6 @@ node 'lead.wikimedia.org' {
     # to update the role::zuul::configuration variable 'gerrit_server'
     include standard
     include base::firewall
-
-    role gerrit::production::replicationdest
 }
 
 node 'lithium.eqiad.wmnet' {
