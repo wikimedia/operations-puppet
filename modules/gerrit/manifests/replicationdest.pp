@@ -13,11 +13,13 @@ class gerrit::replicationdest( $ssh_key, $slaveuser = 'gerritslave' ) {
         shell      => '/bin/bash',
         managehome => true,
         system     => true,
+        require    => Group[$slaveuser],
     }
 
     ssh::userkey { $slaveuser:
         ensure  => present,
         content => $ssh_key,
+        require => User[$slaveuser],
     }
 
     # Add ytterbium to ssh exceptions for git replication
