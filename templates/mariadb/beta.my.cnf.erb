@@ -36,6 +36,10 @@ innodb_file_per_table   = 1
 innodb_buffer_pool_size = <%= (Float(@memorysize.split[0]) * 0.75).round %>G
 innodb_log_file_size    = 500M
 
+[mysqld_safe]
+
+syslog
+
 [mysqldump]
 
 quick
