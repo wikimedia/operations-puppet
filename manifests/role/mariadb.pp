@@ -916,13 +916,14 @@ class role::mariadb::otrsbackups {
     }
 
     cron { 'otrsbackups':
-        minute  => '0',
-        hour    => '0',
-        date    => '*',
-        weekday => '3',
-        command => '/usr/local/bin/dumps-otrs.sh',
-        user    => 'root',
-        require => [
+        minute   => '0',
+        hour     => '0',
+        monthday => '*',
+        month    => '*',
+        weekday  => '3',
+        command  => '/usr/local/bin/dumps-otrs.sh',
+        user     => 'root',
+        require  => [
             File['/usr/local/bin/dumps-otrs.sh'],
             File['/srv/backups'],
         ],

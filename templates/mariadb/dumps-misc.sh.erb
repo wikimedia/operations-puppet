@@ -4,10 +4,10 @@ find /srv/backups -mtime +14 -type f -delete
 
 my="/usr/local/bin/mysql --skip-column-names -e"
 dump="/usr/local/bin/mysqldump --single-transaction --quick"
-dump_master="$dump --master-data=2"
-dump_slave="$dump --dump-slave=2 --include-master-host-port"
+dump_master="$dump --master-data=2 --gtid"
+dump_slave="$dump --dump-slave=2 --include-master-host-port --gtid"
 
-$dump_master -h m1-master --databases bacula etherpadlite librenms puppet racktables rt | \
+$dump_slave -h m1-slave --databases bacula etherpadlite librenms puppet racktables rt | \
     pigz > /srv/backups/m1-$(date +%Y%m%d%H%M%S).sql.gz &
 
 $dump_slave -h m2-slave --databases iegreview reviewdb scholarships | \
