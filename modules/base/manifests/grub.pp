@@ -55,16 +55,6 @@ class base::grub($ioscheduler = 'deadline', $enable_memory_cgroup = false, $tcpm
             onlyif  => 'test -f /etc/default/grub',
             notify  => Exec['update-grub'],
         }
-
-        # The CFQ I/O scheduler is rather suboptimal for some of our I/O
-        # workloads. Override with deadline. (the installer does this too)
-        exec { 'grub2 iosched deadline':
-            path    => '/bin:/usr/bin',
-            command => "sed -i '/^GRUB_CMDLINE_LINUX=/s/\\\"\$/ elevator=${ioscheduler}\\\"/' /etc/default/grub",
-            unless  => "grep -q '^GRUB_CMDLINE_LINUX=.*elevator=${ioscheduler}' /etc/default/grub",
-            onlyif  => 'test -f /etc/default/grub',
-            notify  => Exec['update-grub'];
-        }
     }
 
     exec { 'update-grub':
