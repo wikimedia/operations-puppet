@@ -1,7 +1,6 @@
 class base::grub(
   $ioscheduler = 'deadline',
   $enable_memory_cgroup = false,
-  $tcpmhash_entries = 0
 ) {
     include ::grub::defaults
 
@@ -24,16 +23,6 @@ class base::grub(
         ::grub::bootparam { 'swapaccount':
             ensure => $cgroup_ensure,
             value  => '1',
-        }
-
-        $tcpmhash_ensure = $tcpmhash_entries ? {
-            0       => 'absent',
-            default => 'present',
-        }
-
-        ::grub::bootparam { 'tcpmhash_entries':
-            ensure => $tcpmhash_ensure,
-            value  => $tcpmhash_entries,
         }
     }
 }
