@@ -2851,7 +2851,6 @@ node 'uranium.wikimedia.org' {
 
     role ganglia::web
     include standard
-    include misc::monitoring::views
     include base::firewall
 
     interface::add_ip6_mapped { 'main':
