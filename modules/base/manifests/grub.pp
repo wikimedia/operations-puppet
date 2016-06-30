@@ -1,63 +1,39 @@
-class base::grub($ioscheduler = 'deadline', $enable_memory_cgroup = false, $tcpmhash_entries = 0) {
-    # The augeas Shellvars_list lens can't handle backticks for versions < 1.2
-    # We fallback to the legacy grep/sed method in that case.
+class base::grub(
+  $ioscheduler = 'deadline',
+  $enable_memory_cgroup = false,
+  $tcpmhash_entries = 0
+) {
+    include ::grub::defaults
+
     if versioncmp($::augeasversion, '1.2.0') >= 0 {
-        $cgroup_line = $enable_memory_cgroup ? {
-            true => 'set GRUB_CMDLINE_LINUX/value[. = "cgroup_enable=memory"] cgroup_enable=memory',
-            false => 'rm GRUB_CMDLINE_LINUX/value[. = "cgroup_enable=memory"]'
-        }
-        $swapaccount_line = $enable_memory_cgroup ? {
-            true => 'set GRUB_CMDLINE_LINUX/value[. = "swapaccount=1"] swapaccount=1',
-            false => 'rm GRUB_CMDLINE_LINUX/value[. = "swapaccount=1"]'
+        ::grub::bootparam { 'elevator':
+            ensure => present,
+            value  => 'deadline',
         }
 
-        $tcpmhash_line = $tcpmhash_entries ? {
-            0       => 'rm GRUB_CMDLINE_LINUX/value[. =~ glob("tcpmhash_entries=*")]',
-            default => "set GRUB_CMDLINE_LINUX/value[. =~ glob(\"tcpmhash_entries=*\")] tcpmhash_entries=${tcpmhash_entries}"
+        $cgroup_ensure = $enable_memory_cgroup ? {
+            true  => 'present',
+            false => 'absent',
         }
 
-        augeas { 'grub2':
-            incl    => '/etc/default/grub',
-            lens    => 'Shellvars_list.lns',
-            changes => [
-                # set terminal; default usually is just serial
-                'set GRUB_TERMINAL/quote \'"\'',
-                'set GRUB_TERMINAL/value[1] console',
-                'set GRUB_TERMINAL/value[2] serial',
-                # removes quiet, splash from default kopts
-                'rm GRUB_CMDLINE_LINUX_DEFAULT/value[. = "quiet"]',
-                'rm GRUB_CMDLINE_LINUX_DEFAULT/value[. = "splash"]',
-                # Sets the ioscheduler to a specific value. Default is deadline
-                "set GRUB_CMDLINE_LINUX/value[. =~ glob(\"elevator=*\")] elevator=${ioscheduler}",
-                $cgroup_line,
-                $swapaccount_line,
-                $tcpmhash_line,
-            ],
-            notify  => Exec['update-grub'],
+        ::grub::bootparam { 'cgroup_enable':
+            ensure => $cgroup_ensure,
+            value  => 'memory',
         }
 
-    } else {
-        # Disable the 'quiet' kernel command line option so console messages
-        # will be printed.
-        exec { 'grub2 remove quiet':
-            path    => '/bin:/usr/bin',
-            command => "sed -r -i '/^GRUB_CMDLINE_LINUX_DEFAULT/s/quiet( splash)?//' /etc/default/grub",
-            onlyif  => "grep -E -q '^GRUB_CMDLINE_LINUX_DEFAULT=.*quiet( splash)?' /etc/default/grub",
-            notify  => Exec['update-grub'],
+        ::grub::bootparam { 'swapaccount':
+            ensure => $cgroup_ensure,
+            value  => '1',
         }
 
-        # show the GRUB menu on both console & serial (default is serial)
-        exec { 'grub2 terminal':
-            path    => '/bin:/usr/bin',
-            command => "sed -i '/^GRUB_TERMINAL/s/=.*/=\"console serial\"/' /etc/default/grub",
-            unless  => "grep -q '^GRUB_TERMINAL=.*console serial' /etc/default/grub",
-            onlyif  => 'test -f /etc/default/grub',
-            notify  => Exec['update-grub'],
+        $tcpmhash_ensure = $tcpmhash_entries ? {
+            0       => 'absent',
+            default => 'present',
         }
-    }
 
-    exec { 'update-grub':
-        refreshonly => true,
-        path        => '/bin:/usr/bin:/sbin:/usr/sbin',
+        ::grub::bootparam { 'tcpmhash_entries':
+            ensure => $tcpmhash_ensure,
+            value  => $tcpmhash_entries,
+        }
     }
 }
