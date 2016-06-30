@@ -37,8 +37,9 @@ class phabricator::tools (
             require => Package[$deploy_target],
         }
 
+# Temporarily disabling dumps on the slave for maintenance (T138460)
         cron { $dump_script:
-            ensure  => present,
+            ensure  => absent,
             command => $dump_script,
             user    => root,
             hour    => '2',
