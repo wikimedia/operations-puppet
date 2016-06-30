@@ -5,7 +5,6 @@ class gerrit::jetty(
     $url = "https://${::gerrit::host}/r",
     $db_name = 'reviewdb',
     $db_user = 'gerrit',
-    $ssh_port = '29418',
     $git_dir = 'git'
     ) {
 
