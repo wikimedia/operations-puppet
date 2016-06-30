@@ -1,6 +1,7 @@
 # A role that includes all the needed stuff to run a ganglia web frontend
 class role::ganglia::web {
     include role::ganglia::config
+    include role::ganglia::views
 
     sslcert::certificate { 'ganglia.wikimedia.org': }
 
