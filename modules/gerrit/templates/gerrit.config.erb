@@ -29,11 +29,7 @@
 [sendemail]
     includeDiff = true
     smtpServerPort = 25
-<% if @smtp_host != "" then %>
-    smtpServer = <%= @smtp_host %>
-<% else %>
-    enable = false
-<% end %>
+    smtpServer = <%= @mail_smarthost[0] %>
 [container]
     user = gerrit2
     javaHome = /usr/lib/jvm/java-7-openjdk-amd64/jre
