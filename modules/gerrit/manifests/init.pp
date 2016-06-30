@@ -1,13 +1,8 @@
 # Manifest to setup a Gerrit instance
 
-class gerrit(
-    $host,
-    $replication = ''
-    ) {
+class gerrit($host) {
 
-    class { 'gerrit::jetty':
-        replication => $replication,
-    }
+    class { 'gerrit::jetty': }
 
     class { 'gerrit::proxy':
         require => Class['gerrit::jetty'],
