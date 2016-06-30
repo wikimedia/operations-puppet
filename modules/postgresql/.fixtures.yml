@@ -1,0 +1,4 @@
+fixtures:
+    symlinks:
+        postgresql: "#{source_dir}"
+        wmflib: "../../../../wmflib"
