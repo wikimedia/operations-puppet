@@ -1,0 +1,4 @@
+fixtures:
+    symlinks:
+        network: "#{source_dir}"
+        stdlib: "../../../../stdlib"
