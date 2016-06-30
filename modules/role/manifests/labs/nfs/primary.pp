@@ -17,4 +17,10 @@ class role::labs::nfs::primary($monitor = 'eth0') {
 
     # Enable RPS to balance IRQs over CPUs
     interface::rps { $monitor: }
+
+    # Use the CFQ I/O scheduler
+    grub::bootparam { 'elevator':
+        value => 'cfq',
+    }
+
 }

@@ -1,15 +1,9 @@
 class base::grub(
-  $ioscheduler = 'deadline',
   $enable_memory_cgroup = false,
 ) {
     include ::grub::defaults
 
     if versioncmp($::augeasversion, '1.2.0') >= 0 {
-        ::grub::bootparam { 'elevator':
-            ensure => present,
-            value  => 'deadline',
-        }
-
         $cgroup_ensure = $enable_memory_cgroup ? {
             true  => 'present',
             false => 'absent',
