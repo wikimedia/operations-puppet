@@ -2,13 +2,11 @@
 
 class gerrit(
     $host,
-    $replication = '',
-    $smtp_host   = ''
+    $replication = ''
     ) {
 
     class { 'gerrit::jetty':
         replication => $replication,
-        smtp_host   => $smtp_host,
     }
 
     class { 'gerrit::proxy':

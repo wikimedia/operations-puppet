@@ -1,7 +1,6 @@
 class gerrit::jetty(
     $db_host,
     $replication,
-    $smtp_host,
     $ssh_key,
     $url = "https://${::gerrit::host}/r",
     $db_name = 'reviewdb',
