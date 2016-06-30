@@ -19,6 +19,10 @@ class role::toollabs::k8s::master {
         ]
     }
 
+    class { '::toollabs::maintain_kubeusers':
+        k8s_master => $master_host,
+    }
+
     class { 'k8s::scheduler': }
 
     class { 'k8s::controller': }
