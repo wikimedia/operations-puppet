@@ -28,7 +28,7 @@ class role::aqs {
     ferm::service { 'cassandra-analytics-intra-node':
         proto  => 'tcp',
         port   => '7000',
-        srange => "@resolve((${cassandra_hosts_ferm})) @resolve((${hadoop_hosts_ferm}))",
+        srange => "(@resolve((${cassandra_hosts_ferm})) @resolve((${hadoop_hosts_ferm})))",
     }
     # Cassandra JMX/RMI
     ferm::service { 'cassandra-analytics-jmx-rmi':
