@@ -46,7 +46,6 @@ class role::gerrit::production($host) {
 
         class { '::gerrit':
             host        => $host,
-            smtp_host   => $::mail_smarthost[0],
             replication => {
                 # If adding a new entry, remember to add the fingerprint to gerrit2's known_hosts
                 'github' => {
