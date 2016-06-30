@@ -64,7 +64,7 @@ sources:
 
   # ores is the Objective Revision Evaluation Service
   ores/deploy:
-    repository: mediawiki/services/ores/deploy
+    repository: research/ores/deploy
 
   wdqs/wdqs:
     repository: wikidata/query/deploy
