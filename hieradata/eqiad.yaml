@@ -170,7 +170,7 @@ analytics_cluster_meta_database_backup_rsync_dest: analytics1002.eqiad.wmnet::ba
 # List of hosts in the Analytics Hadoop cluster
 analytics_hadoop_hosts:
     - analytics1001.eqiad.wmnet
-    - analytics1001.eqiad.wmnet
+    - analytics1002.eqiad.wmnet
     - analytics1028.eqiad.wmnet
     - analytics1029.eqiad.wmnet
     - analytics1030.eqiad.wmnet
