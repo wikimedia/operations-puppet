@@ -45,5 +45,5 @@ end
 
 task :spec_standalone => [ :setup, :realspec, :teardown]
 
-task :default => :spec do
+task :default => :spec_standalone do
 end

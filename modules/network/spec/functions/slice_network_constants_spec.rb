@@ -5,10 +5,6 @@ describe "slice_network_constants" do
     expect(Puppet::Parser::Functions.function("slice_network_constants")).to eq "function_slice_network_constants"
   end
 
-  before :each do
-    @scope = Puppet::Parser::Scope
-  end
-
   it "should raise a ParseError if there are less than 1 arguments" do
     expect { subject.call([]) }.to raise_error(ArgumentError)
   end
