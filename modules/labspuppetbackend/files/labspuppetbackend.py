@@ -1,6 +1,6 @@
 from flask import Flask, request, g, Response
 from statsd.defaults.env import statsd
-import pymysql
+from sqlalchemy import create_engine
 import os
 import json
 
@@ -8,15 +8,19 @@ app = Flask(__name__)
 # Propogate exceptions to the uwsgi log
 app.config['PROPAGATE_EXCEPTIONS'] = True
 
+# Use SQLAlchemy purely for connection pooling
+connection_string = 'mysql+pymysql://{user}:{password}@{host}/?charset=utf8mb4'.format(
+    host=os.environ['MYSQL_HOST'],
+    db=os.environ['MYSQL_DB'],
+    user=os.environ['MYSQL_USERNAME'],
+    passwd=os.environ['MYSQL_PASSWORD']
+)
+engine = create_engine(connection_string, pool_recycle=300)
+
 
 @app.before_request
 def before_request():
-    g.db = pymysql.connect(
-        host=os.environ['MYSQL_HOST'],
-        db=os.environ['MYSQL_DB'],
-        user=os.environ['MYSQL_USERNAME'],
-        passwd=os.environ['MYSQL_PASSWORD']
-    )
+    g.db = engine.connect()
 
 
 @app.teardown_request

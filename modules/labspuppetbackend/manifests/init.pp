@@ -6,7 +6,7 @@ class labspuppetbackend(
     $statsd_host,
     $statsd_prefix,
 ) {
-    require_package('python3-pymysql', 'python3-statsd', 'python3-flask')
+    require_package('python3-pymysql', 'python3-statsd', 'python3-flask', 'python3-sqlalchemy')
 
     file { '/usr/local/lib/python3.4/dist-packages/labspuppetbackend.py':
         source => 'puppet:///modules/labspuppetbackend/labspuppetbackend.py',
