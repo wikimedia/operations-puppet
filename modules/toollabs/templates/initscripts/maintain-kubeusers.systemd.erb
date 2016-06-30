@@ -1,0 +1,19 @@
+# maintain-kubeusers
+#
+# A simple script that autocreates kubernetes accounts for tools users
+# Also maintains infrastructure accounts
+[Unit]
+Description="Create & Maintain kubernetes tool & infrastructure users"
+
+[Service]
+User=root # Needs to run as root because it is writing to /data/project/$toolnames
+Group=root
+ExecStart=/usr/local/bin/maintain-kubeusers \
+          --infrastructure-users /etc/kubernetes/infrastructure-users \
+          <%= @k8s_master %> /etc/kubernetes/tokenauth /etc/kubernetes/abac
+ReadWriteDirectories=/data/project /etc/kubernetes
+InaccessibleDirectories=/
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
