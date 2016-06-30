@@ -156,14 +156,6 @@ class gerrit::jetty(
         source => 'puppet:///modules/gerrit/skin/wikimedia-codereview-logo.cache.png',
     }
 
-    file { '/var/lib/gerrit2/review_site/hooks':
-        ensure  => directory,
-        owner   => 'gerrit2',
-        group   => 'gerrit2',
-        mode    => '0755',
-        require => Exec['install_gerrit_jetty'],
-    }
-
     file { '/var/lib/gerrit2/review_site/lib':
         ensure  => directory,
         owner   => 'gerrit2',
