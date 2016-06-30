@@ -1,10 +1,4 @@
 class network::constants {
-
-    # Dummy resource to allow RSpec to work with hiera lookups. Without it RSpec
-    # will not load hiera settings and unrelated tests about functions in this
-    # module will fail. Any resource would be, but this class has none
-    notify { 'dummy': message => '' }
-
     # Note this name is misleading.  Most of these are "external" networks,
     # but some subnets of the IPv6 space are not externally routed, even if
     # they're externally route-able (the ones used for private vlans).
