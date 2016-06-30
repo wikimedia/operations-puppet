@@ -921,7 +921,7 @@ class role::mariadb::otrsbackups {
         monthday => '*',
         month    => '*',
         weekday  => '3',
-        command  => '/usr/local/bin/dumps-otrs.sh',
+        command  => '/usr/local/bin/dumps-otrs.sh > /srv/backups/dump.log 2>&1',
         user     => 'root',
         require  => [
             File['/usr/local/bin/dumps-otrs.sh'],
