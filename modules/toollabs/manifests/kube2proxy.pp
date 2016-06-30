@@ -36,7 +36,7 @@ class toollabs::kube2proxy(
     }
     $service_params = {'ensure' => $should_run}
 
-    $users = hiera('k8s_users')
+    $users = hiera('k8s_infrastructure_users')
     # Ugly hack, ugh!
     $client_token = inline_template("<%= @users.select { |u| u['name'] == 'proxy-infrastructure' }[0]['token'] %>")
 
