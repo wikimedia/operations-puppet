@@ -24,6 +24,10 @@ class role::cache::perf {
         max => 1048576,
     }
 
+    grub::bootparam { 'tcpmhash_entries':
+        value => 65536,
+    }
+
     # RPS/RSS to spread network i/o evenly
     interface::rps { 'eth0': }
 
@@ -169,10 +173,8 @@ class role::cache::perf {
             # saving metrics significantly, and the upsides have always been a
             # win because we remember (for an hour) past RTT, ssthresh, cwnd,
             # etc, which often allow better initial connection conditions.
-            # Kernel boot param 'tcpmhash_entries' defaults to 16K on our
-            # caches, and sets hash table slots for this.  We'd probably be
-            # better off with a much larger hashtable (maybe 64K or 128K?), as
-            # the chains will be long on high-traffic cache hosts at 16K.
+            # Kernel boot param 'tcpmhash_entries' sets hash table slots for
+            # this.
             'net.ipv4.tcp_no_metrics_save'       => 0,
         },
     }
