@@ -34,7 +34,6 @@ class role::librenms {
             'community' => [ $passwords::network::snmp_ro_community ],
         },
 
-        'nets'             => $network::constants::external_networks,
         'autodiscovery'    => {
             'xdp'      => true,
             'ospf'     => true,
