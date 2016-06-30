@@ -38,7 +38,7 @@
 
   # ?r=<repo/name> -> /<repo/name>
   RewriteCond %{QUERY_STRING} ^(.*&)?r=([0-9A-Za-z/_\.-]+).git(&.*)?$
-  RewriteRule ^/(blame|blob|commit|commitdiff|docs|history|log|patch|summary|tree)/$ /$1/%2.git [NE]
+  RewriteRule ^/(blame|blob|commit|commitdiff|docs|git|history|log|patch|summary|tree)/$ /$1/%2.git [NE]
 
   # remove "refs%2Fheads%2F" and "refs%2Fremotes%2Forigin%2F"
   RewriteRule ^(.*)refs\%2[Ff](heads|remotes\%2[Ff]origin)\%2[Ff](.*)$ $1$3
