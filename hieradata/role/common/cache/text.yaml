@@ -2,7 +2,6 @@ cluster: cache_text
 cache::cluster: text
 admin::groups:
   - perf-roots
-base::grub::tcpmhash_entries: 65536
 # The contents of this hash control our DC->DC routing for varnish backend
 # daemons.  There should be a key for every cache datacenter, and the
 # values can be another datacenter or 'direct', which means contact the
