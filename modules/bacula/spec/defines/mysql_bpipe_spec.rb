@@ -2,6 +2,7 @@ require 'spec_helper'
 
 describe 'bacula::client::mysql_bpipe', :type => :define do
     let(:title) { 'something' }
+    let(:facts) { { :processorcount => 4, } }
 
     context 'with per database' do
         let(:params) { {
