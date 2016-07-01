@@ -78,13 +78,13 @@ chunksForAbstract=<%= @config[@configtype]['wikis'][w]['chunksForAbstract'] %>
 checkpointTime=<%= @config[@configtype]['wikis'][w]['checkpointTime'] %>
 <% end -%>
 <% if @config[@configtype]['wikis'][w].has_key?('orderrevs') -%>
-checkpointTime=<%= @config[@configtype]['wikis'][w]['orderrevs'] %>
+orderrevs=<%= @config[@configtype]['wikis'][w]['orderrevs'] %>
 <% end -%>
 <% if @config[@configtype]['wikis'][w].has_key?('minpages') -%>
-checkpointTime=<%= @config[@configtype]['wikis'][w]['minpages'] %>
+minpages=<%= @config[@configtype]['wikis'][w]['minpages'] %>
 <% end -%>
 <% if @config[@configtype]['wikis'][w].has_key?('maxrevs') -%>
-checkpointTime=<%= @config[@configtype]['wikis'][w]['maxrevs'] %>
+maxrevs=<%= @config[@configtype]['wikis'][w]['maxrevs'] %>
 <% end -%>
 
 <% end -%>
