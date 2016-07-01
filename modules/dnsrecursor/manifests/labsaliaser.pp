@@ -2,6 +2,7 @@ class dnsrecursor::labsaliaser(
     $username,
     $password,
     $nova_api_url,
+    $cnames,
     $alias_file,
     $admin_project_name,
 ) {
@@ -11,8 +12,10 @@ class dnsrecursor::labsaliaser(
     $config = {
         'username'           => $username,
         'password'           => $password,
+        'projects'           => $projects,
         'output_path'        => $alias_file,
         'nova_api_url'       => $nova_api_url,
+        'cnames'             => $cnames,
         'admin_project_name' => $admin_project_name,
     }
 
