@@ -1,6 +1,6 @@
 # modules/role/manifests/gerrit/production.pp
-class role::gerrit::production($host) {
-        system::role { 'role::gerrit::production': description => 'Gerrit master' }
+class role::gerrit::server($host) {
+        system::role { 'role::gerrit::server': description => 'Gerrit server' }
         include role::backup::host
         include base::firewall
 
@@ -13,12 +13,12 @@ class role::gerrit::production($host) {
 
         backup::set { 'var-lib-gerrit2-review_site-git': }
 
-        interface::ip { 'role::gerrit::production_ipv4':
+        interface::ip { 'role::gerrit::server_ipv4':
             interface => 'eth0',
             address   => '208.80.154.81',
             prefixlen => '32',
         }
-        interface::ip { 'role::gerrit::production_ipv6':
+        interface::ip { 'role::gerrit::server_ipv6':
             interface => 'eth0',
             address   => '2620:0:861:3:208:80:154:81',
             prefixlen => '128',

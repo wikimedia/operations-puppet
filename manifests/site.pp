@@ -2900,7 +2900,7 @@ node /^wtp20(0[1-9]|1[0-9]|2[0-4])\.codfw\.wmnet$/ {
 node 'ytterbium.wikimedia.org' {
     # Note: whenever moving Gerrit out of ytterbium, you will need
     # to update the role::zuul::configuration variable 'gerrit_server'
-    role gerrit::production
+    role gerrit::server
     include standard
 
     interface::add_ip6_mapped { 'main': }
