@@ -28,3 +28,6 @@
 # Jetbrain's IDEA editor settings
 /.idea
 /*.iml
+
+# rspec status persistence for --next-failure
+/.rspec_status

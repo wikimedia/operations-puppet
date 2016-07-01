@@ -1,0 +1,4 @@
+--format doc
+--color
+--pattern 'modules/*/spec/**/*_spec.rb'
+--exclude-pattern 'modules/mysql/spec/**/*_spec.rb'

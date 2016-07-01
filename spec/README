@@ -1,0 +1,4 @@
+From the root of the repository:
+
+    bundle install
+    bundle exec rspec
