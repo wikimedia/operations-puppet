@@ -1535,6 +1535,7 @@ node /labstore200[3-4]\.codfw\.wmnet/ {
 node 'lead.wikimedia.org' {
     # Note: whenever moving Gerrit out of ytterbium, you will need
     # to update the role::zuul::configuration variable 'gerrit_server'
+    include gerrit::migration::source
     include standard
     include base::firewall
 }
@@ -2901,6 +2902,8 @@ node 'ytterbium.wikimedia.org' {
     # Note: whenever moving Gerrit out of ytterbium, you will need
     # to update the role::zuul::configuration variable 'gerrit_server'
     role gerrit::server
+
+    include gerrit::migration::source
     include standard
 
     interface::add_ip6_mapped { 'main': }
