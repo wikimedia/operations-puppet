@@ -1,4 +1,11 @@
-class gerrit::crons {
+class gerrit::crons($ssh_key) {
+
+    # TODO: Make this go away -- need to stop using gerrit2 for hook actions
+    ssh::userkey { 'gerrit2':
+        ensure  => present,
+        content => $ssh_key,
+        require => Package['gerrit'],
+    }
 
     cron { 'list_mediawiki_extensions':
     # Gerrit is missing a public list of projects.
