@@ -177,21 +177,23 @@ class role::phabricator::main {
     }
 
     # community metrics mail (T81784, T1003)
-    phabricator::logmail {'communitymetrics':
-        script_name  => 'community_metrics.sh',
-        rcpt_address => 'wikitech-l@lists.wikimedia.org',
-        sndr_address => 'communitymetrics@wikimedia.org',
-        monthday     => '1',
-        require      => Package[$deploy_target],
-    }
+    # disabled due to maintenance: T138460
+    #phabricator::logmail {'communitymetrics':
+    #    script_name  => 'community_metrics.sh',
+    #    rcpt_address => 'wikitech-l@lists.wikimedia.org',
+    #    sndr_address => 'communitymetrics@wikimedia.org',
+    #    monthday     => '1',
+    #    require      => Package[$deploy_target],
+    #}
 
     # project changes mail (T85183)
-    phabricator::logmail {'projectchanges':
-        script_name  => 'project_changes.sh',
-        rcpt_address => [ 'phabricator-reports@lists.wikimedia.org' ],
-        sndr_address => 'aklapper@wikimedia.org',
-        monthday     => '*',
-        weekday      => 1, # Monday
-        require      => Package[$deploy_target],
-    }
+    # disabled due to maintenance: T138460
+    #phabricator::logmail {'projectchanges':
+    #    script_name  => 'project_changes.sh',
+    #    rcpt_address => [ 'phabricator-reports@lists.wikimedia.org' ],
+    #    sndr_address => 'aklapper@wikimedia.org',
+    #    monthday     => '*',
+    #    weekday      => 1, # Monday
+    #    require      => Package[$deploy_target],
+    #}
 }
