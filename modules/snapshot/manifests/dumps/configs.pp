@@ -81,6 +81,9 @@ class snapshot::dumps::configs(
                     pagesPerChunkAbstract => '5800000',
                     chunksForAbstract     => '4',
                     checkpointTime        => '720',
+                    orderrevs             => '1',
+                    minpages              => '10',
+                    maxrevs               => '20000',
                 },
                 zhwiki => {
                     pagesPerChunkHistory  => '231819,564192,1300322,3112369',
