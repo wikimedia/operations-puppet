@@ -1,0 +1,4 @@
+fixtures:
+    symlinks:
+        servermon: "#{source_dir}"
+        wmflib: "../../../../wmflib"
