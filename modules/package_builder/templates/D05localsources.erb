@@ -1,6 +1,6 @@
 #!/bin/sh
 
-if [ "${APT_USE_BUILT}" = "yes" ]; then
+if [ "${APT_USE_BUILT}" = "yes" -a -d ${BUILDRESULT} ]; then
     apt-get install -y apt-utils
 
     (cd $BUILDRESULT;
