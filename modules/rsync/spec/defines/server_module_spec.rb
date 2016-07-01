@@ -53,14 +53,14 @@ describe 'rsync::server::module', :type => :define do
     :uid            => '4682',
     :gid            => '4682',
     :secrets_file   => '/path/to/secrets',
-    :hosts_allow    => ['localhost', '169.254.42.51'],
-    :hosts_deny     => ['some-host.example.com', '10.0.0.128']
+    :hosts_allow    => ['localhost', '169.254.42.51'].join(' '),
+    :hosts_deny     => ['some-host.example.com', '10.0.0.128'].join(' '),
   }.each do |k,v|
     describe "when overriding #{k}" do
       let :params do
         mandatory_params.merge({ k => v })
       end
-      it { should contain_file(fragment_file).with_content(/^#{k.to_s.gsub('_', ' ')}\s*=\s*#{v.to_a.join(' ')}$/)}
+      it { should contain_file(fragment_file).with_content(/^#{k.to_s.gsub('_', ' ')}\s*=\s*#{v}$/)}
     end
   end
 
