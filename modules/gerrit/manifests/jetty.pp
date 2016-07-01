@@ -1,7 +1,6 @@
 class gerrit::jetty(
     $db_host,
     $replication,
-    $ssh_key,
     $url = "https://${::gerrit::host}/r",
     $db_name = 'reviewdb',
     $db_user = 'gerrit',
@@ -30,13 +29,6 @@ class gerrit::jetty(
 
     package { 'gerrit':
         ensure => present,
-    }
-
-    # TODO: Make this go away -- need to stop using gerrit2 for hook actions
-    ssh::userkey { 'gerrit2':
-        ensure  => present,
-        content => $ssh_key,
-        require => Package['gerrit'],
     }
 
     file { '/etc/default/gerritcodereview':
