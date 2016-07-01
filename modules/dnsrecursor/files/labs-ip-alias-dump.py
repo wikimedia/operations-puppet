@@ -24,7 +24,7 @@ argparser.add_argument(
     action='store_true'
 )
 
-LUA_LINE_TEMPLATE = 'aliasmapping["{public}"] = "{private}" -- {name}\n'
+LUA_LINE_TEMPLATE = '{table}["{key}"] = "{value}" -- {comment}\n'
 
 args = argparser.parse_args()
 config = yaml.safe_load(args.config_file)
@@ -78,7 +78,12 @@ output = 'aliasmapping = {}\n'
 for name in sorted(aliases.keys()):
     ips = aliases[name]
     for public, private in ips:
-        output += LUA_LINE_TEMPLATE.format(private=private, public=public, name=name)
+        output += LUA_LINE_TEMPLATE.format(
+            table='aliasmapping',
+            key=public,
+            value=private,
+            comment=name
+        )
 
 output += """
 function postresolve (remoteip, domain, qtype, records, origrcode)
@@ -90,6 +95,31 @@ function postresolve (remoteip, domain, qtype, records, origrcode)
         end
     end
     return origrcode, records
+end
+
+"""
+
+if 'cnames' in config:
+    output += 'cnamemapping = {}\n'
+    cnames = config['cnames']
+
+    for cname in sorted(cnames.keys()):
+        output += LUA_LINE_TEMPLATE.format(
+            table='cnamemapping',
+            key=cname,
+            value=cnames[cname],
+            comment=cname
+        )
+
+    output += """
+function preresolve(remoteip, domain, qtype)
+    if cnamemapping[domain]
+    then
+        return 0, {
+            {qtype=pdns.CNAME, content=cnamemapping[domain], ttl=300, place="1"},
+        }
+    end
+    return -1, {}
 end
 """
 
