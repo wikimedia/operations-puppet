@@ -19,7 +19,7 @@ describe 'mysql::server::config', :type => :define do
   }
 
   it 'should contain config parameter in content' do
-    should contain_file(filename).with_content("### MANAGED BY PUPPET ###\n[mysqld]\nbind-address = 0.0.0.0\n\n")
+    should contain_file(filename).with_content("# Note:  This file is managed by Puppet.\n[mysqld]\nbind-address = 0.0.0.0\n\n")
   end
 
   it 'should not notify the mysql daemon' do

@@ -40,7 +40,7 @@ class mysql::server (
 
   if $manage_service {
     service { 'mysqld':
-      ensure   => service_ensure($enabled),
+      ensure   => ensure_service($enabled),
       name     => $service_name,
       enable   => $enabled,
       require  => Package['mysql-server'],
