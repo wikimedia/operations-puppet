@@ -1,0 +1,5 @@
+fixtures:
+    symlinks:
+        nrpe: "#{source_dir}"
+        ferm: "../../../../ferm"
+        monitoring: "../../../../monitoring"
