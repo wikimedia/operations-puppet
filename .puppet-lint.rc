@@ -4,7 +4,6 @@
 
 # TO BE FIXED - T93645 - please help
 --no-autoloader_layout-check
---no-puppet_url_without_modules-check
 
 # T127797 - needs at least one comment line for each class
 --no-documentation-check
