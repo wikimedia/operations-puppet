@@ -149,7 +149,15 @@ task :spec do
 
         module_name = rakefile.match('modules/(.+)/')[1]
 
-        if !run_module_spec(module_name)
+        puts '-' * 80
+        puts "Running rspec tests for module #{module_name}"
+        puts '-' * 80
+
+        spec_result = 0
+        Dir.chdir("modules/#{module_name}") do
+            spec_result = system('rake spec')
+        end
+        if ! spec_result
             failed_modules << module_name  # recording
         end
         puts "\n"
@@ -177,34 +185,6 @@ task :tags do
     puts "See https://github.com/majutsushi/tagbar/wiki#puppet for vim"
     puts "integration with the vim tagbar plugin."
 end
-
-# Wrapper to run rspec in a module.
-def run_module_spec(module_name)
-
-    puts '-' * 80
-    puts "Running rspec tests for module #{module_name}"
-    puts '-' * 80
-
-    Dir.chdir("modules/#{module_name}") do
-        # The following is a customized replacement for 'spec_prep'.
-        # We do not want to use upstream modules which are usually installed
-        # using `rake spec_prep`, instead we symlink to our own modules.
-        directory_name = "spec/fixtures"
-        Dir.mkdir(directory_name) unless File.exists?(directory_name)
-        link_name = "spec/fixtures/modules"
-        system("ln -s ../../../../modules #{link_name}") unless File.exists?(link_name)
-
-        # We also need to create an empty site.pp file in the manifests dir.
-        directory_name = "spec/fixtures/manifests"
-        Dir.mkdir(directory_name) unless File.exists?(directory_name)
-        site_file_name = "spec/fixtures/manifests/site.pp"
-        system("touch #{site_file_name}") unless File.exists?(site_file_name)
-
-        puts "Invoking tests on module #{module_name}"
-        system('rake spec_standalone')
-    end
-end
-
 
 # lint
 # amass profit
