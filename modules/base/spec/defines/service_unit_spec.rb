@@ -13,7 +13,7 @@ describe 'base::service_unit' do
       end
 
       it 'should install a service file' do
-        should contain_file('/etc/systemd/system/nginx.service')
+        should contain_file('/lib/systemd/system/nginx.service')
       end
 
       it 'should execute daemon-reload' do
