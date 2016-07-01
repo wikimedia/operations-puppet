@@ -68,6 +68,11 @@ checkpointTime=<%= @config[@configtype]['checkpointTime'] %>
 [otherformats]
 multistream=1
 
+[stubs]
+orderrevs=0
+minpages=1
+maxrevs=100000
+
 <% if @config[@configtype].has_key?('wikis') %>
 <% @config[@configtype]['wikis'].keys.sort.each do |w| -%>
 [<%= [w] %>]
