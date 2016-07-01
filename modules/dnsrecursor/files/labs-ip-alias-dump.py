@@ -99,24 +99,24 @@ end
 
 """
 
-if 'cnames' in config:
-    output += 'cnamemapping = {}\n'
-    cnames = config['cnames']
+if 'extra_records' in config:
+    output += 'extra_records = {}\n'
+    extra_records = config['extra_records']
 
-    for cname in sorted(cnames.keys()):
+    for q in sorted(extra_records.keys()):
         output += LUA_LINE_TEMPLATE.format(
-            table='cnamemapping',
-            key=cname,
-            value=cnames[cname],
-            comment=cname
+            table='extra_records',
+            key=q,
+            value=extra_records[q],
+            comment=q
         )
 
     output += """
 function preresolve(remoteip, domain, qtype)
-    if cnamemapping[domain]
+    if extra_records[domain]
     then
         return 0, {
-            {qtype=pdns.CNAME, content=cnamemapping[domain], ttl=300, place="1"},
+            {qtype=pdns.A, content=extra_records[domain], ttl=300, place="1"},
         }
     end
     return -1, {}
