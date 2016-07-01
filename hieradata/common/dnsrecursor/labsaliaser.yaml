@@ -1,3 +1,5 @@
-# CNAMEs for use in labs projects. REMEMBER THE TRAILING DOT.
-cnames:
-  tools-db.tools.eqiad.wmflabs.: tools.labsdb.
+# Extra records that the Labs DNS resolver should respond to.
+# Used for things that would ideally be in a .svc. DNS zone but
+# we do not have one. REMEMBER THE TRAILING DOT.
+extra_records:
+  tools-db.tools.eqiad.wmflabs.: 10.64.37.9 # labsdb1005.eqiad.wmnet / tools-db
