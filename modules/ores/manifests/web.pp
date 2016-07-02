@@ -1,7 +1,7 @@
 # = Class: ores::web
 # Sets up a uwsgi based web server for ORES running python3
 class ores::web(
-    $workers_per_core = 4,
+    $workers_per_core = 3,
     $redis_host = '127.0.0.1',
     $redis_password = undef,
     $port = 8081,
