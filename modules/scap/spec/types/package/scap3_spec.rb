@@ -26,6 +26,7 @@ describe provider_class do
 
   describe '#install' do
     it 'should specify the right repo' do
+      allow(FileUtils).to receive(:cd)
       expect(@provider).to receive(:execute).
         with(['/usr/bin/scap', 'deploy-local', '--repo', 'foo/deploy', '-D', 'log_json:False'],
              uid: 666, failonfail: true)
