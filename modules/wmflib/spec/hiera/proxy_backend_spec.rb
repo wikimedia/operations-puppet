@@ -4,6 +4,9 @@ require 'hiera/backend/proxy_backend'
 
 describe 'proxy_backend' do
   before :each do
+    # Mute Hiera debugging log
+    allow(Hiera).to receive(:debug)
+
     # Build a node with two roles applied
     @hiera = Hiera.new({:config => 'spec/fixtures/hiera.proxy.yaml'})
     Hiera::Config.load('spec/fixtures/hiera.proxy.yaml')

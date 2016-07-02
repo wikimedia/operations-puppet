@@ -4,6 +4,8 @@ require 'hiera'
 
 describe 'role_backend' do
   before :each do
+    # Mute hiera debugging log
+    allow(Hiera).to receive(:debug)
 
     @hiera = Hiera.new({:config => 'spec/fixtures/hiera.yaml'})
     Hiera::Config.load('spec/fixtures/hiera.yaml')
