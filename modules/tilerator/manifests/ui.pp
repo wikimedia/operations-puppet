@@ -74,6 +74,7 @@ class tilerator::ui(
     $generator_id   = 'gen',
     $storage_id     = 'v3',
     $delete_empty   = 1,
+    $expire_dir     = '/srv/osm_expire/',
 ) {
     $statefile = "${statefile_dir}/expire.state"
     $cassandra_tileratorui_user = 'tileratorui'
