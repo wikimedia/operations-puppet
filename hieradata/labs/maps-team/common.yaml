@@ -5,7 +5,7 @@ postgresql::slave::replication_pass: justapass
 postgresql::postgis::pgversion: 9.4
 postgresql::spatialdb::postgis_version: 2.1
 postgresql::master::pgversion: 9.4
-postgresql::master::postgres_slaves:
+maps::postgres_slaves:
   replication@mapsslave01-v4:
     user: replication
     password: justapass
