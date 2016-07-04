@@ -57,7 +57,6 @@ class role::maps::master {
         period                => 'day', # Remove thse as soon as we get down to minute
         hour                  => '1',
         minute                => '27',
-        postreplicate_command => '/usr/local/bin/notify-tilerator',
     }
 
     # Cassandra grants
