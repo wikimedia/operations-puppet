@@ -68,13 +68,14 @@ class tilerator::ui(
     $conf_sources   = 'sources.prod.yaml',
     $contact_groups = 'admins',
     $expmask        = 'expire\\.list\\.*',
-    $statefile      = '/srv/osm_expire/expire.state',
+    $statefile_dir  = '/var/run/tileratorui',
     $from_zoom      = 10,
     $before_zoom    = 16,
     $generator_id   = 'gen',
     $storage_id     = 'v3',
     $delete_empty   = 1,
 ) {
+    $statefile = "${statefile_dir}/expire.state"
     $cassandra_tileratorui_user = 'tileratorui'
     $cassandra_tileratorui_pass = hiera('maps::cassandra_tileratorui_pass')
     $pgsql_tileratorui_user = 'tileratorui'
@@ -88,6 +89,13 @@ class tilerator::ui(
         repo           => 'tilerator/deploy',
         deployment     => 'scap3',
         contact_groups => $contact_groups,
+    }
+
+    file { $statefile_dir:
+        ensure => directory,
+        owner  => 'tileratorui',
+        group  => 'tileratorui',
+        mode   => '0755',
     }
 
     file { '/usr/local/bin/notify-tilerator':
