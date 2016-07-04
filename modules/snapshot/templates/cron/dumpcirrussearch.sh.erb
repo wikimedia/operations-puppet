@@ -116,6 +116,29 @@ cat $allList | while read wiki; do
 	fi
 done
 
+# dump the metastore index (contains persistent states used by cirrus
+# administrative tasks). This index is cluster scoped and not bound to a
+# particular wiki (we pass --wiki to mwscript because it's mandatory but this
+# option is not used by the script itself)
+clusters="eqiad codfw"
+for cluster in $clusters; do
+	filename="cirrus-metastore-$cluster-$today"
+	targetFile="$targetDir/$filename.json.gz"
+	if [ "$dryrun" == "true" ]; then
+		echo "php $multiVersionScript extensions/CirrusSearch/maintenance/metastore.php --wiki=metawiki --dump --cluster=$cluster 2> /var/log/cirrusdump/cirrusdump-$filename.log | $gzip > $targetFile"
+	else
+		php $multiVersionScript \
+			extensions/CirrusSearch/maintenance/metastore.php \
+			--wiki=metawiki \
+			--dump
+			--cluster=$cluster
+			2> /var/log/cirrusdump/cirrusdump-$filename.log \
+			| $gzip > $targetFile
+	fi
+done
+
+
+
 # Maintain a 'current' symlink always pointing at the most recently completed dump
 if [ "$dryrun" == "false" ]; then
         rm -f "$targetDirBase/current"
