@@ -1,5 +1,5 @@
 # Defined in the private repo
-#postgresql::master::postgres_slaves:
+#maps::postgres_slaves:
 #  replication@maps-test2002-v4:
 #    user: replication
 #    password: justapass
