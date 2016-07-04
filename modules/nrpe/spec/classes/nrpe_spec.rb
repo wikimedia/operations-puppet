@@ -14,14 +14,14 @@ describe 'nrpe', :type => :class do
     let(:facts) { { :realm => 'production' } }
 
     it 'should generate valid content for nrpe_local.cfg in production' do
-        should contain_file('/etc/nagios/nrpe_local.cfg').with_content(/allowed_hosts=127.0.0.1/)
+        should contain_file('/etc/nagios/nrpe_local.cfg').with_content(/allowed_hosts=127.0.42.42/)
     end
 end
 
 describe 'nrpe', :type => :class do
     let(:facts) { { :realm => 'labs' } }
     it 'should generate valid content for nrpe_local.cfg in labs' do
-        should contain_file('/etc/nagios/nrpe_local.cfg').with_content(/allowed_hosts=10.4.1.88/)
+        should contain_file('/etc/nagios/nrpe_local.cfg').with_content(/allowed_hosts=10.68.42.42/)
     end
 end
 
