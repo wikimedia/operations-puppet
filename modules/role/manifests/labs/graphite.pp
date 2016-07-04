@@ -48,13 +48,13 @@ class role::labs::graphite {
     ferm::service { 'carbon_c_relay-frontend_relay_udp':
         proto  => 'udp',
         port   => '2003',
-        srange => '$ALL_NETWORKS',
+        srange => '$LABS_NETWORKS',
     }
 
     ferm::service { 'carbon_c_relay-frontend_relay_tcp':
         proto  => 'tcp',
         port   => '2003',
-        srange => '$ALL_NETWORKS',
+        srange => '$LABS_NETWORKS',
     }
 
     ferm::service { 'carbon_pickled':
