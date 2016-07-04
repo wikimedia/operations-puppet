@@ -26,6 +26,8 @@ cassandra::instances:
 
 cassandra::cluster_name: "Analytics Query Service Test"
 
+cassandra::target_version: '2.2'
+
 #
 # AQS service
 #
