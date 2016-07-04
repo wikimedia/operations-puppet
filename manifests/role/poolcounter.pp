@@ -22,7 +22,7 @@ class role::poolcounter{
     ferm::service { 'poolcounterd':
         proto   => 'tcp',
         port    => '7531',
-        srange  => '$ALL_NETWORKS',
+        srange  => '$DOMAIN_NETWORKS',
         notrack => true,
     }
 }
