@@ -20,7 +20,7 @@ class role::aptly {
     ferm::service { 'aptly':
         proto  => 'tcp',
         port   => '80',
-        srange => '$ALL_NETWORKS',
+        srange => '$DOMAIN_NETWORKS',
     }
 }
 
