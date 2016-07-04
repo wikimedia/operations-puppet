@@ -47,6 +47,8 @@ define cassandra::instance(
     $listen_address = $this_instance['listen_address']
     $rpc_address    = $this_instance['rpc_address']
     $rpc_interface  = $this_instance['rpc_interface']
+    $rack           = $this_instance['rack']
+    $dc             = $this_instance['dc']
     if $rpc_interface {
         interface::ip { "cassandra-${instance_name}_rpc_${rpc_interface}":
             interface => $rpc_interface,
