@@ -6069,10 +6069,6 @@ host praseodymium {
     fixed-address praseodymium.eqiad.wmnet;
 }
 
-host promethium {
-    fixed-address promethium.eqad.wmflabs;
-}
-
 host radium {
     hardware ethernet 84:2b:2b:fd:bd:0e;
     fixed-address radium.wikimedia.org;
