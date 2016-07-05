@@ -6049,7 +6049,7 @@ host praseodymium {
 }
 
 host promethium {
-    fixed-address promethium.eqad.wmflabs;
+    fixed-address promethium.eqiad.wmflabs;
 }
 
 host radium {
