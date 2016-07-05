@@ -6070,9 +6070,9 @@ host praseodymium {
 }
 
 host promethium {
-    fixed-address promethium.eqad.wmflabs;
+    hardware ethernet 90:B1:1C:2D:6F:0C;
+    fixed-address promethium.eqiad.wmflabs;
 }
-
 host radium {
     hardware ethernet 84:2b:2b:fd:bd:0e;
     fixed-address radium.wikimedia.org;
