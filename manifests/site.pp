@@ -239,25 +239,20 @@ node /^(cerium|praseodymium|xenon)\.eqiad\.wmnet$/ {
     include standard
 }
 
-# cassandra multi-dc temporary test T111382
-node /^restbase-test200[1-3]\.codfw\.wmnet$/ {
-    role restbase, cassandra
-    include standard
-}
-
-node /^(chromium|hydrogen)\.wikimedia\.org$/ {
-    if $::hostname == 'chromium' {
-        $url_downloader_ip = hiera('url_downloader_ip')
-        interface::ip { 'url-downloader':
-            interface => 'eth0',
-            address   => $url_downloader_ip,
-        }
-    }
+# DNS recursor, URL downloader
+node 'chromium.wikimedia.org' {
     role dnsrecursor, url_downloader, ntp
     include standard
 
+    $url_downloader_ip = hiera('url_downloader_ip')
+
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
+    }
+
+    interface::ip { 'url-downloader':
+        interface => 'eth0',
+        address   => $url_downloader_ip,
     }
 }
 
@@ -1189,6 +1184,16 @@ node 'helium.eqiad.wmnet' {
 node 'heze.codfw.wmnet' {
     role backup::storage
     include standard
+}
+
+# DNS recursor, URL downloader
+node 'hydrogen.wikimedia.org' {
+    role dnsrecursor, url_downloader, ntp
+    include standard
+
+    interface::add_ip6_mapped { 'main':
+        interface => 'eth0',
+    }
 }
 
 # irc.wikimedia.org (replaced argon)
@@ -2553,6 +2558,12 @@ node /^restbase10[01][0-9]\.eqiad\.wmnet$/ {
 
 # restbase codfw cluster
 node /^restbase200[1-9]\.codfw\.wmnet$/ {
+    role restbase, cassandra
+    include standard
+}
+
+# cassandra multi-dc temporary test T111382
+node /^restbase-test200[1-3]\.codfw\.wmnet$/ {
     role restbase, cassandra
     include standard
 }
