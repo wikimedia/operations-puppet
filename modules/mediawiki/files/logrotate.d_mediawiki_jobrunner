@@ -8,6 +8,6 @@
     notifempty
     nocreate
     postrotate
-        /sbin/restart jobrunner > /dev/null 2>&1
+        /usr/sbin/service jobrunner restart > /dev/null 2>&1
     endscript
 }
