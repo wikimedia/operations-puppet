@@ -121,6 +121,7 @@ novaconfig:
   live_migration_uri: 'qemu://%s.eqiad.wmnet/system?pkipath=/var/lib/nova'
   zone: eqiad
   scheduler_pool:
+    - labvirt1001
     - labvirt1002
     - labvirt1003
     - labvirt1004
@@ -129,7 +130,6 @@ novaconfig:
     - labvirt1007
     - labvirt1008
     - labvirt1009
-    - labvirt1011
 
 keystoneconfig:
   auth_port: '35357'
