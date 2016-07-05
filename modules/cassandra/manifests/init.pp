@@ -51,6 +51,11 @@
 #   Else, the value provided will be used.
 #   Default: true
 #
+# [*data_directory_base*]
+#   The base directory for cassandra data if we use default instance. In case
+#   of multi-instances this directory is generated based on the instance name.
+#   Default: /var/lib/cassandra
+#
 # [*data_file_directories*]
 #   Array of directories where Cassandra should store data on disk.
 #   This module will not set up partitions or RAID, so make sure
@@ -235,6 +240,7 @@ class cassandra(
     $num_tokens                       = 256,
     $authenticator                    = true,
     $authorizor                       = true,
+    $data_directory_base              = '/var/lib/cassandra',
     $data_file_directories            = ['/var/lib/cassandra/data'],
     $commitlog_directory              = '/var/lib/cassandra/commitlog',
     $heapdump_directory               = '/var/lib/cassandra/',
@@ -395,6 +401,7 @@ class cassandra(
                 'jmx_port'               => $jmx_port,
                 'listen_address'         => $listen_address,
                 'rpc_address'            => $rpc_address,
+                'data_directory_base'    => $data_directory_base,
                 'data_file_directories'  => $data_file_directories,
                 'commitlog_directory'    => $commitlog_directory,
                 'heapdump_directory'     => $heapdump_directory,
