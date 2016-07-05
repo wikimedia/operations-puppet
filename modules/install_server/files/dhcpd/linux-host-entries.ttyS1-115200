@@ -3017,9 +3017,29 @@ host labvirt1011 {
     filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
+host labvirt1012 {
+    hardware ethernet 3c:a8:2a:0a:e9:10;
+    fixed-address labvirt1011.eqiad.wmnet;
+    option pxelinux.pathprefix "trusty-installer/";
+    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
+}
+
+host labvirt1013 {
+    hardware ethernet 3c:a8:2a:0a:e9:10;
+    fixed-address labvirt1011.eqiad.wmnet;
+    option pxelinux.pathprefix "trusty-installer/";
+    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
+}
 host lead {
     hardware ethernet C8:1F:66:BF:71:66;
     fixed-address lead.wikimedia.org;
+}
+
+host labvirt1014 {
+    hardware ethernet 3c:a8:2a:0a:e9:10;
+    fixed-address labvirt1011.eqiad.wmnet;
+    option pxelinux.pathprefix "trusty-installer/";
+    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host lithium {
