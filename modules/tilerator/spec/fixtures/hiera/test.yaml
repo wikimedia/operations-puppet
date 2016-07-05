@@ -1,0 +1,4 @@
+---
+maps::cassandra_tileratorui_pass: 'cassandra_tileratorui_pass'
+maps::postgresql_tileratorui_pass: 'postgresql_tileratorui_pass'
+maps::redis_server: 'redis_server'

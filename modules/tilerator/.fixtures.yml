@@ -1,0 +1,11 @@
+fixtures:
+    symlinks:
+        tilerator: "#{source_dir}"
+        base: "../../../../base"
+        ferm: "../../../../ferm"
+        monitoring: "../../../../monitoring"
+        scap: "../../../../scap"
+        secret: "secret"
+        service: "../../../../service"
+        stdlib: "../../../../stdlib"
+        wmflib: "../../../../wmflib"
