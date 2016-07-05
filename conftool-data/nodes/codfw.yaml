@@ -82,6 +82,11 @@ appserver:
   mw2238.codfw.wmnet: [apache2]
   mw2239.codfw.wmnet: [apache2]
   mw2240.codfw.wmnet: [apache2]
+  mw2241.codfw.wmnet: [apache2]
+  mw2242.codfw.wmnet: [apache2]
+  mw2243.codfw.wmnet: [apache2]
+  mw2244.codfw.wmnet: [apache2]
+  mw2245.codfw.wmnet: [apache2]
 api_appserver:
   mw2061.codfw.wmnet: [apache2]
   mw2062.codfw.wmnet: [apache2]
