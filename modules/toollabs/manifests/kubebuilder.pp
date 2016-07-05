@@ -1,6 +1,6 @@
 # Class to help building our own version of kubernetes
 class toollabs::kubebuilder(
-    $tag='v1.2.4wmf4',
+    $tag='v1.3.0wmf4',
 ) {
     require ::docker::engine
 
