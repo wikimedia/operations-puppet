@@ -2,6 +2,8 @@ require 'spec_helper'
 
 describe 'install_server::preseed_server', :type => :class do
 
+    it { should compile }
+
     it do
         should contain_file('/srv/autoinstall').with({
             'ensure' => 'directory',
@@ -10,6 +12,6 @@ describe 'install_server::preseed_server', :type => :class do
             'group'  => 'root',
             'recurse' => 'true',
             'links' => 'manage',
-        }).without_path()
+        })
     end
 end
