@@ -20,4 +20,13 @@ class puppetmaster::generators($ensure = 'present'){
         source  => 'puppet:///modules/puppetmaster/sshknowngen',
         require => Package[$packages]
     }
+
+    file {'/usr/local/bin/prometheus-ganglia-gen':
+        ensure  => 'present',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0555',
+        source  => 'puppet:///modules/puppetmaster/prometheus-ganglia-gen',
+        require => Package[$packages]
+    }
 }
