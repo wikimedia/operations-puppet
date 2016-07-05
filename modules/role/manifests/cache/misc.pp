@@ -92,14 +92,6 @@ class role::cache::misc {
             'be_opts'  => merge($app_def_be_opts, { 'port' => 9001 }),
             'req_host' => 'etherpad.wikimedia.org',
         },
-        # TODO: Temporary etherpad Host to allow self-serving of pad restoration. See T138516
-        'etherpadrestore' => {
-            'dynamic'  => 'no',
-            'type'     => 'random',
-            'backends' => ['etherpad1001b.eqiad.wmnet'],
-            'be_opts'  => merge($app_def_be_opts, { 'port' => 9002 }),
-            'req_host' => 'etherpad-restore.wikimedia.org',
-        },
         'gallium' => { # CI server
             'dynamic'  => 'no',
             'type'     => 'random',
