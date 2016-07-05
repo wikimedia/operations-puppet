@@ -69,7 +69,7 @@ class role::kafka::main::broker {
     ferm::service { 'kafka-broker':
         proto  => 'tcp',
         port   => $::kafka::server::broker_port,
-        srange => '$ALL_NETWORKS',
+        srange => '$DOMAIN_NETWORKS',
     }
 
     # Include Kafka Server Jmxtrans class
