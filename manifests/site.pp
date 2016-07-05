@@ -2064,12 +2064,6 @@ node /^ms-be20(1[6-9]|2[0-7])\.codfw\.wmnet$/ {
     role swift::storage
 }
 
-# mw1009-1016 are jobrunners
-node /^mw10(09|1[0-6])\.eqiad\.wmnet$/ {
-    role mediawiki::jobrunner
-    include base::firewall
-}
-
 # mw1017-mw1025 are canary appservers
 node /^mw10(1[7-9]|2[0-5])\.eqiad\.wmnet$/ {
     role mediawiki::canary_appserver
