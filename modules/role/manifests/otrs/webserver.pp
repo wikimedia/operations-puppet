@@ -48,10 +48,11 @@ class role::otrs::webserver {
         port  => '80',
     }
 
+    $smtp_ferm = join($::mail_smarthost, ' ')
     ferm::service { 'otrs_smtp':
         proto  => 'tcp',
         port   => '25',
-        srange => '@resolve((mx1001.wikimedia.org mx2001.wikimedia.org))',
+        srange => "@resolve((${smtp_ferm}))",
     }
 
     monitoring::service { 'smtp':
