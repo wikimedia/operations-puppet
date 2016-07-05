@@ -99,6 +99,14 @@ class tilerator::ui(
         mode   => '0755',
     }
 
+    $expmask_escaped = uriescape($expmask)
+    $generator_id_escaped = uriescape($generator_id)
+    $storage_id_escaped = uriescape($storage_id)
+
+    $query_string = "expdirpath=${expire_dir}\\&expmask=${expmask_escaped}\\&statefile=${statefile}\\&fromZoom=${from_zoom}\\&beforeZoom=${before_zoom}\\&generatorId=${generator_id_escaped}\\&storageId=${storage_id_escaped}\\&deleteEmpty=${delete_empty}"
+
+    $notify_url = "http://localhost:${port}/add?${query_string}"
+
     file { '/usr/local/bin/notify-tilerator':
         ensure  => present,
         owner   => 'root',
