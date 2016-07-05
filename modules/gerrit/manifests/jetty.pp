@@ -26,7 +26,7 @@ class gerrit::jetty(
     $ldap_proxyagent = $ldapconfig['proxyagent']
     $ldap_proxyagent_pass = $ldapconfig['proxypass']
 
-    require_package('openjdk-7-jre', 'python-paramiko')
+    require_package('openjdk-7-jre')
 
     package { 'gerrit':
         ensure => present,
