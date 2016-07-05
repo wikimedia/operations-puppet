@@ -21,7 +21,7 @@ respawn
 # https://www.python.org/dev/peps/pep-3143/#correct-daemon-behaviour
 # it only seems to do the first. So we abuse it a bit to get standard behaviour
 # and better logging
-exec /usr/bin/python3 /usr/share/apertium-apy/servlet.py -j<%= @num_of_processes %> -m<%= @max_idle_seconds %> --daemon --log-path <%= @log_dir %> /usr/share/apertium/modes
+exec /usr/bin/python3 /usr/share/apertium-apy/servlet.py -j<%= @num_of_processes %> -m<%= @max_idle_seconds %> --daemon --log-path <%= @log_dir %> <%= @mode_path %>
 
 # wait 60 seconds for a graceful restart before killing the master
 kill timeout 60
