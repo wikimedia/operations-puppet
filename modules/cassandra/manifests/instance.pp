@@ -56,7 +56,7 @@ define cassandra::instance(
     }
 
     if $instance_name == 'default' {
-        $data_directory_base = '/var/lib/cassandra'
+        $data_directory_base = $this_instance['data_directory_base']
         $config_directory    = '/etc/cassandra'
         $service_name        = 'cassandra'
         $tls_hostname        = $::hostname
