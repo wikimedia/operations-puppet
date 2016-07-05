@@ -143,6 +143,13 @@ class toollabs::dev_environ {
         mode   => '0555',
     }
 
+    # Since we install a number of editors here and their ordering can
+    # influence which gets selected as default, let's explicitly set it
+    # See T100526
+    alternatives::select { 'editor':
+        path => '/bin/nano',
+    }
+
     # TODO: deploy scripts
     # TODO: packager
 }
