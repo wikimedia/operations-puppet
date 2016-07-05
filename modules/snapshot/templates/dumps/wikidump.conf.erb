@@ -76,6 +76,9 @@ maxrevs=100000
 <% if @config[@configtype].has_key?('wikis') %>
 <% @config[@configtype]['wikis'].keys.sort.each do |w| -%>
 [<%= [w] %>]
+<% if @config[@configtype]['wikis'][w].has_key?('jobsperbatch') -%>
+jobsperbatch=<%= @config[@configtype]['wikis'][w]['jobsperbatch'] %>
+<% end -%>
 pagesPerChunkHistory=<%= @config[@configtype]['wikis'][w]['pagesPerChunkHistory'] %>
 pagesPerChunkAbstract=<%= @config[@configtype]['wikis'][w]['pagesPerChunkAbstract'] %>
 chunksForAbstract=<%= @config[@configtype]['wikis'][w]['chunksForAbstract'] %>
