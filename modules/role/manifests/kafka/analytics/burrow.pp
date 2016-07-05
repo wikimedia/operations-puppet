@@ -22,6 +22,6 @@ class role::kafka::analytics::burrow {
     ferm::service { 'burrow':
         proto  => 'tcp',
         port   => '8000',
-        srange => '$PRODUCTION_NETWORKS',
+        srange => '$DOMAIN_NETWORKS',
     }
 }
