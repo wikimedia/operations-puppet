@@ -1,0 +1,4 @@
+fixtures:
+    symlinks:
+        aptrepo: "#{source_dir}"
+        ssh: "../../../../ssh"

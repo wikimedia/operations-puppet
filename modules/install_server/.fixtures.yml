@@ -1,0 +1,10 @@
+fixtures:
+    symlinks:
+        install_server: "#{source_dir}"
+        letsencrypt: "../../../../letsencrypt"
+        nginx: "../../../../nginx"
+        sslcert: "../../../../sslcert"
+        # For atleast validate_re()
+        stdlib: "../../../../stdlib"
+        # For atleast ensure_service()
+        wmflib: "../../../../wmflib"
