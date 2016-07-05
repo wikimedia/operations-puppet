@@ -32,7 +32,7 @@ class netops::monitoring {
         'mr1-codfw' => { ipv4 => '208.80.153.196',  ipv6 => '2620:0:860:ffff::6', },
         'pfw-codfw' => { ipv4 => '208.80.153.195',  },
         # eqdfw
-        'cr1-eqdfw' => { ipv4 => '208.80.153.198',  ipv6 => '2620:0:860:ffff::6', bgp => true, },
+        'cr1-eqdfw' => { ipv4 => '208.80.153.198',  ipv6 => '2620:0:860:ffff::5', bgp => true, },
         # esams
         'cr1-esams' => { ipv4 => '91.198.174.245',  ipv6 => '2620:0:862:ffff::5', bgp => true, },
         'cr2-esams' => { ipv4 => '91.198.174.244',  ipv6 => '2620:0:862:ffff::3', bgp => true, },
