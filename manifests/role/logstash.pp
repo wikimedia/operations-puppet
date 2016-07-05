@@ -27,7 +27,7 @@ class role::logstash (
         proto   => 'udp',
         port    => '8324',
         notrack => true,
-        srange  => '$ALL_NETWORKS',
+        srange  => '$DOMAIN_NETWORKS',
     }
 
     logstash::input::syslog { 'syslog':
@@ -38,7 +38,7 @@ class role::logstash (
         proto   => 'udp',
         port    => '10514',
         notrack => true,
-        srange  => '$ALL_NETWORKS',
+        srange  => '$DOMAIN_NETWORKS',
     }
 
     ferm::service { 'grafana_dashboard_definition_storage':
@@ -61,7 +61,7 @@ class role::logstash (
         proto   => 'udp',
         port    => '12201',
         notrack => true,
-        srange  => '$ALL_NETWORKS',
+        srange  => '$DOMAIN_NETWORKS',
     }
 
     logstash::input::udp { 'logback':
@@ -73,7 +73,7 @@ class role::logstash (
         proto   => 'udp',
         port    => '11514',
         notrack => true,
-        srange  => '$ALL_NETWORKS',
+        srange  => '$DOMAIN_NETWORKS',
     }
 
     ## Global pre-processing (15)
@@ -234,7 +234,7 @@ class role::logstash::puppetreports {
     ferm::service { 'logstash_tcp_json':
         proto  => 'tcp',
         port   => '5229',
-        srange => '$ALL_NETWORKS',
+        srange => '$DOMAIN_NETWORKS',
     }
 
     # lint:ignore:puppet_url_without_modules
