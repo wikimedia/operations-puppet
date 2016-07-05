@@ -4,7 +4,7 @@
     "admin_or_projectadmin":  [["is_admin:True"], ["role:projectadmin"]],
     "default": [["rule:admin_or_projectadmin"]],
 
-    "compute:create": "!"
+    "compute:create": "!",
     "compute:delete": "rule:admin_or_projectadmin",
     "compute:create:attach_network": "role:admin",
     "compute:create:attach_volume": "role:admin",
