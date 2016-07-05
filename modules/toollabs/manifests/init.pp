@@ -215,4 +215,13 @@ class toollabs (
         group  => 'root',
         source => 'puppet:///modules/toollabs/log-command-invocation',
     }
+
+    # Make sure nano is installed and the default editor
+    package { 'nano':
+        ensure => latest,
+    }
+
+    alternatives::select { 'editor':
+        path => "/bin/nano",
+    }
 }
