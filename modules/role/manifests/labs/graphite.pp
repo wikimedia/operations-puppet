@@ -36,13 +36,13 @@ class role::labs::graphite {
     ferm::service { 'statsite_udp':
         proto  => 'udp',
         port   => '8125',
-        srange => '$INTERNAL',
+        srange => '$LABS_NETWORKS',
     }
 
     ferm::service { 'statsite_tcp':
         proto  => 'udp',
         port   => '8125',
-        srange => '$INTERNAL',
+        srange => '$LABS_NETWORKS',
     }
 
     ferm::service { 'carbon_c_relay-frontend_relay_udp':
@@ -60,6 +60,6 @@ class role::labs::graphite {
     ferm::service { 'carbon_pickled':
         proto  => 'tcp',
         port   => '2004',
-        srange => '$INTERNAL',
+        srange => '$LABS_NETWORKS',
     }
 }
