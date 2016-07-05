@@ -537,7 +537,7 @@ node /^db20(36|43|50|57)\.codfw\.wmnet/ {
 
 # s4 (commons) core production dbs on eqiad
 # eqiad master
-node 'db1042.eqiad.wmnet' {
+node 'db1040.eqiad.wmnet' {
     class { 'role::mariadb::core':
         shard         => 's4',
         master        => true,
@@ -546,7 +546,7 @@ node 'db1042.eqiad.wmnet' {
     include base::firewall
 }
 
-node /^db10(19|40|56|59|64|68|81|84|91)\.eqiad\.wmnet/ {
+node /^db10(19|42|56|59|64|68|81|84|91)\.eqiad\.wmnet/ {
     class { 'role::mariadb::core':
         shard => 's4',
     }
