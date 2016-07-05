@@ -13,11 +13,14 @@
 # The username apertium-apy will run with
 # [*gid*]
 # The group apertium-apy will run with
+# [*mode_path*]
+# Path to use for language pairs mode.
 class apertium(
     $num_of_processes = 1,
     $max_idle_seconds = 300,
     $uid = 'apertium',
     $gid = 'apertium',
+    $mode_path = '/usr/share/apertium/modes',
 ) {
 
     include ::service::configuration
