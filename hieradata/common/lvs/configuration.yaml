@@ -137,6 +137,7 @@ lvs_services:
     - esams
     - ulsfo
     ip: *ip_block001
+    scheduler: sh
     bgp: 'yes'
     depool-threshold: '.5'
     conftool:
@@ -189,6 +190,7 @@ lvs_services:
     - esams
     - ulsfo
     ip: *ip_block002
+    scheduler: sh
     bgp: 'yes'
     depool-threshold: '.5'
     monitors:
@@ -241,6 +243,7 @@ lvs_services:
     - esams
     - ulsfo
     ip: *ip_block003
+    scheduler: sh
     bgp: 'yes'
     depool-threshold: '.5'
     monitors:
@@ -341,6 +344,7 @@ lvs_services:
     - esams
     - ulsfo
     ip: *ip_block006
+    scheduler: sh
     bgp: 'yes'
     depool-threshold: '.5'
     monitors:
