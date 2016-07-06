@@ -765,7 +765,9 @@ node 'db1043.eqiad.wmnet' {
 node 'db1048.eqiad.wmnet' {
     class { 'role::mariadb::misc::phabricator':
         shard    => 'm3',
-        snapshot => true,
+        mariadb10 => true,
+        ssl       => 'on',
+        p_s       => 'on',
     }
     include base::firewall
 }
