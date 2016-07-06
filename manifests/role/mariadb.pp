@@ -442,7 +442,7 @@ class role::mariadb::backup {
         ensure => directory,
         owner  => 'root',
         group  => 'root',
-        mode   => '0600', # implicitly 0700 for dirs
+        mode   => '0600', 
     }
 
     file { '/etc/mysql/conf.d/dumps.cnf':
@@ -911,7 +911,7 @@ class role::mariadb::otrsbackups {
     file { '/usr/local/bin/dumps-otrs.sh':
         owner   => 'root',
         group   => 'root',
-        mode    => '0444',
+        mode    => '0755',
         content => template('mariadb/dumps-otrs.sh.erb'),
     }
 
