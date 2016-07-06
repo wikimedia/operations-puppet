@@ -11,8 +11,8 @@ cassandra::instances:
     listen_address: 10.64.48.130
     rpc_address: 10.64.48.130
     rpc_interface: eth0
-  c:
-    jmx_port: 7191
-    listen_address: 10.64.48.131
-    rpc_address: 10.64.48.131
-    rpc_interface: eth0
+#  c:
+#    jmx_port: 7191
+#    listen_address: 10.64.48.131
+#    rpc_address: 10.64.48.131
+#    rpc_interface: eth0
