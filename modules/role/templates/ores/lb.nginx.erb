@@ -27,8 +27,8 @@ server {
     }
 
     <% @realservers.each do |realserver| %>
-    location /node/<%= realserver.split(':')[0] %>/ {
-        proxy_pass http://<%= realserver %>;
+    location ^~ /node/<%= realserver.split(':')[0] %>/ {
+        proxy_pass http://<%= realserver %>/;
         proxy_set_header Host $host;
     }
     <% end %>
