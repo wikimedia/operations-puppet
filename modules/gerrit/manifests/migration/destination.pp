@@ -11,15 +11,14 @@ class gerrit::migration::destination {
 
     include rsync::server
 
-    file { [ '/srv/gerrit/', '/srv/gerrit/git' ]:
+    file { '/srv/gerrit/':
         ensure => 'directory',
     }
 
     rsync::server::module { 'gerrit_git_data':
-        path        => '/srv/gerrit/git',
+        path        => '/srv/gerrit',
         read_only   => 'no',
         hosts_allow => $sourceip,
-        require     => File['/srv/gerrit/git'],
+        require     => File['/srv/gerrit'],
     }
 }
-
