@@ -51,7 +51,7 @@ class role::dumps {
     ferm::service { 'dumps_nfs':
         proto  => 'tcp',
         port   => '2049',
-        srange => '($INTERNAL)',
+        srange => '$PRODUCTION_NETWORKS',
     }
 
 }
