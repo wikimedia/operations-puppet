@@ -52,14 +52,17 @@ class role::osm::master {
     }
 
     # FIXME - top-scope var without namespace ($osm_slave_v4), will break in puppet 2.8
+    # $osm_slave_v4 and $osm_slave are node scope variables and not top scope
     # lint:ignore:variable_scope
     if $osm_slave_v4 {
-    # lint:endignore
-        postgresql::user { "replication@${::osm_slave}-v4":
+        postgresql::user { "replication@${osm_slave}-v4":
+            # lint:endignore
             ensure   => 'present',
             user     => 'replication',
             password => $passwords::osm::replication_pass,
-            cidr     => "${::osm_slave_v4}/32",
+            # lint:ignore:variable_scope
+            cidr     => "${osm_slave_v4}/32",
+            # lint:endignore
             type     => 'host',
             method   => 'md5',
             attrs    => 'REPLICATION',
@@ -67,14 +70,17 @@ class role::osm::master {
         }
     }
     # FIXME - top-scope var without namespace ($osm_slave_v6), will break in puppet 2.8
+    # $osm_slave_v6 and $osm_slave are node scope variables and not top scope
     # lint:ignore:variable_scope
     if $osm_slave_v6 {
-    # lint:endignore
-        postgresql::user { "replication@${::osm_slave}-v6":
+        postgresql::user { "replication@${osm_slave}-v6":
+            # lint:endignore
             ensure   => 'present',
             user     => 'replication',
             password => $passwords::osm::replication_pass,
-            cidr     => "${::osm_slave_v6}/128",
+            # lint:ignore:variable_scope
+            cidr     => "${osm_slave_v6}/128",
+            # lint:endignore
             type     => 'host',
             method   => 'md5',
             attrs    => 'REPLICATION',
