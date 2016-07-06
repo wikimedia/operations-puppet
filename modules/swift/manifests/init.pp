@@ -50,6 +50,11 @@ class swift (
         mode  => '0440',
     }
 
+    $log_dir_group = $::operatingsystem ? {
+        'Ubuntu' => 'syslog',
+        default  => 'root',
+    }
+
     file { '/etc/swift':
         ensure  => directory,
         require => Package['swift'],
@@ -72,7 +77,7 @@ class swift (
         ensure  => directory,
         require => Package['swift'],
         owner   => 'root',
-        group   => 'syslog',
+        group   => $log_dir_group,
         mode    => '0775',
     }
 
