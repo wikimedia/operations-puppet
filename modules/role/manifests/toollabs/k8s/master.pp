@@ -17,11 +17,12 @@ class role::toollabs::k8s::master {
         etcd_servers               => $etcd_url,
         docker_registry            => hiera('docker::registry'),
         host_automounts            => ['/var/run/nslcd/socket'],
+        ssl_certificate_name       => 'star.tools.wmflabs.org',
         host_path_prefixes_allowed => [
             '/data/project/',
             '/data/scratch/',
             '/public/dumps/',
-        ]
+        ],
     }
 
     class { '::toollabs::maintain_kubeusers':

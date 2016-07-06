@@ -11,9 +11,9 @@ ExecStart=/usr/local/bin/kube-apiserver \
     --admission-control=NamespaceLifecycle,ServiceAccount,ResourceQuota,LimitRanger,UidEnforcer,RegistryEnforcer,HostAutomounter,HostPathEnforcer \
     --authorization-mode=ABAC \
     --authorization-policy-file=/etc/kubernetes/abac \
-    --tls-private-key-file=/var/lib/kubernetes/ssl/private_keys/server.key \
-    --tls-cert-file=/var/lib/kubernetes/ssl/certs/cert.pem \
-    --service-account-key-file=/var/lib/kubernetes/ssl/private_keys/server.key \
+    --tls-private-key-file=/etc/ssl/private/<%= @ssl_certificate_name %>.key \
+    --tls-cert-file=/etc/ssl/localcerts/<%= @ssl_certificate_name %>.chained.crt \
+    --service-account-key-file=/etc/ssl/private/<%= @ssl_certificate_name %>.key \
     --enforced-docker-registry=<%= @docker_registry %> \
     --host-automounts=<%= @host_automounts_string %> \
     --host-paths-allowed=<%= @host_paths_allowed_string %> \
