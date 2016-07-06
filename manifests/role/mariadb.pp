@@ -916,7 +916,7 @@ class role::mariadb::otrsbackups {
     file { '/usr/local/bin/dumps-otrs.sh':
         owner   => 'root',
         group   => 'root',
-        mode    => '0444',
+        mode    => '0755',
         content => template('mariadb/dumps-otrs.sh.erb'),
     }
 
