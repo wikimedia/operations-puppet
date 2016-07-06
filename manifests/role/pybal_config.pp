@@ -14,7 +14,7 @@ class role::pybal_config {
     ferm::service { 'pybal_conf-http':
         proto  => 'tcp',
         port   => 80,
-        srange => '$ALL_NETWORKS',
+        srange => '$PRODUCTION_NETWORKS',
     }
 
 }
