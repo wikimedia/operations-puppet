@@ -167,7 +167,6 @@ class role::mariadb::misc::phabricator(
     }
     $data_partition = $::hostname ? {
         'db1043' => '/a',
-        'db1048' => '/a',
         default  => '/srv',
     }
     class { 'mariadb::config':
