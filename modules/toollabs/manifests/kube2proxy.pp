@@ -4,10 +4,6 @@ class toollabs::kube2proxy(
     $kube_token='test',
 ) {
     include k8s::users
-    class { '::k8s::ssl':
-        user  => 'kubernetes',
-        group => 'kubernetes',
-    }
 
     file { '/usr/local/sbin/kube2proxy':
         ensure => present,
