@@ -1161,8 +1161,6 @@ host db1042 {
 host db1043 {
     hardware ethernet 78:2b:cb:03:dd:3b;
     fixed-address db1043.eqiad.wmnet;
-    option pxelinux.pathprefix "precise-installer/";
-    filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host db1044 {
@@ -1197,8 +1195,6 @@ host db1047 {
 host db1048 {
     hardware ethernet 78:2b:cb:03:66:28;
     fixed-address db1048.eqiad.wmnet;
-    option pxelinux.pathprefix "precise-installer/";
-    filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host db1049 {
