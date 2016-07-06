@@ -40,7 +40,7 @@ class role::ocg {
         proto   => 'tcp',
         port    => $::ocg::service_port,
         desc    => 'HTTP frontend to submit jobs and get status from pdf rendering',
-        srange  => '$INTERNAL',
+        srange  => '$PRODUCTION_NETWORKS',
         notrack => true,
     }
 
@@ -48,7 +48,7 @@ class role::ocg {
         proto  => 'tcp',
         port   => 8649,
         desc   => 'Ganglia monitor port (OCG config)',
-        srange => '$INTERNAL',
+        srange => '$PRODUCTION_NETWORKS',
     }
 
     include lvs::configuration
