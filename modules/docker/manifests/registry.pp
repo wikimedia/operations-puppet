@@ -7,14 +7,6 @@ class docker::registry(
 
     require_package('docker-registry')
 
-    ## Pretty bad hack, should be using a more generic thing
-    class { '::k8s::ssl':
-        provide_private => true,
-        user            => 'docker-registry',
-        group           => 'docker-registry',
-        target_basedir  => '/var/lib/docker-registry',
-    }
-
     $config = {
         'version' => '0.1',
         'storage' => {
