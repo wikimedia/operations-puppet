@@ -23,11 +23,10 @@ class KubeAuth(requests.auth.AuthBase):
 
 class KubeClient(object):
 
-    def __init__(self, master, ca_cert, token, conn=redis.StrictRedis()):
+    def __init__(self, master, token, conn=redis.StrictRedis()):
         self.base_url = master
         self.session = requests.Session()
         self.session.auth = KubeAuth(token)
-        self.capath = ca_cert
         self.conn = conn
         self.base_params = {
             'labelSelector': 'tools.wmflabs.org/webservice=true'
@@ -38,7 +37,7 @@ class KubeClient(object):
         """Gets an initial list of all services"""
         log.debug('Searching for existing services')
         resp = self.session.get(self.url_for('/services'),
-                                params=self.base_params, verify=self.capath)
+                                params=self.base_params)
         services = []
         try:
             servicelist = resp.json()
