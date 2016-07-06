@@ -1,9 +1,28 @@
-class role::osm::master {
+# === Parameters
+#
+# [*osm_slave*]
+#   hostname of the Postgresql slave for OSM.
+#   Default: undef
+#
+# [*osm_slave_v4*]
+#   IP address of the Postgresql slave for OSM (IPv4)
+#   Default: undef (no slave is configured)
+#
+# [*osm_slave_v6*]
+#   IP address of the Postgresql slave for OSM (IPv6)
+#   Default: undef (no slave is configured)
+#
+class role::osm::master(
+    $osm_slave    = undef,
+    $osm_slave_v4 = undef,
+    $osm_slave_v6 = undef,
+) {
     include role::osm::common
     include postgresql::postgis
     include osm
     include passwords::osm
     include base::firewall
+
 
     class { 'postgresql::master':
         includes => 'tuning.conf',
@@ -51,30 +70,25 @@ class role::osm::master {
         require          => Postgresql::Spatialdb['gis']
     }
 
-    # FIXME - top-scope var without namespace ($osm_slave_v4), will break in puppet 2.8
-    # lint:ignore:variable_scope
     if $osm_slave_v4 {
-    # lint:endignore
-        postgresql::user { "replication@${::osm_slave}-v4":
+        postgresql::user { "replication@${osm_slave}-v4":
             ensure   => 'present',
             user     => 'replication',
             password => $passwords::osm::replication_pass,
-            cidr     => "${::osm_slave_v4}/32",
+            cidr     => "${osm_slave_v4}/32",
             type     => 'host',
             method   => 'md5',
             attrs    => 'REPLICATION',
             database => 'replication',
         }
     }
-    # FIXME - top-scope var without namespace ($osm_slave_v6), will break in puppet 2.8
-    # lint:ignore:variable_scope
+
     if $osm_slave_v6 {
-    # lint:endignore
-        postgresql::user { "replication@${::osm_slave}-v6":
+        postgresql::user { "replication@${osm_slave}-v6":
             ensure   => 'present',
             user     => 'replication',
             password => $passwords::osm::replication_pass,
-            cidr     => "${::osm_slave_v6}/128",
+            cidr     => "${osm_slave_v6}/128",
             type     => 'host',
             method   => 'md5',
             attrs    => 'REPLICATION',
