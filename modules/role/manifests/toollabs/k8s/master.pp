@@ -7,7 +7,12 @@ class role::toollabs::k8s::master {
     $master_host = hiera('k8s::master_host', $::fqdn)
     $etcd_url = join(prefix(suffix(hiera('k8s::etcd_hosts'), ':2379'), 'https://'), ',')
 
-    class { 'k8s::apiserver':
+    sslcert::certificate { 'star.tools.wmflabs.org':
+        skip_private => true,
+        before       => Class['::k8s::apiserver'],
+    }
+
+    class { '::k8s::apiserver':
         master_host                => $master_host,
         etcd_servers               => $etcd_url,
         docker_registry            => hiera('docker::registry'),
