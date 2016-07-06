@@ -1499,9 +1499,6 @@ node 'labsdb1005.eqiad.wmnet' {
 }
 
 node 'labsdb1006.eqiad.wmnet' {
-    $osm_slave = 'labsdb1007.eqiad.wmnet'
-    $osm_slave_v4 = '10.64.37.12'
-
     role osm::master
     # include role::labs::db::slave
 }
