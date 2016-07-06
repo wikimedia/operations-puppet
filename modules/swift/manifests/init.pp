@@ -71,7 +71,9 @@ class swift (
     file { '/var/log/swift':
         ensure  => directory,
         require => Package['swift'],
-        mode    => '0755',
+        owner   => 'root',
+        group   => 'syslog',
+        mode    => '0775',
     }
 
     logrotate::conf { 'swift':
