@@ -319,6 +319,42 @@ def cron_check():
     return False
 
 
+@check('/webservice/kubernetes')
+def webservice_kubernetes_test():
+    """
+    Start a simple kubernetes webservice, verify that it can serve a page
+    within 10 seconds.
+    """
+    success = False
+    url = "https://tools.wmflabs.org/toolschecker/"
+    with open(os.devnull, 'w') as devnull:
+        subprocess.check_call(['/usr/bin/webservice', '--backend=kubernetes', 'start'],
+                              stderr=devnull, stdout=devnull)
+
+    for i in range(0, 10):
+        request = requests.get(url)
+        if request.status_code == 200:
+            success = True
+            break
+        time.sleep(1)
+
+    with open(os.devnull, 'w') as devnull:
+        subprocess.check_call(['/usr/bin/webservice', 'stop'],
+                              stderr=devnull, stdout=devnull)
+
+    # Make sure it really stopped
+    success = False
+    for i in range(0, 10):
+        request = requests.get(url)
+        if request.status_code != 200:
+            success = True
+            break
+        time.sleep(1)
+
+    if not success:
+        return False
+
+
 @check('/service/start')
 def service_start_test():
     ''' Start a couple of simple web services, verify that they can serve a page
