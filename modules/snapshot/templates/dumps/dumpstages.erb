@@ -31,12 +31,12 @@
 # stubs and then tables so inconsistencies between stubs and tables aren't too huge
 1 max continue none <%= @stages['smallwikis']['rest'] -%> --job xmlstubsdump; <%= @stages['smallwikis']['rest'] %> --job tables
 # stubs, recombines, tables for big wikis
-4 max continue none <%= @stages['bigwikis']['rest'] -%> --job xmlstubsdump; <%= @stages['bigwikis']['rest'] -%> --job xmlstubsdumprecombine; <%= @stages['bigwikis']['rest'] -%> --job tables
+4 max continue none <%= @stages['bigwikis']['rest'] -%> --job xmlstubsdump,xmlstubsdumprecombine; <%= @stages['bigwikis']['rest'] -%> --job tables
 
 # regular articles
 1 max continue none <%= @stages['smallwikis']['rest'] -%> --job articlesdump
 # regular articles, recombines for big wikis
-4 max continue none <%= @stages['bigwikis']['rest'] -%> --job articlesdump; <%= @stages['bigwikis']['rest'] -%> --job articlesdumprecombine
+4 max continue none <%= @stages['bigwikis']['rest'] -%> --job articlesdump,articlesdumprecombine
 
 # regular articles multistream
 1 max continue none <%= @stages['smallwikis']['rest'] -%> --job articlesmultistreamdump
@@ -46,7 +46,7 @@
 # articles plus meta pages
 1 max continue none <%= @stages['smallwikis']['rest'] -%> --job metacurrentdump
 # articles, recombine plus meta pages for big wikis
-4 max continue none <%= @stages['bigwikis']['rest'] -%> --job metacurrentdump; <%= @stages['bigwikis']['rest'] -%> --job metacurrentdumprecombine
+4 max continue none <%= @stages['bigwikis']['rest'] -%> --job metacurrentdump,metacurrentdumprecombine
 
 <% if @stagestype == 'normal' or @stagestype == 'normal_nocreate' %>
 # all remaining jobs
