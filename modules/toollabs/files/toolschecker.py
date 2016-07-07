@@ -24,7 +24,7 @@ def check(endpoint):
                 if ret:
                     return "OK", 200
                 else:
-                    return "NOT OK", 503
+                    return "FAIL", 503
             except Exception as e:
                 return "Caught exception: %s" % str(e), 503
         # Fix for https://github.com/mitsuhiko/flask/issues/796
