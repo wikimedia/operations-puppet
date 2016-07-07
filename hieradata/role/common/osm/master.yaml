@@ -1,5 +1,36 @@
 debdeploy::grains:
   debdeploy-osm-master:
     value: standard
-role::osm::master::osm_slave: 'labsdb1007.eqiad.wmnet'
-role::osm::master::osm_slave_v4: '10.64.37.12'
+
+# passwords are configured in private repo with the same structure. For example
+#role::osm::master::postgres_users:
+#  'replication@labsdb1007.eqiad.wmnet-v4':
+#    password: '1234'
+#  'osm@labs':
+#    password: '5678'
+role::osm::master::postgres_users:
+  'replication@labsdb1007.eqiad.wmnet-v4':
+    user:     'replication'
+    cidr:     '10.64.37.12/32'
+    method:   'md5'
+    attrs:    'REPLICATION'
+    database: 'replication'
+  'osm@labs':
+    user:     'osm'
+    cidr:     '10.68.16.0/21'
+    method:   'trust'
+    database: 'gis'
+  'kolossos@labs':
+    user:     'kolossos'
+    database: 'u_kolossos',
+  'aude@labs':
+    user:     'aude'
+    database: 'u_aude'
+  'planemad@labs':
+    user:     'planemad'
+    database: 'wikimaps_atlas'
+
+role::osm::master::spatial_dbs:
+  - 'u_kolossos'
+  - 'u_aude'
+  - 'wikimaps_atlas'

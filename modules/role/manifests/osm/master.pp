@@ -1,21 +1,24 @@
 # === Parameters
 #
-# [*osm_slave*]
-#   hostname of the Postgresql slave for OSM.
-#   Default: undef
+# [*postgres_users*]
+#   Hash of postgresql users to create.
+#   Default: {}
 #
-# [*osm_slave_v4*]
-#   IP address of the Postgresql slave for OSM (IPv4)
-#   Default: undef (no slave is configured)
+# [*postgres_users_private*]
+#   Hash of postgresql users to create.
+#   This hash will be merged with $postgres_users to allow configuration of
+#   private parameters (eg. passwords) in private repo while allowing non
+#   private parameters to be published.
+#   Default: {}
 #
-# [*osm_slave_v6*]
-#   IP address of the Postgresql slave for OSM (IPv6)
-#   Default: undef (no slave is configured)
+# [*spatial_dbs*]
+#   Array of `postgresql::spatialdb` to create.
+#   Default: []
 #
 class role::osm::master(
-    $osm_slave    = undef,
-    $osm_slave_v4 = undef,
-    $osm_slave_v6 = undef,
+    $postgres_users         = {},
+    $postgres_users_private = {},
+    $spatial_dbs            = [],
 ) {
     include role::osm::common
     include postgresql::postgis
@@ -23,6 +26,9 @@ class role::osm::master(
     include passwords::osm
     include base::firewall
 
+    validate_hash($postgres_users)
+    validate_hash($postgres_users_private)
+    validate_array($spatial_dbs)
 
     class { 'postgresql::master':
         includes => 'tuning.conf',
@@ -70,74 +76,16 @@ class role::osm::master(
         require          => Postgresql::Spatialdb['gis']
     }
 
-    if $osm_slave_v4 {
-        postgresql::user { "replication@${osm_slave}-v4":
-            ensure   => 'present',
-            user     => 'replication',
-            password => $passwords::osm::replication_pass,
-            cidr     => "${osm_slave_v4}/32",
-            type     => 'host',
-            method   => 'md5',
-            attrs    => 'REPLICATION',
-            database => 'replication',
-        }
+    $merged_postgres_users = merge($postgres_users, $postgres_users_private)
+    $user_defaults = {
+        cidr   =>   '10.68.16.0/21',
+        type   =>   'host',
+        method =>   'md5',
     }
+    create_resources(postgresql::user, $merged_postgres_users, $user_defaults)
 
-    if $osm_slave_v6 {
-        postgresql::user { "replication@${osm_slave}-v6":
-            ensure   => 'present',
-            user     => 'replication',
-            password => $passwords::osm::replication_pass,
-            cidr     => "${osm_slave_v6}/128",
-            type     => 'host',
-            method   => 'md5',
-            attrs    => 'REPLICATION',
-            database => 'replication',
-        }
-    }
-
-    # OSM user
-    postgresql::user { 'osm@labs':
-            ensure   => 'present',
-            user     => 'osm',
-            password => $passwords::osm::osm_password,
-            cidr     => '10.68.16.0/21',
-            type     => 'host',
-            method   => 'trust',
-            database => 'gis',
-    }
-
-    # Specific users and databases
-    postgresql::spatialdb { 'u_kolossos': }
-    postgresql::user { 'kolossos@labs':
-            ensure   => 'present',
-            user     => 'kolossos',
-            password => $passwords::osm::kolossos_password,
-            cidr     => '10.68.16.0/21',
-            type     => 'host',
-            method   => 'md5',
-            database => 'u_kolossos',
-    }
-    postgresql::spatialdb { 'u_aude': }
-    postgresql::user { 'aude@labs':
-            ensure   => 'present',
-            user     => 'aude',
-            password => $passwords::osm::aude_password,
-            cidr     => '10.68.16.0/21',
-            type     => 'host',
-            method   => 'md5',
-            database => 'u_aude',
-    }
-    postgresql::spatialdb { 'wikimaps_atlas': }
-    postgresql::user { 'planemad@labs':
-            ensure   => 'present',
-            user     => 'planemad',
-            password => $passwords::osm::planemad_password,
-            cidr     => '10.68.16.0/21',
-            type     => 'host',
-            method   => 'md5',
-            database => 'wikimaps_atlas',
-    }
+    # databases
+    postgresql::spatialdb { $spatial_dbs: }
 
     include rsync::server
     rsync::server::module { 'osm_expired_tiles':
