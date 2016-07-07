@@ -175,8 +175,7 @@ define service::uwsgi(
         $monitor_url = "http://${::ipaddress}:${port}${healthcheck_url}"
         nrpe::monitor_service{ "endpoints_${title}":
             description   => "${title} endpoints health",
-            nrpe_command  => "/usr/local/lib/nagios/plugins/service_checker -t 5 ${::ipaddress} ${monitor_url}",
-            subscribe     => File['/usr/local/lib/nagios/plugins/service_checker'],
+            nrpe_command  => "/usr/bin/service-checker-swagger -t 5 ${::ipaddress} ${monitor_url}",
             contact_group => $contact_groups,
         }
         # we also support smart-releases

@@ -131,7 +131,7 @@ function restart_service {
 function check_service_health {
     RETRIES=0
     log "Waiting for the service to come up; checks will be run every ${SLEEP_INTERVAL} seconds"
-    while ! /usr/local/lib/nagios/plugins/service_checker -t 5 ${IPADDRESS} "${MONITOR_URL}";
+    while ! /usr/bin/service-checker-swagger -t 5 ${IPADDRESS} "${MONITOR_URL}";
     do
         RETRIES=$((RETRIES + 1))
         if [ ${RETRIES} -gt ${MAX_RETRIES} ];
