@@ -1,3 +1,0 @@
-contactgroups: 'admins,analytics'
-admin::groups:
-  - restricted
