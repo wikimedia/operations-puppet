@@ -47,6 +47,7 @@ define phabricator::logmail (
     $ensure      = present,
 ) {
 
+    require_package('mariadb-client')
 
     file { "${basedir}/${script_name}":
         ensure  => present,
