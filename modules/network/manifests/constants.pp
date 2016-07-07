@@ -25,6 +25,8 @@ class network::constants {
     $production_networks = slice_network_constants('production')
     # $labs_networks will always contain just the labs networks
     $labs_networks = slice_network_constants('labs')
+    # $frack_networks will always contain just the fundraising networks
+    $frack_networks = slice_network_constants('frack')
 
     $special_hosts = {
         'production' => {
