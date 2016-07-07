@@ -124,4 +124,10 @@ class icinga::monitor::toollabs {
         check_command => "${checker}!/service/start!OK",
         host          => $test_entry_host,
     }
+
+    monitoring::service { 'tools-checker-kubernetes-webservices':
+        description   => 'Start and verify pages via webservices on kubernetes',
+        check_command => "${checker}!/webservice/kubernetes!OK",
+        host          => $test_entry_host,
+    }
 }
