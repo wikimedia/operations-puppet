@@ -54,7 +54,8 @@ define phabricator::logmail (
     }
 
     cron { "phabstatscron_${title}":
-        ensure   => present,
+        # disabled due to maintenance: T138460
+        ensure   => absent,
         command  => "${basedir}/${script_name}",
         user     => 'root',
         hour     => $hour,
