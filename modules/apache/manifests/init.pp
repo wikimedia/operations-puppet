@@ -107,4 +107,5 @@ class apache {
     class {'apache::logrotate':
         require => Package['apache2'],
     }
+
 }
