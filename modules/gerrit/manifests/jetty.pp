@@ -68,6 +68,14 @@ class gerrit::jetty(
         content => secret('gerrit/id_rsa'),
     }
 
+    file { '/var/lib/gerrit2/.ssh/known_hosts':
+        owner   => 'gerrit2',
+        group   => 'gerrit2',
+        mode    => '0600',
+        require => File['/var/lib/gerrit2/.ssh'],
+        source  => 'puppet:///modules/gerrit/known_hosts',
+    }
+
     file { '/var/lib/gerrit2/review_site':
         ensure  => directory,
         owner   => 'gerrit2',
