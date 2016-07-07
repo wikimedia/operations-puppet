@@ -26,6 +26,6 @@ class role::xenon {
     }
 
     ferm::rule { 'xenon_redis':
-        rule => 'saddr ($ALL_NETWORKS) proto tcp dport 6379 ACCEPT;',
+        rule => 'saddr ($DOMAIN_NETWORKS) proto tcp dport 6379 ACCEPT;',
     }
 }
