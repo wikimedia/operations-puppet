@@ -56,7 +56,8 @@ def rotate_logs(cluster, backup_root, num_logs):
         return
 
     # Rename the other ones
-    for backupdir in backupdirs[to_remove:]:
+    idx = max(0, to_remove)
+    for backupdir in backupdirs[idx:]:
         if backupdir == backup_dir:
             base = backupdir
             suffix = '.1'
