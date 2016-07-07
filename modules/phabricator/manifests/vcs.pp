@@ -88,14 +88,14 @@ class phabricator::vcs (
 
     if $::initsystem == 'upstart' {
         $init_file = '/etc/init/ssh-phab.conf'
-        $init_template = template('phabricator/sshd-phab.conf')
+        $init_soorce = 'puppet:///modules/phabricator/sshd-phab.conf'
     } else {
         $init_file = '/etc/systemd/system/ssh-phab.service'
-        $init_template = template('phabricator/ssh-phab.service')
+        $init_source = 'puppet:///modules/phabricator/sshd-phab.service'
     }
 
     file { $init_file:
-        content => $init_template,
+        source  => $init_source,
         mode    => '0644',
         owner   => 'root',
         group   => 'root',
