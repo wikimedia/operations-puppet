@@ -99,12 +99,15 @@ class nagios_common::commands(
     }
 
     # Used for cluster checks of "modern" wmf services
-    nagios_common::check_command{ 'check_wmf_service':
-        ensure        => present,
-        plugin_source => 'puppet:///modules/service/checker.py',
-        config_dir    => $config_dir,
-        owner         => $owner,
-        group         => $group,
+    require_package 'python-service-checker'
+
+    nagios_common::check_command::config { 'check_wmf_service':
+        ensure     => present,
+        source     => 'puppet:///modules/nagios_common/check_commands/check_wmf_service.cfg',
+        content    => undef,
+        config_dir => $config_dir,
+        owner      => $owner,
+        group      => $group
     }
 
     # Check that the icinga config works
