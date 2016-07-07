@@ -32,6 +32,8 @@
 # [*weekday*]
 #    day of the week script is executed
 #
+# [*ensure*]
+#    Whether to enable the cron or not, default present
 
 define phabricator::logmail (
     $script_name,
@@ -42,6 +44,7 @@ define phabricator::logmail (
     $minute      = '0',
     $monthday    = undef,
     $weekday     = undef,
+    $ensure      = present,
 ) {
 
 
@@ -54,7 +57,7 @@ define phabricator::logmail (
     }
 
     cron { "phabstatscron_${title}":
-        ensure   => present,
+        ensure   => $ensure,
         command  => "${basedir}/${script_name}",
         user     => 'root',
         hour     => $hour,
