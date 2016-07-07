@@ -18,6 +18,7 @@ class tendril (
 
     apache::site { $site_name:
         content => template("tendril/apache/${site_name}.erb");
+        ports   => 'both',
     }
 
     file { '/srv/tendril':

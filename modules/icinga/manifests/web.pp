@@ -40,6 +40,7 @@ class icinga::web {
 
     apache::site { 'icinga.wikimedia.org':
         content => template('icinga/icinga.wikimedia.org.erb'),
+        ports   => 'both',
     }
 
     # remove icinga default config
