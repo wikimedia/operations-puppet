@@ -142,6 +142,8 @@ if ($check eq "slave_io_state")
 if ($check eq "slave_sql_state")
 {
 	my $status = $db->selectrow_hashref("show slave status");
+	# sanitize the query for icinga:
+	$status->{Last_SQL_Error} =~ s/Query:\s+'(.*)'/Query: [snipped]/;
 
 	unless ($status) {
 		printf("%s %s not a slave", $OK, $check);
