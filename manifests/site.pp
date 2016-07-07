@@ -93,7 +93,15 @@ node 'analytics1003.eqiad.wmnet' {
 # This is used for Hadoop network topology awareness.
 # Please also update the analytics_hadoop_hosts Hiera variable.
 node /analytics10(2[89]|3[0-9]|4[0-9]|5[0-7]).eqiad.wmnet/ {
-    role analytics_cluster::hadoop::worker
+
+    # Test including hive::client role on analytics1030.
+    # We may need this for Hive-spark in cluster mode.
+    if $::hostname == 'analytics1030' {
+        role analytics_cluster::hadoop::worker, analytics_cluster::hive::client
+    }
+    else {
+        role analytics_cluster::hadoop::worker
+    }
 
     include base::firewall
     include standard
