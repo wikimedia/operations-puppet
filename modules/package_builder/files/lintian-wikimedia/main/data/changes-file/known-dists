@@ -1,0 +1,37 @@
+# Debian
+squeeze
+squeeze-wikimedia
+wheezy
+wheezy-wikimedia
+jessie
+jessie-wikimedia
+stretch
+stretch-wikimedia
+sid
+sid-wikimedia
+
+# Aliases
+oldstable
+stable
+testing
+unstable
+experimental
+
+# Ubuntu
+dapper
+hardy
+karmic
+lucid
+maverick
+natty
+oneiric
+precise
+quantal
+raring
+saucy
+trusty
+utopic
+vivid
+wily
+xenial
+yakkety
