@@ -65,6 +65,10 @@ mapreduce_reduce_java_opts:                 -Xmx3276m  # 0.8 * 2 * 2G
 # The default is 1000m, we increase it to 2048m in production.
 yarn_heapsize:                              2048
 
+# Heap size for HDFS datanode.
+# The default is 1000m, we increase it to 2048m in production.
+hadoop_heapsize:                            2048
+
 # Yarn ApplicationMaster container size and  max heap size (-Xmx)
 yarn_app_mapreduce_am_resource_mb:          4096      # 2 * 2G
 yarn_app_mapreduce_am_command_opts:         -Xmx3276m  # 0.8 * 2 * 2G
