@@ -25,7 +25,9 @@ class role::aqs {
 
     if $cassandra_instances {
         $instance_names = keys($cassandra_instances)
-        ::cassandra::instance::monitoring{ $instance_names: }
+        ::cassandra::instance::monitoring { $instance_names:
+            $contact_group = 'admins,team-services,analytics',
+        }
     } else {
         $default_instances = {
             'default' => {
@@ -33,6 +35,7 @@ class role::aqs {
         }}
         ::cassandra::instance::monitoring{ 'default':
             instances => $default_instances,
+            $contact_group = 'admins,team-services,analytics',
         }
     }
 
