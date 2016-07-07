@@ -5,6 +5,6 @@
 
 class phabricator::mpm {
     apache::conf { 'mpm_prefork':
-        content => template('phabricator/mpm_prefork.conf.erb'),
+        source => 'puppet:///modules/phabricator/apache/mpm_prefork.conf',
     }
 }

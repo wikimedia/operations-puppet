@@ -187,7 +187,7 @@ class phabricator (
     }
 
     file { '/etc/apache2/phabbanlist.conf':
-        content => template('phabricator/phabbanlist.conf.erb'),
+        source => 'puppet:///modules/phabricator/apache/phabbanlist.conf',
         require => Package['libapache2-mod-php5'],
         notify  => Service['apache2'],
     }
