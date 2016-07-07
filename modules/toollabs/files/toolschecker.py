@@ -342,7 +342,13 @@ def webservice_kubernetes_test():
         subprocess.check_call(['/usr/bin/webservice', 'stop'],
                               stderr=devnull, stdout=devnull)
 
-    # Make sure it really stopped
+    # If we never succeeded in the starting of the webservice, fail!
+    # We put this here after the stop so we don't end up with accidental failures
+    # that leave a stray webservice running
+    if not success:
+        return False
+
+    # If we did start it, make sure it really stopped
     success = False
     for i in range(0, 10):
         request = requests.get(url)
@@ -351,8 +357,7 @@ def webservice_kubernetes_test():
             break
         time.sleep(1)
 
-    if not success:
-        return False
+    return success
 
 
 @check('/service/start')
