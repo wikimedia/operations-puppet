@@ -57,6 +57,24 @@ class package_builder(
         content => template('package_builder/pbuilderrc.erb'),
     }
 
+    file { '/usr/share/lintian/vendors/wikimedia':
+        ensure  => directory,
+        owner   => 'root',
+        group   => 'root',
+        recurse => remote,
+        source  => 'puppet:///modules/package_builder/lintian-wikimedia',
+        require => Package['lintian'],
+    }
+
+    file { '/etc/lintianrc':
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        source  => 'puppet:///modules/package_builder/lintianrc',
+        require => Package['lintian'],
+    }
+
     # Dependency info
     Package['cowbuilder'] -> File['/etc/pbuilderrc']
     Package['cowbuilder'] -> Class['package_builder::environments']
