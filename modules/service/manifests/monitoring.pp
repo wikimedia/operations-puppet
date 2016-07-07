@@ -4,13 +4,5 @@
 # services defined via service::node
 
 class service::monitoring {
-    require_package 'python-yaml', 'python-urllib3'
-
-    file { '/usr/local/lib/nagios/plugins/service_checker':
-        ensure => present,
-        owner  => root,
-        group  => root,
-        mode   => '0555',
-        source => 'puppet:///modules/service/checker.py',
-    }
+    require_package 'python-yaml', 'python-urllib3', 'python-service-checker'
 }
