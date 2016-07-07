@@ -349,4 +349,13 @@ class role::labs::openstack::nova::compute($instance_dev='/dev/md1') {
             target => '/usr/bin/qemu-system-x86_64',
         }
     }
+
+    # Increase the size of conntrack table size (default is 65536)
+    #  T139598
+    sysctl::parameters { 'ferm_conntrack':
+        values => {
+            'net.netfilter.nf_conntrack_max'                   => 262144,
+            'net.netfilter.nf_conntrack_tcp_timeout_time_wait' => 65,
+        },
+    }
 }
