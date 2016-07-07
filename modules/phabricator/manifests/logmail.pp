@@ -44,6 +44,9 @@ define phabricator::logmail (
     $weekday     = undef,
 ) {
 
+    package { 'mysql-client':
+        ensure => present,
+    }
 
     file { "${basedir}/${script_name}":
         ensure  => present,
@@ -62,5 +65,6 @@ define phabricator::logmail (
         minute   => $minute,
         weekday  => $weekday,
         monthday => $monthday,
+        require  => Package['mysql-client'],
     }
 }
