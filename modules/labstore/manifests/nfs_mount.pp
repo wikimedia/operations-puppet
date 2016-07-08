@@ -38,6 +38,7 @@ define labstore::nfs_mount(
     $options = [],
     $block=false,
     $block_timeout = 180,
+    $lookupcache='none',
 )
     {
 
@@ -50,7 +51,7 @@ define labstore::nfs_mount(
                 'proto=tcp',
                 'port=0',
                 'noatime',
-                'lookupcache=none',
+                "lookupcache=${lookupcache}",
                 'nofsc',
         ]
 
