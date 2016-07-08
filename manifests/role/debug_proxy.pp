@@ -23,6 +23,6 @@ class role::debug_proxy {
     ferm::service { 'debug_proxy':
         proto  => 'tcp',
         port   => '80',
-        srange => '$ALL_NETWORKS',
+        srange => '$PRODUCTION_NETWORKS',
     }
 }
