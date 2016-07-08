@@ -1,6 +1,10 @@
 # Manifest to setup a Gerrit instance
 
-class gerrit($host) {
+class gerrit($host = undef) {
+
+    if $host == undef {
+        fail('$gerrit::host must be set!')
+    }
 
     class { 'gerrit::jetty': }
 
