@@ -21,7 +21,12 @@ class role::puppetmaster::frontend {
                         {
                             'worker'     => 'strontium.eqiad.wmnet',
                             'loadfactor' => 20,
-                        },
+                         },
+                         {
+                             'worker'     => 'rhodium.eqiad.wmnet',
+                             'loadfactor' => 0,
+                             'offline'    => true,
+                         }
         ],
         config      => {
             'storeconfigs'      => true, # Required by thin_storeconfigs on puppet 3.x
