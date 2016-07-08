@@ -45,9 +45,9 @@ NameVirtualHost *:443
     ServerName <%= @host %>
 
     SSLEngine on
-    SSLCertificateFile /etc/ssl/localcerts/<%= @ssl_cert %>.crt
-    SSLCertificateChainFile /etc/ssl/localcerts/<%= @ssl_cert %>.chain.crt
-    SSLCertificateKeyFile /etc/ssl/private/<%= @ssl_cert_key %>.key
+    SSLCertificateFile <%= @ssl_cert_file %>
+    SSLCertificateChainFile <%= @ssl_cert_chain_file %>
+    SSLCertificateKeyFile <%= @ssl_cert_key_file %>
     <%= @ssl_settings.join("\n") %>
 
     RedirectMatch ^/$ https://<%= @host %>/r/
