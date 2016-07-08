@@ -3,12 +3,14 @@
 class contint::arcanist {
     require_package('arcanist')
 
-    file { '/var/lib/jenkins/.arcrc':
+    $conduit_token = secret('contint/conduit_token')
+
+    file { '/home/jenkins/.arcrc':
         ensure  => 'file',
         owner   => 'jenkins',
         group   => 'jenkins',
         mode    => '0600',
         require => User['jenkins'],
-        source  => 'puppet:///modules/contint/arcrc.json',
+        content => template('contint/arcrc.json.erb'),
     }
 }
