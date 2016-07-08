@@ -22,6 +22,7 @@ class toollabs::dev_environ {
     if os_version('ubuntu trusty') {
         include toollabs::genpp::python_dev_trusty
         package { [
+            'arcanist', # T139738
             'bundler',  # T120287
             # Previously we installed libmariadbclient-dev, but that causes
             # dependency issues on Trusty.  libmariadbclient-dev formerly
