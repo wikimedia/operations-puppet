@@ -19,6 +19,12 @@ create_instance.LaunchInstance.default_steps = (create_instance.SelectProjectUse
                                                 create_instance.SetNetwork)
 
 
+# Disable the UpdateInstanceInfo tab.  All that supports is instance renaming, which is
+#  risky and breaks compatibility with wikitech.
+from openstack_dashboard.dashboards.project.instances.workflows import update_instance
+# Previously (UpdateInstanceInfo, UpdateInstanceSecurityGroups)
+update_instance.UpdateInstance.default_steps = (update_instance.UpdateInstanceSecurityGroups,)
+
 #  --  Support proxy records in the designate dashboard  --
 
 
