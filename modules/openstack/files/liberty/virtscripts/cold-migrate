@@ -98,6 +98,16 @@ class NovaInstance(object):
                    destination)
             host_moved = False
 
+        #  Oddly, nova uses two different fields for this.
+        args = ["mysql", "--user=nova", "--password=%s" % mysql_password,
+                "--host", "m5-master.eqiad.wmnet", "nova",
+                "-e", "update instances set node=\"%s.eqiad.wmnet\" where uuid=\"%s\";" %
+                (destination, self.instance_id)]
+        r = subprocess.call(args)
+        if r:
+            print ("Failed to update the instance's db node value."
+                   "Future hypervisor stats will be incorrect.")
+
         self.instance.start()
         self.wait_for_status('ACTIVE')
 
