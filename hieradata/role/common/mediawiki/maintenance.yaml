@@ -15,3 +15,4 @@ hhvm::extra::cli:
     mysql:
       # Kill queries only after 1 day
       read_timeout: 86400000
+nutcracker::verbosity: "4"
