@@ -1,3 +1,9 @@
 admin::groups:
   - gerrit-root
+gerrit::jetty::db_host: "db1042.eqiad.wmnet"
 gerrit::jetty::git: '/srv/gerrit/git'
+role::gerrit::server::host: 'gerrit-new.wikimedia.org'
+role::gerrit::server::sslhost: 'ssl-cert-snakeoil'
+gerrit::jetty::replication: ''
+role::gerrit::server::ipv4: ''
+role::gerrit::server::ipv6: ''
