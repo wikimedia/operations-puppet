@@ -1,0 +1,2 @@
+role::gerrit::server:serviceip_v4: '208.80.154.81'
+role::gerrit::server:serviceip_v6: '2620:0:861:3:208:80:154:81'
