@@ -366,4 +366,6 @@ class role::labs::openstack::nova::compute($instance_dev='/dev/md1') {
         mode   => '0444',
         source => 'puppet:///modules/base/firewall/nf_conntrack.conf',
     }
+
+    require_package('conntrack')
 }
