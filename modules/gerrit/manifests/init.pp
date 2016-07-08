@@ -1,6 +1,6 @@
 # Manifest to setup a Gerrit instance
 
-class gerrit($host) {
+class gerrit($host, $sslhost) {
 
     class { 'gerrit::jetty': }
 

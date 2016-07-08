@@ -1,10 +1,20 @@
 # modules/role/manifests/gerrit/production.pp
-class role::gerrit::server($host) {
+class role::gerrit::server(
+        $host = undef,
+        $ipv4 = undef,
+        $ipv6 = undef,
+        $sslhost = $::role::gerrit::server::host,
+        ) {
+
         system::role { 'role::gerrit::server': description => 'Gerrit server' }
         include role::backup::host
         include base::firewall
 
-        sslcert::certificate { $host: }
+        if $host == undef or $ipv4 == undef or $ipv6 == undef {
+            fail('role::gerrit::server must have $host $ipv4 and $ipv6 provided')
+        }
+
+        sslcert::certificate { $sslhost: }
 
         monitoring::service { 'https':
             description   => 'HTTPS',
@@ -15,12 +25,12 @@ class role::gerrit::server($host) {
 
         interface::ip { 'role::gerrit::server_ipv4':
             interface => 'eth0',
-            address   => '208.80.154.81',
+            address   => $ipv4,
             prefixlen => '32',
         }
         interface::ip { 'role::gerrit::server_ipv6':
             interface => 'eth0',
-            address   => '2620:0:861:3:208:80:154:81',
+            address   => $ipv6,
             prefixlen => '128',
         }
 
@@ -40,6 +50,7 @@ class role::gerrit::server($host) {
         }
 
         class { '::gerrit':
-            host => $host,
+            host    => $host,
+            sslhost => $sslhost,
         }
 }

@@ -1,7 +1,7 @@
 class gerrit::proxy(
     $host         = $::gerrit::host,
-    $ssl_cert     = 'ssl-cert-snakeoil',
-    $ssl_cert_key = 'ssl-cert-snakeoil'
+    $ssl_cert     = $::gerrit::sslhost,
+    $ssl_cert_key = $::gerrit::proxy::ssl_cert,
     ) {
 
     $ssl_settings = ssl_ciphersuite('apache', 'compat', true)
