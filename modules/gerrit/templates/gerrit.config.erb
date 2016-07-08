@@ -159,3 +159,10 @@
     maxLineLength = 120
 [receive]
     maxObjectSizeLimit = 100m
+[changeCleanup]
+    # Not actually used, but Gerrit complains if unset
+    interval = 1w
+[gc]
+    aggressive = true
+    interval = 1w
+    gc.startTime = Sat 02:00
