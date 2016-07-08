@@ -1,5 +1,5 @@
 # modules/role/manifests/gerrit/production.pp
-class role::gerrit::server($host) {
+class role::gerrit::server($host, $ipv4, $ipv6) {
         system::role { 'role::gerrit::server': description => 'Gerrit server' }
         include role::backup::host
         include base::firewall
@@ -15,12 +15,12 @@ class role::gerrit::server($host) {
 
         interface::ip { 'role::gerrit::server_ipv4':
             interface => 'eth0',
-            address   => '208.80.154.81',
+            address   => $ipv4,
             prefixlen => '32',
         }
         interface::ip { 'role::gerrit::server_ipv6':
             interface => 'eth0',
-            address   => '2620:0:861:3:208:80:154:81',
+            address   => $ipv6,
             prefixlen => '128',
         }
 
