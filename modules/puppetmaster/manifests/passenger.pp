@@ -27,6 +27,11 @@ class puppetmaster::passenger(
 
     $ssl_settings = ssl_ciphersuite('apache', 'compat')
 
+    # Debian jessie needs the DH params file
+    if os_version('Debian >= jessie') {
+        include sslcert::dhparam
+    }
+
     apache::site { 'puppetmaster.wikimedia.org':
         content => template('puppetmaster/puppetmaster.erb'),
     }
