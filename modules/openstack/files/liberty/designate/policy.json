@@ -42,7 +42,7 @@
     "find_domains": "rule:admin_or_member",
     "find_domain": "rule:admin_or_member",
     "update_domain": "rule:admin",
-    "delete_domain": "rule:admin",
+    "delete_domain": "rule:admin_or_projectadmin",
     "abandon_domain": "rule:admin",
     "count_domains": "rule:admin_or_member",
     "touch_domain": "rule:admin",
