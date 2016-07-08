@@ -9,7 +9,7 @@
     "compute:create": "rule:admin_or_projectadmin",
     "compute:create:attach_network": "rule:admin_or_projectadmin",
     "compute:create:attach_volume": "rule:admin_or_projectadmin",
-    "compute:create:forced_host": "is_admin:True",
+    "compute:create:forced_host": "rule:admin_or_projectadmin",
     "compute:get": "rule:admin_or_member",
     "compute:get_all": "",
     "compute:get_all_tenants": "",
