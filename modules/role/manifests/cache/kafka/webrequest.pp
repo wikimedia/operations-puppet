@@ -21,7 +21,17 @@ class role::cache::kafka::webrequest(
         # checks. These requests indicate that Varnish tried to establish a pipe
         # channel between the client and the backend, an information that
         # can be discarded.
-        $varnish_opts = { 'q' => 'ReqMethod ne "PURGE" and not Timestamp:Pipe' }
+        # Websockets upgrade usually lead to long lived requests that trigger
+        # VSL timeouts as well. Varnishkafka does not have a nice support for
+        # these use cases, moreover we haven't decided yet if weberequest logs
+        # will need to take them into account or not.
+        # At the moment these requests get logged incorrectly and with partial
+        # data (due to the VSL timeout) so it makes sense to filter them out to
+        # remove noise from Analytics data.
+        # T136314
+        $varnish_opts = {
+            'q' => 'ReqMethod ne "PURGE" and not Timestamp:Pipe and not ReqHeader:Upgrade ~ "[wW]ebsocket"'
+        }
         $conf_template = 'varnishkafka/varnishkafka_v4.conf.erb'
     } else {
         $varnish_opts = { 'm' => 'RxRequest:^(?!PURGE$)' }
