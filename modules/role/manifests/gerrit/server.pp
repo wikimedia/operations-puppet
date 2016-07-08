@@ -1,10 +1,20 @@
 # modules/role/manifests/gerrit/production.pp
-class role::gerrit::server($host, $ipv4, $ipv6) {
+class role::gerrit::server($ipv4, $ipv6) {
         system::role { 'role::gerrit::server': description => 'Gerrit server' }
         include role::backup::host
         include base::firewall
 
-        sslcert::certificate { $host: }
+        $host = hiera('gerrit::host')
+
+        if hiera('gerrit::proxy::lets_encrypt') {
+            letsencrypt::cert::integrated { 'gerrit':
+                subjects   => $host,
+                puppet_svc => 'apache2',
+                system_svc => 'apache2',
+            }
+        } else {
+            sslcert::certificate { $host: }
+        }
 
         monitoring::service { 'https':
             description   => 'HTTPS',
@@ -39,7 +49,5 @@ class role::gerrit::server($host, $ipv4, $ipv6) {
             port  => 'https',
         }
 
-        class { '::gerrit':
-            host => $host,
-        }
+        class { '::gerrit': }
 }
