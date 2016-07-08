@@ -56,6 +56,7 @@ class toollabs::dev_environ {
     package { [
         'ant',
         'apt-file',
+        'arcanist',                    # T139738
         'autoconf',
         'automake',                    # T119870
         'build-essential', # for dpkg
