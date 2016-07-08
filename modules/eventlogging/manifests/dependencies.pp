@@ -20,6 +20,7 @@ class eventlogging::dependencies {
         'python-kafka',
         'python-mysqldb',
         'python-pygments',
+        'python-confluent-kafka',
         'python-pykafka',
         'python-pymongo',
         'python-six',

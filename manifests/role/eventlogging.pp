@@ -55,7 +55,6 @@ class role::eventlogging {
         ],
         default => $kafka_config['brokers']['array']
     }
-    $kafka_zookeeper_url = $kafka_config['zookeeper']['url']
 
     # By default, the EL Kafka writer writes events to
     # schema based topic names like eventlogging_SCHEMA,
@@ -69,18 +68,11 @@ class role::eventlogging {
     # based topics in Kafka.
     $kafka_schema_uri  = "${kafka_base_uri}?topic=eventlogging_{schema}"
 
-    # The downstream eventlogging MySQL consumer expects schemas to be
-    # all mixed up in a single stream.  We send processed events to a
-    # 'mixed' kafka topic in order to keep supporting it for now.
-    # We blacklist certain high volume schemas from going into this topic.
-    $mixed_schema_blacklist = hiera('eventlogging_valid_mixed_schema_blacklist', undef)
-    $kafka_mixed_uri = $mixed_schema_blacklist ? {
-        undef   => "${kafka_base_uri}?topic=eventlogging-valid-mixed",
-        default => "${kafka_base_uri}?topic=eventlogging-valid-mixed&blacklist=${mixed_schema_blacklist}"
-    }
-
     $kafka_server_side_raw_uri = "${kafka_base_uri}?topic=eventlogging-server-side"
     $kafka_client_side_raw_uri = "${kafka_base_uri}?topic=eventlogging-client-side"
+
+    # This gets added to most consumers, DRY it up.
+    $kafka_default_topic_config = 'default.topic.config={"auto.offset.reset":"smallest"}'
 
     # This check was written for eventlog1001, so only include it there.,
     if $::hostname == 'eventlog1001' {
@@ -127,7 +119,7 @@ class role::eventlogging::forwarder inherits role::eventlogging {
     # This forwards the kafka eventlogging-valid-mixed topic to
     # ZMQ port 8600 for backwards compatibility.
     eventlogging::service::forwarder { 'legacy-zmq':
-        input   => "${kafka_mixed_uri}&zookeeper_connect=${kafka_zookeeper_url}&auto_commit_enable=False&auto_offset_reset=-1&identity=legacy_zmq",
+        input   => "${kafka_base_uri}?topic=eventlogging-valid-mixed&enable.auto.commit=False&${kafka_default_topic_config}&identity=legacy_zmq",
         outputs => ["tcp://${eventlogging_host}:8600"],
     }
 
@@ -147,12 +139,23 @@ class role::eventlogging::forwarder inherits role::eventlogging {
 class role::eventlogging::processor inherits role::eventlogging {
     $kafka_consumer_args  = hiera(
         'eventlogging_processor_kafka_consumer_args',
-        'auto_commit_enable=True&auto_commit_interval_ms=10000&auto_offset_reset=-1'
+        "enable.auto.commit=True&auto.commit.interval.ms=10000&${kafka_default_topic_config}"
     )
     $kafka_consumer_group = hiera(
         'eventlogging_processor_kafka_consumer_group',
         'eventlogging-00'
     )
+
+    # The downstream eventlogging MySQL consumer expects schemas to be
+    # all mixed up in a single stream.  We send processed events to a
+    # 'mixed' kafka topic in order to keep supporting it for now.
+    # We blacklist certain high volume schemas from going into this topic.
+    $mixed_schema_blacklist = hiera('eventlogging_valid_mixed_schema_blacklist', undef)
+    $kafka_mixed_uri = $mixed_schema_blacklist ? {
+        undef   => "${kafka_base_uri}?topic=eventlogging-valid-mixed",
+        default => "${kafka_base_uri}?topic=eventlogging-valid-mixed&blacklist=${mixed_schema_blacklist}"
+    }
+
 
     # Run N parallel client side processors.
     # These will auto balance amongst themselves.
@@ -162,7 +165,7 @@ class role::eventlogging::processor inherits role::eventlogging {
     )
     eventlogging::service::processor { $client_side_processors:
         format         => '%q %{recvFrom}s %{seqId}d %t %o %{userAgent}i',
-        input          => "${kafka_client_side_raw_uri}&zookeeper_connect=${kafka_zookeeper_url}&${kafka_consumer_args}",
+        input          => "${kafka_client_side_raw_uri}&${kafka_consumer_args}",
         sid            => $kafka_consumer_group,
         outputs        => [
             $kafka_schema_uri,
@@ -183,7 +186,7 @@ class role::eventlogging::consumer::mysql inherits role::eventlogging {
 
     $kafka_consumer_args  = hiera(
         'eventlogging_mysql_kafka_consumer_args',
-        'auto_commit_enable=True&auto_commit_interval_ms=1000&auto_offset_reset=-1'
+        "enable.auto.commit=True&auto.commit.interval.ms=1000&${kafka_default_topic_config}"
     )
 
     class { 'passwords::mysql::eventlogging': }    # T82265
@@ -204,7 +207,7 @@ class role::eventlogging::consumer::mysql inherits role::eventlogging {
 
     # Kafka consumer group for this consumer is mysql-m4-master
     eventlogging::service::consumer { $mysql_consumers:
-        input  => "${kafka_mixed_uri}&zookeeper_connect=${kafka_zookeeper_url}&${kafka_consumer_args}",
+        input  => "${kafka_base_uri}?topic=eventlogging-valid-mixed&${kafka_consumer_args}",
         output => "mysql://${mysql_user}:${mysql_pass}@${mysql_db}?charset=utf8&statsd_host=${statsd_host}&replace=True",
         sid    => $kafka_consumer_group,
         # Restrict permissions on this config file since it contains a password.
@@ -267,7 +270,7 @@ class role::eventlogging::consumer::files inherits role::eventlogging {
         ],
     }
 
-    $kafka_consumer_args  = 'auto_commit_enable=True&auto_commit_interval_ms=10000&auto_offset_reset=-1'
+    $kafka_consumer_args  = "enable.auto.commit=True&auto.commit.interval.ms=10000&${kafka_default_topic_config}"
     $kafka_consumer_group = hiera(
         'eventlogging_files_kafka_consumer_group',
         'eventlogging-files-00'
@@ -275,11 +278,11 @@ class role::eventlogging::consumer::files inherits role::eventlogging {
 
     eventlogging::service::consumer {
         'client-side-events.log':
-            input  => "${kafka_client_side_raw_uri}&zookeeper_connect=${kafka_zookeeper_url}&${kafka_consumer_args}&raw=True",
+            input  => "${kafka_client_side_raw_uri}&${kafka_consumer_args}&raw=True",
             output => "file://${out_dir}/client-side-events.log",
             sid    => $kafka_consumer_group;
         'all-events.log':
-            input  =>  "${kafka_mixed_uri}&zookeeper_connect=${kafka_zookeeper_url}&${kafka_consumer_args}",
+            input  =>  "${kafka_base_uri}?topic=eventlogging-valid-mixed&${kafka_consumer_args}",
             output => "file://${out_dir}/all-events.log",
             sid    => $kafka_consumer_group;
     }
