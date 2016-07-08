@@ -11,6 +11,7 @@ class toollabs::dev_environ {
 
     if os_version('ubuntu trusty') {
         include toollabs::genpp::python_dev_trusty
+        include phabricator::arcanist # T139738
         package { [
             'bundler',  # T120287
             # Previously we installed libmariadbclient-dev, but that causes
@@ -33,6 +34,7 @@ class toollabs::dev_environ {
         }
     } elsif os_version('debian jessie') {
         include toollabs::genpp::python_dev_jessie
+        include phabricator::arcanist # T139738
         package { [
             'bundler',  # T120287
             'libmariadb-client-lgpl-dev',
