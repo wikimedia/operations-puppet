@@ -1422,7 +1422,8 @@ node 'labcontrol1001.wikimedia.org' {
     role labs::openstack::nova::controller,
           labs::puppetmaster,
           salt::masters::labs,
-          deployment::salt_masters
+          deployment::salt_masters,
+          access_new_install
 
     include base::firewall
     include standard
