@@ -89,8 +89,9 @@ notify_on_state_change = vm_and_task_state
 
 # Overprovision settings
 
-# Default ram overprovision ration is 1.5.
-ram_allocation_ratio=1.5
+# Running OOM on a compute host produces weird spontaneous shutdowns.
+#  avoid overcommitting as long as we can afford it.
+ram_allocation_ratio=1.2
 
 # Since our images are copy-on-write we can support some overcommitting here.
 disk_allocation_ratio=1.8
