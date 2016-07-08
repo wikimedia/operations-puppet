@@ -72,26 +72,43 @@ class puppetmaster::gitclone(
                 owner   => 'gitpuppet',
                 group   => 'puppet',
                 mode    => '0750';
+        }
+
+        # Creates a bare git repo
+        exec { 'private_dir_init':
+            command => '/usr/bin/git --init',
+            user    => 'gitpuppet',
+            group   => 'gitpuppet',
+            cwd     => "${puppetmaster::gitdir}/operations/private",
+            creates => "${puppetmaster::gitdir}/operations/private/.git",
+            require => File["${puppetmaster::gitdir}/operations/private"]
+        }
+        file {
             "${puppetmaster::gitdir}/operations/private/.git/hooks/post-merge":
                 source  => 'puppet:///modules/puppetmaster/git/private/post-merge',
                 owner   => 'gitpuppet',
                 group   => 'gitpuppet',
-                mode    => '0550';
+                mode    => '0550',
+                require => Exec['private_dir_init'];
             "${puppetmaster::gitdir}/operations/private/.git/hooks/pre-commit":
                 source  => 'puppet:///modules/puppetmaster/git/private/pre-commit',
                 owner   => 'gitpuppet',
                 group   => 'gitpuppet',
-                mode    => '0550';
+                mode    => '0550',
+                require => Exec['private_dir_init'];
+                require => File["${puppetmaster::gitdir}/operations/private"];
             "${puppetmaster::gitdir}/operations/private/.git/hooks/pre-merge":
                 source  => 'puppet:///modules/puppetmaster/git/private/pre-merge',
                 owner   => 'gitpuppet',
                 group   => 'gitpuppet',
-                mode    => '0550';
+                mode    => '0550',
+                require => Exec['private_dir_init'];
             "${puppetmaster::gitdir}/operations/private/.git/hooks/pre-rebase":
                 source  => 'puppet:///modules/puppetmaster/git/private/pre-rebase',
                 owner   => 'gitpuppet',
                 group   => 'gitpuppet',
-                mode    => '0550';
+                mode    => '0550',
+                require => Exec['private_dir_init'];
             '/etc/puppet/private':
                 ensure => link,
                 target => "${puppetmaster::gitdir}/operations/private",
