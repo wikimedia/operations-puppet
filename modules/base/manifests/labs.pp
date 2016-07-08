@@ -23,12 +23,29 @@ class base::labs inherits base {
         }
     }
 
-    file { '/usr/local/sbin/puppetalert.py':
+    file { '/usr/local/sbin/puppet_alert.py':
         ensure => present,
         owner  => 'root',
         group  => 'root',
         mode   => '0544',
-        source => 'puppet:///modules/base/labs/puppetalert.py',
+        source => 'puppet:///modules/base/labs/puppet_alert.py',
+    }
+
+    file { '/usr/local/sbin/notify_maintainers.py':
+        ensure => present,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0544',
+        source => 'puppet:///modules/base/labs/notify_maintainers.py',
+        before => File['/usr/local/sbin/puppet_alert.py'],
+    }
+
+    file { '/usr/local/sbin/puppet_alert.py':
+        ensure => present,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0544',
+        source => 'puppet:///modules/base/labs/puppet_alert.py',
     }
 
     if hiera('send_puppet_failure_emails', false) {
