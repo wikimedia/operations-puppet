@@ -1375,7 +1375,7 @@ node 'iron.wikimedia.org' {
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
     }
-    role bastionhost::2fa
+    role bastionhost::2fa, access_new_install
 }
 
 # Analytics Kafka Brokers
