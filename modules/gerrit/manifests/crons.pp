@@ -18,7 +18,7 @@ class gerrit::crons($ssh_key) {
     cron { 'list_reviewer_counts':
     # This is useful information about the distribution of reviewers.
     # Gerrit's rest api doesn't provide an easy way to get this data.
-        command => "ssh -p 29418 localhost gerrit gsql --format JSON_SINGLE -c \"'SELECT changes.change_id AS change_id, COUNT(DISTINCT patch_set_approvals.account_id) AS reviewer_count FROM changes LEFT JOIN patch_set_approvals ON (changes.change_id = patch_set_approvals.change_id) GROUP BY changes.change_id'\" > /var/www/reviewer-counts.json",
+        command => "/usr/bin/java -jar /var/lib/gerrit2/review_site/bin/gerrit.war gsql --format JSON_SINGLE -c \"'SELECT changes.change_id AS change_id, COUNT(DISTINCT patch_set_approvals.account_id) AS reviewer_count FROM changes LEFT JOIN patch_set_approvals ON (changes.change_id = patch_set_approvals.change_id) GROUP BY changes.change_id'\" > /var/www/reviewer-counts.json",
         user    => 'gerrit2',
         hour    => 1,
     }
