@@ -13,14 +13,17 @@ class role::gerrit::server($host) {
 
         backup::set { 'var-lib-gerrit2-review_site-git': }
 
+        gerrit_service_ip_v4 = hiera('serviceip_v4', '127.0.0.1')
+        gerrit_service_ip_v6 = hiera('serviceip_v6', '0:0:0:0:0:0:0:1')
+
         interface::ip { 'role::gerrit::server_ipv4':
             interface => 'eth0',
-            address   => '208.80.154.81',
+            address   => $gerrit_service_ip_v4,
             prefixlen => '32',
         }
         interface::ip { 'role::gerrit::server_ipv6':
             interface => 'eth0',
-            address   => '2620:0:861:3:208:80:154:81',
+            address   => $gerrit_service_ip_v6,
             prefixlen => '128',
         }
 
