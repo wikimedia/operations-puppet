@@ -6290,8 +6290,6 @@ host rhenium {
 host rhodium {
     hardware ethernet 18:03:73:f1:56:d2;
     fixed-address rhodium.eqiad.wmnet;
-    option pxelinux.pathprefix "precise-installer/";
-    filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host ruthenium {
