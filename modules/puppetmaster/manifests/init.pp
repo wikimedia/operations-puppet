@@ -22,6 +22,9 @@
 #         [{ 'worker' => 'worker1.example.com', loadfactor => '1' }]
 #    - $hiera_config:
 #        Specifies which file to use for hiera.yaml.  Defaults to $::realm
+#    - $is_git_master:
+#        If True, the git private repository here will be considered a master
+
 class puppetmaster(
             $server_name='puppet',
             $bind_address='*',
@@ -38,8 +41,9 @@ class puppetmaster(
                 '*.codfw.wmnet',
             ],
             $is_labs_master=false,
+            $is_git_master=false,
             $hiera_config=$::realm,
-            ){
+    ){
 
     $gitdir = '/var/lib/git'
     $volatiledir = '/var/lib/puppet/volatile'
@@ -84,6 +88,7 @@ class puppetmaster(
 
     class { 'puppetmaster::gitclone':
         is_labs_master => $is_labs_master,
+        is_git_master  => $is_git_master,
     }
 
     include puppetmaster::scripts
