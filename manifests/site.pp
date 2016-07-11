@@ -2076,8 +2076,8 @@ node /^mw10(1[7-9]|2[0-5])\.eqiad\.wmnet$/ {
     include base::firewall
 }
 
-# mw1090-mw1113 are appservers
-node /^mw1(09[0-9]|10[0-9]|11[0-3])\.eqiad\.wmnet$/ {
+#mw1099 is a test appserver
+node 'mw1099.eqiad.wmnet' {
     role mediawiki::appserver
     include base::firewall
 }
@@ -2094,11 +2094,6 @@ node /^mw11(3[1-9]|4[0-8])\.eqiad\.wmnet$/ {
     include base::firewall
 }
 
-# mw1149-1151 are apaches
-node /^mw11(49|5[0-1])\.eqiad\.wmnet$/ {
-    role mediawiki::appserver
-    include base::firewall
-}
 
 # mw1152 is the experimental HAT script runner
 node 'mw1152.eqiad.wmnet' {
