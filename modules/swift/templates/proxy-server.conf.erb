@@ -66,5 +66,6 @@ shard_container_list = <%= @shard_container_list.join(',') %>
 # transformed to something more palatable (specifically, turning http://upload/proj/lang/ into http://lang.proj/
 # valid options are 'asis' (leave it alone) and 'sitelang' (change upload to lang.site.org)
 backend_url_format = <%= @backend_url_format %>
+tld = <%= @tld %>
 
 paste.filter_factory = wmf.rewrite:filter_factory
