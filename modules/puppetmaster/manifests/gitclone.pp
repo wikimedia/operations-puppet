@@ -2,8 +2,9 @@
 #
 # This class handles the repositories from which the puppetmasters pull
 class puppetmaster::gitclone(
-            $is_labs_master = false
-            ){
+    $is_labs_master = false,
+    $is_private_master = false,
+    ){
 
     class  { '::puppetmaster::base_repo':
         gitdir   => $::puppetmaster::gitdir,
@@ -62,53 +63,69 @@ class puppetmaster::gitclone(
     if ! $is_labs_master {
         # Set up private repo.
         # Note that puppet does not actually clone the repo -- puppetizing that
-        # turns out to be a big, insecure mess.  On a new puppetmaster you will
-        # will need to do a clone of
-        #       ${puppetmaster::gitdir}/operations/puppet/private
-        # by hand and with a forwarded key.
-        file {
-            "${puppetmaster::gitdir}/operations/private":
-                ensure  => directory,
-                owner   => 'gitpuppet',
-                group   => 'puppet',
-                mode    => '0750';
+        # turns out to be a big, insecure mess.
+        #
+        # However, it is enough to push from the private repo master
+        # in order to create the repo.
+
+        # on the master for private data,
+        # /srv/private contains the actual repository.
+        # On the non-masters, it is a bare git repo used only to receive
+        # the push from upstream
+
+        if $is_private_master {
+            file { '/srv/private':
+                ensure => directory,
+                mode   => '0755',
+                owner  => 'root',
+                group => 'root',
+            }
+
+            # On a private master, /srv/private is a real repository
+            exec { '/srv/private init':
+                command => '/usr/bin/git init',
+                user    => 'root',
+                group   => 'root',
+                cwd     => '/srv/private',
+                creates => '/srv/private/.git',
+                require => File['/srv/private'],
+            }
+            # TODO: puppetize the post-commit hook.
+        } else {
+            puppetmaster::gitprivate { '/srv/private':
+                bare       => true,
+                dir_params => {mode => '0755'},
+            }
+
+            # This will transmit data to /var/lib...
+            file { '/srv/private/hooks/post-receive':
+                source => 'puppet:///modules/puppetmaster/git/private/post-receive',
+                owner   => 'root',
+                group   => 'root',
+                mode    => '0550',
+                require => Puppetmaster::Gitprivate['/srv/private']
+            }
         }
 
-        # Creates a bare git repo
-        exec { 'private_dir_init':
-            command => '/usr/bin/git init',
+        # What is in the private repo must also be in operations/private in
+        # /var/lib/git...
+
+        $private_dir = "${puppetmaster::gitdir}/operations/private"
+        puppetmaster::gitprivate { $private_dir:
+            owner => 'gitpuppet',
+            group => 'gitpuppet',
+        }
+        exec { 'private git setup remote':
+            command => '/usr/bin/git remote add origin /srv/private',
+            cwd     => $private_dir,
             user    => 'gitpuppet',
             group   => 'gitpuppet',
-            cwd     => "${puppetmaster::gitdir}/operations/private",
-            creates => "${puppetmaster::gitdir}/operations/private/.git",
-            require => File["${puppetmaster::gitdir}/operations/private"]
+            unless  => '/usr/bin/git remote show origin'
         }
-        file {
-            "${puppetmaster::gitdir}/operations/private/.git/hooks/post-merge":
-                source  => 'puppet:///modules/puppetmaster/git/private/post-merge',
-                owner   => 'gitpuppet',
-                group   => 'gitpuppet',
-                mode    => '0550',
-                require => Exec['private_dir_init'];
-            "${puppetmaster::gitdir}/operations/private/.git/hooks/pre-commit":
-                source  => 'puppet:///modules/puppetmaster/git/private/pre-commit',
-                owner   => 'gitpuppet',
-                group   => 'gitpuppet',
-                mode    => '0550',
-                require => [Exec['private_dir_init'], File["${puppetmaster::gitdir}/operations/private"]];
-            "${puppetmaster::gitdir}/operations/private/.git/hooks/pre-merge":
-                source  => 'puppet:///modules/puppetmaster/git/private/pre-merge',
-                owner   => 'gitpuppet',
-                group   => 'gitpuppet',
-                mode    => '0550',
-                require => Exec['private_dir_init'];
-            "${puppetmaster::gitdir}/operations/private/.git/hooks/pre-rebase":
-                source  => 'puppet:///modules/puppetmaster/git/private/pre-rebase',
-                owner   => 'gitpuppet',
-                group   => 'gitpuppet',
-                mode    => '0550',
-                require => Exec['private_dir_init'];
-            '/etc/puppet/private':
+
+
+        # ...and linked to /etc/puppet
+        file { '/etc/puppet/private':
                 ensure => link,
                 target => "${puppetmaster::gitdir}/operations/private",
                 force  => true;
