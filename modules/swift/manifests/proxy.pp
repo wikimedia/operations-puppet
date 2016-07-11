@@ -13,6 +13,7 @@ class swift::proxy (
     $backend_url_format        = 'sitelang',
     $rewrite_account           = undef,
     $dispersion_account        = undef,
+    $tld                       = 'org',
 ) {
     package {[
         'swift-proxy',

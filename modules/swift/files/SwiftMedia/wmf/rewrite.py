@@ -42,6 +42,7 @@ class _WMFRewriteContext(WSGIContext):
         # as is (eg. upload/proj/lang/) or with the site/lang converted  and
         # only the path sent back (eg en.wikipedia/thumb).
         self.backend_url_format = conf['backend_url_format'].strip()  # asis, sitelang
+        self.tld = conf['tld'].strip()
 
     def handle404(self, reqorig, url, container, obj):
         """
@@ -95,10 +96,10 @@ class _WMFRewriteContext(WSGIContext):
                         if(lang in ['mediawiki']):
                             lang = 'www'
                             proj = 'mediawiki'
-                    hostname = '%s.%s.org' % (lang, proj)
+                    hostname = '%s.%s.%s' % (lang, proj, self.tld)
                     if(proj == 'wikipedia' and lang == 'sources'):
                         # yay special case
-                        hostname = 'wikisource.org'
+                        hostname = 'wikisource.%s' % self.tld
                     # ok, replace the URL with just the part starting with thumb/
                     # take off the first two parts of the path
                     # (eg /wikipedia/commons/); make sure the string starts
