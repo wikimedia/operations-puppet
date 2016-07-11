@@ -76,7 +76,7 @@ class puppetmaster::gitclone(
 
         # Creates a bare git repo
         exec { 'private_dir_init':
-            command => '/usr/bin/git --init',
+            command => '/usr/bin/git init',
             user    => 'gitpuppet',
             group   => 'gitpuppet',
             cwd     => "${puppetmaster::gitdir}/operations/private",
