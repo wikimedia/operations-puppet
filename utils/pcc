@@ -150,7 +150,8 @@ while running:
 
 # Puppet's exit code is not always meaningful, so we grep the output
 # for failures before declaring victory.
-ok = build.is_good() and not re.search(r'[1-9]\d* FAIL', output)
+ok = ('Run finished' in output and not
+      re.search(r'[1-9]\d* (ERROR|FAIL)', output))
 if ok:
     print green('SUCCESS')
     sys.exit(0)
