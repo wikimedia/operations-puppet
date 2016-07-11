@@ -1,3 +1,16 @@
 #!/bin/bash
 
 /usr/bin/curl -XPOST <%= @notify_url %>
+
+notification_code=$?
+
+if [ $notification_code -eq 52 ] ; then
+    # tileratorui returns an invalid empty response, ignoring it until it is
+    # fixed (T139451)
+    exit 0
+fi
+
+if [ $notification_code -ne 0 ] ; then
+    echo "Error while notifying tileratorui"
+    exit $notification_code
+fi
