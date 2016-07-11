@@ -1,0 +1,4 @@
+#!/bin/sh
+cd /var/lib/git/operations/private
+unset GIT_DIR
+git pull
