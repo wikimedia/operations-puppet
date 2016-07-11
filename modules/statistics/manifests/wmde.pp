@@ -105,7 +105,7 @@ class statistics::wmde {
         ensure  => 'file',
         owner   => $user,
         group   => $user,
-        mode    => '0644',
+        mode    => '0754',
         content => template('statistics/wmde/daily.erb'),
         require => Git::Clone['wmde/scripts'],
     }
@@ -114,7 +114,7 @@ class statistics::wmde {
         ensure  => 'file',
         owner   => $user,
         group   => $user,
-        mode    => '0644',
+        mode    => '0754',
         content => template('statistics/wmde/minutely.erb'),
         require => Git::Clone['wmde/scripts'],
     }
