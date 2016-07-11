@@ -13,7 +13,7 @@
 # And send the data to statsd or graphite directly
 class statistics::wmde(
     $user = 'analytics-wmde',
-    $dir = '/srv/analytics-wmde/'
+    $dir = '/srv/analytics-wmde'
 ) {
     Class['::statistics'] -> Class['::statistics::wmde']
 
@@ -98,7 +98,7 @@ class statistics::wmde(
         group   => $user,
         mode    => '0440',
         content => template('statistics/wmde/config.erb'),
-        require => User["${dir}/src"],
+        require => File["${dir}/src"],
     }
 
     file { "${dir}/daily.sh":
