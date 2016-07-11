@@ -20,6 +20,8 @@
         "enabled" : true,
         "omit_norms": true
       },
+      "date_detection" : false,
+      "numeric_detection": false,
       "dynamic_templates" : [ {
         "string_fields" : {
           "match" : "*",
@@ -39,6 +41,13 @@
                 "doc_values": true
               }
             }
+          }
+        },
+        "force_to_string" : {
+          "match_mapping_type" : "*",
+          "mapping" : {
+            "type" : "string",
+            "index" : "not_analyzed"
           }
         }
       } ],
