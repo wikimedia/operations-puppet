@@ -56,9 +56,14 @@ class contint::firewall {
         srange => $nodepool_host,
     }
 
-    # Need to grant ytterbium ssh access for git
+    # ssh access for git on old gerrit server
     ferm::rule { 'ytterbium_ssh':
         rule => 'proto tcp dport ssh { saddr (208.80.154.80 208.80.154.81 2620:0:861:3:92b1:1cff:fe2a:e60 2620:0:861:3:208:80:154:80 2620:0:861:3:208:80:154:81) ACCEPT; }'
+    }
+
+    # ssh access for git on new gerrit server
+    ferm::rule { 'lead_ssh':
+        rule => 'proto tcp dport ssh { saddr (208.80.154.82 208.80.154.85 2620:0:861:3:ca1f:66ff:febf:7166 2620:0:861:3:208:80:154:82 2620:0:861:3:208:80:154:85) ACCEPT; }'
     }
 
     # ALLOWS:
