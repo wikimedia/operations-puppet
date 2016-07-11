@@ -3362,6 +3362,96 @@ host mc1018 {
     fixed-address mc1018.eqiad.wmnet;
 }
 
+host mc1019 {
+    hardware ethernet 1c:98:ec:29:27:04;
+    fixed-address mc1019.eqiad.wmnet;
+}
+
+host mc1020 {
+    hardware ethernet 1c:98:ec:29:7c:f4;
+    fixed-address mc1020.eqiad.wmnet;
+}
+
+host mc1021 {
+    hardware ethernet 1c:98:ec:29:8c:48;
+    fixed-address mc1021.eqiad.wmnet;
+}
+
+host mc1022 {
+    hardware ethernet 1c:98:ec:29:07:cc;
+    fixed-address mc1022.eqiad.wmnet;
+}
+
+host mc1023 {
+    hardware ethernet 14:02:ec:32:47:3c;
+    fixed-address mc1023.eqiad.wmnet;
+}
+
+host mc1024 {
+    hardware ethernet 1c:98:ec:29:8c:1c;
+    fixed-address mc1024.eqiad.wmnet;
+}
+
+host mc1025 {
+    hardware ethernet 1c:98:ec:29:1a:30;
+    fixed-address mc1025.eqiad.wmnet;
+}
+
+host mc1026 {
+    hardware ethernet 1c:98:ec:29:8c:34;
+    fixed-address mc1026.eqiad.wmnet;
+}
+
+host mc1027 {
+    hardware ethernet 1c:98:ec:29:8c:58;
+    fixed-address mc1027.eqiad.wmnet;
+}
+
+host mc1028 {
+    hardware ethernet 1c:98:ec:29:7c:e4;
+    fixed-address mc1028.eqiad.wmnet;
+}
+
+host mc1029 {
+    hardware ethernet 1c:98:ec:29:1a:68;
+    fixed-address mc1029.eqiad.wmnet;
+}
+
+host mc1030 {
+    hardware ethernet 1c:98:ec:29:9c:00;
+    fixed-address mc1030.eqiad.wmnet;
+}
+
+host mc1031 {
+    hardware ethernet 1c:98:ec:29:07:f4;
+    fixed-address mc1031.eqiad.wmnet;
+}
+
+host mc1032 {
+    hardware ethernet 1c:98:ec:29:9c:14;
+    fixed-address mc1032.eqiad.wmnet;
+}
+
+host mc1033 {
+    hardware ethernet 1c:98:ec:29:ac:20;
+    fixed-address mc1033.eqiad.wmnet;
+}
+
+host mc1034 {
+    hardware ethernet 1c:98:ec:29:9c:b8;
+    fixed-address mc1034.eqiad.wmnet;
+}
+
+host mc1035 {
+    hardware ethernet 1c:98:ec:29:8c:2c;
+    fixed-address mc1035.eqiad.wmnet;
+}
+
+host mc1036 {
+    hardware ethernet 1c:98:ec:29:1a:04;
+    fixed-address mc1036.eqiad.wmnet;
+}
+
 host mc2001 {
     hardware ethernet 90:e2:ba:19:55:f0;
     fixed-address mc2001.codfw.wmnet;
