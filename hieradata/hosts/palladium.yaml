@@ -9,3 +9,4 @@ apache::logrotate::period: "daily"
 apache::logrotate::rotate: 7
 admin::groups:
   - datacenter-ops
+puppet::git_master: true
