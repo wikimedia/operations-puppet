@@ -11,11 +11,11 @@
 #  - Dumps
 #
 # And send the data to statsd or graphite directly
-class statistics::wmde(
-    $user = 'analytics-wmde',
-    $dir = '/srv/analytics-wmde'
-) {
+class statistics::wmde {
     Class['::statistics'] -> Class['::statistics::wmde']
+
+    $user = 'analytics-wmde'
+    $dir  = "${::statistics::working_path}/analytics-wmde"
 
     # Path in which all crons will log to.
     $log_dir = "${dir}/log"
