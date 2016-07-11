@@ -57,6 +57,22 @@ class package_builder(
         content => template('package_builder/pbuilderrc.erb'),
     }
 
+    file { '/usr/share/lintian/profiles/wikimedia':
+        ensure  => directory,
+        owner   => 'root',
+        group   => 'root',
+        require => Package['lintian'],
+    }
+
+    file { '/usr/share/lintian/profiles/wikimedia/main.profile':
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        source  => 'puppet:///modules/package_builder/wikimedia.profile',
+        require => File['/usr/share/lintian/profiles/wikimedia']
+    }
+
     file { '/usr/share/lintian/vendors/wikimedia':
         ensure  => directory,
         owner   => 'root',
