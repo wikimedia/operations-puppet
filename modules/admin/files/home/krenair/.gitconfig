@@ -4,4 +4,4 @@
 [color]
 	ui = true
 [core]
-	editor = nano
+	editor = nano --const
