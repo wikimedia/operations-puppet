@@ -60,6 +60,19 @@ class lvs::configuration {
         default => 'secondary'
     }
 
+    # This is technically redundant information from $lvs_class_hosts, but
+    # transforming one into the other in puppet is a huge PITA.
+    $lvs_grain_class = $::hostname ? {
+        /^lvs100(7|10)$/  => 'high-traffic1',
+        /^lvs100(8|11)$/  => 'high-traffic2',
+        /^lvs100(9|12)$/  => 'low-traffic',
+        /^lvs[12]00[14]$/ => 'high-traffic1',
+        /^lvs[12]00[25]$/ => 'high-traffic2',
+        /^lvs[12]00[36]$/ => 'low-traffic',
+        /^lvs[34]00[13]$/ => 'high-traffic1',
+        /^lvs[34]00[24]$/ => 'high-traffic2',
+    }
+
     $pybal = {
         'bgp' => hiera('lvs::configuration::bgp', 'yes'),
         'bgp-peer-address' => $::hostname ? {
