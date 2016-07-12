@@ -351,8 +351,8 @@ sub wm_common_backend_response {
 		set beresp.ttl = 0s;
 		/* This should be translated into hit_for_pass later */
 	}
-	elsif (beresp.status >= 400 && beresp.status <= 499 && beresp.ttl > <%= @vcl_config.fetch("cache4xx", "5m") %>) {
-		set beresp.ttl = <%= @vcl_config.fetch("cache4xx", "5m") %>;
+	elsif (beresp.status >= 400 && beresp.status <= 499 && beresp.ttl > 10m) {
+		set beresp.ttl = 10m;
 	}
 
 	set beresp.grace = 60m;

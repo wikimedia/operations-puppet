@@ -97,7 +97,6 @@ class role::cache::text(
     }
 
     $common_vcl_config = {
-        'cache4xx'         => '1m',
         'purge_host_regex' => $::role::cache::base::purge_host_not_upload_re,
         'static_host'      => $static_host,
         'bits_domain'      => $bits_domain,
