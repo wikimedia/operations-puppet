@@ -9,8 +9,15 @@ class vagrant::lxc {
     require ::vagrant
     require ::lxc
 
+    require_package('build-essential')
+    require_package('ruby1.9.1-dev')
+
     ::vagrant::plugin { 'vagrant-lxc':
-        ensure => present,
+        ensure  => present,
+        require => [
+            Package['build-essential'],
+            Package['ruby1.9.1-dev'],
+        ],
     }
 
     # Make sure that the plugin wrapper script is NOT installed
