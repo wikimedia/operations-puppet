@@ -31,6 +31,11 @@ class gerrit::jetty(
         ensure => present,
     }
 
+    user { 'gerrit2':
+        managehome => false,
+        system     => true,
+    }
+
     file { '/etc/default/gerritcodereview':
         source => 'puppet:///modules/gerrit/gerrit',
         owner  => 'root',
@@ -42,7 +47,7 @@ class gerrit::jetty(
         ensure  => directory,
         mode    => '0755',
         owner   => 'gerrit2',
-        require => Package['gerrit'],
+        require => [Package['gerrit'], User['gerrit2']],
     }
 
     file { '/var/lib/gerrit2/.ssh':
