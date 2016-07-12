@@ -16,6 +16,8 @@ class statistics::wmde {
 
     $user = 'analytics-wmde'
     $dir  = "${::statistics::working_path}/analytics-wmde"
+    $data_dir  = "${dir}/data"
+    $scripts_dir  = "${dir}/src/scripts"
 
     # Path in which all crons will log to.
     $log_dir = "${dir}/log"
@@ -69,7 +71,7 @@ class statistics::wmde {
     }
 
     git::clone { 'wmde/scripts':
-        ensure    => '73c88575345d63115230a6f4ca7c75852fb735f0',
+        ensure    => '60aa970b0ae8ccb82034b8972775cd3bf6f15b1e',
         directory => "${dir}/src/scripts",
         origin    => 'https://gerrit.wikimedia.org/r/analytics/wmde/scripts',
         owner     => $user,
