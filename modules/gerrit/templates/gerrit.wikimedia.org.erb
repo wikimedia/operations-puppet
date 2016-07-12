@@ -38,8 +38,9 @@ MaxClients 50
     CustomLog /var/log/apache2/access.log wmf
     ServerSignature Off
 
+    IncludeOnly /etc/acme/challenge-apache.conf
     RewriteEngine on
-    RewriteCond %{SERVER_PORT} !^443$
+    RewriteCond %{REQUEST_URI} !^/\.well-known/acme-challenge/
     RewriteRule ^/(.*)$ https://<%= @host %>/$1 [L,R=301,NE]
 </VirtualHost>
 
