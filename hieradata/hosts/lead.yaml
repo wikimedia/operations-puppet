@@ -1,6 +1,4 @@
 gerrit::host: 'gerrit-new.wikimedia.org'
 gerrit::jetty::db_host: 'db1042.eqiad.wmnet'
-gerrit::jetty::replication: ''
-gerrit::proxy::lets_encrypt: true
 role::gerrit::server::ipv4: '208.80.154.85'
 role::gerrit::server::ipv6: '2620:0:861:3:208:80:154:85'

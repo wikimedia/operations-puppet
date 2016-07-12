@@ -4,3 +4,4 @@ gerrit::jetty::gid: 1146
 gerrit::jetty::uid: 1146
 gerrit::jetty::system: false
 gerrit::jetty::git_dir: 'git'
+gerrit::jetty::replication: ''
