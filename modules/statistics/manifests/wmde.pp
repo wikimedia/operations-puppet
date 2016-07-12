@@ -71,7 +71,8 @@ class statistics::wmde {
     }
 
     git::clone { 'wmde/scripts':
-        ensure    => '60aa970b0ae8ccb82034b8972775cd3bf6f15b1e',
+        ensure    => 'latest',
+        branch    => 'production',
         directory => "${dir}/src/scripts",
         origin    => 'https://gerrit.wikimedia.org/r/analytics/wmde/scripts',
         owner     => $user,
@@ -80,7 +81,8 @@ class statistics::wmde {
     }
 
     git::clone { 'wmde/toolkit-analyzer-build':
-        ensure    => '5030ff6f98bf1ef463e726883ae03a67819815e8',
+        ensure    => 'latest',
+        branch    => 'production',
         directory => "${dir}/src/toolkit-analyzer-build",
         origin    => 'https://gerrit.wikimedia.org/r/analytics/wmde/toolkit-analyzer-build',
         owner     => $user,
