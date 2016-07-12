@@ -15,9 +15,14 @@ class statistics::wmde {
     Class['::statistics'] -> Class['::statistics::wmde']
 
     $user = 'analytics-wmde'
+
     $dir  = "${::statistics::working_path}/analytics-wmde"
     $data_dir  = "${dir}/data"
     $scripts_dir  = "${dir}/src/scripts"
+
+    $statsd_host = hiera('statsd')
+    # TODO graphite hostname should be in hiera
+    $graphite_host = 'graphite.eqiad.wmnet'
 
     # Path in which all crons will log to.
     $log_dir = "${dir}/log"
@@ -105,57 +110,53 @@ class statistics::wmde {
         require => File["${dir}/src"],
     }
 
-    file { "${dir}/daily.sh":
-        ensure  => 'file',
-        owner   => $user,
-        group   => $user,
-        mode    => '0754',
-        content => template('statistics/wmde/daily.erb'),
-        require => Git::Clone['wmde/scripts'],
-    }
-
-    file { "${dir}/minutely.sh":
-        ensure  => 'file',
-        owner   => $user,
-        group   => $user,
-        mode    => '0754',
-        content => template('statistics/wmde/minutely.erb'),
-        require => Git::Clone['wmde/scripts'],
-    }
-
     Cron {
         user => $user,
     }
 
     cron { 'minutely':
-        command => "${dir}/minutely.sh >> ${log_dir}/minutely.log 2>&1",
+        command => "${scripts_dir}/cron/minutely.sh >> ${log_dir}/minutely.log 2>&1",
         hour    => '*',
         minute  => '*',
-        require => File["${dir}/minutely.sh"],
+        require => Git::Clone['wmde/scripts'],
     }
 
     # Note: some of the scripts run by this cron need access to secrets!
     # Docs can be seen at https://github.com/wikimedia/analytics-wmde-scripts/blob/master/README.md
-    cron { 'daily':
-        command => "${dir}/daily.sh >> ${log_dir}/daily.log 2>&1",
+    cron { 'daily.03':
+        command => "time ${scripts_dir}/cron/daily.03.sh >> ${log_dir}/daily.03.log 2>&1",
         hour    => '3',
         minute  => '0',
         require => [
-            File["${dir}/daily.sh"],
+            Git::Clone['wmde/scripts'],
             File["${dir}/src/config"],
             mysql::config::client['research-wmde'],
         ],
     }
 
-    # Logrotate is at 6:25, + time for rsync (hourly?), 12 gives us roughly 6 hours
-    cron { 'graphite/api/logScanner':
-        command => "${scripts_dir}/src/wikidata/apiLogScanner.sh >> ${log_dir}/wd-apiLogScanner.log 2>&1",
+    cron { 'daily.12':
+        command => "time ${scripts_dir}/cron/daily.12.sh >> ${log_dir}/daily.12.log 2>&1",
         hour    => '12',
         minute  => '0',
+        require => [
+            Git::Clone['wmde/scripts'],
+            File["${dir}/src/config"],
+        ],
+    }
+
+    cron { 'weekly':
+        command => "time ${scripts_dir}/cron/weekly.sh >> ${log_dir}/weekly.log 2>&1",
+        weekday => '7',
+        hour    => '01',
+        minute  => '0',
+        require => [
+            Git::Clone['wmde/scripts'],
+            File["${dir}/src/config"],
+        ],
     }
 
     cron { 'wmde/toolkit-analyzer-build':
-        command => "java -Xmx2g -jar ${dir}/src/toolkit-analyzer-build/toolkit-analyzer.jar --processors Metric --store ${dir}/data --latest >> ${log_dir}/toolkit-analyzer.log 2>&1",
+        command => "time java -Xmx2g -jar ${dir}/src/toolkit-analyzer-build/toolkit-analyzer.jar --processors Metric --store ${dir}/data --latest >> ${log_dir}/toolkit-analyzer.log 2>&1",
         hour    => '12',
         minute  => '0',
     }
