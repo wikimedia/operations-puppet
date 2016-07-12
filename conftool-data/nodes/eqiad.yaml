@@ -280,9 +280,6 @@ elasticsearch:
   elastic1045.eqiad.wmnet: [elasticsearch, elasticsearch-ssl]
   elastic1046.eqiad.wmnet: [elasticsearch, elasticsearch-ssl]
   elastic1047.eqiad.wmnet: [elasticsearch, elasticsearch-ssl]
-rcstream:
-  rcs1001.eqiad.wmnet: [nginx, nginx_ssl]
-  rcs1002.eqiad.wmnet: [nginx, nginx_ssl]
 swift:
   ms-fe1001.eqiad.wmnet: [swift-fe]
   ms-fe1002.eqiad.wmnet: [swift-fe]
