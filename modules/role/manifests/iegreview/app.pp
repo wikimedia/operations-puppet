@@ -1,8 +1,8 @@
-# = Class: role::iegreview
+# = Class: role::iegreview::app
 #
 # This class provisions the IEG grant review application.
 #
-class role::iegreview {
+class role::iegreview::app {
 
     include base::firewall
 
