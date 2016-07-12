@@ -73,7 +73,7 @@ class statistics::wmde {
     git::clone { 'wmde/scripts':
         ensure    => 'latest',
         branch    => 'production',
-        directory => "${dir}/src/scripts",
+        directory => $scripts_dir,
         origin    => 'https://gerrit.wikimedia.org/r/analytics/wmde/scripts',
         owner     => $user,
         group     => $user,
@@ -149,7 +149,7 @@ class statistics::wmde {
 
     # Logrotate is at 6:25, + time for rsync (hourly?), 12 gives us roughly 6 hours
     cron { 'graphite/api/logScanner':
-        command => "${dir}/src/scripts/graphite/api/logScanner.sh >> ${log_dir}/graphite_api_logScanner.log 2>&1",
+        command => "${scripts_dir}/src/wikidata/apiLogScanner.sh >> ${log_dir}/wd-apiLogScanner.log 2>&1",
         hour    => '12',
         minute  => '0',
     }
