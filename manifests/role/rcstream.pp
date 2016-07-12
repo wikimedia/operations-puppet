@@ -33,13 +33,6 @@ class role::rcstream {
         backends => $backends,
     }
 
-    if hiera('has_lvs', true) {
-        include lvs::configuration
-        class { 'lvs::realserver':
-            realserver_ips => [],
-        }
-    }
-
     nrpe::monitor_service { 'rcstream_backend':
         description  => 'Recent Changes Stream Python backend',
         nrpe_command => '/usr/local/sbin/rcstreamctl check',
