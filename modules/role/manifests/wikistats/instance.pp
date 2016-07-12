@@ -2,7 +2,7 @@
 # this is labs only! - wikistats.wmflabs.org (dzahn)
 # NOT stats.wikimedia.org (analytics/ezachte)
 # realm case is just here for compatibility
-class role::wikistats {
+class role::wikistats::instance {
 
     system::role { 'wikistats': description => 'wikistats instance' }
 
