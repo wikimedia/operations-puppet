@@ -4,7 +4,10 @@ class gerrit::jetty(
     $url = "https://${::gerrit::host}/r",
     $db_name = 'reviewdb',
     $db_user = 'gerrit',
-    $git_dir = 'git'
+    $git_dir = 'git',
+    $gid     = 444,
+    $uid     = 444,
+    $system  = true,
     ) {
 
     include nrpe
@@ -31,6 +34,21 @@ class gerrit::jetty(
         ensure => present,
     }
 
+    group { 'gerrit2':
+        ensure => present,
+        gid    => $gid,
+        system => $system,
+    }
+
+    user { 'gerrit2':
+        ensure  => present,
+        home    => '/var/lib/gerrit2',
+        system  => $system,
+        gid     => $gid,
+        uid     => $uid,
+        require => Group['gerrit2'],
+    }
+
     file { '/etc/default/gerritcodereview':
         source => 'puppet:///modules/gerrit/gerrit',
         owner  => 'root',
@@ -42,7 +60,7 @@ class gerrit::jetty(
         ensure  => directory,
         mode    => '0755',
         owner   => 'gerrit2',
-        require => Package['gerrit'],
+        require => [Package['gerrit'], User['gerrit2']],
     }
 
     file { '/var/lib/gerrit2/.ssh':
