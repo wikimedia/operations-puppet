@@ -305,8 +305,10 @@ groups:
                  * Manage repositories, phd service, and workers
                  * Reset authentication of users
                  * Delete users (e.g. unverified accounts due to wrong email address)
+                 * Delete files (e.g. copyright violations)
     members: [aklapper]
-    privileges: ['ALL = NOPASSWD: /srv/phab/phabricator/bin/remove destroy r*',
+    privileges: ['ALL = NOPASSWD: /srv/phab/phabricator/bin/remove destroy F*',
+                 'ALL = NOPASSWD: /srv/phab/phabricator/bin/remove destroy r*',
                  'ALL = NOPASSWD: /srv/phab/phabricator/bin/remove destroy @*',
                  'ALL = NOPASSWD: /srv/phab/phabricator/bin/repository',
                  'ALL = NOPASSWD: /srv/phab/phabricator/bin/phd',
