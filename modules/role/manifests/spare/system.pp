@@ -5,9 +5,9 @@
 #
 # This role is entirely transient. Once a system has been reclaimed to spares
 # or decomissioned, this role is removed from site.pp along with the host entry.
-class role::spare {
+class role::spare::system {
     include standard
     include base::firewall
 
-    system::role { 'role::spare': description => 'Unused spare system' }
+    system::role { 'role::spare::system': description => 'Unused spare system' }
 }
