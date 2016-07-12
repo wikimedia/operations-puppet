@@ -101,7 +101,7 @@ node /analytics10(2[89]|3[0-9]|4[0-9]|5[0-7]).eqiad.wmnet/ {
 
 # This is an OOW dell.
 node 'analytics1015.eqiad.wmnet' {
-    role spare
+    role spare::system
 }
 
 
@@ -358,17 +358,17 @@ node /^cp30(0[789]|10)\.esams\.wmnet$/ {
 
 node /^cp301[1-4]\.esams\.wmnet$/ {
     interface::add_ip6_mapped { 'main': }
-    role spare # to be decommed (T130883)
+    role spare::system # to be decommed (T130883)
 }
 
 node /^cp301[5678]\.esams\.wmnet$/ {
     interface::add_ip6_mapped { 'main': }
-    role spare # to be decommed (T130883)
+    role spare::system # to be decommed (T130883)
 }
 
 node /^cp30(19|2[0-2])\.esams\.wmnet$/ {
     interface::add_ip6_mapped { 'main': }
-    role spare # to be decommed (T130883)
+    role spare::system # to be decommed (T130883)
 }
 
 node /^cp30[34][0123]\.esams\.wmnet$/ {
@@ -1992,7 +1992,7 @@ node 'mendelevium.eqiad.wmnet' {
 }
 
 node 'multatuli.wikimedia.org' {
-    role spare
+    role spare::system
 
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
@@ -2574,7 +2574,7 @@ node 'rhenium.wikimedia.org' {
 }
 
 node 'rubidium.wikimedia.org' {
-    role spare
+    role spare::system
 
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
