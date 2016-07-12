@@ -1,5 +1,3 @@
-admin::groups:
-  - gerrit-root
 gerrit::host: 'gerrit-new.wikimedia.org'
 gerrit::jetty::db_host: 'db1042.eqiad.wmnet'
 gerrit::jetty::git_dir: '/srv/gerrit/git'
