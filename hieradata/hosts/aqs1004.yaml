@@ -22,7 +22,7 @@ cassandra::instances:
     rpc_address: 10.64.0.127
     rpc_interface: eth0
 
-cassandra::cluster_name: "Analytics Query Service Test"
+cassandra::cluster_name: "Analytics Query Service NG"
 
 cassandra::target_version: '2.2'
 
