@@ -4,18 +4,6 @@
 class role::cache::perf {
     include cpufrequtils # defaults to "performance"
 
-    # This seems to prevent long term memory fragmentation issues that
-    #  can cause VM perf issues.  This seems to be less necessary on jessie
-    #  with other assorted fixes in place, and we could experiment with
-    #  removing it entirely at a later time when things are more stable.
-    #  (watch for small but increasing sys% spikes on upload caches if so,
-    #  may take days to have real effect).
-    cron { 'varnish_vm_compact_cron':
-        command => 'echo 1 >/proc/sys/vm/compact_memory',
-        user    => 'root',
-        minute  => '*',
-    }
-
     # Bump min_free_kbytes to ensure network buffers are available quickly
     #   without having to evict cache on the spot
     vm::min_free_kbytes { 'cache':
