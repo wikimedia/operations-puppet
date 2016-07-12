@@ -65,23 +65,27 @@ args = ap.parse_args()
 sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 key_value_pairs = re.compile(r'([A-Z][A-Z0-9]*)=([^;]+)')
 stats = {
+    'unknown': 0,
     'hit-front': 0,
     'hit-local': 0,
     'hit-remote': 0,
     'int-front': 0,
     'int-local': 0,
     'int-remote': 0,
-    'misspass': 0,
+    'pass': 0,
+    'miss': 0,
 }
 
 re_simplify = re.compile('cp[0-9]{4} (hit|miss|pass|int)(?:/[0-9]+)?')
 state_finder = [
-    [re.compile(r'hit$'),       'hit-front'],
-    [re.compile(r'hit,[^,]+$'), 'hit-local'],
-    [re.compile(r'hit'),        'hit-remote'],
-    [re.compile(r'int$'),       'int-front'],
-    [re.compile(r'int,[^,]+$'), 'int-local'],
-    [re.compile(r'int'),        'int-remote'],
+    [re.compile(r'hit$'),        'hit-front'],
+    [re.compile(r'hit,[^,]+$'),  'hit-local'],
+    [re.compile(r'hit'),         'hit-remote'],
+    [re.compile(r'int$'),        'int-front'],
+    [re.compile(r'int,[^,]+$'),  'int-local'],
+    [re.compile(r'int'),         'int-remote'],
+    [re.compile(r'pass,[^,]+$'), 'pass'],
+    [re.compile(r'miss'),        'miss'],
 ]
 
 
@@ -89,7 +93,7 @@ def vsl_callback(transaction_id, tag, record, remote_party):
     record = record.split(': ')[1]
 
     record = re_simplify.sub(r'\1', record)
-    state = 'misspass'
+    state = 'unknown'
     for sf in state_finder:
         if sf[0].search(record):
             state = sf[1]
