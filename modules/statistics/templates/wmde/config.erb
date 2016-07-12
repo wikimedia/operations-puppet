@@ -1,3 +1,6 @@
 <% @wmde_secrets.keys.sort.each do |k| -%>
 <%= k %> <%= @wmde_secrets[k] %>
 <% end -%>
+dump-dir <%= @data_dir %>
+statsd_host <%= @statsd_host %>
+graphite_host <%= @graphite_host %>
