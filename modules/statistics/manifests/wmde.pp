@@ -69,7 +69,7 @@ class statistics::wmde {
     }
 
     git::clone { 'wmde/scripts':
-        ensure    => '73c88575345d63115230a6f4ca7c75852fb735f0',
+        ensure    => '108ba8fb015877f18ba7780d05373c3cd56e89d1',
         directory => "${dir}/src/scripts",
         origin    => 'https://gerrit.wikimedia.org/r/analytics/wmde/scripts',
         owner     => $user,
