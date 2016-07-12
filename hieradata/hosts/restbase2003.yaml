@@ -1,5 +1,4 @@
 cassandra::rack: 'c'
-cassandra::target_version: '2.2'
 cassandra::instances:
   a:
     jmx_port: 7189
