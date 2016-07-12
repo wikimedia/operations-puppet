@@ -7,6 +7,7 @@
 import webob
 import webob.exc
 import re
+import eventlet
 from eventlet.green import urllib2
 import urlparse
 from swift.common.utils import get_logger
@@ -34,6 +35,11 @@ class _WMFRewriteContext(WSGIContext):
 
         self.account = conf['account'].strip()
         self.thumbhost = conf['thumbhost'].strip()
+        self.thumborhost = conf['thumborhost'].strip() if 'thumborhost' in conf else None
+        if 'thumbor_wiki_list' in conf:
+            self.thumbor_wiki_list = [item.strip() for item in conf['thumbor_wiki_list'].split(',')]
+        else:
+            self.thumbor_wiki_list = None
         self.user_agent = conf['user_agent'].strip()
         self.bind_port = conf['bind_port'].strip()
         self.shard_container_list = [
@@ -56,6 +62,9 @@ class _WMFRewriteContext(WSGIContext):
         proxy_handler = urllib2.ProxyHandler({'http': self.thumbhost})
         redirect_handler = DumbRedirectHandler()
         opener = urllib2.build_opener(redirect_handler, proxy_handler)
+        # Thumbor doesn't need (and doesn't like) the proxy
+        thumbor_opener = urllib2.build_opener(redirect_handler)
+
         # Pass on certain headers from the caller squid to the scalers
         opener.addheaders = []
         if reqorig.headers.get('User-Agent') is not None:
@@ -76,6 +85,14 @@ class _WMFRewriteContext(WSGIContext):
             # encode the URL but don't encode %s and /s
             urlobj[2] = urllib2.quote(urlobj[2], '%/')
             encodedurl = urlparse.urlunsplit(urlobj)
+
+            # Thumbor never needs URL mangling and it needs a different host
+            if self.thumborhost:
+                thumbor_reqorig = reqorig
+                thumbor_reqorig.host = self.thumborhost
+                thumbor_urlobj = list(urlparse.urlsplit(thumbor_reqorig.url))
+                thumbor_urlobj[2] = urllib2.quote(thumbor_urlobj[2], '%/')
+                thumbor_encodedurl = urlparse.urlunsplit(thumbor_urlobj)
 
             # if sitelang, we're supposed to mangle the URL so that
             # http://upload.wm.o/wikipedia/commons/thumb/a/a2/Foo_.jpg/330px-Foo_.jpg
@@ -131,6 +148,12 @@ class _WMFRewriteContext(WSGIContext):
 
             # ok, call the encoded url
             upcopy = opener.open(encodedurl)
+            self.logger.debug("Mediawiki: %d %s" % (upcopy.getcode(), encodedurl))
+
+            if self.thumborhost:
+                if not self.thumbor_wiki_list or '-'.join((proj, lang)) in self.thumbor_wiki_list:
+                    # call Thumbor blindly, don't look at the result
+                    eventlet.spawn_n(thumbor_opener.open, thumbor_encodedurl)
         except urllib2.HTTPError, error:
             # copy the urllib2 HTTPError into a webob HTTPError class as-is
 
@@ -159,8 +182,21 @@ class _WMFRewriteContext(WSGIContext):
         c_t = uinfo.gettype()
 
         resp = webob.Response(app_iter=upcopy, content_type=c_t)
+
+        headers_whitelist = [
+            'Content-Length',
+            'Content-Disposition',
+            'Last-Modified',
+            'Accept-Ranges',
+            'XKey',
+            'Engine',
+            'Server',
+            'Processing-Time',
+            'Processing-Utime'
+        ]
+
         # add in the headers if we've got them
-        for header in ['Content-Length', 'Content-Disposition', 'Last-Modified', 'Accept-Ranges']:
+        for header in headers_whitelist:
             if(uinfo.getheader(header)):
                 resp.headers.add(header, uinfo.getheader(header))
 
