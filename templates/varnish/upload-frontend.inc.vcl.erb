@@ -58,6 +58,7 @@ sub cluster_fe_backend_response {
 		if (beresp.http.Content-Range ~ "\/[0-9]{8,}$") {
 			set beresp.do_stream = true;
 			// don't attempt to cache these in the frontend
+			set beresp.http.X-CDIS = "pass";
 			return (hit_for_pass);
 		}
 	}
@@ -68,6 +69,7 @@ sub cluster_fe_backend_response {
 		set beresp.do_stream = true;
 		if (std.integer(beresp.http.Content-Length, 50331648) >= 50331648 || beresp.http.Content-Length ~ "^[0-9]{9}") {
 			// don't attempt to cache these in the frontend
+			set beresp.http.X-CDIS = "pass";
 			return (hit_for_pass);
 		}
 	}
