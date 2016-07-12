@@ -63,9 +63,9 @@ class lvs::configuration {
     # This is technically redundant information from $lvs_class_hosts, but
     # transforming one into the other in puppet is a huge PITA.
     $lvs_grain_class = $::hostname ? {
-        /^lvs100(7|10)$/  => 'high-traffic1',
-        /^lvs100(8|11)$/  => 'high-traffic2',
-        /^lvs100(9|12)$/  => 'low-traffic',
+        /^lvs10(07|10)$/  => 'high-traffic1',
+        /^lvs10(08|11)$/  => 'high-traffic2',
+        /^lvs10(09|12)$/  => 'low-traffic',
         /^lvs[12]00[14]$/ => 'high-traffic1',
         /^lvs[12]00[25]$/ => 'high-traffic2',
         /^lvs[12]00[36]$/ => 'low-traffic',
