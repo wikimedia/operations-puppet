@@ -118,7 +118,7 @@ class role::statistics::cruncher inherits role::statistics {
     }
     reportupdater::job { 'multimedia':
         repository => 'limn-multimedia-data',
-        output_dir => 'metrics/beta-feature-enables',
+        output_dir => 'metrics/multimedia-health',
     }
 }
 
