@@ -3,3 +3,4 @@ role::gerrit::server::ipv6: '2620:0:861:3:208:80:154:81'
 gerrit::jetty::gid: 1146
 gerrit::jetty::uid: 1146
 gerrit::jetty::system: false
+gerrit::jetty::git_dir: 'git'
