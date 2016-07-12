@@ -14,8 +14,13 @@ class base {
         server   => $puppetmaster,
     }
 
+    # Temporary workaround for T140100. Remove as soon as Labs instances get
+    # grub-pc or trusty gets phased out from Labs, whichever comes first.
+    if ($::realm == 'production') or (os_version('debian >= jessie')) {
+        include base::grub
+    }
+
     include passwords::root
-    include base::grub
     include base::resolving
     include ::rsyslog
     include base::remote_syslog
