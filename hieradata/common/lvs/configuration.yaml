@@ -80,10 +80,6 @@ lvs_service_ips:
   search: &ip_block013
     eqiad: 10.2.2.30
     codfw: 10.2.1.30
-  stream: &ip_block014
-    eqiad:
-      streamlb: 208.80.154.249
-      streamlb6: 2620:0:861:ed1a::3:15
   ocg: &ip_block015
     eqiad: 10.2.2.31
   parsoid: &ip_block011
@@ -579,46 +575,6 @@ lvs_services:
           hostname: search.svc.eqiad.wmnet
         codfw:
           hostname: search.svc.codfw.wmnet
-  stream:
-    description: Websocket/streaming services
-    class: high-traffic2
-    sites:
-    - eqiad
-    ip: *ip_block014
-    port: 80
-    bgp: 'yes'
-    depool-threshold: '.5'
-    scheduler: sh
-    monitors:
-      ProxyFetch:
-        url:
-        - http://stream.wikimedia.org/rcstream_status
-      IdleConnection:
-        timeout-clean-reconnect: 3
-        max-delay: 300
-    conftool:
-      cluster: rcstream
-      service: nginx
-  stream-https:
-    description: Websocket/streaming services
-    class: high-traffic2
-    sites:
-    - eqiad
-    ip: *ip_block014
-    port: 443
-    bgp: 'no'
-    depool-threshold: '.5'
-    scheduler: sh
-    monitors:
-      ProxyFetch:
-        url:
-        - https://stream.wikimedia.org/rcstream_status
-      IdleConnection:
-        timeout-clean-reconnect: 3
-        max-delay: 300
-    conftool:
-      cluster: rcstream
-      service: nginx_ssl
   ocg:
     description: Offline Content Generator (e.g. PDF), ocg.svc.eqiad.wmnet
     class: high-traffic2
