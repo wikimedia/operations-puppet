@@ -20,7 +20,6 @@ class role::lvs::balancer {
             $sip['maps'][$::site],
             $sip['dns_rec'][$::site],
             $sip['misc_web'][$::site],
-            $sip['stream'][$::site],
             $sip['ocg'][$::site],
             ],
         /^(lvs10(0[36]|09|12))$/ => [

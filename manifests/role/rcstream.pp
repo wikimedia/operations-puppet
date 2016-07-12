@@ -36,7 +36,7 @@ class role::rcstream {
     if hiera('has_lvs', true) {
         include lvs::configuration
         class { 'lvs::realserver':
-            realserver_ips => $lvs::configuration::service_ips['stream'][$::site],
+            realserver_ips => [],
         }
     }
 
