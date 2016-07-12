@@ -33,21 +33,6 @@ elasticsearch:
     datacenters:
     - eqiad
     - codfw
-rcstream:
-  nginx:
-    port: 80
-    default_values:
-      pooled: 'no'
-      weight: 10
-    datacenters:
-    - eqiad
-  nginx_ssl:
-    port: 443
-    default_values:
-      pooled: 'no'
-      weight: 10
-    datacenters:
-    - eqiad
 pdf:
   ocg:
     port: 8000
