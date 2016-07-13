@@ -19,6 +19,7 @@ class mobileapps(
     service::node { 'mobileapps':
         port            => 8888,
         config          => template('mobileapps/config.yaml.erb'),
+        heap_limit      => 450,
         has_spec        => true,
         healthcheck_url => '',
         deployment      => 'scap3',
