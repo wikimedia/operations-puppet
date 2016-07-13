@@ -10,6 +10,7 @@ class gerrit::jetty(
     $system  = true,
     $changeidlink = '#/q/$1',
     $commitlink = '#/q/$2',
+    $index_type  = 'LUCENE',
     ) {
 
     include nrpe
