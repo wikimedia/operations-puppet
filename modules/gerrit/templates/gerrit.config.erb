@@ -60,9 +60,15 @@
     revision = "/r/revision/${project};${commit}"
     project = /r/project/${project}
     branch = "/r/branch/${project};${branch}"
-    filehistory = "/r/browse/${project};${branch};${file}"
+    filehistory = "/r/p/${project}/;history/${branch}/${file}"
+    <%- if @gitwebfile -%>
+    file = "/r/browse/${project};${branch};${file}"
+    <%- end -%>
+    <%- if @gitwebroottree -%>
+    roottree = "/r/p/${project}/;browse/master/;${commit}"
+    <%- end -%>
     linkname = diffusion
-    linkDrafts = false
+    linkDrafts = true
     urlEncode = false
 [user]
     email = gerrit@wikimedia.org
