@@ -10,6 +10,8 @@ class gerrit::jetty(
     $system  = true,
     $changeidlink = '#/q/$1',
     $commitlink = '#/q/$2',
+    $gitwebfile  = true,
+    $gitwebroottree  = true,
     ) {
 
     include nrpe
