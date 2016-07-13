@@ -37,7 +37,7 @@ class phabricator::tools (
             require => Package[$deploy_target],
         }
 
-# Temporarily disabling dumps on the slave for maintenance (T138460)
+        # Temporarily disabling dumps on the slave for maintenance (T138460)
         cron { $dump_script:
             ensure  => absent,
             command => $dump_script,
@@ -47,6 +47,10 @@ class phabricator::tools (
             require => Package[$deploy_target],
         }
     }
+
+    # These bz_*_update jobs require the bugzilla_migration DB
+    # The equivalent rt_*_update crons which are not present
+    # at the moment require the rt_migration DB.
 
     $bz_header = '/var/run/bz_header.flock'
     cron { 'bz_header_update':
