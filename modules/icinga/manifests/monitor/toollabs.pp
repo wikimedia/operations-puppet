@@ -130,4 +130,16 @@ class icinga::monitor::toollabs {
         check_command => "${checker}!/webservice/kubernetes!OK",
         host          => $test_entry_host,
     }
+
+    monitoring::service { 'tools-checker-etcd-flannel':
+        description   => 'All Flannel etcd nodes are healthy',
+        check_command => "${checker}!/etcd/flannel!OK",
+        host          => $test_entry_host,
+    }
+
+    monitoring::service { 'tools-checker-etcd-k8s':
+        description   => 'All k8s etcd nodes are healthy',
+        check_command => "${checker}!/etcd/k8s!OK",
+        host          => $test_entry_host,
+    }
 }
