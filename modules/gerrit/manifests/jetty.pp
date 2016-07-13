@@ -8,6 +8,8 @@ class gerrit::jetty(
     $gid     = 444,
     $uid     = 444,
     $system  = true,
+    $gitwebfile  = true,
+    $gitwebroottree  = true,
     ) {
 
     include nrpe
