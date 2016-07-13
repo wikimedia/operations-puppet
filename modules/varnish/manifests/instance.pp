@@ -49,6 +49,9 @@ define varnish::instance(
         # https://www.varnish-cache.org/docs/4.0/whats-new/upgrading.html#obj-in-vcl-error-replaced-by-beresp-in-vcl-backend-error
         $beresp_obj = 'beresp'
 
+        # storage has been renamed to storage_hint
+        $storage_hint_storage = 'storage_hint'
+
         # https://www.varnish-cache.org/docs/4.0/whats-new/upgrading.html#obj-is-now-read-only
         $resp_obj = 'resp'
 
@@ -73,6 +76,7 @@ define varnish::instance(
 
         $bereq_req = 'req'
         $beresp_obj = 'obj'
+        $storage_hint_storage = 'storage'
         $resp_obj = 'obj'
         $hash_lookup = 'lookup'
         $purge_lookup = 'lookup'

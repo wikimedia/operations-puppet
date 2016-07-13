@@ -2,13 +2,13 @@
 
 sub upload_common_recv {
 	if (req.http.host != "<%= @vcl_config.fetch('upload_domain') %>") {
-		error 404 "Requested domainname does not exist on this server";
+		<%= error_synth(404, "Requested domainname does not exist on this server") -%>
 	}
 }
 
 sub upload_common_hit {
 	if (req.http.If-Cached && req.http.If-Cached != obj.http.Etag) {
-		error 412 "Etag mismatch";
+		<%= error_synth(412, "Etag mismatch") -%>
 	}
 }
 
