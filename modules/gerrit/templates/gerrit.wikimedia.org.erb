@@ -116,6 +116,11 @@ NameVirtualHost *:443
     # trying to reproduce this behavior. But people run into this all the time.
     RewriteRule ^/tools/hooks/commit-msg$ https://gerrit.wikimedia.org/r/tools/hooks/commit-msg
 
+    # Workaround for really broken browser detection in Gerrit code. Not sure if the hex string is
+    # stable, this will probably need to be updated at least after Gerrit upgrades. Just load up
+    # Gerrit in Firefox and look in the Network Monitor for a similarly named .cache.js file.
+    RewriteRule ^/r/gerrit_ui/undefined.cache.js$ /r/gerrit_ui/D39174379837CB12534D3B279AEAC59F.cache.js
+
     ProxyPass /r/ http://127.0.0.1:8080/r/ retry=0 nocanon
 
     ErrorLog /var/log/apache2/error.log
