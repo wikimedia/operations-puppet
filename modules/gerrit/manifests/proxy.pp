@@ -7,9 +7,9 @@ class gerrit::proxy($host = $::gerrit::host, $lets_encrypt = true) {
         $ssl_cert_chain_file = "/etc/acme/cert/${host}.chain.crt"
         $ssl_cert_key_file = "/etc/acme/key/${host}.key"
     } else {
-        $ssl_cert_file = "/etc/ssl/localcerts/${host}.crt"
-        $ssl_cert_chain_file = "/etc/ssl/localcerts/${host}.chain.crt"
-        $ssl_cert_key_file = "/etc/ssl/private/${host}.key"
+        $ssl_cert_file = "/etc/ssl/localcerts/gerrit.crt"
+        $ssl_cert_chain_file = "/etc/ssl/localcerts/gerrit.chain.crt"
+        $ssl_cert_key_file = "/etc/ssl/private/gerrit.key"
     }
 
     apache::site { $host:
