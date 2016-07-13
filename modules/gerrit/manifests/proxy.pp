@@ -3,9 +3,9 @@ class gerrit::proxy($host = $::gerrit::host, $lets_encrypt = true) {
     $ssl_settings = ssl_ciphersuite('apache', 'compat', true)
 
     if $lets_encrypt {
-        $ssl_cert_file = "/etc/acme/cert/${host}.crt"
-        $ssl_cert_chain_file = "/etc/acme/cert/${host}.chain.crt"
-        $ssl_cert_key_file = "/etc/acme/key/${host}.key"
+        $ssl_cert_file = '/etc/acme/cert/gerrit.crt'
+        $ssl_cert_chain_file = '/etc/acme/cert/gerrit.chain.crt'
+        $ssl_cert_key_file = '/etc/acme/key/gerrit.key'
     } else {
         $ssl_cert_file = "/etc/ssl/localcerts/${host}.crt"
         $ssl_cert_chain_file = "/etc/ssl/localcerts/${host}.chain.crt"
