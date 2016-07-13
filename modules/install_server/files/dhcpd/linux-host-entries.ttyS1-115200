@@ -2769,6 +2769,21 @@ host labsdb1008 {
     fixed-address labsdb1008.eqiad.wmnet;
 }
 
+host labsdb1009 {
+    hardware ethernet 1c:98:ec:1a:6b:68;
+    fixed-address labsdb1009.eqiad.wmnet;
+}
+
+host labsdb1010 {
+    hardware ethernet 1c:98:ec:1a:6b:80;
+    fixed-address labsdb1010.eqiad.wmnet;
+}
+
+host labsdb1011 {
+    hardware ethernet 1c:98:ec:1a:6b:04;
+    fixed-address labsdb1011.eqiad.wmnet;
+}
+
 host labservices1001 {
     hardware ethernet C8:1F:66:BF:82:9A;
     fixed-address labservices1001.wikimedia.org;
