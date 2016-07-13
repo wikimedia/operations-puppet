@@ -1,4 +1,4 @@
-# Class: role::installserver
+# Class: role::installserver::wmf
 #
 # A WMF role class used to install all the install_server stuff
 #
@@ -19,10 +19,10 @@
 #   Define['ferm::rule']
 #
 # Sample Usage:
-#       include role::installserver
+#       include role::installserver::wmf
 
-class role::installserver {
-    system::role { 'role::install_server':
+class role::installserver::wmf {
+    system::role { 'role::install_server::wmf':
         description => 'WMF Install server. APT repo, Forward Caching, TFTP, \
                         DHCP and Web server',
     }
