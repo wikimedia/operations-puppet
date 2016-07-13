@@ -115,7 +115,7 @@ class statistics::wmde {
     }
 
     cron { 'minutely':
-        command => "${scripts_dir}/cron/minutely.sh >> ${log_dir}/minutely.log 2>&1",
+        command => "${scripts_dir}/cron/minutely.sh ${scripts_dir} >> ${log_dir}/minutely.log 2>&1",
         hour    => '*',
         minute  => '*',
         require => Git::Clone['wmde/scripts'],
@@ -124,7 +124,7 @@ class statistics::wmde {
     # Note: some of the scripts run by this cron need access to secrets!
     # Docs can be seen at https://github.com/wikimedia/analytics-wmde-scripts/blob/master/README.md
     cron { 'daily.03':
-        command => "time ${scripts_dir}/cron/daily.03.sh >> ${log_dir}/daily.03.log 2>&1",
+        command => "time ${scripts_dir}/cron/daily.03.sh ${scripts_dir} >> ${log_dir}/daily.03.log 2>&1",
         hour    => '3',
         minute  => '0',
         require => [
@@ -135,7 +135,7 @@ class statistics::wmde {
     }
 
     cron { 'daily.12':
-        command => "time ${scripts_dir}/cron/daily.12.sh >> ${log_dir}/daily.12.log 2>&1",
+        command => "time ${scripts_dir}/cron/daily.12.sh ${scripts_dir} >> ${log_dir}/daily.12.log 2>&1",
         hour    => '12',
         minute  => '0',
         require => [
@@ -145,7 +145,7 @@ class statistics::wmde {
     }
 
     cron { 'weekly':
-        command => "time ${scripts_dir}/cron/weekly.sh >> ${log_dir}/weekly.log 2>&1",
+        command => "time ${scripts_dir}/cron/weekly.sh ${scripts_dir} >> ${log_dir}/weekly.log 2>&1",
         weekday => '7',
         hour    => '01',
         minute  => '0',
