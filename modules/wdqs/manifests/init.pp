@@ -67,11 +67,16 @@ class wdqs(
         }
     }
 
+    file { '/etc/wdqs':
+        ensure => directory,
+        owner  => 'root',
+        mode   => '0755',
+    }
 
-    file { "${package_dir}/updater-logs.xml":
+    file { '/etc/wdqs/updater-logs.xml':
         ensure  => present,
         content => template('wdqs/updater-logs.xml'),
-        require => [File[$package_dir], File[$log_dir]],
+        require => [File[$package_dir], File[$log_dir], File['/etc/wdqs']],
     }
 
     # WDQS Updater service
