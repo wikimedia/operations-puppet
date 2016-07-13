@@ -7,11 +7,12 @@ class role::toollabs::etcd::flannel {
     $bastion_hosts = join(hiera('k8s::bastion_hosts'), ' ')
     $peer_hosts = join(hiera('flannel::etcd_hosts'), ' ')
     $proxy_hosts = join(hiera('toollabs::proxy::proxies'), ' ')
+    $checker_hosts = join(hiera('toollabs::checker_hosts'), ' ')
 
     ferm::service { 'flannel-clients':
         proto  => 'tcp',
         port   => '2379',
-        srange => "@resolve((${worker_hosts} ${peer_hosts} ${proxy_hosts} ${bastion_hosts}))"
+        srange => "@resolve((${worker_hosts} ${peer_hosts} ${proxy_hosts} ${bastion_hosts} ${checker_hosts}))"
     }
 
     ferm::service { 'flannel-peers':

@@ -319,6 +319,36 @@ def cron_check():
     return False
 
 
+def check_etcd_health(host):
+    # Don't do https verification because we are using puppet certificate for validating
+    # it and tools-checker infrastructure runs on the labs puppetmaster because we have a
+    # check for the labs puppetmaster in here...
+    request = requests.get('https://{host}:2379/health'.format(host=host), verify=False)
+    if request.status_code == 200:
+        return request.json()['health'] == 'true'
+    return False
+
+
+@check('/etcd/flannel')
+def flannel_etcd_check():
+    hosts = [
+        'tools-flannel-etcd-01.tools.eqiad.wmflabs',
+        'tools-flannel-etcd-02.tools.eqiad.wmflabs',
+        'tools-flannel-etcd-03.tools.eqiad.wmflabs',
+    ]
+    return all([check_etcd_health(host) for host in hosts])
+
+
+@check('/etcd/k8s')
+def kubernetes_etcd_check():
+    hosts = [
+        'tools-k8s-etcd-01.tools.eqiad.wmflabs',
+        'tools-k8s-etcd-02.tools.eqiad.wmflabs',
+        'tools-k8s-etcd-03.tools.eqiad.wmflabs',
+    ]
+    return all([check_etcd_health(host) for host in hosts])
+
+
 @check('/webservice/kubernetes')
 def webservice_kubernetes_test():
     """
