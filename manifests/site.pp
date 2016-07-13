@@ -2361,7 +2361,7 @@ node 'nescio.wikimedia.org' {
 
 # network monitoring tool server
 node 'netmon1001.wikimedia.org' {
-    role rancid::server, librenms, servermon, torrus, smokeping
+    role rancid::server, librenms, servermon::wmf, torrus, smokeping
     include standard
     include passwords::network
     include ganglia::deprecated::collector
