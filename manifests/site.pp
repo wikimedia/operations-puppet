@@ -190,7 +190,7 @@ node 'bast4001.wikimedia.org' {
         interface => 'eth0',
     }
 
-    role bastionhost::general, ipmi, installserver::tftp_server
+    role bastionhost::general, ipmi::mgmt, installserver::tftp_server
 
     class { 'ganglia::monitor::aggregator':
         sites =>  'ulsfo',
@@ -2340,7 +2340,7 @@ node /^notebook100[12]\.eqiad\.wmnet$/ {
 # salt master
 node 'neodymium.eqiad.wmnet' {
     role salt::masters::production, deployment::salt_masters,
-      debdeploy::master, ipmi, access_new_install, mariadb::client
+      debdeploy::master, ipmi::mgmt, access_new_install, mariadb::client
     include standard
     include base::firewall
 }
@@ -2412,7 +2412,7 @@ node 'oxygen.eqiad.wmnet'
 
 # primary puppet master
 node 'palladium.eqiad.wmnet' {
-    role ipmi, access_new_install, puppetmaster::frontend, pybal_config
+    role ipmi::mgmt, access_new_install, puppetmaster::frontend, pybal_config
     include standard
     include role::conftool::master
     interface::add_ip6_mapped { 'main':
