@@ -5,13 +5,13 @@ sub cluster_fe_recv_pre_purge { }
 
 sub cluster_fe_recv {
 	// CORS preflight requests
-	if (req.request == "OPTIONS" && req.http.Origin) {
-		error 667 "OK";
+	if (<%= @req_method %> == "OPTIONS" && req.http.Origin) {
+		<%= error_synth(667, "OK") -%>
 	}
 
 	// Homepage redirect to commons
 	if (req.url == "/") {
-		error 666 "Moved Permanently";
+		<%= error_synth(666, "Moved Permanently") -%>
 	}
 
 	call upload_common_recv;
@@ -59,7 +59,12 @@ sub cluster_fe_backend_response {
 			set beresp.do_stream = true;
 			// don't attempt to cache these in the frontend
 			set beresp.http.X-CDIS = "pass";
+			<%- if @varnish_version4 -%>
+			set beresp.uncacheable = true;
+			return (deliver);
+			<%- else -%>
 			return (hit_for_pass);
+			<%- end -%>
 		}
 	}
 
@@ -70,7 +75,12 @@ sub cluster_fe_backend_response {
 		if (std.integer(beresp.http.Content-Length, 50331648) >= 50331648 || beresp.http.Content-Length ~ "^[0-9]{9}") {
 			// don't attempt to cache these in the frontend
 			set beresp.http.X-CDIS = "pass";
+			<%- if @varnish_version4 -%>
+			set beresp.uncacheable = true;
+			return (deliver);
+			<%- else -%>
 			return (hit_for_pass);
+			<%- end -%>
 		}
 	}
 
@@ -114,26 +124,26 @@ sub cluster_fe_deliver {
 
 sub cluster_fe_err_synth {
 	// Handle CORS preflight requests
-	if (obj.status == 667) {
-		set obj.status = 200;
-		set obj.http.Connection = "keep-alive";
-		set obj.http.Content-Length = "0";
+	if (<%= @resp_obj %>.status == 667) {
+		set <%= @resp_obj %>.status = 200;
+		set <%= @resp_obj %>.http.Connection = "keep-alive";
+		set <%= @resp_obj %>.http.Content-Length = "0";
 
 		// allow Range requests, used by ogv.js
-		set obj.http.Access-Control-Allow-Origin = "*";
-		set obj.http.Access-Control-Allow-Headers = "Range";
-		set obj.http.Access-Control-Allow-Methods = "GET, HEAD, OPTIONS";
-		set obj.http.Access-Control-Max-Age = "86400";
+		set <%= @resp_obj %>.http.Access-Control-Allow-Origin = "*";
+		set <%= @resp_obj %>.http.Access-Control-Allow-Headers = "Range";
+		set <%= @resp_obj %>.http.Access-Control-Allow-Methods = "GET, HEAD, OPTIONS";
+		set <%= @resp_obj %>.http.Access-Control-Max-Age = "86400";
 
 		return (deliver);
 	}
 
 	// Homepage redirect to commons
-	if (obj.status == 666) {
-		set obj.status = 301;
-		set obj.http.Location = "https://commons.wikimedia.org/";
-		set obj.http.Connection = "keep-alive";
-		set obj.http.Content-Length = "0";
+	if (<%= @resp_obj %>.status == 666) {
+		set <%= @resp_obj %>.status = 301;
+		set <%= @resp_obj %>.http.Location = "https://commons.wikimedia.org/";
+		set <%= @resp_obj %>.http.Connection = "keep-alive";
+		set <%= @resp_obj %>.http.Content-Length = "0";
 		return (deliver);
 	}
 }
