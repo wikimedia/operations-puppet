@@ -8,6 +8,8 @@ class gerrit::jetty(
     $gid     = 444,
     $uid     = 444,
     $system  = true,
+    $changeidlink = '#/q/$1',
+    $commitlink = '#/q/$2',
     ) {
 
     include nrpe
