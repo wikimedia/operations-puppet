@@ -3,17 +3,17 @@ include "upload-common.inc.vcl";
 
 sub pick_main_stevedore {
 	if (std.random(0, 2) < 1) {
-		set beresp.storage = "main1";
+		set beresp.<%= @storage_hint_storage %> = "main1";
 	} else {
-		set beresp.storage = "main2";
+		set beresp.<%= @storage_hint_storage %> = "main2";
 	}
 }
 
 sub pick_large_object_stevedore {
 	if (std.random(0, 2) < 1) {
-		set beresp.storage = "bigobj1";
+		set beresp.<%= @storage_hint_storage %> = "bigobj1";
 	} else {
-		set beresp.storage = "bigobj2";
+		set beresp.<%= @storage_hint_storage %> = "bigobj2";
 	}
 }
 
@@ -21,9 +21,17 @@ sub cluster_be_recv_pre_purge { }
 
 sub cluster_be_recv_applayer_backend {
 	if (req.url ~ "^/+[^/]+/[^/]+/thumb/") {
+		<%- if @varnish_version4 -%>
+		set req.backend_hint = swift_thumbs.backend();
+		<%- else -%>
 		set req.backend = swift_thumbs;
+		<%- end -%>
 	} else {
+		<%- if @varnish_version4 -%>
+		set req.backend_hint = swift.backend();
+		<%- else -%>
 		set req.backend = swift;
+		<%- end -%>
 	}
 }
 
@@ -55,7 +63,7 @@ sub cluster_be_miss {
 	}
 
 	if (req.http.If-Cached) {
-		error 412 "Entity not in cache";
+		<%= error_synth(412, "Entity not in cache") -%>
 	}
 }
 
@@ -81,8 +89,8 @@ sub cluster_be_backend_response {
 	}
 
 	// Derive the corresponding original URL and store it with the object
-	if (!beresp.http.X-MediaWiki-Original && req.url ~ "^/+[^/]+/[^/]+/thumb/[^/]+/[^/]+/[^/]+/[0-9]+px-") {
-		set beresp.http.X-MediaWiki-Original = regsub(req.url, "^(/+[^/]+/[^/]+/)thumb/([^/]+/[^/]+/[^/]+).*$", "\1\2");
+	if (!beresp.http.X-MediaWiki-Original && <%= @bereq_req %>.url ~ "^/+[^/]+/[^/]+/thumb/[^/]+/[^/]+/[^/]+/[0-9]+px-") {
+		set beresp.http.X-MediaWiki-Original = regsub(<%= @bereq_req %>.url, "^(/+[^/]+/[^/]+/)thumb/([^/]+/[^/]+/[^/]+).*$", "\1\2");
 	}
 
 	return (deliver);

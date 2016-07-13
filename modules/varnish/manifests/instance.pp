@@ -49,6 +49,12 @@ define varnish::instance(
         # https://www.varnish-cache.org/docs/4.0/whats-new/upgrading.html#obj-in-vcl-error-replaced-by-beresp-in-vcl-backend-error
         $beresp_obj = 'beresp'
 
+        # response has been renamed to reason
+        $reason_response = 'reason'
+
+        # storage has been renamed to storage_hint
+        $storage_hint_storage = 'storage_hint'
+
         # https://www.varnish-cache.org/docs/4.0/whats-new/upgrading.html#obj-is-now-read-only
         $resp_obj = 'resp'
 
@@ -65,6 +71,9 @@ define varnish::instance(
         # The 'ip' function has been added to the Varnish Standard Module in
         # v4. No need to use ipcast.
         $std_ipcast = 'std'
+
+        # https://www.varnish-cache.org/docs/4.0/whats-new/upgrading.html#the-remove-keyword-is-gone
+        $unset_remove = 'unset'
     }
     else {
         $req_method = 'req.request'
@@ -73,11 +82,14 @@ define varnish::instance(
 
         $bereq_req = 'req'
         $beresp_obj = 'obj'
+        $reason_response = 'response'
+        $storage_hint_storage = 'storage'
         $resp_obj = 'obj'
         $hash_lookup = 'lookup'
         $purge_lookup = 'lookup'
         $fetch_pass = 'pass'
         $std_ipcast = 'ipcast'
+        $unset_remove = 'remove'
     }
 
     $varnish_directors = $directors
