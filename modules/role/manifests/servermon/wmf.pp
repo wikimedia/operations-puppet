@@ -1,4 +1,4 @@
-# Class: role::servermon
+# Class: role::servermon::wmf
 #
 # This class installs all the servermon related parts as WMF requires it
 #
@@ -10,9 +10,9 @@
 # Requires:
 #
 # Sample Usage:
-#       include role::servermon
+#       include role::servermon::wmf
 #
-class role::servermon {
+class role::servermon::wmf {
     include ::apache
     include ::apache::mod::proxy_http
     include ::apache::mod::proxy
@@ -21,6 +21,8 @@ class role::servermon {
     include ::apache::mod::auth_basic
     include ::apache::mod::authnz_ldap
     include ::apache::mod::headers
+
+    system::role { 'servermon': description => 'Servermon server' }
 
     include passwords::servermon
     $db_user = $passwords::servermon::db_user
