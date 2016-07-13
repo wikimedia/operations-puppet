@@ -1,4 +1,4 @@
-# == Class: role::xhgui
+# == Class: role::xhgui::app
 #
 # XHGUI is a MongoDB-backed PHP webapp for viewing and analyzing
 # PHP profiling data.
@@ -17,7 +17,7 @@
 #  db.results.ensureIndex( { 'profile.main().cpu' : -1 } );
 #  db.results.ensureIndex( { 'meta.url' : 1 } );
 #
-class role::xhgui {
+class role::xhgui::app {
     include ::apache::mod::authnz_ldap
     include ::apache::mod::php5
     include ::apache::mod::rewrite
@@ -39,7 +39,7 @@ class role::xhgui {
         ],
     }
 
-    system::role { 'role::xhgui': }
+    system::role { 'role::xhgui::app': }
 
     require_package('php5-mongo')
 
