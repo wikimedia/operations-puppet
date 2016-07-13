@@ -1,3 +1,2 @@
 admin::groups:
-  - contint-users
   - contint-admins
