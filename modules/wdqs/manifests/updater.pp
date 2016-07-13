@@ -27,7 +27,7 @@ class wdqs::updater(
                 owner   => root,
                 group   => root,
                 require => [
-                            File["${package_dir}/updater-logs.xml"],
+                            File['/etc/wdqs/updater-logs.xml'],
                             Service['wdqs-blazegraph'] ],
             }
         }
@@ -39,7 +39,7 @@ class wdqs::updater(
                 owner   => root,
                 group   => root,
                 require => [
-                            File["${package_dir}/updater-logs.xml"],
+                            File['/etc/wdqs/updater-logs.xml'],
                             Service['wdqs-blazegraph']
                             ],
             }
