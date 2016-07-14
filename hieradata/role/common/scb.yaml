@@ -28,6 +28,8 @@ graphoid::allowed_domains:
     - upload.wikimedia.org
   wikidatasparql:
     - query.wikidata.org
+  geoshape:
+    - maps.wikimedia.org
 graphoid::headers:
   'Cache-Control': 'public, s-maxage=3600, max-age=3600'
 graphoid::error_headers:
