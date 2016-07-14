@@ -109,8 +109,8 @@ class puppetmaster::gitclone(
             # This will transmit data to /var/lib...
             file { '/srv/private/hooks/post-receive':
                 source  => 'puppet:///modules/puppetmaster/git/private/post-receive',
-                owner   => 'root',
-                group   => 'root',
+                owner   => 'gitpuppet',
+                group   => 'gitpuppet',
                 mode    => '0550',
                 require => Puppetmaster::Gitprivate['/srv/private']
             }
