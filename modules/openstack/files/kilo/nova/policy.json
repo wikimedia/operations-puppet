@@ -135,7 +135,7 @@
     "compute_extension:volumetypes": "rule:admin_or_member",
     "compute_extension:availability_zone:list": "rule:admin_or_member",
     "compute_extension:availability_zone:detail": "rule:admin_api",
-    "compute_extension:used_limits_for_admin": "rule:admin_api",
+    "compute_extension:used_limits_for_admin": "rule:admin_or_projectadmin",
     "compute_extension:migrations:index": "rule:admin_api",
     "compute_extension:os-assisted-volume-snapshots:create": "rule:admin_api",
     "compute_extension:os-assisted-volume-snapshots:delete": "rule:admin_api",
