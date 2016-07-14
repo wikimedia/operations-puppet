@@ -17,6 +17,8 @@ class role::mediawiki::webserver($pool) {
         class { 'lvs::realserver':
             realserver_ips => $ips,
         }
+
+        include ::mediawiki::conftool
     }
 
     ferm::service { 'mediawiki-http':
@@ -48,4 +50,3 @@ class role::mediawiki::webserver($pool) {
     }
 
 }
-
