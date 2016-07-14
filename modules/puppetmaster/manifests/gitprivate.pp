@@ -49,29 +49,25 @@ define puppetmaster::gitprivate (
     # Now all the common hooks there
     file {
         "${prefix}/hooks/post-merge":
-            source  => 'puppet:///modules/puppetmaster/git/private/post-merge',
-            owner   => $owner,
-            group   => $group,
-            mode    => '0550',
-            require => Exec["git init for ${title}"];
+            source => 'puppet:///modules/puppetmaster/git/private/post-merge',
+            owner  => $owner,
+            group  => $group,
+            mode   => '0550',
         "${prefix}/hooks/pre-commit":
-            source  => 'puppet:///modules/puppetmaster/git/private/pre-commit',
-            owner => $owner,
-            group   => $group,
-            mode    => '0550',
-            require => Exec["git init for ${title}"];
+            source => 'puppet:///modules/puppetmaster/git/private/pre-commit',
+            owner  => $owner,
+            group  => $group,
+            mode   => '0550',
         "${prefix}/hooks/pre-merge":
-            source  => 'puppet:///modules/puppetmaster/git/private/pre-merge',
-            owner => $owner,
-            group   => $group,
-            mode    => '0550',
-            require => Exec["git init for ${title}"];
+            source => 'puppet:///modules/puppetmaster/git/private/pre-merge',
+            owner  => $owner,
+            group  => $group,
+            mode   => '0550',
         "${prefix}/hooks/pre-rebase":
-            source  => 'puppet:///modules/puppetmaster/git/private/pre-rebase',
-            owner => $owner,
-            group   => $group,
-            mode    => '0550',
-            require => Exec["git init for ${title}"];
+            source => 'puppet:///modules/puppetmaster/git/private/pre-rebase',
+            owner  => $owner,
+            group  => $group,
+            mode   => '0550',
     }
 
 }
