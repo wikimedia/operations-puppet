@@ -20,7 +20,7 @@ groups:
     description: include everywhere ops folks
     members: [filippo, jgreen, bblack, andrew, faidon, rush, oblivian, laner, yuvipanda,
               dzahn, akosiaris, springle, mark, ariel, cmjohnson, otto, robh, tstarling,
-              ori, midom, jmm, jynus, aaron, ema, elukey, gehel, volans]
+              ori, midom, jmm, jynus, aaron, ema, elukey, gehel, volans, madhuvishy]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
   parsoid-roots:
     gid: 701
@@ -54,7 +54,7 @@ groups:
               nikerabbit, reedy, robla, ssastry, tomasz, yurik,
               tgr, phuedx, ejegg, twentyafterfour, legoktm, catrope, krenair,
               mobrovac, nuria, thcipriani, joal, eevans, mforns, dpatrick, dcausse,
-              bsitzmann, mholloway-shell, dduvall, gehel, madhuvishy, dereckson,
+              bsitzmann, mholloway-shell, jzerebecki, dduvall, gehel, dereckson,
               ladsgroup, bawolff]
     privileges: ['ALL = (www-data,apache,mwdeploy,l10nupdate) NOPASSWD: ALL',
                  'ALL = NOPASSWD: /sbin/restart hhvm',
@@ -78,7 +78,7 @@ groups:
               declerambaul, ellery, dduvall, nettrom, mforns, jkatz,
               bmansurov, west1, jhernandez, smalyshev, tbayer, zfilipin,
               joal, thcipriani, daisy, ashwinpp, jhobs, tomasz, lpintscher,
-              pcoombe, mholloway-shell, madhuvishy, niedzielski, neilpquinn-wmf,
+              pcoombe, mholloway-shell, niedzielski, neilpquinn-wmf,
               gpaumier, moushira, aklapper, qchris, tjones, srijan, addshore,
               jminor, pt1979, asherman, etonkovidova, sbisson, zhousquared,
               atgomez, jgirault, jdrewniak, matmarex, elukey, jdcc, ppchelko,
@@ -248,14 +248,14 @@ groups:
     description: Admin access to analytics cluster.
                  This will grant shell access on all Analytics Cluster nodes, as well
                  as the ability to sudo to certain Analytics Cluster system users.
-    members: [joal, madhuvishy, elukey, nuria, mforns, milimetric]
+    members: [joal, elukey, nuria, mforns, milimetric]
     privileges: ['ALL = (hdfs)  NOPASSWD: ALL',
                  'ALL = (oozie) NOPASSWD: ALL',
                  'ALL = (hive)  NOPASSWD: ALL']
   eventlogging-admins:
     gid: 733
     description: Login access for EventLogging deployment and investigation
-    members: [nuria, milimetric, mforns, joal, legoktm, otto, madhuvishy, elukey]
+    members: [nuria, milimetric, mforns, joal, legoktm, otto, elukey]
   citoid-admin:
     gid: 736
     description: group of citoid admins
@@ -270,7 +270,7 @@ groups:
   eventlogging-roots:
     gid: 739
     description: Full root on EventLogging servers.
-    members: [nuria, milimetric, mforns, joal, madhuvishy]
+    members: [nuria, milimetric, mforns, joal]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
   cxserver-admin:
     gid: 741
@@ -445,7 +445,7 @@ groups:
   aqs-users:
     description: Group of users for the Analytics Query Service
     gid: 767
-    members: [nuria, mforns, madhuvishy]
+    members: [nuria, mforns]
   pentesters:
     description: Group of users running penetration tests
     gid: 768
@@ -463,7 +463,7 @@ groups:
   piwik-roots:
     gid: 770
     description: users who have root on analytics piwik servers
-    members: [mforns, milimetric, nuria, otto, madhuvishy, joal]
+    members: [mforns, milimetric, nuria, otto, joal]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
   analytics-search-users:
     gid: 771
@@ -522,7 +522,7 @@ groups:
   notebook-roots:
     description: root access on experimental notebook servers
     gid: 780
-    members: [madhuvishy]
+    members: []
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
   labnet-users:
     description: unprivileged access on labnet servers
