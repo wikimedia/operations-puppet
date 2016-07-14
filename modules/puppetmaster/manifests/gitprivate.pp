@@ -4,6 +4,7 @@ define puppetmaster::gitprivate (
     $owner='root',
     $group='root',
     $dir_mode='0750',
+    $origin=undef,
     ){
 
     if $bare {
@@ -16,23 +17,34 @@ define puppetmaster::gitprivate (
         $prefix = $creates
     }
 
-    # Create the directory
-    file { $title:
-        ensure => directory,
-        owner  => $owner,
-        group  => $group,
-        mode   => $dir_mode,
+    if ($origin and !$bare) {
+        git::clone { 'operations/private':
+            directory => $title,
+            owner     => $owner,
+            group     => $group,
+            origin    => $origin,
+        }
+    } else {
+        # Create the directory
+        file { $title:
+            ensure => directory,
+            owner  => $owner,
+            group  => $group,
+            mode   => $dir_mode,
+        }
+
+
+        # Initialize a git repository (bare or otherwise)
+        exec { "git init for ${title}":
+            command => $init,
+            user    => $owner,
+            group   => $group,
+            cwd     => $title,
+            creates => $creates,
+            require => File[$title]
+        }
     }
 
-    # Initialize a git repository (bare or otherwise)
-    exec { "git init for ${title}":
-        command => $init,
-        user    => $owner,
-        group   => $group,
-        cwd     => $title,
-        creates => $creates,
-        require => File[$title]
-    }
 
     # Now all the common hooks there
     file {
