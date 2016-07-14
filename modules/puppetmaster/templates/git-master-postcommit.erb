@@ -1,0 +1,11 @@
+#!/bin/sh
+#
+# announce this change
+git log --pretty=format:'From %H %cd%nFrom: %ae%nDate: %ad%nSubject: [puppet-private] (%h) %s%n%b%n' -1 --name-status | sendmail -i ops@wikimedia.org
+
+<%- replicas = @replicate_to.map{ |r| r['worker'] unless r['worker'] == scope.lookupvar('::fqdn')}.sort -%>
+# Update private repo for puppetmasters
+su -c 'cd /var/lib/git/operations/private && git pull' gitpuppet
+<% replicas.each do |replica| -%>
+su -c "export GIT_SSH=/srv/private/.git/ssh_wrapper.sh ; git push ssh://<%= replica %>/srv/private" gitpuppet
+<% end %>

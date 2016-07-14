@@ -89,6 +89,7 @@ class puppetmaster(
     class { 'puppetmaster::gitclone':
         is_labs_master => $is_labs_master,
         is_git_master  => $is_git_master,
+        replicate_to   => $workers,
     }
 
     include puppetmaster::scripts
