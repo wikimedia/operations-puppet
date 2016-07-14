@@ -3,7 +3,7 @@
 class contint::arcanist {
     require_package('arcanist')
 
-    file { '/var/lib/jenkins/.arcrc':
+    file { '/home/jenkins/.arcrc':
         ensure  => 'file',
         owner   => 'jenkins',
         group   => 'jenkins',
