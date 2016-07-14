@@ -9,9 +9,11 @@ define puppetmaster::gitprivate (
     if $bare {
         $init = '/usr/bin/git --bare init'
         $creates = "${title}/config"
+        $prefix = $title
     } else {
         $init = '/usr/bin/git init'
         $creates = "${title}/.git"
+        $prefix = $creates
     }
 
     # Create the directory
@@ -34,25 +36,25 @@ define puppetmaster::gitprivate (
 
     # Now all the common hooks there
     file {
-        "${title}/.git/hooks/post-merge":
+        "${prefix}/hooks/post-merge":
             source  => 'puppet:///modules/puppetmaster/git/private/post-merge',
             owner   => $owner,
             group   => $group,
             mode    => '0550',
             require => Exec["git init for ${title}"];
-        "${title}/.git/hooks/pre-commit":
+        "${prefix}/hooks/pre-commit":
             source  => 'puppet:///modules/puppetmaster/git/private/pre-commit',
             owner => $owner,
             group   => $group,
             mode    => '0550',
             require => Exec["git init for ${title}"];
-        "${title}/.git/hooks/pre-merge":
+        "${prefix}/hooks/pre-merge":
             source  => 'puppet:///modules/puppetmaster/git/private/pre-merge',
             owner => $owner,
             group   => $group,
             mode    => '0550',
             require => Exec["git init for ${title}"];
-        "${title}/.git/hooks/pre-rebase":
+        "${prefix}/hooks/pre-rebase":
             source  => 'puppet:///modules/puppetmaster/git/private/pre-rebase',
             owner => $owner,
             group   => $group,
