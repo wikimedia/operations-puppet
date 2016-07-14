@@ -25,6 +25,23 @@ class role::analytics_cluster::refinery {
         }
     }
 
+    # The deploy-analytics user/group is going to be used only
+    # to deploy the refinery via scap3. Since it is generic enough
+    # it might be a good idea to refactor it in the future in a separate
+    # role, like role::analytics_deploy::users.
+    group { 'deploy-analytics':
+        ensure => present,
+    }
+
+    user { 'deploy-analytics':
+        ensure     => 'present',
+        gid        => 'refinery',
+        shell      => '/bin/bash',
+        home       => '/nonexistent',
+        system     => true,
+        managehome => false,
+    }
+
     # analytics/refinery will deployed to this node.
     package { 'analytics/refinery':
         provider => 'trebuchet',
