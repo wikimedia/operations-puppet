@@ -23,6 +23,7 @@ define puppetmaster::gitprivate (
             owner     => $owner,
             group     => $group,
             origin    => $origin,
+            mode      => $dir_mode,
         }
     } else {
         # Create the directory
