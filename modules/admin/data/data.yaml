@@ -1389,10 +1389,10 @@ users:
     ssh_keys: []
     uid: 4170
   bsimmers:
-    ensure: present
+    ensure: absent
     gid: 500
     name: bsimmers
-    realname: Brett Simmers - Facebook HHVM engineer DO NOT REMOVE (disabled per T85644)
+    realname: Brett Simmers
     shell: /usr/bin/zsh
     ssh_keys: []
     uid: 10173
