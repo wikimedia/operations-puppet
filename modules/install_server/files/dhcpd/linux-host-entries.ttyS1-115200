@@ -3602,53 +3602,41 @@ host ms-be1020 {
     filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
-host ms-be1022 {
-        hardware ethernet 1c:98:ec:30:92:00;
-        fixed-address ms-be1022.eqiad.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
-}
-
-host ms-be1023 {
-        hardware ethernet 1c:98:ec:30:e2:54;
-        fixed-address ms-be1023.eqiad.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
-}
-
-host ms-be1024 {
-        hardware ethernet 14:02:ec:3c:1d:f8;
-        fixed-address ms-be1024.eqiad.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
-}
-
-host ms-be1025 {
-        hardware ethernet 14:02:ec:3c:3d:f8;
-        fixed-address ms-be1025.eqiad.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
-}
-
-host ms-be1026 {
-        hardware ethernet 14:02:ec:3c:fd:b8;
-        fixed-address ms-be1026.eqiad.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
-}
-
-host ms-be1027 {
-        hardware ethernet 14:02:ec:3c:9c:c8;
-        fixed-address ms-be1027.eqiad.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
-}
-
 host ms-be1021 {
         hardware ethernet 5c:b9:01:fe:f0:50;
         fixed-address ms-be1021.eqiad.wmnet;
     option pxelinux.pathprefix "trusty-installer/";
     filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
+}
+
+host ms-be1022 {
+        hardware ethernet 1c:98:ec:30:92:00;
+        fixed-address ms-be1022.eqiad.wmnet;
+}
+
+host ms-be1023 {
+        hardware ethernet 1c:98:ec:30:e2:54;
+        fixed-address ms-be1023.eqiad.wmnet;
+}
+
+host ms-be1024 {
+        hardware ethernet 14:02:ec:3c:1d:f8;
+        fixed-address ms-be1024.eqiad.wmnet;
+}
+
+host ms-be1025 {
+        hardware ethernet 14:02:ec:3c:3d:f8;
+        fixed-address ms-be1025.eqiad.wmnet;
+}
+
+host ms-be1026 {
+        hardware ethernet 14:02:ec:3c:fd:b8;
+        fixed-address ms-be1026.eqiad.wmnet;
+}
+
+host ms-be1027 {
+        hardware ethernet 14:02:ec:3c:9c:c8;
+        fixed-address ms-be1027.eqiad.wmnet;
 }
 
 host ms-be2001 {
