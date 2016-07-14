@@ -18,6 +18,8 @@ RestartSec=2s
 # wait 60 seconds for a graceful restart before killing the master
 TimeoutStopSec=60
 WorkingDirectory=/srv/deployment/<%= @repo %>
+StandardOutput=syslog
+StandardError=syslog
 ExecStart=/usr/bin/firejail --blacklist=/root --blacklist=/home --caps --seccomp /usr/bin/nodejs <%= @starter_script %> -c /etc/<%= @title %>/config.yaml
 
 [Install]
