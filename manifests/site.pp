@@ -1082,7 +1082,7 @@ node /^es200[234]\.codfw\.wmnet/ {
 
 # Etherpad (virtual machine)
 node 'etherpad1001.eqiad.wmnet' {
-    role etherpad
+    role etherpad::server
 }
 
 # Receives log data from Kafka processes it, and broadcasts
