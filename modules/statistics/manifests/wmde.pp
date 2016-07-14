@@ -16,7 +16,8 @@ class statistics::wmde {
 
     $user = 'analytics-wmde'
 
-    $dir  = "${::statistics::working_path}/analytics-wmde"
+    $stats_working_path = $::statistics::working_path
+    $dir  = "${stats_working_path}/analytics-wmde"
     $data_dir  = "${dir}/data"
     $scripts_dir  = "${dir}/src/scripts"
 
