@@ -183,7 +183,7 @@ define service::node(
 
     # the local log file name
     $local_logdir = "${service::configuration::log_dir}/${title}"
-    $local_logfile = "${local_logdir}/main.log"
+    $local_syslogfile = "${local_logdir}/main.log"
 
     # configuration management
     if $full_config {
@@ -270,29 +270,34 @@ define service::node(
         File["/etc/${title}/config.yaml"] -> Service[$title]
     }
 
-    if $local_logging {
-        if !defined(File[$::service::configuration::log_dir]) {
-            file { $::service::configuration::log_dir:
-                ensure => directory,
-                owner  => 'root',
-                group  => 'root',
-                mode   => '0755',
-            }
+    # on systemd, set up redirecting of stdout/stderr to a file
+    # that will be readable by any user.
+    if $::initsystem == 'systemd' {
+        systemd::syslog { $title:
+            readable_by => 'all',
+            base_dir    => $::service::configuration::log_dir,
         }
+    }
+    elsif $local_logging {
+        # Local logging is enabled, but we're
+        # not on systemd
         file { $local_logdir:
-            ensure  => directory,
-            owner   => $title,
-            group   => 'root',
-            mode    => '0755',
-            before  => Service[$title],
-            require => File[$::service::configuration::log_dir],
+            ensure => directory,
+            owner  => $title,
+            group  => 'root',
+            mode   => '0755',
         }
+
         file { "/etc/logrotate.d/${title}":
             content => template('service/logrotate.erb'),
             owner   => 'root',
             group   => 'root',
             mode    => '0444',
         }
+    }
+
+
+    if $local_logging {
         # convenience script to pretty-print logs
         file { "/usr/local/bin/tail-${title}":
             content => template('service/node/tail-log.erb'),
@@ -304,6 +309,11 @@ define service::node(
         # it's not there any more
         file { "/usr/bin/tail-${title}":
             ensure => absent,
+        }
+
+        # Ensure the local log directory is present before the service
+        if $enable {
+            File[$local_logdir] -> Service[$title]
         }
     }
 

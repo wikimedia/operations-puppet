@@ -46,5 +46,12 @@ class service::configuration(
     $log_dir       = '/srv/log',
     $use_dev_pkgs  = false,
 ){
-    # No op for now.
+
+    file { $log_dir:
+        ensure => directory,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+    }
+
 }
