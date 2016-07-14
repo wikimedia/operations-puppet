@@ -254,6 +254,7 @@ def create_namespace(user):
     p = subprocess.Popen([
         '/usr/local/bin/kubectl',
         'create',
+        '--validate=false',
         '-f',
         '-'
     ], stdout=subprocess.PIPE, stdin=subprocess.PIPE, stderr=subprocess.PIPE)
