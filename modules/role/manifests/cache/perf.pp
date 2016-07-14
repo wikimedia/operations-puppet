@@ -9,7 +9,7 @@ class role::cache::perf {
     vm::min_free_kbytes { 'cache':
         pct => 2,
         min => 131072,
-        max => 1048576,
+        max => 2097152,
     }
 
     # RPS/RSS to spread network i/o evenly
