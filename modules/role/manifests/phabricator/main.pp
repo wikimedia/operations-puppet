@@ -177,9 +177,9 @@ class role::phabricator::main {
     }
 
     # community metrics mail (T81784, T1003)
-    # disabled due to maintenance: T138460
+    # disabled due to maintenance: T138460, re-enabled T139950
     phabricator::logmail {'communitymetrics':
-        ensure       => absent,
+        ensure       => present,
         script_name  => 'community_metrics.sh',
         rcpt_address => 'wikitech-l@lists.wikimedia.org',
         sndr_address => 'communitymetrics@wikimedia.org',
