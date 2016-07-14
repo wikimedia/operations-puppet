@@ -8,6 +8,10 @@
 #
 # [*is_git_master*]
 # If True, the git private repository here will be considered a master.
+#
+# [*replicate_to*]
+# For servers that are a master for the private repo, a list of hosts to replicate to
+#
 class puppetmaster::gitclone(
     $is_labs_master = false,
     $is_git_master = false,
@@ -97,7 +101,25 @@ class puppetmaster::gitclone(
                 creates => '/srv/private/.git',
                 require => File['/srv/private'],
             }
-            # TODO: puppetize the post-commit hook.
+
+            # This hook pushes changes to the other workers
+            file { '/srv/private/.git/hooks/post-commit':
+                ensure  => present,
+                content => template('puppetmaster/git-master-postcommit.erb'),
+                owner   => 'root',
+                group   => 'root',
+                require => Exec['/srv/private init'],
+            }
+
+            # Ssh wrapper to use the gitpuppet private key
+            file { '/srv/private/.git/ssh_wrapper.sh':
+                ensure  => present,
+                source  => 'puppet:///modules/puppetmaster/git/private/ssh_wrapper.sh',
+                owner   => 'root',
+                group   => 'root',
+                mode    => '0555',
+                require => Exec['/srv/private init'],
+            }
         } else {
             puppetmaster::gitprivate { '/srv/private':
                 bare     => true,
