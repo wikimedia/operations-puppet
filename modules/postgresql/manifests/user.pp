@@ -43,7 +43,7 @@ define postgresql::user(
     $pg_hba_file = "/etc/postgresql/${pgversion}/main/pg_hba.conf"
 
     # Check if our user exists and store it
-    $userexists = "/usr/bin/psql --tuples-only -c \'SELECT rolname FROM pg_catalog.pg_roles;\' | /bin/grep \'^ ${user}\'"
+    $userexists = "/usr/bin/psql --tuples-only -c \'SELECT rolname FROM pg_catalog.pg_roles;\' | /bin/grep -P \'^ ${user}$\'"
     # Check if our user doesn't own databases, so we can safely drop
     $user_dbs = "/usr/bin/psql --tuples-only --no-align -c \'SELECT COUNT(*) FROM pg_catalog.pg_database JOIN pg_authid ON pg_catalog.pg_database.datdba = pg_authid.oid WHERE rolname = '${user}';\' | grep -e '^0$'"
     $pass_set = "/usr/bin/psql -c \"ALTER ROLE ${user} WITH ${attrs} PASSWORD '${password}';\""
