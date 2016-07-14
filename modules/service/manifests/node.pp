@@ -166,6 +166,7 @@ define service::node(
     # the local log file name
     $local_logdir = "${service::configuration::log_dir}/${title}"
     $local_logfile = "${local_logdir}/main.log"
+    $local_syslogfile = "${local_logdir}/syslog.log"
 
     # configuration management
     if $full_config {
@@ -252,29 +253,49 @@ define service::node(
         File["/etc/${title}/config.yaml"] -> Service[$title]
     }
 
+    if !defined(File[$::service::configuration::log_dir]) {
+        file { $::service::configuration::log_dir:
+            ensure => directory,
+            owner  => 'root',
+            group  => 'root',
+            mode   => '0755',
+        }
+    }
+
+    file { $local_logdir:
+        ensure  => directory,
+        owner   => $title,
+        group   => 'root',
+        mode    => '0755',
+        before  => Service[$title],
+        require => File[$::service::configuration::log_dir],
+    }
+
+    file { $local_syslogfile:
+        ensure  => present,
+        replace => false,
+        content => '',
+        owner   => $title,
+        group   => $title,
+        mode    => '0755',
+        before  => Rsyslog::Conf[$title],
+    }
+
+    rsyslog::conf { $title:
+        content  => template('service/rsyslog.conf.erb'),
+        priority => 20,
+        require  => File[$local_logdir],
+        before   => Base::Service_unit[$title],
+    }
+
+    file { "/etc/logrotate.d/${title}":
+        content => template('service/logrotate.erb'),
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+    }
+
     if $local_logging {
-        if !defined(File[$::service::configuration::log_dir]) {
-            file { $::service::configuration::log_dir:
-                ensure => directory,
-                owner  => 'root',
-                group  => 'root',
-                mode   => '0755',
-            }
-        }
-        file { $local_logdir:
-            ensure  => directory,
-            owner   => $title,
-            group   => 'root',
-            mode    => '0755',
-            before  => Service[$title],
-            require => File[$::service::configuration::log_dir],
-        }
-        file { "/etc/logrotate.d/${title}":
-            content => template('service/logrotate.erb'),
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0444',
-        }
         # convenience script to pretty-print logs
         file { "/usr/local/bin/tail-${title}":
             content => template('service/node/tail-log.erb'),
