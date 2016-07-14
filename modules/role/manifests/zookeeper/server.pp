@@ -17,9 +17,19 @@
 
 # == Class role::zookeeper::server
 #
+# Set zookeeper_cluster_name in hiera to make jmxtrans
+# properly prefix zookeeper statsd (and graphite) metrics.
+#
 class role::zookeeper::server {
+    # Lookup cluster_name from hiera with sane defaults for
+    # labs and production.
+    $cluster_name = hiera('zookeeper_cluster_name', $::realm ? {
+        'labs'       => $::labsproject,
+        'production' => $::site,
+    })
+
     system::role { 'role::zookeeper::server':
-        description => 'Analytics Cluster Zookeeper Server'
+        description => "${cluster_name} Cluster Zookeeper Server"
     }
 
     include role::zookeeper::client
@@ -33,14 +43,9 @@ class role::zookeeper::server {
         srange => '($INTERNAL)',
     }
 
-    if $::standard::has_ganglia {
-        # TODO: use variables from new ganglia module once it is finished.
-        $ganglia_host = '208.80.154.10'
-        $ganglia_port = 9690
-
-        # Use jmxtrans for sending metrics to ganglia
-        class { 'zookeeper::jmxtrans':
-            ganglia => "${ganglia_host}:${ganglia_port}",
-        }
+    # Use jmxtrans for sending metrics to ganglia
+    class { 'zookeeper::jmxtrans':
+        group_prefix => "zookeeper.cluster.${cluster_name}.",
+        statsd  => hiera('statsd', undef),
     }
 }

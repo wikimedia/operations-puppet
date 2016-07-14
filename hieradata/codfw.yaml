@@ -24,6 +24,9 @@ zookeeper_hosts:
   conf2001.codfw.wmnet: '2001'
   conf2002.codfw.wmnet: '2002'
   conf2003.codfw.wmnet: '2003'
+# Used mainly for zookeeper jmxtrans group_prefix to prefix metrics
+# in statsd/graphite.
+zookeeper_cluster_name: 'main-codfw'
 
 #
 # LABS
