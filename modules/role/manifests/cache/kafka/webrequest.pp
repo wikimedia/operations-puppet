@@ -15,6 +15,8 @@ class role::cache::kafka::webrequest(
 {
     # Set varnish.arg.q or varnish.arg.m according to Varnish version
     if (hiera('varnish_version4', false)) {
+        # Background from T136314:
+        # 'q':
         # Filter out PURGE requests and Pipe creation traffic.
         # A Varnish log containing Timestamp:Pipe does not carry Timestamp:Resp,
         # used by Analytics to bucket data on Hadoop and for data consistency
@@ -28,9 +30,14 @@ class role::cache::kafka::webrequest(
         # At the moment these requests get logged incorrectly and with partial
         # data (due to the VSL timeout) so it makes sense to filter them out to
         # remove noise from Analytics data.
-        # T136314
+        # 'T':
+        # VLS API timeout is the maximum time that Varnishkafka will wait between
+        # "Begin" and "End" timestamps before flushing the available tags to a log.
+        # When a timeout occurs most of the times the result is a webrequest log
+        # missing values like the end timestamp.
         $varnish_opts = {
-            'q' => 'ReqMethod ne "PURGE" and not Timestamp:Pipe and not ReqHeader:Upgrade ~ "[wW]ebsocket"'
+            'q' => 'ReqMethod ne "PURGE" and not Timestamp:Pipe and not ReqHeader:Upgrade ~ "[wW]ebsocket"',
+            'T' => '700'
         }
         $conf_template = 'varnishkafka/varnishkafka_v4.conf.erb'
     } else {
