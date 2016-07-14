@@ -116,6 +116,7 @@ define service::uwsgi(
     $local_logfile = "${local_logdir}/main.log"
 
     if $local_logging {
+        ensure_resource('file', '/srv/log', {'ensure' => 'directory' })
         file { $local_logdir:
             ensure => directory,
             owner  => 'www-data',
