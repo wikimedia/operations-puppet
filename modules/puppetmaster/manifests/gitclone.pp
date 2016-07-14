@@ -101,7 +101,9 @@ class puppetmaster::gitclone(
         } else {
             puppetmaster::gitprivate { '/srv/private':
                 bare     => true,
-                dir_mode => '0755'
+                dir_mode => '0755',
+                owner    => 'gitpuppet',
+                group    => 'gitpuppet',
             }
 
             # This will transmit data to /var/lib...
