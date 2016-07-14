@@ -31,8 +31,15 @@ dmz_cidr=<%= @novaconfig["dmz_cidr"] %>
 dhcpbridge_flagfile=/etc/nova/nova.conf
 dhcpbridge=/usr/bin/nova-dhcpbridge
 dhcp_domain=<%= @novaconfig["dhcp_domain"] %>
+
+# Default quotas for new projects:  1 xlarge instance
+#  (or 4 medium, or 8 small)
+quota_cores = 8
+quota_instances = 8
+quota_ram = 16384
 quota_floating_ips=<%= @novaconfig["quota_floating_ips"] %>
 quota_fixed_ips=200
+
 api_paste_config=/etc/nova/api-paste.ini
 #use_ipv6=True
 allow_same_net_traffic=False
