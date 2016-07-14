@@ -8,12 +8,11 @@ ExecStart=/usr/local/bin/kube-apiserver \
     --etcd-servers=<%= @etcd_servers %> \
     --service-cluster-ip-range=192.168.0.0/24 \
     --token-auth-file=/etc/kubernetes/tokenauth \
-    --admission-control=NamespaceLifecycle,ServiceAccount,ResourceQuota,LimitRanger,UidEnforcer,RegistryEnforcer,HostAutomounter,HostPathEnforcer \
+    --admission-control=NamespaceLifecycle,ResourceQuota,LimitRanger,UidEnforcer,RegistryEnforcer,HostAutomounter,HostPathEnforcer \
     --authorization-mode=ABAC \
     --authorization-policy-file=/etc/kubernetes/abac \
     --tls-private-key-file=/etc/ssl/private/<%= @ssl_certificate_name %>.key \
     --tls-cert-file=/etc/ssl/localcerts/<%= @ssl_certificate_name %>.chained.crt \
-    --service-account-key-file=/etc/ssl/private/<%= @ssl_certificate_name %>.key \
     --enforced-docker-registry=<%= @docker_registry %> \
     --host-automounts=<%= @host_automounts_string %> \
     --host-paths-allowed=<%= @host_paths_allowed_string %> \
