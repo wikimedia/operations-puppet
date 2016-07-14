@@ -49,6 +49,7 @@ NameVirtualHost *:443
 <VirtualHost *:443>
     ServerAdmin noc@wikimedia.org
     ServerName <%= @host %>
+    ServerAlias www.<%= @host %>
 
     SSLEngine on
     SSLCertificateFile <%= @ssl_cert_file %>
@@ -132,5 +133,9 @@ NameVirtualHost *:443
 
     CustomLog /var/log/apache2/access.log wmf
     ServerSignature Off
+
+    # Redirect www. to non www
+    RewriteCond %{HTTP_HOST} ^www.<%= @host %> [NC]
+    RewriteRule ^(.*)$ https://<%= @host %>/$1 [L,R=301,NE]
 
 </VirtualHost>
