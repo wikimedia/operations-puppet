@@ -31,6 +31,11 @@ class DataTest(unittest.TestCase):
             admins = yaml.safe_load(f)
 
         all_users = list(admins['users'])
+        absented_group_members = admins['groups']['absent']['members']
+        absented_users = [k for k, v in admins['users'].iteritems()
+                if v.get('ensure', '') == 'absent']
+        absented_users = [x for x in absented_users if x not in
+                absented_group_members]
         grouped_users = self.all_assigned_users(admins)
 
         # ensure all assigned users exist
@@ -39,6 +44,15 @@ class DataTest(unittest.TestCase):
             [],
             non_existent_users,
             'Users assigned that do not exist: %r' % non_existent_users
+        )
+
+        # ensure absented users are not assigned
+        assigned_absented = set(grouped_users).intersection(
+                set(absented_users))
+        self.assertEqual(
+            set(),
+            assigned_absented,
+            'Users absent but not in "absent" group: %r' % assigned_absented,
         )
 
         # ensure no two groups uses the same gid
