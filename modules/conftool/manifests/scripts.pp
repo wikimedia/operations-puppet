@@ -39,4 +39,12 @@ class conftool::scripts {
         content => template('conftool/drain.erb')
     }
 
+    file { '/usr/local/bin/confctl-decommission':
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0555',
+        content => template('conftool/decommission.erb')
+    }
+
 }
