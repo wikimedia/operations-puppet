@@ -2574,7 +2574,7 @@ node /^restbase-test200[1-3]\.codfw\.wmnet$/ {
 
 # network insights (netflow/pmacct, etc.)
 node 'rhenium.wikimedia.org' {
-    role pmacct
+    role pmacct::netflow
     include standard
     include base::firewall
 }
