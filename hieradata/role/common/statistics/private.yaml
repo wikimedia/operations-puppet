@@ -9,6 +9,7 @@ admin::groups:
   # that analytics-search-users are allowed to sudo to.  This is used
   # for deploying files to HDFS.
   - analytics-search-users
+  - analytics-wmde-users
 debdeploy::grains:
   debdeploy-stat:
     value: standard
