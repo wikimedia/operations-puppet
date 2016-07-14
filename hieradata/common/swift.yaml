@@ -33,6 +33,12 @@ storagehosts:
   - ms-be1019.eqiad.wmnet
   - ms-be1020.eqiad.wmnet
   - ms-be1021.eqiad.wmnet
+  - ms-be1022.eqiad.wmnet
+  - ms-be1023.eqiad.wmnet
+  - ms-be1024.eqiad.wmnet
+  - ms-be1025.eqiad.wmnet
+  - ms-be1026.eqiad.wmnet
+  - ms-be1027.eqiad.wmnet
   - ms-be2001.codfw.wmnet
   - ms-be2002.codfw.wmnet
   - ms-be2003.codfw.wmnet
