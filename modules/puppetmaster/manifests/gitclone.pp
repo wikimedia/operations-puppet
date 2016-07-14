@@ -121,7 +121,7 @@ class puppetmaster::gitclone(
 
         $private_dir = "${puppetmaster::gitdir}/operations/private"
         puppetmaster::gitprivate { $private_dir:
-            origin  => '/srv/puppet',
+            origin  => '/srv/private',
             owner   => 'gitpuppet',
             group   => 'puppet',
             require => Puppetmaster::Gitprivate['/srv/private']
