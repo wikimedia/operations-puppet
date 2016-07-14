@@ -537,6 +537,11 @@ groups:
     gid: 783
     members: []
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
+  wmde-analytics-admins:
+    description: Group of WMDE analytics admins
+    gid: 784
+    members: []
+    privileges: ['ALL = (analytics-wmde) NOPASSWD: ALL']
 users:
   rush:
     ensure: present
