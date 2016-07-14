@@ -259,6 +259,12 @@ class role::cache::misc {
         'pass_random'      => true,
     }
 
+    $be_vcl_config = $common_vcl_config
+
+    $fe_vcl_config = merge($common_vcl_config, {
+        'ttl_cap'            => '1d',
+    })
+
     # We're testing file vs persistent as a factor in some varnish4 bugs observed...
     $storage_parts = $::role::cache::2layer::storage_parts
     $storage_size = $::role::cache::2layer::storage_size
@@ -272,8 +278,8 @@ class role::cache::misc {
         fe_jemalloc_conf => 'lg_dirty_mult:8,lg_chunk_size:17',
         runtime_params   => [],
         app_directors    => $app_directors,
-        fe_vcl_config    => $common_vcl_config,
-        be_vcl_config    => $common_vcl_config,
+        fe_vcl_config    => $fe_vcl_config,
+        be_vcl_config    => $be_vcl_config,
         fe_extra_vcl     => ['misc-common'],
         be_extra_vcl     => ['misc-common'],
         be_storage       => $misc_storage_args,
