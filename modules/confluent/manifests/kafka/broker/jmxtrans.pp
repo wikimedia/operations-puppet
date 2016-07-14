@@ -52,9 +52,11 @@ class confluent::kafka::broker::jmxtrans(
     $jmx_port = $::confluent::kafka::broker::jmx_port
     $jmx = "${::fqdn}:${jmx_port}"
 
-    class {'::jmxtrans':
-        run_interval => $run_interval,
-        log_level    => $log_level,
+    if !defined(Class['::jmxtrans']) {
+        class { '::jmxtrans':
+            run_interval => $run_interval,
+            log_level    => $log_level,
+        }
     }
 
     if !defined(Nrpe::Monitor_service['jmxtrans']) {
