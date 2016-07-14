@@ -121,17 +121,11 @@ class puppetmaster::gitclone(
 
         $private_dir = "${puppetmaster::gitdir}/operations/private"
         puppetmaster::gitprivate { $private_dir:
-            owner => 'gitpuppet',
-            group => 'puppet',
+            origin  => '/srv/puppet',
+            owner   => 'gitpuppet',
+            group   => 'puppet',
+            require => Puppetmaster::Gitprivate['/srv/private']
         }
-        exec { 'private git setup remote':
-            command => '/usr/bin/git remote add origin /srv/private',
-            cwd     => $private_dir,
-            user    => 'gitpuppet',
-            group   => 'gitpuppet',
-            unless  => '/usr/bin/git remote show origin'
-        }
-
 
         # ...and linked to /etc/puppet
         file { '/etc/puppet/private':
