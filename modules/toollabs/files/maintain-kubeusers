@@ -22,6 +22,7 @@ import string
 import random
 import time
 import csv
+import stat
 
 TOOL_ALLOWED_RESOURCES = [
     'pods',
@@ -201,7 +202,7 @@ def write_abac(users, path):
 
 def write_kubeconfig(user, master):
     """
-    Write an appropriate .kube/config for given user to access given master
+    Write an appropriate .kube/config for given user to access given master.
 
     See http://kubernetes.io/docs/user-guide/kubeconfig-file/ for format
     """
@@ -232,7 +233,7 @@ def write_kubeconfig(user, master):
     }
     dirpath = os.path.join('/data', 'project', user.name, '.kube')
     path = os.path.join(dirpath, 'config')
-    os.makedirs(dirpath, exist_ok=True)
+    os.makedirs(dirpath, mode=0o775, exist_ok=False)
     f = os.open(path, os.O_CREAT | os.O_WRONLY | os.O_NOFOLLOW)
     try:
         os.write(f, json.dumps(config, indent=4, sort_keys=True).encode('utf-8'))
@@ -245,6 +246,13 @@ def write_kubeconfig(user, master):
         raise
     finally:
         os.close(f)
+
+
+def create_homedir(user):
+    homepath = os.path.join('/data', 'project', user.name)
+    os.makedirs(homepath, mode=0o775, exist_ok=False)
+    os.chmod(homepath, 0o775 | stat.I_SGID)
+    os.chown(homepath, int(user.id), int(user.id))
 
 
 def create_namespace(user):
@@ -285,7 +293,7 @@ if __name__ == '__main__':
     argparser.add_argument('--project', help='Project name to fetch LDAP users from',
                            default='tools')
     argparser.add_argument('--interval', help='Seconds between between runs',
-                           default=300)
+                           default=60)
     argparser.add_argument('--once', help='Run once and exit',
                            action='store_true')
     argparser.add_argument('kube_master_url', help='Full URL of Kubernetes Master')
@@ -325,6 +333,7 @@ if __name__ == '__main__':
             for uid in new_tools:
                 if uid in tools:
                     tools[uid].token = generate_pass(64)
+                    create_homedir(tools[uid])
                     write_kubeconfig(tools[uid], args.kube_master_url)
                     create_namespace(tools[uid])
                     cur_users[uid] = tools[uid]
