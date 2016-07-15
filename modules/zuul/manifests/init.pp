@@ -17,6 +17,7 @@ class zuul ( ){
     # Ideally we should rebuild Zuul with a new version string,
     # but for now this will do.
     if os_version('debian == jessie') {
+        include ::apt
         apt::pin { 'python-pbr':
             pin      => 'release o=debian',
             priority => '1002',
