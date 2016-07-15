@@ -6,7 +6,7 @@ sub cluster_fe_recv_pre_purge { }
 sub cluster_fe_recv {
 	// CORS preflight requests
 	if (req.request == "OPTIONS" && req.http.Origin) {
-		error 667 "CORS";
+		error 667 "OK";
 	}
 
 	// Homepage redirect to commons
@@ -116,7 +116,6 @@ sub cluster_fe_err_synth {
 	// Handle CORS preflight requests
 	if (obj.status == 667) {
 		set obj.status = 200;
-		set obj.response = "OK";
 		set obj.http.Connection = "keep-alive";
 		set obj.http.Content-Length = "0";
 

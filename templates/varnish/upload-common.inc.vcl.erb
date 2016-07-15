@@ -15,6 +15,6 @@ sub upload_common_hit {
 sub upload_common_deliver {
 	if (resp.http.X-Content-Range) {
 		set resp.http.Content-Range = resp.http.X-Content-Range;
-		remove resp.http.X-Content-Range;
+		unset resp.http.X-Content-Range;
 	}
 }
