@@ -63,4 +63,17 @@ class mediawiki::packages::fonts {
     if os_version('debian >= jessie') {
         require_package('fonts-beng', 'fonts-deva', 'fonts-gujr', 'fonts-knda', 'fonts-mlym', 'fonts-orya', 'fonts-guru', 'fonts-taml', 'fonts-telu', 'fonts-gujr-extra', 'fonts-noto-cjk', 'fonts-sil-lateef')
     }
+
+    # In older releases (up to the version present in trusty), fontconfig-config provided
+    # a config file which forced antialiasing. This is no longer present in the versions
+    # in jessie and later, so provide it manually since otherwise some fonts look distorted
+    # in smaller resolutions: T139543
+    if os_version('debian >= jessie') {
+        file { '/etc/fonts/conf.d/10-antialias.conf':
+            source => 'puppet:///modules/mediawiki/fontconfig-antialias.conf',
+            owner  => 'root',
+            group  => 'root',
+            mode   => '0644',
+        }
+    }
 }
