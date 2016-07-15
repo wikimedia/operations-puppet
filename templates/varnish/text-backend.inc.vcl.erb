@@ -98,6 +98,10 @@ sub cluster_be_pass {
 	call text_common_misspass_restore_cookie;
 }
 
+<% if @varnish_version4 -%>
+sub cluster_be_backend_fetch { }
+<% if end -%>
+
 sub cluster_be_backend_response {
 	// Make sure Set-Cookie responses are not cacheable, and log violations
 	// FIXME: exceptions are ugly; maybe get rid of the whole thing?
