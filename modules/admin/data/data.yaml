@@ -195,7 +195,7 @@ groups:
               ironholds, ellery, nettrom, mforns,
               bmansurov, tbayer, joal, ashwinpp,
               madhuvishy, tjones, legoktm, dcausse, bearloga,
-              dpatrick, atgomez, dstrine, joewalsh]
+              dpatrick, atgomez, dstrine, joewalsh, marktraceur]
   statistics-users:
     gid: 726
     description: Access statistics number crunching hosts. NO PRIVS.
