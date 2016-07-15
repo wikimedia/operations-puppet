@@ -22,6 +22,7 @@ import string
 import random
 import time
 import csv
+import stat
 
 TOOL_ALLOWED_RESOURCES = [
     'pods',
@@ -201,7 +202,9 @@ def write_abac(users, path):
 
 def write_kubeconfig(user, master):
     """
-    Write an appropriate .kube/config for given user to access given master
+    Write an appropriate .kube/config for given user to access given master.
+
+    This also creates the user's homedir if it doesn't exist
 
     See http://kubernetes.io/docs/user-guide/kubeconfig-file/ for format
     """
@@ -230,9 +233,21 @@ def write_kubeconfig(user, master):
         }],
         'current-context': 'default'
     }
-    dirpath = os.path.join('/data', 'project', user.name, '.kube')
+    homepath = os.path.join('/data', 'project', user.name)
+    # If the home folder hasn't been created yet, we should create it here
+    # with the appropriate bits. This used to be done by this script called
+    # toolwatcher, but it was racing this so we decided to fold it into this.
+    # HACK: I am not entirely sure if this
+    try:
+        os.path.makedirs(homepath, mode=0o775, exists_ok=False)
+        os.chmod(homepath, 0o775 | stat.I_SGID)
+        os.chown(homepath, int(user.id), int(user.id))
+    except OSError:
+        # It already exists, let it go!
+        pass
+    dirpath = os.path.join(homepath, '.kube')
     path = os.path.join(dirpath, 'config')
-    os.makedirs(dirpath, exist_ok=True)
+    os.makedirs(dirpath, mode=0o775, exist_ok=True)
     f = os.open(path, os.O_CREAT | os.O_WRONLY | os.O_NOFOLLOW)
     try:
         os.write(f, json.dumps(config, indent=4, sort_keys=True).encode('utf-8'))
