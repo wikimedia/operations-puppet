@@ -13,7 +13,7 @@
 #   option.
 #
 # [*verbosity*]
-#   Set logging level (default: 5, min: 0, max: 11).
+#   Set logging level (default: 4, min: 0, max: 11).
 #
 # [*pools*]
 #   A hash defining a nutcracker server pool.
@@ -37,7 +37,7 @@ class nutcracker(
     $pools,
     $ensure    = present,
     $mbuf_size = undef,
-    $verbosity = 5,
+    $verbosity = 4,
 ) {
     validate_hash($pools)
     validate_re($ensure, '^(present|absent)$')
