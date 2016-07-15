@@ -57,7 +57,11 @@ sub cluster_be_miss {
 	if (req.http.Range
 		&& (std.integer(regsub(req.http.Range, "^bytes=([0-9]*)-", "\1"), 0) > 33554432
 			|| req.http.Range ~ "^bytes=([0-9]{9,})-")) {
+		<%- if @varnish_version4 -%>
+		call upload_common_set_xrange;
+		<%- else -%>
 		set bereq.http.Range = req.http.Range;
+		<%- end -%>
 		std.log("Passing high range request: " + req.http.Range);
 		return (pass);
 	}
@@ -70,7 +74,9 @@ sub cluster_be_miss {
 sub cluster_be_pass { }
 
 <% if @varnish_version4 -%>
-sub cluster_be_backend_fetch { }
+sub cluster_be_backend_fetch {
+	call upload_common_set_range;
+}
 <% end -%>
 
 sub cluster_be_backend_response {

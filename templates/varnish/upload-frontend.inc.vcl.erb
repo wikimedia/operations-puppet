@@ -37,7 +37,11 @@ sub cluster_fe_hit {
 sub cluster_fe_miss {
 	// Convert range requests into pass
 	if (req.http.Range) {
+		<%- if @varnish_version4 -%>
+		call upload_common_set_xrange;
+		<%- else -%>
 		set bereq.http.Range = req.http.Range;
+		<%- end -%>
 		return (pass);
 	}
 
@@ -50,7 +54,9 @@ sub cluster_fe_miss {
 sub cluster_fe_pass { }
 
 <% if @varnish_version4 -%>
-sub cluster_fe_backend_fetch { }
+sub cluster_fe_backend_fetch {
+	call upload_common_set_range;
+}
 <% end -%>
 
 sub cluster_fe_backend_response {
