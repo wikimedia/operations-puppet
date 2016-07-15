@@ -1,0 +1,4 @@
+fixtures:
+    symlinks:
+        zuul: "#{source_dir}"
+        #stdlib: "../../../../stdlib"
