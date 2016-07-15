@@ -116,6 +116,12 @@ sub vcl_pipe {
 <% end -%>
 
 <% if @varnish_version4 -%>
+sub vcl_backend_fetch {
+    call cluster_be_backend_fetch;
+}
+<% end -%>
+
+<% if @varnish_version4 -%>
 sub vcl_backend_response {
 <% else -%>
 sub vcl_fetch {

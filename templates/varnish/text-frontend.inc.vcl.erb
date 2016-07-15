@@ -184,6 +184,10 @@ sub cluster_fe_pass {
 	call text_common_misspass_restore_cookie;
 }
 
+<% if @varnish_version4 -%>
+sub cluster_fe_backend_fetch { }
+<% end -%>
+
 sub cluster_fe_backend_response {
 	call text_common_backend_response;
 
