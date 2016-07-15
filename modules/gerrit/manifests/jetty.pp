@@ -52,13 +52,6 @@ class gerrit::jetty(
         require => Group['gerrit2'],
     }
 
-    file { '/etc/default/gerritcodereview':
-        source => 'puppet:///modules/gerrit/gerrit',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0444',
-    }
-
     file { '/var/lib/gerrit2/':
         ensure  => directory,
         mode    => '0755',
