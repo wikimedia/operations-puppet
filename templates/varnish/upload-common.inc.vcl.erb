@@ -1,6 +1,7 @@
 // common to upload front+backend VCL
 
 sub upload_common_recv {
+	unset req.http.X-Range;
 	if (req.http.host != "<%= @vcl_config.fetch('upload_domain') %>") {
 		<%= error_synth(404, "Requested domainname does not exist on this server") -%>
 	}
@@ -16,5 +17,20 @@ sub upload_common_deliver {
 	if (resp.http.X-Content-Range) {
 		set resp.http.Content-Range = resp.http.X-Content-Range;
 		unset resp.http.X-Content-Range;
+	}
+}
+
+// Varnish strips the Range header before copying req into bereq. Save it into
+// a header and restore it in upload_common_set_range
+sub upload_common_set_xrange {
+	if (req.http.Range) {
+		set req.http.X-Range = req.http.Range;
+	}
+}
+
+sub upload_common_set_range {
+	if (bereq.http.X-Range) {
+		set bereq.http.Range = bereq.http.X-Range;
+		unset bereq.http.X-Range;
 	}
 }
