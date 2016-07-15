@@ -43,10 +43,6 @@ private:
       home: true
       project: true
       scratch: true
-  deployment-prep:
-    gid: 50120
-    mounts:
-      project: true
   dumps:
     gid: 50124
     mounts:
