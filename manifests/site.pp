@@ -2415,6 +2415,14 @@ node 'palladium.eqiad.wmnet' {
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
     }
+    # Add a site for temporary puppet backend tests
+    class { '::puppetmaster::web_test':
+        server_name => 'puppetmaster.test',
+        workers     => [{
+                        'worker'     => 'rhodium.eqiad.wmnet',
+                        'loadfactor' => 100,
+                        }],
+    }
 }
 
 # parser cache databases
