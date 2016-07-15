@@ -1,0 +1,5 @@
+fixtures:
+    symlinks:
+        zuul: "#{source_dir}"
+        apt: "../../../../apt"
+        wmflib: "../../../../wmflib"
