@@ -254,7 +254,7 @@ def create_homedir(user):
     """
     homepath = os.path.join('/data', 'project', user.name)
     os.makedirs(homepath, mode=0o775, exist_ok=False)
-    os.chmod(homepath, 0o775 | stat.I_SGID)
+    os.chmod(homepath, 0o775 | stat.S_ISGID)
     os.chown(homepath, int(user.id), int(user.id))
 
 
