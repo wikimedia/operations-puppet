@@ -14,13 +14,13 @@ class role::etcd {
     ferm::service{'etcd_clients':
         proto  => 'tcp',
         port   => hiera('etcd::client_port', '2379'),
-        srange => '$ALL_NETWORKS',
+        srange => '$DOMAIN_NETWORKS',
     }
 
     ferm::service{'etcd_peers':
         proto  => 'tcp',
         port   => hiera('etcd::peer_port', '2380'),
-        srange => '$ALL_NETWORKS',
+        srange => '$DOMAIN_NETWORKS',
     }
 
     # Back up etcd
