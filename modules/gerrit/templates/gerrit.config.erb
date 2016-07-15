@@ -18,6 +18,10 @@
     type = LDAP
     cookieSecure = true
     registerUrl = https://wikitech.wikimedia.org/w/index.php?title=Special:UserLogin&returnto=Help%3AGetting+Started&type=signup
+<%- if @gerritgpg -%>
+[receive]
+        enableSignedPush = true
+<%- end -%>
 [ldap]
     server = <% @ldap_hosts.each do |ldap_host| %>ldaps://<%= ldap_host %> <% end %>
     accountBase = ou=people,<%= @ldap_base_dn %>
