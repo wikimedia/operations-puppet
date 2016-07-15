@@ -7,3 +7,4 @@ gerrit::jetty::changeidlink: '#q,$1,n,z'
 gerrit::jetty::commitlink: '#q,$2,n,z'
 gerrit::jetty::git_dir: '/var/lib/gerrit2/review_site/git'
 gerrit::jetty::index_type: 'SQL'
+gerrit::jetty::gerritgpg: false
