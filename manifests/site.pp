@@ -1485,7 +1485,7 @@ node 'labnodepool1001.eqiad.wmnet' {
 }
 
 ## labsdb dbs
-node /labsdb100[1238]\.eqiad\.wmnet/ {
+node /labsdb10(1[01]|0[1389])\.eqiad\.wmnet/ {
     # this role is depecated and should be converted to labs::db::slave
     role mariadb::labs
 }
