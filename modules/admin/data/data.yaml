@@ -5,7 +5,7 @@ groups:
               handrade, howief, jdouglas, jgonera, jsahleen, mah, maryana, mglaser, mvolz,
               mwalker, nimishg, rainman, ssmith, swalling, sumanah, werdna, rmoen,
               johnflewis, marc, jkrauska, akumar, mnoushad, spage, tnegrin, msyed, kleduc,
-              manybubbles, haithams]
+              manybubbles, haithams, jzerebecki]
   wikidev:
     gid: 500
     description: container group for primary user groups.
@@ -54,7 +54,7 @@ groups:
               nikerabbit, reedy, robla, ssastry, tomasz, yurik,
               tgr, phuedx, ejegg, twentyafterfour, legoktm, catrope, krenair,
               mobrovac, nuria, thcipriani, joal, eevans, mforns, dpatrick, dcausse,
-              bsitzmann, mholloway-shell, jzerebecki, dduvall, gehel, madhuvishy, dereckson,
+              bsitzmann, mholloway-shell, dduvall, gehel, madhuvishy, dereckson,
               ladsgroup, bawolff]
     privileges: ['ALL = (www-data,apache,mwdeploy,l10nupdate) NOPASSWD: ALL',
                  'ALL = NOPASSWD: /sbin/restart hhvm',
@@ -75,7 +75,7 @@ groups:
     description: these folks are allowed bastion _only_ access
     members: [jforrester, jmorgan, dfoy, junikowski, cwdent,
               mhurd, dbrant, bsitzmann, deskana, chedasaurus,
-              jzerebecki, declerambaul, ellery, dduvall, nettrom, mforns, jkatz,
+              declerambaul, ellery, dduvall, nettrom, mforns, jkatz,
               bmansurov, west1, jhernandez, smalyshev, tbayer, zfilipin,
               joal, thcipriani, daisy, ashwinpp, jhobs, tomasz, lpintscher,
               pcoombe, mholloway-shell, madhuvishy, niedzielski, neilpquinn-wmf,
@@ -116,7 +116,7 @@ groups:
                  credentials on stat1003 (currently the only such host)
     members: [awight, bmansurov, catrope, dartar, declerambaul, deskana,
               dduvall, ellery, ezachte, gilles, halfak,
-              ironholds, jforrester, jkatz, jmorgan, jzerebecki, kaldari,
+              ironholds, jforrester, jkatz, jmorgan, kaldari,
               leila, mattflaschen, milimetric, nettrom, bearloga,
               nuria, ori, otto, springle, yurik, yuvipanda,
               mforns, jdlrobson, dr0ptp4kt, tgr, marktraceur, jhernandez, joal,
@@ -141,7 +141,7 @@ groups:
     gid: 719
     description: users with some sudo permissions on jenkins and nodepool hosts
     members: [bd808, cscott, dduvall, demon, krinkle, reedy, marktraceur,
-              twentyafterfour, zfilipin, thcipriani, legoktm, jzerebecki,
+              twentyafterfour, zfilipin, thcipriani, legoktm,
               hashar]
     privileges: ['ALL = (jenkins) NOPASSWD: ALL',
                  'ALL = (jenkins-slave) NOPASSWD: ALL',
@@ -201,7 +201,7 @@ groups:
               mattflaschen, mhurd, yurik, awight, jforrester,
               marktraceur, nuria, leila, gilles,
               dbrant, tgr, dr0ptp4kt, brion, bsitzmann, amire80,
-              deskana, jzerebecki, dduvall, nettrom, mforns, jkatz, ebernhardson,
+              deskana, dduvall, nettrom, mforns, jkatz, ebernhardson,
               mlitn, tbayer, joal, tomasz, kartik, nikerabbit, pcoombe, madhuvishy,
               neilpquinn-wmf, maxsem, jminor, dpatrick, atgomez, dstrine,
               ladsgroup]
@@ -366,7 +366,7 @@ groups:
   wdqs-admins:
     gid: 755
     description: Admins for the WikiData Query Service project
-    members: [smalyshev, hoo, jzerebecki]
+    members: [smalyshev, hoo]
     privileges: ['ALL = NOPASSWD: /usr/sbin/service wdqs-blazegraph *',
                  'ALL = NOPASSWD: /usr/sbin/service wdqs-updater *',
                  'ALL = NOPASSWD: /bin/systemctl enable wdqs-updater',
@@ -416,7 +416,7 @@ groups:
     gid: 763
     description: Service deploy users
     members: [eevans, gwicke, mobrovac, demon, twentyafterfour, thcipriani, dduvall,
-              yurik, bsitzmann, mholloway-shell, kartik, halfak, ladsgroup, smalyshev, hoo, jzerebecki]
+              yurik, bsitzmann, mholloway-shell, kartik, halfak, ladsgroup, smalyshev, hoo]
     privileges: []
 
   aqs-admins:
@@ -527,7 +527,7 @@ groups:
   labnet-users:
     description: unprivileged access on labnet servers
     gid: 781
-    members: [thcipriani, hashar, dduvall, demon, twentyafterfour, zfilipin, jzerebecki, legoktm]
+    members: [thcipriani, hashar, dduvall, demon, twentyafterfour, zfilipin, legoktm]
   ores-admin:
     description: ORES admins
     gid: 782
@@ -558,11 +558,11 @@ users:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCF9INYx9SZy7Gunoh6/Qg7s7l7WjH2Tx3+JzWT8r6k5y+WFufi2sSPTtyOIwnsnQU/6pGB9nb9vnVDoN4Mvhjv454dislPn3JoadxvQRR35n9U/br7DUa3nbNB8ivzCadmlt3jLLj4z2/8rYxcriFgF88AYK9bQiz4BZN5o5nox8LbX7Iq4JiTeyPX41K+xzWtxKzovXu+IcANLyGe+B4Ic1MeDm3gQhaqHR0BJ/CyAPI3SVbGx79U4pivU/i8rLAcXAi4RymQR19jDXogPg0HqWQpg24ZP/3CqVujWYuVGZNUDQ5QmuEUlkRO2cB2OcssEiN6gMgT8Fa3Fra+BU+p dzahn@yubikey
     uid: 2075
   jzerebecki:
-    ensure: present
+    ensure: absent
     gid: 500
     name: jzerebecki
     realname: Jan Zerebecki
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDe6fqrBKdOyu7mUTpWUo850t3zZDOHRsjTrxOH+Wu2KlKgpeAbGwWluY+ZjzI0U8rIjxKCl1NDAGrwhnXxrKblWex6hyjg9X3cFskcv7evBp74tEzQRqNHpsJ4ZS13MdCtgyOQnxzNlQ/ublNWgvNdH4PHFsYtiKtBqZgxOGW0hrieNBjoT8IpBtomaB9Qn96aUY6cBWk217krAxoXQ8ZanaoJVrTAcoyFTjgjhGsum9a+HSD0BTkFJ1fzrHljCjbBoaSXhcv/tgMUHDl3gxGZBYc7lA2EhK91klzdn7mr/oe8DtYqn/cyzmPJZoU7BClpHt8ve4WjJLPN1QYTzZmrVvD3dyugUOVBE5Or2JVxcTszRBG1Hh1+MZAv3EPUFt7S2gTdE8sVIShQhlvuoLpjb5AW1Mwfd84fwWVOThPHQXd98K7edppYapVOdMjGqle02XplZpSpI0+DZxBDBdCZO2ZVpno9Ir/3bH1YxLffamG9Izvf7VVF04pbhI3LLRNTVFQX+znFPcEOiBX/ZFBwuJwWf2R0raL3yoJk3wxjr+VxYl7LbTEifnkbsy1aXKMo4Ng1iillvKN3T7SSnxZwiJvDD6ZGHkf7cMhztde0I53DuzF5RCe1ybOjoAFC3ykv1CbL+cE7ro6q6HY4nXFvGA0+uRSy3GCYo8gDgJRCBQ== jan@zerebecki.de notebook production.wikimedia.org]
+    ssh_keys: []
     uid: 2844
   faidon:
     ensure: present
