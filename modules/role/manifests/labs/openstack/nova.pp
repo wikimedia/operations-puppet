@@ -138,11 +138,14 @@ class role::labs::openstack::nova::controller {
     include role::labs::openstack::keystone::server
     include ::openstack::nova::conductor
     include ::openstack::nova::scheduler
-    include ::openstack::queue_server
-
     include role::labs::openstack::nova::common
     $novaconfig = $role::labs::openstack::nova::common::novaconfig
     $designateconfig = hiera_hash('designateconfig', {})
+
+    class { ' ::openstack::queue_server':
+        rabbit_username => $novaconfig['rabbit_user'],
+        rabbit_password => $novaconfig['rabbit_pass'],
+    }
 
     class { '::openstack::adminscripts':
         novaconfig => $novaconfig
