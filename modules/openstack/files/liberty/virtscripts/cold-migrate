@@ -13,10 +13,14 @@
 """
 
 import argparse
+import os
 import time
 import subprocess
 
-from novaclient.v1_1 import client
+from keystoneclient.auth.identity import generic
+from keystoneclient import session as keystone_session
+from keystoneclient.v3 import client as keystone_client
+from novaclient import client
 
 
 class NovaInstance(object):
@@ -138,27 +142,22 @@ if __name__ == "__main__":
     argparser.add_argument(
         '--nova-user',
         help='username for nova auth',
-        default='novaadmin'
+        default=os.environ.get('OS_USERNAME', None)
     )
     argparser.add_argument(
         '--nova-pass',
         help='password for nova auth',
-        required=True,
+        default=os.environ.get('OS_PASSWORD', None)
     )
     argparser.add_argument(
         '--nova-url',
         help='url for nova auth',
-        default='http://labcontrol1001.wikimedia.org:35357/v2.0'
-    )
-    argparser.add_argument(
-        '--nova-project',
-        help='project for nova auth',
-        default='admin'
+        default=os.environ.get('OS_AUTH_URL', None)
     )
     argparser.add_argument(
         '--mysql-password',
         help='mysql password for nova db',
-        required=True,
+        default=os.environ.get('NOVA_MYSQL_PASS', None)
     )
     argparser.add_argument(
         'instanceid',
@@ -177,10 +176,16 @@ if __name__ == "__main__":
         print "Remote execution failed; this whole enterprise is doomed."
         exit(1)
 
-    novaclient = client.Client(args.nova_user,
-                               args.nova_pass,
-                               args.nova_project,
-                               args.nova_url)
+    auth = generic.Password(
+        auth_url=args.nova_url,
+        username=args.nova_user,
+        password=args.nova_pass,
+        user_domain_name='Default',
+        project_domain_name='Default',
+        project_name='admin')
+    session = keystone_session.Session(auth=auth)
+
+    novaclient = client.Client('2',session=session)
 
     instance = NovaInstance(novaclient, args.instanceid)
     instance.migrate(args.destination, args.mysql_password)
