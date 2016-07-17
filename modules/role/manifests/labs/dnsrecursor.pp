@@ -49,7 +49,9 @@ class role::labs::dnsrecursor {
 
     $labs_auth_dns = ipresolve($dnsconfig['host'],4)
 
-    $lua_hooks = ['/etc/powerdns/labs-ip-alias.lua', '/etc/powerdns/metaldns.lua']
+    $alias_file = '/etc/powerdns/labs-ip-alias.lua'
+    $metal_resolver = '/etc/powerdns/metaldns.lua'
+    $lua_hooks = [$alias_file, $metal_resolver]
 
     $tld = hiera('labs_tld')
     $private_reverse = hiera('labs_private_ips_reverse_dns')
@@ -66,7 +68,6 @@ class role::labs::dnsrecursor {
             client_tcp_timeout       => 1,
     }
 
-    $alias_file = '/etc/powerdns/labs-ip-alias.lua'
     class { '::dnsrecursor::labsaliaser':
         username           => 'novaadmin',
         password           => $wikitech_nova_ldap_user_pass,
@@ -74,7 +75,9 @@ class role::labs::dnsrecursor {
         alias_file         => $alias_file,
         admin_project_name => $wikitech_nova_admin_project_name
     }
-    require dnsrecursor::metalresolver
+    class { '::dnsrecursor::metalresolver':
+        metal_resolver => $metal_resolver
+    }
 
     # There are three replica servers (c1, c2, c3).  The mapping of
     # "shards" (s1, etc.) and databases (enwiki, etc.) to these is

@@ -1,8 +1,9 @@
-class dnsrecursor::metalresolver {
-
+class dnsrecursor::metalresolver(
+    $metal_resolver,
+) {
     $labs_metal = hiera('labs_metal',[])
 
-    file { '/etc/powerdns/metaldns.lua':
+    file { $metal_resolver:
         ensure  => present,
         require => Package['pdns-recursor'],
         owner   => 'root',
