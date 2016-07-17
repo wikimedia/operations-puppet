@@ -6,23 +6,23 @@
 --  this file than to insert things into designate from puppet, and currently
 --  puppet/hiera contains the canonical representation of bare metal hosts and names.
 
-metal = {}
+ARecords = {}
+PTRRecords = {}
 
 <% @labs_metal.sort.map do |k,v| -%>
-metal["<%= k %>.<%= @site %>.<%= @tld %>."] = "<%= v['IPv4'] %>"
-metal["<%= k %>.<%= v['project'] %>.<%= @site %>.<%= @tld %>."] = "<%= v['IPv4'] %>"
+ARecords["<%= k %>.<%= @site %>.<%= @tld %>."] = "<%= v['IPv4'] %>"
+ARecords["<%= k %>.<%= v['project'] %>.<%= @site %>.<%= @tld %>."] = "<%= v['IPv4'] %>"
+PTRRecords["<%= v['IPv4'].split('.').reverse().join('.') %>.in-addr.arpa."] = "<%= k %>.<%= v['project'] %>.<%= @site %>.<%= @tld %>."
 <% end -%>
 
 function nxdomain (remoteip, domain, qtype)
-    if qtype ~= pdns.A then
-        return -1, {}
-    end  --  only A records
-
-    if (metal[domain]) then
-        ret={}
-        ret[1]= {qtype=pdns.A, content=(metal[domain]), ttl=300}
-        return 0, ret
-    else
-        return -1, {}
+    if (qtype == pdns.PTR and PTRRecords[domain]) then
+        return 0, {{qtype=pdns.PTR, content=(PTRRecords[domain]), ttl=300}}
     end
+
+    if (qtype == pdns.A and ARecords[domain]) then
+        return 0, {{qtype=pdns.A, content=(ARecords[domain]), ttl=300}}
+    end
+
+    return -1, {}
 end
