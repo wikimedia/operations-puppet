@@ -1,5 +1,6 @@
 class dnsrecursor::metalresolver(
     $metal_resolver,
+    $tld,
 ) {
     $labs_metal = hiera('labs_metal',[])
 
