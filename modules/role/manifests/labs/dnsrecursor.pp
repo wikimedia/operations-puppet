@@ -76,7 +76,8 @@ class role::labs::dnsrecursor {
         admin_project_name => $wikitech_nova_admin_project_name
     }
     class { '::dnsrecursor::metalresolver':
-        metal_resolver => $metal_resolver
+        metal_resolver => $metal_resolver,
+        tld            => $tld
     }
 
     # There are three replica servers (c1, c2, c3).  The mapping of
