@@ -1,0 +1,6 @@
+
+elasticsearch::bind_networks:
+  - _local_
+  - _site_
+
+elasticsearch::publish_host: _eth0_
