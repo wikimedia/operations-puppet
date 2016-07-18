@@ -188,9 +188,9 @@ class role::phabricator::main {
     }
 
     # project changes mail (T85183)
-    # disabled due to maintenance: T138460
+    # disabled due to maintenance: T138460, re-enabled T139950
     phabricator::logmail {'projectchanges':
-        ensure       => absent,
+        ensure       => present,
         script_name  => 'project_changes.sh',
         rcpt_address => [ 'phabricator-reports@lists.wikimedia.org' ],
         sndr_address => 'aklapper@wikimedia.org',
