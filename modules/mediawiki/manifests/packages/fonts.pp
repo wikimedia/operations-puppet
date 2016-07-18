@@ -75,5 +75,11 @@ class mediawiki::packages::fonts {
             group  => 'root',
             mode   => '0644',
         }
+        file { '/etc/fonts/conf.d/70-no-bitmaps.conf':
+            source => 'puppet:///modules/mediawiki/fontconfig-no-bitmaps.conf',
+            owner  => 'root',
+            group  => 'root',
+            mode   => '0644',
+        }
     }
 }
