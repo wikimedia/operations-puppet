@@ -22,7 +22,7 @@ class role::gerrit::server($ipv4, $ipv6) {
             contact_group => 'admins,gerrit',
         }
 
-        nrpe::monitor_service { 'ssh':
+        monitoring::service { 'ssh':
             description   => 'SSH access',
             check_command => "check_ssh_port!${host}!29418",
             contact_group => 'admins,gerrit',
