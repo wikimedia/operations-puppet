@@ -10,7 +10,8 @@
 <VirtualHost *:443>
     ServerAdmin webmaster@wikimedia.org
     ServerName <%= @lists_servername %>
-    RequestHeader unset Proxy early # https://httpoxy.org/
+    # https://httpoxy.org/
+    RequestHeader unset Proxy early 
     SSLEngine On
     SSLCertificateFile /etc/ssl/localcerts/lists.wikimedia.org.crt
     SSLCertificateChainFile /etc/ssl/localcerts/lists.wikimedia.org.chain.crt

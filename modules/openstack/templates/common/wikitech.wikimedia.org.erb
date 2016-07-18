@@ -9,7 +9,8 @@
     ServerName <%= @webserver_hostname %>
     ServerAlias <%= @webserver_hostname_aliases %>
 
-    RequestHeader unset Proxy early # https://httpoxy.org/
+    # https://httpoxy.org/
+    RequestHeader unset Proxy early
 
     DocumentRoot /srv/mediawiki/docroot/wikimedia.org
     <Directory />
@@ -50,7 +51,8 @@
     ServerAdmin noc@wikimedia.org
     ServerName <%= @webserver_hostname %>
 
-    RequestHeader unset Proxy early # https://httpoxy.org/
+    # https://httpoxy.org/
+    RequestHeader unset Proxy early
 
     RewriteEngine on
     SSLEngine on
