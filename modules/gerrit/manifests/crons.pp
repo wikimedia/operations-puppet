@@ -1,4 +1,4 @@
-class gerrit::crons($ssh_key) {
+class gerrit::crons() {
     cron { 'list_mediawiki_extensions':
     # Gerrit is missing a public list of projects.
     # This hack list MediaWiki extensions repositories
