@@ -1,0 +1,27 @@
+varnishtest "Frontend vcl_deliver"
+
+server s1 {
+    rxreq
+    txresp -hdr "Set-Cookie: test" -hdr "X-MediaWiki-Original: test"
+} -start
+
+varnish v1 -arg "-p vcc_err_unref=false" -vcl+backend {
+    backend vtc_backend {
+        .host = "${s1_addr}"; .port = "${s1_port}";
+    }
+
+    include "/usr/share/varnish/tests/wikimedia_upload-frontend.vcl";
+} -start
+
+client c1 {
+    txreq -url "/test" -hdr "X-Forwarded-Proto: https" -hdr "Host: upload.wikimedia.org" -hdr "X-Content-Disposition: attachment"
+    rxresp
+
+    expect resp.status == 200
+    expect resp.http.Set-Cookie == <undef>
+    expect resp.http.X-MediaWiki-Original == <undef>
+    expect resp.http.Content-Disposition == "attachment"
+    expect resp.http.Access-Control-Allow-Origin == "*"
+    expect resp.http.Access-Control-Expose-Headers == "Age, Date, Content-Length, Content-Range, X-Content-Duration, X-Cache, X-Varnish"
+    expect resp.http.Timing-Allow-Origin == "*"
+} -run

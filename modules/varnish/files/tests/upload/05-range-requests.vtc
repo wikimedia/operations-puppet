@@ -1,0 +1,78 @@
+varnishtest "Range requests"
+
+server s1 {
+    rxreq
+    txresp -bodylen 20
+    rxreq
+    txresp -bodylen 20
+    rxreq
+    txresp -bodylen 20
+    rxreq
+    txresp -bodylen 20
+} -start
+
+varnish v1 -arg "-p vcc_err_unref=false" -vcl+backend {
+    backend vtc_backend {
+        .host = "${s1_addr}"; .port = "${s1_port}";
+    }
+
+    include "/usr/share/varnish/tests/wikimedia_upload-backend.vcl";
+} -start
+
+# Pleonastic precondition
+varnish v1 -expect cache_miss == 0
+varnish v1 -expect cache_hit == 0
+varnish v1 -expect n_object == 0
+
+client c1 {
+    # Range request
+    txreq -url "/test" -hdr "Host: upload.wikimedia.org" -hdr "Range: bytes=0-9"
+    rxresp
+    # Partial content
+    expect resp.status == 206
+    expect resp.http.Content-Length == 10
+}
+
+# First range request 0-9, expecting a miss
+client c1 -run
+varnish v1 -expect cache_miss == 1
+varnish v1 -expect cache_hit == 0
+varnish v1 -expect n_object == 1
+
+# Second range request 0-9, expecting a hit
+client c1 -run
+varnish v1 -expect cache_miss == 1
+varnish v1 -expect cache_hit == 1
+varnish v1 -expect n_object == 1
+
+client c2 {
+    # Range request for an object in cache
+    txreq -url "/test" -hdr "Host: upload.wikimedia.org" -hdr "Range: bytes=1-4"
+    rxresp
+    expect resp.status == 206
+    expect resp.http.Content-Length == 4
+}
+
+# Range request for bytes already fetched (1-4), expecting a hit
+client c2 -run
+varnish v1 -expect cache_miss == 1
+varnish v1 -expect cache_hit == 2
+varnish v1 -expect n_object == 1
+
+client c3 {
+    # unsatisfiable Range request
+    txreq -url "/test" -hdr "Host: upload.wikimedia.org" -hdr "Range: bytes=50-100"
+    rxresp
+    # Varnish 4 returns a 416 - Range Not Satisfiable
+    # Varnish 3 responds with a 200 and the entire selected representation
+    # Use macros for these values to cover both versions
+    expect resp.status == ${unsatisfiable_status}
+    expect resp.http.Content-Length == ${unsatisfiable_length}
+}
+
+# Range request for bytes > CL, varnish returns the whole cached object. This
+# is a cache hit.
+client c3 -run
+varnish v1 -expect cache_miss == 1
+varnish v1 -expect cache_hit == 3
+varnish v1 -expect n_object == 1
