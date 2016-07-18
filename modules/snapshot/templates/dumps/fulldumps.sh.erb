@@ -19,13 +19,17 @@
 # and on the rest of the snapshot hosts for regular wikis.
 
 usage(){
-    echo "Usage: $0 startdate enddate huge|regular"
-    echo "where huge or regular is the type of wiki dump to be"
-    echo "run (huge wikis or small/big wikis)"
+    echo "Usage: $0 startdate enddate huge|regular full|partial"
+    echo "where huge or regular is the type of wikis to be dumped"
+    echo "(huge wikis or small/big wikis),"
+    echo "full or partial is the the type of wiki dump to be run"
+    echo "(all steps including full page content history, or"
+    echo "a partial dump excluding that step)"
     echo "example:"
-    echo "$0 01 10 regular"
-    echo "for a run over the small and big wikis, that should have started"
-    echo "on the first of the month and can be started up to the 10th without"
+    echo "$0 01 10 regular full"
+    echo "for a run over the small and big wikis, including page"
+    echo "content history, that should have started on the first"
+    echo "the month and can be started up to the 10th without"
     echo "encroaching on the next dump run"
 }
 
@@ -81,7 +85,7 @@ maybe_do_dumps (){
     fi
 }
 
-if [ -z "$1" -o -z "$2" -o -z "$3" ]; then
+if [ -z "$1" -o -z "$2" -o -z "$3" -o -z "$4" ]; then
     usage
     exit 1
 fi
@@ -91,12 +95,12 @@ yearmonth=`/bin/date +%Y%m`
 startdate_yyyymmdd="${yearmonth}${startdate}"
 enddate="$2"
 wikitype="$3"
+dumptype="$4"
 if [ "$wikitype" == 'none' ]; then
     # do nothing
     exit 0
 fi
-
-if [ "$4" == "dryrun" ]; then
+if [ "$5" == "dryrun" ]; then
     dryrun=1
 else
     dryrun=0
@@ -166,27 +170,43 @@ case $wikitype in
 esac
 
 maxjobs=<%= scope.lookupvar('snapshot::dumps::cron::maxjobs') %>
+
+case $dumptype in
+    'full')
+	hugestages="stages_normal_nocreate_hugewikis"
+	regularstages="stages_normal_nocreate"
+	;;
+    'partial')
+	hugestages="stages_partial_nocreate_hugewikis"
+	regularstages="stages_partial_nocreate"
+	;;
+    '*')
+        echo "unknown dumptype $dumptype"
+        exit 1
+        ;;
+esac
+
 case $wikitype in
     'hugewikis')
-        maybe_do_dumps "wikidump.conf.hugewikis" "stages_normal_nocreate_hugewikis" "hugewikis" "$maxjobs"
+        maybe_do_dumps "wikidump.conf.hugewikis" "$hugestages" "hugewikis" "$maxjobs"
         # After huge wikis are done, check and do some of the rest if needed
         # If not all the big wikis are done we will start a dump run covering small and big wikis
         # Only wikis without complete dumps will be updated.
-        maybe_do_dumps "wikidump.conf.bigwikis" "stages_normal_nocreate" "bigwikis" "$maxjobs"
+        maybe_do_dumps "wikidump.conf.bigwikis" "$regularstages" "bigwikis" "$maxjobs"
 	if [ $? -ne 0 ]; then
             # If we did not start a dump run above for small and big wikis, and the small wikis
             # are not done, start such a run now.  Only wikis without complete dumps will be updated.
-            maybe_do_dumps "wikidump.conf" "stages_normal_nocreate" "smallwikis" "$maxjobs"
+            maybe_do_dumps "wikidump.conf" "$regularstages" "smallwikis" "$maxjobs"
         fi
         ;;
     'regular')
         # If not all the big wikis are done we will start a dump run covering small and big wikis
         # Only wikis without complete dumps will be updated.
-        maybe_do_dumps "wikidump.conf.bigwikis" "stages_normal_nocreate" "bigwikis" "$maxjobs"
+        maybe_do_dumps "wikidump.conf.bigwikis" "$regularstages" "bigwikis" "$maxjobs"
 	if [ $? -ne 0 ]; then
             # If we did not start a dump run above for small and big wikis, and the small wikis
             # are not done, start such a run now.  Only wikis without complete dumps will be updated.
-            maybe_do_dumps "wikidump.conf" "stages_normal_nocreate" "smallwikis" "$maxjobs"
+            maybe_do_dumps "wikidump.conf" "$regularstages" "smallwikis" "$maxjobs"
         fi
         ;;
     '*')
