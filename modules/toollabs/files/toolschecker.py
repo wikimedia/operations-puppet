@@ -323,7 +323,7 @@ def check_etcd_health(host):
     # Don't do https verification because we are using puppet certificate for validating
     # it and tools-checker infrastructure runs on the labs puppetmaster because we have a
     # check for the labs puppetmaster in here...
-    request = requests.get('https://{host}:2379/health'.format(host=host), verify=False)
+    request = requests.get('https://{host}:2379/health'.format(host=host), timeout=3, verify=False)
     if request.status_code == 200:
         return request.json()['health'] == 'true'
     return False
