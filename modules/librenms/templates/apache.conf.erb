@@ -8,6 +8,7 @@
 <VirtualHost *:443>
     ServerName <%= @sitename %>
     ServerAdmin noc@wikimedia.org
+    RequestHeader unset Proxy early # https://httpoxy.org/
 
     SSLEngine on
     SSLCertificateFile /etc/ssl/localcerts/<%= @sitename %>.crt

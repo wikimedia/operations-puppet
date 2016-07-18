@@ -9,6 +9,8 @@
     ServerName <%= @webserver_hostname %>
     ServerAlias <%= @webserver_hostname_aliases %>
 
+    RequestHeader unset Proxy early # https://httpoxy.org/
+
     DocumentRoot /srv/mediawiki/docroot/wikimedia.org
     <Directory />
         Options FollowSymLinks
@@ -47,6 +49,8 @@
 <VirtualHost *:443>
     ServerAdmin noc@wikimedia.org
     ServerName <%= @webserver_hostname %>
+
+    RequestHeader unset Proxy early # https://httpoxy.org/
 
     RewriteEngine on
     SSLEngine on

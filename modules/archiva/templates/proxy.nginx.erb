@@ -26,6 +26,7 @@ server {
 
   location / {
     proxy_pass <%= @proxy_pass %>;
+    proxy_set_header Proxy ""; # https://httpoxy.org/
 <% if @location_properties -%>
     <%= @location_properties.sort.join("\n    ") -%>
 <% end -%>

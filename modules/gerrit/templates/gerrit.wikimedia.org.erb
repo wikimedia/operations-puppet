@@ -50,6 +50,8 @@ NameVirtualHost *:443
     ServerAdmin noc@wikimedia.org
     ServerName <%= @host %>
 
+    RequestHeader unset Proxy early # https://httpoxy.org/
+
     SSLEngine on
     SSLCertificateFile <%= @ssl_cert_file %>
     SSLCertificateChainFile <%= @ssl_cert_chain_file %>
