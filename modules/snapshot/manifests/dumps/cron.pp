@@ -31,13 +31,25 @@ class snapshot::dumps::cron(
     # fixme there is an implicit dependency on
     # wikidump.conf.* plus some stage files, make explicit
     $runtype = hiera('snapshot::dumps::runtype', 'regular')
+
     cron { 'fulldumps_rest':
         ensure      => 'present',
         environment => 'MAILTO=ops-dumps@wikimedia.org',
         user        => $user,
-        command     => "/usr/local/bin/fulldumps.sh 01 14 ${runtype} > /dev/null",
+        command     => "/usr/local/bin/fulldumps.sh 01 14 ${runtype} full > /dev/null",
         minute      => '05',
         hour        => [8, 20],
         monthday    => '01-14',
     }
+
+    cron { 'partialdumps_rest':
+        ensure      => 'present',
+        environment => 'MAILTO=ops-dumps@wikimedia.org',
+        user        => $user,
+        command     => "/usr/local/bin/fulldumps.sh 20 25 ${runtype} partial > /dev/null",
+        minute      => '05',
+        hour        => [8, 20],
+        monthday    => '20-25',
+    }
+
 }
