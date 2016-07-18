@@ -19,6 +19,7 @@ class role::gerrit::server($ipv4, $ipv6) {
         monitoring::service { 'https':
             description   => 'HTTPS',
             check_command => "check_ssl_http!${host}",
+            contact_group => 'admins,gerrit',
         }
 
         backup::set { 'var-lib-gerrit2-review_site-git': }
