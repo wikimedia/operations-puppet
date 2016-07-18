@@ -1,5 +1,9 @@
 # mediawiki udp2log instance.  Does not use monitoring.
-class role::logging::mediawiki($monitor = true, $log_directory = '/srv/mw-log' ) {
+class role::logging::mediawiki(
+    $monitor = true,
+    $log_directory = '/srv/mw-log',
+    $rotate = 1000,
+) {
     system::role { 'role::logging:mediawiki':
         description => 'MediaWiki log collector',
     }
@@ -64,6 +68,7 @@ class role::logging::mediawiki($monitor = true, $log_directory = '/srv/mw-log' )
         monitor_log_age     =>    false,
         monitor_processes   =>    false,
         monitor_packet_loss =>    false,
+        rotate              =>    $rotate,
         template_variables  => {
             error_processor_host => $error_processor_host,
             error_processor_port => 8423,
