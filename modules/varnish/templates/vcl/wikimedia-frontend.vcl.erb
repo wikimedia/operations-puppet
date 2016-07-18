@@ -34,18 +34,7 @@ sub https_recv_redirect {
 			}
 		}
 		else if (req.http.Host !~ "\.beta\.wmflabs\.org$") {
-<% if @vcl_config.fetch("secure_post", true) -%>
-			<%= error_synth(403, "Insecure Request Forbidden - use HTTPS") -%>
-<% else -%>
-			// T105794 - "Insecure Post": Revised plan:
-			// 2016-07-12 - 20% failure rate for labs hosts, 100% failure rate for outside world
-			// 2016-07-19 - 100% failure rate for all
-			if (req.http.X-Client-IP ~ "^10\.68\." && std.random(0,100) > 20.0) {
-				// temporary hole-punch for labs, for one more week
-			} else {
-				<%= error_synth(403, "Insecure Request Forbidden - use HTTPS - https://lists.wikimedia.org/pipermail/mediawiki-api-announce/2016-May/000110.html") -%>
-			}
-<% end -%>
+			<%= error_synth(403, "Insecure Request Forbidden - use HTTPS - https://lists.wikimedia.org/pipermail/mediawiki-api-announce/2016-May/000110.html") -%>
 		}
 	}
 }
