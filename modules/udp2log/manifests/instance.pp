@@ -36,6 +36,7 @@ define udp2log::instance(
     $template_variables  = undef,
     $recv_queue          = undef,
     $logrotate_template  = 'udp2log/logrotate_udp2log.erb',
+    $rotate              = 1000,
 ){
     # This define requires that the udp2log class has
     # been included.  The udp2log class is parameterized,
