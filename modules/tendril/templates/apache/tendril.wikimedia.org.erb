@@ -6,7 +6,8 @@ NameVirtualHost *:443
 
 <VirtualHost *:443>
     ServerName <%= @site_name %>
-    RequestHeader unset Proxy early # https://httpoxy.org/
+    # https://httpoxy.org/
+    RequestHeader unset Proxy early
     SSLEngine On
     SSLCertificateFile /etc/ssl/localcerts/tendril.wikimedia.org.crt
     SSLCertificateChainFile /etc/ssl/localcerts/tendril.wikimedia.org.chain.crt
