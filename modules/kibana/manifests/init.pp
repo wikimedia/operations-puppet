@@ -25,6 +25,7 @@ class kibana (
         group   => 'root',
         content => ordered_yaml({
             'kibana.defaultAppId' => $default_app_id,
+            'logging.quiet'       => true,
         }),
         mode    => '0444',
         require => Package['kibana'],
