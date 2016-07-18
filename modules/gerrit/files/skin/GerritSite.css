@@ -28,6 +28,11 @@ a:hover {
 	text-decoration: underline;
 }
 
+/* Make the repo links turn blue */
+table.changeTable a.gwt-Anchor {
+	color: #0654ac !important;
+}
+
 /* Search queries / Dashboards
  * have links in every cell, make those easier on the eyes
  */
