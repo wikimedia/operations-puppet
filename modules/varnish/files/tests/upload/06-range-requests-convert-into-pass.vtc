@@ -1,0 +1,36 @@
+varnishtest "Range requests: convert into pass over a certain threshold"
+
+server s1 {
+    rxreq
+    txresp -bodylen 20
+    rxreq
+    txresp -bodylen 20
+} -start
+
+varnish v1 -arg "-p vcc_err_unref=false" -vcl+backend {
+    backend vtc_backend {
+        .host = "${s1_addr}"; .port = "${s1_port}";
+    }
+
+    include "/usr/share/varnish/tests/wikimedia_upload-backend.vcl";
+} -start
+
+client c1 {
+    # Range request over a certain threshold
+    txreq -url "/test" -hdr "Host: upload.wikimedia.org" -hdr "Range: bytes=999999999-"
+    rxresp
+    expect resp.status == 200
+    expect resp.http.Content-Length == 20
+}
+
+client c1 -run
+varnish v1 -expect cache_miss == 1
+varnish v1 -expect cache_hit == 0
+# The request has been converted into pass, no object in cache
+varnish v1 -expect n_object == 0
+
+client c1 -run
+# The request has been converted into pass, this is a miss
+varnish v1 -expect cache_miss == 2
+varnish v1 -expect cache_hit == 0
+varnish v1 -expect n_object == 0
