@@ -238,6 +238,7 @@ sub vcl_recv {
 <% end -%>
 
 	unset req.http.X-DCPath; // no injection from outside our stack
+	unset req.http.Proxy; // https://httpoxy.org/
 
 	if (req.restarts == 0) {
 		// This unwraps proxy-style URLs, strips :port from Host:, and downcases Host:
