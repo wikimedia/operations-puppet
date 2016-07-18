@@ -10,8 +10,10 @@ class mediawiki::multimedia {
     include ::mediawiki::firejail
 
     file { '/etc/fonts/conf.d/70-no-bitmaps.conf':
-        ensure  => link,
-        target  => '/etc/fonts/conf.avail/70-no-bitmaps.conf',
+        source => 'puppet:///modules/mediawiki/fontconfig-no-bitmaps.conf',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0644',
         require => Package['fontconfig-config'],
     }
 
