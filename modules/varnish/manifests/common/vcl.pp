@@ -39,4 +39,19 @@ class varnish::common::vcl {
         group   => 'root',
         recurse => true,
     }
+
+    if $varnish_version4 {
+        $unsatisfiable_status = 416
+        $unsatisfiable_length = 0
+    } else {
+        $unsatisfiable_status = 200
+        $unsatisfiable_length = 20
+    }
+
+    file { '/usr/local/bin/varnishtest-runner':
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0755',
+        content => template("${module_name}/test-runner.sh.erb"),
+    }
 }
