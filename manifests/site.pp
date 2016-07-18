@@ -2492,13 +2492,13 @@ node 'potassium.eqiad.wmnet' {
 }
 
 node /^prometheus200[12]\.codfw\.wmnet$/ {
-    role prometheus::ops
+    role prometheus::ops, prometheus::node_exporter
 
     include standard
 }
 
 node /^prometheus100[12]\.eqiad\.wmnet$/ {
-    role prometheus::ops
+    role prometheus::ops, prometheus::node_exporter
 
     include standard
 }
