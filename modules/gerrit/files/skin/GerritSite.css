@@ -117,7 +117,7 @@ a:hover {
 }
 
 /**
- * https://bugzilla.wikimedia.org/show_bug.cgi?id=44895
+ * https://phabricator.wikimedia.org/T46895
  * Gerrit commit message font is too small
  */
 .changeScreenDescription,
@@ -126,7 +126,7 @@ a:hover {
 }
 
 /**
- * https://bugzilla.wikimedia.org/show_bug.cgi?id=40941
+ * https://phabricator.wikimedia.org/T42941
  * Gerrit diff font isn't big enough, either
  */
 .patchContentTable td {
