@@ -38,7 +38,7 @@ die "Failed to query segments for ${ES_HOST}/${ES_INDEX}"
 SEGMENTS=$(grep num_search_segments "${CURL_BODY}"|cut -d: -f2|tr -d ' ,')
 
 if [[ $SEGMENTS > 1 ]]; then
-    runCurl -XPOST "${ES_HOST}/${ES_INDEX}/_optimize?max_num_segments=1" ||
+    runCurl -XPOST "${ES_HOST}/${ES_INDEX}/_forcemerge?max_num_segments=1" ||
     die "Failed to optimize ${ES_HOST}/${ES_INDEX}"
 fi
 
