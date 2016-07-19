@@ -1,0 +1,34 @@
+# eqiad prod name
+elasticsearch::cluster_name: relforge-eqiad
+
+# ES-specific: Not default
+elasticsearch::multicast_enabled: false
+elasticsearch::unicast_hosts: # this should be set to the list of master eligible nodes
+  - relforge1001.eqiad.wmnet
+  - relforge1002.eqiad.wmnet
+
+elasticsearch::cluster_hosts:
+  - relforge1001.eqiad.wmnet
+  - relforge1002.eqiad.wmnet
+
+# TODO at what point do we need to update this number?
+elasticsearch::expected_nodes: 2
+
+# We should be able to run "OK" with 24 servers.
+elasticsearch::recover_after_nodes: 2
+
+debdeploy::grains:
+  debdeploy-elastic-eqiad:
+    value: standard
+
+elasticsearch::graylog_hosts:
+  - logstash1001.eqiad.wmnet
+  - logstash1002.eqiad.wmnet
+  - logstash1003.eqiad.wmnet
+
+elasticsearch::https::certificate_name: 'relforge.svc.eqiad.wmnet'
+base::puppet::dns_alt_names:            'relforge.svc.eqiad.wmnet'
+
+elasticsearch::master_eligible: true
+# make sure the elasticsearch::unicast_hosts property is updated if master
+# eligibility is modified

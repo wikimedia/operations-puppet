@@ -2551,6 +2551,12 @@ node /^rdb200[1-6]\.codfw\.wmnet/ {
     include base::firewall
 }
 
+node /^relforge100[1-2]\.eqiad\.wmnet/ {
+    role elasticsearch::server
+    include base::firewall
+    include standard
+}
+
 # restbase eqiad cluster
 node /^restbase10[01][0-9]\.eqiad\.wmnet$/ {
     role restbase, cassandra
