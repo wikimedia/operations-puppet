@@ -17,7 +17,8 @@ class puppetmaster::web_test ($server_name, $workers = {}) {
     }
 
     apache::site { 'puppetmaster-test':
-        content => template('puppetmaster/puppetmaster-test.erb'),
-        require => Exec['generate hostcert'],
+        content  => template('puppetmaster/puppetmaster-test.erb'),
+        priority => 90,
+        require  => Exec['generate hostcert'],
     }
 }

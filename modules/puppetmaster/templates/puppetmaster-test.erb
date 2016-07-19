@@ -1,4 +1,5 @@
 # Experimental virtualhost to test new puppetmaster backends
+NameVirtualHost *:8140
 <VirtualHost <%= scope.lookupvar('puppetmaster::passenger::bind_address') %>:8140>
     ServerName <%= @server_name %>
     SSLEngine on
