@@ -1,5 +1,5 @@
 # modules/role/manifests/gerrit/production.pp
-class role::gerrit::server($ipv4, $ipv6) {
+class role::gerrit::server($ipv4, $ipv6, $bacula = undef) {
         system::role { 'role::gerrit::server': description => 'Gerrit server' }
         include role::backup::host
         include base::firewall
@@ -28,7 +28,9 @@ class role::gerrit::server($ipv4, $ipv6) {
             contact_group => 'admins,gerrit',
         }
 
-        backup::set { 'var-lib-gerrit2-review_site-git': }
+        if $bacula != undef {
+            backup::set { $bacula: }
+        }
 
         interface::ip { 'role::gerrit::server_ipv4':
             interface => 'eth0',
