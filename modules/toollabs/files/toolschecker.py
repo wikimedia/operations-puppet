@@ -11,6 +11,7 @@ import subprocess
 import time
 import uuid
 import yaml
+import pykube
 
 
 app = flask.Flask(__name__)
@@ -350,6 +351,36 @@ def kubernetes_etcd_check():
         'tools-k8s-etcd-03.tools.eqiad.wmflabs',
     ]
     return all([check_etcd_health(host) for host in hosts])
+
+
+def get_kubernetes_api():
+    api = pykube.HTTPClient(
+        pykube.KubeConfig.from_file(
+            os.path.expanduser('~/.kube/config')
+        )
+    )
+    return api
+
+
+@check('/k8s/nodes/ready')
+def kubernetes_nodes_ready_check():
+    """
+    Check that no nodes are in NonReady but Schedulable state
+    """
+    api = get_kubernetes_api()
+    nodes = list(pykube.Node.objects(api))
+    for node in nodes:
+        is_ready = False
+        for condition in node.obj['status']['conditions']:
+            if condition['type'] == 'Ready' and condition['status'] == 'True':
+                is_ready = True
+                break
+        if not is_ready:
+            if node.obj['spec'].get('unschedulable', False):
+                # If node isn't ready but is marked as unschedulable (cordoned), is ok
+                continue
+            return False
+    return True
 
 
 @check('/webservice/kubernetes')
