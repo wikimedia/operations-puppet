@@ -24,7 +24,7 @@ class role::gerrit::server($ipv4, $ipv6) {
 
         monitoring::service { 'gerrit_ssh':
             description   => 'SSH access',
-            check_command => "check_ssh_port!${host}!29418",
+            check_command => "check_ssh_port!29418",
             contact_group => 'admins,gerrit',
         }
 
