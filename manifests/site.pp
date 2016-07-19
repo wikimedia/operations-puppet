@@ -886,10 +886,10 @@ node 'dbproxy1002.eqiad.wmnet' {
 node 'dbproxy1003.eqiad.wmnet' {
     class { 'role::mariadb::proxy::master':
         shard          => 'm3',
-        primary_name   => 'db1043',
-        primary_addr   => '10.64.16.32',
-        secondary_name => 'db1048',
-        secondary_addr => '10.64.16.37',
+        primary_name   => 'db1048',
+        primary_addr   => '10.64.16.37',
+        secondary_name => 'db1043',
+        secondary_addr => '10.64.16.33',
     }
 }
 
