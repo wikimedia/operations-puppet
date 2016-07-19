@@ -1,4 +1,8 @@
-class gerrit::proxy($host = $::gerrit::host, $lets_encrypt = true) {
+class gerrit::proxy(
+    $host         = $::gerrit::host,
+    $lets_encrypt = true,
+    $maint_mode   = false,
+    ) {
 
     $ssl_settings = ssl_ciphersuite('apache', 'compat', true)
 
@@ -15,6 +19,29 @@ class gerrit::proxy($host = $::gerrit::host, $lets_encrypt = true) {
     apache::site { $host:
         content => template('gerrit/gerrit.wikimedia.org.erb'),
     }
+
+    # Error page just in case we're dying
+    file { '/var/www/maintenance.html':
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0444',
+        source => 'puppet:///modules/gerrit/maintenance.html',
+    }
+
+    file { '/var/www/page-bkg.jpg':
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0444',
+        source => 'puppet:///modules/gerrit/skin/page-bkg.jpg',
+    }
+
+    file { '/var/www/wikimedia-codereview-logo.png':
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0444',
+        source => 'puppet:///modules/gerrit/skin/wikimedia-codereview-logo.png',
+    }
+
 
     include ::apache::mod::rewrite
 
