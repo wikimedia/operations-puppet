@@ -868,8 +868,8 @@ node 'dbproxy1001.eqiad.wmnet' {
         shard          => 'm1',
         primary_name   => 'db1016',
         primary_addr   => '10.64.0.20',
-        secondary_name => 'db1016',
-        secondary_addr => '10.64.0.20',
+        secondary_name => 'db1001',
+        secondary_addr => '10.64.0.5',
     }
 }
 
