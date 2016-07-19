@@ -37,6 +37,11 @@
 #   surpassed, the worker will be killed and a new one will be spawned. Default:
 #   300
 #
+# [*heartbeat_to*]
+#   Interval (in ms) used to monitor workers for activity. If $heartbeat_to
+#   milliseconds pass without a worker sending a heartbeat, it will be killed by
+#   the master. Default: 7500
+#
 # [*no_file*]
 #   Number of maximum allowed open files for the service, to be set by
 #   ulimit. Default: 10000
@@ -56,6 +61,10 @@
 # [*starter_module*]
 #   The service's starter module loaded by service-runner on start-up. Default:
 #   ./src/app.js
+#
+# [*entrypoint*]
+#   If the service's starter module exports a specific function that should be
+#   used on start-up, set this parameter to the function's name. Default: ''
 #
 # [*starter_script*]
 #   The script used for starting the service. Default: src/server.js
@@ -116,11 +125,13 @@ define service::node(
     $full_config     = false,
     $no_workers      = 'ncpu',
     $heap_limit      = 300,
+    $heartbeat_to    = 7500,
     $no_file         = 10000,
     $healthcheck_url = '/_info',
     $has_spec        = false,
     $repo            = "${title}/deploy",
     $starter_module  = './src/app.js',
+    $entrypoint      = '',
     $starter_script  = 'src/server.js',
     $local_logging   = true,
     $auto_refresh    = true,
