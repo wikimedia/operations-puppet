@@ -163,20 +163,6 @@ class gerrit::jetty(
         recurse => true,
     }
 
-    file { '/var/lib/gerrit2/review_site/static/page-bkg.cache.jpg':
-        owner  => 'gerrit2',
-        group  => 'gerrit2',
-        mode   => '0444',
-        source => 'puppet:///modules/gerrit/skin/page-bkg.cache.jpg',
-    }
-
-    file { '/var/lib/gerrit2/review_site/static/wikimedia-codereview-logo.cache.png':
-        owner  => 'gerrit2',
-        group  => 'gerrit2',
-        mode   => '0444',
-        source => 'puppet:///modules/gerrit/skin/wikimedia-codereview-logo.cache.png',
-    }
-
     file { '/var/lib/gerrit2/review_site/lib':
         ensure  => directory,
         owner   => 'gerrit2',
