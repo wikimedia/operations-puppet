@@ -16,7 +16,13 @@ server {
     listen       <%= bind %><%= ' ssl' if @use_ssl %>;
     <%- end -%>
     server_name  <%= @server_name %>;
-    access_log   /var/log/nginx/rcstream_<%= 'ssl_' if @use_ssl %>access.log;
+
+    log_format combined_with_proto '$remote_addr - $remote_user [$time_local] '
+                                   '"$request" $status $body_bytes_sent '
+                                   '"$http_referer" "$http_user_agent" '
+                                   '"$http_x_forwarded_proto"';
+
+    access_log   /var/log/nginx/rcstream_<%= 'ssl_' if @use_ssl %>access.log combined_with_proto;
     error_log    /var/log/nginx/rcstream_<%= 'ssl_' if @use_ssl %>error.log;
 
     <%- if @use_ssl -%>
