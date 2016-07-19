@@ -438,13 +438,19 @@ def webservice_kubernetes_test():
 
 @check('/service/start')
 def service_start_test():
-    ''' Start a couple of simple web services, verify that they can serve a page
-        within 10 seconds.'''
+    """
+    Start a couple of simple web services, verify that they can serve a page
+    within 10 seconds.
+    """
     success = False
-    url = "https://tools.wmflabs.org/toolschecker/"
+    url = "https://tools.wmflabs.org/toolschecker-ge-ws/"
     with open(os.devnull, 'w') as devnull:
-        subprocess.check_call(['/usr/bin/webservice', 'start'],
-                              stderr=devnull, stdout=devnull)
+        subprocess.check_call([
+            'sudo',
+            'u', 'tools.toolschecker-ge-ws',
+            '-i',
+            '/usr/bin/webservice', 'start'
+        ], stderr=devnull, stdout=devnull)
 
     for i in range(0, 10):
         request = requests.get(url)
@@ -454,11 +460,15 @@ def service_start_test():
         time.sleep(1)
 
     with open(os.devnull, 'w') as devnull:
-        subprocess.check_call(['/usr/bin/webservice', 'stop'],
-                              stderr=devnull, stdout=devnull)
+        subprocess.check_call([
+            'sudo',
+            'u', 'tools.toolschecker-ge-ws',
+            '-i',
+            '/usr/bin/webservice', 'stop'
+        ], stderr=devnull, stdout=devnull)
 
     # Make sure it really stopped
-    success = False
+    success = success and False
     for i in range(0, 10):
         request = requests.get(url)
         if request.status_code != 200:
@@ -472,9 +482,12 @@ def service_start_test():
     # So far so good -- now, test wsgi
     success = False
     with open(os.devnull, 'w') as devnull:
-        subprocess.check_call(
-            ['/usr/bin/webservice', 'uwsgi-python', 'start'],
-            stderr=devnull, stdout=devnull)
+        subprocess.check_call([
+            'sudo',
+            'u', 'tools.toolschecker-ge-ws',
+            '-i',
+            '/usr/bin/webservice', 'uwsgi-python', 'start'
+        ], stderr=devnull, stdout=devnull)
 
     for i in range(0, 10):
         request = requests.get(url)
@@ -484,12 +497,15 @@ def service_start_test():
         time.sleep(1)
 
     with open(os.devnull, 'w') as devnull:
-        subprocess.check_call(
-            ['/usr/bin/webservice', 'uwsgi-python', 'stop'],
-            stderr=devnull, stdout=devnull)
+        subprocess.check_call([
+            'sudo',
+            'u', 'tools.toolschecker-ge-ws',
+            '-i',
+            '/usr/bin/webservice', 'uwsgi-python', 'stop'
+        ], stderr=devnull, stdout=devnull)
 
     # Make sure it really stopped
-    success = False
+    success = success and False
     for i in range(0, 10):
         request = requests.get(url)
         if request.status_code != 200:
