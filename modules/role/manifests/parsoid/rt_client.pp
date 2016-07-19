@@ -2,7 +2,7 @@
 class role::parsoid::rt_client {
     include ::testreduce
 
-    file { '/srv/parsoid/src/tests/testreduce/parsoid-rt-client.rttest.localsettings.js':
+    file { '/srv/deployment/parsoid/deploy/src/tests/testreduce/parsoid-rt-client.rttest.localsettings.js':
         content => template('testreduce/parsoid-rt-client.rttest.localsettings.js.erb'),
         owner   => 'root',
         group   => 'root',
