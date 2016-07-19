@@ -142,4 +142,9 @@ class icinga::monitor::toollabs {
         check_command => "${checker}!/etcd/k8s!OK",
         host          => $test_entry_host,
     }
+    monitoring::service { 'tools-checker-k8s-node-ready':
+        description   => 'All k8s worker nodes are healthy',
+        check_command => "${checker}!/k8s/nodes/ready!OK",
+        host          => $test_entry_host,
+    }
 }
