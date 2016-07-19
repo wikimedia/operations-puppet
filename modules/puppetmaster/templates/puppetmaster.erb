@@ -28,6 +28,7 @@ PassengerUseGlobalQueue on
     SSLOptions +StdEnvVars
 
     <%- if @server_type == 'frontend' -%>
+    ServerName <%= scope.lookupvar('puppetmaster::server_name') %>
     # These request headers are used to pass the client certificate
     # authentication information on to the puppet master process
     RequestHeader set X-SSL-Subject %{SSL_CLIENT_S_DN}e
