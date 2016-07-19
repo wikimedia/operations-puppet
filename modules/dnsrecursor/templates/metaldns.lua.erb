@@ -24,5 +24,12 @@ function nxdomain (remoteip, domain, qtype)
         return 0, {{qtype=pdns.A, content=(ARecords[domain]), ttl=300}}
     end
 
+    if (ARecords[domain] or PTRRecords[domain]) then
+        -- TODO: This should probably return an SOA record, but that might get complex here...
+        -- Labs auth DNS severs usually return something like this:
+        -- {qtype=pdns.SOA, content="labs-ns0.wikimedia.org. root.wmflabs.org. 1468966660 3600 600 86400 3600", ttl=60}
+        return 0, {}
+    end
+
     return -1, {}
 end
