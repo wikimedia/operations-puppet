@@ -1249,7 +1249,8 @@ node 'labtestcontrol2001.wikimedia.org' {
     include standard
     include base::firewall
     role labs::openstack::nova::controller,
-          labs::puppetmaster
+          labs::puppetmaster,
+          labs::dns_floating_ip_updater
 
     include labspuppetbackend
 
@@ -1425,7 +1426,8 @@ node 'labcontrol1001.wikimedia.org' {
     role labs::openstack::nova::controller,
           labs::puppetmaster,
           salt::masters::labs,
-          deployment::salt_masters
+          deployment::salt_masters,
+          labs::dns_floating_ip_updater
 
     include base::firewall
     include standard
