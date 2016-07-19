@@ -1224,7 +1224,8 @@ node 'kraz.wikimedia.org' {
 
 # labservices1001 hosts openstack-designate, the labs DNS service.
 node 'labservices1001.wikimedia.org' {
-    role labs::dns, labs::openstack::designate::server, labs::dnsrecursor
+    role labs::dns, labs::openstack::designate::server, labs::dnsrecursor,
+        labs::dns_floating_ip_updater
     include standard
     include base::firewall
     include ldap::role::client::labs
@@ -1288,7 +1289,8 @@ node 'labtestcontrol2001.wikimedia.org' {
 }
 
 node 'labtestservices2001.wikimedia.org' {
-    role labs::dns, labs::openstack::designate::server, labs::dnsrecursor, openldap::labtest
+    role labs::dns, labs::openstack::designate::server, labs::dnsrecursor, openldap::labtest,
+        labs::dns_floating_ip_updater
     include standard
     include base::firewall
 }
