@@ -15,7 +15,7 @@ class toollabs::bastion(
     include toollabs::dev_environ
     include toollabs::exec_environ
 
-    if $::operatingsystem == 'Ubuntu' {
+    if os_version('ubuntu trusty') {
 
         # lint:ignore:arrow_alignment
         cgred::group {'shell':
