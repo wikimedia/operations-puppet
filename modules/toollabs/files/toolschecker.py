@@ -390,10 +390,16 @@ def webservice_kubernetes_test():
     within 10 seconds.
     """
     success = False
-    url = "https://tools.wmflabs.org/toolschecker/"
+    url = "https://tools.wmflabs.org/toolschecker-k8s-ws/"
     with open(os.devnull, 'w') as devnull:
-        subprocess.check_call(['/usr/bin/webservice', '--backend=kubernetes', 'start'],
-                              stderr=devnull, stdout=devnull)
+        subprocess.check_call([
+            'sudo',
+            '-u', 'tools.toolschecker-k8s-ws',
+            '-i',
+            '/usr/bin/webservice',
+            '--backend=kubernetes',
+            'start',
+        ], stderr=devnull, stdout=devnull)
 
     for i in range(0, 10):
         request = requests.get(url)
@@ -403,8 +409,14 @@ def webservice_kubernetes_test():
         time.sleep(1)
 
     with open(os.devnull, 'w') as devnull:
-        subprocess.check_call(['/usr/bin/webservice', 'stop'],
-                              stderr=devnull, stdout=devnull)
+        subprocess.check_call([
+            'sudo',
+            '-u', 'tools.toolschecker-k8s-ws',
+            '-i',
+            '/usr/bin/webservice',
+            '--backend=kubernetes',
+            'stop',
+        ], stderr=devnull, stdout=devnull)
 
     # If we never succeeded in the starting of the webservice, fail!
     # We put this here after the stop so we don't end up with accidental failures
