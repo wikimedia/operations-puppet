@@ -1,5 +1,4 @@
 -- haproxy@dbproxy1003
--- Grants below presently ignore the proxy, which needs attention.
 
 GRANT USAGE
     ON *.* TO 'haproxy'@'10.64.0.198';
@@ -13,6 +12,14 @@ GRANT USAGE
 GRANT ALL PRIVILEGES
     ON `phabricator%`.* TO 'phadmin'@'10.64.32.150';
 
+-- phadmin@dbproxy1003
+GRANT USAGE
+    ON *.* TO 'phadmin'@'10.64.0.198'
+    IDENTIFIED BY PASSWORD '*4882BF5FB61F6C0D5935BFA407BB6B6086421A5F';
+
+GRANT ALL PRIVILEGES
+    ON `phabricator%`.* TO 'phadmin'@'10.64.0.198';
+
 -- phuser@iridium
 
 GRANT USAGE
@@ -23,7 +30,19 @@ GRANT CREATE, DROP
     ON `phabricator_cache`.`cache_markupcache` TO 'phuser'@'10.64.32.150';
 
 GRANT DELETE, EXECUTE, INSERT, SELECT, SHOW VIEW, UPDATE
-    ON `phabricator%`.* TO 'phuser'@'iridium';
+    ON `phabricator%`.* TO 'phuser'@'10.64.32.150';
+
+-- phuser@dbproxy1003
+
+GRANT USAGE
+    ON *.* TO 'phuser'@'10.64.0.198'
+    IDENTIFIED BY PASSWORD '*986DF0EF210E895FAAA2D71A8AF0F4EEA4D93E2A';
+
+GRANT CREATE, DROP
+    ON `phabricator_cache`.`cache_markupcache` TO 'phuser'@'10.64.0.198';
+
+GRANT DELETE, EXECUTE, INSERT, SELECT, SHOW VIEW, UPDATE
+    ON `phabricator%`.* TO 'phuser'@'10.64.0.198';
 
 -- phstats@iridium
 
@@ -41,7 +60,23 @@ GRANT SELECT
 GRANT SELECT
     ON `phabricator_user`.* TO 'phstats'@'iridium';
 
--- phmanifest@iridium'
+-- phstats@dbproxy1003
+
+GRANT USAGE
+    ON *.* TO 'phstats'@'10.64.0.198'
+    IDENTIFIED BY PASSWORD '*FB8AA9D0E19A01A13E7FB1037FC964F7887D22F5';
+GRANT SELECT ON `phabricator_maniphest`.* TO 'phstats'@'10.64.0.198';
+GRANT SELECT ON `phabricator_user`.* TO 'phstats'@'10.64.0.198';
+GRANT SELECT ON `phabricator_project`.* TO 'phstats'@'10.64.0.198';
+
+
+GRANT SELECT
+    ON `phabricator_maniphest`.* TO 'phstats'@'10.64.0.198';
+
+GRANT SELECT
+    ON `phabricator_user`.* TO 'phstats'@'10.64.0.198';
+
+-- phmanifest@iridium
 
 GRANT USAGE
     ON *.* TO 'phmanifest'@'10.64.32.150'
@@ -49,3 +84,26 @@ GRANT USAGE
 
 GRANT SELECT
     ON `phabricator_maniphest`.* TO 'phmanifest'@'10.64.32.150';
+
+-- phmanifest@dbproxy1003
+
+GRANT USAGE
+    ON *.* TO 'phmanifest'@'10.64.0.198'
+    IDENTIFIED BY PASSWORD '*57879C423C685FDF9F3F4E3DB71207E76A8384C4';
+
+GRANT SELECT
+    ON `phabricator_maniphest`.* TO 'phmanifest'@'10.64.0.198';
+
+-- bzmigrate@%
+GRANT USAGE
+    ON *.* TO 'bzmigrate'@'%' 
+    IDENTIFIED BY PASSWORD '*DA35098F5C3FFAF021B5E73207FC2CFB431DE2FF';
+GRANT ALL PRIVILEGES 
+    ON `bugzilla_migration`.* TO 'bzmigrate'@'%';
+
+-- rtmigrate@%
+GRANT USAGE
+    ON *.* TO 'rtmigrate'@'%'
+    IDENTIFIED BY PASSWORD '*FEFB866BAD7FF0ED0A3078A178E2AA1B7D093477';
+GRANT ALL PRIVILEGES 
+    ON `rt_migration`.* TO 'rtmigrate'@'%';
