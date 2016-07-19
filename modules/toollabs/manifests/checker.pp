@@ -83,8 +83,8 @@ class toollabs::checker inherits toollabs {
 
     sudo::user { 'tools.toolschecker':
         privileges => [
-           'ALL=(tools.toolschecker-k8s-ws) NOPASSWD: ALL',
-           'ALL=(tools.toolschecker-ge-ws) NOPASSWD: ALL',
+            'ALL=(tools.toolschecker-k8s-ws) NOPASSWD: ALL',
+            'ALL=(tools.toolschecker-ge-ws) NOPASSWD: ALL',
         ]
     }
 
