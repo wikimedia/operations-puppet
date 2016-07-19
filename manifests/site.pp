@@ -889,7 +889,7 @@ node 'dbproxy1003.eqiad.wmnet' {
         primary_name   => 'db1048',
         primary_addr   => '10.64.16.37',
         secondary_name => 'db1043',
-        secondary_addr => '10.64.16.33',
+        secondary_addr => '10.64.16.32',
     }
 }
 
