@@ -25,9 +25,17 @@ class role::analytics_cluster::refinery {
         }
     }
 
-    # analytics/refinery will deployed to this node.
-    package { 'analytics/refinery':
-        provider => 'trebuchet',
+    # The analytics/refinery repo will deployed to this node via Scap3.
+    # The analytics user/groups are deployed/managed by Scap.
+    # The analytics_deploy SSH keypair files are stored in the private repo,
+    # and since manage_user is true the analytics_deploy public ssh key
+    # will be added to the 'analytics' user's ssh config. The rationale is to
+    # have a single 'analytics' multi-purpose user that owns refinery files
+    # deployed via scap and could possibly do other things (not yet defined).
+    scap::target { 'analytics/refinery':
+        service_name => 'analytics/refinery',
+        deploy_user  => 'analytics',
+        manage_user  => true,
     }
 
     # analytics/refinery repository is deployed via git-deploy at this path.
