@@ -32,7 +32,7 @@ def main():
     ldapSupportLib.addParserOptions(parser, "scriptuser")
 
     parser.add_option("-m", "--directorymanager", action="store_true", dest="directorymanager", help="Use the Directory Manager's credentials, rather than your own")
-    parser.add_option("--shell", action="store", dest="loginShell", default="/usr/local/bin/sillyshell", help="The user's shell (default: /usr/bin/sillyshell)")
+    parser.add_option("--shell", action="store", dest="loginShell", default="/bin/bash", help="The user's shell (default: /bin/bash)")
     parser.add_option("--gid", action="store", dest="gidNumber", default="550", help="The user's gid (default: 550)")
     parser.add_option("--uid", action="store", dest="uidNumber", help="The user's uid (default: next available uid)")
     parser.add_option("--home", action="store", dest="homeDirectory", help="The user's home directory (default /home/username)")
