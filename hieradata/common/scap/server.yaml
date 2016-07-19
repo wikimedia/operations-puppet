@@ -27,10 +27,20 @@ keyholder_agents:
     trusted_groups:
       - ops
 
+  analyticsdeploy:
+    trusted_groups:
+      - analytics-admins
+
 # scap::source declarations.  These are created
 # by the scap::server class.  Each source listed here
 # will be cloned on the scap deploy server.
 sources:
+
+  # Analytics data refinement tools
+  # https://wikitech.wikimedia.org/wiki/Analytics/Cluster/Refinery
+  analytics/refinery:
+    repository: analytics/refinery
+    scap_repository: analytics/refinery/scap
 
   phabricator/deployment:
     repository: phabricator/deployment

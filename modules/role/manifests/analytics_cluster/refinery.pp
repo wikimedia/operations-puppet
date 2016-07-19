@@ -25,9 +25,14 @@ class role::analytics_cluster::refinery {
         }
     }
 
-    # analytics/refinery will deployed to this node.
-    package { 'analytics/refinery':
-        provider => 'trebuchet',
+    # The analytics/refinery repo will deployed to this node via Scap3.
+    # The analytics-deploy user/groups are deployed/managed by Scap.
+    # The analyticsdeploy SSH keypair are stored in the private repo.
+    scap::target { 'analytics/refinery':
+        service_name => 'analytics/refinery',
+        deploy_user  => 'analytics-deploy',
+        key_name     => 'analyticsdeploy',
+        manage_user  => true,
     }
 
     # analytics/refinery repository is deployed via git-deploy at this path.
