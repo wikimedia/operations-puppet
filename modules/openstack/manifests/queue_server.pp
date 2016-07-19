@@ -32,7 +32,7 @@ class openstack::queue_server(
         }
     }
 
-    diamond::collector { 'rabbitmq':
+    diamond::collector { 'RabbitMQ':
         settings => {
             'host'     => 'localhost:15672',
             'user'     => $rabbit_username,
