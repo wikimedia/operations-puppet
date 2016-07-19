@@ -114,6 +114,9 @@ class role::backup::director {
     bacula::director::fileset { 'var-lib-gerrit2-review_site-git':
         includes => [ '/var/lib/gerrit2/review_site/git' ]
     }
+    bacula::director::fileset { 'srv-gerrit-git':
+        includes => [ '/srv/gerrit/git' ]
+    }
     bacula::director::fileset { 'var-lib-jenkins-backups':
         includes => [ '/var/lib/jenkins/backups' ]
     }
