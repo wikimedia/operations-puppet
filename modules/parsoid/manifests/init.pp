@@ -27,7 +27,7 @@ class parsoid(
             localsettings => $settings_file,
         },
         heap_limit      => 600,
-        heartbeat_to    => 300000,
+        heartbeat_to    => 180000,
         healthcheck_url => '/',
         has_spec        => false,
         auto_refresh    => false,
