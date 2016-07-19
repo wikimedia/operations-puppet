@@ -10,8 +10,7 @@ Environment=CONFIG=/etc/haproxy/haproxy.cfg
 EnvironmentFile=-/etc/default/haproxy
 ExecStartPre=/usr/local/bin/generate_haproxy_default.sh
 ExecStartPre=/usr/sbin/haproxy -f ${CONFIG} -c -q
-ExecStart=/usr/sbin/haproxy-systemd-wrapper -f ${CONFIG} -p /run/haproxy.pid
-$EXTRAOPTS
+ExecStart=/usr/sbin/haproxy-systemd-wrapper -f ${CONFIG} -p /run/haproxy.pid $EXTRAOPTS
 ExecReload=/usr/sbin/haproxy -c -f ${CONFIG}
 ExecReload=/bin/kill -USR2 $MAINPID
 KillMode=mixed
