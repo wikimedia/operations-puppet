@@ -117,6 +117,9 @@ designateconfig:
   domain_id_internal_reverse: '9b60f3ab-d64b-4e30-9d6f-7535811b0fa8'
   wmflabsdotorg_project: 'wmflabsdotorg'
   private_tld: 'testlabs'
+  floating_ip_ptr_zone: '17.196.10.in-addr.arpa.'
+  floating_ip_ptr_fqdn_matching_regex: '^(.*)$'
+  floating_ip_ptr_fqdn_replacement_pattern: '\1'
 
 glanceconfig:
   db_host: 'labtestcontrol2001.wikimedia.org'
