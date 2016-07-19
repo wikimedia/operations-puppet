@@ -81,6 +81,13 @@ class toollabs::checker inherits toollabs {
         notify  => Service['toolschecker'],
     }
 
+    sudo::user { 'tools.toolschecker':
+        privileges => [
+           'ALL=(tools.toolschecker-k8s-ws) NOPASSWD: ALL',
+           'ALL=(tools.toolschecker-ge-ws) NOPASSWD: ALL',
+        ]
+    }
+
     service { 'toolschecker':
         ensure  => running,
         require => File['/run/toolschecker'],
