@@ -9,6 +9,13 @@
 class scap::scripts {
     require mediawiki::users
 
+    file { '/usr/local/bin/logstash_checker.py':
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => 'puppet:///modules/service/logstash_checker.py',
+    }
+
     file { '/usr/local/bin/dologmsg':
         owner  => 'root',
         group  => 'root',
