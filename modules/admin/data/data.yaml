@@ -1969,4 +1969,11 @@ users:
     ssh_keys:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQD2q9U+VYKkFz/WjwG0B+dF01CE4l8NZgBDXGU4AYXqxFk7Vuz2lWTEOeij4r8UgmSsdqq65yOfZYUtjYRm8iHdoIUufWar2XORcBCWqNMeRnId/XX9kMNefzhfl2z7j7UtiAVPsIJZQ0nSFwYY6AxrJdmpBOvinwz8X47FL955/ig4gZvvvV1qzBJ4pvx54U3/e7fwcMGpYrxCUoWuAgIYsc2OS9rW5meBln2bVlJjWRRcid5u9ZM9Za6Jqy/2OIrwhG2AzjpO+5RerflbiVAb6pP7cjU4t+4Cg8fzPTfXuwZ6sjEq6sWJkaz9BaQKC8LDC+nTugokNRlhNj/XxAe3 jasmeetsamra@Jasmeets-MacBook.local
     uid: 15103
-
+  hjiang:
+    ensure: present
+    gid: 500
+    name: hjiang
+    realname: Helen Jiang
+    ssh_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDaary3YNmqf/fNSfBuhAkOQjOJhAKmwUjlKM5eQXlBMTyYdkFxdhEzBVKQeba2O8WSoazfx9fgmtdrJY4LVBH5Xk6DVe7tZcsS6ovpkPFqdey5bOVUOV4IYviuINBIuHjo8Z1LEXGibbB2EsrqsXsm+9NX9bcPifUhFK1ymd6LPjaD/XMeYWld29WwXqK8VW56SWdWpCcSmnVASaHrTXlqgDw6FY3sOjGZbUxoRz2qknSaapMIT2W6rkFoPrDiG5eqi2dS45/vMpEN7FBN6sx3FbjStM3kGu0PrfVDyDcK3+YyvwNgshV4RiW7VMWcsYkpxSWJlKBJMmQwEQDWNabH helen@localhost.localdomain
+    uid: 15082
