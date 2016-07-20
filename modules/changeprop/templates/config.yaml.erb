@@ -123,9 +123,9 @@ spec:
               null_edit:
                 topic: resource_change
                 ignore:
-                  # Ignoring 403 since some of the pages with high number of null_edit events are blacklisted
-                  - 403
-                  - 412
+                  status:
+                    - 403 # Ignoring 403 since some of the pages with high number of null_edit events are blacklisted
+                    - 412
                 match:
                   meta:
                     uri: '/^https?:\/\/[^\/]+\/wiki\/(?<title>.+)$/'
@@ -165,8 +165,9 @@ spec:
               page_delete:
                 topic: mediawiki.page_delete
                 ignore:
-                  - 404 # 404 is a normal response for page deletion
-                  - 412
+                  status:
+                    - 404 # 404 is a normal response for page deletion
+                    - 412
                 exec:
                   method: get
                   uri: '<%= @restbase_uri %>/{{message.meta.domain}}/v1/page/title/{message.title}'
