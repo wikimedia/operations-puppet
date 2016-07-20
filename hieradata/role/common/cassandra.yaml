@@ -80,7 +80,7 @@ cassandra::seeds:
 cassandra::max_heap_size: 12g
 # 1/4 heap size, no more than 100m/thread
 cassandra::heap_newsize: 2048m
-cassandra::compaction_throughput_mb_per_sec: 60
+cassandra::compaction_throughput_mb_per_sec: 20
 cassandra::concurrent_compactors: 10
 cassandra::concurrent_writes: 18
 cassandra::concurrent_reads: 18
