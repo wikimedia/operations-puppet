@@ -11,6 +11,6 @@ class role::prometheus::node_exporter {
     ferm::service { 'prometheus-node-exporter':
         proto  => 'tcp',
         port   => '9100',
-        srange => '$INTERNAL',
+        srange => '$DOMAIN_NETWORKS',
     }
 }
