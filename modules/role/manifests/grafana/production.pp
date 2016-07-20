@@ -1,9 +1,9 @@
-# == Class: role::grafana
+# == Class: role::grafana::production
 #
 # Grafana is a dashboarding webapp for Graphite.
 # It powers <https://grafana.wikimedia.org>.
 #
-class role::grafana {
+class role::grafana::production {
     include ::apache::mod::authnz_ldap
     include ::apache::mod::headers
     include ::apache::mod::proxy
