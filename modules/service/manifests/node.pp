@@ -144,12 +144,19 @@ define service::node(
     case $deployment {
         'scap3': {
             if ! defined(Service::Deploy::Trebuchet[$repo]) and ! defined(Scap::Target[$repo]) {
+                require ::service::deploy::common
                 scap::target { $repo:
                     service_name => $title,
                     deploy_user  => $deployment_user,
                     before       => Base::Service_unit[$title],
                     manage_user  => true,
                 }
+            }
+        }
+        'git': {
+            service::deploy::gitclone { $title:
+                repository => $repo,
+                before     => Base::Service_unit[$title],
             }
         }
         default: {

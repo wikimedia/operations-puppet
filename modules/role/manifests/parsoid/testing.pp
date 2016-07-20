@@ -8,6 +8,7 @@ class role::parsoid::testing {
     class { '::parsoid':
         port          => 8142,
         settings_file => '/srv/deployment/parsoid/deploy/src/localsettings.js',
+        deployment    => 'git',
     }
 
     file { '/usr/local/bin/update_parsoid.sh':
