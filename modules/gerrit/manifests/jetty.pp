@@ -61,9 +61,12 @@ class gerrit::jetty(
 
     file { '/var/lib/gerrit2/.ssh':
         ensure  => directory,
-        mode    => '0600',
+        recurse => remote,
+        mode    => '0644',
         owner   => 'gerrit2',
+        group   => 'gerrit2',
         require => File['/var/lib/gerrit2'],
+        source  => 'puppet:///modules/gerrit/.ssh',
     }
 
     file { '/var/lib/gerrit2/.ssh/id_rsa':
@@ -74,28 +77,20 @@ class gerrit::jetty(
         content => secret('gerrit/id_rsa'),
     }
 
-    file { '/var/lib/gerrit2/.ssh/known_hosts':
-        owner   => 'gerrit2',
-        group   => 'gerrit2',
-        mode    => '0600',
-        require => File['/var/lib/gerrit2/.ssh'],
-        source  => 'puppet:///modules/gerrit/known_hosts',
-    }
-
     file { '/var/lib/gerrit2/review_site':
         ensure  => directory,
         owner   => 'gerrit2',
         group   => 'gerrit2',
-        mode    => '0755',
-        require => [File['/var/lib/gerrit2'],
-                    Package['gerrit']],
+        mode    => '0644',
+        require => [File['/var/lib/gerrit2'],Package['gerrit']],
     }
 
     file { '/var/lib/gerrit2/review_site/etc':
         ensure  => directory,
+        recurse => remote,
         owner   => 'gerrit2',
         group   => 'gerrit2',
-        mode    => '0755',
+        mode    => '0444',
         require => File['/var/lib/gerrit2/review_site'],
     }
 
@@ -123,58 +118,20 @@ class gerrit::jetty(
         require => File['/var/lib/gerrit2/review_site/etc'],
     }
 
-    file { '/var/lib/gerrit2/review_site/etc/mail':
+    file { '/var/lib/gerrit2/review_site/static':
+        ensure  => directory,
+        recurse => remote,
         owner   => 'gerrit2',
         group   => 'gerrit2',
         mode    => '0444',
-        recurse => true,
-        source  => 'puppet:///modules/gerrit/mail',
-        require => File['/var/lib/gerrit2/review_site/etc'],
-    }
-
-    file { '/var/lib/gerrit2/review_site/etc/GerritSite.css':
-        owner  => 'gerrit2',
-        group  => 'gerrit2',
-        mode   => '0444',
-        source => 'puppet:///modules/gerrit/skin/GerritSite.css',
-    }
-
-    file { '/var/lib/gerrit2/review_site/etc/GerritSiteHeader.html':
-        owner  => 'gerrit2',
-        group  => 'gerrit2',
-        mode   => '0444',
-        source => 'puppet:///modules/gerrit/skin/GerritSiteHeader.html',
-    }
-
-    file { '/var/lib/gerrit2/review_site/etc/its':
-        ensure  => directory,
-        owner   => 'gerrit2',
-        group   => 'gerrit2',
-        mode    => '0755',
-        source  => 'puppet:///modules/gerrit/its',
-        require => File['/var/lib/gerrit2/review_site/etc'],
-        recurse => true,
-    }
-
-    file { '/var/lib/gerrit2/review_site/static/page-bkg.cache.jpg':
-        owner  => 'gerrit2',
-        group  => 'gerrit2',
-        mode   => '0444',
-        source => 'puppet:///modules/gerrit/skin/page-bkg.cache.jpg',
-    }
-
-    file { '/var/lib/gerrit2/review_site/static/wikimedia-codereview-logo.cache.png':
-        owner  => 'gerrit2',
-        group  => 'gerrit2',
-        mode   => '0444',
-        source => 'puppet:///modules/gerrit/skin/wikimedia-codereview-logo.cache.png',
+        source  => 'puppet:///modules/gerrit/static',
     }
 
     file { '/var/lib/gerrit2/review_site/lib':
         ensure  => directory,
         owner   => 'gerrit2',
         group   => 'gerrit2',
-        mode    => '0755',
+        mode    => '0444',
         require => [Exec['install_gerrit_jetty'],
                     File['/var/lib/gerrit2/review_site']
         ],
