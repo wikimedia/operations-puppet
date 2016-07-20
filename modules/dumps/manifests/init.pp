@@ -4,7 +4,7 @@ class dumps {
     class { '::nginx':
         variant => 'extras',
     }
-    $ssl_settings = ssl_ciphersuite('nginx', 'compat', true)
+    $ssl_settings = ssl_ciphersuite('nginx', 'mid', true)
 
     nginx::site { 'dumps':
         content => template('dumps/nginx.dumps.conf.erb'),

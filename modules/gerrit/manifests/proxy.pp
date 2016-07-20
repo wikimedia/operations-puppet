@@ -4,7 +4,7 @@ class gerrit::proxy(
     $maint_mode   = false,
     ) {
 
-    $ssl_settings = ssl_ciphersuite('apache', 'compat', true)
+    $ssl_settings = ssl_ciphersuite('apache', 'mid', true)
 
     if $lets_encrypt {
         $ssl_cert_file = '/etc/acme/cert/gerrit.crt'
