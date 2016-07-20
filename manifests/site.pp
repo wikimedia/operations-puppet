@@ -2392,7 +2392,7 @@ node /^oresrdb100[12]\.eqiad\.wmnet$/ {
 
 # VisualEditor performance testing rig
 node 'osmium.eqiad.wmnet' {
-    role ve, osmium::migration
+    role ve
     include ::standard
     include base::firewall
 }
