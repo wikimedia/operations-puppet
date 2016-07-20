@@ -47,6 +47,12 @@ class role::logstash (
         srange => '@resolve(krypton.eqiad.wmnet)',
     }
 
+    ferm::service { 'logstash_canary_checker':
+        proto  => 'tcp',
+        port   => '9200',
+        srange => '$DEPLOYMENT_HOSTS',
+    }
+
     logstash::input::gelf { 'gelf':
         port => 12201,
     }
