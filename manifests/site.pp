@@ -1165,7 +1165,7 @@ node /^ganeti[12]00[0-9]\.(codfw|eqiad)\.wmnet$/ {
 # Hosts visualization / monitoring of EventLogging event streams
 # and MediaWiki errors.
 node 'hafnium.eqiad.wmnet' {
-    role webperf, osmium::migration
+    role webperf
 
     include standard
     include base::firewall
@@ -2392,7 +2392,7 @@ node /^oresrdb100[12]\.eqiad\.wmnet$/ {
 
 # VisualEditor performance testing rig
 node 'osmium.eqiad.wmnet' {
-    role ve
+    role ve, osmium::migration
     include ::standard
     include base::firewall
 }
