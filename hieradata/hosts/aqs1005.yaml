@@ -26,6 +26,16 @@ cassandra::cluster_name: "Analytics Query Service Storage"
 
 cassandra::target_version: '2.2'
 
+# Special compaction settings, following suggesions in:
+# https://docs.datastax.com/en/cassandra/2.1/cassandra/configuration/configCassandra_yaml_r.html
+# All values are divided by two since we have two instances running on each node
+# Assumption: 32 cores with ht on each host, so 16 * 1.5 = 24 cores considered
+# in the calculations.
+cassandra::compaction_throughput_mb_per_sec: 256
+cassandra::concurrent_compactors: 12
+cassandra::concurrent_writes: 64
+cassandra::concurrent_reads: 64
+
 #
 # AQS service
 #
