@@ -235,7 +235,7 @@ node 'carbon.wikimedia.org' {
 
 # cerium, praseodymium and xenon are Cassandra test hosts
 node /^(cerium|praseodymium|xenon)\.eqiad\.wmnet$/ {
-    role restbase, cassandra
+    role restbase, cassandra, prometheus::node_exporter
     include standard
 }
 
@@ -1316,7 +1316,7 @@ node 'graphite1001.eqiad.wmnet' {
 
 # graphite test machine, currently with SSD caching + spinning disks
 node 'graphite1002.eqiad.wmnet' {
-    role test::system
+    role test::system, prometheus::node_exporter
     include base::firewall
 }
 
@@ -1959,12 +1959,12 @@ node 'maerlant.wikimedia.org' {
 }
 
 node 'maps-test2001.codfw.wmnet' {
-    role maps::server, maps::master
+    role maps::server, maps::master, prometheus::node_exporter
     include base::firewall
 }
 
 node /^maps-test200[2-4]\.codfw\.wmnet/ {
-    role maps::server, maps::slave
+    role maps::server, maps::slave, prometheus::node_exporter
     include base::firewall
 }
 
@@ -2054,11 +2054,11 @@ node /^ms-be10(1[6-9]|2[0-7])\.eqiad\.wmnet$/ {
 }
 
 node /^ms-fe300[1-2]\.esams\.wmnet$/ {
-    role swift::proxy
+    role swift::proxy, prometheus::node_exporter
 }
 
 node /^ms-be300[1-4]\.esams\.wmnet$/ {
-    role swift::storage
+    role swift::storage, prometheus::node_exporter
 }
 
 node /^ms-fe2001\.codfw\.wmnet$/ {
@@ -2486,24 +2486,22 @@ node 'potassium.eqiad.wmnet' {
 }
 
 node /^prometheus200[12]\.codfw\.wmnet$/ {
-    role prometheus::ops
+    role prometheus::ops, prometheus::node_exporter
 
     include base::firewall
-    include role::prometheus::node_exporter
     include standard
 }
 
 node /^prometheus100[12]\.eqiad\.wmnet$/ {
-    role prometheus::ops
+    role prometheus::ops, prometheus::node_exporter
 
     include base::firewall
-    include role::prometheus::node_exporter
     include standard
 }
 
 # pybal-test200X VMs are used for pybal testing/development
 node /^pybal-test200[12]\.codfw\.wmnet$/ {
-    role pybaltest
+    role pybaltest, prometheus::node_exporter
     include standard
 }
 
@@ -2577,7 +2575,7 @@ node /^restbase200[1-9]\.codfw\.wmnet$/ {
 
 # cassandra multi-dc temporary test T111382
 node /^restbase-test200[1-3]\.codfw\.wmnet$/ {
-    role restbase, cassandra
+    role restbase, cassandra, prometheus::node_exporter
     include standard
 }
 
