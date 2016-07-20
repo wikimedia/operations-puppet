@@ -495,7 +495,7 @@ groups:
   labtest-roots:
     gid: 776
     description: allows full sudo on labtest cluster, T131166
-    members: [krenair]
+    members: [bd808, krenair]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
   swift-roots:
     gid: 777
