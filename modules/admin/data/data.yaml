@@ -1961,3 +1961,11 @@ users:
     ssh_keys:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDbRaAUzTfgxalgYGZ7ztelMGXC7vDJ4VwFtFlMt9IvApeYViRh+eIwcr2+94cwextv5fuFD/UWAhk38KKsEnr2SDu1BhTeqlXM1Tfibb8vfq5SrUXzANh61HgqAt9XIyWPXhOFGBJWGZKIHE9DJaDZn5xCmkwz+KPe0smxa0QLHgJTs/Z0sHYu5wcJYPQ/D+b1lBQAPHMUzCIDz8t6ctFysb/pPubX7kbnILao+Q60D7L85+6jgPx2mGFHfsv4LiZP80BhsbrLjwOpuILy3A8jS9aJ9WI0q6Yap9vuRXa8D0DNiymeoGo5X6ye0vdtfe4NZuV9eru3BWBjbSFmRwXP MJP@MJPwork.local
     uid: 15095
+  hjiang:
+    ensure: present
+    gid: 500
+    name: hjiang
+    realname: Helen Jiang
+    ssh_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDaary3YNmqf/fNSfBuhAkOQjOJhAKmwUjlKM5eQXlBMTyYdkFxdhEzBVKQeba2O8WSoazfx9fgmtdrJY4LVBH5Xk6DVe7tZcsS6ovpkPFqdey5bOVUOV4IYviuINBIuHjo8Z1LEXGibbB2EsrqsXsm+9NX9bcPifUhFK1ymd6LPjaD/XMeYWld29WwXqK8VW56SWdWpCcSmnVASaHrTXlqgDw6FY3sOjGZbUxoRz2qknSaapMIT2W6rkFoPrDiG5eqi2dS45/vMpEN7FBN6sx3FbjStM3kGu0PrfVDyDcK3+YyvwNgshV4RiW7VMWcsYkpxSWJlKBJMmQwEQDWNabH helen@localhost.localdomain
+    uid: 15082
