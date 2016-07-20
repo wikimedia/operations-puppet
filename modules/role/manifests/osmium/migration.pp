@@ -1,6 +1,6 @@
 class role::osmium::migration {
 
-    $sourceip='10.64.32.146'
+    $sourceip='10.64.32.176'
 
     ferm::service { 'osmium-migration-rysnc':
         proto  => 'tcp',
@@ -11,13 +11,13 @@ class role::osmium::migration {
     include rsync::server
 
     rsync::server::module { 'osmium-home':
-        path        => '/srv/osmium/home',
+        path        => '/home',
         read_only   => 'no',
         hosts_allow => $sourceip,
     }
 
     rsync::server::module { 'osmium-srv':
-        path        => '/srv/osmium/srv',
+        path        => '/srv',
         read_only   => 'no',
         hosts_allow => $sourceip,
     }
