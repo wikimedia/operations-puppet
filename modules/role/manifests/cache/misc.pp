@@ -138,6 +138,16 @@ class role::cache::misc {
                 'grafana-admin.wikimedia.org'
             ],
         },
+        'labmon1001' => {
+            'dynamic'  => 'no',
+            'type'     => 'random',
+            'backends' => ['labmon1001.eqiad.wmnet'],
+            'be_opts'  => $app_def_be_opts,
+            'req_host' => [
+                'grafana-labs.wikimedia.org',
+                'grafana-labs-admin.wikimedia.org',
+            ],
+        },
         'netmon1001' => { # servermon
             'dynamic'  => 'no',
             'type'     => 'random',
