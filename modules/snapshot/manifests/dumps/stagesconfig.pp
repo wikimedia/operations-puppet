@@ -5,7 +5,7 @@ class snapshot::dumps::stagesconfig(
     include snapshot::dumps::dirs
     $confsdir = $snapshot::dumps::dirs::confsdir
 
-    $firststage_args = '--cutoff today'
+    $firststage_args = '--cutoff {STARTDATE}'
     $rest_args = '--date {STARTDATE} --onepass'
     $wikiargs = '/bin/bash ./worker --skipdone --exclusive --log'
 
