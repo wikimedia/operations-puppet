@@ -2920,13 +2920,11 @@ node /^wdqs100[1-2]\.eqiad\.wmnet$/ {
 node /^wtp10(0[1-9]|1[0-9]|2[0-4])\.eqiad\.wmnet$/ {
     role parsoid
     include standard
-    include role::parsoid::transition_cleanup
 }
 
 node /^wtp20(0[1-9]|1[0-9]|2[0-4])\.codfw\.wmnet$/ {
     role parsoid
     include standard
-    include role::parsoid::transition_cleanup
 }
 
 # T138650 - tools for the security team
