@@ -1459,7 +1459,7 @@ node 'labtestweb2001.wikimedia.org' {
 
 # Labs Graphite and StatsD host
 node 'labmon1001.eqiad.wmnet' {
-    role labs::graphite
+    role labs::graphite, grafana::labs
     include standard
     include base::firewall
 }
