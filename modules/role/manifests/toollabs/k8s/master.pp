@@ -51,4 +51,8 @@ class role::toollabs::k8s::master {
         owner  => 'root',
         group  => 'root',
     }
+
+    diamond::collector { 'Kubernetes':
+        source => 'puppet:///modules/diamond/collector/kubernetes.py',
+    }
 }
