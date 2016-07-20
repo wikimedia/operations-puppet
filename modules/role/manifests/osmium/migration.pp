@@ -11,9 +11,14 @@ class role::osmium::migration {
     include rsync::server
 
     rsync::server::module { 'osmium-home':
-        path        => '/srv/osmium',
+        path        => '/srv/osmium/home',
         read_only   => 'no',
         hosts_allow => $sourceip,
     }
 
+    rsync::server::module { 'osmium-srv':
+        path        => '/srv/osmium/srv',
+        read_only   => 'no',
+        hosts_allow => $sourceip,
+    }
 }
