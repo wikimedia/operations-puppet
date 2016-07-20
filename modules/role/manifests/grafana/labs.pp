@@ -6,7 +6,6 @@
 class role::grafana::labs {
     include ::passwords::grafana::labs
 
-    # FIXME: Relax this to include anyone with a LDAP account
     class { '::role::grafana::base':
         readonly_domain         => 'grafana-labs.wikimedia.org',
         admin_domain            => 'grafana-labs-admin.wikimedia.org',
@@ -18,6 +17,7 @@ class role::grafana::labs {
             'cn=nda,ou=groups,dc=wikimedia,dc=org',
             'cn=wmf,ou=groups,dc=wikimedia,dc=org',
             'cn=grafana-admin,ou=groups,dc=wikimedia,dc=org',
+            'cn=project-bastion,ou=groups,dc=wikimedia,dc=org'
         ]
     }
 }
