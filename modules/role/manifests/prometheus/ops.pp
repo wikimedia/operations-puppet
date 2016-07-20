@@ -12,6 +12,6 @@ class role::prometheus::ops {
     ferm::service { 'prometheus-web':
         proto  => 'tcp',
         port   => '80',
-        srange => '$INTERNAL',
+        srange => '$DOMAIN_NETWORKS',
     }
 }
