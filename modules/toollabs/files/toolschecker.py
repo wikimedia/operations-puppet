@@ -391,15 +391,14 @@ def webservice_kubernetes_test():
     """
     success = False
     url = "https://tools.wmflabs.org/toolschecker-k8s-ws/"
-    with open(os.devnull, 'w') as devnull:
-        subprocess.check_call([
-            'sudo',
-            '-u', 'tools.toolschecker-k8s-ws',
-            '-i',
-            '/usr/bin/webservice',
-            '--backend=kubernetes',
-            'start',
-        ], stderr=devnull, stdout=devnull)
+    subprocess.check_call([
+        'sudo',
+        '-u', 'tools.toolschecker-k8s-ws',
+        '-i',
+        '/usr/bin/webservice',
+        '--backend=kubernetes',
+        'start',
+    ])
 
     for i in range(0, 10):
         request = requests.get(url)
@@ -408,15 +407,14 @@ def webservice_kubernetes_test():
             break
         time.sleep(1)
 
-    with open(os.devnull, 'w') as devnull:
-        subprocess.check_call([
-            'sudo',
-            '-u', 'tools.toolschecker-k8s-ws',
-            '-i',
-            '/usr/bin/webservice',
-            '--backend=kubernetes',
-            'stop',
-        ], stderr=devnull, stdout=devnull)
+    subprocess.check_call([
+        'sudo',
+        '-u', 'tools.toolschecker-k8s-ws',
+        '-i',
+        '/usr/bin/webservice',
+        '--backend=kubernetes',
+        'stop',
+    ])
 
     # If we never succeeded in the starting of the webservice, fail!
     # We put this here after the stop so we don't end up with accidental failures
@@ -444,13 +442,12 @@ def service_start_test():
     """
     success = False
     url = "https://tools.wmflabs.org/toolschecker-ge-ws/"
-    with open(os.devnull, 'w') as devnull:
-        subprocess.check_call([
-            'sudo',
-            'u', 'tools.toolschecker-ge-ws',
-            '-i',
-            '/usr/bin/webservice', 'start'
-        ], stderr=devnull, stdout=devnull)
+    subprocess.check_call([
+        'sudo',
+        'u', 'tools.toolschecker-ge-ws',
+        '-i',
+        '/usr/bin/webservice', 'start'
+    ])
 
     for i in range(0, 10):
         request = requests.get(url)
@@ -459,13 +456,12 @@ def service_start_test():
             break
         time.sleep(1)
 
-    with open(os.devnull, 'w') as devnull:
-        subprocess.check_call([
-            'sudo',
-            'u', 'tools.toolschecker-ge-ws',
-            '-i',
-            '/usr/bin/webservice', 'stop'
-        ], stderr=devnull, stdout=devnull)
+    subprocess.check_call([
+        'sudo',
+        'u', 'tools.toolschecker-ge-ws',
+        '-i',
+        '/usr/bin/webservice', 'stop'
+    ])
 
     # Make sure it really stopped
     success = success and False
@@ -481,13 +477,12 @@ def service_start_test():
 
     # So far so good -- now, test wsgi
     success = False
-    with open(os.devnull, 'w') as devnull:
-        subprocess.check_call([
-            'sudo',
-            'u', 'tools.toolschecker-ge-ws',
-            '-i',
-            '/usr/bin/webservice', 'uwsgi-python', 'start'
-        ], stderr=devnull, stdout=devnull)
+    subprocess.check_call([
+        'sudo',
+        'u', 'tools.toolschecker-ge-ws',
+        '-i',
+        '/usr/bin/webservice', 'uwsgi-python', 'start'
+    ])
 
     for i in range(0, 10):
         request = requests.get(url)
@@ -496,13 +491,12 @@ def service_start_test():
             break
         time.sleep(1)
 
-    with open(os.devnull, 'w') as devnull:
-        subprocess.check_call([
-            'sudo',
-            'u', 'tools.toolschecker-ge-ws',
-            '-i',
-            '/usr/bin/webservice', 'uwsgi-python', 'stop'
-        ], stderr=devnull, stdout=devnull)
+    subprocess.check_call([
+        'sudo',
+        'u', 'tools.toolschecker-ge-ws',
+        '-i',
+        '/usr/bin/webservice', 'uwsgi-python', 'stop'
+    ])
 
     # Make sure it really stopped
     success = success and False
