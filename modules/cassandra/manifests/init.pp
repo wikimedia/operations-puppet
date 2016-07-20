@@ -146,6 +146,10 @@
 #    Number of simultaneous compactions to allow.
 #    Default: 1
 #
+# [*streaming_socket_timeout_in_ms*]
+#    Number of milliseconds required to time out streaming connections.
+#    Default: 0 (disabled)
+#
 # [*endpoint_snitch*]
 #   Set this to a class that implements IEndpointSnitch.
 #   Default: GossipingPropertyFileSnitch
@@ -265,6 +269,7 @@ class cassandra(
     $auto_snapshot                    = true,
     $compaction_throughput_mb_per_sec = 16,
     $concurrent_compactors            = 1,
+    $streaming_socket_timeout_in_ms   = 0,
     $endpoint_snitch                  = 'GossipingPropertyFileSnitch',
     $internode_compression            = 'all',
     $max_heap_size                    = undef,
