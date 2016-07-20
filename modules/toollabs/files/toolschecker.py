@@ -399,7 +399,7 @@ def webservice_kubernetes_test():
             '/usr/bin/webservice',
             '--backend=kubernetes',
             'start',
-        ], stderr=devnull, stdout=devnull)
+        ])
 
     for i in range(0, 10):
         request = requests.get(url)
@@ -416,7 +416,7 @@ def webservice_kubernetes_test():
             '/usr/bin/webservice',
             '--backend=kubernetes',
             'stop',
-        ], stderr=devnull, stdout=devnull)
+        ])
 
     # If we never succeeded in the starting of the webservice, fail!
     # We put this here after the stop so we don't end up with accidental failures
@@ -450,7 +450,7 @@ def service_start_test():
             'u', 'tools.toolschecker-ge-ws',
             '-i',
             '/usr/bin/webservice', 'start'
-        ], stderr=devnull, stdout=devnull)
+        ])
 
     for i in range(0, 10):
         request = requests.get(url)
@@ -465,7 +465,7 @@ def service_start_test():
             'u', 'tools.toolschecker-ge-ws',
             '-i',
             '/usr/bin/webservice', 'stop'
-        ], stderr=devnull, stdout=devnull)
+        ])
 
     # Make sure it really stopped
     success = success and False
@@ -487,7 +487,7 @@ def service_start_test():
             'u', 'tools.toolschecker-ge-ws',
             '-i',
             '/usr/bin/webservice', 'uwsgi-python', 'start'
-        ], stderr=devnull, stdout=devnull)
+        ])
 
     for i in range(0, 10):
         request = requests.get(url)
@@ -502,7 +502,7 @@ def service_start_test():
             'u', 'tools.toolschecker-ge-ws',
             '-i',
             '/usr/bin/webservice', 'uwsgi-python', 'stop'
-        ], stderr=devnull, stdout=devnull)
+        ])
 
     # Make sure it really stopped
     success = success and False
