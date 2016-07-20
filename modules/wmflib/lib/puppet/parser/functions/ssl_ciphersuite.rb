@@ -12,27 +12,25 @@
 #   Note that due to POODLE, SSLv3 is universally disabled and none of these
 #   options are compatible with SSLv3-only clients such as IE6/XP.
 #   Current options are:
-#   - strong:     Only TLSv1.2 with PFS+AEAD ciphers.  In practice this is a
+#   - strong:     Only TLSv1.2 with FS+AEAD ciphers.  In practice this is a
 #                 very short list, and requires a very modern client.  No
 #                 tradeoff is made for compatibility.  Known to work with:
 #                 FF/Chrome, IE11, Safari 9, Java8, Android 4.4+, OpenSSL 1.0.x
-#                 IE11 requires server-side DHE support or an ECDSA key.
 #   - mid:        Supports TLSv1.0 and higher, and adds several forward-secret
-#                 options which are not AEAD.  This is compatible with many
-#                 more clients than "strong".  With a DHE-capable server,
-#                 should only be incompatible with IE8/XP, ancient/un-updated
-#                 Java6, and some small corner cases like Nokia feature
-#                 phones.  With a non-DHE server, compatibility is also lost
-#                 with Android 2.x, OpenSSL 0.9.8, and more Java6 clients.
-#   - compat:     Supports most legacy clients, PFS optional but preferred.
+#                 options which are not AEAD.  This is compatible with many more
+#                 clients than "strong".  Should only be incompatible with
+#                 unpatched IE8/XP, ancient/un-updated Java6, and some small
+#                 corner cases like Nokia feature phones.
+#   - compat:     Supports most legacy clients, FS optional but preferred.
 # - HSTS boolean - if true, will emit our standard HSTS header for canonical
 #   public domains (which is currently 1 year with preload and includeSub).
 #   Default false.
 #
-# For servers which support it (currently only nginx @ WMF), DHE cipher
-# variants that are appropriate for the compatibility mode selected will be
-# enabled, generally increasing forward-secrecy and compatibility, but
-# sacrificing some rare/ancient/un-updated Java6 clients.
+# In our WMF configurations, Apache only supports DHE ciphersuites securely on
+# Debian Jessie, which is necessary for "mid" to have the compatibility level
+# stated above.  When this function is used with Apache an older host (e.g.
+# Ubuntu Trusty or Precise), the "mid" and "strong" options will be downgraded
+# to "compat" with a warning.
 #
 # Whenever called, this function will output a list of strings that
 # can be safely used in your configuration file as the ssl
@@ -142,8 +140,8 @@ Function parameters are:
 Examples:
 
    ssl_ciphersuite('apache', 'compat', true) # Compatible config for apache
-   ssl_ciphersuite('apache', 'mid', true) # PFS-only for apache
-   ssl_ciphersuite('nginx', 'strong', true) # PFS-only, AEAD-only, TLSv1.2-only
+   ssl_ciphersuite('apache', 'mid', true) # FS-only for apache
+   ssl_ciphersuite('nginx', 'strong', true) # FS-only, AEAD-only, TLSv1.2-only
 END
               ) do |args|
 
@@ -169,29 +167,18 @@ END
     end
 
     # OS / Server -dependant feature flags:
-    if server == 'nginx'
-      compat_only = false
-      dhe_ok = true
-      if function_os_version(['debian >= jessie'])
-        nginx_always_ok = true
-      else
-        nginx_always_ok = false
-      end
-    elsif server == 'apache'
-      if function_os_version(['debian >= jessie'])
-        compat_only = false
-        dhe_ok = true
-      elsif function_os_version(['ubuntu >= trusty'])
-        compat_only = false
-        dhe_ok = false
-      else
-        compat_only = true
+    nginx_always_ok = true
+    dhe_ok = true
+    if !function_os_version(['debian >= jessie'])
+      nginx_always_ok = false
+      if server == 'apache'
         dhe_ok = false
       end
     end
 
-    if compat_only && ciphersuite != 'compat'
-      fail(ArgumentError, 'ssl_ciphersuite(): OS and/or http server too old, must use "compat"')
+    if !dhe_ok && ciphersuite != 'compat'
+      send Puppet::Parser::Functions.function(:notify), ['ciphersuite_downgrade', 'ssl_ciphersuite(): OS needs upgrade to Jessie!  Downgrading SSL ciphersuite to "compat"']
+      ciphersuite = 'compat'
     end
 
     if dhe_ok
