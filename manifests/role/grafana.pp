@@ -12,7 +12,7 @@ class role::grafana {
 
     include ::role::backup::host
 
-    include ::passwords::grafana
+    include ::passwords::grafana::production
     include ::passwords::ldap::production
 
     include base::firewall
@@ -39,8 +39,8 @@ class role::grafana {
             },
 
             'security'   => {
-                secret_key       => $passwords::grafana::secret_key,
-                admin_password   => $passwords::grafana::admin_password,
+                secret_key       => $passwords::grafana::production::secret_key,
+                admin_password   => $passwords::grafana::production::admin_password,
                 disable_gravatar => true,
             },
 
