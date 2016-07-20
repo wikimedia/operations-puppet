@@ -2799,7 +2799,7 @@ node /^snapshot1003\.eqiad\.wmnet/ {
 
 node /^snapshot100[5-7]\.eqiad\.wmnet/ {
     # start setup and rollout of new role on new hosts
-    role snapshot::dumper
+    role snapshot::dumper, snapshot::monitor
     include standard
     include base::firewall
 }
