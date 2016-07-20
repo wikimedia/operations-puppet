@@ -13,9 +13,14 @@
 #   that Parsoid still draws part of its configuration from there when it is
 #   specified. Default: 'conf/wmf/localsettings.js'
 #
+# [*deployment*]
+#   Deployment system to use: available are trebuchet, scap3 or git.
+#   Default: trebuchet
+#
 class parsoid(
     $port          = 8000,
     $settings_file = 'conf/wmf/localsettings.js',
+    $deployment    = undef,
 ) {
 
     service::node { 'parsoid':
@@ -31,6 +36,7 @@ class parsoid(
         healthcheck_url => '/',
         has_spec        => false,
         auto_refresh    => false,
+        deployment      => $deployment,
     }
 
 }
