@@ -140,7 +140,6 @@ sub cluster_fe_err_synth {
 		set <%= @resp_obj %>.http.Content-Length = "0";
 
 		// allow Range requests, used by ogv.js
-		set <%= @resp_obj %>.http.Access-Control-Allow-Origin = "*";
 		set <%= @resp_obj %>.http.Access-Control-Allow-Headers = "Range";
 		set <%= @resp_obj %>.http.Access-Control-Allow-Methods = "GET, HEAD, OPTIONS";
 		set <%= @resp_obj %>.http.Access-Control-Max-Age = "86400";
