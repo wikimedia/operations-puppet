@@ -2785,7 +2785,7 @@ node /^snapshot1004\.eqiad\.wmnet/ {
     # NOTE: New snapshot hosts must also be manually added
     # to hiera common.yaml dataset_clients_snapshots.
 
-    role snapshot::producer, snapshot::dumps::monitor
+    role snapshot::producer
     include standard
 }
 
