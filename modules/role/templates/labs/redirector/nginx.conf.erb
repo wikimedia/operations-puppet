@@ -13,6 +13,6 @@ server {
 server {
   listen 80;
   server_name <%= host %>;
-  return 301 <%= dest %>;
+  return 301 <%= dest %>$request_uri;
 }
 <% end %>
