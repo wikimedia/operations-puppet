@@ -6,7 +6,7 @@ class role::labs::graphite {
     class { 'role::graphite::base':
         storage_dir => '/srv/carbon',
         auth        => false,
-        hostname    => 'graphite.wmflabs.org',
+        hostname    => 'graphite-labs.wikimedia.org',
     }
 
     include graphite::labs::archiver

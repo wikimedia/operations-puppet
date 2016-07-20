@@ -146,6 +146,7 @@ class role::cache::misc {
             'req_host' => [
                 'grafana-labs.wikimedia.org',
                 'grafana-labs-admin.wikimedia.org',
+                'graphite-labs.wikimedia.org',
             ],
         },
         'netmon1001' => { # servermon
