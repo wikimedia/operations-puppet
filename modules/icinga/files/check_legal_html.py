@@ -7,7 +7,8 @@
 HTML that needs to exist per T108081/T119456
 
 This is meant to ensure certain legal required
-content is present.
+content is present.  Content assurance is
+case INSENSITIVE.
 
 In the absence of rendering I am doing
 basic html validation here as it should suffice.
@@ -21,29 +22,29 @@ import urllib2
 
 mobile_copyright = 'Content\sis\savailable\sunder \
 <a\sclass=\"external\"\srel=\"nofollow\" \
-href="\/\/creativecommons.org/licenses/by-sa/3\.0/">\
+href="(https:)?\/\/creativecommons.org/licenses/by-sa/3\.0/">\
 CC\sBY-SA\s3\.0</a>\sunless\sotherwise\snoted\.'
 
-mobile_terms = '<a\shref="\/\/m\.wikimediafoundation\.org\/wiki\/Terms_of_Use">\
+mobile_terms = '<a\shref="(https:)?\/\/m\.wikimediafoundation\.org\/wiki\/Terms_of_Use">\
 Terms\sof\sUse</a>'
 
-mobile_privacy = '<a\shref="\/\/wikimediafoundation\.org\/wiki\/Privacy_policy"\sclass=\"\S+"\s\
+mobile_privacy = '<a\shref="(https:)?\/\/wikimediafoundation\.org\/wiki\/Privacy_policy"\sclass="extiw"\s\
 title="wmf:Privacy\spolicy">Privacy</a>'
 
 copyright = 'Text\sis\savailable\sunder\sthe\s<a\srel="license"\s+\
-href="\/\/en.wikipedia.org\/wiki\/Wikipedia:\
+href="(https:)?\/\/en.wikipedia.org\/wiki\/Wikipedia:\
 Text_of_Creative_Commons_Attribution-ShareAlike_3.0_Unported_License">\
 Creative\sCommons\sAttribution-ShareAlike\sLicense</a>\
 <a\srel="license"\shref="\/\/creativecommons.org\/licenses\/by-sa\/3\.0/"'
 
 terms = 'additional\sterms\smay\sapply\.  \
 By\susing\sthis\ssite,\syou\sagree\sto\sthe \
-<a\shref="\/\/wikimediafoundation.org\/wiki\/Terms_of_Use">Terms\sof\sUse</a>'
+<a\shref="(https:)?\/\/wikimediafoundation.org\/wiki\/Terms_of_Use">Terms\sof\sUse</a>'
 
-privacy = '<a\shref="//wikimediafoundation.org/wiki/Privacy_policy">\
+privacy = '<a\shref="(https:)?\/\/wikimediafoundation.org/wiki/Privacy_policy">\
 Privacy\spolicy</a>'
 
-enwb_privacy = '<a\shref="\/\/wikimediafoundation\.org\/wiki\/Privacy_policy">\
+enwb_privacy = '<a\shref="(https:)?\/\/wikimediafoundation\.org\/wiki\/Privacy_policy">\
 Privacy\sPolicy\.<\/a>'
 
 enwp_trademark = 'Wikipedia®\sis\sa\sregistered\strademark \
