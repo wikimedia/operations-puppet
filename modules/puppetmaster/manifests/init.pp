@@ -68,6 +68,13 @@ class puppetmaster(
         ensure  => present,
     }
 
+    if os_version('Debian >= jessie') {
+        # Until we use activerecord
+        package { 'ruby-activerecord-deprecated-finders':
+            ensure => present,
+        }
+    }
+
     if $server_type == 'frontend' {
         include ::apache::mod::proxy
         include ::apache::mod::proxy_http
