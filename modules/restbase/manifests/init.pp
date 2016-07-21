@@ -124,7 +124,6 @@ class restbase(
         starter_script  => 'restbase/server.js',
         local_logging   => false,
         auto_refresh    => false,
-        init_restart    => false,
     }
 
 }
