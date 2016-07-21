@@ -9,7 +9,7 @@ admin::groups:
 elasticsearch::auto_create_index: true
 elasticsearch::cluster_name: production-logstash-eqiad
 elasticsearch::expected_nodes: 3
-elasticsearch::heap_memory: '2G'
+elasticsearch::heap_memory: '4G'
 # The ES nodes that are run on the same box as Logstash+Kibana are only used
 # as client nodes to communicate with the backing cluster.
 elasticsearch::holds_data: false
