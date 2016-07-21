@@ -35,6 +35,7 @@ root_helper = sudo designate-rootwrap /etc/designate/rootwrap.conf
 #network_api = neutron
 
 # we have a lot of instances, so raise quotas:
+quota_domains = 25
 quota_domain_records = 5000
 quota_recordset_records = 5000
 
@@ -98,6 +99,29 @@ enabled_extensions_v1 = diagnsotics, quotas, reports, sync
 # Can be one or more of : reports, quotas
 enabled_extensions_v2 = quotas, reports
 
+# Default per-page limit for the V2 API, a value of None means show all results
+# by default.  We need to override because the default is a miserly '20'
+default_limit_v2 = 1000
+
+# Max page size in the V2 API
+#max_limit_v2 = 1000
+
+# Enable Admin API (experimental)
+#enable_api_admin = False
+
+# Enabled Admin API extensions
+# Can be one or more of : reports, quotas, counts, tenants, target_sync
+# zone export is in zones extension
+#enabled_extensions_admin =
+
+# Default per-page limit for the Admin API, a value of None means show all results
+# by default.  We need to override because the default is a miserly '20'
+default_limit_admin = 1000
+
+# Max page size in the Admin API
+#max_limit_admin = 1000
+
+
 #-----------------------
 # Keystone Middleware
 #-----------------------
@@ -157,8 +181,7 @@ enabled_notification_handlers = nova_fixed_multi, nova_ldap
 
 [pool:794ccc2c-d751-44fe-b57f-8894c9f5c842]
 nameservers = 0f66b842-96c2-4189-93fc-1dc95a08b012, 17474d59-a989-48fb-9f8b-19fbdaeff243
-targets = f26e0b32-736f-4f0a-831b-039a415c481e
-also_notifies = <%= @secondary_pdns_ip %>:53
+targets = f26e0b32-736f-4f0a-831b-039a415c481e, f845cc43-2052-4d4b-a159-db6fce37b110
 
 # A 'pool_nameserver' is a pdns instance that receives axfr updates.
 # This is the primary dns server, currently 'labservices1001'
@@ -176,20 +199,31 @@ host = <%= @secondary_pdns_ip %>
 
 # the 'pool_target' is the pdns database, which we write to for zone creation and deletion
 [pool_target:f26e0b32-736f-4f0a-831b-039a415c481e]
-options = connection: mysql://<%= @designateconfig["pdns_db_user"] %>:<%= @designateconfig["pdns_db_pass"] %>@<%= @designateconfig["db_host"] %>/<%= @designateconfig["pdns_db_name"] %>
+options = connection: mysql://<%= @designateconfig["pdns_db_user"] %>:<%= @designateconfig["pdns_db_pass"] %>@<%=@primary_pdns_ip%>/<%= @designateconfig["pdns_db_name"] %>
 # This is an alternate db account with more rights -- this setting should
 #  be used when running the db-sync command and the like during upgrades.
-#options = connection: mysql://<%= @designateconfig["pdns_db_admin_user"] %>:<%= @designateconfig["pdns_db_admin_pass"] %>@<%= @designateconfig["db_host"] %>/<%= @designateconfig["pdns_db_name"] %>
+#options = connection: mysql://<%= @designateconfig["db_admin_user"] %>:<%= @designateconfig["db_admin_pass"] %>@<%=@primary_pdns_ip%>/<%= @designateconfig["pdns_db_name"] %>
 # This is a comma separated list of the mdns servers.
 #  Note that for this to take effect, the list of masters must also be set in the pdns database:
 #  UPDATE pdns.domains SET master="<comman-separated list of masters>"
-masters = <%= scope.function_ipresolve([@fqdn, 4]) %>:5354
+masters = <%= scope.function_ipresolve([@designate_host, 4]) %>:5354
 type = powerdns
-# as I understand it, this is to send notifications to the primary pdns server.
-#  the other server should get notices via the 'also_notifies' setting above.
 host = <%= @primary_pdns_ip %>
 port = 53
 
+# the 'pool_target' is the pdns database, which we write to for zone creation and deletion
+[pool_target:f845cc43-2052-4d4b-a159-db6fce37b110]
+options = connection: mysql://<%= @designateconfig["pdns_db_user"] %>:<%= @designateconfig["pdns_db_pass"] %>@<%=@secondary_pdns_ip%>/<%= @designateconfig["pdns_db_name"] %>
+# This is an alternate db account with more rights -- this setting should
+#  be used when running the db-sync command and the like during upgrades.
+#options = connection: mysql://<%= @designateconfig["db_admin_user"] %>:<%= @designateconfig["db_admin_pass"] %>@<%=@secondary_pdns_ip%>/<%= @designateconfig["pdns_db_name"] %>
+# This is a comma separated list of the mdns servers.
+#  Note that for this to take effect, the list of masters must also be set in the pdns database:
+#  UPDATE pdns.domains SET master="<comman-separated list of masters>"
+masters = <%= scope.function_ipresolve([@designate_host, 4]) %>:5354
+type = powerdns
+host = <%= @secondary_pdns_ip %>
+port = 53
 
 ##############
 ## Network API
