@@ -41,6 +41,7 @@ class role::lvs::balancer {
             $sip['eventbus'][$::site],
             $sip['apertium'][$::site],
             $sip['ores'][$::site],
+            $sip['thumbor'][$::site],
             ],
 
         # codfw (should mirror eqiad above, eventually, and become merged with it via regex
@@ -71,6 +72,7 @@ class role::lvs::balancer {
             $sip['kartotherian'][$::site],
             $sip['eventbus'][$::site],
             $sip['ores'][$::site],
+            $sip['thumbor'][$::site],
             ],
 
         # esams + ulsfo
