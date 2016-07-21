@@ -11,7 +11,8 @@ elasticsearch::cluster_hosts:
   - relforge1001.eqiad.wmnet
   - relforge1002.eqiad.wmnet
 
-# TODO at what point do we need to update this number?
+elasticsearch::data_dir: /srv/elasticsearch
+
 elasticsearch::expected_nodes: 2
 
 # We should be able to run "OK" with 24 servers.
