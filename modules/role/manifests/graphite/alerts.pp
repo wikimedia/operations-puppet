@@ -46,5 +46,13 @@ class role::graphite::alerts {
         percentage  => 40,
     }
 
+    # Monitor MediaWiki fatals and exceptions.
+    monitoring::graphite_threshold { 'mediawiki_error_rate':
+        description => 'MediaWiki exceptions and fatals per minute',
+        metric      => 'transformNull(sumSeries(logstash.rate.mediawiki.fatal.ERROR.sum, logstash.rate.mediawiki.exception.ERROR.sum), 0)',
+        warning     => 25,
+        critical    => 50,
+        from        => '5min',
+    }
 }
 
