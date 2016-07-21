@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Gerrit - Down for Maintenance</title>
+    <title>Gerrit - Error</title>
 	<style>
 		body {
 			color: #353535 !important;
@@ -32,7 +32,14 @@
   <body>
 	<h1> Wikimedia Code Review</h1>
 	<p>
-		Gerrit is currently down for maintenance. Please try again later.
+        <%- if @maint_mode -%>
+        Gerrit is currently down for planned maintenance. Current ETA is <b><%= @maint_mode %></b>.
+        <%- else -%>
+        Gerrit is down. We're working on bringing it back as soon as possible.
+        <%- end -%>
 	</p>
+    <p>
+        Please try again later!
+    </p>
   </body>
 </html>
