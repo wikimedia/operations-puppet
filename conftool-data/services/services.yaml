@@ -141,3 +141,12 @@ eventbus:
     default_values:
       pooled: 'yes'
       weight: 10
+thumbor:
+  thumbor:
+    port: 8800
+    datacenters:
+    - eqiad
+    - codfw
+    default_values:
+      pooled: 'no'
+      weight: 10

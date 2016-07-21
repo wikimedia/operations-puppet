@@ -270,3 +270,6 @@ scb:
 eventbus:
   kafka2001.codfw.wmnet: [eventbus]
   kafka2002.codfw.wmnet: [eventbus]
+thumbor:
+  thumbor2001.codfw.wmnet: [thumbor]
+  thumbor2002.codfw.wmnet: [thumbor]
