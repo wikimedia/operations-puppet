@@ -11,6 +11,7 @@ class gerrit::jetty(
     $changeidlink = '#/q/$1',
     $commitlink = '#/q/$2',
     $index_type  = 'LUCENE',
+    $ssh_host_key = undef,
     ) {
 
     include nrpe
@@ -108,6 +109,16 @@ class gerrit::jetty(
         group   => 'gerrit2',
         mode    => '0440',
         require => File['/var/lib/gerrit2/review_site/etc'],
+    }
+
+    if $ssh_host_key != undef {
+        file { '/var/lib/gerrit2/review_site/etc/ssh_host_key':
+            content => secret("gerrit/${ssh_host_key}"),
+            owner   => 'gerrit2',
+            group   => 'gerrit2',
+            mode    => '0440',
+            require => File['/var/lib/gerrit2/review_site/etc'],
+        }
     }
 
     file { '/var/lib/gerrit2/review_site/etc/replication.config':
