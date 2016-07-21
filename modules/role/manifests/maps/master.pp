@@ -75,6 +75,14 @@ class role::maps::master {
         source => 'puppet:///modules/role/maps/logging.conf',
     }
 
+    file { '/usr/local/bin/osm-initial-import':
+        ensure => 'present',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+        source => 'puppet:///modules/role/osm-initial-import',
+    }
+
     # PostgreSQL Replication
     $postgres_slaves = hiera('maps::postgres_slaves', undef)
     if $postgres_slaves {
