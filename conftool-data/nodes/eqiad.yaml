@@ -251,3 +251,6 @@ aqs:
 eventbus:
   kafka1001.eqiad.wmnet: [eventbus]
   kafka1002.eqiad.wmnet: [eventbus]
+thumbor:
+  thumbor1001.eqiad.wmnet: [thumbor]
+  thumbor1002.eqiad.wmnet: [thumbor]
