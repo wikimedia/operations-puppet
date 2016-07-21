@@ -69,6 +69,9 @@
 # [*starter_script*]
 #   The script used for starting the service. Default: src/server.js
 #
+# [*firejail*]
+#   Whether to use firejail for running the service. Default: true
+#
 # [*local_logging*]
 #   Whether to store log entries on the target node as well. Default: true
 #
@@ -133,6 +136,7 @@ define service::node(
     $starter_module  = './src/app.js',
     $entrypoint      = '',
     $starter_script  = 'src/server.js',
+    $firejail        = true,
     $local_logging   = true,
     $auto_refresh    = true,
     $init_restart    = true,
