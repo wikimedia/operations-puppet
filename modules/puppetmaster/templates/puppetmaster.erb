@@ -121,7 +121,7 @@ PassengerUseGlobalQueue on
             <%- scope.lookupvar('puppetmaster::passenger::deny_from').each do |entry| -%>
             Deny from <%= entry.gsub(/^\*/, "") %>
             <%- end -%>
-        </IfVersion < 2.4>
+        </IfVersion>
         <IfVersion >= 2.4>
             <%- scope.lookupvar('puppetmaster::passenger::allow_from').each do |entry| -%>
             Require host <%= entry.gsub(/^\*/, "") %>
