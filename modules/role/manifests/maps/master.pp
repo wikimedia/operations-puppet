@@ -80,7 +80,7 @@ class role::maps::master {
         owner  => 'root',
         group  => 'root',
         mode   => '0755',
-        source => 'puppet:///modules/role/osm-initial-import',
+        source => 'puppet:///modules/role/maps/osm-initial-import',
     }
 
     # PostgreSQL Replication
