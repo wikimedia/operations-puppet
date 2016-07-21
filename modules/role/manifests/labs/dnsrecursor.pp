@@ -263,7 +263,7 @@ class role::labs::dnsrecursor {
         'svwikivoyage', 'svwiktionary', 'swwiki', 'swwikibooks',
         'swwiktionary', 'szlwiki', 'tawiki', 'tawikibooks',
         'tawikinews', 'tawikiquote', 'tawikisource', 'tawiktionary',
-        'tenwiki', 'test2wiki', 'testwiki', 'testwikidatawiki',
+        'tcywiki', 'tenwiki', 'test2wiki', 'testwiki', 'testwikidatawiki',
         'tetwiki', 'tewiki', 'tewikibooks', 'tewikiquote',
         'tewikisource', 'tewiktionary', 'tgwiki', 'tgwikibooks',
         'tgwiktionary', 'thwikibooks', 'thwikinews', 'thwikiquote',
