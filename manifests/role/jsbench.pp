@@ -51,10 +51,20 @@ class role::jsbench {
         mode   => '0555',
     }
 
-    file { '/etc/init/jsbench-browser.conf':
-        ensure => present,
-        source => 'puppet:///files/jsbench/upstart',
-        mode   => '0444',
+    if $::initsystem == 'upstart' {
+        file { '/etc/init/jsbench-browser.conf':
+            ensure => present,
+            source => 'puppet:///files/jsbench/upstart',
+            mode   => '0444',
+        }
+    }
+
+    if $::initsystem == 'systemd' {
+        file { '/etc/systemd/system/jsbench-browser.service':
+            ensure => present,
+            source => 'puppet:///files/jsbench/systemd',
+            mode   => '0444',
+        }
     }
 
     file { '/usr/local/share/jsbench':
