@@ -7,6 +7,7 @@ debdeploy::grains:
 gerrit::host: 'gerrit.wikimedia.org'
 gerrit::jetty::git_dir: '/srv/gerrit/git'
 gerrit::proxy::lets_encrypt: true
+gerrit::jetty::ssh_host_key: 'ssh_host_key'
 gerrit::jetty::replication:
     github:
         url: 'git@github.com:wikimedia/${name}'
