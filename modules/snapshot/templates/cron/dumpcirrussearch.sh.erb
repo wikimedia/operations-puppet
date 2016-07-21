@@ -6,7 +6,6 @@
 #
 # Generate a json dump of cirrussearch indices for all enabled
 # wikis and remove old ones.
-
 usage() {
 	echo "Usage: $0 [--config <pathtofile>] [--dryrun]"
 	echo
@@ -65,7 +64,8 @@ cutOff=$(( $(date +%s) - $(( $daysToKeep + 1 )) * 24 * 3600))
 if [ -d "$targetDirBase" ]; then
 	for folder in $(ls -d -r $targetDirBase/*); do
 		creationTime=$(date --utc --date="$(basename $folder)" +%s 2>/dev/null)
-		if [ -n "$creationTime" -a "$cutOff" -gt "$creationTime" ]; then
+		if [ -n "$creationTime" ]; then
+		    if [ "$cutOff" -gt "$creationTime" ]; then
 			if [ "$dryrun" == "true" ]; then
 				echo rm $folder/*.json.gz
 				echo rmdir $folder
@@ -73,6 +73,7 @@ if [ -d "$targetDirBase" ]; then
 				rm -f $folder/*.json.gz
 				rmdir $folder
 			fi
+		    fi
 		fi
 	done
 fi
@@ -141,6 +142,7 @@ done
 
 # Maintain a 'current' symlink always pointing at the most recently completed dump
 if [ "$dryrun" == "false" ]; then
-        rm -f "$targetDirBase/current"
-	ln -s "$targetDir" "$targetDirBase/current"
+	cd "$targetDirBase"
+        rm -f "current"
+	ln -s "$today" "current"
 fi
