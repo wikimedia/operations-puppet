@@ -1,7 +1,7 @@
 # sets up rabbitmq on the nova controller
 class openstack::queue_server(
-        $rabbit_username,
-        $rabbit_password
+        $rabbit_monitor_username,
+        $rabbit_monitor_password
     ) {
 
     include openstack::repo
@@ -35,8 +35,8 @@ class openstack::queue_server(
     diamond::collector { 'RabbitMQ':
         settings => {
             'host'     => 'localhost:15672',
-            'user'     => $rabbit_username,
-            'password' => $rabbit_password,
+            'user'     => $rabbit_monitor_username,
+            'password' => $rabbit_monitor_password,
         },
         source   => 'puppet:///modules/openstack/rabbitmq/rabbitmq.py',
     }

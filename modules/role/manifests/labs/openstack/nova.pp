@@ -143,8 +143,8 @@ class role::labs::openstack::nova::controller {
     $designateconfig = hiera_hash('designateconfig', {})
 
     class { '::openstack::queue_server':
-        rabbit_username => $novaconfig['rabbit_user'],
-        rabbit_password => $novaconfig['rabbit_pass'],
+        rabbit_monitor_username => $novaconfig['rabbit_monitor_user'],
+        rabbit_monitor_password => $novaconfig['rabbit_monitor_pass'],
     }
 
     class { '::openstack::adminscripts':
