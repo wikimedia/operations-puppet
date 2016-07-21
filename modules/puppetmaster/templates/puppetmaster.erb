@@ -129,6 +129,7 @@ PassengerUseGlobalQueue on
             <%- scope.lookupvar('puppetmaster::passenger::deny_from').each do |entry| -%>
             Require not host <%= entry.gsub(/^\*/, "") %>
             <%- end -%>
+        </IfVersion>        
     </Location>
 
     DocumentRoot /usr/share/puppet/rack/puppetmasterd/public
