@@ -9,7 +9,13 @@ class role::jsbench {
     # it needs so it can speak Chrome's remote debugging protocol.
     # It uses `numpy` to calculate summary statistics.
     require_package('python-autobahn', 'python-twisted', 'python-numpy')
-    require_package('chromium-browser')
+
+    # it's chromium on Debian but chromium-browser on Ubuntu (T141023)
+    if os_version('debian >= jessie') {
+        require_package('chromium')
+    } else {
+        require_package('chromium-browser')
+    }
 
     # 1366x768 is the most common display resolution, according
     # to http://gs.statcounter.com/.
