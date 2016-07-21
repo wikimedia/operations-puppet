@@ -1,0 +1,12 @@
+[Unit]
+Description=Thumbor image manipulation service (instance %i)
+PartOf=thumbor-instances.service
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/thumbor --port %i --ip 127.0.0.1 --keyfile /etc/thumbor.key --conf /etc/thumbor.d/
+User=thumbor
+PrivateTmp=yes
+
+[Install]
+WantedBy=multi-user.target
