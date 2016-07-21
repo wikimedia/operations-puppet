@@ -125,9 +125,10 @@ NameVirtualHost *:443
     RewriteRule ^/r/gerrit_ui/undefined.cache.js$ https://<%= @host %>/r/gerrit_ui/D39174379837CB12534D3B279AEAC59F.cache.js
 
     <%- if @maint_mode -%>
-    RedirectMatch temp "/r" "/maintenance.html#"
+    RedirectMatch temp "/r" "/error.html#"
     <%- else -%>
     ProxyPass /r/ http://127.0.0.1:8080/r/ retry=0 nocanon
+    ErrorPage 503 "/error.html#"
     <%- end -%>
 
     ErrorLog /var/log/apache2/error.log
