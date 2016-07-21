@@ -37,7 +37,13 @@
       <%- @workers.each do |workerhash| -%>
         <% unless workerhash['offline'] %>BalancerMember https://<%= workerhash['worker'] %>:8141 connectiontimeout=1 retry=500 timeout=900 <%- if workerhash['loadfactor'] -%>loadfactor=<%= workerhash['loadfactor'] %><%- end %><% end %>
       <%- end -%>
-      Require all granted
+      <IfVersion >= 2.4>
+          Require all granted
+      </IfVersion>
+      <IfVersion < 2.4>
+          Order allow,deny
+          allow from all
+      </IfVersion>
     </Proxy>
 </VirtualHost>
 
