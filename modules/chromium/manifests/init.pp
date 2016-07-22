@@ -53,9 +53,18 @@ class chromium(
         managehome => true,
     }
 
-    package { [ 'chromium-browser', 'chromium-browser-l10n' ]:
-        ensure => $ensure,
-        notify => Service['chromium'],
+    if $::operatingsystem == 'Debian' {
+        package { [ 'chromium', 'chromium-l10n' ]:
+            ensure => $ensure,
+            notify => Service['chromium'],
+        }
+    }
+
+    if $::operatingsystem == 'Ubuntu' {
+        package { [ 'chromium-browser', 'chromium-browser-l10n' ]:
+            ensure => $ensure,
+            notify => Service['chromium'],
+        }
     }
 
     file { '/etc/init/chromium.conf':
@@ -67,6 +76,6 @@ class chromium(
 
     service { 'chromium':
         ensure   => ensure_service($ensure),
-        provider => 'upstart',
+        provider => $::initsystem,
     }
 }
