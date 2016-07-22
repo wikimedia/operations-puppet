@@ -36,4 +36,13 @@ class confluent::kafka::client(
             Package[$package],
         ],
     }
+
+    # Have puppet manage totally manage this directory.
+    # Anything it doesn't know about will be removed.
+    file { '/etc/kafka/mirror':
+        ensure  => 'directory',
+        recurse => true,
+        purge   => true,
+        force   => true,
+    }
 }

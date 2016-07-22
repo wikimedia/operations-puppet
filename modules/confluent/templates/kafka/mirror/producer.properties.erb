@@ -1,0 +1,32 @@
+# NOTE: This file is managed by Puppet.
+
+#
+# see kafka.producer.ProducerConfig for more details
+#
+
+############################# Producer Basics #############################
+
+
+# list of brokers used for bootstrapping
+# format: host1:port1,host2:port2 ...
+bootstrap.servers=<%= Array(@destination_brokers).join(',') %>
+
+# Logically identifies the application making the request.
+client.id=kafka-mirror-<%= @mirror_name %>-<%= @hostname %>-producer
+
+# Required number of acks
+acks=<%= @acks %>
+
+linger.ms=<%= @linger_ms %>
+
+# specify the compression codec for all data generated: none , gzip, snappy.
+# the old config values work as well: 0, 1, 2 for none, gzip, snappy, respectivally
+compression.type=<%= compression_type %>
+
+
+########################## Additional Propeties ##########################
+
+<% @producer_properties.keys.sort.each do |key| -%>
+<%= key %>=<%=@producer_properties[key] %>
+
+<% end -%>
