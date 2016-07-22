@@ -13,7 +13,7 @@ destdir = /mnt/vmbuilder/images
 [ubuntu]
 suite = <%= lsbdistcodename %>
 flavour = virtual
-mirror = http://ubuntu.wikimedia.org/ubuntu/
+mirror = http://mirrors.wikimedia.org/ubuntu/
 components = main,restricted,multiverse,universe
 <% if scope.function_os_version(['ubuntu >= trusty']) %>
 addpkg = coreutils, snmp, wipe, tzdata, zsh-beta, jfsutils, xfsprogs, screen, gdb, iperf, atop, htop, vim, sysstat, ngrep, acct, git, lldpd, emacs23, libpam-ldapd, ldap-utils, libnss-ldapd, nss-updatedb, libnss-db, nscd, libpam-ldapd, python-ldap, python-pycurl, openssl, ca-certificates, ssl-cert, rsyslog, exim4-config, exim4-daemon-light, cloud-init, cloud-utils, euca2ools, openssh-server, curl, apparmor, libapparmor1, ubuntu-standard, nfs-client, virt-what, ldapvi, ack-grep, ethtool, debian-goodies, python-redis, python-apt, python-statsd, apt-show-versions, pv, nagios-plugins-standard, httpry, nagios-plugins, linux-tools-generic, puppet-lint, tree, nagios-plugins-basic, jq
