@@ -1,14 +1,20 @@
 sub misc_recv_pass {
+<%
+    hostcmps = []
+    @vcl_config['req_handling'].keys.sort.each do |reqhost|
+        if @vcl_config['req_handling'][reqhost]['force-pass']
+            if reqhost ~ /^[-.A-Za-z0-9]+$/
+                hostop = "=="
+            else
+                hostop = "~"
+            end
+            hostcmps.push(%Q[req.http.Host #{hostop} "#{reqhost}"])
+        end
+    end
+    pass_conds = hostcmps.join("\n        || ");
+%>
     if (
-           req.http.Host == "grafana.wikimedia.org" || req.http.host == "grafana-admin.wikimedia.org"
-        || req.http.Host == "grafana-labs.wikimedia.org" || req.http.host == "grafana-labs-admin.wikimedia.org"
-        || req.http.Host == "piwik.wikimedia.org"
-        || req.http.Host == "ticket.wikimedia.org" // No caching of OTRS for now
-        || req.http.Host == "people.wikimedia.org" // No caching of public_html dirs
-        || req.http.Host == "datasets.wikimedia.org" // No caching of datasets.  They can be larger than misc varnish can deal with.
-        || req.http.Host == "config-master.wikimedia.org"
-        || req.http.Host == "etherpad.wikimedia.org" // No caching of configs; scripts may want to know when things change
-        || req.http.Host == "stream.wikimedia.org"
+           <%= pass_conds -%>
     ) {
         return (pass);
     }
