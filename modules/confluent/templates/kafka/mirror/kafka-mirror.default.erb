@@ -1,0 +1,20 @@
+# NOTE: This file is managed by Puppet.
+
+# User and group to run as
+KAFKA_USER=kafka
+KAFKA_GROUP=kafka
+
+# The default JMX_PORT for Kafka MirrorMaker is 9998.
+# Set JMX_PORT to something else to override this.
+JMX_PORT=<%= @jmx_port %>
+
+# Memory sizes, and logging configuration
+# Memory sizes, and logging configuration
+<% if @heap_opts -%>
+KAFKA_HEAP_OPTS=<%= @heap_opts %>
+<% else -%>
+#KAFKA_HEAP_OPTS="-Xmx1G -Xms1G"
+<% end -%>
+#KAFKA_JVM_PERFORMANCE_OPTS="-server -XX:+UseCompressedOops -XX:+UseParNewGC -XX:+UseConcMarkSweepGC -XX:+CMSClassUnloadingEnabled -XX:+CMSScavengeBeforeRemark -XX:+DisableExplicitGC"
+KAFKA_LOG4J_OPTS="-Dlog4j.configuration=file:/etc/kafka/mirror/<%= @mirror_name %>/log4j.properties"
+KAFKA_OPTS="-XX:GCLogFileSize=50M -XX:+UseGCLogFileRotation -XX:NumberOfGCLogFiles=5"
