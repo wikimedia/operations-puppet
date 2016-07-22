@@ -328,17 +328,3 @@ sub wm_common_xcache_deliver {
 		}
 	}
 }
-
-<% if @websocket_support -%>
-sub wm_common_websocket_recv {
-	if (req.http.upgrade ~ "(?i)websocket") {
-		return (pipe);
-	}
-}
-
-sub wm_common_websocket_pipe {
-	if (req.http.upgrade) {
-		set bereq.http.upgrade = req.http.upgrade;
-	}
-}
-<% end -%>
