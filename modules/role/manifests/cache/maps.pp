@@ -44,6 +44,10 @@ class role::cache::maps {
         },
     }
 
+    $req_handling = {
+        'default' => { 'director' => 'kartotherian' },
+    }
+
     $common_vcl_config = {
         'purge_host_regex' => $::role::cache::base::purge_host_not_upload_re,
         'ttl_cap'          => '1d',
