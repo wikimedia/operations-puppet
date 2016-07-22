@@ -142,6 +142,10 @@ spec:
 
               page_edit:
                 topic: mediawiki.revision_create
+                retry_on:
+                  status:
+                    - '5xx'
+                    - 404 # Sometimes occasional 404s happen because of the mysql replication lag, so retry
                 exec:
                   method: get
                   uri: '<%= @restbase_uri %>/{{message.meta.domain}}/v1/page/html/{message.page_title}/{{message.rev_id}}'
@@ -154,6 +158,10 @@ spec:
 
               revision_visibility_change:
                 topic: mediawiki.revision_visibility_set
+                ignore:
+                  status:
+                    - 403 # When the revision is hidden 403 will be returned by RESTBase, it's a valid situation
+                    - 412
                 exec:
                   method: get
                   uri: '<%= @restbase_uri %>/{{message.meta.domain}}/v1/page/revision/{{message.revision_id}}'
@@ -190,16 +198,16 @@ spec:
                 topic: mediawiki.page_move
                 exec:
                   - method: get
-                    uri: '<%= @restbase_uri %>/{{message.meta.domain}}/v1/page/title/{message.old_title}'
-                    headers:
-                      cache-control: no-cache
-                    query:
-                      redirect: false
-                  - method: get
                     uri: '<%= @restbase_uri %>/{{message.meta.domain}}/v1/page/html/{message.new_title}/{{message.new_revision_id}}'
                     headers:
                       cache-control: no-cache
                       if-unmodified-since: '{{date(message.meta.dt)}}'
+                    query:
+                      redirect: false
+                  - method: get
+                    uri: '<%= @restbase_uri %>/{{message.meta.domain}}/v1/page/title/{message.old_title}'
+                    headers:
+                      cache-control: no-cache
                     query:
                       redirect: false
 #
