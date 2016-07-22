@@ -19,25 +19,20 @@ sub cluster_be_recv_applayer_backend {
 		if (req.url ~ "^/api/rest_v1/") {
 			set req.backend = restbase_backend;
 		} else if (req.url ~ "^/w/api\.php") {
-			if (req.http.X-Wikimedia-Debug) {
-				set req.backend = appservers_debug;
-			} else {
-				set req.backend = api;
-			}
+			set req.backend = api;
 		} else if (req.url ~ "^/w/thumb(_handler)?\.php") {
-			if (req.http.X-Wikimedia-Debug) {
-				set req.backend = appservers_debug;
-			} else {
-				set req.backend = rendering;
-			}
+			set req.backend = rendering;
 		} else {
-			// default MW backend
-			if (req.http.X-Wikimedia-Debug) {
-				set req.backend = appservers_debug;
-			} else {
-				set req.backend = appservers;
-			}
+			set req.backend = appservers;
 		}
+	}
+
+	if (req.http.X-Wikimedia-Debug && (
+		req.backend == appservers
+		|| req.backend == rendering
+		|| req.backend == api
+	)) {
+		set req.backend = appservers_debug;
 	}
 
 <% if @varnish_directors.include?('security_audit') && !@varnish_directors['security_audit']['backends'].empty? %>
