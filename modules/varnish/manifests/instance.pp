@@ -25,8 +25,6 @@ define varnish::instance(
         $extraopts = "-n ${name}"
     }
 
-    $websocket_support = hiera('cache::websocket_support', false)
-
     $netmapper_dir = '/var/netmapper'
 
     $dynamic_backend_caches = hiera('varnish::dynamic_backend_caches', true)
