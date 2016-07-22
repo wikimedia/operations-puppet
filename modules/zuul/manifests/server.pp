@@ -30,6 +30,7 @@ class zuul::server (
     $url_pattern,
     $statsd_host    = '',
     $gerrit_baseurl = 'https://gerrit.wikimedia.org/r',
+    $gerrit_event_delay = '5',
     $status_url     = "https://${::fqdn}/zuul/status",
 ) {
 
