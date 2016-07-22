@@ -757,18 +757,14 @@ node 'db2011.codfw.wmnet' {
 node 'db1048.eqiad.wmnet' {
     class { 'role::mariadb::misc::phabricator':
         shard     => 'm3',
-        mariadb10 => true,
         master    => true,
-        ssl       => 'on',
-        p_s       => 'on',
     }
     include base::firewall
 }
 
 node 'db1043.eqiad.wmnet' {
     class { 'role::mariadb::misc::phabricator':
-        shard  => 'm3',
-        master => false,
+        shard     => 'm3',
     }
     include base::firewall
 }
@@ -776,9 +772,6 @@ node 'db1043.eqiad.wmnet' {
 node 'db2012.codfw.wmnet' {
     class { 'role::mariadb::misc::phabricator':
         shard     => 'm3',
-        mariadb10 => true,
-        ssl       => 'on',
-        p_s       => 'on',
     }
     include base::firewall
 }
