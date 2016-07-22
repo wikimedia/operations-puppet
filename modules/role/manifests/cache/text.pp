@@ -96,7 +96,31 @@ class role::cache::text(
         },
     }
 
+    $req_handling = {
+        'cxserver.wikimedia.org' => {
+            'director'   => 'cxserver_backend',
+            'force-pass' => true,
+        },
+        'citoid.wikimedia.org'   => {
+            'director'   => 'citoid_backend',
+            'force-pass' => true,
+        },
+        'rest.wikimedia.org'     => {
+            'director'   => 'restbase_backend',
+            'force-pass' => true,
+        },
+        'default' => {
+            'subpaths' => {
+                '^/api/rest_v1/'            => { 'director' => 'restbase_backend' },
+                '^/w/api\.php'              => { 'director' => 'api' },
+                '^/w/thumb(_handler)?\.php' => { 'director' => 'rendering' },
+                'default'                   => { 'director' => 'appservers' },
+            }
+        }
+    }
+
     $common_vcl_config = {
+        'req_handling'     => $req_handling,
         'purge_host_regex' => $::role::cache::base::purge_host_not_upload_re,
         'static_host'      => $static_host,
         'bits_domain'      => $bits_domain,
