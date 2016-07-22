@@ -2676,6 +2676,10 @@ node 'sinistra.codfw.wmnet' {
     include standard
 }
 
+node 'sodium.wikimedia.org' {
+    include standard
+}
+
 node /^(strontium|rhodium).eqiad.wmnet/ {
     role puppetmaster::backend
     include standard
