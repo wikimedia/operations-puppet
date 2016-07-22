@@ -151,11 +151,24 @@ class role::cache::misc {
     }
 
     # $req_handling declares how requests are handled based on their attributes.
-    # Currently this only maps request hostnames (Host: header)
-    # If characters outside of '[-.A-Za-z0-9]' are detected in the hostname, it
-    # will be treated as a hostname regex.
-    # Attributes:
-    #   director - routing destination, string key from $app_directors above
+    # The first level of keys map request hostnames (Host: header)
+    # * If characters outside of '[-.A-Za-z0-9]' are detected in the hostname,
+    #   it will be treated as a hostname regex.
+    # * If the special hostname 'default' is specified, that stanza will apply
+    #   to all requests which do not match other hostname comparisons.
+    # * If no default is specified, non-matching requests return 404s.
+    # * Attributes:
+    #   director - required routing destination, string key from $app_directors.
+    #   caching  - 'normal' (default), 'pass', 'pipe', or 'websockets'.  pass
+    #     and pipe cause those returns at recv time unconditionally, and
+    #     websockets enables websocket upgrade support, and implies pass for
+    #     normal requests and pipe after the upgrade.
+    #   subpaths - hash - If present, this is the only allowed key.  Request
+    #     handling will be split on the path portion of the URL.  Keys are path
+    #     regexes, and the value of each key should be a sub-hash of the same
+    #     per-hostname attributes above (director required, caching defaulting
+    #     to 'normal').  Requests which match no subpath will use the
+    #     host-level attributes (404 if no host-level attributes).
 
     $req_handling = {
         '15.wikipedia.org'                   => { 'director' => 'bromine' },
@@ -163,18 +176,39 @@ class role::cache::misc {
         'annual.wikimedia.org'               => { 'director' => 'bromine' },
         'bugs.wikimedia.org'                 => { 'director' => 'iridium' },
         'bugzilla.wikimedia.org'             => { 'director' => 'iridium' },
-        'config-master.wikimedia.org'        => { 'director' => 'pybal_config' },
-        'datasets.wikimedia.org'             => { 'director' => 'thorium' },
+        'config-master.wikimedia.org'        => {
+            'director' => 'pybal_config',
+            'caching'  => 'pass',
+        },
+        'datasets.wikimedia.org'             => {
+            'director' => 'thorium',
+            'caching'  => 'pass',
+        },
         'dbtree.wikimedia.org'               => { 'director' => 'noc' },
         'docker-registry.wikimedia.org'      => { 'director' => 'darmstadtium' },
         'doc.wikimedia.org'                  => { 'director' => 'gallium' },
         'endowment.wikimedia.org'            => { 'director' => 'bromine' },
-        'etherpad.wikimedia.org'             => { 'director' => 'etherpad1001' },
+        'etherpad.wikimedia.org'             => {
+            'director' => 'etherpad1001',
+            'caching'  => 'websockets',
+        },
         'git.wikimedia.org'                  => { 'director' => 'iridium' },
-        'grafana-admin.wikimedia.org'        => { 'director' => 'krypton' },
-        'grafana-labs-admin.wikimedia.org'   => { 'director' => 'labmon1001' },
-        'grafana-labs.wikimedia.org'         => { 'director' => 'labmon1001' },
-        'grafana.wikimedia.org'              => { 'director' => 'krypton' },
+        'grafana-admin.wikimedia.org'        => {
+            'director' => 'krypton',
+            'caching'  => 'pass',
+        },
+        'grafana-labs-admin.wikimedia.org'   => {
+            'director' => 'labmon1001',
+            'caching'  => 'pass',
+        },
+        'grafana-labs.wikimedia.org'         => {
+            'director' => 'labmon1001',
+            'caching'  => 'pass',
+        },
+        'grafana.wikimedia.org'              => {
+            'director' => 'krypton',
+            'caching'  => 'pass',
+        },
         'graphite-labs.wikimedia.org'        => { 'director' => 'labmon1001' },
         'graphite.wikimedia.org'             => { 'director' => 'graphite1001' },
         'horizon.wikimedia.org'              => { 'director' => 'californium' },
@@ -189,12 +223,18 @@ class role::cache::misc {
         'noc.wikimedia.org'                  => { 'director' => 'noc' },
         'ores.wikimedia.org'                 => { 'director' => 'ores' },
         'parsoid-tests.wikimedia.org'        => { 'director' => 'ruthenium' },
-        'people.wikimedia.org'               => { 'director' => 'rutherfordium' },
+        'people.wikimedia.org'               => {
+            'director' => 'rutherfordium',
+            'caching'  => 'pass',
+        },
         'performance.wikimedia.org'          => { 'director' => 'graphite1001' },
         'phabricator.wikimedia.org'          => { 'director' => 'iridium' },
         'phab.wmfusercontent.org'            => { 'director' => 'iridium' },
         'pivot.wikimedia.org'                => { 'director' => 'thorium' },
-        'piwik.wikimedia.org'                => { 'director' => 'bohrium' },
+        'piwik.wikimedia.org'                => {
+            'director' => 'bohrium',
+            'caching'  => 'pass',
+        },
         '^([^.]+\.)?planet\.wikimedia\.org$' => { 'director' => 'planet1001' },
         'query.wikidata.org'                 => { 'director' => 'wdqs_director' },
         'racktables.wikimedia.org'           => { 'director' => 'krypton' },
@@ -205,8 +245,14 @@ class role::cache::misc {
         'smokeping.wikimedia.org'            => { 'director' => 'netmon1001' },
         'static-bugzilla.wikimedia.org'      => { 'director' => 'bromine' },
         'stats.wikimedia.org'                => { 'director' => 'thorium' },
-        'stream.wikimedia.org'               => { 'director' => 'rcstream' },
-        'ticket.wikimedia.org'               => { 'director' => 'mendelevium' },
+        'stream.wikimedia.org'               => {
+            'director' => 'rcstream',
+            'caching'  => 'websockets',
+        },
+        'ticket.wikimedia.org'               => {
+            'director' => 'mendelevium',
+            'caching'  => 'pass',
+        },
         'toolsadmin.wikimedia.org'           => { 'director' => 'californium' },
         'torrus.wikimedia.org'               => { 'director' => 'netmon1001' },
         'transparency.wikimedia.org'         => { 'director' => 'bromine' },
