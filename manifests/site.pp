@@ -857,7 +857,8 @@ node 'dbstore2002.codfw.wmnet' {
     include base::firewall
 }
 
-node 'dbproxy1001.eqiad.wmnet' {
+# Proxies for misc databases
+node /^dbproxy100(1|6)\.eqiad\.wmnet$/ {
     class { 'role::mariadb::proxy::master':
         shard          => 'm1',
         primary_name   => 'db1016',
@@ -867,7 +868,7 @@ node 'dbproxy1001.eqiad.wmnet' {
     }
 }
 
-node 'dbproxy1002.eqiad.wmnet' {
+node /^dbproxy100(2|7)\.eqiad\.wmnet$/ {
     class { 'role::mariadb::proxy::master':
         shard          => 'm2',
         primary_name   => 'db1020',
@@ -877,7 +878,7 @@ node 'dbproxy1002.eqiad.wmnet' {
     }
 }
 
-node 'dbproxy1003.eqiad.wmnet' {
+node /^dbproxy100(3|8)\.eqiad\.wmnet$/ {
     class { 'role::mariadb::proxy::master':
         shard          => 'm3',
         primary_name   => 'db1048',
@@ -887,7 +888,7 @@ node 'dbproxy1003.eqiad.wmnet' {
     }
 }
 
-node 'dbproxy1004.eqiad.wmnet' {
+node /^dbproxy100(4|9)\.eqiad\.wmnet$/ {
     class { 'role::mariadb::proxy::master':
         shard          => 'm4',
         primary_name   => 'db1046',
@@ -897,7 +898,7 @@ node 'dbproxy1004.eqiad.wmnet' {
     }
 }
 
-node 'dbproxy1005.eqiad.wmnet' {
+node /^dbproxy10(05|10)\.eqiad\.wmnet$/ {
     class { 'role::mariadb::proxy::master':
         shard          => 'm5',
         primary_name   => 'db1009',
@@ -906,6 +907,11 @@ node 'dbproxy1005.eqiad.wmnet' {
         secondary_addr => '10.192.16.18',
     }
 }
+
+# spare proxy
+# node 'dbproxy1011.eqiad.wmnet' {
+# }
+
 
 # Analytics Druid servers.
 # https://wikitech.wikimedia.org/wiki/Analytics/Data_Lake#Druid
