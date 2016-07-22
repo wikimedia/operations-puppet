@@ -26,6 +26,11 @@ class role::phabricator::main {
     $phab_root_dir = '/srv/phab'
     $deploy_target = 'phabricator/deployment'
 
+    $mysql_cluster_config = [
+        { 'host' => $mysql_host, 'role' => 'master' },
+        { 'host' => $mysql_slave,'role' => 'replica'}
+    ]
+
     # lint:ignore:arrow_alignment
     class { '::phabricator':
         deploy_target    => $deploy_target,
@@ -46,6 +51,7 @@ class role::phabricator::main {
             'mysql.user'                             => $role::phabricator::config::mysql_appuser,
             'mysql.pass'                             => $role::phabricator::config::mysql_apppass,
             'mysql.host'                             => $mysql_host,
+            'cluster'                                => $mysql_cluster_config,
             'phpmailer.smtp-host'                    => inline_template('<%= @mail_smarthost.join(";") %>'),
             'metamta.default-address'                => "no-reply@${domain}",
             'metamta.domain'                         => $domain,
