@@ -1,23 +1,60 @@
 sub misc_recv_pass {
 <%
-    hostcmps = []
+    def_action = ''
+    if_stmts = []
     @vcl_config['req_handling'].keys.sort.each do |reqhost|
-        if @vcl_config['req_handling'][reqhost]['force-pass']
-            if reqhost ~ /^[-.A-Za-z0-9]+$/
-                hostop = "=="
-            else
-                hostop = "~"
+        options = @vcl_config['req_handling'][reqhost]
+        host_action = false
+        if options.has_key?('subpaths')
+            path_def_action = ''
+            path_ifs = []
+            options['subpaths'].keys.sort.each do |subpath|
+                path_options = options['subpaths'][subpath]
+                if path_options['force-pass']
+                    path_action = 'return (pass);'
+                    if subpath == 'default'
+                        path_def_action = path_action
+                    else
+                        path_ifs.push(%Q[if (req.url ~ "#{subpath}") {\n             #{path_action}\n        }])
+                    end
+                end
             end
-            hostcmps.push(%Q[req.http.Host #{hostop} "#{reqhost}"])
+            if path_ifs.empty?
+                host_action = path_def_action
+            else
+                if not path_def_action.empty?
+                    path_ifs.push("e {\n            #{path_def_action}\n        }")
+                end
+                host_action = path_ifs.join(' els')
+            end
+        elsif options['force-pass']
+            host_action = 'return (pass);'
+        end
+
+        if host_action
+            if reqhost == 'default'
+                def_action = host_action
+            else
+                if reqhost =~ /^[-.A-Za-z0-9]+$/
+                    hostop = '=='
+                else
+                    hostop = '~'
+                end
+                hostcmp = %Q[req.http.Host #{hostop} "#{reqhost}"]
+                if_stmts.push("if (#{hostcmp}) {\n        #{host_action}\n    }")
+            end
         end
     end
-    pass_conds = hostcmps.join("\n        || ");
+    if if_stmts.empty?
+        do_passes = def_action
+    else
+        if not def_action.empty?
+            if_stmts.push("e {\n        #{def_action}\n    }")
+        end
+        do_passes = if_stmts.join(' els')
+    end
 %>
-    if (
-           <%= pass_conds -%>
-    ) {
-        return (pass);
-    }
+    <%= do_passes %>
 
     if (req.method != "GET" && req.method != "HEAD") {
         // We only deal with GET and HEAD
