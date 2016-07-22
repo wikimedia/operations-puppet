@@ -1,0 +1,29 @@
+# Note: This file is managed by Puppet.
+
+#
+# see kafka.consumer.ConsumerConfig for more details
+#
+
+############################# Consumer Basics #############################
+
+# Kafka Consumer group id
+group.id=kafka-mirror-<%= @mirror_name %>
+
+# Zookeeper connection string
+# comma separated host:port pairs, each corresponding to a zk
+# server. e.g. "127.0.0.1:3000,127.0.0.1:3001,127.0.0.1:3002"
+zookeeper.connect=<%= @source_zookeeper_url %>
+
+# What to do when there is no initial offset in Zookeeper or if an offset
+# is out of range:
+# * smallest: automatically reset the offset to the smallest offset
+# * largest: automatically reset the offset to the largest offset
+# * anything else: throw exception to the consumer.
+auto.offset.reset=<%= auto_offset_reset %>
+
+########################## Additional Propeties ##########################
+
+<% @consumer_properties.keys.sort.each do |key| -%>
+<%= key %>=<%=@consumer_properties[key] %>
+
+<% end -%>
