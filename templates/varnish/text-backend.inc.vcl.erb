@@ -15,26 +15,28 @@ sub cluster_be_recv_applayer_backend {
 		set req.backend = citoid_backend;
 	} else if (req.http.Host == "rest.wikimedia.org" ) { # LEGACY: to be removed eventually
 		set req.backend = restbase_backend;
-	} else if (req.url ~ "^/w/api\.php") {
-		if (req.http.X-Wikimedia-Debug) {
-			set req.backend = appservers_debug;
+	} else { // default for all other hostnames
+		if (req.url ~ "^/api/rest_v1/") {
+			set req.backend = restbase_backend;
+		} else if (req.url ~ "^/w/api\.php") {
+			if (req.http.X-Wikimedia-Debug) {
+				set req.backend = appservers_debug;
+			} else {
+				set req.backend = api;
+			}
+		} else if (req.url ~ "^/w/thumb(_handler)?\.php") {
+			if (req.http.X-Wikimedia-Debug) {
+				set req.backend = appservers_debug;
+			} else {
+				set req.backend = rendering;
+			}
 		} else {
-			set req.backend = api;
-		}
-	} else if (req.url ~ "^/w/thumb(_handler)?\.php") {
-		if (req.http.X-Wikimedia-Debug) {
-			set req.backend = appservers_debug;
-		} else {
-			set req.backend = rendering;
-		}
-	} else if (req.url ~ "^/api/rest_v1/") {
-		set req.backend = restbase_backend;
-	} else {
-		// default MW backend
-		if (req.http.X-Wikimedia-Debug) {
-			set req.backend = appservers_debug;
-		} else {
-			set req.backend = appservers;
+			// default MW backend
+			if (req.http.X-Wikimedia-Debug) {
+				set req.backend = appservers_debug;
+			} else {
+				set req.backend = appservers;
+			}
 		}
 	}
 
