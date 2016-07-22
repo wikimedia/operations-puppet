@@ -42,11 +42,6 @@ sub vcl_recv {
 <% end -%>
 
 	call wm_common_recv_grace;
-
-<% if @websocket_support -%>
-	call wm_common_websocket_recv;
-<% end -%>
-
 	call cluster_be_recv_pre_purge;
 	call wm_common_recv_purge;
 	call cluster_be_recv;
@@ -92,11 +87,12 @@ sub vcl_pass {
 	return (fetch); // no default VCL (which is just "return (fetch)" anyways)
 }
 
-<% if @websocket_support -%>
 sub vcl_pipe {
-	call wm_common_websocket_pipe;
+	// for websockets over pipe
+	if (req.http.upgrade) {
+		set bereq.http.upgrade = req.http.upgrade;
+	}
 }
-<% end -%>
 
 sub vcl_backend_fetch {
     call cluster_be_backend_fetch;
