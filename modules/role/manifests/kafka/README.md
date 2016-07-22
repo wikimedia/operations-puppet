@@ -1,12 +1,5 @@
 # Role classes for configuring Kafka Clusters
 
-Each role consists of a config class and a broker class.
-
-The config classes will contain only variable definitions, so they are safe to
-include and use anywhere, e.g. for configuring Kafka clients.
-
-The broker classes will include their respective config classes, and set up
-a Kafka broker belong to a specific cluster.
 
 Each config class is configurable via 2 hiera variables:
 
