@@ -25,6 +25,9 @@ server=<%= @gerrit_server %>
 user=<%= @gerrit_user %>
 <% if @gerrit_baseurl %>baseurl=<%= @gerrit_baseurl %><% end %>
 sshkey=/var/lib/zuul/.ssh/id_rsa
+<% if @gerrit_event_delay -%>
+event_delay=<%= @gerrit_event_delay %>
+<% end -%>
 
 [zuul]
 layout_config=/etc/zuul/wikimedia/zuul/layout.yaml
