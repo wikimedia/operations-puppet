@@ -2676,6 +2676,13 @@ node 'sinistra.codfw.wmnet' {
     include standard
 }
 
+node 'sodium.wikimedia.org' {
+    include base::firewall
+    include standard
+
+    interface::add_ip6_mapped { 'main': }
+}
+
 node /^(strontium|rhodium).eqiad.wmnet/ {
     role puppetmaster::backend
     include standard

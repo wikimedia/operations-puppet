@@ -3445,9 +3445,9 @@ host mira {
     filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
-host mirror1001 {
+host sodium {
     hardware ethernet f4:e9:d4:94:c5:90;
-    fixed-address mirror1001.wikimedia.org;
+    fixed-address sodium.wikimedia.org;
 }
 
 host ms1001 {
