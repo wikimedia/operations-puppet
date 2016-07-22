@@ -49,10 +49,11 @@ class phabricator::phd (
     }
 
     user { $settings['phd.user']:
-        gid        => 'phd',
-        shell      => '/bin/false',
-        managehome => false,
-        system     => true,
+        gid    => 'phd',
+        shell  => '/bin/false',
+        home   => '/var/run/phd'
+        system => true,
+
     }
 
     logrotate::conf { 'phd':
