@@ -30,6 +30,8 @@
 #                         datapoints that should be checked individually
 # $from                 - Date from which to fetch data.
 #                         Examples: '1hours','10min' (default), '2w'
+# $until                - end sampling date (negative relative time from
+#                         now.  Default: '0min'
 # $percentage           - Number of datapoints exceeding the
 #                         threshold. Defaults to 1%.
 # $under                - If true, the threshold is a lower limit.
@@ -54,8 +56,7 @@ define monitoring::graphite_threshold(
     $critical,
     $series                = false,
     $from                  = '10min',
-    # temporarly use $until to conditionally use check_graphite_until command
-    $until                 = undef,
+    $until                 = '0min',
     $percentage            = 1,
     $under                 = false,
     $graphite_url          = 'https://graphite.wikimedia.org',
@@ -83,7 +84,7 @@ define monitoring::graphite_threshold(
     #   $ARG4$  -W warning threshold
     #   $ARG5$  -C critical threshold
     #   $ARG6$  --from start sampling date (negative relative time from now)
-    #####   $ARG7$  --until end sampling date (negative relative time from now)
+    #   $ARG7$  --until end sampling date (negative relative time from now)
     #   $ARG8$  --perc percentage of exceeding datapoints
     #   $ARG9$  --over or --under
     $modifier = $under ? {
@@ -95,43 +96,22 @@ define monitoring::graphite_threshold(
         fail("single quotes will be stripped from graphite metric ${metric}, consider using double quotes")
     }
 
-    # TEMPORARY conditional to test the --until arg without affecting all
-    # alerts. This conditional will be removed once we are sure until works.
-    if $until and !$series {
-        $command = 'check_graphite_threshold_until_temp'
-
-        monitoring::service { $title:
-            ensure                => $ensure,
-            description           => $description,
-            check_command         => "${command}!${graphite_url}!${timeout}!${metric}!${warning}!${critical}!${from}!${until}!${percentage}!${modifier}",
-            retries               => $retries,
-            group                 => $group,
-            critical              => $nagios_critical,
-            passive               => $passive,
-            freshness             => $freshness,
-            normal_check_interval => $normal_check_interval,
-            retry_check_interval  => $retry_check_interval,
-            contact_group         => $contact_group,
-        }
+    $command = $series ? {
+        true    => 'check_graphite_series_threshold',
+        default => 'check_graphite_threshold'
     }
-    else {
-        $command = $series ? {
-            true    => 'check_graphite_series_threshold',
-            default => 'check_graphite_threshold'
-        }
 
-        monitoring::service { $title:
-            ensure                => $ensure,
-            description           => $description,
-            check_command         => "${command}!${graphite_url}!${timeout}!${metric}!${warning}!${critical}!${from}!${percentage}!${modifier}",
-            retries               => $retries,
-            group                 => $group,
-            critical              => $nagios_critical,
-            passive               => $passive,
-            freshness             => $freshness,
-            normal_check_interval => $normal_check_interval,
-            retry_check_interval  => $retry_check_interval,
-            contact_group         => $contact_group,
-        }
+    monitoring::service { $title:
+        ensure                => $ensure,
+        description           => $description,
+        check_command         => "${command}!${graphite_url}!${timeout}!${metric}!${warning}!${critical}!${from}!${until}!${percentage}!${modifier}",
+        retries               => $retries,
+        group                 => $group,
+        critical              => $nagios_critical,
+        passive               => $passive,
+        freshness             => $freshness,
+        normal_check_interval => $normal_check_interval,
+        retry_check_interval  => $retry_check_interval,
+        contact_group         => $contact_group,
     }
 }
