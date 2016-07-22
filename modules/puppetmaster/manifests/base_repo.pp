@@ -21,6 +21,7 @@ class puppetmaster::base_repo (
         origin             => 'https://gerrit.wikimedia.org/r/p/operations/puppet',
         recurse_submodules => true,
         owner              => $gitowner,
+        group              => $gitowner,
         require            => File["${gitdir}/operations"],
     }
 }
