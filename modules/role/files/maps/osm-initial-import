@@ -8,9 +8,21 @@ kartotherian_dir="/srv/deployment/kartotherian/deploy/"
 osm_bright_source_dir="${kartotherian_dir}/node_modules/osm-bright-source"
 replicate_lock="${osmosis_dir}/replicate-osm.lck"
 proxy=
-database_host=`hostname -f`
+database_host=localhost
 log_file=/var/log/osm-initial-import.log
 dump_date="latest"
+
+function show_help() {
+  echo "osm-initial-import -d <date_of_import> [-H <database_host>] -p <password_file> -x <proxy>"
+  echo "  date_of_import: find the latest dump at https://planet.osm.org/pbf/"
+  echo "  database_host: hostname of the postgresql database, default to `hostname -f`"
+  echo "  password_file: a file containing the postgresql password of the osmimporter user"
+  echo "  proxy: proxy used to download PBF files"
+  echo ""
+  echo "WARNING: the import is going to run for a long, long time. You should probably run this from inside screen or similar"
+  echo ""
+  echo "  example: osm-initial-import -d 160530 -p ~/osmimporter_pass -x webproxy.eqiad.wmnet:8080"
+}
 
 while getopts "d:hH:p:x:" opt; do
   case "${opt}" in
@@ -29,18 +41,6 @@ while getopts "d:hH:p:x:" opt; do
 done
 
 filename="planet-${dump_date}.osm.pbf"
-
-function show_help() {
-  echo "osm-initial-import -d <date_of_import> [-H <database_host>] -p <password_file> -x <proxy>"
-  echo "  date_of_import: find the latest dump at https://planet.osm.org/pbf/"
-  echo "  database_host: hostname of the postgresql database, default to `hostname -f`"
-  echo "  password_file: a file containing the postgresql password of the osmimporter user"
-  echo "  proxy: proxy used to download PBF files"
-  echo ""
-  echo "WARNING: the import is going to run for a long, long time. You should probably run this from inside screen or similar"
-  echo ""
-  echo "  example: osm-initial-import -d 160530 -p ~/osmimporter_pass -x webproxy.eqiad.wmnet:8080"
-}
 
 function download_pbf() {
   cd ${download_dir}
