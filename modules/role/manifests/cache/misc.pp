@@ -151,12 +151,20 @@ class role::cache::misc {
     }
 
     # $req_handling declares how requests are handled based on their attributes.
-    # Currently this only maps request hostnames (Host: header)
-    # If characters outside of '[-.A-Za-z0-9]' are detected in the hostname, it
-    # will be treated as a hostname regex.
-    # Attributes:
+    # The first level of keys map request hostnames (Host: header)
+    # * If characters outside of '[-.A-Za-z0-9]' are detected in the hostname,
+    #   it will be treated as a hostname regex.
+    # * If the special hostname 'default' is specified, that stanza will apply
+    #   to all requests which do not match other stanzas.
+    # * If no default is specified, non-matching requests return 404s.
+    # * Attributes:
     #   director   - routing destination, string key from $app_directors above
     #   force-pass - boolean, default false, causes "return (pass)" (no caching)
+    #   subpaths   - hash - If present, this is the only allowed key.  Request
+    #     handling will be split on the path portion of the URL.  Keys are path
+    #     regexes, and the value of each key should be a sub-hash of the same
+    #     per-hostname attributes above.  The special key "default" applies for
+    #     paths that do not match any of the other keys.
 
     $req_handling = {
         '15.wikipedia.org'                   => { 'director' => 'bromine' },
