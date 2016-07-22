@@ -57,6 +57,15 @@ class role::cache::upload(
         },
     }
 
+    $req_handling = {
+        'default' => {
+            'subpaths' => {
+                '^/+[^/]+/[^/]+/thumb/' => { 'director' => 'swift_thumbs' },
+                default                 => { 'director' => 'swift' },
+            }
+        }
+    }
+
     $common_vcl_config = {
         'purge_host_regex' => $::role::cache::base::purge_host_only_upload_re,
         'upload_domain'    => $upload_domain,

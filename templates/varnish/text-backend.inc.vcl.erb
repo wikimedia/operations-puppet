@@ -9,24 +9,6 @@ sub cluster_be_recv_pre_purge {
 }
 
 sub cluster_be_recv_applayer_backend {
-	if (req.http.Host == "cxserver.wikimedia.org" ) { # LEGACY: to be removed eventually
-		set req.backend = cxserver_backend;
-	} else if (req.http.Host == "citoid.wikimedia.org" ) { # LEGACY: to be removed eventually
-		set req.backend = citoid_backend;
-	} else if (req.http.Host == "rest.wikimedia.org" ) { # LEGACY: to be removed eventually
-		set req.backend = restbase_backend;
-	} else { // default for all other hostnames
-		if (req.url ~ "^/api/rest_v1/") {
-			set req.backend = restbase_backend;
-		} else if (req.url ~ "^/w/api\.php") {
-			set req.backend = api;
-		} else if (req.url ~ "^/w/thumb(_handler)?\.php") {
-			set req.backend = rendering;
-		} else {
-			set req.backend = appservers;
-		}
-	}
-
 	if (req.http.X-Wikimedia-Debug && (
 		req.backend == appservers
 		|| req.backend == rendering
