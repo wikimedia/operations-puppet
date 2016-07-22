@@ -180,8 +180,13 @@ enabled_notification_handlers = nova_fixed_multi, nova_ldap
 #cache_driver = sqlalchemy
 
 [pool:794ccc2c-d751-44fe-b57f-8894c9f5c842]
+<% if @secondary_pdns_ip != @primary_pdns_ip>
 nameservers = 0f66b842-96c2-4189-93fc-1dc95a08b012, 17474d59-a989-48fb-9f8b-19fbdaeff243
 targets = f26e0b32-736f-4f0a-831b-039a415c481e, f845cc43-2052-4d4b-a159-db6fce37b110
+<% else %>
+nameservers = 0f66b842-96c2-4189-93fc-1dc95a08b012
+targets = f26e0b32-736f-4f0a-831b-039a415c481e
+<% end %>
 
 # A 'pool_nameserver' is a pdns instance that receives axfr updates.
 # This is the primary dns server, currently 'labservices1001'
@@ -190,11 +195,13 @@ port = 53
 host = <%= @primary_pdns_ip %>
 
 
+<% if @secondary_pdns_ip != @primary_pdns_ip>
 # A 'pool_nameserver' is a pdns instance that receives axfr updates.
 # This is the secondary dns server, 'labservices1002'
 [pool_nameserver:17474d59-a989-48fb-9f8b-19fbdaeff243]
 port = 53
 host = <%= @secondary_pdns_ip %>
+<% end %>
 
 
 # the 'pool_target' is the pdns database, which we write to for zone creation and deletion
@@ -211,6 +218,7 @@ type = powerdns
 host = <%= @primary_pdns_ip %>
 port = 53
 
+<% if @secondary_pdns_ip != @primary_pdns_ip>
 # the 'pool_target' is the pdns database, which we write to for zone creation and deletion
 [pool_target:f845cc43-2052-4d4b-a159-db6fce37b110]
 options = connection: mysql://<%= @designateconfig["pdns_db_user"] %>:<%= @designateconfig["pdns_db_pass"] %>@<%=@secondary_pdns_ip%>/<%= @designateconfig["pdns_db_name"] %>
@@ -224,6 +232,7 @@ masters = <%= scope.function_ipresolve([@designate_host, 4]) %>:5354
 type = powerdns
 host = <%= @secondary_pdns_ip %>
 port = 53
+<% end %>
 
 ##############
 ## Network API
