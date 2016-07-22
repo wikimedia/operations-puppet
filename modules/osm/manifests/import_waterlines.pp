@@ -8,6 +8,13 @@ class osm::import_waterlines (
     $database = 'gis',
     $proxy = 'webproxy.eqiad.wmnet:8080'
 ) {
+
+    $proxy_opt = $proxy ? {
+        undef   => '',
+        ''      => '',
+        default => "-x ${proxy}",
+    }
+
     file { '/usr/local/bin/import_waterlines':
         ensure  => present,
         owner   => 'root',

@@ -2,7 +2,7 @@
 
 set -e
 cd /srv/downloads
-curl -O -x <%= @proxy %> http://data.openstreetmapdata.com/water-polygons-split-3857.zip
+curl -O <%= @proxy_opt %> http://data.openstreetmapdata.com/water-polygons-split-3857.zip
 unzip water-polygons-split-3857.zip
 rm water-polygons-split-3857.zip
 shp2pgsql -a -s 3857:900913 -g way water-polygons-split-3857/water_polygons.shp water_polygons | sed '/^BEGIN;$/aTRUNCATE water_polygons;' | psql <%= @database %>
