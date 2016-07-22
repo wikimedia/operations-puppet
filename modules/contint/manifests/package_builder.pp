@@ -45,12 +45,8 @@ class contint::package_builder {
     package { [
         'jenkins-debian-glue',
         'jenkins-debian-glue-buildenv',
-        'jenkins-debian-glue-buildenv-git',
-        'jenkins-debian-glue-buildenv-lintian',
-        'jenkins-debian-glue-buildenv-piuparts',
-        'jenkins-debian-glue-buildenv-taptools',
         ]:
-            ensure  => latest,
+            ensure  => present,
             # cowbuilder file hierarchy needs to be created after the symlink
             # points to the mounted disk.
             require => File['/var/cache/pbuilder'],
