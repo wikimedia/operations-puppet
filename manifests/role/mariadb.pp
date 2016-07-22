@@ -146,9 +146,9 @@ class role::mariadb::misc::phabricator(
     $shard     = 'm3',
     $master    = false,
     $snapshot  = false,
-    $ssl       = 'off',
-    $p_s       = 'off',
-    $mariadb10 = false,
+    $ssl       = 'on',
+    $p_s       = 'on',
+    $mariadb10 = true,
     ) {
 
     system::role { 'role::mariadb::misc':
@@ -167,16 +167,13 @@ class role::mariadb::misc::phabricator(
         true  => 0,
         false => 1,
     }
-    $data_partition = $::hostname ? {
-        'db1043' => '/a',
-        default  => '/srv',
-    }
+
     class { 'mariadb::config':
         prompt    => "MISC ${shard}",
         config    => 'mariadb/phabricator.my.cnf.erb',
         password  => $passwords::misc::scripts::mysql_root_pass,
-        datadir   => "${data_partition}/sqldata",
-        tmpdir    => "${data_partition}/tmp",
+        datadir   => '/srv/sqldata',
+        tmpdir    => '/srv/tmp',
         sql_mode  => 'STRICT_ALL_TABLES',
         read_only => $read_only,
         ssl       => $ssl,
@@ -201,10 +198,6 @@ class role::mariadb::misc::phabricator(
 
     class { 'role::mariadb::grants':
         shard => $shard,
-    }
-
-    if $snapshot {
-        include coredb_mysql::snapshot
     }
 
     class { 'mariadb::heartbeat':
