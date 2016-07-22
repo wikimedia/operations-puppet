@@ -128,7 +128,7 @@ NameVirtualHost *:443
     RedirectMatch temp "/r" "/error.html#"
     <%- else -%>
     ProxyPass /r/ http://127.0.0.1:8080/r/ retry=0 nocanon
-    ErrorPage 503 "/error.html#"
+    ErrorDocument 503 "/error.html#"
     <%- end -%>
 
     ErrorLog /var/log/apache2/error.log
