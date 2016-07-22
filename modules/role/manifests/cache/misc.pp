@@ -155,7 +155,8 @@ class role::cache::misc {
     # If characters outside of '[-.A-Za-z0-9]' are detected in the hostname, it
     # will be treated as a hostname regex.
     # Attributes:
-    #   director - routing destination, string key from $app_directors above
+    #   director   - routing destination, string key from $app_directors above
+    #   force-pass - boolean, default false, causes "return (pass)" (no caching)
 
     $req_handling = {
         '15.wikipedia.org'                   => { 'director' => 'bromine' },
@@ -163,18 +164,39 @@ class role::cache::misc {
         'annual.wikimedia.org'               => { 'director' => 'bromine' },
         'bugs.wikimedia.org'                 => { 'director' => 'iridium' },
         'bugzilla.wikimedia.org'             => { 'director' => 'iridium' },
-        'config-master.wikimedia.org'        => { 'director' => 'pybal_config' },
-        'datasets.wikimedia.org'             => { 'director' => 'thorium' },
+        'config-master.wikimedia.org'        => {
+            'director'   => 'pybal_config',
+            'force-pass' => true,
+        },
+        'datasets.wikimedia.org'             => {
+            'director'   => 'thorium',
+            'force-pass' => true,
+        },
         'dbtree.wikimedia.org'               => { 'director' => 'noc' },
         'docker-registry.wikimedia.org'      => { 'director' => 'darmstadtium' },
         'doc.wikimedia.org'                  => { 'director' => 'gallium' },
         'endowment.wikimedia.org'            => { 'director' => 'bromine' },
-        'etherpad.wikimedia.org'             => { 'director' => 'etherpad1001' },
+        'etherpad.wikimedia.org'             => {
+            'director'   => 'etherpad1001',
+            'force-pass' => true,
+        },
         'git.wikimedia.org'                  => { 'director' => 'iridium' },
-        'grafana-admin.wikimedia.org'        => { 'director' => 'krypton' },
-        'grafana-labs-admin.wikimedia.org'   => { 'director' => 'labmon1001' },
-        'grafana-labs.wikimedia.org'         => { 'director' => 'labmon1001' },
-        'grafana.wikimedia.org'              => { 'director' => 'krypton' },
+        'grafana-admin.wikimedia.org'        => {
+            'director'   => 'krypton',
+            'force-pass' => true,
+        },
+        'grafana-labs-admin.wikimedia.org'   => {
+            'director'   => 'labmon1001',
+            'force-pass' => true,
+        },
+        'grafana-labs.wikimedia.org'         => {
+            'director'   => 'labmon1001',
+            'force-pass' => true,
+        },
+        'grafana.wikimedia.org'              => {
+            'director'   => 'krypton',
+            'force-pass' => true,
+        },
         'graphite-labs.wikimedia.org'        => { 'director' => 'labmon1001' },
         'graphite.wikimedia.org'             => { 'director' => 'graphite1001' },
         'horizon.wikimedia.org'              => { 'director' => 'californium' },
@@ -189,12 +211,18 @@ class role::cache::misc {
         'noc.wikimedia.org'                  => { 'director' => 'noc' },
         'ores.wikimedia.org'                 => { 'director' => 'ores' },
         'parsoid-tests.wikimedia.org'        => { 'director' => 'ruthenium' },
-        'people.wikimedia.org'               => { 'director' => 'rutherfordium' },
+        'people.wikimedia.org'               => {
+            'director'   => 'rutherfordium',
+            'force-pass' => true,
+        },
         'performance.wikimedia.org'          => { 'director' => 'graphite1001' },
         'phabricator.wikimedia.org'          => { 'director' => 'iridium' },
         'phab.wmfusercontent.org'            => { 'director' => 'iridium' },
         'pivot.wikimedia.org'                => { 'director' => 'thorium' },
-        'piwik.wikimedia.org'                => { 'director' => 'bohrium' },
+        'piwik.wikimedia.org'                => {
+            'director'   => 'bohrium',
+            'force-pass' => true,
+        },
         '^([^.]+\.)?planet\.wikimedia\.org$' => { 'director' => 'planet1001' },
         'query.wikidata.org'                 => { 'director' => 'wdqs_director' },
         'racktables.wikimedia.org'           => { 'director' => 'krypton' },
@@ -205,8 +233,14 @@ class role::cache::misc {
         'smokeping.wikimedia.org'            => { 'director' => 'netmon1001' },
         'static-bugzilla.wikimedia.org'      => { 'director' => 'bromine' },
         'stats.wikimedia.org'                => { 'director' => 'thorium' },
-        'stream.wikimedia.org'               => { 'director' => 'rcstream' },
-        'ticket.wikimedia.org'               => { 'director' => 'mendelevium' },
+        'stream.wikimedia.org'               => {
+            'director'   => 'rcstream',
+            'force-pass' => true,
+        },
+        'ticket.wikimedia.org'               => {
+            'director'   => 'mendelevium',
+            'force-pass' => true,
+        },
         'toolsadmin.wikimedia.org'           => { 'director' => 'californium' },
         'torrus.wikimedia.org'               => { 'director' => 'netmon1001' },
         'transparency.wikimedia.org'         => { 'director' => 'bromine' },
