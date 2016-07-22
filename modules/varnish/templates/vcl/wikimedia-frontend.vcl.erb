@@ -256,10 +256,6 @@ sub vcl_recv {
 		call https_recv_redirect;
 	}
 
-<% if @websocket_support -%>
-	call wm_common_websocket_recv;
-<% end -%>
-
 	if (req.url ~ "^/beacon\/[^/?]+") {
 		// Logging beacon endpoints
 		//
@@ -316,11 +312,12 @@ sub vcl_pass {
 	return (fetch); // no default VCL (which is just "return (fetch)" anyways)
 }
 
-<% if @websocket_support -%>
 sub vcl_pipe {
-	call wm_common_websocket_pipe;
+	// for websockets over pipe
+	if (req.http.upgrade) {
+		set bereq.http.upgrade = req.http.upgrade;
+	}
 }
-<% end -%>
 
 sub vcl_backend_fetch {
     call cluster_fe_backend_fetch;

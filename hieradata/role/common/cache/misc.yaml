@@ -25,4 +25,5 @@ cache::route_table:
   ulsfo: 'codfw'
   esams: 'eqiad'
 varnish_version4: true
+# note this only affects tlsproxy now, should be moved to param there...
 cache::websocket_support: true
