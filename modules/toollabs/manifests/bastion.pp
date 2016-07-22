@@ -15,6 +15,14 @@ class toollabs::bastion(
     include toollabs::dev_environ
     include toollabs::exec_environ
 
+    # 7/22/16 if this proves stable transition
+    # to the grid master
+    if $::hostname == 'tools-bastion-03' {
+        diamond::collector { 'SGE':
+            source   => 'puppet:///modules/toollabs/monitoring/sge.py',
+        }
+    }
+
     if os_version('ubuntu trusty') {
 
         # lint:ignore:arrow_alignment
