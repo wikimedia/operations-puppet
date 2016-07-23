@@ -96,4 +96,22 @@ class toollabs::proxy(
     }
 
     require_package('goaccess')  # webserver statistics, T121233
+
+    $graphite_metric_prefix = "${::labsproject}.reqstats"
+
+    file { '/usr/local/lib/python2.7/dist-packages/toolsweblogster.py':
+        source => 'puppet:///modules/toollabs/toolsweblogster.py',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+    }
+
+    logster::job { 'proxy-requests':
+        minute          => '*/1',
+        parser          => 'toolsweblogster.UrlFirstSegmentLogster', # Nothing more specific yet
+        logfile         => '/var/log/nginx/access.log',
+        logster_options => "-o statsd --statsd-host=labmon1001.eqiad.wmnet:8125 --metric-prefix=${graphite_metric_prefix}",
+        require         => File['/usr/local/lib/python2.7/dist-packages/toolsweblogster.py'],
+    }
+
 }
