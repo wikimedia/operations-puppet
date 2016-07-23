@@ -79,11 +79,6 @@ class contint::packages::labs {
             ensure => link,
             target => '/usr/lib/x86_64-linux-gnu/libz.so',
         }
-
-        exec {'jenkins-deploy kvm membership':
-            unless  => "/bin/grep -q 'kvm\\S*jenkins-deploy' /etc/group",
-            command => '/usr/sbin/usermod -aG kvm jenkins-deploy',
-        }
     }
 
     if os_version( 'debian >= jessie') {
