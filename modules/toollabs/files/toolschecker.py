@@ -15,6 +15,7 @@ import pykube
 
 
 app = flask.Flask(__name__)
+app.debug = True
 
 
 def check(endpoint):
