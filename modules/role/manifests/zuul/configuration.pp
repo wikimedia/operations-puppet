@@ -5,7 +5,7 @@ class role::zuul::configuration {
 
     $shared = {
         'production' => {
-            'gerrit_server'       => 'lead.wikimedia.org',
+            'gerrit_server'       => 'gerrit.wikimedia.org',
             'gerrit_user'         => 'jenkins-bot',
             'url_pattern'         => 'https://integration.wikimedia.org/ci/job/{job.name}/{build.number}/console',
             'status_url'          => 'https://integration.wikimedia.org/zuul/',
