@@ -112,6 +112,7 @@ class role::backup::director {
         includes     => [ '/var/lib/jenkins/config.xml' ],
     }
     bacula::director::fileset { 'var-lib-gerrit2-review_site-git':
+        ensure   => absent,
         includes => [ '/var/lib/gerrit2/review_site/git' ]
     }
     bacula::director::fileset { 'srv-gerrit-git':
