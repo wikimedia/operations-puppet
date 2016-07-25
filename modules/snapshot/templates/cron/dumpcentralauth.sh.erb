@@ -14,7 +14,8 @@ usage() {
     exit 1
 }
 
-configfile="<%= scope.lookupvar('snapshot::dumps::dirs::dumpsdir') -%>/confs/wikidump.conf"
+confsdir="<%= scope.lookupvar('snapshot::dumps::dirs::dumpsdir') -%>/confs"
+configfile="${confsdir}/wikidump.conf"
 dryrun="false"
 site=""
 
