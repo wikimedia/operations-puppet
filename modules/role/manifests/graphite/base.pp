@@ -66,12 +66,12 @@ class role::graphite::base(
             },
             'count'   => {
                 pattern           => '\.count$',
-                xFilesFactor      => 0.01,
+                xFilesFactor      => 0,
                 aggregationMethod => 'sum',
             },
             'sum'     => {
                 pattern           => '\.sum$',
-                xFilesFactor      => 0.01,
+                xFilesFactor      => 0,
                 aggregationMethod => 'sum',
             },
             # statsite extended counters
