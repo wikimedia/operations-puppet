@@ -10,7 +10,7 @@ class toollabs::kube2proxy(
         owner  => 'root',
         group  => 'root',
         mode   => '0555',
-        source => 'puppet:///modules/toollabs/kube2dynproxy.py',
+        source => 'puppet:///modules/toollabs/kube2proxy.py',
     }
 
     $packages = [
