@@ -56,16 +56,6 @@ class snapshot::dumps::dirs (
       group  => 'root',
     }
 
-    $addschangesdir = '/srv/addschanges'
-
-    file { $addschangesdir:
-        ensure => 'directory',
-        path   => $addschangesdir,
-        mode   => '0644',
-        owner  => 'root',
-        group  => 'root',
-    }
-
     $scriptsdir = '/srv/dumps'
     file { $scriptsdir:
       ensure => 'directory',
