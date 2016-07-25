@@ -23,7 +23,7 @@
 ## Gerrit will use templates ending in ".vm" but will ignore templates ending
 ## in ".vm.example".  If a .vm template does not exist, the default internal
 ## gerrit template which is the same as the .vm.example will be used.  If you
-## want to override the default template, copy the .vm.exmaple file to a .vm
+## want to override the default template, copy the .vm.example file to a .vm
 ## file and edit it appropriately.
 ##
 ## This Template:
@@ -31,9 +31,12 @@
 ## The ChangeSubject.vm template will determine the contents of the email
 ## subject line for ALL emails related to changes.
 ##
-#macro(elipses $length $str)
+## Optionally $change.originalSubject can be used for the first subject
+## in a change. This allows subject based email clients such as GMail
+## to thread comments together even if subsequent patch sets change the
+## first line of the commit message.
+##
+#macro(ellipsis $length $str)
 #if($str.length() > $length)#set($length = $length - 3)${str.substring(0,$length)}...#else$str#end
 #end
-##Change in $projectName.replaceAll('/.*/', '...')[$branch.shortName]: #elipses(63, $change.subject)
-#macro(bracketed $str)($str)#end
-[Gerrit] #elipses(63, $change.subject) - change #bracketed($projectName.replaceAll('/.*/', '...')[$branch.shortName])
+[Gerrit] Change in ${projectName.replaceAll('/.*/', '...')}[$branch.shortName]: #ellipsis(63, $change.subject)
