@@ -544,6 +544,14 @@ groups:
     gid: 784
     members: [addshore]
     privileges: ['ALL = (analytics-wmde) NOPASSWD: ALL']
+  eventbus-admins:
+    gid: 785
+    description: admins for the eventbus clusters
+    members: [nuria, milimetric, joal, mforns, eevans, gwicke, pchelko, mobrovac]
+    privileges: ['ALL = NOPASSWD: /bin/systemctl * eventlogging-service-eventbus.service',
+                 'ALL = NOPASSWD: /bin/systemctl * kafka.service',
+                 'ALL = NOPASSWD: /bin/journalctl * eventlogging-service-eventbus.service',
+                 'ALL = NOPASSWD: /bin/journalctl * kafka.service']
 users:
   rush:
     ensure: present
