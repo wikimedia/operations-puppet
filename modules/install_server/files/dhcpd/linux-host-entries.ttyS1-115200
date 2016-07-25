@@ -6727,9 +6727,3 @@ host xenon {
     fixed-address xenon.eqiad.wmnet;
 }
 
-host ytterbium {
-    hardware ethernet 90:B1:1C:2A:0E:60;
-    fixed-address ytterbium.wikimedia.org;
-    option pxelinux.pathprefix "precise-installer/";
-    filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
-}
