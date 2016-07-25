@@ -53,9 +53,9 @@ NameVirtualHost *:443
     RequestHeader unset Proxy early
 
     SSLEngine on
-    SSLCertificateFile <%= @ssl_cert_file %>
-    SSLCertificateChainFile <%= @ssl_cert_chain_file %>
-    SSLCertificateKeyFile <%= @ssl_cert_key_file %>
+    SSLCertificateFile /etc/acme/cert/gerrit.crt
+    SSLCertificateChainFile /etc/acme/cert/gerrit.chain.crt
+    SSLCertificateKeyFile /etc/acme/key/gerrit.key
     <%= @ssl_settings.join("\n") %>
 
     RedirectMatch ^/$ https://<%= @host %>/r/

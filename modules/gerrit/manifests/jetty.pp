@@ -7,10 +7,6 @@ class gerrit::jetty(
     $git_dir = 'git',
     $gid     = 444,
     $uid     = 444,
-    $system  = true,
-    $changeidlink = '#/q/$1',
-    $commitlink = '#/q/$2',
-    $index_type  = 'LUCENE',
     $ssh_host_key = undef,
     ) {
 
@@ -41,13 +37,13 @@ class gerrit::jetty(
     group { 'gerrit2':
         ensure => present,
         gid    => $gid,
-        system => $system,
+        system => true,
     }
 
     user { 'gerrit2':
         ensure  => present,
         home    => '/var/lib/gerrit2',
-        system  => $system,
+        system  => true,
         gid     => $gid,
         uid     => $uid,
         require => Group['gerrit2'],

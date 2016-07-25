@@ -6,16 +6,6 @@ class role::gerrit::server($ipv4, $ipv6, $bacula = undef) {
 
         $host = hiera('gerrit::host')
 
-        if hiera('gerrit::proxy::lets_encrypt') {
-            letsencrypt::cert::integrated { 'gerrit':
-                subjects   => $host,
-                puppet_svc => 'apache2',
-                system_svc => 'apache2',
-            }
-        } else {
-            sslcert::certificate { $host: }
-        }
-
         monitoring::service { 'https':
             description   => 'HTTPS',
             check_command => "check_ssl_http!${host}",
