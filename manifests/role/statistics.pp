@@ -55,7 +55,7 @@ class role::statistics::cruncher inherits role::statistics {
     backup::set { 'home' : }
 
     # include stuff common to statistics compute nodes
-    include statistics::compute
+    include ::statistics::compute
 
     # Aaron Halfaker (halfak) wants MongoDB for his project.
     class { 'mongodb':
@@ -63,7 +63,7 @@ class role::statistics::cruncher inherits role::statistics {
     }
 
     # rsync logs from logging hosts
-    include statistics::rsync::eventlogging
+    include ::statistics::rsync::eventlogging
 
 
     # geowiki: bringing data from production slave db to research db
@@ -133,24 +133,24 @@ class role::statistics::private inherits role::statistics {
     backup::set { 'home' : }
 
     # include stuff common to statistics compute nodes
-    include statistics::compute
+    include ::statistics::compute
 
     # wikistats code is run here to
     # generate stats.wikimedia.org data
-    include statistics::wikistats
+    include ::statistics::wikistats
 
     # rsync webrequest logs from logging hosts
-    include statistics::rsync::webrequest
+    include ::statistics::rsync::webrequest
 
     # rsync mediawiki logs from logging hosts
-    include statistics::rsync::mediawiki
+    include ::statistics::rsync::mediawiki
 
     # WMDE statistics scripts and cron jobs
-    include statistics::wmde
+    include ::statistics::wmde
 
     # eventlogging logs are not private, but they
     # are here for convenience
-    include statistics::rsync::eventlogging
+    include ::statistics::rsync::eventlogging
     # backup eventlogging logs
     backup::set { 'a-eventlogging' : }
 
@@ -159,7 +159,7 @@ class role::statistics::private inherits role::statistics {
 
     # Although it is in the "private" role, the dataset actually isn't
     # private. We just keep it here to spare adding a separate role.
-    include statistics::aggregator::projectview
+    include ::statistics::aggregator::projectview
 
     include passwords::mysql::research
     # This file will render at
@@ -202,15 +202,15 @@ class role::statistics::web inherits role::statistics {
     }
 
     # include stuff common to statistics webserver nodes.
-    include statistics::web
+    include ::statistics::web
 
     # # include statistics web sites
-    include statistics::sites::datasets
-    include statistics::sites::metrics
-    include statistics::sites::stats
+    include ::statistics::sites::datasets
+    include ::statistics::sites::metrics
+    include ::statistics::sites::stats
     # analytics.wikimedia.org will eventually supercede
     # datasets and stats.
-    include statistics::sites::analytics
+    include ::statistics::sites::analytics
 
     ferm::service {'statistics-web':
         proto => 'tcp',
