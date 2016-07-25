@@ -120,7 +120,7 @@ class snapshot::dumps::configs(
         },
         media => {
             dblist        => "${apachedir}/dblists/all.dblist",
-            skipdblist    => "${dblistsdir}/globalusage.dblist",
+            skipdblist    => "${dblistsdir}/skipmonitor.dblist,${dblistsdir}/globalusage.dblist",
             keep          => '30',
             chunksEnabled => '0',
         },
