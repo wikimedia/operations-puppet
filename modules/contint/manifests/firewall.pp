@@ -63,8 +63,8 @@ class contint::firewall {
 
     ferm::service { 'lead_ssh':
         proto  => 'tcp',
-        port   => '22',
-        srange => '@resolve((lead.wikimedia.org gerrit-new.wikimedia.org))',
+        port   => '29418',
+        srange => '@resolve((lead.wikimedia.org gerrit.wikimedia.org))',
     }
 
     # ALLOWS:
