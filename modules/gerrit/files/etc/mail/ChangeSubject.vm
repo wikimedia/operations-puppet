@@ -39,4 +39,4 @@
 #macro(ellipsis $length $str)
 #if($str.length() > $length)#set($length = $length - 3)${str.substring(0,$length)}...#else$str#end
 #end
-[Gerrit] Change in ${projectName.replaceAll('/.*/', '...')}[$branch.shortName]: #ellipsis(63, $change.subject)
+[Gerrit] ${projectName.replaceAll('/.*/', '...')}[$branch.shortName]: #ellipsis(63, $change.subject)
