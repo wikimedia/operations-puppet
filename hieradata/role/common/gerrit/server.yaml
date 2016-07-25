@@ -19,4 +19,3 @@ gerrit::jetty::replication:
             - '+refs/heads/*:refs/heads/*'
             - '+refs/tags/*:refs/tags/*'
 role::gerrit::server::bacula: 'srv-gerrit-git'
-gerrit::proxy::maint_mode: '04:00 UTC'
