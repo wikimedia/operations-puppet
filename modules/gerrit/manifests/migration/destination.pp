@@ -4,6 +4,7 @@ class gerrit::migration::destination {
     $sourceip='208.80.154.80'
 
     ferm::service { 'gerrit-migration-rsync':
+        ensure => absent,
         proto  => 'tcp',
         port   => '873',
         srange => "${sourceip}/32",
@@ -16,6 +17,7 @@ class gerrit::migration::destination {
     }
 
     rsync::server::module { 'gerrit_git_data':
+        ensure      => absent,
         path        => '/srv/gerrit',
         read_only   => 'no',
         hosts_allow => $sourceip,
