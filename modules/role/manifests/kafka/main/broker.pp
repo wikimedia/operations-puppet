@@ -31,29 +31,25 @@ class role::kafka::main::broker {
 
     if $::site == 'codfw' or $::realm == 'labs' {
         class { '::confluent::kafka::broker':
-            # NOTE: This will be removed once all brokers are on 0.9
-            inter_broker_protocol_version => '0.8.2.X',
-
-            log_dirs                      => ['/srv/kafka/data'],
-            brokers                       => $config['brokers']['hash'],
-            zookeeper_connect             => $config['zookeeper']['url'],
-            nofiles_ulimit                => $nofiles_ulimit,
-            jmx_port                      => $config['jmx_port'],
+            log_dirs                     => ['/srv/kafka/data'],
+            brokers                      => $config['brokers']['hash'],
+            zookeeper_connect            => $config['zookeeper']['url'],
+            nofiles_ulimit               => $nofiles_ulimit,
+            jmx_port                     => $config['jmx_port'],
 
             # I don't trust auto.leader.rebalance :)
-            auto_leader_rebalance_enable  => false,
+            auto_leader_rebalance_enable => false,
 
-            default_replication_factor    => min(3, $config['brokers']['size']),
+            default_replication_factor   => min(3, $config['brokers']['size']),
 
             # Start with a low number of (auto created) partitions per
             # topic.  This can be increased manually for high volume
             # topics if necessary.
-            num_partitions                => 1,
+            num_partitions               => 1,
 
             # Use LinkedIn recommended settings with G1 garbage collector,
-            jvm_performance_opts          => '-server -XX:PermSize=48m -XX:MaxPermSize=48m -XX:+UseG1GC -XX:MaxGCPauseMillis=20 -XX:InitiatingHeapOccupancyPercent=35',
+            jvm_performance_opts         => '-server -XX:PermSize=48m -XX:MaxPermSize=48m -XX:+UseG1GC -XX:MaxGCPauseMillis=20 -XX:InitiatingHeapOccupancyPercent=35',
         }
-
 
         # Include Kafka Server Jmxtrans class
         # to send Kafka Broker metrics to Ganglia and statsd.
