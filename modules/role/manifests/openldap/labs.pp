@@ -45,6 +45,13 @@ class role::openldap::labs {
         critical      => false,
     }
 
+    # restart slapd if it uses more than 50% of memory (T130593)
+    cron { 'restart_slapd':
+        ensure  => present,
+        minute  => fqdn_rand(59, $title),
+        command => '/bin/ps -C slapd -o pmem= | awk \'{sum+=$1} END { if (sum <= 50.0) exit 1  }\' && /bin/systemctl restart slapd >/dev/null 2>/dev/null',
+    }
+
     $monitor_pass = $passwords::openldap::labs::monitor_pass
     diamond::collector { 'OpenLDAP':
         settings => {
