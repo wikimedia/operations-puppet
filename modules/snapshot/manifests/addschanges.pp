@@ -1,28 +1,36 @@
 class snapshot::addschanges(
-    $enable=true,
     $user=undef,
 ) {
     include snapshot::dumps::dirs
 
-    if ($enable) {
-        $ensure = 'present'
-    }
-    else {
-        $ensure = 'absent'
-    }
+    $repodir = $snapshot::dumps::dirs::repodir
+    $confsdir = $snapshot::dumps::dirs::confsdir
+    $apachedir = $snapshot::dumps::dirs::apachedir
+    $dblistsdir = $snapshot::dumps::dirs::dblistsdir
+    $templsdir = "${snapshot::dumps::dirs::dumpsdir}/templs"
 
-    class { 'snapshot::addschanges::config':
-        enable => $enable,
+    file { "${confsdir}/addschanges.conf":
+        ensure  => 'present',
+        path    => "${confsdir}/addschanges.conf",
+        mode    => '0755',
+        owner   => 'root',
+        group   => 'root',
+        content => template('snapshot/addschanges.conf.erb'),
     }
-    class { 'snapshot::addschanges::templates':
-        enable => $enable,
+    file { "${templsdir}/incrs-index.html":
+        ensure => 'present',
+        path   => "${templsdir}/incrs-index.html",
+        mode   => '0644',
+        owner  => 'root',
+        group  => 'root',
+        source => 'puppet:///modules/snapshot/addschanges/incrs-index.html',
     }
 
     cron { 'adds-changes':
-        ensure      => $ensure,
+        ensure      => 'present',
         environment => 'MAILTO=ops-dumps@wikimedia.org',
         user        => $user,
-        command     => "python ${snapshot::dumps::dirs::addschangesdir}/generateincrementals.py --configfile ${snapshot::dumps::dirs::addschangesdir}/confs/addschanges.conf",
+        command     => "python ${repodir}/generateincrementals.py --configfile ${confsdir}/addschanges.conf",
         minute      => '50',
         hour        => '23',
     }

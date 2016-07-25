@@ -10,7 +10,7 @@ mediawiki=<%= @apachedir %>
 allwikislist=<%= @apachedir -%>/dblists/all.dblist
 privatewikislist=<%= @apachedir -%>/dblists/private.dblist
 closedwikislist=<%= @apachedir -%>/dblists/closed.dblist
-skipwikislist=<%= scope.lookupvar('snapshot::dumps::dirs::addschangesdir') -%>/dblists/skip.dblist
+skipwikislist=<%= scope.lookupvar('snapshot::dumps::dirs::dblistsdir') -%>/skip.dblist
 adminsettings=private/PrivateSettings.php
 
 [output]

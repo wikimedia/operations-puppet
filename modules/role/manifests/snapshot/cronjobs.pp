@@ -7,4 +7,5 @@ class role::snapshot::cronjobs {
     class { '::snapshot::cron::dumplists': user   => 'datasets' }
     class { '::snapshot::cron::wikidatadumps::json': user   => 'datasets' }
     class { '::snapshot::cron::wikidatadumps::ttl': user   => 'datasets' }
+    class { '::snapshot::addschanges': user   => 'datasets' }
 }
