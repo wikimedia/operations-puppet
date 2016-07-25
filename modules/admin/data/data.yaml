@@ -1977,3 +1977,11 @@ users:
     ssh_keys:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDaary3YNmqf/fNSfBuhAkOQjOJhAKmwUjlKM5eQXlBMTyYdkFxdhEzBVKQeba2O8WSoazfx9fgmtdrJY4LVBH5Xk6DVe7tZcsS6ovpkPFqdey5bOVUOV4IYviuINBIuHjo8Z1LEXGibbB2EsrqsXsm+9NX9bcPifUhFK1ymd6LPjaD/XMeYWld29WwXqK8VW56SWdWpCcSmnVASaHrTXlqgDw6FY3sOjGZbUxoRz2qknSaapMIT2W6rkFoPrDiG5eqi2dS45/vMpEN7FBN6sx3FbjStM3kGu0PrfVDyDcK3+YyvwNgshV4RiW7VMWcsYkpxSWJlKBJMmQwEQDWNabH helen@localhost.localdomain
     uid: 15082
+  bcohn:
+    ensure: present
+    gid: 500
+    name: bcohn
+    realname: Brent Cohn
+    ssh_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDKiINRPK0puzicpOyHuwiMc6ygmgPGXHZ70ltX2zVK5awSIB8ZAwh+ay8Pp9vHlBXFOaDIII7pVuV2k3AC4TH+gXipvZDRBNYABxVgW3V5ZGLkBxFm1sCThajE2jThebq3O7+iNx17Lbqe99CKyDpZ14wxw0ZOxkUYk21tcc3oz20r2b/7GzBmMCWjZlYwFU5CNSncjlyCtNqZrlBdQGIpGPZxzu+bMi/3dJ8vtGL4uxtGtw0+d4eQDmwFZ8ixHrGaAV0Nl7ZuDlbNxXu9isyro4NgY3pxcGJmuiMqrk3fUAgxkJSVMja3lsUSTmazKWf38y7T3L4KmMYjEVxucNXp bcohn@Brents-MacBook-Pro.local
+    uid: 15121
