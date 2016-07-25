@@ -66,17 +66,6 @@ class snapshot::dumps::dirs (
         group  => 'root',
     }
 
-    $wikiqueriesdir = '/srv/wikiqueries'
-
-    file { $wikiqueriesdir:
-        ensure => 'directory',
-        path   => $wikiqueriesdir,
-        mode   => '0644',
-        owner  => 'root',
-        group  => 'root',
-    }
-
-
     $scriptsdir = '/srv/dumps'
     file { $scriptsdir:
       ensure => 'directory',
