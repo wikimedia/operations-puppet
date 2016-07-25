@@ -13,9 +13,5 @@ class role::snapshot::cron::primary {
         enable => true,
         user   => 'datasets',
     }
-    class { 'snapshot::cron::dumplists':
-        enable => true,
-        user   => 'datasets',
-    }
 }
 

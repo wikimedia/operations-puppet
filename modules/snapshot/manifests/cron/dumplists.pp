@@ -1,15 +1,7 @@
 class snapshot::cron::dumplists(
-    $enable = true,
     $user   = undef,
 ) {
     include snapshot::dumps::dirs
-
-    if ($enable) {
-        $ensure = 'present'
-    }
-    else {
-        $ensure = 'absent'
-    }
 
     file { '/usr/local/bin/list-last-good-dumps.sh':
         ensure  => 'present',
@@ -31,7 +23,7 @@ class snapshot::cron::dumplists(
     # fixme there is an implicit dependency on
     # $dumpsdir/confs/wikidump.conf.monitor, make explicit
     cron { 'list-good-dumps':
-        ensure      => $ensure,
+        ensure      => 'present',
         environment => 'MAILTO=ops-dumps@wikimedia.org',
         user        => $user,
         command     => '/usr/local/bin/list-last-good-dumps.sh',
