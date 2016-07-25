@@ -31,9 +31,6 @@ class role::kafka::main::broker {
 
     if $::site == 'codfw' or $::realm == 'labs' {
         class { '::confluent::kafka::broker':
-            # NOTE: This will be removed once all brokers are on 0.9
-            inter_broker_protocol_version => '0.8.2.X',
-
             log_dirs                      => ['/srv/kafka/data'],
             brokers                       => $config['brokers']['hash'],
             zookeeper_connect             => $config['zookeeper']['url'],
