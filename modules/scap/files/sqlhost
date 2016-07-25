@@ -1,0 +1,53 @@
+#!/bin/bash
+
+# This file is managed by Puppet (modules/scap/files/sqlhost).
+
+# Read configuration.
+. /etc/profile.d/mediawiki.sh
+
+# Database that the user wants to read, or a special parameter.
+db=$1
+shift
+
+if [ -z "$db" ] || [ "$db" = "--help" ]; then
+    echo 'Usage: sqlhost [--write] <dbname>'
+    exit 0
+elif [ "$db" = "--write" ]; then
+    hostcode="echo \$lb->getServerName(0);"
+
+    # Database will be the next parameter
+    db=$1
+    shift
+else
+    hostcode="echo \$lb->getServerName(\$lb->getReaderIndex());"
+fi
+
+# Look up MySQL host to connect to.  For centralauth the host cannot
+# be determined this way, so we need to use fawiki instead as it is
+# located on the same server in both production and labs.
+# wikishared is hosted on x1 (i.e. without any local wikis), just use
+# meta to lookup the password.
+if [ "$db" = "centralauth" ]; then
+    lookupdb="fawiki"
+elif [ "$db" = "wikishared" ]; then
+    lookupdb="metawiki"
+else
+    lookupdb="$db"
+fi
+
+if [ "$db" = "wikishared" ]; then
+    lbcode="\$lb = wfGetLBFactory()->getExternalLB('extension1');"
+else
+    lbcode="\$lb = wfGetLB();"
+fi
+host=`echo $lbcode $hostcode | /usr/local/bin/mwscript eval.php --wiki="$lookupdb"`
+pass=`echo 'echo \$wgDBadminpassword;' | /usr/local/bin/mwscript eval.php --wiki="$lookupdb"`
+
+if [ $? -ne 0 ]; then
+    # PHP error, probably an invalid DB code
+    echo "sqlhost: Error looking up DB \"$db\"" 1>&2
+    exit 1
+fi
+
+echo $host $pass
+

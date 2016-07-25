@@ -85,6 +85,12 @@ class scap::scripts {
         mode   => '0555',
         source => 'puppet:///modules/scap/sql',
     }
+    file { '/usr/local/bin/sqlhost':
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => 'puppet:///modules/scap/sqlhost',
+    }
     file { '/usr/local/bin/sqldump':
         owner  => 'root',
         group  => 'root',
