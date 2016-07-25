@@ -138,29 +138,6 @@ class gerrit::jetty(
         source  => 'puppet:///modules/gerrit/static',
     }
 
-    file { '/var/lib/gerrit2/review_site/lib':
-        ensure  => directory,
-        owner   => 'gerrit2',
-        group   => 'gerrit2',
-        mode    => '0444',
-        require => [Exec['install_gerrit_jetty'],
-                    File['/var/lib/gerrit2/review_site']
-        ],
-    }
-
-    # This file is tuned for gerrit-2.8.1-4-ga1048ce. If you update gerrit,
-    # you also need to update this jar to match the BouncyCastle version
-    # required by the fresh gerrit.
-    file { '/var/lib/gerrit2/review_site/lib/bcprov-jdk16-144.jar':
-        ensure  => link,
-        owner   => 'gerrit2',
-        group   => 'gerrit2',
-        mode    => '0444',
-        target  => '/var/lib/gerrit2/review_site/plugins/bouncycastle/bcprov-1.44-from-Debian-wheezy.jar',
-        require => [File['/var/lib/gerrit2/review_site/lib']
-        ],
-    }
-
     exec { 'install_gerrit_jetty':
         creates => '/var/lib/gerrit2/review_site/bin',
         user    => 'gerrit2',
@@ -180,9 +157,7 @@ class gerrit::jetty(
         enable    => true,
         hasstatus => false,
         status    => '/etc/init.d/gerrit check',
-        require   => [Exec['install_gerrit_jetty'],
-                      File['/var/lib/gerrit2/review_site/lib/bcprov-jdk16-144.jar']
-        ],
+        require   => Exec['install_gerrit_jetty'],
     }
 
     nrpe::monitor_service { 'gerrit':
