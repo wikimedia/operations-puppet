@@ -9,10 +9,6 @@ class role::snapshot::cron::secondary {
         enable => false,
         user   => 'datasets',
     }
-    class { 'snapshot::cron::centralauthdump':
-        enable => false,
-        user   => 'datasets',
-    }
     class { 'snapshot::addschanges':
         enable => false,
         user   => 'datasets',
