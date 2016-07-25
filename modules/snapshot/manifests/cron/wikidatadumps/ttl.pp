@@ -1,20 +1,7 @@
 class snapshot::cron::wikidatadumps::ttl(
-    $enable = true,
     $user   = undef,
 ) {
     include snapshot::cron::wikidatadumps::common
-
-    if ($enable == true) {
-        $ensure = 'present'
-    }
-    else {
-        $ensure = 'absent'
-    }
-
-    system::role { 'snapshot::wikidatadumps::ttl':
-        ensure      => $ensure,
-        description => 'producer of weekly wikidata ttl dumps'
-    }
 
     $scriptPath = '/usr/local/bin/dumpwikidatattl.sh'
     file { $scriptPath:
@@ -26,7 +13,7 @@ class snapshot::cron::wikidatadumps::ttl(
     }
 
     cron { 'wikidatattl-dump':
-        ensure  => $ensure,
+        ensure  => 'present',
         command => $scriptPath,
         user    => $user,
         minute  => '0',
