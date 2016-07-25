@@ -28,6 +28,9 @@ class nagios_common::commands(
         # check_bgp/check_jnx_alarms
         'libnet-snmp-perl',
         'libtime-duration-perl',
+        # check_prometheus_metric
+        'jq',
+        'curl',
         ]:
             ensure => present,
     }
@@ -51,6 +54,7 @@ class nagios_common::commands(
         'check_bgp',
         'check_jnx_alarms',
         'check_ores_workers',
+        'check_prometheus_metric',
     ] :
         require    => File["${config_dir}/commands"],
         config_dir => $config_dir,
