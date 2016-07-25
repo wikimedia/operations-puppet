@@ -18,7 +18,7 @@ fi
 DISTRIBUTION="$DIST"
 PDEBUILD_PBUILDER="cowbuilder"
 BASEPATH="<%= @basepath %>/base-${DIST}-${ARCH}.cow/"
-BUILDRESULT="<%= @basepath %>/result/${DIST}-${ARCH}"
+BUILDRESULT=${BUILDRESULT%-<%= @basepath %>/result/${DIST}-${ARCH}}
 
 if [ "${APT_USE_BUILT}" = "yes" -a -d ${BUILDRESULT} ]; then
 	export BUILDRESULT # .deb location needs to be passed to D05localsources
