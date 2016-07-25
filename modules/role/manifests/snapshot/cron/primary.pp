@@ -13,10 +13,6 @@ class role::snapshot::cron::primary {
         enable => true,
         user   => 'datasets',
     }
-    class { 'snapshot::cron::pagetitles':
-        enable => true,
-        user   => 'datasets',
-    }
     class { 'snapshot::addschanges':
         enable => true,
         user   => 'datasets',

@@ -1,18 +1,10 @@
 class snapshot::cron::pagetitles(
-    $enable=true,
     $user=undef,
 ) {
     include snapshot::dumps::dirs
-    include snapshot::cron::wikiqueryskip
-
-    if ($enable) {
-        $ensure = 'present'
-    }
-    else {
-        $ensure = 'absent'
-    }
 
     $otherdir = "${snapshot::dumps::dirs::datadir}/public/other"
+    $repodir = $snapshot::dumps::dirs::repodir
 
     file { "${otherdir}/pagetitles":
         ensure => 'directory',
@@ -31,7 +23,7 @@ class snapshot::cron::pagetitles(
     }
 
     cron { 'titles-cleanup':
-        ensure      => $ensure,
+        ensure      => 'present',
         environment => 'MAILTO=ops-dumps@wikimedia.org',
         user        => $user,
         command     => "find ${otherdir}/pagetitles/ -maxdepth 1 -type d -mtime +90 -exec rm -rf {} \\; ; find ${otherdir}/mediatitles/ -maxdepth 1 -type d -mtime +90 -exec rm -rf {} \\;",
@@ -39,23 +31,21 @@ class snapshot::cron::pagetitles(
         hour        => '8',
     }
 
-    $scriptsdir = $snapshot::dumps::dirs::scriptsdir
-
     cron { 'pagetitles-ns0':
-        ensure      => $ensure,
+        ensure      => 'present',
         environment => 'MAILTO=ops-dumps@wikimedia.org',
         user        => $user,
-        command     => "cd ${scriptsdir}; python onallwikis.py --configfile confs/wikidump.conf.monitor  --filenameformat '{w}-{d}-all-titles-in-ns-0.gz' --outdir '${otherdir}/pagetitles/{d}' --query \"'select page_title from page where page_namespace=0;'\"",
+        command     => "cd ${repodir}; python onallwikis.py --configfile confs/wikidump.conf.monitor  --filenameformat '{w}-{d}-all-titles-in-ns-0.gz' --outdir '${otherdir}/pagetitles/{d}' --query \"'select page_title from page where page_namespace=0;'\"",
         minute      => '10',
         hour        => '8',
         require     => File["${otherdir}/pagetitles"],
     }
 
     cron { 'pagetitles-ns6':
-        ensure      => $ensure,
+        ensure      => 'present',
         environment => 'MAILTO=ops-dumps@wikimedia.org',
         user        => $user,
-        command     => "cd ${scriptsdir}; python onallwikis.py --configfile confs/wikidump.conf.monitor  --filenameformat '{w}-{d}-all-media-titles.gz' --outdir '${otherdir}/mediatitles/{d}' --query \"'select page_title from page where page_namespace=6;'\"",
+        command     => "cd ${repodir}; python onallwikis.py --configfile confs/wikidump.conf.monitor  --filenameformat '{w}-{d}-all-media-titles.gz' --outdir '${otherdir}/mediatitles/{d}' --query \"'select page_title from page where page_namespace=6;'\"",
         minute      => '50',
         hour        => '8',
         require     => File["${otherdir}/mediatitles"],
