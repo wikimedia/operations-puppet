@@ -34,6 +34,7 @@
 #
 define rsync::server::module (
   $path,
+  $ensure          = present,
   $comment         = undef,
   $read_only       = 'yes',
   $write_only      = 'no',
@@ -50,6 +51,7 @@ define rsync::server::module (
   $hosts_deny      = undef)  {
 
   file { "${rsync::server::rsync_fragments}/frag-${name}":
+    ensure => $ensure,
     content => template('rsync/module.erb'),
     notify  => Exec['compile fragments'],
   }
