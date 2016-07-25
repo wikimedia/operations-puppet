@@ -1,23 +1,20 @@
 class gerrit::proxy(
     $host         = $::gerrit::host,
-    $lets_encrypt = true,
     $maint_mode   = false,
     ) {
 
-    $ssl_settings = ssl_ciphersuite('apache', 'mid', true)
-
-    if $lets_encrypt {
-        $ssl_cert_file = '/etc/acme/cert/gerrit.crt'
-        $ssl_cert_chain_file = '/etc/acme/cert/gerrit.chain.crt'
-        $ssl_cert_key_file = '/etc/acme/key/gerrit.key'
-    } else {
-        $ssl_cert_file = "/etc/ssl/localcerts/${host}.crt"
-        $ssl_cert_chain_file = "/etc/ssl/localcerts/${host}.chain.crt"
-        $ssl_cert_key_file = "/etc/ssl/private/${host}.key"
+    letsencrypt::cert::integrated { 'gerrit':
+        subjects   => $host,
+        puppet_svc => 'apache2',
+        system_svc => 'apache2',
+        require    => Class['apache::mod::ssl']
     }
+
+    $ssl_settings = ssl_ciphersuite('apache', 'mid', true)
 
     apache::site { $host:
         content => template('gerrit/gerrit.wikimedia.org.erb'),
+        require => Letsencrypt::Cert::Integrated['gerrit'],
     }
 
     # Error page stuff
