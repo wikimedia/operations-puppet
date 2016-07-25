@@ -45,6 +45,16 @@ class role::openldap::labs {
         critical      => false,
     }
 
+    # restart slapd once a week to mitigate memory leak (T130593)
+    cron {
+        ensure  => present,
+        user    => 'root',
+        weekday => 'Sunday'
+        minute  => '0',
+        hour    => '3',
+        command => '/bin/systemctl restart slapd',
+    }
+
     $monitor_pass = $passwords::openldap::labs::monitor_pass
     diamond::collector { 'OpenLDAP':
         settings => {
