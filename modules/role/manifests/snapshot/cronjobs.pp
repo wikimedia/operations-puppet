@@ -4,4 +4,5 @@ class role::snapshot::cronjobs {
     class { '::snapshot::cron::pagetitles': user   => 'datasets' }
     class { '::snapshot::cron::cirrussearch': user   => 'datasets' }
     class { '::snapshot::cron::centralauthdump': user   => 'datasets' }
+    class { '::snapshot::cron::dumplists': user   => 'datasets' }
 }

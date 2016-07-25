@@ -13,10 +13,6 @@ class role::snapshot::cron::secondary {
         enable => false,
         user   => 'datasets',
     }
-    class { 'snapshot::cron::dumplists':
-        enable => false,
-        user   => 'datasets',
-    }
     class { 'snapshot::cron::mediadirlists':
         enable => false,
         user   => 'datasets',
