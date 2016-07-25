@@ -1541,7 +1541,7 @@ node /labstore200[3-4]\.codfw\.wmnet/ {
 
 # New https://www.mediawiki.org/wiki/Gerrit
 node 'lead.wikimedia.org' {
-    # Note: whenever moving Gerrit out of ytterbium, you will need
+    # Note: whenever moving Gerrit to another server you will need
     # to update the role::zuul::configuration variable 'gerrit_server'
     role gerrit::server
 
@@ -2922,18 +2922,6 @@ node /^wtp20(0[1-9]|1[0-9]|2[0-4])\.codfw\.wmnet$/ {
     role parsoid
     include standard
     include role::parsoid::transition_cleanup
-}
-
-# https://www.mediawiki.org/wiki/Gerrit
-node 'ytterbium.wikimedia.org' {
-    # Note: whenever moving Gerrit out of ytterbium, you will need
-    # to update the role::zuul::configuration variable 'gerrit_server'
-    role gerrit::server
-
-    include gerrit::migration::source
-    include standard
-
-    interface::add_ip6_mapped { 'main': }
 }
 
 # T138650 - tools for the security team
