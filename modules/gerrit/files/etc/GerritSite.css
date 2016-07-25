@@ -125,8 +125,7 @@ table.changeTable a.gwt-Anchor {
  * https://phabricator.wikimedia.org/T46895
  * Gerrit commit message font is too small
  */
-.changeScreenDescription,
-.changeScreenDescription textarea {
+.com-google-gerrit-client-change-CommitBox_BinderImpl_GenCss_style-text {
 	font-size: 9pt !important;
 }
 
@@ -134,7 +133,7 @@ table.changeTable a.gwt-Anchor {
  * https://phabricator.wikimedia.org/T42941
  * Gerrit diff font isn't big enough, either
  */
-.patchContentTable td {
+.com-google-gerrit-client-diff-DiffTable_BinderImpl_GenCss_style-table {
 	font-size: 9pt !important;
 }
 
@@ -212,4 +211,4 @@ table.changeTable a.gwt-Anchor {
 .ci_result_LOST {
 	color: #e39f00;
 }
-li.ci_comment_test {list-style-type: none; }
+li.ci_comment_test { list-style-type: none; }
