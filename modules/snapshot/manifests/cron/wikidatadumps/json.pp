@@ -1,20 +1,7 @@
 class snapshot::cron::wikidatadumps::json(
-    $enable = true,
     $user   = undef,
 ) {
     include snapshot::cron::wikidatadumps::common
-
-    if ($enable == true) {
-        $ensure = 'present'
-    }
-    else {
-        $ensure = 'absent'
-    }
-
-    system::role { 'snapshot::wikidatadumps::json':
-        ensure      => $ensure,
-        description => 'producer of weekly wikidata json dumps'
-    }
 
     $scriptPath = '/usr/local/bin/dumpwikidatajson.sh'
     file { $scriptPath:
@@ -26,7 +13,7 @@ class snapshot::cron::wikidatadumps::json(
     }
 
     cron { 'wikidatajson-dump':
-        ensure  => $ensure,
+        ensure  => 'present',
         command => $scriptPath,
         user    => $user,
         minute  => '15',
