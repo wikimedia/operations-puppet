@@ -59,7 +59,7 @@ class puppetmaster(
     if os_version('Debian >= jessie') {
         apt::pin { ['puppet', 'puppetmaster', 'puppetmaster-common',
                     'vim-puppet', 'puppet-el']:
-                        pin      => 'release a=jessie-wikimedia c=backports',
+                        pin      => 'release a=jessie-backports',
                         priority => '1001',
                         before   => Package['puppet'],
         }
