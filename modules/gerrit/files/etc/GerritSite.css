@@ -4,6 +4,14 @@
  * Add word wrapping for commit messages, so horizontal scrolling isn't needed,
  *               and for inline review messages, so we can write code there.
  */
+.com-google-gerrit-client-diff-DiffTable_BinderImpl_GenCss_style-difftable .CodeMirror pre span {
+	white-space: pre-wrap !important;
+}
+
+/*
+ * pre-gerrit-2.8 not sure if this is needed
+ * but keeping it just in case.
+ */
 .commentPanelMessage {
 	white-space: pre-wrap !important;
 }
