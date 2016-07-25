@@ -1,17 +1,7 @@
 class snapshot::cron::cirrussearch(
-    $enable = true,
     $user   = undef,
 ) {
-    if ($enable == true) {
-        $ensure = 'present'
-    } else {
-        $ensure = 'absent'
-    }
-
-    system::role { 'snapshot::cirrussearch':
-        ensure      => $ensure,
-        description => 'producer of weekly cirrussearch json dumps'
-    }
+    $confdir = "${snapshot::dumps::dirs::dumpsdir}/confs"
 
     file { '/var/log/cirrusdump':
         ensure => 'directory',
@@ -35,8 +25,8 @@ class snapshot::cron::cirrussearch(
     }
 
     cron { 'cirrussearch-dump':
-        ensure      => $ensure,
-        command     => "${scriptPath} --config ${snapshot::dumps::dirs::dumpsdir}/confs/wikidump.conf",
+        ensure      => 'present',
+        command     => "${scriptPath} --config ${confdir}/wikidump.conf",
         environment => 'MAILTO=ops-dumps@wikimedia.org',
         user        => $user,
         minute      => '15',

@@ -25,9 +25,5 @@ class role::snapshot::cron::secondary {
         enable => false,
         user   => 'datasets',
     }
-    class { 'snapshot::cron::cirrussearch':
-        enable => false,
-        user   => 'datasets',
-    }
 }
 
