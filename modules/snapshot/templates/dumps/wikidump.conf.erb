@@ -75,7 +75,7 @@ maxrevs=100000
 
 <% if @config[@configtype].has_key?('wikis') %>
 <% @config[@configtype]['wikis'].keys.sort.each do |w| -%>
-[<%= [w] %>]
+[<%= w %>]
 <% if @config[@configtype]['wikis'][w].has_key?('jobsperbatch') -%>
 jobsperbatch=<%= @config[@configtype]['wikis'][w]['jobsperbatch'] %>
 <% end -%>
