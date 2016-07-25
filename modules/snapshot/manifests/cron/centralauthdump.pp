@@ -1,15 +1,8 @@
 class snapshot::cron::centralauthdump(
-    $enable = true,
     $user   = undef,
 ) {
     include snapshot::dumps::dirs
-
-    if ($enable == true) {
-        $ensure = 'present'
-    }
-    else {
-        $ensure = 'absent'
-    }
+    $confdir = "${snapshot::dumps::dirs::dumpsdir}/confs"
 
     file { '/usr/local/bin/dumpcentralauth.sh':
         mode    => '0755',
@@ -28,7 +21,7 @@ class snapshot::cron::centralauthdump(
 
     cron { 'centralauth-dump':
         ensure      => $ensure,
-        command     => "/usr/local/bin/dumpcentralauth.sh --site ${dbsite} --config ${snapshot::dumps::dirs::dumpsdir}/confs/wikidump.conf",
+        command     => "/usr/local/bin/dumpcentralauth.sh --site ${dbsite} --config ${confdir}/wikidump.conf",
         environment => 'MAILTO=ops-dumps@wikimedia.org',
         user        => $user,
         minute      => '15',
