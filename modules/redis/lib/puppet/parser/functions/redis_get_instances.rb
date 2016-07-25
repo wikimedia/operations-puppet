@@ -14,6 +14,6 @@ module Puppet::Parser::Functions
         instances << data['port'].to_s
       end
     end
-    instances
+    instances.sort
   end
 end

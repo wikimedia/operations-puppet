@@ -42,6 +42,6 @@ module Puppet::Parser::Functions
       my_ips |= servers[s]
     end
     # Resolve the ip back to a hostname, used for ipsec
-    my_ips.map { |h| function_ipresolve([h, 'ptr']) }
+    my_ips.map { |h| function_ipresolve([h, 'ptr']) }.sort
   end
 end
