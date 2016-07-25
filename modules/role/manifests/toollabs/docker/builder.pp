@@ -4,7 +4,7 @@ class role::toollabs::docker::builder {
     require role::labs::lvm::srv
     class { '::docker::engine': }
 
-    class { '::docker::baseimages': }
+    class { '::toollabs::images': }
 
     # This requires push privilages
     $docker_username = hiera('docker::username')
