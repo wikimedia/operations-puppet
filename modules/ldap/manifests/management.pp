@@ -46,7 +46,7 @@ class ldap::management(
     }
 
     file { '/usr/local/bin/reset-ldap-password':
-        source => 'puppet:///modules/ldap/reset-password',
+        source => 'puppet:///modules/ldap/reset-ldap-password',
         mode   => '0554',
         owner  => 'root',
         group  => 'root',
