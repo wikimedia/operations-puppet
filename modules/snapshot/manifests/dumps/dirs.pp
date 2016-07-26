@@ -1,7 +1,4 @@
-class snapshot::dumps::dirs (
-    $user = undef,
-    $group = undef,
-) {
+class snapshot::dumps::dirs {
     $dumpsdir = '/etc/dumps'
     file { $dumpsdir:
       ensure => 'directory',
@@ -32,34 +29,28 @@ class snapshot::dumps::dirs (
       group  => 'root',
     }
 
-    file { "${dumpsdir}/stages":
+    $stagesdir = "${dumpsdir}/stages"
+    file { $stagesdir:
       ensure => 'directory',
-      path   => "${dumpsdir}/stages",
+      path   => $stagesdir,
       mode   => '0755',
       owner  => 'root',
       group  => 'root',
     }
 
-    file { "${dumpsdir}/cache":
+    $cachedir = "${dumpsdir}/cache"
+    file { $cachedir:
       ensure => 'directory',
-      path   => "${dumpsdir}/cache",
+      path   => $cachedir,
       mode   => '0755',
       owner  => 'datasets',
       group  => 'root',
     }
 
-    file { "${dumpsdir}/templs":
+    $templsdir = "${dumpsdir}/templs"
+    file { $templsdir:
       ensure => 'directory',
-      path   => "${dumpsdir}/templs",
-      mode   => '0755',
-      owner  => 'root',
-      group  => 'root',
-    }
-
-    $scriptsdir = '/srv/dumps'
-    file { $scriptsdir:
-      ensure => 'directory',
-      path   => $scriptsdir,
+      path   => $templsdir,
       mode   => '0755',
       owner  => 'root',
       group  => 'root',
