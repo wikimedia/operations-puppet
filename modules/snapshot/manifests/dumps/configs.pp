@@ -1,7 +1,4 @@
-class snapshot::dumps::configs(
-    $enable           = true,
-) {
-
+class snapshot::dumps::configs {
     include snapshot::dumps::dirs
 
     $dblistsdir = $snapshot::dumps::dirs::dblistsdir
@@ -126,26 +123,24 @@ class snapshot::dumps::configs(
         },
     }
 
-    if ($enable) {
-        snapshot::dumps::wikiconf { 'wikidump.conf':
-            configtype => 'smallwikis',
-            config     => $config,
-        }
-        snapshot::dumps::wikiconf { 'wikidump.conf.bigwikis':
-            configtype => 'bigwikis',
-            config     => $config,
-        }
-        snapshot::dumps::wikiconf { 'wikidump.conf.hugewikis':
-          configtype => 'hugewikis',
-          config     => $config,
-        }
-        snapshot::dumps::wikiconf { 'wikidump.conf.monitor':
-            configtype => 'monitor',
-            config     => $config,
-        }
-        snapshot::dumps::wikiconf { 'wikidump.conf.media':
-            configtype => 'media',
-            config     => $config,
-        }
+    snapshot::dumps::wikiconf { 'wikidump.conf':
+        configtype => 'smallwikis',
+        config     => $config,
+    }
+    snapshot::dumps::wikiconf { 'wikidump.conf.bigwikis':
+        configtype => 'bigwikis',
+        config     => $config,
+    }
+    snapshot::dumps::wikiconf { 'wikidump.conf.hugewikis':
+        configtype => 'hugewikis',
+        config     => $config,
+    }
+    snapshot::dumps::wikiconf { 'wikidump.conf.monitor':
+        configtype => 'monitor',
+        config     => $config,
+    }
+    snapshot::dumps::wikiconf { 'wikidump.conf.media':
+        configtype => 'media',
+        config     => $config,
     }
 }

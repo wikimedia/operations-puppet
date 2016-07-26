@@ -1,16 +1,6 @@
-class snapshot::dumps(
-    $enable    = true,
-) {
-    class { 'snapshot::dumps::configs':
-        enable => $enable,
-    }
-    class { 'snapshot::dumps::dblists':
-        enable => $enable,
-    }
-    class { 'snapshot::dumps::templates':
-      enable => $enable,
-    }
-    class { 'snapshot::dumps::stagesconfig':
-        enable => $enable,
-    }
+class snapshot::dumps {
+    include snapshot::dumps::configs
+    include snapshot::dumps::dblists
+    include snapshot::dumps::templates
+    include snapshot::dumps::stagesconfig
 }

@@ -1,6 +1,4 @@
-class snapshot::dumps::stagesconfig(
-    $enable = true,
-) {
+class snapshot::dumps::stagesconfig {
 
     include snapshot::dumps::dirs
     $confsdir = $snapshot::dumps::dirs::confsdir
@@ -34,54 +32,52 @@ class snapshot::dumps::stagesconfig(
         skipjob_args => "--skipjobs ${jobs_to_skip}",
     }
 
-    if ($enable) {
-        snapshot::dumps::stagesconf { 'stages_normal':
-            stagestype => 'normal',
-            stages     => $stages,
-        }
-        snapshot::dumps::stagesconf { 'stages_partial':
-            stagestype => 'partial',
-            stages     => $stages,
-        }
-        snapshot::dumps::stagesconf { 'stages_normal_nocreate':
-            stagestype => 'normal_nocreate',
-            stages     => $stages,
-        }
-        snapshot::dumps::stagesconf { 'stages_partial_nocreate':
-            stagestype => 'partial_nocreate',
-            stages     => $stages,
-        }
-        snapshot::dumps::stagesconf { 'stages_normal_hugewikis':
-            stagestype => 'normal_huge',
-            stages     => $stages,
-        }
-        snapshot::dumps::stagesconf { 'stages_partial_hugewikis':
-            stagestype => 'partial_huge',
-            stages     => $stages,
-        }
-        snapshot::dumps::stagesconf { 'stages_normal_nocreate_hugewikis':
-            stagestype => 'normal_nocreate_huge',
-            stages     => $stages,
-        }
-        snapshot::dumps::stagesconf { 'stages_partial_nocreate_hugewikis':
-            stagestype => 'partial_nocreate_huge',
-            stages     => $stages,
-        }
-        snapshot::dumps::stagesconf { 'stages_create':
-            stagestype => 'create',
-            stages     => $stages,
-        }
-        snapshot::dumps::stagesconf { 'stages_create_smallwikis':
-            stagestype => 'create_small',
-            stages     => $stages,
-        }
-        snapshot::dumps::stagesconf { 'stages_create_bigwikis':
-            stagestype => 'create_big',
-            stages     => $stages,
-        }
-        snapshot::dumps::stagesconf { 'stages_create_hugewikis':
-            stagestype => 'create_huge',
-            stages     => $stages,
-        }
+    snapshot::dumps::stagesconf { 'stages_normal':
+        stagestype => 'normal',
+        stages     => $stages,
+    }
+    snapshot::dumps::stagesconf { 'stages_partial':
+        stagestype => 'partial',
+        stages     => $stages,
+    }
+    snapshot::dumps::stagesconf { 'stages_normal_nocreate':
+        stagestype => 'normal_nocreate',
+        stages     => $stages,
+    }
+    snapshot::dumps::stagesconf { 'stages_partial_nocreate':
+        stagestype => 'partial_nocreate',
+        stages     => $stages,
+    }
+    snapshot::dumps::stagesconf { 'stages_normal_hugewikis':
+        stagestype => 'normal_huge',
+        stages     => $stages,
+    }
+    snapshot::dumps::stagesconf { 'stages_partial_hugewikis':
+        stagestype => 'partial_huge',
+        stages     => $stages,
+    }
+    snapshot::dumps::stagesconf { 'stages_normal_nocreate_hugewikis':
+        stagestype => 'normal_nocreate_huge',
+        stages     => $stages,
+    }
+    snapshot::dumps::stagesconf { 'stages_partial_nocreate_hugewikis':
+        stagestype => 'partial_nocreate_huge',
+        stages     => $stages,
+    }
+    snapshot::dumps::stagesconf { 'stages_create':
+        stagestype => 'create',
+        stages     => $stages,
+    }
+    snapshot::dumps::stagesconf { 'stages_create_smallwikis':
+        stagestype => 'create_small',
+        stages     => $stages,
+    }
+    snapshot::dumps::stagesconf { 'stages_create_bigwikis':
+        stagestype => 'create_big',
+        stages     => $stages,
+    }
+    snapshot::dumps::stagesconf { 'stages_create_hugewikis':
+        stagestype => 'create_huge',
+        stages     => $stages,
     }
 }
