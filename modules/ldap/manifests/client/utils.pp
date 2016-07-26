@@ -59,13 +59,6 @@ class ldap::client::utils($ldapconfig) {
         }
     }
 
-    file { '/usr/local/sbin/homedirectorymanager.py':
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0544',
-        source => 'puppet:///modules/ldap/scripts/homedirectorymanager.py',
-    }
-
     file { '/usr/local/lib/python2.7/dist-packages/ldapsupportlib.py':
         owner  => 'root',
         group  => 'root',
