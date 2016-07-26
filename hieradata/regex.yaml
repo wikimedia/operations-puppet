@@ -64,7 +64,7 @@ es_eqiad_rack_d4:
   elasticsearch::row:  D
 
 mysql_eqiad:
-  __regex: !ruby/regexp /^(db10[0-9][0-9]|dbstore100[1-2]|dbproxy100[1-8]|es101[1-9]|labsdb100[1-8])\.eqiad\.wmnet$/
+  __regex: !ruby/regexp /^(db10[0-9][0-9]|dbstore100[1-2]|dbproxy10[01][0-9]|es101[1-9]|labsdb10[01][0-9])\.eqiad\.wmnet$/
   cluster: mysql
 
 mysql_codfw:
