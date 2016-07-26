@@ -1,5 +1,4 @@
 snapshot::dumps::runtype: hugewikis
 snapshot::dumps::maxjobs: 28
 snapshot::dumps::monitor: false
-snapshot::dumps::repodir: /srv/deployment/dumps/dumps/xmldumps-backup
 snapshot::cron::misc: false

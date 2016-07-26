@@ -56,5 +56,5 @@ class snapshot::dumps::dirs {
       group  => 'root',
     }
 
-    $repodir = hiera('snapshot::dumps::repodir','/srv/dumps')
+    $repodir = '/srv/deployment/dumps/dumps/xmldumps-backup'
 }

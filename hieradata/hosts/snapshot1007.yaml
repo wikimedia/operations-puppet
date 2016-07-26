@@ -1,5 +1,4 @@
 snapshot::dumps::runtype: regular
 snapshot::dumps::maxjobs: 20
 snapshot::dumps::monitor: true
-snapshot::dumps::repodir: /srv/deployment/dumps/dumps/xmldumps-backup
 snapshot::cron::misc: true
