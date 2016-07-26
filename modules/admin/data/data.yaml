@@ -82,7 +82,7 @@ groups:
               gpaumier, moushira, aklapper, qchris, tjones, srijan, addshore,
               jminor, pt1979, asherman, etonkovidova, sbisson, zhousquared,
               atgomez, jgirault, jdrewniak, matmarex, elukey, jdcc, ppchelko,
-              nschaaf, dstrine, ladsgroup, joewalsh, mpany, hjiang, jsamra]
+              nschaaf, dstrine, ladsgroup, joewalsh, mpany, hjiang, jsamra, bcohn]
   cassandra-test-roots:
     gid: 708
     description: users with root on cassandra hosts
@@ -123,7 +123,7 @@ groups:
               daisy, tomasz, mholloway-shell, madhuvishy, ebernhardson, niedzielski,
               neilpquinn-wmf, tbayer, moushira, dbrant, maxsem, srijan, krenair,
               jminor, asherman, etonkovidova, sbisson, addshore, matmarex, elukey,
-              nikerabbit, nschaaf, dstrine, joewalsh, mpany, hjiang, jsamra]
+              nikerabbit, nschaaf, dstrine, joewalsh, mpany, hjiang, jsamra, bcohn]
   ldap-admins:
     gid: 715
     description: ldap admins
@@ -242,7 +242,7 @@ groups:
               andyrussg, niedzielski, maxsem, hoo, daniel, tbayer, krinkle, tgr,
               csteipp, smalyshev, ebernhardson, addshore, jminor, chedasaurus, neilpquinn-wmf,
               dcausse, bd808, tjones, mobrovac, jgirault, jdrewniak, ejegg, jdcc, ori,
-              bmansurov, atgomez, amire80, kartik, pcoombe, foks, mpany, hjiang, jsamra]
+              bmansurov, atgomez, amire80, kartik, pcoombe, foks, mpany, hjiang, jsamra, bcohn]
   analytics-admins:
     gid: 732
     description: Admin access to analytics cluster.
