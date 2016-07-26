@@ -1,6 +1,7 @@
 # this class is for snapshot hosts that run regular dumps
 # meaning sql/xml dumps every couple of weeks or so
 class role::snapshot::dumper {
+    include role::snapshot::common
 
     # mw packages and dependencies, dataset server nfs mount
     include snapshot::dumps::packages
