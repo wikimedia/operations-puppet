@@ -66,13 +66,6 @@ class ldap::client::utils($ldapconfig) {
         }
     }
 
-    file { '/usr/local/sbin/change-ldap-passwd':
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0544',
-        source => 'puppet:///modules/ldap/scripts/change-ldap-passwd',
-    }
-
     file { '/usr/local/sbin/homedirectorymanager.py':
         owner  => 'root',
         group  => 'root',
