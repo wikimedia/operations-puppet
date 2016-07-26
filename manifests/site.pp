@@ -2584,8 +2584,19 @@ node /^restbase200[1-9]\.codfw\.wmnet$/ {
 }
 
 # cassandra multi-dc temporary test T111382
-node /^restbase-test200[1-3]\.codfw\.wmnet$/ {
-    role restbase, cassandra
+# test host rsync data from cassandra test hosts per P3575
+node 'restbase-test2001.codfw.wmnet' {
+    role restbase, cassandra, restbase::rsync::xenon
+    include standard
+}
+
+node 'restbase-test2002.codfw.wmnet' {
+    role restbase, cassandra, restbase::rsync::cerium
+    include standard
+}
+
+node 'restbase-test2003.codfw.wmnet' {
+    role restbase, cassandra, restbase::rsync::praseodymium
     include standard
 }
 
