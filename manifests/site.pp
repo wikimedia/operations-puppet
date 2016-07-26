@@ -2181,7 +2181,7 @@ node /^mw12(8[0-9]|90)\.eqiad\.wmnet$/ {
 }
 
 # ROW A eqiad imagescalers
-node /^mw129[1-8]\.eqiad\.wmnet$/ {
+node /^mw129[3-8]\.eqiad\.wmnet$/ {
     role mediawiki::imagescaler
 }
 

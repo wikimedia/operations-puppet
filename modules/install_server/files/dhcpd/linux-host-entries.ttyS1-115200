@@ -4782,14 +4782,14 @@ host mw1290 {
     fixed-address mw1290.eqiad.wmnet;
 }
 
-host mw1291 {
+host thumbor1001 {
     hardware ethernet 14:18:77:61:3C:D3;
-    fixed-address mw1291.eqiad.wmnet;
+    fixed-address thumbor1001.eqiad.wmnet;
 }
 
-host mw1292 {
+host thumbor1002 {
     hardware ethernet 14:18:77:61:B0:87;
-    fixed-address mw1292.eqiad.wmnet;
+    fixed-address thumbor1002.eqiad.wmnet;
 }
 
 host mw1293 {
