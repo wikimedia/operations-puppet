@@ -70,19 +70,6 @@ groups:
               ezachte, hoo, jamesur, jdlrobson, khorn, tparscal, ssastry,
               ironholds, nuria, leila, santhosh, amire80, legoktm, addshore, foks]
     privileges: ['ALL = (www-data,apache) NOPASSWD: ALL']
-  bastiononly:
-    gid: 707
-    description: these folks are allowed bastion _only_ access
-    members: [jforrester, jmorgan, dfoy, junikowski, cwdent,
-              mhurd, dbrant, bsitzmann, deskana, chedasaurus,
-              declerambaul, ellery, dduvall, nettrom, mforns, jkatz,
-              bmansurov, west1, jhernandez, smalyshev, tbayer, zfilipin,
-              joal, thcipriani, daisy, ashwinpp, jhobs, tomasz, lpintscher,
-              pcoombe, mholloway-shell, niedzielski, neilpquinn-wmf,
-              gpaumier, moushira, aklapper, qchris, tjones, srijan, addshore,
-              jminor, pt1979, asherman, etonkovidova, sbisson, zhousquared,
-              atgomez, jgirault, jdrewniak, matmarex, elukey, jdcc, ppchelko,
-              nschaaf, dstrine, ladsgroup, joewalsh, mpany, hjiang, jsamra, bcohn]
   cassandra-test-roots:
     gid: 708
     description: users with root on cassandra hosts
