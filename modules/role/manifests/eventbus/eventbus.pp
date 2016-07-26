@@ -30,7 +30,12 @@ class role::eventbus::eventbus {
     }
 
     $kafka_brokers_array = $config['brokers']['array']
-    $kafka_base_uri      = inline_template('kafka:///<%= @kafka_brokers_array.join(":9092,") + ":9092" %>')
+
+    # We are trying out different kafka clients in eventlogging.
+    # The default Kafka handler 'protocol' is 'kafka://'.  Other
+    # handlers are named differently, e.g. 'confluent-kafka://'.
+    $eventlogging_kafka_handler = hiera('eventlogging_kafka_handler', 'kafka')
+    $kafka_base_uri      = inline_template('<%= @eventlogging_kafka_handler %>:///<%= @kafka_brokers_array.join(":9092,") + ":9092" %>')
 
     $outputs = [
         # When events are produced to kafka, the
