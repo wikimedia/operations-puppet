@@ -1,0 +1,19 @@
+grant {
+	// Config files
+	permission java.io.FilePermission "/etc/html5depurate/-", "read";
+
+	// Resources within jar files
+	permission java.io.FilePermission "/usr/lib/html5depurate/-", "read";
+
+	// Listen on the HTTP port
+	permission java.net.SocketPermission "localhost:<%= @port %>", "listen";
+	permission java.net.SocketPermission "<%= @listen_host %>:<%= @port %>", "listen";
+
+	// Accept permissions need to be granted to the remote host on its ephemeral port
+	permission java.net.SocketPermission "localhost", "accept,resolve";
+	permission java.net.SocketPermission "<%= @listen_host %>", "accept,resolve";
+
+	// Other permissions
+	permission java.util.PropertyPermission "*", "read";
+	permission java.lang.RuntimePermission "modifyThread";
+};
