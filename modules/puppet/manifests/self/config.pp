@@ -98,4 +98,14 @@ class puppet::self::config(
         mode    => '0444',
         content => template('puppet/fileserver-self.conf.erb'),
     }
+
+    # Set a unicode capable locale to avoid "SERVER: invalid byte sequence in
+    # US-ASCII" errors when puppetmaster is started with LANG that doesn't
+    # support non-ASCII encoding.
+    # See <https://tickets.puppetlabs.com/browse/PUP-1386#comment-62325>
+    file_line { 'puppetmaster_select_lang':
+        line  => 'LANG="en_US.UTF-8"',
+        path  => '/etc/default/puppetmaster',
+        match => 'LANG=',
+    }
 }

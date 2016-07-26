@@ -27,9 +27,21 @@ class puppetmaster::passenger(
 
     $ssl_settings = ssl_ciphersuite('apache', 'compat')
 
-    # Debian jessie needs the DH params file
+    # Jessie-specific instructions
     if os_version('Debian >= jessie') {
+        # Debian jessie needs the DH params file
         include sslcert::dhparam
+
+        # Set a unicode capable locale to avoid "SERVER: invalid byte sequence in
+        # US-ASCII" errors when puppetmaster is started with LANG that doesn't
+        # support non-ASCII encoding.
+        # See <https://tickets.puppetlabs.com/browse/PUP-1386#comment-62325>
+        apache::env { 'use-utf-locale':
+            ensure => present,
+            vars   => {
+                'LANG' => 'en_US.UTF-8'
+            },
+        }
     }
 
     apache::site { 'puppetmaster.wikimedia.org':
