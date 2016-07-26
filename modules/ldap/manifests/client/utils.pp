@@ -7,7 +7,6 @@ class ldap::client::utils($ldapconfig) {
     package { [
         'python-ldap',
         'python-pycurl',
-        'ldapvi',
     ]:
         ensure => latest,
     }
