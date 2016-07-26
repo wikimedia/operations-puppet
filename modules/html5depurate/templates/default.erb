@@ -1,0 +1,5 @@
+# Set the target GC pause time to 200ms, which is chosen as a maximum
+# acceptable user-visible latency. This service is expected to use a small
+# proportion of the throughput capacity of a single server, so throughput
+# overhead is not a major performance concern.
+JAVA_ARGS="-Xmx<% @max_memory_mb %>M -XX:MaxGCPauseMillis=200"
