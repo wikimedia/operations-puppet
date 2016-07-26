@@ -35,7 +35,7 @@
     "compute_extension:certificates": [],
     "compute_extension:cloudpipe": [["rule:admin_api"]],
     "compute_extension:console_output": [["rule:admin_or_projectadmin"]],
-    "compute_extension:consoles": [["rule:admin_or_projectadmin"]],
+    "compute_extension:consoles": [["rule:admin_api"]],
     "compute_extension:createserverext": [["rule:admin_or_projectadmin"]],
     "compute_extension:deferred_delete": [["rule:admin_or_projectadmin"]],
     "compute_extension:disk_config": [["rule:admin_or_projectadmin"]],
