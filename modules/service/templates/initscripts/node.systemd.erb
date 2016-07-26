@@ -20,5 +20,10 @@ TimeoutStopSec=60
 WorkingDirectory=/srv/deployment/<%= @repo %>
 ExecStart=/usr/bin/firejail --blacklist=/root --blacklist=/home --caps --seccomp /usr/bin/nodejs <%= @starter_script %> -c /etc/<%= @title %>/config.yaml
 
+# Always redirect stdout and stderr to the journal. Production services only
+# log fatal errors to stderr / stdout, and use logstash (or log files) for
+# regular app logs. StandardError is piped to stdout by systemd's defaults.
+StandardOutput=journal
+
 [Install]
 WantedBy=multi-user.target
