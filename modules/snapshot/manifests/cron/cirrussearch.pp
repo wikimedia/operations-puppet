@@ -1,7 +1,7 @@
 class snapshot::cron::cirrussearch(
     $user   = undef,
 ) {
-    $confdir = "${snapshot::dumps::dirs::dumpsdir}/confs"
+    $confsdir = $snapshot::dumps::dirs::confsdir
 
     file { '/var/log/cirrusdump':
         ensure => 'directory',
@@ -26,7 +26,7 @@ class snapshot::cron::cirrussearch(
 
     cron { 'cirrussearch-dump':
         ensure      => 'present',
-        command     => "${scriptPath} --config ${confdir}/wikidump.conf",
+        command     => "${scriptPath} --config ${confsdir}/wikidump.conf",
         environment => 'MAILTO=ops-dumps@wikimedia.org',
         user        => $user,
         minute      => '15',
