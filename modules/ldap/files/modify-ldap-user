@@ -1,0 +1,9 @@
+#!/bin/bash
+[ $# -eq 0 ] && {
+    echo "Usage: $0 username";
+    echo "Provide username of the user to modify"
+    exit 1;
+}
+USER="$1"
+
+ldapvi -b ou=people uid="$USER"
