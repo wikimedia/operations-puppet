@@ -81,7 +81,7 @@ authorizer: <%= @authorizor_value %>
 # expensive operation depending on the authorizer, CassandraAuthorizer is
 # one example). Defaults to 2000, set to 0 to disable.
 # Will be disabled automatically for AllowAllAuthorizer.
-permissions_validity_in_ms: 2000
+permissions_validity_in_ms: <%= @permissions_validity_in_ms %>
 
 # The partitioner is responsible for distributing groups of rows (by
 # partition key) across nodes in the cluster.  You should leave this
