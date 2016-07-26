@@ -123,6 +123,7 @@ novaconfig:
   dhcp_domain: 'eqiad.wmflabs'
   live_migration_uri: 'qemu://%s.eqiad.wmnet/system?pkipath=/var/lib/nova'
   zone: eqiad
+  spice_hostname: 'labspice.wikimedia.org'
   scheduler_pool:
     - labvirt1001
     - labvirt1002

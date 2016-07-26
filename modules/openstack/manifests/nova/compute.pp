@@ -135,7 +135,7 @@ class openstack::nova::compute(
     } elsif $::kernelrelease =~ /^3\.19\..*/ {
         fail('nova-compute not installed on buggy kernels.  On 3.19 series kernels, instance clocks die after resuming from suspension.  Try installing linux-image-generic-lts-xenial')
     } else {
-        package { [ 'nova-compute', 'nova-compute-kvm' ]:
+        package { [ 'nova-compute', 'nova-compute-kvm', 'spice-html5', 'websockify' ]:
             ensure  => present,
             require => [Class['openstack::repo'], Package['qemu-system']],
         }

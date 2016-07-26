@@ -54,6 +54,7 @@ novaconfig:
   puppet_db_name: 'puppet'
   puppet_db_user: 'puppet'
   quota_floating_ips: '0'
+  spice_hostname: 'labtestspice.wikimedia.org'
   libvirt_type: 'kvm'
   my_ip: "%{::ipaddress_eth0}"
   network_public_interface: 'eth0'
