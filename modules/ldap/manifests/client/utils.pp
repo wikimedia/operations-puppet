@@ -18,13 +18,6 @@ class ldap::client::utils($ldapconfig) {
         source => 'puppet:///modules/ldap/scripts/add-ldap-group',
     }
 
-    file { '/usr/local/sbin/modify-ldap-group':
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0544',
-        source => 'puppet:///modules/ldap/scripts/modify-ldap-group',
-    }
-
     file { '/usr/local/sbin/ldaplist':
         ensure => link,
         target => '/usr/local/bin/ldaplist',

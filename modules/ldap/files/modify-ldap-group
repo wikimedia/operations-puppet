@@ -1,0 +1,9 @@
+#!/bin/bash
+[ $# -eq 0 ] && {
+    echo "Usage: $0 groupname";
+    echo "Provide name of the group to modify"
+    exit 1;
+}
+GROUP="$1"
+
+ldapvi -b ou=groups uid="$GROUP"
