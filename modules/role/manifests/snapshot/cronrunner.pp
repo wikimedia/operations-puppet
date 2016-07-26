@@ -7,7 +7,7 @@ class role::snapshot::cronrunner {
 
     if hiera('snapshot::cron::misc', false) {
         # cron jobs
-        include role::snapshot::cronjobs
+        class { '::snapshot::cron': user   => 'datasets' }
 
         system::role { 'role::snapshot::cronrunner':
             description => 'runner of misc dump-related cron jobs',
