@@ -11,13 +11,6 @@ class ldap::client::utils($ldapconfig) {
         ensure => latest,
     }
 
-    file { '/usr/local/sbin/modify-ldap-user':
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0544',
-        source => 'puppet:///modules/ldap/scripts/modify-ldap-user',
-    }
-
     file { '/usr/local/sbin/add-ldap-group':
         owner  => 'root',
         group  => 'root',
