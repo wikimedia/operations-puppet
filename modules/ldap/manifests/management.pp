@@ -12,7 +12,7 @@ class ldap::management(
         'python3-ldap3',
         'python3-yaml',
     ])
-  
+
     file { '/etc/ldapvi.conf':
         content => template('ldap/ldapvi.conf.erb'),
         mode    => '0440',
@@ -46,7 +46,7 @@ class ldap::management(
     }
 
     file { '/usr/local/bin/reset-ldap-password':
-        source => 'puppet:///modules/ldap/reset-password',
+        source => 'puppet:///modules/ldap/reset-ldap-password',
         mode   => '0554',
         owner  => 'root',
         group  => 'root',
