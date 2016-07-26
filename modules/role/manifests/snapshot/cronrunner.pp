@@ -2,6 +2,7 @@
 # dump related cron jobs OTHER THAN the full xml/sql
 # dumps
 class role::snapshot::cronrunner {
+    include role::snapshot::common
 
     if hiera('snapshot::cron::misc', false) {
         # mw packages and dependencies, dataset server nfs mount

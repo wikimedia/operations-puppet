@@ -1,4 +1,5 @@
 class role::snapshot::monitor {
+    include role::snapshot::common
 
     if hiera('snapshot::dumps::monitor', false) {
         # mw packages and dependencies, dataset server nfs mount
