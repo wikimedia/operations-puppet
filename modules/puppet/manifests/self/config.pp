@@ -105,9 +105,10 @@ class puppet::self::config(
         # support non-ASCII encoding.
         # See <https://tickets.puppetlabs.com/browse/PUP-1386#comment-62325>
         file_line { 'puppetmaster_select_lang':
-            line  => 'LANG="en_US.UTF-8"',
-            path  => '/etc/default/puppetmaster',
-            match => 'LANG=',
+            line    => 'LANG="en_US.UTF-8"',
+            path    => '/etc/default/puppetmaster',
+            match   => 'LANG=',
+            require => Package['puppetmaster'],
         }
     }
 }
