@@ -7,7 +7,7 @@ class snapshot::addschanges(
     $confsdir = $snapshot::dumps::dirs::confsdir
     $apachedir = $snapshot::dumps::dirs::apachedir
     $dblistsdir = $snapshot::dumps::dirs::dblistsdir
-    $templsdir = "${snapshot::dumps::dirs::dumpsdir}/templs"
+    $templsdir = $snapshot::dumps::dirs::templsdir
 
     file { "${confsdir}/addschanges.conf":
         ensure  => 'present',

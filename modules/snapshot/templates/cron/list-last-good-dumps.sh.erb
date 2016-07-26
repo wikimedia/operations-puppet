@@ -5,5 +5,5 @@
 #############################################################
 
 # generate lists of most recent completed successful dumps for rsync (dirs, files)
-python /usr/local/bin/list-last-n-good-dumps.py --dumpsnumber 1,2,3,4,5 --dirlisting 'rsync-dirlist-last-%s-good.txt' --configfile <%= scope.lookupvar('snapshot::dumps::dirs::dumpsdir') -%>/confs/wikidump.conf.monitor --rsynclists --relpath --outputdir <%= scope.lookupvar('snapshot::dumps::dirs::datadir') -%>/public/
-python /usr/local/bin/list-last-n-good-dumps.py --dumpsnumber 1,2,3,4,5 --filelisting 'rsync-filelist-last-%s-good.txt' --configfile <%= scope.lookupvar('snapshot::dumps::dirs::dumpsdir') -%>/confs/wikidump.conf.monitor --rsynclists --relpath --outputdir <%= scope.lookupvar('snapshot::dumps::dirs::datadir') -%>/public/ --toplevel
+python /usr/local/bin/list-last-n-good-dumps.py --dumpsnumber 1,2,3,4,5 --dirlisting 'rsync-dirlist-last-%s-good.txt' --configfile <%= scope.lookupvar('snapshot::dumps::dirs::confsdir') -%>/wikidump.conf.monitor --rsynclists --relpath --outputdir <%= scope.lookupvar('snapshot::dumps::dirs::datadir') -%>/public/
+python /usr/local/bin/list-last-n-good-dumps.py --dumpsnumber 1,2,3,4,5 --filelisting 'rsync-filelist-last-%s-good.txt' --configfile <%= scope.lookupvar('snapshot::dumps::dirs::confsdir') -%>/wikidump.conf.monitor --rsynclists --relpath --outputdir <%= scope.lookupvar('snapshot::dumps::dirs::datadir') -%>/public/ --toplevel

@@ -8,7 +8,7 @@
 #
 # Marius Hoch < hoo@online.de >
 
-confdir="<%= scope.lookupvar('snapshot::dumps::dirs::dumpsdir') -%>/confs"
+confdir="<%= scope.lookupvar('snapshot::dumps::dirs::confsdir') -%>"
 configfile="${confdir}/wikidump.conf"
 
 today=`date +'%Y%m%d'`
