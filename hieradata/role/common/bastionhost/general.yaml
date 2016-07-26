@@ -6,11 +6,7 @@ base::resolving::domain_search:
   - esams.wmnet
   - ulsfo.wmnet
 admin::groups:
-  - deployment
-  - restricted
-  - parsoid-admin
-  - ocg-render-admins
-  - bastiononly
+  - all-users
 debdeploy::grains:
   debdeploy-bastion:
     value: standard
