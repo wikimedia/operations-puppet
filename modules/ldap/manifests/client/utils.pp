@@ -12,25 +12,11 @@ class ldap::client::utils($ldapconfig) {
         ensure => latest,
     }
 
-    file { '/usr/local/sbin/add-ldap-user':
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0544',
-        source => 'puppet:///modules/ldap/scripts/add-ldap-user',
-    }
-
     file { '/usr/local/sbin/modify-ldap-user':
         owner  => 'root',
         group  => 'root',
         mode   => '0544',
         source => 'puppet:///modules/ldap/scripts/modify-ldap-user',
-    }
-
-    file { '/usr/local/sbin/delete-ldap-user':
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0544',
-        source => 'puppet:///modules/ldap/scripts/delete-ldap-user',
     }
 
     file { '/usr/local/sbin/add-ldap-group':
@@ -45,20 +31,6 @@ class ldap::client::utils($ldapconfig) {
         group  => 'root',
         mode   => '0544',
         source => 'puppet:///modules/ldap/scripts/modify-ldap-group',
-    }
-
-    file { '/usr/local/sbin/delete-ldap-group':
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0544',
-        source => 'puppet:///modules/ldap/scripts/delete-ldap-group',
-    }
-
-    file { '/usr/local/sbin/netgroup-mod':
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0544',
-        source => 'puppet:///modules/ldap/scripts/netgroup-mod',
     }
 
     file { '/usr/local/sbin/ldaplist':
@@ -93,13 +65,6 @@ class ldap::client::utils($ldapconfig) {
             home   => '/nonexistent', # Since things seem to check for $HOME/.whatever unconditionally...
             shell  => '/bin/false',
         }
-    }
-
-    file { '/usr/local/sbin/change-ldap-passwd':
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0544',
-        source => 'puppet:///modules/ldap/scripts/change-ldap-passwd',
     }
 
     file { '/usr/local/sbin/homedirectorymanager.py':
