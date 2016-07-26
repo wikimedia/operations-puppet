@@ -61,11 +61,11 @@ module Puppet::Parser::Functions
       'name'      => cluster_name,
       'brokers'   => {
         'hash'     => brokers,
-        'array'    => brokers.keys,
+        'array'    => brokers.keys.sort,
         # list of comma-separated host:port broker pairs
         'string'   => brokers.map { |host, conf| "#{host}:#{conf['port'] || 9092}" }.sort.join(','),
         # list of comma-separated host_9999 broker pairs used as graphite wildcards
-        'graphite' => "{#{brokers.keys.map { |b| "#{b.tr '.', '_'}_#{jmx_port}" }.join(',')}}",
+        'graphite' => "{#{brokers.keys.map { |b| "#{b.tr '.', '_'}_#{jmx_port}" }.sort.join(',')}}",
         'size'     => brokers.keys.size
       },
       'jmx_port'  => jmx_port,
