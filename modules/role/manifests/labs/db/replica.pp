@@ -14,7 +14,7 @@ class role::labs::db::replica {
 
     class { 'mariadb::config':
         prompt        => 'REPLICA database',
-        config        => 'mariadb/labs-replica.my.cnf.erb',
+        config        => 'puppet:///modules/role/labs/db/labsdb-replica.my.cnf.erb',
         password      => $passwords::misc::scripts::mysql_root_pass,
         datadir       => '/srv/labsdb/data',
         tmpdir        => '/srv/labsdb/tmp',
