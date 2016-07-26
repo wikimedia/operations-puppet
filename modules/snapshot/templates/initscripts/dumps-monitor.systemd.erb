@@ -8,7 +8,7 @@ After=network.target
 
 [Service]
 User=datasets
-WorkingDirectory=<%= @repodir -%>
+WorkingDirectory=<%= @repodir %>
 ExecStart=/bin/bash <%= @repodir -%>/monitor --configfile <%= @confsdir -%>/wikidump.conf.monitor
 
 [Install]
