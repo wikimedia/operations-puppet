@@ -2831,7 +2831,7 @@ node 'tegmen.wikimedia.org' {
 
 # https://wikitech.wikimedia.org/wiki/Terbium
 node 'terbium.eqiad.wmnet' {
-    role mariadb::maintenance, mediawiki::maintenance
+    role mariadb::maintenance, mediawiki::maintenance, openldap::management
 
     include ldap::role::client::labs
     include base::firewall
