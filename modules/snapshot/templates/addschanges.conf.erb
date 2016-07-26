@@ -15,7 +15,7 @@ adminsettings=private/PrivateSettings.php
 
 [output]
 incrementalsdir=<%= scope.lookupvar('snapshot::dumps::dirs::datadir') -%>/public/other/incr
-templatedir=<%= scope.lookupvar('snapshot::dumps::dirs::addschangesdir') -%>/templs
+templatedir=<%= scope.lookupvar('snapshot::dumps::dirs::dumpsdir') -%>/templs
 temp=<%= scope.lookupvar('snapshot::dumps::dirs::datadir') -%>/temp
 webroot=http://download.wikimedia.org
 fileperms=0644
