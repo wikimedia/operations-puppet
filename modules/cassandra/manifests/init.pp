@@ -51,6 +51,12 @@
 #   Else, the value provided will be used.
 #   Default: true
 #
+# [*permissions_validity_in_ms*]
+#   Validity period for permissions cache (fetching permissions can be an
+#   expensive operation depending on the authorizer, CassandraAuthorizer is
+#   one example). Will be disabled automatically for AllowAllAuthorizer.
+#   Defaults to 2000, set to 0 to disable.
+#
 # [*data_directory_base*]
 #   The base directory for cassandra data if we use default instance. In case
 #   of multi-instances this directory is generated based on the instance name.
@@ -244,6 +250,7 @@ class cassandra(
     $num_tokens                       = 256,
     $authenticator                    = true,
     $authorizor                       = true,
+    $permissions_validity_in_ms       = 2000,
     $data_directory_base              = '/var/lib/cassandra',
     $data_file_directories            = ['/var/lib/cassandra/data'],
     $commitlog_directory              = '/var/lib/cassandra/commitlog',
