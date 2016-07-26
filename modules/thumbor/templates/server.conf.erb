@@ -569,7 +569,7 @@ EXIFTOOL_PATH = '/usr/bin/exiftool'
 EXIFTOOL_STAY_OPEN = True
 EXIF_FIELDS_TO_KEEP = [ 'Artist', 'Copyright', 'Description' ]
 EXIF_TINYRGB_PATH = '/usr/local/lib/thumbor/tinyrgb.icc'
-EXIF_TINYRGB_ICC_REPLACE = 'IEC 61966-2.1 Default RGB colour space - sRGB'
+EXIF_TINYRGB_ICC_REPLACE = 'sRGB IEC61966-2.1'
 
 SUBPROCESS_TIMEOUT_PATH = '/usr/bin/timeout'
 SUBPROCESS_TIMEOUT = 60
@@ -578,17 +578,11 @@ SUBPROCESS_CGROUP = 'memory:thumbor'
 
 VIPS_ENGINE_MIN_PIXELS = 10000000
 
-RSVG_CONVERT_PATH = '/usr/bin/rsvg-convert'
-
 FFPROBE_PATH = '/usr/bin/ffprobe'
 
 XCF2PNG_PATH = '/usr/bin/xcf2png'
 
-DDJVU_PATH = '/usr/bin/ddjvu'
-
 GHOSTSCRIPT_PATH = '/usr/bin/gs'
-
-VIPS_PATH = '/usr/bin/vips'
 
 PROXY_ENGINE_ENGINES = [
     ('wikimedia_thumbor.engine.svg', ['svg']),
