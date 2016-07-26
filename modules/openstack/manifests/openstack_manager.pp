@@ -26,11 +26,7 @@ class openstack::openstack_manager(
 
     package { [
         'php5-ldap',
-        'librsvg2-bin',
-        'nova-xvpvncproxy',
-        'nova-novncproxy',
-        'nova-consoleauth',
-        'novnc']:
+        'librsvg2-bin']:
             ensure => present;
     }
 
