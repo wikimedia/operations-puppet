@@ -3,16 +3,6 @@
 class role::snapshot::dumper {
     include role::snapshot::common
 
-    # mw packages and dependencies, dataset server nfs mount
-    include snapshot::dumps::packages
-
-    # config, stages files, dblists, html templates
-    include snapshot::dumps
-
-    # scap3 deployment of dump scripts
-    include dataset::user
-    include snapshot::deployment
-
     # cron job for running the dumps
     include role::snapshot::cron
 }
