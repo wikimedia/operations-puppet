@@ -2802,7 +2802,10 @@ node /^snapshot100[2-4]\.eqiad\.wmnet/ {
 
 node /^snapshot100[5-7]\.eqiad\.wmnet/ {
     # NOTE: New snapshot hosts must also be manually added
-    # to hiera common.yaml dataset_clients_snapshots.
+    # to hiera/common.yaml:dataset_clients_snapshots,
+    # hieradata/hosts/ with a file named after the host,
+    # modules/scap/files/dsh/group/mediawiki-installation,
+    # and modules/snapshot/files/deployment/dump_targets
     role snapshot::dumper, snapshot::monitor, snapshot::cronrunner
     include standard
     include base::firewall
