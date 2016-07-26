@@ -92,6 +92,17 @@ class puppet::self::master(
         ],
     }
 
+    # Set a unicode capable locale to avoid "SERVER: invalid byte sequence in
+    # US-ASCII" errors when puppetmaster is started with LANG that doesn't
+    # support non-ASCII encoding.
+    # See <https://tickets.puppetlabs.com/browse/PUP-1386#comment-62325>
+    file_line { 'puppetmaster_select_lang':
+        line    => 'LANG="en_US.UTF-8"',
+        path    => '/etc/default/puppetmaster',
+        match   => 'LANG=',
+        require => Package['puppetmaster'],
+    }
+
     #Set up hiera locally
     class { '::puppetmaster::hiera':
         source => 'puppet:///modules/puppetmaster/labs.hiera.yaml',
@@ -106,9 +117,12 @@ class puppet::self::master(
     service { 'puppetmaster':
         ensure    => 'running',
         require   => Package['puppetmaster'],
-        subscribe => [Class['puppet::self::config'],
-                      File['/etc/puppet/hieradata'],
-                      File['/etc/puppet/hiera.yaml']],
+        subscribe => [
+            Class['puppet::self::config'],
+            File['/etc/puppet/hieradata'],
+            File['/etc/puppet/hiera.yaml'],
+            File_line['puppetmaster_select_lang'],
+        ],
     }
 
     include puppetmaster::scripts
