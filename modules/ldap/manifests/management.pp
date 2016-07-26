@@ -34,6 +34,13 @@ class ldap::management(
         source => 'puppet:///modules/ldap/modify-ldap-user',
     }
 
+    file { '/usr/local/bin/modify-ldap-group':
+        owner  => 'root',
+        group  => 'ldap-admins',
+        mode   => '0550',
+        source => 'puppet:///modules/ldap/modify-ldap-group',
+    }
+
     file { '/etc/ldap.scriptuser.yaml':
         content => ordered_yaml($yaml_config),
     }
