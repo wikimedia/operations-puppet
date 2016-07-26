@@ -17,7 +17,6 @@ class puppet::self::config(
     $bindaddress          = undef,
     $puppet_client_subnet = undef,
     $certname             = $::fqdn,
-    $enc_script_path      = undef,
     $autosign             = hiera('puppetmaster::autosigner', false),
 ) {
     include ldap::role::config::labs
@@ -25,21 +24,15 @@ class puppet::self::config(
     $ldapconfig = $ldap::role::config::labs::ldapconfig
     $basedn = $ldapconfig['basedn']
 
-    if $enc_script_path {
-        $config = {
-            'node_terminus'  => 'exec',
-            'external_nodes' => $enc_script_path,
-        }
-    } else {
-        $config = {
-            'node_terminus' => 'ldap',
-            'ldapserver'    => $ldapconfig['servernames'][0],
-            'ldapbase'      => "ou=hosts,${basedn}",
-            'ldapstring'    => '(&(objectclass=puppetClient)(associatedDomain=%s))',
-            'ldapuser'      => $ldapconfig['proxyagent'],
-            'ldappassword'  => $ldapconfig['proxypass'],
-            'ldaptls'       => true,
-        }
+
+    $config = {
+        'node_terminus' => 'ldap',
+        'ldapserver'    => $ldapconfig['servernames'][0],
+        'ldapbase'      => "ou=hosts,${basedn}",
+        'ldapstring'    => '(&(objectclass=puppetClient)(associatedDomain=%s))',
+        'ldapuser'      => $ldapconfig['proxyagent'],
+        'ldappassword'  => $ldapconfig['proxypass'],
+        'ldaptls'       => true,
     }
 
     $config['dbadapter'] = 'sqlite3'
