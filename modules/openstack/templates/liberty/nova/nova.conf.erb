@@ -62,14 +62,7 @@ routing_source_ip=<%= @novaconfig["network_public_ip"] %>
 multi_host=False
 
 #  novnc stuff
-novncproxy_base_url=<%= @novaconfig['controller_hostname'] %>:6080/vnc_auto.html
-vnc_enabled=True
-vnc_keymap=en-us
-vnc_password=None
-vnc_port=5900
-vnc_port_total=10000
-vncserver_listen=0.0.0.0
-vncserver_proxyclient_address=<%= @novaconfig['my_ip'] %>
+vnc_enabled=False
 
 dnsmasq_config_file=/etc/dnsmasq-nova.conf
 
@@ -133,3 +126,22 @@ rabbit_password = <%= @novaconfig["rabbit_pass"] %>
 [workarounds]
 # This is the safest option until evacuation is fixed in Libery
 destroy_after_evacuate=False
+
+
+[spice]
+html5proxy_host=<%= @novaconfig['controller_hostname'] %>
+html5proxy_port=6082
+html5proxy_base_url=https://<%= @novaconfig['controller_hostname'] %>:6082/spice_auto.html
+
+# These two only matter on the compute hosts:
+server_listen=0.0.0.0
+server_proxyclient_address=<%= @novaconfig["my_ip"] %>
+
+# Enable spice related features (boolean value)
+enabled=True
+
+# Enable spice guest agent support (boolean value)
+agent_enabled=true
+
+# Keymap for spice (string value)
+keymap=en-us

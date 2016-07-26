@@ -137,6 +137,7 @@ class role::labs::openstack::nova::controller {
     include role::labs::openstack::glance::server
     include role::labs::openstack::keystone::server
     include ::openstack::nova::conductor
+    include ::openstack::nova::spiceproxy
     include ::openstack::nova::scheduler
     include role::labs::openstack::nova::common
     $novaconfig = $role::labs::openstack::nova::common::novaconfig
@@ -192,6 +193,9 @@ class role::labs::openstack::nova::controller {
         },
         dns_public => {
             rule  => 'saddr (0.0.0.0/0) proto (udp tcp) dport 53 ACCEPT;',
+        },
+        spice_consoles => {
+            rule  => 'saddr (0.0.0.0/0) proto (udp tcp) dport 6082 ACCEPT;',
         },
         keystone_redis_replication => {
             rule  => "saddr (${spare_master}) proto tcp dport (6379) ACCEPT;",
