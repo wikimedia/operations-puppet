@@ -2790,32 +2790,19 @@ node 'stat1004.eqiad.wmnet' {
     include standard
 }
 
-node /^snapshot100[1-2]\.eqiad\.wmnet/ {
-    # NOTE: New snapshot hosts must also be manually added
-    # to hiera common.yaml dataset_clients_snapshots.
-
-    role snapshot::producer
+node /^snapshot1001\.eqiad\.wmnet/ {
+    # to be reinstalled for use as testbed/canary
     include standard
 }
 
-node /^snapshot1004\.eqiad\.wmnet/ {
-    # NOTE: New snapshot hosts must also be manually added
-    # to hiera common.yaml dataset_clients_snapshots.
-
-    role snapshot::producer
-    include standard
-}
-
-node /^snapshot1003\.eqiad\.wmnet/ {
-    # NOTE: New snapshot hosts must also be manually added
-    # to hiera common.yaml dataset_clients_snapshots.
-
-    role snapshot::producer, snapshot::cron::primary
+node /^snapshot100[2-4]\.eqiad\.wmnet/ {
+    # to be decommed soon
     include standard
 }
 
 node /^snapshot100[5-7]\.eqiad\.wmnet/ {
-    # start setup and rollout of new role on new hosts
+    # NOTE: New snapshot hosts must also be manually added
+    # to hiera common.yaml dataset_clients_snapshots.
     role snapshot::dumper, snapshot::monitor, snapshot::cronrunner
     include standard
     include base::firewall
