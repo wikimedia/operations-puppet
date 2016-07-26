@@ -40,6 +40,15 @@ class puppetmaster::passenger(
         content => template('puppetmaster/ports.conf.erb'),
     }
 
+    if os_version('Debian >= jessie') {
+        apache::env { 'use-utf-locale':
+            ensure => present,
+            vars   => {
+                LANG => 'en_US.UTF-8'
+            }
+        }
+    }
+
     # Unfortunately priority does not allows to use apache::site for this
     # Purging the package installed puppetmaster site
     file { '/etc/apache2/site-enabled/puppetmaster':
