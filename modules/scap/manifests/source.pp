@@ -110,14 +110,25 @@ define scap::source(
 
     if $scap_repository {
         # Clone the scap repository at $path/scap
+        $scap_clone_path = "${path}/scap"
         git::clone { "scap::source ${scap_repository} for ${title}":
             origin             => "https://gerrit.wikimedia.org/r/p/${scap_repository}.git",
-            directory          => "${path}/scap",
+            directory          => $scap_clone_path,
             owner              => $owner,
             group              => $group,
             shared             => true,
             recurse_submodules => true,
             require            => Git::Clone["scap::source ${repository} for ${title}"],
+        }
+
+        # Go ahead and init the DEPLOY_HEAD too
+        exec{ "init ${scap_repository} for ${title}":
+            creates => "${scap_clone_path}/.git/DEPLOY_HEAD",
+            command => 'scap deploy --init',
+            cwd     => $scap_clone_path,
+            user    => $owner,
+            group   => $group,
+            require => Git::Clone["scap::source ${scap_repository} for ${title}"],
         }
     }
 }
