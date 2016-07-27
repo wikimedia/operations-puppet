@@ -131,7 +131,7 @@ define service::uwsgi(
             mode    => '0444',
         }
         $local_log_config = {
-            logto       => $local_logfile,
+            logger => "file:${local_logfile}",
         }
     } else {
         $local_log_config = {}
@@ -145,7 +145,7 @@ define service::uwsgi(
     }
 
     $base_config = {
-            plugins     => 'python, python3',
+            plugins     => 'python, python3, logfile',
             master      => true,
             http-socket => "0.0.0.0:${port}",
             processes   => $no_workers,
