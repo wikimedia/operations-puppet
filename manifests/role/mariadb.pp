@@ -20,12 +20,14 @@ class role::mariadb::grants(
     include passwords::testreduce::mysql
     include passwords::racktables
     include passwords::prometheus
+    include passwords::servermon
 
     $root_pass       = $passwords::misc::scripts::mysql_root_pass
     $repl_pass       = $passwords::misc::scripts::mysql_repl_pass
     $nagios_pass     = $passwords::misc::scripts::nagios_sql_pass
     $tendril_user    = $passwords::tendril::db_user
     $tendril_pass    = $passwords::tendril::db_pass
+    $prometheus_pass = $passwords::prometheus::db_pass
 
     file { '/etc/mysql/production-grants.sql':
         ensure  => present,
@@ -36,13 +38,12 @@ class role::mariadb::grants(
     }
 
     if $shard {
-        $nodepool_pass = $passwords::nodepool::nodepooldb_pass
-        $testreduce_pass = $passwords::testreduce::mysql::db_pass
+        $nodepool_pass       = $passwords::nodepool::nodepooldb_pass
+        $testreduce_pass     = $passwords::testreduce::mysql::db_pass
         $testreduce_cli_pass = $passwords::testreduce::mysql::mysql_client_pass
-        $racktables_user = $passwords::racktables::racktables_db_user
-        $racktables_pass = $passwords::racktables::racktables_db_pass
-        $prometheus_pass = $passwords::prometheus::db_pass
-        $servermon_pass  = $passwords::servermon::db_password
+        $racktables_user     = $passwords::racktables::racktables_db_user
+        $racktables_pass     = $passwords::racktables::racktables_db_pass
+        $servermon_pass      = $passwords::servermon::db_password
 
         file { '/etc/mysql/production-grants-shard.sql':
             ensure  => present,
