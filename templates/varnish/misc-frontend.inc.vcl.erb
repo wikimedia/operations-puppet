@@ -5,7 +5,7 @@ sub cluster_fe_recv_pre_purge { }
 sub cluster_fe_recv {
     if (req.http.Host == "yarn.wikimedia.org") {
         // Disabling this as it exposes the YARN ResourceManager REST interface
-        <%= error_synth(404, "Public access disabled. See https://wikitech.wikimedia.org/wiki/Analytics/Cluster/Access#ssh_tunnel.28s.29 for access instructions") -%>
+        return (synth(404, "Public access disabled. See https://wikitech.wikimedia.org/wiki/Analytics/Cluster/Access#ssh_tunnel.28s.29 for access instructions"));
     }
 
     if (req.http.Host == "grafana.wikimedia.org" || req.http.host == "grafana-admin.wikimedia.org"
@@ -20,7 +20,7 @@ sub cluster_fe_recv {
     // re-use the TLS-redirector code and send them to the wikimedia site.
     if (req.http.Host == "wmfusercontent.org") {
         set req.http.Location = "https://www.wikimedia.org";
-        <%= error_synth(751, "TLS Redirect") -%>
+        return (synth(751, "TLS Redirect"));
     }
 
     call misc_recv_pass;
@@ -37,21 +37,14 @@ sub cluster_fe_hit {
 
 sub cluster_fe_miss { }
 sub cluster_fe_pass { }
-
-<% if @varnish_version4 -%>
 sub cluster_fe_backend_fetch { }
-<% end -%>
 
 sub cluster_fe_backend_response {
     // hit_for_pass on objects >= ~10MB or no CL
     if (!beresp.http.Content-Length || beresp.http.Content-Length ~ "^[0-9]{8}") {
 	set beresp.http.X-CDIS = "pass";
-<% if @varnish_version4 -%>
         set beresp.uncacheable = true;
         return (deliver);
-<% else -%>
-        return (hit_for_pass);
-<% end -%>
     }
 }
 

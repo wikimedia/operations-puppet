@@ -13,7 +13,7 @@ sub misc_recv_pass {
         return (pass);
     }
 
-    if (<%= @req_method -%> != "GET" && <%= @req_method -%> != "HEAD") {
+    if (req.method != "GET" && req.method != "HEAD") {
         // We only deal with GET and HEAD
         return (pass);
     }
