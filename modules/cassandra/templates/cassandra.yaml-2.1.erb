@@ -355,8 +355,8 @@ index_summary_resize_interval_in_minutes: 60
 # buffers. Enable this to avoid sudden dirty buffer flushing from
 # impacting read latencies. Almost always a good idea on SSDs; not
 # necessarily on platters.
-trickle_fsync: true
-trickle_fsync_interval_in_kb: 30240
+trickle_fsync: <%= @trickle_fsync %>
+trickle_fsync_interval_in_kb: <%= @trickle_fsync_interval_in_kb %>
 
 # TCP port, for commands and data
 storage_port: <%= @storage_port %>
