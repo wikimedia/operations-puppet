@@ -128,3 +128,4 @@ cassandra::cluster_name: "eqiad"
 cassandra::application_username: restb
 cassandra::application_password: "%{passwords::cassandra::restbase}"
 cassandra::target_version: '2.2'
+cassandra::trickle_fsync: 'false'
