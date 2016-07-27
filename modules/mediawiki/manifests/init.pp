@@ -33,15 +33,16 @@ class mediawiki (
 
     include ::mediawiki::hhvm
 
-    # This profile is used to contain the convert command of imagemagick using firejail
-    # Profiles specific to the image/video scalers are handled via mediawiki::firejail,
-    # but imagemagick is also used on the general purpose appscalers for scaling musical
-    # typesheets in the Score extension
+    # This profile is used to contain the convert command of imagemagick using
+    # firejail Profiles specific to the image/video scalers are handled via
+    # mediawiki::firejail, but imagemagick is also used on the general purpose
+    # appscalers for scaling musical typesheets in the Score extension
     file { '/etc/firejail/mediawiki-imagemagick.profile':
-        source => 'puppet:///modules/mediawiki/mediawiki-imagemagick.profile',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0644',
+        source  => 'puppet:///modules/mediawiki/mediawiki-imagemagick.profile',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0644',
+        require => Package['firejail'],
     }
 
     file { '/usr/local/bin/mediawiki-firejail-convert':
