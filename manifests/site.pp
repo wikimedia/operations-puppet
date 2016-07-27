@@ -1464,11 +1464,13 @@ node 'labmon1001.eqiad.wmnet' {
     include base::firewall
 }
 
+# This is the spare api/network node, currently not active
 node 'labnet1001.eqiad.wmnet' {
-    role labs::openstack::nova::api
+    role labs::openstack::nova::api, labs::openstack::nova::network
     include standard
 }
 
+# This is the active api/network node.
 node 'labnet1002.eqiad.wmnet' {
     role labs::openstack::nova::api, labs::openstack::nova::network
     include standard
