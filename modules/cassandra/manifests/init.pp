@@ -484,6 +484,6 @@ class cassandra(
         ensure => directory,
         owner  => 'cassandra',
         group  => 'cassandra',
-        mode   => '0700',
+        mode   => '0755',
     }
 }
