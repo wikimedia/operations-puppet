@@ -14,7 +14,8 @@ class role::cache::ssl::misc {
     }
 
     tlsproxy::localssl { 'planet.wikimedia.org':
-        certs          => ['star.planet.wikimedia.org'],
+        do_ocsp        => true,
+        certs          => ['ecc-star.planet.wikimedia.org', 'star.planet.wikimedia.org'],
         server_name    => 'planet.wikimedia.org',
         server_aliases => ['*.planet.wikimedia.org'],
         upstream_port  => 3127,
