@@ -161,12 +161,11 @@ class gerrit::jetty(
         ],
     }
 
-    exec { 'install_gerrit_jetty':
+    exec { '/usr/bin/java -jar gerrit.war init -d review_site --batch --no-auto-start':
         creates => '/var/lib/gerrit2/review_site/bin',
         user    => 'gerrit2',
         group   => 'gerrit2',
         cwd     => '/var/lib/gerrit2',
-        command => '/usr/bin/java -jar gerrit.war init -d review_site --batch --no-auto-start',
         require => [Package['gerrit'],
                     File['/var/lib/gerrit2/review_site/etc/gerrit.config'],
                     File['/var/lib/gerrit2/review_site/etc/secure.config']
