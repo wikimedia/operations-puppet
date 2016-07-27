@@ -1,0 +1,51 @@
+# This file is managed by Puppet.
+# See modules/striker/templates/nginx.conf.erb
+
+upstream striker {
+  <%- @servers.each do |server| -%>
+  server <%= server %>;
+  <%- end -%>
+}
+
+server {
+  listen <%= @port %>;
+  server_name <%= @server_name %>;
+  charset utf-8;
+  root <%= @docroot %>;
+
+  location /static/ {
+    access_log off;
+
+    sendfile on;
+    sendfile_max_chunk 1m;
+    tcp_nopush on;
+
+    expires 1y;
+    add_header Cache-Control "public";
+  }
+
+  location ~ ^/[^/]+\.(?:ico|png)$ {
+    # Add resonably long expires headers for root level static assets
+    # (e.g. favicon and Apple icons)
+    expires 7d;
+    add_header Cache-Control "public";
+  }
+
+  location / {
+    # Serve local files directly or pass on to the @backend named location
+    try_files $uri @backend;
+  }
+
+  location @backend {
+    proxy_pass http://striker;
+    proxy_redirect off;
+    proxy_buffering off;
+    proxy_http_version 1.1;
+    proxy_set_header Connection "";
+    proxy_set_header Proxy-Connection "Keep-Alive";
+    # Don't set other fancy proxy headers here and instead assume that there
+    # is yet another level of proxy upstream (either Varnish in prod or
+    # invisible unicorn in Labs) that will be setting them.
+  }
+}
+# vim:ft=nginx:sw=2:ts=2:sts=2:et:
