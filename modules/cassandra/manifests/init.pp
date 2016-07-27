@@ -102,6 +102,15 @@
 #   Number of allowed concurrent counter writes.
 #   Default: 32
 #
+# [*trickle_fsync*]
+#   Whether or not to enable trickle_fsync.
+#   Default: true
+#
+# [*trickle_fsync_interval_in_kb*]
+#   Interval (in kilobytes) when sequential writing to fsync(), forcing
+#   the operating system to flush the dirty buffers.
+#   Default: 30240
+#
 # [*storage_port*]
 #   TCP port for cluster communication
 #   Default: 7000
@@ -262,6 +271,8 @@ class cassandra(
     $concurrent_reads                 = 32,
     $concurrent_writes                = 32,
     $concurrent_counter_writes        = 32,
+    $trickle_fsync                    = true,
+    $trickle_fsync_interval_in_kb     = 30240,
     $storage_port                     = 7000,
     $listen_address                   = $::ipaddress,
     $broadcast_address                = undef,
@@ -316,6 +327,7 @@ class cassandra(
     validate_re($internode_compression, '^(all|dc|none)$')
     validate_re($disk_failure_policy, '^(stop|best_effort|ignore)$')
 
+    validate_bool($trickle_fsync)
     validate_array($additional_jvm_opts)
     validate_array($extra_classpath)
 
@@ -323,6 +335,10 @@ class cassandra(
     # lint:ignore:only_variable_string
     validate_re("${logstash_port}", '^[0-9]+$')
     # lint:endignore
+
+    if (!is_integer($trickle_fsync_interval_in_kb)) {
+        fail('trickle_fsync_interval_in_kb must be number')
+    }
 
     if (!is_integer($jmx_port)) {
         fail('jmx_port must be a port number between 1 and 65535')
