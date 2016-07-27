@@ -47,21 +47,14 @@ sub cluster_be_hit {
 
 sub cluster_be_miss { }
 sub cluster_be_pass { }
-
-<% if @varnish_version4 -%>
 sub cluster_be_backend_fetch { }
-<% end -%>
 
 sub cluster_be_backend_response {
     // Do not cache explicit lengths >= ~1GB in backends in general
     if (beresp.http.Content-Length ~ "^[0-9]{10}") {
 	set beresp.http.X-CDIS = "pass";
-<% if @varnish_version4 -%>
         set beresp.uncacheable = true;
         return (deliver);
-<% else -%>
-        return (hit_for_pass);
-<% end -%>
     }
 
 <% if @cache_route == 'direct' or @varnish_testing -%>
