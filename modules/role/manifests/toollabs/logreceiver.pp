@@ -1,5 +1,5 @@
 # Recevies logs from rsyslogd via UDP and stores it centrally
-class role::tools::logreceiver {
+class role::toollabs::logreceiver {
     include base::firewall
 
     system::role { 'role::tools::logreceiver':
