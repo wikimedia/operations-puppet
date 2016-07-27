@@ -2079,8 +2079,8 @@ node /^ms-be20(1[6-9]|2[0-7])\.codfw\.wmnet$/ {
     role swift::storage
 }
 
-# mw1017-mw1025 are canary appservers
-node /^mw10(1[7-9]|2[0-5])\.eqiad\.wmnet$/ {
+# mw1017 is a canary appserver
+node 'mw1017.eqiad.wmnet' {
     role mediawiki::canary_appserver
     include base::firewall
 }
