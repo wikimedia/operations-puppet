@@ -97,12 +97,6 @@ module Puppet::Parser::Functions
       'DHE-RSA-AES256-SHA256',
       'DHE-RSA-AES128-SHA',
       'DHE-RSA-AES256-SHA',
-    ],
-    # Only include this in "mid" for the mid-spec, because including it in
-    # "compat" might block a successful negotiation by "upgrading" a working
-    # compat option to a DHE-based mid option for clients that are probably
-    # likely to fail on >1024-bit DHE.
-    'mid-only-tail' => [
       'EDH-RSA-DES-CBC3-SHA', # EDH == DHE here, confusingly
     ],
     # not-forward-secret compat for ancient stuff
@@ -117,7 +111,7 @@ module Puppet::Parser::Functions
   # Final lists exposed to callers
   ciphersuites = {
     'strong'     => basic['strong'],
-    'mid'        => basic['strong'] + basic['mid'] + basic['mid-only-tail'],
+    'mid'        => basic['strong'] + basic['mid'],
     'compat'     => basic['strong'] + basic['mid'] + basic['compat'],
   }
 
