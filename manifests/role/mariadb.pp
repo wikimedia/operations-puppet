@@ -26,9 +26,6 @@ class role::mariadb::grants(
     $nagios_pass     = $passwords::misc::scripts::nagios_sql_pass
     $tendril_user    = $passwords::tendril::db_user
     $tendril_pass    = $passwords::tendril::db_pass
-    $racktables_user = $passwords::racktables::racktables_db_user
-    $racktables_pass = $passwords::racktables::racktables_db_pass
-    $prometheus_pass = $passwords::prometheus::db_pass
 
     file { '/etc/mysql/production-grants.sql':
         ensure  => present,
@@ -42,6 +39,10 @@ class role::mariadb::grants(
         $nodepool_pass = $passwords::nodepool::nodepooldb_pass
         $testreduce_pass = $passwords::testreduce::mysql::db_pass
         $testreduce_cli_pass = $passwords::testreduce::mysql::mysql_client_pass
+        $racktables_user = $passwords::racktables::racktables_db_user
+        $racktables_pass = $passwords::racktables::racktables_db_pass
+        $prometheus_pass = $passwords::prometheus::db_pass
+        $servermon_pass  = $passwords::servermon::db_password
 
         file { '/etc/mysql/production-grants-shard.sql':
             ensure  => present,
