@@ -18,10 +18,18 @@ sub misc_recv_pass {
         return (pass);
     }
 
-    // Note default builtin VCL would pass on req.http.Cookie here too, but
-    // that would pass virtually all content, as junk cookies are common
-    // (including our own, for these purposes)
+    // don't cache authorized requests
     if (req.http.Authorization) {
         return (pass);
     }
+
+    // don't cache cookie requests, but ignore google analytics cookies and our
+    // own global WMF-Last-Access and CP cookies.
+    set req.http.NC-Cookie = regsuball(req.http.Cookie, "(?i)(^|;\s*)(_ga[-_a-z]*|_utm[-_a-z]*|WMF-Last-Access|CP)=[^;]*", "");
+    set req.http.NC-Cookie = regsub(req.http.NC-Cookie, "^;?\s*", "");
+    if (req.http.NC-Cookie != "") {
+        unset req.http.NC-Cookie;
+        return (pass);
+    }
+    unset req.http.NC-Cookie;
 }
