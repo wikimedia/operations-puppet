@@ -108,11 +108,8 @@ module Puppet::Parser::Functions
     # not-forward-secret compat for ancient stuff
     'compat' => [
       'AES128-GCM-SHA256', # AEAD, but not forward-secret
-      'AES256-GCM-SHA384', # AEAD, but not forward-secret
       'AES128-SHA256',
-      'AES256-SHA256',
       'AES128-SHA',
-      'AES256-SHA',
       'DES-CBC3-SHA', # Mostly IE7-8 on XP
     ],
   }
