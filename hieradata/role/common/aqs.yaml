@@ -29,6 +29,13 @@ cassandra::concurrent_compactors: 10
 cassandra::concurrent_writes: 18
 cassandra::concurrent_reads: 18
 
+# The CassandraAuthorizer Auth mandates non trivial checks for
+# each read/write operation to make sure that permissions are honored.
+# This could be a problem in already heavy loaded clusters like AQS,
+# so we need to increase caching to allow better performances
+# (default value 2s).
+cassandra::permissions_validity_in_ms: 60000
+
 cassandra::dc: "%{::site}"
 cassandra::cluster_name: "Analytics Query Service Cassandra"
 
