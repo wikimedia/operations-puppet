@@ -5,8 +5,9 @@
 class puppetmaster::config(
     $config,
     $server_type,
-) {
+    ) {
 
+    $is_37_plus = versioncmp($::puppetversion, '3.7')
     base::puppet::config { 'master':
         prio    => 20,
         content => template('puppetmaster/master.conf.erb'),
