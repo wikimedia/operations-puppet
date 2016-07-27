@@ -87,7 +87,7 @@ udp2log_host: fluorine.eqiad.wmnet
 
 [wmflabs]
 # Wikimedia Foundation beta cluster configuration
-master_rsync: deployment-tin.eqiad.wmflabs
+master_rsync: <%= @wmflabs_master %>
 statsd_host: labmon1001.eqiad.wmnet
 udp2log_host: 10.68.16.198
 wmf_realm: labs
