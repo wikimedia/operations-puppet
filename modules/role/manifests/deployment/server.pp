@@ -70,6 +70,13 @@ class role::deployment::server(
         remote_branch => 'readonly/master'
     }
 
+    # Also make sure that no files have been stolen by root ;-)
+    nrpe::monitor_service { 'mediawiki_staging_no_root':
+        description  => 'Root-owned files in /srv/mediawiki-staging',
+        nrpe_command => 'find /srv/mediawiki-staging -uid 0 -or -gid 0',
+        retries      => 10,
+    }
+
     ### Trebuchet
     file { '/srv/deployment':
         ensure => directory,
