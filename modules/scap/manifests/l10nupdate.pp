@@ -33,7 +33,20 @@ class scap::l10nupdate(
         gid        => 10002,
         shell      => '/bin/bash',
         home       => '/home/l10nupdate',
-        managehome => true,
+    }
+
+    # Explicitly provision the l10nupdate user's home directory. In Labs the
+    # l10nupdate user exists in LDAP which will prevent the User resource from
+    # provisoning the user's home directory via the managehome parameter.
+    file { '/home/l10nupdate':
+        ensure => 'directory',
+        owner  => 'l10nupdate',
+        group  => 'l10nupdate',
+        mode   => '0755',
+        require => [
+            User['l10nupdate'],
+            Group['l10nupdate'],
+        ],
     }
 
     cron { 'l10nupdate':
@@ -73,11 +86,11 @@ class scap::l10nupdate(
 
     # T119746: make git fetch happy by setting up git identity
     file { '/home/l10nupdate/.gitconfig':
-        ensure => 'present',
-        owner  => 'l10nupdate',
-        group  => 'l10nupdate',
-        mode   => '0644',
-        source => 'puppet:///modules/scap/l10nupdate.gitconfig',
+        ensure  => 'present',
+        owner   => 'l10nupdate',
+        group   => 'l10nupdate',
+        mode    => '0644',
+        source  => 'puppet:///modules/scap/l10nupdate.gitconfig',
     }
 
     # Make sure the log directory exists and has adequate permissions.
