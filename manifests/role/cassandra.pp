@@ -9,6 +9,11 @@ class role::cassandra {
     class { '::cassandra::metrics': }
     class { '::cassandra::logging': }
 
+    class { '::cassandra::sysctl':
+        # Queue page flushes at 24MB intervals
+        vm_dirty_background_bytes => 25165824,
+    }
+
     $cassandra_instances = $::cassandra::instances
 
     if $cassandra_instances {
