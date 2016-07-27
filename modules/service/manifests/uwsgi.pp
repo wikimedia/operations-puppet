@@ -131,7 +131,7 @@ define service::uwsgi(
             mode    => '0444',
         }
         $local_log_config = {
-            logto       => $local_logfile,
+            logger => "file:$local_logfile",
         }
     } else {
         $local_log_config = {}
