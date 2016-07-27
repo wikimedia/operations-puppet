@@ -129,3 +129,4 @@ cassandra::application_username: restb
 cassandra::application_password: "%{passwords::cassandra::restbase}"
 cassandra::target_version: '2.2'
 cassandra::permissions_validity_in_ms: 600000
+cassandra::trickle_fsync: 'false'
