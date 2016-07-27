@@ -1,0 +1,27 @@
+---
+striker::uwsgi::config:
+  debug:
+    DEBUG: false
+  ldap:
+    SERVER_URI: ldaps://ldap-labs.eqiad.wikimedia.org:389
+    BIND_USER: uid=novaadmin,ou=people,dc=wikimedia,dc=org
+    TLS: true
+  oauth:
+    CONSUMER_KEY: 3f0e3e91f2cba000c7d81932f59d615a
+  phabricator:
+    USER: striker
+  db:
+    ENGINE: django.db.backends.mysql
+    NAME: striker
+    USER: striker_app
+    HOST: m5-master.eqiad.wmnet
+    PORT: 3306
+  cache:
+    LOCATION: 127.0.0.1:11211
+  xff:
+    USE_XFF_HEADER: true
+  https:
+    REQUIRE_HTTPS: true
+  logging:
+    HANDLERS: console file
+    FILE_FILENAME: /srv/log/striker/striker.log
