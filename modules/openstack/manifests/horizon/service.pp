@@ -25,12 +25,7 @@ class openstack::horizon::service(
     include ::apache::mod::wsgi
     include ::apache::mod::rewrite
     include ::apache::mod::headers
-
-    if !defined(Class['memcached']) {
-        class { 'memcached':
-            ip => '127.0.0.1',
-        }
-    }
+    include ::memcached
 
     # Blank out these files so that the (broken) dashboard
     #  package doesn't fret.
