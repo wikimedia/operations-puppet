@@ -29,11 +29,24 @@ class scap::l10nupdate(
     }
 
     user { 'l10nupdate':
-        ensure     => present,
-        gid        => 10002,
-        shell      => '/bin/bash',
-        home       => '/home/l10nupdate',
-        managehome => true,
+        ensure => present,
+        gid    => 10002,
+        shell  => '/bin/bash',
+        home   => '/home/l10nupdate',
+    }
+
+    # Explicitly provision the l10nupdate user's home directory. In Labs the
+    # l10nupdate user exists in LDAP which will prevent the User resource from
+    # provisoning the user's home directory via the managehome parameter.
+    file { '/home/l10nupdate':
+        ensure  => 'directory',
+        owner   => 'l10nupdate',
+        group   => 'l10nupdate',
+        mode    => '0755',
+        require => [
+            User['l10nupdate'],
+            Group['l10nupdate'],
+        ],
     }
 
     cron { 'l10nupdate':
