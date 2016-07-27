@@ -3,8 +3,6 @@ repo_config:
     upstream: https://gerrit.wikimedia.org/r/mediawiki/tools/codesniffer
   integration/phpunit:
     upstream: https://gerrit.wikimedia.org/r/integration/phpunit
-  integration/phpcs:
-    upstream: https://gerrit.wikimedia.org/r/integration/phpcs
   integration/php-coveralls:
     upstream: https://gerrit.wikimedia.org/r/integration/php-coveralls
   integration/slave-scripts:
