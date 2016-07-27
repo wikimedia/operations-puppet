@@ -8,6 +8,7 @@ class role::cassandra {
     class { '::cassandra': }
     class { '::cassandra::metrics': }
     class { '::cassandra::logging': }
+    class { '::cassandra::sysctl':  }
 
     $cassandra_instances = $::cassandra::instances
 
