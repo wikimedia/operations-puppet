@@ -13,7 +13,7 @@ class role::toollabs::logreceiver {
     }
 
     labs_lvm::volume { 'syslog':
-        mountat => '/srv/syslog',
+        mountat => '/srv',
     }
 
     class { 'rsyslog::receiver':
