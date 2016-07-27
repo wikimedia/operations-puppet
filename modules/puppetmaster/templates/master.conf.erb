@@ -3,6 +3,10 @@
 certname = <%= scope.lookupvar('puppetmaster::server_name') %>
 templatedir = /etc/puppet/templates
 modulepath = /etc/puppet/private/modules:/etc/puppet/modules
+<%- if @lsbdistcodname == 'jessie' -%>
+# TODO: Temporary if clause while transitioning to jessie
+always_cache_features = true
+<%- end -%>
 
 # puppetmaster($config) settings
 <% @config.sort.each do |setting, value| -%>
