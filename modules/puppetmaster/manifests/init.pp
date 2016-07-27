@@ -57,11 +57,14 @@ class puppetmaster(
 
     # Let's use puppet 3.8 on the masters at least
     if os_version('Debian >= jessie') {
-        apt::pin { ['puppet', 'puppetmaster', 'puppetmaster-common',
-                    'vim-puppet', 'puppet-el']:
-                        pin      => 'release a=jessie-backports',
-                        priority => '1001',
-                        before   => Package['puppet'],
+        $pinned_pkgs = ['puppet', 'puppetmaster', 'puppetmaster-common',
+                        'vim-puppet', 'puppet-el', 'puppetmaster-passenger',
+                        'puppet-common']
+        apt::pin { 'puppet':
+            package  => join(sort($pinned_pkgs), ' '),
+            pin      => 'release a=jessie-backports',
+            priority => '1001',
+            before   => Package['puppetmaster-common'],
         }
     }
 
