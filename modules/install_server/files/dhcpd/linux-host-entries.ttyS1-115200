@@ -3917,46 +3917,6 @@ host mw1017 {
     fixed-address mw1017.eqiad.wmnet;
 }
 
-host mw1018 {
-    hardware ethernet 78:2b:cb:08:7b:42;
-    fixed-address mw1018.eqiad.wmnet;
-}
-
-host mw1019 {
-    hardware ethernet 84:2b:2b:77:e4:67;
-    fixed-address mw1019.eqiad.wmnet;
-}
-
-host mw1020 {
-    hardware ethernet 84:2b:2b:77:25:19;
-    fixed-address mw1020.eqiad.wmnet;
-}
-
-host mw1021 {
-    hardware ethernet 84:2b:2b:77:e6:16;
-    fixed-address mw1021.eqiad.wmnet;
-}
-
-host mw1022 {
-    hardware ethernet 84:2b:2b:77:28:05;
-    fixed-address mw1022.eqiad.wmnet;
-}
-
-host mw1023 {
-    hardware ethernet 84:2b:2b:77:d2:93;
-    fixed-address mw1023.eqiad.wmnet;
-}
-
-host mw1024 {
-    hardware ethernet 84:2b:2b:77:27:c9;
-    fixed-address mw1024.eqiad.wmnet;
-}
-
-host mw1025 {
-    hardware ethernet 84:2b:2b:78:28:18;
-    fixed-address mw1025.eqiad.wmnet;
-}
-
 host mw1099 {
     hardware ethernet 84:2b:2b:77:e7:72;
     fixed-address mw1099.eqiad.wmnet;
