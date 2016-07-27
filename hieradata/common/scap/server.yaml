@@ -78,3 +78,7 @@ sources:
 
   wdqs/wdqs:
     repository: wikidata/query/deploy
+
+  # Striker is the Tool Labs admin console application
+  striker/deploy:
+    repository: labs/striker/deploy
