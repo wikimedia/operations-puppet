@@ -50,7 +50,7 @@ class role::servermon::wmf {
     }
 
     apache::site { 'servermon.wikimedia.org':
-        content => template('apache/sites/servermon.wikimedia.org.erb'),
+        content => template('role/servermon/servermon.wikimedia.org.erb'),
     }
 
     ferm::service { 'servermon-http':
