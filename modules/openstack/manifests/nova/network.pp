@@ -11,12 +11,6 @@ class openstack::nova::network($openstack_version=$::openstack::version, $novaco
         require => Class['openstack::repo'];
     }
 
-    service { 'nova-network':
-        ensure    => running,
-        subscribe => File['/etc/nova/nova.conf'],
-        require   => Package['nova-network'];
-    }
-
     # dnsmasq is run manually by nova-network, we don't want the service running
     service { 'dnsmasq':
         ensure  => stopped,
@@ -75,12 +69,6 @@ class openstack::nova::network($openstack_version=$::openstack::version, $novaco
         priority => 50,
     }
 
-    nrpe::monitor_service { 'check_nova_network_process':
-        description  => 'nova-network process',
-        nrpe_command => "/usr/lib/nagios/plugins/check_procs -c 1: --ereg-argument-array '^/usr/bin/python /usr/bin/nova-network'",
-        critical     => true,
-    }
-
     file { '/etc/modprobe.d/nf_conntrack.conf':
         ensure => present,
         owner  => 'root',
@@ -94,11 +82,30 @@ class openstack::nova::network($openstack_version=$::openstack::version, $novaco
         mode   => '0755',
     }
 
-    nrpe::monitor_service { 'conntrack_table_size':
-        ensure        => 'present',
-        description   => 'Check size of conntrack table',
-        nrpe_command  => '/usr/lib/nagios/plugins/check_conntrack 80 90',
-        require       => File['/usr/lib/nagios/plugins/check_conntrack'],
-        contact_group => 'admins',
+    if $::hostname == hiera('labs_nova_network_host') {
+        service { 'nova-network':
+            ensure    => running,
+            subscribe => File['/etc/nova/nova.conf'],
+            require   => Package['nova-network'];
+        }
+
+        nrpe::monitor_service { 'check_nova_network_process':
+            description  => 'nova-network process',
+            nrpe_command => "/usr/lib/nagios/plugins/check_procs -c 1: --ereg-argument-array '^/usr/bin/python /usr/bin/nova-network'",
+            critical     => true,
+        }
+
+        nrpe::monitor_service { 'conntrack_table_size':
+            ensure        => 'present',
+            description   => 'Check size of conntrack table',
+            nrpe_command  => '/usr/lib/nagios/plugins/check_conntrack 80 90',
+            require       => File['/usr/lib/nagios/plugins/check_conntrack'],
+            contact_group => 'admins',
+        }
+    } else {
+        service { 'nova-network':
+            ensure    => stopped,
+            require   => Package['nova-network'];
+        }
     }
 }
