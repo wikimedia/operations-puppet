@@ -17,4 +17,11 @@ sub misc_recv_pass {
         // We only deal with GET and HEAD
         return (pass);
     }
+
+    // Note default builtin VCL would pass on req.http.Cookie here too, but
+    // that would pass virtually all content, as junk cookies are common
+    // (including our own, for these purposes)
+    if (req.http.Authorization) {
+        return (pass);
+    }
 }
