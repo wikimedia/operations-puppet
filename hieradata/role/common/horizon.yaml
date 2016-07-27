@@ -1,3 +1,6 @@
+---
 debdeploy::grains:
   debdeploy-horizon:
     value: standard
+
+memcached::ip: 127.0.0.1
