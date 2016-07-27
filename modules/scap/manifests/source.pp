@@ -118,6 +118,17 @@ define scap::source(
             shared             => true,
             recurse_submodules => true,
             require            => Git::Clone["scap::source ${repository} for ${title}"],
+            notify             => Exec["scap::source init ${repository} for ${title}"],
         }
+    }
+
+    # Go ahead and init the DEPLOY_HEAD too
+    exec { "scap::source init ${repository} for ${title}":
+        creates => "${path}/.git/DEPLOY_HEAD",
+        command => 'scap deploy --init',
+        cwd     => $path,
+        user    => $owner,
+        group   => $group,
+        require => Git::Clone["scap::source ${repository} for ${title}"],
     }
 }
