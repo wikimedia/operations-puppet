@@ -1,6 +1,7 @@
 # Experimental virtualhost to test new puppetmaster backends
 <VirtualHost <%= scope.lookupvar('puppetmaster::passenger::bind_address') %>:8140>
     ServerName <%= @server_name %>
+    ServerAlias <%= @alt_names.sort.join(" ") %>
     SSLEngine on
     <%= @ssl_settings.join("\n") %>
     SSLCertificateFile      /var/lib/puppet/server/ssl/certs/<%= @server_name %>.pem
