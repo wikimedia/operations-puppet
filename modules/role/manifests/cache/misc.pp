@@ -29,11 +29,8 @@ class role::cache::misc {
         'max_connections'       => 100,
     }
 
-    # misc-cluster specific (for now!):
-    #   every director must have exactly one of...
-    #     'req_host' => request hostname (or array of them)
-    #     'req_host_re' => request hostname regex
-    # ...and for sanity's sake, there should be no overlap among them
+    # $app_directors defines the backend applayer services this varnish can
+    # route requests to.
     #
     # Maintenance flag:
     # It is also possible to force a director to return a HTTP 503
@@ -48,42 +45,30 @@ class role::cache::misc {
             'type'     => 'random',
             'backends' => ['analytics1027.eqiad.wmnet'],
             'be_opts'  => merge($app_def_be_opts, { 'port' => 8888 }),
-            'req_host' => 'hue.wikimedia.org',
         },
         'bromine' => { # ganeti VM for misc. static HTML sites
             'dynamic'  => 'no',
             'type'     => 'random',
             'backends' => ['bromine.eqiad.wmnet'],
             'be_opts'  => $app_def_be_opts,
-            'req_host' => [
-                'static-bugzilla.wikimedia.org',
-                'annual.wikimedia.org',
-                'endowment.wikimedia.org',
-                'transparency.wikimedia.org',
-                '15.wikipedia.org',
-                'releases.wikimedia.org'
-            ],
         },
         'bohrium' => {
             'dynamic'  => 'no',
             'type'     => 'random',
             'backends' => ['bohrium.eqiad.wmnet'],
             'be_opts'  => $app_def_be_opts,
-            'req_host' => 'piwik.wikimedia.org',
         },
         'californium' => {
             'dynamic'  => 'no',
             'type'     => 'random',
             'backends' => ['californium.wikimedia.org'],
             'be_opts'  => $app_def_be_opts,
-            'req_host' => 'horizon.wikimedia.org',
         },
         'labtestweb2001' => {
             'dynamic'  => 'no',
             'type'     => 'random',
             'backends' => ['labtestweb2001.wikimedia.org'],
             'be_opts'  => $app_def_be_opts,
-            'req_host' => 'labtesthorizon.wikimedia.org',
         },
         'labtestspice' => {
             'dynamic'  => 'no',
@@ -97,99 +82,60 @@ class role::cache::misc {
             'type'     => 'random',
             'backends' => ['etherpad1001.eqiad.wmnet'],
             'be_opts'  => merge($app_def_be_opts, { 'port' => 9001 }),
-            'req_host' => 'etherpad.wikimedia.org',
         },
         'gallium' => { # CI server
             'dynamic'  => 'no',
             'type'     => 'random',
             'backends' => ['gallium.wikimedia.org' ],
             'be_opts'  => $app_def_be_opts,
-            'req_host' => [
-                'doc.wikimedia.org',
-                'integration.wikimedia.org'
-            ],
         },
         'graphite1001' => {
             'dynamic'  => 'no',
             'type'     => 'random',
             'backends' => ['graphite1001.eqiad.wmnet'],
             'be_opts'  => $app_def_be_opts,
-            'req_host' => [
-                'performance.wikimedia.org',
-                'graphite.wikimedia.org'
-            ],
         },
         'iridium' => { # main phab
             'dynamic'  => 'no',
             'type'     => 'random',
             'backends' => ['iridium.eqiad.wmnet'],
             'be_opts'  => $app_def_be_opts,
-            'req_host' => [
-                'phabricator.wikimedia.org',
-                'phab.wmfusercontent.org',
-                'bugzilla.wikimedia.org',
-                'bugs.wikimedia.org',
-                'git.wikimedia.org'
-            ],
         },
         'krypton' => { # ganeti VM for misc. PHP apps
             'dynamic'  => 'no',
             'type'     => 'random',
             'backends' => ['krypton.eqiad.wmnet'],
             'be_opts'  => $app_def_be_opts,
-            'req_host' => [
-                'scholarships.wikimedia.org',
-                'iegreview.wikimedia.org',
-                'racktables.wikimedia.org',
-                'grafana.wikimedia.org',
-                'grafana-admin.wikimedia.org'
-            ],
         },
         'labmon1001' => {
             'dynamic'  => 'no',
             'type'     => 'random',
             'backends' => ['labmon1001.eqiad.wmnet'],
             'be_opts'  => $app_def_be_opts,
-            'req_host' => [
-                'grafana-labs.wikimedia.org',
-                'grafana-labs-admin.wikimedia.org',
-                'graphite-labs.wikimedia.org',
-            ],
         },
         'netmon1001' => { # servermon
             'dynamic'  => 'no',
             'type'     => 'random',
             'backends' => ['netmon1001.wikimedia.org'],
             'be_opts'  => $app_def_be_opts,
-            'req_host' => [
-                'servermon.wikimedia.org',
-                'smokeping.wikimedia.org',
-                'torrus.wikimedia.org'
-            ],
         },
         'noc' => { # noc.wikimedia.org and dbtree.wikimedia.org
             'dynamic'  => 'no',
             'type'     => 'random',
             'backends' => ['mw1152.eqiad.wmnet'],
             'be_opts'  => $app_def_be_opts,
-            'req_host' => [
-                'noc.wikimedia.org',
-                'dbtree.wikimedia.org'
-            ],
         },
         'palladium' => {
             'dynamic'  => 'no',
             'type'     => 'random',
             'backends' => ['palladium.eqiad.wmnet'],
             'be_opts'  => $app_def_be_opts,
-            'req_host' => 'config-master.wikimedia.org',
         },
         'planet1001' => {
             'dynamic'     => 'no',
             'type'        => 'random',
             'backends'    => ['planet1001.eqiad.wmnet'],
             'be_opts'     => $app_def_be_opts,
-            'req_host_re' => '^([^.]+\.)?planet\.wikimedia\.org$'
         },
         'rcstream' => {
             'dynamic'  => 'no',
@@ -199,47 +145,36 @@ class role::cache::misc {
                 'rcs1002.eqiad.wmnet',
             ],
             'be_opts'  => $app_def_be_opts,
-            'req_host' => 'stream.wikimedia.org',
         },
         'ruthenium' => { # parsoid rt test server
             'dynamic'  => 'no',
             'type'     => 'random',
             'backends' => ['ruthenium.eqiad.wmnet'],
             'be_opts'  => merge($app_def_be_opts, { 'port' => 8001 }),
-            'req_host' => 'parsoid-tests.wikimedia.org',
         },
         'rutherfordium' => { # people.wikimedia.org
             'dynamic'  => 'no',
             'type'     => 'random',
             'backends' => ['rutherfordium.eqiad.wmnet'],
             'be_opts'  => $app_def_be_opts,
-            'req_host' => 'people.wikimedia.org',
         },
         'stat1001' => { # metrics and metrics-api
             'dynamic'  => 'no',
             'type'     => 'random',
             'backends' => ['stat1001.eqiad.wmnet'],
             'be_opts'  => $app_def_be_opts,
-            'req_host' => [
-                'metrics.wikimedia.org',
-                'stats.wikimedia.org',
-                'datasets.wikimedia.org',
-                'analytics.wikimedia.org',
-            ],
         },
         'ununpentium' => { # rt.wikimedia.org
             'dynamic'  => 'no',
             'type'     => 'random',
             'backends' => ['ununpentium.wikimedia.org'],
             'be_opts'  => $app_def_be_opts,
-            'req_host' => 'rt.wikimedia.org',
         },
         'mendelevium' => { # OTRS
             'dynamic'  => 'no',
             'type'     => 'random',
             'backends' => ['mendelevium.eqiad.wmnet'],
             'be_opts'  => $app_def_be_opts,
-            'req_host' => 'ticket.wikimedia.org',
         },
         'logstash_director' => {
             'dynamic'  => 'no',
@@ -250,7 +185,6 @@ class role::cache::misc {
                 'logstash1003.eqiad.wmnet',
             ],
             'be_opts'  => merge($app_def_be_opts, { 'probe' => 'logstash' }),
-            'req_host' => 'logstash.wikimedia.org',
         },
         'wdqs_director' => {
             'dynamic'  => 'no',
@@ -260,21 +194,90 @@ class role::cache::misc {
                 'wdqs1002.eqiad.wmnet',
             ],
             'be_opts'  => merge($app_def_be_opts, { 'probe' => 'wdqs' }),
-            'req_host' => 'query.wikidata.org',
         },
         'ores' => {
             'dynamic'  => 'no',
             'type'     => 'random',
             'backends' => [ 'ores.svc.eqiad.wmnet', ],
             'be_opts'  => merge($app_def_be_opts, { 'port' => '8081' }),
-            'req_host' => 'ores.wikimedia.org',
         },
+    }
+
+    # WIP - not all of the below is implemented, several commits coming!
+    #
+    # This declares how requests are handled based on the request hostname
+    # and/or path (and possibly more in the future).  For now what's controlled
+    # here is backend selection, and pass-only mode (no possible caching for
+    # these reqs).
+    # The first layer of keys are mostly request hostnames.  If characters
+    # outside of '[-.A-Za-z0-9]' are detected in the key, the "hostname" will
+    # be treated as a hostname regex.  The special key "default" applies if
+    # nothing else matches the request hostname.  Ordering is not gauranteed,
+    # so regexes should not overlap each other or the explicit hostnames.
+    # Within each hostname stanza there are parameters:
+    #  director => required, names a director from $app_directors above
+    #  force-pass => boolean, default false, causes "return (pass)"
+    #  subpaths => hash.  If present, this is the only allowed key.  Request
+    #     handling will be split on the path portion of the URL.  Keys are path
+    #     regexes, and the value of each key should be a sub-hash of the same
+    #     per-hostname options above.  The special key "default" applies for
+    #     paths that do not match any of the other keys.
+
+    $req_handling = {
+        'hue.wikimedia.org'                  => { 'director' => 'analytics1027' },
+        'static-bugzilla.wikimedia.org'      => { 'director' => 'bromine' },
+        'annual.wikimedia.org'               => { 'director' => 'bromine' },
+        'endowment.wikimedia.org'            => { 'director' => 'bromine' },
+        'transparency.wikimedia.org'         => { 'director' => 'bromine' },
+        '15.wikipedia.org'                   => { 'director' => 'bromine' },
+        'releases.wikimedia.org'             => { 'director' => 'bromine' },
+        'piwik.wikimedia.org'                => { 'director' => 'bohrium' },
+        'horizon.wikimedia.org'              => { 'director' => 'californium' },
+        'latesthorizon.wikimedia.org'        => { 'director' => 'labtestweb2001' },
+        'etherpad.wikimedia.org'             => { 'director' => 'etherpad1001' },
+        'doc.wikimedia.org'                  => { 'director' => 'gallium' },
+        'integration.wikimedia.org'          => { 'director' => 'gallium' },
+        'graphite.wikimedia.org'             => { 'director' => 'graphite1001' },
+        'performance.wikimedia.org'          => { 'director' => 'graphite1001' },
+        'phabricator.wikimedia.org'          => { 'director' => 'iridium' },
+        'phab.wmfusercontent.org'            => { 'director' => 'iridium' },
+        'bugzilla.wikimedia.org'             => { 'director' => 'iridium' },
+        'bugs.wikimedia.org'                 => { 'director' => 'iridium' },
+        'git.wikimedia.org'                  => { 'director' => 'iridium' },
+        'scholarships.wikimedia.org'         => { 'director' => 'krypton' },
+        'iegreview.wikimedia.org'            => { 'director' => 'krypton' },
+        'racktables.wikimedia.org'           => { 'director' => 'krypton' },
+        'grafana.wikimedia.org'              => { 'director' => 'krypton' },
+        'grafana-admin.wikimedia.org'        => { 'director' => 'krypton' },
+        'grafana-labs.wikimedia.org'         => { 'director' => 'labmon1001' },
+        'grafana-labs-admin.wikimedia.org'   => { 'director' => 'labmon1001' },
+        'graphite-labs.wikimedia.org'        => { 'director' => 'labmon1001' },
+        'servermon.wikimedia.org'            => { 'director' => 'netmon1001' },
+        'smokeping.wikimedia.org'            => { 'director' => 'netmon1001' },
+        'torrus.wikimedia.org'               => { 'director' => 'netmon1001' },
+        'noc.wikimedia.org'                  => { 'director' => 'noc' },
+        'dbtree.wikimedia.org'               => { 'director' => 'noc' },
+        'config-master.wikimedia.org'        => { 'director' => 'palladium' },
+        '^([^.]+\.)?planet\.wikimedia\.org$' => { 'director' => 'planet1001' },
+        'stream.wikimedia.org'               => { 'director' => 'rcstream' },
+        'parsoid-tests.wikimedia.org'        => { 'director' => 'ruthenium' },
+        'people.wikimedia.org'               => { 'director' => 'rutherfordium' },
+        'metrics.wikimedia.org'              => { 'director' => 'stat1001' },
+        'stats.wikimedia.org'                => { 'director' => 'stat1001' },
+        'datasets.wikimedia.org'             => { 'director' => 'stat1001' },
+        'analytics.wikimedia.org'            => { 'director' => 'stat1001' },
+        'rt.wikimedia.org'                   => { 'director' => 'ununpentium' },
+        'ticket.wikimedia.org'               => { 'director' => 'mendelevium' },
+        'logstash.wikimedia.org'             => { 'director' => 'logstash_director' },
+        'query.wikimedia.org'                => { 'director' => 'wdqs_director' },
+        'ores.wikimedia.org'                 => { 'director' => 'ores' },
     }
 
     $common_vcl_config = {
         'allowed_methods'  => '^(GET|DELETE|HEAD|POST|PURGE|PUT|OPTIONS)$',
         'purge_host_regex' => $::role::cache::base::purge_host_not_upload_re,
         'pass_random'      => true,
+        'req_handling'     => $req_handling,
     }
 
     $be_vcl_config = $common_vcl_config
