@@ -5,13 +5,14 @@ sub cluster_be_recv_pre_purge { }
 sub cluster_be_recv_applayer_backend {
 <%
     if_stmts = []
-    @app_directors.keys.sort.each do |dirname|
-        dir = @app_directors[dirname]
-        if dir.key?('req_host')
-            hostcmp = [*dir['req_host']].map { |h| %Q[req.http.Host == "#{h}"] }.join(' || ')
+    @vcl_config['req_handling'].keys.sort.each do |reqhost|
+        if reqhost =~ /^[-.A-Za-z0-9]+$/
+            hostop = '=='
         else
-            hostcmp = %Q[req.http.Host ~ "#{dir['req_host_re']}"]
+            hostop = '~'
         end
+        hostcmp = %Q[req.http.Host #{hostop} "#{reqhost}"]
+        dirname = @vcl_config['req_handling'][reqhost]['director']
         action = "set req.backend_hint = #{dirname}.backend();\n"
         if_stmts.push("if (#{hostcmp}) {\n        #{action}    }")
     end
