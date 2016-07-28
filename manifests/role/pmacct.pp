@@ -9,13 +9,13 @@ class role::pmacct {
         proto  => 'tcp',
         port   => '179',
         desc   => 'BGP',
-        srange => '$ALL_NETWORKS',
+        srange => '$PRODUCTION_NETWORKS',
     }
 
     ferm::service { 'netflow':
         proto  => 'udp',
         port   => '2100',
         desc   => 'NetFlow',
-        srange => '$ALL_NETWORKS',
+        srange => '$PRODUCTION_NETWORKS',
     }
 }
