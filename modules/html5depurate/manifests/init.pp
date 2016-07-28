@@ -23,6 +23,7 @@ class html5depurate(
         mode    => '0444',
         require => Package['html5depurate'],
         content => template('html5depurate/html5depurate.conf.erb'),
+        notify  => Service['html5depurate'],
     }
 
     file { '/etc/html5depurate/security.policy':
@@ -31,6 +32,7 @@ class html5depurate(
         mode    => '0444',
         require => Package['html5depurate'],
         content => template('html5depurate/security.policy.erb'),
+        notify  => Service['html5depurate'],
     }
 
     file { '/etc/default/html5depurate':
@@ -39,6 +41,7 @@ class html5depurate(
         mode    => '0444',
         require => Package['html5depurate'],
         content => template('html5depurate/default.erb'),
+        notify  => Service['html5depurate'],
     }
 
     service { 'html5depurate':
