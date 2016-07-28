@@ -3,5 +3,5 @@ num_threads <%= @threads %>
 flush_interval 10  # ms
 
 <%- @backend_ports.each do |port| -%>
-node 127.0.0.1:<%= port %> :1
+node 127.0.0.1:<%= port %>:1
 <% end %>
