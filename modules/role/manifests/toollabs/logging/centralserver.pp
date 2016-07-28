@@ -1,5 +1,5 @@
 # Recevies logs from rsyslogd via UDP and stores it centrally
-class role::toollabs::logreceiver {
+class role::toollabs::logging::centralserver {
     include base::firewall
 
     system::role { 'role::tools::logreceiver':
@@ -18,6 +18,6 @@ class role::toollabs::logreceiver {
 
     class { 'rsyslog::receiver':
         require            => Labs_lvm::Volume['syslog'],
-        log_retention_days => 15, #We don't have that much space!
+        log_retention_days => 3, # We don't have that much space! Increase later when we know we can handle it
     }
 }
