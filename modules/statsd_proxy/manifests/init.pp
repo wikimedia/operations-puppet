@@ -54,7 +54,6 @@ class statsd_proxy(
         provider  => $::initsystem,
         subscribe => [
             Package['statsd-proxy'],
-            File['/etc/default/statsd-proxy'],
         ],
     }
 }
