@@ -15,7 +15,7 @@ class statistics::wmde {
     Class['::statistics'] -> Class['::statistics::wmde']
 
     $statistics_working_path = $::statistics::working_path
-    statistics::wmde::user{ 'analytics-wmde':
+    class { 'statistics::wmde::user':
         homedir => "${statistics_working_path}/analytics-wmde"
     }
     $user = $statistics::wmde::user::username
