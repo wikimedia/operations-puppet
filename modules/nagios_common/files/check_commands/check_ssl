@@ -182,7 +182,7 @@ sub ssl_subject_matches {
 
     push @verbose, "Certificate subject: $subject";
     push @verbose, "Certificate issuer: $issuer";
-    push @verbose, "Certificate SANs: $sans";
+    push @verbose, "Certificate SANs: $sans" if defined $sans;
 
     if ( $ng->subject && $subject !~ /\Q$ng->{subject}\E/ ) {
         push @crit, "Certificate subject $subject didn't match argument";
