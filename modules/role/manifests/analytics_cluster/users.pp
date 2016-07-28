@@ -16,4 +16,11 @@ class role::analytics_cluster::users {
         gid    => 'analytics-search',
         system => true
     }
+
+    # analytics-wmde will be used to run hive
+    # queries using scripts contained in the
+    # analytics/wmde/scripts repository
+    # The analytics-wmde-users group will be allowed to
+    # sudo -u analytics-wmde.
+    include statistics::wmde::user
 }
