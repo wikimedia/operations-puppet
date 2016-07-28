@@ -2085,19 +2085,6 @@ node /^mw10(17|99)\.eqiad\.wmnet$/ {
     include base::firewall
 }
 
-# mw1114-mw1120 are canary api appservers
-node /^mw11(1[4-9]|20)\.eqiad\.wmnet$/ {
-    role mediawiki::appserver::canary_api
-    include base::firewall
-}
-
-# mw1131-1148 are api apaches
-node /^mw11(3[1-9]|4[0-8])\.eqiad\.wmnet$/ {
-    role mediawiki::appserver::api
-    include base::firewall
-}
-
-
 # mw1152 is the experimental HAT script runner
 node 'mw1152.eqiad.wmnet' {
     role mediawiki::maintenance, mariadb::maintenance, mediawiki::generic_monitoring
