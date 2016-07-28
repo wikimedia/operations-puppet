@@ -1985,3 +1985,11 @@ users:
     ssh_keys:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDKiINRPK0puzicpOyHuwiMc6ygmgPGXHZ70ltX2zVK5awSIB8ZAwh+ay8Pp9vHlBXFOaDIII7pVuV2k3AC4TH+gXipvZDRBNYABxVgW3V5ZGLkBxFm1sCThajE2jThebq3O7+iNx17Lbqe99CKyDpZ14wxw0ZOxkUYk21tcc3oz20r2b/7GzBmMCWjZlYwFU5CNSncjlyCtNqZrlBdQGIpGPZxzu+bMi/3dJ8vtGL4uxtGtw0+d4eQDmwFZ8ixHrGaAV0Nl7ZuDlbNxXu9isyro4NgY3pxcGJmuiMqrk3fUAgxkJSVMja3lsUSTmazKWf38y7T3L4KmMYjEVxucNXp bcohn@Brents-MacBook-Pro.local
     uid: 15121
+  jdittrich:
+    ensure: present
+    gid: 500
+    name: jdittrich
+    realname: Jan Dittrich
+    ssh_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC30CobMFZjzo1EMN2EzzU/sDlW8RnQI7xhF5w9Le+dgOUiVwYY9NzeWy5bX4cfLzNTt8lgOYUgsG5IVy7AA41S0RjdMS/vJm9FUkX/9r0cJGCiEd+Fb6UgKBqLdzMo5iWyWx/Mp4Q0hhZgQAJOXGXMiKbg7NWvZwlZVfqk1bgRVAp2tsVpTEAX+veoczfDEsK6hUMLcOR/UFIuPyjtTUnHoWH+s1fQh7C+Tw4GtmAQ82/hgsKvxBD+Q4HeS/4mQufgLVrr9H74K+dK4Ik46vNbXRyIhRZ0Cs/YNfMkMj1NQHLYxZuoqkLrOmAp1Rg2US3zchyjZM3+P6xkFa8cyo8pG8JHg7pYDrdGEEE8dCUrGrA/trBlYYpxO+Lvwtz2X1bmR2Q0pil9ncE12OKlJjO4AhtH7xBhG2ZAKCNR3bb3DoxEJ5HNu2cKE0A6AzcFnbcGtB1Y+EmkNJFWjUHIG+dDy+KZ/nWY3E/S894jgcO+JkpF8CkUIvng5gq3Hg7raqDmZYDqc5YUUwXBB9MFL6veNE6YW99JSkwTaT5lhYdPX9HkN5ZN/ZHWRcQ+gzhvsrADzLhfWSMyYfnfgTqvwF2qK6V8WNt5TZyqiHp7Gyjh/5oiqlrXl1HNMg7hNiTy1wSBkrUjyz4xK9S+JotWHns2uvzt6QEWqf+FSdVj/848Vw== jan.dittrich@wikimedia.de
+    uid: 14685
