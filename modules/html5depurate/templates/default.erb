@@ -2,4 +2,4 @@
 # acceptable user-visible latency. This service is expected to use a small
 # proportion of the throughput capacity of a single server, so throughput
 # overhead is not a major performance concern.
-JAVA_ARGS="-Xmx<% @max_memory_mb %>M -XX:MaxGCPauseMillis=200"
+JAVA_ARGS="-Xmx<%= @max_memory_mb %>M -XX:MaxGCPauseMillis=200"
