@@ -16,4 +16,6 @@ class role::analytics_cluster::users {
         gid    => 'analytics-search',
         system => true
     }
+
+    include statistics::wmde_user
 }
