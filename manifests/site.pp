@@ -2410,7 +2410,7 @@ node 'palladium.eqiad.wmnet' {
     }
     # Add a site for temporary puppet backend tests
     class { '::puppetmaster::web_test':
-        server_name => 'puppetmaster.test',
+        server_name => 'puppetmaster-test',
         workers     => [{
                         'worker'     => 'rhodium.eqiad.wmnet',
                         'loadfactor' => 100,
