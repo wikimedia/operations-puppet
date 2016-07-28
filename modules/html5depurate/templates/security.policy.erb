@@ -10,8 +10,7 @@ grant {
 	permission java.net.SocketPermission "<%= @listen_host %>:<%= @port %>", "listen";
 
 	// Accept permissions need to be granted to the remote host on its ephemeral port
-	permission java.net.SocketPermission "localhost", "accept,resolve";
-	permission java.net.SocketPermission "<%= @listen_host %>", "accept,resolve";
+	permission java.net.SocketPermission "*", "accept,resolve";
 
 	// Other permissions
 	permission java.util.PropertyPermission "*", "read";
