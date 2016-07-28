@@ -14,6 +14,7 @@ It sends metrics of the form:
     raw.{firstsegment}.httpversion.{version} -> For HTTP versions used
 """
 import re
+from collections import defaultdict
 
 from logster.logster_helper import MetricObject, LogsterParser
 from logster.logster_helper import LogsterParsingException
@@ -26,6 +27,9 @@ class UrlFirstSegmentLogster(LogsterParser):
         of the tasty bits we find in the log we are parsing.'''
         self.status_stats = {}
         self.httpver_stats = {}
+
+        self.combined_status = defaultdict(int)
+        self.combined_httpver = defaultdict(int)
         # Regular expression for matching lines we are interested in, and capturing
         # fields from the line (in this case, http_status_code, size and squid_code).
         self.reg = re.compile(r"""
@@ -56,10 +60,12 @@ class UrlFirstSegmentLogster(LogsterParser):
             statuses = self.status_stats.get(firstsegment, {status: 0})
             statuses[status] = statuses.get(status, 0) + 1
             self.status_stats[firstsegment] = statuses
+            self.combined_status[status] += 1
 
             httpversions = self.httpver_stats.get(firstsegment, {httpversion: 0})
             httpversions[httpversion] = httpversions.get(httpversion, 0) + 1
             self.httpver_stats[firstsegment] = httpversions
+            self.combined_httpver[httpversion] += 1
         else:
             raise LogsterParsingException("regmatch failed to match")
 
@@ -68,6 +74,22 @@ class UrlFirstSegmentLogster(LogsterParser):
         and return a list of metric objects.'''
 
         metrics = []
+        for status, count in self.combined_status.items():
+            metrics.append(
+                MetricObject(
+                    'combined.status.{status}'.format(status=status),
+                    count,
+                    'Responses'
+                )
+            )
+        for httpver, count in self.combined_httpver.items():
+            metrics.append(
+                MetricObject(
+                    'combined.httpver.{httpver}'.format(httpver=httpver),
+                    count,
+                    'Responses'
+                )
+            )
         for firstsegment, statuses in self.status_stats.items():
             for status, count in statuses.items():
                 metric_name = 'raw.{firstsegment}.status.{status}'.format(
