@@ -13,7 +13,6 @@ class gerrit::proxy(
 
     apache::site { $host:
         content => template('gerrit/gerrit.wikimedia.org.erb'),
-        require => Letsencrypt::Cert::Integrated['gerrit'],
     }
 
     # Error page stuff
