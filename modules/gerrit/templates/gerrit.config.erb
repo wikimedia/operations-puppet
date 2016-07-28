@@ -101,8 +101,8 @@
     # that we use, $1 needs to hold the bug number. By the way the
     # pattern gets used, neither non-capturing groups nor
     # look-aheads/look-backs work reliably.
-    match =  "\\bT(\\d+)\\b"
-    link = https://phabricator.wikimedia.org/T$1
+    match = "\\b(T\\d+(#\\d+)?)\\b"
+    link = https://phabricator.wikimedia.org/$1
 [mimetype "application/javascript"]
     safe = true
 [mimetype "application/x-php"]
