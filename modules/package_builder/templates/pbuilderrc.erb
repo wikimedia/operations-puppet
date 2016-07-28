@@ -18,7 +18,12 @@ fi
 DISTRIBUTION="$DIST"
 PDEBUILD_PBUILDER="cowbuilder"
 BASEPATH="<%= @basepath %>/base-${DIST}-${ARCH}.cow/"
-BUILDRESULT=${BUILDRESULT:-<%= @basepath %>/result/${DIST}-${ARCH}}
+DEFAULT_OUTPUT_DIR="../"
+# If no override is given, use our designated destination
+if [ -z ${BUILDRESULT} ] || [ ${BUILDRESULT} == ${DEFAULT_OUTPUT_DIR} ];
+   then
+   BUILDRESULT=<%= @basepath %>/result/${DIST}-${ARCH}
+fi;
 
 if [ "${APT_USE_BUILT}" = "yes" -a -d ${BUILDRESULT} ]; then
 	export BUILDRESULT # .deb location needs to be passed to D05localsources
