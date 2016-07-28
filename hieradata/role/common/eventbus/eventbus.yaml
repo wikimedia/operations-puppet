@@ -1,1 +1,3 @@
 cluster: eventbus
+admin::groups:
+  - eventbus-admins
