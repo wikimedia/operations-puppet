@@ -68,6 +68,6 @@ class contint::firewall {
     ferm::service { 'allow_http':
         proto  => 'tcp',
         port   => '80',
-        srange => '$ALL_NETWORKS',
+        srange => '$PRODUCTION_NETWORKS',
     }
 }
