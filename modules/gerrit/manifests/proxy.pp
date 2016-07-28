@@ -7,7 +7,6 @@ class gerrit::proxy(
         subjects   => $host,
         puppet_svc => 'apache2',
         system_svc => 'apache2',
-        require    => Class['apache::mod::ssl']
     }
 
     $ssl_settings = ssl_ciphersuite('apache', 'mid', true)
