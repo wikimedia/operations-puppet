@@ -182,7 +182,7 @@ class role::cache::misc {
             'type'        => 'random',
             'backends'    => ['planet1001.eqiad.wmnet'],
             'be_opts'     => $app_def_be_opts,
-            'req_host_re' => '(?i)^([^.]+\.)?planet\.wikimedia\.org$'
+            'req_host_re' => '^([^.]+\.)?planet\.wikimedia\.org$'
         },
         'rcstream' => {
             'dynamic'  => 'no',
