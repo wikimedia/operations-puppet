@@ -14,10 +14,10 @@
 class statistics::wmde {
     Class['::statistics'] -> Class['::statistics::wmde']
 
-    $user = 'analytics-wmde'
-
     $statistics_working_path = $::statistics::working_path
-    $dir  = "${statistics_working_path}/analytics-wmde"
+    statistics::wmde::user{ home => "${statistics_working_path}/analytics-wmde" }
+    $user = $statistics::wmde::user::user
+    $dir = $statistics::wmde::user::home
     $data_dir  = "${dir}/data"
     $scripts_dir  = "${dir}/src/scripts"
 
@@ -35,20 +35,6 @@ class statistics::wmde {
         'php5',
         'php5-cli',
         'git')
-
-    group { $user:
-        ensure => present,
-        name   => $user,
-    }
-
-    user { $user:
-        ensure     => present,
-        shell      => '/bin/bash',
-        managehome => false,
-        home       => $dir,
-        system     => true,
-        require    => Group[$user],
-    }
 
     include passwords::mysql::research
     # This file will render at
