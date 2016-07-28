@@ -2,6 +2,10 @@ class role::toollabs::docker::builder {
     include ::toollabs::infrastructure
 
     require role::labs::lvm::srv
+
+    # Send *all* the logs!
+    include ::k8s::sendlogs
+
     class { '::docker::engine': }
 
     class { '::toollabs::images': }

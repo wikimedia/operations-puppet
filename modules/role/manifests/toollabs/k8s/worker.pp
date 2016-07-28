@@ -11,6 +11,9 @@ class role::toollabs::k8s::worker {
         port  => 8472,
     }
 
+    # Send *all* the logs!
+    include ::k8s::sendlogs
+
     class { '::k8s::flannel':
         etcd_endpoints => $etcd_url,
     }
