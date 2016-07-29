@@ -4,7 +4,7 @@
 # https://github.com/prometheus/node_exporter and the module's documentation.
 
 class role::prometheus::node_exporter {
-    if os_version('debien >= jessie') {
+    if os_version('debian >= jessie') {
         # Doesn't work for trusty or jessie yet
         include ::prometheus::node_exporter
     }
