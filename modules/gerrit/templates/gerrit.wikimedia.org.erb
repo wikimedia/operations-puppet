@@ -29,13 +29,13 @@ MaxClients 50
         </IfVersion>
     </Directory>
 
-    ErrorLog /var/log/apache2/error.log
+    ErrorLog /var/log/apache2/<%= @host %>.http.error.log
 
     # Possible values include: debug, info, notice, warn, error, crit,
     # alert, emerg.
     LogLevel warn
 
-    CustomLog /var/log/apache2/access.log wmf
+    CustomLog /var/log/apache2/<%= @host %>.http.access.log wmf
     ServerSignature Off
     <IfVersion >= 2.4>
         IncludeOptional /etc/acme/challenge-apache.conf
@@ -130,13 +130,13 @@ NameVirtualHost *:443
     ErrorDocument 503 "/error.html#"
     <%- end -%>
 
-    ErrorLog /var/log/apache2/error.log
+    ErrorLog /var/log/apache2/<%= @host %>.https.error.log
 
     # Possible values include: debug, info, notice, warn, error, crit,
     # alert, emerg.
     LogLevel warn
 
-    CustomLog /var/log/apache2/access.log wmf
+    CustomLog /var/log/apache2/<%= @host %>.https.access.log wmf
     ServerSignature Off
 
 </VirtualHost>
