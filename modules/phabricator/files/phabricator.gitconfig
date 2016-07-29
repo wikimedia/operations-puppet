@@ -4,7 +4,7 @@
         bare = false
         logallrefupdates = true
 [remote "origin"]
-        url = https://gerrit.wikimedia.org/r/p/phabricator/phabricator.git
+        url = https://phabricator.wikimedia.org/diffusion/PHAB/phabricator.git
         fetch = +refs/heads/*:refs/remotes/origin/*
 [branch "master"]
         remote = origin
