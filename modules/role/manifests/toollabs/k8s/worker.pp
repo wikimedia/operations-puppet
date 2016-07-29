@@ -37,6 +37,26 @@ class role::toollabs::k8s::worker {
     }
 
     # Deployment script (for now!)
+     file { '/usr/local/bin/fetch-worker':
+        source => 'puppet:///modules/role/toollabs/fetch-worker.bash',
+        mode   => '0555',
+        owner  => 'root',
+        group  => 'root',
+    }
+
+    $version = hiera('k8s::version')
+    $docker_builder = hiera('docker::builder_host')
+
+    exec { 'initial-kube-deploy':
+        command => "/usr/local/bin/fetch-worker http://${docker_builder} ${version}",
+        creates => '/usr/local/bin/kubelet',
+        require => File['/usr/local/bin/fetch-worker'],
+        before  => [
+            Class['k8s::kubelet'],
+            Class['k8s::proxy']
+        ],
+    }
+
     file { '/usr/local/bin/deploy-worker':
         source => 'puppet:///modules/role/toollabs/deploy-worker.bash',
         mode   => '0555',
