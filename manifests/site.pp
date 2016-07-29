@@ -1558,7 +1558,6 @@ node 'lead.wikimedia.org' {
     # to update the role::zuul::configuration variable 'gerrit_server'
     role gerrit::server
 
-    include gerrit::migration::destination
     include standard
     include base::firewall
 }
