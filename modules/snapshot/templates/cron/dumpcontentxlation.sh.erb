@@ -1,0 +1,93 @@
+#!/bin/bash
+#############################################################
+# This file is maintained by puppet!
+# modules/snapshot/templates/cron/dumpcontentxlation.sh.erb
+#############################################################
+
+set -x
+
+checkval() {
+    setting=$1
+    value=$2
+    if [ -z "$value" -o "$value" == "null" ]; then
+        echo "failed to retrieve value of $setting from $configfile"
+        exit 1
+    fi
+}
+
+getsetting() {
+    results=$1
+    section=$2
+    setting=$3
+    echo "$results" | jq -M ".$section.$setting"
+}
+
+getdbinfo() {
+    hostname=$1
+    dbuser=$2
+    dbpasswd=$3
+}
+
+usage() {
+    echo "Usage: $0 [--config <pathtofile>] [--dryrun]"
+    echo
+    echo "  --config   path to configuration file for dump generation"
+    echo "             (default value: ${confsdir}/wikidump.conf"
+    echo "  --dryrun   display dump command instead of running it"
+    exit 1
+}
+
+#####################
+# MAIN
+#####################
+
+confsdir="<%= scope.lookupvar('snapshot::dumps::dirs::confsdir') -%>"
+repodir="<%= scope.lookupvar('snapshot::dumps::dirs::repodir') -%>"
+configfile="${confsdir}/wikidump.conf"
+dryrun="false"
+
+#####################
+# Get cmdline args
+#####################
+
+while [ $# -gt 0 ]; do
+    if [ $1 == "--config" ]; then
+        configfile="$2"
+        shift; shift
+    elif [ $1 == "--dryrun" ]; then
+        dryrun="true"
+        shift
+    else
+        echo "$0: Unknown option $1"
+        usage
+    fi
+done
+
+#####################
+# Get config settings
+#####################
+
+args="wiki:dir;tools:gzip,php"
+results=`python "${repodir}/getconfigvals.py" --configfile "$configfile" --args "$args"`
+
+gzip=`getsetting "$results" "tools" "gzip"`
+php=`getsetting "$results" "tools" "php"`
+
+for settingname in "gzip" "php"; do
+    checkval "$settingname" "${!settingname}"
+done
+
+####################
+# Dump
+####################
+
+today=`date +%Y%m%d`
+$xlationdir = "${otherdir}/contentxlation"
+outdir=$xlationdir/$today
+mkdir -p "$outdir"
+multiversionscript="${apachedir}/multiversion/MWScript.php"
+xlationscript="extensions/ContentTranslation/scripts/dump-corpora.php"
+
+$php -q $multiversionscript $xlationscript --wiki enwiki --split-at 500 --outputdir $outputdir --compression gzip --format json
+$php -q $multiversionscript $xlationscript --wiki enwiki --split-at 500 --outputdir $outputdir --compression gzip --format json --plaintext
+$php -q $multiversionscript $xlationscript --wiki enwiki --split-at 500 --outputdir $outputdir --compression gzip --format tmx --plaintext
