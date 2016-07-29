@@ -34,7 +34,7 @@ cassandra::concurrent_reads: 18
 # This could be a problem in already heavy loaded clusters like AQS,
 # so we need to increase caching to allow better performances
 # (default value 2s).
-cassandra::permissions_validity_in_ms: 60000
+cassandra::permissions_validity_in_ms: 600000
 
 cassandra::dc: "%{::site}"
 cassandra::cluster_name: "Analytics Query Service Cassandra"
