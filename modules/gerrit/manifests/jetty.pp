@@ -5,8 +5,6 @@ class gerrit::jetty(
     $db_name = 'reviewdb',
     $db_user = 'gerrit',
     $git_dir = 'git',
-    $gid     = 444,
-    $uid     = 444,
     $ssh_host_key = undef,
     ) {
 
@@ -33,26 +31,11 @@ class gerrit::jetty(
         ensure => present,
     }
 
-    group { 'gerrit2':
-        ensure => present,
-        gid    => $gid,
-        system => true,
-    }
-
-    user { 'gerrit2':
-        ensure  => present,
-        home    => '/var/lib/gerrit2',
-        system  => true,
-        gid     => $gid,
-        uid     => $uid,
-        require => Group['gerrit2'],
-    }
-
     file { '/var/lib/gerrit2/':
         ensure  => directory,
         mode    => '0755',
         owner   => 'gerrit2',
-        require => [Package['gerrit'], User['gerrit2']],
+        require => Package['gerrit'],
     }
 
     file { '/var/lib/gerrit2/.ssh':
@@ -140,9 +123,9 @@ class gerrit::jetty(
         group   => 'gerrit2',
         cwd     => '/var/lib/gerrit2',
         command => '/usr/bin/java -jar gerrit.war init -d review_site --batch --no-auto-start',
-        require => [Package['gerrit'],
-                    File['/var/lib/gerrit2/review_site/etc/gerrit.config'],
-                    File['/var/lib/gerrit2/review_site/etc/secure.config']
+        require => [
+            File['/var/lib/gerrit2/review_site/etc/gerrit.config'],
+            File['/var/lib/gerrit2/review_site/etc/secure.config'],
         ],
     }
 
