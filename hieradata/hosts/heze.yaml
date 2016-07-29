@@ -2,3 +2,4 @@
 debdeploy::grains:
   debdeploy-backup-storage:
     value: standard
+puppetmaster: "puppetmaster.test.%{::domain}"
