@@ -37,6 +37,7 @@ class varnish::common::vcl {
         source  => 'puppet:///modules/varnish/tests',
         owner   => 'root',
         group   => 'root',
+        mode    => '0644',
         recurse => true,
     }
 
