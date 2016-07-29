@@ -1,0 +1,12 @@
+#!/bin/bash
+set -e
+set -u
+
+# First of all, check if there is something to merge.
+if [ -z "`find <%= @dir %> -uid <%= @owner %> -or -gid <%= @group %> `" ]; then
+    echo "Improperly owned (<%= @owner %>:<%= @group %>) files in <%= @dir %>"
+    exit 2
+fi
+
+echo "Files ownership is ok."
+exit 0

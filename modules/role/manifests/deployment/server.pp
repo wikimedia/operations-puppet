@@ -71,11 +71,7 @@ class role::deployment::server(
     }
 
     # Also make sure that no files have been stolen by root ;-)
-    nrpe::monitor_service { 'mediawiki_staging_no_root':
-        description  => 'Root-owned files in /srv/mediawiki-staging',
-        nrpe_command => 'test -z "`find /srv/mediawiki-staging -uid 0 -or -gid 0`"',
-        retries      => 10,
-    }
+    ::monitoring::icinga::bad_directory_owner { '/srv/mediawiki-staging': }
 
     ### Trebuchet
     file { '/srv/deployment':
