@@ -18,20 +18,14 @@ class role::toollabs::k8s::worker {
         etcd_endpoints => $etcd_url,
     }
 
-    labs_lvm::volume { 'docker-storage':
-        mountat => '/var/lib/docker',
-    }
     class { '::k8s::docker':
-        require => [
-            Class['::k8s::flannel'],
-            Labs_lvm::Volume['docker-storage'],
-        ]
+        require => Class['::k8s::flannel'],
     }
+
     class { '::k8s::ssl':
         provide_private => true,
         notify          => Class['k8s::kubelet'],
     }
-
 
     class { 'k8s::kubelet':
         master_host => $master_host,
