@@ -10,6 +10,7 @@ class dataset::dirs {
     $otherdir_wikidata_legacy = '/data/xmldatadumps/public/other/wikidata'
     $otherdir_wikibase        = '/data/xmldatadumps/public/other/wikibase/'
     $relative_wikidatawiki    = 'other/wikibase/wikidatawiki'
+    $xlationdir               = '/data/xmldatadumps/public/other/contenttranslation/'
 
     file { $datadir:
         ensure => 'directory',
@@ -76,6 +77,13 @@ class dataset::dirs {
 
     # Legacy
     file { $otherdir_wikidata_legacy:
+        ensure => 'directory',
+        mode   => '0755',
+        owner  => 'datasets',
+        group  => 'datasets',
+    }
+
+    file { $xlationdir:
         ensure => 'directory',
         mode   => '0755',
         owner  => 'datasets',
