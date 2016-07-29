@@ -64,11 +64,13 @@ define redis::instance(
     }
 
     $defaults = {
-        pidfile    => "/var/lib/redis/${instance_name}.pid",
-        logfile    => "/var/log/redis/${instance_name}.log",
-        port       => $port,
-        unixsocket => $unixsocket,
-        daemonize  => true,
+        pidfile        => "/var/lib/redis/${instance_name}.pid",
+        logfile        => "/var/log/redis/${instance_name}.log",
+        port           => $port,
+        unixsocket     => $unixsocket,
+        daemonize      => true,
+        appendfilename => "${instance_name}.aof",
+        dbfilename     => "${instance_name}.rdb",
     }
 
 
