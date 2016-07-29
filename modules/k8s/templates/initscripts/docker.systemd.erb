@@ -8,7 +8,13 @@ Requires=docker.socket flannel.service
 [Service]
 EnvironmentFile=-/etc/default/docker
 EnvironmentFile=/run/flannel/subnet.env
-ExecStart=/usr/bin/docker daemon -H fd:// --bip=${FLANNEL_SUBNET} --mtu=${FLANNEL_MTU} --iptables=false --ip-masq=false
+ExecStart=/usr/bin/docker daemon -H fd:// \
+            --bip=${FLANNEL_SUBNET} \
+            --mtu=${FLANNEL_MTU} \
+            --iptables=false \
+            --ip-masq=false \
+            --storage-opt dm.datadev=/dev/docker/data \
+            --storage-opt dm.metadatadev=/dev/docker/metadata
 MountFlags=slave
 LimitNOFILE=1048576
 LimitNPROC=1048576
