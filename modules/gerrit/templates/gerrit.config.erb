@@ -47,14 +47,32 @@
     maxThreads = 60
 [cache]
     directory = cache
+[cache "accounts_byname"]
+    memoryLimit = 2048
+[cache "groups"]
+    memoryLimit = 2048
+[cache "groups_byuuid"]
+    memoryLimit = 2048
+[cache "ldap_group_existence"]
+    maxAge = 1 hour
+[cache "ldap_groups"]
+    memoryLimit = 2048
+[cache "ldap_groups_byinclude"]
+    maxAge = 1 hour
+[cache "ldap_usernames"]
+    maxAge = 1 hour
+    memoryLimit = 2048
+[cache "projects"]
+    memoryLimit = 2048
+[cache "ssh_keys"]
+    memoryLimit = 2048
+[cache "static_content"]
+    maxAge = 1 day
+    memoryLimit = 2048
 [cache "web_sessions"]
     maxAge = 90 days
-[cache "accounts"]
-    maxAge = 7 days
-[cache "accounts_byemail"]
-    maxAge = 7 days
-[cache "accounts_byname"]
-    maxAge = 7 days
+    memoryLimit = 2048
+    diskLimit = 256mb
 [gitweb]
     url = https://phabricator.wikimedia.org
     type = custom
