@@ -16,12 +16,13 @@
 #                 very short list, and requires a very modern client.  No
 #                 tradeoff is made for compatibility.  Known to work with:
 #                 FF/Chrome, IE11, Safari 9, Java8, Android 4.4+, OpenSSL 1.0.x
-#   - mid:        Supports TLSv1.0 and higher, and adds several forward-secret
+#   - mid:        Supports TLSv1.1 and higher, and adds several forward-secret
 #                 options which are not AEAD.  This is compatible with many more
 #                 clients than "strong".  Should only be incompatible with
 #                 unpatched IE8/XP, ancient/un-updated Java6, and some small
 #                 corner cases like Nokia feature phones.
-#   - compat:     Supports most legacy clients, FS optional but preferred.
+#   - compat:     Supports most legacy clients, by adding TLSv1.0 and
+#                 non-forward-secret options as a final fallback.
 # - HSTS boolean - if true, will emit our standard HSTS header for canonical
 #   public domains (which is currently 1 year with preload and includeSub).
 #   Default false.
@@ -138,7 +139,7 @@ Function parameters are:
 Examples:
 
    ssl_ciphersuite('apache', 'compat', true) # Compatible config for apache
-   ssl_ciphersuite('apache', 'mid', true) # FS-only for apache
+   ssl_ciphersuite('apache', 'mid', true) # FS-only and TLSv1.1+ for apache
    ssl_ciphersuite('nginx', 'strong', true) # FS-only, AEAD-only, TLSv1.2-only
 END
               ) do |args|
@@ -193,6 +194,8 @@ END
     if server == 'apache'
       if ciphersuite == 'strong'
         output.push('SSLProtocol all -SSLv2 -SSLv3 -TLSv1 -TLSv1.1')
+      elsif ciphersuite == 'mid'
+        output.push('SSLProtocol all -SSLv2 -SSLv3 -TLSv1')
       else
         output.push('SSLProtocol all -SSLv2 -SSLv3')
       end
@@ -207,6 +210,8 @@ END
     else # nginx
       if ciphersuite == 'strong'
         output.push('ssl_protocols TLSv1.2;')
+      elsif ciphersuite == 'mid'
+        output.push('ssl_protocols TLSv1.1 TLSv1.2;')
       else
         output.push('ssl_protocols TLSv1 TLSv1.1 TLSv1.2;')
       end
