@@ -78,12 +78,15 @@ module Puppet::Parser::Functions
       '-ALL',
       'ECDHE-ECDSA-AES128-GCM-SHA256',
       'ECDHE-RSA-AES128-GCM-SHA256',
-      'ECDHE-ECDSA-CHACHA20-POLY1305', # openssl-1.1.0
-      'ECDHE-RSA-CHACHA20-POLY1305',   # openssl-1.1.0
+      'ECDHE-ECDSA-CHACHA20-POLY1305',   # openssl-1.1.0, 1.0.2+cloudflare
+      'ECDHE-RSA-CHACHA20-POLY1305',     # openssl-1.1.0, 1.0.2+cloudflare
+      'ECDHE-ECDSA-CHACHA20-POLY1305-D', # 1.0.2+cloudflare
+      'ECDHE-RSA-CHACHA20-POLY1305-D',   # 1.0.2+cloudflare
       'ECDHE-ECDSA-AES256-GCM-SHA384',
       'ECDHE-RSA-AES256-GCM-SHA384',
       'DHE-RSA-AES128-GCM-SHA256',
-      'DHE-RSA-CHACHA20-POLY1305', # openssl-1.1.0
+      'DHE-RSA-CHACHA20-POLY1305',   # openssl-1.1.0, 1.0.2+cloudflare
+      'DHE-RSA-CHACHA20-POLY1305-D', # 1.0.2+cloudflare
       'DHE-RSA-AES256-GCM-SHA384',
     ],
     # Forward-Secret, but not AEAD
