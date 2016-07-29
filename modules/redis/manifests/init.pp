@@ -33,12 +33,24 @@ class redis {
         values => { 'vm.overcommit_memory' => 1 },
     }
 
-    if os_version('debian >= jessie') {
-        file_line { 'enable_latency_monitor':
-            line  => 'latency-monitor-threshold 100',
-            match => '^latency-monitor-threshold',
-            path  => '/etc/redis/redis.conf',
-        }
+    # Manage the redis.conf file again as we need it
+    # to be the simplest lowest-common denominator
+    file { '/etc/redis/redis-common.conf':
+        ensure => present,
+        source => 'puppet:///modules/redis/redis-common.conf',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0644',
+        before => File['/etc/redis/redis.conf']
+    }
+
+    # Distro-specific common directives go here
+    file { '/etc/redis/redis.conf':
+        ensure => present,
+        source => "puppet:///modules/redis/redis-${::lsbdistcodename}.conf",
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0644',
     }
 
     # ensure that /var/run/redis is created at boot
