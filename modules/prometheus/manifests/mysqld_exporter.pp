@@ -26,6 +26,13 @@ define prometheus::mysqld_exporter (
 ) {
     require_package('prometheus-mysqld-exporter')
 
+    file { '/var/lib/prometheus':
+        ensure => directory,
+        mode   => '0444',
+        owner  => 'prometheus',
+        group  => 'prometheus',
+    }
+
     # default .my.cnf location (i.e. $HOME/.my.cnf)
     file { '/var/lib/prometheus/.my.cnf':
         ensure  => present,
@@ -33,7 +40,9 @@ define prometheus::mysqld_exporter (
         owner   => 'prometheus',
         group   => 'prometheus',
         content => template('prometheus/mysqld_exporter.cnf.erb'),
-        require => Package['prometheus-mysqld-exporter'],
+        require => [ Package['prometheus-mysqld-exporter'],
+                     File['/var/lib/prometheus'],
+                   ],
         notify  => Service['prometheus-mysqld-exporter'],
     }
 
