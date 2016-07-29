@@ -14,7 +14,7 @@ class scap (
     $wmflabs_master = 'deployment-tin.eqiad.wmflabs',
 ) {
     package { 'scap':
-        ensure => '3.2.0-1',
+        ensure => '3.2.2-1',
     }
 
     file { '/etc/scap.cfg':
