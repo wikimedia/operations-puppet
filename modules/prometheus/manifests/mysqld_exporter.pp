@@ -26,6 +26,13 @@ define prometheus::mysqld_exporter (
 ) {
     require_package('prometheus-mysqld-exporter')
 
+    file { '/var/lib/prometheus':
+        ensure => directory,
+        mode   => '0444',
+        owner  => 'prometheus',
+        group  => 'prometheus',
+    }
+
     # default .my.cnf location (i.e. $HOME/.my.cnf)
     file { '/var/lib/prometheus/.my.cnf':
         ensure  => present,
