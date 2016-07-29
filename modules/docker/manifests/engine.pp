@@ -1,5 +1,5 @@
 class docker::engine(
-    $version = '1.11.1-0~jessie',
+    $version = '1.11.2-0~jessie',
     $declare_service = true,
 ) {
     apt::repository { 'docker':
