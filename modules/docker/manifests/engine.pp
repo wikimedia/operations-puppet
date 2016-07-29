@@ -10,11 +10,22 @@ class docker::engine(
         keyfile    => 'puppet:///modules/docker/docker.gpg',
     }
 
-    # Pin a version of docker-engine so we have the same
-    # across the fleet
-    package { 'docker-engine':
-        ensure  => $version,
-        require => Apt::Repository['docker'],
+    file { '/usr/local/bin/setup-docker':
+        source => 'puppet:///modules/docker/setup-docker',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0554',
+    }
+
+    exec { 'setup-docker':
+        command => '/usr/local/bin/setup-docker',
+        unless  => '/sbin/vgdisplay docker',
+        user    => 'root',
+        group   => 'root',
+        require => [
+            Apt::Repository['docker'],
+            File['/usr/local/bin/setup-docker']
+        ]
     }
 
     if $declare_service {
