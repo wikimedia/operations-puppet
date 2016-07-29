@@ -37,6 +37,12 @@ def get_roles(project, prefix):
                   prefix.id = roleassignment.prefix_id
         """, (project, prefix))
         roles = [r[0] for r in cur.fetchall()]
+        if len(roles) == 0:
+            return Response(
+                json.dumps({'status': 'notfound'}),
+                status=404,
+                mimetype='application/json'
+            )
         return Response(
             json.dumps({'roles': roles}),
             status=200,
@@ -93,8 +99,15 @@ def get_hiera(project, prefix):
             WHERE prefix.project = %s AND prefix.prefix = %s AND
                   prefix.id = hieraassignment.prefix_id
         """, (project, prefix))
+        row = cur.fetchone()
+        if row is None:
+            return Response(
+                json.dumps({'status': 'notfound'}),
+                status=404,
+                mimetype='application/json'
+            )
         return Response(
-            json.dumps({'hiera': cur.fetchone()[0]}),
+            json.dumps({'hiera': row[0]}),
             status=200,
             mimetype='application/json'
         )
