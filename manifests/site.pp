@@ -447,11 +447,20 @@ node 'db2016.codfw.wmnet' {
     include base::firewall
 }
 
-node /^db20(34|42|48|55|62|69|70)\.codfw\.wmnet/ {
+node /^db20(34|42|48|55|62|70)\.codfw\.wmnet/ {
     class { 'role::mariadb::core':
         shard         => 's1',
         binlog_format => 'ROW',
     }
+    include base::firewall
+}
+
+node 'db2069.codfw.wmnet' {
+    class { 'role::mariadb::core':
+        shard         => 's1',
+        binlog_format => 'ROW',
+    }
+    role prometheus::mysqld_exporter
     include base::firewall
 }
 
