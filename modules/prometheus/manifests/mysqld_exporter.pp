@@ -22,7 +22,7 @@ define prometheus::mysqld_exporter (
     $client_socket = '/tmp/mysql.sock',
     $client_user = 'prometheus',
     $client_password = '',
-    $arguments = undef,
+    $arguments = '',
 ) {
     require_package('prometheus-mysqld-exporter')
 
@@ -37,13 +37,13 @@ define prometheus::mysqld_exporter (
         notify  => Service['prometheus-mysqld-exporter'],
     }
 
-    if defined($arguments) {
+    if $arguments != '' {
         file { '/etc/default/prometheus-mysqld-exporter':
             ensure  => present,
             mode    => '0444',
             owner   => 'root',
             group   => 'root',
-            content => "ARGS='${arguments}'",
+            content => "ARGS=${arguments}",
             notify  => Service['prometheus-mysqld-exporter'],
         }
     }
