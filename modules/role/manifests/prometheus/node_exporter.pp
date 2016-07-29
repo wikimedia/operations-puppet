@@ -4,7 +4,10 @@
 # https://github.com/prometheus/node_exporter and the module's documentation.
 
 class role::prometheus::node_exporter {
-    include ::prometheus::node_exporter
+    if os_version('debien >= jessie') {
+        # Doesn't work for trusty or jessie yet
+        include ::prometheus::node_exporter
+    }
 
     ferm::service { 'prometheus-node-exporter':
         proto  => 'tcp',
