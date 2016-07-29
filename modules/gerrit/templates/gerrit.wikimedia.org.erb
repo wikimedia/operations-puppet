@@ -58,7 +58,7 @@ NameVirtualHost *:443
     SSLCertificateKeyFile /etc/acme/key/gerrit.key
     <%= @ssl_settings.join("\n") %>
 
-    RedirectMatch ^/$ https://<%= @host %>/r/
+    RedirectMatch ^/r?$ https://<%= @host %>/r/
 
     # Misbehaving bots
     SetEnvIf User-Agent 80legs bad_browser
