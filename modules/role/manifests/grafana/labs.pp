@@ -20,4 +20,14 @@ class role::grafana::labs {
             'cn=project-bastion,ou=groups,dc=wikimedia,dc=org'
         ]
     }
+
+    # https://phabricator.wikimedia.org/T141636
+    git::clone { 'grafana/simple-json-datasource':
+        ensure    => 'latest',
+        # TODO pin a version once git repo is created
+        branch    => 'master',
+        directory => '/usr/share/grafana/public/app/plugins/datasource/simple-json-datasource',
+        origin    => 'operations/software/grafana/simple-json-datasource',
+        require => Package['grafana'],
+    }
 }
