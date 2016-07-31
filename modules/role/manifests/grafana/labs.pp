@@ -20,4 +20,13 @@ class role::grafana::labs {
             'cn=project-bastion,ou=groups,dc=wikimedia,dc=org'
         ]
     }
+
+    git::clone { 'grafana/simple-json-datasource':
+        ensure    => 'latest',
+        branch    => 'master',
+        directory => '/usr/share/grafana/public/app/plugins/datasource/simple-json-datasource',
+        # TODO move to gerrit
+        origin    => 'https://gerrit.wikimedia.org/r/analytics/wmde/scripts',
+        # REQUIRES?
+    }
 }
