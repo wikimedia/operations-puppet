@@ -20,4 +20,11 @@ class role::grafana::labs {
             'cn=project-bastion,ou=groups,dc=wikimedia,dc=org'
         ]
     }
+
+    git::clone { 'grafana/simple-json-datasource':
+        ensure    => 'latest',
+        branch    => 'master',
+        directory => '/usr/share/grafana/public/app/plugins/datasource/simple-json-datasource',
+        origin    => 'https://gerrit.wikimedia.org/r/operations/software/grafana/simple-json-datasource',
+    }
 }
