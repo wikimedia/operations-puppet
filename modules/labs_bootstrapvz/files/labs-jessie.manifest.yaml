@@ -196,18 +196,15 @@ plugins:
         src: /etc/apt/sources.list.d/wikimedia.list
         dst: /etc/apt/sources.list.d/wikimedia.list
       -
-        src: /etc/default/grub
-        dst: /etc/default/grub
-      -
         src: /etc/apt/preferences.d/wikimedia.pref
         dst: /etc/apt/preferences.d/wikimedia.pref
       -
         src: /etc/ssl/certs/ca-certificates.crt
         dst: /etc/ssl/certs/ca-certificates.crt
   commands:
-    # Current implementation does not specify an order between image_commands and
+    # Current implementation does not specify an order between commands and
     #  file_copy.  This section should not depend on anything existing from
-    #  file_copy; hence the touch below.
+    #  file_copy; hence the touches and explicit copies below.
     commands:
       - ['chroot', '{root}', 'passwd', '-ld', 'root']
       - ['chroot', '{root}', '/bin/sh', '-c', 'echo "#" >> /etc/sudoers']
@@ -216,6 +213,8 @@ plugins:
       - ['chroot', '{root}', 'rm', '-f', '/etc/sudo-ldap.conf']
       - ['chroot', '{root}', 'ln', '-s', '/etc/ldap/ldap.conf', '/etc/sudo-ldap.conf']
       - ['chroot', '{root}', 'rm', '-f', '/etc/resolvconf/resolv.conf.d/original']
+      - ['cp', '/etc/default/grub', '{root}/etc/default/grub']
+      - ['chroot', '{root}', 'update-grub']
       - ['chroot', '{root}', 'puppet', 'agent', '--disable']
 
   unattended_upgrades:
