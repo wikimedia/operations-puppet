@@ -30,6 +30,12 @@ worker_heartbeat_timeout: <%= @heartbeat_to %>
 logging:
   name: <%= @title %>
   level: warn
+<%- if defined?(@sampled_logging) && !@sampled_logging.empty? -%>
+  sampled_levels:
+<%- @sampled_logging.each do | log_name, log_probability | -%>
+    <%= log_name %>: <%= log_probability %>
+<%- end -%>
+<%- end -%>
   streams:
   # Use gelf-stream -> logstash
   - type: gelf

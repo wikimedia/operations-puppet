@@ -72,6 +72,9 @@
 # [*local_logging*]
 #   Whether to store log entries on the target node as well. Default: true
 #
+# [*sampled_logging*]
+#   Map of log probabilities for sampled logging. Default: undef
+#
 # [*auto_refresh*]
 #   Whether the service should be automatically restarted after config changes.
 #   Default: true
@@ -118,6 +121,18 @@
 #        },
 #    }
 #
+# For sampled logging support set up a hash of logging components and
+# probabilities for each component to be logged. In the following example
+# logs with 'trace/sample' component would be logged with 10% probability:
+#
+#    service::node { 'myservice':
+#        port            => 8520,
+#        config          => template('myservice/config.yaml.erb'),
+#        sampled_logging => {
+#          'trace/sample' => 0.1
+#        }
+#    }
+#
 define service::node(
     $port,
     $enable          = true,
@@ -134,6 +149,7 @@ define service::node(
     $entrypoint      = '',
     $starter_script  = 'src/server.js',
     $local_logging   = true,
+    $sampled_logging = undef,
     $auto_refresh    = true,
     $init_restart    = true,
     $deployment      = undef,
