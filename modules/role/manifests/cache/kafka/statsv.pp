@@ -40,6 +40,7 @@ class role::cache::kafka::statsv(
         conf_template               => $conf_template,
     }
 
+    include ::standard
     if $::standard::has_ganglia {
         varnishkafka::monitor { 'statsv': }
     }

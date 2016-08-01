@@ -1,6 +1,8 @@
 class role::cache::maps {
     include role::cache::2layer
     include role::cache::ssl::unified
+    include ::standard
+
     if $::standard::has_ganglia {
         include varnish::monitoring::ganglia::vhtcpd
     }

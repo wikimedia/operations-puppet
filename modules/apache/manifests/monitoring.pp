@@ -7,6 +7,7 @@
 #
 class apache::monitoring {
     include ::apache::mod::status
+    include ::standard
 
     if $::standard::has_ganglia {
         include ::ganglia
