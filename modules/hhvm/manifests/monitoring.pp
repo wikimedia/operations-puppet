@@ -3,6 +3,7 @@
 # Provisions Ganglia metric-gathering modules for HHVM.
 #
 class hhvm::monitoring {
+    include ::standard
 
     ## Memory statistics
 

@@ -94,6 +94,7 @@ class role::cache::kafka::webrequest(
         conf_template                => $conf_template,
     }
 
+    include ::standard
     if $::standard::has_ganglia {
         varnishkafka::monitor { 'webrequest':
             # The primary webrequest varnishkafka instance was formerly the

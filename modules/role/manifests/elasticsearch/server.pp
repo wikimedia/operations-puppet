@@ -56,6 +56,7 @@ class role::elasticsearch::server{
         require => Package['elasticsearch/plugins'],
     }
 
+    include ::standard
     if $::standard::has_ganglia {
         include ::elasticsearch::ganglia
     }

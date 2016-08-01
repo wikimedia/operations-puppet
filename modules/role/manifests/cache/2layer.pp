@@ -3,6 +3,7 @@ class role::cache::2layer(
     $storage_parts = undef
 ) {
     include role::cache::base
+    include ::standard
 
     $varnish_version4 = hiera('varnish_version4', false)
 
