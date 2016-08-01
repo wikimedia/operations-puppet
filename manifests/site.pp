@@ -2794,8 +2794,6 @@ node /^snapshot100[5-7]\.eqiad\.wmnet/ {
     # modules/scap/files/dsh/group/mediawiki-installation,
     # and modules/snapshot/files/deployment/dump_targets
     role snapshot::dumper, snapshot::monitor, snapshot::cronrunner
-    include standard
-    include base::firewall
 }
 
 # codfw poolcounters
