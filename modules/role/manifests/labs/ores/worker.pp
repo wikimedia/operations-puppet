@@ -17,8 +17,8 @@ class role::labs::ores::worker {
                     'port' => '6380',
                 }
             },
-            'score_processors' => {
-                'ores_celery' => {
+            'scoring_systems' => {
+                'celery_queue' => {
                     'BROKER_URL'            => 'redis://ores-redis-01:6379',
                     'CELERY_RESULT_BACKEND' => 'redis://ores-redis-01:6379',
                 }

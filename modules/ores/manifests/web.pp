@@ -50,8 +50,8 @@ class ores::web(
                 'port' => '6380',
             }
         },
-        'score_processors' => {
-            'ores_celery' => {
+        'scoring_systems' => {
+            'celery_queue' => {
                 'BROKER_URL'            => "redis://${redis_host}:6379",
                 'CELERY_RESULT_BACKEND' => "redis://${redis_host}:6379",
             }
@@ -64,8 +64,8 @@ class ores::web(
                     'password' => $redis_password,
                 }
             },
-            'score_processors' => {
-                'ores_celery' => {
+            'scoring_systems' => {
+                'celery_queue' => {
                     'BROKER_URL'            => "redis://:${redis_password}@${redis_host}:6379",
                     'CELERY_RESULT_BACKEND' => "redis://:${redis_password}@${redis_host}:6379",
                 }
