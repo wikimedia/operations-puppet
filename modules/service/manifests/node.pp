@@ -75,6 +75,9 @@
 # [*logging_name*]
 #   The logging name to send to logstash. Default: $title
 #
+# [*sampled_logging*]
+#   Map of log probabilities for sampled logging. Default: undef
+#
 # [*statsd_prefix*]
 #   The statsd metric prefix to use. Default: $title
 #
@@ -133,6 +136,18 @@
 #        },
 #    }
 #
+# For sampled logging support set up a hash of logging components and
+# probabilities for each component to be logged. In the following example
+# logs with 'trace/sample' component would be logged with 10% probability:
+#
+#    service::node { 'myservice':
+#        port            => 8520,
+#        config          => template('myservice/config.yaml.erb'),
+#        sampled_logging => {
+#          'trace/sample' => 0.1
+#        }
+#    }
+#
 # You can supply additional enviroment variables for the service systemd or upstart unit:
 #
 #    service::node { 'myservice':
@@ -160,6 +175,7 @@ define service::node(
     $starter_script  = 'src/server.js',
     $local_logging   = true,
     $logging_name    = $title,
+    $sampled_logging = undef,
     $statsd_prefix   = $title,
     $auto_refresh    = true,
     $init_restart    = true,
