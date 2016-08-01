@@ -1,2 +1,1 @@
 ganglia_aggregators: bast3001.wikimedia.org:11649
-puppetmaster: "puppetmaster.test.%{::domain}"

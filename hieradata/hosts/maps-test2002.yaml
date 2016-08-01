@@ -1,3 +1,2 @@
 cassandra::rack: a5
 do_paging: false
-puppetmaster: "puppetmaster.test.%{::domain}"

@@ -1,4 +1,3 @@
 debdeploy::grains:
   debdeploy-authdns:
     value: canary
-puppetmaster: "puppetmaster.test.%{::domain}"

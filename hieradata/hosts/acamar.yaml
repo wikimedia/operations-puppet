@@ -1,1 +1,0 @@
-puppetmaster: "puppetmaster.test.%{::domain}"

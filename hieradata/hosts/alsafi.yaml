@@ -2,4 +2,3 @@
 debdeploy::grains:
   debdeploy-urldownloader:
     value: standard
-puppetmaster: "puppetmaster.test.%{::domain}"
