@@ -30,7 +30,7 @@ qualname=kazoo
 handlers=
 
 [logger_tornado_access]
-level=WARNING
+level=<%= @access_log_level ? @access_log_level : 'WARNING' %>
 qualname=tornado.access
 handlers=
 
