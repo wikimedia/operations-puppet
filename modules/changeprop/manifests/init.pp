@@ -49,6 +49,9 @@ class changeprop(
         deployment      => 'scap3',
         auto_refresh    => false,
         init_restart    => false,
+        sampled_loging  => {
+            'trace/sample' => 0.00005
+        }
     }
 
 }

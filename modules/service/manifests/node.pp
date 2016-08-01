@@ -72,6 +72,9 @@
 # [*local_logging*]
 #   Whether to store log entries on the target node as well. Default: true
 #
+# [*sampled_log_levels*]
+#   Map of log probabilities for sampled logging. Default: undef
+#
 # [*auto_refresh*]
 #   Whether the service should be automatically restarted after config changes.
 #   Default: true
@@ -134,6 +137,7 @@ define service::node(
     $entrypoint      = '',
     $starter_script  = 'src/server.js',
     $local_logging   = true,
+    $sampled_loging  = undef,
     $auto_refresh    = true,
     $init_restart    = true,
     $deployment      = undef,
