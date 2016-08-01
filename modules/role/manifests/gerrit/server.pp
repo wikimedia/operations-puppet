@@ -1,5 +1,5 @@
 # modules/role/manifests/gerrit/production.pp
-class role::gerrit::server($ipv4, $ipv6, $bacula = undef) {
+class role::gerrit::server($ipv4, $ipv6 = undef, $bacula = undef) {
         system::role { 'role::gerrit::server': description => 'Gerrit server' }
         include role::backup::host
         include base::firewall
@@ -27,10 +27,12 @@ class role::gerrit::server($ipv4, $ipv6, $bacula = undef) {
             address   => $ipv4,
             prefixlen => '32',
         }
-        interface::ip { 'role::gerrit::server_ipv6':
-            interface => 'eth0',
-            address   => $ipv6,
-            prefixlen => '128',
+        if $ipv6 != undef {
+            interface::ip { 'role::gerrit::server_ipv6':
+                interface => 'eth0',
+                address   => $ipv6,
+                prefixlen => '128',
+            }
         }
 
         ferm::service { 'gerrit_ssh':
