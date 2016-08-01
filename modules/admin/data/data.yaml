@@ -82,7 +82,8 @@ groups:
               gpaumier, moushira, aklapper, qchris, tjones, srijan, addshore,
               jminor, pt1979, asherman, etonkovidova, sbisson, zhousquared,
               atgomez, jgirault, jdrewniak, matmarex, elukey, jdcc, ppchelko,
-              nschaaf, dstrine, ladsgroup, joewalsh, mpany, hjiang, jsamra, bcohn]
+              nschaaf, dstrine, ladsgroup, joewalsh, mpany, hjiang, jsamra, bcohn,
+              jdittrich]
   cassandra-test-roots:
     gid: 708
     description: users with root on cassandra hosts
@@ -123,7 +124,8 @@ groups:
               daisy, tomasz, mholloway-shell, madhuvishy, ebernhardson, niedzielski,
               neilpquinn-wmf, tbayer, moushira, dbrant, maxsem, srijan, krenair,
               jminor, asherman, etonkovidova, sbisson, addshore, matmarex, elukey,
-              nikerabbit, nschaaf, dstrine, joewalsh, mpany, hjiang, jsamra, bcohn]
+              nikerabbit, nschaaf, dstrine, joewalsh, mpany, hjiang, jsamra, bcohn,
+              jdittrich]
   ldap-admins:
     gid: 715
     description: ldap admins
