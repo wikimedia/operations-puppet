@@ -23,14 +23,14 @@ class role::labs::ores::staging {
 
     ores::config { 'staging':
         config   => {
-            'score_caches'    => {
+            'score_caches'     => {
                 'ores_redis' => {
                     'host' => '127.0.0.1',
                     'port' => '6380',
                 }
             },
-            'scoring_systems' => {
-                'celery_queue' => {
+            'score_processors' => {
+                'ores_celery' => {
                     'BROKER_URL'            => 'redis://127.0.0.1:6379',
                     'CELERY_RESULT_BACKEND' => 'redis://127.0.0.1:6379',
                 }
