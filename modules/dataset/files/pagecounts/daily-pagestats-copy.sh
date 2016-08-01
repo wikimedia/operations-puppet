@@ -161,8 +161,11 @@ for y in $years; do
 
     therearefiles=$( ls $localsrcdir/pagecounts-$y$m*.gz 2>/dev/null )
     if [ ! -z "$therearefiles" ]; then
-        newpagefiles=$( rsync -v -t $localsrcdir/pagecounts-$y$m*.gz $mdestdir )
-        if [ $? -ne 0 ]; then
+	# filter out messages of the type
+	# file has vanished: "/data/xmldatadumps/public/other/pagecounts-all-sites/2016/2016-08/.pagecounts-20160801-030000.gz.XbovT0"
+	# rsync warning: some files vanished before they could be transferred (code 24) at main.c(1183) [sender=3.1.1]
+        newpagefiles=$( rsync -v -t $localsrcdir/pagecounts-$y$m*.gz $mdestdir 2>&1 | grep -v 'vanished' )
+        if [ ${PIPESTATUS[0]} -ne 0 ]; then
         echo "Rsync of pagecount files from $localsrcdir to $mdestdir failed!"
         exit 1
         fi
@@ -172,8 +175,11 @@ for y in $years; do
     fi
     therearefiles=$( ls $localsrcdir/projectcounts-$y$m*[0-9] 2>/dev/null )
     if [ ! -z "$therearefiles" ]; then
-        newprojfiles=$( rsync -v -t $localsrcdir/projectcounts-$y$m*[0-9] $mdestdir )
-        if [ $? -ne 0 ]; then
+	# filter out messages of the type
+	# file has vanished: "/data/xmldatadumps/public/other/pagecounts-all-sites/2016/2016-08/.pagecounts-20160801-030000.gz.XbovT0"
+	# rsync warning: some files vanished before they could be transferred (code 24) at main.c(1183) [sender=3.1.1]
+        newprojfiles=$( rsync -v -t $localsrcdir/projectcounts-$y$m*[0-9] $mdestdir 2>&1 | grep -v 'vanished' )
+        if [ ${PIPESTATUS[0]} -ne 0 ]; then
         echo "Rsync of projectcount files from $localsrcdir to $mdestdir failed!"
         exit 1
         fi
