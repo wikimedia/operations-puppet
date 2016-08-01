@@ -2,3 +2,4 @@ openldap::master: ldap-labs.eqiad.wikimedia.org
 openldap::server_id: 2
 openldap::logging: sync
 openldap::hash_passwords: SSHA
+puppetmaster: "puppetmaster.test.%{::domain}"

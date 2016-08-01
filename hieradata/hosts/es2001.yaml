@@ -1,2 +1,3 @@
 base::monitoring::host::nrpe_check_disk_options: -w 5% -c 1% -l -e --exclude-type=tracefs
 base::monitoring::host::nrpe_check_disk_critical: false
+puppetmaster: "puppetmaster.test.%{::domain}"
