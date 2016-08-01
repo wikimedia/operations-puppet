@@ -35,9 +35,9 @@ sub vcl_recv {
 			if (req.http.X-DCPath ~ "<%= @site %>") {
 				<%= error_synth(508, "Loop Detected") -%>
 			}
-			set req.http.X-DCPath = req.http.X-DCPath + ", <%= site %>";
+			set req.http.X-DCPath = req.http.X-DCPath + ", <%= @site %>";
 		} else {
-			set req.http.X-DCPath = "<%= site %>";
+			set req.http.X-DCPath = "<%= @site %>";
 		}
 	}
 
