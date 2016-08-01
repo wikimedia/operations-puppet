@@ -43,18 +43,25 @@ class role::eventbus::eventbus {
         "${kafka_base_uri}?async=False&topic=${::site}.{meta[topic]}"
     ]
 
+
+    $access_log_level = $::realm ? {
+        'production' => 'WARNING',
+        default      => 'INFO',
+    }
+
     # TODO: Allow configuration of more than one service daemon process?
     eventlogging::service::service { 'eventbus':
-        schemas_path  => "${::eventschemas::path}/jsonschema",
-        topic_config  => "${::eventschemas::path}/config/eventbus-topics.yaml",
-        outputs       => $outputs,
-        statsd        => hiera('statsd'),
-        statsd_prefix => 'eventbus',
+        schemas_path     => "${::eventschemas::path}/jsonschema",
+        topic_config     => "${::eventschemas::path}/config/eventbus-topics.yaml",
+        outputs          => $outputs,
+        statsd           => hiera('statsd'),
+        statsd_prefix    => 'eventbus',
         # The service will be reloaded (SIGHUPed, not restarted)
         # if any of these resources change.
         # Reload if mediawiki/event-schemas has a change.
-        reload_on     =>  Class['::eventschemas'],
-        num_processes => 8,
+        reload_on        =>  Class['::eventschemas'],
+        num_processes    => 8,
+        access_log_level => $access_log_level
     }
 
     # Allow traffic to eventlogging-service on $port
