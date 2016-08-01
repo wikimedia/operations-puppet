@@ -5,3 +5,4 @@ admin::groups:
 debdeploy::grains:
   debdeploy-stat:
     value: standard
+cluster: analytics
