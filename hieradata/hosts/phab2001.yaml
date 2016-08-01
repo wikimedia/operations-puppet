@@ -1,2 +1,2 @@
 phabricator::logmail::ensure: absent
-phabricator::tools::dump: false
+phabricator::tools::dump: absent

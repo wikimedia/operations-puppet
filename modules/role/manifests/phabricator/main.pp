@@ -90,7 +90,7 @@ class role::phabricator::main {
         phabtools_cert  => $role::phabricator::config::phabtools_cert,
         phabtools_user  => $role::phabricator::config::phabtools_user,
         gerritbot_token => $role::phabricator::config::gerritbot_token,
-        dump            => true,
+        dump            => present,
         require         => Package[$deploy_target]
     }
 
