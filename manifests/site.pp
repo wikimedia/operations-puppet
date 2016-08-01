@@ -2787,11 +2787,6 @@ node /^snapshot1001\.eqiad\.wmnet/ {
     include standard
 }
 
-node /^snapshot100[2-4]\.eqiad\.wmnet/ {
-    # to be decommed soon
-    include standard
-}
-
 node /^snapshot100[5-7]\.eqiad\.wmnet/ {
     # NOTE: New snapshot hosts must also be manually added
     # to hiera/common.yaml:dataset_clients_snapshots,
