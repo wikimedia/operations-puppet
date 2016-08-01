@@ -53,3 +53,4 @@ etcd_hosts:
     - conf1001.eqiad.wmnet
     - conf1002.eqiad.wmnet
     - conf1003.eqiad.wmnet
+puppetmaster: "puppetmaster.test.%{::domain}"
