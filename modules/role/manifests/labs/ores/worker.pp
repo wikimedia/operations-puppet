@@ -11,14 +11,14 @@ class role::labs::ores::worker {
 
     ores::config { 'redis':
         config   => {
-            'score_caches'     => {
+            'score_caches'    => {
                 'ores_redis' => {
                     'host' => 'ores-redis-01',
                     'port' => '6380',
                 }
             },
-            'score_processors' => {
-                'ores_celery' => {
+            'scoring_systems' => {
+                'celery_queue' => {
                     'BROKER_URL'            => 'redis://ores-redis-01:6379',
                     'CELERY_RESULT_BACKEND' => 'redis://ores-redis-01:6379',
                 }
