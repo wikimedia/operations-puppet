@@ -408,8 +408,6 @@ node /^cp40(1[129]|20)\.ulsfo\.wmnet$/ {
 node 'dataset1001.wikimedia.org' {
 
     role dataset::primary, dumps
-    include standard
-    include base::firewall
 
     interface::add_ip6_mapped { 'eth2':
         interface => 'eth2',
@@ -2019,8 +2017,6 @@ node 'ms1001.wikimedia.org' {
     $cluster = 'misc'
 
     role dataset::secondary, dumps
-    include standard
-    include base::firewall
 
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
