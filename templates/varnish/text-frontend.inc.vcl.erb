@@ -161,6 +161,13 @@ sub cluster_fe_recv {
 		set req.http.host = "<%= @vcl_config.fetch("static_host") %>";
 	}
 
+	// w.wiki URLs can be validated and restricted here
+	if (req.http.host == "w.wiki") {
+		if (req.url !~ "^/[23456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz$_]*") {
+			<%= error_synth(404, "Not Found") -%>
+		}
+	}
+
 	// Users that just logged out, should not get a 304 for their
 	// (locally cached) logged in pages.
 	if (req.http.If-Modified-Since && req.http.Cookie ~ "LoggedOut") {
