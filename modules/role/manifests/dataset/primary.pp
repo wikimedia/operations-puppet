@@ -4,6 +4,8 @@
 # of content may or may not be generated here (but should all be eventually)
 # mirrors to the public should not be provided from here via rsync
 class role::dataset::primary {
+    include role::dataset::common
+
     system::role { 'role::dataset::primary':
         description => 'dataset primary host',
     }
@@ -111,30 +113,6 @@ class role::dataset::primary {
         source      => 'stat1002.eqiad.wmnet::hdfs-archive/unique_devices',
         destination => '/data/xmldatadumps/public/other/unique_devices',
         minute      => '31',
-    }
-
-    ferm::service { 'nfs_rpc_mountd':
-        proto  => 'tcp',
-        port   => '32767',
-        srange => '$INTERNAL',
-    }
-
-    ferm::service { 'nfs_rpc_statd':
-        proto  => 'tcp',
-        port   => '32765',
-        srange => '$INTERNAL',
-    }
-
-    ferm::service { 'nfs_portmapper_udp':
-        proto  => 'udp',
-        port   => '111',
-        srange => '$INTERNAL',
-    }
-
-    ferm::service { 'nfs_portmapper_tcp':
-        proto  => 'tcp',
-        port   => '111',
-        srange => '$INTERNAL',
     }
 }
 
