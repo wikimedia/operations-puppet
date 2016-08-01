@@ -23,7 +23,7 @@ labs_designate_hostname: &labsdesignatehostname "labtestservices2001.wikimedia.o
 labs_designate_hostname_secondary: &labs_designate_hostname_secondary "labtestservices2001.wikimedia.org"
 
 labs_nova_api_host: &labsnovaapihost "labtestnet2001.codfw.wmnet"
-labs_nova_network_host: &labsnovanetworkhost "labtestnet2001.codfw.wmnet"
+labs_nova_network_host: &labsnovanetworkhost "labtestnet2001"
 labs_nova_network_ip: &labsnovanetworkip "10.192.20.5"
 status_wiki_host_master: 'labtestwikitech.wikimedia.org'
 
