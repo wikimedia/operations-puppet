@@ -64,6 +64,15 @@ class role::logstash (
         srange  => '$DOMAIN_NETWORKS',
     }
 
+    logstash::input::log4j { 'log4j': }
+
+    ferm::service { 'logstash_log4j':
+        proto   => 'tcp',
+        port    => '4560',
+        notrack => true,
+        srange  => '$DOMAIN_NETWORKS',
+    }
+
     logstash::input::udp { 'logback':
         port  => 11514,
         codec => 'json',
