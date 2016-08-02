@@ -1,0 +1,20 @@
+# This template creates a config file for a DRBD resource
+# The name of the file resource in the Puppet define is assumed as the name of
+# the DRBD resource.
+
+resource <%= @title %> {
+
+  on <%= @nodes.first %> {
+    device    <%= @device %>;
+    address   10.64.37.19:<%= @port %>;
+    disk      <%= @disk %>;
+    meta-disk internal;
+  }
+
+  on <%= @nodes.last %> {
+    device    <%= @device %>;
+    address   10.64.37.20:<%= @port %>;
+    disk      <%= @disk %>;
+    meta-disk internal;
+  }
+}
