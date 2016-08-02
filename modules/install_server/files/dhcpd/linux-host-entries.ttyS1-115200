@@ -6191,15 +6191,11 @@ host WMF4724 {
 host wtp1001 {
     hardware ethernet 90:B1:1C:2D:85:30;
     fixed-address wtp1001.eqiad.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host wtp1002 {
     hardware ethernet 90:B1:1C:2A:0D:B8;
     fixed-address wtp1002.eqiad.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host wtp1003 {
