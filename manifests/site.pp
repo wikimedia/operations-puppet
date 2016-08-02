@@ -2826,7 +2826,7 @@ node /^thumbor100[12].eqiad.wmnet/ {
 
 # deployment servers
 node 'tin.eqiad.wmnet', 'mira.codfw.wmnet' {
-    role deployment::server, labsdb::manager
+    role deployment::server
     include base::firewall
 
     interface::add_ip6_mapped { 'main':
