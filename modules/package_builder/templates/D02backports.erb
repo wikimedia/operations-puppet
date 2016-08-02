@@ -6,5 +6,10 @@ if [ "${BACKPORTS}" = "yes" ]; then
     deb <%= @upstream_mirror %> <%= @distribution %>-backports main contrib non-free
     deb-src <%= @upstream_mirror %> <%= @distribution %>-backports main contrib non-free
 EOF
+    cat > /etc/apt/preferences.d/<%= @distribution %>.pref <<-'EOF'
+    Package: *
+    Pin: release a=<%= @distribution %>-backports
+    Pin-Priority: 500
+EOF
     apt-get update
 fi
