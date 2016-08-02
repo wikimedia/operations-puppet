@@ -3,8 +3,8 @@
 # Avoid running hooks if backports is not specified
 if [ "${BACKPORTS}" = "yes" ]; then
     cat > /etc/apt/sources.list.d/<%= @distribution %>-backports.list <<-'EOF'
-    deb <%= @upstream_mirror %> <%= @distribution %>-backports <%= @components %>
-    deb-src <%= @upstream_mirror %> <%= @distribution %>-backports <%= @components %>
+    deb <%= @upstream_mirror %> <%= @distribution %>-backports main contrib non-free
+    deb-src <%= @upstream_mirror %> <%= @distribution %>-backports main contrib non-free
 EOF
     apt-get update
 fi
