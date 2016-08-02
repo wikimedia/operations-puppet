@@ -2682,6 +2682,10 @@ node 'sodium.wikimedia.org' {
 node /^(strontium|rhodium).eqiad.wmnet/ {
     role puppetmaster::backend
     include standard
+
+    interface::add_ip6_mapped { 'main':
+        interface => 'eth0',
+    }
 }
 
 node 'stat1001.eqiad.wmnet' {
