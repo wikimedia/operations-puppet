@@ -4,8 +4,8 @@ set -u
 
 # Check if there are files owned by the wrong user or group.
 # exclude pathes that contain '*readonly/master'
-if [ -z "`find <%= @title %> \( -uid <%= @owner %> -or -gid <%= @group %> \) -not -path *readonly/master`" ]; then
-    echo "Improperly owned (<%= @owner %>:<%= @group %>) files in <%= @title %>"
+if [ -z "`find <%= @title %> \( -uid <%= @uid %> -or -gid <%= @gid %> \) -not -path *readonly/master`" ]; then
+    echo "Improperly owned (<%= @uid %>:<%= @gid %>) files in <%= @title %>"
     exit 2
 fi
 
