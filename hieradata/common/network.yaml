@@ -30,14 +30,14 @@ subnets:
         private1-d-eqiad:
           ipv4: 10.64.48.0/22
           ipv6: 2620:0:861:107::/64
-        labs-hosts1-a-eqiad:
-          ipv4: 10.64.4.0/24
-          ipv6: 2620:0:861:117::/64
         labs-hosts1-b-eqiad:
           ipv4: 10.64.20.0/24
           ipv6: 2620:0:861:118::/64
         labs-hosts1-d-eqiad:
           ipv4: 10.64.52.0/24
+        labs-support1-a-eqiad:
+          ipv4: 10.64.4.0/24
+          ipv6: 2620:0:861:117::/64
         labs-support1-c-eqiad:
           ipv4: 10.64.37.0/24
           ipv6: 2620:0:861:119::/64
