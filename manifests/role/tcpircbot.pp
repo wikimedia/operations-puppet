@@ -15,14 +15,16 @@ class role::tcpircbot {
         channels => '#wikimedia-operations',
         password => $passwords::logmsgbot::logmsgbot_password,
         cidr     => [
-            '::ffff:10.64.32.167/128',    # eventlog1001
-            '::ffff:10.64.0.196/128',     # tin
-            '::ffff:10.192.16.132/128',   # mira
-            '::ffff:127.0.0.1/128',       # loopback
-            '2620:0:861:101:10:64:0:196/128', # tin
-            '2620:0:860:102:10:192:16:132/128', # mira
-            '::ffff:10.64.16.160/128',   # palladium
-            '2620:0:861:102:10:64:16:160/128', # palladium
+            '::ffff:127.0.0.1/128',             # loopback
+            '::ffff:10.64.32.167/128',          # logging: eventlog1001
+            '::ffff:10.64.0.196/128',           # deployment eqiad v4: tin
+            '2620:0:861:101:10:64:0:196/128',   # deployment eqiad v6: tin
+            '::ffff:10.192.16.132/128',         # deployment codfw v4: mira
+            '2620:0:860:102:10:192:16:132/128', # deployment codfw v6: mira
+            '::ffff:10.64.32.13/128',           # maintenance eqiad: terbium
+            '::ffff:10.192.48.45/128',          # maintenance codfw: wasat
+            '::ffff:10.64.16.160/128',          # puppet master: palladium
+            '2620:0:861:102:10:64:16:160/128',  # puppet master: palladium
         ],
     }
 
