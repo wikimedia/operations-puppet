@@ -32,6 +32,7 @@ class snapshot::cron::contentxlation(
         command     => '/usr/local/bin/dumpcontentxlation.sh',
         minute      => '10',
         hour        => '9',
+        weekday     => '5',
         require     => File[$scriptPath],
     }
 }
