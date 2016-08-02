@@ -136,8 +136,9 @@ class role::mariadb::misc(
     }
 
     class { 'mariadb::heartbeat':
-        shard   => $shard,
-        enabled => $master,
+        shard      => $shard,
+        datacenter => $::site,
+        enabled    => $master,
     }
 }
 
@@ -203,8 +204,9 @@ class role::mariadb::misc::phabricator(
     }
 
     class { 'mariadb::heartbeat':
-        shard   => $shard,
-        enabled => $master,
+        shard      => $shard,
+        datacenter => $::site,
+        enabled    => $master,
     }
 
     unless $master {
@@ -259,8 +261,9 @@ class role::mariadb::misc::eventlogging(
     }
 
     class { 'mariadb::heartbeat':
-        shard   => $shard,
-        enabled => $master,
+        shard      => $shard,
+        datacenter => $::site,
+        enabled    => $master,
     }
 }
 
@@ -578,8 +581,9 @@ class role::mariadb::core(
     }
 
     class { 'mariadb::heartbeat':
-        shard   => $shard,
-        enabled => $master,
+        shard      => $shard,
+        datacenter => $::site,
+        enabled    => $master,
     }
 }
 
@@ -870,8 +874,9 @@ class role::mariadb::parsercache(
     }
 
     class { 'mariadb::heartbeat':
-        shard   => $shard,
-        enabled => true,
+        shard      => $shard,
+        datacenter => $::site,
+        enabled    => true,
     }
 
     # mysql monitoring access from tendril (db1011)

@@ -22,6 +22,7 @@ my $pass = "";
 my $sock = "";
 my $master_server_id = "";
 my $shard = "";
+my $datacenter = "";
 
 my $sql_lag_warn = 30;
 my $sql_lag_crit = 60;
@@ -82,6 +83,10 @@ foreach my $arg (@ARGV)
 	elsif ($arg =~ /^--shard=(.+)$/)
 	{
 		$shard = $1;
+	}
+	elsif ($arg =~ /^--datacenter=(.+)$/)
+	{
+		$datacenter = $1;
 	}
 	elsif ($arg =~ /^--set=(.+)$/)
 	{
@@ -181,11 +186,11 @@ if ($check eq "slave_sql_lag")
 # master.
 # This particular check works for the regular table and the
 # pt-heartbeat-wikimedia extension, that includes the shard.
-# For that, --master-server-id or --shard are strongly
-# suggested to be set. In case it is not, the lag from its
-# direct master is reported. If the heartbeat table does not
-# exist, the record for the master is not found or any other
-# errors happens, it failbacks to using
+# For that, --master-server-id or --shard & --datacenter are
+# strongly suggested to be set. In case it is not, the lag
+# from its direct master is reported. If the heartbeat table
+# does not exist, the record for the master is not found or
+# any other errors happens, it failbacks to using
 # Seconds_Behind_Master.
 # If the server is not a slave, it returns OK. If lag cannot
 # be determined neither by using heartbeat nor seconds behind
@@ -200,23 +205,26 @@ if ($check eq "slave_sql_lag")
 	# pt-heartbeat query, depending on if shard, master_server_id
         # or both are set
         my @values;
-	my $query = "SELECT TIMESTAMPDIFF(MICROSECOND,ts,UTC_TIMESTAMP(6)) AS lag FROM heartbeat.heartbeat WHERE ";
-	if ($shard eq "") {
-		if ($master_server_id eq "") {
-			$master_server_id = $status->{Master_Server_Id};
-		}
-		$query .= "server_id = ?";
+	my $query = "SELECT TIMESTAMPDIFF(MICROSECOND,ts,UTC_TIMESTAMP(6)) AS lag FROM heartbeat.heartbeat WHERE 1=1 ";
+	if ($master_server_id ne "") {
+		$query .= "AND server_id = ? ";
 		push @values, $master_server_id;
-	} else {
-		if ($master_server_id eq "") {
-                        $query .= "shard = ? ORDER BY ts DESC LIMIT 1";
-		} else {
-			$query .= "server_id = ? and shard = ?";
-                        push @values, $master_server_id;
-                }
+    }
+	if ($shard ne "") {
+		$query .= "AND shard = ? ";
 		push @values, $shard;
 	}
+    if ($datacenter ne "") {
+		$query .= "AND datacenter = ? ";
+		push @values, $datacenter;
+	}
+    my $numparams = @values;
+    if ($numparams == 0) {
+		$query .= "AND server_id = ? ";
+		push @values, $status->{Master_Server_Id};
+	}
 
+	$query .= "ORDER BY ts DESC LIMIT 1";
 	my $heartbeat = $db->selectrow_hashref($query, undef, @values);
 
 	# failback to seconds_behind_master
