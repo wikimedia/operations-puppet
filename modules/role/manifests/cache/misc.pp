@@ -85,6 +85,13 @@ class role::cache::misc {
             'be_opts'  => $app_def_be_opts,
             'req_host' => 'labtesthorizon.wikimedia.org',
         },
+        'labtestspice' => {
+            'dynamic'  => 'no',
+            'type'     => 'random',
+            'backends' => ['labtestcontrol2001.wikimedia.org'],
+            'be_opts'  => $app_def_be_opts,
+            'req_host' => 'labtestspice.wikimedia.org',
+        },
         'etherpad1001' => {
             'dynamic'  => 'no',
             'type'     => 'random',
