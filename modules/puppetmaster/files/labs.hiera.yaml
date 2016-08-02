@@ -17,6 +17,6 @@
   - "labs"
   - "secret/%{::labsproject}"
   - "private/%{::labsproject}"
-  - common
+  - "common"
   - "secret/common"
   - "private/common"
