@@ -102,9 +102,7 @@ module Puppet::Parser::Functions
       'ECDHE-ECDSA-DES-CBC3-SHA',
       'ECDHE-RSA-DES-CBC3-SHA',
       'DHE-RSA-AES128-SHA256',
-      'DHE-RSA-AES256-SHA256',
       'DHE-RSA-AES128-SHA',
-      'DHE-RSA-AES256-SHA',
       'DHE-RSA-DES-CBC3-SHA', # openssl-1.1.0
       'EDH-RSA-DES-CBC3-SHA', # pre-1.1.0 name for the above
     ],
