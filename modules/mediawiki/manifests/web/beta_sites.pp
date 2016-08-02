@@ -62,11 +62,6 @@ class mediawiki::web::beta_sites {
         priority => 12,
     }
 
-    apache::site { 'upload':
-        source   => 'puppet:///modules/mediawiki/apache/beta/sites/upload.conf',
-        priority => 13,
-    }
-
     apache::site { 'wmflabs':
         source   => 'puppet:///modules/mediawiki/apache/beta/sites/wmflabs.conf',
         priority => 15,
