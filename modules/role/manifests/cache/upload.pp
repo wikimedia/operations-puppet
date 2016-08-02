@@ -72,7 +72,6 @@ class role::cache::upload(
     # upload-frontend case.  All tiers of backend share the same policies.
 
     $be_vcl_config = merge($common_vcl_config, {
-        'ttl_fixed'        => '7d',
         'pass_random'      => true,
     })
 
@@ -93,7 +92,7 @@ class role::cache::upload(
     role::cache::instances { 'upload':
         fe_mem_gb        => ceiling(0.5 * $::memorysize_mb / 1024.0),
         fe_jemalloc_conf => 'lg_dirty_mult:8,lg_chunk_size:17',
-        runtime_params   => ['default_ttl=2592000'],
+        runtime_params   => ['default_ttl=604800'], # default_ttl=7d
         app_directors    => $app_directors,
         fe_vcl_config    => $fe_vcl_config,
         be_vcl_config    => $be_vcl_config,

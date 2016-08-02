@@ -338,14 +338,6 @@ sub wm_common_backend_response {
 	// cases later.
 	unset beresp.http.X-CDIS;
 
-<% if @vcl_config.fetch("ttl_fixed", false) -%>
-	// Fixed TTL (rare/questionable, only used on upload backend right now)
-	// Note the ttl_cap comes after this and takes precedence!
-	if (beresp.status <= 400) {
-		set beresp.ttl = <%= @vcl_config.fetch("ttl_fixed", "invalid") %>;
-	}
-<% end -%>
-
 	// Hard TTL cap on all fetched objects (default 7d)
 	if (beresp.ttl > <%= @vcl_config.fetch("ttl_cap", "7d") %>) {
 		set beresp.ttl = <%= @vcl_config.fetch("ttl_cap", "7d") %>;
