@@ -14,6 +14,8 @@ class dataset::dirs {
     $centralauthdir           = '/data/xmldatadumps/private/centralauth'
     $cirrussearchdir          = "${otherdir}/cirrussearch"
     $medialistsdir            = "${otherdir}/imageinfo"
+    $pagetitlesdir            = "${otherdir}/pagetitles"
+    $mediatitlesdir           = "${otherdir}/mediatitles"
 
     file { $datadir:
         ensure => 'directory',
@@ -108,6 +110,20 @@ class dataset::dirs {
     }
 
     file { $medialistsdir:
+        ensure => 'directory',
+        mode   => '0755',
+        owner  => 'datasets',
+        group  => 'datasets',
+    }
+
+    file { $mediatitlesdir:
+        ensure => 'directory',
+        mode   => '0755',
+        owner  => 'datasets',
+        group  => 'datasets',
+    }
+
+    file { $pagetitlesdir:
         ensure => 'directory',
         mode   => '0755',
         owner  => 'datasets',

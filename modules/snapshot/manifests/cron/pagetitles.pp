@@ -7,22 +7,6 @@ class snapshot::cron::pagetitles(
     $repodir = $snapshot::dumps::dirs::repodir
     $confsdir = $snapshot::dumps::dirs::confsdir
 
-    file { "${otherdir}/pagetitles":
-        ensure => 'directory',
-        path   => "${otherdir}/pagetitles",
-        mode   => '0755',
-        owner  => $user,
-        group  => root,
-    }
-
-    file { "${otherdir}/mediatitles":
-        ensure => 'directory',
-        path   => "${otherdir}/mediatitles",
-        mode   => '0755',
-        owner  => $user,
-        group  => root,
-    }
-
     cron { 'titles-cleanup':
         ensure      => 'present',
         environment => 'MAILTO=ops-dumps@wikimedia.org',
@@ -39,7 +23,6 @@ class snapshot::cron::pagetitles(
         command     => "cd ${repodir}; python onallwikis.py --configfile ${confsdir}/wikidump.conf.monitor  --filenameformat '{w}-{d}-all-titles-in-ns-0.gz' --outdir '${otherdir}/pagetitles/{d}' --query \"'select page_title from page where page_namespace=0;'\"",
         minute      => '10',
         hour        => '8',
-        require     => File["${otherdir}/pagetitles"],
     }
 
     cron { 'pagetitles-ns6':
@@ -49,7 +32,6 @@ class snapshot::cron::pagetitles(
         command     => "cd ${repodir}; python onallwikis.py --configfile ${confsdir}/wikidump.conf.monitor  --filenameformat '{w}-{d}-all-media-titles.gz' --outdir '${otherdir}/mediatitles/{d}' --query \"'select page_title from page where page_namespace=6;'\"",
         minute      => '50',
         hour        => '8',
-        require     => File["${otherdir}/mediatitles"],
     }
 
 }
