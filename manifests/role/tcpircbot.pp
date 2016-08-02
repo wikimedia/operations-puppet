@@ -25,6 +25,8 @@ class role::tcpircbot {
             '::ffff:10.192.48.45/128',          # maintenance codfw: wasat
             '::ffff:10.64.16.160/128',          # puppet master v4: palladium
             '2620:0:861:102:10:64:16:160/128',  # puppet master v6: palladium
+            '::ffff:10.64.16.184/128',          # puppet master v4: rhodium
+            '2620:0:861:102:10:64:16:184/128',  # puppet master v6: rhodium
         ],
     }
 
