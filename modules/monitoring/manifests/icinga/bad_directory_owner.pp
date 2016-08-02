@@ -17,8 +17,8 @@ define monitoring::icinga::bad_directory_owner (
 
     file { $filename:
         ensure  => present,
-        owner   => 'icinga',
-        group   => 'icinga',
+        owner   => 'root',
+        group   => 'root',
         mode    => '0555',
         content => template('monitoring/check_dir-not-bad-owner.erb'),
     }
