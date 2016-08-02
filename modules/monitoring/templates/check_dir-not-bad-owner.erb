@@ -2,8 +2,9 @@
 set -e
 set -u
 
-# First of all, check if there is something to merge.
-if [ -z "`find <%= @title %> -uid <%= @owner %> -or -gid <%= @group %> `" ]; then
+# Check if there are files owned by the wrong user or group.
+# exclude pathes that contain '*readonly/master'
+if [ -z "`find <%= @title %> \( -uid <%= @owner %> -or -gid <%= @group %> \) -not -path *readonly/master`" ]; then
     echo "Improperly owned (<%= @owner %>:<%= @group %>) files in <%= @title %>"
     exit 2
 fi
