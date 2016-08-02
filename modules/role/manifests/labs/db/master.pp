@@ -10,6 +10,7 @@ class role::labs::db::master {
     }
     include role::mariadb::grants
     include role::mariadb::monitor
+    include passwords::misc::scripts
 
     class { 'mariadb::config':
         prompt    => 'TOOLSDB master',

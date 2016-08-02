@@ -11,6 +11,7 @@ class role::labs::db::slave {
     include role::mariadb::grants
     include role::mariadb::monitor
     include role::mariadb::ferm
+    include passwords::misc::scripts
 
     class { 'mariadb::config':
         prompt        => 'TOOLSDB slave',
