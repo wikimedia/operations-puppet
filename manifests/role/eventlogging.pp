@@ -57,12 +57,26 @@ class role::eventlogging {
     }
     $kafka_zookeeper_url = $kafka_config['zookeeper']['url']
 
+    # We are trying out different kafka clients in eventlogging.
+    # The default Kafka handler 'protocol' is 'kafka://'.  Other
+    # handlers are named differently, e.g. 'kafka-python://'.
+    $eventlogging_kafka_handler = hiera('eventlogging_kafka_handler', 'kafka')
+
+    # Kafka consumer auto_offset_reset enum values are different
+    # for different kafka clients. eventlogging analytics only uses latest,
+    # so conditionally select the appropriate enum default.  This is
+    # temporary until we select a single kafka handler in eventlogging code.
+    $kafka_auto_offset_reset = $eventlogging_kafka_handler ? {
+        'kafka' => '-1'         # pykafka
+        default => 'latest'     # kafka-python, confluent-kafka
+    }
+
     # By default, the EL Kafka writer writes events to
     # schema based topic names like eventlogging_SCHEMA,
     # with each message keyed by SCHEMA_REVISION.
     # If you want to write to a different topic, append topic=<TOPIC>
     # to your query params.
-    $kafka_base_uri    = inline_template('kafka:///<%= @kafka_brokers_array.join(":9092,") + ":9092" %>')
+    $kafka_base_uri    = inline_template('<%= @eventlogging_kafka_handler %>:///<%= @kafka_brokers_array.join(":9092,") + ":9092" %>')
 
     # Read in server side and client side raw events from
     # Kafka, process them, and send events to schema
@@ -127,7 +141,7 @@ class role::eventlogging::forwarder inherits role::eventlogging {
     # This forwards the kafka eventlogging-valid-mixed topic to
     # ZMQ port 8600 for backwards compatibility.
     eventlogging::service::forwarder { 'legacy-zmq':
-        input   => "${kafka_mixed_uri}&zookeeper_connect=${kafka_zookeeper_url}&auto_commit_enable=False&auto_offset_reset=-1&identity=legacy_zmq",
+        input   => "${kafka_mixed_uri}&zookeeper_connect=${kafka_zookeeper_url}&auto_commit_enable=False&auto_offset_reset=${kafka_auto_offset_reset}&identity=legacy_zmq",
         outputs => ["tcp://${eventlogging_host}:8600"],
     }
 
@@ -147,7 +161,7 @@ class role::eventlogging::forwarder inherits role::eventlogging {
 class role::eventlogging::processor inherits role::eventlogging {
     $kafka_consumer_args  = hiera(
         'eventlogging_processor_kafka_consumer_args',
-        'auto_commit_enable=True&auto_commit_interval_ms=10000&auto_offset_reset=-1'
+        "auto_commit_enable=True&auto_commit_interval_ms=10000&auto_offset_reset=${kafka_auto_offset_reset}"
     )
     $kafka_consumer_group = hiera(
         'eventlogging_processor_kafka_consumer_group',
@@ -183,7 +197,7 @@ class role::eventlogging::consumer::mysql inherits role::eventlogging {
 
     $kafka_consumer_args  = hiera(
         'eventlogging_mysql_kafka_consumer_args',
-        'auto_commit_enable=True&auto_commit_interval_ms=1000&auto_offset_reset=-1'
+        "auto_commit_enable=True&auto_commit_interval_ms=1000&auto_offset_reset=$kafka_auto_offset_reset"
     )
 
     class { 'passwords::mysql::eventlogging': }    # T82265
@@ -267,7 +281,7 @@ class role::eventlogging::consumer::files inherits role::eventlogging {
         ],
     }
 
-    $kafka_consumer_args  = 'auto_commit_enable=True&auto_commit_interval_ms=10000&auto_offset_reset=-1'
+    $kafka_consumer_args  = "auto_commit_enable=True&auto_commit_interval_ms=10000&auto_offset_reset=${kafka_auto_offset_reset}"
     $kafka_consumer_group = hiera(
         'eventlogging_files_kafka_consumer_group',
         'eventlogging-files-00'
