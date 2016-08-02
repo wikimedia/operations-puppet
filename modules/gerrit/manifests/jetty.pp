@@ -139,6 +139,11 @@ class gerrit::jetty(
         require   => Exec['install_gerrit_jetty'],
     }
 
+    file { '/etc/default/gerritcodereview':
+        ensure => 'link',
+        target => '/etc/default/gerrit',
+    }
+
     nrpe::monitor_service { 'gerrit':
         description  => 'gerrit process',
         nrpe_command => "/usr/lib/nagios/plugins/check_procs -w 1:1 -c 1:1 --ereg-argument-array '^GerritCodeReview .*-jar /var/lib/gerrit2/review_site/bin/gerrit.war'"
