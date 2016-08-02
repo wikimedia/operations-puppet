@@ -1,0 +1,9 @@
+input {
+  # Log4j socket-based logger
+  log4j {
+    type => "java"
+    port => "<%= @port %>"
+    mode => "<%= @mode %>"
+    host => "<%= @host %>"
+  }
+}
