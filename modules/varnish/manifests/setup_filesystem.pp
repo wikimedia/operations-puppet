@@ -3,8 +3,6 @@ define varnish::setup_filesystem() {
         $custom_mount_opts = ',comment=cloudconfig'
     }
     elsif os_version('debian >= jessie') {
-        # setup_filesystem is only used on the non-bits caches,
-        #  which are all set up as ext4-on-SSD...
         $custom_mount_opts = ',nobarrier,data=writeback'
     }
     else {
