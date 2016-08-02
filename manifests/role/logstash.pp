@@ -6,6 +6,9 @@
 # == Parameters:
 # - $statsd_host: Host to send statsd data to.
 #
+
+
+
 class role::logstash (
     $statsd_host,
 ) {
@@ -60,6 +63,15 @@ class role::logstash (
     ferm::service { 'logstash_gelf':
         proto   => 'udp',
         port    => '12201',
+        notrack => true,
+        srange  => '$DOMAIN_NETWORKS',
+    }
+
+    logstash::input::log4j { 'log4j': }
+
+    ferm::service { 'logstash_log4j':
+        proto   => 'tcp',
+        port    => '4560',
         notrack => true,
         srange  => '$DOMAIN_NETWORKS',
     }
