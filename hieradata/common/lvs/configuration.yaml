@@ -933,6 +933,7 @@ lvs_services:
     sites:
     - eqiad
     ip: *ip_block029
+    port: 8800
     bgp: 'yes'
     depool-threshold: '.5'
     monitors:
