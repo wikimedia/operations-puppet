@@ -1,0 +1,10 @@
+#!/bin/sh
+
+# Avoid running hooks if backports is not specified
+if [ "${BACKPORTS}" = "yes" ]; then
+    cat > /etc/apt/sources.list.d/<%= @distribution %>-backports.list <<-'EOF'
+    deb <%= @mirror %> <%= @distribution %>-backports <%= @components %>
+    deb-src <%= @mirror %> <%= @distribution %>-backports <%= @components %>
+EOF
+    apt-get update
+fi
