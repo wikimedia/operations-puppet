@@ -1,6 +1,7 @@
 # vim: set tabstop=4 shiftwidth=4 softtabstop=4 expandtab textwidth=80 smarttab
 # site.pp
 
+
 import 'realm.pp' # These ones first
 import 'role/*.pp'
 
