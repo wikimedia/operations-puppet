@@ -10,7 +10,8 @@ class role::thumbor::mediawiki {
 
     class { '::thumbor': }
 
-    $swift_account_keys = hiera('swift::params::account_keys')
+    include ::swift::params
+    $swift_account_keys = $::swift::params::account_keys
 
     class { '::thumbor::swift':
         swift_key                => $swift_account_keys['thumbor'],
