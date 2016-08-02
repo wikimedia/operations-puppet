@@ -129,6 +129,15 @@ class gerrit::jetty(
         ],
     }
 
+    exec { 'reindex_gerrit_jetty':
+        creates => '/var/lib/gerrit2/review_site/index',
+        user    => 'gerrit2',
+        group   => 'gerrit2',
+        cwd     => '/var/lib/gerrit2',
+        command => '/usr/bin/java -jar gerrit.war reindex -d review_site --threads 4',
+        require => Exec['install_gerrit_jetty'],
+    }
+
     service { 'gerrit':
         ensure    => running,
         subscribe => [File['/var/lib/gerrit2/review_site/etc/gerrit.config'],
@@ -136,7 +145,7 @@ class gerrit::jetty(
         enable    => true,
         hasstatus => false,
         status    => '/etc/init.d/gerrit check',
-        require   => Exec['install_gerrit_jetty'],
+        require   => Exec['reindex_gerrit_jetty'],
     }
 
     file { '/etc/default/gerritcodereview':
