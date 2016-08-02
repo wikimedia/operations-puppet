@@ -1,0 +1,18 @@
+# This file is managed by puppet
+
+resource <%= @name %> {
+
+  on <%= @nodes.first %> {
+    device    <%= @device %>;
+    address   <%= scope.function_ipresolve([@nodes.first, 4]) %>:<%= @port %>;
+    disk      <%= @disk %>;
+    meta-disk internal;
+  }
+
+  on <%= @nodes.last %> {
+    device    <%= @device %>;
+    address   <%= scope.function_ipresolve([@nodes.last, 4]) %>:<%= @port %>;
+    disk      <%= @disk %>;
+    meta-disk internal;
+  }
+}
