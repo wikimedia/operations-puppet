@@ -13,7 +13,7 @@ define monitoring::icinga::bad_directory_owner (
     ) {
 
     $safe_title = regsubst($title, '\/', '_', 'G')
-    $filename = "/usr/local/lib/nagios/plugins/check_${safe_title}-needs-merge"
+    $filename = "/usr/local/lib/nagios/plugins/check${safe_title}-bad-owner"
 
     file { $filename:
         ensure  => present,
