@@ -2816,6 +2816,14 @@ node 'terbium.eqiad.wmnet' {
     include base::firewall
 }
 
+# Thumbor servers for MediaWiki image scaling
+node /^thumbor100[12].eqiad.wmnet/ {
+    role thumbor::mediawiki
+
+    include standard
+    include base::firewall
+}
+
 # deployment servers
 node 'tin.eqiad.wmnet', 'mira.codfw.wmnet' {
     role deployment::server, labsdb::manager
