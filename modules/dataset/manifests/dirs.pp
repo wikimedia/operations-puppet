@@ -3,14 +3,17 @@ class dataset::dirs {
     # should be defined in puppet (here).
     $datadir                  = '/data/xmldatadumps'
     $publicdir                = '/data/xmldatadumps/public'
-    $otherdir                 = '/data/xmldatadumps/public/other'
-    $analyticsdir             = '/data/xmldatadumps/public/other/analytics'
-    $othermiscdir             = '/data/xmldatadumps/public/other/misc'
-    $othertestfilesdir        = '/data/xmldatadumps/public/other/testfiles'
-    $otherdir_wikidata_legacy = '/data/xmldatadumps/public/other/wikidata'
-    $otherdir_wikibase        = '/data/xmldatadumps/public/other/wikibase/'
+    $otherdir                 = "${publicdir}/other"
+    $analyticsdir             = "${otherdir}/analytics"
+    $othermiscdir             = "${otherdir}/misc"
+    $othertestfilesdir        = "${otherdir}/testfiles"
+    $otherdir_wikidata_legacy = "${otherdir}/wikidata"
+    $otherdir_wikibase        = "${otherdir}/wikibase/"
     $relative_wikidatawiki    = 'other/wikibase/wikidatawiki'
-    $xlationdir               = '/data/xmldatadumps/public/other/contenttranslation/'
+    $xlationdir               = "${otherdir}/contenttranslation"
+    $centralauthdir           = '/data/xmldatadumps/private/centralauth'
+    $cirrussearchdir          = "${otherdir}/cirrussearch"
+    $medialistsdir            = "${otherdir}/imageinfo"
 
     file { $datadir:
         ensure => 'directory',
@@ -84,6 +87,27 @@ class dataset::dirs {
     }
 
     file { $xlationdir:
+        ensure => 'directory',
+        mode   => '0755',
+        owner  => 'datasets',
+        group  => 'datasets',
+    }
+
+    file { $centralauthdir:
+        ensure => 'directory',
+        mode   => '0755',
+        owner  => 'datasets',
+        group  => 'datasets',
+    }
+
+    file { $cirrussearchdir:
+        ensure => 'directory',
+        mode   => '0755',
+        owner  => 'datasets',
+        group  => 'datasets',
+    }
+
+    file { $medialistsdir:
         ensure => 'directory',
         mode   => '0755',
         owner  => 'datasets',
