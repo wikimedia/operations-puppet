@@ -381,7 +381,25 @@ kafka_clusters:
         id: 2001
       kafka2002.codfw.wmnet:
         id: 2002
+
 deployment_server: tin.eqiad.wmnet
+
+deployment_servers:
+  - tin.eqiad.wmnet
+  - mira.codfw.wmnet
+
+maintenance_servers:
+  - terbium.eqiad.wmnet
+  - wasat.codfw.wmnet
+
+logging_servers:
+  - eventlog1001.eqiad.wmnet
+
+puppet_masters:
+  - palladium.eqiad.wmnet
+  - strontium.eqiad.wmnet
+  - rhodium.eqiad.wmnet
+
 
 # all prometheus nodes, used for firewall whitelist
 prometheus_nodes:
