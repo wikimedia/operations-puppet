@@ -15,8 +15,10 @@ elasticsearch::data_dir: /srv/elasticsearch
 
 elasticsearch::expected_nodes: 2
 
-# We should be able to run "OK" with 24 servers.
-elasticsearch::recover_after_nodes: 2
+# We should be able to run "OK" with a single server.
+elasticsearch::recover_after_nodes: 1
+
+elasticsearch::minimum_master_nodes: 1
 
 debdeploy::grains:
   debdeploy-elastic-eqiad:

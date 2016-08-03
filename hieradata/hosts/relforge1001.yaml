@@ -15,8 +15,10 @@ elasticsearch::data_dir: /srv/elasticsearch
 
 elasticsearch::expected_nodes: 2
 
-# We should be able to run "OK" with 24 servers.
-elasticsearch::recover_after_nodes: 2
+# We should be able to run "OK" with a single server.
+elasticsearch::recover_after_nodes: 1
+
+elasticsearch::minimum_master_nodes: 1
 
 debdeploy::grains:
   debdeploy-elastic-eqiad:
@@ -31,5 +33,3 @@ elasticsearch::https::certificate_name: 'relforge.svc.eqiad.wmnet'
 base::puppet::dns_alt_names:            'relforge.svc.eqiad.wmnet'
 
 elasticsearch::master_eligible: true
-# make sure the elasticsearch::unicast_hosts property is updated if master
-# eligibility is modified
