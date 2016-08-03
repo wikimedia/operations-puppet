@@ -2,6 +2,27 @@
 # Collection of global definitions used across sites, within one realm.
 #
 
+# Determine the site the server is in
+if $::ipaddress_eth0 != undef {
+    $main_ipaddress = $::ipaddress_eth0
+} elsif $::ipaddress_bond0 != undef {
+    $main_ipaddress = $::ipaddress_bond0
+} else {
+    $main_ipaddress = $::ipaddress
+}
+
+$site = $main_ipaddress ? {
+    /^208\.80\.15[23]\./                      => 'codfw',
+    /^208\.80\.15[45]\./                      => 'eqiad',
+    /^10\.6[48]\./                            => 'eqiad',
+    /^10\.19[26]\./                           => 'codfw',
+    /^91\.198\.174\./                         => 'esams',
+    /^198\.35\.26\.([0-9]|[1-5][0-9]|6[0-2])/ => 'ulsfo',
+    /^10\.128\./                              => 'ulsfo',
+    /^10\.20\.0\./                            => 'esams',
+    default                                   => '(undefined)'
+}
+
 # Lab testing cluster all prefix labtest
 if $::hostname =~ /^labtest/ {
     $realm = 'labtest'
@@ -29,31 +50,6 @@ if $realm == 'labs' {
     }
 }
 
-
-
-# Determine the site the server is in
-if $::ipaddress_eth0 != undef {
-    $main_ipaddress = $::ipaddress_eth0
-} elsif $::ipaddress_bond0 != undef {
-    $main_ipaddress = $::ipaddress_bond0
-} else {
-    $main_ipaddress = $::ipaddress
-}
-
-$site = $main_ipaddress ? {
-    /^208\.80\.152\./                         => 'codfw',
-    /^208\.80\.153\./                         => 'codfw',
-    /^208\.80\.15[45]\./                      => 'eqiad',
-    /^10\.6[48]\./                            => 'eqiad',
-    /^10\.192\./                              => 'codfw',
-    /^10\.196\./                              => 'codfw',
-    /^91\.198\.174\./                         => 'esams',
-    /^198\.35\.26\.([0-9]|[1-5][0-9]|6[0-2])/ => 'ulsfo',
-    /^10\.128\./                              => 'ulsfo',
-    /^10\.20\.0\./                            => 'esams',
-    default                                   => '(undefined)'
-}
-
 # This is used to define the fallback site and is to be used by applications that
 # are capable of automatically detecting a failed service and falling back to
 # another one. Only the 2 sites that make sense to really be here are added for
@@ -63,7 +59,6 @@ $other_site = $site ? {
     'eqiad' => 'codfw',
     default => '(undefined)'
 }
-
 
 $app_routes = hiera('discovery::app_routes')
 
