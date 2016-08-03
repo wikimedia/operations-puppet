@@ -115,7 +115,7 @@ class Hiera
       end
 
       def lookup(key, scope, order_override, resolution_type)
-        topscope_var = '::_roles'
+        topscope_var = '_roles'
         resultset = nil
         return nil unless scope.include?topscope_var
         roles = scope[topscope_var]
