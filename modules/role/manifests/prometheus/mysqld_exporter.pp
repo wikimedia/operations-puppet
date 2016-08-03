@@ -13,4 +13,11 @@ class role::prometheus::mysqld_exporter {
         port   => '9104',
         srange => "@resolve((${prometheus_ferm_nodes}))",
     }
+
+#    @@prometheus_mysql_host { $::fqdn:
+#         mysql_dc    => $mysql_dc,
+#         mysql_group => $mysql_group,
+#         mysql_shard => $mysql_shard,
+#         mysql_role  => $mysql_role,
+#    }
 }
