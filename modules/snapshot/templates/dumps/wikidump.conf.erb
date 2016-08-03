@@ -35,7 +35,8 @@ fileperms=0644
 adminmail=ops-dumps@wikimedia.org
 mailfrom=root@wikimedia.org
 smtpserver=<%= @mail_smarthost[0] %>
-staleage=3600
+# 15 minutes is long enough to decide a lock is expired, right?
+staleage=900
 
 [database]
 
