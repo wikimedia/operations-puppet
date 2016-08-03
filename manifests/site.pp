@@ -2814,6 +2814,10 @@ node 'terbium.eqiad.wmnet' {
 
     include ldap::role::client::labs
     include base::firewall
+
+    interface::add_ip6_mapped { 'main':
+        interface => 'eth0',
+    }
 }
 
 # Thumbor servers for MediaWiki image scaling
@@ -2889,6 +2893,10 @@ node 'wasat.codfw.wmnet' {
 
     include ldap::role::client::labs
     include base::firewall
+
+    interface::add_ip6_mapped { 'main':
+        interface => 'eth0',
+    }
 }
 
 # Wikidata query service
