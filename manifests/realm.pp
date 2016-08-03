@@ -33,11 +33,11 @@ if $realm == 'labs' {
 
 # Determine the site the server is in
 if $::ipaddress_eth0 != undef {
-    $main_ipaddress = $ipaddress_eth0
+    $main_ipaddress = $::ipaddress_eth0
 } elsif $::ipaddress_bond0 != undef {
-    $main_ipaddress = $ipaddress_bond0
+    $main_ipaddress = $::ipaddress_bond0
 } else {
-    $main_ipaddress = $ipaddress
+    $main_ipaddress = $::ipaddress
 }
 
 $site = $main_ipaddress ? {
