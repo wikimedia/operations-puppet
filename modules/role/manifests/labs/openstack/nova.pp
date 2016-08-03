@@ -262,7 +262,7 @@ class role::labs::openstack::nova::network {
 
     interface::ip { 'openstack::network_service_public_dynamic_snat':
         interface => 'lo',
-        address   => $novaconfig['site_address'],
+        address   => $novaconfig['network_public_ip'],
     }
 
     interface::tagged { $novaconfig['network_flat_interface']:
