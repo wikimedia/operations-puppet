@@ -9,7 +9,7 @@ class role::mariadb {
     include ::mariadb
 }
 
-# root, repl, nagios, tendril
+# root, repl, nagios, tendril, prometheus
 class role::mariadb::grants(
     $shard = false,
     ) {
@@ -98,6 +98,15 @@ class role::mariadb::monitor::dba {
     include mariadb::monitor_process
 }
 
+class role::mariadb::prometheus {
+    if os_version('debian >= jessie') and $::site != $::mw_primary {
+        include role::prometheus::mysqld_exporter
+    }
+    if $::hostname == 'db2069' {
+        include role::prometherus::node_exporter
+    }
+}
+
 # miscellaneous services clusters
 class role::mariadb::misc(
     $shard  = 'm1',
@@ -117,6 +126,7 @@ class role::mariadb::misc(
     include role::mariadb::monitor
     include passwords::misc::scripts
     include role::mariadb::ferm
+    include role::mariadb::prometheus
 
     class { 'mariadb::packages_wmf':
         mariadb10 => true,
@@ -165,6 +175,7 @@ class role::mariadb::misc::phabricator(
     include role::mariadb::monitor
     include passwords::misc::scripts
     include role::mariadb::ferm
+    include role::mariadb::prometheus
 
     $read_only = $master ? {
         true  => 0,
@@ -234,6 +245,7 @@ class role::mariadb::misc::eventlogging(
     include role::mariadb::monitor::dba
     include passwords::misc::scripts
     include role::mariadb::ferm
+    include role::mariadb::prometheus
 
     class { 'mariadb::packages_wmf':
         mariadb10 => true,
@@ -304,6 +316,7 @@ class role::mariadb::tendril {
     include role::mariadb::monitor::dba
     include passwords::misc::scripts
     include role::mariadb::ferm
+    include role::mariadb::prometheus
 
     ferm::service { 'memcached_tendril':
         proto  => 'tcp',
@@ -340,6 +353,7 @@ class role::mariadb::dbstore(
     include role::mariadb::monitor::dba
     include passwords::misc::scripts
     include role::mariadb::ferm
+    include role::mariadb::prometheus
 
     class { 'mariadb::config':
         prompt   => 'DBSTORE',
@@ -385,6 +399,7 @@ class role::mariadb::analytics {
     include role::mariadb::monitor
     include passwords::misc::scripts
     include role::mariadb::ferm
+    include role::mariadb::prometheus
 
     class { 'mariadb::config':
         prompt   => 'ANALYTICS',
@@ -517,6 +532,7 @@ class role::mariadb::core(
     include role::mariadb::monitor
     include passwords::misc::scripts
     include role::mariadb::ferm
+    include role::mariadb::prometheus
 
     if ($shard == 'es1') {
         $mysql_role = 'standalone'
@@ -596,6 +612,7 @@ class role::mariadb::sanitarium {
     include standard
     include role::mariadb::grants
     include passwords::misc::scripts
+    include role::mariadb::prometheus
 
     class { 'mariadb::packages_wmf':
         mariadb10 => true,
@@ -688,6 +705,7 @@ class role::mariadb::labs {
     include passwords::misc::scripts
     include role::mariadb::ferm
     include base::firewall
+    include role::mariadb::prometheus
 
     class { 'mariadb::packages_wmf':
         mariadb10 => true,
@@ -737,6 +755,7 @@ class role::mariadb::wikitech {
     include role::mariadb::grants::wikitech
     include role::mariadb::monitor
     include passwords::misc::scripts
+    include role::mariadb::prometheus
 
     class { 'mariadb::packages_wmf':
         mariadb10 => true,
@@ -845,6 +864,7 @@ class role::mariadb::parsercache(
     include role::mariadb::monitor
     include role::mariadb::ferm
     include passwords::misc::scripts
+    include role::mariadb::prometheus
 
     system::role { 'role::mariadb::parsercache':
         description => "Parser Cache Database ${shard}",
