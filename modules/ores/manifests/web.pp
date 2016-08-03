@@ -6,6 +6,7 @@ class ores::web(
     $redis_password = undef,
     $port = 8081,
     $graphite_server = 'graphite-in.eqiad.wmnet',
+    $deployment = 'scap3',
 ) {
     require ores::base
 
@@ -21,6 +22,7 @@ class ores::web(
         port            => $port,
         sudo_rules      => $sudo_rules,
         healthcheck_url => '/',
+        deployment      => $deployment,
         config          => {
             'wsgi-file' => "${ores::base::config_path}/ores_wsgi.py",
             chdir       => $ores::base::config_path,
