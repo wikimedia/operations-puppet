@@ -6201,36 +6201,26 @@ host wtp1002 {
 host wtp1003 {
     hardware ethernet 90:B1:1C:2A:23:2A;
     fixed-address wtp1003.eqiad.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host wtp1004 {
     hardware ethernet 90:B1:1C:2A:21:A6;
     fixed-address wtp1004.eqiad.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host wtp1005 {
     hardware ethernet 90:B1:1C:41:A7:F7;
     fixed-address wtp1005.eqiad.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host wtp1006 {
     hardware ethernet 90:B1:1C:38:80:2C;
     fixed-address wtp1006.eqiad.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host wtp1007 {
     hardware ethernet 90:B1:1C:3D:00:A7;
     fixed-address wtp1007.eqiad.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host wtp1008 {
