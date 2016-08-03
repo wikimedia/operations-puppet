@@ -210,7 +210,7 @@ $private_tables = [
 
 # Route list for mail coming from MediaWiki mailer
 $wikimail_smarthost = $realm ? {
-    'production' => $::site ? {
+    'production' => $site ? {
         'eqiad' => [ 'wiki-mail-eqiad.wikimedia.org', 'wiki-mail-codfw.wikimedia.org' ],
         'codfw' => [ 'wiki-mail-codfw.wikimedia.org', 'wiki-mail-eqiad.wikimedia.org' ],
         default => [ 'wiki-mail-eqiad.wikimedia.org', 'wiki-mail-codfw.wikimedia.org' ],
@@ -223,7 +223,7 @@ $wikimail_smarthost = $realm ? {
 }
 # Generic, default servers (order matters!)
 $mail_smarthost = $realm ? {
-    'production' => $::site ? {
+    'production' => $site ? {
         'eqiad' => [ 'mx1001.wikimedia.org', 'mx2001.wikimedia.org' ],
         'codfw' => [ 'mx2001.wikimedia.org', 'mx1001.wikimedia.org' ],
         default => [ 'mx1001.wikimedia.org', 'mx2001.wikimedia.org' ],
