@@ -47,6 +47,9 @@
   RewriteRule ^/(blame|blob|commit|commitdiff|docs|history|log|patch|summary|tree)/([0-9A-Za-z/_\.-]+)\%2[Ff](.*)\.git(.*)$ /$1/$2/$3.git$4 [N]
 
   # <tag%2Fname> -> <tag%25252Fname>
+  RewriteRule ^/(tree)/([0-9A-Za-z/_\.-]+)\.git/HEAD/\%2[Ff]([^/]+)(.*)/$ /$1/$2.git/\%25252F$3$4 [N]
+
+  # <tag%2Fname> -> <tag%25252Fname>
   RewriteRule ^/(blame|blob|commit|commitdiff|docs|history|log|patch|summary|tree)/([0-9A-Za-z/_\.-]+)\.git/([0-9A-Za-z_\.-]+)\%2[Ff]([^/]+)(.*)$ /$1/$2.git/$3\%25252F$4$5 [N]
 
   # <path%2Fto%2Ffile> -> <path/to/file>
