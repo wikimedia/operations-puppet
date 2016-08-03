@@ -110,8 +110,9 @@ define osm::planet_sync(
         user        => 'osmupdater',
         hour        => $hour,
         minute      => $minute,
-        environment => "PGPASS=${pg_password}",
+        environment => [ "PGPASSWORD=${pg_password}", "PGPASS=${pg_password}", ],
     }
+
     cron { "expire_old_planet_syncs-${name}":
         ensure  => $ensure,
         command => "/usr/bin/find ${expire_dir} -mtime +30 -type f -exec rm {} \\;",
