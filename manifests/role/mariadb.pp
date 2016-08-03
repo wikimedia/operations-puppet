@@ -9,7 +9,7 @@ class role::mariadb {
     include ::mariadb
 }
 
-# root, repl, nagios, tendril
+# root, repl, nagios, tendril, prometheus
 class role::mariadb::grants(
     $shard = false,
     ) {
@@ -98,6 +98,45 @@ class role::mariadb::monitor::dba {
     include mariadb::monitor_process
 }
 
+# mysql-specific prometheus monitoring
+# * mysql_group (required): general usage of the server, for example:
+#   - 'core': production mediawiki servers
+#   - 'dbstore': servers for backup and analytics
+#   - 'labs': production and labs replicas of production
+#   - 'misc': other services
+# * mysql_shard (optional): for 'core', 'misc' and 'pc' services, vertical
+#   slices:
+#   - 's1': English Wikipedia (see dblists on mediawiki-config)
+#   - 'm1': puppet, bacula, etc.
+#   - most services are not segmented and will return the empty string ('')
+# * mysql_role (required). One of three:
+# - 'master': for the masters of each datacenter (one per shard and
+#   datacenter). Only the one on the active datacenter is read-write of
+#   all the ones on the same shard.
+# - 'slave': for read-only slave
+# - 'standalone': single servers that are not part of replication,
+#   such as read-only 'es1' hosts; wikitech, or tendril
+
+#FIXME: apply to all servers, not only those on codfw
+#FIXME: move node_exporter to standard and remove it from here when ready
+class role::mariadb::prometheus(
+    $mysql_group,
+    $mysql_shard = '',
+    $mysql_role,
+    ) {
+    if os_version('debian >= jessie') and $::site == 'codfw' {
+        include role::prometheus::mysqld_exporter
+        include role::prometheus::node_exporter
+
+        @@prometheus_host { $::hostname:
+            mysql_dc    => $::site,
+            mysql_group => $mysql_group,
+            mysql_shard => $mysql_shard,
+            mysql_role  => $mysql_role,
+        }
+    }
+}
+
 # miscellaneous services clusters
 class role::mariadb::misc(
     $shard  = 'm1',
@@ -113,10 +152,20 @@ class role::mariadb::misc(
         false => 1,
     }
 
+    $mysql_role = $master ? {
+        true  => 'master',
+        false => 'slave',
+    }
+
     include standard
     include role::mariadb::monitor
     include passwords::misc::scripts
     include role::mariadb::ferm
+    class { 'role::mariadb::prometheus':
+        mysql_group => 'misc',
+        mysql_shard => $shard,
+        mysql_role  => $mysql_role,
+    }
 
     class { 'mariadb::packages_wmf':
         mariadb10 => true,
@@ -162,9 +211,21 @@ class role::mariadb::misc::phabricator(
     class { 'mariadb::packages_wmf':
         mariadb10 => $mariadb10,
     }
+
+    $mysql_role = $master ? {
+        true  => 'master',
+        false => 'slave',
+    }
+
     include role::mariadb::monitor
     include passwords::misc::scripts
     include role::mariadb::ferm
+
+    class { 'role::mariadb::prometheus':
+        mysql_group => 'misc',
+        mysql_shard => $shard,
+        mysql_role  => $mysql_role,
+    }
 
     $read_only = $master ? {
         true  => 0,
@@ -230,10 +291,21 @@ class role::mariadb::misc::eventlogging(
         description => 'Eventlogging Database',
     }
 
+    $mysql_role = $master ? {
+        true  => 'master',
+        false => 'slave',
+    }
+
     include standard
     include role::mariadb::monitor::dba
     include passwords::misc::scripts
     include role::mariadb::ferm
+
+    class {'role::mariadb::prometheus':
+        mysql_group => 'misc',
+        mysql_shard => $shard,
+        mysql_role  => $mysql_role,
+    }
 
     class { 'mariadb::packages_wmf':
         mariadb10 => true,
@@ -305,6 +377,11 @@ class role::mariadb::tendril {
     include passwords::misc::scripts
     include role::mariadb::ferm
 
+    class {'role::mariadb::prometheus':
+        mysql_group => 'tendril',
+        mysql_role  => 'standalone',
+    }
+
     ferm::service { 'memcached_tendril':
         proto  => 'tcp',
         port   => '11211',
@@ -340,6 +417,11 @@ class role::mariadb::dbstore(
     include role::mariadb::monitor::dba
     include passwords::misc::scripts
     include role::mariadb::ferm
+
+    class {'role::mariadb::prometheus':
+        mysql_group => 'dbstore',
+        mysql_role  => 'slave',
+    }
 
     class { 'mariadb::config':
         prompt   => 'DBSTORE',
@@ -386,6 +468,12 @@ class role::mariadb::analytics {
     include passwords::misc::scripts
     include role::mariadb::ferm
 
+    class { 'role::mariadb::prometheus':
+        mysql_group => 'misc',
+        mysql_shard => 'm4',
+        mysql_role  => 'slave',
+    }
+
     class { 'mariadb::config':
         prompt   => 'ANALYTICS',
         config   => 'mariadb/analytics.my.cnf.erb',
@@ -394,7 +482,7 @@ class role::mariadb::analytics {
         tmpdir   => '/a/tmp',
     }
 
-    mariadb::monitor_replication { ['s1','s2','m2']:
+    mariadb::monitor_replication { ['s1','s2']:
         is_critical   => false,
         contact_group => 'admins', # only show on nagios/irc
     }
@@ -526,6 +614,12 @@ class role::mariadb::core(
         $mysql_role = 'slave'
     }
 
+    class { 'role::mariadb::prometheus':
+        mysql_group => 'core',
+        mysql_shard => $shard,
+        mysql_role  => $mysql_role,
+    }
+
     salt::grain { 'mysql_role':
         ensure  => present,
         replace => true,
@@ -596,6 +690,10 @@ class role::mariadb::sanitarium {
     include standard
     include role::mariadb::grants
     include passwords::misc::scripts
+    class { 'role::mariadb::prometheus':
+        mysql_group => 'labs',
+        mysql_role  => 'slave',
+    }
 
     class { 'mariadb::packages_wmf':
         mariadb10 => true,
@@ -689,6 +787,11 @@ class role::mariadb::labs {
     include role::mariadb::ferm
     include base::firewall
 
+    class { 'role::mariadb::prometheus':
+        mysql_group => 'labs',
+        mysql_role  => 'slave',
+    }
+
     class { 'mariadb::packages_wmf':
         mariadb10 => true,
     }
@@ -737,6 +840,10 @@ class role::mariadb::wikitech {
     include role::mariadb::grants::wikitech
     include role::mariadb::monitor
     include passwords::misc::scripts
+    class { 'role::mariadb::prometheus':
+        mysql_group => 'wikitech',
+        mysql_role  => 'standalone',
+    }
 
     class { 'mariadb::packages_wmf':
         mariadb10 => true,
@@ -845,6 +952,11 @@ class role::mariadb::parsercache(
     include role::mariadb::monitor
     include role::mariadb::ferm
     include passwords::misc::scripts
+    class { 'role::mariadb::prometheus':
+        mysql_group => 'parsercache',
+        mysql_shard => $shard,
+        mysql_role  => 'master',
+    }
 
     system::role { 'role::mariadb::parsercache':
         description => "Parser Cache Database ${shard}",
@@ -858,17 +970,12 @@ class role::mariadb::parsercache(
         shard => 'parsercache',
     }
 
-    $basedir = $::hostname ? {
-        /pc100[123]/ => '/a',
-        default      => '/srv',
-    }
-
     class { 'mariadb::config':
         prompt   => 'PARSERCACHE',
         config   => 'mariadb/parsercache.my.cnf.erb',
         password => $passwords::misc::scripts::mysql_root_pass,
-        datadir  => "${basedir}/sqldata-cache",
-        tmpdir   => "${basedir}/tmp",
+        datadir  => '/srv/sqldata-cache',
+        tmpdir   => '/srv/tmp',
         ssl      => 'on',
         p_s      => 'off',
     }
