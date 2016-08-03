@@ -2,14 +2,14 @@
 
 # Avoid running hooks if backports is not specified
 if [ "${BACKPORTS}" = "yes" ]; then
-    cat > /etc/apt/sources.list.d/<%= @distribution %>-backports.list <<-'EOF'
-    deb <%= @upstream_mirror %> <%= @distribution %>-backports main contrib non-free
-    deb-src <%= @upstream_mirror %> <%= @distribution %>-backports main contrib non-free
+	cat > /etc/apt/sources.list.d/<%= @distribution %>-backports.list <<-'EOF'
+	deb <%= @upstream_mirror %> <%= @distribution %>-backports main contrib non-free
+	deb-src <%= @upstream_mirror %> <%= @distribution %>-backports main contrib non-free
 EOF
-    cat > /etc/apt/preferences.d/<%= @distribution %>.pref <<-'EOF'
-    Package: *
-    Pin: release a=<%= @distribution %>-backports
-    Pin-Priority: 500
+	cat > /etc/apt/preferences.d/<%= @distribution %>-backports.pref <<-'EOF'
+	Package: *
+	Pin: release a=<%= @distribution %>-backports
+	Pin-Priority: 500
 EOF
-    apt-get update
+	apt-get update
 fi
