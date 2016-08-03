@@ -163,7 +163,7 @@ sub cluster_fe_recv {
 
 	// shortener URLs can be validated and restricted here
 	if (req.http.host == "<%= @vcl_config.fetch('shortener_domain') %>") {
-		if (req.url !~ "^/[23456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz$_]*") {
+		if (req.url !~ "^/[23456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz$_]*$") {
 			<%= error_synth(404, "Short URL Not Found") -%>
 		}
 	}
