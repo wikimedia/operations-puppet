@@ -13,9 +13,8 @@
 :hierarchy:
   - "hosts/%{::hostname}"
   - "regex/%{::fqdn}"
-  - "%{::site}/%{::realm}"
   - "%{::site}"
-  - "private/%{::site}/%{::realm}"
+  - "private/hosts/%{::hostname}" # TODO: Remove this once labtest realm dies. DO NOT USE THIS
   - "private/%{::site}"
   - "common"
   - "private/common"
