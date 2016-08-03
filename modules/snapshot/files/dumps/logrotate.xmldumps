@@ -1,0 +1,12 @@
+# This file is managed by puppet
+# puppet:///modules/snapshot/cron/logrotate.xmldumps
+#
+/var/log/dumps/xmldumps*.log {
+    weekly
+    copytruncate
+    compress
+    notifempty
+    dateext
+    missingok
+    maxage 90
+}
