@@ -462,7 +462,7 @@ node 'db2069.codfw.wmnet' {
         shard         => 's1',
         binlog_format => 'ROW',
     }
-    role prometheus::mysqld_exporter
+    role prometheus::mysqld_exporter, prometheus::node_exporter
     include base::firewall
 }
 
