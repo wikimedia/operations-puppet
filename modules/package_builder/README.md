@@ -76,6 +76,15 @@ Examples:
 The commands above are equivalent and will both build a package for the
 jessie distribution using the Wikimedia apt repository.
 
+Backports repos
+===============
+
+Packages from the Debian backports repositories can be used to satisfy
+dependencies as well. To use the backports repository for the distribution
+selected (e.g. jessie-backports), use:
+
+    DIST=jessie BACKPORTS=yes pdebuild
+
 git-buildpackage
 ================
 
