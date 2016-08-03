@@ -65,28 +65,29 @@ module Puppet::Parser::Functions
   # Basic list chunks, used to construct bigger lists
   # General preference ordering for fullest combined list:
   # 0) Kx:   (EC)DHE > RSA    (Forward Secrecy)
-  # 1) Mac:  AEAD > ALL       (GCM/CHACHA > CBC)
+  # 1) Mac:  AEAD > ALL       (AES-GCM/CHAPOLY > Others)
   # 2) Kx:   ECDHE > DHE      (Server Perf, may help with DH>1024 compat)
   # 3) Mac:  SHA-2 > SHA-1
-  # 4) Enc:  AES128 > CHACHA > AES256
-  #   ^ Note: we'd prefer [AES128, CHACHA] > AES256 here, but OpenSSL-1.1.0
-  #   doesn't implement equal preference cipher grouping :(
+  # 4) Enc:  [AES128 > CHACHA] > AES256
+  #   ^ Note: our cloudflare-patched 1.0.2 never chooses chapoly unless a
+  #     chapoly cipher is the client's top choice, which makes this work with
+  #     the chapoly suites ahead of AES-GCM in the 'strong' list below.
   # 5) Auth: ECDSA > RSA      (Server Performance)
   basic = {
     # Forward-Secret + AEAD
     'strong' => [
       '-ALL',
-      'ECDHE-ECDSA-AES128-GCM-SHA256',
-      'ECDHE-RSA-AES128-GCM-SHA256',
       'ECDHE-ECDSA-CHACHA20-POLY1305',   # openssl-1.1.0, 1.0.2+cloudflare
       'ECDHE-RSA-CHACHA20-POLY1305',     # openssl-1.1.0, 1.0.2+cloudflare
       'ECDHE-ECDSA-CHACHA20-POLY1305-D', # 1.0.2+cloudflare
       'ECDHE-RSA-CHACHA20-POLY1305-D',   # 1.0.2+cloudflare
+      'ECDHE-ECDSA-AES128-GCM-SHA256',
+      'ECDHE-RSA-AES128-GCM-SHA256',
       'ECDHE-ECDSA-AES256-GCM-SHA384',
       'ECDHE-RSA-AES256-GCM-SHA384',
-      'DHE-RSA-AES128-GCM-SHA256',
       'DHE-RSA-CHACHA20-POLY1305',   # openssl-1.1.0, 1.0.2+cloudflare
       'DHE-RSA-CHACHA20-POLY1305-D', # 1.0.2+cloudflare
+      'DHE-RSA-AES128-GCM-SHA256',
       'DHE-RSA-AES256-GCM-SHA384',
     ],
     # Forward-Secret, but not AEAD
