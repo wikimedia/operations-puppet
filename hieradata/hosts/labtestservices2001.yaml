@@ -70,7 +70,6 @@ novaconfig:
   glance_host: *labsnovacontroller
   rabbit_host: *labsnovacontroller
   cc_host: *labsnovacontroller
-  site_address: '208.80.155.255'
   controller_hostname: *labsnovacontroller
   ldap_host: 'labtestservices2001.wikimedia.org'
   puppet_host: *labsnovacontroller
