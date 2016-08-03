@@ -1,4 +1,9 @@
-class role::prometheus::mysqld_exporter {
+class role::prometheus::mysqld_exporter (
+    $mysql_dc,
+    $mysql_group,
+    $mysql_shard,
+    $mysql_role,
+) {
     include passwords::prometheus
 
     prometheus::mysqld_exporter { 'default':
@@ -12,5 +17,12 @@ class role::prometheus::mysqld_exporter {
         proto  => 'tcp',
         port   => '9104',
         srange => "@resolve((${prometheus_ferm_nodes}))",
+    }
+
+    @@prometheus_mysql_host { $::fqdn:
+         mysql_dc    => $mysql_dc,
+         mysql_group => $mysql_group,
+         mysql_shard => $mysql_shard,
+         mysql_role  => $mysql_role,
     }
 }
