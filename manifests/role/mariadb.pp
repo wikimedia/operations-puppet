@@ -518,6 +518,10 @@ class role::mariadb::core(
     include passwords::misc::scripts
     include role::mariadb::ferm
 
+    if os_version('debian >= jessie') {
+        include role::prometheus::mysqld_exporter
+    }
+
     if ($shard == 'es1') {
         $mysql_role = 'standalone'
     } elsif $master == true {
