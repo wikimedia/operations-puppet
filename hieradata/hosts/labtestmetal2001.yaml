@@ -1,3 +1,6 @@
+debdeploy::grains:
+  debdeploy-labtest:
+    value: standard
 # These values are site/realm specific for LABTEST infrastructure
 
 # This address range is not really used for labtest external, it is
