@@ -1,15 +1,16 @@
 class gerrit::proxy(
     $host         = $::gerrit::host,
     $maint_mode   = false,
+    $gerrit_letsencrypt = true,
     ) {
 
-    letsencrypt::cert::integrated { 'gerrit':
-        subjects   => $host,
-        puppet_svc => 'apache2',
-        system_svc => 'apache2',
-    }
-
     $ssl_settings = ssl_ciphersuite('apache', 'mid', true)
+
+    if $gerrit_letsencrypt != false  {
+        $ssl_cert_file = "/etc/ssl/localcerts/${host}.crt"
+        $ssl_cert_chain_file = "/etc/ssl/localcerts/${host}.chain.crt"
+        $ssl_cert_key_file = "/etc/ssl/private/${host}.key"
+    }
 
     apache::site { $host:
         content => template('gerrit/gerrit.wikimedia.org.erb'),

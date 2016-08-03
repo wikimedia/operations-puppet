@@ -37,11 +37,18 @@ MaxClients 50
 
     CustomLog /var/log/apache2/<%= @host %>.http.access.log wmf
     ServerSignature Off
-    <IfVersion >= 2.4>
-        IncludeOptional /etc/acme/challenge-apache.conf
-    </IfVersion>
+    <%- if @gerrit_letsencrypt -%>
+        <IfVersion >= 2.4>
+            IncludeOptional /etc/acme/challenge-apache.conf
+        </IfVersion>
+    <%- end -%>
+
     RewriteEngine on
-    RewriteCond %{REQUEST_URI} !^/\.well-known/acme-challenge/
+    <%- if @gerrit_letsencrypt -%>
+        RewriteCond %{REQUEST_URI} !^/\.well-known/acme-challenge/
+    <%- else -%>
+        RewriteCond %{SERVER_PORT} !^443$
+    <%- end -%>
     RewriteRule ^/(.*)$ https://<%= @host %>/$1 [L,R=301,NE]
 </VirtualHost>
 
@@ -53,9 +60,16 @@ NameVirtualHost *:443
     RequestHeader unset Proxy early
 
     SSLEngine on
-    SSLCertificateFile /etc/acme/cert/gerrit.crt
-    SSLCertificateChainFile /etc/acme/cert/gerrit.chain.crt
-    SSLCertificateKeyFile /etc/acme/key/gerrit.key
+    <%- if @gerrit_letsencrypt -%>
+        SSLCertificateFile /etc/acme/cert/gerrit.crt
+        SSLCertificateChainFile /etc/acme/cert/gerrit.chain.crt
+        SSLCertificateKeyFile /etc/acme/key/gerrit.key
+    <%- else -%>
+        SSLEngine on
+        SSLCertificateFile <%= @ssl_cert_file %>
+        SSLCertificateChainFile <%= @ssl_cert_chain_file %>
+        SSLCertificateKeyFile <%= @ssl_cert_key_file %>
+    <%- end -%>
     <%= @ssl_settings.join("\n") %>
 
     RedirectMatch ^/$ https://<%= @host %>/r/
