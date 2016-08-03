@@ -1886,11 +1886,6 @@ host dbstore2002 {
     filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
-host dickson {
-    hardware ethernet 78:2b:cb:09:0c:5a;
-    fixed-address dickson.wikimedia.org;
-}
-
 host cp1099 {
     hardware ethernet 90:B1:1C:3B:C7:2C;
     fixed-address cp1099.eqiad.wmnet;
