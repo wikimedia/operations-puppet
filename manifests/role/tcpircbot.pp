@@ -21,8 +21,10 @@ class role::tcpircbot {
             '2620:0:861:101:10:64:0:196/128',   # deployment eqiad v6: tin
             '::ffff:10.192.16.132/128',         # deployment codfw v4: mira
             '2620:0:860:102:10:192:16:132/128', # deployment codfw v6: mira
-            '::ffff:10.64.32.13/128',           # maintenance eqiad: terbium
-            '::ffff:10.192.48.45/128',          # maintenance codfw: wasat
+            '::ffff:10.64.32.13/128',                 # maintenance eqiad v4: terbium
+            '2620:0:861:103:92b1:1cff:fe25:9d72/128', # maintenance eqiad v6: terbium
+            '::ffff:10.192.48.45/128',                # maintenance codfw v4: wasat
+            '2620:0:860:104:1602:ecff:fe3f:478c/128', # maintenance codfw v6: wasat
             '::ffff:10.64.16.160/128',          # puppet master v4: palladium
             '2620:0:861:102:10:64:16:160/128',  # puppet master v6: palladium
         ],
