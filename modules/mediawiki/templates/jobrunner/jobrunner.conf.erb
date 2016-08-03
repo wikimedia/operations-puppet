@@ -75,7 +75,9 @@
         // How many times to let jobs be executed before abandoning
         "attempts": {
             "*": 3,
-            "RestbaseUpdateJobOnDependencyChange": 1
+            "RestbaseUpdateJobOnDependencyChange": 1,
+            "LocalPageMoveJob": 6, // T141731
+            "renameUser": 6 // T141731
         },
         // How long jobs can be claimed before being recycled
         "claimTTL": {
