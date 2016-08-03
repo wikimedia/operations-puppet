@@ -7,11 +7,11 @@ if $::hostname =~ /^labtest/ {
     $realm = 'labtest'
 }
 
-if $::realm == undef {
+if $realm == undef {
     $realm = hiera('realm', 'production')
 }
 
-if $::realm == 'labs' {
+if $realm == 'labs' {
 
     $labs_metal = hiera('labs_metal', {})
     if has_key($labs_metal, $::hostname) {
@@ -86,7 +86,7 @@ $network_zone = $main_ipaddress ? {
 # Set some basic variables
 
 # DNS
-if $::realm == 'labs' {
+if $realm == 'labs' {
     $dnsconfig = hiera_hash('labsdnsconfig', {})
     $nameservers = [ ipresolve($dnsconfig['recursor'],4), ipresolve($dnsconfig['recursor_secondary'],4) ]
 } else {
@@ -209,7 +209,7 @@ $private_tables = [
     'watchlist' ]
 
 # Route list for mail coming from MediaWiki mailer
-$wikimail_smarthost = $::realm ? {
+$wikimail_smarthost = $realm ? {
     'production' => $::site ? {
         'eqiad' => [ 'wiki-mail-eqiad.wikimedia.org', 'wiki-mail-codfw.wikimedia.org' ],
         'codfw' => [ 'wiki-mail-codfw.wikimedia.org', 'wiki-mail-eqiad.wikimedia.org' ],
@@ -222,7 +222,7 @@ $wikimail_smarthost = $::realm ? {
     'labtest' => [ 'wiki-mail-codfw.wikimedia.org', 'wiki-mail-eqiad.wikimedia.org' ],
 }
 # Generic, default servers (order matters!)
-$mail_smarthost = $::realm ? {
+$mail_smarthost = $realm ? {
     'production' => $::site ? {
         'eqiad' => [ 'mx1001.wikimedia.org', 'mx2001.wikimedia.org' ],
         'codfw' => [ 'mx2001.wikimedia.org', 'mx1001.wikimedia.org' ],
