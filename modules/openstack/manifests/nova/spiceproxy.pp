@@ -15,11 +15,11 @@ class openstack::nova::spiceproxy(
     # The default spice_auto.html file doesn't support wss so won't
     #  work over https.  Add an exact duplicate of that file with
     #  a one-character change:  s/ws:/wss:/g
-    file { '/usr/share/spice-html5/spice_sec_auth.html':
+    file { '/usr/share/spice-html5/spice_sec_auto.html':
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-        source  => "puppet:///modules/openstack/${openstack_version}/nova/spice_sec_auth.html",
+        source  => "puppet:///modules/openstack/${openstack_version}/nova/spice_sec_auto.html",
         require   => Package['spice-html5'];
     }
 
