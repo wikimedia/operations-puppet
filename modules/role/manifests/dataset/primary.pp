@@ -19,20 +19,13 @@ class role::dataset::primary {
         'kiwix' => true,
     }
     $uploads = {
-        'pagecounts' => true,
+        'pagecounts_ez' => true,
         'phab'       => true,
     }
     class { 'dataset':
         rsync   => $rsync,
         grabs   => $grabs,
         uploads => $uploads,
-    }
-
-    # NOTE: these requires that an rsync server module named 'hdfs-archive' is
-    # configured on stat1002.
-    class { '::dataset::cron::pagecountsraw':
-        enable => true,
-        source => 'stat1002.eqiad.wmnet::hdfs-archive/pagecounts-raw/*/*/',
     }
 
     # Copies over the mediacounts files
@@ -42,22 +35,6 @@ class role::dataset::primary {
         source      => 'stat1002.eqiad.wmnet::hdfs-archive/mediacounts',
         destination => '/data/xmldatadumps/public/other/mediacounts',
         minute      => '41',
-    }
-
-    # Copies over the webstats/ files (AKA pagecounts_all_sites)
-    # from an rsyncable location.
-    #
-    # These *-all-sites datasets recreates the webstatscollector
-    # logic in Hadoop and Hive, except that this dataset includes
-    # requests to mobile and zero sites.
-    #
-    # See: https://github.com/wikimedia/analytics-refinery/tree/master/oozie/webstats.
-    #      https://wikitech.wikimedia.org/wiki/Analytics/Pagecounts-all-sites
-    dataset::cron::job { 'pagecounts_all_sites':
-        ensure      => present,
-        source      => 'stat1002.eqiad.wmnet::hdfs-archive/pagecounts-all-sites',
-        destination => '/data/xmldatadumps/public/other/pagecounts-all-sites',
-        minute      => '51',
     }
 
     class { '::dataset::cron::rsync::nginxlogs':

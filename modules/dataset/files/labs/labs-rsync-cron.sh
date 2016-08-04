@@ -24,5 +24,3 @@ fi
 #copy from our dumps "other" directory to the labs host copy of dumps
 do_rsync "incr" ""
 do_rsync "wikibase/wikidatawiki/" "public/wikidatawiki/entities/"
-do_rsync "pagecounts-raw" ""
-do_rsync "pagecounts-all-sites" ""
