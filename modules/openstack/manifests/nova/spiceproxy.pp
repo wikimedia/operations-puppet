@@ -20,7 +20,7 @@ class openstack::nova::spiceproxy(
         group   => 'root',
         mode    => '0444',
         source  => "puppet:///modules/openstack/${openstack_version}/nova/spice_sec_auth.html",
-        require   => Package['nova-html5'];
+        require   => Package['spice-html5'];
     }
 
     #if $::fqdn == hiera('labs_nova_controller') {
