@@ -2,12 +2,25 @@
 #
 #  When enabled, these services relay a Labs VM console to
 #   a public IP.
-class openstack::nova::spiceproxy {
+class openstack::nova::spiceproxy(
+    $openstack_version=$::openstack::version,
+){
     include openstack::repo
 
     package { ['nova-spiceproxy', 'nova-consoleauth', 'spice-html5', 'websockify']:
         ensure  => present,
         require => Class['openstack::repo'];
+    }
+
+    # The default spice_auto.html file doesn't support wss so won't
+    #  work over https.  Add an exact duplicate of that file with
+    #  a one-character change:  s/ws:/wss:/g
+    file { '/usr/share/spice-html5/spice_sec_auth.html':
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        source  => "puppet:///modules/openstack/${openstack_version}/nova/spice_sec_auth.html",
+        require   => Package['nova-html5'];
     }
 
     #if $::fqdn == hiera('labs_nova_controller') {
