@@ -9,11 +9,14 @@ templatedir = /etc/puppet/templates
 <%= setting %> = <%= value %>
 <% end -%>
 
-<%- if @is_37_plus >= 0 %>always_cache_features = true<% end %>
+<%- if @is_37_plus >= 0 -%>
+always_cache_features = true
+trusted_node_data = true
+<% end -%>
 # SSL
 ssldir = /var/lib/puppet/server/ssl/
 <% if @server_type == 'standalone' -%>
-ssl_client_header = SSL_CLIENT_S_DN 
+ssl_client_header = SSL_CLIENT_S_DN
 ssl_client_verify_header = SSL_CLIENT_VERIFY
 <%- end -%>
 hostcert = /var/lib/puppet/server/ssl/certs/<%= @fqdn %>.pem
