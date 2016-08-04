@@ -3,7 +3,7 @@ class role::labs::openstack::nova::common {
     include passwords::misc::scripts
     include role::labs::openstack::nova::wikiupdates
 
-    $novaconfig                           = hiera_hash('novaconfig', {})
+    $novaconfig_pre                       = hiera_hash('novaconfig', {})
     $keystoneconfig                       = hiera_hash('keystoneconfig', {})
 
     $keystone_host                        = hiera('labs_keystone_host')
@@ -12,15 +12,17 @@ class role::labs::openstack::nova::common {
     $network_host                         = hiera('labs_nova_network_host')
     $status_wiki_host_master              = hiera('status_wiki_host_master')
 
-    $novaconfig['bind_ip']                = ipresolve($keystone_host,4)
-    $novaconfig['keystone_auth_host']     = $keystoneconfig['auth_host']
-    $novaconfig['keystone_auth_port']     = $keystoneconfig['auth_port']
-    $novaconfig['keystone_admin_token']   = $keystoneconfig['admin_token']
-    $novaconfig['keystone_auth_protocol'] = $keystoneconfig['auth_protocol']
-
-    $novaconfig['auth_uri']               = "http://${nova_controller}:5000"
-    $novaconfig['api_ip']                 = ipresolve($nova_api_host,4)
-    $novaconfig['controller_address']     = ipresolve($nova_controller,4)
+    $extra_novaconfig = {
+        bind_ip                => ipresolve($keystone_host,4),
+        keystone_auth_host     => $keystoneconfig['auth_host'],
+        keystone_auth_port     => $keystoneconfig['auth_port'],
+        keystone_admin_token   => $keystoneconfig['admin_token'],
+        keystone_auth_protocol => $keystoneconfig['auth_protocol'],
+        auth_uri               => "http://${nova_controller}:5000",
+        api_ip                 => ipresolve($nova_api_host,4),
+        controller_address     => ipresolve($nova_controller,4),
+    }
+    $novaconfig = deep_merge($novaconfig_pre, $extra_novaconfig)
 
     class { '::openstack::common':
         novaconfig                       => $novaconfig,
@@ -208,9 +210,6 @@ class role::labs::openstack::nova::controller {
         },
         keystone => {
             rule  => "saddr (${labs_nodes} ${spare_master} ${api_host} ${designate} ${designate_secondary}) proto tcp dport (5000 35357) ACCEPT;",
-        },
-        horizon_openstack_services => {
-            rule  => "saddr ${horizon} proto tcp dport (5000 35357 9292) ACCEPT;",
         },
         mysql_nova => {
             rule  => "saddr ${labs_nodes} proto tcp dport (3306) ACCEPT;",
