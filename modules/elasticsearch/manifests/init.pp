@@ -126,7 +126,6 @@ class elasticsearch($cluster_name,
     # if no graylog_host is given, do not send logs
     $send_logs_to_logstash = is_array($graylog_hosts)
 
-    notice($send_logs_to_logstash)
     if $send_logs_to_logstash {
         validate_array($graylog_hosts)
         $rotated_graylog_host = fqdn_rotate($graylog_hosts, $::hostname)
