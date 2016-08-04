@@ -127,7 +127,7 @@ define prometheus::server (
 
     exec { "${service_name}-reload":
         command     => "/bin/systemctl reload ${service_name}",
-        onlyif      => "/usr/bin/promtool check-config ${base_path}/prometheus.yml && /usr/bin/promtool check-rules <%= @rule_files.join(' ') %>",
+        onlyif      => "/usr/bin/promtool check-config ${base_path}/prometheus.yml",
         refreshonly => true,
     }
 
