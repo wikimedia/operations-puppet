@@ -26,11 +26,7 @@ class gerrit::jetty(
     $ldap_proxyagent = $ldapconfig['proxyagent']
     $ldap_proxyagent_pass = $ldapconfig['proxypass']
 
-    require_package('openjdk-7-jdk')
-
-    package { 'gerrit':
-        ensure => present,
-    }
+    require_package(['openjdk-7-jdk', 'gerrit', 'libmysql-java'])
 
     file { '/var/lib/gerrit2/':
         ensure  => directory,
@@ -63,6 +59,12 @@ class gerrit::jetty(
         group   => 'gerrit2',
         mode    => '0644',
         require => [File['/var/lib/gerrit2'],Package['gerrit']],
+    }
+
+    file { '/var/lib/gerrit2/review_site/lib/mysql-connector-java.jar':
+        ensure  => 'link',
+        target  => '/usr/share/java/mysql-connector-java.jar',
+        require => [Package['gerrit'], Package['libmysql-java']],
     }
 
     file { '/var/lib/gerrit2/review_site/etc':
@@ -127,6 +129,7 @@ class gerrit::jetty(
         require => [
             File['/var/lib/gerrit2/review_site/etc/gerrit.config'],
             File['/var/lib/gerrit2/review_site/etc/secure.config'],
+            File['/var/lib/gerrit2/review_site/lib/mysql-connector-java.jar'],
         ],
     }
 
