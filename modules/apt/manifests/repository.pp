@@ -6,9 +6,9 @@ define apt::repository(
     $comment_old=false,
     $keyfile='',
     $ensure=present,
-    $trusted=false,
+    $trust_repo=false,
 ) {
-    if $trusted {
+    if $trust_repo {
         $trustedline = '[trusted=yes] '
     } else {
         $trustedline = ''
