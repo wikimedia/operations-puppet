@@ -9,6 +9,7 @@
 MaxClients 50
 
 <VirtualHost *:80>
+    <% if @lets_encrypt %>
     ServerAdmin noc@wikimedia.org
     ServerName <%= @host %>
 
@@ -47,6 +48,7 @@ MaxClients 50
 
 NameVirtualHost *:443
 <VirtualHost *:443>
+    <% end %>
     ServerAdmin noc@wikimedia.org
     ServerName <%= @host %>
     # https://httpoxy.org/
