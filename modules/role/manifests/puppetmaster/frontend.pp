@@ -27,7 +27,7 @@ class role::puppetmaster::frontend {
                           },
                           {
                           'worker'     => 'rhodium.eqiad.wmnet',
-                          'loadfactor' => 1,
+                          'loadfactor' => 20,
                           },
         ],
         config        => {
