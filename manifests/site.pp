@@ -2912,6 +2912,8 @@ node /^wtp20(0[1-9]|1[0-9]|2[0-4])\.codfw\.wmnet$/ {
 # T138650 - tools for the security team
 node 'zosma.codfw.wmnet' {
     role security::tools
+
+    interface::add_ip6_mapped { 'main': interface => 'eth0', }
 }
 
 node default {
