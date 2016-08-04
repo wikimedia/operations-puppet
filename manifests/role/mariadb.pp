@@ -839,17 +839,12 @@ class role::mariadb::parsercache(
         shard => 'parsercache',
     }
 
-    $basedir = $::hostname ? {
-        /pc100[123]/ => '/a',
-        default      => '/srv',
-    }
-
     class { 'mariadb::config':
         prompt   => 'PARSERCACHE',
         config   => 'mariadb/parsercache.my.cnf.erb',
         password => $passwords::misc::scripts::mysql_root_pass,
-        datadir  => "${basedir}/sqldata-cache",
-        tmpdir   => "${basedir}/tmp",
+        datadir  => '/srv/sqldata-cache',
+        tmpdir   => '/srv/tmp',
         ssl      => 'on',
         p_s      => 'off',
     }
