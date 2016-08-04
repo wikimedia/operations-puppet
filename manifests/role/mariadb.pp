@@ -370,33 +370,14 @@ class role::mariadb::dbstore(
 }
 
 # MariaDB 10 Analytics all-shards slave, with scratch space and TokuDB
+# analytics slaves are already either dbstores or eventlogging slaves
+# so they just need the extra core monitoring
 class role::mariadb::analytics {
 
-    system::role { 'role::mariadb::analytics':
-        description => 'Analytics All-Shards Slave',
-    }
-
-    class { 'mariadb::packages_wmf':
-        mariadb10 => true,
-    }
-
-    include standard
-    include role::mariadb::grants
-    include role::mariadb::monitor
-    include passwords::misc::scripts
-    include role::mariadb::ferm
-
-    class { 'mariadb::config':
-        prompt   => 'ANALYTICS',
-        config   => 'mariadb/analytics.my.cnf.erb',
-        password => $passwords::misc::scripts::mysql_root_pass,
-        datadir  => '/a/sqldata',
-        tmpdir   => '/a/tmp',
-    }
-
-    mariadb::monitor_replication { ['s1','s2','m2']:
+    mariadb::monitor_replication { ['s1','s2']:
         is_critical   => false,
         contact_group => 'admins', # only show on nagios/irc
+        multisource   => true,
     }
 }
 
