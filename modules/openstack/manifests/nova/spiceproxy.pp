@@ -10,6 +10,17 @@ class openstack::nova::spiceproxy {
         require => Class['openstack::repo'];
     }
 
+    # The default spice_auto.html file doesn't support wss so won't
+    #  work over https.  Add an exact duplicate of that file with
+    #  a one-character change:  s/ws:/wss:/g
+    file { "/usr/share/spice-html5/spice_sec_auth.html":
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        source  => "puppet:///modules/openstack/${openstack_version}/nova/spice_sec_auth.html",
+        require   => Package['nova-html5'];
+    }
+
     #if $::fqdn == hiera('labs_nova_controller') {
     if false {
         # These services aren't on by default, pending some
