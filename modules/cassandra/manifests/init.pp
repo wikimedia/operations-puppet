@@ -327,7 +327,6 @@ class cassandra(
     validate_re($internode_compression, '^(all|dc|none)$')
     validate_re($disk_failure_policy, '^(stop|best_effort|ignore)$')
 
-    validate_bool($trickle_fsync)
     validate_array($additional_jvm_opts)
     validate_array($extra_classpath)
 
