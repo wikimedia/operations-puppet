@@ -76,13 +76,12 @@ class Rsyncer(object):
                        "-f", "%s::%s" % (targ, dest)]
             try:
                 subprocess.check_output(command)
+                # return code 0 = already running
+                if self.dryrun:
+                    print "would skip rsync to", "%s::%s" % (targ, dest)
+                continue
             except subprocess.CalledProcessError as err:
-                if err.returncode == 1:
-                    # already running
-                    if self.dryrun:
-                        print "would skip rsync to", "%s::%s" % (targ, dest)
-                    continue
-                else:
+                if err.returncode != 1:
                     # genuine error
                     raise
 
