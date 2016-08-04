@@ -41,7 +41,11 @@
     batchThreads = 2
     idleTimeout = 864000
 [httpd]
+    <%= @gerrit_ssl %>
     listenUrl = proxy-https://127.0.0.1:8080/r/
+    <%= else %>
+    listenUrl = proxy-http://127.0.0.1:8080/r/
+    <%= end %>
     maxQueued = 500
     minThreads = 10
     maxThreads = 60

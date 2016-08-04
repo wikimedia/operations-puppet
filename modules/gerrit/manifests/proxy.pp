@@ -1,12 +1,15 @@
 class gerrit::proxy(
     $host         = $::gerrit::host,
     $maint_mode   = false,
+    $lets_encrypt = true,
     ) {
 
-    letsencrypt::cert::integrated { 'gerrit':
-        subjects   => $host,
-        puppet_svc => 'apache2',
-        system_svc => 'apache2',
+    if $lets_encrypt {
+        letsencrypt::cert::integrated { 'gerrit':
+            subjects   => $host,
+            puppet_svc => 'apache2',
+            system_svc => 'apache2',
+        }
     }
 
     $ssl_settings = ssl_ciphersuite('apache', 'mid', true)
