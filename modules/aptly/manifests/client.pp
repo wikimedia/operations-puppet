@@ -16,7 +16,7 @@ class aptly::client(
         dist       => "${::lsbdistcodename}-${::labsproject}",
         components => 'main',
         source     => $source,
-        trusted    => true,
+        trust_repo => true,
     }
 
     # Pin it so it has higher preference
