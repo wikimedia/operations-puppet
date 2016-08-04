@@ -26,14 +26,6 @@ class role::analytics_cluster::refinery::data::check {
         minute      => 0,
     }
 
-    cron { 'refinery data check pagecounts':
-        command     => "${::role::analytics_cluster::refinery::path}/bin/refinery-dump-status-webrequest-partitions --hdfs-mount ${hdfs_mount_point} --datasets pagecounts_all_sites,pagecounts_raw --quiet",
-        environment => "MAILTO=${mail_to}",
-        user        => 'hdfs', # See comment in above cron
-        hour        => 10,
-        minute      => 5,
-    }
-
     cron { 'refinery data check pageviews':
         command     => "${::role::analytics_cluster::refinery::path}/bin/refinery-dump-status-webrequest-partitions --hdfs-mount ${hdfs_mount_point} --datasets pageview,projectview --quiet",
         environment => "MAILTO=${mail_to}",
