@@ -126,7 +126,7 @@ rabbit_password = <%= @novaconfig["rabbit_pass"] %>
 [spice]
 html5proxy_host=<%= @novaconfig['controller_hostname'] %>
 html5proxy_port=6082
-html5proxy_base_url=https://<%= @novaconfig['spice_hostname'] %>:6082/spice_auto.html
+html5proxy_base_url=https://<%= @novaconfig['spice_hostname'] %>/spice_auto.html
 
 # These two only matter on the compute hosts:
 server_listen=0.0.0.0

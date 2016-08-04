@@ -89,7 +89,7 @@ class role::cache::misc {
             'dynamic'  => 'no',
             'type'     => 'random',
             'backends' => ['labtestcontrol2001.wikimedia.org'],
-            'be_opts'  => $app_def_be_opts,
+            'be_opts'  => merge($app_def_be_opts, { 'port' => '6082' }),
             'req_host' => 'labtestspice.wikimedia.org',
         },
         'etherpad1001' => {
