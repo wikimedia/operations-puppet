@@ -54,7 +54,7 @@ while getopts "d:hH:p:s:x:" opt; do
 done
 
 filename="planet-${dump_date}.osm.pbf"
-if [ ${state_file_url} -eq "" ] ; then
+if [ "${state_file_url}" == "" ] ; then
   echo "state file URL is mandatory (-s)"
   exit -1
 fi
