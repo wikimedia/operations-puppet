@@ -29,22 +29,24 @@ class phabricator::tools (
         require => Package[$deploy_target],
     }
 
-    if ($dump) {
-        $dump_script = "${directory}/public_task_dump.py"
+    $dump_script = "${directory}/public_task_dump.py"
 
-        file { $dump_script:
-            mode    => '0555',
-            require => Package[$deploy_target],
-        }
+    file { $dump_script:
+        mode    => '0555',
+        require => Package[$deploy_target],
+    }
 
-        cron { $dump_script:
-            ensure  => present,
-            command => $dump_script,
-            user    => root,
-            hour    => '2',
-            minute  => '0',
-            require => Package[$deploy_target],
-        }
+    $dump_cron_ensure ? $dump {
+        true    => present,
+        default => absent,
+    }
+    cron { $dump_script:
+        ensure  => $dump_cron_ensure,
+        command => $dump_script,
+        user    => root,
+        hour    => '2',
+        minute  => '0',
+        require => Package[$deploy_target],
     }
 
     # These bz_*_update jobs require the bugzilla_migration DB
