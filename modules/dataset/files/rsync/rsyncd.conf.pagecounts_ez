@@ -1,5 +1,5 @@
 #####################################################################
-### puppet:///files/rsync/rsyncd.conf.pagecounts
+### Note: This file is managed by Puppet.
 #####################################################################
 
 # write access from stat1002 and stat1003 to pagecounts-ez directory.
