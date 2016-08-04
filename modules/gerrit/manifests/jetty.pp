@@ -28,20 +28,12 @@ class gerrit::jetty(
 
     require_package(['openjdk-7-jdk', 'gerrit', 'libmysql-java'])
 
-    file { '/var/lib/gerrit2/':
-        ensure  => directory,
-        mode    => '0755',
-        owner   => 'gerrit2',
-        require => Package['gerrit'],
-    }
-
     file { '/var/lib/gerrit2/.ssh':
         ensure  => directory,
         recurse => remote,
         mode    => '0644',
         owner   => 'gerrit2',
         group   => 'gerrit2',
-        require => File['/var/lib/gerrit2'],
         source  => 'puppet:///modules/gerrit/.ssh',
     }
 
@@ -53,18 +45,9 @@ class gerrit::jetty(
         content => secret('gerrit/id_rsa'),
     }
 
-    file { '/var/lib/gerrit2/review_site':
-        ensure  => directory,
-        owner   => 'gerrit2',
-        group   => 'gerrit2',
-        mode    => '0644',
-        require => [File['/var/lib/gerrit2'],Package['gerrit']],
-    }
-
     file { '/var/lib/gerrit2/review_site/lib/mysql-connector-java.jar':
         ensure  => 'link',
         target  => '/usr/share/java/mysql-connector-java.jar',
-        require => [Package['gerrit'], Package['libmysql-java']],
     }
 
     file { '/var/lib/gerrit2/review_site/etc':
@@ -74,7 +57,6 @@ class gerrit::jetty(
         group   => 'gerrit2',
         mode    => '0444',
         source  => 'puppet:///modules/gerrit/etc',
-        require => File['/var/lib/gerrit2/review_site'],
     }
 
     file { '/var/lib/gerrit2/review_site/etc/gerrit.config':
