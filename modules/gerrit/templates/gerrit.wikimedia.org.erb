@@ -58,8 +58,8 @@ NameVirtualHost *:443
     SSLCertificateKeyFile /etc/acme/key/gerrit.key
     <%= @ssl_settings.join("\n") %>
 
-    RedirectMatch ^/$ https://<%= @host %>/r/
-    RedirectMatch ^/r$ https://<%= @host %>/r/
+    RedirectMatch ^/$ /r/
+    RedirectMatch ^/r$ /r/
 
     # Misbehaving bots
     SetEnvIf User-Agent 80legs bad_browser
@@ -117,12 +117,12 @@ NameVirtualHost *:443
     # git-review for some reason sometimes uses <https://gerrit.wikimedia.org/tools/hooks/commit-msg>
     # instead of <https://gerrit.wikimedia.org/r/tools/hooks/commit-msg>, except when somebody is
     # trying to reproduce this behavior. But people run into this all the time.
-    RewriteRule ^/tools/hooks/commit-msg$ https://<%= @host %>/r/tools/hooks/commit-msg
+    RewriteRule ^/tools/hooks/commit-msg$ /r/tools/hooks/commit-msg
 
     # Workaround for really broken browser detection in Gerrit code. Not sure if the hex string is
     # stable, this will probably need to be updated at least after Gerrit upgrades. Just load up
     # Gerrit in Firefox and look in the Network Monitor for a similarly named .cache.js file.
-    RewriteRule ^/r/gerrit_ui/undefined.cache.js$ https://<%= @host %>/r/gerrit_ui/D39174379837CB12534D3B279AEAC59F.cache.js
+    RewriteRule ^/r/gerrit_ui/undefined.cache.js$ /r/gerrit_ui/D39174379837CB12534D3B279AEAC59F.cache.js
 
     <%- if @maint_mode -%>
     RedirectMatch temp "/r" "/error.html#"
