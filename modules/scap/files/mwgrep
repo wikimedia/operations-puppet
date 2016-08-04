@@ -127,31 +127,49 @@ query = {
 
 matches = {'public': [], 'private': []}
 uri = BASE_URI + '?' + urllib.urlencode(query)
-req = urllib2.urlopen(uri, json.dumps(search))
-result = json.load(req)['hits']
+try:
+    req = urllib2.urlopen(uri, json.dumps(search))
+    result = json.load(req)['hits']
 
-private_wikis = open('/srv/mediawiki/dblists/private.dblist').read().splitlines()
+    private_wikis = open('/srv/mediawiki/dblists/private.dblist').read().splitlines()
 
-for hit in result['hits']:
-    db_name = hit['_index'].rsplit('_', 2)[0]
-    title = hit['_source']['title']
-    page_name = '%s%s' % (PREFIX_NS[args.ns], title)
-    if db_name in private_wikis:
-        bisect.insort(matches['private'], (db_name, page_name))
-    else:
-        bisect.insort(matches['public'], (db_name, page_name))
+    for hit in result['hits']:
+        db_name = hit['_index'].rsplit('_', 2)[0]
+        title = hit['_source']['title']
+        page_name = '%s%s' % (PREFIX_NS[args.ns], title)
+        if db_name in private_wikis:
+            bisect.insort(matches['private'], (db_name, page_name))
+        else:
+            bisect.insort(matches['public'], (db_name, page_name))
 
-if matches['public']:
-    print('## Public wiki results')
-    for db_name, page_name in matches['public']:
-        print('{:<20}{}'.format(db_name, page_name))
-
-if matches['private']:
     if matches['public']:
-        print('')
-    print('## Private wiki results')
-    for db_name, page_name in matches['private']:
-        print('{:<20}{}'.format(db_name, page_name))
+        print('## Public wiki results')
+        for db_name, page_name in matches['public']:
+            print('{:<20}{}'.format(db_name, page_name))
 
-print('')
-print('(total: %s, shown: %s)' % (result['total'], len(result['hits'])))
+    if matches['private']:
+        if matches['public']:
+            print('')
+        print('## Private wiki results')
+        for db_name, page_name in matches['private']:
+            print('{:<20}{}'.format(db_name, page_name))
+
+    print('')
+    print('(total: %s, shown: %s)' % (result['total'], len(result['hits'])))
+except urllib2.HTTPError, error:
+    try:
+        error_body = json.load(error)
+        if 'error' in error_body and 'root_cause' in error_body['error']:
+            root_cause = error_body['error']['root_cause'][0]
+            if root_cause['type'] == 'invalid_regex_exception':
+                sys.stderr.write('Error while parsing regular expression: {0}\n{1}\n'\
+                    .format(args.term, root_cause['reason']))
+            else:
+                sys.stderr.write('Unknown error: {0}\n'.format(root_cause['reason']))
+        else:
+            sys.stderr.write('Received unexpected json body from elasticsearch:\n{0}\n'\
+                .format(json.dumps(error_body, indent=4, separators=(',', ': '))))
+    except ValueError, e:
+        sys.stderr.write("Error '{0}' while parsing elasticsearch response '{1}'.\n"\
+            .format(e.message, error))
+    exit(1)
