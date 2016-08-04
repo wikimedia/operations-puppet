@@ -5,7 +5,7 @@
 # Determine the site the server is in
 
 # If our puppetmaster is 3.5+ then use the trusted $facts hash
-if versioncmp($::serverversion, '3.5') >= 0 {
+if versioncmp($::serverversion, '3.5') >= 0 and $facts {
     if $facts['ipaddress_eth0'] {
         $main_ipaddress = $facts['ipaddress_eth0']
     } elsif $facts['ipaddress_bond0'] {
