@@ -1,8 +1,47 @@
 class role::prometheus::ops {
     include base::firewall
 
+    $targets_path = '/srv/prometheus/ops/targets'
+
+    # Add one job for each of mysql 'group' (i.e. their broad function)
+    # Each job will look for new files matching the glob and load the job
+    # configuration automatically.
+    $mysql_jobs = [
+      {
+        'job_name'      => 'mysql-core',
+        'file_sd_configs' => [
+          { 'names'  => [ "${targets_path}/mysql-core_*.yaml"] },
+        ]
+      },
+      {
+        'job_name'      => 'mysql-dbstore',
+        'file_sd_configs' => [
+          { 'names'  => [ "${targets_path}/mysql-dbstore_*.yaml"] },
+        ]
+      },
+      {
+        'job_name'      => 'mysql-labs',
+        'file_sd_configs' => [
+          { 'names'  => [ "${targets_path}/mysql-labs_*.yaml"] },
+        ]
+      },
+      {
+        'job_name'      => 'mysql-misc',
+        'file_sd_configs' => [
+          { 'names'  => [ "${targets_path}/mysql-misc_*.yaml"] },
+        ]
+      },
+      {
+        'job_name'      => 'mysql-parsercache',
+        'file_sd_configs' => [
+          { 'names'  => [ "${targets_path}/mysql-parsercache_*.yaml"] },
+        ]
+      },
+    ]
+
     prometheus::server { 'ops':
-        listen_address => '127.0.0.1:9900',
+        listen_address       => '127.0.0.1:9900',
+        scrape_configs_extra => $mysql_jobs,
     }
 
     prometheus::web { 'ops':
