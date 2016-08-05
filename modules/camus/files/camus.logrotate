@@ -1,8 +1,8 @@
 # Note:  This file is managed by Puppet.
 #
 /var/log/camus/*.log {
-  monthly
-  rotate 3
+  weekly
+  rotate 4
   missingok
   notifempty
   nocreate
