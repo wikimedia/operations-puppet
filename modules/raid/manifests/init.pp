@@ -18,6 +18,24 @@ class raid {
 
     if 'megaraid' in $raid {
         require_package('megacli')
+        $get_raid_status_megacli = '/usr/local/lib/nagios/plugins/get-raid-status-megacli'
+
+        file { $get_raid_status_megacli:
+            ensure => present,
+            owner  => 'root',
+            group  => 'root',
+            mode   => '0555',
+            source => 'puppet:///modules/raid/get-raid-status-megacli.py';
+        }
+
+        sudo::user { 'nagios_megaraid':
+            user       => 'nagios',
+            privileges => ["ALL = NOPASSWD: ${get_raid_status_megacli}"],
+        }
+
+        nrpe::check { 'get_raid_status_megacli':
+            command => "/usr/bin/sudo ${get_raid_status_megacli}",
+        }
 
         nrpe::monitor_service { 'raid_megaraid':
             description  => 'MegaRAID',
@@ -43,6 +61,8 @@ class raid {
                 'ALL = NOPASSWD: /usr/sbin/hpssacli controller slot=[0-9] ld all show',
                 'ALL = NOPASSWD: /usr/sbin/hpssacli controller slot=[0-9] ld * show',
                 'ALL = NOPASSWD: /usr/sbin/hpssacli controller slot=[0-9] pd all show',
+                'ALL = NOPASSWD: /usr/sbin/hpssacli controller slot=[0-9] pd all show detail',
+                'ALL = NOPASSWD: /usr/sbin/hpssacli controller slot=[0-9] pd all show status',
                 'ALL = NOPASSWD: /usr/sbin/hpssacli controller slot=[0-9] pd [0-9]\:[0-9] show',
                 'ALL = NOPASSWD: /usr/sbin/hpssacli controller slot=[0-9] pd [0-9][EIC]\:[0-9]\:[0-9] show',
                 'ALL = NOPASSWD: /usr/sbin/hpssacli controller slot=[0-9] pd [0-9][EIC]\:[0-9]\:[0-9][0-9] show',
@@ -62,6 +82,20 @@ class raid {
             description  => 'HP RAID',
             nrpe_command => '/usr/local/lib/nagios/plugins/check_hpssacli',
             timeout      => 40, # can take > 10s on servers with lots of disks
+        }
+
+        $get_raid_status_hpssacli = '/usr/local/lib/nagios/plugins/get-raid-status-hpssacli'
+
+        file { $get_raid_status_hpssacli:
+            ensure => present,
+            owner  => 'root',
+            group  => 'root',
+            mode   => '0555',
+            source => 'puppet:///modules/raid/get-raid-status-hpssacli.sh';
+        }
+
+        nrpe::check { 'get_raid_status_hpssacli':
+            command => $get_raid_status_hpssacli,
         }
     }
 
@@ -83,13 +117,22 @@ class raid {
             description  => 'MPT RAID',
             nrpe_command => "${check_raid} mpt",
         }
+
+        nrpe::check { 'get_raid_status_mpt':
+            command => "${check_raid} mpt",
+        }
     }
+
     if 'md' in $raid {
         # if there is an "md" RAID configured, mdadm is already installed
 
         nrpe::monitor_service { 'raid_md':
             description  => 'MD RAID',
             nrpe_command => "${check_raid} md",
+        }
+
+        nrpe::check { 'get_raid_status_md':
+            command => 'cat /proc/mdstat',
         }
     }
 
