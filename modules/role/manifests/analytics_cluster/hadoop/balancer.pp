@@ -10,6 +10,14 @@ class role::analytics_cluster::hadoop::balancer {
         group  => 'hdfs',
     }
 
+    # logrotate HDFS balancer's log files
+    file { '/etc/logrotate.d/hdfs_balancer':
+        source => 'puppet:///modules/role/analytics_cluster/hadoop/hdfs_balancer.logrotate',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0444',
+    }
+
     cron { 'hdfs-balancer':
         command => '/usr/local/bin/hdfs-balancer >> /var/log/hadoop-hdfs/balancer.log 2>&1',
         user    => 'hdfs',
