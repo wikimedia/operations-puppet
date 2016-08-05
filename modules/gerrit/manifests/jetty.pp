@@ -87,7 +87,7 @@ class gerrit::jetty(
         content => template('gerrit/secure.config.erb'),
         owner   => 'gerrit2',
         group   => 'gerrit2',
-        mode    => '0440',
+        mode    => '0664',
         require => File['/var/lib/gerrit2/review_site/etc'],
     }
 
