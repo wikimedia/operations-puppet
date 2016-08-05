@@ -84,11 +84,12 @@ class gerrit::jetty(
     }
 
     file { '/var/lib/gerrit2/review_site/etc/secure.config':
-        content => template('gerrit/secure.config.erb'),
+        content => template('gerrit/secure2.config.erb'),
         owner   => 'gerrit2',
         group   => 'gerrit2',
+        ensure  => 'link',
         mode    => '0440',
-        require => File['/var/lib/gerrit2/review_site/etc'],
+        target  => '/var/lib/gerrit2/review_site/etc/secure2.config',
     }
 
     if $ssh_host_key != undef {
@@ -126,7 +127,6 @@ class gerrit::jetty(
         command => '/usr/bin/java -jar gerrit.war init -d review_site --batch --no-auto-start',
         require => [
             File['/var/lib/gerrit2/review_site/etc/gerrit.config'],
-            File['/var/lib/gerrit2/review_site/etc/secure.config'],
         ],
     }
 
@@ -136,7 +136,10 @@ class gerrit::jetty(
         group   => 'gerrit2',
         cwd     => '/var/lib/gerrit2',
         command => '/usr/bin/java -jar gerrit.war reindex -d review_site --threads 4',
-        require => Exec['install_gerrit_jetty'],
+        require => [
+            Exec['install_gerrit_jetty'],
+            File['/var/lib/gerrit2/review_site/etc/secure.config'],
+        ],
     }
 
     service { 'gerrit':
