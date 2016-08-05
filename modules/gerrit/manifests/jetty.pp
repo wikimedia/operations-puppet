@@ -2,11 +2,13 @@ class gerrit::jetty(
     $db_host,
     $replication = '',
     $url = "https://${::gerrit::host}/r",
+    $url_http = "http://${::gerrit::host}/r",
     $db_name = 'reviewdb',
     $db_user = 'gerrit',
     $git_dir = 'git',
     $ssh_host_key = undef,
     $heap_limit = '28g',
+    $gerrit_ssl = true,
     ) {
 
     include nrpe
