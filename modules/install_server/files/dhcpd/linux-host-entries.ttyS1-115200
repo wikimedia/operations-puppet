@@ -6110,8 +6110,6 @@ host stat1004 {
 host strontium {
     hardware ethernet 18:03:73:f4:ef:51;
     fixed-address strontium.eqiad.wmnet;
-    option pxelinux.pathprefix "precise-installer/";
-    filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host subra {
