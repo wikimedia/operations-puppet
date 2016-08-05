@@ -1,9 +1,6 @@
 class role::toollabs::etcd::flannel {
     include ::etcd
 
-    # Send *all* the logs!
-    include ::k8s::sendlogs
-
     include base::firewall
 
     $worker_hosts = join(hiera('k8s::worker_hosts'), ' ')
