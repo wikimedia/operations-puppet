@@ -36,7 +36,7 @@ class role::openldap::labs {
     ferm::service { 'labs_ldap':
         proto  => 'tcp',
         port   => '(389 636)',
-        srange => '$ALL_NETWORKS',
+        srange => '($PRODUCTION_NETWORKS $LABS_NETWORKS)',
     }
 
     monitoring::service { 'labs_ldap_check':
