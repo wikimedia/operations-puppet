@@ -63,7 +63,7 @@ class mediawiki::web::beta_sites {
     }
 
     apache::site { 'wmflabs':
-        source   => 'puppet:///modules/mediawiki/apache/beta/sites/wmflabs.conf',
+        ensure   => absent,
         priority => 15,
     }
 
