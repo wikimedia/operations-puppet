@@ -78,7 +78,7 @@ define druid::service(
     ferm::service { "druid-${service}":
         proto  => 'tcp',
         port   =>  $runtime_properties['druid.port'],
-        srange => '$ALL_NETWORKS',
+        srange => '$DOMAIN_NETWORKS',
     }
     if $::realm == 'production' {
         $ensure_monitor_service = $enable ? {

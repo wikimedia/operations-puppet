@@ -103,6 +103,6 @@ class druid::middlemanager(
     ferm::service { 'druid-middlemanager-indexer-task':
         proto  => 'tcp',
         port   =>  "${peon_start_port}:${peon_end_port}",
-        srange => '$ALL_NETWORKS',
+        srange => '$DOMAIN_NETWORKS',
     }
 }
