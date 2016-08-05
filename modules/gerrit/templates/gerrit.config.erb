@@ -1,6 +1,6 @@
 [gerrit]
     basePath = <%= @git_dir %>
-    canonicalWebUrl = <%= @url %>
+    canonicalWebUrl = <%- if @gerrit_ssl -%><%= @url %><%- else -%><%= @url_http %><%- end -%>
     reportBugUrl = https://phabricator.wikimedia.org/maniphest/task/create/?projects=PHID-PROJ-lc5rwomzjp6fmcdpbw43
 [core]
     packedGitOpenFiles = 4096
@@ -41,7 +41,7 @@
     batchThreads = 2
     idleTimeout = 864000
 [httpd]
-    listenUrl = proxy-https://127.0.0.1:8080/r/
+    listenUrl = <%- if @gerrit_ssl -%>proxy-https://127.0.0.1:8080/r/<%- else -%>proxy-http://127.0.0.1:8080/r/<%- end -%>
     maxQueued = 500
     minThreads = 10
     maxThreads = 60
