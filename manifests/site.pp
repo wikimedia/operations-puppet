@@ -2390,7 +2390,7 @@ node 'oxygen.eqiad.wmnet'
 }
 
 # primary puppet master
-node 'palladium.eqiad.wmnet' {
+node /^(palladium|strontium)\.eqiad\.wmnet$/ {
     role ipmi::mgmt, access_new_install, puppetmaster::frontend, pybal_config
     include standard
     include role::conftool::master
@@ -2671,7 +2671,7 @@ node 'sodium.wikimedia.org' {
     interface::add_ip6_mapped { 'main': }
 }
 
-node /^(strontium|rhodium).eqiad.wmnet/ {
+node /^rhodium.eqiad.wmnet/ {
     role puppetmaster::backend
     include standard
 
