@@ -1,0 +1,11 @@
+# Note:  This file is managed by Puppet.
+#
+/var/log/hadoop-hdfs/balancer.log {
+  weekly
+  rotate 4
+  missingok
+  notifempty
+  nocreate
+  compress
+  delaycompress
+}
