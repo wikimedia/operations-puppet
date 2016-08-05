@@ -300,6 +300,7 @@ novaconfig:
   network_host: *labsnovanetworkip
   api_host: *labsnovaapihost
   db_name: 'nova'
+  api_db_name: 'novaapi'
   db_user: 'nova'
   ceilometer_db_name: 'ceilometer'
   ldap_base_dn: 'dc=wikimedia,dc=org'
