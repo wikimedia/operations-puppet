@@ -3,9 +3,6 @@ class role::toollabs::docker::registry {
 
     require role::labs::lvm::srv
 
-    # Send *all* the logs!
-    include ::k8s::sendlogs
-
     sslcert::certificate { 'star.tools.wmflabs.org':
         skip_private => true,
         before       => Class['::docker::registry'],

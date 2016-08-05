@@ -33,9 +33,6 @@ class role::toollabs::k8s::master {
 
     class { 'k8s::controller': }
 
-    # Send *all* the logs!
-    include ::k8s::sendlogs
-
     # FIXME: Setup TLS properly, disallow HTTP
     ferm::service { 'apiserver-http':
         proto => 'tcp',

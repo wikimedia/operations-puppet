@@ -3,9 +3,6 @@ class role::toollabs::k8s::webproxy {
     $master_host = hiera('k8s_master')
     $etcd_url = join(prefix(suffix(hiera('flannel::etcd_hosts'), ':2379'), 'https://'), ',')
 
-    # Send *all* the logs!
-    include ::k8s::sendlogs
-
     ferm::service { 'flannel-vxlan':
         proto => udp,
         port  => 8472,

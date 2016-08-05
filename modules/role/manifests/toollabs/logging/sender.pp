@@ -1,9 +1,9 @@
 # Send logs to a central server
-class k8s::sendlogs(
+class role::toollabs::logging::sender(
     $centralserver,
 ) {
     $centralip = ipresolve($centralserver, 4, $::nameservers[0])
     rsyslog::conf{ 'everything':
-        content => template('k8s/sendlogs.conf.erb')
+        content => template('role/toollabs/sendlogs.conf.erb')
     }
 }
