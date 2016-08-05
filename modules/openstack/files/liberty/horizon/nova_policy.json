@@ -4,7 +4,7 @@
     "admin_or_projectadmin":  [["is_admin:True"], ["role:projectadmin"]],
     "default": [["rule:admin_or_projectadmin"]],
 
-    "compute:create": "rule:admin_or_projectadmin",
+    "compute:create": "rule:admin_api",
     "compute:delete": "rule:admin_or_projectadmin",
     "compute:create:attach_network": "role:admin",
     "compute:create:attach_volume": "role:admin",
@@ -63,7 +63,7 @@
     "compute_extension:quotas:update": [["rule:admin_api"]],
     "compute_extension:quota_classes": [["rule:admin_or_projectadmin"]],
     "compute_extension:rescue": [["rule:admin_or_projectadmin"]],
-    "compute_extension:security_groups": [["rule:admin_or_projectadmin"]],
+    "compute_extension:security_groups": [["rule:admin_api"]],
     "compute_extension:server_diagnostics": [["rule:admin_api"]],
     "compute_extension:simple_tenant_usage:show": [["rule:admin_or_member"]],
     "compute_extension:simple_tenant_usage:list": [["rule:admin_api"]],
