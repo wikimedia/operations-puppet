@@ -12,7 +12,7 @@ class role::analytics_cluster::hadoop::balancer {
 
     # logrotate HDFS balancer's log files
     file { '/etc/logrotate.d/hdfs_balancer':
-        source => 'puppet:///modules/role/analytics_cluster/hadoop/hdfs_balancer.logrotate',
+        source => 'puppet:///modules/role/analytics_cluster/hadoop/hadoop_hdfs.logrotate',
         owner  => 'root',
         group  => 'root',
         mode   => '0444',
