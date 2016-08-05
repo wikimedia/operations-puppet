@@ -119,18 +119,6 @@ class icinga::monitor::toollabs {
         host          => $test_entry_host,
     }
 
-    monitoring::service { 'tools-checker-webservices':
-        description   => 'Start and verify pages via webservices',
-        check_command => "${checker}!/service/start!OK",
-        host          => $test_entry_host,
-    }
-
-    monitoring::service { 'tools-checker-kubernetes-webservices':
-        description   => 'Start and verify pages via webservices on kubernetes',
-        check_command => "${checker}!/webservice/kubernetes!OK",
-        host          => $test_entry_host,
-    }
-
     monitoring::service { 'tools-checker-etcd-flannel':
         description   => 'All Flannel etcd nodes are healthy',
         check_command => "${checker}!/etcd/flannel!OK",
