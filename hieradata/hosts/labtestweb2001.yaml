@@ -446,4 +446,4 @@ network::subnets:
           ipv6: 2620:0:860:204::/64
 
 
-openstack::version: 'liberty'
+openstack::version: 'mitaka'
