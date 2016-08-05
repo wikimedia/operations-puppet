@@ -70,7 +70,7 @@ class gerrit::jetty(
         recurse => remote,
         owner   => 'gerrit2',
         group   => 'gerrit2',
-        mode    => '0444',
+        mode    => '0644',
         source  => 'puppet:///modules/gerrit/etc',
         require => File['/var/lib/gerrit2/review_site'],
     }
