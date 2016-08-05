@@ -62,8 +62,8 @@ define apache::conf(
         fail("invalid conf_type '${conf_type}'")
     }
 
-    if $source == undef and $content == undef  {
-        fail('you must provide either "source" or "content"')
+    if $source == undef and $content == undef and $ensure == 'present' {
+        fail('you must provide either "source" or "content", or ensure must be "absent"')
     }
 
     if $source != undef and $content != undef  {
