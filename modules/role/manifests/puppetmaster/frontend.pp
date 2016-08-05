@@ -22,11 +22,6 @@ class role::puppetmaster::frontend {
                           'loadfactor' => 1,
                           },
                           {
-                          'worker'     => 'strontium.eqiad.wmnet',
-                          'loadfactor' => 0,
-                          'offline'    => true,
-                          },
-                          {
                           'worker'     => 'rhodium.eqiad.wmnet',
                           'loadfactor' => 20,
                           },
