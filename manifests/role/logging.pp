@@ -23,13 +23,13 @@ class role::logging::mediawiki($monitor = true, $log_directory = '/srv/mw-log' )
     }
 
     ferm::rule { 'udp2log_accept_all_wikimedia':
-        rule => 'saddr ($ALL_NETWORKS) proto udp ACCEPT;',
+        rule => 'saddr ($DOMAIN_NETWORKS) proto udp ACCEPT;',
     }
 
     ferm::rule { 'udp2log_notrack':
         table => 'raw',
         chain => 'PREROUTING',
-        rule  => 'saddr ($ALL_NETWORKS) proto udp NOTRACK;',
+        rule  => 'saddr ($DOMAIN_NETWORKS) proto udp NOTRACK;',
     }
 
     # let monitoring host connect via NRPE
