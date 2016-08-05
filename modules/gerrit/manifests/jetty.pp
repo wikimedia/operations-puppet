@@ -4,6 +4,8 @@ class gerrit::jetty(
     $url = "https://${::gerrit::host}/r",
     $db_name = 'reviewdb',
     $db_user = 'gerrit',
+    $db_password = '123',
+    $db_custom_password = false,
     $git_dir = 'git',
     $ssh_host_key = undef,
     $heap_limit = '28g',
@@ -14,7 +16,11 @@ class gerrit::jetty(
     # Private config
     include passwords::gerrit
     $email_key = $passwords::gerrit::gerrit_email_key
-    $db_pass = $passwords::gerrit::gerrit_db_pass
+    if $db_custom_password {
+        $db_pass = $db_password
+    } else {
+        $db_pass = $passwords::gerrit::gerrit_db_pass
+    }
     $phab_cert = $passwords::gerrit::gerrit_phab_cert
 
     # Setup LDAP
