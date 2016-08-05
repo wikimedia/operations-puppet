@@ -8,7 +8,7 @@ connection_type=libvirt
 root_helper=sudo nova-rootwrap /etc/nova/rootwrap.conf
 instance_name_template=i-%08x
 daemonize=1
-scheduler_driver=filter_scheduler.FilterScheduler
+scheduler_driver=nova.scheduler.filter_scheduler.FilterScheduler
 wmf_scheduler_hosts_pool=<%= @novaconfig["scheduler_pool"].join(",") %>
 scheduler_default_filters=RetryFilter,AvailabilityZoneFilter,RamFilter,ComputeFilter,ComputeCapabilitiesFilter,ImagePropertiesFilter,ServerGroupAntiAffinityFilter,ServerGroupAffinityFilter,AggregateInstanceExtraSpecsFilter,AvailabilityZoneFilter,SchedulerPoolFilter,DiskFilter
 
@@ -144,8 +144,5 @@ keymap=en-us
 [workarounds]
 # This is the safest option until evacuation is fixed in Libery
 destroy_after_evacuate=False
-
-[api_database]
-connection=mysql://<%= @novaconfig["db_user"] %>:<%= @novaconfig["db_pass"] %>@<%= @novaconfig["db_host"] %>/<%= @novaconfig["api_db_name"] %>
 
 
