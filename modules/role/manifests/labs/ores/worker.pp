@@ -22,6 +22,12 @@ class role::labs::ores::worker {
                     'BROKER_URL'            => 'redis://ores-redis-02:6379',
                     'CELERY_RESULT_BACKEND' => 'redis://ores-redis-02:6379',
                 }
+            },
+            'scoring_systems'  => {
+                'celery_queue' => {
+                    'BROKER_URL'            => 'redis://ores-redis-02:6379',
+                    'CELERY_RESULT_BACKEND' => 'redis://ores-redis-02:6379',
+                }
             }
         },
         priority => '99',

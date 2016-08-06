@@ -58,6 +58,12 @@ class ores::web(
                 'CELERY_RESULT_BACKEND' => "redis://${redis_host}:6379",
             }
         },
+        'scoring_systems' => {
+            'celery_queue' => {
+                'BROKER_URL'            => "redis://${redis_host}:6379",
+                'CELERY_RESULT_BACKEND' => "redis://${redis_host}:6379",
+            }
+        },
     }
     if $redis_password {
         $pass_config = {
@@ -68,6 +74,12 @@ class ores::web(
             },
             'score_processors' => {
                 'ores_celery' => {
+                    'BROKER_URL'            => "redis://:${redis_password}@${redis_host}:6379",
+                    'CELERY_RESULT_BACKEND' => "redis://:${redis_password}@${redis_host}:6379",
+                }
+            },
+            'scoring_systems' => {
+                'celery_queue' => {
                     'BROKER_URL'            => "redis://:${redis_password}@${redis_host}:6379",
                     'CELERY_RESULT_BACKEND' => "redis://:${redis_password}@${redis_host}:6379",
                 }
