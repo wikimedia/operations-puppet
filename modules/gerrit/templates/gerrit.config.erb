@@ -15,9 +15,11 @@
     username = <%= @db_user %>
     url = jdbc:mysql://<%= @db_host %>/<%= @db_name %>?characterSetResults=utf8&characterEncoding=utf8&connectionCollation=utf8_unicode_ci
 [auth]
-    type = LDAP
+    type = <%= @auth_type %>
     cookieSecure = true
+<%- if @auth_type == 'LDAP' -%>
     registerUrl = https://wikitech.wikimedia.org/w/index.php?title=Special:UserLogin&returnto=Help%3AGetting+Started&type=signup
+
 [ldap]
     server = <% @ldap_hosts.each do |ldap_host| %>ldaps://<%= ldap_host %> <% end %>
     accountBase = ou=people,<%= @ldap_base_dn %>
@@ -26,6 +28,7 @@
     groupBase = ou=groups,<%= @ldap_base_dn %>
     groupMemberPattern = (&(objectClass=groupOfNames)(member=${dn}))
     groupScope = one
+<%- end -%>
 [sendemail]
     includeDiff = true
     smtpServerPort = 25
