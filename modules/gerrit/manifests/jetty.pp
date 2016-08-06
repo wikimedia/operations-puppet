@@ -7,6 +7,8 @@ class gerrit::jetty(
     $git_dir = 'git',
     $ssh_host_key = undef,
     $heap_limit = '28g',
+    $gerrit_auth = true,
+    $gerrit_auth_type = 'DEVELOPMENT_BECOME_ANY_ACCOUNT',
     ) {
 
     include nrpe
