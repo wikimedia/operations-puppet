@@ -2,8 +2,6 @@ class role::toollabs::k8s::master {
     include base::firewall
     include toollabs::infrastructure
 
-    include ::etcd
-
     $master_host = hiera('k8s::master_host', $::fqdn)
     $etcd_url = join(prefix(suffix(hiera('k8s::etcd_hosts'), ':2379'), 'https://'), ',')
 
