@@ -349,6 +349,7 @@ class toollabs::exec_environ {
             'libvips15',
             'mysql-client',                # mariadb-client just... doesn't work on precise. Apt failures
             # No php5-readline (T136519).
+            # opencv-data is not available on precise (T142321)
             'pyflakes',                    # T59863
             'tclthread',                   # now called tcl-thread
             # no nodejs-legacy             (presumably, -legacy makes a symlink that is default in precise)
@@ -368,6 +369,7 @@ class toollabs::exec_environ {
             'nodejs-legacy',               # T1102
             'mariadb-client',              # For /usr/bin/mysql, is broken on precise atm
             'php5-readline',               # T136519.
+            'opencv-data',                 # T142321
             'python-flake8',
             'python3-flake8',
             'tcl-thread',
@@ -407,6 +409,7 @@ class toollabs::exec_environ {
             'nodejs-legacy',               # T1102
             'mariadb-client',              # For /usr/bin/mysql, is broken on precise atm
             'php5-readline',               # T136519.
+            'opencv-data',                 # T142321
             'python-flake8',
             'python3-flake8',
             'tcl-thread',
