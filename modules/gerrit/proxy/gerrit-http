@@ -1,0 +1,31 @@
+    DocumentRoot /var/www
+    <Directory />
+        Options FollowSymLinks
+        AllowOverride None
+    </Directory>
+    <Directory /var/www/>
+        Options Indexes FollowSymLinks MultiViews
+        AllowOverride None
+        <IfVersion >= 2.4>
+          Require all granted
+        </IfVersion>
+        <IfVersion < 2.4>
+          Order allow,deny
+          allow from all
+        </IfVersion>
+    </Directory>
+
+    ErrorLog /var/log/apache2/<%= @host %>.http.error.log
+
+    # Possible values include: debug, info, notice, warn, error, crit,
+    # alert, emerg.
+    LogLevel warn
+
+    CustomLog /var/log/apache2/<%= @host %>.http.access.log wmf
+    ServerSignature Off
+    <IfVersion >= 2.4>
+        IncludeOptional /etc/acme/challenge-apache.conf
+    </IfVersion>
+    RewriteEngine on
+    RewriteCond %{REQUEST_URI} !^/\.well-known/acme-challenge/
+    RewriteRule ^/(.*)$ https://<%= @host %>/$1 [L,R=301,NE]
