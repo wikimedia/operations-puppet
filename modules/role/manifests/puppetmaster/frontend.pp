@@ -18,10 +18,6 @@ class role::puppetmaster::frontend {
         is_git_master => true,
         workers       => [
                           {
-                          'worker'     => 'palladium.eqiad.wmnet',
-                          'loadfactor' => 1,
-                          },
-                          {
                           'worker'     => 'rhodium.eqiad.wmnet',
                           'loadfactor' => 20,
                           },
