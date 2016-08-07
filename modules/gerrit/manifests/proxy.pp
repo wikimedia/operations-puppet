@@ -1,15 +1,33 @@
 class gerrit::proxy(
     $host         = $::gerrit::host,
     $maint_mode   = false,
+    $letsencrypt  = true,
+    $labs_https   = true,
     ) {
 
-    letsencrypt::cert::integrated { 'gerrit':
-        subjects   => $host,
-        puppet_svc => 'apache2',
-        system_svc => 'apache2',
+    if $letsencrypt {
+        letsencrypt::cert::integrated { 'gerrit':
+            subjects   => $host,
+            puppet_svc => 'apache2',
+            system_svc => 'apache2',
+        }
+
+        $ssl_settings = ssl_ciphersuite('apache', 'mid', true)
     }
 
-    $ssl_settings = ssl_ciphersuite('apache', 'mid', true)
+    file { '/etc/apache2/gerrit-http':
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0444',
+        source => 'puppet:///modules/gerrit/proxy/gerrit-http',
+    }
+
+    file { '/etc/apache2/gerrit-https':
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0444',
+        source => 'puppet:///modules/gerrit/proxy/gerrit-https',
+    }
 
     apache::site { $host:
         content => template('gerrit/gerrit.wikimedia.org.erb'),
