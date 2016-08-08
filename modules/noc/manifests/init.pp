@@ -38,6 +38,7 @@ class noc {
     }
 
     git::clone { 'operations/software/dbtree':
+        ensure    => 'latest',
         directory => '/srv/dbtree',
         branch    => 'master',
         owner     => 'mwdeploy',
