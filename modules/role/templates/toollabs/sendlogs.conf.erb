@@ -1,3 +1,4 @@
-# Send all logs to a central server!
-# FIXME: In the future, target this better?
-*.* @<%= centralip %>:514
+# Send all logs to multiple central servers
+<% @centralserver_ips.each do | ip |%>
+*.* @<%= ip %>:514
+<%= end %>
