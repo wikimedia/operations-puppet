@@ -36,13 +36,6 @@ class contint::package_builder {
     }
 
     package { [
-        # Let git-buidpackage find the Ubuntu/Debian release names
-        'libdistro-info-perl',
-        ]:
-        ensure => present,
-    }
-
-    package { [
         'jenkins-debian-glue',
         'jenkins-debian-glue-buildenv',
         ]:

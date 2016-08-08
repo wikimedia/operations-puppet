@@ -10,7 +10,6 @@ class role::package::builder {
         description => 'Debian package builder'
     }
 
-
     # this uses modules/rsync to
     # set up an rsync daemon service
     include rsync::server
