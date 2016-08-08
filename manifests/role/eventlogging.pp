@@ -55,28 +55,13 @@ class role::eventlogging {
         ],
         default => $kafka_config['brokers']['array']
     }
-    $kafka_zookeeper_url = $kafka_config['zookeeper']['url']
-
-    # We are trying out different kafka clients in eventlogging.
-    # The default Kafka handler 'protocol' is 'kafka://'.  Other
-    # handlers are named differently, e.g. 'kafka-python://'.
-    $eventlogging_kafka_handler = hiera('eventlogging_kafka_handler', 'kafka')
-
-    # Kafka consumer auto_offset_reset enum values are different
-    # for different kafka clients. eventlogging analytics only uses latest,
-    # so conditionally select the appropriate enum default.  This is
-    # temporary until we select a single kafka handler in eventlogging code.
-    $kafka_auto_offset_reset = $eventlogging_kafka_handler ? {
-        'kafka' => '-1',     # pykafka
-        default => 'latest', # kafka-python, confluent-kafka
-    }
 
     # By default, the EL Kafka writer writes events to
     # schema based topic names like eventlogging_SCHEMA,
     # with each message keyed by SCHEMA_REVISION.
     # If you want to write to a different topic, append topic=<TOPIC>
     # to your query params.
-    $kafka_base_uri    = inline_template('<%= @eventlogging_kafka_handler %>:///<%= @kafka_brokers_array.join(":9092,") + ":9092" %>')
+    $kafka_base_uri    = inline_template('kafka:///<%= @kafka_brokers_array.join(":9092,") + ":9092" %>')
 
     # Read in server side and client side raw events from
     # Kafka, process them, and send events to schema
@@ -141,7 +126,7 @@ class role::eventlogging::forwarder inherits role::eventlogging {
     # This forwards the kafka eventlogging-valid-mixed topic to
     # ZMQ port 8600 for backwards compatibility.
     eventlogging::service::forwarder { 'legacy-zmq':
-        input   => "${kafka_mixed_uri}&zookeeper_connect=${kafka_zookeeper_url}&auto_commit_enable=False&auto_offset_reset=${kafka_auto_offset_reset}&identity=legacy_zmq",
+        input   => "${kafka_mixed_uri}&enable_auto_commit=False&identity=eventlogging_legacy_zmq",
         outputs => ["tcp://${eventlogging_host}:8600"],
     }
 
@@ -159,24 +144,20 @@ class role::eventlogging::forwarder inherits role::eventlogging {
 # them along for further consumption.
 #
 class role::eventlogging::processor inherits role::eventlogging {
-    $kafka_consumer_args  = hiera(
-        'eventlogging_processor_kafka_consumer_args',
-        "auto_commit_enable=True&auto_commit_interval_ms=10000&auto_offset_reset=${kafka_auto_offset_reset}"
-    )
     $kafka_consumer_group = hiera(
         'eventlogging_processor_kafka_consumer_group',
-        'eventlogging-00'
+        'eventlogging_processor_client_side_00'
     )
 
     # Run N parallel client side processors.
     # These will auto balance amongst themselves.
     $client_side_processors = hiera(
         'eventlogging_client_side_processors',
-        ['client-side-0']
+        ['client-side-00', 'client-side-01']
     )
     eventlogging::service::processor { $client_side_processors:
         format         => '%q %{recvFrom}s %{seqId}d %t %o %{userAgent}i',
-        input          => "${kafka_client_side_raw_uri}&zookeeper_connect=${kafka_zookeeper_url}&${kafka_consumer_args}",
+        input          => $kafka_client_side_raw_uri,
         sid            => $kafka_consumer_group,
         outputs        => [
             $kafka_schema_uri,
@@ -195,11 +176,6 @@ class role::eventlogging::consumer::mysql inherits role::eventlogging {
 
     # Log strictly valid events to the 'log' database on m4-master.
 
-    $kafka_consumer_args  = hiera(
-        'eventlogging_mysql_kafka_consumer_args',
-        "auto_commit_enable=True&auto_commit_interval_ms=1000&auto_offset_reset=${kafka_auto_offset_reset}"
-    )
-
     class { 'passwords::mysql::eventlogging': }    # T82265
     $mysql_user = $passwords::mysql::eventlogging::user
     $mysql_pass = $passwords::mysql::eventlogging::password
@@ -212,13 +188,14 @@ class role::eventlogging::consumer::mysql inherits role::eventlogging {
     # These will auto balance amongst themselves.
     $mysql_consumers = hiera(
         'eventlogging_mysql_consumers',
-        ['mysql-m4-master']
+        ['mysql-m4-master-00']
     )
-    $kafka_consumer_group = 'mysql-m4-master'
+    $kafka_consumer_group = 'eventlogging_consumer_mysql_00'
 
     # Kafka consumer group for this consumer is mysql-m4-master
     eventlogging::service::consumer { $mysql_consumers:
-        input  => "${kafka_mixed_uri}&zookeeper_connect=${kafka_zookeeper_url}&${kafka_consumer_args}",
+        # auto commit offsets to kafka more often for mysql consumer:
+        input  => "${kafka_mixed_uri}&auto_commit_interval_ms=1000",
         output => "mysql://${mysql_user}:${mysql_pass}@${mysql_db}?charset=utf8&statsd_host=${statsd_host}&replace=True",
         sid    => $kafka_consumer_group,
         # Restrict permissions on this config file since it contains a password.
@@ -281,21 +258,25 @@ class role::eventlogging::consumer::files inherits role::eventlogging {
         ],
     }
 
-    $kafka_consumer_args  = "auto_commit_enable=True&auto_commit_interval_ms=10000&auto_offset_reset=${kafka_auto_offset_reset}"
     $kafka_consumer_group = hiera(
         'eventlogging_files_kafka_consumer_group',
-        'eventlogging-files-00'
+        'eventlogging_consumer_files_00'
     )
 
-    eventlogging::service::consumer {
-        'client-side-events.log':
-            input  => "${kafka_client_side_raw_uri}&zookeeper_connect=${kafka_zookeeper_url}&${kafka_consumer_args}&raw=True",
-            output => "file://${out_dir}/client-side-events.log",
-            sid    => $kafka_consumer_group;
-        'all-events.log':
-            input  =>  "${kafka_mixed_uri}&zookeeper_connect=${kafka_zookeeper_url}&${kafka_consumer_args}",
-            output => "file://${out_dir}/all-events.log",
-            sid    => $kafka_consumer_group;
+    # Raw client side events:
+    eventlogging::service::consumer { 'client-side-events.log':
+        input  => "${kafka_client_side_raw_uri}&raw=True",
+        output => "file://${out_dir}/client-side-events.log",
+        sid    => $kafka_consumer_group,
+    }
+    # Processed and valid all (AKA 'mixed') mixed.
+    # Note that this does not include events that were
+    # 'blacklisted' during processing.  Events are blacklisted
+    # from these logs for volume reasons.
+    eventlogging::service::consumer { 'all-events.log':
+        input  =>  $kafka_mixed_uri,
+        output => "file://${out_dir}/all-events.log",
+        sid    => $kafka_consumer_group,
     }
 
     $backup_destinations = $::realm ? {
