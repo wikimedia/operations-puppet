@@ -37,6 +37,7 @@ class role::lvs::balancer {
             $sip['zotero'][$::site],
             $sip['graphoid'][$::site],
             $sip['mobileapps'][$::site],
+            $sip['kartotherian'][$::site],
             $sip['aqs'][$::site],
             $sip['eventbus'][$::site],
             $sip['apertium'][$::site],

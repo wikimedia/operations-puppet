@@ -205,6 +205,11 @@ restbase:
   restbase1013.eqiad.wmnet: [restbase]
   restbase1014.eqiad.wmnet: [restbase]
   restbase1015.eqiad.wmnet: [restbase]
+maps:
+  maps1001.eqiad.wmnet: [kartotherian]
+  maps1002.eqiad.wmnet: [kartotherian]
+  maps1003.eqiad.wmnet: [kartotherian]
+  maps1004.eqiad.wmnet: [kartotherian]
 elasticsearch:
   elastic1017.eqiad.wmnet: [elasticsearch, elasticsearch-ssl]
   elastic1018.eqiad.wmnet: [elasticsearch, elasticsearch-ssl]
