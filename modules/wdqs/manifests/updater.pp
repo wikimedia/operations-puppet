@@ -8,43 +8,14 @@ class wdqs::updater(
     $username = $::wdqs::username,
 ){
 
-    $init_template = "wdqs/initscripts/wdqs-updater.${::initsystem}.erb"
-    case $::initsystem {
-        'systemd': {
-
-            $path = '/etc/systemd/system/wdqs-updater.service'
-
-            exec { 'systemd reload for wdqs-updater':
-                refreshonly => true,
-                command     => '/bin/systemctl daemon-reload',
-                subscribe   => File[$path],
-            }
-
-            file { $path:
-                ensure  => present,
-                content => template($init_template),
-                mode    => '0444',
-                owner   => root,
-                group   => root,
-                require => [
-                            File['/etc/wdqs/updater-logs.xml'],
+    base::service_unit { 'wdqs-updater':
+        template_name  => 'wdqs-updater',
+        systemd        => true,
+        upstart        => true,
+        service_params => {
+            enable => true,
+        },
+        require        => [ File['/etc/wdqs/updater-logs.xml'],
                             Service['wdqs-blazegraph'] ],
-            }
-        }
-        'upstart': {
-            file { '/etc/init/wdqs-updater.conf':
-                ensure  => present,
-                content => template($init_template),
-                mode    => '0444',
-                owner   => root,
-                group   => root,
-                require => [
-                            File['/etc/wdqs/updater-logs.xml'],
-                            Service['wdqs-blazegraph']
-                            ],
-            }
-
-        }
-        default: { fail('Unsupported init system') }
     }
 }
