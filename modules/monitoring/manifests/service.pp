@@ -12,6 +12,7 @@ define monitoring::service(
     $retry_check_interval  = 1,
     $contact_group         = hiera('contactgroups', 'admins'),
     $config_dir            = '/etc/nagios',
+    $event_handler         = undef,
 )
 {
     # the list of characters is the default for illegal_object_name_chars
@@ -91,5 +92,6 @@ define monitoring::service(
         is_volatile            => $check_volatile,
         check_freshness        => $check_fresh,
         freshness_threshold    => $is_fresh,
+        event_handler          => $event_handler,
     }
 }
