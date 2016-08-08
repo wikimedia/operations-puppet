@@ -11,7 +11,8 @@ Examples:
 
 It sends metrics of the form:
     raw.{firstsegment}.status.{status} -> For statuses!
-    raw.{firstsegment}.httpversion.{version} -> For HTTP versions used
+
+It also sends combined metrics on a per status and per-http version basis.
 """
 import re
 from collections import defaultdict
@@ -26,7 +27,6 @@ class UrlFirstSegmentLogster(LogsterParser):
         '''Initialize any data structures or variables needed for keeping track
         of the tasty bits we find in the log we are parsing.'''
         self.status_stats = {}
-        self.httpver_stats = {}
 
         self.combined_status = defaultdict(int)
         self.combined_httpver = defaultdict(int)
@@ -62,9 +62,6 @@ class UrlFirstSegmentLogster(LogsterParser):
             self.status_stats[firstsegment] = statuses
             self.combined_status[status] += 1
 
-            httpversions = self.httpver_stats.get(firstsegment, {httpversion: 0})
-            httpversions[httpversion] = httpversions.get(httpversion, 0) + 1
-            self.httpver_stats[firstsegment] = httpversions
             self.combined_httpver[httpversion] += 1
         else:
             raise LogsterParsingException("regmatch failed to match")
@@ -94,12 +91,6 @@ class UrlFirstSegmentLogster(LogsterParser):
             for status, count in statuses.items():
                 metric_name = 'raw.{firstsegment}.status.{status}'.format(
                     firstsegment=firstsegment, status=status
-                )
-                metrics.append(MetricObject(metric_name, count, 'Responses'))
-        for firstsegment, httpversions in self.httpver_stats.items():
-            for httpver, count in httpversions.items():
-                metric_name = 'raw.{firstsegment}.httpver.{httpver}'.format(
-                    firstsegment=firstsegment, httpver=httpver
                 )
                 metrics.append(MetricObject(metric_name, count, 'Responses'))
 
