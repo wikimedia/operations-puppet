@@ -49,4 +49,9 @@ class base::labs inherits base {
             user    => 'root',
         }
     }
+
+    # Create a root password and store it on the puppetmaster
+    user { 'root':
+        password => generate('/usr/local/sbin/make-labs-root-password', $::labsproject)
+    }
 }
