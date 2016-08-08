@@ -10,10 +10,6 @@ class logstash::output::elasticsearch::scripts {
         source => 'puppet:///modules/logstash/logstash_delete_index.sh',
     }
 
-    file { '/usr/local/bin/logstash_optimize_index.sh':
-        ensure => absent,
-    }
-
     file { '/usr/local/bin/logstash_clear_cache.sh':
         owner  => 'root',
         group  => 'root',
