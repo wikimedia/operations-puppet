@@ -317,8 +317,11 @@ if __name__ == '__main__':
 
     while True:
         logging.info('starting a run')
+        servers = ldap3.ServerPool([
+            ldap3.Server(s, connect_timeout=1)
+            for s in ldapconfig['servers']
+        ], ldap3.POOLING_STRATEGY_ROUND_ROBIN, active=True, exhaust=True)
         with ldap3.Connection(
-            [ldap3.Server(s) for s in ldapconfig['servers']],
             read_only=True,
             user=ldapconfig['user'],
             auto_bind=True,
