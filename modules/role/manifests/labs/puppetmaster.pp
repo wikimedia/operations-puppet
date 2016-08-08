@@ -4,6 +4,7 @@ class role::labs::puppetmaster {
 
     include network::constants
     include ldap::role::config::labs
+    include puppetmaster::labsrootpass
 
     $labs_metal = hiera('labs_baremetal_servers', [])
     $ldapconfig = $ldap::role::config::labs::ldapconfig
