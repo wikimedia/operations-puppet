@@ -26,6 +26,7 @@ import io
 import time
 import subprocess
 
+
 class User:
     def __init__(self, project, name, uid, kind):
         self.project = project
@@ -224,9 +225,12 @@ if __name__ == '__main__':
     logging.debug(str(args))
 
     while True:
-        server = ldap3.Server(config['ldap']['host'])
+        servers = ldap3.ServerPool([
+            ldap3.Server(host, connect_timeout=10)
+            for host in config['ldap']['hosts']
+        ], ldap3.POOLING_STRATEGY_ROUND_ROBIN, active=True, exhaust=True)
         with ldap3.Connection(
-            server, read_only=True,
+            servers, read_only=True,
             user=config['ldap']['username'],
             auto_bind=True,
             password=config['ldap']['password']
