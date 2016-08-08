@@ -155,13 +155,22 @@ class role::eventlogging::processor inherits role::eventlogging {
         'eventlogging_client_side_processors',
         ['client-side-00', 'client-side-01']
     )
+
+    # Increase number and backoff time of retries for async
+    # analytics uses.  If metadata changes, we should give
+    # more time to retry. NOTE: testing this in production
+    # STILL yielded some dropped messages.  Need to figure
+    # out why and stop it.  This either needs to be higher,
+    # or it is a bug in kafka-python.
+    # See: https://phabricator.wikimedia.org/T142430
+    $kafka_producer_args = 'retries=6&retry_backoff_ms=200'
     eventlogging::service::processor { $client_side_processors:
         format         => '%q %{recvFrom}s %{seqId}d %t %o %{userAgent}i',
         input          => $kafka_client_side_raw_uri,
         sid            => $kafka_consumer_group,
         outputs        => [
-            $kafka_schema_uri,
-            $kafka_mixed_uri,
+            "${kafka_schema_uri}&${kafka_producer_args}",
+            "${kafka_mixed_uri}&${kafka_producer_args}",
         ],
         output_invalid => true,
     }
