@@ -21,4 +21,16 @@ class puppetmaster::labs {
         user    => 'gitpuppet',
         minute  => '*/1',
     }
+
+    file { '/usr/local/bin/make_labs_password.sh':
+        ensure => 'present',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => 'puppet:///modules/puppetmaster/make_labs_password.sh'
+    }
+
+    file { '/var/cache/instance-root-passwords':
+        ensure => 'directory',
+    }
 }
