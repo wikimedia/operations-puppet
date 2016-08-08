@@ -56,4 +56,19 @@ class role::labs::puppetmaster {
             remote_cert_cleaner => hiera('labs_certmanager_hostname'),
         }
     }
+
+    require_package('pwgen')
+
+    file { '/usr/local/sbin/make_labs_password':
+        ensure => 'present',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => 'puppet:///modules/puppetmaster/make_labs_password'
+    }
+
+    file { '/var/local/instance-root-passwords':
+        ensure => 'directory',
+        mode   => '0700',
+    }
 }
