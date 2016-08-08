@@ -2353,6 +2353,11 @@ node 'netmon1001.wikimedia.org' {
     }
 }
 
+node /^(nihal\.codfw|nitrogen\.eqiad)\.wmnet$/ {
+    include base::firewall
+    include standard
+}
+
 # Test server for labs ElasticSearch replication
 node 'nobelium.eqiad.wmnet' {
     role elasticsearch::server

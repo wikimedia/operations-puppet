@@ -89,6 +89,16 @@ host mx2001 {
     fixed-address mx2001.wikimedia.org;
 }
 
+host nihal {
+     hardware ethernet aa:00:00:27:56:f0;
+     fixed-address nihal.eqiad.wmnet;
+}
+
+host nitrogen {
+     hardware ethernet aa:00:00:e8:68:1f;
+     fixed-address nitrogen.eqiad.wmnet;
+}
+     
 host etherpad1001 {
     hardware ethernet AA:00:00:EE:AD:01;
     fixed-address etherpad1001.eqiad.wmnet;
