@@ -100,6 +100,7 @@ lvs_service_ips:
     eqiad: 10.2.2.16
     codfw: 10.2.1.16
   kartotherian: &ip_block022
+    eqiad: 10.2.2.13
     codfw: 10.2.1.13
   mobileapps: &ip_block023
     eqiad: 10.2.2.14
@@ -767,10 +768,11 @@ lvs_services:
         codfw:
           hostname: zotero.svc.codfw.wmnet
   kartotherian:
-    description: Kartotherian, kartotherian.svc.codfw.wmnet
+    description: "Kartotherian, kartotherian.svc.%{::site}.wmnet"
     class: low-traffic
     sites:
     - codfw
+    - eqiad
     ip: *ip_block022
     port: 6533
     bgp: 'yes'

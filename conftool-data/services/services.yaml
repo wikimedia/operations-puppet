@@ -124,6 +124,7 @@ maps:
       weight: 10
     datacenters:
     - codfw
+    - eqiad
 aqs:
   aqs:
     port: 7232
