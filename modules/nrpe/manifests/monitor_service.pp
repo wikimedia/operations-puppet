@@ -22,6 +22,9 @@
 #    $critical
 #       Defaults to false. It will passed directly to monitoring::service which
 #       will use nagios_service, so extra care, it is not a boolean, it is a string
+#    $event_handler
+#       Default to false. If present execute this registered command on the
+#       Nagios server.
 #    $ensure
 #       Defaults to present
 #
@@ -31,6 +34,7 @@ define nrpe::monitor_service( $description,
                               $retries       = 3,
                               $timeout       = 10,
                               $critical      = false,
+                              $event_handler = undef,
                               $ensure        = 'present') {
 
     nrpe::check { "check_${title}":
@@ -44,6 +48,7 @@ define nrpe::monitor_service( $description,
         check_command => "nrpe_check!check_${title}!${timeout}",
         contact_group => $contact_group,
         retries       => $retries,
+        event_handler => $event_handler,
         critical      => $critical,
     }
 }
