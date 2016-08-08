@@ -1,0 +1,139 @@
+#!/bin/bash
+#############################################################
+# This file is maintained by puppet!
+# modules/snapshot/templates/cron/get_dump_stats.erb
+#############################################################
+
+getsetting() {
+    results=$1
+    section=$2
+    setting=$3
+    echo "$results" | jq -M ".$section.$setting"
+}
+
+checkval() {
+    setting=$1
+    value=$2
+    if [ -z "$value" -o "$value" == "null" ]; then
+        echo "failed to retrieve value of $setting from $configfile"
+        exit 1
+    fi
+}
+
+get_wiki_stats() {
+    wiki=$1
+    user=$2
+    password=$3
+
+    ###############
+    # get db info
+    ###############
+    wiki="enwiki"
+    host=$( php "$multiversionscript" getSlaveServer.php --wiki $wiki )
+
+    ###############
+    # get dump stats
+    ###############
+    biggestpage=$( echo 'select page_title,page_namespace,page_len from page order by DESC limit 1' | mysql -u "$user" -p "$password" -h "$host" "$wiki" )
+
+    cd "$public"
+    date=$( grep "/${wiki}/" rsync-dirlist-last-1-good.txt | mawk -F '/' '{ print $3 }' )
+    if [ -z "$date" ]; then
+        echo "Failed to get date of the last good en wp run. No mail this month."
+        exit 1
+    fi    
+
+    cd "${wiki}/${date}"
+    currentpages=$( bzcat "${wiki}-${date}-pages-articles.xml.bz2" | wc -c )
+    currentall=$( bzcat "${wiki}-${date}-pages-meta-current.xml.bz2" | wc -c )
+    fullhistory=$( bzcat "${wiki}-${date}-pages-meta-history*.xml.bz2" | wc -c )
+
+}
+
+get_stats_text() {
+    echo <<EOF
+
+---------------------
+Total size of ${wiki} page content dump files for
+articles, current content only:
+${currentpages}
+
+Total size of ${wiki} page content dump files for
+all pages, current content only:
+${currentall}
+
+Total size of ${wiki} page content dump files for
+all pages, all revisions:
+${fullhistory}
+
+Current page with the largest bytecount in the ${wiki} project,
+across all namespaces (title, namespace, length):
+${biggestpage}
+--------------------
+
+EOF
+
+}
+
+
+###############
+# main
+###############
+confsdir="<%= scope.lookupvar('snapshot::dumps::dirs::confsdir') -%>"
+configfile="${confsdir}/wikidump.conf.monitor"
+repodir="<%= scope.lookupvar('snapshot::dumps::dirs::repodir') -%>"
+
+###############
+# get conf settings
+###############
+args="wiki:dir,dblist,skipdblist;tools:php;output:public"
+results=$( python "${repodir}/getconfigvals.py" --configfile "$configfile" --args "$args" )
+
+apachedir=`getsetting "$results" "wiki" "dir"`
+alldblist=`getsetting "$results" "wiki" "dblist"`
+skipdblist=`getsetting "$results" "wiki" "skipdblist"`
+php=`getsetting "$results" "tools" "php"`
+public=`getsetting "$results" "output" "public"`
+
+for settingname in "apachedir" "alldblist" "skipdblist" "php" "public"; do
+    checkval "$settingname" "${!settingname}"
+done
+
+allprojects=$( wc -l $dblist )
+skipped=$( wc -l $skipdblist )
+totaldumped=$(( $allprojects - $skipped ))
+
+multiversionscript="${apachedir}/multiversion/MWScript.php"
+user=$( echo 'echo $wgDBadminuser;' | $php "$multiversionscript" eval.php $wiki )
+$password=$( echo 'echo $wgDBadminpassword;' | $php "$multiversionscript" eval.php $wiki )
+
+# choose random wiki not enwiki
+wikirandom=$(...)
+
+for wiki in "$wikirandom" "enwiki"; do
+    get_wiki_stats $wiki
+    wikistatstext=`get_stats_text`
+    emailbody="${emailbody}\n${wikistatstext}"
+done
+
+###############
+# send email
+###############
+# fixme these addresses need to come from someplace too
+cat <<EOF | /usr/bin/mail -r "${sndr_address}" -s "XML Dumps FAQ monthly update" ${rcpt_address}
+
+Greetings XML Dump users and contributors!
+
+This is your automatic monthly Dumps FAQ update email.  This update
+contains figures for the ${date} full page content history run.
+
+We are currently dumping ${totaldumped} projects in total.
+
+${emailbody}
+
+Sincerely,
+
+#fixme a nicer sig would be better
+somebody or other.
+EOF
+
