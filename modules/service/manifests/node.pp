@@ -72,6 +72,12 @@
 # [*local_logging*]
 #   Whether to store log entries on the target node as well. Default: true
 #
+# [*logging_name*]
+#   The logging name to send to logstash. Default: $title
+#
+# [*statsd_prefix*]
+#   The statsd metric prefix to use. Default: $title
+#
 # [*auto_refresh*]
 #   Whether the service should be automatically restarted after config changes.
 #   Default: true
@@ -134,6 +140,8 @@ define service::node(
     $entrypoint      = '',
     $starter_script  = 'src/server.js',
     $local_logging   = true,
+    $logging_name    = $title,
+    $statsd_prefix   = $title,
     $auto_refresh    = true,
     $init_restart    = true,
     $deployment      = undef,
