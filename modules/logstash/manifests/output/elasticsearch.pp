@@ -62,10 +62,6 @@ define logstash::output::elasticsearch(
         require => File['/usr/local/bin/logstash_delete_index.sh'],
     }
 
-    cron { "logstash_optimize_index_${title}":
-        ensure  => absent,
-    }
-
     cron { "logstash_clear_cache_${title}":
         ensure  => $ensure_cron,
         command => "/usr/local/bin/logstash_clear_cache.sh ${host}:${port} '${title}-*'",
