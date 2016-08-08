@@ -347,11 +347,29 @@ sub deliver_synth_ {
 	call wm_common_xcache_deliver;
 
 	// At the frontends, copy X-Cache-Int to X-Cache and delete X-Cache-Int
-	// This prevents double-set from confusing varnishlog-based stats
-	// grepping for X-Cache: and seeing double-set on varnish4
+	// This prevents double-set of X-Cache in log parsing on varnish4.
+	// In this block we also decipher X-Cache into an overall X-Cache-Status
+	// output header with one of 5 simple values: hit, miss, pass, int, or
+	// bug.
 	if (<%= @req_method %> != "PURGE") {
 		set resp.http.X-Cache = resp.http.X-Cache-Int;
 		unset resp.http.X-Cache-Int;
+		if (resp.http.X-Cache ~ "hit") {
+			set resp.http.X-Cache-Status = "hit";
+		} elsif (resp.http.X-Cache ~ "int") {
+			set resp.http.X-Cache-Status = "int";
+		} elsif (resp.http.X-Cache ~ "pass,[^,]+$") {
+			// The special pass regex above is because we have
+			// layer-differential pass rules where a frontend may
+			// intentionally pass traffic that a backend does not,
+			// which should still count as a true 'miss' if the
+			// backend misses it.
+			set resp.http.X-Cache-Status = "pass";
+		} elsif (resp.http.X-Cache ~ "miss") {
+			set resp.http.X-Cache-Status = "miss";
+		} else {
+			set resp.http.X-Cache-Status = "bug";
+		}
 	}
 
 	std.collect(resp.http.Via);
