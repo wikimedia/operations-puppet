@@ -14,4 +14,12 @@ class base::debdeploy
     if $grains != {} {
         create_resources(salt::grain, $grains)
     }
+
+    file { '/usr/local/bin/apt-upgrade-activity':
+        ensure => present,
+        source => 'puppet:///modules/base/apt-upgrade-activity',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+    }
 }
