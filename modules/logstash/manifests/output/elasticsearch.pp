@@ -64,13 +64,6 @@ define logstash::output::elasticsearch(
 
     cron { "logstash_optimize_index_${title}":
         ensure  => absent,
-        command => "/usr/local/bin/logstash_optimize_index.sh ${host}:${port} \"${title}-$(date -d '-1days' +\\%Y.\\%m.\\%d)\"",
-        user    => 'root',
-        hour    => 1,
-        # Stagger execution on each node of cluster to avoid running in
-        # parallel.
-        minute  => 5 * fqdn_rand(12, "logstash_optimize_index_${title}"),
-        require => File['/usr/local/bin/logstash_optimize_index.sh'],
     }
 
     cron { "logstash_clear_cache_${title}":

@@ -12,10 +12,6 @@ class logstash::output::elasticsearch::scripts {
 
     file { '/usr/local/bin/logstash_optimize_index.sh':
         ensure => absent,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
-        source => 'puppet:///modules/logstash/logstash_optimize_index.sh',
     }
 
     file { '/usr/local/bin/logstash_clear_cache.sh':
