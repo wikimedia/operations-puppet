@@ -47,6 +47,14 @@ class icinga::plugins {
 
     File <| tag == nagiosplugin |>
 
+    # WMF custom event handlers
+    file { '/usr/lib/nagios/plugins/eventhandlers/raid_handler':
+        source => 'puppet:///modules/icinga/raid_handler.py',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+    }
+
     # WMF custom service checks
     file { '/usr/lib/nagios/plugins/check_ripe_atlas.py':
         source => 'puppet:///modules/icinga/check_ripe_atlas.py',
@@ -114,6 +122,14 @@ class icinga::plugins {
     include passwords::nagios::mysql
 
     $nagios_mysql_check_pass = $passwords::nagios::mysql::mysql_check_pass
+
+    nagios_common::check_command::config { 'raid_handler':
+        ensure     => present,
+        content    => template('icinga/event_handlers/raid_handler.cfg.erb'),
+        config_dir => '/etc/icinga',
+        owner      => 'icinga',
+        group      => 'icinga'
+    }
 
     nagios_common::check_command::config { 'smtp.cfg':
         ensure     => present,
