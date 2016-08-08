@@ -11,6 +11,7 @@ class logstash::output::elasticsearch::scripts {
     }
 
     file { '/usr/local/bin/logstash_optimize_index.sh':
+        ensure => absent,
         owner  => 'root',
         group  => 'root',
         mode   => '0555',
