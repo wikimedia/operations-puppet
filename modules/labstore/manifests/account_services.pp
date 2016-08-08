@@ -9,6 +9,14 @@
 
 class labstore::account_services {
 
+    # We need a newer version of python3-ldap3 than what is in Jessie
+    # For the connection time out / server pool features
+    apt::pin { 'python3-ldap3':
+        pin      => 'release a=jessie c=backports',
+        priority => '1001',
+        before   => Package['python3-ldap3'],
+    }
+
     require_package('python3-yaml', 'python3-ldap3')
 
     # Set to true only for the labstore that is currently
@@ -20,7 +28,10 @@ class labstore::account_services {
 
     $creds = {
         'ldap' => {
-            'host'     => 'ldap-labs.eqiad.wikimedia.org',
+            'hosts'    => [
+                'ldap-labs.eqiad.wikimedia.org',
+                'ldap-labs.codfw.wikimedia.org'
+             ],
             'username' => 'cn=proxyagent,ou=profile,dc=wikimedia,dc=org',
             'password' => $ldapconfig['proxypass'],
         },
