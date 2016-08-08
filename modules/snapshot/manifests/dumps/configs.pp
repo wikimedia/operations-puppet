@@ -67,11 +67,13 @@ class snapshot::dumps::configs {
                   pagesPerChunkHistory  => '168815,480631,943865,1760565',
                     pagesPerChunkAbstract => '800000',
                     chunksForAbstract     => '4',
+                    checkpointTime        => '720',
                 },
                 commonswiki => {
                     pagesPerChunkHistory  => '6457504,9672260,12929298,17539944',
                     pagesPerChunkAbstract => '11000000',
                     chunksForAbstract     => '4',
+                    checkpointTime        => '720',
                 },
                 wikidatawiki => {
                     pagesPerChunkHistory  => '2421529,4883997,8784997,8199134',
