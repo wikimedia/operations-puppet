@@ -10,7 +10,6 @@ class role::package::builder {
         description => 'Debian package builder'
     }
 
-
     # this uses modules/rsync to
     # set up an rsync daemon service
     include rsync::server
@@ -30,5 +29,12 @@ class role::package::builder {
     monitoring::service { 'package_builder_rsync':
         description   => 'package builder rsync',
         check_command => 'check_tcp!873',
+    }
+
+    package { [
+        # Let git-buidpackage find the Ubuntu/Debian release names
+        'libdistro-info-perl',
+        ]:
+        ensure => present,
     }
 }
