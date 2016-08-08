@@ -28,7 +28,7 @@ worker_heartbeat_timeout: <%= @heartbeat_to %>
 
 # Logger info
 logging:
-  name: <%= @title %>
+  name: <%= @logging_name %>
   level: warn
   streams:
   # Use gelf-stream -> logstash
@@ -43,7 +43,7 @@ logging:
 
 # Statsd metrics reporter
 metrics:
-  name: <%= @title %>
+  name: <%= @statsd_prefix %>
   type: statsd
   host: <%= cvars['stat_host'] %>
   port: <%= cvars['stat_port'] %>

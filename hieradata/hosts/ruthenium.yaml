@@ -3,3 +3,6 @@ admin::groups:
   - parsoid-admin
   - parsoid-test-admins
   - parsoid-test-roots
+
+parsoid::logging_name: parsoid-tests
+parsoid::statsd_prefix: parsoid-tests
