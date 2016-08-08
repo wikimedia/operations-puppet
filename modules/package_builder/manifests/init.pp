@@ -36,6 +36,7 @@ class package_builder(
         'debian-archive-keyring',
         'gnome-pkg-tools',
         'gobject-introspection',
+        'libdistro-info-perl',
     ])
 
     if $::operatingsystem == 'Ubuntu' {
