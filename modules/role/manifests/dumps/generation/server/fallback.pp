@@ -9,4 +9,5 @@ class role::dumps::generation::server::fallback {
     include ::profile::dumps::nfs
     include ::profile::dumps::generation::server::dumpstatusfiles_sync
     include ::profile::dumps::generation::server::cleanup
+    include ::profile::dumps::generation::server::statsender
 }
