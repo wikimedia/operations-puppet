@@ -63,7 +63,7 @@ define logstash::output::elasticsearch(
     }
 
     cron { "logstash_optimize_index_${title}":
-        ensure  => $ensure_cron,
+        ensure  => absent,
         command => "/usr/local/bin/logstash_optimize_index.sh ${host}:${port} \"${title}-$(date -d '-1days' +\\%Y.\\%m.\\%d)\"",
         user    => 'root',
         hour    => 1,
