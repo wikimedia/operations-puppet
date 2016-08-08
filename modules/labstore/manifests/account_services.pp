@@ -17,7 +17,12 @@ class labstore::account_services {
         before   => Package['python3-ldap3'],
     }
 
-    require_package('python3-yaml', 'python3-ldap3')
+    package { [
+        'python3-ldap3',
+        'python-yaml'
+    ]:
+        ensure => present,
+    }
 
     # Set to true only for the labstore that is currently
     # actively serving files
