@@ -1,5 +1,9 @@
 [Unit]
 Description=Wikidate Query Service Updater
+Wants=wdqs-blazegraph
+After=wdqs-blazegraph
+AssertPathExists=<%= @package_dir %>/wikidata.jnl
+ConditionPathExists=<%= @data_dir %>/data_loaded
 
 [Service]
 Type=simple
