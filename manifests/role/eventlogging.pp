@@ -194,7 +194,7 @@ class role::eventlogging::consumer::mysql inherits role::eventlogging {
 
     # Kafka consumer group for this consumer is mysql-m4-master
     eventlogging::service::consumer { $mysql_consumers:
-        # auto commit offsets to kafka more often for mysql consumer:
+        # auto commit offsets to kafka more often for mysql consumer:
         input  => "${kafka_mixed_uri}&auto_commit_interval_ms=1000",
         output => "mysql://${mysql_user}:${mysql_pass}@${mysql_db}?charset=utf8&statsd_host=${statsd_host}&replace=True",
         sid    => $kafka_consumer_group,
