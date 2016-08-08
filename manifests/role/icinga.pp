@@ -27,6 +27,7 @@ class role::icinga(
     include icinga::monitor::commons
     include icinga::monitor::elasticsearch
     include icinga::monitor::wdqs
+    include icinga::event_handlers::raid
 
     include role::authdns::monitoring
     include netops::monitoring

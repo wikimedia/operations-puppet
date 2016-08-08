@@ -44,11 +44,13 @@ class raid {
             command => "/usr/bin/sudo ${get_raid_status_megacli} -c",
         }
 
+        $service_description = 'MegaRAID'
         nrpe::monitor_service { 'raid_megaraid':
-            description           => 'MegaRAID',
+            description           => $service_description,
             nrpe_command          => "${check_raid} megacli",
             normal_check_interval => $normal_check_interval,
             retry_check_interval  => $retry_check_interval,
+            event_handler         => "raid_handler!megacli!${service_description}!${::site}",
         }
     }
 
@@ -86,12 +88,14 @@ class raid {
             ],
         }
 
+        $service_description = 'HP RAID'
         nrpe::monitor_service { 'raid_hpssacli':
-            description           => 'HP RAID',
+            description           => $service_description,
             nrpe_command          => '/usr/local/lib/nagios/plugins/check_hpssacli',
             timeout               => 50, # can take > 10s on servers with lots of disks
             normal_check_interval => $normal_check_interval,
             retry_check_interval  => $retry_check_interval,
+            event_handler         => "raid_handler!hpssacli!${service_description}!${::site}",
         }
 
         $get_raid_status_hpssacli = '/usr/local/lib/nagios/plugins/get-raid-status-hpssacli'
@@ -123,11 +127,13 @@ class raid {
             before  => Package['mpt-status'],
         }
 
+        $service_description = 'MPT RAID'
         nrpe::monitor_service { 'raid_mpt':
-            description           => 'MPT RAID',
+            description           => $service_description,
             nrpe_command          => "${check_raid} mpt",
             normal_check_interval => $normal_check_interval,
             retry_check_interval  => $retry_check_interval,
+            event_handler         => "raid_handler!mpt!${service_description}!${::site}",
         }
 
         nrpe::check { 'get_raid_status_mpt':
@@ -138,9 +144,11 @@ class raid {
     if 'md' in $raid {
         # if there is an "md" RAID configured, mdadm is already installed
 
+        $service_description = 'MD RAID'
         nrpe::monitor_service { 'raid_md':
-            description  => 'MD RAID',
-            nrpe_command => "${check_raid} md",
+            description   => $service_description,
+            nrpe_command  => "${check_raid} md",
+            event_handler => "raid_handler!md!${service_description}!${::site}",
         }
 
         nrpe::check { 'get_raid_status_md':
