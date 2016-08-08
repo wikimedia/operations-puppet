@@ -28,7 +28,7 @@ class role::statsd {
         proto   => 'udp',
         port    => '8125',
         notrack => true,
-        srange  => '$ALL_NETWORKS',
+        srange  => '$PRODUCTION_NETWORKS',
     }
 
     class { '::statsite': }
