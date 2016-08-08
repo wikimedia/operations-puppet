@@ -5,6 +5,7 @@ class puppetmaster::labs {
     if ($::lsbdistcodename == 'precise') {
         package { 'libldap-ruby1.8': ensure => present; }
     }
+    require_package('pwgen')
 
     include puppetmaster::certcleaner
 
@@ -20,5 +21,17 @@ class puppetmaster::labs {
         command => '(cd /var/lib/git/operations/labs/private && /usr/bin/git pull) > /dev/null 2>&1',
         user    => 'gitpuppet',
         minute  => '*/1',
+    }
+
+    file { '/usr/local/bin/make_labs_password.sh':
+        ensure => 'present',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => 'puppet:///modules/puppetmaster/make_labs_password.sh'
+    }
+
+    file { '/var/cache/instance-root-passwords':
+        ensure => 'directory',
     }
 }
