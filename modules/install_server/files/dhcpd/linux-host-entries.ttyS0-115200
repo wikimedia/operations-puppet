@@ -18,9 +18,20 @@ host bromine {
     fixed-address bromine.eqiad.wmnet;
 }
 
+# ganeti VM used for d-i testing
+host d-i-test {
+    hardware ethernet aa:00:00:3b:60:cb;
+    fixed-address d-i-test.eqiad.wmnet;
+}
+
 host dubnium {
     hardware ethernet aa:00:00:2f:d8:57;
     fixed-address dubnium.wikimedia.org;
+}
+     
+host etherpad1001 {
+    hardware ethernet AA:00:00:EE:AD:01;
+    fixed-address etherpad1001.eqiad.wmnet;
 }
 
 host fermium {
@@ -98,11 +109,6 @@ host nitrogen {
      hardware ethernet aa:00:00:e8:68:1f;
      fixed-address nitrogen.eqiad.wmnet;
 }
-     
-host etherpad1001 {
-    hardware ethernet AA:00:00:EE:AD:01;
-    fixed-address etherpad1001.eqiad.wmnet;
-}
 
 host planet1001 {
     hardware ethernet aa:00:00:19:24:b9;
@@ -129,16 +135,6 @@ host prometheus2002 {
     fixed-address prometheus2002.codfw.wmnet;
 }
 
-host seaborgium {
-    hardware ethernet aa:00:00:4d:be:84;
-    fixed-address seaborgium.wikimedia.org;
-}
-
-host serpens {
-    hardware ethernet aa:00:00:0e:a4:81;
-    fixed-address serpens.wikimedia.org;
-}
-
 # ganeti VMs used for pybal testing/development
 host pybal-test2001 {
     hardware ethernet aa:00:00:16:8d:f9;
@@ -160,10 +156,14 @@ host rutherfordium {
     fixed-address rutherfordium.eqiad.wmnet;
 }
 
-# ganeti VM used for d-i testing
-host d-i-test {
-    hardware ethernet aa:00:00:3b:60:cb;
-    fixed-address d-i-test.eqiad.wmnet;
+host seaborgium {
+    hardware ethernet aa:00:00:4d:be:84;
+    fixed-address seaborgium.wikimedia.org;
+}
+
+host serpens {
+    hardware ethernet aa:00:00:0e:a4:81;
+    fixed-address serpens.wikimedia.org;
 }
 
 host zosma {
