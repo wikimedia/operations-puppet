@@ -10,6 +10,7 @@ class role::labs::puppetmaster {
     $basedn = $ldapconfig['basedn']
     $novaconfig = hiera_hash('novaconfig', {})
     $labs_instance_range = $novaconfig['fixed_range']
+    $horizon_host = hiera('labs_horizon_host')
     $horizon_host_ip = ipresolve(hiera('labs_horizon_host'), 4)
 
 
@@ -21,6 +22,10 @@ class role::labs::puppetmaster {
         allow_from     => $allow_from,
         is_labs_master => true,
         secure_private => false,
+        extra_auth_rules => "# Allow Horizon to ask the puppetmaster about available roles
+path /resource_type
+auth any
+allow ${horizon_host}",
         config         => {
             'thin_storeconfigs' => false,
             'node_terminus'     => 'ldap',

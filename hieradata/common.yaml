@@ -5,6 +5,12 @@ datacenters:
   - esams
   - ulsfo
 
+puppetmaster::extra_auth_rules: |-
+  # Temporary allow rhodium to compile all the catalogs while testing
+  path ~ ^/catalog/([^/]+)$
+  method find
+  allow rhodium.eqiad.wmnet
+
 # Main statsd instance
 statsd: statsd.eqiad.wmnet:8125
 
