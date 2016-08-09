@@ -1,0 +1,16 @@
+[user]
+    name = Riccardo Coccioli
+    email = rcoccioli@wikimedia.org
+
+[alias]
+    b = branch
+    fe = fetch --recurse-submodules
+    pu = pull --recurse-submodules
+    su = submodule foreach 'git pull'
+    st = status
+    co = checkout
+    ci = commit
+    ds = diff --staged
+    di = diff --submodule
+    wdi = diff --word-diff=plain
+    ll = log --graph --pretty=format:'%Cred%h%Creset -%C(auto)%d%Creset %s %Cgreen(%cr) %C(cyan)<%an>%Creset' --abbrev-commit --date=relative
