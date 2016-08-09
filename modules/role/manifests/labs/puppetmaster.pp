@@ -21,6 +21,7 @@ class role::labs::puppetmaster {
         server_name    => hiera('labs_puppet_master'),
         allow_from     => $allow_from,
         is_labs_master => true,
+        secure_private => false,
         config         => {
             'thin_storeconfigs' => false,
             'node_terminus'     => 'ldap',

@@ -3,8 +3,9 @@
 # This class handles the repositories from which the puppetmasters pull
 #
 # === Parameters
-# [*is_labs_master*]
-# Differentiates production and labs masters
+# [*secure_private*]
+# If false, /etc/puppet/private will be labs/private.git.
+# Otherwise, some magic is done to have local repositories and sync between puppetmasters.
 #
 # [*is_git_master*]
 # If True, the git private repository here will be considered a master.
@@ -13,7 +14,7 @@
 # For servers that are a master for the private repo, a list of hosts to replicate to
 #
 class puppetmaster::gitclone(
-    $is_labs_master = false,
+    $secure_private = true,
     $is_git_master = false,
     $replicate_to = undef,
     ){
@@ -72,7 +73,7 @@ class puppetmaster::gitclone(
             mode    => '0640';
     }
 
-    if ! $is_labs_master {
+    if $secure_private {
         # Set up private repo.
         # Note that puppet does not actually clone the repo -- puppetizing that
         # turns out to be a big, insecure mess.
