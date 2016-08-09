@@ -23,8 +23,7 @@ class openstack::nova::spiceproxy(
         require   => Package['spice-html5'];
     }
 
-    #if $::fqdn == hiera('labs_nova_controller') {
-    if false {
+    if $::fqdn == hiera('labs_nova_controller') {
         # These services aren't on by default, pending some
         #  security discussions.
         service { 'nova-spiceproxy':
