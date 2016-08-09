@@ -14,6 +14,8 @@
 #       Defaults to present
 #   root_dir
 #       See $postgresql::server::root_dir
+#   use_ssl
+#       Enable ssl for both clients and replication
 #
 # Actions:
 #  Install/configure postgresql in a slave configuration
@@ -33,6 +35,7 @@ class postgresql::slave(
     $pgversion='9.1',
     $ensure='present',
     $root_dir='/var/lib/postgresql',
+    $use_ssl=false,
 ) {
 
     $data_dir = "${root_dir}/${pgversion}/main"
@@ -42,6 +45,7 @@ class postgresql::slave(
         pgversion => $pgversion,
         includes  => [ $includes, 'slave.conf'],
         root_dir  => $root_dir,
+        use_ssl   => $use_ssl,
     }
 
     file { "/etc/postgresql/${pgversion}/main/slave.conf":
