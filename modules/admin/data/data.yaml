@@ -1750,7 +1750,9 @@ users:
     gid: 500
     name: addshore
     realname: Adam Shorland
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAABJQAAAIEApeItORPk5O7RFYDonA2HMvZnKKxr5caasia26wCgNC4ht9G7YegZRdikSqYGELb8NZtsRWkbtBwSj+T6O2DPcGQFTRIynDwjN9c9iHwd9gQXs7+3R0WZgFfoqs7ycPoq44mTBcDqtR4W2WIaHei5OlbJitEsk0om2+6YQLXVuzE= rsa-key-20150902]
+    ssh_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAABJQAAAIEApeItORPk5O7RFYDonA2HMvZnKKxr5caasia26wCgNC4ht9G7YegZRdikSqYGELb8NZtsRWkbtBwSj+T6O2DPcGQFTRIynDwjN9c9iHwd9gQXs7+3R0WZgFfoqs7ycPoq44mTBcDqtR4W2WIaHei5OlbJitEsk0om2+6YQLXVuzE= rsa-key-20150902
+      - ssh-rsa AAAAB3NzaC1yc2EAAAABJQAAAQEAup2rqK/HwiLt7pSQG1BIDR0zKs5SurLjAc0YAjOFIR5l5Lh5vFt3EvwXhDH+9bgL+cpAQQSCR705xrnpE/Rb+ZqfYaB7F0Xd/Y33vDpNVvhaW+9kMKeEQPx6TuDazVywPm6TU/Xmhd3m/62unqt26jetCsx2eBD8TSRlnnYAtDzTFNNvBckYwJcQFXdPrcwOrr2fwy2F4n/F61Mh6xYUoWhVP2d0Gg6wQNMJshnxquaNLuCqqPQTFOZqyJFOvMIFeMpwGXUANFcvOxBrhG4tG/iIw3qzeZQnHokkwh/9dIWjYMZckCwXCLOPbWnOH39Lm5hjlmk6hM3VRjzYrGlE1Q== rsa-key-20160809-wmfprod
     uid: 2178
   jminor:
     ensure: present
