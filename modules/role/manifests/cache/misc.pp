@@ -92,6 +92,13 @@ class role::cache::misc {
             'be_opts'  => merge($app_def_be_opts, { 'port' => '6082' }),
             'req_host' => 'labtestspice.wikimedia.org',
         },
+        'labspice' => {
+            'dynamic'  => 'no',
+            'type'     => 'random',
+            'backends' => ['labcontrol1001.wikimedia.org'],
+            'be_opts'  => merge($app_def_be_opts, { 'port' => '6082' }),
+            'req_host' => 'labspice.wikimedia.org',
+        },
         'etherpad1001' => {
             'dynamic'  => 'no',
             'type'     => 'random',
