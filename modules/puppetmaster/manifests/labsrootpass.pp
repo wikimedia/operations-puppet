@@ -12,6 +12,7 @@
 class puppetmaster::labsrootpass {
 
     require_package('pwgen')
+    require_package('whois')
 
     file { '/usr/local/sbin/make-labs-root-password':
         ensure => 'present',
@@ -23,6 +24,7 @@ class puppetmaster::labsrootpass {
 
     file { '/var/local/labs-root-passwords':
         ensure => 'directory',
+        owner  => 'puppet',
         mode   => '0700',
     }
 }
