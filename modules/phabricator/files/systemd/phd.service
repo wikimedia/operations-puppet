@@ -1,0 +1,16 @@
+[Unit]
+Description=phabricator-phd
+After=syslog.target network.target
+Before=apache2.service
+User=phd
+Group=phd
+
+[Service]
+Type=oneshot
+Enviroment="PATH=/sbin:/usr/sbin:/usr/local/sbin:/usr/local/bin:/usr/bin:/bin"
+ExecStart=/srv/phab/phabricator/bin/phd start
+ExecStop=/srv/phab/phabricator/bin/phd stop
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target

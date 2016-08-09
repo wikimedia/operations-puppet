@@ -235,10 +235,22 @@ class phabricator (
         require  => $base_requirements,
     }
 
-    # This needs to become Upstart managed
+    if $::initsystem == 'systemd' {
+        file { '/etc/systemd/system/phd.service':
+            ensure => present,
+            owner  => 'root',
+            group  => 'root',
+            mode   => '0444',
+            source => 'puppet://modules/phabricator/systemd/phd.service',
+        }
+    }
+
+    # This needs to become <s>Upstart</s> systemd managed
     # https://secure.phabricator.com/book/phabricator/article/managing_daemons/
     # Meanwhile upstream has a bug to make an LSB friendly wrapper
     # https://secure.phabricator.com/T8129
+    # see examples of real-word unit files in comments of:
+    # https://secure.phabricator.com/T4181
     service { 'phd':
         ensure     => running,
         start      => '/usr/sbin/service phd start --force',
