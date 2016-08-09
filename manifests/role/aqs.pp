@@ -9,6 +9,8 @@ class role::aqs {
         description => 'Analytics Query Service Node',
     }
 
+    include ::passwords::aqs
+
     include standard
     include base::firewall
 
@@ -20,8 +22,6 @@ class role::aqs {
     include ::cassandra
     include ::cassandra::metrics
     include ::cassandra::logging
-
-    include ::passwords::aqs
 
     $cassandra_instances = $::cassandra::instances
 
