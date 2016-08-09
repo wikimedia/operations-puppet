@@ -27,6 +27,8 @@
 #    - $secure_private:
 #        If true, some magic is done to have local repositories and sync between puppetmasters.
 #        Otherwise, /etc/puppet/private will be labs/private.git.
+#    - $extra_auth_rules:
+#        String - extra authentication rules to add before the default policy.
 
 class puppetmaster(
             $server_name='puppet',
@@ -47,6 +49,7 @@ class puppetmaster(
             $is_git_master=false,
             $hiera_config=$::realm,
             $secure_private=true,
+            $extra_auth_rules='',
     ){
 
     $gitdir = '/var/lib/git'
@@ -125,9 +128,6 @@ class puppetmaster(
     if $is_labs_master {
         # This is required for the mwyaml hiera backend
         require_package('ruby-httpclient')
-
-        # This variable is used by the auth.conf template
-        $horizon_host = hiera('labs_horizon_host')
     }
 
     file { '/etc/puppet/auth.conf':
