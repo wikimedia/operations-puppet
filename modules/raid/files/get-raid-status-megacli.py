@@ -3,10 +3,12 @@
 Get the status of a MegaRAID RAID
 
 Execute and parse megacli commands in order to print a summary of the RAID
-status. Only components in non-optimal status are shown.
+status. By default only components in non-optimal status are shown.
 """
 
+import argparse
 import subprocess
+import zlib
 
 ADAPTER_LINE_STARTSWITH = 'Adapter #'
 EXIT_LINE_STARTSWITH = 'Exit Code:'
@@ -176,30 +178,33 @@ class RaidStatus():
             if context == final_context:
                 break
 
-    def print_status(self, optimal=False):
-        """ Print to stdout the summarized RAID status
+    def get_status(self, get_all=False):
+        """ Return a string with the summarized RAID status
 
             Keyword arguments:
-            optimal -- if False print only hierarchical chains where there is
+            get_all -- if False print only hierarchical chains where there is
                        at least one non-optimal block, all blocks otherwise
         """
 
+        status = []
         message = 'does not include components in optimal state'
-        if optimal:
+        if get_all:
             message = 'includes all components'
 
-        print('=== RaidStatus ({})'.format(message))
+        status.append('=== RaidStatus ({})'.format(message))
 
         for adapter in self.adapters:
-            if not optimal and adapter['optimal']:
+            if not get_all and adapter['optimal']:
                 continue
 
-            self._print_block(adapter, optimal=optimal)
+            status += self._get_block_status(adapter, get_all=get_all)
 
-        print('=== RaidStatus completed')
+        status.append('=== RaidStatus completed')
 
-    def _print_block(self, block, prefix='', optimal=False):
-        """ Print to stdout a summary of the given block
+        return '\n'.join(status)
+
+    def _get_block_status(self, block, prefix='', get_all=False):
+        """ Return an array of string with the summary of the given block
 
             Arguments:
             block   -- the block to be printed
@@ -210,22 +215,42 @@ class RaidStatus():
                        at least one non-optimal block, all blocks otherwise
         """
 
+        status = []
         for key in CONTEXTS[block['context']]['print_keys']:
             try:
-                print('{}{}: {}'.format(prefix, key, block[key]))
+                status.append('{}{}: {}'.format(prefix, key, block[key]))
             except:
                 pass  # Explicitely ignore missing keys
 
-        print('')  # Separate each block
+        status.append('')  # Separate each block
 
         for child in block['childs']:
             # Skip the child if not needed
-            if not optimal and child['optimal']:
+            if not get_all and child['optimal']:
                 if (block['optimal'] or
                         not CONTEXTS[block['context']]['include_childs']):
                     continue
 
-            self._print_block(child, prefix=prefix + '\t', optimal=optimal)
+            status += self._get_block_status(
+                child, prefix=prefix + '\t', get_all=get_all)
+
+        return status
+
+
+def parse_args():
+    """Parse command line arguments"""
+
+    parser = argparse.ArgumentParser(
+        description=('Print a summarized status of all non-optimal components '
+                     'of all detected MegaRAID controllers'))
+    parser.add_argument(
+        '-c', dest='compress', action='store_true',
+        help='Compress with zlib the summary to overcome NRPE output limits.')
+    parser.add_argument(
+        '-a', dest='all', action='store_true',
+        help='Include all components in the summary.')
+
+    return parser.parse_args()
 
 
 def parse_megacli_status(status):
@@ -276,6 +301,15 @@ def _process_line(line, status):
 
 
 if __name__ == '__main__':
+    args = parse_args()
+
     status = RaidStatus()
     parse_megacli_status(status)
-    status.print_status()
+    summary = status.get_status(get_all=args.all)
+
+    if args.compress:
+        # NRPE doesn't handle NULL bytes, encoding them.
+        # Given the specific domain there is no need of a full yEnc encoding
+        print(zlib.compress(summary).replace('\x00', '###NULL###'))
+    else:
+        print(summary)
