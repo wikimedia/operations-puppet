@@ -24,6 +24,9 @@
 #        Specifies which file to use for hiera.yaml.  Defaults to $::realm
 #    - $is_git_master:
 #        If True, the git private repository here will be considered a master
+#    - $secure_private
+#        If true, some magic is done to have local repositories and sync between puppetmasters.
+#        Otherwise, /etc/puppet/private will be labs/private.git.
 
 class puppetmaster(
             $server_name='puppet',
@@ -43,6 +46,7 @@ class puppetmaster(
             $is_labs_master=false,
             $is_git_master=false,
             $hiera_config=$::realm,
+            $secure_private=true,
     ){
 
     $gitdir = '/var/lib/git'
@@ -108,7 +112,7 @@ class puppetmaster(
     }
 
     class { 'puppetmaster::gitclone':
-        is_labs_master => $is_labs_master,
+        secure_private => $secure_private,
         is_git_master  => $is_git_master,
         replicate_to   => $workers,
     }
