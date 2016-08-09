@@ -45,7 +45,6 @@ class puppetmaster(
                 '*.esams.wmnet',
                 '*.codfw.wmnet',
             ],
-            $is_labs_master=false,
             $is_git_master=false,
             $hiera_config=$::realm,
             $secure_private=true,
@@ -125,11 +124,6 @@ class puppetmaster(
     include puppetmaster::gitpuppet
     include puppetmaster::monitoring
 
-    if $is_labs_master {
-        # This is required for the mwyaml hiera backend
-        require_package('ruby-httpclient')
-    }
-
     file { '/etc/puppet/auth.conf':
         owner   => 'root',
         group   => 'root',
@@ -137,6 +131,10 @@ class puppetmaster(
         content => template('puppetmaster/auth-master.conf.erb'),
     }
 
+    if $hiera_config == 'labs' or $hiera_config == 'labtest' {
+        # This is required for the mwyaml hiera backend
+        require_package('ruby-httpclient')
+    }
     class { '::puppetmaster::hiera':
         source => "puppet:///modules/puppetmaster/${hiera_config}.hiera.yaml",
     }

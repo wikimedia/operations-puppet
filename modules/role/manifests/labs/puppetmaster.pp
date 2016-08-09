@@ -20,7 +20,6 @@ class role::labs::puppetmaster {
     class { '::puppetmaster':
         server_name    => hiera('labs_puppet_master'),
         allow_from     => $allow_from,
-        is_labs_master => true,
         secure_private => false,
         extra_auth_rules => "# Allow Horizon to ask the puppetmaster about available roles
 path /resource_type
