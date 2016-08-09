@@ -42,13 +42,18 @@ class role::labs::novaproxy(
         $redis_replication = undef
     }
 
+    $ssl_settings = ssl_ciphersuite('nginx', 'compat')
     class { '::dynamicproxy':
         ssl_certificate_name => 'star.wmflabs.org',
-        ssl_settings         => ssl_ciphersuite('nginx', 'compat'),
+        ssl_settings         => $ssl_settings,
         set_xff              => true,
         luahandler           => 'domainproxy',
         redis_replication    => $redis_replication,
         require              => Sslcert::Certificate['star.wmflabs.org'],
     }
     include dynamicproxy::api
+
+    nginx::site { 'wmflabs.org':
+        content => template('role/labs/novaproxy-wmflabs.org.conf')
+    }
 }
