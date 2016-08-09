@@ -119,22 +119,18 @@ class puppetmaster(
     include puppetmaster::monitoring
 
     if $is_labs_master {
+        # This is required for the mwyaml hiera backend
         require_package('ruby-httpclient')
 
+        # This variable is used by the auth.conf template
         $horizon_host = hiera('labs_horizon_host')
-        file { '/etc/puppet/auth.conf':
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0444',
-            content => template('puppetmaster/auth-labs-master.conf.erb'),
-        }
-    } else {
-        file { '/etc/puppet/auth.conf':
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0444',
-            content => template('puppetmaster/auth-prod-master.conf.erb'),
-        }
+    }
+
+    file { '/etc/puppet/auth.conf':
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        content => template('puppetmaster/auth-master.conf.erb'),
     }
 
     class { '::puppetmaster::hiera':
