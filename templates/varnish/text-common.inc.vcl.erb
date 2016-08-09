@@ -68,7 +68,7 @@ sub text_normalize_path {
 
 	// Normalize Accept headers for the REST API: Ignore unless a profile is
 	// specified or this is a request for the root REST URI
-	if (req.url ~ "^/api/rest_v1/?$" && req.http.Accept ~ "text/html") {
+	if (req.url ~ "^/api/rest_v1/?(\?doc)?$" && req.http.Accept ~ "text/html") {
 		set req.http.Accept = "text/html";
 	} else if (req.url ~ "^/api/rest_v1/" && req.http.Accept !~ {"profile="https://www.mediawiki.org/wiki/Specs/"}) {
 		unset req.http.Accept;
