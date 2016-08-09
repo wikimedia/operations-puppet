@@ -2,6 +2,7 @@ class role::toollabs::etcd::flannel {
     include ::etcd
 
     include base::firewall
+    include ::role::toollabs::etcd::expose_metrics
 
     $worker_hosts = join(hiera('k8s::worker_hosts'), ' ')
     $bastion_hosts = join(hiera('k8s::bastion_hosts'), ' ')
