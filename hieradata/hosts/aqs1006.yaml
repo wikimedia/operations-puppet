@@ -26,6 +26,11 @@ cassandra::cluster_name: "Analytics Query Service Storage"
 
 cassandra::target_version: '2.2'
 
+# This configuration forces Restbase to use a specific user. Please make sure
+# to create the user first.
+aqs::cassandra_user: aqs
+aqs::cassandra_password: "%{passwords::aqs::aqs_user}"
+
 # Special compaction settings, following suggesions in:
 # https://docs.datastax.com/en/cassandra/2.1/cassandra/configuration/configCassandra_yaml_r.html
 # All values are divided by two since we have two instances running on each node
