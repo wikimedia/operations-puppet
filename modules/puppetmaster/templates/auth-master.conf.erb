@@ -60,12 +60,13 @@
 #
 
 ### Authenticated ACLs - these rules apply only when the client
-### has a valid certificate and is thus authenticated
-
+### has a valid certificate and is thus authenticated<% if @is_labs_master != true %>
+# Temporary allow rhodium to compile all the catalogs while testing<% end %>
 # allow nodes to retrieve their own catalog
 path ~ ^/catalog/([^/]+)$
 method find
-allow $1
+allow $1<% if @is_labs_master != true %>
+allow rhodium.eqiad.wmnet<% end %>
 
 # allow nodes to retrieve their own node definition
 path ~ ^/node/([^/]+)$
@@ -111,11 +112,11 @@ path /certificate_request
 auth any
 method find, save
 allow *
-
+<% if @is_labs_master %>
 # Allow Horizon to ask the puppetmaster about available roles
 path /resource_type
 auth any
-allow <%= @horizon_host %>
+allow <%= @horizon_host %><% end %>
 
 # deny everything else; this ACL is not strictly necessary, but
 # illustrates the default policy.
