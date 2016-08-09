@@ -110,12 +110,9 @@ path /certificate_request
 auth any
 method find, save
 allow *
-<% if @is_labs_master %>
-# Allow Horizon to ask the puppetmaster about available roles
-path /resource_type
-auth any
-allow <%= @horizon_host %>
-<% end %>
+
+<%- @extra_auth_rules -%>
+
 # deny everything else; this ACL is not strictly necessary, but
 # illustrates the default policy.
 path /
