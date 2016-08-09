@@ -498,3 +498,7 @@ default_text_search_config = 'pg_catalog.english'
 <%- @includes.flatten().each do |include| -%>
 include '<%= include %>'
 <%- end -%>
+<%- if @use_ssl -%>
+# SSL configuration
+include 'ssl.conf'
+<%- end -%>
