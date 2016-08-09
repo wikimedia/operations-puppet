@@ -19,6 +19,8 @@
 #       Defaults to 128. Refer to postgresql documentation for its meaning
 #   root_dir
 #       See $postgresql::server::root_dir
+#   use_ssl
+#       Enable ssl
 #
 # Actions:
 #  Install/configure postgresql as a master. Also create replication users
@@ -41,6 +43,7 @@ class postgresql::master(
     $checkpoint_segments=64,
     $wal_keep_segments=128,
     $root_dir='/var/lib/postgresql',
+    $use_ssl=false,
 ) {
 
     $data_dir = "${root_dir}/${pgversion}/main"
@@ -50,6 +53,7 @@ class postgresql::master(
         pgversion => $pgversion,
         includes  => [ $includes, 'master.conf'],
         root_dir  => $root_dir,
+        use_ssl   => $use_ssl,
     }
 
     file { "/etc/postgresql/${pgversion}/main/master.conf":

@@ -16,6 +16,8 @@
 #   root_dir
 #       The root directory for postgresql data. The actual directory will be
 #       "${root_dir}/${pgversion}/main".
+#   use_ssl
+#       Enable ssl
 #
 # Actions:
 #  Install/configure postgresql
@@ -36,6 +38,7 @@ class postgresql::server(
     $listen_addresses = '*',
     $port             = '5432',
     $root_dir         = '/var/lib/postgresql',
+    $use_ssl          = false,
 ) {
     package { [
         "postgresql-${pgversion}",
@@ -69,6 +72,25 @@ class postgresql::server(
         command     => "/usr/bin/pg_ctlcluster ${pgversion} main reload",
         user        => 'postgres',
         refreshonly => true,
+    }
+
+    if $use_ssl {
+        file { "/etc/postgresql/${pgversion}/main/ssl.conf":
+            ensure  => $ensure,
+            source  => 'puppet:///modules/postresql/ssl.conf',
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0444',
+            require => Base::Expose_puppet_certs['/etc/postgresql'],
+            before  => Service['postgresql'],
+        }
+
+        ::base::expose_puppet_certs { '/etc/postgresql':
+            ensure          => $ensure,
+            provide_private => true,
+            user            => 'postgres',
+            group           => 'postgres',
+        }
     }
 
     service { 'postgresql':
