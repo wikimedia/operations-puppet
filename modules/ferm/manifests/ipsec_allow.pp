@@ -5,14 +5,14 @@
 class ferm::ipsec_allow {
     #firewall allow ipsec esp
     ferm::rule { 'ferm-ipsec-esp':
-        rule   => 'proto esp { saddr $ALL_NETWORKS ACCEPT; }'
+        rule   => 'proto esp { saddr $DOMAIN_NETWORKS ACCEPT; }'
     }
 
     #firewall allow ipsec ike udp 500
     ferm::service { 'ferm-ipsec-ike':
         proto  => 'udp',
         port   => '500',
-        srange => '$ALL_NETWORKS',
+        srange => '$DOMAIN_NETWORKS',
     }
 
 }
