@@ -30,7 +30,7 @@ class prometheus::node_exporter (
 
     $collectors_default = ['diskstats', 'filefd', 'filesystem', 'loadavg',
         'mdadm', 'meminfo', 'netdev', 'netstat', 'sockstat', 'stat',
-        'textfile', 'time', 'uname', 'devstat']
+        'textfile', 'time', 'uname']
     $textfile_directory = '/var/lib/prometheus/node.d'
     $collectors_enabled = join(sort(concat($collectors_default, $collectors_extra)), ',')
 
