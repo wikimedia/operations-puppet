@@ -21,6 +21,8 @@ class role::aqs {
     include ::cassandra::metrics
     include ::cassandra::logging
 
+    include ::passwords::aqs
+
     $cassandra_instances = $::cassandra::instances
 
     if $cassandra_instances {
