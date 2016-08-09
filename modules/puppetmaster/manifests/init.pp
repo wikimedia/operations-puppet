@@ -119,7 +119,6 @@ class puppetmaster(
     include puppetmaster::monitoring
 
     if $is_labs_master {
-        include puppetmaster::labs
         require_package('ruby-httpclient')
 
         $horizon_host = hiera('labs_horizon_host')

@@ -33,6 +33,24 @@ class role::labs::puppetmaster {
         };
     }
 
+
+    # Run a cron that pulls the ops/puppet repo & labs/private every minute.
+    # We do not have equivalent of puppet merge for the labs puppetmaster
+    cron { 'update_public_puppet_repos':
+        ensure  => present,
+        command => '(cd /var/lib/git/operations/puppet && /usr/bin/git pull && /usr/bin/git submodule update --init) > /dev/null 2>&1',
+        user    => 'gitpuppet',
+        minute  => '*/1',
+    }
+
+    cron { 'update_private_puppet_repos':
+        ensure  => present,
+        command => '(cd /var/lib/git/operations/labs/private && /usr/bin/git pull) > /dev/null 2>&1',
+        user    => 'gitpuppet',
+        minute  => '*/1',
+    }
+
+    include ::puppetmaster::certcleaner
     if ! defined(Class['puppetmaster::certmanager']) {
         class { 'puppetmaster::certmanager':
             remote_cert_cleaner => hiera('labs_certmanager_hostname'),
