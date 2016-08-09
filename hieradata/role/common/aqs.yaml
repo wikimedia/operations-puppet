@@ -37,11 +37,17 @@ cassandra::concurrent_reads: 18
 cassandra::permissions_validity_in_ms: 600000
 
 # AQS Cassandra user
+
 # This configuration creates the adduser.cql script that must be used
 # to create the new user on the Cassandra cluster. This configuration alone
 # does not create any user on the Cassandra cluster.
 cassandra::application_username: aqs
 cassandra::application_password: "%{passwords::aqs::aqs_user}"
+
+# This configuration forces Restbase to use a specific user. Please make sure
+# to create the user first.
+aqs::cassandra_user: aqs
+aqs::cassandra_password: "%{passwords::aqs::aqs_user}"
 
 cassandra::dc: "%{::site}"
 cassandra::cluster_name: "Analytics Query Service Cassandra"
