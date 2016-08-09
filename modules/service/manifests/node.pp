@@ -148,6 +148,8 @@ define service::node(
     $deployment_user = 'deploy-service',
     $deployment_config = false,
     $contact_groups  = hiera('contactgroups', 'admins'),
+    $service_user    = $title,
+    $service_group   = $title,
 ) {
     case $deployment {
         'scap3': {
@@ -216,14 +218,14 @@ define service::node(
     require_package('nodejs', 'nodejs-legacy', 'firejail')
 
     # User/group
-    group { $title:
+    group { $service_group:
         ensure => present,
         name   => $title,
         system => true,
         before => Service[$title],
     }
 
-    user { $title:
+    user { $service_user:
         gid    => $title,
         home   => '/nonexistent',
         shell  => '/bin/false',
@@ -261,9 +263,9 @@ define service::node(
         file { "/etc/${title}/config.yaml":
             ensure  => present,
             content => $complete_config,
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0444',
+            owner   => $service_user,
+            group   => $service_group,
+            mode    => '0440',
             tag     => "${title}::config",
         }
     }
