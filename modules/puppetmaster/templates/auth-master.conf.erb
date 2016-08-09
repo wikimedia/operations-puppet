@@ -61,13 +61,10 @@
 
 ### Authenticated ACLs - these rules apply only when the client
 ### has a valid certificate and is thus authenticated
-<% if @is_labs_master != true %>
-# Temporary allow rhodium to compile all the catalogs while testing<% end %>
 # allow nodes to retrieve their own catalog
 path ~ ^/catalog/([^/]+)$
 method find
-allow $1<% if @is_labs_master != true %>
-allow rhodium.eqiad.wmnet<% end %>
+allow $1
 
 # allow nodes to retrieve their own node definition
 path ~ ^/node/([^/]+)$
