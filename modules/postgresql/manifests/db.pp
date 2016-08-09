@@ -8,9 +8,6 @@
 # [*ensure*]
 #   'present' to create the database, 'absent' to delete it
 #
-# [*name*]
-#   Database name (falls back to the resource title).
-#
 # [*owner*]
 #   User who will own the database (defaults to 'postgres')
 #
@@ -25,7 +22,6 @@
 #
 define postgresql::db(
     $ensure = present,
-    $name   = $title,
     $owner  = 'postgres',
 ) {
     validate_ensure($ensure)
