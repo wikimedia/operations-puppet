@@ -2354,8 +2354,7 @@ node 'netmon1001.wikimedia.org' {
 }
 
 node /^(nihal\.codfw|nitrogen\.eqiad)\.wmnet$/ {
-    include base::firewall
-    include standard
+    role puppetmaster::puppetdb
 }
 
 # Test server for labs ElasticSearch replication
