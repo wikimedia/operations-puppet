@@ -13,6 +13,7 @@ GITREPOS="core extensions skins"
 QUIET=--quiet
 # Ensure that $LOGNAME is set and has a non-null value.
 LOGNAME=${LOGNAME:-$(logname)}
+SCAP_LOCK=/var/lock/scap
 
 umask 0002
 BEGAN=$(date +"%s")
@@ -34,6 +35,11 @@ while true; do
     esac
 done
 
+function banglog {
+	/usr/local/bin/dologmsg "!log $LOGNAME@$HOSTNAME $*"
+	echo "$*"
+}
+
 echo "Starting l10nupdate at $(date -ud @$BEGAN)."
 
 # Update i18n messages from git to the HEAD of master, or create the clone if it doesn't exist yet
@@ -47,7 +53,7 @@ do
 		then
 			echo "Updated $path"
 		else
-			/usr/local/bin/dologmsg "!log $LOGNAME@$HOSTNAME LocalisationUpdate failed: git pull of $path failed"
+			banglog "LocalisationUpdate failed: git pull of $path failed"
 			echo "Updating $path FAILED."
 			exit 1
 		fi
@@ -60,7 +66,7 @@ do
 		then
 			echo "Cloned $path"
 		else
-			/usr/local/bin/dologmsg "!log $LOGNAME@$HOSTNAME LocalisationUpdate failed: git clone of $path failed"
+			banglog "LocalisationUpdate failed: git clone of $path failed"
 			echo "Cloning $path FAILED."
 			exit 1
 		fi
@@ -71,7 +77,7 @@ echo "git clone updated."
 # Get all MW message cache versions (and a wiki DB name for each)
 mwVerDbSets=$(scap wikiversions-inuse --withdb)
 if [ -z "$mwVerDbSets" ]; then
-	/usr/local/bin/dologmsg "!log $LOGNAME@$HOSTNAME LocalisationUpdate failed: mwversionsinuse returned empty list"
+	banglog "LocalisationUpdate failed: mwversionsinuse returned empty list"
 	echo "Obtaining MediaWiki version list FAILED"
 	exit 1
 fi
@@ -97,10 +103,20 @@ do
 			--outdir="$tempCacheDir" $QUIET
 		# Copy the LC files
 		echo "Completed at `date --rfc-3339=seconds`. Copying LC files to $MEDIAWIKI_STAGING_DIR"
-		cp --preserve=timestamps --force "$tempCacheDir"/l10n_cache-* $MEDIAWIKI_STAGING_DIR/php-"$mwVerNum"/cache/l10n
-		# Include JSON versions of the CDB files and add MD5 files
-		/usr/bin/scap cdb-json-refresh --directory="$MEDIAWIKI_STAGING_DIR/php-$mwVerNum/cache/l10n"
-
+		(
+			# Wait on lock of $SCAP_LOCK to prevent mid-sync corruption.
+			# The "9" argument is the file descriptor that is being locked.
+			# See 9>$SCAP_LOCK below and `man -s1 flock`.
+			flock --exclusive 9 &&
+			# Stage l10n changes
+			cp --preserve=timestamps --force "$tempCacheDir"/l10n_cache-* $MEDIAWIKI_STAGING_DIR/php-"$mwVerNum"/cache/l10n &&
+			# Include JSON versions of the CDB files and add MD5 files
+			/usr/bin/scap cdb-json-refresh --directory="$MEDIAWIKI_STAGING_DIR/php-$mwVerNum/cache/l10n"
+		) 9>$SCAP_LOCK
+		if [[ $? -ne 0 ]]; then
+			banglog "Failed to stage l10n changes for '$mwVerNum'"
+			exit 1
+		fi
 		echo "Syncing to Apaches at `date --rfc-3339=seconds`"
 		sudo -u mwdeploy -n -- /usr/bin/scap sync-l10n --verbose $mwVerNum
 		if [[ $? -ne 0 ]]; then
@@ -109,8 +125,7 @@ do
 		fi
 		echo "All done at `date --rfc-3339=seconds`"
 	else
-		/usr/local/bin/dologmsg "!log $LOGNAME@$HOSTNAME LocalisationUpdate failed ($mwVerNum) at `date --rfc-3339=seconds`"
-		echo "FAILED"
+		banglog "LocalisationUpdate failed ($mwVerNum) at `date --rfc-3339=seconds`"
 	fi
 done
 
@@ -126,4 +141,4 @@ if [[ $LENGTH -lt 3600 ]]; then
 else
 	DURATION=$(date -ud @"$LENGTH" +'%-Hh %-Mm %-Ss')
 fi
-/usr/local/bin/dologmsg "!log $LOGNAME@$HOSTNAME ResourceLoader cache refresh completed at $(date -ud @$ENDED) (duration $DURATION)"
+banglog "ResourceLoader cache refresh completed at $(date -ud @$ENDED) (duration $DURATION)"
