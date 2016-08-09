@@ -101,7 +101,7 @@ function initial_osm_import() {
 
 function import_water_lines() {
   echo "starting water line import"
-  sudo -u osmupdater /usr/local/bin/import_waterlines
+  sudo -u osmupdater /usr/local/bin/import_waterlines create
   echo "water line import completed"
 
 }
@@ -137,5 +137,7 @@ ensure_sql_grants
 initial_osm_import
 import_water_lines
 custom_functions_and_indexes
+# ensure grants again as some other tables have been created
+ensure_sql_grants
 replicate_osm
 cleanup
