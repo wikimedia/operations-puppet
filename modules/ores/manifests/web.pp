@@ -7,6 +7,7 @@ class ores::web(
     $port = 8081,
     $graphite_server = 'graphite-in.eqiad.wmnet',
     $deployment = 'scap3',
+    $celery_workers = 24,
 ) {
     require ores::base
 
@@ -57,12 +58,14 @@ class ores::web(
             'ores_celery' => {
                 'BROKER_URL'            => "redis://${redis_host}:6379",
                 'CELERY_RESULT_BACKEND' => "redis://${redis_host}:6379",
+                'CELERYD_CONCURRENCY'   => $celery_workers,
             }
         },
         'scoring_systems' => {
             'celery_queue' => {
                 'BROKER_URL'            => "redis://${redis_host}:6379",
                 'CELERY_RESULT_BACKEND' => "redis://${redis_host}:6379",
+                'CELERYD_CONCURRENCY'   => $celery_workers,
             }
         },
     }
