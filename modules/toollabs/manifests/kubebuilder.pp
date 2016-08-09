@@ -23,10 +23,11 @@ class toollabs::kubebuilder(
         mode   => '0555'
     }
 
-    git::clone { 'operations/software/kubernetes':
-        ensure    => present,
-        directory => '/srv/build/kubernetes',
-        require   => File['/srv/build'],
+    git::clone { 'OSKU/operations-software-kubernetes':
+        ensure         => present,
+        directory      => '/srv/build/kubernetes',
+        require        => File['/srv/build'],
+        default_source => 'phabricator',
     }
 
     file { '/usr/local/bin/build-kubernetes':
