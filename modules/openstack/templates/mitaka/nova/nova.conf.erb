@@ -15,6 +15,12 @@ scheduler_default_filters=RetryFilter,AvailabilityZoneFilter,RamFilter,ComputeFi
 # Don't allow duplicate instance names
 osapi_compute_unique_server_name_scope='global'
 
+# Security groups for big projects (e.g. tools) are too hard to
+#  organize and cause a timeout between conductor and compute.
+# This is /maybe/ fixed in mitaka, so we can investigate reverting
+#  this to 60 (the proper default) in future versions.
+rpc_response_timeout=180
+
 my_ip=<%= @novaconfig["my_ip"] %>
 log_dir=/var/log/nova
 state_path=/var/lib/nova
