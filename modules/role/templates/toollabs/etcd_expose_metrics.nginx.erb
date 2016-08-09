@@ -1,0 +1,15 @@
+upstream etcd {
+  server <%= @fqdn %>:2379;
+}
+
+server {
+    listen <%= @exposed_port %> default_server;
+
+    location = /metrics {
+      proxy_pass https://etcd;
+      proxy_redirect off;
+      proxy_buffering off;
+      proxy_http_version 1.1;
+      proxy_set_header Host $host;
+    }
+}
