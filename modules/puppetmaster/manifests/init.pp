@@ -24,6 +24,8 @@
 #        Specifies which file to use for hiera.yaml.  Defaults to $::realm
 #    - $is_git_master:
 #        If True, the git private repository here will be considered a master
+#    - $extra_auth_rules:
+#        Extra authentication rules to add before the default policy.
 
 class puppetmaster(
             $server_name='puppet',
@@ -40,9 +42,10 @@ class puppetmaster(
                 '*.esams.wmnet',
                 '*.codfw.wmnet',
             ],
-            $is_labs_master=false,
             $is_git_master=false,
             $hiera_config=$::realm,
+            $secure_private=true,
+            $extra_auth_rules='',
     ){
 
     $gitdir = '/var/lib/git'
@@ -108,7 +111,7 @@ class puppetmaster(
     }
 
     class { 'puppetmaster::gitclone':
-        is_labs_master => $is_labs_master,
+        secure_private => $secure_private,
         is_git_master  => $is_git_master,
         replicate_to   => $workers,
     }
@@ -118,14 +121,6 @@ class puppetmaster(
     include puppetmaster::gitpuppet
     include puppetmaster::monitoring
 
-    if $is_labs_master {
-        # This is required for the mwyaml hiera backend
-        require_package('ruby-httpclient')
-
-        # This variable is used by the auth.conf template
-        $horizon_host = hiera('labs_horizon_host')
-    }
-
     file { '/etc/puppet/auth.conf':
         owner   => 'root',
         group   => 'root',
@@ -133,6 +128,10 @@ class puppetmaster(
         content => template('puppetmaster/auth-master.conf.erb'),
     }
 
+    if $hiera_config == "labs" || $hiera_config == "labtest" {
+        # This is required for the mwyaml hiera backend
+        require_package('ruby-httpclient')
+    }
     class { '::puppetmaster::hiera':
         source => "puppet:///modules/puppetmaster/${hiera_config}.hiera.yaml",
     }
