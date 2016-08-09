@@ -123,19 +123,13 @@ class puppetmaster(
         require_package('ruby-httpclient')
 
         $horizon_host = hiera('labs_horizon_host')
-        file { '/etc/puppet/auth.conf':
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0444',
-            content => template('puppetmaster/auth-labs-master.conf.erb'),
-        }
-    } else {
-        file { '/etc/puppet/auth.conf':
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0444',
-            content => template('puppetmaster/auth-prod-master.conf.erb'),
-        }
+    }
+
+    file { '/etc/puppet/auth.conf':
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        content => template('puppetmaster/auth-master.conf.erb'),
     }
 
     class { '::puppetmaster::hiera':
