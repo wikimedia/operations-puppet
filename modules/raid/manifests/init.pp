@@ -34,7 +34,7 @@ class raid {
         }
 
         nrpe::check { 'get_raid_status_megacli':
-            command => "/usr/bin/sudo ${get_raid_status_megacli}",
+            command => "/usr/bin/sudo ${get_raid_status_megacli} -c",
         }
 
         nrpe::monitor_service { 'raid_megaraid':
