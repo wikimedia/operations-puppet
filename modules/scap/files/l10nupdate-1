@@ -13,6 +13,7 @@ GITREPOS="core extensions skins"
 QUIET=--quiet
 # Ensure that $LOGNAME is set and has a non-null value.
 LOGNAME=${LOGNAME:-$(logname)}
+SCAP_LOCK=/var/lock/scap
 
 umask 0002
 BEGAN=$(date +"%s")
@@ -97,10 +98,20 @@ do
 			--outdir="$tempCacheDir" $QUIET
 		# Copy the LC files
 		echo "Completed at `date --rfc-3339=seconds`. Copying LC files to $MEDIAWIKI_STAGING_DIR"
-		cp --preserve=timestamps --force "$tempCacheDir"/l10n_cache-* $MEDIAWIKI_STAGING_DIR/php-"$mwVerNum"/cache/l10n
-		# Include JSON versions of the CDB files and add MD5 files
-		/usr/bin/scap cdb-json-refresh --directory="$MEDIAWIKI_STAGING_DIR/php-$mwVerNum/cache/l10n"
-
+		(
+			# Wait on lock of $SCAP_LOCK to prevent mid-sync corruption.
+			# The "9" argument is the file descriptor that is being locked.
+			# See 9>$SCAP_LOCK below and `man -s1 flock`.
+			flock --exclusive 9 &&
+			# Stage l10n changes
+			cp --preserve=timestamps --force "$tempCacheDir"/l10n_cache-* $MEDIAWIKI_STAGING_DIR/php-"$mwVerNum"/cache/l10n &&
+			# Include JSON versions of the CDB files and add MD5 files
+			/usr/bin/scap cdb-json-refresh --directory="$MEDIAWIKI_STAGING_DIR/php-$mwVerNum/cache/l10n"
+			if [[ $? -ne 0 ]]; then
+				echo "Failed to stage l10n changes for '$mwVerNum'"
+				exit 1
+			fi
+		) 9>$SCAP_LOCK
 		echo "Syncing to Apaches at `date --rfc-3339=seconds`"
 		sudo -u mwdeploy -n -- /usr/bin/scap sync-l10n --verbose $mwVerNum
 		if [[ $? -ne 0 ]]; then
