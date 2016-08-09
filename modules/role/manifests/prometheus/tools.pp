@@ -6,7 +6,6 @@
 
 class role::prometheus::tools {
     $bearer_token_file = '/srv/prometheus/tools/k8s.token'
-    $targets_file = '/srv/prometheus/tools/targets/node_project.yml'
     $master_host = hiera('k8s::master_host')
 
     prometheus::server { 'tools':
@@ -62,9 +61,26 @@ class role::prometheus::tools {
 
     include ::prometheus::scripts
 
+    $targets_path = '/srv/prometheus/tools/targets/node_project.yml'
     cron { 'prometheus_tools_project_targets':
         ensure  => present,
-        command => "/usr/local/bin/prometheus-labs-targets > ${targets_file}.$$ && mv ${targets_file}.$$ ${targets_file}",
+        command => "/usr/local/bin/prometheus-labs-targets > ${targets_path}/node_project.$$ && mv ${targets_path}/node_project.$$ ${targets_file}/node_project.yml",
+        minute  => '*/10',
+        hour    => '*',
+        user    => 'prometheus',
+    }
+
+    cron { 'prometheus_tools_k8s_etcd_targets':
+        ensure  => present,
+        command => "/usr/local/bin/prometheus-labs-targets --port 9051 --prefix tools-k8s-etcd- > ${targets_path}/etcd_k8s.$$ && mv ${targets_path}/etcd_k8s.$$ ${targets_file}/etcd_k8s.yml",
+        minute  => '*/10',
+        hour    => '*',
+        user    => 'prometheus',
+    }
+
+    cron { 'prometheus_tools_flannel_etcd_targets':
+        ensure  => present,
+        command => "/usr/local/bin/prometheus-labs-targets --port 9051 --prefix tools-flannel-etcd- > ${targets_path}/etcd_flannel.$$ && mv ${targets_path}/etcd_flannel.$$ ${targets_file}/etcd_flannel.yml",
         minute  => '*/10',
         hour    => '*',
         user    => 'prometheus',

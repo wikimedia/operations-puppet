@@ -34,6 +34,11 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--project', dest='project')
     parser.add_argument('--port', dest='port', default='9100')
+    parser.add_argument(
+        '--prefix',
+        help='Only output targets for instances that match this prefix',
+        default=''  # Match everything by default
+    )
     args = parser.parse_args()
 
     if args.project is None:
@@ -47,7 +52,8 @@ def main():
     scrape_configs = []
     targets = {'targets': []}
     for instance in project_instances(args.project):
-        targets['targets'].append("%s:%s" % (instance['name'], args.port))
+        if instance['name'].startswith(args.prefix):
+            targets['targets'].append("%s:%s" % (instance['name'], args.port))
     targets['targets'] = sorted(targets['targets'])
     scrape_configs.append(targets)
     print(yaml.dump(scrape_configs, default_flow_style=False))
