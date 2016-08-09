@@ -20,7 +20,6 @@ class base {
         include grub::defaults
     }
 
-    include passwords::root
     include base::resolving
     include ::rsyslog
     include base::remote_syslog
