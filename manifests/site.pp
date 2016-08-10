@@ -2558,7 +2558,7 @@ node /^rdb200[1-6]\.codfw\.wmnet/ {
 }
 
 node /^relforge100[1-2]\.eqiad\.wmnet/ {
-    role elasticsearch::server
+    role elasticsearch::relforge
     include base::firewall
     include standard
 }
