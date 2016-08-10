@@ -25,6 +25,13 @@ class role::elasticsearch::server{
         srange  => '(($INTERNAL @resolve(wikitech.wikimedia.org) @resolve(labtestwikitech.wikimedia.org)))',
     }
 
+    ferm::service { 'elastic-https':
+        proto   => 'tcp',
+        port    => '9243',
+        notrack => true,
+        srange  => '$INTERNAL',
+    }
+
     $elastic_nodes = hiera('elasticsearch::cluster_hosts')
     $elastic_nodes_ferm = join($elastic_nodes, ' ')
 
@@ -61,7 +68,18 @@ class role::elasticsearch::server{
         include ::elasticsearch::ganglia
     }
 
-    include ::elasticsearch::https
+    $site_name = hiera('elasticsearch::https::certificate_name', $::fqdn)
+
+    ::nginx::simple_tlsproxy { 'elasticssearch-tls-termination':
+        site_name    => $site_name,
+        backend_port => 9200,
+        port         => 9243,
+    }
+    ::monitoring::service { 'elasticsearch-https':
+        description   => 'Elasticsearch HTTPS',
+        check_command => "check_ssl_http_on_port!${site_name}!9243",
+    }
+
     include elasticsearch::monitor::diamond
     include ::elasticsearch::log::hot_threads
     include ::elasticsearch::nagios::check
