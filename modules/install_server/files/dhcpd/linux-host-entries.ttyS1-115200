@@ -5637,13 +5637,6 @@ host nescio {
     fixed-address nescio.wikimedia.org;
 }
 
-host nobelium {
-    hardware ethernet F0:1F:AF:E8:B1:FB;
-    fixed-address nobelium.eqiad.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
-}
-
 host notebook1001 {
     hardware ethernet 90:b1:1c:12:8f:9a;
     fixed-address notebook1001.eqiad.wmnet;
