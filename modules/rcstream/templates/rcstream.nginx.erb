@@ -2,7 +2,6 @@
 # <http://siriux.net/2013/06/nginx-and-websockets/>
 # <http://socket.io/docs/using-multiple-nodes/#nginx-configuration>
 # Requires Nginx 1.4+.
-<%- if ! @use_ssl -%>
 upstream websockets {
     ip_hash;
     <%- @backends.each do |backend| -%>
@@ -14,25 +13,16 @@ log_format combined_with_proto '$remote_addr - $remote_user [$time_local] '
                                '"$request" $status $body_bytes_sent '
                                '"$http_referer" "$http_user_agent" '
                                '"$http_x_forwarded_proto"';
-<%- end -%>
 
 server {
     <%- Array(@listen).each do |bind| -%>
-    listen       <%= bind %><%= ' ssl' if @use_ssl %>;
+    listen       <%= bind %>;
     <%- end -%>
     server_name  <%= @server_name %>;
 
 
-    access_log   /var/log/nginx/rcstream_<%= 'ssl_' if @use_ssl %>access.log combined_with_proto;
-    error_log    /var/log/nginx/rcstream_<%= 'ssl_' if @use_ssl %>error.log;
-
-    <%- if @use_ssl -%>
-    ssl_certificate      /etc/ssl/localcerts/<%= @server_name %>.chained.crt;
-    ssl_certificate_key  /etc/ssl/private/<%= @server_name %>.key;
-    ssl_session_cache    shared:SSL:50m;
-    ssl_session_timeout  5m;
-    <%= @ssl_settings.join("\n") %>
-    <%- end -%>
+    access_log   /var/log/nginx/rcstream_access.log combined_with_proto;
+    error_log    /var/log/nginx/rcstream_error.log;
 
     location <%= @location %> {
         <%- if @location != '/' -%>

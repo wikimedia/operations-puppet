@@ -29,10 +29,6 @@ class role::rcstream {
         backends => $backends,
     }
 
-    class { '::rcstream::proxy::ssl':
-        backends => $backends,
-    }
-
     nrpe::monitor_service { 'rcstream_backend':
         description  => 'Recent Changes Stream Python backend',
         nrpe_command => '/usr/local/sbin/rcstreamctl check',
@@ -46,20 +42,10 @@ class role::rcstream {
         port  => '80',
     }
 
-    ferm::service { 'rcstream_ssl':
-        proto => 'tcp',
-        port  => '443',
-    }
-
     ferm::service { 'rcstream_redis':
         proto  => 'tcp',
         port   => '6379',
         srange => '(($INTERNAL @resolve(wikitech.wikimedia.org, AAAA) @resolve(labtestwikitech.wikimedia.org, AAAA)))',
-    }
-
-    monitoring::service { 'https_rcstream':
-        description   => 'HTTPS',
-        check_command => 'check_ssl_http!stream.wikimedia.org',
     }
 
     diamond::collector { 'RCStream':
