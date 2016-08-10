@@ -12,4 +12,8 @@
 <%= @schemas_path %>
 --topic-config
 <%= @topic_config %>
+<% if @error_output -%>
+--error-output
+<%= @error_output %>
+<% end -%>
 <%= @outputs.join("\n") %>
