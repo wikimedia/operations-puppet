@@ -242,135 +242,199 @@ spec:
                         domain: ar.wikipedia.org
                       rev_by_bot: false
                     exec:
-                      uri: '<%= @ores_uri %>/v2/scores/arwiki/reverted/{{message.rev_id}}/?precache=true'
+                      uri: '<%= @ores_uri %>/v2/scores/arwiki/'
+                      query:
+                        models: 'reverted'
+                        revids: '{{message.rev_id}}'
+                        precache: true
                   - match:
                       meta:
                         domain: cs.wikipedia.org
                       rev_by_bot: false
                     exec:
-                      uri: '<%= @ores_uri %>/v2/scores/cswiki/reverted/{{message.rev_id}}/?precache=true'
+                      uri: '<%= @ores_uri %>/v2/scores/cswiki/'
+                      query:
+                        models: 'reverted'
+                        revids: '{{message.rev_id}}'
+                        precache: true
                   - match:
                       meta:
                         domain: en.wikipedia.org
                       rev_by_bot: false
                     exec:
-                      - uri: '<%= @ores_uri %>/v2/scores/enwiki/damaging/{{message.rev_id}}/?precache=true'
-                      - uri: '<%= @ores_uri %>/v2/scores/enwiki/reverted/{{message.rev_id}}/?precache=true'
-                      - uri: '<%= @ores_uri %>/v2/scores/enwiki/goodfaith/{{message.rev_id}}/?precache=true'
+                      uri: '<%= @ores_uri %>/v2/scores/enwiki/'
+                      query:
+                        models: 'reverted|damaging|goodfaith'
+                        revids: '{{message.rev_id}}'
+                        precache: true
                   - match:
                       meta:
                         domain: en.wiktionary.org
                       rev_by_bot: false
                     exec:
-                      uri: '<%= @ores_uri %>/v2/scores/enwiktionary/reverted/{{message.rev_id}}/?precache=true'
+                      uri: '<%= @ores_uri %>/v2/scores/enwiktionary/'
+                      query:
+                        models: 'reverted'
+                        revids: '{{message.rev_id}}'
+                        precache: true
                   - match:
                       meta:
                         domain: es.wikipedia.org
                       rev_by_bot: false
                     exec:
-                      uri: '<%= @ores_uri %>/v2/scores/eswiki/reverted/{{message.rev_id}}/?precache=true'
+                      uri: '<%= @ores_uri %>/v2/scores/eswiki/'
+                      query:
+                        models: 'reverted'
+                        revids: '{{message.rev_id}}'
+                        precache: true
                   - match:
                       meta:
                         domain: et.wikipedia.org
                       rev_by_bot: false
                     exec:
-                      uri: '<%= @ores_uri %>/v2/scores/etwiki/reverted/{{message.rev_id}}/?precache=true'
+                      uri: '<%= @ores_uri %>/v2/scores/etwiki/'
+                      query:
+                        models: 'reverted'
+                        revids: '{{message.rev_id}}'
+                        precache: true
                   - match:
                       meta:
                         domain: fa.wikipedia.org
                       rev_by_bot: false
                     exec:
-                      - uri: '<%= @ores_uri %>/v2/scores/fawiki/damaging/{{message.rev_id}}/?precache=true'
-                      - uri: '<%= @ores_uri %>/v2/scores/fawiki/reverted/{{message.rev_id}}/?precache=true'
-                      - uri: '<%= @ores_uri %>/v2/scores/fawiki/goodfaith/{{message.rev_id}}/?precache=true'
+                      uri: '<%= @ores_uri %>/v2/scores/fawiki/'
+                      query:
+                        models: 'reverted|damaging|goodfaith'
+                        revids: '{{message.rev_id}}'
+                        precache: true
                   - match:
                       meta:
                         domain: fr.wikipedia.org
                       rev_by_bot: false
                     exec:
-                      uri: '<%= @ores_uri %>/v2/scores/frwiki/reverted/{{message.rev_id}}/?precache=true'
+                      uri: '<%= @ores_uri %>/v2/scores/frwiki/'
+                      query:
+                        models: 'reverted'
+                        revids: '{{message.rev_id}}'
+                        precache: true
                   - match:
                       meta:
                         domain: he.wikipedia.org
                       rev_by_bot: false
                     exec:
-                      uri: '<%= @ores_uri %>/v2/scores/hewiki/reverted/{{message.rev_id}}/?precache=true'
+                      uri: '<%= @ores_uri %>/v2/scores/hewiki/'
+                      query:
+                        models: 'reverted'
+                        revids: '{{message.rev_id}}'
+                        precache: true
                   - match:
                       meta:
                         domain: hu.wikipedia.org
                       rev_by_bot: false
                     exec:
-                      uri: '<%= @ores_uri %>/v2/scores/huwiki/reverted/{{message.rev_id}}/?precache=true'
+                      uri: '<%= @ores_uri %>/v2/scores/huwiki/'
+                      query:
+                        models: 'reverted'
+                        revids: '{{message.rev_id}}'
+                        precache: true
                   - match:
                       meta:
                         domain: id.wikipedia.org
                       rev_by_bot: false
                     exec:
-                      uri: '<%= @ores_uri %>/v2/scores/idwiki/reverted/{{message.rev_id}}/?precache=true'
+                      uri: '<%= @ores_uri %>/v2/scores/idwiki/'
+                      query:
+                        models: 'reverted'
+                        revids: '{{message.rev_id}}'
+                        precache: true
                   - match:
                       meta:
                         domain: it.wikipedia.org
                       rev_by_bot: false
                     exec:
-                      uri: '<%= @ores_uri %>/v2/scores/itwiki/reverted/{{message.rev_id}}/?precache=true'
+                      uri: '<%= @ores_uri %>/v2/scores/itwiki/'
+                      query:
+                        models: 'reverted'
+                        revids: '{{message.rev_id}}'
+                        precache: true
                   - match:
                       meta:
                         domain: nl.wikipedia.org
                       rev_by_bot: false
                     exec:
-                      - uri: '<%= @ores_uri %>/v2/scores/nlwiki/damaging/{{message.rev_id}}/?precache=true'
-                      - uri: '<%= @ores_uri %>/v2/scores/nlwiki/reverted/{{message.rev_id}}/?precache=true'
-                      - uri: '<%= @ores_uri %>/v2/scores/nlwiki/goodfaith/{{message.rev_id}}/?precache=true'
+                      uri: '<%= @ores_uri %>/v2/scores/nlwiki/'
+                      query:
+                        models: 'reverted|damaging|goodfaith'
+                        revids: '{{message.rev_id}}'
+                        precache: true
                   - match:
                       meta:
                         domain: pl.wikipedia.org
                       rev_by_bot: false
                     exec:
-                      - uri: '<%= @ores_uri %>/v2/scores/plwiki/damaging/{{message.rev_id}}/?precache=true'
-                      - uri: '<%= @ores_uri %>/v2/scores/plwiki/goodfaith/{{message.rev_id}}/?precache=true'
-                      - uri: '<%= @ores_uri %>/v2/scores/plwiki/reverted/{{message.rev_id}}/?precache=true'
+                      uri: '<%= @ores_uri %>/v2/scores/plwiki/'
+                      query:
+                        models: 'reverted|damaging|goodfaith'
+                        revids: '{{message.rev_id}}'
+                        precache: true
                   - match:
                       meta:
                         domain: pt.wikipedia.org
                       rev_by_bot: false
                     exec:
-                      - uri: '<%= @ores_uri %>/v2/scores/ptwiki/damaging/{{message.rev_id}}/?precache=true'
-                      - uri: '<%= @ores_uri %>/v2/scores/ptwiki/reverted/{{message.rev_id}}/?precache=true'
-                      - uri: '<%= @ores_uri %>/v2/scores/ptwiki/goodfaith/{{message.rev_id}}/?precache=true'
+                      uri: '<%= @ores_uri %>/v2/scores/ptwiki/'
+                      query:
+                        models: 'reverted|damaging|goodfaith'
+                        revids: '{{message.rev_id}}'
+                        precache: true
                   - match:
                       meta:
                         domain: ru.wikipedia.org
                       rev_by_bot: false
                     exec:
-                      - uri: '<%= @ores_uri %>/v2/scores/ruwiki/damaging/{{message.rev_id}}/?precache=true'
-                      - uri: '<%= @ores_uri %>/v2/scores/ruwiki/reverted/{{message.rev_id}}/?precache=true'
-                      - uri: '<%= @ores_uri %>/v2/scores/ruwiki/goodfaith/{{message.rev_id}}/?precache=true'
+                      uri: '<%= @ores_uri %>/v2/scores/ruwiki/'
+                      query:
+                        models: 'reverted|damaging|goodfaith'
+                        revids: '{{message.rev_id}}'
+                        precache: true
                   - match:
                       meta:
                         domain: tr.wikipedia.org
                       rev_by_bot: false
                     exec:
-                      - uri: '<%= @ores_uri %>/v2/scores/trwiki/damaging/{{message.rev_id}}/?precache=true'
-                      - uri: '<%= @ores_uri %>/v2/scores/trwiki/reverted/{{message.rev_id}}/?precache=true'
-                      - uri: '<%= @ores_uri %>/v2/scores/trwiki/goodfaith/{{message.rev_id}}/?precache=true'
+                      uri: '<%= @ores_uri %>/v2/scores/trwiki/'
+                      query:
+                        models: 'reverted|damaging|goodfaith'
+                        revids: '{{message.rev_id}}'
+                        precache: true
                   - match:
                       meta:
                         domain: uk.wikipedia.org
                       rev_by_bot: false
                     exec:
-                      uri: '<%= @ores_uri %>/v2/scores/ukwiki/reverted/{{message.rev_id}}/?precache=true'
+                      uri: '<%= @ores_uri %>/v2/scores/ukwiki/'
+                      query:
+                        models: 'reverted'
+                        revids: '{{message.rev_id}}'
+                        precache: true
                   - match:
                       meta:
                         domain: vi.wikipedia.org
                       rev_by_bot: false
                     exec:
-                      uri: '<%= @ores_uri %>/v2/scores/viwiki/reverted/{{message.rev_id}}/?precache=true'
+                      uri: '<%= @ores_uri %>/v2/scores/viwiki/'
+                      query:
+                        models: 'reverted'
+                        revids: '{{message.rev_id}}'
+                        precache: true
                   - match:
                       meta:
                         domain: wikidata.org
                       page_namespace: 0
                       rev_by_bot: false
                     exec:
-                      - uri: '<%= @ores_uri %>/v2/scores/wikidatawiki/damaging/{{message.rev_id}}/?precache=true'
-                      - uri: '<%= @ores_uri %>/v2/scores/wikidatawiki/reverted/{{message.rev_id}}/?precache=true'
-                      - uri: '<%= @ores_uri %>/v2/scores/wikidatawiki/goodfaith/{{message.rev_id}}/?precache=true'
+                      uri: '<%= @ores_uri %>/v2/scores/wikidatawiki/'
+                      query:
+                        models: 'reverted|damaging|goodfaith'
+                        revids: '{{message.rev_id}}'
+                        precache: true
