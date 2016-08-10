@@ -1967,11 +1967,11 @@ node 'maps1001.eqiad.wmnet' {
     include base::firewall
 }
 
-# Waiting for master to be configured before configuring the slaves
-# node /^maps100[2-4]\.eqiad\.wmnet/ {
-#     role maps::server, maps::slave
-#     include base::firewall
-# }
+# maps1002 has networking issues, let's wait until they are resolved to configure it
+node /^maps100[3-4]\.eqiad\.wmnet/ {
+    role maps::server, maps::slave
+    include base::firewall
+}
 
 node 'maps2001.codfw.wmnet' {
     role maps::server, maps::master
