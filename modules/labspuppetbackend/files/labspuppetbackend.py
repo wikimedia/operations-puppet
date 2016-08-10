@@ -2,7 +2,7 @@ from flask import Flask, request, g, Response
 from statsd.defaults.env import statsd
 import pymysql
 import os
-import json
+import yaml
 
 app = Flask(__name__)
 # Propogate exceptions to the uwsgi log
@@ -39,14 +39,14 @@ def get_roles(project, prefix):
         roles = [r[0] for r in cur.fetchall()]
         if len(roles) == 0:
             return Response(
-                json.dumps({'status': 'notfound'}),
+                yaml.dump({'status': 'notfound'}),
                 status=404,
-                mimetype='application/json'
+                mimetype='application/x-yaml'
             )
         return Response(
-            json.dumps({'roles': roles}),
+            yaml.dump({'roles': roles}),
             status=200,
-            mimetype='application/json'
+            mimetype='application/x-yaml'
         )
     finally:
         cur.close()
@@ -55,9 +55,26 @@ def get_roles(project, prefix):
 @statsd.timer('set_roles')
 @app.route('/v1/<string:project>/prefix/<string:prefix>/roles', methods=['POST'])
 def set_roles(project, prefix):
-    roles = request.get_json()
+    try:
+        roles = yaml.safe_load(request.data)
+    except yaml.YAMLError:
+        return Response(
+            yaml.dump({
+                'status': 'fail',
+                'message': 'Unable to parse input provided as YAML'
+            }),
+            status=400,
+            mimetype='application/x-yaml'
+        )
     if type(roles) is not list:
-        return "Body should be a JSON array of roles to set", 400
+        return Response(
+            yaml.dump({
+                'status': 'fail',
+                'message': 'Provided YAML should be a list'
+            }),
+            status=400,
+            mimetype='application/x-yaml'
+        )
     # TODO: Add more validation for roles?
     cur = g.db.cursor()
     try:
@@ -83,9 +100,9 @@ def set_roles(project, prefix):
     finally:
         cur.close()
     return Response(
-        json.dumps({'status': 'ok'}),
+        yaml.dump({'status': 'ok'}),
         status=200,
-        mimetype='application/json'
+        mimetype='application/x-yaml'
     )
 
 
@@ -102,14 +119,14 @@ def get_hiera(project, prefix):
         row = cur.fetchone()
         if row is None:
             return Response(
-                json.dumps({'status': 'notfound'}),
+                yaml.dump({'status': 'notfound'}),
                 status=404,
-                mimetype='application/json'
+                mimetype='application/x-yaml'
             )
         return Response(
-            json.dumps({'hiera': row[0]}),
+            yaml.dump({'hiera': row[0]}),
             status=200,
-            mimetype='application/json'
+            mimetype='application/x-yaml'
         )
     finally:
         cur.close()
@@ -118,9 +135,26 @@ def get_hiera(project, prefix):
 @statsd.timer('set_hiera')
 @app.route('/v1/<string:project>/prefix/<string:prefix>/hiera', methods=['POST'])
 def set_hiera(project, prefix):
-    hiera = request.get_json()
+    try:
+        hiera = yaml.safe_load(request.data)
+    except yaml.YAMLError:
+        return Response(
+            yaml.dump({
+                'status': 'fail',
+                'message': 'Unable to parse input provided as YAML'
+            }),
+            status=400,
+            mimetype='application/x-yaml'
+        )
     if type(hiera) is not dict:
-        return "Body should be a JSON dict of hiera to set", 400
+        return Response(
+            yaml.dump({
+                'status': 'fail',
+                'message': 'Provided YAML should be a dictionary'
+            }),
+            status=400,
+            mimetype='application/x-yaml'
+        )
     # TODO: Add more validation for hiera?
     cur = g.db.cursor()
     try:
@@ -141,9 +175,9 @@ def set_hiera(project, prefix):
     finally:
         cur.close()
     return Response(
-        json.dumps({'status': 'ok'}),
+        yaml.safe_dump({'status': 'ok'}),
         status=200,
-        mimetype='application/json'
+        mimetype='application/x-yaml'
     )
 
 
@@ -179,13 +213,13 @@ def get_node_config(project, fqdn):
         """, (project, fqdn))
         hiera = {}
         for row in cur.fetchall():
-            hiera.update(json.loads(row[1]))
+            hiera.update(yaml.loads(row[1]))
     finally:
         cur.close()
     return Response(
-        json.dumps({'roles': roles, 'hiera': hiera}),
+        yaml.safe_dump({'roles': roles, 'hiera': hiera}),
         status=200,
-        mimetype='application/json'
+        mimetype='application/x-yaml'
     )
 
 
@@ -198,9 +232,9 @@ def get_prefixes(project):
             SELECT prefix FROM prefix WHERE project = %s
         """, (project, ))
         return Response(
-            json.dumps({'prefixes': [r[0] for r in cur.fetchall()]}),
+            yaml.safe_dump({'prefixes': [r[0] for r in cur.fetchall()]}),
             status=200,
-            mimetype='application/json'
+            mimetype='application/x-yaml'
         )
     finally:
         cur.close()
@@ -219,9 +253,9 @@ def healthz():
         """)
         cur.fetchall()
         return Response(
-            json.dumps({'status': 'ok'}),
+            yaml.safe_dump({'status': 'ok'}),
             status=200,
-            mimetype='application/json'
+            mimetype='application/x-yaml'
         )
     finally:
         cur.close()
