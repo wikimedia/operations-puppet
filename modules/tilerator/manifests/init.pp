@@ -20,10 +20,17 @@
 #   Contact groups for alerting.
 #   Default: 'admins'
 #
+# [*cassandra_servers*]
+#   List of cassandra server names used by Tilerator
+#
 class tilerator(
-    $conf_sources   = 'sources.prod.yaml',
-    $contact_groups = 'admins',
+    $conf_sources      = 'sources.prod.yaml',
+    $contact_groups    = 'admins',
+    $cassandra_servers = hiera('cassandra::seeds'),
 ) {
+
+    validate_array($cassandra_servers)
+
     include ::tilerator::ui
 
     $cassandra_tilerator_user = 'tilerator'
