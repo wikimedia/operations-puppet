@@ -4,15 +4,14 @@
 define monitoring::icinga::git_merge (
     $dir           = "/var/lib/git/operations/${title}",
     $user          = 'gitpuppet',
-    $remote_branch = 'origin/production',
+    $remote        = 'origin',
+    $remote_branch = 'production',
     $interval      = 10
     ) {
 
     $sane_title = regsubst($title, '\W', '_', 'G')
     $filename = "/usr/local/lib/nagios/plugins/check_${sane_title}-needs-merge"
     $file_resource = "check_${sane_title}_needs_merge"
-
-    $remote = regsubst($remote_branch,'/\w+$','')
 
     file { $file_resource:
         ensure  => present,

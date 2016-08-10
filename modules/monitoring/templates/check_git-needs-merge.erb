@@ -5,12 +5,15 @@ set -u
 #Config variables
 basedir="<%= @dir %>"
 git_user=<%= @user %>
-refname=<%= @remote_branch %>
+repository=<%= @remote %>
+refs=<%= @remote_branch %>
+refname="${repository}/${refs}"
 
 # First of all, check if there is something to merge.
 cd "${basedir}"
-su - $git_user -c "cd ${basedir} && git remote update <%= @remote %> > /dev/null 2>&1"
-remote_sha1=$(git rev-parse ${refname})
+remote_sha1=$(su - $git_user -c "cd \"${basedir}\" \
+    && git ls-remote --heads \"${repository}\" \"${refs}\" 2>&1" \
+    | cut -f1)
 local_sha1=$(git rev-parse HEAD)
 # Exit if there are no changes to merge.
 if [ "x${remote_sha1}" == "x${local_sha1}" ]; then

@@ -67,7 +67,8 @@ class role::deployment::server(
     ::monitoring::icinga::git_merge { 'mediawiki_config':
         dir           => '/srv/mediawiki-staging/',
         user          => 'root',
-        remote_branch => 'readonly/master'
+        remote        => 'readonly',
+        remote_branch => 'master',
     }
 
     # Also make sure that no files have been stolen by root ;-)
