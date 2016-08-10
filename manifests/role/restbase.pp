@@ -11,6 +11,9 @@ class role::restbase {
 
     include lvs::realserver
 
+    # Add conftool scripts and credentials
+    inlcude ::conftool::scripts
+    conftool::credentials { 'root': }
 
     # RESTBase rate limiting DHT firewall rule
     $rb_hosts_ferm = join(hiera('restbase::hosts'), ' ')
