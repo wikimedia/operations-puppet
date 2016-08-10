@@ -1,0 +1,7 @@
+Code-Review+2: Andrew Bogott <abogott@wikimedia.org>
+Verified+2: jenkins-bot
+Submitted-by: Andrew Bogott <abogott@wikimedia.org>
+Submitted-at: Wed, 10 Aug 2016 19:05:38 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/304047
+Project: operations/puppet
+Branch: refs/heads/production
