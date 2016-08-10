@@ -3,44 +3,45 @@ class role::labs::nfsclient(
     $lookupcache = 'none',
 ) {
 
-    $nfs_server = 'labstore.svc.eqiad.wmnet'
-    $misc_nfs = 'labstore1003.eqiad.wmnet'
-
-    labstore::nfs_mount { 'project':
+    labstore::nfs_mount { 'project-on-labstoresvc':
+        mount_name  => 'project',
         project     => $::labsproject,
         options     => ['rw', $mode],
         mount_path  => '/data/project',
         share_path  => "/project/${::labsproject}/project",
-        server      => $nfs_server,
+        server      => 'labstore.svc.eqiad.wmnet',
         block       => true,
         lookupcache => $lookupcache,
     }
 
-    labstore::nfs_mount { 'home':
+    labstore::nfs_mount { 'home-on-labstoresvc':
+        mount_name  => 'home',
         project     => $::labsproject,
         options     => ['rw', 'hard'],
         mount_path  => '/home',
         share_path  => "/project/${::labsproject}/home",
-        server      => $nfs_server,
+        server      => 'labstore.svc.eqiad.wmnet',
         block       => true,
         lookupcache => $lookupcache,
     }
 
-    labstore::nfs_mount { 'scratch':
+    labstore::nfs_mount { 'scratch-on-labstoresvc':
+        mount_name  => 'scratch',
         project     => $::labsproject,
         options     => ['rw', 'soft', 'timeo=300', 'retrans=3'],
         mount_path  => '/data/scratch',
-        server      => $nfs_server,
+        server      => 'labstore.svc.eqiad.wmnet',
         share_path  => '/scratch',
         lookupcache => $lookupcache,
     }
 
-    labstore::nfs_mount { 'dumps':
+    labstore::nfs_mount { 'dumps-on-labstore1003':
+        mount_name  => 'dumps',
         project     => $::labsproject,
         options     => ['ro', 'soft', 'timeo=300', 'retrans=3'],
         mount_path  => '/public/dumps',
         share_path  => '/dumps',
-        server      => $misc_nfs,
+        server      => 'labstore1003.eqiad.wmnet',
         lookupcache => $lookupcache,
     }
 }
