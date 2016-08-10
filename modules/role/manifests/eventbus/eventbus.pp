@@ -30,12 +30,7 @@ class role::eventbus::eventbus {
     }
 
     $kafka_brokers_array = $config['brokers']['array']
-
-    # We are trying out different kafka clients in eventlogging.
-    # The default Kafka handler 'protocol' is 'kafka://'.  Other
-    # handlers are named differently, e.g. 'confluent-kafka://'.
-    $eventlogging_kafka_handler = hiera('eventlogging_kafka_handler', 'kafka')
-    $kafka_base_uri      = inline_template('<%= @eventlogging_kafka_handler %>:///<%= @kafka_brokers_array.join(":9092,") + ":9092" %>')
+    $kafka_base_uri      = inline_template('kafka:///<%= @kafka_brokers_array.join(":9092,") + ":9092" %>')
 
     $outputs = [
         # When events are produced to kafka, the
@@ -48,17 +43,44 @@ class role::eventbus::eventbus {
         "${kafka_base_uri}?async=False&topic=${::site}.{meta[topic]}"
     ]
 
-
     $access_log_level = $::realm ? {
         'production' => 'WARNING',
         default      => 'INFO',
     }
 
-    # TODO: Allow configuration of more than one service daemon process?
+    # We ensure the /srv/log (parent of $out_dir) manually here, as
+    # there is no proper class to rely on for this, and starting a
+    # separate would be an overkill for now.  We create these directories
+    # so we can save failed EventError events from eventbus here.
+    if !defined(File['/srv/log']) {
+        file { '/srv/log':
+            ensure => 'directory',
+            mode   => '0755',
+            owner  => 'root',
+            group  => 'root',
+        }
+    }
+    if !defined(File['/srv/log/eventlogging']) {
+        file { '/srv/log':
+            ensure => 'directory',
+            mode   => '0755',
+            owner  => 'root',
+            group  => 'root',
+        }
+    }
+    # Add logrotate for failed events log.  This shouldn't ever fill up,
+    # but we want to be sure we don't have some fluke where we fill up
+    # disks with error logs.
+    logrotate::conf { 'eventlogging-service-eventbus.failed_events':
+        ensure => 'present',
+        source => 'puppet:///modules/role/eventbus/failed_events.logrotate',
+    }
+
     eventlogging::service::service { 'eventbus':
         schemas_path     => "${::eventschemas::path}/jsonschema",
         topic_config     => "${::eventschemas::path}/config/eventbus-topics.yaml",
         outputs          => $outputs,
+        error_output     => 'file:///srv/log/eventlogging/eventlogging-service-eventbus.failed_events.log',
         statsd           => hiera('statsd'),
         statsd_prefix    => 'eventbus',
         # The service will be reloaded (SIGHUPed, not restarted)
@@ -66,7 +88,11 @@ class role::eventbus::eventbus {
         # Reload if mediawiki/event-schemas has a change.
         reload_on        =>  Class['::eventschemas'],
         num_processes    => 8,
-        access_log_level => $access_log_level
+        access_log_level => $access_log_level,
+        require          => [
+            File['/srv/log/eventlogging'],
+            Logrotate::Conf['eventlogging-service-eventbus.failed_events'],
+        ],
     }
 
     # Allow traffic to eventlogging-service on $port
