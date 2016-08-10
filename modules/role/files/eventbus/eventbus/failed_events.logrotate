@@ -1,0 +1,8 @@
+/srv/log/eventlogging/eventlogging-service-eventbus.failed_events.log {
+    size 100M
+    missingok
+    notifempty
+    rotate 10
+    compress
+    delaycompress
+}
