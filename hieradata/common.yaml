@@ -254,6 +254,11 @@ ganglia_clusters:
     sites:
       eqiad: []
       codfw: []
+  relforge:
+    name: "Elasticsearch relforge cluster"
+    id: 56
+    sites:
+      eqiad: []
 puppetmaster: "puppet"
 active_labstore_host: 'labstore1001'
 statistics_servers:

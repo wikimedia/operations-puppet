@@ -1,8 +1,4 @@
-# = Class: role::elasticsearch::server
-#
-# This class sets up Elasticsearch in a WMF-specific way.
-#
-class role::elasticsearch::server{
+class role::elasticsearch::common {
 
     if ($::realm == 'production' and hiera('elasticsearch::rack', undef) == undef) {
         fail("Don't know rack for ${::hostname} and rack awareness should be turned on")
@@ -53,7 +49,26 @@ class role::elasticsearch::server{
 
     # Install
     class { '::elasticsearch':
-        require => Package['elasticsearch/plugins'],
+        require                    => Package['elasticsearch/plugins'],
+        # More than 30G isn't very useful
+        heap_memory                => '30G',
+        # Production elasticsearch needs these plugins to be loaded in order
+        # to work properly.  This will keep elasticsearch from starting
+        # if these plugins are  not available.
+        plugins_mandatory          => [
+            'experimental-highlighter',
+            'extra',
+            'analysis-icu',
+        ],
+        # Let apifeatureusage create their indices
+        auto_create_index          => '+apifeatureusage-*,-*',
+        # Production can get a lot of use out of the filter cache.
+        filter_cache_size          => '20%',
+        bulk_thread_pool_executors => 6,
+        bulk_thread_pool_capacity  => 1000,
+        # Use only 1 merge thread (instead of 3) to avoid updates interfering with
+        # actual searches
+        merge_threads              => 1,
     }
 
     include ::standard
@@ -72,4 +87,5 @@ class role::elasticsearch::server{
     file { '/etc/elasticsearch/scripts/mwgrep.groovy':
         ensure => absent
     }
+
 }

@@ -900,25 +900,25 @@ node 'einsteinium.wikimedia.org' {
 }
 
 node /^elastic101[7-9]\.eqiad\.wmnet/ {
-    role elasticsearch::server
+    role elasticsearch::cirrus
     include base::firewall
     include standard
 }
 
 node /^elastic10[2-3][0-9]\.eqiad\.wmnet/ {
-    role elasticsearch::server
+    role elasticsearch::cirrus
     include base::firewall
     include standard
 }
 
 node /^elastic104[0-7]\.eqiad\.wmnet/ {
-    role elasticsearch::server
+    role elasticsearch::cirrus
     include base::firewall
     include standard
 }
 
 node /^elastic20[0-3][0-9]\.codfw\.wmnet/ {
-    role elasticsearch::server
+    role elasticsearch::cirrus
     include base::firewall
     include standard
 }
@@ -2496,7 +2496,7 @@ node /^rdb200[1-6]\.codfw\.wmnet/ {
 }
 
 node /^relforge100[1-2]\.eqiad\.wmnet/ {
-    role elasticsearch::server
+    role elasticsearch::relforge
     include base::firewall
     include standard
 }
