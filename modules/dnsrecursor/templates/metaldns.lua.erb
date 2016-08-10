@@ -15,7 +15,7 @@ ARecords["<%= k %>.<%= v['project'] %>.<%= @site %>.<%= @tld %>."] = "<%= v['IPv
 PTRRecords["<%= v['IPv4'].split('.').reverse().join('.') %>.in-addr.arpa."] = "<%= k %>.<%= v['project'] %>.<%= @site %>.<%= @tld %>."
 <% end -%>
 
-function postresolve (remoteip, domain, qtype, records, origrcode)
+function nxdomain (remoteip, domain, qtype)
     if ((qtype == pdns.PTR or qtype == pdns.ANY) and PTRRecords[domain]) then
         return 0, {{qtype=pdns.PTR, content=(PTRRecords[domain]), ttl=300}}
     end
@@ -26,8 +26,9 @@ function postresolve (remoteip, domain, qtype, records, origrcode)
 
     -- Prevent NXDOMAIN if the domain exists, we just don't have a record of the matching type.
     if (ARecords[domain] or PTRRecords[domain]) then
-        return 0, records
+        -- There isn't really a way to provide a proper serial here, so I chose '1'.
+        return 0, {{qtype=pdns.SOA, content="labs-ns0.wikimedia.org. root.wmflabs.org. 1 3600 600 86400 3600", ttl=60}}
     end
 
-    return origrcode, records
+    return -1, {}
 end
