@@ -554,6 +554,13 @@ groups:
                  'ALL = NOPASSWD: /bin/systemctl stop eventlogging-service-eventbus.service',
                  'ALL = NOPASSWD: /bin/systemctl restart eventlogging-service-eventbus.service',
                  'ALL = NOPASSWD: /bin/journalctl *']
+  deploy-aqs:
+    gid: 786
+    description: deployers for the AQS service
+    members: [nuria, milimetric, joal, mforns]
+    privileges: [
+         'ALL = NOPASSWD: /usr/sbin/service restbase *',
+         'ALL = (restbase) NOPASSWD: ALL']
 users:
   rush:
     ensure: present
