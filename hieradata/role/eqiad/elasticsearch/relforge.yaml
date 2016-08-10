@@ -3,7 +3,7 @@ elasticsearch::cluster_name: relforge-eqiad
 
 # ES-specific: Not default
 elasticsearch::multicast_enabled: false
-elasticsearch::unicast_hosts: # this should be set to the list of master eligible nodes
+elasticsearch::unicast_hosts:
   - relforge1001.eqiad.wmnet
   - relforge1002.eqiad.wmnet
 
@@ -14,9 +14,6 @@ elasticsearch::cluster_hosts:
 elasticsearch::data_dir: /srv/elasticsearch
 
 elasticsearch::expected_nodes: 2
-
-# We should be able to run "OK" with a single server.
-elasticsearch::recover_after_nodes: 1
 
 elasticsearch::minimum_master_nodes: 1
 
@@ -31,3 +28,5 @@ elasticsearch::graylog_hosts:
 
 elasticsearch::https::certificate_name: 'relforge.svc.eqiad.wmnet'
 base::puppet::dns_alt_names:            'relforge.svc.eqiad.wmnet'
+
+has_lvs: false
