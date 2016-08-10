@@ -14,6 +14,14 @@
 #   Path to topic config file.  This file specifies what schema names
 #   are allowed to be produced to which topics.
 #
+# [*error_output*]
+#   Eventlogging output URI to which EventError events will be written
+#   if an input event fails processing, validation, or writing to
+#   configured outputs.  This is best effort.  E.g. if the failures
+#   are do to a Kafka problem in one of your main outputs, it is possible
+#   that a Kafka error_output will fail too.  It may be advisable to use
+#   a different output handler here than you are using for your main outputs.
+#
 # [*port*]
 #   Port on which this service will listen.  Default: 8085.
 #
@@ -43,9 +51,10 @@
 #   [File['/path/to/topicconfig.yaml'], Class['::something::else']]
 #
 define eventlogging::service::service(
+    $outputs,
     $schemas_path,
     $topic_config,
-    $outputs,
+    $error_output        = undef,
     $port                = 8085,
     $num_processes       = undef, # default 1
     $log_file            = undef,
