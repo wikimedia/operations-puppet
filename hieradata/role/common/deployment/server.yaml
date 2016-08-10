@@ -6,6 +6,7 @@ admin::groups:
   - wdqs-admins
   - eventlogging-admins
   - aqs-admins
+  - deploy-aqs
   - deploy-phabricator
   - analytics-admins
 

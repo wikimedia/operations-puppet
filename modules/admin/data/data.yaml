@@ -421,6 +421,14 @@ groups:
               yurik, bsitzmann, mholloway-shell, kartik, halfak, ladsgroup, smalyshev, hoo]
     privileges: []
 
+  deploy-aqs:
+    gid: 786
+    description: Deployers for the Analytics Query Service
+    members: [nuria, milimetric, joal, mforns]
+    privileges: [
+         'ALL = NOPASSWD: /usr/sbin/service restbase *',
+         'ALL = (restbase) NOPASSWD: ALL']
+
   aqs-admins:
     description: Group of admins for the Analytics Query Service
     gid: 764
@@ -554,6 +562,7 @@ groups:
                  'ALL = NOPASSWD: /bin/systemctl stop eventlogging-service-eventbus.service',
                  'ALL = NOPASSWD: /bin/systemctl restart eventlogging-service-eventbus.service',
                  'ALL = NOPASSWD: /bin/journalctl *']
+
 users:
   rush:
     ensure: present
