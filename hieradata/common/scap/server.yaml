@@ -22,6 +22,7 @@ keyholder_agents:
     trusted_groups:
       - deploy-service
       - aqs-admins
+      - deploy-aqs
 
   dumpsdeploy:
     trusted_groups:
