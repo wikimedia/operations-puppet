@@ -59,25 +59,25 @@ class role::ganglia::web {
     ferm::service { 'gmond_udp':
         proto  => 'udp',
         port   => '8649',
-        srange => '$ALL_NETWORKS',
+        srange => '($PRODUCTION_NETWORKS $LABS_NETWORKS)',
     }
 
     ferm::service { 'gmond_tcp':
         proto  => 'tcp',
         port   => '8649',
-        srange => '$ALL_NETWORKS',
+        srange => '($PRODUCTION_NETWORKS $LABS_NETWORKS)',
     }
 
     ferm::service { 'gmetad_xml':
         proto  => 'tcp',
         port   => '8653',
-        srange => '$ALL_NETWORKS',
+        srange => '($PRODUCTION_NETWORKS $LABS_NETWORKS)',
     }
 
     ferm::service { 'gmetad':
         proto  => 'tcp',
         port   => '8654',
-        srange => '$ALL_NETWORKS',
+        srange => '($PRODUCTION_NETWORKS $LABS_NETWORKS)',
     }
 
     # Get better insight into how disks are faring
