@@ -37,9 +37,6 @@ class role::labs::dnsrecursor {
         address   => $recursor_ip
     }
 
-    #  We need to alias some public IPs to their corresponding private IPs.
-    $wikitech_nova_ldap_user_pass = $keystoneconfig['ldap_user_pass']
-    $wikitech_nova_admin_project_name = $keystoneconfig['admin_project_name']
     $nova_controller_hostname = hiera('labs_nova_controller')
 
     $listen_addresses = $::realm ? {
@@ -47,37 +44,28 @@ class role::labs::dnsrecursor {
         default => [$recursor_ip]
     }
 
-    $labs_auth_dns = ipresolve($dnsconfig['host'],4)
-
-    $alias_file = '/etc/powerdns/labs-ip-alias.lua'
-    $metal_resolver = '/etc/powerdns/metaldns.lua'
-    $lua_hooks = [$alias_file, $metal_resolver]
-
     $tld = hiera('labs_tld')
+    $labs_auth_dns = ipresolve($dnsconfig['host'],4)
     $private_reverse = hiera('labs_private_ips_reverse_dns')
+
+    # Purge old files
+    # TODO: Remove
+    file { ['/etc/labs-dns-alias.yaml', '/usr/local/bin/labs-ip-alias-dump.py']:
+        ensure  => absent
+    }
+
+    include dnsrecursor::lua_hooks
 
     class { '::dnsrecursor':
             listen_addresses         => $listen_addresses,
             allow_from               => $all_networks,
             additional_forward_zones => "${tld}=${labs_auth_dns}, ${private_reverse}=${labs_auth_dns}",
             auth_zones               => 'labsdb=/var/zones/labsdb',
-            lua_hooks                => $lua_hooks,
+            lua_hooks                => true,
             max_negative_ttl         => 900,
             max_tcp_per_client       => 10,
             max_cache_entries        => 3000000,
             client_tcp_timeout       => 1,
-    }
-
-    class { '::dnsrecursor::labsaliaser':
-        username           => 'novaadmin',
-        password           => $wikitech_nova_ldap_user_pass,
-        nova_api_url       => "http://${nova_controller_hostname}:35357/v2.0",
-        alias_file         => $alias_file,
-        admin_project_name => $wikitech_nova_admin_project_name
-    }
-    class { '::dnsrecursor::metalresolver':
-        metal_resolver => $metal_resolver,
-        tld            => $tld
     }
 
     # There are three replica servers (c1, c2, c3).  The mapping of

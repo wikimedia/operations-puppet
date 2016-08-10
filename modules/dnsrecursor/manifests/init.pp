@@ -5,6 +5,9 @@
 #
 # [*allow_from]
 #  Prefixes from which to allow recursive DNS queries
+#
+# [*lua_hooks]
+#  Boolean. If true, will load lua_hooks found at /etc/powerdns/recursorhooks.lua
 
 class dnsrecursor(
     $listen_addresses         = [$::ipaddress],
@@ -41,18 +44,6 @@ class dnsrecursor(
         mode    => '0444',
         notify  => Service['pdns-recursor'],
         content => template('dnsrecursor/recursor.conf.erb'),
-    }
-
-    if $lua_hooks {
-        file { '/etc/powerdns/recursorhooks.lua':
-            ensure  => 'present',
-            require => Package['pdns-recursor'],
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0444',
-            notify  => Service['pdns-recursor'],
-            content => template('dnsrecursor/recursorhooks.lua.erb'),
-        }
     }
 
     service { 'pdns-recursor':
