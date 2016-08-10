@@ -2358,15 +2358,6 @@ node /^(nihal\.codfw|nitrogen\.eqiad)\.wmnet$/ {
     include standard
 }
 
-# Test server for labs ElasticSearch replication
-node 'nobelium.eqiad.wmnet' {
-    role elasticsearch::server
-
-    include elasticsearch::proxy
-    include base::firewall
-    include standard
-}
-
 # Offline Content Generator
 node /^ocg100[123]\.eqiad\.wmnet$/ {
     role ocg
