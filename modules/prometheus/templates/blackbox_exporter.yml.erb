@@ -1,0 +1,13 @@
+modules:
+  tcp_connect:
+    prober: tcp
+    timeout: 5s
+  ssh_banner:
+    prober: tcp
+    timeout: 5s
+    tcp:
+      query_response:
+      - expect: "^SSH-2.0-"
+  icmp:
+    prober: icmp
+    timeout: 5s

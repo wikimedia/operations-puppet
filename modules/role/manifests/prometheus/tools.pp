@@ -59,6 +59,7 @@ class role::prometheus::tools {
         require => Prometheus::Server['tools'],
     }
 
+    include ::role::prometheus::blackbox_exporter
     include ::prometheus::scripts
 
     $targets_path = '/srv/prometheus/tools/targets'
