@@ -18,6 +18,6 @@ class role::toollabs::logging::centralserver {
 
     class { 'rsyslog::receiver':
         require            => Labs_lvm::Volume['syslog'],
-        log_retention_days => 3, # We don't have that much space! Increase later when we know we can handle it
+        log_retention_days => 14,
     }
 }
