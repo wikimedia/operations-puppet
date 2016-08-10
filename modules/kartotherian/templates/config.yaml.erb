@@ -7,6 +7,11 @@ variables:
     cassandra-user: '<%= @cassandra_kartotherian_user %>'
     cassandra-pswd: '<%= @cassandra_kartotherian_pass %>'
 
+    cassandra-servers:
+<% @cassandra_servers.each do |cassandra_server| -%>
+        - <%= cassandra_server %>
+<% end %>
+
 sources: <%= @conf_sources %>
 
 # TODO: allowUserQueries should be removed when geoshapes are enabled in prod

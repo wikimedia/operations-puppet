@@ -20,10 +20,16 @@
 #   Contact groups for alerting.
 #   Default: 'admins'
 #
+# [*cassandra_servers*]
+#   List of cassandra server names used by Kartotherian
+#
 class kartotherian(
-    $conf_sources   = 'sources.prod.yaml',
-    $contact_groups = 'admins',
+    $conf_sources      = 'sources.prod.yaml',
+    $contact_groups    = 'admins',
+    $cassandra_servers = hiera('cassandra::seeds'),
 ) {
+
+    validate_array($cassandra_servers)
 
     $cassandra_kartotherian_user = 'kartotherian'
     $cassandra_kartotherian_pass = hiera('maps::cassandra_kartotherian_pass')
