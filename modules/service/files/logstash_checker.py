@@ -105,6 +105,78 @@ class CheckService(object):
             self.auth = '{}:{}'.format(user, password)
 
     def _logstash_query(self):
+        if self.service_name == 'fatalmonitor':
+            return self._fatal_monitor_query()
+
+        return self._make_logstash_query()
+
+    def _fatal_monitor_query(self):
+        """Return query that powers the kibana fatalmonitor."""
+        query = ('host:("%(host)s") '
+                 'AND (type:mediawiki '
+                 'AND (channel:exception OR channel:wfLogDBError)) '
+                 'OR type:hhvm') % vars(self)
+
+        return {"aggs": {
+            "2": {
+                "date_histogram": {
+                    "interval": "10s",
+                    "field": "@timestamp"
+                }
+            }
+        }, "query": {
+            "filtered": {
+                "filter": {
+                    "bool": {
+                        "must": [{
+                            "range": {
+                                "@timestamp": {
+                                    "lte": "now",
+                                    "gte": "now-60m"
+                                }
+                            }
+                        }],
+                        "must_not": [{
+                            "bool": {
+                                "must": [{
+                                    "terms": {
+                                        "level": [
+                                            "NOTICE",
+                                            "INFO",
+                                            "WARNING"
+                                        ]}}, {
+                                    "term": {
+                                        "type": "mediawiki"
+                                    }}]
+                            }}, {
+                            "query": {
+                                "match": {
+                                    "message": {
+                                        "query": "SlowTimer",
+                                        "type": "phrase"
+                                    }
+                                }
+                            }}, {
+                            "query": {
+                                "match": {
+                                    "message": {
+                                        "query": "Invalid host name",
+                                        "type": "phrase"
+                                    }
+                                }
+                            }}
+                        ]
+                    }
+                },
+                "query": {
+                    "query_string": {
+                        "query": query
+                    }
+                }
+            }
+        }}
+
+    def _make_logstash_query(self):
         query = ('host:("%(host)s") '
                  'AND (level:("ERROR") OR level:("FATAL")) '
                  'AND type:("%(service_name)s")') % vars(self)
