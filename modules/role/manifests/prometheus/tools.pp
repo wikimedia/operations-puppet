@@ -7,6 +7,7 @@
 class role::prometheus::tools {
     $bearer_token_file = '/srv/prometheus/tools/k8s.token'
     $master_host = hiera('k8s::master_host')
+    $targets_path = '/srv/prometheus/tools/targets'
 
     prometheus::server { 'tools':
         listen_address       => '127.0.0.1:9902',
@@ -19,25 +20,53 @@ class role::prometheus::tools {
                         'api_servers'       => [ "https://${master_host}:6443" ],
                         'bearer_token_file' => $bearer_token_file,
                     },
-                    ],
-                    # keep metrics coming from apiserver or node kubernetes roles
-                    # and map kubernetes node labels to prometheus metric labels
-                    'relabel_configs'       => [
-                        {
-                            'source_labels' => ['__meta_kubernetes_role'],
-                            'action'        => 'keep',
-                            'regex'         => '(?:apiserver|node)',
-                        },
-                        {
-                            'action' => 'labelmap',
-                            'regex'  => '__meta_kubernetes_node_label_(.+)',
-                        },
-                        {
-                            'source_labels' => ['__meta_kubernetes_role'],
-                            'action'        => 'replace',
-                            'target_label'  => 'kubernetes_role',
-                        },
-                    ]
+                ],
+                # keep metrics coming from apiserver or node kubernetes roles
+                # and map kubernetes node labels to prometheus metric labels
+                'relabel_configs'       => [
+                    {
+                        'source_labels' => ['__meta_kubernetes_role'],
+                        'action'        => 'keep',
+                        'regex'         => '(?:apiserver|node)',
+                    },
+                    {
+                        'action' => 'labelmap',
+                        'regex'  => '__meta_kubernetes_node_label_(.+)',
+                    },
+                    {
+                        'source_labels' => ['__meta_kubernetes_role'],
+                        'action'        => 'replace',
+                        'target_label'  => 'kubernetes_role',
+                    },
+                ]
+            },
+            {
+                'job_name'        => 'ssh_checks',
+                'module'          => ['ssh_banner'],
+                'file_sd_configs' => [ { 'names' => ["${targets_path}/ssh_checks.yml"] } ],
+                'relabel_configs' => [
+                    # The replacement syntax is for prometheus to consume
+                    # lint:ignore:single_quote_string_with_variables
+                    {
+                        'source_labels' => ['__address__'],
+                        'regex'         => '(.*)',
+                        'target_label'  => '__param_target',
+                        'replacement'   => '${1}',
+                    },
+                    {
+                        'source_labels' => ['__param_target'],
+                        'regex'         => '(.*)',
+                        'target_label'  => 'instance',
+                        'replacement'   => '${1}',
+                    },
+                    {
+                        'source_labels' => [],
+                        'regex'         => '.*',
+                        'target_label'  => '__address__',
+                        'replacement'   => '127.0.0.1:9115',
+                    }
+                    # lint:endignore
+                ]
             }
         ]
     }
@@ -62,10 +91,17 @@ class role::prometheus::tools {
     include ::role::prometheus::blackbox_exporter
     include ::prometheus::scripts
 
-    $targets_path = '/srv/prometheus/tools/targets'
     cron { 'prometheus_tools_project_targets':
         ensure  => present,
         command => "/usr/local/bin/prometheus-labs-targets > ${targets_path}/node_project.$$ && mv ${targets_path}/node_project.$$ ${targets_path}/node_project.yml",
+        minute  => '*/10',
+        hour    => '*',
+        user    => 'prometheus',
+    }
+
+    cron { 'prometheus_tools_project_ssh_targets':
+        ensure  => present,
+        command => "/usr/local/bin/prometheus-labs-targets --port 22 > ${targets_path}/ssh_banner.$$ && mv ${targets_path}/ssh_banner.$$ ${targets_path}/ssh_banner.yml",
         minute  => '*/10',
         hour    => '*',
         user    => 'prometheus',
