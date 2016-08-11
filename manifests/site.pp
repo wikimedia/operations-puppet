@@ -1959,8 +1959,7 @@ node 'maps1001.eqiad.wmnet' {
     include base::firewall
 }
 
-# maps1002 has networking issues, let's wait until they are resolved to configure it
-node /^maps100[3-4]\.eqiad\.wmnet/ {
+node /^maps100[2-4]\.eqiad\.wmnet/ {
     role maps::server, maps::slave
     include base::firewall
 }
