@@ -81,8 +81,8 @@ define prometheus::server (
       {
         'job_name'      => 'node',
         'file_sd_configs' => [
-            { 'names'  => [ "${targets_path}/*.yml",
-                            "${targets_path}/*.yaml" ] },
+            { 'names'  => [ "${targets_path}/node_*.yml",
+                            "${targets_path}/node_*.yaml" ] },
         ]
       },
     ]
