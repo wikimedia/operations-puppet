@@ -90,9 +90,9 @@ class network::constants {
                     '10.68.18.66',  # bastion-restricted-01.eqiad.wmflabs
                     '10.68.18.68',  # bastion-restricted-02.eqiad.wmflabs
                 ],
-            'monitoring_hosts' => [
+            'monitoring_hosts' => concat([
                     '10.68.16.210', # shinken-01.eqiad.wmflabs
-                ],
+                ], hiera('prometheus_host_ips', [])), # Support per-project prometheus hosts!
             'deployment_hosts' => [
                     '10.68.17.240',  # deployment-tin.deployment-prep.eqiad.wmflabs
                     '10.68.17.215',  # mira.deployment-prep.eqiad.wmflabs
