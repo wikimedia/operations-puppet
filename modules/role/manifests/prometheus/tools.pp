@@ -74,7 +74,15 @@ class role::prometheus::tools {
                     }
                     # lint:endignore
                 ]
-            }
+            },
+            {
+            'job_name'        => 'etcd',
+            'file_sd_configs' => [
+                {
+                    'names' => [ "${targets_path}/etcd_*.yml" ]
+                }
+            ]
+            },
         ]
     }
 
