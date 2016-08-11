@@ -68,7 +68,7 @@ groups:
                  restricted folks use sudo to access apache / www-data resources
     members: [daniel, dartar, ellery, bearloga,
               ezachte, hoo, jamesur, jdlrobson, khorn, tparscal, ssastry,
-              ironholds, nuria, leila, santhosh, amire80, legoktm, addshore, foks]
+              ironholds, nuria, leila, santhosh, amire80, legoktm, addshore, foks, chelsyx]
     privileges: ['ALL = (www-data,apache) NOPASSWD: ALL']
   bastiononly:
     gid: 707
@@ -125,7 +125,7 @@ groups:
               neilpquinn-wmf, tbayer, moushira, dbrant, maxsem, srijan, krenair,
               jminor, asherman, etonkovidova, sbisson, addshore, matmarex, elukey,
               nikerabbit, nschaaf, dstrine, joewalsh, mpany, hjiang, jsamra, bcohn,
-              jdittrich]
+              jdittrich, chelsyx]
   ldap-admins:
     gid: 715
     description: ldap admins
@@ -245,7 +245,7 @@ groups:
               csteipp, smalyshev, ebernhardson, addshore, jminor, chedasaurus, neilpquinn-wmf,
               dcausse, bd808, tjones, mobrovac, jgirault, jdrewniak, ejegg, jdcc, ori,
               bmansurov, atgomez, amire80, kartik, pcoombe, foks, mpany, hjiang, jsamra, bcohn,
-              jdlrobson]
+              jdlrobson, chelsyx]
   analytics-admins:
     gid: 732
     description: Admin access to analytics cluster.
@@ -2014,3 +2014,11 @@ users:
     ssh_keys:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDfDN+fYSIem1HA5TFNzLtrkG/+OwvYHlR9rZOF/aISNhVDu/QETNiUKxTiSBtuqeCGsB/rSvE0XEI/Hi3EIQ1SkNOH/mGIRLpI0g5ETMW7FW/z0pSgaXKgNJNMMWZfBgyYnSk+a9OnPGd9ofvX0u8GvSEjLsaS0fZPrd2GZz/jX6GzqbnRSfZbSoPEFhimD1ENQ0CRyjBzlG9g4RKXWQ0Qku1SXXy0EtUxMh7xojKPEdU1Vi7p51m4T7oL2j+4dAOYWLUcBvkezOFp8S3eAt7JYW9Ohj+blOmvbzXBKVSfoSgnstTum4xLXFgyVYDBLCdakW85RWyAe0fIO9MrJiLT nkohli@nkohlis-MacBook-Pro.local
     uid: 4103
+  chelsyx:
+    ensure: present
+    gid: 500
+    name: chelsyx
+    realname: Chelsy Xie
+    ssh_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDCpSTjqJly0lX3xY5TtBwHwcH7kir4hAkVGhDXkPjnfdycvXFCXHjrrONLQh6M+lIy4DIgXrK90aLUOgcPRPFLD2pQl7SrYBSSJKSf2Xv6nz7lc3fCsIk0lK+jWfPvc659z91IFsqizgiMqpNJavZoHqxMvqO6JTnxpJQzJ2Elno2lEJCWIKZ1nP+U8/M6BC45bYEHWRH+RyCfMgCkJ5B6+R7B3u0gPjmeICkS5WF0oiW7ktQ2Fo4Go2n0chRXVWyff0+JUA4twC+8YPkfDZhDgvI0r8dH2MOhln9Ex6xqRfgkqXL6V812z3sTn6O4UIfOq3C5X3JCzww9bUXwvv+IpVpklxJyt/Nll8ux1tGJkRVEmb0u6JUTf7gzdscWuoxNHsPEFHtxEiOwfh2QDjn4nfiNixvWPfV8Q9QEBGtx7NCXbv4wrkpQ4eIrqKH9Y0MyhtZ2LnOH2CB9git/vERIBIcFFiKG7U6fYhsTwbtXPghVoUa6hYqaFQr3WYejjllv0wBYWcs0l+gINhl+lqqmx7yc54jEsdyWRml+InrYCcONeMEnJrqytL/K4fNxcjWQ4s7jnG3zVVe9RKmN1Ab06D2QTLZgg8QNS127sAjyxc+IRqaT/xVHnr29B9ymrKFrh0jDEfJ3+TSFrwb2Lnjwc0W+9hSevhQYUJEmZczBQQ== cxie@wikimedia.org
+    uid: 15196
