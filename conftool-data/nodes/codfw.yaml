@@ -156,6 +156,7 @@ api_appserver:
   mw2219.codfw.wmnet: [apache2]
   mw2220.codfw.wmnet: [apache2]
 imagescaler:
+  mw2086.codfw.wmnet: [apache2]
   mw2087.codfw.wmnet: [apache2]
   mw2089.codfw.wmnet: [apache2]
   mw2149.codfw.wmnet: [apache2]
