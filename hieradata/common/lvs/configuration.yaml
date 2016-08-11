@@ -785,6 +785,8 @@ lvs_services:
       sites:
         codfw:
           hostname: kartotherian.svc.codfw.wmnet
+        eqiad:
+          hostname: kartotherian.svc.eqiad.wmnet
   mobileapps:
     description: "A service for use by mobile apps. Provides DOM manipulation, aggregation, JSON flattening. mobileapps.svc.%{::site}.wmnet"
     class: low-traffic
