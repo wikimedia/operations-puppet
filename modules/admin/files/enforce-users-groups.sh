@@ -16,8 +16,7 @@ EXCLUDE=("nobody" \
          "mwdeploy" \   # eventlog*
          "releases" \   # tin.eqiad.wmnet/mira.codfw.wmnet
          "reprepro" \   # bromine.eqiad.wmnet
-         "mysql" \      # db1015.eqiad.wmnet (sadly, still needed)
-         "dbmon" \      # db1044.eqiad.wmnet
+         "mysql" \      # db1015.eqiad.wmnet T134476
          "parsoid-rt" \ # ruthenium.eqiad.wmnet T90966
          "datasets" );  # snapshot*, dataset*, ms1001
 
