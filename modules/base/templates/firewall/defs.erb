@@ -33,7 +33,6 @@ mw_appserver_networks = scope.lookupvar('network::constants::mw_appserver_networ
 	<%- end -%>
 <%- end -%>
 <%-
-all_descrs = Array.new()
 all_network_subnets.sort.map do |realm, sites|
 	sites.sort.map do |site, spheres|
 		spheres.sort.map do |sphere, networks |
@@ -42,7 +41,6 @@ all_network_subnets.sort.map do |realm, sites|
 # Realm: <%= realm %>, # Site: <%= site %>, # Sphere: <%= sphere %>, # Network: <%= network %>
 				<%-
 				descr = "#{site.upcase()}_#{sphere.upcase()}_#{network.upcase()}".gsub('-', '_').gsub('+', '_')
-				all_descrs << descr
 				familydescrs = Array.new()
 				families.sort.map do |family, address|
 					familydescr = "#{descr}_#{family.upcase()}"
@@ -54,4 +52,3 @@ all_network_subnets.sort.map do |realm, sites|
 		end
 	end
 end -%>
-@def $ALL_NETWORK_SUBNETS = (<%- all_descrs.each do |fd|%>$<%= fd %> <% end -%>);
