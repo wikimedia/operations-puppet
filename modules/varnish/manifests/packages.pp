@@ -13,10 +13,10 @@ class varnish::packages($version='installed') {
     if (hiera('varnish_version4', false)) {
         # Install VMODs on Varnish 4 instances
         package { [
-            'libvmod-header',
             'libvmod-netmapper',
             'libvmod-tbf',
-            'libvmod-vslp'
+            'libvmod-vslp',
+            'varnish-modules'
             ]:
             ensure  => 'installed',
             require => Class['varnish::apt_preferences'],
