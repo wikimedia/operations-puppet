@@ -66,13 +66,22 @@ module Puppet::Parser::Functions
   # General preference ordering for fullest combined list:
   # 0) Kx:   (EC)DHE > RSA    (Forward Secrecy)
   # 1) Mac:  AEAD > ALL       (AES-GCM/CHAPOLY > Others)
-  # 2) Kx:   ECDHE > DHE      (Server Perf, may help with DH>1024 compat)
-  # 3) Mac:  SHA-2 > SHA-1
-  # 4) Enc:  [AES128 > CHACHA] > AES256
-  #   ^ Note: our cloudflare-patched 1.0.2 never chooses chapoly unless a
-  #     chapoly cipher is the client's top choice, which makes this work with
-  #     the chapoly suites ahead of AES-GCM in the 'strong' list below.
-  # 5) Auth: ECDSA > RSA      (Server Performance)
+  #   ^ Note: our chapoly patches only turn on chapoly ciphers if the client
+  #     prefers them to their equivalent AES-GCM options.
+  # 2) Kx:   ECDHE > DHE      (Perf, mostly)
+  # 3) Enc:  AES128 > AES256  (Perf, mostly)
+  # 4) Mac:  SHA-2 > SHA-1    (Not that it matters much, yet)
+  # 5) Auth: ECDSA > RSA      (Perf, mostly)
+  #
+  # After all of that, the fullest list of reasonably-acceptable mid/compat
+  # ciphers has been filtered further to reduce pointless clutter:
+  # *) The 'mid' list has been filtered of AES256 options on the grounds that
+  # any such client can always use AES128 instead, and it's senseless to try to
+  # set a 'more bits' security policy if not using a strong cipher in general.
+  # *) The 'compat' list has been reduced to just the two weakest and
+  # most-popular reasonable options there.  The others were mostly statistically
+  # insignificant, and things are so bad at this level it's not worth worrying
+  # about slight cipher strength gains.
   basic = {
     # Forward-Secret + AEAD
     'strong' => [
@@ -91,14 +100,14 @@ module Puppet::Parser::Functions
     ],
     # Forward-Secret, but not AEAD
     'mid' => [
-      'ECDHE-ECDSA-AES128-SHA256',
+      'ECDHE-ECDSA-AES128-SHA256', # Mostly Safari 6-8
       'ECDHE-RSA-AES128-SHA256',
-      'ECDHE-ECDSA-AES128-SHA',
+      'ECDHE-ECDSA-AES128-SHA',    # Unpatched IE<11, Android 4.[0-3]
       'ECDHE-RSA-AES128-SHA',
       'ECDHE-ECDSA-DES-CBC3-SHA',
       'ECDHE-RSA-DES-CBC3-SHA',
       'DHE-RSA-AES128-SHA256',
-      'DHE-RSA-AES128-SHA',
+      'DHE-RSA-AES128-SHA',   # Android 2.x, openssl-0.9.8
       'DHE-RSA-DES-CBC3-SHA', # openssl-1.1.0
       'EDH-RSA-DES-CBC3-SHA', # pre-1.1.0 name for the above
     ],
