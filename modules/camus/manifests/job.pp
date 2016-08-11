@@ -29,7 +29,7 @@
 # [*check_jar*]
 #   Path to jar with CamusPartitionChecker.  This is ignored if
 #   $check is false.  Default: undef,
-#   (/srv/deployment/analytics/refinery/artifacts/refinery-job.jar)
+#   (/srv/deployment/analytics/refinery/artifacts/refinery-camus.jar)
 #
 # [*libjars*]
 #    Any additional jar files to pass to Hadoop when starting the MapReduce job.
