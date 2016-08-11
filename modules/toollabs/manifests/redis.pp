@@ -66,6 +66,6 @@ class toollabs::redis (
     }
 
     diamond::collector { 'Redis':
-        require => Class['::redis::instance'],
+        require => Class['::redis::client::python'],
     }
 }
