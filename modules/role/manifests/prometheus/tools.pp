@@ -11,34 +11,34 @@ class role::prometheus::tools {
     prometheus::server { 'tools':
         listen_address       => '127.0.0.1:9902',
         scrape_configs_extra => [
-          {
-            'job_name'              => 'k8s',
-            'bearer_token_file'     => $bearer_token_file,
-            'kubernetes_sd_configs' => [
-              {
-                'api_servers'       => [ "https://${master_host}:6443" ],
-                'bearer_token_file' => $bearer_token_file,
-              },
-            ],
-            # keep metrics coming from apiserver or node kubernetes roles
-            # and map kubernetes node labels to prometheus metric labels
-            'relabel_configs'       => [
-              {
-                'source_labels' => ['__meta_kubernetes_role'],
-                'action'        => 'keep',
-                'regex'         => '(?:apiserver|node)',
-              },
-              {
-                'action' => 'labelmap',
-                'regex'  => '__meta_kubernetes_node_label_(.+)',
-              },
-              {
-                'source_labels' => ['__meta_kubernetes_role'],
-                'action'        => 'replace',
-                'target_label'  => 'kubernetes_role',
-              },
-            ]
-          }
+            {
+                'job_name'              => 'k8s',
+                'bearer_token_file'     => $bearer_token_file,
+                'kubernetes_sd_configs' => [
+                    {
+                        'api_servers'       => [ "https://${master_host}:6443" ],
+                        'bearer_token_file' => $bearer_token_file,
+                    },
+                    ],
+                    # keep metrics coming from apiserver or node kubernetes roles
+                    # and map kubernetes node labels to prometheus metric labels
+                    'relabel_configs'       => [
+                        {
+                            'source_labels' => ['__meta_kubernetes_role'],
+                            'action'        => 'keep',
+                            'regex'         => '(?:apiserver|node)',
+                        },
+                        {
+                            'action' => 'labelmap',
+                            'regex'  => '__meta_kubernetes_node_label_(.+)',
+                        },
+                        {
+                            'source_labels' => ['__meta_kubernetes_role'],
+                            'action'        => 'replace',
+                            'target_label'  => 'kubernetes_role',
+                        },
+                    ]
+            }
         ]
     }
 
