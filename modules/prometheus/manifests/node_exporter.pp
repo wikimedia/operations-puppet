@@ -24,8 +24,6 @@ class prometheus::node_exporter (
     $ignored_devices  = '^(ram|loop|fd)\\d+$',
     $collectors_extra = [],
 ) {
-    requires_os('debian >= jessie')
-
     require_package('prometheus-node-exporter')
 
     $collectors_default = ['diskstats', 'filefd', 'filesystem', 'loadavg',
