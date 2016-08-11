@@ -39,7 +39,7 @@ class parsoid(
         config          => {
             localsettings => $settings_file,
         },
-        heap_limit      => 600,
+        heap_limit      => 800,
         heartbeat_to    => 180000,
         healthcheck_url => '/',
         has_spec        => false,
