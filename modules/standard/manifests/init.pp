@@ -31,7 +31,6 @@ class standard(
     # the admin class
     if $has_admin {
         include ::admin
-        include passwords::root
     }
 
 }
