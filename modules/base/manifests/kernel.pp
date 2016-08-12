@@ -22,4 +22,21 @@ class base::kernel
             source => 'puppet:///modules/base/kernel/blacklist-linux44.conf',
         }
     }
+
+    # By default trusty allows the creation of user namespaces by unprivileged users
+    # (Debian defaulted to disallowing these since the feature was introduced for security reasons)
+    # Unprivileged user namespaces are not something we need in general (and especially
+    # not in trusty where support for namespaces is incomplete) and was the source for
+    # several local privilege escalation vulnerabilities. Fortunately the 3.13.0-91 release
+    # introduced a backport of the Debian patch allowing to disable the creation of user
+    # namespaces via a sysctl. There's a few servers we haven't been able to migrate to
+    # that kernel for technical reasons, so make the creation of the sysctl dependant on
+    # the kernel release.
+    if os_version('ubuntu == trusty') and (versioncmp($::kernelrelease, '3.13.0-91') >= 0) {
+        sysctl::parameters { 'disable-unprivileged-user-namespaces':
+            values => {
+                'kernel.unprivileged_userns_clone' => 0,
+            },
+        }
+    }
 }
