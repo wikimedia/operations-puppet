@@ -22,7 +22,7 @@ class role::elasticsearch::server{
         proto   => 'tcp',
         port    => '9200',
         notrack => true,
-        srange  => '(($INTERNAL @resolve(wikitech.wikimedia.org) @resolve(labtestwikitech.wikimedia.org)))',
+        srange  =  '$DOMAIN_NETWORKS',
     }
 
     $elastic_nodes = hiera('elasticsearch::cluster_hosts')
@@ -39,7 +39,7 @@ class role::elasticsearch::server{
     ferm::service { 'elastic-zen-discovery':
         proto  => 'udp',
         port   => '54328',
-        srange => '$INTERNAL',
+        srange => '$DOMAIN_NETWORKS',
     }
 
     system::role { 'role::elasticsearch::server':
