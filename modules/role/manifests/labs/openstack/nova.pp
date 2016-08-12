@@ -373,5 +373,15 @@ class role::labs::openstack::nova::compute($instance_dev='/dev/md1') {
         source => 'puppet:///modules/base/firewall/nf_conntrack.conf',
     }
 
+    diamond::collector { 'LibvirtKVM':
+        source   => 'puppet:///modules/diamond/collector/libvirtkvm.py',
+        settings => {
+            # lint:ignore:quoted_booleans
+            # This is jammed straight into a config file, needs quoting.
+            'sort_by_uuid' => 'false',
+            # lint:endignore
+        }
+    }
+
     require_package('conntrack')
 }
