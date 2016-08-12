@@ -13,10 +13,6 @@ repo_config:
   jobrunner/jobrunner:
     upstream: https://gerrit.wikimedia.org/r/mediawiki/services/jobrunner
     service_name: jobrunner
-  parsoid/deploy:
-    upstream: https://gerrit.wikimedia.org/r/p/mediawiki/services/parsoid/deploy
-    checkout_submodules: true
-    service_name: parsoid
   eventlogging/eventlogging:
     upstream: https://gerrit.wikimedia.org/r/eventlogging
     checkout_submodules: true

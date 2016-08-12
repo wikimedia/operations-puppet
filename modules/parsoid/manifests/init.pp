@@ -21,14 +21,14 @@
 #
 # [*deployment*]
 #   Deployment system to use: available are trebuchet, scap3 or git.
-#   Default: trebuchet
+#   Default: scap3
 #
 class parsoid(
     $port          = 8000,
     $settings_file = 'conf/wmf/localsettings.js',
     $logging_name  = 'parsoid',
     $statsd_prefix = 'parsoid',
-    $deployment    = undef,
+    $deployment    = 'scap3',
 ) {
 
     service::node { 'parsoid':
