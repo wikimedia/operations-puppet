@@ -14,7 +14,6 @@ ARCHIVE_DIR='/var/userarchive'
 EXCLUDE=("nobody" \
          "l10nupdate" \
          "mwdeploy" \   # eventlog*
-         "gerrit2" \    # lead.wikimedia.org
          "releases" \   # tin.eqiad.wmnet/mira.codfw.wmnet
          "reprepro" \   # bromine.eqiad.wmnet
          "mysql" \      # pc1001.eqiad.wmnet
