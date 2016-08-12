@@ -2,12 +2,12 @@ postgres_users:
   replication@nihal-v4:
     user: replication
     password: "%{::puppetmaster::puppetdb::database::replication_pass}"
-    cidr: 10.192.16.184 
+    cidr: 10.192.16.184/32
     pgversion: 9.4
   puppetdb@nihal-v4:
-    user: replication
+    user: puppetdb
     password: "%{::puppetmaster::puppetdb::database::puppetdb_pass}"
-    cidr: 10.192.16.184 
+    cidr: 10.192.16.184/32
     pgversion: 9.4
 master: nitrogen.eqiad.wmnet
 slaves: [nihal.codfw.wmnet]
