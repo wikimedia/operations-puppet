@@ -1,4 +1,7 @@
-class role::cache::ssl::unified {
+class role::cache::ssl::unified(
+    $labs_server_name = 'beta.wmflabs.org',
+    $labs_subjects = ['beta.wmflabs.org'],
+) {
     if ( $::realm == 'production' ) {
         monitoring::service { 'https':
             description   => 'HTTPS',
@@ -16,8 +19,8 @@ class role::cache::ssl::unified {
     }
     else {
         tlsproxy::localssl { 'unified':
-            server_name    => 'www.wikimedia.beta.wmflabs.org',
-            certs          => ['star.wmflabs.org'],
+            server_name    => $labs_server_name,
+            acme_subjects  => $labs_subjects,
             default_server => true,
             do_ocsp        => false,
             skip_private   => true,
