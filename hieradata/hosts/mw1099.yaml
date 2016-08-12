@@ -1,0 +1,2 @@
+monitoring::smart::enabled: 'true'
+monitoring::smart::device: '/dev/sda2'

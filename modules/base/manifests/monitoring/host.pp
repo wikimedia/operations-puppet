@@ -5,7 +5,7 @@
 # - dpkg
 # - disk space
 # - raid
-#
+# - SMART attributes
 # Note that this class is probably already included for your node
 # by the class base.  If you want to change the contact_group, set
 # the variable contactgroups in hiera.
@@ -27,6 +27,8 @@ class base::monitoring::host(
     # that are purposefully at 99%. Better ideas are welcome.
     $nrpe_check_disk_options = '-w 6% -c 3% -l -e -A -i "/srv/sd[a-b][1-3]" --exclude-type=tracefs',
     $nrpe_check_disk_critical = false,
+    $nrpe_check_smart_device = hiera('monitoring::smart::device', '/dev/sda1'),
+    $nrpe_check_smart_critical = false,
 ) {
     include base::puppet::params # In order to be able to use some variables
 
@@ -90,6 +92,21 @@ class base::monitoring::host(
         description  => 'Disk space',
         critical     => $nrpe_check_disk_critical,
         nrpe_command => "/usr/lib/nagios/plugins/check_disk ${nrpe_check_disk_options}",
+    }
+
+    if $::monitoring::smart::enabled {
+
+        if os_version('Debian >= jessie') {
+            $check_ide_smart_options = " -d ${nrpe_check_smart_device}"
+        } else {
+            $check_ide_smart_options = " -n -d ${nrpe_check_smart_device}"
+        }
+
+        nrpe::monitor_service { 'disk_smart':
+            description  => 'Disk SMART',
+            critical     => $nrpe_check_smart_critical,
+            nrpe_command => "/usr/lib/nagios/plugins/check_ide_smart ${check_ide_smart_options}",
+        }
     }
 
     nrpe::monitor_service { 'dpkg':
