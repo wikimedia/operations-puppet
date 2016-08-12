@@ -66,7 +66,8 @@ as cummulative nanoseconds since VM creation if this is True."""
             'path':     'libvirt-kvm',
             'sort_by_uuid': False,
             'uri':      'qemu:///system',
-            'cpu_absolute': False
+            'cpu_absolute': False,
+            'network_stats': False
         })
         return config
 
@@ -147,17 +148,18 @@ as cummulative nanoseconds since VM creation if this is True."""
             for stat in self.vifStats.keys():
                 accum[stat] = 0
 
-            for vif in vifs:
-                stats = dom.interfaceStats(vif)
+            if self.config['network_stats']:
+                for vif in vifs:
+                    stats = dom.interfaceStats(vif)
+                    for stat in self.vifStats.keys():
+                        idx = self.vifStats[stat]
+                        val = stats[idx]
+                        accum[stat] += val
+                        self.publish('net.%s.%s' % (vif, stat), val,
+                                    instance=name)
                 for stat in self.vifStats.keys():
-                    idx = self.vifStats[stat]
-                    val = stats[idx]
-                    accum[stat] += val
-                    self.publish('net.%s.%s' % (vif, stat), val,
-                                 instance=name)
-            for stat in self.vifStats.keys():
-                self.publish('net.total.%s' % stat, accum[stat],
-                             instance=name)
+                    self.publish('net.total.%s' % stat, accum[stat],
+                                instance=name)
 
             # Memory stats
             mem = dom.memoryStats()
