@@ -53,6 +53,12 @@ class postgresql::server(
 
     $data_dir = "${root_dir}/${pgversion}/main"
 
+    $service_name = $::lsbdistcodename ? {
+        jessie => "postgresql@${pgversion}-main",
+        default => 'postgresql'
+    }
+
+
     file {  [ $root_dir, "${root_dir}/${pgversion}" ] :
         ensure  => ensure_directory($ensure),
         owner   => 'postgres',
@@ -82,7 +88,7 @@ class postgresql::server(
             group   => 'root',
             mode    => '0444',
             require => Base::Expose_puppet_certs['/etc/postgresql'],
-            before  => Service['postgresql'],
+            before  => Service[$service_name],
         }
 
         ::base::expose_puppet_certs { '/etc/postgresql':
@@ -93,7 +99,7 @@ class postgresql::server(
         }
     }
 
-    service { 'postgresql':
+    service { $service_name:
         ensure  => ensure_service($ensure),
         require => Package["postgresql-${pgversion}"]
     }
