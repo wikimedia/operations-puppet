@@ -6,12 +6,12 @@ class role::toollabs::etcd::k8s {
 
     $peer_nodes = join(hiera('k8s::etcd_hosts'), ' ')
     $checker_hosts = join(hiera('toollabs::checker_hosts'), ' ')
-    $k8s_master = hiera('k8s::master_host')
+    $master_hosts = join(hiera('k8s::master_hosts'), ' ')
 
     ferm::service { 'etcd-clients':
         proto  => 'tcp',
         port   => '2379',
-        srange => "@resolve((${k8s_master} ${peer_nodes} ${checker_hosts}))"
+        srange => "@resolve((${master_hosts} ${peer_nodes} ${checker_hosts}))"
     }
 
     ferm::service { 'etcd-peers':
