@@ -23,11 +23,13 @@ class role::analytics_cluster::client {
     class { 'cdh::hadoop::mount': }
 
     # These packages are useful, install them.
-    ensure_packages([
+    require_package(
         'ipython-notebook',
         'kafkacat',
         'heirloom-mailx',
-    ])
+        'python-docopt',
+        'python3-docopt',
+    )
 
     # include maven to build jars for Hadoop.
     include ::maven
