@@ -56,7 +56,7 @@ class role::puppetmaster::puppetdb {
     }
 
     class { '::puppetmaster::puppetdb::database':
-        master => 'master',
+        master => $master,
     }
 
     class { '::puppetmaster::puppetdb':
