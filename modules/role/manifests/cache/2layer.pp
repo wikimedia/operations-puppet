@@ -72,4 +72,9 @@ class role::cache::2layer(
         "-s main1=${persistent_name},/srv/${storage_parts[0]}/varnish.main1,${storage_size}G,${mma[0]}",
         "-s main2=${persistent_name},/srv/${storage_parts[1]}/varnish.main2,${storage_size}G,${mma[1]}",
     ], ' ')
+
+    $file_storage_args = join([
+        "-s main1=file,/srv/${storage_parts[0]}/varnish.main1,${storage_size}G",
+        "-s main2=file,/srv/${storage_parts[1]}/varnish.main2,${storage_size}G",
+    ], ' ')
 }

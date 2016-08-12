@@ -61,7 +61,7 @@ class role::cache::maps {
         be_vcl_config    => $common_vcl_config,
         fe_extra_vcl     => [],
         be_extra_vcl     => [],
-        be_storage       => $::role::cache::2layer::persistent_storage_args,
+        be_storage       => $::role::cache::2layer::file_storage_args,
         fe_cache_be_opts => $fe_cache_be_opts,
         be_cache_be_opts => $be_cache_be_opts,
         cluster_nodes    => hiera('cache::maps::nodes'),
