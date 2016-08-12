@@ -1,0 +1,77 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+import sys
+import argparse
+import logging
+from logging.handlers import SysLogHandler
+import requests
+
+
+class SshKnownHostsGen(object):
+
+    def __init__(self, url, debug):
+        self.log = logging.getLogger('sshknowngen')
+        self.url = url
+
+    def _query(self):
+        sshkeys = requests.get("{}/v3/resources/Sshkey")
+        return sshkeys.json()
+
+    def render(self):
+        try:
+            for entity in self._query():
+                self.log.debug('Working on resource %s', entity['certname'])
+                attrs = entity['parameters']
+
+                if attrs['ensure'] != 'present':
+                    continue
+
+                hostname = entity['certname']
+                aliases = [
+                    a
+                    for a in attrs['host_aliases']
+                    if not a.startswith('---')
+                ]
+                host_part = ",".join([hostname] + aliases)
+                (keytype, key) = (attrs['type'], attrs['key'])
+
+                line = '%s %s %s' % (host_part, keytype, key)
+                yield line
+        except Exception as e:
+            self.log.exception(
+                'Could not generate output for resource Sshkey')
+            sys.exit(30)
+
+
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--url', '-u', dest='url', default='nitrogen.eqiad.wmnet',
+                        help='Url of the puppetDB installation')
+    parser.add_argument('--debug', action='store_true', default=False)
+    args = parser.parse_args()
+
+    log_format ='%(name)s: %(levelname)s - %(message)s'
+    log = logging.getLogger('sshknowngen')
+
+    if not args.debug:
+        # if normal mode, log to syslog
+        log.setLevel(logging.INFO)
+        log.propagate = False
+        handler = SysLogHandler(
+            address='/dev/log',
+            facility=SysLogHandler.LOG_LOCAL3)
+        formatter = logging.Formatter(fmt=log_format)
+        handler.setFormatter(formatter)
+        log.addHandler(handler)
+    else:
+        #if debug mode, print to stderr
+        logging.basicConfig(level=logging.DEBUG, format=log_format)
+
+    log.info('Generating output for resource Sshkey')
+    n = SshKnownHostsGen(args.url)
+    for entity in n.render():
+        print(entity)
+    log.info('Run completed')
+
+if __name__ == '__main__':
+    main()
