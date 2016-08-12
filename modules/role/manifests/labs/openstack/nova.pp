@@ -374,6 +374,7 @@ class role::labs::openstack::nova::compute($instance_dev='/dev/md1') {
     }
 
     diamond::collector { 'LibvirtKVM':
+        ensure   => absent, # Temporarily disabled
         source   => 'puppet:///modules/diamond/collector/libvirtkvm.py',
         settings => {
             # lint:ignore:quoted_booleans
