@@ -67,7 +67,11 @@ as cummulative nanoseconds since VM creation if this is True."""
             'path':     'libvirt-kvm',
             'sort_by_uuid': False,
             'uri':      'qemu:///system',
-            'cpu_absolute': False
+            'cpu_absolute': False,
+            'network_stats': False,
+            'disk_stats': False,
+            'memory_stats': False,
+            'cpu_stats': False
         })
         return config
 
@@ -114,54 +118,58 @@ as cummulative nanoseconds since VM creation if this is True."""
                 name = dom.name()
 
             # CPU stats
-            vcpus = dom.getCPUStats(True, 0)
-            totalcpu = 0
-            idx = 0
-            for vcpu in vcpus:
-                cputime = vcpu['cpu_time']
-                self.report_cpu_metric('cpu.%s.time' % idx, cputime, name)
-                idx += 1
-                totalcpu += cputime
-            self.report_cpu_metric('cpu.total.time', totalcpu, name)
+            if self.config['cpu_stats']:
+                vcpus = dom.getCPUStats(True, 0)
+                totalcpu = 0
+                idx = 0
+                for vcpu in vcpus:
+                    cputime = vcpu['cpu_time']
+                    self.report_cpu_metric('cpu.%s.time' % idx, cputime, name)
+                    idx += 1
+                    totalcpu += cputime
+                self.report_cpu_metric('cpu.total.time', totalcpu, name)
 
             # Disk stats
-            disks = self.get_disk_devices(dom)
-            accum = {}
-            for stat in self.blockStats.keys():
-                accum[stat] = 0
-
-            for disk in disks:
-                stats = dom.blockStats(disk)
+            if self.config['disk_stats']:
+                disks = self.get_disk_devices(dom)
+                accum = {}
                 for stat in self.blockStats.keys():
-                    idx = self.blockStats[stat]
-                    val = stats[idx]
-                    accum[stat] += val
-                    self.publish('block.%s.%s' % (disk, stat), val,
-                                 instance=name)
-            for stat in self.blockStats.keys():
-                self.publish('block.total.%s' % stat, accum[stat],
-                             instance=name)
+                    accum[stat] = 0
+
+                for disk in disks:
+                    stats = dom.blockStats(disk)
+                    for stat in self.blockStats.keys():
+                        idx = self.blockStats[stat]
+                        val = stats[idx]
+                        accum[stat] += val
+                        self.publish('block.%s.%s' % (disk, stat), val,
+                                    instance=name)
+                for stat in self.blockStats.keys():
+                    self.publish('block.total.%s' % stat, accum[stat],
+                                instance=name)
 
             # Network stats
-            vifs = self.get_network_devices(dom)
-            accum = {}
-            for stat in self.vifStats.keys():
-                accum[stat] = 0
-
-            for vif in vifs:
-                stats = dom.interfaceStats(vif)
+            if self.config['network_stats']:
+                vifs = self.get_network_devices(dom)
+                accum = {}
                 for stat in self.vifStats.keys():
-                    idx = self.vifStats[stat]
-                    val = stats[idx]
-                    accum[stat] += val
-                    self.publish('net.%s.%s' % (vif, stat), val,
-                                 instance=name)
-            for stat in self.vifStats.keys():
-                self.publish('net.total.%s' % stat, accum[stat],
-                             instance=name)
+                    accum[stat] = 0
+
+                for vif in vifs:
+                    stats = dom.interfaceStats(vif)
+                    for stat in self.vifStats.keys():
+                        idx = self.vifStats[stat]
+                        val = stats[idx]
+                        accum[stat] += val
+                        self.publish('net.%s.%s' % (vif, stat), val,
+                                    instance=name)
+                for stat in self.vifStats.keys():
+                    self.publish('net.total.%s' % stat, accum[stat],
+                                instance=name)
 
             # Memory stats
-            mem = dom.memoryStats()
-            self.publish('memory.nominal', mem['actual'] * 1024,
-                         instance=name)
-            self.publish('memory.rss', mem['rss'] * 1024, instance=name)
+            if self.config['memory_stats']:
+                mem = dom.memoryStats()
+                self.publish('memory.nominal', mem['actual'] * 1024,
+                            instance=name)
+                self.publish('memory.rss', mem['rss'] * 1024, instance=name)

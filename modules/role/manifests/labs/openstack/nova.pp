@@ -380,6 +380,7 @@ class role::labs::openstack::nova::compute($instance_dev='/dev/md1') {
             # lint:ignore:quoted_booleans
             # This is jammed straight into a config file, needs quoting.
             'sort_by_uuid' => 'true',
+            'disk_stats'   => 'true',
             # lint:endignore
         }
     }
