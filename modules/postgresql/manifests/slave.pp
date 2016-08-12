@@ -73,6 +73,14 @@ class postgresql::slave(
                 ]
     }
 
+    file { '/usr/local/bin/initialize-postgres-slave':
+        ensure => 'present',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+        source => 'puppet:///modules/postgresql/initialize-postgres-slave',
+    }
+
     # Let's sync once all our content from the master
     if $ensure == 'present' {
         exec { "pg_basebackup-${master_server}":
