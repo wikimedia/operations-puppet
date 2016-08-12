@@ -70,6 +70,10 @@ class role::analytics_cluster::hadoop::worker {
     # in order load Spark Python dependencies.
     include cdh::spark
 
+    # sqoop needs to be on worker nodes if Oozie is to
+    # launch sqoop jobs.
+    include cdh::sqoop
+
     # Install MaxMind databases for geocoding UDFs
     include geoip
 
