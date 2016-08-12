@@ -31,6 +31,6 @@ class hhvm::admin(
     ferm::service { 'hhvm_admin':
         proto  => 'tcp',
         port   => $port,
-        srange => '$INTERNAL',
+        srange => '$DOMAIN_NETWORKS',
     }
 }
