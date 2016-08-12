@@ -5,7 +5,8 @@ Description=Kubernetes Scheduler
 User=kubernetes
 Group=kubernetes
 ExecStart=/usr/local/bin/kube-scheduler \
-    --master=http://127.0.0.1:8080
+    --master=http://127.0.0.1:8080 \
+    --leader-elect=true
 
 [Install]
 WantedBy=multi-user.target
