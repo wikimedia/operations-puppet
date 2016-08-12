@@ -87,6 +87,8 @@ class role::analytics_cluster::hadoop::worker {
         'python-matplotlib',
         'python-dateutil',
         'python-sympy',
+        'python-docopt',
+        'python3-docopt',
     )
 
     # This allows Hadoop daemons to talk to each other.
