@@ -7,7 +7,7 @@ Uses libvirt to harvest per KVM instance stats
 
  * python-libvirt, xml
 
-Sourced from https://github.com/BrightcoveOS/Diamond/blob/0cf5a4bccfad3a3630dd4bf771758adf1ea8fc26/src/collectors/libvirtkvm/libvirtkvm.py
+Sourced from https://github.com/BrightcoveOS/Diamond/blob/0cf5a4bccfad3a3630dd4bf771758adf1ea8fc26
 
 """
 
@@ -30,7 +30,7 @@ class LibvirtKVMCollector(diamond.collector.Collector):
         'read_bytes':  1,
         'write_reqs':  2,
         'write_bytes': 3
-        }
+    }
 
     vifStats = {
         'rx_bytes':   0,
@@ -41,10 +41,11 @@ class LibvirtKVMCollector(diamond.collector.Collector):
         'tx_packets': 5,
         'tx_errors':  6,
         'tx_drops':   7
-        }
+    }
 
     def get_default_config_help(self):
-        config_help = super(LibvirtKVMCollector, self).get_default_config_help()
+        config_help = super(
+            LibvirtKVMCollector, self).get_default_config_help()
         config_help.update({
             'uri': """The libvirt connection URI. By default it's
 'qemu:///system'. One decent option is
@@ -78,7 +79,7 @@ as cummulative nanoseconds since VM creation if this is True."""
 
         for target in tree.findall("devices/%s/target" % type):
             dev = target.get("dev")
-            if not dev in devices:
+            if dev not in devices:
                 devices.append(dev)
 
         return devices
