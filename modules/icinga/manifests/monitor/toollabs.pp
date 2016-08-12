@@ -73,12 +73,6 @@ class icinga::monitor::toollabs {
         critical      => true,
     }
 
-    monitoring::service { 'tools-checker-puppetmaster-eqiad':
-        description   => 'Puppet catalogue fetch',
-        check_command => "${checker}!/labs-puppetmaster/eqiad!OK",
-        host          => $test_entry_host,
-    }
-
     monitoring::service { 'tools-checker-labs-dns-private':
         description   => 'Verify internal DNS from within Tools',
         check_command => "${checker}!/labs-dns/private!OK",
