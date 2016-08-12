@@ -15,9 +15,11 @@ class puppetmaster::puppetdb($master, $port=443, $jetty_port=8080) {
     }
 
     $ssl_settings = ssl_ciphersuite('nginx', 'mid')
+    include ::sslcert::dhparam
     ::nginx::site { 'puppetdb':
         ensure  => present,
         content => template('puppetmaster/nginx-puppetdb.conf.erb'),
+        require => Class['::sslcert::dhparam']
     }
 
     diamond::collector::nginx{ $::fqdn:
