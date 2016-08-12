@@ -69,6 +69,8 @@ sources:
   tilerator/deploy: {}
   graphoid/deploy: {}
 
+  parsoid/deploy: {}
+
   # cxserver is the ContentTranslation server.
   cxserver/deploy:
     repository: cxserver/deploy
