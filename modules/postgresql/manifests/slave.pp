@@ -32,7 +32,11 @@ class postgresql::slave(
     $master_server,
     $replication_pass,
     $includes=[],
-    $pgversion='9.1',
+    $pgversion = $::lsbdistcodename ? {
+        jessie  => '9.4',
+        precise => '9.1',
+        trusty  => '9.3',
+    },
     $ensure='present',
     $root_dir='/var/lib/postgresql',
     $use_ssl=false,
