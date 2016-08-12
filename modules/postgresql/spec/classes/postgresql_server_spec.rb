@@ -15,9 +15,9 @@ describe 'postgresql::server', :type => :class do
         it { should contain_package('libdbd-pg-perl').with_ensure('present') }
         it { should contain_package('libdbd-pg-perl').with_ensure('present') }
         it { should contain_file('/etc/postgresql/9.1/main/postgresql.conf').with_ensure('present') }
-        it { should contain_file('/var/lib/postgresql/').with_ensure('directory') }
-        it { should contain_file('/var/lib/postgresql/9.1/').with_ensure('directory') }
-        it { should contain_file('/var/lib/postgresql/9.1/main/').with_ensure('directory') }
+        it { should contain_file('/var/lib/postgresql').with_ensure('directory') }
+        it { should contain_file('/var/lib/postgresql/9.1').with_ensure('directory') }
+        it { should contain_file('/var/lib/postgresql/9.1/main').with_ensure('directory') }
         it { should contain_service('postgresql').with_ensure('running') }
 
         context 'with custom root_dir' do
@@ -27,9 +27,9 @@ describe 'postgresql::server', :type => :class do
                 :root_dir => '/srv/postgresql'
             } }
 
-            it { should contain_file('/srv/postgresql/').with_ensure('directory') }
-            it { should contain_file('/srv/postgresql/9.1/').with_ensure('directory') }
-            it { should contain_file('/srv/postgresql/9.1/main/').with_ensure('directory') }
+            it { should contain_file('/srv/postgresql').with_ensure('directory') }
+            it { should contain_file('/srv/postgresql/9.1').with_ensure('directory') }
+            it { should contain_file('/srv/postgresql/9.1/main').with_ensure('directory') }
         end
     end
 
@@ -45,9 +45,9 @@ describe 'postgresql::server', :type => :class do
         it { should contain_package('libdbi-perl').with_ensure('absent') }
         it { should contain_package('libdbd-pg-perl').with_ensure('absent') }
         it { should contain_file('/etc/postgresql/9.1/main/postgresql.conf').with_ensure('absent') }
-        it { should contain_file('/var/lib/postgresql/').with_ensure('absent') }
-        it { should contain_file('/var/lib/postgresql/9.1/').with_ensure('absent') }
-        it { should contain_file('/var/lib/postgresql/9.1/main/').with_ensure('absent') }
+        it { should contain_file('/var/lib/postgresql').with_ensure('absent') }
+        it { should contain_file('/var/lib/postgresql/9.1').with_ensure('absent') }
+        it { should contain_file('/var/lib/postgresql/9.1/main').with_ensure('absent') }
         it { should contain_service('postgresql').with_ensure('stopped') }
     end
 
@@ -62,5 +62,24 @@ describe 'postgresql::server', :type => :class do
                         .with_content(/include 'a.conf'/)
                         .with_content(/include 'b.conf'/)
         }
+    end
+
+    context 'ensure jessie' do
+        let(:facts) {{ :lsbdistcodename => 'jessie' }}
+        let(:params) { {
+            :ensure => 'present',
+        } }
+
+        it { should contain_package('postgresql-9.4').with_ensure('present') }
+        it { should contain_package('postgresql-9.4-debversion').with_ensure('present') }
+        it { should contain_package('postgresql-client-9.4').with_ensure('present') }
+        it { should contain_package('libdbi-perl').with_ensure('present') }
+        it { should contain_package('libdbd-pg-perl').with_ensure('present') }
+        it { should contain_package('libdbd-pg-perl').with_ensure('present') }
+        it { should contain_file('/etc/postgresql/9.4/main/postgresql.conf').with_ensure('present') }
+        it { should contain_file('/var/lib/postgresql').with_ensure('directory') }
+        it { should contain_file('/var/lib/postgresql/9.4').with_ensure('directory') }
+        it { should contain_file('/var/lib/postgresql/9.4/main').with_ensure('directory') }
+        it { should contain_service('postgresql').with_ensure('running') }
     end
 end
