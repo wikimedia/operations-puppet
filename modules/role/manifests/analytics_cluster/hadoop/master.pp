@@ -30,6 +30,11 @@ class role::analytics_cluster::hadoop::master {
         require => Class['cdh::hadoop::master'],
     }
 
+    # We need to include this class somewhere, and the master
+    # role is as good as place as any, since we only need it to
+    # be included on one node.
+    include role::analytics_cluster::mysql_password
+
     # FairScheduler is creating event logs in hadoop.log.dir/fairscheduler/
     # It rotates them but does not delete old ones.  Set up cronjob to
     # delete old files in this directory.
