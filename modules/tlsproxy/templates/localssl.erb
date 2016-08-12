@@ -24,6 +24,10 @@ server {
 	ssl_certificate /etc/ssl/localcerts/<%= cert %>.chained.crt;
 	ssl_certificate_key /etc/ssl/private/<%= cert %>.key;
 	<%- end -%>
+	<%- if @acme_subjects -%>
+	ssl_certificate /etc/acme/cert/<%= @server_name.gsub(/\W/, '_') %>.chained.crt;
+	ssl_certificate_key /etc/acme/key/<%= @server_name.gsub(/\W/, '_') %>.key;
+	<%- end -%>
 	<%- if @do_ocsp -%>
 	ssl_stapling on;
 	ssl_stapling_file /var/cache/ocsp/<%= @name %>.ocsp;
@@ -31,6 +35,9 @@ server {
 
 	keepalive_timeout 60;
 
+<% if @acme_subjects -%>
+	include /etc/acme/challenge-nginx.conf;
+<% end -%>
 	location / {
 		proxy_pass http://local_fe_<%= @basename %>;
 <% if @varnish_version4 -%>
