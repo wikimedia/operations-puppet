@@ -89,9 +89,11 @@ class role::kafka::analytics::broker {
         log_flush_interval_ms           => 3000,
         zookeeper_connection_timeout_ms => 16000,
         zookeeper_session_timeout_ms    => 16000,
-        # Setting maximum partition size for a topic to 500GB
+        # Setting maximum partition size for a topic to 350GiB
+        # This should guarantee 4 big partitions like text/upload to co-exist
+        # on the same disk partition leaving enough space for other ones.
         # More info in: T136690
-        log_retention_bytes             => 536870912000,
+        log_retention_bytes             => 375809638400,
         # Use LinkedIn recommended settings with G1 garbage collector,
         jvm_performance_opts            => '-server -XX:PermSize=48m -XX:MaxPermSize=48m -XX:+UseG1GC -XX:MaxGCPauseMillis=20 -XX:InitiatingHeapOccupancyPercent=35',
     }
