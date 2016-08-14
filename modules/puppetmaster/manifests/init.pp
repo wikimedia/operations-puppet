@@ -72,6 +72,11 @@ class puppetmaster(
             priority => '1001',
             before   => Package['puppetmaster-common'],
         }
+
+        # Install the puppetdb-terminus package, needed for puppetdbquery
+        package { 'puppetdb-terminus':
+            ensure => present,
+        }
     }
 
 

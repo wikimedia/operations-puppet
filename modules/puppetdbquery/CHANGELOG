@@ -1,0 +1,33 @@
+1.6.1:
+- add require statements needed in some puppet versions to avoid loaderror
+
+1.6.0:
+- Update events face to use v3 API instead of experimental
+- Print error if chronic dependency can't be loaded
+
+1.5.3:
+- Fixed memory leak with ruby LOAD_PATH
+
+1.5.2:
+- Module update to avoid forge checksum error
+
+1.5.1:
+- Style fixes
+- Update to metadata.json for module metadata
+
+1.5.0:
+- Update default API version to v3
+- Add resource query function from rlpowell
+- README fixes
+- Update rexical dependency to 1.0.5 and regenerated lexer
+
+1.4.0:
+- Support for regexp matching resource titles, like:
+   File[~titleregexp]
+- More tests
+- Only require JSON gem when actually needed
+- Allow empty queries (returns all hosts)
+- Don't require pluginsync to run on master
+- Fix strftime call on old ruby versions
+- Improve facts query output
+- Support single quoted strings in queries as well as double quoted
