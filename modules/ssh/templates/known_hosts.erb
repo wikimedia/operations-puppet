@@ -1,0 +1,10 @@
+# This file is managed by puppet
+<%-
+scope.function_query_resource('@@Sshkey').each do |resource|
+  parameters = resource['parameters']
+  aliases = parameters['host_aliases'].select{ |el| el !~ /^---/}.join(',')
+  if parameters['ensure'] == 'present' -%>
+<%= resource['certname'] %>,<%= aliases %> <%= parameters['type'] %>
+<%-
+  end
+end -%>
