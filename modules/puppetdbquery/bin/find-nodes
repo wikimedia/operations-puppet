@@ -1,0 +1,59 @@
+#!/usr/bin/env ruby
+
+require 'rubygems'
+require 'puppetdb/connection'
+require 'optparse'
+require 'net/http'
+require 'net/https'
+
+options = {:puppetdb_host => "puppetdb",
+           :puppetdb_port => 443,
+           :fact => nil,
+           :query => nil}
+
+opt = OptionParser.new
+
+opt.on("--puppetdb [PUPPETDB]", "-p", "Host running PuppetDB (#{options[:puppetdb_host]})") do |v|
+  options[:puppetdb_host] = v
+end
+
+opt.on("--port [PORT]", "-P", Integer, "Port PuppetDB is running on (#{options[:puppetdb_port]})") do |v|
+  options[:puppetdb_port] = v
+end
+
+opt.on("--query [QUERY]", "-q", "Query String") do |v|
+  options[:query] = v
+end
+
+opt.on("--facts [FACT]", "-f", "Comma separated list of facts") do |v|
+  options[:facts] = v.split ','
+end
+
+opt.on("--timeout [SECONDS]", "-t", "PuppetDB read timeout") do |v|
+  options[:timeout] = v.to_i
+end
+
+opt.parse!
+
+options[:query] ||= ARGV[0]
+
+abort "Please specify a query" unless options[:query]
+
+puppetdb = PuppetDB::Connection.new(options[:puppetdb_host], options[:puppetdb_port])
+http = Net::HTTP.new(options[:puppetdb_host], options[:puppetdb_port])
+http.use_ssl = true
+http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+http.read_timeout = options[:timeout] if options[:timeout]
+
+if options[:facts]
+  query = puppetdb.parse_query(options[:query], :facts)
+  facts = puppetdb.facts(options[:facts], query, http)
+  facts.each_value do |host|
+    print options[:facts].collect { |f| host[f] if host.include? f }.join(',') + "\n"
+  end
+else
+  query = puppetdb.parse_query(options[:query])
+  results = puppetdb.query(:nodes, query, http)
+  hosts = results.collect { |host| host['name'] }
+  hosts.each { |host| print host + "\n" }
+end
