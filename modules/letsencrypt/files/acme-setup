@@ -43,7 +43,7 @@
 # fixes any permissions issues on existing ones.  It will overwrite an existing
 # csr and/or cert if:
 # 1. pre-requisites had to be regenerated (e.g. if tls key was missing)
-# 2. subjects list does not match current subjects argument (exactly!)
+# 2. subjects list does not match current subjects
 # 3. for 'acme' mode, if the existing cert is self-signed
 # 4. expiry is near: simple fixed 2 day threshold for self-signed.  For actual
 #    ACME certs, the threshold is randomly swizzled with overrideable default
@@ -54,6 +54,15 @@
 #
 # If you want to periodically rotate the otherwise-persistent account or TLS
 # keys, simply delete them just before running this script.
+#
+# This script normalizes the "subjects" list: it downcases all subjects and
+# sorts them in lexographic order before further processing.  The upside is
+# this ensures consistency and that we don't pointlessly re-issue LE certs due
+# to random ordering changes in the caller's subject list.  The downside is the
+# caller can't put a special name as the first subject in the set and expect it
+# to work for non-SAN browsers.  One must assume that our LE certs with
+# multiple hostnames are not reliably compatible with browsers that don't do
+# SAN, for all names.
 # ----------------------------------------------------------------------------
 #
 # The intended integration with calling tools is something like this for the
@@ -472,7 +481,9 @@ def main():
         raise Exception('-i must match ^[-a-zA-Z0-9_]+$ ')
 
     acme_user = pwd.getpwnam(args.acme_user)
-    acme_setup(args.id, args.subjects, args.mode,
+    subjects = [item.lower() for item in args.subjects]
+    subjects.sort()
+    acme_setup(args.id, subjects, args.mode,
                args.exp_days, args.exp_rand, acme_user, args.svc)
 
 
