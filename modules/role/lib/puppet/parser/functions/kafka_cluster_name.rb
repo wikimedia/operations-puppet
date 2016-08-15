@@ -25,12 +25,16 @@
 
 module Puppet::Parser::Functions
   newfunction(:kafka_cluster_name, :type => :rvalue, :arity => -2) do |args|
+    # If kafka_cluster_name is set in scope in hiera, then just return it.
     name = function_hiera(['kafka_cluster_name', :none])
     return name unless name == :none
-    prefix = args.pop
+
+    # Otherwise build name from prefix and site.
+    prefix = args.shift
+    site = args.shift || lookupvar('::site')
     realm = lookupvar('::realm')
-    site = args.pop || lookupvar('::site')
     labsp = lookupvar('::labsproject')
+
     if realm == 'labs'
       "#{prefix}-#{labsp}"
     # There is only one analytics cluster, it lives in eqiad.
