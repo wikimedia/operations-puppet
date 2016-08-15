@@ -14,18 +14,10 @@ class role::deployment::server(
     # anything to do with Mediawiki.
     include scap::server
 
+    include ::deployment::umask_wikidev
+
     class { 'deployment::deployment_server':
         deployment_group => $deployment_group,
-    }
-
-    # set umask for wikidev users so that newly-created files are g+w
-    file { '/etc/profile.d/umask-wikidev.sh':
-        ensure => present,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0444',
-        # NOTE: This file is also used in role::statistics
-        source => 'puppet:///modules/role/deployment/umask-wikidev-profile-d.sh',
     }
 
     include ::apache
