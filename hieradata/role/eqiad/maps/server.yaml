@@ -8,3 +8,7 @@ maps::hosts:
   - maps1003.eqiad.wmnet
   - maps1004.eqiad.wmnet
 maps::redis_server: redis://maps1001.eqiad.wmnet
+
+tilerator::conf_sources: sources.prod2.yaml
+tilerator::ui::conf_sources: sources.prod2.yaml
+kartotherian::conf_sources: sources.prod2.yaml
