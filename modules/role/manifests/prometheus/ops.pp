@@ -66,9 +66,13 @@ class role::prometheus::ops {
     # Query puppet exported resources and generate a list of hosts for
     # prometheus to poll metrics from. Ganglia::Cluster is used to generate the
     # mapping from cluster to a list of its members.
+    $content = $::use_puppetdb ? {
+        true => template('role/prometheus/node_site.yaml.erb'),
+        default => generate('/usr/local/bin/prometheus-ganglia-gen',
+        "--site=${::site}"),
+    }
     file { "${targets_path}/node_site_${::site}.yaml":
-        content => generate('/usr/local/bin/prometheus-ganglia-gen',
-                            "--site=${::site}"),
+        content => $content,
     }
 
     # Generate static placeholders for mysql jobs
