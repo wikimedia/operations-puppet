@@ -1,4 +1,6 @@
 class role::statistics {
+    include ::deployment::umask_wikidev
+
     # Manually set a list of statistics servers.
     $statistics_servers = hiera(
         'statistics_servers',
@@ -30,15 +32,6 @@ class role::statistics {
         proto  => 'tcp',
         port   => '873',
         srange => '($INTERNAL)',
-    }
-
-    # Set umask for wikidev users so that newly-created files are g+w
-    file { '/etc/profile.d/umask-wikidev.sh':
-        ensure => 'present',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0444',
-        source => 'puppet:///modules/role/deployment/umask-wikidev-profile-d.sh',
     }
 }
 

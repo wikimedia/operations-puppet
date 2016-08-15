@@ -11,6 +11,7 @@ class vagrant::mediawiki(
     $install_directory = '/srv/mediawiki-vagrant',
 ) {
     require ::vagrant::lxc
+    include ::deployment::umask_wikidev
 
     # Add a local NFS server to export the /srv/mediawiki-vagrant files to the
     # LXC container. NFS is actually slower than native LXC sharing but it
@@ -70,16 +71,6 @@ class vagrant::mediawiki(
         group   => 'root',
         mode    => '0555',
         content => template('vagrant/labs-vagrant.erb'),
-    }
-
-    # Set umask for wikidev users so that newly-created files are g+w.
-    # This makes shared ownership of $install_directory easier
-    file { '/etc/profile.d/umask-wikidev.sh':
-        ensure => present,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0444',
-        source => 'puppet:///modules/vagrant/umask-wikidev-profile-d.sh',
     }
 
     # T127129: Attempt to start an existing MediaWiki-Vagrant LXC container on
