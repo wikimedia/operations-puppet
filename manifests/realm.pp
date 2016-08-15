@@ -107,6 +107,12 @@ if $realm == 'labs' {
     }
 }
 
+# Temporary: puppetdb switch
+# Note: $settings::storeconfigs_backend is a ruby symbol, thus it
+# would never match in the equality below. So cast the variable to string. See
+# https://tickets.puppetlabs.com/browse/PUP-6682
+$use_puppetdb = ("x${settings::storeconfigs_backend}" == 'xpuppetdb')
+
 # TODO: SMTP settings
 
 # TODO: NTP settings
