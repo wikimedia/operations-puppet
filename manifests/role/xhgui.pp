@@ -60,13 +60,13 @@ class role::xhgui::app {
     ferm::service { 'xhgui_mongodb':
         port   => 27017,
         proto  => 'tcp',
-        srange => '$INTERNAL',
+        srange => '$DOMAIN_NETWORKS',
     }
 
     ferm::service { 'xhgui_http':
         port   => 80,
         proto  => 'tcp',
-        srange => '$INTERNAL',
+        srange => '$DOMAIN_NETWORKS',
     }
 
     git::clone { 'operations/software/xhprof':
