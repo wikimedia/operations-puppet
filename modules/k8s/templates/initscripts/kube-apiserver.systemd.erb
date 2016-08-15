@@ -17,6 +17,7 @@ ExecStart=/usr/local/bin/kube-apiserver \
     --host-automounts=<%= @host_automounts_string %> \
     --host-paths-allowed=<%= @host_paths_allowed_string %> \
     --host-path-prefixes-allowed=<%= @host_path_prefixes_allowed_string %>
+Restart=on-failure
 
 [Install]
 WantedBy=multi-user.target
