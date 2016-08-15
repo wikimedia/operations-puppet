@@ -1,9 +1,15 @@
 # Sets up a maps server master
 class role::maps::master {
+    include ::role::maps::server
     include ::postgresql::master
     include ::role::maps::postgresql_common
     include ::osm
     include ::osm::import_waterlines
+
+    # Osm install Osmosis, which requires a java runtime environment. To ensure
+    # that a single JRE is installed, let's make sure that Cassandra is
+    # installed first.
+    Class['cassandra'] -> Class['osm']
 
     system::role { 'role::maps::master':
         ensure      => 'present',
