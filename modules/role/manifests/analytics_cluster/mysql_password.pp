@@ -15,7 +15,7 @@ class role::analytics_cluster::mysql_password {
     $path     = '/user/hdfs/mysql-analytics-research-client-pw.txt'
 
     exec { 'hdfs_put_mysql-analytics-research-client-pw.txt':
-        command => "/bin/echo ${password} | /usr/bin/hdfs dfs -put - ${path} && /usr/bin/hdfs dfs -chmod 600 ${path}",
+        command => "/bin/echo -n "${password}" | /usr/bin/hdfs dfs -put - ${path} && /usr/bin/hdfs dfs -chmod 600 ${path}",
         unless  => "/usr/bin/hdfs dfs -test -e ${path}",
         user    => 'hdfs',
     }
