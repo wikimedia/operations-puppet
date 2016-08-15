@@ -1,2 +1,0 @@
-# This will be removed once main-eqiad is fully upgraded to Confluent Kafka 0.9.
-confluent::kafka::broker::inter_broker_protocol_version: 0.8.2.X
