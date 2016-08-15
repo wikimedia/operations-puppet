@@ -35,15 +35,7 @@ sub cluster_fe_hit {
 }
 
 sub cluster_fe_miss {
-	// Convert range requests into pass
-	if (req.http.Range) {
-		<%- if @varnish_version4 -%>
-		call upload_common_set_xrange;
-		<%- else -%>
-		set bereq.http.Range = req.http.Range;
-		<%- end -%>
-		return (pass);
-	}
+	call upload_common_miss;
 
 	// Make sure If-Cached requests won't pollute the cache
 	if (req.http.If-Cached) {
@@ -67,14 +59,6 @@ sub cluster_fe_backend_response {
 
 		if (beresp.http.Content-Range ~ "\/[0-9]{8,}$") {
 			set beresp.do_stream = true;
-			// don't attempt to cache these in the frontend
-			set beresp.http.X-CDIS = "pass";
-			<%- if @varnish_version4 -%>
-			set beresp.uncacheable = true;
-			return (deliver);
-			<%- else -%>
-			return (hit_for_pass);
-			<%- end -%>
 		}
 	}
 

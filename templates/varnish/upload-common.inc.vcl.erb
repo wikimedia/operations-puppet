@@ -5,12 +5,28 @@ sub upload_common_recv {
 	if (req.http.host != "<%= @vcl_config.fetch('upload_domain') %>") {
 		<%= error_synth(404, "Requested domainname does not exist on this server") -%>
 	}
+
+	if (req.http.Range) {
+		set req.hash_ignore_busy = true;
+	}
 }
 
 sub upload_common_hit {
 	if (req.http.If-Cached && req.http.If-Cached != obj.http.Etag) {
 		<%= error_synth(412, "Etag mismatch") -%>
 	}
+}
+
+sub upload_common_miss {
+    // Convert range requests into pass
+    if (req.http.Range) {
+        <%- if @varnish_version4 -%>
+        call upload_common_set_xrange;
+        <%- else -%>
+        set bereq.http.Range = req.http.Range;
+        <%- end -%>
+        return (pass);
+    }
 }
 
 sub upload_common_deliver {
