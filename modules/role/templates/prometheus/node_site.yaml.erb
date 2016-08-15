@@ -1,0 +1,16 @@
+<%-
+all = []
+clusters = scope.function_site_cluster_nodes()
+
+@clusters.each do |cluster, sites|
+  sites.each do |site, targets|
+  all.append(
+    {
+      'labels' => {'cluster' => cluster, 'site' => site },
+      'targets' => targets,
+    })
+  end
+end
+-%>
+# This file is managed by puppet
+<%= scope.function_ordered_yaml(all) %>

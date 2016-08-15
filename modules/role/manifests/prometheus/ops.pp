@@ -54,15 +54,28 @@ class role::prometheus::ops {
         srange => '$DOMAIN_NETWORKS',
     }
 
-    # Query puppet exported resources and generate a list of hosts for
-    # prometheus to poll metrics from. Ganglia::Cluster is used to generate the
-    # mapping from cluster to a list of its members.
-    file { "/srv/prometheus/ops/targets/node_site_${::site}.yaml":
-        content => generate('/usr/local/bin/prometheus-ganglia-gen',
-                            "--site=${::site}"),
-        backup  => false,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
+    if (hiera('use_puppetdb', false)) {
+        $clusters = keys(hiera('ganglia_clusters', {}))
+        file { "/srv/prometheus/ops/targets/node_site_${::site}.yaml":
+            content => template('role/prometheus/node_site.yaml.erb'),
+            backup  => false,
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0444',
+        }
+
+    }
+    else {
+        # Query puppet exported resources and generate a list of hosts for
+        # prometheus to poll metrics from. Ganglia::Cluster is used to generate the
+        # mapping from cluster to a list of its members.
+        file { "/srv/prometheus/ops/targets/node_site_${::site}.yaml":
+            content => generate('/usr/local/bin/prometheus-ganglia-gen',
+            "--site=${::site}"),
+            backup  => false,
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0444',
+        }
     }
 }
