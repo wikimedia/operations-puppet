@@ -279,9 +279,9 @@ def chk_ossl(file, which, subjects, check_ss, exp_days, exp_rand):
         return True
 
     san_re = (
-        '^\s*X509v3 Subject Alternative Name:\s*'
-        + (',\s*'.join(['DNS:' + re.escape(s) for s in subjects]))
-        + '\s*$'
+        '^\s*X509v3 Subject Alternative Name:\s*' +
+        (',\s*'.join(['DNS:' + re.escape(s) for s in subjects])) +
+        '\s*$'
     )
     if not re.search(san_re, txt, re.M):
         return True
@@ -396,12 +396,12 @@ def ensure_crt_self(id, cert_dir, tls_key, csr, subjects, force):
         info('Creating self-signed cert ' + tls_crt)
         with tempfile.NamedTemporaryFile() as extfile:
             extfile.write(
-                '[v3_req]\n'
-                + 'keyUsage=critical,digitalSignature,keyEncipherment\n'
-                + 'basicConstraints=CA:FALSE\n'
-                + 'extendedKeyUsage=serverAuth\n'
-                + 'subjectAltName='
-                + ','.join(['DNS:' + s for s in subjects]) + '\n'
+                '[v3_req]\n' +
+                'keyUsage=critical,digitalSignature,keyEncipherment\n' +
+                'basicConstraints=CA:FALSE\n' +
+                'extendedKeyUsage=serverAuth\n' +
+                'subjectAltName=' +
+                ','.join(['DNS:' + s for s in subjects]) + '\n'
             )
             extfile.flush()
             check_output_errtext([
@@ -467,7 +467,7 @@ def main():
         raise Exception('-r %s must be less than half of -d %s'
                         % (args.exp_rand, args.exp_days))
 
-    reg_id=re.compile('^[-a-zA-Z0-9_]+$')
+    reg_id = re.compile('^[-a-zA-Z0-9_]+$')
     if not reg_id.match(args.id):
         raise Exception('-i must match ^[-a-zA-Z0-9_]+$ ')
 
