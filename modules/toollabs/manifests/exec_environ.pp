@@ -305,6 +305,7 @@ class toollabs::exec_environ {
         'openbabel',                   # T68995
         'p7zip-full',                  # requested by Betacommand and danilo to decompress 7z files
         'pdf2svg',                     # T70092.
+        'pdf2djvu',                    # T130138
         'pdftk',                       # T67048.
         'phantomjs',                   # T68928
         'phpunit',
