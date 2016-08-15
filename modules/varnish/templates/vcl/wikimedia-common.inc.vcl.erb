@@ -145,7 +145,7 @@ be_seen = {}
 	[*director['backends']].each do |backend|
 		next if be_seen.key?(backend)
 		be_seen[backend] = 1
-		name = /^[0-9\.]+$/.match(backend) ? "ipv4_" + backend.gsub(".", "_") : "be_" + backend.split(".")[0].gsub("-", "_")
+		name = 'be_' + backend.gsub('.', ',').gsub('-', '_')
 -%>
 
 <% if not @varnish_testing -%>
@@ -201,7 +201,7 @@ director <%= director_name %> <%= director['type'] %> {
 <% end -%>
 <%
 	backends.each do |backend|
-		name = /^[0-9\.]+$/.match(backend) ? "ipv4_" + backend.gsub(".", "_") : "be_" + backend.split(".")[0].gsub("-", "_")
+		name = 'be_' + backend.gsub('.', ',').gsub('-', '_')
 
 		# Override backend name for test VCL files. This way we can use
 		# "vtc_backend" as the backend name in our VTC tests.
