@@ -13,6 +13,18 @@ sub upload_common_hit {
 	}
 }
 
+sub upload_common_miss {
+    // Convert range requests into pass
+    if (req.http.Range) {
+        <%- if @varnish_version4 -%>
+        call upload_common_set_xrange;
+        <%- else -%>
+        set bereq.http.Range = req.http.Range;
+        <%- end -%>
+        return (pass);
+    }
+}
+
 sub upload_common_deliver {
 	if (resp.http.X-Content-Range) {
 		set resp.http.Content-Range = resp.http.X-Content-Range;
