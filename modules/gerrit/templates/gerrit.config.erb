@@ -9,7 +9,7 @@
     streamFileThreshold = 100m
     useRecursiveMerge = true
 [database]
-    type = MYSQL
+    type = mysql
     hostname = <%= @db_host %>
     database = <%= @db_name %>
     username = <%= @db_user %>
@@ -98,7 +98,7 @@
     match = (^|\\s|[:,!?\\(\\[\\{])([0-9a-f]{7,40})\\b
     html = "$1<a href=\"#/q/$2\">$2</a>"
 [commentlink "bugzilla"]
-    match =  "\\b[bB][uU][gG]\\:?\\s+#?(\\d+)\\b"
+    match = "\\b[bB][uU][gG]\\:?\\s+#?(\\d+)\\b"
     link = https://bugzilla.wikimedia.org/$1
 [commentlink "codereview"]
     match = \\br(\\d+)\\b
@@ -110,20 +110,20 @@
     match = "\\b[sS][cC][iI][dD]\\:?\\s+#?(\\d+)\\b"
     link = https://meta.wikimedia.org/w/index.php?oldid=$1
 [commentlink "cve"]
-    match = "\\b(CVE\\-\\d{4}\\-\\d+)\\b"
+    match = \\b(CVE\\-\\d{4}\\-\\d+)\\b
     link = https://cve.mitre.org/cgi-bin/cvename.cgi?name=$1
 [commentlink "mingle-analytics"]
     match = "\\b([aA]nalytics\\s*[:-]?\\s*[cC]ard|[cC]ard\\s*[:-]?\\s*[aA]nalytics)\\s*\\#?\\s*(\\d+)\\b"
     link = https://wikimedia.mingle.thoughtworks.com/projects/analytics/cards/$2
 [commentlink "ci-test-result"]
-    match = "<li>([^ ]+) (<a href=\"https://integration\\.wikimedia\\.org/ci/[a-zA-Z0-9/_.-]+\" target=\"_blank\">)[^<]+</a> : ([a-zA-Z_]+)([^<]*)</li>"
-    html  = "<li class=\"ci_comment_test\"><span class=\"ci_comment_test_name\">$2$1</a></span> <span class=\"ci_comment_test_result\"><span class=\"ci_result_$3\">$3</span>$4</span></li>"
+    match = <li>([^ ]+) (<a href=\"https://integration\\.wikimedia\\.org/ci/[a-zA-Z0-9/_.-]+\" target=\"_blank\">)[^<]+</a> : ([a-zA-Z_]+)([^<]*)</li>
+    html = <li class=\"ci_comment_test\"><span class=\"ci_comment_test_name\">$2$1</a></span> <span class=\"ci_comment_test_result\"><span class=\"ci_result_$3\">$3</span>$4</span></li>
 [commentlink "its-phabricator"]
     # Due to limitations of our old gerrit (and hence the old plugins)
     # that we use, $1 needs to hold the bug number. By the way the
     # pattern gets used, neither non-capturing groups nor
     # look-aheads/look-backs work reliably.
-    match =  "\\bT(\\d+)\\b(?!\")"
+    match = \\bT(\\d+)\\b(?!\")
     link = https://phabricator.wikimedia.org/T$1
 [mimetype "application/javascript"]
     safe = true
@@ -188,12 +188,13 @@
     maxLineLength = 120
 [receive]
     maxObjectSizeLimit = 100m
+    enableSignedPush = false
 [changeCleanup]
     # Not actually used, but Gerrit complains if unset
-    interval = 1w
+    interval = 1 week
 [gc]
     aggressive = true
-    interval = 1w
+    interval = 1 week
     startTime = Sat 02:00
 [index]
     type = LUCENE
