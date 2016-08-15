@@ -27,9 +27,11 @@ module Puppet::Parser::Functions
   newfunction(:kafka_cluster_name, :type => :rvalue, :arity => -2) do |args|
     name = function_hiera(['kafka_cluster_name', :none])
     return name unless name == :none
-    prefix = args.pop
+    # TODO: args.pop looks like a bug.
+    prefix = args.shift
+    # prefix = args.pop
+    site = args.shift || lookupvar('::site')
     realm = lookupvar('::realm')
-    site = args.pop || lookupvar('::site')
     labsp = lookupvar('::labsproject')
     if realm == 'labs'
       "#{prefix}-#{labsp}"

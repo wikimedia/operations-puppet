@@ -17,6 +17,7 @@
 # # to an aggregate cluster.  Note that if you are running multiple
 # # mirror instances on a single host, you must specify unique
 # # jmx_ports for each of them.
+#
 # class { 'confluent::kafka::mirrors:
 #     $mirrors => {
 #         'mainA_to_aggregate' => {
