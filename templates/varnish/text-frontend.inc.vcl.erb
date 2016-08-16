@@ -142,6 +142,11 @@ sub cluster_fe_recv_pre_purge {
 }
 
 sub cluster_fe_recv {
+	// Experiment on dealing with a buggy UA that's spamming requests in T141786
+	if (req.http.User-Agent ~ "Windows NT .*Chrome/41\.0\.2272\.76" && req.url == "/") {
+		<%= error_synth(400, "Buggy request, please report at https://phabricator.wikimedia.org/T141786") -%>
+	}
+
 	// BITS: legacy bits.wm.o domain support
 	if (req.http.host == "<%= @vcl_config.fetch('bits_domain') %>") {
 		if (req.url ~ "^/event\.gif") {
@@ -196,11 +201,6 @@ sub cluster_fe_backend_fetch { }
 <% end -%>
 
 sub cluster_fe_backend_response {
-	// Experiment on dealing with a buggy UA that's spamming requests in T141786
-	if (req.http.User-Agent ~ "Windows NT .*Chrome/41\.0\.2272\.76" && req.url == "/" && beresp.status == 301) {
-		<%= error_synth(400, "Buggy request, please report at https://phabricator.wikimedia.org/T141786") -%>
-	}
-
 	call text_common_backend_response;
 
 	return (deliver);
