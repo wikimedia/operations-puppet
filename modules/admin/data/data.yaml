@@ -83,7 +83,7 @@ groups:
               jminor, pt1979, asherman, etonkovidova, sbisson, zhousquared,
               atgomez, jgirault, jdrewniak, matmarex, elukey, jdcc, ppchelko,
               nschaaf, dstrine, ladsgroup, joewalsh, mpany, hjiang, jsamra, bcohn,
-              jdittrich, niharika29]
+              jdittrich, niharika29, ovasileva]
   cassandra-test-roots:
     gid: 708
     description: users with root on cassandra hosts
@@ -125,7 +125,7 @@ groups:
               neilpquinn-wmf, tbayer, moushira, dbrant, maxsem, srijan, krenair,
               jminor, asherman, etonkovidova, sbisson, addshore, matmarex, elukey,
               nikerabbit, nschaaf, dstrine, joewalsh, mpany, hjiang, jsamra, bcohn,
-              jdittrich, chelsyx]
+              jdittrich, chelsyx, ovasileva]
   ldap-admins:
     gid: 715
     description: ldap admins
@@ -206,7 +206,7 @@ groups:
               deskana, dduvall, nettrom, mforns, jkatz, ebernhardson,
               mlitn, tbayer, joal, tomasz, kartik, nikerabbit, pcoombe, madhuvishy,
               neilpquinn-wmf, maxsem, jminor, dpatrick, atgomez, dstrine,
-              ladsgroup]
+              ladsgroup, ovasileva]
   statistics-admins:
     posix_name: stats
     description: access files created by stats user cron jobs
@@ -245,7 +245,7 @@ groups:
               csteipp, smalyshev, ebernhardson, addshore, jminor, chedasaurus, neilpquinn-wmf,
               dcausse, bd808, tjones, mobrovac, jgirault, jdrewniak, ejegg, jdcc, ori,
               bmansurov, atgomez, amire80, kartik, pcoombe, foks, mpany, hjiang, jsamra, bcohn,
-              jdlrobson, chelsyx]
+              jdlrobson, chelsyx, ovasileva]
   analytics-admins:
     gid: 732
     description: Admin access to analytics cluster.
@@ -2023,3 +2023,11 @@ users:
     ssh_keys:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDCpSTjqJly0lX3xY5TtBwHwcH7kir4hAkVGhDXkPjnfdycvXFCXHjrrONLQh6M+lIy4DIgXrK90aLUOgcPRPFLD2pQl7SrYBSSJKSf2Xv6nz7lc3fCsIk0lK+jWfPvc659z91IFsqizgiMqpNJavZoHqxMvqO6JTnxpJQzJ2Elno2lEJCWIKZ1nP+U8/M6BC45bYEHWRH+RyCfMgCkJ5B6+R7B3u0gPjmeICkS5WF0oiW7ktQ2Fo4Go2n0chRXVWyff0+JUA4twC+8YPkfDZhDgvI0r8dH2MOhln9Ex6xqRfgkqXL6V812z3sTn6O4UIfOq3C5X3JCzww9bUXwvv+IpVpklxJyt/Nll8ux1tGJkRVEmb0u6JUTf7gzdscWuoxNHsPEFHtxEiOwfh2QDjn4nfiNixvWPfV8Q9QEBGtx7NCXbv4wrkpQ4eIrqKH9Y0MyhtZ2LnOH2CB9git/vERIBIcFFiKG7U6fYhsTwbtXPghVoUa6hYqaFQr3WYejjllv0wBYWcs0l+gINhl+lqqmx7yc54jEsdyWRml+InrYCcONeMEnJrqytL/K4fNxcjWQ4s7jnG3zVVe9RKmN1Ab06D2QTLZgg8QNS127sAjyxc+IRqaT/xVHnr29B9ymrKFrh0jDEfJ3+TSFrwb2Lnjwc0W+9hSevhQYUJEmZczBQQ== cxie@wikimedia.org
     uid: 15196
+  ovasileva:
+    ensure: present
+    gid: 500
+    name: ovasileva
+    realname: Olga Vasileva
+    ssh_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQD3yvsX9fUZX7B14Rzko/VbDfdrDZvHUBP/SmKM9oxKI5bcCaIa6u7l+faDjEfAte+SgMSj+jl1azOZYtJ/+fdRVrIRAkS0heL9DDNSdJxuOcWdY3QCOWu6CmcAPWNfo2DxR4FZit0CbFtyH0s6CTOoiG0reF8uiQR+Oyt4mZKSecfk8zX1N5B50hkvbUArrNUg1fLNED1SuJxtBVo73+tEWUOaYyDovy5D0UU8LH0hFp0pKwDeYnlRJxHTV4h+AQ2SqECQ2wg+k5WX8Kd7MYO/7hVuZMkoD9wlHnPMgTSthy4AzGcliO3mNHa0mfHlZtcf/ck0bm75mZhyrXlUewKD ovasileva@wmf1395.corp.wikimedia.org
+    uid: 15207
