@@ -37,6 +37,7 @@ class package_builder(
         'gnome-pkg-tools',
         'gobject-introspection',
         'libdistro-info-perl',
+        'maven-repo-helper',
     ])
 
     if $::operatingsystem == 'Ubuntu' {
