@@ -1,0 +1,9 @@
+fixtures:
+    symlinks:
+        wdqs: "#{source_dir}"
+        base: "../../../../base"
+        diamond: "../../../../diamond"
+        java: "../../../../java"
+        monitoring: "../../../../monitoring"
+        stdlib: "../../../../stdlib"
+        wmflib: "../../../../wmflib"
