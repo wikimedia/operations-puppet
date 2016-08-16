@@ -5,7 +5,7 @@ groups:
               handrade, howief, jdouglas, jgonera, jsahleen, mah, maryana, mglaser, mvolz,
               mwalker, nimishg, rainman, ssmith, swalling, sumanah, werdna, rmoen,
               johnflewis, marc, jkrauska, akumar, mnoushad, spage, tnegrin, msyed, kleduc,
-              manybubbles, haithams, jzerebecki]
+              manybubbles, haithams, jzerebecki, ashwinpp]
   wikidev:
     gid: 500
     description: container group for primary user groups.
@@ -77,7 +77,7 @@ groups:
               mhurd, dbrant, bsitzmann, deskana, chedasaurus,
               declerambaul, ellery, dduvall, nettrom, mforns, jkatz,
               bmansurov, west1, jhernandez, smalyshev, tbayer, zfilipin,
-              joal, thcipriani, daisy, ashwinpp, jhobs, tomasz, lpintscher,
+              joal, thcipriani, daisy, jhobs, tomasz, lpintscher,
               pcoombe, mholloway-shell, niedzielski, neilpquinn-wmf,
               gpaumier, moushira, aklapper, qchris, tjones, srijan, addshore,
               jminor, pt1979, asherman, etonkovidova, sbisson, zhousquared,
@@ -193,7 +193,7 @@ groups:
     members: [ezachte, milimetric, dartar, yurik,
               halfak, awight, dr0ptp4kt, nuria, leila,
               ironholds, ellery, nettrom, mforns,
-              bmansurov, tbayer, joal, ashwinpp,
+              bmansurov, tbayer, joal,
               madhuvishy, tjones, legoktm, dcausse, bearloga,
               dpatrick, atgomez, dstrine, joewalsh, marktraceur]
   statistics-users:
@@ -228,7 +228,7 @@ groups:
     description: Gives generic client access to the Analytics (Hadoop) cluster.
         This will grant shell access on Hadoop client nodes (stat1002) and on
         Hadoop NameNodes.
-    members: [ashwinpp]
+    members: []
   analytics-privatedata-users:
     gid: 731
     description: Gives access to the Analytics (Hadoop) cluster as well as private data within.
@@ -1590,11 +1590,11 @@ users:
     ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCiy95u6XMT41V+ISpDql7n26m/ENqbS6xmF8neK4LOTdHp8dE6jZN3+HgrbssDoTYibBmyZsIzH+nmqJXQtXz9l0uPs1q3jdzv2LQrW1TpbaMt5L3sQ6eW+eWD/F05/+OL00zIhhI7yWaBfptCYGfU9NGkTQJJIWVcTGBLb2qOGPedIwtQjt5E2Ng3dlYK0dX0+rSUi60QDI/WAisXVCpZSvofoULxd7hEXIbADFe0w8r+ZUtI4EnBFSAbM+ffQ4duyiqO3UNcFxjWicD8WUPvG6YOeLX/UwUw+USh9bQBuewnDp5TIRLCGBCdxKPvl0qBQfmwj1fCOjtxdm5PZ11d+/zVQBKe2kCXdyLeRQF+BE+HDLePcOLs5Gujx1e9UKIiNtN8BuKDZ5fFCfVdjSbE0CTeWzAYsWx+uzT1PzXw1j7lDYUVI3BExdkQp8UDfF81OW+3WmvsN+HbgKl3zB5hR4lJ2h1F1s+MWxrnrtjnn+UqheS9xWeSJgtwuN/2TY/N30u/s0hfGEv+M/djRUtSWlqK9APSe9o4/2iprIs7EQJFu8eV/dN3UyAf0jVfvemdcnNXWIKD4c18+8k6uQzbiPF8vcYn9N49vmPCzMUIYnJKUA847A/poxavzcW3wdtmup4k8VIYYciyqCA9yJTgG5ueqw97a31XRhk+CG+i8Q== thcipriani@wikimedia-prod]
     uid: 11634
   ashwinpp:
-    ensure: present
+    ensure: absent
     gid: 500
     name: ashwinpp
     realname: Ashwin Pradeep Paranjape
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDgV06472reSVOxOHVPGh9rCdt+pkJIePYxoBM6JyNAPic42XYu2dJMvTop4EVZpHV33rpdVNhELY4/JxOY7zU6dFx+yA1W+Ag7u8XrqkSk3WYmyWcUTocrgUrt0c6jAuScSFfHYAkGunyo3XP+l6iUYuej+Sv8v8Xtexq+ax+5YNjxdBH4AOxq8n4s4tso2vvaVEF91jxCGuZS3mSp77WTAO3BZNzJAwlZEF5LD5ufMF7EJgVSFhrfqkkMgbrzvqrSYV4O0mtvPYp4qzigedDpE+WU+DtIu3JRs3Jz/pk7wX3wiELuaZNvwyxPZWihh+gRhS6gYfDwrdd5z0rO1ART ashwin@ashwin-SVE15127CNB]
+    ssh_keys: []
     uid: 11049
   mvolz:
     ensure: absent
