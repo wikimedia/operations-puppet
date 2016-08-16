@@ -96,7 +96,7 @@ as cummulative nanoseconds since VM creation if this is True."""
 
     def report_cpu_metric(self, statname, value, instance):
         # Value in cummulative nanoseconds
-        if self.config['cpu_absolute'] is True:
+        if self.config['cpu_absolute'] == 'true':  # INI config used, no actual bools
             metric = value
         else:
             # Nanoseconds (10^9), however, we want to express in 100%
@@ -112,7 +112,7 @@ as cummulative nanoseconds since VM creation if this is True."""
 
         conn = libvirt.openReadOnly(self.config['uri'])
         for dom in [conn.lookupByID(n) for n in conn.listDomainsID()]:
-            if self.config['sort_by_uuid'] is True:
+            if self.config['sort_by_uuid'] == 'true':  # INI config used, no actual bools
                 name = dom.UUIDString()
             else:
                 name = dom.name()
