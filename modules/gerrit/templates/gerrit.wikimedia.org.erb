@@ -122,7 +122,7 @@ NameVirtualHost *:443
     # Workaround for really broken browser detection in Gerrit code. Not sure if the hex string is
     # stable, this will probably need to be updated at least after Gerrit upgrades. Just load up
     # Gerrit in Firefox and look in the Network Monitor for a similarly named .cache.js file.
-    RewriteRule ^/r/gerrit_ui/undefined.cache.js$ https://<%= @host %>/r/gerrit_ui/D39174379837CB12534D3B279AEAC59F.cache.js
+    RewriteRule ^/r/gerrit_ui/undefined.cache.js$ https://<%= @host %>/r/gerrit_ui/AFCF57AB10C0BF746D7926C5246142C1.cache.js
 
     <%- if @maint_mode -%>
     RedirectMatch temp "/r" "/error.html#"
