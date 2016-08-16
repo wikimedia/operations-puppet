@@ -144,7 +144,7 @@ sub cluster_fe_recv_pre_purge {
 sub cluster_fe_recv {
 	// Experiment on dealing with a buggy UA that's spamming requests in T141786
 	if (req.http.User-Agent ~ "Windows NT .*Chrome/41\.0\.2272\.76" && req.url == "/") {
-		<%= error_synth(403, "Buggy request, please report at https://phabricator.wikimedia.org/T141786") -%>
+		<%= error_synth(741, "Buggy request, please report at https://phabricator.wikimedia.org/T141786") -%>
 	}
 
 	// BITS: legacy bits.wm.o domain support
@@ -271,6 +271,15 @@ sub cluster_fe_err_synth {
 		set obj.status = 302;
 		set obj.http.Connection = "keep-alive";
 		set obj.http.Content-Length = "0"; // BZ #62245
+		return (deliver);
+	}
+
+	// Chrome/41-on-Windows: T141786
+	if (obj.status == 741) {
+		set obj.http.Location = "/_nonexistent";
+		set obj.status = 302;
+		set obj.http.Content-Length = "0"; // BZ #62245
+		set obj.http.Retry-After = "75";
 		return (deliver);
 	}
 }
