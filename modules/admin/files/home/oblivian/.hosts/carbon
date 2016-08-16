@@ -1,0 +1,2 @@
+export REPREPRO_BASE_DIR=/srv/wikimedia
+export GNUPGHOME=/root/.gnupg 
