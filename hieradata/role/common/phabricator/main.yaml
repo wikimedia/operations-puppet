@@ -7,3 +7,5 @@ apache::logrotate::rotate: 3
 debdeploy::grains:
   debdeploy-phabricator:
     value: standard
+
+phabricator_active_server: 'iridium'
