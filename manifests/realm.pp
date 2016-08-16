@@ -139,6 +139,7 @@ $private_wikis = [
     'officewiki',
     'ombudsmenwiki',
     'otrs_wikiwiki',
+    'projectcom',
     'searchcomwiki',
     'spcomwiki',
     'stewardwiki',
