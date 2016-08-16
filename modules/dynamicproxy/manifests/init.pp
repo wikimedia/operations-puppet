@@ -41,17 +41,19 @@ class dynamicproxy (
 
     $resolver = join($::nameservers, ' ')
 
+    $redis_port = '6379'
     if $redis_replication and $redis_replication[$::hostname] {
         $slave_host = $redis_replication[$::hostname]
-        $slaveof = "${slave_host} 6379"
+        $slaveof = "${slave_host} ${redis_port}"
     }
 
-    redis::instance { '6379':
+    redis::instance { $redis_port:
         settings => {
-            appendonly => 'yes',
-            maxmemory  => $redis_maxmemory,
-            slaveof    => $slaveof,
-            dir        => '/var/lib/redis',
+            appendonly     => 'yes',
+            appendfilename => "${::hostname}-${redis_port}.aof"
+            maxmemory      => $redis_maxmemory,
+            slaveof        => $slaveof,
+            dir            => '/var/lib/redis',
         },
     }
 
