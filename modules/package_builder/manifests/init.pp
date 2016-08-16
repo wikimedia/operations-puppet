@@ -38,6 +38,7 @@ class package_builder(
         'gobject-introspection',
         'libdistro-info-perl',
         'maven-repo-helper',
+        'gradle-debian-helper',
     ])
 
     if $::operatingsystem == 'Ubuntu' {
