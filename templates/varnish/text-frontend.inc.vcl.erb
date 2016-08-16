@@ -276,10 +276,8 @@ sub cluster_fe_err_synth {
 
 	// Chrome/41-on-Windows: T141786
 	if (obj.status == 741) {
-		set obj.http.Location = "/_nonexistent";
-		set obj.status = 302;
-		set obj.http.Content-Length = "0"; // BZ #62245
-		set obj.http.Retry-After = "75";
+		set obj.status = 401;
+		set obj.http.WWW-Authenticate = {"Basic realm="Buggy request, please report at https://phabricator.wikimedia.org/T141786""};
 		return (deliver);
 	}
 }
