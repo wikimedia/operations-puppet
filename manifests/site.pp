@@ -209,9 +209,10 @@ node 'bromine.eqiad.wmnet' {
 }
 
 # Californium hosts openstack-dashboard AKA horizon
+# and Tool Labs admin console AKA Striker
 #  It's proxied by the misc-web varnishes
 node 'californium.wikimedia.org' {
-    role horizon
+    role horizon, striker::web
     include standard
     include base::firewall
 }
