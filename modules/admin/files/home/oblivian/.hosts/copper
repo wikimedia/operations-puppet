@@ -1,0 +1,2 @@
+export DEBEMAIL="joe@wikimedia.org"
+export DEBFULLNAME="Giuseppe Lavagetto"
