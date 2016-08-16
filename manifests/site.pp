@@ -241,18 +241,11 @@ node /^(cerium|praseodymium|xenon)\.eqiad\.wmnet$/ {
 
 # DNS recursor, URL downloader
 node 'chromium.wikimedia.org' {
-    role dnsrecursor, url_downloader, ntp
+    role dnsrecursor, ntp
     include standard
-
-    $url_downloader_ip = hiera('url_downloader_ip')
 
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
-    }
-
-    interface::ip { 'url-downloader':
-        interface => 'eth0',
-        address   => $url_downloader_ip,
     }
 }
 
@@ -1191,7 +1184,7 @@ node 'heze.codfw.wmnet' {
 
 # DNS recursor, URL downloader
 node 'hydrogen.wikimedia.org' {
-    role dnsrecursor, url_downloader, ntp
+    role dnsrecursor, ntp
     include standard
 
     interface::add_ip6_mapped { 'main':
