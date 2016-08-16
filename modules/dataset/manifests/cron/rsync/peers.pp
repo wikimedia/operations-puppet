@@ -19,7 +19,8 @@ class dataset::cron::rsync::peers($enable=true) {
 
     cron { 'rsync-dumps':
         ensure  => $ensure,
-        command => '/usr/bin/python /usr/local/bin/rsync-dumps.py',
+        # filter out error messages about vanishing files, we don't want email for that
+        command => '/usr/bin/python /usr/local/bin/rsync-dumps.py | grep -v "vanished" ',
         user    => 'root',
         minute  => '0',
         hour    => '*/2',
