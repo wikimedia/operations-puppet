@@ -243,7 +243,7 @@ sub cluster_fe_deliver {
 	}
 
 	// Experiment on dealing with a buggy UA that's spamming requests in T141786
-	if (req.http.User-Agent ~ "Windows NT .*Chrome/41\.0\.2272\.76" && req.url == '/' && resp.status == 301) {
+	if (req.http.User-Agent ~ "Windows NT .*Chrome/41\.0\.2272\.76" && req.url == "/" && resp.status == 301) {
 		<%= error_synth(400, "Buggy request, please report at https://phabricator.wikimedia.org/T141786") -%>
 	}
 }
