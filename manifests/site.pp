@@ -22,8 +22,8 @@ node /^(acamar|achernar)\.wikimedia\.org$/ {
     }
 }
 
-# url-downloader codfw
-node 'alsafi.wikimedia.org' {
+# url-downloaders
+node /^(alsafi|aluminium)\.wikimedia\.org$/ {
     role url_downloader
     include standard
     include base::firewall

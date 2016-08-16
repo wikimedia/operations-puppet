@@ -8,6 +8,11 @@ host alsafi {
     fixed-address alsafi.wikimedia.org;
 }
 
+host aluminium {
+    hardware ethernet aa:00:00:81:9e:0f;
+    fixed-address aluminium.wikimedia.org;
+}
+
 host bohrium {
     hardware ethernet aa:00:00:1e:70:87;
     fixed-address bohrium.eqiad.wmnet;
@@ -28,7 +33,7 @@ host dubnium {
     hardware ethernet aa:00:00:2f:d8:57;
     fixed-address dubnium.wikimedia.org;
 }
-     
+
 host etherpad1001 {
     hardware ethernet AA:00:00:EE:AD:01;
     fixed-address etherpad1001.eqiad.wmnet;
