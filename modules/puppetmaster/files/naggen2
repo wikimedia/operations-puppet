@@ -1,35 +1,23 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-import os
-import sys
+
+import argparse
 # python 3 compatibility
 try:
     import ConfigParser as configparser
 except ImportError:
     import configparser
-
-import sqlalchemy
-import jinja2
-import argparse
 import logging
 from logging.handlers import SysLogHandler
+import sys
+import time
+
+import jinja2
+import requests
+import sqlalchemy
 
 
-class NagiosGenerator(object):
-    base_query = """
-SELECT resources.title as title,
-  GROUP_CONCAT(CONCAT(param_names.name, "\t", param_values.value)
-    ORDER BY param_names.name ASC SEPARATOR "\n") AS service_content
-FROM param_values
-  JOIN param_names ON param_names.id = param_values.param_name_id
-  JOIN resources ON param_values.resource_id = resources.id
-WHERE param_names.name NOT IN ('ensure', 'target') AND resource_id IN
-  (SELECT resource_id FROM param_values
-    JOIN resources ON resource_id = resources.id
-    JOIN param_names ON param_names.id = param_name_id
-    WHERE restype = '%s' AND param_names.name = 'ensure' AND value = 'present')
-GROUP BY resources.id ORDER BY resources.title ASC"""
-
+class NagiosGeneratorBase(object):
     restype = {
         'services': 'Nagios_service',
         'hosts': 'Nagios_host',
@@ -63,6 +51,51 @@ GROUP BY resources.id ORDER BY resources.title ASC"""
     def load_config(self, configfile):
         self.config = configparser.SafeConfigParser()
         self.config.read(configfile)
+
+    def __init__(self, configfile, debug):
+        self.log = logging.getLogger('naggen2')
+        self.log.debug('Loading configfile %s', configfile)
+        self.load_config(configfile)
+        self.env = jinja2.Environment(
+            loader=jinja2.DictLoader(self.restpl)
+        )
+
+    def render(self, what):
+        if what not in self.restype:
+            self.log.error('Exiting  - unsupported resource type %s', what)
+            sys.exit(1)
+        try:
+            for entity in self._query(what):
+                self.log.debug('Working on resource %s', entity['title'])
+                name, content = self._filter_entity(entity)
+                tpl = self.env.get_template(what)
+                yield tpl.render(name=name, data=content)
+        except Exception as e:
+            self.log.exception(
+                'Could not generate output for resource %s', what)
+            sys.exit(30)
+
+    def _query(self, what):
+        raise NotImplementedError("Not implemented in the base class")
+
+
+class NagiosGeneratorMysql(NagiosGeneratorBase):
+    base_query = """
+SELECT resources.title as title,
+  GROUP_CONCAT(CONCAT(param_names.name, "\t", param_values.value)
+    ORDER BY param_names.name ASC SEPARATOR "\n") AS service_content
+FROM param_values
+  JOIN param_names ON param_names.id = param_values.param_name_id
+  JOIN resources ON param_values.resource_id = resources.id
+WHERE param_names.name NOT IN ('ensure', 'target') AND resource_id IN
+  (SELECT resource_id FROM param_values
+    JOIN resources ON resource_id = resources.id
+    JOIN param_names ON param_names.id = param_name_id
+    WHERE restype = '%s' AND param_names.name = 'ensure' AND value = 'present')
+GROUP BY resources.id ORDER BY resources.title ASC"""
+
+    def load_config(self, configfile):
+        super(NagiosGeneratorMysql, self).load_config(configfile)
         self.dsn = "{}://{}:{}@{}:3306/puppet".format(
             self.config.get('master', 'dbadapter'),
             self.config.get('master', 'dbuser'),
@@ -71,15 +104,10 @@ GROUP BY resources.id ORDER BY resources.title ASC"""
         )
 
     def __init__(self, configfile, debug):
-        self.log = logging.getLogger('naggen2')
-        self.log.debug('Loading configfile %s', configfile)
-        self.load_config(configfile)
+        super(NagiosGeneratorMysql, self).__init__(configfile, debug)
         self.db_engine = sqlalchemy.create_engine(
             self.dsn,
             echo=debug
-        )
-        self.env = jinja2.Environment(
-            loader=jinja2.DictLoader(self.restpl)
         )
 
     def _query(self, what):
@@ -89,23 +117,31 @@ GROUP BY resources.id ORDER BY resources.title ASC"""
         connection.close()
         return res
 
-    def render(self, what):
-        if what not in self.restype:
-            self.log.error('Exiting  - unsupported resource type %s', what)
-            sys.exit(1)
-        try:
-            for entity in self._query(what):
-                self.log.debug('Working on resource %s', entity['title'])
-                content = [
-                    tuple(i.split("\t"))
-                    for i in entity['service_content'].split("\n")
-                    if i]
-                tpl = self.env.get_template(what)
-                yield tpl.render(name=entity['title'], data=content)
-        except Exception as e:
-            self.log.exception(
-                'Could not generate output for resource %s', what)
-            sys.exit(30)
+    def _filter_entity(self, entity):
+        return (entity['title'], [
+            tuple(i.split("\t"))
+            for i in entity['service_content'].split("\n")
+            if i])
+
+
+class NagiosGeneratorPuppetDB(NagiosGeneratorBase):
+
+    def load_config(self, configfile):
+        super(NagiosGeneratorPuppetDB, self).load_config(configfile)
+
+    def _query(self, what):
+        url = "https://%s:%s/v3/resources/%s" % (
+            self.config.get('main', 'server'),
+            self.config.get('main', 'port'),
+            self.restype[what]
+        )
+        resources_raw = requests.get(url, params={'query': '["=", ["parameter", "ensure"], "present"]'})
+        return resources_raw.json()
+
+    def _filter_entity(self, entity):
+        name = entity['certname']
+        params = [p for p in entity['parameters'].iteritems() if p[0] not in ['ensure', 'target']]
+        return (name, params)
 
 
 def main():
@@ -117,30 +153,40 @@ def main():
     parser.add_argument(
         '--configfile', '-c', dest='configfile', default='/etc/puppet/puppet.conf')
     parser.add_argument('--debug', action='store_true', default=False)
+    parser.add_argument('--puppetdb', action='store_true', default=False)
     args = parser.parse_args()
 
-    log_format='%(name)s: %(levelname)s - %(message)s'
+    log_format = '%(name)s: %(levelname)s - %(message)s'
     log = logging.getLogger('naggen2')
 
     if not args.debug:
-        #if normal mode, log to syslog
+        # if normal mode, log to syslog
         log.setLevel(logging.INFO)
         log.propagate = False
         handler = SysLogHandler(
-                address='/dev/log',
-                facility=SysLogHandler.LOG_LOCAL3)
+            address='/dev/log',
+            facility=SysLogHandler.LOG_LOCAL3)
         formatter = logging.Formatter(fmt=log_format)
         handler.setFormatter(formatter)
         log.addHandler(handler)
     else:
-        #if debug mode, print to stderr
+        # if debug mode, print to stderr
         logging.basicConfig(level=logging.DEBUG, format=log_format)
 
     log.info('Generating output for resource %s', args.type)
-    n = NagiosGenerator(args.configfile, args.debug)
+    tstart = time.time()
+    if args.puppetdb:
+        if args.configfile == '/etc/puppet/puppet.conf':
+            configfile = '/etc/puppet/puppetdb.conf'
+        else:
+            configfile = args.configfile
+        log.debug("Querying puppetdb for resources")
+        n = NagiosGeneratorPuppetDB(configfile, args.debug)
+    else:
+        n = NagiosGeneratorMysql(args.configfile, args.debug)
     for entity in n.render(args.type):
         print(entity)
-    log.info('Run completed')
+    log.info('Run completed in %.2f seconds', (time.time() - tstart))
 
 if __name__ == '__main__':
     main()
