@@ -78,6 +78,13 @@ class role::cache::misc {
             'be_opts'  => $app_def_be_opts,
             'req_host' => 'horizon.wikimedia.org',
         },
+        'californium8044' => {
+            'dynamic'  => 'no',
+            'type'     => 'random',
+            'backends' => ['californium.wikimedia.org'],
+            'be_opts'  => merge($app_def_be_opts, { 'port' => 8044 }),
+            'req_host' => 'toolsadmin.wikimedia.org',
+        },
         'labtestweb2001' => {
             'dynamic'  => 'no',
             'type'     => 'random',
