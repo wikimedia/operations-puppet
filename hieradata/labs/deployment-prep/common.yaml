@@ -255,3 +255,4 @@ scap::sources:
   eventlogging/analytics:
     repository: eventlogging
     scap_repository: eventlogging/scap/analytics
+  electron-render/deploy: {}
