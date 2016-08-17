@@ -68,6 +68,8 @@ sources:
   tilerator/deploy: {}
   graphoid/deploy: {}
 
+  electron-render/deploy: {}
+
   # cxserver is the ContentTranslation server.
   cxserver/deploy:
     repository: cxserver/deploy
