@@ -1,0 +1,28 @@
+# NOTE: This file is managed by Puppet
+# Systemd unit for pdfrender
+[Unit]
+Description="pdfrender service"
+After=network.target
+
+[Service]
+# up ulimit -n a bit
+LimitNOFILE=10000
+User=pdfrender
+Group=pdfrender
+Environment="NODE_PATH=/srv/deployment/electron-render/deploy/node_modules"
+Environment="RENDERER_ACCESS_KEY=<%= @access_key %>"
+Environment="PORT=5252"
+Environment="WINDOW_HEIGHT=<%= @height %>"
+Environment="WINDOW_WIDTH=<%= @width %>"
+Environment="CONCURRENCY=<%= @no_browsers %>"
+Environment="TIMEOUT=<%= @timeout %>"
+SyslogIdentifier=pdfrender
+Restart=always
+RestartSec=2s
+# wait 60 seconds for a graceful restart before killing the master
+TimeoutStopSec=60
+WorkingDirectory=/srv/deployment/electron-render/deploy
+ExecStart=/usr/bin/firejail --blacklist=/root --blacklist=/home --caps --seccomp /usr/bin/xvfb-run /srv/deployment/electron-render/deploy/src/bin/electron-render-service.js
+
+[Install]
+WantedBy=multi-user.target
