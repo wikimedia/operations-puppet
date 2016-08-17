@@ -19,6 +19,7 @@ role::lvs::realserver::pools:
   cxserver: {}
   citoid: {}
   mathoid: {}
+  pdfrender: {}
 graphoid::allowed_domains:
   https:
     - mediawiki.org
