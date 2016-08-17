@@ -71,14 +71,8 @@ etcd_hosts:
     - conf1002.eqiad.wmnet
     - conf1003.eqiad.wmnet
 
-# List of Zookeeper service nodes in eqiad and their ids.
-# TODO: Move this to eqiad/zookeeper.yaml and update usages throughout puppet.
-zookeeper_hosts:
-  conf1001.eqiad.wmnet: '1101'
-  conf1002.eqiad.wmnet: '1102'
-  conf1003.eqiad.wmnet: '1103'
-# Used mainly for zookeeper jmxtrans group_prefix to prefix metrics
-# in statsd/graphite.
+# Default zookeeper cluster to use in eqiad.
+# The cluster config is in common.yaml in zookeeper_clusters.
 zookeeper_cluster_name: 'main-eqiad'
 
 #
