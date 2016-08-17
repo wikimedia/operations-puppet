@@ -34,6 +34,8 @@ class changeprop(
 
     include ::service::configuration
 
+    require ::changeprop::packages
+
     $restbase_uri = $::service::configuration::restbase_uri
     $mwapi_uri = $::service::configuration::mwapi_uri
 
@@ -49,6 +51,9 @@ class changeprop(
         deployment      => 'scap3',
         auto_refresh    => false,
         init_restart    => false,
+        environment     => {
+            'UV_THREADPOOL_SIZE' => 128
+        },
     }
 
 }
