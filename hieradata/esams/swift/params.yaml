@@ -10,6 +10,11 @@ accounts:
         account_name: 'AUTH_mw'
         auth:         'http://ms-fe.svc.esams.wmnet'
         user:         'mw:media'
+    mw_thumbor:
+        access:       '.admin'
+        account_name: 'AUTH_mw'
+        auth:         'http://ms-fe.svc.esams.wmnet'
+        user:         'mw:thumbor'
     dispersion:
         access:       '.admin'
         account_name: 'AUTH_dispersion'
