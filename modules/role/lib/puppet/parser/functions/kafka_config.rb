@@ -48,14 +48,21 @@ module Puppet::Parser::Functions
     fqdn = lookupvar('::fqdn').to_s
     clusters = function_hiera(['kafka_clusters', {}])
     cluster_name = clusters.key?(args[0]) ? args[0] : function_kafka_cluster_name(args)
-    zk_hosts = function_hiera(['zookeeper_hosts', [fqdn]])
-    zk_hosts = zk_hosts.keys.sort if zk_hosts.kind_of?(Hash)
     cluster = clusters[cluster_name] || {
       'brokers' => {
         fqdn => { 'id' => '1' }
       }
     }
     brokers = cluster['brokers']
+
+    # Get this Kafka cluster's zookeeper cluster name
+    zk_cluster_name = cluster['zookeeper_cluster_name']
+    # Lookup all zookeeper clusters config
+    zk_clusters = function_hiera(['zookeeper_clusters'])
+
+    # These are the zookeeper hosts for this kafka cluster.
+    zk_hosts = zk_clusters[zk_cluster_name]['hosts'].keys.sort
+
     jmx_port = '9999'
     {
       'name'      => cluster_name,

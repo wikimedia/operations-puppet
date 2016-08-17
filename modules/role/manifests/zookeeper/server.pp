@@ -10,29 +10,19 @@
 # If you want to set up a Zookeeper server:
 #   include role::zookeeper::server
 #
-#
-# You need to include the hiera variable 'zookeeper_hosts' as a
-# assoc array with key being name of node and value being zookeeper id
-# for the client / server roles to work.
-
 # == Class role::zookeeper::server
 #
-# Set zookeeper_cluster_name in hiera to make jmxtrans
+# zookeeper_cluster_name in hiera will be used to make jmxtrans
 # properly prefix zookeeper statsd (and graphite) metrics.
 #
 class role::zookeeper::server {
-    # Lookup cluster_name from hiera with sane defaults for
-    # labs and production.
-    $cluster_name = hiera('zookeeper_cluster_name', $::realm ? {
-        'labs'       => $::labsproject,
-        'production' => $::site,
-    })
+    include role::zookeeper::client
+    $cluster_name = $::role::zookeeper::client::cluster_name
 
     system::role { 'role::zookeeper::server':
         description => "${cluster_name} Cluster Zookeeper Server"
     }
 
-    include role::zookeeper::client
     class { '::zookeeper::server': }
 
     ferm::service { 'zookeeper':
