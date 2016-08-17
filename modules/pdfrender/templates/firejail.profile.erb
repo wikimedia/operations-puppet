@@ -1,0 +1,10 @@
+## This file is managed by Puppet
+## Do not edit
+
+include /etc/firejail/default.profile
+
+whitelist <%= @home_dir %>
+whitelist <%= @log_dir %>
+protocol unix,inet,inet6,netlink
+x11 xpra
+
