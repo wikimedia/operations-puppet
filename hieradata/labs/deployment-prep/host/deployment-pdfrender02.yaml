@@ -1,0 +1,2 @@
+hiera_classes:
+  - role::pdfrender
