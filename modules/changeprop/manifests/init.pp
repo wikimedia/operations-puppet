@@ -34,6 +34,11 @@ class changeprop(
 
     include ::service::configuration
 
+    service::packages { 'changeprop':
+        pkgs     => ['librdkafka++1', 'librdkafka1'],
+        dev_pkgs => ['librdkafka-dev'],
+    }
+
     $restbase_uri = $::service::configuration::restbase_uri
     $mwapi_uri = $::service::configuration::mwapi_uri
 
@@ -49,6 +54,9 @@ class changeprop(
         deployment      => 'scap3',
         auto_refresh    => false,
         init_restart    => false,
+        environment     => {
+            'UV_THREADPOOL_SIZE' => 128
+        },
     }
 
 }
