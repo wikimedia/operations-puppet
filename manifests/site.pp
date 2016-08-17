@@ -239,7 +239,7 @@ node /^(cerium|praseodymium|xenon)\.eqiad\.wmnet$/ {
     include standard
 }
 
-# DNS recursor, URL downloader
+# DNS recursor
 node 'chromium.wikimedia.org' {
     role dnsrecursor, ntp
     include standard
@@ -1182,7 +1182,7 @@ node 'heze.codfw.wmnet' {
     include standard
 }
 
-# DNS recursor, URL downloader
+# DNS recursor
 node 'hydrogen.wikimedia.org' {
     role dnsrecursor, ntp
     include standard
@@ -1539,8 +1539,6 @@ node /labstore200[3-4]\.codfw\.wmnet/ {
 
 # New https://www.mediawiki.org/wiki/Gerrit
 node 'lead.wikimedia.org' {
-    # Note: whenever moving Gerrit to another server you will need
-    # to update the role::zuul::configuration variable 'gerrit_server'
     role gerrit::server
 
     include standard
@@ -2574,6 +2572,7 @@ node 'rubidium.wikimedia.org' {
     }
 }
 
+# people.wikimedia.org, for all shell users
 node 'rutherfordium.eqiad.wmnet' {
     role microsites::peopleweb, backup::host
     include base::firewall
@@ -2618,10 +2617,12 @@ node 'scandium.eqiad.wmnet' {
 
 }
 
+# Services 'A'
 node /^sca[12]00[12]\.(eqiad|codfw)\.wmnet$/ {
     role sca
 }
 
+# Services 'B'
 node /^scb[12]00[12]\.(eqiad|codfw)\.wmnet$/ {
     role scb
 }
@@ -2842,6 +2843,7 @@ node 'ununpentium.wikimedia.org' {
 
 }
 
+# Ganglia Web UI
 node 'uranium.wikimedia.org' {
     $ganglia_aggregator = true
 
