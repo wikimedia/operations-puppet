@@ -83,4 +83,13 @@ class postgresql::slave(
             require     => Class['postgresql::server'],
         }
     }
+
+    # Provisioning a script to conduct replication lag checks
+    file { '/usr/lib/nagios/plugins/check_postgres_replication_lag.py':
+        ensure => $ensure,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+        source => 'puppet:///modules/postgres/check_postgres_replication_lag.py',
+    }
 }
