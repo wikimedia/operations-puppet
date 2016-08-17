@@ -43,7 +43,8 @@ class SGECollector(diamond.collector.Collector):
     def get_queues(self):
         """ retrieve list of queues
         """
-        queues = subprocess.check_output(['/usr/bin/qconf', '-sql'])
+        queues = subprocess.check_output(['/usr/bin/qconf', '-sql'],
+                                         env={"SGE_ROOT": '/data/project/.system/gridengine/'})
         return [q for q in queues.splitlines() if q not in self.config['exclude']]
 
     def job_state_stats(self, jobs):
