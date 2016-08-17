@@ -6159,6 +6159,11 @@ host wasat {
     filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
+host wezen {
+    hardware ethernet 70:10:6f:ab:39:5e;
+    fixed-address wezen.codfw.wmnet;
+}
+
 host wdqs1001 {
     hardware ethernet 90:b1:1c:1d:e7:e5;
     fixed-address wdqs1001.eqiad.wmnet;
