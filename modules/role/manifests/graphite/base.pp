@@ -38,14 +38,21 @@ class role::graphite::base(
     class { '::graphite':
         # First match wins with storage schemas
         storage_schemas     => {
-            # Retain daily metrics for 25 years
+            # Retain daily metrics for 25 years. Per metric size: 109528 bytes
             'daily'   => {
                 pattern    => '^daily\..*',
                 retentions => '1d:25y',
             },
+            # Retain aggregated data at 1 hour resolution for 1 year and at
+            # 1 day resolution for 5 years. Per metric size: 127060 bytes
+            'daily'   => {
+                pattern    => '^hourly\..*',
+                retentions => '1h:1y,1d:5y',
+            },
             # Retain aggregated data at a one-minute resolution for one week; at
             # five-minute resolution for two weeks; at 15-minute resolution for
-            # one month; one-hour resolution for one year, and 1d for five years
+            # one month; one-hour resolution for one year, and 1d for five years.
+            # Per metric size: 331000 bytes
             'default' => {
                 pattern    => '.*',
                 retentions => '1m:7d,5m:14d,15m:30d,1h:1y,1d:5y',
