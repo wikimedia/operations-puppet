@@ -86,6 +86,10 @@
 #  Whether the service should be respawned by the init system in case of
 #  crashes. Default: true
 #
+# [*environment*]
+#  Environment variables that should be set in the service systemd or upstart unit.
+#  Default: undef
+#
 # [*deployment*]
 #   If this value is set to 'scap3' then deploy via scap3, otherwise,
 #   use trebuchet
@@ -124,6 +128,16 @@
 #        },
 #    }
 #
+# You can supply additional enviroment variables for the service systemd or upstart unit:
+#
+#    service::node { 'myservice':
+#        port   => 8520,
+#        environment => {
+#           FOO => "bar",
+#        },
+#    }
+#
+#
 define service::node(
     $port,
     $enable          = true,
@@ -144,6 +158,7 @@ define service::node(
     $statsd_prefix   = $title,
     $auto_refresh    = true,
     $init_restart    = true,
+    $environment     = undef,
     $deployment      = undef,
     $deployment_user = 'deploy-service',
     $deployment_config = false,

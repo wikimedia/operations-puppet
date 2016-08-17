@@ -32,6 +32,7 @@ spec:
         - path: src/sys/kafka.js
           options:
             uri: <%= @zk_uri %>
+            metadata_broker_list: <%= @broker_list %>
             dc_name: <%= scope.lookupvar('::site') %>
             concurrency: <%= @concurrency %>
             templates:
