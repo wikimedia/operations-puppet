@@ -10,6 +10,9 @@
 #   The URI (host:port) of the Zookeeper broker(s) controlling the Kafka cluster
 #   from which to receive the events.
 #
+# [*broker_list*]
+#   Comma-separated list of Kafka broker URIs
+#
 # [*purge_host*]
 #   The vhtcpd daemon host to send purge requests to. Default: 239.128.0.112
 #
@@ -26,6 +29,7 @@
 
 class changeprop(
     $zk_uri,
+    $broker_list,
     $purge_host   = '239.128.0.112',
     $ores_uri     = 'http://ores.svc.eqiad.wmnet:8081',
     $purge_port   = 4827,
@@ -33,6 +37,8 @@ class changeprop(
 ) {
 
     include ::service::configuration
+
+    require ::changeprop::packages
 
     $restbase_uri = $::service::configuration::restbase_uri
     $mwapi_uri = $::service::configuration::mwapi_uri
@@ -49,6 +55,9 @@ class changeprop(
         deployment      => 'scap3',
         auto_refresh    => false,
         init_restart    => false,
+        environment     => {
+            'UV_THREADPOOL_SIZE' => 128
+        },
     }
 
 }
