@@ -10,6 +10,12 @@ accounts:
         account_name: 'AUTH_mw'
         auth:         'http://ms-fe.svc.eqiad.wmnet'
         user:         'mw:media'
+    mw_thumbor:
+        access:       '.read-write'
+        account_name: 'AUTH_mw'
+        auth:         'http://ms-fe.svc.eqiad.wmnet'
+        user:         'mw:thumbor'
+        stats_enabled: 'no'
     dispersion:
         access:       '.admin'
         account_name: 'AUTH_dispersion'
