@@ -65,10 +65,6 @@ sub cluster_fe_recv_pre_purge {
 	// Disable Range requests for now.
 	unset req.http.Range;
 
-	if (req.url == "/geoiplookup" || req.http.host == "geoiplookup.wikimedia.org") {
-		error 668 "geoiplookup";
-	}
-
 	if (req.restarts == 0) {
 		// Always set or clear X-Subdomain and X-Orig-Cookie
 		unset req.http.X-Orig-Cookie;
@@ -260,14 +256,6 @@ sub cluster_fe_err_synth {
 			set obj.http.Connection = "keep-alive";
 			return (deliver);
 		}
-	}
-
-	// Support geoiplookup
-	if (obj.status == 668) {
-		call geoip_lookup;
-		set obj.status = 200;
-		set obj.http.Connection = "keep-alive";
-		return (deliver);
 	}
 
 	// Support mobile redirects
