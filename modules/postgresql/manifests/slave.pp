@@ -90,6 +90,6 @@ class postgresql::slave(
         owner  => 'root',
         group  => 'root',
         mode   => '0755',
-        source => 'puppet:///modules/postgres/check_postgres_replication_lag.py',
+        source => 'puppet:///modules/postgresql/check_postgres_replication_lag.py',
     }
 }
