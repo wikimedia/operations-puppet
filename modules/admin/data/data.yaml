@@ -426,6 +426,7 @@ groups:
     gid: 764
     members: [joal, milimetric, gwicke, eevans, mobrovac, otto]
     privileges: ['ALL = NOPASSWD: /usr/sbin/service cassandra *',
+                 'ALL = NOPASSWD: /usr/sbin/service cassandra-[a-z] *',
                  'ALL = (cassandra) NOPASSWD: ALL',
                  'ALL = NOPASSWD: /usr/sbin/service restbase *',
                  'ALL = (restbase) NOPASSWD: ALL',
