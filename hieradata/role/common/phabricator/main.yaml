@@ -7,3 +7,7 @@ apache::logrotate::rotate: 3
 debdeploy::grains:
   debdeploy-phabricator:
     value: standard
+
+phabricator_servers:
+  - phab1001.eqiad.wmnet
+  - phab2001.codfw.wmnet
