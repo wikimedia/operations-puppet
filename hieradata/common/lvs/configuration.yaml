@@ -955,5 +955,3 @@ lvs_services:
       sites:
         eqiad:
           hostname: thumbor.svc.eqiad.wmnet
-        codfw:
-          hostname: thumbor.svc.codfw.wmnet
