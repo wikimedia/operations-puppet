@@ -1398,7 +1398,9 @@ node /kafka100[12]\.eqiad\.wmnet/ {
 node /kafka200[12]\.codfw\.wmnet/ {
     role kafka::main::broker,
         # Mirror eqiad.* topics from the main-eqiad Kafka cluster.
-        kafka::main::mirror,
+        # Disable kafka mirror for now.  zookeeper_hosts lookup needs
+        # refactoring.
+        # kafka::main::mirror,
         eventbus::eventbus
     include standard
     include base::firewall
