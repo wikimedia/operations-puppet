@@ -246,6 +246,11 @@ sub cluster_fe_deliver {
 		&& req.http.Cookie !~ "(^|;\s*)GeoIP=[^;]") {
 		call geoip_cookie;
 	}
+	// Fix old IPv6 no-data cookies
+	else if (req.http.X-Orig-Cookie ~ "(^|;\s*)GeoIP=:::::v6"
+		|| req.http.Cookie ~ "(^|;\s*)GeoIP=:::::v6") {
+		call geoip_cookie;
+	}
 }
 
 sub cluster_fe_err_synth {
