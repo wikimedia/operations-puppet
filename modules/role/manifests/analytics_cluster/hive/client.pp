@@ -10,11 +10,15 @@ class role::analytics_cluster::hive::client {
 
     $auxpath = $hcatalog_jar
 
+    $zookeeper_clusters     = hiera('zookeeper_clusters')
+    $zookeeper_cluster_name = hiera('zookeeper_cluster_name')
+    $zookeeper_hosts        = keys($zookeeper_clusters[$zookeeper_cluster_name]['hosts'])
+
     # You must set at least:
     #   metastore_host
     class { '::cdh::hive':
         # Hive uses Zookeeper for table locking.
-        zookeeper_hosts           => keys(hiera('zookeeper_hosts')),
+        zookeeper_hosts           => $zookeeper_hosts,
         # We set support concurrency to false by default.
         # if someone needs to use it in their hive job, they
         # may manually set it to true via
