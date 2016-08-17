@@ -163,6 +163,22 @@ class role::phabricator::main {
         rule => 'saddr (0.0.0.0/0 ::/0) daddr (10.64.32.186/32 208.80.154.250/32 2620:0:861:103:10:64:32:186/128 2620:0:861:ed1a::3:16/128) proto tcp dport (22) ACCEPT;',
     }
 
+    # ssh between phab instances for clustering support
+    if $::site == 'eqiad' {
+        ferm::service { 'ssh_eqiad_codfw':
+            port  => '22',
+            proto => 'tcp',
+            srange => '@resolve(phab2001.codfw.wmnet)',
+        }
+    }
+    if $::site == 'codfw' {
+        ferm::service { 'ssh_codfw_eqiad':
+            port  => '22',
+            proto => 'tcp',
+            srange => '@resolve(iridium.codfw.wmnet)',
+        }
+    }
+
     # redirect bugzilla URL patterns to phabricator
     # handles translation of bug numbers to maniphest task ids
     phabricator::redirector { "redirector.${domain}":
