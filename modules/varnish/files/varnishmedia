@@ -48,19 +48,6 @@ class MediaVarnishLogProcessor(varnishprocessor.VarnishLogProcessor):
 
         metric_keys = ['reqs.all', 'resps.' + status_code]
 
-        if 'RxHeader' in transaction:
-            metric_keys.append('reqs.if_none_match')
-
-        if 'TxHeader' in transaction:
-            cache_control_header = transaction.get('TxHeader')
-            cache_control = 'no'
-            if cache_control_header:
-                match = re.search(r'(?<=max-age=)\d+', cache_control_header)
-                if match:
-                    cache_control = 'short' if match.group() == '300' else 'long'
-            metric_keys.append('responses.%s_cache_control.%s' %
-                               (cache_control, status_code))
-
         for key in metric_keys:
             self.stats[key] = self.stats.get(key, 0) + 1
 
