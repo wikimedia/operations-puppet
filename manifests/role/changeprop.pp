@@ -9,7 +9,7 @@ class role::changeprop {
     }
 
     class { '::changeprop':
-        zk_uri => $kafka_config['zookeeper']['url'],
+        broker_list => $kafka_config['brokers']['string'],
     }
 
 }
