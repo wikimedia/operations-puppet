@@ -5,27 +5,28 @@
 # Druid module parameters are configured via hiera.
 #
 # Druid Zookeeper settings will default to using the hosts in
-# the hiera zookeeper_hosts hiera variable.  Druid Zookeeper chroot will
-# be set according to $site in production, or $realm in labs.
+# the hiera zookeeper_cluster_name and zookeeper_clusters hiera variables.
+# Druid Zookeeper chroot will be set according to $site in production, or
+# $labsproject in labs.
 #
 class role::analytics_cluster::druid::common
 {
     # Need Java before Druid is installed.
     require role::analytics_cluster::java
 
+    $zookeeper_cluster_name = hiera('zookeeper_cluster_name')
+    $zookeeper_cluster_name = hiera('zookeeper_clusters')
+    $zookeeper_hosts        = join(keys($zookeeper_clusters[$zookeeper_cluster_name]['hosts']), ',')
+
     $zookeeper_chroot = $::realm ? {
         'labs'       => "/druid/analytics-${::labsproject}",
         'production' => "/druid/analytics-${::site}",
     }
 
-    $zookeeper_properties = {
+    $zookeeper_properties   = {
         'druid.zk.paths.base'          => $zookeeper_chroot,
         'druid.discovery.curator.path' => "${zookeeper_chroot}/discovery",
-        'druid.zk.service.host'        => join(keys(hiera(
-            'zookeeper_hosts',
-            # Default to running a single zk locally.
-            {'localhost:2181' => {'id' => '1'}}
-        )), ','),
+        'druid.zk.service.host'        => $zookeeper_hosts,
     }
 
     # Look up druid::properties out of hiera.  Since class path
