@@ -11,6 +11,8 @@ class role::scb {
     include role::ores::worker
     include role::apertium
     include role::eventstreams
+    include role::pdfrender
+
     include standard
     include base::firewall
 
