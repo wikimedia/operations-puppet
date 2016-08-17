@@ -109,8 +109,13 @@ varnish::dynamic_directors: false
 
 swift::proxy::tld: 'beta.wmflabs.org'
 
-zookeeper_hosts:
-  "${::fqdn}": 1
+
+zookeeper_cluster_name: "%{::labsproject}"
+zookeeper_clusters:
+  "%{::labsproject}":
+    hosts:
+      "%{::fqdn}": 1
+
 nrpe::allowed_hosts: '10.68.16.195'
 
 ssh::server::disable_agent_forwarding: false
