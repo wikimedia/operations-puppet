@@ -160,6 +160,7 @@ define service::node(
                     manage_user  => true,
                 }
             }
+            include ::scap::conftool
         }
         'git': {
             service::deploy::gitclone { $title:
