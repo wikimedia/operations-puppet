@@ -141,38 +141,6 @@ C{
         _GEO_IDX_SIZE   = 5,
     } geo_idx_t;
 
-    static const char json_fmt[] =
-        "Geo = {\"city\":\"%s\",\"country\":\"%s\",\"region\":\"%s\","
-        "\"lat\":\"%s\",\"lon\":\"%s\",\"IP\":\"v4\"}";
-
-    static void geo_out_json(struct sess* sp, char** geo, bool failed) {
-        char out[255];
-
-        if (!failed) {
-            int out_size = snprintf(out, 255, json_fmt,
-                geo[GEO_IDX_CITY],
-                geo[GEO_IDX_COUNTRY],
-                geo[GEO_IDX_REGION],
-                geo[GEO_IDX_LAT],
-                geo[GEO_IDX_LON]
-            );
-            if (out_size >= 254) // Don't use truncated output
-                failed = true;
-        }
-
-        if (failed)
-            strcpy(out, "Geo = {}");
-
-        VRT_synth_page(sp, 0, out, vrt_magic_string_end);
-        char* now = VRT_time_string(sp, VRT_r_now(sp));
-        VRT_SetHdr(sp, HDR_OBJ, "\016Last-Modified:",
-                   now, vrt_magic_string_end);
-        VRT_SetHdr(sp, HDR_OBJ, "\016Cache-Control:",
-                   "private, max-age=86400, s-maxage=0", vrt_magic_string_end);
-        VRT_SetHdr(sp, HDR_OBJ, "\015Content-Type:",
-                   "text/javascript", vrt_magic_string_end);
-    }
-
     static void geo_out_cookie(struct sess* sp, char** geo) {
         char host_safe[50];
 
@@ -218,9 +186,8 @@ C{
         {"location", "longitude", NULL, NULL},
     };
 
-    static void geo_xcip_output(struct sess* sp, const bool json) {
+    static void geo_xcip_output(struct sess* sp) {
         int gai_error, mmdb_error;
-        bool failed = true; // this is just for the JSON case
         char ip[INET6_ADDRSTRLEN];
         char* geo[_GEO_IDX_SIZE];
         char* empty = "\0";
@@ -241,7 +208,6 @@ C{
 
         // from this point we have a lookup, it just may or may
         // not have a full set of useful fields.
-        failed = false;
 
         // Parse results into "geo" on the stack, which is always full of
         // pointers.  The pointers are to empty strings if results are lacking.
@@ -266,17 +232,9 @@ C{
         }
 
         out:
-        if (json)
-            geo_out_json(sp, geo, failed);
-        else
-            geo_out_cookie(sp, geo);
+        geo_out_cookie(sp, geo);
     }
 }C
-
-// Emits JSON
-sub geoip_lookup {
-    C{geo_xcip_output(sp, true);}C
-}
 
 // Emits a Set-Cookie
 sub geoip_cookie {
