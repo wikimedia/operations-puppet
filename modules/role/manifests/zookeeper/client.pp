@@ -10,11 +10,25 @@
 # If you want to set up a Zookeeper server:
 #   include role::zookeeper::server
 #
+# You need to include the hiera variables 'zookeeper_clusters' and
+# 'zookeeper_cluster_name'.  zookeeper_clusters should be a hash with
+# zookeeper_cluster_name as a key, the value of which is a hash
+# that has a 'hosts' sub with key being name of node and value being zookeeper
+# id for the client / server roles to work.
 #
-# You need to include the hiera variable 'zookeeper_hosts' as a
-# assoc array with key being name of node and value being zookeeper id
-# for the client / server roles to work.
-
+# E.g.
+#
+# # In eqiad.yaml, or role/eqiad/zookeeper/server.yaml:
+# zookeeper_cluster_name: main-eqiad
+#
+# # In common.yaml:
+# zookeeper_clusters:
+#  main-eqiad:
+#   hosts:
+#     nodeA: 1
+#     nodeB: 2
+# ...
+#
 # == Class role::zookeeper::client
 #
 class role::zookeeper::client {
@@ -25,11 +39,12 @@ class role::zookeeper::client {
         'precise' => '3.3.5+dfsg1-1ubuntu1',
     }
 
-    $hosts = hiera('zookeeper_hosts')
+    $clusters     = hiera('zookeeper_clusters')
+    $cluster_name = hiera('zookeeper_cluster_name')
 
     require_package('openjdk-7-jdk')
     class { '::zookeeper':
-        hosts   => $hosts,
+        hosts   => $clusters[$cluster_name]['hosts'],
         version => $version,
     }
 }
