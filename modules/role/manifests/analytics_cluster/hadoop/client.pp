@@ -14,14 +14,21 @@ class role::analytics_cluster::hadoop::client {
     # You MUST set at least the following:
     #  cdh::hadoop::cluster_name
     #  cdh::hadoop::namenode_hosts
+    #  zookeeper_clusters
+    #  zookeeper_cluster_name
     #
+
+    $zookeeper_clusters     = hiera('zookeeper_clusters')
+    $zookeeper_cluster_name = hiera('zookeeper_cluster_name')
+    $zookeeper_hosts        = keys($zookeeper_clusters[$zookeeper_cluster_name]['hosts'])
+
     class { 'cdh::hadoop':
         # Default to using running resourcemanager on the same hosts
         # as the namenodes.
         resourcemanager_hosts                       => hiera(
             'cdh::hadoop::resourcemanager_hosts', hiera('cdh::hadoop::namenode_hosts')
         ),
-        zookeeper_hosts                             => keys(hiera('zookeeper_hosts', undef)),
+        zookeeper_hosts                             => $zookeeper_hosts,
         dfs_name_dir                                => [$hadoop_name_directory],
         dfs_journalnode_edits_dir                   => $hadoop_journal_directory,
 
