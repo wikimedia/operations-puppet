@@ -12,7 +12,7 @@ define conftool::credentials(
     etcd::client::config { "${home}/.etcdrc":
         ensure   => present,
         owner    => $title,
-        group    => $title,
+        group    => $group,
         settings => {
             username => 'conftool',
             password => $::conftool::password,
