@@ -11,6 +11,11 @@ User=<%= @title %>
 Group=<%= @title %>
 Environment="NODE_PATH=/srv/deployment/<%= @repo %>/node_modules"
 Environment="<%= @title.gsub(/[^a-zA-Z0-9_]/, '_').upcase %>_PORT=<%= @port %>"
+<%- if defined?(@environment) && !@environment.empty? -%>
+<%- @environment.each do | variable, value | -%>
+Environment="<%= variable %>=<%= value %>"
+<%- end -%>
+<%- end -%>
 SyslogIdentifier=<%= @title %>
 <% if @init_restart -%>
 Restart=always
