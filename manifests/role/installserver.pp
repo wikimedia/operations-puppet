@@ -13,7 +13,6 @@
 #   Class['install_server::preseed_server']
 #   Class['install_server::tftp_server']
 #   Class['install_server::web_server']
-#   Class['install_server::dhcp_server']
 #   Define['backup::set']
 #   Class['base::firewall']
 #   Define['ferm::rule']
@@ -69,11 +68,6 @@ class role::installserver {
     ferm::service { 'https':
         proto => 'tcp',
         port  => 'https'
-    }
-
-    include install_server::dhcp_server
-    ferm::rule { 'dhcp':
-        rule => 'proto udp dport bootps { saddr $PRODUCTION_NETWORKS ACCEPT; }'
     }
 
     # Backup
