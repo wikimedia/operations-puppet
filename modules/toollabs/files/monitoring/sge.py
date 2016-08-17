@@ -43,7 +43,10 @@ class SGECollector(diamond.collector.Collector):
     def get_queues(self):
         """ retrieve list of queues
         """
-        queues = subprocess.check_output(['/usr/bin/qconf', '-sql'])
+        # SGE looks in /opt/gridengine while our bind mounts are in /var/lib/gridengine
+        # Set SGE_ROOT explicitly, and use the direct NFS path so we don't depend on the bind mount.
+        queues = subprocess.check_output(['/usr/bin/qconf', '-sql'],
+                                          env={"SGE_ROOT": '/data/project/.system/gridengine/'})
         return [q for q in queues.splitlines() if q not in self.config['exclude']]
 
     def job_state_stats(self, jobs):
