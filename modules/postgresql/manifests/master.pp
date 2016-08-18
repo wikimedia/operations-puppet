@@ -12,7 +12,7 @@
 #   ensure
 #       Defaults to present
 #   max_wal_senders
-#       Defaults to 3. Refer to postgresql documentation for its meaning
+#       Defaults to 5. Refer to postgresql documentation for its meaning
 #   checkpoint_segments
 #       Defaults to 64. Refer to postgresql documentation for its meaning
 #   wal_keep_segments
@@ -39,7 +39,7 @@ class postgresql::master(
         trusty  => '9.3',
     },
     $ensure='present',
-    $max_wal_senders=3,
+    $max_wal_senders=5,
     $checkpoint_segments=64,
     $wal_keep_segments=128,
     $root_dir='/var/lib/postgresql',
