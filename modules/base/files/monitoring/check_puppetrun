@@ -6,8 +6,7 @@
 # that are not enabled
 #
 # The script will use the puppet last_run-summary.yaml
-# file to determine when last Puppet ran else the age
-# of the statefile.
+# file to determine when last Puppet ran
 
 require 'optparse'
 require 'yaml'
@@ -15,7 +14,6 @@ require 'json' # TODO: Remove once we are free from precise
 
 runlockfile = "/var/lib/puppet/state/agent_catalog_run.lock"
 adminlockfile = "/var/lib/puppet/state/agent_disabled.lock"
-statefile = "/var/lib/puppet/state/state.yaml"
 summaryfile = "/var/lib/puppet/state/last_run_summary.yaml"
 enabled = true
 running = false
@@ -48,10 +46,6 @@ opt.on("--adminlock-file [FILE]", "-a", "Location of the admin lock file, defaul
     adminlockfile = f
 end
 
-opt.on("--state-file [FILE]", "-t", "Location of the state file, default #{statefile}") do |f|
-    statefile = f
-end
-
 opt.on("--summary-file [FILE]", "-s", "Location of the summary file, default #{summaryfile}") do |f|
     summaryfile = f
 end
@@ -74,8 +68,6 @@ end
 if File.exists?(runlockfile)
        running = true
 end
-
-lastrun = File.stat(statefile).mtime.to_i if File.exists?(statefile)
 
 if File.exists?(summaryfile)
     begin
