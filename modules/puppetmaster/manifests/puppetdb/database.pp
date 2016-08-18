@@ -16,6 +16,16 @@ class puppetmaster::puppetdb::database($master) {
         if $postgres_users {
             create_resources(postgresql::user, $postgres_users)
         }
+        # Create the puppetdb user for localhost
+        # This works on every server and is used for read-only db lookups
+        postgresql::user { 'puppetdb@localhost':
+            ensure    => present,
+            user      => 'puppetdb',
+            database  => 'puppetdb',
+            password  => $puppetdb_pass,
+            cidr      => "${::main_ipaddress}/32",
+            pgversion => '9.4',
+        }
     } else {
         class { 'postgresql::slave':
             includes         => ['tuning.conf'],
@@ -27,16 +37,6 @@ class puppetmaster::puppetdb::database($master) {
     }
 
 
-    # Create the puppetdb user for localhost
-    # This works on every server and is used for read-only db lookups
-    postgresql::user { 'puppetdb@localhost':
-        ensure    => present,
-        user      => 'puppetdb',
-        database  => 'puppetdb',
-        password  => $puppetdb_pass,
-        cidr      => "${::main_ipaddress}/32",
-        pgversion => '9.4',
-    }
 
     # Create the database
     postgresql::db { 'puppetdb':
