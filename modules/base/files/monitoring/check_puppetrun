@@ -9,12 +9,15 @@
 # file to determine when last Puppet ran
 
 require 'optparse'
-require 'yaml'
+require 'safe_yaml'
 require 'json' # TODO: Remove once we are free from precise
+
+PRINT_FAILED_RESOURCES_NO = 3 # Number of failed resources to print. Don't set this high
 
 runlockfile = "/var/lib/puppet/state/agent_catalog_run.lock"
 adminlockfile = "/var/lib/puppet/state/agent_disabled.lock"
 summaryfile = "/var/lib/puppet/state/last_run_summary.yaml"
+reportfile = "/var/lib/puppet/state/last_run_report.yaml"
 enabled = true
 running = false
 lastrun = 0
@@ -22,6 +25,7 @@ failcount = 0
 warn = 0
 crit = 0
 enabled_only = false
+SafeYAML::OPTIONS[:default_mode] = :safe
 
 opt = OptionParser.new
 
@@ -47,6 +51,10 @@ end
 
 opt.on("--summary-file [FILE]", "-s", "Location of the summary file, default #{summaryfile}") do |f|
     summaryfile = f
+end
+
+opt.on("--report-file [FILE]", "-r", "Location of the report file, default #{reportfile}") do |f|
+    reportfile = f
 end
 
 opt.parse!
@@ -125,7 +133,10 @@ if not enabled
 end
 
 if failcount > 0
-    puts "CRITICAL: Puppet has #{failcount} failures"
+    report = YAML.load_file(reportfile)
+    failed_resources = report["resource_statuses"].select { |_, r| r["failed"] }.map { |_, r| r["resource"] }
+    failed_resources = failed_resources[0..PRINT_FAILED_RESOURCES_NO]
+    puts "CRITICAL: Puppet has #{failcount} failures. Failed resources: #{failed_resources.join','}"
     exit 2
 end
 
