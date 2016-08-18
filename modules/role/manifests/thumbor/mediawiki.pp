@@ -18,10 +18,7 @@ class role::thumbor::mediawiki {
         swift_sharded_containers => hiera_array('swift::proxy::shard_container_list'),
     }
 
-    include lvs::configuration
-    class { 'lvs::realserver':
-        realserver_ips => $lvs::configuration::service_ips['thumbor'][$::site],
-    }
+    include ::lvs::realserver
 
     ferm::service { 'thumbor':
         proto  => 'tcp',
