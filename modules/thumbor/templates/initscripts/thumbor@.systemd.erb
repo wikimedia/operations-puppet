@@ -8,6 +8,7 @@ ExecStart=/usr/bin/thumbor --port %i --ip 127.0.0.1 --keyfile /etc/thumbor.key -
 User=thumbor
 PrivateTmp=yes
 Restart=on-failure
+SyslogIdentifier=thumbor@%i
 
 [Install]
 WantedBy=multi-user.target
