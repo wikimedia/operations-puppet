@@ -8,3 +8,4 @@ postgresql::master::wal_keep_segments: 768
 debdeploy::grains:
   debdeploy-maps-master:
     value: standard
+postgresql::master::max_wal_senders: 5
