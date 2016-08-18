@@ -104,7 +104,7 @@ end
 
 
 if failcount == :failed
-    puts "CRITICAL: puppet fail"
+    puts "CRITICAL: Catalog fetch fail. Either compilation failed or puppetmaster has issues"
     exit 2
 end
 
