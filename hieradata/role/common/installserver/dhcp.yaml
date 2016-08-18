@@ -3,3 +3,5 @@ debdeploy::grains:
     value: standard
 admin::groups:
   - datacenter-ops
+
+active_dhcp_server: 'carbon'
