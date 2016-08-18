@@ -1375,7 +1375,10 @@ node /kafka10(12|13|14|18|20|22)\.eqiad\.wmnet/ {
     # addresses.
     interface::add_ip6_mapped { 'main': }
 
-    role kafka::analytics::broker, ipsec
+    role kafka::analytics::broker,
+        # Mirror all other Kafka cluster data into the analytics Kafka cluster.
+        kafka::analytics::mirror,
+        ipsec
 
     include standard
     include base::firewall
