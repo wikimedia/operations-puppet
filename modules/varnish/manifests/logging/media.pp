@@ -19,7 +19,7 @@ define varnish::logging::media( $statsd_server = 'statsd' ) {
     include varnish::common
 
     file { '/usr/local/bin/varnishmedia':
-        source  => 'puppet:///modules/varnish/varnishmedia',
+        source  => "puppet:///modules/varnish/varnishmedia${varnish::common::varnish4_python_suffix}",
         owner   => 'root',
         group   => 'root',
         mode    => '0555',
