@@ -1386,6 +1386,8 @@ node /kafka10(12|13|14|18|20|22)\.eqiad\.wmnet/ {
 # on these brokers.
 node /kafka100[12]\.eqiad\.wmnet/ {
     role kafka::main::broker,
+        # Mirror eqiad.* topics from Kafka main-eqiad into this main-codfw
+        kafka::main::mirror,
         eventbus::eventbus
 
     include standard
