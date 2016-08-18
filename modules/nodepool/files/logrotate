@@ -1,0 +1,7 @@
+/var/log/nodepool {
+    daily
+    compress
+    missingok
+    notifempty
+    rotate 14
+}

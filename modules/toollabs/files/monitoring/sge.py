@@ -38,7 +38,9 @@ class SGECollector(diamond.collector.Collector):
         :note: shell=true is to honor askerisk via subprocess
         """
         job_query = "/usr/bin/qstat -q %s -u '*'" % (queue,)
-        return subprocess.check_output([job_query], shell=True)
+        return subprocess.check_output([job_query],
+                                       env={"SGE_ROOT": '/data/project/.system/gridengine/'},
+                                       shell=True)
 
     def get_queues(self):
         """ retrieve list of queues
