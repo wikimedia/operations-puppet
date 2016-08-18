@@ -27,8 +27,16 @@ class install_server::dhcp_server {
         ensure => present,
     }
 
+    $dhcp_active_server = hiera('dhcp_active_server')
+
+    if $::hostname == $dhcp_active_server {
+        $ensure_dhcp = 'running'
+    } else {
+        $ensure_dhcp = 'stopped'
+    }
+
     service { 'isc-dhcp-server':
-        ensure    => running,
+        ensure    => $ensure_dhcp,
         require   => [
             Package['isc-dhcp-server'],
             File['/etc/dhcp']
