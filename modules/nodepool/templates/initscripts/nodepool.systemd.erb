@@ -6,6 +6,8 @@ Type=simple
 User=nodepool
 Group=nodepool
 
+Environment="STATSD_HOST=statsd.eqiad.wmnet"
+
 # Start in non daemon mode (-d)
 ExecStart=/usr/bin/nodepoold -d -l /etc/nodepool/logging.conf
 
