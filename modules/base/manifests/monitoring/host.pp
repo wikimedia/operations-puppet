@@ -100,7 +100,8 @@ class base::monitoring::host(
     $criticalinterval = $base::puppet::params::freshnessinterval * 2
     nrpe::monitor_service { 'puppet_checkpuppetrun':
         description  => 'puppet last run',
-        nrpe_command => "/usr/bin/sudo /usr/local/lib/nagios/plugins/check_puppetrun -w ${warninginterval} -c ${criticalinterval}",
+        nrpe_command => "/usr/bin/sudo /usr/local/lib/nagios/plugins/check_puppetrun \
+            -w ${warninginterval} -c ${criticalinterval} -W 1 -C 5",
     }
     nrpe::monitor_service {'check_eth':
         description  => 'configured eth',
