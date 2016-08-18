@@ -1322,7 +1322,7 @@ node 'graphite2002.codfw.wmnet' {
 
 # partially replaces carbon (T132757)
 node 'install1001.wikimedia.org' {
-    role installserver::tftp_server, aptrepo::wikimedia
+    role installserver::tftp_server, installserver::dhcp, aptrepo::wikimedia
     $cluster = 'misc'
 
     interface::add_ip6_mapped { 'main':
@@ -1333,7 +1333,7 @@ node 'install1001.wikimedia.org' {
 }
 
 node 'install2001.wikimedia.org' {
-    role installserver::tftp_server
+    role installserver::tftp_server, installserver::dhcp
     $cluster = 'misc'
     $ganglia_aggregator = true
 
