@@ -1,6 +1,12 @@
 class varnish::common {
     require varnish::packages
 
+    if (hiera('varnish_version4', false)) {
+        $varnish4_python_suffix = '4'
+    } else {
+        $varnish4_python_suffix = ''
+    }
+
     # Mount /var/lib/ganglia as tmpfs to avoid Linux flushing mlocked
     # shm memory to disk
     mount { '/var/lib/varnish':
