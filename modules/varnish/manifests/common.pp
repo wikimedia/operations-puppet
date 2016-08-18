@@ -36,7 +36,7 @@ class varnish::common {
     }
 
     file { '/usr/local/lib/python2.7/dist-packages/varnishprocessor':
-        source  => 'puppet:///modules/varnish/varnishprocessor',
+        source  => "puppet:///modules/varnish/varnishprocessor${varnish4_python_suffix}",
         owner   => 'root',
         group   => 'root',
         mode    => '0755',
