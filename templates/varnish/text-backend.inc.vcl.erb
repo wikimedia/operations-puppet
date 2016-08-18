@@ -52,31 +52,20 @@ sub cluster_be_hash {
 
 <% if @cache_route == 'direct' -%>
 sub misspass_mangle {
-	// BITS: legacy bits.wm.o domain support
-	if (req.http.host == "<%= @vcl_config.fetch('bits_domain') %>") {
-		// Transform backend url: /<sitename>/load.php -> /w/load.php
-		// Set host header for backend to <sitename>
-		if (req.url ~ "^/([a-zA-Z0-9-]+\.)?([a-zA-Z0-9-]+\.)?([a-zA-Z0-9-]+)\.<%= Regexp.escape(@vcl_config.fetch('top_domain')) %>/load\.php") {
-			set bereq.http.host = regsub(req.url, "^/([^/]+)/(.*)$", "\1");
-			set bereq.url = regsub(req.url, "^/([^/]+)/load\.php(.*)?", "/w/load.php\2");
-		}
+	// Mobile hostname mangling for MediaWiki
+	if (req.http.X-Subdomain) {
+		set bereq.http.host = req.http.x-dt-host;
 	}
-	else {
-		// Mobile hostname mangling for MediaWiki
-		if (req.http.X-Subdomain) {
-			set bereq.http.host = req.http.x-dt-host;
-		}
 
-		// RB request mangling
-		if (req.url ~ "^/api/rest_v1/") {
-			set bereq.url = "/" + req.http.host + regsub(req.url, "^/api/rest_v1/", "/v1/");
-		}
+	// RB request mangling
+	if (req.url ~ "^/api/rest_v1/") {
+		set bereq.url = "/" + req.http.host + regsub(req.url, "^/api/rest_v1/", "/v1/");
+	}
 
-		// Redirect url shortener w.wiki urls to meta (T133485)
-		if (req.http.host == "<%= @vcl_config.fetch('shortener_domain') %>" && req.url != "/") {
-			set bereq.http.host = "meta.wikimedia.<%= @vcl_config.fetch('top_domain') %>";
-			set bereq.url = "/wiki/Special:UrlRedirector" + req.url;
-		}
+	// Redirect url shortener w.wiki urls to meta (T133485)
+	if (req.http.host == "<%= @vcl_config.fetch('shortener_domain') %>" && req.url != "/") {
+		set bereq.http.host = "meta.wikimedia.<%= @vcl_config.fetch('top_domain') %>";
+		set bereq.url = "/wiki/Special:UrlRedirector" + req.url;
 	}
 }
 <% else -%>

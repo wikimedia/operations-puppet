@@ -1,7 +1,6 @@
 class role::cache::text(
     # static_host must serve MediaWiki (e.g. not wwwportal)
     $static_host = 'en.wikipedia.org',
-    $bits_domain = 'bits.wikimedia.org',
     $top_domain = 'org',
     $shortener_domain = 'w.wiki',
 ) {
@@ -100,7 +99,6 @@ class role::cache::text(
     $common_vcl_config = {
         'purge_host_regex' => $::role::cache::base::purge_host_not_upload_re,
         'static_host'      => $static_host,
-        'bits_domain'      => $bits_domain,
         'top_domain'       => $top_domain,
         'shortener_domain' => $shortener_domain,
         'pass_random'      => true,
