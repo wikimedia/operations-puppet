@@ -26,14 +26,8 @@ define varnish::logging::xcache(
 ) {
     include varnish::common
 
-    if (hiera('varnish_version4', false)) {
-        $varnish4_python_suffix = '4'
-    } else {
-        $varnish4_python_suffix = ''
-    }
-
     file { '/usr/local/bin/varnishxcache':
-        source  => "puppet:///modules/varnish/varnishxcache${varnish4_python_suffix}",
+        source  => "puppet:///modules/varnish/varnishxcache${varnish::common::varnish4_python_suffix}",
         owner   => 'root',
         group   => 'root',
         mode    => '0555',
