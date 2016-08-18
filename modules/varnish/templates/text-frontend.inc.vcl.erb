@@ -143,14 +143,6 @@ sub cluster_fe_recv {
 		<%= error_synth(741, "Buggy request, please report at https://phabricator.wikimedia.org/T141786") -%>
 	}
 
-	// BITS: legacy bits.wm.o domain support
-	if (req.http.host == "<%= @vcl_config.fetch('bits_domain') %>") {
-		if (req.url ~ "^/event\.gif") {
-			error 204;
-		}
-		return (lookup);
-	}
-
 	call mobile_redirect;
 
 	# normalize all /static to the same hostname for caching
@@ -288,14 +280,6 @@ sub cluster_fe_deliver {
 }
 
 sub cluster_fe_err_synth {
-	// BITS: legacy bits.wm.o domain support
-	if (req.http.host == "<%= @vcl_config.fetch('bits_domain') %>") {
-		if (obj.status == 204) {
-			set obj.http.Connection = "keep-alive";
-			return (deliver);
-		}
-	}
-
 	// Support mobile redirects
 	if (obj.status == 666) {
 		set obj.http.Location = req.http.Location;
