@@ -17,7 +17,6 @@ adminlockfile = "/var/lib/puppet/state/agent_disabled.lock"
 summaryfile = "/var/lib/puppet/state/last_run_summary.yaml"
 enabled = true
 running = false
-lastrun_failed = false
 lastrun = 0
 failcount = 0
 warn = 0
