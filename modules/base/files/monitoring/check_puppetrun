@@ -11,6 +11,7 @@
 
 require 'optparse'
 require 'yaml'
+require 'json' # TODO: Remove once we are free from precise
 
 runlockfile = "/var/lib/puppet/state/agent_catalog_run.lock"
 adminlockfile = "/var/lib/puppet/state/agent_disabled.lock"
@@ -64,6 +65,10 @@ end
 
 if File.exists?(adminlockfile)
        enabled = false
+       # TODO: ruby 1.8 YAML parser sucks. Once we are free, transform into
+       # disabled_message = YAML.load_file(adminlockfile)["disabled_message"]
+       tmp = JSON.parse(File.read(adminlockfile))
+       disabled_message = tmp["disabled_message"]
 end
 
 if File.exists?(runlockfile)
@@ -114,7 +119,7 @@ if enabled_only && enabled == false
 end
 
 if not enabled
-    puts "WARNING: Puppet is currently disabled, last run #{human_time_since_last_run} ago with #{failcount} failures"
+    puts "WARNING: Puppet is currently disabled, message: #{disabled_message}, last run #{human_time_since_last_run} ago with #{failcount} failures"
     exit 1
 end
 
