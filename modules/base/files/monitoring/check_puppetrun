@@ -79,8 +79,7 @@ if File.exists?(summaryfile)
         unless summary.include?("events")
             failcount = :failed
         else
-            # and unless there are failures, the events hash just wont have the failure count
-            failcount = summary["events"]["failure"] || 0
+            failcount = summary["events"]["failure"]
         end
     rescue
         failcount = :failed_to_parse_summary_file
