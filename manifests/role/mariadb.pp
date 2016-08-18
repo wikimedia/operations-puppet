@@ -21,6 +21,7 @@ class role::mariadb::grants(
     include passwords::racktables
     include passwords::prometheus
     include passwords::servermon
+    include passwords::striker
 
     $root_pass       = $passwords::misc::scripts::mysql_root_pass
     $repl_pass       = $passwords::misc::scripts::mysql_repl_pass
@@ -44,6 +45,8 @@ class role::mariadb::grants(
         $racktables_user     = $passwords::racktables::racktables_db_user
         $racktables_pass     = $passwords::racktables::racktables_db_pass
         $servermon_pass      = $passwords::servermon::db_password
+        $striker_pass        = $passwords::striker::application_db_password
+        $striker_admin_pass  = $passwords::striker::admin_db_password
 
         file { '/etc/mysql/production-grants-shard.sql':
             ensure  => present,
