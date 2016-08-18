@@ -64,6 +64,7 @@ end
 
 if File.exists?(adminlockfile)
        enabled = false
+       disabled_message = YAML.load_file(adminlockfile)["disabled_message"]
 end
 
 if File.exists?(runlockfile)
@@ -114,7 +115,7 @@ if enabled_only && enabled == false
 end
 
 if not enabled
-    puts "WARNING: Puppet is currently disabled, last run #{human_time_since_last_run} ago with #{failcount} failures"
+    puts "WARNING: Puppet is currently disabled, message: #{disabled_message}, last run #{human_time_since_last_run} ago with #{failcount} failures"
     exit 1
 end
 
