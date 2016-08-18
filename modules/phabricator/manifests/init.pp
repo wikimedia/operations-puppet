@@ -245,6 +245,14 @@ class phabricator (
         }
     }
 
+    # phd service is only running on active server set in Hiera
+    # will be changed after cluster setup is finished
+    $phabricator_active_server = hiera('phabricator_active_server')
+    if $::hostname == $phabricator_active_server {
+        $phd_service_ensure = 'running',
+    } else {
+        $phd_service_ensure = 'stopped',
+    }
     # This needs to become <s>Upstart</s> systemd managed
     # https://secure.phabricator.com/book/phabricator/article/managing_daemons/
     # Meanwhile upstream has a bug to make an LSB friendly wrapper
@@ -252,7 +260,7 @@ class phabricator (
     # see examples of real-word unit files in comments of:
     # https://secure.phabricator.com/T4181
     service { 'phd':
-        ensure     => running,
+        ensure     => $phd_service_ensure,
         start      => '/usr/sbin/service phd start --force',
         status     => '/usr/bin/pgrep -f phd-daemon',
         hasrestart => true,
