@@ -1,0 +1,66 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+"""
+  varnishmedia
+  ~~~~~~~~~~~~
+
+  Accumulate browser cache hit ratio and total request volume statistics
+  for media requests and report to StatsD.
+
+  Usage: varnishmedia [--statsd-server SERVER] [--key-prefix PREFIX]
+
+    --statsd-server SERVER  statsd server (default: none; echo to stdout)
+    --key-prefix PREFIX     metric key prefix (default: media.thumbnail.varnish)
+
+  Copyright 2015 Ori Livneh <ori@wikimedia.org>
+  Copyright 2015 Gilles Dubuc <gilles@wikimedia.org>
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+"""
+from __future__ import division
+
+import re
+
+import varnishlog
+import varnishprocessor
+
+
+class MediaVarnishLogProcessor(varnishprocessor.VarnishLogProcessor):
+    description = 'Media Browser Cache Hit Ratio StatsD Reporter'
+    key_prefix = 'media.thumbnail.varnish'
+
+    def process_transaction(self, transaction):
+        """Process a single completed transaction."""
+        status_code = transaction.get('RespStatus')
+        if status_code is None:
+            return
+
+        metric_keys = ['reqs.all', 'resps.' + status_code]
+
+        for key in metric_keys:
+            self.stats[key] = self.stats.get(key, 0) + 1
+
+        if self.stats['reqs.all'] > 10000:
+            self.flush_stats()
+
+    def start(self):
+        varnishlog.varnishlog((
+            ('q', 'ReqURL ~ "/thumb/"'), # Only look at thumb requests
+            ('n', 'frontend'),           # Only frontend Varnish instance
+            ('i', 'RespStatus'),         # RespStatus for the HTTP status code
+            ('i', 'ReqURL'),             # ReqURL to delimit requests
+            ('i', 'Timestamp'),          # Timestamp to delimit requests
+        ), self.handle_log_record)
+
+lp = MediaVarnishLogProcessor()
