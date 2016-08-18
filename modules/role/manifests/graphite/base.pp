@@ -46,7 +46,7 @@ class role::graphite::base(
             # Retain aggregated data at 1 hour resolution for 1 year and at
             # 1 day resolution for 5 years. Per metric size: 127060 bytes
             'hourly'  => {
-                pattern    => '^hourly\..*',
+                pattern    => '(^hourly\..*|.*\.hourly$)',
                 retentions => '1h:1y,1d:5y',
             },
             # Retain aggregated data at a one-minute resolution for one week; at
