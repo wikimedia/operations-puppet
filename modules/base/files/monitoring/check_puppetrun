@@ -22,6 +22,8 @@ lastrun = 0
 failcount = 0
 warn = 0
 crit = 0
+resources_warn = 1
+resources_crit = 5
 enabled_only = false
 SafeYAML::OPTIONS[:default_mode] = :safe
 
@@ -33,6 +35,14 @@ end
 
 opt.on("--warn [WARN]", "-w", Integer, "Warning staleness threshold, time in seconds") do |f|
     warn = f.to_i
+end
+
+opt.on("--resources_critical [CRIT]", "-C", Integer, "Critical threshold, # of failed resources") do |f|
+    resources_crit = f.to_i
+end
+
+opt.on("--resources_warn [WARN]", "-W", Integer, "Warning threshold, # of failed resources") do |f|
+    resources_warn = f.to_i
 end
 
 opt.on("--only-enabled", "-e", "Only alert if Puppet is enabled") do
@@ -133,8 +143,16 @@ end
 if failcount > 0
     report = YAML.load_file(reportfile)
     failed_resources = report["resource_statuses"].select { |_, r| r["failed"] }.map { |_, r| r["resource"] }
-    puts "CRITICAL: Puppet has #{failcount} failures. Failed resources: #{failed_resources.join','}"
-    exit 2
+    if failcount >= resources_crit
+        status = 'CRITICAL'
+        exitcode = 2
+    end
+    if failcount >= resources_warn
+        status = 'WARNING'
+        exitcode = 1
+    end
+    puts "#{status}: Puppet has #{failcount} failures. Failed resources: #{failed_resources.join','}"
+    exit exitcode
 end
 
 if time_since_last_run >= crit
