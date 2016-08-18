@@ -187,8 +187,15 @@ def varnishlog(vsl_args, callback):
     """
     # Check callback signature
     sig = inspect.getargspec(callback)
-    if len(sig.args) != 4 and (len(sig.args) > 4 or not sig.varargs):
-        raise TypeError('varnishlog(): callback has invalid signature')
+
+    if sig.args[0] == "self":
+        # Expect 5 arguments if the callback is a method
+        if len(sig.args) != 5 and (len(sig.args) > 5 or not sig.varargs):
+            raise TypeError('varnishlog(): callback has invalid signature')
+    else:
+        # Expect 4 arguments if the callback is a regular function
+        if len(sig.args) != 4 and (len(sig.args) > 4 or not sig.varargs):
+            raise TypeError('varnishlog(): callback has invalid signature')
 
     vlog = VarnishCallbackHandler(
         parse_varnishlog_args(vsl_args), callback)
