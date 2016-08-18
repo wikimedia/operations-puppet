@@ -88,11 +88,11 @@ if File.exists?(summaryfile)
             failcount = summary["events"]["failure"] || 0
         end
     rescue
-        failcount = :unknown
+        failcount = :failed_to_parse_summary_file
         summary = nil
     end
 else
-    failcount = :nostatefile
+    failcount = :no_summary_file
 end
 
 def time_ago(s)
@@ -106,6 +106,17 @@ def time_ago(s)
   "Indeterminate amount of time (see time_ago)"
 end
 
+
+if failcount == :failed
+    puts "CRITICAL: puppet fail"
+    exit 2
+end
+
+if failcount == :failed_to_parse_summary_file || failcount == :no_summary_file
+    puts "UNKNOWN: Failed to check. Reason is: #{failcount}"
+    exit 3
+end
+
 time_since_last_run = Time.now.to_i - lastrun
 human_time_since_last_run = time_ago(time_since_last_run)
 
@@ -117,16 +128,6 @@ end
 if not enabled
     puts "WARNING: Puppet is currently disabled, message: #{disabled_message}, last run #{human_time_since_last_run} ago with #{failcount} failures"
     exit 1
-end
-
-if failcount == :failed
-    puts "CRITICAL: puppet fail"
-    exit 2
-end
-
-if failcount == :unknown || failcount == :nostatefile
-    puts "UNKNOWN: Failed to check. Probably failed to read the state file"
-    exit 3
 end
 
 if failcount > 0
