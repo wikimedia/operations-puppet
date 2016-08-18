@@ -1,4 +1,4 @@
-# == Class elasticsearch::notifications
+# == Class elasticsearch::nagios::check
 # Sets up icinga alerts for an elasticsearch instance.
 # Make sure your Nagios/Icinga node has included
 # the elasticsearch::nagios::plugin class.

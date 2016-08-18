@@ -64,7 +64,6 @@ class role::elasticsearch::server{
     include ::elasticsearch::https
     include elasticsearch::monitor::diamond
     include ::elasticsearch::log::hot_threads
-    include ::elasticsearch::nagios::check
 
     file { '/etc/elasticsearch/scripts':
         ensure  => absent,
