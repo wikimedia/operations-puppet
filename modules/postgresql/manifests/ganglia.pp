@@ -11,8 +11,10 @@ class postgresql::ganglia(
                     $ensure='present') {
     Class['postgresql::server'] -> Class['postgresql::ganglia']
 
-    package { 'python-psycopg2':
-        ensure => $ensure,
+    if !defined(Package['python-psycopg2']) {
+        package { 'python-psycopg2':
+            ensure => $ensure,
+        }
     }
 
     file { '/usr/lib/ganglia/python_modules/postgresql.py':
