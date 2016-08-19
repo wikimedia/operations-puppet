@@ -368,6 +368,17 @@ class role::mariadb::beta {
     include mariadb::packages
     include passwords::misc::scripts
 
+    labs_lvm::volume { 'sqldata':
+        size    => '80%FREE',
+        before  => Class['mariadb::packages'],
+    }
+
+    labs_lvm::volume { 'tmp':
+        size    => '100%FREE',
+        before  => Class['mariadb::packages'],
+        require => Labs_lvm::Volume['sqldata'],
+    }
+
     class { 'mariadb::config':
         prompt   => 'BETA',
         config   => 'mariadb/beta.my.cnf.erb',
