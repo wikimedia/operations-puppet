@@ -87,7 +87,14 @@ end
 if File.exists?(summaryfile)
     begin
         summary = YAML.load_file(summaryfile)
+        if not enabled
+            summary["time"]["last_disabled_check"] = Time.now.to_i
+            File.open(summaryfile, 'w') { |f| f.write(YAML.dump summary) }
+        end
         lastrun = summary["time"]["last_run"]
+        if summary["time"].key? "last_disabled_check"
+            last_disabled_check = summary["time"]["last_disabled_check"]
+        end
 
         # machines that outright failed to run like on missing dependencies
         # are treated as huge failures. The yaml file will be valid but
@@ -128,6 +135,11 @@ if failcount == :failed_to_parse_summary_file || failcount == :no_summary_file
 end
 
 time_since_last_run = Time.now.to_i - lastrun
+# If puppet has recently been reenabled, pretend that the time passed since the
+# last run is less. That mutes some unwanted spam
+if last_disabled_check && enabled
+    time_since_last_run = Time.now.to_i - last_disabled_check
+end
 human_time_since_last_run = time_ago(time_since_last_run)
 
 if enabled_only && enabled == false
