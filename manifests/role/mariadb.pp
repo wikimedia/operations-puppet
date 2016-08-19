@@ -368,12 +368,28 @@ class role::mariadb::beta {
     include mariadb::packages
     include passwords::misc::scripts
 
+    labs_lvm::volume { 'sqldata':
+        mountat     => '/mnt/sqldata',
+        mountmanage => false,
+        size        => '80%FREE',
+        before      => Class['mariadb::packages'],
+    }
+
+    labs_lvm::volume { 'tmp':
+        mountat     => '/mnt/tmp',
+        mountmanage => false,
+        size        => '100%FREE',
+        before      => Class['mariadb::packages'],
+        require     => Labs_lvm::Volume['sqldata'],
+    }
+
     class { 'mariadb::config':
         prompt   => 'BETA',
         config   => 'mariadb/beta.my.cnf.erb',
         password => $passwords::misc::scripts::mysql_beta_root_pass,
         datadir  => '/mnt/sqldata',
         tmpdir   => '/mnt/tmp',
+        require  => Labs_lvm::Volume['sqldata', 'tmp'],
     }
 }
 
