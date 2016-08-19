@@ -1,0 +1,75 @@
+# This file is managed by puppet.
+
+global {
+    # usage-count yes;
+    # minor-count dialog-refresh disable-ip-verification
+}
+
+common {
+
+    protocol <%= @protocol %>;
+
+    startup {
+      # reduce the timeouts when booting
+      degr-wfc-timeout 5;
+      wfc-timeout 3;
+    }
+
+    handlers {
+
+      # https://drbd.linbit.com/en/doc/users-guide-84/s-lvm-snapshots
+      before-resync-target "/usr/lib/drbd/snapshot-resync-target-lvm.sh";
+      after-resync-target "/usr/lib/drbd/unsnapshot-resync-target-lvm.sh";
+
+      pri-on-incon-degr "/usr/lib/drbd/notify-pri-on-incon-degr.sh; /usr/lib/drbd/notify-emergency-reboot.sh; echo b > /proc/sysrq-trigger ; reboot -f";
+      pri-lost-after-sb "/usr/lib/drbd/notify-pri-lost-after-sb.sh; /usr/lib/drbd/notify-emergency-reboot.sh; echo b > /proc/sysrq-trigger ; reboot -f";
+      local-io-error "/usr/lib/drbd/notify-io-error.sh; /usr/lib/drbd/notify-emergency-shutdown.sh; echo o > /proc/sysrq-trigger ; halt -f";
+      out-of-sync "/usr/lib/drbd/notify-out-of-sync.sh root";
+
+    }
+
+    disk {
+      no-md-flushes;
+      # disk-barrier no;
+      # disk-flushes no;
+      on-io-error   detach;
+      #avoid split-brain in pacemaker cluster
+      fencing resource-only;
+
+      # DEFAULT: al-extents 127;
+      al-extents 1000;
+
+    }
+
+    net {
+
+      # Only protocol A
+      ## https://drbd.linbit.com/en/doc/users-guide-84/s-configure-congestion-policy
+      #on-congestion pull-ahead;
+      #congestion-fill 5G;
+      #congestion-extents 4000;
+
+      # https://drbd.linbit.com/en/doc/users-guide-84/s-configure-checksum-sync
+      csums-alg md5;
+
+      verify-alg md5;
+      cram-hmac-alg sha1;
+
+      # https://drbd.linbit.com/en/doc/users-guide-84/s-drbd-proxy
+      #DRBD also supports TCP send buffer auto-tuning.
+      sndbuf-size 0;
+
+      max-buffers 32000;
+      max-epoch-size 20000;
+
+      ## DRBD recovery policy
+      after-sb-0pri discard-zero-changes;
+      after-sb-1pri discard-secondary;
+      after-sb-2pri disconnect;
+    }
+
+    syncer {
+      rate <%= @sync_rate %>;
+      #al-extents 257;
+    }
+}
