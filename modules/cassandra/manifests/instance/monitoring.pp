@@ -34,4 +34,11 @@ define cassandra::instance::monitoring (
         check_command => "check_tcp_ip!${listen_address}!9042",
         contact_group => $contact_group,
     }
+
+    # SSL cert expiration monitoring (T120662)
+    monitoring::service { "${service_name}-ssl":
+        description   => "${service_name} SSL ${listen_address}:7001",
+        check_command => "check_http_on_port!${::hostname}!7001",
+        contact_group => $contact_group,
+    }
 }
