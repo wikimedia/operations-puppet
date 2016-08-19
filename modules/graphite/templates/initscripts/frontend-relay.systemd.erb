@@ -4,7 +4,7 @@ PartOf=carbon.service
 
 [Service]
 User=carbon-c-relay
-ExecStart=/usr/bin/carbon-c-relay -H <%= "#{@hostname}_frontend" -%> -p 2003 -f /etc/carbon/frontend-relay.conf
+ExecStart=/usr/bin/carbon-c-relay -H <%= "#{scope.lookupvar('::hostname')}_frontend" -%> -p 2003 -f /etc/carbon/frontend-relay.conf
 
 [Install]
 WantedBy=carbon.service
