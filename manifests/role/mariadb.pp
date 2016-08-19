@@ -368,12 +368,21 @@ class role::mariadb::beta {
     include mariadb::packages
     include passwords::misc::scripts
 
+    # This is essentially the same volume created by role::labs::lvm::srv but
+    # ensures it will be created before mariadb is installed and leaves some
+    # LVM extents free for a possible second volume for the tmpdir.
+    # (see T117446)
+    labs_lvm::volume { 'second-local-disk':
+        mountat => '/srv',
+        size    => '80%FREE',
+        before  => Class['mariadb::packages'],
+    }
+
     class { 'mariadb::config':
         prompt   => 'BETA',
         config   => 'mariadb/beta.my.cnf.erb',
         password => $passwords::misc::scripts::mysql_beta_root_pass,
-        datadir  => '/mnt/sqldata',
-        tmpdir   => '/mnt/tmp',
+        require  => Labs_lvm::Volume['second-local-disk'],
     }
 }
 
