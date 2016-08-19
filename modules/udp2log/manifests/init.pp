@@ -42,9 +42,6 @@ class udp2log(
         mode   => '0775',
     }
 
-    # udp-filter is useful for udp2log outputs
-    require_package('udp-filter')
-
     # make sure the udplog package is installed
     require_package('udplog')
 
