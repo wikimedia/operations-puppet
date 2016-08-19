@@ -92,7 +92,8 @@ def get_tools_from_ldap(conn, projectname):
         'ou=people,ou=servicegroups,dc=wikimedia,dc=org',
         '(cn=%s.*)' % projectname,
         ldap3.SEARCH_SCOPE_WHOLE_SUBTREE,
-        attributes=['uidNumber', 'cn']
+        attributes=['uidNumber', 'cn'],
+        time_limit=5
     )
     tools = {}
     for resp in conn.response:

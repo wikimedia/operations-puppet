@@ -64,7 +64,8 @@ class User:
             'ou=people,ou=servicegroups,dc=wikimedia,dc=org',
             '(cn=%s.*)' % projectname,
             ldap3.SEARCH_SCOPE_WHOLE_SUBTREE,
-            attributes=['uidNumber', 'cn']
+            attributes=['uidNumber', 'cn'],
+            time_limit=5
         )
         users = []
         for resp in conn.response:
