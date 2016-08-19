@@ -14,7 +14,7 @@ class role::labs::nfs::secondary($monitor = 'eth0') {
         nodes  => ['labstore1004', 'labstore1005'],
         port   => '7790',
         device => '/dev/drbd1',
-        disk   => '/dev/tools-project/test',
+        disk   => '/dev/misc/test',
     }
 
     labstore::drbd::resource {'tools':
