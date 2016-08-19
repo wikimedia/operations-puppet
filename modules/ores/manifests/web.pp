@@ -25,15 +25,16 @@ class ores::web(
         healthcheck_url => '/',
         deployment      => $deployment,
         config          => {
-            'wsgi-file'  => "${ores::base::config_path}/ores_wsgi.py",
-            chdir        => $ores::base::config_path,
-            plugins      => 'python3,stats_pusher_statsd',
-            venv         => $ores::base::venv_path,
-            logformat    => '[pid: %(pid)] %(addr) (%(user)) {%(vars) vars in %(pktsize) bytes} [%(ctime)] %(method) %(uri) => generated %(rsize) bytes in %(msecs) msecs (%(proto) %(status)) %(headers) headers in %(hsize) bytes (%(switches) switches on core %(core)) user agent "%(uagent)"',
-            processes    => $processes,
-            add-header   => 'Access-Control-Allow-Origin: *',
-            max-requests => 200,
-            stats-push   => "statsd:${graphite_server}:8125,ores.${::hostname}.uwsgi",
+            'wsgi-file'   => "${ores::base::config_path}/ores_wsgi.py",
+            chdir         => $ores::base::config_path,
+            plugins       => 'python3,stats_pusher_statsd',
+            venv          => $ores::base::venv_path,
+            logformat     => '[pid: %(pid)] %(addr) (%(user)) {%(vars) vars in %(pktsize) bytes} [%(ctime)] %(method) %(uri) => generated %(rsize) bytes in %(msecs) msecs (%(proto) %(status)) %(headers) headers in %(hsize) bytes (%(switches) switches on core %(core)) user agent "%(uagent)"',
+            processes     => $processes,
+            add-header    => 'Access-Control-Allow-Origin: *',
+            max-requests  => 200,
+            stats-push    => "statsd:${graphite_server}:8125,ores.${::hostname}.uwsgi",
+            memory-report => true,
         }
     }
 
