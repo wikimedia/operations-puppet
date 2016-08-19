@@ -49,11 +49,6 @@ class role::logging::mediawiki(
         source => 'puppet:///modules/udp2log/demux.py',
     }
 
-    $error_processor_host = $::realm ? {
-        production => 'eventlog1001.eqiad.wmnet',
-        labs       => "deployment-fluoride.${::site}.wmflabs",
-    }
-
     $logstash_host = $::realm ? {
         # TODO: Find a way to use multicast that doesn't cause duplicate
         # messages to be stored in logstash. This is a SPOF.
@@ -70,7 +65,7 @@ class role::logging::mediawiki(
         monitor_packet_loss =>    false,
         rotate              =>    $rotate,
         template_variables  => {
-            error_processor_host => $error_processor_host,
+            error_processor_host => 'eventlog1001.eqiad.wmnet',
             error_processor_port => 8423,
 
             # forwarding to logstash
