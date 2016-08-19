@@ -26,6 +26,13 @@
 #  $module/initscripts/$template_name.systemd.erb for systemd  (and
 #  similarly for other init systems)
 #
+# [*systemd_override*]
+#  Boolean - if enabled, make the resource use a systemd unit provided
+#  by a Debian package, while applying an override file with site-
+#  specific changes.
+#  You are expected to place the override file in specific subdirectory of
+#  the current module: $module/initscripts/$template_name.systemd_override.erb
+#
 # [*upstart*]
 #  As the preceding param, but for upstart scripts
 #
@@ -67,6 +74,7 @@
 define base::service_unit (
     $ensure           = present,
     $systemd          = false,
+    $systemd_override = false,
     $upstart          = false,
     $sysvinit         = false,
     $strict           = true,
@@ -80,7 +88,7 @@ define base::service_unit (
 
     # Validates the service name, and picks the valid init script
     $initscript = pick_initscript(
-        $name, $::initsystem, $systemd, $upstart, $sysvinit, $strict)
+        $name, $::initsystem, $systemd, $systemd_override, $upstart, $sysvinit, $strict)
 
     # we assume init scripts are templated
     if $initscript {
@@ -91,9 +99,10 @@ define base::service_unit (
         }
 
         $path = $initscript ? {
-            'systemd'  => "/lib/systemd/system/${name}.service",
-            'upstart'  => "/etc/init/${name}.conf",
-            default    => "/etc/init.d/${name}"
+            'systemd'          => "/lib/systemd/system/${name}.service",
+            'systemd_override' => "/etc/systemd/system/${name}.service.d/puppet-override.conf",
+            'upstart'          => "/etc/init/${name}.conf",
+            default            => "/etc/init.d/${name}"
         }
 
         # systemd complains if unit files are executable
@@ -101,6 +110,17 @@ define base::service_unit (
             $i_mode = '0444'
         } else {
             $i_mode = '0544'
+        }
+
+
+        if $systemd_override {
+            file { "/etc/systemd/system/${name}.service.d":
+                ensure => directory,
+                owner  => 'root',
+                group  => 'root',
+                mode   => '0555',
+                before => File[$path]
+            }
         }
 
         file { $path:
