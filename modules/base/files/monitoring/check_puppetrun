@@ -154,7 +154,7 @@ if failcount > 0
         status = 'WARNING'
         exitcode = 1
     end
-    puts "#{status}: Puppet has #{failcount} failures. Failed resources: #{failed_resources.join','}"
+    puts "#{status}: Puppet has #{failcount} failures. Last run #{human_time_since_last_run} ago with #{failcount} failures. Failed resources: #{failed_resources.join','}"
     exit exitcode
 end
 
