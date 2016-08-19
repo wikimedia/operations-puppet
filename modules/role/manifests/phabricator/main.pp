@@ -26,6 +26,18 @@ class role::phabricator::main {
     $phab_root_dir = '/srv/phab'
     $deploy_target = 'phabricator/deployment'
 
+    # logmail and dumps are only enabled on the active server set in Hiera
+    $phabricator_active_server = hiera('phabricator_active_server')
+    if $::hostname == $phabricator_active_server {
+        $logmail_ensure = 'present'
+        $dump_rsync_ensure = 'present'
+        $dump_enabled = true
+    } else {
+        $logmail_ensure = 'absent'
+        $dump_rsync_ensure ='absent'
+        $dump_enabled = false
+    }
+
     # lint:ignore:arrow_alignment
     class { '::phabricator':
         deploy_target    => $deploy_target,
@@ -90,12 +102,12 @@ class role::phabricator::main {
         phabtools_cert  => $role::phabricator::config::phabtools_cert,
         phabtools_user  => $role::phabricator::config::phabtools_user,
         gerritbot_token => $role::phabricator::config::gerritbot_token,
-        dump            => true,
+        dump            => $dump_enabled,
         require         => Package[$deploy_target]
     }
 
     cron { 'phab_dump':
-        ensure  => present,
+        ensure  => $dump_rsync_ensure,
         command => 'rsync -zpt --bwlimit=40000 -4 /srv/dumps/phabricator_public.dump dataset1001.wikimedia.org::other_misc/ >/dev/null 2>&1',
         user    => 'root',
         minute  => '10',
@@ -186,17 +198,8 @@ class role::phabricator::main {
 
     # community metrics mail (T81784, T1003)
     # disabled due to maintenance: T138460, re-enabled T139950
-
-    # crons are only enabled on the active server set in Hiera
-    $phabricator_active_server = hiera('phabricator_active_server')
-    if $::hostname == $phabricator_active_server {
-        $phab_logmail_ensure = 'present'
-    } else {
-        $phab_logmail_ensure = 'absent'
-    }
-
     phabricator::logmail {'communitymetrics':
-        ensure       => $phab_logmail_ensure,
+        ensure       => $logmail_ensure,
         script_name  => 'community_metrics.sh',
         rcpt_address => 'wikitech-l@lists.wikimedia.org',
         sndr_address => 'communitymetrics@wikimedia.org',
@@ -207,7 +210,7 @@ class role::phabricator::main {
     # project changes mail (T85183)
     # disabled due to maintenance: T138460, re-enabled T139950
     phabricator::logmail {'projectchanges':
-        ensure       => $phab_logmail_ensure,
+        ensure       => $logmail_ensure,
         script_name  => 'project_changes.sh',
         rcpt_address => [ 'phabricator-reports@lists.wikimedia.org' ],
         sndr_address => 'aklapper@wikimedia.org',
