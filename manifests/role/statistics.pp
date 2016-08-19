@@ -141,6 +141,9 @@ class role::statistics::private inherits role::statistics {
     # WMDE statistics scripts and cron jobs
     include ::statistics::wmde
 
+    # Discovery statistics generating scripts
+    include ::statistics::discovery
+
     # eventlogging logs are not private, but they
     # are here for convenience
     include ::statistics::rsync::eventlogging
