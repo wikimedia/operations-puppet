@@ -4,20 +4,25 @@
 # created by the labs_lvm class.
 #
 # Parameters:
-#   volname  => arbitrary identifier used to construct the volume
-#               name, and the default mountpoint.  Needs to be
-#               unique in the instance.  Defaults to the resource
-#               title.
-#   mountat  => point where the volume is to be mounted
-#   size     => size of the volume, using the lvcreate(8) syntax.
-#               defaults to allocate all of the available space
-#               in the volume group.  Note that if you use the
-#               default value, any /other/ volumes must be created
-#               before that one and should be marked as dependencies.
-#   fstype   => filesystem type.  Defaults to ext4.
-#   mkfs_opt => options for the mkfs if the filesystem needs to
-#               be created.
-#   options  => mount options
+#   volname     => arbitrary identifier used to construct the volume
+#                  name, and the default mountpoint.  Needs to be
+#                  unique in the instance.  Defaults to the resource
+#                  title.
+#   mountat     => point where the volume is to be mounted
+#   mountmanage => whether to define a file resource to manage
+#                  ownership/mode of the mount point.
+#   mountowner  => mount point owner.
+#   mountgroup  => mount point group.
+#   mountmode   => mount point mode/permissions.
+#   size        => size of the volume, using the lvcreate(8) syntax.
+#                  defaults to allocate all of the available space
+#                  in the volume group.  Note that if you use the
+#                  default value, any /other/ volumes must be created
+#                  before that one and should be marked as dependencies.
+#   fstype      => filesystem type.  Defaults to ext4.
+#   mkfs_opt    => options for the mkfs if the filesystem needs to
+#                  be created.
+#   options     => mount options
 #
 # Requires:
 #   The node must have included the labs_lvm class.
@@ -27,15 +32,16 @@
 #
 
 define labs_lvm::volume(
-    $volname    = $title,
-    $mountat    = "/mnt/${volname}",
-    $mountowner = 'root',
-    $mountgroup = 'root',
-    $mountmode  = '755',
-    $size       = '100%FREE',
-    $fstype     = 'ext4',
-    $mkfs_opt   = '',
-    $options    = 'defaults',
+    $volname     = $title,
+    $mountat     = "/mnt/${volname}",
+    $mountmanage = true,
+    $mountowner  = 'root',
+    $mountgroup  = 'root',
+    $mountmode   = '755',
+    $size        = '100%FREE',
+    $fstype      = 'ext4',
+    $mkfs_opt    = '',
+    $options     = 'defaults',
 ) {
     include labs_lvm
 
@@ -73,12 +79,14 @@ define labs_lvm::volume(
         ],
     }
 
-    file { $mountat:
-        ensure  => directory,
-        owner   => $mountowner,
-        group   => $mountgroup,
-        mode    => $mountmode,
-        require => Mount[$mountat],
+    if $mountmanage {
+        file { $mountat:
+            ensure  => directory,
+            owner   => $mountowner,
+            group   => $mountgroup,
+            mode    => $mountmode,
+            require => Mount[$mountat],
+        }
     }
 
     labs_lvm::extend { $mountat:
