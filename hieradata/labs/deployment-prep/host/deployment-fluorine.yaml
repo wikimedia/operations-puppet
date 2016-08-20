@@ -1,3 +1,0 @@
-role::logging::mediawiki::monitor: false
-role::logging::mediawiki::log_directory: /srv/mw-log
-role::logging::mediawiki::count: 100
