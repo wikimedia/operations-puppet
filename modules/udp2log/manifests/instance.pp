@@ -45,6 +45,10 @@ define udp2log::instance(
     # up the dependency.
     Class['udp2log'] -> Udp2log::Instance[$title]
 
+    # Default template (udp2log/logrotate_udp2log.erb) required killall command
+    # which comes from the psmisc package
+    require_package('psmisc')
+
     # the udp2log instance's filter config file
     file { "/etc/udp2log/${name}":
         require => Package['udplog'],
