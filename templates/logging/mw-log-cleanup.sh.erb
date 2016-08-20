@@ -6,23 +6,23 @@ export TERM=dumb
 # Remove logs which are beyond the logrotate expiry time
 # or past the data retention limits
 # logrotate will miss archived logs which were deleted in the parent directory.
-find /a/mw-log/archive -mtime +90 -delete
+find <%= @log_directory %>/archive -mtime +90 -delete
 
 # Remove API logs after 30 days since they are particularly bulky and will fill
 # fluorine's disk if left for 180 days
-find /a/mw-log/archive -name api.log-\* -mtime +30 -delete
+find <%= @log_directory %>/archive -name api.log-\* -mtime +30 -delete
 
 # Remove XFF logs before the CheckUser expiry time
-find /a/mw-log/archive -name xff.log-\* -mtime +88 -delete
+find <%= @log_directory %>/archive -name xff.log-\* -mtime +88 -delete
 
 # Remove any zero-length log files if they are not touched for a week.
 # If MW stops writing to a file, logrotate truncates it to zero size and then 
 # leaves it there forever.
-find /a/mw-log -maxdepth 1 -name \*.log -mtime +7 -size 0c -delete
+find <%= @log_directory %> -maxdepth 1 -name \*.log -mtime +7 -size 0c -delete
 
 # Remove log files with names that start with a dot, since logrotate ignores them
-find /a/mw-log \( -name .log -o -name .\*.log \) -mtime +7 -delete
+find <%= @log_directory %> \( -name .log -o -name .\*.log \) -mtime +7 -delete
 
 # Find any uncompressed files that have not been accessed in the last day and
 # compress them. This can happen if logrotate terminates abnormally.
-find /a/mw-log/archive -type f -atime +1 -not -name "*.gz" -exec nice /bin/gzip "{}" \;
+find <%= @log_directory %>/archive -type f -atime +1 -not -name "*.gz" -exec nice /bin/gzip "{}" \;
