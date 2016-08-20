@@ -1,6 +1,6 @@
 #####################################################################
 # THIS FILE IS MANAGED BY PUPPET
-# puppet:///files/misc/demux.py
+# puppet:///modules/udp2log/templates/demux.py.erb
 #####################################################################
 
 # Simple python script for demultiplexing MediaWiki log files
@@ -13,7 +13,7 @@ import sys
 
 transTable = string.maketrans("./", "__")
 openFiles = {}
-baseDir = '/a/mw-log'
+baseDir = '<%= @log_directory %>'
 nameRegex = re.compile(r"^[\040-\176]*$")
 
 parser = argparse.ArgumentParser()

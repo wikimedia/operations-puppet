@@ -14,7 +14,7 @@ class role::logging::mediawiki(
     # These are available for download at http://dumps.wikimedia.org/other/slow-parse/
     include ::dataset::user
     cron { 'rsync_slow_parse':
-        command     => '/usr/bin/rsync -rt /a/mw-log/archive/slow-parse.log*.gz dumps.wikimedia.org::slow-parse/',
+        command     => "/usr/bin/rsync -rt ${log_directory}/archive/slow-parse.log*.gz dumps.wikimedia.org::slow-parse/",
         hour        => 23,
         minute      => 15,
         environment => 'MAILTO=ops-dumps@wikimedia.org',
@@ -46,7 +46,7 @@ class role::logging::mediawiki(
         mode   => '0544',
         owner  => 'root',
         group  => 'root',
-        source => 'puppet:///modules/udp2log/demux.py',
+        content => template('modules/udp2log/demux.py.erb'),
     }
 
     $error_processor_host = $::realm ? {
@@ -92,13 +92,12 @@ class role::logging::mediawiki(
         minute  => 0
     }
 
-    # move files to module?
     # lint:ignore:puppet_url_without_modules
     file { '/usr/local/bin/mw-log-cleanup':
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
-        source => 'puppet:///files/misc/scripts/mw-log-cleanup',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0555',
+        content => template('modules/udp2log/mw-log-cleanup.sh.erb'),
     }
 
     file { '/usr/local/bin/exceptionmonitor':
@@ -109,10 +108,10 @@ class role::logging::mediawiki(
     }
 
     file { '/usr/local/bin/fatalmonitor':
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
-        source => 'puppet:///files/misc/scripts/fatalmonitor',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0555',
+        content => template('modules/udp2log/fatalmonitor.sh.erb'),
     }
     # lint:endignore
 
