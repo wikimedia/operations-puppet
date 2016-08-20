@@ -14,7 +14,7 @@ class role::logging::mediawiki(
     # These are available for download at http://dumps.wikimedia.org/other/slow-parse/
     include ::dataset::user
     cron { 'rsync_slow_parse':
-        command     => '/usr/bin/rsync -rt /a/mw-log/archive/slow-parse.log*.gz dumps.wikimedia.org::slow-parse/',
+        command     => "/usr/bin/rsync -rt ${log_directory}/archive/slow-parse.log*.gz dumps.wikimedia.org::slow-parse/",
         hour        => 23,
         minute      => 15,
         environment => 'MAILTO=ops-dumps@wikimedia.org',
@@ -106,6 +106,13 @@ class role::logging::mediawiki(
         group   => 'root',
         mode    => '0555',
         content => template('misc/exceptionmonitor.erb'),
+    }
+
+    file { '/etc/profile.d/mw-log.sh':
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0555',
+        content => "LOG_DIRECTORY=${log_directory}\n",
     }
 
     file { '/usr/local/bin/fatalmonitor':

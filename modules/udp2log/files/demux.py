@@ -13,14 +13,15 @@ import sys
 
 transTable = string.maketrans("./", "__")
 openFiles = {}
-baseDir = '/a/mw-log'
 nameRegex = re.compile(r"^[\040-\176]*$")
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--basedir', help='destination path of log files')
+parser.add_argument(
+    '--basedir',
+    default='/srv/mw-log',
+    help='destination path of log files'
+)
 args = parser.parse_args()
-if args.basedir:
-    baseDir = args.basedir
 
 while True:
     # Use readline() not next() to avoid python's buffering
@@ -44,7 +45,7 @@ while True:
         if name in openFiles:
             f = openFiles[name]
         else:
-            f = file(baseDir + '/' + name, "a")
+            f = file(args.baseDir + '/' + name, "a")
             openFiles[name] = f
         f.write(text)
         f.flush()
