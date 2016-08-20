@@ -1,0 +1,19 @@
+#!/usr/bin/python3
+import yaml
+import argparse
+
+parser = argparse.ArgumentParser()
+parser.add_argument(
+    'hostgroups_path',
+    help='Path to YAML file with hostgroup information',
+)
+parser.add_argument(
+    'group',
+    help='Name of group whose instances should be printed'
+)
+args = parser.parse_args()
+
+
+with open(args.hostgroups_path) as f:
+    groups = yaml.safe_load(f)
+    print('\n'.join(groups[args.group]))
