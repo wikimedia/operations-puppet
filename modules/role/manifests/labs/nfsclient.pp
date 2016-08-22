@@ -26,6 +26,7 @@ class role::labs::nfsclient(
     }
 
     labstore::nfs_mount { 'scratch-on-labstoresvc':
+        ensure      => absent,
         mount_name  => 'scratch',
         project     => $::labsproject,
         options     => ['rw', 'soft', 'timeo=300', 'retrans=3'],
@@ -43,6 +44,12 @@ class role::labs::nfsclient(
         server      => 'labstore1003.eqiad.wmnet',
         share_path  => '/scratch',
         lookupcache => $lookupcache,
+    }
+
+    file { '/data/scratch':
+        ensure  => 'link',
+        target  => '/mnt/nfs/labstore1003-scratch',
+        require => Labstore::Nfs_mount['scratch-on-labstoresvc'],
     }
 
     labstore::nfs_mount { 'dumps-on-labstore1003':
