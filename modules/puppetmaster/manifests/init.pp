@@ -141,4 +141,7 @@ class puppetmaster(
     class { '::puppetmaster::hiera':
         source => "puppet:///modules/puppetmaster/${hiera_config}.hiera.yaml",
     }
+
+    # This is required for the conftool perser function
+    include ::conftool
 }
