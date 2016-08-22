@@ -66,7 +66,11 @@ sub cluster_fe_recv_pre_purge {
 	unset req.http.Range;
 
 	if (req.url == "/geoiplookup" || req.http.host == "geoiplookup.wikimedia.org") {
-		error 668 "geoiplookup";
+		if (req.http.referer) {
+			error 668 "geoiplookup";
+		} else {
+			error 403 "Forbidden";
+		}
 	}
 
 	if (req.restarts == 0) {
