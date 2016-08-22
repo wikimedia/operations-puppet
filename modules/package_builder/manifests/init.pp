@@ -39,6 +39,7 @@ class package_builder(
         'libdistro-info-perl',
         'maven-repo-helper',
         'gradle',
+        'pkg-php-tools',
     ])
 
     if $::operatingsystem == 'Ubuntu' {
