@@ -34,7 +34,7 @@ module Puppet::Parser::Functions
       result = []
       data = function_generate(
         [
-          '/usr/bin/conftool',
+          '/usr/bin/confctl',
           '--object-type', type,
           'select', selector,
           'get'
