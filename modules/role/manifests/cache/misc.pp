@@ -279,7 +279,7 @@ class role::cache::misc {
     }
 
     $common_vcl_config = {
-        'allowed_methods'  => '^(GET|DELETE|HEAD|POST|PURGE|PUT|OPTIONS)$',
+        'allowed_methods'  => '^(GET|DELETE|HEAD|PATCH|POST|PURGE|PUT|OPTIONS)$',
         'purge_host_regex' => $::role::cache::base::purge_host_not_upload_re,
         'pass_random'      => true,
     }
