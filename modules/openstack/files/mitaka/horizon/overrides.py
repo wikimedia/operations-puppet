@@ -102,3 +102,53 @@ class RecordsTableWithProxies(ddtables.RecordsTable):
 
 
 ddtables.RecordsTable = RecordsTableWithProxies
+
+
+#  --  Fix a bug in quota calculations, T142379 --
+from openstack_dashboard.api import base
+from openstack_dashboard.api import nova
+from horizon import exceptions
+
+
+def _get_tenant_compute_usages_fixed(request, usages, disabled_quotas, tenant_id):
+    # Unlike the other services it can be the case that nova is enabled but
+    # doesn't support quotas, in which case we still want to get usage info,
+    # so don't rely on '"instances" in disabled_quotas' as elsewhere
+    if not base.is_service_enabled(request, 'compute'):
+        return
+
+    if tenant_id:
+        # determine if the user has permission to view across projects
+        # there are cases where an administrator wants to check the quotas
+        # on a project they are not scoped to
+        instances, has_more = nova.server_list(
+            request, search_opts={'tenant_id': tenant_id})
+    else:
+        instances, has_more = nova.server_list(request)
+
+    # Fetch deleted flavors if necessary.
+    flavors = dict([(f.id, f) for f in nova.flavor_list(request)])
+    missing_flavors = [instance.flavor['id'] for instance in instances
+                       if instance.flavor['id'] not in flavors]
+    for missing in missing_flavors:
+        if missing not in flavors:
+            try:
+                flavors[missing] = nova.flavor_get(request, missing)
+            except Exception:
+                flavors[missing] = {}
+                exceptions.handle(request, ignore=True)
+
+    usages.tally('instances', len(instances))
+
+    # Sum our usage based on the flavors of the instances.
+    for flavor in [flavors[instance.flavor['id']] for instance in instances]:
+        usages.tally('cores', getattr(flavor, 'vcpus', None))
+        usages.tally('ram', getattr(flavor, 'ram', None))
+
+    # Initialize the tally if no instances have been launched yet
+    if len(instances) == 0:
+        usages.tally('cores', 0)
+        usages.tally('ram', 0)
+
+from openstack_dashboard.usage import quotas
+quotas._get_tenant_compute_usages = _get_tenant_compute_usages_fixed
