@@ -6,7 +6,7 @@ class puppet_compiler(
     $ensure  = 'present',
     $user    = 'jenkins-deploy',
     $homedir = '/mnt/home/jenkins-deploy',
-) {
+    ) {
 
     require puppet_compiler::packages
 
@@ -77,5 +77,18 @@ class puppet_compiler(
         ensure  => $ensure,
         owner   => $user,
         content => template('puppet_compiler/puppet-compiler.conf.erb')
+    }
+
+
+    # The conftool parser function needs
+    #   - the conftool module to be included
+    #   - An etcd instance running populated with (fake? synced?) data
+
+    include ::etcd
+
+    class { 'conftool':
+        config_file => 'puppet:///modules/puppet_compiler/compiler.config.yaml',
+        use_ssl     => false,
+        auth        => false,
     }
 }
