@@ -41,6 +41,7 @@ class package_builder(
         'gradle',
         'pkg-php-tools',
         'dh-php5',
+        'php5-dev',
     ])
 
     if $::operatingsystem == 'Ubuntu' {
