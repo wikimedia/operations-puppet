@@ -73,6 +73,7 @@ class role::logstash (
         srange  => '$DOMAIN_NETWORKS',
     }
 
+    # Also used for UDP JSON logging from python-logstash lib (e.g. Striker)
     logstash::input::udp { 'logback':
         port  => 11514,
         codec => 'json',
@@ -120,6 +121,11 @@ class role::logstash (
 
     logstash::conf { 'filter_mediawiki':
         source   => 'puppet:///files/logstash/filter-mediawiki.conf',
+        priority => 50,
+    }
+
+    logstash::conf { 'filter_striker':
+        source   => 'puppet:///files/logstash/filter-striker.conf',
         priority => 50,
     }
 
