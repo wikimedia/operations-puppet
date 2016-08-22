@@ -119,7 +119,7 @@ class role::kafka::analytics::broker {
         # TODO: $::confluent::kafka::broker::port doesn't
         # seem to work as expected.  Hardcoding this for now.
         port   => 9092,
-        srange => '$ALL_NETWORKS',
+        srange => '($PRODUCTION_NETWORKS $FRACK_NETWORKS)',
     }
 
     include ::ferm::ipsec_allow
