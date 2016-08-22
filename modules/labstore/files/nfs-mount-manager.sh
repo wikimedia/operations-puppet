@@ -36,7 +36,7 @@ case "$1" in
         mount)
 
             # mount understands to look in /etc/fstab
-            /usr/bin/timeout -k 10s 20s /bin/mount -v --target $2
+            /usr/bin/timeout -k 10s 20s /bin/mount -v $2
 
             ;;
         umount)
