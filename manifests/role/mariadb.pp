@@ -148,7 +148,7 @@ class role::mariadb::groups(
         }
     }
 
-    if (os_version('debian >= jessie') or $::hostname == 'db2034') and $::site == 'codfw' {
+    if $::site == 'codfw' {
         include role::prometheus::node_exporter
         include role::prometheus::mysqld_exporter
     }
