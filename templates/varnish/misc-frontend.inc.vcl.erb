@@ -8,6 +8,15 @@ sub cluster_fe_recv {
         return (synth(404, "Public access disabled. See https://wikitech.wikimedia.org/wiki/Analytics/Cluster/Access#ssh_tunnel.28s.29 for access instructions"));
     }
 
+    if (req.method == "PATCH" &&
+        req.http.Host != "grafana.wikimedia.org" &&
+        req.http.Host != "grafana-admin.wikimedia.org" &&
+        req.http.Host != "grafana-labs.wikimedia.org" &&
+        req.http.Host != "grafana-labs-admin.wikimedia.org")
+    {
+        return (synth(405, "Method not allowed"));
+    }
+
     if (req.http.Host == "grafana.wikimedia.org" || req.http.host == "grafana-admin.wikimedia.org"
         || req.http.Host == "grafana-labs.wikimedia.org" || req.http.host == "grafana-labs-admin.wikimedia.org") {
         // X-WEBAUTH-USER is set by Apache's mod_authnz_ldap on the request it
