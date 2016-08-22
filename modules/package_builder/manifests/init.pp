@@ -40,6 +40,7 @@ class package_builder(
         'maven-repo-helper',
         'gradle',
         'pkg-php-tools',
+        'dh-php5',
     ])
 
     if $::operatingsystem == 'Ubuntu' {
