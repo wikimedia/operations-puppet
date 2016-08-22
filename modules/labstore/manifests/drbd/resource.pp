@@ -5,17 +5,17 @@
 # and associated risk of programatic managment. This is a
 # one time operation.
 #
-# 1. Apply resource files via Puppet
-# 2. Make sure the underlying device is free
-# 2a. May need to be zero'd out 'dd if=/dev/zero of=/dev/vg/lv'
+# 1. Apply resource files via Puppet - created in /etc/drbd.d/
+# 2. Make sure the underlying disk is free
+# 2a. May need to be zero'd out - 'dd if=/dev/zero of=/dev/vg/lv'
 # 3. drbdadm create-md $resource
-# 4. Create /dev/drbdx resource
+# 4. Create /dev/drbdx device
 # 4a. drbdadm up $resource
 # 5. Verify resource is secondary for both
 # 5a. drbd-overview
 # 5b. Connected Secondary/Secondary Inconsistent/Inconsistent
 # 6. Promote a resource to primary
-# 6a. drbdadm -- --overwrite-data-of-peer primary $resource
+# 6a. drbdadm primary --force $resource
 # 7. Format /dev/drbdx
 #
 # [*nodes]
