@@ -29,6 +29,12 @@ server {
 
     location / {
         root <%= @package_dir %>/gui;
+
+        location ~ ^/(css|js) {
+            add_header Cache-Control "public, max-age=604800, s-maxage=604800";
+        }
+
+        add_header Cache-Control "public, max-age=300, s-maxage=300";
     }
 
     location /status {
