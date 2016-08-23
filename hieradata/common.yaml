@@ -351,8 +351,6 @@ labs_metal:
   promethium: {MAC: '90:b1:1c:2d:6f:0c', IPv4: 10.68.16.2, project: wikitextexp }
 
 
-
-
 # List of all zookeeper clusters in production.
 zookeeper_clusters:
   main-eqiad:
@@ -360,11 +358,21 @@ zookeeper_clusters:
       conf1001.eqiad.wmnet: '1101'
       conf1002.eqiad.wmnet: '1102'
       conf1003.eqiad.wmnet: '1103'
+
   main-codfw:
     hosts:
       conf2001.codfw.wmnet: '2001'
       conf2002.codfw.wmnet: '2002'
       conf2003.codfw.wmnet: '2003'
+
+  # ZK cluster for Druid (in Analytics cluster),
+  # colocated with Druid.
+  druid-eqiad:
+    hosts:
+      druid1001.eqiad.wmnet: '1001'
+      druid1002.eqiad.wmnet: '1002'
+      druid1003.eqiad.wmnet: '1003'
+
 
 kafka_clusters:
   # This is the analytics Kafka cluster, named just 'eqiad' for
