@@ -6,10 +6,6 @@
 #
 # === Parameters
 #
-# [*zk_uri*]
-#   The URI (host:port) of the Zookeeper broker(s) controlling the Kafka cluster
-#   from which to receive the events.
-#
 # [*broker_list*]
 #   Comma-separated list of Kafka broker URIs
 #
@@ -28,7 +24,6 @@
 #
 
 class changeprop(
-    $zk_uri,
     $broker_list,
     $purge_host   = '239.128.0.112',
     $ores_uri     = 'http://ores.svc.eqiad.wmnet:8081',
