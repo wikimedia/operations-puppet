@@ -236,12 +236,13 @@ class hhvm(
     }
 
     base::service_unit { 'hhvm':
-        ensure         => present,
-        systemd        => true,
-        upstart        => true,
-        refresh        => false,
-        service_params => $service_params,
-        subscribe      => Package[$ext_pkgs],
+        ensure           => present,
+        systemd          => false,
+        systemd_override => true,
+        upstart          => true,
+        refresh          => false,
+        service_params   => $service_params,
+        subscribe        => Package[$ext_pkgs],
     }
 
     if $::initsystem == 'systemd' {
