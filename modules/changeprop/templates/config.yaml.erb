@@ -35,6 +35,7 @@ spec:
             metadata_broker_list: <%= @broker_list %>
             dc_name: <%= scope.lookupvar('::site') %>
             concurrency: <%= @concurrency %>
+            startup_delay: 60000
             templates:
               summary_rerender:
                 topic: resource_change
