@@ -25,6 +25,7 @@ class base::standard_packages {
         'jq',
         'lldpd',
         'molly-guard',
+        'moreutils',
         'ncdu',
         'ngrep',
         'pv',
