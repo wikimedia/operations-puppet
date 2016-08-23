@@ -120,7 +120,6 @@ class role::mariadb::monitor::dba {
 # - 'standalone': single servers that are not part of replication,
 #   such as read-only 'es1' hosts; wikitech, or tendril
 
-#FIXME: apply to all servers, not only those on codfw
 #FIXME: move node_exporter to standard and remove it from here when ready
 class role::mariadb::groups(
     $mysql_group,
@@ -148,10 +147,8 @@ class role::mariadb::groups(
         }
     }
 
-    if $::site == 'codfw' {
-        include role::prometheus::node_exporter
-        include role::prometheus::mysqld_exporter
-    }
+    include role::prometheus::node_exporter
+    include role::prometheus::mysqld_exporter
 }
 
 # miscellaneous services clusters
