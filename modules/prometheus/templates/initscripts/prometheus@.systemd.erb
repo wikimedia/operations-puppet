@@ -7,5 +7,6 @@ ExecStart=/usr/bin/prometheus -storage.local.path <%= @metrics_path %> -web.list
 Restart=on-failure
 RestartSec=2s
 TimeoutStopSec=10m
+LimitNOFILE=32768
 SyslogIdentifier=prometheus@%i
 ExecReload=/bin/kill -HUP $MAINPID
