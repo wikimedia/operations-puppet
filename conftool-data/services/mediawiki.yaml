@@ -25,4 +25,31 @@ imagescaler:
     datacenters:
       - eqiad
       - codfw
+videoscaler:
+  apache2:
+    port: 80
+    default_values:
+      "pooled": "yes"
+      "weight": 10
+    datacenters:
+      - eqiad
+      - codfw
+jobrunner:
+  apache2:
+    port: 80
+    default_values:
+      "pooled": "yes"
+      "weight": 10
+    datacenters:
+      - eqiad
+      - codfw
+testserver:
+  apache2:
+    port: 80
+    default_values:
+      "pooled": "yes"
+      "weight": 10
+    datacenters:
+      - eqiad
+      - codfw
   
