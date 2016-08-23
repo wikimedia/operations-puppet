@@ -1,7 +1,7 @@
 # == Class contint::packages::php
 class contint::packages::php {
 
-    package { [
+    require_package( [
         'php5-dev',  # phpize
         'php5-ldap',  # OpenStackManager/LdapAuthentication T125158
         'php5-gd',
@@ -9,9 +9,7 @@ class contint::packages::php {
         'php5-sqlite',
         'php5-tidy',
         'php5-xdebug',
-        ]:
-        ensure => present,
-    }
+    ] )
     package { [
         'php5-parsekit',
         ]:
