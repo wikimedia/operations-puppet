@@ -10,6 +10,7 @@
 # - $port: Port to listen for udp2log input on. Default '11514'.
 # - $codec: Codec to decode tcp stream input. Default 'plain'.
 # - $priority: Configuration loading priority. Default '10'.
+# - $tags: Array of tags to add to events. Default undef.
 #
 # == Sample usage:
 #
@@ -24,6 +25,7 @@ define logstash::input::udp(
     $port     = 11514,
     $codec    = 'plain',
     $priority = 10,
+    $tags     = undef,
 ) {
     logstash::conf { "input-udp-${title}":
         ensure   => $ensure,

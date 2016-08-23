@@ -85,6 +85,19 @@ class role::logstash (
         srange  => '$DOMAIN_NETWORKS',
     }
 
+    logstash::input::udp { 'msgpack':
+        port  => 1717,
+        codec => 'msgpack',
+        tags  => ['es'],
+    }
+
+    ferm::service { 'logstash_msgpack':
+        proto   => 'udp',
+        port    => '1717',
+        notrack => true,
+        srange  => '$DOMAIN_NETWORKS',
+    }
+
     ## Global pre-processing (15)
 
     # move files into module?
