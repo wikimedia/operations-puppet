@@ -1,10 +1,8 @@
 [database]
 	password = <%= @db_pass %>
-<%- if @auth_type == 'LDAP' -%>
 [ldap]
 	username = <%= @ldap_proxyagent %>
 	password = <%= @ldap_proxyagent_pass %>
-<%- end -%>
 [auth]
 	registerEmailPrivateKey = <%= @email_key %>
 [its-phabricator]
