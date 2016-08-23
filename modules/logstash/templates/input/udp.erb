@@ -3,5 +3,8 @@ input {
     type => "<%= @type %>"
     port => <%= @port %>
     codec => "<%= @codec %>"
+<% if @tags -%>
+    tags => <%= scope.function_ordered_json(@tags) %>
+<% end -%>
   }
 }
