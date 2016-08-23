@@ -117,12 +117,13 @@ define labstore::nfs_mount(
         mount { $mount_path:
             ensure  => absent,
             require => Exec["cleanup-${mount_path}"],
+            notify  => Exec["remove-${mount_path}"],
         }
 
-        file { $mount_path:
-            ensure  => absent,
-            force   => true,
-            require => Mount[$mount_path],
+        exec { "remove-${mount_path}":
+            command     => "/usr/bin/timeout -k 5s 10s /bin/rm -rf ${mount_path}",
+            refreshonly => true,
+            logoutput   => true,
         }
     }
 
