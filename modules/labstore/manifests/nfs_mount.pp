@@ -89,22 +89,29 @@ define labstore::nfs_mount(
         }
     }
 
+    # 8/23/2016 cleanup can be removed after a week
     if !defined(File['/usr/local/sbin/nfs-mount-manager.sh']) {
         file { '/usr/local/sbin/nfs-mount-manager.sh':
+            ensure => absent,
+        }
+    }
+
+    if !defined(File['/usr/local/sbin/nfs-mount-manager']) {
+        file { '/usr/local/sbin/nfs-mount-manager':
             ensure => present,
             owner  => root,
             mode   => '0555',
-            source => 'puppet:///modules/labstore/nfs-mount-manager.sh',
+            source => 'puppet:///modules/labstore/nfs-mount-manager',
         }
     }
 
     if ($ensure == 'absent') {
 
         exec { "cleanup-${mount_path}":
-            command   => "/usr/local/sbin/nfs-mount-manager.sh umount ${mount_path}",
-            onlyif    => "/usr/local/sbin/nfs-mount-manager.sh check ${mount_path}",
+            command   => "/usr/local/sbin/nfs-mount-manager umount ${mount_path}",
+            onlyif    => "/usr/local/sbin/nfs-mount-manager check ${mount_path}",
             logoutput => true,
-            require   => File['/usr/local/sbin/nfs-mount-manager.sh'],
+            require   => File['/usr/local/sbin/nfs-mount-manager'],
         }
 
         mount { $mount_path:
@@ -155,7 +162,7 @@ define labstore::nfs_mount(
             fstype   => 'nfs',
             options  => join($final_options,','),
             device   => "${server}:${share_path}",
-            require  => File['/usr/local/sbin/nfs-mount-manager.sh'],
+            require  => File['/usr/local/sbin/nfs-mount-manager'],
             remounts => false,
         }
 
@@ -169,8 +176,8 @@ define labstore::nfs_mount(
         }
 
         exec { "ensure-nfs-${name}":
-            command   => "/usr/local/sbin/nfs-mount-manager.sh mount ${mount_path}",
-            unless    => "/usr/local/sbin/nfs-mount-manager.sh check ${mount_path}",
+            command   => "/usr/local/sbin/nfs-mount-manager mount ${mount_path}",
+            unless    => "/usr/local/sbin/nfs-mount-manager check ${mount_path}",
             require   => Exec["create-${mount_path}"],
             logoutput => true,
         }
