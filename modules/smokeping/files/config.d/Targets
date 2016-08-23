@@ -170,11 +170,6 @@ menu = bast2001
 title = bast2001.wikimedia.org [A5-CODFW]
 host = bast2001.wikimedia.org
 
-+++ install2001
-menu = install2001
-title = install2001.wikimedia.org [A5-CODFW]
-host = install2001.wikimedia.org
-
 + esams
 
 menu = esams
