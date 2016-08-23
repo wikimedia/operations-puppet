@@ -23,7 +23,10 @@ class ZeroFetcher:
     #   all the other methods (including the constructor!)
     def _apiJSON(self, method, action, params={}):
         params.update({'action': action})
-        resp = getattr(self.sess, method)(self.baseurl, params=params)
+        if method == 'get':
+            resp = getattr(self.sess, method)(self.baseurl, params=params)
+        else:
+            resp = getattr(self.sess, method)(self.baseurl, data=params)
         if resp.status_code != requests.codes.ok:
             raise Exception('Bad response code ' +
                             str(resp.status_code) +
