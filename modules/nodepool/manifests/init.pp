@@ -83,13 +83,14 @@ class nodepool(
 
     # Nodepool 0.1.0 requires novaclient>=2.21.0
     # Jessie has 2.18.1  (T104971)
+    # jessie-backports has 3.3.1
     apt::pin { 'python-novaclient':
-        pin      => 'release a=jessie-wikimedia c=backports',
+        pin      => 'release a=jessie-backports',
         priority => '1001',
         before   => Package['nodepool'],
     }
     apt::pin { 'python-openstackclient':
-        pin      => 'release a=jessie-wikimedia c=backports',
+        pin      => 'release a=jessie-backports',
         priority => '1001',
         before   => Package['nodepool'],
     }
