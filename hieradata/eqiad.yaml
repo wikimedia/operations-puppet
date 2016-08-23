@@ -205,3 +205,7 @@ analytics_hadoop_hosts:
     - analytics1055.eqiad.wmnet
     - analytics1056.eqiad.wmnet
     - analytics1057.eqiad.wmnet
+
+prometheus_nodes:
+    - prometheus1001.eqiad.wmnet
+    - prometheus1002.eqiad.wmnet

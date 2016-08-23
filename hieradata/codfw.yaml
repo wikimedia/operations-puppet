@@ -48,3 +48,7 @@ etcd_hosts:
     - conf1001.eqiad.wmnet
     - conf1002.eqiad.wmnet
     - conf1003.eqiad.wmnet
+
+prometheus_nodes:
+  - prometheus2001.codfw.wmnet
+  - prometheus2002.codfw.wmnet
