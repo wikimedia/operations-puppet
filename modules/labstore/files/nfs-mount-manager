@@ -3,6 +3,7 @@
 set -e
 
 to_umount () {
+
             # -f = force an unmount (in case of an unreachable NFS system).  \
             # (Requires kernel 2.1.116 or later.)
             #
@@ -40,16 +41,18 @@ case "$1" in
 
             ;;
         umount)
+
             to_umount $2
             ;;
         clean)
-            # Remove all mounts
-            for m in `/bin/cat /proc/mounts | /bin/grep nfs4 | /usr/bin/awk '{print $3}'`; do
-                to_umount $m;
+
+            # If defined in /etc/fstab unmount for NFS
+            for mount_point in $(/bin/findmnt -n --fstab -t nfs | /usr/bin/awk '{print $1}'); do
+                to_umount $mount_point;
             done
             ;;
         *)
-            echo 'status|mount|umount <mount_path>'
-            echo 'clean' -- remove all mounts
+            echo 'check | mount | umount <mount_path>'
+            echo 'clean' -- remove all mounts defined in /etc/fstab
             ;;
 esac
