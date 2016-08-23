@@ -26,8 +26,11 @@ class puppet_compiler(
         }
     }
 
-    # We don't really need sshknowngen and naggen, link them to /bin/true
-    file { ['/usr/local/bin/sshknowngen', '/usr/local/bin/naggen2']:
+    # We don't really need some generators from puppet master, link them to
+    # /bin/true
+    file { ['/usr/local/bin/sshknowngen',
+            '/usr/local/bin/naggen2',
+            '/usr/local/bin/prometheus-ganglia-gen']:
         ensure => ensure_link($ensure),
         target => '/bin/true',
     }
