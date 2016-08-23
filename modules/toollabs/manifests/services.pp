@@ -20,6 +20,10 @@ class toollabs::services(
         ensure => latest,
     }
 
+    diamond::collector { 'SGE':
+        source   => 'puppet:///modules/toollabs/monitoring/sge.py',
+    }
+
     service { 'webservicemonitor':
         ensure    => ensure_service($active),
         subscribe => Package['tools-manifest'],
