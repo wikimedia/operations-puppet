@@ -77,17 +77,25 @@ define scap::source(
     # how to bootstrap itself properly without trebuchet.
     $owner                = 'trebuchet',
     $group                = 'wikidev',
-) {
-    # Path at which $repository should be cloned.
-    $path                 = "/srv/deployment/${title}"
+    ) {
 
-    # We can't rely on puppet to manage arbitrary subdirectories.
-    # Use an exec to just make sure that $path's parent directories exist.
-    exec { "mkdir_scap_source_path_${title}":
-        command => "mkdir -p $(dirname ${path}) && chmod 775 $(dirname ${path}) && chown ${owner}:${group} $(dirname ${path})",
-        path    => '/bin:/usr/bin',
-        unless  => "test -d $(dirname ${path})",
-        user    => 'root',
+    # Base directory of the deployment; TODO: get it from
+    # where it is defined, if possible
+    $base_path = '/srv/deployment'
+    # Path at which $repository should be cloned.
+    $path = "/srv/deployment/${title}"
+
+    # All subpaths under /srv/deployment
+    $subpaths_str = inline_template(
+        '<%- path = @base_path -%><%= @title.split("/").map{ |p| path += "/#{p}" }.join("||") -%>'
+    )
+    $subpaths = split($subpaths_str, '\|\|')
+
+    file { $subpaths:
+        ensure => directory,
+        mode   => '0755',
+        owner  => $owner,
+        group  => $group,
     }
 
     # Clone the source repository at $path.
@@ -105,7 +113,7 @@ define scap::source(
         group              => $group,
         shared             => true,
         recurse_submodules => true,
-        require            => Exec["mkdir_scap_source_path_${title}"],
+        require            => File[$path],
     }
 
     if $scap_repository {
