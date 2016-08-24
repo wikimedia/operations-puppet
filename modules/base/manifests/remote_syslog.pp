@@ -7,17 +7,17 @@
 # [*enable*]
 #   Enable log forwarding. Should be set to false on the central server.
 #
-# [*central_host*]
-#   Host (and optional port) to forward syslog events to.
-#   (e.g. "syslog.eqiad.wmnet" or "deployment-logstash2.deployment-prep.eqiad.wmflabs:10514")
+# [*central_hosts*]
+#   A list of host (and optional port) to forward syslog events to.
+#   (e.g. ["syslog.eqiad.wmnet"] or ["deployment-logstash2.deployment-prep.eqiad.wmflabs:10514"])
 #
 #
 class base::remote_syslog (
     $enable,
-    $central_host = undef,
+    $central_hosts = [],
 ) {
     if $enable {
-        if $central_host == undef {
+        if empty($central_hosts) {
             fail('::base::remote_syslog::central_host required')
         }
 
