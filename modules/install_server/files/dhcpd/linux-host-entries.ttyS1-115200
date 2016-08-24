@@ -5739,6 +5739,17 @@ host promethium {
     hardware ethernet 90:B1:1C:2D:6F:0C;
     fixed-address promethium.eqiad.wmflabs;
 }
+
+host puppetmaster2001 {
+    hardware ethernet 18:66:DA:63:1D:3;
+    fixed-address puppetmaster2001.codfw.wmnet;
+}
+
+host puppetmaster2002 {
+    hardware ethernet 18:66:DA:63:2E:DA;
+    fixed-address puppetmaster2002.codfw.wmnet;
+}
+
 host radium {
     hardware ethernet 84:2b:2b:fd:bd:0e;
     fixed-address radium.wikimedia.org;
