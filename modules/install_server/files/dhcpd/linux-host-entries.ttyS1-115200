@@ -5741,7 +5741,7 @@ host promethium {
 }
 
 host puppetmaster2001 {
-    hardware ethernet 18:66:DA:63:1D:3;
+    hardware ethernet 18:66:DA:63:1D:37;
     fixed-address puppetmaster2001.codfw.wmnet;
 }
 
