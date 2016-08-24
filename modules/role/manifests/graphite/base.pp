@@ -19,6 +19,7 @@ class role::graphite::base(
     $storage_dir      = '/var/lib/carbon',
     $auth             = true,
     $hostname         = 'graphite.wikimedia.org',
+    $cors_origins     = [ 'https?://(grafana|grafana-admin).wikimedia.org' ],
     $c_relay_settings = {},
     $cluster_servers  = undef,
 ) {
@@ -196,7 +197,7 @@ class role::graphite::base(
         storage_dir       => $carbon_storage_dir,
         documentation_url => '//wikitech.wikimedia.org/wiki/Graphite',
         cluster_servers   => $cluster_servers,
-        cors_origins      => [ 'https?://(grafana|grafana-admin).wikimedia.org' ],
+        cors_origins      => $cors_origins,
     }
 
 

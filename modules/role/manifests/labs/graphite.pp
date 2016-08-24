@@ -4,9 +4,10 @@
 class role::labs::graphite {
 
     class { 'role::graphite::base':
-        storage_dir => '/srv/carbon',
-        auth        => false,
-        hostname    => 'graphite-labs.wikimedia.org',
+        storage_dir  => '/srv/carbon',
+        auth         => false,
+        hostname     => 'graphite-labs.wikimedia.org',
+        cors_origins => [ 'https?://(grafana-labs|grafana-labs-admin).wikimedia.org' ],
     }
 
     include graphite::labs::archiver
