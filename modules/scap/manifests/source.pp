@@ -41,6 +41,9 @@
 #   Group owner of cloned repository.
 #   Default: wikidev
 #
+# [*lvs_service*]
+#   Name of the lvs service associated with this deployment, if any
+#
 # == Usage
 #
 #   # Clones the 'repo/without/external/scap' repsitory into
@@ -78,6 +81,7 @@ define scap::source(
     $owner                = 'trebuchet',
     $group                = 'wikidev',
     $source               = 'gerrit',
+    $lvs_service          = undef,
     ) {
 
     # Base directory of the deployment; TODO: get it from
@@ -131,5 +135,27 @@ define scap::source(
             recurse_submodules => true,
             require            => Git::Clone["scap::source ${repository} for ${title}"],
         }
+    }
+    # Scap dsh lists.
+    #
+    # Each scap installation in production should be tied to a dsh group
+    # defined via puppet.
+    #
+    # If you have a manual list of hosts, they should go in hiera under
+    # "scap::dsh::${dsh_groupname}".
+    #
+    $dsh_groupname = regsubst($title, '/', '-', 'G')
+
+    # If this deployment is linked to an lvs service, let's find out which conftool
+    # cluster / service it's referring to.
+    if $lvs_service {
+        $lvs_config = hiera('lvs::configuration::lvs_services', {})
+        $conftool = $lvs_config[$lvs_service]['conftool']
+    }
+    else {
+        $conftool = undef
+    }
+    scap::dsh::group { $dsh_groupname:
+        conftool => $conftool
     }
 }
