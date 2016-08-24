@@ -41,6 +41,9 @@
 #   Group owner of cloned repository.
 #   Default: wikidev
 #
+# [*lvs_service*]
+#   Name of the lvs service associated with this deployment, if any
+#
 # == Usage
 #
 #   # Clones the 'repo/without/external/scap' repsitory into
@@ -77,47 +80,38 @@ define scap::source(
     # how to bootstrap itself properly without trebuchet.
     $owner                = 'trebuchet',
     $group                = 'wikidev',
-) {
-    # Path at which $repository should be cloned.
-    $path                 = "/srv/deployment/${title}"
+    $lvs_service          = undef,
+    ) {
 
-    # We can't rely on puppet to manage arbitrary subdirectories.
-    # Use an exec to just make sure that $path's parent directories exist.
-    exec { "mkdir_scap_source_path_${title}":
-        command => "mkdir -p $(dirname ${path}) && chmod 775 $(dirname ${path}) && chown ${owner}:${group} $(dirname ${path})",
-        path    => '/bin:/usr/bin',
-        unless  => "test -d $(dirname ${path})",
-        user    => 'root',
+    # Checkout and prepare the scap repositories
+    scap_source { $title:
+        repository      => $repository,
+        scap_repository => $scap_repository,
+        owner           => $owner,
+        group           => $group,
     }
 
-    # Clone the source repository at $path.
-    git::clone { "scap::source ${repository} for ${title}":
-        # Since usage of this define might result in multiple clones of the
-        # same $repository, it is necessary to title the git::clones with
-        # unique names.  If we aren't using the repository name as the $title
-        # of git::clone, then we need to set $origin, and a $origin
-        # must be a full git URL. This means we can't yet use phabricator
-        # git URLs.  TODO: Fix git::clone to support custom repository names
-        # without specificing full git $origin URLs.
-        origin             => "https://gerrit.wikimedia.org/r/p/${repository}.git",
-        directory          => $path,
-        owner              => $owner,
-        group              => $group,
-        shared             => true,
-        recurse_submodules => true,
-        require            => Exec["mkdir_scap_source_path_${title}"],
-    }
 
-    if $scap_repository {
-        # Clone the scap repository at $path/scap
-        git::clone { "scap::source ${scap_repository} for ${title}":
-            origin             => "https://gerrit.wikimedia.org/r/p/${scap_repository}.git",
-            directory          => "${path}/scap",
-            owner              => $owner,
-            group              => $group,
-            shared             => true,
-            recurse_submodules => true,
-            require            => Git::Clone["scap::source ${repository} for ${title}"],
-        }
+    # Scap dsh lists.
+    #
+    # Each scap installation in production should be tied to a dsh group
+    # defined via puppet.
+    #
+    # If you have a manual list of hosts, they should go in hiera under
+    # "scap::dsh::${dsh_groupname}".
+    #
+    $dsh_groupname = regsubst($title, '/', '-', 'G')
+
+    # If this deployment is linked to an lvs service, let's find out which conftool
+    # cluster / service it's referring to.
+    if $lvs_service {
+        $lvs_config = hiera('lvs::configuration::lvs_services', {})
+        $conftool = $lvs_config[$lvs_service]['conftool']
+    }
+    else {
+        $conftool = undef
+    }
+    scap::dsh::group { $dsh_groupname:
+        conftool => $conftool
     }
 }
