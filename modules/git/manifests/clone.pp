@@ -60,13 +60,14 @@ define git::clone(
     $recurse_submodules=false,
     $umask=undef,
     $mode=undef,
-    $default_source='gerrit') {
+    $default_source='gerrit'
+    ){
 
-    $default_url_format = $default_source ? {
-        'phabricator' => 'https://phabricator.wikimedia.org/diffusion/%.git',
-        'gerrit'      => 'https://gerrit.wikimedia.org/r/p/%s.git',
-        default       => 'https://gerrit.wikimedia.org/r/p/%s.git',
-    }
+    include ::git::params
+    $default_url_format = pick(
+        $::git::params::source_format[$default_source],
+        $::git::params::source_format['gerrit']
+    )
 
     $remote = $origin ? {
         undef   => sprintf($default_url_format, $title),
