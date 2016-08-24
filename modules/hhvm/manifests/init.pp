@@ -173,6 +173,11 @@ class hhvm(
                     ttl    => to_seconds('5 minutes'),
                 },
             },
+            virtual_host      => {
+                'default'  => {
+                    always_decode_post_data => false,
+                },
+            },
         },
     }
 
