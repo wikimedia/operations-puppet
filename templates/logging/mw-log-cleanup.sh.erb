@@ -12,6 +12,10 @@ find <%= @log_directory %>/archive -mtime +90 -delete
 # fluorine's disk if left for 180 days
 find <%= @log_directory %>/archive -name api.log-\* -mtime +30 -delete
 
+# Remove debug logs after 7 days since they are HUGE
+# These only exist in deployment-prep/labs, not prod
+find <%= @log_directory %>/archive -name wfDebug.log-\* -mtime +7 -delete
+
 # Remove XFF logs before the CheckUser expiry time
 find <%= @log_directory %>/archive -name xff.log-\* -mtime +88 -delete
 
