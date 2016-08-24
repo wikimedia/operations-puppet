@@ -29,6 +29,12 @@ class rsyslog::receiver (
         fail("rsyslog log and archive are the same: ${log_directory}")
     }
 
+    if os_version('debian >= jessie') {
+        $rsyslog_user = 'root'
+    } else {
+        $rsyslog_user = 'syslog'
+    }
+
     rsyslog::conf { 'receiver':
         content  => template("${module_name}/receiver.erb.conf"),
         priority => 10,
@@ -52,14 +58,14 @@ class rsyslog::receiver (
 
     file { $log_directory:
         ensure => directory,
-        owner  => 'syslog',
+        owner  => $rsyslog_user,
         group  => 'root',
         mode   => '0755',
     }
 
     file { $archive_directory:
         ensure => directory,
-        owner  => 'syslog',
+        owner  => $rsyslog_user,
         group  => 'root',
         mode   => '0755',
     }
