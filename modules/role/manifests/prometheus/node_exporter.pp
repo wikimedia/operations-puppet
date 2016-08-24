@@ -6,9 +6,12 @@
 class role::prometheus::node_exporter {
     include ::prometheus::node_exporter
 
+    $prometheus_nodes = hiera('prometheus_nodes')
+    $prometheus_ferm_nodes = join($prometheus_nodes, ' ')
+
     ferm::service { 'prometheus-node-exporter':
         proto  => 'tcp',
         port   => '9100',
-        srange => '$DOMAIN_NETWORKS',
+        srange => "@resolve((${prometheus_ferm_nodes}))",
     }
 }
