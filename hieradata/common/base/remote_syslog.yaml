@@ -1,3 +1,4 @@
 ---
 enable: true
-central_host: syslog.eqiad.wmnet
+central_hosts:
+  - syslog.eqiad.wmnet

@@ -1,6 +1,7 @@
 ---
 base::remote_syslog::enable: true
-base::remote_syslog::central_host: "deployment-logstash2.deployment-prep.eqiad.wmflabs:10514"
+base::remote_syslog::central_hosts:
+  - "deployment-logstash2.deployment-prep.eqiad.wmflabs:10514"
 "ocg::temp_dir": /mnt/tmpfs
 "ocg::redis_host": deployment-redis01.deployment-prep.eqiad.wmflabs
 "ocg::statsd_host": labmon1001.eqiad.wmnet
