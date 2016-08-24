@@ -3,7 +3,7 @@
 # Packages and config needed for a host that can build wheels for Striker
 #
 class striker::build {
-    requires_os('Debian >= jessie')
+    requires_os('Ubuntu trusty')
     require_package(
         'build-essential',
         'libffi-dev',

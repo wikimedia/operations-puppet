@@ -29,7 +29,7 @@ class striker::uwsgi(
     $venv_dir      = '/srv/deployment/striker/venv',
     $secret_config = {},
 ){
-    requires_os('Debian >= jessie')
+    requires_os('Ubuntu trusty')
     include service::configuration
 
     # Packages needed by python wheels
