@@ -2885,6 +2885,11 @@ node /^wdqs100[1-2]\.eqiad\.wmnet$/ {
     $nagios_contact_group = 'admins,wdqs-admins'
 }
 
+node 'wezen.codfw.wmnet' {
+    role backup::host, syslog::centralserver
+    include standard
+}
+
 # https://www.mediawiki.org/wiki/Parsoid
 node /^wtp10(0[1-9]|1[0-9]|2[0-4])\.eqiad\.wmnet$/ {
     role parsoid
