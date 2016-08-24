@@ -77,6 +77,7 @@ define scap::source(
     # how to bootstrap itself properly without trebuchet.
     $owner                = 'trebuchet',
     $group                = 'wikidev',
+    $source               = 'gerrit',
     ) {
 
     # Base directory of the deployment; TODO: get it from
@@ -98,16 +99,15 @@ define scap::source(
         group  => $group,
     }
 
+    include ::git::params
+    $origin = sprintf($::git::params::source_format[$source], $repository)
+
     # Clone the source repository at $path.
+    # We can't use the $repository as title for git::clone as we
+    # can have multiple deployments originating from the same
+    # origin, and that would result in duplicated resources.
     git::clone { "scap::source ${repository} for ${title}":
-        # Since usage of this define might result in multiple clones of the
-        # same $repository, it is necessary to title the git::clones with
-        # unique names.  If we aren't using the repository name as the $title
-        # of git::clone, then we need to set $origin, and a $origin
-        # must be a full git URL. This means we can't yet use phabricator
-        # git URLs.  TODO: Fix git::clone to support custom repository names
-        # without specificing full git $origin URLs.
-        origin             => "https://gerrit.wikimedia.org/r/p/${repository}.git",
+        origin             => $origin,
         directory          => $path,
         owner              => $owner,
         group              => $group,
@@ -117,9 +117,13 @@ define scap::source(
     }
 
     if $scap_repository {
+        $scap_origin = sprintf(
+            $::git::params::source_format[$source],
+            $scap_repository
+        )
         # Clone the scap repository at $path/scap
         git::clone { "scap::source ${scap_repository} for ${title}":
-            origin             => "https://gerrit.wikimedia.org/r/p/${scap_repository}.git",
+            origin             => $scap_origin,
             directory          => "${path}/scap",
             owner              => $owner,
             group              => $group,
