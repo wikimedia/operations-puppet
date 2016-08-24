@@ -33,31 +33,32 @@ client c1 {
     expect resp.http.Content-Length == 10
 }
 
-# First range request 0-9, expecting a miss
+# First range request 0-9, expecting a pass
 client c1 -run
-varnish v1 -expect cache_miss == 1
+varnish v1 -expect cache_miss == 0
 varnish v1 -expect cache_hit == 0
-varnish v1 -expect n_object == 1
+varnish v1 -expect n_object == 0
+varnish v1 -expect s_pass == 1
 
-# Second range request 0-9, expecting a hit
+# Second range request 0-9, expecting another pass
 client c1 -run
-varnish v1 -expect cache_miss == 1
-varnish v1 -expect cache_hit == 1
-varnish v1 -expect n_object == 1
+varnish v1 -expect cache_miss == 0
+varnish v1 -expect cache_hit == 0
+varnish v1 -expect n_object == 0
+varnish v1 -expect s_pass == 2
 
 client c2 {
-    # Range request for an object in cache
     txreq -url "/test" -hdr "Host: upload.wikimedia.org" -hdr "Range: bytes=1-4"
     rxresp
     expect resp.status == 206
     expect resp.http.Content-Length == 4
 }
 
-# Range request for bytes already fetched (1-4), expecting a hit
 client c2 -run
-varnish v1 -expect cache_miss == 1
-varnish v1 -expect cache_hit == 2
-varnish v1 -expect n_object == 1
+varnish v1 -expect cache_miss == 0
+varnish v1 -expect cache_hit == 0
+varnish v1 -expect n_object == 0
+varnish v1 -expect s_pass == 3
 
 client c3 {
     # unsatisfiable Range request
@@ -70,9 +71,9 @@ client c3 {
     expect resp.http.Content-Length == ${unsatisfiable_length}
 }
 
-# Range request for bytes > CL, varnish returns the whole cached object. This
-# is a cache hit.
+# Range request for bytes > CL, varnish returns the whole cached object.
 client c3 -run
-varnish v1 -expect cache_miss == 1
-varnish v1 -expect cache_hit == 3
-varnish v1 -expect n_object == 1
+varnish v1 -expect cache_miss == 0
+varnish v1 -expect cache_hit == 0
+varnish v1 -expect n_object == 0
+varnish v1 -expect s_pass == 4
