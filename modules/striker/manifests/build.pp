@@ -3,7 +3,7 @@
 # Packages and config needed for a host that can build wheels for Striker
 #
 class striker::build {
-    requires_os('Debian >= jessie')
+    requires_os('Ubuntu trusty')
     require_package(
         'build-essential',
         'libffi-dev',
@@ -14,7 +14,8 @@ class striker::build {
         'python3',
         'python3-dev',
         'python3-wheel',
-        'virtualenv',
+        'python-virtualenv',
+        'realpath',
     )
 }
 # vim:sw=4:ts=4:sts=4:ft=puppet:
