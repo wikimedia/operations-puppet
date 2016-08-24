@@ -64,52 +64,51 @@ scap::keyholder_agents:
 # by the scap::server class.  Each source listed here
 # will be cloned on the scap deploy server.
 scap::sources:
-
-  # Analytics data refinement tools
-  # https://wikitech.wikimedia.org/wiki/Analytics/Cluster/Refinery
   analytics/refinery:
     repository: analytics/refinery
     scap_repository: analytics/refinery/scap
-
-  phabricator/deployment:
-    repository: phabricator/deployment
-
-  # Source code for taking XML dumps and snapshots of Mediawiki.
+  changeprop/deploy:
+    lvs_service: changeprop
+  citoid/deploy:
+    lvs_service: citoid
+  cxserver/deploy:
+    lvs_service: cxserver
   dumps/dumps:
     repository: operations/dumps
     scap_repository: operations/dumps/scap
-
-  # eventbus runs eventlogging-service.
-  # See: https://wikitech.wikimedia.org/wiki/EventBus
   eventlogging/eventbus:
     repository: eventlogging
     scap_repository: eventlogging/scap/eventbus
-
-  # eventlogging/analytics is the original EventLogging server deployment.
   eventlogging/analytics:
     repository: eventlogging
     scap_repository: eventlogging/scap/analytics
-
-  # The {} acts as an empty hash to use defaults.
-  mobileapps/deploy: {}
-
-  kartotherian/deploy: {}
-  tilerator/deploy: {}
-  graphoid/deploy: {}
-
-  parsoid/deploy: {}
-
-  # cxserver is the ContentTranslation server.
-  cxserver/deploy:
-    repository: cxserver/deploy
-
-  # ores is the Objective Revision Evaluation Service
+  graphoid/deploy:
+    lvs_service: graphoid
+  kartotherian/deploy:
+    repository: maps/kartotherian/deploy
+    lvs_service: kartotherian
+  mathoid/deploy:
+    lvs_service: mathoid
+  mobileapps/deploy:
+    lvs_service: mobileapps
   ores/deploy:
     repository: mediawiki/services/ores/deploy
-
+    lvs_service: ores
+  parsoid/deploy:
+    lvs_service: parsoid
+  phabricator/deployment:
+    repository: phabricator/deployment
+  # This is actually cloned from github at the moment and the repository indicated
+  # doesn't exist.
+  servermon/servermon:
+    repository: operations/software/servermon
+  tilerator/deploy:
+    repository: maps/tilerator/deploy
+    lvs_service: tilerator
   wdqs/wdqs:
     repository: wikidata/query/deploy
-
-  # Striker is the Tool Labs admin console application
-  striker/deploy:
-    repository: labs/striker/deploy
+    lvs_service: wdqs
+  zotero/translation-server:
+    lvs_service: zotero
+  zotero/translators:
+    lvs_service: zotero
