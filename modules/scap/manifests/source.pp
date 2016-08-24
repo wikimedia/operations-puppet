@@ -74,7 +74,7 @@
 #   }
 #
 define scap::source(
-    $repository           = $title,
+    $repository           = "mediawiki/services/${title}",
     $scap_repository      = false,
     # TODO: change scap repo owner when scap figures out
     # how to bootstrap itself properly without trebuchet.

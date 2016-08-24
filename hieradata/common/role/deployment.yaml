@@ -13,37 +13,13 @@ repo_config:
   jobrunner/jobrunner:
     upstream: https://gerrit.wikimedia.org/r/mediawiki/services/jobrunner
     service_name: jobrunner
-  parsoid/deploy:
-    upstream: https://gerrit.wikimedia.org/r/p/mediawiki/services/parsoid/deploy
-    checkout_submodules: true
-    service_name: parsoid
   eventlogging/eventlogging:
-    upstream: https://gerrit.wikimedia.org/r/eventlogging
-    checkout_submodules: true
-  # eventlogging/eventbus is the eventlogging codebase, but as a
-  # separate deploy target so that eventlogging-service-eventbus
-  # deployments can be scheduled separately from other eventlogging
-  # codebase deployments.
-  eventlogging/eventbus:
     upstream: https://gerrit.wikimedia.org/r/eventlogging
     checkout_submodules: true
   ocg/ocg:
     upstream: https://gerrit.wikimedia.org/r/mediawiki/services/ocg-collection
     service_name: ocg
     checkout_submodules: true
-  mathoid/deploy:
-    upstream: https://gerrit.wikimedia.org/r/mediawiki/services/mathoid/deploy
-    service_name: mathoid
-    checkout_submodules: true
-  citoid/deploy:
-    upstream: https://gerrit.wikimedia.org/r/mediawiki/services/citoid/deploy
-    service_name: citoid
-    checkout_submodules: true
-  zotero/translation-server:
-    upstream: https://gerrit.wikimedia.org/r/mediawiki/services/zotero/translation-server
-    service_name: zotero
-  zotero/translators:
-    upstream: https://gerrit.wikimedia.org/r/mediawiki/services/zotero/translators
   rcstream/rcstream:
     upstream: https://gerrit.wikimedia.org/r/mediawiki/services/rcstream
     service_name: rcstream
@@ -65,8 +41,6 @@ repo_config:
     upstream: https://gerrit.wikimedia.org/r/wikimedia/wikimania-scholarships
   librenms/librenms:
     upstream: https://gerrit.wikimedia.org/r/operations/software/librenms
-  servermon/servermon:
-    service_name: gunicorn
   iegreview/iegreview:
     grain: iegreview
     upstream: https://gerrit.wikimedia.org/r/wikimedia/iegreview
@@ -89,8 +63,3 @@ repo_config:
     upstream: https://gerrit.wikimedia.org/r/analytics/aqs/deploy
     service_name: aqs
     checkout_submodules: true
-  changeprop/deploy:
-    upstream: https://gerrit.wikimedia.org/r/mediawiki/services/change-propagation/deploy
-    checkout_submodules: true
-  dumps/dumps:
-    upstream: https://gerrit.wikimedia.org/r/operations/dumps
