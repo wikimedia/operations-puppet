@@ -41,6 +41,11 @@
 #   Group owner of cloned repository.
 #   Default: wikidev
 #
+# [*lvs_service*]
+#   Name of the lvs service associated with this deployment, if any
+#
+# [*canaries*]
+#   If this source has canary deployments, create the corresponding dsh group
 # == Usage
 #
 #   # Clones the 'repo/without/external/scap' repsitory into
@@ -77,11 +82,43 @@ define scap::source(
     # how to bootstrap itself properly without trebuchet.
     $owner                = 'trebuchet',
     $group                = 'wikidev',
-) {
+    $canaries             = false,
+    $lvs_service          = undef,
+    ) {
+
+    # Checkout and prepare the scap repositories
     scap_source { $title:
         repository      => $repository,
         scap_repository => $scap_repository,
         owner           => $owner,
         group           => $group,
+    }
+
+    # Scap dsh lists.
+    #
+    # Each scap installation in production should be tied to a dsh group
+    # defined via puppet.
+    #
+    # If you have a manual list of hosts, they should go in hiera under
+    # "scap::dsh::${dsh_groupname}".
+    #
+    $dsh_groupname = regsubst($title, '/', '-', 'G')
+
+    # If this deployment is linked to an lvs service, let's find out which conftool
+    # cluster / service it's referring to.
+    if $lvs_service {
+        include ::lvs::configuration
+        $conftool = $::lvs::configuration::lvs_config[$lvs_service]['conftool']
+    } else {
+        $conftool = undef
+    }
+
+    scap::dsh::group { $dsh_groupname:
+        conftool => $conftool
+    }
+
+    if ($canaries) {
+        scap::dsh::group { "${dsh_groupname}_canaries":
+        }
     }
 }
