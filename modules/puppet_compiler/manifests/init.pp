@@ -94,4 +94,10 @@ class puppet_compiler(
         use_ssl     => false,
         auth        => false,
     }
+
+    tidy { "${::puppet_compiler::workdir}/output":
+        recurse => true,
+        age     => '6w',
+        rmdirs  => true,
+    }
 }
