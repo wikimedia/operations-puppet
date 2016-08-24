@@ -12,7 +12,7 @@ striker::uwsgi::config:
   debug:
     DEBUG: false
   ldap:
-    SERVER_URI: ldaps://ldap-labs.eqiad.wikimedia.org:389
+    SERVER_URI: ldaps://ldap-labs.eqiad.wikimedia.org:636
     BIND_USER: uid=novaadmin,ou=people,dc=wikimedia,dc=org
     TLS: true
   oauth:
