@@ -50,3 +50,6 @@ GRANT PROCESS, REPLICATION CLIENT
     WITH MAX_USER_CONNECTIONS 5;
 GRANT SELECT
     ON heartbeat.heartbeat TO 'prometheus'@'localhost';
+GRANT SELECT
+    ON performance_schema.events_statements_summary_by_digest
+    TO 'prometheus'@'localhost';
