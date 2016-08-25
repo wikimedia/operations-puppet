@@ -140,9 +140,10 @@ class puppetmaster(
     }
 
     class { 'puppetmaster::gitclone':
-        secure_private => $secure_private,
-        is_git_master  => $is_git_master,
-        replicate_to   => $workers,
+        secure_private    => $secure_private,
+        is_git_master     => $is_git_master,
+        replicate_to      => $workers,
+        is_primary_master => ($config['ca_server'] == $::fqdn),
     }
 
     include puppetmaster::scripts
