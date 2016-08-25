@@ -72,7 +72,6 @@ class role::installserver {
 
     # Backup
     $sets = [ 'srv-autoinstall',
-              'srv-tftpboot',
             ]
     backup::set { $sets : }
 
