@@ -6,7 +6,7 @@ striker::nginx::server_name: toolsadmin.wikimedia.org
 striker::nginx::docroot: /srv/deployment/striker/deploy/public_html
 striker::nginx::servers:
   - 127.0.0.1:8081
-striker::nginx::port: 8044
+striker::nginx::port: 80
 
 striker::uwsgi::port: 8081
 striker::uwsgi::config:
