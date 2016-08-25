@@ -302,3 +302,6 @@ eventbus:
 thumbor:
   thumbor1001.eqiad.wmnet: [thumbor]
   thumbor1002.eqiad.wmnet: [thumbor]
+prometheus:
+  prometheus1001.eqiad.wmnet: [prometheus]
+  prometheus1002.eqiad.wmnet: [prometheus]
