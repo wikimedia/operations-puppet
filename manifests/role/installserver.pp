@@ -73,7 +73,6 @@ class role::installserver {
     # Backup
     $sets = [ 'srv-autoinstall',
               'srv-tftpboot',
-              'srv-wikimedia',
             ]
     backup::set { $sets : }
 
