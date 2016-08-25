@@ -8,6 +8,8 @@ class role::puppetmaster::backend {
         description => 'Puppetmaster backend'
     }
 
+    $ca_server = hiera('puppetmaster::ca_server', 'palladium.eqiad.wmnet')
+
     class { '::puppetmaster':
         server_type => 'backend',
         config      => {
@@ -17,7 +19,7 @@ class role::puppetmaster::backend {
             # Not a simple boolean, this must be quoted.
             'ca'                => 'false',
             # lint:endignore
-            'ca_server'         => 'palladium.eqiad.wmnet',
+            'ca_server'         => $ca_server,
             'dbadapter'         => 'mysql',
             'dbuser'            => 'puppet',
             'dbpassword'        => $passwords::puppet::database::puppet_production_db_pass,

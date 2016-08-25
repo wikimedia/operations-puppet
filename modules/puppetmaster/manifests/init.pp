@@ -31,25 +31,25 @@
 #        String - extra authentication rules to add before the default policy.
 
 class puppetmaster(
-            $server_name='puppet',
-            $bind_address='*',
-            $verify_client='optional',
-            $deny_from=[],
-            $server_type='standalone',
-            $workers=undef,
-            $config={},
-            $allow_from = [
-                '*.wikimedia.org',
-                '*.eqiad.wmnet',
-                '*.ulsfo.wmnet',
-                '*.esams.wmnet',
-                '*.codfw.wmnet',
-            ],
-            $is_git_master=false,
-            $hiera_config=$::realm,
-            $secure_private=true,
-            $extra_auth_rules='',
-    ){
+    $server_name='puppet',
+    $bind_address='*',
+    $verify_client='optional',
+    $deny_from=[],
+    $server_type='standalone',
+    $workers=undef,
+    $config={},
+    $allow_from = [
+        '*.wikimedia.org',
+        '*.eqiad.wmnet',
+        '*.ulsfo.wmnet',
+        '*.esams.wmnet',
+        '*.codfw.wmnet',
+    ],
+    $is_git_master=false,
+    $hiera_config=$::realm,
+    $secure_private=true,
+    $extra_auth_rules='',
+){
 
     $gitdir = '/var/lib/git'
     $volatiledir = '/var/lib/puppet/volatile'
