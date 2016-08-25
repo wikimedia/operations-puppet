@@ -78,6 +78,10 @@
 # [*statsd_prefix*]
 #   The statsd metric prefix to use. Default: $title
 #
+# [*req_templates*]
+#   Whether to include default templates for RESTBase and MW API requests in the config.
+#   Default: true
+#
 # [*auto_refresh*]
 #   Whether the service should be automatically restarted after config changes.
 #   Default: true
@@ -156,6 +160,7 @@ define service::node(
     $local_logging   = true,
     $logging_name    = $title,
     $statsd_prefix   = $title,
+    $req_templates   = true,
     $auto_refresh    = true,
     $init_restart    = true,
     $environment     = undef,

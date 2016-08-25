@@ -69,6 +69,7 @@ services:
       # cors: restricted.domain.org
       # URL of the outbound proxy to use (complete with protocol)
       proxy: <%= cvars['proxy'] %>
+<%- if @req_templates -%>
       # the template used for contacting the MW API
       mwapi_req:
         method: post
@@ -84,3 +85,4 @@ services:
         query: '{{ default(request.query, {}) }}'
         headers: '{{request.headers}}'
         body: '{{request.body}}'
+<%- end -%>
