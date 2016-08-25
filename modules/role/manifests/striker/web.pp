@@ -5,6 +5,7 @@
 #
 class role::striker::web {
     include ::memcached
+    include ::striker::apache
     include ::striker::nginx
     include ::striker::uwsgi
 }
