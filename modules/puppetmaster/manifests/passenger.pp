@@ -49,27 +49,6 @@ class puppetmaster::passenger(
         priority => 10,
     }
 
-    case $::puppetmaster::server_type {
-        'frontend' => {            
-            apache::site { 'puppetmaster.wikimedia.org':
-                content => template('puppetmaster/puppetmaster.erb'),
-            }
-            apache::site { 'puppetmaster-backend':
-                content => template('puppetmaster/puppetmaster-backend.conf.erb'),
-            }            
-         },
-        'backend' => {
-            apache::site { 'puppetmaster-backend':
-                content => template('puppetmaster/puppetmaster-backend.conf.erb'),
-            }
-        },
-        default => {
-            apache::site { 'puppetmaster.wikimedia.org':
-                content => template('puppetmaster/puppetmaster.erb'),
-            }
-        }
-    }
-    
     apache::conf { 'puppetmaster_ports':
         content => template('puppetmaster/ports.conf.erb'),
     }
