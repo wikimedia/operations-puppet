@@ -35,6 +35,12 @@ class apache::mod::rewrite         { apache::mod_conf { 'rewrite':        } }
 class apache::mod::setenvif        { apache::mod_conf { 'setenvif':       } }
 class apache::mod::ssl             { apache::mod_conf { 'ssl':            } }
 class apache::mod::userdir         { apache::mod_conf { 'userdir':        } }
+
+# Apache 2.4 load balancers
+class apache::mod::lbmethod_bybusiness { apache::mod_conf { 'lbmethod_bybusiness': } }
+class apache::mod::lbmethod_byrequests { apache::mod_conf { 'lbmethod_byrequests': } }
+class apache::mod::lbmethod_bytraffic  { apache::mod_conf { 'lbmethod_bytraffic': } }
+class apache::mod::lbmethod_heartbeat  { apache::mod_conf { 'lbmethod_heartbeat': } }
 # lint:endignore
 
 # Modules that depend on additional packages
