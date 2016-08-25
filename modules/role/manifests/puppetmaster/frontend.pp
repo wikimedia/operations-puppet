@@ -42,13 +42,25 @@ class role::puppetmaster::frontend {
         }
     }
 
-    ::puppetmaster::web_frontend { 'puppet':
+    # On the primary frontend, we keep the old vhost
+    # for compatibility
+    if $ca_server == $::fqdn {
+        ::puppetmaster::web_frontend { 'puppet':
+            master       => $ca_server,
+            workers      => $::puppetmaster::workers,
+            bind_address => $::puppetmaster::bind_address,
+            priority     => 50,
+        }
+    }
+
+    # On all the puppetmasters, we should respond
+    # to the FQDN, as it's used in the SRV records
+    ::puppetmaster::web_frontend { $::fqdn:
         master       => $ca_server,
         workers      => $::puppetmaster::workers,
         bind_address => $::puppetmaster::bind_address,
         priority     => 50,
     }
-
 
     ferm::service { 'puppetmaster-backend':
         proto => 'tcp',
