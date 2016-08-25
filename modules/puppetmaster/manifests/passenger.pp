@@ -25,8 +25,6 @@ class puppetmaster::passenger(
         ensure => present,
     }
 
-    $ssl_settings = ssl_ciphersuite('apache', 'compat')
-
     # Jessie-specific instructions
     if os_version('Debian >= jessie') {
         # Debian jessie needs the DH params file
@@ -47,27 +45,6 @@ class puppetmaster::passenger(
     apache::conf { 'passenger':
         content  => template('puppetmaster/passenger.conf.erb'),
         priority => 10,
-    }
-
-    case $::puppetmaster::server_type {
-        'frontend': {
-            apache::site { 'puppetmaster.wikimedia.org':
-                content => template('puppetmaster/puppetmaster.erb'),
-            }
-            apache::site { 'puppetmaster-backend':
-                content => template('puppetmaster/puppetmaster-backend.conf.erb'),
-            }
-        }
-        'backend': {
-            apache::site { 'puppetmaster-backend':
-                content => template('puppetmaster/puppetmaster-backend.conf.erb'),
-            }
-        }
-        default: {
-            apache::site { 'puppetmaster.wikimedia.org':
-                content => template('puppetmaster/puppetmaster.erb'),
-            }
-        }
     }
 
     apache::conf { 'puppetmaster_ports':
