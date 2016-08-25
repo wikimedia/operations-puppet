@@ -28,12 +28,12 @@ class nagios_common::commands(
         # check_bgp/check_jnx_alarms
         'libnet-snmp-perl',
         'libtime-duration-perl',
-        # check_prometheus_metric
-        'jq',
-        'curl',
         ]:
             ensure => present,
     }
+
+    # check_prometheus_metric
+    require_package(['jq', 'curl'])
 
     file { "${config_dir}/commands":
         ensure => directory,
