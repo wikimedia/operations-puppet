@@ -44,6 +44,11 @@ class puppetmaster::passenger(
         }
     }
 
+    apache::conf { 'passenger':
+        content  => template('puppetmaster/passenger.conf.erb'),
+        priority => 10,
+    }
+
     apache::site { 'puppetmaster.wikimedia.org':
         content => template('puppetmaster/puppetmaster.erb'),
     }
