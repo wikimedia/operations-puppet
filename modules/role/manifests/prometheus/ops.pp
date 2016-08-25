@@ -1,5 +1,6 @@
 class role::prometheus::ops {
     include base::firewall
+    include lvs::realserver
 
     $targets_path = '/srv/prometheus/ops/targets'
 
