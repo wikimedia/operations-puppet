@@ -33,7 +33,7 @@ class puppet_config():
         self.tenant_id = tenant_id
         self.apiurl = getattr(settings,
                               "PUPPET_CONFIG_BACKEND",
-                              "http://labtestcontrol2001.wikimedia.org:8100/v1"
+                              "http://labcontrol1001.wikimedia.org:8100/v1"
                               )
         self.refresh()
 
