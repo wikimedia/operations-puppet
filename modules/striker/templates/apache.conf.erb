@@ -1,0 +1,49 @@
+# This file is managed by Puppet.
+# See modules/striker/templates/apache.conf.erb
+<VirtualHost *:<%= @port %>>
+  ServerName <%= @server_name %>
+  DocumentRoot <%= @docroot %>
+
+  # This is *not* an open proxy!
+  ProxyRequests Off
+  ProxyVia Off
+
+  ProxyPassInherit Off
+  ProxyPreserveHost On
+  ProxyAddHeaders On
+
+  <Directory />
+    Options FollowSymLinks
+    AllowOverride None
+    Require all denied
+  </Directory>
+
+  <Directory <%= @docroot %>>
+    Require all granted
+
+    # Do not proxy static assets
+    <If "! -f %{REQUEST_FILENAME}">
+      # Reverse proxy to uwsgi backend
+      ProxyPass "/" <%= @backend %>
+      ProxyPassReverse "/" <%= @backend %>
+    </If>
+  </Directory>
+
+  <Location /static>
+    # Add very long expires headers for static assets
+    ExpiresDefault "access plus 1 year"
+    Header set Cache-Control "public"
+  </Location>
+
+  <LocationMatch "^/[^/]+\.(ico|png)$">
+    # Add resonably long expires headers for root level static assets
+    # (e.g. favicon and Apple icons)
+    ExpiresDefault "access plus 7 days"
+    Header set Cache-Control "public"
+  </LocationMatch>
+
+  LogLevel warn
+  CustomLog /var/log/apache2/<%= @server_name %>-access.log wmf
+  ErrorLog  /var/log/apache2/<%= @server_name %>-error.log
+</VirtualHost>
+# vim:ft=apache:sw=2:ts=2:sts=2:et:
