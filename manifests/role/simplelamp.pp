@@ -1,6 +1,8 @@
 # = class: role::simplelamp
 #
 # Sets up a simple LAMP server for use by arbitrary php applications
+#
+# filtertags: labs-common
 class role::simplelamp(
     $mysql_local = true,
     $mysql_datadir = '/srv/mysql',

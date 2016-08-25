@@ -10,6 +10,7 @@
 # This allows puppet classes to be configured via LDAP
 # and wikitech instance configuration.
 #
+# filtertags: labs-common
 class role::puppet::self(
     $master = $::puppetmaster,
     $autoupdate_master = true,

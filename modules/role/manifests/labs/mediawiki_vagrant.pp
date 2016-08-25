@@ -4,6 +4,8 @@
 # provision a MediaWiki-Vagrant clone for shared use.
 #
 # Conflicts with role::labs_vagrant.
+#
+# filtertags: labs-common
 class role::labs::mediawiki_vagrant {
     include ::vagrant
     include ::vagrant::lxc
