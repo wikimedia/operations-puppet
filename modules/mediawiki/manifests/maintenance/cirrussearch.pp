@@ -25,6 +25,7 @@ class mediawiki::maintenance::cirrussearch( $ensure = present ) {
 
     # Push sanitze jobs to the jobqueue every 2 hours
     cron { 'cirrus_sanitize_jobs':
+        ensure  => absent, # temporarily disable saneitizer as it seems to generate much DB load (T143862)
         command => '/usr/local/bin/foreachwiki extensions/CirrusSearch/maintenance/saneitizeJobs.php --push --refresh-freq=7200 >> /var/log/mediawiki/cirrus-sanitize/push-jobs.log 2>&1',
         minute  => 10,
         hour    => '*/2',
