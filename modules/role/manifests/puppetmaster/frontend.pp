@@ -21,6 +21,7 @@ class role::puppetmaster::frontend {
         # lint:endignore
     }
     class { '::puppetmaster':
+        bind_address  => '*',
         server_type   => 'frontend',
         is_git_master => true,
         workers       => [
@@ -40,6 +41,14 @@ class role::puppetmaster::frontend {
             'dbserver'          => 'm1-master.eqiad.wmnet',
         }
     }
+
+    ::puppetmaster::web_frontend { 'puppet':
+        master       => $ca_server,
+        workers      => $::puppetmaster::workers,
+        bind_address => $::puppetmaster::bind_address,
+        priority     => 50,
+    }
+
 
     ferm::service { 'puppetmaster-backend':
         proto => 'tcp',
