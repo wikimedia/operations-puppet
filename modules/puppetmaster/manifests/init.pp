@@ -100,17 +100,40 @@ class puppetmaster(
         }
     }
 
-    if $server_type == 'frontend' {
-        include ::apache::mod::proxy
-        include ::apache::mod::proxy_http
-        include ::apache::mod::proxy_balancer
-    }
-
     class { 'puppetmaster::passenger':
         bind_address  => $bind_address,
         verify_client => $verify_client,
         allow_from    => $allow_from,
         deny_from     => $deny_from
+    }
+
+
+    $ssl_settings = ssl_ciphersuite('apache', 'compat')
+
+    # Part dependent on the server_type
+    case $server_type {
+        'frontend': {
+            include ::apache::mod::proxy
+            include ::apache::mod::proxy_http
+            include ::apache::mod::proxy_balancer
+
+            apache::site { 'puppetmaster.wikimedia.org':
+                content => template('puppetmaster/puppetmaster.erb'),
+            }
+            apache::site { 'puppetmaster-backend':
+                content => template('puppetmaster/puppetmaster-backend.conf.erb'),
+            }
+        }
+        'backend': {
+            apache::site { 'puppetmaster-backend':
+                content => template('puppetmaster/puppetmaster-backend.conf.erb'),
+            }
+        }
+        default: {
+            apache::site { 'puppetmaster.wikimedia.org':
+                content => template('puppetmaster/puppetmaster.erb'),
+            }
+        }
     }
 
     class { 'puppetmaster::ssl':
