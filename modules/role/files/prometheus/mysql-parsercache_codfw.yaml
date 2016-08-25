@@ -1,0 +1,18 @@
+- labels:
+    shard: pc1
+    role: master
+  targets:
+  - pc2004:9104
+
+- labels:
+    shard: pc2
+    role: master
+  targets:
+  - pc2005:9104
+
+- labels:
+    shard: pc2
+    role: master
+  targets:
+  - pc2006:9104
+
