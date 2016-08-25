@@ -5,8 +5,6 @@
 #
 # === Parameters
 #
-# [*restbase_url*]
-#   Url to Restbase API.
 # [*apertium*]
 #   Url to Apertium service.
 # [*yandex_url*]
@@ -20,7 +18,6 @@
 # [*registry*]
 #   registry file to use.
 class cxserver(
-    $restbase_url = "http://restbase.svc.${::rb_site}.wmnet:7231/@lang.wikipedia.org/v1/page/html/@title",
     $apertium = "http://apertium.svc.${::site}.wmnet:2737",
     $yandex_url = undef,
     $yandex_api_key = undef,
