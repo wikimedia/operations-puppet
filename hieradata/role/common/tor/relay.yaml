@@ -1,0 +1,4 @@
+debdeploy::grains:
+  debdeploy-tor:
+    value: standard
+cluster: misc
