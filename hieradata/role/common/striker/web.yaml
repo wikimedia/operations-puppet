@@ -15,6 +15,7 @@ striker::uwsgi::config:
   ldap:
     SERVER_URI: ldaps://ldap-labs.eqiad.wikimedia.org:636
     BIND_USER: uid=novaadmin,ou=people,dc=wikimedia,dc=org
+    TLS: false
   oauth:
     CONSUMER_KEY: 3f0e3e91f2cba000c7d81932f59d615a
   phabricator:
