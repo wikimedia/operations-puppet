@@ -2431,6 +2431,7 @@ node /^prometheus200[12]\.codfw\.wmnet$/ {
 
     include base::firewall
     include standard
+    include lvs::realserver
 }
 
 node /^prometheus100[12]\.eqiad\.wmnet$/ {
@@ -2438,6 +2439,7 @@ node /^prometheus100[12]\.eqiad\.wmnet$/ {
 
     include base::firewall
     include standard
+    include lvs::realserver
 }
 
 # pybal-test200X VMs are used for pybal testing/development

@@ -17,3 +17,12 @@ phabricator:
       "weight": 10
     datacenters:
       - eqiad
+prometheus:
+  prometheus:
+    port: 80
+    default_values:
+      "pooled": "no"
+      "weight": 10
+    datacenters:
+      - eqiad
+      - codfw
