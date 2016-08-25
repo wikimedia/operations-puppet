@@ -19,7 +19,7 @@ class nagios_common::commands(
     $group = 'icinga',
 ) {
 
-    package { [
+    require_package([
         'libnagios-plugin-perl',
         # check_ssl
         'libnet-ssleay-perl',
@@ -31,9 +31,7 @@ class nagios_common::commands(
         # check_prometheus_metric
         'jq',
         'curl',
-        ]:
-            ensure => present,
-    }
+    ])
 
     file { "${config_dir}/commands":
         ensure => directory,
