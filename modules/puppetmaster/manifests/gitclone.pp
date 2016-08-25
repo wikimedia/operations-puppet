@@ -13,10 +13,15 @@
 # [*replicate_to*]
 # For servers that are a master for the private repo, a list of hosts to replicate to
 #
+# [*is_primary_master*]
+# Since we can have a hierarchy of primary and secundary masters, that get pushed to from the primary,
+# add a switch to configure the behaviour
+#
 class puppetmaster::gitclone(
     $secure_private = true,
     $is_git_master = false,
     $replicate_to = undef,
+    $is_primary_master = false,
     ){
 
     class  { '::puppetmaster::base_repo':
@@ -104,6 +109,9 @@ class puppetmaster::gitclone(
                 require => File['/srv/private'],
             }
 
+            #TODO: add the secundary masters to the primary hook
+            #TODO: secundary masters should run git reset --hard locally upon receiving a push
+            #TODO: verify if a post-commit hook works on a secundary master.
             # This hook pushes changes to the other workers
             file { '/srv/private/.git/hooks/post-commit':
                 ensure  => present,
