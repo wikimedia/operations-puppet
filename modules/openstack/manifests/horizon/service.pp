@@ -20,11 +20,7 @@ class openstack::horizon::service(
         ensure  => present,
     }
 
-    include ::apache
-    include ::apache::mod::ssl
-    include ::apache::mod::wsgi
-    include ::apache::mod::rewrite
-    include ::apache::mod::headers
+    include ::nginx
     include ::memcached
 
     # Blank out these files so that the (broken) dashboard
@@ -84,21 +80,22 @@ class openstack::horizon::service(
         mode    => '0440',
     }
 
-    file { '/usr/share/openstack-dashboard/openstack_dashboard/static/dashboard/img/logo.png':
+    $app_dir = '/usr/share/openstack-dashboard'
+    file { "${app_dir}/openstack_dashboard/static/dashboard/img/logo.png":
         source  => 'puppet:///modules/openstack/horizon/216px-Wikimedia_labs_dashboard_logo.png',
         owner   => 'horizon',
         group   => 'horizon',
         require => Package['openstack-dashboard'],
         mode    => '0444',
     }
-    file { '/usr/share/openstack-dashboard/openstack_dashboard/static/dashboard/img/logo-splash.png':
+    file { "${app_dir}/openstack_dashboard/static/dashboard/img/logo-splash.png":
         source  => 'puppet:///modules/openstack/horizon/180px-Wikimedia_labs_dashboard_splash.png',
         owner   => 'horizon',
         group   => 'horizon',
         require => Package['openstack-dashboard'],
         mode    => '0444',
     }
-    file { '/usr/share/openstack-dashboard/openstack_dashboard/static/dashboard/img/favicon.ico':
+    file { "${app_dir}/openstack_dashboard/static/dashboard/img/favicon.ico":
         source  => 'puppet:///modules/openstack/horizon/Wikimedia_labs.ico',
         owner   => 'horizon',
         group   => 'horizon',
@@ -141,28 +138,28 @@ class openstack::horizon::service(
     }
 
     # Install the designate dashboard
-    file { '/usr/share/openstack-dashboard/openstack_dashboard/local':
+    file { "${app_dir}/openstack_dashboard/local":
         ensure  => 'directory',
         owner   => 'root',
         group   => 'root',
         mode    => '0644',
         require => Package['python-designate-dashboard', 'openstack-dashboard'],
     }
-    file { '/usr/share/openstack-dashboard/openstack_dashboard/local/enabled':
+    file { "${app_dir}/openstack_dashboard/local/enabled":
         ensure  => 'directory',
         owner   => 'root',
         group   => 'root',
         mode    => '0644',
         require => Package['python-designate-dashboard', 'openstack-dashboard'],
     }
-    file { '/usr/share/openstack-dashboard/openstack_dashboard/local/enabled/_70_dns_add_group.py':
+    file { "${app_dir}/openstack_dashboard/local/enabled/_70_dns_add_group.py":
         source  => "puppet:///modules/openstack/${openstack_version}/designate/dashboard/_70_dns_add_group.py",
         owner   => 'root',
         group   => 'root',
         mode    => '0644',
         require => Package['python-designate-dashboard', 'openstack-dashboard'],
     }
-    file { '/usr/share/openstack-dashboard/openstack_dashboard/local/enabled/_71_dns_project.py':
+    file { "${app_dir}/openstack_dashboard/local/enabled/_71_dns_project.py":
         source  => "puppet:///modules/openstack/${openstack_version}/designate/dashboard/_71_dns_project.py",
         owner   => 'root',
         group   => 'root',
@@ -179,7 +176,7 @@ class openstack::horizon::service(
         require => Package['python-designate-dashboard', 'openstack-dashboard'],
         recurse => true
     }
-    file { '/usr/share/openstack-dashboard/openstack_dashboard/local/enabled/_1922_project_proxy_panel.py':
+    file { "${app_dir}/openstack_dashboard/local/enabled/_1922_project_proxy_panel.py":
         source  => "puppet:///modules/openstack/${openstack_version}/horizon/proxy_enable.py",
         owner   => 'root',
         group   => 'root',
@@ -204,8 +201,23 @@ class openstack::horizon::service(
         mode   => '0744',
     }
 
-    apache::site { $webserver_hostname:
-        content => template("openstack/${openstack_version}/horizon/${webserver_hostname}.erb"),
-        require => File['/etc/openstack-dashboard/local_settings.py'],
+    $uwsgi_port = 8080
+    service::uwsgi { 'horizon':
+        port            => $uwsgi_port,
+        config          => {
+            chdir     => $app_dir,
+            wsgi-file => 'openstack_dashboard/wsgi/django.wsgi',
+            uid       => 'horizon',
+            gid       => 'horizon',
+            vacuum    => true,
+        },
+        healthcheck_url => '/',
+        firejail        => false,
+        # We don't use scap3 to deploy, the files are already here
+        deployment      => 'puppet',
+        require         => File['/etc/openstack-dashboard/local_settings.py'],
+    }
+    nginx::site { 'horizon':
+        content => template('openstack/horizon/nginx.conf.erb'),
     }
 }
