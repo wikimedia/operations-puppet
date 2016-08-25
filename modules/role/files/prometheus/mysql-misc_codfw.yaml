@@ -1,0 +1,24 @@
+- labels:
+    shard: m1
+    role: slave
+  targets:
+  - db2010:9104
+
+- labels:
+    shard: m2
+    role: slave
+  targets:
+  - db2011:9104
+
+- labels:
+    shard: m3
+    role: slave
+  targets:
+  - db2012:9104
+
+- labels:
+    shard: m5
+    role: slave
+  targets:
+  - db2030:9104
+
