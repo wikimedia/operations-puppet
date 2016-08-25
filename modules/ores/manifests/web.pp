@@ -8,6 +8,7 @@ class ores::web(
     $graphite_server = 'graphite-in.eqiad.wmnet',
     $deployment = 'scap3',
     $celery_workers = 40,
+    $extra_config = undef,
 ) {
     require ores::base
 
@@ -96,6 +97,11 @@ class ores::web(
         $config = $base_config
     }
     # lint:endignore
+
+    if $extra_config {
+        $config = deep_merge($config, $extra_config)
+    }
+
     # For now puppet ships the config until we migrate it to scap3 as well
     ores::config { 'main':
         config   => $config,
