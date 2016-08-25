@@ -384,5 +384,17 @@ class role::labs::openstack::nova::compute($instance_dev='/dev/md1') {
         }
     }
 
+    # Starting with 3.18 (34666d467cbf1e2e3c7bb15a63eccfb582cdd71f) the netfilter code
+    # was split from the bridge kernel module into a separate module (br_netfilter)
+    if (versioncmp($::kernelversion, '3.18') >= 0) {
+        file { '/etc/modprobe.d/br_netfilter.conf':
+            ensure  => present,
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0444',
+            content => 'options br_netfilter\n',
+        }
+    }
+
     require_package('conntrack')
 }
