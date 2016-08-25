@@ -1334,7 +1334,7 @@ node 'install1001.wikimedia.org' {
 }
 
 node 'install2001.wikimedia.org' {
-    role installserver::tftp_server, installserver::dhcp
+    role installserver::tftp_server, installserver::dhcp, aptrepo::wikimedia
     $cluster = 'misc'
     $ganglia_aggregator = true
 
