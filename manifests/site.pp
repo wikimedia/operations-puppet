@@ -1406,11 +1406,19 @@ node 'labcontrol1002.wikimedia.org' {
     include ldap::role::client::labs
 }
 
-# like silver (wikitech.wikimedia.org)
+# This is the testlab server that implements both:
+#  - silver (wikitech.wikimedia.org), and
+#  - californium (horizon.wikimedia.org)
 node 'labtestweb2001.wikimedia.org' {
     role labs::openstack::nova::manager, mariadb::wikitech, horizon
     include base::firewall
     include standard
+
+    class { 'openstack::horizon::puppetpanel':
+        #  Currently we only have Liberty code for this,
+        #  but it works fine with mitaka Horizon.
+        openstack_version  => 'liberty',
+    }
 
     interface::add_ip6_mapped { 'main': }
 }
