@@ -118,10 +118,11 @@ class puppetmaster(
             include ::apache::mod::proxy_balancer
 
             apache::site { 'puppetmaster.wikimedia.org':
-                content => template('puppetmaster/puppetmaster.erb'),
+                ensure => absent,
             }
+                        
             apache::site { 'puppetmaster-backend':
-                content => template('puppetmaster/puppetmaster-backend.conf.erb'),
+                content      => template('puppetmaster/puppetmaster-backend.conf.erb'),
             }
         }
         'backend': {
