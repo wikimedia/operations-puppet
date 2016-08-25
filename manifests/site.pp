@@ -2384,18 +2384,18 @@ node /^(palladium|strontium)\.eqiad\.wmnet$/ {
         interface => 'eth0',
     }
     # Add a site for temporary puppet backend tests
-    class { '::puppetmaster::web_test':
-        server_name => 'puppetmaster.test.eqiad.wmnet',
-        workers     => [{
-                        'worker'     => 'rhodium.eqiad.wmnet',
-                        'loadfactor' => 100,
-                        }],
-        alt_names   => [
-                        'puppetmaster.test.codfw.wmnet',
-                        'puppetmaster.test.ulsfo.wmnet',
-                        'puppetmaster.test.esams.wmnet',
-                        'puppetmaster.test.wikimedia.org'
-                        ],
+    ::puppetmaster::web_frontend { 'puppetmaster.test.eqiad.wmnet':
+        master    => 'palladium.eqiad.wmnet',
+        workers   => [{
+                      'worker'     => 'rhodium.eqiad.wmnet',
+                      'loadfactor' => 100,
+                      }],
+        alt_names => [
+                      'puppetmaster.test.codfw.wmnet',
+                      'puppetmaster.test.ulsfo.wmnet',
+                      'puppetmaster.test.esams.wmnet',
+                      'puppetmaster.test.wikimedia.org'
+                      ],
     }
 }
 
