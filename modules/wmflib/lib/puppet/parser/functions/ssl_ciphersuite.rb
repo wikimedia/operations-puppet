@@ -64,6 +64,7 @@ require 'puppet/util/package'
 module Puppet::Parser::Functions
   # Basic list chunks, used to construct bigger lists
   # General preference ordering for fullest combined list:
+  # -1) Enc: 3DES < ALL       (SWEET32)
   # 0) Kx:   (EC)DHE > RSA    (Forward Secrecy)
   # 1) Mac:  AEAD > ALL       (AES-GCM/CHAPOLY > Others)
   #   ^ Note: our chapoly patches only turn on chapoly ciphers if the client
@@ -104,16 +105,17 @@ module Puppet::Parser::Functions
       'ECDHE-RSA-AES128-SHA256',
       'ECDHE-ECDSA-AES128-SHA',    # Unpatched IE<11, Android 4.[0-3]
       'ECDHE-RSA-AES128-SHA',
-      'ECDHE-ECDSA-DES-CBC3-SHA',
-      'ECDHE-RSA-DES-CBC3-SHA',
       'DHE-RSA-AES128-SHA256',
       'DHE-RSA-AES128-SHA',   # Android 2.x, openssl-0.9.8
-      'DHE-RSA-DES-CBC3-SHA', # openssl-1.1.0
-      'EDH-RSA-DES-CBC3-SHA', # pre-1.1.0 name for the above
     ],
     # not-forward-secret compat for ancient stuff
     'compat' => [
       'AES128-SHA',   # Mostly evil proxies, also ancient devices
+       # These 4 are forward-secret, but 3DES is borked now
+      'ECDHE-ECDSA-DES-CBC3-SHA',
+      'ECDHE-RSA-DES-CBC3-SHA',
+      'DHE-RSA-DES-CBC3-SHA', # openssl-1.1.0
+      'EDH-RSA-DES-CBC3-SHA', # pre-1.1.0 name for the above
       'DES-CBC3-SHA', # Mostly IE7-8 on XP, also ancient devices
     ],
   }
