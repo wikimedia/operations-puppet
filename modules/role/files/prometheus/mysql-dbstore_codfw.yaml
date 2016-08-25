@@ -1,0 +1,6 @@
+- labels:
+    role: slave
+  targets:
+  - dbstore2001:9104
+  - dbstore2002:9104
+
