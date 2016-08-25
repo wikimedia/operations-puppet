@@ -13,16 +13,25 @@ class role::puppetmaster::frontend {
 
     # Puppet frontends are git masters at least for their datacenter
 
+    $ca_server = hiera('puppetmaster::ca_server', 'palladium.eqiad.wmnet')
+    $ca = $ca_server ? {
+        # lint:ignore:quoted_booleans
+        $::fqdn => 'true',
+        default => 'false',
+        # lint:endignore
+    }
     class { '::puppetmaster':
         server_type   => 'frontend',
         is_git_master => true,
         workers       => [
-                          {
-                          'worker'     => 'rhodium.eqiad.wmnet',
-                          'loadfactor' => 20,
-                          },
+            {
+            'worker'     => 'rhodium.eqiad.wmnet',
+            'loadfactor' => 20,
+            },
         ],
         config        => {
+            'ca'                => $ca,
+            'ca_server'         => $ca_server,
             'storeconfigs'      => true, # Required by thin_storeconfigs on puppet 3.x
             'thin_storeconfigs' => true,
             'dbadapter'         => 'mysql',
