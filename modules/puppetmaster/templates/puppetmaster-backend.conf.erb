@@ -1,0 +1,47 @@
+# This file is managed by Puppet!
+
+<VirtualHost <%= @bind_address %>:8141>
+    SSLEngine on
+    <%= @ssl_settings.join("\n") %>
+
+    SSLCertificateFile      /var/lib/puppet/ssl/certs/<%= @fqdn %>.pem
+    SSLCertificateKeyFile   /var/lib/puppet/ssl/private_keys/<%= @fqdn %>.pem
+    SSLCACertificateFile    /var/lib/puppet/ssl/certs/ca.pem
+    SSLCertificateChainFile /var/lib/puppet/ssl/certs/ca.pem
+    RackBaseURI /
+
+    <Location />
+        <IfVersion < 2.4>
+            Order Allow,Deny
+            <%- @allow_from.each do |entry| -%>
+            Allow from <%= entry.gsub(/^\*/, "") %>
+            <%- end -%>
+            <%- @deny_from.each do |entry| -%>
+            Deny from <%= entry.gsub(/^\*/, "") %>
+            <%- end -%>
+        </IfVersion>
+        <IfVersion >= 2.4>
+            <%- @allow_from.each do |entry| -%>
+            Require host <%= entry.gsub(/^\*/, "") %>
+            <%- end -%>
+            <%- @deny_from.each do |entry| -%>
+            Require not host <%= entry.gsub(/^\*/, "") %>
+            <%- end -%>
+        </IfVersion>
+    </Location>
+
+    DocumentRoot /usr/share/puppet/rack/puppetmasterd/public
+    <Directory /usr/share/puppet/rack/puppetmasterd/>
+        Options None
+        AllowOverride None
+        <IfVersion < 2.4>
+            Order allow,deny
+            allow from all
+        </IfVersion>
+        <IfVersion >= 2.4>
+            Require all granted
+        </IfVersion>
+    </Directory>
+
+    CustomLog /var/log/apache2/puppetmaster-backend.log wmf
+</VirtualHost>
