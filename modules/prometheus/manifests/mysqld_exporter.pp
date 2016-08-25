@@ -47,15 +47,13 @@ define prometheus::mysqld_exporter (
         notify  => Service['prometheus-mysqld-exporter'],
     }
 
-    if $arguments != '' {
-        file { '/etc/default/prometheus-mysqld-exporter':
-            ensure  => present,
-            mode    => '0444',
-            owner   => 'root',
-            group   => 'root',
-            content => "ARGS=${arguments}",
-            notify  => Service['prometheus-mysqld-exporter'],
-        }
+    file { '/etc/default/prometheus-mysqld-exporter':
+        ensure  => present,
+        mode    => '0444',
+        owner   => 'root',
+        group   => 'root',
+        content => "ARGS=\"${arguments}\"",
+        notify  => Service['prometheus-mysqld-exporter'],
     }
 
     service { 'prometheus-mysqld-exporter':
