@@ -24,12 +24,7 @@ class role::puppetmaster::frontend {
         bind_address  => '*',
         server_type   => 'frontend',
         is_git_master => true,
-        workers       => [
-            {
-            'worker'     => 'rhodium.eqiad.wmnet',
-            'loadfactor' => 20,
-            },
-        ],
+        workers       => hiera('puppetmaster::workers'),
         config        => {
             'ca'                => $ca,
             'ca_server'         => $ca_server,
