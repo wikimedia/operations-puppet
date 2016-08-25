@@ -11,7 +11,6 @@
 # Requires:
 #
 #   Class['install_server::preseed_server']
-#   Class['install_server::tftp_server']
 #   Class['install_server::web_server']
 #   Define['backup::set']
 #   Class['base::firewall']
@@ -32,11 +31,6 @@ class role::installserver {
     include install_server::preseed_server
 
     include mirrors::tails
-
-    include install_server::tftp_server
-    ferm::rule { 'tftp':
-        rule => 'proto udp dport tftp { saddr $PRODUCTION_NETWORKS ACCEPT; }'
-    }
 
     if os_version('ubuntu >= trusty') or os_version('debian >= jessie') {
         $config_content = template('caching-proxy/squid.conf.erb')
@@ -72,7 +66,6 @@ class role::installserver {
 
     # Backup
     $sets = [ 'srv-autoinstall',
-              'srv-tftpboot',
             ]
     backup::set { $sets : }
 
