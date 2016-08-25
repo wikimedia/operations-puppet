@@ -536,3 +536,6 @@ INSTANCE_TLD = '<%= scope.lookupvar('::site') %>.<%= @designateconfig['private_t
 
 # Disable instance consoles for Horizon users
 CONSOLE_TYPE = False
+
+PUPPETMASTER_API  = "https://<%= @novaconfig['controller_hostname'] %>:8140/puppet"
+PUPPET_CONFIG_BACKEND  = "https://<%= @novaconfig['controller_hostname'] %>:8100/v1"

@@ -72,7 +72,7 @@ def available_roles():
     if not roles:
         apiurl = getattr(settings,
                          "PUPPETMASTER_API",
-                         "https://labtestcontrol2001.wikimedia.org:8140/puppet"
+                         "https://labcontrol1001.wikimedia.org:8140/puppet"
                          )
         roleurl = "%s/resource_types/role" % apiurl
 
