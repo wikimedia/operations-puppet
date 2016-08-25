@@ -19,9 +19,7 @@ class striker::nginx(
     $servers,
     $port = 80,
 ){
-    class { '::nginx':
-        variant => 'light',
-    }
+    include ::nginx
     nginx::site { 'striker':
         content => template('striker/nginx.conf.erb'),
     }
