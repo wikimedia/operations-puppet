@@ -41,6 +41,14 @@ class role::puppetmaster::frontend {
         }
     }
 
+    ::puppetmaster::web_frontend { 'puppet':
+        master       => $config['ca_server'],
+        workers      => $workers,
+        bind_address => $bind_address,
+        priority     => 50,
+    }
+
+
     ferm::service { 'puppetmaster-backend':
         proto => 'tcp',
         port  => 8141,
