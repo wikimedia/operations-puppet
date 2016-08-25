@@ -1,0 +1,2 @@
+workers:
+  - { worker: rhodium.eqiad.wmnet, loadfactor: 20 }

@@ -20,16 +20,14 @@ class role::puppetmaster::frontend {
         default => 'false',
         # lint:endignore
     }
+
+    $workers = hiera('puppetmaster::workers')
+
     class { '::puppetmaster':
         bind_address  => '*',
         server_type   => 'frontend',
         is_git_master => true,
-        workers       => [
-            {
-            'worker'     => 'rhodium.eqiad.wmnet',
-            'loadfactor' => 20,
-            },
-        ],
+        workers       => $workers,
         config        => {
             'ca'                => $ca,
             'ca_server'         => $ca_server,
@@ -47,7 +45,7 @@ class role::puppetmaster::frontend {
     if $ca_server == $::fqdn {
         ::puppetmaster::web_frontend { 'puppet':
             master       => $ca_server,
-            workers      => $::puppetmaster::workers,
+            workers      => $workers,
             bind_address => $::puppetmaster::bind_address,
             priority     => 40,
         }
@@ -57,7 +55,7 @@ class role::puppetmaster::frontend {
     # to the FQDN, as it's used in the SRV records
     ::puppetmaster::web_frontend { $::fqdn:
         master       => $ca_server,
-        workers      => $::puppetmaster::workers,
+        workers      => $workers,
         bind_address => $::puppetmaster::bind_address,
         priority     => 50,
     }
