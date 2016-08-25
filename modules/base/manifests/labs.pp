@@ -49,4 +49,18 @@ class base::labs inherits base {
             user    => 'root',
         }
     }
+
+    # Set a root password only if we're still governed by the official Labs
+    #  puppetmaster.  Self- and locally-hosted instances are on their own,
+    #  but most likely already registered a password during their initial
+    #  setup.
+    if $::puppetmastername == hiera('labs_puppet_master') {
+        # Create a root password and store it on the puppetmaster
+        user { 'root':
+            password => regsubst(
+                generate('/usr/local/sbin/make-labs-root-password', $::labsproject),
+                '\s$', '')
+
+        }
+    }
 }
