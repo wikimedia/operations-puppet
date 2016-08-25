@@ -46,6 +46,9 @@ quota_ram = 16384
 quota_floating_ips=<%= @novaconfig["quota_floating_ips"] %>
 quota_fixed_ips=200
 
+# Quota drift is a common problem
+max_age = 30
+
 api_paste_config=/etc/nova/api-paste.ini
 #use_ipv6=True
 allow_same_net_traffic=False
