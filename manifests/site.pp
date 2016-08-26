@@ -422,14 +422,12 @@ node 'db1057.eqiad.wmnet' {
         master        => true,
         binlog_format => 'STATEMENT',
     }
-    include base::firewall
 }
 
 node /^db10(51|52|53|55|65|66|72|73|80|83|89)\.eqiad\.wmnet/ {
     class { 'role::mariadb::core':
         shard => 's1',
     }
-    include base::firewall
 }
 
 # s1 (enwiki) core production dbs on codfw
@@ -440,7 +438,6 @@ node 'db2016.codfw.wmnet' {
         master        => true,
         binlog_format => 'STATEMENT',
     }
-    include base::firewall
 }
 
 node /^db20(34|42|48|55|62|69|70)\.codfw\.wmnet/ {
@@ -448,7 +445,6 @@ node /^db20(34|42|48|55|62|69|70)\.codfw\.wmnet/ {
         shard         => 's1',
         binlog_format => 'ROW',
     }
-    include base::firewall
 }
 
 # s2 (large wikis) core production dbs on eqiad
@@ -459,14 +455,12 @@ node 'db1018.eqiad.wmnet' {
         master        => true,
         binlog_format => 'STATEMENT',
     }
-    include base::firewall
 }
 
 node /^db10(21|24|36|54|60|63|67|74|76|90)\.eqiad\.wmnet/ {
     class { 'role::mariadb::core':
         shard => 's2',
     }
-    include base::firewall
 }
 
 # s2 (large wikis) core production dbs on codfw
@@ -477,7 +471,6 @@ node 'db2017.codfw.wmnet' {
         master        => true,
         binlog_format => 'STATEMENT',
     }
-    include base::firewall
 }
 
 node /^db20(35|41|49|56|63|64)\.codfw\.wmnet/ {
@@ -485,7 +478,6 @@ node /^db20(35|41|49|56|63|64)\.codfw\.wmnet/ {
         shard         => 's2',
         binlog_format => 'ROW',
     }
-    include base::firewall
 }
 
 # s3 (default) core production dbs on eqiad
@@ -504,7 +496,6 @@ node /^db10(15|35|38|44|77|78)\.eqiad\.wmnet/ {
     class { 'role::mariadb::core':
         shard => 's3',
     }
-    include base::firewall
 }
 
 # s3 (default) core production dbs on codfw
@@ -515,7 +506,6 @@ node 'db2018.codfw.wmnet' {
         master        => true,
         binlog_format => 'STATEMENT',
     }
-    include base::firewall
 }
 
 node /^db20(36|43|50|57)\.codfw\.wmnet/ {
@@ -523,7 +513,6 @@ node /^db20(36|43|50|57)\.codfw\.wmnet/ {
         shard         => 's3',
         binlog_format => 'ROW',
     }
-    include base::firewall
 }
 
 # s4 (commons) core production dbs on eqiad
@@ -534,14 +523,12 @@ node 'db1040.eqiad.wmnet' {
         master        => true,
         binlog_format => 'STATEMENT',
     }
-    include base::firewall
 }
 
 node /^db10(19|42|56|59|64|68|81|84|91)\.eqiad\.wmnet/ {
     class { 'role::mariadb::core':
         shard => 's4',
     }
-    include base::firewall
 }
 
 # s4 (commons) core production dbs on codfw
@@ -552,7 +539,6 @@ node 'db2019.codfw.wmnet' {
         master        => true,
         binlog_format => 'STATEMENT',
     }
-    include base::firewall
 }
 
 node /^db20(37|44|51|58|65)\.codfw\.wmnet/ {
@@ -560,7 +546,6 @@ node /^db20(37|44|51|58|65)\.codfw\.wmnet/ {
         shard         => 's4',
         binlog_format => 'ROW',
     }
-    include base::firewall
 }
 
 # s5 (wikidata/dewiki) core production dbs on eqiad
@@ -571,14 +556,12 @@ node 'db1049.eqiad.wmnet' {
         master        => true,
         binlog_format => 'STATEMENT',
     }
-    include base::firewall
 }
 
 node /^db10(26|45|70|71|82|87|92)\.eqiad\.wmnet/ {
     class { 'role::mariadb::core':
         shard => 's5',
     }
-    include base::firewall
 }
 
 # s5 (wikidata/dewiki) core production dbs on codfw
@@ -589,7 +572,6 @@ node 'db2023.codfw.wmnet' {
         master        => true,
         binlog_format => 'STATEMENT',
     }
-    include base::firewall
 }
 
 node /^db20(38|45|52|59|66)\.codfw\.wmnet/ {
@@ -597,7 +579,6 @@ node /^db20(38|45|52|59|66)\.codfw\.wmnet/ {
         shard         => 's5',
         binlog_format => 'ROW',
     }
-    include base::firewall
 }
 
 # s6 core production dbs on eqiad
@@ -608,14 +589,12 @@ node 'db1050.eqiad.wmnet' {
         master        => true,
         binlog_format => 'STATEMENT',
     }
-    include base::firewall
 }
 
 node /^db10(22|23|30|37|61|85|88|93)\.eqiad\.wmnet/ {
     class { 'role::mariadb::core':
         shard => 's6',
     }
-    include base::firewall
 }
 
 # s6 core production dbs on codfw
@@ -626,7 +605,6 @@ node 'db2028.codfw.wmnet' {
         master        => true,
         binlog_format => 'STATEMENT',
     }
-    include base::firewall
 }
 
 node /^db20(39|46|53|60|67)\.codfw\.wmnet/ {
@@ -634,7 +612,6 @@ node /^db20(39|46|53|60|67)\.codfw\.wmnet/ {
         shard         => 's6',
         binlog_format => 'ROW',
     }
-    include base::firewall
 }
 
 # s7 (centralauth, meta et al.) core production dbs on eqiad
@@ -645,14 +622,12 @@ node 'db1041.eqiad.wmnet' {
         master        => true,
         binlog_format => 'STATEMENT',
     }
-    include base::firewall
 }
 
 node /^db10(28|33|34|39|62|79|86|94)\.eqiad\.wmnet/ {
     class { 'role::mariadb::core':
         shard => 's7',
     }
-    include base::firewall
 }
 
 # s7 (centralauth, meta et al.) core production dbs on codfw
@@ -663,7 +638,6 @@ node 'db2029.codfw.wmnet' {
         master        => true,
         binlog_format => 'STATEMENT',
     }
-    include base::firewall
 }
 
 node /^db20(40|47|54|61|68)\.codfw\.wmnet/ {
@@ -671,7 +645,6 @@ node /^db20(40|47|54|61|68)\.codfw\.wmnet/ {
         shard         => 's7',
         binlog_format => 'ROW',
     }
-    include base::firewall
 }
 
 ## x1 shard
@@ -682,7 +655,6 @@ node 'db1031.eqiad.wmnet' {
         master        => true,
         binlog_format => 'ROW',
     }
-    include base::firewall
 }
 
 node 'db1029.eqiad.wmnet' {
@@ -690,7 +662,6 @@ node 'db1029.eqiad.wmnet' {
         shard         => 'x1',
         binlog_format => 'ROW',
     }
-    include base::firewall
 }
 
 # codfw
@@ -700,7 +671,6 @@ node 'db2033.codfw.wmnet' {
         master        => true,
         binlog_format => 'ROW',
     }
-    include base::firewall
 }
 
 ## m1 shard
@@ -959,7 +929,6 @@ node /^es101[268]\.eqiad\.wmnet/ {
         shard => 'es1',
         ssl   => 'on'
     }
-    include base::firewall
 }
 
 ## codfw servers
@@ -969,7 +938,6 @@ node /^es201[123]\.codfw\.wmnet/ {
         binlog_format => 'ROW',
         ssl           => 'on',
     }
-    include base::firewall
 }
 
 # External Storage, Shard 2 (es2) databases
@@ -982,7 +950,6 @@ node 'es1015.eqiad.wmnet' {
         binlog_format => 'ROW',
         ssl           => 'on',
     }
-    include base::firewall
 }
 
 node /^es101[13]\.eqiad\.wmnet/ {
@@ -991,7 +958,6 @@ node /^es101[13]\.eqiad\.wmnet/ {
         binlog_format => 'ROW',
         ssl           => 'on',
     }
-    include base::firewall
 }
 
 ## codfw servers
@@ -1002,7 +968,6 @@ node 'es2015.codfw.wmnet' {
         binlog_format => 'ROW',
         ssl           => 'on',
     }
-    include base::firewall
 }
 
 node /^es201[46]\.codfw\.wmnet/ {
@@ -1011,7 +976,6 @@ node /^es201[46]\.codfw\.wmnet/ {
         binlog_format => 'ROW',
         ssl           => 'on',
     }
-    include base::firewall
 }
 
 # External Storage, Shard 3 (es3) databases
@@ -1024,7 +988,6 @@ node 'es1019.eqiad.wmnet' {
         binlog_format => 'ROW',
         ssl           => 'on',
     }
-    include base::firewall
 }
 
 node /^es101[47]\.eqiad\.wmnet/ {
@@ -1033,7 +996,6 @@ node /^es101[47]\.eqiad\.wmnet/ {
         binlog_format => 'ROW',
         ssl           => 'on',
     }
-    include base::firewall
 }
 
 ## codfw servers
@@ -1044,7 +1006,6 @@ node 'es2018.codfw.wmnet' {
         binlog_format => 'ROW',
         ssl           => 'on',
     }
-    include base::firewall
 }
 
 node /^es201[79]\.codfw\.wmnet/ {
@@ -1053,7 +1014,6 @@ node /^es201[79]\.codfw\.wmnet/ {
         binlog_format => 'ROW',
         ssl           => 'on',
     }
-    include base::firewall
 }
 
 # Disaster recovery hosts for external storage
