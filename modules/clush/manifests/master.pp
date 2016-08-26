@@ -21,6 +21,9 @@ class clush::master(
     $username,
     $ensure = present,
 ) {
+    # clush has not been vetted for use in production
+    # See T143306
+    requires_realm('labs')
 
     file { '/root/.ssh':
         ensure => directory,
@@ -35,7 +38,10 @@ class clush::master(
         group   => 'root',
         mode    => '0400',
         require => File['/root/.ssh'],
+        content => secret("clush/${username}"),
     }
+
+    require_package('clustershell')
 
     $config = {
         'Main' => {
