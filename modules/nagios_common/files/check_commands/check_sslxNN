@@ -30,11 +30,12 @@ use constant DOMAINS => qw(
 
 use strict;
 use warnings;
+use threads;
 use Nagios::Plugin::Functions qw(nagios_exit max_state %STATUS_TEXT);
 
 # this is required to be in the same directory as us
 use FindBin qw($Bin);
-use lib ($Bin, "$Bin/plugins", "/usr/lib/nagios/plugins");
+use lib ( $Bin, "$Bin/plugins", "/usr/lib/nagios/plugins" );
 require "check_ssl";    ## no critic
 
 sub check_ssl {
@@ -46,24 +47,39 @@ sub check_ssl {
 }
 
 sub run {
-    my ( @exits, @lines );
+    my @threads;
 
     foreach my $domain (DOMAINS) {
         foreach my $prefix ( '', 'en.', 'en.m.' ) {
             my $cn = $prefix . $domain;
 
             my @argv = ( @ARGV, '--cn', $cn );
-            my $e = check_ssl(@argv);
 
-            my $msg = $e->message;
-            $msg =~ s/^\w+ (.+)\n/$1/;
+            # spawn a thread to run the various check_ssls asynchronously
+            my $thr = threads->create(
+                { 'context' => 'list' },
+                sub {
+                    my $e = check_ssl(@argv);
 
-            # prepend with $cn and format in columns to ease debugging
-            $msg = sprintf( '%-30s %s', $cn, $msg );
+                    my $msg = $e->message;
+                    $msg =~ s/^\w+ (.+)\n/$1/;
 
-            push @lines, $msg;
-            push @exits, $e->return_code;
+                    # prepend with $cn and format in columns to ease debugging
+                    $msg = sprintf( '%-30s %s', $cn, $msg );
+
+                    return ( $msg, $e->return_code );
+                }
+            );
+            push @threads, $thr;
         }
+    }
+
+    # join all the threads and collect all stdout/return code values
+    my ( @exits, @lines );
+    foreach my $thr (@threads) {
+        my ( $msg, $return_code ) = $thr->join();
+        push @lines, $msg;
+        push @exits, $return_code;
     }
 
     # build a one-line summary (e.g. "70 OK, 2 WARNING") and set it first
