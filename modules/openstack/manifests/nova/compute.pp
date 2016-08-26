@@ -147,6 +147,21 @@ class openstack::nova::compute(
         }
     }
 
+    # By default trusty allows the creation of user namespaces by unprivileged users
+    # (Debian defaulted to disallowing these since the feature was introduced for security reasons)
+    # Unprivileged user namespaces are not something we need in general (and especially
+    # not in trusty where support for namespaces is incomplete) and was the source for
+    # several local privilege escalation vulnerabilities. The 4.4 HWE kernel for trusty
+    # contains a backport of the Debian patch allowing to disable the creation of user
+    # namespaces via a sysctl, so disable to limit the attack footprint
+    if os_version('ubuntu == trusty') and (versioncmp($::kernelversion, '4.4') >= 0) {
+        sysctl::parameters { 'disable-unprivileged-user-namespaces-labvirt':
+            values => {
+                'kernel.unprivileged_userns_clone' => 0,
+            },
+        }
+    }
+
     # Without qemu-system, apt will install qemu-kvm by default,
     # which is somewhat broken.
     package { 'qemu-system':
