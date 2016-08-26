@@ -75,33 +75,18 @@ class role::prometheus::ops {
     # this is only a temporary measure until we generate them from
     # a template and some exported resources
     file { "${targets_path}/mysql-core_${::site}.yaml":
-        source => [
-          "puppet:///modules/role/prometheus/mysql-core_${::site}.yaml",
-          '/dev/null'
-        ],
+        source => "puppet:///modules/role/prometheus/mysql-core_${::site}.yaml",
     }
     file { "${targets_path}/mysql-dbstore_${::site}.yaml":
-        source => [
-          "puppet:///modules/role/prometheus/mysql-dbstore_${::site}.yaml",
-          '/dev/null'
-        ],
+        source => "puppet:///modules/role/prometheus/mysql-dbstore_${::site}.yaml",
     }
     file { "${targets_path}/mysql-misc_${::site}.yaml":
-        source => [
-          "puppet:///modules/role/prometheus/mysql-misc_${::site}.yaml",
-          '/dev/null'
-        ],
+        source => "puppet:///modules/role/prometheus/mysql-misc_${::site}.yaml",
     }
     file { "${targets_path}/mysql-parsercache_${::site}.yaml":
-        source => [
-          "puppet:///modules/role/prometheus/mysql-parsercache_${::site}.yaml",
-          '/dev/null',
-        ],
+        source => "puppet:///modules/role/prometheus/mysql-parsercache_${::site}.yaml",
     }
     file { "${targets_path}/mysql-labs_${::site}.yaml":
-        source => [
-          "puppet:///modules/role/prometheus/mysql-labs_${::site}.yaml",
-          '/dev/null'
-        ],
+        source => "puppet:///modules/role/prometheus/mysql-labs_${::site}.yaml",
     }
 }
