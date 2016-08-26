@@ -1,0 +1,20 @@
+varnishtest "RB Redirect"
+
+server s1 {} -start
+
+varnish v1 -arg "-p cc_command='exec cc -fpic -shared -Wl,-x -L/usr/local/lib/ -o %o %s -lmaxminddb' -p vcc_allow_inline_c=true -p vcc_err_unref=false" -vcl+backend {
+    backend vtc_backend {
+        .host = "${s1_addr}"; .port = "${s1_port}";
+    }
+
+    include "/usr/share/varnish/tests/wikimedia_text-frontend.vcl";
+} -start
+
+client c1 {
+    txreq -hdr "Host: en.wikipedia.org" -url "/api/rest_v1" -hdr "X-Forwarded-Proto: https"
+    rxresp
+
+    expect resp.status == 301
+    expect resp.msg == "Moved Permanently"
+    expect resp.http.Location == "https://en.wikipedia.org/api/rest_v1/"
+} -run
