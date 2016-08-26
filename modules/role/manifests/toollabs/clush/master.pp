@@ -7,8 +7,11 @@
 # maintained in modules/role/files/toollabs/clush/toollabs-clush-generator.
 # This is refreshed every hour.
 #
+# You'll have to be a member of tools.admin to run this. All accesses
+# are logged to /var/log/clush.log.
+#
 # For example, to run a command on all the kubernetes workers,
-#  # clush -g k8s-worker -b 'uname -r'
+#  $ clush -g k8s-worker -b 'uname -r'
 #
 # This will run it on all the k8s-workers, collect the output
 # from them all (the -b option), dedupes them and displays them. You can specify fanout with -f - the default is 16.
@@ -33,6 +36,17 @@ class role::toollabs::clush::master {
     file { '/usr/local/sbin/tools-clush-interpreter':
         ensure => file,
         source => 'puppet:///modules/role/toollabs/clush/tools-clush-interpreter',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+    }
+
+    # override /usr/bin/clush with this! Just does additional logging
+    # and makes sure users aren't runnning it as root. It logs to
+    # /var/log/clush.log. Only people in tools.admin can run this!
+    file { '/usr/local/bin/clush':
+        ensure => file,
+        source => 'puppet:///modules/role/toollabs/clush/clush',
         owner  => 'root',
         group  => 'root',
         mode   => '0555',
