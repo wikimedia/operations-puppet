@@ -51,4 +51,11 @@ class ldap::management(
         owner  => 'root',
         group  => 'root',
     }
+
+    file { '/usr/local/bin/rewrite-group-for-memberof':
+        source => 'puppet:///modules/ldap/rewrite-group-for-memberof',
+        mode   => '0554',
+        owner  => 'root',
+        group  => 'root',
+    }
 }
