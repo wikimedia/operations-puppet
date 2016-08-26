@@ -1058,7 +1058,7 @@ node /^es201[79]\.codfw\.wmnet/ {
 
 # Disaster recovery hosts for external storage
 node 'es2001.codfw.wmnet' {
-    role mariadb::otrsbackups
+    role mariadb::otrsbackups, prometheus::node_exporter
     include standard
     include base::firewall
 }
