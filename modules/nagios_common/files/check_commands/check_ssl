@@ -85,8 +85,8 @@ sub init {
         default => 0,
     );
     $ng->arg(
-        spec    => 'authalg=s',
-        help    => 'authentication algorithm (DSS, RSA, ECDSA)',
+        spec => 'authalg=s',
+        help => 'authentication algorithm (DSS, RSA, ECDSA)',
     );
     $ng->arg(
         spec => 'subject|s=s',
@@ -138,10 +138,13 @@ sub ssl_connect {
 
     # not setting this (or setting to undef) does *not* disable SNI;
     # only setting to empty string does (this is documented)
-    $sopts{SSL_hostname} = '' if $ng->nosni;
+    if ( $ng->nosni ) {
+        $sopts{SSL_hostname}      = '';
+        $sopts{SSL_verifycn_name} = $cn;
+    }
 
     if ( defined $ng->authalg ) {
-        $sopts{SSL_cipher_list} = 'a' . uc($ng->authalg);
+        $sopts{SSL_cipher_list} = 'a' . uc( $ng->authalg );
         $sopts{SSL_cipher_list} .= ':!eNULL';
     }
 
