@@ -183,6 +183,28 @@ sub cluster_fe_recv {
 		unset req.http.If-Modified-Since;
 	}
 
+	// The idea here is to occasionally redirect some of our worst clients
+	// (in TLS terms: those lacking forward secrecy and/or using 3DES) to
+	// our wikitech page about browser security, hoping it will prod them
+	// to upgrade.
+	// The X-Conn-Props cipher filter matches roughly 0.46% of traffic.  By
+	// restricting to a UA string matching 'Windows NT' (for now), the
+	// percentage drops a bit more.  We then further restrict to GETs of
+	// wiki pages, avoid the mobile domains JIC, and ignore clients that
+	// already have a cookie meaning we've done this to them once before
+	// during this browser session.  After all the basic conditions are
+	// met, we then only apply the redirect to 1% of matching traffic
+	// randomly.  We may increase that a bit in the future and/or widen the
+	// UA filter, but this is a good
+	// starting point.
+	if (req.http.X-Connection-Properties ~ "DES-CBC3|C=AES"
+	   && req.http.User-Agent ~ "Windows NT" && req.request == "GET"
+	   && req.url ~ "^/wiki/" && req.http.host !~ "\.m\."
+	   && req.http.Cookie !~ "Browser-Security=Awful"
+	   && std.random(0,100) < 1.0) {
+		<%= error_synth(787, "Browser Security Warning Redirect") -%>
+	}
+
 	call text_common_recv;
 }
 
@@ -287,6 +309,17 @@ sub cluster_fe_err_synth {
 	if (obj.status == 741) {
 		set obj.status = 401;
 		set obj.http.WWW-Authenticate = {"Basic realm="Buggy request, please report at https://phabricator.wikimedia.org/T141786""};
+		return (deliver);
+	}
+
+	// Browser sec redirect, with a cookie to prevent repeats in the same session
+	// Note the cookie is is per-site for simplicity
+	if (obj.status == 787) {
+		set obj.status = 302;
+		set obj.http.Connection = "keep-alive";
+		set obj.http.Content-Length = "0"; // BZ #62245
+		set obj.http.Set-Cookie = "Browser-Security=Awful; Path=/; secure";
+		set obj.http.Location = "https://wikitech.wikimedia.org/wiki/HTTPS:_Browser_Recommendations";
 		return (deliver);
 	}
 }
