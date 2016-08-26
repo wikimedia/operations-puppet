@@ -73,12 +73,12 @@ class role::mariadb::ferm {
 
     # tendril monitoring
     ferm::rule { 'mariadb_monitoring':
-        rule => 'saddr @resolve((neon.wikimedia.org iron.wikimedia.org)) proto tcp dport (3306) ACCEPT;',
+        rule => 'saddr @resolve((neon.wikimedia.org)) proto tcp dport (3306) ACCEPT;',
     }
 
     # for DBA purposes
     ferm::rule { 'mariadb_dba':
-        rule => 'saddr @resolve((neon.wikimedia.org iron.wikimedia.org db1011.eqiad.wmnet)) proto tcp dport (3307) ACCEPT;',
+        rule => 'saddr @resolve((neon.wikimedia.org db1011.eqiad.wmnet)) proto tcp dport (3307) ACCEPT;',
     }
 }
 
@@ -588,6 +588,7 @@ class role::mariadb::core(
     }
 
     include standard
+    include base::firewall
     include role::mariadb::grants
     include role::mariadb::grants::core
     include role::mariadb::monitor
