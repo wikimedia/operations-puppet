@@ -22,11 +22,17 @@ class toollabs::static(
     # Hence not mirroring on gerrit
     # Also gerrit will probably die from a 11Gig repo
     # This does not mean it's ok to clone other things from github on ops/puppet :)
-    git::clone { 'cdnjs':
-        ensure    => latest,
-        directory => '/srv/cdnjs',
-        origin    => 'https://github.com/cdnjs/cdnjs.git',
-        require   => Labs_lvm::Volume['cdnjs-disk'],
+    exec { 'clone-cdnjs':
+        command => '/usr/bin/git clone --depth 1 https://github.com/cdnjs/cdnjs.git /srv/cdnjs',
+        creates => '/srv/cdnjs',
+        require => Labs_lvm::Volume['cdnjs-disk'],
+    }
+
+    cron { 'update-cdnjs':
+        command => 'cd /srv/cdnjs && /usr/bin/git pull --depth 1 https://github.com/cdnjs/cdnjs.git',
+        user    => 'root',
+        hour    => 0,
+        require => Exec['clone-cdnjs'],
     }
 
     file { '/usr/local/bin/cdnjs-packages-gen':
