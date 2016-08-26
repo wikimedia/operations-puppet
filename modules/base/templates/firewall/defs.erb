@@ -14,7 +14,6 @@ mw_appserver_networks = scope.lookupvar('network::constants::mw_appserver_networ
 # $DOMAIN_NETWORKS is a set of all networks belonging to a domain.
 # a domain is a realm currently, but the notion is more generic than that on purpose
 @def $DOMAIN_NETWORKS = (<%- domain_networks.each do |net| -%><%= net %> <% end -%>);
-@def $ALL_NETWORKS = (<%- all_networks.each do |net| -%><%= net %> <% end -%>);
 
 # $PRODUCTION_NETWORKS is a set of all production networks
 @def $PRODUCTION_NETWORKS = (<%- production_networks.each do |net| -%><%= net %> <% end -%>);
