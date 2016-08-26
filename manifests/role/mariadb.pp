@@ -588,6 +588,7 @@ class role::mariadb::core(
     }
 
     include standard
+    include base::firewall
     include role::mariadb::grants
     include role::mariadb::grants::core
     include role::mariadb::monitor
