@@ -6,9 +6,17 @@
 class role::prometheus::node_exporter {
     include ::prometheus::node_exporter
 
+    if $::realm == 'labs' {
+        $ferm_srange = '$DOMAIN_NETWORKS'
+    } else {
+        $prometheus_nodes = hiera('prometheus_nodes')
+        $prometheus_ferm_nodes = join($prometheus_nodes, ' ')
+        $ferm_srange = "@resolve((${prometheus_ferm_nodes}))"
+    }
+
     ferm::service { 'prometheus-node-exporter':
         proto  => 'tcp',
         port   => '9100',
-        srange => '$DOMAIN_NETWORKS',
+        srange => $ferm_srange,
     }
 }
