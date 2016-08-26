@@ -52,6 +52,13 @@ class contint::packages::python {
         require  => Package['python-pip'],
     }
 
+    # pyflakes and pep8
+    require_package(
+        'python-pyflakes',
+        'python-flake8',
+        'python-pep8',
+    )
+
     # Python 3
     require_package(
         'python3',
