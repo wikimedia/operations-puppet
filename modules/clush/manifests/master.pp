@@ -62,7 +62,7 @@ class clush::master(
         }
     }
 
-    file { '/etc/clustershell/clush.ini':
+    file { '/etc/clustershell/clush.conf':
         ensure  => file,
         owner   => 'root',
         group   => 'root',
