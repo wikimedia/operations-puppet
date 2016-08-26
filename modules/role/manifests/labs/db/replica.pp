@@ -13,6 +13,12 @@ class role::labs::db::replica {
     include role::mariadb::ferm
     include passwords::misc::scripts
 
+    class { 'role::mariadb::groups':
+        mysql_group => 'labs',
+        mysql_role  => 'slave',
+        mysql_shard => 'multi',
+    }
+
     class { 'mariadb::config':
         prompt        => 'REPLICA database',
         config        => 'mariadb/labsdb-replica.my.cnf.erb',
