@@ -54,7 +54,8 @@ define puppetmaster::web_frontend(
         exec { "generate hostcert for ${title}":
             require => File["${ssldir}/certs"],
             command => "/usr/bin/puppet cert generate ${server_name}${alt_names_cmd}",
-            creates => "${ssldir}/certs/${server_name}.pem";
+            creates => "${ssldir}/certs/${server_name}.pem",
+            before  => Service['apache2'],
         }
 
     }
@@ -62,7 +63,6 @@ define puppetmaster::web_frontend(
         ensure   => present,
         content  => template('puppetmaster/web-frontend.conf.erb'),
         priority => $priority,
-        require  => Exec["generate hostcert for ${title}"],
     }
 
 }
