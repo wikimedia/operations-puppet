@@ -106,6 +106,13 @@ sub cluster_fe_recv_pre_purge {
 				set req.http.x-dt-host = regsub(req.http.host, "^([a-z0-9-]+)\.(m|zero)\.", "\1.");
 			}
 
+	    // Permanently redirect /api/rest_v1 to the RESTBase documentation
+	    if (req.url == "/api/rest_v1") {
+	      set resp.status = 301
+	      set resp.http.Location = "/api/rest_v1/;
+	      return (deliver);
+	    }
+
 			if (req.url ~ "^/api/rest_v1/") {
 				// for Restbase, there is no difference in desktop-vs-mobile hostnames,
 				// so rewrite mobile hostnames to desktop hostnames for singular caching
