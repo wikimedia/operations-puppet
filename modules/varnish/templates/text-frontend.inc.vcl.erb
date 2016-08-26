@@ -138,6 +138,12 @@ sub cluster_fe_recv_pre_purge {
 			//     [?&] to reuse with the parameter that follows:
 			set req.url = regsub(req.url, "([?&])redirect=[^&]+&", "\1");
 		}
+
+		// Permanently redirect /api/rest_v1 to the RESTBase documentation
+		if (req.url == "/api/rest_v1") {
+			set req.http.Location = req.http.X-Forwarded-Proto + "://" + req.http.Host + "/api/rest_v1/";
+			return (synth(301, "RB Redirect"));
+		}
 	}
 
 	// Normalize paths before purging
@@ -319,6 +325,11 @@ sub cluster_fe_err_synth {
 		set resp.http.Location = req.http.Location;
 		set resp.http.Connection = "keep-alive";
 		set resp.http.Content-Length = "0"; // BZ #62245
+	}
+
+	if (resp.reason == "RB Redirect") {
+		set resp.reason = "Moved Permanently";
+		set resp.http.Location = req.http.Location;
 	}
 
 	// Chrome/41-on-Windows: T141786
