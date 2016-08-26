@@ -13,6 +13,12 @@ class role::labs::db::slave {
     include role::mariadb::ferm
     include passwords::misc::scripts
 
+    class { 'role::mariadb::groups':
+        group => 'labs',
+        role  => 'slave',
+        shard => 'tools',
+    }
+
     class { 'mariadb::config':
         prompt        => 'TOOLSDB slave',
         config        => 'mariadb/tools.my.cnf.erb',

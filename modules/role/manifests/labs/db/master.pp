@@ -12,6 +12,12 @@ class role::labs::db::master {
     include role::mariadb::monitor
     include passwords::misc::scripts
 
+    class { 'role::mariadb::groups':
+        group => 'labs',
+        role  => 'master',
+        shard => 'tools',
+    }
+
     class { 'mariadb::config':
         prompt    => 'TOOLSDB master',
         config    => 'mariadb/tools.my.cnf.erb',
