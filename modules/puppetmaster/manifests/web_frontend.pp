@@ -62,7 +62,6 @@ define puppetmaster::web_frontend(
         ensure   => present,
         content  => template('puppetmaster/web-frontend.conf.erb'),
         priority => $priority,
-        require  => Exec["generate hostcert for ${title}"],
     }
 
 }
