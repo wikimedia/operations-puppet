@@ -49,7 +49,7 @@ class role::puppetmaster::frontend {
             master       => $ca_server,
             workers      => $::puppetmaster::workers,
             bind_address => $::puppetmaster::bind_address,
-            priority     => 50,
+            priority     => 40,
         }
     }
 
