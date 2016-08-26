@@ -861,6 +861,7 @@ class role::mariadb::proxy(
     }
 
     include standard
+    include role::prometheus::node_exporter
 
     package { [
         'mysql-client',
