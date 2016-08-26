@@ -49,6 +49,7 @@ sub check_ssl {
 sub run {
     my @threads;
 
+    # iterate through all of the domains and try domain/en.domain/en.m.domain
     foreach my $domain (DOMAINS) {
         foreach my $prefix ( '', 'en.', 'en.m.' ) {
             my $cn = $prefix . $domain;
@@ -73,6 +74,21 @@ sub run {
             push @threads, $thr;
         }
     }
+
+    # finally, try just once without --no-sni; this should suffice for expiry
+    # checks, but it's not enough to validate against all of our domains
+    my $thr = threads->create(
+        { 'context' => 'list' },
+        sub {
+            my $cn = (DOMAINS)[0];
+            my $e = check_ssl( @ARGV, '--cn', $cn, '--no-sni' );
+            my $msg = $e->message;
+            $msg =~ s/^\w+ (.+)\n/$1/;
+            $msg = sprintf( '%-30s %s', '(no SNI)', $msg );
+            return ( $msg, $e->return_code );
+        }
+    );
+    push @threads, $thr;
 
     # join all the threads and collect all stdout/return code values
     my ( @exits, @lines );
