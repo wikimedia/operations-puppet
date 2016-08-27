@@ -214,6 +214,7 @@ class openstack::horizon::service(
     # Collect and compress static web content
     exec { 'djangorefresh':
         command     => 'python manage.py collectstatic --noinput && python manage.py compress',
+        path        => '/usr/bin',
         cwd         => '/usr/share/openstack-dashboard',
         require     => File['/etc/openstack-dashboard/local_settings.py'],
         refreshonly => true
