@@ -40,7 +40,7 @@ class openstack::horizon::service(
         content => template("openstack/${openstack_version}/horizon/local_settings.py.erb"),
         owner   => 'horizon',
         group   => 'horizon',
-        notify  => Service['apache2'],
+        notify  => [Service['apache2'], Exec['djangorefresh']]
         require => Package['openstack-dashboard'],
         mode    => '0440',
     }
@@ -177,6 +177,7 @@ class openstack::horizon::service(
         group   => 'root',
         mode    => '0644',
         require => Package['python-designate-dashboard', 'openstack-dashboard'],
+        notify  => Exec['djangorefresh'],
         recurse => true
     }
     file { '/usr/share/openstack-dashboard/openstack_dashboard/local/enabled/_1922_project_proxy_panel.py':
@@ -184,6 +185,7 @@ class openstack::horizon::service(
         owner   => 'root',
         group   => 'root',
         mode    => '0644',
+        notify  => Exec['djangorefresh'],
         require => Package['python-designate-dashboard', 'openstack-dashboard'],
     }
 
@@ -207,5 +209,13 @@ class openstack::horizon::service(
     apache::site { $webserver_hostname:
         content => template("openstack/${openstack_version}/horizon/${webserver_hostname}.erb"),
         require => File['/etc/openstack-dashboard/local_settings.py'],
+    }
+
+    # Collect and compress static web content
+    exec { 'djangorefresh':
+        command     => 'python manage.py collectstatic --noinput && python manage.py compress',
+        cwd         => '/usr/share/openstack-dashboard',
+        require     => File['/etc/openstack-dashboard/local_settings.py'],
+        refreshonly => true
     }
 }
