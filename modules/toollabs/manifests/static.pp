@@ -29,6 +29,25 @@ class toollabs::static(
         require   => Labs_lvm::Volume['cdnjs-disk'],
     }
 
+    # Prune branches deleted upstream once per day
+    cron { 'prune /srv/cdnjs':
+        ensure  => present,
+        command => 'cd /srv/cdnjs && git fetch --prune --quiet',
+        user    => 'root',
+        hour    => 9,
+        minute  => 5 * fqdn_rand(12, 'prune /srv/cdnjs'),
+    }
+
+    # Aggressively collect garbage refs once per week
+    cron { 'gc /srv/cdnjs':
+        ensure  => present,
+        command => 'cd /srv/cdnjs && git gc --aggressive --quiet',
+        user    => 'root',
+        hour    => 17
+        minute  => 5 * fqdn_rand(12, 'gc /srv/cdnjs'),
+        weekday => 3,
+    }
+
     file { '/usr/local/bin/cdnjs-packages-gen':
         source => 'puppet:///modules/toollabs/cdnjs-packages-gen',
         owner  => 'root',
