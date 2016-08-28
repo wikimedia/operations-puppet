@@ -26,6 +26,7 @@ require 'git'
 require 'puppet-lint/tasks/puppet-lint'
 require 'puppet-strings/tasks/generate'
 require 'rubocop/rake_task'
+require 'rake/testtask'
 
 # Find files modified in HEAD
 def git_changed_in_head(file_exts=[])
@@ -159,6 +160,24 @@ def puppet_parser_validate(*manifests)
     sh "puppet parser validate #{manifests}"
 end
 
+def spec_modules
+    module_names = []
+    FileList['modules/*/spec'].each do |m|
+        module_names << m.match('modules/(.+)/')[1]
+    end
+    return module_names
+end
+
+namespace :spec do
+    spec_modules.each do |module_name|
+        desc "Run spec for module #{module_name}"
+        task module_name do
+            spec_result = system("cd 'modules/#{module_name}' && rake spec")
+            raise "Module #{module_name} failed to pass spec" if !spec_result
+        end
+    end
+end
+
 desc "Run spec tests found in modules"
 task :spec do
 
@@ -167,24 +186,17 @@ task :spec do
     ignored_modules = ['mysql', 'osm', 'postgresql', 'puppetdbquery', 'stdlib', 'wdqs']
 
     # Invoke rake whenever a module has a Rakefile.
-    FileList["modules/*/Rakefile"].each do |rakefile|
-
-        module_name = rakefile.match('modules/(.+)/')[1]
+    spec_modules.each do |module_name|
         next if ignored_modules.include? module_name
-
         puts '-' * 80
         puts "Running rspec tests for module #{module_name}"
         puts '-' * 80
-
-        spec_result = 0
-        Dir.chdir("modules/#{module_name}") do
-            spec_result = system('rake spec')
-        end
-        if !spec_result
+        begin
+            Rake::Task["spec:#{module_name}"].invoke
+        rescue
             failed_modules << module_name  # recording
         end
         puts "\n"
-
     end
 
     puts '-' * 80
