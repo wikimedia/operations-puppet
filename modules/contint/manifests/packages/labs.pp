@@ -17,6 +17,8 @@ class contint::packages::labs {
         include mediawiki::packages::fonts
         # No Android SDK jobs on Precise
         include ::contint::packages::androidsdk
+
+        include phabricator::arcanist
     }
 
     include ::contint::packages::analytics
@@ -25,8 +27,6 @@ class contint::packages::labs {
     include ::contint::packages::php
     include ::contint::packages::python
     include ::contint::packages::ruby
-
-    include phabricator::arcanist
 
     # Database related
     package { [
