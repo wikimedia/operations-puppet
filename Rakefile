@@ -24,6 +24,7 @@
 
 require 'bundler/setup'
 require 'rubocop/rake_task'
+require 'rake/testtask'
 
 RuboCop::RakeTask.new(:rubocop)
 
@@ -85,7 +86,7 @@ task :run_puppet_lint do
 end
 
 desc 'Run all build/tests commands (CI entry point)'
-task test: [:rubocop]
+task test: [:rubocop, :"spec:all"]
 
 desc "Build documentation"
 task :doc do
@@ -133,6 +134,22 @@ end
 def puppet_parser_validate(*manifests)
     manifests = manifests.join(' ')
     sh "puppet parser validate #{manifests}"
+end
+
+
+namespace :spec do
+    FileList['modules/*/spec'].each do |m|
+        module_name = m.match('modules/(.+)/')[1]
+
+        desc "Run spec for module #{module_name}"
+        task module_name do
+            spec_result = system("cd 'modules/#{module_name}' && rake spec")
+            raise "Module #{module_name} failed to pass spec" if !spec_result
+        end
+
+        desc "Run 'rake spec' in each module"
+        task :all => module_name
+    end
 end
 
 desc "Run spec tests found in modules"
