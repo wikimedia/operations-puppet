@@ -10,15 +10,12 @@
 # [*is_git_master*]
 # If True, the git private repository here will be considered a master.
 #
-# [*replicate_to*]
-# For servers that are a master for the private repo, a list of hosts to replicate to
-#
 class puppetmaster::gitclone(
     $secure_private = true,
     $is_git_master = false,
-    $replicate_to = undef,
-    ){
-
+){
+    $servers = hiera('puppetmaster::servers', {})
+    
     class  { '::puppetmaster::base_repo':
         gitdir   => $::puppetmaster::gitdir,
         gitowner => 'gitpuppet'
@@ -81,7 +78,7 @@ class puppetmaster::gitclone(
         # However, it is enough to push from the private repo master
         # in order to create the repo.
 
-        # on the master for private data,
+        # on any master for private data,
         # /srv/private contains the actual repository.
         # On the non-masters, it is a bare git repo used only to receive
         # the push from upstream
@@ -122,6 +119,17 @@ class puppetmaster::gitclone(
                 mode    => '0555',
                 require => Exec['/srv/private init'],
             }
+
+            # Post receive script in case the push is from another master
+            # This will reset to head, and transmit data to /var/lib
+            file { '/srv/private/hooks/post-receive':
+                source  => 'puppet:///modules/puppetmaster/git/private/post-receive-master',
+                owner   => 'gitpuppet',
+                group   => 'gitpuppet',
+                mode    => '0550',
+                require => Puppetmaster::Gitprivate['/srv/private']
+            }
+            
         } else {
             puppetmaster::gitprivate { '/srv/private':
                 bare     => true,
