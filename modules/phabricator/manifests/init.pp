@@ -248,7 +248,9 @@ class phabricator (
     # phd service is only running on active server set in Hiera
     # will be changed after cluster setup is finished
     $phabricator_active_server = hiera('phabricator_active_server')
-    if $::hostname == $phabricator_active_server {
+	if $::realm == 'labs' {
+        $phd_service_ensure = 'running'
+    } elseif $::hostname == $phabricator_active_server {
         $phd_service_ensure = 'running'
     } else {
         $phd_service_ensure = 'stopped'
