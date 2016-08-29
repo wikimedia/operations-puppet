@@ -35,9 +35,19 @@ class role::cache::kafka::webrequest(
         # "Begin" and "End" timestamps before flushing the available tags to a log.
         # When a timeout occurs most of the times the result is a webrequest log
         # missing values like the end timestamp.
+        #
+        # Parameters modified during the upload migration:
+        # 'L':
+        # Sets the upper limit of incomplete transactions kept before the oldest
+        # one is force completed. This setting keeps an upper bound
+        # on the memory usage of running queries (Default: 1000).
+        # A change in the -T timeout value has the side effect of keeping more
+        # incomplete transactions in memory for each varnishkafka query (in our case
+        # it directly corresponds to a varnishkafka instance running).
         $varnish_opts = {
             'q' => 'ReqMethod ne "PURGE" and not Timestamp:Pipe and not ReqHeader:Upgrade ~ "[wW]ebsocket"',
-            'T' => '700'
+            'T' => '700',
+            'L' => '5000'
         }
         $conf_template = 'varnishkafka/varnishkafka_v4.conf.erb'
     } else {
