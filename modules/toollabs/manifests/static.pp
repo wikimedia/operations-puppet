@@ -29,7 +29,8 @@ class toollabs::static(
     }
 
     cron { 'update-cdnjs':
-        command => 'cd /srv/cdnjs && /usr/bin/git pull --depth 1 https://github.com/cdnjs/cdnjs.git',
+        command => 'cd /srv/cdnjs && /usr/bin/git pull --depth 1 https://github.com/cdnjs/cdnjs.git && \
+                    /usr/local/bin/cdnjs-packages-gen /srv/cdnjs /srv/cdnjs/packages.json',
         user    => 'root',
         hour    => 0,
         require => Exec['clone-cdnjs'],
@@ -42,16 +43,8 @@ class toollabs::static(
         mode   => '0755',
     }
 
-    exec { 'generate-cdnjs-packages-json':
-        command     => '/usr/local/bin/cdnjs-packages-gen /srv/cdnjs /srv/cdnjs/packages.json',
-        refreshonly => true,
-        subscribe   => [File['/usr/local/bin/cdnjs-packages-gen'],
-                        Git::Clone['cdnjs']],
-    }
-
     $resolver = join($::nameservers, ' ')
     nginx::site { 'static-server':
         content => template('toollabs/static-server.conf.erb'),
-        require => Git::Clone['cdnjs'],
     }
 }
