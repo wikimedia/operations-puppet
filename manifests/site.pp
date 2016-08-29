@@ -1235,8 +1235,6 @@ node 'labtestservices2001.wikimedia.org' {
 
 # bastion in the Netherlands
 node 'bast3001.wikimedia.org' {
-    $ganglia_aggregator = true
-
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
     }
@@ -1296,7 +1294,6 @@ node 'install1001.wikimedia.org' {
 node 'install2001.wikimedia.org' {
     role installserver::tftp_server, installserver::dhcp, aptrepo::wikimedia
     $cluster = 'misc'
-    $ganglia_aggregator = true
 
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
@@ -1740,11 +1737,6 @@ node /^lvs10(0[789]|1[012])\.eqiad\.wmnet$/ {
 
 # codfw lvs
 node /lvs200[1-6]\.codfw\.wmnet/ {
-
-    if $::hostname =~ /^lvs200[12]$/ {
-        $ganglia_aggregator = true
-    }
-
     # lvs200[25] are LVS balancers for the codfw recursive DNS IP,
     #   so they need to use the recursive DNS backends directly
     #   (acamar and achernar) with fallback to eqiad
@@ -1845,11 +1837,6 @@ node /lvs200[1-6]\.codfw\.wmnet/ {
 
 # ESAMS lvs servers
 node /^lvs300[1-4]\.esams\.wmnet$/ {
-
-    if $::hostname =~ /^lvs300[12]$/ {
-        $ganglia_aggregator = true
-    }
-
     # lvs300[24] are LVS balancers for the esams recursive DNS IP,
     #   so they need to use the recursive DNS backends directly
     #   (nescio and maerlant) with fallback to eqiad
@@ -2015,13 +2002,11 @@ node /^ms-be300[1-4]\.esams\.wmnet$/ {
 
 node /^ms-fe2001\.codfw\.wmnet$/ {
     role swift::proxy, swift::stats_reporter
-    $ganglia_aggregator = true
     include ::lvs::realserver
 }
 
 node /^ms-fe2002\.codfw\.wmnet$/ {
     role swift::proxy
-    $ganglia_aggregator = true
     include ::lvs::realserver
 }
 
@@ -2817,8 +2802,6 @@ node 'ununpentium.wikimedia.org' {
 
 # Ganglia Web UI
 node 'uranium.wikimedia.org' {
-    $ganglia_aggregator = true
-
     role ganglia::web
     include standard
     include base::firewall
