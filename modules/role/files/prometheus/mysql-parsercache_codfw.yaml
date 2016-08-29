@@ -11,7 +11,7 @@
   - pc2005:9104
 
 - labels:
-    shard: pc2
+    shard: pc3
     role: master
   targets:
   - pc2006:9104
