@@ -15,9 +15,9 @@
     role: master
   targets:
   - labsdb1004:9104
-- labels:
-    shard: tools
-    role: slave
-  targets:
-  - labsdb1005:9104
+#- labels:
+#    shard: tools
+#    role: slave
+#  targets:
+#  - labsdb1005:9104
 
