@@ -1,0 +1,4 @@
+docker::builder_host: 'docker_builder_host'
+docker::username: 'docker_username'
+docker::password: 'docker_password'
+docker::password_hash: 'docker_password_hash'
