@@ -1,0 +1,2 @@
+class passwords::testreduce::mysql {
+}

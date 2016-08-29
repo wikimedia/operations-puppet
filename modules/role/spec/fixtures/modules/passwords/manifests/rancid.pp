@@ -1,0 +1,2 @@
+passwords::rancid {
+}
