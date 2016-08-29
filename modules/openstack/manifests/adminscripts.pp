@@ -33,15 +33,6 @@ class openstack::adminscripts(
         group  => 'root',
     }
 
-    # Log analysis tool
-    file { '/root/logstat.py':
-        ensure => present,
-        source => "puppet:///modules/openstack/${openstack_version}/virtscripts/logstat.py",
-        mode   => '0755',
-        owner  => 'root',
-        group  => 'root',
-    }
-
     # Set up keystone services (example script)
     file { '/root/prod-example.sh':
         ensure => present,
