@@ -36,12 +36,6 @@ class role::logging::mediawiki(
         rule  => 'saddr ($DOMAIN_NETWORKS) proto udp NOTRACK;',
     }
 
-    # let monitoring host connect via NRPE
-    ferm::rule { 'udp2log_accept_icinga_nrpe':
-        rule => 'proto tcp dport 5666 { saddr $INTERNAL ACCEPT; }',
-        prio => 13,
-    }
-
     file { '/usr/local/bin/demux.py':
         mode   => '0544',
         owner  => 'root',
