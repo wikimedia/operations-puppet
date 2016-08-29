@@ -1,0 +1,6 @@
+- labels:
+    role: slave
+    shard: multi
+  targets:
+  - dbstore1001:9104
+  - dbstore1002:9104
