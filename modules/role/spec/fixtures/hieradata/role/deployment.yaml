@@ -1,0 +1,12 @@
+mediawiki_memcached_servers: ['memcached_01']
+mediawiki::redis_servers::eqiad:
+    shard01:
+        host: 127.0.0.1
+        port: 6379
+    shard02:
+        host: 127.0.0.1
+        port: 6380
+role::deployment::repo_config:
+    test/gerrit:
+        upstream: https://gerrit.example.org/r/test/gerrit.git
+        checkout_submodules: true
