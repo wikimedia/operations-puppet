@@ -1,0 +1,28 @@
+cache::misc::nodes:
+    eqiad: ['cache_misc_00']
+cache::route_table:
+    eqiad: direct
+
+lvs::configuration::lvs_service_ips:
+    apaches:
+        eqiad: dummy
+    upload:
+        eqiad: dummy
+lvs::configuration::lvs_service_ips:
+    maps:
+        eqiad: dummy
+    misc_web:
+        eqiad: dummy
+    text:
+        eqiad: dummy
+    upload:
+        eqiad: dummy
+
+lvs::configuration::lvs_services:
+    apaches: []
+
+etcd::auth::common::root_password: ''
+
+role::cache::2layer::storage_parts:
+  - sda1
+  - sdb1
