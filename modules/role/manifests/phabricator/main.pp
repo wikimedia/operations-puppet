@@ -28,7 +28,11 @@ class role::phabricator::main {
 
     # logmail and dumps are only enabled on the active server set in Hiera
     $phabricator_active_server = hiera('phabricator_active_server')
-    if $::hostname == $phabricator_active_server {
+    if $::realm == 'labs' {
+        $logmail_ensure = 'absent'
+        $dump_rsync_ensure ='absent'
+        $dump_enabled = false
+    } elsif $::hostname == $phabricator_active_server {
         $logmail_ensure = 'present'
         $dump_rsync_ensure = 'present'
         $dump_enabled = true
