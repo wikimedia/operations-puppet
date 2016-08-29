@@ -1,0 +1,3 @@
+cdh::hadoop::datanode_mounts:
+    - /var/lib/hadoop/data/a
+    - /var/lib/hadoop/data/b

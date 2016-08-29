@@ -1,0 +1,12 @@
+mediawiki_memcached_servers: ['memcached_01']
+mediawiki::redis_servers::eqiad:
+    shard01:
+        host: 127.0.0.1
+        port: 6379
+    shard02:
+        host: 127.0.0.1
+        port: 6380
+
+# Roles parameters
+role::mediawiki::appserver::root_password: ''
+role::mediawiki::webserver::pool: apaches
