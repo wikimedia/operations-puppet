@@ -1,0 +1,2 @@
+class grub::defaults {
+}

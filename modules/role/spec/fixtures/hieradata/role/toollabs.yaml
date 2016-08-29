@@ -1,0 +1,7 @@
+toollabs::checker_hosts:
+    - tools_checker_01
+    - tools_checker_02
+
+toollabs::proxy::proxies:
+    - tools_proxy_01
+    - tools_proxy_02

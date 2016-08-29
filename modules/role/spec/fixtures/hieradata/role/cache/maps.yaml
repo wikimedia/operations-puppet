@@ -1,0 +1,10 @@
+cache::cluster: maps
+cache::maps::apps:
+    kartotherian:
+        route: eqiad
+        backends:
+            eqiad: [127.0.0.1]
+            codfw: [127.0.0.1]
+cache::maps::nodes:
+    eqiad: [127.0.0.1]
+    codfw: [127.0.0.1]

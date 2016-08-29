@@ -1,0 +1,2 @@
+dnsrecursor::labsaliaser::extra_records:
+    extra1.example.org.: 127.0.0.1

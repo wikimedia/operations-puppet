@@ -1,0 +1,13 @@
+cache::cluster: upload
+cache::upload::apps:
+    swift:
+        route: eqiad
+        backends:
+            eqiad: 127.0.0.1
+    swift_thumbs:
+        route: eqiad
+        backends:
+            eqiad: 127.0.0.1
+cache::upload::nodes:
+    codfw: [127.0.0.1]
+    eqiad: [127.0.0.1]
