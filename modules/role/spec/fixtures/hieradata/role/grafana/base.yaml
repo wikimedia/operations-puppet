@@ -1,0 +1,6 @@
+role::grafana::base::readonly_domain: 'grafana.example.org'
+role::grafana::base::admin_domain: 'grafana-admin.example.org'
+role::grafana::base::secret_key: 'grafanaSecret'
+role::grafana::base::admin_password: 'grafanaAdminPassword'
+role::grafana::base::ldap_editor_description: 'Grafana ldap editor description'
+role::grafana::base::ldap_editor_groups: []
