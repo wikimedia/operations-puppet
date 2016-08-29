@@ -147,8 +147,12 @@ class role::mariadb::groups(
         }
     }
 
-    include role::prometheus::node_exporter
-    include role::prometheus::mysqld_exporter
+    # hacky workaround until we get rid of precise hosts
+    # T123525
+    if os_version('debian >= jessie || ubuntu >= trusty') {
+        include role::prometheus::node_exporter
+        include role::prometheus::mysqld_exporter
+    }
 }
 
 # miscellaneous services clusters
