@@ -21,8 +21,9 @@ class role::puppetmaster::frontend {
         # lint:endignore
     }
 
-    $workers = hiera('puppetmaster::workers')
-
+    $servers = hiera('puppetmaster::servers', {})
+    $workers = $servers[$::fqdn]
+    
     class { '::puppetmaster':
         bind_address  => '*',
         server_type   => 'frontend',
