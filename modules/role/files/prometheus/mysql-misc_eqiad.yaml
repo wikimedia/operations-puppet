@@ -1,0 +1,54 @@
+- labels:
+    shard: m1
+    role: master
+  targets:
+  - db1016:9104
+
+- labels:
+    shard: m1
+    role: slave
+  targets:
+  - db1001:9104
+
+- labels:
+    shard: m2
+    role: master
+  targets:
+  - db1020:9104
+
+- labels:
+    shard: m3
+    role: master
+  targets:
+  - db1048:9104
+
+- labels:
+    shard: m3
+    role: slave
+  targets:
+  - db1043:9104
+
+- labels:
+    shard: m4
+    role: master
+  targets:
+  - db1046:9104
+
+- labels:
+    shard: multi
+    role: slave
+  targets:
+  - db1047:9104
+
+- labels:
+    shard: m5
+    role: master
+  targets:
+  - db1009:9104
+
+- labels:
+    shard: tendril
+    role: standalone
+  targets:
+  - db1011:9104
+
