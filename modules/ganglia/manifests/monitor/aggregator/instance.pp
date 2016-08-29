@@ -24,21 +24,6 @@ define ganglia::monitor::aggregator::instance($monitored_site) {
     $gmond_port = $ganglia::configuration::base_port + $id
     $cname = "${desc_safe} ${::site}"
 
-    # The following 2 rules are limited on purpose to only allow production
-    # networks to reach the ganglia aggregators. ganglia has been tried in labs
-    # and failed so for now we will be limiting ganglia aggregation to just
-    # production
-    ferm::service { "aggregator-udp-${id}":
-        proto  => 'udp',
-        port   => $gmond_port,
-        srange => '$PRODUCTION_NETWORKS',
-    }
-    ferm::service { "aggregator-tcp-${id}":
-        proto  => 'udp',
-        port   => $gmond_port,
-        srange => '$PRODUCTION_NETWORKS',
-    }
-
     # Run these instances in the foreground
     $daemonize = 'no'
 
@@ -61,6 +46,20 @@ define ganglia::monitor::aggregator::instance($monitored_site) {
             mode    => '0444',
             content => template("${module_name}/gmond.conf.erb"),
             notify  => Service[$aggsvcname],
+        }
+        # The following 2 rules are limited on purpose to only allow production
+        # networks to reach the ganglia aggregators. ganglia has been tried in labs
+        # and failed so for now we will be limiting ganglia aggregation to just
+        # production
+        ferm::service { "aggregator-udp-${id}":
+            proto  => 'udp',
+            port   => $gmond_port,
+            srange => '$PRODUCTION_NETWORKS',
+        }
+        ferm::service { "aggregator-tcp-${id}":
+            proto  => 'udp',
+            port   => $gmond_port,
+            srange => '$PRODUCTION_NETWORKS',
         }
 
         if $::initsystem == 'systemd' {
