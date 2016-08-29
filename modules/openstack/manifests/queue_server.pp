@@ -20,6 +20,15 @@ class openstack::queue_server(
         source => 'puppet:///modules/openstack/rabbitmq/labs-rabbitmq.default',
     }
 
+    # Turn up the number of allowed file handles for rabbitmq
+    file { '/usr/local/sbin/rabbitmqadmin':
+        ensure => present,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0644',
+        source => 'puppet:///modules/openstack/rabbitmq/rabbitmqadmin',
+    }
+
     if $::fqdn == hiera('labs_nova_controller') {
         service { 'rabbitmq-server':
             ensure    => running,
