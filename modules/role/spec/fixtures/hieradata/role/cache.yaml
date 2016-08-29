@@ -1,0 +1,10 @@
+cache::misc::nodes:
+    eqiad: ['cache_misc_00']
+    codfw: ['cache_misc_00']
+
+cache::route_table:
+    eqiad: direct
+
+role::cache::2layer::storage_parts:
+  - sda1
+  - sdb1

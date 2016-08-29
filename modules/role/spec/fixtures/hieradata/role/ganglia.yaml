@@ -1,0 +1,12 @@
+ganglia_aggregators: ganglia_aggregator:9649
+ganglia_clusters:
+    decommissioned:
+        name: 'Decommissioned servers'
+        id: 1
+        sites: {}
+    cluster_D:
+        name: 'Cluster D'
+        id: 2
+        sites:
+            eqiad: {}
+            codfw: {}

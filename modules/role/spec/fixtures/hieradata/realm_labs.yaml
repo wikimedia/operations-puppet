@@ -1,0 +1,2 @@
+saltmaster: "salt_master.wmflabs.example.org"
+labs_global_puppet_master: "puppetmaster.wmflabs.example.org"

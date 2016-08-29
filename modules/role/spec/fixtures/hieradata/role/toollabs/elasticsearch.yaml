@@ -1,0 +1,3 @@
+elasticsearch::cluster_name: 'toollabs_elasticsearch_cluster'
+elasticsearch::unicast_hosts:
+    - tools_es_01
