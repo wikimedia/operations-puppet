@@ -1,0 +1,47 @@
+puppetmaster: 'puppetmaster_host'
+
+mail_smarthost:
+    - 'mail_smarthost01'
+    - 'mail_smarthost02'
+statsd: 'statsd-fake.example.org'
+
+etcd::auth::common::root_password: ''
+
+# standard/base are mocked. Should not be needed:
+network::subnets: []
+base::remote_syslog::enable: false
+
+lvs::configuration::lvs_services:
+    apaches: []
+
+lvs::configuration::lvs_service_ips:
+    apaches:
+        eqiad: dummy
+    maps:
+        eqiad: dummy
+    misc_web:
+        eqiad: dummy
+    text:
+        eqiad: dummy
+    upload:
+        eqiad: dummy
+
+
+# move below spec/fixtures/hieradata/role/
+zookeeper_cluster_name: "zookeeper_test_cluster"
+zookeeper_clusters:
+    zookeeper_test_cluster:
+        hosts:
+            host_a: '1000'
+namenode_hosts:
+    - 'namenode_1'
+journalnode_hosts:
+    - 'journalnode_1'
+cdh::hadoop::journalnode_hosts:
+    - 'journalnode_2'
+cdh::hadoop::namenode_hosts:
+    - 'namenode_2'
+cdh::hive::metastore_host:
+    - 'metastore_host'
+cdh::oozie::oozie_host:
+    - 'oozie_host'

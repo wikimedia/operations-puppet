@@ -1,0 +1,4 @@
+ores::redis::password: ''
+ores::redis::queue_maxmemory: ''
+ores::redis::cache_maxmemory: ''
+ores::redis::client_hosts: []

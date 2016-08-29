@@ -1,0 +1,2 @@
+postgresql::slave::master_server: 'maps_master_server'
+postgresql::slave::replication_pass: ''

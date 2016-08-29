@@ -1,0 +1,3 @@
+phabricator_active_server: ''
+cache::misc::nodes:
+    eqiad: ['cache_misc_00']
