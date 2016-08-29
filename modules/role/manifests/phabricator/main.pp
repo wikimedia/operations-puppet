@@ -10,7 +10,7 @@ class role::phabricator::main {
     }
 
     include passwords::phabricator
-    include role::phabricator::config
+    include passwords::mysql::phabricator
     include phabricator::monitoring
     include phabricator::mpm
     include lvs::realserver
@@ -46,8 +46,8 @@ class role::phabricator::main {
                               'bugzilla.wikimedia.org',
                               'bugs.wikimedia.org' ],
         trusted_proxies  => $cache_misc_nodes[$::site],
-        mysql_admin_user => $role::phabricator::config::mysql_adminuser,
-        mysql_admin_pass => $role::phabricator::config::mysql_adminpass,
+        mysql_admin_user => $passwords::mysql::phabricator::mysql_adminuser,
+        mysql_admin_pass => $passwords::mysql::phabricator::mysql_adminpass,
         libraries        => [ "${phab_root_dir}/libext/Sprint/src",
                               "${phab_root_dir}/libext/security/src",
                               "${phab_root_dir}/libext/misc/" ],
@@ -55,8 +55,8 @@ class role::phabricator::main {
             'darkconsole.enabled'                    => false,
             'phabricator.base-uri'                   => "https://${domain}",
             'security.alternate-file-domain'         => "https://${altdom}",
-            'mysql.user'                             => $role::phabricator::config::mysql_appuser,
-            'mysql.pass'                             => $role::phabricator::config::mysql_apppass,
+            'mysql.user'                             => $passwords::mysql::phabricator::appuser,
+            'mysql.pass'                             => $passwords::mysql::phabricator::apppass,
             'mysql.host'                             => $mysql_host,
             'phpmailer.smtp-host'                    => inline_template('<%= @mail_smarthost.join(";") %>'),
             'metamta.default-address'                => "no-reply@${domain}",
@@ -91,17 +91,17 @@ class role::phabricator::main {
         directory       => "${phab_root_dir}/tools",
         dbhost          => $mysql_host,
         dbslave         => $mysql_slave,
-        manifest_user   => $role::phabricator::config::mysql_maniphestuser,
-        manifest_pass   => $role::phabricator::config::mysql_maniphestpass,
-        app_user        => $role::phabricator::config::mysql_appuser,
-        app_pass        => $role::phabricator::config::mysql_apppass,
-        bz_user         => $role::phabricator::config::bz_user,
-        bz_pass         => $role::phabricator::config::bz_pass,
-        rt_user         => $role::phabricator::config::rt_user,
-        rt_pass         => $role::phabricator::config::rt_pass,
-        phabtools_cert  => $role::phabricator::config::phabtools_cert,
-        phabtools_user  => $role::phabricator::config::phabtools_user,
-        gerritbot_token => $role::phabricator::config::gerritbot_token,
+        manifest_user   => $passwords::mysql::phabricator::mysql_maniphestuser,
+        manifest_pass   => $passwords::mysql::phabricator::mysql_maniphestpass,
+        app_user        => $passwords::mysql::phabricator::appuser,
+        app_pass        => $passwords::mysql::phabricator::apppass,
+        bz_user         => $passwords::mysql::phabricator::bz_user,
+        bz_pass         => $passwords::mysql::phabricator::bz_pass,
+        rt_user         => $passwords::mysql::phabricator::rt_user,
+        rt_pass         => $passwords::mysql::phabricator::rt_pass,
+        phabtools_cert  => $passwords::phabricator::phabtools_cert,
+        phabtools_user  => $passwords::phabricator::phabtools_user,
+        gerritbot_token => $passwords::phabricator::gerritbot_token,
         dump            => $dump_enabled,
         require         => Package[$deploy_target]
     }
@@ -186,8 +186,8 @@ class role::phabricator::main {
     # redirect bugzilla URL patterns to phabricator
     # handles translation of bug numbers to maniphest task ids
     phabricator::redirector { "redirector.${domain}":
-        mysql_user  => $role::phabricator::config::mysql_maniphestuser,
-        mysql_pass  => $role::phabricator::config::mysql_maniphestpass,
+        mysql_user  => $passwords::mysql::phabricator::mysql_maniphestuser,
+        mysql_pass  => $passwords::mysql::phabricator::mysql_maniphestpass,
         mysql_host  => $mysql_host,
         rootdir     => '/srv/phab',
         field_index => '4rRUkCdImLQU',
