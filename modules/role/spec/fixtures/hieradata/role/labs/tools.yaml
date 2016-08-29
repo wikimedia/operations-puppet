@@ -1,0 +1,15 @@
+active_proxy_host: 'active_proxy_host'
+active_redis: 'active_redis_host'
+
+gridengine::gridmaster: 'labs_gridmaster_host'
+
+# role::labs::tools::proxy at least
+k8s_master: 'k8s_master_for_tools'
+flannel::etcd_hosts: []
+k8s_infrastructure_users:
+    - name: 'proxy-infrastructure'
+      token: 'fake_token'
+    - name: 'client-infrastructure'
+      token: 'fake_token'
+
+active_cronrunner: 'tools_cron_host'

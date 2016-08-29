@@ -1,0 +1,4 @@
+role::labs::nfs::misc::dump_servers_ips:
+    - 127.0.0.1
+statistics_servers:
+    - stats_01

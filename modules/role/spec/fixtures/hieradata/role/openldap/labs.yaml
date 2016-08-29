@@ -1,0 +1,4 @@
+openldap::server_id: ''
+openldap::suffix: ''
+openldap::datadir: ''
+

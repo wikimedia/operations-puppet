@@ -1,0 +1,5 @@
+base_config: ''
+puppetmaster::servers:
+    puppetmaster.example.org:
+        - { worker: puppetworker1.example.org, loadfactor: 5}
+        - { worker: puppetworker2.example.org, loadfactor: 5, offline: true}
