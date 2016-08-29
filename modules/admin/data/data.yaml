@@ -229,7 +229,7 @@ groups:
               csteipp, smalyshev, ebernhardson, addshore, jminor, chedasaurus, neilpquinn-wmf,
               dcausse, bd808, tjones, mobrovac, jgirault, jdrewniak, ejegg, jdcc, ori,
               bmansurov, atgomez, amire80, kartik, pcoombe, foks, mpany, hjiang, jsamra, bcohn,
-              jdlrobson, chelsyx, ovasileva, mtizzoni, panisson, paolotti, ciro]
+              jdlrobson, chelsyx, ovasileva, mtizzoni, panisson, paolotti, ciro, psinger, flemmerich]
   analytics-admins:
     gid: 732
     description: Admin access to analytics cluster.
@@ -2059,4 +2059,19 @@ users:
     ssh_keys:
       - ssh-dss AAAAB3NzaC1kc3MAAACBAJMN2HY4SvYvpse+DMZPY2Rn2W0Uy2Og01tug+vpF96RwN4bad7Z0ryRNno4LcnlaWtl5D6yhLDbibxZSNFn1pXN/Iqj3Took4YJsyXuLkFFN5IYY/ETWphRDqGXIYFWwG9oVLayKk+5wfPz8STBsajXLcliU67YmPyC5tk2IX49AAAAFQDoPyrcuaMbMvHNynsZWXM5h6lF9wAAAIAGd8MyyN9sMosoow783UgLyM0cF0XjdIl0Pzk9Ry5qmYtOp/hWEJRM9bC2I7R+ZhLzoqm1eOJGw8lNbt1PRa3woafJLtget9fPJujn9Csa1jMP2hHjzjSX6C8jtLPGHMVlWu0dgNOfelhcnidP3atjo4bp+gEvXNBRB/W9ZwNNZQAAAIBDPtyrwmvbI3vjwVwOIbFV66B4CTzRzIucmfRjrdKcwHe3eG7K597yP+kUFpMdUq8GlWFeHRpLDZd7nGZ2fXkZZz1ar95EpxPf7Q842We17B6EXgQNr9yZgso3x378eoUGJP9TKgR9ZSZ4iK4S4qIcstflhMheOxb5fZ5ckg2bfw==
     uid: 15247
-
+  psinger:
+    ensure: present
+    gid: 500
+    name: psinger
+    realname: Philipp Singer
+    ssh_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDoA+dwV71A3HjSLT1LjxjtXv0fb4/ycQGhqIdqPtulshi5/PZlG3tncFSQpwcOtgbwbRIMUnxhezHdQSUQONTOD02lKOk93dVma4TN6FAkb/ZIK6c9eRU/TQwy3OCXqj6O1CQohVj60kRKBvTKMUpw/oRM9lgTT3USc6UE3Uy8/0eHPiR37nhrA3E5uZ9KgEyIY6z+WCT6inghxEFE+uDFowY/8wwd2Rq4Nsa2F88I7488G1lmZpkye/BtbNbjt3QtLt9Qk8yfJqj8Rpniroxaj1Z+MNvVAXJFK+c4ziwjjAvNHcN9ngsJCURIOlOKgpLahNYofv8OmQ2PpQwGHDj/ psinger@gobbo
+    uid: 15296
+  flemmerich:
+    ensure: present
+    gid: 500
+    name: flemmerich
+    realname: Florian Lemmerich
+    ssh_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAABJQAAAQEAhAOVYD/NaXnew0HlVw4i/3LYT6wn6b8D+5Yun2tWRGd8DaODevafjW0Bzf+XwjSNoRIP52ZRM4Vmhg4H6sL4g31FuMfEVgLwjI0WCTxUxIrR2aGuumXRVYRwLOhFkC2RT7TcjTkDzeMa7DijyDxjI9+/rqCgGHcQwIk/c20VYZ4AzHPpGWqeb2JQblDRu/Jz1enmzUt1rwX/4Kxo/lmkLAtJxzVKgNfn13Acj3BSu1w0DIbPBT7EjKCuzKx7ZthanoYIh+BV5KyErp13AB6dxoxSQNfcIbftBoG6idlUSkEqnzednYoVBQSWa4xNaA2NDbjqpxfbMhERRs8FSn9/iw==
+    uid: 15297
