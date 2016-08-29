@@ -1,0 +1,8 @@
+programdashboard::server_name: 'program-dashboard.example.org'
+programdashboard::server_admin: 'education@example.org'
+
+programdashboard::app::directory: /srv/programdashboard
+programdashboard::app::environment: production
+programdashboard::app::owner: programdashboard
+programdashboard::app::group: programdashboard
+programdashboard::app::dependencies: []
