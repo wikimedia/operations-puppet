@@ -1,0 +1,3 @@
+mediawiki::jobrunner::queue_servers:
+    - job_redisdb_01:6379
+    - job_redisdb_02:6380

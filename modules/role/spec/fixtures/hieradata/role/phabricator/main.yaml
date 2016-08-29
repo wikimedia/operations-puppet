@@ -1,0 +1,6 @@
+phabricator_active_server: 'phabricator_01'
+phabricator_servers:
+    - phabricator_01
+    - phabricator_02
+cache::misc::nodes:
+    eqiad: ['cache_misc_00']

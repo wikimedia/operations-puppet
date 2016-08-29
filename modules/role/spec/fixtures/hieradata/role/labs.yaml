@@ -1,0 +1,22 @@
+active_labstore_host: 'labstore_01'
+
+labs_certmanager_hostname: "labscertmanager.example.org"
+#labs_global_puppet_master: "puppetmaster.wmflabs.example.org"
+labs_nova_controller: "nova_controller"
+#labs_tld: "wmflabs.example.org"
+labs_private_ips_reverse_dns: "0.10.in-addr.arpa"
+labs_horizon_host: 'horizon.example.org'
+labs_puppet_master: 'labspuppetmaster.example.org'
+
+novaconfig:
+    fixed_range: 10.0.42.0/24
+
+role::labs::redirector::default_url: 'http://example.org'
+role::labs::redirector::redirects: []
+
+role::labs::novaproxy::active_proxy:
+    - novaproxy_01
+role::labs::novaproxy::all_proxies:
+    - novaproxy_01
+
+#saltmaster: puppetmaster_labs
