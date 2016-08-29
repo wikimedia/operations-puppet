@@ -1,0 +1,4 @@
+maps::hosts: ['map01', 'map02']
+
+maps::postgresql_osmimporter_pass: ''
+maps::postgresql_osmupdater_pass: ''
