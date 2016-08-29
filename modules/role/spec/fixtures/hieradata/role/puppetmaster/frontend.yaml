@@ -1,0 +1,2 @@
+puppetmaster::workers: ['puppetmaster_worker_01']
+etcd::auth::common::root_password: ''

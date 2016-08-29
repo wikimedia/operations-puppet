@@ -1,0 +1,10 @@
+swift::hash_path_suffix: ''
+swift::proxy::proxy_service_host: ''
+swift::proxy::rewrite_thumb_server: ''
+swift::proxy::shard_container_list: []
+swift::proxy::rewrite_account: 'rewrite_account'
+swift::params::accounts:
+    rewrite_account:  # username
+        user: 'rewriter' 
+        account_name: ''
+swift::proxyhosts: []

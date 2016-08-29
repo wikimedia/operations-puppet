@@ -1,0 +1,8 @@
+k8s_master: 'master_for_toollabs_webproxy'
+k8s_infrastructure_users:
+    - name: 'client-infrastructure'
+      token: 'fake_token_for-client-infrastructure'
+    - name: 'proxy-infrastructure'
+      token: 'fake_token_for-proxy-infrastructure'
+flannel::etcd_hosts: []
+active_proxy_host: ''

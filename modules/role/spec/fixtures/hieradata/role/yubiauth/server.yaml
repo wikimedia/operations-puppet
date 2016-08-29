@@ -1,0 +1,2 @@
+yubiauth_servers: ['yubi1', 'yubi2']
+yubiauth_server_primary: 'yubi1'
