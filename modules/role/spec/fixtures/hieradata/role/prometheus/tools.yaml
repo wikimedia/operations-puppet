@@ -1,0 +1,4 @@
+k8s::master_host: 'prometheus_k8s_master_host'
+k8s_infrastructure_users:
+  - name: 'prometheus'
+    token: 'fake_token_for_prometheus'
