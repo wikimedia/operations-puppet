@@ -4,6 +4,7 @@ class role::prometheus::ops {
     include base::firewall
 
     $targets_path = '/srv/prometheus/ops/targets'
+    $rules_path = '/srv/prometheus/ops/rules'
 
     # Add one job for each of mysql 'group' (i.e. their broad function)
     # Each job will look for new files matching the glob and load the job
@@ -92,5 +93,9 @@ class role::prometheus::ops {
     }
     file { "${targets_path}/mysql-labs_${::site}.yaml":
         source => "puppet:///modules/role/prometheus/mysql-labs_${::site}.yaml",
+    }
+
+    file { "${rules_path}/rules_ops.conf":
+        source => 'puppet:///modules/role/prometheus/rules_ops.conf',
     }
 }
