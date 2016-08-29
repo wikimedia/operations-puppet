@@ -12,7 +12,7 @@ class ganglia::configuration {
     $aggregator_hosts = {
         'eqiad' => [ ipresolve('carbon.wikimedia.org') ],
         'esams' => [ ipresolve('bast3001.wikimedia.org') ],
-        'codfw' => [ '208.80.153.4' ],
+        'codfw' => [ ipresolve('install2001.wikimedia.org') ],
         'ulsfo' => [ ipresolve('bast4001.wikimedia.org') ],
     }
     $base_port = 8649
