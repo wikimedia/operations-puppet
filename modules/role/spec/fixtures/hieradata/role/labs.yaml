@@ -1,0 +1,3 @@
+labs_nova_controller: "nova_controller"
+labs_tld: "wmflabs.example.org"
+labs_private_ips_reverse_dns: "0.10.in-addr.arpa"

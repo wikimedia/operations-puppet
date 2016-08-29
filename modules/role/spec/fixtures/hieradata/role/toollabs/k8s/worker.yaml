@@ -1,0 +1,6 @@
+docker::builder_host: 'docker_builder_host'
+k8s::version: ''
+k8s::master_host: 'k8s_master_for_toolslabs_worker'
+k8s_infrastructure_users:
+    - name: 'client-infrastructure'
+      token: 'fake_token_for_client-infrastructure'
