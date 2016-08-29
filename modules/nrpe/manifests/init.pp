@@ -61,8 +61,10 @@ class nrpe($allowed_hosts='127.0.0.1') {
     }
 
     # firewall nrpe-server, only accept nrpe/5666 from internal
-    ferm::rule { 'nrpe_5666':
-        rule => 'proto tcp dport 5666 { saddr $INTERNAL ACCEPT; }'
+    ferm::service { 'nrpe_5666':
+        proto => 'tcp',
+        port  => '5666',
+        saddr => '$MONITORING_HOSTS',
     }
 
     #Collect virtual nrpe checks
