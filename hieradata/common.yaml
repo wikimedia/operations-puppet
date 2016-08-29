@@ -202,11 +202,6 @@ ganglia_clusters:
     sites:
       eqiad: []
       codfw: []
-  openldap_corp_mirror:
-    name: "Corp OIT LDAP mirror"
-    id: 47
-    sites:
-      eqiad: []
   restbase:
     name: "Restbase"
     id: 48

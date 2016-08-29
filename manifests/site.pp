@@ -2410,8 +2410,6 @@ node /^planet[12]001\.(eqiad|codfw)\.wmnet$/ {
 
 # LDAP servers relied on by OIT for mail
 node /(dubnium|pollux)\.wikimedia\.org/ {
-    $cluster = 'openldap_corp_mirror'
-
     role openldap::corp, backup::host
     include standard
     backup::openldapset {'openldap_oit':}
