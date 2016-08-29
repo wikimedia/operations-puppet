@@ -10,7 +10,7 @@ class role::puppet_compiler {
                 proto  => 'tcp',
                 port   => 'http',
                 prio   => '30',
-                srange => '\$INTERNAL'
+                srange => '$LABS_NETWORKS'
             }
         }
         default     : { fail("Realm ${::realm} NOT supported by this role.") }
