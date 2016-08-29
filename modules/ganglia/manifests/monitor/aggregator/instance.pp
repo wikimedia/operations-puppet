@@ -28,11 +28,15 @@ define ganglia::monitor::aggregator::instance($monitored_site) {
     # networks to reach the ganglia aggregators. ganglia has been tried in labs
     # and failed so for now we will be limiting ganglia aggregation to just
     # production
-    ferm::rule { "aggregator-udp-${id}":
-        rule => "proto udp dport ${gmond_port} { saddr \$PRODUCTION_NETWORKS ACCEPT; }",
+    ferm::service { "aggregator-udp-${id}":
+        proto  => 'udp',
+        port   => $gmond_port,
+        srange => '$PRODUCTION_NETWORKS',
     }
-    ferm::rule { "aggregator-tcp-${id}":
-        rule => "proto tcp dport ${gmond_port} { saddr \$PRODUCTION_NETWORKS ACCEPT; }",
+    ferm::service { "aggregator-tcp-${id}":
+        proto  => 'udp',
+        port   => $gmond_port,
+        srange => '$PRODUCTION_NETWORKS',
     }
 
     # Run these instances in the foreground
