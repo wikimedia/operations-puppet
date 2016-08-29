@@ -1,0 +1,4 @@
+otrs::otrs_database_host: 'otrsdbhost'
+otrs::otrs_database_name: 'otrsdbname'
+cache::misc::nodes:
+    eqiad: ['cache_misc_00']

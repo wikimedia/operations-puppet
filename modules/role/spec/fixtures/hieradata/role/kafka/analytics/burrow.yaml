@@ -1,0 +1,3 @@
+burrow::consumer_groups:
+    - eventlogging_00
+    - eventlogging_01
