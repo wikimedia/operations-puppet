@@ -25,6 +25,9 @@ class toollabs::static(
     exec { 'clone-cdnjs':
         command => '/usr/bin/git clone --depth 1 https://github.com/cdnjs/cdnjs.git /srv/cdnjs',
         creates => '/srv/cdnjs',
+        # This is okay because puppet-run defines a timeout, and this takes longer than the default
+        # exec timeout of 300s
+        timeout => 0,
         require => Labs_lvm::Volume['cdnjs-disk'],
     }
 
