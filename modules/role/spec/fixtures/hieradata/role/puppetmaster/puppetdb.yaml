@@ -1,0 +1,4 @@
+puppetmaster::puppetdb::master: 'puppetdb_master'
+puppetmaster::puppetdb::slaves: ['puppetdb_slave_01']
+puppetdb::password::replication: ''
+puppetdb::password::rw: ''

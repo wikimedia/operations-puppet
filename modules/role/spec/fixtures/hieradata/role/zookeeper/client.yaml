@@ -1,0 +1,4 @@
+zookeeper_cluster_name: 'zookeeper_cluster'
+zookeeper_clusters:
+    - zookeeper_cluster:
+        hosts: []
