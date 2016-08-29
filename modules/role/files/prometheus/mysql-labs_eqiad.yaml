@@ -1,0 +1,23 @@
+- labels:
+    shard: multi
+    role: slave
+  targets:
+  - db1069:9104
+  - labsdb1001:9104
+  - labsdb1003:9104
+  - labsdb1008:9104
+  - labsdb1009:9104
+  - labsdb1010:9104
+  - labsdb1011:9104
+
+- labels:
+    shard: tools
+    role: master
+  targets:
+  - labsdb1004:9104
+- labels:
+    shard: tools
+    role: slave
+  targets:
+  - labsdb1005:9104
+
