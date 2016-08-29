@@ -1,0 +1,5 @@
+striker::apache::server_name: 'striker.example.org'
+striker::apache::docroot: ''
+striker::apache::servers: []
+striker::uwsgi::port: 1234
+striker::uwsgi::config: ''
