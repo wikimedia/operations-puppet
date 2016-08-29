@@ -1,0 +1,7 @@
+maps::cassandra_kartotherian_pass : ''
+maps::cassandra_tilerator_pass: ''
+maps::cassandra_tileratorui_pass: ''
+
+maps::postgresql_kartotherian_pass: ''
+maps::postgresql_tilerator_pass: ''
+maps::postgresql_tileratorui_pass: ''

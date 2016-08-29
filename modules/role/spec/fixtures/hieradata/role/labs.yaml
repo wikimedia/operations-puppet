@@ -1,0 +1,9 @@
+active_labstore_host: 'labstore_01'
+labs_nova_controller: "nova_controller"
+labs_tld: "wmflabs.example.org"
+labs_private_ips_reverse_dns: "0.10.in-addr.arpa"
+labs_horizon_host: 'horizon.example.org'
+labs_puppet_master: 'labspuppetmaster.example.org'
+
+role::labs::redirector::default_url: 'http://example.org'
+role::labs::redirector::redirects: []

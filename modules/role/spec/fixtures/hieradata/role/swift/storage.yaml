@@ -1,0 +1,5 @@
+swift::hash_path_suffix: ''
+swift_storage_drives: []
+swift::storagehosts: []
+swift::proxyhosts: []
+swift_aux_partitions: []
