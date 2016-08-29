@@ -3,9 +3,16 @@
 # announce this change
 git log --pretty=format:'From %H %cd%nFrom: %ae%nDate: %ad%nSubject: [puppet-private] (%h) %s%n%b%n' -1 --name-status | sendmail -i ops@wikimedia.org
 
-<%- replicas = @replicate_to.map{ |r| r['worker'] unless r['worker'] == scope.lookupvar('::fqdn')}.compact.sort -%>
-# Update private repo for puppetmasters
+# Refresh the local copy
 su -c 'cd /var/lib/git/operations/private && git pull' gitpuppet
-<% replicas.each do |replica| -%>
-su -c "export GIT_SSH=/srv/private/.git/ssh_wrapper.sh ; git push ssh://<%= replica %>/srv/private" gitpuppet
-<% end %>
+
+# Now refresh the other masters
+<%-
+@servers.each do |frontend, workers| 
+  workers.each do |workerhash|
+      # Do not clone to myself
+      if workerhash['worker'] == @fqdn then next end
+-%>
+su -c "export GIT_SSH=/srv/private/.git/ssh_wrapper.sh ; git push ssh://<%= workerhash['worker'] %>/srv/private" gitpuppet
+<%- end -%>
+<%- end -%>
