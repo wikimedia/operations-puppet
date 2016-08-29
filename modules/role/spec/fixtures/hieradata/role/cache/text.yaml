@@ -1,0 +1,18 @@
+cache::cluster: text
+cache::text::apps:
+    api: &appdef
+        route: eqiad
+        backends:
+            eqiad: [127.0.0.1]
+            codfw: [127.0.0.1]
+    appservers: *appdef
+    appservers_debug: *appdef
+    rendering: *appdef
+    security_audit: *appdef
+    # Services
+    restbase: *appdef
+    cxserver: *appdef
+    citoid: *appdef
+cache::text::nodes:
+    eqiad: [127.0.0.1]
+    codfw: [127.0.0.1]
