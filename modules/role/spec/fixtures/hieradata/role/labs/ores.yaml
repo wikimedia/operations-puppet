@@ -1,0 +1,4 @@
+scap::deployment_server: 'ores_deploy_server'
+
+role::labs::ores::lb::realservers: ['ores_real_1']
+role::labs::ores::redisproxy::server: 'redis_proxy'

@@ -1,0 +1,16 @@
+flannel::etcd_hosts:
+    - tools_flannel_etcd_01
+    - tools_flannel_etcd_02
+
+k8s::bastion_hosts:
+    - tools_bastion_01
+    - tools_bastion_02
+k8s::etcd_hosts:
+    - tools_k8s_etcd_01
+    - tools_k8s_etcd_02
+k8s::master_hosts:
+    - tools_k8s_master_01
+    - tools_k8s_master_02
+k8s::worker_hosts:
+    - tools_worker_01
+    - tools_worker_02

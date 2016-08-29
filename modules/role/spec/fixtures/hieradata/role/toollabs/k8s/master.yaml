@@ -1,0 +1,3 @@
+k8s::etcd_hosts: []
+docker::registry: ''
+k8s_infrastructure_users: []
