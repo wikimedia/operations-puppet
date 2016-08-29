@@ -1,0 +1,3 @@
+elasticsearch::rack: z0
+elasticsearch::cluster_hosts: []
+elasticsearch::cluster_name: 'rspec_unit_cluster'

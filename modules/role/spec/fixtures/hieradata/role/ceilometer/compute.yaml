@@ -1,0 +1,5 @@
+labs_keystone_host: "keystone_host"
+labs_nova_controller: "nova_controller"
+labs_nova_api_host: "nova_api_host"
+labs_nova_network_host: "nova_network_host"
+status_wiki_host_master: "status_wiki_host_master"

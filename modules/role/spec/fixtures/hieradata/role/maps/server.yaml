@@ -1,0 +1,4 @@
+cassandra::seeds: [ 127.0.0.1 ]
+maps::redis_server: 'maps_redis_01'
+
+etcd::auth::common::root_password: ''
