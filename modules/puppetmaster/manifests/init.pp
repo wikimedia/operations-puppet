@@ -145,7 +145,6 @@ class puppetmaster(
     class { 'puppetmaster::gitclone':
         secure_private => $secure_private,
         is_git_master  => $is_git_master,
-        replicate_to   => $workers,
     }
 
     include puppetmaster::scripts

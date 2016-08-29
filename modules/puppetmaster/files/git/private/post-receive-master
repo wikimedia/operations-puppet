@@ -1,0 +1,6 @@
+#!/bin/sh
+cd /srv/private
+git reset --hard HEAD
+cd /var/lib/git/operations/private
+unset GIT_DIR
+git pull

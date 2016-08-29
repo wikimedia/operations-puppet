@@ -21,13 +21,13 @@ class role::puppetmaster::frontend {
         # lint:endignore
     }
 
-    $workers = hiera('puppetmaster::workers')
+    $servers = hiera('puppetmaster::servers', {})
 
     class { '::puppetmaster':
         bind_address  => '*',
         server_type   => 'frontend',
         is_git_master => true,
-        workers       => $workers,
+        workers       => $servers[$::fqdn],
         config        => {
             'ca'                => $ca,
             'ca_server'         => $ca_server,
