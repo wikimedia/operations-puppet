@@ -1,0 +1,4 @@
+k8s::master_host: 'master'
+k8s_infrastructure_users:
+    - name: 'client-infrastructure'
+      token: 'fake_token_for-client-infrastructure'
