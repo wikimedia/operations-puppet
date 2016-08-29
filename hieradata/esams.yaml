@@ -1,1 +1,4 @@
 ganglia_aggregators: bast3001.wikimedia.org:11649
+prometheus_nodes:
+  prometheus1001.eqiad.wmnet
+  prometheus1002.eqiad.wmnet
