@@ -5,6 +5,9 @@
 # in Phabricator but only for administrators.  If you do not have the ability to restart the
 # associated daemons do not merge changes to this file.
 
+logoImagePHID: 'PHID-FILE-rs3pf2brupiulr6zcnrg'
+wordmarkText: 'Wikimedia'
+
 ui.footer-items:
   - {name: 'Content licensed under Creative Commons Attribution-ShareAlike 3.0 (CC-BY-SA) unless otherwise noted; code licensed under GNU General Public License (GPL) or other open source licenses. By using this site, you agree to the Terms of Use and Privacy Policy.'}
   - {href: 'https://www.wikimediafoundation.org/', name: Wikimedia Foundation}
