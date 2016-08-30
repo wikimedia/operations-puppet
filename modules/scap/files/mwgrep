@@ -101,8 +101,8 @@ filters = [
         'regex': args.term,
         'field': 'source_text',
         'ngram_field': 'source_text.trigram',
-        'max_inspect': 10000,
         'max_determinized_states': 20000,
+        'max_expand': 10,
         'case_sensitive': True,
         'locale': 'en',
     }},
@@ -129,7 +129,8 @@ matches = {'public': [], 'private': []}
 uri = BASE_URI + '?' + urllib.urlencode(query)
 try:
     req = urllib2.urlopen(uri, json.dumps(search))
-    result = json.load(req)['hits']
+    full_result = json.load(req)
+    result = full_result['hits']
 
     private_wikis = open('/srv/mediawiki/dblists/private.dblist').read().splitlines()
 
@@ -156,6 +157,19 @@ try:
 
     print('')
     print('(total: %s, shown: %s)' % (result['total'], len(result['hits'])))
+    if full_result['timed_out']:
+        print("""
+The query was unable to complete within the alloted time. Only partial results
+are shown here, and the reported total hits is <= the true value. To speed up
+the query:
+
+* Ensure the regular expression contains one or more sets of 3 contiguous
+  characters. A character range ([a-z]) won't be expanded to count as
+  contiguous if it matches more than 10 characters.
+* Use a simpler regular expression. Consider breaking the query up into
+  multiple queries where possible.
+""")
+
 except urllib2.HTTPError, error:
     try:
         error_body = json.load(error)
