@@ -1,0 +1,3 @@
+# Druid nodes get their own Zookeeper cluster to isolate them
+# from the production ones.
+zookeeper_cluster_name: druid-eqiad
