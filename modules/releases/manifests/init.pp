@@ -38,6 +38,14 @@ class releases (
         require => File['/srv/org/wikimedia/releases'],
     }
 
+    file { '/srv/org/wikimedia/releases/wikidiff2':
+        ensure  => 'directory',
+        mode    => '0775',
+        owner   => 'root',
+        group   => 'releasers-mediawiki',
+        require => File['/srv/org/wikimedia/releases'],
+    }
+
     include ::apache::mod::rewrite
     include ::apache::mod::headers
 
