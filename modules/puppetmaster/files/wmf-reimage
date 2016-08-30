@@ -213,11 +213,11 @@ if [ -n "${newnodename}" ]; then
     nodename="${newnodename}"
 fi
 
-sign_puppet "${nodename}" "${FORCE}"
+test "${NOCLEAN}" -eq "0" && sign_puppet "${nodename}" "${FORCE}"
 if [ "${RUNPUPPET}" -eq "1" ]; then
     enable_and_run_puppet "${nodename}"
-fi;
-sign_salt "${nodename}" "${FORCE}"
+fi
+test "${NOCLEAN}" -eq "0" && sign_salt "${nodename}" "${FORCE}"
 
 log "Node ${nodename} is now signed and both puppet and salt should work."
 
