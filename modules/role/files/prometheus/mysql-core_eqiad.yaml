@@ -1,4 +1,34 @@
 - labels:
+    shard: s1
+    role: slave
+  targets:
+  - db1089:9104
+
+- labels:
+    shard: s2
+    role: slave
+  targets:
+  - db1090:9104
+
+- labels:
+    shard: s3
+    role: slave
+  targets:
+  - db1078:9104
+
+- labels:
+    shard: s4
+    role: slave
+  targets:
+  - db1091:9104
+
+- labels:
+    shard: s5
+    role: slave
+  targets:
+  - db1092:9104
+
+- labels:
     shard: s6
     role: slave
   targets:
@@ -11,3 +41,36 @@
   - db1088:9104
   - db1093:9104
 
+- labels:
+    shard: s7
+    role: slave
+  targets:
+  - db1094:9104
+
+- labels:
+    shard: x1
+    role: slave
+  targets:
+  - db1029:9104
+
+- labels:
+    shard: es1
+    role: standalone
+  targets:
+  - es1012:9104
+  - es1016:9104
+  - es1018:9104
+
+- labels:
+    shard: es2
+    role: slave
+  targets:
+  - es1011:9104
+  - es1013:9104
+
+- labels:
+    shard: es3
+    role: slave
+  targets:
+  - es1014:9104
+  - es1017:9104
