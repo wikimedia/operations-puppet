@@ -79,38 +79,21 @@ class keyholder($require_encrypted_keys='yes') {
 
     # The `keyholder-agent` service is responsible for running
     # the ssh-agent instance that will hold shared key(s).
-
-    file { '/etc/init/keyholder-agent.conf':
-        source => 'puppet:///modules/keyholder/keyholder-agent.conf',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0444',
-        notify => Service['keyholder-agent'],
+    base::service_unit { 'keyholder-agent':
+        ensure  => present,
+        systemd => false,
+        upstart => true,
+        require => File['/run/keyholder'],
     }
-
-    service { 'keyholder-agent':
-        ensure   => running,
-        provider => 'upstart',
-        require  => File['/run/keyholder'],
-    }
-
 
     # The `keyholder-proxy` service runs the filtering ssh-agent proxy
     # that acts as an intermediary between users in the trusted group
     # and the backend ssh-agent that holds the shared key(s).
-
-    file { '/etc/init/keyholder-proxy.conf':
-        source => 'puppet:///modules/keyholder/keyholder-proxy.conf',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0444',
-        notify => Service['keyholder-proxy'],
-    }
-
-    service { 'keyholder-proxy':
-        ensure   => running,
-        provider => 'upstart',
-        require  => Service['keyholder-agent'],
+    base::service_unit { 'keyholder-proxy':
+        ensure  => present,
+        systemd => false,
+        upstart => true,
+        require => Service['keyholder-agent'],
     }
 
     file { '/etc/keyholder-auth.d/keyholder.conf':
@@ -120,10 +103,8 @@ class keyholder($require_encrypted_keys='yes') {
         content => "REQUIRE_ENCRYPTED_KEYS='${require_encrypted_keys}'",
     }
 
-
     # The `keyholder` script provides a simplified command-line
     # interface for managing the agent. See `keyholder --help`.
-
     file { '/usr/local/sbin/keyholder':
         source => 'puppet:///modules/keyholder/keyholder',
         owner  => 'root',
