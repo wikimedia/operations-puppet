@@ -30,6 +30,14 @@ class releases (
     ensure_resource('file', '/srv/org/wikimedia', {'ensure' => 'directory' })
     ensure_resource('file', '/srv/org/wikimedia/releases', {'ensure' => 'directory' })
 
+    file { '/srv/org/wikimedia/releases/mediawiki':
+        ensure  => 'directory',
+        mode    => '0775',
+        owner   => 'root',
+        group   => 'releasers-mediawiki',
+        require => File['/srv/org/wikimedia/releases'],
+    }
+
     include ::apache::mod::rewrite
     include ::apache::mod::headers
 
