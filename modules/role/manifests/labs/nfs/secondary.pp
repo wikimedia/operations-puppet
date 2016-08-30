@@ -4,6 +4,7 @@ class role::labs::nfs::secondary($monitor = 'eth0') {
         description => 'NFS secondary share cluster',
     }
 
+    include labstore::fileserver::exports
     include labstore::fileserver::secondary
     include labstore::backup_keys
 
