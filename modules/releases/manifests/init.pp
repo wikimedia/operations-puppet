@@ -36,6 +36,12 @@ class releases (
         group => 'releasers-mediawiki',
     }
 
+    file { '/srv/org/wikimedia/releases/wikidiff2':
+        ensure => 'directory',
+        owner => 'root',
+        group => 'releasers-mediawiki',
+    }
+
     include ::apache::mod::rewrite
     include ::apache::mod::headers
 
