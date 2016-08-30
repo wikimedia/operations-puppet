@@ -1,10 +1,10 @@
 class labstore::fileserver::exports {
 
-    # Set to true only for the labstore that is currently
-    # actively serving files
-    $is_active = (hiera('active_labstore_host') == $::hostname)
-
-    require_package('python3', 'python3-yaml')
+    package { [
+        'python3',
+        'python3-yaml',
+        ],
+    }
 
     group { 'nfsmanager':
         ensure => present,
@@ -36,36 +36,28 @@ class labstore::fileserver::exports {
         require    => User['nfsmanager'],
     }
 
-    file { '/usr/local/sbin/sync-exports':
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
-        source => 'puppet:///modules/labstore/sync-exports',
+    file { '/etc/nfs-mounts.yaml':
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        source  => 'puppet:///modules/labstore/nfs-mounts.yaml',
+        require => [Package['python3'], Package['python3-yaml']],
     }
 
-    file { '/etc/nfs-mounts.yaml':
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0444',
-        source => 'puppet:///modules/labstore/nfs-mounts.yaml',
+    file { '/usr/local/sbin/sync-exports':
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0555',
+        source  => 'puppet:///modules/labstore/sync-exports',
+        require => File['/etc/nfs-mounts.yaml'],
     }
 
     file { '/usr/local/bin/nfs-exports-daemon':
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
-        source => 'puppet:///modules/labstore/nfs-exports-daemon',
-    }
-
-    base::service_unit { 'nfs-exports':
-        systemd         => true,
-        declare_service => false,
-    }
-
-    if $is_active {
-        nrpe::monitor_systemd_unit_state { 'nfs-exports':
-            description => 'Ensure NFS exports are maintained for new instances with NFS',
-        }
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0555',
+        source  => 'puppet:///modules/labstore/nfs-exports-daemon',
+        require => File['/usr/local/sbin/sync-exports'],
     }
 
     file { '/usr/local/sbin/archive-project-volumes':
@@ -73,5 +65,11 @@ class labstore::fileserver::exports {
         group  => 'root',
         mode   => '0555',
         source => 'puppet:///modules/labstore/archive-project-volumes',
+    }
+
+    base::service_unit { 'nfs-exports':
+        systemd         => true,
+        declare_service => false,
+        require         => File['/usr/local/bin/nfs-exports-daemon'],
     }
 }
