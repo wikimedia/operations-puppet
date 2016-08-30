@@ -45,11 +45,13 @@ module Puppet::Parser::Functions
     # Since all self-hosted puppetmasters are in .eqiad.wmflabs, while
     # the labs masters don't
     return default if lookupvar('::settings::certname') =~ /\.wikimedia\.org$/
-
     # Non-self-hosted puppetmasters all use the default ssldir
     puppetmaster = lookupvar('puppetmaster')
     puppetmaster ||= function_hiera(['role::puppet::self::master', ''])
-    if [lookupvar('hostname'), 'localhost', '', nil].include?puppetmaster
+    if puppetmaster == ''
+      # Means we aren't using any of role::puppet::self!1!
+      default
+    elsif [lookupvar('hostname'), 'localhost', '', nil].include?puppetmaster
       self_master
     else
       self_client
