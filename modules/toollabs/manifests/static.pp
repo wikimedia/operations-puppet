@@ -32,8 +32,7 @@ class toollabs::static(
     }
 
     cron { 'update-cdnjs':
-        command => 'cd /srv/cdnjs && /usr/bin/git pull --depth 1 https://github.com/cdnjs/cdnjs.git && \
-                    /usr/local/bin/cdnjs-packages-gen /srv/cdnjs /srv/cdnjs/packages.json',
+        command => 'cd /srv/cdnjs && /usr/bin/git pull --depth 1 https://github.com/cdnjs/cdnjs.git && /usr/local/bin/cdnjs-packages-gen /srv/cdnjs /srv/cdnjs/packages.json',
         user    => 'root',
         hour    => 0,
         require => Exec['clone-cdnjs'],
