@@ -23,4 +23,7 @@ class role::labs::nfs::primary($monitor = 'eth0') {
         value => 'cfq',
     }
 
+    nrpe::monitor_systemd_unit_state { 'nfs-exports':
+        description => 'Ensure NFS exports are maintained for new instances with NFS',
+    }
 }
