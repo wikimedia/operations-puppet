@@ -74,6 +74,8 @@ etcd_hosts:
 # Default zookeeper cluster to use in eqiad.
 # The cluster config is in common.yaml in zookeeper_clusters.
 zookeeper_cluster_name: 'main-eqiad'
+# Page if a zookeeper server in this cluster goes down.
+zookeeper_cluster_is_critical: true
 
 #
 # Labs

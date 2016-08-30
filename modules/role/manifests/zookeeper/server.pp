@@ -40,11 +40,14 @@ class role::zookeeper::server {
     }
 
     if $::realm == 'production' {
+        # Configure service pages via hiera.
+        $zookeeper_cluster_is_critical = hiera('zookeeper_cluster_is_critical', false)
+
         # Alert if Zookeeper Server is not running.
         nrpe::monitor_service { 'zookeeper':
             description  => 'Zookeeper Server',
             nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C java -a "org.apache.zookeeper.server.quorum.QuorumPeerMain /etc/zookeeper/conf/zoo.cfg"',
-            critical     => true,
+            critical     => $zookeeper_cluster_is_critical,
         }
 
         # jmxtrans statsd writer emits fqdns in keys
