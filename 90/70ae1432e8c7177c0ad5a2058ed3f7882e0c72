@@ -1,0 +1,9 @@
+Code-Review+1: EBernhardson <ebernhardson@wikimedia.org>
+Code-Review-1: Faidon Liambotis <faidon@wikimedia.org>
+Verified+2: jenkins-bot
+Code-Review+2: Gehel <glederrey@wikimedia.org>
+Submitted-by: Gehel <glederrey@wikimedia.org>
+Submitted-at: Tue, 30 Aug 2016 07:46:53 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/305519
+Project: operations/puppet
+Branch: refs/heads/production
