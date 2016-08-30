@@ -16,17 +16,17 @@ spec:
           options:
             host: <%= @purge_host %>
             port: <%= @purge_port %>
-    /{api:sys}/links:
-      x-modules:
-        - path: src/sys/dep_updates.js
-          options:
-            templates:
-              mw_api:
-                uri: <%= @mwapi_uri %>
-                headers:
-                  host: '{{message.meta.domain}}'
-                body:
-                  formatversion: 2
+#    /{api:sys}/links:
+#      x-modules:
+#        - path: src/sys/dep_updates.js
+#          options:
+#            templates:
+#              mw_api:
+#                  uri: <%= @mwapi_uri %>
+#                  headers:
+#                    host: '{{message.meta.domain}}'
+#                  body:
+#                    formatversion: 2
     /{api:sys}/queue:
       x-modules:
         - path: src/sys/kafka.js
@@ -440,28 +440,3 @@ spec:
                         models: 'reverted|damaging|goodfaith'
                         revids: '{{message.rev_id}}'
                         precache: true
-
-              # Re-renders summary on WikiData item update
-              wikidata_description:
-                topic: mediawiki.revision_create
-                match:
-                  meta:
-                    domain: www.wikidata.org
-                exec:
-                  method: 'post'
-                  uri: '/sys/links/wikidata_descriptions'
-                  body: '{{globals.message}}'
-
-              on_wikidata_description_change:
-                topic: resource_change
-                match:
-                  meta:
-                    uri: '/https?:\/\/[^\/]+\/wiki\/(?<title>.+)/'
-                  tags: [ 'change-prop', 'wikidata' ]
-                exec:
-                  method: get
-                  uri: '<%= @restbase_uri %>/{{message.meta.domain}}/v1/page/summary/{{match.meta.uri.title}}'
-                  headers:
-                    cache-control: no-cache
-                  query:
-                    redirect: false
