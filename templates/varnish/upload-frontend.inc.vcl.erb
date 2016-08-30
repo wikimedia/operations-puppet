@@ -26,6 +26,11 @@ sub cluster_fe_recv {
 
 	// Replace double slashes
 	set req.url = regsuball(req.url, "/{2,}", "/");
+
+	// Fixup borked client Range: headers
+	if (req.http.Range ~ "(?i)bytes:") {
+		set req.http.Range = regsub(req.http.Range, "(?i)bytes:\s*", "bytes=");
+	}
 }
 
 sub cluster_fe_hash { }
