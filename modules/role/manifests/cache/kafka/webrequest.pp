@@ -44,9 +44,13 @@ class role::cache::kafka::webrequest(
         # A change in the -T timeout value has the side effect of keeping more
         # incomplete transactions in memory for each varnishkafka query (in our case
         # it directly corresponds to a varnishkafka instance running).
+        # 'T':
+        # Raised the maximum timeout for incomplete records from '700' to '1500'
+        # after setting the -L to '5000'. VSL timeouts were masked
+        # by VSL store overflow errors.
         $varnish_opts = {
             'q' => 'ReqMethod ne "PURGE" and not Timestamp:Pipe and not ReqHeader:Upgrade ~ "[wW]ebsocket"',
-            'T' => '700',
+            'T' => '1500',
             'L' => '5000'
         }
         $conf_template = 'varnishkafka/varnishkafka_v4.conf.erb'
