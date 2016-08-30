@@ -2,31 +2,93 @@
     shard: s1
     role: slave
   targets:
+  - db1051:9104
+  - db1052:9104
+  - db1053:9104
+  - db1055:9104
+  - db1065:9104
+  - db1066:9104
+  - db1072:9104
+  - db1073:9104
+  - db1080:9104
+  - db1083:9104
   - db1089:9104
+- labels:
+    shard: s1
+    role: master
+  targets:
+  - db1057:9104
 
 - labels:
     shard: s2
     role: slave
   targets:
+  - db1021:9104
+  - db1024:9104
+  - db1036:9104
+  - db1054:9104
+  - db1060:9104
+  - db1063:9104
+  - db1067:9104
+  - db1074:9104
+  - db1076:9104
   - db1090:9104
+- labels:
+    shard: s2
+    role: master
+  targets:
+  - db1018:9104
 
 - labels:
     shard: s3
     role: slave
   targets:
+  - db1015:9104
+  - db1035:9104
+  - db1038:9104
+  - db1044:9104
+  - db1075:9104
+  - db1077:9104
   - db1078:9104
+- labels:
+    shard: s3
+    role: master
+  targets:
+  - db1075:9104
 
 - labels:
     shard: s4
     role: slave
   targets:
+  - db1019:9104
+  - db1056:9104
+  - db1059:9104
+  - db1064:9104
+  - db1081:9104
+  - db1084:9104
   - db1091:9104
+- labels:
+    shard: s4
+    role: master
+  targets:
+  - db1040:9104
 
 - labels:
     shard: s5
     role: slave
   targets:
+  - db1026:9104
+  - db1045:9104
+  - db1070:9104
+  - db1071:9104
+  - db1082:9104
+  - db1087:9104
   - db1092:9104
+- labels:
+    shard: s5
+    role: master
+  targets:
+  - db1049:9104
 
 - labels:
     shard: s6
@@ -40,18 +102,40 @@
   - db1085:9104
   - db1088:9104
   - db1093:9104
+- labels:
+    shard: s6
+    role: master
+  targets:
+  - db1050:9104
 
 - labels:
     shard: s7
     role: slave
   targets:
+  - db1028:9104
+  - db1033:9104
+  - db1034:9104
+  - db1039:9104
+  - db1062:9104
+  - db1079:9104
+  - db1086:9104
   - db1094:9104
+- labels:
+    shard: s7
+    role: master
+  targets:
+  - db1041:9104
 
 - labels:
     shard: x1
     role: slave
   targets:
   - db1029:9104
+- labels:
+    shard: x1
+    role: master
+  targets:
+  - db1031:9104
 
 - labels:
     shard: es1
@@ -67,6 +151,11 @@
   targets:
   - es1011:9104
   - es1013:9104
+- labels:
+    shard: es2
+    role: master
+  targets:
+  - es1015:9104
 
 - labels:
     shard: es3
@@ -74,3 +163,9 @@
   targets:
   - es1014:9104
   - es1017:9104
+- labels:
+    shard: es3
+    role: master
+  targets:
+  - es1019:9104
+
