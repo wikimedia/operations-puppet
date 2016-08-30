@@ -32,7 +32,7 @@ class releases (
 
     file { '/srv/org/wikimedia/releases/mediawiki':
         ensure  => 'directory',
-        mode    => '0775',
+        mode    => '2775',
         owner   => 'root',
         group   => 'releasers-mediawiki',
         require => File['/srv/org/wikimedia/releases'],
