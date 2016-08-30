@@ -10,6 +10,7 @@ class role::labs::db::replica {
     }
     include role::mariadb::grants
     include role::mariadb::monitor
+    include base::firewall
     include role::mariadb::ferm
     include passwords::misc::scripts
 
