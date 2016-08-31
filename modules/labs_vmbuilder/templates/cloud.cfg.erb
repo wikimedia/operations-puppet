@@ -42,7 +42,6 @@ cloud_init_modules:
 cloud_config_modules:
 # Emit the cloud config ready event
 # this can be used by upstart jobs for 'start on cloud-config'.
- - disk_setup
  - mounts
  - locale
  - set-passwords
@@ -55,6 +54,7 @@ cloud_config_modules:
  - runcmd
  - byobu
 <% if scope.function_os_version(['ubuntu >= trusty']) %>
+ - disk_setup
  - emit_upstart
  - apt-configure
  - package-update-upgrade-install
@@ -65,17 +65,18 @@ cloud_final_modules:
  - rightscale_userdata
  - scripts-per-once
  - scripts-per-boot
+ - scripts-per-instance
  - scripts-user
  - keys-to-console
  - phone-home
  - final-message
 <% if scope.function_os_version(['ubuntu >= trusty']) %>
- - scripts-per-instance
  - scripts-vendor
  - ssh-authkey-fingerprints
  - power-state-change
 <% end %>
 
+<% if scope.function_os_version(['ubuntu >= trusty']) %>
 # System and/or distro specific settings
 # (not accessible to handlers/transforms)
 system_info:
@@ -109,3 +110,4 @@ system_info:
          primary: http://ports.ubuntu.com/ubuntu-ports
          security: http://ports.ubuntu.com/ubuntu-ports
    ssh_svcname: ssh
+<% end %>
