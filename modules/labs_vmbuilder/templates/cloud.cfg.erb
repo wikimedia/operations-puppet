@@ -65,7 +65,6 @@ cloud_final_modules:
  - rightscale_userdata
  - scripts-per-once
  - scripts-per-boot
- - scripts-per-instance
  - scripts-user
  - keys-to-console
  - phone-home
@@ -75,11 +74,13 @@ cloud_final_modules:
  - ssh-authkey-fingerprints
  - power-state-change
 <% end %>
+# We would uncomment this if we had things to run on every boot
+# - scripts-per-instance
 
+system_info:
 <% if scope.function_os_version(['ubuntu >= trusty']) %>
 # System and/or distro specific settings
 # (not accessible to handlers/transforms)
-system_info:
    # This will affect which distro class gets used
    distro: ubuntu
    # Default user name + that default users groups (if added/used)
@@ -95,6 +96,7 @@ system_info:
       cloud_dir: /var/lib/cloud/
       templates_dir: /etc/cloud/templates/
       upstart_dir: /etc/init/
+<% end %>
    package_mirrors:
      - arches: [i386, amd64]
        failsafe:
@@ -110,4 +112,3 @@ system_info:
          primary: http://ports.ubuntu.com/ubuntu-ports
          security: http://ports.ubuntu.com/ubuntu-ports
    ssh_svcname: ssh
-<% end %>
