@@ -24,7 +24,7 @@ server {
 	ssl_certificate /etc/ssl/localcerts/<%= cert %>.chained.crt;
 	ssl_certificate_key /etc/ssl/private/<%= cert %>.key;
 	<%- end -%>
-	<%- if @acme_subjects.length -%>
+	<%- if ! @acme_subjects.empty? -%>
 	ssl_certificate /etc/acme/cert/<%= @server_name.gsub(/\W/, '_') %>.chained.crt;
 	ssl_certificate_key /etc/acme/key/<%= @server_name.gsub(/\W/, '_') %>.key;
 	<%- end -%>
@@ -35,7 +35,7 @@ server {
 
 	keepalive_timeout 60;
 
-<% if @acme_subjects.length -%>
+<% if ! @acme_subjects.empty? -%>
 	include /etc/acme/challenge-nginx.conf;
 <% end -%>
 	location / {
