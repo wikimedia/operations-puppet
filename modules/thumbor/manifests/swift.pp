@@ -20,7 +20,7 @@
 
 class thumbor::swift (
     $swift_key,
-    $swift_account = 'thumbor',
+    $swift_account = 'mw',
     $swift_user = 'thumbor',
     $swift_sharded_containers = [],
     $swift_host = "http://ms-fe.svc.${::site}.wmnet",
