@@ -67,13 +67,13 @@ class tilerator::ui(
     $port           = 6535,
     $conf_sources   = 'sources.prod.yaml',
     $contact_groups = 'admins',
-    $expmask        = 'expire\\.list\\.*',
+    $expmask        = '\'expire\.list\.*\'',
     $statefile_dir  = '/var/run/tileratorui',
     $from_zoom      = 10,
     $before_zoom    = 16,
     $generator_id   = 'gen',
     $storage_id     = 'v3',
-    $delete_empty   = 1,
+    $delete_empty   = true,
     $expire_dir     = '/srv/osm_expire/',
 ) {
     $statefile = "${statefile_dir}/expire.state"
@@ -99,18 +99,10 @@ class tilerator::ui(
         mode   => '0755',
     }
 
-    $expmask_escaped = uriescape($expmask)
-    $generator_id_escaped = uriescape($generator_id)
-    $storage_id_escaped = uriescape($storage_id)
-
-    $query_string = "expdirpath=${expire_dir}\\&expmask=${expmask_escaped}\\&statefile=${statefile}\\&fromZoom=${from_zoom}\\&beforeZoom=${before_zoom}\\&generatorId=${generator_id_escaped}\\&storageId=${storage_id_escaped}\\&deleteEmpty=${delete_empty}"
-
-    $notify_url = "http://localhost:${port}/add?${query_string}"
-
     file { '/usr/local/bin/notify-tilerator':
         ensure  => present,
-        owner   => 'root',
-        group   => 'root',
+        owner   => 'tileratorui',
+        group   => 'tileratorui',
         mode    => '0555',
         content => template('tilerator/notify-tilerator.erb'),
     }
