@@ -28,9 +28,9 @@
 # [+smtp_host+]
 #   Outgoing email relay. Default localhost.
 #
-# [+parsoid_url+]
-#   Parsoid API url for wikitext to html conversion.
-#   Default http://parsoid.svc.eqiad.wmnet:8000/enwiki/
+# [+restbase_url+]
+#   RESTBase API url for wikitext to html conversion.
+#   Default https://en.wikipedia.org/api/rest_v1/transform/wikitext/to/html
 #
 # == Sample usage:
 #
@@ -44,7 +44,7 @@ class iegreview(
     $mysql_host           = 'localhost',
     $mysql_db             = 'iegreview',
     $smtp_host            = 'localhost',
-    $parsoid_url          = "http://parsoid.svc.${::parsoid_site}.wmnet:8000/enwiki/",
+    $restbase_url         = 'https://en.wikipedia.org/api/rest_v1/transform/wikitext/to/html',
 ) {
     include ::apache
     include ::apache::mod::php5
