@@ -39,7 +39,7 @@ sub upload_common_deliver {
 sub upload_common_backend_response {
 <% if @varnish_version4 -%>
 	// Debugging T144257. Don't cache 200 responses with CL:0.
-	if (beresp.http.Content-Length == 0 && beresp.status == 200) {
+	if (beresp.http.Content-Length == "0" && beresp.status == 200) {
 		set beresp.ttl = 0s;
 		set beresp.uncacheable = true;
 	}
