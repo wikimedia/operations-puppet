@@ -33,7 +33,7 @@ sub https_recv_redirect {
 				}
 			}
 		}
-		else if (req.http.Host !~ "\.beta\.wmflabs\.org$") {
+		else {
 			<%= error_synth(403, "Insecure Request Forbidden - use HTTPS - https://lists.wikimedia.org/pipermail/mediawiki-api-announce/2016-May/000110.html") -%>
 		}
 	}
