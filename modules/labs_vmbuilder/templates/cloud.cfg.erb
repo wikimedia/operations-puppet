@@ -65,12 +65,12 @@ cloud_final_modules:
  - rightscale_userdata
  - scripts-per-once
  - scripts-per-boot
- - scripts-per-instance
  - scripts-user
  - keys-to-console
  - phone-home
  - final-message
 <% if scope.function_os_version(['ubuntu >= trusty']) %>
+ - scripts-per-instance
  - scripts-vendor
  - ssh-authkey-fingerprints
  - power-state-change
