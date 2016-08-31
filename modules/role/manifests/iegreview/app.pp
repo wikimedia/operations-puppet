@@ -16,7 +16,6 @@ class role::iegreview::app {
         mysql_host  => 'm2-master.eqiad.wmnet',
         mysql_db    => 'iegreview',
         smtp_host   => $::mail_smarthost[0],
-        parsoid_url => "http://parsoid.svc.${::parsoid_site}.wmnet:8000/enwiki/",
     }
 
     ferm::service { 'iegreview_http':
