@@ -1,6 +1,3 @@
 debdeploy::grains:
   debdeploy-druid:
     value: standard
-admin::groups:
-  - analytics-roots
-  - analytics-admins
