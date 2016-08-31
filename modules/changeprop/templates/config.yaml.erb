@@ -238,6 +238,9 @@ spec:
               ores_cache:
                 topic: mediawiki.revision_create
                 concurrency: 15
+                ignore:
+                  status:
+                    - 503
                 cases:
                   - match:
                       meta:
