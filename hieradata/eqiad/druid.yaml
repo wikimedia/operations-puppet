@@ -1,3 +1,6 @@
+admin::groups:
+  - analytics-roots
+  - analytics-admins
 use_cdh: true
 properties:
   druid.metadata.storage.type: mysql
