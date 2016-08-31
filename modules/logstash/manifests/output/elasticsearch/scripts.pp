@@ -11,6 +11,7 @@ class logstash::output::elasticsearch::scripts {
     }
 
     file { '/usr/local/bin/logstash_clear_cache.sh':
+        ensure => absent, # T144396 - removing the clear cache mechanism to validate it is not needed anymore
         owner  => 'root',
         group  => 'root',
         mode   => '0555',

@@ -206,6 +206,7 @@ class role::logstash (
 class role::logstash::elasticsearch {
     include standard
     include ::elasticsearch::nagios::check
+    include ::elasticsearch::monitor::diamond
 
     if $::standard::has_ganglia {
         include ::elasticsearch::ganglia
