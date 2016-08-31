@@ -1518,7 +1518,7 @@ node 'lead.wikimedia.org' {
 }
 
 node 'lithium.eqiad.wmnet' {
-    role backup::host, syslog::centralserver
+    role backup::host, syslog::centralserver, prometheus::node_exporter
     include standard
 }
 
@@ -2843,7 +2843,7 @@ node /^wdqs100[1-2]\.eqiad\.wmnet$/ {
 }
 
 node 'wezen.codfw.wmnet' {
-    role backup::host, syslog::centralserver
+    role backup::host, syslog::centralserver, prometheus::node_exporter
     include standard
 }
 
