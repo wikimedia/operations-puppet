@@ -45,7 +45,7 @@ while True:
         if name in openFiles:
             f = openFiles[name]
         else:
-            f = file(args.baseDir + '/' + name, "a")
+            f = file(args.basedir + '/' + name, "a")
             openFiles[name] = f
         f.write(text)
         f.flush()
