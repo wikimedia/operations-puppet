@@ -1,14 +1,17 @@
 #!/bin/bash
 
-/usr/bin/curl -XPOST <%= @notify_url %>
+/usr/bin/nodejs /srv/deployment/tilerator/deploy/src/scripts/tileshell.js \
+    --config /etc/tileratorui/config.yaml \
+    -j.fromZoom <%= @from_zoom %> \
+    -j.beforeZoom <%= @before_zoom %> \
+    -j.generatorId <%= @generator_id %> \
+    -j.storageId <%= @storage_id %> \
+<%- if @delete_empty %>    -j.deleteEmpty \ <% end -%>
+    -j.expdirpath <%= @expire_dir %> \
+    -j.expmask 'expire\.list\.*' \
+    -j.statefile <%= statefile %>
 
 notification_code=$?
-
-if [ $notification_code -eq 52 ] ; then
-    # tileratorui returns an invalid empty response, ignoring it until it is
-    # fixed (T139451)
-    exit 0
-fi
 
 if [ $notification_code -ne 0 ] ; then
     echo "Error while notifying tileratorui"
