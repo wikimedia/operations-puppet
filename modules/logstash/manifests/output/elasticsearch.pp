@@ -63,7 +63,7 @@ define logstash::output::elasticsearch(
     }
 
     cron { "logstash_clear_cache_${title}":
-        ensure  => $ensure_cron,
+        ensure  => absent,
         command => "/usr/local/bin/logstash_clear_cache.sh ${host}:${port} '${title}-*'",
         user    => 'root',
         minute  => 5 * fqdn_rand(12, "logstash_clear_cache_${title}"),
