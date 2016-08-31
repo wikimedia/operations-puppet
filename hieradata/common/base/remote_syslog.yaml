@@ -2,3 +2,4 @@
 enable: true
 central_hosts:
   - syslog.eqiad.wmnet
+  - syslog.codfw.wmnet
