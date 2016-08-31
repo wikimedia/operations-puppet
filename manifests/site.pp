@@ -1431,12 +1431,12 @@ node 'labmon1001.eqiad.wmnet' {
 }
 
 node 'labnet1001.eqiad.wmnet' {
-    role labs::openstack::nova::api
+    role labs::openstack::nova::api, labs::openstack::nova::network
     include standard
 }
 
 node 'labnet1002.eqiad.wmnet' {
-    role labs::openstack::nova::api, labs::openstack::nova::network
+    role labs::openstack::nova::api
     include standard
 }
 
