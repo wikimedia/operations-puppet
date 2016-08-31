@@ -43,9 +43,19 @@ es_eqiad_rack_a3:
   elasticsearch::rack: A3
   elasticsearch::row:  A
 
+es_eqiad_rack_a6:
+  __regex: !ruby/regexp /^elastic10(44|45)\.eqiad\.wmnet$/
+  elasticsearch::rack: A6
+  elasticsearch::row:  A
+
 es_eqiad_rack_b3:
   __regex: !ruby/regexp /^elastic10(36|37|38|39)\.eqiad\.wmnet$/
   elasticsearch::rack: B3
+  elasticsearch::row:  B
+
+es_eqiad_rack_b6:
+  __regex: !ruby/regexp /^elastic10(46|47)\.eqiad\.wmnet$/
+  elasticsearch::rack: B6
   elasticsearch::row:  B
 
 es_eqiad_rack_c5:
@@ -59,7 +69,7 @@ es_eqiad_rack_d3:
   elasticsearch::row:  D
 
 es_eqiad_rack_d4:
-  __regex: !ruby/regexp /^elastic10(23|24|25|26|27|28|29|44|45|46|47)\.eqiad\.wmnet$/
+  __regex: !ruby/regexp /^elastic10(23|24|25|26|27|28|29)\.eqiad\.wmnet$/
   elasticsearch::rack: D4
   elasticsearch::row:  D
 
