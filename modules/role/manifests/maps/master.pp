@@ -89,6 +89,13 @@ class role::maps::master {
         create_resources(postgresql::user, $postgres_slaves)
     }
 
+    sudo::user { 'tilerator-notification':
+        user       => 'osmupdater',
+        privileges => [
+            'ALL = (tileratorui) NOPASSWD: /usr/local/bin/notify-tilerator',
+        ],
+    }
+
     osm::planet_sync { 'gis':
         ensure                => present,
         flat_nodes            => true,
@@ -98,7 +105,7 @@ class role::maps::master {
         period                => 'day', # Remove thse as soon as we get down to minute
         hour                  => '1',
         minute                => '27',
-        postreplicate_command => '/usr/local/bin/notify-tilerator',
+        postreplicate_command => 'sudo -u tileratorui /usr/local/bin/notify-tilerator',
     }
 
     # Cassandra grants
