@@ -2075,3 +2075,11 @@ users:
     ssh_keys:
       - ssh-rsa AAAAB3NzaC1yc2EAAAABJQAAAQEAhAOVYD/NaXnew0HlVw4i/3LYT6wn6b8D+5Yun2tWRGd8DaODevafjW0Bzf+XwjSNoRIP52ZRM4Vmhg4H6sL4g31FuMfEVgLwjI0WCTxUxIrR2aGuumXRVYRwLOhFkC2RT7TcjTkDzeMa7DijyDxjI9+/rqCgGHcQwIk/c20VYZ4AzHPpGWqeb2JQblDRu/Jz1enmzUt1rwX/4Kxo/lmkLAtJxzVKgNfn13Acj3BSu1w0DIbPBT7EjKCuzKx7ZthanoYIh+BV5KyErp13AB6dxoxSQNfcIbftBoG6idlUSkEqnzednYoVBQSWa4xNaA2NDbjqpxfbMhERRs8FSn9/iw==
     uid: 15297
+  volkere:
+    ensure: present
+    gid: 500
+    name: volkere
+    realname: Volker Eckl
+    ssh_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDKpQEVtQw8XJCKvG7oNL9d+dveFqRpHCzduUvdzi6MK7zgtY9xUKF7ZcQObgP5fCpgLonDUu2b61WRzYgiPoBkhhnTKqRkCx6sT6KfsHaSE2iZefW5N7qEyRqpWCoXfmGnXJdP3r4cCgxBqdAJ/aoFNcvzpLUrcgw7wfI+gJ6VV897fwkH9SEnjVUxn/AZDAxsK6xa2gDmCUjG+Biwl6LsRCXtop87jtJ6SdgKmDkmGNh8t2y6YJxE0vjYuzNH2E2bEaYOgFRS/GULbNh+U+UqrN3sE4RTHUzAOqXh3iYShpNnwgm9nj41j3Q4h1S51muPEywRz60nU16JfaAvvvA3vyrS2L1P3zB7F+MbvhVVhdprmMvQf7hXbqSNhcxBWwvYfGGA67jy6hDL8WCd8+ql5F7tGw66FxStDjs2GYCiLp0zaDeBkl5Fx9GKjTXD8kCtA7Y8JDLuW1L/7ROX58C8tO6SyHjHHQO4hpSUavieUHt+2CFLYWvGtBZFStdL+esQmOC6qjX1KdwSQxlRXN9D436VxGusVdo3gkbaVvPFVx25gefWrKQ0/a17iU3eDL02sVkNa91Xs3AfeNNTqOv111UfoZjsatva7ZhBujeD131Ky7wolm1IVYtwfF4ifEpgLwjHtSzgfmdMLJSv4IweGYebc71JILMOHZCQGJ3/iw== volker.e@wikimedia.org
+    uid: 12186
