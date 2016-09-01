@@ -85,6 +85,15 @@ selected (e.g. jessie-backports), use:
 
     DIST=jessie BACKPORTS=yes pdebuild
 
+Experimental repos
+===============
+
+Packages from the Debian experimental repositories can be used to satisfy
+dependencies as well. To use the experimental repository for the distribution
+selected (e.g. jessie-wikimedia), use:
+
+    DIST=jessie EXPERIMENTAL=yes pdebuild
+
 git-buildpackage
 ================
 

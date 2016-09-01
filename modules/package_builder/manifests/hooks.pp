@@ -27,7 +27,7 @@ class package_builder::hooks(
 
     package_builder::pbuilder_hook { 'jessie':
         distribution => 'jessie',
-        components   => 'main backports thirdparty',
+        components   => 'main backports thirdparty experimental',
         basepath     => $basepath,
     }
 
