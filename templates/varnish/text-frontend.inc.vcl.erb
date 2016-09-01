@@ -184,24 +184,24 @@ sub cluster_fe_recv {
 	}
 
 	// The idea here is to occasionally redirect some of our worst clients
-	// (in TLS terms: those lacking forward secrecy and/or using 3DES) to
-	// our wikitech page about browser security, hoping it will prod them
+	// (in TLS terms: those using 3DES, the bulk of which are not
+	// forward-secret, and the bulk of which are also IE[78]-XP) to our
+	// wikitech page about browser security, hoping it will prod them
 	// to upgrade.
-	// The X-Conn-Props cipher filter matches roughly 0.46% of traffic.  By
+	// The X-Conn-Props cipher filter matches roughly 0.2% of traffic.  By
 	// restricting to a UA string matching 'Windows NT' (for now), the
 	// percentage drops a bit more.  We then further restrict to GETs of
 	// wiki pages, avoid the mobile domains JIC, and ignore clients that
 	// already have a cookie meaning we've done this to them once before
 	// during this browser session.  After all the basic conditions are
-	// met, we then only apply the redirect to 1% of matching traffic
+	// met, we then only apply the redirect to 2% of matching traffic
 	// randomly.  We may increase that a bit in the future and/or widen the
-	// UA filter, but this is a good
-	// starting point.
-	if (req.http.X-Connection-Properties ~ "DES-CBC3|C=AES"
+	// UA filter, but this is a good starting point.
+	if (req.http.X-Connection-Properties ~ "DES-CBC3"
 	   && req.http.User-Agent ~ "Windows NT" && req.request == "GET"
 	   && req.url ~ "^/wiki/" && req.http.host !~ "\.m\."
 	   && req.http.Cookie !~ "Browser-Security=Awful"
-	   && std.random(0,100) < 1.0) {
+	   && std.random(0,100) < 2.0) {
 		<%= error_synth(787, "Browser Security Warning Redirect") -%>
 	}
 
