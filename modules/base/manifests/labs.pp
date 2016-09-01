@@ -54,7 +54,7 @@ class base::labs inherits base {
     #  puppetmaster.  Self- and locally-hosted instances are on their own,
     #  but most likely already registered a password during their initial
     #  setup.
-    if $::puppetmastername == hiera('labs_puppet_master') {
+    if $::puppetmastername == hiera('labs_global_puppet_master') {
         # Create a root password and store it on the puppetmaster
         user { 'root':
             password => regsubst(

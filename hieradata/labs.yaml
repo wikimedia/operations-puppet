@@ -332,4 +332,4 @@ network::subnets:
           ipv4: 10.196.48.0/24
           ipv6: 2620:0:860:204::/64
 
-labs_puppet_master: &labspuppetmaster "labs-puppetmaster-eqiad.wikimedia.org"
+labs_global_puppet_master: &labspuppetmaster "labs-puppetmaster-eqiad.wikimedia.org"
