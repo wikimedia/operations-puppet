@@ -106,4 +106,9 @@ puppet agent --enable
 #  updated sources.list
 puppet agent --onetime --verbose --no-daemonize --no-splay --show_diff --waitforcert=10 --certname=${fqdn} --server=${master}
 apt-get update
+
+# The standard precise ssh server isn't compatible with our puppetized
+#  ssh config.  Grab the latest from the WMF repo, which should fix things
+apt-get -y install openssh-server
+
 puppet agent -t
