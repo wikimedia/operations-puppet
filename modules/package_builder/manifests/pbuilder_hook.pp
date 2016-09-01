@@ -29,14 +29,6 @@ define package_builder::pbuilder_hook(
         content => template('package_builder/D02backports.erb'),
     }
 
-    file { "${basepath}/hooks/${distribution}/D03experimental":
-        ensure  => present,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0555',
-        content => template('package_builder/D03experimental.erb'),
-    }
-
     file { "${basepath}/hooks/${distribution}/D05localsources":
         ensure  => present,
         owner   => 'root',
@@ -49,6 +41,5 @@ define package_builder::pbuilder_hook(
     # Dependency info
     File["${basepath}/hooks/${distribution}"] -> File["${basepath}/hooks/${distribution}/D01apt.wikimedia.org"]
     File["${basepath}/hooks/${distribution}"] -> File["${basepath}/hooks/${distribution}/D02backports"]
-    File["${basepath}/hooks/${distribution}"] -> File["${basepath}/hooks/${distribution}/D03experimental"]
     File["${basepath}/hooks/${distribution}"] -> File["${basepath}/hooks/${distribution}/D05localsources"]
 }
