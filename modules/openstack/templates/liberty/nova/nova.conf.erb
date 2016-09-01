@@ -113,6 +113,12 @@ zone_name=<%= @novaconfig["zone"] %>
 # Should be:
 #default_availability_zone = <%= @novaconfig["zone"] %>
 
+[database]
+# http://docs.sqlalchemy.org/en/latest/core/pooling.html
+max_overflow = 25
+max_pool_size = 10
+pool_timeout = 60
+
 [glance]
 host=<%= @novaconfig["glance_host"] %>
 
