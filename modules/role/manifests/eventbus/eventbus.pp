@@ -63,7 +63,7 @@ class role::eventbus::eventbus {
     if !defined(File['/srv/log/eventlogging']) {
         file { '/srv/log/eventlogging':
             ensure => 'directory',
-            mode   => '0775',
+            mode   => '0755',
             owner  => 'eventlogging',
             group  => 'eventlogging',
         }
