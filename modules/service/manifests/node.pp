@@ -273,6 +273,14 @@ define service::node(
             onlyif  => "/usr/bin/test -O ${chown_target}",
             require => [User[$deployment_user], Group[$deployment_user]]
         }
+        file { "/etc/${title}/config-vars.yaml":
+            ensure  => present,
+            content => template('service/node/config-vars.yaml.erb'),
+            owner   => $deployment_user,
+            group   => $deployment_user,
+            mode    => '0444',
+            tag     => "${title}::config",
+        }
     } else {
         file { "/etc/${title}/config.yaml":
             ensure  => present,
@@ -282,16 +290,15 @@ define service::node(
             mode    => '0444',
             tag     => "${title}::config",
         }
-    }
-
-    if $auto_refresh {
-        # if the service should be restarted after a
-        # config change, specify the notify/before requirement
-        File["/etc/${title}/config.yaml"] ~> Service[$title]
-    } else {
-        # no restart should happen, just ensure the file is
-        # created before the service
-        File["/etc/${title}/config.yaml"] -> Service[$title]
+        if $auto_refresh {
+            # if the service should be restarted after a
+            # config change, specify the notify/before requirement
+            File["/etc/${title}/config.yaml"] ~> Service[$title]
+        } else {
+            # no restart should happen, just ensure the file is
+            # created before the service
+            File["/etc/${title}/config.yaml"] -> Service[$title]
+        }
     }
 
     # on systemd, set up redirecting of stdout/stderr to a file
