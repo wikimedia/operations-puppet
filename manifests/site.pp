@@ -1125,7 +1125,7 @@ node 'hafnium.eqiad.wmnet' {
 
 # debug_proxy hosts; Varnish backend for X-Wikimedia-Debug reqs
 node /^(hassaleh|hassium)\.(codfw|eqiad)\.wmnet$/ {
-    role debug_proxy
+    role debug_proxy, prometheus::node_exporter
     include standard
     include base::firewall
 }
@@ -1142,7 +1142,7 @@ node 'helium.eqiad.wmnet' {
 
 # Bacula storage
 node 'heze.codfw.wmnet' {
-    role backup::storage
+    role backup::storage, prometheus::node_exporter
     include standard
 }
 
@@ -1180,20 +1180,25 @@ node 'labservices1002.wikimedia.org' {
 }
 
 node 'labtestneutron2001.codfw.wmnet' {
+    role prometheus::node_exporter
+
     include standard
 }
 
 node 'labtestvirt2001.codfw.wmnet' {
-    role labs::openstack::nova::compute
+    role labs::openstack::nova::compute, prometheus::node_exporter
     include standard
 }
 
 node 'labtestnet2001.codfw.wmnet' {
-    role labs::openstack::nova::api, labs::openstack::nova::network
+    role labs::openstack::nova::api, labs::openstack::nova::network,
+          prometheus::node_exporter
     include standard
 }
 
 node 'labtestmetal2001.codfw.wmnet' {
+    role prometheus::node_exporter
+
     include standard
     include base::firewall
 }
@@ -1202,7 +1207,7 @@ node 'labtestcontrol2001.wikimedia.org' {
     include standard
     include base::firewall
     role labs::openstack::nova::controller,
-          labs::puppetmaster
+          labs::puppetmaster, prometheus::node_exporter
 
     include labspuppetbackend
 
@@ -1231,7 +1236,7 @@ node 'labtestcontrol2001.wikimedia.org' {
 
 node 'labtestservices2001.wikimedia.org' {
     role labs::dns, labs::openstack::designate::server, labs::dnsrecursor, openldap::labtest,
-        labs::dns_floating_ip_updater
+        labs::dns_floating_ip_updater, prometheus::node_exporter
     include standard
     include base::firewall
 }
@@ -1270,14 +1275,14 @@ node 'graphite1003.eqiad.wmnet' {
 
 # Primary graphite machines
 node 'graphite2001.codfw.wmnet' {
-    role graphite::production, statsd
+    role graphite::production, statsd, prometheus::node_exporter
     include standard
     include base::firewall
 }
 
 # graphite additional machine, for additional space
 node 'graphite2002.codfw.wmnet' {
-    role graphite::production, statsd
+    role graphite::production, statsd, prometheus::node_exporter
     include standard
     include base::firewall
 }
@@ -1365,7 +1370,8 @@ node /kafka200[12]\.codfw\.wmnet/ {
     role kafka::main::broker,
         # Mirror eqiad.* topics from Kafka main-eqiad into this main-codfw
         kafka::main::mirror,
-        eventbus::eventbus
+        eventbus::eventbus,
+        prometheus::node_exporter
     include standard
     include base::firewall
 }
@@ -1500,12 +1506,12 @@ node /labstore100[45]\.eqiad\.wmnet/ {
 }
 
 node /labstore200[1-2]\.codfw\.wmnet/ {
-    role labs::nfs::backup
+    role labs::nfs::backup, prometheus::node_exporter
     include standard
 }
 
 node /labstore200[3-4]\.codfw\.wmnet/ {
-    role labs::nfs::backup
+    role labs::nfs::backup, prometheus::node_exporter
     include standard
 }
 
@@ -1922,12 +1928,12 @@ node /^maps100[2-4]\.eqiad\.wmnet/ {
 }
 
 node 'maps2001.codfw.wmnet' {
-    role maps::server, maps::master
+    role maps::server, maps::master, prometheus::node_exporter
     include base::firewall
 }
 
 node /^maps200[2-4]\.codfw\.wmnet/ {
-    role maps::server, maps::slave
+    role maps::server, maps::slave, prometheus::node_exporter
     include base::firewall
 }
 
@@ -1936,7 +1942,7 @@ node /^mc(10[01][0-9])\.eqiad\.wmnet/ {
 }
 
 node /^mc20[01][0-9]\.codfw\.wmnet/ {
-    role memcached
+    role memcached, prometheus::node_exporter
 }
 
 node 'meitnerium.wikimedia.org' {
@@ -2004,22 +2010,22 @@ node /^ms-be300[1-4]\.esams\.wmnet$/ {
 }
 
 node /^ms-fe2001\.codfw\.wmnet$/ {
-    role swift::proxy, swift::stats_reporter
+    role swift::proxy, swift::stats_reporter, prometheus::node_exporter
     include ::lvs::realserver
 }
 
 node /^ms-fe2002\.codfw\.wmnet$/ {
-    role swift::proxy
+    role swift::proxy, prometheus::node_exporter
     include ::lvs::realserver
 }
 
 node /^ms-fe200[3-4]\.codfw\.wmnet$/ {
-    role swift::proxy
+    role swift::proxy, prometheus::node_exporter
     include ::lvs::realserver
 }
 
 node /^ms-be20(0[0-9]|1[0-5])\.codfw\.wmnet$/ {
-    role swift::storage
+    role swift::storage, prometheus::node_exporter
 }
 
 # HP machines have different disk ordering T90922
@@ -2123,13 +2129,13 @@ node /^mw1(299|30[0-6])\.eqiad\.wmnet$/ {
 
 # mw2017.codfw.wmnet is a codfw test appserver
 node 'mw2017.codfw.wmnet' {
-    role mediawiki::appserver
+    role mediawiki::appserver, prometheus::node_exporter
     include base::firewall
 }
 
 #mw2061-2079 are api appservers
 node /^mw20[6-7][0-9]\.codfw\.wmnet$/ {
-    role mediawiki::appserver::api
+    role mediawiki::appserver::api, prometheus::node_exporter
     include base::firewall
 }
 
@@ -2137,24 +2143,24 @@ node /^mw20[6-7][0-9]\.codfw\.wmnet$/ {
 # ROW B codfw appservers: mw2080-mw2147
 #mw2080-mw2085 are jobrunners
 node /^mw208[0-5]\.codfw\.wmnet$/ {
-    role mediawiki::jobrunner
+    role mediawiki::jobrunner, prometheus::node_exporter
     include base::firewall
 }
 
 #mw2086-mw2089 are imagescalers
 node /^mw208[6-9]\.codfw\.wmnet$/ {
-    role mediawiki::imagescaler
+    role mediawiki::imagescaler, prometheus::node_exporter
 }
 
 #mw2090-mw2119 are appservers
 node /^mw2(09[0-9]|1[0-1][0-9])\.codfw\.wmnet$/ {
-    role mediawiki::appserver
+    role mediawiki::appserver, prometheus::node_exporter
     include base::firewall
 }
 
 #mw2120-2147 are api appservers
 node /^mw21([2-3][0-9]|4[0-7])\.codfw\.wmnet$/ {
-    role mediawiki::appserver::api
+    role mediawiki::appserver::api, prometheus::node_exporter
     include base::firewall
 }
 
@@ -2167,7 +2173,7 @@ node /^mw21(4[89]|5[01])\.codfw\.wmnet$/ {
 
 #mw2152 is a videoscaler
 node 'mw2152.codfw.wmnet' {
-    role mediawiki::videoscaler
+    role mediawiki::videoscaler, prometheus::node_exporter
 }
 
 #mw2153-62 are jobrunners
@@ -2235,7 +2241,7 @@ node 'mx1001.wikimedia.org' {
 }
 
 node 'mx2001.wikimedia.org' {
-    role mail::mx
+    role mail::mx, prometheus::node_exporter
     include standard
     interface::add_ip6_mapped { 'main': }
 
@@ -2403,7 +2409,7 @@ node 'pc2006.codfw.wmnet' {
 
 # virtual machines hosting https://wikitech.wikimedia.org/wiki/Planet.wikimedia.org
 node /^planet[12]001\.(eqiad|codfw)\.wmnet$/ {
-    role planet::venus
+    role planet::venus, prometheus::node_exporter
 
     interface::add_ip6_mapped { 'main': interface => 'eth0', }
 }
@@ -2448,7 +2454,7 @@ node /^pybal-test200[12]\.codfw\.wmnet$/ {
 # pybal-test2003 is used for pybal testing/development
 # and for redis multi-instance testing/development
 node 'pybal-test2003.codfw.wmnet' {
-    role pybaltest
+    role pybaltest, prometheus::node_exporter
     include standard
 
     redis::instance { 6370: }
@@ -2491,7 +2497,7 @@ node /^rdb100[1-9]\.eqiad\.wmnet/ {
 }
 
 node /^rdb200[1-6]\.codfw\.wmnet/ {
-    role jobqueue_redis
+    role jobqueue_redis, prometheus::node_exporter
     include base::firewall
 }
 
@@ -2553,7 +2559,7 @@ node 'ruthenium.eqiad.wmnet' {
 
 # salt master fallback
 node 'sarin.codfw.wmnet' {
-    role salt::masters::production, mariadb::client
+    role salt::masters::production, mariadb::client, prometheus::node_exporter
     include standard
     include base::firewall
 }
@@ -2608,6 +2614,7 @@ node 'silver.wikimedia.org' {
 
 # mw logging host codfw - setup pending
 node 'sinistra.codfw.wmnet' {
+    role prometheus::node_exporter
 
     include base::firewall
     include standard
@@ -2743,7 +2750,7 @@ node /^snapshot100[5-7]\.eqiad\.wmnet/ {
 
 # codfw poolcounters
 node /(subra|suhail)\.codfw\.wmnet/ {
-    role poolcounter
+    role poolcounter, prometheus::node_exporter
     include standard
 }
 
@@ -2829,7 +2836,8 @@ node /^labvirt101[0-4].eqiad.wmnet/ {
 
 # mediawiki maintenance server (like terbium)
 node 'wasat.codfw.wmnet' {
-    role mariadb::maintenance, mediawiki::maintenance
+    role mariadb::maintenance, mediawiki::maintenance,
+          prometheus::node_exporter
 
     include ldap::role::client::labs
     include base::firewall
@@ -2854,13 +2862,13 @@ node /^wtp10(0[1-9]|1[0-9]|2[0-4])\.eqiad\.wmnet$/ {
 }
 
 node /^wtp20(0[1-9]|1[0-9]|2[0-4])\.codfw\.wmnet$/ {
-    role parsoid
+    role parsoid, prometheus::node_exporter
     include standard
 }
 
 # T138650 - tools for the security team
 node 'zosma.codfw.wmnet' {
-    role security::tools
+    role security::tools, prometheus::node_exporter
 
     interface::add_ip6_mapped { 'main': interface => 'eth0', }
 }
