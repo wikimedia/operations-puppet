@@ -85,6 +85,14 @@ selected (e.g. jessie-backports), use:
 
     DIST=jessie BACKPORTS=yes pdebuild
 
+Experimental component
+======================
+
+Packages from the experimental component can be used to satisfy dependencies as
+well, within jessie-wikimedia. To use the experimental component:
+
+    DIST=jessie-wikimedia EXPERIMENTAL=yes pdebuild
+
 git-buildpackage
 ================
 
