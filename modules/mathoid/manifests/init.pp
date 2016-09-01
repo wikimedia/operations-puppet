@@ -32,8 +32,8 @@ class mathoid(
     require ::mathoid::packages
 
     service::node { 'mathoid':
-        port            => 10042,
-        config          => {
+        port              => 10042,
+        config            => {
             svg       => $svg_generation,
             img       => $img_generation,
             png       => $png_generation,
@@ -41,8 +41,9 @@ class mathoid(
             texvcinfo => $texvcinfo_generation,
             no_check  => $render_no_check,
         },
-        healthcheck_url => '',
-        has_spec        => true,
-        deployment      => 'scap3',
+        healthcheck_url   => '',
+        has_spec          => true,
+        deployment        => 'scap3',
+        deployment_config => true,
     }
 }

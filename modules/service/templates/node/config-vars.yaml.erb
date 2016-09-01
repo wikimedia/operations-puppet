@@ -1,0 +1,37 @@
+<%-
+cvars = {
+  'mwapi'     => scope.lookupvar('service::configuration::mwapi_uri'),
+  'restbase'  => scope.lookupvar('service::configuration::restbase_uri'),
+  'gelf_host' => scope.lookupvar('service::configuration::logstash_host'),
+  'gelf_port' => scope.lookupvar('service::configuration::logstash_port'),
+  'stat_host' => scope.lookupvar('service::configuration::statsd_host'),
+  'stat_port' => scope.lookupvar('service::configuration::statsd_port'),
+  'proxy'     => scope.lookupvar('service::configuration::http_proxy')
+}
+
+cvars.keys.each do |k|
+  cvars[k] = '' if cvars[k].nil? or ['undef', ''].include? cvars[k].to_s
+end
+-%>
+# general
+num_workers: <%= @no_workers %>
+worker_heap_limit_mb: <%= @heap_limit %>
+worker_heartbeat_timeout: <%= @heartbeat_to %>
+# log-related variables
+log_name: <%= @logging_name %>
+logstash_host: <%= cvars['gelf_host'] %>
+logstash_port: <%= cvars['gelf_port'] %>
+log_file: <%= @local_logfile %>
+# metrics
+metrics_name: <%= @statsd_prefix %>
+metrics_host: <%= cvars['stat_host'] %>
+metrics_port: <%= cvars['stat_port'] %>
+# service
+name: <%= @title %>
+module: <%= @starter_module %>
+entrypoint: <%= @entrypoint %>
+port: <%= @port %>
+proxy: <%= cvars['proxy'] %>
+mwapi_uri: <%= cvars['mwapi'] %>
+restbase_uri: <%= cvars['restbase'] %>
+

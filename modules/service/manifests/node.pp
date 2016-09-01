@@ -273,6 +273,13 @@ define service::node(
             onlyif  => "/usr/bin/test -O ${chown_target}",
             require => [User[$deployment_user], Group[$deployment_user]]
         }
+        file { "/etc/${title}/config-vars.yaml":
+            ensure  => present,
+            content => template('service/node/config-vars.yaml.erb'),
+            owner   => $deployment_user,
+            group   => $deployment_user,
+            mode    => '0444',
+        }
     } else {
         file { "/etc/${title}/config.yaml":
             ensure  => present,
