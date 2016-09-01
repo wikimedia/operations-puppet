@@ -8,8 +8,6 @@ DIST=${DIST:-"$(lsb_release --short --codename)"}
 WIKIMEDIA=${WIKIMEDIA:-"no"}
 # Default to not use distribution backports
 BACKPORTS=${BACKPORTS:-"no"}
-# Default to not use component experimental
-EXPERIMENTAL=${EXPERIMENTAL:-"no"}
 
 # If DIST has been declared like dist-wikimedia, handle it like as if the user
 # wanted to specify WIKIMEDIA="yes" which will satisfy build dependencies from
