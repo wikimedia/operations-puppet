@@ -31,7 +31,7 @@ class labs_vmbuilder($vmbuilder_version) {
 
     file { '/etc/vmbuilder/files/cloud.cfg':
         mode    => '0444',
-        content => template('labs_vmbuilder/cloud.cfg.erb'),
+        source  => 'puppet:///modules/labs_vmbuilder/cloud.cfg',
         require => Package['python-vm-builder'],
     }
 
