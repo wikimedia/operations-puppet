@@ -1942,7 +1942,7 @@ node /^mc20[01][0-9]\.codfw\.wmnet/ {
 
 node 'meitnerium.wikimedia.org' {
     $cluster = 'misc'
-    role archiva, archiva::migration
+    role archiva
     include standard
 }
 
