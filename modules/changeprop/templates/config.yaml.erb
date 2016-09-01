@@ -142,7 +142,7 @@ spec:
                     redirect: false
 
               page_edit:
-                topic: mediawiki.revision_create
+                topic: mediawiki.revision-create
                 retry_on:
                   status:
                     - '5xx'
@@ -158,62 +158,62 @@ spec:
                     redirect: false
 
               revision_visibility_change:
-                topic: mediawiki.revision_visibility_set
+                topic: mediawiki.revision-visibility-set
                 ignore:
                   status:
                     - 403 # When the revision is hidden 403 will be returned by RESTBase, it's a valid situation
                     - 412
                 exec:
                   method: get
-                  uri: '<%= @restbase_uri %>/{{message.meta.domain}}/v1/page/revision/{{message.revision_id}}'
+                  uri: '<%= @restbase_uri %>/{{message.meta.domain}}/v1/page/revision/{{message.rev_id}}'
                   headers:
                     cache-control: no-cache
                   query:
                     redirect: false
 
               page_delete:
-                topic: mediawiki.page_delete
+                topic: mediawiki.page-delete
                 ignore:
                   status:
                     - 404 # 404 is a normal response for page deletion
                     - 412
                 exec:
                   method: get
-                  uri: '<%= @restbase_uri %>/{{message.meta.domain}}/v1/page/title/{message.title}'
+                  uri: '<%= @restbase_uri %>/{{message.meta.domain}}/v1/page/title/{message.page_title}'
                   headers:
                     cache-control: no-cache
                   query:
                     redirect: false
 
               page_restore:
-                topic: mediawiki.page_restore
+                topic: mediawiki.page-undelete
                 exec:
                   method: get
-                  uri: '<%= @restbase_uri %>/{{message.meta.domain}}/v1/page/html/{message.title}'
+                  uri: '<%= @restbase_uri %>/{{message.meta.domain}}/v1/page/html/{message.page_title}'
                   headers:
                     cache-control: no-cache
                   query:
                     redirect: false
 
               page_move:
-                topic: mediawiki.page_move
+                topic: mediawiki.page-move
                 exec:
                   - method: get
-                    uri: '<%= @restbase_uri %>/{{message.meta.domain}}/v1/page/html/{message.new_title}/{{message.new_revision_id}}'
+                    uri: '<%= @restbase_uri %>/{{message.meta.domain}}/v1/page/html/{message.page_title}/{{message.rev_id}}'
                     headers:
                       cache-control: no-cache
                       if-unmodified-since: '{{date(message.meta.dt)}}'
                     query:
                       redirect: false
                   - method: get
-                    uri: '<%= @restbase_uri %>/{{message.meta.domain}}/v1/page/title/{message.old_title}'
+                    uri: '<%= @restbase_uri %>/{{message.meta.domain}}/v1/page/title/{message.prior_state.page_title}'
                     headers:
                       cache-control: no-cache
                     query:
                       redirect: false
 #
 #              transclusion_update:
-#                topic: mediawiki.revision_create
+#                topic: mediawiki.revision-create
 #                exec:
 #                  method: 'post'
 #                  uri: '/sys/links/transcludes/{{message.page_title}}'
@@ -235,7 +235,7 @@ spec:
 
               # ORES caching updates
               ores_cache:
-                topic: mediawiki.revision_create
+                topic: mediawiki.revision-create
                 concurrency: 15
                 ignore:
                   status:
@@ -244,7 +244,8 @@ spec:
                   - match:
                       meta:
                         domain: ar.wikipedia.org
-                      rev_by_bot: false
+                      performer:
+                        user_is_bot: false
                     exec:
                       uri: '<%= @ores_uri %>/v2/scores/arwiki/'
                       query:
@@ -254,7 +255,8 @@ spec:
                   - match:
                       meta:
                         domain: cs.wikipedia.org
-                      rev_by_bot: false
+                      performer:
+                        user_is_bot: false
                     exec:
                       uri: '<%= @ores_uri %>/v2/scores/cswiki/'
                       query:
@@ -264,7 +266,8 @@ spec:
                   - match:
                       meta:
                         domain: en.wikipedia.org
-                      rev_by_bot: false
+                      performer:
+                        user_is_bot: false
                     exec:
                       uri: '<%= @ores_uri %>/v2/scores/enwiki/'
                       query:
@@ -274,7 +277,8 @@ spec:
                   - match:
                       meta:
                         domain: en.wiktionary.org
-                      rev_by_bot: false
+                      performer:
+                        user_is_bot: false
                     exec:
                       uri: '<%= @ores_uri %>/v2/scores/enwiktionary/'
                       query:
@@ -284,7 +288,8 @@ spec:
                   - match:
                       meta:
                         domain: es.wikipedia.org
-                      rev_by_bot: false
+                      performer:
+                        user_is_bot: false
                     exec:
                       uri: '<%= @ores_uri %>/v2/scores/eswiki/'
                       query:
@@ -294,7 +299,8 @@ spec:
                   - match:
                       meta:
                         domain: et.wikipedia.org
-                      rev_by_bot: false
+                      performer:
+                        user_is_bot: false
                     exec:
                       uri: '<%= @ores_uri %>/v2/scores/etwiki/'
                       query:
@@ -304,7 +310,8 @@ spec:
                   - match:
                       meta:
                         domain: fa.wikipedia.org
-                      rev_by_bot: false
+                      performer:
+                        user_is_bot: false
                     exec:
                       uri: '<%= @ores_uri %>/v2/scores/fawiki/'
                       query:
@@ -314,7 +321,8 @@ spec:
                   - match:
                       meta:
                         domain: fr.wikipedia.org
-                      rev_by_bot: false
+                      performer:
+                        user_is_bot: false
                     exec:
                       uri: '<%= @ores_uri %>/v2/scores/frwiki/'
                       query:
@@ -324,7 +332,8 @@ spec:
                   - match:
                       meta:
                         domain: he.wikipedia.org
-                      rev_by_bot: false
+                      performer:
+                        user_is_bot: false
                     exec:
                       uri: '<%= @ores_uri %>/v2/scores/hewiki/'
                       query:
@@ -334,7 +343,8 @@ spec:
                   - match:
                       meta:
                         domain: hu.wikipedia.org
-                      rev_by_bot: false
+                      performer:
+                        user_is_bot: false
                     exec:
                       uri: '<%= @ores_uri %>/v2/scores/huwiki/'
                       query:
@@ -344,7 +354,8 @@ spec:
                   - match:
                       meta:
                         domain: id.wikipedia.org
-                      rev_by_bot: false
+                      performer:
+                        user_is_bot: false
                     exec:
                       uri: '<%= @ores_uri %>/v2/scores/idwiki/'
                       query:
@@ -354,7 +365,8 @@ spec:
                   - match:
                       meta:
                         domain: it.wikipedia.org
-                      rev_by_bot: false
+                      performer:
+                        user_is_bot: false
                     exec:
                       uri: '<%= @ores_uri %>/v2/scores/itwiki/'
                       query:
@@ -364,7 +376,8 @@ spec:
                   - match:
                       meta:
                         domain: nl.wikipedia.org
-                      rev_by_bot: false
+                      performer:
+                        user_is_bot: false
                     exec:
                       uri: '<%= @ores_uri %>/v2/scores/nlwiki/'
                       query:
@@ -374,7 +387,8 @@ spec:
                   - match:
                       meta:
                         domain: pl.wikipedia.org
-                      rev_by_bot: false
+                      performer:
+                        user_is_bot: false
                     exec:
                       uri: '<%= @ores_uri %>/v2/scores/plwiki/'
                       query:
@@ -384,7 +398,8 @@ spec:
                   - match:
                       meta:
                         domain: pt.wikipedia.org
-                      rev_by_bot: false
+                      performer:
+                        user_is_bot: false
                     exec:
                       uri: '<%= @ores_uri %>/v2/scores/ptwiki/'
                       query:
@@ -394,7 +409,8 @@ spec:
                   - match:
                       meta:
                         domain: ru.wikipedia.org
-                      rev_by_bot: false
+                      performer:
+                        user_is_bot: false
                     exec:
                       uri: '<%= @ores_uri %>/v2/scores/ruwiki/'
                       query:
@@ -404,7 +420,8 @@ spec:
                   - match:
                       meta:
                         domain: tr.wikipedia.org
-                      rev_by_bot: false
+                      performer:
+                        user_is_bot: false
                     exec:
                       uri: '<%= @ores_uri %>/v2/scores/trwiki/'
                       query:
@@ -414,7 +431,8 @@ spec:
                   - match:
                       meta:
                         domain: uk.wikipedia.org
-                      rev_by_bot: false
+                      performer:
+                        user_is_bot: false
                     exec:
                       uri: '<%= @ores_uri %>/v2/scores/ukwiki/'
                       query:
@@ -424,7 +442,8 @@ spec:
                   - match:
                       meta:
                         domain: vi.wikipedia.org
-                      rev_by_bot: false
+                      performer:
+                        user_is_bot: false
                     exec:
                       uri: '<%= @ores_uri %>/v2/scores/viwiki/'
                       query:
@@ -435,7 +454,8 @@ spec:
                       meta:
                         domain: wikidata.org
                       page_namespace: 0
-                      rev_by_bot: false
+                      performer:
+                        user_is_bot: false
                     exec:
                       uri: '<%= @ores_uri %>/v2/scores/wikidatawiki/'
                       query:
@@ -445,12 +465,11 @@ spec:
 
               # Re-renders summary on WikiData item update
               wikidata_description:
-                topic: mediawiki.revision_create
+                topic: mediawiki.revision-create
                 match:
                   meta:
                     domain: www.wikidata.org
-                match_not:
-                  page_title: /:/
+                  page_namespace: 0
                 exec:
                   method: 'post'
                   uri: '/sys/links/wikidata_descriptions'
