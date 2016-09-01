@@ -32,35 +32,56 @@ class role::url_downloader {
 
     if $::realm == 'production' {
         $wikimedia = [
-            # TODO: Add IPv6 as well
             $network::constants::all_network_subnets['production']['eqiad']['public']['public1-a-eqiad']['ipv4'],
+            $network::constants::all_network_subnets['production']['eqiad']['public']['public1-a-eqiad']['ipv6'],
             $network::constants::all_network_subnets['production']['eqiad']['public']['public1-b-eqiad']['ipv4'],
+            $network::constants::all_network_subnets['production']['eqiad']['public']['public1-b-eqiad']['ipv6'],
             $network::constants::all_network_subnets['production']['eqiad']['public']['public1-c-eqiad']['ipv4'],
+            $network::constants::all_network_subnets['production']['eqiad']['public']['public1-c-eqiad']['ipv6'],
             $network::constants::all_network_subnets['production']['eqiad']['public']['public1-d-eqiad']['ipv4'],
+            $network::constants::all_network_subnets['production']['eqiad']['public']['public1-d-eqiad']['ipv6'],
 
             $network::constants::all_network_subnets['production']['codfw']['public']['public1-a-codfw']['ipv4'],
+            $network::constants::all_network_subnets['production']['codfw']['public']['public1-a-codfw']['ipv6'],
             $network::constants::all_network_subnets['production']['codfw']['public']['public1-b-codfw']['ipv4'],
+            $network::constants::all_network_subnets['production']['codfw']['public']['public1-b-codfw']['ipv6'],
             $network::constants::all_network_subnets['production']['codfw']['public']['public1-c-codfw']['ipv4'],
+            $network::constants::all_network_subnets['production']['codfw']['public']['public1-c-codfw']['ipv6'],
             $network::constants::all_network_subnets['production']['codfw']['public']['public1-d-codfw']['ipv4'],
+            $network::constants::all_network_subnets['production']['codfw']['public']['public1-d-codfw']['ipv6'],
 
             $network::constants::all_network_subnets['production']['eqiad']['private']['private1-a-eqiad']['ipv4'],
+            $network::constants::all_network_subnets['production']['eqiad']['private']['private1-a-eqiad']['ipv6'],
             $network::constants::all_network_subnets['production']['eqiad']['private']['private1-b-eqiad']['ipv4'],
+            $network::constants::all_network_subnets['production']['eqiad']['private']['private1-b-eqiad']['ipv6'],
             $network::constants::all_network_subnets['production']['eqiad']['private']['private1-c-eqiad']['ipv4'],
+            $network::constants::all_network_subnets['production']['eqiad']['private']['private1-c-eqiad']['ipv6'],
             $network::constants::all_network_subnets['production']['eqiad']['private']['private1-d-eqiad']['ipv4'],
+            $network::constants::all_network_subnets['production']['eqiad']['private']['private1-d-eqiad']['ipv6'],
 
             $network::constants::all_network_subnets['production']['codfw']['private']['private1-a-codfw']['ipv4'],
+            $network::constants::all_network_subnets['production']['codfw']['private']['private1-a-codfw']['ipv6'],
             $network::constants::all_network_subnets['production']['codfw']['private']['private1-b-codfw']['ipv4'],
+            $network::constants::all_network_subnets['production']['codfw']['private']['private1-b-codfw']['ipv6'],
             $network::constants::all_network_subnets['production']['codfw']['private']['private1-c-codfw']['ipv4'],
+            $network::constants::all_network_subnets['production']['codfw']['private']['private1-c-codfw']['ipv6'],
             $network::constants::all_network_subnets['production']['codfw']['private']['private1-d-codfw']['ipv4'],
+            $network::constants::all_network_subnets['production']['codfw']['private']['private1-d-codfw']['ipv6'],
 
             $network::constants::all_network_subnets['production']['esams']['public']['public1-esams']['ipv4'], #TODO: Do we need this ?
+            $network::constants::all_network_subnets['production']['esams']['public']['public1-esams']['ipv6'], #TODO: Do we need this ?
+
             ]
     } elsif $::realm == 'labs' {
         $wikimedia = [
             $network::constants::all_network_subnets['labs']['eqiad']['private']['labs-instances1-a-eqiad']['ipv4'],
+            $network::constants::all_network_subnets['labs']['eqiad']['private']['labs-instances1-a-eqiad']['ipv6'],
             $network::constants::all_network_subnets['labs']['eqiad']['private']['labs-instances1-b-eqiad']['ipv4'],
+            $network::constants::all_network_subnets['labs']['eqiad']['private']['labs-instances1-b-eqiad']['ipv6'],
             $network::constants::all_network_subnets['labs']['eqiad']['private']['labs-instances1-c-eqiad']['ipv4'],
+            $network::constants::all_network_subnets['labs']['eqiad']['private']['labs-instances1-c-eqiad']['ipv6'],
             $network::constants::all_network_subnets['labs']['eqiad']['private']['labs-instances1-d-eqiad']['ipv4'],
+            $network::constants::all_network_subnets['labs']['eqiad']['private']['labs-instances1-d-eqiad']['ipv6'],
         ]
     } else {
         fail('Dont use this role outside of wikimedia')
