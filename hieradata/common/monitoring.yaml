@@ -54,6 +54,8 @@ groups:
     description: esams elasticsearch servers
   elasticsearch_ulsfo:
     description: ulsfo elasticsearch servers
+  relforge_eqiad:
+    description: eqiad elasticsearch relforge servers
 
 # Etcd
   etcd_eqiad:
