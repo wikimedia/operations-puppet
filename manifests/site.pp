@@ -2526,14 +2526,6 @@ node 'rhenium.wikimedia.org' {
     include base::firewall
 }
 
-node 'rubidium.wikimedia.org' {
-    role spare::system
-
-    interface::add_ip6_mapped { 'main':
-        interface => 'eth0',
-    }
-}
-
 # people.wikimedia.org, for all shell users
 node 'rutherfordium.eqiad.wmnet' {
     role microsites::peopleweb, backup::host
