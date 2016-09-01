@@ -8,16 +8,6 @@
 	white-space: pre-wrap !important;
 }
 
-/*
- * Partially fix diff screen cutting off changes at the cost of ugleness
- * can be reverted once upstream gerrit fixes it.
- *
- * Tracked at https://bugs.chromium.org/p/gerrit/issues/detail?id=4292
- */
-.com-google-gerrit-client-diff-DiffTable_BinderImpl_GenCss_style-difftable .CodeMirror pre span {
-	white-space: pre-wrap !important;
-}
-
 /**
  * General
  */
