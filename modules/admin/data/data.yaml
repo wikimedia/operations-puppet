@@ -229,7 +229,8 @@ groups:
               csteipp, smalyshev, ebernhardson, addshore, jminor, chedasaurus, neilpquinn-wmf,
               dcausse, bd808, tjones, mobrovac, jgirault, jdrewniak, ejegg, jdcc, ori,
               bmansurov, atgomez, amire80, kartik, pcoombe, foks, mpany, hjiang, jsamra, bcohn,
-              jdlrobson, chelsyx, ovasileva, mtizzoni, panisson, paolotti, ciro, psinger, flemmerich]
+              jdlrobson, chelsyx, ovasileva, mtizzoni, panisson, paolotti, ciro, psinger, flemmerich, 
+              mkroetzsch, akrausetud]
   analytics-admins:
     gid: 732
     description: Admin access to analytics cluster.
@@ -2085,3 +2086,19 @@ users:
     ssh_keys:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDCVFwvz2B9uCVDhBUhTuBLbpDNWF4qvRQO/S/au86QH+8XHP9/OImdiZ6Lg3VH2G5KrOwGQkQKBBur3/w+WQwFgA7pUTZQP9oHeMBJjl+v3gHY7EpwzQP7g1SJl08rFTLTHB1vgUBYyWFCr5QGVmOV/0At9nJ+yW6XdjUC9gIvRiPf3BcPQy5zFxcrEVF6/8QyGPanqUs8N5ATnggd6Key//vUbWcTJ6c6bwVaPb0C4X9s49RFJpJkoO8C4yE72IM1JZlscMwl/9fSRqQulDx4H4xqpxdEnUYk0cdCIx+An7fIibJTZAKFpy/zLt4ptRMvLUb+knqCaX3R1qHdEIaL manuelarostegui@Youngblood.local
     uid: 15343
+  mkroetzsch:
+    ensure: present
+    gid: 500
+    name: mkroetzsch
+    realname: Markus Kroetzsch
+    ssh_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCTzLfXEWbB8g/rN0l9Jiva80PTQ0LOIGzANPQ2DFkPdwvutxWesEfkcI6wbUWQJdmRzhaUyCFetHdzcBMf71h3JczYX6AvtNetsTcXG8Fc4J0qajglF16Uso7/CFIA5XEkmGa15YWXQ63Y6Tlx18ARhY5f+sMPlJUn/Zxi9jd9gc+7AjwlxrTyhkKgzr2HmlVAxphbZmF7yfB3m4d0STyH4RlphVx+7zTCC4zGyDT9vwBqhQxZ0VKRllpu+lMXdR5gJiURAqgBEp5G5cDg1mN70PjRo8ZG+DgrFmLQKLRgzl6a4U9IFg6YhaE7TiGtz25e9Weo4mjoTPZAsjpEkE73 markus.kroetzsch@tu-dresden.de
+    uid: 1023
+  akrausetud:
+    ensure: present
+    gid: 500
+    name: akrausetud
+    realname: Alexander Krause
+    ssh_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAABJQAAAQEAyQ3P70H1ryo7zqkPkQjaFwyu37YxO2KPsl9P6afMIdK88P2beo2jF3pTOtFmtvOUyqUXhCcHmIfsXCtGlev9r7/tgLrPtgkGYHbdLCavOTVJ4/BsEnfpF/vfp7MBtaLRN61Qjj+CoDZmcQLUgeRvmhxytWHr5lFE23zGiAwWNBztRcQg5hk1YVEdz4jzWOynyMPyoe7nXntswOw+eVQekXLKgB8mI+6Jn5EKbsOm6tEvUmCNauE2nUI1glQ5izumqP3hVdF8GenKI7t09FXsW562FUFMW6QQEHxIje0PHA0r3MRngtMrUf8kN4aSLl37x1+pK29qNAwWtxqv+pzRKQ==
+    uid: 15329
