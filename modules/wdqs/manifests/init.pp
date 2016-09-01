@@ -14,8 +14,8 @@ class wdqs(
     $username = 'blazegraph',
     $package_dir = '/srv/deployment/wdqs/wdqs',
     $data_dir = '/var/lib/wdqs',
-    $log_dir = '/var/log/wdqs'
-    ) {
+    $log_dir = '/var/log/wdqs',
+) {
 
     group { $username:
         ensure => present,
@@ -59,23 +59,29 @@ class wdqs(
             group  => 'wikidev',
             mode   => '0775',
         }
-
-        file { "${package_dir}/wikidata.jnl":
-            ensure  => link,
-            target  => "${data_dir}/wikidata.jnl",
-            require => File[$data_dir],
-        }
     }
 
     file { '/etc/wdqs':
         ensure => directory,
         owner  => 'root',
+        group   => 'root',
         mode   => '0755',
+    }
+
+    file { '/etc/wdqs/vars.yaml':
+        ensure  => present,
+        content => template('wdqs/vars.yaml.erb'),
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0644',
     }
 
     file { '/etc/wdqs/updater-logs.xml':
         ensure  => present,
         content => template('wdqs/updater-logs.xml'),
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0644',
     }
 
     # WDQS Updater service
