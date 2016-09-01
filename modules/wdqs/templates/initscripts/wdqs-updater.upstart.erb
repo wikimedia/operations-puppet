@@ -8,7 +8,7 @@ console log
 chdir <%= @package_dir %>
 
 pre-start script
-  [ -e <%= @package_dir %>/wikidata.jnl -a -e <%= @data_dir %>/data_loaded ] || stop && exit 0
+  [ -e <%= @data_dir %>/wikidata.jnl -a -e <%= @data_dir %>/data_loaded ] || stop && exit 0
 end script
 
 exec /bin/bash <%= @package_dir %>/runUpdate.sh <%= @options %>
