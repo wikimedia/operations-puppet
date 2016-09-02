@@ -12,6 +12,7 @@ server {
     root /dev/null;
 
     client_max_body_size 100M;
+    keepalive_timeout 600s;
 
     location / {
         proxy_pass http://localhost:9200/;
