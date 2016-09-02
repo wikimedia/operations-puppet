@@ -1,0 +1,11 @@
+[Unit]
+Description=Shared keyholder SSH agent which holds shared identities
+
+[Install]
+WantedBy=multi-user.target
+
+[Service]
+User=keyholder
+Group=keyholder
+ExecStart=/usr/bin/ssh-agent -d -a /run/keyholder/agent.sock
+ExecStop=/bin/rm -f /run/keyholder/agent.sock
