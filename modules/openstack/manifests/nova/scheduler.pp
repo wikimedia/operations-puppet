@@ -32,8 +32,8 @@ class openstack::nova::scheduler(
         }
     } else {
         service { 'nova-scheduler':
-            ensure    => stopped,
-            require   => Package['nova-scheduler'];
+            ensure  => stopped,
+            require => Package['nova-scheduler'];
         }
     }
 }
