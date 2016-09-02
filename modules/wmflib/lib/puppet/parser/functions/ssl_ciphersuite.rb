@@ -64,15 +64,15 @@ require 'puppet/util/package'
 module Puppet::Parser::Functions
   # Basic list chunks, used to construct bigger lists
   # General preference ordering for fullest combined list:
-  # -1) Enc: 3DES < ALL       (SWEET32)
-  # 0) Kx:   (EC)DHE > RSA    (Forward Secrecy)
-  # 1) Mac:  AEAD > ALL       (AES-GCM/CHAPOLY > Others)
+  # 0) Enc:  3DES < ALL       (SWEET32)
+  # 1) Kx:   (EC)DHE > RSA    (Forward Secrecy)
+  # 2) Mac:  AEAD > ALL       (AES-GCM/CHAPOLY > Others)
   #   ^ Note: our chapoly patches only turn on chapoly ciphers if the client
   #     prefers them to their equivalent AES-GCM options.
-  # 2) Kx:   ECDHE > DHE      (Perf, mostly)
-  # 3) Enc:  AES128 > AES256  (Perf, mostly)
-  # 4) Mac:  SHA-2 > SHA-1    (Not that it matters much, yet)
-  # 5) Auth: ECDSA > RSA      (Perf, mostly)
+  # 3) Kx:   ECDHE > DHE      (Perf, mostly)
+  # 4) Auth: ECDSA > RSA      (Perf, mostly)
+  # 5) Enc:  AES128 > AES256  (Perf, mostly - debateable...)
+  # 6) Mac:  SHA-2 > SHA-1    (Not that it matters much, yet)
   #
   # After all of that, the fullest list of reasonably-acceptable mid/compat
   # ciphers has been filtered further to reduce pointless clutter:
@@ -88,12 +88,12 @@ module Puppet::Parser::Functions
     'strong' => [
       '-ALL',
       'ECDHE-ECDSA-CHACHA20-POLY1305',   # openssl-1.1.0, 1.0.2+cloudflare
-      'ECDHE-RSA-CHACHA20-POLY1305',     # openssl-1.1.0, 1.0.2+cloudflare
       'ECDHE-ECDSA-CHACHA20-POLY1305-D', # 1.0.2+cloudflare
-      'ECDHE-RSA-CHACHA20-POLY1305-D',   # 1.0.2+cloudflare
       'ECDHE-ECDSA-AES128-GCM-SHA256',
-      'ECDHE-RSA-AES128-GCM-SHA256',
       'ECDHE-ECDSA-AES256-GCM-SHA384',
+      'ECDHE-RSA-CHACHA20-POLY1305',     # openssl-1.1.0, 1.0.2+cloudflare
+      'ECDHE-RSA-CHACHA20-POLY1305-D',   # 1.0.2+cloudflare
+      'ECDHE-RSA-AES128-GCM-SHA256',
       'ECDHE-RSA-AES256-GCM-SHA384',
       'DHE-RSA-CHACHA20-POLY1305',   # openssl-1.1.0, 1.0.2+cloudflare
       'DHE-RSA-AES128-GCM-SHA256',
@@ -102,8 +102,8 @@ module Puppet::Parser::Functions
     # Forward-Secret, but not AEAD
     'mid' => [
       'ECDHE-ECDSA-AES128-SHA256', # Mostly Safari 6-8
-      'ECDHE-RSA-AES128-SHA256',
       'ECDHE-ECDSA-AES128-SHA',    # Unpatched IE<11, Android 4.[0-3]
+      'ECDHE-RSA-AES128-SHA256',
       'ECDHE-RSA-AES128-SHA',
       'DHE-RSA-AES128-SHA256',
       'DHE-RSA-AES128-SHA',   # Android 2.x, openssl-0.9.8
