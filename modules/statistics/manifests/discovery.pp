@@ -50,7 +50,7 @@ class statistics::discovery {
     require   => File[$dir],
   }
 
-  logrotate::conf { 'analytics/discovery-stats':
+  logrotate::conf { 'analytics-discovery-stats':
     ensure  => present,
     content => template('statistics/discovery-stats.logrotate.erb'),
     require => File[$log_dir],
