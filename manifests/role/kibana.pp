@@ -55,7 +55,7 @@ class role::kibana (
         proto   => 'tcp',
         port    => 80,
         notrack => true,
-        srange  => '$INTERNAL',
+        srange  => '$DOMAIN_NETWORKS',
     }
 
     apache::site { $vhost:
