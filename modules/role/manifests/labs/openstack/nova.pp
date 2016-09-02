@@ -297,19 +297,19 @@ class role::labs::openstack::nova::wikiupdates {
         }
     }
 
-    package { 'python-openstack-wikistatus':
-        ensure  => installed,
+    file { '/usr/lib/python2.7/dist-packages/wikistatus':
+        source  => "puppet:///modules/openstack/${::openstack::version}/nova/wikistatus",
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0644',
         require => Package['python-mwclient'],
+        recurse => true,
     }
 
-    # Cleanup.  Can be removed by the time you are reading this.
-    file { '/usr/local/lib/python2.6/dist-packages/wikinotifier.py':
-        ensure => absent,
-    }
 
-    # Cleanup.  Can be removed by the time you are reading this.
-    file { '/usr/local/lib/python2.7/dist-packages/wikinotifier.py':
-        ensure => absent,
+    package { 'python-openstack-wikistatus':
+        ensure  => absent,
+        require => File['/usr/lib/python2.7/dist-packages/wikistatus'],
     }
 }
 
