@@ -6,6 +6,10 @@ class statistics::discovery {
   $dir = "${statistics_working_path}/discovery-stats"
   $user = 'discovery-stats'
 
+  group { $user:
+    ensure => present,
+  }
+
   user { $user:
     ensure     => present,
     home       => $dir,
@@ -17,6 +21,8 @@ class statistics::discovery {
   # Path in which all crons will log to
   $log_dir = "${dir}/log"
 
+  $scripts_dir = "${dir}/scripts"
+
   require_package(
     'php5',
     'php5-cli',
@@ -24,7 +30,7 @@ class statistics::discovery {
 
   $directories = [
     $dir,
-    $log_dir
+    $log_dir,
   ]
 
   file { $directories:
@@ -37,7 +43,7 @@ class statistics::discovery {
   git::clone { 'analytics/discovery-stats':
     ensure    => 'latest',
     branch    => 'production',
-    directory => $dir,
+    directory => $scripts_dir,
     origin    => 'https://gerrit.wikimedia.org/r/analytics/discovery-stats',
     owner     => $user,
     group     => $user,
