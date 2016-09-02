@@ -58,7 +58,7 @@ class statistics::discovery {
 
   cron { 'discovery-stats':
     command => "/usr/bin/php ${scripts_dir}/tracking-category-count.php >> ${log_dir}/tracking-category-count.log 2>&1",
-    hour    => '*',
+    minute  => '14',
     require => Git::Clone['analytics/discovery-stats'],
     user    => $user,
   }
