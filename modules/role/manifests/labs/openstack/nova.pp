@@ -113,6 +113,14 @@ class role::labs::openstack::nova::manager {
         check_command => 'check_wikitech_static',
     }
 
+    # For Math extensions file (T126628)
+    file { '/srv/math-images':
+        ensure => 'directory',
+        owner  => 'www-data',
+        group  => 'www-data',
+        mode   => '0755',
+    }
+
     class { '::nutcracker':
         mbuf_size => '64k',
         verbosity => 2,
