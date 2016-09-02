@@ -1,0 +1,14 @@
+[Unit]
+Description=keyholder-proxy - Filtering proxy for keyholder SSH agent
+Requires=keyholder-agent.service
+
+[Install]
+WantedBy=multi-user.target
+
+[Service]
+User=keyholder
+Group=keyholder
+UMask=111
+ExecPre=/bin/rm -f /run/keyholder/proxy.sock
+ExecStart=/usr/local/bin/ssh-agent-proxy --bind /run/keyholder/proxy.sock --connect /run/keyholder/agent.sock
+ExecStop=/bin/rm -f /run/keyholder/proxy.sock
