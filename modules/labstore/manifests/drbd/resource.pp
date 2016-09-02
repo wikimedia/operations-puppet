@@ -89,11 +89,3 @@ define labstore::drbd::resource (
     }
 }
 
-define labstore::drbd::resource::port {
-}
-
-define labstore::drbd::resource::device {
-}
-
-define labstore::drbd::resource::disk {
-}
