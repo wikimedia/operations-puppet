@@ -1,0 +1,5 @@
+Do *not* place roles at this level. Instead place them in a sub directory.
+
+Puppet's autoloader and the explicit imports done in manifests/site.pp do not
+play nicely together. See https://phabricator.wikimedia.org/T119042 for a full
+explanation.
