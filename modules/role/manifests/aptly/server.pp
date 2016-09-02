@@ -3,7 +3,7 @@
 # Sets up a simple aptly repo server serving over http on port 80
 #
 # filtertags: labs-common
-class role::aptly {
+class role::aptly::server {
     include ::aptly
 
     # Auto setup published repositories for all 3 available distros
@@ -23,16 +23,5 @@ class role::aptly {
         proto  => 'tcp',
         port   => '80',
         srange => '$DOMAIN_NETWORKS',
-    }
-}
-
-# = Class: role::aptly::client
-#
-# Sets up a simple deb package that points to the project's aptly server
-class role::aptly::client(
-    $servername = "${::labsproject}-packages.${::labsproject}.${::site}.wmflabs",
-) {
-    class { '::aptly::client':
-        servername => $servername,
     }
 }

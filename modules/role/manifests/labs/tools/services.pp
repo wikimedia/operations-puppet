@@ -5,7 +5,7 @@ class role::labs::tools::services(
         description => 'Tool Labs manifest based services',
     }
 
-    include role::aptly
+    include role::aptly::server
     # Backup packages!
     # FIXME: Find out if we deserve better than this
     file { '/data/project/.system/aptly':
