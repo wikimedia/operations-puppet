@@ -45,7 +45,7 @@ class role::rcstream {
     ferm::service { 'rcstream_redis':
         proto  => 'tcp',
         port   => '6379',
-        srange => '(($INTERNAL @resolve(wikitech.wikimedia.org, AAAA) @resolve(labtestwikitech.wikimedia.org, AAAA)))',
+        srange => '$DOMAIN_NETWORKS',
     }
 
     diamond::collector { 'RCStream':
