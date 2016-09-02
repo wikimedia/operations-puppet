@@ -111,11 +111,6 @@ module Puppet::Parser::Functions
     # not-forward-secret compat for ancient stuff
     'compat' => [
       'AES128-SHA',   # Mostly evil proxies, also ancient devices
-       # These 4 are forward-secret, but 3DES is borked now
-      'ECDHE-ECDSA-DES-CBC3-SHA',
-      'ECDHE-RSA-DES-CBC3-SHA',
-      'DHE-RSA-DES-CBC3-SHA', # openssl-1.1.0
-      'EDH-RSA-DES-CBC3-SHA', # pre-1.1.0 name for the above
       'DES-CBC3-SHA', # Mostly IE7-8 on XP, also ancient devices
     ],
   }
