@@ -463,9 +463,15 @@ spec:
                     uri: '/https?:\/\/[^\/]+\/wiki\/(?<title>.+)/'
                   tags: [ 'change-prop', 'wikidata' ]
                 exec:
-                  method: get
-                  uri: '<%= @restbase_uri %>/{{message.meta.domain}}/v1/page/summary/{{match.meta.uri.title}}'
-                  headers:
-                    cache-control: no-cache
-                  query:
-                    redirect: false
+                  - method: get
+                    uri: '<%= @restbase_uri %>/{{message.meta.domain}}/v1/page/summary/{{match.meta.uri.title}}'
+                    headers:
+                      cache-control: no-cache
+                    query:
+                      redirect: false
+                  - method: get
+                    uri: '<%= @restbase_uri %>/{{message.meta.domain}}/v1/page/mobile-sections/{{match.meta.uri.title}}'
+                    headers:
+                      cache-control: no-cache
+                    query:
+                      redirect: false
