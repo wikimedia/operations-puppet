@@ -25,8 +25,8 @@ class openstack::nova::conductor {
         }
     } else {
         service { 'nova-conductor':
-            ensure    => stopped,
-            require   => Package['nova-conductor'];
+            ensure  => stopped,
+            require => Package['nova-conductor'];
         }
     }
 }
