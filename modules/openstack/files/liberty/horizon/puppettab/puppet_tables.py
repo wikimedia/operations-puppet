@@ -19,6 +19,9 @@ import logging
 from django.core import urlresolvers
 from django.utils.translation import ugettext_lazy as _
 
+from django.utils.html import escape
+from django.utils.safestring import mark_safe
+
 from horizon import tables
 
 import puppet_roles
@@ -28,7 +31,13 @@ LOG = logging.getLogger(__name__)
 
 
 def get_formatted_name(classrecord):
-    return classrecord.name.split('role::')[1]
+    name = classrecord.name.split('role::')[1]
+    title = get_docs_for_class(name)
+    html = '%s <span title="%s" class="fa-question-circle" />' % (
+        escape(name),
+        escape(title)
+    )
+    return mark_safe(html)
 
 
 def get_formatted_params(classrecord):
@@ -44,9 +53,9 @@ def get_docs_for_class(classname):
     for role in allroles:
         if role.name.split('role::')[1] == classname:
             if role.docs:
-                return {'title': role.docs}
+                return role.docs
             break
-    return {'title': _('(No docs available)')}
+    return _('(No docs available)')
 
 
 class RemoveRole(tables.LinkAction):
@@ -141,8 +150,7 @@ class RoleFilter(tables.FixedFilterAction):
 class PuppetTable(tables.DataTable):
     applied = tables.Column('applied', verbose_name=_('Applied'), status=True)
     name = tables.Column(get_formatted_name,
-                         verbose_name=_('Name'),
-                         cell_attributes_getter=get_docs_for_class)
+                         verbose_name=_('Name'))
     params = tables.Column(get_formatted_params,
                            verbose_name=_('Parameters'),
                            sortable=False)
