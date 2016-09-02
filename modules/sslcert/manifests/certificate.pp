@@ -48,6 +48,8 @@ define sslcert::certificate(
     require sslcert
     require sslcert::dhparam
 
+    # lint:ignore:puppet_url_without_modules
+    # FIXME
     file { "/etc/ssl/localcerts/${title}.crt":
         ensure => $ensure,
         owner  => 'root',
@@ -55,6 +57,7 @@ define sslcert::certificate(
         mode   => '0444',
         source => "puppet:///files/ssl/${title}.crt",
     }
+    # lint:endignore
 
     if !$skip_private {
         file { "/etc/ssl/private/${title}.key":
