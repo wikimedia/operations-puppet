@@ -2331,7 +2331,7 @@ node 'oxygen.eqiad.wmnet'
 }
 
 # primary puppet master
-node /^(palladium|strontium)\.eqiad\.wmnet$/ {
+node 'palladium.eqiad.wmnet' {
     role ipmi::mgmt, access_new_install, puppetmaster::frontend, pybal_config
     include standard
     include base::firewall
