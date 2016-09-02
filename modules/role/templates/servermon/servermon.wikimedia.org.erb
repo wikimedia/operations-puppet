@@ -6,12 +6,12 @@
 <VirtualHost *:80>
     ServerName servermon.wikimedia.org
 
-    DocumentRoot /srv/nonexistent
+    DocumentRoot /srv/deployment/servermon
     <Directory />
         Options FollowSymLinks
         AllowOverride None
         Order Allow,Deny
-        Allow from All
+        Deny from All
     </Directory>
 
     <Location />
