@@ -2,6 +2,7 @@
 class swift::ring (
     $swift_cluster = $swift::params::swift_cluster,
 ) {
+    # lint:ignore:puppet_url_without_modules
     file { '/etc/swift/account.builder':
         ensure    => present,
         source    => "puppet:///volatile/swift/${swift_cluster}/account.builder",
@@ -34,4 +35,5 @@ class swift::ring (
         ensure => present,
         source => "puppet:///volatile/swift/${swift_cluster}/object.ring.gz",
     }
+    # lint:endignore
 }
