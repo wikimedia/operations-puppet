@@ -104,8 +104,8 @@ class openstack::nova::network($openstack_version=$::openstack::version, $novaco
         }
     } else {
         service { 'nova-network':
-            ensure    => stopped,
-            require   => Package['nova-network'];
+            ensure  => stopped,
+            require => Package['nova-network'];
         }
     }
 }

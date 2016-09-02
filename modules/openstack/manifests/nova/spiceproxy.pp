@@ -20,7 +20,7 @@ class openstack::nova::spiceproxy(
         group   => 'root',
         mode    => '0444',
         source  => "puppet:///modules/openstack/${openstack_version}/nova/spice_sec_auto.html",
-        require   => Package['spice-html5'];
+        require => Package['spice-html5'];
     }
 
     if $::fqdn == hiera('labs_nova_controller') {
@@ -39,12 +39,12 @@ class openstack::nova::spiceproxy(
         }
     } else {
         service { 'nova-spiceproxy':
-            ensure    => stopped,
-            require   => Package['nova-spiceproxy'];
+            ensure  => stopped,
+            require => Package['nova-spiceproxy'];
         }
         service { 'nova-consoleauth':
-            ensure    => stopped,
-            require   => Package['nova-consoleauth'];
+            ensure  => stopped,
+            require => Package['nova-consoleauth'];
         }
     }
 }
