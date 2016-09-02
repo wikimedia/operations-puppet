@@ -2,8 +2,8 @@
 #  within nova.
 # https://wiki.openstack.org/wiki/Nova
 class openstack::nova::compute(
-    $openstack_version=$::openstack::version,
-    $novaconfig
+    $novaconfig,
+    $openstack_version=$::openstack::version
 ){
     include openstack::repo
 

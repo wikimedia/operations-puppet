@@ -1,7 +1,7 @@
 # Nova-network is the network service currently used in Labs; some day soon
 #  we hope to replace it with Neutron.
 # http://docs.openstack.org/openstack-ops/content/nova-network-deprecation.html
-class openstack::nova::network($openstack_version=$::openstack::version, $novaconfig) {
+class openstack::nova::network($novaconfig, $openstack_version=$::openstack::version) {
     include openstack::repo
 
     $tftp_host = 'carbon.wikimedia.org'
