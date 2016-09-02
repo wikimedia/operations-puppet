@@ -16,6 +16,12 @@ class statistics::web {
         mode   => '0750',
     }
 
+    require_package([
+        'mc',
+        'unzip',
+    ])
+
+
     include ::apache::mod::rewrite
     include ::apache::mod::proxy
     include ::apache::mod::proxy_http
