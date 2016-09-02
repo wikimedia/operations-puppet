@@ -36,38 +36,6 @@ exports.setup = function(parsoidConfig) {
 	// Set rtTestMode to true for round-trip testing
 	parsoidConfig.rtTestMode = true;
 
-	// Direct logs to logstash via bunyan and gelf-stream.
-	var LOGSTASH_HOSTNAME = 'logstash1003.eqiad.wmnet';
-	var LOGSTASH_PORT = 12201;
-	parsoidConfig.loggerBackend = {
-		name: ':Logger.bunyan/BunyanLogger',
-		options: {
-			// Replicate log to disk and to Logstash.
-			// Use a parsoid-tests prefix to distinguish from
-			// production parsoid logs.
-			name: 'parsoid-tests',
-			streams: [
-				{
-					stream: process.stdout,
-					level: 'debug',
-				},
-				{
-					type: 'raw',
-					stream: require('gelf-stream').forBunyan(LOGSTASH_HOSTNAME, LOGSTASH_PORT),
-					level: 'warn',
-				},
-			],
-		},
-	};
-
-	// Set to true to enable Performance timing
-	parsoidConfig.useDefaultPerformanceTimer = false;
-	// Peformance timing options for testing
-	parsoidConfig.performanceTimer = {
-		count: function() {},
-		timing: function() {},
-	};
-
 	// Sample verbose logs
 	parsoidConfig.loggerSampling = [
 		['warning/dsr/inconsistent', 5],
