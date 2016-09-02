@@ -2437,6 +2437,23 @@ node /^prometheus100[12]\.eqiad\.wmnet$/ {
     include lvs::realserver
 }
 
+node 'puppetmaster2001.codfw.wmnet' {
+    role puppetmaster::frontend
+    include standard
+    interface::add_ip6_mapped { 'main':
+        interface => 'eth0',
+    }
+}
+
+node 'puppetmaster2002.codfw.wmnet' {
+    role puppetmaster::backend
+    include standard
+    interface::add_ip6_mapped { 'main':
+        interface => 'eth0',
+    }
+}
+
+
 # pybal-test200X VMs are used for pybal testing/development
 node /^pybal-test200[12]\.codfw\.wmnet$/ {
     role pybaltest, prometheus::node_exporter
