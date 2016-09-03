@@ -18,11 +18,11 @@ default_project: &default_project
           backend: cassandra
           hosts: [<%= Array(@seeds).join(',') %>]
           keyspace: system
-          localDc: <%= @cassandra_localDc %>
+          localDc: <%= @cassandra_localdc %>
           datacenters: [<%= Array(@cassandra_datacenters).join(',') %>]
           username: <%= @cassandra_user %>
           password: <%= @cassandra_password %>
-          defaultConsistency: <%= @cassandra_defaultConsistency %>
+          defaultConsistency: <%= @cassandra_defaultconsistency %>
           storage_groups:
             - name: phase0.group.local
               domains:
