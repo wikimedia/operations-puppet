@@ -8,14 +8,14 @@ class role::dnsrecursor {
 
     class {
         'lvs::realserver':
-            realserver_ips => $lvs::configuration::service_ips['dns_rec'][$::site];
+            realserver_ips   => $lvs::configuration::service_ips['dns_rec'][$::site];
         '::dnsrecursor':
-            require             => Class['lvs::realserver'],
-            listen_addresses    => [$::ipaddress,
+            require          => Class['lvs::realserver'],
+            listen_addresses => [$::ipaddress,
                                     $::ipaddress6_eth0,
                                     $lvs::configuration::service_ips['dns_rec'][$::site],
                                   ],
-            allow_from          => $network::constants::all_networks;
+            allow_from       => $network::constants::all_networks;
     }
 
     ::dnsrecursor::monitor { [ $::ipaddress, $::ipaddress6_eth0 ]: }
