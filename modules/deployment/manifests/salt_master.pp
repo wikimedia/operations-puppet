@@ -1,11 +1,11 @@
 class deployment::salt_master(
+    $repo_config,
+    $deployment_config,
     $state_dir='/srv/salt',
     $runner_dir='/srv/runners',
     $pillar_dir='/srv/pillars',
     $module_dir='/srv/salt/_modules',
-    $returner_dir='/srv/salt/_returners',
-    $repo_config,
-    $deployment_config
+    $returner_dir='/srv/salt/_returners'
 ) {
 
     file { "${state_dir}/deploy":
