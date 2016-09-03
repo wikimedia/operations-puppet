@@ -68,8 +68,8 @@ class openstack::keystone::service($openstack_version=$::openstack::version, $ke
         }
     } else {
         service { 'keystone':
-            ensure    => stopped,
-            require   => Package['keystone'];
+            ensure  => stopped,
+            require => Package['keystone'];
         }
     }
 }

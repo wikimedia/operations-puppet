@@ -31,13 +31,13 @@ class openstack::queue_server(
 
     if $::fqdn == hiera('labs_nova_controller') {
         service { 'rabbitmq-server':
-            ensure    => running,
-            require   => Package['rabbitmq-server'];
+            ensure  => running,
+            require => Package['rabbitmq-server'];
         }
     } else {
         service { 'rabbitmq-server':
-            ensure    => stopped,
-            require   => Package['rabbitmq-server'];
+            ensure  => stopped,
+            require => Package['rabbitmq-server'];
         }
     }
 
