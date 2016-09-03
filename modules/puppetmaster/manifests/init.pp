@@ -120,7 +120,7 @@ class puppetmaster(
             apache::site { 'puppetmaster.wikimedia.org':
                 ensure => absent,
             }
-                        
+
             apache::site { 'puppetmaster-backend':
                 content      => template('puppetmaster/puppetmaster-backend.conf.erb'),
             }
