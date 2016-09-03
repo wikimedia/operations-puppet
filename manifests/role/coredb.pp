@@ -244,8 +244,8 @@ class role::coredb::fundraising( $mariadb = true ) {
 
 class role::coredb::common(
     $shard,
-    $logical_cluster = 'mysql',
     $mariadb,
+    $logical_cluster = 'mysql',
     $read_only = true,
     $skip_name_resolve = true,
     $mysql_myisam = false,
