@@ -1,11 +1,11 @@
 # The OpenStack Dashboard Project
 # http://docs.openstack.org/developer/horizon/
 class openstack::horizon::service(
-    $openstack_version  = $::openstack::version,
-    $webserver_hostname = 'horizon.wikimedia.org',
     $novaconfig,
-    $designateconfig)
-{
+    $designateconfig,
+    $openstack_version  = $::openstack::version,
+    $webserver_hostname = 'horizon.wikimedia.org'
+) {
     # basic horizon packages and config
     include openstack::repo
 
