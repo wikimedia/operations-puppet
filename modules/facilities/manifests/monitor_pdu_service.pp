@@ -13,10 +13,10 @@ define facilities::monitor_pdu_service(
     include passwords::nagios::snmp
 
     $servertech_tree = '.1.3.6.1.4.1.1718'
-    $infeedLoad      = '.3.2.2.1.7'
-    $oid = "${servertech_tree}${infeedLoad}.${tower}.${infeed}"
+    $infeedload      = '.3.2.2.1.7'
+    $oid = "${servertech_tree}${infeedload}.${tower}.${infeed}"
 
-    # The value of infeedLoadValue is given in _hundredths of Amps_,
+    # The value of infeedloadValue is given in _hundredths of Amps_,
     # thats why we multiply here
 
     if $redundant == false {
@@ -35,4 +35,3 @@ define facilities::monitor_pdu_service(
     }
 
 }
-
