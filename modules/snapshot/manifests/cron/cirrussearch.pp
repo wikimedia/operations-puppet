@@ -16,8 +16,8 @@ class snapshot::cron::cirrussearch(
         source => 'puppet:///modules/snapshot/cron/logrotate.cirrusdump',
     }
 
-    $scriptPath = '/usr/local/bin/dumpcirrussearch.sh'
-    file { $scriptPath:
+    $scriptpath = '/usr/local/bin/dumpcirrussearch.sh'
+    file { $scriptpath:
         mode    => '0755',
         owner   => 'root',
         group   => 'root',
@@ -26,13 +26,13 @@ class snapshot::cron::cirrussearch(
 
     cron { 'cirrussearch-dump':
         ensure      => 'present',
-        command     => "${scriptPath} --config ${confsdir}/wikidump.conf",
+        command     => "${scriptpath} --config ${confsdir}/wikidump.conf",
         environment => 'MAILTO=ops-dumps@wikimedia.org',
         user        => $user,
         minute      => '15',
         hour        => '16',
         weekday     => '1',
-        require     => File[$scriptPath],
+        require     => File[$scriptpath],
     }
 }
 
