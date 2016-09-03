@@ -1,8 +1,8 @@
 class docker::registry(
-    $datapath = '/srv/registry',
     $allow_push_from,
     $ssl_certificate_name,
     $ssl_settings,
+    $datapath = '/srv/registry'
 ){
 
     require_package('docker-registry')
