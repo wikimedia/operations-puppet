@@ -1,5 +1,4 @@
 class ganglia::gmetad(
-        $ensure='present',
         $grid,
         $rrd_rootdir,
         $gmetad_root,
@@ -8,6 +7,7 @@ class ganglia::gmetad(
         $trusted_hosts,
         $data_sources,
         $rra_sizes,
+        $ensure='present',
 ) {
 
     package { 'gmetad':
