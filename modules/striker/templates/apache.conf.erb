@@ -50,6 +50,14 @@
     ProxyPass !
   </LocationMatch>
 
+  <LocationMatch "^/50[234].html$">
+    # Error pages should not be cached
+    ExpiresDefault "access plus 0 seconds"
+    Header set Cache-Control "no-cache"
+    # Do not proxy matching requests
+    ProxyPass !
+  </LocationMatch>
+
   # Reverse proxy everything that's not excluded to the uwsgi backend
   ProxyPassMatch "/(.*)" "balancer://uwsgi/$1"
   <Proxy balancer://uwsgi>
@@ -61,5 +69,9 @@
   LogLevel warn
   CustomLog /var/log/apache2/<%= @server_name %>-access.log wmf
   ErrorLog  /var/log/apache2/<%= @server_name %>-error.log
+
+  ErrorDocument 502 /502.html
+  ErrorDocument 503 /503.html
+  ErrorDocument 504 /504.html
 </VirtualHost>
 # vim:ft=apache:sw=2:ts=2:sts=2:et:
