@@ -8,9 +8,9 @@
 class labs_dns(
     $dns_auth_ipaddress,
     $dns_auth_soa_name,
-    $dns_auth_query_address = '',
     $pdns_db_host,
-    $pdns_db_password
+    $pdns_db_password,
+    $dns_auth_query_address = ''
 ) {
 
     package { [ 'pdns-server',
