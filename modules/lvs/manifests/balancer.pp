@@ -8,11 +8,11 @@
 #   - $pybal_global_options: A configuration hash of PyBal global options
 #   - $site: Site name used in PyBal configuration
 class lvs::balancer(
-    $service_ips=[],
     $lvs_services,
     $lvs_class_hosts,
     $pybal_global_options,
-    $site
+    $site,
+    $service_ips=[]
     ) {
 
     include pybal
