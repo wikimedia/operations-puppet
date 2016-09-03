@@ -26,10 +26,10 @@
 #  }
 #
 class statsd_proxy(
-    $ensure = present,
-    $threads = 4,
     $server_port,
     $backend_ports,
+    $ensure = present,
+    $threads = 4,
 ) {
     validate_ensure($ensure)
     validate_array($backend_ports)
