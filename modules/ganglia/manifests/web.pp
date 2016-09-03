@@ -1,8 +1,8 @@
 # Class for the ganglia frontend machine
 class ganglia::web(
-                    $ensure='present',
                     $rrdcached_socket,
                     $gmetad_root,
+                    $ensure='present',
 ) {
     include ::apache
     include ::apache::mod::php5

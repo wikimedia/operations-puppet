@@ -1,9 +1,9 @@
 # Only support trusty
 class ganglia::gmetad::rrdcached(
-    $ensure='present',
     $rrdpath,
     $gmetad_socket,
     $gweb_socket,
+    $ensure='present',
     $journal_dir='/var/lib/rrdcached/journal',
 ) {
     package { 'rrdcached':
