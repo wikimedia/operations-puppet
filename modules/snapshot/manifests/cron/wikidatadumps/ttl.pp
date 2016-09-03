@@ -3,8 +3,8 @@ class snapshot::cron::wikidatadumps::ttl(
 ) {
     include snapshot::cron::wikidatadumps::common
 
-    $scriptPath = '/usr/local/bin/dumpwikidatattl.sh'
-    file { $scriptPath:
+    $scriptpath = '/usr/local/bin/dumpwikidatattl.sh'
+    file { $scriptpath:
         mode    => '0755',
         owner   => 'root',
         group   => 'root',
@@ -14,12 +14,12 @@ class snapshot::cron::wikidatadumps::ttl(
 
     cron { 'wikidatattl-dump':
         ensure  => 'present',
-        command => $scriptPath,
+        command => $scriptpath,
         user    => $user,
         minute  => '0',
         hour    => '23',
         weekday => '1',
-        require => File[$scriptPath],
+        require => File[$scriptpath],
     }
 }
 
