@@ -13,8 +13,8 @@
 # [*png_generation*]
 #   Enable PNG generation, accomplished via a librsvg2 node binding. Default:
 #   true
-# [*speakText_generation*]
-#   Enable speakText generation. Default: false
+# [*speaktext_generation*]
+#   Enable speaktext generation. Default: false
 # [*textvcinfo_generation*]
 #   Enable texvcinfo generation. Default: true
 # [*render_no_check*]
@@ -24,7 +24,7 @@ class mathoid(
     $svg_generation=true,
     $img_generation=true,
     $png_generation=true,
-    $speakText_generation=false,
+    $speaktext_generation=false,
     $texvcinfo_generation=true,
     $render_no_check=true,
 ) {
@@ -37,7 +37,7 @@ class mathoid(
             svg       => $svg_generation,
             img       => $img_generation,
             png       => $png_generation,
-            speech_on => $speakText_generation,
+            speech_on => $speaktext_generation,
             texvcinfo => $texvcinfo_generation,
             no_check  => $render_no_check,
         },
