@@ -1,6 +1,6 @@
 # Telemetry for OpenStack - the controller
 # https://wiki.openstack.org/wiki/Ceilometer
-class openstack::ceilometer::controller ($openstack_version=$::openstack::version, $novaconfig) {
+class openstack::ceilometer::controller ($novaconfig, $openstack_version=$::openstack::version) {
 
     include openstack::repo
 
