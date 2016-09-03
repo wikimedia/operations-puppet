@@ -1,11 +1,11 @@
 class openstack::glance::service(
-    $openstack_version=$::openstack::version,
-    $glance_data = '/srv/glance/',
     $active_server,
     $standby_server,
     $keystone_host,
     $glanceconfig,
     $keystoneconfig,
+    $openstack_version=$::openstack::version,
+    $glance_data = '/srv/glance/',
 ) {
     include openstack::repo
 
