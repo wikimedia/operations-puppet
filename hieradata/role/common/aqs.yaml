@@ -61,8 +61,8 @@ aqs::seeds:
     - aqs1002.eqiad.wmnet
     - aqs1003.eqiad.wmnet
 aqs::logstash_host: logstash1001.eqiad.wmnet
-aqs::cassandra_defaultConsistency: localOne
-aqs::cassandra_localDc: "%{::site}"
+aqs::cassandra_default_consistency: localOne
+aqs::cassandra_localdc: "%{::site}"
 aqs::statsd_host: statsd.eqiad.wmnet
 
 lvs::realserver::realserver_ips:
