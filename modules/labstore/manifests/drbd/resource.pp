@@ -89,6 +89,7 @@ define labstore::drbd::resource (
     }
 }
 
+# lint:ignore:autoloader_layout
 define labstore::drbd::resource::port {
 }
 
@@ -97,3 +98,4 @@ define labstore::drbd::resource::device {
 
 define labstore::drbd::resource::disk {
 }
+# lint:endignore
