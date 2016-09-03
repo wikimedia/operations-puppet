@@ -2,7 +2,6 @@
 # https://wiki.openstack.org/wiki/Designate
 
 class openstack::designate::service (
-    $openstack_version=$::openstack::version,
     $active_server,
     $nova_controller,
     $keystone_host,
@@ -10,6 +9,7 @@ class openstack::designate::service (
     $designateconfig,
     $primary_pdns_ip,
     $secondary_pdns_ip,
+    $openstack_version=$::openstack::version,
 )
     {
 
