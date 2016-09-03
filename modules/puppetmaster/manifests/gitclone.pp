@@ -56,15 +56,15 @@ class puppetmaster::gitclone(
             source  => 'puppet:///modules/puppetmaster/git/pre-commit',
             mode    => '0550';
         $puppetmaster::volatiledir:
-            ensure  => directory,
-            owner   => 'root',
-            group   => 'puppet',
-            mode    => '0750';
+            ensure => directory,
+            owner  => 'root',
+            group  => 'puppet',
+            mode   => '0750';
         "${puppetmaster::volatiledir}/misc":
-            ensure  => directory,
-            owner   => 'root',
-            group   => 'puppet',
-            mode    => '0750';
+            ensure => directory,
+            owner  => 'root',
+            group  => 'puppet',
+            mode   => '0750';
         '/var/log/puppet-post-merge.log':
             ensure  => file,
             replace => false,
@@ -174,10 +174,10 @@ class puppetmaster::gitclone(
 
     git::clone {
         'operations/software':
-            require     => File["${puppetmaster::gitdir}/operations"],
-            owner       => 'gitpuppet',
-            directory   => "${puppetmaster::gitdir}/operations/software",
-            origin      => 'https://gerrit.wikimedia.org/r/p/operations/software';
+            require   => File["${puppetmaster::gitdir}/operations"],
+            owner     => 'gitpuppet',
+            directory => "${puppetmaster::gitdir}/operations/software",
+            origin    => 'https://gerrit.wikimedia.org/r/p/operations/software';
     }
 
     # These symlinks will allow us to use /etc/puppet for the puppetmaster to
