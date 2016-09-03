@@ -15,7 +15,7 @@
 #   Array of cassandra hosts (IP or host names) to contact.
 #   Default: ['localhost']
 #
-# [*cassandra_defaultConsistency*]
+# [*cassandra_default_consistency*]
 #   Default cassandra query consistency level. Typically 'one' or
 #   'localQuorum'. Default: 'localQuorum'.
 #
@@ -87,8 +87,8 @@ class restbase(
     $cassandra_user = 'cassandra',
     $cassandra_password = 'cassandra',
     $seeds          = [$::ipaddress],
-    $cassandra_defaultConsistency = 'localQuorum',
-    $cassandra_localDc = 'datacenter1',
+    $cassandra_default_consistency = 'localQuorum',
+    $cassandra_localdc = 'datacenter1',
     $cassandra_datacenters = [ 'datacenter1' ],
     $port           = 7231,
     $salt_key       = 'secretkey',
