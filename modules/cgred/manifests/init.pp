@@ -35,12 +35,12 @@ class cgred {
     }
 
     base::service_unit { 'cgrulesengd':
-        ensure          => present,
-        sysvinit        => true,
-        refresh         => true,
-        service_params  => {
+        ensure         => present,
+        sysvinit       => true,
+        refresh        => true,
+        service_params => {
             hasrestart => true,
         },
-        require         => File['/etc/cgrules.d/'];
+        require        => File['/etc/cgrules.d/'];
     }
 }
