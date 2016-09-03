@@ -8,8 +8,8 @@ class snapshot::cron::contentxlation(
     $confsdir = $snapshot::dumps::dirs::confsdir
     $xlationdir = "${otherdir}/contenttranslation"
 
-    $scriptPath = '/usr/local/bin/dumpcontentxlation.sh'
-    file { $scriptPath:
+    $scriptpath = '/usr/local/bin/dumpcontentxlation.sh'
+    file { $scriptpath:
         mode    => '0755',
         owner   => 'root',
         group   => 'root',
@@ -33,6 +33,6 @@ class snapshot::cron::contentxlation(
         minute      => '10',
         hour        => '9',
         weekday     => '5',
-        require     => File[$scriptPath],
+        require     => File[$scriptpath],
     }
 }

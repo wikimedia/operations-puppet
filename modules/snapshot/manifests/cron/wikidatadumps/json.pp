@@ -3,8 +3,8 @@ class snapshot::cron::wikidatadumps::json(
 ) {
     include snapshot::cron::wikidatadumps::common
 
-    $scriptPath = '/usr/local/bin/dumpwikidatajson.sh'
-    file { $scriptPath:
+    $scriptpath = '/usr/local/bin/dumpwikidatajson.sh'
+    file { $scriptpath:
         mode    => '0755',
         owner   => 'root',
         group   => 'root',
@@ -14,12 +14,12 @@ class snapshot::cron::wikidatadumps::json(
 
     cron { 'wikidatajson-dump':
         ensure  => 'present',
-        command => $scriptPath,
+        command => $scriptpath,
         user    => $user,
         minute  => '15',
         hour    => '3',
         weekday => '1',
-        require => File[$scriptPath],
+        require => File[$scriptpath],
     }
 }
 
