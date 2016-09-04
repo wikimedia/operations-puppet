@@ -98,16 +98,21 @@ module Puppet::Parser::Functions
       'DHE-RSA-AES128-GCM-SHA256',
       'DHE-RSA-AES256-GCM-SHA384',
     ],
-    # Forward-Secret, but not AEAD
+    # Forward-Secret, but not AEAD.  Note there are many other valid ciphers we
+    # could place in this list with AES256 and/or SHA-2, but none offer any
+    # real-world-useful improvement on the most fundamental problems these have,
+    # and these offer us the broadest compatibility with the fewest ciphers.  As
+    # of this writing, <10% (and declining) of client requests use these.
     'mid' => [
-      'ECDHE-ECDSA-AES128-SHA256', # Mostly Safari 6-8
-      'ECDHE-ECDSA-AES128-SHA',    # Unpatched IE<11, Android 4.[0-3]
-      'ECDHE-RSA-AES128-SHA256',
-      'ECDHE-RSA-AES128-SHA',
-      'DHE-RSA-AES128-SHA256',
-      'DHE-RSA-AES128-SHA',   # Android 2.x, openssl-0.9.8
+      'ECDHE-ECDSA-AES128-SHA', # Various outdated IE/Safari, Android<4.4, etc
+      'ECDHE-RSA-AES128-SHA',   # as above
+      'DHE-RSA-AES128-SHA',     # Android 2.x, openssl-0.9.8
     ],
-    # not-forward-secret compat for ancient stuff
+    # not-forward-secret compat for ancient stuff.  As above, there are other
+    # valid roughly-security-equivalent options here, but these two cover all
+    # such statistically-signficant clients as fallbacks, which in total amount
+    # to ~0.5% (and declining) of our negotations.  This whole category is
+    # slated for eventual removal when possible regardless.
     'compat' => [
       'AES128-SHA',   # Mostly evil proxies, also ancient devices
       'DES-CBC3-SHA', # Mostly IE7-8 on XP, also ancient devices
