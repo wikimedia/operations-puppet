@@ -1,7 +1,7 @@
 # vim: set ts=4 et sw=4:
 
-class role::cxserver {
-    system::role { 'role::cxserver':
+class role::cxserver::server {
+    system::role { 'role::cxserver::server':
         description => 'content translation server'
     }
 
