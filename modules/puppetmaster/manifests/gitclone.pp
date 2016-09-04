@@ -15,7 +15,7 @@ class puppetmaster::gitclone(
     $is_git_master = false,
 ){
     $servers = hiera('puppetmaster::servers', {})
-    
+
     class  { '::puppetmaster::base_repo':
         gitdir   => $::puppetmaster::gitdir,
         gitowner => 'gitpuppet'
