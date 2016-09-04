@@ -5,7 +5,7 @@ class role::scb {
     include role::mathoid
     include role::graphoid
     include role::citoid
-    include role::cxserver
+    include role::cxserver::server
     include role::changeprop
     include role::ores::web
     include role::ores::worker

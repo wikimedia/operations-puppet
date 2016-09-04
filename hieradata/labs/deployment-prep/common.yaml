@@ -134,7 +134,7 @@ ssh::server::disable_nist_kex: false
 ssh::server::explicit_macs: false
 
 "role::apertium::apertium_port": 2737
-"role::cxserver::cxserver_port": 8080
+"role::cxserver::server::cxserver_port": 8080
 "misc::syslog-server::basepath": /data/project/syslog
 "cxserver::log_dir": /var/log/cxserver
 "cxserver::logstash_host": deployment-logstash2.deployment-prep.eqiad.wmflabs
