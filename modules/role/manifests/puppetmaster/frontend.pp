@@ -23,7 +23,7 @@ class role::puppetmaster::frontend {
 
     $servers = hiera('puppetmaster::servers', {})
     $workers = $servers[$::fqdn]
-    
+
     class { '::puppetmaster':
         bind_address  => '*',
         server_type   => 'frontend',
