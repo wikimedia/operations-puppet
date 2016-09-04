@@ -12,7 +12,19 @@ class role::rcstream {
     }
 
     redis::instance { 6379:
-        settings => { maxmemory => '100mb' },
+        settings => {
+            maxmemory                   => '100mb',
+            maxmemory_policy            => 'volatile-lru',
+            maxmemory_samples           => '5',
+            no_appendfsync_on_rewrite   => 'yes',
+            save                        => '""',
+            slave_read_only             => 'no',
+            stop_writes_on_bgsave_error => 'no',
+            tcp_keepalive               => 0,
+            auto_aof_rewrite_min_size   => '512mb',
+            bind                        => '0.0.0.0',
+            client_output_buffer_limit  => 'slave 512mb 200mb 60',
+        },
     }
 
     # Spawn as many instances as there are CPU cores, less two.
