@@ -95,7 +95,6 @@ module Puppet::Parser::Functions
       'ECDHE-RSA-CHACHA20-POLY1305-D',   # 1.0.2+cloudflare
       'ECDHE-RSA-AES128-GCM-SHA256',
       'ECDHE-RSA-AES256-GCM-SHA384',
-      'DHE-RSA-CHACHA20-POLY1305',   # openssl-1.1.0, 1.0.2+cloudflare
       'DHE-RSA-AES128-GCM-SHA256',
       'DHE-RSA-AES256-GCM-SHA384',
     ],
