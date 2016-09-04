@@ -95,6 +95,7 @@ class role::coredb::config {
     }
 }
 
+# Role class for coredb::s1
 class role::coredb::s1( $mariadb = false, $innodb_file_per_table = false ) {
     class { 'role::coredb::common':
         shard                 => 's1',
@@ -105,6 +106,7 @@ class role::coredb::s1( $mariadb = false, $innodb_file_per_table = false ) {
     }
 }
 
+# Role class for coredb::s2
 class role::coredb::s2( $mariadb = false, $innodb_file_per_table = false ) {
     class { 'role::coredb::common':
         shard                 => 's2',
@@ -115,6 +117,7 @@ class role::coredb::s2( $mariadb = false, $innodb_file_per_table = false ) {
     }
 }
 
+# Role class for coredb::s3
 class role::coredb::s3( $mariadb = false, $innodb_file_per_table = false ) {
     class { 'role::coredb::common':
         shard                 => 's3',
@@ -124,6 +127,7 @@ class role::coredb::s3( $mariadb = false, $innodb_file_per_table = false ) {
     }
 }
 
+# Role class for coredb::s4
 class role::coredb::s4( $mariadb = false, $innodb_file_per_table = false ) {
     class { 'role::coredb::common':
         shard                 => 's4',
@@ -134,6 +138,7 @@ class role::coredb::s4( $mariadb = false, $innodb_file_per_table = false ) {
     }
 }
 
+# Role class for coredb::s5
 class role::coredb::s5( $mariadb = false, $innodb_file_per_table = false ) {
     class { 'role::coredb::common':
         shard                 => 's5',
@@ -144,6 +149,7 @@ class role::coredb::s5( $mariadb = false, $innodb_file_per_table = false ) {
     }
 }
 
+# Role class for coredb::s6
 class role::coredb::s6( $mariadb = false, $innodb_file_per_table = false ) {
     class { 'role::coredb::common':
         shard                 => 's6',
@@ -153,6 +159,7 @@ class role::coredb::s6( $mariadb = false, $innodb_file_per_table = false ) {
     }
 }
 
+# Role class for coredb::s7
 class role::coredb::s7( $mariadb = false, $innodb_file_per_table = false ) {
     class { 'role::coredb::common':
         shard                 => 's7',
@@ -162,6 +169,7 @@ class role::coredb::s7( $mariadb = false, $innodb_file_per_table = false ) {
     }
 }
 
+# Role class for coredb::s8
 class role::coredb::x1( $mariadb = true ) {
     class { 'role::coredb::common':
         shard                 => 'x1',
@@ -170,6 +178,7 @@ class role::coredb::x1( $mariadb = true ) {
     }
 }
 
+# Role class for coredb::s9
 class role::coredb::m1( $mariadb = false ) {
     class { 'role::coredb::common':
         shard                 => 'm1',
@@ -181,6 +190,7 @@ class role::coredb::m1( $mariadb = false ) {
 # m2 role::mariadb::misc
 # m3 role::mariadb::misc::phabricator
 
+# Role class for coredb::es1
 class role::coredb::es1( $mariadb = false ) {
     class { 'role::coredb::common':
         shard                 => 'es1',
@@ -191,6 +201,7 @@ class role::coredb::es1( $mariadb = false ) {
     }
 }
 
+# Role class for coredb::es2
 class role::coredb::es2( $mariadb = false ) {
     class { 'role::coredb::common':
         shard                 => 'es2',
@@ -200,6 +211,7 @@ class role::coredb::es2( $mariadb = false ) {
     }
 }
 
+# Role class for coredb::es3
 class role::coredb::es3( $mariadb = false ) {
     class { 'role::coredb::common':
         shard                 => 'es3',
@@ -209,6 +221,7 @@ class role::coredb::es3( $mariadb = false ) {
     }
 }
 
+# Role class for coredb::researchdb
 class role::coredb::researchdb(
     $shard='s1',
     $innodb_log_file_size = '2000M',
@@ -231,6 +244,7 @@ class role::coredb::researchdb(
     }
 }
 
+# Role class for coredb::fundraising
 class role::coredb::fundraising( $mariadb = true ) {
     class { 'role::coredb::common':
         shard                 => 'fundraisingdb',
@@ -242,6 +256,7 @@ class role::coredb::fundraising( $mariadb = true ) {
     }
 }
 
+# Role class for coredb::common
 class role::coredb::common(
     $shard,
     $logical_cluster = 'mysql',
