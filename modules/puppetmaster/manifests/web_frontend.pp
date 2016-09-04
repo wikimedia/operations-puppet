@@ -29,11 +29,7 @@ define puppetmaster::web_frontend(
     $alt_names=undef,
 ){
     $server_name = $title
-    if $master != $::fqdn {
-        $ssldir = '/var/lib/puppet/ssl'
-    } else {
-        $ssldir = $::puppetmaster::ssl::ssldir
-    }
+    $ssldir = $::puppetmaster::ssl::ssldir
     $ssl_settings = ssl_ciphersuite('apache', 'compat')
 
     if $alt_names {
@@ -61,10 +57,12 @@ define puppetmaster::web_frontend(
             creates => "${ssldir}/certs/${server_name}.pem",
             before  => Service['apache2'],
         }
+
     }
     apache::site { $server_name:
         ensure   => present,
         content  => template('puppetmaster/web-frontend.conf.erb'),
         priority => $priority,
     }
+
 }
