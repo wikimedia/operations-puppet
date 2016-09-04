@@ -36,6 +36,7 @@ class toollabs::exec_environ {
         'language-pack-hi',
         'language-pack-ja',
         'language-pack-nl',
+        'language-pack-ko',            # T130532
         'language-pack-pa',
         'language-pack-pt',
         'language-pack-ru',
