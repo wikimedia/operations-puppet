@@ -100,11 +100,8 @@ module Puppet::Parser::Functions
     ],
     # Forward-Secret, but not AEAD
     'mid' => [
-      'ECDHE-ECDSA-AES128-SHA256', # Mostly Safari 6-8
-      'ECDHE-ECDSA-AES128-SHA',    # Unpatched IE<11, Android 4.[0-3]
-      'ECDHE-RSA-AES128-SHA256',
+      'ECDHE-ECDSA-AES128-SHA',
       'ECDHE-RSA-AES128-SHA',
-      'DHE-RSA-AES128-SHA256',
       'DHE-RSA-AES128-SHA',   # Android 2.x, openssl-0.9.8
     ],
     # not-forward-secret compat for ancient stuff
