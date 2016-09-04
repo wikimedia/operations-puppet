@@ -80,4 +80,6 @@ class salt::master(
             'net.ipv4.tcp_mem'            => '16777216 16777216 16777216',
         }
     }
+
+    class { 'salt::orchestration': }
 }
