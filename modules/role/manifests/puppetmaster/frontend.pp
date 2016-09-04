@@ -70,4 +70,11 @@ class role::puppetmaster::frontend {
         proto => 'tcp',
         port  => 8140,
     }
+
+    $puppetmaster_frontend_ferm = join(keys(hiera('puppetmaster::servers')), ' ')
+    ferm::service { 'ssh_puppet_merge':
+        proto  => 'tcp',
+        port   => '22',
+        srange => "@resolve((${puppetmaster_frontend_ferm}))"
+    }
 }

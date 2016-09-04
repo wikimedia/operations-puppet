@@ -33,10 +33,10 @@ class role::puppetmaster::backend {
         port  => 8141,
     }
 
-    $puppetmaster_hostname = hiera('puppetmaster')
+    $puppetmaster_frontend_ferm = join(keys(hiera('puppetmaster::servers')), ' ')
     ferm::service { 'ssh_puppet_merge':
         proto  => 'tcp',
         port   => '22',
-        srange => "@resolve(${puppetmaster_hostname})"
+        srange => "@resolve((${puppetmaster_frontend_ferm}))"
     }
 }
