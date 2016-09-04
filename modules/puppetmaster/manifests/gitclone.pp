@@ -127,7 +127,7 @@ class puppetmaster::gitclone(
                 owner   => 'gitpuppet',
                 group   => 'gitpuppet',
                 mode    => '0550',
-                require => Puppetmaster::Gitprivate['/srv/private']
+                require => File['/srv/private']
             }
         } else {
             puppetmaster::gitprivate { '/srv/private':
