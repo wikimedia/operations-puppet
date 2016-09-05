@@ -103,6 +103,11 @@
 #   Whether Scap3 is used for deploying the config as well. Applicable only when
 #   $deployment == 'scap3'. Default: false
 #
+# [*deployment_vars*]
+#   Extra variables to include in the puppet-controlled variables file. This
+#   parameter's value is used only when the deployment method is Scap3 and the
+#   service's configuration is deployed with it as well. Default: {}
+#
 # [*contact_groups*]
 #   Contact groups for alerting.
 #   Default: hiera('contactgroups', 'admins') - use 'contactgroups' hiera
@@ -162,6 +167,7 @@ define service::node(
     $deployment      = undef,
     $deployment_user = 'deploy-service',
     $deployment_config = false,
+    $deployment_vars = {},
     $contact_groups  = hiera('contactgroups', 'admins'),
 ) {
     case $deployment {
@@ -216,11 +222,10 @@ define service::node(
         }
         $complete_config = $config
     } else {
-        # load configuration; if none is provided, assume it's
-        # in a standard location
+        # load configuration
         $local_config = $config ? {
-            undef   => template("service/node/${title}_config.yaml.erb"),
-            default => $config,
+            undef   => '{}',
+            default => $config
         }
         $complete_config = merge_config(
             template('service/node/config.yaml.erb'),
@@ -273,6 +278,35 @@ define service::node(
             onlyif  => "/usr/bin/test -O ${chown_target}",
             require => [User[$deployment_user], Group[$deployment_user]]
         }
+        file { "/etc/${title}/config-vars.yaml":
+            ensure  => present,
+            content => template('service/node/config-vars.yaml.erb'),
+            owner   => $deployment_user,
+            group   => $deployment_user,
+            mode    => '0444',
+            tag     => "${title}::config",
+        }
+
+        # We need to ensure that the full config gets deployed when we change the
+        # puppet controlled part. If auto_refresh is true, this will also restart
+        # the service.
+        file { "/usr/local/bin/apply-config-${title}":
+            ensure  => present,
+            content => template('service/node/apply-config.sh.erb'),
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0755',
+            before  => Exec["${title} config deploy"],
+        }
+
+        exec { "${title} config deploy":
+                command     => "/usr/local/bin/apply-config-${title}",
+                user        => $deployment_user,
+                group       => $deployment_user,
+                refreshonly => true,
+                subscribe   => File["/etc/${title}/config-vars.yaml"],
+        }
+
     } else {
         file { "/etc/${title}/config.yaml":
             ensure  => present,
@@ -282,16 +316,15 @@ define service::node(
             mode    => '0444',
             tag     => "${title}::config",
         }
-    }
-
-    if $auto_refresh {
-        # if the service should be restarted after a
-        # config change, specify the notify/before requirement
-        File["/etc/${title}/config.yaml"] ~> Service[$title]
-    } else {
-        # no restart should happen, just ensure the file is
-        # created before the service
-        File["/etc/${title}/config.yaml"] -> Service[$title]
+        if $auto_refresh {
+            # if the service should be restarted after a
+            # config change, specify the notify/before requirement
+            File["/etc/${title}/config.yaml"] ~> Service[$title]
+        } else {
+            # no restart should happen, just ensure the file is
+            # created before the service
+            File["/etc/${title}/config.yaml"] -> Service[$title]
+        }
     }
 
     # on systemd, set up redirecting of stdout/stderr to a file

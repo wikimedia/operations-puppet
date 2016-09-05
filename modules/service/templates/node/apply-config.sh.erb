@@ -1,0 +1,7 @@
+#!/bin/sh
+# This file is managed by Puppet
+# Do not modify it manually
+
+set -e
+/usr/bin/scap deploy-local -D 'log_json:False' --repo <%= @repo %> --force config_deploy;
+<%- if @auto_refresh %>/usr/bin/scap deploy-local -D 'log_json:False' --repo <%= @repo %> --force restart_service;<%- end -%>
