@@ -1,0 +1,2 @@
+use_puppetdb: true
+puppetdb_host: nihal.codfw.wmnet
