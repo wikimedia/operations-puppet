@@ -1,7 +1,6 @@
 # vim: set tabstop=4 shiftwidth=4 softtabstop=4 expandtab textwidth=80 smarttab
 
 class role::puppetmaster::frontend {
-    include passwords::puppet::database
 
     include role::backup::host
     backup::set { 'var-lib-puppet-ssl': }
@@ -21,24 +20,26 @@ class role::puppetmaster::frontend {
         # lint:endignore
     }
 
+
+    ## Configuration
     $servers = hiera('puppetmaster::servers', {})
     $workers = $servers[$::fqdn]
 
+
+    class { '::role::puppetmaster::common':
+        base_config => {
+            'ca'                => $ca,
+            'ca_server'         => $ca_server,
+        }
+    }
+
+    
     class { '::puppetmaster':
         bind_address  => '*',
         server_type   => 'frontend',
         is_git_master => true,
         workers       => $workers,
-        config        => {
-            'ca'                => $ca,
-            'ca_server'         => $ca_server,
-            'storeconfigs'      => true, # Required by thin_storeconfigs on puppet 3.x
-            'thin_storeconfigs' => true,
-            'dbadapter'         => 'mysql',
-            'dbuser'            => 'puppet',
-            'dbpassword'        => $passwords::puppet::database::puppet_production_db_pass,
-            'dbserver'          => 'm1-master.eqiad.wmnet',
-        }
+        config        => $::role::puppetmaster::common::config,
     }
 
     # On the primary frontend, we keep the old vhost
