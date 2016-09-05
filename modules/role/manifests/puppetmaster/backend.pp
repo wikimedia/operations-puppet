@@ -11,10 +11,7 @@ class role::puppetmaster::backend {
 
     class { '::role::puppetmaster::common':
         base_config => {
-            # lint:ignore:quoted_booleans
-            # Not a simple boolean, this must be quoted.
-            'ca'        => 'false',
-            # lint:endignore
+            'ca'        => false,
             'ca_server' => $ca_server,
         }
     }
