@@ -216,7 +216,7 @@ spec:
                 topic: mediawiki.revision_create
                 exec:
                   method: 'post'
-                  uri: '/sys/links/transcludes/{{message.page_title}}'
+                  uri: '/sys/links/transcludes/{message.page_title}'
                   body: '{{globals.message}}'
 
               on_transclusion_update:
