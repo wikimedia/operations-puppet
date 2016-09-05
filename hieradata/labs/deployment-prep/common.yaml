@@ -195,7 +195,6 @@ scap::dsh::groups:
     - deployment-elastic07
     - deployment-elastic08
 "elasticsearch::cluster_name": beta-search
-"elasticsearch::auto_create_index": '+apifeatureusage-*,-*'
 "elasticsearch::graylog_hosts":
   - deployment-logstash2.deployment-prep.eqiad.wmflabs
 role::logstash::statsd_host: labmon1001.eqiad.wmnet

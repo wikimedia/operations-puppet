@@ -50,8 +50,6 @@ class role::elasticsearch::common {
     # Install
     class { '::elasticsearch':
         require                    => Package['elasticsearch/plugins'],
-        # More than 30G isn't very useful
-        heap_memory                => '30G',
         # Production elasticsearch needs these plugins to be loaded in order
         # to work properly.  This will keep elasticsearch from starting
         # if these plugins are  not available.
