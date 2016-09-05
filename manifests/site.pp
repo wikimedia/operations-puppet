@@ -2442,7 +2442,7 @@ node /^prometheus100[12]\.eqiad\.wmnet$/ {
 }
 
 node 'puppetmaster2001.codfw.wmnet' {
-    role(puppetmaster::frontend)
+    role(puppetmaster::frontend, conftool::master)
     include standard
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
