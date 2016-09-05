@@ -1,0 +1,10 @@
+#!/bin/sh
+
+# This file is managed by Puppet
+# Do not modify it manually
+/usr/local/bin/pool service=<%= @title %>;
+/usr/bin/scap deploy-local -D 'log_json:False' --repo <%= @repo %> --force config_deploy;
+/usr/bin/scap deploy-local -D 'log_json:False' --repo <%= @repo %> --force restart_service;
+/usr/local/bin/depool service=<%= @title %>;
+exit $?;
+
