@@ -11,10 +11,9 @@
     daily
     compress
     delaycompress
-    size 300M
-    rotate 0
+    size 100M
+    rotate 3
     missingok
-    nocreate
     sharedscripts
     postrotate
         /usr/sbin/service uwsgi-graphite-web restart
