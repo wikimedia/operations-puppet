@@ -148,8 +148,6 @@ define mysql_multi_instance::instance(
           'back_log'                       => 1000,
           'max_connect_errors'             => 1000000000,
           'temp-pool'                      => true,
-          'query_cache_type'               => 0,
-          'log_slow_verbosity'             => 'Query_plan',
           'optimizer_switch'               => '\'mrr=on,mrr_cost_based=on,mrr_sort_keys=on,optimize_join_buffer_size=on,extended_keys=off\'',
           'replicate-ignore-db'            => $repl_ignore_dbs,
           'replicate-wild-ignore-table'    => $repl_wild_ignore_tables,
