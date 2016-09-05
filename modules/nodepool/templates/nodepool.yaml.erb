@@ -84,10 +84,6 @@ providers:
       # RelEng manually build and upload the images to Glance
       - name: ci-jessie-wikimedia
         base-image: ci-jessie-wikimedia
-        meta:
-            properties:
-                # Let Horizon/Wikitech display the image (T105015)
-                show: 'true'
         min-ram: 0
         name-filter: 'm1.medium'
         setup: setup_node.sh
@@ -95,10 +91,6 @@ providers:
         private-key: /var/lib/nodepool/.ssh/id_rsa
       - name: ci-trusty-wikimedia
         base-image: ci-trusty-wikimedia
-        meta:
-            properties:
-                # Let Horizon/Wikitech display the image (T105015)
-                show: 'true'
         min-ram: 0
         name-filter: 'm1.medium'
         setup: setup_node.sh
