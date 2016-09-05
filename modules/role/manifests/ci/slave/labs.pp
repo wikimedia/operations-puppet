@@ -40,13 +40,15 @@ class role::ci::slave::labs {
     include role::ci::slave::labs::common
     include role::zuul::install
 
-    include role::ci::slave::localbrowser
+    if os_version('ubuntu >= trusty || debian >= jessie') {
+        include role::ci::slave::localbrowser
 
-    class { 'role::ci::slave::browsertests':
-        require => [
-            Class['role::ci::slave::labs::common'], # /mnt
-            Class['contint::packages::labs'], # realize common packages first
-        ]
+        class { 'role::ci::slave::browsertests':
+            require => [
+                Class['role::ci::slave::labs::common'], # /mnt
+                Class['contint::packages::labs'], # realize common packages first
+            ]
+        }
     }
 
     # The sshkey resource seems to modify file permissions and make it
