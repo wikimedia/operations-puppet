@@ -968,6 +968,7 @@ lvs_services:
     port: 80
     bgp: 'yes'
     depool-threshold: '.5'
+    scheduler: sh
     monitors:
       ProxyFetch:
         url:
