@@ -249,11 +249,6 @@ groups:
     members: [gwicke, catrope, mobrovac]
     privileges: ['ALL = NOPASSWD: /usr/sbin/service citoid *',
                  'ALL = (citoid) NOPASSWD: ALL']
-  analytics-roots:
-      gid: 738
-      description: Full root access to Analytics Cluster nodes.
-      members: []
-      privileges: ['ALL = (ALL) NOPASSWD: ALL']
   eventlogging-roots:
     gid: 739
     description: Full root on EventLogging servers.

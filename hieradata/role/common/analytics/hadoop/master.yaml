@@ -7,7 +7,6 @@ admin::groups:
   # groups parameter to ensure that their hdfs homedirs get created.
   - analytics-users
   - analytics-privatedata-users
-  - analytics-roots
   - analytics-admins
   # role::analytics_cluster::users create system users for different
   # shared analytics cluster file owership.  Certain user groups
