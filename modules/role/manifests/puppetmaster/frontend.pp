@@ -14,10 +14,8 @@ class role::puppetmaster::frontend {
 
     $ca_server = hiera('puppetmaster::ca_server', 'palladium.eqiad.wmnet')
     $ca = $ca_server ? {
-        # lint:ignore:quoted_booleans
-        $::fqdn => 'true',
-        default => 'false',
-        # lint:endignore
+        $::fqdn => true,
+        default => false,
     }
 
 

@@ -1,10 +1,6 @@
 
 class puppetmaster::ssl(
             $server_name='puppet',
-            # lint:ignore:quoted_booleans
-            # This isn't a simple boolean, it may also contain a ca name
-            $ca='false'
-            # lint:endignore
 ) {
     $ssldir = '/var/lib/puppet/server/ssl'
 

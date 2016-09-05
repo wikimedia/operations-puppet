@@ -137,7 +137,6 @@ class puppetmaster(
 
     class { 'puppetmaster::ssl':
         server_name => $server_name,
-        ca          => $config['ca']
     }
 
     class { 'puppetmaster::gitclone':
