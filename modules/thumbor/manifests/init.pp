@@ -31,6 +31,7 @@ class thumbor (
 
     require_package('python-thumbor-wikimedia')
     require_package('cgroup-tools')
+    require_package('firejail')
 
     file { '/usr/local/lib/thumbor/':
         ensure => directory,
@@ -57,6 +58,15 @@ class thumbor (
         group   => 'thumbor',
         mode    => '0440',
         content => template('thumbor/server.conf.erb'),
+    }
+
+    file { '/etc/firejail/thumbor.profile':
+        ensure => present,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0444',
+        source => 'puppet:///modules/thumbor/thumbor.profile.firejail',
+        before => Base::Service_Unit['thumbor@'],
     }
 
     # XXX using a literal integer as the first argument results in
