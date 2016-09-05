@@ -1323,12 +1323,12 @@ node /^(iridium\.eqiad|phab2001\.codfw)\.wmnet$/ {
 
 node 'iron.wikimedia.org' {
     system::role { 'misc':
-        description => 'Experimental Yubico 2fa bastion',
+        description => 'Experimental Yubico two factor authentication bastion',
     }
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
     }
-    role(bastionhost::2fa, access_new_install)
+    role(bastionhost::twofa, access_new_install)
 }
 
 # Analytics Kafka Brokers
