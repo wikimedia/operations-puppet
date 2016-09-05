@@ -11,7 +11,7 @@ class role::salt::masters::production {
         salt_peer_run       => {
             'tin.eqiad.wmnet'       => ['deploy.*'],
             'mira.codfw.wmnet'      => ['deploy.*'],
-            'palladium.eqiad.wmnet' => ['keys.*'],
+            'palladium.eqiad.wmnet' => ['keys.*', 'test.*'],
         },
         salt_file_roots     => $salt_file_roots,
         salt_pillar_roots   => $salt_pillar_roots,
