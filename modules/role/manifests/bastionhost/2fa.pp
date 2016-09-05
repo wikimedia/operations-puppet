@@ -1,5 +1,5 @@
-class role::bastionhost::2fa {
-    system::role { 'bastionhost::2fa':
+class role::bastionhost::twofa {
+    system::role { 'bastionhost::twofa':
         description => 'Bastion host using two factor authentication',
     }
 
