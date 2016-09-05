@@ -31,7 +31,7 @@ class role::statistics {
     ferm::service { 'rsync':
         proto  => 'tcp',
         port   => '873',
-        srange => '($INTERNAL)',
+        srange => '$PRODUCTION_NETWORKS',
     }
 }
 
