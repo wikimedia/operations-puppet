@@ -32,7 +32,7 @@ class role::puppetmaster::puppetdb {
 
     ganglia::plugin::python { 'diskstat': }
 
-    ferm::service { 'postgresql':
+    ferm::service { 'postgresql_puppetdb':
         proto  => 'tcp',
         port   => 5432,
         srange => "@resolve((${slave_range}))",
