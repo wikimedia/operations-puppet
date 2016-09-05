@@ -54,7 +54,11 @@ class role::graphite::base(
             # five-minute resolution for two weeks; at 15-minute resolution for
             # one month; one-hour resolution for one year, and 1d for five years.
             # Per metric size: 331000 bytes
-            'default' => {
+            # Note that the different schemas are written to configuration file
+            # in alphabetical order and matched in that order. The "default"
+            # schema has to be the last one in the list, thus the "zzdefault"
+            # name.
+            'zzdefault' => {
                 pattern    => '.*',
                 retentions => '1m:7d,5m:14d,15m:30d,1h:1y,1d:5y',
             },
