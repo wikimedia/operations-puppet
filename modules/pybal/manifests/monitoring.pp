@@ -3,7 +3,7 @@
 
 class pybal::monitoring {
 
-    require_package 'libnagios-plugin-perl'
+    require_package('libnagios-plugin-perl')
 
     diamond::collector { 'PyBalState':
         source => 'puppet:///modules/pybal/pybal_state.py'
