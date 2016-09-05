@@ -80,4 +80,13 @@ class salt::master(
             'net.ipv4.tcp_mem'            => '16777216 16777216 16777216',
         }
     }
+
+    # Reducing permissions on the master cache, by default is 0755
+    file { '/var/cache/salt/master':
+        ensure => directory,
+        mode   => '0750',
+        owner  => 'root',
+        group  => 'root',
+    }
+
 }
