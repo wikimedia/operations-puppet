@@ -95,6 +95,16 @@
                 Require all granted
         </IfVersion>
     </Directory>
+    <Directory /srv/math-images>
+        php_flag engine off
+        <IfVersion >= 2.4>
+                Require all granted
+        </IfVersion>
+        <IfVersion < 2.4>
+                Order allow,deny
+                allow from all
+        </IfVersion>
+    </Directory>
     <Location /server-status>
         SetHandler server-status
         <IfVersion >= 2.4>
@@ -122,6 +132,7 @@
     Include "sites-enabled/public-wiki-rewrites.incl"
 
     Alias /w/images /srv/org/wikimedia/controller/wikis/images
+    Alias /w/images/math /srv/math-images
     Alias /dumps /a/backup/public
 
     <% if @realm == "labs" %>
