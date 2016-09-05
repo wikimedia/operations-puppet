@@ -1,7 +1,6 @@
 # vim: set tabstop=4 shiftwidth=4 softtabstop=4 expandtab textwidth=80 smarttab
 
 class role::puppetmaster::backend {
-    include passwords::puppet::database
     include base::firewall
 
     system::role { 'puppetmaster':
@@ -10,22 +9,20 @@ class role::puppetmaster::backend {
 
     $ca_server = hiera('puppetmaster::ca_server', 'palladium.eqiad.wmnet')
 
-    class { '::puppetmaster':
-        server_type => 'backend',
-        config      => {
-            'storeconfigs'      => true, # Required by thin_storeconfigs on puppet 3.x
-            'thin_storeconfigs' => true,
+    class { '::role::puppetmaster::common':
+        base_config => {
             # lint:ignore:quoted_booleans
             # Not a simple boolean, this must be quoted.
-            'ca'                => 'false',
+            'ca'        => 'false',
             # lint:endignore
-            'ca_server'         => $ca_server,
-            'dbadapter'         => 'mysql',
-            'dbuser'            => 'puppet',
-            'dbpassword'        => $passwords::puppet::database::puppet_production_db_pass,
-            'dbserver'          => 'm1-master.eqiad.wmnet',
-            'dbconnections'     => '256',
+            'ca_server' => $ca_server,
         }
+    }
+
+    
+    class { '::puppetmaster':
+        server_type => 'backend',
+        config      => $::role::puppetmaster::common::config
     }
 
     ferm::service { 'puppetmaster-backend':
