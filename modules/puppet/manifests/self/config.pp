@@ -33,11 +33,10 @@ class puppet::self::config(
         'ldapuser'      => $ldapconfig['proxyagent'],
         'ldappassword'  => $ldapconfig['proxypass'],
         'ldaptls'       => true,
+        'dbadapter'     => 'sqlite3',
+        'autosign'      => $autosign
     }
 
-    $config['dbadapter'] = 'sqlite3'
-
-    $config['autosign'] = $autosign
 
     # This is set to something different than the default
     # /var/lib/puppet/ssl to avoid conflicts with previously
