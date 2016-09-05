@@ -14,6 +14,7 @@ class role::xenon {
         settings => {
             maxmemory                   => '1Mb',
             stop_writes_on_bgsave_error => 'no',
+            bind                        => '0.0.0.0',
         },
     }
 
