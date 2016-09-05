@@ -4,8 +4,9 @@ set -e
 
 download_dir="/srv/downloads/"
 osmosis_dir="/srv/osmosis"
-kartotherian_dir="/srv/deployment/kartotherian/deploy/"
+kartotherian_dir="/srv/deployment/kartotherian/deploy"
 osm_bright_source_dir="${kartotherian_dir}/node_modules/osm-bright-source"
+modules_with_sql="osm-bright-source kartotherian-geoshapes"
 replicate_lock="${osmosis_dir}/replicate-osm.lck"
 proxy=
 database_host=localhost
@@ -109,9 +110,15 @@ function import_water_lines() {
 function custom_functions_and_indexes() {
   echo "starting creation of custom functions and indexes"
   sudo -u postgres psql -Xd gis -f "${osm_bright_source_dir}/node_modules/postgis-vt-util/lib.sql"
-  sudo -u postgres psql -Xd gis -f "${osm_bright_source_dir}/sql/admin.sql"
-  sudo -u postgres psql -Xd gis -f "${osm_bright_source_dir}/sql/functions.sql"
-  sudo -u postgres psql -Xd gis -f "${osm_bright_source_dir}/sql/water-indexes.sql"
+
+  for module in ${modules_with_sql}; do
+    echo "executing SQL in: ${kartotherian_dir}/node_modules/${module}/sql"
+    for sql_file in `ls ${kartotherian_dir}/node_modules/${module}/sql/*.sql`; do
+      echo "  executing: ${sql_file}"
+      sudo -u postgres psql -Xd gis -f ${sql_file}
+    done
+  done
+
   sudo -u postgres psql -d gis -c 'SELECT populate_admin();'
   echo "creation of custom functions and indexes completed"
 }
