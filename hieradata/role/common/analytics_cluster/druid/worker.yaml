@@ -1,3 +1,5 @@
+admin::groups:
+  - druid-admins
 debdeploy::grains:
   debdeploy-druid:
     value: standard
