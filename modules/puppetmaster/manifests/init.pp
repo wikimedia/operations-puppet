@@ -74,9 +74,7 @@ class puppetmaster(
         }
 
         # Install the puppetdb-terminus package, needed for puppetdbquery
-        package { 'puppetdb-terminus':
-            ensure => present,
-        }
+        require_package('puppetdb-terminus')
     }
 
 
