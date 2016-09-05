@@ -549,6 +549,15 @@ groups:
                  'ALL = NOPASSWD: /bin/systemctl stop eventlogging-service-eventbus.service',
                  'ALL = NOPASSWD: /bin/systemctl restart eventlogging-service-eventbus.service',
                  'ALL = NOPASSWD: /bin/journalctl *']
+druid-admins:
+    gid: 788
+    description: admins for the Analytics Druid cluster
+    members: [nuria, milimetric, joal, mforns]
+    privileges: ['ALL = NOPASSWD: /bin/systemctl start druid-*.service',
+                 'ALL = NOPASSWD: /bin/systemctl stop druid-*.service',
+                 'ALL = NOPASSWD: /bin/systemctl restart druid-*.service',
+                 'ALL = NOPASSWD: /bin/systemctl mask druid-*.service',
+                 'ALL = NOPASSWD: /bin/systemctl unmask druid-*.service']
 
 users:
   rush:
