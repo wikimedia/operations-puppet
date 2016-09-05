@@ -11,7 +11,10 @@ class role::xenon {
     include ::apache::mod::proxy_http
 
     redis::instance { 6379:
-        settings => { maxmemory => '1Mb' },
+        settings => {
+            maxmemory                   => '1Mb',
+            stop_writes_on_bgsave_error => 'no',
+        },
     }
 
     Service['redis-server'] ~> Service['xenon-log']
