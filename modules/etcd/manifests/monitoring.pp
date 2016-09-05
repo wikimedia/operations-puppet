@@ -8,7 +8,7 @@ class etcd::monitoring {
         require => Service['etcd'],
     }
 
-    require_package 'libnagios-plugin-perl'
+    require_package('libnagios-plugin-perl')
 
     file { '/usr/local/bin/nrpe_etcd_cluster_health':
         ensure  => present,

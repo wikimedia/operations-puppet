@@ -9,7 +9,7 @@ class nagios_common::check::redis(
     $group = 'icinga'
     ) {
 
-    require_package 'libredis-perl'
+    require_package('libredis-perl')
 
     require ::passwords::redis
 

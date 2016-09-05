@@ -4,5 +4,5 @@
 # services defined via service::node
 
 class service::monitoring {
-    require_package 'python-yaml', 'python-urllib3', 'python-service-checker'
+    require_package('python-yaml', 'python-urllib3', 'python-service-checker')
 }
