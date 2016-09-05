@@ -10,7 +10,7 @@ class conftool(
     $auth        = true,
     $password    = undef,
     ) {
-    require_package 'python-conftool'
+    require_package('python-conftool')
 
     require ::etcd::client::globalconfig
 

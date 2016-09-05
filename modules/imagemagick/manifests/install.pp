@@ -2,7 +2,7 @@
 #
 # Installs imagemagick and our custom policy
 class imagemagick::install {
-    require_package 'imagemagick'
+    require_package('imagemagick')
 
     if os_version('debian >= jessie || ubuntu >= wily') {
         # configuration directory changed since ImageMagick 8:6.8.5.6-1
