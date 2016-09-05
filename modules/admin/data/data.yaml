@@ -549,6 +549,25 @@ groups:
                  'ALL = NOPASSWD: /bin/systemctl stop eventlogging-service-eventbus.service',
                  'ALL = NOPASSWD: /bin/systemctl restart eventlogging-service-eventbus.service',
                  'ALL = NOPASSWD: /bin/journalctl *']
+druid-admins:
+    gid: 787
+    description: admins for the Analytics Druid cluster
+    members: [nuria, milimetric, joal, mforns]
+    privileges: ['ALL = NOPASSWD: /bin/systemctl start druid-broker.service',
+                 'ALL = NOPASSWD: /bin/systemctl stop druid-broker.service',
+                 'ALL = NOPASSWD: /bin/systemctl restart druid-broker.service',
+                 'ALL = NOPASSWD: /bin/systemctl start druid-coordinator.service',
+                 'ALL = NOPASSWD: /bin/systemctl stop druid-coordinator.service',
+                 'ALL = NOPASSWD: /bin/systemctl restart druid-coordinator.service',
+                 'ALL = NOPASSWD: /bin/systemctl start druid-historical.service',
+                 'ALL = NOPASSWD: /bin/systemctl stop druid-historical.service',
+                 'ALL = NOPASSWD: /bin/systemctl restart druid-historical.service',
+                 'ALL = NOPASSWD: /bin/systemctl start druid-middlemanager.service',
+                 'ALL = NOPASSWD: /bin/systemctl stop druid-middlemanager.service',
+                 'ALL = NOPASSWD: /bin/systemctl restart druid-middlemanager.service',
+                 'ALL = NOPASSWD: /bin/systemctl start druid-overlord.service',
+                 'ALL = NOPASSWD: /bin/systemctl stop druid-overlordservice',
+                 'ALL = NOPASSWD: /bin/systemctl restart druid-overlord.service']
 
 users:
   rush:
