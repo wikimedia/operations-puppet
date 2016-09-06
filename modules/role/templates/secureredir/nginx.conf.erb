@@ -1,0 +1,47 @@
+# Proxy site configuration file for secureredir
+# This file is managed by Puppet!
+
+<%- first = true -%>
+<%- @letsencrypt_cfg.each do |certname, certdetails| -%>
+server {
+	# Enabling TCP Fast Open is safe for HTTP over TLS. There is no idempotency
+	# concern replaying TLS Client Hello.
+	# https://tools.ietf.org/html/rfc7413#section-6.3.2
+	listen [::]:443 <%= first ? "default_server deferred backlog=16384 reuseport ipv6only=on fastopen=#{@fastopen_pending_max} " : "" %>ssl http2;
+	listen 443 <%= first ? "default_server deferred backlog=16384 reuseport fastopen=#{@fastopen_pending_max} " : "" %>ssl http2;
+	server_name <%= certdetails["subjects"].split(",").join(" ") %>;
+	error_log   /var/log/nginx/secureredir.error.log;
+	access_log   off;
+	ssl_certificate /etc/acme/cert/<%= certname %>.chained.crt;
+	ssl_certificate_key /etc/acme/key/<%= certname %>.key;
+	keepalive_timeout 60;
+	include /etc/acme/challenge-nginx.conf;
+	<%- certdetails["subjects"].split(",").each do |domain| -%>
+	if ( $host = '<%= domain %>' ) {
+	<%- @nginx_cfg[domain].each do |path, target| -%>
+		rewrite <%= path == nil ? "^\/((?!(\.well-known\/acme-challenge\/)).*)$" : path %> <%= target %> permanent;
+	<%- end -%>
+	}
+	<%- end -%>
+}
+server {
+	# Enabling TCP Fast Open is safe for HTTP over TLS. There is no idempotency
+	# concern replaying TLS Client Hello.
+	# https://tools.ietf.org/html/rfc7413#section-6.3.2
+	listen [::]:80 <%= first ? "default_server deferred backlog=16384 reuseport ipv6only=on fastopen=#{@fastopen_pending_max} " : "" %>;
+	listen 80 <%= first ? "default_server deferred backlog=16384 reuseport fastopen=#{@fastopen_pending_max} " : "" %>;
+	server_name <%= certdetails["subjects"].split(",").join(" ") %>;
+	error_log   /var/log/nginx/secureredir.error.log;
+	access_log   off;
+	keepalive_timeout 60;
+	include /etc/acme/challenge-nginx.conf;
+	<%- certdetails["subjects"].split(",").each do |domain| -%>
+	if ( $host = '<%= domain %>' ) {
+	<%- @nginx_cfg[domain].each do |path, target| -%>
+		rewrite <%= path ? path : "^\/((?!(\.well-known\/acme-challenge\/)).*)$" %> <%= target %> permanent;
+	<%- end -%>
+	}
+	<%- end -%>
+}
+<%- first = false -%>
+<%- end -%>
