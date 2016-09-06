@@ -103,8 +103,7 @@ module Puppet::Parser::Functions
       'ECDHE-ECDSA-AES128-SHA',    # Unpatched IE<11, Android 4.[0-3]
       'ECDHE-RSA-AES128-SHA256',
       'ECDHE-RSA-AES128-SHA',
-      'DHE-RSA-AES128-SHA256',
-      'DHE-RSA-AES128-SHA',   # Android 2.x, openssl-0.9.8
+      'DHE-RSA-AES128-SHA',   # Android 2.x, openssl-0.9.8, etc
     ],
     # not-forward-secret compat for ancient stuff
     'compat' => [
