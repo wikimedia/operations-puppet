@@ -57,7 +57,6 @@ class role::labs::openstack::nova::manager {
         }
         'labtest': {
             $sitename = 'labtestwikitech.wikimedia.org'
-            sslcert::certificate { $sitename: ensure => absent }
             $certificate = 'labtestwikitech'
             letsencrypt::cert::integrated { $certificate:
                 subjects   => $sitename,
@@ -310,12 +309,6 @@ class role::labs::openstack::nova::wikiupdates {
         mode    => '0644',
         require => Package['python-mwclient'],
         recurse => true,
-    }
-
-
-    package { 'python-openstack-wikistatus':
-        ensure  => absent,
-        require => File['/usr/lib/python2.7/dist-packages/wikistatus'],
     }
 }
 

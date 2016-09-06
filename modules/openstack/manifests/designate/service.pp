@@ -27,10 +27,24 @@ class openstack::designate::service (
         'designate-api',
         'designate-doc',
         'designate-central',
-        'python-nova-ldap',
         'python-novaclient',
         'python-nova-fixed-multi'
     )
+
+    file { '/usr/lib/python2.7/dist-packages/nova_ldap':
+        source  => "puppet:///modules/openstack/${::openstack::version}/designate/nova_ldap",
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0644',
+        recurse => true,
+    }
+    file { '/usr/lib/python2.7/dist-packages/nova_ldap.egg-info':
+        source  => "puppet:///modules/openstack/${::openstack::version}/designate/nova_ldap.egg-info",
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0644',
+        recurse => true,
+    }
 
     file {
         '/etc/designate/designate.conf':
