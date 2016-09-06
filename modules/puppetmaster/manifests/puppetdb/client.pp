@@ -8,8 +8,7 @@ class puppetmaster::puppetdb::client($host, $port=443) {
 
     file { '/etc/puppet/puppetdb.conf':
         ensure  => present,
-        content => inline_template(
-            '[ main ]\nserver = <%= @host %>\nport = <%= @port %>\nsoft_write_failure = true\n'),
+        content => template('puppetmaster/puppetdb.conf.erb'),
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
