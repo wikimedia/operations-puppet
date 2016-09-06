@@ -45,7 +45,7 @@ fi
 
 # Start service to make sure that ip addresses for each project
 # are maintained properly
-/bin/systemctl start nfs-exports
+/bin/systemctl start nfs-exportd
 
 # Setup service IP
 /sbin/ip addr add dev eth0 10.64.37.10/24

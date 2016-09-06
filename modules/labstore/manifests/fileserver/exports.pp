@@ -51,11 +51,11 @@ class labstore::fileserver::exports {
         require => File['/etc/nfs-mounts.yaml'],
     }
 
-    file { '/usr/local/bin/nfs-exports-daemon':
+    file { '/usr/local/bin/nfs-exportd':
         owner   => 'root',
         group   => 'root',
         mode    => '0555',
-        source  => 'puppet:///modules/labstore/nfs-exports-daemon',
+        source  => 'puppet:///modules/labstore/nfs-exportd',
         require => File['/usr/local/sbin/sync-exports'],
     }
 
@@ -66,9 +66,9 @@ class labstore::fileserver::exports {
         source => 'puppet:///modules/labstore/archive-project-volumes',
     }
 
-    base::service_unit { 'nfs-exports':
+    base::service_unit { 'nfs-exportd':
         systemd         => true,
         declare_service => false,
-        require         => File['/usr/local/bin/nfs-exports-daemon'],
+        require         => File['/usr/local/bin/nfs-exportd'],
     }
 }
