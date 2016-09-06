@@ -28,11 +28,14 @@ class role::labs::google_api_proxy (
         '::external_proxy::instance',
         $instances,
         {
-            'acls' => [
-                'deny 10.68.21.68; # IP we see if XFF unwrapping did not work',
+            'acls'       => [
                 'allow 10.68.16.0/21; # All of Labs',
                 'allow 127.0.0.1;',
                 'deny all;',
+            ],
+            'trusted_xff' => [
+                '10.68.21.68',  # novaproxy-01.project-proxy.eqiad.wmflabs
+                '10.68.21.69',  # novaproxy-02.project-proxy.eqiad.wmflabs
             ],
         }
     )
