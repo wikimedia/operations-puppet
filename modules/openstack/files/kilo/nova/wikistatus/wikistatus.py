@@ -12,7 +12,6 @@
 #    WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
 #    License for the specific language governing permissions and limitations
 #    under the License.
-import sys
 
 import mwclient
 
@@ -24,7 +23,6 @@ from nova import image
 from nova import network
 from nova import objects
 from oslo_log import log as logging
-from nova import utils
 
 from oslo.config import cfg
 from oslo.messaging.notify import notifier
@@ -180,7 +178,7 @@ class WikiStatus(notifier._Driver):
             template_param_dict['tenant'] = tenant_name
             template_param_dict['username'] = user_name
 
-        inst = objects.Instance.get_by_uuid(ctxt, payload['instance_id'])
+        inst = objects.Instance.get_by_uuid(ctxt, instance)
 
         simple_id = inst['id']
         ec2_id = 'i-%08x' % simple_id
