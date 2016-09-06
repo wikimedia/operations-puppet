@@ -1,0 +1,27 @@
+# *** Auto-generated ***
+:backends:
+  - nuyaml
+  - role
+:role:
+  :datadir: /home/hashar/projects/operations/puppet/hieradata
+:nuyaml:
+  :datadir: /home/hashar/projects/operations/puppet/hieradata
+  :expand_path:
+    - common
+    - "%{::site}"
+:private:
+  :datadir: /home/hashar/projects/operations/puppet/private/hieradata
+:hierarchy:
+  - "hosts/%{::hostname}"
+  - "regex/%{::fqdn}"
+  - "%{::site}"
+  - "private/hosts/%{::hostname}" # TODO: Remove this once labtest realm dies. DO NOT USE THIS
+  - "private/%{::site}"
+  - "common"
+  - "private/common"
+
+:role_hierarchy:
+  - "%{::site}"
+  - "common"
+  - "private/%{::site}"
+  - "private/common"
