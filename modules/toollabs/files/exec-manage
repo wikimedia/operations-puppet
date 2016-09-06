@@ -3,11 +3,21 @@
 # This script helps manage Grid Engine exec nodes by allowing for depool,
 # repool, and check status, given an exec node hostname.
 
-# Usage: exec-manage.sh exec_host_name [status|depool|repool|test]
-# Example: ./exec-manage.sh tools-exec1001.eqiad.wmflabs status
 
 set -e
 
+function usage {
+        echo -e "Usage:\n"
+        echo "exec-manage exec_host_name [status|depool|repool|test]"
+        echo "exec-manage [list]"
+        echo ""
+        echo "Example: exec-manage tools-exec1001.eqiad.wmflabs status"
+}
+
+if [[ ! "$1" || "$1" == '-h' ]]; then
+    usage
+    exit 0
+fi
 
 if [ "$#" -ne 2 ]; then
     echo "Wrong number of parameters"
@@ -71,6 +81,13 @@ case $cmd in
 
         ;;
 
+    list)
+
+        # list all exec nodes
+        /usr/bin/qconf -sel
+
+        ;;
+
     repool)
 
         # Enables all queues on this host
@@ -107,9 +124,7 @@ case $cmd in
         ;;
 
     *)
-
-        # Print usage
-        echo "Usage: exec-manage.sh exec_host_name [status|depool|repool|test]"
+        usage
 
         ;;
 
