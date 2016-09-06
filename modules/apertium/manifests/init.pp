@@ -24,7 +24,7 @@ class apertium(
 
     $log_dir = "${::service::configuration::log_dir}/apertium"
 
-    package { [
+    $base_packages = [
         'apertium',
         'apertium-af-nl',
         'apertium-apy',
@@ -40,7 +40,6 @@ class apertium(
         'apertium-eo-en',
         'apertium-eo-es',
         'apertium-eo-fr',
-        'apertium-es-an',
         'apertium-es-ast',
         'apertium-es-ca',
         'apertium-es-gl',
@@ -50,13 +49,12 @@ class apertium(
         'apertium-eu-en',
         'apertium-eu-es',
         'apertium-eus',
-        'apertium-fr-ca',
         'apertium-fr-es',
         'apertium-hbs',
-        'apertium-hin',
         'apertium-hbs-eng',
         'apertium-hbs-mkd',
         'apertium-hbs-slv',
+        'apertium-hin',
         'apertium-id-ms',
         'apertium-is-sv',
         'apertium-isl',
@@ -65,7 +63,6 @@ class apertium(
         'apertium-kaz-tat',
         'apertium-lex-tools',
         'apertium-mk-bg',
-        'apertium-mkd',
         'apertium-mlt-ara',
         'apertium-nno',
         'apertium-nno-nob',
@@ -74,14 +71,47 @@ class apertium(
         'apertium-oc-es',
         'apertium-pt-ca',
         'apertium-pt-gl',
-        'apertium-sv-da',
         'apertium-tat',
         'apertium-urd',
         'apertium-urd-hin',
         'cg3',
         'hfst',
         'lttoolbox'
-    ]:
+    ]
+    $trusty_packages = [
+        'apertium-es-an',
+        'apertium-fr-ca',
+        'apertium-mkd',
+        'apertium-sv-da',
+    ]
+    $jessie_packages = [
+        'apertium-arg',
+        'apertium-arg-cat',
+        'apertium-cat',
+        'apertium-fra',
+        'apertium-fra-cat',
+        'apertium-ita',
+        'apertium-sme-nob',
+        'apertium-spa',
+        'apertium-spa-arg',
+        'apertium-srd',
+        'apertium-srd-ita',
+        'apertium-swe',
+        'apertium-swe-dan',
+        'apertium-swe-nor',
+        'giella-core',
+        'giella-sme',
+    ]
+
+    if os_version('ubuntu >= trusty') {
+        $packages = concat($base_packages, $trusty_packages)
+    } elsif os_version('debian >= jessie') {
+        $packages = concat($base_packages, $jessie_packages)
+    } else {
+        $packages = $base_packages  # Should never reach this but anyway
+    }
+
+    package { $packages:
         ensure => present,
         notify => Service['apertium-apy'],
     }
