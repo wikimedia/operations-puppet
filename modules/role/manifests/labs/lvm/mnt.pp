@@ -3,10 +3,10 @@
 # FIXME: Deprecate and kill with mild fire
 #
 # filtertags: labs-project-labtestproject
-class role::labs::lvm::mnt {
-    $mount_point = $::lvm_mount_point ? {
+class role::labs::lvm::mnt($mount_point = $::lvm_mount_point) {
+    $mount = $mount_point ? {
         undef   => '/mnt',
-        default => $::lvm_mount_point,
+        default => $mount_point,
     }
-    labs_lvm::volume { 'second-local-disk': mountat => $mount_point }
+    labs_lvm::volume { 'second-local-disk': mountat => $mount }
 }
