@@ -1,0 +1,2 @@
+[designate.notification.handler]
+nova_ldap = nova_ldap.novaldap:NovaFixedLdapHandler
