@@ -68,4 +68,10 @@ shard_container_list = <%= @shard_container_list.join(',') %>
 backend_url_format = <%= @backend_url_format %>
 tld = <%= @tld %>
 
+# mirror thumbnail requests to thumbor
+<%- unless @thumborhost.empty? or @thumbor_wiki_list.empty? -%>
+thumborhost = <%= @thumborhost %>
+thumbor_wiki_list = <%= @thumbor_wiki_list.join(',') %>
+<%- end -%>
+
 paste.filter_factory = wmf.rewrite:filter_factory
