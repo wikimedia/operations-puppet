@@ -1,5 +1,0 @@
-admin::groups:
-  - contint-users
-  - contint-admins
-cluster: misc
-contactgroups: 'admins,contint'
