@@ -3,11 +3,6 @@ include "misc-common.inc.vcl";
 sub cluster_fe_recv_pre_purge { }
 
 sub cluster_fe_recv {
-    if (req.http.Host == "yarn.wikimedia.org") {
-        // Disabling this as it exposes the YARN ResourceManager REST interface
-        return (synth(404, "Public access disabled. See https://wikitech.wikimedia.org/wiki/Analytics/Cluster/Access#ssh_tunnel.28s.29 for access instructions"));
-    }
-
     if (req.http.Host == "grafana.wikimedia.org" || req.http.host == "grafana-admin.wikimedia.org"
         || req.http.Host == "grafana-labs.wikimedia.org" || req.http.host == "grafana-labs-admin.wikimedia.org") {
         // X-WEBAUTH-USER is set by Apache's mod_authnz_ldap on the request it
