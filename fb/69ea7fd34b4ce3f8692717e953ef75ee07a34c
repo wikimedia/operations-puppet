@@ -1,0 +1,8 @@
+Code-Review+1: Andrew Bogott <abogott@wikimedia.org>
+Code-Review+2: Alexandros Kosiaris <akosiaris@wikimedia.org>
+Verified+2: Alexandros Kosiaris <akosiaris@wikimedia.org>
+Submitted-by: Alexandros Kosiaris <akosiaris@wikimedia.org>
+Submitted-at: Tue, 06 Sep 2016 07:51:52 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/308666
+Project: operations/puppet
+Branch: refs/heads/production
