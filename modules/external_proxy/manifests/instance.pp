@@ -8,6 +8,9 @@
 # [*acls*]
 #   Ordered list of nginx access control directives to apply.
 #   See https://nginx.org/en/docs/http/ngx_http_access_module.
+# [*trusted_xff*]
+#   List of hosts trusted to provide valid X-Forwarded-For values.
+#   See https://nginx.org/en/docs/http/ngx_http_realip_module.html
 # [*port*]
 #   Port that nginx should listen on. Default: 80.
 # [*default*]
@@ -17,6 +20,7 @@
 define external_proxy::instance (
     $proxied,
     $acls,
+    $trusted_xff,
     $port    = 80,
     $default = false,
 ){
