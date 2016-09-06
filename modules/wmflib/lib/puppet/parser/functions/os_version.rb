@@ -52,6 +52,13 @@ module Puppet::Parser::Functions
   }
 
   newfunction(:os_version, :type => :rvalue, :arity => 1) do |args|
+    lsbdistrelease = lookupvar('lsbdistrelease')
+    lsbdistid = lookupvar('lsbdistid')
+
+    if lsbdistrelease.nil? || lsbdistid.nil?
+        fail(ArgumentError, 'lsbdistrelease and/or lsbdistid not set')
+    end
+
     self_release = lookupvar('lsbdistrelease').capitalize
     self_id = lookupvar('lsbdistid').capitalize
 
