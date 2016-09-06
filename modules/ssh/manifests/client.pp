@@ -5,7 +5,13 @@ class ssh::client {
 
     # no exported resources on Labs == no sshknowngen
     if $::realm == 'production' {
-        if $::settings::storeconfigs_backend == 'puppetdb' {
+        # Note: For some reason (ruby symbol?), $settings::storeconfigs_backend
+        # would never match in the if clause below. So define a new variable and
+        # cast the variable to string
+        # lint:ignore:only_variable_string
+        $settings_storeconfigs_backend = "${settings::storeconfigs_backend}"
+        # lint:endignore
+        if $settings_storeconfigs_backend == 'puppetdb' {
             file { '/etc/ssh/ssh_known_hosts':
                 content => template('ssh/known_hosts.erb'),
                 backup  => false,
