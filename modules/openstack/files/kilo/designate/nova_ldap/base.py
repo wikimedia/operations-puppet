@@ -13,13 +13,9 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 
-import abc
 from oslo_config import cfg
-from designate import exceptions
 from designate.central import rpcapi as central_rpcapi
-from designate.context import DesignateContext
 from designate.notification_handler.base import BaseAddressHandler
-from designate.plugin import ExtensionPlugin
 from keystoneclient.auth.identity import v3
 from keystoneclient import client
 from keystoneclient import exceptions as keystoneexceptions
@@ -91,8 +87,9 @@ class BaseAddressLdapHandler(BaseAddressHandler):
             LOG.debug("LDAP bind failure:  The bind DN is incorrect... \n")
         except ldap.NO_SUCH_OBJECT:
             LOG.debug("LDAP bind failure:  Unable to locate the bind DN account.\n")
-        except ldap.UNWILLING_TO_PERFORM, msg:
-            LOG.debug("LDAP bind failure:  The LDAP server was unwilling to perform the action requested.\nError was: %s\n" % msg[0]["info"])
+        except ldap.UNWILLING_TO_PERFORM as msg:
+            LOG.debug("LDAP bind failure:  The LDAP server was unwilling to perform the action"
+                      " requested.\nError was: %s\n" % msg[0]["info"])
         except ldap.INVALID_CREDENTIALS:
             LOG.debug("LDAP bind failure:  Password incorrect.\n")
 
@@ -251,7 +248,7 @@ class BaseAddressLdapHandler(BaseAddressHandler):
             passwd = cfg.CONF[self.name].keystone_auth_pass
             project = cfg.CONF[self.name].keystone_auth_project
             url = cfg.CONF[self.name].keystone_auth_url
-        except keyerror:
+        except KeyError:
             LOG.debug('Missing a config setting for keystone auth.')
             return
 
