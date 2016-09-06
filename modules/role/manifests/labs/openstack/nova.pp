@@ -306,6 +306,15 @@ class role::labs::openstack::nova::wikiupdates {
         recurse => true,
     }
 
+    file { '/usr/lib/python2.7/dist-packages/wikistatus.egg-info':
+        source  => "puppet:///modules/openstack/${::openstack::version}/nova/wikistatus.egg-info",
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0644',
+        require => Package['python-mwclient'],
+        recurse => true,
+    }
+
 
     package { 'python-openstack-wikistatus':
         ensure  => absent,
