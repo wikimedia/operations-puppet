@@ -14,7 +14,7 @@ class role::thumbor::mediawiki {
     $swift_account_keys = $::swift::params::account_keys
 
     class { '::thumbor::swift':
-        swift_key                => $swift_account_keys['thumbor'],
+        swift_key                => $swift_account_keys['mw_thumbor'],
         swift_sharded_containers => hiera_array('swift::proxy::shard_container_list'),
     }
 
