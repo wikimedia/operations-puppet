@@ -27,7 +27,7 @@ class role::postgres::common {
     ferm::service { 'postgresql':
         proto  => 'tcp',
         port   => 5432,
-        srange => '$INTERNAL',
+        srange => '$LABS_NETWORKS',
     }
 }
 
