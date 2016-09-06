@@ -72,7 +72,6 @@ module Puppet::Parser::Functions
   # 3) Kx:   ECDHE > DHE      (Perf, mostly)
   # 4) Auth: ECDSA > RSA      (Perf, mostly)
   # 5) Enc:  AES128 > AES256  (Perf, mostly - debateable...)
-  # 6) Mac:  SHA-2 > SHA-1    (Not that it matters much, yet)
   #
   # After all of that, the fullest list of reasonably-acceptable mid/compat
   # ciphers has been filtered further to reduce pointless clutter:
@@ -99,11 +98,9 @@ module Puppet::Parser::Functions
     ],
     # Forward-Secret, but not AEAD
     'mid' => [
-      'ECDHE-ECDSA-AES128-SHA256', # Mostly Safari 6-8
-      'ECDHE-ECDSA-AES128-SHA',    # Unpatched IE<11, Android 4.[0-3]
-      'ECDHE-RSA-AES128-SHA256',
+      'ECDHE-ECDSA-AES128-SHA', # Various outdated IE, Safari<9, Android<4.4
       'ECDHE-RSA-AES128-SHA',
-      'DHE-RSA-AES128-SHA',   # Android 2.x, openssl-0.9.8, etc
+      'DHE-RSA-AES128-SHA', # Android 2.x, openssl-0.9.8, etc
     ],
     # not-forward-secret compat for ancient stuff
     'compat' => [
