@@ -1,9 +1,7 @@
 # Class for website hosted on the continuous integration server
 # https://integration.mediawiki.org/
 # https://doc.wikimedia.org/
-class contint::website(
-  $zuul_git_dir = '/var/lib/zuul/git'
-){
+class contint::website(){
 
   # Need to send Vary: X-Forwarded-Proto since most sites are forced to HTTPS
   # and behind a varnish cache. See also T62822

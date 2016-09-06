@@ -6,7 +6,7 @@ class role::ci::slave::localbrowser {
     }
 
     include role::ci::slave::labs::common
-    include role::zuul::install
     include contint::browsers
-}
 
+    class { '::zuul': }
+}
