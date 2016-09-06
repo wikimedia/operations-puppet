@@ -13,8 +13,8 @@ shell                 /bin/bash
 shell_start_mode      unix_behavior
 terminate_method      /usr/local/bin/jobkill $job_pid
 notify                00:00:60
-user_list             <%= @node_dedicated_tool %>
-owner_list            <%= @node_dedicated_tool %>
+user_list             <%= @dedicated_tool %>
+owner_list            <%= @dedicated_tool %>
 prolog                NONE
 epilog                NONE
 processors            UNDEFINED
