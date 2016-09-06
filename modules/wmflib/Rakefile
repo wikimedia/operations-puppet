@@ -8,6 +8,7 @@ modulename = File.basename(File.expand_path(File.dirname(__FILE__)))
 symlinks = { 'spec/fixtures/modules/%s/files' % modulename => '../../../../files',
              'spec/fixtures/modules/%s/manifests' % modulename => '../../../../manifests',
              'spec/fixtures/modules/%s/templates' % modulename => '../../../../templates',
+             'spec/fixtures/modules/stdlib'  => '../../../../stdlib'
            }
 
 
