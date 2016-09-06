@@ -52,8 +52,15 @@ module Puppet::Parser::Functions
   }
 
   newfunction(:os_version, :type => :rvalue, :arity => 1) do |args|
-    self_release = lookupvar('lsbdistrelease').capitalize
-    self_id = lookupvar('lsbdistid').capitalize
+    lsbdistrelease = lookupvar('lsbdistrelease')
+    lsbdistid = lookupvar('lsbdistid')
+
+    if lsbdistrelease.nil? || lsbdistid.nil?
+        fail(ArgumentError, 'lsbdistrelease and/or lsbdistid not set')
+    end
+
+    self_release = lsbdistrelease.capitalize
+    self_id = lsbdistid.capitalize
 
     fail(ArgumentError, 'os_version(): string argument required') unless args.first.is_a?(String)
 
