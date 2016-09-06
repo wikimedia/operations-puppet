@@ -1,9 +1,8 @@
 # === Class mediawiki::packages::php5
 #
 # This class declares packages that make up Wikimedia's PHP5-based
-# MediaWiki deployment stack. As of August 2014, this is the most common
-# configuration in production, but new installs are configured for HHVM
-# instead.
+# MediaWiki deployment stack. As of August 2016, most installs are
+# configured for HHVM, but a few are still using PHP5 (T86081).
 #
 class mediawiki::packages::php5 {
     requires_os('ubuntu >= trusty || Debian >= jessie')
