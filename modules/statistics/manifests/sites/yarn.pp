@@ -15,6 +15,8 @@ class statistics::sites::yarn {
     include ::apache::mod::authnz_ldap
     include ::passwords::ldap::production
 
+    $proxypass = $passwords::ldap::production::proxypass
+
     # Set up the VirtualHost
     apache::site { 'yarn.wikimedia.org':
         content => template('statistics/yarn.wikimedia.org.erb'),
