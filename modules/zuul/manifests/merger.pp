@@ -29,7 +29,8 @@ class zuul::merger (
     $zuul_url       = $::fqdn,
 ) {
 
-    require ::zuul
+    class { '::zuul': }
+    Class['::zuul'] -> Class['zuul::merger']
 
     exec { 'zuul merger recursive mkdir of git_dir':
         command => "/bin/mkdir -p ${git_dir}",
