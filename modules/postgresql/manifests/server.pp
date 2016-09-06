@@ -44,6 +44,7 @@ class postgresql::server(
         "postgresql-${pgversion}",
         "postgresql-${pgversion}-debversion",
         "postgresql-client-${pgversion}",
+        "postgresql-contrib-${pgversion}",
         'libdbi-perl',
         'libdbd-pg-perl',
         'ptop',
