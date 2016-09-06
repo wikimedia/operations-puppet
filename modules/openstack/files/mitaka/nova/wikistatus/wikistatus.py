@@ -24,8 +24,8 @@ from nova import network
 from nova import objects
 from oslo_log import log as logging
 
-from oslo.config import cfg
-from oslo.messaging.notify import notifier
+from oslo_config import cfg
+from oslo_messaging.notify import notifier
 
 LOG = logging.getLogger('nova.%s' % __name__)
 
