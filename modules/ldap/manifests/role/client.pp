@@ -1,4 +1,8 @@
-class ldap::role::client::labs($ldapincludes=['openldap', 'utils']) {
+class ldap::role::client::labs(
+    $ldapincludes=['openldap', 'utils'],
+    $restricted_to = $::restricted_to,
+    $restricted_from = $::restricted_from,
+) {
     include ldap::role::config::labs
 
     if ( $::realm == 'labs' ) {
@@ -23,16 +27,16 @@ class ldap::role::client::labs($ldapincludes=['openldap', 'utils']) {
         #       replaces the default group allowed to login
         #       (project members) with an explicitly specified one.
         #
-        if ( $::restricted_from ) {
+        if ( $restricted_from ) {
             security::access::config { 'labs-restrict-from':
-                content  => "-:${::restricted_from}:ALL\n",
+                content  => "-:${restricted_from}:ALL\n",
                 priority => '98',
             }
         }
 
-        if ( $::restricted_to ) {
+        if ( $restricted_to ) {
             security::access::config { 'labs-restrict-to-group':
-                content  => "-:ALL EXCEPT (${::restricted_to}) root:ALL\n",
+                content  => "-:ALL EXCEPT (${restricted_to}) root:ALL\n",
                 priority => '99',
             }
         } else {
