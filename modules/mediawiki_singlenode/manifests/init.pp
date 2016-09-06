@@ -20,7 +20,8 @@ class mediawiki_singlenode(
     $role_config_lines = [],
     $mysql_pass = '',
     $memcached_size    = 128,
-    $apache_site_template = 'mediawiki_singlenode/mediawiki_singlenode.erb'
+    $apache_site_template = 'mediawiki_singlenode/mediawiki_singlenode.erb',
+    $mediawiki_hostname = $::labs_mediawiki_hostname
     ) {
     require base::mysterious_sysctl
 
@@ -67,8 +68,8 @@ class mediawiki_singlenode(
         install_path => $install_path,
     }
 
-    if $::labs_mediawiki_hostname {
-        $servername = $::labs_mediawiki_hostname
+    if $mediawiki_hostname {
+        $servername = $mediawiki_hostname
     } else {
         $servername = "${::hostname}.eqiad.wmflabs"
     }
