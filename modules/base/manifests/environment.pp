@@ -50,13 +50,11 @@ class base::environment(
                     group   => 'root',
                     mode    => '0644',
             }
-            if( $::instancename ) {
-                file { '/etc/wmflabs-instancename':
-                    owner   => 'root',
-                    group   => 'root',
-                    mode    => '0444',
-                    content => "${::instancename}\n",
-                }
+            file { '/etc/wmflabs-instancename':
+                owner   => 'root',
+                group   => 'root',
+                mode    => '0444',
+                content => "${::hostname}\n",
             }
             if( $::labsproject ) {
                 file { '/etc/wmflabs-project':

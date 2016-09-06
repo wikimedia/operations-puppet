@@ -66,7 +66,7 @@ class role::ci::slave::labs::common {
         settings => {
             'user' => {
                 'name'  => 'Wikimedia Jenkins Deploy',
-                'email' => "jenkins-deploy@${::instancename}.${::site}.wmflabs",
+                'email' => "jenkins-deploy@${::fqdn}",
             },  # end of [user] section
         },  # end of settings
         require  => File['/mnt/home/jenkins-deploy'],

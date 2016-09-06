@@ -14,7 +14,7 @@ class role::racktables::server {
     # be flexible about labs vs. prod
     case $::realm {
         'labs': {
-            $racktables_host = "${::instancename}.${::domain}"
+            $racktables_host = $::fqdn
         }
         'production': {
             $racktables_host = 'racktables.wikimedia.org'
