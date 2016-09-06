@@ -3,3 +3,17 @@ admin::groups:
   - contint-admins
 cluster: misc
 contactgroups: 'admins,contint'
+
+zuul::common:
+    gerrit_server: gerrit.wikimedia.org
+    gerrit_user: jenkins-bot
+    url_pattern: 'https://integration.wikimedia.org/ci/job/{job.name}/{build.number}/console'
+    status_url: 'https://integration.wikimedia.org/zuul/'
+
+zuul::merger:
+    gearman_server: '208.80.154.135'  # gallium.wikimedia.org
+    gerrit_ssh_key_file: 'ssh/ci/jenkins-bot_gerrit_id_rsa'
+    git_dir: '/srv/ssd/zuul/git'
+    git_email: "zuul-merger@%{::hostname}"
+    git_name: 'Wikimedia Zuul Merger'
+    zuul_url: "git://%{::fqdn}"
