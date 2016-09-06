@@ -50,10 +50,7 @@ define puppetmaster::gitprivate (
     # Now all the common hooks there
     file {
         "${prefix}/hooks/post-merge":
-            source => 'puppet:///modules/puppetmaster/git/private/post-merge',
-            owner  => $owner,
-            group  => $group,
-            mode   => '0550';
+            ensure => 'absent';
         "${prefix}/hooks/pre-commit":
             source => 'puppet:///modules/puppetmaster/git/private/pre-commit',
             owner  => $owner,
