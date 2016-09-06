@@ -5,27 +5,6 @@ class role::requesttracker::server {
     include passwords::misc::rt
     include base::firewall
 
-    if os_version('ubuntu <= precise') {
-
-        letsencrypt::cert::integrated { 'rt':
-            subjects   => 'rt.wikimedia.org',
-            puppet_svc => 'apache2',
-            system_svc => 'apache2',
-        }
-
-        $ssl_settings = ssl_ciphersuite('apache', 'compat', true)
-
-        ferm::service { 'rt-https':
-            proto => 'tcp',
-            port  => '443',
-        }
-
-        monitoring::service { 'https':
-            description   => 'HTTPS',
-            check_command => 'check_ssl_http!rt.wikimedia.org',
-        }
-    }
-
     class { '::requesttracker':
         apache_site => 'rt.wikimedia.org',
         dbhost      => 'm1-master.eqiad.wmnet',
