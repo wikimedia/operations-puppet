@@ -6,3 +6,5 @@ memcached_servers: [
   'ms-fe1004.eqiad.wmnet:11211'
 # no trailing comma!
 ]
+
+thumborhost: 'thumbor.svc.eqiad.wmnet'

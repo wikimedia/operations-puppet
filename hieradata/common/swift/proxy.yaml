@@ -55,3 +55,16 @@ shard_container_list: [
   'wikipedia-zh-local-thumb', 'wikipedia-zh-local-transcoded'
 # no trailing comma!
  ]
+
+thumbor_wiki_list: [
+  'wikipedia-fa', 'wikipedia-vi', 'wikipedia-fi', 'wikipedia-hu',
+  'wikipedia-ro', 'wikipedia-sr', 'wikipedia-ko', 'wikipedia-ms',
+  'wikipedia-arz', 'wikipedia-az', 'wikipedia-el', 'wikipedia-lt',
+  'wikipedia-hr', 'wikipedia-lv', 'wikipedia-af', 'wikipedia-bs',
+  'wikipedia-te', 'wikipedia-ka', 'wikipedia-ta', 'wikipedia-sq',
+  'wikipedia-kk', 'wikibooks-de', 'wikipedia-hi', 'wikipedia-sl',
+  'wikibooks-en', 'wikipedia-cy', 'wikipedia-bn', 'wikipedia-ca',
+  'wikiversity-en', 'wikipedia-mr', 'wikipedia-gl', 'wikipedia-sh',
+  'wikipedia-hy', 'wikisource-ar', 'wikipedia-my'
+# no trailing comma!
+]
