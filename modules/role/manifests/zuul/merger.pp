@@ -1,29 +1,29 @@
 class role::zuul::merger {
     system::role { 'role::zuul::merger': description => 'Zuul merger' }
 
-    include role::zuul::configuration
-    include role::zuul::install
     include ::zuul::monitoring::merger
 
+    $conf_common = hiera_hash('zuul::common')
+    $conf_merger = hiera_hash('zuul::merger')
     class { '::zuul::merger':
         # Shared settings
-        gerrit_server       => $role::zuul::configuration::shared[$::realm]['gerrit_server'],
-        gerrit_user         => $role::zuul::configuration::shared[$::realm]['gerrit_user'],
-        url_pattern         => $role::zuul::configuration::shared[$::realm]['url_pattern'],
-        status_url          => $role::zuul::configuration::shared[$::realm]['status_url'],
+        gerrit_server       => $conf_common['gerrit_server'],
+        gerrit_user         => $conf_common['gerrit_user'],
+        url_pattern         => $conf_common['url_pattern'],
+        status_url          => $conf_common['status_url'],
 
         # Merger related
-        gearman_server      => $role::zuul::configuration::merger[$::realm]['gearman_server'],
-        gerrit_ssh_key_file => $role::zuul::configuration::merger[$::realm]['gerrit_ssh_key_file'],
-        git_dir             => $role::zuul::configuration::merger[$::realm]['git_dir'],
-        git_email           => $role::zuul::configuration::merger[$::realm]['git_email'],
-        git_name            => $role::zuul::configuration::merger[$::realm]['git_name'],
-        zuul_url            => $role::zuul::configuration::merger[$::realm]['zuul_url'],
+        gearman_server      => $conf_merger['gearman_server'],
+        gerrit_ssh_key_file => $conf_merger['gerrit_ssh_key_file'],
+        git_dir             => $conf_merger['git_dir'],
+        git_email           => $conf_merger['git_email'],
+        git_name            => $conf_merger['git_name'],
+        zuul_url            => $conf_merger['zuul_url'],
     }
 
     # Serves Zuul git repositories
     class { 'contint::zuul::git_daemon':
-        zuul_git_dir => $role::zuul::configuration::merger[$::realm]['git_dir'],
+        zuul_git_dir => $conf_merger['git_dir'],
     }
 
     # We run a git-daemon process to exposes the zuul-merger git repositories.

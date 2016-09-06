@@ -5,7 +5,5 @@
 #
 class role::zuul::install {
 
-    include role::zuul::configuration
-
     class { '::zuul': }
 }
