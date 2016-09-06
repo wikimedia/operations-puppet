@@ -235,6 +235,7 @@ class role::cache::misc {
                 'stats.wikimedia.org',
                 'datasets.wikimedia.org',
                 'analytics.wikimedia.org',
+                'yarn.wikimedia.org',
             ],
         },
         'ununpentium' => { # rt.wikimedia.org
