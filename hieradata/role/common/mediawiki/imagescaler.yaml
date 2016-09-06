@@ -3,7 +3,6 @@ admin::groups:
   - deployment
   - perf-roots
 role::mediawiki::webserver::pool: rendering
-mediawiki::web::mpm_config::workers_limit: 30
 nutcracker::verbosity: "4"
 hhvm::extra::fcgi:
   hhvm:
