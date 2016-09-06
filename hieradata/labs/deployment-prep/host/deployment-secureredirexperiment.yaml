@@ -1,0 +1,7 @@
+secureredirconfig:
+    1.secureredirtest.wmflabs.org:
+        ! "": https://store.wikimedia.org
+    2.secureredirtest.wmflabs.org:
+        ! "": https://cs.wikinews.org/$1
+    3.secureredirtest.wmflabs.org:
+        /evaluating: https://commons.wikimedia.org/wiki/File:Evaluating_Wikipedia_brochure.pdf
