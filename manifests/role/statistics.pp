@@ -207,6 +207,8 @@ class role::statistics::web inherits role::statistics {
     # analytics.wikimedia.org will eventually supercede
     # datasets and stats.
     include ::statistics::sites::analytics
+    # Proxy to securely access Yarn (authentication via LDAP)
+    include ::statistics::sites::yarn
 
     ferm::service {'statistics-web':
         proto => 'tcp',
