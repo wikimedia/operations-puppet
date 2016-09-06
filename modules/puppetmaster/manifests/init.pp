@@ -114,6 +114,7 @@ class puppetmaster(
             include ::apache::mod::proxy
             include ::apache::mod::proxy_http
             include ::apache::mod::proxy_balancer
+            include ::apache::mod::lbmethod_byrequests
 
             apache::site { 'puppetmaster.wikimedia.org':
                 ensure => absent,
