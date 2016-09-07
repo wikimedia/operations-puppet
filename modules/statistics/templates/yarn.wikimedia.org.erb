@@ -25,7 +25,7 @@
         AuthLDAPBindDN cn=proxyagent,ou=profile,dc=wikimedia,dc=org
         AuthLDAPBindPassword <%= @proxypass %>
         AuthLDAPURL "ldaps://ldap-labs.eqiad.wikimedia.org ldap-labs.codfw.wikimedia.org/ou=people,dc=wikimedia,dc=org?cn"
-        Require ldap-group cn=ops,ou=groups,dc=wikimedia,dc=org
+        Require ldap-group cn=wmf,ou=groups,dc=wikimedia,dc=org
     </Location>
 
     CustomLog /var/log/apache2/yarn.wikimedia.org-access.log wmf
