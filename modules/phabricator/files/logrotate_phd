@@ -1,6 +1,7 @@
 /var/log/phd {
     daily
     compress
+    delaycompress
     missingok
     notifempty
     rotate 7
@@ -9,6 +10,7 @@
 /var/log/phd/daemons.log {
     daily
     compress
+    delaycompress
     missingok
     notifempty
     rotate 7

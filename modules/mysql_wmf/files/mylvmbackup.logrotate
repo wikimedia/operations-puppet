@@ -5,5 +5,6 @@
     missingok
     notifempty
     compress
+    delaycompress
     nocreate
 }

@@ -4,6 +4,7 @@
 # https://issues.jenkins-ci.org/browse/JENKINS-18870
 /var/log/jenkins/access.log {
     compress
+    delaycompress
     dateext
     daily
     maxage 30

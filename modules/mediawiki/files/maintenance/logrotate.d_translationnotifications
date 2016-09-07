@@ -10,5 +10,6 @@
 	rotate 1000
 	dateext
 	compress
+	delaycompress
 }
 
