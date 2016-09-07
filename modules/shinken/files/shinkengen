@@ -91,11 +91,8 @@ class LDAPSource(object):
             ip = [a for a in hostinfo['aRecord'] if a.startswith('10.')][0]
             instancename, projectname, site, realm = hostinfo['dc'][0].split(".")
             hosts.append({
-                'ec2id': hostinfo['dc'][0], # unused, incorrect
                 'ip': ip,
-                'region': hostinfo['l'][0], # unused
                 'puppetClasses': hostinfo.get('puppetClass', []),
-                'project': project, # unused
                 'name': instancename
             })
 
