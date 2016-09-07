@@ -38,6 +38,11 @@ class contint::packages::php {
             'php7.0-sqlite3',
             'php7.0-tidy',
             # missing xdebug
+            # ..and these are part of php5-common,
+            # but now are separate packages
+            'php7.0-bcmath',
+            'php7.0-mbstring',
+            'php7.0-xml',
             ]:
             ensure  => latest,
             require => Apt::Repository['sury-php'],
