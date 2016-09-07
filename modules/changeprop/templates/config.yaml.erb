@@ -220,7 +220,7 @@ spec:
                   body: '{{globals.message}}'
 
               on_transclusion_update:
-                concurrency: <%= (@concurrency * 2).to_i %>
+                concurrency: <%= @concurrency.to_i * 2 %>
                 topic: resource_change
                 match:
                   meta:
