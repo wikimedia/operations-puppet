@@ -1,9 +1,3 @@
-#
-# NFS misc server:
-# - dumps
-# - statistics data shuffle
-# - scratch
-#
 # The IPs of the servers allowed to populate dumps ($dump_servers_ips)
 # must be set at the node level or via hiera.
 #
@@ -34,10 +28,6 @@ class role::labs::nfs::misc($dump_servers_ips) {
         hosts_allow => $dump_servers_ips,
     }
 
-    # Allow users to push files from statistics servers here.
-    file { '/srv/statistics':
-        ensure => 'directory',
-    }
 
     # This also exports /srv/statistics to allow statistics servers
     # a way to rsync public data in from production.
@@ -49,19 +39,38 @@ class role::labs::nfs::misc($dump_servers_ips) {
         require     => File['/srv/statistics']
     }
 
-    file { '/srv/scratch':
-        ensure => 'directory',
-    }
-
     # This has a flat exports list
-    # because it only exports public data
-    # unconditionally and ro or
-    # as available to all
+    # because it only exports data
+    # available to all
     file { '/etc/exports':
         ensure  => present,
         content => template('labstore/exports.labs_extras.erb'),
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
+    }
+
+    file { '/srv/scratch':
+        ensure => 'directory',
+    }
+
+    file { '/srv/statistics':
+        ensure => 'directory',
+    }
+
+    mount { '/srv/scratch':
+        ensure  => present,
+        atboot  => true,
+        device  => '/dev/srv/scratch',
+        remount => true,
+        require => File['/srv/scratch'],
+    }
+
+    mount { '/srv/statistics':
+        ensure  => present,
+        atboot  => true,
+        device  => '/dev/srv/statistics/',
+        remount => true,
+        require => File['/srv/statistics'],
     }
 }
