@@ -13,4 +13,20 @@ class puppetmaster::puppetdb::client($host, $port=443) {
         group   => 'root',
         mode    => '0444',
     }
+
+    file { '/etc/puppet/routes.yaml':
+        ensure => present,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0444',
+        source => 'puppet:///modules/puppetmaster/routes.yaml',
+        notify => Service['apache2'],
+    }
+
+    # Absence of this directory causes the puppetmaster to spit out
+    # 'Removing mount "facts": /var/lib/puppet/facts does not exist or is not a directory'
+    # and catalog compilation to fail with https://tickets.puppetlabs.com/browse/PDB-949
+    file { '/var/lib/puppet/facts':
+        ensure => directory,
+    }
 }
