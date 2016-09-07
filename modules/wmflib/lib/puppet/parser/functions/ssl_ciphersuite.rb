@@ -68,7 +68,9 @@ module Puppet::Parser::Functions
   # 1) Kx:   (EC)DHE > RSA    (Forward Secrecy)
   # 2) Mac:  AEAD > ALL       (AES-GCM/CHAPOLY > Others)
   #   ^ Note: our chapoly patches only turn on chapoly ciphers if the client
-  #     prefers them to their equivalent AES-GCM options.
+  #     prefers them to their equivalent AES-GCM options, and we have some
+  #     strange ordering on chapoly in general to align with prefhacks and
+  #     deprecating draft-mode
   # 3) Kx:   ECDHE > DHE      (Perf, mostly)
   # 4) Auth: ECDSA > RSA      (Perf, mostly)
   # 5) Enc:  AES128 > AES256  (Perf, mostly - debateable...)
@@ -77,7 +79,11 @@ module Puppet::Parser::Functions
   # ciphers has been filtered further to reduce pointless clutter:
   # *) The 'mid' list has been filtered of AES256 options on the grounds that
   # any such client can always use AES128 instead, and it's senseless to try to
-  # set a 'more bits' security policy if not using a strong cipher in general.
+  # set a 'more bits' security policy if not using a strong cipher in general,
+  # and clients too old for strong ciphers are more likely to be impacted by
+  # AES256 performance differentials.  SHA-2 HMAC variants were filtered
+  # similarly, as all clients that would negotiate x-SHA256 also negotiate x-SHA
+  # and there's no effective security difference between the two.
   # *) The 'compat' list has been reduced to just the two weakest and
   # most-popular reasonable options there.  The others were mostly statistically
   # insignificant, and things are so bad at this level it's not worth worrying
@@ -87,11 +93,11 @@ module Puppet::Parser::Functions
     'strong' => [
       '-ALL',
       'ECDHE-ECDSA-CHACHA20-POLY1305',   # openssl-1.1.0, 1.0.2+cloudflare
+      'ECDHE-RSA-CHACHA20-POLY1305',     # openssl-1.1.0, 1.0.2+cloudflare
       'ECDHE-ECDSA-CHACHA20-POLY1305-D', # 1.0.2+cloudflare
+      'ECDHE-RSA-CHACHA20-POLY1305-D',   # 1.0.2+cloudflare
       'ECDHE-ECDSA-AES128-GCM-SHA256',
       'ECDHE-ECDSA-AES256-GCM-SHA384',
-      'ECDHE-RSA-CHACHA20-POLY1305',     # openssl-1.1.0, 1.0.2+cloudflare
-      'ECDHE-RSA-CHACHA20-POLY1305-D',   # 1.0.2+cloudflare
       'ECDHE-RSA-AES128-GCM-SHA256',
       'ECDHE-RSA-AES256-GCM-SHA384',
       'DHE-RSA-AES128-GCM-SHA256',
