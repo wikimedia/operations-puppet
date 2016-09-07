@@ -1,0 +1,9 @@
+Code-Review+1: Paladox <thomasmulhall410@yahoo.com>
+Verified+2: jenkins-bot
+Code-Review+1: Hashar <hashar@free.fr>
+Code-Review+2: Muehlenhoff <mmuhlenhoff@wikimedia.org>
+Submitted-by: Muehlenhoff <mmuhlenhoff@wikimedia.org>
+Submitted-at: Wed, 07 Sep 2016 16:58:23 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/309039
+Project: operations/puppet
+Branch: refs/heads/production
