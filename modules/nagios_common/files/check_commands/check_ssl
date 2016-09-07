@@ -9,7 +9,7 @@
 #
 # Example usage:
 #   check_ssl -H test.example.org -p 443
-#   check_ssl -H text-lb.wikimedia.org -p 443 --cn en.wikipedia.org --warning 30 --critical 60 --issuer GlobalSign
+#   check_ssl -H text-lb.wikimedia.org -p 443 --cn en.wikipedia.org --warning 0.835 --critical 0.918 --issuer GlobalSign
 
 package Local::CheckSSL;
 
@@ -98,14 +98,14 @@ sub init {
     );
 
     $ng->arg(
-        spec    => 'warning|w=i',
+        spec    => 'warning|w=f',
         help    => 'min validity days left to issue a WARNING (default: %s)',
-        default => 30,
+        default => 0.835,
     );
     $ng->arg(
-        spec    => 'critical|c=i',
+        spec    => 'critical|c=f',
         help    => 'min validity days left to issue a CRITICAL (default: %s)',
-        default => 15,
+        default => 0.918,
     );
 
     $ng->getopts;
@@ -218,16 +218,19 @@ sub ssl_expiry_check {
     my $expiry = strftime( '%Y-%m-%d %H:%M:%S +0000', gmtime($notAfter) );
     $expiry .= ' (expires in ' . int( ( $notAfter - $now ) / 86400 ) . ' days)';
 
+    my $duration = $notAfter - $notBefore;
+    my $elapsed = $now - $notBefore;
+
     if ( $notBefore > $now ) {
         push @crit, "Certificate $name not yet valid";
     }
     elsif ( $notAfter < $now ) {
         push @crit, "Certificate $name expired";
     }
-    elsif ( $notAfter - $now < $ng->critical * 86400 ) {
+    elsif ( $elapsed / $duration > $ng->critical ) {
         push @crit, "Certificate $name valid until $expiry";
     }
-    elsif ( $notAfter - $now < $ng->warning * 86400 ) {
+    elsif ( $elapsed / $duration > $ng->warning ) {
         push @warn, "Certificate $name valid until $expiry";
     }
     else {
