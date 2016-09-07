@@ -14,6 +14,7 @@ class role::labs::nfs::primary($monitor = 'eth0') {
     include labstore::monitoring::interfaces
     include labstore::monitoring::ldap
     include labstore::monitoring::nfsd
+    include labstore::monitoring::exports
 
     # Enable RPS to balance IRQs over CPUs
     interface::rps { $monitor: }
@@ -21,9 +22,5 @@ class role::labs::nfs::primary($monitor = 'eth0') {
     # Use the CFQ I/O scheduler
     grub::bootparam { 'elevator':
         value => 'cfq',
-    }
-
-    nrpe::monitor_systemd_unit_state { 'nfs-exports':
-        description => 'Ensure NFS exports are maintained for new instances with NFS',
     }
 }
