@@ -24,15 +24,19 @@ class puppet::self::config(
     $ldapconfig = $ldap::role::config::labs::ldapconfig
     $basedn = $ldapconfig['basedn']
 
+    # Setup ENC
+    require_package('python3-yaml', 'python3-ldap3')
+
+    file { '/usr/local/bin/puppet-enc':
+        source => 'puppet:///modules/role/labs/puppet-enc.py',
+        mode   => '0555',
+        owner  => 'root',
+        group  => 'root',
+    }
 
     $config = {
-        'node_terminus' => 'ldap',
-        'ldapserver'    => $ldapconfig['servernames'][0],
-        'ldapbase'      => "ou=hosts,${basedn}",
-        'ldapstring'    => '(&(objectclass=puppetClient)(associatedDomain=%s))',
-        'ldapuser'      => $ldapconfig['proxyagent'],
-        'ldappassword'  => $ldapconfig['proxypass'],
-        'ldaptls'       => true,
+        'node_terminus'  => 'exec',
+        'external_nodes' => '/usr/local/bin/puppet-enc',
     }
 
     $config['dbadapter'] = 'sqlite3'
