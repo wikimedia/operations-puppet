@@ -255,6 +255,7 @@ class role::eventlogging::consumer::files inherits role::eventlogging {
        rotate 1000
        dateext
        compress
+       delaycompress
        missingok
 }"
 

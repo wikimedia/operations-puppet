@@ -5,6 +5,7 @@
 /var/log/memkeys/*.csv {
   rotate 90
   compress
+  delaycompress
   daily
   missingok
   nocopy

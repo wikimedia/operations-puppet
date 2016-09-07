@@ -3,6 +3,7 @@
 	size 200M
 	missingok
 	compress
+	delaycompress
 	postrotate
 		/etc/init.d/gmetad restart
 	endscript
