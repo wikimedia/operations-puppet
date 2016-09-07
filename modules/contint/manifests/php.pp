@@ -5,7 +5,8 @@ class contint::php {
     alternatives::install { 'php':
         link     => '/usr/bin/php',
         path     => '/srv/deployment/integration/slave-scripts/bin/php',
-        priority => '60',
+        # php7 has prio 70
+        priority => '100',
         require  => Git::Clone['jenkins CI slave scripts'],
     }
 
