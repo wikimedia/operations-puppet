@@ -18,6 +18,8 @@ class labspuppetbackend(
         mode   => '0444',
     }
 
+    $horizon_host_ip = ipresolve(hiera('labs_horizon_host'), 4)
+
     uwsgi::app { 'labspuppetbackend':
         settings  => {
             uwsgi => {
@@ -33,6 +35,7 @@ class labspuppetbackend(
                     "MYSQL_PASSWORD=${mysql_password}",
                     "STATSD_HOST=${statsd_host}",
                     "STATSD_PREFIX=${statsd_prefix}",
+                    "ALLOW_POST_FROM=${horizon_host_ip}"
                 ],
             }
         },

@@ -55,6 +55,13 @@ def get_roles(project, prefix):
 @statsd.timer('set_roles')
 @app.route('/v1/<string:project>/prefix/<string:prefix>/roles', methods=['POST'])
 def set_roles(project, prefix):
+    if request.remote_addr != os.environ['ALLOW_POST_FROM']:
+        return Response(
+            yaml.dump({'status': 'forbidden'}),
+            status=403,
+            mimetype='application/x-yaml'
+        )
+
     try:
         roles = yaml.safe_load(request.data)
     except yaml.YAMLError:
@@ -135,6 +142,13 @@ def get_hiera(project, prefix):
 @statsd.timer('set_hiera')
 @app.route('/v1/<string:project>/prefix/<string:prefix>/hiera', methods=['POST'])
 def set_hiera(project, prefix):
+    if request.remote_addr != os.environ['ALLOW_POST_FROM']:
+        return Response(
+            yaml.dump({'status': 'forbidden'}),
+            status=403,
+            mimetype='application/x-yaml'
+        )
+
     try:
         hiera = yaml.safe_load(request.data)
     except yaml.YAMLError:
