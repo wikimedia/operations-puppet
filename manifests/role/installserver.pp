@@ -14,7 +14,7 @@
 #   Class['install_server::web_server']
 #   Define['backup::set']
 #   Class['base::firewall']
-#   Define['ferm::rule']
+#   Define['ferm::service']
 #
 # Sample Usage:
 #       include role::installserver
@@ -50,8 +50,10 @@ class role::installserver {
         minute  => '15',
     }
 
-    ferm::rule { 'proxy':
-        rule => 'proto tcp dport 8080 { saddr $PRODUCTION_NETWORKS ACCEPT; }'
+    ferm::service { 'proxy':
+        proto  => 'tcp',
+        port   => '8080',
+        srange => '$PRODUCTION_NETWORKS',
     }
 
     include install_server::web_server
