@@ -46,9 +46,9 @@ class role::labs::nfsclient(
         lookupcache => $lookupcache,
     }
 
-    file { '/data/scratch':
-        ensure  => 'link',
-        target  => '/mnt/nfs/labstore1003-scratch',
+    exec { 'create-scratch-link':
+        command => '/bin/ln -s /mnt/nfs/labstore1003-scratch /data/scratch',
+        onlyif  => '/usr/local/sbin/nfs-mount-manager check /mnt/nfs/labstore1003-scratch',
         require => [Labstore::Nfs_mount['scratch-on-labstoresvc'],
                     Labstore::Nfs_mount['scratch-on-labstore1003']],
     }
