@@ -30,8 +30,6 @@ class role::installserver {
     include role::installserver::mirrors
     include install_server::preseed_server
 
-    include mirrors::tails
-
     if os_version('ubuntu >= trusty') or os_version('debian >= jessie') {
         $config_content = template('caching-proxy/squid.conf.erb')
     } else {
@@ -57,13 +55,9 @@ class role::installserver {
     }
 
     include install_server::web_server
-    ferm::service { 'http':
+    ferm::service { 'install_http':
         proto => 'tcp',
-        port  => 'http'
-    }
-    ferm::service { 'https':
-        proto => 'tcp',
-        port  => 'https'
+        port  => '(http https)'
     }
 
     # Backup
