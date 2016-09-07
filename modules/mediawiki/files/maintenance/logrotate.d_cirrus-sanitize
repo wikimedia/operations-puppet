@@ -9,6 +9,7 @@
 	rotate 5
 	dateext
 	compress
+	delaycompress
 	missingok
 	nocreate
 }

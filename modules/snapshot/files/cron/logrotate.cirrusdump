@@ -6,6 +6,7 @@
     notifempty
     dateext
     compress
+    delaycompress
     missingok
     maxage 22
 }

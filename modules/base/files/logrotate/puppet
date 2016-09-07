@@ -5,7 +5,8 @@
 
 /var/log/puppet {
     daily
-    compress 
+    compress
+    delaycompress
     missingok
     notifempty
     rotate 7
@@ -14,6 +15,7 @@
 /var/log/puppet.log {
     daily
     compress
+    delaycompress
     missingok
     notifempty
     rotate 7

@@ -7,6 +7,7 @@
 /var/log/squid3/*.log {
 	daily
 	compress
+	delaycompress
 	size 300M
 	rotate 0
 	missingok
