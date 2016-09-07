@@ -27,7 +27,6 @@ class role::installserver {
 
     include base::firewall
     include role::backup::host
-    include role::installserver::mirrors
     include install_server::preseed_server
 
     if os_version('ubuntu >= trusty') or os_version('debian >= jessie') {
