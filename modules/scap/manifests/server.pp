@@ -3,7 +3,7 @@
 # Configures dependencies for a scap3 deployment server.  This includes
 # setting up ssh agent keys and repositories configured for deployment.
 #
-# This class creates keyholder::agent and scap::source resources based on
+# This class creates keyholder::agent and scap_source resources based on
 # the contents of the 'keyholder::agents' and 'scap::sources' hiera variables.
 # These would be class parameters instead of hiera lookups, if it were possible
 # to do a hiera hash merge using class parameters.  Since hash merge doesn't
@@ -29,14 +29,14 @@
 #   which is kept in a private location in the puppet modulepath.
 #
 # [*sources*]
-#   Hash of scap::source resource declarations to be passed to
+#   Hash of scap_source resource declarations to be passed to
 #   the create_resources() function.  Default: {}
 #
 #   Each repository listed will be cloned via declaration of the
-#   scap::source define. You should use scap::target directly on your
+#   scap_source type. You should use scap::target directly on your
 #   target hosts that are declared with $package_name matching the keys in
 #   this hash.
-#   See scap::source for more information.
+#   See scap_source for more information.
 #
 # == Usage
 #
@@ -62,6 +62,6 @@ class scap::server(
     # Create an instance of $keyholder_agents for each of the key specs.
     create_resources('keyholder::agent', $keyholder_agents)
 
-    # Create an instance of scap::source for each of the key specs in hiera.
-    create_resources('scap::source', $sources)
+    # Create an instance of scap_source for each of the key specs in hiera.
+    create_resources('scap_source', $sources)
 }
