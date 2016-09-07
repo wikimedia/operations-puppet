@@ -86,21 +86,16 @@ class LDAPSource(object):
                          ldap3.SEARCH_SCOPE_WHOLE_SUBTREE,
                          attributes=ldap3.ALL_ATTRIBUTES)
         hosts = []
-        hostnames = set()  # Temp fix for T96817
         for responseitem in self.conn.response:
             hostinfo = responseitem['attributes']
             ip = [a for a in hostinfo['aRecord'] if a.startswith('10.')][0]
             instancename, projectname, site, realm = hostinfo['dc'][0].split(".")
-            if instancename in hostnames:
-                continue
-            else:
-                hostnames.add(instancename)
             hosts.append({
-                'ec2id': hostinfo['dc'][0],
+                'ec2id': hostinfo['dc'][0], # unused, incorrect
                 'ip': ip,
-                'region': hostinfo['l'][0],
+                'region': hostinfo['l'][0], # unused
                 'puppetClasses': hostinfo.get('puppetClass', []),
-                'project': project,
+                'project': project, # unused
                 'name': instancename
             })
 
