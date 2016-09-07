@@ -14,4 +14,18 @@ class contint::packages::apt {
         # lint:endignore
     }
 
+    if os_version('debian == jessie') {
+        # Sanity check: only enable in labs
+        requires_realm('labs')
+        # Enable deb.sury.org PHP packages for jessie only
+        apt::repository { 'sury-php':
+            uri        => 'https://packages.sury.org/php/',
+            dist       => $::lsbdistcodename,
+            components => 'main',
+            source     => false,
+            keyfile    => 'puppet:///modules/contint/sury-php.gpg',
+        }
+    }
+
+
 }
