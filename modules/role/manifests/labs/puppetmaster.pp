@@ -18,6 +18,16 @@ class role::labs::puppetmaster {
     # Only allow puppet access from the instances
     $allow_from = flatten([$labs_instance_range, '208.80.154.14', $horizon_host_ip, $labs_metal])
 
+    # Setup ENC
+    require_package('python3-yaml', 'python3-ldap3')
+
+    file { '/usr/local/bin/puppet-enc':
+        source => 'puppet:///modules/role/labs/puppet-enc.py',
+        mode   => '0555',
+        owner  => 'root',
+        group  => 'root',
+    }
+
     class { '::puppetmaster':
         server_name      => hiera('labs_puppet_master'),
         allow_from       => $allow_from,
@@ -25,13 +35,8 @@ class role::labs::puppetmaster {
         extra_auth_rules => template('role/labs/puppetmaster/extra_auth_rules.conf.erb'),
         config           => {
             'thin_storeconfigs' => false,
-            'node_terminus'     => 'ldap',
-            'ldapserver'        => $ldapconfig['servernames'][0],
-            'ldapbase'          => "ou=hosts,${basedn}",
-            'ldapstring'        => '(&(objectclass=puppetClient)(associatedDomain=%s))',
-            'ldapuser'          => $ldapconfig['proxyagent'],
-            'ldappassword'      => $ldapconfig['proxypass'],
-            'ldaptls'           => true,
+            'node_terminus'     => 'exec',
+            'external_nodes'    => '/usr/local/bin/puppet-enc',
             'autosign'          => true,
         };
     }
