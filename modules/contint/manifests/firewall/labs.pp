@@ -8,4 +8,7 @@ class contint::firewall::labs {
     ferm::rule { 'gallium_ssh_to_slaves':
         rule => 'proto tcp dport ssh { saddr 208.80.154.135 ACCEPT; }'
     }
+    ferm::rule { 'contint1001_ssh_to_slaves':
+        rule => 'proto tcp dport ssh { saddr 208.80.154.17 ACCEPT; }'
+    }
 }
