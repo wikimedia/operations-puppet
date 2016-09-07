@@ -34,6 +34,7 @@ class apache::mod::proxy_http      { apache::mod_conf { 'proxy_http':     } }
 class apache::mod::rewrite         { apache::mod_conf { 'rewrite':        } }
 class apache::mod::setenvif        { apache::mod_conf { 'setenvif':       } }
 class apache::mod::ssl             { apache::mod_conf { 'ssl':            } }
+class apache::mod::substitute      { apache::mod_conf { 'substitute':     } }
 class apache::mod::userdir         { apache::mod_conf { 'userdir':        } }
 # lint:endignore
 
