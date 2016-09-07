@@ -80,12 +80,9 @@ class LDAPSource(object):
                              configure page in wikitech.
             - project: Name of project the instance is contained in
             - name: Name of the instance
-            - puppetVars: Dictionary containing any custom puppet variables that
-                          have been set in the configure page in wikitech. Also
-                          contains default keys of `instanceproject` & `instancename`
         """
         self.conn.search('ou=hosts,dc=wikimedia,dc=org',
-                         '(puppetVar=instanceproject=%s)' % project,
+                         '(dc=*.%s.eqiad.wmflabs)' % project,
                          ldap3.SEARCH_SCOPE_WHOLE_SUBTREE,
                          attributes=ldap3.ALL_ATTRIBUTES)
         hosts = []
@@ -93,22 +90,18 @@ class LDAPSource(object):
         for responseitem in self.conn.response:
             hostinfo = responseitem['attributes']
             ip = [a for a in hostinfo['aRecord'] if a.startswith('10.')][0]
-            puppetvars = {
-                var[0]: var[1]
-                for var in [pv.split("=") for pv in hostinfo['puppetVar']]
-            }
-            if puppetvars['instancename'] in hostnames:
+            instancename, projectname, site, realm = hostinfo['dc'][0].split(".")
+            if instancename in hostnames:
                 continue
             else:
-                hostnames.add(puppetvars['instancename'])
+                hostnames.add(instancename)
             hosts.append({
                 'ec2id': hostinfo['dc'][0],
                 'ip': ip,
                 'region': hostinfo['l'][0],
                 'puppetClasses': hostinfo.get('puppetClass', []),
                 'project': project,
-                'name': puppetvars['instancename'],
-                'puppetVars': puppetvars
+                'name': instancename
             })
 
         return hosts
