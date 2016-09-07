@@ -16,6 +16,34 @@ class contint::packages::php {
         ensure => absent,
     }
 
+    if os_version('debian == jessie') {
+        package { [
+            # PHP 7.0 version of packages in mediawiki::packages::php5
+            'php7.0-cli',
+            'php7.0-common',
+            # Note: Missing luasandbox and wikidiff2
+            # PHP extensions
+            'php7.0-curl',
+            # missing geoip
+            'php7.0-intl',
+            # missing memcached
+            'php7.0-mysql',
+            # missing redis
+            'php7.0-xmlrpc',
+            # CI packages from above
+            'php7.0-dev',
+            'php7.0-ldap',
+            'php7.0-gd',
+            'php7.0-pgsql',
+            'php7.0-sqlite3',
+            'php7.0-tidy',
+            # missing xdebug
+            ]:
+            ensure  => latest,
+            require => Apt::Repository['sury-php'],
+        }
+    }
+
     if os_version('ubuntu < trusty') {
         # Disable APC entirely it gets confused when files changes often
         file { '/etc/php5/conf.d/apc.ini':
