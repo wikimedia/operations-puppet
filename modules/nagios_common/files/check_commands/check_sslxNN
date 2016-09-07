@@ -9,7 +9,7 @@
 #
 # Example usage:
 #   check_sslxNN -H text-lb.wikimedia.org -p 443 --issuer GlobalSign
-#   check_sslxNN -H cp1036.eqiad.wmnet -p 443 --warning 30 --critical 15
+#   check_sslxNN -H cp1036.eqiad.wmnet -p 443
 
 package Local::CheckSSL::xNN;
 
