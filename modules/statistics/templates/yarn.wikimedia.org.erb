@@ -27,6 +27,12 @@
         AuthLDAPURL "ldaps://ldap-labs.eqiad.wikimedia.org ldap-labs.codfw.wikimedia.org/ou=people,dc=wikimedia,dc=org?cn"
         Require ldap-group cn=wmf,ou=groups,dc=wikimedia,dc=org
         Require ldap-group cn=nda,ou=groups,dc=wikimedia,dc=org
+
+        # The Jetty Webserver (responsible for the Yarn UI) returns HTML with hardcoded
+        # links in the HTML hrefs, so we need a way to avoid broken links.
+        AddOutputFilterByType SUBSTITUTE text/html
+        Substitute "s|http://analytics1001.eqiad.wmnet:19888|http://yarn.wikimedia.org|q"
+        Substitute "s|http://analytics1001.eqiad.wmnet:8088|http://yarn.wikimedia.org|q"
     </Location>
 
     CustomLog /var/log/apache2/yarn.wikimedia.org-access.log wmf
@@ -36,4 +42,7 @@
 
     ProxyPass / http://analytics1001.eqiad.wmnet:8088/
     ProxyPassReverse / http://analytics1001.eqiad.wmnet:8088/
+
+    ProxyPass /jobhistory/ http://analytics1001.eqiad.wmnet:19888/jobhistory/
+    ProxyPassReverse /jobhistory/ http://analytics1001.eqiad.wmnet:19888/jobhistory/
 </VirtualHost>
