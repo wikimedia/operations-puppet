@@ -976,7 +976,7 @@ host cp4020 {
 
 host contint1001 {
      hardware ethernet 14:18:77:5b:29:c7;
-     fixed-address contint1001.eqiad.wmnet;
+     fixed-address contint1001.wikimedia.org;
 }
 
 host dataset1001 {
