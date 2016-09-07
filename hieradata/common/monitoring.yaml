@@ -190,6 +190,8 @@ groups:
 # Wikidata Query Service
   wdqs_eqiad:
     description: Wikidata Query Service (eqiad)
+  wdqs_codfw:
+    description: Wikidata Query Service (codfw)
 
 # Zotero
   zotero_eqiad:
