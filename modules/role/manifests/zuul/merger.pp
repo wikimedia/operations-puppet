@@ -30,8 +30,9 @@ class role::zuul::merger {
     # The slaves fetch changes from it over the git:// protocol.
     # It is only meant to be used from slaves, so only accept internal
     # connections.
-    ferm::rule { 'git-daemon_internal':
-        rule => 'proto tcp dport 9418 { saddr $INTERNAL ACCEPT; }'
+    ferm::service { 'git-daemon_internal':
+        proto  => 'tcp',
+        port   => '9418',
+        srange => '(($LABS_NETWORKS @resolve(gallium.wikimedia.org) ))',
     }
-
 }
