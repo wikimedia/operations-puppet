@@ -1,9 +1,9 @@
-# Class: role::installserver::mirrors
+# Class: role::mirrors
 #
 # A role class used to setup our mirrors server.
 
-class role::installserver::mirrors {
-    system::role { 'role::installserver::mirrors':
+class role::mirrors {
+    system::role { 'role::mirrors':
         description => 'Mirrors server',
     }
 
