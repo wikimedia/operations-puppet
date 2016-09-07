@@ -2850,8 +2850,10 @@ node 'wasat.codfw.wmnet' {
 # Wikidata query service
 node /^wdqs100[1-2]\.eqiad\.wmnet$/ {
     role(wdqs)
+}
 
-    $nagios_contact_group = 'admins,wdqs-admins'
+node /^wdqs200[1-2]\.codfw\.wmnet$/ {
+    role(wdqs)
 }
 
 node 'wezen.codfw.wmnet' {
