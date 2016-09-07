@@ -46,11 +46,13 @@ class role::labs::nfsclient(
         lookupcache => $lookupcache,
     }
 
-    file { '/data/scratch':
-        ensure  => 'link',
-        target  => '/mnt/nfs/labstore1003-scratch',
-        require => [Labstore::Nfs_mount['scratch-on-labstoresvc'],
-                    Labstore::Nfs_mount['scratch-on-labstore1003']],
+    if mount_nfs_volume($::labsproject, 'scratch') {
+        file { '/data/scratch':
+            ensure  => 'link',
+            target  => '/mnt/nfs/labstore1003-scratch',
+            require => [Labstore::Nfs_mount['scratch-on-labstoresvc'],
+                        Labstore::Nfs_mount['scratch-on-labstore1003']],
+        }
     }
 
     labstore::nfs_mount { 'dumps-on-labstore1003':
