@@ -30,10 +30,10 @@
 
         # The Jetty Webserver (responsible for the Yarn UI) returns HTML with hardcoded
         # links in the HTML hrefs, so we need a way to avoid broken links.
-        # mod_substitute's output filter needs to run before deflate as outlined
-        # in https://httpd.apache.org/docs/2.4/mod/mod_substitute.html#comment_3856
-        AddOutputFilterByType INFLATE;SUBSTITUTE;DEFLATE text/html text/plain text/xml
-        Substitute "s|http://analytics1001.eqiad.wmnet:\d+|http://yarn.wikimedia.org|q"
+        ProxyHTMLEnable On
+        ProxyHTMLLinks a href
+        ProxyHTMLURLMap http://analytics1001.eqiad.wmnet:8088/ / Lecn
+        ProxyHTMLURLMap http://analytics1001.eqiad.wmnet:19888/ / Lecn
     </Location>
 
     CustomLog /var/log/apache2/yarn.wikimedia.org-access.log wmf
