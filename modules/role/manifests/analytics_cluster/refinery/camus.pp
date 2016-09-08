@@ -7,6 +7,14 @@ class role::analytics_cluster::refinery::camus {
 
     $kafka_config = kafka_config('analytics')
 
+    # Crontabs needs to contain on puppet entries and we need to avoid
+    # duplicates that might cause inconsistencies.
+    # Example: we ran for a while a duplicate of the camus webrequest job,
+    # causing issues during data import.
+    resources { 'cron':
+        purge => true,
+    }
+
     # Make all uses of camus::job set default kafka_brokers and camus_jar.
     # If you build a new camus or refinery, and you want to use it, you'll
     # need to change these.  You can also override these defaults
