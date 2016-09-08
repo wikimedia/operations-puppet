@@ -91,6 +91,8 @@ wiktionary: &wiktionary_project
 root_spec: &root_spec
   title: "The RESTBase root"
   # Some more general RESTBase info
+  x-request-filters:
+    - path: lib/security_response_header_filter.js
   x-sub-request-filters:
     - type: default
       name: http
