@@ -75,25 +75,6 @@ class role::ci::master {
 
     ganglia::plugin::python { 'gmond_jenkins': }
 
-    # key pair for VE sync tasks (T84731)
-    file { '/var/lib/jenkins/.ssh/jenkins-mwext-sync_id_rsa':
-        ensure  => present,
-        owner   => 'jenkins',
-        group   => 'jenkins',
-        mode    => '0400',
-        content => secret('ssh/ci/jenkins-mwext-sync_id_rsa'),
-        require => User['jenkins'],
-    }
-
-    file { '/var/lib/jenkins/.ssh/jenkins-mwext-sync_id_rsa.pub':
-        ensure  => present,
-        owner   => 'jenkins',
-        group   => 'jenkins',
-        mode    => '0400',
-        source  => 'puppet:///modules/jenkins/jenkins-mwext-sync_id_rsa.pub',
-        require => User['jenkins'],
-    }
-
     # backups
     include role::backup::host
     backup::set {'var-lib-jenkins-config': }
