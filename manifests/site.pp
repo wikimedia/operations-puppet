@@ -2430,7 +2430,7 @@ node /^prometheus100[12]\.eqiad\.wmnet$/ {
     include lvs::realserver
 }
 
-node 'puppetmaster2001.codfw.wmnet' {
+node /^puppetmaster[12]001\.(codfw|eqiad)\.wmnet$/ {
     role(puppetmaster::frontend, conftool::master)
     include standard
     interface::add_ip6_mapped { 'main':
@@ -2438,7 +2438,7 @@ node 'puppetmaster2001.codfw.wmnet' {
     }
 }
 
-node 'puppetmaster2002.codfw.wmnet' {
+node /^puppetmaster[12]002\.(codfw|eqiad)\.wmnet$/ {
     role(puppetmaster::backend)
     include standard
     interface::add_ip6_mapped { 'main':
