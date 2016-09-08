@@ -43,6 +43,16 @@ class labstore::fileserver::exports {
         require => [Package['python3'], Package['python3-yaml']],
     }
 
+    # Effectively replaces /usr/local/sbin/sync-exports but
+    # makes assumptions only true on newer systems at the moment
+    file { '/usr/local/sbin/nfs-manage-binds':
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0555',
+        source  => 'puppet:///modules/labstore/nfs-manage-binds',
+        require => File['/etc/nfs-mounts.yaml'],
+    }
+
     file { '/usr/local/sbin/sync-exports':
         owner   => 'root',
         group   => 'root',
