@@ -1,7 +1,7 @@
 # vim: set tabstop=4 shiftwidth=4 softtabstop=4 expandtab textwidth=80 smarttab
 
 class role::labs::puppetmaster(
-    $use_enc = false,
+    $use_enc = true,
 ) {
 
     include network::constants
