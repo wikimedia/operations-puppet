@@ -39,22 +39,6 @@ class role::ci::master {
     }
 
 
-    # .gitconfig file required for rare git write operations
-    git::userconfig { '.gitconfig for jenkins user':
-        homedir  => '/var/lib/jenkins',
-        settings => {
-            'user' => {
-                'name'  => 'Wikimedia Jenkins Bot',
-                'email' => 'jenkins@gallium.wikimedia.org',
-            },  # end of [user] section
-            'core' => {
-                # T58717: avoid eating all RAM when repacking
-                'packedGitLimit' => '2G',
-            },  # end of [core] section
-        },  # end of settings
-        require  => User['jenkins'],
-    }
-
     # Templates for Jenkins plugin Email-ext.  The templates are hosted in
     # the repository integration/jenkins.git, so link to there.
     file { '/var/lib/jenkins/email-templates':
@@ -65,15 +49,6 @@ class role::ci::master {
         group  => 'root',
     }
 
-    # As of October 2013, the slave scripts are installed with
-    # contint::slave_scripts and land under /srv/jenkins.
-    # FIXME: clean up Jenkins jobs to no more refer to the paths below:
-    file { '/var/lib/jenkins/.git':
-        ensure => directory,
-        mode   => '2775',  # group sticky bit
-        group  => 'jenkins',
-    }
-
     # Jenkins build records path is set to:
     # ${JENKINS_HOME}/builds/${ITEM_FULL_NAME}
     file { '/var/lib/jenkins/builds':
@@ -82,33 +57,7 @@ class role::ci::master {
         group  => 'jenkins',
     }
 
-    file { '/var/lib/jenkins/bin':
-        ensure => directory,
-        owner  => 'jenkins',
-        group  => 'wikidev',
-        mode   => '0775';
-    }
-
     require contint::master_dir
-
-    file { '/srv/ssd/jenkins':
-        ensure => 'directory',
-        owner  => 'jenkins',
-        group  => 'jenkins',
-        mode   => '2775',  # group sticky bit
-    }
-
-    # Master does not run job anymore since June 2013. But better safe than
-    # sorry.  We might have to run some jobs there.
-    file { '/srv/ssd/jenkins/workspace':
-        ensure  => 'directory',
-        owner   => 'jenkins',
-        group   => 'jenkins',
-        mode    => '0775',
-        require => [
-            File['/srv/ssd/jenkins'],
-        ],
-    }
 
     # Ganglia monitoring for Jenkins
     # The upstream module is named 'jenkins' which conflicts with python-jenkins
