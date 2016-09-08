@@ -5,9 +5,6 @@
 # [*name*]
 #  Hash user name
 #
-# [*phash*]
-#  Hash with valid user data
-
 define admin::hashuser(
 )
 {
