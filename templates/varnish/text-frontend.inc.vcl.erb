@@ -65,7 +65,7 @@ sub cluster_fe_recv_pre_purge {
 	// Disable Range requests for now.
 	unset req.http.Range;
 
-	if (req.url == "/geoiplookup" || req.http.host == "geoiplookup.wikimedia.org") {
+	if (req.http.host == "geoiplookup.wikimedia.org") {
 		if (req.http.referer) {
 			error 668 "geoiplookup";
 		} else {
