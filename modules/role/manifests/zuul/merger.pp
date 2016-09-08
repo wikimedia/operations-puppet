@@ -10,8 +10,6 @@ class role::zuul::merger {
         # Shared settings
         gerrit_server       => $conf_common['gerrit_server'],
         gerrit_user         => $conf_common['gerrit_user'],
-        url_pattern         => $conf_common['url_pattern'],
-        status_url          => $conf_common['status_url'],
 
         # Merger related
         gearman_server      => $conf_merger['gearman_server'],
