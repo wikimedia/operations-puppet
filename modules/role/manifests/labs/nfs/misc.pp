@@ -62,7 +62,6 @@ class role::labs::nfs::misc($dump_servers_ips) {
         ensure  => present,
         atboot  => true,
         device  => '/dev/srv/scratch',
-        remount => true,
         require => File['/srv/scratch'],
     }
 
@@ -70,7 +69,6 @@ class role::labs::nfs::misc($dump_servers_ips) {
         ensure  => present,
         atboot  => true,
         device  => '/dev/srv/statistics/',
-        remount => true,
         require => File['/srv/statistics'],
     }
 }
