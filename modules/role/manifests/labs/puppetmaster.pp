@@ -24,6 +24,8 @@ class role::labs::puppetmaster(
         # Setup ENC
         require_package('python3-yaml', 'python3-ldap3')
 
+        include ldap::yamlcreds
+
         file { '/usr/local/bin/puppet-enc':
             source => 'puppet:///modules/role/labs/puppet-enc.py',
             mode   => '0555',
