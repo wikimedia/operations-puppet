@@ -47,7 +47,6 @@ class role::mariadb::grants(
         $servermon_pass      = $passwords::servermon::db_password
         $striker_pass        = $passwords::striker::application_db_password
         $striker_admin_pass  = $passwords::striker::admin_db_password
-        $labspuppet_pass     = hiera('labspuppetbackend::mysql_password')
 
         file { '/etc/mysql/production-grants-shard.sql':
             ensure  => present,
