@@ -98,6 +98,12 @@ labs_osm_host: "wikitech.wikimedia.org"
 labs_horizon_host: "californium.wikimedia.org"
 labs_host_ips: '10.64.20.0/24'
 
+labspuppetbackend::mysql_host: m5-master.eqiad.wmnet
+labspuppetbackend::mysql_db:   labspuppet
+labspuppetbackend::mysql_username: labspuppet
+labspuppetbackend::statsd_host: labmon1001.eqiad.wmnet
+labspuppetbackend::statsd_prefix: labs.puppetbackend
+
 # These are the up-and-coming, better dns servers:
 labsdnsconfig:
   host: 'labs-ns0.wikimedia.org'
