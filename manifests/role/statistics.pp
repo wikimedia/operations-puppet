@@ -209,6 +209,8 @@ class role::statistics::web inherits role::statistics {
     include ::statistics::sites::analytics
     # Proxy to securely access Yarn (authentication via LDAP)
     include ::statistics::sites::yarn
+    # Proxy to securely access Pivot (authentication via LDAP)
+    include ::statistics::sites::pivot
 
     ferm::service {'statistics-web':
         proto => 'tcp',
