@@ -40,6 +40,18 @@ table.changeTable a.gwt-Anchor {
 	color: #222 !important;
 }
 
+/*
+ * Workaround Microsoft Edge bug in gerrit
+ *
+ * https://bugs.chromium.org/p/gerrit/issues/detail?id=4526
+ *
+ * https://phabricator.wikimedia.org/T145130
+ *
+ */
+.downloadBoxScheme {
+	display: block !important;
+}
+
 /**
  * Header
  */
