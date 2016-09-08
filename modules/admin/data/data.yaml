@@ -1813,7 +1813,7 @@ users:
     gid: 500
     name: zhousquared
     realname: Zhou Zhou
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC7Gxb8FnbJRmu5chragFQRDJnLG3Fku7Tl7jkoKgvb5Bz+F1tJV03SkVnpBuZ8EUonoh6vRp5+LUIMa8LGdUTQ+XMXGgA16nq2k4W5XVVpoe1ts9RdsZk6rwbuffi+p+ouXAdDk1f0jVTu6pMK32jT/jTstORTXdeeCy/MryQ2ihVEXgJeoAtqbKn/Aclp4R7ysABotP0IS2ThQvVtdJm+5r27jkjOZ51+hTJ+y3VKBeVsgK8EFf4krlNNQK/9k0+fPTMFLI16htmdYNp/pJKBZp9L+M5Kwfl+J+HV/3e7qxpFUzUZnv01y6XIfS1e6IbwHJUan40cTBnMIJ7Sv/Yb zzhou@wikimedia.org]
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCZXHi14Nxr38Pck4Gqg13rUX3S3mbPo38eEdYrwS7WAMFEKMavkPnuv6qUeicN4IkC6e2AbTt+UFaxfXU3TBqa9SQfrqw/xb431T8wmjnwCSGBw+uCO2U6BHAG4ky3irMnqh+FxZ+Y6QUNwAB++QofLql3h4FEt9vEhpH8bKqQBA4gDOV6xUR4Uwu20uN7yEDDzQCpdJB+ZZsfg7gWnFkDQksgtbuDTdOWUT4MkBss5hiRrMpGN91Y/KPLkNeuAjYDSUnjpNt6AkfV1KtpFaqKH5DmvkJHbfq3FerS3Gp+HNXaB3AAMm2+MxPANgC2efhidvwG3ae/tb5ND4hzFfYT zzhou@wikimedia.org]
     uid: 12576
   dfoy:
     ensure: present
