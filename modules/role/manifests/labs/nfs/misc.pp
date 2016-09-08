@@ -54,19 +54,36 @@ class role::labs::nfs::misc($dump_servers_ips) {
         ensure => 'directory',
     }
 
+    file { '/srv/dumps':
+        ensure => 'directory',
+    }
+
     file { '/srv/statistics':
         ensure => 'directory',
     }
 
+    mount { '/srv/dumps':
+        ensure  => mounted,
+        fstype  => ext4,
+        options => 'defaults,noatime',
+        atboot  => true,
+        device  => '/dev/srv/dumps',
+        require => File['/srv/dumps'],
+    }
+
     mount { '/srv/scratch':
-        ensure  => present,
+        ensure  => mounted,
+        fstype  => ext4,
+        options => 'defaults,noatime',
         atboot  => true,
         device  => '/dev/srv/scratch',
         require => File['/srv/scratch'],
     }
 
     mount { '/srv/statistics':
-        ensure  => present,
+        ensure  => mounted,
+        fstype  => ext4,
+        options => 'defaults,noatime',
         atboot  => true,
         device  => '/dev/srv/statistics/',
         require => File['/srv/statistics'],
