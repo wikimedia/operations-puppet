@@ -1,15 +1,12 @@
 # Set up a bigbrother service.
 class toollabs::bigbrother($active) {
-
-    # bigbrother needs this perl package
-    require_package('libxml-simple-perl')
-
     file { '/usr/local/sbin/bigbrother':
         ensure => file,
         owner  => 'root',
         group  => 'root',
         mode   => '0555',
-        source => 'puppet:///modules/toollabs/bigbrother',
+        # File is named with .py suffix so that tox will run tests on it
+        source => 'puppet:///modules/toollabs/bigbrother.py',
     }
 
     file { '/etc/init/bigbrother.conf':
