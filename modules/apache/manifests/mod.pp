@@ -31,7 +31,6 @@ class apache::mod::negotiation     { apache::mod_conf { 'negotiation':    } }
 class apache::mod::proxy           { apache::mod_conf { 'proxy':          } }
 class apache::mod::proxy_balancer  { apache::mod_conf { 'proxy_balancer': } }
 class apache::mod::proxy_http      { apache::mod_conf { 'proxy_http':     } }
-class apache::mod::proxy_html      { apache::mod_conf { 'proxy_html':     } }
 class apache::mod::rewrite         { apache::mod_conf { 'rewrite':        } }
 class apache::mod::setenvif        { apache::mod_conf { 'setenvif':       } }
 class apache::mod::ssl             { apache::mod_conf { 'ssl':            } }
@@ -57,6 +56,7 @@ class apache::mod::wsgi            { apache::mod_conf { 'wsgi':           } <- p
 # Modules that target a specific distribution
 class apache::mod::access_compat { if os_version('debian >= jessie || ubuntu >= 13.10') { apache::mod_conf { 'access_compat': } } }
 class apache::mod::proxy_fcgi    { if os_version('debian >= jessie || ubuntu >= 13.10') { apache::mod_conf { 'proxy_fcgi':    } } }
+class apache::mod::proxy_html    { if os_version('debian >= jessie || ubuntu >= 13.10') { apache::mod_conf { 'proxy_html':    } } }
 class apache::mod::remoteip      { if os_version('debian >= jessie || ubuntu >= 13.10') { apache::mod_conf { 'remoteip':      } } }
 class apache::mod::version       { if os_version('ubuntu < 13.10')  { apache::mod_conf { 'version':       } } }
 class apache::mod::lbmethod_byrequests  { if os_version('debian >= jessie || ubuntu >= 13.10') { apache::mod_conf { 'lbmethod_byrequests': } } }
