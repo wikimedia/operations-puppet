@@ -1194,8 +1194,6 @@ node 'labtestcontrol2001.wikimedia.org' {
     include base::firewall
     role(labs::openstack::nova::controller, labs::puppetmaster)
 
-    include labspuppetbackend
-
     # Labtest is weird; the mysql server is on labtestcontrol2001.  So
     #  we need some special fw rules to allow that
     $designate = ipresolve(hiera('labs_designate_hostname'),4)
