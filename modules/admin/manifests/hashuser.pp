@@ -9,11 +9,10 @@
 #  Hash with valid user data
 
 define admin::hashuser(
-    $phash={},
 )
 {
 
-    $uinfo = $phash['users'][$name]
+    $uinfo = $::admin::data['users'][$name]
 
     if has_key($uinfo, 'gid') {
         $group_id = $uinfo['gid']

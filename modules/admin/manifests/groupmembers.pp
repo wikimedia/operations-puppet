@@ -5,19 +5,15 @@
 # [*name*]
 #  Group name
 #
-# [*phash*]
-#  Hash that contains valid group data
-#
 # [*default_member*]
 #  User to be added to a group when explicit members array is empty
 
 define admin::groupmembers(
-    $phash={},
     $default_member='root',
 )
     {
 
-    $gdata = $phash['groups'][$name]
+    $gdata = $::admin::data['groups'][$name]
     $members = $gdata['members']
 
     if !empty($members) {

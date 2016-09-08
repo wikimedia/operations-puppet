@@ -38,17 +38,14 @@ class admin(
     }
 
     admin::hashgroup { $all_groups:
-        phash  => $data,
         before => Admin::Hashuser[$user_set],
     }
 
     admin::hashuser { $user_set:
-        phash  => $data,
         before => Admin::Groupmembers[$all_groups],
     }
 
     admin::groupmembers { $all_groups:
-        phash  => $data,
         before => Exec['enforce-users-groups-cleanup'],
     }
 
