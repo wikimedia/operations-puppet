@@ -220,7 +220,7 @@ node 'californium.wikimedia.org' {
 # DHCP / TFTP
 node 'carbon.wikimedia.org' {
     role(installserver, installserver::tftp_server, installserver::dhcp,
-        aptrepo::wikimedia, mirrors)
+        aptrepo::wikimedia)
     $cluster = 'misc'
 
     interface::add_ip6_mapped { 'main':
