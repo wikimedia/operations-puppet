@@ -14,8 +14,6 @@ class role::zuul::server {
         # Shared settings
         gerrit_server        => $conf_common['gerrit_server'],
         gerrit_user          => $conf_common['gerrit_user'],
-        url_pattern          => $conf_common['url_pattern'],
-        status_url           => $conf_common['status_url'],
 
         # Server settings
         jenkins_apikey       => $jenkins_apikey,
@@ -23,6 +21,8 @@ class role::zuul::server {
         gearman_server_start => $conf_server['gearman_server_start'],
         jenkins_server       => $conf_server['jenkins_server'],
         jenkins_user         => $conf_server['jenkins_user'],
+        url_pattern          => $conf_server['url_pattern'],
+        status_url           => $conf_server['status_url'],
         statsd_host          => $conf_server['statsd_host'],
     }
 

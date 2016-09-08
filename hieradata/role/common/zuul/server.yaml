@@ -7,3 +7,5 @@ zuul::server:
     jenkins_user: zuul-bot
     # FIXME use a lookup?
     statsd_host: statsd.eqiad.wmnet
+    url_pattern: 'https://integration.wikimedia.org/ci/job/{job.name}/{build.number}/console'
+    status_url: 'https://integration.wikimedia.org/zuul/'
