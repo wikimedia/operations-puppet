@@ -44,17 +44,7 @@ class ldap::client::nss(
     }
 
     # So scripts don't have to parse the ldap.conf format
-    $ldap_pw = $ldapconfig['basedn']
-    $client_readable_config = {
-        'servers'  => $ldapconfig['servernames'],
-        'basedn'   => $ldapconfig['basedn'],
-        'user'     => "cn=proxyagent,ou=profile,${ldap_pw}",
-        'password' => $ldapconfig['proxypass'],
-    }
-
-    file { '/etc/ldap.yaml':
-        content => ordered_yaml($client_readable_config),
-    }
+    include ldap::yamlcreds
 
     # Allow labs projects to give people custom shells
     $shell_override = hiera('user_login_shell', false)
