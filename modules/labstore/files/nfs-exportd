@@ -1,4 +1,4 @@
-#! /usr/bin/python3
+#!/usr/bin/python3
 #
 #  Copyright © 2015 Marc-André Pelletier <mpelletier@wikimedia.org>
 #  Copyright © 2015 Yuvi Panda <yuvipanda@gmail.com>
@@ -32,8 +32,6 @@ import subprocess
 
 
 # Volumes that need an entry in exports.d
-# /data/scratch and /public/dumps are available to anyone
-# who wants, and hence do not need a entry in exports.d.
 VOLUMES_NEEDING_EXPORTS = ['project', 'home']
 
 
@@ -49,6 +47,11 @@ def is_valid_ipv4(ip):
 
 
 class Project:
+    """ subtree_check -- allows mounting of subdirectories
+        async -- io should be done asynchronously
+        no_root_squash -- allow root in project instances
+                          to be treated as root on mount
+    """
     EXPORTS_TEMPLATE = '/exp/project/{name} ' + \
         '-rw,nohide,fsid=00000000000000000-{gid}-0000000000' + \
         ',subtree_check,async,no_root_squash ' + \
@@ -59,6 +62,7 @@ class Project:
         self.instance_ips = instance_ips
         self.volumes = volumes
         self.gid = gid
+        self.path = os.path.join('/exp/project/', name)
 
     def get_exports(self):
         return Project.EXPORTS_TEMPLATE.format(
@@ -82,6 +86,7 @@ def get_instance_ips(project):
     except:
         logging.exception('Error fetching instance ip list for project %s', project)
         sys.exit(1)
+
     ips = []
     if 'query' in data and 'novainstances' in data['query']:
         for instance in data['query']['novainstances']:
@@ -90,111 +95,111 @@ def get_instance_ips(project):
                     if is_valid_ipv4(ip) and ip.startswith('10.')]
     return ips
 
-
-def get_public_exports(mounts_config):
-    return mounts_config['public']
-
-
 def get_projects_with_nfs(mounts_config):
     """
-    Returns list of populated Project objects that need NFS exports
+    Get populated project objects that need NFS exports
+    :param mounts_config: dict
+    :returns: list
     """
     projects = []
     for name, config in mounts_config['private'].items():
-        logging.debug('Fetching config for project %s', name)
         if 'mounts' in config:
             mounts = [k for k, v in config['mounts'].items()
                       if k in VOLUMES_NEEDING_EXPORTS and v]
             if len(mounts) == 0:
                 # Skip project if it has no private mounts
-                logging.info('Skipping exports for %s, no private mounts', name)
+                logging.debug('skipping exports for %s, no private mounts', name)
                 continue
         else:
             continue
         project = Project(name, config['gid'], get_instance_ips(name), mounts)
         projects.append(project)
-        logging.info('Fetched config for project %s, with %s instances',
+        logging.debug('project %s has %s instances',
                      name, len(project.instance_ips))
 
     # Validate that there are no duplicate gids
     gids = [p.gid for p in projects]
     if len(set(gids)) != len(gids):
-        # OMG DUPLICATES
-        logging.error('Duplicate GIDs found in project config, aborting')
+        logging.error('duplicate GIDs found in project config, aborting')
         sys.exit(1)
 
-    logging.info("Found %s projects requiring private mounts", len(projects))
+    logging.info("found %s projects requiring private mounts", len(projects))
     return projects
 
 
-def sync_exports_files(mounts_config, exports_d_base):
+def exportfs():
+    """ translate on disk definitions into active NFS exports
+    :warn: this can fail with 0 exit code
     """
-    Generate exports files for syncfs
-    """
-    existing_exports = [
-        os.path.join(exports_d_base, filename)
-        for filename in os.listdir(exports_d_base)]
+    exportfs = [
+        '/usr/bin/sudo',
+        '/usr/sbin/exportfs',
+        '-ra'
+    ]
 
-    public_exports = get_public_exports(mounts_config)
+    logging.info(' '.join(exportfs))
+    subprocess.check_call(exportfs)
+
+def write_public_exports(public_exports, exports_d_path):
+    """ output public export definitions
+    :param public_exports: dict of defined exports
+    """
+    public_paths = []
     for name, content in public_exports.items():
-        logging.debug('Writing exports file for public export %s', name)
-        path = os.path.join(exports_d_base, 'public_%s.exports' % name)
+        logging.debug('writing exports file for public export %s', name)
+        path = os.path.join(exports_d_path, 'public_%s.exports' % name)
         with open(path, 'w') as f:
             f.write(content)
-        logging.info('Wrote exports file for public export %s', name)
-        if path in existing_exports:
-            existing_exports.remove(path)
+        public_paths.append(path)
+    logging.info("found %s public NFS exports" % (len(public_paths)))
+    return public_paths
 
+def write_project_exports(mounts_config, exports_d_path):
+    """ output project export definitions
+    :param mounts_config: dict of defined exports
+    """
+    project_paths = []
     projects = get_projects_with_nfs(mounts_config)
     for project in projects:
-        logging.debug('Writing exports file for %s', project.name)
-        path = os.path.join(exports_d_base, '%s.exports' % project.name)
+        logging.debug('writing exports file for %s', project.name)
+        path = os.path.join(exports_d_path, '%s.exports' % project.name)
         with open(path, 'w') as f:
             f.write(project.get_exports())
-        logging.info('Wrote exports file for %s', project.name)
-        if path in existing_exports:
-            existing_exports.remove(path)
-
-    if len(existing_exports) != 0:
-        logging.info('Extra exports.d files found, purging')
-        for existing_export in existing_exports:
-            with open(existing_export) as f:
-                logging.info('Deleting %s with contents %s', existing_export, f.read())
-            os.remove(existing_export)
-            logging.info('Deleted %s', existing_export)
+        project_paths.append(path)
+    return project_paths
 
 
-def exportfs():
-    logging.debug('Attempting to exportfs')
-    try:
-        subprocess.check_call([
-            '/usr/bin/sudo',
-            '/usr/sbin/exportfs',
-            '-ra'
-        ])
-    except:
-        logging.exception('Failed running exportfs -ra')
-    logging.info('Successfully ran exportfs')
-
-
-if __name__ == "__main__":
+def main():
     argparser = argparse.ArgumentParser()
+
     argparser.add_argument(
         '--exports-d-path',
+        default='/etc/exports.d/',
         help='Dir to write exports files to',
     )
+
     argparser.add_argument(
         '--config-path',
+        default='/etc/nfs-mounts.yaml',
         help='Path to YAML file containing config of which exports to maintain',
     )
+
+    argparser.add_argument(
+        '--interval',
+        type=int,
+        default=0,
+        help='Set interval to rerun at',
+    )
+
+    argparser.add_argument(
+        '--dry',
+        help='Do a dry run, do not call exportfs',
+        action='store_true'
+    )
+
     argparser.add_argument(
         '--debug',
         help='Turn on debug logging',
-        action='store_true'
-    )
-    argparser.add_argument(
-        '--dry-run',
-        help='Do a dry run, do not call exportfs',
         action='store_true'
     )
 
@@ -206,19 +211,49 @@ if __name__ == "__main__":
 
     if os.getuid() == 0:
         logging.error('Daemon started as root, exiting')
-        sys.stderr.write("This daemon should should not be run as root!\n")
         sys.exit(1)
 
-    logging.info('Daemon starting')
-
     while True:
+
         try:
             with open(args.config_path) as f:
                 config = yaml.safe_load(f)
         except:
             logging.exception('Could not load projects config file from %s', args.config_path)
             sys.exit(1)
-        sync_exports_files(config, args.exports_d_path)
-        if not args.dry_run:
-            exportfs()
-        time.sleep(60)
+
+        exports_d_path = args.exports_d_path
+
+        existing_exports = [
+            os.path.join(exports_d_path, filename)
+            for filename in os.listdir(exports_d_path)]
+
+        public_paths = write_public_exports(config['public'], exports_d_path)
+        project_paths = write_project_exports(config, exports_d_path)
+
+        # compile list of entries in export_d path that are not defined in current config
+        existing_wo_public = list(set(existing_exports) - set(public_paths))
+        existing_wo_all = list(set(existing_wo_public) - set(project_paths))
+
+        if args.dry:
+            logging.warning('dry run mode [no exportfs or cleanup]')
+            break
+
+        if existing_wo_all:
+            for unmanaged_export in existing_wo_all:
+                with open(unmanaged_export) as f:
+                    logging.warning('deleting %s with contents: %s', unmanaged_export, f.read())
+                os.remove(unmanaged_export)
+
+        exportfs()
+
+        if args.interval > 0:
+            time.sleep(args.interval)
+        else:
+            break
+
+if __name__ == "__main__":
+    try:
+        main()
+    except KeyboardInterrupt:
+        pass
