@@ -155,7 +155,6 @@ role::deployment::mediawiki::key_fingerprint: f0:54:06:fa:17:27:97:a2:cc:69:a0:a
 "mediawiki::jobrunner::statsd_server": labmon1001.eqiad.wmnet
 "mediawiki::jobrunner::runners_basic": 5
 "mediawiki::jobrunner::runners_gwt": 1
-"mediawiki::jobrunner::runners_restbase": 5
 "mediawiki::jobrunner::runners_translate": 1
 "mediawiki::jobrunner::runners_upload": 2
 "hhvm::base_jit_size": 183500800
