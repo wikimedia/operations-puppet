@@ -1,0 +1,5 @@
+mysql_host: "m5-master.eqiad.wmnet"
+mysql_db:   "labspuppet"
+mysql_username: "labspuppet"
+statsd_host: "labmon1001.eqiad.wmnet"
+statsd_prefix: "labs.puppetbackend"
