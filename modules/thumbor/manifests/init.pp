@@ -30,7 +30,6 @@ class thumbor (
     requires_os('debian >= jessie')
 
     require_package('python-thumbor-wikimedia')
-    require_package('cgroup-tools')
     require_package('firejail')
 
     file { '/usr/local/lib/thumbor/':
