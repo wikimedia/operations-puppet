@@ -69,6 +69,13 @@ class dynamicproxy (
         source => 'puppet:///modules/dynamicproxy/logrotate',
     }
 
+    file { '/etc/nginx/nginx.conf':
+        ensure  => file,
+        content => template('dynamicproxy/nginx.conf'),
+        require => Package['nginx-common'],
+        notify  => Service['nginx'],
+    }
+
     file { [
         '/var/www/',
         '/var/www/error',
