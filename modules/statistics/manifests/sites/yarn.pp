@@ -11,7 +11,8 @@ class statistics::sites::yarn {
 
     include ::apache::mod::proxy_http
     include ::apache::mod::proxy
-    include ::apache::mod::substitute
+    include ::apache::mod::proxy_html
+    include ::apache::mod::xml2enc
     include ::apache::mod::auth_basic
     include ::apache::mod::authnz_ldap
     include ::passwords::ldap::production
