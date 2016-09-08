@@ -41,9 +41,9 @@
 
     LogLevel warn
 
-    ProxyPass / http://analytics1001.eqiad.wmnet:8088/
-    ProxyPassReverse / http://analytics1001.eqiad.wmnet:8088/
-
     ProxyPass /jobhistory/ http://analytics1001.eqiad.wmnet:19888/jobhistory/
     ProxyPassReverse /jobhistory/ http://analytics1001.eqiad.wmnet:19888/jobhistory/
+
+    ProxyPass / http://analytics1001.eqiad.wmnet:8088/
+    ProxyPassReverse / http://analytics1001.eqiad.wmnet:8088/
 </VirtualHost>
