@@ -19,13 +19,11 @@ class zuul::merger (
     $gearman_server,
     $gerrit_server,
     $gerrit_user,
-    $url_pattern,
     $gerrit_ssh_key_file,
     $gerrit_baseurl = 'https://gerrit.wikimedia.org/r',
     $git_dir        = '/var/lib/zuul/git',
     $git_email      = "zuul-merger@${::hostname}",
     $git_name       = 'Wikimedia Zuul Merger',
-    $status_url     = "https://${::fqdn}/zuul/status",
     $zuul_url       = $::fqdn,
 ) {
 

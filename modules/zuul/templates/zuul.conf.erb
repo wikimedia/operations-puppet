@@ -33,9 +33,11 @@ event_delay=<%= @gerrit_event_delay %>
 layout_config=/etc/zuul/wikimedia/zuul/layout.yaml
 log_config=/etc/zuul/logging.conf
 state_dir=/var/lib/zuul
+<% if @zuul_role == 'server' -%>
 url_pattern=<%= @url_pattern %>
 status_url=<%= @status_url %>
 job_name_in_report = true
+<% end -%>
 
 <% if @zuul_role == 'merger' -%>
 [merger]
