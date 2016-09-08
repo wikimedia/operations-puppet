@@ -46,8 +46,8 @@ class PhpRunner(object):
     def get_php_code(self):
         if self.multiversion:
             php_setup = (
-                "require_once( '%s/MWVersion.php' ); "
-                "$dir = getMediaWikiCli(''); "
+                "require_once( '%s/MWMultiVersion.php' ); "
+                "$dir = MWMultiVersion::getMediaWikiCli(''); "
                 "require_once( \"$dir/maintenance/Maintenance.php\" );"
                 % self.script_path)
         else:
@@ -79,7 +79,7 @@ def usage(message):
 
 Options:
 
---scriptpath:    path to MWVersion.php, if multiversion option is set,
+--scriptpath:    path to MWMultiVersion.php, if multiversion option is set,
                  or to maintenance/Maintenance.php, otherwise
 --wikilist:        path to list of wiki database names one per line
                  if filename is '-' then the list will be read from stdin
