@@ -10,8 +10,6 @@ contactgroups: 'admins,contint'
 zuul::common:
     gerrit_server: gerrit.wikimedia.org
     gerrit_user: jenkins-bot
-    url_pattern: 'https://integration.wikimedia.org/ci/job/{job.name}/{build.number}/console'
-    status_url: 'https://integration.wikimedia.org/zuul/'
 
 zuul::server:
     # ferm defaults to ACCEPT on loopback:
@@ -20,5 +18,7 @@ zuul::server:
     gearman_server_start: true
     jenkins_server: http://127.0.0.1:8080/ci
     jenkins_user: zuul-bot
+    url_pattern: 'https://integration.wikimedia.org/ci/job/{job.name}/{build.number}/console'
+    status_url: 'https://integration.wikimedia.org/zuul/'
     # FIXME use a lookup?
     statsd_host: statsd.eqiad.wmnet
