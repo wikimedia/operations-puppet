@@ -25,10 +25,25 @@ import sys
 import yaml
 
 if len(sys.argv) <= 1:
-    print 'usage: matrix.py user1 [user2 ..]'
+    print 'usage: matrix.py [--wikitext] user1 [user2 ..]'
     sys.exit(1)
 
 users = sys.argv[1:]
+
+TOP_LEFT = 'grp/users'
+HEADER_SEPARATOR = '\t'
+HEADER_END = ''
+ROW_SEPARATOR = '\t'
+GROUP_BEGIN = ''
+mode = 'plain'
+if len(users) and users[0] == '--wikitext':
+    users = users[1:]
+    HEADER_SEPARATOR = '\n! '
+    TOP_LEFT = '! ' + TOP_LEFT
+    HEADER_END = '\n'
+    ROW_SEPARATOR = '\n|'
+    GROUP_BEGIN = '|-\n|'
+    mode = 'wikitext'
 
 with open('data.yaml', 'r') as f:
     admins = yaml.safe_load(f)
@@ -39,7 +54,9 @@ if unknown:
     print 'Unknown user(s):', ', '.join(unknown)
     sys.exit(1)
 
-print '\t'.join(['grp/users'] + users)
+if mode == 'wikitext':
+    print '\n{| class="wikitable"'
+print HEADER_SEPARATOR.join([TOP_LEFT] + users) + HEADER_END
 
 groups = admins.get('groups', {})
 for group_name in sorted(groups.keys()):
@@ -50,7 +67,10 @@ for group_name in sorted(groups.keys()):
         continue
 
     members = set(users) & set(group_members)
-    print '\t'.join(
+    print GROUP_BEGIN + ROW_SEPARATOR.join(
         [group_name] +
-        ['OK' if u in members else '-'
+        ['OK' if u in members else ' '
             for u in users])
+
+if mode == 'wikitext':
+    print '|}'
