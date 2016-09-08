@@ -109,4 +109,12 @@ class thumbor (
         source   => 'puppet:///modules/thumbor/thumbor.rsyslog.conf',
         priority => 40,
     }
+
+    grub::bootparam { 'cgroup_enable':
+        value => 'memory',
+    }
+
+    grub::bootparam { 'swapaccount':
+        value => '1',
+    }
 }
