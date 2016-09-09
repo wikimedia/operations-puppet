@@ -213,7 +213,7 @@ def get_node_config(project, fqdn):
         """, (project, fqdn))
         hiera = {}
         for row in cur.fetchall():
-            hiera.update(yaml.loads(row[1]))
+            hiera.update(yaml.safe_load(row[1]))
     finally:
         cur.close()
     return Response(
