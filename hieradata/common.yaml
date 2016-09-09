@@ -260,6 +260,16 @@ ganglia_clusters:
     id: 56
     sites:
       eqiad: []
+  labtestvirt:
+    name: "Labtest virt hosts"
+    id: 57
+    sites:
+      codfw: []
+  labtest:
+    name: "Labtest services"
+    id: 58
+    sites:
+      codfw: []
 puppetmaster: "puppet"
 active_labstore_host: 'labstore1001'
 statistics_servers:
