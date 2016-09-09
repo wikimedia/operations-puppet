@@ -16,6 +16,11 @@ if [ "${DIST#*-}" = "wikimedia" ]; then
 	export WIKIMEDIA="yes"
 	DIST=${DIST%-wikimedia}
 fi
+# Same for '<dist>-backports':
+if [ "${BACKPORTS#*-}" = "backports" ]; then
+	export BACKPORTS="yes"
+	DIST=${DIST%-backports}
+fi
 
 DISTRIBUTION="$DIST"
 PDEBUILD_PBUILDER="cowbuilder"
