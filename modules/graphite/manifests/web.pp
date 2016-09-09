@@ -145,13 +145,16 @@ class graphite::web(
         require => File['/usr/local/sbin/graphite-auth'],
     }
 
+    # Bug: T144797 - graphite-web cronspam
+    # This is a test to see how graphite-web's internal log rotation works,
+    # because logrotate conflicts with it.
     file { '/etc/logrotate.d/graphite-web':
-        ensure  => present,
-        mode    => '0444',
-        owner   => 'root',
-        group   => 'root',
-        source  => 'puppet:///modules/graphite/graphite-web-logrotate',
-        require => File['/var/log/graphite-web'],
+        ensure  => absent,
+        #mode    => '0444',
+        #owner   => 'root',
+        #group   => 'root',
+        #source  => 'puppet:///modules/graphite/graphite-web-logrotate',
+        #require => File['/var/log/graphite-web'],
     }
 
 }
