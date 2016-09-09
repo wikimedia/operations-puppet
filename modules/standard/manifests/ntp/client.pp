@@ -3,14 +3,6 @@
 # Class most servers must include
 class standard::ntp::client () {
     require standard::ntp
-    # XXX special case for now, virt100x seem to need v4-only access
-    #  (probably router/firewall issue needs to be tracked down)
-    if $::hostname =~ /^virt[0-9]+$/ {
-        $s_opt = '-4'
-    }
-    else {
-        $s_opt = ''
-    }
 
     $wmf_peers = $::standard::ntp::wmf_peers
     # This maps the servers that regular clients use
@@ -25,7 +17,6 @@ class standard::ntp::client () {
     ntp::daemon { 'client':
         servers     => $client_upstreams[$::site],
         query_acl   => $::standard::ntp::neon_acl,
-        servers_opt => $s_opt,
     }
 
     monitoring::service { 'ntp':
