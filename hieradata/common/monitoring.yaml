@@ -76,9 +76,9 @@ groups:
 
 # Labs OpenStack Nova (labvirt***)
   labvirt_eqiad:
-    description: eqiad virt servers
+    description: eqiad labs virt servers
   labvirt_codfw:
-    description: codfw virt servers
+    description: codfw labs virt servers
 
 # Labs Services
   labs_eqiad:
