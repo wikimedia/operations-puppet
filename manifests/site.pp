@@ -1192,7 +1192,9 @@ node 'labtestmetal2001.codfw.wmnet' {
 node 'labtestcontrol2001.wikimedia.org' {
     include standard
     include base::firewall
-    role(labs::openstack::nova::controller, labs::puppetmaster)
+    role(labs::openstack::nova::controller,
+         labs::puppetmaster,
+         labs::puppetbackend)
 
     # Labtest is weird; the mysql server is on labtestcontrol2001.  So
     #  we need some special fw rules to allow that
@@ -1373,7 +1375,8 @@ node 'labcontrol1001.wikimedia.org' {
     role(labs::openstack::nova::controller,
           labs::puppetmaster,
           salt::masters::labs,
-          deployment::salt_masters)
+          deployment::salt_masters,
+          labs::puppetbackend)
 
     include base::firewall
     include standard

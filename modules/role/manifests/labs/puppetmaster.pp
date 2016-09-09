@@ -82,6 +82,4 @@ class role::labs::puppetmaster(
             remote_cert_cleaner => hiera('labs_certmanager_hostname'),
         }
     }
-
-    include labspuppetbackend
 }
