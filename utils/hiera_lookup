@@ -52,13 +52,19 @@ def get_scope()
   scope = Hash[ARGV.map { |kv| "::#{kv.sub('--', '')}".split('=') }]
   abort(usage "Error: --fqdn=FQDN is required.") unless scope['::fqdn']
   scope['::hostname'] = scope['::fqdn'][/^[^.]+/]
-  scope['::realm'] = scope['::fqdn'].include?('labs') ? 'labs' : 'production'
+  if scope['::fqdn'].end_with?('.wmflabs')
+    scope['::realm'] = 'labs'
+  elsif scope['::fqdn'].end_with?('.labtest')
+    scope['::realm'] = 'labtest'
+  else
+    scope['::realm'] = 'production'
+  end
 
   # Detect labs project/site
-  if scope['::realm'] == 'labs'
+  if scope['::realm'] == 'labs' or scope['::realm'] == 'labtest'
     bits = scope['::fqdn'].split('.')
     unless bits.length == 4
-      Kernel.abort('labs FQDN must be <hostname>.<project>.<site>.wmflabs')
+      Kernel.abort('labs FQDN must be <hostname>.<project>.<site>.(wmflabs|labtest)')
     end
     scope['::labsproject'] = bits[1]
     scope['::site'] = bits[2]
