@@ -81,9 +81,23 @@ Backports repos
 
 Packages from the Debian backports repositories can be used to satisfy
 dependencies as well. To use the backports repository for the distribution
-selected (e.g. jessie-backports), use:
+selected (e.g. jessie-backports), use either of:
 
     DIST=jessie BACKPORTS=yes pdebuild
+    DIST=jessie-backports pdebuild
+
+Combining Wikimedia and Backports repos
+=======================================
+
+Set both WIKIMEDIA and BACKPORTS:
+
+    DIST=jessie BACKPORTS=yes WIKIMEDIA=yes pdebuild
+
+When using a distribution suffix, the other repo must be enabled via an
+environment variable. The following examples are equivalent:
+
+  DIST=jessie-backports WIKIMEDIA=yes pdebuild
+  DIST=jessie-wikimedia BACKPORTS=yes pdebuild
 
 git-buildpackage
 ================
