@@ -86,7 +86,7 @@ class puppetmaster::gitclone(
         if $is_git_master {
             file { '/srv/private':
                 ensure => directory,
-                mode   => '0755',
+                mode   => '0700',
                 owner  => 'gitpuppet',
                 group  => 'gitpuppet',
             }
