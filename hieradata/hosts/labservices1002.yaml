@@ -1,5 +1,3 @@
-cluster: labs
-
 labsdnsconfig:
   host: 'labs-ns1.wikimedia.org'
   host_secondary: 'labs-ns0.wikimedia.org'
