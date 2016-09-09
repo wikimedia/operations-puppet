@@ -1,4 +1,3 @@
-cluster: labvirt
 debdeploy::grains:
   debdeploy-nova-compute:
     value: standard
