@@ -2112,9 +2112,9 @@ node /^mw1(299|30[0-6])\.eqiad\.wmnet$/ {
 
 # ROW A codfw appservers: mw2017, mw2061-mw2079, and mw2215-2250
 
-# mw2017.codfw.wmnet is a codfw test appserver
-node 'mw2017.codfw.wmnet' {
-    role(mediawiki::appserver)
+# mw2017/mw2099 are codfw test appservers
+node /^mw20(17|99)\.codfw\.wmnet$/ {
+    role(mediawiki::canary_appserver)
     include base::firewall
 }
 
@@ -2137,8 +2137,8 @@ node /^mw208[6-9]\.codfw\.wmnet$/ {
     role(mediawiki::imagescaler)
 }
 
-#mw2090-mw2119 are appservers
-node /^mw2(09[0-9]|1[0-1][0-9])\.codfw\.wmnet$/ {
+#mw2090-mw2098, mw2100-mw2119 are appservers
+node /^mw2(09[0-8]|1[0-1][0-9])\.codfw\.wmnet$/ {
     role(mediawiki::appserver)
     include base::firewall
 }
