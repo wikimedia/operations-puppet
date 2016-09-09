@@ -103,9 +103,6 @@ def available_roles():
                         newdoc += "%s\n" % line
                 obj.docs = newdoc
 
-            if obj.name.startswith("role::labs::"):
-                obj.filter_tags.append('labs')
-
             roles.append(obj)
 
         cache.set(key, roles, 300)

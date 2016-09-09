@@ -103,13 +103,9 @@ class ApplyRole(tables.LinkAction):
 
 def get_categories_for_role(role):
     categories = set(['all'])
-    if 'labs' in role.filter_tags:
-        categories.add('labs')
     if 'labs-common' in role.filter_tags:
         categories.add('common')
-        categories.add('labs')
     if "labs-project-%s" % role.tenant_id in role.filter_tags:
-        categories.add('labs')
         categories.add('project')
     return categories
 
@@ -132,10 +128,9 @@ class RoleFilter(tables.FixedFilterAction):
         def make_dict(text, tenant, icon):
             return dict(text=text, value=tenant, icon=icon)
 
-        buttons = [make_dict(_('common'), 'common', 'fa-cube'),
-                   make_dict(_('labs'), 'labs', 'fa-cubes'),
-                   make_dict(_('project'), 'project', 'fa-star'),
-                   make_dict(_('all'), 'all', 'fa-warning')]
+        buttons = [make_dict(_('project'), 'project', 'fa-star'),
+                   make_dict(_('common'), 'common', 'fa-cube'),
+                   make_dict(_('all'), 'all', 'fa-cubes')]
         return buttons
 
     def categorize(self, table, roles):
