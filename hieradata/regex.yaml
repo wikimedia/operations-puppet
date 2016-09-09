@@ -462,7 +462,7 @@ labtest:
     domain_id_internal_forward: 'e1ac328c-b932-43f2-b12f-407fb9477925'
     domain_id_internal_reverse: '9b60f3ab-d64b-4e30-9d6f-7535811b0fa8'
     wmflabsdotorg_project: 'wmflabsdotorg'
-    private_tld: 'testlabs'
+    private_tld: 'labtest'
     floating_ip_ptr_zone: '17.196.10.in-addr.arpa.'
     floating_ip_ptr_fqdn_matching_regex: '^(.*)$'
     floating_ip_ptr_fqdn_replacement_pattern: '\1'
