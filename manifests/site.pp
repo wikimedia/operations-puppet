@@ -135,6 +135,10 @@ node 'analytics1027.eqiad.wmnet' {
 
 # Analytics Query Service (RESTBase & Cassandra)
 node /aqs100[123]\.eqiad\.wmnet/ {
+    Service::Node {
+        service_group => 'restbase-admins'
+    }
+
     role(aqs)
 }
 
@@ -238,6 +242,10 @@ node 'carbon.wikimedia.org' {
 
 # cerium, praseodymium and xenon are Cassandra test hosts
 node /^(cerium|praseodymium|xenon)\.eqiad\.wmnet$/ {
+    Service::Node {
+        service_group => 'restbase-admins'
+    }
+
     role(restbase, cassandra, prometheus::node_exporter)
     include standard
 }
@@ -2496,12 +2504,20 @@ node /^relforge100[1-2]\.eqiad\.wmnet/ {
 
 # restbase eqiad cluster
 node /^restbase10[01][0-9]\.eqiad\.wmnet$/ {
+    Service::Node {
+        service_group => 'restbase-admins'
+    }
+
     role(restbase, cassandra)
     include standard
 }
 
 # restbase codfw cluster
 node /^restbase200[1-9]\.codfw\.wmnet$/ {
+    Service::Node {
+        service_group => 'restbase-admins'
+    }
+
     role(restbase, cassandra)
     include standard
 }
@@ -2561,16 +2577,23 @@ node 'scandium.eqiad.wmnet' {
         options => 'noatime,nodiratime,nobarrier,logbufs=8',
         require => File['/srv/ssd'],
     }
-
 }
 
 # Services 'A'
 node /^sca[12]00[12]\.(eqiad|codfw)\.wmnet$/ {
+    Service::Node {
+        service_group => 'sc-admins'
+    }
+
     role(sca)
 }
 
 # Services 'B'
 node /^scb[12]00[12]\.(eqiad|codfw)\.wmnet$/ {
+    Service::Node {
+        service_group => 'sc-admins'
+    }
+
     role(scb)
 }
 
