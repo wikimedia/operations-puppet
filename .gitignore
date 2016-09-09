@@ -12,9 +12,11 @@
 
 /private/
 
-# Automatically generated documentation:
+# Automatically generated documentation and related support path:
 /doc/*
 !/doc/README
+*.yardoc*
+/.yardwarns
 
 # ctags generated file (see `rake tags`)
 /tags
