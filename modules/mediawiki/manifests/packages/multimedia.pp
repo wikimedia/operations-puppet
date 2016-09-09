@@ -8,6 +8,7 @@ class mediawiki::packages::multimedia {
         'ffmpeg2theora',
         'fontconfig-config',
         'ghostscript',
+        'libimage-exiftool-perl',
         'libjpeg-turbo-progs',
         'libogg0',
         'libtheora0',
@@ -15,7 +16,6 @@ class mediawiki::packages::multimedia {
         'libvorbisenc2',
         'netpbm',
         'oggvideotools',
-        'libimage-exiftool-perl',
     ]:
         ensure => present,
     }
