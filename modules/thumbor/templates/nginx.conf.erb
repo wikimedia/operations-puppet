@@ -1,9 +1,9 @@
 upstream thumbor {
     least_conn;
 
-    <% @ports.each do |port| %>
+    <%- @ports.each do |port| -%>
     server 127.0.0.1:<%= port -%>;
-    <% end %>
+    <%- end -%>
 }
 
 server {
@@ -14,6 +14,9 @@ server {
     location / {
         proxy_redirect off;
         proxy_buffering off;
+        # fallback to the next upstream at most once, and no longer than 30s
+        proxy_next_upstream_timeout 30;
+        proxy_next_upstream_tries 1;
         proxy_set_header Host $http_host;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
