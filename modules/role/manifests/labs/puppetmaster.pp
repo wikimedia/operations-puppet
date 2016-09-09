@@ -86,16 +86,14 @@ class role::labs::puppetmaster(
     include labspuppetbackend
 
     $labs_vms = $novaconfig['fixed_range']
-    $labs_metal = join(hiera('labs_baremetal_servers', []), ' ')
-    $horizon = ipresolve(hiera('labs_horizon_host'),4)
     $monitoring = '208.80.154.14'
 
     $fwrules = {
         puppetmaster => {
-            rule => "saddr (${labs_vms} ${labs_metal} ${monitoring} ${horizon}) proto tcp dport 8140 ACCEPT;",
+            rule => "saddr (${labs_vms} ${labs_metal} ${monitoring} ${horizon_host_ip}) proto tcp dport 8140 ACCEPT;",
         },
         puppetbackend => {
-            rule => "saddr (${labs_vms} ${labs_metal} ${monitoring} ${horizon}) proto tcp dport 8100 ACCEPT;",
+            rule => "saddr (${labs_vms} ${labs_metal} ${monitoring} ${horizon_host_ip}) proto tcp dport 8100 ACCEPT;",
         },
     }
     create_resources (ferm::rule, $fwrules)
