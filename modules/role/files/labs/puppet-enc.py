@@ -2,6 +2,7 @@
 import yaml
 import sys
 import ldap3
+from urllib.request import urlopen
 
 
 def _is_valid_hostname(name):
@@ -50,6 +51,8 @@ if __name__ == '__main__':
         for s in ldapconfig['servers']
     ], ldap3.POOLING_STRATEGY_ROUND_ROBIN, active=True, exhaust=True)
 
+    classes = set()
+
     with ldap3.Connection(
         servers,
         read_only=True,
@@ -70,7 +73,18 @@ if __name__ == '__main__':
             sys.exit(-1)
 
         attrs = conn.response[0]['attributes']
-        yaml.dump({
-            'classes': attrs.get('puppetClass', []),
-            'parameters': {}
-        }, sys.stdout)
+        classes.update(attrs.get('puppteClass', []))
+
+
+    url = 'http://localhost:8100/v1/{project}/node/{fqdn}'.format(
+        project=hostname.split('.')[1],
+        fqdn=hostname
+    )
+
+    rest_response = yaml.safe_load(urlopen(url))
+
+    classes.update(rest_response.get('roles', []))
+    yaml.safe_dump({
+        'classes': list(classes),
+        'parameters': {}
+    }, sys.stdout)
