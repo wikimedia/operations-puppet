@@ -84,4 +84,14 @@ class role::labs::puppetmaster(
     }
 
     include labspuppetbackend
+
+    $fwrules = {
+        puppetmaster => {
+            rule => "saddr (${labs_vms} ${labs_metal} ${monitoring} ${horizon}) proto tcp dport 8140 ACCEPT;",
+        },
+        puppetbackend => {
+            rule => "saddr (${labs_vms} ${labs_metal} ${monitoring} ${horizon}) proto tcp dport 8100 ACCEPT;",
+        },
+    }
+    create_resources (ferm::rule, $fwrules)
 }

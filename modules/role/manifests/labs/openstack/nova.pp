@@ -234,9 +234,6 @@ class role::labs::openstack::nova::controller {
         glance_api_nova => {
             rule => "saddr ${labs_nodes} proto tcp dport 9292 ACCEPT;",
         },
-        puppetmaster => {
-            rule => "saddr (${labs_vms} ${labs_metal} ${monitoring} ${horizon}) proto tcp dport 8140 ACCEPT;",
-        },
         salt => {
             rule => "saddr (${labs_vms} ${monitoring}) proto tcp dport (4505 4506) ACCEPT;",
         },
