@@ -95,7 +95,7 @@ labstore:
   cluster: labsnfs
 
 labs:
-  __regex: !ruby/regexp /^(labnet|labservices|labnodepool|labcontrol)100[1-9]\.eqiad\.wmnet$/
+  __regex: !ruby/regexp /^(labnet|labservices|labnodepool|labcontrol|labmon)100[1-9]\.eqiad\.wmnet$/
   cluster: labs
 
 cassandra_test_eqiad:
