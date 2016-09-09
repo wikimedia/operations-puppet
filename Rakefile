@@ -27,6 +27,7 @@
 require 'bundler/setup'
 require 'git'
 require 'puppet-lint/tasks/puppet-lint'
+require 'puppet-strings/tasks/generate'
 require 'rubocop/rake_task'
 
 # Find files modified in HEAD
@@ -121,15 +122,12 @@ end
 
 desc "Build documentation"
 task :doc do
-    doc_cmd = [
-        "puppet doc",
-        "--mode rdoc",
-        "--all",  # build all references
-        "--manifestdir manifests",
-        "--modulepath modules",
-    ].join(' ')
-    puts "Running #{doc_cmd}"
-    system(doc_cmd)
+    Rake::Task['strings:generate'].invoke(
+        '**/*.pp',  # patterns
+        'false',    # debug
+        'false',    # backtrace
+        'rdoc',     # markup format
+    )
 end
 
 desc "Validate puppet syntax (default: manifests/site.pp)"
