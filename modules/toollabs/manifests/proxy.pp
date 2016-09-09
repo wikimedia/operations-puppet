@@ -72,7 +72,7 @@ class toollabs::proxy(
     ferm::service { 'proxylistener-port':
         proto  => 'tcp',
         port   => '8282',
-        srange => '$INTERNAL',
+        srange => '$LABS_NETWORKS',
         desc   => 'Proxylistener port, open to just labs'
     }
 
