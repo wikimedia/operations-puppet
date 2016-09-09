@@ -108,6 +108,9 @@
 #   parameter's value is used only when the deployment method is Scap3 and the
 #   service's configuration is deployed with it as well. Default: {}
 #
+# [*service_group*]
+#  Posix group that manages the service, if any.
+#
 # [*contact_groups*]
 #   Contact groups for alerting.
 #   Default: hiera('contactgroups', 'admins') - use 'contactgroups' hiera
@@ -168,6 +171,7 @@ define service::node(
     $deployment_user = 'deploy-service',
     $deployment_config = false,
     $deployment_vars = {},
+    $service_group = undef,
     $contact_groups  = hiera('contactgroups', 'admins'),
 ) {
     case $deployment {
@@ -278,12 +282,18 @@ define service::node(
             onlyif  => "/usr/bin/test -O ${chown_target}",
             require => [User[$deployment_user], Group[$deployment_user]]
         }
+
+        $config_group = $service_group ? {
+            undef   => $deployment_user,
+            default => $service_group
+        }
+
         file { "/etc/${title}/config-vars.yaml":
             ensure  => present,
             content => template('service/node/config-vars.yaml.erb'),
             owner   => $deployment_user,
-            group   => $deployment_user,
-            mode    => '0444',
+            group   => $config_group,
+            mode    => '0440',
             tag     => "${title}::config",
         }
 
@@ -308,12 +318,17 @@ define service::node(
         }
 
     } else {
+        $config_group = $service_group ? {
+            undef   => $title,
+            default => $service_group
+        }
+
         file { "/etc/${title}/config.yaml":
             ensure  => present,
             content => $complete_config,
             owner   => 'root',
-            group   => 'root',
-            mode    => '0444',
+            group   => $config_group,
+            mode    => '0440',
             tag     => "${title}::config",
         }
         if $auto_refresh {
