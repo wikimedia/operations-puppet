@@ -16,6 +16,7 @@ class mediawiki::packages::multimedia {
         'libvorbisenc2',
         'netpbm',
         'oggvideotools',
+		'pyexiv2', # T71336
     ]:
         ensure => present,
     }
