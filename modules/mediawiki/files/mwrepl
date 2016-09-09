@@ -39,4 +39,4 @@ if [[ $USER != $MEDIAWIKI_WEB_USER ]]; then
     PROLOGUE="/usr/bin/sudo -u ${MEDIAWIKI_WEB_USER} ${PROLOGUE}"
 fi
 
-$PROLOGUE /usr/bin/hhvm --mode=debug --debug-extension="${MEDIAWIKI_DEPLOYMENT_DIR_DIR_USE}/multiversion/MWMinimalScriptInit.php"
+$PROLOGUE /usr/bin/hhvm --mode=debug --debug-extension="${MEDIAWIKI_DEPLOYMENT_DIR_DIR_USE}/multiversion/MWScript.php commandLine.inc"
