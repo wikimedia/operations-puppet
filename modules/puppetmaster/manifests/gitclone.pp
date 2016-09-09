@@ -85,10 +85,11 @@ class puppetmaster::gitclone(
 
         if $is_git_master {
             file { '/srv/private':
-                ensure => directory,
-                mode   => '0755',
-                owner  => 'gitpuppet',
-                group  => 'gitpuppet',
+                ensure  => directory,
+                owner   => 'gitpuppet',
+                group   => 'gitpuppet',
+                mode    => '0644', # Will become 0755 for dir automatically
+                recurse => 'true',
             }
 
             # On a private master, /srv/private is a real repository
