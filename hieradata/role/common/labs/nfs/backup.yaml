@@ -1,4 +1,3 @@
-cluster: labsnfs
 # This is there because we have a ssh::userkey stanza
 # and it will not be used without this hack.  Same pattern ganeti uses.
 ssh::server::authorized_keys_file: /etc/ssh/userkeys/%u /etc/ssh/userkeys/%u.d/labstore
