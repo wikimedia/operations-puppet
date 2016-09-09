@@ -1,6 +1,7 @@
 #!/bin/sh
-cd /srv/private
-git reset --hard HEAD
+unset GIT_DIR # Otherwise git commands will work on the wrong place
+cd ../
+git reset --hard HEAD --
+git checkout HEAD -- .
 cd /var/lib/git/operations/private
-unset GIT_DIR
 git pull
