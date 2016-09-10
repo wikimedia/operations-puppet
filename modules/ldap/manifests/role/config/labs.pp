@@ -22,8 +22,6 @@ class ldap::role::config::labs {
         'user_id_attribute'    => 'uid',
         'tenant_id_attribute'  => 'cn',
         'ca'                   => 'ca-certificates.crt',
-        'wikildapdomain'       => 'labs',
-        'wikicontrollerapiurl' => 'https://wikitech.wikimedia.org/w/api.php',
         'sudobasedn'           => $sudobasedn,
         'pagesize'             => '2000',
         'nss_min_uid'          => '499',
