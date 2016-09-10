@@ -6,7 +6,9 @@ import traceback
 import salt.config
 import salt.client
 import salt.key
-from novaclient.v1_1 import client
+from novaclient import client
+import keystoneclient.session as keystonesession
+import keystoneclient.auth.identity.v3 as keystoneidentity
 
 # fixme sanity checking:
 # we want to make sure we don't get bogus results
@@ -50,7 +52,7 @@ class NovaClient(object):
         '''
         self.auth = NovaAuth(authfile)
         auth_args = self.auth.get_auth_args()
-        self.client = client.Client(*auth_args, service_type='compute')
+        self.client = client.Client("2.0", **auth_args)
         self.token = None
         self.limit = limit
 
@@ -178,10 +180,16 @@ class NovaAuth(object):
         suitable for using with the nova client api
         '''
 
-        return [self.authinfo['USERNAME'],
-                self.authinfo['PASSWORD'],
-                self.authinfo['TENANT_NAME'],
-                self.authinfo['AUTH_URL']]
+        auth = keystoneidentity.Password(
+            auth_url=self.authinfo['AUTH_URL'],
+            username=self.authinfo['USERNAME'],
+            password=self.authinfo['PASSWORD'],
+            project_name=self.authinfo['TENANT_NAME'],
+            project_domain_name='default',
+            user_domain_name='default'
+        )
+
+        return {"session": keystonesession.Session(auth=auth)}
 
 
 class SaltKeys(object):
