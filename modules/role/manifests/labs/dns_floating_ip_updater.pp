@@ -22,11 +22,12 @@ class role::labs::dns_floating_ip_updater {
     }
 
     file { '/etc/dns-floating-ip-updater.py':
-        ensure => present,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0750',
-        source => 'puppet:///modules/role/labs/dns-floating-ip-updater.py'
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0750',
+        source  => 'puppet:///modules/role/labs/dns-floating-ip-updater.py',
+        require => Package['python-ipaddress']
     }
 
     cron { 'floating-ip-ptr-record-updater':
