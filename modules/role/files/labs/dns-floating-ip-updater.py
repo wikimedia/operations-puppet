@@ -1,5 +1,6 @@
 #!/usr/bin/python
 import argparse
+import ipaddress
 import re
 import yaml
 
@@ -135,7 +136,7 @@ for tenant in keystone_client.tenants.list():
 
 # Now we go through all the A record data we have stored
 public_PTRs = {}
-for (A_FQDN, project), (managed_here, IPv4s) in public_addrs.items():
+for (A_FQDN, project), (managed_here, IPs) in public_addrs.items():
     # Set up any that need to be and don't already exist
     if managed_here and A_FQDN not in existing_As:
         designate_client = designateclient.Client(session=keystone_sessions[project])
@@ -147,15 +148,15 @@ for (A_FQDN, project), (managed_here, IPv4s) in public_addrs.items():
                 project_main_zone_ids[project],
                 A_FQDN,
                 'A',
-                IPv4s,
+                IPs,
                 description=managed_description
             )
         else:
             print("Oops! No main zone for that project.")
 
     # Generate PTR record data, handling rewriting for RFC 2317 delegation as configured
-    for IPv4 in IPv4s:
-        PTR_FQDN = '.'.join(reversed(IPv4.split('.'))) + '.in-addr.arpa.'
+    for IP in IPs:
+        PTR_FQDN = ipaddress.ip_address(IP.decode('ascii')).reverse_pointer + '.'
         delegated_PTR_FQDN = floating_ip_ptr_fqdn_matching_regex.sub(
             config['floating_ip_ptr_fqdn_replacement_pattern'],
             PTR_FQDN
