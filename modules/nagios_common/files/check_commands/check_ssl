@@ -9,7 +9,7 @@
 #
 # Example usage:
 #   check_ssl -H test.example.org -p 443
-#   check_ssl -H text-lb.wikimedia.org -p 443 --cn en.wikipedia.org --warning 30 --critical 60 --issuer GlobalSign
+#   check_ssl -H text-lb.wikimedia.org -p 443 --cn en.wikipedia.org --warning 30 --critical 15 --issuer GlobalSign
 
 package Local::CheckSSL;
 
