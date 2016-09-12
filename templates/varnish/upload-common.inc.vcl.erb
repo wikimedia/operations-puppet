@@ -36,6 +36,16 @@ sub upload_common_deliver {
 	}
 }
 
+sub upload_common_backend_response {
+<% if @varnish_version4 -%>
+	// Debugging T144257. Don't cache 200 responses with CL:0.
+	if (beresp.http.Content-Length == "0" && beresp.status == 200) {
+		set beresp.ttl = 0s;
+		set beresp.uncacheable = true;
+	}
+<% end -%>
+}
+
 // Varnish strips the Range header before copying req into bereq. Save it into
 // a header and restore it in upload_common_set_range
 sub upload_common_set_xrange {
