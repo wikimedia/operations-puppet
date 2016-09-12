@@ -27,3 +27,4 @@ cache::route_table:
   codfw: 'direct'
   ulsfo: 'codfw'
   esams: 'codfw'
+varnish_version4: true
