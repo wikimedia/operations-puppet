@@ -13,11 +13,14 @@ class role::puppetmaster::frontend {
     # Puppet frontends are git masters at least for their datacenter
 
     $ca_server = hiera('puppetmaster::ca_server', 'palladium.eqiad.wmnet')
-    $ca = $ca_server ? {
-        $::fqdn => true,
-        default => false,
-    }
 
+    if $ca_server == $::fqdn {
+        $ca = true
+        $cron = 'absent'
+    } else {
+        $ca = false
+        $cron = 'present'
+    }
 
     ## Configuration
     $servers = hiera('puppetmaster::servers', {})
@@ -31,7 +34,7 @@ class role::puppetmaster::frontend {
         }
     }
 
-    
+
     class { '::puppetmaster':
         bind_address  => '*',
         server_type   => 'frontend',
@@ -60,6 +63,13 @@ class role::puppetmaster::frontend {
         priority     => 50,
     }
 
+    # Run the rsync servers on all puppetmaster frontends, and activate
+    # crons syncing from the master
+    class { '::puppetmaster::rsync':
+        server      => $ca_server,
+        cron_ensure => $cron,
+    }
+
     ferm::service { 'puppetmaster-backend':
         proto => 'tcp',
         port  => 8141,
@@ -74,6 +84,12 @@ class role::puppetmaster::frontend {
     ferm::service { 'ssh_puppet_merge':
         proto  => 'tcp',
         port   => '22',
+        srange => "@resolve((${puppetmaster_frontend_ferm}))"
+    }
+
+    ferm::service { 'rsync_puppet_frontends':
+        proto  => 'tcp',
+        port   => '873',
         srange => "@resolve((${puppetmaster_frontend_ferm}))"
     }
 }
