@@ -4,7 +4,6 @@ class role::toollabs::docker::registry {
     require role::labs::lvm::srv
 
     sslcert::certificate { 'star.tools.wmflabs.org':
-        skip_private => true,
         before       => Class['::docker::registry'],
     }
 
