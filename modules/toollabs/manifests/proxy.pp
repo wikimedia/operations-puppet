@@ -12,7 +12,6 @@ class toollabs::proxy(
 
     if $ssl_install_certificate {
         sslcert::certificate { $ssl_certificate_name:
-            skip_private => true,
             before       => Class['::dynamicproxy'],
         }
     }
