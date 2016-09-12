@@ -3,3 +3,4 @@ debdeploy::grains:
     value: standard
 admin::groups:
   - gitpuppet
+  - datacenter-ops
