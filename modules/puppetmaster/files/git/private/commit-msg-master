@@ -1,0 +1,4 @@
+#!/bin/sh
+
+# Audit the committer adding it's login to the message
+sed -i "1s/^/(${SUDO_USER}) /" "${1}"
