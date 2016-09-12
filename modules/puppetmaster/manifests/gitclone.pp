@@ -131,7 +131,7 @@ class puppetmaster::gitclone(
                 require => File['/srv/private']
             }
             file { '/srv/private/.git/config':
-                source  => 'puppet:///modules/puppetmaster/git/private/git-config-master',
+                source  => 'puppet:///modules/puppetmaster/git/private/gitconfig-master',
                 owner   => 'gitpuppet',
                 group   => 'gitpuppet',
                 mode    => '0550',
