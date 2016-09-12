@@ -32,7 +32,7 @@ module Puppet::Parser::Functions
     if selector.include? 'cluster'
       clusters = selector['cluster']
     else
-      clusters = keys(cluster_config)
+      clusters = cluster_config.keys
     end
 
     if selector.include? 'site'
