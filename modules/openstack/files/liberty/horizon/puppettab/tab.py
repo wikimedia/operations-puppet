@@ -64,7 +64,6 @@ class PuppetTab(tabs.TableTab):
         kwargs = {
             'fqdn': fqdn,
             'tenantid': instance.tenant_id,
-            'instanceid': instance.id,
         }
         context['edithieraurl'] = urlresolvers.reverse(url, kwargs=kwargs)
 

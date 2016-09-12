@@ -21,12 +21,12 @@ urlpatterns = patterns(
     '',
     url(r'^$', panel.IndexView.as_view(), name='index'),
     url(r'^(?P<fqdn>[^/]+)/(?P<tenantid>[^/]+)/'
-        '(?P<instanceid>[^/]+)/(?P<roleid>[^/]+)/applypuppetrole$',
+        '(?P<roleid>[^/]+)/applypuppetrole$',
         views.ApplyRoleView.as_view(), name='applypuppetrole'),
     url(r'^(?P<fqdn>[^/]+)/(?P<tenantid>[^/]+)/'
-        '(?P<instanceid>[^/]+)/(?P<roleid>[^/]+)/removepuppetrole$',
+        '(?P<roleid>[^/]+)/removepuppetrole$',
         views.RemoveRoleView.as_view(), name='removepuppetrole'),
     url(r'^(?P<fqdn>[^/]+)/(?P<tenantid>[^/]+)/'
-        '(?P<instanceid>[^/]+)/edithiera$',
+        'edithiera$',
         views.EditHieraView.as_view(), name='edithiera'),
 )

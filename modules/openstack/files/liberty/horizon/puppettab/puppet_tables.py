@@ -71,7 +71,6 @@ class RemoveRole(tables.LinkAction):
         kwargs = {
             'fqdn': datum.fqdn,
             'tenantid': datum.tenant_id,
-            'instanceid': datum.instance_id,
             'roleid': datum.name,
         }
         return urlresolvers.reverse(url, kwargs=kwargs)
@@ -92,7 +91,6 @@ class ApplyRole(tables.LinkAction):
         kwargs = {
             'fqdn': datum.fqdn,
             'tenantid': datum.tenant_id,
-            'instanceid': datum.instance_id,
             'roleid': datum.name,
         }
         return urlresolvers.reverse(url, kwargs=kwargs)
