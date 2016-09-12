@@ -189,7 +189,7 @@ node 'bast4001.wikimedia.org' {
         interface => 'eth0',
     }
 
-    role(bastionhost::general, ipmi::mgmt, installserver::tftp_server)
+    role(bastionhost::general, ipmi::mgmt, installserver::tftp_server, prometheus::ops)
 
     class { 'ganglia::monitor::aggregator':
         sites =>  'ulsfo',
@@ -1229,7 +1229,7 @@ node 'bast3001.wikimedia.org' {
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
     }
-    role(bastionhost::general, installserver::tftp_server)
+    role(bastionhost::general, installserver::tftp_server, prometheus::ops)
 
     class { 'ganglia::monitor::aggregator':
         sites =>  'esams',
