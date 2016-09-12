@@ -81,24 +81,20 @@ class role::cache::upload(
     })
 
     if ($::role::cache::2layer::varnish_version4) {
-        # The persistent storage backend is deprecated and buggy in Varnish 4.
-        # Use "file" instead. See T142810, T142848 and
+        # The persistent storage backend has been renamed into
+        # deprecated_persistent in varnish 4:
         # https://www.varnish-cache.org/docs/trunk/phk/persistent.html
-        $storage_backend = 'file'
-        $storage_mma_1 = ''
-        $storage_mma_2 = ''
+        $persistent_name = 'deprecated_persistent'
     }
     else {
-        $storage_backend = 'persistent'
-        $storage_mma_1 = ",${::role::cache::2layer::mma[0]}"
-        $storage_mma_2 = ",${::role::cache::2layer::mma[1]}"
+        $persistent_name = 'persistent'
     }
 
     $storage_size_bigobj = floor($::role::cache::2layer::storage_size / 6)
     $storage_size_up = $::role::cache::2layer::storage_size - $storage_size_bigobj
     $upload_storage_args = join([
-        "-s main1=${storage_backend},/srv/${::role::cache::2layer::storage_parts[0]}/varnish.main1,${storage_size_up}G${storage_mma_1}",
-        "-s main2=${storage_backend},/srv/${::role::cache::2layer::storage_parts[1]}/varnish.main2,${storage_size_up}G${storage_mma_2}",
+        "-s main1=${persistent_name},/srv/${::role::cache::2layer::storage_parts[0]}/varnish.main1,${storage_size_up}G,${::role::cache::2layer::mma[0]}",
+        "-s main2=${persistent_name},/srv/${::role::cache::2layer::storage_parts[1]}/varnish.main2,${storage_size_up}G,${::role::cache::2layer::mma[1]}",
         "-s bigobj1=file,/srv/${::role::cache::2layer::storage_parts[0]}/varnish.bigobj1,${storage_size_bigobj}G",
         "-s bigobj2=file,/srv/${::role::cache::2layer::storage_parts[1]}/varnish.bigobj2,${storage_size_bigobj}G",
     ], ' ')
