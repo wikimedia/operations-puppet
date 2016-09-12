@@ -8,14 +8,11 @@
 # [*puppet_cert_name*]
 #   The name on the puppet certificate.
 #
-# [*ssldir*]
-#   The directory where the puppet ssl certs are contained
-#
 class etcd::ssl(
     $puppet_cert_name = $::fqdn,
-    $ssldir           = '/var/lib/puppet/ssl',
     ) {
 
+    $ssldir = puppet_ssldir()
     $basedir = '/var/lib/etcd/ssl'
     $pubdir = "${basedir}/certs"
 
