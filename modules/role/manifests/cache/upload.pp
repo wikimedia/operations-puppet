@@ -29,7 +29,7 @@ class role::cache::upload(
         'connect_timeout'       => '5s',
         'first_byte_timeout'    => '35s',
         'max_connections'       => 10000,
-        #'probe'                 => 'varnish',
+        'probe'                 => 'varnish',
     }
 
     $apps = hiera('cache::upload::apps')
