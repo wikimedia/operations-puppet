@@ -43,13 +43,9 @@ class PuppetClass():
         self.filter_tags = []
         self.instance = None
 
-    def update_instance_data(self, instance):
-        self.instance_id = instance.id
-        self.tenant_id = instance.tenant_id
-        tld = getattr(settings,
-                      "INSTANCE_TLD",
-                      "eqiad.wmflabs")
-        self.fqdn = "%s.%s.%s" % (instance.name, instance.tenant_id, tld)
+    def update_prefix_data(self, prefix, tenant_id):
+        self.prefix = prefix
+        self.tenant_id = tenant_id
         return self
 
     def mark_applied(self, paramdict):

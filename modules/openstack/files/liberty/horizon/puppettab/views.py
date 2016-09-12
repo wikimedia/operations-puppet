@@ -33,7 +33,7 @@ LOG = logging.getLogger(__name__)
 
 
 class EditHieraForm(forms.SelfHandlingForm):
-    fqdn = forms.CharField(widget=forms.HiddenInput())
+    prefix = forms.CharField(widget=forms.HiddenInput())
     tenant_id = forms.CharField(widget=forms.HiddenInput())
     hieradata = forms.CharField(label=_("Instance hiera config:"),
                                 widget=forms.Textarea(attrs={
@@ -42,7 +42,7 @@ class EditHieraForm(forms.SelfHandlingForm):
                                 required=False)
 
     def handle(self, request, data):
-        config = puppet_config(data['fqdn'], data['tenant_id'])
+        config = puppet_config(data['prefix'], data['tenant_id'])
         config.set_hiera(yaml.safe_load(data['hieradata']))
         return True
 
@@ -58,10 +58,10 @@ class EditHieraView(forms.ModalFormView):
 
     def get_context_data(self, **kwargs):
         context = super(EditHieraView, self).get_context_data(**kwargs)
-        context['fqdn'] = self.fqdn
+        context['prefix'] = self.prefix
         context['hieradata'] = self.hieradata.hiera
         urlkwargs = {
-            'fqdn': self.fqdn,
+            'prefix': self.prefix,
             'tenantid': self.tenant_id,
         }
         context['submit_url'] = urlresolvers.reverse(self.submit_url,
@@ -74,19 +74,19 @@ class EditHieraView(forms.ModalFormView):
         validate(refer)
         return refer
 
-    def get_fqdn(self):
-        return self.kwargs['fqdn']
+    def get_prefix(self):
+        return self.kwargs['prefix']
 
     def get_tenant_id(self):
         return self.kwargs['tenantid']
 
     def get_initial(self):
         initial = {}
-        self.fqdn = self.get_fqdn()
+        self.prefix = self.get_prefix()
         self.tenant_id = self.get_tenant_id()
-        self.hieradata = puppet_config(self.fqdn, self.tenant_id)
+        self.hieradata = puppet_config(self.prefix, self.tenant_id)
         initial['hieradata'] = self.hieradata.hiera
-        initial['fqdn'] = self.fqdn
+        initial['prefix'] = self.prefix
         initial['tenant_id'] = self.tenant_id
 
         return initial
@@ -101,11 +101,11 @@ class RoleViewBase(forms.ModalFormView):
         context = super(RoleViewBase, self).get_context_data(**kwargs)
         context['puppetrole'] = self.puppet_role
         urlkwargs = {
-            'fqdn': self.fqdn,
+            'prefix': self.prefix,
             'tenantid': self.tenant_id,
             'roleid': self.role_id,
         }
-        context['fqdn'] = self.fqdn
+        context['prefix'] = self.prefix
         context['submit_url'] = urlresolvers.reverse(self.submit_url,
                                                      kwargs=urlkwargs)
         if self.puppet_role.docs:
@@ -129,21 +129,21 @@ class RoleViewBase(forms.ModalFormView):
         puppet_role = puppet_roles.get_role_by_name(rolename)
         return puppet_role
 
-    def get_fqdn(self):
-        return self.kwargs['fqdn']
+    def get_prefix(self):
+        return self.kwargs['prefix']
 
     def get_tenant_id(self):
         return self.kwargs['tenantid']
 
     def get_initial(self):
         initial = {}
-        self.fqdn = self.get_fqdn()
+        self.prefix = self.get_prefix()
         self.tenant_id = self.get_tenant_id()
         self.role_id = self.kwargs['roleid']
         self.puppet_role = self.get_puppet_role()
         initial['puppet_role'] = self.puppet_role
         initial['tenant_id'] = self.tenant_id
-        initial['fqdn'] = self.fqdn
+        initial['prefix'] = self.prefix
         return initial
 
 
@@ -152,7 +152,7 @@ class ApplyRoleForm(forms.SelfHandlingForm):
         super(ApplyRoleForm, self).__init__(request, *args, **kwargs)
         initial = kwargs.get('initial', {})
         self.tenant_id = initial['tenant_id']
-        self.fqdn = initial['fqdn']
+        self.prefix = initial['prefix']
         self.role = initial['puppet_role']
         if self.role.params:
             for key in self.role.params.keys():
@@ -167,7 +167,7 @@ class ApplyRoleForm(forms.SelfHandlingForm):
                 )
 
     def handle(self, request, data):
-        config = puppet_config(self.fqdn, self.tenant_id)
+        config = puppet_config(self.prefix, self.tenant_id)
         config.apply_role(self.role, data)
         return True
 
@@ -186,11 +186,11 @@ class RemoveRoleForm(forms.SelfHandlingForm):
         super(RemoveRoleForm, self).__init__(request, *args, **kwargs)
         initial = kwargs.get('initial', {})
         self.tenant_id = initial['tenant_id']
-        self.fqdn = initial['fqdn']
+        self.prefix = initial['prefix']
         self.role = initial['puppet_role']
 
     def handle(self, request, data):
-        config = puppet_config(self.fqdn, self.tenant_id)
+        config = puppet_config(self.prefix, self.tenant_id)
         config.remove_role(self.role)
         return True
 

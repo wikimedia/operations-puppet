@@ -37,38 +37,32 @@ class PuppetTab(tabs.TableTab):
 
     def __init__(self, *args, **kwargs):
         super(PuppetTab, self).__init__(*args, **kwargs)
-        fqdn = self.get_fqdn()
-        instance = self.get_instance()
-        self.config = puppet_config(fqdn, instance.tenant_id)
-
-    def get_instance(self):
-        return self.tab_group.kwargs['instance']
-
-    def get_fqdn(self):
-        instance = self.get_instance()
-        tld = getattr(settings,
-                      "INSTANCE_TLD",
-                      "eqiad.wmflabs")
-
-        fqdn = "%s.%s.%s" % (instance.name, instance.tenant_id, tld)
-        return fqdn
+        if 'instance' in self.tab_group.kwargs:
+            tld = getattr(settings,
+                          "INSTANCE_TLD",
+                          "eqiad.wmflabs")
+            instance = self.tab_group.kwargs['instance']
+            self.prefix = "%s.%s.%s" % (instance.name,
+                                        instance.tenant_id, tld)
+            self.tenant_id = instance.tenant_id
+        else:
+            LOG.error("We aren't an instance tab, we need a new way to find prefix and tenant_id.")
+        self.config = puppet_config(self.prefix, self.tenant_id)
 
     def get_context_data(self, request, **kwargs):
         context = super(PuppetTab, self).get_context_data(request, **kwargs)
-        instance = self.get_instance()
-        context['instance'] = instance
+        context['prefix'] = self.prefix
         context['config'] = self.config
 
-        fqdn = self.get_fqdn()
         url = "horizon:project:puppet:edithiera"
         kwargs = {
-            'fqdn': fqdn,
-            'tenantid': instance.tenant_id,
+            'prefix': self.prefix,
+            'tenantid': self.tenant_id,
         }
         context['edithieraurl'] = urlresolvers.reverse(url, kwargs=kwargs)
 
         return context
 
     def get_puppet_data(self):
-        return [role.update_instance_data(self.get_instance()) for
+        return [role.update_prefix_data(self.prefix, self.tenant_id) for
                 role in self.config.allroles]
