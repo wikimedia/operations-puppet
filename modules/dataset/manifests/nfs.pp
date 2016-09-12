@@ -53,4 +53,12 @@ class dataset::nfs($enable=true) {
         description   => 'NFS',
         check_command => 'check_tcp!2049',
     }
+
+    file { '/etc/modprobe.d/nfs-lockd.conf':
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0644',
+        content => 'options lockd nlm_udpport=32768 nlm_tcpport=32769',
+    }
 }
