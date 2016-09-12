@@ -24,7 +24,7 @@ module Puppet::Parser::Functions
   newfunction(:get_clusters, :type => :rvalue) do |args|
     all = {}
     # Ganglia config is the source of truth about clusters/site
-    cluster_config = function_hiera('ganglia_clusters', {})
+    cluster_config = function_hiera(['ganglia_clusters', {}])
 
     # Arguments are an hash of selectors
     selector ||= {}
@@ -41,7 +41,7 @@ module Puppet::Parser::Functions
       sites = false
     end
 
-    function_query_resources(false, '@@Ganglia::Cluster', false).each do |node|
+    function_query_resources([false, '@@Ganglia::Cluster', false]).each do |node|
       cluster = node['parameters']['cluster']
       site = node['parameters']['site']
       fqdn = node['title']
