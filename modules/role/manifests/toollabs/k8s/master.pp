@@ -6,7 +6,6 @@ class role::toollabs::k8s::master {
     $etcd_url = join(prefix(suffix(hiera('k8s::etcd_hosts'), ':2379'), 'https://'), ',')
 
     sslcert::certificate { 'star.tools.wmflabs.org':
-        skip_private => true,
         before       => Class['::k8s::apiserver'],
     }
 
