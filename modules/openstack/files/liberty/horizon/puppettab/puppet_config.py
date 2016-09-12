@@ -136,10 +136,11 @@ class puppet_config():
         roleurl = "%s/%s/prefix/%s/roles" % (self.apiurl,
                                              self.tenant_id,
                                              self.prefix)
-        requests.post(roleurl,
-                      verify=False,
-                      data=list_dump,
-                      headers={'Content-Type': 'application/x-yaml'})
+        req = requests.post(roleurl,
+                            verify=False,
+                            data=list_dump,
+                            headers={'Content-Type': 'application/x-yaml'})
+        req.raise_for_status()
         self.refresh()
 
     def set_hiera(self, hiera_yaml):
@@ -147,8 +148,9 @@ class puppet_config():
         hieraurl = "%s/%s/prefix/%s/hiera" % (self.apiurl,
                                               self.tenant_id,
                                               self.prefix)
-        requests.post(hieraurl,
-                      verify=False,
-                      data=hiera_dump,
-                      headers={'Content-Type': 'application/x-yaml'})
+        req = requests.post(hieraurl,
+                            verify=False,
+                            data=hiera_dump,
+                            headers={'Content-Type': 'application/x-yaml'})
+        req.raise_for_status()
         self.refresh()
