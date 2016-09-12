@@ -88,7 +88,7 @@ class puppetmaster::gitclone(
                 ensure  => directory,
                 owner   => 'gitpuppet',
                 group   => 'gitpuppet',
-                mode    => '0644', # Will become 0755 for dir automatically
+                mode    => '0640', # Will become 0755 for dir automatically
                 recurse => 'true',
             }
 
