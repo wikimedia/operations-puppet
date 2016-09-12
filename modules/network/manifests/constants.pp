@@ -55,6 +55,14 @@ class network::constants {
                     '10.192.16.132',                    # mira.codfw.wmnet
                     '2620:0:860:102:10:192:16:132',     # mira.codfw.wmnet
                 ],
+            'puppet_frontends' => [
+                    '10.64.16.160',               # palladium.eqiad.wmnet
+                    '2620:0:861:102:10:64:16:16', # palladium.eqiad.wmnet
+                    '10.64.16.73',                # puppetmaster1001.eqiad.wmnet
+                    '2620:0:861:102:10:64:16:73', # puppetmaster1001.eqiad.wmnet
+                    '10.192.0.27',                # puppetmaster2001.codfw.wmnet
+                    '2620:0:860:101:10:192:0:27', # puppetmaster2001.codfw.wmnet
+                ],
             },
         'labtest' => {
             'bastion_hosts' => [
