@@ -14,10 +14,14 @@ class citoid( $zotero_host,
               $zotero_port,
 ) {
     service::node { 'citoid':
-        port            => 1970,
-        config          => template('citoid/config.yaml.erb'),
-        healthcheck_url => '',
-        has_spec        => true,
-        deployment      => 'scap3',
+        port              => 1970,
+        healthcheck_url   => '',
+        has_spec          => true,
+        deployment        => 'scap3',
+        deployment_config => true,
+        deployment_vars   => {
+            zotero_host => $zotero_host,
+            zotero_port => $zotero_port,
+        },
     }
 }
