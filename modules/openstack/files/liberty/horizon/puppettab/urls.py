@@ -20,13 +20,13 @@ from wikimediapuppettab import views
 urlpatterns = patterns(
     '',
     url(r'^$', panel.IndexView.as_view(), name='index'),
-    url(r'^(?P<fqdn>[^/]+)/(?P<tenantid>[^/]+)/'
+    url(r'^(?P<prefix>[^/]+)/(?P<tenantid>[^/]+)/'
         '(?P<roleid>[^/]+)/applypuppetrole$',
         views.ApplyRoleView.as_view(), name='applypuppetrole'),
-    url(r'^(?P<fqdn>[^/]+)/(?P<tenantid>[^/]+)/'
+    url(r'^(?P<prefix>[^/]+)/(?P<tenantid>[^/]+)/'
         '(?P<roleid>[^/]+)/removepuppetrole$',
         views.RemoveRoleView.as_view(), name='removepuppetrole'),
-    url(r'^(?P<fqdn>[^/]+)/(?P<tenantid>[^/]+)/'
+    url(r'^(?P<prefix>[^/]+)/(?P<tenantid>[^/]+)/'
         'edithiera$',
         views.EditHieraView.as_view(), name='edithiera'),
 )
