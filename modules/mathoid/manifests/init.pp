@@ -14,8 +14,5 @@ class mathoid {
         has_spec          => true,
         deployment        => 'scap3',
         deployment_config => true,
-        deployment_vars   => {
-            'testvar' => 'testvalue'
-        }
     }
 }
