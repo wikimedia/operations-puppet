@@ -25,4 +25,16 @@ class role::dataset::common {
         port   => '111',
         srange => '$PRODUCTION_NETWORKS',
     }
+
+    ferm::service { 'nfs_lockd_udp':
+        proto  => 'udp',
+        port   => '32768',
+        srange => '$PRODUCTION_NETWORKS',
+    }
+
+    ferm::service { 'nfs_lockd_tcp':
+        proto  => 'tcp',
+        port   => '32769',
+        srange => '$PRODUCTION_NETWORKS',
+    }
 }
