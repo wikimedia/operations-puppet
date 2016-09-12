@@ -73,7 +73,7 @@ if __name__ == '__main__':
             sys.exit(-1)
 
         attrs = conn.response[0]['attributes']
-        classes.update(attrs.get('puppteClass', []))
+        classes.update(attrs.get('puppetClass', []))
 
     url = 'http://localhost:8100/v1/{project}/node/{fqdn}'.format(
         project=hostname.split('.')[1],
