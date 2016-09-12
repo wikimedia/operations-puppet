@@ -69,7 +69,7 @@ class RemoveRole(tables.LinkAction):
     def get_link_url(self, datum):
         url = "horizon:project:puppet:removepuppetrole"
         kwargs = {
-            'fqdn': datum.fqdn,
+            'prefix': datum.prefix,
             'tenantid': datum.tenant_id,
             'roleid': datum.name,
         }
@@ -89,7 +89,7 @@ class ApplyRole(tables.LinkAction):
     def get_link_url(self, datum):
         url = "horizon:project:puppet:applypuppetrole"
         kwargs = {
-            'fqdn': datum.fqdn,
+            'prefix': datum.prefix,
             'tenantid': datum.tenant_id,
             'roleid': datum.name,
         }
@@ -153,8 +153,8 @@ class PuppetTable(tables.DataTable):
     tenant = tables.Column('tenant',
                            verbose_name=_('Tenant'),
                            hidden=True)
-    tenant = tables.Column('fqdn',
-                           verbose_name=_('FQDN'),
+    tenant = tables.Column('prefix',
+                           verbose_name=_('prefix'),
                            hidden=True)
     roleid = tables.Column('name', verbose_name=_('ID'), hidden=True)
 

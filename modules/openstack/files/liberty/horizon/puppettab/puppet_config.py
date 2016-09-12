@@ -28,8 +28,8 @@ LOG = logging.getLogger(__name__)
 #
 # This class manages all communication with the home-made puppet REST backend
 class puppet_config():
-    def __init__(self, fqdn, tenant_id):
-        self.fqdn = fqdn
+    def __init__(self, prefix, tenant_id):
+        self.prefix = prefix
         self.tenant_id = tenant_id
         self.apiurl = getattr(settings,
                               "PUPPET_CONFIG_BACKEND",
@@ -40,7 +40,7 @@ class puppet_config():
     def refresh(self):
         classesurl = "%s/%s/prefix/%s/roles" % (self.apiurl,
                                                 self.tenant_id,
-                                                self.fqdn)
+                                                self.prefix)
         req = requests.get(classesurl, verify=False)
         if req.status_code == 404:
             self.roles = []
@@ -50,7 +50,7 @@ class puppet_config():
 
         hieraurl = "%s/%s/prefix/%s/hiera" % (self.apiurl,
                                               self.tenant_id,
-                                              self.fqdn)
+                                              self.prefix)
         req = requests.get(hieraurl, verify=False)
         if req.status_code == 404:
             self.hiera_raw = ""
@@ -135,7 +135,7 @@ class puppet_config():
         list_dump = yaml.safe_dump(role_list, default_flow_style=False)
         roleurl = "%s/%s/prefix/%s/roles" % (self.apiurl,
                                              self.tenant_id,
-                                             self.fqdn)
+                                             self.prefix)
         requests.post(roleurl,
                       verify=False,
                       data=list_dump,
@@ -146,7 +146,7 @@ class puppet_config():
         hiera_dump = yaml.safe_dump(hiera_yaml, default_flow_style=False)
         hieraurl = "%s/%s/prefix/%s/hiera" % (self.apiurl,
                                               self.tenant_id,
-                                              self.fqdn)
+                                              self.prefix)
         requests.post(hieraurl,
                       verify=False,
                       data=hiera_dump,
