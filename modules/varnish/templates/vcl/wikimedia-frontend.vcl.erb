@@ -127,8 +127,14 @@ sub recv_fe_ip_processing {
 	// and XFF is external + our addition of client.ip.
 
 	if (!req.http.X-Client-IP) {
-		set req.http.X-Client-IP = client.ip;
 		unset req.http.via-nginx;
+		set req.http.X-Client-IP = client.ip;
+		if (!req.http.X-Client-IP) {
+			// apparently sometimes the above doesn't set it???  use
+			// illegal RFC 5735 documentation network to avoid
+			// sending NULL to netmapper-1.3 for now
+			set req.http.X-Client-IP = "192.0.2.1";
+		}
 	} else {
 		set req.http.via-nginx = 1;
 	}
