@@ -111,6 +111,16 @@ class puppetmaster::gitclone(
                 require => Exec['/srv/private init'],
             }
 
+            # Audit hook, add username of commiter in message
+            file { '/srv/private/.git/hooks/commit-msg':
+                ensure  => present,
+                content => 'puppet:///modules/puppetmaster/git/private/commit-msg-master',
+                owner   => 'gitpuppet',
+                group   => 'gitpuppet',
+                mode    => '0550',
+                require => Exec['/srv/private init'],
+            }
+
             # Syncing hooks
             # This hook updates /var/lib and pushes changes to the backend workers
             file { '/srv/private/.git/hooks/post-commit':
