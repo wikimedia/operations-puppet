@@ -10,7 +10,7 @@ class toollabs::static(
     include toollabs::infrastructure
 
     if $ssl_certificate_name != false {
-        sslcert::certificate { $ssl_certificate_name: skip_private => true }
+        sslcert::certificate { $ssl_certificate_name: }
     }
 
     labs_lvm::volume { 'cdnjs-disk':
