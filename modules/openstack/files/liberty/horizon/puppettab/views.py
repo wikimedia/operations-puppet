@@ -16,6 +16,7 @@
 import logging
 
 from django.core import urlresolvers
+from django.core.validators import URLValidator
 from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext_lazy as _
 
@@ -62,15 +63,16 @@ class EditHieraView(forms.ModalFormView):
         urlkwargs = {
             'fqdn': self.fqdn,
             'tenantid': self.tenant_id,
-            'instanceid': self.instance_id,
         }
         context['submit_url'] = urlresolvers.reverse(self.submit_url,
                                                      kwargs=urlkwargs)
         return context
 
     def get_success_url(self):
-        success_url = "horizon:project:instances:detail"
-        return urlresolvers.reverse(success_url, args=[self.instance_id])
+        validate = URLValidator()
+        refer = self.request.META.get('HTTP_REFERER', '/')
+        validate(refer)
+        return refer
 
     def get_fqdn(self):
         return self.kwargs['fqdn']
@@ -78,14 +80,10 @@ class EditHieraView(forms.ModalFormView):
     def get_tenant_id(self):
         return self.kwargs['tenantid']
 
-    def get_instance_id(self):
-        return self.kwargs['instanceid']
-
     def get_initial(self):
         initial = {}
         self.fqdn = self.get_fqdn()
         self.tenant_id = self.get_tenant_id()
-        self.instance_id = self.get_instance_id()
         self.hieradata = puppet_config(self.fqdn, self.tenant_id)
         initial['hieradata'] = self.hieradata.hiera
         initial['fqdn'] = self.fqdn
@@ -105,7 +103,6 @@ class RoleViewBase(forms.ModalFormView):
         urlkwargs = {
             'fqdn': self.fqdn,
             'tenantid': self.tenant_id,
-            'instanceid': self.instance_id,
             'roleid': self.role_id,
         }
         context['fqdn'] = self.fqdn
@@ -122,8 +119,10 @@ class RoleViewBase(forms.ModalFormView):
         return context
 
     def get_success_url(self):
-        success_url = "horizon:project:instances:detail"
-        return urlresolvers.reverse(success_url, args=[self.instance_id])
+        validate = URLValidator()
+        refer = self.request.META.get('HTTP_REFERER', '/')
+        validate(refer)
+        return refer
 
     def get_puppet_role(self):
         rolename = self.kwargs['roleid']
@@ -136,19 +135,13 @@ class RoleViewBase(forms.ModalFormView):
     def get_tenant_id(self):
         return self.kwargs['tenantid']
 
-    def get_instance_id(self):
-        return self.kwargs['instanceid']
-
     def get_initial(self):
         initial = {}
         self.fqdn = self.get_fqdn()
         self.tenant_id = self.get_tenant_id()
-        self.instance_id = self.get_instance_id()
         self.role_id = self.kwargs['roleid']
         self.puppet_role = self.get_puppet_role()
-        self.instance_id = self.get_instance_id()
         initial['puppet_role'] = self.puppet_role
-        initial['instance_id'] = self.instance_id
         initial['tenant_id'] = self.tenant_id
         initial['fqdn'] = self.fqdn
         return initial
@@ -158,7 +151,6 @@ class ApplyRoleForm(forms.SelfHandlingForm):
     def __init__(self, request, *args, **kwargs):
         super(ApplyRoleForm, self).__init__(request, *args, **kwargs)
         initial = kwargs.get('initial', {})
-        self.instance_id = initial['instance_id']
         self.tenant_id = initial['tenant_id']
         self.fqdn = initial['fqdn']
         self.role = initial['puppet_role']
@@ -193,7 +185,6 @@ class RemoveRoleForm(forms.SelfHandlingForm):
     def __init__(self, request, *args, **kwargs):
         super(RemoveRoleForm, self).__init__(request, *args, **kwargs)
         initial = kwargs.get('initial', {})
-        self.instance_id = initial['instance_id']
         self.tenant_id = initial['tenant_id']
         self.fqdn = initial['fqdn']
         self.role = initial['puppet_role']
