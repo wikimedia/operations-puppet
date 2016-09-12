@@ -24,7 +24,7 @@ cache::tune_for_media: true
 #
 cache::route_table:
   eqiad: 'direct'
-  codfw: 'direct'
+  codfw: 'eqiad'
   ulsfo: 'codfw'
-  esams: 'codfw'
+  esams: 'eqiad'
 varnish_version4: true
