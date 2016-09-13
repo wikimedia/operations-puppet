@@ -3,13 +3,14 @@
 # Provisions WDQS service package
 #
 class wdqs::service(
-    $use_git_deploy=true,
     $package_dir=$::wdqs::package_dir,
-    $username=$::wdqs::username
-    ) {
+    $username=$::wdqs::username,
+    $config_file='RWStore.properties',
+) {
+
     include ::wdqs::packages
 
-    if $use_git_deploy {
+    if $::wdqs::use_git_deploy {
 
         package { 'wdqs':
             ensure   => present,

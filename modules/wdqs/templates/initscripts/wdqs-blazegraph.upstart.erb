@@ -7,6 +7,6 @@ setuid <%= @username %>
 console log
 chdir <%= @package_dir %>
 
-exec /bin/bash <%= @package_dir %>/runBlazegraph.sh
+exec /bin/bash <%= @package_dir %>/runBlazegraph.sh -f <%= @config_file %>
 respawn
 respawn limit 10 30

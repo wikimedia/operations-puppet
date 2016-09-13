@@ -4,18 +4,19 @@
 # for now a manual process.
 #
 # == Parameters:
-# - $version: Version of the service to install
 # - $username: Username owning the service
 # - $package_dir:  Directory where the service should be installed.
 # - $data_dir: Directory where the database should be stored
 # - $log_dir: Directory where the logs go
 class wdqs(
-    $version = '0.0.2',
+    $use_git_deploy = true,
     $username = 'blazegraph',
     $package_dir = '/srv/deployment/wdqs/wdqs',
     $data_dir = '/var/lib/wdqs',
     $log_dir = '/var/log/wdqs',
 ) {
+
+    $deploy_user = 'deploy-service'
 
     group { $username:
         ensure => present,
@@ -61,11 +62,16 @@ class wdqs(
         }
     }
 
+    $config_dir_group = $use_git_deploy ? {
+        true    => $deploy_user,
+        default => 'root',
+    }
+
     file { '/etc/wdqs':
         ensure => directory,
         owner  => 'root',
-        group  => 'root',
-        mode   => '0755',
+        group  => $config_dir_group,
+        mode   => '0775',
     }
 
     file { '/etc/wdqs/vars.yaml':
@@ -90,7 +96,7 @@ class wdqs(
     # Deployment
     scap::target { 'wdqs/wdqs':
         service_name => 'wdqs-blazegraph',
-        deploy_user  => 'deploy-service',
+        deploy_user  => $deploy_user,
         manage_user  => true,
     }
 }
