@@ -4,7 +4,7 @@ Description=Wikidate Query Service Updater
 [Service]
 Type=simple
 WorkingDirectory=<%= @package_dir %>
-ExecStart=/bin/bash <%= @package_dir %>/runBlazegraph.sh
+ExecStart=/bin/bash <%= @package_dir %>/runBlazegraph.sh -f <%= @config_file %>
 User=<%= @username %>
 StandardOutput=journal+console
 Restart=always
