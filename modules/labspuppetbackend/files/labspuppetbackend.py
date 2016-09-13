@@ -9,6 +9,19 @@ app = Flask(__name__)
 app.config['PROPAGATE_EXCEPTIONS'] = True
 
 
+def _preprocess_prefix(prefix):
+    """
+    Preprocess prefixes to provide some convenience features
+
+    - Take a single _ to mean empty. The empty prefix applies to all
+      instances in a project, and this makes it easier than trying
+      to have an empty url segment
+    """
+    if prefix == '_':
+        return ''
+    return prefix
+
+
 @app.before_request
 def before_request():
     g.db = pymysql.connect(
@@ -29,6 +42,7 @@ def teardown_request(exception):
 @statsd.timer('get_roles')
 @app.route('/v1/<string:project>/prefix/<string:prefix>/roles', methods=['GET'])
 def get_roles(project, prefix):
+    prefix = _preprocess_prefix(prefix)
     cur = g.db.cursor()
     try:
         cur.execute("""
@@ -55,6 +69,7 @@ def get_roles(project, prefix):
 @statsd.timer('set_roles')
 @app.route('/v1/<string:project>/prefix/<string:prefix>/roles', methods=['POST'])
 def set_roles(project, prefix):
+    prefix = _preprocess_prefix(prefix)
     try:
         roles = yaml.safe_load(request.data)
     except yaml.YAMLError:
@@ -109,6 +124,7 @@ def set_roles(project, prefix):
 @statsd.timer('get_hiera')
 @app.route('/v1/<string:project>/prefix/<string:prefix>/hiera', methods=['GET'])
 def get_hiera(project, prefix):
+    prefix = _preprocess_prefix(prefix)
     cur = g.db.cursor()
     try:
         cur.execute("""
@@ -135,6 +151,7 @@ def get_hiera(project, prefix):
 @statsd.timer('set_hiera')
 @app.route('/v1/<string:project>/prefix/<string:prefix>/hiera', methods=['POST'])
 def set_hiera(project, prefix):
+    prefix = _preprocess_prefix(prefix)
     try:
         hiera = yaml.safe_load(request.data)
     except yaml.YAMLError:
@@ -231,8 +248,9 @@ def get_prefixes(project):
         cur.execute("""
             SELECT prefix FROM prefix WHERE project = %s
         """, (project, ))
+        # Do the inverse of _preprocess_prefix, so callers get a consistent view
         return Response(
-            yaml.safe_dump({'prefixes': [r[0] for r in cur.fetchall()]}),
+            yaml.safe_dump({'prefixes': ['_' if r[0] == '' else r[0] for r in cur.fetchall()]}),
             status=200,
             mimetype='application/x-yaml'
         )
