@@ -42,7 +42,7 @@ class role::cache::upload(
                 'port'                  => 80,
                 'connect_timeout'       => '5s',
                 'first_byte_timeout'    => '35s',
-                'max_connections'       => 1000,
+                'max_connections'       => 10000,
             }
         },
         'swift_thumbs'   => {
@@ -53,7 +53,7 @@ class role::cache::upload(
                 'port'                  => 80,
                 'connect_timeout'       => '5s',
                 'first_byte_timeout'    => '35s',
-                'max_connections'       => 1000,
+                'max_connections'       => 10000,
             }
         },
     }
