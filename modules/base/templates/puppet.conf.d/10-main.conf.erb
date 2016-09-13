@@ -11,7 +11,12 @@ rundir = /var/run/puppet
 factpath = $vardir/lib/facter
 
 [agent]
+<%- if @use_srv_record -%>
+use_srv_records = true
+srv_domain = <%= scope.lookupvar('::site') %>.wmnet
+<%- else -%> 
 server = <%= @server %>
+<%- end -%>
 <% if @certname %>certname = <%= @certname %><% end %>
 <% if @dns_alt_names %>dns_alt_names = <%= @dns_alt_names %><% end %>
 configtimeout = 960
