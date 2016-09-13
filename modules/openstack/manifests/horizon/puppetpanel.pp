@@ -12,7 +12,15 @@ class openstack::horizon::puppetpanel(
         notify  => Exec['djangorefresh'],
         recurse => true
     }
-    file { '/usr/share/openstack-dashboard/openstack_dashboard/local/enabled/_1923_puppet_role_panel.py':
+    file { '/usr/share/openstack-dashboard/openstack_dashboard/local/enabled/_1923_puppet_group_add.py':
+        source  => "puppet:///modules/openstack/${openstack_version}/horizon/puppet_group_add.py",
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0644',
+        notify  => Exec['djangorefresh'],
+        require => Package['openstack-dashboard'],
+    }
+    file { '/usr/share/openstack-dashboard/openstack_dashboard/local/enabled/_1924_puppet_role_panel.py':
         source  => "puppet:///modules/openstack/${openstack_version}/horizon/puppet_tab_enable.py",
         owner   => 'root',
         group   => 'root',

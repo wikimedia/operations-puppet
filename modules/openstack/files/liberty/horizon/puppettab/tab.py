@@ -45,14 +45,23 @@ class PuppetTab(tabs.TableTab):
             self.prefix = "%s.%s.%s" % (instance.name,
                                         instance.tenant_id, tld)
             self.tenant_id = instance.tenant_id
+        elif 'prefix' in self.tab_group.kwargs:
+            self.prefix = self.tab_group.kwargs['prefix']
+            self.tenant_id = self.tab_group.kwargs['tenant_id']
         else:
-            LOG.error("We aren't an instance tab, we need a new way to find prefix and tenant_id.")
+            LOG.error("prefix and tenant_id unset")
+
         self.config = puppet_config(self.prefix, self.tenant_id)
 
     def get_context_data(self, request, **kwargs):
         context = super(PuppetTab, self).get_context_data(request, **kwargs)
         context['prefix'] = self.prefix
         context['config'] = self.config
+
+        if 'caption' in self.tab_group.kwargs:
+            context['caption'] = self.tab_group.kwargs['caption']
+        else:
+            context['caption'] = ""
 
         url = "horizon:project:puppet:edithiera"
         kwargs = {

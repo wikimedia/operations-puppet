@@ -14,12 +14,12 @@
 #    under the License.
 from django.conf.urls import url, patterns
 
-from wikimediapuppettab import panel
+from wikimediapuppettab import projectpanel
 from wikimediapuppettab import views
 
 urlpatterns = patterns(
     '',
-    url(r'^$', panel.IndexView.as_view(), name='index'),
+    url(r'^$', projectpanel.IndexView.as_view(), name='index'),
     url(r'^(?P<prefix>[^/]+)/(?P<tenantid>[^/]+)/'
         '(?P<roleid>[^/]+)/applypuppetrole$',
         views.ApplyRoleView.as_view(), name='applypuppetrole'),
