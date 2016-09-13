@@ -9,8 +9,12 @@ set -e
 RED=$(tput bold; tput setaf 1)
 MAGENTA=$(tput bold; tput setaf 9)
 RESET=$(tput sgr0)
+FORCE=0
+USAGE=0
+BASEDIR="/var/lib/git/operations/puppet"
+CONFFILE="/etc/puppet-merge.conf"
 
-usage="$(basename ${0}) [<basedir>]
+usage="$(basename ${0}) [-y|--yes] [SHA1]
 
 Fetches changes from origin and from all submodules.
 Shows diffs between HEAD and FETCH_HEAD, including diffs
@@ -21,31 +25,52 @@ to FETCH_HEAD.
 
 It also runs the conftool merge if necessary.
 
-<basedir> defaults to /var/lib/git/operations/puppet
-
+SHA1 equals HEAD if not specified
 "
 
-if [ "${1}" = "help" -o "${1}" = "--help" -o "${1}" = "-h" ]; then
+TEMP=$(getopt -o yh: --long yes,help: -n "$0" -- "$@")
+if [ $? != 0 ] ; then echo "Terminating..." >&2 ; exit 1 ; fi
+
+eval set -- "$TEMP"
+while true; do
+    case "$1" in
+        -y|--yes) FORCE=1; shift ;;
+        -h|--help) USAGE=1; shift ;;
+        --) shift ; break ;;
+        *) echo "Internal error!"; exit 1 ;;
+    esac
+done
+
+if [ $USAGE -eq 1 ]; then
     echo "$usage" && exit 0;
 fi
+
+if [ -f $CONFFILE ]; then
+    . $CONFFILE
+fi
+
+sha1=${1:-}
 
 git_user='gitpuppet'
 
 # Default to /var/lib/git/operations/puppet unless $1 is specified
-basedir=${1:-/var/lib/git/operations/puppet}
-cd "${basedir}"
+cd "${BASEDIR}"
 
 echo "Fetching new commits from $(git config --get remote.origin.url)"
 
-su - $git_user -c "cd ${basedir} && git fetch"
-fetch_head_sha1=$(git rev-parse FETCH_HEAD)
+su - $git_user -c "cd ${BASEDIR} && git fetch"
+if [ -z ${sha1} ]; then
+    fetch_head_sha1=$(git rev-parse FETCH_HEAD)
+else
+    fetch_head_sha1=$sha1
+fi
 
 submodule_changes="$(git diff --submodule=log HEAD..${fetch_head_sha1} | grep -e '^Submodule ')" || true
 
 # Exit if there are no changes to merge.
 if [ -z "$(git diff HEAD..${fetch_head_sha1})" -a -z "${submodule_changes}" ]; then
-  echo "No changes to merge."
-  exit 0
+    echo "No changes to merge."
+    exit 0
 fi
 
 
@@ -62,15 +87,15 @@ else
 
     # clone the puppet working directory to a temp directory, excludiing private/
     tmpdir=$(mktemp -d /tmp/puppet-merge.XXXXXXXXXX)
-    git clone --quiet  "${basedir}" "${tmpdir}"
+    git clone --quiet  "${BASEDIR}" "${tmpdir}"
 
     # merge and update submodules in $tmpdir
     (cd "${tmpdir}" && \
      git merge --quiet --ff-only "${fetch_head_sha1}" && \
      git submodule update --quiet --init)
 
-    # show the diff between the $basedir puppet directory and the $tmpdir puppet directory
-    diff -uNr -x "private" -x ".git" "${basedir}" "${tmpdir}" || true
+    # show the diff between the $BASEDIR puppet directory and the $tmpdir puppet directory
+    diff -uNr -x "private" -x ".git" "${BASEDIR}" "${tmpdir}" || true
 
     # We've shown the diff so we are done with $tmpdir.  Remove it.
     rm -r "${tmpdir}"
@@ -87,21 +112,25 @@ if [ $ncommiters -ne 1 ]; then
     echo "${RED}WARNING${RESET}: Revision range includes commits from multiple committers!"
 fi
 
-echo -n "Merge these changes? (yes/no)? "
+if [ $FORCE -eq 1 ]; then
+    answer="yes"
+else
+    echo -n "Merge these changes? (yes/no)? "
+    read answer
+fi
 
-read answer
 if [ "x${answer}" = "xyes" ] || [ "x${answer}" = "xy" ]; then
     echo "Merging ${fetch_head_sha1}..."
     cmd="git merge --ff-only ${fetch_head_sha1}"
     echo "${cmd}"
-    su - $git_user -c "cd ${basedir} && ${cmd}"
+    su - $git_user -c "cd ${BASEDIR} && ${cmd}"
 
     # If there were submodule changes update and init them
     if [ -n "${submodule_changes}" ]; then
         echo "Updating submodules..."
         cmd="git submodule update --init --no-fetch"
         echo "${cmd}"
-        su - $git_user -c "cd ${basedir} && ${cmd}"
+        su - $git_user -c "cd ${BASEDIR} && ${cmd}"
     fi
 
     # git clean to remove any untracked
@@ -109,7 +138,7 @@ if [ "x${answer}" = "xyes" ] || [ "x${answer}" = "xy" ]; then
     echo "Running git clean to clean any untracked files."
     cmd="git clean -dffx -e /private/"
     echo "${cmd}"
-    su - $git_user -c "cd ${basedir} && ${cmd}"
+    su - $git_user -c "cd ${BASEDIR} && ${cmd}"
 
     echo "HEAD is now $(git rev-parse HEAD)."
     cd -
