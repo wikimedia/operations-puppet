@@ -1,5 +1,6 @@
 wdqs::gui::log_aggregator:  'logstash1001.eqiad.wmnet:10514'
 wdqs::updater::options: '-n wdq'
+wdqs::service::config_file: /etc/wdqs/RWStore.properties
 admin::groups:
   - wdqs-admins
 cluster: wdqs
