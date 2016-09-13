@@ -6,3 +6,4 @@ ssh::server::disable_nist_kex: false
 ssh::server::explicit_macs: false
 cluster: misc
 contactgroups: 'admins,contint'
+base::puppet::params::use_srv_record: true
