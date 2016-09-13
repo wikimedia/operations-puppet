@@ -4,11 +4,17 @@
 # a post-receive hook.
 
 class conftool(
-    $config_file = 'puppet:///modules/conftool/production.config.yaml',
     $ssl_dir     = '/var/lib/puppet/ssl',
     $use_ssl     = true,
     $auth        = true,
     $password    = undef,
+    $hosts       = [
+        'https://conf1001.eqiad.wmnet:2379',
+        'https://conf1002.eqiad.wmnet:2379',
+        'https://conf1003.eqiad.wmnet:2379'
+    ],
+    $tcpircbot_host = 'neon.wikimedia.org',
+    $tcpircbot_port = 9200,
     ) {
     require_package('python-conftool')
 
@@ -22,11 +28,18 @@ class conftool(
     }
 
     file { '/etc/conftool/config.yaml':
-        ensure => present,
-        owner  => root,
-        group  => root,
-        mode   => '0444',
-        source => $config_file,
+        ensure  => present,
+        owner   => root,
+        group   => root,
+        mode    => '0444',
+        content => ordered_yaml({
+            hosts          => $hosts,
+            tcpircbot_host => $tcpircbot_host,
+            tcpircbot_port => $tcpircbot_port,
+            driver_options => {
+                allow_reconnect => true
+            }
+        }),
     }
 
     if $auth {

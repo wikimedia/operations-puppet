@@ -1,8 +1,0 @@
-hosts:
-  - https://conf1001.eqiad.wmnet:2379
-  - https://conf1002.eqiad.wmnet:2379
-  - https://conf1003.eqiad.wmnet:2379
-driver_options:
-  allow_reconnect: true
-tcpircbot_host: neon.wikimedia.org
-tcpircbot_port: 9200
