@@ -25,10 +25,11 @@ class role::tcpircbot {
             '2620:0:861:103:92b1:1cff:fe25:9d72/128', # maintenance eqiad v6: terbium
             '::ffff:10.192.48.45/128',                # maintenance codfw v4: wasat
             '2620:0:860:104:1602:ecff:fe3f:478c/128', # maintenance codfw v6: wasat
-            '::ffff:10.64.16.160/128',          # puppet master v4: palladium
-            '2620:0:861:102:10:64:16:160/128',  # puppet master v6: palladium
-            '::ffff:10.64.16.184/128',          # puppet master v4: rhodium
-            '2620:0:861:102:10:64:16:184/128',  # puppet master v6: rhodium
+            '::ffff:10.64.16.73/128',           # puppetmaster1001.eqiad.wmnet
+            '2620:0:861:102:10:64:16:73/128',   # puppetmaster1001.eqiad.wmnet
+            '::ffff:10.192.0.27/128',           # puppetmaster2001.codfw.wmnet
+            '2620:0:860:101:10:192:0:27',       # puppetmaster2001.codfw.wmnet
+
         ],
     }
 
