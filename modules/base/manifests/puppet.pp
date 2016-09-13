@@ -2,13 +2,13 @@ class base::puppet(
     $server='puppet',
     $certname=undef,
     $dns_alt_names=undef,
-) {
-
+    ) {
     include passwords::puppet::database
     include base::puppet::params
     $interval = $base::puppet::params::interval
     $crontime = $base::puppet::params::crontime
     $freshnessinterval = $base::puppet::params::freshnessinterval
+    $use_srv_record = $base::puppet::params::use_srv_record
 
     package { [ 'puppet', 'facter' ]:
         ensure => present,

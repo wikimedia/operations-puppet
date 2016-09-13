@@ -6,4 +6,6 @@ class base::puppet::params {
     $crontime = fqdn_rand(60)
     # Calculate freshness interval in seconds (hence *60)
     $freshnessinterval = $interval * 60 * 6
+    # Use srv domain to discover the puppetmaster
+    $use_srv_record = false
 }
