@@ -2430,6 +2430,7 @@ node /^prometheus100[12]\.eqiad\.wmnet$/ {
 
 node /^puppetmaster[12]001\.(codfw|eqiad)\.wmnet$/ {
     role(puppetmaster::frontend, conftool::master)
+    include role::pybal_config
     include standard
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
