@@ -5,6 +5,7 @@
 # - dpkg
 # - disk space
 # - raid
+# - ipmi
 #
 # Note that this class is probably already included for your node
 # by the class base.  If you want to change the contact_group, set
@@ -68,6 +69,14 @@ class base::monitoring::host(
         group  => 'root',
         mode   => '0555',
         source => 'puppet:///modules/base/monitoring/check-fresh-files-in-dir.py',
+    }
+
+    file { '/usr/local/lib/nagios/plugins/check_ipmi_sensor':
+        ensure => present,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => 'puppet:///modules/base/monitoring/check_ipmi_sensor',
     }
 
     sudo::user { 'nagios_puppetrun':
