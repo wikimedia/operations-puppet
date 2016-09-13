@@ -12,7 +12,11 @@ class role::restbase {
     include lvs::realserver
 
     # Add conftool scripts and credentials
-    include ::conftool::scripts
+    # TODO: remove this once RESTBase starts using
+    # Scap3 for deploys
+    service::conftool { 'restbase':
+        port => 7231,
+    }
 
     # RESTBase rate limiting DHT firewall rule
     $rb_hosts_ferm = join(hiera('restbase::hosts'), ' ')
