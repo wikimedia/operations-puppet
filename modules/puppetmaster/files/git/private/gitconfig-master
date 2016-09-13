@@ -5,3 +5,5 @@
 	logallrefupdates = true
 [receive]
 	denyCurrentBranch = ignore
+[user]
+	email = git@palladium.eqiad.wmnet
