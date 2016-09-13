@@ -170,6 +170,10 @@ define service::node(
     $deployment_vars = {},
     $contact_groups  = hiera('contactgroups', 'admins'),
 ) {
+
+    # Import all common configuration
+    include service::configuration
+    include lvs::configuration
     case $deployment {
         'scap3': {
             if ! defined(Service::Deploy::Trebuchet[$repo]) and ! defined(Scap::Target[$repo]) {
@@ -181,7 +185,6 @@ define service::node(
                     manage_user  => true,
                 }
             }
-            include ::scap::conftool
         }
         'git': {
             service::deploy::gitclone { $title:
@@ -198,8 +201,6 @@ define service::node(
         }
     }
 
-    # Import all common configuration
-    include service::configuration
 
     # we do not allow empty names
     unless $title and size($title) > 0 {
