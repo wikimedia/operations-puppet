@@ -7,3 +7,4 @@ memcached_servers: [
 # no trailing comma!
 ]
 
+thumborhost: 'thumbor.svc.eqiad.wmnet:8800'
