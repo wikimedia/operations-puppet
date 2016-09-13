@@ -13,32 +13,49 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 
+import logging
+
 from django.utils.translation import ugettext_lazy as _
 import horizon
 
-from horizon import views
+from horizon import tabs
 
 import openstack_dashboard.dashboards.project.instances.tabs as instancetabs
 from wikimediapuppettab.tab import PuppetTab
 
+logging.basicConfig()
+LOG = logging.getLogger(__name__)
 
-class PuppetTabDummyPanel(horizon.Panel):
-    name = _("Dummy")
+
+class ProjectPuppetPanel(horizon.Panel):
+    name = _("Project Puppet")
     slug = "puppet"
-    # No one wants to see this.
-    nav = False
 
     @staticmethod
     def can_register():
         # Hacky hook
-        #  We don't want to actually add a panel.  But we /do/ want a bunch
-        #  of templates and classes and such loaded.  So, I'm overloading
-        #  this function to override the things I actually care about.
+        #  While we're here, add tabs to the instance detail view as well
         instancetabs.InstanceDetailTabs.tabs += (PuppetTab,)
         return True
 
 
-class IndexView(views.HorizonTemplateView):
-    table_class = None
-    template_name = 'project/puppet/index.html'
-    page_title = _("Dummy")
+class ProjectTabs(tabs.TabGroup):
+    slug = "project_puppet"
+    tabs = (PuppetTab, )
+    sticky = True
+
+
+class IndexView(tabs.TabbedTableView):
+    tab_group_class = ProjectTabs
+    template_name = 'project/puppet/project_panel.html'
+    page_title = _("Project Puppet")
+
+    def get_tabs(self, request, *args, **kwargs):
+        tenant_id = self.request.user.tenant_id
+        caption = _("These puppet settings will affect all VMs"
+                    " in the %s project.") % tenant_id
+        return self.tab_group_class(request,
+                                    prefix=' ',
+                                    caption=caption,
+                                    tenant_id=tenant_id,
+                                    **kwargs)
