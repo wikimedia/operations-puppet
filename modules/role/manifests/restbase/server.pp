@@ -13,6 +13,12 @@ class role::restbase::server {
 
     # Add conftool scripts and credentials
     include ::conftool::scripts
+    # LVS pooling/depoling scripts
+    include ::lvs::configuration
+    conftool::scripts::service { 'restbase':
+        lvs_services_config => $::lvs::configuration::lvs_services,
+        lvs_class_hosts     => $::lvs::configuration::lvs_class_hosts,
+    }
 
     # RESTBase rate limiting DHT firewall rule
     $rb_hosts_ferm = join(hiera('restbase::hosts'), ' ')
