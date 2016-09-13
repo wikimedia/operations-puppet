@@ -155,4 +155,10 @@ class base::monitoring::host(
             nrpe_command => '/usr/local/lib/nagios/plugins/check_cpufreq 600',
         }
     }
+
+    # check temperature sensors via IPMI (T125205)
+    nrpe::monitor_service { 'check_ipmi_temp':
+        description  => 'IPMI Temperature',
+        nrpe_command => '/usr/local/lib/nagios/plugins/check_ipmi_sensor --noentityabsent -T Temperature -ST Temperature',
+    }
 }
