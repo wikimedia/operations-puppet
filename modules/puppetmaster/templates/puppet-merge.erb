@@ -150,3 +150,12 @@ else
     cd -
     exit 1
 fi
+
+<%- if @servers.key?(@fqdn) -%>
+  <%- @servers.each do |frontend, workers| -%>
+    <%- workers.each do |workerhash| -%>
+      <%- if workerhash['worker'] == @fqdn then next end -%>
+ssh -t -t <%= workerhash['worker'] -%> "puppet-merge -y ${sha1}" 2>&1 | tee -a /var/log/puppet-post-merge.log
+    <%- end -%>
+  <%- end -%>
+<%- end -%>
