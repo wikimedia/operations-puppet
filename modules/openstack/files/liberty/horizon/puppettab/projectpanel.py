@@ -55,7 +55,7 @@ class IndexView(tabs.TabbedTableView):
         caption = _("These puppet settings will affect all VMs"
                     " in the %s project.") % tenant_id
         return self.tab_group_class(request,
-                                    prefix=' ',
+                                    prefix='_',
                                     caption=caption,
                                     tenant_id=tenant_id,
                                     **kwargs)
