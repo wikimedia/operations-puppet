@@ -123,4 +123,11 @@ class base::monitoring::host(
         description  => 'salt-minion processes',
         nrpe_command => "/usr/lib/nagios/plugins/check_procs -w 1: -c 1:4 --ereg-argument-array '^/usr/bin/python /usr/bin/salt-minion'",
     }
+    # check temperature sensors via IPMI (T125205) (freeipmi only in jessie)
+    if os_version('debian >= jessie') {
+        nrpe::monitor_service { 'check_ipmi_temp':
+            description  => 'IPMI',
+            nrpe_command => "/usr/local/lib/nagios/plugins/check_ipmi_sensor -T temperature",
+        }
+    }
 }
