@@ -73,8 +73,8 @@ sub cluster_fe_backend_response {
 		set beresp.do_stream = true;
 	}
 
-	// hit-for-pass objects >= 8MB size
-	if (std.integer(beresp.http.Content-Length, 8388608) >= 8388608 || beresp.http.Content-Length ~ "^[0-9]{9}") {
+	// hit-for-pass objects >= 1MB size
+	if (std.integer(beresp.http.Content-Length, 1048576) >= 1048576 || beresp.http.Content-Length ~ "^[0-9]{9}") {
 		set beresp.http.X-CDIS = "pass";
 		<%- if @varnish_version4 -%>
 		set beresp.uncacheable = true;
