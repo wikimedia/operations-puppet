@@ -71,7 +71,7 @@ def parse_args():
         '-a', '--apache', action='store_true',
         help='run apache-fast-test on the hosts after the reimage')
     parser.add_argument(
-        '-p', '--phab-task-id', action='store', required=True,
+        '-p', '--phab-task-id', action='store',
         help='the Phabricator task ID (T12345)')
     parser.add_argument(
         'hosts', metavar='HOST', nargs='+', action='store',
@@ -96,7 +96,8 @@ def parse_args():
             dup=duplicates))
 
     # Ensure Phab task is properly formatted
-    if PHAB_TASK_PATTERN.search(args.phab_task_id) is None:
+    if (args.phab_task_id is not None and
+            PHAB_TASK_PATTERN.search(args.phab_task_id) is None):
         raise ValueError(("Invalid Phabricator task ID '{task}', expected in "
                           "the form T12345").format(task=args.phab_task_id))
 
@@ -328,7 +329,8 @@ def submit_job(target, action, params, audit_params=None, **kwargs):
     return (jid, client)
 
 
-def run_command_on_hosts(targets, action, params=None, timeout=30, **kwargs):
+def run_command_on_hosts(targets, action, params=None, timeout=30,
+                         silent=False, **kwargs):
     """ A generator to run a single Salt module.function on multiple hosts
 
         Arguments:
@@ -337,6 +339,7 @@ def run_command_on_hosts(targets, action, params=None, timeout=30, **kwargs):
         params   -- a list of parameters to pass to the module.function
         timeout  -- seconds after which stop waiting for answers. A value of 0
                     means to wait forever. [optional, default: 30]
+        silent   -- suppress command logging [optional, default: False]
         **kwargs -- additional keyword arguments for the submit_job function
     """
     if len(targets) == 0:
@@ -357,12 +360,13 @@ def run_command_on_hosts(targets, action, params=None, timeout=30, **kwargs):
 
     # Wait for their results
     for _, result in watch_jobs(jobs, timeout=timeout):
-        log_salt_cmd_run(action, result)
+        if not silent:
+            log_salt_cmd_run(action, result)
         yield result
 
 
-def proxy_command(action, target, hosts_commands,
-                  audit_commands=None, timeout=30, **kwargs):
+def proxy_command(action, target, hosts_commands, audit_commands=None,
+                  timeout=30, silent=False, **kwargs):
     """ A generator to run hosts-based cmd.run commands from a single proxy host
 
         Arguments:
@@ -373,6 +377,7 @@ def proxy_command(action, target, hosts_commands,
                           be logged [optional]
         timeout        -- seconds after which stop waiting for answers. A value
                           of 0 means to wait forever. [optional, default: 30]
+        silent         -- suppress command logging [optional, default: False]
         **kwargs       -- additional optional keyword arguments for submit_job()
     """
     if len(hosts_commands) == 0:
@@ -395,7 +400,8 @@ def proxy_command(action, target, hosts_commands,
 
     # Wait for their results
     for host, result in watch_jobs(jobs, timeout=timeout):
-        log_salt_cmd_run(action, result, host)
+        if not silent:
+            log_salt_cmd_run(action, result, host)
         yield (host, result)
 
 
@@ -510,22 +516,23 @@ def validate_hosts(puppetmaster_host, hosts, no_raise=False):
                 raise RuntimeError(message)
 
 
-def icinga_downtime(icinga_host, hosts, phab_task):
+def icinga_downtime(icinga_host, hosts, user, phab_task):
     """ Set downtime on Icinga for hosts and return the list of successful ones
 
         Arguments:
         icinga_host -- the hostname of the Icinga server
         hosts       -- the list of hosts to set downtime for
+        user        -- the user that is executing the command
         phab_task   -- the related Phabricator task ID (i.e. T12345)
 
         Returns:
         The list of successfully depooled hosts
     """
     command = ("icinga-downtime -h '{host}' -d 14400 -r "
-               "'Reimaging: {phab_task}'")
+               "'wmf-auto-reimage: user={user} phab_task={phab_task}'")
     hosts_commands = {
-        host: [command.format(host=host.split('.')[0], phab_task=phab_task)]
-        for host in hosts}
+        host: [command.format(host=host.split('.')[0], user=user,
+                              phab_task=phab_task)] for host in hosts}
     success_hosts = []
 
     for host, result in proxy_command(
@@ -534,6 +541,8 @@ def icinga_downtime(icinga_host, hosts, phab_task):
         if result['retcode'] == 0:
             success_hosts.append(host)
 
+    print("Successfully set Icinga downtime for hosts: {hosts}".format(
+        hosts=success_hosts))
     return success_hosts
 
 
@@ -567,6 +576,8 @@ def conftool_depool_hosts(puppetmaster_host, hosts):
             logger.error(("Unable to conftool 'set/pooled=inactive' host "
                           "'{host}'").format(host=host))
 
+    print("Depooled via conftool, previous state was: {status}".format(
+        status=hosts_status))
     return hosts_status
 
 
@@ -589,6 +600,8 @@ def conftool_ensure_depooled(puppetmaster_host, hosts):
             if status[host]['pooled'] == 'inactive':
                 success_hosts.append(host)
 
+    print("Successfully ensured depooled for hosts: {hosts}".format(
+        hosts=success_hosts))
     return success_hosts
 
 
@@ -607,6 +620,8 @@ def run_puppet(hosts):
         if result['success'] and result['return']['retcode'] == 0:
             success_hosts.append(result['id'])
 
+    print("Successfully run Puppet on hosts: {hosts}".format(
+        hosts=success_hosts))
     return success_hosts
 
 
@@ -654,6 +669,8 @@ def reimage_hosts(puppetmaster_host, hosts, custom_mgmts, ipmi_password):
             success_hosts.append(host)
 
     # See TODO in the docstring
+    print("Run wmf-reimage on hosts: {hosts}".format(
+        hosts=hosts))
     return hosts
 
 
@@ -672,8 +689,8 @@ def check_reimage(puppetmaster_host, hosts):
     success_hosts = []
 
     while True:
-        for host, result in proxy_command(
-                'check_reimage', puppetmaster_host, hosts_commands):
+        for host, result in proxy_command('check_reimage', puppetmaster_host,
+                                          hosts_commands, silent=True):
 
             if result['retcode'] == 0 and check_message in result['return']:
                 success_hosts.append(host)
@@ -692,6 +709,8 @@ def check_reimage(puppetmaster_host, hosts):
         logger.error("Waiting puppet not confirmed for '{hosts}'".format(
             hosts=hosts_commands.keys()))
 
+    print("Successfully completed wmf-reimage for hosts: {hosts}".format(
+        hosts=success_hosts))
     return success_hosts
 
 
@@ -713,6 +732,7 @@ def wait_puppet_run(hosts, start=None):
     success_hosts = set()
     timeout = 3600  # 1 hour
     retries = 0
+    command = 'puppet.summary'
 
     while True:
         retries += 1
@@ -722,7 +742,7 @@ def wait_puppet_run(hosts, start=None):
                 min=(retries * WATCHER_LONG_SLEEP) / 60.0))
 
         hosts = list(hosts_set - success_hosts)
-        for result in run_command_on_hosts(hosts, 'puppet.summary'):
+        for result in run_command_on_hosts(hosts, command, silent=True):
             if result is None or isinstance(result['return'], basestring):
                 continue
 
@@ -745,6 +765,8 @@ def wait_puppet_run(hosts, start=None):
         logger.error("Waiting puppet not confirmed for '{hosts}'".format(
             hosts=(hosts_set - success_hosts)))
 
+    print("Puppet run check completed for hosts: {hosts}".format(
+        hosts=list(success_hosts)))
     return list(success_hosts)
 
 
@@ -764,6 +786,8 @@ def reboot_hosts(hosts):
             success_hosts.append(result['id'])
 
     # See TODO in the docstring
+    print("Rebooted hosts: {hosts}".format(
+        hosts=hosts))
     return hosts
 
 
@@ -790,7 +814,8 @@ def wait_reboot(hosts):
                 min=(retries * WATCHER_LONG_SLEEP) / 60.0))
 
         hosts = list(hosts_set - success_hosts)
-        for result in run_command_on_hosts(hosts, 'test.ping', timeout=5):
+        for result in run_command_on_hosts(hosts, 'test.ping',
+                                           timeout=5, silent=True):
             if result['retcode'] == 0 and result['return'] is True:
                 success_hosts.add(result['id'])
 
@@ -807,6 +832,8 @@ def wait_reboot(hosts):
         logger.error("Waiting reboot not confirmed for '{hosts}'".format(
             hosts=(hosts_set - success_hosts)))
 
+    print("Successful reboot on hosts: {hosts}".format(
+        hosts=list(success_hosts)))
     return list(success_hosts)
 
 
@@ -849,6 +876,8 @@ def check_uptime(hosts, minimum=0, maximum=None):
 
         success_hosts.append(result['id'])
 
+    print("Successful uptime check on hosts: {hosts}".format(
+        hosts=success_hosts))
     return success_hosts
 
 
@@ -875,6 +904,8 @@ def run_apache_fast_test(deployment_host, hosts):
         if result['retcode'] == 0:
             success_hosts.append(host)
 
+    print("Successfully run Apache fast-test on hosts: {hosts}".format(
+        hosts=success_hosts))
     return success_hosts
 
 
@@ -893,6 +924,7 @@ def get_repool_message(hosts_status):
     message = ("To set back the conftool status to their previous values run:\n"
                "```\n{repool}\n```").format(repool='\n'.join(commands))
 
+    print(message)
     return message
 
 
@@ -903,6 +935,8 @@ def run(args, user):
         args -- parsed command line arguments
         user -- the user that launched the script, for auditing purposes
     """
+    print('START')
+
     # Get additional informations
     ipmi_password = get_ipmi_password()
     custom_mgmts = get_custom_mgmts(args.hosts)
@@ -916,12 +950,14 @@ def run(args, user):
     validate_hosts(puppetmaster_host, args.hosts, args.no_verify)
 
     # Update the Phabricator task
-    phabricator_task_update(
-        phab_client, args.phab_task_id, PHAB_COMMENT_PRE.format(
-            user=user, hostname=socket.getfqdn(), hosts=hosts, log=LOG_PATH))
+    if args.phab_task_id is not None:
+        phabricator_task_update(
+            phab_client, args.phab_task_id, PHAB_COMMENT_PRE.format(
+                user=user, hostname=socket.getfqdn(), hosts=hosts,
+                log=LOG_PATH))
 
     # Set downtime on Icinga
-    hosts = icinga_downtime(icinga_host, hosts, args.phab_task_id)
+    hosts = icinga_downtime(icinga_host, hosts, user, args.phab_task_id)
 
     # Depool via conftool
     if args.conftool:
@@ -964,15 +1000,16 @@ def run(args, user):
         notes = get_repool_message(hosts_status)
 
     # Comment on the Phabricator task
-    phabricator_task_update(
-        phab_client, args.phab_task_id,
-        PHAB_COMMENT_POST.format(
-            hosts=args.hosts, successful=hosts, notes=notes))
+    if args.phab_task_id is not None:
+        phabricator_task_update(
+            phab_client, args.phab_task_id,
+            PHAB_COMMENT_POST.format(
+                hosts=args.hosts, successful=hosts, notes=notes))
 
     logger.info(("Auto reimaging of hosts '{hosts}' completed, hosts "
-                 "'{successful}' were successful. Phab task '{task_id}' "
-                 "updated.").format(
-        hosts=args.hosts, task_id=args.phab_task_id))
+                 "'{successful}' were successful.").format(
+        hosts=args.hosts, successful=hosts))
+    print('END')
 
 
 def main():
