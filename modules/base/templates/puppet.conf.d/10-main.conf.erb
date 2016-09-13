@@ -14,7 +14,7 @@ factpath = $vardir/lib/facter
 <%- if @use_srv_record -%>
 use_srv_records = true
 srv_domain = <%= scope.lookupvar('::site') %>.wmnet
-<%- else -%> 
+<%- else -%>
 server = <%= @server %>
 <%- end -%>
 <% if @certname %>certname = <%= @certname %><% end %>
