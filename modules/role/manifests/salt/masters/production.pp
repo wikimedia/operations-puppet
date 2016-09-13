@@ -6,12 +6,15 @@ class role::salt::masters::production {
     $salt_module_roots   = { 'base' => ['/srv/salt/_modules'] }
     $salt_returner_roots = { 'base' => ['/srv/salt/_returners'] }
 
+
+    # TODO: do not hardcode salt_peer_run
     class { 'salt::master':
         salt_runner_dirs    => ['/srv/runners'],
         salt_peer_run       => {
-            'tin.eqiad.wmnet'       => ['deploy.*'],
-            'mira.codfw.wmnet'      => ['deploy.*'],
-            'palladium.eqiad.wmnet' => ['keys.*', 'test.*'],
+            'tin.eqiad.wmnet'              => ['deploy.*'],
+            'mira.codfw.wmnet'             => ['deploy.*'],
+            'puppetmaster1001.eqiad.wmnet' => ['keys.*', 'test.*'],
+            'puppetmaster2001.codfw.wmnet' => ['keys.*', 'test.*'],
         },
         salt_file_roots     => $salt_file_roots,
         salt_pillar_roots   => $salt_pillar_roots,
