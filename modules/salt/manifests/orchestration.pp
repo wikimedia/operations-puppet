@@ -1,4 +1,6 @@
 class salt::orchestration() {
+    include passwords::phabricator
+
     package { [
         'python-dnspython',
         'python-phabricator',
