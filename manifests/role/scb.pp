@@ -9,6 +9,7 @@ class role::scb {
     include role::changeprop
     include role::ores::web
     include role::ores::worker
+    include role::apertium
 
     include standard
     include base::firewall
