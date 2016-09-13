@@ -6,6 +6,13 @@ class role::apertium(
         description => 'Apertium APY server'
     }
 
+    # LVS pooling/depoling scripts
+    include ::lvs::configuration
+    conftool::scripts::service { 'apertium':
+        lvs_services_config => $::lvs::configuration::lvs_services,
+        lvs_class_hosts     => $::lvs::configuration::lvs_class_hosts,
+    }
+
     include ::apertium
 
     ferm::service { 'apertium_http':
