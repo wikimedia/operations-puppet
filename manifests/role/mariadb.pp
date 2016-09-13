@@ -366,8 +366,11 @@ class role::mariadb::beta {
     }
 
     include standard
-    include mariadb::packages
     include passwords::misc::scripts
+
+    class { 'mariadb::packages_wmf':
+        mariadb10 => true,
+    }
 
     # This is essentially the same volume created by role::labs::lvm::srv but
     # ensures it will be created before mariadb is installed and leaves some
@@ -376,7 +379,7 @@ class role::mariadb::beta {
     labs_lvm::volume { 'second-local-disk':
         mountat => '/srv',
         size    => '80%FREE',
-        before  => Class['mariadb::packages'],
+        before  => Class['mariadb::packages_wmf'],
     }
 
     class { 'mariadb::config':
