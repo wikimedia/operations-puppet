@@ -1,9 +1,15 @@
-# == Class conftool::scripts
+# == Class: conftool::scripts
 #
 # Install some useful scripts that can be used to pool/depool/drain a server
 # from all the pools it is in.
 #
-# Example:
+# === Parameters
+#
+# [*lvs_uri*]
+#   The LVS host:port to contact when seeking information about the state of the
+#   target host. Default: "appservers.svc.${::site}.wmnet:9092"
+#
+# === Examples
 #
 #class some::service {
 #    user { 'foo': }
@@ -12,7 +18,9 @@
 #
 #    include conftool::scripts
 #}
-class conftool::scripts {
+class conftool::scripts(
+    $lvs_uri = "appservers.svc.${::site}.wmnet:9092",
+) {
     require conftool
 
     file { '/usr/local/bin/pool':
@@ -29,6 +37,14 @@ class conftool::scripts {
         group   => 'root',
         mode    => '0555',
         content => template('conftool/depool.erb')
+    }
+
+    file { '/usr/local/bin/pooler-loop':
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0555',
+        source  => 'puppet:///modules/conftool/pooler-loop.rb'
     }
 
     file { '/usr/local/bin/drain':
