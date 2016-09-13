@@ -155,4 +155,12 @@ class base::monitoring::host(
             nrpe_command => '/usr/local/lib/nagios/plugins/check_cpufreq 600',
         }
     }
+
+    # check temperature sensors via IPMI, unless VM (T125205)
+    if str2bool($facts['is_virtual']) == false {
+        nrpe::monitor_service { 'check_ipmi_temp':
+            description  => 'IPMI Temperature',
+            nrpe_command => '/usr/local/lib/nagios/plugins/check_ipmi_sensor --noentityabsent -T Temperature -ST Temperature',
+        }
+    }
 }
