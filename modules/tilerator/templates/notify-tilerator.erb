@@ -6,7 +6,9 @@
     -j.beforeZoom <%= @before_zoom %> \
     -j.generatorId <%= @generator_id %> \
     -j.storageId <%= @storage_id %> \
-<%- if @delete_empty %>    -j.deleteEmpty \ <% end -%>
+<%- if @delete_empty -%>
+    -j.deleteEmpty \
+<%- end -%>
     -j.expdirpath <%= @expire_dir %> \
     -j.expmask 'expire\.list\.*' \
     -j.statefile <%= @statefile %>
