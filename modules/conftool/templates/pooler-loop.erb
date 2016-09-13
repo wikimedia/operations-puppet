@@ -1,0 +1,92 @@
+#!/usr/bin/env ruby
+
+<%- if scope.lookupvar('realm') == 'labs' -%>
+# labs don't have LVS nor Pybal, so there's nothing to do
+exit 0
+<%- else -%>
+
+require 'optparse'
+require 'net/http'
+
+
+PATH_ROOT = '/usr/local/bin/'
+
+# default values
+args = {
+  host: '<%= scope.lookupvar("fqdn") %>',
+  command: PATH_ROOT + 'pool',
+  pool: true,
+  depool: false,
+  lvs_uri: '<%= @lvs_uri %>',
+  pool_name: nil,
+  pool_subject: '',
+  interval: 1,
+  wait: 9,
+  cycles: 3
+}
+
+# parse the command-line arguments
+OptionParser.new do |opts|
+  opts.banner = "Usage: pooler-loop [options] [service]"
+  opts.on('-p', '--pool', '(Re)pool the host') do |v|
+    args[:command] = PATH_ROOT + 'pool'
+    args[:pool] = true
+    args[:depool] = false
+  end
+  opts.on('-d', '--depool', 'Depool the host') do |v|
+    args[:command] = PATH_ROOT + 'depool'
+    args[:depool] = true
+    args[:pool] = false
+  end
+  opts.on('-l', '--lvs-uri URI', 'The LVS host:port to contact') do |uri|
+    args[:lvs_uri] = uri
+  end
+  opts.on('-P', '--pool-name POOL', 'The pool name to use') do |pool|
+    args[:pool_name] = pool
+  end
+  opts.on('-i', '--interval INTERVAL', Float,
+      'The check interval, in seconds') do |i|
+    args[:interval] = i
+  end
+  opts.on('-w', '--wait TIMES', Integer, 'The number of intervals to wait ' +
+      'before', 're-issuing the (de)pool command') do |w|
+    args[:wait] = w
+  end
+  opts.on('-c', '--cycles N', Integer, 'The number of times to repeat',
+      'the process') do |n|
+    args[:cycles] = n
+  end
+  opts.on_tail('-h', '--help', 'Show this text and exit') do
+    puts opts
+    exit
+  end
+end.parse!
+
+args[:pool_subject] = ARGV.shift || ''
+
+unless args[:pool_name]
+  puts 'You have to specify the pool name! Use pooler-loop -h for help'
+  exit 1
+end
+
+
+# do the whole procedure args[:cycles] times
+(1..args[:cycles]).each do
+  # try to (de)pool the host we are on
+  res = %x{#{args[:command]} #{args[:pool_subject]}}
+  # check at most args[:wait] times each args[:interval]
+  # seconds with the LVS server to confirm the host is in
+  # the desired state
+  (1..args[:wait]).each do
+    sleep args[:interval]
+    enabled, active, pooled = Net::HTTP.get(args[:lvs_uri],
+      "/pools/#{args[:pool_name]}/#{args[:host]}").strip.split('/')
+    ok = enabled != 'enabled' || active != 'up'
+    ok ||= args[:pool] ? pooled == 'pooled' : pooled != 'pooled'
+    exit 0 if ok
+  end
+end
+
+exit 2
+<%- end -%>
+
