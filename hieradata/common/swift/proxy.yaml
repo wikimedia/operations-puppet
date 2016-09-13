@@ -57,6 +57,7 @@ shard_container_list: [
  ]
 
 thumbor_wiki_list: [
+  'wikipedia-commons',
   'wikipedia-en', 'wikipedia-ja', 'wikipedia-de', 'wikipedia-ru',
   'wikipedia-it', 'wikipedia-pt', 'wikipedia-he', 'wikipedia-fr',
   'wikipedia-id', 'wikipedia-zh', 'wikipedia-th', 'wikipedia-uk',
