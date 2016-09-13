@@ -2763,7 +2763,7 @@ node 'terbium.eqiad.wmnet' {
 
 # Thumbor servers for MediaWiki image scaling
 node /^thumbor100[12].eqiad.wmnet/ {
-    role(thumbor::mediawiki)
+    role(thumbor::mediawiki, prometheus::node_exporter)
 
     include standard
     include base::firewall
