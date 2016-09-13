@@ -4,6 +4,7 @@ admin::groups:
 - citoid-admin
 - citoid-users
 - cxserver-admin
+- apertium-admins
 - graphoid-admin
 - mathoid-admin
 - zotero-admin
