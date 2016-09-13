@@ -182,6 +182,9 @@ define service::node(
                 }
             }
             include ::scap::conftool
+            service::conftool { $title:
+                port => $port,
+            }
         }
         'git': {
             service::deploy::gitclone { $title:
