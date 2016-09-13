@@ -39,6 +39,7 @@ ExecStart=/usr/sbin/varnishd \
 -p thread_pool_stack=131072 \
 -p listen_depth=4096 -p session_max=200000 -p vcc_err_unref=off \
 -p nuke_limit=300 \
+-p lru_interval=31 \
 -p http_req_size=24576 \
 -p gzip_level=8 \
 -p gzip_memlevel=9 \
