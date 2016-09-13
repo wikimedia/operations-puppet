@@ -15,6 +15,14 @@
 class conftool::scripts {
     require conftool
 
+    file { '/usr/local/bin/pooler-loop':
+        ensure => present,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => 'puppet:///modules/conftool/pooler_loop.rb',
+    }
+
     file { '/usr/local/bin/pool':
         ensure  => present,
         owner   => 'root',
