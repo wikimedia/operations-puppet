@@ -50,6 +50,11 @@ class base::standard_packages {
     require_package('gdb', 'apt-transport-https')
     require_package('git')
 
+    # for hardware monitoring via IPMI (T125205)
+    if os_version('debian >= jessie') {
+        require_package('freeipmi', 'libipc-run-perl')
+    }
+
     # This should be in $packages, but moved here temporarily because it's
     # currently broken on jessie hosts...
     if ! os_version('debian >= jessie') {
