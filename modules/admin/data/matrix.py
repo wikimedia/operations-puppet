@@ -20,30 +20,34 @@
 # Antoine Musso <hashar@free.fr> - 2016
 # Wikimedia Foundation Inc - 2016
 
+import argparse
 import sys
 
 import yaml
 
-if len(sys.argv) <= 1:
-    print 'usage: matrix.py [--wikitext] user1 [user2 ..]'
-    sys.exit(1)
+parser = argparse.ArgumentParser(
+    description="Utility to generate a matrix of production users and their groups",
+)
+parser.add_argument('--wikitext',
+                    help="Whether to output wikitext or not.",
+                    action="store_true")
+parser.add_argument('user',
+                    help="User to display.",
+                    nargs='+')
 
-users = sys.argv[1:]
+args = parser.parse_args()
+users = args.user
 
 TOP_LEFT = 'grp/users'
-HEADER_SEPARATOR = '\t'
-HEADER_END = ''
-ROW_SEPARATOR = '\t'
-GROUP_BEGIN = ''
-mode = 'plain'
-if len(users) and users[0] == '--wikitext':
-    users = users[1:]
+if args.wikitext:
     HEADER_SEPARATOR = '\n! '
     TOP_LEFT = '! ' + TOP_LEFT
-    HEADER_END = '\n'
     ROW_SEPARATOR = '\n|'
     GROUP_BEGIN = '|-\n|'
-    mode = 'wikitext'
+else:
+    HEADER_SEPARATOR = '\t'
+    ROW_SEPARATOR = '\t'
+    GROUP_BEGIN = ''
 
 with open('data.yaml', 'r') as f:
     admins = yaml.safe_load(f)
@@ -54,9 +58,9 @@ if unknown:
     print 'Unknown user(s):', ', '.join(unknown)
     sys.exit(1)
 
-if mode == 'wikitext':
+if args.wikitext:
     print '\n{| class="wikitable"'
-print HEADER_SEPARATOR.join([TOP_LEFT] + users) + HEADER_END
+print HEADER_SEPARATOR.join([TOP_LEFT] + users)
 
 groups = admins.get('groups', {})
 for group_name in sorted(groups.keys()):
@@ -72,5 +76,5 @@ for group_name in sorted(groups.keys()):
         ['OK' if u in members else ' '
             for u in users])
 
-if mode == 'wikitext':
+if args.wikitext:
     print '|}'
