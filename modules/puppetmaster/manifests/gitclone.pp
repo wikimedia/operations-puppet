@@ -23,11 +23,7 @@ class puppetmaster::gitclone(
 
     file {
         "${puppetmaster::gitdir}/operations/puppet/.git/hooks/post-merge":
-            require => Git::Clone['operations/puppet'],
-            owner   => 'gitpuppet',
-            group   => 'gitpuppet',
-            content => template('puppetmaster/post-merge.erb'),
-            mode    => '0550';
+            ensure  => absent;
         "${puppetmaster::gitdir}/operations/puppet/.git/hooks/pre-commit":
             require => Git::Clone['operations/puppet'],
             owner   => 'gitpuppet',
