@@ -12,6 +12,7 @@
 class puppetmaster::scripts(
     $keep_reports_minutes = 960, # 16 hours
 ) {
+    $servers = hiera('puppetmaster::servers', {})
 
     file {'/usr/local/sbin/puppetstoredconfigclean.rb':
         ensure => 'present',
@@ -21,11 +22,11 @@ class puppetmaster::scripts(
         source => 'puppet:///modules/puppetmaster/puppetstoredconfigclean.rb'
     }
     file{'/usr/local/bin/puppet-merge':
-        ensure => present,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
-        source => 'puppet:///modules/puppetmaster/puppet-merge'
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0555',
+        content => template('puppetmaster/puppet-merge.erb'),
     }
 
     # export and sanitize facts for puppet compiler
