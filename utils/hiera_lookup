@@ -52,7 +52,7 @@ def get_scope()
   scope = Hash[ARGV.map { |kv| "::#{kv.sub('--', '')}".split('=') }]
   abort(usage "Error: --fqdn=FQDN is required.") unless scope['::fqdn']
   scope['::hostname'] = scope['::fqdn'][/^[^.]+/]
-  if scope['::fqdn'].end_with?('.wmflabs') or scope['::fqdn'].end_with?('.labtest')
+  if scope['::fqdn'].end_with?('.wmflabs') || scope['::fqdn'].end_with?('.labtest')
     scope['::realm'] = 'labs'
   else
     scope['::realm'] = 'production'
