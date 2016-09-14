@@ -2330,11 +2330,13 @@ node 'palladium.eqiad.wmnet' {
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
     }
+    # lint:ignore:puppet_url_without_modules
     motd::script { 'deprecation_warning':
         ensure   => present,
         priority => 01,
         source   => 'puppet:///files/palladium_deprecation',
     }
+    # lint:endignore
     # Add a site for temporary puppet backend tests
     ::puppetmaster::web_frontend { 'puppetmaster.test.eqiad.wmnet':
         master    => 'palladium.eqiad.wmnet',
