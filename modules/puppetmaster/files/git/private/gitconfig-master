@@ -6,4 +6,5 @@
 [receive]
 	denyCurrentBranch = ignore
 [user]
+	name = "gitpuppet for private repo"
 	email = git@palladium.eqiad.wmnet
