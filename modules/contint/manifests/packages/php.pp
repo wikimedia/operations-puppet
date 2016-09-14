@@ -44,7 +44,7 @@ class contint::packages::php {
             'php7.0-mbstring',
             'php7.0-xml',
             ]:
-            ensure  => latest,
+            ensure  => present,
             require => Apt::Repository['sury-php'],
         }
     }
