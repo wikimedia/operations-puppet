@@ -43,7 +43,18 @@ class role::puppetmaster::frontend {
         config        => $::role::puppetmaster::common::config,
     }
 
-    # On all the frontends we should respond
+    # On the primary frontend, we keep the old vhost
+    # for compatibility
+    if $ca_server == $::fqdn {
+        ::puppetmaster::web_frontend { 'puppet':
+            master       => $ca_server,
+            workers      => $workers,
+            bind_address => $::puppetmaster::bind_address,
+            priority     => 40,
+        }
+    }
+
+    # On all the puppetmasters, we should respond
     # to the FQDN, as it's used in the SRV records
     ::puppetmaster::web_frontend { $::fqdn:
         master       => $ca_server,
