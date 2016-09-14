@@ -16,7 +16,6 @@ class role::puppetmaster::backend {
         }
     }
 
-    
     class { '::puppetmaster':
         server_type => 'backend',
         config      => $::role::puppetmaster::common::config
