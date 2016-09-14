@@ -1,0 +1,28 @@
+#!/bin/sh
+
+cat <<'MOTD'
+     _         _   _  ___ _____                    _   _     _
+  __| | ___   | \ | |/ _ \_   _|  _   _ ___  ___  | |_| |__ (_)___
+/  _` |/ _ \  |  \| | | | || |   | | | / __|/ _ \ | __| '_ \| / __|
+| (_| | (_) | | |\  | |_| || |   | |_| \__ \  __/ | |_| | | | \__ \
+ \__,_|\___/  |_| \_|\___/ |_|    \__,_|___/\___|  \__|_| |_|_|___/
+
+                              _
+ ___  ___ _ ____   _____ _ __| |
+/ __|/ _ \ '__\ \ / / _ \ '__| |
+\__ \  __/ |   \ V /  __/ |  |_|
+|___/\___|_|    \_/ \___|_|  (_)
+
+
+While it is still working, palladium is NOT the proper server anymore
+
+Head over to puppetmaster1001 or puppetmaster1002. Look at the following
+legend to see where to head to:
+
+ * PUPPET CERT SIGNING: should be done ONLY on puppetmaster1001
+ * REIMAGING: should be done on neodymium, using the automated script Riccardo is working on, or on puppetmaster1001 only
+ * CONFCTL: can be done on any puppetmaster frontend, so puppetmaster1001.eqiad.wmnet or puppetmaster2001.eqiad.wmnet
+ * PUPPET-MERGE: can be done on any  puppetmaster frontend, so puppetmaster1001 or puppetmaster2001
+ * GIT PRIVATE: can be edited from any puppetmaster frontend, so puppetmaster1001 or puppetmaster2001
+
+MOTD
