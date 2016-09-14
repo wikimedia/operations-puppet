@@ -32,32 +32,27 @@ define puppetmaster::web_frontend(
     $ssldir = $::puppetmaster::ssl::ssldir
     $ssl_settings = ssl_ciphersuite('apache', 'compat')
 
-    if $alt_names {
-        $alt_names_list = join(sort($alt_names), ',')
-        $alt_names_cmd = " --dns_alt_names=${alt_names_list}"
-    } else {
-        $alt_names_cmd = ''
-    }
-
     if $server_name != $::fqdn {
-        # This is unfortunate, but "puppet cert generate"
-        # just works locally, even if ca=false and a different ca server is
-        # setup.
-        # We will make it work writing a proper puppet resource once we are
-        # settled on a PKI infrastructure to use, or we surrender to using the
-        # puppet one forever.
-        if $master != $::fqdn {
-            fail('Alternative names are not supported for secundary puppetmasters.')
-        }
-        # Have puppet generate the certificate for this virtualhost
-        # BEWARE: SSL key length cannot be controlled here
-        exec { "generate hostcert for ${title}":
-            require => File["${ssldir}/certs"],
-            command => "/usr/bin/puppet cert generate ${server_name}${alt_names_cmd}",
-            creates => "${ssldir}/certs/${server_name}.pem",
-            before  => Service['apache2'],
+        # The files called with secret() should be generated on the current
+        # puppetmaster::ca_server with "puppet cert generate" and committed to
+        # the private repository.
+        # We use the private repo for the public key as well as it gets
+        # generated on the puppet ca server.
+        file { "${ssldir}/certs/${server_name}.pem":
+            content => secret("puppetmaster/${server_name}_pubkey.pem"),
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0640',
+            before  => Apache::Site[$server_name],
         }
 
+        file { "${ssldir}/private_keys/${server_name}.pem":
+            content => secret("puppetmaster/${server_name}_privkey.pem"),
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0640',
+            before  => Apache::Site[$server_name],
+        }
     }
     apache::site { $server_name:
         ensure   => present,
