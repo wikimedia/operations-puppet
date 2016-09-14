@@ -170,7 +170,7 @@ class role::memcached {
     }
 
     rsyslog::conf { 'memkeys':
-        content  => template('memcached/rsyslog.conf.erb'),
+        content  => template('role/memcached/rsyslog.conf.erb'),
         priority => 40,
     }
 }
