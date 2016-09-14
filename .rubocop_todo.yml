@@ -10,7 +10,6 @@
 # Configuration parameters: AllowSafeAssignment.
 Lint/AssignmentInCondition:
   Exclude:
-    - 'modules/puppetmaster/files/puppetstoredconfigclean.rb'
     - 'modules/wmflib/lib/hiera/backend/nuyaml_backend.rb'
     - 'modules/wmflib/lib/hiera/backend/role_backend.rb'
     - 'modules/wmflib/lib/puppet/parser/functions/secret.rb'
@@ -40,7 +39,6 @@ Lint/UselessAssignment:
     - 'modules/base/files/monitoring/check_puppetrun'
     - 'modules/ganeti/lib/facter/ganeti.rb'
     - 'modules/puppet_statsd/lib/puppet/reports/statsd.rb'
-    - 'modules/puppetmaster/files/puppetstoredconfigclean.rb'
     - 'modules/service/Rakefile'
     - 'modules/wmflib/lib/hiera/backend/nuyaml_backend.rb'
     - 'modules/wmflib/lib/puppet/parser/functions/validate_array_re.rb'
@@ -209,7 +207,6 @@ Style/NestedTernaryOperator:
 Style/Not:
   Exclude:
     - 'modules/base/files/monitoring/check_puppetrun'
-    - 'modules/puppetmaster/files/puppetstoredconfigclean.rb'
     - 'modules/wmflib/lib/hiera/backend/proxy_backend.rb'
     - 'modules/wmflib/lib/puppet/parser/functions/role.rb'
     - 'utils/hiera_lookup'
@@ -366,7 +363,6 @@ Style/SpaceInsideParens:
 # Cop supports --auto-correct.
 Style/SpecialGlobalVars:
   Exclude:
-    - 'modules/puppetmaster/files/puppetstoredconfigclean.rb'
     - 'utils/expanderb.rb'
 
 # Offense count: 188
