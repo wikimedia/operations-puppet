@@ -36,7 +36,25 @@ class PuppetTab(tabs.TableTab):
     preload = False
 
     def __init__(self, *args, **kwargs):
+        # For some reason our parent class can't deal with these
+        #  args, so extract them now if they're present
+        if 'prefix' in kwargs:
+            self.prefix = kwargs['prefix']
+            self.name = _("Prefix %s") % self.prefix
+            self.slug += '-%s' % self.prefix
+            del kwargs['prefix']
+
+        if 'tenant_id' in kwargs:
+            self.tenant_id = kwargs['tenant_id']
+            del kwargs['tenant_id']
+
+        if self.tenant_id and self.prefix:
+            self.caption = _("These puppet settings will affect all VMs in the"
+                             " %s project whose names begin with \'%s\'") % (
+                self.tenant_id, self.prefix)
+
         super(PuppetTab, self).__init__(*args, **kwargs)
+
         if 'instance' in self.tab_group.kwargs:
             tld = getattr(settings,
                           "INSTANCE_TLD",
@@ -45,11 +63,12 @@ class PuppetTab(tabs.TableTab):
             self.prefix = "%s.%s.%s" % (instance.name,
                                         instance.tenant_id, tld)
             self.tenant_id = instance.tenant_id
+            self.caption = _("These puppet settings will affect all VMs"
+                             " in the %s project") % (self.tenant_id,
+                                                      self.prefix)
         elif 'prefix' in self.tab_group.kwargs:
             self.prefix = self.tab_group.kwargs['prefix']
             self.tenant_id = self.tab_group.kwargs['tenant_id']
-        else:
-            LOG.error("prefix and tenant_id unset")
 
         self.config = puppet_config(self.prefix, self.tenant_id)
 
@@ -60,8 +79,8 @@ class PuppetTab(tabs.TableTab):
 
         if 'caption' in self.tab_group.kwargs:
             context['caption'] = self.tab_group.kwargs['caption']
-        else:
-            context['caption'] = ""
+        elif self.caption:
+            context['caption'] = self.caption
 
         url = "horizon:project:puppet:edithiera"
         kwargs = {

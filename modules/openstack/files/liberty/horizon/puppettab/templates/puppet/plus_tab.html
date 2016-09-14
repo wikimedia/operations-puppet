@@ -1,0 +1,13 @@
+{% load i18n %}
+
+{% if prefix_name %}
+Name: {{ prefix_name }}
+{% else %}
+<form action="" method="POST">
+    {% csrf_token %}
+    <input type="hidden" name="action" value="puppetprefixplus__undefined">
+    <input type="text" name="prefix_name" placeholder="prefix name:"><br>
+    <input type="submit" value="New prefix"><br>
+</form>
+{% endif %}
+
