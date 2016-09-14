@@ -13,13 +13,6 @@ class puppetmaster::scripts(
     $keep_reports_minutes = 960, # 16 hours
 ) {
 
-    file {'/usr/local/sbin/puppetstoredconfigclean.rb':
-        ensure => 'present',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
-        source => 'puppet:///modules/puppetmaster/puppetstoredconfigclean.rb'
-    }
     file{'/usr/local/bin/puppet-merge':
         ensure => present,
         owner  => 'root',
