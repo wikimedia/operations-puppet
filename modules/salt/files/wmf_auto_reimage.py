@@ -500,7 +500,7 @@ def validate_hosts(puppetmaster_host, hosts, no_raise=False):
         Raise:
         RuntimeError if any host is not valid and no_raise is False
     """
-    command = "puppet cert list '{host}'"
+    command = "puppet cert list '{host}' 2> /dev/null"
     hosts_commands = {host: [command.format(host=host)] for host in hosts}
 
     for host, result in proxy_command(
