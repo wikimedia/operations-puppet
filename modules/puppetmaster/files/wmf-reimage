@@ -15,16 +15,14 @@ function log  {
 
 function clean_puppet {
     nodename=${1}
-    log "cleaning puppet certificate for ${nodename}"
-    puppet cert clean ${nodename}
+    log "cleaning puppet facts and certificate for ${nodename}"
+    puppet node clean ${nodename} 2> /dev/null
     # An additional, paranoid check.
-    if puppet cert list --all | fgrep -q ${nodename}; then
+    if puppet cert list --all 2> /dev/null | fgrep -q ${nodename}; then
         log "unable to clean puppet cert, please check manually"
         log "Maybe you need to use the -n switch?"
         exit 1
     fi
-    log "cleaning puppet facts cache for ${nodename}"
-    /usr/local/sbin/puppetstoredconfigclean.rb ${nodename}
 }
 
 function __salt_key {
@@ -60,7 +58,7 @@ function sign_puppet {
     force_yes=${2}
     log "Seeking the Puppet certificate to sign"
     while true; do
-        res=$(puppet cert list | sed -ne "s/\"$nodename\"//p")
+        res=$(puppet cert list 2> /dev/null | sed -ne "s/\"$nodename\"//p")
         if [ "x${res}" == "x" ]; then
             #log "cert not found, sleeping for ${SLEEPTIME}s"
             echo -n "."
@@ -80,7 +78,7 @@ function sign_puppet {
                 exit 1
             fi
         fi
-        puppet cert -s ${nodename}
+        puppet cert -s ${nodename} 2> /dev/null
         break
     done
 }
