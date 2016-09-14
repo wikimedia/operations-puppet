@@ -14,6 +14,7 @@ class standard(
     }
 
     include ::standard::diamond
+    include ::standard::prometheus
 
     if $has_ganglia {
         include ::ganglia
