@@ -24,5 +24,6 @@ legend to see where to head to:
  * CONFCTL: can be done on any puppetmaster frontend, so puppetmaster1001.eqiad.wmnet or puppetmaster2001.eqiad.wmnet
  * PUPPET-MERGE: can be done on any  puppetmaster frontend, so puppetmaster1001 or puppetmaster2001
  * GIT PRIVATE: can be edited from any puppetmaster frontend, so puppetmaster1001 or puppetmaster2001
+ * VOLATILE: can be populated ONLY on puppetmaster1001
 
 MOTD
