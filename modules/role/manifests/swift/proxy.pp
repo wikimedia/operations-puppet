@@ -14,6 +14,9 @@ class role::swift::proxy {
         statsd_metric_prefix => "swift.${::swift::params::swift_cluster}.${::hostname}",
     }
 
+    class { '::swift::proxy_ssl':
+    }
+
     class { '::memcached':
         size => 128,
         port => 11211,
@@ -25,6 +28,12 @@ class role::swift::proxy {
         proto   => 'tcp',
         notrack => true,
         port    => '80',
+    }
+
+    ferm::service { 'swift-proxy-https':
+        proto   => 'tcp',
+        notrack => true,
+        port    => '443',
     }
 
     $swift_frontends = hiera('swift::proxyhosts')
@@ -44,6 +53,10 @@ class role::swift::proxy {
     monitoring::service { 'swift-http-backend':
         description   => 'Swift HTTP backend',
         check_command => "check_http_url!${::swift::proxy::proxy_service_host}!/monitoring/backend",
+    }
+    monitoring::service { 'swift-https':
+        description   => 'Swift HTTPS',
+        check_command => "check_https_url!${::fqdn}!/monitoring/frontend",
     }
 }
 
