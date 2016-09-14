@@ -14,6 +14,28 @@ class role::swift::proxy {
         statsd_metric_prefix => "swift.${::swift::params::swift_cluster}.${::hostname}",
     }
 
+    if (hiera('role::swift::proxy::tls', false)) {
+        include ::tlsproxy::nginx_bootstrap
+
+        tlsproxy::localssl { 'unified':
+            server_name    => ${::swift::proxy::proxy_service_host},
+            certs          => [${::swift::proxy::proxy_service_host}],
+            default_server => true,
+            do_ocsp        => false,
+        }
+
+        monitoring::service { 'swift-https':
+            description   => 'Swift HTTPS',
+            check_command => "check_http_url!${::swift::proxy::proxy_service_host}!/monitoring/frontend",
+        }
+
+        ferm::service { 'swift-proxy-https':
+            proto   => 'tcp',
+            notrack => true,
+            port    => '443',
+        }
+    }
+
     class { '::memcached':
         size => 128,
         port => 11211,
