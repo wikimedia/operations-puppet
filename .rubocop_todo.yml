@@ -64,6 +64,7 @@ Style/BlockDelimiters:
 # Offense count: 4
 Style/ClassAndModuleCamelCase:
   Exclude:
+    - 'modules/wmflib/lib/hiera/backend/httpyaml_backend.rb'
     - 'modules/wmflib/lib/hiera/backend/mwyaml_backend.rb'
     - 'modules/wmflib/lib/hiera/backend/nuyaml_backend.rb'
     - 'modules/wmflib/lib/hiera/backend/proxy_backend.rb'
