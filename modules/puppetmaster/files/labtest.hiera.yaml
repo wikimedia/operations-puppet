@@ -10,6 +10,8 @@
   :datadir: /etc/puppet/private/hieradata
 :secret:
   :datadir: /etc/puppet/secret/hieradata
+:httpyaml:
+  :url_prefix: http://localhost:8100/v1/
 :hierarchy:
   - "labs/%{::labsproject}/host/%{::hostname}"
   - "labs/%{::labsproject}/common"
@@ -21,3 +23,4 @@
   - common
   - "secret/common"
   - "private/common"
+  - "httpyaml/%{::labsproject}/node/%{::fqdn}"
