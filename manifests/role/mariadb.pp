@@ -979,9 +979,8 @@ class role::mariadb::parsercache(
 class role::mariadb::maintenance {
     # TODO: check if both of these are still needed
     include mysql
-    package { 'percona-toolkit':
-        ensure => latest,
-    }
+
+    require_package('percona-toolkit')
 
     # place from which tendril-related cron jobs are run
     include passwords::tendril
