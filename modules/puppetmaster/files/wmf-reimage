@@ -23,8 +23,8 @@ function clean_puppet {
         log "Maybe you need to use the -n switch?"
         exit 1
     fi
-    log "cleaning puppet facts cache for ${nodename}"
-    /usr/local/sbin/puppetstoredconfigclean.rb ${nodename}
+    log "revoking puppet cert and cleaning puppet facts cache for ${nodename}"
+    puppet node clean ${nodename}
 }
 
 function __salt_key {
