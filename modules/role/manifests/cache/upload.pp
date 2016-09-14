@@ -106,11 +106,14 @@ class role::cache::upload(
     # default_ttl=7d
     $common_runtime_params = ['default_ttl=604800']
 
+    # Bumping nuke_limit and lru_interval helps with T145661
+    $be_runtime_params = ['nuke_limit=1000','lru_interval=31']
+
     role::cache::instances { 'upload':
         fe_mem_gb         => ceiling(0.4 * $::memorysize_mb / 1024.0),
         fe_jemalloc_conf  => 'lg_dirty_mult:8,lg_chunk:20',
         fe_runtime_params => $common_runtime_params,
-        be_runtime_params => $common_runtime_params,
+        be_runtime_params => $common_runtime_params + $be_runtime_params,
         app_directors     => $app_directors,
         fe_vcl_config     => $fe_vcl_config,
         be_vcl_config     => $be_vcl_config,
