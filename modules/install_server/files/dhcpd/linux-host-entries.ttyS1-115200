@@ -6075,13 +6075,6 @@ host tin {
     filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
-host titanium {
-    hardware ethernet 78:2b:cb:08:aa:57;
-    fixed-address titanium.wikimedia.org;
-    option pxelinux.pathprefix "precise-installer/";
-    filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
-}
-
 host tungsten {
     hardware ethernet 78:2b:cb:0a:04:12;
     fixed-address tungsten.eqiad.wmnet;
