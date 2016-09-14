@@ -648,6 +648,8 @@ def reimage_hosts(puppetmaster_host, hosts, custom_mgmts, ipmi_password):
     hosts_commands = {}
     audit_commands = {}
 
+    print("Running wmf-reimage on hosts: {hosts}".format(hosts=hosts))
+
     for host in hosts:
         mgmt_host = get_mgmt(host)
         if mgmt_host is None:
@@ -662,6 +664,8 @@ def reimage_hosts(puppetmaster_host, hosts, custom_mgmts, ipmi_password):
             password=ipmi_password, host=host, mgmt=mgmt_host)]
         audit_commands[host] = [command.format(
             password='******', host=host, mgmt=mgmt_host)]
+        print("wmf-reimage log is on {puppetmaster}:/root/{host}.log".format(
+            puppetmaster=puppetmaster_host, host=host))
 
     for host, result in proxy_command(
             'reimage_hosts', puppetmaster_host, hosts_commands,
@@ -671,8 +675,7 @@ def reimage_hosts(puppetmaster_host, hosts, custom_mgmts, ipmi_password):
             success_hosts.append(host)
 
     # See TODO in the docstring
-    print("Run wmf-reimage on hosts: {hosts}".format(
-        hosts=hosts))
+    print("Run wmf-reimage on hosts: {hosts}".format(hosts=hosts))
     return hosts
 
 
@@ -938,6 +941,7 @@ def run(args, user):
         user -- the user that launched the script, for auditing purposes
     """
     print('START')
+    print('To monitor the full log:\ntail -F {log}'.format(log=LOG_PATH))
 
     # Get additional informations
     ipmi_password = get_ipmi_password()
