@@ -2,8 +2,8 @@ require "hiera/httpcache"
 class Hiera
   module Backend
     class Httpyaml_backend
-      def initialize(cache=nil)
-        @cache = cache || Httpcache.new
+      def initialize
+        @cache = Httpcache.new
       end
 
       def lookup(key, scope, order_override, resolution_type)
@@ -16,7 +16,7 @@ class Hiera
           # in any other case.
           next unless source.start_with?('httpyaml/') && source.length > 'httpyaml/'.length
 
-          data = @cache.read(source, Hash, {})
+          data = @cache.read(source)
 
           next if data.nil? || data.empty?
           next unless data.include?(key)
