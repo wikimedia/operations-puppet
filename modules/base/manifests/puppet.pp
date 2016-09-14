@@ -9,6 +9,7 @@ class base::puppet(
     $crontime = $base::puppet::params::crontime
     $freshnessinterval = $base::puppet::params::freshnessinterval
     $use_srv_record = $base::puppet::params::use_srv_record
+    $ca_server = hiera('puppetmaster::ca_server', '')
 
     package { [ 'puppet', 'facter' ]:
         ensure => present,
