@@ -40,16 +40,16 @@ define puppetmaster::web_frontend(
         # generated on the puppet ca server.
         file { "${ssldir}/certs/${server_name}.pem":
             content => secret("puppetmaster/${server_name}_pubkey.pem"),
-            owner   => 'root',
-            group   => 'root',
+            owner   => 'puppet',
+            group   => 'puppet',
             mode    => '0640',
             before  => Apache::Site[$server_name],
         }
 
         file { "${ssldir}/private_keys/${server_name}.pem":
             content => secret("puppetmaster/${server_name}_privkey.pem"),
-            owner   => 'root',
-            group   => 'root',
+            owner   => 'puppet',
+            group   => 'puppet',
             mode    => '0640',
             before  => Apache::Site[$server_name],
         }
