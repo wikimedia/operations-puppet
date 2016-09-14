@@ -20,10 +20,6 @@
 # $email_template     - The name of the email template to use for Burrow's alerts
 
 class burrow (
-    $ensure = 'present',
-    $client_id = 'burrow-client',
-    $httpserver_port = 8000,
-    $lagcheck_intervals = 10,
     $zookeeper_hosts,
     $zookeeper_path,
     $kafka_cluster_name,
@@ -32,6 +28,10 @@ class burrow (
     $smtp_server,
     $from_email,
     $to_emails,
+    $ensure = 'present',
+    $client_id = 'burrow-client',
+    $httpserver_port = 8000,
+    $lagcheck_intervals = 10,
     $email_template = 'burrow/email.tmpl.erb'
 
 )
