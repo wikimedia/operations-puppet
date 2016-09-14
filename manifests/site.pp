@@ -1929,9 +1929,10 @@ node /^mc20[01][0-9]\.codfw\.wmnet/ {
     role(memcached)
 }
 
+# archiva.wikimedia.org
 node 'meitnerium.wikimedia.org' {
     $cluster = 'misc'
-    role archiva
+    role(archiva)
     include standard
 }
 
@@ -2788,13 +2789,6 @@ node 'tin.eqiad.wmnet', 'mira.codfw.wmnet' {
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
     }
-}
-
-# titanium hosts archiva.wikimedia.org
-node 'titanium.wikimedia.org' {
-    $cluster = 'misc'
-    role(archiva)
-    include standard
 }
 
 # test system for performance team (T117888)
