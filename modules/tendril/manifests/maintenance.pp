@@ -4,7 +4,6 @@
 # or the database, but it requires having mysql access
 
 class tendril::maintenance (
-    $ensure = present,
     $tendril_host,
     $tendril_user,
     $tendril_password,
@@ -12,6 +11,7 @@ class tendril::maintenance (
     $tendril_port = 3306,
     $wd_user = undef,
     $wd_password = undef,
+    $ensure = present,
 ){
 
     # We want to control if cron is running, not if the scripts are installed.
