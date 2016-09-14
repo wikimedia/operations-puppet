@@ -68,7 +68,7 @@ class Hiera
       end
       # We shamelessly throw exceptions here, and catch them upper in the chain
       # specifically in Hiera::Mwcache.stale? and Hiera::Mwcache.read
-      body = YAML.parse(res.body)
+      body = YAML.load(res.body)
 
       body['hiera']
     end
