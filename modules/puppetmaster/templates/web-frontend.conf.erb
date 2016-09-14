@@ -4,8 +4,8 @@
 <%- if @alt_names %>    ServerAlias <%= @alt_names.sort.join(" ") %><% end %>
     SSLEngine on
     <%= @ssl_settings.join("\n") %>
-    SSLCertificateFile      /var/lib/puppet/ssl/certs/<%= @server_name %>.pem
-    SSLCertificateKeyFile   /var/lib/puppet/ssl/private_keys/<%= @server_name %>.pem
+    SSLCertificateFile      <%= @ssldir %>/certs/<%= @server_name %>.pem
+    SSLCertificateKeyFile   <%= @ssldir %>/private_keys/<%= @server_name %>.pem
     SSLCACertificateFile    /var/lib/puppet/ssl/certs/ca.pem
     SSLCertificateChainFile /var/lib/puppet/ssl/certs/ca.pem
     # If Apache complains about invalid signatures on the CRL, you can try disabling
