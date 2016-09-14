@@ -91,7 +91,7 @@ class keyholder($require_encrypted_keys='yes') {
     # and the backend ssh-agent that holds the shared key(s).
     base::service_unit { 'keyholder-proxy':
         ensure  => present,
-        systemd => false,
+        systemd => true,
         upstart => true,
         require => Service['keyholder-agent'],
     }
