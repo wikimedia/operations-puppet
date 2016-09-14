@@ -21,7 +21,7 @@ import salt.client
 from phabricator import Phabricator
 
 ICINGA_DOMAIN = 'icinga.wikimedia.org'
-PUPPET_DOMAIN = '_x-puppet._tcp.eqiad.wmnet'
+PUPPET_DOMAIN = 'puppet.wikimedia.org'
 DEPLOYMENT_DOMAIN = 'deployment.eqiad.wmnet'
 INTERNAL_TLD = 'wmnet'
 MANAGEMENT_DOMAIN = 'mgmt'
@@ -943,7 +943,7 @@ def run(args, user):
     ipmi_password = get_ipmi_password()
     custom_mgmts = get_custom_mgmts(args.hosts)
     icinga_host = resolve_dns(ICINGA_DOMAIN, 'CNAME')
-    puppetmaster_host = resolve_dns(PUPPET_DOMAIN, 'SRV')
+    puppetmaster_host = resolve_dns(PUPPET_DOMAIN, 'CNAME')
     deployment_host = resolve_dns(DEPLOYMENT_DOMAIN, 'CNAME')
     phab_client = get_phabricator_client()
     hosts = args.hosts
