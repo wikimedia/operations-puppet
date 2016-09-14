@@ -1,4 +1,4 @@
 debdeploy::grains:
   debdeploy-videoscaler:
     value: canary
-base::puppet::params::use_srv_record: true
+
