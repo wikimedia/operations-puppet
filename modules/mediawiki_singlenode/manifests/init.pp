@@ -35,9 +35,7 @@ class mediawiki_singlenode(
 
     include ::imagemagick::install
 
-    package { [ 'php-apc', 'php5-cli' ] :
-        ensure => latest,
-    }
+    require_package('php-apc', 'php5-cli')
 
     if !defined(Class['memcached']) {
         class { 'memcached':
