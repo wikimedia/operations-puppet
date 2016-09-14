@@ -2,7 +2,8 @@
 define role::cache::instances (
     $fe_mem_gb,
     $fe_jemalloc_conf,
-    $runtime_params,
+    $fe_runtime_params,
+    $be_runtime_params,
     $app_directors,
     $fe_vcl_config,
     $be_vcl_config,
@@ -85,7 +86,7 @@ define role::cache::instances (
         extra_vcl          => $be_extra_vcl,
         ports              => [ 3128 ],
         admin_port         => 6083,
-        runtime_parameters => $runtime_params,
+        runtime_parameters => $be_runtime_params,
         storage            => $be_storage,
         vcl_config         => $be_vcl_config,
         directors          => $be_directors,
@@ -99,7 +100,7 @@ define role::cache::instances (
         extra_vcl          => $fe_extra_vcl,
         ports              => [ 80, 3127 ],
         admin_port         => 6082,
-        runtime_parameters => $runtime_params,
+        runtime_parameters => $fe_runtime_params,
         storage            => "-s malloc,${fe_mem_gb}G",
         jemalloc_conf      => $fe_jemalloc_conf,
         directors          => {

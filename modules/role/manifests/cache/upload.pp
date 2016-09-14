@@ -103,19 +103,23 @@ class role::cache::upload(
         "-s bigobj2=file,/srv/${::role::cache::2layer::storage_parts[1]}/varnish.bigobj2,${storage_size_bigobj}G",
     ], ' ')
 
+    # default_ttl=7d
+    $common_runtime_params = ['default_ttl=604800']
+
     role::cache::instances { 'upload':
-        fe_mem_gb        => ceiling(0.4 * $::memorysize_mb / 1024.0),
-        fe_jemalloc_conf => 'lg_dirty_mult:8,lg_chunk:20',
-        runtime_params   => ['default_ttl=604800'], # default_ttl=7d
-        app_directors    => $app_directors,
-        fe_vcl_config    => $fe_vcl_config,
-        be_vcl_config    => $be_vcl_config,
-        fe_extra_vcl     => ['upload-common'],
-        be_extra_vcl     => ['upload-common'],
-        be_storage       => $upload_storage_args,
-        fe_cache_be_opts => $fe_cache_be_opts,
-        be_cache_be_opts => $be_cache_be_opts,
-        cluster_nodes    => hiera('cache::upload::nodes'),
+        fe_mem_gb         => ceiling(0.4 * $::memorysize_mb / 1024.0),
+        fe_jemalloc_conf  => 'lg_dirty_mult:8,lg_chunk:20',
+        fe_runtime_params => $common_runtime_params,
+        be_runtime_params => $common_runtime_params,
+        app_directors     => $app_directors,
+        fe_vcl_config     => $fe_vcl_config,
+        be_vcl_config     => $be_vcl_config,
+        fe_extra_vcl      => ['upload-common'],
+        be_extra_vcl      => ['upload-common'],
+        be_storage        => $upload_storage_args,
+        fe_cache_be_opts  => $fe_cache_be_opts,
+        be_cache_be_opts  => $be_cache_be_opts,
+        cluster_nodes     => hiera('cache::upload::nodes'),
     }
 
     # Media browser cache hit rate and request volume stats.
