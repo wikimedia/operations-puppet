@@ -2330,6 +2330,18 @@ node 'palladium.eqiad.wmnet' {
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
     }
+
+    $servers = hiera('puppetmaster::servers', {})
+    $workers = $servers[$::fqdn]
+
+    # the old vhost for compatibility
+    ::puppetmaster::web_frontend { 'puppet':
+        master       => 'palladium.eqiad.wmnet',
+        workers      => $workers,
+        priority     => 40,
+        bind_address => '*',
+    }
+
     # Add a site for temporary puppet backend tests
     ::puppetmaster::web_frontend { 'puppetmaster.test.eqiad.wmnet':
         master    => 'palladium.eqiad.wmnet',
