@@ -547,7 +547,14 @@ node 'db1049.eqiad.wmnet' {
     }
 }
 
-node /^db10(26|45|70|71|82|87|92)\.eqiad\.wmnet/ {
+node /^db10(26|45|70|71|87|92)\.eqiad\.wmnet/ {
+    class { 'role::mariadb::core':
+        shard => 's5',
+    }
+}
+
+node 'db1082.eqiad.wmnet' {
+    role mariadb::custom_mysqld_safe
     class { 'role::mariadb::core':
         shard => 's5',
     }
