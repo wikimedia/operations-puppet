@@ -18,7 +18,7 @@ class Hiera
       end
     end
 
-    def read(path)
+    def read(path, _, _)
       read_file(path)
     rescue => detail
       # When failing to read data, we raise an exception, see https://phabricator.wikimedia.org/T78408
@@ -47,15 +47,15 @@ class Hiera
       now = Time.now.to_i
       if @cache[path].nil?
         @cache[path] = {:data => nil, :meta => {:ts => now}}
-        return True
+        return true
       elsif (now - @cache[path][:meta][:ts]) <= @stat_ttl
         # if we already fetched the result within the last stat_ttl seconds,
         # we don't bother killing the mediawiki instance with a flood of requests
-        return False
+        return false
       else
         # This means there's a ts and it's old enough
         @cache[path][:meta][:ts] = now
-        return True
+        return true
       end
     end
 
