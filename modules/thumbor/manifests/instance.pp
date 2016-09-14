@@ -30,5 +30,7 @@ define thumbor::instance
         require  => File[$instance_service_path],
     }
 
-    nrpe::monitor_systemd_unit_state{ "thumbor@${port}": }
+    nrpe::monitor_systemd_unit_state{ "thumbor@${port}":
+        retries => 15,
+    }
 }
