@@ -34,7 +34,7 @@ define backup::mysqlset(
             owner   => 'root',
             group   => 'root',
             mode    => '0500',
-            content => template('backups/mysql-predump.erb'),
+            content => template('backup/mysql-predump.erb'),
         }
 
     } elsif $method == 'bpipe' {
