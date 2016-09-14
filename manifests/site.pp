@@ -1029,9 +1029,7 @@ node /^es201[79]\.codfw\.wmnet/ {
 # These nodes are temporarilly up until we get proper
 # storage on the backup system
 node 'es2001.codfw.wmnet' {
-    # prometheus is added as a temporary measure until it is
-    # applied on all nodes by default
-    role(mariadb::otrsbackups, prometheus::node_exporter)
+    role(mariadb::otrsbackups)
     include standard
     include base::firewall
     # temporary measure until mysql is uninstalled
@@ -1039,9 +1037,6 @@ node 'es2001.codfw.wmnet' {
 }
 
 node /^es200[234]\.codfw\.wmnet/ {
-    # prometheus is added as a temporary measure until it is
-    # applied on all nodes by default
-    role(prometheus::node_exporter)
     include standard
     include base::firewall
     # temporary measure until mysql is uninstalled
@@ -1915,12 +1910,12 @@ node 'maerlant.wikimedia.org' {
 }
 
 node 'maps-test2001.codfw.wmnet' {
-    role(maps::server, maps::master, prometheus::node_exporter)
+    role(maps::server, maps::master)
     include base::firewall
 }
 
 node /^maps-test200[2-4]\.codfw\.wmnet/ {
-    role(maps::server, maps::slave, prometheus::node_exporter)
+    role(maps::server, maps::slave)
     include base::firewall
 }
 
@@ -2430,7 +2425,7 @@ node 'potassium.eqiad.wmnet' {
 }
 
 node /^prometheus200[12]\.codfw\.wmnet$/ {
-    role(prometheus::ops, prometheus::node_exporter)
+    role(prometheus::ops)
 
     include base::firewall
     include standard
@@ -2438,7 +2433,7 @@ node /^prometheus200[12]\.codfw\.wmnet$/ {
 }
 
 node /^prometheus100[12]\.eqiad\.wmnet$/ {
-    role(prometheus::ops, prometheus::node_exporter)
+    role(prometheus::ops)
 
     include base::firewall
     include standard
@@ -2468,7 +2463,7 @@ node /^puppetmaster[12]002\.(codfw|eqiad)\.wmnet$/ {
 
 # pybal-test200X VMs are used for pybal testing/development
 node /^pybal-test200[12]\.codfw\.wmnet$/ {
-    role(pybaltest, prometheus::node_exporter)
+    role(pybaltest)
     include standard
 }
 
@@ -2542,7 +2537,7 @@ node /^restbase200[1-9]\.codfw\.wmnet$/ {
 
 # cassandra multi-dc temporary test T111382
 node /^restbase-test200[1-3]\.codfw\.wmnet$/ {
-    role(restbase, cassandra, prometheus::node_exporter)
+    role(restbase, cassandra)
     include standard
 }
 
@@ -2863,7 +2858,7 @@ node /^wdqs200[1-2]\.codfw\.wmnet$/ {
 }
 
 node 'wezen.codfw.wmnet' {
-    role(backup::host, syslog::centralserver, prometheus::node_exporter)
+    role(backup::host, syslog::centralserver)
     include standard
 }
 
