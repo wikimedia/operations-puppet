@@ -5,7 +5,7 @@
 :nuyaml:
   :datadir: /etc/puppet/hieradata
 :mwyaml:
-  :host: https://labtestwikitech.wikimedia.org
+  :host: https://wikitech.wikimedia.org
   :cache_ttl: 120
 :private:
   :datadir: /etc/puppet/private/hieradata
