@@ -224,7 +224,7 @@ class role::logging::kafkatee::webrequest {
         mode    => '0444',
         owner   => 'root',
         group   => 'root',
-        content => template('kafkatee/logrotate.erb'),
+        content => template('role/logging/kafkatee_logrotate.erb'),
     }
 
 }
