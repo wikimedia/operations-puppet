@@ -185,7 +185,7 @@ fi
   <%- @servers.each do |frontend, workers| -%>
     <%- workers.map{ |w| w['worker']}.select{|name| name != @fqdn}.each do |worker| -%>
 if [ $running_user = $git_user ]; then
-    ssh -t -t <%= worker -%> true ${sha1} 2>&1 | tee -a /var/log/puppet-post-merge.log
+    ssh -t -t <%= worker -%> true ${fetch_head_sha1} 2>&1 | tee -a /var/log/puppet-post-merge.log
 else
     su - $git_user -c "ssh -t -t <%= worker -%> true ${sha1} 2>&1 | tee -a /var/log/puppet-post-merge.log"
 fi
