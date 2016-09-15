@@ -42,9 +42,37 @@ class role::prometheus::ops {
       },
     ]
 
+    # one job per varnish cache 'role'
+    $varnish_jobs = [
+      {
+        'job_name'        => 'varnish-text',
+        'file_sd_configs' => [
+          { 'names' => [ "${targets_path}/varnish-text_*.yaml"] },
+        ]
+      },
+      {
+        'job_name'        => 'varnish-upload',
+        'file_sd_configs' => [
+          { 'names' => [ "${targets_path}/varnish-upload_*.yaml"] },
+        ]
+      },
+      {
+        'job_name'        => 'varnish-maps',
+        'file_sd_configs' => [
+          { 'names' => [ "${targets_path}/varnish-maps_*.yaml"] },
+        ]
+      },
+      {
+        'job_name'        => 'varnish-misc',
+        'file_sd_configs' => [
+          { 'names' => [ "${targets_path}/varnish-misc_*.yaml"] },
+        ]
+      },
+    ]
+
     prometheus::server { 'ops':
         listen_address       => '127.0.0.1:9900',
-        scrape_configs_extra => $mysql_jobs,
+        scrape_configs_extra => array_concat($mysql_jobs, $varnish_jobs),
     }
 
     prometheus::web { 'ops':
