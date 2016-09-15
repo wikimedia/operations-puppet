@@ -44,8 +44,8 @@ class role::lists::server {
 
     class { 'exim4':
         variant => 'heavy',
-        config  => template('exim/exim4.conf.mailman.erb'),
-        filter  => template('exim/system_filter.conf.mailman.erb'),
+        config  => template('role/exim/exim4.conf.mailman.erb'),
+        filter  => template('role/exim/system_filter.conf.mailman.erb'),
         require => [
             Class['spamassassin'],
             Interface::Ip['lists.wikimedia.org_v4'],
@@ -174,4 +174,3 @@ class role::lists::server {
         rule => 'proto tcp dport 783 { saddr (127.0.0.1 ::1) ACCEPT; }'
     }
 }
-

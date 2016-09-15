@@ -120,8 +120,8 @@ class role::phabricator::main {
 
     class { 'exim4':
         variant => 'heavy',
-        config  => template('exim/exim4.conf.phab.erb'),
-        filter  => template('exim/system_filter.conf.erb'),
+        config  => template('role/exim/exim4.conf.phab.erb'),
+        filter  => template('role/exim/system_filter.conf.erb'),
     }
     include exim4::ganglia
 
