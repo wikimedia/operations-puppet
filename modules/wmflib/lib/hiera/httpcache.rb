@@ -71,7 +71,7 @@ class Hiera
       # FIXME: use safe_load here somehow?
       body = YAML.load(res.body)
 
-      Hiera.debug('Content is #{body}')
+      Hiera.debug("Content is #{body}")
       body['hiera']
     end
   end
