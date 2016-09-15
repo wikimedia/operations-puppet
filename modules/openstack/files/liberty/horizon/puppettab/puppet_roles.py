@@ -18,6 +18,9 @@ import requests
 
 from django.conf import settings
 from django.core.cache import cache
+from django.utils.html import escape
+from django.utils.safestring import mark_safe
+from django.utils.translation import ugettext_lazy as _
 
 logging.basicConfig()
 LOG = logging.getLogger(__name__)
@@ -27,18 +30,22 @@ LOG = logging.getLogger(__name__)
 #  for our Horizon table-of-roles UI
 class PuppetClass():
     name = None
+    html_name = ""
     docs = ""
     applied = False
     params = []
+    formatted_params = ""
     raw_params = {}
     filter_tags = []
     instance = None
 
     def __init__(self, name):
         self.name = name
-        self.docs = ""
+        self.html_name = ""
+        self.docs = _('(No docs available)')
         self.applied = False
         self.params = []
+        self.formatted_params = ""
         self.raw_params = {}
         self.filter_tags = []
         self.instance = None
@@ -51,6 +58,12 @@ class PuppetClass():
     def mark_applied(self, paramdict):
         self.applied = True
         self.params = paramdict
+        if paramdict:
+            keysanddefaults = []
+            for param in self.params.items():
+                keysanddefaults.append("%s: %s" % param)
+            self.formatted_params = ";\n".join(keysanddefaults)
+
         return self
 
 
@@ -98,6 +111,13 @@ def available_roles():
                     else:
                         newdoc += "%s\n" % line
                 obj.docs = newdoc
+
+            simplename = obj.name.split('role::')[1]
+            html = '%s <span title="%s" class="fa-question-circle" />' % (
+                escape(simplename),
+                escape(obj.docs)
+            )
+            obj.html_name = mark_safe(html)
 
             roles.append(obj)
 
