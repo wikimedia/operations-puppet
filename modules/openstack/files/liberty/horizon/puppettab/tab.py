@@ -48,7 +48,7 @@ class PuppetTab(tabs.TableTab):
             self.tenant_id = kwargs['tenant_id']
             del kwargs['tenant_id']
 
-        if self.tenant_id and self.prefix:
+        if hasattr(self, 'tenant_id') and hasattr(self, 'prefix'):
             self.caption = _("These puppet settings will affect all VMs in the"
                              " %s project whose names begin with \'%s\'") % (
                 self.tenant_id, self.prefix)
@@ -63,12 +63,11 @@ class PuppetTab(tabs.TableTab):
             self.prefix = "%s.%s.%s" % (instance.name,
                                         instance.tenant_id, tld)
             self.tenant_id = instance.tenant_id
-            self.caption = _("These puppet settings will affect all VMs"
-                             " in the %s project") % (self.tenant_id,
-                                                      self.prefix)
-        elif 'prefix' in self.tab_group.kwargs:
-            self.prefix = self.tab_group.kwargs['prefix']
+        elif 'tenant_id' in self.tab_group.kwargs:
             self.tenant_id = self.tab_group.kwargs['tenant_id']
+            self.prefix = self.tab_group.kwargs['prefix']
+            self.caption = _("These puppet settings will affect all VMs"
+                             " in the %s project") % self.tenant_id
 
         self.config = puppet_config(self.prefix, self.tenant_id)
 
@@ -77,10 +76,10 @@ class PuppetTab(tabs.TableTab):
         context['prefix'] = self.prefix
         context['config'] = self.config
 
-        if 'caption' in self.tab_group.kwargs:
-            context['caption'] = self.tab_group.kwargs['caption']
-        elif self.caption:
+        if hasattr(self, 'caption'):
             context['caption'] = self.caption
+        elif 'caption' in self.tab_group.kwargs:
+            context['caption'] = self.tab_group.kwargs['caption']
 
         url = "horizon:project:puppet:edithiera"
         kwargs = {
