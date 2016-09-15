@@ -54,7 +54,7 @@ class mha::manager inherits role::coredb::config {
             owner   => 'root',
             group   => 'root',
             mode    => '0400',
-            content => template('mha/local.erb'),
+            content => template('role/mha/local.erb'),
             require => File['/etc/mha'],
         }
     }
@@ -65,7 +65,7 @@ class mha::manager inherits role::coredb::config {
             owner   => 'root',
             group   => 'root',
             mode    => '0400',
-            content => template('mha/siteswitch.erb'),
+            content => template('role/mha/siteswitch.erb'),
             require => File['/etc/mha'],
         }
     }
