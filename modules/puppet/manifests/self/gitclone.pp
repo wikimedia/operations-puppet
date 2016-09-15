@@ -3,12 +3,10 @@
 # for use by puppet::self::masters.
 #
 class puppet::self::gitclone {
-    $gitdir = '/var/lib/git'
     $volatiledir = '/var/lib/puppet/volatile'
 
-    class { '::puppetmaster::base_repo':
-        gitdir => $gitdir,
-    }
+    require ::puppetmaster::base_repo
+    $gitdir = $::puppetmaster::base_repo::gitdir
 
     file { "${gitdir}/labs":
         ensure => directory,
