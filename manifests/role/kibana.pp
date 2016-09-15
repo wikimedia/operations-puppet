@@ -49,7 +49,7 @@ class role::kibana (
         fail('role::kibana::auth_type must be one of ldap, local, none')
     }
 
-    $apache_auth = template("kibana/apache-auth-${auth_type}.erb")
+    $apache_auth = template("role/kibana/apache-auth-${auth_type}.erb")
 
     ferm::service { 'kibana_frontend':
         proto   => 'tcp',
@@ -59,6 +59,6 @@ class role::kibana (
     }
 
     apache::site { $vhost:
-        content => template('kibana/apache.conf.erb'),
+        content => template('role/kibana/apache.conf.erb'),
     }
 }
