@@ -18,21 +18,42 @@ class puppet::self::config(
     $puppet_client_subnet = undef,
     $certname             = $::fqdn,
     $autosign             = hiera('puppetmaster::autosigner', false),
+    $use_enc              = false,
 ) {
-    include ldap::role::config::labs
+    if $use_enc {
+        require_package('python3-yaml', 'python3-ldap3')
 
-    $ldapconfig = $ldap::role::config::labs::ldapconfig
-    $basedn = $ldapconfig['basedn']
+        include ldap::yamlcreds
 
+        file { '/usr/local/bin/puppet-enc':
+            source => 'puppet:///modules/role/labs/puppet-enc.py',
+            mode   => '0555',
+            owner  => 'root',
+            group  => 'root',
+        }
 
-    $config = {
-        'node_terminus' => 'ldap',
-        'ldapserver'    => $ldapconfig['servernames'][0],
-        'ldapbase'      => "ou=hosts,${basedn}",
-        'ldapstring'    => '(&(objectclass=puppetClient)(associatedDomain=%s))',
-        'ldapuser'      => $ldapconfig['proxyagent'],
-        'ldappassword'  => $ldapconfig['proxypass'],
-        'ldaptls'       => true,
+        $encconfig = {
+            'node_terminus'  => 'exec',
+            'external_nodes' => '/usr/local/bin/puppet-enc',
+        }
+    } else {
+        include ldap::role::config::labs
+
+        $ldapconfig = $ldap::role::config::labs::ldapconfig
+        $basedn = $ldapconfig['basedn']
+
+        $encconfig = {
+            'node_terminus' => 'ldap',
+            'ldapserver'    => $ldapconfig['servernames'][0],
+            'ldapbase'      => "ou=hosts,${basedn}",
+            'ldapstring'    => '(&(objectclass=puppetClient)(associatedDomain=%s))',
+            'ldapuser'      => $ldapconfig['proxyagent'],
+            'ldappassword'  => $ldapconfig['proxypass'],
+            'ldaptls'       => true,
+        }
+    }
+
+    $config = merge($encconfig, {
         'dbadapter'     => 'sqlite3',
         'autosign'      => $autosign
     }
