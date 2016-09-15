@@ -59,6 +59,8 @@ class puppet_config():
             self.hiera_raw = yaml.safe_load(req.text)['hiera']
 
         hiera_yaml = yaml.safe_load(self.hiera_raw)
+        if not hiera_yaml:
+            hiera_yaml = {}
         self.role_dict = {}
 
         # Find the hiera lines that assign params to applied roles.
@@ -154,3 +156,16 @@ class puppet_config():
                             headers={'Content-Type': 'application/x-yaml'})
         req.raise_for_status()
         self.refresh()
+
+    @staticmethod
+    def get_prefixes(tenant_id):
+        apiurl = getattr(settings,
+                         "PUPPET_CONFIG_BACKEND",
+                         "http://labcontrol1001.wikimedia.org:8100/v1")
+        prefixurl = "%s/%s/prefix" % (apiurl, tenant_id)
+        req = requests.get(prefixurl, verify=False)
+        if req.status_code == 404:
+            return []
+        else:
+            req.raise_for_status()
+        return yaml.safe_load(req.text)['prefixes']
