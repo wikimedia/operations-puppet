@@ -258,6 +258,45 @@ def get_prefixes(project):
         cur.close()
 
 
+@statsd.timer('delete_prefix')
+@app.route('/v1/<string:project>/prefix/<string:prefix>', methods=['DELETE'])
+def delete_prefix(project, prefix):
+    prefix = _preprocess_prefix(prefix)
+    cur = g.db.cursor()
+    try:
+        cur.execute("""
+            SELECT id  FROM prefix WHERE project = %s and prefix = %s
+        """, (project, prefix))
+        prefix_id = cur.lastrowid
+
+        if not prefix_id:
+            return Response(
+                yaml.dump({'status': 'notfound'}),
+                status=404,
+                mimetype='application/x-yaml'
+            )
+
+        cur.execute("""
+            DELETE FROM prefix WHERE id = %s
+        """, (prefix_id, ))
+
+        cur.execute("""
+            DELETE FROM roleassignment WHERE prefix = %s
+        """, (prefix_id, ))
+
+        cur.execute("""
+            DELETE FROM hieraassignment WHERE prefix = %s
+        """, (prefix_id, ))
+
+        return Response(
+            yaml.safe_dump({'status': 'ok'}),
+            status=200,
+            mimetype='application/x-yaml'
+        )
+    finally:
+        cur.close()
+
+
 @statsd.timer('healthz')
 @app.route('/v1/healthz')
 def healthz():
