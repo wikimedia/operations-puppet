@@ -278,11 +278,11 @@ def delete_prefix(project, prefix):
 
         g.db.begin()
         cur.execute("""
-            DELETE FROM roleassignment WHERE prefix = %s
+            DELETE FROM roleassignment WHERE prefix_id = %s
         """, (prefix_id, ))
 
         cur.execute("""
-            DELETE FROM hieraassignment WHERE prefix = %s
+            DELETE FROM hieraassignment WHERE prefix_id = %s
         """, (prefix_id, ))
 
         cur.execute("""
