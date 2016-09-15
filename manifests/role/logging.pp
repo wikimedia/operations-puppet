@@ -94,7 +94,7 @@ class role::logging::mediawiki(
         owner   => 'root',
         group   => 'root',
         mode    => '0555',
-        content => template('misc/exceptionmonitor.erb'),
+        content => template('role/logging/exceptionmonitor.erb'),
     }
 
     file { '/etc/profile.d/mw-log.sh':
