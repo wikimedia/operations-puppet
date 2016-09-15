@@ -18,6 +18,7 @@ import requests
 
 from django.conf import settings
 from django.core.cache import cache
+from django.utils.translation import ugettext_lazy as _
 
 logging.basicConfig()
 LOG = logging.getLogger(__name__)
@@ -36,7 +37,7 @@ class PuppetClass():
 
     def __init__(self, name):
         self.name = name
-        self.docs = ""
+        self.docs = _('(No docs available)')
         self.applied = False
         self.params = []
         self.raw_params = {}

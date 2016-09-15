@@ -24,15 +24,13 @@ from django.utils.safestring import mark_safe
 
 from horizon import tables
 
-import puppet_roles
-
 logging.basicConfig()
 LOG = logging.getLogger(__name__)
 
 
 def get_formatted_name(classrecord):
     name = classrecord.name.split('role::')[1]
-    title = get_docs_for_class(name)
+    title = classrecord.docs
     html = '%s <span title="%s" class="fa-question-circle" />' % (
         escape(name),
         escape(title)
@@ -46,16 +44,6 @@ def get_formatted_params(classrecord):
         for param in classrecord.params.items():
             keysanddefaults.append("%s: %s" % param)
         return(";\n".join(keysanddefaults))
-
-
-def get_docs_for_class(classname):
-    allroles = puppet_roles.available_roles()
-    for role in allroles:
-        if role.name.split('role::')[1] == classname:
-            if role.docs:
-                return role.docs
-            break
-    return _('(No docs available)')
 
 
 class RemoveRole(tables.LinkAction):
