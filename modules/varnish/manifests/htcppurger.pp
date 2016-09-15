@@ -37,7 +37,7 @@ class varnish::htcppurger(
     Class[varnish::packages] -> Class[varnish::htcppurger]
 
     package { 'vhtcpd':
-        ensure => latest,
+        ensure => present,
     }
 
     if $host_regex != '' {
