@@ -32,7 +32,7 @@ class role::installserver {
     if os_version('ubuntu >= trusty') or os_version('debian >= jessie') {
         $config_content = template('role/caching-proxy/squid.conf.erb')
     } else {
-        $config_content = template('squid3/precise_acls_conf.erb', 'role/caching-proxy/squid.conf.erb')
+        $config_content = template('role/squid3/precise_acls_conf.erb', 'role/caching-proxy/squid.conf.erb')
     }
 
     class { 'squid3':
