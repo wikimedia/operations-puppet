@@ -36,7 +36,7 @@ class varnish::htcppurger(
     Class[varnish::packages] -> Class[varnish::htcppurger]
 
     package { 'vhtcpd':
-        ensure => latest,
+        ensure => present,
     }
 
     file { '/etc/default/vhtcpd':
