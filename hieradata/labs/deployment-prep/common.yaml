@@ -170,6 +170,7 @@ scap::dsh::groups:
             - deployment-jobrunner01.deployment-prep.eqiad.wmflabs
             - deployment-mediawiki02.deployment-prep.eqiad.wmflabs
             - deployment-mediawiki04.deployment-prep.eqiad.wmflabs
+            - deployment-mediawiki06.deployment-prep.eqiad.wmflabs
             - deployment-tmh01.deployment-prep.eqiad.wmflabs
             - deployment-tin.deployment-prep.eqiad.wmflabs
             - mira.deployment-prep.eqiad.wmflabs
