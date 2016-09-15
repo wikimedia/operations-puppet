@@ -12,6 +12,12 @@ class Hiera
       @httphost = config[:host] || 'https://wikitech.wikimedia.org'
       @endpoint = config[:endpoint] || '/w/api.php'
       @http = HTTPClient.new(:agent_name => 'HieraMwCache/0.1')
+
+      # Use the operating system's certificate store, not ruby-httpclient's cacert.p7s which doesn't
+      # even have the root used to sign Let's Encrypt CAs (DST Root CA X3)
+      @http.ssl_config.clear_cert_store
+      @http.ssl_config.set_default_paths
+
       @stat_ttl = config[:cache_ttl] || 60
       if defined? @http.ssl_config.ssl_version
         @http.ssl_config.ssl_version = 'TLSv1'
