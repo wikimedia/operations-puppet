@@ -174,7 +174,7 @@ class role::grafana::base(
     #
 
     apache::site { $readonly_domain:
-        content => template('apache/sites/grafana-readonly.erb'),
+        content => template('role/apache/sites/grafana-readonly.erb'),
         require => Class['::grafana'],
     }
 
@@ -184,7 +184,7 @@ class role::grafana::base(
     }
 
     apache::site { $admin_domain:
-        content => template('apache/sites/grafana-admin.erb'),
+        content => template('role/apache/sites/grafana-admin.erb'),
         require => Class['::grafana'],
     }
 

@@ -57,7 +57,7 @@ class role::piwik::server {
     }
 
     apache::site { 'piwik.wikimedia.org':
-        content => template('apache/sites/piwik.wikimedia.org.erb'),
+        content => template('role/apache/sites/piwik.wikimedia.org.erb'),
     }
 
     monitoring::service { 'piwik':

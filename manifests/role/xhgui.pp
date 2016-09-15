@@ -96,6 +96,6 @@ class role::xhgui::app {
     } ->
 
     apache::site { 'xhgui_apache_site':
-        content => template('apache/sites/xhgui.erb'),
+        content => template('role/apache/sites/xhgui.erb'),
     }
 }
