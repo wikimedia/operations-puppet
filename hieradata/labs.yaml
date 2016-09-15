@@ -51,19 +51,19 @@ cache::text::apps:
     route: eqiad
     backends:
       eqiad:
-        - '10.68.16.127' # deployment-mediawiki02
+        - '10.68.16.127' # deployment-mediawiki06
         - '10.68.19.128' # deployment-mediawiki04
   api:
     route: eqiad
     backends:
       eqiad:
-        - '10.68.16.127' # deployment-mediawiki02
+        - '10.68.16.127' # deployment-mediawiki06
         - '10.68.19.128' # deployment-mediawiki04
   rendering:
     route: eqiad
     backends:
       eqiad:
-        - '10.68.16.127' # deployment-mediawiki02
+        - '10.68.16.127' # deployment-mediawiki06
         - '10.68.19.128' # deployment-mediawiki04
   security_audit:
     route: eqiad

@@ -74,19 +74,16 @@ class role::cache::configuration {
             'labs' => {
                 'appservers' => {
                     'eqiad' => [
-                        '10.68.17.208', # deployment-mediawiki02
                         '10.68.19.128', # deployment-mediawiki04
                     ],
                 },
                 'api' => {
                     'eqiad' => [
-                        '10.68.17.208', # deployment-mediawiki02
                         '10.68.19.128', # deployment-mediawiki04
                     ],
                 },
                 'rendering' => {
                     'eqiad' => [
-                        '10.68.17.208', # deployment-mediawiki02
                         '10.68.19.128', # deployment-mediawiki04
                     ],
                 },
