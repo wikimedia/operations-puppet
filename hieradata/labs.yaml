@@ -68,7 +68,7 @@ cache::text::apps:
   security_audit:
     route: eqiad
     backends:
-      eqiad: '10.68.16.127' # deployment-mediawiki02
+      eqiad: '10.68.19.241' # deployment-mediawiki06
   appservers_debug:
     route: eqiad
     backends:
