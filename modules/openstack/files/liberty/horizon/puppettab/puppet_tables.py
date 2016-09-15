@@ -19,31 +19,10 @@ import logging
 from django.core import urlresolvers
 from django.utils.translation import ugettext_lazy as _
 
-from django.utils.html import escape
-from django.utils.safestring import mark_safe
-
 from horizon import tables
 
 logging.basicConfig()
 LOG = logging.getLogger(__name__)
-
-
-def get_formatted_name(classrecord):
-    name = classrecord.name.split('role::')[1]
-    title = classrecord.docs
-    html = '%s <span title="%s" class="fa-question-circle" />' % (
-        escape(name),
-        escape(title)
-    )
-    return mark_safe(html)
-
-
-def get_formatted_params(classrecord):
-    if classrecord.params:
-        keysanddefaults = []
-        for param in classrecord.params.items():
-            keysanddefaults.append("%s: %s" % param)
-        return(";\n".join(keysanddefaults))
 
 
 class RemoveRole(tables.LinkAction):
@@ -130,9 +109,9 @@ class RoleFilter(tables.FixedFilterAction):
 
 class PuppetTable(tables.DataTable):
     applied = tables.Column('applied', verbose_name=_('Applied'), status=True)
-    name = tables.Column(get_formatted_name,
+    name = tables.Column('html_name',
                          verbose_name=_('Name'))
-    params = tables.Column(get_formatted_params,
+    params = tables.Column('formatted_params',
                            verbose_name=_('Parameters'),
                            sortable=False)
     instance = tables.Column('instance',
@@ -155,7 +134,3 @@ class PuppetTable(tables.DataTable):
 
     def get_object_id(self, datum):
         return datum.name
-
-    def render_to_response(self, context, **response_kwargs):
-        LOG.warn("render_to_response 2: %s" %
-                 self.request.GET.get('format', 'html'))
