@@ -1,7 +1,7 @@
 postgres_users:
   replication@nihal-v4:
     user: replication
-    database: replication
+    database: all
     password: "%{::puppetmaster::puppetdb::database::replication_pass}"
     cidr: 10.192.16.184/32
     pgversion: 9.4

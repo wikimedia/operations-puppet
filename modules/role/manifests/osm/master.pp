@@ -79,7 +79,7 @@ class role::osm::master(
             type     => 'host',
             method   => 'md5',
             attrs    => 'REPLICATION',
-            database => 'replication',
+            database => 'all',
         }
     }
 

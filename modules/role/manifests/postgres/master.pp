@@ -31,7 +31,7 @@ class role::postgres::master {
             type     => 'host',
             method   => 'md5',
             attrs    => 'REPLICATION',
-            database => 'replication',
+            database => 'all',
         }
     }
 
