@@ -5,11 +5,11 @@ class gridengine::submit_host {
     include ::gridengine
 
     package { [ 'jobutils' ]:
-        ensure => latest,
+        ensure => present,
     }
 
     package { 'gridengine-client':
-        ensure  => latest,
+        ensure  => present,
         require => Package['gridengine-common'],
     }
 
