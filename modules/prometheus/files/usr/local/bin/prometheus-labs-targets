@@ -12,6 +12,16 @@ import urllib.request
 import yaml
 
 
+HELP_EPILOG = """
+
+The --print-format option accepts .format()-style strings, some examples
+can be found at https://docs.python.org/3/library/string.html#format-examples
+
+For example list all default scraping URLs:
+  --print-format "http://{name}:{port}/metrics"
+"""
+
+
 def project_instances(project):
     req = urllib.request.urlopen(
             'https://wikitech.wikimedia.org/w/api.php?' +
@@ -31,9 +41,12 @@ def project_instances(project):
 
 
 def main():
-    parser = argparse.ArgumentParser()
+    parser = argparse.ArgumentParser(epilog=HELP_EPILOG,
+            formatter_class=argparse.RawTextHelpFormatter)
     parser.add_argument('--project', dest='project')
     parser.add_argument('--port', dest='port', default='9100')
+    parser.add_argument('--print-format', dest='print_format', default=None,
+        metavar='FMT', help='Print each host according to FMT')
     parser.add_argument(
         '--prefix',
         help='Only output targets for instances that match this prefix',
@@ -50,13 +63,23 @@ def main():
             return 1
 
     scrape_configs = []
+    format_lines = []
     targets = {'targets': []}
     for instance in project_instances(args.project):
         if instance['name'].startswith(args.prefix):
             targets['targets'].append("%s:%s" % (instance['name'], args.port))
+            if args.print_format:
+                print_args = {'hostname': instance['name'],
+                              'port': args.port,
+                              'project': args.project}
+                format_lines.append(args.print_format.format(**print_args))
     targets['targets'] = sorted(targets['targets'])
     scrape_configs.append(targets)
-    print(yaml.dump(scrape_configs, default_flow_style=False))
+
+    if args.print_format:
+        print('\n'.join(format_lines))
+    else:
+        print(yaml.dump(scrape_configs, default_flow_style=False))
 
 
 if __name__ == '__main__':
