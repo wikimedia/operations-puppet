@@ -1,39 +1,18 @@
 class contint::browsers {
 
-    package { [
-        # Without xfonts-cyrillic Xvdb emits warning:
-        # "[dix] Could not init font path element /usr/share/fonts/X11/cyrillic"
-        'xfonts-cyrillic',
-    ]:
-        ensure => present,
-    }
+    # Without xfonts-cyrillic Xvdb emits warning:
+    # "[dix] Could not init font path element /usr/share/fonts/X11/cyrillic"
+    require_package('xfonts-cyrillic')
 
     if $::operatingsystem == 'Debian' {
-        $latest_packages = [
-            'chromium',
-            'chromedriver',
-            'iceweasel',  # rebranded firefox
-            # phantomjs is not available on Jessie
-        ]
+        # iceweasel rebranded firefox
+        require_package('chromium', 'chromedriver', 'iceweasel')
+        # phantomjs is not available on Jessie
     } elsif os_version('ubuntu >= trusty') {
-        $latest_packages = [
-            'chromium-browser',
-            'chromium-chromedriver',
-            'firefox',
-            'phantomjs',
-        ]
+        require_package('chromium-browser', 'chromium-chromedriver', 'firefox', 'phantomjs')
     } else {
-        $latest_packages = [
-            'chromium-browser',
-            'firefox',
-            'phantomjs',
-        ]
+        require_package('chromium-browser', 'firefox', 'phantomjs')
     }
-
-    package { $latest_packages:
-        ensure => latest,
-    }
-
 
     class { 'xvfb':
         display    => 94,
