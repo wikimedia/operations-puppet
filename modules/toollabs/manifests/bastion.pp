@@ -17,7 +17,6 @@ class toollabs::bastion(
 
     if os_version('ubuntu trusty') {
 
-        # lint:ignore:arrow_alignment
         cgred::group {'shell':
             order  => '01',
             config => {
@@ -38,7 +37,6 @@ class toollabs::bastion(
 
         # misc group for on-the-fly classification
         # of expensive processes as opposed to kill
-        # lint:ignore:arrow_alignment
         cgred::group {'throttle':
             config => {
                 cpu    => {
@@ -50,7 +48,6 @@ class toollabs::bastion(
             },
         }
 
-        # lint:ignore:arrow_alignment
         cgred::group {'user-daemons':
             config => {
                 cpu    => {
@@ -67,7 +64,6 @@ class toollabs::bastion(
             ],
         }
 
-        # lint:ignore:arrow_alignment
         cgred::group {'scripts':
             config => {
                 cpu    => {
@@ -103,7 +99,6 @@ class toollabs::bastion(
             ],
         }
 
-        # lint:ignore:arrow_alignment
         cgred::group {'utilities':
             config => {
                 cpu    => {
