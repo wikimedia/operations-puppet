@@ -47,7 +47,11 @@ case "$command" in
   status)
     prefers_root
     for service in agent proxy; do
-      /sbin/status "keyholder-${service}" || continue
+      if [ -x "/sbin/status" ]; then # upstart
+          /sbin/status "keyholder-${service}" || continue
+      elif [ -x "/bin/systemctl" ]; then  # systemd
+          /bin/systemctl --quiet is-active "keyholder-${service}" || continue
+      fi
       [ -r "/run/keyholder/${service}.sock" ] || continue
       SSH_AUTH_SOCK="/run/keyholder/${service}.sock" /usr/bin/ssh-add -l | sed 's/^/- /'
     done
