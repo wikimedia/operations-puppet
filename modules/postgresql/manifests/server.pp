@@ -45,7 +45,6 @@ class postgresql::server(
         ensure    => $ensure,
         pgversion => $pgversion,
         root_dir  => $root_dir,
-        require   => Class['postgresql::server'],
     }
 
     $data_dir = "${root_dir}/${pgversion}/main"
