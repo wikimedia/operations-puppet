@@ -41,6 +41,7 @@ class postgresql::slave(
     $root_dir='/var/lib/postgresql',
     $use_ssl=false,
 ) {
+    require ::postgresql::packages
 
     $data_dir = "${root_dir}/${pgversion}/main"
 
@@ -80,7 +81,7 @@ class postgresql::slave(
             command     => "/usr/bin/pg_basebackup -X stream -D ${data_dir} -h ${master_server} -U replication -w",
             user        => 'postgres',
             unless      => "/usr/bin/test -f ${data_dir}/PG_VERSION",
-            require     => Class['postgresql::server'],
+            before      => Class['postgresql::server'],
         }
     }
 
