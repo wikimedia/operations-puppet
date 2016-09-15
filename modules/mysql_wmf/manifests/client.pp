@@ -2,13 +2,9 @@
 # and rename this to mysql::client-cli?
 class mysql_wmf::client {
     if versioncmp($::lsbdistrelease, '12.04') >= 0 {
-        package { 'mysql-client-5.5':
-            ensure => latest,
-        }
+        require_package('mysql-client-5.5')
     } else {
-        package { 'mysql-client-5.1':
-            ensure => latest,
-        }
+        require_package('mysql-client-5.1')
     }
 }
 
