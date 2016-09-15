@@ -6,6 +6,8 @@ class puppetmaster::puppetdb::database($master) {
     $puppetdb_pass = hiera('puppetdb::password::rw')
 
     if $master == $::fqdn {
+        # We do this for the require in postgres::db
+        $require_class = 'postgresql::master'
         class { 'postgresql::master':
             includes => ['tuning.conf'],
             root_dir => '/srv/postgres',
@@ -27,6 +29,7 @@ class puppetmaster::puppetdb::database($master) {
             pgversion => '9.4',
         }
     } else {
+        $require_class = 'postgresql::slave'
         class { 'postgresql::slave':
             includes         => ['tuning.conf'],
             master_server    => $master,
@@ -40,7 +43,8 @@ class puppetmaster::puppetdb::database($master) {
 
     # Create the database
     postgresql::db { 'puppetdb':
-        owner => 'puppetdb',
+        owner   => 'puppetdb',
+        require => Class[$require_class],
     }
 
     exec { 'create_tgrm_extension':
