@@ -31,9 +31,15 @@
         # The Jetty Webserver (responsible for the Yarn UI) returns HTML with hardcoded
         # links in the HTML hrefs, so we need a way to avoid broken links.
         ProxyHTMLEnable On
+        # ProxyHTMLExtended forces mod_proxy_html to parse CSS/JS files too
+        # causing performance penalties in the overall rendering time.
+        # Unfortunately this is needed since some analytics1001 links are
+        # contained in embedded JS script that cause a broken UI experience
+        # if left untouched.
+        ProxyHTMLExtended On
         ProxyHTMLLinks a href
-        ProxyHTMLURLMap http://analytics1001.eqiad.wmnet:8088/ / Lecn
-        ProxyHTMLURLMap http://analytics1001.eqiad.wmnet:19888/ / Lecn
+        ProxyHTMLURLMap http://analytics1001.eqiad.wmnet:8088/ / L
+        ProxyHTMLURLMap http://analytics1001.eqiad.wmnet:19888/ / L
     </Location>
 
     CustomLog /var/log/apache2/yarn.wikimedia.org-access.log wmf
