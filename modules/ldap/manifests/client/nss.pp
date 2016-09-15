@@ -3,13 +3,7 @@ class ldap::client::nss(
     $nsswitch_conf_source = 'puppet:///modules/ldap/nsswitch.conf',
 ) {
 
-    package { [ 'libnss-ldapd',
-                'nss-updatedb',
-                'libnss-db',
-                'nscd',
-                'nslcd' ]:
-        ensure => latest,
-    }
+    require_package('libnss-ldapd', 'nss-updatedb', 'libnss-db', 'nscd', 'nslcd')
 
     package { [ 'libnss-ldap' ]:
         ensure => purged,
