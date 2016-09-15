@@ -13,7 +13,7 @@ class role::toollabs::elasticsearch {
     $auth_realm = 'Elasticsearch protected actions'
     $auth_file = '/etc/nginx/elasticsearch.htpasswd'
     nginx::site { 'elasticsearch':
-        content => template('labs/toollabs/elasticsearch/nginx.conf.erb'),
+        content => template('role/toollabs/elasticsearch/nginx.conf.erb'),
     }
 
     file { '/etc/nginx/elasticsearch.htpasswd':
