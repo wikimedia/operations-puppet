@@ -40,17 +40,7 @@ class postgresql::server(
     $root_dir         = '/var/lib/postgresql',
     $use_ssl          = false,
 ) {
-    package { [
-        "postgresql-${pgversion}",
-        "postgresql-${pgversion}-debversion",
-        "postgresql-client-${pgversion}",
-        "postgresql-contrib-${pgversion}",
-        'libdbi-perl',
-        'libdbd-pg-perl',
-        'ptop',
-    ]:
-        ensure => $ensure,
-    }
+    require ::postgresql::packages
 
     $data_dir = "${root_dir}/${pgversion}/main"
 
@@ -65,7 +55,6 @@ class postgresql::server(
         owner   => 'postgres',
         group   => 'postgres',
         mode    => '0755',
-        require => Package["postgresql-${pgversion}"],
     }
 
     file { $data_dir:
@@ -102,7 +91,6 @@ class postgresql::server(
 
     service { $service_name:
         ensure  => ensure_service($ensure),
-        require => Package["postgresql-${pgversion}"]
     }
 
     file { "/etc/postgresql/${pgversion}/main/postgresql.conf":
