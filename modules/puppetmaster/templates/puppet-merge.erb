@@ -55,13 +55,20 @@ fi
 sha1=${1:-}
 
 git_user='gitpuppet'
+# We might be running this as root, or as gitpuppet (from an ssh session to a backend)
+running_user=`whoami`
 
 # Default to /var/lib/git/operations/puppet unless $1 is specified
 cd "${BASEDIR}"
 
 echo "Fetching new commits from $(git config --get remote.origin.url)"
 
-su - $git_user -c "cd ${BASEDIR} && git fetch"
+if [ $running_user = $git_user ]; then
+    cd ${BASEDIR} && git fetch
+else
+    su - $git_user -c "cd ${BASEDIR} && git fetch"
+fi
+
 if [ -z ${sha1} ]; then
     fetch_head_sha1=$(git rev-parse FETCH_HEAD)
 else
@@ -132,14 +139,22 @@ if [ "x${answer}" = "xyes" ] || [ "x${answer}" = "xy" ]; then
     echo "Merging ${fetch_head_sha1}..."
     cmd="git merge --ff-only ${fetch_head_sha1}"
     echo "${cmd}"
-    su - $git_user -c "cd ${BASEDIR} && ${cmd}"
+    if [ $running_user = $git_user ]; then
+        cd ${BASEDIR} && ${cmd}
+    else
+        su - $git_user -c "cd ${BASEDIR} && ${cmd}"
+    fi
 
     # If there were submodule changes update and init them
     if [ -n "${submodule_changes}" ]; then
         echo "Updating submodules..."
         cmd="git submodule update --init --no-fetch"
         echo "${cmd}"
-        su - $git_user -c "cd ${BASEDIR} && ${cmd}"
+        if [ $running_user = $git_user ]; then
+            cd ${BASEDIR} && ${cmd}
+	else
+            su - $git_user -c "cd ${BASEDIR} && ${cmd}"
+	fi
     fi
 
     # git clean to remove any untracked
@@ -147,7 +162,11 @@ if [ "x${answer}" = "xyes" ] || [ "x${answer}" = "xy" ]; then
     echo "Running git clean to clean any untracked files."
     cmd="git clean -dffx -e /private/"
     echo "${cmd}"
-    su - $git_user -c "cd ${BASEDIR} && ${cmd}"
+    if [ $running_user = $git_user ]; then
+        cd ${BASEDIR} && ${cmd}
+    else
+        su - $git_user -c "cd ${BASEDIR} && ${cmd}"
+    fi
 
     echo "HEAD is now $(git rev-parse HEAD)."
     cd -
@@ -165,7 +184,11 @@ fi
 # worker end that does the actual work. Note that the $sha1 however is important
   <%- @servers.each do |frontend, workers| -%>
     <%- workers.map{ |w| w['worker']}.select{|name| name != @fqdn}.each do |worker| -%>
-ssh -t -t <%= worker -%> "true ${sha1}" 2>&1 | tee -a /var/log/puppet-post-merge.log
+if [ $running_user = $git_user ]; then
+    ssh -t -t <%= worker -%> true ${sha1} 2>&1 | tee -a /var/log/puppet-post-merge.log
+else
+    su - $git_user -c "ssh -t -t <%= worker -%> true ${sha1} 2>&1 | tee -a /var/log/puppet-post-merge.log"
+fi
 if [ $? -eq 0 ]; then
     echo "${GREEN}OK${RESET}: puppet-merge on <%= worker %> succeded"
 else
