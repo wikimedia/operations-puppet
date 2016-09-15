@@ -1,3 +1,23 @@
+# vim:set ft=gdb:
+#
+# This file was provisioned by Puppet.
+
+# Picked from ori modules/admin/files/home/ori/.gdbinit
+set verbose off
+set print pretty on
+set prompt (\001\033[32m\002gdb\001\033[0m\002)\040
+
+# Don't pause output
+set height 0
+set width 0
+
+#
+# Below is Zend PHP gdbinit file
+#
+# Latest version can be retrieved from
+# http://git.php.net/?p=php-src.git;a=blob;f=.gdbinit;hb=HEAD
+#
+
 define set_ts
 	set $tsrm_ls = $arg0
 end
