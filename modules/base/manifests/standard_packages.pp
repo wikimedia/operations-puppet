@@ -44,7 +44,7 @@ class base::standard_packages {
     ]
 
     package { $packages:
-        ensure => latest,
+        ensure => present,
     }
 
     require_package('gdb', 'apt-transport-https')
