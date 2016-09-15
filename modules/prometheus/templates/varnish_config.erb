@@ -1,0 +1,10 @@
+<%
+  targets_config = []
+  hosts = scope.function_conftool(@selector).map{ |x| "#{x['name']}:#{@port}" }
+  targets_config.push({
+    labels  => { 'service' => @selector['service'] },
+    targets => hosts
+  })
+-%>
+
+<%= scope.function_ordered_yaml(targets_config) -%>
