@@ -30,8 +30,8 @@ Lint/RescueException:
 # Configuration parameters: AllowUnusedKeywordArguments, IgnoreEmptyMethods.
 Lint/UnusedMethodArgument:
   Exclude:
-    - 'modules/wmflib/lib/hiera/backend/role_backend.rb'
-    - 'modules/wmflib/lib/hiera/mwcache.rb'
+    - 'modules/wmflib/lib/hiera/backend/*_backend.rb'
+    - 'modules/wmflib/lib/hiera/*cache.rb'
 
 # Offense count: 10
 Lint/UselessAssignment:

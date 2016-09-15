@@ -18,7 +18,7 @@ class Hiera
       end
     end
 
-    def read(path, _=nil, _=nil)
+    def read(path, expected_type=Hash, default=nil)
       read_file(path)
     rescue => detail
       # When failing to read data, we raise an exception, see https://phabricator.wikimedia.org/T78408
