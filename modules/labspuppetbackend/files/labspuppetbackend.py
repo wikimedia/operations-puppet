@@ -258,6 +258,23 @@ def get_prefixes(project):
         cur.close()
 
 
+@statsd.timer('delete_prefix')
+@app.route('/v1/<string:project>/prefix/<string:prefix>', methods=['DELETE'])
+def delete_prefix(project):
+    cur = g.db.cursor()
+    try:
+        cur.execute("""
+            DELETE prefix FROM prefix WHERE project = %s
+        """, (project, ))
+        return Response(
+            yaml.safe_dump({'status': 'ok'}),
+            status=200,
+            mimetype='application/x-yaml'
+        )
+    finally:
+        cur.close()
+
+
 @statsd.timer('healthz')
 @app.route('/v1/healthz')
 def healthz():
