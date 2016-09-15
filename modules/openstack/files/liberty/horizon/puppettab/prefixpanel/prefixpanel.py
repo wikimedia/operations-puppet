@@ -24,6 +24,7 @@ from horizon.tabs import TabGroup
 
 from wikimediapuppettab.tab import PuppetTab
 from wikimediapuppettab.prefixpanel.plustab import PlusTab
+from wikimediapuppettab.puppet_config import puppet_config
 
 logging.basicConfig()
 LOG = logging.getLogger(__name__)
@@ -32,9 +33,6 @@ LOG = logging.getLogger(__name__)
 class PrefixPuppetPanel(horizon.Panel):
     name = _("Prefix Puppet")
     slug = "prefixpuppet"
-
-    def handle(self, request, data):
-        LOG.warning('PrefixPuppetPanel is handling')
 
 
 class PrefixTabs(tabs.TabGroup):
@@ -50,21 +48,19 @@ class PrefixTabs(tabs.TabGroup):
         tab_instances = []
 
         tenant_id = self.request.user.tenant_id
+        prefixlist = puppet_config.get_prefixes(tenant_id)
+        LOG.warning("prefixlist: %s" % prefixlist)
 
-        # demo #1
-        prefix = 'prefixone'
-        tab_instances.append(("puppet-%s" % prefix,
-                              PuppetTab(self,
-                                        request,
-                                        prefix=prefix,
-                                        tenant_id=tenant_id)))
-        # demo #2
-        prefix = 'prefixtwo'
-        tab_instances.append(("puppet-%s" % prefix,
-                              PuppetTab(self,
-                                        request,
-                                        prefix=prefix,
-                                        tenant_id=tenant_id)))
+        # One tab per prefix
+        for prefix in prefixlist:
+            # exclude anything with a '.' as those are instance names
+            if '.' not in prefix:
+                tab_instances.append(("puppet-%s" % prefix,
+                                      PuppetTab(self,
+                                                request,
+                                                prefix=prefix,
+                                                tenant_id=tenant_id)))
+
         # + tab
         tab_instances.append(('puppetprefixplus',
                               PlusTab(self, request, tenant_id=tenant_id)))
@@ -75,14 +71,8 @@ class PrefixTabs(tabs.TabGroup):
         if not self._set_active_tab():
             self.tabs_not_available()
 
-    def handle(self, request, data):
-        LOG.warning('PrefixTabs is handling')
-
 
 class IndexView(tabs.TabbedTableView):
     tab_group_class = PrefixTabs
     template_name = 'project/puppet/prefix_panel.html'
     page_title = _("Prefix Puppet")
-
-    def handle(self, request, data):
-        LOG.warning('IndexView is handling')
