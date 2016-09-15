@@ -51,10 +51,10 @@ class postgresql::server(
 
 
     file {  [ $root_dir, "${root_dir}/${pgversion}" ] :
-        ensure  => ensure_directory($ensure),
-        owner   => 'postgres',
-        group   => 'postgres',
-        mode    => '0755',
+        ensure => ensure_directory($ensure),
+        owner  => 'postgres',
+        group  => 'postgres',
+        mode   => '0755',
     }
 
     file { $data_dir:
