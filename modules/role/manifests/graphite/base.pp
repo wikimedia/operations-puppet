@@ -222,11 +222,11 @@ class role::graphite::base(
             'cn=wmf,ou=groups,dc=wikimedia,dc=org'
         ]
         $auth_realm    = 'WMF Labs (use wiki login name not shell) - nda/ops/wmf'
-        $apache_auth   = template('graphite/apache-auth-ldap.erb')
+        $apache_auth   = template('role/graphite/apache-auth-ldap.erb')
     }
 
     apache::site { $hostname:
-        content => template('graphite/graphite.apache.erb'),
+        content => template('role/graphite/graphite.apache.erb'),
     }
 
     if $::initsystem == 'upstart' {
@@ -261,5 +261,3 @@ class role::graphite::base(
         check_command => "check_http_url!${hostname}!/render",
     }
 }
-
-
