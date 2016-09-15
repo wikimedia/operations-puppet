@@ -153,7 +153,6 @@ if [ "x${answer}" = "xyes" ] || [ "x${answer}" = "xy" ]; then
     cd -
     echo "Now running conftool-merge to sync any changes to conftool data"
     /usr/local/bin/conftool-merge
-    exit 0
 else
     echo "Aborting merge."
     cd -
@@ -165,7 +164,7 @@ fi
 # to the SSH sessions is irrelevant. It's the SSH forced command trick on the
 # worker end that does the actual work. Note that the $sha1 however is important
   <%- @servers.each do |frontend, workers| -%>
-    <%- workers.map{ |w| w['workerhash']}.select{|name| name != @fqdn}.each do |worker| -%>
+    <%- workers.map{ |w| w['worker']}.select{|name| name != @fqdn}.each do |worker| -%>
 ssh -t -t <%= worker -%> "true ${sha1}" 2>&1 | tee -a /var/log/puppet-post-merge.log
 if [ $? -eq 0 ]; then
     echo "${GREEN}OK${RESET}: puppet-merge on <%= worker %> succeded"
