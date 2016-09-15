@@ -114,7 +114,7 @@ def check_delay(options):
 
 
 # return results and graphing data to Nagios
-def nagios_delay(delay, optionsTrue):
+def nagios_delay(delay, options):
     warn = float(options.warn)
     crit = float(options.crit)
     #pop delay out of list and get float out of tuple for direct comparison to warn/crit float values
