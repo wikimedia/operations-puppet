@@ -32,4 +32,7 @@ urlpatterns = patterns(
     url(r'^(?P<tenantid>[^/]+)/'
         'newprefix$',
         prefixpanel.IndexView.as_view(), name='newprefix'),
+    url(r'^(?P<prefix>[^/]+)/(?P<tenantid>[^/]+)/'
+        'removepuppetprefix$',
+        views.RemovePrefixView.as_view(), name='removepuppetprefix'),
 )

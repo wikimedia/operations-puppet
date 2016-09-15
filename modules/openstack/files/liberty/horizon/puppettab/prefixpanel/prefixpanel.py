@@ -63,12 +63,15 @@ class PrefixTabs(tabs.TabGroup):
         for prefix in prefixlist:
             # exclude anything with a '.' as those are instance names
             #  handled on a different UI
-            if '.' not in prefix:
-                tab_instances.append(("puppet-%s" % prefix,
-                                      PuppetTab(self,
-                                                self.request,
-                                                prefix=prefix,
-                                                tenant_id=self.tenant_id)))
+            if '.' in prefix:
+                continue
+            if prefix == '_':
+                continue
+            tab_instances.append(("puppet-%s" % prefix,
+                                  PuppetTab(self,
+                                            self.request,
+                                            prefix=prefix,
+                                            tenant_id=self.tenant_id)))
 
         # + tab
         tab_instances.append(('puppetprefixplus',

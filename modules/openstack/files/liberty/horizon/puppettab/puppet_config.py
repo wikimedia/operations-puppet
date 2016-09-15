@@ -158,6 +158,15 @@ class puppet_config():
         self.refresh()
 
     @staticmethod
+    def delete_prefix(tenant_id, prefix):
+        apiurl = getattr(settings,
+                         "PUPPET_CONFIG_BACKEND",
+                         "http://labcontrol1001.wikimedia.org:8100/v1")
+        prefixurl = "%s/%s/prefix/%s" % (apiurl, tenant_id, prefix)
+        req = requests.delete(prefixurl, verify=False)
+        req.raise_for_status()
+
+    @staticmethod
     def get_prefixes(tenant_id):
         apiurl = getattr(settings,
                          "PUPPET_CONFIG_BACKEND",

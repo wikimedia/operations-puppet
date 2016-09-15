@@ -36,6 +36,11 @@ class PuppetTab(tabs.TableTab):
     preload = False
 
     def __init__(self, *args, **kwargs):
+
+        # if prefix_tab is true we're going to display a
+        #  'delete prefix' button.
+        self.prefix_tab = False
+
         # For some reason our parent class can't deal with these
         #  args, so extract them now if they're present
         if 'prefix' in kwargs:
@@ -49,8 +54,9 @@ class PuppetTab(tabs.TableTab):
             del kwargs['tenant_id']
 
         if hasattr(self, 'tenant_id') and hasattr(self, 'prefix'):
+            self.prefix_tab = True
             self.caption = _("These puppet settings will affect all VMs in the"
-                             " %s project whose names begin with \'%s\'") % (
+                             " %s project whose names begin with \'%s\'.") % (
                 self.tenant_id, self.prefix)
 
         super(PuppetTab, self).__init__(*args, **kwargs)
@@ -67,7 +73,7 @@ class PuppetTab(tabs.TableTab):
             self.tenant_id = self.tab_group.kwargs['tenant_id']
             self.prefix = self.tab_group.kwargs['prefix']
             self.caption = _("These puppet settings will affect all VMs"
-                             " in the %s project") % self.tenant_id
+                             " in the %s project.") % self.tenant_id
 
         self.config = puppet_config(self.prefix, self.tenant_id)
 
@@ -75,6 +81,7 @@ class PuppetTab(tabs.TableTab):
         context = super(PuppetTab, self).get_context_data(request, **kwargs)
         context['prefix'] = self.prefix
         context['config'] = self.config
+        context['prefix_tab'] = self.prefix_tab
 
         if hasattr(self, 'caption'):
             context['caption'] = self.caption
@@ -87,6 +94,10 @@ class PuppetTab(tabs.TableTab):
             'tenantid': self.tenant_id,
         }
         context['edithieraurl'] = urlresolvers.reverse(url, kwargs=kwargs)
+
+        url = "horizon:project:puppet:removepuppetprefix"
+        context['removepuppetprefixurl'] = urlresolvers.reverse(url,
+                                                                kwargs=kwargs)
 
         return context
 

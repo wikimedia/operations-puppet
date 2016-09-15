@@ -29,4 +29,7 @@ urlpatterns = patterns(
     url(r'^(?P<prefix>[^/]+)/(?P<tenantid>[^/]+)/'
         'edithiera$',
         views.EditHieraView.as_view(), name='edithiera'),
+    url(r'^(?P<prefix>[^/]+)/(?P<tenantid>[^/]+)/'
+        'removepuppetprefix$',
+        views.RemovePrefixView.as_view(), name='removepuppetprefix'),
 )

@@ -201,4 +201,58 @@ class RemoveRoleView(RoleViewBase):
     modal_header = _("Remove Role")
     submit_label = _("Remove")
     submit_url = "horizon:project:puppet:removepuppetrole"
-    template_name = "project/puppet/remove.html"
+    template_name = "project/puppet/removeprefix.html"
+
+
+class RemovePrefixForm(forms.SelfHandlingForm):
+    def __init__(self, request, *args, **kwargs):
+        super(RemovePrefixForm, self).__init__(request, *args, **kwargs)
+        initial = kwargs.get('initial', {})
+        self.tenant_id = initial['tenant_id']
+        self.prefix = initial['prefix']
+
+    def handle(self, request, data):
+        puppet_config.delete_prefix(self.tenant_id, self.prefix)
+        return True
+
+
+class RemovePrefixView(forms.ModalFormView):
+    form_class = RemovePrefixForm
+    form_id = "remove_prefix_form"
+    modal_header = _("Remove Prefix")
+    submit_label = _("Remove")
+    submit_url = "horizon:project:puppet:removepuppetprefix"
+    template_name = "project/puppet/removeprefix.html"
+
+    def get_prefix(self):
+        return self.kwargs['prefix']
+
+    def get_tenant_id(self):
+        return self.kwargs['tenantid']
+
+    def get_initial(self):
+        initial = {}
+        self.prefix = self.get_prefix()
+        self.tenant_id = self.get_tenant_id()
+        initial['prefix'] = self.prefix
+        initial['tenant_id'] = self.tenant_id
+
+        return initial
+
+    def get_context_data(self, **kwargs):
+        context = super(RemovePrefixView, self).get_context_data(**kwargs)
+        context['prefix'] = self.prefix
+        urlkwargs = {
+            'prefix': self.prefix,
+            'tenantid': self.tenant_id,
+        }
+        context['prefix'] = self.prefix
+        context['submit_url'] = urlresolvers.reverse(self.submit_url,
+                                                     kwargs=urlkwargs)
+        return context
+
+    def get_success_url(self):
+        validate = URLValidator()
+        refer = self.request.META.get('HTTP_REFERER', '/')
+        validate(refer)
+        return refer
