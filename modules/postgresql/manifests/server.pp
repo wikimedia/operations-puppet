@@ -41,6 +41,12 @@ class postgresql::server(
     $use_ssl          = false,
 ) {
     require ::postgresql::packages
+    class { '::postgresql::dirs':
+        ensure    => $ensure,
+        pgversion => $pgversion,
+        root_dir  => $root_dir,
+        require   => Class['postgresql::server'],
+    }
 
     $data_dir = "${root_dir}/${pgversion}/main"
 
@@ -48,22 +54,6 @@ class postgresql::server(
         jessie => "postgresql@${pgversion}-main",
         default => 'postgresql'
     }
-
-
-    file {  [ $root_dir, "${root_dir}/${pgversion}" ] :
-        ensure => ensure_directory($ensure),
-        owner  => 'postgres',
-        group  => 'postgres',
-        mode   => '0755',
-    }
-
-    file { $data_dir:
-        ensure => ensure_directory($ensure),
-        owner  => 'postgres',
-        group  => 'postgres',
-        mode   => '0700',
-    }
-
     exec { 'pgreload':
         command     => "/usr/bin/pg_ctlcluster ${pgversion} main reload",
         user        => 'postgres',
