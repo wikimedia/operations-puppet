@@ -129,8 +129,8 @@ cowbuilder is the default pbuilder builder.
 Networking
 ==========
 
-cowbuilder/pbuilder block networking using namespaces. Technically speaking an
-unshare is done in those environments, but the effect is that you can expect
+cowbuilder/pbuilder block networking using Linux namespaces. Technically speaking an
+*unshare* is done in those environments, but the effect is that you can expect
 networking to not work.
 
 If your package requires internet access to build successfully, it will not
