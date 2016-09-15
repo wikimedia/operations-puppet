@@ -1,0 +1,11 @@
+##################################
+### THIS FILE IS MANAGED BY PUPPET
+##################################
+
+/var/log/git-clean-puppetmaster.log {
+    daily
+    copytruncate
+    missingok
+    notifempty
+    rotate 7
+}

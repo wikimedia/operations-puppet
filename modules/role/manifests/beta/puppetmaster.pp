@@ -5,5 +5,7 @@ class role::beta::puppetmaster {
         logstash_host => 'deployment-logstash2.deployment-prep.eqiad.wmflabs',
         logstash_port => 5229,
     }
+
+    include ::beta::puppetmaster::gitclean
 }
 
