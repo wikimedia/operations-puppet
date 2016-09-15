@@ -115,7 +115,7 @@ Results
 
 The resulting deb files should be in /var/cache/pbuilder/result/${DIST}-${ARCH} like:
 
-    /var/cache/pbuilder/result/trusty-amd64/
+    /var/cache/pbuilder/result/jessie-amd64/
 
 Notes
 =====
