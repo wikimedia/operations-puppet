@@ -44,6 +44,12 @@ class puppetmaster::puppetdb($master, $port=443, $jetty_port=8080) {
         require => Package['puppetdb']
     }
 
+    # Ensure the default debian config file is not there
+
+    file { '/etc/puppetdb/conf.d/config.ini':
+        ensure => absent,
+    }
+
     $default_db_settings = {
         'classname'   => 'org.postgresql.Driver',
         'subprotocol' => 'postgresql',
