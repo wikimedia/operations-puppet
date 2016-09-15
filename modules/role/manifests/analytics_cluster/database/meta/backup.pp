@@ -1,6 +1,6 @@
 # == Class role::analytics_cluster::database::meta::backup
-# Uses mysql_wmf::mylvmbackup to take backups of the
-# analytics-meta mysql instance.
+# Uses mariadb::mylvmbackup to take backups of the
+# analytics-meta mariadb instance.
 #
 # == Hiera Variables
 #
@@ -19,7 +19,7 @@ class role::analytics_cluster::database::meta::backup {
 
     # Take hourly backups of the analytics-meta instance
     # and rsync those backups to $dest.
-    mysql_wmf::mylvmbackup { 'analytics-meta':
+    mariadb::mylvmbackup { 'analytics-meta':
         dest   => $dest,
         minute => 0,
     }
