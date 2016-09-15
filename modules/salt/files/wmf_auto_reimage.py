@@ -538,7 +538,7 @@ def icinga_downtime(icinga_host, hosts, user, phab_task):
     success_hosts = []
 
     for host, result in proxy_command(
-            'icinga_downtime', icinga_host, hosts_commands):
+            'icinga_downtime', icinga_host, hosts_commands, timeout=300):
 
         if result['retcode'] == 0:
             success_hosts.append(host)
@@ -970,7 +970,8 @@ def run(args, user):
         hosts_status = conftool_depool_hosts(puppetmaster_host, hosts)
         hosts = conftool_ensure_depooled(puppetmaster_host, hosts)
         # Run Puppet on the deployment host to update DSH groups
-        run_puppet([deployment_host])
+        if len(hosts) > 0:
+            run_puppet([deployment_host])
 
     # Start the reimage
     reimage_time = datetime.now()
