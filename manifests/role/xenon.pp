@@ -21,7 +21,7 @@ class role::xenon {
     Service['redis-server'] ~> Service['xenon-log']
 
     apache::site { 'xenon':
-        content => template('apache/sites/xenon.erb'),
+        content => template('role/apache/sites/xenon.erb'),
     }
 
     ferm::service { 'xenon_http':

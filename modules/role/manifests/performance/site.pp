@@ -23,7 +23,7 @@ class role::performance::site {
     }
 
     apache::site { 'performance.wikimedia.org':
-        content => template('apache/sites/performance.wikimedia.org.erb'),
+        content => template('role/apache/sites/performance.wikimedia.org.erb'),
         require => Git::Clone['performance/docroot'],
     }
 

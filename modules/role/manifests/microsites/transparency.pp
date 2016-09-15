@@ -48,7 +48,7 @@ class role::microsites::transparency {
     }
 
     apache::site { 'transparency.wikimedia.org':
-        content => template('apache/sites/transparency.wikimedia.org.erb'),
+        content => template('role/apache/sites/transparency.wikimedia.org.erb'),
     }
 
     ferm::service { 'transparency_http':
