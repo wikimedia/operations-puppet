@@ -39,7 +39,7 @@ class role::zookeeper::server {
         proto  => 'tcp',
         # Zookeeper client, protocol ports
         port   => '(2181 2182 2183)',
-        srange => '($INTERNAL)',
+        srange => '$DOMAIN_NETWORKS',
     }
 
     $group_prefix = "zookeeper.cluster.${cluster_name}."
