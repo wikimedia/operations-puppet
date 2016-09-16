@@ -232,4 +232,18 @@ define varnish::instance(
     varnish::monitoring::instance { $ports:
         instance => $title,
     }
+
+    # XXX: temporary, we need this to mitigate T145661
+    if $title == 'upload-backend' {
+        $be_restart_h = fqdn_rand(24)
+        $be_restart_m = fqdn_rand(60)
+
+        file { '/etc/cron.d/varnish-backend-restart':
+            mode    => '0444',
+            owner   => 'root',
+            group   => 'root',
+            content => template('varnish/varnish-backend-restart.cron.erb'),
+            require => File['/usr/local/sbin/varnish-backend-restart'],
+        }
+    }
 }
