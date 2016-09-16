@@ -1,7 +1,6 @@
 # == Class: puppetmaster::gitsync
 #
 # Sync local operations/puppet.git checkout with upstream.
-# Meant for use with local puppetmasters.
 class puppetmaster::gitsync(
     $run_every_minutes = '10',
 ) {
