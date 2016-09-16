@@ -97,7 +97,11 @@
 #
 # [*deployment_user*]
 #   The user that will own the service code. Only applicable when
-#   $deployment =='scap3'. Default: $title
+#   $deployment =='scap3'. Default: 'deploy-service'
+#
+# [*deployment_key*]
+#   The keyholder's key that will be used. Only applicable when
+#   $deployment =='scap3'. Default: 'deploy-service'
 #
 # [*deployment_config*]
 #   Whether Scap3 is used for deploying the config as well. Applicable only when
@@ -166,6 +170,7 @@ define service::node(
     $environment     = undef,
     $deployment      = undef,
     $deployment_user = 'deploy-service',
+    $deployment_key  = 'deploy-service',
     $deployment_config = false,
     $deployment_vars = {},
     $contact_groups  = hiera('contactgroups', 'admins'),
@@ -177,6 +182,7 @@ define service::node(
                 scap::target { $repo:
                     service_name => $title,
                     deploy_user  => $deployment_user,
+                    key_name     => $deployment_key,
                     before       => Base::Service_unit[$title],
                     manage_user  => true,
                 }
