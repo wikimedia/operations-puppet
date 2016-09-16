@@ -90,4 +90,5 @@ class salt::master(
     }
 
     include salt::orchestration
+    include salt::monitoring
 }
