@@ -113,11 +113,11 @@ def available_roles():
                 obj.docs = newdoc
 
             simplename = obj.name.split('role::')[1]
-            html = '%s <span title="%s" class="fa-question-circle" />' % (
-                escape(simplename),
-                escape(obj.docs)
-            )
             obj.html_name = mark_safe(html)
+            html = '<span title="%s">%s</>' % (
+                escape(obj.docs),
+                escape(simplename)
+            )
 
             roles.append(obj)
 
