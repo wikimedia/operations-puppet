@@ -201,7 +201,7 @@ class RemoveRoleView(RoleViewBase):
     modal_header = _("Remove Role")
     submit_label = _("Remove")
     submit_url = "horizon:project:puppet:removepuppetrole"
-    template_name = "project/puppet/removeprefix.html"
+    template_name = "project/puppet/remove.html"
 
 
 class RemovePrefixForm(forms.SelfHandlingForm):
