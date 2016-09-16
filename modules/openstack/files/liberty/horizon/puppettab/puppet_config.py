@@ -100,9 +100,10 @@ class puppet_config():
 
         # Remove all related role args from hiera
         hiera_yaml = yaml.safe_load(self.hiera_raw)
-        for key in hiera_yaml.keys():
-            if key.startswith("%s::" % role.name):
-                del hiera_yaml[key]
+        if hiera_yaml:
+            for key in hiera_yaml.keys():
+                if key.startswith("%s::" % role.name):
+                    del hiera_yaml[key]
 
         self.set_role_list(roles)
         self.set_hiera(hiera_yaml)
