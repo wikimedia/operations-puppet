@@ -1,0 +1,30 @@
+#!/bin/bash
+
+set -e
+
+# Depool varnish-be and varnish-be-rand
+confctl --quiet select name=`hostname -f`,service='varnish-be' set/pooled=no
+confctl --quiet select name=`hostname -f`,service='varnish-be-rand' set/pooled=no
+
+# Wait a bit for the services to be drained
+sleep 15
+
+# Restart varnish and wipe storage
+service varnish stop
+rm -f /srv/sd*/varnish*
+service varnish start
+
+sleep 5
+
+# Fix VSM files permissions and restart ganglia
+chmod 644 /var/lib/varnish/*/*.vsm
+service ganglia-monitor restart
+
+sleep 5
+
+# Sometimes varnishkafka crashes after a varnish restart
+service varnishkafka-webrequest restart
+
+# Repool varnish-be and varnish-be-rand
+confctl --quiet select name=`hostname -f`,service='varnish-be' set/pooled=yes
+confctl --quiet select name=`hostname -f`,service='varnish-be-rand' set/pooled=yes
