@@ -187,9 +187,21 @@ class puppetmaster::gitclone(
                 force  => true;
         }
     } else {
+        file { '/var/lib/git/labs':
+            ensure => directory,
+            owner  => 'gitpuppet',
+            mode   => '0700',
+        }
+
+        git::clone { 'labs/private':
+            require   => File["${puppetmaster::gitdir}/labs"],
+            owner     => 'gitpuppet',
+            directory => "${puppetmaster::gitdir}/labs/private",
+        }
+
         file { '/etc/puppet/private':
             ensure => link,
-            target => "${puppetmaster::gitdir}/operations/labs/private",
+            target => "${puppetmaster::gitdir}/labs/private",
             force  => true,
         }
     }
