@@ -51,11 +51,13 @@ class IndexView(tabs.TabbedTableView):
     page_title = _("Project Puppet")
 
     def get_tabs(self, request, *args, **kwargs):
-        tenant_id = self.request.user.tenant_id
-        caption = _("These puppet settings will affect all VMs"
-                    " in the %s project.") % tenant_id
-        return self.tab_group_class(request,
-                                    prefix='_',
-                                    caption=caption,
-                                    tenant_id=tenant_id,
-                                    **kwargs)
+        if self._tab_group is None:
+            tenant_id = self.request.user.tenant_id
+            caption = _("These puppet settings will affect all VMs"
+                        " in the %s project.") % tenant_id
+            self._tab_group = self.tab_group_class(request,
+                                                   prefix='_',
+                                                   caption=caption,
+                                                   tenant_id=tenant_id,
+                                                   **kwargs)
+        return self._tab_group
