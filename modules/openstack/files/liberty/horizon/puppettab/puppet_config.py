@@ -53,7 +53,8 @@ class puppet_config():
                                               self.prefix)
         req = requests.get(hieraurl, verify=False)
         if req.status_code == 404:
-            self.hiera_raw = ""
+            # Missing is the same as empty
+            self.hiera_raw = "{}"
         else:
             req.raise_for_status()
             self.hiera_raw = yaml.safe_load(req.text)['hiera']
