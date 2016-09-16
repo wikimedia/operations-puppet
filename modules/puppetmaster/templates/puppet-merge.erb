@@ -177,8 +177,11 @@ else
 fi
 
 <%- if @servers.has_key?(@fqdn) -%>
-echo "Now running conftool-merge to sync any changes to conftool data"
-/usr/local/bin/conftool-merge
+# conftool-merge does need to run from >1 frontend, avoid running a second time
+if [ $running_user != $git_user ]; then
+    echo "Now running conftool-merge to sync any changes to conftool data"
+    /usr/local/bin/conftool-merge
+fi
 # Note: The "true" command is passed on purpose to show that the command passed
 # to the SSH sessions is irrelevant. It's the SSH forced command trick on the
 # worker end that does the actual work. Note that the $sha1 however is important
