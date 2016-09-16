@@ -1,0 +1,20 @@
+#!/bin/bash
+# Icinga plugin to check for unaccepted salt keys (T144801)
+# Daniel Zahn - Wikimedia Foundation Inc.
+
+num_keys=$(sudo /usr/bin/salt-key -l un | wc -l)
+let num_keys=num_keys-1
+
+# echo "There are ${num_keys} unaccepted keys"
+
+if [[ $num_keys -gt 0 ]] ; then
+    echo "CRITICAL- ${num_keys} unaccepted salt keys"
+    exit 2
+elif [[ $num_keys -eq 0 ]] ; then
+    echo "OK- No unaccepted salt keys"
+    exit 0
+fi
+
+echo "UNKOWN- check plugin script"
+exit 3
+

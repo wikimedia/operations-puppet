@@ -89,5 +89,14 @@ class salt::master(
         group  => 'root',
     }
 
+    # Icinga plugin to check for unaccepted keys (T144801)
+    file { '/usr/local/lib/nagios/plugins/check_unaccepted_keys':
+        ensure => present,
+        mode   => '0550',
+        owner  => 'root',
+        group  => 'root',
+        source => 'puppet:///modules/salt/check_unaccepted_keys',
+    }
+
     include salt::orchestration
 }
