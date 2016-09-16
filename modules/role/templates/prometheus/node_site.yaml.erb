@@ -6,11 +6,12 @@ clusters = scope.function_get_clusters([{
 
 clusters.each do |cluster, sites|
   sites.each do |site, targets|
-  all.append(
+  all.push(
     {
       'labels' => {'cluster' => cluster, 'site' => site },
       'targets' => targets,
-    })
+    }
+  )
   end
 end
 -%>
