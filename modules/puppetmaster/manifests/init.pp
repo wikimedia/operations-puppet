@@ -49,6 +49,7 @@ class puppetmaster(
     $hiera_config=$::realm,
     $secure_private=true,
     $extra_auth_rules='',
+    $include_conftool=true,
 ){
 
     $gitdir = '/var/lib/git'
@@ -164,6 +165,8 @@ class puppetmaster(
         source => "puppet:///modules/puppetmaster/${hiera_config}.hiera.yaml",
     }
 
-    # This is required for the conftool perser function
-    include ::conftool
+    if $include_conftool {
+        # This is required for the conftool perser function
+        include ::conftool
+    }
 }
