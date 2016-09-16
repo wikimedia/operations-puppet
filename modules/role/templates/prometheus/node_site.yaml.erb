@@ -1,8 +1,8 @@
 <%-
 all = []
-clusters = function_get_clusters({
+clusters = function_get_clusters([{
          'site' => [scope.lookupvar('::site')]
-})
+}])
 
 clusters.each do |cluster, sites|
   sites.each do |site, targets|
@@ -15,4 +15,4 @@ clusters.each do |cluster, sites|
 end
 -%>
 # This file is managed by puppet
-<%= scope.function_ordered_yaml(all) %>
+<%= scope.function_ordered_yaml([all]) %>
