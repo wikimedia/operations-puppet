@@ -20,6 +20,7 @@ from django.utils.translation import ugettext_lazy as _
 
 from horizon import tabs
 from django.conf import settings
+from django.utils.safestring import mark_safe
 
 import puppet_tables as p_tables
 from puppet_config import puppet_config
@@ -37,16 +38,11 @@ class PuppetTab(tabs.TableTab):
 
     def __init__(self, *args, **kwargs):
 
-        # if prefix_tab is true we're going to display a
-        #  'delete prefix' button.
-        self.prefix_tab = False
-
         # For some reason our parent class can't deal with these
         #  args, so extract them now if they're present
         if 'prefix' in kwargs:
             self.prefix = kwargs['prefix']
             self.name = _("Prefix %s") % self.prefix
-            self.slug += '-%s' % self.prefix
             del kwargs['prefix']
 
         if 'tenant_id' in kwargs:
@@ -54,34 +50,72 @@ class PuppetTab(tabs.TableTab):
             del kwargs['tenant_id']
 
         if hasattr(self, 'tenant_id') and hasattr(self, 'prefix'):
-            self.prefix_tab = True
-            self.caption = _("These puppet settings will affect all VMs in the"
-                             " %s project whose names begin with \'%s\'.") % (
-                self.tenant_id, self.prefix)
+            self.slug += '-%s' % self.prefix
+            self.tab_type = 'prefix'
 
         super(PuppetTab, self).__init__(*args, **kwargs)
 
         if 'instance' in self.tab_group.kwargs:
+            self.tab_type = 'instance'
             tld = getattr(settings,
                           "INSTANCE_TLD",
                           "eqiad.wmflabs")
-            instance = self.tab_group.kwargs['instance']
-            self.prefix = "%s.%s.%s" % (instance.name,
-                                        instance.tenant_id, tld)
-            self.tenant_id = instance.tenant_id
+            self.instance = self.tab_group.kwargs['instance']
+
+            self.prefix = "%s.%s.%s" % (self.instance.name,
+                                        self.instance.tenant_id, tld)
+            self.tenant_id = self.instance.tenant_id
+
         elif 'tenant_id' in self.tab_group.kwargs:
+            self.tab_type = 'project'
             self.tenant_id = self.tab_group.kwargs['tenant_id']
             self.prefix = self.tab_group.kwargs['prefix']
+        else:
+            self.tab_type = 'prefix'
+
+        self.add_caption()
+
+        self.config = puppet_config(self.prefix, self.tenant_id)
+
+    def add_caption(self):
+
+        self.capption = ""
+        if self.tab_type == 'prefix':
+            self.caption = _("These puppet settings will affect all VMs in the"
+                             " %s project whose names begin with \'%s\'.") % (
+                self.tenant_id, self.prefix)
+
+        elif self.tab_type == 'project':
             self.caption = _("These puppet settings will affect all VMs"
                              " in the %s project.") % self.tenant_id
 
-        self.config = puppet_config(self.prefix, self.tenant_id)
+        elif self.tab_type == 'instance':
+            prefixes = puppet_config.get_prefixes(self.tenant_id)
+            links = []
+            for prefix in prefixes:
+                if '.' in prefix:
+                    continue
+                if prefix == '_':
+                    links.append("<a href=\"%s\">project config</a>" %
+                                 urlresolvers.reverse(
+                                     "horizon:project:puppet:index"))
+                elif self.instance.name.startswith(prefix):
+                    prefix_url = urlresolvers.reverse(
+                        "horizon:project:prefixpuppet:index",
+                        ) + "?tab=prefix_puppet__puppet-%s" % prefix
+                    links.append("<a href=\"%s\">%s</a>" % (prefix_url,
+                                                            prefix))
+
+            if links:
+                self.caption = mark_safe(_("This instance is also "
+                                           "affected by the following puppet "
+                                           "configs:  %s" % ", ".join(links)))
 
     def get_context_data(self, request, **kwargs):
         context = super(PuppetTab, self).get_context_data(request, **kwargs)
         context['prefix'] = self.prefix
         context['config'] = self.config
-        context['prefix_tab'] = self.prefix_tab
+        context['prefix_tab'] = (self.tab_type == 'prefix')
 
         if hasattr(self, 'caption'):
             context['caption'] = self.caption
