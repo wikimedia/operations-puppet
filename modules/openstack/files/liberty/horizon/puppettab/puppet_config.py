@@ -148,6 +148,10 @@ class puppet_config():
         self.refresh()
 
     def set_hiera(self, hiera_yaml):
+        if not hiera_yaml.strip():
+            # The user probably cleared the field.  That's fine, we'll just
+            #  convert that to {}
+            hiera_yaml = {}
         hiera_dump = yaml.safe_dump(hiera_yaml, default_flow_style=False)
         hieraurl = "%s/%s/prefix/%s/hiera" % (self.apiurl,
                                               self.tenant_id,
