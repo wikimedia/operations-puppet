@@ -1094,13 +1094,6 @@ node 'gallium.wikimedia.org' {
         zuul::server,
         backup::host)
 
-    # T51846, let us sync VisualEditor in mediawiki/extensions.git
-    sudo::user { 'jenkins-slave':
-        privileges => [
-            'ALL = (jenkins) NOPASSWD: /srv/deployment/integration/slave-scripts/bin/gerrit-sync-ve-push.sh',
-        ]
-    }
-
     include standard
     include contint::firewall
 }
