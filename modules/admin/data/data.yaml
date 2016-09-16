@@ -839,7 +839,7 @@ users:
     gid: 500
     name: ebernhardson
     realname: Erik Bernhardson
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCw9RGPG974LGGgH43aZc6m0sWMbaTEaLlL91zNKzOazv0oQCuZKBlSv0SNoya1NXxK/c9XQBf4EoTaI1OLdgKr1sPA1xYHdm+aqnd3A7hT9suWctoH13sF0lq2gB+5FLvaRz0lBg8C0fHk3bLkB6XVWKedMu7Nshvtq/Si/ut+9cVSIyXk40PJgOGEUvmyi12w4MgdPKlPBbGiKBVh8/ehn1L3aloivyUdpckOqOstrP3KLfIn5AITjc4hZUM/OS0dYV0/XVOnNMHhL+IjHCBD9Ayf2NPGSCO5w7mXjXSQG21oVPIMyk4BuPgNMyf9ny3Iq0wZ1e+oTNcHFDRyag15
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCq5sClypKI1N1T1ZfR2ZZPbWH6gXPrQ9a3HRiFgWpcp+W4YIYT4taNNqd+gFO6aF7UyAS9148ROxivCksSK+MmfULsIz0cD4l8R6haR939kfK5MRC2yONusy8IUkQgPvkBWkIvOhrURNs2sPkxYVwEyHIOUX3Izf1cLjVZenz4lhRqPtstHMZQaa3TGAoCFcymOln/64j5vq9W8MljLBsEWpPdeUwmf6mD0EHb5LUA+2aVB1JwfmViY5Dm77FBh5CDHqdvMWa8ZF0ZybtUAuL0wpcO0h/H1WDhqS5j1Q4AemxtOeRnBJoCsh5Wlf4J4sZptMM2hvdNYnqWXb+3Dto7
         ebernhardson@wikimedia.org]
     uid: 3088
   esanders:
