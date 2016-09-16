@@ -129,4 +129,16 @@ class role::cache::upload(
     ::varnish::logging::media { 'media':
         statsd_server => hiera('statsd'),
     }
+
+    # XXX: temporary, we need this to mitigate T145661
+    $be_restart_h = fqdn_rand(24)
+    $be_restart_m = fqdn_rand(60)
+
+    file { '/etc/cron.d/varnish-backend-restart':
+        mode    => '0444',
+        owner   => 'root',
+        group   => 'root',
+        content => template('varnish/varnish-backend-restart.cron.erb'),
+        require => File['/usr/local/sbin/varnish-backend-restart'],
+    }
 }
