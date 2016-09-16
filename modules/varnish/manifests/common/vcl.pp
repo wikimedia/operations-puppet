@@ -24,6 +24,14 @@ class varnish::common::vcl {
         source => 'puppet:///modules/varnish/errorpage.html',
     }
 
+    # Script to depool, restart and repool a varnish backend
+    file { '/usr/local/sbin/varnish-backend-restart':
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => 'puppet:///modules/varnish/varnish-backend-restart',
+    }
+
     # VCL unit tests
     file { '/usr/local/sbin/varnish-test-geoip':
         owner  => 'root',
