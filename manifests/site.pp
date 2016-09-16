@@ -215,6 +215,7 @@ node 'californium.wikimedia.org' {
     role(horizon, striker::web)
     include standard
     include base::firewall
+    include openstack::horizon::puppetpanel
 }
 
 # DHCP / TFTP
@@ -1403,12 +1404,7 @@ node 'labtestweb2001.wikimedia.org' {
     role(labs::openstack::nova::manager, mariadb::wikitech, horizon)
     include base::firewall
     include standard
-
-    class { 'openstack::horizon::puppetpanel':
-        #  Currently we only have Liberty code for this,
-        #  but it works fine with mitaka Horizon.
-        openstack_version  => 'liberty',
-    }
+    include openstack::horizon::puppetpanel
 
     interface::add_ip6_mapped { 'main': }
 }
