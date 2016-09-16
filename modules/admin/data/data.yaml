@@ -5,7 +5,7 @@ groups:
               handrade, howief, jdouglas, jgonera, jsahleen, mah, maryana, mglaser, mvolz,
               mwalker, nimishg, rainman, ssmith, swalling, sumanah, werdna, rmoen,
               johnflewis, marc, jkrauska, akumar, mnoushad, spage, tnegrin, msyed, kleduc,
-              manybubbles, haithams, jzerebecki, ashwinpp]
+              manybubbles, haithams, jzerebecki, ashwinpp, ironholds]
   wikidev:
     gid: 500
     description: container group for primary user groups.
@@ -68,7 +68,7 @@ groups:
                  restricted folks use sudo to access apache / www-data resources
     members: [daniel, dartar, ellery, bearloga,
               ezachte, hoo, jamesur, jdlrobson, khorn, tparscal, ssastry,
-              ironholds, nuria, leila, santhosh, amire80, legoktm, addshore, foks, chelsyx]
+              nuria, leila, santhosh, amire80, legoktm, addshore, foks, chelsyx]
     privileges: ['ALL = (www-data,apache) NOPASSWD: ALL']
   cassandra-test-roots:
     gid: 708
@@ -103,7 +103,7 @@ groups:
                  credentials on stat1003 (currently the only such host)
     members: [awight, bmansurov, catrope, dartar, declerambaul, deskana,
               dduvall, ellery, ezachte, gilles, halfak,
-              ironholds, jforrester, jkatz, jmorgan, kaldari,
+              jforrester, jkatz, jmorgan, kaldari,
               leila, mattflaschen, milimetric, nettrom, bearloga,
               nuria, ori, otto, springle, yurik, yuvipanda,
               mforns, jdlrobson, dr0ptp4kt, tgr, marktraceur, jhernandez, joal,
@@ -177,13 +177,13 @@ groups:
                  you should put them in the analytics-privatedata-users
                  group.
     members: [ezachte, milimetric, dartar, yurik, halfak, awight, dr0ptp4kt, nuria,
-              leila, ironholds, ellery, nettrom, mforns, bmansurov, tbayer, joal,
+              leila, ellery, nettrom, mforns, bmansurov, tbayer, joal,
               madhuvishy, tjones, legoktm, dcausse, bearloga, dpatrick, atgomez, dstrine,
               joewalsh, marktraceur, mtizzoni, panisson, paolotti, ciro]
   statistics-users:
     gid: 726
     description: Access statistics number crunching hosts. NO PRIVS.
-    members: [dartar, halfak, ironholds, jdlrobson, jmorgan, bearloga,
+    members: [dartar, halfak, jdlrobson, jmorgan, bearloga,
               mattflaschen, mhurd, yurik, awight, jforrester,
               marktraceur, nuria, leila, gilles,
               dbrant, tgr, dr0ptp4kt, brion, bsitzmann, amire80,
@@ -194,7 +194,7 @@ groups:
   statistics-admins:
     posix_name: stats
     description: access files created by stats user cron jobs
-    members: [ezachte, ironholds, milimetric, joal, mforns, bearloga, nuria]
+    members: [ezachte, milimetric, joal, mforns, bearloga, nuria]
     privileges: ['ALL = (stats) NOPASSWD: ALL']
   oit:
     gid: 727
@@ -220,7 +220,7 @@ groups:
                  Hadoop NameNodes.  Some files in HDFS have sensitive data in them.
                  Those files are group readable by the analytics-privatedata-users group.
     members: [dartar, milimetric, yurik, dfoy, aude, jforrester,
-              halfak, dr0ptp4kt, ironholds, bearloga, cwdent, elukey,
+              halfak, dr0ptp4kt, bearloga, cwdent, elukey,
               nuria, otto, deskana, zhousquared,
               bsitzmann, dbrant, declerambaul, ellery, nettrom, leila,
               ezachte, mforns, reedy, west1, phuedx, awight, junikowski,
@@ -461,7 +461,7 @@ groups:
   analytics-search-users:
     gid: 771
     description: Group of users for managing search related analytics jobs
-    members: [ebernhardson, smalyshev, dcausse, gehel, ironholds, bearloga]
+    members: [ebernhardson, smalyshev, dcausse, gehel, bearloga]
     privileges: ['ALL = (analytics-search) NOPASSWD: ALL']
   parsoid-test-roots:
     gid: 772
@@ -1193,12 +1193,11 @@ users:
     ssh_keys: []
     uid: 3558
   ironholds:
-    ensure: present
+    ensure: absent
     gid: 500
     name: ironholds
     realname: Oliver Keyes
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC0xcNFDy6ewrEloABYeO5FQGpHNGkPA5KajTFMv4r85xGeICZwQPUojxedyOHpbleTfhwTAtZdLEozMeDYwXSmkaK2UL5g8ZhljgAF9dUkWhwBY7MXvz8rpfOP6oZPIbdd3AfdWNbAfi9TRqJnVFwUJc3vKgQBxKAKuYCCx0Q0pERE8n5phBYuam2KVvygk0Er/rR2nBnk3i3K8mHss5IHQbWbgWZGjZ/HODTvBKX47/S/J2WY+06omxY0c3C7qBjybXkGSHKcoiDJH9Ha73lAS1/7WY9t8IUyR9ogtw3L3KEkxuvLQIw3IGzjIChNaa+Zk8SUycaNwIxGtGD4+0nP
-        ironholds@MargretWander]
+    ssh_keys: []
     uid: 5004
   nuria:
     ensure: present
