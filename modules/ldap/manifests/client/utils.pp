@@ -8,7 +8,7 @@ class ldap::client::utils($ldapconfig) {
         'python-ldap',
         'python-pycurl',
     ]:
-        ensure => latest,
+        ensure => present,
     }
 
     file { '/usr/local/sbin/add-ldap-group':
