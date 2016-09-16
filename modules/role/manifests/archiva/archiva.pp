@@ -4,7 +4,7 @@
 # sets up a cron job to symlink .jar files to
 # a git-fat store.
 #
-class role::archiva {
+class role::archiva::archiva {
     system::role { 'role::archiva': description => 'Apache Archiva Host' }
 
     include base::firewall
