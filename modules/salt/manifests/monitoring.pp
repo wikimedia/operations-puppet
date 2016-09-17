@@ -5,7 +5,7 @@ class salt::monitoring() {
 
     file { $check_unaccepted_keys:
         ensure => present,
-        mode   => '0550',
+        mode   => '0555',
         owner  => 'root',
         group  => 'root',
         source => 'puppet:///modules/salt/check_unaccepted_keys',
