@@ -115,7 +115,7 @@ zookeeper_clusters:
     hosts:
       "%{::fqdn}": 1
 
-nrpe::allowed_hosts: '10.68.16.195'
+nrpe::allowed_hosts: '10.68.16.195' # icinga
 
 ssh::server::disable_agent_forwarding: false
 labs_puppet_master: "labs-puppetmaster-eqiad.wikimedia.org"

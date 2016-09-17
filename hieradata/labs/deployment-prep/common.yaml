@@ -101,8 +101,8 @@ cassandra::logstash_host: deployment-logstash2.deployment-prep.eqiad.wmflabs
 cassandra::target_version: '2.2'
 cassandra::metrics::graphite_host: labmon1001.eqiad.wmnet
 restbase::seeds:
-  - 10.68.16.128
-  - 10.68.17.189
+  - 10.68.16.128 # deployment-restbase01
+  - 10.68.17.189 # deployment-restbase02
 # used for rate limiting
 restbase::hosts:
   - deployment-restbase01.deployment-prep.eqiad.wmflabs
@@ -159,7 +159,7 @@ role::deployment::mediawiki::key_fingerprint: f0:54:06:fa:17:27:97:a2:cc:69:a0:a
 "role::logging::mediawiki::log_directory": /data/project/logs
 "role::mediawiki::webserver::pool": one-pool-to-rule-them-all
 "beta::syncsiteresources::user": www-data
-"role::url_downloader::url_downloader_ip": 10.68.16.135
+"role::url_downloader::url_downloader_ip": 10.68.16.135 # deployment-urldownloader
 "zotero::http_proxy": deployment-urldownloader.deployment-prep.eqiad.wmflabs:8080
 "trebuchet::deployment_server": deployment-tin.deployment-prep.eqiad.wmflabs
 "scap::deployment_server": deployment-tin.deployment-prep.eqiad.wmflabs
@@ -204,10 +204,10 @@ scap::dsh::groups:
 role::logstash::statsd_host: labmon1001.eqiad.wmnet
 "mediawiki::redis_servers::eqiad":
   shard01:
-    host: 10.68.16.177
+    host: 10.68.16.177 # deployment-redis01
     port: 6379
   shard02:
-    host: 10.68.16.231
+    host: 10.68.16.231 # deployment-redis02
     port: 6379
 nfs_mounts:
   project: false

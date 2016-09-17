@@ -29,13 +29,10 @@ class openstack::nova::network($novaconfig, $openstack_version=$::openstack::ver
         'relic'                     => {public_ip  => '208.80.155.197',
                                         private_ip => '10.68.16.162' },
         'tools-webproxy'            => {public_ip  => '208.80.155.131',
-                                        private_ip => '10.68.17.139' },
-        'udplog'                    => {public_ip  => '208.80.155.191',
-                                        private_ip => '10.68.17.240' },
-
+                                        private_ip => '10.68.21.49' },
         # A wide variety of hosts are reachable via a public web proxy.
         'labs_shared_proxy' => {public_ip  => '208.80.155.156',
-                                private_ip => '10.68.16.65'},
+                                private_ip => '10.68.21.68'},
     }
 
     $dnsconfig = hiera_hash('labsdnsconfig', {})
