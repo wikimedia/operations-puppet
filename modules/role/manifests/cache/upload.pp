@@ -131,7 +131,7 @@ class role::cache::upload(
     }
 
     # XXX: temporary, we need this to mitigate T145661
-    $rt_parts = split(inline_template("<%= require 'digest/md5'; x = Random.new(Digest::MD5.hexdigest(@fqdn).to_i(16)).rand(1440); hh = x / 60; mm = x % 60; hh.to_s() + ':' + mm.to_s(); %>"), ':')
+    $rt_parts = split(inline_template("<%= require 'digest/md5'; x = Digest::MD5.hexdigest(@fqdn).to_i(16) % 1440; hh = x / 60; mm = x % 60; hh.to_s() + ':' + mm.to_s(); %>"), ':')
     $be_restart_h = $rt_parts[0]
     $be_restart_m = $rt_parts[1]
 
