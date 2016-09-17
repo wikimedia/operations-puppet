@@ -83,6 +83,8 @@ nameserver ${nameserver}
 options timeout:5 ndots:2
 EOF
 
+echo "$ip	$hostname $fqdn" >> /etc/hosts
+
 /etc/init.d/nslcd restart
 /etc/init.d/nscd restart
 dpkg-reconfigure -fnoninteractive -pcritical openssh-server
