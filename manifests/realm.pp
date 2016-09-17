@@ -2,40 +2,6 @@
 # Collection of global definitions used across sites, within one realm.
 #
 
-# Determine the site the server is in
-
-# If our puppetmaster is 3.5+ then use the trusted $facts hash
-if versioncmp($::serverversion, '3.5') >= 0 and $facts {
-    if $facts['ipaddress_eth0'] {
-        $main_ipaddress = $facts['ipaddress_eth0']
-    } elsif $facts['ipaddress_bond0'] {
-        $main_ipaddress = $facts['ipaddress_bond0']
-    } else {
-        $main_ipaddress = $facts['ipaddress']
-    }
-# Otherwise fallback to pre 3.5 behaviour
-} else {
-    if $::ipaddress_eth0 != undef {
-        $main_ipaddress = $::ipaddress_eth0
-    } elsif $::ipaddress_bond0 != undef {
-        $main_ipaddress = $::ipaddress_bond0
-    } else {
-        $main_ipaddress = $::ipaddress
-    }
-}
-
-$site = $main_ipaddress ? {
-    /^208\.80\.15[23]\./                      => 'codfw',
-    /^208\.80\.15[45]\./                      => 'eqiad',
-    /^10\.6[48]\./                            => 'eqiad',
-    /^10\.19[26]\./                           => 'codfw',
-    /^91\.198\.174\./                         => 'esams',
-    /^198\.35\.26\.([0-9]|[1-5][0-9]|6[0-2])/ => 'ulsfo',
-    /^10\.128\./                              => 'ulsfo',
-    /^10\.20\.0\./                            => 'esams',
-    default                                   => '(undefined)'
-}
-
 # Lab testing cluster all prefix labtest
 if $::hostname =~ /^labtest/ {
     $realm = 'labtest'
