@@ -131,8 +131,8 @@ class role::cache::upload(
     }
 
     # XXX: temporary, we need this to mitigate T145661
-    $be_restart_h = fqdn_rand(24)
-    $be_restart_m = fqdn_rand(60)
+    $be_restart_h = fqdn_rand(24, 'eb70e880')
+    $be_restart_m = fqdn_rand(60, '5ae39fee')
 
     file { '/etc/cron.d/varnish-backend-restart':
         mode    => '0444',
