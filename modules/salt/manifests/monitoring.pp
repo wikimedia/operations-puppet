@@ -13,7 +13,7 @@ class salt::monitoring() {
 
     sudo::user { 'nagios_unaccepted_keys':
         user       => 'nagios',
-        privileges => ["ALL = NOPASSWD: ${check_unaccepted_keys}"],
+        privileges => ['ALL = NOPASSWD: /usr/bin/salt-key -l un'],
     }
 
     nrpe::monitor_service { 'salt_unaccepted_keys':
