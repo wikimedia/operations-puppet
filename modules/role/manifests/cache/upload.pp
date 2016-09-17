@@ -131,9 +131,12 @@ class role::cache::upload(
     }
 
     # XXX: temporary, we need this to mitigate T145661
-    $rt_parts = split(inline_template("<%= require 'digest/md5'; x = Random.new(Digest::MD5.hexdigest(@fqdn).to_i(16)).rand(1440); hh = x / 60; mm = x % 60; hh.to_s() + ':' + mm.to_s(); %>"), ':')
-    $be_restart_h = $rt_parts[0]
-    $be_restart_m = $rt_parts[1]
+    $hnodes = hiera('cache::upload::nodes')
+    $all_nodes = array_concat($hnodes['eqiad'], $hnodes['esams'], $hnodes['ulsfo'], $hnodes['codfw'])
+    $times = cron_splay($all_nodes, 'daily', 'upload-backend-restarts')
+    $be_restart_h = $times['hour']
+    $be_restart_m = $times['minute']
+    $be_restart_d = $times['weekday']
 
     file { '/etc/cron.d/varnish-backend-restart':
         mode    => '0444',
