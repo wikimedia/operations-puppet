@@ -1,1 +1,1 @@
-<%= @be_restart_m %> <%= @be_restart_h %> * * * root /usr/local/sbin/varnish-backend-restart > /dev/null
+<%= @be_restart_m %> <%= @be_restart_h %> * * <%= @be_restart_d %> root /usr/local/sbin/varnish-backend-restart > /dev/null
