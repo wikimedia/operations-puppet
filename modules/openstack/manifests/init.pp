@@ -1,4 +1,4 @@
 # Simple config class for openstack
-class openstack ($version = 'juno'){
+class openstack ($version = 'liberty'){
 
 }
