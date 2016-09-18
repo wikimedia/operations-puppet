@@ -167,7 +167,9 @@ sub recv_fe_ip_processing {
 
 		// if it's an outside IP, use it to set XCIP (otherwise leave
 		// XCIP alone and it's still the proxy's IP)
-		if(<%= @std_ipcast %>.ip(req.http.maybe-xcip, "127.0.0.1") !~ wikimedia_nets) {
+		if(req.http.maybe-xcip && <%= @std_ipcast %>.ip(req.http.maybe-xcip, "127.0.0.1") !~ wikimedia_nets) {
+			// the check for empty/false maybe-xcip is to prevent
+			// the same netmapper-1.3 breakage as the 192.0.2.1 hack
 			set req.http.X-Client-IP = req.http.maybe-xcip;
 		}
 
