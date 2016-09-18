@@ -1,7 +1,7 @@
 #!/usr/bin/python
 #####################################################################
 # THIS FILE IS MANAGED BY PUPPET
-# puppet:///modules/openstack/liberty/virtscripts/cold-migrate
+# puppet:///modules/openstack/mitaka/virtscripts/cold-migrate
 #####################################################################
 """
  cold-migrate stops an instance, moves it to a new host,

@@ -1,7 +1,7 @@
 #!/usr/bin/python
 #####################################################################
 # THIS FILE IS MANAGED BY PUPPET
-# puppet:///modules/openstack/liberty/virtscripts/makedomain
+# puppet:///modules/openstack/mitaka/virtscripts/makedomain
 #####################################################################
 """
 makedomain is a tool for creating subdomains of existing designate domains.
