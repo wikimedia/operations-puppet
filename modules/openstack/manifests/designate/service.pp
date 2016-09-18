@@ -139,7 +139,10 @@ class openstack::designate::service (
             description  => 'designate-pool-manager process',
             nrpe_command => "/usr/lib/nagios/plugins/check_procs -c 1: --ereg-argument-array '^/usr/bin/python /usr/bin/designate-pool-manager'",
         }
-
+        monitoring::service { 'designate-api-http':
+            description   => 'designate-api http',
+            check_command => 'check_http_on_port!9001',
+        }
     } else {
         service {'designate-api':
             ensure  => stopped,

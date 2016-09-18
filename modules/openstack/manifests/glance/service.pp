@@ -121,6 +121,11 @@ class openstack::glance::service(
                 require => User['glancesync'],
             }
         }
+
+        monitoring::service { 'glance-api-http':
+            description   => 'glance-api http',
+            check_command => 'check_http_on_port!9292',
+        }
     } else {
         service { 'glance-api':
             ensure  => stopped,
