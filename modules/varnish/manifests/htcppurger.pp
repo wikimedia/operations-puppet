@@ -41,7 +41,7 @@ class varnish::htcppurger(
     }
 
     if $host_regex != '' {
-        $regex_arg = " -r '${host_regex}'"
+        $regex_arg = " -r ${host_regex}"
     }
     else {
         $regex_arg = ''
