@@ -10,20 +10,20 @@ confctl --quiet select name=`hostname -f`,service='varnish-be-rand' set/pooled=n
 sleep 15
 
 # Restart varnish and wipe storage
-service varnish stop
+/usr/sbin/service varnish stop
 rm -f /srv/sd*/varnish*
-service varnish start
+/usr/sbin/service varnish start
 
 sleep 5
 
 # Fix VSM files permissions and restart ganglia
 chmod 644 /var/lib/varnish/*/*.vsm
-service ganglia-monitor restart
+/usr/sbin/service ganglia-monitor restart
 
 sleep 5
 
 # Sometimes varnishkafka crashes after a varnish restart
-service varnishkafka-webrequest restart
+/usr/sbin/service varnishkafka-webrequest restart
 
 # Repool varnish-be and varnish-be-rand
 confctl --quiet select name=`hostname -f`,service='varnish-be' set/pooled=yes
