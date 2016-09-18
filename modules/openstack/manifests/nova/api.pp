@@ -26,4 +26,8 @@ class openstack::nova::api($novaconfig, $openstack_version=$::openstack::version
         description  => 'nova-api process',
         nrpe_command => "/usr/lib/nagios/plugins/check_procs -c 1: --ereg-argument-array '^/usr/bin/python /usr/bin/nova-api'",
     }
+    monitoring::service { 'nova-api-http':
+        description   => 'nova-api http',
+        check_command => 'check_http_on_port!8774',
+    }
 }

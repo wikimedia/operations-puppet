@@ -77,6 +77,14 @@ class openstack::keystone::service($keystoneconfig, $openstack_version=$::openst
             description  => 'keystone process',
             nrpe_command => "/usr/lib/nagios/plugins/check_procs -c 1: --ereg-argument-array '^/usr/bin/python /usr/bin/keystone-all'",
         }
+        monitoring::service { 'keystone-http-35357':
+            description   => 'keystone http',
+            check_command => 'check_http_on_port!35357',
+        }
+        monitoring::service { 'keystone-http-5000': # v2 api is limited here
+            description   => 'keystone http',
+            check_command => 'check_http_on_port!5000',
+        }
     } else {
         service { 'keystone':
             ensure  => stopped,
