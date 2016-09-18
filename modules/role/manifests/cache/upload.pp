@@ -9,7 +9,8 @@ class role::cache::upload(
     }
 
     class { 'varnish::htcppurger':
-        mc_addrs => [ '239.128.0.112', '239.128.0.113' ],
+        host_regex => 'upload',
+        mc_addrs   => [ '239.128.0.112', '239.128.0.113' ],
     }
 
     class { 'lvs::realserver':

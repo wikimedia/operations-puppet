@@ -31,12 +31,20 @@
 
 class varnish::htcppurger(
     $mc_addrs,
+    $host_regex = '',
     $varnishes = [ '127.0.0.1:3127', '127.0.0.1:3128' ],
 ) {
     Class[varnish::packages] -> Class[varnish::htcppurger]
 
     package { 'vhtcpd':
         ensure => latest,
+    }
+
+    if $host_regex != '' {
+        $regex_arg = " -r '${host_regex}'"
+    }
+    else {
+        $regex_arg = ''
     }
 
     file { '/etc/default/vhtcpd':
