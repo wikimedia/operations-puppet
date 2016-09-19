@@ -26,12 +26,19 @@ class varnish::common {
         mode   => '0555',
     }
 
-    # Script to depool, restart and repool a varnish backend
+    # Scripts to depool, restart and repool varnish backends and frontends
     file { '/usr/local/sbin/varnish-backend-restart':
         owner  => 'root',
         group  => 'root',
         mode   => '0555',
         source => 'puppet:///modules/varnish/varnish-backend-restart',
+    }
+
+    file { '/usr/local/sbin/varnish-frontend-restart':
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => 'puppet:///modules/varnish/varnish-frontend-restart',
     }
 
     # `vlogdump` is a small tool to filter the output of varnishlog
