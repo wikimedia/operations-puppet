@@ -28,7 +28,8 @@ def before_request():
         host=os.environ['MYSQL_HOST'],
         db=os.environ['MYSQL_DB'],
         user=os.environ['MYSQL_USERNAME'],
-        passwd=os.environ['MYSQL_PASSWORD']
+        passwd=os.environ['MYSQL_PASSWORD'],
+        charset='utf8'
     )
 
 
@@ -250,7 +251,10 @@ def get_prefixes(project):
         """, (project, ))
         # Do the inverse of _preprocess_prefix, so callers get a consistent view
         return Response(
-            yaml.safe_dump({'prefixes': ['_' if r[0] == b'' else r[0] for r in cur.fetchall()]}),
+            yaml.safe_dump({
+                'prefixes':
+                ['_' if r[0] == b'' or r[0] == ''
+                 else r[0] for r in cur.fetchall()]}),
             status=200,
             mimetype='application/x-yaml'
         )
