@@ -179,7 +179,7 @@ groups:
     members: [ezachte, milimetric, dartar, yurik, halfak, awight, dr0ptp4kt, nuria,
               leila, ellery, nettrom, mforns, bmansurov, tbayer, joal,
               madhuvishy, tjones, legoktm, dcausse, bearloga, dpatrick, atgomez, dstrine,
-              joewalsh, marktraceur, mtizzoni, panisson, paolotti, ciro]
+              joewalsh, marktraceur, mtizzoni, panisson, paolotti, ciro, melodykramer]
   statistics-users:
     gid: 726
     description: Access statistics number crunching hosts. NO PRIVS.
