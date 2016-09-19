@@ -66,6 +66,7 @@ default_project: &default_project
         events:
           uri: <%= @eventlogging_service_uri %>
           topic: resource_change
+          transcludes_topic: change-prop.transcludes.resource-change
         related:
           cache_control: s-maxage=86400, max-age=3600
         # Cache headers for purged end points.
