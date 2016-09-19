@@ -81,28 +81,48 @@ class role::cache::upload(
         'pass_random'      => false,
     })
 
-    if ($::role::cache::2layer::varnish_version4) {
-        # The persistent storage backend is deprecated and buggy in Varnish 4.
-        # Use "file" instead. See T142810, T142848 and
-        # https://www.varnish-cache.org/docs/trunk/phk/persistent.html
-        $storage_backend = 'file'
-        $storage_mma_1 = ''
-        $storage_mma_2 = ''
+    $upload_storage_experiment = hiera('upload_storage_experiment', false)
+    if $upload_storage_experiment {
+        $sda = $::role::cache::2layer::storage_parts[0]
+        $sdb = $::role::cache::2layer::storage_parts[1]
+        $ssm = $::role::cache::2layer::storage_size * 2 * 1024
+        $bin0_size = floor($ssm * 0.03)
+        $bin1_size = floor($ssm * 0.20)
+        $bin2_size = floor($ssm * 0.43)
+        $bin3_size = floor($ssm * 0.30)
+        $bin4_size = floor($ssm * 0.04)
+        $upload_storage_args = join([
+            "-s bin0=file,/srv/${sda}/varnish.bin0,${bin0_size}M",
+            "-s bin1=file,/srv/${sdb}/varnish.bin1,${bin1_size}M",
+            "-s bin2=file,/srv/${sda}/varnish.bin2,${bin2_size}M",
+            "-s bin3=file,/srv/${sdb}/varnish.bin3,${bin3_size}M",
+            "-s bin4=file,/srv/${sda}/varnish.bin4,${bin4_size}M",
+        ], ' ')
     }
     else {
-        $storage_backend = 'persistent'
-        $storage_mma_1 = ",${::role::cache::2layer::mma[0]}"
-        $storage_mma_2 = ",${::role::cache::2layer::mma[1]}"
-    }
+        if ($::role::cache::2layer::varnish_version4) {
+            # The persistent storage backend is deprecated and buggy in Varnish 4.
+            # Use "file" instead. See T142810, T142848 and
+            # https://www.varnish-cache.org/docs/trunk/phk/persistent.html
+            $storage_backend = 'file'
+            $storage_mma_1 = ''
+            $storage_mma_2 = ''
+        }
+        else {
+            $storage_backend = 'persistent'
+            $storage_mma_1 = ",${::role::cache::2layer::mma[0]}"
+            $storage_mma_2 = ",${::role::cache::2layer::mma[1]}"
+        }
 
-    $storage_size_bigobj = floor($::role::cache::2layer::storage_size / 6)
-    $storage_size_up = $::role::cache::2layer::storage_size - $storage_size_bigobj
-    $upload_storage_args = join([
-        "-s main1=${storage_backend},/srv/${::role::cache::2layer::storage_parts[0]}/varnish.main1,${storage_size_up}G${storage_mma_1}",
-        "-s main2=${storage_backend},/srv/${::role::cache::2layer::storage_parts[1]}/varnish.main2,${storage_size_up}G${storage_mma_2}",
-        "-s bigobj1=file,/srv/${::role::cache::2layer::storage_parts[0]}/varnish.bigobj1,${storage_size_bigobj}G",
-        "-s bigobj2=file,/srv/${::role::cache::2layer::storage_parts[1]}/varnish.bigobj2,${storage_size_bigobj}G",
-    ], ' ')
+        $storage_size_bigobj = floor($::role::cache::2layer::storage_size / 6)
+        $storage_size_up = $::role::cache::2layer::storage_size - $storage_size_bigobj
+        $upload_storage_args = join([
+            "-s main1=${storage_backend},/srv/${::role::cache::2layer::storage_parts[0]}/varnish.main1,${storage_size_up}G${storage_mma_1}",
+            "-s main2=${storage_backend},/srv/${::role::cache::2layer::storage_parts[1]}/varnish.main2,${storage_size_up}G${storage_mma_2}",
+            "-s bigobj1=file,/srv/${::role::cache::2layer::storage_parts[0]}/varnish.bigobj1,${storage_size_bigobj}G",
+            "-s bigobj2=file,/srv/${::role::cache::2layer::storage_parts[1]}/varnish.bigobj2,${storage_size_bigobj}G",
+        ], ' ')
+    }
 
     # default_ttl=7d
     $common_runtime_params = ['default_ttl=604800']
