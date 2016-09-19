@@ -8,32 +8,6 @@ class dataset::cron::rsync::labs($enable=true) {
         $ensure = 'absent'
     }
 
-    file { '/mnt/dumps':
-        ensure => directory,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0755',
-    }
-
-    if ($enable) {
-        mount { '/mnt/dumps':
-            ensure  => mounted,
-            atboot  => true,
-            fstype  => 'nfs',
-            device  => 'labstore1003.eqiad.wmnet:/dumps',
-            options => 'rw,vers=4,bg,soft,intr,timeo=14,sec=sys,proto=tcp,port=0,noatime,nofsc',
-            require => File['/mnt/dumps'],
-        }
-
-        file { '/mnt/dumps/public':
-            ensure  => directory,
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0755',
-            require => Mount['/mnt/dumps'],
-        }
-    }
-
     file { '/usr/local/bin/wmfdumpsmirror.py':
         ensure => 'present',
         mode   => '0755',
@@ -55,8 +29,7 @@ class dataset::cron::rsync::labs($enable=true) {
             command     => '/usr/local/sbin/labs-rsync-cron.sh',
             environment => 'MAILTO=ops-dumps@wikimedia.org',
             require     => File['/usr/local/bin/wmfdumpsmirror.py',
-                                '/usr/local/sbin/labs-rsync-cron.sh',
-                                '/mnt/dumps/public'],
+                                '/usr/local/sbin/labs-rsync-cron.sh'],
         }
     }
     else {
