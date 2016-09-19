@@ -2,7 +2,7 @@
 #############################################################
 # This file is maintained by puppet!
 # puppet:///modules/snapshot/cron/dumpwikidatattl.sh
-##############################################################
+#############################################################
 #
 # Generate a json dump for Wikidata and remove old ones.
 #
@@ -14,21 +14,25 @@ filename=wikidata-$today-all-BETA
 targetFileGzip=$targetDir/$filename.ttl.gz
 targetFileBzip2=$targetDir/$filename.ttl.bz2
 failureFile=/tmp/dumpwikidatattl-failure
+mainLogFile=/var/log/wikidatadump/dumpwikidatattl-$filename-main.log
 
-i=0
 shards=4
 
 # Try to create the dump (up to three times).
 retries=0
 
 while true; do
+	i=0
 	rm -f $failureFile
 
 	while [ $i -lt $shards ]; do
 		(
 			set -o pipefail
-			php $multiversionscript extensions/Wikidata/extensions/Wikibase/repo/maintenance/dumpRdf.php --wiki wikidatawiki --shard $i --sharding-factor $shards --format ttl 2>> /var/log/wikidatadump/dumpwikidatattl-$filename-$i.log | gzip > $tempDir/wikidataTTL.$i.gz
-			if [ $? -gt 0 ]; then
+			errorLog=/var/log/wikidatadump/dumpwikidatattl-$filename-$i.log
+			php $multiversionscript extensions/Wikidata/extensions/Wikibase/repo/maintenance/dumpRdf.php --wiki wikidatawiki --shard $i --sharding-factor $shards --format ttl 2>> $errorLog | gzip > $tempDir/wikidataTTL.$i.gz
+			exitCode=$?
+			if [ $exitCode -gt 0 ]; then
+				echo -e "\n\nProcess failed with exit code $exitCode" >> $errorLog
 				echo 1 > $failureFile
 			fi
 		) &
@@ -40,8 +44,9 @@ while true; do
 	if [ -f $failureFile ]; then
 		# Something went wrong, let's clean up and maybe retry. Leave logs in place.
 		rm -f $failureFile
-		rm $tempDir/wikidataTTL.*.gz
+		rm -f $tempDir/wikidataTTL.*.gz
 		let retries++
+		echo "Dumping one or more shards failed. Retrying." >> $mainLogFile
 
 		if [ $retries -eq 3 ]; then
 			exit 1
@@ -57,8 +62,18 @@ done
 
 i=0
 while [ $i -lt $shards ]; do
-	cat $tempDir/wikidataTTL.$i.gz >> $tempDir/wikidataTtl.gz
-	rm $tempDir/wikidataTTL.$i.gz
+	tempFile=$tempDir/wikidataTTL.$i.gz
+	if [ ! -f $tempFile ]; then
+		echo "$tempFile does not exist. Aborting." >> $mainLogFile
+		exit 1
+	fi
+	fileSize=`stat --printf="%s" $tempFile`
+	if [ $fileSize -lt 1800000000 ]; then
+		echo "File size of $tempFile is only $fileSize. Aborting." >> $mainLogFile
+		exit 1
+	fi
+	cat $tempFile >> $tempDir/wikidataTtl.gz
+	rm $tempFile
 	let i++
 done
 
