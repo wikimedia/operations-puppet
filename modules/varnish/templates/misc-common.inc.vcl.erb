@@ -9,6 +9,8 @@ sub misc_recv_pass {
         || req.http.Host == "config-master.wikimedia.org"
         || req.http.Host == "etherpad.wikimedia.org" // No caching of configs; scripts may want to know when things change
         || req.http.Host == "stream.wikimedia.org"
+        || req.http.Host == "puppetdb-eqiad.wikimedia.org" // This exposes a real-time dashboard, no reason to cache it
+        || req.http.Host == "puppetdb-codfw.wikimedia.org"
     ) {
         return (pass);
     }

@@ -24,3 +24,30 @@ server {
     }
 }
 
+# Server to specifically expose the dashboard and the metrics
+server {
+    listen 80 default_server;
+
+    access_log /var/log/nginx/dashboard_access.log;
+    error_log /var/log/nginx/dashboard_error.log;
+
+    root /dev/null;
+
+    location /dashboard/ {
+        proxy_pass http://localhost:<%= @jetty_port %>/dashboard/;
+        proxy_set_header    X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header    X-Real-IP $remote_addr;    
+    }
+
+    location /v3/metrics/ {
+        proxy_pass http://localhost:<%= @jetty_port %>/v3/metrics/;
+        proxy_set_header    X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header    X-Real-IP $remote_addr;    
+    }
+
+    location /v3/version {
+        proxy_pass http://localhost:<%= @jetty_port %>/v3/version;
+        proxy_set_header    X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header    X-Real-IP $remote_addr;    
+    }
+}       

@@ -46,6 +46,15 @@ class role::puppetmaster::puppetdb {
         srange  => '$DOMAIN_NETWORKS',
     }
 
+    # On port 80, only the dashboard and metrics get served.
+    ferm::service { 'puppetdb_http':
+        proto   => 'tcp',
+        port    => 80,
+        notrack => true,
+        srange  => '$DOMAIN_NETWORKS',
+    }
+
+
     class { 'postgresql::ganglia':
         pgstats_user => $passwords::postgres::ganglia_user,
         pgstats_pass => $passwords::postgres::ganglia_pass,
