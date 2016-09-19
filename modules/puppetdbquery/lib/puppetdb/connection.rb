@@ -56,8 +56,9 @@ class PuppetDB::Connection
   # @param resquery [Array] a resources query for what resources to fetch
   # @param nodequery [Array] the query to find the nodes to fetch resources for, optionally empty
   # @param grouphosts [Boolean] whether or not to group the results by the host they belong to
+  # @param order_by [String] a field to order the result by
   # @return [Hash|Array] a hash of hashes with resources for each node mathing query or array if grouphosts was false
-  def resources(nodequery, resquery, http=nil, grouphosts=true)
+  def resources(nodequery, resquery, http=nil, grouphosts=true, order_by=nil)
     if resquery and ! resquery.empty?
       if nodequery and ! nodequery.empty?
         q = ['and', resquery, nodequery]
@@ -68,7 +69,7 @@ class PuppetDB::Connection
       raise RuntimeError, "PuppetDB resources query error: at least one argument must be non empty; arguments were: nodequery: #{nodequery.inspect} and requery: #{resquery.inspect}"
     end
     resources = {}
-    results = query(:resources, q, http)
+    results = query(:resources, q, http, order_by)
 
     if grouphosts
       results.each do |resource|
@@ -89,7 +90,7 @@ class PuppetDB::Connection
   # @param endpoint [Symbol] :resources, :facts or :nodes
   # @param query [Array] query to execute
   # @return [Array] the results of the query
-  def query(endpoint, query = nil, http = nil, version = :v3)
+  def query(endpoint, query = nil, http = nil, version = :v3, order_by = nil)
     require 'json'
 
     unless http
@@ -100,7 +101,12 @@ class PuppetDB::Connection
 
     uri = "/#{version}/#{endpoint}"
     uri += URI.escape "?query=#{query.to_json}" unless query.nil? || query.empty?
-
+    unless order_by.nil?
+      field, order = order_by.downcase.split(" ")
+      order ||= 'asc'
+      order_query = [{'field' => field, 'order' => order}]
+      uri += URI.escape "&order-by=#{order_query.to_json}"
+    end
     debug("PuppetDB query: #{query.to_json}")
 
     resp = http.get(uri, headers)

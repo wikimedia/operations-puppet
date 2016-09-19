@@ -10,6 +10,9 @@ Puppet::Parser::Functions.newfunction(:query_resources, :type => :rvalue, :arity
 
   If the third parameters is false the result will be a an array of all resources found.
 
+  If the (optional) fourth parameter is added, it will be possible to order the result based
+  on one resource field
+
   Examples:
 
     Returns the parameters and such for the ntp class for all CentOS nodes:
@@ -28,9 +31,12 @@ Puppet::Parser::Functions.newfunction(:query_resources, :type => :rvalue, :arity
 
       query_resources(false, 'Class["apache"]', false)
 
+    Same as above, but ordered by resource title (ascending)
+      query_resources(false, 'Class["apache"]', false, 'title')
+
 EOT
 ) do |args|
-  nodequery, resquery, grouphosts = args
+  nodequery, resquery, grouphosts, order_by = args
 
   require 'puppet/util/puppetdb'
   # This is needed if the puppetdb library isn't pluginsynced to the master
@@ -44,5 +50,5 @@ EOT
   puppetdb = PuppetDB::Connection.new(Puppet::Util::Puppetdb.server, Puppet::Util::Puppetdb.port)
   nodequery = puppetdb.parse_query nodequery, :facts if nodequery and nodequery.is_a? String and ! nodequery.empty?
   resquery = puppetdb.parse_query resquery, :none if resquery and resquery.is_a? String and ! resquery.empty?
-  return puppetdb.resources(nodequery, resquery, nil, grouphosts)
+  return puppetdb.resources(nodequery, resquery, nil, grouphosts, order_by)
 end
