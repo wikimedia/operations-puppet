@@ -40,7 +40,7 @@
     <Proxy balancer://mycluster>
       <%- @workers.each do |workerhash| -%>
       <%- unless workerhash['offline'] -%>
-        BalancerMember https://<%= workerhash['worker'] %>:8141 connectiontimeout=1 retry=500 timeout=900 <%- if workerhash['loadfactor'] -%>loadfactor=<%= workerhash['loadfactor'] %><%- end %>
+        BalancerMember https://<%= workerhash['worker'] %>:8141 ping=1 connectiontimeout=1 retry=500 timeout=900 <%- if workerhash['loadfactor'] -%>loadfactor=<%= workerhash['loadfactor'] %><%- end %>
       <%- end -%>
       <%- end -%>
       <IfVersion >= 2.4>
