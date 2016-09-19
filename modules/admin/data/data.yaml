@@ -2126,3 +2126,11 @@ users:
     ssh_keys:
       - ssh-rsa AAAAB3NzaC1yc2EAAAABJQAAAQEAoD/Zl3L6h+F3gWsN+D/URX1vo8xNGN+FU/NvlU61NEBfmlDYsP+Qses8BOA1xVzj21G6CDZDwWyBaY8TXJJ0FEVeZaisW7y2tf8UKPh7t55ttVIQQUrt5oWm4ZCObWYI+As52VZJbKulpA0Ihzp6tQryqJsdh5OlVQIzwIjEMQ/9WTvn45ZESIiYbpTJjFKqKv/uNU5HbZJzDDOGcvXmhirO3t3kOF3zgrrTROFqjn/rD/nK1uGRD/pSrNWOLnePBT2z/mn1vRWwOlHPUBe915Rwl+bGpGkr0aaljwp39gdeyEpPMJBLCAEv2mLOVT7Dw2dK25sZKSxIaecKDwhJsQ==
     uid: 15329
+  debt:
+    ensure: present
+    gid: 500
+    name: debt
+    realname: Deborah Tankersley
+    ssh_keys:
+      - ssh-rsa ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDEUXW3TsDb+IfVFZEMbwW2SUidorZ4C7yszXdNU9lUSmpcFAcZSnHSaHL1HbU+30DsBKUjAx4HHQiZJg6c3pnaaD5NqfOaPMG0blRWRGBDUhBHfWGTv4jBF8JVyhN61NnoaJ8NJOxyf/Bf/RQIOkHrBHs3Vr+W9qA7yMporcb36gU/nhzm1TdrZ10JyjPcKDpISDUA+6h0pKvD6uKTCRHCUYh9uLhf62NBjM6GW0ISGKs3l0Vp7c9tvpTkUNzAc4YAbsDTAQ0ueBi9siKpdCMsyGkGESNYPNdrlbKPBCGKaGtyDlIOHTLbrep1qLONUJDT/rpI7KonYukrLAgrv7q5+iR/r36knjIekWpnKpU8DLbB6V2yZhGzkxTCT/2/J6LujW/lI2ug0JXzroFl9ykaA/SulqLKCg+3uo+n1WFe/V0I1g5MfHanaMNHHt3GF92d/XIUUAIFWpg0bUUvOKT4ThWM3B9/lrOzxrHXLPnSuQhLSewN6k8gx5R4rhpllmipqt6nvE4LTeaVvzKhtOaJveW2VO/uwUoHOO1YLyjqkSFJG9e4lhjHxiOOY583ei5L//cJa2aoWjMrO1KxqMmLf2y4qA4SKpPcVrgL7wmpvsExdZQ7DDpn6PFYjwwRyTC7z7J82jqVc1B0oSewbqU03J0FYrdlN0z0GA7sQMy9yQ== dtankersley@wikimedia.org
+    uid: 15213
