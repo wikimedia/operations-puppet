@@ -16,6 +16,10 @@ access_log /var/log/squid3/access.log squid
 logfile_rotate 10
 cache_store_log none
 hosts_file /etc/hosts
+refresh_pattern \/(Packages|Sources)(|\.bz2|\.gz|\.xz)$ 0 0% 0 refresh-ims
+refresh_pattern \/Release(|\.gpg)$ 0 0% 0 refresh-ims
+refresh_pattern \/InRelease$ 0 0% 0 refresh-ims
+refresh_pattern \/(Translation-.*)(|\.bz2|\.gz|\.xz)$ 0 0% 0 refresh-ims
 refresh_pattern ^ftp:		1440	20%	10080
 refresh_pattern ^gopher:	1440	0%	1440
 refresh_pattern .		0	20%	4320
