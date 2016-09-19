@@ -2142,3 +2142,11 @@ users:
     ssh_keys:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC+0/t+joJHGh5gAGAl4qGNKMtVDc4jGefo6o/K8YUdLJiNHPFDv9hJKiRb4/7OMqh64JZUcrX2N11+SmpvSfC1bE4JBHZdzcErmuHChe4U7CuELZJW3qMxG6Yq1IzLoUJV6uH89Dn7nHmOskEFeiDmCyAwIvFYjhp7QxqYYYL2c2zF0ermLyS8+bXxT2fBZyFUtCJ/6jVSPEPmg0l130X7XEfHsvcfE5H27RNMib2kS87NjNYzt0pdYlqqUNO+49A1SaSiJ3V4ys8Hb66mtKYbkmyX1XyO9Np2Qduh+fwMynbKWw42idwgeJQ40eeX8X6yQZnxv6sECipm+CGmK96aQezSc/qefwP9oOco1u6AUkFr1FpmDun2yCZKwjyyLH+glVGQDGS0YV3A8FVXLbbX9WArme4mohrt/m/3Keg+fYS/OHlR9ai5S73TQNURkZWTonN4H4DeNfPYl8aLdGDbW8UlvqwyrL7PAMlEVrc90ou4BXbbJunpBpEPs2JUi8NsKREBnmqCxrN37hOxU0Dz5KJxQFsRnigaNuwc97k44Vhi7IFAK/imi4rB0YnmDKjwXbk/K2I2bAU964JQwiDVEc9jJxkTxbgq36gWCVTvpPKPAEARCPLZWV+rQKlCM9+ye9U7SxqJuJq3x4ltwuFRtPuGoDU5jKf81r3a61UMfw== mkramer@wikimedia.org
     uid: 15457
+  samwalton9:
+    ensure: present
+    gid: 500
+    name: samwalton9
+    realname: Sam Walton
+    ssh_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDBSqKkOktF20xShNmJgeOpkhDYXFgcCvNPKbexn67on5M0hPNTKZjptFPCeoQh/i3suAvPDFakDt0pEcCZzzzcwArM21LJ2EFWeqwl6il20L45aD52y8zYYPrTtAi2YaqP77kbSl7/jVW0AFzM6m/G9e5550oeZKDbHGkANpi9uAqn7EjTI88i0txnTEGG6Bwu4G4H/08BsKbkW2C3sB2/h4V1GEHMhxlDEfhlEsVqfaYgrxmXJsTyAjsgawx+fIuqDJsrIFCWlu7IIfur+g0o+DVIDE5kCzZLUeD7FfwP0ym03f7fXF/yjg0sQzXKPF1eXLKXod+7Mn+KOnxLnj+d Swalton@wikimedia.org
+    uid: 15557
