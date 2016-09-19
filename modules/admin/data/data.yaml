@@ -2126,3 +2126,11 @@ users:
     ssh_keys:
       - ssh-rsa AAAAB3NzaC1yc2EAAAABJQAAAQEAoD/Zl3L6h+F3gWsN+D/URX1vo8xNGN+FU/NvlU61NEBfmlDYsP+Qses8BOA1xVzj21G6CDZDwWyBaY8TXJJ0FEVeZaisW7y2tf8UKPh7t55ttVIQQUrt5oWm4ZCObWYI+As52VZJbKulpA0Ihzp6tQryqJsdh5OlVQIzwIjEMQ/9WTvn45ZESIiYbpTJjFKqKv/uNU5HbZJzDDOGcvXmhirO3t3kOF3zgrrTROFqjn/rD/nK1uGRD/pSrNWOLnePBT2z/mn1vRWwOlHPUBe915Rwl+bGpGkr0aaljwp39gdeyEpPMJBLCAEv2mLOVT7Dw2dK25sZKSxIaecKDwhJsQ==
     uid: 15329
+  samwalton9:
+    ensure: present
+    gid: 500
+    name: samwalton9
+    realname: Sam Walton
+    ssh_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDBSqKkOktF20xShNmJgeOpkhDYXFgcCvNPKbexn67on5M0hPNTKZjptFPCeoQh/i3suAvPDFakDt0pEcCZzzzcwArM21LJ2EFWeqwl6il20L45aD52y8zYYPrTtAi2YaqP77kbSl7/jVW0AFzM6m/G9e5550oeZKDbHGkANpi9uAqn7EjTI88i0txnTEGG6Bwu4G4H/08BsKbkW2C3sB2/h4V1GEHMhxlDEfhlEsVqfaYgrxmXJsTyAjsgawx+fIuqDJsrIFCWlu7IIfur+g0o+DVIDE5kCzZLUeD7FfwP0ym03f7fXF/yjg0sQzXKPF1eXLKXod+7Mn+KOnxLnj+d Swalton@wikimedia.org
+    uid: 15557
