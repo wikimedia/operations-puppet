@@ -12,6 +12,11 @@ server {
       autoindex on;
       charset utf-8;
    }
+
+   # per Tails' request
+   location /tails {
+      etag off;
+   }
 }
 
 server {
@@ -29,5 +34,10 @@ server {
       index index.html;
       autoindex on;
       charset utf-8;
+   }
+
+   # per Tails' request
+   location /tails {
+      etag off;
    }
 }
