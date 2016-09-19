@@ -194,6 +194,20 @@ class role::cache::misc {
             'be_opts'     => $app_def_be_opts,
             'req_host_re' => '^([^.]+\.)?planet\.wikimedia\.org$'
         },
+        'puppetdb_codfw' => {
+            'dynamic'  => 'no',
+            'type'     => 'random',
+            'backends' => 'nihal.codfw.wmnet',
+            'be_opts'  => $app_def_be_opts,
+            'req_host' => 'puppetdb-codfw.wikimedia.org',
+        },
+        'puppetdb_eqiad' => {
+            'dynamic'  => 'no',
+            'type'     => 'random',
+            'backends' => 'nitrogen.eqiad.wmnet',
+            'be_opts'  => $app_def_be_opts,
+            'req_host' => 'puppetdb-eqiad.wikimedia.org',
+        },
         'pybal_config' => {
             'dynamic'  => 'no',
             'type'     => 'random',
