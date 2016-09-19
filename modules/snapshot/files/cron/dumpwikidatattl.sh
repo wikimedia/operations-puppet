@@ -27,8 +27,11 @@ while true; do
 	while [ $i -lt $shards ]; do
 		(
 			set -o pipefail
-			php $multiversionscript extensions/Wikidata/extensions/Wikibase/repo/maintenance/dumpRdf.php --wiki wikidatawiki --shard $i --sharding-factor $shards --format ttl 2>> /var/log/wikidatadump/dumpwikidatattl-$filename-$i.log | gzip > $tempDir/wikidataTTL.$i.gz
-			if [ $? -gt 0 ]; then
+			errorLog=/var/log/wikidatadump/dumpwikidatattl-$filename-$i.log
+			php $multiversionscript extensions/Wikidata/extensions/Wikibase/repo/maintenance/dumpRdf.php --wiki wikidatawiki --shard $i --sharding-factor $shards --format ttl 2>> $errorLog | gzip > $tempDir/wikidataTTL.$i.gz
+			exitCode=$?
+			if [ $exitCode -gt 0 ]; then
+				echo -e "\n\nProcess failed with exit code $exitCode" >> $errorLog
 				echo 1 > $failureFile
 			fi
 		) &
