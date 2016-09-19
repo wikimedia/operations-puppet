@@ -7,14 +7,14 @@ confctl --quiet select name=`hostname -f`,service='varnish-be' set/pooled=no
 confctl --quiet select name=`hostname -f`,service='varnish-be-rand' set/pooled=no
 
 # Wait a bit for the services to be drained
-sleep 15
+sleep 30
 
 # Restart varnish and wipe storage
 /usr/sbin/service varnish stop
 rm -f /srv/sd*/varnish*
 /usr/sbin/service varnish start
 
-sleep 5
+sleep 10
 
 # Fix VSM files permissions and restart ganglia
 chmod 644 /var/lib/varnish/*/*.vsm
