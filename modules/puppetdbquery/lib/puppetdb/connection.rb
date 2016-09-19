@@ -90,7 +90,7 @@ class PuppetDB::Connection
   # @param endpoint [Symbol] :resources, :facts or :nodes
   # @param query [Array] query to execute
   # @return [Array] the results of the query
-  def query(endpoint, query = nil, http = nil, version = :v3, order_by = nil)
+  def query(endpoint, query = nil, http = nil, order_by = nil, version = :v3)
     require 'json'
 
     unless http
