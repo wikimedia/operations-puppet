@@ -135,16 +135,22 @@ class NagiosGeneratorPuppetDB(NagiosGeneratorBase):
             self.config.get('main', 'port'),
             self.restype[what]
         )
-        resources_raw = requests.get(url, params={'query': '["=", ["parameter", "ensure"], "present"]'})
+        resources_raw = requests.get(url, params={
+            'query': '["=", ["parameter", "ensure"], "present"]',
+            'order-by': '[{"field": "title"}]'
+        })
         return resources_raw.json()
 
     def _filter_entity(self, entity, what):
-        name = entity['certname']
-        params = [p for p in entity['parameters'].iteritems() if p[0] not in ['ensure', 'target']]
+        name = entity['title']
         # PuppetDB 2.3 does not collect the host_name parameter, apparently
         if what in ['hosts', 'hostextinfo']:
-            params.append(('host_name', entity['title']))
+            if 'host_name' not in entity['parameters']:
+                entity['parameters']['host_name'] = entity['title']
 
+        param_keys = entity['parameters'].keys()
+        param_keys.sort()
+        params = [(p, entity['parameters'][p]) for p in param_keys if p not in ['ensure', 'target']]
         return (name, params)
 
 
