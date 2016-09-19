@@ -1033,8 +1033,10 @@ def main():
 
     try:
         run(args, user)
-    except Exception:
-        logger.exception('Unable to run wmf_auto_reimage')
+    except Exception as e:
+        message = 'Unable to run wmf_auto_reimage'
+        print('{message}: {error}'.format(message=message, error=e))
+        logger.exception(message)
 
 
 if __name__ == '__main__':
