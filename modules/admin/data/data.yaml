@@ -68,7 +68,8 @@ groups:
                  restricted folks use sudo to access apache / www-data resources
     members: [daniel, dartar, ellery, bearloga,
               ezachte, hoo, jamesur, jdlrobson, khorn, tparscal, ssastry,
-              nuria, leila, santhosh, amire80, legoktm, addshore, foks, chelsyx]
+              ironholds, nuria, leila, santhosh, amire80, legoktm, addshore, foks,
+              chelsyx, melodykramer]
     privileges: ['ALL = (www-data,apache) NOPASSWD: ALL']
   cassandra-test-roots:
     gid: 708
@@ -179,7 +180,7 @@ groups:
     members: [ezachte, milimetric, dartar, yurik, halfak, awight, dr0ptp4kt, nuria,
               leila, ellery, nettrom, mforns, bmansurov, tbayer, joal,
               madhuvishy, tjones, legoktm, dcausse, bearloga, dpatrick, atgomez, dstrine,
-              joewalsh, marktraceur, mtizzoni, panisson, paolotti, ciro]
+              joewalsh, marktraceur, mtizzoni, panisson, paolotti, ciro, melodykramer]
   statistics-users:
     gid: 726
     description: Access statistics number crunching hosts. NO PRIVS.
@@ -2126,6 +2127,7 @@ users:
     ssh_keys:
       - ssh-rsa AAAAB3NzaC1yc2EAAAABJQAAAQEAoD/Zl3L6h+F3gWsN+D/URX1vo8xNGN+FU/NvlU61NEBfmlDYsP+Qses8BOA1xVzj21G6CDZDwWyBaY8TXJJ0FEVeZaisW7y2tf8UKPh7t55ttVIQQUrt5oWm4ZCObWYI+As52VZJbKulpA0Ihzp6tQryqJsdh5OlVQIzwIjEMQ/9WTvn45ZESIiYbpTJjFKqKv/uNU5HbZJzDDOGcvXmhirO3t3kOF3zgrrTROFqjn/rD/nK1uGRD/pSrNWOLnePBT2z/mn1vRWwOlHPUBe915Rwl+bGpGkr0aaljwp39gdeyEpPMJBLCAEv2mLOVT7Dw2dK25sZKSxIaecKDwhJsQ==
     uid: 15329
+<<<<<<< HEAD
   debt:
     ensure: present
     gid: 500
@@ -2134,6 +2136,8 @@ users:
     ssh_keys:
       - ssh-rsa ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDEUXW3TsDb+IfVFZEMbwW2SUidorZ4C7yszXdNU9lUSmpcFAcZSnHSaHL1HbU+30DsBKUjAx4HHQiZJg6c3pnaaD5NqfOaPMG0blRWRGBDUhBHfWGTv4jBF8JVyhN61NnoaJ8NJOxyf/Bf/RQIOkHrBHs3Vr+W9qA7yMporcb36gU/nhzm1TdrZ10JyjPcKDpISDUA+6h0pKvD6uKTCRHCUYh9uLhf62NBjM6GW0ISGKs3l0Vp7c9tvpTkUNzAc4YAbsDTAQ0ueBi9siKpdCMsyGkGESNYPNdrlbKPBCGKaGtyDlIOHTLbrep1qLONUJDT/rpI7KonYukrLAgrv7q5+iR/r36knjIekWpnKpU8DLbB6V2yZhGzkxTCT/2/J6LujW/lI2ug0JXzroFl9ykaA/SulqLKCg+3uo+n1WFe/V0I1g5MfHanaMNHHt3GF92d/XIUUAIFWpg0bUUvOKT4ThWM3B9/lrOzxrHXLPnSuQhLSewN6k8gx5R4rhpllmipqt6nvE4LTeaVvzKhtOaJveW2VO/uwUoHOO1YLyjqkSFJG9e4lhjHxiOOY583ei5L//cJa2aoWjMrO1KxqMmLf2y4qA4SKpPcVrgL7wmpvsExdZQ7DDpn6PFYjwwRyTC7z7J82jqVc1B0oSewbqU03J0FYrdlN0z0GA7sQMy9yQ== dtankersley@wikimedia.org
     uid: 15213
+=======
+>>>>>>> 7716947... access to stats1002/3 and fluorine for Melody Kramer
   melodykramer:
     ensure: present
     gid: 500
@@ -2141,4 +2145,7 @@ users:
     realname: Melody Kramer
     ssh_keys:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC+0/t+joJHGh5gAGAl4qGNKMtVDc4jGefo6o/K8YUdLJiNHPFDv9hJKiRb4/7OMqh64JZUcrX2N11+SmpvSfC1bE4JBHZdzcErmuHChe4U7CuELZJW3qMxG6Yq1IzLoUJV6uH89Dn7nHmOskEFeiDmCyAwIvFYjhp7QxqYYYL2c2zF0ermLyS8+bXxT2fBZyFUtCJ/6jVSPEPmg0l130X7XEfHsvcfE5H27RNMib2kS87NjNYzt0pdYlqqUNO+49A1SaSiJ3V4ys8Hb66mtKYbkmyX1XyO9Np2Qduh+fwMynbKWw42idwgeJQ40eeX8X6yQZnxv6sECipm+CGmK96aQezSc/qefwP9oOco1u6AUkFr1FpmDun2yCZKwjyyLH+glVGQDGS0YV3A8FVXLbbX9WArme4mohrt/m/3Keg+fYS/OHlR9ai5S73TQNURkZWTonN4H4DeNfPYl8aLdGDbW8UlvqwyrL7PAMlEVrc90ou4BXbbJunpBpEPs2JUi8NsKREBnmqCxrN37hOxU0Dz5KJxQFsRnigaNuwc97k44Vhi7IFAK/imi4rB0YnmDKjwXbk/K2I2bAU964JQwiDVEc9jJxkTxbgq36gWCVTvpPKPAEARCPLZWV+rQKlCM9+ye9U7SxqJuJq3x4ltwuFRtPuGoDU5jKf81r3a61UMfw== mkramer@wikimedia.org
+<<<<<<< HEAD
     uid: 15457
+=======
+>>>>>>> 7716947... access to stats1002/3 and fluorine for Melody Kramer
