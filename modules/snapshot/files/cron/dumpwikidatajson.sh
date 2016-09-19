@@ -27,8 +27,11 @@ while true; do
 	while [ $i -lt $shards ]; do
 		(
 			set -o pipefail
-			php $multiversionscript extensions/Wikidata/extensions/Wikibase/repo/maintenance/dumpJson.php --wiki wikidatawiki --shard $i --sharding-factor $shards --snippet 2>> /var/log/wikidatadump/dumpwikidatajson-$filename-$i.log | gzip > $tempDir/wikidataJson.$i.gz
-			if [ $? -gt 0 ]; then
+			errorLog=/var/log/wikidatadump/dumpwikidatajson-$filename-$i.log
+			php $multiversionscript extensions/Wikidata/extensions/Wikibase/repo/maintenance/dumpJson.php --wiki wikidatawiki --shard $i --sharding-factor $shards --snippet 2>> $errorLog | gzip > $tempDir/wikidataJson.$i.gz
+			exitCode=$?
+			if [ $exitCode -gt 0 ]; then
+				echo -e "\n\nProcess failed with exit code $exitCode" >> $errorLog
 				echo 1 > $failureFile
 			fi
 		) &
@@ -60,8 +63,14 @@ echo '[' | gzip -f > $tempDir/wikidataJson.gz
 
 i=0
 while [ $i -lt $shards ]; do
-	cat $tempDir/wikidataJson.$i.gz >> $tempDir/wikidataJson.gz
-	rm $tempDir/wikidataJson.$i.gz
+	tempFile=$tempDir/wikidataJson.$i.gz
+	fileSize=`stat --printf="%s" $tempFile`
+	if [ $fileSize -lt 2000000000 ]; then
+		echo "File size of $tempFile is just $fileSize. Aborting." >> /var/log/wikidatadump/dumpwikidatajson-$filename-main.log
+		exit 1
+	fi
+	cat $tempFile >> $tempDir/wikidataJson.gz
+	rm $tempFile
 	let i++
 	if [ $i -lt $shards ]; then
 		# Shards don't end with commas so add commas to separate them
