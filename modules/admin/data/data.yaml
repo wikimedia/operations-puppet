@@ -111,7 +111,8 @@ groups:
               neilpquinn-wmf, tbayer, moushira, dbrant, maxsem, srijan, krenair,
               jminor, asherman, etonkovidova, sbisson, addshore, matmarex, elukey,
               nikerabbit, nschaaf, dstrine, joewalsh, mpany, hjiang, jsamra, bcohn,
-              jdittrich, chelsyx, ovasileva, mtizzoni, panisson, paolotti, ciro, debt]
+              jdittrich, chelsyx, ovasileva, mtizzoni, panisson, paolotti, ciro, debt,
+              samwalton9]
   ldap-admins:
     gid: 715
     description: ldap admins
