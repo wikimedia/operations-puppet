@@ -11,7 +11,7 @@ elasticsearch::cluster_hosts:
   - relforge1002.eqiad.wmnet
 
 elasticsearch::expected_nodes: 2
-
+elasticsearch::heap_memory: '30G'
 elasticsearch::minimum_master_nodes: 1
 
 debdeploy::grains:
