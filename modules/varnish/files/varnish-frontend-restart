@@ -1,0 +1,26 @@
+#!/bin/bash
+
+set -e
+
+# Depool varnish-fe
+confctl --quiet select name=`hostname -f`,service='varnish-fe' set/pooled=no
+
+# Wait a bit for the service to be drained
+sleep 15
+
+# Restart varnish-frontend
+/usr/sbin/service varnish-frontend restart
+
+sleep 5
+
+# Fix VSM files permissions and restart ganglia
+chmod 644 /var/lib/varnish/*/*.vsm
+/usr/sbin/service ganglia-monitor restart
+
+sleep 5
+
+# Sometimes varnishkafka crashes after a varnish restart
+/usr/sbin/service varnishkafka-webrequest restart
+
+# Repool varnish-fe
+confctl --quiet select name=`hostname -f`,service='varnish-fe' set/pooled=yes
