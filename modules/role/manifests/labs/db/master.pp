@@ -8,7 +8,6 @@ class role::labs::db::master {
     class { 'mariadb::packages_wmf':
         mariadb10 => false
     }
-    include role::mariadb::grants
     include role::mariadb::monitor
     include passwords::misc::scripts
 
@@ -19,9 +18,7 @@ class role::labs::db::master {
     }
 
     class { 'mariadb::config':
-        prompt    => 'TOOLSDB master',
         config    => 'mariadb/tools.my.cnf.erb',
-        password  => $passwords::misc::scripts::mysql_root_pass,
         datadir   => '/srv/labsdb/data',
         tmpdir    => '/tmp',
         read_only => 'OFF',
