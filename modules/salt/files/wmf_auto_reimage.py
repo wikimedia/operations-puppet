@@ -13,7 +13,7 @@ import sys
 import time
 
 from datetime import datetime
-from logging.handlers import RotatingFileHandler
+from logging.handlers import FileHandler
 
 import dns.resolver
 import salt.client
@@ -26,7 +26,7 @@ DEPLOYMENT_DOMAIN = 'deployment.eqiad.wmnet'
 INTERNAL_TLD = 'wmnet'
 MANAGEMENT_DOMAIN = 'mgmt'
 
-LOG_PATH = '/var/log/wmf_auto_reimage.log'
+LOG_PATTERN = '/var/log/wmf-auto-reimage/{start}_{user}_{pid}.log'
 # TODO: move it to a dedicated ops-orchestration-bot
 PHABRICATOR_CONFIG_FILE = '/etc/phabricator_ops-monitoring-bot.conf'
 
@@ -138,21 +138,24 @@ def get_running_user():
 
 
 def setup_logging(user):
-    """ Setup the logger instance
+    """ Setup the logger instance and return the log file path
 
         Arguments:
         user -- the real user to use in the logging formatter for auditing
     """
+    log_path = LOG_PATTERN.format(start=datetime.now().strftime('%Y%m%d%H%M'),
+                                  user=user, pid=os.getpid())
     log_formatter = logging.Formatter(
         fmt=('%(asctime)s [%(levelname)s] ({user}) %(name)s::%(funcName)s: '
              '%(message)s').format(user=user),
         datefmt='%F %T')
-    log_handler = RotatingFileHandler(
-        LOG_PATH, maxBytes=5*(1024**2), backupCount=10)
+    log_handler = FileHandler(log_path)
     log_handler.setFormatter(log_formatter)
     logger.addHandler(log_handler)
     logger.raiseExceptions = False
     logger.setLevel(logging.INFO)
+
+    return log_path
 
 
 def get_mgmt(host):
@@ -430,7 +433,8 @@ def watch_jobs(jobs, timeout=30):
     sleep = WATCHER_SHORT_SLEEP
     log_loops = 0
     while True:
-        logger.debug('Watching for jobs...')
+        logger.debug('Watching for jobs: {jobs}'.format(
+            jobs=(running - completed)))
 
         log_loops += 1
         if log_loops == WATCHER_SLEEP_THRESHOLD:
@@ -478,11 +482,13 @@ def watch_jobs(jobs, timeout=30):
 
         if log_loops == WATCHER_LOG_LOOPS and sleep == WATCHER_LONG_SLEEP:
             log_loops = 0
-            logger.info('Job completion progress: {done}/{total}'.format(
-                done=len(completed), total=len(running)))
+            logger.info('Job done ({done}/{total}), waiting for {jobs}'.format(
+                done=len(completed), total=len(running),
+                jobs=(running - completed)))
 
         if timeout > 0 and (datetime.now() - start).total_seconds() > timeout:
-            logger.warning('Timeout reached')
+            logger.warning('Timeout reached for jobs: {jobs}'.format(
+                jobs=(running - completed)))
             raise StopIteration()
 
         time.sleep(sleep)
@@ -618,7 +624,7 @@ def run_puppet(hosts):
     """
     success_hosts = []
 
-    for result in run_command_on_hosts(hosts, 'wmfpuppet.run', timeout=1800):
+    for result in run_command_on_hosts(hosts, 'wmfpuppet.run', timeout=300):
         if result['success'] and result['return']['retcode'] == 0:
             success_hosts.append(result['id'])
 
@@ -933,16 +939,14 @@ def get_repool_message(hosts_status):
     return message
 
 
-def run(args, user):
+def run(args, user, log_path):
     """ Run the WMF auto reimage according to command line arguments
 
         Arguments:
-        args -- parsed command line arguments
-        user -- the user that launched the script, for auditing purposes
+        args     -- parsed command line arguments
+        user     -- the user that launched the script, for auditing purposes
+        log_path -- the path of the logfile
     """
-    print('START')
-    print('To monitor the full log:\ntail -F {log}'.format(log=LOG_PATH))
-
     # Get additional informations
     ipmi_password = get_ipmi_password()
     custom_mgmts = get_custom_mgmts(args.hosts)
@@ -960,7 +964,7 @@ def run(args, user):
         phabricator_task_update(
             phab_client, args.phab_task_id, PHAB_COMMENT_PRE.format(
                 user=user, hostname=socket.getfqdn(), hosts=hosts,
-                log=LOG_PATH))
+                log=log_path))
 
     # Set downtime on Icinga
     hosts = icinga_downtime(icinga_host, hosts, user, args.phab_task_id)
@@ -1016,7 +1020,6 @@ def run(args, user):
     logger.info(("Auto reimaging of hosts '{hosts}' completed, hosts "
                  "'{successful}' were successful.").format(
         hosts=args.hosts, successful=hosts))
-    print('END')
 
 
 def main():
@@ -1025,18 +1028,22 @@ def main():
     args = parse_args()
     ensure_shell_mode()
     user = get_running_user()
-    setup_logging(user)
+    log_path = setup_logging(user)
     if args.debug:
         logger.setLevel(logging.DEBUG)
 
     logger.info('wmf_auto_reimage called with args: {args}'.format(args=args))
 
     try:
-        run(args, user)
+        print('START')
+        print('To monitor the full log:\ntail -F {log}'.format(log=log_path))
+        run(args, user, log_path)
     except Exception as e:
         message = 'Unable to run wmf_auto_reimage'
         print('{message}: {error}'.format(message=message, error=e))
         logger.exception(message)
+    finally:
+        print('END')
 
 
 if __name__ == '__main__':
