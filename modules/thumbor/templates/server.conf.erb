@@ -98,5 +98,39 @@ FILTERS = [
 
 ################################### Wikimedia ##################################
 
+EXIF_FIELDS_TO_KEEP = [ 'Artist', 'Copyright', 'Description' ]
 EXIF_TINYRGB_PATH = '/usr/local/lib/thumbor/tinyrgb.icc'
 EXIF_TINYRGB_ICC_REPLACE = 'sRGB IEC61966-2.1'
+
+PROXY_ENGINE_ENGINES = [
+    ('wikimedia_thumbor.engine.svg', ['svg']),
+    ('wikimedia_thumbor.engine.xcf', ['xcf']),
+    ('wikimedia_thumbor.engine.djvu', ['djvu']),
+    ('wikimedia_thumbor.engine.vips', ['tiff', 'png']),
+    ('wikimedia_thumbor.engine.tiff', ['tiff']),
+    ('wikimedia_thumbor.engine.ghostscript', ['pdf']),
+    ('wikimedia_thumbor.engine.imagemagick', ['jpg', 'png']),
+]
+
+HTTP_LOADER_MAX_BODY_SIZE = 1024*1024*1024  # 1GB
+
+PROXY_LOADER_LOADERS = [
+    'wikimedia_thumbor.loader.video',
+    'wikimedia_thumbor.loader.https'
+]
+
+COMMUNITY_EXTENSIONS = [
+    'wikimedia_thumbor.handler.multi',
+    'wikimedia_thumbor.handler.images'
+]
+
+SLOW_PROCESSING_LIMIT = 30000
+
+SUBPROCESS_USE_TIMEOUT = True
+SUBPROCESS_TIMEOUT = 60
+
+VIPS_ENGINE_MIN_PIXELS = 10000000
+
+CHROMA_SUBSAMPLING = '4:2:0'
+QUALITY_LOW = 40
+DEFAULT_FILTERS_JPEG = 'conditional_sharpen(0.0,0.8,1.0,0.0,0.85)'
