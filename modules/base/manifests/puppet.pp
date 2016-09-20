@@ -75,6 +75,13 @@ class base::puppet(
         source => 'puppet:///modules/base/puppet/puppet-run',
     }
 
+    file { '/usr/local/sbin/run-no-puppet':
+        mode   => '0550',
+        owner  => 'root',
+        group  => 'root',
+        source => 'puppet:///modules/base/puppet/run-no-puppet',
+    }
+
     file { '/etc/cron.d/puppet':
         mode    => '0444',
         owner   => 'root',
