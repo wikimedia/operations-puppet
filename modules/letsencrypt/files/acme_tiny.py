@@ -137,9 +137,14 @@ def get_crt(account_key, csr, acme_dir, log=LOGGER, CA=DEFAULT_CA):
         wellknown_url = "http://{0}/.well-known/acme-challenge/{1}".format(domain, token)
 
         # allow invalid https redirect - this would usually be served over http so it's fine
-        ctx = ssl.create_default_context()
-        ctx.check_hostname = False
-        ctx.verify_mode = ssl.CERT_NONE
+        if 'create_default_context' in dir(ssl):
+            # This is only needed for Python 2.7.9+, earlier versions didn't check certs by default
+            # And they didn't have ssl.create_default_context
+            ctx = ssl.create_default_context()
+            ctx.check_hostname = False
+            ctx.verify_mode = ssl.CERT_NONE
+        else:
+            ctx = None
 
         try:
             resp = urlopen(wellknown_url, context=ctx)
