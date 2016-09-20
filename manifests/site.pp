@@ -548,15 +548,7 @@ node 'db1049.eqiad.wmnet' {
     }
 }
 
-node /^db10(26|45|70|71|87|92)\.eqiad\.wmnet/ {
-    class { 'role::mariadb::core':
-        shard => 's5',
-    }
-}
-
-# temporary definition for mysqld_safe testing
-node 'db1082.eqiad.wmnet' {
-    role mariadb::custom_mysqld_safe
+node /^db10(26|45|70|71|82|87|92)\.eqiad\.wmnet/ {
     class { 'role::mariadb::core':
         shard => 's5',
     }
@@ -589,20 +581,11 @@ node 'db1050.eqiad.wmnet' {
     }
 }
 
-node /^db10(22|23|30|37|85|88|93)\.eqiad\.wmnet/ {
+node /^db10(22|23|30|37|61|85|88|93)\.eqiad\.wmnet/ {
     class { 'role::mariadb::core':
         shard => 's6',
     }
 }
-
-# temporary definition for mysqld_safe testing
-node 'db1061.eqiad.wmnet' {
-    role mariadb::custom_mysqld_safe
-    class { 'role::mariadb::core':
-        shard => 's6',
-    }
-}
-
 
 # s6 core production dbs on codfw
 # codfw master
