@@ -30,32 +30,33 @@ class role::mariadb::grants(
     $tendril_pass    = $passwords::tendril::db_pass
     $prometheus_pass = $passwords::prometheus::db_pass
 
-    file { '/etc/mysql/production-grants.sql':
-        ensure  => present,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0400',
-        content => template('mariadb/production-grants.sql.erb'),
-    }
-
-    if $shard {
-        $nodepool_pass       = $passwords::nodepool::nodepooldb_pass
-        $testreduce_pass     = $passwords::testreduce::mysql::db_pass
-        $testreduce_cli_pass = $passwords::testreduce::mysql::mysql_client_pass
-        $racktables_user     = $passwords::racktables::racktables_db_user
-        $racktables_pass     = $passwords::racktables::racktables_db_pass
-        $servermon_pass      = $passwords::servermon::db_password
-        $striker_pass        = $passwords::striker::application_db_password
-        $striker_admin_pass  = $passwords::striker::admin_db_password
-
-        file { '/etc/mysql/production-grants-shard.sql':
-            ensure  => present,
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0400',
-            content => template("mariadb/production-grants-${shard}.sql.erb"),
-        }
-    }
+    # disabled until T146146 is clarified
+    #file { '/etc/mysql/production-grants.sql':
+    #    ensure  => present,
+    #    owner   => 'root',
+    #    group   => 'root',
+    #    mode    => '0400',
+    #    content => template('mariadb/production-grants.sql.erb'),
+    #}
+    #
+    #if $shard {
+    #    $nodepool_pass       = $passwords::nodepool::nodepooldb_pass
+    #    $testreduce_pass     = $passwords::testreduce::mysql::db_pass
+    #    $testreduce_cli_pass = $passwords::testreduce::mysql::mysql_client_pass
+    #    $racktables_user     = $passwords::racktables::racktables_db_user
+    #    $racktables_pass     = $passwords::racktables::racktables_db_pass
+    #    $servermon_pass      = $passwords::servermon::db_password
+    #    $striker_pass        = $passwords::striker::application_db_password
+    #    $striker_admin_pass  = $passwords::striker::admin_db_password
+    #
+    #    file { '/etc/mysql/production-grants-shard.sql':
+    #        ensure  => present,
+    #        owner   => 'root',
+    #        group   => 'root',
+    #        mode    => '0400',
+    #        content => template("mariadb/production-grants-${shard}.sql.erb"),
+    #    }
+    #}
 }
 
 class role::mariadb::ferm {
