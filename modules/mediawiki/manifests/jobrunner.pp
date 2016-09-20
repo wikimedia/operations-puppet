@@ -68,8 +68,18 @@ class mediawiki::jobrunner (
         rsyslog::conf { 'jobrunner':
             source   => 'puppet:///modules/mediawiki/jobrunner.rsyslog.conf',
             priority => 20,
-            require  => File['/etc/logrotate.d/mediawiki_jobrunner'],
+            require  => [
+              File['/etc/logrotate.d/mediawiki_jobrunner'],
+              File['/etc/logrotate.d/mediawiki_jobchron'],
+            ],
         }
+    }
+
+    file { '/etc/logrotate.d/mediawiki_jobchron':
+        source => 'puppet:///modules/mediawiki/logrotate.d_mediawiki_jobchron',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0444',
     }
 
     file { '/etc/logrotate.d/mediawiki_jobrunner':
