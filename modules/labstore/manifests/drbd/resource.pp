@@ -22,6 +22,11 @@
 #  Array with 2 values containing the node names where the resources are
 #  meant to be available. Typically one of these nodes will be designated
 #  primary, and the other secondary.
+#  ** must match $::hostname
+#
+# [*addresses]
+#  Array of resolvable fqdn to peer with for DRBD (is translated to IP), can be the same
+#  as nodes definitons or distinct.
 #
 # [*port]
 #  Integer port number for DRBD TCP connections. Needs to be unique for
@@ -35,15 +40,17 @@
 #
 # Example:
 # labstore::drbd_resource {'myresource':
-#     nodes  => ['host1', 'host2'],
-#     port   => 7788,
-#     device => '/dev/drbd1',
-#     disk   => '/dev/misc/blockdevice',
+#     nodes   => ['host1', 'host2'],
+#     addresses => ['eth1.host1', 'eth1.host2'],
+#     port    => 7788,
+#     device  => '/dev/drbd1',
+#     disk    => '/dev/misc/blockdevice',
 # }
 #
 
 define labstore::drbd::resource (
     $nodes,
+    $addresses,
     $port,
     $device,
     $disk,
