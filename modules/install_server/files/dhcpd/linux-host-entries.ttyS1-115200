@@ -6124,6 +6124,26 @@ host wdqs2002 {
     fixed-address wdqs2002.codfw.wmnet;
 }
 
+host wmf4747 {
+    hardware ethernet 14:18:77:5B:23:4C;
+    fixed-address wmf4747.eqiad.wmnet;
+}
+
+host wmf4748 {
+    hardware ethernet 14:18:77:5B:2B:1D;
+    fixed-address wmf4748.eqiad.wmnet;
+}
+
+host wmf4749 {
+    hardware ethernet 14:18:77:58:86:BC;
+    fixed-address wmf4749.eqiad.wmnet;
+}
+
+host wmf4750 {
+    hardware ethernet 14:18:77:5B:2E:16;
+    fixed-address wmf4750.eqiad.wmnet;
+}
+
 host wtp1001 {
     hardware ethernet 90:B1:1C:2D:85:30;
     fixed-address wtp1001.eqiad.wmnet;
