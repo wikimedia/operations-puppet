@@ -131,6 +131,7 @@ class PuppetTable(tables.DataTable):
         table_actions = (RoleFilter,)
         status_columns = ["applied"]
         row_class = UpdateRow
+        multi_select = False
 
     def get_object_id(self, datum):
         return datum.name
