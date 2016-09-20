@@ -93,26 +93,28 @@ if [ -z "${submodule_changes}" ]; then
         git diff --color HEAD..${fetch_head_sha1} | cat
     fi
 else
-    # Else there are submodule changes.
-    # Do some fancy stuff to show diffs
-    # of submodule changes.
-
-    # clone the puppet working directory to a temp directory, excludiing private/
-    tmpdir=$(mktemp -d /tmp/puppet-merge.XXXXXXXXXX)
-    git clone --quiet  "${BASEDIR}" "${tmpdir}"
-
-    # merge and update submodules in $tmpdir
-    (cd "${tmpdir}" && \
-     git merge --quiet --ff-only "${fetch_head_sha1}" && \
-     git submodule update --quiet --init)
-
-    # show the diff between the $BASEDIR puppet directory and the $tmpdir puppet directory
     if [ $QUIET -eq 0 ]; then
-        diff -uNr -x "private" -x ".git" "${BASEDIR}" "${tmpdir}" || true
-    fi
+        # Else there are submodule changes.
+        # Do some fancy stuff to show diffs
+        # of submodule changes.
 
-    # We've shown the diff so we are done with $tmpdir.  Remove it.
-    rm -r "${tmpdir}"
+        # clone the puppet working directory to a temp directory, excludiing private/
+        tmpdir=$(mktemp -d /tmp/puppet-merge.XXXXXXXXXX)
+        git clone --quiet  "${BASEDIR}" "${tmpdir}"
+
+        # merge and update submodules in $tmpdir
+        (cd "${tmpdir}" && \
+         git merge --quiet --ff-only "${fetch_head_sha1}" && \
+         git submodule update --quiet --init)
+
+        # show the diff between the $BASEDIR puppet directory and the $tmpdir puppet directory
+        if [ $QUIET -eq 0 ]; then
+            diff -uNr -x "private" -x ".git" "${BASEDIR}" "${tmpdir}" || true
+        fi
+
+        # We've shown the diff so we are done with $tmpdir.  Remove it.
+        rm -rf "${tmpdir}"
+    fi
 fi
 
 
