@@ -105,10 +105,18 @@ git-buildpackage
 git-pbuilder can be used by git-buildpackage to leverage all of the above. The
 trick is to use GIT\_PBUILDER\_AUTOCONF=no i.e.:
 
-    GIT_PBUILDER_AUTOCONF=no DIST=trusty WIKIMEDIA=yes git-buildpackage -us -uc --git-builder=git-pbuilder
+    GIT_PBUILDER_AUTOCONF=no DIST=trusty WIKIMEDIA=yes git-buildpackage -sa -us -uc --git-builder=git-pbuilder
 
 The GIT\_PBUILDER\_AUTOCONF tells git-pbuilder to forego all attempts to discover the base path, tarball, or
 configuration file to set up the pbuilder options but rather instead rely on the settings in .pbuilderrc
+
+You can make it a default by editing your ~/.gbp.conf:
+
+    [buildpackage]
+    builder = GIT_PBUILDER_AUTOCONF=no git-pbuilder -sa
+
+-sa being to enforce the original tarball to be included in the .changes file
+which is a requirement for Wikimedia reprepro.
 
 Results
 =======
