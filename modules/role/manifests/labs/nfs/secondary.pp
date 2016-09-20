@@ -17,6 +17,8 @@ class role::labs::nfs::secondary($monitor = 'eth0') {
             address   => '10.64.37.26',
             prefixlen => '24',
         }
+        # Define DRBD role for this host, should come from hiera
+        $drbd_role = 'secondary'
     }
 
     if $::hostname == 'labstore1004' {
@@ -25,6 +27,8 @@ class role::labs::nfs::secondary($monitor = 'eth0') {
             address   => '10.64.37.25',
             prefixlen => '24',
         }
+        # Define DRBD role for this host, should come from hiera
+        $drbd_role = 'primary'
     }
 
     $nodes = ['labstore1004', 'labstore1005']
@@ -56,5 +60,9 @@ class role::labs::nfs::secondary($monitor = 'eth0') {
         device    => '/dev/drbd3',
         disk      => '/dev/misc/others',
         require   => Interface::Ip['drbd-replication'],
+    }
+
+    class { 'labstore::monitoring::drbd':
+        role  => $role,
     }
 }
