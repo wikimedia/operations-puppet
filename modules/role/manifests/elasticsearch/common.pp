@@ -85,5 +85,7 @@ class role::elasticsearch::common {
     file { '/etc/elasticsearch/scripts/mwgrep.groovy':
         ensure => absent
     }
-
+    file { '/etc/elasticsearch/scripts/id_hash_mod.groovy':
+        ensure => absent
+    }
 }
