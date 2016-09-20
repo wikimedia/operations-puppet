@@ -8,7 +8,6 @@ class role::labs::db::replica {
     class { 'mariadb::packages_wmf':
         mariadb10 => true
     }
-    include role::mariadb::grants
     include role::mariadb::monitor
     include base::firewall
     include role::mariadb::ferm
@@ -21,9 +20,7 @@ class role::labs::db::replica {
     }
 
     class { 'mariadb::config':
-        prompt        => 'REPLICA database',
         config        => 'mariadb/labsdb-replica.my.cnf.erb',
-        password      => $passwords::misc::scripts::mysql_root_pass,
         datadir       => '/srv/sqldata',
         tmpdir        => '/srv/tmp',
         read_only     => 'ON',

@@ -8,7 +8,6 @@ class role::labs::db::slave {
     class { 'mariadb::packages_wmf':
         mariadb10 => true
     }
-    include role::mariadb::grants
     include role::mariadb::monitor
     include role::mariadb::ferm
     include passwords::misc::scripts
@@ -20,9 +19,7 @@ class role::labs::db::slave {
     }
 
     class { 'mariadb::config':
-        prompt        => 'TOOLSDB slave',
         config        => 'mariadb/tools.my.cnf.erb',
-        password      => $passwords::misc::scripts::mysql_root_pass,
         datadir       => '/srv/labsdb/data',
         tmpdir        => '/srv/labsdb/tmp',
         read_only     => 'ON',
