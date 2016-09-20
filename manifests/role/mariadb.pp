@@ -1044,10 +1044,3 @@ class role::mariadb::client {
         ensure => latest,
     }
 }
-
-# control mysqld_safe with puppet instead of with
-# the mariadb package for flexibility
-class role::mariadb::custom_mysqld_safe {
-
-    include mariadb::mysqld_safe
-}
