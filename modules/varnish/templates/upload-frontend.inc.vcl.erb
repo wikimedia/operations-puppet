@@ -77,18 +77,13 @@ sub cluster_fe_backend_response {
 	}
 	<%- end -%>
 
-	// Two-hit-wonder experiment: if the immediate backend does not indicate
-	// hit/2 or higher, deliver the object as normal but do not create a new
+	// Four-hit-wonder experiment: if the immediate backend does not indicate
+	// hit/4 or higher, deliver the object as normal but do not create a new
 	// cache entry of any kind.  We start caching in the frontend when an
-	// object is accessed for the 3rd time across all frontends in this DC.
-	// The ttl>3600 check is to ensure we don't apply this to any short-TTL
-	// edge cases we're not thinking of.
-	// We probably want to either back out this experiment later or improve
-	// on it, especially re: multiplying backend requests when warming a
-	// cold cache.
+	// object is accessed for the 5th time across all frontends in this DC.
 	if (beresp.status == 200
-            && beresp.http.X-Cache-Int !~ " hit/([2-9]|[0-9]{2,})$"
-            && beresp.ttl > 3600s) {
+            && bereq.http.X-CDIS == "miss"
+            && beresp.http.X-Cache-Int !~ " hit/([4-9]|[0-9]{2,})$") {
 		set beresp.ttl = 0s;
 		<%- if @varnish_version4 -%>
 		set beresp.uncacheable = true;
