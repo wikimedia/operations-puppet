@@ -19,15 +19,16 @@ class role::openldap::corp {
     }
 
     class { '::openldap':
-        server_id   => 3, # 1 and 2 used in OIT
-        suffix      => 'dc=corp,dc=wikimedia,dc=org',
-        datadir     => '/var/lib/ldap/corp',
-        master      => $master,
-        sync_pass   => $sync_pass,
-        ca          => '/etc/ssl/certs/ca-certificates.crt',
-        certificate => "/etc/ssl/localcerts/ldap-corp.${::site}.wikimedia.org.crt",
-        key         => "/etc/ssl/private/ldap-corp.${::site}.wikimedia.org.key",
-        extra_acls  => 'openldap/corp-acls.erb',
+        server_id     => 3, # 1 and 2 used in OIT
+        suffix        => 'dc=corp,dc=wikimedia,dc=org',
+        datadir       => '/var/lib/ldap/corp',
+        master        => $master,
+        sync_pass     => $sync_pass,
+        ca            => '/etc/ssl/certs/ca-certificates.crt',
+        certificate   => "/etc/ssl/localcerts/ldap-corp.${::site}.wikimedia.org.crt",
+        key           => "/etc/ssl/private/ldap-corp.${::site}.wikimedia.org.key",
+        extra_acls    => 'openldap/corp-acls.erb',
+        extra_schemas => 'wmf-user.schema',
     }
 
     ferm::service { 'corp_ldap':
