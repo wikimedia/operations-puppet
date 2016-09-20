@@ -43,6 +43,9 @@ if __name__ == '__main__':
         print('Invalid hostname', hostname)
         sys.exit(-1)
 
+    with open('/etc/puppet-enc.yaml', encoding='utf-8') as f:
+        encconfig = yaml.safe_load(f)
+
     with open('/etc/ldap.yaml', encoding='utf-8') as f:
         ldapconfig = yaml.safe_load(f)
 
@@ -75,7 +78,8 @@ if __name__ == '__main__':
         attrs = conn.response[0]['attributes']
         classes.update(attrs.get('puppetClass', []))
 
-    url = 'http://localhost:8100/v1/{project}/node/{fqdn}'.format(
+    url = 'http://{host}:8100/v1/{project}/node/{fqdn}'.format(
+        host=encconfig['host'],
         project=hostname.split('.')[1],
         fqdn=hostname
     )
