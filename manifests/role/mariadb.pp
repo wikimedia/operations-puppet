@@ -10,8 +10,14 @@ class role::mariadb {
 }
 
 # root, repl, nagios, tendril, prometheus
-class role::mariadb::grants(
-    $shard = false,
+# WARNING: any root user will have access to these files
+# Do not apply to hosts with users with arbitrary roots
+# or any non-production mysql, such as labs-support hosts,
+# wikitech hosts, etc.
+class role::mariadb::grants::production(
+    $shard    = false,
+    $prompt   = '',
+    $password = 'undefined',
     ) {
 
     include passwords::misc::scripts
@@ -30,33 +36,72 @@ class role::mariadb::grants(
     $tendril_pass    = $passwords::tendril::db_pass
     $prometheus_pass = $passwords::prometheus::db_pass
 
-    # disabled until T146146 is clarified
-    #file { '/etc/mysql/production-grants.sql':
-    #    ensure  => present,
-    #    owner   => 'root',
-    #    group   => 'root',
-    #    mode    => '0400',
-    #    content => template('mariadb/production-grants.sql.erb'),
-    #}
-    #
-    #if $shard {
-    #    $nodepool_pass       = $passwords::nodepool::nodepooldb_pass
-    #    $testreduce_pass     = $passwords::testreduce::mysql::db_pass
-    #    $testreduce_cli_pass = $passwords::testreduce::mysql::mysql_client_pass
-    #    $racktables_user     = $passwords::racktables::racktables_db_user
-    #    $racktables_pass     = $passwords::racktables::racktables_db_pass
-    #    $servermon_pass      = $passwords::servermon::db_password
-    #    $striker_pass        = $passwords::striker::application_db_password
-    #    $striker_admin_pass  = $passwords::striker::admin_db_password
-    #
-    #    file { '/etc/mysql/production-grants-shard.sql':
-    #        ensure  => present,
-    #        owner   => 'root',
-    #        group   => 'root',
-    #        mode    => '0400',
-    #        content => template("mariadb/production-grants-${shard}.sql.erb"),
-    #    }
-    #}
+    file { '/etc/mysql/production-grants.sql':
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0400',
+        content => template('mariadb/production-grants.sql.erb'),
+    }
+
+    file { '/root/.my.cnf':
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0400',
+        content => template('mariadb/root.my.cnf.erb'),
+    }
+
+    if $shard {
+        $nodepool_pass       = $passwords::nodepool::nodepooldb_pass
+        $testreduce_pass     = $passwords::testreduce::mysql::db_pass
+        $testreduce_cli_pass = $passwords::testreduce::mysql::mysql_client_pass
+        $racktables_user     = $passwords::racktables::racktables_db_user
+        $racktables_pass     = $passwords::racktables::racktables_db_pass
+        $servermon_pass      = $passwords::servermon::db_password
+        $striker_pass        = $passwords::striker::application_db_password
+        $striker_admin_pass  = $passwords::striker::admin_db_password
+
+        file { '/etc/mysql/production-grants-shard.sql':
+            ensure  => present,
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0400',
+            content => template("mariadb/production-grants-${shard}.sql.erb"),
+        }
+    }
+}
+
+# wikiadmin, wikiuser
+class role::mariadb::grants::core {
+
+    include passwords::misc::scripts
+
+    $wikiadmin_pass = $passwords::misc::scripts::wikiadmin_pass
+    $wikiuser_pass  = $passwords::misc::scripts::wikiuser_pass
+
+    file { '/etc/mysql/production-grants-core.sql':
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0400',
+        content => template('mariadb/production-grants-core.sql.erb'),
+    }
+}
+
+class role::mariadb::grants::wikitech {
+
+    include passwords::misc::scripts
+    $wikiadmin_pass = $passwords::misc::scripts::wikiadmin_pass
+    $keystoneconfig  = hiera_hash('keystoneconfig', {})
+    $oathreader_pass = $keystoneconfig['oath_dbpass']
+
+    file { '/etc/mysql/grants-wikitech.sql':
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0400',
+        content => template('mariadb/grants-wikitech.sql.erb'),
+    }
 }
 
 class role::mariadb::ferm {
@@ -191,16 +236,16 @@ class role::mariadb::misc(
     }
 
     class { 'mariadb::config':
-        prompt    => "MISC ${shard}",
         config    => 'mariadb/misc.my.cnf.erb',
-        password  => $passwords::misc::scripts::mysql_root_pass,
         datadir   => '/srv/sqldata',
         tmpdir    => '/srv/tmp',
         read_only => $read_only,
     }
 
-    class { 'role::mariadb::grants':
-        shard => $shard,
+    class { 'role::mariadb::grants::production':
+        shard    => $shard,
+        prompt   => "MISC ${shard}",
+        password => $passwords::misc::scripts::mysql_root_pass,
     }
 
     class { 'mariadb::heartbeat':
@@ -252,9 +297,7 @@ class role::mariadb::misc::phabricator(
     }
 
     class { 'mariadb::config':
-        prompt    => "MISC ${shard}",
         config    => 'mariadb/phabricator.my.cnf.erb',
-        password  => $passwords::misc::scripts::mysql_root_pass,
         datadir   => '/srv/sqldata',
         tmpdir    => '/srv/tmp',
         sql_mode  => 'STRICT_ALL_TABLES',
@@ -279,8 +322,10 @@ class role::mariadb::misc::phabricator(
         content => template('mariadb/phabricator-stopwords.txt.erb'),
     }
 
-    class { 'role::mariadb::grants':
-        shard => $shard,
+    class { 'role::mariadb::grants::production':
+        shard    => $shard,
+        prompt   => "MISC ${shard}",
+        password => $passwords::misc::scripts::mysql_root_pass,
     }
 
     class { 'mariadb::heartbeat':
@@ -336,9 +381,7 @@ class role::mariadb::misc::eventlogging(
     }
 
     class { 'mariadb::config':
-        prompt        => "EVENTLOGGING ${shard}",
         config        => 'mariadb/eventlogging.my.cnf.erb',
-        password      => $passwords::misc::scripts::mysql_root_pass,
         datadir       => '/srv/sqldata',
         tmpdir        => '/srv/tmp',
         read_only     => $read_only,
@@ -347,8 +390,10 @@ class role::mariadb::misc::eventlogging(
         binlog_format => 'MIXED',
     }
 
-    class { 'role::mariadb::grants':
-        shard => $shard,
+    class { 'role::mariadb::grants::production':
+        shard    => $shard,
+        prompt   => "EVENTLOGGING ${shard}",
+        password => $passwords::misc::scripts::mysql_root_pass,
     }
 
     class { 'mariadb::heartbeat':
@@ -371,11 +416,9 @@ class role::mariadb::beta {
     include passwords::misc::scripts
 
     class { 'mariadb::config':
-        prompt   => 'BETA',
-        config   => 'mariadb/beta.my.cnf.erb',
-        password => $passwords::misc::scripts::mysql_beta_root_pass,
-        datadir  => '/mnt/sqldata',
-        tmpdir   => '/mnt/tmp',
+        config  => 'mariadb/beta.my.cnf.erb',
+        datadir => '/mnt/sqldata',
+        tmpdir  => '/mnt/tmp',
     }
 }
 
@@ -391,7 +434,6 @@ class role::mariadb::tendril {
     }
 
     include standard
-    include role::mariadb::grants
     include role::mariadb::monitor::dba
     include passwords::misc::scripts
     include role::mariadb::ferm
@@ -408,11 +450,9 @@ class role::mariadb::tendril {
     }
 
     class { 'mariadb::config':
-        prompt   => 'TENDRIL',
-        config   => 'mariadb/tendril.my.cnf.erb',
-        password => $passwords::misc::scripts::mysql_root_pass,
-        datadir  => '/srv/sqldata',
-        tmpdir   => '/srv/tmp',
+        config  => 'mariadb/tendril.my.cnf.erb',
+        datadir => '/srv/sqldata',
+        tmpdir  => '/srv/tmp',
     }
 }
 
@@ -432,7 +472,12 @@ class role::mariadb::dbstore(
     }
 
     include standard
-    include role::mariadb::grants
+
+    class { 'role::mariadb::grants::production':
+        password => $passwords::misc::scripts::mysql_root_pass,
+        prompt   => 'DBSTORE',
+    }
+
     include role::mariadb::monitor::dba
     include passwords::misc::scripts
     include role::mariadb::ferm
@@ -443,13 +488,11 @@ class role::mariadb::dbstore(
     }
 
     class { 'mariadb::config':
-        prompt   => 'DBSTORE',
-        config   => 'mariadb/dbstore.my.cnf.erb',
-        password => $passwords::misc::scripts::mysql_root_pass,
-        datadir  => '/srv/sqldata',
-        tmpdir   => '/srv/tmp',
-        ssl      => 'on',
-        p_s      => 'off',
+        config  => 'mariadb/dbstore.my.cnf.erb',
+        datadir => '/srv/sqldata',
+        tmpdir  => '/srv/tmp',
+        ssl     => 'on',
+        p_s     => 'off',
     }
 
     mariadb::monitor_replication {
@@ -548,39 +591,6 @@ class role::mariadb::backup {
     }
 }
 
-# wikiadmin, wikiuser
-class role::mariadb::grants::core {
-
-    include passwords::misc::scripts
-
-    $wikiadmin_pass = $passwords::misc::scripts::wikiadmin_pass
-    $wikiuser_pass  = $passwords::misc::scripts::wikiuser_pass
-
-    file { '/etc/mysql/production-grants-core.sql':
-        ensure  => present,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0400',
-        content => template('mariadb/production-grants-core.sql.erb'),
-    }
-}
-
-class role::mariadb::grants::wikitech {
-
-    include passwords::misc::scripts
-    $wikiadmin_pass = $passwords::misc::scripts::wikiadmin_pass
-    $keystoneconfig  = hiera_hash('keystoneconfig', {})
-    $oathreader_pass = $keystoneconfig['oath_dbpass']
-
-    file { '/etc/mysql/grants-wikitech.sql':
-        ensure  => present,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0400',
-        content => template('mariadb/grants-wikitech.sql.erb'),
-    }
-}
-
 class role::mariadb::core(
     $shard,
     $ssl           = 'puppet-cert',
@@ -594,8 +604,6 @@ class role::mariadb::core(
 
     include standard
     include base::firewall
-    include role::mariadb::grants
-    include role::mariadb::grants::core
     include role::mariadb::monitor
     include passwords::misc::scripts
     include role::mariadb::ferm
@@ -633,9 +641,7 @@ class role::mariadb::core(
 
     # Read only forced on also for the masters of the primary datacenter
     class { 'mariadb::config':
-        prompt           => "PRODUCTION ${shard}",
         config           => 'mariadb/production.my.cnf.erb',
-        password         => $passwords::misc::scripts::mysql_root_pass,
         datadir          => '/srv/sqldata',
         tmpdir           => '/srv/tmp',
         p_s              => 'on',
@@ -643,6 +649,13 @@ class role::mariadb::core(
         binlog_format    => $binlog_format,
         semi_sync        => $semi_sync,
         replication_role => $mysql_role,
+    }
+
+    include role::mariadb::grants::core
+    class { 'role::mariadb::grants::production':
+        shard    => 'core',
+        prompt   => "PRODUCTION ${shard}",
+        password => $passwords::misc::scripts::mysql_root_pass,
     }
 
     $replication_is_critical = ($::mw_primary == $::site)
@@ -671,7 +684,6 @@ class role::mariadb::sanitarium {
     }
 
     include standard
-    include role::mariadb::grants
     include passwords::misc::scripts
     class { 'role::mariadb::groups':
         mysql_group => 'labs',
@@ -683,9 +695,7 @@ class role::mariadb::sanitarium {
     }
 
     class { 'mariadb::config':
-        prompt   => 'SANITARIUM',
         config   => 'mariadb/sanitarium.my.cnf.erb',
-        password => $passwords::misc::scripts::mysql_root_pass,
     }
 
     ferm::service { 'mysqld_sanitarium':
@@ -764,7 +774,6 @@ class role::mariadb::labs {
     }
 
     include standard
-    include role::mariadb::grants
     include role::mariadb::monitor
     include passwords::misc::scripts
     include role::mariadb::ferm
@@ -780,11 +789,9 @@ class role::mariadb::labs {
     }
 
     class { 'mariadb::config':
-        prompt   => 'LABS',
-        config   => 'mariadb/labs.my.cnf.erb',
-        password => $passwords::misc::scripts::mysql_root_pass,
-        datadir  => '/srv/sqldata',
-        tmpdir   => '/srv/tmp',
+        config  => 'mariadb/labs.my.cnf.erb',
+        datadir => '/srv/sqldata',
+        tmpdir  => '/srv/tmp',
     }
 
     file { '/srv/innodb':
@@ -819,7 +826,6 @@ class role::mariadb::wikitech {
     }
 
     include standard
-    include role::mariadb::grants
     include role::mariadb::grants::wikitech
     include role::mariadb::monitor
     include passwords::misc::scripts
@@ -833,11 +839,9 @@ class role::mariadb::wikitech {
     }
 
     class { 'mariadb::config':
-        prompt   => 'WIKITECH',
-        config   => 'mariadb/wikitech.my.cnf.erb',
-        password => $passwords::misc::scripts::mysql_root_pass,
-        datadir  => '/srv/sqldata',
-        tmpdir   => '/srv/tmp',
+        config  => 'mariadb/wikitech.my.cnf.erb',
+        datadir => '/srv/sqldata',
+        tmpdir  => '/srv/tmp',
     }
 
     # mysql monitoring access from tendril (db1011)
@@ -931,7 +935,6 @@ class role::mariadb::parsercache(
 
     include standard
 
-    include role::mariadb::grants::core
     include role::mariadb::monitor
     include role::mariadb::ferm
     include passwords::misc::scripts
@@ -949,18 +952,19 @@ class role::mariadb::parsercache(
         mariadb10 => true,
     }
 
-    class { 'role::mariadb::grants':
-        shard => 'parsercache',
+    include role::mariadb::grants::core
+    class { 'role::mariadb::grants::production':
+        shard    => 'parsercache',
+        prompt   => 'PARSERCACHE',
+        password => $passwords::misc::scripts::mysql_root_pass,
     }
 
     class { 'mariadb::config':
-        prompt   => 'PARSERCACHE',
-        config   => 'mariadb/parsercache.my.cnf.erb',
-        password => $passwords::misc::scripts::mysql_root_pass,
-        datadir  => '/srv/sqldata-cache',
-        tmpdir   => '/srv/tmp',
-        ssl      => 'on',
-        p_s      => 'off',
+        config  => 'mariadb/parsercache.my.cnf.erb',
+        datadir => '/srv/sqldata-cache',
+        tmpdir  => '/srv/tmp',
+        ssl     => 'on',
+        p_s     => 'off',
     }
 
     class { 'mariadb::heartbeat':
@@ -1034,8 +1038,16 @@ class role::mariadb::client {
     include passwords::misc::scripts
 
     class { 'mariadb::config':
-        password => $passwords::misc::scripts::mysql_root_pass,
-        ssl      => 'on',
+        ssl => 'puppet-cert',
+    }
+
+    $password = $passwords::misc::scripts::mysql_root_pass
+    $prompt = 'MARIADB'
+    file { '/root/.my.cnf':
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0400',
+        content => template('mariadb/root.my.cnf.erb'),
     }
 
     package {
