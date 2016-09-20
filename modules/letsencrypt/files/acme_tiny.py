@@ -147,7 +147,10 @@ def get_crt(account_key, csr, acme_dir, log=LOGGER, CA=DEFAULT_CA):
             ctx = None
 
         try:
-            resp = urlopen(wellknown_url, context=ctx)
+            if ctx:
+                resp = urlopen(wellknown_url, context=ctx)
+            else:
+                resp = urlopen(wellknown_url)
             resp_data = resp.read().decode('utf8').strip()
             assert resp_data == keyauthorization
         except (IOError, AssertionError):
