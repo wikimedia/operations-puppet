@@ -118,6 +118,7 @@ zookeeper_clusters:
 nrpe::allowed_hosts: '10.68.16.195'
 
 ssh::server::disable_agent_forwarding: false
+labs_puppet_master: "labs-puppetmaster-eqiad.wikimedia.org"
 puppetmaster: "labs-puppetmaster-eqiad.wikimedia.org"
 saltmaster: "labs-puppetmaster-eqiad.wikimedia.org"
 mysql::server::use_apparmor: false  # The images we have for debian don't support it
