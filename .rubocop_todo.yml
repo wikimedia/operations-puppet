@@ -24,6 +24,7 @@ Lint/HandleExceptions:
 Lint/RescueException:
   Exclude:
     - 'modules/puppetmaster/lib/puppet/reports/logstash.rb'
+    - 'modules/puppetmaster/lib/puppet/reports/servermon.rb'
 
 # Offense count: 2
 # Cop supports --auto-correct.
@@ -52,6 +53,7 @@ Metrics/LineLength:
 Style/AsciiComments:
   Exclude:
     - 'modules/puppetmaster/lib/puppet/reports/logstash.rb'
+    - 'modules/puppetmaster/lib/puppet/reports/servermon.rb'
 
 # Offense count: 58
 # Cop supports --auto-correct.
@@ -267,6 +269,7 @@ Style/RedundantSelf:
   Exclude:
     - 'modules/puppet_statsd/lib/puppet/reports/statsd.rb'
     - 'modules/puppetmaster/lib/puppet/reports/logstash.rb'
+    - 'modules/puppetmaster/lib/puppet/reports/servermon.rb'
     - 'modules/wmflib/lib/hiera/backend/proxy_backend.rb'
 
 # Offense count: 23
