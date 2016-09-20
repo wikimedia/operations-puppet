@@ -25,11 +25,9 @@
 
     SSLProxyEngine on
     # Tries to avoid the "error reading status line from server" error
-    SetEnv proxy-initial-not-pooled 1    
+    SetEnv proxy-initial-not-pooled 1
     # Certificates requests should only be in the master.
     ProxyPassMatch ^/([^/]+/certificate.*)$ https://<%= @master %>:8141
-    # Reports should only be in one place. Choosing the master by default for simplicity
-    ProxyPassMatch ^/([^/]+/report/.*)$ https://<%= @master %>:8141
     # File buckets should only be in one place. Choosing the frontend by default for simplicity
     ProxyPassMatch ^/([^/]+/file_bucket_file/md5/.*)$ https://<%= @fqdn %>:8141
     # Volatile should only be in one place. Choosing the master by default for simplicity

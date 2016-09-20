@@ -3,6 +3,11 @@ class role::puppetmaster::common ( $base_config ) {
     $activerecord_config =   {
         'storeconfigs'      => true,
         'thin_storeconfigs' => true,
+    }
+    # Note: We are going to need this anyway regardless of
+    # puppetdb/active_record use for the configuration of servermon report
+    # handler
+    $active_record_db = {
         'dbadapter'         => 'mysql',
         'dbuser'            => 'puppet',
         'dbpassword'        => $passwords::puppet::database::puppet_production_db_pass,
@@ -13,7 +18,7 @@ class role::puppetmaster::common ( $base_config ) {
     $puppetdb_config = {
         storeconfigs         => true,
         storeconfigs_backend => 'puppetdb',
-        reports              => 'store,puppetdb',
+        reports              => 'puppetdb,servermon',
     }
 
     $use_puppetdb = hiera('puppetmaster::config::use_puppetdb', false)
@@ -23,9 +28,9 @@ class role::puppetmaster::common ( $base_config ) {
         class { 'puppetmaster::puppetdb::client':
             host => $puppetdb_host,
         }
-        $config = merge($base_config, $puppetdb_config)
+        $config = merge($base_config, $puppetdb_config, $active_record_db)
     }
     else {
-        $config = merge($base_config, $activerecord_config)
+        $config = merge($base_config, $activerecord_config, $active_record_db)
     }
 }
