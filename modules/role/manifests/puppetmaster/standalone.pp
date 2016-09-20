@@ -14,20 +14,49 @@
 #  use this, and will have to sign manually.
 class role::puppetmaster::standalone(
     $autosign = false,
+    $use_enc = false,
 ) {
     include ldap::role::config::labs
 
     $ldapconfig = $ldap::role::config::labs::ldapconfig
     $basedn = $ldapconfig['basedn']
 
-    $encconfig = {
-        'ldapserver'    => $ldapconfig['servernames'][0],
-        'ldapbase'      => "ou=hosts,${basedn}",
-        'ldapstring'    => '(&(objectclass=puppetClient)(associatedDomain=%s))',
-        'ldapuser'      => $ldapconfig['proxyagent'],
-        'ldappassword'  => $ldapconfig['proxypass'],
-        'ldaptls'       => true,
-        'node_terminus' => 'ldap'
+    if $use_enc {
+        # Setup ENC
+        require_package('python3-yaml', 'python3-ldap3')
+
+        include ldap::yamlcreds
+
+        file { '/etc/puppet-enc.yaml':
+            content => ordered_yaml({
+                host => hiera('labs_puppet_master'),
+            }),
+            mode    => '0444',
+            owner   => 'root',
+            group   => 'root',
+        }
+
+        file { '/usr/local/bin/puppet-enc':
+            source => 'puppet:///modules/role/labs/puppet-enc.py',
+            mode   => '0555',
+            owner  => 'root',
+            group  => 'root',
+        }
+
+        $encconfig = {
+            'node_terminus'  => 'exec',
+            'external_nodes' => '/usr/local/bin/puppet-enc',
+        }
+    } else {
+        $encconfig = {
+            'ldapserver'    => $ldapconfig['servernames'][0],
+            'ldapbase'      => "ou=hosts,${basedn}",
+            'ldapstring'    => '(&(objectclass=puppetClient)(associatedDomain=%s))',
+            'ldapuser'      => $ldapconfig['proxyagent'],
+            'ldappassword'  => $ldapconfig['proxypass'],
+            'ldaptls'       => true,
+            'node_terminus' => 'ldap'
+        }
     }
 
     # Allow access from everywhere! Use certificates to
