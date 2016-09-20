@@ -1,0 +1,87 @@
+#!/usr/bin/python3
+import argparse
+import re
+import subprocess
+import sys
+
+mount_points = {'test': '/srv/test',
+                'others': '/srv/misc',
+                'tools': '/srv/tools'}
+
+
+def check_resource(resource, role, resource_status):
+    cstate_ok = (resource_status['cstate'] == 'Connected')
+    dstate_ok = (resource_status['dstate'] == 'UpToDate/UpToDate')
+    if role == 'primary':
+        role_ok = (resource_status['role'] == 'Primary/Secondary')
+        mount_ok = (resource_status['mount-point'] == mount_points[resource])
+    else:
+        role_ok = (resource_status['role'] == 'Secondary/Primary')
+        mount_ok = (resource_status.get('mount-point') ==
+                    mount_points[resource]) or \
+            not resource_status.get('mount-point')
+
+    drbd_ok = cstate_ok and dstate_ok and role_ok and mount_ok
+
+    if not drbd_ok:
+        errors = []
+        errors.append('{}: Unexpected connected state: {}'.format(
+            resource, resource_status['cstate']) if not cstate_ok else '')
+        errors.append('{}: Unexpected disk state: {}'.format(
+            resource, resource_status['dstate']) if not dstate_ok else '')
+        errors.append('{}: Expected role {} but got {}'.format(
+            resource, role, resource_status['role']) if not role_ok else '')
+        errors.append('{}: Expected resource mounted at {} but got {}'.format(
+            resource, mount_points[resource], resource_status['role']
+            ) if not mount_ok else '')
+
+        print(', '.join(filter(lambda e: e, errors)))
+
+    return drbd_ok
+
+
+def main():
+    parser = argparse.ArgumentParser('Check DRBD Status')
+    parser.add_argument('resource',
+                        help='Name of resource or \'all\'')
+    parser.add_argument('role',
+                        help='Role of the current node, primary or secondary')
+    args = parser.parse_args()
+
+    # Parse drbd-overview
+
+    # Headers in drbd-overview
+    headers = ['cstate', 'role', 'dstate', 'mount-point', 'fstype',
+               'size', 'used', 'avail', 'use%']
+
+    # Read contents of drbd-overview and split by new lines
+    drbd_overview_raw = str(subprocess.check_output(
+        ['drbd-overview']), 'utf-8').rstrip('\n').split('\n')
+
+    # Split each line into a list - making a nested list, remove empty elements
+    # and strip whitespaces in the rest
+    drbd_overview_split = [[z.strip(' ') for z in
+                            filter(lambda y: y != '', x.split(' '))]
+                           for x in drbd_overview_raw]
+
+    # Make a dict of status date per resource, e.g:
+    # {resource1: {cstate: .., dstate: .., ..},
+    #  resource2: {cstate: .., dstate: .., ..}}
+    # resource name is extracted from the first item of each list
+    # e.g test is extracted from 1:test/0
+    resource_status_map = {re.split(':|/', x[0])[1]:
+                           dict(zip(headers, x[1:]))
+                           for x in drbd_overview_split}
+
+    if args.resource == 'all':
+        if False in [check_resource(r, args.role, resource_status_map[r])
+                     for r in resource_status_map.keys()]:
+            sys.exit(1)
+    elif not check_resource(
+            args.resource, args.role, resource_status_map[args.resource]):
+        sys.exit(1)
+
+    sys.exit(0)
+
+if __name__ == '__main__':
+    main()
