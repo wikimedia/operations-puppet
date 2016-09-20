@@ -1,0 +1,43 @@
+#!/bin/bash
+#
+# Wrapper to run a given command avoiding races with puppet
+
+if [ -z "$1" ]; then
+    echo "Usage: $0 command" >&2
+    exit 1
+fi
+
+MESSAGE="$0[$$]: $1"
+
+# Re-enable puppet only if it was disabled by us
+enable_puppet() {
+    jq -r '.disabled_message' < /var/lib/puppet/state/agent_disabled.lock |
+      grep -xq "$MESSAGE" && puppet agent --enable
+}
+
+# Disable puppet setting the reason to $MESSAGE
+puppet agent --disable "$MESSAGE"
+
+# Wait for puppet to finish running, timeout after 300s
+for i in {1..30}; do
+    if [ ! -f "/var/lib/puppet/state/agent_catalog_run.lock" ]; then
+        # Puppet is not running, carry on
+        break
+    fi
+    sleep 10
+done
+
+if [ "$i" -eq 30 ]; then
+    # Puppet did not finish its work within the timeout. Re-enable it and exit
+    enable_puppet
+    echo "$0: timeout reached waiting for puppet to finish running" >&2
+    exit 1
+fi
+
+# Run the command
+"$@"
+RET="$?"
+
+enable_puppet
+
+exit "$RET"
