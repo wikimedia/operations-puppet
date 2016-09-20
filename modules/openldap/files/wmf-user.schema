@@ -1,0 +1,14 @@
+# Object class for WMF-specific user attributes
+# The registered IANA ID is 33298, we use the following hierarchy:
+# 1.3.6.1.4.1.33298.1.x   : LDAP in general
+# 1.3.6.1.4.1.33298.1.1.x : Custom LDAP attributes
+# 1.3.6.1.4.1.33298.1.2.x : Custom LDAP object classes
+
+attributetype ( 1.3.6.1.4.1.33298.1.1.1 NAME 'YubikeyVPN'
+	DESC 'Yubikey used for VPN authentication'
+	EQUALITY caseIgnoreIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
+
+objectclass ( 1.3.6.1.4.1.33298.1.2.1 NAME 'wikimediaPerson' SUP top AUXILIARY
+	DESC 'Object class for user attributes specific to Wikimedia Foundation staff'
+	MAY YubikeyVPN )
