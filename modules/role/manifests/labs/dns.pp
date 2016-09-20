@@ -15,8 +15,6 @@ class role::labs::dns {
     }
 
     # install mysql locally on all dns servers
-    include role::mariadb::grants
-    include passwords::misc::scripts
     include role::mariadb::monitor::dba
     include role::mariadb::ferm
 
@@ -33,9 +31,7 @@ class role::labs::dns {
     }
 
     class { 'mariadb::config':
-        prompt    => 'DNS',
         config    => 'mariadb/dns.my.cnf.erb',
-        password  => $passwords::misc::scripts::mysql_root_pass,
         datadir   => '/srv/sqldata',
         tmpdir    => '/srv/tmp',
         read_only => 'off',
