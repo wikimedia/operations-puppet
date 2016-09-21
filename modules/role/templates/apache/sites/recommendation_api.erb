@@ -1,0 +1,14 @@
+<VirtualHost *:80>
+    ServerName <%= @hostname %>
+    DocumentRoot "/srv/recommendation-api/core/recommendation/web/static"
+    <Location />
+        Order allow,deny
+        Allow from all
+
+        # uWSGI reverse-proxy
+        uWSGIsocket /run/uwsgi/recommendation-api.sock
+        uWSGIForceWSGIScheme https
+        uWSGImaxVars 192
+        SetHandler uwsgi-handler
+    </Location>
+</VirtualHost>
