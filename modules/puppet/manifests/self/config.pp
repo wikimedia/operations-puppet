@@ -24,7 +24,7 @@ class puppet::self::config(
         # We don't want this in precise, since
         # precise is deprecated and we can't use the
         # same libraries there
-        $use_enc_real = os_version('debian >= jessie')
+        $use_enc_real = os_version('debian >= jessie || ubuntu >= trusty')
     } else {
         $use_enc_real = $use_enc
     }
