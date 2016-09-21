@@ -1,15 +1,15 @@
 resource <%= @name %> {
 
-  on <%= @nodes.first %> {
+  on <%= @drbd_hosts.first %> {
     device    <%= @device %>;
-    address   <%= scope.function_ipresolve([@addresses.first, 4]) %>:<%= @port %>;
+    address   <%= scope.function_ipresolve([@drbd_cluster[@drbd_hosts.first], 4]) %>:<%= @port %>;
     disk      <%= @disk %>;
     meta-disk internal;
   }
 
-  on <%= @nodes.last %> {
+  on <%= @drbd_hosts.last %> {
     device    <%= @device %>;
-    address   <%= scope.function_ipresolve([@addresses.last, 4]) %>:<%= @port %>;
+    address   <%= scope.function_ipresolve([@drbd_cluster[@drbd_hosts.last], 4]) %>:<%= @port %>;
     disk      <%= @disk %>;
     meta-disk internal;
   }

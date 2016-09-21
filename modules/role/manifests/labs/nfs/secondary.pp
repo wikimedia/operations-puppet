@@ -27,34 +27,33 @@ class role::labs::nfs::secondary($monitor = 'eth0') {
         }
     }
 
-    $nodes = ['labstore1004', 'labstore1005']
-    $addresses = ['eth1.labstore1004.eqiad.wmnet',
-                  'eth1.labstore1005.eqiad.wmnet']
+    # TODO: hiera this
+    $drbd_cluster = {
+        'labstore1004' => 'eth1.labstore1004.eqiad.wmnet',
+        'labstore1005' => 'eth1.labstore1005.eqiad.wmnet',
+    }
 
     labstore::drbd::resource {'test':
-        nodes     => $nodes,
-        addresses => $addresses,
-        port      => '7790',
-        device    => '/dev/drbd1',
-        disk      => '/dev/misc/test',
-        require   => Interface::Ip['drbd-replication'],
+        drbd_cluster => $drbd_cluster,
+        port         => '7790',
+        device       => '/dev/drbd1',
+        disk         => '/dev/misc/test',
+        require      => Interface::Ip['drbd-replication'],
     }
 
     labstore::drbd::resource {'tools':
-        nodes     => $nodes,
-        addresses => $addresses,
-        port      => '7791',
-        device    => '/dev/drbd2',
-        disk      => '/dev/tools-project/tools-project',
-        require   => Interface::Ip['drbd-replication'],
+        drbd_cluster => $drbd_cluster,
+        port         => '7791',
+        device       => '/dev/drbd2',
+        disk         => '/dev/tools-project/tools-project',
+        require      => Interface::Ip['drbd-replication'],
     }
 
     labstore::drbd::resource {'others':
-        nodes     => $nodes,
-        addresses => $addresses,
-        port      => '7792',
-        device    => '/dev/drbd3',
-        disk      => '/dev/misc/others',
-        require   => Interface::Ip['drbd-replication'],
+        drbd_cluster => $drbd_cluster,
+        port         => '7792',
+        device       => '/dev/drbd3',
+        disk         => '/dev/misc/others',
+        require      => Interface::Ip['drbd-replication'],
     }
 }
