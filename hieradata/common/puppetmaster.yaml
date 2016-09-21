@@ -1,7 +1,4 @@
 servers:
-  palladium.eqiad.wmnet:
-    - { worker: rhodium.eqiad.wmnet, loadfactor: 20 }
-    - { worker: palladium.eqiad.wmnet, offline: true, loadfactor: 5 }
   puppetmaster1001.eqiad.wmnet:
     - { worker: puppetmaster1001.eqiad.wmnet, loadfactor: 10 }
     - { worker: puppetmaster1002.eqiad.wmnet, loadfactor: 20 }
