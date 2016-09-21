@@ -67,7 +67,7 @@ Puppet::Reports.register_report(:servermon) do
                     con.query(update_fact_name)
                     if con.affected_rows == 0
                         insert_fact_name = "INSERT INTO fact_names(name, updated_at, created_at) \
-                        VALUES('#{key}', '#{self.time}', '#{self.time}'"
+                        VALUES('#{key}', '#{self.time}', '#{self.time}')"
                         if log_level == 'debug'
                             puts insert_fact_name
                         end
