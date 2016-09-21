@@ -21,15 +21,16 @@ class role::puppetmaster::backend {
         config      => $::role::puppetmaster::common::config
     }
 
-    ferm::service { 'puppetmaster-backend':
-        proto => 'tcp',
-        port  => 8141,
-    }
-
     $puppetmaster_frontend_ferm = join(keys(hiera('puppetmaster::servers')), ' ')
     ferm::service { 'ssh_puppet_merge':
         proto  => 'tcp',
         port   => '22',
         srange => "@resolve((${puppetmaster_frontend_ferm}))"
     }
+    ferm::service { 'puppetmaster-backend':
+        proto  => 'tcp',
+        port   => 8141,
+        srange => "@resolve((${puppetmaster_frontend_ferm}))"
+    }
+
 }
