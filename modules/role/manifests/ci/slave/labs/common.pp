@@ -5,48 +5,29 @@ class role::ci::slave::labs::common {
     include contint::firewall::labs
     include contint::packages::base
 
-    if $::site == 'eqiad' {
-        # Does not come with /dev/vdb, we need to mount it using lvm
-        require role::labs::lvm::mnt
-
-        # Will make sure /mnt is mounted before populating file there or they
-        # might end up being being created locally and hidden by the mount.
-        $slash_mnt_require = Mount['/mnt']
-    } else {
-        file { '/mnt':
-            ensure => directory,
-            owner  => 'root',
-            group  => 'root',
-            mode   => '0775',
-        }
-        $slash_mnt_require = File['/mnt']
-    }
+    # Need the labs instance extended disk space
+    require role::labs::lvm::mnt
 
     # Home dir for Jenkins agent
     #
-    # We will use neither /var/lib (partition too small) nor /home since it is
-    # GlusterFS.
-    #
-    # Instead, create a work dir on /dev/vdb which has all the instance disk
-    # space and is usually mounted on /mnt.
+    # /var/lib and /home are too small to hold Jenkins workspaces
     file { '/mnt/jenkins-workspace':
         ensure  => directory,
         owner   => 'jenkins-deploy',
         group   => 'wikidev',  # useless, but we need a group
         mode    => '0775',
-        require => $slash_mnt_require,
+        require => Mount['/mnt'],
     }
 
-    # Create a homedir for `jenkins-deploy` so it does not end up being created
-    # on /home which is using GlusterFS on the integration project.  The user is
-    # only LDAP and is not created by puppet
+    # Create a homedir for `jenkins-deploy` so we get plenty of disk space.
+    # The user is only LDAP and is not created by puppet
     # T63144
     file { '/mnt/home':
         ensure  => directory,
         owner   => 'root',
         group   => 'root',
         mode    => '0755',
-        require => $slash_mnt_require,
+        require => Mount['/mnt'],
     }
 
     file { '/mnt/home/jenkins-deploy':
@@ -78,4 +59,3 @@ class role::ci::slave::labs::common {
     include jenkins::slave::requisites
 
 }
-
