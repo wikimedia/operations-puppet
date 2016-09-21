@@ -7,7 +7,7 @@ if [ -z "$1" ]; then
     exit 1
 fi
 
-MESSAGE="$0[$$]: $1"
+MESSAGE="$0 $$: $1"
 ATTEMPTS="30"
 
 # Re-enable puppet only if it was disabled by us
