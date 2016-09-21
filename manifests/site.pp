@@ -2311,9 +2311,9 @@ node 'oxygen.eqiad.wmnet'
     include standard
 }
 
-# primary puppet master
+# Former primary puppet master - to be decommissioned
 node 'palladium.eqiad.wmnet' {
-    role(ipmi::mgmt, access_new_install, puppetmaster::frontend, pybal_config)
+    role(ipmi::mgmt, access_new_install, pybal_config)
     include standard
     include base::firewall
     include role::conftool::master
@@ -2327,20 +2327,6 @@ node 'palladium.eqiad.wmnet' {
         source   => 'puppet:///files/palladium_deprecation',
     }
     # lint:endignore
-    # Add a site for temporary puppet backend tests
-    ::puppetmaster::web_frontend { 'puppetmaster.test.eqiad.wmnet':
-        master    => 'palladium.eqiad.wmnet',
-        workers   => [{
-                      'worker'     => 'rhodium.eqiad.wmnet',
-                      'loadfactor' => 100,
-                      }],
-        alt_names => [
-                      'puppetmaster.test.codfw.wmnet',
-                      'puppetmaster.test.ulsfo.wmnet',
-                      'puppetmaster.test.esams.wmnet',
-                      'puppetmaster.test.wikimedia.org'
-                      ],
-    }
 }
 
 # parser cache databases
