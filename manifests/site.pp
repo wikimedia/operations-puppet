@@ -2313,7 +2313,7 @@ node 'oxygen.eqiad.wmnet'
 
 # Former primary puppet master - to be decommissioned
 node 'palladium.eqiad.wmnet' {
-    role(ipmi::mgmt, access_new_install, pybal_config)
+    role(ipmi::mgmt, access_new_install)
     include standard
     include base::firewall
     include role::conftool::master
