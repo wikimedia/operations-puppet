@@ -13,7 +13,7 @@ ATTEMPTS="30"
 # Re-enable puppet only if it was disabled by us
 enable_puppet() {
     jq -r '.disabled_message' < /var/lib/puppet/state/agent_disabled.lock |
-      grep -xq "$MESSAGE" && puppet agent --enable
+      grep -Fxq "$MESSAGE" && puppet agent --enable
 }
 
 # Disable puppet setting the reason to $MESSAGE
