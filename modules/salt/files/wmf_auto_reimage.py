@@ -13,7 +13,7 @@ import sys
 import time
 
 from datetime import datetime
-from logging.handlers import FileHandler
+from logging import FileHandler
 
 import dns.resolver
 import salt.client
