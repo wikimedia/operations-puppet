@@ -46,6 +46,10 @@ sources:
   phabricator/deployment:
     repository: phabricator/deployment
 
+  research/recommendation-api:
+    repository: research/recommendation-api
+    scap_repository: research/recommendation-api/scap
+
   # Source code for taking XML dumps and snapshots of Mediawiki.
   dumps/dumps:
     repository: operations/dumps
