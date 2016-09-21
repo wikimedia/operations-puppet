@@ -1,7 +1,7 @@
 # TODO: remove this if https://phabricator.wikimedia.org/T121721
 # is fixed.
 class beta::deployaccess(
-    $bastion_ip = '10.68.17.240', # ip of deployment-tin
+    $bastion_ip = '10.68.20.135', # ip of deployment-mira
 ) {
 
     security::access::config { 'beta-allow-mwdeploy':
