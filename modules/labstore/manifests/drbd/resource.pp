@@ -18,15 +18,15 @@
 # 6a. drbdadm primary --force $resource
 # 7. Format /dev/drbdx
 #
-# [*nodes]
-#  Array with 2 values containing the node names where the resources are
-#  meant to be available. Typically one of these nodes will be designated
-#  primary, and the other secondary.
-#  ** must match $::hostname
+# [*drbd_cluster]
+#  Hash that has the `hostname` of each node with the associated
+#  FQDN to use for replication (this is most likely a secondary interface).
+#  {'nfs1' => 'eth1.nfs1.domain', 'nfs2' => eth1.nfs2.domain'}
 #
-# [*addresses]
-#  Array of resolvable fqdn to peer with for DRBD (is translated to IP), can be the same
-#  as nodes definitons or distinct.
+#  ** the 'hostname' here should match literal `hostname` for the relevant node
+#     in the cluster for DRBD to function correctly.  This is not used
+#     for resolution.  Using the FQDN or another representation causes
+#     DRBD to ignore the resource.
 #
 # [*port]
 #  Integer port number for DRBD TCP connections. Needs to be unique for
@@ -40,17 +40,15 @@
 #
 # Example:
 # labstore::drbd_resource {'myresource':
-#     nodes   => ['host1', 'host2'],
-#     addresses => ['eth1.host1', 'eth1.host2'],
-#     port    => 7788,
-#     device  => '/dev/drbd1',
-#     disk    => '/dev/misc/blockdevice',
+#     drbd_cluster => {'nfs1' => 'eth1.nfs1.domain', 'nfs2' => eth1.nfs2.domain'},
+#     port         => 7788,
+#     device       => '/dev/drbd1',
+#     disk         => '/dev/misc/blockdevice',
 # }
 #
 
 define labstore::drbd::resource (
-    $nodes,
-    $addresses,
+    $drbd_cluster,
     $port,
     $device,
     $disk,
@@ -58,8 +56,10 @@ define labstore::drbd::resource (
 
     require labstore::drbd::node
 
-    if size(unique($nodes)) != 2 {
-        fail('specify two nodes by hostname')
+    $drbd_hosts = keys($drbd_cluster)
+
+    if size(unique($drbd_hosts)) != 2 {
+        fail('specify two nodes by hostname as keys')
     }
 
     # cheap way to ensure uniqueness across resources
@@ -81,18 +81,6 @@ define labstore::drbd::resource (
         onlyif      => "/sbin/drbdadm role ${name} | grep -i -e ^primary -e ^secondary",
         logoutput   => true,
         refreshonly => true,
-    }
-
-    if !defined(Host[$nodes[0]]) {
-        host { $nodes[0]:
-            ip => ipresolve($nodes[0]),
-        }
-    }
-
-    if !defined(Host[$nodes[1]]) {
-        host { $nodes[1]:
-            ip => ipresolve($nodes[1]),
-        }
     }
 }
 
