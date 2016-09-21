@@ -35,6 +35,7 @@ import argparse
 import sys
 import yaml
 import ldap3
+import requests
 from collections import OrderedDict
 
 
@@ -101,10 +102,18 @@ class LDAPSource(object):
                 'region': hostinfo['l'][0],
                 'puppetClasses': hostinfo.get('puppetClass', []),
                 'project': project,
-                'name': instancename
+                'name': instancename,
+                'fqdn': hostinfo['dc'][0]
             })
 
         return hosts
+
+def get_instance_roles(project, fqdn):
+    url = 'http://labcontrol1001.wikimedia.org:8100/v1/{project}/node/{fqdn}'.format(
+        project,
+        fqdn
+    )
+    return yaml.safe_load(requests.get(url).text)['roles']
 
 if __name__ == '__main__':
     argparser = argparse.ArgumentParser()
@@ -132,7 +141,9 @@ if __name__ == '__main__':
             # particular roles with checks.  role::labs::instance is
             # implicitly applied to all instances via
             # manifests/site.pp, so we need to add it here explicitly.
-            co.properties['hostgroups'] = ','.join([project, 'role::labs::instance'] + instance['puppetClasses'])
+            hostgroups = [project, 'role::labs::instance'] + instance['puppetClasses']
+            hostgroups += get_instance_roles(instance['project'], instance['fqdn'])
+            co.properties['hostgroups'] = ','.join(hostgroups)
             # For each project added to monitoring we expect a contactgroup with the same
             # name added.
             # FIXME: Implement access mechanism more fine grained than per-project
