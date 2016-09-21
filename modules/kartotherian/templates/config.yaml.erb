@@ -22,4 +22,7 @@ geoshapes:
     database: gis
     user: '<%= @pgsql_kartotherian_user %>'
     password: '<%= @pgsql_kartotherian_pass %>'
+    # TODO: delete table param once geoshapes service is updated to use other table values
     table: planet_osm_polygon
+    polygonTable: planet_osm_polygon
+    lineTable: planet_osm_line
