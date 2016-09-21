@@ -13,6 +13,7 @@ class puppetmaster::puppetdb::database($master) {
             root_dir => '/srv/postgres',
             use_ssl  => true,
         }
+        $on_master = true
     } else {
         $require_class = 'postgresql::slave'
         class { 'postgresql::slave':
@@ -22,11 +23,17 @@ class puppetmaster::puppetdb::database($master) {
             replication_pass => $replication_pass,
             use_ssl          => true,
         }
+        $on_master = false
     }
     # Postgres replication and users
     $postgres_users = hiera('puppetmaster::puppetdb::postgres_users', undef)
     if $postgres_users {
-        create_resources(postgresql::user, $postgres_users)
+        $postgres_users_defaults = {
+            pgversion => 9.4,
+            master    => $on_master
+        }
+        create_resources(postgresql::user, $postgres_users,
+            $postgres_users_defaults)
     }
     # Create the puppetdb user for localhost
     # This works on every server and is used for read-only db lookups
@@ -37,6 +44,7 @@ class puppetmaster::puppetdb::database($master) {
         password  => $puppetdb_pass,
         cidr      => "${::main_ipaddress}/32",
         pgversion => '9.4',
+        master    => $on_master,
     }
 
     # Create the database

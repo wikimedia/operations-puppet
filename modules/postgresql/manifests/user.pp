@@ -37,6 +37,7 @@ define postgresql::user(
         trusty  => '9.3',
     },
     $attrs = '',
+    $master = true,
     $ensure = 'present'
     ) {
 
@@ -64,10 +65,13 @@ define postgresql::user(
         # NOTE: This has the potential of the password leaking by process
         # listing tools like ps. Need to investigate better ways of setting the
         # password .e.g. hashed with md5 in the manifest
-        exec { "pass_set-${name}":
-            command => $pass_set,
-            user    => 'postgres',
-            onlyif  => $userexists,
+        # This will not be run on a slave as it is read-only
+        if $master {
+            exec { "pass_set-${name}":
+                command => $pass_set,
+                user    => 'postgres',
+                onlyif  => $userexists,
+            }
         }
 
         $changes = [
