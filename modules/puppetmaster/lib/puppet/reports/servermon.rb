@@ -29,6 +29,7 @@ Puppet::Reports.register_report(:servermon) do
         log_level = Puppet[:log_level]
         begin
             con = Mysql.new dbserver, dbuser, dbpassword, 'puppet'
+            con.query('BEGIN')
             # First we try to update the host, if it fails, insert it
             update_host = "UPDATE hosts SET \
             environment = '#{self.environment}', \
@@ -104,6 +105,7 @@ Puppet::Reports.register_report(:servermon) do
                     # rubocop:enable Style/Next
                 end
             end
+            con.query('COMMIT')
         rescue Mysql::Error => e
             puts "Mysql error: #{e.errno}, #{e.error}"
             puts e.errno
