@@ -67,11 +67,6 @@ class role::puppetmaster::frontend {
         cron_ensure => $cron,
     }
 
-    ferm::service { 'puppetmaster-backend':
-        proto => 'tcp',
-        port  => 8141,
-    }
-
     ferm::service { 'puppetmaster-frontend':
         proto => 'tcp',
         port  => 8140,
@@ -87,6 +82,11 @@ class role::puppetmaster::frontend {
     ferm::service { 'rsync_puppet_frontends':
         proto  => 'tcp',
         port   => '873',
+        srange => "@resolve((${puppetmaster_frontend_ferm}))"
+    }
+    ferm::service { 'puppetmaster-backend':
+        proto  => 'tcp',
+        port   => 8141,
         srange => "@resolve((${puppetmaster_frontend_ferm}))"
     }
 }
