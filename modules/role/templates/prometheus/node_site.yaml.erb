@@ -9,7 +9,7 @@ clusters.each do |cluster, sites|
   all.push(
     {
       'labels' => {'cluster' => cluster, 'site' => site },
-      'targets' => targets,
+      'targets' => targets.map{|t| "#{t}:9100" },
     }
   )
   end
