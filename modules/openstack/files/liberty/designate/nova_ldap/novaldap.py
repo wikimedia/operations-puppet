@@ -32,6 +32,7 @@ cfg.CONF.register_opts([
     cfg.ListOpt('notification-topics', default=['monitor']),
     cfg.StrOpt('control-exchange', default='nova'),
     cfg.StrOpt('domain_id', default=None),
+    cfg.StrOpt('site', default='eqiad'),
 
     cfg.ListOpt('format', default=[]),
     cfg.StrOpt('ldapusername', default=None),

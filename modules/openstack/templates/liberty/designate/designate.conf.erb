@@ -283,6 +283,7 @@ retry_interval = 10
 [handler:nova_fixed_multi]
 # Domain ID of domain to create records in. For a pre-existing domain, in this case eqiad.wmflabs
 domain_id = '<%= @designateconfig["domain_id_internal_forward"] %>'
+site = '<%= scope.lookupvar("::site") %>'
 notification_topics = monitor
 notification_topics = notifications
 control_exchange = nova
