@@ -6,51 +6,78 @@ class role::ci::slave::labs::common {
     include contint::packages::base
 
     # Need the labs instance extended disk space
-    require role::labs::lvm::mnt
+    require role::labs::lvm::srv
 
-    # Home dir for Jenkins agent
-    #
-    # /var/lib and /home are too small to hold Jenkins workspaces
-    file { '/mnt/jenkins-workspace':
+    # We no more use role::labs::lvm::mnt
+    mount { '/mnt':
+        ensure => absent,
+    }
+
+    file { '/srv/jenkins':
         ensure  => directory,
         owner   => 'jenkins-deploy',
         group   => 'wikidev',  # useless, but we need a group
         mode    => '0775',
-        require => Mount['/mnt'],
+        require => Mount['/srv'],
+    }
+
+    # Home dir for Jenkins agent
+    #
+    # /var/lib and /home are too small to hold Jenkins workspaces
+    file { '/srv/jenkins/workspace':
+        ensure  => directory,
+        owner   => 'jenkins-deploy',
+        group   => 'wikidev',  # useless, but we need a group
+        mode    => '0775',
+        require => File['/srv/jenkins'],
     }
 
     # Create a homedir for `jenkins-deploy` so we get plenty of disk space.
-    # The user is only LDAP and is not created by puppet
+    # The user is only LDAP and is not created by puppet. LDAP has the homedir
+    # set to /mnt/home/jenkins-deploy for legacy reason.
     # T63144
     file { '/mnt/home':
+        ensure  => directory,
+        mode    => '0755',
+        owner   => 'root',
+        group   => 'root',
+        require => Mount['/mnt'],  # ensure => absent
+    }
+
+    file { '/mnt/home/jenkins-deploy':
+        ensure  => link,
+        target  => '/srv/jenkins/home/jenkins-deploy',
+        mode    => '0444',
+        owner   => 'root',
+        group   => 'root',
+        require => File['/mnt/home'],
+    }
+
+    file { '/srv/jenkins/home':
         ensure  => directory,
         owner   => 'root',
         group   => 'root',
         mode    => '0755',
-        require => Mount['/mnt'],
+        require => File['/srv/jenkins'],
     }
 
-    file { '/mnt/home/jenkins-deploy':
-        ensure => directory,
-        owner  => 'jenkins-deploy',
-        group  => 'wikidev',
-        mode   => '0775',
-    }
-
-    # drop settings file with old proxy settings
-    file { '/mnt/home/jenkins-deploy/.m2/settings.xml':
-        ensure => absent
+    file { '/srv/jenkins/home/jenkins-deploy':
+        ensure  => directory,
+        owner   => 'jenkins-deploy',
+        group   => 'wikidev',
+        mode    => '0775',
+        require => File['/srv/jenkins/home'],
     }
 
     git::userconfig { '.gitconfig for jenkins-deploy user':
-        homedir  => '/mnt/home/jenkins-deploy',
+        homedir  => '/srv/jenkins/home/jenkins-deploy',
         settings => {
             'user' => {
                 'name'  => 'Wikimedia Jenkins Deploy',
                 'email' => "jenkins-deploy@${::fqdn}",
             },  # end of [user] section
         },  # end of settings
-        require  => File['/mnt/home/jenkins-deploy'],
+        require  => File['/srv/jenkins/home/jenkins-deploy'],
     }
 
     # The slaves on labs use the `jenkins-deploy` user which is already
