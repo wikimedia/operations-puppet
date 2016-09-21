@@ -166,7 +166,6 @@ role::deployment::mediawiki::key_fingerprint: f0:54:06:fa:17:27:97:a2:cc:69:a0:a
 
 scap::dsh::scap_masters:
     - deployment-tin.deployment-prep.eqiad.wmflabs
-    - mira.deployment-prep.eqiad.wmflabs
     - deployment-mira.deployment-prep.eqiad.wmflabs
 scap::dsh::groups:
     mediawiki-installation:
@@ -177,7 +176,6 @@ scap::dsh::groups:
             - deployment-mediawiki06.deployment-prep.eqiad.wmflabs
             - deployment-tmh01.deployment-prep.eqiad.wmflabs
             - deployment-tin.deployment-prep.eqiad.wmflabs
-            - mira.deployment-prep.eqiad.wmflabs
             - deployment-mira.deployment-prep.eqiad.wmflabs
     mediawiki-appserver-canaries:
         hosts:

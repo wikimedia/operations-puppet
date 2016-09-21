@@ -103,8 +103,7 @@ class network::constants {
                 ],
             'deployment_hosts' => [
                     '10.68.17.240',  # deployment-tin.deployment-prep.eqiad.wmflabs
-                    '10.68.17.215',  # mira.deployment-prep.eqiad.wmflabs
-                    '10.68.20.135',   # deployment-mira.deployment-prep.eqiad.wmflabs
+                    '10.68.20.135',  # deployment-mira.deployment-prep.eqiad.wmflabs
                 ],
             }
     }
