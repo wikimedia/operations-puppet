@@ -18,17 +18,12 @@ class puppet::self::config(
     $puppet_client_subnet = undef,
     $certname             = $::fqdn,
     $autosign             = hiera('puppetmaster::autosigner', false),
-    $use_enc              = undef,
+    $use_enc              = true,
 ) {
-    if $use_enc == undef {
-        # We don't want this in precise, since
-        # precise is deprecated and we can't use the
-        # same libraries there
-        $use_enc_real = os_version('debian >= jessie')
-    } else {
-        $use_enc_real = $use_enc
+    if os_version('ubuntu == precise') {
+        fail('Self hosted puppetmasters on Ubuntu precise no longer supported')
     }
-    if $use_enc_real {
+    if $use_enc {
         require_package('python3-yaml', 'python3-ldap3')
 
         include ldap::yamlcreds
