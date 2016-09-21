@@ -111,7 +111,7 @@ groups:
               neilpquinn-wmf, tbayer, moushira, dbrant, maxsem, srijan, krenair,
               jminor, asherman, etonkovidova, sbisson, addshore, matmarex, elukey,
               nikerabbit, nschaaf, dstrine, joewalsh, mpany, hjiang, jsamra, bcohn,
-              jdittrich, chelsyx, ovasileva, mtizzoni, panisson, paolotti, ciro]
+              jdittrich, chelsyx, ovasileva, mtizzoni, panisson, paolotti, ciro, debt]
   ldap-admins:
     gid: 715
     description: ldap admins
@@ -212,7 +212,7 @@ groups:
     description: Gives generic client access to the Analytics (Hadoop) cluster.
         This will grant shell access on Hadoop client nodes (stat1002) and on
         Hadoop NameNodes.
-    members: []
+    members: [debt]
   analytics-privatedata-users:
     gid: 731
     description: Gives access to the Analytics (Hadoop) cluster as well as private data within.
