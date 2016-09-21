@@ -142,7 +142,7 @@ class BaseAddressLdapHandler(BaseAddressHandler):
                                     'domain',
                                     'dcobject',
                                     'top']
-        hostEntry['l'] = 'eqiad'
+        hostEntry['l'] = cfg.CONF[self.name].site
         hostEntry['dc'] = dc
         hostEntry['aRecord'] = addr['address'].encode('utf8')
         hostEntry['puppetClass'] = []
