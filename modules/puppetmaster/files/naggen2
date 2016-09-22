@@ -137,7 +137,6 @@ class NagiosGeneratorPuppetDB(NagiosGeneratorBase):
         )
         resources_raw = requests.get(url, params={
             'query': '["=", ["parameter", "ensure"], "present"]',
-            'order-by': '[{"field": "title"}]'
         })
         return resources_raw.json()
 
