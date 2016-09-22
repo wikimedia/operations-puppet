@@ -20,7 +20,9 @@ class role::ci::slave::labs {
         # Jobs expect the tmpfs to be in $HOME/tmpfs
         mount_point => '/mnt/home/jenkins-deploy/tmpfs',
         size        => '256M',
-        require     => File['/mnt/home/jenkins-deploy'],
+        # /srv here is intentional.
+        # They are both the same filesystem anyway.
+        require     => File['/srv/home/jenkins-deploy'],
     }
 
     # Trebuchet replacement on labs
