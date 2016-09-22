@@ -1008,3 +1008,10 @@ lvs_services:
     conftool:
       cluster: wdqs
       service: wdqs
+    icinga:
+      check_command: check_http_on_port!80
+      sites:
+        eqiad:
+          hostname: wdqs.svc.eqiad.wmnet
+        codfw:
+          hostname: wdqs.svc.codfw.wmnet
