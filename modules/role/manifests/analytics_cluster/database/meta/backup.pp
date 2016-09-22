@@ -19,7 +19,7 @@ class role::analytics_cluster::database::meta::backup {
 
     # Take hourly backups of the analytics-meta instance
     # and rsync those backups to $dest.
-    mysql_wmf::mylvmbackup { 'analytics-meta':
+    mariadb::mylvmbackup { 'analytics-meta':
         dest   => $dest,
         minute => 0,
     }
