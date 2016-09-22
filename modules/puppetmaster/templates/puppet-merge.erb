@@ -182,20 +182,23 @@ fi
 # Note: The "true" command is passed on purpose to show that the command passed
 # to the SSH sessions is irrelevant. It's the SSH forced command trick on the
 # worker end that does the actual work. Note that the $sha1 however is important
+
+if [ -z ${sha1} ]; then # Only loop through the other servers if called without sha1
   <%- @servers.each do |frontend, workers| -%>
     <%- workers.map{ |w| w['worker']}.select{|name| name != @fqdn}.each do |worker| -%>
-if [ $running_user = $git_user ]; then
-    ssh -t -t <%= worker -%> true ${fetch_head_sha1} 2>&1 | tee -a /var/log/puppet-post-merge.log
-else
-    su - $git_user -c "ssh -t -t <%= worker -%> true ${fetch_head_sha1} 2>&1 | tee -a /var/log/puppet-post-merge.log"
-fi
-if [ $? -eq 0 ]; then
-    echo "${GREEN}OK${RESET}: puppet-merge on <%= worker %> succeded"
-else
-    echo "${RED}ERROR${RESET}: puppet-merge on <%= worker %> failed"
-fi
+    if [ $running_user = $git_user ]; then
+        ssh -t -t <%= worker -%> true ${fetch_head_sha1} 2>&1 | tee -a /var/log/puppet-post-merge.log
+    else
+        su - $git_user -c "ssh -t -t <%= worker -%> true ${fetch_head_sha1} 2>&1 | tee -a /var/log/puppet-post-merge.log"
+    fi
+    if [ $? -eq 0 ]; then
+        echo "${GREEN}OK${RESET}: puppet-merge on <%= worker %> succeded"
+    else
+        echo "${RED}ERROR${RESET}: puppet-merge on <%= worker %> failed"
+    fi
     <%- end -%>
   <%- end -%>
+fi
 # conftool-merge does need to run from >1 frontend, avoid running a second time
 if [ $running_user != $git_user ]; then
     echo "Now running conftool-merge to sync any changes to conftool data"
