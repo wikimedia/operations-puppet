@@ -5,7 +5,7 @@ class ganglia::monitor {
     include ganglia::configuration
 
     $id = $ganglia::configuration::clusters[$cluster]['id'] + $ganglia::configuration::id_prefix[$::site]
-    $desc = $ganglia::configuration::clusters[$cluster]['name']
+    $desc = $ganglia::configuration::clusters[$cluster]['description']
     $desc_safe = regsubst($desc, '/', '_', 'G')
     $gmond_port = $ganglia::configuration::base_port + $id
 
