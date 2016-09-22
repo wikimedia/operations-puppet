@@ -20,7 +20,7 @@ class icinga::monitor::legal {
         host                  => 'en.wikipedia.org',
         normal_check_interval => 1440,
         retry_check_interval  => 30,
-        contact_group         => 'admins',
+        contact_group         => 'admins,legal',
     }
 
     monitoring::service { 'en.m.wp.o-legal-html':
@@ -29,7 +29,7 @@ class icinga::monitor::legal {
         host                  => 'en.m.wikipedia.org',
         normal_check_interval => 1440,
         retry_check_interval  => 30,
-        contact_group         => 'admins',
+        contact_group         => 'admins,legal',
     }
 
     monitoring::service { 'en.wb.o-legal-html':
@@ -38,6 +38,6 @@ class icinga::monitor::legal {
         host                  => 'en.wikibooks.org',
         normal_check_interval => 1440,
         retry_check_interval  => 30,
-        contact_group         => 'admins',
+        contact_group         => 'admins,legal',
     }
 }
