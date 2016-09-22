@@ -29,6 +29,8 @@
 #        Otherwise, /etc/puppet/private will be labs/private.git.
 #    - $extra_auth_rules:
 #        String - extra authentication rules to add before the default policy.
+#    - $prevent_cherrypicks:
+#        Bool - use git hooks to prevent cherry picking on top of the git repo
 
 class puppetmaster(
     $server_name='puppet',
@@ -50,6 +52,7 @@ class puppetmaster(
     $secure_private=true,
     $extra_auth_rules='',
     $include_conftool=true,
+    $prevent_cherrypicks=true,
 ){
 
     $gitdir = '/var/lib/git'
@@ -142,8 +145,9 @@ class puppetmaster(
     }
 
     class { 'puppetmaster::gitclone':
-        secure_private => $secure_private,
-        is_git_master  => $is_git_master,
+        secure_private      => $secure_private,
+        is_git_master       => $is_git_master,
+        prevent_cherrypicks => $prevent_cherrypicks,
     }
 
     include puppetmaster::scripts

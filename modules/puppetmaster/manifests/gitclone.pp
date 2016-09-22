@@ -10,9 +10,12 @@
 # [*is_git_master*]
 # If True, the git private repository here will be considered a master.
 #
+# [*prevent_cherrypicks*]
+# If true, setup git hooks to prevent manual modification of the git repos.
 class puppetmaster::gitclone(
     $secure_private = true,
     $is_git_master = false,
+    $prevent_cherrypicks = true,
 ){
     $servers = hiera('puppetmaster::servers', {})
 
@@ -21,28 +24,38 @@ class puppetmaster::gitclone(
         gitowner => 'gitpuppet'
     }
 
+    if $prevent_cherrypicks {
+        $cherrypick_hook_ensure = present
+    } else {
+        $cherrypick_hook_ensure = absent
+    }
+
     file {
         "${puppetmaster::gitdir}/operations/puppet/.git/hooks/post-merge":
             ensure  => absent;
         "${puppetmaster::gitdir}/operations/puppet/.git/hooks/pre-commit":
+            ensure  => $cherrypick_hook_ensure,
             require => Git::Clone['operations/puppet'],
             owner   => 'gitpuppet',
             group   => 'gitpuppet',
             source  => 'puppet:///modules/puppetmaster/git/pre-commit',
             mode    => '0550';
         "${puppetmaster::gitdir}/operations/puppet/.git/hooks/pre-merge":
+            ensure  => $cherrypick_hook_ensure,
             require => Git::Clone['operations/puppet'],
             owner   => 'gitpuppet',
             group   => 'gitpuppet',
             source  => 'puppet:///modules/puppetmaster/git/pre-merge',
             mode    => '0550';
         "${puppetmaster::gitdir}/operations/puppet/.git/hooks/pre-rebase":
+            ensure  => $cherrypick_hook_ensure,
             require => Git::Clone['operations/puppet'],
             owner   => 'gitpuppet',
             group   => 'gitpuppet',
             source  => 'puppet:///modules/puppetmaster/git/pre-rebase',
             mode    => '0550';
         "${puppetmaster::gitdir}/operations/software/.git/hooks/pre-commit":
+            ensure  => $cherrypick_hook_ensure,
             require => Git::Clone['operations/software'],
             owner   => 'gitpuppet',
             group   => 'gitpuppet',
