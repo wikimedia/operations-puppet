@@ -15,7 +15,7 @@ module Puppet::Parser::Functions
     clusters = function_hiera(['ganglia_clusters'])
     clusters.each do |_cluster, data|
       data['sites'].each do |site, aggregators|
-        name = format('%s %s', data['name'], site)
+        name = format('%s %s', data['description'], site)
         if !aggregators.empty?
           aggregator = aggregators.join(' ')
         else
