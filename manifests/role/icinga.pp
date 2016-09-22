@@ -34,6 +34,10 @@ class role::icinga(
     include standard
     include base::firewall
 
+    # Create groups for puppet-defined clusters
+    create_resources(monitoring::group, icinga_clusters())
+
+    # Groups that have no correspondence in puppet
     $monitoring_groups = hiera('monitoring::groups')
     create_resources(monitoring::group, $monitoring_groups)
 
