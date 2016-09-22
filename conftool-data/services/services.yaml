@@ -158,3 +158,12 @@ thumbor:
     default_values:
       pooled: 'no'
       weight: 10
+wdqs:
+  wdqs:
+    port: 80
+    datacenters:
+    - eqiad
+    - codfw
+    default_values:
+      pooled: 'no'
+      weight: 10
