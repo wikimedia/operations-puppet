@@ -147,6 +147,12 @@ groups:
   ocg_eqiad:
     description: offline content generator eqiad
 
+# Puppet
+  puppet_eqiad:
+    description: Puppetmasters eqiad
+  puppet_codfw:
+    description: Puppetmasters codfw
+
 # Parsoid
   parsoid_eqiad:
     description: eqiad parsoid servers
