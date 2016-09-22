@@ -1,0 +1,36 @@
+#!/bin/sh
+
+# ########################################################################
+# This program is part of percona-nagios-checks (http://code.google.com/p/percona-nagios-checks/)
+# License: BSD License (see COPYING)
+# Authors:
+#  Baron Schwartz
+# ########################################################################
+
+# Set up constants, etc.
+PROGPATH="$(dirname "$0")"
+. $PROGPATH/utils.sh
+
+# Find MySQL's data directory from its 'ps' command line.
+CMDLINE="$(ps -fp $(pgrep mysqld) | grep mysqld)"
+# Sample:
+# mysql    13822     1 33 Jan28 ?        1-01:08:37 /usr/sbin/mysqld --defaults-file=/var/lib/mysql/my.cnf --basedir=/usr --datadir=/var/lib/mysql/data/ --pid-file=/var/run/mysqld/mysqld.pid --socket=/var/run/mysqld/mysqld.sock
+for WORD in $CMDLINE; do
+   if echo "${WORD}" | grep datadir >/dev/null 2>&1; then
+      DATADIR="$(echo "${WORD}" | cut -d= -f2)"
+   fi
+done
+
+EXITSTATUS=$STATE_UNKNOWN
+NOTE="UNK could not determine datadir"
+if [ "${DATADIR}" ]; then
+   EXITSTATUS=$STATE_OK
+   NOTE="OK all files are owned by mysql"
+   FILES="$(find "${DATADIR}" \! -group mysql -o \! -user mysql)"
+   if [ "${FILES}" ]; then
+      EXITSTATUS=$STATE_WARNING
+      NOTE="WARN files not owned by mysql: ${FILES}"
+   fi
+fi
+echo $NOTE
+exit $EXITSTATUS

@@ -1,0 +1,23 @@
+#!/bin/sh
+
+# ########################################################################
+# This program is part of percona-nagios-checks (http://code.google.com/p/percona-nagios-checks/)
+# License: BSD License (see COPYING)
+# Authors:
+#  Baron Schwartz
+# ########################################################################
+
+# Set up constants, etc.
+PROGPATH="$(dirname "$0")"
+. $PROGPATH/utils.sh
+
+# Look for LVM snapshots that are open and close to filling up.
+EXITSTATUS=$STATE_OK
+NOTE="OK no full LVM snapshot volumes"
+VOLS="$(lvs | awk '$1 != "LV" && $6 > 90 {print $5 "=" $6 "%"}')"
+if [ "${VOLS}" ]; then
+   NOTE="WARN LVM snapshot volumes over 90% full: ${VOLS}"
+   EXITSTATUS=$STATE_WARNING
+fi
+echo $NOTE
+exit $EXITSTATUS
