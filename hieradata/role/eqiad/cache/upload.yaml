@@ -1,3 +1,4 @@
 debdeploy::grains:
   debdeploy-cp-eqiad-upload:
     value: standard
+upload_storage_experiment: true
