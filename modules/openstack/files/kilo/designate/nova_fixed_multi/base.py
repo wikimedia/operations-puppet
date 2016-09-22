@@ -17,15 +17,12 @@
 # This is a slight form of the designate source file found at
 # designate/notification_handler/base.py
 
-import abc
 from oslo_config import cfg
-from designate import exceptions
 from oslo_log import log as logging
 from designate.central import rpcapi as central_rpcapi
 from designate.context import DesignateContext
 from designate.notification_handler.base import BaseAddressHandler
 from designate.objects import Record
-from designate.plugin import ExtensionPlugin
 from keystoneclient.auth.identity import v3
 from keystoneclient import client
 from keystoneclient import exceptions as keystoneexceptions
@@ -206,7 +203,7 @@ class BaseAddressMultiHandler(BaseAddressHandler):
             passwd = cfg.CONF[self.name].keystone_auth_pass
             project = cfg.CONF[self.name].keystone_auth_project
             url = cfg.CONF[self.name].keystone_auth_url
-        except keyerror:
+        except KeyError:
             LOG.debug('Missing a config setting for keystone auth.')
             return
 
