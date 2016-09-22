@@ -47,11 +47,6 @@ class role::ci::slave::labs::common {
         mode   => '0775',
     }
 
-    # drop settings file with old proxy settings
-    file { '/mnt/home/jenkins-deploy/.m2/settings.xml':
-        ensure => absent
-    }
-
     git::userconfig { '.gitconfig for jenkins-deploy user':
         homedir  => '/mnt/home/jenkins-deploy',
         settings => {
