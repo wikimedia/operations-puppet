@@ -24,6 +24,12 @@ ganglia_clusters:
       codfw: []
       esams: []
       ulsfo: []
+  puppet:
+    name: "Puppetmasters"
+    id: 3
+    sites:
+      eqiad: []
+      codfw: []
   search:
     name: "Search"
     id: 4

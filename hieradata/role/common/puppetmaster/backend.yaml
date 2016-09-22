@@ -9,3 +9,4 @@ base::resolving::domain_search:
   - codfw.wmnet
   - esams.wmnet
   - ulsfo.wmnet
+cluster: puppet
