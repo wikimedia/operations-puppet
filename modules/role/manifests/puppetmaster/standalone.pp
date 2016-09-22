@@ -12,8 +12,13 @@
 #  certificate signing requests. Note that if you want to
 #  keep any secrets secure in your puppetmaster, you *can not*
 #  use this, and will have to sign manually.
+#
+# [*prevent_cherrypicks*]
+#  Set to true to prevent manual cherry-picking / modification of
+#  the puppet git repository. Is accomplished using git hooks.
 class role::puppetmaster::standalone(
     $autosign = false,
+    $prevent_cherrypicks = false,
     $use_enc = true,
 ) {
     include ldap::role::config::labs
