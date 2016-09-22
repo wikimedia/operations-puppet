@@ -18,6 +18,61 @@ class role::ci::slave::labs::common {
         require => Class['role::labs::lvm::mnt'],
     }
 
+    # New file layout based on /srv
+
+    # base directory
+    file { '/srv/jenkins':
+        ensure  => directory,
+        owner   => 'jenkins-deploy',
+        group   => 'wikidev',
+        mode    => '0775',
+        require => Mount['/srv'],
+    }
+
+    file { '/srv/jenkins/cache':
+        ensure  => directory,
+        owner   => 'jenkins-deploy',
+        group   => 'wikidev',
+        mode    => '0775',
+        require => File['/srv/jenkins'],
+    }
+
+    file { '/srv/jenkins/workspace':
+        ensure  => directory,
+        owner   => 'jenkins-deploy',
+        group   => 'wikidev',
+        mode    => '0775',
+        require => File['/srv/jenkins'],
+    }
+
+    file { '/srv/home':
+        ensure  => directory,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0755',
+        require => Mount['/srv'],
+    }
+    file { '/srv/home/jenkins-deploy':
+        ensure  => directory,
+        owner   => 'jenkins-deploy',
+        group   => 'wikidev',
+        mode    => '0775',
+        require => File['/srv/home'],
+    }
+
+    git::userconfig { '.gitconfig for jenkins-deploy user in srv':
+        homedir  => '/srv/home/jenkins-deploy',
+        settings => {
+            'user' => {
+                'name'  => 'Wikimedia Jenkins Deploy',
+                'email' => "jenkins-deploy@${::fqdn}",
+            },
+        },
+        require  => File['/srv/home/jenkins-deploy'],
+    }
+
+    ##### Legacy based on /mnt #############################
+
     # Home dir for Jenkins agent
     #
     # /var/lib and /home are too small to hold Jenkins workspaces
