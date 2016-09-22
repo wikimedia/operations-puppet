@@ -1,11 +1,2 @@
-# Application routes
-# MediaWiki should be reached to the master datacenter,
-# while other services should be polled locally
-app_routes:
-  mediawiki: 'eqiad'
-  parsoid: "%{::site}"
-  restbase: "%{::site}"
-  mobileapps: "%{::site}"
-  graphoid: "%{::site}"
-  mathoid: "%{::site}"
-  aqs: 'eqiad'
+discovery::app_routes: {aqs: eqiad, graphoid: '%{::site}', mathoid: '%{::site}', mediawiki: eqiad,
+  mobileapps: '%{::site}', parsoid: '%{::site}', restbase: '%{::site}'}

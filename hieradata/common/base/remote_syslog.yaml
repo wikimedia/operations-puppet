@@ -1,5 +1,2 @@
----
-enable: true
-central_hosts:
-  - syslog.eqiad.wmnet
-  - syslog.codfw.wmnet
+base::remote_syslog::central_hosts: [syslog.eqiad.wmnet, syslog.codfw.wmnet]
+base::remote_syslog::enable: true

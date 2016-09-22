@@ -1,1 +1,1 @@
-version: 'liberty'
+{'openstack::version': liberty}

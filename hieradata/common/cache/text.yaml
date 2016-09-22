@@ -1,75 +1,35 @@
-nodes:
-  codfw:
-    - 'cp2001.codfw.wmnet'
-    - 'cp2004.codfw.wmnet'
-    - 'cp2007.codfw.wmnet'
-    - 'cp2010.codfw.wmnet'
-    - 'cp2013.codfw.wmnet'
-    - 'cp2016.codfw.wmnet'
-    - 'cp2019.codfw.wmnet'
-    - 'cp2023.codfw.wmnet'
-  eqiad:
-    - 'cp1052.eqiad.wmnet'
-    - 'cp1053.eqiad.wmnet'
-    - 'cp1054.eqiad.wmnet'
-    - 'cp1055.eqiad.wmnet'
-    - 'cp1065.eqiad.wmnet'
-    - 'cp1066.eqiad.wmnet'
-    - 'cp1067.eqiad.wmnet'
-    - 'cp1068.eqiad.wmnet'
-  esams:
-    - 'cp3030.esams.wmnet'
-    - 'cp3031.esams.wmnet'
-    - 'cp3032.esams.wmnet'
-    - 'cp3033.esams.wmnet'
-    - 'cp3040.esams.wmnet'
-    - 'cp3041.esams.wmnet'
-    - 'cp3042.esams.wmnet'
-    - 'cp3043.esams.wmnet'
-  ulsfo:
-    - 'cp4008.ulsfo.wmnet'
-    - 'cp4009.ulsfo.wmnet'
-    - 'cp4010.ulsfo.wmnet'
-    - 'cp4016.ulsfo.wmnet'
-    - 'cp4017.ulsfo.wmnet'
-    - 'cp4018.ulsfo.wmnet'
-apps:
-  appservers:
-    route: 'eqiad'
-    backends:
-      eqiad: 'appservers.svc.eqiad.wmnet'
-      codfw: 'appservers.svc.codfw.wmnet'
-  appservers_debug:
-    route: 'codfw'
-    backends:
-      eqiad: 'hassium.eqiad.wmnet'
-      codfw: 'hassaleh.codfw.wmnet'
+cache::text::apps:
   api:
-    route: 'eqiad'
-    backends:
-      eqiad: 'api.svc.eqiad.wmnet'
-      codfw: 'api.svc.codfw.wmnet'
-  rendering:
-    route: 'eqiad'
-    backends:
-      eqiad: 'rendering.svc.eqiad.wmnet'
-      codfw: 'rendering.svc.codfw.wmnet'
-  restbase:
-    route: 'eqiad'
-    backends:
-      eqiad: 'restbase.svc.eqiad.wmnet'
-      codfw: 'restbase.svc.codfw.wmnet'
-  cxserver:
-    route: 'eqiad'
-    backends:
-      eqiad: 'cxserver.svc.eqiad.wmnet'
-      codfw: 'cxserver.svc.codfw.wmnet'
+    backends: {codfw: api.svc.codfw.wmnet, eqiad: api.svc.eqiad.wmnet}
+    route: eqiad
+  appservers:
+    backends: {codfw: appservers.svc.codfw.wmnet, eqiad: appservers.svc.eqiad.wmnet}
+    route: eqiad
+  appservers_debug:
+    backends: {codfw: hassaleh.codfw.wmnet, eqiad: hassium.eqiad.wmnet}
+    route: codfw
   citoid:
-    route: 'eqiad'
-    backends:
-      eqiad: 'citoid.svc.eqiad.wmnet'
-      codfw: 'citoid.svc.codfw.wmnet'
+    backends: {codfw: citoid.svc.codfw.wmnet, eqiad: citoid.svc.eqiad.wmnet}
+    route: eqiad
+  cxserver:
+    backends: {codfw: cxserver.svc.codfw.wmnet, eqiad: cxserver.svc.eqiad.wmnet}
+    route: eqiad
+  rendering:
+    backends: {codfw: rendering.svc.codfw.wmnet, eqiad: rendering.svc.eqiad.wmnet}
+    route: eqiad
+  restbase:
+    backends: {codfw: restbase.svc.codfw.wmnet, eqiad: restbase.svc.eqiad.wmnet}
+    route: eqiad
   security_audit:
-    route: 'eqiad'
     backends:
       eqiad: []
+    route: eqiad
+cache::text::nodes:
+  codfw: [cp2001.codfw.wmnet, cp2004.codfw.wmnet, cp2007.codfw.wmnet, cp2010.codfw.wmnet,
+    cp2013.codfw.wmnet, cp2016.codfw.wmnet, cp2019.codfw.wmnet, cp2023.codfw.wmnet]
+  eqiad: [cp1052.eqiad.wmnet, cp1053.eqiad.wmnet, cp1054.eqiad.wmnet, cp1055.eqiad.wmnet,
+    cp1065.eqiad.wmnet, cp1066.eqiad.wmnet, cp1067.eqiad.wmnet, cp1068.eqiad.wmnet]
+  esams: [cp3030.esams.wmnet, cp3031.esams.wmnet, cp3032.esams.wmnet, cp3033.esams.wmnet,
+    cp3040.esams.wmnet, cp3041.esams.wmnet, cp3042.esams.wmnet, cp3043.esams.wmnet]
+  ulsfo: [cp4008.ulsfo.wmnet, cp4009.ulsfo.wmnet, cp4010.ulsfo.wmnet, cp4016.ulsfo.wmnet,
+    cp4017.ulsfo.wmnet, cp4018.ulsfo.wmnet]

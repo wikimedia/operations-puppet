@@ -170,6 +170,10 @@ class Hiera
             new_answer = regex_lookup(lookup_key, matchto, data, scope)
           else
             new_answer = plain_lookup(lookup_key, data, scope)
+            # if an expand path, also support a full key lookup
+            if( new_answer.nil? && lookup_key != key)
+              new_answer = plain_lookup(key, data, scope)
+            end
           end
           next if new_answer.nil?
           # Extra logging that we found the key. This can be outputted

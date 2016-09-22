@@ -1,15 +1,5 @@
----
-# This is a yaml file. Remember to keep indentation otherwise the structure
-# will not be what you intend
-groups:
-# Facilities
-  pdus:
-    description: PDUs
-
-# Network
-  routers:
-    description: IP routers
-  switches:
-    description: IP switches
-  storage:
-    description: Storage equipment
+monitoring::groups:
+  pdus: {description: PDUs}
+  routers: {description: IP routers}
+  storage: {description: Storage equipment}
+  switches: {description: IP switches}

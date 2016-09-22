@@ -1,1 +1,1 @@
-data_filesystem: "/srv"
+{'ocg::ganglia::data_filesystem': /srv}

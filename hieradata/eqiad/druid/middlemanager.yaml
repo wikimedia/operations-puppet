@@ -1,12 +1,11 @@
-properties:
-  druid.worker.ip: "%{::fqdn}"
-  druid.worker.capacity: 12
-  druid.processing.numThreads: 3
+druid::middlemanager::env: {DRUID_EXTRA_JVM_OPTS: '-XX:+UseConcMarkSweepGC -XX:+PrintGCDetails
+    -XX:+PrintGCTimeStamps', DRUID_HEAP_OPTS: -Xmx64m -Xms64m}
+druid::middlemanager::properties:
+  druid.indexer.runner.javaOpts: -server -Xmx2g -XX:+UseG1GC -XX:MaxGCPauseMillis=100
+    -XX:+PrintGCDetails -XX:+PrintGCTimeStamps -Dhadoop.mapreduce.job.user.classpath.first=true
+  druid.indexer.task.defaultHadoopCoordinates: ['org.apache.hadoop:hadoop-client:cdh']
   druid.processing.buffer.sizeBytes: 536870912
+  druid.processing.numThreads: 3
   druid.server.http.numThreads: 20
-  druid.indexer.runner.javaOpts: "-server -Xmx2g -XX:+UseG1GC -XX:MaxGCPauseMillis=100 -XX:+PrintGCDetails -XX:+PrintGCTimeStamps -Dhadoop.mapreduce.job.user.classpath.first=true"
-  druid.indexer.task.defaultHadoopCoordinates: ["org.apache.hadoop:hadoop-client:cdh"]
-
-env:
-  DRUID_HEAP_OPTS: "-Xmx64m -Xms64m"
-  DRUID_EXTRA_JVM_OPTS: "-XX:+UseConcMarkSweepGC -XX:+PrintGCDetails -XX:+PrintGCTimeStamps"
+  druid.worker.capacity: 12
+  druid.worker.ip: '%{::fqdn}'

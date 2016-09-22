@@ -1,14 +1,7 @@
-puppetmaster: "labtestcontrol2001.wikimedia.org"
-saltmaster: "labtestcontrol2001.wikimedia.org"
-labs_puppet_master: "labtestcontrol2001.wikimedia.org"
-ldap_host: "labtestservices2001.wikimedia.org"
-
-labsdnsconfig:
-  recursor: 'labtest-recursor0.wikimedia.org'
-  recursor_secondary: 'labtest-recursor0.wikimedia.org'
-
-labsldapconfig:
-  hostname: "labtestservices2001.wikimedia.org"
-  secondary_hostname: "labtestservices2001.wikimedia.org"
-
-labs_tld: "labtest"
+labtest-instances::labs_puppet_master: labtestcontrol2001.wikimedia.org
+labtest-instances::labs_tld: labtest
+labtest-instances::labsdnsconfig: {recursor: labtest-recursor0.wikimedia.org, recursor_secondary: labtest-recursor0.wikimedia.org}
+labtest-instances::labsldapconfig: {hostname: labtestservices2001.wikimedia.org, secondary_hostname: labtestservices2001.wikimedia.org}
+labtest-instances::ldap_host: labtestservices2001.wikimedia.org
+labtest-instances::puppetmaster: labtestcontrol2001.wikimedia.org
+labtest-instances::saltmaster: labtestcontrol2001.wikimedia.org

@@ -1,87 +1,26 @@
-# Default scap::server configuration.  This is used in production.
-# If you are setting up scap::server in labs, these will be used
-# unless you override them for your labs project.
-# See the overrides in hieradata/labs/deployment-prep/common.yaml
-# for an example.
-
-# keyholder::agent declarations.  These are created
-# by the scap::server class.  Each agent listed here
-# will be present and useable by scap on the scap deploy server.
-# NOTE: since labs
-keyholder_agents:
-
-  phabricator:
-    trusted_groups:
-      - deploy-phabricator
-
-  eventlogging:
-    trusted_groups:
-      - eventlogging-admins
-
-  deploy-service:
-    trusted_groups:
-      - deploy-service
-      - aqs-admins
-      - deploy-aqs
-
-  dumpsdeploy:
-    trusted_groups:
-      - ops
-
+scap::server::keyholder_agents:
   analytics_deploy:
-    trusted_groups:
-      - analytics-admins
-
-# scap::source declarations.  These are created
-# by the scap::server class.  Each source listed here
-# will be cloned on the scap deploy server.
-sources:
-
-  # Analytics data refinement tools
-  # https://wikitech.wikimedia.org/wiki/Analytics/Cluster/Refinery
-  analytics/refinery:
-    repository: analytics/refinery
-    scap_repository: analytics/refinery/scap
-
-  phabricator/deployment:
-    repository: phabricator/deployment
-
-  # Source code for taking XML dumps and snapshots of Mediawiki.
-  dumps/dumps:
-    repository: operations/dumps
-    scap_repository: operations/dumps/scap
-
-  # eventbus runs eventlogging-service.
-  # See: https://wikitech.wikimedia.org/wiki/EventBus
-  eventlogging/eventbus:
-    repository: eventlogging
-    scap_repository: eventlogging/scap/eventbus
-
-  # eventlogging/analytics is the original EventLogging server deployment.
-  eventlogging/analytics:
-    repository: eventlogging
-    scap_repository: eventlogging/scap/analytics
-
-  # The {} acts as an empty hash to use defaults.
-  mobileapps/deploy: {}
-
-  kartotherian/deploy: {}
-  tilerator/deploy: {}
+    trusted_groups: [analytics-admins]
+  deploy-service:
+    trusted_groups: [deploy-service, aqs-admins, deploy-aqs]
+  dumpsdeploy:
+    trusted_groups: [ops]
+  eventlogging:
+    trusted_groups: [eventlogging-admins]
+  phabricator:
+    trusted_groups: [deploy-phabricator]
+scap::server::sources:
+  analytics/refinery: {repository: analytics/refinery, scap_repository: analytics/refinery/scap}
+  cxserver/deploy: {repository: cxserver/deploy}
+  dumps/dumps: {repository: operations/dumps, scap_repository: operations/dumps/scap}
+  eventlogging/analytics: {repository: eventlogging, scap_repository: eventlogging/scap/analytics}
+  eventlogging/eventbus: {repository: eventlogging, scap_repository: eventlogging/scap/eventbus}
   graphoid/deploy: {}
-
+  kartotherian/deploy: {}
+  mobileapps/deploy: {}
+  ores/deploy: {repository: mediawiki/services/ores/deploy}
   parsoid/deploy: {}
-
-  # cxserver is the ContentTranslation server.
-  cxserver/deploy:
-    repository: cxserver/deploy
-
-  # ores is the Objective Revision Evaluation Service
-  ores/deploy:
-    repository: mediawiki/services/ores/deploy
-
-  wdqs/wdqs:
-    repository: wikidata/query/deploy
-
-  # Striker is the Tool Labs admin console application
-  striker/deploy:
-    repository: labs/striker/deploy
+  phabricator/deployment: {repository: phabricator/deployment}
+  striker/deploy: {repository: labs/striker/deploy}
+  tilerator/deploy: {}
+  wdqs/wdqs: {repository: wikidata/query/deploy}
