@@ -102,8 +102,7 @@ class role::maps::master {
         expire_levels         => '15',
         num_threads           => 4,
         pg_password           => $osmupdater_pass,
-        period                => 'day', # Remove thse as soon as we get down to minute
-        hour                  => '1',
+        period                => 'hour', # Remove thse as soon as we get down to minute
         minute                => '27',
         postreplicate_command => 'sudo -u tileratorui /usr/local/bin/notify-tilerator',
     }
