@@ -18,7 +18,7 @@ class role::puppetmaster::common ( $base_config ) {
     $puppetdb_config = {
         storeconfigs         => true,
         storeconfigs_backend => 'puppetdb',
-        reports              => 'puppetdb,servermon',
+        reports              => 'servermon',
     }
 
     $use_puppetdb = hiera('puppetmaster::config::use_puppetdb', false)
