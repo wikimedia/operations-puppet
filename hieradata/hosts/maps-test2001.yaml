@@ -2,3 +2,4 @@ cassandra::rack: a5
 do_paging: false
 role::maps::master::planet_sync_period: 'hour'
 role::maps::master::planet_sync_hour:   '*'
+tilerator::ui::storage_id: 'v5'
