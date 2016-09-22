@@ -29,7 +29,6 @@ Puppet::Reports.register_report(:servermon) do
         log_level = Puppet[:log_level]
         begin
             con = Mysql.new dbserver, dbuser, dbpassword, 'puppet'
-            con.query('BEGIN')
             # First we try to update the host, if it fails, insert it
             update_host = "UPDATE hosts SET \
             environment = '#{self.environment}', \
@@ -56,33 +55,32 @@ Puppet::Reports.register_report(:servermon) do
             if File.exists?("#{Puppet[:vardir]}/yaml/facts/#{self.host}.yaml")
                 node_facts = YAML.load_file("#{Puppet[:vardir]}/yaml/facts/#{self.host}.yaml")
                 # We got a Ruby object, get the values attributes and walk it
+                # This part of the code causes highly concurrent queries to the
+                # DB, so extra care is taken to avoid LOCKs, deadlocks etc
                 node_facts.values.each do |key, value|
-                    # First update the fact_names table, if it fails, insert the
-                    # fact name
-                    update_fact_name = "UPDATE fact_names SET \
-                    updated_at = '#{self.time}' \
+                    # First try to see if the fact_name already exists
+                    con.query('BEGIN')
+                    select_fact_name = "SELECT id from fact_names \
                     WHERE name='#{key}'"
                     if log_level == 'debug'
-                        puts update_fact_name
+                        puts(select_fact_name)
                     end
-                    con.query(update_fact_name)
-                    if con.affected_rows == 0
+                    rs = con.query(select_fact_name)
+                    # So we need to insert a fact_name
+                    if rs.num_rows == 0
                         insert_fact_name = "INSERT INTO fact_names(name, updated_at, created_at) \
                         VALUES('#{key}', '#{self.time}', '#{self.time}')"
                         if log_level == 'debug'
-                            puts insert_fact_name
+                            puts(insert_fact_name)
                         end
                         con.query(insert_fact_name)
+                    else
+                        fact_id = rs.fetch_row[0]
+                        if log_level == 'debug'
+                            puts "Got fact: #{key} with id: #{fact_id}"
+                        end
                     end
-                    # We now can be sure the fact exists if the code reaches
-                    # this point, so just get the id
-                    query = "SELECT id from fact_names \
-                    WHERE name='#{key}'"
-                    rs = con.query(query)
-                    fact_id = rs.fetch_row[0]
-                    if log_level == 'debug'
-                        puts "Got fact: #{key} with id: #{fact_id}"
-                    end
+                    con.query('COMMIT')
                     # Now try to update the fact_value, it is fails, insert it
                     update_fact_value = "UPDATE fact_values SET \
                     updated_at = '#{self.time}', \
@@ -105,7 +103,6 @@ Puppet::Reports.register_report(:servermon) do
                     # rubocop:enable Style/Next
                 end
             end
-            con.query('COMMIT')
         rescue Mysql::Error => e
             puts "Mysql error: #{e.errno}, #{e.error}"
             puts e.errno
