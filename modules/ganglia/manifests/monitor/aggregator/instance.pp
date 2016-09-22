@@ -19,7 +19,7 @@ define ganglia::monitor::aggregator::instance($monitored_site) {
         $sites = $ganglia::configuration::default_sites
     }
     $id = $ganglia::configuration::clusters[$cluster]['id'] + $ganglia::configuration::id_prefix[$monitored_site]
-    $desc = $ganglia::configuration::clusters[$cluster]['name']
+    $desc = $ganglia::configuration::clusters[$cluster]['description']
     $desc_safe = regsubst($desc, '/', '_', 'G')
     $gmond_port = $ganglia::configuration::base_port + $id
     $cname = "${desc_safe} ${::site}"
