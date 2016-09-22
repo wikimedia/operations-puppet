@@ -15,71 +15,29 @@ class role::labs::puppetmaster(
     $labs_instance_range = $novaconfig['fixed_range']
     $horizon_host = hiera('labs_horizon_host')
     $horizon_host_ip = ipresolve(hiera('labs_horizon_host'), 4)
-
-
     # Only allow puppet access from the instances
     $allow_from = flatten([$labs_instance_range, '208.80.154.14', $horizon_host_ip, $labs_metal])
 
-    if $use_enc {
-        # Setup ENC
-        require_package('python3-yaml', 'python3-ldap3')
-
-        include ldap::yamlcreds
-
-        file { '/etc/puppet-enc.yaml':
-            content => ordered_yaml({
-                host => hiera('labs_puppet_master'),
-            }),
-            mode    => '0444',
-            owner   => 'root',
-            group   => 'root',
-        }
-
-        file { '/usr/local/bin/puppet-enc':
-            source => 'puppet:///modules/role/labs/puppet-enc.py',
-            mode   => '0555',
-            owner  => 'root',
-            group  => 'root',
-        }
-
-        $encconfig = {
-            'node_terminus'  => 'exec',
-            'external_nodes' => '/usr/local/bin/puppet-enc',
-        }
-    } else {
-        $encconfig = {
-            'ldapserver'    => $ldapconfig['servernames'][0],
-            'ldapbase'      => "ou=hosts,${basedn}",
-            'ldapstring'    => '(&(objectclass=puppetClient)(associatedDomain=%s))',
-            'ldapuser'      => $ldapconfig['proxyagent'],
-            'ldappassword'  => $ldapconfig['proxypass'],
-            'ldaptls'       => true,
-            'node_terminus' => 'ldap'
-        }
-    }
-    class { '::puppetmaster':
-        server_name      => hiera('labs_puppet_master'),
-        allow_from       => $allow_from,
-        secure_private   => false,
-        extra_auth_rules => template('role/labs/puppetmaster/extra_auth_rules.conf.erb'),
-        config           => merge($encconfig, {
-            'thin_storeconfigs' => false,
-            'autosign'          => true,
-        })
+    class { 'role::puppetmaster::standalone':
+        autosign            => true,
+        prevent_cherrypicks => true,
+        allow_from          => $allow_from,
+        git_sync_minutes    => '1',
+        use_enc             => $use_enc,
+        extra_auth_rules    => template('role/labs/puppetmaster/extra_auth_rules.conf.erb'),
+        server_name         => hiera('labs_puppet_master'),
     }
 
-
-    # Run a cron that pulls the ops/puppet repo & labs/private every minute.
-    # We do not have equivalent of puppet merge for the labs puppetmaster
+    # Kill these crons, since role::puppetmaster::standalone does this for us
     cron { 'update_public_puppet_repos':
-        ensure  => present,
+        ensure  => absent,
         command => '(cd /var/lib/git/operations/puppet && /usr/bin/git pull && /usr/bin/git submodule update --init) > /dev/null 2>&1',
         user    => 'gitpuppet',
         minute  => '*/1',
     }
 
     cron { 'update_private_puppet_repos':
-        ensure  => present,
+        ensure  => absent,
         command => '(cd /var/lib/git/operations/labs/private && /usr/bin/git pull) > /dev/null 2>&1',
         user    => 'gitpuppet',
         minute  => '*/1',
