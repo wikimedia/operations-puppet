@@ -67,6 +67,8 @@ define osm::planet_sync(
 ) {
     include ::osm::users
 
+    $osm_log_dir = '/var/log/osmosis/'
+
     file { '/srv/downloads':
         ensure => 'directory',
         owner  => 'osmupdater',
@@ -104,9 +106,21 @@ define osm::planet_sync(
         content => template('osm/osmosis_configuration.txt.erb'),
     }
 
+    file { $osm_log_dir:
+        ensure => directory,
+        owner  => 'osmupdater',
+        group  => 'osmupdater',
+        mode   => '0755',
+    }
+
+    logrotate::conf { 'planetsync':
+        ensure  => present,
+        content => template('osm/planetsync-logrotate.conf.erb'),
+    }
+
     cron { "planet_sync-${name}":
         ensure      => $ensure,
-        command     => '/usr/local/bin/replicate-osm > /tmp/osm2pgsql.log 2>&1',
+        command     => "/usr/local/bin/replicate-osm >> ${osm_log_dir}/osm2pgsql.log 2>&1",
         user        => 'osmupdater',
         hour        => $hour,
         minute      => $minute,

@@ -14,7 +14,7 @@ export JAVACMD_OPTIONS="\
        --read-replication-interval \
        workingDirectory=<%= @osmosis_dir %> \
        --simplify-change \
-       --write-xml-change - 2>/tmp/osmosis.log \
+       --write-xml-change - 2>> <%= @osm_log_dir %>/osmosis.log \
     | /usr/bin/osm2pgsql \
       --hstore \
       --slim \
