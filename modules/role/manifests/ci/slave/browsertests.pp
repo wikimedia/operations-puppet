@@ -24,23 +24,12 @@ class role::ci::slave::browsertests {
         settings => {
             bind                      => '0.0.0.0',
             appendonly                => true,
-            dir                       => '/mnt/redis',
+            dir                       => '/srv/redis',
             maxmemory                 => '128Mb',
             requirepass               => 'notsecure',
             auto_aof_rewrite_min_size => '32mb',
         },
     }
+    Mount['/srv'] -> File['/srv/redis'] -> Service["redis-instance-tcp_${redis_port}"]
 
-    file { '/mnt/redis':
-        ensure  => directory,
-        mode    => '0775',
-        owner   => 'redis',
-        group   => 'redis',
-        before  => Service["redis-instance-tcp_${redis_port}"],
-        require => [
-            Mount['/mnt'],
-            Package['redis-server'],
-        ],
-    }
 }
-
