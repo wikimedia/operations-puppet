@@ -271,10 +271,7 @@ class role::cache::misc {
         'wdqs_director' => {
             'dynamic'  => 'no',
             'type'     => 'random',
-            'backends' => [
-                'wdqs1001.eqiad.wmnet',
-                'wdqs1002.eqiad.wmnet',
-            ],
+            'backends' => [ 'wdqs.svc.eqiad.wmnet', ],
             'be_opts'  => merge($app_def_be_opts, { 'probe' => 'wdqs' }),
             'req_host' => 'query.wikidata.org',
         },
