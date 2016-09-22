@@ -19,3 +19,9 @@ nodes:
     - 'cp4002.ulsfo.wmnet'
     - 'cp4003.ulsfo.wmnet'
     - 'cp4004.ulsfo.wmnet'
+apps:
+  wdqs:
+    route: 'eqiad'
+    backends:
+      eqiad: 'wdqs.svc.eqiad.wmnet'
+      codfw: 'wdqs.svc.codfw.wmnet'
