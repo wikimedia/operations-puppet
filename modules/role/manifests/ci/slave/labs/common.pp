@@ -8,6 +8,16 @@ class role::ci::slave::labs::common {
     # Need the labs instance extended disk space
     require role::labs::lvm::mnt
 
+    # Duplicate for transition purposes
+    mount { '/srv':
+        ensure  => mounted,
+        atboot  => true,
+        device  => '/dev/vd/second-local-disk',
+        options => 'defaults',
+        fstype  => 'ext4',
+        require => Class['role::labs::lvm::mnt'],
+    }
+
     # Home dir for Jenkins agent
     #
     # /var/lib and /home are too small to hold Jenkins workspaces
