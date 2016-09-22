@@ -1,5 +1,9 @@
 # Sets up a maps server master
-class role::maps::master {
+class role::maps::master(
+    $planet_sync_period = 'day', # Remove this as soon as we get down to minute
+    $planet_sync_hour = '1',
+    $planet_sync_minute = '27',
+) {
     include ::postgresql::master
     include ::role::maps::postgresql_common
     include ::osm
@@ -102,9 +106,9 @@ class role::maps::master {
         expire_levels         => '15',
         num_threads           => 4,
         pg_password           => $osmupdater_pass,
-        period                => 'day', # Remove thse as soon as we get down to minute
-        hour                  => '1',
-        minute                => '27',
+        period                => $planet_sync_period,
+        hour                  => $planet_sync_hour,
+        minute                => $planet_sync_minute,
         postreplicate_command => 'sudo -u tileratorui /usr/local/bin/notify-tilerator',
     }
 
