@@ -59,7 +59,7 @@ class role::toollabs::clush::master {
         user    => 'root'
     }
 
-    $groupsConfig = {
+    $groups_config = {
         'Main' => {
             'default' => 'Tools',
         },
@@ -74,6 +74,6 @@ class role::toollabs::clush::master {
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-        content => ini($groupsConfig),
+        content => ini($groups_config),
     }
 }
