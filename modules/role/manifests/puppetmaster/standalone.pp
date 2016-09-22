@@ -73,7 +73,7 @@ class role::puppetmaster::standalone(
         allow_from          => $allow_from,
         secure_private      => false,
         include_conftool    => false,
-        prevent_cherrypicks => $prevent_cherrypicks,,
+        prevent_cherrypicks => $prevent_cherrypicks,
         config              => merge($encconfig, {
             'thin_storeconfigs' => false,
             'autosign'          => $autosign,
