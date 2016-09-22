@@ -127,7 +127,13 @@ node 'analytics1027.eqiad.wmnet' {
         analytics_cluster::refinery::camus,
 
         # Add cron job to delete old data in HDFS
-        analytics_cluster::refinery::data::drop)
+        analytics_cluster::refinery::data::drop,
+
+        # We need hive-site.xml in HDFS.  This can be included
+        # on any node with a Hive client, but we really only
+        # want to include it in one place.  analytics1027
+        # is a little special and standalone, so we do it here.
+        analytics_cluster::hive::site_hdfs)
 
     include standard
     include base::firewall
