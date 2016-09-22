@@ -98,6 +98,10 @@ def available_roles():
             if 'parameters' in role:
                 obj.params = role['parameters']
                 obj.raw_params = role['parameters']
+                keysanddefaults = []
+                for param in obj.params.items():
+                    keysanddefaults.append("%s: %s" % param)
+                obj.formatted_params = ";\n".join(keysanddefaults)
 
             if 'doc' in role and (role['doc'].find('filtertags') != -1):
                 #  Collect filter tags from the role comment,
