@@ -16,9 +16,24 @@
 # [*prevent_cherrypicks*]
 #  Set to true to prevent manual cherry-picking / modification of
 #  the puppet git repository. Is accomplished using git hooks.
+#
+# [*allow_from*]
+#  Array of CIDRs from which to allow access to this puppetmaster.
+#  Defaults to the entire 10.x range, so no real access control.
+#
+# [*git_sync_minutes*]
+#  How frequently should the git repositories be sync'd to upstream.
+#  Defaults to 10.
+#
+# [*extra_auth_rules*]
+#  A string that gets added to auth.conf as extra auth rules for
+#  the puppetmaster.
 class role::puppetmaster::standalone(
     $autosign = false,
     $prevent_cherrypicks = false,
+    $allow_from = ['10.0.0.0/8'],
+    $git_sync_minutes = '10',
+    $extra_auth_rules = '',
     $use_enc = true,
 ) {
     include ldap::role::config::labs
@@ -64,22 +79,21 @@ class role::puppetmaster::standalone(
         }
     }
 
-    # Allow access from everywhere! Use certificates to
-    # control access
-    $allow_from = ['10.0.0.0/8']
-
     class { '::puppetmaster':
         server_name         => $::fqdn,
         allow_from          => $allow_from,
         secure_private      => false,
         include_conftool    => false,
         prevent_cherrypicks => $prevent_cherrypicks,
+        extra_auth_rules    => $extra_auth_rules,
         config              => merge($encconfig, {
             'thin_storeconfigs' => false,
             'autosign'          => $autosign,
-        })
+        }),
     }
 
     # Update git checkout
-    include ::puppetmaster::gitsync
+    class { 'puppetmaster::gitsync':
+        run_every_minutes => $git_sync_minutes,
+    }
 }
