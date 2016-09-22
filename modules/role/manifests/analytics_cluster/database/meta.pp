@@ -19,10 +19,10 @@ class role::analytics_cluster::database::meta {
     }
 
     class { 'mariadb::config':
-        config   => $config_template,
-        password => false,
-        datadir  => '/var/lib/mysql',
-        require  => Class['mariadb::packages_wmf'],
+        config    => $config_template,
+        datadir   => '/var/lib/mysql',
+        read_only => false,
+        require   => Class['mariadb::packages_wmf'],
     }
 
     file { '/etc/init.d/mysql':
