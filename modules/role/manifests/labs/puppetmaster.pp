@@ -20,7 +20,9 @@ class role::labs::puppetmaster(
 
     class { 'role::puppetmaster::standalone':
         autosign            => true,
-        prevent_cherrypicks => true,
+        # FIXME: Temporarily set to false until we make git-sync-upstream
+        # work as non-root.
+        prevent_cherrypicks => false,
         allow_from          => $allow_from,
         git_sync_minutes    => '1',
         use_enc             => $use_enc,
