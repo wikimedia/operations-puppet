@@ -69,11 +69,12 @@ class role::puppetmaster::standalone(
     $allow_from = ['10.0.0.0/8']
 
     class { '::puppetmaster':
-        server_name      => $::fqdn,
-        allow_from       => $allow_from,
-        secure_private   => false,
-        include_conftool => false,
-        config           => merge($encconfig, {
+        server_name         => $::fqdn,
+        allow_from          => $allow_from,
+        secure_private      => false,
+        include_conftool    => false,
+        prevent_cherrypicks => $prevent_cherrypicks,,
+        config              => merge($encconfig, {
             'thin_storeconfigs' => false,
             'autosign'          => $autosign,
         })
