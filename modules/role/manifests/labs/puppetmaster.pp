@@ -9,8 +9,6 @@ class role::labs::puppetmaster(
     include puppetmaster::labsrootpass
 
     $labs_metal = hiera('labs_baremetal_servers', [])
-    $ldapconfig = $ldap::role::config::labs::ldapconfig
-    $basedn = $ldapconfig['basedn']
     $novaconfig = hiera_hash('novaconfig', {})
     $labs_instance_range = $novaconfig['fixed_range']
     $horizon_host = hiera('labs_horizon_host')
@@ -28,21 +26,7 @@ class role::labs::puppetmaster(
         use_enc             => $use_enc,
         extra_auth_rules    => template('role/labs/puppetmaster/extra_auth_rules.conf.erb'),
         server_name         => hiera('labs_puppet_master'),
-    }
 
-    # Kill these crons, since role::puppetmaster::standalone does this for us
-    cron { 'update_public_puppet_repos':
-        ensure  => absent,
-        command => '(cd /var/lib/git/operations/puppet && /usr/bin/git pull && /usr/bin/git submodule update --init) > /dev/null 2>&1',
-        user    => 'gitpuppet',
-        minute  => '*/1',
-    }
-
-    cron { 'update_private_puppet_repos':
-        ensure  => absent,
-        command => '(cd /var/lib/git/operations/labs/private && /usr/bin/git pull) > /dev/null 2>&1',
-        user    => 'gitpuppet',
-        minute  => '*/1',
     }
 
     if ! defined(Class['puppetmaster::certmanager']) {
