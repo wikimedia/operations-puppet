@@ -12,16 +12,24 @@
 #
 # [*prevent_cherrypicks*]
 # If true, setup git hooks to prevent manual modification of the git repos.
+#
+# [*user*]
+# The user which should own the git repositories
+#
+# [*group*]
+# The group which should own the git repositories
 class puppetmaster::gitclone(
     $secure_private = true,
     $is_git_master = false,
     $prevent_cherrypicks = true,
+    $user = 'gitpuppet',
+    $group = 'gitpuppet',
 ){
     $servers = hiera('puppetmaster::servers', {})
 
     class  { '::puppetmaster::base_repo':
         gitdir   => $::puppetmaster::gitdir,
-        gitowner => 'gitpuppet'
+        gitowner => $user,
     }
 
     if $prevent_cherrypicks {
@@ -36,29 +44,29 @@ class puppetmaster::gitclone(
         "${puppetmaster::gitdir}/operations/puppet/.git/hooks/pre-commit":
             ensure  => $cherrypick_hook_ensure,
             require => Git::Clone['operations/puppet'],
-            owner   => 'gitpuppet',
-            group   => 'gitpuppet',
+            owner   => $user,
+            group   => $group,
             source  => 'puppet:///modules/puppetmaster/git/pre-commit',
             mode    => '0550';
         "${puppetmaster::gitdir}/operations/puppet/.git/hooks/pre-merge":
             ensure  => $cherrypick_hook_ensure,
             require => Git::Clone['operations/puppet'],
-            owner   => 'gitpuppet',
-            group   => 'gitpuppet',
+            owner   => $user,
+            group   => $group,
             source  => 'puppet:///modules/puppetmaster/git/pre-merge',
             mode    => '0550';
         "${puppetmaster::gitdir}/operations/puppet/.git/hooks/pre-rebase":
             ensure  => $cherrypick_hook_ensure,
             require => Git::Clone['operations/puppet'],
-            owner   => 'gitpuppet',
-            group   => 'gitpuppet',
+            owner   => $user,
+            group   => $group,
             source  => 'puppet:///modules/puppetmaster/git/pre-rebase',
             mode    => '0550';
         "${puppetmaster::gitdir}/operations/software/.git/hooks/pre-commit":
             ensure  => $cherrypick_hook_ensure,
             require => Git::Clone['operations/software'],
-            owner   => 'gitpuppet',
-            group   => 'gitpuppet',
+            owner   => $user,
+            group   => $group,
             source  => 'puppet:///modules/puppetmaster/git/pre-commit',
             mode    => '0550';
         $puppetmaster::volatiledir:
@@ -74,8 +82,8 @@ class puppetmaster::gitclone(
         '/var/log/puppet-post-merge.log':
             ensure  => file,
             replace => false,
-            owner   => 'gitpuppet',
-            group   => 'gitpuppet',
+            owner   => $user,
+            group   => $group,
             mode    => '0640';
     }
 
@@ -95,8 +103,8 @@ class puppetmaster::gitclone(
         if $is_git_master {
             file { '/srv/private':
                 ensure  => directory,
-                owner   => 'gitpuppet',
-                group   => 'gitpuppet',
+                owner   => $user,
+                group   => $group,
                 mode    => '0640', # Will become 0755 for dir automatically
                 recurse => true,
             }
@@ -124,8 +132,8 @@ class puppetmaster::gitclone(
             file { '/srv/private/.git/hooks/commit-msg':
                 ensure  => present,
                 source  => 'puppet:///modules/puppetmaster/git/private/commit-msg-master',
-                owner   => 'gitpuppet',
-                group   => 'gitpuppet',
+                owner   => $user,
+                group   => $group,
                 mode    => '0550',
                 require => Exec['/srv/private init'],
             }
@@ -135,8 +143,8 @@ class puppetmaster::gitclone(
             file { '/srv/private/.git/hooks/post-commit':
                 ensure  => present,
                 content => template('puppetmaster/git-master-postcommit.erb'),
-                owner   => 'gitpuppet',
-                group   => 'gitpuppet',
+                owner   => $user,
+                group   => $group,
                 mode    => '0550',
                 require => Exec['/srv/private init'],
             }
@@ -145,15 +153,15 @@ class puppetmaster::gitclone(
             # This will reset to head, and transmit data to /var/lib
             file { '/srv/private/.git/hooks/post-receive':
                 source  => 'puppet:///modules/puppetmaster/git/private/post-receive-master',
-                owner   => 'gitpuppet',
-                group   => 'gitpuppet',
+                owner   => $user,
+                group   => $group,
                 mode    => '0550',
                 require => File['/srv/private']
             }
             file { '/srv/private/.git/config':
                 source  => 'puppet:///modules/puppetmaster/git/private/gitconfig-master',
-                owner   => 'gitpuppet',
-                group   => 'gitpuppet',
+                owner   => $user,
+                group   => $group,
                 mode    => '0550',
                 require => File['/srv/private']
             }
@@ -161,15 +169,15 @@ class puppetmaster::gitclone(
             puppetmaster::gitprivate { '/srv/private':
                 bare     => true,
                 dir_mode => '0700',
-                owner    => 'gitpuppet',
-                group    => 'gitpuppet',
+                owner    => $user,
+                group    => $group,
             }
 
             # This will transmit data to /var/lib...
             file { '/srv/private/hooks/post-receive':
                 source  => 'puppet:///modules/puppetmaster/git/private/post-receive',
-                owner   => 'gitpuppet',
-                group   => 'gitpuppet',
+                owner   => $user,
+                group   => $group,
                 mode    => '0550',
                 require => Puppetmaster::Gitprivate['/srv/private']
             }
@@ -182,7 +190,7 @@ class puppetmaster::gitclone(
 
         puppetmaster::gitprivate { $private_dir:
             origin   => '/srv/private',
-            owner    => 'gitpuppet',
+            owner    => $user,
             group    => 'puppet',
             dir_mode => '0750',
         }
@@ -202,14 +210,14 @@ class puppetmaster::gitclone(
     } else {
         file { '/var/lib/git/labs':
             ensure => directory,
-            owner  => 'gitpuppet',
-            group  => 'gitpuppet',
+            owner  => $user,
+            group  => $group,
             mode   => '0755',
         }
 
         git::clone { 'labs/private':
             require   => File["${puppetmaster::gitdir}/labs"],
-            owner     => 'gitpuppet',
+            owner     => $user,
             directory => "${puppetmaster::gitdir}/labs/private",
         }
 
@@ -223,7 +231,7 @@ class puppetmaster::gitclone(
     git::clone {
         'operations/software':
             require   => File["${puppetmaster::gitdir}/operations"],
-            owner     => 'gitpuppet',
+            owner     => $user,
             directory => "${puppetmaster::gitdir}/operations/software",
             origin    => 'https://gerrit.wikimedia.org/r/p/operations/software';
     }

@@ -2,7 +2,7 @@
 #
 # This class installs a Puppetmaster
 #
-# Parameters:
+# Parameters
 #    - $bind_address:
 #        The IP address Apache will bind to
 #    - $verify_client:
@@ -31,7 +31,11 @@
 #        String - extra authentication rules to add before the default policy.
 #    - $prevent_cherrypicks:
 #        Bool - use git hooks to prevent cherry picking on top of the git repo
-
+#    - $git_user
+#        String - name of user who should own the git repositories
+#
+#    - $git_group
+#        String - name of group which should own the git repositories
 class puppetmaster(
     $server_name='puppet',
     $bind_address='*',
@@ -53,6 +57,8 @@ class puppetmaster(
     $extra_auth_rules='',
     $include_conftool=true,
     $prevent_cherrypicks=true,
+    $git_user='gitpuppet',
+    $git_group='gitpuppet',
 ){
 
     $gitdir = '/var/lib/git'
@@ -148,6 +154,8 @@ class puppetmaster(
         secure_private      => $secure_private,
         is_git_master       => $is_git_master,
         prevent_cherrypicks => $prevent_cherrypicks,
+        user                => $git_user,
+        group               => $git_group,
     }
 
     include puppetmaster::scripts
