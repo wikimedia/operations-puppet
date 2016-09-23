@@ -16,14 +16,6 @@ class role::ci::slave::labs {
         owner => 'jenkins-deploy',
     }
 
-    contint::tmpfs { 'tmpfs for jenkins CI labs slave':
-        # Jobs expect the tmpfs to be in $HOME/tmpfs
-        mount_point => '/mnt/home/jenkins-deploy/tmpfs',
-        size        => '256M',
-        # /srv here is intentional.
-        # They are both the same filesystem anyway.
-        require     => File['/srv/home/jenkins-deploy'],
-    }
     # And a second mounted on /srv
     contint::tmpfs { 'tmpfs for jenkins CI labs slave on /srv':
         # Jobs expect the tmpfs to be in $HOME/tmpfs
