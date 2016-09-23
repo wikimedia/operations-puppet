@@ -1021,12 +1021,14 @@ node 'es2001.codfw.wmnet' {
     role(mariadb::otrsbackups, prometheus::node_exporter)
     include standard
     include base::firewall
+    include mariadb::mysqld_safe
 }
 
 node /^es200[234]\.codfw\.wmnet/ {
     role(prometheus::node_exporter)
     include standard
     include base::firewall
+    include mariadb::mysqld_safe
 }
 
 
