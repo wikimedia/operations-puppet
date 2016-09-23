@@ -47,9 +47,10 @@ class hhvm::debug {
         default => 'perf-tools',
     }
 
-    package { [ 'google-perftools', 'graphviz', 'gv', 'apache2-utils', $perftools_package ]:
+    package { [ 'google-perftools', 'gv', 'apache2-utils', $perftools_package ]:
         ensure => present,
     }
+    require_package('graphviz')
 
     # `hhvm-dump-debug` dumps an HHVM backtrace to /tmp.
     # When invoked with "--full", also dumps core.

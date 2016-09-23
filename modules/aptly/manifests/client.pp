@@ -1,6 +1,7 @@
 class aptly::client(
     $servername,
-    $source=false
+    $source=false,
+    $server_port=80,
 ) {
     if os_version('ubuntu <= precise') {
         # Remove multiarch support in precise aptly clients.
@@ -12,7 +13,7 @@ class aptly::client(
     }
 
     apt::repository { 'project-aptly':
-        uri        => "http://${servername}/repo",
+        uri        => "http://${servername}:${server_port}/repo",
         dist       => "${::lsbdistcodename}-${::labsproject}",
         components => 'main',
         source     => $source,
