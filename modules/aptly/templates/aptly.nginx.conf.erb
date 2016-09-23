@@ -9,7 +9,7 @@
 # nginx configuration for aptly
 
 server {
-    listen 80;
+    listen <%= @http_port %>;
 
     location /repo {
         alias /srv/packages/public;
