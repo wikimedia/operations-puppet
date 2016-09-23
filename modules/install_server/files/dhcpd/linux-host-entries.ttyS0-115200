@@ -71,13 +71,6 @@ host labsdb1001 {
     filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
-host labsdb1002 {
-    hardware ethernet 00:22:BD:D3:63:F4;
-    fixed-address labsdb1002.eqiad.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
-}
-
 host labsdb1003 {
     hardware ethernet 88:43:E1:C2:54:98;
     fixed-address labsdb1003.eqiad.wmnet;
