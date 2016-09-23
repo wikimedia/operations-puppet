@@ -34,7 +34,8 @@ class role::tcpircbot {
     }
 
     ferm::rule { 'tcpircbot_allowed':
-        # eventlog1001, tin (v4), mira (v4), localhost, tin (v6), mira (v6), terbium (v4), wasat (v4)
+        # eventlog1001 (v4), tin (v4), mira (v4), palladium (v4), localhost (v4), tin (v6), mira (v6), palladium (v6, unnamed in DNS), terbium (v4), terbium (v6, unnamed in DNS), wasat (v4), wasat (v6, unnamed in DNS), rhodium (v4), rhodium (v6, unnamed in DNS)
+        # Please DO NOT change the IPs in the rule below without updating the comment above
         rule => 'proto tcp dport 9200 { saddr (10.64.32.167/32 10.64.0.196/32 10.192.16.132/32 10.64.16.160/32 127.0.0.1 2620:0:861:101:10:64:0:196/128 2620:0:860:102:10:192:16:132/128 2620:0:861:102:10:64:16:160/128 10.64.32.13/32 2620:0:861:103:92b1:1cff:fe25:9d72/128 10.192.48.45/32 2620:0:860:104:1602:ecff:fe3f:478c/128 10.64.16.184/32 2620:0:861:102:10:64:16:184/128) ACCEPT; }',
     }
 }
