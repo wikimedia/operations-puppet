@@ -28,7 +28,7 @@ class role::openldap::corp {
         certificate   => "/etc/ssl/localcerts/ldap-corp.${::site}.wikimedia.org.crt",
         key           => "/etc/ssl/private/ldap-corp.${::site}.wikimedia.org.key",
         extra_acls    => 'openldap/corp-acls.erb',
-        extra_schemas => 'wmf-user.schema',
+        extra_schemas => ['wmf-user.schema'],
     }
 
     ferm::service { 'corp_ldap':
