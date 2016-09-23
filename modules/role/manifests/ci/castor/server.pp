@@ -6,7 +6,8 @@
 class role::ci::castor::server {
     requires_realm( 'labs' )
 
-    include role::labs::lvm::mnt
+    require role::ci::slave::labs::common
+
     class { 'rsync::server':
         # Disable DNS lookup since wmflabs fails to set some for contintcloud
         # and that is annoying in logs. That is solely needed for host
@@ -16,22 +17,21 @@ class role::ci::castor::server {
         }
     }
 
-    file { '/mnt/jenkins-workspace/caches':
+    file { '/srv/jenkins-workspace/caches':
         ensure  => directory,
         owner   => 'jenkins-deploy',
         group   => 'wikidev',
         mode    => '0775',
-        require => Class['role::labs::lvm::mnt'],
+        require => Mount['/srv'],
     }
 
     rsync::server::module { 'caches':
-        path      => '/mnt/jenkins-workspace/caches',
+        path      => '/srv/jenkins-workspace/caches',
         read_only => 'yes',
         uid       => 'jenkins-deploy',
         gid       => 'wikidev',
         require   => [
-            File['/mnt/jenkins-workspace/caches'],
-            Class['role::labs::lvm::mnt'],
+            File['/srv/jenkins-workspace/caches'],
         ],
     }
 }

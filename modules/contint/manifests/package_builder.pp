@@ -11,28 +11,28 @@ class contint::package_builder {
     # Package generated via the mirror operations/debs/jenkins-debian-glue.git
 
     # jenkins-debian glue puppetization:
-    file { '/mnt/pbuilder':
+    file { '/srv/pbuilder':
         ensure  => directory,
         # On extended disk provided by ci::slave::labs::common
-        require => Mount['/mnt'],
+        require => Mount['/srv'],
     }
 
     file { '/var/cache/pbuilder':
         ensure  => link,
-        target  => '/mnt/pbuilder',
-        require => File['/mnt/pbuilder'],
+        target  => '/srv/pbuilder',
+        require => File['/srv/pbuilder'],
     }
 
     class { '::package_builder':
-        # We need /var/cache/pbuilder to be a symlink to /mnt
+        # We need /var/cache/pbuilder to be a symlink to /srv
         # before cowbuilder/pbuilder is installed
         require  => [
             File['/var/cache/pbuilder'],
-            File['/mnt/pbuilder'],
+            File['/srv/pbuilder'],
         ],
         # Cowdancer is confused by /var/cache/pbuilder being a symlink
         # causing it to fail to properly --update cow images. T125999
-        basepath => '/mnt/pbuilder',
+        basepath => '/srv/pbuilder',
     }
 
     package { [
