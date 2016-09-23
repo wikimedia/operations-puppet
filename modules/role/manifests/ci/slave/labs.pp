@@ -17,11 +17,12 @@ class role::ci::slave::labs {
         owner => 'jenkins-deploy',
     }
 
-    contint::tmpfs { 'tmpfs for jenkins CI labs slave':
+    # And a second mounted on /srv
+    contint::tmpfs { 'tmpfs for jenkins CI labs slave on /srv':
         # Jobs expect the tmpfs to be in $HOME/tmpfs
-        mount_point => '/mnt/home/jenkins-deploy/tmpfs',
+        mount_point => '/srv/home/jenkins-deploy/tmpfs',
         size        => '256M',
-        require     => File['/mnt/home/jenkins-deploy'],
+        require     => File['/srv/home/jenkins-deploy'],
     }
 
     # Trebuchet replacement on labs
@@ -47,7 +48,7 @@ class role::ci::slave::labs {
 
         class { 'role::ci::slave::browsertests':
             require => [
-                Class['role::ci::slave::labs::common'], # /mnt
+                Class['role::ci::slave::labs::common'], # /srv
                 Class['contint::packages::labs'], # realize common packages first
             ]
         }
