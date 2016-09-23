@@ -1,8 +1,11 @@
-# == Class statistics::sites::yarn
+# == Class statistics::sites::pivot
 # pivot.wikimedia.org
 #
-# This site will be a simple reverse proxy to the nodejs service serving
-# the pivot UI, used to limit the access to authenticated clients (via LDAP).
+# This site is composed by two parts:
+# 1) a simple Apache reverse proxy to limit the access to authenticated
+#    clients (via LDAP);
+# 2) a nodejs application (Imply's pivot UI) deployed via scap (not part of
+#    this class).
 #
 # Context up to September 2016:
 # There is a current dispute between Imply and Metamarkets about a possible
