@@ -2,7 +2,9 @@
 # Sets up a simple aptly repo server serving over http
 #
 # Set up to only allow root to add packages
-class aptly {
+class aptly (
+    http_port=80
+) {
     require_package('aptly')
     require_package('graphviz') # for aptly graph
 
@@ -22,6 +24,6 @@ class aptly {
     }
 
     nginx::site { 'aptly-server':
-        source => 'puppet:///modules/aptly/aptly.nginx.conf',
+        content => template('aptly/aptly.nginx.conf.erb'),
     }
 }
