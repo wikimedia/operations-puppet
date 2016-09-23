@@ -125,7 +125,6 @@ appserver:
   mw1214.eqiad.wmnet: [apache2]
   mw1215.eqiad.wmnet: [apache2]
   mw1216.eqiad.wmnet: [apache2]
-  mw1217.eqiad.wmnet: [apache2]
   mw1218.eqiad.wmnet: [apache2]
   mw1219.eqiad.wmnet: [apache2]
   mw1220.eqiad.wmnet: [apache2]
