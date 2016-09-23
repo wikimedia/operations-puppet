@@ -6,7 +6,7 @@ class role::labs::tools::proxy {
         proto  => 'tcp',
         port   => '8081',
         desc   => 'Proxymanager service for Labs instances',
-        srange => '$INTERNAL',
+        srange => '$LABS_NETWORKS',
     }
 
     ferm::service{ 'http':
