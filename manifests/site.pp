@@ -1017,16 +1017,26 @@ node /^es201[79]\.codfw\.wmnet/ {
 }
 
 # Disaster recovery hosts for external storage
+# These nodes are temporarilly up until we get proper
+# storage on the backup system
 node 'es2001.codfw.wmnet' {
+    # prometheus is added as a temporary measure until it is
+    # applied on all nodes by default
     role(mariadb::otrsbackups, prometheus::node_exporter)
     include standard
     include base::firewall
+    # temporary measure until mysql is uninstalled
+    include mariadb::mysqld_safe
 }
 
 node /^es200[234]\.codfw\.wmnet/ {
+    # prometheus is added as a temporary measure until it is
+    # applied on all nodes by default
     role(prometheus::node_exporter)
     include standard
     include base::firewall
+    # temporary measure until mysql is uninstalled
+    include mariadb::mysqld_safe
 }
 
 
