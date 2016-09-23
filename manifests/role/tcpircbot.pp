@@ -28,7 +28,7 @@ class role::tcpircbot {
             '::ffff:10.64.16.73/128',           # puppetmaster1001.eqiad.wmnet
             '2620:0:861:102:10:64:16:73/128',   # puppetmaster1001.eqiad.wmnet
             '::ffff:10.192.0.27/128',           # puppetmaster2001.codfw.wmnet
-            '2620:0:860:101:10:192:0:27',       # puppetmaster2001.codfw.wmnet
+            '2620:0:860:101:10:192:0:27/128',   # puppetmaster2001.codfw.wmnet
 
         ],
     }
