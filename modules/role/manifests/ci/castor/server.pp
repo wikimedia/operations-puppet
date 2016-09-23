@@ -4,25 +4,25 @@
 class role::ci::castor::server {
     requires_realm( 'labs' )
 
-    include role::labs::lvm::mnt
+    require role::ci::slave::labs::common
+
     include rsync::server
 
-    file { '/mnt/jenkins-workspace/caches':
+    file { '/srv/jenkins-workspace/caches':
         ensure  => directory,
         owner   => 'jenkins-deploy',
         group   => 'wikidev',
         mode    => '0775',
-        require => Class['role::labs::lvm::mnt'],
+        require => Mount['/srv'],
     }
 
     rsync::server::module { 'caches':
-        path      => '/mnt/jenkins-workspace/caches',
+        path      => '/srv/jenkins-workspace/caches',
         read_only => 'yes',
         uid       => 'jenkins-deploy',
         gid       => 'wikidev',
         require   => [
-            File['/mnt/jenkins-workspace/caches'],
-            Class['role::labs::lvm::mnt'],
+            File['/srv/jenkins-workspace/caches'],
         ],
     }
 }
