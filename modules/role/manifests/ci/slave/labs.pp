@@ -46,7 +46,7 @@ class role::ci::slave::labs {
 
         class { 'role::ci::slave::browsertests':
             require => [
-                Class['role::ci::slave::labs::common'], # /mnt
+                Class['role::ci::slave::labs::common'], # /srv
                 Class['contint::packages::labs'], # realize common packages first
             ]
         }

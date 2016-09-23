@@ -6,16 +6,16 @@ class role::ci::slave::labs::common {
     include contint::packages::base
 
     # Need the labs instance extended disk space
-    require role::labs::lvm::mnt
+    require role::labs::lvm::srv
 
     # Duplicate for transition purposes
-    mount { '/srv':
+    mount { '/mnt':
         ensure  => mounted,
         atboot  => true,
         device  => '/dev/vd/second-local-disk',
         options => 'defaults',
         fstype  => 'ext4',
-        require => Class['role::labs::lvm::mnt'],
+        require => Class['role::labs::lvm::srv'],
     }
 
     # New file layout based on /srv
@@ -45,6 +45,15 @@ class role::ci::slave::labs::common {
         require => File['/srv/jenkins'],
     }
 
+    # Legacy from /mnt era
+    file { '/srv/jenkins-workspace':
+        ensure  => directory,
+        owner   => 'jenkins-deploy',
+        group   => 'wikidev',  # useless, but we need a group
+        mode    => '0775',
+        require => Mount['/srv'],
+    }
+
     file { '/srv/home':
         ensure  => directory,
         owner   => 'root',
@@ -69,19 +78,6 @@ class role::ci::slave::labs::common {
             },
         },
         require  => File['/srv/home/jenkins-deploy'],
-    }
-
-    ##### Legacy based on /mnt #############################
-
-    # Home dir for Jenkins agent
-    #
-    # /var/lib and /home are too small to hold Jenkins workspaces
-    file { '/mnt/jenkins-workspace':
-        ensure  => directory,
-        owner   => 'jenkins-deploy',
-        group   => 'wikidev',  # useless, but we need a group
-        mode    => '0775',
-        require => Mount['/mnt'],
     }
 
     # The slaves on labs use the `jenkins-deploy` user which is already
