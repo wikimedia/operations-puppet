@@ -102,12 +102,10 @@ define udp2log::instance(
         ],
     }
 
-    if !defined(Ferm::Serivce["udp2log_instance_${port}"]) {
-        ferm::service { "udp2log_instance_${port}":
-            proto  => 'udp',
-            port   => $port,
-            srange => '$INTERNAL',
-        }
+    ferm::service { "udp2log_instance_${port}":
+        proto  => 'udp',
+        port   => $port,
+        srange => '$DOMAIN_NETWORKS',
     }
 
     # only set up instance monitoring if the monitoring scripts are installed
