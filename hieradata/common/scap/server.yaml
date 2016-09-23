@@ -43,6 +43,10 @@ sources:
     repository: analytics/refinery
     scap_repository: analytics/refinery/scap
 
+  # Analytics UI to explore Druid's data
+  analytics/pivot:
+    repository: analytics/pivot/deploy
+
   phabricator/deployment:
     repository: phabricator/deployment
 
