@@ -28,3 +28,4 @@ cache::route_table:
   ulsfo: 'codfw'
   esams: 'eqiad'
 varnish_version4: true
+upload_storage_experiment: true
