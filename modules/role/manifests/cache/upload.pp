@@ -162,19 +162,12 @@ class role::cache::upload(
         $be_restart_m = $times['minute']
         $be_restart_d = $times['weekday']
 
-        if $upload_storage_experiment {
-            file { '/etc/cron.d/varnish-backend-restart':
-                ensure => absent,
-            }
-        }
-        else {
-            file { '/etc/cron.d/varnish-backend-restart':
-                mode    => '0444',
-                owner   => 'root',
-                group   => 'root',
-                content => template('varnish/varnish-backend-restart.cron.erb'),
-                require => File['/usr/local/sbin/varnish-backend-restart'],
-            }
+        file { '/etc/cron.d/varnish-backend-restart':
+            mode    => '0444',
+            owner   => 'root',
+            group   => 'root',
+            content => template('varnish/varnish-backend-restart.cron.erb'),
+            require => File['/usr/local/sbin/varnish-backend-restart'],
         }
     }
 }
