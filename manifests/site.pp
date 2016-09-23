@@ -2642,16 +2642,19 @@ node /^rhodium.eqiad.wmnet/ {
 
 node 'stat1001.eqiad.wmnet' {
     # stat1001 is mainly used to host Analytics websites like:
-    # - http://stats.wikimedia.org (Wikistats)
-    # - http://datasets.wikimedia.org
-    # - http://metrics.wikimedia.org
+    # - https://stats.wikimedia.org (Wikistats)
+    # - https://datasets.wikimedia.org
+    # - https://metrics.wikimedia.org
     #       or https://metrics.wmflabs.org/ (Wikimetrics)
+    # - https://pivot.wikimedia.org (Imply's Pivot UI for Druid data)
     #
     # For a complete and up to date list please check the
     # related role/module.
     #
     # This node is not intended for data processing.
-    role(statistics::web)
+    role(statistics::web,
+        analytics_cluster::druid::pivot)
+
     include standard
     include base::firewall
 }
