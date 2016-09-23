@@ -90,9 +90,12 @@ class puppet_compiler(
     include ::etcd
 
     class { 'conftool':
-        config_file => 'puppet:///modules/puppet_compiler/compiler.config.yaml',
-        use_ssl     => false,
-        auth        => false,
+        use_ssl        => false,
+        auth           => false,
+        hosts          => [ 'http://127.0.0.1:2379' ],
+        # Apply default from conftool to override puppet class defaults
+        tcpircbot_host => 'localhost',
+        tcpircbot_port => '9999',
     }
 
     tidy { "${::puppet_compiler::workdir}/output":
