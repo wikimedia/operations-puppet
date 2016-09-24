@@ -166,7 +166,7 @@ deployment_server: deployment-mira.deployment-prep.eqiad.wmflabs
 "scap::deployment_server": deployment-mira.deployment-prep.eqiad.wmflabs
 
 scap::dsh::scap_masters:
-    - deployment-tin.deployment-prep.eqiad.wmflabs
+    - deployment-tin02.deployment-prep.eqiad.wmflabs
     - deployment-mira.deployment-prep.eqiad.wmflabs
 scap::dsh::groups:
     mediawiki-installation:
@@ -176,7 +176,7 @@ scap::dsh::groups:
             - deployment-mediawiki05.deployment-prep.eqiad.wmflabs
             - deployment-mediawiki06.deployment-prep.eqiad.wmflabs
             - deployment-tmh01.deployment-prep.eqiad.wmflabs
-            - deployment-tin.deployment-prep.eqiad.wmflabs
+            - deployment-tin02.deployment-prep.eqiad.wmflabs
             - deployment-mira.deployment-prep.eqiad.wmflabs
     mediawiki-appserver-canaries:
         hosts:
