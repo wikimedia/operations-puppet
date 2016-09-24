@@ -422,7 +422,7 @@ class role::mariadb::beta {
     labs_lvm::volume { 'second-local-disk':
         mountat => '/srv',
         size    => '80%FREE',
-        before  => Class['mariadb::packages'],
+        before  => Class['mariadb::packages_wmf'],
     }
 
     class { 'mariadb::config':
