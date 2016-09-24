@@ -32,9 +32,9 @@ class mediawiki::users(
     sudo::user { 'mwdeploy':
         privileges => [
             "ALL = (${web},mwdeploy,l10nupdate) NOPASSWD: ALL",
-            'ALL = (root) NOPASSWD: /sbin/restart hhvm',
+            'ALL = (root) NOPASSWD: /user/sbin/service restart hhvm',
             'ALL = (root) NOPASSWD: /usr/sbin/service apache2 start',
-            'ALL = (root) NOPASSWD: /sbin/start hhvm',
+            'ALL = (root) NOPASSWD: /sbin/sbin/service start hhvm',
             'ALL = (root) NOPASSWD: /usr/sbin/apache2ctl graceful-stop',
         ]
     }
