@@ -102,7 +102,7 @@ class network::constants {
                     '10.68.16.210', # shinken-01.eqiad.wmflabs
                 ],
             'deployment_hosts' => [
-                    '10.68.17.240',  # deployment-tin.deployment-prep.eqiad.wmflabs
+                    '10.68.21.205',  # deployment-tin.deployment-prep.eqiad.wmflabs
                     '10.68.20.135',  # deployment-mira.deployment-prep.eqiad.wmflabs
                 ],
             }

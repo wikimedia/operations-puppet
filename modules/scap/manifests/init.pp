@@ -8,10 +8,10 @@
 #
 #  [*wmflabs_master*]
 #    Master scap rsync host in the wmflabs domain.
-#    Default 'deployment-mira.eqiad.wmflabs'.
+#    Default 'deployment-tin.eqiad.wmflabs'.
 class scap (
     $deployment_server = 'deployment',
-    $wmflabs_master = 'deployment-mira.eqiad.wmflabs',
+    $wmflabs_master = 'deployment-tin.eqiad.wmflabs',
     $version = '3.3.0-1',
 ) {
     package { 'scap':
