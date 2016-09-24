@@ -2,14 +2,18 @@
 # Sets up a simple aptly repo server serving over http
 #
 # Set up to only allow root to add packages
-class aptly {
+class aptly(
+    $manage_nginx=true,
+    $owner='root',
+    $group='root',
+){
     require_package('aptly')
     require_package('graphviz') # for aptly graph
 
     file { '/srv/packages':
         ensure => directory,
-        owner  => 'root',
-        group  => 'root',
+        owner  => $owner,
+        group  => $group,
         mode   => '0755',
     }
 
@@ -21,7 +25,9 @@ class aptly {
         mode   => '0444',
     }
 
-    nginx::site { 'aptly-server':
-        source => 'puppet:///modules/aptly/aptly.nginx.conf',
+    if $manage_nginx {
+        nginx::site { 'aptly-server':
+            source => 'puppet:///modules/aptly/aptly.nginx.conf',
+        }
     }
 }
