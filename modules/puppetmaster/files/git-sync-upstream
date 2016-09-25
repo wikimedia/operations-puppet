@@ -32,6 +32,12 @@ function rebase_repo() {
     # Fetch new changes from origin
     git fetch --verbose origin
 
+    # Abort early when already on tip of upstream
+    git merge-base --is-ancestor "origin/${TRACK_BRANCH}" HEAD && {
+        echo "Up-to-date: $1"
+        return 0
+    }
+
     # Rebase locally commited changes on top of tracked origin branch
     if ! git rebase "${REBASE_OPTS[@]}" "origin/${TRACK_BRANCH}"; then
         echo "Rebase failed! See error messages above." 1>&2
