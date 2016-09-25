@@ -21,6 +21,7 @@ class base::standard_packages {
         'gdisk',
         'htop',
         'httpry',
+        'intel-microcode',
         'iperf',
         'jq',
         'lldpd',
