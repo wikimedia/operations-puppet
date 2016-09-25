@@ -6,42 +6,38 @@ set -e
 
 # TODO: rewrite in python?
 
-# Used only on labs, send metrics to labmon1001
-STATSD_HOST=labmon1001.eqiad.wmnet
 # Run script as root
 [[ ${UID} -ne 0 ]] && exec sudo ${0} "${@}"
 
 echo "--- ${0} $(date +%Y-%m-%dT%H:%M:%S)"
 
 function rebase_repo() {
-    REPO_NAME="${1}"
-    REPO_PATH="${2}"
-    TRACK_BRANCH="${3}"
+    REPO_PATH="${1}"
+    TRACK_BRANCH="${2}"
     REBASE_OPTS=(
         '--preserve-merges'
         '--stat'
-        '--strategy-option=patience'
         '--strategy=recursive'
+        '--strategy-option=patience'
     )
-    HAVE_STASH=0
 
-    cd ${REPO_PATH}
+    cd "${REPO_PATH}"
 
-    DIFF=`git diff`
+    DIFF=$(git diff)
     if [ -n "${DIFF}" ]; then
         echo "Local diffs detected.  Commit your changes!"
-        exit 2
+        return 2
     fi
 
     # Fetch new changes from origin
     git fetch --verbose origin
 
     # Rebase locally commited changes on top of tracked origin branch
-    if ! git rebase "${REBASE_OPTS[@]}" origin/${TRACK_BRANCH}; then
+    if ! git rebase "${REBASE_OPTS[@]}" "origin/${TRACK_BRANCH}"; then
         echo "Rebase failed! See error messages above." 1>&2
         echo "Reverting rebase attempt" 1>&2
         git rebase --abort
-        exit 2
+        return 2
     fi
 
     # Ensure that submodule changes are applied to the local checkout
@@ -58,5 +54,5 @@ function rebase_repo() {
     sed 's/^/  /'
 }
 
-rebase_repo ops-puppet /var/lib/git/operations/puppet production
-rebase_repo labs-private /var/lib/git/labs/private master
+rebase_repo /var/lib/git/operations/puppet production
+rebase_repo /var/lib/git/labs/private master
