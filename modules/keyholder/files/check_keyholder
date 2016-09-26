@@ -5,12 +5,14 @@ export SSH_AUTH_SOCK="/run/keyholder/proxy.sock"
 
 configured_keys() {
   # Get a sorted list of all key files in /etc/keyholder.d
-  /usr/bin/find /etc/keyholder.d -type f -not -name '*.pub' 2>/dev/null | /usr/bin/sort
+  for key in /etc/keyholder.d/*.pub; do
+      /usr/bin/ssh-keygen -l -f "$key" | /usr/bin/cut -d' ' -f2 2>/dev/null;
+  done | sort
 }
 
 active_keys() {
   # Get a sorted list of all keys currently represented by the agent.
-  /usr/bin/ssh-add -l 2>/dev/null | /usr/bin/cut -d' ' -f 3 | /usr/bin/sort
+  /usr/bin/ssh-add -l 2>/dev/null | /usr/bin/cut -d' ' -f 2 | /usr/bin/sort
 }
 
 [ -S "$SSH_AUTH_SOCK" ] || {
