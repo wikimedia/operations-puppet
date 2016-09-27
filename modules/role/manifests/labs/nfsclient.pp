@@ -2,6 +2,23 @@ class role::labs::nfsclient(
     $mode = 'hard',
     $lookupcache = 'none',
 ) {
+    if !defined(File['/data']) {
+        file { '/data':
+            ensure => directory,
+            owner  => 'root',
+            group  => 'root',
+            mode   => '0755',
+        }
+    }
+
+    if !defined(File['/mnt/nfs']) {
+        file { '/mnt/nfs':
+            ensure => directory,
+            owner  => 'root',
+            group  => 'root',
+            mode   => '0755',
+        }
+    }
 
     labstore::nfs_mount { 'project-on-labstoresvc':
         mount_name  => 'project',
@@ -12,6 +29,7 @@ class role::labs::nfsclient(
         server      => 'labstore.svc.eqiad.wmnet',
         block       => true,
         lookupcache => $lookupcache,
+        require     => File['/data'],
     }
 
     labstore::nfs_mount { 'home-on-labstoresvc':
@@ -34,6 +52,7 @@ class role::labs::nfsclient(
         server      => 'labstore.svc.eqiad.wmnet',
         share_path  => '/scratch',
         lookupcache => $lookupcache,
+        require     => File['/data'],
     }
 
     labstore::nfs_mount { 'scratch-on-labstore1003':
@@ -44,6 +63,7 @@ class role::labs::nfsclient(
         server      => 'labstore1003.eqiad.wmnet',
         share_path  => '/scratch',
         lookupcache => $lookupcache,
+        require     => File['/mnt/nfs'],
     }
 
     if mount_nfs_volume($::labsproject, 'scratch') {
