@@ -1,4 +1,15 @@
-/* Local overrides for Wikimedia. Tested on Gerrit 2.12.2 */
+/* Local overrides for Wikimedia. Tested on Gerrit 2.12.3 */
+
+.com-google-gerrit-client-diff-CommentBox-Style-commentWidgets {
+	/*
+	 * Fixes IE copying text
+	 *
+	 * https://bugs.chromium.org/p/gerrit/issues/detail?id=4647
+	 */
+	-ms-user-select: text !important;
+	/* For browsers that doint prefix there css */
+	user-select: text;
+}
 
 /**
  * Add word wrapping for commit messages, so horizontal scrolling isn't needed,
