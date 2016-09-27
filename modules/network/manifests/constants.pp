@@ -10,6 +10,9 @@ class network::constants {
         '185.15.56.0/22',
         '2a02:ec80::/32',
     ]
+    $module_path = get_module_path($module_name)
+    $network_data = loadyaml("${module_path}/data/data.yaml")
+    $all_network_subnets = $network_data['network::subnets']
 
     # are you really sure you want to use this? maybe what you really
     # the trusted/production networks. See $production_networks for this.
@@ -90,7 +93,6 @@ class network::constants {
             }
     }
 
-    $all_network_subnets = hiera('network::subnets')
 
     # Networks hosting MediaWiki application servers
     # These are:
