@@ -90,9 +90,11 @@ class puppet_compiler(
     include ::etcd
 
     class { 'conftool':
-        config_file => 'puppet:///modules/puppet_compiler/compiler.config.yaml',
         use_ssl     => false,
         auth        => false,
+        hosts       => [
+            'http://127.0.0.1:2379',
+        ]
     }
 
     tidy { "${::puppet_compiler::workdir}/output":
