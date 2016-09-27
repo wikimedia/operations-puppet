@@ -62,33 +62,6 @@ define labstore::nfs_mount(
 
     $final_options = flatten([$set_opts,$options])
 
-    if !defined(File['/data']) {
-        file { '/data':
-            ensure => directory,
-            owner  => 'root',
-            group  => 'root',
-            mode   => '0755',
-        }
-    }
-
-    if !defined(File['/mnt/nfs']) {
-        file { '/mnt/nfs':
-            ensure => directory,
-            owner  => 'root',
-            group  => 'root',
-            mode   => '0755',
-        }
-    }
-
-    if !defined(File['/public']) {
-        file { '/public':
-            ensure => directory,
-            owner  => 'root',
-            group  => 'root',
-            mode   => '0755',
-        }
-    }
-
     # 8/23/2016 cleanup can be removed after a week
     if !defined(File['/usr/local/sbin/nfs-mount-manager.sh']) {
         file { '/usr/local/sbin/nfs-mount-manager.sh':
