@@ -29,6 +29,8 @@ class role::analytics_cluster::client {
         'heirloom-mailx',
         'python-docopt',
         'python3-docopt',
+        # Really nice pure python hdfs client
+        'snakebite',
     )
 
     # include maven to build jars for Hadoop.
