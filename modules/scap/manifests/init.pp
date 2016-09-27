@@ -12,9 +12,10 @@
 class scap (
     $deployment_server = 'deployment',
     $wmflabs_master = 'deployment-mira.eqiad.wmflabs',
+    $version = '3.3.0-1',
 ) {
     package { 'scap':
-        ensure => '3.3.0-1',
+        ensure => $version,
     }
 
     file { '/etc/scap.cfg':
