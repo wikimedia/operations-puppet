@@ -6,6 +6,8 @@ class contint::packages::javascript {
 
     requires_realm('labs')
 
+    require ::graphoid::packages
+
     package { 'npm':
         ensure => present,
         notify => Exec['pin npm'],
