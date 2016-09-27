@@ -39,7 +39,7 @@ module Puppet::Parser::Functions
   newfunction(:slice_network_constants, :type => :rvalue, :arity => -2) do |args|
     fail ArgumentError, 'slice_network_constants() requires an argument' if args.empty?
     fail ArgumentError, 'slice_network_constants() cannot handle more than 2 values' if args.length > 2
-    all_network_subnets = function_hiera(['network::subnets'])
+    all_network_subnets = lookupvar('all_network_subnets')
     realm = args[0]
     options = args[1] if args.length > 1
     requested_site = options['site'] if options
