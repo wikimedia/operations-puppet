@@ -68,6 +68,7 @@ innodb_buffer_pool_instances   = 1
 innodb_log_file_size           = 1G
 innodb_flush_log_at_trx_commit = 1
 innodb_flush_method            = O_DIRECT
+innodb_ft_min_token_size       = 1
 innodb_thread_concurrency      = 0
 innodb_io_capacity             = 1000
 innodb_stats_sample_pages      = 16
@@ -120,9 +121,6 @@ userstat                                               = 1
 # Setting ft_boolean_syntax with a leading white space explodes and it isn't clear there was
 # ever a way to escape things or use set-variable here. For now, run a SET GLOBAL at startup:
 init_file                      = /etc/mysql/phabricator-init.sql
-ft_stopword_file               = /etc/mysql/phabricator-stopwords.txt
-ft_min_word_len                = 3
-aria_pagecache_buffer_size     = 4G
 
 [mysqldump]
 
