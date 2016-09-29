@@ -55,3 +55,8 @@ case `hostname` in \
 		in-target /usr/sbin/useradd --gid 130 --uid 130 --system --shell /bin/false swift
 	;; \
 esac
+
+# Add the network location to motd (T84518)
+mynetwork=$(lldpctl -f keyvalue | grep -oP 'eth0.vlan=+.*' | cut -d= -f2)
+echo -e "This server is located in network ${mynetwork}.\n" >> /etc/motd
+
