@@ -22,9 +22,6 @@ chmod 644 /var/lib/varnish/*/*.vsm
 
 sleep 5
 
-# Sometimes varnishkafka crashes after a varnish restart
-/usr/sbin/service varnishkafka-webrequest restart
-
 # Repool varnish-be and varnish-be-rand
 confctl --quiet select name=`hostname -f`,service='varnish-be' set/pooled=yes
 confctl --quiet select name=`hostname -f`,service='varnish-be-rand' set/pooled=yes
