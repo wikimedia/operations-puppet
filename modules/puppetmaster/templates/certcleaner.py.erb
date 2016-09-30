@@ -13,7 +13,12 @@ import subprocess
 import os
 import json
 import ldap
+import logging
 from optparse import OptionParser  # FIXME: Use argparse
+
+LOG = logging.getLogger('certcleaner')
+LOG.setLevel(logging.INFO)
+LOG.addHandler(logging.FileHandler('/var/log/certcleaner'))
 
 
 def getPuppetInfo(attr, conffile="/etc/puppet/puppet.conf"):
@@ -36,11 +41,13 @@ def purgeSaltKeys(output, minion_type):
         host_result = ds.search_s(basedn, ldap.SCOPE_SUBTREE, ldap_query)
         if not host_result:
             sys.stderr.write('Removing stale salt key %s\n' % host)
+            LOG.warn('Removing stale salt key %s\n' % host)
             try:
                 subprocess.check_call(['/usr/bin/salt-key', '-y', '--rotate-aes-key=', '-r', host])
                 subprocess.check_call(['/usr/bin/salt-key', '-y', '--rotate-aes-key=', '-d', host])
             except subprocess.CalledProcessError:
                 sys.stderr.write('Failed to remove stale salt key %s\n' % host)
+                LOG.warn('Failed to remove stale salt key %s\n' % host)
 
 
 parser = OptionParser(conflict_handler="resolve")
@@ -52,6 +59,8 @@ ldapSupportLib.addParserOptions(parser)
 ldapSupportLib.setBindInfoByOptions(options, parser)
 ds = ldapSupportLib.connect()
 basedn = ldapSupportLib.getLdapInfo('base')
+
+LOG.debug('Certcleaner run beginning')
 
 try:
     puppet_output = subprocess.check_output(['/usr/bin/puppet', 'cert', 'list', '--all'])
@@ -88,10 +97,12 @@ try:
         # Skip pathological hostnames -- possible attack vector.
         if not re.match(r'^[\.a-zA-Z0-9_-]+\.eqiad\.wmflabs$', hostname):
             sys.stderr.write('Invalid hostname %s\n' % hostname)
+            LOG.warn('Invalid hostname %s\n' % hostname)
             try:
                 subprocess.check_call(['/usr/bin/puppet', 'cert', 'clean', hostname])
             except subprocess.CalledProcessError:
                 sys.stderr.write('Failed cleanup of %s\n' % hostname)
+                LOG.warn('Failed cleanup of %s\n' % hostname)
             continue
 
         # Erase keys that don't correspond to ldap.
@@ -99,15 +110,18 @@ try:
         host_info = ds.search_s(basedn, ldap.SCOPE_SUBTREE, query)
         if not host_info:
             sys.stderr.write('Removing stale cert %s' % hostname)
+            LOG.warn('Removing stale cert %s' % hostname)
             try:
                 subprocess.check_call(['/usr/bin/puppet', 'cert', 'clean', hostname])
             except subprocess.CalledProcessError:
                 if not signed:
                     requestpath = '/var/lib/puppet/server/ssl/ca/requests/%s.pem' % hostname
+                    LOG.warn('Failed to remove stale cert %s -- directly removing %s\n' % (hostname, requestpath))
                     sys.stderr.write('Failed to remove stale cert %s -- directly removing %s\n' % (hostname, requestpath))
                     try:
                         subprocess.check_call(['rm', '-f', requestpath])
                     except subprocess.CalledProcessError:
+                        LOG.warn('Failed to rm %s, out of ideas\n' % requestpath)
                         sys.stderr.write('Failed to rm %s, out of ideas\n' % requestpath)
 
     if os.path.exists('/usr/bin/salt-key'):
@@ -125,3 +139,5 @@ try:
 
 finally:
     ds.unbind()
+
+LOG.debug('Certcleaner run complete')
