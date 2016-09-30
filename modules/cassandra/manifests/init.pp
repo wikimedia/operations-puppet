@@ -187,7 +187,7 @@
 #   Default: []
 #
 # [*extra_classpath*]
-#   Additional classpath to be appended to the default.
+#   Additional files and/or directories to append to the JVM classpath.
 #   Default: []
 #
 # [*jmx_port*]
@@ -453,7 +453,7 @@ class cassandra(
 
     file { '/etc/cassandra.in.sh':
         ensure  => present,
-        source  => "puppet:///modules/${module_name}/cassandra.in.sh",
+        content => template("${module_name}/cassandra.in.sh.erb"),
         owner   => 'cassandra',
         group   => 'cassandra',
         mode    => '0444',
