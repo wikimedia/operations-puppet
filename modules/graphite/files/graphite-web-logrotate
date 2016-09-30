@@ -16,6 +16,6 @@
     missingok
     sharedscripts
     postrotate
-        /usr/sbin/service uwsgi-graphite-web restart
+        /usr/sbin/service uwsgi-graphite-web restart > /dev/null
     endscript
 }
