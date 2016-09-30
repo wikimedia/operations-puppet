@@ -73,7 +73,15 @@ class role::ci::master {
         ensure => absent,
     }
 
-    ganglia::plugin::python { 'gmond_jenkins': }
+    file { '/usr/lib/ganglia/python_modules/gmond_jenkins.py':
+        ensure => absent,
+    }
+    file { '/usr/lib/ganglia/python_modules/gmond_jenkins.pyc':
+        ensure => absent,
+    }
+    file { '/etc/ganglia/conf.d/gmond_jenkins.pyconf':
+        ensure => absent,
+    }
 
     # backups
     include role::backup::host
