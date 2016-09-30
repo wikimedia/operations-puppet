@@ -49,21 +49,23 @@ define udp2log::instance(
     # which comes from the psmisc package
     require_package('psmisc')
 
+    require_package('udplog')
+
+    base::service_unit { "udp2log-${name}":
+        ensure   => $ensure,
+        sysvinit => true,
+        systemd  => true,
+        subscribe => File["/etc/udp2log/${name}"],
+        require   => [File["/etc/udp2log/${name}"],
+                      File["/etc/init.d/udp2log-${name}"]
+    }
+
     # the udp2log instance's filter config file
     file { "/etc/udp2log/${name}":
-        require => Package['udplog'],
         mode    => '0744',
         owner   => 'root',
         group   => 'root',
         content => template("udp2log/filters.${name}.erb"),
-    }
-
-    # init service script for this udp2log instance
-    file { "/etc/init.d/udp2log-${name}":
-        mode    => '0755',
-        owner   => 'root',
-        group   => 'root',
-        content => template('udp2log/udp2log.init.erb'),
     }
 
     # primary directory where udp2log log files will be stored.
@@ -90,24 +92,10 @@ define udp2log::instance(
         content => template($logrotate_template),
     }
 
-    # ensure that this udp2log instance is running
-    service { "udp2log-${name}":
-        ensure    => $ensure,  # ensure stopped or running
-        enable    => true,     # make sure this starts on boot
-        subscribe => File["/etc/udp2log/${name}"],
-        hasstatus => false,
-        require   => [Package['udplog'],
-                    File["/etc/udp2log/${name}"],
-                    File["/etc/init.d/udp2log-${name}"]
-        ],
-    }
-
-    if !defined(Ferm::Serivce["udp2log_instance_${port}"]) {
-        ferm::service { "udp2log_instance_${port}":
-            proto  => 'udp',
-            port   => $port,
-            srange => '$INTERNAL',
-        }
+    ferm::service { "udp2log_instance_${port}":
+        proto  => 'udp',
+        port   => $port,
+        srange => '$INTERNAL',
     }
 
     # only set up instance monitoring if the monitoring scripts are installed
