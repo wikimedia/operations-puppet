@@ -4,6 +4,7 @@
 #####################################################################
 
 /var/log/l10nupdatelog/*.log {
+	su l10nupdate <%= @deployment_group %>
 	daily
 	notifempty
 	maxage 180
