@@ -35,11 +35,12 @@ gearman-servers:
 
 # Jenkins masters emits jobs start/completion over zeromq
 zmq-publishers:
-  - tcp://gallium.wikimedia.org:8888
+  - tcp://contint1001.wikimedia.org:8888
 
 # CI systems to attach instances to
 targets:
-  - name: gallium.wikimedia.org
+  # Do not put dot in name, it is used for statsd metrics
+  - name: contint1001
     jenkins:
       url: 'https://integration.wikimedia.org/ci/'
       user: '<%= @jenkins_api_user -%>'
