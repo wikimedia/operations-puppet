@@ -1,4 +1,4 @@
-class role::poolcounter{
+class role::poolcounter::server {
     include ::poolcounter
     include base::firewall
 

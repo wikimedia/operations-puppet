@@ -1133,7 +1133,7 @@ node /^(hassaleh|hassium)\.(codfw|eqiad)\.wmnet$/ {
 
 # poolcounter - careful
 node 'helium.eqiad.wmnet' {
-    role(poolcounter, backup::director, backup::storage)
+    role(poolcounter::server, backup::director, backup::storage)
 
     include standard
     interface::add_ip6_mapped { 'main':
@@ -2407,7 +2407,7 @@ node /(dubnium|pollux)\.wikimedia\.org/ {
 
 # careful when moving poolcounters
 node 'potassium.eqiad.wmnet' {
-    role(poolcounter)
+    role(poolcounter::server)
     include standard
 }
 
@@ -2746,7 +2746,7 @@ node /^snapshot100[5-7]\.eqiad\.wmnet/ {
 
 # codfw poolcounters
 node /(subra|suhail)\.codfw\.wmnet/ {
-    role(poolcounter)
+    role(poolcounter::server)
     include standard
 }
 
