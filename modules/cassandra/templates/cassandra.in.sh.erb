@@ -17,6 +17,10 @@ for jar in /usr/share/cassandra/*.jar; do
     CLASSPATH=$CLASSPATH:$jar
 done
 
+<% if not @extra_classpath.empty? -%>
+EXTRA_CLASSPATH="<%= Array(@extra_classpath).join(':') %>"
+<% end -%>
+
 CLASSPATH="$CLASSPATH:$EXTRA_CLASSPATH"
 
 
