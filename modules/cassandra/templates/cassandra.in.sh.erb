@@ -17,6 +17,18 @@ for jar in /usr/share/cassandra/*.jar; do
     CLASSPATH=$CLASSPATH:$jar
 done
 
+<% if not @extra_classpath_directories.empty? -%>
+for search in <%= Array(@extra_classpath_directories).join(' ') %>; do
+    if test -d "$search"; then
+        for j in "$search"/*.jar; do
+            if test -e "$j"; then
+                CLASSPATH=$CLASSPATH:"$j"
+            fi
+        done
+    fi
+done
+<% end -%>
+
 CLASSPATH="$CLASSPATH:$EXTRA_CLASSPATH"
 
 

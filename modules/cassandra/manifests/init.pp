@@ -186,8 +186,8 @@
 #   Additional options to pass to the JVM.
 #   Default: []
 #
-# [*extra_classpath*]
-#   Additional classpath to be appended to the default.
+# [*extra_classpath_directories*]
+#   An array of directories to be searched for additional jar files.
 #   Default: []
 #
 # [*jmx_port*]
@@ -294,7 +294,7 @@ class cassandra(
     $heap_newsize                     = undef,
     $jmx_port                         = 7199,
     $additional_jvm_opts              = [],
-    $extra_classpath                  = [],
+    $extra_classpath_directories      = [],
     $dc                               = 'datacenter1',
     $rack                             = 'rack1',
     $key_cache_size_in_mb             = 400,
@@ -328,7 +328,7 @@ class cassandra(
     validate_re($disk_failure_policy, '^(stop|best_effort|ignore)$')
 
     validate_array($additional_jvm_opts)
-    validate_array($extra_classpath)
+    validate_array($extra_classpath_directories)
 
     validate_string($logstash_host)
     # lint:ignore:only_variable_string
@@ -453,7 +453,7 @@ class cassandra(
 
     file { '/etc/cassandra.in.sh':
         ensure  => present,
-        source  => "puppet:///modules/${module_name}/cassandra.in.sh",
+        content => template("${module_name}/cassandra.in.sh.erb"),
         owner   => 'cassandra',
         group   => 'cassandra',
         mode    => '0444',
