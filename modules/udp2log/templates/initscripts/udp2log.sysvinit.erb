@@ -1,11 +1,10 @@
 #! /bin/sh
 #######################################################################
 # This file is managed by puppet!
-# puppet://templates/udp2log/udp2log.init.erb
 #######################################################################
 
 ### BEGIN INIT INFO
-# Provides:          udp2log-<%= @name %>
+# Provides:          udp2log-<%= @instance_name %>
 # Required-Start:    $remote_fs $syslog
 # Required-Stop:     $remote_fs $syslog
 # Default-Start:     2 3 4 5
@@ -20,12 +19,12 @@
 # PATH should only include /usr/* if it runs after the mountnfs.sh script
 PATH=/sbin:/usr/sbin:/bin:/usr/bin
 DESC="UDP log receiver (udp2log)"
-NAME=udp2log-<%= @name %>
+NAME=udp2log-<%= @instance_name %>
 DAEMON=/usr/bin/udp2log
 PIDFILE=/var/run/$NAME.pid
 DAEMON_ARGS="--daemon --pid-file $PIDFILE -p <%= @port %><% if @multicast then -%> --multicast <%= (@multicast.class == String) ? @multicast : '233.58.59.1' %><% end %>"
 SCRIPTNAME=/etc/init.d/$NAME
-CONFFILE=/etc/udp2log/<%= @name %>
+CONFFILE=/etc/udp2log/<%= @instance_name %>
 
 <% if @recv_queue %>
 queue=<%= @recv_queue %>

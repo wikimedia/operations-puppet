@@ -1,0 +1,11 @@
+[Unit]
+Description=UDP log receiver (instance <%= @instance_name %>)
+
+[Service]
+User=udp2log
+ExecStart=/usr/bin/udp2log --port <%= @port %> --config-file /etc/udp2log/<%= @instance_name %> --recv-queue <%= @recv_queue %>
+EnvironmentFile=-/etc/default/<%= @name %>
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
