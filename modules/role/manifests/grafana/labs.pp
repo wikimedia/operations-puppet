@@ -22,11 +22,10 @@ class role::grafana::labs {
     }
 
     # https://phabricator.wikimedia.org/T141636
-    git::clone { 'grafana/simple-json-datasource':
-        ensure    => 'latest',
+    git::clone { 'operations/software/grafana/simple-json-datasource':
+        ensure    => present,
         branch    => '3.0',
         directory => '/usr/share/grafana/public/app/plugins/datasource/simple-json-datasource',
-        origin    => 'operations/software/grafana/simple-json-datasource',
         require   => Package['grafana'],
     }
 }
