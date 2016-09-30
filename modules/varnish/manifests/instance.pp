@@ -206,10 +206,7 @@ define varnish::instance(
     $vcl_failed_file = "/var/tmp/reload-vcl-failed${instancesuffix}"
 
     exec { "load-new-vcl-file${instancesuffix}":
-        require     => [
-                Service["varnish${instancesuffix}"],
-                File["/etc/varnish/wikimedia_${vcl}.vcl"]
-            ],
+        require     => Service["varnish${instancesuffix}"],
         subscribe   => [
                 Class['varnish::common::vcl'],
                 File[suffix(prefix($extra_vcl, '/etc/varnish/'),'.inc.vcl')],
