@@ -52,4 +52,13 @@ class base {
     class { 'base::monitoring::host':
         contact_group => $group_contact,
     }
+
+    if os_version('ubuntu == trusty') {
+        file { '/etc/logrotate.d/upstart':
+            mode   => '0444',
+            owner  => 'root',
+            group  => 'root',
+            source => 'puppet:///modules/base/logrotate/upstart',
+        }
+    }
 }
