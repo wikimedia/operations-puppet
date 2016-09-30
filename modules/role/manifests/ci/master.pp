@@ -59,30 +59,6 @@ class role::ci::master {
 
     require contint::master_dir
 
-    # Ganglia monitoring for Jenkins
-    # The upstream module is named 'jenkins' which conflicts with python-jenkins
-    # since gmond will lookup the 'jenkins' python module in the system path
-    # before the module path.
-    # See: https://github.com/ganglia/monitor-core/issues/111
-
-    file { '/usr/lib/ganglia/python_modules/jenkins.py':
-        ensure => absent,
-    }
-
-    file { '/etc/ganglia/conf.d/jenkins.pyconf':
-        ensure => absent,
-    }
-
-    file { '/usr/lib/ganglia/python_modules/gmond_jenkins.py':
-        ensure => absent,
-    }
-    file { '/usr/lib/ganglia/python_modules/gmond_jenkins.pyc':
-        ensure => absent,
-    }
-    file { '/etc/ganglia/conf.d/gmond_jenkins.pyconf':
-        ensure => absent,
-    }
-
     # backups
     include role::backup::host
     backup::set {'var-lib-jenkins-config': }
