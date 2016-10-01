@@ -52,6 +52,22 @@ class mediawiki (
         mode   => '0555',
     }
 
+    # This profile is used to contain ghostscript
+    file { '/etc/firejail/mediawiki-gs.profile':
+        source  => 'puppet:///modules/mediawiki/mediawiki-gs.profile',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0644',
+        require => Package['firejail'],
+    }
+
+    file { '/usr/local/bin/mediawiki-firejail-gs':
+        source => 'puppet:///modules/mediawiki/mediawiki-firejail-gs',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+    }
+
     # We've set the 'php' grain in the past, but we don't really need it anymore
     salt::grain { 'php':
         ensure => absent,
