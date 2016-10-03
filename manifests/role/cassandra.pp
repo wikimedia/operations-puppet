@@ -8,6 +8,7 @@ class role::cassandra {
     class { '::cassandra': }
     class { '::cassandra::metrics': }
     class { '::cassandra::logging': }
+    class { '::cassandra::twcs': }
 
     class { '::cassandra::sysctl':
         # Queue page flushes at 24MB intervals
