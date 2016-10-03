@@ -81,7 +81,7 @@ class role::lists::server {
 
     monitoring::service { 'https':
         description   => 'HTTPS',
-        check_command => 'check_ssl_http!lists.wikimedia.org',
+        check_command => 'check_ssl_http!lists.wikimedia.org!60!30',
     }
 
     nrpe::monitor_service { 'procs_mailmanctl':

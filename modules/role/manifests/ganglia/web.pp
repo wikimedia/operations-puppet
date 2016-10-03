@@ -7,7 +7,7 @@ class role::ganglia::web {
 
     monitoring::service { 'https':
         description   => 'HTTPS',
-        check_command => 'check_ssl_http!ganglia.wikimedia.org',
+        check_command => 'check_ssl_http!ganglia.wikimedia.org!60!30',
     }
 
     $gmetad_root = '/srv/ganglia'
