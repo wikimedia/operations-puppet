@@ -82,6 +82,7 @@ define tlsproxy::localssl(
             puppet_svc => 'nginx',
             system_svc => 'nginx',
         }
+        # TODO: Maybe add monitoring to this in role::cache::ssl::unified
     }
 
     if $do_ocsp and !empty($certs) {
