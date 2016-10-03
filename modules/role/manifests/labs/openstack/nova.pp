@@ -49,6 +49,7 @@ class role::labs::openstack::nova::manager {
     include role::labs::openstack::nova::common
     $novaconfig = $role::labs::openstack::nova::common::novaconfig
 
+    $cert_type = 'traditional'
     case $::realm {
         'production': {
             $sitename = 'wikitech.wikimedia.org'
@@ -63,6 +64,7 @@ class role::labs::openstack::nova::manager {
                 puppet_svc => 'apache2',
                 system_svc => 'apache2',
             }
+            $cert_type = 'letsencrypt'
         }
         default: {
             notify {"unknown realm ${::realm}; https cert will not be installed.":}
@@ -71,7 +73,7 @@ class role::labs::openstack::nova::manager {
 
     monitoring::service { 'https':
         description   => 'HTTPS',
-        check_command => "check_ssl_http!${sitename}",
+        check_command => "check_ssl_http_${cert_type}!${sitename}",
     }
 
     $ssl_settings = ssl_ciphersuite('apache', 'compat', true)

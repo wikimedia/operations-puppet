@@ -3,7 +3,6 @@ class role::cache::ssl::unified(
     $labs_subjects = ['beta.wmflabs.org'],
 ) {
     if ( $::realm == 'production' ) {
-
         $check_cn = 'en.wikipedia.org'
         $check_sans = [
             'wikipedia.org',   '*.wikipedia.org',   '*.m.wikipedia.org', '*.zero.wikipedia.org',
@@ -52,6 +51,7 @@ class role::cache::ssl::unified(
             upstream_ports => [3120, 3121, 3122, 3123, 3124, 3125, 3126, 3127],
             redir_port     => 8080,
         }
+        # TODO: Monitor SSL? Also commented in tlsproxy::localssl
     }
 
     # ordering ensures nginx/varnish config/service-start are
