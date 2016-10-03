@@ -284,13 +284,6 @@ sub cluster_fe_err_synth {
 		return (deliver);
 	}
 
-	// Chrome/41-on-Windows: T141786
-	if (obj.status == 741) {
-		set obj.status = 401;
-		set obj.http.WWW-Authenticate = {"Basic realm="Buggy request, please report at https://phabricator.wikimedia.org/T141786""};
-		return (deliver);
-	}
-
 	// Browser sec redirect, with a cookie to prevent repeats in the same session
 	// Note the cookie is is per-site for simplicity
 	if (obj.status == 787) {
