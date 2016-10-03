@@ -2,17 +2,19 @@ class role::deployment::server(
     $apache_fqdn = $::fqdn,
     $deployment_group = 'wikidev',
 ) {
+
     include standard
 
-    # Can't include this while scap is present on the deployment server:
-    # include misc::deployment::scripts
     include role::deployment::mediawiki
 
-    # scap::server will ensure that all keyholder::agents and scap::sources
+    # scap::server will ensure that all scap::keyholder_agents and scap::sources
     # declared in hiera will exist.  scap::server is
     # for generic repository deployment and does not have
     # anything to do with Mediawiki.
-    include scap::server
+    class { '::scap::server':
+        keyholder_agents => hiera('scap::keyholder_agents', {}),
+        sources          => hiera('scap::sources', {})
+    }
 
     include ::deployment::umask_wikidev
 
