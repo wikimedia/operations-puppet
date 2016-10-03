@@ -90,3 +90,6 @@ repo_config:
     checkout_submodules: true
   dumps/dumps:
     upstream: https://gerrit.wikimedia.org/r/operations/dumps
+  cassandra/twcs:
+    gitfat_enabled: true
+    upstream: https://gerrit.wikimedia.org/r/operations/software/cassandra-twcs
