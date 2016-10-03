@@ -308,16 +308,16 @@ class role::mariadb::misc::phabricator(
 
     file { '/etc/mysql/phabricator-init.sql':
         ensure  => present,
-        owner   => 'mysql',
-        group   => 'mysql',
+        owner   => 'root',
+        group   => 'root',
         mode    => '0644',
         content => template('mariadb/phabricator-init.sql.erb'),
     }
 
     file { '/etc/mysql/phabricator-stopwords.txt':
         ensure  => present,
-        owner   => 'mysql',
-        group   => 'mysql',
+        owner   => 'root',
+        group   => 'root',
         mode    => '0644',
         content => template('mariadb/phabricator-stopwords.txt.erb'),
     }
