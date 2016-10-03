@@ -217,17 +217,13 @@ mediawiki::web::sites::portal_dir: "portal-master"
 
 
 # NOTE: The production scap::server $keyholder_agents and $sources used by
-# The scap::server class are in common/scap/server.yaml.
+# The scap::server class are in role/common/deployment/server.yaml.
 # These override the production ones for deployment-prep in labs.
-# These would be in $classpath based lookup somewhere for deployment-prep,
-# (like labs/deployment-prep/scap/server.yaml), but :expand_path doesn't
-# seem to work the same way in labs as it does in production for the nuyaml
-# backend.
 
 # deployment-prep keyholder::agent declarations.  These are created
 # by the scap::server class.  Each agent listed here
 # will be present and useable by scap on the scap deploy server.
-scap::server::keyholder_agents:
+scap::keyholder_agents:
 
   phabricator:
     trusted_groups:
@@ -242,9 +238,9 @@ scap::server::keyholder_agents:
       - deploy-service
 
 # deployment-prep scap::source declarations.  These are created
-# by the scap::server class.  Each source listed here
+# by the role deployment::server.  Each source listed here
 # will be cloned on the scap deploy server.
-scap::server::sources:
+scap::sources:
 
   phabricator/deployment:
     repository: phabricator/deployment
