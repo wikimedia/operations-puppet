@@ -21,6 +21,7 @@ class install_server::web_server {
         puppet_svc => 'nginx',
         system_svc => 'nginx',
     }
+    // TODO: Monitor SSL?
 
     $ssl_settings = ssl_ciphersuite('nginx', 'mid', true)
 

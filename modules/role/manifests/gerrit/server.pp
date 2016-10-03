@@ -4,14 +4,6 @@ class role::gerrit::server($ipv4, $ipv6 = undef, $bacula = undef) {
         include role::backup::host
         include base::firewall
 
-        $host = hiera('gerrit::host')
-
-        monitoring::service { 'https':
-            description   => 'HTTPS',
-            check_command => "check_ssl_http!${host}",
-            contact_group => 'admins,gerrit',
-        }
-
         monitoring::service { 'gerrit_ssh':
             description   => 'SSH access',
             check_command => 'check_ssh_port!29418',

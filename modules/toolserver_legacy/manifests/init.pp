@@ -18,6 +18,7 @@ class toolserver_legacy {
         puppet_svc => 'apache2',
         system_svc => 'apache2',
     }
+    // Monitored externally by icinga::monitor::certs due to this being run in labs...
 
     apache::site { 'www.toolserver.org':
         content => template('toolserver_legacy/www.toolserver.org.erb'),

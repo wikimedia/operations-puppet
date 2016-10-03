@@ -10,7 +10,7 @@ class icinga::monitor::certs {
     }
     monitoring::service { 'https_blog':
         description   => 'HTTPS-blog',
-        check_command => 'check_ssl_http!blog.wikimedia.org',
+        check_command => 'check_ssl_http!blog.wikimedia.org!60!30',
         host          => 'blog.wikimedia.org',
     }
 
@@ -20,7 +20,7 @@ class icinga::monitor::certs {
     }
     monitoring::service { 'https_policy':
         description   => 'HTTPS-policy',
-        check_command => 'check_ssl_http!policy.wikimedia.org',
+        check_command => 'check_ssl_http!policy.wikimedia.org!60!30',
         host          => 'policy.wikimedia.org',
     }
 
@@ -30,13 +30,13 @@ class icinga::monitor::certs {
     }
     monitoring::service { 'https_eventdonations':
         description   => 'HTTPS-eventdonations',
-        check_command => 'check_ssl_http!eventdonations.wikimedia.org',
+        check_command => 'check_ssl_http!eventdonations.wikimedia.org!60!30',
         host          => 'eventdonations.wikimedia.org',
     }
 
     monitoring::service { 'https_toolserver':
         description   => 'HTTPS-toolserver',
-        check_command => 'check_ssl_http!www.toolserver.org',
+        check_command => 'check_ssl_http!www.toolserver.org!7!3',
         host          => 'www.toolserver.org',
     }
 
@@ -46,14 +46,14 @@ class icinga::monitor::certs {
     }
     monitoring::service { 'https_planet':
         description   => 'HTTPS-planet',
-        check_command => 'check_ssl_http!en.planet.wikimedia.org',
+        check_command => 'check_ssl_http!en.planet.wikimedia.org!60!30',
         host          => 'en.planet.wikimedia.org',
     }
 
     # *.wmflabs.org (labs wildcard cert, testing tools.wmflabs.org)
     monitoring::service { 'https_wmflabs':
         description   => 'HTTPS-wmflabs',
-        check_command => 'check_ssl_http!tools.wmflabs.org',
+        check_command => 'check_ssl_http!tools.wmflabs.org!60!30',
         host          => 'tools.wmflabs.org',
     }
 
@@ -63,7 +63,7 @@ class icinga::monitor::certs {
     }
     monitoring::service { 'https_wmfusercontent':
         description   => 'HTTPS-wmfusercontent',
-        check_command => 'check_ssl_http!phab.wmfusercontent.org',
+        check_command => 'check_ssl_http!phab.wmfusercontent.org!60!30',
         host          => 'phab.wmfusercontent.org',
     }
 }

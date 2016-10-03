@@ -5,7 +5,7 @@ class role::cache::ssl::unified(
     if ( $::realm == 'production' ) {
         monitoring::service { 'https':
             description   => 'HTTPS',
-            check_command => 'check_sslxNN',
+            check_command => 'check_sslxNN!60!30',
         }
 
         tlsproxy::localssl { 'unified':
@@ -27,6 +27,7 @@ class role::cache::ssl::unified(
             upstream_port  => 3127,
             redir_port     => 8080,
         }
+        // TODO: Monitor SSL? Also commented in tlsproxy::localssl
     }
 
     # ordering ensures nginx/varnish config/service-start are
