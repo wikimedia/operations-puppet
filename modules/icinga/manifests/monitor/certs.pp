@@ -10,7 +10,7 @@ class icinga::monitor::certs {
     }
     monitoring::service { 'https_blog':
         description   => 'HTTPS-blog',
-        check_command => 'check_ssl_http!blog.wikimedia.org',
+        check_command => 'check_ssl_http_letsencrypt!blog.wikimedia.org',
         host          => 'blog.wikimedia.org',
     }
 
@@ -36,7 +36,7 @@ class icinga::monitor::certs {
 
     monitoring::service { 'https_toolserver':
         description   => 'HTTPS-toolserver',
-        check_command => 'check_ssl_http!www.toolserver.org',
+        check_command => 'check_ssl_http_letsencrypt!www.toolserver.org',
         host          => 'www.toolserver.org',
     }
 

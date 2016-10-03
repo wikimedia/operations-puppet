@@ -83,6 +83,7 @@ define tlsproxy::localssl(
             puppet_svc => 'nginx',
             system_svc => 'nginx',
         }
+        # TODO: Maybe add monitoring to this in role::cache::ssl::unified
     }
 
     $do_ocsp_int = hiera('do_ocsp_int', false)
