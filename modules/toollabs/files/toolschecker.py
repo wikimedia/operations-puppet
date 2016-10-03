@@ -144,11 +144,6 @@ def labsdb_check_labsdb1001():
     return db_query_check('labsdb1001.eqiad.wmnet')
 
 
-@check('/labsdb/labsdb1002')
-def labsdb_check_labsdb1002():
-    return db_query_check('labsdb1002.eqiad.wmnet')
-
-
 @check('/labsdb/labsdb1003')
 def labsdb_check_labsdb1003():
     return db_query_check('labsdb1003.eqiad.wmnet')
@@ -300,11 +295,6 @@ def check_toolsdb():
 @check('/labsdb/labsdb1001rw')
 def labsdb_check_labsdb1001rw():
     return db_read_write_check('labsdb1001.eqiad.wmnet', 's52524__rwtest')
-
-
-@check('/labsdb/labsdb1002rw')
-def labsdb_check_labsdb1002rw():
-    return db_read_write_check('labsdb1002.eqiad.wmnet', 's52524__rwtest')
 
 
 @check('/labsdb/labsdb1003rw')
