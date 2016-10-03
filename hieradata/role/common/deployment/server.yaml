@@ -113,3 +113,7 @@ scap::sources:
   # Striker is the Tool Labs admin console application
   striker/deploy:
     repository: labs/striker/deploy
+
+  # Time-window compaction strategy for Cassandra
+  cassandra/twcs:
+    repository: operations/software/cassandra-twcs
