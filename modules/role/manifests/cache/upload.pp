@@ -129,7 +129,7 @@ class role::cache::upload(
     if $::realm == 'production' {
         $hnodes = hiera('cache::upload::nodes')
         $all_nodes = array_concat($hnodes['eqiad'], $hnodes['esams'], $hnodes['ulsfo'], $hnodes['codfw'])
-        $times = cron_splay($all_nodes, 'daily', 'upload-backend-restarts')
+        $times = cron_splay($all_nodes, 'weekly', 'upload-backend-restarts')
         $be_restart_h = $times['hour']
         $be_restart_m = $times['minute']
         $be_restart_d = $times['weekday']
