@@ -10,7 +10,7 @@ class role::tendril {
 
     monitoring::service { 'https-tendril':
         description   => 'HTTPS-tendril',
-        check_command => 'check_ssl_http!tendril.wikimedia.org',
+        check_command => 'check_ssl_http_traditional!tendril.wikimedia.org',
     }
 
     class { '::tendril':

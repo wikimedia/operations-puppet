@@ -17,7 +17,7 @@ class librenms::web(
 
     monitoring::service { 'https':
         description   => 'HTTPS',
-        check_command => 'check_ssl_http!librenms.wikimedia.org',
+        check_command => 'check_ssl_http_traditional!librenms.wikimedia.org',
     }
 
     monitoring::service { 'librenms':
