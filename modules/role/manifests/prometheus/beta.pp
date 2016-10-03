@@ -55,7 +55,7 @@ class role::prometheus::beta {
 
     prometheus::server { 'beta':
         listen_address       => '127.0.0.1:9903',
-        scrape_configs_extra => concat($varnish_jobs, $mysql_jobs, $web_jobs),
+        scrape_configs_extra => array_concat($varnish_jobs, $mysql_jobs, $web_jobs),
     }
 
     prometheus::web { 'beta':
