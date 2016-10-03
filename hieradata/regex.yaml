@@ -353,7 +353,7 @@ lvs_temp_bgp_disable:
   lvs::configuration::bgp: no
 maps_test:
   __regex: !ruby/regexp /^maps-test200[1-4]\.codfw\.wmnet$/
-  cassandra::version: '2.1.12'
+  cassandra::target_version: '2.2'
 
 # These values are site/realm specific for LABTEST infrastructure
 
