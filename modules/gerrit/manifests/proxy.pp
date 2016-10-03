@@ -9,6 +9,12 @@ class gerrit::proxy(
         system_svc => 'apache2',
     }
 
+    monitoring::service { 'https':
+        description   => 'HTTPS',
+        check_command => "check_ssl_http_letsencrypt!${host}",
+        contact_group => 'admins,gerrit',
+    }
+
     $ssl_settings = ssl_ciphersuite('apache', 'mid', true)
 
     apache::site { $host:

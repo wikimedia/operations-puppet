@@ -54,6 +54,7 @@ class role::labs::openstack::nova::manager {
             $sitename = 'wikitech.wikimedia.org'
             $certificate = $sitename
             sslcert::certificate { $sitename: }
+            $cert_type = 'traditional'
         }
         'labtest': {
             $sitename = 'labtestwikitech.wikimedia.org'
@@ -63,15 +64,17 @@ class role::labs::openstack::nova::manager {
                 puppet_svc => 'apache2',
                 system_svc => 'apache2',
             }
+            $cert_type = 'letsencrypt'
         }
         default: {
             notify {"unknown realm ${::realm}; https cert will not be installed.":}
+            $cert_type = 'traditional'
         }
     }
 
     monitoring::service { 'https':
         description   => 'HTTPS',
-        check_command => "check_ssl_http!${sitename}",
+        check_command => "check_ssl_http_${cert_type}!${sitename}",
     }
 
     $ssl_settings = ssl_ciphersuite('apache', 'compat', true)
