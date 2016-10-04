@@ -78,46 +78,10 @@ define scap::source(
     $owner                = 'trebuchet',
     $group                = 'wikidev',
 ) {
-    # Path at which $repository should be cloned.
-    $path                 = "/srv/deployment/${title}"
-
-    # We can't rely on puppet to manage arbitrary subdirectories.
-    # Use an exec to just make sure that $path's parent directories exist.
-    exec { "mkdir_scap_source_path_${title}":
-        command => "mkdir -p $(dirname ${path}) && chmod 775 $(dirname ${path}) && chown ${owner}:${group} $(dirname ${path})",
-        path    => '/bin:/usr/bin',
-        unless  => "test -d $(dirname ${path})",
-        user    => 'root',
-    }
-
-    # Clone the source repository at $path.
-    git::clone { "scap::source ${repository} for ${title}":
-        # Since usage of this define might result in multiple clones of the
-        # same $repository, it is necessary to title the git::clones with
-        # unique names.  If we aren't using the repository name as the $title
-        # of git::clone, then we need to set $origin, and a $origin
-        # must be a full git URL. This means we can't yet use phabricator
-        # git URLs.  TODO: Fix git::clone to support custom repository names
-        # without specificing full git $origin URLs.
-        origin             => "https://gerrit.wikimedia.org/r/p/${repository}.git",
-        directory          => $path,
-        owner              => $owner,
-        group              => $group,
-        shared             => true,
-        recurse_submodules => true,
-        require            => Exec["mkdir_scap_source_path_${title}"],
-    }
-
-    if $scap_repository {
-        # Clone the scap repository at $path/scap
-        git::clone { "scap::source ${scap_repository} for ${title}":
-            origin             => "https://gerrit.wikimedia.org/r/p/${scap_repository}.git",
-            directory          => "${path}/scap",
-            owner              => $owner,
-            group              => $group,
-            shared             => true,
-            recurse_submodules => true,
-            require            => Git::Clone["scap::source ${repository} for ${title}"],
-        }
+    scap_source { $title:
+        repository      => $repository,
+        scap_repository => $scap_repository,
+        owner           => $owner,
+        group           => $group,
     }
 }
