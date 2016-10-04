@@ -44,8 +44,8 @@ class role::labs::nfs::secondary($monitor = 'eth0') {
     labstore::drbd::resource {'tools':
         drbd_cluster => $drbd_cluster,
         port         => '7791',
-        device       => '/dev/drbd2',
-        disk         => '/dev/tools-project/tools-project',
+        device       => '/dev/drbd4',
+        disk         => '/dev/tools/tools-project',
         require      => Interface::Ip['drbd-replication'],
     }
 
