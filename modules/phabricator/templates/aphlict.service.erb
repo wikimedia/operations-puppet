@@ -1,0 +1,13 @@
+[Unit]
+Description=Aphlict - Phabricator notification service
+After=network.target auditd.service
+
+[Service]
+ExecStart=<%= @aphlict_cmd %>
+ExecReload=/bin/kill -HUP $MAINPID
+KillMode=process
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
+Alias=aphlict.service

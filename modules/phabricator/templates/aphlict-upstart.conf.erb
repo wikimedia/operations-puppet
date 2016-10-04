@@ -1,0 +1,16 @@
+# aphlict - Phabricator notification server
+#
+# Routes real-time notifications to websocket clients
+
+description	"Phabricator notification websocket server"
+
+start on runlevel [2345]
+stop on runlevel [!2345]
+
+respawn
+respawn limit 10 5
+umask 022
+
+expect stop
+
+exec <%= @aphlict_cmd %>
