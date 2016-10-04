@@ -266,4 +266,8 @@ class phabricator (
         hasrestart => true,
         require    => $base_requirements,
     }
+
+    if $phab_settings['notification.servers'] {
+        include phabricator::aphlict
+    }
 }
