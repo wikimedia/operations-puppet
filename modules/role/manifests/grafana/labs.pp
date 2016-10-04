@@ -21,18 +21,4 @@ class role::grafana::labs {
         ]
     }
 
-    # https://phabricator.wikimedia.org/T141636
-    # We clone this, but need to symlink into the 'dist' directory for plugin to actually work
-    git::clone { 'operations/software/grafana/simple-json-datasource':
-        ensure    => present,
-        branch    => '3.0',
-        directory => '/usr/share/grafana/public/app/plugins/datasource/simple-json-datasource',
-        require   => Package['grafana'],
-    }
-
-    file { '/usr/share/grafana/public/app/plugins/datasource/datasource-plugin-genericdatasource':
-        ensure  => link,
-        target  => '/usr/share/grafana/public/app/plugins/datasource/simple-json-datasource/dist',
-        require => Git::Clone['operations/software/grafana/simple-json-datasource'],
-    }
 }
