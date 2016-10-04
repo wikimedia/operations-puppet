@@ -254,8 +254,8 @@ restbase:
   restbase2008.codfw.wmnet: [restbase]
   restbase2009.codfw.wmnet: [restbase]
 sca:
-  sca2001.codfw.wmnet: [zotero, apertium]
-  sca2002.codfw.wmnet: [zotero, apertium]
+  sca2001.codfw.wmnet: [zotero]
+  sca2002.codfw.wmnet: [zotero]
 scb:
   scb2001.codfw.wmnet: [mobileapps, mathoid, graphoid, citoid, apertium, cxserver, ores]
   scb2002.codfw.wmnet: [mobileapps, mathoid, graphoid, citoid, apertium, cxserver, ores]
