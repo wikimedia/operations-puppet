@@ -1,9 +1,0 @@
-nagios_group: analytics_eqiad
-cluster: analytics
-admin::groups:
-  - analytics-admins
-# This should have been assigned via the role, but not possible ATM
-# See https://gerrit.wikimedia.org/r/#/c/250038/
-debdeploy::grains:
-  debdeploy-impala:
-    value: standard
