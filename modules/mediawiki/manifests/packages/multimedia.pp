@@ -7,7 +7,6 @@ class mediawiki::packages::multimedia {
         'ffmpeg',
         'ffmpeg2theora',
         'fontconfig-config',
-        'ghostscript',
         'libimage-exiftool-perl',
         'libjpeg-turbo-progs',
         'libogg0',
