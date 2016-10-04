@@ -34,6 +34,7 @@ class mediawiki::packages {
 
     # PDF and DjVu
     package { [
+        'ghostscript',
         'djvulibre-bin',
         'librsvg2-bin',
         'libtiff-tools',
