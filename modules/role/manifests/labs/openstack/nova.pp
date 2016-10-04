@@ -410,7 +410,7 @@ class role::labs::openstack::nova::compute($instance_dev='/dev/md1') {
             group   => 'root',
             mode    => '0444',
             require => File['/etc/modules-load.d/'],
-            content => 'br_netfilter\n',
+            content => "br_netfilter\n",
         }
     }
 
