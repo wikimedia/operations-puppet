@@ -1,8 +1,8 @@
-# == Class: toollabs::node::web::generic
+# == Class: role::toollabs::node::web::generic
 # 
 # Sets up a node for running generic webservices.
 # Currently explicitly supports nodejs
-class toollabs::node::web::generic inherits toollabs::node::web {
+class role::toollabs::node::web::generic inherits toollabs::node::web {
     class { 'toollabs::queues':
         queues => [ 'webgrid-generic' ],
     }
