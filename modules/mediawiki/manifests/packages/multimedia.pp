@@ -6,7 +6,6 @@ class mediawiki::packages::multimedia {
     package { [
         'ffmpeg',
         'fontconfig-config',
-        'ghostscript',
         'libimage-exiftool-perl',
         'libjpeg-turbo-progs',
         'libogg0',
