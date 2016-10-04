@@ -46,6 +46,8 @@ cfg.CONF.register_opts([
     cfg.StrOpt('puppet_master_host', default=None),
     cfg.StrOpt('salt_master_host', default=None),
 
+    cfg.ListOpt('skip_tenants', default=[]),
+
     cfg.StrOpt('keystone_auth_name', default=None),
     cfg.StrOpt('keystone_auth_pass', default=None),
     cfg.StrOpt('keystone_auth_project', default=None),
@@ -72,6 +74,12 @@ class NovaFixedLdapHandler(BaseAddressLdapHandler):
 
     def process_notification(self, context, event_type, payload):
         LOG.debug('NovaLdapHandler received notification - %s' % event_type)
+
+        project_name = getattr(context, 'tenant', None)
+        if project_name in cfg.CONF[self.name].skip_tenants:
+            LOG.debug('NovaLdapHandler skipped project %s event %s' % (
+                project_name, event_type))
+            return
 
         if event_type == 'compute.instance.create.end':
             self._create(payload['fixed_ips'], payload,
