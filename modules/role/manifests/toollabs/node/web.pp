@@ -1,4 +1,4 @@
-# Class: toollabs::node::web
+# Class: role::toollabs::node::web
 #
 # Common settings for all toollabs::node::web::* classes
 #
@@ -12,7 +12,7 @@
 #
 # Sample Usage:
 #
-class toollabs::node::web {
+class role::toollabs::node::web {
 
     include toollabs::node::all
     include gridengine::submit_host
