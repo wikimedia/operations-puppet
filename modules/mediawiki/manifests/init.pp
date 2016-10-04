@@ -52,6 +52,20 @@ class mediawiki (
         mode   => '0555',
     }
 
+    file { '/etc/firejail/mediawiki-converters.profile':
+        source => 'puppet:///modules/mediawiki/mediawiki-converters.profile',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0644',
+    }
+
+    file { '/usr/local/bin/mediawiki-firejail-ghostscript':
+        source => 'puppet:///modules/mediawiki/mediawiki-firejail-ghostscript',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+    }
+
     # We've set the 'php' grain in the past, but we don't really need it anymore
     salt::grain { 'php':
         ensure => absent,
