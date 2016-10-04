@@ -1,4 +1,4 @@
-# Class: toollabs::node::compute::general
+# Class: role::toollabs::node::compute::general
 #
 # This configures the compute node as a general node
 #
@@ -10,7 +10,7 @@
 #
 # Sample Usage:
 #
-class toollabs::node::compute::general {
+class role::toollabs::node::compute::general {
 
     include toollabs::node::all
 

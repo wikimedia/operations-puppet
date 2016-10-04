@@ -1,4 +1,4 @@
-# Class: toollabs::node::web::lighttpd
+# Class: role::toollabs::node::web::lighttpd
 #
 # This configures the compute node as a lighttpd web server
 #
@@ -10,7 +10,7 @@
 #
 # Sample Usage:
 #
-class toollabs::node::web::lighttpd inherits toollabs::node::web {
+class role::toollabs::node::web::lighttpd inherits role::toollabs::node::web {
 
     package { 'php5-cgi':
         ensure => latest,
