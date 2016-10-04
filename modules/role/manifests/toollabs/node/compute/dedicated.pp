@@ -1,4 +1,4 @@
-# Class: toollabs::node::compute::general
+# Class: role::toollabs::node::compute::general
 #
 # This configures the compute node as a general node dedicated to a tool
 #
@@ -10,7 +10,7 @@
 #
 # Sample Usage:
 #
-class toollabs::node::compute::dedicated($dedicated_tool = $::node_dedicated_tool) {
+class role::toollabs::node::compute::dedicated($dedicated_tool = $::node_dedicated_tool) {
 
     include toollabs::node::all
 
