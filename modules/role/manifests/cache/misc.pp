@@ -2,6 +2,10 @@ class role::cache::misc {
     include role::cache::2layer
     include role::cache::ssl::misc
 
+    class { 'varnish::htcppurger':
+        mc_addrs => [ '239.128.0.115' ],
+    }
+
     class { 'lvs::realserver':
         realserver_ips => $lvs::configuration::service_ips['misc_web'][$::site],
     }
