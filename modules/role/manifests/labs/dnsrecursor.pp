@@ -222,7 +222,7 @@ class role::labs::dnsrecursor {
         'nowikibooks', 'nowikimedia', 'nowikinews', 'nowikiquote',
         'nowikisource', 'nowiktionary', 'nrmwiki', 'nsowiki',
         'nvwiki', 'nycwikimedia', 'nywiki', 'nzwikimedia', 'ocwiki',
-        'ocwikibooks', 'ocwiktionary', 'omwiki', 'omwiktionary',
+        'ocwikibooks', 'ocwiktionary', 'olowiki', 'omwiki', 'omwiktionary',
         'orwiki', 'orwikisource', 'orwiktionary', 'oswiki',
         'outreachwiki', 'pa_uswikimedia', 'pagwiki', 'pamwiki',
         'papwiki', 'pawiki', 'pawikibooks', 'pawiktionary', 'pcdwiki',
