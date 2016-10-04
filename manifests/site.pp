@@ -98,16 +98,13 @@ node /analytics10(2[89]|3[0-9]|4[0-9]|5[0-7]).eqiad.wmnet/ {
     include standard
 }
 
-# This is an OOW dell.
+
 node 'analytics1015.eqiad.wmnet' {
     role(spare::system)
 }
 
-
-# analytics1026 is spare, for now is just an analytics client.
 node 'analytics1026.eqiad.wmnet' {
-    role(analytics_cluster::client)
-    include standard
+    role(spare::system)
 }
 
 # analytics1027 hosts hue.wikimedia.org, and is used for launching
