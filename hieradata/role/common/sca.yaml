@@ -2,7 +2,6 @@ cluster: sca
 admin::groups:
   - sc-admins
   - zotero-admin
-  - apertium-admins
 debdeploy::grains:
   debdeploy-sca:
     value: standard
