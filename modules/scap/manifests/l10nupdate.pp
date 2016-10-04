@@ -117,8 +117,8 @@ class scap::l10nupdate(
     }
 
     logrotate::conf { 'l10nupdate':
-        ensure  => present,
-        content => template('scap/l10nupdate.logrotate.erb'),
+        ensure => present,
+        source => 'puppet:///modules/scap/l10nupdate.logrotate'
     }
 
     # Git clones for the l10update git job

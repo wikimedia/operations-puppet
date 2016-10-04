@@ -4,7 +4,7 @@
 #####################################################################
 
 /var/log/l10nupdatelog/*.log {
-	su l10nupdate <%= @deployment_group %>
+	su l10nupdate l10nupdate
 	daily
 	notifempty
 	maxage 180
@@ -14,4 +14,3 @@
 	delaycompress
 	missingok
 }
-
