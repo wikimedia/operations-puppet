@@ -7,14 +7,15 @@ class role::deployment::server(
 
     include role::deployment::mediawiki
 
-    # scap::server will ensure that all scap::keyholder_agents and scap::sources
-    # declared in hiera will exist.  scap::server is
-    # for generic repository deployment and does not have
-    # anything to do with Mediawiki.
-    class { '::scap::server':
-        keyholder_agents => hiera('scap::keyholder_agents', {}),
-        sources          => hiera('scap::sources', {})
-    }
+    ## Scap Config ##
+    require ::scap
+
+    # Create an instance of $keyholder_agents for each of the key specs.
+    create_resources('keyholder::agent', hiera('scap::keyholder_agents', {}))
+
+    # Create an instance of scap_source for each of the key specs in hiera.
+    create_resources('scap::source', hiera('scap::sources', {}))
+    ## End scap config ###
 
     include ::deployment::umask_wikidev
 
