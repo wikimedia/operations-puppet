@@ -1,1 +1,1 @@
-statsd_host: 'localhost'
+swift::storage::statsd_host: 'localhost'

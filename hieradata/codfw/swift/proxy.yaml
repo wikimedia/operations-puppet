@@ -1,5 +1,5 @@
-proxy_service_host: 'ms-fe.svc.codfw.wmnet'
-memcached_servers: [
+swift::proxy::proxy_service_host: 'ms-fe.svc.codfw.wmnet'
+swift::proxy::memcached_servers: [
   'ms-fe2001.codfw.wmnet:11211',
   'ms-fe2002.codfw.wmnet:11211',
   'ms-fe2003.codfw.wmnet:11211',
