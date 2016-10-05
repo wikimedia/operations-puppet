@@ -171,6 +171,12 @@ class Hiera
           else
             new_answer = plain_lookup(lookup_key, data, scope)
           end
+
+          # Transitional: look up the full qualified key in expand_path
+          if new_answer.nil? && lookup_key != key
+            new_answer = plain_lookup(key, data, scope)
+          end
+
           next if new_answer.nil?
           # Extra logging that we found the key. This can be outputted
           # multiple times if the resolution type is array or hash but that

@@ -1,4 +1,4 @@
 #
 # Following Cloudera recommandations for ~20 users
 #
-heapsize: 10240
+cdh::hive::metastore::heapsize: 10240

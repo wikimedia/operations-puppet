@@ -1,7 +1,7 @@
 ---
 # This is a yaml file. Remember to keep indentation otherwise the structure
 # will not be what you intend
-groups:
+monitoring::groups:
   analytics_eqiad:
     description: analytics servers in eqiad
 

@@ -1,1 +1,1 @@
-puppetdb_host: nitrogen.eqiad.wmnet
+puppetmaster::config::puppetdb_host: nitrogen.eqiad.wmnet

@@ -1,5 +1,5 @@
-swift_cluster: eqiad-prod
-accounts:
+swift::params::swift_cluster: eqiad-prod
+swift::params::accounts:
     super_admin:
         access:       '.admin .reseller_admin'
         account_name: 'AUTH_admin'
