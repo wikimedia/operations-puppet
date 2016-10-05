@@ -1,4 +1,4 @@
-nodes:
+cache::misc::nodes:
   eqiad:
     - 'cp1045.eqiad.wmnet'
     - 'cp1051.eqiad.wmnet'

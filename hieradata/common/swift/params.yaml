@@ -2,10 +2,10 @@
 # container-sync-realms.conf.
 # See also
 # http://docs.openstack.org/developer/swift/overview_container_sync.html
-replication_accounts:
+swift::params::replication_accounts:
     mw_media:
         cluster_codfw: 'http://ms-fe.svc.codfw.wmnet/v1/'
-
+swift::params::
 # the private part looks like this:
 # swift::params::replication_keys:
 #   mw_media:
