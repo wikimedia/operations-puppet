@@ -70,6 +70,10 @@ ALLOW_UNSAFE_URL = False
 ## Defaults to: None
 HTTP_LOADER_CA_CERTS = '/etc/ssl/certs/ca-certificates.crt'
 
+## The maximum number of seconds libcurl can take to download an image
+## Defaults to: 20
+HTTP_LOADER_REQUEST_TIMEOUT = 60
+
 ## Max size in Kb for images uploaded to thumbor
 ## Aliases: MAX_SIZE
 ## Defaults to: 0
