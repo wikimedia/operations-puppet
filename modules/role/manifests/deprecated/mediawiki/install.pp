@@ -6,7 +6,7 @@ class role::deprecated::mediawiki::install {
 
     requires_realm('labs')
 
-    include memcached
+    include ::memcached
 
     class { 'mediawiki_singlenode':
         ensure => present
