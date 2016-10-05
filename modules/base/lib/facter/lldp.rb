@@ -38,17 +38,14 @@ if Facter.value('virtual') == 'physical' && File.exists?('/usr/sbin/lldpctl')
                 end
             end
         end
-        # VLAN info is also reported by LLDP but for now not parsing it due to some
-        # inconsistencies in reporting depending on vendor and lack of a use case
-        # sample code is provided however
-        #iface.elements.each('vlan') do |vlan|
-        #    Facter.add('lldpswport_vlan_%s' % eth) do
-        #        confine :kernel => %w{Linux FreeBSD OpenBSD}
-        #        setcode do
-        #            vlan.text
-        #        end
-        #    end
-        #end
+        iface.elements.each('vlan') do |vlan|
+            Facter.add('lldpswport_vlan_%s' % eth) do
+                confine :kernel => %w{Linux FreeBSD OpenBSD}
+                setcode do
+                    vlan.text
+                end
+            end
+        end
     end
 
     # Aggregate all the lldp peers on one single variable
