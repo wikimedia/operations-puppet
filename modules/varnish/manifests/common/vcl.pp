@@ -24,14 +24,6 @@ class varnish::common::vcl {
         source => 'puppet:///modules/varnish/errorpage.html',
     }
 
-    # VCL unit tests
-    file { '/usr/local/sbin/varnish-test-geoip':
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
-        source => 'puppet:///modules/varnish/varnish-test-geoip',
-    }
-
     # VTC tests
     file { '/usr/share/varnish/tests/':
         source  => 'puppet:///modules/varnish/tests',
