@@ -2753,8 +2753,7 @@ node /(subra|suhail)\.codfw\.wmnet/ {
 
 # neon-like monitoring host in codfw
 node 'tegmen.wikimedia.org' {
-    include standard
-    include base::firewall
+    role(icinga) #, tendril, tcpircbot)
 }
 
 # https://wikitech.wikimedia.org/wiki/Terbium
