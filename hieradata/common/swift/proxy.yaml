@@ -1,9 +1,9 @@
-statsd_host: 'localhost'
-backend_url_format: 'sitelang'
-rewrite_thumb_server: 'rendering.svc.eqiad.wmnet'
-dispersion_account: 'dispersion'
-rewrite_account: 'mw_media'
-shard_container_list: [
+swift::proxy::statsd_host: 'localhost'
+swift::proxy::backend_url_format: 'sitelang'
+swift::proxy::rewrite_thumb_server: 'rendering.svc.eqiad.wmnet'
+swift::proxy::dispersion_account: 'dispersion'
+swift::proxy::rewrite_account: 'mw_media'
+swift::proxy::shard_container_list: [
   'global-data-math-render',
 
   'wikipedia-commons-local-public', 'wikipedia-commons-local-temp',
@@ -56,7 +56,7 @@ shard_container_list: [
 # no trailing comma!
  ]
 
-thumbor_wiki_list: [
+swift::proxy::thumbor_wiki_list: [
   'wikimedia-commons',
   'wikipedia-en', 'wikipedia-ja', 'wikipedia-de', 'wikipedia-ru',
   'wikipedia-it', 'wikipedia-pt', 'wikipedia-he', 'wikipedia-fr',

@@ -1,7 +1,7 @@
 # Note: this isn't a real cache cluster, its purpose is just to integrate
 # kafka nodelists with the caches' ipsec host<->host association data, so that
 # we can do ipsec for cache<->kafka the same way we do for cache<->cache.
-nodes:
+cache::ipsec::kafka::nodes:
   eqiad:
     - 'kafka1012.eqiad.wmnet'
     - 'kafka1013.eqiad.wmnet'
