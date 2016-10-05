@@ -21,8 +21,7 @@ require 'puppet/util/execution'
 require 'fileutils'
 require 'etc'
 
-# rubocop:disable ClassAndModuleCamelCase
-class Puppet::Provider::Scap_source < Puppet::Provider
+Puppet::Type.type(:scap_source).provide(:default) do
   initvars
 
   def self.default?
@@ -46,6 +45,16 @@ class Puppet::Provider::Scap_source < Puppet::Provider
     when :phabricator
       "https://phabricator.wikimedia.org/diffusion/#{repo_name}.git"
     end
+  end
+
+  def repo_name(origin)
+    case resource[:origin]
+    when :gerrit
+      origin.slice! "https://gerrit.wikimedia.org/r/p/"
+    when :phabricator
+      origin.slice! "https://phabricator.wikimedia.org/diffusion/"
+    end
+    origin.gsub(/\.git$/, '')
   end
 
   # The path to install the git clone to
@@ -150,5 +159,17 @@ class Puppet::Provider::Scap_source < Puppet::Provider
           break
       end
     end
+  end
+
+  def repository
+    res = git('-C', target_path, 'config', '--get', 'remote.origin.url').chomp
+    repo_name(res)
+  rescue Puppet::ExecutionFailure
+    Puppet.warn('Origin not set or not found')
+    raise Puppet::Error, "Could not determine the origin url at #{target_path}"
+  end
+
+  def repository=(value)
+    git('-C', target_path, 'config', 'remote.origin.url', origin(value))
   end
 end

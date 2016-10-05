@@ -109,15 +109,18 @@ EOT
     defaultto 'wikidev'
   end
 
-  newparam(:repository) do
+  newproperty(:repository) do
     desc <<-EOT
 Repository name in the VCS. Defaults to the resource name
 EOT
     defaultto do
       @resource[:name]
     end
-  end
 
+    def insync?(is)
+      is == should
+    end
+  end
 
   newparam(:scap_repository) do
     desc <<-EOT
