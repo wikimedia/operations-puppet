@@ -12,48 +12,16 @@ class role::memcached {
         'labs'       => 3000,
     }
 
-    # The following hosts will get different package versions
-    # deployed manually. This workaround should avoid
-    # disabling puppet for the whole duration of the test.
+    # There are different package versions available due to a performance test,
+    # most of them are deployed/installed manually.
     # More info: T129963
-    if $::hostname == 'mc2009' {
-        $version =  '1.4.28-1.1+wmf1'
-    } elsif $::hostname =~ /mc10(09|10)/ {
-        $version =  '1.4.25-2~wmf1'
-    } else {
-        $version = os_version('debian >= jessie || ubuntu >= trusty') ? {
-            true    => 'present',
-            default => '1.4.15-0wmf1',
-        }
+    $version = os_version('debian >= jessie || ubuntu >= trusty') ? {
+        true    => hiera('memcached::version', 'present'),
+        default => '1.4.15-0wmf1',
     }
 
-    # The following hosts are configured with newer memcached versions
-    # (1.4.25-2~wmf1 and 1.4.28-1.1+wmf1) as part of a performance experiment.
-    # The maximum number of slab classes is 64 from >= 1.4.25
-    # so a different growth factor is needed to manage the same workload.
-    # More info: T129963
-    if $::hostname == 'mc2009' or $::hostname =~ /mc10(09|10)/ {
-        $growth_factor    = 1.15
-        $extended_options = [
-            'slab_reassign',
-            'slab_automove',
-            'lru_crawler',
-            'lru_maintainer',
-        ]
-    } elsif $::hostname == 'mc2010' {
-        $growth_factor    = 1.05
-        $extended_options = [
-            'slab_reassign',
-            'lru_crawler',
-            'maxconns_fast',
-            'hash_algorithm=murmur3',
-        ]
-    } else {
-        $growth_factor    = 1.05
-        $extended_options = [
-            'slab_reassign'
-        ]
-    }
+    $growth_factor = hiera('memcached::growth_factor', 1.05)
+    $extended_options = hiera_array('memcached::extended_options', ['slab_reassign'])
 
     class { '::memcached':
         size          => $memcached_size,

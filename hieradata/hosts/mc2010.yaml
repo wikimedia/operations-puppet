@@ -1,0 +1,5 @@
+memcached::extended_options:
+  - 'slab_reassign'
+  - 'lru_crawler'
+  - 'maxconns_fast'
+  - 'hash_algorithm=murmur3'
