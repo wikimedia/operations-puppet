@@ -1,0 +1,15 @@
+-- Loads /etc/mysql/phabricator-stopwords.txt into @stopwords_database database,
+-- phabricator_stopwords table. After it is updated, assuming it is in use (by
+-- the global variable or the table option), the fulltext index has to be
+-- recreated.
+-- For more information on how this works, see T146673 for details and
+-- http://dev.mysql.com/doc/refman/5.6/en/fulltext-stopwords.html
+
+use phabricator_search;
+DROP TABLE IF EXISTS phabricator_stopwords;
+CREATE TABLE phabricator_stopwords(
+  value VARCHAR(255)
+) ENGINE = INNODB;
+
+LOAD DATA INFILE '/etc/mysql/phabricator-stopwords.txt'
+INTO TABLE phabricator_stopwords;
