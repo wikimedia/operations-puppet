@@ -89,10 +89,10 @@ class role::cache::kafka::webrequest(
         # At ~6000 msgs per second, 500000 messages is over 1 minute
         # of buffering, which should be more than enough.
         queue_buffering_max_messages => 500000,
-        # bits varnishes can do about 6000 reqs / sec each.
+        # varnishes can do about 6000 reqs / sec each.
         # We want to send batches at least once a second.
         batch_num_messages           => 6000,
-        # On caches with high traffic (bits and upload), we have seen
+        # On caches with high traffic (text and upload), we have seen
         # message drops from esams during high load time with a large
         # request ack timeout (it was 30 seconds).
         # The vanrishkafka buffer gets too full and it drops messages.
