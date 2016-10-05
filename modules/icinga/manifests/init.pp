@@ -4,7 +4,7 @@
 # FIXME: A lot of code in here (init script, user setup, logrotate,
 # and others) should probably come from the icinga deb package,
 # and not from puppet. Investigate and potentially fix this.
-class icinga {
+class icinga($enable_notifications=1) {
     # Setup icinga user
     # FIXME: This should be done by the package
     include icinga::group
@@ -54,7 +54,7 @@ class icinga {
     }
 
     file { '/etc/icinga/icinga.cfg':
-        source  => 'puppet:///modules/icinga/icinga.cfg',
+        content => template('icinga/icinga.cfg.erb'),
         owner   => 'icinga',
         group   => 'icinga',
         mode    => '0644',
