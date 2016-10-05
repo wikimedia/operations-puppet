@@ -10,42 +10,12 @@ class base::standard_packages {
         ensure => absent,
     }
 
-    $packages = [
-        'acct',
-        'ack-grep',
-        'atop',
-        'coreutils',
-        'debian-goodies',
-        'dstat',
-        'ethtool',
-        'gdisk',
-        'htop',
-        'httpry',
-        'iperf',
-        'jq',
-        'lldpd',
-        'molly-guard',
-        'moreutils',
-        'ncdu',
-        'ngrep',
-        'pv',
-        'screen',
-        'strace',
-        'sysstat',
-        'tcpdump',
-        'tmux',
-        'tree',
-        'tshark',
-        'tzdata',
-        'vim',
-        'wipe',
-        'xfsprogs',
-        'zsh-beta',
-    ]
+    require_package('acct', 'ack-grep', 'atop', 'debian-goodies', 'dstat', 'ethtool')
+    require_package('gdisk', 'htop', 'httpry', 'iperf', 'jq', 'lldpd', 'molly-guard')
+    require_package('moreutils', 'ncdu', 'ngrep', 'pv', 'screen', 'strace', 'sysstat')
+    require_package('tcpdump', 'tmux', 'tree', 'tshark', 'vim', 'wipe', 'xfsprogs', 'zsh-beta')
 
-    package { $packages:
-        ensure => latest,
-    }
+    package { 'tzdata': ensure => latest }
 
     require_package('gdb', 'apt-transport-https')
     require_package('git')
