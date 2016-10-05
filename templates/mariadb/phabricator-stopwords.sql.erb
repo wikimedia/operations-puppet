@@ -1,0 +1,6 @@
+-- T146673
+-- DROP TABLE IF EXISTS + CREATE TABLE + LOAD DATA FROM FILE SKIP X lines
+
+CREATE TABLE phabricator_stopwords(value VARCHAR(255)) ENGINE = INNODB;
+
+LOAD DATA INFILE '/etc/mysql/phabricator-stopwords.txt' INTO TABLE phabricator_stopwords;
