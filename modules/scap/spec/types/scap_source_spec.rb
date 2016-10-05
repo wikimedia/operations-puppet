@@ -4,12 +4,12 @@ resource_class = Puppet::Type.type(:scap_source)
 
 describe resource_class do
   describe 'when validating attributes' do
-    [:repository, :scap_repository, :origin, :owner, :group].each do |param|
+    [:scap_repository, :origin, :owner, :group].each do |param|
       it "should have a #{param} parameter" do
         expect(described_class.attrtype(param)).to eq(:param)
       end
     end
-    [:ensure].each do |property|
+    [:ensure, :repository].each do |property|
       it "should have a #{property} property" do
         expect(described_class.attrtype(property)).to eq(:property)
       end
