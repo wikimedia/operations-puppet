@@ -336,6 +336,8 @@ host bast3001 {
     fixed-address bast3001.wikimedia.org;
 
     next-server 208.80.154.10; # carbon (tftp server)
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
+    filename "jessie-installer/debian-installer/amd64/lpxelinux.0";
 }
 
 host bast4001 {
@@ -343,6 +345,8 @@ host bast4001 {
     fixed-address bast4001.wikimedia.org;
 
     next-server 208.80.153.4; # install2001 (tftp server)
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
+    filename "jessie-installer/debian-installer/amd64/lpxelinux.0";
 }
 
 host californium {
@@ -2549,6 +2553,8 @@ host install1001 {
     fixed-address install1001.wikimedia.org;
 
     next-server 208.80.153.4; # install2001 (tftp server)
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
+    filename "jessie-installer/debian-installer/amd64/lpxelinux.0";
 }
 
 host install2001 {
@@ -2556,6 +2562,8 @@ host install2001 {
     fixed-address install2001.wikimedia.org;
 
     next-server 208.80.154.10; # carbon (tftp server)
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
+    filename "jessie-installer/debian-installer/amd64/lpxelinux.0";
 }
 
 host iridium {
