@@ -9,6 +9,7 @@
 # https://phabricator.wikimedia.org/T119042 works.
 #
 class role::eventbus::eventbus {
+    include base::firewall
     require ::eventschemas
 
     $config = kafka_config('main')

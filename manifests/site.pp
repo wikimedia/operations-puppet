@@ -1372,7 +1372,6 @@ node /kafka100[12]\.eqiad\.wmnet/ {
         eventbus::eventbus)
 
     include standard
-    include base::firewall
 }
 
 # Kafka Brokers - main-codfw
@@ -1383,8 +1382,8 @@ node /kafka200[12]\.codfw\.wmnet/ {
         # Mirror eqiad.* topics from Kafka main-eqiad into this main-codfw
         kafka::main::mirror,
         eventbus::eventbus)
+
     include standard
-    include base::firewall
 }
 
 # virtual machine for misc. PHP apps
