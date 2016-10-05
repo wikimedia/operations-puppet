@@ -306,14 +306,7 @@ class role::mariadb::misc::phabricator(
         p_s       => $p_s,
     }
 
-    file { '/etc/mysql/phabricator-init.sql':
-        ensure  => present,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0644',
-        content => template('mariadb/phabricator-init.sql.erb'),
-    }
-
+    $stopwords_database = 'phabricator_search'
     file { '/etc/mysql/phabricator-stopwords.txt':
         ensure  => present,
         owner   => 'root',
@@ -322,6 +315,21 @@ class role::mariadb::misc::phabricator(
         content => template('mariadb/phabricator-stopwords.txt.erb'),
     }
 
+    file { '/etc/mysql/phabricator-stopwords-update.sql':
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0644',
+        content => template('mariadb/phabricator-stopwords-update.sql.erb'),
+    }
+
+    file { '/etc/mysql/phabricator-init.sql':
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0644',
+        content => template('mariadb/phabricator-init.sql.erb'),
+    }
     class { 'role::mariadb::grants::production':
         shard    => $shard,
         prompt   => "MISC ${shard}",
