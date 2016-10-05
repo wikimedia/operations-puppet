@@ -41,6 +41,11 @@
 #   Group owner of cloned repository.
 #   Default: wikidev
 #
+# [*origin*]
+#   VCS to checkout from. Available values are gerrit and phabricator
+#
+#   Default: gerrit
+#
 # == Usage
 #
 #   # Clones the 'repo/without/external/scap' repsitory into
@@ -127,7 +132,7 @@ You can use this keep your scap configs separate from your source
 repositories.
 Default: false.
 EOT
-    defaultto false
+    defaultto :false
     munge do |value|
       case value
       when false, :false
@@ -138,5 +143,11 @@ EOT
         value
       end
     end
+  end
+
+  newparam(:origin) do
+    desc "The VCS to fetch data from"
+    newvalues(:gerrit, :phabricator)
+    defaultto :gerrit
   end
 end
