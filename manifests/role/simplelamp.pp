@@ -10,6 +10,7 @@ class role::simplelamp(
     include ::apache
     include ::apache::mod::php5
     include ::apache::mod::rewrite
+    include ::memcached
 
     require_package('php5-mysql', 'php5-cli')
 
