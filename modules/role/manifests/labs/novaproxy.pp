@@ -3,10 +3,9 @@
 class role::labs::novaproxy(
     $all_proxies,
     $active_proxy,
+    $use_ssl = true,
 ) {
     include base::firewall
-
-    sslcert::certificate { 'star.wmflabs.org': skip_private => true }
 
     $proxy_nodes = join($all_proxies, ' ')
     # Open up redis to all proxies!
@@ -42,15 +41,26 @@ class role::labs::novaproxy(
         $redis_replication = undef
     }
 
-    $ssl_settings = ssl_ciphersuite('nginx', 'compat')
-    class { '::dynamicproxy':
-        ssl_certificate_name => 'star.wmflabs.org',
-        ssl_settings         => $ssl_settings,
-        set_xff              => true,
-        luahandler           => 'domainproxy',
-        redis_replication    => $redis_replication,
-        require              => Sslcert::Certificate['star.wmflabs.org'],
+    if $use_ssl {
+        sslcert::certificate { 'star.wmflabs.org': skip_private => true }
+
+        $ssl_settings = ssl_ciphersuite('nginx', 'compat')
+        class { '::dynamicproxy':
+            ssl_certificate_name => 'star.wmflabs.org',
+            ssl_settings         => $ssl_settings,
+            set_xff              => true,
+            luahandler           => 'domainproxy',
+            redis_replication    => $redis_replication,
+            require              => Sslcert::Certificate['star.wmflabs.org'],
+        }
+    } else {
+        class { '::dynamicproxy':
+            set_xff              => true,
+            luahandler           => 'domainproxy',
+            redis_replication    => $redis_replication,
+        }
     }
+
     include dynamicproxy::api
 
     nginx::site { 'wmflabs.org':
