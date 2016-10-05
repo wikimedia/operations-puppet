@@ -2928,8 +2928,6 @@ host lead {
 host lithium {
     hardware ethernet C8:1F:66:BF:7F:EA;
     fixed-address lithium.eqiad.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host logstash1001 {
