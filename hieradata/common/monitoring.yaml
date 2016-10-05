@@ -1,16 +1,16 @@
----
+monitoring::---
 # This is a yaml file. Remember to keep indentation otherwise the structure
 # will not be what you intend
-groups:
+monitoring::groups:
   analytics_eqiad:
     description: analytics servers in eqiad
-
+monitoring::
 # Analytics Query Service
   aqs_eqiad:
     description: Analytics Query Service eqiad
   aqs_codfw:
     description: Analytics Query Service codfw
-
+monitoring::
 # Cache
   cache_text_codfw:
     description: codfw text Varnish
@@ -44,7 +44,7 @@ groups:
     description: Maps caches esams
   cache_maps_ulsfo:
     description: Maps caches ulsfo
-
+monitoring::
 # Elasticsearch
   elasticsearch_eqiad:
     description: eqiad elasticsearch servers
@@ -56,36 +56,36 @@ groups:
     description: ulsfo elasticsearch servers
   relforge_eqiad:
     description: eqiad elasticsearch relforge servers
-
+monitoring::
 # Etcd
   etcd_eqiad:
     description: eqiad Etcd
-
+monitoring::
   # Eventbus
   eventbus_eqiad:
     description: eventbus eqiad servers
-
+monitoring::
   eventbus_codfw:
     description: eventbus codfw servers
-
+monitoring::
 # Ganeti
   ganeti_eqiad:
     description: Ganeti virt cluster eqiad
   ganeti_codfw:
     description: Ganeti virt cluster codfw
-
+monitoring::
 # Labs OpenStack Nova (labvirt***)
   labvirt_eqiad:
     description: eqiad virt servers
   labvirt_codfw:
     description: codfw virt servers
-
+monitoring::
 # Labs Services
   labs_eqiad:
     description: eqiad labs services
   labs_codfw:
     description: codfw labs services
-
+monitoring::
 # LVS
   lvs:
     description: LVS
@@ -97,17 +97,17 @@ groups:
     description: ulsfo LVS servers
   lvs_esams:
     description: esams LVS servers
-
+monitoring::
 # Logstash
   logstash_eqiad:
     description: eqiad logstash
-
+monitoring::
 # Maps
   maps_eqiad:
     description: eqiad maps servers
   maps_codfw:
     description: codfw maps servers
-
+monitoring::
 # MediaWiki
   appserver_eqiad:
     description: eqiad application servers
@@ -119,7 +119,7 @@ groups:
     description: eqiad jobrunner application servers
   videoscaler_eqiad:
     description: eqiad video scaler
-
+monitoring::
   appserver_codfw:
     description: codfw application servers
   api_appserver_codfw:
@@ -130,45 +130,45 @@ groups:
     description: codfw jobrunner application servers
   videoscaler_codfw:
     description: codfw video scaler
-
+monitoring::
 # Memcached
   memcached_eqiad:
     description: eqiad memcached
   memcached_codfw:
     description: codfw memcached
-
+monitoring::
 # MySQL
   mysql_eqiad:
     description: eqiad mysql core
   mysql_codfw:
     description: codfw mysql core
-
+monitoring::
 # OCG
   ocg_eqiad:
     description: offline content generator eqiad
-
+monitoring::
 # Puppet
   puppet_eqiad:
     description: Puppetmasters eqiad
   puppet_codfw:
     description: Puppetmasters codfw
-
+monitoring::
 # Parsoid
   parsoid_eqiad:
     description: eqiad parsoid servers
   parsoid_codfw:
     description: codfw parsoid servers
-
+monitoring::
 # RCStream
   rcstream_eqiad:
     description: eqiad rcstream
-
+monitoring::
 # RedisDB
   redis_eqiad:
     description: eqiad Redis
   redis_codfw:
     description: codfw Redis
-
+monitoring::
 # RESTBase
   restbase_eqiad:
     description: Restbase eqiad
@@ -178,7 +178,7 @@ groups:
     description: Restbase test/staging eqiad
   restbase_test_codfw:
     description: Restbase test/staging codfw
-
+monitoring::
 # Service Clusters
   sca_eqiad:
     description: Service Cluster A servers eqiad
@@ -188,29 +188,29 @@ groups:
     description: Service Cluster B servers eqiad
   scb_codfw:
     description: Service Cluster B servers codfw
-
+monitoring::
 # Swift
   swift:
     description: swift servers
-
+monitoring::
 # Wikidata Query Service
   wdqs_eqiad:
     description: Wikidata Query Service (eqiad)
   wdqs_codfw:
     description: Wikidata Query Service (codfw)
-
+monitoring::
 # Zotero
   zotero_eqiad:
     description: Zotero eqiad
   zotero_codfw:
     description: Zotero codfw
-
+monitoring::
 # Labs
   labsnfs_eqiad:
     description: eqiad labsnfs server servers
   labsnfs_codfw:
     description: codfw labsnfs server servers
-
+monitoring::
 # Misc
   misc_eqiad:
     description: eqiad misc servers
@@ -220,11 +220,11 @@ groups:
     description: esams misc servers
   misc_ulsfo:
     description: ulsfo misc servers
-
+monitoring::
 # Facilities
   pdus:
     description: PDUs
-
+monitoring::
 # Network
   routers:
     description: IP routers

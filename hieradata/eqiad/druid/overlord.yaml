@@ -1,7 +1,7 @@
-properties:
+druid::overlord::properties:
   druid.indexer.runner.type: remote
   druid.indexer.storage.type: metadata
-
-env:
+druid::overlord::
+druid::overlord::env:
   DRUID_HEAP_OPTS: "-Xmx4g -Xms4g"
   DRUID_EXTRA_JVM_OPTS: "-XX:NewSize=256m -XX:MaxNewSize=256m -XX:+UseConcMarkSweepGC -XX:+PrintGCDetails -XX:+PrintGCTimeStamps"

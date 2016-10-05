@@ -1,4 +1,4 @@
-subnets:
+network::subnets:
   production:
     eqiad:
       public:

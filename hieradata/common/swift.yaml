@@ -1,5 +1,5 @@
 # used by ferm
-proxyhosts:
+swift::proxyhosts:
   - ms-fe1001.eqiad.wmnet
   - ms-fe1002.eqiad.wmnet
   - ms-fe1003.eqiad.wmnet
@@ -10,8 +10,8 @@ proxyhosts:
   - ms-fe2004.codfw.wmnet
   - ms-fe3001.esams.wmnet
   - ms-fe3002.esams.wmnet
-
-storagehosts:
+swift::
+swift::storagehosts:
   - ms-be1001.eqiad.wmnet
   - ms-be1002.eqiad.wmnet
   - ms-be1003.eqiad.wmnet

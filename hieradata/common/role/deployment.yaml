@@ -1,4 +1,4 @@
-repo_config:
+role::deployment::repo_config:
   integration/mediawiki-tools-codesniffer:
     upstream: https://gerrit.wikimedia.org/r/mediawiki/tools/codesniffer
   integration/phpunit:

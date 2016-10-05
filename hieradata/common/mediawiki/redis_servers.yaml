@@ -1,4 +1,4 @@
-eqiad:
+mediawiki::redis_servers::eqiad:
   shard01:
     host: 10.64.0.180
     port: 6379
@@ -53,9 +53,9 @@ eqiad:
   shard18:
     host: 10.64.48.96
     port: 6379
-
-
-codfw:
+mediawiki::redis_servers::
+mediawiki::redis_servers::
+mediawiki::redis_servers::codfw:
   shard01:
     host: 10.192.0.34
     port: 6379

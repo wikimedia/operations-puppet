@@ -1,62 +1,62 @@
-statsd_host: 'localhost'
-backend_url_format: 'sitelang'
-rewrite_thumb_server: 'rendering.svc.eqiad.wmnet'
-dispersion_account: 'dispersion'
-rewrite_account: 'mw_media'
-shard_container_list: [
+swift::proxy::statsd_host: 'localhost'
+swift::proxy::backend_url_format: 'sitelang'
+swift::proxy::rewrite_thumb_server: 'rendering.svc.eqiad.wmnet'
+swift::proxy::dispersion_account: 'dispersion'
+swift::proxy::rewrite_account: 'mw_media'
+swift::proxy::shard_container_list: [
   'global-data-math-render',
-
+swift::proxy::
   'wikipedia-commons-local-public', 'wikipedia-commons-local-temp',
   'wikipedia-commons-local-thumb', 'wikipedia-commons-local-transcoded',
-
+swift::proxy::
   'wikipedia-de-local-public', 'wikipedia-de-local-temp',
   'wikipedia-de-local-thumb', 'wikipedia-de-local-transcoded',
-
+swift::proxy::
   'wikipedia-en-local-public', 'wikipedia-en-local-temp',
   'wikipedia-en-local-thumb', 'wikipedia-en-local-transcoded',
-
+swift::proxy::
   'wikipedia-fi-local-public', 'wikipedia-fi-local-temp',
   'wikipedia-fi-local-thumb', 'wikipedia-fi-local-transcoded',
-
+swift::proxy::
   'wikipedia-fr-local-public', 'wikipedia-fr-local-temp',
   'wikipedia-fr-local-thumb', 'wikipedia-fr-local-transcoded',
-
+swift::proxy::
   'wikipedia-he-local-public', 'wikipedia-he-local-temp',
   'wikipedia-he-local-thumb', 'wikipedia-he-local-transcoded',
-
+swift::proxy::
   'wikipedia-hu-local-public', 'wikipedia-hu-local-temp',
   'wikipedia-hu-local-thumb', 'wikipedia-hu-local-transcoded',
-
+swift::proxy::
   'wikipedia-id-local-public', 'wikipedia-id-local-temp',
   'wikipedia-id-local-thumb', 'wikipedia-id-local-transcoded',
-
+swift::proxy::
   'wikipedia-it-local-public', 'wikipedia-it-local-temp',
   'wikipedia-it-local-thumb', 'wikipedia-it-local-transcoded',
-
+swift::proxy::
   'wikipedia-ja-local-public', 'wikipedia-ja-local-temp',
   'wikipedia-ja-local-thumb', 'wikipedia-ja-local-transcoded',
-
+swift::proxy::
   'wikipedia-ro-local-public', 'wikipedia-ro-local-temp',
   'wikipedia-ro-local-thumb', 'wikipedia-ro-local-transcoded',
-
+swift::proxy::
   'wikipedia-ru-local-public', 'wikipedia-ru-local-temp',
   'wikipedia-ru-local-thumb', 'wikipedia-ru-local-transcoded',
-
+swift::proxy::
   'wikipedia-th-local-public', 'wikipedia-th-local-temp',
   'wikipedia-th-local-thumb', 'wikipedia-th-local-transcoded',
-
+swift::proxy::
   'wikipedia-tr-local-public', 'wikipedia-tr-local-temp',
   'wikipedia-tr-local-thumb', 'wikipedia-tr-local-transcoded',
-
+swift::proxy::
   'wikipedia-uk-local-public', 'wikipedia-uk-local-temp',
   'wikipedia-uk-local-thumb', 'wikipedia-uk-local-transcoded',
-
+swift::proxy::
   'wikipedia-zh-local-public', 'wikipedia-zh-local-temp',
   'wikipedia-zh-local-thumb', 'wikipedia-zh-local-transcoded'
 # no trailing comma!
  ]
-
-thumbor_wiki_list: [
+swift::proxy::
+swift::proxy::thumbor_wiki_list: [
   'wikimedia-commons',
   'wikipedia-en', 'wikipedia-ja', 'wikipedia-de', 'wikipedia-ru',
   'wikipedia-it', 'wikipedia-pt', 'wikipedia-he', 'wikipedia-fr',
@@ -72,4 +72,4 @@ thumbor_wiki_list: [
   'wikiversity-en', 'wikipedia-mr', 'wikipedia-gl', 'wikipedia-sh',
   'wikipedia-hy', 'wikisource-ar', 'wikipedia-my'
 # no trailing comma!
-]
+swift::proxy::]
