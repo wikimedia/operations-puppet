@@ -1,4 +1,4 @@
-# Puppet base provider for type `scap_source`, which is needed to set up a
+# Puppet default provider for type `scap_source`, which is needed to set up a
 # base repository to use with the `scap3` deployment system
 #
 # Copyright (c) 2016 Giuseppe Lavagetto
@@ -25,6 +25,10 @@ require 'etc'
 class Puppet::Provider::Scap_source < Puppet::Provider
   initvars
 
+  def self.default?
+    true
+  end
+
   has_command(:git, '/usr/bin/git')
 
   BASE_PATH = '/srv/deployment'
@@ -35,8 +39,13 @@ class Puppet::Provider::Scap_source < Puppet::Provider
   end
 
   # The origin of the repository
-  def origin(*)
-    raise Puppet::Error "origin must be implemented by actual providers"
+  def origin(repo_name)
+    case resource[:origin]
+    when :gerrit
+      "https://gerrit.wikimedia.org/r/p/#{repo_name}.git"
+    when :phabricator
+      "https://phabricator.wikimedia.org/diffusion/#{repo_name}.git"
+    end
   end
 
   # The path to install the git clone to
