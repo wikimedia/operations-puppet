@@ -6,19 +6,15 @@ class base::standard_packages {
         }
     }
 
-    package { [ 'command-not-found', 'command-not-found-data' ]:
-        ensure => absent,
-    }
-
-    $packages = [
+    require_package ([
         'acct',
         'ack-grep',
         'apt-transport-https',
         'atop',
-        'coreutils',
         'debian-goodies',
         'dstat',
         'ethtool',
+        'gdb',
         'gdisk',
         'gdb',
         'git',
@@ -27,7 +23,7 @@ class base::standard_packages {
         'iperf',
         'jq',
         'lldpd',
-        'molly-guard',
+        'molly-guard'
         'moreutils',
         'ncdu',
         'ngrep',
@@ -40,16 +36,13 @@ class base::standard_packages {
         'tmux',
         'tree',
         'tshark',
-        'tzdata',
         'vim',
         'wipe',
         'xfsprogs',
         'zsh-beta',
-    ]
+   ])
 
-    package { $packages:
-        ensure => latest,
-    }
+    package { 'tzdata': ensure => latest }
 
     # for hardware monitoring via IPMI (T125205)
     if os_version('debian >= jessie') {
@@ -64,6 +57,8 @@ class base::standard_packages {
     package { [
             'apport',
             'apt-listchanges',
+            'command-not-found',
+            'command-not-found-data',
             'ecryptfs-utils',
             'mlocate',
             'os-prober',
