@@ -6,16 +6,11 @@ class base::standard_packages {
         }
     }
 
-    package { [ 'command-not-found', 'command-not-found-data' ]:
-        ensure => absent,
-    }
-
-    $packages = [
+    require_package ([
         'acct',
         'ack-grep',
         'apt-transport-https',
         'atop',
-        'coreutils',
         'debian-goodies',
         'dstat',
         'ethtool',
@@ -41,16 +36,13 @@ class base::standard_packages {
         'tmux',
         'tree',
         'tshark',
-        'tzdata',
         'vim',
         'wipe',
         'xfsprogs',
         'zsh-beta',
-    ]
+    ])
 
-    package { $packages:
-        ensure => latest,
-    }
+    package { 'tzdata': ensure => latest }
 
     if $::network_zone == 'internal' {
         include nrpe
@@ -60,6 +52,8 @@ class base::standard_packages {
     package { [
             'apport',
             'apt-listchanges',
+            'command-not-found',
+            'command-not-found-data',
             'ecryptfs-utils',
             'mlocate',
             'os-prober',
