@@ -5,6 +5,8 @@ debdeploy::grains:
   debdeploy-gerrit:
     value: standard
 gerrit::host: 'gerrit.wikimedia.org'
+# Assume all production nodes are slaves
+gerrit::slave: true
 gerrit::jetty::git_dir: '/srv/gerrit/git'
 gerrit::jetty::ssh_host_key: 'ssh_host_key'
 gerrit::jetty::replication:
