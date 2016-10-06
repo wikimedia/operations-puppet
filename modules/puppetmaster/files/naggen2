@@ -65,9 +65,15 @@ class NagiosGeneratorBase(object):
             self.log.error('Exiting  - unsupported resource type %s', what)
             sys.exit(1)
         try:
+            entities = set()
             for entity in self._query(what):
                 self.log.debug('Working on resource %s', entity['title'])
                 name, content = self._filter_entity(entity, what)
+                if name in entities:
+                    self.log.warn('Duplicate definition for %s', name)
+                    continue
+
+                entities.add(name)
                 tpl = self.env.get_template(what)
                 yield tpl.render(name=name, data=content)
         except Exception:
