@@ -17,7 +17,9 @@ class role::icinga(
     # This is just to unbreak icinga ASAP.
     if $::hostname == 'neon' {
         include facilities
+        include lvs::monitor
     }
+
     include icinga::monitor::checkpaging
     include icinga::nsca::firewall
     include icinga::nsca::daemon
@@ -31,7 +33,7 @@ class role::icinga(
     include icinga::monitor::gsb
     include icinga::monitor::commons
     include icinga::monitor::elasticsearch
-    include lvs::monitor
+
     include role::authdns::monitoring
     include netops::monitoring
     include scap::dsh
