@@ -153,4 +153,9 @@ EOT
     newvalues(:gerrit, :phabricator)
     defaultto :gerrit
   end
+
+  newparam(:base_path) do
+    desc "The base path for deploying the repositories"
+    defaultto '/srv/deployment'
+  end
 end

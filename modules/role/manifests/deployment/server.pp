@@ -4,7 +4,7 @@ class role::deployment::server(
 ) {
 
     include standard
-
+    $base_path = '/srv/deployment'
     include role::deployment::mediawiki
 
     ## Scap Config ##
@@ -14,6 +14,10 @@ class role::deployment::server(
     create_resources('keyholder::agent', hiera('scap::keyholder_agents', {}))
 
     # Create an instance of scap_source for each of the key specs in hiera.
+    Scap::Source {
+        base_path => $base_path,
+    }
+
     create_resources('scap::source', hiera('scap::sources', {}))
     ## End scap config ###
 

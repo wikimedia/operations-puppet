@@ -4,7 +4,7 @@ resource_class = Puppet::Type.type(:scap_source)
 
 describe resource_class do
   describe 'when validating attributes' do
-    [:scap_repository, :origin, :owner, :group].each do |param|
+    [:scap_repository, :origin, :owner, :group, :base_path].each do |param|
       it "should have a #{param} parameter" do
         expect(described_class.attrtype(param)).to eq(:param)
       end
@@ -38,6 +38,10 @@ describe resource_class do
 
     it "origin should be gerrit" do
       expect(subject[:origin]).to eq(:gerrit)
+    end
+
+    it "base_path should be /srv/deployment" do
+      expect(subject[:base_path]).to eq('/srv/deployment')
     end
   end
 end

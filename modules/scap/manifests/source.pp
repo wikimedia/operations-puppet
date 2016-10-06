@@ -41,6 +41,10 @@
 #   Group owner of cloned repository.
 #   Default: wikidev
 #
+# [*base_path*]
+#   Base path for deployments.
+#   Default: /srv/deployment
+#
 # == Usage
 #
 #   # Clones the 'repo/without/external/scap' repsitory into
@@ -77,11 +81,13 @@ define scap::source(
     # how to bootstrap itself properly without trebuchet.
     $owner                = 'trebuchet',
     $group                = 'wikidev',
+    $base_path            = '/srv/deployment'
 ) {
     scap_source { $title:
         repository      => $repository,
         scap_repository => $scap_repository,
         owner           => $owner,
         group           => $group,
+        base_path       => $base_path,
     }
 }

@@ -30,8 +30,6 @@ Puppet::Type.type(:scap_source).provide(:default) do
 
   has_command(:git, '/usr/bin/git')
 
-  BASE_PATH = '/srv/deployment'
-
   # Shortand for the repo name
   def repo
     resource[:repository]
@@ -67,9 +65,9 @@ Puppet::Type.type(:scap_source).provide(:default) do
   end
 
   def target_path
-    path = File.expand_path(File.join(BASE_PATH, repo_path))
+    path = File.expand_path(File.join(resource[:base_path], repo_path))
 
-    unless path.start_with?(BASE_PATH)
+    unless path.start_with?(resource[:base_path])
       raise Puppet::Error, "Target path '#{path}' is invalid."
     end
     path
@@ -151,7 +149,7 @@ Puppet::Type.type(:scap_source).provide(:default) do
     FileUtils.remove_entry_secure(dir, :force => true)
     loop do
       dir, _ = File.split(dir)
-      break if BASE_PATH.include?(dir)
+      break if resource[:base_path].include?(dir)
       begin
         Dir.delete(dir)
       rescue Errno::ENOTEMPTY
