@@ -37,7 +37,9 @@ class contint::packages::php {
             'php7.0-pgsql',
             'php7.0-sqlite3',
             'php7.0-tidy',
-            # missing xdebug
+            # xdebug s provided by sury as php-xdebug but we are using phpdbg
+            # which is faster for code coverage
+            'php7.0-phpdbg',  # php70-phpdbg -qrr ...
             # ..and these are part of php5-common,
             # but now are separate packages
             'php7.0-bcmath',
