@@ -7,6 +7,7 @@ class gerrit::jetty(
     $git_dir = 'git',
     $ssh_host_key = undef,
     $heap_limit = '28g',
+    $master_node = $::fqdn,
     ) {
 
     include nrpe
@@ -25,6 +26,12 @@ class gerrit::jetty(
     $ldap_base_dn = $ldapconfig['basedn']
     $ldap_proxyagent = $ldapconfig['proxyagent']
     $ldap_proxyagent_pass = $ldapconfig['proxypass']
+
+    # Are we a slave or a master?
+    $slave = $master_node ? {
+        $::fqdn => true,
+        default => false,
+    }
 
     require_package(['openjdk-7-jdk', 'gerrit', 'libmysql-java'])
 
