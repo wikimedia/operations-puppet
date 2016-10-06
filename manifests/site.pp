@@ -255,6 +255,13 @@ node 'chromium.wikimedia.org' {
     }
 }
 
+# gerrit warm stand-by (T147597)
+node 'cobalt.wikimedia.org' {
+    # role(gerrit::server)
+    include standard
+    include base::firewall
+}
+
 # conf100x are zookeeper and etcd discovery service nodes in eqiad
 node /^conf100[123]\.eqiad\.wmnet$/ {
     role(etcd, zookeeper::server)
