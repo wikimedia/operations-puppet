@@ -67,7 +67,8 @@ scap::sources:
   analytics/refinery:
     repository: analytics/refinery
     scap_repository: analytics/refinery/scap
-  changeprop/deploy: {}
+  changeprop/deploy:
+    repository: mediawiki/services/change-propagation/deploy
 #    lvs_service: changeprop
   citoid/deploy: {}
 #    lvs_service: citoid
