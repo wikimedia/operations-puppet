@@ -74,6 +74,9 @@ Puppet::Reports.register_report(:servermon) do
                             puts(insert_fact_name)
                         end
                         con.query(insert_fact_name)
+                        # Should have been inserted, fetch it
+                        rs = con.query(select_fact_name)
+                        fact_id = rs.fetch_row[0]
                     else
                         fact_id = rs.fetch_row[0]
                         if log_level == 'debug'
