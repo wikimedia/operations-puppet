@@ -12,7 +12,7 @@ class contint::browsers {
         $latest_packages = [
             'chromium',
             'chromedriver',
-            'iceweasel',  # rebranded firefox
+            'firefox-esr',
             # phantomjs is not available on Jessie
         ]
     } elsif os_version('ubuntu >= trusty') {
