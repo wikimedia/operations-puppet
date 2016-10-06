@@ -14,8 +14,8 @@ class elasticsearch::packages {
 
     require_package('curl')
 
-    # library for elasticsearch. only in trusty+
-    if os_version('ubuntu >= trusty') {
+    # library for elasticsearch. only in trusty+ and jessie
+    if os_version('ubuntu >= trusty || debian >= jessie') {
         require_package('python-elasticsearch')
         require_package('python-ipaddr')
     }
