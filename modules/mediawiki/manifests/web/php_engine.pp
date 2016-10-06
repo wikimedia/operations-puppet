@@ -14,12 +14,6 @@ class mediawiki::web::php_engine {
         priority => 50,
     }
 
-    # Mark static assets as coming from an appserver as well. Needed for Varnish
-    apache::conf { 'mark_engine':
-        source   => 'puppet:///modules/mediawiki/apache/configs/hhvm_mark_engine.conf',
-        priority => 49,
-    }
-
     # Add headers lost by mod_proxy_fastcgi
     apache::conf { 'fcgi_headers':
         source   => 'puppet:///modules/mediawiki/apache/configs/fcgi_headers.conf',
