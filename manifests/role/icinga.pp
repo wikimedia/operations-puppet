@@ -11,7 +11,13 @@
 class role::icinga(
     $ircbot = true,
 ){
-    include facilities
+
+    # Facilities must be, unluckily, only declared once, not from multiple hosts.
+    # Forgive me for this hack while we figure out a clean way to do this.
+    # This is just to unbreak icinga ASAP.
+    if $::hostname == 'neon' {
+        include facilities
+    }
     include icinga::monitor::checkpaging
     include icinga::nsca::firewall
     include icinga::nsca::daemon
