@@ -8,34 +8,33 @@
 # [*ircbot*]
 #   Setup an ircbot using ircecho to support echoing notifications
 #
-class role::icinga(
-    $ircbot = true,
-){
+class role::icinga {
+    $ircbot = hiera('role::icinga::ircbot', true)
 
-    # Facilities must be, unluckily, only declared once, not from multiple hosts.
-    # Forgive me for this hack while we figure out a clean way to do this.
-    # This is just to unbreak icinga ASAP.
-    if $::hostname == 'neon' {
-        include facilities
-        include lvs::monitor
+    # All common resources must be declared only once.
+    $primary = hiera('role::icinga::primary', $::hostname)
+
+    # Note that this could be done by not collecting virtual resources, but
+    # that would generate larger catalogs on the 'non-primaries', and is more prone
+    # to error.
+    if $primary == $::hostname {
+        include icinga::monitor::checkpaging
+        include icinga::nsca::firewall
+        include icinga::nsca::daemon
+        include icinga::monitor::wikidata
+        include icinga::monitor::ores
+        include icinga::monitor::toollabs
+        include icinga::monitor::stream
+        include icinga::monitor::ripeatlas
+        include icinga::monitor::legal
+        include icinga::monitor::certs
+        include icinga::monitor::gsb
+        include icinga::monitor::commons
+        include icinga::monitor::elasticsearch
+        include role::authdns::monitoring
+        include netops::monitoring
     }
 
-    include icinga::monitor::checkpaging
-    include icinga::nsca::firewall
-    include icinga::nsca::daemon
-    include icinga::monitor::wikidata
-    include icinga::monitor::ores
-    include icinga::monitor::toollabs
-    include icinga::monitor::stream
-    include icinga::monitor::ripeatlas
-    include icinga::monitor::legal
-    include icinga::monitor::certs
-    include icinga::monitor::gsb
-    include icinga::monitor::commons
-    include icinga::monitor::elasticsearch
-
-    include role::authdns::monitoring
-    include netops::monitoring
     include scap::dsh
     include mysql
     include nrpe

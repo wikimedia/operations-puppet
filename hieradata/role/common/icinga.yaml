@@ -1,3 +1,4 @@
 debdeploy::grains:
   debdeploy-icinga:
     value: standard
+role::icinga::primary: neon.wikimedia.org
