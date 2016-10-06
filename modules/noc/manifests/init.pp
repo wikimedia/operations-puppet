@@ -7,7 +7,7 @@ class noc {
 
     include ::apache
 
-    if os_version('ubuntu >= trusty') {
+    if os_version('ubuntu >= trusty || debian >= jessie') {
         apache::def { 'HHVM': }
     }
 
