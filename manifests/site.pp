@@ -136,15 +136,12 @@ node 'analytics1027.eqiad.wmnet' {
     include base::firewall
 }
 
-# Analytics Query Service (RESTBase & Cassandra)
+# Old Analytics Query Service (now decommissioned)
 node /aqs100[123]\.eqiad\.wmnet/ {
-    role(aqs)
+    role(spare::system)
 }
 
-# Analytics Query Service - Testing
-# These nodes are not part of the official AQS cluster now because we are
-# currently testing Cassandra configurations on top of them. Hiera variables
-# have been placed for each host to override the role's default values.
+# Analytics Query Service
 node /aqs100[456]\.eqiad\.wmnet/ {
     role(aqs)
 }

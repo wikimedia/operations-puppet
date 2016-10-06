@@ -15,20 +15,31 @@ debdeploy::grains:
 cassandra::metrics::graphite_host: 'graphite-in.eqiad.wmnet'
 cassandra::start_rpc: 'false'
 
+cassandra::target_version: '2.2'
+
 # TODO: set up a cluster variable similar to MySQL clusters to share
 # cassandra cluster configs between cassandra & clients
 
 cassandra::seeds:
-    - aqs1001.eqiad.wmnet
-    - aqs1002.eqiad.wmnet
-    - aqs1003.eqiad.wmnet
+    - aqs1004-a.eqiad.wmnet
+    - aqs1004-b.eqiad.wmnet
+    - aqs1005-a.eqiad.wmnet
+    - aqs1005-b.eqiad.wmnet
+    - aqs1006-a.eqiad.wmnet
+    - aqs1006-b.eqiad.wmnet
 cassandra::max_heap_size: 16g
 # 1/4 heap size, no more than 100m/thread
 cassandra::heap_newsize: 2048m
-cassandra::compaction_throughput_mb_per_sec: 60
-cassandra::concurrent_compactors: 10
-cassandra::concurrent_writes: 18
-cassandra::concurrent_reads: 18
+
+# Special compaction settings, following suggesions in:
+# https://docs.datastax.com/en/cassandra/2.1/cassandra/configuration/configCassandra_yaml_r.html
+# All values are divided by two since we have two instances running on each node
+# Assumption: 32 cores with ht on each host, so 16 * 1.5 = 24 cores considered
+# in the calculations.
+cassandra::compaction_throughput_mb_per_sec: 256
+cassandra::concurrent_compactors: 12
+cassandra::concurrent_writes: 64
+cassandra::concurrent_reads: 64
 
 # The CassandraAuthorizer Auth mandates non trivial checks for
 # each read/write operation to make sure that permissions are honored.
@@ -51,15 +62,18 @@ aqs::cassandra_user: aqs
 aqs::cassandra_password: "%{passwords::aqs::aqs_user}"
 
 cassandra::dc: "%{::site}"
-cassandra::cluster_name: "Analytics Query Service Cassandra"
+cassandra::cluster_name: "Analytics Query Service Storage"
 
 #
 # AQS service
 #
 aqs::seeds:
-    - aqs1001.eqiad.wmnet
-    - aqs1002.eqiad.wmnet
-    - aqs1003.eqiad.wmnet
+    - aqs1004-a.eqiad.wmnet
+    - aqs1004-b.eqiad.wmnet
+    - aqs1005-a.eqiad.wmnet
+    - aqs1005-b.eqiad.wmnet
+    - aqs1006-a.eqiad.wmnet
+    - aqs1006-b.eqiad.wmnet
 aqs::logstash_host: logstash1001.eqiad.wmnet
 aqs::cassandra_default_consistency: localOne
 aqs::cassandra_local_dc: "%{::site}"
@@ -70,9 +84,6 @@ lvs::realserver::realserver_ips:
 
 # Used for ferm firewall rules
 aqs_hosts:
-    - aqs1001.eqiad.wmnet
-    - aqs1002.eqiad.wmnet
-    - aqs1003.eqiad.wmnet
     - aqs1004.eqiad.wmnet
     - aqs1005.eqiad.wmnet
     - aqs1006.eqiad.wmnet
