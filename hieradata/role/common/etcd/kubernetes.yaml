@@ -1,0 +1,8 @@
+debdeploy::grains:
+  debdeploy-etcd:
+    value: standard
+cluster: etcd
+etcd::cluster_name: 'k8s.eqiad'
+etcd::srv_dns: 'k8s.eqiad.wmnet'
+etcd::use_client_certs: false
+etcd::do_backup: true
