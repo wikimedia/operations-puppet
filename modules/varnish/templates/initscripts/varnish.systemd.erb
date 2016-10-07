@@ -27,6 +27,7 @@ ExecStart=/usr/sbin/varnishd \
 <% if @varnish_version4 -%>
 -p thread_pool_min=250 -p thread_pool_max=<%= @processorcount.to_i * 250 -%> -p thread_pool_timeout=120 \
 -p vsl_reclen=2048 \
+-p vcc_allow_inline_c=true \
 <% else -%>
 -w 250,<%= @processorcount.to_i * 250 -%>,120 \
 -p shm_reclen=2048 \

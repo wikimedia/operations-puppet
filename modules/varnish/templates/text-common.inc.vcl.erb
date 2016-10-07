@@ -77,7 +77,7 @@ sub text_normalize_path {
 
 // fe+be common recv code
 sub text_common_recv {
-	if (req.request != "GET" && req.request != "HEAD") {
+	if (<%= @req_method %> != "GET" && <%= @req_method %> != "HEAD") {
 		return (pass);
 	}
 
@@ -121,7 +121,7 @@ sub text_common_hash {
 
 // fe+be common fetch code
 sub text_common_backend_response {
-	if (req.http.X-Subdomain && (req.url ~ "mobileaction=" || req.url ~ "useformat=")) {
+	if (<%= @bereq_req %>.http.X-Subdomain && (<%= @bereq_req %>.url ~ "mobileaction=" || <%= @bereq_req %>.url ~ "useformat=")) {
 		set beresp.ttl = 60 s;
 	}
 
@@ -146,12 +146,17 @@ sub text_common_backend_response {
 		&& beresp.status < 500
 		&& (!beresp.http.X-Cache-Int || beresp.http.X-Cache-Int !~ " hit")
 	    ) || (
-		req.http.Cookie == "Token=1"
+		<%= @bereq_req %>.http.Cookie == "Token=1"
 		&& beresp.http.Vary ~ "(?i)(^|,)\s*Cookie\s*(,|$)"
 	    )
 	) {
 		set beresp.ttl = 601s;
 		set beresp.http.X-CDIS = "pass";
+		<%- if @varnish_version4 -%>
+		set beresp.uncacheable = true;
+		return (deliver);
+		<%- else -%>
 		return (hit_for_pass);
+		<%- end -%>
 	}
 }
