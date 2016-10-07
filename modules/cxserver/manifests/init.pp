@@ -11,6 +11,10 @@
 #   Url to Yandex service.
 # [*yandex_api_key*]
 #   API key for Yandex service.
+# [*youdao_url*]
+#   Url to Youdao service.
+# [*youdao_api_key*]
+#   API key for Yandex service.
 # [*jwt_secret*]
 #   JWT secret token.
 # [*no_proxy_list*]
@@ -21,6 +25,8 @@ class cxserver(
     $apertium = "http://apertium.svc.${::site}.wmnet:2737",
     $yandex_url = undef,
     $yandex_api_key = undef,
+    $youdao_url = undef,
+    $youdao_api_key = undef,
     $jwt_secret = undef,
     $no_proxy_list = undef,
     $registry = 'registry.wikimedia.yaml',
