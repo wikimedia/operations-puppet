@@ -62,6 +62,10 @@ class role::labs::nfs::misc($dump_servers_ips) {
         ensure => 'directory',
     }
 
+    file {'/srv/maps':
+        ensure => 'directory',
+    }
+
     mount { '/srv/dumps':
         ensure  => mounted,
         fstype  => ext4,
@@ -87,5 +91,14 @@ class role::labs::nfs::misc($dump_servers_ips) {
         atboot  => true,
         device  => '/dev/srv/statistics/',
         require => File['/srv/statistics'],
+    }
+
+    mount { '/srv/maps':
+        ensure  => mounted,
+        fstype  => ext4,
+        options => 'defaults,noatime',
+        atboot  => true,
+        device  => '/dev/srv/maps/',
+        require => File['/srv/maps'],
     }
 }
