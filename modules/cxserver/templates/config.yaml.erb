@@ -22,6 +22,11 @@ mt:
     api: '<%= @yandex_url %>'
     key: '<%= @yandex_api_key %>'
   <% end -%>
+  <%- if @youdao_url -%>
+  youdao:
+    api: '<%= @youdao_url %>'
+    key: '<%= @youdao_api_key %>'
+  <% end -%>
 
 # registry to use
 registry: <%= @registry %>
