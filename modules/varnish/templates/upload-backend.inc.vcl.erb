@@ -31,17 +31,9 @@ sub cluster_be_recv_pre_purge { }
 
 sub cluster_be_recv_applayer_backend {
 	if (req.url ~ "^/+[^/]+/[^/]+/thumb/") {
-		<%- if @varnish_version4 -%>
 		set req.backend_hint = swift_thumbs.backend();
-		<%- else -%>
-		set req.backend = swift_thumbs;
-		<%- end -%>
 	} else {
-		<%- if @varnish_version4 -%>
 		set req.backend_hint = swift.backend();
-		<%- else -%>
-		set req.backend = swift;
-		<%- end -%>
 	}
 }
 
@@ -65,20 +57,11 @@ sub cluster_be_miss {
 
 sub cluster_be_pass { }
 
-<% if @varnish_version4 -%>
 sub cluster_be_backend_fetch {
 	call upload_common_set_range;
 }
-<% end -%>
 
 sub cluster_be_backend_response {
-	<%- if not @varnish_version4 -%>
-	// Stream large objects, >= 1 MB
-	if (std.integer(beresp.http.Content-Length, 0) >= 1048576 || beresp.http.Content-Length ~ "^[0-9]{9}") {
-		set beresp.do_stream = true;
-	}
-	<%- end -%>
-
 	call pick_stevedore;
 	
 	if (beresp.http.Content-Range) {

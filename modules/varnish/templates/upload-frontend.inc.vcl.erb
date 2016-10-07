@@ -50,32 +50,16 @@ sub cluster_fe_miss {
 
 sub cluster_fe_pass { }
 
-<% if @varnish_version4 -%>
 sub cluster_fe_backend_fetch {
 	call upload_common_set_range;
 }
-<% end -%>
 
 sub cluster_fe_backend_response {
 	if (beresp.http.Content-Range) {
 		// Varnish itself doesn't ask for ranges, so this must have been
 		// a passed range request
 		set beresp.http.X-Content-Range = beresp.http.Content-Range;
-
-		<%- if not @varnish_version4 -%>
-		if (beresp.http.Content-Range ~ "\/[0-9]{8,}$") {
-			set beresp.do_stream = true;
-		}
-		<%- end -%>
 	}
-
-	<%- if not @varnish_version4 -%>
-	// Stream large objects, >= 1 or 32 MB
-<% stream_threshold = @cache_route == 'direct' ? 33554432 : 1048576 -%>
-	if (std.integer(beresp.http.Content-Length, 33554432) >= <%= stream_threshold %> || beresp.http.Content-Length ~ "^[0-9]{9}") {
-		set beresp.do_stream = true;
-	}
-	<%- end -%>
 
 	// Four-hit-wonder experiment: if the immediate backend does not indicate
 	// hit/4 or higher, deliver the object as normal but do not create a new
@@ -85,23 +69,15 @@ sub cluster_fe_backend_response {
             && bereq.http.X-CDIS == "miss"
             && beresp.http.X-Cache-Int !~ " hit/([4-9]|[0-9]{2,})$") {
 		set beresp.ttl = 0s;
-		<%- if @varnish_version4 -%>
 		set beresp.uncacheable = true;
 		return (deliver);
-		<%- else -%>
-		return (hit_for_pass);
-		<%- end -%>
 	}
 
 	// hit-for-pass objects >= 256K size
 	if (std.integer(beresp.http.Content-Length, 262144) >= 262144 || beresp.http.Content-Length ~ "^[0-9]{9}") {
 		set beresp.http.X-CDIS = "pass";
-		<%- if @varnish_version4 -%>
 		set beresp.uncacheable = true;
 		return (deliver);
-		<%- else -%>
-		return (hit_for_pass);
-		<%- end -%>
 	}
 
 	call upload_common_backend_response;
