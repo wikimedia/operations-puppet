@@ -32,8 +32,8 @@ class etcd::auth {
         }
     } else {
         exec { 'Etcd disable auth':
-            cmd    => "${cmd_base} auth disable",
-            unless => "${cmd_base} auth status | grep -q false",
+            command => "${cmd_base} auth disable",
+            unless  => "${cmd_base} auth status | grep -q false",
         }
     }
 }
