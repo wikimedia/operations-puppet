@@ -35,6 +35,14 @@ class icinga::monitor::toollabs {
         host          => 'tools.wmflabs.org',
     }
 
+    # Monitors the tools nginx proxy by hitting the health endpoint
+    # defined in dynamicproxy nginx.conf
+    monitoring::service {'tools-proxy':
+        description   => 'tools nginx proxy health'
+        check_command => 'check_http_url!tools.wmflabs.org!/health'
+        host          => 'tools.wmflabs.org'
+    }
+
     # complex checks via a wsgi app running on a cluster for this purpose.
     # these checks are used to track uptime and availability via
     # catchpoint as well as for general alerting and administration.
