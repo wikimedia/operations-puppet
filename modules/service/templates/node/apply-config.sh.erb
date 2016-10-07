@@ -3,5 +3,7 @@
 # Do not modify it manually
 
 set -e
-/usr/bin/scap deploy-local -D 'log_json:False' --repo <%= @repo %> --force config_deploy;
-<%- if @auto_refresh %>/usr/bin/scap deploy-local -D 'log_json:False' --repo <%= @repo %> --force restart_service;<%- end -%>
+/usr/bin/scap deploy-local -D 'log_json:False' --force config_deploy http://<%= @deployment_host %>/<%= @repo %> /srv/deployment/<%= @repo %>;
+<%- if @auto_refresh %>
+/usr/bin/scap deploy-local -D 'log_json:False' --force restart_service http://<%= @deployment_host %>/<%= @repo %> /srv/deployment/<%= @repo %>;
+<%- end -%>

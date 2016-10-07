@@ -87,14 +87,13 @@ define scap::target(
         }
     }
 
-
+    $deployment_host = hiera('scap::deployment_server')
 
     if $::realm == 'labs' {
         if !defined(Security::Access::Config["scap-allow-${deploy_user}"]) {
             # Allow $deploy_user login from scap deployment host.
             # adds an exception in /etc/security/access.conf
             # to work around labs-specific restrictions
-            $deployment_host = hiera('scap::deployment_server')
             $deployment_ip = ipresolve($deployment_host, 4, $::nameservers[0])
             security::access::config { "scap-allow-${deploy_user}":
                 content  => "+ : ${deploy_user} : ${deployment_ip}\n",
@@ -105,7 +104,9 @@ define scap::target(
 
     package { $package_name:
         install_options => [{
-                  owner => $deploy_user}],
+                  owner => $deploy_user,
+                  host  => $deployment_host,
+        }],
         provider        => 'scap3',
         require         => [Package['scap'], User[$deploy_user]],
     }

@@ -28,7 +28,8 @@ describe provider_class do
     it 'should specify the right repo' do
       allow(FileUtils).to receive(:cd)
       expect(@provider).to receive(:execute).
-        with(['/usr/bin/scap', 'deploy-local', '--repo', 'foo/deploy', '-D', 'log_json:False'],
+        with(['/usr/bin/scap', 'deploy-local', '-D', 'log_json:False',
+              'http://deployment.eqiad.wmnet/foo/deploy', '/srv/deployment/foo/deploy'],
              uid: 666, failonfail: true)
       @provider.install
     end

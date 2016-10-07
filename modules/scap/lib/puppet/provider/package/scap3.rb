@@ -57,7 +57,7 @@ Puppet::Type.type(:package).provide(
 
     uid = Etc.getpwnam(deploy_user).uid
 
-    execute([self.class.command(:scap), 'deploy-local', '--repo', repo_path, '-D', 'log_json:False'],
+    execute([self.class.command(:scap), 'deploy-local', '-D', 'log_json:False', host_path, target_path],
             :uid => uid, :failonfail => true)
   end
 
@@ -122,6 +122,14 @@ Puppet::Type.type(:package).provide(
 
   def deploy_user
     @deploy_user ||= install_option('owner', 'root')
+  end
+
+  def host
+    @host_name ||= install_option('host', 'deployment.eqiad.wmnet')
+  end
+
+  def host_path
+    'http://' + File.join(host, repo_path)
   end
 
   def repo

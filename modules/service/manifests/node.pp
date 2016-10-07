@@ -272,6 +272,7 @@ define service::node(
         # the file and install its symlink
         $chown_user = "${deployment_user}:${deployment_user}"
         $chown_target = "/etc/${title}/config.yaml"
+        $deployment_host = hiera('scap::deployment_host')
         exec { "chown ${chown_target}":
             command => "/bin/chown ${chown_user} ${chown_target}",
             # perform the chown only if root is the effective owner
