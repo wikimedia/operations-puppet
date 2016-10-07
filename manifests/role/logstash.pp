@@ -47,10 +47,10 @@ class role::logstash (
         srange => '@resolve(krypton.eqiad.wmnet)',
     }
 
-    ferm::service { 'logstash_canary_checker':
+    ferm::service { 'logstash_canary_checker_reporting':
         proto  => 'tcp',
         port   => '9200',
-        srange => '$DEPLOYMENT_HOSTS',
+        srange => '($DEPLOYMENT_HOSTS $MAINTENANCE_HOSTS)',
     }
 
     logstash::input::gelf { 'gelf':
