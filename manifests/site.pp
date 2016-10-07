@@ -1048,6 +1048,15 @@ node /^es200[234]\.codfw\.wmnet/ {
     include mariadb::mysqld_safe
 }
 
+# Etcd cluster for kubernetes
+node /^etcd100[123]\.eqiad\.wmnet$/ {
+    role(etcd::kubernetes)
+}
+
+# Etcd cluster for "virtual" networking
+node /^etcd100[456]\.eqiad\.wmnet$/ {
+    role(etcd::networking)
+}
 
 # Etherpad (virtual machine)
 node 'etherpad1001.eqiad.wmnet' {
