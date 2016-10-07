@@ -53,6 +53,12 @@ class role::logstash (
         srange => '$DEPLOYMENT_HOSTS',
     }
 
+    ferm::service { 'logstash_reporting':
+        proto  => 'tcp',
+        port   => '9200',
+        srange => '@resolve(terbium.eqiad.wmnet)',
+    }
+
     logstash::input::gelf { 'gelf':
         port => 12201,
     }
