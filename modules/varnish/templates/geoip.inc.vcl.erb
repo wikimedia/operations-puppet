@@ -54,8 +54,14 @@ C{
      * return value is the zero for success, non-zero for failure (input IP is
      * invalid or the encoding of it is too long).
      */
+<% if @varnish_version4 -%>
+    static int geo_get_xcip(const struct vrt_ctx *ctx, char* ip) {
+        const struct gethdr_s hdr = { HDR_REQ, "\014X-Client-IP:" };
+        const char* client_ip = VRT_GetHdr(ctx, &hdr);
+<% else -%>
     static int geo_get_xcip(const struct sess* sp, char* ip) {
         const char* client_ip = VRT_GetHdr(sp, HDR_REQ, "\014X-Client-IP:");
+<% end -%>
         size_t len = 0;
         int rv = -1;
 
@@ -141,13 +147,22 @@ C{
         _GEO_IDX_SIZE   = 5,
     } geo_idx_t;
 
+<% if @varnish_version4 -%>
+    static void geo_out_cookie(const struct vrt_ctx *ctx, char** geo) {
+<% else -%>
     static void geo_out_cookie(struct sess* sp, char** geo) {
+<% end -%>
         char host_safe[50];
 
         // We can't set a cookie if we don't know the valid top domain, so this
         // is the case where we emit no Cookie output at all (as before) with
         // the two possible bare "return;" below
+<% if @varnish_version4 -%>
+        const struct gethdr_s hdr = { HDR_REQ, "\005host:" };
+        const char* host = VRT_GetHdr(ctx, &hdr);
+<% else -%>
         const char* host = VRT_GetHdr(sp, HDR_REQ, "\005host:");
+<% end -%>
         if (!host)
             return;
         const char* top_dom = geo_get_top_cookie_domain(host);
@@ -173,9 +188,16 @@ C{
 
         // Use libvmod-header to ensure the Set-Cookie header we are adding
         // does not clobber or manipulate existing cookie headers (if any).
+<% if @varnish_version4 -%>
+        const struct gethdr_s hdr_set_cookie = { HDR_RESP, "\013Set-Cookie:" };
+        Vmod_header_Func.append(ctx, &hdr_set_cookie,
+                                out, "; Path=/; secure; Domain=.",
+                                host_safe, vrt_magic_string_end);
+<% else -%>
         Vmod_Func_header.append(sp, HDR_RESP, "\013Set-Cookie:",
                                 out, "; Path=/; secure; Domain=.",
                                 host_safe, vrt_magic_string_end);
+<% end -%>
     }
 
     static const char* mm_path[_GEO_IDX_SIZE][4] = {
@@ -186,7 +208,11 @@ C{
         {"location", "longitude", NULL, NULL},
     };
 
+<% if @varnish_version4 -%>
+    static void geo_xcip_output(const struct vrt_ctx *ctx) {
+<% else -%>
     static void geo_xcip_output(struct sess* sp) {
+<% end -%>
         int gai_error, mmdb_error;
         char ip[INET6_ADDRSTRLEN];
         char* geo[_GEO_IDX_SIZE];
@@ -199,7 +225,11 @@ C{
 
         if (!mmdb)
             goto out;
+<% if @varnish_version4 -%>
+        if (geo_get_xcip(ctx, ip))
+<% else -%>
         if (geo_get_xcip(sp, ip))
+<% end -%>
             goto out;
         MMDB_lookup_result_s result = MMDB_lookup_string(mmdb, ip,
             &gai_error, &mmdb_error);
@@ -232,11 +262,19 @@ C{
         }
 
         out:
+<% if @varnish_version4 -%>
+        geo_out_cookie(ctx, geo);
+<% else -%>
         geo_out_cookie(sp, geo);
+<% end -%>
     }
 }C
 
 // Emits a Set-Cookie
 sub geoip_cookie {
+<% if @varnish_version4 -%>
+    C{geo_xcip_output(ctx);}C
+<% else -%>
     C{geo_xcip_output(sp);}C
+<% end -%>
 }

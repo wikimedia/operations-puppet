@@ -3,39 +3,71 @@
 include "text-common.inc.vcl";
 
 sub cluster_be_recv_pre_purge {
-	if (req.request == "PURGE") {
+	if (<%= @req_method %> == "PURGE") {
 		call text_normalize_path;
 	}
 }
 
 sub cluster_be_recv_applayer_backend {
 	if (req.http.Host == "cxserver.wikimedia.org" ) { # LEGACY: to be removed eventually
+		<%- if @varnish_version4 -%>
+		set req.backend_hint = cxserver_backend.backend();
+		<%- else -%>
 		set req.backend = cxserver_backend;
+		<%- end -%>
 	} else if (req.http.Host == "citoid.wikimedia.org" ) { # LEGACY: to be removed eventually
+		<%- if @varnish_version4 -%>
+		set req.backend_hint = citoid_backend.backend();
+		<%- else -%>
 		set req.backend = citoid_backend;
+		<%- end -%>
 	} else { // default for all other hostnames
 		if (req.url ~ "^/api/rest_v1/") {
+			<%- if @varnish_version4 -%>
+			set req.backend_hint = restbase_backend.backend();
+			<%- else -%>
 			set req.backend = restbase_backend;
+			<%- end -%>
 		} else if (req.url ~ "^/w/api\.php") {
+			<%- if @varnish_version4 -%>
+			set req.backend_hint = api.backend();
+			<%- else -%>
 			set req.backend = api;
+			<%- end -%>
+			set req.http.X-Backend-is-Mediawiki = 1;
 		} else if (req.url ~ "^/w/thumb(_handler)?\.php") {
+			<%- if @varnish_version4 -%>
+			set req.backend_hint = rendering.backend();
+			<%- else -%>
 			set req.backend = rendering;
+			<%- end -%>
+			set req.http.X-Backend-is-Mediawiki = 1;
 		} else {
+			<%- if @varnish_version4 -%>
+			set req.backend_hint = appservers.backend();
+			<%- else -%>
 			set req.backend = appservers;
+			<%- end -%>
+			set req.http.X-Backend-is-Mediawiki = 1;
 		}
 	}
 
-	if (req.http.X-Wikimedia-Debug && (
-		req.backend == appservers
-		|| req.backend == rendering
-		|| req.backend == api
-	)) {
+	if (req.http.X-Wikimedia-Debug && req.http.X-Backend-is-Mediawiki) {
+	<%- if @varnish_version4 -%>
+		set req.backend_hint = appservers_debug.backend();
+	<%- else -%>
 		set req.backend = appservers_debug;
+	<%- end -%>
+		unset req.http.X-Backend-is-Mediawiki;
 	}
 
 <% if @varnish_directors.include?('security_audit') && !@varnish_directors['security_audit']['backends'].empty? %>
 	if (req.http.X-Wikimedia-Security-Audit == "1") {
+		<%- if @varnish_version4 -%>
+		set req.backend_hint = security_audit.backend();
+		<%- else -%>
 		set req.backend = security_audit;
+		<%- end -%>
 	}
 <% end %>
 }
@@ -73,29 +105,41 @@ sub misspass_mangle { }
 sub cluster_be_hit { }
 
 sub cluster_be_miss {
+	<%- if not @varnish_version4 -%>
 	call misspass_mangle;
 	call text_common_misspass_restore_cookie;
+	<%- end -%>
 }
 
 sub cluster_be_pass {
+	<%- if not @varnish_version4 -%>
 	call misspass_mangle;
 	call text_common_misspass_restore_cookie;
+	<%- end -%>
 }
 
 <% if @varnish_version4 -%>
-sub cluster_be_backend_fetch { }
+sub cluster_be_backend_fetch {
+	call misspass_mangle;
+	call text_common_misspass_restore_cookie;
+}
 <% end -%>
 
 sub cluster_be_backend_response {
 	// Make sure Set-Cookie responses are not cacheable, and log violations
 	// FIXME: exceptions are ugly; maybe get rid of the whole thing?
 	if (beresp.ttl > 0s && beresp.http.Set-Cookie &&
-		req.url !~ "^/wiki/Special:HideBanners") {
-		std.log("Cacheable object with Set-Cookie found. req.url: " + req.url + " Cache-Control: " + beresp.http.Cache-Control + " Set-Cookie: " + beresp.http.Set-Cookie);
+		<%= @bereq_req %>.url !~ "^/wiki/Special:HideBanners") {
+		std.log("Cacheable object with Set-Cookie found. <%= @bereq_req %>.url: " + <%= @bereq_req %>.url + " Cache-Control: " + beresp.http.Cache-Control + " Set-Cookie: " + beresp.http.Set-Cookie);
 		set beresp.http.Cache-Control = "private, max-age=0, s-maxage=0";
 		set beresp.ttl = 0s;
 		set beresp.http.X-CDIS = "pass";
+		<%- if @varnish_version4 -%>
+		set beresp.uncacheable = true;
+		return (deliver);
+		<%- else -%>
 		return (hit_for_pass);
+		<%- end -%>
 	}
 
 	// FIXME: Fix up missing Vary headers on Apache redirects
