@@ -55,6 +55,12 @@ class network::constants {
                     '10.192.16.132',                    # mira.codfw.wmnet
                     '2620:0:860:102:10:192:16:132',     # mira.codfw.wmnet
                 ],
+            'maintenance_hosts' => [
+                    '10.64.32.13',                      # terbium.eqiad.wmnet
+                    '2620:0:861:103:10:64:32:13',       # terbium.eqiad.wmnet
+                    '10.192.48.45',                     # wasat.codfw.wmnet
+                    '2620:0:860:104:10:192:48:45',      # wasat.codfw.wmnet
+                ],
             'puppet_frontends' => [
                     '10.64.16.160',               # palladium.eqiad.wmnet
                     '2620:0:861:102:10:64:16:16', # palladium.eqiad.wmnet
@@ -90,6 +96,12 @@ class network::constants {
                     '10.192.16.132',                    # mira.codfw.wmnet
                     '2620:0:860:102:10:192:16:132',     # mira.codfw.wmnet
                 ],
+            'maintenance_hosts' => [
+                    '10.64.32.13',                      # terbium.eqiad.wmnet
+                    '2620:0:861:103:10:64:32:13',       # terbium.eqiad.wmnet
+                    '10.192.48.45',                     # wasat.codfw.wmnet
+                    '2620:0:860:104:10:192:48:45',      # wasat.codfw.wmnet
+                ],
             },
         'labs' => {
             'bastion_hosts' => concat([
@@ -105,6 +117,9 @@ class network::constants {
                     '10.68.21.205',  # deployment-tin.deployment-prep.eqiad.wmflabs
                     '10.68.20.135',  # deployment-mira.deployment-prep.eqiad.wmflabs
                 ],
+            'maintenance_hosts' => [
+                    '10.68.21.XXX',  # deployment-terbium.deployment-prep.eqiad.wmflabs
+                    '10.68.20.XXX',  # deployment-wasat.deployment-prep.eqiad.wmflabs
             }
     }
 
