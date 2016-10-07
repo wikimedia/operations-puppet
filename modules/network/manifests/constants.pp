@@ -55,6 +55,10 @@ class network::constants {
                     '10.192.16.132',                    # mira.codfw.wmnet
                     '2620:0:860:102:10:192:16:132',     # mira.codfw.wmnet
                 ],
+            'maintenance_hosts' => [
+                    '10.64.32.13',                      # terbium.eqiad.wmnet
+                    '10.192.48.45',                     # wasat.codfw.wmnet
+                ],
             'puppet_frontends' => [
                     '10.64.16.160',               # palladium.eqiad.wmnet
                     '2620:0:861:102:10:64:16:16', # palladium.eqiad.wmnet
