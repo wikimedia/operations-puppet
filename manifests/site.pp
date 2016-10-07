@@ -255,9 +255,6 @@ node 'chromium.wikimedia.org' {
 # gerrit warm stand-by (T147597)
 node 'cobalt.wikimedia.org' {
     role(gerrit::server)
-
-    include standard
-    include base::firewall
 }
 
 # conf100x are zookeeper and etcd discovery service nodes in eqiad
@@ -1538,9 +1535,6 @@ node /labstore200[3-4]\.codfw\.wmnet/ {
 # New https://www.mediawiki.org/wiki/Gerrit
 node 'lead.wikimedia.org' {
     role(gerrit::server)
-
-    include standard
-    include base::firewall
 }
 
 node 'lithium.eqiad.wmnet' {
