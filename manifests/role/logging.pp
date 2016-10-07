@@ -53,12 +53,11 @@ class role::logging::mediawiki(
     $logstash_port = 8324
 
     udp2log::instance { 'mw':
-        log_directory       =>    $log_directory,
-        monitor_log_age     =>    false,
-        monitor_processes   =>    false,
-        monitor_packet_loss =>    false,
-        rotate              =>    $rotate,
-        template_variables  => {
+        log_directory      =>    $log_directory,
+        monitor_log_age    =>    false,
+        monitor_processes  =>    false,
+        rotate             =>    $rotate,
+        template_variables => {
             error_processor_host => 'eventlog1001.eqiad.wmnet',
             error_processor_port => 8423,
 
