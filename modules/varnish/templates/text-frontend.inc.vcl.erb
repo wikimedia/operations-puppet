@@ -17,7 +17,7 @@ include "geoip.inc.vcl";
 // the example of traffic sourced directly by satellite or something.
 
 sub mobile_redirect {
-	if (!req.http.X-Subdomain && (req.request == "GET" || req.request == "HEAD")
+	if (!req.http.X-Subdomain && (<%= @req_method %> == "GET" || <%= @req_method %> == "HEAD")
 		&& (req.http.User-Agent ~ "(?i)(mobi|240x240|240x320|320x320|alcatel|android|audiovox|bada|benq|blackberry|cdm-|compal-|docomo|ericsson|hiptop|htc[-_]|huawei|ipod|kddi-|kindle|meego|midp|mitsu|mmp\/|mot-|motor|ngm_|nintendo|opera.m|palm|panasonic|philips|phone|playstation|portalmmm|sagem-|samsung|sanyo|sec-|semc-browser|sendo|sharp|silk|softbank|symbian|teleca|up.browser|vodafone|webos)"
 			|| req.http.User-Agent ~ "^(?i)(lge?|sie|nec|sgh|pg)-" || req.http.Accept ~ "vnd.wap.wml")
 		&& req.http.Cookie !~ "(stopMobileRedirect=true|mf_useformat=desktop)"
@@ -41,7 +41,7 @@ sub mobile_redirect {
 			} else {
 				set req.http.Location = "http://" + req.http.MobileHost + req.url;
 			}
-			error 666 "Found";
+			<%= error_synth(666, "Found") -%>
 		}
 		unset req.http.MobileHost;
 	}
@@ -50,15 +50,15 @@ sub mobile_redirect {
 sub cluster_fe_recv_pre_purge {
 	// Forged UAs on zerodot. This largely handles lazywebtools below, incidentally.
 	if (req.http.host ~ "zero\.wikipedia\.org" && req.http.User-Agent && req.http.User-Agent ~ "Facebookbot|Googlebot") {
-		error 403 "Noise";
+		<%= error_synth(403, "Noise") -%>
 	}
 
 	if (req.http.referer && req.http.referer ~ "^http://(www\.(keeprefreshing|refreshthis|refresh-page|urlreload)\.com|tuneshub\.blogspot\.com|itunes24x7\.blogspot\.com|autoreload\.net|www\.lazywebtools\.co\.uk)/") {
-		error 403 "Noise";
+		<%= error_synth(403, "Noise") -%>
 	}
 
-	if (req.request == "POST" && req.url ~ "index\.php\?option=com_jce&task=plugin&plugin=imgmanager&file=imgmanager&method=form&cid=") {
-		error 403 "Noise";
+	if (<%= @req_method %> == "POST" && req.url ~ "index\.php\?option=com_jce&task=plugin&plugin=imgmanager&file=imgmanager&method=form&cid=") {
+		<%= error_synth(403, "Noise") -%>
 	}
 
 	// FIXME: we're seeing an issue with Range requests and gzip/gunzip.
@@ -182,7 +182,7 @@ sub cluster_fe_recv {
 	// randomly.  We may increase that a bit in the future and/or widen the
 	// UA filter, but this is a good starting point.
 	if (req.http.X-Connection-Properties ~ "DES-CBC3"
-	   && req.http.User-Agent ~ "Windows NT" && req.request == "GET"
+	   && req.http.User-Agent ~ "Windows NT" && <%= @req_method %> == "GET"
 	   && req.url ~ "^/wiki/" && req.http.host !~ "\.m\."
 	   && req.http.Cookie !~ "Browser-Security=Awful"
 	   && std.random(0,100) < 2.0) {
@@ -246,7 +246,11 @@ sub cluster_fe_deliver {
 		if (resp.status == 302) {
 			unset resp.http.Location;
 			set resp.status = 200;
+			<%- if @varnish_version4 -%>
+			set resp.reason = "OK";
+			<%- else -%>
 			set resp.response = "OK";
+			<%- end -%>
 		} elsif (resp.status == 301) {
 			// preserve the original client redirect preference on title redirects
 			if (resp.http.Location ~ "[?]") {
@@ -287,29 +291,29 @@ sub cluster_fe_deliver {
 
 sub cluster_fe_err_synth {
 	// Support mobile redirects
-	if (obj.status == 666) {
-		set obj.http.Location = req.http.Location;
-		set obj.status = 302;
-		set obj.http.Connection = "keep-alive";
-		set obj.http.Content-Length = "0"; // BZ #62245
+	if (<%= @resp_obj %>.status == 666) {
+		set <%= @resp_obj %>.http.Location = req.http.Location;
+		set <%= @resp_obj %>.status = 302;
+		set <%= @resp_obj %>.http.Connection = "keep-alive";
+		set <%= @resp_obj %>.http.Content-Length = "0"; // BZ #62245
 		return (deliver);
 	}
 
 	// Chrome/41-on-Windows: T141786
-	if (obj.status == 741) {
-		set obj.status = 401;
-		set obj.http.WWW-Authenticate = {"Basic realm="Buggy request, please report at https://phabricator.wikimedia.org/T141786""};
+	if (<%= @resp_obj %>.status == 741) {
+		set <%= @resp_obj %>.status = 401;
+		set <%= @resp_obj %>.http.WWW-Authenticate = {"Basic realm="Buggy request, please report at https://phabricator.wikimedia.org/T141786""};
 		return (deliver);
 	}
 
 	// Browser sec redirect, with a cookie to prevent repeats in the same session
 	// Note the cookie is is per-site for simplicity
-	if (obj.status == 787) {
-		set obj.status = 302;
-		set obj.http.Connection = "keep-alive";
-		set obj.http.Content-Length = "0"; // BZ #62245
-		set obj.http.Set-Cookie = "Browser-Security=Awful; Path=/; secure";
-		set obj.http.Location = "https://wikitech.wikimedia.org/wiki/HTTPS:_Browser_Recommendations";
+	if (<%= @resp_obj %>.status == 787) {
+		set <%= @resp_obj %>.status = 302;
+		set <%= @resp_obj %>.http.Connection = "keep-alive";
+		set <%= @resp_obj %>.http.Content-Length = "0"; // BZ #62245
+		set <%= @resp_obj %>.http.Set-Cookie = "Browser-Security=Awful; Path=/; secure";
+		set <%= @resp_obj %>.http.Location = "https://wikitech.wikimedia.org/wiki/HTTPS:_Browser_Recommendations";
 		return (deliver);
 	}
 }
