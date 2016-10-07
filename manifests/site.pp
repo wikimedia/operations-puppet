@@ -260,6 +260,7 @@ node 'cobalt.wikimedia.org' {
     # role(gerrit::server)
     include standard
     include base::firewall
+    include role::backup::host
 }
 
 # conf100x are zookeeper and etcd discovery service nodes in eqiad
