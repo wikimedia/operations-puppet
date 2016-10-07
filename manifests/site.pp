@@ -258,6 +258,7 @@ node 'chromium.wikimedia.org' {
 # gerrit warm stand-by (T147597)
 node 'cobalt.wikimedia.org' {
     # role(gerrit::server)
+    role(gerrit::migration)
     include standard
     include base::firewall
     include role::backup::host
