@@ -34,6 +34,36 @@ host dubnium {
     fixed-address dubnium.wikimedia.org;
 }
 
+host etcd1001 {
+     hardware ethernet aa:00:00:34:69:70;
+     fixed-address etcd1001.eqiad.wmnet;
+}
+
+host etcd1002 {
+     hardware ethernet aa:00:00:e8:d2:90;
+     fixed-address etcd1002.eqiad.wmnet;
+}
+
+host etcd1003 {
+     hardware ethernet aa:00:00:42:5d:36;
+     fixed-address etcd1003.eqiad.wmnet;
+}
+
+host etcd1004 {
+     hardware ethernet aa:00:00:24:5f:97;
+     fixed-address etcd1004.eqiad.wmnet;
+}
+
+host etcd1005 {
+     hardware ethernet aa:00:00:bf:3f:d7;
+     fixed-address etcd1005.eqiad.wmnet;
+}
+
+host etcd1006 {
+     hardware ethernet aa:00:00:dd:26:03;
+     fixed-address etcd1006.eqiad.wmnet;
+}
+
 host etherpad1001 {
     hardware ethernet AA:00:00:EE:AD:01;
     fixed-address etherpad1001.eqiad.wmnet;
