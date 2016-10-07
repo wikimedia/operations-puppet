@@ -6,4 +6,3 @@ etcd::cluster_name: "net.k8s.%{::site}"
 etcd::srv_dns: "net.k8s.%{::site}.wmnet"
 etcd::use_client_certs: true
 etcd::do_backup: true
-etcd::cluster_state: "new"
