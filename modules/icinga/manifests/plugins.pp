@@ -2,6 +2,9 @@
 #
 # Sets up icinga check_plugins and notification commands
 class icinga::plugins {
+    package { 'nagios-nrpe-plugin':
+        ensure => present,
+    }
     file { '/usr/lib/nagios':
         ensure => directory,
         owner  => 'icinga',
@@ -80,12 +83,6 @@ class icinga::plugins {
     }
     file { '/usr/lib/nagios/plugins/check_MySQL.php':
         source => 'puppet:///modules/icinga/check_MySQL.php',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0755',
-    }
-    file { '/usr/lib/nagios/plugins/check_nrpe':
-        source => 'puppet:///modules/icinga/check_nrpe',
         owner  => 'root',
         group  => 'root',
         mode   => '0755',
