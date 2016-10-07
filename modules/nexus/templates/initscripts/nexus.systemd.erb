@@ -1,0 +1,22 @@
+[Unit]
+Description=Sonatype Nexus Repository Manager
+
+[Service]
+User=nexus
+Group=nexus
+WorkingDirectory=~
+
+# Use 'start-launchd'
+# - spawns Nexus with bash 'exec'
+# - leaves stdout/stderr untouched.
+Type=simple
+ExecStart=/var/lib/nexus/repo/bin/nexus start-launchd
+
+ExecStop=/var/lib/nexus/repo/bin/nexus stop
+ExecReload=/var/lib/nexus/repo/bin/nexus restart
+
+StandardOutput=journal
+StandardError=inherit
+
+[Install]
+WantedBy=multi-user.target
