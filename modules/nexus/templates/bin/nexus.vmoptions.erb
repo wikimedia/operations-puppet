@@ -1,0 +1,12 @@
+-Xms1200M
+-Xmx1200M
+-XX:+UnlockDiagnosticVMOptions
+-XX:+UnsyncloadClass
+-Djava.net.preferIPv4Stack=true
+-Dkaraf.home=.
+-Dkaraf.base=.
+-Dkaraf.etc=etc
+-Djava.util.logging.config.file=etc/java.util.logging.properties
+-Dkaraf.data=<%= @data_dir %>/storage
+-Djava.io.tmpdir=<%= @data_dir %>/tmp
+-Dkaraf.startLocalConsole=false
