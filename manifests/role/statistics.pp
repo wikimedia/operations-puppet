@@ -77,10 +77,6 @@ class role::statistics::cruncher inherits role::statistics {
 
     # Set up various jobs to be executed by reportupdater
     # creating several reports on mysql research db.
-    reportupdater::job { 'mobile':
-        repository => 'limn-mobile-data',
-        output_dir => 'mobile/datafiles',
-    }
     reportupdater::job { 'flow':
         repository => 'limn-flow-data',
         output_dir =>  'flow/datafiles',
@@ -96,10 +92,6 @@ class role::statistics::cruncher inherits role::statistics {
     reportupdater::job { 'language':
         repository => 'limn-language-data',
         output_dir => 'metrics/beta-feature-enables',
-    }
-    reportupdater::job { 'extdist':
-        repository => 'limn-extdist-data',
-        output_dir => 'extdist/datafiles',
     }
     reportupdater::job { 'ee':
         repository => 'limn-ee-data',
