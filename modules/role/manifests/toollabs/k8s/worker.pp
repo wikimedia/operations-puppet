@@ -1,7 +1,7 @@
 class role::toollabs::k8s::worker {
     # NOTE: No base::firewall!
     # ferm and kube-proxy will conflict
-    include toollabs::infrastructure
+    include ::toollabs::infrastructure
 
     $master_host = hiera('k8s::master_host')
     $etcd_url = join(prefix(suffix(hiera('flannel::etcd_hosts', [$master_host]), ':2379'), 'https://'), ',')

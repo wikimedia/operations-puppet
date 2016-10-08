@@ -14,7 +14,7 @@
 #
 class role::toollabs::node::web {
 
-    include toollabs::node::all
+    include ::toollabs::node::all
     include gridengine::submit_host
 
     # New style webservices!

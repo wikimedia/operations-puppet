@@ -1,5 +1,5 @@
 class role::toollabs::mailrelay {
     system::role { 'role::toollabs::mailrelay': description => 'Tool Labs mail relay' }
 
-    include toollabs::mailrelay
+    include ::toollabs::mailrelay
 }

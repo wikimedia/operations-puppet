@@ -12,7 +12,7 @@
 #
 class role::toollabs::node::compute::dedicated($dedicated_tool = $::node_dedicated_tool) {
 
-    include toollabs::node::all
+    include ::toollabs::node::all
 
     if $dedicated_tool {
 
