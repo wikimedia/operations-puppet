@@ -1,9 +1,10 @@
-cluster: swift
-nagios_group: swift
-lvs::realserver::realserver_ips:
-  - '10.2.1.27'
 debdeploy::grains:
   debdeploy-swift-fe-codfw:
     value: standard
-admin::groups:
-  - swift-roots
+swift::proxy::memcached: [
+  'ms-fe2001.codfw.wmnet:11211',
+  'ms-fe2002.codfw.wmnet:11211',
+  'ms-fe2003.codfw.wmnet:11211',
+  'ms-fe2004.codfw.wmnet:11211'
+# no trailing comma!
+]

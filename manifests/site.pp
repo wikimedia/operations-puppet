@@ -1991,13 +1991,11 @@ node 'ms1002.eqiad.wmnet' {
 # new server IP as a trusted proxy so X-Forwarded-For headers are trusted for
 # rate limiting purposes (T66622)
 node /^ms-fe1001\.eqiad\.wmnet$/ {
-    role(swift::proxy, swift::stats_reporter)
-    include lvs::realserver
+    role(swift::proxy_reporter)
 }
 
 node /^ms-fe100[2-4]\.eqiad\.wmnet$/ {
     role(swift::proxy)
-    include ::lvs::realserver
 }
 
 node /^ms-be10(0[0-9]|1[0-5])\.eqiad\.wmnet$/ {
@@ -2018,18 +2016,11 @@ node /^ms-be300[1-4]\.esams\.wmnet$/ {
 }
 
 node /^ms-fe2001\.codfw\.wmnet$/ {
-    role(swift::proxy, swift::stats_reporter)
-    include ::lvs::realserver
+    role(swift::proxy_reporter)
 }
 
-node /^ms-fe2002\.codfw\.wmnet$/ {
+node /^ms-fe200[2-4]\.codfw\.wmnet$/ {
     role(swift::proxy)
-    include ::lvs::realserver
-}
-
-node /^ms-fe200[3-4]\.codfw\.wmnet$/ {
-    role(swift::proxy)
-    include ::lvs::realserver
 }
 
 node /^ms-be20(0[0-9]|1[0-5])\.codfw\.wmnet$/ {

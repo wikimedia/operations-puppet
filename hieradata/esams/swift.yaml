@@ -1,1 +1,24 @@
 hash_path_suffix: 'a0af6563d361f968'
+# Esams doesn't have the 'search_backup' account.
+accounts:
+    super_admin:
+        access:       '.admin .reseller_admin'
+        account_name: 'AUTH_admin'
+        auth:         'http://ms-fe.svc.esams.wmnet'
+        user:         'admin:admin'
+    mw_media:
+        access:       '.admin'
+        account_name: 'AUTH_mw'
+        auth:         'http://ms-fe.svc.esams.wmnet'
+        user:         'mw:media'
+    mw_thumbor:
+        access:       ''
+        account_name: 'AUTH_mw'
+        auth:         'http://ms-fe.svc.esams.wmnet'
+        user:         'mw:thumbor'
+        stats_enabled: 'no'
+    dispersion:
+        access:       '.admin'
+        account_name: 'AUTH_dispersion'
+        auth:         'http://ms-fe.svc.esams.wmnet'
+        user:         'swift:dispersion'

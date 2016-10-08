@@ -1,5 +1,7 @@
-proxy_service_host: 'ms-fe.svc.codfw.wmnet'
-memcached_servers: [
+debdeploy::grains:
+  debdeploy-swift-fe-codfw:
+    value: standard
+swift::proxy::memcached: [
   'ms-fe2001.codfw.wmnet:11211',
   'ms-fe2002.codfw.wmnet:11211',
   'ms-fe2003.codfw.wmnet:11211',

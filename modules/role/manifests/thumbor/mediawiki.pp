@@ -11,11 +11,11 @@ class role::thumbor::mediawiki {
     class { '::thumbor': }
 
     include ::swift::params
-    $swift_account_keys = $::swift::params::account_keys
+    $swift_account_keys = hiera('swift::account_keys')
 
     class { '::thumbor::swift':
         swift_key                => $swift_account_keys['mw_thumbor'],
-        swift_sharded_containers => hiera_array('swift::proxy::shard_container_list'),
+        swift_sharded_containers => hiera_array('swift::shard_container_list'),
     }
 
     include ::lvs::realserver

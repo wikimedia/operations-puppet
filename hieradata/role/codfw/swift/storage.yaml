@@ -1,5 +1,3 @@
 debdeploy::grains:
   debdeploy-swift-be-codfw:
     value: standard
-admin::groups:
-  - swift-roots

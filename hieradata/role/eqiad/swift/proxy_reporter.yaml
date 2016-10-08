@@ -1,10 +1,11 @@
-proxy_service_host: 'ms-fe.svc.eqiad.wmnet'
-memcached_servers: [
+swift::proxy::thumbor: 'thumbor.svc.eqiad.wmnet:8800'
+debdeploy::grains:
+  debdeploy-swift-fe-eqiad:
+    value: standard
+swift::proxy::memcached: [
   'ms-fe1001.eqiad.wmnet:11211',
   'ms-fe1002.eqiad.wmnet:11211',
   'ms-fe1003.eqiad.wmnet:11211',
   'ms-fe1004.eqiad.wmnet:11211'
 # no trailing comma!
 ]
-
-thumborhost: 'thumbor.svc.eqiad.wmnet:8800'

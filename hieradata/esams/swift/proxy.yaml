@@ -1,6 +1,0 @@
-proxy_service_host: 'ms-fe.svc.esams.wmnet'
-memcached_servers: [
-  'ms-fe3001.esams.wmnet:11211',
-  'ms-fe3002.esams.wmnet:11211'
-# no trailing comma!
-]

@@ -1,6 +1,6 @@
 # XXX support additional storage policies
 class swift::ring (
-    $swift_cluster = $swift::params::swift_cluster,
+    $swift_cluster = undef,
 ) {
     # lint:ignore:puppet_url_without_modules
     file { '/etc/swift/account.builder':
