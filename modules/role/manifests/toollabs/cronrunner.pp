@@ -1,7 +1,7 @@
-class role::labs::tools::cronrunner {
+class role::toollabs::cronrunner {
     include ::toollabs::cronrunner
 
-    system::role { 'role::labs::tools::cronrunner':
+    system::role { 'role::toollabs::cronrunner':
         description => 'Tool Labs cron starter host',
     }
 }

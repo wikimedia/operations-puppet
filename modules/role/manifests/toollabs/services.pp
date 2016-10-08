@@ -1,7 +1,7 @@
-class role::labs::tools::services(
+class role::toollabs::services(
     $active_host = 'tools-services-01.eqiad.wmflabs',
 ) {
-    system::role { 'role::labs::tools::services':
+    system::role { 'role::toollabs::services':
         description => 'Tool Labs manifest based services',
     }
 

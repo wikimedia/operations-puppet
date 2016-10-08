@@ -1,6 +1,6 @@
-class role::labs::tools::redis {
+class role::toollabs::redis {
     system::role {
-        'role::labs::tools::redis':
+        'role::toollabs::redis':
         description => 'Server that hosts shared Redis instance'
     }
 
