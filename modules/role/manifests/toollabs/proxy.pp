@@ -1,4 +1,4 @@
-class role::labs::tools::proxy {
+class role::toollabs::proxy {
     include toollabs::proxy
     include role::toollabs::k8s::webproxy
 
@@ -21,5 +21,5 @@ class role::labs::tools::proxy {
         desc  => 'HTTPS webserver for the entire world',
     }
 
-    system::role { 'role::labs::tools::proxy': description => 'Tool labs generic web proxy' }
+    system::role { 'role::toollabs::proxy': description => 'Tool labs generic web proxy' }
 }

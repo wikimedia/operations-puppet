@@ -1,7 +1,7 @@
-class role::labs::tools::checker {
+class role::toollabs::checker {
     include toollabs::checker
 
-    system::role { 'role::labs::tools::checker':
+    system::role { 'role::toollabs::checker':
         description => 'Exposes end points for external monitoring of internal systems',
     }
 }
