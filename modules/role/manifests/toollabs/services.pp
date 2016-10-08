@@ -25,19 +25,19 @@ class role::toollabs::services(
         show_diff => false,
     }
 
-    class { 'toollabs::services':
+    class { '::toollabs::services':
         active => ($::fqdn == $active_host),
     }
 
-    class { 'toollabs::bigbrother':
+    class { '::toollabs::bigbrother':
         active => ($::fqdn == $active_host),
     }
 
-    class { 'toollabs::updatetools':
+    class { '::toollabs::updatetools':
         active => ($::fqdn == $active_host),
     }
 
-    class { 'toollabs::admin_web_updater':
+    class { '::toollabs::admin_web_updater':
         active => ($::fqdn == $active_host)
     }
 }

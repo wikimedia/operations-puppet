@@ -20,7 +20,7 @@ class role::toollabs::node::compute::general {
         config => 'toollabs/gridengine/host-vmem.erb',
     }
 
-    class { 'toollabs::hostgroups': groups => [ '@general' ] }
+    class { '::toollabs::hostgroups': groups => [ '@general' ] }
 
     file { '/usr/local/bin/jobkill':
         ensure => file,

@@ -3,7 +3,7 @@
 # Sets up a node for running generic webservices.
 # Currently explicitly supports nodejs
 class role::toollabs::node::web::generic inherits role::toollabs::node::web {
-    class { 'toollabs::queues':
+    class { '::toollabs::queues':
         queues => [ 'webgrid-generic' ],
     }
 
