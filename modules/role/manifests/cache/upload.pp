@@ -127,8 +127,19 @@ class role::cache::upload(
 
     # XXX: temporary, we need this to mitigate T145661
     if $::realm == 'production' {
+        $hnodes = hiera('cache::upload::nodes')
+        $all_nodes = array_concat($hnodes['eqiad'], $hnodes['esams'], $hnodes['ulsfo'], $hnodes['codfw'])
+        $times = cron_splay($all_nodes, 'weekly', 'upload-backend-restarts')
+        $be_restart_h = $times['hour']
+        $be_restart_m = $times['minute']
+        $be_restart_d = $times['weekday']
+
         file { '/etc/cron.d/varnish-backend-restart':
-            ensure => absent,
+            mode    => '0444',
+            owner   => 'root',
+            group   => 'root',
+            content => template('varnish/varnish-backend-restart.cron.erb'),
+            require => File['/usr/local/sbin/varnish-backend-restart'],
         }
     }
 }
