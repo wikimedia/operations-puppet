@@ -2253,7 +2253,7 @@ node 'mx2001.wikimedia.org' {
 
 # Experimental Jupyter notebook servers
 node /^notebook100[12]\.eqiad\.wmnet$/ {
-    role(notebook::server)
+    role(notebook::pawsinternal)
 
     include standard
     include admin
