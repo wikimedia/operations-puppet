@@ -78,7 +78,7 @@ class pivot(
         ensure  => present,
         systemd => true,
         require => [
-            Scap['analytics/pivot/deploy'],
+            Scap::Target['analytics/pivot/deploy'],
             File['/etc/firejail/pivot.profile'],
             User['pivot'],
             Systemd::Syslog['pivot'],
