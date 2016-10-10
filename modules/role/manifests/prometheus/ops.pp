@@ -126,4 +126,14 @@ class role::prometheus::ops {
     file { "${rules_path}/rules_ops.conf":
         source => 'puppet:///modules/role/prometheus/rules_ops.conf',
     }
+
+    prometheus::varnish_2layer{ 'maps':
+        targets_path => $targets_path,
+        cache_name   => 'maps',
+    }
+
+    prometheus::varnish_2layer{ 'misc':
+        targets_path => $targets_path,
+        cache_name   => 'misc',
+    }
 }
