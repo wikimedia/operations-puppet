@@ -39,7 +39,7 @@
 #       operation. May be set to a number or to 'unlimited'. If unset, the default
 #       is 2048.
 #    $logging
-#       Optional. Specify the kind of logging desired. Defaults to "sync stats"
+#       Optional. Specify the kind of logging desired. Defaults to "sync"
 #       And it is not named loglevel cause that's a puppet metaparameter
 #    $hash_passwords
 #       Optional. Specify what hashing scheme will be used by openldap to hash
@@ -72,7 +72,7 @@ class openldap(
     $extra_acls=undef,
     $extra_indices=undef,
     $size_limit=undef,
-    $logging='sync stats',
+    $logging='sync',
     $hash_passwords='SHA',
 ) {
 
