@@ -69,7 +69,7 @@ define monitoring::graphite_threshold(
     $passive               = false,
     $freshness             = 36000,
     $check_interval        = 1,
-    $retry_check_interval  = 1,
+    $retry_interval        = 1,
     $contact_group         = 'admins'
 )
 {
@@ -102,16 +102,16 @@ define monitoring::graphite_threshold(
     }
 
     monitoring::service { $title:
-        ensure               => $ensure,
-        description          => $description,
-        check_command        => "${command}!${graphite_url}!${timeout}!${metric}!${warning}!${critical}!${from}!${until}!${percentage}!${modifier}",
-        retries              => $retries,
-        group                => $group,
-        critical             => $nagios_critical,
-        passive              => $passive,
-        freshness            => $freshness,
-        check_interval       => $check_interval,
-        retry_check_interval => $retry_check_interval,
-        contact_group        => $contact_group,
+        ensure         => $ensure,
+        description    => $description,
+        check_command  => "${command}!${graphite_url}!${timeout}!${metric}!${warning}!${critical}!${from}!${until}!${percentage}!${modifier}",
+        retries        => $retries,
+        group          => $group,
+        critical       => $nagios_critical,
+        passive        => $passive,
+        freshness      => $freshness,
+        check_interval => $check_interval,
+        retry_interval => $retry_interval,
+        contact_group  => $contact_group,
     }
 }
