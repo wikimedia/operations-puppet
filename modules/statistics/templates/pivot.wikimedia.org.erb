@@ -34,8 +34,6 @@
 
     LogLevel warn
 
-    # The nodejs service is temporary running on stat1002
-    # but it will be properly deployed and migrated.
-    ProxyPass / http://stat1002.eqiad.wmnet:9090/
-    ProxyPassReverse / http://stat1002.eqiad.wmnet:9090/
+    ProxyPass / http://localhost:9090/
+    ProxyPassReverse / http://localhost:9090/
 </VirtualHost>
