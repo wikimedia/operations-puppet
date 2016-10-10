@@ -144,8 +144,11 @@ table.changeTable a.gwt-Anchor {
  * https://phabricator.wikimedia.org/T42941
  * Gerrit diff font isn't big enough, either
  */
-.com-google-gerrit-client-diff-DiffTable_BinderImpl_GenCss_style-table {
+.com-google-gerrit-client-diff-DiffTable_BinderImpl_GenCss_style-table .CodeMirror {
 	font-size: 9pt !important;
+}
+.com-google-gerrit-client-diff-CommentBox-Style-commentWidgets {
+	font-size: small;
 }
 
 /**
