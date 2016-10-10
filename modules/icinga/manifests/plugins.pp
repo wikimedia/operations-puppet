@@ -44,11 +44,12 @@ class icinga::plugins {
     # TODO: Purge this directoy instead of populating it is probably not very
     # future safe. We should be populating it instead
     file { '/etc/nagios-plugins/config':
-        ensure => directory,
-        purge  => true,
-        owner  => 'icinga',
-        group  => 'icinga',
-        mode   => '0755',
+        ensure  => directory,
+        purge   => true,
+        recurse => true,
+        owner   => 'icinga',
+        group   => 'icinga',
+        mode    => '0755',
     }
 
     File <| tag == nagiosplugin |>
