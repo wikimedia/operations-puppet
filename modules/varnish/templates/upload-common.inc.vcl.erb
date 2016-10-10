@@ -3,7 +3,7 @@
 sub upload_common_recv {
 	unset req.http.X-Range;
 	if (req.http.host != "<%= @vcl_config.fetch('upload_domain') %>") {
-		<%= error_synth(404, "Requested domainname does not exist on this server") -%>
+		return (synth(404, "Requested domainname does not exist on this server"));
 	}
 
 	if (req.http.Range) {
@@ -13,7 +13,7 @@ sub upload_common_recv {
 
 sub upload_common_hit {
 	if (req.http.If-Cached && req.http.If-Cached != obj.http.Etag) {
-		<%= error_synth(412, "Etag mismatch") -%>
+		return (synth(412, "Etag mismatch"));
 	}
 }
 

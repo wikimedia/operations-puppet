@@ -51,7 +51,7 @@ sub cluster_be_miss {
 	call upload_common_miss;
 
 	if (req.http.If-Cached) {
-		<%= error_synth(412, "Entity not in cache") -%>
+		return (synth(412, "Entity not in cache"));
 	}
 }
 
@@ -71,8 +71,8 @@ sub cluster_be_backend_response {
 	}
 
 	// Derive the corresponding original URL and store it with the object
-	if (!beresp.http.X-MediaWiki-Original && <%= @bereq_req %>.url ~ "^/+[^/]+/[^/]+/thumb/[^/]+/[^/]+/[^/]+/[0-9]+px-") {
-		set beresp.http.X-MediaWiki-Original = regsub(<%= @bereq_req %>.url, "^(/+[^/]+/[^/]+/)thumb/([^/]+/[^/]+/[^/]+).*$", "\1\2");
+	if (!beresp.http.X-MediaWiki-Original && bereq.url ~ "^/+[^/]+/[^/]+/thumb/[^/]+/[^/]+/[^/]+/[0-9]+px-") {
+		set beresp.http.X-MediaWiki-Original = regsub(bereq.url, "^(/+[^/]+/[^/]+/)thumb/([^/]+/[^/]+/[^/]+).*$", "\1\2");
 	}
 
 	call upload_common_backend_response;
