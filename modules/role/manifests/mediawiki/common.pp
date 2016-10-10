@@ -36,9 +36,9 @@ class role::mediawiki::common {
     include scap::ferm
 
     monitoring::service { 'mediawiki-installation DSH group':
-        description           => 'mediawiki-installation DSH group',
-        check_command         => 'check_dsh_groups!mediawiki-installation',
-        normal_check_interval => 60,
+        description    => 'mediawiki-installation DSH group',
+        check_command  => 'check_dsh_groups!mediawiki-installation',
+        check_interval => 60,
     }
 
     $scap_proxies = hiera('scap::dsh::scap_proxies',[])

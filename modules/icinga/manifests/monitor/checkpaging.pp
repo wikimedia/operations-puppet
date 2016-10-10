@@ -4,11 +4,11 @@
 # is working properly
 class icinga::monitor::checkpaging {
     monitoring::service { 'check_to_check_nagios_paging':
-        description           => 'check_to_check_nagios_paging',
-        check_command         => 'check_to_check_nagios_paging',
-        normal_check_interval => 1,
-        retry_check_interval  => 1,
-        contact_group         => 'admins',
-        critical              => false
+        description          => 'check_to_check_nagios_paging',
+        check_command        => 'check_to_check_nagios_paging',
+        check_interval       => 1,
+        retry_check_interval => 1,
+        contact_group        => 'admins',
+        critical             => false
     }
 }
