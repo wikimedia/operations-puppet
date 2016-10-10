@@ -1,0 +1,9 @@
+Code-Review+1: Elukey <ltoscano@wikimedia.org>
+Code-Review+1: Alexandros Kosiaris <akosiaris@wikimedia.org>
+Verified+2: jenkins-bot
+Code-Review+2: Andrew Bogott <abogott@wikimedia.org>
+Submitted-by: Andrew Bogott <abogott@wikimedia.org>
+Submitted-at: Mon, 10 Oct 2016 16:19:18 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/314338
+Project: operations/puppet
+Branch: refs/heads/production
