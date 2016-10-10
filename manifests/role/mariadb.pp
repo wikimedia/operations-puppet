@@ -262,7 +262,7 @@ class role::mariadb::misc::phabricator(
     $shard     = 'm3',
     $master    = false,
     $snapshot  = false,
-    $ssl       = 'on',
+    $ssl       = 'puppet-cert',
     $p_s       = 'on',
     $mariadb10 = true,
     ) {
