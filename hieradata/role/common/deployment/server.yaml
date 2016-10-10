@@ -88,7 +88,7 @@ scap::sources:
   kartotherian/deploy:
     repository: maps/kartotherian/deploy
 #    lvs_service: kartotherian
-  analytics/pivot:
+  analytics/pivot/deploy:
     repository: analytics/pivot/deploy
   mathoid/deploy: {}
 #    lvs_service: mathoid
