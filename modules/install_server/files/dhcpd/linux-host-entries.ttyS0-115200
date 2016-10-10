@@ -194,6 +194,26 @@ host rutherfordium {
     fixed-address rutherfordium.eqiad.wmnet;
 }
 
+host sca1003 {
+    hardware ethernet FIXME;
+    fixed-address sca1003.eqiad.wmnet;
+}
+
+host sca1004 {
+    hardware ethernet FIXME;
+    fixed-address sca1004.eqiad.wmnet;
+}
+
+host sca2003 {
+    hardware ethernet FIXME;
+    fixed-address sca2003.codfw.wmnet;
+}
+
+host sca2004 {
+    hardware ethernet FIXME;
+    fixed-address sca2004.codfw.wmnet;
+}
+
 host seaborgium {
     hardware ethernet aa:00:00:4d:be:84;
     fixed-address seaborgium.wikimedia.org;

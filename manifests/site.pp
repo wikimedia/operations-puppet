@@ -2599,7 +2599,7 @@ node 'scandium.eqiad.wmnet' {
 }
 
 # Services 'A'
-node /^sca[12]00[12]\.(eqiad|codfw)\.wmnet$/ {
+node /^sca[12]00[1234]\.(eqiad|codfw)\.wmnet$/ {
     role(sca)
 }
 
