@@ -46,15 +46,7 @@ class role::eventlogging {
     # for beta cluster, set in https://wikitech.wikimedia.org/wiki/Hiera:Deployment-prep
     $statsd_host         = hiera('eventlogging_statsd_host',      'statsd.eqiad.wmnet')
 
-    # Hardcoded temporarily to remove kafka1012 and permit its maintenance.
-    #$kafka_brokers_array = $kafka_config['brokers']['array']
-    $kafka_brokers_array = $::realm ? {
-        'production' => [
-            'kafka1013.eqiad.wmnet', 'kafka1014.eqiad.wmnet', 'kafka1018.eqiad.wmnet',
-            'kafka1020.eqiad.wmnet', 'kafka1022.eqiad.wmnet',
-        ],
-        default => $kafka_config['brokers']['array']
-    }
+    $kafka_brokers_array = $config['brokers']['array']
 
     # By default, the EL Kafka writer writes events to
     # schema based topic names like eventlogging_SCHEMA,
