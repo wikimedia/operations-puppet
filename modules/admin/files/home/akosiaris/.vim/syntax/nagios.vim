@@ -67,7 +67,7 @@ syn keyword nagiosDirective contained host_notification_options
 syn keyword nagiosDirective contained host_notification_period hostgroup_name servicegroup_name hostgroups servicegroups
 syn keyword nagiosDirective contained is_volatile last_notification
 syn keyword nagiosDirective contained low_flap_threshold max_check_attempts
-syn keyword nagiosDirective contained members monday normal_check_interval
+syn keyword nagiosDirective contained members monday check_interval
 syn keyword nagiosDirective contained notification_failure_criteria notification_failure_options
 syn keyword nagiosDirective contained notification_interval notification_options
 syn keyword nagiosDirective contained notification_period notifications_enabled
