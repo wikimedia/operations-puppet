@@ -27,11 +27,13 @@
 #
 define nrpe::monitor_service( $description,
                               $nrpe_command,
-                              $contact_group = hiera('contactgroups', 'admins'),
-                              $retries       = 3,
-                              $timeout       = 10,
-                              $critical      = false,
-                              $ensure        = 'present') {
+                              $contact_group         = hiera('contactgroups', 'admins'),
+                              $retries               = 3,
+                              $timeout               = 10,
+                              $critical              = false,
+                              $normal_check_interval = 1,
+                              $retry_check_interval  = 1,
+                              $ensure                = 'present') {
 
     nrpe::check { "check_${title}":
         command => $nrpe_command,
@@ -39,11 +41,13 @@ define nrpe::monitor_service( $description,
     }
 
     monitoring::service { $title:
-        ensure        => $ensure,
-        description   => $description,
-        check_command => "nrpe_check!check_${title}!${timeout}",
-        contact_group => $contact_group,
-        retries       => $retries,
-        critical      => $critical,
+        ensure                => $ensure,
+        description           => $description,
+        check_command         => "nrpe_check!check_${title}!${timeout}",
+        contact_group         => $contact_group,
+        retries               => $retries,
+        critical              => $critical,
+        normal_check_interval => $normal_check_interval,
+        retry_check_interval  => $retry_check_interval,
     }
 }
