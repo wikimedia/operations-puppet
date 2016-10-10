@@ -32,21 +32,23 @@ class parsoid(
 ) {
 
     service::node { 'parsoid':
-        port            => $port,
-        starter_module  => 'src/lib/index.js',
-        entrypoint      => 'apiServiceWorker',
-        starter_script  => 'src/bin/server.js',
-        config          => {
+        port              => $port,
+        starter_module    => 'src/lib/index.js',
+        entrypoint        => 'apiServiceWorker',
+        starter_script    => 'src/bin/server.js',
+        # NOTE: this is useful only when deployment == 'git'
+        config            => {
             localsettings => $settings_file,
         },
-        heap_limit      => 800,
-        heartbeat_to    => 180000,
-        healthcheck_url => '/',
-        has_spec        => false,
-        logging_name    => $logging_name,
-        statsd_prefix   => $statsd_prefix,
-        auto_refresh    => false,
-        deployment      => $deployment,
+        heap_limit        => 800,
+        heartbeat_to      => 180000,
+        healthcheck_url   => '/',
+        has_spec          => false,
+        logging_name      => $logging_name,
+        statsd_prefix     => $statsd_prefix,
+        auto_refresh      => false,
+        deployment        => $deployment,
+        deployment_config => true,
     }
 
 }
