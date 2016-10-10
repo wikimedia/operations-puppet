@@ -152,9 +152,9 @@ class icinga($enable_notifications=1) {
 
     # Check that the icinga config is sane
     monitoring::service { 'check_icinga_config':
-        description           => 'Check correctness of the icinga configuration',
-        check_command         => 'check_icinga_config',
-        normal_check_interval => 10,
+        description    => 'Check correctness of the icinga configuration',
+        check_command  => 'check_icinga_config',
+        check_interval => 10,
     }
 
     # script to schedule host downtimes
