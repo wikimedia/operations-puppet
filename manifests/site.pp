@@ -279,6 +279,11 @@ node /^conf200[123]\.codfw\.wmnet$/ {
 
 # New CI master
 node 'contint1001.wikimedia.org' {
+    role(ci::master,
+        ci::slave,
+        ci::website,
+        backup::host)
+
     include standard
     include contint::firewall
 }
