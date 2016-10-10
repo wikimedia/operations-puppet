@@ -120,10 +120,6 @@ class role::statistics::private inherits role::statistics {
     # include stuff common to statistics compute nodes
     include ::statistics::compute
 
-    # wikistats code is run here to
-    # generate stats.wikimedia.org data
-    include ::statistics::wikistats
-
     # rsync webrequest logs from logging hosts
     include ::statistics::rsync::webrequest
 
