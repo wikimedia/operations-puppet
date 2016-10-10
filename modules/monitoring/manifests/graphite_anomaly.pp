@@ -61,7 +61,7 @@ define monitoring::graphite_anomaly(
     $nagios_critical       = false,
     $passive               = false,
     $freshness             = 36000,
-    $normal_check_interval = 1,
+    $check_interval        = 1,
     $retry_check_interval  = 1,
     $contact_group         = 'admins'
 )
@@ -92,16 +92,16 @@ define monitoring::graphite_anomaly(
     #   $ARG6$  --check_window sampling size
     #   $ARG7$  --over or --under
     monitoring::service { $title:
-        ensure                => $ensure,
-        description           => $description,
-        check_command         => "check_graphite_anomaly!${graphite_url}!${timeout}!${metric}!${warning}!${critical}!${check_window}!${modifier}",
-        retries               => $retries,
-        group                 => $group,
-        critical              => $nagios_critical,
-        passive               => $passive,
-        freshness             => $freshness,
-        normal_check_interval => $normal_check_interval,
-        retry_check_interval  => $retry_check_interval,
-        contact_group         => $contact_group,
+        ensure               => $ensure,
+        description          => $description,
+        check_command        => "check_graphite_anomaly!${graphite_url}!${timeout}!${metric}!${warning}!${critical}!${check_window}!${modifier}",
+        retries              => $retries,
+        group                => $group,
+        critical             => $nagios_critical,
+        passive              => $passive,
+        freshness            => $freshness,
+        check_interval       => $check_interval,
+        retry_check_interval => $retry_check_interval,
+        contact_group        => $contact_group,
     }
 }
