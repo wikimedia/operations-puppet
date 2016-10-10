@@ -46,6 +46,13 @@ class thumbor (
         mode   => '0755',
     }
 
+    file { ['/srv/thumbor', '/srv/thumbor/tmp']:
+        ensure => directory,
+        mode   => '0755',
+        owner  => 'thumbor',
+        group  => 'thumbor',
+    }
+
     file { '/usr/local/lib/thumbor/tinyrgb.icc':
         ensure => present,
         source => 'puppet:///modules/thumbor/tinyrgb.icc',
@@ -115,5 +122,15 @@ class thumbor (
 
     grub::bootparam { 'swapaccount':
         value => '1',
+    }
+
+    cron { 'systemd-thumbor-tmpfiles-clean':
+        minute   => '*',
+        hour     => '*',
+        monthday => '*',
+        month    => '*',
+        weekday  => '*',
+        command  => '/bin/systemd-tmpfiles --clean --prefix=/srv/thumbor/tmp',
+        user     => 'thumbor',
     }
 }
