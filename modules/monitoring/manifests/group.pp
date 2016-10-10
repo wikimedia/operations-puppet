@@ -20,6 +20,7 @@ define monitoring::group (
         ensure         => $ensure,
         target         => "${config_dir}/puppet_hostgroups.cfg",
         hostgroup_name => $title,
+        mode           => '0444',
         alias          => $description,
     }
 
@@ -28,6 +29,7 @@ define monitoring::group (
         ensure            => $ensure,
         target            => "${config_dir}/puppet_servicegroups.cfg",
         servicegroup_name => $title,
+        mode              => '0444',
         alias             => $description,
     }
 }
