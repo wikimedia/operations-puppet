@@ -13,18 +13,18 @@
 #     include postgresql::postgis
 #
 class postgresql::postgis(
-    $ensure='present',
-    $pgversion = $::lsbdistcodename ? {
-        jessie  => '9.4',
-        precise => '9.1',
-        trusty  => '9.3',
+    $ensure = 'present',
+    $postgresql_postgis_package = $::lsbdistcodename ? {
+        jessie  => 'postgresql-9.4-postgis-2.3',
+        precise => 'postgresql-9.1-postgis',
+        trusty  => 'postgresql-9.3-postgis-2.1',
     },
-    ) {
+) {
 
     package { [
-                "postgresql-${pgversion}-postgis",
-                'postgis',
-            ]:
+        $postgresql_postgis_package,
+        'postgis',
+    ]:
         ensure  => $ensure,
     }
 }
