@@ -16,6 +16,7 @@ define thumbor::instance
     $port = $name
     $instance_service_path = "/lib/systemd/system/thumbor@${port}.service"
     $template_service_path = '/lib/systemd/system/thumbor@.service'
+    $instance_dropin_path = "/etc/systemd/system/thumbor@${port}.service.d"
 
     file { $instance_service_path:
         ensure  => 'link',
@@ -23,11 +24,22 @@ define thumbor::instance
         require => File[$template_service_path],
     }
 
+    file { $instance_dropin_path:
+        ensure => 'directory',
+    }
+
+    file { "${instance_dropin_path}/10-runtimedir.conf"
+        content => template('thumbor/initscripts/thumbor.runtimedir.systemd.erb'),
+    }
+
     service { "thumbor@${port}":
         ensure   => running,
         provider => 'systemd',
         enable   => true,
-        require  => File[$instance_service_path],
+        require  => File[
+            $instance_service_path,
+            "${instance_dropin_path}/10-runtimedir.conf"
+        ],
     }
 
     nrpe::monitor_systemd_unit_state{ "thumbor@${port}":
