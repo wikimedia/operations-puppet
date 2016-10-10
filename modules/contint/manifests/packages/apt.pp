@@ -8,7 +8,7 @@ class contint::packages::apt {
     apt::conf { 'unattended-upgrades-wikimedia':
         priority => '51',
         # Key with trailing '::' to append to potentially existing entry
-        key      => 'Unattended-Upgrade::Allowed-Origins::',
+        key      => 'Unattended-Upgrade::Origins-Pattern::',
         # lint:ignore:single_quote_string_with_variables
         value    => 'Wikimedia:${distro_codename}-wikimedia',
         # lint:endignore
