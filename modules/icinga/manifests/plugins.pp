@@ -41,8 +41,11 @@ class icinga::plugins {
         group  => 'icinga',
         mode   => '0755',
     }
+    # TODO: Purge this directoy instead of populating it is probably not very
+    # future safe. We should be populating it instead
     file { '/etc/nagios-plugins/config':
         ensure => directory,
+        purge  => true,
         owner  => 'icinga',
         group  => 'icinga',
         mode   => '0755',
@@ -153,9 +156,4 @@ class icinga::plugins {
 
     # Include check_elasticsearch from elasticsearch module
     include elasticsearch::nagios::plugin
-
-    # some default configuration files conflict and should be removed
-    file { '/etc/nagios-plugins/config/mailq.cfg':
-        ensure => absent,
-    }
 }
