@@ -9,7 +9,7 @@ define monitoring::service(
     $passive               = false,
     $freshness             = 36000,
     $check_interval        = 1,
-    $retry_check_interval  = 1,
+    $retry_interval        = 1,
     $contact_group         = hiera('contactgroups', 'admins'),
     $config_dir            = '/etc/nagios',
 )
@@ -80,7 +80,7 @@ define monitoring::service(
         check_command          => $check_command,
         max_check_attempts     => $retries,
         check_interval         => $check_interval,
-        retry_check_interval   => $retry_check_interval,
+        retry_interval         => $retry_interval,
         check_period           => '24x7',
         notification_interval  => $notification_critical,
         notification_period    => '24x7',
