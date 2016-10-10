@@ -5,14 +5,26 @@
 class contint::packages::apt {
     include ::apt::unattendedupgrades
 
+    # lint:ignore:single_quote_string_with_variables
+
+    # In apt configuration, a key with trailing '::' to append to potentially
+    # existing entry
     apt::conf { 'unattended-upgrades-wikimedia':
         priority => '51',
-        # Key with trailing '::' to append to potentially existing entry
         key      => 'Unattended-Upgrade::Origins-Pattern::',
-        # lint:ignore:single_quote_string_with_variables
         value    => 'origin=Wikimedia,codename=${distro_codename}-wikimedia',
-        # lint:endignore
     }
+    apt::conf { 'unattended-upgrades-distro':
+        priority => '51',
+        key      => 'Unattended-Upgrade::Origins-Pattern::',
+        value    => 'origin=${distro_id},codename=${distro_codename}',
+    }
+    apt::conf { 'unattended-upgrades-distro-updates':
+        priority => '51',
+        key      => 'Unattended-Upgrade::Origins-Pattern::',
+        value    => 'origin=${distro_id},codename=${distro_codename}-updates',
+    }
+    # lint:endignore
 
     if os_version('debian == jessie') {
         # Sanity check: only enable in labs
