@@ -38,8 +38,10 @@ class raid {
         }
 
         nrpe::monitor_service { 'raid_megaraid':
-            description  => 'MegaRAID',
-            nrpe_command => "${check_raid} megacli",
+            description           => 'MegaRAID',
+            nrpe_command          => "${check_raid} megacli",
+            normal_check_interval => 10,
+            retry_check_interval  => 6,
         }
     }
 
@@ -78,9 +80,11 @@ class raid {
         }
 
         nrpe::monitor_service { 'raid_hpssacli':
-            description  => 'HP RAID',
-            nrpe_command => '/usr/local/lib/nagios/plugins/check_hpssacli',
-            timeout      => 50, # can take > 10s on servers with lots of disks
+            description           => 'HP RAID',
+            nrpe_command          => '/usr/local/lib/nagios/plugins/check_hpssacli',
+            timeout               => 50, # can take > 10s on servers with lots of disks
+            normal_check_interval => 10,
+            retry_check_interval  => 6,
         }
 
         $get_raid_status_hpssacli = '/usr/local/lib/nagios/plugins/get-raid-status-hpssacli'
@@ -113,8 +117,10 @@ class raid {
         }
 
         nrpe::monitor_service { 'raid_mpt':
-            description  => 'MPT RAID',
-            nrpe_command => "${check_raid} mpt",
+            description           => 'MPT RAID',
+            nrpe_command          => "${check_raid} mpt",
+            normal_check_interval => 10,
+            retry_check_interval  => 6,
         }
 
         nrpe::check { 'get_raid_status_mpt':
@@ -139,8 +145,10 @@ class raid {
         require_package('arcconf')
 
         nrpe::monitor_service { 'raid_aac':
-            description  => 'Adaptec RAID',
-            nrpe_command => "${check_raid} aac",
+            description           => 'Adaptec RAID',
+            nrpe_command          => "${check_raid} aac",
+            normal_check_interval => 10,
+            retry_check_interval  => 6,
         }
     }
 
@@ -148,8 +156,10 @@ class raid {
         require_package('tw-cli')
 
         nrpe::monitor_service { 'raid_twe':
-            description  => '3ware TW',
-            nrpe_command => "${check_raid} twe",
+            description           => '3ware TW',
+            nrpe_command          => "${check_raid} twe",
+            normal_check_interval => 10,
+            retry_check_interval  => 6,
         }
     }
 
