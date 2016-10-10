@@ -970,7 +970,7 @@ node /^es101[13]\.eqiad\.wmnet/ {
 }
 
 ## codfw servers
-node 'es2015.codfw.wmnet' {
+node 'es2016.codfw.wmnet' {
     class { 'role::mariadb::core':
         shard         => 'es2',
         master        => true,
