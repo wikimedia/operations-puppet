@@ -8,11 +8,11 @@ class icinga::monitor::wikidata {
     }
 
     monitoring::service { 'wikidata.org dispatch lag':
-        description          => 'wikidata.org dispatch lag is higher than 300s',
-        check_command        => 'check_wikidata',
-        host                 => 'wikidata',
-        check_interval       => 5,
-        retry_check_interval => 1,
-        contact_group        => 'admins,wikidata',
+        description    => 'wikidata.org dispatch lag is higher than 300s',
+        check_command  => 'check_wikidata',
+        host           => 'wikidata',
+        check_interval => 5,
+        retry_interval => 1,
+        contact_group  => 'admins,wikidata',
     }
 }

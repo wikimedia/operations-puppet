@@ -74,7 +74,7 @@ syn keyword nagiosDirective contained notification_period notifications_enabled
 syn keyword nagiosDirective contained obsess_over_service pager parallelize_check
 syn keyword nagiosDirective contained parents passive_checks_enabled
 syn keyword nagiosDirective contained process_perf_data retain_nonstatus_information
-syn keyword nagiosDirective contained retain_status_information retry_check_interval
+syn keyword nagiosDirective contained retain_status_information retry_interval
 syn keyword nagiosDirective contained saturday service_description
 syn keyword nagiosDirective contained service_notification_commands
 syn keyword nagiosDirective contained service_notification_options
