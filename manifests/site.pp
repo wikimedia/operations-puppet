@@ -1097,7 +1097,7 @@ node 'fluorine.eqiad.wmnet' {
 
     include standard
 
-    class { 'role::logging::mediawiki':
+    class { 'role::logging::mediawiki::udp2log':
         monitor       => false,
         log_directory => '/a/mw-log',
     }
