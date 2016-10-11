@@ -83,7 +83,7 @@ define tcpircbot::instance(
     }
 
     base::service_unit { "tcpircbot-${title}":
-        ensure        => running,
+        ensure        => present,
         upstart       => true,
         systemd       => true,
         template_name => 'tcpircbot',
