@@ -34,7 +34,6 @@ class role::ganglia::web {
         rrdcached_socket => $gmetad_socket,
         trusted_hosts    => [
                         '208.80.154.149', # bast1001
-                        '208.80.154.14', # neon
                         '10.64.32.13', # terbium
                         ],
         data_sources     => $role::ganglia::config::data_sources,
