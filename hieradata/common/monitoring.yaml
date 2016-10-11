@@ -143,8 +143,8 @@ groups:
   mysql_codfw:
     description: codfw mysql core
 
-# OCG
-  ocg_eqiad:
+# PDF (now known as OCG)
+  pdf_eqiad:
     description: offline content generator eqiad
 
 # Puppet
