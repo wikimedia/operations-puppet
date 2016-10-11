@@ -80,7 +80,7 @@ class Hiera
         # Special case: regex
         if m = /^regex\//.match(source)
           Hiera.debug("Regex match going on - using regex.yaml")
-          return key, Backend.datafile(config_section, scope, 'regex', "yaml")
+          return Backend.datafile(config_section, scope, 'regex', "yaml")
         end
 
         # Special case: 'private' repository.
@@ -106,19 +106,18 @@ class Hiera
         # expansion. This is thought to allow large codebases to live
         # with fairly small yaml files as opposed to a very large one.
         # Example:
-        # $apache::mpm::worker => 'worker' in common/apache/mpm.yaml
+        # $apache::mpm::worker will be in common/apache/mpm.yaml
         paths = @expand_path.map{ |x| Backend.parse_string(x, scope) }
         if paths.include? source
           namespaces = key.gsub(/^::/,'').split('::')
-          newkey = namespaces.pop
+          namespaces.pop
 
           unless namespaces.empty?
             source += "/".concat(namespaces.join('/'))
-            key = newkey
           end
         end
 
-        return key, Backend.datafile(config_section, scope, source, "yaml")
+        return Backend.datafile(config_section, scope, source, "yaml")
       end
 
       def plain_lookup(key, data, scope)
@@ -149,7 +148,7 @@ class Hiera
         Backend.datasources(scope, order_override) do |source|
           Hiera.debug("Loading info from #{source} for #{key}")
 
-          lookup_key, yamlfile = get_path(key, scope, source)
+          yamlfile = get_path(key, scope, source)
 
           Hiera.debug("Searching for #{lookup_key} in #{yamlfile}")
 
@@ -170,11 +169,6 @@ class Hiera
             new_answer = regex_lookup(lookup_key, matchto, data, scope)
           else
             new_answer = plain_lookup(lookup_key, data, scope)
-          end
-
-          # Transitional: look up the full qualified key in expand_path
-          if new_answer.nil? && lookup_key != key
-            new_answer = plain_lookup(key, data, scope)
           end
 
           next if new_answer.nil?
