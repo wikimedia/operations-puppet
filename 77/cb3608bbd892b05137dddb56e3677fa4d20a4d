@@ -1,0 +1,8 @@
+Verified+2: jenkins-bot
+Code-Review+1: Yuvipanda <yuvipanda@wikimedia.org>
+Code-Review+2: Rush <rush@wikimedia.org>
+Submitted-by: Rush <rush@wikimedia.org>
+Submitted-at: Tue, 11 Oct 2016 19:15:24 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/315327
+Project: operations/puppet
+Branch: refs/heads/production
