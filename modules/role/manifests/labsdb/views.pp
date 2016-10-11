@@ -1,5 +1,16 @@
 class role::labsdb::views {
 
+    git::clone { 'operations/mediawiki-config':
+        ensure             => 'latest',
+        directory          => '/usr/local/lib',
+        owner              => 'root',
+        group              => 'root',
+        before             => File['/usr/local/sbin/maintain-views'],
+        recurse_submodules => true,
+    }
+
+    $view_user = $passwords::mysql::maintain-views::user
+    $view_pass = $passwords::mysql::maintain-views::password
     file { '/etc/maintain-views.json':
         ensure  => file,
         content => template('role/labsdb/maintain-views.json'),
