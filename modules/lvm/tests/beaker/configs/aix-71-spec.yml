@@ -1,0 +1,23 @@
+HOSTS:
+  redhat-6-x86_64:
+    roles:
+      - master
+      - dashboard
+      - database
+      - agent
+    platform: el-6-x86_64
+    template: redhat-6-x86_64
+    hypervisor: vcloud
+  pe-aix-71-spec:
+    roles:
+      - agent
+    platform: aix-7.1-power
+    hypervisor: none
+    vmhostname: pe-aix-71-spec.delivery.puppetlabs.net
+CONFIG:
+  nfs_server: NONE
+  consoleport: 443
+  datastore: instance0
+  folder: Delivery/Quality Assurance/Enterprise/Dynamic
+  resourcepool: delivery/Quality Assurance/Enterprise/Dynamic
+  pooling_api: http://vcloud.delivery.puppetlabs.net/
