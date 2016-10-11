@@ -1,0 +1,22 @@
+HOSTS:
+  puppet:
+    roles:
+      - master
+      - dashboard
+      - database
+      - agent
+    platform: el-6-x86_64
+    snapshot: master_ankeny
+    hypervisor : fusion
+  websphere:
+    roles:
+      - agent
+      - frictionless
+    platform: el-6-x86_64
+    snapshot: agent_ankeny
+    hypervisor : fusion
+
+CONFIG:
+  ssh:
+    auth_methods: ["password", "publickey"]
+    password: puppet
