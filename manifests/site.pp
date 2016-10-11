@@ -252,7 +252,7 @@ node 'chromium.wikimedia.org' {
     }
 }
 
-# gerrit warm stand-by (T147597)
+# New https://www.mediawiki.org/wiki/Gerrit (T147597)
 node 'cobalt.wikimedia.org' {
     role(gerrit::server)
 }
@@ -1530,11 +1530,6 @@ node /labstore200[1-2]\.codfw\.wmnet/ {
 node /labstore200[3-4]\.codfw\.wmnet/ {
     role(labs::nfs::backup)
     include standard
-}
-
-# New https://www.mediawiki.org/wiki/Gerrit
-node 'lead.wikimedia.org' {
-    role(gerrit::server)
 }
 
 node 'lithium.eqiad.wmnet' {
