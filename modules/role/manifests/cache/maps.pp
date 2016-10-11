@@ -1,5 +1,5 @@
 class role::cache::maps {
-    include role::cache::2layer
+    include role::cache::base
     include role::cache::ssl::unified
     include ::standard
 
@@ -64,7 +64,7 @@ class role::cache::maps {
         be_vcl_config     => $common_vcl_config,
         fe_extra_vcl      => [],
         be_extra_vcl      => [],
-        be_storage        => $::role::cache::2layer::file_storage_args,
+        be_storage        => $::role::cache::base::file_storage_args,
         fe_cache_be_opts  => $fe_cache_be_opts,
         be_cache_be_opts  => $be_cache_be_opts,
         cluster_nodes     => hiera('cache::maps::nodes'),
