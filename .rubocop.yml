@@ -11,6 +11,7 @@ AllCops:
     - 'modules/rsync/**/*'
     - 'modules/stdlib/**/*'
     - 'modules/puppetdbquery/**/*'
+    - 'modules/lvm/**/*'
     # bundler installation files
     - 'vendor/**/*'
 
