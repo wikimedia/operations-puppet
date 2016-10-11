@@ -13,7 +13,7 @@ class conftool(
         'https://conf1002.eqiad.wmnet:2379',
         'https://conf1003.eqiad.wmnet:2379'
     ],
-    $tcpircbot_host = 'neon.wikimedia.org',
+    $tcpircbot_host = 'einsteinium.wikimedia.org',
     $tcpircbot_port = 9200,
     ) {
     require_package('python-conftool')
