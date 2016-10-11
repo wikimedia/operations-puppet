@@ -1,0 +1,5 @@
+counter oom_killed
+
+/Out of memory: Kill process/ {
+  oom_killed++
+}

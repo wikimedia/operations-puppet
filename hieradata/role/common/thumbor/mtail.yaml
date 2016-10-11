@@ -1,0 +1,2 @@
+mtail::logs:
+    - /var/log/syslog

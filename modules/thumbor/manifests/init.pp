@@ -75,6 +75,12 @@ class thumbor (
         before => Base::Service_Unit['thumbor@'],
     }
 
+    mtail::program { 'thumbor':
+        ensure => present,
+        source => 'puppet:///modules/thumbor/thumbor.mtail',
+        before => Base::Service_Unit['thumbor@'],
+    }
+
     # XXX using a literal integer as the first argument results in
     # Error 400 on SERVER: undefined method `match' for 8801:Fixnum at
     # /etc/puppet/modules/thumbor/manifests/init.pp:62
