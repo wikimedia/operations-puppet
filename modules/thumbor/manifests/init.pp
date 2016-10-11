@@ -31,6 +31,7 @@ class thumbor (
 
     require_package('python-thumbor-wikimedia')
     require_package('firejail')
+    require_package('mtail')
 
     file { '/usr/local/lib/thumbor/':
         ensure => directory,
@@ -65,6 +66,15 @@ class thumbor (
         group  => 'root',
         mode   => '0444',
         source => 'puppet:///modules/thumbor/thumbor.profile.firejail',
+        before => Base::Service_Unit['thumbor@'],
+    }
+
+    file { '/etc/mtail/thumbor.mtail':
+        ensure => present,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0444',
+        source => 'puppet:///modules/thumbor/thumbor.mtail',
         before => Base::Service_Unit['thumbor@'],
     }
 
