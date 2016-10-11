@@ -1,4 +1,4 @@
-nodes:
+cache::upload::nodes:
   codfw:
     - 'cp2002.codfw.wmnet'
     - 'cp2005.codfw.wmnet'
@@ -42,7 +42,7 @@ nodes:
     - 'cp4013.ulsfo.wmnet'
     - 'cp4014.ulsfo.wmnet'
     - 'cp4015.ulsfo.wmnet'
-apps:
+cache::upload::apps:
   swift:
     route: 'eqiad'
     backends:
