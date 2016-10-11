@@ -1,4 +1,4 @@
-nodes:
+cache::maps::nodes:
   codfw:
     - 'cp2003.codfw.wmnet'
     - 'cp2009.codfw.wmnet'
@@ -19,7 +19,7 @@ nodes:
     - 'cp4012.ulsfo.wmnet'
     - 'cp4019.ulsfo.wmnet'
     - 'cp4020.ulsfo.wmnet'
-apps:
+cache::maps::apps:
   kartotherian:
     route: 'codfw'
     backends:
