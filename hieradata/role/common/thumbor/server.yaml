@@ -4,3 +4,6 @@ debdeploy::grains:
 
 admin::groups:
     - thumbor-admins
+
+mtail::logs:
+    - /var/log/syslog
