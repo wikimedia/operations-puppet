@@ -2,12 +2,13 @@
 #
 # Common base configs for the etcd auth classes
 class etcd::auth::common($root_password, $active = true) {
-
-    $ensure = $active ? {
-        true    => 'present',
-        default => 'absent'
+    file { '/usr/local/bin/etcd-manage':
+        ensure => present,
+        owner  => 'root',
+        group  => 'ops',
+        mode   => '0550',
+        source => 'puppet:///modules/etcd/etcd-manage',
     }
-
 
     if $active {
         # Require the global etcd config file
@@ -22,14 +23,4 @@ class etcd::auth::common($root_password, $active = true) {
             }
         }
     }
-
-
-    file { '/usr/local/bin/etcd-manage':
-        ensure => $ensure,
-        owner  => 'root',
-        group  => 'ops',
-        mode   => '0550',
-        source => 'puppet:///modules/etcd/etcd-manage',
-    }
-
 }
