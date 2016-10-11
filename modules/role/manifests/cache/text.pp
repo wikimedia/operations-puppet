@@ -6,7 +6,7 @@ class role::cache::text(
 ) {
     require geoip
     require geoip::dev # for VCL compilation using libGeoIP
-    include role::cache::2layer
+    include role::cache::base
     include role::cache::ssl::unified
     include ::standard
     if $::standard::has_ganglia {
@@ -123,7 +123,7 @@ class role::cache::text(
         be_vcl_config     => $be_vcl_config,
         fe_extra_vcl      => ['text-common', 'zero', 'normalize_path', 'geoip'],
         be_extra_vcl      => ['text-common', 'normalize_path'],
-        be_storage        => $::role::cache::2layer::persistent_storage_args,
+        be_storage        => $::role::cache::base::persistent_storage_args,
         fe_cache_be_opts  => $fe_cache_be_opts,
         be_cache_be_opts  => $be_cache_be_opts,
         cluster_nodes     => hiera('cache::text::nodes'),

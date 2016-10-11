@@ -9,7 +9,7 @@
 #
 # [*varnishes*]
 #   Array of 'IP:Port' for local varnish instances to forward to, defaults to
-#   ports 80 and 3128 on localhost (our standard 2layer frontend + backend
+#   ports 3127 and 3128 on localhost (our standard 2-layer frontend + backend
 #   instances).
 #
 # === Multicast assignments:

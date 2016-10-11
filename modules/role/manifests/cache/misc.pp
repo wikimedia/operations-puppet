@@ -1,5 +1,5 @@
 class role::cache::misc {
-    include role::cache::2layer
+    include role::cache::base
     include role::cache::ssl::misc
 
     class { 'varnish::htcppurger':
@@ -311,7 +311,7 @@ class role::cache::misc {
         be_vcl_config     => $be_vcl_config,
         fe_extra_vcl      => ['misc-common'],
         be_extra_vcl      => ['misc-common'],
-        be_storage        => $::role::cache::2layer::file_storage_args,
+        be_storage        => $::role::cache::base::file_storage_args,
         fe_cache_be_opts  => $fe_cache_be_opts,
         be_cache_be_opts  => $be_cache_be_opts,
         cluster_nodes     => hiera('cache::misc::nodes'),

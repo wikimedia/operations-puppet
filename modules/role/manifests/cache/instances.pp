@@ -1,4 +1,4 @@
-# This defines the pair of varnish::instance for a 2layer/2tier cache cluster
+# This defines the pair of varnish::instance for a 2-layer (fe+be) cache node
 define role::cache::instances (
     $fe_mem_gb,
     $fe_jemalloc_conf,
