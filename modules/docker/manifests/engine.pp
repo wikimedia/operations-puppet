@@ -1,6 +1,8 @@
 class docker::engine(
     $version = '1.11.2-0~jessie',
     $declare_service = true,
+    $vg_to_remove = 'vd',
+    $physical_volumes = ['/dev/vda4'],
 ) {
     apt::repository { 'docker':
         uri        => 'https://apt.dockerproject.org/repo',
@@ -10,22 +12,30 @@ class docker::engine(
         keyfile    => 'puppet:///modules/docker/docker.gpg',
     }
 
-    file { '/usr/local/bin/setup-docker':
-        source => 'puppet:///modules/docker/setup-docker',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0554',
+    volume_group { $vg_to_remove:
+        ensure           => absent,
+        physical_volumes => [],
     }
 
-    exec { 'setup-docker':
-        command => "/usr/local/bin/setup-docker ${version}",
-        unless  => '/sbin/vgdisplay docker',
-        user    => 'root',
-        group   => 'root',
-        require => [
-            Apt::Repository['docker'],
-            File['/usr/local/bin/setup-docker']
-        ]
+    volume_group { 'docker':
+        ensure           => present,
+        physical_volumes => $physical_volumes,
+        require          => Volume_group[$vg_to_remove],
+    }
+
+    logical_volume { 'data':
+        volume_group => 'docker',
+        extents      => '95%VG',
+    }
+
+    logical_volume { 'metadata':
+        volume_group => 'docker',
+        extents      => '5%VG',
+    }
+
+    package { 'docker-engine':
+        ensure  => $version,
+        require => Apt::Repository['docker']
     }
 
     if $declare_service {
