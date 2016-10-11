@@ -39,18 +39,24 @@ class thumbor (
         group  => 'root',
     }
 
-    file { '/var/log/thumbor':
-        ensure => directory,
-        owner  => 'thumbor',
-        group  => 'root',
-        mode   => '0755',
+    # We ensure the /srv/log (parent of $out_dir) manually here, as
+    # there is no proper class to rely on for this, and starting a
+    # separate would be an overkill for now.
+    if !defined(File['/srv/log']) {
+        file { '/srv/log':
+            ensure => 'directory',
+            mode   => '0755',
+            owner  => 'root',
+            group  => 'root',
+        }
     }
 
-    file { ['/srv/thumbor', '/srv/thumbor/tmp']:
-        ensure => directory,
-        mode   => '0755',
-        owner  => 'thumbor',
-        group  => 'thumbor',
+    file { ['/srv/thumbor', '/srv/thumbor/tmp', '/srv/log/thumbor']:
+        ensure  => directory,
+        mode    => '0755',
+        owner   => 'thumbor',
+        group   => 'thumbor',
+        require => File['/srv/log']
     }
 
     file { '/usr/local/lib/thumbor/tinyrgb.icc':
