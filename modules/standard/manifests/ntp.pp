@@ -2,6 +2,8 @@
 #
 # Basic common definitons used for NTP service configuration.
 class standard::ntp {
+    include network::constants
+
     # These are our servers - they all peer to each other
     #   and sync to upstream NTP pool servers.
     $wmf_peers = {
@@ -20,11 +22,9 @@ class standard::ntp {
         ulsfo => [],
     }
 
-    # neon for ntp monitoring queries
-    $neon_acl = [
-        '208.80.154.14 mask 255.255.255.255',
-    ]
-
+    # ntp monitoring queries
+    # TODO: Make this realm independent
+    $monitoring_acl = $network::constants::special_hosts['production']['monitoring_hosts']
     # Required for race-free ntpd startup, see https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=436029 :
     require_package('lockfile-progs')
 }
