@@ -7,6 +7,14 @@ class gerrit::crons() {
         minute  => [0, 15, 30, 45],
     }
 
+    cron { 'list_mediawiki_skins':
+    # Gerrit is missing a public list of projects.
+    # This hack list MediaWiki skins repositories
+        command => "/bin/ls -1d ${::gerrit::jetty::git_dir}/mediawiki/skins/*.git | sed 's#.*/##' | sed 's/\\.git//' > /var/www/mediawiki-skins.txt",
+        user    => 'root',
+        minute  => [0, 15, 30, 45],
+    }
+
     cron { 'list_reviewer_counts':
     # This is useful information about the distribution of reviewers.
     # Gerrit's rest api doesn't provide an easy way to get this data.
