@@ -1473,7 +1473,7 @@ node /labsdb100[138]\.eqiad\.wmnet/ {
     # this historically unpuppetized logic.
     # testing purposes only temporarily labsdb at the moment
     if $::hostname == 'labsdb1008' {
-        include role::labsdb
+        role(labsdb::views)
     }
 }
 
