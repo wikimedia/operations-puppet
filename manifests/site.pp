@@ -1466,6 +1466,15 @@ node 'labnodepool1001.eqiad.wmnet' {
 node /labsdb100[138]\.eqiad\.wmnet/ {
     # this role is depecated and its nodes scheduled for decom
     role(mariadb::labs)
+
+    # Labsdb1008 has been assigned to pilot our
+    # setup logic for maintain-views.
+    # This hostname specification is temporary for untangling
+    # this historically unpuppetized logic.
+    # testing purposes only temporarily labsdb at the moment
+    if $::hostname == 'labsdb1008' {
+        include role::labsdb
+    }
 }
 
 node /labsdb10(09|10|11)\.eqiad\.wmnet/ {

@@ -1,4 +1,4 @@
-class labsdb {
+class role::labsdb {
 
     file { '/etc/maintain-views.json':
         ensure  => file,
