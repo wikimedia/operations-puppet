@@ -33,6 +33,20 @@ define monitoring::host (
     }
 
     # Export the nagios host instance
+    if $title == $::hostname {
+        $image = $::operatingsystem ? {
+            'Ubuntu'  => 'ubuntu',
+            'Debian'  => 'debian',
+            default   => 'linux40'
+        }
+        $icon_image      = "base/${image}.png"
+        $vrml_image      = "base/${image}.png"
+        $statusmap_image = "base/${image}.gd2"
+    } else {
+        $icon_image      = undef
+        $vrml_image      = undef
+        $statusmap_image = undef
+    }
     @@nagios_host { $title:
         ensure                => $ensure,
         target                => '/etc/nagios/puppet_hosts.cfg',
@@ -46,24 +60,8 @@ define monitoring::host (
         notification_interval => 0,
         notification_period   => '24x7',
         notification_options  => 'd,u,r,f',
-    }
-
-    if $title == $::hostname {
-        $image = $::operatingsystem ? {
-            'Ubuntu'  => 'ubuntu',
-            'Debian'  => 'debian',
-            default   => 'linux40'
-        }
-
-        # Couple it with some hostextinfo
-        @@nagios_hostextinfo { $title:
-            ensure          => $ensure,
-            target          => '/etc/nagios/puppet_hostextinfo.cfg',
-            host_name       => $title,
-            notes           => $title,
-            icon_image      => "base/${image}.png",
-            vrml_image      => "base/${image}.png",
-            statusmap_image => "base/${image}.gd2",
-        }
+        icon_image            => $icon_image,
+        vrml_image            => $vrml_image,
+        statusmap_image       => $statusmap_image,
     }
 }
