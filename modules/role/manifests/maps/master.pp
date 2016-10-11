@@ -23,6 +23,9 @@ class role::maps::master(
     $tileratorui_pass = hiera('maps::postgresql_tileratorui_pass')
     $osmimporter_pass = hiera('maps::postgresql_osmimporter_pass')
     $osmupdater_pass = hiera('maps::postgresql_osmupdater_pass')
+    $replication_pass = hiera('maps::postgresql_replication_pass')
+    $monitoring_pass = hiera('maps::postgresql_monitoring_pass')
+    $pg_version = hiera('postgresql::master::pgversion')
 
     # Users
     postgresql::user { 'kartotherian':
@@ -87,10 +90,14 @@ class role::maps::master(
         source => 'puppet:///modules/role/maps/osm-initial-import',
     }
 
-    # PostgreSQL Replication
     $postgres_slaves = hiera('maps::postgres_slaves', undef)
     if $postgres_slaves {
-        create_resources(postgresql::user, $postgres_slaves)
+        $postgres_slaves_defaults = {
+            replication_pass => $replication_pass,
+            monitoring_pass  => $monitoring_pass,
+            pg_version       => $pg_version,
+        }
+        create_resources(::role::maps::postgresql_slave_users, $postgres_slaves, $postgres_slaves_defaults)
     }
 
     sudo::user { 'tilerator-notification':
