@@ -1122,6 +1122,12 @@ node 'gallium.wikimedia.org' {
         zuul::server,
         backup::host)
 
+    # TODO: Temporary rsync port for the migration to contint1001
+    ferm::service { 'rsync_migration':
+        proto  => 'tcp',
+        port   => 873,
+        srange => '208.80.154.17',
+    }
     include standard
     include contint::firewall
 }
