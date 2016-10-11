@@ -2,6 +2,9 @@
 #
 # Common base configs for the etcd auth classes
 class etcd::auth::common($root_password, $active = true) {
+    # Require the global etcd config file
+    require ::etcd::client::globalconfig
+
     file { '/usr/local/bin/etcd-manage':
         ensure => present,
         owner  => 'root',
@@ -11,9 +14,6 @@ class etcd::auth::common($root_password, $active = true) {
     }
 
     if $active {
-        # Require the global etcd config file
-        require ::etcd::client::globalconfig
-
         # specific configuration for the root user, basically
         # just the credentials.
         etcd::client::config { '/root/.etcdrc':

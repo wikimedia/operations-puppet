@@ -22,7 +22,7 @@ class etcd::auth {
         },
     }
 
-    $cmd_base = '/usr/local/bin/etcd-manage --configdir /etc/etcdrc/local'
+    $cmd_base = '/usr/local/bin/etcd-manage --configdir /etc/etcd/local'
     if $::etcd::auth::common::active {
         # Enable auth locally
         # Note: this will fail until someone applies etcd::auth:users somewhere

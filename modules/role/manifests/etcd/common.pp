@@ -45,6 +45,12 @@ class role::etcd::common {
     }
 
     # Authn/authz
+    class { '::etcd::client::globalconfig':
+        host       => $::fqdn,
+        port       => 2379,
+        srv_domain => $srv_dns,
+    }
+
     class { '::etcd::auth::common':
         root_password => $root_password,
         active        => $auth_enabled,
