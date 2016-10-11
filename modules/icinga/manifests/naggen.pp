@@ -27,10 +27,6 @@ class icinga::naggen {
         mode    => '0644',
         notify  => Service['icinga'],
     }
-    file { '/etc/icinga/puppet_hostextinfo.cfg':
-        ensure  => absent,
-    }
-
     # Collect all (virtual) resources
     Monitoring::Group <| |> {
         notify  => Service['icinga'],
