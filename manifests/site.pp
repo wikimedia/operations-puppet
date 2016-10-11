@@ -404,7 +404,7 @@ node /^cp40(1[129]|20)\.ulsfo\.wmnet$/ {
 
 node 'dataset1001.wikimedia.org' {
 
-    role(dataset::primary, dumps)
+    role(dataset::primary, dumps::server)
 
     interface::add_ip6_mapped { 'eth2':
         interface => 'eth2',
@@ -1989,7 +1989,7 @@ node 'multatuli.wikimedia.org' {
 node 'ms1001.wikimedia.org' {
     $cluster = 'misc'
 
-    role(dataset::secondary, dumps)
+    role(dataset::secondary, dumps::server)
 
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
