@@ -2,9 +2,7 @@ class role::labsdb::views {
 
     git::clone { 'operations/mediawiki-config':
         ensure             => 'latest',
-        directory          => '/usr/local/lib',
-        owner              => 'root',
-        group              => 'root',
+        directory          => '/usr/local/lib/mediawiki-config',
         before             => File['/usr/local/sbin/maintain-views'],
         recurse_submodules => true,
     }
