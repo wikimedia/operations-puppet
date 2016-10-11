@@ -67,7 +67,7 @@ groups:
     description: access to terbium, fluorine (private data) and bastion hosts
                  restricted folks use sudo to access apache / www-data resources
     members: [daniel, dartar, ellery, bearloga,
-              ezachte, hoo, jamesur, jdlrobson, khorn, tparscal, ssastry,
+              ezachte, hoo, jamesur, jdlrobson, khorn, tparscal, ssastry, smalyshev,
               nuria, leila, santhosh, amire80, legoktm, addshore, foks, chelsyx]
     privileges: ['ALL = (www-data,apache) NOPASSWD: ALL']
   cassandra-test-roots:
