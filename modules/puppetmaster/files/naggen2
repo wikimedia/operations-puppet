@@ -21,7 +21,6 @@ class NagiosGeneratorBase(object):
     restype = {
         'services': 'Nagios_service',
         'hosts': 'Nagios_host',
-        'hostextinfo': 'Nagios_hostextinfo'
     }
 
     restpl = {
@@ -35,12 +34,6 @@ class NagiosGeneratorBase(object):
 }
 """,
         'hosts': """define host {
-{% for line in data -%}
-{{ "\t%-30s %s" % line }}
-{% endfor %}
-}
-""",
-        'hostextinfo': """define hostextinfo {
 {% for line in data -%}
 {{ "\t%-30s %s" % line }}
 {% endfor %}
@@ -149,7 +142,7 @@ class NagiosGeneratorPuppetDB(NagiosGeneratorBase):
     def _filter_entity(self, entity, what):
         name = entity['title']
         # PuppetDB 2.3 does not collect the host_name parameter, apparently
-        if what in ['hosts', 'hostextinfo']:
+        if what in ['hosts']:
             if 'host_name' not in entity['parameters']:
                 entity['parameters']['host_name'] = entity['title']
 
@@ -164,7 +157,7 @@ def main():
     parser.add_argument('--type', '-t',
                         dest='type',
                         help="type of file to generate",
-                        choices=['services', 'hosts', 'hostextinfo'])
+                        choices=['services', 'hosts'])
     parser.add_argument(
         '--configfile', '-c', dest='configfile', default='/etc/puppet/puppet.conf')
     parser.add_argument('--debug', action='store_true', default=False)
