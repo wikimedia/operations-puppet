@@ -1,7 +1,7 @@
 class role::cache::upload(
     $upload_domain = 'upload.wikimedia.org',
 ) {
-    include role::cache::2layer
+    include role::cache::base
     include role::cache::ssl::unified
     include ::standard
     if $::standard::has_ganglia {
@@ -82,9 +82,9 @@ class role::cache::upload(
     })
 
     # See T145661 for storage binning rationale
-    $sda = $::role::cache::2layer::storage_parts[0]
-    $sdb = $::role::cache::2layer::storage_parts[1]
-    $ssm = $::role::cache::2layer::storage_size * 2 * 1024
+    $sda = $::role::cache::base::storage_parts[0]
+    $sdb = $::role::cache::base::storage_parts[1]
+    $ssm = $::role::cache::base::storage_size * 2 * 1024
     $bin0_size = floor($ssm * 0.03)
     $bin1_size = floor($ssm * 0.20)
     $bin2_size = floor($ssm * 0.43)
