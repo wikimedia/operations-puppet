@@ -33,5 +33,14 @@ class role::kafka::analytics::mirror {
         jmx_port                  => 9997,
         num_streams               => 2,
         offset_commit_interval_ms => 5000,
+        # 2016-10 - MirrorMaker has been dying with errors about
+        # batch expirations.  I think is because kafka1018 has been
+        # down (due to a bad disk) for a while, and is really busy
+        # resyncing.  acks=all makes a batch wait for all brokers
+        # in the ISR to ack, and if a single broker takes a while,
+        # an exception is thrown.  This isn't the best solution,
+        # we should be able to use acks=all, but for analytics purposes
+        # this should be acceptable (for now).
+        acks                      => 1,
     }
 }
