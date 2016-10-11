@@ -1,5 +1,5 @@
-proxy_service_host: 'ms-fe.svc.eqiad.wmnet'
-memcached_servers: [
+swift::proxy::proxy_service_host: 'ms-fe.svc.eqiad.wmnet'
+swift::proxy::memcached_servers: [
   'ms-fe1001.eqiad.wmnet:11211',
   'ms-fe1002.eqiad.wmnet:11211',
   'ms-fe1003.eqiad.wmnet:11211',
@@ -7,4 +7,4 @@ memcached_servers: [
 # no trailing comma!
 ]
 
-thumborhost: 'thumbor.svc.eqiad.wmnet:8800'
+swift::proxy::thumborhost: 'thumbor.svc.eqiad.wmnet:8800'

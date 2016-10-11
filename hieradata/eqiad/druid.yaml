@@ -1,5 +1,5 @@
-use_cdh: true
-properties:
+druid::use_cdh: true
+druid::properties:
   druid.metadata.storage.type: mysql
   druid.metadata.storage.connector.host: analytics1003.eqiad.wmnet
   # druid.metadata.storage.connector.password is set in
