@@ -1,3 +1,3 @@
-storage_parts:
+role::cache::2layer::storage_parts:
   - sda3
   - sdb3

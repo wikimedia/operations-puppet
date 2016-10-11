@@ -1,3 +1,8 @@
+# BEWARE: this file has been added to the production-realm
+# hieradata, but it's not really for it; it is used by a different realm instead
+# and the lookup logic is different than everywhere else.
+# Because we love clarity and consistency.
+
 puppetmaster: "labtestcontrol2001.wikimedia.org"
 saltmaster: "labtestcontrol2001.wikimedia.org"
 labs_puppet_master: "labtestcontrol2001.wikimedia.org"
