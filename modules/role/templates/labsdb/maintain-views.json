@@ -2,8 +2,8 @@
     "slices": [
         ["<%= @fqdn %>", 3306]
     ],
-    "mysql_user": "maintain-views",
-    "mysql_password": "",
+    "mysql_user": "<%= @view_user %>",
+    "mysql_password": "<%= @view_pass %>",
     "fullviews": [
         "abuse_filter_action", "aft_article_answer", "aft_article_answer_text",
         "aft_article_feedback_properties", "aft_article_feedback_ratings_rollup",
