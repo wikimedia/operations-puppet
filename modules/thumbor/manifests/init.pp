@@ -39,14 +39,7 @@ class thumbor (
         group  => 'root',
     }
 
-    file { '/var/log/thumbor':
-        ensure => directory,
-        owner  => 'thumbor',
-        group  => 'root',
-        mode   => '0755',
-    }
-
-    file { ['/srv/thumbor', '/srv/thumbor/tmp']:
+    file { ['/srv/thumbor', '/srv/thumbor/tmp', '/srv/log/thumbor']:
         ensure => directory,
         mode   => '0755',
         owner  => 'thumbor',
