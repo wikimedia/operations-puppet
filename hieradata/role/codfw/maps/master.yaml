@@ -1,17 +1,13 @@
-# Defined in the private repo
-#maps::postgres_slaves:
-#  replication@maps-test2002-v4:
-#    user: replication
-#    password: justapass
-#    cidr: 10.192.0.129
-#    pgversion: 9.4
-#  replication@maps-test2003-v4:
-#    user: replication
-#    password: justapass
-#    cidr: 10.192.16.34
-#    pgversion: 9.4
-#  replication@maps-test2004-v4:
-#    user: replication
-#    password: justapass
-#    cidr: 10.192.16.35
-#    pgversion: 9.4
+maps::postgres_slaves:
+  maps-test2002:
+    ip_address: 10.192.0.129
+  maps-test2003:
+    ip_address: 10.192.16.34
+  maps-test2004:
+    ip_address: 10.192.16.35
+  maps2002:
+    ip_address: 10.192.16.179
+  maps2003:
+    ip_address: 10.192.32.146
+  maps2004:
+    ip_address: 10.192.48.57

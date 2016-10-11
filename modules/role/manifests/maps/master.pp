@@ -23,6 +23,9 @@ class role::maps::master(
     $tileratorui_pass = hiera('maps::postgresql_tileratorui_pass')
     $osmimporter_pass = hiera('maps::postgresql_osmimporter_pass')
     $osmupdater_pass = hiera('maps::postgresql_osmupdater_pass')
+    $replication_pass = hiera('maps::postgresql_replication_pass')
+    $monitoring_pass = hiera('maps::postgresql_monitoring_pass')
+    $pg_version = hiera('postgresql::master::pgversion')
 
     # Users
     postgresql::user { 'kartotherian':
@@ -87,10 +90,29 @@ class role::maps::master(
         source => 'puppet:///modules/role/maps/osm-initial-import',
     }
 
-    # PostgreSQL Replication
+    # PostgreSQL Replication / Monitoring
+    # This inner define should probably be replaced by iterator once we activate future parser
+    define postgresql_slave_users($ip_address) {
+        ::postgresql::user { "replication@${title}":
+            user      => 'replication',
+            password  => $replication_pass,
+            cidr      => "${ip_address}/32",
+            pgversion => $pg_version,
+            attrs     => 'REPLICATION',
+            database  => 'replication',
+        }
+        ::postgresql::user { "icinga@${title}":
+            user      => 'icinga',
+            password  => $monitoring_pass,
+            cidr      => "${ip_address}/32",
+            pgversion => $pg_version,
+            database  => 'all',
+        }
+    }
+
     $postgres_slaves = hiera('maps::postgres_slaves', undef)
     if $postgres_slaves {
-        create_resources(postgresql::user, $postgres_slaves)
+        create_resources(icinga_user, $postgres_slaves)
     }
 
     sudo::user { 'tilerator-notification':
