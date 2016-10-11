@@ -117,14 +117,9 @@ class role::mariadb::ferm {
         srange  => '$INTERNAL',
     }
 
-    # tendril monitoring
-    ferm::rule { 'mariadb_monitoring':
-        rule => 'saddr @resolve((neon.wikimedia.org)) proto tcp dport (3306) ACCEPT;',
-    }
-
     # for DBA purposes
     ferm::rule { 'mariadb_dba':
-        rule => 'saddr @resolve((neon.wikimedia.org db1011.eqiad.wmnet)) proto tcp dport (3307) ACCEPT;',
+        rule => 'saddr @resolve((db1011.eqiad.wmnet)) proto tcp dport (3307) ACCEPT;',
     }
 }
 
@@ -468,12 +463,6 @@ class role::mariadb::tendril {
     class {'role::mariadb::groups':
         mysql_group => 'tendril',
         mysql_role  => 'standalone',
-    }
-
-    ferm::service { 'memcached_tendril':
-        proto  => 'tcp',
-        port   => '11211',
-        srange => '@resolve(neon.wikimedia.org)',
     }
 
     class { 'mariadb::config':
