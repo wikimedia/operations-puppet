@@ -897,7 +897,7 @@ node 'eeden.wikimedia.org' {
     include standard
 }
 
-# neon-like monitoring host in eqiad
+# icinga based monitoring host in eqiad
 node 'einsteinium.wikimedia.org' {
     include standard
     include base::firewall
@@ -2773,7 +2773,7 @@ node /(subra|suhail)\.codfw\.wmnet/ {
     include standard
 }
 
-# neon-like monitoring host in codfw
+# icinga based monitoring host in codfw
 node 'tegmen.wikimedia.org' {
     role(icinga) #, tendril, tcpircbot)
 }
