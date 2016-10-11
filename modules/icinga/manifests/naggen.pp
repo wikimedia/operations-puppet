@@ -28,13 +28,7 @@ class icinga::naggen {
         notify  => Service['icinga'],
     }
     file { '/etc/icinga/puppet_hostextinfo.cfg':
-        content => generate(
-            '/usr/local/bin/naggen2', $dbarg, '--type', 'hostextinfo'),
-        backup  => false,
-        owner   => 'icinga',
-        group   => 'icinga',
-        mode    => '0644',
-        notify  => Service['icinga'],
+        ensure  => absent,
     }
 
     # Collect all (virtual) resources
