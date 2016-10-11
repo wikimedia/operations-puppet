@@ -116,4 +116,22 @@ class thumbor (
     grub::bootparam { 'swapaccount':
         value => '1',
     }
+
+    cgred::group {'thumbor-subprocesses':
+        config => {
+            memory => {
+                'memory.limit_in_bytes' => '838860800', # 800MB
+            },
+        },
+        rules  => [
+            '*:/usr/bin/ddjvu           memory   /thumbor-subprocesses',
+            '*:/usr/bin/exiftool        memory   /thumbor-subprocesses',
+            '*:/usr/bin/ffmpeg          memory   /thumbor-subprocesses',
+            '*:/usr/bin/ffprobe         memory   /thumbor-subprocesses',
+            '*:/usr/bin/gs              memory   /thumbor-subprocesses',
+            '*:/usr/bin/rsvg-convert    memory   /thumbor-subprocesses',
+            '*:/usr/bin/xcf2png         memory   /thumbor-subprocesses',
+            '*:/usr/bin/vips            memory   /thumbor-subprocesses',
+        ],
+    }
 }
