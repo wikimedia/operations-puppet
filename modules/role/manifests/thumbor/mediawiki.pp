@@ -25,4 +25,9 @@ class role::thumbor::mediawiki {
         port   => '8800',
         srange => '$DOMAIN_NETWORKS',
     }
+
+    mtail::program { 'thumbor':
+        ensure => present,
+        source => 'puppet:///modules/thumbor/thumbor.mtail',
+    }
 }
