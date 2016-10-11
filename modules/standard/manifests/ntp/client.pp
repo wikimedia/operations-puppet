@@ -16,7 +16,7 @@ class standard::ntp::client () {
 
     ntp::daemon { 'client':
         servers   => $client_upstreams[$::site],
-        query_acl => $::standard::ntp::neon_acl,
+        query_acl => $::standard::ntp::monitoring_acl,
     }
 
     monitoring::service { 'ntp':

@@ -78,7 +78,7 @@ class role::ntp {
         servers   => $peer_upstreams[$::fqdn],
         peers     => delete($wmf_all_peers, $::fqdn),
         time_acl  => $our_networks_acl,
-        query_acl => $::standard::ntp::neon_acl,
+        query_acl => $::standard::ntp::monitoring_acl,
     }
 
     ferm::service { 'ntp':
