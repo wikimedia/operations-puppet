@@ -85,7 +85,7 @@ class role::deployment::server(
         require => File['/srv/deployment'],
     }
 
-    $deployment_server = hiera('deployment_server', 'tin.eqiad.wmnet')
+    $deployment_server = hiera('deployment_server', 'mira.codfw.wmnet')
     class { '::deployment::redis':
         deployment_server => $deployment_server
     }
