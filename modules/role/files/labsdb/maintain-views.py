@@ -25,9 +25,8 @@
 #  By default, it processes every database but it accepts a list of
 #  databases to process
 #
-#  The script uses a clone of operations/mediawiki-config in a directory called
-#  mediawiki-config, from which it will get it's database list information. It
-#  will clone the repository from https://gerrit.wikimedia.org if necessary.
+#  Information on available and operational databases is sourced from
+#  a checkout of mediawiki-config.
 #
 
 import argparse
@@ -298,6 +297,12 @@ if __name__ == "__main__":
               " values can be given space-separated."),
         nargs="+"
     )
+    argparser.add_argument(
+        "--mediawiki-config",
+        help=("Specify path to mediawiki-config checkout"
+              " values can be given space-separated."),
+        default="/usr/local/lib/mediawiki-config"
+    )
     args = argparser.parse_args()
     with open(args.config_location) as f:
         config = json.load(f)
@@ -313,19 +318,9 @@ if __name__ == "__main__":
     customviews["logging_userindex"]["where"] = ("(log_deleted&4)=0 and " +
                                                  safelog)
 
-    if os.path.isdir('mediawiki-config'):
-        logging.info("Running git pull in mediawiki-config")
-        subprocess.call(["git", "pull"], cwd="mediawiki-config")
-    else:
-        logging.info("Running git clone for mediawiki-config")
-        subprocess.call([
-            "git",
-            "clone",
-            "https://gerrit.wikimedia.org/r/p/operations/mediawiki-config.git"
-        ])
-
-    with open("mediawiki-config/dblists/all.dblist") as f:
+    with open("{}/dblists/all.dblist".format(args.mediawiki_config)) as f:
         all_available_dbs = f.read().splitlines()
+
     all_available_dbs.append("centralauth")
     if args.databases:
         dbs = {}
@@ -344,7 +339,7 @@ if __name__ == "__main__":
         dbs = {db: {} for db in all_available_dbs}
 
     def read_list(fname, prop, val):
-        with open("mediawiki-config/dblists/{}.dblist".format(fname)) as f:
+        with open("{}/dblists/{}.dblist".format(args.mediawiki_config, fname)) as f:
             for db in f.read().splitlines():
                 if db in dbs:
                     dbs[db][prop] = val
