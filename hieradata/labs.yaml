@@ -47,21 +47,15 @@ cache::text::apps:
   appservers:
     route: eqiad
     backends:
-      eqiad:
-        - 'deployment-mediawiki04.deployment-prep.eqiad.wmflabs'
-        - 'deployment-mediawiki05.deployment-prep.eqiad.wmflabs'
+      eqiad: 'deployment-mediawiki04.deployment-prep.eqiad.wmflabs'
   api:
     route: eqiad
     backends:
-      eqiad:
-        - 'deployment-mediawiki04.deployment-prep.eqiad.wmflabs'
-        - 'deployment-mediawiki05.deployment-prep.eqiad.wmflabs'
+      eqiad: 'deployment-mediawiki05.deployment-prep.eqiad.wmflabs'
   rendering:
     route: eqiad
     backends:
-      eqiad:
-        - 'deployment-mediawiki04.deployment-prep.eqiad.wmflabs'
-        - 'deployment-mediawiki05.deployment-prep.eqiad.wmflabs'
+      eqiad: 'deployment-mediawiki05.deployment-prep.eqiad.wmflabs'
   security_audit:
     route: eqiad
     backends:
