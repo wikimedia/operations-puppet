@@ -208,10 +208,7 @@ class role::cache::misc {
         'rcstream' => {
             'dynamic'  => 'no',
             'type'     => 'hash',
-            'backends' => [
-                'rcs1001.eqiad.wmnet',
-                'rcs1002.eqiad.wmnet',
-            ],
+            'backends' => ['stream.svc.eqiad.wmnet'],
             'be_opts'  => $app_def_be_opts,
             'req_host' => 'stream.wikimedia.org',
         },
