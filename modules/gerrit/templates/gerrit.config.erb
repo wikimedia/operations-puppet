@@ -34,6 +34,7 @@
 [container]
     user = gerrit2
     javaHome = /usr/lib/jvm/java-7-openjdk-amd64/jre
+    javaOptions = -Dlog4j.configuration=file:///var/lib/gerrit2/review_site/site/etc/log4j.properties
     heapLimit = <%= @heap_limit %>
     slave = <%= @slave %>
 [sshd]
