@@ -11,6 +11,10 @@ class role::rcstream {
         description => 'MediaWiki Recent Changes stream',
     }
 
+    lvs::realserver { 'rcstream:
+        realserver_ips => $lvs::configuration::service_ips['stream'][$::site]
+    }
+
     redis::instance { 6379:
         settings => {
             maxmemory                   => '100mb',

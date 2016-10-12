@@ -129,6 +129,8 @@ lvs::configuration::lvs_service_ips:
   wdqs: &ip_block031
     eqiad: 10.2.2.32
     codfw: 10.2.1.32
+  stream: &ip_block032
+    eqiad: 10.2.2.33
 lvs::configuration::lvs_services:
   text:
     description: "Main wiki platform LVS service, text.%{::site}.wikimedia.org (Varnish)"
@@ -1015,3 +1017,28 @@ lvs::configuration::lvs_services:
           hostname: wdqs.svc.eqiad.wmnet
         codfw:
           hostname: wdqs.svc.codfw.wmnet
+  stream:
+    description: rcstream Service
+    class: low-traffic
+    sites:
+    - eqiad
+    ip: *ip_block032
+    port: 80
+    scheduler: sh
+    bgp: 'yes'
+    depool-threshold: '.5'
+    monitors:
+      ProxyFetch:
+        url:
+        - http://localhost/
+      IdleConnection:
+        timeout-clean-reconnect: 3
+        max-delay: 300
+    conftool:
+      cluster: stream
+      service: stream
+    icinga:
+      check_command: check_http_on_port!80
+      sites:
+        eqiad:
+          hostname: stream.svc.eqiad.wmnet

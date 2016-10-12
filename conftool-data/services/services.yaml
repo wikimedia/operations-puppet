@@ -167,3 +167,11 @@ wdqs:
     default_values:
       pooled: 'no'
       weight: 10
+stream:
+  stream:
+    port: 80
+    datacenters:
+    - eqiad
+    default_values:
+      pooled: 'no'
+      weight: 10

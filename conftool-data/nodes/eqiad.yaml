@@ -313,3 +313,6 @@ prometheus:
 wdqs:
   wdqs1001.eqiad.wmnet: [wdqs]
   wdqs1002.eqiad.wmnet: [wdqs]
+stream:
+  rcs1001.eqiad.wmnet: [stream]
+  rcs1002.eqiad.wmnet: [stream]
