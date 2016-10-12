@@ -43,9 +43,6 @@ cache::text::nodes:
 cache::upload::nodes:
     eqiad:
       - '127.0.0.1'
-cache::maps::nodes:
-    eqiad:
-      - '127.0.0.1'
 cache::text::apps:
   appservers:
     route: eqiad
