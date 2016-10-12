@@ -17,24 +17,48 @@
 #
 # === Parameters
 #
-# $port              The port used by Pivot to accept HTTP connections.
-#                    Default: 9090
-# $druid_broker      The fully qualified domain name (like druid1001.eqiad.wmnet)
-#                    of the Druid Broker that the Pivot UI will contact.
-#                    Default: undef
-# $deployment_user   Scap deployment user.
-#                    Default: 'analytics_deploy'
-# $scap_repo         Scap repository.
-#                    Default: 'analytics/pivot/deploy'
-# $contact_group     Contact group for alerts.
-#                    Default: 'admins'
-
+# [*port*]
+#   The port used by Pivot to accept HTTP connections.
+#   Default: 9090
+#
+# [*druid_broker*]
+#   The fully qualified domain name (like druid1001.eqiad.wmnet)
+#   of the Druid Broker that the Pivot UI will contact.
+#   Default: undef
+#
+# [*query_timeout*]
+#   The timeout to set on the Druid queries in ms.
+#   Default: 40000
+#
+# [*source_refresh_ms*]
+#   How often should Druid sources be reloaded in ms.
+#   Default: 15000
+#
+# [*schema_refresh_ms*]
+#   How often should Druid source schema be reloaded in ms.
+#   Default: 120000
+#
+# [*deployment_user*]
+#   Scap deployment user.
+#   Default: 'analytics_deploy'
+#
+# [*scap_repo*]
+#   Scap repository.
+#   Default: 'analytics/pivot/deploy'
+#
+# [*contact_group*]
+#   Contact group for alerts.
+#   Default: 'admins'
+#
 class pivot(
-    $port            = 9090,
-    $druid_broker    = undef,
-    $deployment_user = 'analytics_deploy',
-    $scap_repo       = 'analytics/pivot/deploy',
-    $contact_group   = 'admins',
+    $port              = 9090,
+    $druid_broker      = undef,
+    $query_timeout     = 40000,
+    $source_refresh_ms = 15000,
+    $schema_refresh_ms = 120000,
+    $deployment_user   = 'analytics_deploy',
+    $scap_repo         = 'analytics/pivot/deploy',
+    $contact_group     = 'admins',
 ) {
 
     requires_os('debian >= jessie')
@@ -68,6 +92,14 @@ class pivot(
         source => 'puppet:///modules/pivot/pivot.profile.firejail',
     }
 
+    file { '/etc/pivot/config.yaml':
+        ensure => present,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0444',
+        source => 'puppet:///modules/pivot/templates/config.yaml.erb',
+    }
+
     systemd::syslog { 'pivot':
         readable_by => 'all',
         base_dir    => '/var/log',
@@ -80,6 +112,7 @@ class pivot(
         require => [
             Scap::Target['analytics/pivot/deploy'],
             File['/etc/firejail/pivot.profile'],
+            File['/etc/pivot/config.yaml'],
             User['pivot'],
             Systemd::Syslog['pivot'],
         ],
