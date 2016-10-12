@@ -93,11 +93,11 @@ class pivot(
     }
 
     file { '/etc/pivot/config.yaml':
-        ensure => present,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0444',
-        source => 'puppet:///modules/pivot/templates/config.yaml.erb',
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        content => template('pivot/config.yaml.erb'),
     }
 
     systemd::syslog { 'pivot':
