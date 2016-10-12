@@ -7,6 +7,7 @@ define monitoring::service(
     $ensure                = present,
     $critical              = false,
     $passive               = false,
+    $exported              = true,
     $freshness             = 36000,
     $normal_check_interval = 1,
     $retry_check_interval  = 1,
@@ -71,25 +72,32 @@ define monitoring::service(
     }
 
     # Export the nagios service instance
-    @@nagios_service { "${::hostname} ${title}":
-        ensure                 => $ensure,
-        target                 => "${config_dir}/puppet_checks.d/${host}.cfg",
-        host_name              => $host,
-        servicegroups          => $servicegroups,
-        service_description    => $description_safe,
-        check_command          => $check_command,
-        max_check_attempts     => $retries,
-        normal_check_interval  => $normal_check_interval,
-        retry_check_interval   => $retry_check_interval,
-        check_period           => '24x7',
-        notification_interval  => $notification_critical,
-        notification_period    => '24x7',
-        notification_options   => 'c,r,f',
-        contact_groups         => $contact_critical,
-        passive_checks_enabled => 1,
-        active_checks_enabled  => $is_active,
-        is_volatile            => $check_volatile,
-        check_freshness        => $check_fresh,
-        freshness_threshold    => $is_fresh,
+    $service = {
+        "${::hostname} ${title}" => {
+            ensure                 => $ensure,
+            target                 => "${config_dir}/puppet_checks.d/${host}.cfg",
+            host_name              => $host,
+            servicegroups          => $servicegroups,
+            service_description    => $description_safe,
+            check_command          => $check_command,
+            max_check_attempts     => $retries,
+            normal_check_interval  => $normal_check_interval,
+            retry_check_interval   => $retry_check_interval,
+            check_period           => '24x7',
+            notification_interval  => $notification_critical,
+            notification_period    => '24x7',
+            notification_options   => 'c,r,f',
+            contact_groups         => $contact_critical,
+            passive_checks_enabled => 1,
+            active_checks_enabled  => $is_active,
+            is_volatile            => $check_volatile,
+            check_freshness        => $check_fresh,
+            freshness_threshold    => $is_fresh,
+        }
+    }
+    if $exported {
+        create_resources('@@nagios_service', $service)
+    } else {
+        create_resources(nagios_service, $service)
     }
 }
