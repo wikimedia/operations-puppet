@@ -18,21 +18,18 @@
 #  ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 #  OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 #
-#
 #  This script maintains the databases containing sanitized views to
 #  the replicated databases (in the form <db>_p for every <db>)
-#
-#  By default, it processes every database but it accepts a list of
-#  databases to process
 #
 #  Information on available and operational databases is sourced from
 #  a checkout of mediawiki-config.
 #
 
 import argparse
-import json
 import logging
 import re
+import sys
+import yaml
 
 import pymysql
 
@@ -45,17 +42,33 @@ class SchemaOperations():
         self.db_p = db + '_p'
         self.db_size = db_size
         self.cursor = cursor
+        self.definer = 'viewmaster'
 
     def write_execute(self, query):
-        if self.dry_run:
-            logging.info("DRY RUN: Would execute: {}".format(query))
-        else:
+        """ Do operation or simulate
+        :param query: str
+        """
+        logging.debug("SQL: {}".format(query))
+        if not self.dry_run:
             self.cursor.execute(query)
 
-    def table_exists(self, table, database):
+    def user_exists(self, name):
+        """ Check if a user exists
+        :param name: str
         """
-        Determine whether a table of the given name exists in the database of
+        self.cursor.execute("""
+            SELECT 1
+            FROM `mysql`.`user`
+            WHERE `user`=%s;
+        """, args=(name))
+        return bool(self.cursor.rowcount)
+
+    def table_exists(self, table, database):
+        """ Determine whether a table of the given name exists in the database of
         the given name.
+        :param table: str
+        :param database: str
+        :returns: bool
         """
         self.cursor.execute("""
             SELECT `table_name`
@@ -64,33 +77,21 @@ class SchemaOperations():
         """, args=(table, database))
         return bool(self.cursor.rowcount)
 
-    def execute(self, fullviews, customviews):
+    def database_exists(self, database):
+        """ Verify if a DB exists
+        :param database: str
+        :return: bool
         """
-        Begin checking/creating views for this schema.
-        """
-
         self.cursor.execute("""
             SELECT `schema_name`
             FROM `information_schema`.`schemata`
             WHERE `schema_name`=%s
-        """, args=(self.db_p,))
-        if not self.cursor.rowcount:
-            # Can't use pymysql to build this
-            self.write_execute(
-                "CREATE DATABASE `{}`;".format(self.db_p)
-            )
-
-        logging.info("Full views for {}:".format(self.db))
-        for view in fullviews:
-            self.do_fullview(view)
-
-        logging.info("Custom views for {}:".format(self.db))
-        for view_name, view_details in customviews.items():
-            self.do_customview(view_name, view_details)
+        """, args=(database,))
+        return bool(self.cursor.rowcount)
 
     def do_fullview(self, view):
-        """
-        Check whether the source table exists, and if so, create the view.
+        """ Check whether the source table exists, and if so, create the view.
+        :param view: str
         """
         if self.table_exists(view, self.db):
             # If it does, create or replace the view for it.
@@ -101,10 +102,10 @@ class SchemaOperations():
                 # Can't use pymysql to build this
                 self.write_execute("""
                     CREATE OR REPLACE
-                    DEFINER=viewmaster
-                    VIEW `{0}`.`{1}`
-                    AS SELECT * FROM `{2}`.`{1}`;
-                """.format(self.db_p, view, self.db))
+                    DEFINER={0}
+                    VIEW `{1}`.`{2}`
+                    AS SELECT * FROM `{3}`.`{2}`;
+                """.format(self.definer, self.db_p, view, self.db))
         else:
             # Some views only exist in CentralAuth, some only in MediaWiki,
             # etc.
@@ -115,9 +116,10 @@ class SchemaOperations():
             )
 
     def check_customview_source(self, view_name, source):
-        """
-        Check whether a custom view's particular source exists. If it does,
-        return the source database and table names. If not, return False.
+        """ Check whether a custom view's particular source exists
+        :param view_name: str
+        :param source: str
+        :return: tuple
         """
         match = re.match(r"^(?:(.*)\.)?([^.]+)$", source)
         if not match:
@@ -142,20 +144,20 @@ class SchemaOperations():
                     " view {}")
                 .format(source_table, source_db, view_name)
             )
-            return False
+            return ()
 
     def do_customview(self, view_name, view_details):
-        """
-        Process a custom view's sources, and if they're all present, and the
-        view's limit is not bigger than the database size, call
-        create_customview.
+        """ Process a custom view's sources, and if they're all present, and the
+        view's limit is not bigger than the database size, call create_customview.
+        :param view_name: str
+        :param view_details: str
         """
         if ("limit" in view_details and self.db_size is not None and
                 view_details["limit"] > self.db_size):
             # Ignore custom views which have a limit number greater
             # than the size ID set by the read_list calls for
             # size.dblist above.
-            logging.debug("Too big for this database")
+            logging.warning("Too big for this database")
             return
 
         sources = view_details["source"]
@@ -166,13 +168,12 @@ class SchemaOperations():
 
         for source in sources:
             result = self.check_customview_source(view_name, source)
-            if result:
-                source_db, source_table = result
-                sources_checked.append(
-                    "`{}`.`{}`".format(source_db, source_table)
-                )
-            else:
+            if not result:
                 break
+            source_db, source_table = result
+            sources_checked.append(
+                "`{}`.`{}`".format(source_db, source_table)
+            )
 
         if len(sources) == len(sources_checked):
 
@@ -202,16 +203,20 @@ class SchemaOperations():
             )
 
     def create_customview(self, view_name, view_details, sources):
+        """ Creates or replaces a custom view from its sources.
+        :param view_name: str
+        :param view_details: dict
+        :param sources: list
         """
-        Creates or replaces a custom view from it's sources.
-        """
+
         query = """
             CREATE OR REPLACE
-            DEFINER=viewmaster
+            DEFINER={}
             VIEW `{}`.`{}`
             AS {}
             FROM {}
         """.format(
+            self.definer,
             self.db_p,
             view_name,
             view_details["view"],
@@ -229,53 +234,54 @@ class SchemaOperations():
         # Can't use pymysql to build this
         self.write_execute(query)
 
+    def execute(self, fullviews, customviews):
+        """ Begin checking/creating views for this schema.
+        :param fullviews: list
+        :param customviews: dict
+        """
 
-def do_dbhost(dry_run, replace_all, dbhost, dbport, config, dbs, customviews):
-    """
-    Handle setting up a connection to a dbhost, then go through every database
-    to start the process of creating views there.
-    """
-    dbh = pymysql.connect(
-        host=dbhost,
-        port=dbport,
-        user=config["mysql_user"],
-        passwd=config["mysql_password"],
-        charset="utf8"
-    )
-    with dbh.cursor() as cursor:
-        logging.info("Connected to {}:{}...".format(dbhost, dbport))
-        cursor.execute("SET NAMES 'utf8';")
-        for db, db_info in dbs.items():
-            skip = False
-            for bad_flag in ["deleted", "private"]:
-                if db_info.get(bad_flag, False):
-                    logging.debug(
-                        "Skipping database {} because it's marked as {}."
-                        .format(db, bad_flag)
-                    )
-                    skip = True
+        if not self.database_exists(self.db):
+            logging.warning('DB {} does not exist to create views'.format(self.db))
+            return
 
-            if skip:
-                continue
+        if not self.database_exists(self.db_p):
+            # Can't use pymysql to build this
+            self.write_execute(
+                "CREATE DATABASE `{}`;".format(self.db_p)
+            )
 
-            db_size = None
-            if "size" in db_info:
-                db_size = db_info["size"]
+        logging.info("Full views for {}:".format(self.db))
+        for view in fullviews:
+            self.do_fullview(view)
 
-            ops = SchemaOperations(dry_run, replace_all, db, db_size, cursor)
-            ops.execute(config["fullviews"], customviews)
+        logging.info("Custom views for {}:".format(self.db))
+        for view_name, view_details in customviews.items():
+            self.do_customview(view_name, view_details)
+
 
 if __name__ == "__main__":
-    logging.getLogger().setLevel(logging.INFO)
 
     argparser = argparse.ArgumentParser(
         "maintain-views",
-        description="Maintain labs sanitized views of replica databases"
+        description="Maintain labsdb sanitized views of replica databases"
+    )
+
+    group = argparser.add_mutually_exclusive_group(required=True)
+    group.add_argument(
+        '--databases',
+        help=("Specify database(s) to work on, instead of all. Multiple"
+              " values can be given space-separated."),
+        nargs="+"
+    )
+    group.add_argument(
+        '--all-databases',
+        help='Flag to run through all possible databases',
+        action='store_true',
     )
     argparser.add_argument(
         "--config-location",
         help="Path to find the configuration file",
-        default="/etc/maintain-views.json"
+        default="/etc/maintain-views.yaml"
     )
     argparser.add_argument(
         "--dry-run",
@@ -290,20 +296,41 @@ if __name__ == "__main__":
         action="store_true"
     )
     argparser.add_argument(
-        "--databases",
-        help=("Specify database(s) to work on, instead of all. Multiple"
-              " values can be given space-separated."),
-        nargs="+"
-    )
-    argparser.add_argument(
         "--mediawiki-config",
         help=("Specify path to mediawiki-config checkout"
               " values can be given space-separated."),
         default="/usr/local/lib/mediawiki-config"
     )
+    argparser.add_argument(
+        '--debug',
+        help='Turn on debug logging',
+        action='store_true'
+    )
+
     args = argparser.parse_args()
-    with open(args.config_location) as f:
-        config = json.load(f)
+
+    with open(args.config_location, 'r') as stream:
+        try:
+            config = yaml.load(stream)
+        except yaml.YAMLError as exc:
+            logging.critical(exc)
+            sys.exit(1)
+
+    dbs_metadata = config['metadata']
+    sensitive_db_lists = config['sensitive_db_lists']
+
+    logging.basicConfig(
+        format='%(asctime)s %(levelname)s %(message)s',
+        level=logging.DEBUG if args.debug else logging.INFO,
+    )
+
+    dbh = pymysql.connect(
+        host=config['host'],
+        port=config['port'],
+        user=config["mysql_user"],
+        passwd=config["mysql_password"],
+        charset="utf8"
+    )
 
     # Hacks
     safelog = ("log_type IN ('" +
@@ -316,51 +343,50 @@ if __name__ == "__main__":
     customviews["logging_userindex"]["where"] = ("(log_deleted&4)=0 and " +
                                                  safelog)
 
-    with open("{}/dblists/all.dblist".format(args.mediawiki_config)) as f:
+    # This will include private and deleted dbs at this stage
+    all_dbs_file = "{}/dblists/all.dblist".format(args.mediawiki_config)
+    with open(all_dbs_file) as f:
         all_available_dbs = f.read().splitlines()
+    all_available_dbs.extend(config['add_to_all_dbs'])
 
-    all_available_dbs.append("centralauth")
+    # argparse will ensure we are declaring explicitly
+    dbs = all_available_dbs
     if args.databases:
-        dbs = {}
-        for db in args.databases:
-            if db in all_available_dbs:
-                dbs[db] = {}
-            else:
-                logging.info(
-                    "Ignoring database {} which doesn't appear to exist."
-                    .format(db)
-                )
+        dbs = [db for db in args.databases if db in all_available_dbs]
 
-        if not len(dbs.keys()):
-            logging.critical("No databases specified exist.")
-    else:
-        dbs = {db: {} for db in all_available_dbs}
+    # purge all sensitive dbs so they are never attempted
+    allowed_dbs = dbs
+    for list in sensitive_db_lists:
+        path = "{}/dblists/{}.dblist".format(args.mediawiki_config, list)
+        with open(path) as file:
+            pdbs = [db for db in file.read().splitlines()]
+            allowed_dbs = [x for x in allowed_dbs if x not in pdbs]
 
-    def read_list(fname, prop, val):
-        with open("{}/dblists/{}.dblist".format(args.mediawiki_config, fname)) as f:
-            for db in f.read().splitlines():
-                if db in dbs:
-                    dbs[db][prop] = val
+    logging.debug("Removing {} dbs as sensitive".format(len(dbs) - len(allowed_dbs)))
+    if not allowed_dbs:
+        logging.error('None of the specified dbs are allowed')
+        sys.exit(1)
 
-    # Reads various .dblist files to store information about specific
-    # databases. The first line, for example, reads deleted.dblist, and for
-    # each listed database name sets dbs[db_name]["deleted"] = True
-    read_list("deleted", "deleted", True)
-    read_list("private", "private", True)
-    read_list("small", "size", 1)
-    read_list("medium", "size", 2)
-    read_list("large", "size", 3)
+    # assign all metadata from lists
+    dbs_with_metadata = {x: {} for x in allowed_dbs}
+    for list, meta in dbs_metadata.items():
+        path = "{}/dblists/{}.dblist".format(args.mediawiki_config, list)
+        with open(path) as file:
+            mdbs = [db for db in file.read().splitlines()]
+        for db in mdbs:
+            if db in dbs_with_metadata:
+                dbs_with_metadata[db].update(meta)
 
-    logging.info("Got all necessary info, starting to connect to slices")
-    for dbhost, dbport in config["slices"]:
-        do_dbhost(
-            args.dry_run,
-            args.replace_all,
-            dbhost,
-            dbport,
-            config,
-            dbs,
-            customviews
-        )
+    with dbh.cursor() as cursor:
+        cursor.execute("SET NAMES 'utf8';")
+        for db, db_info in dbs_with_metadata.items():
+            ops = SchemaOperations(args.dry_run,
+                                   args.replace_all,
+                                   db,
+                                   db_info.get('size', None),
+                                   cursor)
+            if not ops.user_exists(ops.definer):
+                logging.critical("Definer has not been created")
+                sys.exit(1)
 
-    logging.info("All done.")
+            ops.execute(config["fullviews"], customviews)
