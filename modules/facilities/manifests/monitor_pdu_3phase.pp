@@ -5,6 +5,7 @@ define facilities::monitor_pdu_3phase(
 ) {
     @monitoring::host { $title:
         ip_address => $ip,
+        exported   => false,
         group      => 'pdus',
     }
 
