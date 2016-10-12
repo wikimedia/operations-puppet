@@ -11,9 +11,9 @@ class role::ci::slave {
     system::role { 'role::ci::slave': description => 'CI slave runner' }
 
     include contint::packages
-    include role::zuul::install
-
     require contint::master_dir
+
+    class { '::zuul': }
 
     class { 'jenkins::slave':
         # Master connect to itself via the fqdn / primary IP ipaddress
