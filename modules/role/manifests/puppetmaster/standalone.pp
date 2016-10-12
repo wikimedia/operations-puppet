@@ -32,6 +32,8 @@
 # [*server_name*]
 #  Hostname for the puppetmaster. Defaults to fqdn. Is used for SSL
 #  certificates, virtualhost routing, etc
+#
+# filtertags: labs-common
 class role::puppetmaster::standalone(
     $autosign = false,
     $prevent_cherrypicks = false,
