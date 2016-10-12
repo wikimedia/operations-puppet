@@ -39,37 +39,37 @@ cache::route_table:
     eqiad: 'direct'
 cache::text::nodes:
     eqiad:
-      - '127.0.0.1'
+      - 'deployment-cache-text04.deployment-prep.eqiad.wmflabs'
 cache::upload::nodes:
     eqiad:
-      - '127.0.0.1'
+      - 'deployment-cache-upload04.deployment-prep.eqiad.wmflabs'
 cache::text::apps:
   appservers:
     route: eqiad
     backends:
       eqiad:
-        - '10.68.19.128' # deployment-mediawiki04
-        - '10.68.22.21'  # deployment-mediawiki05
+        - 'deployment-mediawiki04.deployment-prep.eqiad.wmflabs'
+        - 'deployment-mediawiki05.deployment-prep.eqiad.wmflabs'
   api:
     route: eqiad
     backends:
       eqiad:
-        - '10.68.19.128' # deployment-mediawiki04
-        - '10.68.22.21'  # deployment-mediawiki05
+        - 'deployment-mediawiki04.deployment-prep.eqiad.wmflabs'
+        - 'deployment-mediawiki05.deployment-prep.eqiad.wmflabs'
   rendering:
     route: eqiad
     backends:
       eqiad:
-        - '10.68.19.128' # deployment-mediawiki04
-        - '10.68.22.21'  # deployment-mediawiki05
+        - 'deployment-mediawiki04.deployment-prep.eqiad.wmflabs'
+        - 'deployment-mediawiki05.deployment-prep.eqiad.wmflabs'
   security_audit:
     route: eqiad
     backends:
-      eqiad: '10.68.19.241' # deployment-mediawiki06
+      eqiad: 'deployment-mediawiki06.deployment-prep.eqiad.wmflabs'
   appservers_debug:
     route: eqiad
     backends:
-      eqiad: '10.68.19.128' # deployment-mediawiki04
+      eqiad: 'deployment-mediawiki04.deployment-prep.eqiad.wmflabs'
   cxserver:
     route: eqiad
     backends:
@@ -86,11 +86,11 @@ cache::upload::apps:
   swift:
     route: eqiad
     backends:
-      eqiad: '10.68.16.96' # deployment-ms-fe01.deployment-prep.eqiad.wmflabs
+      eqiad: 'deployment-ms-fe01.deployment-prep.eqiad.wmflabs'
   swift_thumbs:
     route: eqiad
     backends:
-      eqiad: '10.68.16.96' # deployment-ms-fe01.deployment-prep.eqiad.wmflabs
+      eqiad: 'deployment-ms-fe01.deployment-prep.eqiad.wmflabs'
 role::cache::base::zero_site: 'https://zero.wikimedia.beta.wmflabs.org'
 role::cache::base::purge_host_only_upload_re: '^upload\.beta\.wmflabs\.org$'
 role::cache::base::purge_host_not_upload_re: '^(?!upload\.beta\.wmflabs\.org)'
