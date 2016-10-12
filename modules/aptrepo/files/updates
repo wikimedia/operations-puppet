@@ -63,7 +63,7 @@ Components: main>thirdparty
 UDebComponents:
 Suite: 21x
 Architectures: amd64 source
-VerifyRelease: 749D6EEC0353B12C
+VerifyRelease: 749D6EEC0353B12C|A278B781FE4B2BDA
 ListShellHook: grep-dctrl -X -S cassandra || [ $? -eq 1 ]
 
 Name: elasticsearch
