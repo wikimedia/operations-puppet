@@ -14,7 +14,7 @@
 # [*youdao_url*]
 #   Url to Youdao service.
 # [*youdao_api_key*]
-#   API key for Yandex service.
+#   API key for Youdao service.
 # [*jwt_secret*]
 #   JWT secret token.
 # [*no_proxy_list*]
