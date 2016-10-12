@@ -201,7 +201,7 @@ class role::cache::misc {
         'pybal_config' => {
             'dynamic'  => 'no',
             'type'     => 'random',
-            'backends' => keys(hiera('puppetmaster::servers')),
+            'backends' => ['puppetmaster1001.eqiad.wmnet'],
             'be_opts'  => $app_def_be_opts,
             'req_host' => 'config-master.wikimedia.org',
         },
