@@ -13,6 +13,9 @@ class role::puppet::self(
     $master = $::puppetmaster,
     $autoupdate_master = true,
 ) {
+    # Deprecate!
+    $message = 'Please do not use this role on new instances! Use https://wikitech.wikimedia.org/wiki/Standalone_puppetmaster instead'
+    notify { $message: }
     if $master != undef {
         if $master =~ /\./ {
             fail("${::puppetmaster} must be a simple hostname.  The project-specific domain will be automatically appended.")
