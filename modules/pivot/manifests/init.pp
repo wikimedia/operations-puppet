@@ -92,12 +92,20 @@ class pivot(
         source => 'puppet:///modules/pivot/pivot.profile.firejail',
     }
 
+    file { '/etc/pivot':
+        ensure => directory,
+        owner  => root,
+        group  => root,
+        mode   => '0755',
+    }
+
     file { '/etc/pivot/config.yaml':
         ensure  => present,
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
         content => template('pivot/config.yaml.erb'),
+        require => File['/etc/pivot'],
     }
 
     systemd::syslog { 'pivot':
