@@ -30,6 +30,7 @@ define facilities::monitor_pdu_service(
     @monitoring::service { $title:
         host          => $host,
         group         => 'pdus',
+        exported      => false,
         description   => $title,
         check_command => "check_snmp_generic!${passwords::nagios::snmp::pdu_snmp_pass}!${oid}!${title}!${warn_hi}!${crit_hi}",
     }

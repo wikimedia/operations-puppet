@@ -16,10 +16,10 @@ class role::icinga(
     # Forgive me for this hack while we figure out a clean way to do this.
     # This is just to unbreak icinga ASAP.
     if $::hostname == 'neon' {
-        include facilities
         include lvs::monitor
     }
 
+    include facilities
     include icinga::monitor::checkpaging
     include icinga::nsca::firewall
     include icinga::nsca::daemon
