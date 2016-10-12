@@ -1,28 +1,34 @@
 class role::labsdb::views {
 
+    package {
+        ['python3-yaml', 'python3-pymysql']:
+            ensure => present,
+            before => File['/usr/local/sbin/maintain-views'],
+    }
+
     git::clone { 'operations/mediawiki-config':
         ensure             => 'latest',
         directory          => '/usr/local/lib/mediawiki-config',
-        before             => File['/usr/local/sbin/maintain-views'],
         recurse_submodules => true,
+        before             => File['/usr/local/sbin/maintain-views'],
     }
 
-    $view_user = $passwords::mysql::maintain_views::user
-    $view_pass = $passwords::mysql::maintain_views::password
-    file { '/etc/maintain-views.json':
+    $view_user = $::passwords::mysql::maintain_views::user
+    $view_pass = $::passwords::mysql::maintain_views::password
+    file { '/etc/maintain-views.yaml':
         ensure  => file,
-        content => template('role/labsdb/maintain-views.json'),
+        content => template('role/labsdb/maintain-views.yaml'),
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
     }
 
     file { '/usr/local/sbin/maintain-views':
-        ensure => file,
-        source => 'puppet:///modules/role/labsdb/maintain-views.py',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0655',
+        ensure  => file,
+        source  => 'puppet:///modules/role/labsdb/maintain-views.py',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0655',
     }
 
     file { '/usr/local/sbin/maintain-meta_p':
