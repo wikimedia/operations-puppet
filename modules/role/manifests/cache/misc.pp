@@ -272,7 +272,7 @@ class role::cache::misc {
             'dynamic'  => 'no',
             'type'     => 'random',
             'backends' => [ 'wdqs.svc.eqiad.wmnet', ],
-            'be_opts'  => merge($app_def_be_opts, { 'probe' => 'wdqs' }),
+            'be_opts'  => $app_def_be_opts,
             'req_host' => 'query.wikidata.org',
         },
         'ores' => {
