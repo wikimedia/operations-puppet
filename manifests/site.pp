@@ -136,7 +136,7 @@ node 'analytics1027.eqiad.wmnet' {
     include base::firewall
 }
 
-# Old Analytics Query Service (now decommissioned)
+# Old Analytics Query Service (hw reclaim task: T147926)
 node /aqs100[123]\.eqiad\.wmnet/ {
     role(spare::system)
 }
