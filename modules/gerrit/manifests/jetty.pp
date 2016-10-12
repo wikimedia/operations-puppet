@@ -94,6 +94,14 @@ class gerrit::jetty(
         require => File['/var/lib/gerrit2/review_site/etc'],
     }
 
+    file { '/var/lib/gerrit2/review_site/etc/log4j.properties':
+        content => template('gerrit/log4j.properties.erb'),
+        owner   => 'gerrit2',
+        group   => 'gerrit2',
+        mode    => '0660',
+        require => File['/var/lib/gerrit2/review_site/etc'],
+    }
+
     if $ssh_host_key != undef {
         file { '/var/lib/gerrit2/review_site/etc/ssh_host_key':
             content => secret("gerrit/${ssh_host_key}"),
@@ -145,8 +153,11 @@ class gerrit::jetty(
 
     service { 'gerrit':
         ensure    => running,
-        subscribe => [File['/var/lib/gerrit2/review_site/etc/gerrit.config'],
-                    File['/var/lib/gerrit2/review_site/etc/secure.config']],
+        subscribe => [
+            File['/var/lib/gerrit2/review_site/etc/gerrit.config'],
+            File['/var/lib/gerrit2/review_site/etc/secure.config'],
+            File['/var/lib/gerrit2/review_site/etc/log4j.properties']
+        ],
         enable    => true,
         hasstatus => false,
         status    => '/etc/init.d/gerrit check',
