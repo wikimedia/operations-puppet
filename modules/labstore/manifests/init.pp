@@ -14,6 +14,14 @@ class labstore {
     $ldapincludes = ['openldap', 'nss', 'utils']
     class { 'ldap::role::client::labs': ldapincludes => $ldapincludes }
 
+    file { '/usr/local/sbin/snapshot-manager':
+        ensure => present,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+        source => 'puppet:///modules/labstore/snapshot-manager.py',
+    }
+
     file { '/usr/local/sbin/set-stripe-cache':
         ensure => present,
         owner  => 'root',
