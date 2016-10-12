@@ -37,10 +37,7 @@ define thumbor::instance
         ensure   => running,
         provider => 'systemd',
         enable   => true,
-        require  => File[
-            $instance_service_path,
-            "/srv/thumbor/tmp/thumbor@${port}"
-        ],
+        require  => File[$instance_service_path],
     }
 
     nrpe::monitor_systemd_unit_state{ "thumbor@${port}":
