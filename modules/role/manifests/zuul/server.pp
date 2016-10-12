@@ -2,7 +2,6 @@ class role::zuul::server {
     system::role { 'role::zuul::server': description => 'Zuul server (scheduler)' }
 
     include contint::proxy_zuul
-    include ::role::zuul::install
     include ::zuul::monitoring::server
 
     # Zuul server needs an API key to interact with Jenkins:

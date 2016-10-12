@@ -6,7 +6,7 @@ class role::ci::slave::browsertests {
     }
 
     include role::ci::slave::labs::common
-    include role::zuul::install
+    include ::zuul
     include contint::browsertests
 
     # For CirrusSearch testing:

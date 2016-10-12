@@ -38,7 +38,7 @@ class role::ci::slave::labs {
     include contint::php
 
     include role::ci::slave::labs::common
-    include role::zuul::install
+    include ::zuul
 
     if os_version('ubuntu >= trusty || debian >= jessie') {
         include role::ci::slave::localbrowser

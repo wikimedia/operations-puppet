@@ -11,5 +11,5 @@ class role::ci::website {
     # Needed at least for the jenkins-slave user
     require ::role::ci::slave
 
-    include contint::website
+    class { 'contint::website': }
 }

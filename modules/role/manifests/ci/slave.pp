@@ -11,7 +11,7 @@ class role::ci::slave {
     system::role { 'role::ci::slave': description => 'CI slave runner' }
 
     include contint::packages
-    include role::zuul::install
+    include ::zuul
 
     require contint::master_dir
 
