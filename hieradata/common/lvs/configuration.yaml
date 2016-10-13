@@ -1036,3 +1036,8 @@ lvs::configuration::lvs_services:
     conftool:
       cluster: kibana
       service: kibana
+    icinga:
+      check_command: check_http_on_port!80
+      sites:
+        eqiad:
+          hostname: kibana.svc.eqiad.wmnet
