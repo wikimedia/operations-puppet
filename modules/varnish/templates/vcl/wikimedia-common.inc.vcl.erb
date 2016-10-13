@@ -91,14 +91,6 @@ probe varnish {
 	.threshold = 2;
 }
 
-probe logstash {
-	.url = "/status";
-	.interval = 5s;
-	.timeout = 1s;
-	.window = 5;
-	.threshold = 3;
-}
-
 <%
 # Directors / Backends
 

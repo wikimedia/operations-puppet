@@ -260,12 +260,8 @@ class role::cache::misc {
         'logstash_director' => {
             'dynamic'  => 'no',
             'type'     => 'random',
-            'backends' => [
-                'logstash1001.eqiad.wmnet',
-                'logstash1002.eqiad.wmnet',
-                'logstash1003.eqiad.wmnet',
-            ],
-            'be_opts'  => merge($app_def_be_opts, { 'probe' => 'logstash' }),
+            'backends' => [ 'kibana.svc.eqiad.wmnet', ],
+            'be_opts'  => $app_def_be_opts,
             'req_host' => 'logstash.wikimedia.org',
         },
         'wdqs_director' => {
