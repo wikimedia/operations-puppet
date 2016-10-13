@@ -1,0 +1,8 @@
+Verified+2: jenkins-bot
+Code-Review+1: Zppix <Megadev44s.mail@gmail.com>
+Code-Review+2: Jcrespo <jcrespo@wikimedia.org>
+Submitted-by: Jcrespo <jcrespo@wikimedia.org>
+Submitted-at: Thu, 13 Oct 2016 18:46:14 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/315718
+Project: operations/puppet
+Branch: refs/heads/production
