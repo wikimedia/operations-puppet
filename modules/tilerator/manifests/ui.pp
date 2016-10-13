@@ -59,6 +59,9 @@
 #   if tile is empty, make sure we don't store it, if it was there before
 #   used in Tilerator notification
 #
+# [*osmosis_dir*]
+#   directory in which osmosis keeps its state
+#
 class tilerator::ui(
     $port           = 6535,
     $conf_sources   = 'sources.prod.yaml',
@@ -69,6 +72,7 @@ class tilerator::ui(
     $generator_id   = 'gen',
     $storage_id     = 'v3',
     $delete_empty   = true,
+    $osmosis_dir    = '/srv/osmosis',
     $expire_dir     = '/srv/osm_expire/',
 ) {
     $statefile = "${statefile_dir}/expire.state"

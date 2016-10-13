@@ -1,17 +1,18 @@
 #!/bin/bash
 
-/usr/bin/nodejs /srv/deployment/tilerator/deploy/src/scripts/tileshell.js \
-    --config /etc/tileratorui/config.yaml \
-    -j.fromZoom <%= @from_zoom %> \
-    -j.beforeZoom <%= @before_zoom %> \
-    -j.generatorId <%= @generator_id %> \
-    -j.storageId <%= @storage_id %> \
+/usr/bin/flock -xn <%= @osmosis_dir %>/replicate-osm.lck \
+    /usr/bin/nodejs /srv/deployment/tilerator/deploy/src/scripts/tileshell.js \
+        --config /etc/tileratorui/config.yaml \
+        -j.fromZoom <%= @from_zoom %> \
+        -j.beforeZoom <%= @before_zoom %> \
+        -j.generatorId <%= @generator_id %> \
+        -j.storageId <%= @storage_id %> \
 <%- if @delete_empty -%>
-    -j.deleteEmpty \
+        -j.deleteEmpty \
 <%- end -%>
-    -j.expdirpath <%= @expire_dir %> \
-    -j.expmask 'expire\.list\.*' \
-    -j.statefile <%= @statefile %>
+        -j.expdirpath <%= @expire_dir %> \
+        -j.expmask 'expire\.list\.*' \
+        -j.statefile <%= @statefile %>
 
 notification_code=$?
 
