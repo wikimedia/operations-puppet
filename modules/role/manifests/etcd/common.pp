@@ -39,7 +39,9 @@ class role::etcd::common {
     # Backup
     if $do_backup {
         # Back up etcd
-        require etcd::backup
+        class { '::etcd::backup':
+            cluster_name => $cluster_name,
+        }
         include role::backup::host
         backup::set { 'etcd': }
     }
