@@ -62,6 +62,6 @@ class role::labs::nfs::secondary($monitor = 'eth0') {
     }
 
     class { 'labstore::monitoring::drbd':
-        role  => $drbd_role,
+        drbd_role  => $drbd_role,
     }
 }
