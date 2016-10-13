@@ -1,4 +1,23 @@
-class jenkins {
+# == Class jenkins
+#
+# Set up a basic Jenkins master instance for CI.
+#
+# == Parameters:
+#
+# [*service_ensure*]
+#
+# Passed to Puppet Service['jenkins']. If set to 'unmanaged', pass undef to
+# prevent Puppet from managing the service. Default: 'running'.
+#
+# [*service_enable*]
+#
+# Passed to Puppet Service['jenkins'] as 'enable'. Default: true.
+#
+class jenkins(
+    $service_ensure  = 'running',
+    $service_enable = true,
+)
+{
     require jenkins::user
     require jenkins::group
 
@@ -43,9 +62,13 @@ class jenkins {
         ensure => absent,
     }
 
+    $real_ensure = $service_ensure ? {
+        'unmanaged' => undef,
+        default     => $service_ensure,
+    }
     service { 'jenkins':
-        ensure     => 'running',
-        enable     => true,
+        ensure     => $real_ensure,
+        enable     => $service_enable,
         hasrestart => true,
         # Better have umask properly set before starting
         require    => File['/var/lib/jenkins/.daemonrc'],
