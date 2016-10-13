@@ -33,7 +33,7 @@ TOOLS_PREFIX_CLASSIFIER = {
     'grid-master': 'grid-master',
     'grid-shadow': 'grid-shadow',
     'mail': 'mail',
-    'web-static-': 'static',
+    'static-': 'static',
     'worker': 'k8s-worker',
     'k8s-master': 'k8s-master',
     'flannel-etcd': 'flannel-etcd',
