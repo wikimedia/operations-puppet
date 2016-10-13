@@ -14,7 +14,7 @@
   RewriteEngine on
 <%- if @require_ssl -%>
   RewriteCond %{HTTP:X-Forwarded-Proto} !https
-  RewriteCond %{REQUEST_URI} !^/status$
+  RewriteCond %{REQUEST_URI} !^/api/status$
   RewriteRule ^/(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,E=ProtoRedirect]
   Header always merge Vary X-Forwarded-Proto env=ProtoRedirect
 <%- end -%>
@@ -42,7 +42,7 @@
   # Expose the status api without authenticating
   # Due to varnish frontend, all requests are seen by Apache as being internal
   # so using IP ranges is not any more restrictive than "all"
-  <Location /status>
+  <Location /api/status>
     Require all granted
   </Location>
 

@@ -1036,3 +1036,8 @@ lvs::configuration::lvs_services:
     conftool:
       cluster: logstash
       service: kibana
+    icinga:
+      check_command: "check_http_lvs_on_port!kibana.svc.%{::site}.wmnet!80!/api/status"
+      sites:
+        eqiad:
+          hostname: kibana.svc.eqiad.wmnet
