@@ -43,6 +43,8 @@ class contint::packages::php {
             'php7.0-bcmath',
             'php7.0-mbstring',
             'php7.0-xml',
+            # for phan (T132636)
+            'php7.0-ast',
             ]:
             ensure  => latest,
             require => Apt::Repository['sury-php'],
