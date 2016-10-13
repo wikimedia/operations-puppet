@@ -6,3 +6,6 @@ ssh::server::disable_nist_kex: false
 ssh::server::explicit_macs: false
 cluster: misc
 contactgroups: 'admins,contint'
+
+jenkins::service_ensure: stopped
+jenkins::service_enable: false
