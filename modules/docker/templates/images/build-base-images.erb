@@ -7,3 +7,9 @@
 
 # Push it to the repository
 docker push <%= @docker_registry %>/wikimedia-jessie
+
+# Build ubuntu trusty base image!
+/usr/share/docker-engine/contrib/mkimage-debootstrap.sh <%= @docker_registry %>/wikimedia-trusty trusty  http://ubuntu.wikimedia.org/ubuntu/
+
+# Push it to the repo
+docker push <%= @docker_registry %>/wikimedia-trusty
