@@ -211,6 +211,12 @@ def certs_fetch_ocsp(out_temp, args):
         raise Exception("Did not find verification OK in stderr:\n%s" %
                         (ocsp_err))
 
+    # Check the response says successful rather than revoked
+    if not re.search('^\s*OCSP Response Status: successful \(0x0\)$',
+                     ocsp_text, re.M):
+        raise Exception("OCSP Response Status not successful:\n%s" %
+                        (ocsp_text))
+
     now_dt = datetime.datetime.utcnow()
 
     # This starts out based on min_cert, then is raised to the greater
