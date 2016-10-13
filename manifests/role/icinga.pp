@@ -33,6 +33,7 @@ class role::icinga(
     include icinga::monitor::gsb
     include icinga::monitor::commons
     include icinga::monitor::elasticsearch
+    include icinga::monitor::wdqs
 
     include role::authdns::monitoring
     include netops::monitoring
