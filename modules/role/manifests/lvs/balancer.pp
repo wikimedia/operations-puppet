@@ -45,6 +45,7 @@ class role::lvs::balancer {
             $sip['thumbor'][$::site],
             $sip['prometheus'][$::site],
             $sip['wdqs'][$::site],
+            $sip['kibana'][$::site],
             ],
 
         # codfw (should mirror eqiad above, eventually, and become merged with it via regex
