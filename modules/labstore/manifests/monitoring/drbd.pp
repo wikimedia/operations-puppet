@@ -22,7 +22,7 @@ class labstore::monitoring::drbd($drbd_role, $resource = 'all') {
 
     nrpe::monitor_service { 'check_drbd_status':
         description  => 'Check status of DRBD node',
-        nrpe_command => "/usr/bin/sudo /usr/local/sbin/check_drbd_status ${resource} ${drbd_role}",
+        nrpe_command => "/usr/bin/sudo /usr/local/sbin/check_drbd_status ${resource}",
         require      => File['/usr/local/sbin/check_drbd_status'],
     }
 
