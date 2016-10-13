@@ -15,9 +15,6 @@
 #
 # This will run it on all the k8s-workers, collect the output
 # from them all (the -b option), dedupes them and displays them. You can specify fanout with -f - the default is 16.
-#
-# Right now the user has no sudo rights, but this will probably
-# change!
 class role::toollabs::clush::master {
     class { '::clush::master':
         username => 'clushuser',
@@ -75,5 +72,11 @@ class role::toollabs::clush::master {
         group   => 'root',
         mode    => '0444',
         content => ini($groups_config),
+    }
+
+    # Give it complete sudo rights
+    sudo::user { 'clushuser':
+        ensure     => present,
+        privileges => 'ALL = (ALL) NOPASSWD: ALL',
     }
 }
