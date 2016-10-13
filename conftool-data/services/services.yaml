@@ -159,3 +159,11 @@ wdqs:
     default_values:
       pooled: 'no'
       weight: 10
+logstash:
+  kibana:
+    port: 80
+    datacenters:
+    - eqiad
+    default_values:
+      pooled: 'no'
+      weight: 10
