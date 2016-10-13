@@ -21,29 +21,28 @@ Usage: dstat --varnishstat
 
 import os
 
-counters = (
-    ("fe-n_object", "f_nobj"),
-    ("fe-n_lru_nuked", "f_nlru"),
-    ("fe-backend_fail", "f_bfail"),
-    ("be-n_object", "b_nobj"),
-    ("be-n_lru_nuked", "b_nlru"),
-    ("be-backend_fail", "b_bfail"),
-    ("fe-threads", "f_thr"),
-    ("fe-threads_created", "f_thc"),
-    ("be-threads", "b_thr"),
-    ("be-threads_created", "b_thc"),
-    ("fe-exp-lag", "f_exlag"),
-    ("be-exp-lag", "b_exlag"),
-)
-
 
 class dstat_plugin(dstat):  # noqa F821 undefined name 'dstat'
 
+    COUNTERS = (
+        ("fe-n_object", "f_nobj"),
+        ("fe-n_lru_nuked", "f_nlru"),
+        ("fe-backend_fail", "f_bfail"),
+        ("be-n_object", "b_nobj"),
+        ("be-n_lru_nuked", "b_nlru"),
+        ("be-backend_fail", "b_bfail"),
+        ("fe-threads", "f_thr"),
+        ("fe-threads_created", "f_thc"),
+        ("be-threads", "b_thr"),
+        ("be-threads_created", "b_thc"),
+        ("fe-exp-lag", "f_exlag"),
+        ("be-exp-lag", "b_exlag"),
+    )
+
     def __init__(self):
-        global counters
         self.name = "varnishstat"
-        self.vars = [i[0] for i in counters]
-        self.nick = [i[1] for i in counters]
+        self.vars = [i[0] for i in self.COUNTERS]
+        self.nick = [i[1] for i in self.COUNTERS]
         self.type = "d"
 
     def check(self):
