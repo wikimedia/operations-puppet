@@ -5,6 +5,14 @@
 
 class labstore::monitoring::drbd($drbd_role, $resource = 'all') {
 
+    sudo::user { 'nagios_check_drbd':
+        user       => 'nagios',
+        privileges => [
+                      'ALL = NOPASSWD: /usr/local/sbin/check_drbd_status',
+                      'ALL = NOPASSWD: /usr/local/sbin/check_drbd_role',
+                      ],
+    }
+
     file { '/usr/local/sbin/check_drbd_status':
         source => 'puppet:///modules/labstore/monitor/check_drbd_status',
         mode   => '0755',
@@ -12,9 +20,9 @@ class labstore::monitoring::drbd($drbd_role, $resource = 'all') {
         group  => 'root',
     }
 
-    nrpe::monitor_service { 'check-drbd-status':
+    nrpe::monitor_service { 'check_drbd_status':
         description  => 'Check status of DRBD node',
-        nrpe_command => "/usr/local/sbin/check_drbd_status ${resource} ${drbd_role}",
+        nrpe_command => "/usr/bin/sudo /usr/local/sbin/check_drbd_status ${resource} ${drbd_role}",
         require      => File['/usr/local/sbin/check_drbd_status'],
     }
 
@@ -26,8 +34,8 @@ class labstore::monitoring::drbd($drbd_role, $resource = 'all') {
     }
 
     nrpe::monitor_service { 'check_drbd_role':
-        description  => 'Check status of DRBD node',
-        nrpe_command => "/usr/local/sbin/check_drbd_role ${::hostname} ${drbd_role}",
+        description  => 'Check DRBD role',
+        nrpe_command => "/usr/bin/sudo /usr/local/sbin/check_drbd_role ${::hostname} ${drbd_role}",
         require      => File['/usr/local/sbin/check_drbd_role'],
     }
 
