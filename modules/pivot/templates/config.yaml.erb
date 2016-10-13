@@ -39,6 +39,7 @@ clusters:
 dataCubes:
   - name: pageviews-daily
     title: Pageviews Daily
+    description: Small dataset - Starting July 2015 - Daily resolution - Monthly loading
     clusterName: druid
     source: pageviews-daily
     # The refresh rule describes how often the data cube looks for new data. Default: 'query'/PT1M (every minute)
@@ -70,6 +71,7 @@ dataCubes:
 
   - name: edit-history-test
     title: Edit History test
+    description: WIP - Don't use for now (probably broken anyway)
     clusterName: druid
     source: edit-history-test
     # The refresh rule describes how often the data cube looks for new data.
@@ -102,6 +104,7 @@ dataCubes:
 
   - name: pageviews-hourly
     title: Pageviews Hourly
+    description: Large dataset - Last 3 months - Hourly resolution - Daily loading
     clusterName: druid
     source: pageviews-hourly
     # The refresh rule describes how often the data cube looks for new data.
