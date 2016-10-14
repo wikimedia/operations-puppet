@@ -2563,7 +2563,6 @@ node 'rhenium.wikimedia.org' {
 # people.wikimedia.org, for all shell users
 node 'rutherfordium.eqiad.wmnet' {
     role(microsites::peopleweb, backup::host)
-    include base::firewall
 }
 
 # ruthenium is a parsoid regression test server

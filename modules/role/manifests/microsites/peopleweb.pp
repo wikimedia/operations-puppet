@@ -2,6 +2,7 @@
 class role::microsites::peopleweb {
 
     include standard
+    include base::firewall
 
     class { '::publichtml':
         sitename     => 'people.wikimedia.org',
