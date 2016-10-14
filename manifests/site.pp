@@ -1085,12 +1085,7 @@ node 'eventlog2001.codfw.wmnet' {
 # virtual machine for mailman list server
 node 'fermium.wikimedia.org' {
     role(lists::server)
-    include standard
-    include admin
-
-    interface::add_ip6_mapped { 'main':
-        interface => 'eth0',
-    }
+    interface::add_ip6_mapped { 'main': }
 }
 
 node 'fluorine.eqiad.wmnet' {
