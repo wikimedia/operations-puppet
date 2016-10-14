@@ -19,7 +19,7 @@ define conftool::scripts::service(
     $lvs_config = $lvs_services_config[$lvs_name]
 
     $service = $lvs_config['conftool']['service']
-    $port = $lvs_config['port']
+    $port = pick($lvs_config['port'], 80)
     $hostnames = $lvs_class_hosts[$lvs_config['class']]
     $lvs_ips = inline_template(
         "<%= @hostnames.map{|h| scope.function_ipresolve([h])}.join(',') %>")
