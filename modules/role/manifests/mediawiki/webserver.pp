@@ -26,6 +26,19 @@ class role::mediawiki::webserver($pool) {
             lvs_class_hosts     => $lvs::configuration::lvs_class_hosts,
             lvs_services_config => $lvs::configuration::lvs_services
         }
+
+        # Restart HHVM if it is running since more than 3 days.
+        # This should prevent a series of cpu usage surges we've been seeing
+        # on long-running HHVM processes. T147773
+        $conftool_config = $lvs::configuration::lvs_services['conftool']
+        $site_nodes = loadyaml("conftool-data/nodes/${::site}.yaml")
+        $pool_nodes = keys($site_nodes[$conftool_config['cluster']])
+        $times = cron_splay($pool_nodes, 'daily', 'hhvm-conditional-restarts')
+        cron { 'hhvm-conditional-restart':
+            command => '(( $(ps -C hhvm -o etimes= | head -n 1 ) > 259200 )) && /usr/local/bin/run-no-puppet /usr/local/bin/restart-hhvm > /dev/null',
+            hour    => $times['hour'],
+            minute  => $times['minute'],
+        }
     }
 
     ferm::service { 'mediawiki-http':
