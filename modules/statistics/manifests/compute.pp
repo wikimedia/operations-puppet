@@ -25,12 +25,9 @@ class statistics::compute {
         'mercurial',
         'tofrodos',
         'git-review',
-        # halfak wants make to manage dependencies
-        'make',
-        # for checking up on eventlogging
-        'zpubsub',
-        # libwww-perl for wikistats stuff
-        'libwww-perl',
+        'make', # halfak wants make to manage dependencies
+        'zpubsub', # For checking up on eventlogging
+        'libwww-perl', # For wikistats stuff
         'php5-cli',
         'php5-curl',
         'php5-mysql',
@@ -38,7 +35,7 @@ class statistics::compute {
         'libgdal1-dev', # Requested by lzia for rgdal
         'libproj-dev', # Requested by lzia for rgdal
         'libbz2-dev', # for compiling some python libs. T84378
-        'libboost-regex-dev',  # Ironholds wants these
+        'libboost-regex-dev', # Ironholds wants these
         'libboost-system-dev',
         'libyaml-cpp0.3',
         'libyaml-cpp0.3-dev',
@@ -47,7 +44,12 @@ class statistics::compute {
         'libmaxminddb-dev',
         'build-essential', # Requested by halfak to install SciPy
         'nodejs',
-        'openjdk-7-jdk'
+        'openjdk-7-jdk',
+        'g++-4.8',         # Requested by bearloga (Mikhail) to ensure that there is a compiler with C++11 support that can compile R package 'Boom'; see T147682 and http://stackoverflow.com/a/36034866/1091835 for more info
+        # GNU Scientific Library (GSL) requested by bearloga (Mikhail)
+        'libgsl0ldbl',     # GSL part 1/3
+        'gsl-bin',         # GSL part 2/3
+        'libgsl0-dev'      # GSL part 3/3
     ])
 
     # Python packages
@@ -78,6 +80,7 @@ class statistics::compute {
     # FORTRAN packages (T89414)
     ensure_packages([
         'gfortran',        # GNU Fortran 95 compiler
+        'gfortran-4.8',    # Requested by bearloga (Mikhail); see T147682 and http://stackoverflow.com/a/36034866/1091835 for more info
         'liblapack-dev',   # FORTRAN library of linear algebra routines
         'libopenblas-dev', # Optimized BLAS (linear algebra) library
     ])
@@ -86,11 +89,17 @@ class statistics::compute {
     ensure_packages([
         'ploticus',
         'libploticus0',
-        'r-base',
-        'r-cran-rmysql',
         'libcairo2',
         'libcairo2-dev',
         'libxt-dev'
+    ])
+
+    # R packages
+    ensure_packages([
+        'r-base',
+        'r-base-dev',      # Needed for R packages that have to compile C++ code; see T147682
+        'r-cran-rmysql',
+        'r-recommended'    # CRAN-recommended packages (e.g. MASS, Matrix, boot)
     ])
 
     # spell checker/dictionary packages for research (halfak)
