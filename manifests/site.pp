@@ -249,7 +249,6 @@ node 'carbon.wikimedia.org' {
 # cerium, praseodymium and xenon are Cassandra test hosts
 node /^(cerium|praseodymium|xenon)\.eqiad\.wmnet$/ {
     role(restbase::server, cassandra, prometheus::node_exporter)
-    include standard
 }
 
 # DNS recursor
@@ -2522,19 +2521,16 @@ node /^relforge100[1-2]\.eqiad\.wmnet/ {
 # restbase eqiad cluster
 node /^restbase10[01][0-9]\.eqiad\.wmnet$/ {
     role(restbase::server, cassandra)
-    include standard
 }
 
 # restbase codfw cluster
 node /^restbase200[1-9]\.codfw\.wmnet$/ {
     role(restbase::server, cassandra)
-    include standard
 }
 
 # cassandra multi-dc temporary test T111382
 node /^restbase-test200[1-3]\.codfw\.wmnet$/ {
     role(restbase::server, cassandra)
-    include standard
 }
 
 # network insights (netflow/pmacct, etc.)
