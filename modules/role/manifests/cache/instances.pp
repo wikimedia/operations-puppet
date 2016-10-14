@@ -70,7 +70,7 @@ define role::cache::instances (
     # the production conditional is sad (vs using hiera), but I
     # don't know of a better way to factor this out at the moment,
     # and it may all change later...
-    if $::realm != 'production' {
+    if $::realm != 'production' or $::hostname == 'cp1008' {
         $becaches_filtered = hash_deselect_re('^cache_codfw', $backend_caches)
     } else {
         $becaches_filtered = $backend_caches
