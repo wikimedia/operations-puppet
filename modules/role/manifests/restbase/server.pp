@@ -5,6 +5,7 @@ class role::restbase::server {
 
     include ::passwords::cassandra
     include base::firewall
+    include standard
 
     include ::restbase
     include ::restbase::monitoring
