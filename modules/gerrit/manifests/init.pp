@@ -19,9 +19,9 @@ class gerrit($host = undef, $master_host = $::fqdn) {
         class { 'gerrit::proxy':
             require => Class['gerrit::jetty'],
         }
-    }
 
-    class { 'gerrit::crons':
-        require => Class['gerrit::jetty'],
+        class { 'gerrit::crons':
+            require => Class['gerrit::jetty'],
+        }
     }
 }
