@@ -1923,32 +1923,26 @@ node 'maerlant.wikimedia.org' {
 
 node 'maps-test2001.codfw.wmnet' {
     role(maps::server, maps::master, prometheus::node_exporter)
-    include base::firewall
 }
 
 node /^maps-test200[2-4]\.codfw\.wmnet/ {
     role(maps::server, maps::slave, prometheus::node_exporter)
-    include base::firewall
 }
 
 node 'maps1001.eqiad.wmnet' {
     role(maps::server, maps::master)
-    include base::firewall
 }
 
 node /^maps100[2-4]\.eqiad\.wmnet/ {
     role(maps::server, maps::slave)
-    include base::firewall
 }
 
 node 'maps2001.codfw.wmnet' {
     role(maps::server, maps::master)
-    include base::firewall
 }
 
 node /^maps200[2-4]\.codfw\.wmnet/ {
     role(maps::server, maps::slave)
-    include base::firewall
 }
 
 node /^mc(10[01][0-9])\.eqiad\.wmnet/ {
