@@ -1,0 +1,5 @@
+#!/bin/bash
+set -e
+/usr/local/bin/depool-<%= @title %>
+/usr/sbin/service '<%= @title %>' restart
+/usr/local/bin/pool-<%= @title %>

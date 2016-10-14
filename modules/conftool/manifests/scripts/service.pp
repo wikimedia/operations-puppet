@@ -18,7 +18,7 @@ define conftool::scripts::service(
     require ::conftool::scripts
     $lvs_config = $lvs_services_config[$lvs_name]
 
-    $service = $lvs_config['service']
+    $service = $lvs_config['conftool']['service']
     $port = $lvs_config['port']
     $hostnames = $lvs_class_hosts[$lvs_config['class']]
     $lvs_ips = inline_template(
@@ -37,6 +37,14 @@ define conftool::scripts::service(
         group   => 'root',
         mode    => '0555',
         content => template('conftool/depool-service.erb'),
+    }
+
+    file { "/usr/local/bin/restart-${title}":
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0555',
+        content => template('conftool/restart-service.erb'),
     }
 
 }

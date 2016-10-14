@@ -19,7 +19,13 @@ class role::mediawiki::webserver($pool) {
             realserver_ips => $ips,
         }
 
+        # Conftool config
         include ::mediawiki::conftool
+        conftool::scripts::service { 'hhvm':
+            lvs_name            => $pool,
+            lvs_class_hosts     => $lvs::configuration::lvs_class_hosts,
+            lvs_services_config => $lvs::configuration::lvs_services
+        }
     }
 
     ferm::service { 'mediawiki-http':
