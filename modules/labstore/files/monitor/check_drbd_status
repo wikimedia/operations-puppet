@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 import argparse
+import os
 import re
 import subprocess
 import sys
@@ -22,7 +23,7 @@ def parse_drbd_overview():
 
     # Read contents of drbd-overview and split by new lines
     drbd_overview_raw = str(subprocess.check_output(
-        ['drbd-overview']), 'utf-8').rstrip('\n').split('\n')
+        ['/usr/sbin/drbd-overview']), 'utf-8').rstrip('\n').split('\n')
 
     # Split each line into a list - making a nested list, remove empty elements
     # and strip whitespaces in the rest
@@ -67,6 +68,10 @@ def check_resource(resource, resource_status):
 
 
 def main():
+    if not os.geteuid() == 0:
+        print('Script not run as root')
+        sys.exit(1)
+
     parser = argparse.ArgumentParser('Check DRBD Status')
     parser.add_argument('resource',
                         help='Name of resource or \'all\'')
@@ -82,6 +87,7 @@ def main():
             args.resource, resource_status_map[args.resource]):
         sys.exit(1)
 
+    print('DRBD Status OK')
 
 if __name__ == '__main__':
     main()

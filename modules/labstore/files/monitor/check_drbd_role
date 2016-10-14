@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 import argparse
+import os
 import subprocess
 import sys
 
@@ -11,7 +12,7 @@ def check_role(node, expected_role):
     :returns: boolean
     """
     drbd_res_roles = str(
-        subprocess.check_output(['drbdadm', 'role', 'all']), 'utf-8')\
+        subprocess.check_output(['/sbin/drbdadm', 'role', 'all']), 'utf-8')\
         .rstrip('\n').split('\n')
     if expected_role == 'primary':
         role_ok = all([role == 'Primary/Secondary' for role in drbd_res_roles])
@@ -26,6 +27,10 @@ def check_role(node, expected_role):
 
 
 def main():
+    if not os.geteuid() == 0:
+        print('Script not run as root')
+        sys.exit(1)
+
     parser = argparse.ArgumentParser('Check DRBD node role')
     parser.add_argument('node', help='Hostname of node being checked')
     parser.add_argument('role', help='Expected drbd role, primary|secondary')
@@ -33,6 +38,8 @@ def main():
 
     if not check_role(args.node, args.role):
         sys.exit(1)
+
+    print('DRBD role OK')
 
 if __name__ == '__main__':
     main()
