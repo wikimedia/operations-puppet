@@ -2823,9 +2823,6 @@ node 'tungsten.eqiad.wmnet' {
 node 'ununpentium.wikimedia.org' {
     role(requesttracker::server)
 
-    include standard
-    include base::firewall
-
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
     }
