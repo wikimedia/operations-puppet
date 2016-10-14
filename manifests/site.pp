@@ -1386,6 +1386,11 @@ node 'krypton.eqiad.wmnet' {
     include standard
 }
 
+node /kubernetes100[1-4].eqiad.wmnet/ {
+#    role(kubernetes::worker)
+    include standard
+}
+
 node 'labcontrol1001.wikimedia.org' {
     role(labs::openstack::nova::controller,
           labs::puppetmaster,
