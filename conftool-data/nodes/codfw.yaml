@@ -256,6 +256,8 @@ restbase:
 sca:
   sca2001.codfw.wmnet: [zotero]
   sca2002.codfw.wmnet: [zotero]
+  sca2003.codfw.wmnet: [zotero]
+  sca2004.codfw.wmnet: [zotero]
 scb:
   scb2001.codfw.wmnet: [mobileapps, mathoid, graphoid, citoid, apertium, cxserver, ores]
   scb2002.codfw.wmnet: [mobileapps, mathoid, graphoid, citoid, apertium, cxserver, ores]
