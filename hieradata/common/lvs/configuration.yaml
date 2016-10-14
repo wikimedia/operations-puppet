@@ -52,7 +52,6 @@ lvs::configuration::lvs_service_ips:
     codfw: 10.2.1.27
   dns_rec: &ip_block005
     eqiad:
-      dns_rec_old: 208.80.154.239
       dns_rec: 208.80.154.254
       dns_rec6: 2620:0:861:ed1a::3:fe
     codfw:
