@@ -228,8 +228,6 @@ node 'carbon.wikimedia.org' {
         interface => 'eth0',
     }
 
-    include standard
-
     class { 'ganglia::monitor::aggregator':
         sites =>  'eqiad',
     }
@@ -1312,8 +1310,6 @@ node 'install1001.wikimedia.org' {
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
     }
-
-    include standard
 }
 
 node 'install2001.wikimedia.org' {
@@ -1323,8 +1319,6 @@ node 'install2001.wikimedia.org' {
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
     }
-
-    include standard
 
     class { 'ganglia::monitor::aggregator':
         sites =>  'codfw',
