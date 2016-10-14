@@ -1,4 +1,0 @@
-#!/bin/bash
-puppet-merge() {
-    ssh palladium -t -- 'sudo puppet-merge'
-}
