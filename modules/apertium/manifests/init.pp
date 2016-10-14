@@ -24,7 +24,7 @@ class apertium(
 
     $log_dir = "${::service::configuration::log_dir}/apertium"
 
-    $base_packages = [
+    $packages = [
         'apertium',
         'apertium-af-nl',
         'apertium-apy',
@@ -76,15 +76,7 @@ class apertium(
         'apertium-urd-hin',
         'cg3',
         'hfst',
-        'lttoolbox'
-    ]
-    $trusty_packages = [
-        'apertium-es-an',
-        'apertium-fr-ca',
-        'apertium-mkd',
-        'apertium-sv-da',
-    ]
-    $jessie_packages = [
+        'lttoolbox',
         'apertium-arg',
         'apertium-arg-cat',
         'apertium-cat',
@@ -102,14 +94,6 @@ class apertium(
         'giella-core',
         'giella-sme',
     ]
-
-    if os_version('ubuntu >= trusty') {
-        $packages = concat($base_packages, $trusty_packages)
-    } elsif os_version('debian >= jessie') {
-        $packages = concat($base_packages, $jessie_packages)
-    } else {
-        $packages = $base_packages  # Should never reach this but anyway
-    }
 
     package { $packages:
         ensure => present,
