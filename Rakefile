@@ -1,9 +1,11 @@
 # This rakefile is meant to trigger your local puppet-linter. To take
-# advantage of that powerful linter, you must have the puppet and
-# puppet-lint gems:
+# advantage of that powerful linter, you must have the puppet,
+# puppet-lint, rake (currently 10.4.2), bundler, and rubocop gems:
 #
 #   $ sudo gem install puppet
 #   $ sudo gem install puppet-lint
+#   $ sudo gem install rake -v 10.4.2
+#   $ sudo gem install bundler rubocop
 #
 # Then run the linter using rake (a ruby build helper):
 #
