@@ -9,8 +9,6 @@
 #
 class zuul ( ){
 
-    include zuul::user
-
     package { 'zuul':
         ensure => present,
     }
