@@ -42,7 +42,7 @@ class role::ci::slave::labs {
     class { '::zuul': }
 
     if os_version('ubuntu >= trusty || debian >= jessie') {
-        include role::ci::slave::localbrowser
+        include contint::browsers
 
         class { 'role::ci::slave::browsertests':
             require => [
