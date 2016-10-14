@@ -13,7 +13,7 @@ class role::puppetmaster::frontend {
 
     # Puppet frontends are git masters at least for their datacenter
 
-    $ca_server = hiera('puppetmaster::ca_server', 'palladium.eqiad.wmnet')
+    $ca_server = hiera('puppetmaster::ca_server', 'puppetmaster1001.eqiad.wmnet')
 
     if $ca_server == $::fqdn {
         $ca = true

@@ -7,7 +7,7 @@ class role::puppetmaster::backend {
         description => 'Puppetmaster backend'
     }
 
-    $ca_server = hiera('puppetmaster::ca_server', 'palladium.eqiad.wmnet')
+    $ca_server = hiera('puppetmaster::ca_server', 'puppetmaster1001.eqiad.wmnet')
 
     class { '::role::puppetmaster::common':
         base_config => {
