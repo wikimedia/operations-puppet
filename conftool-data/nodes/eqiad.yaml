@@ -197,8 +197,6 @@ pdf:
   ocg1002.eqiad.wmnet: [ocg]
   ocg1003.eqiad.wmnet: [ocg]
 sca:
-  sca1001.eqiad.wmnet: [zotero]
-  sca1002.eqiad.wmnet: [zotero]
   sca1003.eqiad.wmnet: [zotero]
   sca1004.eqiad.wmnet: [zotero]
 scb:
