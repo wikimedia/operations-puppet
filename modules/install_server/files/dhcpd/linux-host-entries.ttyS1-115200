@@ -5628,13 +5628,6 @@ host oxygen {
     fixed-address oxygen.eqiad.wmnet;
 }
 
-host palladium {
-    hardware ethernet 18:03:73:f1:59:2d;
-    fixed-address palladium.eqiad.wmnet;
-    option pxelinux.pathprefix "precise-installer/";
-    filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
-}
-
 host pc1004 {
     hardware ethernet 14:18:77:42:DF:00;
     fixed-address pc1004.eqiad.wmnet;

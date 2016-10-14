@@ -2330,24 +2330,6 @@ node 'oxygen.eqiad.wmnet'
     include standard
 }
 
-# Former primary puppet master - to be decommissioned
-node 'palladium.eqiad.wmnet' {
-    role(ipmi::mgmt, access_new_install)
-    include standard
-    include base::firewall
-    include role::conftool::master
-    interface::add_ip6_mapped { 'main':
-        interface => 'eth0',
-    }
-    # lint:ignore:puppet_url_without_modules
-    motd::script { 'deprecation_warning':
-        ensure   => present,
-        priority => 01,
-        source   => 'puppet:///files/palladium_deprecation',
-    }
-    # lint:endignore
-}
-
 # parser cache databases
 # eqiad
 node 'pc1004.eqiad.wmnet' {

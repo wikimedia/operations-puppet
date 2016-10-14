@@ -65,8 +65,6 @@ class network::constants {
                     '2620:0:860:104:10:192:48:45',      # wasat.codfw.wmnet
                 ],
             'puppet_frontends' => [
-                    '10.64.16.160',               # palladium.eqiad.wmnet
-                    '2620:0:861:102:10:64:16:16', # palladium.eqiad.wmnet
                     '10.64.16.73',                # puppetmaster1001.eqiad.wmnet
                     '2620:0:861:102:10:64:16:73', # puppetmaster1001.eqiad.wmnet
                     '10.192.0.27',                # puppetmaster2001.codfw.wmnet
