@@ -4,6 +4,8 @@ class role::pmacct {
     }
 
     include ::pmacct
+    include base::firewall
+    include standard
 
     ferm::service { 'bgp':
         proto  => 'tcp',
