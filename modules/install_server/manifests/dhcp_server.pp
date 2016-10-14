@@ -13,6 +13,9 @@
 #   include install_server::dhcp_server
 
 class install_server::dhcp_server {
+
+    include standard
+
     file { '/etc/dhcp':
         ensure  => directory,
         require => Package['isc-dhcp-server'],
