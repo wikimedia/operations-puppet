@@ -2308,7 +2308,6 @@ node 'netmon1001.wikimedia.org' {
     role(rancid::server, librenms, servermon::wmf, torrus, smokeping)
     include standard
     include passwords::network
-    include ganglia::deprecated::collector
     include base::firewall
 
     interface::add_ip6_mapped { 'main': }
