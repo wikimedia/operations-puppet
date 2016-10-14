@@ -7,7 +7,6 @@ define monitoring::service(
     $ensure                = present,
     $critical              = false,
     $passive               = false,
-    $exported              = true,
     $freshness             = 36000,
     $normal_check_interval = 1,
     $retry_check_interval  = 1,
@@ -71,7 +70,7 @@ define monitoring::service(
         default => undef,
     }
 
-    # Export the nagios service instance
+    # the nagios service instance
     $service = {
         "${::hostname} ${title}" => {
             ensure                 => $ensure,
@@ -95,7 +94,9 @@ define monitoring::service(
             freshness_threshold    => $is_fresh,
         }
     }
-    if $exported {
+    # This is a hack. We detect if we are running on the scope of an icinga
+    # host and avoid exporting the resource if yes
+    if defined(Class['icinga']) {
         create_resources('@@nagios_service', $service)
     } else {
         create_resources(nagios_service, $service)
