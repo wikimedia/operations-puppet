@@ -292,7 +292,6 @@ node 'contint1001.wikimedia.org' {
 node 'copper.eqiad.wmnet' {
     role(package::builder)
     include standard
-    include admin
 }
 
 # cp1008: prod-like SSL test host
@@ -1086,7 +1085,6 @@ node 'eventlog2001.codfw.wmnet' {
 node 'fermium.wikimedia.org' {
     role(lists::server)
     include standard
-    include admin
 
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
@@ -1110,7 +1108,6 @@ node 'francium.eqiad.wmnet' {
 
     role(dumps::zim)
     include standard
-    include admin
 }
 
 # Continuous Integration
@@ -1135,7 +1132,6 @@ node 'gallium.wikimedia.org' {
 node /^ganeti[12]00[0-9]\.(codfw|eqiad)\.wmnet$/ {
     role(ganeti)
     include standard
-    include admin
 }
 
 # Hosts visualization / monitoring of EventLogging event streams
@@ -2281,7 +2277,6 @@ node /^notebook100[12]\.eqiad\.wmnet$/ {
     role(notebook::server)
 
     include standard
-    include admin
 }
 
 # salt master
