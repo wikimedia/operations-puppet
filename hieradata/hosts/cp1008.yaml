@@ -2,3 +2,6 @@ debdeploy::grains:
   debdeploy-cp:
     value: canary
 varnish_version4: true
+cache::text::nodes:
+    eqiad:
+      - 'cp1008.wikimedia.org'
