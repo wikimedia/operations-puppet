@@ -12,10 +12,27 @@ class role::mediawiki::webserver {
     }
 
     if hiera('has_lvs', true) {
+        include ::lvs::configuration
         include ::role::lvs::realserver
 
         # Conftool config
         include ::mediawiki::conftool
+
+        # Restart HHVM if it is running since more than 3 days or
+        # memory occupation exceeds 50% of the available RAM
+        # This should prevent a series of cpu usage surges we've been seeing
+        # on long-running HHVM processes. T147773
+        $pool = values(hiera('role::lvs::realserver::pools', {}))[0]
+        $conftool_config = $lvs::configuration::lvs_services[$pool]['conftool']
+        $module_path = get_module_path($module_name)
+        $site_nodes = loadyaml("${module_path}/../../conftool-data/nodes/${::site}.yaml")
+        $pool_nodes = keys($site_nodes[$conftool_config['cluster']])
+        $times = cron_splay($pool_nodes, 'daily', 'hhvm-conditional-restarts')
+        cron { 'hhvm-conditional-restart':
+            command => '/usr/local/bin/hhvm-needs-restart && /usr/local/bin/run-no-puppet /usr/local/bin/restart-hhvm > /dev/null',
+            hour    => $times['hour'],
+            minute  => $times['minute'],
+        }
     }
 
     ferm::service { 'mediawiki-http':
