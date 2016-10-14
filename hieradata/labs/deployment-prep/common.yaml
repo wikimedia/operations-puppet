@@ -193,7 +193,6 @@ scap::dsh::groups:
     - deployment-elastic05
     - deployment-elastic06
     - deployment-elastic07
-    - deployment-elastic08
 "elasticsearch::cluster_name": beta-search
 "elasticsearch::graylog_hosts":
   - deployment-logstash2.deployment-prep.eqiad.wmflabs
