@@ -172,4 +172,13 @@ class gerrit::jetty(
         description  => 'gerrit process',
         nrpe_command => "/usr/lib/nagios/plugins/check_procs -w 1:1 -c 1:1 --ereg-argument-array '^GerritCodeReview .*-jar /var/lib/gerrit2/review_site/bin/gerrit.war'"
     }
+
+    cron { 'clear_gerrit_logs':
+    # Gerrit rotates their own logs, but doesn't clean them out
+    # Delete logs older than a week
+        command => 'find /var/lib/gerrit2/review_site/logs/ -name "*.gz" -mtime +7 -delete',
+        user    => 'root',
+        hour    => 1,
+        require => Exec['install_gerrit_jetty'],
+    }
 }
