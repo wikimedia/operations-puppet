@@ -25,6 +25,7 @@ class role::installserver {
                         DHCP and Web server',
     }
 
+    include standard
     include base::firewall
     include role::backup::host
     include install_server::preseed_server
