@@ -2633,6 +2633,26 @@ host kafka2002 {
     fixed-address kafka2002.codfw.wmnet;
 }
 
+host kubernetes1001 {
+     hardware ethernet 18:66:DA:56:64:A1;
+     fixed-address kubernetes1001.eqiad.wmnet;
+}
+
+host kubernetes1002 {
+     hardware ethernet 18:66:DA:56:79:BC;
+     fixed-address kubernetes1002.eqiad.wmnet;
+}
+
+host kubernetes1003 {
+     hardware ethernet 18:66:DA:56:43:7E;
+     fixed-address kubernetes1003.eqiad.wmnet;
+}
+
+host kubernetes1004 {
+     hardware ethernet 18:66:DA:56:79:7A;
+     fixed-address kubernetes1004.eqiad.wmnet;
+}
+
 host labcontrol1001 {
     hardware ethernet 84:2b:2b:77:cf:ca;
     fixed-address labcontrol1001.wikimedia.org;
