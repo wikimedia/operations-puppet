@@ -264,6 +264,13 @@ class hhvm(
         mode   => '0555',
     }
 
+    file {  '/usr/local/bin/hhvm-needs-restart':
+        ensure => present,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => 'puppet:///modules/hhvm/hhvm-needs-restart.sh',
+    }
 
     ## Run-time data and logging
 
