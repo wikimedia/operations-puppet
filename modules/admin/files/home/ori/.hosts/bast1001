@@ -1,0 +1,4 @@
+#!/bin/bash
+puppet-merge() {
+    ssh puppetmaster1001 -t -- 'sudo puppet-merge'
+}
