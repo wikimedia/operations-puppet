@@ -2530,8 +2530,6 @@ node /^restbase-test200[1-3]\.codfw\.wmnet$/ {
 # network insights (netflow/pmacct, etc.)
 node 'rhenium.wikimedia.org' {
     role(pmacct)
-    include standard
-    include base::firewall
 }
 
 # people.wikimedia.org, for all shell users
