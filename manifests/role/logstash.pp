@@ -11,6 +11,7 @@ class role::logstash (
 ) {
     include ::role::logstash::elasticsearch
     include ::logstash
+    include base::firewall
 
     nrpe::monitor_service { 'logstash':
         description  => 'logstash process',
