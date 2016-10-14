@@ -1544,16 +1544,13 @@ node 'lithium.eqiad.wmnet' {
 
 node /^logstash100[1-2]\.eqiad\.wmnet$/ {
     role(logstash, kibana, logstash::apifeatureusage)
-    include base::firewall
 }
 
 node /^logstash1003\.eqiad\.wmnet$/ {
     role(logstash, kibana, logstash::apifeatureusage, logstash::eventlogging)
-    include base::firewall
 }
 node /^logstash100[4-6]\.eqiad\.wmnet$/ {
     role(logstash::elasticsearch)
-    include base::firewall
 }
 
 node /lvs100[1-6]\.wikimedia\.org/ {
