@@ -15,7 +15,7 @@ class sslcert {
     }
 
     exec { 'update-ca-certificates':
-        command     => '/usr/sbin/update-ca-certificates',
+        command     => '/usr/sbin/update-ca-certificates -f',
         refreshonly => true,
         require     => Package['ca-certificates'],
     }
