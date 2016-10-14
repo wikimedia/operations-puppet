@@ -24,7 +24,7 @@ log4j.additivity.gc_log=false
 
 # Configure log appenders as defaults
 log4j.appender.error_log=org.apache.log4j.DailyRollingFileAppender
-log4j.appender.error_log.File=/var/log/gerrit/error_log
+log4j.appender.error_log.File=/var/lib/gerrit2/review_site/logs/error_log
 log4j.appender.error_log.layout=org.apache.log4j.PatternLayout
 log4j.appender.error_log.layout.ConversionPattern=[%d] %-5p %c %x: %m%n
 log4j.appender.error_log.encoding=UTF-8
@@ -32,14 +32,14 @@ log4j.appender.error_log.threshold=INFO
 log4j.appender.error_log.immediateFlush=true
 log4j.appender.error_log.fileAppend=true
 log4j.appender.httpd_log=org.apache.log4j.DailyRollingFileAppender
-log4j.appender.httpd_log.File=/var/log/gerrit/httpd_log
+log4j.appender.httpd_log.File=/var/lib/gerrit2/review_site/logs/httpd_log
 log4j.appender.httpd_log.layout=com.google.gerrit.pgm.http.jetty.HttpLogLayout
 log4j.appender.httpd_log.encoding=UTF-8
 log4j.appender.httpd_log.threshold=INFO
 log4j.appender.httpd_log.immediateFlush=true
 log4j.appender.httpd_log.fileAppend=true
 log4j.appender.sshd_log=org.apache.log4j.DailyRollingFileAppender
-log4j.appender.sshd_log.File=/var/log/gerrit/sshd_log
+log4j.appender.sshd_log.File=/var/lib/gerrit2/review_site/logs/sshd_log
 log4j.appender.sshd_log.layout=com.google.gerrit.sshd.SshLogLayout
 log4j.appender.sshd_log.encoding=UTF-8
 log4j.appender.sshd_log.threshold=INFO

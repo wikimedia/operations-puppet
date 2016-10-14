@@ -22,12 +22,4 @@ class gerrit::crons() {
         hour    => 1,
         require => File['/var/www/reviewer-counts.json'],
     }
-
-    cron { 'clear_gerrit_logs':
-    # Gerrit rotates their own logs, but doesn't clean them out
-    # Delete logs older than a week
-        command => 'find /var/lib/gerrit2/review_site/logs/ -name "*.gz" -mtime +7 -delete',
-        user    => 'root',
-        hour    => 1
-    }
 }
