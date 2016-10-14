@@ -8,8 +8,6 @@ class role::ci::slave::browsertests {
     include role::ci::slave::labs::common
     include contint::browsertests
 
-    class { '::zuul': }
-
     # For CirrusSearch testing:
     file { '/mnt/elasticsearch':
         ensure => absent,
