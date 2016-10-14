@@ -101,7 +101,7 @@ end
 # do the whole procedure args[:cycles] times
 (1..args[:cycles]).each do
   # try to (de)pool the host we are on
-  `#{args[:command]} #{args[:pool_subject]}"`
+  `#{args[:command]} "#{args[:pool_subject]}"`
 
   # If the script exited with status !=0, we surely had an error; retry directly.
   if $CHILD_STATUS.exitstatus != 0
