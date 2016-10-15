@@ -183,6 +183,18 @@ node 'bast2001.wikimedia.org' {
     role(bastionhost::general)
 }
 
+# Bastion in the Netherlands
+node 'bast3001.wikimedia.org' {
+    interface::add_ip6_mapped { 'main':
+        interface => 'eth0',
+    }
+    role(bastionhost::general, installserver::tftp_server)
+
+    class { 'ganglia::monitor::aggregator':
+        sites =>  'esams',
+    }
+}
+
 # Bastion in California
 node 'bast4001.wikimedia.org' {
     interface::add_ip6_mapped { 'main':
@@ -1247,18 +1259,6 @@ node 'labtestservices2001.wikimedia.org' {
         labs::dns_floating_ip_updater)
     include standard
     include base::firewall
-}
-
-# bastion in the Netherlands
-node 'bast3001.wikimedia.org' {
-    interface::add_ip6_mapped { 'main':
-        interface => 'eth0',
-    }
-    role(bastionhost::general, installserver::tftp_server)
-
-    class { 'ganglia::monitor::aggregator':
-        sites =>  'esams',
-    }
 }
 
 # Primary graphite machines
