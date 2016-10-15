@@ -183,6 +183,18 @@ node 'bast2001.wikimedia.org' {
     role(bastionhost::general)
 }
 
+# Bastion in the Netherlands
+node 'bast3001.wikimedia.org' {
+    interface::add_ip6_mapped { 'main':
+        interface => 'eth0',
+    }
+    role(bastionhost::general, installserver::tftp_server)
+
+    class { 'ganglia::monitor::aggregator':
+        sites =>  'esams',
+    }
+}
+
 # Bastion in California
 node 'bast4001.wikimedia.org' {
     interface::add_ip6_mapped { 'main':
