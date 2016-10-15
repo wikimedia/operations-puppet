@@ -42,6 +42,17 @@ server {
         access_log   off;
     }
 
+    location /cancel/ {
+         rewrite /cancel/([a-z0-9-]+) /bigdata/namespace/wdq/sparql?cancelQuery&queryId=$1 break;
+         proxy_pass http://localhost:9999;
+         proxy_set_header Cookie "";
+         add_header X-Served-By <%= @hostname %> always;
+         add_header Access-Control-Allow-Origin * always;
+         limit_except POST OPTIONS {
+                 deny all;
+         }
+     }
+
     rewrite ^/sparql$ /bigdata/namespace/wdq/sparql last;
 
     location /bigdata/namespace/wdq/sparql {
