@@ -285,6 +285,7 @@ node 'contint1001.wikimedia.org' {
         backup::host)
 
     include standard
+    interface::add_ip6_mapped { 'main': interface => 'eth0', }
     include contint::firewall
 }
 
