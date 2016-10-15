@@ -902,6 +902,7 @@ node 'eeden.wikimedia.org' {
 node 'einsteinium.wikimedia.org' {
     include standard
     include base::firewall
+    interface::add_ip6_mapped { 'main': interface => 'eth0', }
 }
 
 node /^elastic101[7-9]\.eqiad\.wmnet/ {
