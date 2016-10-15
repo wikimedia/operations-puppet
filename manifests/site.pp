@@ -1373,6 +1373,7 @@ node 'krypton.eqiad.wmnet' {
 node /kubernetes100[1-4].eqiad.wmnet/ {
     role(kubernetes::worker)
     include standard
+    interface::add_ip6_mapped { 'main': interface => 'eth0', }
 }
 
 node 'labcontrol1001.wikimedia.org' {
