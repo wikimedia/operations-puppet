@@ -1391,6 +1391,7 @@ node 'krypton.eqiad.wmnet' {
     role(wikimania_scholarships, iegreview::app, grafana::production,
         kafka::analytics::burrow, racktables::server)
     include standard
+    interface::add_ip6_mapped { 'main': interface => 'eth0', }
 }
 
 node 'labcontrol1001.wikimedia.org' {
