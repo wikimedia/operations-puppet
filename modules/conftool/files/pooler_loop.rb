@@ -69,8 +69,18 @@ class PybalError < StandardError
 end
 
 def check_pooled_state(ip, port, pool, host, want_pooled)
-  resp = Net::HTTP.start(ip, port) do |http|
-    http.get "/pools/#{pool}/#{host}"
+  # Manage down or unresponsive pybals
+  http = Net::HTTP.new(ip, port)
+  http.open_timeout = 1
+  http.read_timeout = 2
+
+  begin
+    resp = http.start do |http|
+      http.get "/pools/#{pool}/#{host}"
+    end
+  rescue Timeout::Error
+    # If pybal is down, don't care about it
+    return true
   end
   # ignore 404s
   # rubocop:disable Style/CaseEquality
