@@ -43,6 +43,8 @@ class contint::packages::php {
             'php7.0-bcmath',
             'php7.0-mbstring',
             'php7.0-xml',
+            'postgresql',
+            'postgresql-contrib',
             ]:
             ensure  => latest,
             require => Apt::Repository['sury-php'],
