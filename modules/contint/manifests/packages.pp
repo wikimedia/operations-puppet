@@ -12,6 +12,13 @@ class contint::packages {
     # jessie, but we still need it for CI
     if os_version('debian == jessie') {
         include ::mediawiki::packages::php5
+
+        package { [
+            'postgresql',
+            'postgresql-contrib',
+            ]:
+            ensure => present,
+        }
     }
 
     require_package('openjdk-7-jdk')
