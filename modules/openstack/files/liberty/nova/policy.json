@@ -187,6 +187,7 @@
     "network:delete_dns_domain": "rule:admin_or_projectadmin",
     "network:attach_external_network": "rule:admin_api",
 
+    "os_compute_api:servers:detail": "",
     "os_compute_api:servers:start": "rule:admin_or_projectadmin",
     "os_compute_api:servers:stop": "rule:admin_or_projectadmin",
     "os_compute_api:os-access-ips:discoverable": "rule:admin_or_member",
