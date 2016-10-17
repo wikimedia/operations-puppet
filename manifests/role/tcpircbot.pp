@@ -33,9 +33,21 @@ class role::tcpircbot {
         ],
     }
 
-    ferm::rule { 'tcpircbot_allowed':
-        # eventlog1001 (v4), tin (v4), mira (v4), puppetmaster1001 (v4), tin (v6), mira (v6), puppetmaster1001 (v6, unnamed in DNS), terbium (v4), terbium (v6), wasat (v4), wasat (v6), puppetmaster2001 (v4), puppetmaster2001 (v6, unnamed in DNS)
-        # Please DO NOT change the IPs in the rule below without updating the comment above
-        rule => 'proto tcp dport 9200 { saddr (10.64.32.167/32 10.64.0.196/32 10.192.16.132/32 10.64.16.73/32 2620:0:861:101:10:64:0:196/128 2620:0:860:102:10:192:16:132/128 2620:0:861:102:10:64:16:73/128 10.64.32.13/32 2620:0:861:103:10:64:32:13/64 10.192.48.45/32 2620:0:860:104:10:192:48:45/64 10.192.0.27/32 2620:0:860:101:10:192:0:27/128) ACCEPT; }',
+    $allowed_hosts = [
+        'eventlog1001.eqiad.wmnet',     # logging eqiad
+        'eventlog2001.codfw.wmnet',     # logging codfw
+        'tin.eqiad.wmnet',              # deployment eqiad
+        'mira.codfw.wmnet',             # deployment codfw
+        'puppetmaster1001.eqiad.wmnet', # puppet eqiad
+        'puppetmaster2001.codfw.wmnet', # puppet codfw
+        'terbium.eqiad.wmnet',          # maintenance eqiad
+        'wasat.codfw.wmnet',            # maintenance codfw
+    ]
+
+    ferm::service { 'tcpircbot_allowed':
+        proto  => 'tcp',
+        port   => '9200',
+        srange => "(@resolve((${allowed_hosts})) @resolve((${allowed_hosts}), AAAA))',
     }
+
 }
