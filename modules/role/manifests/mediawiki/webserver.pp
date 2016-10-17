@@ -15,7 +15,7 @@ class role::mediawiki::webserver($pool) {
         include ::lvs::configuration
         $ips = $lvs::configuration::service_ips[$pool][$::site]
 
-        class { 'lvs::realserver':
+        class { '::lvs::realserver':
             realserver_ips => $ips,
         }
 

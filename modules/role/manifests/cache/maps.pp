@@ -11,7 +11,7 @@ class role::cache::maps {
         mc_addrs => [ '239.128.0.114' ],
     }
 
-    class { 'lvs::realserver':
+    class { '::lvs::realserver':
         realserver_ips => $lvs::configuration::service_ips['maps'][$::site],
     }
 

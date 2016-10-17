@@ -52,5 +52,5 @@ class role::ocg {
     }
 
     include lvs::configuration
-    class { 'lvs::realserver': realserver_ips => $lvs::configuration::service_ips['ocg'][$::site] }
+    class { '::lvs::realserver': realserver_ips => $lvs::configuration::service_ips['ocg'][$::site] }
 }

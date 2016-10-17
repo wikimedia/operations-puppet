@@ -17,7 +17,7 @@ class role::cache::text(
         mc_addrs => [ '239.128.0.112' ],
     }
 
-    class { 'lvs::realserver':
+    class { '::lvs::realserver':
         realserver_ips => $lvs::configuration::service_ips['text'][$::site]
     }
 

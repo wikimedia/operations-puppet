@@ -13,7 +13,7 @@ class role::cache::upload(
         mc_addrs   => [ '239.128.0.112', '239.128.0.113' ],
     }
 
-    class { 'lvs::realserver':
+    class { '::lvs::realserver':
         realserver_ips => $lvs::configuration::service_ips['upload'][$::site],
     }
 
