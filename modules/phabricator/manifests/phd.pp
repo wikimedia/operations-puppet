@@ -51,7 +51,7 @@ class phabricator::phd (
     user { $settings['phd.user']:
         gid    => 'phd',
         shell  => '/bin/false',
-        home   => '/var/run/phd',
+        home   => '/var/lib/phd',
         system => true,
     }
 
