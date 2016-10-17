@@ -10,10 +10,10 @@ class role::scb {
     include role::ores::web
     include role::ores::worker
     include role::apertium
-
     include standard
     include base::firewall
-    if $::realm == 'production' {
-        include lvs::realserver
+
+    if hiera('has_lvs', true) {
+        include role::lvs::realserver
     }
 }
