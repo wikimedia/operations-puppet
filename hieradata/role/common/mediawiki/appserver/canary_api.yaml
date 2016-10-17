@@ -1,5 +1,7 @@
 cluster: api_appserver
-role::mediawiki::webserver::pool: api
+role::lvs::realserver::pools:
+  hhvm:
+    lvs_name: api
 apache::mpm::mpm: worker
 mediawiki::web::mpm_config::mpm: worker
 admin::groups:
@@ -20,4 +22,3 @@ hhvm::extra::cli:
       connect_timeout: 3000
 apache::logrotate::rotate: 12
 nutcracker::verbosity: "4"
-

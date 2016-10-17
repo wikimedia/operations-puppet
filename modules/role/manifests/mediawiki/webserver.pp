@@ -1,4 +1,4 @@
-class role::mediawiki::webserver($pool) {
+class role::mediawiki::webserver {
     include ::role::mediawiki::common
     include ::apache::monitoring
     include ::mediawiki::web
@@ -12,20 +12,10 @@ class role::mediawiki::webserver($pool) {
     }
 
     if hiera('has_lvs', true) {
-        include ::lvs::configuration
-        $ips = $lvs::configuration::service_ips[$pool][$::site]
-
-        class { '::lvs::realserver':
-            realserver_ips => $ips,
-        }
+        include ::role::lvs::realserver
 
         # Conftool config
         include ::mediawiki::conftool
-        conftool::scripts::service { 'hhvm':
-            lvs_name            => $pool,
-            lvs_class_hosts     => $lvs::configuration::lvs_class_hosts,
-            lvs_services_config => $lvs::configuration::lvs_services
-        }
     }
 
     ferm::service { 'mediawiki-http':

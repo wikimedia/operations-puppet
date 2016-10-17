@@ -1,5 +1,7 @@
 cluster: appserver
-role::mediawiki::webserver::pool: apaches
+role::lvs::realserver::pools:
+  hhvm:
+    lvs_name: apaches
 admin::groups:
   - deployment
   - perf-roots
@@ -15,4 +17,3 @@ hhvm::extra::cli:
       connect_timeout: 3000
 apache::logrotate::rotate: 12
 nutcracker::verbosity: "4"
-
