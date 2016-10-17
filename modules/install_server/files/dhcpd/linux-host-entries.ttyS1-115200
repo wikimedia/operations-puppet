@@ -5920,32 +5920,24 @@ host scandium {
     fixed-address scandium.eqiad.wmnet;
 }
 
-host sca1001 {
+host scb1003 {
     hardware ethernet F0:1F:AF:E8:B0:EF;
-    fixed-address sca1001.eqiad.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
+    fixed-address scb1003.eqiad.wmnet;
 }
 
-host sca1002 {
+host scb1004 {
     hardware ethernet F0:1F:AF:E8:BF:6F;
-    fixed-address sca1002.eqiad.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
+    fixed-address scb1004.eqiad.wmnet;
 }
 
-host sca2001 {
+host scb2003 {
     hardware ethernet 14:18:77:33:4F:F5;
-    fixed-address sca2001.codfw.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
+    fixed-address scb2003.codfw.wmnet;
 }
 
-host sca2002 {
+host scb2004 {
     hardware ethernet 14:18:77:33:3D:B3;
-    fixed-address sca2002.codfw.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
+    fixed-address scb2004.codfw.wmnet;
 }
 
 host scb1001 {
