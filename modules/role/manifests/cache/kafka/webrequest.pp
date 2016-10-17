@@ -15,10 +15,11 @@ class role::cache::kafka::webrequest(
 {
     # Set varnish.arg.q or varnish.arg.m according to Varnish version
     if (hiera('varnish_version4', false)) {
-        # Background from T136314:
+        # Background task: T136314
+        # Background info about the parameters used:
         # 'q':
-        # Filter out PURGE requests and Pipe creation traffic.
-        # A Varnish log containing Timestamp:Pipe does not carry Timestamp:Resp,
+        # 1) Filter out PURGE requests and Pipe creation traffic.
+        # 2) A Varnish log containing Timestamp:Pipe does not carry Timestamp:Resp,
         # used by Analytics to bucket data on Hadoop and for data consistency
         # checks. These requests indicate that Varnish tried to establish a pipe
         # channel between the client and the backend, an information that
@@ -30,13 +31,15 @@ class role::cache::kafka::webrequest(
         # At the moment these requests get logged incorrectly and with partial
         # data (due to the VSL timeout) so it makes sense to filter them out to
         # remove noise from Analytics data.
+        # 3) A request marked with the VSL tag 'HttpGarbage' indicates unparseable
+        # HTTP requests, generating spurious Varnish logs.
         # 'T':
         # VLS API timeout is the maximum time that Varnishkafka will wait between
         # "Begin" and "End" timestamps before flushing the available tags to a log.
         # When a timeout occurs most of the times the result is a webrequest log
         # missing values like the end timestamp.
         #
-        # Parameters modified during the upload migration:
+        # VSL Timeout parameters modified during the upload migration:
         # 'L':
         # Sets the upper limit of incomplete transactions kept before the oldest
         # one is force completed. This setting keeps an upper bound
@@ -44,14 +47,16 @@ class role::cache::kafka::webrequest(
         # A change in the -T timeout value has the side effect of keeping more
         # incomplete transactions in memory for each varnishkafka query (in our case
         # it directly corresponds to a varnishkafka instance running).
+        # The threshold has been raised to '5000' the first time (which removed
+        # the bulk of the timeouts) and to '10000' the second time.
         # 'T':
         # Raised the maximum timeout for incomplete records from '700' to '1500'
         # after setting the -L to '5000'. VSL timeouts were masked
         # by VSL store overflow errors.
         $varnish_opts = {
-            'q' => 'ReqMethod ne "PURGE" and not Timestamp:Pipe and not ReqHeader:Upgrade ~ "[wW]ebsocket"',
+            'q' => 'ReqMethod ne "PURGE" and not Timestamp:Pipe and not ReqHeader:Upgrade ~ "[wW]ebsocket" and not HttpGarbage',
             'T' => '1500',
-            'L' => '5000'
+            'L' => '10000'
         }
         $conf_template = 'varnishkafka/varnishkafka_v4.conf.erb'
     } else {
