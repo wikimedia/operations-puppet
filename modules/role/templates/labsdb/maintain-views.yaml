@@ -75,7 +75,6 @@ fullviews:
   - globalimagelinks
   - global_block_whitelist
   - hashs
-  - hitcounter
   - image
   - imagelinks
   - imagelinks_old
