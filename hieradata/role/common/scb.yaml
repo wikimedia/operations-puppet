@@ -11,6 +11,14 @@ admin::groups:
 - mobileapps-admin
 - changeprop-admin
 - ores-admin
+role::lvs::realserver::pools:
+  ores: {}
+  apertium: {}
+  mobileapps: {}
+  graphoid: {}
+  cxserver: {}
+  citoid: {}
+  mathoid: {}
 graphoid::allowed_domains:
   https:
     - mediawiki.org

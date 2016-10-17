@@ -4,12 +4,6 @@ class role::cxserver {
     system::role { 'role::cxserver':
         description => 'content translation server'
     }
-    # LVS pooling/depoling scripts
-    include ::lvs::configuration
-    conftool::scripts::service { 'cxserver':
-        lvs_services_config => $::lvs::configuration::lvs_services,
-        lvs_class_hosts     => $::lvs::configuration::lvs_class_hosts,
-    }
 
     include ::passwords::cxserver
     $yandex_api_key = $::passwords::cxserver::yandex_api_key
