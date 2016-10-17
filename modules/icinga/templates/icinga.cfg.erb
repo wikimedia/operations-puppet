@@ -36,7 +36,6 @@ cfg_file=/etc/icinga/contactgroups.cfg
 cfg_file=/etc/icinga/contacts.cfg
 cfg_file=/etc/icinga/timeperiods.cfg
 cfg_file=/etc/icinga/notification_commands.cfg
-# We use naggen2 for those
 cfg_file=/etc/icinga/puppet_hosts.cfg
 cfg_file=/etc/icinga/puppet_hostextinfo.cfg
 cfg_file=/etc/icinga/puppet_services.cfg
@@ -49,9 +48,6 @@ cfg_file=/etc/icinga/puppet_services.cfg
 # backwards compatibility with old nagios installation
 cfg_file=/etc/nagios/puppet_hostgroups.cfg
 cfg_file=/etc/nagios/puppet_servicegroups.cfg
-# These are locally generated hosts (like routers, pdus). We do not use naggen2 for these
-cfg_file=/etc/nagios/nagios_host.cfg
-cfg_file=/etc/nagios/nagios_service.cfg
 
 # passive checks via nsca from fundraising systems
 cfg_file=/etc/icinga/nsca_frack.cfg

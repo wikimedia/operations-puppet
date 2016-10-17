@@ -7,6 +7,7 @@ define monitoring::host (
     $group         = undef,
     $ensure        = present,
     $critical      = false,
+    $exported      = true,
     $contact_group = hiera('contactgroups', 'admins')
     ) {
 
@@ -66,9 +67,7 @@ define monitoring::host (
             statusmap_image       => $statusmap_image,
         }
     }
-    # This is a hack. We detect if we are running on the scope of an icinga
-    # host and avoid exporting the resource if yes
-    if defined(Class['icinga']) {
+    if $exported {
         create_resources('@@nagios_host', $host)
     } else {
         create_resources(nagios_host, $host)
