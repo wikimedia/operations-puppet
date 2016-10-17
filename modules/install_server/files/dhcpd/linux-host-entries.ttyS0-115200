@@ -153,6 +153,11 @@ host pollux {
     fixed-address pollux.wikimedia.org;
 }
 
+host poolcounter1001 {
+    hardware ethernet aa:00:00:de:ad:e5;
+    fixed-address poolcounter1001.eqiad.wmnet;
+}
+
 host prometheus1001 {
     hardware ethernet aa:00:00:64:48:f8;
     fixed-address prometheus1001.eqiad.wmnet;

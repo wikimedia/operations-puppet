@@ -2417,6 +2417,11 @@ node /(dubnium|pollux)\.wikimedia\.org/ {
     backup::openldapset {'openldap_oit':}
 }
 
+node 'poolcounter1001.eqiad.wmnet' {
+    role(poolcounter::server)
+    include standard
+}
+
 # careful when moving poolcounters
 node 'potassium.eqiad.wmnet' {
     role(poolcounter::server)
