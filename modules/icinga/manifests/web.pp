@@ -12,6 +12,7 @@ class icinga::web {
     include ::apache
     include ::apache::mod::php5
     include ::apache::mod::ssl
+    include ::apache::mod::headers
 
     ferm::service { 'icinga-https':
       proto => 'tcp',
