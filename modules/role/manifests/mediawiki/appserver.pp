@@ -4,4 +4,3 @@ class role::mediawiki::appserver {
     include ::role::mediawiki::webserver
 
 }
-

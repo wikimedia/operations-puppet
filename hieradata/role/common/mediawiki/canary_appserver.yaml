@@ -1,5 +1,7 @@
 cluster: appserver
-role::mediawiki::webserver::pool: apaches
+role::lvs::realserver::pools:
+  hhvm:
+    lvs_name: apaches
 apache::mpm::mpm: worker
 mediawiki::web::mpm_config::mpm: worker
 admin::groups:

@@ -1,8 +1,10 @@
 cluster: imagescaler
+role::lvs::realserver::pools:
+  hhvm:
+    lvs_name: rendering
 admin::groups:
   - deployment
   - perf-roots
-role::mediawiki::webserver::pool: rendering
 mediawiki::web::mpm_config::workers_limit: 100
 nutcracker::verbosity: "4"
 hhvm::extra::fcgi:

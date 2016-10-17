@@ -155,7 +155,6 @@ role::deployment::mediawiki::key_fingerprint: f0:54:06:fa:17:27:97:a2:cc:69:a0:a
 "mediawiki::jobrunner::runners_upload": 2
 "hhvm::base_jit_size": 183500800
 "role::logging::mediawiki::log_directory": /data/project/logs
-"role::mediawiki::webserver::pool": one-pool-to-rule-them-all
 "beta::syncsiteresources::user": www-data
 "role::url_downloader::url_downloader_ip": 10.68.16.135 # deployment-urldownloader
 "zotero::http_proxy": deployment-urldownloader.deployment-prep.eqiad.wmflabs:8080
