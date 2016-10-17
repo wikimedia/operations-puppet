@@ -99,6 +99,10 @@ class role::puppetmaster::standalone(
         }),
     }
 
+    sslcert::ca { 'Puppetmaster_standalone_CA':
+        source => '/var/lib/puppet/server/ssl/certs/ca.pem',
+    }
+
     # Update git checkout
     class { 'puppetmaster::gitsync':
         run_every_minutes => $git_sync_minutes,
