@@ -85,6 +85,7 @@ define tlsproxy::localssl(
         }
     }
 
+    $do_ocsp_int = hiera('do_ocsp_int', false)
     if $do_ocsp {
         include tlsproxy::ocsp
 
