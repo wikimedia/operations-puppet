@@ -7,7 +7,7 @@ class role::dnsrecursor {
     include base::firewall
 
     class {
-        'lvs::realserver':
+        '::lvs::realserver':
             realserver_ips   => $lvs::configuration::service_ips['dns_rec'][$::site];
         '::dnsrecursor':
             require          => Class['lvs::realserver'],
