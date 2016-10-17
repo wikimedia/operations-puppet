@@ -47,7 +47,7 @@ class role::analytics_cluster::hue {
     ferm::service{ 'hue_server':
         proto  => 'tcp',
         port   => '8888',
-        srange => '$INTERNAL',
+        srange => '$PRODUCTION_NETWORKS',
     }
 
     # Include icinga alerts if production realm.
