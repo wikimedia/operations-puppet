@@ -6,13 +6,9 @@ class role::parsoid {
     }
 
     include base::firewall
-    include lvs::realserver
 
-    # LVS pooling/depoling scripts
-    include ::lvs::configuration
-    conftool::scripts::service { 'parsoid':
-        lvs_services_config => $::lvs::configuration::lvs_services,
-        lvs_class_hosts     => $::lvs::configuration::lvs_class_hosts,
+    if hiera('has_lvs', true) {
+        include role::lvs::realserver
     }
 
     include ::parsoid
