@@ -7,7 +7,6 @@ define monitoring::host (
     $group         = undef,
     $ensure        = present,
     $critical      = false,
-    $exported      = true,
     $contact_group = hiera('contactgroups', 'admins')
     ) {
 
@@ -51,7 +50,6 @@ define monitoring::host (
     $host = {
         "${title}" => {
             ensure                => $ensure,
-            target                => '/etc/nagios/puppet_hosts.cfg',
             host_name             => $title,
             address               => $nagios_address,
             hostgroups            => $hostgroup,
@@ -67,9 +65,11 @@ define monitoring::host (
             statusmap_image       => $statusmap_image,
         }
     }
-    if $exported {
-        create_resources('@@nagios_host', $host)
-    } else {
+    # This is a hack. We detect if we are running on the scope of an icinga
+    # host and avoid exporting the resource if yes
+    if defined(Class['icinga']) {
         create_resources(nagios_host, $host)
+    } else {
+        create_resources('@@nagios_host', $host)
     }
 }
