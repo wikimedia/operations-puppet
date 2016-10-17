@@ -45,7 +45,6 @@ class role::labs::puppetmaster(
         minute  => '*/1',
     }
 
-    include ::puppetmaster::certcleaner
     if ! defined(Class['puppetmaster::certmanager']) {
         class { 'puppetmaster::certmanager':
             remote_cert_cleaner => hiera('labs_certmanager_hostname'),
