@@ -2594,11 +2594,15 @@ node 'scandium.eqiad.wmnet' {
 # Services 'A'
 node /^sca[12]00[1234]\.(eqiad|codfw)\.wmnet$/ {
     role(sca)
+
+    interface::add_ip6_mapped { 'main': }
 }
 
 # Services 'B'
 node /^scb[12]00[12]\.(eqiad|codfw)\.wmnet$/ {
     role(scb)
+
+    interface::add_ip6_mapped { 'main': }
 }
 
 # Codfw, eqiad ldap servers, aka ldap-$::site
