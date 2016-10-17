@@ -10,7 +10,7 @@ class role::dnsrecursor {
         '::lvs::realserver':
             realserver_ips   => $lvs::configuration::service_ips['dns_rec'][$::site];
         '::dnsrecursor':
-            require          => Class['lvs::realserver'],
+            require          => Class['::lvs::realserver'],
             listen_addresses => [$::ipaddress,
                                     $::ipaddress6_eth0,
                                     $lvs::configuration::service_ips['dns_rec'][$::site],
