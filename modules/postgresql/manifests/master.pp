@@ -21,6 +21,10 @@
 #       See $postgresql::server::root_dir
 #   use_ssl
 #       Enable ssl
+#   locale
+#       Locale used to initialise posgresql cluster.
+#       Setting the locale ensure that locale and encodings will be the same
+#       whether $LANG and $LC_* are set or not.
 #
 # Actions:
 #  Install/configure postgresql as a master. Also create replication users
@@ -44,6 +48,7 @@ class postgresql::master(
     $wal_keep_segments=128,
     $root_dir='/var/lib/postgresql',
     $use_ssl=false,
+    $locale='en_US.UTF-8',
 ) {
 
     $data_dir = "${root_dir}/${pgversion}/main"
@@ -67,7 +72,7 @@ class postgresql::master(
 
     if $ensure == 'present' {
         exec { 'pg-initdb':
-            command => "/usr/lib/postgresql/${pgversion}/bin/initdb -D ${data_dir}",
+            command => "/usr/lib/postgresql/${pgversion}/bin/initdb --locale ${locale} -D ${data_dir}",
             user    => 'postgres',
             unless  => "/usr/bin/test -f ${data_dir}/PG_VERSION",
             require => Class['postgresql::server'],
