@@ -2,3 +2,5 @@ admin::groups:
   - parsoid-roots
   - parsoid-admin
 cluster: parsoid
+role::lvs::realserver::pools:
+  parsoid: {}

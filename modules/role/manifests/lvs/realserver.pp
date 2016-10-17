@@ -6,7 +6,7 @@
 class role::lvs::realserver {
     require ::lvs::configuration
     # Pools in the format: $service => { lvs_name => $name}
-    $lvs_pools = hiera('::role::lvs::realserver::pools', {})
+    $lvs_pools = hiera('role::lvs::realserver::pools', {})
 
     # TODO: fix this when we have the future parser
     $realserver_ips_str = template('role/lvs/realserver_ips.erb')
