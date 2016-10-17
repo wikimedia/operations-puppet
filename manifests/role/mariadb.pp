@@ -923,6 +923,13 @@ class role::mariadb::proxy::master(
         content => template('mariadb/haproxy-master.cfg.erb'),
     }
 
+    ferm::service{ 'mariadb_dbproxy':
+        proto   => 'tcp',
+        port    => '3306',
+        notrack => true,
+        srange  => '$DOMAIN_NETWORKS',
+    }
+
     nrpe::monitor_service { 'haproxy_failover':
         description  => 'haproxy failover',
         nrpe_command => '/usr/lib/nagios/plugins/check_haproxy --check=failover',
