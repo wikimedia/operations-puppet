@@ -456,11 +456,11 @@ lvs::configuration::lvs_services:
     - codfw
     ip: *ip_block009
     bgp: 'yes'
-    depool-threshold: '.95'
+    depool-threshold: '.6'
     monitors:
-#      ProxyFetch:
-#        url:
-#        - http://en.wikipedia.org/w/api.php
+      ProxyFetch:
+        url:
+        - http://en.wikipedia.org/w/api.php
       IdleConnection:
         timeout-clean-reconnect: 3
         max-delay: 300
