@@ -52,6 +52,28 @@ class SchemaOperations():
         if not self.dry_run:
             self.cursor.execute(query)
 
+    def drop_view(self, view):
+        """ Drop an obsolete view
+        :param view: str
+        :return: bool
+        """
+        self.write_execute("drop view {}.{}".format(self.db_p, view))
+        return not self.table_exists(view, self.db_p)
+
+    def tables(self, database):
+        """ Get list of tables in a database (views are included)
+        :param database: str
+        :returns: list
+        """
+        self.cursor.execute("""
+            SELECT `table_name`
+            FROM `information_schema`.`tables`
+            WHERE `table_schema`=%s;
+        """, args=(database))
+
+        dbtables = self.cursor.fetchall()
+        return [t[0] for t in dbtables]
+
     def user_exists(self, name):
         """ Check if a user exists
         :param name: str
@@ -70,12 +92,7 @@ class SchemaOperations():
         :param database: str
         :returns: bool
         """
-        self.cursor.execute("""
-            SELECT `table_name`
-            FROM `information_schema`.`tables`
-            WHERE `table_name`=%s AND `table_schema`=%s;
-        """, args=(table, database))
-        return bool(self.cursor.rowcount)
+        return table in self.tables(database=database)
 
     def database_exists(self, database):
         """ Verify if a DB exists
@@ -290,6 +307,12 @@ if __name__ == "__main__":
         action="store_true"
     )
     argparser.add_argument(
+        "--clean",
+        help=("Clean out views from _p varient that are no longer specified"
+              " make changes."),
+        action="store_true"
+    )
+    argparser.add_argument(
         "--replace-all",
         help=("Give this parameter if you don't want the script to prompt"
               " before replacing views."),
@@ -315,6 +338,11 @@ if __name__ == "__main__":
         except yaml.YAMLError as exc:
             logging.critical(exc)
             sys.exit(1)
+
+    all_tables = []
+    all_tables = all_tables + config['fullviews']
+    all_tables = all_tables + config['logging_whitelist']
+    all_tables = all_tables + list(config['customviews'].keys())
 
     dbs_metadata = config['metadata']
     sensitive_db_lists = config['sensitive_db_lists']
@@ -347,7 +375,7 @@ if __name__ == "__main__":
     all_dbs_file = "{}/dblists/all.dblist".format(args.mediawiki_config)
     with open(all_dbs_file) as f:
         all_available_dbs = f.read().splitlines()
-    all_available_dbs.extend(config['add_to_all_dbs'])
+    all_available_dbs = all_available_dbs + config['add_to_all_dbs']
 
     # argparse will ensure we are declaring explicitly
     dbs = all_available_dbs
@@ -385,8 +413,16 @@ if __name__ == "__main__":
                                    db,
                                    db_info.get('size', None),
                                    cursor)
+
             if not ops.user_exists(ops.definer):
                 logging.critical("Definer has not been created")
                 sys.exit(1)
 
             ops.execute(config["fullviews"], customviews)
+
+            if args.clean:
+                live_tables = ops.tables(ops.db_p)
+                dead_tables = [t for t in live_tables if t not in all_tables]
+                for dt in dead_tables:
+                    logging.info("Dropping view {}".format(dt))
+                    ops.drop_view(dt)
