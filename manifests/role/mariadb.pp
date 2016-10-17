@@ -270,7 +270,6 @@ class role::mariadb::misc::phabricator(
     class { 'mariadb::packages_wmf':
         mariadb10 => $mariadb10,
     }
-    include mariadb::service
 
     $mysql_role = $master ? {
         true  => 'master',
