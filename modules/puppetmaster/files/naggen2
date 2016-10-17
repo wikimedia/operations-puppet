@@ -142,9 +142,9 @@ class NagiosGeneratorPuppetDB(NagiosGeneratorBase):
             self.restype[what]
         )
         resources_raw = requests.get(url, params={
-            'query': '["and",
-                        ["=", ["parameter", "ensure"], "present"],
-                        ["=", "exported", "true"]
+            'query': '["and", \
+                        ["=", ["parameter", "ensure"], "present"], \
+                        ["=", "exported", "true"] \
                     ]',
         })
         return resources_raw.json()
