@@ -261,12 +261,12 @@ ganglia_clusters:
     sites:
       eqiad: []
   labtestvirt:
-    name: "Labtest virt hosts"
+    description: "Labtest virt hosts"
     id: 57
     sites:
       codfw: []
   labtest:
-    name: "Labtest services"
+    description: "Labtest services"
     id: 58
     sites:
       codfw: []
