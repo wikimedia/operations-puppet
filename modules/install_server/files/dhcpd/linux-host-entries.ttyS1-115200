@@ -5920,26 +5920,6 @@ host scandium {
     fixed-address scandium.eqiad.wmnet;
 }
 
-host scb1003 {
-    hardware ethernet F0:1F:AF:E8:B0:EF;
-    fixed-address scb1003.eqiad.wmnet;
-}
-
-host scb1004 {
-    hardware ethernet F0:1F:AF:E8:BF:6F;
-    fixed-address scb1004.eqiad.wmnet;
-}
-
-host scb2003 {
-    hardware ethernet 14:18:77:33:4F:F5;
-    fixed-address scb2003.codfw.wmnet;
-}
-
-host scb2004 {
-    hardware ethernet 14:18:77:33:3D:B3;
-    fixed-address scb2004.codfw.wmnet;
-}
-
 host scb1001 {
     hardware ethernet 90:b1:1c:2d:7f:6b;
     fixed-address scb1001.eqiad.wmnet;
@@ -5950,6 +5930,16 @@ host scb1002 {
     fixed-address scb1002.eqiad.wmnet;
 }
 
+host scb1003 {
+    hardware ethernet F0:1F:AF:E8:B0:EF;
+    fixed-address scb1003.eqiad.wmnet;
+}
+
+host scb1004 {
+    hardware ethernet F0:1F:AF:E8:BF:6F;
+    fixed-address scb1004.eqiad.wmnet;
+}
+
 host scb2001 {
     hardware ethernet 14:18:77:33:43:6A;
     fixed-address scb2001.codfw.wmnet;
@@ -5958,6 +5948,16 @@ host scb2001 {
 host scb2002 {
     hardware ethernet 14:18:77:33:4D:37;
     fixed-address scb2002.codfw.wmnet;
+}
+
+host scb2003 {
+    hardware ethernet 14:18:77:33:4F:F5;
+    fixed-address scb2003.codfw.wmnet;
+}
+
+host scb2004 {
+    hardware ethernet 14:18:77:33:3D:B3;
+    fixed-address scb2004.codfw.wmnet;
 }
 
 host silver {
