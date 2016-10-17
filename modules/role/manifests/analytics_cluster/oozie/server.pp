@@ -42,7 +42,7 @@ class role::analytics_cluster::oozie::server {
     ferm::service{ 'oozie_server':
         proto  => 'tcp',
         port   => '11000',
-        srange => '$INTERNAL',
+        srange => '$ANALYTICS_NETWORKS',
     }
 
     # Include icinga alerts if production realm.
