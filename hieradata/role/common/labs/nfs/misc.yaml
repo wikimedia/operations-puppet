@@ -12,6 +12,15 @@ ssh::server::authorized_keys_file: /etc/ssh/userkeys/%u /etc/ssh/userkeys/%u.d/l
 role::labs::nfs::misc::dump_servers_ips:
   - '208.80.154.11'
   - '208.80.152.185'
+# List of internal ips for instances on maps project, to make maps share available on
+# New instances must be manually added here for the nfs share to be available.
+role::labs::nfs::misc::maps_project_internal_ips:
+  - '10.68.16.6'
+  - '10.68.17.110'
+  - '10.68.16.103'
+  - '10.68.16.125'
+  - '10.68.17.33'
+  - '10.68.16.70'
 debdeploy::grains:
   debdeploy-labsnfs:
     value: standard
