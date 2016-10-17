@@ -8,3 +8,4 @@
 /srv/dumps  *(ro,sec=sys,no_subtree_check,all_squash,nocrossmnt)
 /srv/statistics *(ro,sec=sys,no_subtree_check,all_squash,nocrossmnt)
 /srv/scratch *(rw,sec=sys,async,no_subtree_check,root_squash)
+/srv/maps   -rw,sec=sys,async,no_subtree_check,no_root_squash <%= Array(@maps_project_internal_ips).join(' ') %>
