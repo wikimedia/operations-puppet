@@ -1,7 +1,6 @@
 #!/usr/bin/python3
 import yaml
 import sys
-import ldap3
 from urllib.request import urlopen
 
 
@@ -46,37 +45,7 @@ if __name__ == '__main__':
     with open('/etc/puppet-enc.yaml', encoding='utf-8') as f:
         encconfig = yaml.safe_load(f)
 
-    with open('/etc/ldap.yaml', encoding='utf-8') as f:
-        ldapconfig = yaml.safe_load(f)
-
-    servers = ldap3.ServerPool([
-        ldap3.Server(s)
-        for s in ldapconfig['servers']
-    ], ldap3.POOLING_STRATEGY_ROUND_ROBIN, active=True, exhaust=True)
-
     classes = set()
-
-    with ldap3.Connection(
-        servers,
-        read_only=True,
-        user=ldapconfig['user'],
-        auto_bind=True,
-        password=ldapconfig['password']
-    ) as conn:
-        conn.search(
-            'ou=hosts,dc=wikimedia,dc=org',
-            '(&(objectclass=puppetClient)(associatedDomain=%s))' % (hostname),
-            ldap3.SEARCH_SCOPE_WHOLE_SUBTREE,
-            attributes=['puppetClass'],
-            time_limit=5
-        )
-        if len(conn.response) != 1:
-            print('Exactly one match must be found for hostname ', hostname)
-            print('But', len(conn.response), 'matches found')
-            sys.exit(-1)
-
-        attrs = conn.response[0]['attributes']
-        classes.update(attrs.get('puppetClass', []))
 
     url = 'http://{host}:8100/v1/{project}/node/{fqdn}'.format(
         host=encconfig['host'],
