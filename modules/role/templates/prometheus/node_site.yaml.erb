@@ -9,7 +9,11 @@ clusters.each do |cluster, sites|
   all.push(
     {
       'labels' => {'cluster' => cluster, 'site' => site },
-      'targets' => targets.map{|t| "#{t.split('.')[0]}:9100" },
+      'targets' => targets.map{ |t|
+          /.wikimedia.org$/ =~ t ?
+              "#{t}:9100" :
+              "#{t.split('.')[0]}:9100"
+      },
     }
   )
   end
