@@ -31,7 +31,7 @@ class role::mediawiki::webserver {
         if member($pool_nodes, $::fqdn) {
             $times = cron_splay($pool_nodes, 'daily', 'hhvm-conditional-restarts')
             cron { 'hhvm-conditional-restart':
-                command => '/usr/local/bin/hhvm-needs-restart && /usr/local/bin/run-no-puppet /usr/local/bin/restart-hhvm > /dev/null',
+                command => '/usr/local/bin/hhvm-needs-restart && /usr/local/sbin/run-no-puppet /usr/local/bin/restart-hhvm > /dev/null',
                 hour    => $times['hour'],
                 minute  => $times['minute'],
             }
