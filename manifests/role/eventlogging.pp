@@ -55,9 +55,8 @@ class role::eventlogging {
     # to your query params.
     $kafka_base_uri    = inline_template('kafka:///<%= @kafka_brokers_array.join(":9092,") + ":9092" %>')
 
-    # Read in server side and client side raw events from
-    # Kafka, process them, and send events to schema
-    # based topics in Kafka.
+    # Read in raw events from Kafka, process them, and send them to
+    # the schema corresponding to their topic in Kafka.
     $kafka_schema_uri  = "${kafka_base_uri}?topic=eventlogging_{schema}"
 
     # The downstream eventlogging MySQL consumer expects schemas to be
@@ -70,7 +69,6 @@ class role::eventlogging {
         default => "${kafka_base_uri}?topic=eventlogging-valid-mixed&blacklist=${mixed_schema_blacklist}"
     }
 
-    $kafka_server_side_raw_uri = "${kafka_base_uri}?topic=eventlogging-server-side"
     $kafka_client_side_raw_uri = "${kafka_base_uri}?topic=eventlogging-client-side"
 
     # This check was written for eventlog1001, so only include it there.,
