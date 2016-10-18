@@ -38,7 +38,7 @@ logging:
 <% if @local_logging -%>
   - type: file
     path: <%= @local_logfile %>
-    level: info
+    level: <%= @local_logging_level %>
 <% end -%>
 
 # Statsd metrics reporter

@@ -159,6 +159,7 @@ define service::node(
     $entrypoint      = '',
     $starter_script  = 'src/server.js',
     $local_logging   = true,
+    $local_logging_level = 'info',
     $logging_name    = $title,
     $statsd_prefix   = $title,
     $auto_refresh    = true,
