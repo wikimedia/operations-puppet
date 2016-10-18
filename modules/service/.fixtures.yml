@@ -1,0 +1,12 @@
+fixtures:
+    symlinks:
+        service: "#{source_dir}"
+        base: "../../../../base"
+        ferm: "../../../../ferm"
+        monitoring: "../../../../monitoring"
+        rsyslog: "../../../../rsyslog"
+        scap: "../../../../scap"
+        stdlib: "../../../../stdlib"
+        systemd: "../../../../systemd"
+        trebuchet: "../../../../trebuchet"
+        wmflib: "../../../../wmflib"
