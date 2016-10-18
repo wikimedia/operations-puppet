@@ -96,6 +96,7 @@ private:
       home: true
       project: true
       scratch: true
+      maps: true
   maps-team:
     gid: 52497
     mounts:
