@@ -42,6 +42,7 @@ class role::mediawiki::webserver {
         proto   => 'tcp',
         notrack => true,
         port    => 'http',
+        srange  => '$DOMAIN_NETWORKS',
     }
 
     # If a service check happens to run while we are performing a
