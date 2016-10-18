@@ -21,13 +21,16 @@ class role::labs::dns {
     # Note:  This will install mariadb but won't set up the
     #  pdns database.  Manual steps are:
     #
-    #  $ /opt/wmf-mariad/install
     #  $ /opt/wmf/mariadb/scripts/mysql_install_db
     #  Then export the 'pdns' db from a working labservices host and import
     #  Then, run 'designate-manage powerdns sync' for the new host
     #
     class { 'mariadb::packages_wmf':
         mariadb10 => true,
+    }
+
+    class { 'mariadb::service':
+        version => 'wmf-mariadb10',
     }
 
     class { 'mariadb::config':
@@ -39,7 +42,7 @@ class role::labs::dns {
 
     service { 'mariadb':
         ensure  => running,
-        require => Class['mariadb::packages_wmf', 'mariadb::config'],
+        require => Class['mariadb::packages_wmf', 'mariadb::config', 'mariadb::service'],
     }
 
     package { 'mysql-client':
