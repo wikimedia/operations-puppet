@@ -26,7 +26,6 @@ class role::labs::nfsclient(
     }
 
     if $::labsproject == 'maps' {
-        notify { "Labsproject is ${::labsproject}": }
         labstore::nfs_mount { 'maps-on-labstore1003':
             mount_name  => 'maps',
             project     => $::labsproject,
