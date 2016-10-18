@@ -1,11 +1,6 @@
 class role::toollabs::docker::builder {
     include ::toollabs::infrastructure
 
-    require role::labs::lvm::srv
-
-    # Send *all* the logs!
-
-
     class { '::docker::engine': }
 
     class { '::toollabs::images': }
