@@ -1,5 +1,6 @@
 class base::resolving (
     $domain_search = $::domain,
+    $labs_additional_domains = [],
 ){
     if ! $::nameservers {
         error("Variable ${::nameservers} is not defined!")
