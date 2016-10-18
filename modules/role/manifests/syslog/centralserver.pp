@@ -18,4 +18,9 @@ class role::syslog::centralserver {
     }
 
     class { 'rsyslog::receiver': }
+
+    mtail::program { 'kernel':
+        ensure => present,
+        source => 'puppet:///modules/mtail/programs/kernel.mtail',
+    }
 }
