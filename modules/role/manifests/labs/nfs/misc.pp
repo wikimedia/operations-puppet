@@ -1,8 +1,9 @@
-# The IPs of the servers allowed to populate dumps ($dump_servers_ips)
-# must be set at the node level or via hiera.
+# The IPs of the servers allowed to populate dumps ($dump_servers_ips),
+# and IPs of maps instances where the maps nfs share is to be mounted
+# ($maps_project_internal_ips) must be set at the node level or via hiera.
 #
 
-class role::labs::nfs::misc($dump_servers_ips) {
+class role::labs::nfs::misc($dump_servers_ips, $maps_project_internal_ips) {
 
     system::role { 'role::labs::nfs::misc':
         description => 'Labs NFS service (misc)',
