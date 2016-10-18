@@ -102,6 +102,13 @@ class gerrit::jetty(
         require => File['/var/lib/gerrit2/review_site/etc'],
     }
 
+    file { '/var/log/gerrit/gerrit_heap_log':
+        content => template('gerrit/gerrit_heap_log.erb'),
+        owner   => 'gerrit2',
+        group   => 'gerrit2',
+        mode    => '0660',
+    }
+
     if $ssh_host_key != undef {
         file { '/var/lib/gerrit2/review_site/etc/ssh_host_key':
             content => secret("gerrit/${ssh_host_key}"),
