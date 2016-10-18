@@ -19,6 +19,7 @@
   - "labs/%{::labsproject}/common"
   - "labs"
   - "secret/%{::labsproject}"
+  - "private/%{::labsproject}/common"
   - "private/%{::labsproject}"
   - "common"
   - "secret/common"
