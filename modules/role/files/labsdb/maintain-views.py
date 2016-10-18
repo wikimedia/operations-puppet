@@ -301,6 +301,11 @@ if __name__ == "__main__":
         default="/etc/maintain-views.yaml"
     )
     argparser.add_argument(
+        "--table",
+        help="Specify a single table to act on (currently only fullviews are supported)",
+        default=''
+    )
+    argparser.add_argument(
         "--dry-run",
         help=("Give this parameter if you don't want the script to actually"
               " make changes."),
@@ -332,6 +337,11 @@ if __name__ == "__main__":
 
     args = argparser.parse_args()
 
+    # argparse mutually exclusive is weird http://bugs.python.org/issue10984
+    if args.table and args.clean:
+        logging.critical("cannot specify a single table and cleanup")
+        sys.exit(1)
+
     with open(args.config_location, 'r') as stream:
         try:
             config = yaml.load(stream)
@@ -343,6 +353,14 @@ if __name__ == "__main__":
     all_tables = all_tables + config['fullviews']
     all_tables = all_tables + config['logging_whitelist']
     all_tables = all_tables + list(config['customviews'].keys())
+
+    if args.table:
+        fullviews = [t for t in config["fullviews"] if t == args.table]
+        # TODO: stop ignoring customviews on table specification
+        customviews = {}
+    else:
+        fullviews = config['fullviews']
+        customviews = config['customviews']
 
     dbs_metadata = config['metadata']
     sensitive_db_lists = config['sensitive_db_lists']
@@ -360,16 +378,17 @@ if __name__ == "__main__":
         charset="utf8"
     )
 
-    # Hacks
-    safelog = ("log_type IN ('" +
-               "', '".join(config["logging_whitelist"]) +
-               "')")
-    customviews = config["customviews"]
-    customviews["logging"]["where"] = safelog
-    customviews["logging_logindex"]["where"] = ("(log_deleted&1)=0 and " +
-                                                safelog)
-    customviews["logging_userindex"]["where"] = ("(log_deleted&4)=0 and " +
-                                                 safelog)
+    # This is weirdly arranged and should be cleaned up
+    # to be more explicit at the config file layer
+    if customviews:
+        safelog = ("log_type IN ('" +
+                   "', '".join(config["logging_whitelist"]) +
+                   "')")
+        customviews["logging"]["where"] = safelog
+        customviews["logging_logindex"]["where"] = ("(log_deleted&1)=0 and " +
+                                                    safelog)
+        customviews["logging_userindex"]["where"] = ("(log_deleted&4)=0 and " +
+                                                     safelog)
 
     # This will include private and deleted dbs at this stage
     all_dbs_file = "{}/dblists/all.dblist".format(args.mediawiki_config)
@@ -418,11 +437,13 @@ if __name__ == "__main__":
                 logging.critical("Definer has not been created")
                 sys.exit(1)
 
-            ops.execute(config["fullviews"], customviews)
+            ops.execute(fullviews, customviews)
 
             if args.clean:
+                logging.info('cleanup is enabled')
                 live_tables = ops.tables(ops.db_p)
                 dead_tables = [t for t in live_tables if t not in all_tables]
+                logging.info('cleaning {} tables'.format(len(dead_tables)))
                 for dt in dead_tables:
                     logging.info("Dropping view {}".format(dt))
                     ops.drop_view(dt)
