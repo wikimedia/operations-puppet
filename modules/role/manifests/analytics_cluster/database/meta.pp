@@ -6,9 +6,8 @@ class role::analytics_cluster::database::meta {
     # Some CDH database init scripts need Java to run.
     require role::analytics_cluster::java
 
-    class { 'mariadb::packages_wmf':
-        mariadb10 => true,
-    }
+    include mariadb::packages_wmf
+    include mariadb::service
 
     $config_template = $::realm ? {
         # Production instance has large innodb_buffer_pool_size.
@@ -23,21 +22,6 @@ class role::analytics_cluster::database::meta {
         datadir   => '/var/lib/mysql',
         read_only => false,
         require   => Class['mariadb::packages_wmf'],
-    }
-
-    file { '/etc/init.d/mysql':
-        ensure  => link,
-        target  => '/opt/wmf-mariadb10/service',
-        require => Class['mariadb::packages_wmf'],
-    }
-
-    # Make /usr/local/bin/mysql and /usr/bin/mysql a pointer to
-    # mariadb10 mysql client.  /usr/bin/mysql allows
-    # cdh::hive::metastore::mysql execs to run.
-    file { ['/usr/local/bin/mysql', '/usr/bin/mysql']:
-        ensure  => link,
-        target  => '/opt/wmf-mariadb10/bin/mysql',
-        require => Class['mariadb::packages_wmf'],
     }
 
     # if labs, automate mysql_install_db.
