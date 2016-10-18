@@ -229,6 +229,7 @@ class role::mariadb::misc(
     class { 'mariadb::packages_wmf':
         mariadb10 => true,
     }
+    include mariadb::service
 
     class { 'mariadb::config':
         config    => 'mariadb/misc.my.cnf.erb',
@@ -377,9 +378,8 @@ class role::mariadb::misc::eventlogging(
         mysql_role  => $mysql_role,
     }
 
-    class { 'mariadb::packages_wmf':
-        mariadb10 => true,
-    }
+    include mariadb::packages_wmf
+    include mariadb::service
 
     $read_only = $master ? {
         true  => 0,
@@ -419,6 +419,7 @@ class role::mariadb::beta {
 
     include standard
     include mariadb::packages_wmf
+    include mariadb::service
     include passwords::misc::scripts
 
     # This is essentially the same volume created by role::labs::lvm::srv but
@@ -452,9 +453,8 @@ class role::mariadb::tendril {
         description => 'tendril database server',
     }
 
-    class { 'mariadb::packages_wmf':
-        mariadb10 => true,
-    }
+    include mariadb::packages_wmf
+    include mariadb::service
 
     include standard
     include role::mariadb::monitor::dba
@@ -484,9 +484,8 @@ class role::mariadb::dbstore(
         description => 'Delayed Slave',
     }
 
-    class { 'mariadb::packages_wmf':
-        mariadb10 => true,
-    }
+    include mariadb::packages_wmf
+    include mariadb::service
 
     include standard
     include passwords::misc::scripts
@@ -641,9 +640,8 @@ class role::mariadb::core(
     }
 
 
-    class { 'mariadb::packages_wmf':
-        mariadb10 => true,
-    }
+    include mariadb::packages_wmf
+    include mariadb::service
 
     # Semi-sync replication
     # off: for non-primary datacenter and read-only shard(s)
@@ -708,9 +706,8 @@ class role::mariadb::sanitarium {
         mysql_role  => 'slave',
     }
 
-    class { 'mariadb::packages_wmf':
-        mariadb10 => true,
-    }
+    include mariadb::packages_wmf
+    # do not add mariadb::service, multi-instance has its own way
 
     class { 'mariadb::config':
         config   => 'mariadb/sanitarium.my.cnf.erb',
@@ -802,9 +799,8 @@ class role::mariadb::labs {
         mysql_role  => 'slave',
     }
 
-    class { 'mariadb::packages_wmf':
-        mariadb10 => true,
-    }
+    include mariadb::packages_wmf
+    include mariadb::service
 
     class { 'mariadb::config':
         config  => 'mariadb/labs.my.cnf.erb',
@@ -852,9 +848,8 @@ class role::mariadb::wikitech {
         mysql_role  => 'standalone',
     }
 
-    class { 'mariadb::packages_wmf':
-        mariadb10 => true,
-    }
+    include mariadb::packages_wmf
+    include mariadb::service
 
     class { 'mariadb::config':
         config  => 'mariadb/wikitech.my.cnf.erb',
@@ -966,9 +961,8 @@ class role::mariadb::parsercache(
         description => "Parser Cache Database ${shard}",
     }
 
-    class { 'mariadb::packages_wmf':
-        mariadb10 => true,
-    }
+    include mariadb::packages_wmf
+    include mariadb::service
 
     include role::mariadb::grants::core
     class { 'role::mariadb::grants::production':
