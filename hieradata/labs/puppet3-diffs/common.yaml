@@ -1,0 +1,14 @@
+ssh::server::disable_nist_kex: false
+ssh::server::explicit_macs: false
+puppet_compiler::version: 0.1.6
+etcd::peers_list: compiler02=http://127.0.0.1:2380
+etcd::client::globalconfig::host: 127.0.0.1
+etcd::client::globalconfig::port: 2379
+etcd::client::globalconfig::protocol: http
+etcd::client::globalconfig::srv_domain: ""
+base::resolving::labs_additional_domains:
+  - wikimedia.org
+  - eqiad.wmnet
+  - codfw.wmnet
+  - esams.wmnet
+  - ulsfo.wmnet
