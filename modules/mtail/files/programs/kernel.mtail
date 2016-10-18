@@ -1,0 +1,57 @@
+# Syslog decorator
+def syslog {/(?P<date>(?P<legacy_date>\w+\s+\d+\s+\d+:\d+:\d+)|(?P<rfc3339_date>\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d+[+-]\d{2}:\d{2}))/ +
+    /\s+(?:\w+@)?(?P<hostname>[\w\.-]+)\s+(?P<application>[\w\.-]+)(?:\[(?P<pid>\d+)\])?:\s+(?P<message>.*)/ {
+        len($legacy_date) > 0 {
+            strptime($2, "Jan _2 15:04:05")
+        }
+        len($rfc3339_date) > 0 {
+            strptime($rfc3339_date, "2006-01-02T03:04:05-0700")
+        }
+        next
+    }
+}
+
+@syslog {
+counter mce_events
+counter cpu_throttled
+counter edac_correctable_errors
+counter edac_uncorrectable_errors
+counter edac_events
+
+counter upstart_respawn by service
+counter oom_kill by binary
+counter segfault by binary
+
+/kernel: \[[\d.]+\] mce: .*Machine check events logged/ {
+  mce_events++
+}
+
+/kernel: \[[\d.]+\] .* above threshold, cpu clock throttled/ {
+  cpu_throttled++
+}
+
+/kernel: \[[\d.]+\] EDAC / {
+  edac_events++
+}
+
+/kernel: \[[\d.]+\] EDAC MC\d+: (\d+) CE/ {
+  edac_correctable_errors += $1
+}
+
+/kernel: \[[\d.]+\] EDAC MC\d+: (\d+) UE/ {
+  edac_uncorrectable_errors += $1
+}
+
+/kernel: \[[\d.]+\] init: (?P<service>[\S]+) .*process ended, respawning/ {
+  upstart_respawn[$service]++
+}
+
+/kernel: \[[\d.]+\] (?P<binary>[\S]+) invoked oom-killer:.*/ {
+  oom_kill[$binary]++
+}
+
+/kernel: \[[\d.]+\] (?P<binary>[^\[]+)\[\d+\]: segfault at.*/ {
+  segfault[$binary]++
+}
+
+}
