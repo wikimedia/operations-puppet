@@ -120,6 +120,24 @@ class role::labs::openstack::nova::manager {
         mode   => '0755',
     }
 
+    # On app servers and image scalers, convert(1) from imagemagick is
+    # contained in a firejail profile. Silver receives the same setting
+    # in wmf-config/CommonSettings.php via $wgImageMagickConvertCommand
+    # and since we also need to scale graphics on wikitech, provide them here
+    file { '/usr/local/bin/mediawiki-firejail-convert':
+        source => 'puppet:///modules/mediawiki/mediawiki-firejail-convert',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+    }
+
+    file { '/etc/firejail/mediawiki-converters.profile':
+        source => 'puppet:///modules/mediawiki/mediawiki-converters.profile',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0644',
+    }
+
     class { '::nutcracker':
         mbuf_size => '64k',
         verbosity => 2,
