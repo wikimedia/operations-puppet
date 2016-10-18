@@ -6,6 +6,6 @@ class role::sca {
     include standard
     include base::firewall
     if $::realm == 'production' {
-        include lvs::realserver
+        include ::lvs::realserver
     }
 }
