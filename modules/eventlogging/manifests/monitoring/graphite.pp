@@ -9,8 +9,9 @@
 #                                    kafka::server::jmxtrans
 #
 class eventlogging::monitoring::graphite($kafka_brokers_graphite_wildcard) {
-    $raw_events_rate_metric   = "sumSeries(kafka.cluster.analytics-eqiad.kafka.${kafka_brokers_graphite_wildcard}.kafka.server.BrokerTopicMetrics.MessagesInPerSec.{eventlogging-client-side,eventlogging-server-side}.OneMinuteRate)"
-    $valid_events_rate_metric = "sumSeries(kafka.cluster.analytics-eqiad.kafka.${kafka_brokers_graphite_wildcard}.kafka.server.BrokerTopicMetrics.MessagesInPerSec.eventlogging_*.OneMinuteRate)"
+    $raw_events_rate_metric   = "sumSeries(kafka.cluster.analytics-eqiad.kafka.${kafka_brokers_graphite_wildcard}.kafka.server.BrokerTopicMetrics.MessagesInPerSec.eventlogging-client-side.OneMinuteRate)"
+    $invalid_events_rate_metric = "sumSeries(kafka.cluster.analytics-eqiad.kafka.${kafka_brokers_graphite_wildcard}.kafka.server.BrokerTopicMetrics.MessagesInPerSec.eventlogging_EventError.OneMinuteRate)"
+    $navigation_timing_events_rate_metric = "sumSeries(kafka.cluster.analytics-eqiad.kafka.${kafka_brokers_graphite_wildcard}.kafka.server.BrokerTopicMetrics.MessagesInPerSec.eventlogging_NavigationTiming.OneMinuteRate)"
 
     # Warn if 15% of overall event throughput goes beyond 1000 events/s
     # in a 15 min period.
@@ -28,7 +29,6 @@ class eventlogging::monitoring::graphite($kafka_brokers_graphite_wildcard) {
     # Alarms if 15% of Navigation Timing event throughput goes under 1 req/sec
     # in a 15 min period
     # https://meta.wikimedia.org/wiki/Schema:NavigationTiming
-    $navigation_timing_events_rate_metric = "sumSeries(kafka.cluster.analytics-eqiad.kafka.${kafka_brokers_graphite_wildcard}.kafka.server.BrokerTopicMetrics.MessagesInPerSec.eventlogging_NavigationTiming.OneMinuteRate)"
     monitoring::graphite_threshold { 'eventlogging_NavigationTiming_throughput':
         description   => 'Throughput of EventLogging NavigationTiming events',
         metric        => $navigation_timing_events_rate_metric,
@@ -40,19 +40,15 @@ class eventlogging::monitoring::graphite($kafka_brokers_graphite_wildcard) {
         under         => true
     }
 
-    # Warn/Alert if the difference between raw and valid EventLogging
-    # alerts gets too big.  We put a 10 minute lag because of metrics
-    # not being correct in graphite before.
-    # If the difference gets too big, either the validation step is
-    # overloaded, or high volume schemas are failing validation.
-    monitoring::graphite_threshold { 'eventlogging_difference_raw_validated':
-        description   => 'Difference between raw and validated EventLogging overall message rates',
-        metric        => "absolute(diffSeries(${raw_events_rate_metric},${valid_events_rate_metric}))",
+    # Warn if 15% of overall invalid event throughput goes above 20 events/s
+    # in a 15 minute period.
+    monitoring::graphite_threshold { 'eventlogging_EventError_throughput':
+        description   => 'Throughput of invalid EventLogging events',
+        metric        => $invalid_events_rate_metric,
         warning       => 20,
         critical      => 30,
-        percentage    => 20, # At least 3 of the (25 - 10) = 15 readings
-        from          => '25min',
-        until         => '10min',
+        percentage    => 15, # At least 3 of the (25 - 10) = 15 readings
+        from          => '15min',
         contact_group => 'analytics',
     }
 
