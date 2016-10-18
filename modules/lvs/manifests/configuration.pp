@@ -37,7 +37,8 @@ class lvs::configuration {
                 'ulsfo' => [ ],
                 default => undef,
             },
-            'labs' => $::site ? {
+            'labs' => $::labsproject ? {
+                'deployment-prep' => [ ],
                 default => undef,
             },
             default => undef,
