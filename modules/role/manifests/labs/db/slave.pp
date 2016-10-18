@@ -5,9 +5,8 @@ class role::labs::db::slave {
     }
 
     include standard
-    class { 'mariadb::packages_wmf':
-        mariadb10 => true
-    }
+    include mariadb::packages_wmf
+    include mariadb::service
     include role::mariadb::monitor
     include role::mariadb::ferm
     include passwords::misc::scripts

@@ -8,6 +8,8 @@ class role::labs::db::master {
     class { 'mariadb::packages_wmf':
         mariadb10 => false
     }
+    # only when migrated to mariadb10:
+    # include mariadb::service
     include role::mariadb::monitor
     include passwords::misc::scripts
 

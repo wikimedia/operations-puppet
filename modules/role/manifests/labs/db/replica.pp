@@ -5,9 +5,8 @@ class role::labs::db::replica {
     }
 
     include standard
-    class { 'mariadb::packages_wmf':
-        mariadb10 => true
-    }
+    include mariadb::packages_wmf
+    include mariadb::service
     include role::mariadb::monitor
     include base::firewall
     include role::mariadb::ferm
