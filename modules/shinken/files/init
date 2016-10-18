@@ -325,7 +325,7 @@ do_stop() {
     }
     if [ ! -z "$pid" ]; then
         kill "$pid"
-        sleep 0.5
+        /bin/sleep 0.5
         ## TODO: instead of 'sleep 1': wait up to when pid file is removed (with timeout)?
         for i in 1 2 3
         do
