@@ -1,4 +1,6 @@
-#!/bin/sh
+#!/bin/bash
+# We've replaced /bin/sh with /bin/bash given that this script does not work
+# properly when /bin/sh is a symlink to /bin/dash. See T95064. -- ema
 
 
 print_ok()

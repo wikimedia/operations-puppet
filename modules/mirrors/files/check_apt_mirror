@@ -9,8 +9,8 @@ if [ "x$TO" = "x" ]; then
 	exit 1
 fi
 
-HOSTNAME=$(hostname -f)
-STAMP=${TO}/project/trace/${HOSTNAME}
+FQDN=$(hostname -f)
+STAMP=${TO}/project/trace/${FQDN}
 WARN=6
 CRITICAL=12
 
