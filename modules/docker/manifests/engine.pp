@@ -31,7 +31,6 @@ class docker::engine(
     if $declare_service {
         service { 'docker':
             ensure    => running,
-            subscribe => Package['docker-engine'],
         }
     }
 }
