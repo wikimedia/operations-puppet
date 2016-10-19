@@ -23,7 +23,7 @@ class role::maps::server {
     ganglia::plugin::python { 'diskstat': }
 
     if $::realm == 'production' {
-        include lvs::realserver
+        include ::lvs::realserver
     }
 
     $cassandra_hosts = hiera('cassandra::seeds')

@@ -9,7 +9,7 @@ class role::restbase::server {
     include ::restbase
     include ::restbase::monitoring
 
-    include lvs::realserver
+    include ::lvs::realserver
 
     # Add conftool scripts and credentials
     include ::conftool::scripts
