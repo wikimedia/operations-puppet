@@ -11,7 +11,7 @@ class role::elasticsearch::common {
     }
 
     if hiera('has_lvs', true) {
-        include lvs::realserver
+        include ::lvs::realserver
     }
 
     ferm::service { 'elastic-http':
