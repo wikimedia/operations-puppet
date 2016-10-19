@@ -118,6 +118,14 @@ class icinga(
         options => 'size=128m,uid=icinga,gid=icinga,mode=755',
         require => File['/var/icinga-tmpfs']
     }
+    # Fix the ownerships of some files. This is ugly but will do for now
+    file { ['/var/cache/icinga',
+            '/var/lib/icinga',
+            '/var/lib/icinga/rw',
+        ]:
+        ensure => directory,
+        owner  => 'icinga',
+    }
 
     # FIXME: This should not require explicit setup
     service { 'icinga':
