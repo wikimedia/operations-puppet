@@ -86,10 +86,10 @@ class role::labs::openstack::nova::manager {
         port  => '443',
     }
 
-    # allow ssh from deployment hosts
-    ferm::rule { 'deployment-ssh':
-        ensure => present,
-        rule   => 'proto tcp dport ssh saddr $DEPLOYMENT_HOSTS ACCEPT;',
+    ferm::service { 'deployment-ssh':
+        proto  => 'tcp',
+        port   => '22',
+        srange => '$DEPLOYMENT_HOSTS',
     }
 
     # allow keystone to query the wikitech db
