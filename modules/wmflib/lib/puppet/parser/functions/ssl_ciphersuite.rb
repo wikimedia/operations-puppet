@@ -69,7 +69,7 @@ module Puppet::Parser::Functions
   # 2) Mac:  AEAD > ALL       (AES-GCM/CHAPOLY > Others)
   # 3) Enc:  CHAPOLY > AESGCM (Old client perf, sec)
   # 4) Kx:   ECDHE > DHE      (Perf, mostly)
-  # 5) Enc:  AES128 > AES256  (Perf, mostly - debateable...)
+  # 5) Enc:  AES256 > AES128  (sec)
   # 6) Auth: ECDSA > RSA      (Perf, mostly)
   #
   # After all of that, the fullest list of reasonably-acceptable mid/compat
@@ -91,10 +91,10 @@ module Puppet::Parser::Functions
       '-ALL',
       'ECDHE-ECDSA-CHACHA20-POLY1305',   # openssl-1.1.0, 1.0.2+cloudflare
       'ECDHE-RSA-CHACHA20-POLY1305',     # openssl-1.1.0, 1.0.2+cloudflare
-      'ECDHE-ECDSA-AES128-GCM-SHA256',
-      'ECDHE-RSA-AES128-GCM-SHA256',
       'ECDHE-ECDSA-AES256-GCM-SHA384',
       'ECDHE-RSA-AES256-GCM-SHA384',
+      'ECDHE-ECDSA-AES128-GCM-SHA256',
+      'ECDHE-RSA-AES128-GCM-SHA256',
       'DHE-RSA-AES128-GCM-SHA256',
     ],
     # Forward-Secret, but not AEAD
