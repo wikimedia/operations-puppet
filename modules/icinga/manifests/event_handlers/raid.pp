@@ -34,5 +34,6 @@ class icinga::event_handlers::raid {
         owner      => 'icinga',
         group      => 'icinga',
         require    => File['/usr/lib/nagios/plugins/eventhandlers/raid_handler'],
+        notify     => Service['icinga'],
     }
 }
