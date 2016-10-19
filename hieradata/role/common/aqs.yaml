@@ -79,8 +79,8 @@ aqs::cassandra_default_consistency: localOne
 aqs::cassandra_local_dc: "%{::site}"
 aqs::statsd_host: statsd.eqiad.wmnet
 
-lvs::realserver::realserver_ips:
-    - '10.2.2.12' # aqs.svc.eqiad.wmnet
+role::lvs::realserver::pools:
+  aqs: {}
 
 # Used for ferm firewall rules
 aqs_hosts:

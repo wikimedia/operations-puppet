@@ -78,7 +78,7 @@ class role::aqs {
     include ::aqs
     include ::aqs::monitoring
 
-    include lvs::realserver
+    include role::lvs::realserver
 
     ferm::service {'aqs_web':
         proto => 'tcp',
