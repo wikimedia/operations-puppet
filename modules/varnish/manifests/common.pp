@@ -81,6 +81,11 @@ class varnish::common {
         enable => false,
     }
 
+    # We don't use varnishlog at all, and it can become an issue, see T135700
+    service { 'varnishlog':
+        ensure => 'stopped'
+    }
+
     if (hiera('varnish_version4', false)) {
         # varnishlog4.py depends on varnishapi. Install it.
         file { '/usr/local/lib/python2.7/dist-packages/varnishapi.py':
@@ -104,11 +109,6 @@ class varnish::common {
             owner  => 'root',
             group  => 'root',
             mode   => '0444',
-        }
-
-        # We don't use varnishlog at all, and it can become an issue, see T135700
-        service { 'varnishlog':
-            ensure => 'stopped'
         }
     }
 }
