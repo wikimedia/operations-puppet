@@ -2767,7 +2767,7 @@ node /(subra|suhail)\.codfw\.wmnet/ {
 
 # icinga based monitoring host in codfw
 node 'tegmen.wikimedia.org' {
-    role(icinga) #, tendril, tcpircbot)
+    role(icinga, tendril) #, tcpircbot)
 }
 
 # https://wikitech.wikimedia.org/wiki/Terbium
