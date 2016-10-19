@@ -72,8 +72,8 @@ module Puppet::Parser::Functions
   #     strange ordering on chapoly in general to align with prefhacks and
   #     deprecating draft-mode
   # 3) Kx:   ECDHE > DHE      (Perf, mostly)
-  # 4) Auth: ECDSA > RSA      (Perf, mostly)
-  # 5) Enc:  AES128 > AES256  (Perf, mostly - debateable...)
+  # 4) Enc:  AES128 > AES256  (Perf, mostly - debateable...)
+  # 5) Auth: ECDSA > RSA      (Perf, mostly)
   #
   # After all of that, the fullest list of reasonably-acceptable mid/compat
   # ciphers has been filtered further to reduce pointless clutter:
@@ -95,8 +95,8 @@ module Puppet::Parser::Functions
       'ECDHE-ECDSA-CHACHA20-POLY1305',   # openssl-1.1.0, 1.0.2+cloudflare
       'ECDHE-RSA-CHACHA20-POLY1305',     # openssl-1.1.0, 1.0.2+cloudflare
       'ECDHE-ECDSA-AES128-GCM-SHA256',
-      'ECDHE-ECDSA-AES256-GCM-SHA384',
       'ECDHE-RSA-AES128-GCM-SHA256',
+      'ECDHE-ECDSA-AES256-GCM-SHA384',
       'ECDHE-RSA-AES256-GCM-SHA384',
       'DHE-RSA-AES128-GCM-SHA256',
     ],
