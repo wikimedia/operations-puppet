@@ -344,12 +344,12 @@ node /^cp20(0[258]|1[147]|2[0246])\.codfw\.wmnet$/ {
 
 node /^cp20(0[39]|15|21)\.codfw\.wmnet$/ {
     interface::add_ip6_mapped { 'main': }
-    role(cache::maps, ipsec)
+    role(cache::maps, ipsec, prometheus::varnish_exporter)
 }
 
 node /^cp20(06|1[28]|25)\.codfw\.wmnet$/ {
     interface::add_ip6_mapped { 'main': }
-    role(cache::misc, ipsec)
+    role(cache::misc, ipsec, prometheus::varnish_exporter)
 }
 
 node /^cp300[3-6]\.esams\.wmnet$/ {
@@ -397,7 +397,7 @@ node /^cp30[34][4-9]\.esams\.wmnet$/ {
 
 node /^cp400[1-4]\.ulsfo\.wmnet$/ {
     interface::add_ip6_mapped { 'main': }
-    role(cache::misc, ipsec)
+    role(cache::misc, ipsec, prometheus::varnish_exporter)
 }
 
 node /^cp40(0[5-7]|1[3-5])\.ulsfo\.wmnet$/ {
@@ -412,7 +412,7 @@ node /^cp40(0[89]|1[0678])\.ulsfo\.wmnet$/ {
 
 node /^cp40(1[129]|20)\.ulsfo\.wmnet$/ {
     interface::add_ip6_mapped { 'main': }
-    role(cache::maps, ipsec)
+    role(cache::maps, ipsec, prometheus::varnish_exporter)
 }
 
 node 'dataset1001.wikimedia.org' {
