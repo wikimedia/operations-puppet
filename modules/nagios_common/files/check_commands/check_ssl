@@ -136,6 +136,14 @@ sub ssl_connect {
     $sopts{timeout}      = $ng->timeout;
     $sopts{SSL_hostname} = $cn;
 
+    # Note: This might seem insecure, but we actually rely on the rest of our
+    # custom ssl_* functions to do all the verifications. Plus this is monitoring
+    # We explicity disable peer verification to allow the connecting phase to continue
+    # and retrieve certificates.
+    # This was added to override the default of IO::Socket::SSL version 1.950 which is
+    # SSL_VERIFY_PEER
+    $sopts{SSL_verify_mode} = SSL_VERIFY_NONE;
+
     # not setting this (or setting to undef) does *not* disable SNI;
     # only setting to empty string does (this is documented)
     if ( $ng->nosni ) {
