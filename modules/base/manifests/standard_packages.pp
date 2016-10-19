@@ -28,6 +28,7 @@ class base::standard_packages {
         'moreutils',
         'ncdu',
         'ngrep',
+        'quickstack',
         'pv',
         'screen',
         'strace',
@@ -53,12 +54,6 @@ class base::standard_packages {
     # for hardware monitoring via IPMI (T125205)
     if os_version('debian >= jessie') {
         require_package('freeipmi', 'libipc-run-perl')
-    }
-
-    # This should be in $packages, but moved here temporarily because it's
-    # currently broken on jessie hosts...
-    if ! os_version('debian >= jessie') {
-        package { 'quickstack': ensure => latest }
     }
 
     if $::network_zone == 'internal' {
