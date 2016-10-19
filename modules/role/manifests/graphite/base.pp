@@ -66,6 +66,13 @@ class role::graphite::base(
 
         # Aggregation methods for whisper files.
         storage_aggregation => {
+            # Cassandra "count" metrics are treated like gauges, not like
+            # statsd "counters". See also T121789 for rationale.
+            '10_cassandra_count'     => {
+                pattern           => '^cassandra\..*\.count$',
+                xFilesFactor      => 0.01,
+                aggregationMethod => 'avg',
+            },
             'min'     => {
                 pattern           => '\.min$',
                 xFilesFactor      => 0.01,
@@ -97,7 +104,11 @@ class role::graphite::base(
                 xFilesFactor      => 0.01,
                 aggregationMethod => 'max',
             },
-            'default' => {
+            # Like storage_schemas, this hash is written in order in the
+            # configuration file and read in order by graphite
+            # (lib/carbon/storage.py). Therefore put default as last item for
+            # matching to work correctly.
+            'zzdefault' => {
                 pattern      => '.*',
                 xFilesFactor => 0.01,
             },
