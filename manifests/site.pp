@@ -2628,7 +2628,6 @@ node 'sinistra.codfw.wmnet' {
 
 node 'sodium.wikimedia.org' {
     role(mirrors)
-    include base::firewall
     include standard
 
     interface::add_ip6_mapped { 'main': }
