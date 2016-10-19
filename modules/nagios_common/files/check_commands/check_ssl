@@ -135,6 +135,11 @@ sub ssl_connect {
     $sopts{SSL_version}  = $ng->ssl if $ng->ssl;
     $sopts{timeout}      = $ng->timeout;
     $sopts{SSL_hostname} = $cn;
+    # TODO: This is hideous. We explicity disable peer verification to unbreak
+    # our use cases, but we clearly need to update those use cases in order to
+    # switch to the more secure SSL_VERIFY_PEER which is the default since
+    # IO::Socket::SSL version 1.950
+    $sopts{SSL_verify_mode} = SSL_VERIFY_NONE;
 
     # not setting this (or setting to undef) does *not* disable SNI;
     # only setting to empty string does (this is documented)
