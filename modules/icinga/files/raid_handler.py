@@ -18,6 +18,8 @@ SERVICE_STATE_TYPES = ('SOFT', 'HARD')
 RAID_TYPES = ('megacli', 'hpssacli', 'mpt', 'md')
 COMPRESSED_RAID_TYPES = ('megacli', 'hpssacli')
 
+SKIP_STRINGS = ('timeout', 'timed out', 'connection refused')
+
 LOG_PATH = '/var/log/icinga/raid_handler.log'
 COMMAND_FILE = '/var/lib/nagios/rw/nagios.cmd'
 CHECK_NRPE_PATH = '/usr/lib/nagios/plugins/check_nrpe'
@@ -213,12 +215,15 @@ def main():
         logger.debug('Nothing to do, exiting')
         return
 
-    if 'timeout' in args.message.lower():
-        logger.info(
-            ("Skipping RAID Handler execution for host '{}' and "
-             "RAID type '{}', timeout detected: {}").format(
-                args.host_address, args.raid_type, args.message))
-        return
+    message_lower = args.message.lower()
+    for skip_string in SKIP_STRINGS:
+        if skip_string in message_lower:
+            logger.info(
+                ("Skipping RAID Handler execution for host '{}' and "
+                 "RAID type '{}', skip string '{}' detected in '{}'").format(
+                    args.host_address, args.raid_type, skip_string,
+                    args.message))
+            return
 
     raid_status = get_raid_status(args.host_address, args.raid_type)
     phab_client = get_phabricator_client()
