@@ -14,6 +14,10 @@ class icinga::web {
     include ::apache::mod::ssl
     include ::apache::mod::headers
     include ::apache::mod::cgi
+    # Disable access_compat module on Debian >= Jessie
+    if os_version('debian >= jessie') {
+        apache::mod_conf { 'access_compat': ensure => absent }
+    }
 
     ferm::service { 'icinga-https':
       proto => 'tcp',
