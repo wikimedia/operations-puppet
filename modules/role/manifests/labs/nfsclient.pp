@@ -37,7 +37,7 @@ class role::labs::nfsclient(
         }
 
         # Temp - to remove existing mounts from labstore1001
-        labstore::nfs_mount { 'project-on-labstoresvc':
+        labstore::nfs_mount { 'maps-project-on-labstoresvc':
             ensure      => 'absent',
             mount_name  => 'project',
             project     => $::labsproject,
@@ -49,7 +49,7 @@ class role::labs::nfsclient(
             lookupcache => $lookupcache,
         }
 
-        labstore::nfs_mount { 'home-on-labstoresvc':
+        labstore::nfs_mount { 'maps-home-on-labstoresvc':
             ensure      => 'absent',
             mount_name  => 'home',
             project     => $::labsproject,
