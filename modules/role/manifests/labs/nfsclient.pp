@@ -35,6 +35,31 @@ class role::labs::nfsclient(
             share_path  => '/maps',
             lookupcache => $lookupcache,
         }
+
+        # Temp - to remove existing mounts from labstore1001
+        labstore::nfs_mount { 'project-on-labstoresvc':
+            ensure      => 'absent',
+            mount_name  => 'project',
+            project     => $::labsproject,
+            options     => ['rw', $mode],
+            mount_path  => '/data/project',
+            share_path  => "/project/${::labsproject}/project",
+            server      => 'labstore.svc.eqiad.wmnet',
+            block       => true,
+            lookupcache => $lookupcache,
+        }
+
+        labstore::nfs_mount { 'home-on-labstoresvc':
+            ensure      => 'absent',
+            mount_name  => 'home',
+            project     => $::labsproject,
+            options     => ['rw', 'hard'],
+            mount_path  => '/home',
+            share_path  => "/project/${::labsproject}/home",
+            server      => 'labstore.svc.eqiad.wmnet',
+            block       => true,
+            lookupcache => $lookupcache,
+        }
     }
 
     labstore::nfs_mount { 'scratch-on-labstoresvc':

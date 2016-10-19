@@ -93,8 +93,6 @@ private:
     gid: 50196
     mounts:
       dumps: true
-      home: true
-      project: true
       scratch: true
       maps: true
   maps-team:
