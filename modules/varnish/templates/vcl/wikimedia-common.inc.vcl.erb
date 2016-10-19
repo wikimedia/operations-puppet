@@ -92,7 +92,7 @@ probe varnish {
 }
 
 probe logstash {
-	.url = "/status";
+	.url = "/api/status";
 	.interval = 5s;
 	.timeout = 1s;
 	.window = 5;
