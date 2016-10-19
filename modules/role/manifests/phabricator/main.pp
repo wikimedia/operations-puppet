@@ -13,7 +13,7 @@ class role::phabricator::main {
     include passwords::mysql::phabricator
     include phabricator::monitoring
     include phabricator::mpm
-    include lvs::realserver
+    include ::lvs::realserver
     include base::firewall
     include ::apache::mod::remoteip
 
