@@ -213,7 +213,7 @@ def main():
         logger.debug('Nothing to do, exiting')
         return
 
-    if 'Timeout' in args.message:
+    if 'timeout' in args.message.lower():
         logger.info(
             ("Skipping RAID Handler execution for host '{}' and "
              "RAID type '{}', timeout detected: {}").format(
