@@ -60,6 +60,23 @@ class role::labs::nfsclient(
             block       => true,
             lookupcache => $lookupcache,
         }
+
+        if mount_nfs_volume($::labsproject, 'maps') {
+            file { '/data/project':
+                ensure  => 'link',
+                target  => '/mnt/nfs/labstore1003-maps/project',
+                require => [Labstore::Nfs_mount['maps-on-labstore1003'],
+                            Labstore::Nfs_mount['maps-project-on-labstoresvc']],
+            }
+
+            file { '/home':
+                ensure  => 'link',
+                target  => '/mnt/nfs/labstore1003-maps/home',
+                require => [Labstore::Nfs_mount['maps-on-labstore1003'],
+                            Labstore::Nfs_mount['maps-home-on-labstoresvc']],
+            }
+        }
+
     }
 
     labstore::nfs_mount { 'scratch-on-labstoresvc':
