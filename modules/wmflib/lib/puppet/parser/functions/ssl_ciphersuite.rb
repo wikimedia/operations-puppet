@@ -67,13 +67,10 @@ module Puppet::Parser::Functions
   # 0) Enc:  3DES < ALL       (SWEET32)
   # 1) Kx:   (EC)DHE > RSA    (Forward Secrecy)
   # 2) Mac:  AEAD > ALL       (AES-GCM/CHAPOLY > Others)
-  #   ^ Note: our chapoly patches only turn on chapoly ciphers if the client
-  #     prefers them to their equivalent AES-GCM options, and we have some
-  #     strange ordering on chapoly in general to align with prefhacks and
-  #     deprecating draft-mode
-  # 3) Kx:   ECDHE > DHE      (Perf, mostly)
-  # 4) Enc:  AES128 > AES256  (Perf, mostly - debateable...)
-  # 5) Auth: ECDSA > RSA      (Perf, mostly)
+  # 3) Enc:  CHAPOLY > AESGCM (Old client perf, sec)
+  # 4) Kx:   ECDHE > DHE      (Perf, mostly)
+  # 5) Enc:  AES128 > AES256  (Perf, mostly - debateable...)
+  # 6) Auth: ECDSA > RSA      (Perf, mostly)
   #
   # After all of that, the fullest list of reasonably-acceptable mid/compat
   # ciphers has been filtered further to reduce pointless clutter:
