@@ -38,6 +38,7 @@ class role::graphite::base(
 
     class { '::graphite':
         # First match wins with storage schemas
+        # lint:ignore:arrow_alignment
         storage_schemas     => {
             # Retain daily metrics for 25 years. Per metric size: 109528 bytes
             'daily'     => {
@@ -63,9 +64,18 @@ class role::graphite::base(
                 retentions => '1m:7d,5m:14d,15m:30d,1h:1y,1d:5y',
             },
         },
+        # lint:endignore
 
         # Aggregation methods for whisper files.
+        # lint:ignore:arrow_alignment
         storage_aggregation => {
+            # Cassandra "count" metrics are treated like gauges, not like
+            # statsd "counters". See also T121789 for rationale.
+            '10_cassandra_count'  => {
+                pattern           => '^cassandra\..*\.count$',
+                xFilesFactor      => 0.01,
+                aggregationMethod => 'avg',
+            },
             'min'     => {
                 pattern           => '\.min$',
                 xFilesFactor      => 0.01,
@@ -97,11 +107,16 @@ class role::graphite::base(
                 xFilesFactor      => 0.01,
                 aggregationMethod => 'max',
             },
-            'default' => {
+            # Like storage_schemas, this hash is written in order in the
+            # configuration file and read in order by graphite
+            # (lib/carbon/storage.py). Therefore put default as last item for
+            # matching to work correctly.
+            'zzdefault' => {
                 pattern      => '.*',
                 xFilesFactor => 0.01,
             },
         },
+        # lint:endignore
 
         # All metric data goes through a single carbon-relay instance, which
         # forwards each data point to one of eight carbon-cache instances, using
