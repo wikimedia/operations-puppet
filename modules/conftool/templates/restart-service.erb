@@ -1,5 +1,12 @@
 #!/bin/bash
 set -e
-/usr/local/bin/depool-<%= @title %>
+# Check the pooling status first
+POOLING_STATUS=$(confctl select 'name=<%= @fqdn %>,service=<%= @title %>' get | jq '.["<%= @fqdn %>"].pooled')
+
+if [ $POOLING_STATUS == '"yes"' ]; then
+    DO_POOL=1
+fi
+
+test -z ${DO_POOL} && /usr/local/bin/depool-<%= @title %>
 /usr/sbin/service '<%= @title %>' restart
-/usr/local/bin/pool-<%= @title %>
+test -x ${DO_POOL} && /usr/local/bin/pool-<%= @title %>
