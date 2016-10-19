@@ -23,7 +23,6 @@ class icinga::event_handlers::raid {
         require => [
             File['/etc/phabricator_ops-monitoring-bot.conf'],
             File['/var/lib/nagios/rw/nagios.cmd'],
-            File['/usr/lib/nagios/plugins/check_nrpe'],
             Package['icinga'],
         ],
     }
