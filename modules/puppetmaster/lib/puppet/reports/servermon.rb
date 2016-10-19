@@ -39,7 +39,7 @@ Puppet::Reports.register_report(:servermon) do
             if con.affected_rows == 0
                 insert_host = "INSERT INTO hosts(
                 name, environment, last_compile, updated_at, created_at) \
-                VALUES('#{self.host}', #{self.environment}', '#{self.time}', '#{self.time}', #{self.time}')"
+                VALUES('#{self.host}', '#{self.environment}', '#{self.time}', '#{self.time}', '#{self.time}')"
                 con.query(insert_host)
             end
             # Now we know the host is there, get the id
