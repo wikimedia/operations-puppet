@@ -12,6 +12,9 @@ class role::eventbus::eventbus {
     include base::firewall
     require ::eventschemas
 
+    if hiera('has_lvs', true) {
+        include ::role::lvs::realserver
+    }
     $config = kafka_config('main')
 
     # eventlogging code for eventbus is configured to deploy
@@ -103,7 +106,4 @@ class role::eventbus::eventbus {
         srange => '$INTERNAL',
     }
 
-    if $::realm == 'production' {
-        include lvs::realserver
-    }
 }
