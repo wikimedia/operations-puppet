@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 # Check the pooling status first
-POOLING_STATUS=$(confctl select 'name=<%= @fqdn %>,service=<%= @title %>' get | jq '.["<%= @fqdn %>"].pooled')
+POOLING_STATUS=$(confctl select 'name=<%= @fqdn %>,service=<%= @service %>' get | jq '.["<%= @fqdn %>"].pooled')
 
 if [ $POOLING_STATUS == '"yes"' ]; then
     DO_POOL=1
