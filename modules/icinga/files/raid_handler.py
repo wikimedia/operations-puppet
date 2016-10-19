@@ -68,7 +68,8 @@ def parse_args():
         '-c', dest='datacenter', action='store', required=True,
         help='The name of the datacenter the host is located in')
     parser.add_argument(
-        '-n', dest='notes', action='store', help='The Service notes')
+        '-m', dest='message', action='store', required=True,
+        help='The service Status information output (first line)')
     parser.add_argument(
         '-d', dest='debug', action='store_true', help='Debug level logging')
 
@@ -212,11 +213,11 @@ def main():
         logger.debug('Nothing to do, exiting')
         return
 
-    if args.notes is not None and 'Timeout' in args.notes:
+    if 'Timeout' in args.message:
         logger.info(
             ("Skipping RAID Handler execution for host '{}' and "
              "RAID type '{}', timeout detected: {}").format(
-                args.host_address, args.raid_type, args.notes))
+                args.host_address, args.raid_type, args.message))
         return
 
     raid_status = get_raid_status(args.host_address, args.raid_type)
