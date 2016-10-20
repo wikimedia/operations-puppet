@@ -588,7 +588,7 @@ lvs::configuration::lvs_services:
           hostname: search.svc.codfw.wmnet
   ocg:
     description: Offline Content Generator (e.g. PDF), ocg.svc.eqiad.wmnet
-    class: high-traffic2
+    class: low-traffic
     sites:
     - eqiad
     ip: *ip_block015
