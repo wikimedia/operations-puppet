@@ -2424,6 +2424,10 @@ node /^prometheus200[12]\.codfw\.wmnet$/ {
     include base::firewall
     include standard
     include lvs::realserver
+
+    interface::add_ip6_mapped { 'main':
+        interface => 'eth0',
+    }
 }
 
 node /^prometheus100[12]\.eqiad\.wmnet$/ {
@@ -2432,6 +2436,10 @@ node /^prometheus100[12]\.eqiad\.wmnet$/ {
     include base::firewall
     include standard
     include lvs::realserver
+
+    interface::add_ip6_mapped { 'main':
+        interface => 'eth0',
+    }
 }
 
 node /^puppetmaster[12]001\.(codfw|eqiad)\.wmnet$/ {
