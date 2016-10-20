@@ -1,0 +1,4 @@
+---
+role::lvs::realserver::pools:
+  restbase: {}
+
