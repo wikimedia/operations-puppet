@@ -307,6 +307,18 @@ discovery.zen.ping.multicast.group: <%= @multicast_group %>
 # to minimize discovery failures:
 #
 #discovery.zen.ping.timeout: 3s
+<% if @zen_ping_timeout -%>
+discovery.zen.ping.timeout: <%= @zen_ping_timeout %>
+<% end -%>
+<% if @zen_fd_ping_interval -%>
+discovery.zen.fd.ping_interval: <%= @zen_fd_ping_interval %>
+<% end -%>
+<% if @zen_fd_ping_timeout -%>
+discovery.zen.fd.ping_timeout: <%= @zen_fd_ping_timeout %>
+<% end -%>
+<% if @zen_fd_ping_retries -%>
+discovery.zen.fd.ping_retries: <%= @zen_fd_ping_retries %>
+<% end -%>
 
 # See <http://elasticsearch.org/guide/reference/modules/discovery/zen.html>
 # for more information.

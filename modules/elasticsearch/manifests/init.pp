@@ -59,6 +59,8 @@
 #       hosts in the cluster to this list.  Elasticsearch will still use
 #       multicast discovery but this will keep it from getting lost if none of
 #       its pings reach other servers.
+# - $zen_ping_interval, $zen_fd_ping_interval, $zen_fd_ping_timeout, $zen_fd_ping_retries:
+#       see https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-discovery-zen.html
 # - $bind_networks: networks to bind (both transport and http connectors)
 #       see https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-network.html#network-interface-values
 # - $publish_host: host to publish (both transport and http connectors)
@@ -107,6 +109,10 @@ class elasticsearch(
     $rack = undef,
     $multicast_enabled = false,
     $unicast_hosts = undef,
+    $zen_ping_interval = undef,
+    $zen_fd_ping_interval = undef,
+    $zen_fd_ping_timeout = undef,
+    $zen_fd_ping_retries = undef,
     $bind_networks = ['_local_', '_site_'],
     $publish_host = '_eth0_',
     $filter_cache_size = '10%',
