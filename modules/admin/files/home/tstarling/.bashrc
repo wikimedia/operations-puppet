@@ -60,8 +60,8 @@ export RCMD_CMD=ssh
 export FANOUT=20
 export EDITOR=vim
 
-if [ -e /usr/local/lib/mw-deployment-vars.sh ]; then
-	. /usr/local/lib/mw-deployment-vars.sh
+if [ -e /etc/profile.d/mediawiki.sh ]; then
+	. /etc/profile.d/mediawiki.sh
 	export ENWIKI_VERSION=$(php -r '$a = json_decode(file_get_contents("/srv/mediawiki-staging/wikiversions.json")); print $a->enwiki;')
 	if [ -e $MEDIAWIKI_STAGING_DIR ]; then
 		export WIKI=$MEDIAWIKI_STAGING_DIR/$ENWIKI_VERSION

@@ -3,7 +3,7 @@
 set -e
 set -u
 
-. /usr/local/lib/mw-deployment-vars.sh
+. /etc/profile.d/mediawiki.sh
 
 me=$(readlink -f "$0")
 deploy_type=${1:-}

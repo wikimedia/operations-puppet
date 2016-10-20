@@ -4,6 +4,9 @@ MEDIAWIKI_DEPLOYMENT_DIR="<%= @mediawiki_deployment_dir %>"
 MEDIAWIKI_STAGING_DIR="<%= @mediawiki_staging_dir %>"
 MEDIAWIKI_WEB_USER="<%= @mediawiki_web_user %>"
 
+MW_STATSD_HOST="<%= @statsd_host %>"
+MW_STATSD_PORT=<%= @statsd_port %>
+
 # Members of the wikidev group are deployers, keep the things they do
 # group readable/writable. Do the same for l10nupdate, which calls
 # into scap.
