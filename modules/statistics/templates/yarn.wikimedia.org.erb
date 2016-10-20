@@ -30,10 +30,10 @@
 
         # The Jetty Webserver (responsible for the Yarn UI) returns HTML with hardcoded
         # links in the HTML hrefs, so we need a way to avoid broken links.
-        ProxyHTMLEnable On
-        # ProxyHTMLExtended forces mod_proxy_html to parse CSS/JS files too
-        # causing performance penalties in the overall rendering time.
-        # Unfortunately this is needed since some analytics1001 links are
+        # Not using 'ProxyHTMLEnable On' since it breaks the visualization of
+        # Spark shell logs in the UI.
+        # https://httpd.apache.org/docs/2.4/mod/mod_proxy_html.html#comment_3329
+        SetOutputFilter INFLATE;proxy-html;DEFLATE
         # contained in embedded JS script that cause a broken UI experience
         # if left untouched.
         ProxyHTMLExtended On
