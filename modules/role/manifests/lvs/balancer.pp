@@ -20,7 +20,6 @@ class role::lvs::balancer {
             $sip['maps'][$::site],
             $sip['dns_rec'][$::site],
             $sip['misc_web'][$::site],
-            $sip['ocg'][$::site],
             ],
         /^(lvs10(0[36]|09|12))$/ => [
             $sip['apaches'][$::site],
@@ -44,6 +43,7 @@ class role::lvs::balancer {
             $sip['ores'][$::site],
             $sip['thumbor'][$::site],
             $sip['prometheus'][$::site],
+            $sip['ocg'][$::site],
             $sip['wdqs'][$::site],
             $sip['kibana'][$::site],
             ],
