@@ -52,7 +52,7 @@ if __name__ == '__main__':
 
     classes = set()
 
-    if project != 'tools':
+    if project == 'tools':
         servers = ldap3.ServerPool([
             ldap3.Server(s)
             for s in ldapconfig['servers']
