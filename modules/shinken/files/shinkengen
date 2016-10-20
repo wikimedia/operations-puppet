@@ -136,7 +136,7 @@ if __name__ == '__main__':
             # manifests/site.pp, so we need to add it here explicitly.
             hostgroups = [project, 'role::labs::instance'] + instance['puppetClasses']
             hostgroups += get_instance_roles(instance['project'], instance['fqdn'])
-            co.properties['hostgroups'] = ','.join(set(hostgroups))
+            co.properties['hostgroups'] = ','.join(sorted(set(hostgroups)))
             # For each project added to monitoring we expect a contactgroup with the same
             # name added.
             # FIXME: Implement access mechanism more fine grained than per-project
