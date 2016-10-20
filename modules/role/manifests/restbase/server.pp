@@ -10,15 +10,8 @@ class role::restbase::server {
     include ::restbase
     include ::restbase::monitoring
 
-    include ::lvs::realserver
-
-    # Add conftool scripts and credentials
-    include ::conftool::scripts
-    # LVS pooling/depoling scripts
-    include ::lvs::configuration
-    conftool::scripts::service { 'restbase':
-        lvs_services_config => $::lvs::configuration::lvs_services,
-        lvs_class_hosts     => $::lvs::configuration::lvs_class_hosts,
+    if hiera('has_lvs', true) {
+        include role::lvs::realserver
     }
 
     # RESTBase rate limiting DHT firewall rule
