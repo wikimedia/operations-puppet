@@ -29,7 +29,7 @@ class role::labs::nfsclient(
         labstore::nfs_mount { 'maps-on-labstore1003':
             mount_name  => 'maps',
             project     => $::labsproject,
-            options     => ['rw', 'soft', 'timeo=300', 'retrans=3'],
+            options     => ['rw', 'hard'],
             mount_path  => '/mnt/nfs/labstore1003-maps',
             server      => 'labstore1003.eqiad.wmnet',
             share_path  => '/maps',
