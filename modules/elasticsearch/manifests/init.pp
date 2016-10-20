@@ -59,6 +59,8 @@
 #       hosts in the cluster to this list.  Elasticsearch will still use
 #       multicast discovery but this will keep it from getting lost if none of
 #       its pings reach other servers.
+# - $zen_ping_interval, $zen_fd_ping_interval, $zen_fd_ping_timeout, $zen_fd_ping_retries:
+#       see https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-discovery-zen.html
 # - $bind_networks: networks to bind (both transport and http connectors)
 #       see https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-network.html#network-interface-values
 # - $publish_host: host to publish (both transport and http connectors)
@@ -86,34 +88,39 @@
 #       cluster_name = 'labs-search'
 #   }
 #
-class elasticsearch($cluster_name,
-                    $heap_memory = '2G',
-                    $multicast_group = '224.2.2.4',
-                    $data_dir = '/var/lib/elasticsearch',
-                    $plugins_dir = '/srv/deployment/elasticsearch/plugins',
-                    $plugins_mandatory = undef,
-                    $minimum_master_nodes = 1,
-                    $master_eligible = true,
-                    $holds_data = true,
-                    $auto_create_index = false,
-                    $expected_nodes = 1,
-                    $recover_after_nodes = 1,
-                    $recover_after_time = '1s',
-                    $awareness_attributes = undef,
-                    $row = undef,
-                    $rack = undef,
-                    $multicast_enabled = false,
-                    $unicast_hosts = undef,
-                    $bind_networks = ['_local_', '_site_'],
-                    $publish_host = '_eth0_',
-                    $filter_cache_size = '10%',
-                    $bulk_thread_pool_executors = undef,
-                    $bulk_thread_pool_capacity = undef,
-                    $statsd_host = undef,
-                    $merge_threads = 3,
-                    $load_fixed_bitset_filters_eagerly = true,
-                    $graylog_hosts = undef,
-                    $graylog_port = 12201,
+class elasticsearch(
+    $cluster_name,
+    $heap_memory = '2G',
+    $multicast_group = '224.2.2.4',
+    $data_dir = '/var/lib/elasticsearch',
+    $plugins_dir = '/srv/deployment/elasticsearch/plugins',
+    $plugins_mandatory = undef,
+    $minimum_master_nodes = 1,
+    $master_eligible = true,
+    $holds_data = true,
+    $auto_create_index = false,
+    $expected_nodes = 1,
+    $recover_after_nodes = 1,
+    $recover_after_time = '1s',
+    $awareness_attributes = undef,
+    $row = undef,
+    $rack = undef,
+    $multicast_enabled = false,
+    $unicast_hosts = undef,
+    $zen_ping_interval = undef,
+    $zen_fd_ping_interval = undef,
+    $zen_fd_ping_timeout = undef,
+    $zen_fd_ping_retries = undef,
+    $bind_networks = ['_local_', '_site_'],
+    $publish_host = '_eth0_',
+    $filter_cache_size = '10%',
+    $bulk_thread_pool_executors = undef,
+    $bulk_thread_pool_capacity = undef,
+    $statsd_host = undef,
+    $merge_threads = 3,
+    $load_fixed_bitset_filters_eagerly = true,
+    $graylog_hosts = undef,
+    $graylog_port = 12201,
 ) {
 
     # Check arguments
