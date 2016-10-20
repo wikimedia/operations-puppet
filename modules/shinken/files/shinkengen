@@ -110,8 +110,8 @@ class LDAPSource(object):
 
 def get_instance_roles(project, fqdn):
     url = 'http://labcontrol1001.wikimedia.org:8100/v1/{project}/node/{fqdn}'.format(
-        project,
-        fqdn
+        project=project,
+        fqdn=fqdn
     )
     return yaml.safe_load(requests.get(url).text)['roles']
 
