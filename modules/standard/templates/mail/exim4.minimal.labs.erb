@@ -1,5 +1,4 @@
-# Exim 4 configuration file for Wikimedia servers
-# Written on 2010-02-08 by Mark Bergsma <mark@wikimedia.org>
+# Minimal Exim 4 configuration file for Wikimedia Labs
 
 # Main configuration options
 
@@ -15,6 +14,9 @@ ignore_bounce_errors_after = 0h
 
 add_environment = <; PATH=/bin:/usr/bin
 keep_environment =
+
+# 4.87+ defaults to *, which errors if tls_certificate etc. is not present
+tls_advertise_hosts =
 
 # Logging
 log_selector = +address_rewrite +all_parents +delivery_size +deliver_time +incoming_interface +incoming_port +smtp_confirmation +smtp_protocol_error +smtp_syntax_error
