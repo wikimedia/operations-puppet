@@ -22,6 +22,7 @@ class shinken::shinkengen(
     package { [
         'python3-ldap3', # Custom package of https://pypi.python.org/pypi/python3-ldap
         'python3-yaml',
+        'python3-requests',
     ]:
         ensure => present,
     }
