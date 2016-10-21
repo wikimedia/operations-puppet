@@ -100,6 +100,15 @@ class profile::docker::engine {
         settings => merge($docker_settings, $docker_storage_options),
     }
 
+    # Enable memory cgroup
+    grub::bootparam { 'cgroup_enable':
+        value => 'memory',
+    }
+
+    grub::bootparam { 'swapaccount':
+        value => '1',
+    }
+
     # Service declaration
     service { 'docker':
         ensure => $service_ensure,
