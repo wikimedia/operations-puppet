@@ -17,11 +17,11 @@ class raid {
     $check_raid = '/usr/bin/sudo /usr/local/lib/nagios/plugins/check_raid'
 
     # for 'forking' checks (i.e. all but mdadm, which essentially just reads
-    # kernel memory from /proc/mdstat) check every $normal_check_interval
+    # kernel memory from /proc/mdstat) check every $check_interval
     # minutes instead of default of one minute. If the check is non-OK, retry
-    # every $retry_check_interval.
-    $normal_check_interval = 10
-    $retry_check_interval = 5
+    # every $retry_interval.
+    $check_interval = 10
+    $retry_interval = 5
 
     if 'megaraid' in $raid {
         require_package('megacli')
@@ -46,11 +46,11 @@ class raid {
 
         $service_description_megaraid = 'MegaRAID'
         nrpe::monitor_service { 'raid_megaraid':
-            description           => $service_description_megaraid,
-            nrpe_command          => "${check_raid} megacli",
-            normal_check_interval => $normal_check_interval,
-            retry_check_interval  => $retry_check_interval,
-            event_handler         => "raid_handler!megacli!${service_description_megaraid}!${::site}",
+            description    => $service_description_megaraid,
+            nrpe_command   => "${check_raid} megacli",
+            check_interval => $check_interval,
+            retry_interval => $retry_interval,
+            event_handler  => "raid_handler!megacli!${service_description_megaraid}!${::site}",
         }
     }
 
@@ -90,12 +90,12 @@ class raid {
 
         $service_description_hp = 'HP RAID'
         nrpe::monitor_service { 'raid_hpssacli':
-            description           => $service_description_hp,
-            nrpe_command          => '/usr/local/lib/nagios/plugins/check_hpssacli',
-            timeout               => 50, # can take > 10s on servers with lots of disks
-            normal_check_interval => $normal_check_interval,
-            retry_check_interval  => $retry_check_interval,
-            event_handler         => "raid_handler!hpssacli!${service_description_hp}!${::site}",
+            description    => $service_description_hp,
+            nrpe_command   => '/usr/local/lib/nagios/plugins/check_hpssacli',
+            timeout        => 50, # can take > 10s on servers with lots of disks
+            check_interval => $check_interval,
+            retry_interval => $retry_interval,
+            event_handler  => "raid_handler!hpssacli!${service_description_hp}!${::site}",
         }
 
         $get_raid_status_hpssacli = '/usr/local/lib/nagios/plugins/get-raid-status-hpssacli'
@@ -129,11 +129,11 @@ class raid {
 
         $service_description_mpt = 'MPT RAID'
         nrpe::monitor_service { 'raid_mpt':
-            description           => $service_description_mpt,
-            nrpe_command          => "${check_raid} mpt",
-            normal_check_interval => $normal_check_interval,
-            retry_check_interval  => $retry_check_interval,
-            event_handler         => "raid_handler!mpt!${service_description_mpt}!${::site}",
+            description    => $service_description_mpt,
+            nrpe_command   => "${check_raid} mpt",
+            check_interval => $check_interval,
+            retry_interval => $retry_interval,
+            event_handler  => "raid_handler!mpt!${service_description_mpt}!${::site}",
         }
 
         nrpe::check { 'get_raid_status_mpt':
@@ -160,10 +160,10 @@ class raid {
         require_package('arcconf')
 
         nrpe::monitor_service { 'raid_aac':
-            description           => 'Adaptec RAID',
-            nrpe_command          => "${check_raid} aac",
-            normal_check_interval => $normal_check_interval,
-            retry_check_interval  => $retry_check_interval,
+            description    => 'Adaptec RAID',
+            nrpe_command   => "${check_raid} aac",
+            check_interval => $check_interval,
+            retry_interval => $retry_interval,
         }
     }
 
@@ -171,10 +171,10 @@ class raid {
         require_package('tw-cli')
 
         nrpe::monitor_service { 'raid_twe':
-            description           => '3ware TW',
-            nrpe_command          => "${check_raid} twe",
-            normal_check_interval => $normal_check_interval,
-            retry_check_interval  => $retry_check_interval,
+            description    => '3ware TW',
+            nrpe_command   => "${check_raid} twe",
+            check_interval => $check_interval,
+            retry_interval => $retry_interval,
         }
     }
 

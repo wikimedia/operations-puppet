@@ -30,28 +30,28 @@
 #
 define nrpe::monitor_service( $description,
                               $nrpe_command,
-                              $contact_group         = hiera('contactgroups', 'admins'),
-                              $retries               = 3,
-                              $timeout               = 10,
-                              $critical              = false,
-                              $event_handler         = undef,
-                              $normal_check_interval = 1,
-                              $retry_check_interval  = 1,
-                              $ensure                = 'present') {
+                              $contact_group  = hiera('contactgroups', 'admins'),
+                              $retries        = 3,
+                              $timeout        = 10,
+                              $critical       = false,
+                              $event_handler  = undef,
+                              $check_interval = 1,
+                              $retry_interval = 1,
+                              $ensure         = 'present') {
     nrpe::check { "check_${title}":
         command => $nrpe_command,
         before  => Monitoring::Service[$title],
     }
 
     monitoring::service { $title:
-        ensure                => $ensure,
-        description           => $description,
-        check_command         => "nrpe_check!check_${title}!${timeout}",
-        contact_group         => $contact_group,
-        retries               => $retries,
-        critical              => $critical,
-        event_handler         => $event_handler,
-        normal_check_interval => $normal_check_interval,
-        retry_check_interval  => $retry_check_interval,
+        ensure         => $ensure,
+        description    => $description,
+        check_command  => "nrpe_check!check_${title}!${timeout}",
+        contact_group  => $contact_group,
+        retries        => $retries,
+        critical       => $critical,
+        event_handler  => $event_handler,
+        check_interval => $check_interval,
+        retry_interval => $retry_interval,
     }
 }
