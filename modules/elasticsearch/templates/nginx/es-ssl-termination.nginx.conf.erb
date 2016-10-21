@@ -6,7 +6,11 @@ server {
     ssl_certificate     /etc/nginx/ssl/cert.pem;
     ssl_certificate_key /etc/nginx/ssl/server.key;
 
-    access_log   /var/log/nginx/ssl_access.log;
+    # access log is about 5GB per day, which no one ever looks at. Most of this
+    # data is already available in other places (mw logs, hive, ...)
+    # uncommenting the following line to enable the access logs.
+    # access_log   /var/log/nginx/ssl_access.log;
+    access_log   off;
     error_log    /var/log/nginx/ssl_error.log;
 
     root /dev/null;
