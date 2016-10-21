@@ -24,3 +24,4 @@ cache::maps::apps:
     route: 'codfw'
     backends:
       codfw: 'kartotherian.svc.codfw.wmnet'
+      eqiad: 'kartotherian.svc.eqiad.wmnet'
