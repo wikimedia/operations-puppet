@@ -33,9 +33,9 @@ PHABRICATOR_CONFIG_FILE = '/etc/phabricator_ops-monitoring-bot.conf'
 PHAB_COMMENT_PRE = ('Script wmf_auto_reimage was launched by {user} on '
                     '{hostname} for hosts:\n```\n{hosts}\n```\n'
                     'The log can be found in `{log}`.')
-PHAB_COMMENT_POST = ('Completed auto-reimage of hosts:\n```\n{hosts}\n```\n'
-                     'Those hosts were successful:\n```\n{successful}\n```\n'
-                     '{notes}')
+PHAB_COMMENT_POST = 'Completed auto-reimage of hosts:\n```\n{hosts}\n```\n'
+PHAB_COMMENT_POST_SUCCESS = 'and were **ALL** successful.\n'
+PHAB_COMMENT_POST_FAILED = 'Of which those **FAILED**:\n```\n{failed}\n```\n'
 
 
 WATCHER_SLEEP_THRESHOLD = 10  # Use the WATCHER_LONG_SLEEP after those loops
@@ -939,6 +939,27 @@ def get_repool_message(hosts_status):
     return message
 
 
+def get_phabricator_post_message(hosts, successful, hosts_status=None):
+    hosts_set = set(hosts)
+    successful_set = set(successful)
+    failed = hosts_set - successful_set
+
+    if failed:
+        result = PHAB_COMMENT_POST_FAILED.format(failed=failed)
+    else:
+        result = PHAB_COMMENT_POST_SUCCESS
+
+    notes = ''
+    if hosts_status is not None:
+        notes = get_repool_message(hosts_status)
+
+    message = '{common}\n{result}\n{notes}'.format(
+        common=PHAB_COMMENT_POST.format(hosts=hosts),
+        result=result, notes=notes)
+
+    return message
+
+
 def run(args, user, log_path):
     """ Run the WMF auto reimage according to command line arguments
 
@@ -955,6 +976,7 @@ def run(args, user, log_path):
     deployment_host = resolve_dns(DEPLOYMENT_DOMAIN, 'CNAME')
     phab_client = get_phabricator_client()
     hosts = args.hosts
+    hosts_status = None
 
     # Validate hosts
     validate_hosts(puppetmaster_host, args.hosts, args.no_verify)
@@ -1005,17 +1027,15 @@ def run(args, user, log_path):
     if args.apache:
         hosts = run_apache_fast_test(deployment_host, hosts)
 
-    # Repool (manually for now)
-    notes = ''
-    if args.conftool:
-        notes = get_repool_message(hosts_status)
+    # The repool is *not* done automatically the command to repool is added
+    # to the Phabricator task
 
     # Comment on the Phabricator task
     if args.phab_task_id is not None:
+        phabricator_message = get_phabricator_post_message(
+            args.hosts, hosts, hosts_status=hosts_status)
         phabricator_task_update(
-            phab_client, args.phab_task_id,
-            PHAB_COMMENT_POST.format(
-                hosts=args.hosts, successful=hosts, notes=notes))
+            phab_client, args.phab_task_id, phabricator_message)
 
     logger.info(("Auto reimaging of hosts '{hosts}' completed, hosts "
                  "'{successful}' were successful.").format(
