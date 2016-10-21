@@ -1933,7 +1933,7 @@ node /^maps200[2-4]\.codfw\.wmnet/ {
     include base::firewall
 }
 
-node /^mc(10[01][0-9])\.eqiad\.wmnet/ {
+node /^mc(10[01][0-8])\.eqiad\.wmnet/ {
     role(memcached)
 }
 
