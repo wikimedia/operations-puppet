@@ -877,9 +877,10 @@ node /^dbproxy10(05|10)\.eqiad\.wmnet$/ {
     }
 }
 
-# spare proxy
-# node 'dbproxy1011.eqiad.wmnet' {
-# }
+# production test proxy- soon to be moved to labs
+node 'dbproxy1011.eqiad.wmnet' {
+    role(labs::db::proxy)
+}
 
 
 # Analytics Druid servers.
