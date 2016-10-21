@@ -1380,7 +1380,7 @@ node 'krypton.eqiad.wmnet' {
 }
 
 node /kubernetes100[1-4].eqiad.wmnet/ {
-#    role(kubernetes::worker)
+    role(kubernetes::worker)
     include standard
 }
 
