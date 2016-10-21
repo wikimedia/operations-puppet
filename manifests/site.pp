@@ -1075,6 +1075,7 @@ node 'eventlog1001.eqiad.wmnet' {
 
     include standard
     include base::firewall
+    interface::add_ip6_mapped { 'main': interface => 'eth0', }
 }
 
 # EventLogging Analytics does not (yet?) run in codfw.
