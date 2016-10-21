@@ -53,7 +53,11 @@ server {
 
     rewrite ^/sparql$ /bigdata/namespace/wdq/sparql last;
 
-    location /bigdata/namespace/wdq/sparql {
+    location ~ ^/bigdata/(namespace/wdq/sparql|ldf|assets) {
+        if ( $uri ~ ^/bigdata/assets ) {
+            add_header Cache-Control "public, max-age=604800, s-maxage=604800";
+        }
+
         # use IP address for the backend and not "localhost" to ensure
         # connection is done over IPv4 (backend is configured as IPv4 only)
         proxy_pass http://127.0.0.1:9999;
