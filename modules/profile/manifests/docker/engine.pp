@@ -16,13 +16,13 @@ class profile::docker::engine {
     $pool_metadata_size = hiera('profile::docker::engine::lvm_metadata_size', undef)
     # Version to install; the default is not to pick one.
     $docker_version = hiera('profile::docker::engine::version', 'present')
-    $apt_proxy_settings = hiera('profile::docker::engine::proxy', undef)
+    $apt_proxy = hiera('profile::docker::engine::proxy', undef)
     $service_ensure = hiera('profile::docker::engine::service', 'running')
 
     # Install docker
     class { 'docker':
-        version        => $docker_version,
-        proxy_settings => $apt_proxy_settings
+        version => $docker_version,
+        proxy   => $apt_proxy,
     }
 
     # Storage
