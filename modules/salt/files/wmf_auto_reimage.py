@@ -63,10 +63,16 @@ def parse_args():
         help='do not reboot the host after the reimage a first Puppet run')
     parser.add_argument(
         '--no-verify', action='store_true',
-        help='do not fail if hosts verification fails, just log it')
+        help=('do not fail if hosts verification fails, just log it. Has no '
+              'effect if --new is also set.'))
+    parser.add_argument(
+        '--new', action='store_true',
+        help='for first imaging of new hosts, skip some steps on old hosts')
     parser.add_argument(
         '-c', '--conftool', action='store_true',
-        help='depool the host via conftool before proceeding')
+        help=('depool the host via conftool before proceeding, print the '
+              'command to repool at the end and in the Phabricator task if -p '
+              'is set. If --new is also set just print the pool message.'))
     parser.add_argument(
         '-a', '--apache', action='store_true',
         help='run apache-fast-test on the hosts after the reimage')
@@ -633,7 +639,8 @@ def run_puppet(hosts):
     return success_hosts
 
 
-def reimage_hosts(puppetmaster_host, hosts, custom_mgmts, ipmi_password):
+def reimage_hosts(
+        puppetmaster_host, hosts, custom_mgmts, ipmi_password, is_new=False):
     """ Reimage hosts, return the list of successful ones
 
         TODO: assuming all are successful for now because the minion job
@@ -644,15 +651,22 @@ def reimage_hosts(puppetmaster_host, hosts, custom_mgmts, ipmi_password):
         puppetmaster_host -- the hostname of the Puppet Master server
         hosts             -- the list of FQDN of the hosts to be reimaged
         ipmi_password     -- the password for the IPMI
+        is_new            -- whether this is the first image for a new host
+                             [optional, default: False]
     """
     # Hack to avoid a Salt parser bug. Using 'kwarg' doesn't work either
     # at least in our current version.
-    command = ("true; IPMI_PASSWORD='{password}' wmf-reimage -s 10 "
+    command = ("true; IPMI_PASSWORD='{password}' wmf-reimage -s 10 {new} "
                "-y '{host}' '{mgmt}' | tee -a '/root/{host}.log'")
 
     success_hosts = []
     hosts_commands = {}
     audit_commands = {}
+
+    if is_new:
+        new = '--no-clean'
+    else:
+        new = ''
 
     print("Running wmf-reimage on hosts: {hosts}".format(hosts=hosts))
 
@@ -667,9 +681,9 @@ def reimage_hosts(puppetmaster_host, hosts, custom_mgmts, ipmi_password):
             continue
 
         hosts_commands[host] = [command.format(
-            password=ipmi_password, host=host, mgmt=mgmt_host)]
+            password=ipmi_password, new=new, host=host, mgmt=mgmt_host)]
         audit_commands[host] = [command.format(
-            password='******', host=host, mgmt=mgmt_host)]
+            password='******', new=new, host=host, mgmt=mgmt_host)]
         print("wmf-reimage log is on {puppetmaster}:/root/{host}.log".format(
             puppetmaster=puppetmaster_host, host=host))
 
@@ -987,7 +1001,8 @@ def run(args, user, log_path):
     hosts_status = None
 
     # Validate hosts
-    validate_hosts(puppetmaster_host, args.hosts, args.no_verify)
+    if not args.new:
+        validate_hosts(puppetmaster_host, args.hosts, args.no_verify)
 
     # Update the Phabricator task
     if args.phab_task_id is not None:
@@ -997,10 +1012,11 @@ def run(args, user, log_path):
                 log=log_path))
 
     # Set downtime on Icinga
-    hosts = icinga_downtime(icinga_host, hosts, user, args.phab_task_id)
+    if not args.new:
+        hosts = icinga_downtime(icinga_host, hosts, user, args.phab_task_id)
 
     # Depool via conftool
-    if args.conftool:
+    if args.conftool and not args.new:
         hosts_status = conftool_depool_hosts(puppetmaster_host, hosts)
         hosts = conftool_ensure_depooled(puppetmaster_host, hosts)
         # Run Puppet on the deployment host to update DSH groups
@@ -1010,7 +1026,7 @@ def run(args, user, log_path):
     # Start the reimage
     reimage_time = datetime.now()
     hosts = reimage_hosts(puppetmaster_host, hosts, custom_mgmts=custom_mgmts,
-                          ipmi_password=ipmi_password)
+                          ipmi_password=ipmi_password, is_new=args.new)
     hosts = check_reimage(puppetmaster_host, hosts)
     hosts = check_uptime(
         hosts, maximum=int((datetime.now() - reimage_time).total_seconds()))
@@ -1028,7 +1044,7 @@ def run(args, user, log_path):
             hosts, maximum=int((datetime.now() - reboot_time).total_seconds()))
         hosts = wait_puppet_run(hosts, start=boot_time)
 
-    # Check Icinga alarms
+    # Check Icinga alarms, put again in downtime if was cleared or --new is set
     # TODO
 
     # Run Apache fast test
