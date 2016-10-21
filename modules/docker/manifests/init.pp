@@ -47,8 +47,4 @@ class docker($version, $use_dockerproject=true, $proxy=undef){
     package { $package:
         ensure => $version,
     }
-
-    service { 'docker':
-        ensure => running,
-    }
 }
