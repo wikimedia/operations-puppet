@@ -56,6 +56,12 @@ class apt(
                 key      => 'Acquire::http::Proxy::security.debian.org',
                 value    => $http_proxy,
             }
+            apt::conf { 'security-cdn-debian-proxy':
+                ensure   => present,
+                priority => '80',
+                key      => 'Acquire::http::Proxy::security-cdn.debian.org',
+                value    => $http_proxy,
+            }
         } elsif $::operatingsystem == 'Ubuntu' {
             apt::conf { 'security-ubuntu-proxy':
                 ensure   => present,
