@@ -48,10 +48,17 @@ class profile::docker::engine {
         'thinpool'     => $lv_params,
     }
 
-    lvm::volume_group { 'docker':
-        ensure           => present,
-        physical_volumes => $physical_volumes,
-        logical_volumes  => $logical_volumes,
+    $volume_group = {
+        docker => {
+            ensure           => present,
+            physical_volumes => $physical_volumes,
+            logical_volumes  => $logical_volumes,
+        }
+    }
+
+    class { 'lvm':
+        manage_pkg => true,
+        volume_groups => $volume_group,
     }
 
     file { '/etc/lvm/profile/docker-thinpool.profile':
