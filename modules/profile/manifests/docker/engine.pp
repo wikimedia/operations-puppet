@@ -88,7 +88,7 @@ class profile::docker::engine {
     $docker_storage_options = {
         'storage-driver' => 'devicemapper',
         'storage-opts'   =>  [
-            'dm.thinpooldev=/dev/mapper/docker-thinpool',
+            'dm.thinpooldev=/dev/mapper/docker-thinpool-tpool',
             'dm.use_deferred_removal=true',
             'dm.use_deferred_deletion=true'
         ]
