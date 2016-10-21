@@ -44,7 +44,11 @@ server {
 
     rewrite ^/sparql$ /bigdata/namespace/wdq/sparql last;
 
-    location /bigdata/namespace/wdq/sparql {
+    location ~ ^/bigdata/(namespace/wdq/sparql|ldf|assets) {
+        if ( $uri ~ ^/bigdata/assets ) {
+            add_header Cache-Control "public, max-age=604800, s-maxage=604800";
+        }
+
         proxy_pass http://localhost:9999;
 
         proxy_set_header Host $http_host;
