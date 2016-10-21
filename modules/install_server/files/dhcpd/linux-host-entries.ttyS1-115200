@@ -2584,13 +2584,18 @@ host iron {
 }
 
 host kafka1001 {
-        hardware ethernet 14:18:77:33:52:42;
-        fixed-address kafka1001.eqiad.wmnet;
+    hardware ethernet 14:18:77:33:52:42;
+    fixed-address kafka1001.eqiad.wmnet;
 }
 
 host kafka1002 {
-        hardware ethernet 14:18:77:33:4A:4E;
-        fixed-address kafka1002.eqiad.wmnet;
+    hardware ethernet 14:18:77:33:4A:4E;
+    fixed-address kafka1002.eqiad.wmnet;
+}
+
+host kafka1003 {
+    hardware ethernet 14:18:77:33:4A:D2;
+    fixed-address kafka1003.eqiad.wmnet;
 }
 
 host kafka1012 {
