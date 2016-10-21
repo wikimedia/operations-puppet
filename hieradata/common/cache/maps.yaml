@@ -21,7 +21,7 @@ cache::maps::nodes:
     - 'cp4020.ulsfo.wmnet'
 cache::maps::apps:
   kartotherian:
-    route: 'codfw'
+    route: 'eqiad'
     backends:
       codfw: 'kartotherian.svc.codfw.wmnet'
       eqiad: 'kartotherian.svc.eqiad.wmnet'
