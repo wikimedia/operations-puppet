@@ -61,10 +61,18 @@ class profile::docker::engine {
         volume_groups => $volume_group,
     }
 
+    file { '/etc/lvm/profile/':
+        ensure => directory,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+    }
+
     file { '/etc/lvm/profile/docker-thinpool.profile':
         ensure => present,
         owner  => 'root',
         group  => 'root',
+        mode   => '0444',
         source => 'puppet:///modules/profile/docker/lvm.profile',
     }
 
