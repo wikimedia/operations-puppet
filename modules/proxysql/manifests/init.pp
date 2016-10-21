@@ -12,7 +12,10 @@ class proxysql (
     $mysql_socket    = '/tmp/proxysql.sock',
     ) {
 
-    package { 'proxysql':
+    package { [
+        'proxysql',
+        'mysql-client',
+    ]:
         ensure => present,
     }
 
@@ -24,4 +27,11 @@ class proxysql (
         content => template('proxysql/proxysql.cnf.erb'),
     }
 
+    file { '/root/.my.cnf':
+        ensure => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0400',
+        content => template('proxysql/root.my.cnf.erb'),
+    }
 }
