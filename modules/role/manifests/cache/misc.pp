@@ -207,12 +207,10 @@ class role::cache::misc {
         },
         'rcstream' => {
             'dynamic'  => 'no',
-            'type'     => 'hash',
-            'backends' => [
-                'rcs1001.eqiad.wmnet',
-                'rcs1002.eqiad.wmnet',
-            ],
-            'be_opts'  => $app_def_be_opts,
+            'type'     => 'random',
+            'backends' => ['rcs1001.eqiad.wmnet'],
+            # 'backends' => ['rcs1002.eqiad.wmnet'], # manual backup option if 1001 fails
+            'be_opts'  => merge($app_def_be_opts, { max_connections => 1000 }),
             'req_host' => 'stream.wikimedia.org',
         },
         'ruthenium' => { # parsoid rt test server
