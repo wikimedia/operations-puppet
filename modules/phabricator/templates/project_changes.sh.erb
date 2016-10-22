@@ -15,10 +15,12 @@ declare sql_pass='<%= scope.lookupvar('passwords::mysql::phabricator::metrics_pa
 #echo "result_creations_and_name_changes"
 result_creations_and_name_changes=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -u $sql_user $sql_name << END
 
-SELECT oldValue, newValue
+SELECT project_transaction.oldValue, project_transaction.newValue, user.userName
     FROM project_transaction
-    WHERE transactionType = "project:name"
-    AND dateModified > UNIX_TIMESTAMP(DATE_SUB(NOW(), INTERVAL 1 WEEK));
+    JOIN phabricator_user.user
+    WHERE project_transaction.transactionType = "project:name"
+    AND project_transaction.authorPHID = user.phid
+    AND project_transaction.dateModified > UNIX_TIMESTAMP(DATE_SUB(NOW(), INTERVAL 1 WEEK));
 
 END
 )
