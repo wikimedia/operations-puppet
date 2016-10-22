@@ -104,22 +104,6 @@ SELECT p.name, count(p.name) AS n
 END
 )
 
-#echo "result_single_workboard_column"
-# see https://phabricator.wikimedia.org/T105865
-result_single_workboard_column=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -u$sql_user $sql_name << END
-
-SELECT project.name
-    FROM project_column
-    JOIN project
-    WHERE project.phid = project_column.projectPHID
-    AND project.status != 100
-    GROUP BY project_column.projectPHID
-    HAVING count(project_column.id) = 1
-    ORDER BY project.name;
-
-END
-)
-
 # the actual email
 cat <<EOF | /usr/bin/mail -r "${sndr_address}" -s "Phabricator weekly project changes" ${rcpt_address}
 
@@ -146,10 +130,6 @@ ${result_column_changes}
 
 ARCHIVED PROJECTS WITH OPEN TASKS WITH NO OTHER ACTIVE PROJECTS, EXCLUDING PATCH-FOR-REVIEW:
 ${result_archived_projects_open_tasks}
-
-
-PROJECT WORKBOARDS WITH A SINGLE COLUMN ONLY:
-${result_single_workboard_column}
 
 
 Yours sincerely,
