@@ -57,16 +57,18 @@ END
 #echo "result_column_changes"
 result_column_changes=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -u$sql_user $sql_name << END
 
-SELECT cltr.oldValue, cltr.newValue, prj.name, usr.userName
+SELECT prj.name AS projectName, cl.name AS columnName, cltr.oldValue, cltr.newValue, usr.userName
     FROM phabricator_project.project_columntransaction cltr
     JOIN phabricator_project.project prj
     JOIN phabricator_project.project_column pcl
     JOIN phabricator_user.user usr
+    JOIN phabricator_project.project_column cl
     WHERE (cltr.transactionType = "project:col:name"
     OR cltr.transactionType = "project:col:status")
     AND cltr.objectPHID = pcl.phid
     AND pcl.projectPHID = prj.phid
     AND cltr.authorPHID = usr.phid
+    AND cl.phid = cltr.objectPHID
     AND cltr.dateModified > UNIX_TIMESTAMP(DATE_SUB(NOW(), INTERVAL 1 WEEK));
 
 END
@@ -141,6 +143,7 @@ ${result_policy_locking_archiving_changes}
 
 
 PROJECT WORKBOARD COLUMN CHANGES:
+(newValue and oldValue values: 0 = shown, 1 = hidden)
 ${result_column_changes}
 
 
