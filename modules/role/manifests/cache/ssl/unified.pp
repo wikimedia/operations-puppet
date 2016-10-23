@@ -13,7 +13,7 @@ class role::cache::ssl::unified(
             certs          => ['ecc-uni.wikimedia.org', 'uni.wikimedia.org'],
             default_server => true,
             do_ocsp        => true,
-            upstream_port  => 3127,
+            upstream_ports => [3120, 3121, 3122, 3123, 3124, 3125, 3126, 3127],
             redir_port     => 8080,
         }
     }
@@ -24,7 +24,7 @@ class role::cache::ssl::unified(
             default_server => true,
             do_ocsp        => false,
             skip_private   => true,
-            upstream_port  => 3127,
+            upstream_ports => [3120, 3121, 3122, 3123, 3124, 3125, 3126, 3127],
             redir_port     => 8080,
         }
     }

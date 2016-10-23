@@ -9,7 +9,7 @@ class role::cache::ssl::misc {
         certs          => ['ecc-star.wmfusercontent.org', 'star.wmfusercontent.org'],
         server_name    => 'wmfusercontent.org',
         server_aliases => ['*.wmfusercontent.org'],
-        upstream_port  => 3127,
+        upstream_ports => [3120, 3121, 3122, 3123, 3124, 3125, 3126, 3127],
         redir_port     => 8080,
     }
 
@@ -18,7 +18,7 @@ class role::cache::ssl::misc {
         certs          => ['ecc-star.planet.wikimedia.org', 'star.planet.wikimedia.org'],
         server_name    => 'planet.wikimedia.org',
         server_aliases => ['*.planet.wikimedia.org'],
-        upstream_port  => 3127,
+        upstream_ports => [3120, 3121, 3122, 3123, 3124, 3125, 3126, 3127],
         redir_port     => 8080,
     }
 }
