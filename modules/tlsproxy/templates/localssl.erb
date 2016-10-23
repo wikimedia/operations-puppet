@@ -1,7 +1,9 @@
 # Proxy site configuration file for <%= @name %>
 # This file is managed by Puppet!
 upstream local_fe_<%= @basename %> {
+<%- @upstream_ports do |upstream_port| -%>
     server <%= @ipaddress %>:<%= @upstream_port %> max_fails=0;
+<%- end -%>
 <% if @varnish_version4 and @keepalives_per_worker.to_i > 0 -%>
     keepalive <%= @keepalives_per_worker %>; # Note: commonly up to 48 workers!
 <% end -%>

@@ -22,8 +22,8 @@
 #   will be listed as Subject Alternative Names.
 #   There should be no more than 100 entries in this.
 #
-# [*upstream_port*]
-#   TCP port to proxy to. Defaults to '80'
+# [*upstream_ports*]
+#   TCP ports array to proxy to. Defaults to ['80']
 #
 # [*redir_port*]
 #   TCP port to listen on as plain HTTP.  This listener will redirect GET/HEAD
@@ -46,7 +46,7 @@ define tlsproxy::localssl(
     $server_name    = $::fqdn,
     $server_aliases = [],
     $default_server = false,
-    $upstream_port  = '80',
+    $upstream_ports = ['80'],
     $redir_port     = undef,
     $do_ocsp        = false,
     $skip_private   = false,
