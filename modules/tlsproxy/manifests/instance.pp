@@ -19,7 +19,7 @@ class tlsproxy::instance {
     $varnish_version4 = hiera('varnish_version4', false)
     $keepalives_per_worker = hiera('tlsproxy::localssl::keepalives_per_worker', 0)
     $websocket_support = hiera('cache::websocket_support', false)
-    $nginx_worker_connections = '32768'
+    $nginx_worker_connections = '131072'
     $nginx_ssl_conf = ssl_ciphersuite('nginx', 'compat')
     $nginx_tune_for_media = hiera('cache::tune_for_media', false)
 
