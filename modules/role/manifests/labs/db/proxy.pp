@@ -23,7 +23,7 @@ class role::labs::db::proxy {
 
     file {'/var/run/proxysql':
         ensure  => directory,
-        owner   => 'proxysql',
+        owner   => 'root',
         group   => 'root',
         mode    => '0755',
         require => Class['proxysql'],
@@ -31,8 +31,8 @@ class role::labs::db::proxy {
 
     nrpe::monitor_service { 'proxysql':
         description   => 'proxysql processes',
-        nrpe_command  => '/usr/lib/nagios/plugins/check_procs -c 1: \
--a "proxysql"',
+        nrpe_command  => '/usr/lib/nagios/plugins/check_procs \
+-c 2:2 -C proxysql',
         critical      => false,
         contact_group => 'admins', # show on icinga/irc only
     }
