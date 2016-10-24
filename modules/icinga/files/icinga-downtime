@@ -6,7 +6,7 @@
 # example: ./icinga-downtime -h mw1021 -d 7200 -r "something happened"
 #
 # -h <hostname> should be the (short) name of a host as shown in the Icinga UI
-# -d <duration> how long should the downtime last, in seconds (2 hrs = 7200)
+# -d <duration> how long should the downtime last, in seconds (default 7200 (2h))
 # -r <reason>   a string with the reason for the downtime
 #
 
@@ -36,9 +36,13 @@ case $opts in
 esac
 done
 
-if [ -z $hostname ] || [ -z $duration ] || [ -z "$reason" ]; then
+if [ -z "$hostname" ] || [ -z "$reason" ]; then
     echo "usage: $0 -h <hostname> -d <duration> -r <reason>"
     exit
+fi
+
+if [ -z "$duration" ]; then
+    duration=7200
 fi
 
 start_time=$(date +%s) # now
