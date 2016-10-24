@@ -2,7 +2,7 @@
 # Exports the resource that monitors hosts in icinga/shinken
 #
 define monitoring::host (
-    $ip_address    = $::ipaddress,
+    $ip_address    = $::main_ipaddress,
     $host_fqdn     = undef,
     $group         = undef,
     $ensure        = present,
