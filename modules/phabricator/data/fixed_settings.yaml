@@ -35,6 +35,9 @@ files.viewable-mime-types:
   'audio/mpeg': 'audio/mpeg'
   'text/x-php': 'text/plain; charset=utf-8'
   'text/x-python': 'text/plain; charset=utf-8'
+  'text/javascript': 'text/plain; charset=utf-8'
+  'text/x-javascript': 'text/plain; charset=utf-8'
+  'application/javascript': 'text/plain; charset=utf-8'
 
 files.image-mime-types:
     'image/jpeg': true
