@@ -27,6 +27,18 @@ class gerrit::jetty(
     $ldap_proxyagent = $ldapconfig['proxyagent']
     $ldap_proxyagent_pass = $ldapconfig['proxypass']
 
+    $java_options = [
+        '-Xloggc:/var/lib/gerrit2/review_site/logs/jvm_gc.%p.log',
+        '-XX:+PrintGCDetails',
+        '-XX:+PrintGCDateStamps',
+        '-XX:+PrintTenuringDistribution',
+        '-XX:+PrintGCCause',
+        '-XX:+UseGCLogFileRotation',
+        '-XX:NumberOfGCLogFiles=10',
+        '-XX:GCLogFileSize=2M',
+        '-Dlog4j.configuration=file:///var/lib/gerrit2/review_site/etc/log4j.properties',
+    ]
+
     require_package(['openjdk-7-jdk', 'gerrit', 'libmysql-java'])
 
     file { '/var/lib/gerrit2/':
