@@ -22,8 +22,10 @@ class profile::docker::engine {
     # Fetch the storage config from the related driver
     if defined(Class['::profile::docker::storage::thinpool']) {
         $docker_storage_options = $::profile::docker::storage::thinpool::options
+        Class['::profile::docker::storage::thinpool'] -> Service['docker']
     } else {
         $docker_storage_options = $::profile::docker::storage::options
+        Class['::profile::docker::storage'] -> Service['docker']
     }
 
     # We need to import one storage config
