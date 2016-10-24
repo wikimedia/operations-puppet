@@ -25,6 +25,13 @@ class nrpe($allowed_hosts='127.0.0.1') {
         ensure => present,
     }
 
+    # Hack for docker: given the 'ipaddress' fact will report
+    # the ip of docker0, we override it with the main_ipaddress in
+    # that specific case
+    if $::interfaces =~ /docker0/ {
+        $ipaddress = $::main_ipaddress
+    }
+
     file { '/etc/nagios/nrpe_local.cfg':
         ensure  => present,
         owner   => 'root',
