@@ -8,10 +8,18 @@ define monitoring::host (
     $ensure        = present,
     $critical      = false,
     $contact_group = hiera('contactgroups', 'admins')
-    ) {
+){
 
+    # Hack for docker/puppet installations, where puppet will find
+    # docker0 as its primary network interface and report that address
+    # for $::ipaddress
+    if $::interfaces =~ /docker0/ and $ip_address == $::ipaddress {
+        $nagios_ipaddress = $::main_ipaddress
+    } else {
+        $nagios_ipaddress = $ip_address
+    }
     $nagios_address = $host_fqdn ? {
-        undef   => $ip_address,
+        undef   => $nagios_ipaddress,
         default => $host_fqdn,
     }
 
