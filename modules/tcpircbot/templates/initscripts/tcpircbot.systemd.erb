@@ -1,0 +1,14 @@
+[Unit]
+Description=TCP socket to IRC bot: <%= @title %>
+
+[Service]
+
+ExecStart=/usr/bin/python tcpircbot.py <%= @title %>.json
+Restart=always
+RestartSec=5s
+WorkingDirectory=/srv/tcpircbot
+User=tcpircbot
+Group=tcpircbot
+
+[Install]
+WantedBy=multi-user.target
