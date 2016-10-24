@@ -19,13 +19,25 @@ class postgresql::postgis(
         precise => 'postgresql-9.1-postgis',
         trusty  => 'postgresql-9.3-postgis-2.1',
     },
+    $install_postgis_scripts = $::lsbdistcodename ? {
+        jessie  => true,
+        precise => false,
+        trusty  => true,
+        default => true,
+    },
 ) {
+    validate_bool($install_postgis_scripts)
 
     package { [
         $postgresql_postgis_package,
-        "${postgresql_postgis_package}-scripts",
         'postgis',
     ]:
         ensure  => $ensure,
+    }
+
+    if $install_postgis_scripts {
+        package { "${postgresql_postgis_package}-scripts":
+            ensure  => $ensure,
+        }
     }
 }
