@@ -71,25 +71,24 @@ define tcpircbot::instance(
 
     file { "${tcpircbot::dir}/${title}.json":
         ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
         content => template('tcpircbot/tcpircbot.json.erb'),
         require => User['tcpircbot'],
     }
 
-    file { "/etc/init/tcpircbot-${title}.conf":
-        ensure  => present,
-        content => template('tcpircbot/tcpircbot.conf.erb'),
-    }
-
     file { "/etc/init.d/tcpircbot-${title}":
-        ensure => link,
-        target => '/lib/init/upstart-job',
+        ensure => absent,
     }
 
-    service { "tcpircbot-${title}":
-        ensure    => running,
-        provider  => 'upstart',
-        subscribe => File["/etc/init/tcpircbot-${title}.conf", "${tcpircbot::dir}/${title}.json"],
-        require   => [
+    base::service_unit { "tcpircbot-${title}":
+        ensure        => running,
+        upstart       => true,
+        systemd       => true,
+        template_name => 'tcpircbot',
+        subscribe     => File["${tcpircbot::dir}/${title}.json"],
+        require       => [
             Package['python-irclib'],
             File["${tcpircbot::dir}/${title}.json"],
         ],
