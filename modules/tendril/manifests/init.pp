@@ -19,6 +19,7 @@ class tendril (
     apache::site { $site_name:
         content => template("tendril/apache/${site_name}.erb");
     }
+    require_package('php5-mysql')
 
     file { '/srv/tendril':
         ensure => 'directory',
