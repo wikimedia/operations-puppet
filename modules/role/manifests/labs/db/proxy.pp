@@ -22,10 +22,11 @@ class role::labs::db::proxy {
     }
 
     file {'/var/run/proxysql':
-        ensure => directory,
-        user   => 'proxysql',
-        group  => 'root',
-        mode   => '0755',
+        ensure   => directory,
+        owner    => 'proxysql',
+        group    => 'root',
+        mode     => '0755',
+        requires => Class['proxysql'],
     }
 
     nrpe::monitor_service { 'proxysql':
