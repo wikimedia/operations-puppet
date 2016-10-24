@@ -3,4 +3,4 @@ base::resolving::domain_search:
   - eqiad.wmnet
   - codfw.wmnet
 cluster: misc
-scap::l10nupdate::run_l10nupdate: false
+scap::l10nupdate::run_l10nupdate: true
