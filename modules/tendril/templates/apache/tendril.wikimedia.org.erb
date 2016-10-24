@@ -17,8 +17,13 @@
         Options +ExecCGI +FollowSymLinks
         DirectoryIndex index.php
         AllowOverride All
-        Order Allow,Deny
-        Allow From All
+	<IfVersion >= 2.4>
+	    Require all granted
+	</IfVersion>
+	<IfVersion < 2.4>
+            Order Allow,Deny
+            Allow From All
+	</IfVersion>
         AuthName "<%= @auth_name %>"
         AuthType Basic
         AuthBasicProvider ldap
