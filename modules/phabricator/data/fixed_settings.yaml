@@ -35,6 +35,11 @@ files.viewable-mime-types:
   'audio/mpeg': 'audio/mpeg'
   'text/x-php': 'text/plain; charset=utf-8'
   'text/x-python': 'text/plain; charset=utf-8'
+  # javascript has had it's tag changed a couple of times
+  # so some browsers wont know the newer one.
+  'text/javascript': 'text/plain; charset=utf-8'
+  'text/x-javascript': 'text/plain; charset=utf-8'
+  'application/javascript': 'text/plain; charset=utf-8'
 
 files.image-mime-types:
     'image/jpeg': true
