@@ -11,6 +11,7 @@ class role::prometheus::varnish_exporter {
         $prometheus_nodes = hiera('prometheus_nodes')
         $prometheus_ferm_nodes = join($prometheus_nodes, ' ')
         $ferm_srange = "@resolve((${prometheus_ferm_nodes}))"
+        $ferm_srange_v6 = "@resolve((${prometheus_ferm_nodes}), AAAA)"
     }
 
     prometheus::varnish_exporter{ 'default': }
@@ -19,6 +20,12 @@ class role::prometheus::varnish_exporter {
         proto  => 'tcp',
         port   => '9131',
         srange => $ferm_srange,
+    }
+
+    ferm::service { 'prometheus-varnish-exporter_v6':
+        proto  => 'tcp',
+        port   => '9131',
+        srange => $ferm_srange_v6,
     }
 
     prometheus::varnish_exporter{ 'frontend':
@@ -30,5 +37,11 @@ class role::prometheus::varnish_exporter {
         proto  => 'tcp',
         port   => '9331',
         srange => $ferm_srange,
+    }
+
+    ferm::service { 'prometheus-varnish-exporter-frontend_v6':
+        proto  => 'tcp',
+        port   => '9331',
+        srange => $ferm_srange_v6,
     }
 }
