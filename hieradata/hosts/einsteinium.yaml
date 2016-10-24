@@ -1,2 +1,3 @@
 icinga::enable_notifications: 0
 icinga::enable_event_handlers: 0
+icinga::ircbot::ensure: absent
