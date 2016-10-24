@@ -141,7 +141,7 @@ nameserver ${nameserver}
 options timeout:5 ndots:2
 EOF
 
-echo "$ip	$hostname $fqdn" >> /etc/hosts
+echo "$ip	$fqdn" >> /etc/hosts
 
 # This is only needed when running bootstrap-vz on
 # a puppetmaster::self instance, and even then

@@ -83,7 +83,7 @@ nameserver ${nameserver}
 options timeout:5 ndots:2
 EOF
 
-echo "$ip	$hostname $fqdn" >> /etc/hosts
+echo "$ip	$fqdn" >> /etc/hosts
 
 /etc/init.d/nslcd restart
 /etc/init.d/nscd restart
