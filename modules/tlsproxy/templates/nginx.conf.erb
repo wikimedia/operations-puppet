@@ -102,10 +102,9 @@ http {
     ssl_dyn_rec_timeout 1s;   # cf patch default: 1s
 <% end -%>
 
-    # limit http2 request-parallelism to 64.  This will slow down some pages
-    # with large counts of sub-resources (e.g. large image categories with
-    # thumbnails), but helps avoid pushing edge cases in our edge infastructure.
-    http2_max_concurrent_streams 64; # default 128
+    # limit http2 request-parallelism to 512.  Testing whether this affects
+    # problems in T148917 .
+    http2_max_concurrent_streams 512; # default 128
 
     # nginx's $http2 is either 'h2' or '' (empty string) for http/1
     # Map it to $h2 as a boolean string value '1' or '0' for use in headers
