@@ -140,6 +140,17 @@ class openstack::horizon::service(
         mode    => '0644',
     }
 
+    # Replace the standard login backend.py to fix
+    #  https://bugs.launchpad.net/django-openstack-auth/+bug/1562452
+    # and also to implement the 'rememberme' checkbox
+    file { '/usr/lib/python2.7/dist-packages/openstack_auth/backend.py':
+        source  => "puppet:///modules/openstack/${openstack_version}/horizon/openstack_auth_backened.py",
+        owner   => 'root',
+        group   => 'root',
+        require => Package['python-openstack-auth'],
+        mode    => '0644',
+    }
+
     # Install the designate dashboard
     file { '/usr/share/openstack-dashboard/openstack_dashboard/local':
         ensure  => 'directory',
