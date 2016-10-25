@@ -28,11 +28,11 @@ import argparse
 import collections
 import errno
 import fcntl
+import logging
 import os
 import os.path
 import select
 import signal
-import syslog
 
 import whisper
 import zmq
