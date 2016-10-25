@@ -14,6 +14,4 @@ class contint::packages {
         include ::mediawiki::packages::php5
     }
 
-    require_package('openjdk-7-jdk')
-
 }
