@@ -76,8 +76,6 @@ deploy() {
 }
 
 sync() {
-    QUIET=0
-    case "$1" in -q|--quiet) QUIET=1 ; shift ;; esac
     local target="$1" ; shift ; local message="$@"
 
     if [ -z "$target" -o -z "$message" ]; then
@@ -87,8 +85,8 @@ sync() {
         echo >&2 "No such file: ${target}"
         return 1
     elif [ -d "$target" ]; then
-        DOLOGMSGNOLOG="$QUIET" scap sync-dir "$target" "$message"
+        scap sync-dir "$target" "$message"
     else
-        DOLOGMSGNOLOG="$QUIET" scap sync-file "$target" "$message"
+        scap sync-file "$target" "$message"
     fi
 }
