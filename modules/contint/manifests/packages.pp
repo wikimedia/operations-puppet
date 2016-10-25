@@ -14,11 +14,10 @@ class contint::packages {
         include ::mediawiki::packages::php5
     }
 
-    require_package('openjdk-7-jdk')
-
     # MediaWiki doc is built directly on contint1001
     require_package('doxygen')
 
     # For Doxygen based documentations
     require_package('graphviz')
+
 }
