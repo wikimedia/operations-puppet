@@ -140,15 +140,23 @@ class WhisperLogger(object):
         poll.register(timer_fd, select.EPOLLIN)
 
         syslog.syslog('Entering main loop.')
+
+        intervals_since_last_event = 0
+
         while 1:
             try:
                 for fd, _ in poll.poll():
                     if fd == timer_fd:
                         os.read(timer_fd, 1)
                         self.flush_data()
+                        intervals_since_last_event += 1
+                        if intervals_since_last_event > 2:
+                            raise RuntimeError('No events in %d seconds.' % (
+                                UPDATE_INTERVAL * intervals_since_last_event))
                     if fd == socket.fd:
                         while socket.events & zmq.POLLIN:
                             meta = socket.recv_json()
+                            intervals_since_last_event = 0
                             self.handle_event(meta)
             except IOError as e:
                 if e.errno != errno.EINTR:
