@@ -27,14 +27,16 @@ AUTHENTICATION_PLUGINS = ['openstack_auth.plugin.wmtotp.WmtotpPlugin', 'openstac
 # https://docs.djangoproject.com/en/1.4/ref/settings/#secure-proxy-ssl-header
 # SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTOCOL', 'https')
 
-# SESSION_TIMEOUT is in seconds and defaults to 1800.  Change to one day.
-#  Note that due to
-#   https://bugs.launchpad.net/django-openstack-auth/+bug/1562452
-#  this may be shortened to two hours.  As of 2016-04-04 there's a
-#  live hack in place on californium to alleviate that bug, but
-#  this will revert when we upgrade to M, and then start working again on N.
-SESSION_TIMEOUT = 86400
-SESSION_COOKIE_AGE = 86400
+# SESSION_TIMEOUT is in seconds and defaults to 1800.  Change to 7 days
+#  by default, and also support SESSION_SHORT_TIMEOUT of 30 minutes.
+#
+# SESSION_SHORT is a WMF hack.  SESSION_TIMEOUT is used in multiple
+#  places as a maximum in Horizon code, so it was easier to add
+#  a special case extra-short token for when the user does not
+#  check 'Remember me'.
+SESSION_SHORT_TIMEOUT = 1800
+SESSION_TIMEOUT = 604800
+SESSION_COOKIE_AGE = 604800
 CSRF_COOKIE_SECURE = True
 SESSION_COOKIE_SECURE = True
 
