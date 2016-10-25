@@ -1149,7 +1149,6 @@ node /^(hassaleh|hassium)\.(codfw|eqiad)\.wmnet$/ {
     include base::firewall
 }
 
-# poolcounter - careful
 node 'helium.eqiad.wmnet' {
     role(poolcounter::server, backup::director, backup::storage)
 
@@ -2409,8 +2408,7 @@ node 'poolcounter1001.eqiad.wmnet' {
     include standard
 }
 
-# careful when moving poolcounters
-node 'potassium.eqiad.wmnet' {
+node 'poolcounter1002.eqiad.wmnet' {
     role(poolcounter::server)
     include standard
 }

@@ -5670,11 +5670,9 @@ host phab2001 {
     fixed-address phab2001.codfw.wmnet;
 }
 
-host potassium {
+host poolcounter1002 {
     hardware ethernet 78:2b:cb:08:ac:78;
-    fixed-address potassium.eqiad.wmnet;
-    option pxelinux.pathprefix "precise-installer/";
-    filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
+    fixed-address poolcounter1002.eqiad.wmnet;
 }
 
 host praseodymium {
