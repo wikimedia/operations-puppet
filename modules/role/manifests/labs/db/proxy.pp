@@ -23,8 +23,9 @@ class role::labs::db::proxy {
     }
 
     ferm::service { 'proxysql_mysql':
-        proto => 'tcp',
-        port  => '3306',
+        proto   => 'tcp',
+        port    => '3306',
+        notrack => true,
     }
 
     file {'/var/run/proxysql':
