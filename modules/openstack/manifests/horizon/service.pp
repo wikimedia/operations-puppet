@@ -124,7 +124,7 @@ class openstack::horizon::service(
 
     # Homemade totp plugin for openstack_auth
     file { '/usr/lib/python2.7/dist-packages/openstack_auth/plugin/wmtotp.py':
-        source  => "puppet:///modules/openstack/${openstack_version}/horizon/wmtotp.py",
+        source  => "puppet:///modules/openstack/${openstack_version}/horizon/openstack_auth/wmtotp.py",
         owner   => 'root',
         group   => 'root',
         require => Package['python-openstack-auth'],
@@ -133,7 +133,7 @@ class openstack::horizon::service(
 
     # Replace the standard horizon login form to support 2fa
     file { '/usr/lib/python2.7/dist-packages/openstack_auth/forms.py':
-        source  => "puppet:///modules/openstack/${openstack_version}/horizon/forms.py",
+        source  => "puppet:///modules/openstack/${openstack_version}/horizon/openstack_auth/forms.py",
         owner   => 'root',
         group   => 'root',
         require => Package['python-openstack-auth'],
