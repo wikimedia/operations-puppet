@@ -22,6 +22,7 @@ class contint::packages::labs {
     }
 
     include ::contint::packages::analytics
+    include ::contint::packages::doxygen
     include ::contint::packages::java
     include ::contint::packages::javascript
     include ::contint::packages::php
