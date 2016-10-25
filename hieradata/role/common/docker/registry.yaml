@@ -1,0 +1,7 @@
+docker::registry::username: uploader
+#docker::registry::hash: defined in the private repo
+profile::docker::registry::storage_backend: swift
+profile::docker::registry::swift_username: "docker"
+#profile::docker::registry::swift_password defined in the private repo
+profile::docker::registry::swift_auth_url: "http://ms-fe.svc.codfw.wmnet/v1/"
+profile::docker::swift_container: "docker_registry"
