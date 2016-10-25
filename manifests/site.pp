@@ -2269,6 +2269,13 @@ node 'neodymium.eqiad.wmnet' {
 # Icinga
 node 'neon.wikimedia.org' {
     role(icinga, tendril, tcpircbot)
+    # lint:ignore:puppet_url_without_modules
+    motd::script { 'deprecation_warning':
+        ensure   => present,
+        priority => 01,
+        source   => 'puppet:///files/neon_deprecation',
+    }
+    # lint:endignore
 }
 
 node 'nescio.wikimedia.org' {
