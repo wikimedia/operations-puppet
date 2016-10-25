@@ -21,8 +21,4 @@ class contint::packages {
 
     # For Doxygen based documentations
     require_package('graphviz')
-
-    # VisualEditor syncing
-    require_package('python-requests')
-
 }
