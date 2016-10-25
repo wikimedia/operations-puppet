@@ -11,6 +11,11 @@ class contint::packages::labs {
 
     include ::mediawiki::packages
     include ::mediawiki::packages::multimedia  # T76661
+    # We're no longer installing PHP on app servers starting with
+    # jessie, but we still need it for CI
+    if os_version('debian == jessie') {
+        include ::mediawiki::packages::php5
+    }
 
     if os_version('ubuntu >= trusty || Debian >= jessie') {
         # Fonts needed for browser tests screenshots (T71535)
