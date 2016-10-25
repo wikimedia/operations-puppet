@@ -50,7 +50,7 @@ class role::prometheus::tools {
                 },
                 'file_sd_configs' => [
                     {
-                        'names' => ["${targets_path}/ssh_banner.yml"]
+                        'files' => ["${targets_path}/ssh_banner.yml"]
                     }
                 ],
                 'relabel_configs' => [
@@ -81,7 +81,7 @@ class role::prometheus::tools {
             'job_name'        => 'etcd',
             'file_sd_configs' => [
                 {
-                    'names' => [ "${targets_path}/etcd_*.yml" ]
+                    'files' => [ "${targets_path}/etcd_*.yml" ]
                 }
             ]
             },

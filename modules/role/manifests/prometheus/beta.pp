@@ -12,13 +12,13 @@ class role::prometheus::beta {
       {
         'job_name'        => 'varnish-text',
         'file_sd_configs' => [
-          { 'names' => [ "${targets_path}/varnish-text_*.yaml"] },
+          { 'files' => [ "${targets_path}/varnish-text_*.yaml"] },
         ]
       },
       {
         'job_name'        => 'varnish-upload',
         'file_sd_configs' => [
-          { 'names' => [ "${targets_path}/varnish-upload_*.yaml"] },
+          { 'files' => [ "${targets_path}/varnish-upload_*.yaml"] },
         ]
       },
     ]
@@ -27,7 +27,7 @@ class role::prometheus::beta {
       {
         'job_name'        => 'mysql-core',
         'file_sd_configs' => [
-          { 'names' => [ "${targets_path}/mysql-core_*.yaml"] },
+          { 'files' => [ "${targets_path}/mysql-core_*.yaml"] },
         ]
       },
     ]
@@ -36,19 +36,19 @@ class role::prometheus::beta {
       {
         'job_name'        => 'apache',
         'file_sd_configs' => [
-          { 'names' => [ "${targets_path}/apache_*.yaml"] },
+          { 'files' => [ "${targets_path}/apache_*.yaml"] },
         ]
       },
       {
         'job_name'        => 'hhvm',
         'file_sd_configs' => [
-          { 'names' => [ "${targets_path}/hhvm_*.yaml"] },
+          { 'files' => [ "${targets_path}/hhvm_*.yaml"] },
         ]
       },
       {
         'job_name'        => 'memcache',
         'file_sd_configs' => [
-          { 'names' => [ "${targets_path}/memcache_*.yaml"] },
+          { 'files' => [ "${targets_path}/memcache_*.yaml"] },
         ]
       },
     ]
