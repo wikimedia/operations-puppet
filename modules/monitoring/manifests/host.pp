@@ -50,6 +50,7 @@ define monitoring::host (
     $host = {
         "${title}" => {
             ensure                => $ensure,
+            mode                  => '0444',
             host_name             => $title,
             address               => $nagios_address,
             hostgroups            => $hostgroup,
