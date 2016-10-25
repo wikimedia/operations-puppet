@@ -908,8 +908,7 @@ node 'eeden.wikimedia.org' {
 
 # icinga based monitoring host in eqiad
 node 'einsteinium.wikimedia.org' {
-    include standard
-    include base::firewall
+    role(icinga, tendril, tcpircbot)
 }
 
 node /^elastic101[7-9]\.eqiad\.wmnet/ {
