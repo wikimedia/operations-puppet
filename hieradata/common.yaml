@@ -57,6 +57,11 @@ ganglia_clusters:
       eqiad: []
       codfw: []
       esams: []
+  kubernetes:
+    description: "Kubernetes"
+    id: 9
+    sites:
+      eqiad: []
   appserver:
     description: "Application servers"
     id: 11

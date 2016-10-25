@@ -1,7 +1,7 @@
 debdeploy::grains:
-  debdeploy-etcd:
-    value: standard
-cluster: etcd
+  debdeploy-kubernetes-eqiad:
+    value: etcd
+cluster: kubernetes
 etcd::cluster_name: 'k8s.eqiad'
 etcd::srv_dns: 'k8s.eqiad.wmnet'
 etcd::use_client_certs: false
