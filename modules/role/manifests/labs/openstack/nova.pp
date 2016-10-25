@@ -179,7 +179,7 @@ class role::labs::openstack::nova::controller {
     $spare_master = ipresolve(hiera('labs_nova_controller_spare'),4)
     $designate = ipresolve(hiera('labs_designate_hostname'),4)
     $designate_secondary = ipresolve(hiera('labs_designate_hostname_secondary'))
-    $monitoring = '208.80.154.14'
+    $monitoring = '208.80.154.14 208.80.153.74 208.80.155.119'
     $labs_nodes = hiera('labs_host_ips')
 
     # mysql access from iron
