@@ -155,7 +155,8 @@ class gerrit::jetty(
         ensure    => running,
         subscribe => [
             File['/var/lib/gerrit2/review_site/etc/gerrit.config'],
-            File['/var/lib/gerrit2/review_site/etc/secure.config']
+            File['/var/lib/gerrit2/review_site/etc/secure.config'],
+            File['/var/lib/gerrit2/review_site/etc/log4j.properties']
         ],
         enable    => true,
         hasstatus => false,
