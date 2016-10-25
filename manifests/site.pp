@@ -410,8 +410,7 @@ node /^cp40(1[129]|20)\.ulsfo\.wmnet$/ {
 }
 
 node 'darmstadtium.eqiad.wmnet' {
-    include standard
-    include base::firewall
+    role(docker::registry)
 }
 
 node 'dataset1001.wikimedia.org' {
