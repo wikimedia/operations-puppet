@@ -98,7 +98,7 @@ class gerrit::jetty(
         content => template('gerrit/log4j.properties.erb'),
         owner   => 'gerrit2',
         group   => 'gerrit2',
-        mode    => '0660',
+        mode    => '0664',
         require => File['/var/lib/gerrit2/review_site/etc'],
     }
 
