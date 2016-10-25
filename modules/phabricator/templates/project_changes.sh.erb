@@ -58,7 +58,8 @@ SELECT project_transaction.oldValue, project_transaction.newValue,
     OR project_transaction.transactionType = "core:view-policy"
     OR project_transaction.transactionType = "project:locked"
     OR project_transaction.transactionType = "project:status")
-    AND project_transaction.oldValue != "null"
+    AND (project_transaction.oldValue != "null"
+        OR project_transaction.newValue NOT IN ("\"public\"", "\"users\""))
     AND project_transaction.objectPHID = project.phid
     AND project_transaction.dateModified > UNIX_TIMESTAMP(DATE_SUB(NOW(), INTERVAL 1 WEEK));
 
