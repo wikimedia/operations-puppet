@@ -190,9 +190,14 @@ class KeystoneBackend(object):
         if request is not None:
             request.session['unscoped_token'] = unscoped_token
             request.user = user
-            timeout = getattr(settings, "SESSION_TIMEOUT", 3600)
+            if 'extended_session' in kwargs and kwargs['extended_session']:
+                timeout = getattr(settings, "SESSION_TIMEOUT", 86400)
+            else:
+                timeout = getattr(settings, "SESSION_SHORT_TIMEOUT", 1800)
             token_life = user.token.expires - datetime.datetime.now(pytz.utc)
-            session_time = min(timeout, token_life.seconds)
+
+            # Fix for https://bugs.launchpad.net/django-openstack-auth/+bug/1562452:
+            session_time = min(timeout, int(token_life.total_seconds()))
             request.session.set_expiry(session_time)
 
             scoped_client = keystone_client_class(session=session,
