@@ -38,8 +38,7 @@ class role::labs::db::proxy {
 
     nrpe::monitor_service { 'proxysql':
         description   => 'proxysql processes',
-        nrpe_command  => '/usr/lib/nagios/plugins/check_procs \
--c 2:2 -C proxysql',
+        nrpe_command  => '/usr/lib/nagios/plugins/check_procs -c 2:2 -C proxysql',
         critical      => false,
         contact_group => 'admins', # show on icinga/irc only
     }
