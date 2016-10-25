@@ -16,7 +16,7 @@ class role::labs::puppetmaster(
     $horizon_host = hiera('labs_horizon_host')
     $horizon_host_ip = ipresolve(hiera('labs_horizon_host'), 4)
     # Only allow puppet access from the instances
-    $allow_from = flatten([$labs_instance_range, '208.80.154.14', $horizon_host_ip, $labs_metal])
+    $allow_from = flatten([$labs_instance_range, '208.80.154.14', '208.80.155.119', '208.80.153.74', $horizon_host_ip, $labs_metal])
 
     class { 'role::puppetmaster::standalone':
         autosign            => true,
@@ -54,7 +54,7 @@ class role::labs::puppetmaster(
     include labspuppetbackend
 
     $labs_vms = $novaconfig['fixed_range']
-    $monitoring = '208.80.154.14'
+    $monitoring = '208.80.154.14 208.80.155.119 208.80.153.74'
 
     $fwrules = {
         puppetmaster => {
