@@ -10,7 +10,7 @@ class role::ci::slave {
 
     system::role { 'role::ci::slave': description => 'CI slave runner' }
 
-    include contint::packages
+    include contint::packages::base
     require contint::master_dir
 
     class { '::zuul': }
