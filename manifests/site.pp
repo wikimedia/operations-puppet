@@ -2,7 +2,6 @@
 # site.pp
 
 import 'realm.pp' # These ones first
-import 'role/*.pp'
 
 # Base nodes
 
