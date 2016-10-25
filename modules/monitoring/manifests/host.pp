@@ -39,9 +39,9 @@ define monitoring::host (
             'Debian'  => 'debian',
             default   => 'linux40'
         }
-        $icon_image      = "base/${image}.png"
-        $vrml_image      = "base/${image}.png"
-        $statusmap_image = "base/${image}.gd2"
+        $icon_image      = "vendors/${image}.png"
+        $vrml_image      = "vendors/${image}.png"
+        $statusmap_image = "vendors/${image}.gd2"
     } else {
         $icon_image      = undef
         $vrml_image      = undef
