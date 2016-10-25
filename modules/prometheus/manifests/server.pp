@@ -74,14 +74,14 @@ define prometheus::server (
       {
         'job_name'      => 'prometheus',
         'metrics_path'  => "/${title}/metrics",
-        'target_groups' => [
+        'static_configs' => [
             { 'targets'  => [ $listen_address ] },
         ]
       },
       {
         'job_name'      => 'node',
         'file_sd_configs' => [
-            { 'names'  => [ "${targets_path}/node_*.yml",
+            { 'files'  => [ "${targets_path}/node_*.yml",
                             "${targets_path}/node_*.yaml" ] },
         ]
       },

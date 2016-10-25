@@ -13,31 +13,31 @@ class role::prometheus::ops {
       {
         'job_name'        => 'mysql-core',
         'file_sd_configs' => [
-          { 'names' => [ "${targets_path}/mysql-core_*.yaml"] },
+          { 'files' => [ "${targets_path}/mysql-core_*.yaml"] },
         ]
       },
       {
         'job_name'        => 'mysql-dbstore',
         'file_sd_configs' => [
-          { 'names' => [ "${targets_path}/mysql-dbstore_*.yaml"] },
+          { 'files' => [ "${targets_path}/mysql-dbstore_*.yaml"] },
         ]
       },
       {
         'job_name'        => 'mysql-labs',
         'file_sd_configs' => [
-          { 'names' => [ "${targets_path}/mysql-labs_*.yaml"] },
+          { 'files' => [ "${targets_path}/mysql-labs_*.yaml"] },
         ]
       },
       {
         'job_name'        => 'mysql-misc',
         'file_sd_configs' => [
-          { 'names' => [ "${targets_path}/mysql-misc_*.yaml"] },
+          { 'files' => [ "${targets_path}/mysql-misc_*.yaml"] },
         ]
       },
       {
         'job_name'        => 'mysql-parsercache',
         'file_sd_configs' => [
-          { 'names' => [ "${targets_path}/mysql-parsercache_*.yaml"] },
+          { 'files' => [ "${targets_path}/mysql-parsercache_*.yaml"] },
         ]
       },
     ]
