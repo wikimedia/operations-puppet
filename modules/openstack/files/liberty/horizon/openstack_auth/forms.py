@@ -62,10 +62,14 @@ class Login(django_auth_forms.AuthenticationForm):
                                           "authentication.  To enable it, "
                                           "visit Preferences->User "
                                           "Profile in your Wikitech account")
+    rememberme = forms.BooleanField(label=_("Remember me"),
+                                    help_text="Stay logged in for up to 7 "
+                                              "days of inactivity.",
+                                    required=False)
 
     def __init__(self, *args, **kwargs):
         super(Login, self).__init__(*args, **kwargs)
-        fields_ordering = ['username', 'password', 'totptoken', 'region']
+        fields_ordering = ['username', 'password', 'totptoken', 'rememberme', 'region']
         if getattr(settings,
                    'OPENSTACK_KEYSTONE_MULTIDOMAIN_SUPPORT',
                    False):
@@ -75,7 +79,7 @@ class Login(django_auth_forms.AuthenticationForm):
                 widget=forms.TextInput(attrs={"autofocus": "autofocus"}))
             self.fields['username'].widget = forms.widgets.TextInput()
             fields_ordering = ['domain', 'username', 'password',
-                               'totptoken', 'region']
+                               'totptoken', 'rememberme', 'region']
         self.fields['region'].choices = self.get_region_choices()
         if len(self.fields['region'].choices) == 1:
             self.fields['region'].initial = self.fields['region'].choices[0][0]
@@ -125,6 +129,7 @@ class Login(django_auth_forms.AuthenticationForm):
         username = self.cleaned_data.get('username')
         password = self.cleaned_data.get('password')
         token = self.cleaned_data.get('totptoken')
+        remember = self.cleaned_data.get('rememberme')
         region = self.cleaned_data.get('region')
         domain = self.cleaned_data.get('domain', default_domain)
 
@@ -137,6 +142,7 @@ class Login(django_auth_forms.AuthenticationForm):
                                            username=username,
                                            password=password,
                                            totp=token,
+                                           extended_session=remember,
                                            user_domain_name=domain,
                                            auth_url=region)
             msg = 'Login successful for user "%(username)s".' % \
