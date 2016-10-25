@@ -16,8 +16,10 @@ dumps::rsync_clients:
   - crcdtn01.crc.nd.edu
   - wmrsync.crc.nd.edu
   - wikimedia.iconic.vi
+  - poincare.acc.umu.se
 dumps::rsync_clients_ipv6:
   - odysseus.ip6.fi.muni.cz
+  - poincare.acc.umu.se
 debdeploy::grains:
   debdeploy-dumps:
     value: standard
