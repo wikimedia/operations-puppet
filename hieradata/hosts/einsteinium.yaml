@@ -4,7 +4,7 @@ base::resolving::domain_search:
   - codfw.wmnet
   - esams.wmnet
   - ulsfo.wmnet
-icinga::enable_notifications: 0
-icinga::enable_event_handlers: 0
-icinga::ircbot::ensure: absent
-role::tcpircbot::ensure: absent
+icinga::enable_notifications: 1
+icinga::enable_event_handlers: 1
+icinga::ircbot::ensure: present
+role::tcpircbot::ensure: present
