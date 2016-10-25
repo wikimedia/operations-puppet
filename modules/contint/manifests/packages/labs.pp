@@ -7,7 +7,7 @@ class contint::packages::labs {
 
     require contint::packages::apt
 
-    include contint::packages
+    include contint::packages::base
 
     include ::mediawiki::packages
     include ::mediawiki::packages::multimedia  # T76661

@@ -2,8 +2,6 @@
 #
 class contint::browsertests {
 
-    # Ship several packages such as php5-sqlite or ruby1.9.3
-    include contint::packages
     include contint::packages::ruby
 
     # Provides phantomjs, firefox and xvfb
