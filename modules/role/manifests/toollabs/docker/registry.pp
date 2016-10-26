@@ -9,8 +9,13 @@ class role::toollabs::docker::registry {
 
     $builder = ipresolve(hiera('docker::builder_host'), 4, $::nameservers[0])
 
+    $user = hiera('docker::username')
+    $hash = hiera('docker::password_hash')
+
     class { '::docker::registry':
-        backend              => 'filebackend',
+        docker_username      => $user,
+        docker_password_hash => $hash,
+        storage_backend      => 'filebackend',
         datapath             => '/srv/registry',
         allow_push_from      => $builder,
         ssl_certificate_name => 'star.tools.wmflabs.org',
