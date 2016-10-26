@@ -2028,15 +2028,6 @@ node /^mw10(17|99)\.eqiad\.wmnet$/ {
     include base::firewall
 }
 
-# mw1152 is the experimental HAT script runner
-node 'mw1152.eqiad.wmnet' {
-    role(mediawiki::maintenance, mariadb::maintenance,
-        mediawiki::generic_monitoring)
-    include role::noc::site
-    include standard
-    include base::firewall
-    include ldap::role::client::labs
-}
 
 # mw1161-1169 are job runners
 node /^mw116[1-9]\.eqiad\.wmnet$/ {
