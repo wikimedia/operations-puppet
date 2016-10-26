@@ -47,7 +47,7 @@ class contint::firewall {
         srange => $nodepool_host,
     }
 
-    ferm::service { 'lead_cobalt_gerrit_ssh':
+    ferm::service { 'cobalt_gerrit_ssh':
         proto  => 'tcp',
         port   => '29418',
         srange => '@resolve((cobalt.wikimedia.org gerrit.wikimedia.org))',
