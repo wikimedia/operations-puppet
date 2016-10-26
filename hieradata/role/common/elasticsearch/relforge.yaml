@@ -14,3 +14,6 @@ elasticsearch::recover_after_time: '1m'
 base::monitoring::host::nrpe_check_disk_options: -w 18% -c 15% -l -e -A -i "/srv/sd[a-b][1-3]" --exclude-type=tracefs
 
 elasticsearch::data_dir: /srv/elasticsearch
+
+# enable garbage collection logs
+elasticsearch::gc_log: true
