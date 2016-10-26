@@ -1,9 +1,4 @@
 class docker::registry(
-    $allow_push_from,
-    $ssl_certificate_name,
-    $ssl_settings,
-    $docker_username,
-    $docker_password_hash,
     $storage_backend='filebackend',
     $datapath='/srv/registry',
     $swift_user=undef,
@@ -64,14 +59,6 @@ class docker::registry(
         mode   => '0555',
     }
 
-    file { '/etc/nginx/htpasswd.registry':
-        content => "${docker_username}:${docker_password_hash}",
-        owner   => 'www-data',
-        group   => 'www-data',
-        mode    => '0440',
-        before  => Service['nginx'],
-        require => Package['nginx-common'],
-    }
 
     file { '/etc/docker/registry/config.yml':
         content => ordered_yaml($config),
@@ -87,8 +74,5 @@ class docker::registry(
             '/etc/docker',
             '/etc/docker/registry/config.yml'
         ]
-    }
-    nginx::site { 'registry':
-        content => template('docker/registry-nginx.conf.erb'),
     }
 }
