@@ -64,7 +64,9 @@ server {
     location = /v2/ {
       satisfy any;
 
-      deny <%= @allow_push_from %>;
+      <%- @allow_push_from.each do |ip| -%>
+      deny <%= ip %>;
+      <%- end -%>
       allow all;
 
       auth_basic "docker-registry";
