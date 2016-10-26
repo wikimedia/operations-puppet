@@ -430,4 +430,4 @@ kafka_clusters:
       kafka2002.codfw.wmnet:
         id: 2002
 
-deployment_server: mira.codfw.wmnet
+deployment_server: tin.eqiad.wmnet
