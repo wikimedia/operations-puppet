@@ -2,32 +2,57 @@ class docker::registry(
     $allow_push_from,
     $ssl_certificate_name,
     $ssl_settings,
-    $datapath = '/srv/registry',
+    $storage_backend='filebackend',
+    $datapath='/srv/registry',
+    $swift_user=undef,
+    $swift_password=undef,
+    $swift_url=undef,
+    $swift_contasiner=undef,
 ){
 
     require_package('docker-registry')
 
+    case $storage_backend {
+        'filebackend': {
+            $storage_config = {
+                'filesystem' => { 'rootdirectory' => $datapath },
+                'cache'      => { 'blobdescriptor' => 'inmemory' },
+            }
+            file { $datapath:
+                ensure => directory,
+                mode   => '0775',
+                owner  => 'docker-registry',
+                group  => 'docker-registry',
+            }
+        }
+        'swift': {
+            $username = hiera('profile::docker::registry::swift_username')
+            $password = hiera('profile::docker::registry::swift_password')
+            $auth_url = hiera('profile::docker::registry::swift_auth_url')
+            $container = hiera('profile::docker::registry::swift_container')
+            $storage_config = {
+                'swift'  => {
+                    'username'  => $username,
+                    'password'  => $password,
+                    'authurl'   => $auth_url,
+                    'container' => $container,
+                },
+                'cache' => {
+                    'blobdescriptor' => 'inmemory'
+                },
+            }
+        }
+        default: { fail("Unsupported storage backend ${storage_backend}") }
+    }
+
+
     $config = {
         'version' => '0.1',
-        'storage' => {
-            'filesystem' => {
-                'rootdirectory' => $datapath,
-            },
-            'cache' => {
-                'blobdescriptor' => 'inmemory',
-            },
-        },
+        'storage' => $storage_config,
         'http'     => {
             'addr' => '127.0.0.1:5000',
             'host' => $::fqdn,
         },
-    }
-
-    file { $datapath:
-        ensure => directory,
-        mode   => '0775',
-        owner  => 'docker-registry',
-        group  => 'docker-registry',
     }
 
     # This is by default 0700 for some reason - nothing sensitive inside
