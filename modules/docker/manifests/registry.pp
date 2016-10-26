@@ -1,4 +1,5 @@
 class docker::registry(
+    $config={},
     $storage_backend='filebackend',
     $datapath='/srv/registry',
     $swift_user=undef,
@@ -43,7 +44,7 @@ class docker::registry(
     }
 
 
-    $config = {
+    $base_config = {
         'version' => '0.1',
         'storage' => $storage_config,
         'http'     => {
@@ -61,7 +62,7 @@ class docker::registry(
 
 
     file { '/etc/docker/registry/config.yml':
-        content => ordered_yaml($config),
+        content => ordered_yaml(merge($config, $base_config)),
         owner   => 'docker-registry',
         group   => 'docker-registry',
         mode    => '0440',
