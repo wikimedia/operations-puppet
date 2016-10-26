@@ -27,4 +27,14 @@ describe 'elasticsearch', :type => :class do
     }
   end
 
+  describe 'when GC logging is enabled' do
+    let(:params) { {
+        :cluster_name => 'my_cluster_name',
+        :gc_log       => true,
+    } }
+    it { is_expected.to contain_file('/etc/default/elasticsearch')
+                            .with_content(/-XX:\+PrintGCDetai ls -XX:\+PrintGCDateStamps/)
+    }
+  end
+
 end
