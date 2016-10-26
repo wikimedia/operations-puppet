@@ -572,17 +572,21 @@ def conftool_depool_hosts(puppetmaster_host, hosts):
     for host, result in proxy_command(
             'conftool_depool_hosts', puppetmaster_host, hosts_commands):
 
-        if result['retcode'] == 0:
-            pattern = CONFTOOL_SET_INACTIVE_PATTERN.format(host=re.escape(host))
-            match = re.search(pattern, result['return'])
-            if match is None:
-                logger.error("Unrecognized conftool output: {out}".format(
-                    out=result['return']))
-            else:
-                hosts_status[match.groups()[0]].append(host)
-        else:
+        if result['retcode'] != 0:
             logger.error(("Unable to conftool 'set/pooled=inactive' host "
                           "'{host}'").format(host=host))
+            continue
+
+        pattern = CONFTOOL_SET_INACTIVE_PATTERN.format(host=re.escape(host))
+        for line in result['return'].splitlines():
+            match = re.search(pattern, line)
+            if match is None:
+                logger.error("Unrecognized conftool output: {out}".format(
+                    out=line))
+                break
+        else:
+            # The host was properly depooled from all roles
+            hosts_status[match.groups()[0]].append(host)
 
     print("Depooled via conftool, previous state was: {status}".format(
         status=hosts_status))
@@ -603,10 +607,16 @@ def conftool_ensure_depooled(puppetmaster_host, hosts):
     for host, result in proxy_command('conftool_ensure_depooled',
                                       puppetmaster_host, hosts_commands):
 
-        if result['retcode'] == 0:
-            status = json.loads(result['return'])
-            if status[host]['pooled'] == 'inactive':
-                success_hosts.append(host)
+        if result['retcode'] != 0:
+            continue
+
+        for line in result['return'].splitlines():
+            status = json.loads(line)
+            if status[host]['pooled'] != 'inactive':
+                break
+        else:
+            # The host was properly depooled from all roles
+            success_hosts.append(host)
 
     print("Successfully ensured depooled for hosts: {hosts}".format(
         hosts=success_hosts))
