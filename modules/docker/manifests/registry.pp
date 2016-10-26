@@ -2,6 +2,8 @@ class docker::registry(
     $allow_push_from,
     $ssl_certificate_name,
     $ssl_settings,
+    $docker_username,
+    $docker_password_hash,
     $storage_backend='filebackend',
     $datapath='/srv/registry',
     $swift_user=undef,
@@ -62,8 +64,6 @@ class docker::registry(
         mode   => '0555',
     }
 
-    $docker_username = hiera('docker::username')
-    $docker_password_hash = hiera('docker::password_hash')
     file { '/etc/docker/registry/htpasswd':
         content => "${docker_username}:${docker_password_hash}",
         owner   => 'www-data',
