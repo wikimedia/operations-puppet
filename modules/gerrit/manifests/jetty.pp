@@ -29,6 +29,7 @@ class gerrit::jetty(
 
     $java_options = [
         '-Xloggc:/srv/gerrit/jvmlogs/jvm_gc.%p.log',
+        '-XX:+PrintGCApplicationStoppedTime',
         '-XX:+PrintGCDetails',
         '-XX:+PrintGCDateStamps',
         '-XX:+PrintTenuringDistribution',
