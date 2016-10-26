@@ -39,6 +39,8 @@ temp-pool
 # Master selection will be handled by orchestration.
 read_only = 1
 
+# prevent imports/exports to arbitrary dirs
+secure_file_priv               = /dev/null
 # thread and connection handling
 thread_handling                = pool-of-threads
 <% if @replication_role == 'master' -%>

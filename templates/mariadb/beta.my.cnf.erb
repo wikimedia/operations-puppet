@@ -22,6 +22,7 @@ tmpdir    = <%= @tmpdir %>
 server_id = <%= @server_id %>
 read_only = 0
 
+secure_file_priv   = /dev/null
 max_connections    = 250
 max_allowed_packet = 32M
 sync_binlog        = 1
