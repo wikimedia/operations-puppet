@@ -32,6 +32,7 @@ scap::dsh::groups:
       - wasat.codfw.wmnet
       - silver.wikimedia.org
       - labtestweb2001.wikimedia.org
+      - snapshot1001.eqiad.wmnet
       - snapshot1005.eqiad.wmnet
       - snapshot1006.eqiad.wmnet
       - snapshot1007.eqiad.wmnet
