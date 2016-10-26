@@ -35,5 +35,12 @@
 
     <Directory /srv/mediawiki/docroot/noc/conf>
         AddDefaultCharset utf-8
+        # Force the Content-Type to text/plain
+        # for files without an extension, since
+        # AddDefaultCharset works only
+        # for text/plain or text/html.
+        <FilesMatch "^[^.]+$">
+            ForceType text/plain
+        </FilesMatch>
     </Directory>
 </VirtualHost>
