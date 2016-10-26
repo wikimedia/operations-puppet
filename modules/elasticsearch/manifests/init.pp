@@ -79,6 +79,8 @@
 #        or an array of hostnames. In the later case, one is choosen at random.
 #        If `undef` no logs will be shipped.
 # - $gelf_port: port on which the logs will be sent
+# - $gc_log: set to true to activate garbage collection logs
+#        Default: false
 #
 # == Sample usage:
 #
@@ -86,34 +88,36 @@
 #       cluster_name = 'labs-search'
 #   }
 #
-class elasticsearch($cluster_name,
-                    $heap_memory = '2G',
-                    $multicast_group = '224.2.2.4',
-                    $data_dir = '/var/lib/elasticsearch',
-                    $plugins_dir = '/srv/deployment/elasticsearch/plugins',
-                    $plugins_mandatory = undef,
-                    $minimum_master_nodes = 1,
-                    $master_eligible = true,
-                    $holds_data = true,
-                    $auto_create_index = false,
-                    $expected_nodes = 1,
-                    $recover_after_nodes = 1,
-                    $recover_after_time = '1s',
-                    $awareness_attributes = undef,
-                    $row = undef,
-                    $rack = undef,
-                    $multicast_enabled = false,
-                    $unicast_hosts = undef,
-                    $bind_networks = ['_local_', '_site_'],
-                    $publish_host = '_eth0_',
-                    $filter_cache_size = '10%',
-                    $bulk_thread_pool_executors = undef,
-                    $bulk_thread_pool_capacity = undef,
-                    $statsd_host = undef,
-                    $merge_threads = 3,
-                    $load_fixed_bitset_filters_eagerly = true,
-                    $graylog_hosts = undef,
-                    $graylog_port = 12201,
+class elasticsearch(
+    $cluster_name,
+    $heap_memory = '2G',
+    $multicast_group = '224.2.2.4',
+    $data_dir = '/var/lib/elasticsearch',
+    $plugins_dir = '/srv/deployment/elasticsearch/plugins',
+    $plugins_mandatory = undef,
+    $minimum_master_nodes = 1,
+    $master_eligible = true,
+    $holds_data = true,
+    $auto_create_index = false,
+    $expected_nodes = 1,
+    $recover_after_nodes = 1,
+    $recover_after_time = '1s',
+    $awareness_attributes = undef,
+    $row = undef,
+    $rack = undef,
+    $multicast_enabled = false,
+    $unicast_hosts = undef,
+    $bind_networks = ['_local_', '_site_'],
+    $publish_host = '_eth0_',
+    $filter_cache_size = '10%',
+    $bulk_thread_pool_executors = undef,
+    $bulk_thread_pool_capacity = undef,
+    $statsd_host = undef,
+    $merge_threads = 3,
+    $load_fixed_bitset_filters_eagerly = true,
+    $graylog_hosts = undef,
+    $graylog_port = 12201,
+    $gc_log = false,
 ) {
 
     # Check arguments
@@ -122,6 +126,7 @@ class elasticsearch($cluster_name,
     }
 
     validate_bool($multicast_enabled)
+    validate_bool($gc_log)
 
     # if no graylog_host is given, do not send logs
     $send_logs_to_logstash = is_array($graylog_hosts)
@@ -132,6 +137,22 @@ class elasticsearch($cluster_name,
         $graylog_host = $rotated_graylog_host[0]
         validate_string($graylog_host)
         # validate_integer($graylog_port)  // should be uncommented when we upgrade to stdlib 4.x
+    }
+
+    $gc_log_flags = $gc_log ? {
+        true    => [
+            "-Xloggc:/var/log/elasticsearch/${cluster_name}_jvm_gc.%p.log",
+            '-XX:+PrintGCDetails',
+            '-XX:+PrintGCDateStamps',
+            '-XX:+PrintGCTimeStamps',
+            '-XX:+PrintTenuringDistribution',
+            '-XX:+PrintGCCause',
+            '-XX:+PrintGCApplicationStoppedTime',
+            '-XX:+UseGCLogFileRotation',
+            '-XX:NumberOfGCLogFiles=10',
+            '-XX:GCLogFileSize=2M',
+        ],
+        default => [],
     }
 
     include ::elasticsearch::packages
