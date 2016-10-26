@@ -2755,7 +2755,7 @@ node 'tegmen.wikimedia.org' {
 # https://wikitech.wikimedia.org/wiki/Terbium
 node 'terbium.eqiad.wmnet' {
     role(mariadb::maintenance, mediawiki::maintenance, openldap::management)
-
+    include role::noc::site
     include ldap::role::client::labs
     include base::firewall
 
@@ -2823,7 +2823,7 @@ node /^labvirt101[0-4].eqiad.wmnet/ {
 # mediawiki maintenance server (like terbium)
 node 'wasat.codfw.wmnet' {
     role(mariadb::maintenance, mediawiki::maintenance)
-
+    include role::noc::site
     include ldap::role::client::labs
     include base::firewall
 
