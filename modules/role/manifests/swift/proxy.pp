@@ -27,6 +27,24 @@ class role::swift::proxy {
         port    => '80',
     }
 
+    ferm::service { 'swift-object-server':
+        proto   => 'tcp',
+        notrack => true,
+        port    => '6000',
+    }
+
+    ferm::service { 'swift-container-server':
+        proto   => 'tcp',
+        notrack => true,
+        port    => '6001',
+    }
+
+    ferm::service { 'swift-account-server':
+        proto   => 'tcp',
+        notrack => true,
+        port    => '6002',
+    }
+
     $swift_frontends = hiera('swift::proxyhosts')
     $swift_frontends_ferm = join($swift_frontends, ' ')
 
