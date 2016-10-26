@@ -205,7 +205,7 @@ class role::logstash (
 # Provisions Elasticsearch backend node for a Logstash cluster.
 #
 class role::logstash::elasticsearch {
-    include standard
+    include ::standard
     include ::elasticsearch::nagios::check
     include ::elasticsearch::monitor::diamond
 
