@@ -8,15 +8,4 @@ class contint::master_dir() {
         owner  => 'root',
         group  => 'root',
     }
-
-    if $::hostname == 'gallium' {
-        # gallium received a SSD drive (T82401) mount it
-        mount { '/srv/ssd':
-            ensure  => mounted,
-            device  => '/dev/sdb1',
-            fstype  => 'xfs',
-            options => 'noatime,nodiratime,nobarrier,logbufs=8',
-            require => File['/srv/ssd'],
-        }
-    }
 }
