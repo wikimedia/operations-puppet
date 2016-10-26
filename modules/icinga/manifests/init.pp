@@ -161,6 +161,14 @@ class icinga(
         mode   => '0664',
     }
 
+    # ensure icinga can write logs for ircecho, raid_handler etc.
+    file { '/var/log/icinga':
+        ensure => 'directory',
+        owner  => 'icinga',
+        group  => 'adm',
+        mode   => '2755',
+    }
+
     # Check that the icinga config is sane
     monitoring::service { 'check_icinga_config':
         description    => 'Check correctness of the icinga configuration',
