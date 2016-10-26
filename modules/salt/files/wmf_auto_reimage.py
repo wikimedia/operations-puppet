@@ -603,10 +603,16 @@ def conftool_ensure_depooled(puppetmaster_host, hosts):
     for host, result in proxy_command('conftool_ensure_depooled',
                                       puppetmaster_host, hosts_commands):
 
-        if result['retcode'] == 0:
-            status = json.loads(result['return'])
-            if status[host]['pooled'] == 'inactive':
-                success_hosts.append(host)
+        if result['retcode'] != 0:
+            continue
+
+        for line in result['return'].splitlines():
+            status = json.loads(line)
+            if status[host]['pooled'] != 'inactive':
+                break
+        else:
+            # The host was properly depooled from all roles
+            success_hosts.append(host)
 
     print("Successfully ensured depooled for hosts: {hosts}".format(
         hosts=success_hosts))
