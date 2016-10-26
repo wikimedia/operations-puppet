@@ -48,6 +48,7 @@ lvs::configuration::lvs_service_ips:
     eqiad: 10.2.2.22
     codfw: 10.2.1.22
   swift: &ip_block010
+    esams: 10.2.3.27
     eqiad: 10.2.2.27
     codfw: 10.2.1.27
   dns_rec: &ip_block005
@@ -486,6 +487,7 @@ lvs::configuration::lvs_services:
     sites:
     - codfw
     - eqiad
+    - esams
     ip: *ip_block010
     bgp: 'yes'
     depool-threshold: '.5'
@@ -506,6 +508,8 @@ lvs::configuration::lvs_services:
           hostname: ms-fe.svc.eqiad.wmnet
         codfw:
           hostname: ms-fe.svc.codfw.wmnet
+        esams:
+          hostname: ms-fe.svc.esams.wmnet
   parsoid:
     description: "Parsoid wikitext parser for VisualEditor (%{::site})"
     class: low-traffic

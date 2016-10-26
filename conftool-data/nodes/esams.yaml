@@ -33,3 +33,6 @@ cache_misc:
 dns:
   maerlant.wikimedia.org: [pdns_recursor]
   nescio.wikimedia.org: [pdns_recursor]
+swift:
+  ms-fe3001.esams.wmnet: [swift-fe]
+  ms-fe3002.esams.wmnet: [swift-fe]

@@ -5,3 +5,5 @@ debdeploy::grains:
     value: standard
 admin::groups:
   - swift-roots
+lvs::realserver::realserver_ips:
+  - '10.2.3.27'
