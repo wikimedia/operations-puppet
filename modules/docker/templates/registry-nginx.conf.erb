@@ -67,7 +67,7 @@ server {
       allow all;
 
       auth_basic "docker-registry";
-      auth_basic_user_file /etc/docker/registry/htpasswd;
+      auth_basic_user_file /etc/nginx/htpasswd.registry;
 
       proxy_pass http://registry;
       proxy_redirect off;
