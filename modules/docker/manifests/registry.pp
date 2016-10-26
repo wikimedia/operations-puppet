@@ -64,12 +64,13 @@ class docker::registry(
         mode   => '0555',
     }
 
-    file { '/etc/docker/registry/htpasswd':
+    file { '/etc/nginx/htpasswd.registry':
         content => "${docker_username}:${docker_password_hash}",
         owner   => 'www-data',
         group   => 'www-data',
         mode    => '0440',
-        notify  => Service['docker-registry'],
+        before  => Service['nginx'],
+        require => Package['nginx-common'],
     }
 
     file { '/etc/docker/registry/config.yml':
