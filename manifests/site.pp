@@ -2728,7 +2728,7 @@ node 'stat1004.eqiad.wmnet' {
 }
 
 node /^snapshot1001\.eqiad\.wmnet/ {
-    # to be reinstalled for use as testbed/canary
+    role(snapshot::testbed)
     include standard
 }
 
