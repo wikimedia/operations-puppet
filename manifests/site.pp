@@ -245,7 +245,7 @@ node 'carbon.wikimedia.org' {
 
 # cerium, praseodymium and xenon are Cassandra test hosts
 node /^(cerium|praseodymium|xenon)\.eqiad\.wmnet$/ {
-    role(restbase::server, cassandra, prometheus::node_exporter)
+    role(restbase::server, cassandra)
 }
 
 # DNS recursor
@@ -1264,7 +1264,7 @@ node 'graphite1001.eqiad.wmnet' {
 
 # graphite test machine, currently with SSD caching + spinning disks
 node 'graphite1002.eqiad.wmnet' {
-    role(test::system, prometheus::node_exporter)
+    role(test::system)
     include base::firewall
 }
 
@@ -1524,7 +1524,7 @@ node /labstore200[3-4]\.codfw\.wmnet/ {
 }
 
 node 'lithium.eqiad.wmnet' {
-    role(backup::host, syslog::centralserver, prometheus::node_exporter)
+    role(backup::host, syslog::centralserver)
     include standard
 }
 
@@ -1996,11 +1996,11 @@ node /^ms-be10(1[6-9]|2[0-7])\.eqiad\.wmnet$/ {
 }
 
 node /^ms-fe300[1-2]\.esams\.wmnet$/ {
-    role(swift::proxy, prometheus::node_exporter)
+    role(swift::proxy)
 }
 
 node /^ms-be300[1-4]\.esams\.wmnet$/ {
-    role(swift::storage, prometheus::node_exporter)
+    role(swift::storage)
 }
 
 node /^ms-fe2001\.codfw\.wmnet$/ {
@@ -2761,7 +2761,7 @@ node 'terbium.eqiad.wmnet' {
 
 # Thumbor servers for MediaWiki image scaling
 node /^thumbor100[12].eqiad.wmnet/ {
-    role(thumbor::mediawiki, prometheus::node_exporter)
+    role(thumbor::mediawiki)
 
     include standard
     include base::firewall
