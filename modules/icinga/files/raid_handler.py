@@ -18,7 +18,7 @@ SERVICE_STATE_TYPES = ('SOFT', 'HARD')
 RAID_TYPES = ('megacli', 'hpssacli', 'mpt', 'md')
 COMPRESSED_RAID_TYPES = ('megacli', 'hpssacli')
 
-SKIP_STRINGS = ('timeout', 'timed out', 'connection refused')
+SKIP_STRINGS = ('timeout', 'timed out', 'connection refused', 'out of bounds')
 
 LOG_PATH = '/var/log/icinga/raid_handler.log'
 COMMAND_FILE = '/var/lib/nagios/rw/nagios.cmd'
@@ -91,9 +91,14 @@ def get_raid_status(host, raid_type):
                         '-c', NRPE_REMOTE_COMMAND.format(raid_type)]
         proc = subprocess.Popen(nrpe_command, stdout=subprocess.PIPE)
         stdout, stderr = proc.communicate()
+        if proc.returncode != 0 or len(stdout) == 0:
+            raise RuntimeError(('RETCODE: {retcode}\nSTDOUT:\n{stdout}\n'
+                                'STDERR:\n{stderr}').format(
+                retcode=proc.returncode, stdout=stdout, stderr=stderr))
     except Exception as e:
-        logger.error("Unable to execute '{}': {}".format(nrpe_command, e))
-        raise
+        status = "Failed to execute '{}': {}".format(nrpe_command, e)
+        logger.error(status)
+        return status
 
     if raid_type in COMPRESSED_RAID_TYPES:
         # NRPE doesn't handle NULL bytes, decoding them.
