@@ -13,3 +13,6 @@ Environment="CONFD_OPTS=<% if @interval %>-interval <%= @interval %><% else %>-w
 ExecStart=/usr/bin/confd -backend $CONFD_BACKEND $CONFD_DISCOVERY $CONFD_OPTS
 Restart=on-failure
 RestartSec=10s
+
+[Install]
+WantedBy=multi-user.target
