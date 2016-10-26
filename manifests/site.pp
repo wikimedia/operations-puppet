@@ -1113,24 +1113,6 @@ node 'francium.eqiad.wmnet' {
     include standard
 }
 
-# Continuous Integration
-node 'gallium.wikimedia.org' {
-    role(ci::master,
-        ci::slave,
-        ci::website,
-        zuul::server,
-        backup::host)
-
-    # TODO: Temporary rsync port for the migration to contint1001
-    ferm::service { 'rsync_migration':
-        proto  => 'tcp',
-        port   => 873,
-        srange => '208.80.154.17',
-    }
-    include standard
-    include contint::firewall
-}
-
 # Virtualization hosts
 node /^ganeti[12]00[0-9]\.(codfw|eqiad)\.wmnet$/ {
     role(ganeti)
