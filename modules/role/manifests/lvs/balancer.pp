@@ -12,17 +12,17 @@ class role::lvs::balancer {
 
     $lvs_balancer_ips = $::hostname ? {
         # eqiad
-        /^(lvs10(0[14]|07|10))$/ => [
+        /^(lvs10(0[14]|07|10))$/ => [ # IPs must be high-traffic1 subnet
             $sip['text'][$::site],
             ],
-        /^(lvs10(0[25]|08|11))$/ => [
+        /^(lvs10(0[25]|08|11))$/ => [ # IPs must be high-traffic2 subnet
             $sip['upload'][$::site],
             $sip['maps'][$::site],
             $sip['dns_rec'][$::site],
             $sip['misc_web'][$::site],
             $sip['git-ssh'][$::site],
             ],
-        /^(lvs10(0[36]|09|12))$/ => [
+        /^(lvs10(0[36]|09|12))$/ => [ # IPs must be low-traffic subnet
             $sip['apaches'][$::site],
             $sip['api'][$::site],
             $sip['rendering'][$::site],
@@ -49,16 +49,16 @@ class role::lvs::balancer {
             ],
 
         # codfw (should mirror eqiad above, eventually, and become merged with it via regex
-        /^(lvs200[14])$/ => [
+        /^(lvs200[14])$/ => [ # IPs must be high-traffic1 subnet
             $sip['text'][$::site],
             ],
-        /^(lvs200[25])$/ => [
+        /^(lvs200[25])$/ => [ # IPs must be high-traffic2 subnet
             $sip['upload'][$::site],
             $sip['maps'][$::site],
             $sip['misc_web'][$::site],
             $sip['dns_rec'][$::site],
             ],
-        /^(lvs200[36])$/ => [
+        /^(lvs200[36])$/ => [ # IPs must be low-traffic subnet
             $sip['apaches'][$::site],
             $sip['api'][$::site],
             $sip['rendering'][$::site],
@@ -82,16 +82,16 @@ class role::lvs::balancer {
             ],
 
         # esams + ulsfo
-        /^(lvs[34]00[13])$/ => [
+        /^(lvs[34]00[13])$/ => [ # IPs must be high-traffic1 subnet
             $sip['text'][$::site],
             ],
-        /^(lvs300[24])$/ => [
+        /^(lvs300[24])$/ => [ # IPs must be high-traffic2 subnet
             $sip['upload'][$::site],
             $sip['maps'][$::site],
             $sip['misc_web'][$::site],
             $sip['dns_rec'][$::site],
             ],
-        /^(lvs400[24])$/ => [
+        /^(lvs400[24])$/ => [ # IPs must be high-traffic2 subnet
             $sip['upload'][$::site],
             $sip['maps'][$::site],
             $sip['misc_web'][$::site],
