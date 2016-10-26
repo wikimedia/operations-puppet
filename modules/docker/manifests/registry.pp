@@ -49,7 +49,6 @@ class docker::registry(
         'storage' => $storage_config,
         'http'     => {
             'addr' => '127.0.0.1:5000',
-            'host' => $::fqdn,
         },
     }
 
