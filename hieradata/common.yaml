@@ -284,6 +284,7 @@ statistics_servers:
   - analytics1027.eqiad.wmnet
   - dataset1001.wikimedia.org
 dataset_clients_snapshots:
+  - snapshot1001.eqiad.wmnet
   - snapshot1005.eqiad.wmnet
   - snapshot1006.eqiad.wmnet
   - snapshot1007.eqiad.wmnet
