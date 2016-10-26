@@ -21,6 +21,12 @@ swift::params::accounts:
         account_name: 'AUTH_dispersion'
         auth:         'http://ms-fe.svc.esams.wmnet'
         user:         'swift:dispersion'
+    docker_registry:
+        access:       '.admin'
+        account_name: 'AUTH_docker'
+        auth:         'http://swift.svc.esams.wmnet'
+        user:         'docker:registry'
+
 # keys are to be defined in private repo, e.g.:
 #swift::params::account_keys:
 #    super_admin: <key>
