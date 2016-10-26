@@ -13,10 +13,13 @@ class role::toollabs::docker::registry {
     $hash = hiera('docker::password_hash')
 
     class { '::docker::registry':
+        storage_backend => 'filebackend',
+        datapath        => '/srv/registry',
+    }
+
+    class { '::docker::web':
         docker_username      => $user,
         docker_password_hash => $hash,
-        storage_backend      => 'filebackend',
-        datapath             => '/srv/registry',
         allow_push_from      => $builder,
         ssl_certificate_name => 'star.tools.wmflabs.org',
         ssl_settings         => ssl_ciphersuite('nginx', 'compat'),
