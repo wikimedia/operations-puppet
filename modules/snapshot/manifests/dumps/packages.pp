@@ -1,8 +1,4 @@
 class snapshot::dumps::packages {
-    include ::mediawiki
-    include mediawiki::nutcracker
-    include mediawiki::scap
-
     require_package('mwbzutils')
     require_package('mysql-client')
     require_package('p7zip-full')
