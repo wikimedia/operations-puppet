@@ -184,7 +184,7 @@ class role::cache::misc {
         'noc' => { # noc.wikimedia.org and dbtree.wikimedia.org
             'dynamic'  => 'no',
             'type'     => 'random',
-            'backends' => ['mw1152.eqiad.wmnet'],
+            'backends' => ['terbium.eqiad.wmnet'],
             'be_opts'  => $app_def_be_opts,
             'req_host' => [
                 'noc.wikimedia.org',
