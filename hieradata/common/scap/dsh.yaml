@@ -35,7 +35,6 @@ scap::dsh::groups:
       - snapshot1005.eqiad.wmnet
       - snapshot1006.eqiad.wmnet
       - snapshot1007.eqiad.wmnet
-      - mw1152.eqiad.wmnet
   parsoid:
     conftool:
       - {'cluster': 'parsoid', 'service': 'parsoid'}
@@ -56,4 +55,3 @@ scap::dsh::groups:
       - mw1263.eqiad.wmnet
       - mw1264.eqiad.wmnet
       - mw1265.eqiad.wmnet
-      

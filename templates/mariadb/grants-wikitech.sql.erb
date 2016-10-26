@@ -9,10 +9,12 @@ GRANT ALL PRIVILEGES
     ON `labswiki`.* TO 'wikiadmin'@'10.64.32.13'
     IDENTIFIED BY '<%= @wikiadmin_pass %>';
 
--- queries from mw1152
+-- queries from wasat
+
 GRANT ALL PRIVILEGES
-    ON `labswiki`.* TO 'wikiadmin'@'10.64.16.132'
+    ON `labswiki`.* TO 'wikiadmin'@'10.192.48.45'
     IDENTIFIED BY '<%= @wikiadmin_pass %>';
+
 
 -- queries from horizon.wikimedia.org
 GRANT select
