@@ -146,6 +146,18 @@ define base::service_unit (
                 subscribe   => File[$path],
             }
 
+            $cmd = $ensure ? {
+                present => "enable",
+                default => "disable",
+            }
+            # Horrible, but effective
+            $expected_state = "${cmd}d"
+
+            exec { "systemd ${cmd} for ${name}":
+                command => "/bin/systemctl ${cmd} ${name}.service",
+                unless  => "/bin/systemctl is-enabled ${name}.service | /bin/grep -q ${expected_state}"
+            }
+
             if $declare_service {
                 Exec["systemd reload for ${name}"] -> Service[$name]
             }
