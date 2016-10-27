@@ -12,6 +12,7 @@ upstream websockets {
 log_format combined_with_proto '$remote_addr - $remote_user [$time_local] '
                                '"$request" $status $body_bytes_sent '
                                '"$http_referer" "$http_user_agent" '
+                               '"$http_x_client_ip" '
                                '"$http_x_forwarded_proto"';
 
 server {
