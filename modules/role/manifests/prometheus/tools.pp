@@ -30,8 +30,8 @@ class role::prometheus::tools {
                 'bearer_token_file'     => $bearer_token_file,
                 # Force (insecure) https only for node servers
                 'scheme'                => 'https',
-                'tls_configs'           => {
-                    'insecure_skip_verify' => 'True',
+                'tls_config'            => {
+                    'insecure_skip_verify' => true,
                 },
                 'kubernetes_sd_configs' => [
                     {
