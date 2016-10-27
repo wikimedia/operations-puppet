@@ -5,15 +5,16 @@
 #maps::postgresql_kartotherian_pass: some_password
 #maps::postgresql_osmimporter_pass: some_password
 #maps::postgresql_osmupdater_pass: some_password
+#maps::postgresql_replication_pass: some_password
+#maps::postgresql_monitoring_pass: some_password
 #maps::cassandra_tilerator_pass: some_password
 #maps::cassandra_tileratorui_pass: some_password
 #maps::cassandra_kartotherian_pass: some_password
 
-# Commented for testing: this block needs to be uncommented after changes to private and labs-private repo have been made.
-#maps::postgres_slaves:
-#  maps1002:
-#    ip_address: 10.64.16.42
-#  maps1003:
-#    ip_address: 10.64.32.117
-#  maps1004:
-#    ip_address: 10.64.48.154
+maps::postgres_slaves:
+  maps1002:
+    ip_address: 10.64.16.42
+  maps1003:
+    ip_address: 10.64.32.117
+  maps1004:
+    ip_address: 10.64.48.154
