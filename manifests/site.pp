@@ -409,6 +409,11 @@ node /^cp40(1[129]|20)\.ulsfo\.wmnet$/ {
     role(cache::maps, ipsec)
 }
 
+node 'darmstadtium.eqiad.wmnet' {
+    include standard
+    include base::firewall
+}
+
 node 'dataset1001.wikimedia.org' {
 
     role(dataset::primary, dumps::server)

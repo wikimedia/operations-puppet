@@ -23,6 +23,11 @@ host bromine {
     fixed-address bromine.eqiad.wmnet;
 }
 
+host darmstadtium {
+     hardware ethernet aa:00:00:00:8a:ae;
+     fixed-address darmstadtium.eqiad.wmnet;
+}
+
 # ganeti VM used for d-i testing
 host d-i-test {
     hardware ethernet aa:00:00:3b:60:cb;
