@@ -31,6 +31,6 @@ class role::zuul::merger {
     ferm::service { 'git-daemon_internal':
         proto  => 'tcp',
         port   => '9418',
-        srange => '(($LABS_NETWORKS @resolve(gallium.wikimedia.org) @resolve(contint1001.wikimedia.org) ))',
+        srange => '(($LABS_NETWORKS @resolve(contint1001.wikimedia.org) ))',
     }
 }
