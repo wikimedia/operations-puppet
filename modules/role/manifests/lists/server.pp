@@ -110,10 +110,7 @@ class role::lists::server {
         owner  => 'root',
         group  => 'root',
         mode   => '0755',
-        # move to icinga module?
-        # lint:ignore:puppet_url_without_modules
-        source => 'puppet:///files/icinga/check_mailman_queue',
-        # lint:endignore
+        source => 'puppet:///modules/icinga/check_mailman_queue',
     }
 
     sudo::user { 'nagios_mailman_queue':
@@ -137,9 +134,7 @@ class role::lists::server {
         owner  => 'root',
         group  => 'root',
         mode   => '0755',
-        # lint:ignore:puppet_url_without_modules
-        source => 'puppet:///files/icinga/check_iostat',
-        # lint:endignore
+        source => 'puppet:///modules/icinga/check_iostat',
     }
 
     # lint:ignore:quoted_booleans
