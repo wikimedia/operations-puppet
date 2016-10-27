@@ -28,6 +28,8 @@ class gerrit::jetty(
     $ldap_proxyagent_pass = $ldapconfig['proxypass']
 
     $java_options = [
+        '-XX:+UseConcMarkSweepGC',
+        '-XX:+USeParNewGC',
         '-Xloggc:/srv/gerrit/jvmlogs/jvm_gc.%p.log',
         '-XX:+PrintGCApplicationStoppedTime',
         '-XX:+PrintGCDetails',
