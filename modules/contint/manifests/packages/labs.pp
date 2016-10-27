@@ -15,9 +15,6 @@ class contint::packages::labs {
     if os_version('ubuntu >= trusty || Debian >= jessie') {
         # Fonts needed for browser tests screenshots (T71535)
         include mediawiki::packages::fonts
-        # No Android SDK jobs on Precise
-        include ::contint::packages::androidsdk
-
         include phabricator::arcanist
     }
 
@@ -78,11 +75,6 @@ class contint::packages::labs {
         file { '/usr/lib/libz.so':
             ensure => link,
             target => '/usr/lib/x86_64-linux-gnu/libz.so',
-        }
-
-        exec {'jenkins-deploy kvm membership':
-            unless  => "/bin/grep -q 'kvm\\S*jenkins-deploy' /etc/group",
-            command => '/usr/sbin/usermod -aG kvm jenkins-deploy',
         }
     }
 
