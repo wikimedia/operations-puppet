@@ -5520,13 +5520,6 @@ host neodymium {
     fixed-address neodymium.eqiad.wmnet;
 }
 
-host neon {
-    hardware ethernet 78:2b:cb:08:a4:2f;
-    fixed-address neon.wikimedia.org;
-    option pxelinux.pathprefix "precise-installer/";
-    filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
-}
-
 host netmon1001 {
     hardware ethernet 84:2b:2b:51:91:ff;
     fixed-address netmon1001.wikimedia.org;
