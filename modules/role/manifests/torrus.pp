@@ -34,7 +34,6 @@ class role::torrus {
         'asw-esams.mgmt.esams.wmnet',
         'csw2-esams.mgmt.esams.wmnet',
         'msw1-eqiad.mgmt.eqiad.wmnet',
-        'psw1-eqiad.mgmt.eqiad.wmnet',
         'msw1-codfw.mgmt.codfw.wmnet',
     ]
 
