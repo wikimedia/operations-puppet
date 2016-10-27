@@ -15,30 +15,42 @@ class role::prometheus::tools {
         listen_address       => '127.0.0.1:9902',
         scrape_configs_extra => [
             {
-                'job_name'              => 'k8s',
+                'job_name'              => 'k8s-api',
                 'bearer_token_file'     => $bearer_token_file,
                 'kubernetes_sd_configs' => [
                     {
                         'api_servers'       => [ "https://${master_host}:6443" ],
                         'bearer_token_file' => $bearer_token_file,
+                        'role'              => 'apiserver',
                     },
                 ],
-                # keep metrics coming from apiserver or node kubernetes roles
-                # and map kubernetes node labels to prometheus metric labels
-                'relabel_configs'       => [
+            },
+            {
+                'job_name'              => 'k8s-node',
+                'bearer_token_file'     => $bearer_token_file,
+                # Force (insecure) https only for node servers
+                'scheme'                => 'https',
+                'tls_configs'           => {
+                    'insecure_skip_verify' => 'True',
+                },
+                'kubernetes_sd_configs' => [
                     {
-                        'source_labels' => ['__meta_kubernetes_role'],
-                        'action'        => 'keep',
-                        'regex'         => '(?:apiserver|node)',
+                        'api_servers'       => [ "https://${master_host}:6443" ],
+                        'bearer_token_file' => $bearer_token_file,
+                        'role'              => 'node',
                     },
+                ],
+                'relabel_configs'       => [
+                    # Map kubernetes node labels to prometheus metric labels
                     {
                         'action' => 'labelmap',
                         'regex'  => '__meta_kubernetes_node_label_(.+)',
                     },
+                    # Drop spammy metrics (i.e. with high cardinality k/v pairs)
                     {
-                        'source_labels' => ['__meta_kubernetes_role'],
-                        'action'        => 'replace',
-                        'target_label'  => 'kubernetes_role',
+                        'action'        => 'drop',
+                        'regex'         => 'rest_client_request.*',
+                        'source_labels' => [ '__name__' ],
                     },
                 ]
             },
