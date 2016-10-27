@@ -2255,7 +2255,8 @@ node /^notebook100[12]\.eqiad\.wmnet$/ {
 # salt master
 node 'neodymium.eqiad.wmnet' {
     role(salt::masters::production, deployment::salt_masters,
-      debdeploy::master, ipmi::mgmt, access_new_install, mariadb::client)
+      debdeploy::master, ipmi::mgmt, access_new_install, mariadb::client,
+      mgmt::drac_ilo)
     include standard
     include base::firewall
 }
