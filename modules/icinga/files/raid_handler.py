@@ -186,7 +186,7 @@ def acknowledge_nagios_alert(host, service_description, task_uri):
     """
 
     message = (
-        '[{time}] ACKNOWLEDGE_SVC_PROBLEM;{host};{service};2;1;1;'
+        '[{time}] ACKNOWLEDGE_SVC_PROBLEM;{host};{service};2;1;0;'
         'nagiosadmin;{message}\n'
     ).format(time=int(time.time()), host=host, service=service_description,
              message=ACK_MESSAGE.format(task_uri))
