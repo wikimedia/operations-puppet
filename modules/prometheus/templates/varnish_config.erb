@@ -1,8 +1,8 @@
 <%
   targets_config = []
   targets_config.push({
-    labels  => @labels,
-    targets => @hosts[@site][@cluster].map{ |x| "#{x}:#{@port}" }
+    'labels'  => @labels,
+    'targets' => @hosts[@site][@cluster].map{ |x| "#{x}:#{@port}" }
   })
 -%>
 
