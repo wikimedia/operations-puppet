@@ -1,3 +1,6 @@
+# == Class role::ci::slave::android
+#
+# A continuous integration slave that runs Android based tests.
 class role::ci::slave::android {
 
     requires_realm('labs')
@@ -11,5 +14,10 @@ class role::ci::slave::android {
 
     include contint::packages::androidsdk
     include contint::packages::java
+
+    exec {'jenkins-deploy kvm membership':
+        unless  => "/bin/grep -q 'kvm\\S*jenkins-deploy' /etc/group",
+        command => '/usr/sbin/usermod -aG kvm jenkins-deploy',
+    }
 
 }

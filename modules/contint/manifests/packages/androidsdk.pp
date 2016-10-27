@@ -12,10 +12,4 @@ class contint::packages::androidsdk {
         'qemu',
         ]: ensure => present,
     }
-
-    exec {'jenkins-deploy kvm membership':
-        unless  => "/bin/grep -q 'kvm\\S*jenkins-deploy' /etc/group",
-        command => '/usr/sbin/usermod -aG kvm jenkins-deploy',
-    }
-
 }
