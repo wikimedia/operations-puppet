@@ -269,21 +269,6 @@ host analytics1057 {
     filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
-host aqs1001 {
-    hardware ethernet 90:b1:1c:06:bf:01;
-    fixed-address aqs1001.eqiad.wmnet;
-}
-
-host aqs1002 {
-    hardware ethernet 90:b1:1c:12:68:32;
-    fixed-address aqs1002.eqiad.wmnet;
-}
-
-host aqs1003 {
-    hardware ethernet 90:b1:1c:12:88:48;
-    fixed-address aqs1003.eqiad.wmnet;
-}
-
 host aqs1004 {
     hardware ethernet 1c:98:ec:2a:94:e0;
     fixed-address aqs1004.eqiad.wmnet;
