@@ -144,7 +144,7 @@ class openstack::horizon::service(
     #  https://bugs.launchpad.net/django-openstack-auth/+bug/1562452
     # and also to implement the 'rememberme' checkbox
     file { '/usr/lib/python2.7/dist-packages/openstack_auth/backend.py':
-        source  => "puppet:///modules/openstack/${openstack_version}/horizon/openstack_auth/backened.py",
+        source  => "puppet:///modules/openstack/${openstack_version}/horizon/openstack_auth/backend.py",
         owner   => 'root',
         group   => 'root',
         require => Package['python-openstack-auth'],
