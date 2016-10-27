@@ -9,7 +9,7 @@ cluster: misc
 contactgroups: 'admins,contint'
 
 zuul::merger:
-    gearman_server: '208.80.154.135'  # gallium.wikimedia.org
+    gearman_server: '208.80.154.17'  # contint1001.wikimedia.org
     gerrit_ssh_key_file: 'ssh/ci/jenkins-bot_gerrit_id_rsa'
     git_dir: '/srv/ssd/zuul/git'
     git_email: "zuul-merger@%{::hostname}"
