@@ -145,7 +145,6 @@ define base::service_unit (
                 command     => '/bin/systemctl daemon-reload',
                 subscribe   => File[$path],
             }
-
             if $declare_service {
                 Exec["systemd reload for ${name}"] -> Service[$name]
             }
@@ -153,9 +152,14 @@ define base::service_unit (
     }
 
     if $declare_service {
+        $enable = $ensure ? {
+            present => true,
+            default => false,
+        }
         $base_params = {
-            ensure => ensure_service($ensure),
+            ensure   => ensure_service($ensure),
             provider => $::initsystem,
+            enable   => $enable
         }
         $params = merge($base_params, $service_params)
         ensure_resource('service', $name, $params)
