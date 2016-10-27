@@ -80,7 +80,7 @@
 #        If `undef` no logs will be shipped.
 # - $gelf_port: port on which the logs will be sent
 # - $gc_log: set to true to activate garbage collection logs
-#        Default: false
+#        Default: true
 #
 # == Sample usage:
 #
@@ -117,7 +117,7 @@ class elasticsearch(
     $load_fixed_bitset_filters_eagerly = true,
     $graylog_hosts = undef,
     $graylog_port = 12201,
-    $gc_log = false,
+    $gc_log = true,
 ) {
 
     # Check arguments
