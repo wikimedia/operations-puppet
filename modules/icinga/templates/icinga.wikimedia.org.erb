@@ -16,7 +16,6 @@ Alias /icinga /usr/share/icinga/htdocs
 
 <VirtualHost *:443>
     ServerName icinga.wikimedia.org
-    ServerAlias neon.wikimedia.org
     ServerAdmin noc@wikimedia.org
     # https://httpoxy.org/
     RequestHeader unset Proxy early
@@ -85,7 +84,6 @@ Alias /icinga /usr/share/icinga/htdocs
 
 <VirtualHost *:80>
     ServerName icinga.wikimedia.org
-    ServerAlias neon.wikimedia.org
     ServerAdmin noc@wikimedia.org
     DocumentRoot /usr/share/icinga/htdocs
 
