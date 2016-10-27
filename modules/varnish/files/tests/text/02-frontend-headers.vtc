@@ -1,0 +1,34 @@
+varnishtest "cache_text frontend headers"
+
+server s1 {
+    rxreq
+    txresp
+} -start
+
+varnish v1 -arg "-p cc_command='exec cc -fpic -shared -Wl,-x -L/usr/local/lib/ -o %o %s -lmaxminddb' -p vcc_allow_inline_c=true -p vcc_err_unref=false" -vcl+backend {
+    backend vtc_backend {
+        .host = "${s1_addr}"; .port = "${s1_port}";
+    }
+
+    include "/usr/share/varnish/tests/wikimedia_text-frontend.vcl";
+} -start
+
+# We return Set-Cookie twice: the first time for WMF-Last-Access, the second
+# one for GeoIP. logexpect seems to be the only sane way to check that the
+# latter is also set.
+logexpect l1 -v v1 -g request {
+    expect  0 1001  Begin       "^req .* rxreq"
+    expect  * = RespHeader "Set-Cookie: GeoIP=NL:::52.38:4.90:v4"
+    expect  * = End
+} -start
+
+client c1 {
+    txreq -url "/" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https" -hdr "X-Client-IP: 91.198.174.192"
+    rxresp
+    expect resp.http.Strict-Transport-Security == "max-age=31536000; includeSubDomains; preload"
+    expect resp.http.X-Analytics == "https=1;nocookies=1"
+    expect resp.http.X-Client-IP == "91.198.174.192"
+    expect resp.http.Set-Cookie ~ "WMF-Last-Access="
+} -run
+
+logexpect l1 -wait
