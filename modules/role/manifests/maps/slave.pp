@@ -9,7 +9,7 @@ class role::maps::slave {
     }
     $master = hiera('postgresql::slave::master_server')
 
-    $monitoring_pass = hiera('maps::postgresql_replication_pass')
+    $monitoring_pass = hiera('maps::postgresql_monitoring_pass')
     $critical = 1800
     $warning = 300
     $command = "/usr/lib/nagios/plugins/check_postgres_replication_lag.py \
