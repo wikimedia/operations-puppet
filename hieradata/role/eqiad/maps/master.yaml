@@ -6,7 +6,6 @@
 #maps::postgresql_osmimporter_pass: some_password
 #maps::postgresql_osmupdater_pass: some_password
 #maps::postgresql_replication_pass: some_password
-#maps::postgresql_monitoring_pass: some_password
 #maps::cassandra_tilerator_pass: some_password
 #maps::cassandra_tileratorui_pass: some_password
 #maps::cassandra_kartotherian_pass: some_password
