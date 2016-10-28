@@ -1,7 +1,7 @@
-!/bin/bash
+#!/bin/bash
 # change the password of a DRAC mgmt interface
 # (c) Papaul Tshibamba, Wikimedia Foundation Inc. 2016
-#sshpass needs to be installed on the host from where this script will run
+# sshpass needs to be installed on the host from where this script will run
 echo -n "Enter iDRAC root password (password will not be displayed):"
 read -s DRACPASS
 echo
@@ -9,11 +9,11 @@ echo -n "Enter IDRAC root new password (password will not be displayed):"
 read -s DRAC_NEW_PASS
 echo
 
-#Host ip list file location
+# Host ip list file location
 host_list=ip_list.txt
-#Dell Racadm command
-#sshpass -p "$DRACPASS" ssh -o StrictHostKeyChecking=no root@$host_ip racadm config -g cfgUserAdmin -o cfgUserAdminPassword -i 2 "$DRAC_NEW_PASS"
-#Logfile to keep the logs of the execution
+# Dell Racadm command
+# sshpass -p "$DRACPASS" ssh -o StrictHostKeyChecking=no root@$host_ip racadm config -g cfgUserAdmin -o cfgUserAdminPassword -i 2 "$DRAC_NEW_PASS"
+# Logfile to keep the logs of the execution
 logfile=config.log
 
         #get a list of IPs for the servers
@@ -21,11 +21,11 @@ logfile=config.log
                 cat $host_list
 }
 
-        #check if the file with the hosts IPs exist
+        # check if the file with the hosts IPs exists
         if [ ! -r $host_list ]; then
                 echo "IP address file $host_list not found or cannot be read"
                 exit
-        #Make a log file. The logfile gets overwritten at each exection
+        # Make a log file. The logfile gets overwritten at each execution
                 else echo "Starting Bash configuration of Dell Drac for file $host_list" >$logfile
 fi
 
