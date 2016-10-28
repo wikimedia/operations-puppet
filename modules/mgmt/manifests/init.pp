@@ -6,5 +6,11 @@ class mgmt {
     package { 'sshpass':
         ensure => present,
     }
+    file { '/usr/local/bin/changepw':
+        mode   => '0500',
+        owner  => 'root',
+        group  => 'root',
+        source => 'puppet:///modules/mgmt/changepw',
 
+    }
 }
