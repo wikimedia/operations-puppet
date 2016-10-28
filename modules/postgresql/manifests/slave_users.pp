@@ -13,10 +13,10 @@ define postgresql::slave_users(
         database => 'replication',
     }
     ::postgresql::user { "monitoring@${title}":
-        user     => 'monitoring',
+        user     => 'replication',
         password => $monitoring_pass,
         cidr     => "${ip_address}/32",
-        database => 'all',
+        database => 'template0',
     }
 }
 
