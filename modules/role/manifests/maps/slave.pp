@@ -9,11 +9,14 @@ class role::maps::slave {
     }
     $master = hiera('postgresql::slave::master_server')
 
-    $monitoring_pass = hiera('maps::postgresql_monitoring_pass')
+    # check_postgres_replication_lag script relies on values that are only
+    # readable by superuser or replication user. This prevents using a
+    # dedicated user for monitoring.
+    $replication_pass = hiera('maps::postgresql_replication_pass')
     $critical = 1800
     $warning = 300
     $command = "/usr/lib/nagios/plugins/check_postgres_replication_lag.py \
--U monitoring -P ${monitoring_pass} -m ${master} -D template1 -C ${critical} -W ${warning}"
+-U replication -P ${replication_pass} -m ${master} -D template1 -C ${critical} -W ${warning}"
     nrpe::monitor_service { 'postgres-rep-lag':
         description  => 'Postgres Replication Lag',
         nrpe_command => $command,

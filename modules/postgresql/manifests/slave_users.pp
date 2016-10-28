@@ -3,7 +3,6 @@
 define postgresql::slave_users(
     $ip_address,
     $replication_pass,
-    $monitoring_pass,
 ) {
     ::postgresql::user { "replication@${title}":
         user     => 'replication',
@@ -13,10 +12,10 @@ define postgresql::slave_users(
         database => 'replication',
     }
     ::postgresql::user { "monitoring@${title}":
-        user     => 'monitoring',
-        password => $monitoring_pass,
+        user     => 'replication',
+        password => $replication_pass,
         cidr     => "${ip_address}/32",
-        database => 'all',
+        database => 'template0',
     }
 }
 
