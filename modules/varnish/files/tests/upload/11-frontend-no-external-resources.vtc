@@ -1,0 +1,24 @@
+varnishtest "Restrict loading of external resources"
+
+server s1 {
+    rxreq
+    txresp
+} -start
+
+varnish v1 -arg "-p vcc_err_unref=false" -vcl+backend {
+    backend vtc_backend {
+        .host = "${s1_addr}"; .port = "${s1_port}";
+    }
+
+    include "/usr/share/varnish/tests/wikimedia_upload-frontend.vcl";
+} -start
+
+client c1 {
+    txreq -url "/wikipedia/fr" -hdr "X-Forwarded-Proto: https" -hdr "Host: upload.wikimedia.org"
+    rxresp
+
+    expect resp.status == 200
+    expect resp.http.Content-Security-Policy-Report-Only ~ "^default-src 'none';"
+    expect resp.http.Content-Security-Policy-Report-Only == resp.http.X-Content-Security-Policy-Report-Only
+    expect resp.http.X-Content-Security-Policy-Report-Only ==  resp.http.X-Webkit-CSP-Report-Only
+} -run
