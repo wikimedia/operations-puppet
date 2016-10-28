@@ -34,8 +34,8 @@ define prometheus::varnish_config(
     validate_hash($labels)
 
     $hosts = get_clusters({
-      'site' => $site,
-      'cluster' => $cluster,
+      'site' => [$site],
+      'cluster' => [$cluster],
     })
 
     file { $dest:
