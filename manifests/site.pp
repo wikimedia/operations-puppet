@@ -1351,7 +1351,7 @@ node /kafka10(12|13|14|18|20|22)\.eqiad\.wmnet/ {
 # Kafka Brokers - main-eqiad
 # For now, eventlogging-service-eventbus is also colocated
 # on these brokers.
-node /kafka100[12]\.eqiad\.wmnet/ {
+node /kafka100[123]\.eqiad\.wmnet/ {
     role(kafka::main::broker,
         # Mirror eqiad.* topics from Kafka main-eqiad into this main-codfw
         kafka::main::mirror,
