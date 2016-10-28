@@ -15,7 +15,7 @@ define postgresql::slave_users(
         user     => 'replication',
         password => $replication_pass,
         cidr     => "${ip_address}/32",
-        database => 'template0',
+        database => 'template1',
     }
 }
 
