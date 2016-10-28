@@ -5,7 +5,7 @@ groups:
               handrade, howief, jdouglas, jgonera, jsahleen, mah, maryana, mglaser, mvolz,
               mwalker, nimishg, rainman, ssmith, swalling, sumanah, werdna, rmoen,
               johnflewis, marc, jkrauska, akumar, mnoushad, spage, tnegrin, msyed, kleduc,
-              manybubbles, haithams, jzerebecki, ashwinpp, ironholds]
+              manybubbles, haithams, jzerebecki, ashwinpp, ironholds, robla]
   wikidev:
     gid: 500
     description: container group for primary user groups.
@@ -51,7 +51,7 @@ groups:
               brion, cscott, csteipp, demon, ebernhardson, esanders, gilles,
               gjg, gwicke, halfak, hashar, hoo, kaldari, kartik, khorn, krinkle,
               maxsem, mattflaschen, marktraceur, milimetric, mlitn, andyrussg,
-              nikerabbit, reedy, robla, ssastry, tomasz, yurik,
+              nikerabbit, reedy, ssastry, tomasz, yurik,
               tgr, phuedx, ejegg, twentyafterfour, legoktm, catrope, krenair,
               mobrovac, nuria, thcipriani, joal, eevans, mforns, dpatrick, dcausse,
               bsitzmann, mholloway-shell, dduvall, gehel, dereckson,
@@ -1031,12 +1031,11 @@ users:
     ssh_keys: []
     uid: 2099
   robla:
-    ensure: present
+    ensure: absent
     gid: 500
     name: robla
     realname: Rob Lanphier
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAu53QXIYXig1FTP4ve0MOMSXZXtMORld4y+f9cqmKA7OAStnT1VYw6F0eBSPJH0WUo541iMKcsigENytdn/kuSu8zmh1+nyHvhndB3LvP467IBo82LRBaZ6X0+0y5X+w1w56oX5H+t2zixWPHTQu0f9XQBPCsZzfV8DkVbJjwoHk9wcHI/lJSa7r5dI0xWPWYXXHM6BeAHbET1kcUAe3km1jWDsh2gBgKfwis7iIZx6ROSBOfHdYs9MU6miFq/9kk2/Z1vKOY6bj3adVe+wbd6JFF0UZdQzstIW3/15NfWJjJ8X6gx5U7wchtuPjnIyydUTU5u4UiS6uUS4e+MFsoOw==
-        robla@wikimedia.org]
+    ssh_keys: []
     uid: 1233
   spage:
     ensure: absent
