@@ -33,11 +33,6 @@ define prometheus::varnish_config(
     validate_re($port, '^[0-9]+$')
     validate_hash($labels)
 
-    $hosts = get_clusters({
-      'site' => [$site],
-      'cluster' => [$cluster],
-    })
-
     file { $dest:
         ensure  => present,
         owner   => 'root',

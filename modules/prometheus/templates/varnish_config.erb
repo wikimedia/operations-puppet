@@ -1,9 +1,20 @@
-<%
-  targets_config = []
-  targets_config.push({
-    'labels'  => @labels,
-    'targets' => @hosts[@cluster][@site].map{ |x| "#{x}:#{@port}" }
-  })
--%>
+<%-
+all = []
+clusters = scope.function_get_clusters([{
+         'site' => [@site],
+         'cluster' => [@cluster],
+}])
 
-<%= scope.function_ordered_yaml(targets_config) -%>
+clusters.each do |cluster, sites|
+  sites.each do |site, targets|
+  all.push(
+    {
+      'labels' => @labels,
+      'targets' => targets.map{|t| "#{t.split('.')[0]}:#{@port}" },
+    }
+  )
+  end
+end
+-%>
+# This file is managed by puppet
+<%= scope.function_ordered_yaml([all]) %>
