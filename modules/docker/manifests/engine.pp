@@ -2,6 +2,11 @@ class docker::engine(
     $version = '1.11.2-0~jessie',
     $declare_service = true,
 ) {
+
+    package { 'bridge-utils':
+        ensure => present,
+    }
+
     apt::repository { 'docker':
         uri        => 'https://apt.dockerproject.org/repo',
         dist       => 'debian-jessie',
