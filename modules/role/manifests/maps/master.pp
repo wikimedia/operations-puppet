@@ -24,7 +24,6 @@ class role::maps::master(
     $osmimporter_pass = hiera('maps::postgresql_osmimporter_pass')
     $osmupdater_pass = hiera('maps::postgresql_osmupdater_pass')
     $replication_pass = hiera('maps::postgresql_replication_pass')
-    $monitoring_pass = hiera('maps::postgresql_monitoring_pass')
 
     # Users
     postgresql::user { 'kartotherian':
@@ -93,7 +92,6 @@ class role::maps::master(
     if $postgres_slaves {
         $postgres_slaves_defaults = {
             replication_pass => $replication_pass,
-            monitoring_pass  => $monitoring_pass,
         }
         create_resources(postgresql::slave_users, $postgres_slaves, $postgres_slaves_defaults)
     }
