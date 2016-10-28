@@ -47,25 +47,25 @@ class role::prometheus::ops {
       {
         'job_name'        => 'varnish-text',
         'file_sd_configs' => [
-          { 'names' => [ "${targets_path}/varnish-text_*.yaml"] },
+          { 'files' => [ "${targets_path}/varnish-text_*.yaml"] },
         ]
       },
       {
         'job_name'        => 'varnish-upload',
         'file_sd_configs' => [
-          { 'names' => [ "${targets_path}/varnish-upload_*.yaml"] },
+          { 'files' => [ "${targets_path}/varnish-upload_*.yaml"] },
         ]
       },
       {
         'job_name'        => 'varnish-maps',
         'file_sd_configs' => [
-          { 'names' => [ "${targets_path}/varnish-maps_*.yaml"] },
+          { 'files' => [ "${targets_path}/varnish-maps_*.yaml"] },
         ]
       },
       {
         'job_name'        => 'varnish-misc',
         'file_sd_configs' => [
-          { 'names' => [ "${targets_path}/varnish-misc_*.yaml"] },
+          { 'files' => [ "${targets_path}/varnish-misc_*.yaml"] },
         ]
       },
     ]
