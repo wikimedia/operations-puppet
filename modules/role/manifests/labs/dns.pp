@@ -31,6 +31,9 @@ class role::labs::dns {
 
     class { 'mariadb::service':
         package => 'wmf-mariadb10',
+        manage  => true,
+        ensure  => running,
+        enabled => true,
     }
 
     class { 'mariadb::config':
@@ -38,11 +41,6 @@ class role::labs::dns {
         datadir   => '/srv/sqldata',
         tmpdir    => '/srv/tmp',
         read_only => 'off',
-    }
-
-    service { 'mariadb':
-        ensure  => running,
-        require => Class['mariadb::packages_wmf', 'mariadb::config', 'mariadb::service'],
     }
 
     package { 'mysql-client':
