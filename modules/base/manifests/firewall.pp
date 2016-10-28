@@ -59,4 +59,26 @@ class base::firewall($ensure = 'present') {
         require       => File['/usr/lib/nagios/plugins/check_conntrack'],
         contact_group => 'admins',
     }
+
+    sudo::user { 'nagios_check_ferm':
+        ensure     => 'present',
+        user       => 'nagios',
+        privileges => [ 'ALL = NOPASSWD: /usr/lib/nagios/plugins/check_ferm' ],
+        require    => File['/usr/lib/nagios/plugins/check_ferm'],
+    }
+
+    file { '/usr/lib/nagios/plugins/check_ferm':
+        source => 'puppet:///modules/base/firewall/check_ferm',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+    }
+
+    nrpe::monitor_service { 'ferm_active':
+        ensure        => 'present',
+        description   => 'Check whether ferm is active by checking the default input chain',
+        nrpe_command  => '/usr/bin/sudo /usr/lib/nagios/plugins/check_ferm',
+        require       =>  [File['/usr/lib/nagios/plugins/check_ferm'], Sudo::User['nagios_check_ferm']],
+        contact_group => 'admins',
+    }
 }
