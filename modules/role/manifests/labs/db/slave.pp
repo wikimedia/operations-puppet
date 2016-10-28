@@ -23,7 +23,7 @@ class role::labs::db::slave {
         tmpdir        => '/srv/labsdb/tmp',
         read_only     => 'ON',
         p_s           => 'on',
-        ssl           => 'on',
+        ssl           => 'puppet-cert',
         binlog_format => 'ROW',
     }
 
