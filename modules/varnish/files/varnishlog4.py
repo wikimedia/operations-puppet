@@ -129,8 +129,8 @@ class VarnishCallbackHandler:
         transaction_id = cbd['vxid']
         tag = vap.VSL_tags[cbd['tag']]
 
-        # Remove trailing NULL byte
-        value = cbd['data'][:-1]
+        # Remove trailing NULL byte (if any)
+        value = cbd['data'].rstrip(b'\x00')
 
         remote_type = cbd['type']
 
