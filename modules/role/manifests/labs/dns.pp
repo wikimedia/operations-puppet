@@ -39,6 +39,7 @@ class role::labs::dns {
 
     service { 'mariadb':
         ensure  => running,
+        enable  => true,
         require => Class['mariadb::packages_wmf', 'mariadb::config'],
     }
 
