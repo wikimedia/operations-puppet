@@ -1,0 +1,17 @@
+#!/bin/bash
+# This plugin tests whether ferm has been started on a host by querying
+# the policy for the INPUT chain
+
+if [ ! -x /sbin/iptables ]; then
+    echo "WARNING iptables not installed"
+    exit 1
+fi
+
+input_policy=$(iptables -nL INPUT | sed -nr 's/^Chain INPUT \(policy (.*)\)$/\1/p')
+if [ $input_policy = "DROP" ]; then
+    echo "OK ferm input default policy is set"
+    exit 0
+else
+    echo "ERROR ferm input drop default policy not set, ferm might not have been started correctly"
+    exit 2
+fi
