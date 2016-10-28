@@ -18,6 +18,9 @@ ExecStart=/usr/local/bin/kube-apiserver \
     --host-paths-allowed=<%= @host_paths_allowed_string %> \
     --host-path-prefixes-allowed=<%= @host_path_prefixes_allowed_string %>
 Restart=on-failure
+# Really large limit - defaults to 1024 otherwise for some reason?
+# That runs out pretty quickly, so we do 1024 * 1024
+LimitNOFILE=1048576
 
 [Install]
 WantedBy=multi-user.target
