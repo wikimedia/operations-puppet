@@ -422,6 +422,8 @@ kafka_clusters:
         id: 1001
       kafka1002.eqiad.wmnet:
         id: 1002
+      kafka1003.eqiad.wmnet:
+        id: 1003
 
   main-codfw:
     zookeeper_cluster_name: main-codfw
