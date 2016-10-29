@@ -63,6 +63,11 @@ class phabricator::vcs (
         group   => 'root',
     }
 
+    # allow ssh connection to IPs in hiera phabricator::vcs::listen_addresses:
+    ferm::rule { 'ssh_public':
+        rule => template('phabricator/ferm_rule-ssh_public.erb'),
+    }
+
     file { $sshd_config:
         content => template('phabricator/sshd_config.phabricator.erb'),
         mode    => '0644',

@@ -115,12 +115,12 @@ class role::phabricator::main {
     # This exists to offer git services
     interface::ip { 'role::phabricator::main::ipv4':
         interface => 'eth0',
-        address   => '10.64.32.186',
+        address   => hiera('phabricator::vcs::address::v4'),
         prefixlen => '21',
     }
     interface::ip { 'role::phabricator::main::ipv6':
         interface => 'eth0',
-        address   => '2620:0:861:103:10:64:32:186',
+        address   => hiera('phabricator::vcs::address::v6'),
         prefixlen => '128',
         # mark as deprecated = never pick this address unless explicitly asked
         options   => 'preferred_lft 0',
@@ -208,10 +208,6 @@ class role::phabricator::main {
         port   => '25',
         proto  => 'tcp',
         srange => inline_template('(<%= @mail_smarthost.map{|x| "@resolve(#{x}, AAAA)" }.join(" ") %>)'),
-    }
-
-    ferm::rule { 'ssh_public':
-        rule => 'saddr (0.0.0.0/0 ::/0) daddr (10.64.32.186/32 208.80.154.250/32 2620:0:861:103:10:64:32:186/128 2620:0:861:ed1a::3:16/128) proto tcp dport (22) ACCEPT;',
     }
 
     # ssh between phabricator servers for clustering support
