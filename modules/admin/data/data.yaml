@@ -2170,3 +2170,11 @@ users:
     ssh_keys:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCsS1WgYh+EeHalBKDkWmlvhzfoWPFQcg6OYWKkWhraOd6mhGjDfaF6vst9xC4PCtvudDBMImNIrzLAT3uWoZxuLUIpsGLvIfPLk/vRtfQFN/L//ItSaOshFRVmVfEvVeNbmQKrgcfLvp2rmuJvf/1qJXNAgGIZK54xw3xjriZ/uem8xBZOJ9a7jcyUYlD8fk0rNcv2vpzQIY6ZiFJq8lYf8bja70IuBTPb93gmlCnE6r6wCb6PAWByL3zZJVffFi+A+DEMSNZ6bjEu6iQA1iQCcIPxXS8DTr0Zj+J1TeyqYUvuXmzqJb+xmOqv74fAqPu8A7YxX89LCExj5AzP+0Xr raynor@DellE6540
     uid: 15700
+  zareen:
+    ensure: present
+    gid: 500
+    name: zareen
+    realname: Zareen Farooqui
+    ssh_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQD8giXsRrle7aLzTJHUEJuCZqn0eSQbTf3skLk7IRyKAc6ZtVmU+kW0pKO3vTxAigPTr/oo4LPS9RKmIQXhbzFDiPhYom+Clx8D5cQRXfeBYMgJgjeWSVNNVixLDphPMZu5ISSFBfElaT2Yga0DCW8Whobg1T151FvGcmVB8LYSLF68i7vp56MHWwvA1h51mhvQj4rHGo1kINQxcD7Nl7ReowpdefizX52CVGx19LXJPsK4L1FFG/IyCf2py/p0BWwo0UAjcHOVTXQAY2SJxcHSot8X72opkRpu0QMoloKaHuUdBq7/dOe5FFxvIgwg1+TpmeGTb3RsX2ii9YJqm/tX ZareenFarooqui@ZAREENs-MacBook.local
+    uid: 15831
