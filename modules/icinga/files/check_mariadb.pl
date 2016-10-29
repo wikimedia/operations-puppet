@@ -205,7 +205,7 @@ if ($check eq "slave_sql_lag")
 	# pt-heartbeat query, depending on if shard, master_server_id
         # or both are set
         my @values;
-	my $query = "SELECT TIMESTAMPDIFF(MICROSECOND,ts,UTC_TIMESTAMP(6)) AS lag FROM heartbeat.heartbeat WHERE 1=1 ";
+	my $query = "SELECT 1 as ok, greatest(0, TIMESTAMPDIFF(MICROSECOND, ts, UTC_TIMESTAMP(6)) - 500000) AS lag FROM heartbeat.heartbeat WHERE 1=1 ";
 	if ($master_server_id ne "") {
 		$query .= "AND server_id = ? ";
 		push @values, $master_server_id;
@@ -228,7 +228,7 @@ if ($check eq "slave_sql_lag")
 	my $heartbeat = $db->selectrow_hashref($query, undef, @values);
 
 	# failback to seconds_behind_master
-	my $lag = $heartbeat->{lag}?$heartbeat->{lag}/1000000:$status->{Seconds_Behind_Master};
+	my $lag = $heartbeat->{ok}?$heartbeat->{lag}/1000000:$status->{Seconds_Behind_Master};
 
 	if ($lag eq "NULL" or $lag eq "") {
 		# Either IO or SQL threads stopped? WARN
