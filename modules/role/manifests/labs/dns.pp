@@ -30,7 +30,7 @@ class role::labs::dns {
     }
 
     class { 'mariadb::service':
-        version => 'wmf-mariadb10',
+        package => 'wmf-mariadb10',
     }
 
     class { 'mariadb::config':
