@@ -3,9 +3,18 @@ class role::cache::ssl::unified(
     $labs_subjects = ['beta.wmflabs.org'],
 ) {
     if ( $::realm == 'production' ) {
+
+        $check_cn = 'en.wikipedia.org'
+        $check_sans = 'wikipedia.org,mediawiki.org,wikibooks.org,wikidata.org,wikimedia.org,wikimediafoundation.org,wikinews.org,wikiquote.org,wikisource.org,wikiversity.org,wikivoyage.org,wiktionary.org,w.wiki,*.wikipedia.org,*.mediawiki.org,*.wikibooks.org,*.wikidata.org,*.wikimedia.org,*.wikimediafoundation.org,*.wikinews.org,*.wikiquote.org,*.wikisource.org,*.wikiversity.org,*.wikivoyage.org,*.wiktionary.org,*.m.wikipedia.org,*.m.mediawiki.org,*.m.wikibooks.org,*.m.wikidata.org,*.m.wikimedia.org,*.m.wikimediafoundation.org,*.m.wikinews.org,*.m.wikiquote.org,*.m.wikisource.org,*.m.wikiversity.org,*.m.wikivoyage.org,*.m.wiktionary.org,*.zero.wikipedia.org'
+
         monitoring::service { 'https':
-            description   => 'HTTPS',
-            check_command => 'check_sslxNN',
+            description   => 'HTTPS Unified ECDSA',
+            check_command => "check_ssl_unified!ECDSA!${check_cn}!${check_sans}",
+        }
+
+        monitoring::service { 'https':
+            description   => 'HTTPS Unified RSA',
+            check_command => "check_ssl_unified!RSA!${check_cn}!${check_sans}",
         }
 
         tlsproxy::localssl { 'unified':
