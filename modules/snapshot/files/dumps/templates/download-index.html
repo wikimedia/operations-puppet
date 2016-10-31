@@ -112,49 +112,64 @@ dl {
         <div id="content">
             <h1>Wikimedia Downloads</h1>
             <p>
-            Please note that we have rate limited downloaders and we are capping the number of per-ip connections to 2. This will
-            help to ensure that everyone can access the files with reasonable download times.  Clients that try to evade these limits
-            may be blocked.
+                Please note that we have rate limited downloaders and we are capping the
+                number of per-ip connections to 2. This will help to ensure that everyone
+                can access the files with reasonable download times.  Clients that try to
+                evade these limits may be blocked.
+            </p>
+            <p>
+                <strong>Please consider using a <a href="/mirrors.html">mirror</a> for
+                downloading these dumps.</strong>
             </p>
             <p>The following kinds of downloads are available:</p>
             <dl>
-                <dt><a href="backup-index.html">Database backup dumps</a></dt>
-                <dd>A complete copy of all Wikimedia wikis, in the form of wikitext source and metadata embedded in XML. A number of raw database tab
-
+                <dt>Database backup dumps (current page)</dt>
+                <dd>
+                    A complete copy of all Wikimedia wikis, in the form of wikitext source
+                    and metadata embedded in XML. A number of
+                    raw database tables in SQL form are also available.
+                </dd>
+                <dd>
+                    These snapshots are provided at the very least monthly and usually
+                    twice a month. If you are a regular user of these dumps,
+                    please consider subscribing to
+                    <a href="https://lists.wikimedia.org/mailman/listinfo/xmldatadumps-l">
+                    xmldatadumps-l</a> for regular updates.
+                </dd>
                 <dt><a href="/other/static_html_dumps/">Static HTML dumps</a></dt>
                 <dd>A copy of all pages from all Wikipedia wikis, in HTML form.</dd>
-
                 <dt><a href="dvd.html">DVD distributions</a></dt>
                 <dd>Available for some Wikipedia editions.</dd>
-
                 <dt>Image tarballs</dt>
                 <dd>There are currently no image dumps available.</dd>
             </dl>
             <h2>Legal</h2>
             <dl>
                 <dt>App Guidelines</dt>
-                <dd><a href="https://wikimediafoundation.org/wiki/Developer_app_guidelines">Guidelines for developers</a> on how to properly reuse Wikimedia data, trademarks, and content.</dd>
+                <dd>
+                    <a href="https://wikimediafoundation.org/wiki/Developer_app_guidelines">
+                    Guidelines for developers</a> on how to properly reuse
+                    Wikimedia data, trademarks, and content.
+                </dd>
                 <dt>Copyright licensing</dt>
-                <dd><a href="/legal.html">Copyright
-                licensing information</a> for these dumps.</dd>
+                <dd><a href="/legal.html">Copyright licensing information</a> for these dumps.</dd>
                 <dt>Privacy</dt>
-                <dd>The <a
-                href="https://meta.wikimedia.org/wiki/Privacy_policy">privacy
-                policy</a> for Wikimedia Foundation websites.</dd></dl>
-                <div class="visualClear"></div>
-                    <div class="status">
-                        %(status)s
-                    </div>
-                    <div class="otherindexlink">
-                       %(otherIndexLink)s
-                    </div>
-                    <ul>
-                       %(items)s
-                    </ul>
-                </div>
+                <dd>
+                    The <a href="https://meta.wikimedia.org/wiki/Privacy_policy">
+                    privacy policy</a> for Wikimedia Foundation websites.
+                </dd>
             </dl>
+            <div class="visualClear"></div>
+            <div class="status">
+                %(status)s
+            </div>
+            <div class="otherindexlink">
+                %(otherIndexLink)s
+            </div>
+            <ul>
+                %(items)s
+            </ul>
         </div>
     </div>
 </body>
-
 </html>
