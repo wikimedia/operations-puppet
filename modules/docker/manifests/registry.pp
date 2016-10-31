@@ -5,7 +5,7 @@ class docker::registry(
     $swift_user=undef,
     $swift_password=undef,
     $swift_url=undef,
-    $swift_contasiner=undef,
+    $swift_container=undef,
 ){
 
     require_package('docker-registry')
