@@ -63,6 +63,7 @@ class nagios_common::commands(
     nagios_common::check_command::config { [
         'apt',
         'breeze',
+        'check_ssl_unified',
         'dhcp',
         'disk',
         'disk-smb',
