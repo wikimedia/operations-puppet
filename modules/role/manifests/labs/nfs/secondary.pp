@@ -11,24 +11,32 @@ class role::labs::nfs::secondary($monitor = 'eth0') {
     # Enable RPS to balance IRQs over CPUs
     interface::rps { $monitor: }
 
+    interface::manual{ 'eth1':
+        interface => 'eth1',
+    }
+
     if $::hostname == 'labstore1005' {
+        # Define DRBD role for this host, should come from hiera
+        $drbd_role = 'secondary'
+
         interface::ip { 'drbd-replication':
             interface => 'eth1',
             address   => '10.64.37.26',
             prefixlen => '24',
+            require   => Interface::Manual['eth1'],
         }
-        # Define DRBD role for this host, should come from hiera
-        $drbd_role = 'secondary'
     }
 
     if $::hostname == 'labstore1004' {
+        # Define DRBD role for this host, should come from hiera
+        $drbd_role = 'primary'
+
         interface::ip { 'drbd-replication':
             interface => 'eth1',
             address   => '10.64.37.25',
             prefixlen => '24',
+            require   => Interface::Manual['eth1'],
         }
-        # Define DRBD role for this host, should come from hiera
-        $drbd_role = 'primary'
     }
 
     # TODO: hiera this
