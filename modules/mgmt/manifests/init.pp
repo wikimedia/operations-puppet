@@ -7,7 +7,7 @@ class mgmt {
         ensure => present,
     }
     file { '/usr/local/bin/changepw':
-        mode   => '0500',
+        mode   => '0555',
         owner  => 'root',
         group  => 'root',
         source => 'puppet:///modules/mgmt/changepw',
