@@ -42,12 +42,6 @@ class profile::docker::registry {
 
 
     # Nginx frontend
-    base::expose_puppet_certs { '/etc/nginx':
-        ensure          => present,
-        provide_private => true,
-        require         => Class['nginx'],
-    }
-
     class { '::sslcert::dhparam': }
 
 
