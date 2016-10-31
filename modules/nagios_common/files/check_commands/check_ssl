@@ -102,6 +102,22 @@ sub init {
     );
 
     $ng->arg(
+        spec    => 'ocsp|o=s',
+        help    => 'OCSP checking: off, valid, must-staple (default: valid)',
+        default => 'off',
+    );
+    $ng->arg(
+        spec    => 'ocspwarn=i',
+        help    => 'Warning threshold for OCSP staple validity in seconds (default: %s)',
+        default => 86400*3,
+    );
+    $ng->arg(
+        spec    => 'ocspcrit=i',
+        help    => 'Critical threshold for OCSP staple validity in seconds (default: %s)',
+        default => 86400*1,
+    );
+
+    $ng->arg(
         spec    => 'warning|w=i',
         help    => 'min validity days left to issue a WARNING (default: %s)',
         default => 30,
@@ -167,11 +183,39 @@ sub ssl_connect {
         $sopts{'SSL_ca_file'} = $ng->rootcert;
     }
 
+    if ( $ng->ocsp eq 'valid' ) {
+        $sopts{'SSL_ocsp_mode'} = SSL_OCSP_FAIL_HARD|SSL_OCSP_FULL_CHAIN|SSL_OCSP_TRY_STAPLE;
+    }
+    elsif ( $ng->ocsp eq 'must-staple' ) {
+        $sopts{'SSL_ocsp_mode'} = SSL_OCSP_FAIL_HARD|SSL_OCSP_FULL_CHAIN|SSL_OCSP_MUST_STAPLE;
+    }
+    elsif ( $ng->ocsp eq 'off' ) {
+        $sopts{'SSL_ocsp_mode'} = SSL_OCSP_NO_STAPLE;
+    }
+    else {
+        nagios_exit( UNKNOWN, 'Invalid OCSP setting: ' . $ng->ocsp );
+    }
+
     # we use IO::Socket::SSL for its verify hostname routines that are
     # complicated enough to handles SANs, wildcards etc., depending on the given
     # protocol (e.g. RFC 2818 rules for HTTPS)
     $client = IO::Socket::SSL->new(%sopts)
       or nagios_exit( CRITICAL, 'failed to connect or SSL handshake:' . $@ );
+
+    if ( $ng->ocsp eq 'must-staple' ) {
+        my $now = time;
+        my $nextupdate = ${*$client}{'_SSL_ocsp_verify'}->[1];
+        my $ocsp_timeleft = $nextupdate - $now;
+        if ($ocsp_timeleft < $ng->ocspcrit ) {
+            push(@crit, "OCSP staple validity for $cn has $ocsp_timeleft seconds left");
+        }
+        elsif ( $ocsp_timeleft < $ng->ocspwarn ) {
+            push(@warn, "OCSP staple validity for $cn has $ocsp_timeleft seconds left");
+        }
+        else {
+            push(@ok, "OCSP staple validity for $cn has $ocsp_timeleft seconds left");
+        }
+    }
 }
 
 sub ssl_verify {
