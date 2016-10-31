@@ -4,6 +4,8 @@
 # FIXME: A lot of code in here (init script, user setup, logrotate,
 # and others) should probably come from the icinga deb package,
 # and not from puppet. Investigate and potentially fix this.
+# Note that our paging infrastructure (AQL as of 20161101) may need
+# an update of it's sender whitelist
 class icinga(
     $enable_notifications  = 1,
     $enable_event_handlers = 1,
