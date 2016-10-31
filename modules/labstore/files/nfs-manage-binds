@@ -13,25 +13,30 @@ def ensure_dir(dir, recurse=False):
     :param recurse: bool
     """
     try:
+        if not os.path.exists(dir):
+            logging.info('mkdir %s' % dir)
         if recurse:
             os.makedirs(dir)
         else:
             os.mkdir(dir)
-        logging.debug('mkdir %s' % dir)
     except OSError:
         if not os.path.exists(dir):
             raise
+
 
 def is_mount(path):
     """ confirm a path is a mountpoint
     :param src: str
     """
     try:
+        cmd = ['/bin/findmnt', path]
+        logging.debug(' '.join(cmd))
         with open(os.devnull, 'w') as null:
             subprocess.check_call(['/bin/findmnt', path], stdout=null)
         return True
     except subprocess.CalledProcessError:
         return False
+
 
 def bind_mount(src, dst):
     """ bind mount two paths on disk
@@ -39,7 +44,7 @@ def bind_mount(src, dst):
     :param dst: str
     """
 
-    if is_mount(src):
+    if is_mount(dst):
         logging.debug("%s is already a mountpoint" % src)
         return
 
@@ -49,6 +54,7 @@ def bind_mount(src, dst):
         subprocess.check_call(bind)
     except subprocess.CalledProcessError:
         logging.error("bind mount %s %s failed" % (src, dst))
+
 
 def create_binding(target, export, force=False):
         """ manage bind state on disk (with possible inline creations)
@@ -66,6 +72,23 @@ def create_binding(target, export, force=False):
             bind_mount(target, export)
         else:
             logging.warning("no bind on %s as %s does not exist" % (export, target))
+
+
+def get_binds():
+    """ find all bindmounts under /exp
+    :note: we assume /exp is the root for exported binds
+    :returns: list
+    """
+
+    cmd = ['/bin/findmnt', '-n', '-r', '-o', 'target']
+    logging.debug(' '.join(cmd))
+    mnt_targets = subprocess.check_output(cmd).decode()
+    bind_mounts = []
+    for mnt in mnt_targets.split():
+        if mnt.startswith('/exp'):
+            bind_mounts.append(mnt.strip())
+    return bind_mounts
+
 
 def main():
 
@@ -89,6 +112,12 @@ def main():
         action='store_true'
     )
 
+    argparser.add_argument(
+        '-binds',
+        help='Display active binds (this operation will exit post)',
+        action='store_true'
+    )
+
     args = argparser.parse_args()
 
     logging.basicConfig(
@@ -109,6 +138,14 @@ def main():
         logging.exception('Could not load projects config file from %s', args.config_path)
         sys.exit(1)
 
+    if args.binds:
+        binds = get_binds()
+        if not binds:
+            sys.exit(1)
+        for b in binds:
+            print(b)
+        sys.exit(0)
+
     srv_root = args.disk_path
     # get dict of path_on_disk:share_name to create in descending order
     public_inverse = {v.split(' ')[0]: k for k, v in config['public'].items()}
@@ -128,8 +165,8 @@ def main():
 
     device_path_default = '/srv/misc'
     device_paths = {
-         'tools': '/srv/tools',
-          'maps': '/srv/maps',
+        'tools': '/srv/tools',
+        'maps': '/srv/maps',
     }
 
     for project in sorted(config['private']):
