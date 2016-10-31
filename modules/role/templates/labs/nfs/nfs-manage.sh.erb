@@ -1,0 +1,50 @@
+#!/bin/bash
+# NFS management script for labstore HA cluster
+# This should be used to bring up a node as the active NFS server (primary DRBD)
+# node, or to stop NFS and make a node DRBD secondary - which may be needed prior
+# to rebooting a node, or during failovers.
+#
+# Usage:
+# ./nfs-manage [start|stop|status]
+# start - Makes node DRBD primary, assigns floating IP, mounts drbd devices onto
+#         fileserver, runs nfs-exportd, and starts NFS server
+# stop - Stop NFS server, unmounts drbd devices, makes node drbd secondary, removes
+#         floating IP assignment
+# status - Display mount and drbd status
+
+CMD="$1"
+
+case $CMD in
+        start)
+            echo "start"
+            /usr/sbin/drbd-overview
+            /sbin/drbdadm primary all
+            ip address add <%= @cluster_ip %>/24 dev eth0
+            /usr/sbin/arping -c 3 -S <%= @cluster_ip -%> -i eth0 <%= @primary_interface_ip -%>
+            <% @drbd_resource_config.each do |resource, config| -%>
+                mount <%= config['device'] -%> <%= config['disk'] -%>
+            <% end -%>
+            /usr/sbin/drbd-overview
+            /usr/bin/timeout 10s sudo -u nfsmanager nfs-exportd
+            /usr/local/sbin/nfs-manage-binds
+            service nfs-kernel-server start
+            ;;
+        stop)
+            echo "stop"
+            /usr/sbin/drbd-overview
+            service nfs-kernel-server stop
+            <% @drbd_resource_config.each do |resource, config| -%>
+                umount <%= config['device'] -%> <%= config['disk'] -%>
+            <% end -%>
+            /sbin/drbdadm secondary all
+            ip a del <%= @cluster_ip -%>/24 dev eth0
+            /usr/sbin/drbd-overview
+            ;;
+        status)
+            drbd-overview
+            showmount -e localhost | wc
+            ;;
+        *)
+            echo $"Usage: $0 {start|stop|status}"
+            exit 1
+esac
