@@ -93,6 +93,7 @@ class nagios_common::commands(
         'ping',
         'procs',
         'vsz',
+        'check_ssl_unified',
     ] :
         require    => File["${config_dir}/commands"],
         config_dir => $config_dir,
