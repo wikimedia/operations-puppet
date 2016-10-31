@@ -24,16 +24,12 @@ class docker::registry(
             }
         }
         'swift': {
-            $username = hiera('profile::docker::registry::swift_username')
-            $password = hiera('profile::docker::registry::swift_password')
-            $auth_url = hiera('profile::docker::registry::swift_auth_url')
-            $container = hiera('profile::docker::registry::swift_container')
             $storage_config = {
                 'swift'  => {
-                    'username'  => $username,
-                    'password'  => $password,
-                    'authurl'   => $auth_url,
-                    'container' => $container,
+                    'username'  => $swift_user,
+                    'password'  => $swift_password,
+                    'authurl'   => $swift_url,
+                    'container' => $swift_container,
                 },
                 'cache' => {
                     'blobdescriptor' => 'inmemory'
