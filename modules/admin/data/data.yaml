@@ -112,7 +112,7 @@ groups:
               jminor, asherman, etonkovidova, sbisson, addshore, matmarex, elukey,
               nikerabbit, nschaaf, dstrine, joewalsh, mpany, hjiang, jsamra, bcohn,
               jdittrich, chelsyx, ovasileva, mtizzoni, panisson, paolotti, ciro, debt,
-              samwalton9]
+              samwalton9, zareen]
   ldap-admins:
     gid: 715
     description: ldap admins
@@ -180,7 +180,7 @@ groups:
     members: [ezachte, milimetric, dartar, yurik, halfak, awight, dr0ptp4kt, nuria,
               leila, ellery, nettrom, mforns, bmansurov, tbayer, joal,
               madhuvishy, tjones, legoktm, dcausse, bearloga, dpatrick, atgomez, dstrine,
-              joewalsh, marktraceur, mtizzoni, panisson, paolotti, ciro, melodykramer]
+              joewalsh, marktraceur, mtizzoni, panisson, paolotti, ciro, melodykramer, zareen]
   statistics-users:
     gid: 726
     description: Access statistics number crunching hosts. NO PRIVS.
@@ -231,7 +231,8 @@ groups:
               dcausse, bd808, tjones, mobrovac, jgirault, jdrewniak, ejegg, jdcc, ori,
               bmansurov, atgomez, amire80, kartik, pcoombe, foks, mpany, hjiang, jsamra, bcohn,
               jdlrobson, chelsyx, ovasileva, mtizzoni, panisson, paolotti, ciro,
-              psinger, flemmerich, mkroetzsch, akrausetud, filippo, nschaaf, pmiazga, faidon]
+              psinger, flemmerich, mkroetzsch, akrausetud, filippo, nschaaf, pmiazga, faidon,
+              zareen]
   analytics-admins:
     gid: 732
     description: Admin access to analytics cluster.
