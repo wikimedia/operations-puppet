@@ -32,7 +32,7 @@ class profile::docker::registry {
             'config'          => $config,
             'storage_backend' => $storage_backend,
             'swift_user'      => $swift_account['user'],
-            'swift_password'  => $swift_account_keys[$swift_account['docker_registry']],
+            'swift_password'  => $swift_account_keys['docker_registry'],
             'swift_url'       => 'http://swift.svc.codfw.wmnet/auth/v1.0',
             'swift_container' => $swift_container,
         }
