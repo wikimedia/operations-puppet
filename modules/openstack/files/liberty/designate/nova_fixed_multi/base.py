@@ -119,9 +119,9 @@ class BaseAddressMultiHandler(BaseAddressHandler):
                             'managed_resource_type': resource_type,
                             'managed_resource_id': resource_id})
 
-                    LOG.debug('Creating record in %s / %s with values %r',
-                              reverse_domain['id'],
-                              recordset['id'], record_values)
+                    LOG.warn('Creating record in %s / %s with values %r',
+                             reverse_domain['id'],
+                             recordset['id'], record_values)
                     central_api.create_record(context,
                                               reverse_domain['id'],
                                               recordset['id'],
@@ -147,8 +147,8 @@ class BaseAddressMultiHandler(BaseAddressHandler):
                         'managed_resource_type': resource_type,
                         'managed_resource_id': resource_id})
 
-                LOG.debug('Creating record in %s / %s with values %r',
-                          domain['id'], recordset['id'], record_values)
+                LOG.warn('Creating record in %s / %s with values %r',
+                         domain['id'], recordset['id'], record_values)
                 central_api.create_record(context,
                                           domain['id'],
                                           recordset['id'],
@@ -179,7 +179,7 @@ class BaseAddressMultiHandler(BaseAddressHandler):
         records = central_api.find_records(context, criterion)
 
         for record in records:
-            LOG.debug('Deleting record %s' % record['id'])
+            LOG.warn('Deleting record %s' % record['id'])
 
             central_api.delete_record(context, cfg.CONF[self.name].domain_id,
                                       record['recordset_id'], record['id'])
@@ -191,7 +191,7 @@ class BaseAddressMultiHandler(BaseAddressHandler):
             records = central_api.find_records(context, criterion)
 
             for record in records:
-                LOG.debug('Deleting record %s' % record['id'])
+                LOG.warn('Deleting record %s' % record['id'])
 
                 central_api.delete_record(context,
                                           reverse_domain_id,
@@ -204,7 +204,7 @@ class BaseAddressMultiHandler(BaseAddressHandler):
             project = cfg.CONF[self.name].keystone_auth_project
             url = cfg.CONF[self.name].keystone_auth_url
         except KeyError:
-            LOG.debug('Missing a config setting for keystone auth.')
+            LOG.warn('Missing a config setting for keystone auth.')
             return
 
         try:
@@ -215,7 +215,7 @@ class BaseAddressMultiHandler(BaseAddressHandler):
             sess = session.Session(auth=auth)
             keystone = client.Client(session=sess, auth_url=url)
         except keystoneexceptions.AuthorizationFailure:
-            LOG.debug('Keystone client auth failed.')
+            LOG.warn('Keystone client auth failed.')
             return
         projectmanager = projects.ProjectManager(keystone)
         proj = projectmanager.get(tenant_id)
