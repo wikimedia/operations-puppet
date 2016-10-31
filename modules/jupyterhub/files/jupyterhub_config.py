@@ -96,9 +96,9 @@ class VenvCreatingAuthenticator(Authenticator):
 c.JupyterHub.authenticator_class = VenvCreatingAuthenticator
 
 if AUTHENTICATOR == 'ldap':
-    c.LocalAuthenticator.server_address = 'ldap-labs.eqiad.wikimedia.org'
-    c.LocalAuthenticator.bind_dn_template = \
+    c.LDAPAuthenticator.server_address = 'ldap-labs.eqiad.wikimedia.org'
+    c.LDAPAuthenticator.bind_dn_template = \
         'uid={username},ou=people,dc=wikimedia,dc=org'
-    c.LocalAuthenticator.allowed_groups = [
+    c.LDAPAuthenticator.allowed_groups = [
         'cn=ops,ou=groups,dc=wikimedia,dc=org',
     ]
