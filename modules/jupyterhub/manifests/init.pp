@@ -23,7 +23,7 @@
 class jupyterhub (
     $wheels_repo,
     $base_path='/srv/jupyterhub',
-    $authenticator='dummy',
+    $authenticator='ldap',
 ) {
 
     $venv_path = "${base_path}/venv"
