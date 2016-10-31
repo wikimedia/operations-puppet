@@ -50,31 +50,14 @@ class role::labs::nfs::secondary($monitor = 'eth0') {
 
     $subnet_gateway_ip = '10.64.37.1'
 
-    $drbd_resource_config = {
-        test   => {
-            port   => '7790',
-            device => '/dev/drbd1',
-            disk   => '/dev/misc/test',
-        },
-        tools  => {
-            port   => '7791',
-            device => '/dev/drbd4',
-            disk   => '/dev/tools/tools-project',
-        },
-        others => {
-            port   => '7792',
-            device => '/dev/drbd3',
-            disk   => '/dev/misc/others',
-        },
-    }
-
+    $drbd_resource_config = hiera({}, 'drbd_resource_config')
     $drbd_resources = keys($drbd_resource_config)
 
     labstore::drbd::resource { $drbd_resources:
         drbd_cluster => $drbd_cluster,
-        port         => $drbd_resource_config[$title][port],
-        device       => $drbd_resource_config[$title][device],
-        disk         => $drbd_resource_config[$title][disk],
+        port         => $drbd_resource_config[$title]['port'],
+        device       => $drbd_resource_config[$title]['device'],
+        disk         => $drbd_resource_config[$title]['disk'],
         require      => Interface::Ip['drbd-replication'],
     }
 
