@@ -96,6 +96,10 @@ sub init {
         spec => 'issuer|i=s',
         help => 'issuer name to match against',
     );
+    $ng->arg(
+        spec => 'sans=s',
+        help => 'comma-separated list of SAN elements that must be present',
+    );
 
     $ng->arg(
         spec    => 'warning|w=i',
@@ -198,6 +202,21 @@ sub ssl_verify {
     }
     if ( $ng->issuer && $issuer !~ /\Q$ng->{issuer}\E/ ) {
         push @crit, "Certificate issuer $issuer didn't match argument";
+    }
+
+    if ( defined $ng->sans ) {
+        my @check_sans = split(/,/, $ng->sans);
+        my %cert_sans = map { $_ => 1 } @sans;
+        my $bad = 0;
+        foreach my $check_san (@check_sans) {
+            if ( !exists $cert_sans{$check_san} ) {
+                push(@crit, "Certificate $name SAN $check_san not found in cert SAN list: $sans");
+                $bad = 1;
+            }
+        }
+        if ( !$bad ) {
+            push(@ok, "Certificate $name contains all required SANs: $sans");
+        }
     }
 }
 
