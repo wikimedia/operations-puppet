@@ -8,7 +8,7 @@ Type=simple
 ExecStart=/usr/bin/firejail --profile=/etc/firejail/thumbor.profile --env=TMPDIR=/srv/thumbor/tmp/thumbor@%i -- /usr/bin/thumbor --port %i --ip 127.0.0.1 --keyfile /etc/thumbor.key --conf /etc/thumbor.d/
 User=thumbor
 PrivateTmp=yes
-Restart=on-failure
+Restart=always
 SyslogIdentifier=thumbor@%i
 MemoryLimit=1G
 
