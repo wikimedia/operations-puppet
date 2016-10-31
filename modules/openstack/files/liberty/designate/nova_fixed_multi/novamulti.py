@@ -63,25 +63,25 @@ class NovaFixedMultiHandler(BaseAddressMultiHandler):
         ]
 
     def process_notification(self, context, event_type, payload):
-        LOG.debug('NovaFixedHandler received notification - %s' % event_type)
-
         if event_type == 'compute.instance.create.end':
+            LOG.warn('NovaFixedHandler creating records  - %s' % event_type)
             try:
                 self._create(payload['fixed_ips'], payload,
                              resource_id=payload['instance_id'],
                              resource_type='instance')
             except:
-                LOG.debug("--------------------     Unexpected error: %s" %
-                          sys.exc_info()[0])
-                LOG.debug("--------------------     (swallowed)")
+                LOG.warn("--------------------     Unexpected error: %s" %
+                         sys.exc_info()[0])
+                LOG.warn("--------------------     (swallowed)")
 
         elif event_type == 'compute.instance.delete.start':
+            LOG.warn('NovaFixedHandler deleting records  - %s' % event_type)
             try:
                 self._delete(resource_id=payload['instance_id'],
                              resource_type='instance')
             except:
-                LOG.debug("--------------------     Unexpected error: %s" %
-                          sys.exc_info()[0])
-                LOG.debug("--------------------     (swallowed)")
+                LOG.warn("--------------------     Unexpected error: %s" %
+                         sys.exc_info()[0])
+                LOG.warn("--------------------     (swallowed)")
         else:
             raise ValueError('NovaFixedHandler received an invalid event type')
