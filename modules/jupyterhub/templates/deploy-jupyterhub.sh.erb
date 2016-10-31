@@ -5,7 +5,6 @@ set -e
 VENV="<%= @venv_path %>"
 WHEELS="<%= @wheels_path %>"
 
-virtualenv -p python3 ${VENV}
 ${VENV}/bin/pip install \
      --no-index \
      --find-links=${WHEELS}/wheelhouse \
