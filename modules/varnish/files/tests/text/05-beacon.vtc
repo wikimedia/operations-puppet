@@ -1,0 +1,20 @@
+varnishtest "cache_text beacon endpoints"
+
+server s1 {
+    rxreq
+    txresp
+} -start
+
+varnish v1 -arg "-p cc_command='exec cc -fpic -shared -Wl,-x -L/usr/local/lib/ -o %o %s -lmaxminddb' -p vcc_allow_inline_c=true -p vcc_err_unref=false" -vcl+backend {
+    backend vtc_backend {
+        .host = "${s1_addr}"; .port = "${s1_port}";
+    }
+
+    include "/usr/share/varnish/tests/wikimedia_text-frontend.vcl";
+} -start
+
+client c1 {
+    txreq -url "/beacon/test" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https"
+    rxresp
+    expect resp.status == 204
+} -run
