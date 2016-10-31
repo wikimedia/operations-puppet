@@ -19,7 +19,6 @@ class role::icinga(
     include icinga::monitor::wikidata
     include icinga::monitor::ores
     include icinga::monitor::toollabs
-    include icinga::monitor::stream
     include icinga::monitor::ripeatlas
     include icinga::monitor::legal
     include icinga::monitor::certs
