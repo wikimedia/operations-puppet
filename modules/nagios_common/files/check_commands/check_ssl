@@ -171,29 +171,27 @@ sub ssl_connect {
 }
 
 sub ssl_verify {
-    my $name = $client->peer_certificate('commonName');
-    my @sans = $client->peer_certificate('subjectAltNames');
+    my $name    = $client->peer_certificate('commonName');
+    my $subject = $client->peer_certificate('subject');
+    my $issuer  = $client->peer_certificate('issuer');
+    my @sans    = $client->peer_certificate('subjectAltNames');
 
     # handle Net::SSLeay's list of tuples (get even elements, ignore odd)
     @sans = @sans[ grep { $_ & 1 } 1 .. $#sans ];
+    my $sans = join(q{, }, @sans);
 
     # commonName + SANs-except-commonName
     my @names = ( $name, grep { !/^\Q$name\E$/ } @sans );
+    my $names = join(q{, }, @names);
 
     unless ( $ng->noverify ) {
         $client->verify_hostname( $cn, $ng->protocol )
-          or push @crit, "failed to verify $cn against " . join( ', ', @names );
+          or push @crit, "failed to verify $cn against $names";
     }
-}
-
-sub ssl_subject_matches {
-    my $subject = $client->peer_certificate('subject');
-    my $issuer  = $client->peer_certificate('issuer');
-    my $sans    = $client->peer_certificate('subjectAltNames');
 
     push @verbose, "Certificate subject: $subject";
     push @verbose, "Certificate issuer: $issuer";
-    push @verbose, "Certificate SANs: $sans" if defined $sans;
+    push @verbose, "Certificate SANs: $sans";
 
     if ( $ng->subject && $subject !~ /\Q$ng->{subject}\E/ ) {
         push @crit, "Certificate subject $subject didn't match argument";
@@ -247,7 +245,6 @@ sub run {
     init;
     ssl_connect;
     ssl_verify;
-    ssl_subject_matches;
     ssl_expiry_check;
 
     print join( "\n", @verbose ), "\n" if $ng->verbose;
