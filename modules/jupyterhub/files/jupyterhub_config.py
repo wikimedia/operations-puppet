@@ -102,3 +102,33 @@ if AUTHENTICATOR == 'ldap':
     c.LDAPAuthenticator.allowed_groups = [
         'cn=ops,ou=groups,dc=wikimedia,dc=org',
     ]
+
+# Security settings! Let's lock this down!
+# This provides arbitrary code execution over the web, so needs to be as
+# secure as possible.
+# The threat model is dual:
+#  1. Compromise of JupyterHub itself
+#  2. Compromise of individual user's notebook
+#
+# We aren't patching for (1) here, but just for (2). In case of a compromise,
+# we want the attacker to not be able to gain any extra privilages at all.
+# We want the attack to be as confined as possible. We'll need auditing and
+# what not built eventually, but here are some basic rudimentary protections.
+# This also requires systemd > 228, so we must have systemd from jessie-backports
+
+# Give each user their own /tmp! Prevents data leaks via accidentally writing
+# to /tmp
+c.SystemdSpawner.isolate_tmp = True
+
+# Give each user their own /dev. This prevents users from gaining direct
+# device access, which helps prevent escalation via device specific bugs
+c.SystemdSpawner.isolate_devices = True
+
+# Disable users from ever gaining root privilages for anything at all.
+# This protects against the notebook of a privilaged user being compromised
+# to gain root
+c.SystemdSpawner.disable_user_sudo = True
+
+# We allow users to only write to their homedirs, and nowhere else
+c.SystemdSpawner.readonly_paths = ['/']
+c.SystemdSpawner.readwrite_paths = ['/home/{USERNAME}']
