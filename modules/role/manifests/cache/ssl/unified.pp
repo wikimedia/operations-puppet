@@ -3,9 +3,34 @@ class role::cache::ssl::unified(
     $labs_subjects = ['beta.wmflabs.org'],
 ) {
     if ( $::realm == 'production' ) {
-        monitoring::service { 'https':
-            description   => 'HTTPS',
-            check_command => 'check_sslxNN',
+
+        $check_cn = 'en.wikipedia.org'
+        $check_sans = [
+            'wikipedia.org',   '*.wikipedia.org',   '*.m.wikipedia.org', '*.zero.wikipedia.org',
+            'wikimedia.org',   '*.wikimedia.org',   '*.m.wikimedia.org',
+            'mediawiki.org',   '*.mediawiki.org',   '*.m.mediawiki.org',
+            'wikibooks.org',   '*.wikibooks.org',   '*.m.wikibooks.org',
+            'wikidata.org',    '*.wikidata.org',    '*.m.wikidata.org',
+            'wikinews.org',    '*.wikinews.org',    '*.m.wikinews.org',
+            'wikiquote.org',   '*.wikiquote.org',   '*.m.wikiquote.org',
+            'wikisource.org',  '*.wikisource.org',  '*.m.wikisource.org',
+            'wikiversity.org', '*.wikiversity.org', '*.m.wikiversity.org',
+            'wikivoyage.org',  '*.wikivoyage.org',  '*.m.wikivoyage.org',
+            'wiktionary.org',  '*.wiktionary.org',  '*.m.wiktionary.org',
+            'wikimediafoundation.org', '*.wikimediafoundation.org', '*.m.wikimediafoundation.org',
+            'w.wiki',
+        ]
+
+        $check_sans_str = inline_template('<%= @check_sans.join(",") %>')
+
+        monitoring::service { 'https-ecdsa':
+            description   => 'HTTPS Unified ECDSA',
+            check_command => "check_ssl_unified!ECDSA!${check_cn}!${check_sans_str}",
+        }
+
+        monitoring::service { 'https-rsa':
+            description   => 'HTTPS Unified RSA',
+            check_command => "check_ssl_unified!RSA!${check_cn}!${check_sans_str}",
         }
 
         tlsproxy::localssl { 'unified':
