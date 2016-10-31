@@ -3,6 +3,7 @@ class role::maps::master(
     $planet_sync_period = 'day', # Remove this as soon as we get down to minute
     $planet_sync_hour = '1',
     $planet_sync_minute = '27',
+    $postgres_tile_storage = false,
 ) {
     include ::postgresql::master
     include ::role::maps::postgresql_common
@@ -58,17 +59,31 @@ class role::maps::master(
     }
 
     # Grants
-    file { '/usr/local/bin/maps-grants.sql':
+    file { '/usr/local/bin/maps-grants-gis.sql':
         owner   => 'root',
         group   => 'root',
         mode    => '0400',
-        content => template('role/maps/grants.sql.erb'),
+        content => template('role/maps/grants-gis.sql.erb'),
+    }
+    file { '/usr/local/bin/maps-grants-tiles.sql':
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0400',
+        content => template('role/maps/grants-tiles.sql.erb'),
     }
 
     # DB setup
     postgresql::spatialdb { 'gis':
         require => Class['::postgresql::postgis'],
     }
+
+    if $postgres_tile_storage {
+        ::postgresql::db { 'tiles':
+            owner => 'tilerator',
+            require => Postgresql::User['tilerator'],
+        }
+    }
+
 
     # some additional logging for the postgres master to help diagnose import
     # performance issues
