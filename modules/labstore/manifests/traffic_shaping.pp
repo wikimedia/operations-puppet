@@ -1,12 +1,17 @@
-class labstore::traffic_shaping {
+class labstore::traffic_shaping(
+    $nfs_write = '7000kbps',
+    $nfs_read = '9500kbps',
+    $nfs_dumps_read = '15000kbps',
+    $eth0_egress = '30000kbps',
+) {
 
     file { '/usr/local/sbin/tc-setup':
-        ensure => present,
-        mode   => '0554',
-        owner  => 'root',
-        group  => 'root',
-        source => 'puppet:///modules/labstore/tc-setup.sh',
-        notify => Exec['apply_tc_config'],
+        ensure  => present,
+        mode    => '0554',
+        owner   => 'root',
+        group   => 'root',
+        content => template('labstore/tc-setup.sh.erb'),
+        notify  => Exec['apply_tc_config'],
     }
 
     # if native qdisc of pfifo_fast is applied then load modules & setup
