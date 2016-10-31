@@ -11,10 +11,10 @@
 # http://lartc.org/manpages/tc.txt
 
 modules='act_mirr ifb'
-nfs_write='7000kbps'
-nfs_read='9500kbps'
-nfs_dumps_read='15000kbps'
-eth0_egress='30000kbps'
+nfs_write='<%= @nfs_write %>'
+nfs_read='<%= @nfs_read %>'
+nfs_dumps_read='<%= @nfs_dumps_read %>'
+eth0_egress='<%= @eth0_egress %>'
 
 TC=$(which tc)
 
