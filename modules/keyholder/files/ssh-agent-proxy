@@ -93,12 +93,13 @@ def get_key_fingerprints():
     """Look up the key fingerprints for all keys held by keyholder"""
     keymap = {}
     for fname in glob.glob('/etc/keyholder.d/*.pub'):
-        line = subprocess.check_output(['/usr/bin/ssh-keygen', '-lf', fname],
-                                        universal_newlines=True)
+        line = subprocess.check_output(
+            ['/usr/bin/ssh-keygen', '-lf', fname], universal_newlines=True)
         bits, fingerprint, note = line.split(' ', 2)
         keyfile = os.path.splitext(os.path.basename(fname))[0]
         keymap[keyfile] = fingerprint.replace(':', '')
     return keymap
+
 
 def get_key_perms(path):
     """Recursively walk `path`, loading YAML configuration files."""
