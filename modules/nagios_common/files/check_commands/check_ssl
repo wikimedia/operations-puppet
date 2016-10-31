@@ -98,6 +98,12 @@ sub init {
     );
 
     $ng->arg(
+        spec    => 'ocsp|o=s',
+        help    => 'OCSP checking: off, valid, must-staple (default: valid)',
+        default => 'valid',
+    );
+
+    $ng->arg(
         spec    => 'warning|w=i',
         help    => 'min validity days left to issue a WARNING (default: %s)',
         default => 30,
@@ -161,6 +167,19 @@ sub ssl_connect {
     }
     else {
         $sopts{'SSL_ca_file'} = $ng->rootcert;
+    }
+
+    if ( $ng->ocsp eq 'valid' ) {
+        $sopts{'SSL_ocsp_mode'} = SSL_OCSP_FAIL_HARD|SSL_OCSP_FULL_CHAIN;
+    }
+    elsif ( $ng->ocsp eq 'must-staple' ) {
+        $sopts{'SSL_ocsp_mode'} = SSL_OCSP_MUST_STAPLE|SSL_OCSP_FULL_CHAIN|SSL_OCSP_FAIL_HARD;
+    }
+    elsif ( $ng->ocsp eq 'off' ) {
+        $sopts{'SSL_ocsp_mode'} = SSL_OCSP_NO_STAPLE;
+    }
+    else {
+        nagios_exit( UNKNOWN, 'Invalid OCSP setting: ' . $ng->ocsp );
     }
 
     # we use IO::Socket::SSL for its verify hostname routines that are
