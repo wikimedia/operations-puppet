@@ -112,6 +112,9 @@ zookeeper_clusters:
 nrpe::allowed_hosts: '10.68.16.195' # icinga
 
 ssh::server::disable_agent_forwarding: false
+# No 2fa in labs, and enabling it turns on PAM auth via ChallengeResponseAuthentication
+# Disable to protect from botspam (and bots accidentally guessing labs instance root pws)
+ssh::server::enable_2fa: false
 labs_puppet_master: "labs-puppetmaster-eqiad.wikimedia.org"
 puppetmaster: "labs-puppetmaster-eqiad.wikimedia.org"
 saltmaster: "labs-puppetmaster-eqiad.wikimedia.org"

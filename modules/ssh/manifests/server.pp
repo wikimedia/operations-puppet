@@ -7,6 +7,9 @@ class ssh::server (
     $disable_nist_kex = true, # Allow labs projects to temporarily opt out of nist kex disabling
     $explicit_macs = true, # Allow labs projects to temporarily opt out of more secure MACs
     $enable_hba = false,
+    # Allow labs to turn off ChallengeResponseAuthentication, since we don't have 2fa there
+    # This turns off password based ssh, saves us from botspam
+    $enable_2fa = true,
     $disable_agent_forwarding = true,
 ) {
     package { 'openssh-server':
