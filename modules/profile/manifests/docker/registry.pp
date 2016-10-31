@@ -21,7 +21,7 @@ class profile::docker::registry {
     }
     else {
         $swift_accounts = hiera('swift::params::accounts')
-        $swift_account = $swift_accounts['docker_registry']['user']
+        $swift_account = $swift_accounts['docker_registry']
         $swift_account_keys = hiera('swift::params::account_keys')
         $swift_container = hiera(
             'profile::docker::registry::swift_container',
@@ -31,8 +31,8 @@ class profile::docker::registry {
         $params = {
             'config'          => $config,
             'storage_backend' => $storage_backend,
-            'swift_user'      => $swift_account,
-            'swift_password'  => $swift_account_keys[$swift_account],
+            'swift_user'      => $swift_account['user'],
+            'swift_password'  => $swift_account_keys[$swift_account['docker_registry']],
             'swift_url'       => 'http://swift.svc.codfw.wmnet/auth/v1.0',
             'swift_container' => $swift_container,
         }
