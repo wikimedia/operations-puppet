@@ -5,3 +5,4 @@ Description=NFS exports daemon
 ExecStart=/usr/local/bin/nfs-exportd --interval 60
 Restart=on-failure
 User=nfsmanager
+RestartSec=10
