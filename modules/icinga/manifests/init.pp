@@ -184,5 +184,9 @@ class icinga(
         group  => 'root',
         mode   => '0550',
     }
-
+    # Purge unmanaged nagios_host and nagios_services resources
+    # This will only happen for non exported resources, that is resources that
+    # are declared by the icinga host itself
+    resources { 'nagios_host': purge => true, }
+    resources { 'nagios_service': purge => true, }
 }
