@@ -26,6 +26,12 @@ class tendril (
         owner  => 'www-data',
         group  => 'www-data',
     }
+    file { '/srv/tendril/robots.txt':
+        ensure => present,
+        owner  => 'root',
+        group  => 'root',
+        source => 'puppet:///modules/tendril/robots.txt',
+    }
 
     git::clone { 'operations/software/tendril':
         ensure    => 'latest',
