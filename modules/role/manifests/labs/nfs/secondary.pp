@@ -49,19 +49,22 @@ class role::labs::nfs::secondary($monitor = 'eth0') {
 
     $drbd_resource_config = {
         'test'   => {
-            port   => '7790',
-            device => '/dev/drbd1',
-            disk   => '/dev/misc/test',
+            port       => '7790',
+            device     => '/dev/drbd1',
+            disk       => '/dev/misc/test',
+            mount_path => '/srv/test',
         },
         'tools'  => {
-            port   => '7791',
-            device => '/dev/drbd4',
-            disk   => '/dev/tools/tools-project',
+            port       => '7791',
+            device     => '/dev/drbd4',
+            disk       => '/dev/tools/tools-project',
+            mount_path => '/srv/tools',
         },
         'others' => {
-            port   => '7792',
-            device => '/dev/drbd3',
-            disk   => '/dev/misc/others',
+            port       => '7792',
+            device     => '/dev/drbd3',
+            disk       => '/dev/misc/others',
+            mount_path => '/srv/misc',
         },
     }
 
