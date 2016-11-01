@@ -166,19 +166,6 @@ labsldapconfig:
   hostname: ldap-labs.eqiad.wikimedia.org
   secondary_hostname: ldap-labs.codfw.wikimedia.org
 
-labstore_secondary_drbd_resource_config:
-  test:
-    port: '7790'
-    device: '/dev/drbd1'
-    disk: '/dev/misc/test'
-  tools:
-    port: '7791'
-    device: '/dev/drbd4'
-    disk: '/dev/tools/tools-project'
-  others:
-    port: '7792'
-    device: '/dev/drbd3'
-    disk: '/dev/misc/others'
 # Configure regular backups of the analytics-meta MySQL instance
 # in the Analytics Cluster to back up via rsync to
 # analytics1002.  This works because the analytics1002 has the

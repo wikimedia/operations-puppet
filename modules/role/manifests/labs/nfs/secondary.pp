@@ -40,33 +40,48 @@ class role::labs::nfs::secondary($monitor = 'eth0') {
     }
 
     # TODO: hiera this
-    $drbd_cluster = {
-        'labstore1004' => 'eth1.labstore1004.eqiad.wmnet',
-        'labstore1005' => 'eth1.labstore1005.eqiad.wmnet',
-    }
+
 
     # Floating IP assigned to drbd primary(active NFS server). Should come from hiera
     $cluster_ip = '10.64.37.18'
 
     $subnet_gateway_ip = '10.64.37.1'
 
-    $drbd_resource_config = hiera('labstore_secondary_drbd_resource_config', {})
-    $drbd_resources = keys($drbd_resource_config)
-
-    labstore::drbd::resource { $drbd_resources:
-        drbd_cluster => $drbd_cluster,
-        port         => $drbd_resource_config[$title]['port'],
-        device       => $drbd_resource_config[$title]['device'],
-        disk         => $drbd_resource_config[$title]['disk'],
-        require      => Interface::Ip['drbd-replication'],
+    $drbd_resource_config = {
+        'test'   => {
+            port   => '7790',
+            device => '/dev/drbd1',
+            disk   => '/dev/misc/test',
+        },
+        'tools'  => {
+            port   => '7791',
+            device => '/dev/drbd4',
+            disk   => '/dev/tools/tools-project',
+        },
+        'others' => {
+            port   => '7792',
+            device => '/dev/drbd3',
+            disk   => '/dev/misc/others',
+        },
     }
+
+    $drbd_defaults = {
+        'drbd_cluster' => {
+            'labstore1004' => 'eth1.labstore1004.eqiad.wmnet',
+            'labstore1005' => 'eth1.labstore1005.eqiad.wmnet',
+        },
+    }
+
+    create_resources(labstore::drbd::resource, $drbd_resource_config, $drbd_defaults)
+
+    Interface::Ip['drbd-replication'] -> Labstore::Drbd::Resource[keys($drbd_resource_config)]
 
     class { 'labstore::monitoring::drbd':
         drbd_role  => $drbd_role,
     }
 
     file { '/usr/local/sbin/nfs-manage':
-        content => template('labs/nfs/nfs-manage.sh.erb'),
+        content => template('role/labs/nfs/nfs-manage.sh.erb'),
         mode    => '0744',
         owner   => 'root',
         group   => 'root',
