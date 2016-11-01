@@ -12,16 +12,3 @@ ssh::server::authorized_keys_file: /etc/ssh/userkeys/%u /etc/ssh/userkeys/%u.d/l
 debdeploy::grains:
   debdeploy-labsnfs:
     value: standard
-drbd_resource_config:
-  test:
-    port: '7790'
-    device: '/dev/drbd1'
-    disk: '/dev/misc/test'
-  tools:
-    port: '7791'
-    device: '/dev/drbd4'
-    disk: '/dev/tools/tools-project'
-  others:
-    port: '7792'
-    device: '/dev/drbd3'
-    disk: '/dev/misc/others'
