@@ -39,7 +39,8 @@ class mtail (
         notify  => Service['mtail'],
     }
 
-    service { 'mtail':
-        ensure => running,
+    base::service_unit { 'mtail':
+        ensure  => present,
+        systemd => true
     }
 }

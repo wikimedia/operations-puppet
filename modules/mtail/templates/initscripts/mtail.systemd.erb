@@ -1,0 +1,9 @@
+[Unit]
+Description=Extract monitoring data from logs for collection in a timeseries database
+
+[Service]
+User=mtail
+Group=root
+EnvironmentFile=-/etc/default/mtail
+ExecStart=/usr/bin/mtail -progs /etc/mtail -logtostderr $EXTRA_ARGS
+Restart=on-failure
