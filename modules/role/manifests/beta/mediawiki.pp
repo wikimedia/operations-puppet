@@ -5,10 +5,9 @@
 class role::beta::mediawiki {
     include base::firewall
 
-    $deployment_host = hiera('scap::deployment_server')
-    $deployment_ip = ipresolve($deployment_host, 4, $::nameservers[0])
+    $ips = join($network::constants::special_hosts[$::realm]['deployment_hosts'], ' ')
     security::access::config { 'scap-allow-mwdeploy':
-        content  => "+ : mwdeploy : ${deployment_ip}\n",
+        content  => "+ : mwdeploy : ${ips}\n",
         priority => 60,
     }
 }
