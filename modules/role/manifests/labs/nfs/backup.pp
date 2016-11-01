@@ -31,7 +31,7 @@ class role::labs::nfs::backup {
         options => 'defaults,noatime',
         atboot  => true,
         device  => '/dev/backup/tools',
-        require => File['/srv/scratch'],
+        require => File['/srv/eqiad/tools'],
     }
 
     mount { '/srv/eqiad/others':
@@ -40,7 +40,7 @@ class role::labs::nfs::backup {
         options => 'defaults,noatime',
         atboot  => true,
         device  => '/dev/backup/others',
-        require => File['/srv/statistics'],
+        require => File['/srv/eqiad/others'],
     }
 
     labstore::device_backup { 'secondary-test':
