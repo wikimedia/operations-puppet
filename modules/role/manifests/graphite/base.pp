@@ -74,7 +74,7 @@ class role::graphite::base(
             '10_cassandra_count'  => {
                 pattern           => '^cassandra\.[^.]+\.org\.apache\.cassandra\..*\.count$',
                 xFilesFactor      => 0.01,
-                aggregationMethod => 'avg',
+                aggregationMethod => 'average',
             },
             'min'     => {
                 pattern           => '\.min$',
