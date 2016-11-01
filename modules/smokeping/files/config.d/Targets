@@ -52,6 +52,11 @@ menu = asw-d-eqiad
 title = asw-d-eqiad.mgmt.eqiad.wmnet
 host = asw-d-eqiad.mgmt.eqiad.wmnet
 
++++ asw2-d-eqiad
+menu = asw2-d-eqiad
+title = asw2-d-eqiad.mgmt.eqiad.wmnet
+host = asw2-d-eqiad.mgmt.eqiad.wmnet
+
 +++ mr1-eqiad
 menu = mr1-eqiad
 title = mr1-eqiad.wikimedia.org
