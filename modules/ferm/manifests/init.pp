@@ -32,6 +32,20 @@ class ferm {
         notify  => Service['ferm'],
     }
 
+    # The connection tracking values cannot be set via the standard
+    # /etc/sysctl.d hierarchy: The conntrack entries are only available
+    # once ferm loads the connection tracking kernel modules. So these
+    # values are set via a separate systemd unit which is started after
+    # ferm. This doesn't use the /etc/sysctl.d path used by the sysctl
+    # class to avoid confusion
+    file { '/etc/ferm/conntrack-sysctl.conf':
+        ensure => present,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0444',
+        source => 'puppet:///modules/ferm/conntrack.conf',
+    }
+
     file { '/etc/ferm/functions.conf' :
         ensure  => present,
         owner   => 'root',
