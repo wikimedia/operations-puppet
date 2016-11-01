@@ -60,10 +60,10 @@ class role::labs::nfs::secondary($monitor = 'eth0') {
             disk       => '/dev/tools/tools-project',
             mount_path => '/srv/tools',
         },
-        'others' => {
+        'misc' => {
             port       => '7792',
             device     => '/dev/drbd3',
-            disk       => '/dev/misc/others',
+            disk       => '/dev/misc/misc-project',
             mount_path => '/srv/misc',
         },
     }
