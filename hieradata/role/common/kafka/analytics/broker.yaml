@@ -5,3 +5,4 @@ nagios_group: analytics_eqiad
 debdeploy::grains:
   debdeploy-kafka:
     value: standard
+ferm::conntrack::table_size: 524288
