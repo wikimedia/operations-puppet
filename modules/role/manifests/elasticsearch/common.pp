@@ -78,14 +78,4 @@ class role::elasticsearch::common {
     include elasticsearch::monitor::diamond
     include ::elasticsearch::log::hot_threads
 
-    file { '/etc/elasticsearch/scripts':
-        ensure  => absent,
-    }
-
-    file { '/etc/elasticsearch/scripts/mwgrep.groovy':
-        ensure => absent
-    }
-    file { '/etc/elasticsearch/scripts/id_hash_mod.groovy':
-        ensure => absent
-    }
 }
