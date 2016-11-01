@@ -38,6 +38,9 @@
 # [*disk]
 #  Path for underlying volume on disk
 #
+# [*mount_path]
+#  Path allocated to mount block device
+#
 # Example:
 # labstore::drbd_resource {'myresource':
 #     drbd_cluster => {'nfs1' => 'eth1.nfs1.domain', 'nfs2' => eth1.nfs2.domain'},
@@ -52,6 +55,7 @@ define labstore::drbd::resource (
     $port,
     $device,
     $disk,
+    $mount_path,
 ) {
 
     require labstore::drbd::node
@@ -66,6 +70,7 @@ define labstore::drbd::resource (
     labstore::drbd::resource::port { $port: }
     labstore::drbd::resource::port { $disk: }
     labstore::drbd::resource::port { $device: }
+    labstore::drbd::resource::port { $mount_path: }
 
     file { "/etc/drbd.d/${name}.res":
         content => template('labstore/drbd/drbd_resource.res.erb'),
