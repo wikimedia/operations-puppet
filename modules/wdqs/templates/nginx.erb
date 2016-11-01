@@ -3,7 +3,9 @@ log_format logstash
     '"$request" $status $body_bytes_sent '
     '"$http_referer" "$http_user_agent" '
     '$request_time '
-    '$upstream_response_time';
+    '$upstream_response_time $http_x_client_ip $remote_addr';
+
+limit_conn_zone $http_x_client_ip zone=byaddr:10m;
 
 server {
     listen 80 default_server;
@@ -26,6 +28,12 @@ server {
     if (-f /var/lib/nginx/wdqs/maintenance) {
         return 503;
     }
+	# Rate limit error
+    error_page 429 @rate_limit;
+    location @rate_limit {
+        echo Rate limit exceeded;
+        echo_flush;
+    }
 
     location / {
         root <%= @package_dir %>/gui;
@@ -46,6 +54,10 @@ server {
 
     location /bigdata/namespace/wdq/sparql {
         proxy_pass http://localhost:9999;
+
+        # Allow only 3 connections per IP
+        limit_conn byaddr 3;
+        limit_conn_status 429;
 
         proxy_set_header Host $http_host;
         proxy_set_header X-Real-IP $remote_addr;
