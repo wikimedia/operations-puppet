@@ -165,10 +165,11 @@ class BaseAddressMultiHandler(BaseAddressHandler):
         context.all_tenants = True
         context.edit_managed_records = True
 
-        criterion.update({'domain_id': cfg.CONF[self.name].domain_id})
+        forward_crit = criterion.copy()
+        forward_crit['domain_id'] = cfg.CONF[self.name].domain_id
 
         if managed:
-            criterion.update({
+            forward_crit.update({
                 'managed': managed,
                 'managed_plugin_name': self.get_plugin_name(),
                 'managed_plugin_type': self.get_plugin_type(),
@@ -176,22 +177,34 @@ class BaseAddressMultiHandler(BaseAddressHandler):
                 'managed_resource_type': resource_type
             })
 
-        records = central_api.find_records(context, criterion)
+        records = central_api.find_records(context, forward_crit)
 
         for record in records:
-            LOG.warn('Deleting record %s' % record['id'])
+            LOG.warn('Deleting forward record %s in recordset %s' % (record['id'],
+                                                                     record['recordset_id']))
 
             central_api.delete_record(context, cfg.CONF[self.name].domain_id,
                                       record['recordset_id'], record['id'])
 
         reverse_domain_id = cfg.CONF[self.name].get('reverse_domain_id')
         if reverse_domain_id:
-            criterion.update({'domain_id': reverse_domain_id})
+            reverse_crit = criterion.copy()
+            reverse_crit.update({'domain_id': reverse_domain_id})
 
-            records = central_api.find_records(context, criterion)
+            if managed:
+                reverse_crit.update({
+                    'managed': managed,
+                    'managed_plugin_name': self.get_plugin_name(),
+                    'managed_plugin_type': self.get_plugin_type(),
+                    'managed_resource_id': resource_id,
+                    'managed_resource_type': resource_type
+                })
+
+            records = central_api.find_records(context, reverse_crit)
 
             for record in records:
-                LOG.warn('Deleting record %s' % record['id'])
+                LOG.warn('Deleting reverse record %s in recordset %s' % (record['id'],
+                                                                         record['recordset_id']))
 
                 central_api.delete_record(context,
                                           reverse_domain_id,
