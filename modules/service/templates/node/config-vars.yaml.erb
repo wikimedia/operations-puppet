@@ -38,5 +38,5 @@ mwapi_uri: <%= cvars['mwapi'] %>
 restbase_uri: <%= cvars['restbase'] %>
 <%- unless @deployment_vars.empty? -%>
 # deployment variables
-<%= @deployment_vars.map { |k, v| "#{k}: #{v}" }.join("\n") %>
-<%- end -%>
+<%= scope.function_ordered_yaml(@deployment_vars) %>
+<% end -%>
