@@ -140,7 +140,7 @@ class role::cache::text(
     # varnishkafka eventlogging listens for eventlogging
     # requests and logs them to the eventlogging-client-side
     # topic.  EventLogging servers consume and process this
-    # topic into many JSON based kafka topics for further
+    # topic into many JSON based kafka topics for further
     # consumption.
     class { '::role::cache::kafka::eventlogging':
         varnish_name => 'frontend',
