@@ -83,6 +83,11 @@ class role::labs::nfs::secondary($monitor = 'eth0') {
         drbd_role  => $drbd_role,
     }
 
+    # state via nfs-manage
+    service { 'nfs-kernel-server':
+        enable => false,
+    }
+
     file { '/usr/local/sbin/nfs-manage':
         content => template('role/labs/nfs/nfs-manage.sh.erb'),
         mode    => '0744',
