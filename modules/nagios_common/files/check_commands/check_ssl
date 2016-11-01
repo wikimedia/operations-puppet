@@ -259,7 +259,7 @@ sub ssl_verify {
             }
         }
         if ( !$bad ) {
-            push(@ok, "Certificate $name contains all required SANs: $sans");
+            push(@ok, "Certificate $name contains all required SANs");
         }
     }
 }
