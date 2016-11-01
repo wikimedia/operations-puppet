@@ -38,5 +38,6 @@ mwapi_uri: <%= cvars['mwapi'] %>
 restbase_uri: <%= cvars['restbase'] %>
 <%- unless @deployment_vars.empty? -%>
 # deployment variables
-<%= @deployment_vars.map { |k, v| "#{k}: #{v}" }.join("\n") %>
-<%- end -%>
+<% require 'yaml' -%>
+<%= @deployment_vars.to_yaml.sub("---\n", '') %>
+<% end -%>
