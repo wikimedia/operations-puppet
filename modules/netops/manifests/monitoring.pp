@@ -67,6 +67,7 @@ class netops::monitoring {
         'asw-b-eqiad.mgmt.eqiad.wmnet'   => { ipv4 => '10.65.0.18',   },
         'asw-c-eqiad.mgmt.eqiad.wmnet'   => { ipv4 => '10.65.0.23',   },
         'asw-d-eqiad.mgmt.eqiad.wmnet'   => { ipv4 => '10.65.0.24',   },
+        'asw2-d-eqiad.mgmt.eqiad.wmnet'  => { ipv4 => '10.65.0.27',   },
         'msw1-eqiad.mgmt.eqiad.wmnet'    => { ipv4 => '10.65.0.10',   },
         # codfw
         'asw-a-codfw.mgmt.codfw.wmnet'   => { ipv4 => '10.193.0.16',  },
