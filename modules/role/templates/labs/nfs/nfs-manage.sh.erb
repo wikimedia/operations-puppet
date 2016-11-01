@@ -26,10 +26,10 @@ case $CMD in
         else
             /sbin/drbdadm primary all
             /bin/ip address add <%= @cluster_ip %>/24 dev eth0
-            /usr/sbin/arping -c 3 -S <%= @cluster_ip -%> -i eth0 <%= @subnet_gateway_ip -%>
-            <% @drbd_resource_config.each do |resource, config| -%>
-                mount <%= config['device'] -%> <%= config['disk'] -%>
-            <% end -%>
+            /usr/sbin/arping -c 3 -S <%= @cluster_ip %> -i eth0 <%= @subnet_gateway_ip %>
+            <% @drbd_resource_config.each do |resource, config| %>
+            mount <%= config['device'] %> <%= config['disk'] %>
+            <% end %>
             /usr/sbin/drbd-overview
             /usr/bin/timeout 10s sudo -u nfsmanager nfs-exportd
             /usr/local/sbin/nfs-manage-binds
@@ -42,11 +42,11 @@ case $CMD in
         /sbin/service nfs-kernel-server stop
         /usr/local/sbin/nfs-manage-binds -binds | \
             xargs --no-run-if-empty /bin/umount -f
-        <% @drbd_resource_config.each do |resource, config| -%>
-            umount <%= config['device'] -%> <%= config['disk'] -%>
-        <% end -%>
+        <% @drbd_resource_config.each do |resource, config| %>
+            umount <%= config['device'] %> <%= config['disk'] %>
+        <% end %>
         /sbin/drbdadm secondary all
-        /bin/ip a del <%= @cluster_ip -%>/24 dev eth0
+        /bin/ip a del <%= @cluster_ip %>/24 dev eth0
         /usr/sbin/drbd-overview
         ;;
     status)
