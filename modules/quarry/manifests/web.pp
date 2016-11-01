@@ -14,6 +14,7 @@ class quarry::web {
         require  => Git::Clone['analytics/quarry/web'],
         settings => {
             uwsgi => {
+                'plugins'   => 'python',
                 'socket'    => '/run/uwsgi/quarry-web.sock',
                 'wsgi-file' => "${clone_path}/quarry.wsgi",
                 'master'    => true,
