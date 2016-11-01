@@ -20,9 +20,10 @@ class standard::ntp::client () {
     }
 
     monitoring::service { 'ntp':
-        description   => 'NTP',
-        check_command => 'check_ntp_time!0.5!1',
-        retries       => 20, # wait for resync, don't flap after restart
+        description    => 'NTP',
+        check_command  => 'check_ntp_time!0.5!1',
+        check_interval => 10,
+        retry_interval => 5,
     }
 
 }
