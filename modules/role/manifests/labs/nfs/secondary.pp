@@ -50,7 +50,7 @@ class role::labs::nfs::secondary($monitor = 'eth0') {
 
     $subnet_gateway_ip = '10.64.37.1'
 
-    $drbd_resource_config = hiera('drbd_resource_config', {})
+    $drbd_resource_config = hiera('labstore_secondary_drbd_resource_config', {})
     $drbd_resources = keys($drbd_resource_config)
 
     labstore::drbd::resource { $drbd_resources:
