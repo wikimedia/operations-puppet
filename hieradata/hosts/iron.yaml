@@ -4,3 +4,5 @@ base::resolving::domain_search:
   - codfw.wmnet
   - esams.wmnet
   - ulsfo.wmnet
+admin::groups:
+  - datacenter-ops
