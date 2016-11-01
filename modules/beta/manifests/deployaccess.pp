@@ -1,12 +1,9 @@
 # TODO: remove this if https://phabricator.wikimedia.org/T121721
 # is fixed.
-class beta::deployaccess(
-    $bastion_ip = '10.68.21.205', # ip of deployment-tin
-) {
-
+class beta::deployaccess {
+    $ips = join($network::constants::special_hosts[$::realm]['deployment_hosts'], ' ')
     security::access::config { 'beta-allow-mwdeploy':
-        content  => "+ : deploy-service mwdeploy : ${bastion_ip}\n",
+        content  => "+ : deploy-service mwdeploy : ${ips}\n",
         priority => 50,
     }
-
 }
