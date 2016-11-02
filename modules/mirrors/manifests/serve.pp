@@ -21,4 +21,14 @@ class mirrors::serve {
         mode   => '0444',
         source => 'puppet:///modules/mirrors/index.html',
     }
+
+    # rsync
+    include rsync::server
+    file { '/etc/rsyncd.secrets':
+        content => secret('mirrors/rsyncd.secrets'),
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0440',
+    }
+
 }
