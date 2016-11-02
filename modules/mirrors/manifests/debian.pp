@@ -61,4 +61,14 @@ class mirrors::debian {
         minute  => '03',
         require => File['/var/lib/mirror/archvsync/etc/ftpsync.conf'],
     }
+
+    rsync::server::module { 'debian':
+        path         => '/srv/mirrors/debian/',
+        read_only    => 'yes',
+        uid          => 'nobody',
+        gid          => 'nogroup',
+        auth_users   => ['mirrors.wikimedia.org'],
+        secrets_file => '/etc/rsyncd.secrets',
+    }
+
 }
