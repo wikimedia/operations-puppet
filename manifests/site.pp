@@ -1454,8 +1454,7 @@ node 'labnodepool1001.eqiad.wmnet' {
 ## labsdb dbs
 node /labsdb100[13]\.eqiad\.wmnet/ {
     # this role is depecated and its nodes scheduled for decom
-    role(mariadb::labs)
-
+    role(mariadb::labs, labs::db::views)
 }
 
 ## labsdb dbs testing canary
@@ -1465,7 +1464,7 @@ node /labsdb1008\.eqiad\.wmnet/ {
     # setup logic for maintain-views.
     # This hostname specification is temporary for untangling
     # this historically unpuppetized logic.
-    role(mariadb::labs, labsdb::views)
+    role(mariadb::labs, labs::db::views)
 }
 
 node /labsdb10(09|10|11)\.eqiad\.wmnet/ {
