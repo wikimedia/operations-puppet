@@ -1,5 +1,6 @@
 admin::groups:
   - notebook-roots
+  - researchers
 
 debdeploy::grains:
   debdeploy-notebook:
