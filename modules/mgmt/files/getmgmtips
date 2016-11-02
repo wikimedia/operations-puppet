@@ -14,15 +14,11 @@ count_rejects=0
 
 echo "getting all mgmt hostnames from DNS templates.."
 
-if [ ! -d  "$tempdir" ]; then
-    echo "creating temp dir $tempdir and git cloning DNS repo.."
-    mkdir -p $tempdir
-    cd $tempdir
-    git clone $dnsrepo
-else
-    echo "removing $tempdir"
-    rm -rf $tempdir
-fi
+rm -rf $tempdir
+echo "creating temp dir $tempdir and git cloning DNS repo.."
+mkdir -p $tempdir
+cd $tempdir
+git clone $dnsrepo
 
 cd ${tempdir}/dns/templates
 
@@ -32,7 +28,7 @@ if [ -f $resultfile ] || [ -f $resultfile.tmp ] || [ -f $rejectsfile ] || [ -f $
 fi
 
 echo -e "extracting mgmt hostnames from 10.in-addr.arpa..\n"
-mgmt_hosts=$(grep -oh "\w*.mgmt.\w*.\w*.\w*" 10.in-addr.arpa)
+mgmt_hosts=$(grep -o '[a-z].*\.mgmt\.[a-z].*' 10.in-addr.arpa)
 
 touch $resulfile.tmp
 touch $rejectfile.tmp
