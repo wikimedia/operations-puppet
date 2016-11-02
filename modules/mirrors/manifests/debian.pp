@@ -63,12 +63,10 @@ class mirrors::debian {
     }
 
     rsync::server::module { 'debian':
-        path         => '/srv/mirrors/debian/',
-        read_only    => 'yes',
-        uid          => 'nobody',
-        gid          => 'nogroup',
-        auth_users   => ['mirrors.wikimedia.org'],
-        secrets_file => '/etc/rsyncd.secrets',
+        path      => '/srv/mirrors/debian/',
+        read_only => 'yes',
+        uid       => 'nobody',
+        gid       => 'nogroup',
     }
 
 }
