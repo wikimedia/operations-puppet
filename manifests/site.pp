@@ -303,7 +303,7 @@ node 'copper.eqiad.wmnet' {
 
 # cp1008: prod-like SSL test host
 node 'cp1008.wikimedia.org' {
-    role(cache::text, authdns::testns)
+    role(cache::text, authdns::testns, prometheus::varnish_exporter)
     interface::add_ip6_mapped { 'main': }
 }
 
@@ -319,22 +319,22 @@ node 'cp1046.eqiad.wmnet', 'cp1047.eqiad.wmnet', 'cp1059.eqiad.wmnet', 'cp1060.e
 
 node /^cp10(4[89]|50|6[234]|7[1-4]|99)\.eqiad\.wmnet$/ {
     interface::add_ip6_mapped { 'main': }
-    role(cache::upload, ipsec)
+    role(cache::upload, ipsec, prometheus::varnish_exporter)
 }
 
 node /^cp10(5[2-5]|6[5-8])\.eqiad\.wmnet$/ {
     interface::add_ip6_mapped { 'main': }
-    role(cache::text, ipsec)
+    role(cache::text, ipsec, prometheus::varnish_exporter)
 }
 
 node /^cp20(0[147]|1[0369]|23)\.codfw\.wmnet$/ {
     interface::add_ip6_mapped { 'main': }
-    role(cache::text, ipsec)
+    role(cache::text, ipsec, prometheus::varnish_exporter)
 }
 
 node /^cp20(0[258]|1[147]|2[0246])\.codfw\.wmnet$/ {
     interface::add_ip6_mapped { 'main': }
-    role(cache::upload, ipsec)
+    role(cache::upload, ipsec, prometheus::varnish_exporter)
 }
 
 node /^cp20(0[39]|15|21)\.codfw\.wmnet$/ {
@@ -378,12 +378,12 @@ node 'cp3022.esams.wmnet' {
 
 node /^cp30[34][0123]\.esams\.wmnet$/ {
     interface::add_ip6_mapped { 'main': }
-    role(cache::text, ipsec)
+    role(cache::text, ipsec, prometheus::varnish_exporter)
 }
 
 node /^cp30[34][4-9]\.esams\.wmnet$/ {
     interface::add_ip6_mapped { 'main': }
-    role(cache::upload, ipsec)
+    role(cache::upload, ipsec, prometheus::varnish_exporter)
 }
 
 #
@@ -397,12 +397,12 @@ node /^cp400[1-4]\.ulsfo\.wmnet$/ {
 
 node /^cp40(0[5-7]|1[3-5])\.ulsfo\.wmnet$/ {
     interface::add_ip6_mapped { 'main': }
-    role(cache::upload, ipsec)
+    role(cache::upload, ipsec, prometheus::varnish_exporter)
 }
 
 node /^cp40(0[89]|1[0678])\.ulsfo\.wmnet$/ {
     interface::add_ip6_mapped { 'main': }
-    role(cache::text, ipsec)
+    role(cache::text, ipsec, prometheus::varnish_exporter)
 }
 
 node /^cp40(1[129]|20)\.ulsfo\.wmnet$/ {
