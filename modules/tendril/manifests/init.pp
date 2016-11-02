@@ -26,6 +26,13 @@ class tendril (
         owner  => 'www-data',
         group  => 'www-data',
     }
+    file { '/srv/tendril/web/robots.txt':
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        source  => 'puppet:///modules/tendril/robots.txt',
+        require => Git::Clone['operations/software/tendril'],
+    }
 
     git::clone { 'operations/software/tendril':
     # we do not update (pull) automatically the repo
@@ -43,5 +50,6 @@ class tendril (
         group   => 'root',
         mode    => '0444',
         content => template('tendril/config.php.erb'),
+        require => Git::Clone['operations/software/tendril'],
     }
 }
