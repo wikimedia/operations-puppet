@@ -20,10 +20,15 @@
 #  machine. On labs, this means anyone with labs account.
 #  'ldap' to use LDAPAuthenticator, configured to let only people with LDAP
 #  credentials in. Currently restricted to members of the ops group only.
+#
+# [*web_proxy*]
+#  Set this to put http/https_proxy environment variables in the spawned
+#  single user servers.
 class jupyterhub (
     $wheels_repo,
     $base_path='/srv/jupyterhub',
     $authenticator='ldap',
+    $web_proxy=undef,
 ) {
 
     $venv_path = "${base_path}/venv"
