@@ -14,6 +14,7 @@
 
 class mirrors::debian {
     require mirrors
+    include passwords::mirrors
 
     file { '/srv/mirrors/debian':
         ensure => directory,
@@ -46,11 +47,11 @@ class mirrors::debian {
 
     # this is our configuration for archvsync
     file { "${mirrors::homedir}/archvsync/etc/ftpsync.conf":
-        ensure => present,
-        owner  => 'mirror',
-        group  => 'mirror',
-        mode   => '0555',
-        source => 'puppet:///modules/mirrors/ftpsync.conf',
+        ensure  => present,
+        owner   => 'mirror',
+        group   => 'mirror',
+        mode    => '0555',
+        content => template('mirrors/ftpsync.conf.erb'),
     }
 
     cron { 'update-debian-mirror':

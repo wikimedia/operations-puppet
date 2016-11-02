@@ -1,0 +1,11 @@
+MIRRORNAME="mirrors.wikimedia.org"
+TO="/srv/mirrors/debian/"
+RSYNC_PATH="debian"
+RSYNC_HOST="syncproxy.cna.debian.org"
+RSYNC_USER="<%= scope.lookupvar("passwords::mirrors::debian_rsync_username") %>"
+RSYNC_PASSWORD="<%= scope.lookupvar("passwords::mirrors::debian_rsync_password") %>"
+
+MAILTO="root"
+ERRORSONLY="true"
+FULLLOGS="false"
+LOGROTATE=14
