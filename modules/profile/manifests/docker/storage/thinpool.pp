@@ -23,6 +23,7 @@ class profile::docker::storage::thinpool {
         fail('Thin pools cannot be used on Debian jessie.')
     }
 
+    Class['::profile::docker::storage::thinpool'] -> Service['docker']
 
     if $vg_to_remove {
         volume_group { $vg_to_remove:
