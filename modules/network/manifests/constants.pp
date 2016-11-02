@@ -46,9 +46,9 @@ class network::constants {
                     '208.80.154.14',                    # neon.wikimedia.org
                     '2620:0:861:1:208:80:154:14',       # neon.wikimedia.org
                     '208.80.153.74',                    # tegmen.wikimedia.org
-                    '2620:0:860:3:208:80:153:74/64',    # tegmen.wikimedia.org
+                    '2620:0:860:3:208:80:153:74',       # tegmen.wikimedia.org
                     '208.80.155.119',                   # einsteinium.wikimedia.org
-                    '2620:0:860:3:208:80:155:119/64',   # einsteinium.wikimedia.org
+                    '2620:0:860:3:208:80:155:119',      # einsteinium.wikimedia.org
                     '208.80.154.53',                    # uranium.wikimedia.org (ganglia, gmetad needs it)
                     '2620:0:861:1:208:80:154:53',       # uranium.wikimedia.org
                 ],
