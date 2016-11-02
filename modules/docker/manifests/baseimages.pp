@@ -1,7 +1,7 @@
 # Classs: docker::baseimages
 #
 # Helper class that builds standard base images
-class docker::baseimages {
+class docker::baseimages($docker_registry) {
     # We need docker running
     Service[docker] -> Class[docker::baseimages]
 
@@ -23,7 +23,6 @@ class docker::baseimages {
         require => File['/srv/images'],
     }
 
-    $docker_registry = hiera('docker::registry')
     file { '/srv/images/base/jessie.yaml':
         content => template('docker/images/jessie.yaml.erb'),
         owner   => 'root',
