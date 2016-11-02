@@ -1,3 +1,4 @@
 debdeploy::grains:
   debdeploy-packagebuild:
     value: standard
+docker::registry: darmstadtium.eqiad.wmnet
