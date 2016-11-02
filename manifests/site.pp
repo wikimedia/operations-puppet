@@ -2681,12 +2681,8 @@ node 'stat1002.eqiad.wmnet' {
     # /etc/mysql/conf.d/analytics-research-client.cnf
     # and only readable by users in the
     # analytics-privatedata-users group.
-    include passwords::mysql::research
-    mysql::config::client { 'analytics-research':
-        user  => $::passwords::mysql::research::user,
-        pass  => $::passwords::mysql::research::pass,
+    statistics::mysql_credentials { 'analytics-research':
         group => 'analytics-privatedata-users',
-        mode  => '0440',
     }
 
     # The eventlogging code is useful for scripting
@@ -2701,16 +2697,6 @@ node 'stat1002.eqiad.wmnet' {
 # query results for further processing on this node.
 node 'stat1003.eqiad.wmnet' {
     role(statistics::cruncher)
-
-    include passwords::mysql::research
-    # This file will render at
-    # /etc/mysql/conf.d/research-client.cnf.
-    mysql::config::client { 'research':
-        user  => $::passwords::mysql::research::user,
-        pass  => $::passwords::mysql::research::pass,
-        group => 'researchers',
-        mode  => '0440',
-    }
 }
 
 node 'stat1004.eqiad.wmnet' {
