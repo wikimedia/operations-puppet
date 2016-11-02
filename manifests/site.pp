@@ -1520,6 +1520,7 @@ node /labstore200[1-2]\.codfw\.wmnet/ {
 }
 
 node /labstore200[3-4]\.codfw\.wmnet/ {
+    include labstore::backup_keys
     include standard
 }
 
