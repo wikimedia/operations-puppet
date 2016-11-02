@@ -136,4 +136,14 @@ class role::prometheus::ops {
         targets_path => $targets_path,
         cache_name   => 'misc',
     }
+
+    prometheus::varnish_2layer{ 'text':
+        targets_path => $targets_path,
+        cache_name   => 'text',
+    }
+
+    prometheus::varnish_2layer{ 'upload':
+        targets_path => $targets_path,
+        cache_name   => 'upload',
+    }
 }
