@@ -2,8 +2,8 @@
 #
 # Helper class that builds standard base images
 class docker::baseimages {
-
-    require ::docker::engine
+    # We need docker running
+    Service[docker] -> Class[docker::baseimages]
 
     require_package('python-bootstrap-vz')
     require_package('debootstrap')
