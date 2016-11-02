@@ -371,10 +371,10 @@ if __name__ == "__main__":
     )
 
     dbh = pymysql.connect(
-        host=config['host'],
         port=config['port'],
         user=config["mysql_user"],
         passwd=config["mysql_password"],
+        unix_socket="/tmp/mysql.sock",
         charset="utf8"
     )
 

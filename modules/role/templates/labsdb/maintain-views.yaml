@@ -1,4 +1,3 @@
-host: "<%= @fqdn %>"
 port: 3306
 mysql_user: "<%= @view_user %>"
 mysql_password: "<%= @view_pass %>"
