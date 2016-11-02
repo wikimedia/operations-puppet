@@ -54,15 +54,12 @@ class mirrors::debian {
         content => template('mirrors/ftpsync.conf.erb'),
     }
 
-    cron { 'update-debian-mirror':
-        ensure  => present,
-        command => '/var/lib/mirror/archvsync/bin/ftpsync',
-        user    => 'mirror',
-        hour    => '*/6',
-        minute  => '03',
-        require => File['/var/lib/mirror/archvsync/etc/ftpsync.conf'],
+    # allow the Debian syncproxy to trigger ftpsync runs over ssh
+    ssh::userkey { 'mirror':
+        source => 'puppet:///modules/mirrors/ssh-debian-archvsync.pub',
     }
 
+    # serve via rsync
     rsync::server::module { 'debian':
         path      => '/srv/mirrors/debian/',
         read_only => 'yes',

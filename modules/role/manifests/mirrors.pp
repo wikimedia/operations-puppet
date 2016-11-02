@@ -31,4 +31,9 @@ class role::mirrors {
         proto => 'tcp',
         port  => '873',
     }
+    ferm::service { 'mirrors_ssh':
+        proto  => 'tcp',
+        port   => 'ssh',
+        srange => '@resolve(syncproxy.cna.debian.org)',
+    }
 }
