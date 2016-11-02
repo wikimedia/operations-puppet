@@ -309,12 +309,12 @@ node 'cp1008.wikimedia.org' {
 
 node /^cp10(45|5[18]|61)\.eqiad\.wmnet$/ {
     interface::add_ip6_mapped { 'main': }
-    role(cache::misc, ipsec)
+    role(cache::misc, ipsec, prometheus::varnish_exporter)
 }
 
 node 'cp1046.eqiad.wmnet', 'cp1047.eqiad.wmnet', 'cp1059.eqiad.wmnet', 'cp1060.eqiad.wmnet' {
     interface::add_ip6_mapped { 'main': }
-    role(cache::maps, ipsec)
+    role(cache::maps, ipsec, prometheus::varnish_exporter)
 }
 
 node /^cp10(4[89]|50|6[234]|7[1-4]|99)\.eqiad\.wmnet$/ {
@@ -349,12 +349,12 @@ node /^cp20(06|1[28]|25)\.codfw\.wmnet$/ {
 
 node /^cp300[3-6]\.esams\.wmnet$/ {
     interface::add_ip6_mapped { 'main': }
-    role(cache::maps, ipsec)
+    role(cache::maps, ipsec, prometheus::varnish_exporter)
 }
 
 node /^cp30(0[789]|10)\.esams\.wmnet$/ {
     interface::add_ip6_mapped { 'main': }
-    role(cache::misc, ipsec)
+    role(cache::misc, ipsec, prometheus::varnish_exporter)
 }
 
 node /^cp301[1-4]\.esams\.wmnet$/ {
