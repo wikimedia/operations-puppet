@@ -23,7 +23,6 @@ else:
     raise ImportError('Unknown AUTHENTICATOR_CLASS %s' % AUTHENTICATOR)
 
 
-
 c.JupyterHub.log_level = 'WARN'
 
 # Isolate the db file into a specific directory, and give JupyterHub write
@@ -49,10 +48,14 @@ c.JupyterHub.spawner_class = 'systemdspawner.SystemdSpawner'
 # things via pip easily and have them be immediately available
 c.SystemdSpawner.extra_paths = ['/home/{USERNAME}/venv/bin']
 
-# ???
-c.SystemdSpawner.environment = {
-    'HADOOP_CONF_DIR': '/etc/hadoop/conf.analytics-cluster/',
-}
+if 'HTTP_PROXY' in os.environ:
+    c.SystemdSpawner.environment = {
+        # Use HTTP_PROXY for both HTTP and HTTPS proxy
+        # Looks like smaller case is more compatible - curl doesn't like
+        # all upper case HTTP_PROXY. lol?
+        'https_proxy': os.environ['HTTP_PROXY'],
+        'http_proxy': os.environ['HTTP_PROXY'],
+    }
 
 class VenvCreatingAuthenticator(Authenticator):
     """

@@ -9,6 +9,7 @@ WorkingDirectory=<%= @venv_path %>
 Environment=AUTHENTICATOR=<%= @authenticator %>
 Environment=WHEELS_PATH=<%= @wheels_path %>
 Environment=DATA_PATH=<%= @data_path %>
+<% if @web_proxy %>Environment=HTTP_PROXY=<%= @web_proxy %> <% end %>
 EnvironmentFile=<%= @venv_path %>/configproxy_auth_token
 PrivateTmp=yes
 PrivateDevices=yes
