@@ -295,10 +295,9 @@ node 'contint1001.wikimedia.org' {
     include contint::firewall
 }
 
-# Debian package building host in production
+# Debian package/docker images building host in production
 node 'copper.eqiad.wmnet' {
-    role(package::builder)
-    include standard
+    role(builder)
 }
 
 # cp1008: prod-like SSL test host
