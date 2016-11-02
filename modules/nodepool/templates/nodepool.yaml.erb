@@ -51,17 +51,23 @@ targets:
 # Jenkins labels
 #
 # Make sure all labels run the 'ready.sh' script
+#
+# To balance number of min-ready per labels, see the repartition of builds
+# between nodes on the Grafana dashboard:
+#
+# https://grafana.wikimedia.org/dashboard/db/continuous-integration?panelId=8&fullscreen
+#
 labels:
   - name: ci-jessie-wikimedia
     image: ci-jessie-wikimedia
     ready-script: ready.sh
-    min-ready: 4
+    min-ready: 6
     providers:
       - name: wmflabs-eqiad
   - name: ci-trusty-wikimedia
     image: ci-trusty-wikimedia
     ready-script: ready.sh
-    min-ready: 4
+    min-ready: 3
     providers:
       - name: wmflabs-eqiad
 
