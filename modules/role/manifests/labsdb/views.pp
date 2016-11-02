@@ -13,9 +13,9 @@ class role::labsdb::views {
         before             => File['/usr/local/sbin/maintain-views'],
     }
 
-    include passwords::mysql::maintain_views
-    $view_user = $::passwords::mysql::maintain_views::user
-    $view_pass = $::passwords::mysql::maintain_views::password
+    include passwords::labsdb::maintainviews
+    $view_user = $::passwords::labsdb::maintainviews::user
+    $view_pass = $::passwords::labsdb::maintainviews::db_pass
     file { '/etc/maintain-views.yaml':
         ensure  => file,
         content => template('role/labsdb/maintain-views.yaml'),
