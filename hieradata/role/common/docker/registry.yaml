@@ -1,3 +1,4 @@
+profile::docker::registry::image_builders: ['10.64.16.176'] # copper.eqiad.wmnet
 docker::registry::username: uploader
 #docker::registry::hash: defined in the private repo
 profile::docker::registry::storage_backend: swift

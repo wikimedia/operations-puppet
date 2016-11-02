@@ -18,6 +18,8 @@ class profile::docker::storage {
     $extents = hiera('profile::docker::storage::extents', '95%VG')
     $metadata_size = hiera('profile::docker::storage::metadata_size', '5%VG')
 
+    Class['::profile::docker::storage'] -> Service['docker']
+
     if $vg_to_remove {
         volume_group { $vg_to_remove:
             ensure           => absent,
