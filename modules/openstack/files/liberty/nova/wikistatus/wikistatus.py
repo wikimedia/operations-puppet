@@ -184,7 +184,8 @@ class WikiStatus(notifier._Driver):
         ec2_id = 'i-%08x' % simple_id
 
         if CONF.wiki_instance_dns_domain:
-            fqdn = "%s.%s.%s" % (instance_name, inst['project_id'], CONF.wiki_instance_dns_domain)
+            fqdn = "%s.%s.%s" % (instance_name, inst['project_id'],
+                                 CONF.wiki_instance_dns_domain)
             resourceName = fqdn
         else:
             fqdn = instance_name
@@ -236,12 +237,10 @@ class WikiStatus(notifier._Driver):
         for key in template_param_dict:
             fields_string += "\n|%s=%s" % (key, template_param_dict[key])
 
-        clear_page = False
         if event_type == 'compute.instance.delete.start':
-            page_string = ("\n%s\nThis instance has been deleted.\n%s\n" %
-                           (begin_comment, end_comment))
-            clear_page = True
+            delete_page = True
         else:
+            delete_page = False
             page_string = "%s\n{{InstanceStatus%s}}\n%s" % (begin_comment,
                                                             fields_string,
                                                             end_comment)
@@ -254,10 +253,10 @@ class WikiStatus(notifier._Driver):
 
         page = self.site.Pages[pagename]
         try:
-            pText = page.edit()
-            if clear_page:
-                newText = page_string
+            if delete_page:
+                page.delete(reason='Instance deleted')
             else:
+                pText = page.edit()
                 start_replace_index = pText.find(begin_comment)
                 if start_replace_index == -1:
                     # Just stick new text at the top.
@@ -274,7 +273,7 @@ class WikiStatus(notifier._Driver):
                     newText = "%s%s%s" % (pText[:start_replace_index],
                                           page_string,
                                           pText[end_replace_index:])
-            page.save(newText, "Auto update of instance info.")
+                page.save(newText, "Auto update of instance info.")
         except (mwclient.errors.InsufficientPermission,
                 mwclient.errors.LoginError):
             LOG.debug("Failed to update wiki page..."
