@@ -20,12 +20,14 @@ class profile::docker::engine {
 
     # Docker config
     # Fetch the storage config from the related driver
+    # I know this is horrible
     if defined(Class['::profile::docker::storage::thinpool']) {
         $docker_storage_options = $::profile::docker::storage::thinpool::options
-        Class['::profile::docker::storage::thinpool'] -> Service['docker']
+    } elsif defined(Class['::profile::docker::storage::loopback']) {
+        $docker_storage_options = $::profile::docker::storage::loopback::options
+
     } else {
         $docker_storage_options = $::profile::docker::storage::options
-        Class['::profile::docker::storage'] -> Service['docker']
     }
 
     # We need to import one storage config
