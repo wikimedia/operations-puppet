@@ -14,6 +14,7 @@
 
 class mirrors::debian {
     require mirrors
+    include passwords::mirrors
 
     file { '/srv/mirrors/debian':
         ensure => directory,
@@ -50,7 +51,7 @@ class mirrors::debian {
         owner  => 'mirror',
         group  => 'mirror',
         mode   => '0555',
-        source => 'puppet:///modules/mirrors/ftpsync.conf',
+        content => template('mirrors/ftpsync.conf.erb'),
     }
 
     cron { 'update-debian-mirror':
