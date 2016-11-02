@@ -4,6 +4,8 @@
 # See https://wikitech.wikimedia.org/wiki/PAWS/Internal for more info
 class role::paws_internal::jupyterhub {
 
+    include ::base::firewall
+
     class { '::jupyterhub':
         base_path   => '/srv/paws-internal',
         wheels_repo => 'operations/wheels/paws-internal',
