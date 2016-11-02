@@ -9,6 +9,7 @@ class role::cache::base(
     include lvs::configuration
     include network::constants
     include conftool::scripts
+    include ::role::prometheus::varnish_exporter
 
     $cache_cluster = hiera('cache::cluster')
 
