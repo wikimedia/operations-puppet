@@ -38,6 +38,8 @@ class noc {
     }
 
     git::clone { 'operations/software/dbtree':
+    # we do not update (pull) automatically the repo
+    # not adding ensure => 'latest' is on purpose
         directory => '/srv/dbtree',
         branch    => 'master',
         owner     => 'mwdeploy',

@@ -28,7 +28,8 @@ class tendril (
     }
 
     git::clone { 'operations/software/tendril':
-        ensure    => 'latest',
+    # we do not update (pull) automatically the repo
+    # not adding ensure => 'latest' is on purpose
         directory => '/srv/tendril',
         branch    => 'master',
         owner     => 'www-data',
