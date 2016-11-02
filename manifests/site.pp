@@ -2246,8 +2246,15 @@ node 'mx2001.wikimedia.org' {
 }
 
 # Experimental Jupyter notebook servers
-node /^notebook100[12]\.eqiad\.wmnet$/ {
-    role(notebook::server, paws_internal::jupyterhub, analytics_cluster::client)
+node 'notebook1001.eqiad.wmnet' {
+    # Equivalent of stat1003
+    role(paws_internal::jupyterhub, paws_internal::mysql_access)
+
+    include standard
+}
+node 'notebook1002.eqiad.wmnet' {
+    # Equivalent to stat1002
+    role(paws_internal::jupyterhub, analytics_cluster::client)
     include standard
 }
 
