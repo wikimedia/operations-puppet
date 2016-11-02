@@ -9,6 +9,10 @@ class role::statistics::cruncher inherits role::statistics::base {
     include role::backup::host
     backup::set { 'home' : }
 
+    statistics::mysql_credentials { 'research':
+        group => 'researchers',
+    }
+
     # include stuff common to statistics compute nodes
     include ::statistics::compute
 
