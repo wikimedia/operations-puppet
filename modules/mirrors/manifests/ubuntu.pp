@@ -39,4 +39,13 @@ class mirrors::ubuntu {
         minute  => '43',
         require => File['/usr/local/sbin/update-ubuntu-mirror'],
     }
+
+    # serve via rsync
+    rsync::server::module { 'ubuntu':
+        path      => '/srv/mirrors/ubuntu/',
+        read_only => 'yes',
+        uid       => 'nobody',
+        gid       => 'nogroup',
+    }
+
 }
