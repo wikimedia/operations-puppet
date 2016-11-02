@@ -1934,6 +1934,12 @@ node /^mc10(0[1-9]|1[0-8])\.eqiad\.wmnet/ {
     role(memcached)
 }
 
+# New memcached/redis servers
+# T137345
+node /^mc10(19|2[0-9]|3[0-6])\.eqiad\.wmnet/ {
+    role(spare::system)
+}
+
 node /^mc20[01][0-9]\.codfw\.wmnet/ {
     role(memcached)
 }
