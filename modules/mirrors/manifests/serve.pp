@@ -24,11 +24,5 @@ class mirrors::serve {
 
     # rsync
     include rsync::server
-    file { '/etc/rsyncd.secrets':
-        content => secret('mirrors/rsyncd.secrets'),
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0440',
-    }
 
 }

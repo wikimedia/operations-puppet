@@ -67,8 +67,6 @@ class mirrors::debian {
         read_only    => 'yes',
         uid          => 'nobody',
         gid          => 'nogroup',
-        auth_users   => ['mirrors.wikimedia.org'],
-        secrets_file => '/etc/rsyncd.secrets',
     }
 
 }
