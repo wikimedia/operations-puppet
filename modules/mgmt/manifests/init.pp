@@ -6,11 +6,22 @@ class mgmt {
     package { 'sshpass':
         ensure => present,
     }
+
+    # script to change passwords on a list of IPs
     file { '/usr/local/bin/changepw':
         mode   => '0555',
         owner  => 'root',
         group  => 'root',
         source => 'puppet:///modules/mgmt/changepw',
+
+    }
+
+    # script to get a list of all the (usable) mgmt IPs
+    file { '/usr/local/bin/getmgmtips':
+        mode   => '0555',
+        owner  => 'root',
+        group  => 'root',
+        source => 'puppet:///modules/mgmt/getmgmtips',
 
     }
 }
