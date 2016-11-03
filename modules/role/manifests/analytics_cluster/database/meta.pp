@@ -7,7 +7,6 @@ class role::analytics_cluster::database::meta {
     require role::analytics_cluster::java
 
     include mariadb::packages_wmf
-    include mariadb::service
 
     $config_template = $::realm ? {
         # Production instance has large innodb_buffer_pool_size.
@@ -35,12 +34,11 @@ class role::analytics_cluster::database::meta {
         }
     }
 
-    service { 'mysql':
-        ensure     => 'running',
-        enable     => true,
-        hasrestart => true,
-        hasstatus  => true,
-        require    => [File['/etc/init.d/mysql'], Class['mariadb::config']],
+    class { 'mariadb::service':
+        manage  => true,
+        ensure  => 'running',
+        enabled => true,
+        require => Class['mariadb::config'],
     }
 
     # Allow access to this analytics mysql instance from analytics networks
