@@ -4,7 +4,14 @@ GRANT ALL PRIVILEGES
     ON `labswiki`.* TO 'wikiadmin'@'10.64.0.196'
     IDENTIFIED BY '<%= @wikiadmin_pass %>';
 
+-- queries from mira
+
+GRANT ALL PRIVILEGES
+    ON `labswiki`.* TO 'wikiadmin'@'10.192.16.132'
+    IDENTIFIED BY '<%= @wikiadmin_pass %>';
+
 -- queries from terbium
+
 GRANT ALL PRIVILEGES
     ON `labswiki`.* TO 'wikiadmin'@'10.64.32.13'
     IDENTIFIED BY '<%= @wikiadmin_pass %>';
@@ -14,7 +21,6 @@ GRANT ALL PRIVILEGES
 GRANT ALL PRIVILEGES
     ON `labswiki`.* TO 'wikiadmin'@'10.192.48.45'
     IDENTIFIED BY '<%= @wikiadmin_pass %>';
-
 
 -- queries from horizon.wikimedia.org
 GRANT select
