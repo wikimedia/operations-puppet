@@ -5,6 +5,7 @@ class statistics::packages {
     include mysql
     include geoip
     include ::imagemagick::install
+    include ::statistics::r
 
     ensure_packages([
         'emacs23',
@@ -83,14 +84,6 @@ class statistics::packages {
         'libcairo2',
         'libcairo2-dev',
         'libxt-dev'
-    ])
-
-    # R packages
-    ensure_packages([
-        'r-base',
-        'r-base-dev',      # Needed for R packages that have to compile C++ code; see T147682
-        'r-cran-rmysql',
-        'r-recommended'    # CRAN-recommended packages (e.g. MASS, Matrix, boot)
     ])
 
     # spell checker/dictionary packages for research (halfak)
