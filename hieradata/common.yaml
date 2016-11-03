@@ -291,6 +291,7 @@ dataset_clients_snapshots:
 dataset_clients_other:
   - stat1002.eqiad.wmnet
   - stat1003.eqiad.wmnet
+statistics::r::proxy: "http://webproxy.%{::site}.wmnet:8080"
 
 # Schemas names that match this regex
 # will not be produced to the eventlogging-valid-mixed
