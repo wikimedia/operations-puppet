@@ -38,6 +38,7 @@ for host_ip in $(getServers); do
 
     if [ $? -ne 0 ]; then
         echo "Failed. See logfile for details"
+        continue
     else
         echo "DRAC configured successfully on $host_ip"
     fi
