@@ -18,8 +18,13 @@
     Include *_proxy
 
     <Directory />
-        Order Deny,Allow
-        AllowOverride All
+        <IfVersion < 2.4>
+            Order Deny,Allow
+            AllowOverride All
+        </IfVersion>
+        <IfVersion >= 2.4>
+            Require all granted
+        </IfVersion>
     </Directory>
 
     <Directory /srv/org/wikimedia/integration>
