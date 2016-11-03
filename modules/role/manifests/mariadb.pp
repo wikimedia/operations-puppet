@@ -415,7 +415,6 @@ class role::mariadb::beta {
 
     include standard
     include mariadb::packages_wmf
-    include mariadb::service
     include passwords::misc::scripts
 
     # This is essentially the same volume created by role::labs::lvm::srv but
@@ -432,6 +431,13 @@ class role::mariadb::beta {
         config  => 'mariadb/beta.my.cnf.erb',
     }
 
+    class { 'mariadb::service':
+        ensure  => 'running',
+        manage  => true,
+        enabled => true,
+        require => Class['mariadb::config'],
+    }
+
     $password = $passwords::misc::scripts::mysql_beta_root_pass
     $prompt = 'BETA'
     file { '/root/.my.cnf':
@@ -440,6 +446,7 @@ class role::mariadb::beta {
         mode    => '0400',
         content => template('mariadb/root.my.cnf.erb'),
     }
+    
 }
 
 # tendril.wikimedia.org db
