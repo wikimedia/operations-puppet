@@ -6,6 +6,7 @@ are set via puppet. This allows us to keep this a pure python file, rather
 than a ruby template (erb) that generates python.
 """
 import os
+import grp
 import subprocess
 import shutil
 from tornado import gen
@@ -71,6 +72,8 @@ class VenvCreatingAuthenticator(Authenticator):
       appropriately
     - if the user doesn't have a venv in their homedir, we create one under
       $HOME/venv, and install jupyterhub+jupyter in it from our wheelhouse
+    - If the user doesn't exist in the system as part of the specified group,
+      then deny authentication.
 
     This happens before the notebook is launched for each users, and thus
     users can install packages they want with pip from here.
@@ -81,6 +84,7 @@ class VenvCreatingAuthenticator(Authenticator):
         venv_path = os.path.join(home_path, 'venv')
         if not os.path.exists(home_path):
             os.mkdir(home_path, 0o755)
+            # FIXME: Parameterize this groupname
             shutil.chown(home_path, user.name, 'wikidev')
         if not os.path.exists(venv_path):
             subprocess.check_call([
@@ -100,6 +104,15 @@ class VenvCreatingAuthenticator(Authenticator):
                 'jupyter',
                 'jupyterhub'
             ])
+
+    @gen.coroutine
+    def authenticate(self, handler, data):
+        username = data['username']
+        # FIXME: Parameterize this groupname
+        if username not in grp.getgrnam('researchers').gr_mem:
+            self.log.warn('User %s not in researchers group' % username)
+            return None
+        return super().authenticate(handler, data)
 
 
 c.JupyterHub.authenticator_class = VenvCreatingAuthenticator
