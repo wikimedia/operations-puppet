@@ -112,7 +112,7 @@ class VenvCreatingAuthenticator(Authenticator):
         if username not in grp.getgrnam('researchers').gr_mem:
             self.log.warn('User %s not in researchers group' % username)
             return None
-        return super().authenticate(handler, data)
+        return (yield super().authenticate(handler, data))
 
 
 c.JupyterHub.authenticator_class = VenvCreatingAuthenticator
