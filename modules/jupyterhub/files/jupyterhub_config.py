@@ -48,7 +48,7 @@ c.JupyterHub.spawner_class = 'systemdspawner.SystemdSpawner'
 # things via pip easily and have them be immediately available
 c.SystemdSpawner.extra_paths = ['/home/{USERNAME}/venv/bin']
 
-if 'HTTP_PROXY' in os.environ:
+if 'SINGLEUSER_HTTP_PROXY' in os.environ:
     c.SystemdSpawner.environment = {
         # Use HTTP_PROXY for both HTTP and HTTPS proxy
         # Looks like smaller case is more compatible - curl doesn't like
