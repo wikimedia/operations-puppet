@@ -57,6 +57,10 @@ if 'HTTP_PROXY' in os.environ:
         # the hub itself to use the HTTP_PROXY
         'https_proxy': os.environ['SINGLEUSER_HTTP_PROXY'],
         'http_proxy': os.environ['SINGLEUSER_HTTP_PROXY'],
+        # Do not use proxying to talk to localhost! This will mostly just
+        # never work, and will cause strange errors when the spawned
+        # notebooks talk to the hub or if the hub tries to talk to them
+        'no_proxy': 'localhost,127.0.0.1'
     }
 
 class VenvCreatingAuthenticator(Authenticator):
