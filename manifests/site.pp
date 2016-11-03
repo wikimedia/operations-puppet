@@ -1513,7 +1513,6 @@ node /labstore100[45]\.eqiad\.wmnet/ {
 }
 
 node /labstore200[1-2]\.codfw\.wmnet/ {
-    role(labs::nfs::backup)
     include standard
 }
 
