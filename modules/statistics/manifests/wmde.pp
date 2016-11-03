@@ -119,7 +119,7 @@ class statistics::wmde {
         require => [
             Git::Clone['wmde/scripts'],
             File["${dir}/src/config"],
-            mysql::config::client['research-wmde'],
+            Mysql::Config::Client['research-wmde'],
         ],
     }
 
