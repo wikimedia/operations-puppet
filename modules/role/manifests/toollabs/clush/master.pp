@@ -75,10 +75,4 @@ class role::toollabs::clush::master {
         mode    => '0444',
         content => ini($groups_config),
     }
-
-    # Give it complete sudo rights
-    sudo::user { 'clushuser':
-        ensure     => present,
-        privileges => 'ALL = (ALL) NOPASSWD: ALL',
-    }
 }

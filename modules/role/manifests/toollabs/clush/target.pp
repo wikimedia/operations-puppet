@@ -26,4 +26,10 @@ class role::toollabs::clush::target(
         port   => 22,
         srange => "@resolve((${master}))",
     }
+
+    # Give it complete sudo rights
+    sudo::user { 'clushuser':
+        ensure     => present,
+        privileges => ['ALL = (ALL) NOPASSWD: ALL'],
+    }
 }
