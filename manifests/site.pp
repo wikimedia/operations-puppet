@@ -288,6 +288,7 @@ node 'contint1001.wikimedia.org' {
     role(ci::master,
         ci::slave,
         ci::website,
+        zuul::server,
         backup::host)
 
     include standard
