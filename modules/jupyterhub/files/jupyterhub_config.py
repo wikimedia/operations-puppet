@@ -53,8 +53,10 @@ if 'HTTP_PROXY' in os.environ:
         # Use HTTP_PROXY for both HTTP and HTTPS proxy
         # Looks like smaller case is more compatible - curl doesn't like
         # all upper case HTTP_PROXY. lol?
-        'https_proxy': os.environ['HTTP_PROXY'],
-        'http_proxy': os.environ['HTTP_PROXY'],
+        # Also remember to not use HTTP_PROXY itself, since we don't want
+        # the hub itself to use the HTTP_PROXY
+        'https_proxy': os.environ['SINGLEUSER_HTTP_PROXY'],
+        'http_proxy': os.environ['SINGLEUSER_HTTP_PROXY'],
     }
 
 class VenvCreatingAuthenticator(Authenticator):
