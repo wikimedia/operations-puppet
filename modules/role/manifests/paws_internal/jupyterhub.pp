@@ -5,6 +5,7 @@
 class role::paws_internal::jupyterhub {
 
     include ::base::firewall
+    include ::statistics::packages
 
     class { '::jupyterhub':
         base_path   => '/srv/paws-internal',
