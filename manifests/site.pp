@@ -535,14 +535,14 @@ node 'db1040.eqiad.wmnet' {
     }
 }
 
-node /^db10(42|53|56|59|64|68|81|84|91)\.eqiad\.wmnet/ {
+node /^db10(53|56|59|64|68|81|84|91)\.eqiad\.wmnet/ {
     class { 'role::mariadb::core':
         shard => 's4',
     }
 }
 
-node 'db1019.eqiad.wmnet' {
-    role(spare::system) # to be decommed (T146265)
+node /^db10(19|42)\.eqiad\.wmnet/ {
+    role(spare::system) # to be decommed (T146265, T149793)
 }
 
 # s4 (commons) core production dbs on codfw
