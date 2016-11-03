@@ -115,7 +115,7 @@ class role::cache::text(
 
     role::cache::instances { 'text':
         fe_mem_gb         => ceiling(0.4 * $::memorysize_mb / 1024.0),
-        fe_jemalloc_conf  => 'lg_dirty_mult:8,lg_chunk:19',
+        fe_jemalloc_conf  => 'lg_dirty_mult:8,lg_chunk:16',
         fe_runtime_params => $common_runtime_params,
         be_runtime_params => $common_runtime_params,
         app_directors     => $app_directors,
