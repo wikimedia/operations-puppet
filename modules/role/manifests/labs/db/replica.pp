@@ -5,8 +5,12 @@ class role::labs::db::replica {
     }
 
     include standard
-    include mariadb::packages_wmf
-    include mariadb::service
+    class { 'mariadb::packages_wmf':
+        package => 'wmf-mariadb101',
+    }
+    class { 'mariadb::service':
+        package => 'wmf-mariadb101',
+    }
     include role::mariadb::monitor
     include base::firewall
     include role::mariadb::ferm
