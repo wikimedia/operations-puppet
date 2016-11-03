@@ -25,12 +25,12 @@ class role::puppetmaster::backend {
     ferm::service { 'ssh_puppet_merge':
         proto  => 'tcp',
         port   => '22',
-        srange => "(@resolve(${puppetmaster_frontend_ferm}) @resolve(${puppetmaster_frontend_ferm}, AAAA))"
+        srange => "(@resolve((${puppetmaster_frontend_ferm})) @resolve((${puppetmaster_frontend_ferm}), AAAA))"
     }
     ferm::service { 'puppetmaster-backend':
         proto  => 'tcp',
         port   => 8141,
-        srange => "(@resolve(${puppetmaster_frontend_ferm}) @resolve(${puppetmaster_frontend_ferm}, AAAA))"
+        srange => "(@resolve((${puppetmaster_frontend_ferm})) @resolve((${puppetmaster_frontend_ferm}), AAAA))"
     }
 
 }
