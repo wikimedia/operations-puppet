@@ -70,12 +70,17 @@ class zuul::server (
         notify    => Exec['craft public zuul conf'],
     }
 
-    file { '/usr/local/bin/zuul-gearman.py':
+    package { 'python-gear':
+        # Solely for zuul-gearman.py , the server has gear embedded.
         ensure => present,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
-        source => 'puppet:///modules/zuul/zuul-gearman.py',
+    }
+    file { '/usr/local/bin/zuul-gearman.py':
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0555',
+        source  => 'puppet:///modules/zuul/zuul-gearman.py',
+        require => Package['python-gear'],
     }
 
     file { '/usr/local/bin/zuul-test-repo':
