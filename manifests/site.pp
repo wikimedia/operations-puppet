@@ -1518,8 +1518,13 @@ node /labstore200[1-2]\.codfw\.wmnet/ {
     include standard
 }
 
-node /labstore200[3-4]\.codfw\.wmnet/ {
-    include labstore::backup_keys
+node 'labstore2003.codfw.wmnet' {
+    # role(labs::nfs::secondary_backup::tools)
+    include standard
+}
+
+node 'labstore2004.codfw.wmnet' {
+    role(labs::nfs::secondary_backup::misc)
     include standard
 }
 
