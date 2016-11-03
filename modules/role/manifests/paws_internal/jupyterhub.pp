@@ -10,4 +10,7 @@ class role::paws_internal::jupyterhub {
         base_path   => '/srv/paws-internal',
         wheels_repo => 'operations/wheels/paws-internal',
     }
+
+    # All the packages and stuff!
+    include ::statistics::compute
 }
