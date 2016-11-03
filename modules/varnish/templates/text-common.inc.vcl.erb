@@ -125,6 +125,21 @@ sub text_common_backend_response {
 		set beresp.ttl = 60 s;
 	}
 
+	<%- if @varnish_version4 -%>
+	// Re-do the same changes as evalute_cookie above, but on the bereq
+	// Cookie header and without bothering to save originals.  The reason we
+	// have to do this very late in the game here is that Varnish 4 uses
+	// bereq.http.Cookie to set the cache storage Vary:Cookie slot for a
+	// fetched object shortly after vcl_backend_response.  Under Varnish3
+	// when all this session-cookie related VCL was developed, the vary slot
+	// was being set from req.http.Cookie.
+	if (bereq.http.Cookie ~ "([sS]ession|Token)=") {
+		set bereq.http.Cookie = "Token=1";
+	} else {
+		unset bereq.http.Cookie;
+	}
+	<%- end -%>
+
 	// There are a couple different conditions here under which we set a
 	// 601s hit-for-pass object based on response conditions in vcl_backend_response:
 	// 1) Calculated TTL <= 0 + Status < 500 + No underlying cache hit:
