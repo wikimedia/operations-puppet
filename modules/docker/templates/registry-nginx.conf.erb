@@ -88,7 +88,7 @@ server {
       # Require auth for POST, PUT, DELETE, ... requests
       limit_except GET HEAD OPTIONS {
         auth_basic "docker-registry";
-        auth_basic_user_file /etc/docker/registry/htpasswd;
+        auth_basic_user_file /etc/nginx/htpasswd.registry;
       }
 
       add_header 'Docker-Distribution-Api-Version' 'registry/2.0' always;
