@@ -109,7 +109,11 @@ if AUTHENTICATOR == 'ldap':
     c.LDAPAuthenticator.bind_dn_template = \
         'uid={username},ou=people,dc=wikimedia,dc=org'
     c.LDAPAuthenticator.allowed_groups = [
-        'cn=ops,ou=groups,dc=wikimedia,dc=org',
+        # This still restricts it to only people in the researchers group
+        # in admin.yaml, since you need to have a working local user account
+        # to launch a notebook
+        'cn=nda,ou=groups,dc=wikimedia,dc=org',
+        'cn=wmf,ou=groups,dc=wikimedia,dc=org',
     ]
 
 # Security settings! Let's lock this down!
