@@ -113,6 +113,13 @@ class role::cache::text(
 
     $common_runtime_params = ['default_ttl=2592000']
 
+    if ($::role::cache::2layer::varnish_version4) {
+        $text_storage_args = $::role::cache::base::file_storage_args
+    }
+    else {
+        $text_storage_args = $::role::cache::base::persistent_storage_args
+    }
+
     role::cache::instances { 'text':
         fe_mem_gb         => ceiling(0.4 * $::memorysize_mb / 1024.0),
         fe_jemalloc_conf  => 'lg_dirty_mult:8,lg_chunk:16',
@@ -123,7 +130,7 @@ class role::cache::text(
         be_vcl_config     => $be_vcl_config,
         fe_extra_vcl      => ['text-common', 'zero', 'normalize_path', 'geoip'],
         be_extra_vcl      => ['text-common', 'normalize_path'],
-        be_storage        => $::role::cache::base::persistent_storage_args,
+        be_storage        => $text_storage_args,
         fe_cache_be_opts  => $fe_cache_be_opts,
         be_cache_be_opts  => $be_cache_be_opts,
         cluster_nodes     => hiera('cache::text::nodes'),
