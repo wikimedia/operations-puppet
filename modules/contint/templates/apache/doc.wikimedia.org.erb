@@ -1,4 +1,5 @@
 #####################################################################
+
 ### THIS FILE IS MANAGED BY PUPPET
 ### puppet:///modules/contint/apache/doc.wikimedia.org
 #####################################################################
@@ -19,6 +20,16 @@
     RewriteRule ^(.+[^/])$ https://doc.wikimedia.org/$1/ [R=301,QSA]
 
     DocumentRoot /srv/org/wikimedia/doc
+
+    <Directory />
+        <IfVersion < 2.4>
+            Order Deny,Allow
+            AllowOverride All
+        </IfVersion>
+        <IfVersion >= 2.4>
+            Require all granted
+        </IfVersion>
+    </Directory>
 
     # Favicon proxy
     RewriteRule ^/favicon\.ico$ /favicon.php [L]
