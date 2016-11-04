@@ -66,10 +66,11 @@ class memcached(
     }
 
     base::service_unit { 'memcached':
-        ensure         => present,
-        systemd        => true,
-        strict         => false,
-        service_params => {
+        ensure           => present,
+        systemd          => false,
+        systemd_override => true,
+        strict           => false,
+        service_params   => {
             enable => true
         }
     }
