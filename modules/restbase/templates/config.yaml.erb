@@ -55,6 +55,7 @@ default_project: &default_project
           host: <%= @parsoid_uri %>
         action:
           apiUriTemplate: http://api.svc.<%= mw_primary %>.wmnet/w/api.php
+          baseUriTemplate: "{{'https://{domain}/api/rest_v1'}}"
         graphoid:
           host: <%= @graphoid_uri %>
         mathoid:
