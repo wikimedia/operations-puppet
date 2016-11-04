@@ -1518,7 +1518,7 @@ node /labstore200[1-2]\.codfw\.wmnet/ {
 }
 
 node 'labstore2003.codfw.wmnet' {
-    # role(labs::nfs::secondary_backup::tools)
+    role(labs::nfs::secondary_backup::tools)
     include standard
 }
 
