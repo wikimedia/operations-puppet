@@ -42,11 +42,17 @@ class role::ci::master {
     # Templates for Jenkins plugin Email-ext.  The templates are hosted in
     # the repository integration/jenkins.git, so link to there.
     file { '/var/lib/jenkins/email-templates':
-        ensure => link,
-        target => '/srv/deployment/integration/slave-scripts/tools/email-templates',
-        mode   => '0444',
+        ensure => directory,
+        mode   => '0755',
         owner  => 'root',
         group  => 'root',
+    }
+    file { '/var/lib/jenkins/email-templates/wikimedia.template':
+        source  => 'puppet:///modules/contint/jenkins-email-template',
+        mode    => '0444',
+        owner   => 'root',
+        group   => 'root',
+        require => File['/var/lib/jenkins/email-templates'],
     }
 
     # Jenkins build records path is set to:

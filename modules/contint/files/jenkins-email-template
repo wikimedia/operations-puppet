@@ -1,0 +1,89 @@
+<STYLE>
+	BODY, TABLE, TD, TH, P {
+		font-family: Verdana, Helvetica, sans serif;
+		font-size: 11px;
+		color: black;
+	}
+	h1 {
+		color: black;
+	}
+	h2 {
+		color: black;
+	}
+	h3 {
+		color: black;
+	}
+	TD.bg1 {
+		font-size: 120%
+	}
+	TD.bg2 {
+		font-size: 110%
+	}
+	TD.bg3 {
+	}
+	TD.test_passed {
+		color: blue;
+	}
+	TD.test_failed {
+		color: red;
+	}
+	TD.console {
+		font-family: Courier New;
+	}
+</STYLE>
+<BODY>
+	<TABLE>
+		<TR>
+			<TD align="left"><B style="font-size: 250%;"> <span style="color:<%= build.result.toString() == 'SUCCESS' ? 'blue' : build.result.toString() == 'FAILURE' ? 'red' : 'yellow' %>">${build.result}:</span> ${project.name} Build #<A href="${rooturl}${build.url}">${build.number}</A> (${it.timestampString})</B></TD>
+		</TR>
+	</TABLE>
+	<BR/>
+
+	<!-- JUnit TEMPLATE -->
+
+	<% def junitResultList = it.JUnitTestResult
+	if (junitResultList.size() > 0) { %>
+	<TD><H1><A href="${rooturl}${build.url}testReport/"><B>Test Result</B></A></H1>
+	<DIV>
+		<DIV>
+			${build.testResultAction.getFailCount()} failed, ${build.testResultAction.getSkipCount()} skipped
+		</DIV>
+		<div style="width:100%; height:1em; background-color: #729FCF">
+			<div style="width:${ build.testResultAction.getFailCount() / build.testResultAction.getTotalCount() * 100 }%; height: 1em; background-color: #EF2929; float: left"></div><div style="width:${ build.testResultAction.getSkipCount() / build.testResultAction.getTotalCount() * 100 }%; height: 1em; background-color: #FCE94F; float: left"></div>
+		</div>
+		<h2>Failed Tests</h2>
+		<Table border="1" style="border-collapse: collapse; border-spacing: 2px; border-color: gray; white-space: nowrap; width: 100%;">
+			<tr>
+				<Td><b>Test Name</B></td><td style="width:5m"><B>Duration</B></td><Td style="width:5em"><b>Age</b></td>
+			</tr>
+			<% it.JUnitTestResult.each { junitResult ->
+			junitResult.getChildren().each { packageResult -> %>
+
+			<% packageResult.getFailedTests().each{ failed_test -> %>
+			<tr>
+				<Td><A href="${rooturl}${build.url}testReport${failed_test.getUrl()}">${failed_test.getFullName()}</A></td><td>${failed_test.getDurationString()}</td><Td><A href="${rooturl}${project.url}${build.number - failed_test.getAge()}/">${failed_test.getAge()}</A></td>
+			</tr>
+			<% } %>
+
+			<%      }
+			} %>
+		</table>
+		<h2>All Tests</h2>
+		<table border="1" style="border-collapse: collapse; border-spacing: 2px; border-color: gray; white-space: nowrap; width: 100%;">
+			<tr>
+				<Td><b>Package</B></td><td style="width:6em"><B>Duration</B></td><td style="width:5em"><b>Fail</b></td><td style="width:5em"><b>Skip</b></td><Td style="width:5em"><b>Total</b></td>
+			</tr>
+			<% it.JUnitTestResult.each { junitResult ->
+			junitResult.getChildren().each { packageResult -> %>
+
+			<tr>
+				<Td><A href="${rooturl}${build.url}testReport${packageResult.getUrl()}">${packageResult.getName()}</a></td><td>${packageResult.getDurationString()}</td><td>${packageResult.getFailCount()}</td><td>${packageResult.getSkipCount()}</td><td>${packageResult.getTotalCount()}</td>
+			</tr>
+
+			<%      }
+			} %>
+		</table>
+		<BR/>
+		<% } %>
+</BODY>
+
