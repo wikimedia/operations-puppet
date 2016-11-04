@@ -1,7 +1,26 @@
 # Classs: docker::baseimages
 #
 # Helper class that builds standard base images
-class docker::baseimages($docker_registry) {
+#
+# === Parameters
+#
+# [*docker_registry]
+#  The url of the docker registry where images should be uploaded
+#
+# [*proxy_address*]
+#  The address of the proxy for downloading packages. Undefined by default
+#
+# [*proxy_port*]
+#  The port of said proxy, if present. Undefined by default.
+#
+# [*distributions*]
+#  List of distributions to build. Defaults to both jessie and trusty.
+class docker::baseimages(
+    $docker_registry,
+    $proxy_address=undef,
+    $proxy_port=undef,
+    $distributions=['jessie', 'trusty'],
+) {
     # We need docker running
     Service[docker] -> Class[docker::baseimages]
 

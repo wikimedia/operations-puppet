@@ -34,6 +34,11 @@ packages:
   trusted-keys:
     - /etc/apt/trusted.gpg
 plugins:
+<%- if @proxy_address -%>
+  apt_proxy:
+    address: <%= @proxy_address %>
+    port: <%= @proxy_port %>
+<%- end -%>
   minimize_size:
     apt:
       autoclean: true
