@@ -40,6 +40,7 @@ TOOLS_PREFIX_CLASSIFIER = {
     'k8s-etcd': 'k8s-etcd',
     'logs': 'logs',
     'precise-dev': 'precise-dev',
+    'docker-builder': 'docker-builder',
     'prometheus': 'prometheus',
     '': 'all',
 }
