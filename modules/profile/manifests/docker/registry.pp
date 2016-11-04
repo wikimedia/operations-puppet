@@ -60,8 +60,8 @@ class profile::docker::registry {
     }
 
     ferm::service { 'docker_registry_https':
-        proto => 'tcp',
-        port => 'https',
+        proto  => 'tcp',
+        port   => 'https',
         srange => '$DOMAIN_NETWORKS',
     }
 }
