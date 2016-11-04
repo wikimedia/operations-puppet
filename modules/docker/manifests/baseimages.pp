@@ -1,7 +1,11 @@
 # Classs: docker::baseimages
 #
 # Helper class that builds standard base images
-class docker::baseimages($docker_registry) {
+class docker::baseimages(
+    $docker_registry,
+    $proxy_address,
+    $proxy_port,
+) {
     # We need docker running
     Service[docker] -> Class[docker::baseimages]
 
