@@ -1861,8 +1861,6 @@ host dbstore2001 {
 host dbstore2002 {
     hardware ethernet 40:a8:f0:26:8a:14;
     fixed-address dbstore2002.codfw.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host cp1099 {
