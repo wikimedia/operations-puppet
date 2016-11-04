@@ -58,4 +58,10 @@ class profile::docker::registry {
     diamond::collector::nginx{ $::fqdn:
         port => 10080,
     }
+
+    ferm::service { 'docker_registry_https':
+        proto => 'tcp',
+        port => 'https',
+        srange => '$DOMAIN_NETWORKS',
+    }
 }
