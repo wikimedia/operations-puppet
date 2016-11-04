@@ -1475,8 +1475,6 @@ host db2010 {
 host db2011 {
     hardware ethernet 78:2b:cb:66:aa:3e;
     fixed-address db2011.codfw.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host db2012 {
