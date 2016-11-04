@@ -65,12 +65,26 @@ class memcached(
         }
     }
 
-    base::service_unit { 'memcached':
-        ensure         => present,
-        systemd        => true,
-        strict         => false,
-        service_params => {
-            enable => true
+    if hiera('use_memcached_override', false) {
+        base::service_unit { 'memcached':
+            ensure           => present,
+            systemd          => false,
+            systemd_override => true,
+            strict           => false,
+            service_params   => {
+                enable => true
+            }
+        }
+    }
+    else
+    {
+        base::service_unit { 'memcached':
+            ensure         => present,
+            systemd        => false,
+            strict         => false,
+            service_params => {
+                enable => true
+            }
         }
     }
 
