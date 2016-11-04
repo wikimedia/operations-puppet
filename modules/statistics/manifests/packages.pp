@@ -7,7 +7,7 @@ class statistics::packages {
     include ::imagemagick::install
 
     ensure_packages([
-        'emacs23',
+        'emacs',
         'mc',
         'zip',
         'p7zip',
