@@ -61,6 +61,10 @@ sub cluster_fe_backend_response {
 		set beresp.http.X-Content-Range = beresp.http.Content-Range;
 	}
 
+	// NOTE: it's very important this happens *after* the generic code that
+	// translates TTL<=0 responses into hit-for-pass!  That code is
+	// currently in wikimedia-common's backend_response, which is implicitly
+	// ahead of this subroutine.
 	// Four-hit-wonder experiment: if the immediate backend does not indicate
 	// hit/4 or higher, deliver the object as normal but do not create a new
 	// cache entry of any kind.  We start caching in the frontend when an
