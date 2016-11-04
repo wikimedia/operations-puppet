@@ -2603,7 +2603,7 @@ node /^(seaborgium|serpens)\.wikimedia\.org$/ {
 
 # Silver is the new home of the wikitech web server.
 node 'silver.wikimedia.org' {
-    role(labs::openstack::nova::manager, mariadb::wikitech)
+    role(labs::openstack::nova::manager, mariadb::wikitech, labs::instance_info_dumper)
     include base::firewall
     include standard
 
