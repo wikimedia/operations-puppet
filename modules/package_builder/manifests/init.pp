@@ -26,6 +26,8 @@ class package_builder(
         'devscripts',
         'dh-make',
         'dh-autoreconf',
+        'dh-php5',
+        'dh-golang',
         'openstack-pkg-tools',
         'git-buildpackage',
         'quilt',
@@ -40,7 +42,6 @@ class package_builder(
         'maven-repo-helper',
         'gradle',
         'pkg-php-tools',
-        'dh-php5',
         'php5-dev',
         'kernel-wedge',
     ])
