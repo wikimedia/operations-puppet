@@ -75,7 +75,7 @@ class role::graphite::production {
     ferm::service { 'carbon_pickled':
         proto  => 'tcp',
         port   => '2004',
-        srange => '$INTERNAL',
+        srange => '$PRODUCTION_NETWORKS',
     }
 }
 
