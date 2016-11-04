@@ -168,7 +168,6 @@ define confluent::kafka::mirror::jmxtrans(
                 'name'          => "kafka.consumer:type=FetchRequestAndResponseMetrics,name=FetchResponseSize,clientId=${client_id},brokerHost=*,brokerPort=*",
                 'resultAlias'   => 'kafka.consumer.FetchRequestAndResponseMetrics.FetchResponseSize',
                 'attrs'         => $kafka_timing_jmx_attrs,
-                'attrs'         => $kafka_timing_jmx_attrs,
             },
 
             # Consumer Lag
