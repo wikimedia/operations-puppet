@@ -47,7 +47,7 @@ class elasticsearch::https (
         ensure => $ensure,
         proto  => 'tcp',
         port   => '9243',
-        srange => '$INTERNAL',
+        srange => '$DOMAIN_NETWORKS',
     }
 
 }
