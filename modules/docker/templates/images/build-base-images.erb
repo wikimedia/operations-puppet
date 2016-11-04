@@ -1,6 +1,7 @@
 #!/bin/bash
 # This script builds all the base images we need and pushes
 # them to the appropriate docker registry
+set -e
 
 # Build debian jessie image!
 /usr/bin/bootstrap-vz /srv/images/base/jessie.yaml
