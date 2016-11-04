@@ -14,7 +14,8 @@ sleep 30
 rm -f /srv/sd*/varnish*
 # Wait for the FS to catch up and realize there's enough free space for
 # fallocate: T149881
-sleep 5
+sync
+sleep 10
 /usr/sbin/service varnish start
 
 sleep 10
