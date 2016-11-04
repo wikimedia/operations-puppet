@@ -25,6 +25,7 @@ class role::maps::master(
     $osmimporter_pass = hiera('maps::postgresql_osmimporter_pass')
     $osmupdater_pass = hiera('maps::postgresql_osmupdater_pass')
     $replication_pass = hiera('maps::postgresql_replication_pass')
+    $postgres_slaves = hiera('maps::postgres_slaves', undef)
 
     # Users
     postgresql::user { 'kartotherian':
@@ -39,6 +40,24 @@ class role::maps::master(
         database => 'gis',
         require  => Postgresql::Spatialdb['gis'],
     }
+
+    role::maps::tilerator_user { 'localhost':
+        ip_address            => '127.0.0.1',
+        password              => $tilerator_pass,
+        postgres_tile_storage => $postgres_tile_storage,
+    }
+
+    if $postgres_slaves {
+        create_resources(
+            role::maps::tilerator_user,
+            $postgres_slaves,
+            {
+                password              => $tilerator_pass,
+                postgres_tile_storage => $postgres_tile_storage,
+            }
+        )
+    }
+
     postgresql::user { 'tileratorui':
         user     => 'tileratorui',
         password => $tileratorui_pass,
@@ -103,7 +122,6 @@ class role::maps::master(
         source => 'puppet:///modules/role/maps/osm-initial-import',
     }
 
-    $postgres_slaves = hiera('maps::postgres_slaves', undef)
     if $postgres_slaves {
         $postgres_slaves_defaults = {
             replication_pass => $replication_pass,
