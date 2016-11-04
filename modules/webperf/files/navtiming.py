@@ -206,9 +206,10 @@ def is_sane(value):
 @handles('SaveTiming')
 def handle_save_timing(meta):
     event = meta['event']
-    duration = event.get('duration')
-    version = event.get('mediaWikiVersion')
-    if is_sane(duration):
+    duration = event.get('saveTiming')
+    if duration is None:
+        duration = event.get('duration')
+    if duration and is_sane(duration):
         dispatch_stat('mw.performance.save', duration)
         if version:
             dispatch_stat('mw.performance.save_by_version',
