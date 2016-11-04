@@ -27,6 +27,7 @@ class role::mediawiki::maintenance {
     include mediawiki::maintenance::purge_securepoll
     include mediawiki::maintenance::jobqueue_stats
     include mediawiki::maintenance::cirrussearch
+    include mediawiki::maintenance::generatecaptcha
 
     # backup home directories to bacula, people work on these
     include backup::host
