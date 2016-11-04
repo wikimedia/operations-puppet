@@ -36,7 +36,7 @@ class role::labs::instance_info_dumper {
     }
 
     cron { 'dump-instances':
-        ensure  => present,
+        ensure  => absent,
         user    => 'root',
         minute  => '*/15',
         command => '/usr/local/sbin/instance-info-dumper',
