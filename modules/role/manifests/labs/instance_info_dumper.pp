@@ -19,7 +19,7 @@ class role::labs::instance_info_dumper {
         'credentials' => {
             'username' => 'novaadmin',
             'api_key'  => $novaconfig['ldap_user_pass'],
-            'auth_url' => "http://${novaconfig['controller_hostname']} %>:35357/v2.0",
+            'auth_url' => "http://${novaconfig['controller_hostname']}:35357/v2.0",
         },
     'enc_host'    => hiera('labs_puppet_master'),
     # FIXME: This is terrible, since this will get wiped at every deploy

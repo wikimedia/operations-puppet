@@ -1,4 +1,4 @@
-#!/bin/python
+#!/usr/bin/python
 """
 Dump info about all instances in all projects to a JSON file
 """
