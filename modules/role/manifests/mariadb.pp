@@ -233,6 +233,7 @@ class role::mariadb::misc(
         config    => 'mariadb/misc.my.cnf.erb',
         datadir   => '/srv/sqldata',
         tmpdir    => '/srv/tmp',
+        ssl       => 'puppet-cert',
         read_only => $read_only,
     }
 
