@@ -32,4 +32,23 @@ class role::labs::ores::worker {
         },
         priority => '99',
     }
+
+    if !defined(File['/srv/log']) {
+        file { '/srv/log':
+            ensure => 'directory',
+            mode   => '0755',
+            owner  => 'root',
+            group  => 'root',
+        }
+    }
+
+    if !defined(File['/srv/log/ores']) {
+        file { '/srv/log/ores':
+            ensure => 'directory',
+            mode   => '0755',
+            owner  => 'www-data',
+            group  => 'www-data',
+        }
+    }
+
 }
