@@ -56,7 +56,7 @@ class role::cache::base(
     }
 
     # XXX: temporary, we need this to mitigate T145661
-    if $::realm == 'production' {
+    if $::realm == 'production' and $varnish_version4 {
         $hnodes = hiera("cache::${cache_cluster}::nodes")
         $all_nodes = array_concat($hnodes['eqiad'], $hnodes['esams'], $hnodes['ulsfo'], $hnodes['codfw'])
         $times = cron_splay($all_nodes, 'weekly', "${cache_cluster}-backend-restarts")
