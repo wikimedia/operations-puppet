@@ -125,6 +125,10 @@ sub cluster_be_backend_fetch {
 }
 <% end -%>
 
+sub cluster_be_backend_response_early {
+	// XXX hack bereq vary here
+}
+
 sub cluster_be_backend_response {
 	// Make sure Set-Cookie responses are not cacheable, and log violations
 	// FIXME: exceptions are ugly; maybe get rid of the whole thing?
