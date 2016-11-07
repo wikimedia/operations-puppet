@@ -389,7 +389,7 @@ groups:
   mw-log-readers:
     gid: 760
     description: users who can login on fluorine and read mediawiki logs
-    members: [tjones, addshore]
+    members: [tjones, addshore, matanya]
 
   apertium-admins:
     description: Group of apertium admins
@@ -2180,3 +2180,11 @@ users:
     ssh_keys:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDKJFKzMQRJcDPrtRBIi7/b8hWbngR59UA3VCHZXbWVaNCKe+mOz9gXUvmAmeSr29p5vnmAP7tafnWYktvYbqGV02e1x5P09fvAWOvOaQob/A7/5shTGwtVxsip3/Ky2viP5Kycb8THbRHOtOt0DmeUVrWlhwie5M9AeKSWmTVJOivoME8g//nIlq7cXTCYyv+NHFSDIPKDmvlLbVFFdBbhYdDWlT6DQvTPFjTAyD23pltRBDo2WwufnSZB1sQ7spg+6+SN7e2fIcRiGXv8ar8fjwiolLtNz2I5nsLoBsb6q0ZHSwOdta4EhnkmswMrjNAgo6ayImKzXMeG35dvHvZh ZareenFarooqui@ZAREENs-MacBook.local
     uid: 15813
+  matanya:
+    ensure: present
+    gid: 500
+    name: matanya
+    realname: Matanya Moses
+    ssh_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDaREf06EZa5CoRLc7sUNqZqDJVIKIxaxpsMsiG98QixtEEGQLw6W0CCwRwls+NVunzERumXJsKaAPBX5ptn5wH4ZXMfrD1y9CWqQFYkImKI4BJjCCef7xo+PwdHGf694WD+MBzuNXWzhTUUAnFKYDTvs5WEqdeXYBH4cFNVPQzG5noy7+E6g/7jBXZFVhT91OUofMvEAsOL5eIzT1nmYZex0vOPsRN8+gH0nGc0XaQ8nRWGu+n4gAHnecCJUOAILvNcFC/JF0QzmD/58vbkiJVhhAkXBVTNzxsmWCk0q6r2cIoAjfiMbS0u4tNQezz2DcJQLO5HrHwmi5Q/SbvUKtT matanya@arch
+    uid: 2497
