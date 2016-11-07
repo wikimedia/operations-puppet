@@ -6,6 +6,7 @@ define labstore::device_backup (
     $localdev,
     $weekday,
     $hour=0,
+    $minute=0,
 ) {
 
     include labstore::bdsync
@@ -30,5 +31,6 @@ define labstore::device_backup (
         command => "${block_sync} ${remote_ip} ${remote_vg} ${remote_lv} ${remote_snapshot} ${localdev}",
         weekday => $day[$weekday],
         hour    => $hour,
+        minute  => $minute,
     }
 }
