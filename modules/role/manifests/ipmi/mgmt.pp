@@ -5,6 +5,6 @@ class role::ipmi::mgmt {
         description => 'IPMI Management'
     }
 
-    include ::ipmi
+    include ::ipmi::mgmt
 
 }
