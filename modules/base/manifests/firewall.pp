@@ -24,6 +24,25 @@ class base::firewall($ensure = 'present') {
         },
     }
 
+    # Connection tracking parameters cannot be set via the default /etc/sysctl.d
+    # hierarchy; it needs to be ensured that these are set after ferm is started
+    # (which loads the connection tracking kernel modules which configure the
+    # respective sysctl options)
+    file { '/lib/systemd/system/ferm-sysctl.service':
+        ensure => $ensure,
+        mode   => '0644',
+        owner  => 'root',
+        group  => 'root',
+        source => 'puppet:///modules/base/firewall/ferm-sysctl.service',
+    }
+
+    service { 'ferm-sysctl':
+        ensure   => running,
+        provider => 'systemd',
+        enable   => true,
+        require  => File['/lib/systemd/system/ferm-sysctl.service'],
+    }
+
     # The sysctl value net.netfilter.nf_conntrack_buckets is read-only. It is configured
     # via a modprobe parameter, bump it manually for running systems
     exec { 'bump nf_conntrack hash table size':

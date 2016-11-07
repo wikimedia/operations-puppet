@@ -1,0 +1,13 @@
+[Unit]
+Description=Apply connection tracking sysctl settings for ferm
+After=ferm.service
+ConditionPathIsReadWrite=/proc/sys/
+ConditionPathExists=/etc/ferm/conntrack-sysctl.conf
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/sbin/sysctl -q --load=/etc/ferm/conntrack-sysctl.conf
+
+[Install]
+WantedBy=multi-user.target
