@@ -33,7 +33,7 @@
     smtpServer = <%= @mail_smarthost[0] %>
 [container]
     user = gerrit2
-    javaHome = /usr/lib/jvm/java-7-openjdk-amd64/jre
+    javaHome = <%= @java_home %>
     javaOptions = <% @java_options.each do |jvm_opt| %><%= jvm_opt %> <% end %>
     heapLimit = <%= @heap_limit %>
     slave = <%= @slave %>

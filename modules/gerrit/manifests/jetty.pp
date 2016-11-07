@@ -8,6 +8,7 @@ class gerrit::jetty(
     $ssh_host_key = undef,
     $heap_limit = '28g',
     $slave = false,
+    $java_home = '/usr/lib/jvm/java-7-openjdk-amd64/jre',
     ) {
 
     include nrpe
@@ -40,7 +41,12 @@ class gerrit::jetty(
         '-Dlog4j.configuration=file:///var/lib/gerrit2/review_site/etc/log4j.properties',
     ]
 
-    require_package(['openjdk-7-jdk', 'gerrit', 'libmysql-java'])
+    require_package([
+        'openjdk-7-jdk',
+        'openjdk-8-jdk',
+        'gerrit',
+        'libmysql-java'
+    ])
 
     file { '/srv/gerrit':
         ensure => directory,
