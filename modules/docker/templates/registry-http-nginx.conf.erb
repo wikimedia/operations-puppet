@@ -22,7 +22,7 @@ server {
     # IP whitelisting
     satisfy any;
     <%- @http_allowed_hosts.each do |host| -%>
-    allow <%= scope.function_ipresolve(host) %>;
+    allow <%= scope.function_ipresolve([host]) %>;
     <%- end -%>
     deny all;
 
