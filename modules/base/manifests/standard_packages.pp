@@ -52,7 +52,7 @@ class base::standard_packages {
     require_package('git')
 
     # for hardware monitoring via IPMI (T125205)
-    if os_version('debian >= jessie') {
+    if os_version('ubuntu >= trusty || debian >= jessie') {
         require_package('freeipmi', 'libipc-run-perl')
     }
 
