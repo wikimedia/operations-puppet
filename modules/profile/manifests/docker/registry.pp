@@ -10,6 +10,10 @@ class profile::docker::registry {
         $network::constants::special_hosts[$::realm]['deployment_hosts'])
     $config = hiera('profile::docker::registry::config', {})
 
+    # cache misc nodes are allowed to connect via HTTP, if defined
+    $hnodes = hiera('cache::misc::nodes', {})
+    $http_allowed_hosts = pick($hnodes[$::site], [])
+
     # Storage configuration
     $storage_backend = hiera('profile::docker::registry::storage_backend', 'filebackend')
 
@@ -46,13 +50,14 @@ class profile::docker::registry {
     # Nginx frontend
     class { '::sslcert::dhparam': }
 
-
     class { '::docker::registry::web':
         docker_username      => $username,
         docker_password_hash => $hash,
         allow_push_from      => $image_builders,
         ssl_settings         => ssl_ciphersuite('nginx', 'mid'),
         use_puppet_certs     => true,
+        http_endpoint        => true,
+        http_allowed_hosts   => $http_allowed_hosts,
     }
 
     diamond::collector::nginx{ $::fqdn:
@@ -62,6 +67,12 @@ class profile::docker::registry {
     ferm::service { 'docker_registry_https':
         proto  => 'tcp',
         port   => 'https',
+        srange => '$DOMAIN_NETWORKS',
+    }
+
+    ferm::service { 'docker_registry_http_81':
+        proto  => 'tcp',
+        port   => '81',
         srange => '$DOMAIN_NETWORKS',
     }
 }
