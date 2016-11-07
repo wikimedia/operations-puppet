@@ -17,7 +17,6 @@ class statistics::packages {
         'tofrodos',
         'git-review',
         'make', # halfak wants make to manage dependencies
-        'zpubsub', # For checking up on eventlogging
         'libwww-perl', # For wikistats stuff
         'php5-cli',
         'php5-curl',
