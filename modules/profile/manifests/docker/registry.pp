@@ -75,4 +75,19 @@ class profile::docker::registry {
         port   => '81',
         srange => '$DOMAIN_NETWORKS',
     }
+
+    # Monitoring
+    # HTTP should return 403 forbidden
+    monitoring::service { 'check_docker_registry_http':
+        description   => 'Docker registry HTTP interface',
+        check_command => 'check_http_port_status!81!403',
+    }
+    # This will test both nginx and the docker registry application
+    monitoring::service { 'check_docker_registry_https':
+        description   => 'Docker registry HTTP interface',
+        check_command => "check_https_url_for_string!${::fqdn}!/v2/wikimedia-jessie/manifests/latest!schemaVersion",
+    }
+
+    nrpe::monitor_systemd_unit_state{ 'docker-registry': }
+
 }
