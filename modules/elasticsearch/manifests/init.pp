@@ -173,6 +173,15 @@ class elasticsearch(
         mode    => '0444',
         require => Package['elasticsearch'],
     }
+    # elasticsearch refuses to start without the "scripts" directory, even if
+    # do not actually use any scripts.
+    file { '/etc/elasticsearch/scripts':
+        ensure  => directory,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        require => Package['elasticsearch'],
+    }
     file { '/etc/default/elasticsearch':
         ensure  => file,
         owner   => 'root',
