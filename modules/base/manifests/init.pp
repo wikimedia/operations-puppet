@@ -38,6 +38,7 @@ class base {
     include nrpe
     include base::kernel
     include base::debdeploy
+    include ipmi::monitor
 
     if os_version('debian >= jessie') {
         include base::initramfs
