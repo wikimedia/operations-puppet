@@ -24,11 +24,14 @@ sub evaluate_cookie {
 	// object in a single Vary slot per object for those responses that
 	// should Vary:Cookie.
 	if (req.restarts == 0) {
-		set req.http.X-Orig-Cookie = req.http.Cookie;
-		if (req.http.Cookie ~ "([sS]ession|Token)=") {
-			set req.http.Cookie = "Token=1";
-		} else {
-			unset req.http.Cookie;
+		unset req.http.X-Orig-Cookie;
+		if (req.http.Cookie) {
+			set req.http.X-Orig-Cookie = req.http.Cookie;
+			if (req.http.Cookie ~ "([sS]ession|Token)=") {
+				set req.http.Cookie = "Token=1";
+			} else {
+				unset req.http.Cookie;
+			}
 		}
 	}
 }
