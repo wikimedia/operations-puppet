@@ -55,9 +55,6 @@ define confluent::kafka::mirror::jmxtrans(
     $log_level      = 'info',
 )
 {
-    # NOTE: $title should match title of confluent::kafka::mirror::instance
-    # instance (AKA $mirror_name).
-    $client_id = "kafka-mirror-${title}"
     $jmx = "${::fqdn}:${jmx_port}"
 
     # query for metrics from Kafka's JVM
@@ -77,6 +74,7 @@ define confluent::kafka::mirror::jmxtrans(
         'OneMinuteRate'     => { 'slope' => 'both',     'bucketType' => 'g' },
         'MeanRate'          => { 'slope' => 'both',     'bucketType' => 'g' },
     }
+
     $kafka_timing_jmx_attrs = {
         '50thPercentile'     => { 'slope' => 'both',     'bucketType' => 'g' },
         '75ththPercentile'   => { 'slope' => 'both',     'bucketType' => 'g' },
@@ -90,6 +88,12 @@ define confluent::kafka::mirror::jmxtrans(
         'Min'                => { 'slope' => 'both',     'bucketType' => 'g' },
         'StdDev'             => { 'slope' => 'both',     'bucketType' => 'g' },
     }
+
+    $kafka_rate_and_timing_jmx_attrs = merge(
+        $kafka_rate_jmx_attrs,
+        $kafka_timing_jmx_attrs
+    )
+
     $kafka_value_jmx_attrs = {
         'Value'             => { 'slope' => 'both',     'bucketType' => 'g' },
     }
@@ -99,171 +103,218 @@ define confluent::kafka::mirror::jmxtrans(
         # default set of Kafka JMX MBean objects to query.
         undef   => [
             #
-            # DataChannel Metrics
-            #
-            {
-                'name'          => 'kafka.tools:type=DataChannel,name=MirrorMaker-DataChannel-Size',
-                'resultAlias'   => 'kafka.tools.MirrorMaker.DataChannel.Size',
-                'attrs'         => $kafka_timing_jmx_attrs,
-            },
-            {
-                'name'          => 'kafka.tools:type=DataChannel,name=MirrorMaker-DataChannel-WaitOnPut',
-                'resultAlias'   => 'kafka.tools.MirrorMaker.DataChannel.WaitOnPut',
-                'attrs'         => $kafka_rate_jmx_attrs,
-            },
-            {
-                'name'          => 'kafka.tools:type=DataChannel,name=MirrorMaker-DataChannel-WaitOnTake',
-                'resultAlias'   => 'kafka.tools.MirrorMaker.DataChannel.WaitOnTake',
-                'attrs'         => $kafka_rate_jmx_attrs,
-            },
-
-            #
             # Consumer Metrics
             #
+            # TODO: These will likely change if/when we switch to using new java consumer
+            # client in MirrorMaker.  (Either when we upgrade, or use --new.consumer flag).
+            #
 
-            # ConsumerFetcheManager (MaxLag, MinFetchRate)
+            # ConsumerFetcherManager (MaxLag, MinFetchRate)
             {
-                'name'          => "kafka.consumer:type=ConsumerFetcherManager,name=*,clientId=${client_id}",
+                'name'          => 'kafka.consumer:type=ConsumerFetcherManager,name=*,clientId=*',
                 'resultAlias'   => 'kafka.consumer.ConsumerFetcherManager',
-                'typeNames'     => ['name'],
+                'typeNames'     => ['name', 'clientId'],
                 'attrs'         => $kafka_value_jmx_attrs,
             },
 
             # All Topic Consumer Metrics
             {
-                'name'          => "kafka.consumer:type=ConsumerTopicMetrics,name=*,clientId=${client_id}",
+                'name'          => 'kafka.consumer:type=ConsumerTopicMetrics,name=*,clientId=*',
                 'resultAlias'   => 'kafka.consumer.ConsumerTopicMetrics-AllTopics',
-                'typeNames'     => ['name'],
+                'typeNames'     => ['name', 'clientId'],
                 'attrs'         => $kafka_rate_jmx_attrs,
             },
-            # Per Topic Consumer Metrics
+            # Per Topic Consumer Metrics: BytesPerSec, MesagesPerSec
             {
-                'name'          => "kafka.consumer:type=ConsumerTopicMetrics,name=BytesPerSec,clientId=${client_id},topic=*",
-                'resultAlias'   => 'kafka.consumer.ConsumerTopicMetrics.BytesPerSec',
-                'typeNames'     => ['topic'],
+                'name'          => 'kafka.consumer:type=ConsumerTopicMetrics,name=*,clientId=*,topic=*',
+                'resultAlias'   => 'kafka.consumer.ConsumerTopicMetrics',
+                'typeNames'     => ['name', 'topic', 'clientId'],
                 'attrs'         => $kafka_rate_jmx_attrs,
             },
+            # Overall Consumer Fetch Request and Response Metrics:
+            # FetchRequestRateAndTimeMs, FetchRequestThrottleRateAndTimeMs, FetchResponseSize
             {
-                'name'          => "kafka.consumer:type=ConsumerTopicMetrics,name=MessagesPerSec,clientId=${client_id},topic=*",
-                'resultAlias'   => 'kafka.consumer.ConsumerTopicMetrics.MessagesPerSec',
-                'typeNames'     => ['topic'],
-                'attrs'         => $kafka_rate_jmx_attrs,
+                'name'          => 'kafka.consumer:type=FetchRequestAndResponseMetrics,name=FetchRequestRateAndTimeMs,clientId=*',
+                'resultAlias'   => 'kafka.consumer.FetchRequestAndResponseMetrics.FetchRequestRateAndTimeMs',
+                'typeNames'     => ['clientId'],
+                'attrs'         => $kafka_rate_and_timing_jmx_attrs,
+            },
+            {
+                'name'          => 'kafka.consumer:type=FetchRequestAndResponseMetrics,name=FetchRequestThrottleRateAndTimeMs,clientId=*',
+                'resultAlias'   => 'kafka.consumer.FetchRequestAndResponseMetrics.FetchRequestThrottleRateAndTimeMs',
+                'typeNames'     => ['clientId'],
+                'attrs'         => $kafka_rate_and_timing_jmx_attrs,
+            },
+            {
+                'name'          => 'kafka.consumer:type=FetchRequestAndResponseMetrics,name=FetchResponseSize,clientId=*',
+                'resultAlias'   => 'kafka.consumer.FetchRequestAndResponseMetrics.FetchResponseSize',
+                'typeNames'     => ['clientId'],
+                'attrs'         => $kafka_timing_jmx_attrs,
             },
 
-            # Overall Consumer Fetch Request and Response Metrics
+            # Per Broker Fetch Request and Response Metrics:
+            # FetchRequestRateAndTimeMs, FetchRequestThrottleRateAndTimeMs, FetchResponseSize
             {
-                'name'          => "kafka.consumer:type=FetchRequestAndResponseMetrics,name=*,clientId=${client_id}",
-                'resultAlias'   => 'kafka.consumer.FetchRequestAndResponseMetrics',
-                'typeNames'     => ['name'],
-                'attrs'         => $kafka_timing_jmx_attrs,
-            },
-            # Per Broker Fetch Request and Response Metrics
-            {
-                'name'          => "kafka.consumer:type=FetchRequestAndResponseMetrics,name=FetchRequestRateAndTimeMs,clientId=${client_id},brokerHost=*,brokerPort=*",
+                'name'          => 'kafka.consumer:type=FetchRequestAndResponseMetrics,name=FetchRequestRateAndTimeMs,clientId=*,brokerHost=*,brokerPort=*',
                 'resultAlias'   => 'kafka.consumer.FetchRequestAndResponseMetrics.FetchRequestRateAndTimeMs',
-                'typeNames'     => ['brokerHost', 'brokerPort'],
-                'attrs'         => $kafka_timing_jmx_attrs,
+                'typeNames'     => ['brokerHost', 'brokerPort', 'clientId'],
+                'attrs'         => $kafka_rate_and_timing_jmx_attrs,
             },
             {
-                'name'          => "kafka.consumer:type=FetchRequestAndResponseMetrics,name=FetchResponseSize,clientId=${client_id},brokerHost=*,brokerPort=*",
+                'name'          => 'kafka.consumer:type=FetchRequestAndResponseMetrics,name=FetchRequestThrottleRateAndTimeMs,clientId=*,brokerHost=*,brokerPort=*',
+                'resultAlias'   => 'kafka.consumer.FetchRequestAndResponseMetrics.FetchRequestThrottleRateAndTimeMs',
+                'typeNames'     => ['brokerHost', 'brokerPort', 'clientId'],
+                'attrs'         => $kafka_rate_and_timing_jmx_attrs,
+            },
+            {
+                'name'          => 'kafka.consumer:type=FetchRequestAndResponseMetrics,name=FetchResponseSize,clientId=*,brokerHost=*,brokerPort=*',
                 'resultAlias'   => 'kafka.consumer.FetchRequestAndResponseMetrics.FetchResponseSize',
+                'typeNames'     => ['brokerHost', 'brokerPort', 'clientId'],
                 'attrs'         => $kafka_timing_jmx_attrs,
             },
 
             # Consumer Lag
             {
-                'name'          => "kafka.server:type=FetcherLagMetrics,name=ConsumerLag,clientId=${client_id},topic=*,partition=*",
+                'name'          => 'kafka.server:type=FetcherLagMetrics,name=ConsumerLag,clientId=*,topic=*,partition=*',
                 'resultAlias'   => 'kafka.server.FetcherLagMetrics.ConsumerLag',
-                'typeNames'     => ['topic', 'partition'],
+                'typeNames'     => ['topic', 'partition', 'clientId'],
                 'attrs'         => $kafka_value_jmx_attrs,
             },
-            # Fetcher Stats
+            # Fetcher Stats: BytesPerSec, RequestsPerSec
             {
-                'name'          => "kafka.server:type=FetcherStats,name=BytesPerSec,clientId=${client_id},brokerHost=*,brokerPort=*",
-                'resultAlias'   => 'kafka.server.FetcherStats.BytesPerSec',
-                'typeNames'     => ['brokerHost', 'brokerPort'],
-                'attrs'         => $kafka_rate_jmx_attrs,
-            },
-            {
-                'name'          => "kafka.server:type=FetcherStats,name=RequestsPerSec,clientId=${client_id},brokerHost=*,brokerPort=*",
-                'resultAlias'   => 'kafka.server.FetcherStats.RequestsPerSec',
-                'typeNames'     => ['brokerHost', 'brokerPort'],
+                'name'          => 'kafka.server:type=FetcherStats,name=*,clientId=*,brokerHost=*,brokerPort=*',
+                'resultAlias'   => 'kafka.server.FetcherStats',
+                'typeNames'     => ['name', 'brokerHost', 'brokerPort', 'clientId'],
                 'attrs'         => $kafka_rate_jmx_attrs,
             },
 
-            # Commit Metrics
+            # Commit Metrics:
+            # KafkaCommitsPerSec (new consumer), ZooKeeperCommitsPerSec (old consumer)
             {
-                'name'          => "kafka.consumer:type=ZookeeperConsumerConnector,name=KafkaCommitsPerSec,clientId=${client_id}",
+                'name'          => 'kafka.consumer:type=ZookeeperConsumerConnector,name=KafkaCommitsPerSec,clientId=*',
                 'resultAlias'   => 'kafka.consumer.ZookeeperConsumerConnector.KafkaCommitsPerSec',
+                'typeNames'     => ['clientId'],
                 'attrs'         => $kafka_rate_jmx_attrs,
             },
             {
-                'name'          => "kafka.consumer:type=ZookeeperConsumerConnector,name=ZooKeeperCommitsPerSec,clientId=${client_id}",
+                'name'          => 'kafka.consumer:type=ZookeeperConsumerConnector,name=ZooKeeperCommitsPerSec,clientId=*',
                 'resultAlias'   => 'kafka.consumer.ZookeeperConsumerConnector.ZooKeeperCommitsPerSec',
+                'typeNames'     => ['clientId'],
                 'attrs'         => $kafka_rate_jmx_attrs,
             },
-
+            # Owned Partition Count (global, not per topic)
+            {
+                'name'          => 'kafka.consumer:type=ZookeeperConsumerConnector,name=OwnedPartitionsCount,clientId=*,groupId=*',
+                'resultAlias'   => 'kafka.consumer.ZookeeperConsumerConnector.OwnedPartitionsCount',
+                'typeNames'     => ['groupId', 'clientId'],
+                'attrs'         => $kafka_value_jmx_attrs,
+            },
+            # Rebalance Stats
+            {
+                'name'          => 'kafka.consumer:type=ZookeeperConsumerConnector,name=RebalanceRateAndTime,clientId=*',
+                'resultAlias'   => 'kafka.consumer.ZookeeperConsumerConnector.RebalanceRateAndTime',
+                'typeNames'     => ['clientId'],
+                'attrs'         => $kafka_rate_and_timing_jmx_attrs,
+            },
 
             #
-            # Producer Topic Metrics
+            # Producer Metrics
             #
-
-            # Producer client.ids are suffixed with the producer number.
-            # This means that we can't clean up the resultAlias well for
-            # producer metrics.
 
             # All Topic Producer Metrics
             {
-                'name'          => 'kafka.producer:type=ProducerTopicMetrics,name=BytesPerSec,clientId=*',
-                'resultAlias'   => 'kafka.producer.ProducerTopicMetrics-AllTopics.BytesPerSec',
-                'typeNames'     => ['clientId'],
-                'attrs'         => $kafka_rate_jmx_attrs,
-            },
-            {
-                'name'          => 'kafka.producer:type=ProducerTopicMetrics,name=DroppedMessagesPerSec,clientId=*',
-                'resultAlias'   => 'kafka.producer.ProducerTopicMetrics-AllTopics.DroppedMessagesPerSec',
-                'typeNames'     => ['clientId'],
-                'attrs'         => $kafka_rate_jmx_attrs,
-            },
-            {
-                'name'          => 'kafka.producer:type=ProducerTopicMetrics,name=MessagesPerSec,clientId=*',
-                'resultAlias'   => 'kafka.producer.ProducerTopicMetrics-AllTopics.MessagesPerSec',
-                'typeNames'     => ['clientId'],
-                'attrs'         => $kafka_rate_jmx_attrs,
-            },
-            # Per Topic Producer Metrics
-            {
-                'name'          => 'kafka.producer:type=ProducerTopicMetrics,name=BytesPerSec,clientId=*',
-                'resultAlias'   => 'kafka.producer.ProducerTopicMetrics.BytesPerSec',
-                'typeNames'     => ['clientId', 'topic'],
-                'attrs'         => $kafka_rate_jmx_attrs,
-            },
-            {
-                'name'          => 'kafka.producer:type=ProducerTopicMetrics,name=DroppedMessagesPerSec,clientId=*,topic=*',
-                'resultAlias'   => 'kafka.producer.ProducerTopicMetrics.DroppedMessagesPerSec',
-                'typeNames'     => ['clientId', 'topic'],
-                'attrs'         => $kafka_rate_jmx_attrs,
-            },
-            {
-                'name'          => 'kafka.producer:type=ProducerTopicMetrics,name=MessagesPerSec,clientId=*,topic=*',
-                'resultAlias'   => 'kafka.producer.ProducerTopicMetrics.MessagesPerSec',
-                'typeNames'     => ['clientId', 'topic'],
-                'attrs'         => $kafka_rate_jmx_attrs,
+                'name'          => 'kafka.producer:type=producer-metrics,client-id=*',
+                'resultAlias'   => 'kafka.producer.producer-metrics',
+                'typeNames'     => ['client-id'],
+                'attrs'         => {
+                    'metadata-age'              => { 'slope' => 'both', 'bucketType' => 'g' },
+
+                    'batch-size-avg'            => { 'slope' => 'both', 'bucketType' => 'g' },
+                    'batch-size-max'            => { 'slope' => 'both', 'bucketType' => 'g' },
+
+                    'buffer-available-bytes'    => { 'slope' => 'both', 'bucketType' => 'g' },
+                    'buffer-exhausted-rate'     => { 'slope' => 'both', 'bucketType' => 'g' },
+                    'buffer-total-bytes'        => { 'slope' => 'both', 'bucketType' => 'g' },
+                    'bufferpool-wait-ratio'     => { 'slope' => 'both', 'bucketType' => 'g' },
+
+                    'compression-rate-avg'      => { 'slope' => 'both', 'bucketType' => 'g' },
+
+                    'connection-close-rate'     => { 'slope' => 'both', 'bucketType' => 'g' },
+                    'connection-count'          => { 'slope' => 'both', 'bucketType' => 'g' },
+                    'connection-creation-rate'  => { 'slope' => 'both', 'bucketType' => 'g' },
+
+                    'incoming-byte-rate'        => { 'slope' => 'both', 'bucketType' => 'g' },
+                    'outgoing-byte-rate'        => { 'slope' => 'both', 'bucketType' => 'g' },
+
+                    'io-ratio'                  => { 'slope' => 'both', 'bucketType' => 'g' },
+                    'io-time-ns-avg'            => { 'slope' => 'both', 'bucketType' => 'g' },
+                    'io-wait-ratio'             => { 'slope' => 'both', 'bucketType' => 'g' },
+                    'io-wait-time-ns-avg'       => { 'slope' => 'both', 'bucketType' => 'g' },
+                    'network-io-rate'           => { 'slope' => 'both', 'bucketType' => 'g' },
+
+                    'produce-throttle-time-avg' => { 'slope' => 'both', 'bucketType' => 'g' },
+                    'produce-throttle-time-max' => { 'slope' => 'both', 'bucketType' => 'g' },
+
+                    'record-error-rate'         => { 'slope' => 'both', 'bucketType' => 'g' },
+                    'record-queue-time-avg'     => { 'slope' => 'both', 'bucketType' => 'g' },
+                    'record-queue-time-max'     => { 'slope' => 'both', 'bucketType' => 'g' },
+                    'record-retry-rate'         => { 'slope' => 'both', 'bucketType' => 'g' },
+                    'record-send-rate'          => { 'slope' => 'both', 'bucketType' => 'g' },
+                    'recrod-size-avg'           => { 'slope' => 'both', 'bucketType' => 'g' },
+                    'record-size-max'           => { 'slope' => 'both', 'bucketType' => 'g' },
+                    'records-per-request-avg'   => { 'slope' => 'both', 'bucketType' => 'g' },
+
+                    'request-latency-avg'       => { 'slope' => 'both', 'bucketType' => 'g' },
+                    'request-latency-max'       => { 'slope' => 'both', 'bucketType' => 'g' },
+                    'request-rate'              => { 'slope' => 'both', 'bucketType' => 'g' },
+                    'request-size-avg'          => { 'slope' => 'both', 'bucketType' => 'g' },
+                    'request-size-max'          => { 'slope' => 'both', 'bucketType' => 'g' },
+                    'requests-in-flight'        => { 'slope' => 'both', 'bucketType' => 'g' },
+
+                    'response-rate'             => { 'slope' => 'both', 'bucketType' => 'g' },
+
+                    'select-rate'               => { 'slope' => 'both', 'bucketType' => 'g' },
+                    'waiting-threads'           => { 'slope' => 'both', 'bucketType' => 'g' },
+                }
             },
 
-            # Async Producer Metrics
+            # Per Topic Producer Metrics
             {
-                'name'          => 'kafka.producer.async:type=ProducerSendThread,name=ProducerQueueSize,clientId=*',
-                'resultAlias'   => 'kafka.producer.ProducerSendThread.ProducerQueueSize',
-                'typeNames'     => ['clientId'],
-                'attrs'         => $kafka_value_jmx_attrs,
+                'name'          => 'kafka.producer:type=producer-topic-metrics,client-id=*,topic=*',
+                'resultAlias'   => 'kafka.producer.producer-topic-metrics',
+                'typeNames'     => ['topic', 'client-id'],
+                'attrs'         => {
+                    'byte-rate'                 => { 'slope' => 'both', 'bucketType' => 'g' },
+                    'compression-rate'          => { 'slope' => 'both', 'bucketType' => 'g' },
+                    'record-error-rate'         => { 'slope' => 'both', 'bucketType' => 'g' },
+                    'record-retry-rate'         => { 'slope' => 'both', 'bucketType' => 'g' },
+                    'record-send-rate'          => { 'slope' => 'both', 'bucketType' => 'g' },
+                }
             },
+
+            # Per Producer Node (to a specific broker) Metrics
+            {
+                'name'          => 'kafka.producer:type=producer-node-metrics,client-id=*,node-id=*',
+                'resultAlias'   => 'kafka.producer.producer-node-metrics',
+                'typeNames'     => ['node-id', 'client-id'],
+                'attrs'         => {
+                    'incoming-byte-rate'        => { 'slope' => 'both', 'bucketType' => 'g' },
+                    'outgoing-byte-rate'        => { 'slope' => 'both', 'bucketType' => 'g' },
+                    'request-latency-avg'       => { 'slope' => 'both', 'bucketType' => 'g' },
+                    'request-latency-max'       => { 'slope' => 'both', 'bucketType' => 'g' },
+                    'request-rate'              => { 'slope' => 'both', 'bucketType' => 'g' },
+                    'request-size-avg'          => { 'slope' => 'both', 'bucketType' => 'g' },
+                    'request-size-max'          => { 'slope' => 'both', 'bucketType' => 'g' },
+                    'response-rate'             => { 'slope' => 'both', 'bucketType' => 'g' },
+                }
+            },
+
         ],
         default => $objects,
     }
 
     # query kafka for jmx metrics
-    jmxtrans::metrics { "kafka-mirror-${client_id}-${jmx_port}":
+    jmxtrans::metrics { "kafka-mirror-${title}-${jmx_port}":
         jmx                  => $jmx,
         outfile              => $outfile,
         ganglia              => $ganglia,
