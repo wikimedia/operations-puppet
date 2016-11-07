@@ -51,11 +51,6 @@ class base::standard_packages {
         ensure => latest,
     }
 
-    # for hardware monitoring via IPMI (T125205)
-    if os_version('debian >= jessie') {
-        require_package('freeipmi', 'libipc-run-perl')
-    }
-
     if $::network_zone == 'internal' {
         include nrpe
     }
