@@ -8,16 +8,10 @@ server {
     # Tell everyone we're v2, not v1!
     add_header 'Docker-Distribution-Api-Version' 'registry/2.0' always;
 
-    # Handle method not allowed calls
-    error_page 405 @error405;
-    location @error405 {
-        add_header Allow "GET, POST, HEAD" always;
-    }
-
     location / {
         # The HTTP endpoint cannot be used to upload images
         limit_except GET HEAD OPTIONS {
-            return 405;
+            deny all;
         }
 
         # IP whitelisting
