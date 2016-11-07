@@ -189,11 +189,10 @@ THUMBOR_LOG_CONFIG = {
         },
         'http404': {
             'level': 'WARNING',
-            'class': 'logging.handlers.TimedRotatingFileHandler',
+            'class': 'wikimedia_thumbor.logging.handler.rotating.RotatingHandler',
             'formatter': 'default',
             'filename': '/srv/log/thumbor/thumbor.404.log',
-            'interval': 1,
-            'when': 'D',
+            'maxBytes': 943718400, # 900MB
             'backupCount': 4,
             'encoding': 'utf8',
             'delay': False,
