@@ -96,14 +96,14 @@ class role::cache::misc {
             'dynamic'  => 'no',
             'type'     => 'random',
             'backends' => ['labtestcontrol2001.wikimedia.org'],
-            'be_opts'  => merge($app_def_be_opts, { 'port' => '6082' }),
+            'be_opts'  => merge($app_def_be_opts, { 'port' => 6082 }),
             'req_host' => 'labtestspice.wikimedia.org',
         },
         'labspice' => {
             'dynamic'  => 'no',
             'type'     => 'random',
             'backends' => ['labcontrol1001.wikimedia.org'],
-            'be_opts'  => merge($app_def_be_opts, { 'port' => '6082' }),
+            'be_opts'  => merge($app_def_be_opts, { 'port' => 6082 }),
             'req_host' => 'labspice.wikimedia.org',
         },
         'etherpad1001' => {
@@ -275,7 +275,7 @@ class role::cache::misc {
             'dynamic'  => 'no',
             'type'     => 'random',
             'backends' => [ 'ores.svc.eqiad.wmnet', ],
-            'be_opts'  => merge($app_def_be_opts, { 'port' => '8081' }),
+            'be_opts'  => merge($app_def_be_opts, { 'port' => 8081 }),
             'req_host' => 'ores.wikimedia.org',
         },
     }
