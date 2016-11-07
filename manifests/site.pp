@@ -298,7 +298,7 @@ node 'contint1001.wikimedia.org' {
 
 # Debian package/docker images building host in production
 node 'copper.eqiad.wmnet' {
-    role(builder, systemtap::devserver)
+    role(builder)
 }
 
 # cp1008: prod-like SSL test host
