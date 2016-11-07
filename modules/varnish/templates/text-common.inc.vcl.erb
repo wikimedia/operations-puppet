@@ -119,12 +119,7 @@ sub text_common_hash {
 	}
 }
 
-// fe+be common fetch code
-sub text_common_backend_response {
-	if (<%= @bereq_req %>.http.X-Subdomain && (<%= @bereq_req %>.url ~ "mobileaction=" || <%= @bereq_req %>.url ~ "useformat=")) {
-		set beresp.ttl = 60 s;
-	}
-
+sub text_common_backend_response_early {
 	<%- if @varnish_version4 -%>
 	// Re-do the same changes as evalute_cookie above, but on the bereq
 	// Cookie header and without bothering to save originals.  The reason we
@@ -133,12 +128,21 @@ sub text_common_backend_response {
 	// fetched object shortly after vcl_backend_response.  Under Varnish3
 	// when all this session-cookie related VCL was developed, the vary slot
 	// was being set from req.http.Cookie.
+	// Note this must happen in the "backend_response_early" hook before the
+	// global common VCL tries to create generic hit-for-pass objects for
+	// TTL<=0, or else the Vary-slotting will be wrong there!
 	if (bereq.http.Cookie ~ "([sS]ession|Token)=") {
 		set bereq.http.Cookie = "Token=1";
 	} else {
 		unset bereq.http.Cookie;
 	}
 	<%- end -%>
+}
+
+sub text_common_backend_response {
+	if (<%= @bereq_req %>.http.X-Subdomain && (<%= @bereq_req %>.url ~ "mobileaction=" || <%= @bereq_req %>.url ~ "useformat=")) {
+		set beresp.ttl = 60 s;
+	}
 
 	// set a 607s hit-for-pass object based on response conditions in vcl_backend_response:
 	//    Token=1 + Vary:Cookie:
