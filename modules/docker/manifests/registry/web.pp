@@ -5,6 +5,8 @@ class docker::registry::web(
     $ssl_settings,
     $use_puppet_certs=false,
     $ssl_certificate_name=undef,
+    $http_endpoint=false,
+    $http_allowed_hosts=[],
 ) {
     if (!$use_puppet_certs and ($ssl_certificate_name == undef)) {
         fail('Either puppet certs should be used, or an ssl cert name should be provided')
@@ -28,6 +30,12 @@ class docker::registry::web(
     }
     nginx::site { 'registry':
         content => template('docker/registry-nginx.conf.erb'),
+    }
+
+    if $http_endpoint {
+        nginx::site { 'registry-http':
+            content => template('docker/registry-http-nginx.conf.erb')
+        }
     }
 
 }
