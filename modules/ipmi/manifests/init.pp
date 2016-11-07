@@ -1,9 +1,13 @@
 # IPMItool mgmt hosts
 class ipmi {
 
-    package { 'ipmitool':
-        ensure => present,
-    }
+    require_package(
+        'ipmitool',
+        'freeipmi-common',
+        'freeipmi-tools',
+        'freeipmi-ipmidetect',
+        'freeipmi-bmc-watchdog',
+    )
 
     file { '/usr/local/sbin/ipmi_mgmt':
         path   => '/usr/local/sbin/ipmi_mgmt',
@@ -12,4 +16,5 @@ class ipmi {
         mode   => '0550',
         source => 'puppet:///modules/ipmi/ipmi_mgmt',
     }
+
 }
