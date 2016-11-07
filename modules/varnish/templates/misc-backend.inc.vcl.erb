@@ -39,6 +39,7 @@ sub cluster_be_hit { }
 sub cluster_be_miss { }
 sub cluster_be_pass { }
 sub cluster_be_backend_fetch { }
+sub cluster_be_backend_response_early { }
 
 sub cluster_be_backend_response {
     // Do not cache explicit lengths >= ~1GB in backends in general

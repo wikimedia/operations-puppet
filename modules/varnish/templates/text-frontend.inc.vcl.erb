@@ -216,6 +216,10 @@ sub cluster_fe_backend_fetch {
 }
 <% end -%>
 
+sub cluster_fe_backend_response_early {
+	// XXX hack bereq vary here
+}
+
 sub cluster_fe_backend_response {
 	call text_common_backend_response;
 

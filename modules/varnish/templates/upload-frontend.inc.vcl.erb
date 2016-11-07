@@ -54,6 +54,8 @@ sub cluster_fe_backend_fetch {
 	call upload_common_set_range;
 }
 
+sub cluster_fe_backend_response_early { }
+
 sub cluster_fe_backend_response {
 	if (beresp.http.Content-Range) {
 		// Varnish itself doesn't ask for ranges, so this must have been
