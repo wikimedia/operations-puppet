@@ -342,6 +342,11 @@ sub vcl_backend_fetch {
 
 <% if @varnish_version4 -%>
 sub vcl_backend_response {
+	// retry 503 once in frontend instances, to paper over transient issues
+	// This catches the backending handing us an explicit 503
+	if (beresp.status == 503 && bereq.retries == 0) {
+		return(retry);
+	}
 <% else -%>
 sub vcl_fetch {
 <% end -%>
@@ -435,6 +440,7 @@ sub vcl_synth {
 
 sub vcl_backend_error {
 	// retry 503 once in frontend instances, to paper over transient issues
+	// This catches an implicit 503 (e.g. connectfail, timeout, etc)
 	if (beresp.status == 503 && bereq.retries == 0) {
 		return(retry);
 	}
