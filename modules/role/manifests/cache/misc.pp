@@ -85,6 +85,13 @@ class role::cache::misc {
                 'toolsadmin.wikimedia.org',
             ],
         },
+        'darmstadtium' => {
+            'dynamic'  => 'no',
+            'type'     => 'random',
+            'backends' => ['darmstadtium.eqiad.wmnet'],
+            'be_opts'  => merge($app_def_be_opts, {'port' => 81, 'max_connections' => 5}),
+            'req_host' => 'docker-registry.wikimedia.org',
+        },
         'labtestweb2001' => {
             'dynamic'  => 'no',
             'type'     => 'random',
