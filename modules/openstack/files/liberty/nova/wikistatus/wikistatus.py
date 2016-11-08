@@ -15,8 +15,6 @@
 
 import mwclient
 
-from keystoneclient.v2_0 import client as keystoneclient
-
 import nova.context
 from nova import exception
 from nova import image
@@ -51,18 +49,6 @@ wiki_opts = [
     cfg.StrOpt('wiki_password',
                default='password',
                help='Password for wiki_login.'),
-    cfg.BoolOpt('wiki_use_keystone',
-                default=True,
-                help='Indicates whether or not keystone is in use.'),
-    cfg.StrOpt('wiki_keystone_auth_url',
-               default='http://127.0.0.1:35357/v2.0',
-               help='keystone auth url'),
-    cfg.StrOpt('wiki_keystone_login',
-               default='admin',
-               help='keystone admin login'),
-    cfg.StrOpt('wiki_keystone_password',
-               default='keystonepass',
-               help='keystone admin password'),
     cfg.MultiStrOpt('wiki_eventtype_whitelist',
                     default=['compute.instance.delete.start',
                              'compute.instance.create.start',
@@ -111,40 +97,21 @@ class WikiStatus(notifier._Driver):
 
     def __init__(self, conf, topics, transport, version=1.0):
         self.host = CONF.wiki_host
-        self.site = None
-        self.kclient = {}
-        self.tenant_manager = {}
-        self.user_manager = {}
-        self._wiki_logged_in = False
         self._image_service = image.glance.get_default_image_service()
 
-    def _wiki_login(self):
-        if not self._wiki_logged_in:
-            if not self.site:
-                self.site = mwclient.Site(("https", self.host),
-                                          retry_timeout=5,
-                                          max_retries=3)
-            if self.site:
-                self.site.login(CONF.wiki_login, CONF.wiki_password,
-                                domain=CONF.wiki_domain)
-                self._wiki_logged_in = True
-            else:
-                LOG.warning("Unable to reach %s.  We'll keep trying, "
-                            "but pages will be out of sync in the meantime.")
-
-    def _keystone_login(self, tenant_id, ctxt):
-        if tenant_id not in self.kclient:
-            self.kclient[tenant_id] = keystoneclient.Client(
-                token='devstack',
-                username=CONF.wiki_keystone_login,
-                password=CONF.wiki_keystone_password,
-                tenant_id=tenant_id,
-                endpoint=CONF.wiki_keystone_auth_url)
-
-            self.tenant_manager[tenant_id] = self.kclient[tenant_id].tenants
-            self.user_manager[tenant_id] = self.kclient[tenant_id].users
-
-        return self.kclient[tenant_id]
+    @staticmethod
+    def _wiki_login(host):
+        site = mwclient.Site(("https", host),
+                             retry_timeout=5,
+                             max_retries=3)
+        if site:
+            site.login(CONF.wiki_login, CONF.wiki_password,
+                       domain=CONF.wiki_domain)
+            return site
+        else:
+            LOG.warning("Unable to reach %s.  We'll keep trying, "
+                        "but pages will be out of sync in the meantime.")
+            return None
 
     def _deserialize_context(self, contextdict):
         context = nova.context.RequestContext(**contextdict)
@@ -168,15 +135,7 @@ class WikiStatus(notifier._Driver):
         for field in self.RawTemplateFields:
             template_param_dict[field] = payload[field]
 
-        tenant_id = payload['tenant_id']
-        if (CONF.wiki_use_keystone and self._keystone_login(tenant_id,
-                                                            ctxt)):
-            tenant_obj = self.tenant_manager[tenant_id].get(tenant_id)
-            user_obj = self.user_manager[tenant_id].get(payload['user_id'])
-            tenant_name = tenant_obj.name
-            user_name = user_obj.name
-            template_param_dict['tenant'] = tenant_name
-            template_param_dict['username'] = user_name
+        template_param_dict['username'] = payload['user_id']
 
         inst = objects.Instance.get_by_uuid(ctxt, instance)
 
@@ -228,7 +187,7 @@ class WikiStatus(notifier._Driver):
                 image = self._image_service.show(ctxt, inst['image_ref'])
                 image_name = image.get('name', inst['image_ref'])
                 template_param_dict['image_name'] = image_name
-            except (TypeError):
+            except (TypeError, exception.ImageNotAuthorized):
                 template_param_dict['image_name'] = inst['image_ref']
         else:
             template_param_dict['image_name'] = 'tbd'
@@ -245,13 +204,13 @@ class WikiStatus(notifier._Driver):
                                                             fields_string,
                                                             end_comment)
 
-        self._wiki_login()
+        site = self._wiki_login(self.host)
         pagename = "%s%s" % (CONF.wiki_page_prefix, resourceName)
         LOG.debug("wikistatus:  Writing instance info"
                   " to page http://%s/wiki/%s" %
                   (self.host, pagename))
 
-        page = self.site.Pages[pagename]
+        page = site.Pages[pagename]
         try:
             if delete_page:
                 page.delete(reason='Instance deleted')
@@ -278,4 +237,3 @@ class WikiStatus(notifier._Driver):
                 mwclient.errors.LoginError):
             LOG.debug("Failed to update wiki page..."
                       " trying to re-login next time.")
-            self._wiki_logged_in = False
