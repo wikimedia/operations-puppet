@@ -713,19 +713,19 @@ class role::mariadb::sanitarium {
     ferm::service { 'mysqld_sanitarium':
         proto  => 'tcp',
         port   => '3311:3317',
-        srange => '$INTERNAL',
+        srange => '$PRODUCTION_NETWORKS',
     }
 
     ferm::service { 'gmond_udp':
         proto  => 'udp',
         port   => '8649',
-        srange => '$INTERNAL',
+        srange => '$PRODUCTION_NETWORKS',
     }
 
     ferm::service { 'gmond_tcp':
         proto  => 'tcp',
         port   => '8649',
-        srange => '$INTERNAL',
+        srange => '$PRODUCTION_NETWORKS',
     }
 
     # One instance per shard using mysqld_multi.
