@@ -13,6 +13,8 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 
+import time
+
 import mwclient
 
 import nova.context
@@ -105,12 +107,22 @@ class WikiStatus(notifier._Driver):
                              retry_timeout=5,
                              max_retries=3)
         if site:
-            site.login(CONF.wiki_login, CONF.wiki_password,
-                       domain=CONF.wiki_domain)
+            # MW has a bug that kills a fair number of these logins,
+            #  so give it a few tries.
+            for count in reversed(xrange(4)):
+                try:
+                    site.login(CONF.wiki_login, CONF.wiki_password,
+                               domain=CONF.wiki_domain)
+                    break
+                except mwclient.APIError:
+                    LOG.warning("mwclient login failed, will try %s more times"
+                                % count)
+                    time.sleep(.2)
             return site
         else:
             LOG.warning("Unable to reach %s.  We'll keep trying, "
-                        "but pages will be out of sync in the meantime.")
+                        "but pages will be out of sync in the meantime."
+                        % host)
             return None
 
     def _deserialize_context(self, contextdict):
