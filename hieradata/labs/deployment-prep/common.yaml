@@ -35,6 +35,7 @@ graphoid::allowed_domains:
     - wikiversity.org
     - wikivoyage.org
     - wiktionary.org
+    - beta.wmflabs.org
   wikirawupload:
     - upload.wikimedia.org
     - upload.beta.wmflabs.org
