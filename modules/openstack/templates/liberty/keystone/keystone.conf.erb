@@ -411,6 +411,17 @@ password = <%= @keystoneconfig["ldap_user_pass"] %>
 methods = external,password,token,wmtotp
 
 wmtotp = keystone.auth.plugins.wmtotp.Wmtotp
+# Override the default password plugin with a custom
+#  one that checks source IPs.
+password = keystone.auth.plugins.password_whitelist.PasswordWhitelist
+
+<% scope.lookupvar('network::constants::labs_networks').each do |subnet| -%>
+password_whitelist = novaobserver:<%=subnet%>
+<% end -%>
+<% scope.lookupvar('network::constants::production_networks').each do |subnet| -%>
+password_whitelist = novaobserver:<%=subnet%>
+password_whitelist = novaadmin:<%=subnet%>
+<% end -%>
 
 [oath]
 
