@@ -111,26 +111,25 @@ class WikiStatus(notifier._Driver):
 
     def __init__(self, conf, topics, transport, version=1.0):
         self.host = CONF.wiki_host
-        self.site = None
         self.kclient = {}
         self.tenant_manager = {}
         self.user_manager = {}
         self._wiki_logged_in = False
         self._image_service = image.glance.get_default_image_service()
 
-    def _wiki_login(self):
-        if not self._wiki_logged_in:
-            if not self.site:
-                self.site = mwclient.Site(("https", self.host),
-                                          retry_timeout=5,
-                                          max_retries=3)
-            if self.site:
-                self.site.login(CONF.wiki_login, CONF.wiki_password,
-                                domain=CONF.wiki_domain)
-                self._wiki_logged_in = True
-            else:
-                LOG.warning("Unable to reach %s.  We'll keep trying, "
-                            "but pages will be out of sync in the meantime.")
+    @staticmethod
+    def _wiki_login(host):
+        site = mwclient.Site(("https", host),
+                             retry_timeout=5,
+                             max_retries=3)
+        if site:
+            site.login(CONF.wiki_login, CONF.wiki_password,
+                       domain=CONF.wiki_domain)
+            return site
+        else:
+            LOG.warning("Unable to reach %s.  We'll keep trying, "
+                        "but pages will be out of sync in the meantime.")
+            return None
 
     def _keystone_login(self, tenant_id, ctxt):
         if tenant_id not in self.kclient:
@@ -228,7 +227,7 @@ class WikiStatus(notifier._Driver):
                 image = self._image_service.show(ctxt, inst['image_ref'])
                 image_name = image.get('name', inst['image_ref'])
                 template_param_dict['image_name'] = image_name
-            except (TypeError):
+            except (TypeError, exception.ImageNotAuthorized):
                 template_param_dict['image_name'] = inst['image_ref']
         else:
             template_param_dict['image_name'] = 'tbd'
@@ -245,13 +244,13 @@ class WikiStatus(notifier._Driver):
                                                             fields_string,
                                                             end_comment)
 
-        self._wiki_login()
+        site = self._wiki_login(self.host)
         pagename = "%s%s" % (CONF.wiki_page_prefix, resourceName)
         LOG.debug("wikistatus:  Writing instance info"
                   " to page http://%s/wiki/%s" %
                   (self.host, pagename))
 
-        page = self.site.Pages[pagename]
+        page = site.Pages[pagename]
         try:
             if delete_page:
                 page.delete(reason='Instance deleted')
