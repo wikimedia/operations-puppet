@@ -73,18 +73,28 @@ title = Sampled Hosts
 
 +++ bast1001
 menu = bast1001
-title = bast1001.wikimedia.org [B4-EQIAD]
+title = bast1001.wikimedia.org [B4]
 host = bast1001.wikimedia.org
 
-+++ carbon
-menu = carbon
-title = carbon.wikimedia.org [A4-EQIAD]
-host = carbon.wikimedia.org
++++ hydrogen
+menu = hydrogen
+title = hydrogen.wikimedia.org [A4]
+host = hydrogen.wikimedia.org
 
-+++ iron
-menu = iron
-title = iron.wikimedia.org [B4-EQIAD]
-host = iron.wikimedia.org
++++ chromium
+menu = chromium
+title = chromium.wikimedia.org [B4]
+host = chromium.wikimedia.org
+
++++ radon
+menu = radon
+title = radon.wikimedia.org [C4]
+host = radon.wikimedia.org
+
++++ einsteinium
+menu = einsteinium
+title = einsteinium.wikimedia.org [D3]
+host = einsteinium.wikimedia.org
 
 + eqord
 
@@ -160,15 +170,30 @@ host = msw1-codfw.mgmt.codfw.wmnet
 menu = Hosts
 title = Sampled Hosts
 
-+++ achernar
-menu = achernar
-title = achernar.wikimedia.org [B5-CODFW]
-host = achernar.wikimedia.org
-
 +++ bast2001
 menu = bast2001
-title = bast2001.wikimedia.org [A5-CODFW]
+title = bast2001.wikimedia.org [A5]
 host = bast2001.wikimedia.org
+
++++ acamar
+menu = acamar
+title = acamar.wikimedia.org [A5]
+host = acamar.wikimedia.org
+
++++ achernar
+menu = achernar
+title = achernar.wikimedia.org [B5]
+host = achernar.wikimedia.org
+
++++ tegmen
+menu = tegmen
+title = tegmen.wikimedia.org [C5]
+host = tegmen.wikimedia.org
+
++++ wasat
+menu = wasat
+title = wasat.codfw.wmnet [D5]
+host = wasat.codfw.wmnet
 
 + esams
 
