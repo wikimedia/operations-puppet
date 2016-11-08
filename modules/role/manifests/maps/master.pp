@@ -89,7 +89,7 @@ class role::maps::master(
     if $postgres_tile_storage {
         ::postgresql::db { 'tiles':
             owner   => 'tilerator',
-            require => Postgresql::User['tilerator'],
+            require => Postgresql::User['tilerator@localhost'],
         }
     }
 
