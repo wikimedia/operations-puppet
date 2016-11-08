@@ -21,6 +21,10 @@ class openstack::keystone::service($keystoneconfig, $openstack_version=$::openst
         }
     }
 
+    include network::constants
+    $prod_networks = $network::constants::production_networks
+    $labs_networks = $network::constants::labs_networks
+
     file {
         '/etc/keystone/keystone.conf':
             content => template("openstack/${openstack_version}/keystone/keystone.conf.erb"),
@@ -37,6 +41,12 @@ class openstack::keystone::service($keystoneconfig, $openstack_version=$::openst
             require => Package['keystone'];
         '/usr/lib/python2.7/dist-packages/keystone/auth/plugins/wmtotp.py':
             source  => "puppet:///modules/openstack/${openstack_version}/keystone/wmtotp.py",
+            mode    => '0644',
+            owner   => 'root',
+            group   => 'root',
+            require => Package['keystone'];
+        '/usr/lib/python2.7/dist-packages/keystone/auth/plugins/password_whitelist.py':
+            source  => "puppet:///modules/openstack/${openstack_version}/keystone/password_whitelist.py",
             mode    => '0644',
             owner   => 'root',
             group   => 'root',
