@@ -55,7 +55,6 @@ class statistics::packages {
         'python-pandas',    # Pivot tables processing
         'python-requests',  # Simple lib to make API calls
         'python-unidecode', # Unicode simplification - converts everything to latin set
-        'python-pygeoip',   # For geo-encoding IP addresses
         'python-ua-parser', # For parsing User Agents
         'python-matplotlib',  # For generating plots of data
         'python-netaddr',
@@ -66,6 +65,13 @@ class statistics::packages {
         'python-kafka',
         'python-pymysql',
     ])
+
+    # This is a custom package and currently not available on jessie, don't install on jessie for now 
+    if os_version('ubuntu >= trusty') {
+        ensure_packages([
+            'python-pygeoip', # For geo-encoding IP addresses
+        ])
+    }
 
     # FORTRAN packages (T89414)
     ensure_packages([
