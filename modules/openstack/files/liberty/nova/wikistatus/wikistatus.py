@@ -104,12 +104,11 @@ class WikiStatus(notifier._Driver):
     @staticmethod
     def _wiki_login(host):
         site = mwclient.Site(("https", host),
-                             retry_timeout=5,
-                             max_retries=3)
+                             retry_timeout=5)
         if site:
             # MW has a bug that kills a fair number of these logins,
             #  so give it a few tries.
-            for count in reversed(xrange(2)):
+            for count in reversed(xrange(3)):
                 try:
                     site.login(CONF.wiki_login, CONF.wiki_password,
                                domain=CONF.wiki_domain)
@@ -117,7 +116,7 @@ class WikiStatus(notifier._Driver):
                 except mwclient.APIError:
                     LOG.warning("mwclient login failed, will try %s more times"
                                 % count)
-                    time.sleep(1)
+                    time.sleep(2)
             raise mwclient.MaximumRetriesExceeded()
         else:
             LOG.warning("Unable to reach %s.  We'll keep trying, "
