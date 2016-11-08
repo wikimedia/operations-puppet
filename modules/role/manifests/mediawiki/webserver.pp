@@ -47,16 +47,20 @@ class role::mediawiki::webserver {
     # If a service check happens to run while we are performing a
     # graceful restart of Apache, we want to try again before declaring
     # defeat. See T103008.
+    # We want to avoid false alarms during scheduled HHVM restarts (T147773),
+    # so a higher retry_interval is needed.
     monitoring::service { 'appserver http':
-        description   => 'Apache HTTP',
-        check_command => 'check_http_wikipedia',
-        retries       => 2,
+        description    => 'Apache HTTP',
+        check_command  => 'check_http_wikipedia',
+        retries        => 2,
+        retry_interval => 2,
     }
 
     monitoring::service { 'appserver_http_hhvm':
-        description   => 'HHVM rendering',
-        check_command => 'check_http_wikipedia_main',
-        retries       => 2,
+        description    => 'HHVM rendering',
+        check_command  => 'check_http_wikipedia_main',
+        retries        => 2,
+        retry_interval => 2,
     }
 
     nrpe::monitor_service { 'hhvm':
