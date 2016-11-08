@@ -107,6 +107,16 @@
               }
             }
           }
+        },
+        {
+          "add_suffix_if_object" : {
+            "match_mapping_type" : "object",
+            "unmatch": "*_obj",
+            "mapping" : {
+                "index": "no",
+                "copy_to": "{name}_obj"
+            }
+          }
         }
       ],
       "properties" : {
