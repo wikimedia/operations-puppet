@@ -40,6 +40,12 @@ class openstack::keystone::service($keystoneconfig, $openstack_version=$::openst
             owner   => 'root',
             group   => 'root',
             require => Package['keystone'];
+        '/usr/lib/python2.7/dist-packages/keystone/auth/plugins/password_whitelist.py':
+            source  => "puppet:///modules/openstack/${openstack_version}/keystone/password_whitelist.py",
+            mode    => '0644',
+            owner   => 'root',
+            group   => 'root',
+            require => Package['keystone'];
     }
 
     if $::fqdn == hiera('labs_nova_controller') {
