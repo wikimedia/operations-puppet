@@ -1618,8 +1618,6 @@ host db2041 {
 host db2042 {
     hardware ethernet a0:d3:c1:fa:32:28;
     fixed-address db2042.codfw.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host db2043 {
