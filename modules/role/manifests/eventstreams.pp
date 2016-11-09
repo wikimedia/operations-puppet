@@ -5,16 +5,16 @@
 # it to consume only specific topics from a specific Kafka cluster.
 #
 # == Hiera Variables
-# [*eventstreams_kafka_cluster_name*]
+# [*role::eventstreams::kafka_cluster_name*]
 #   Default: 'analytics' in production, 'main' in labs.
 #
-# [*eventstreams_port*]
+# [*role::eventstreams::port*]
 #   Default: 8092
 #
-# [*eventstreams_log_level*]
+# [*role::eventstreams::log_level*]
 #   Default: info
 #
-# [*eventstreams_streams*]
+# [*role::eventstreams::streams*]
 #   Default: test and revision-create.
 #
 class role::eventstreams {
@@ -27,13 +27,13 @@ class role::eventstreams {
         'labs'       => 'main'
     }
 
-    $kafka_cluster_name = hiera('eventstreams_kafka_cluster_name', $default_kafka_cluster_name)
+    $kafka_cluster_name = hiera('role::eventstreams::port', $default_kafka_cluster_name)
     $kafka_config       = kafka_config($kafka_cluster_name)
 
-    $port      = hiera('eventstreams_port', 8092)
-    $log_level = hiera('eventstreams_log_level', 'info')
+    $port      = hiera('role::eventstreams::port', 8092)
+    $log_level = hiera('role::eventstreams::log_level', 'info')
 
-    $streams = hiera('eventstreams_streams', {
+    $streams = hiera('role::eventstreams::streams', {
         'test' => {
             'topics' => ["${::site}.test.event"]
         },

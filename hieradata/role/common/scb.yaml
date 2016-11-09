@@ -54,3 +54,11 @@ cxserver::no_proxy_list:
 cxserver::yandex_url: https://translate.yandex.net
 cxserver::youdao_url: https://fanyi.youdao.com/paidapi/fanyiapi
 ores::web::redis_host: oresrdb1001.eqiad.wmnet
+
+# Stream configuration for Public EventStreams service
+# Maps stream route names to composite Kafka topics.
+role::eventstreams::streams:
+  revision-create:
+    topics:
+      - eqiad.mediawiki.revision-create
+      - codfw.mediawiki.revision-create

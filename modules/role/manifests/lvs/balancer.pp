@@ -46,6 +46,7 @@ class role::lvs::balancer {
             $sip['ocg'][$::site],
             $sip['wdqs'][$::site],
             $sip['kibana'][$::site],
+            $sip['eventstreams'][$::site],
             ],
 
         # codfw (should mirror eqiad above, eventually, and become merged with it via regex
