@@ -285,6 +285,13 @@ class role::cache::misc {
             'be_opts'  => merge($app_def_be_opts, { 'port' => 8081 }),
             'req_host' => 'ores.wikimedia.org',
         },
+        'eventstreams' => {
+            'dynamic'  => 'no',
+            'type'     => 'hash',
+            'backends' => [ 'eventstreams.svc.eqiad.wmnet' ],
+            'be_opts'  => $app_def_be_opts,
+            'req_host' => 'eventstreams.wikimedia.org',
+        },
     }
 
     $common_vcl_config = {

@@ -167,3 +167,11 @@ logstash:
     default_values:
       pooled: 'no'
       weight: 10
+eventstreams:
+  eventstreams:
+    port: 8092
+    datacenters:
+    - eqiad
+    default_values:
+      pooled: 'yes'
+      weight: 10
