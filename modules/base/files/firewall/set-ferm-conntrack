@@ -1,0 +1,23 @@
+#!/bin/bash
+
+# This script is run during ferm startup. The iptables modules are
+# loaded in an earlier step of the setup, so wait up to five seconds
+# if /proc/sys/net/netfilter does not yet exists (it gets created with
+# loading the module)
+
+n=0
+until [ $n -ge 5 ]
+do
+    if [[ -w /proc/sys/net/netfilter/nf_conntrack_max && -w /proc/sys/net/netfilter/nf_conntrack_tcp_timeout_time_wait ]]; then
+        /sbin/sysctl -q -w net.netfilter.nf_conntrack_max=262144
+        /sbin/sysctl -q -w net.netfilter.nf_conntrack_tcp_timeout_time_wait=65
+        echo "Connection tracking sysctl values configured"
+        exit 0
+    fi
+
+    n=$[$n+1]
+    sleep 1
+done
+
+echo "Failed to set connection tracking sysctl values"
+exit 1

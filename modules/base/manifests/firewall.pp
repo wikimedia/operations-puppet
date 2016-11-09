@@ -37,6 +37,19 @@ class base::firewall($ensure = 'present') {
         source => 'puppet:///modules/base/firewall/main-input-default-drop.conf',
     }
 
+    ferm::conf { 'sysctl':
+        ensure => $ensure,
+        prio   => '99',
+        source => 'puppet:///modules/base/firewall/conntrack-sysctl.conf',
+    }
+
+    file { '/usr/local/sbin/set-ferm-conntrack':
+        source => 'puppet:///modules/base/firewall/set-ferm-conntrack',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+    }
+
     ferm::rule { 'bastion-ssh':
         ensure => $ensure,
         rule   => 'proto tcp dport ssh saddr $BASTION_HOSTS ACCEPT;',
