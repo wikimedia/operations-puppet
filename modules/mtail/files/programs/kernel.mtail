@@ -34,13 +34,14 @@ counter segfault by binary
   edac_events++
 }
 
-/kernel: \[[\d.]+\] EDAC MC\d+: (\d+) CE/ {
-  edac_correctable_errors += $1
-}
-
-/kernel: \[[\d.]+\] EDAC MC\d+: (\d+) UE/ {
-  edac_uncorrectable_errors += $1
-}
+# See also https://github.com/google/mtail/issues/50
+#/kernel: \[[\d.]+\] EDAC MC\d+: (\d+) CE/ {
+#  edac_correctable_errors += $1
+#}
+#
+#/kernel: \[[\d.]+\] EDAC MC\d+: (\d+) UE/ {
+#  edac_uncorrectable_errors += $1
+#}
 
 /kernel: \[[\d.]+\] init: (?P<service>[\S]+) .*process ended, respawning/ {
   upstart_respawn[$service]++
