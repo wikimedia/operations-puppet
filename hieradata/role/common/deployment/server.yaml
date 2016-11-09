@@ -83,6 +83,9 @@ scap::sources:
   eventlogging/analytics:
     repository: eventlogging
     scap_repository: eventlogging/scap/analytics
+  # Public EventStreams service
+  eventstreams/deploy:
+    repository: mediawiki/services/eventstreams/deploy
   graphoid/deploy: {}
 #    lvs_service: graphoid
   kartotherian/deploy:
