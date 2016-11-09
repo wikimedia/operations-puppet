@@ -13,7 +13,7 @@ class role::analytics_cluster::hive::server {
     ferm::service{ 'hive_server':
         proto  => 'tcp',
         port   => '10000',
-        srange => '$INTERNAL',
+        srange => '$ANALYTICS_NETWORKS',
     }
 
     # Include icinga alerts if production realm.
