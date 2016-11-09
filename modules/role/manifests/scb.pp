@@ -10,6 +10,7 @@ class role::scb {
     include role::ores::web
     include role::ores::worker
     include role::apertium
+    include role::eventstreams
     include standard
     include base::firewall
 
