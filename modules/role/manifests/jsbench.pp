@@ -30,7 +30,7 @@ class role::jsbench {
     ferm::service { 've-xvfb':
         proto  => 'tcp',
         port   => '6099',
-        srange => '$INTERNAL',
+        srange => '$PRODUCTION_NETWORKS',
     }
 
     user { 'jsbench':
