@@ -26,6 +26,6 @@ class role::mediawiki::jobrunner {
         proto   => 'tcp',
         port    => $::mediawiki::jobrunner::port,
         notrack => true,
-        srange  => '$INTERNAL',
+        srange  => '$DOMAIN_NETWORKS',
     }
 }
