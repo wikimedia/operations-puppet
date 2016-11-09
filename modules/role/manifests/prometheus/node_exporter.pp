@@ -11,19 +11,12 @@ class role::prometheus::node_exporter {
     } else {
         $prometheus_nodes = hiera('prometheus_nodes')
         $prometheus_ferm_nodes = join($prometheus_nodes, ' ')
-        $ferm_srange = "@resolve((${prometheus_ferm_nodes}))"
-        $ferm_srange_v6 = "@resolve((${prometheus_ferm_nodes}), AAAA)"
+        $ferm_srange = "(@resolve((${prometheus_ferm_nodes})) @resolve((${prometheus_ferm_nodes}), AAAA))"
     }
 
     ferm::service { 'prometheus-node-exporter':
         proto  => 'tcp',
         port   => '9100',
         srange => $ferm_srange,
-    }
-
-    ferm::service { 'prometheus-node-exporter_v6':
-        proto  => 'tcp',
-        port   => '9100',
-        srange => $ferm_srange_v6,
     }
 }
