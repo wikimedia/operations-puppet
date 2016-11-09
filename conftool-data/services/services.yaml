@@ -59,6 +59,13 @@ scb:
     datacenters:
     - eqiad
     - codfw
+  eventstreams:
+    port: 8092
+    datacenters:
+    - eqiad
+    default_values:
+      pooled: 'yes'
+      weight: 10
   mathoid:
     port: 10042
     default_values:
