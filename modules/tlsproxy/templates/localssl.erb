@@ -32,12 +32,7 @@ server {
 	<%- end -%>
 	<%- if @do_ocsp -%>
 	ssl_stapling on;
-	<%- if @do_ocsp_int -%>
-	resolver <%= @nameservers.join(' ') %>;
-	ssl_stapling_proxy http://webproxy.<%= @site %>.wmnet:8080/;
-	<%- else -%>
 	ssl_stapling_file /var/cache/ocsp/<%= @name %>.ocsp;
-	<%- end -%>
 	<%- end -%>
 
 	keepalive_timeout 60;
