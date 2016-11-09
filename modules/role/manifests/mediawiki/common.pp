@@ -22,7 +22,7 @@ class role::mediawiki::common {
     ferm::service{ 'ssh_pybal':
         proto  => 'tcp',
         port   => '22',
-        srange => '$INTERNAL',
+        srange => '$PRODUCTION_NETWORKS',
         desc   => 'Allow incoming SSH for pybal health checks',
     }
 
