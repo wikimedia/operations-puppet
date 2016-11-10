@@ -10,6 +10,7 @@ class labstore::monitoring::drbd($drbd_role, $cluster_ip, $resource = 'all') {
         privileges => [
                       'ALL = NOPASSWD: /usr/local/sbin/check_drbd_status',
                       'ALL = NOPASSWD: /usr/local/sbin/check_drbd_role',
+                      'ALL = NOPASSWD: /usr/local/sbin/check_drbd_cluster_ip',
                       ],
     }
 
