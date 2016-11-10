@@ -92,17 +92,13 @@ innodb_large_prefix            = 1
 <% end -%>
 aria_pagecache_buffer_size     = 512M
 
-<% if @shard == 'm2' -%>
 # gtid_domain_id flag is needed for multisource replication and GTID.
 # Strictly it is only needed on masters or servers that can potentially be
 # masters but for consistency it should be set in all of them.
 # https://mariadb.com/kb/en/mariadb/gtid/
-# The following regex removes all the non numeric characters and sets it to
-# the numbers that are part of the hostname
 
 gtid_domain_id  = <%= @server_id %>
 
-<% end -%>
 <% if @ssl == 'on' %>
 # ssl
 ssl-ca=/etc/mysql/ssl/cacert.pem
