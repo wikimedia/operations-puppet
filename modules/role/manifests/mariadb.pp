@@ -772,7 +772,43 @@ class role::mariadb::sanitarium {
 
     class { 'mariadb::monitor_process':
         process_count => 7,
-        contact_group => 'admins'
+        contact_group => 'admins',
+    }
+}
+
+class role::mariadb::sanitarium2 {
+    system::role { 'role::mariadb::sanitarium':
+        description => 'Sanitarium DB Server',
+    }
+
+    include standard
+    include passwords::misc::scripts
+    include base::firewall
+    include role::mariadb::ferm
+
+    class { 'role::mariadb::groups':
+        mysql_group => 'labs',
+        mysql_role  => 'slave',
+    }
+
+    class {'mariadb::packages_wmf':
+        package => 'wmf-mariadb101',
+    }
+
+    class { 'mariadb::config':
+        config   => 'mariadb/sanitarium2.my.cnf.erb',
+    }
+
+    class {'mariadb::service':
+        package => 'wmf-mariadb101',
+    }
+
+    class { 'mariadb::monitor_disk':
+        contact_group => 'admins',
+    }
+
+    class { 'mariadb::monitor_process':
+        contact_group => 'admins',
     }
 }
 
