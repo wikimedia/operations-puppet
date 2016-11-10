@@ -25,5 +25,5 @@ cache::route_table:
   eqiad: 'direct'
   codfw: 'eqiad'
   ulsfo: 'codfw'
-  esams: 'codfw'
+  esams: 'eqiad'
 varnish_version4: true
