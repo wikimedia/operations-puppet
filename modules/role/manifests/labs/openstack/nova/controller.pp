@@ -56,6 +56,10 @@ class role::labs::openstack::nova::controller {
         srange => '@resolve(tendril.wikimedia.org)',
     }
 
+    include network::constants
+    $prod_networks = $network::constants::production_networks
+    $labs_networks = $network::constants::labs_networks
+
     $fwrules = {
         wikitech_ssh_public => {
             rule  => 'saddr (0.0.0.0/0) proto tcp dport (ssh) ACCEPT;',
@@ -69,14 +73,22 @@ class role::labs::openstack::nova::controller {
         keystone_redis_replication => {
             rule  => "saddr (${spare_master}) proto tcp dport (6379) ACCEPT;",
         },
-        wikitech_openstack_services => {
-            rule  => "saddr (${wikitech} ${spare_master}) proto tcp dport (5000 35357 9292) ACCEPT;",
+        # keystone admin API only for openstack services that might need it
+        keystone_admin => {
+            rule  => "saddr (${labs_nodes} ${spare_master} ${api_host}
+                             ${designate} ${designate_secondary} ${horizon}
+                             ${wikitech}
+                             ) proto tcp dport (35357) ACCEPT;",
         },
-        horizon_openstack_services => {
-            rule  => "saddr ${horizon} proto tcp dport (5000 35357 9292) ACCEPT;",
+        # keystone public API for all prod hosts and labs instances
+        keystone_public => {
+            rule  => "saddr (${prod_networks} ${labs_networks}
+                             ) proto tcp dport (5000) ACCEPT;",
         },
-        keystone => {
-            rule  => "saddr (${labs_nodes} ${spare_master} ${api_host} ${designate} ${designate_secondary}) proto tcp dport (5000 35357) ACCEPT;",
+        # glance API for all prod hosts and labs instances
+        glance => {
+            rule  => "saddr (${prod_networks} ${labs_networks}
+                             ) proto tcp dport (9292) ACCEPT;",
         },
         mysql_nova => {
             rule  => "saddr ${labs_nodes} proto tcp dport (3306) ACCEPT;",
@@ -100,4 +112,3 @@ class role::labs::openstack::nova::controller {
 
     create_resources (ferm::rule, $fwrules)
 }
-
