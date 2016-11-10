@@ -1,0 +1,158 @@
+# Sanitarium22 -- now in a single instance + InnoDB
+
+[client]
+port   = 3311
+socket = /tmp/mysql.sock
+
+[mysqld]
+port      = 3306
+socket    = /tmp/mysql.sock
+log-bin   = binlog
+relay-log = s1-rel
+datadir   = /srv/sqldata
+pid-file  = /srv/sqldata/pid
+tmpdir    = /srv/tmp
+server_id = <%= @server_id %>
+user      = mysql
+read_only = 1
+
+skip-external-locking
+skip-name-resolve
+skip-slave-start
+log-slave-updates
+temp-pool
+
+secure_file_priv               = /dev/null
+max_connections                = 100
+max_connect_errors             = 1000000000
+max_allowed_packet             = 32M
+connect_timeout                = 3
+query_cache_size               = 0
+query_cache_type               = 0
+event_scheduler                = 1
+userstat                       = 0
+log-warnings                   = 0
+thread_stack                   = 192K
+thread_cache_size              = 300
+interactive_timeout            = 28800
+wait_timeout                   = 3600
+transaction-isolation          = REPEATABLE-READ
+slave_transaction_retries      = 4294967295
+slave_parallel_threads         = 2
+slave_parallel_max_queued      = 16M
+binlog-format                  = ROW
+expire_logs_days               = 7
+sql-mode                       = IGNORE_BAD_TABLE_OPTIONS
+
+table_open_cache               = 10000
+table_definition_cache         = 50000
+open-files-limit               = 400000
+character_set_server           = binary
+character_set_filesystem       = binary
+collation_server               = binary
+
+default-storage-engine         = InnoDB
+innodb_file_per_table          = 1
+innodb_buffer_pool_size        = <%= (Float(@memorysize.split[0]) * 0.85).round %>G
+innodb_log_file_size           = 2G
+innodb_flush_log_at_trx_commit = 1
+innodb_flush_method            = O_DIRECT
+innodb_file_format             = Barracuda
+join_cache_level               = 8
+
+# dump and load innodb buffer at start and stop
+innodb_buffer_pool_load_at_startup  = 1
+innodb_buffer_pool_dump_at_shutdown = 1
+
+# index_condition_pushdown=off https://github.com/Tokutek/mariadb-5.5/issues/39
+optimizer_switch = 'mrr=on,mrr_cost_based=on,mrr_sort_keys=on,optimize_join_buffer_size=on,engine_condition_pushdown=on,index_condition_pushdown=off'
+
+replicate-wild-ignore-table = mysql.%
+replicate-wild-ignore-table = oai.%
+
+<% scope.lookupvar("::private_wikis").each do |name| -%>
+replicate-wild-ignore-table = <%= name %>.%
+<% end -%>
+
+<% scope.lookupvar("::private_tables").each do |name| -%>
+replicate-wild-ignore-table = %.<%= name %>
+<% end -%>
+
+[mysqld_multi]
+log        = /var/log/mysqld_multi.log
+mysqld     = /opt/wmf-mariadb10/bin/mysqld_safe
+mysqladmin = /opt/wmf-mariadb10/bin/mysqladmin
+
+[mysqld1]
+
+
+[mysqld2]
+
+port      = 3312
+socket    = /tmp/mysql.s2.sock
+log-bin   = s2-bin
+relay-log = s2-rel
+datadir   = /srv/sqldata.s2
+pid-file  = /srv/sqldata.s2/pid
+tmpdir    = /srv/tmp.s2
+server_id = <%= @server_id %>3312
+
+[mysqld3]
+
+port      = 3313
+socket    = /tmp/mysql.s3.sock
+log-bin   = s3-bin
+relay-log = s3-rel
+datadir   = /srv/sqldata.s3
+pid-file  = /srv/sqldata.s3/pid
+tmpdir    = /srv/tmp.s3
+server_id = <%= @server_id %>3313
+
+[mysqld4]
+
+port      = 3314
+socket    = /tmp/mysql.s4.sock
+log-bin   = s4-bin
+relay-log = s4-rel
+datadir   = /srv/sqldata.s4
+pid-file  = /srv/sqldata.s4/pid
+tmpdir    = /srv/tmp.s4
+server_id = <%= @server_id %>3314
+
+[mysqld5]
+
+port      = 3315
+socket    = /tmp/mysql.s5.sock
+log-bin   = s5-bin
+relay-log = s5-rel
+datadir   = /srv/sqldata.s5
+pid-file  = /srv/sqldata.s5/pid
+tmpdir    = /srv/tmp.s5
+server_id = <%= @server_id %>3315
+
+[mysqld6]
+
+port      = 3316
+socket    = /tmp/mysql.s6.sock
+log-bin   = s6-bin
+relay-log = s6-rel
+datadir   = /srv/sqldata.s6
+pid-file  = /srv/sqldata.s6/pid
+tmpdir    = /srv/tmp.s6
+server_id = <%= @server_id %>3316
+
+[mysqld7]
+
+port      = 3317
+socket    = /tmp/mysql.s7.sock
+log-bin   = s7-bin
+relay-log = s7-rel
+datadir   = /srv/sqldata.s7
+pid-file  = /srv/sqldata.s7/pid
+tmpdir    = /srv/tmp.s7
+server_id = <%= @server_id %>3317
+
+[mysqldump]
+
+quick
+max_allowed_packet = 32M
