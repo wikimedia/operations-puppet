@@ -88,6 +88,8 @@ fullviews:
   - module_deps
   - msg_resource_links
   - namespaces
+  - ores_classification
+  - ores_model
   - page
   - page_broken
   - pagelinks
