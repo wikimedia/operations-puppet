@@ -32,7 +32,13 @@ server {
 	<%- end -%>
 	<%- if @do_ocsp -%>
 	ssl_stapling on;
+          <%- if @do_ocsp_multi -%>
+	    <%- @certs.each do |cert| -%>
+	ssl_stapling_file /var/cache/ocsp/<%= cert %>.ocsp;
+	    <%- end -%>
+	  <%- else -%>
 	ssl_stapling_file /var/cache/ocsp/<%= @name %>.ocsp;
+	  <%- end -%>
 	<%- end -%>
 
 	keepalive_timeout 60;

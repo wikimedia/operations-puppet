@@ -11,10 +11,9 @@
 #
 # [*certs*]
 #   Optional - specify either this or acme_subjects.
-#   Array of certs, normally just one.  If more than one, special
-#   patched nginx support is required, and the OCSP/Issuer/Subject/SAN info
-#   should be identical in all certs.  This is intended to support duplicate
-#   keys with differing crypto (e.g. ECDSA + RSA).
+#   Array of certs, normally just one.  If more than one, special patched nginx
+#   support is required.  This is intended to support duplicate keys with
+#   differing crypto (e.g. ECDSA + RSA).
 #
 # [*acme_subjects*]
 #   Optional - specify either this or certs.
@@ -38,7 +37,7 @@
 #   Boolean. Sets up OCSP Stapling for this server.  This both enables the
 #   correct configuration directives in the site's nginx config file as well
 #   as creates the OCSP data file itself and ensures a cron is running to
-#   keep it up to date.
+#   keep it up to date.  Does not work for ACME (letsencrypt) yet!
 
 define tlsproxy::localssl(
     $certs          = [],
@@ -85,13 +84,23 @@ define tlsproxy::localssl(
         }
     }
 
-    if $do_ocsp {
+    # temp for feature testing
+    $do_ocsp_multi = hiera('do_ocsp_multi', false)
+
+    if $do_ocsp and !empty($certs) {
         include tlsproxy::ocsp
 
-        sslcert::ocsp::conf { $title:
-            proxy  => "webproxy.${::site}.wmnet:8080",
-            certs  => $certs,
-            before => Service['nginx'],
+        if $do_ocsp_multi {
+            sslcert::ocsp::conf { $certs:
+                proxy  => "webproxy.${::site}.wmnet:8080",
+                before => Service['nginx'],
+            }
+        } else {
+            sslcert::ocsp::conf { $title:
+                proxy  => "webproxy.${::site}.wmnet:8080",
+                certs  => $certs,
+                before => Service['nginx'],
+            }
         }
     }
 

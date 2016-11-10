@@ -8,3 +8,4 @@ cache::text::nodes:
       - 'cp1008.wikimedia.org'
     codfw:
       - 'cp1008.wikimedia.org'
+do_ocsp_multi: true
