@@ -81,6 +81,7 @@ class role::labs::nfs::secondary($monitor = 'eth0') {
 
     class { 'labstore::monitoring::drbd':
         drbd_role  => $drbd_role,
+        cluster_ip => $cluster_ip,
     }
 
     # state via nfs-manage
