@@ -19,6 +19,7 @@ from oslo_config import cfg
 
 from keystone import auth
 from keystone.auth import plugins as auth_plugins
+from keystone.auth.plugins import password_whitelist
 from keystone.common import dependency
 from keystone import exception
 from keystone.i18n import _
@@ -59,6 +60,11 @@ class Wmtotp(auth.AuthMethodHandler):
     def authenticate(self, context, auth_payload, auth_context):
         """Try to authenticate against the identity backend."""
         user_info = auth_plugins.UserAuthInfo.create(auth_payload, self.method)
+
+        # Before we do anything else, make sure that this user is allowed
+        #  access from their source IP
+        password_whitelist.check_whitelist(user_info.user_id,
+                                           context['environment']['REMOTE_ADDR'])
 
         # FIXME(gyee): identity.authenticate() can use some refactoring since
         # all we care is password matches
