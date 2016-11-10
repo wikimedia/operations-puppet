@@ -28,6 +28,9 @@ tmpdir     = <%= @tmpdir %>
 server_id  = <%= @server_id %>
 read_only  = 0
 
+# enable socket authentication
+plugin-load = unix_socket=auth_socket.so
+
 log_bin                 = /srv/labsdb/binlogs/log
 log_bin_index           = /srv/labsdb/binlogs/log.index
 log_slave_updates

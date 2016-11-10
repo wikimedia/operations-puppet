@@ -30,6 +30,9 @@ tmpdir    = <%= @tmpdir %>
 server_id = <%= @server_id %>
 read_only = 0
 
+# enable socket authentication
+plugin-load = unix_socket=auth_socket.so
+
 secure_file_priv   = /dev/null
 max_connections    = 250
 max_allowed_packet = 32M

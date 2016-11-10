@@ -27,6 +27,9 @@ server_id  = <%= @server_id %>
 # Parsercache needs to be writeable (no masters).
 read_only = 0
 
+# enable socket authentication
+plugin-load = unix_socket=auth_socket.so
+
 log_bin
 log_slave_updates
 skip-external-locking
