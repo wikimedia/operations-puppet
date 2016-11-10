@@ -59,6 +59,10 @@ wikimedia.org: &wikimedia.org
           pageviews:
             host: <%= @aqs_uri %>
 
+wikidata.org: &wikidata.org
+  x-modules:
+    - path: projects/wmf_wikidata.yaml
+      options: *default_options
 
 # Swagger spec root.
 root_spec: &root_spec
@@ -108,7 +112,7 @@ root_spec: &root_spec
     /{domain:sq.wikipedia.beta.wmflabs.org}: *default_project
     /{domain:test.wikimedia.beta.wmflabs.org}: *default_project
     /{domain:uk.wikipedia.beta.wmflabs.org}: *default_project
-    /{domain:wikidata.beta.wmflabs.org}: *default_project
+    /{domain:wikidata.beta.wmflabs.org}: *wikidata.org
     /{domain:zero.wikimedia.beta.wmflabs.org}: *default_project
     /{domain:zh.wikipedia.beta.wmflabs.org}: *default_project
 

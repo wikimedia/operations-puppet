@@ -83,6 +83,12 @@ wikimedia.org: &wikimedia.org
           pageviews:
             host: <%= @aqs_uri %>
 
+# A different project for wikidata since we have limited RESTBase support there.
+wikidata.org: &wikidata.org
+  x-modules:
+    - path: projects/wmf_wikidata.yaml
+      options: *default_options
+
 # wiktionaries config
 wiktionary: &wiktionary_project
   x-modules:
@@ -868,8 +874,8 @@ root_spec: &root_spec
     /{domain:www.mediawiki.org}: *default_project
     /{domain:wikisource.org}: *default_project
     /{domain:beta.wikiversity.org}: *default_project
-    /{domain:www.wikidata.org}: *default_project
-    /{domain:test.wikidata.org}: *default_project
+    /{domain:www.wikidata.org}: *wikidata.org
+    /{domain:test.wikidata.org}: *wikidata.org
 
     # global domain
     /{domain:wikimedia.org}: *wikimedia.org
