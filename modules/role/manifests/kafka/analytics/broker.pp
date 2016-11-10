@@ -115,11 +115,12 @@ class role::kafka::analytics::broker {
     }
     # firewall Kafka Broker
     ferm::service { 'kafka-broker':
-        proto  => 'tcp',
+        proto   => 'tcp',
         # TODO: $::confluent::kafka::broker::port doesn't
         # seem to work as expected.  Hardcoding this for now.
-        port   => 9092,
-        srange => '($PRODUCTION_NETWORKS $FRACK_NETWORKS)',
+        port    => 9092,
+        notrack => true,
+        srange  => '($PRODUCTION_NETWORKS $FRACK_NETWORKS)',
     }
 
     include ::ferm::ipsec_allow
