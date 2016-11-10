@@ -14,10 +14,9 @@ def check_role(node, expected_role):
     drbd_res_roles = str(
         subprocess.check_output(['/sbin/drbdadm', 'role', 'all']), 'utf-8')\
         .rstrip('\n').split('\n')
-    if expected_role == 'primary':
-        role_ok = all([role == 'Primary/Secondary' for role in drbd_res_roles])
-    else:
-        role_ok = all([role == 'Secondary/Primary' for role in drbd_res_roles])
+
+    role_ok = all([role.split('/')[0].lower() == expected_role.lower()
+                  for role in drbd_res_roles])
 
     if not role_ok:
         print('{}: Unexpected role match, expected role {}'.format(
