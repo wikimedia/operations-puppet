@@ -93,13 +93,13 @@ define tlsproxy::localssl(
         if $do_ocsp_multi {
             sslcert::ocsp::conf { $certs:
                 proxy  => "webproxy.${::site}.wmnet:8080",
-                before => Service['nginx'],
+                before => [Service['nginx'], Exec['nginx-reload']],
             }
         } else {
             sslcert::ocsp::conf { $title:
                 proxy  => "webproxy.${::site}.wmnet:8080",
                 certs  => $certs,
-                before => Service['nginx'],
+                before => [Service['nginx'], Exec['nginx-reload']],
             }
         }
     }
