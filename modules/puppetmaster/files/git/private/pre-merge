@@ -1,4 +1,4 @@
 #!/bin/sh
 
-echo "Local merges are not allowed in this repository. Please go to frontend puppetmaster and merge (why do you want to merge anyways????) to /root/private"
+echo "Local merges are not allowed in this repository. Please go to frontend puppetmaster and merge (why do you want to merge anyways????) to /srv/private"
 exit 1
