@@ -1,7 +1,6 @@
 debdeploy::grains:
   debdeploy-cp:
     value: canary
-varnish_version4: true
 varnish::dynamic_directors: false
 cache::text::nodes:
     eqiad:
