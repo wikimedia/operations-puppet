@@ -20,7 +20,7 @@ fi
 rsync --recursive --times --links --hard-links \
   --stats \
   --exclude "Packages*" --exclude "Sources*" \
-  --exclude "Release*" \
+  --exclude "Release*" --exclude "InRelease" \
   ${RSYNCSOURCE} ${BASEDIR} || fatal "First stage of sync failed."
 
 rsync --recursive --times --links --hard-links \
