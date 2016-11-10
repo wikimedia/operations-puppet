@@ -344,7 +344,7 @@ sub vcl_backend_fetch {
 sub vcl_backend_response {
 	// retry 503 once in frontend instances, to paper over transient issues
 	// This catches the backending handing us an explicit 503
-	if (beresp.status == 503 && bereq.retries == 0) {
+	if (beresp.status == 503 && bereq.retries == 0 && bereq.method ~ "^(GET|HEAD|OPTIONS|PUT|DELETE)$") {
 		return(retry);
 	}
 <% else -%>
@@ -441,7 +441,7 @@ sub vcl_synth {
 sub vcl_backend_error {
 	// retry 503 once in frontend instances, to paper over transient issues
 	// This catches an implicit 503 (e.g. connectfail, timeout, etc)
-	if (beresp.status == 503 && bereq.retries == 0) {
+	if (beresp.status == 503 && bereq.retries == 0 && bereq.method ~ "^(GET|HEAD|OPTIONS|PUT|DELETE)$") {
 		return(retry);
 	}
 	if (beresp.status > 400 && beresp.status != 413) {
@@ -455,7 +455,7 @@ sub vcl_backend_error {
 // Varnish3 vcl_error
 sub vcl_error {
 	// retry 503 once in frontend instances, to paper over transient issues
-	if (obj.status == 503 && req.restarts == 0) {
+	if (obj.status == 503 && req.restarts == 0 && req.request ~ "^(GET|HEAD|OPTIONS|PUT|DELETE)$") {
 		return(restart);
 	}
 
