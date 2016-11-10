@@ -84,23 +84,12 @@ define tlsproxy::localssl(
         }
     }
 
-    # temp for feature testing
-    $do_ocsp_multi = hiera('do_ocsp_multi', false)
-
     if $do_ocsp and !empty($certs) {
         include tlsproxy::ocsp
 
-        if $do_ocsp_multi {
-            sslcert::ocsp::conf { $certs:
-                proxy  => "webproxy.${::site}.wmnet:8080",
-                before => [Service['nginx'], Exec['nginx-reload']],
-            }
-        } else {
-            sslcert::ocsp::conf { $title:
-                proxy  => "webproxy.${::site}.wmnet:8080",
-                certs  => $certs,
-                before => [Service['nginx'], Exec['nginx-reload']],
-            }
+        sslcert::ocsp::conf { $certs:
+            proxy  => "webproxy.${::site}.wmnet:8080",
+            before => [Service['nginx'], Exec['nginx-reload']],
         }
     }
 

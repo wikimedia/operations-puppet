@@ -26,4 +26,3 @@ cache::route_table:
   ulsfo: 'codfw'
   esams: 'eqiad'
 varnish_version4: true
-do_ocsp_multi: true
