@@ -15,5 +15,11 @@ class nrpe::systemd_scripts {
         group  => 'root',
         mode   => '0555',
     }
-
+    file { '/usr/local/lib/nagios/plugins/check_systemd_state':
+        ensure => present,
+        source => 'puppet:///modules/nrpe/plugins/check_systemd_state.py',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+    }
 }
