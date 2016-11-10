@@ -14,6 +14,9 @@ tmpdir    = <%= @tmpdir %>
 server_id = <%= @server_id %>
 read_only = 0
 
+# enable socket authentication
+plugin-load = unix_socket=auth_socket.so
+
 skip-external-locking
 skip-name-resolve
 #skip-slave-start

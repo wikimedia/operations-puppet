@@ -27,6 +27,9 @@ sql-mode   = <%= @sql_mode %>
 <% end -%>
 read_only  = <%= @read_only %>
 
+# enable socket authentication
+plugin-load = unix_socket=auth_socket.so
+
 log_bin
 log_slave_updates
 skip-external-locking
