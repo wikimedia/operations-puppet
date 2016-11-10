@@ -1,8 +1,12 @@
 #/bin/dash
 
 fatal() {
-  echo "$1" 1>&2
+  echo "$1"
   exit 1
+}
+
+warn() {
+  echo "$1"
 }
 
 # Find a source mirror near you which supports rsync on
@@ -20,7 +24,7 @@ fi
 rsync --recursive --times --links --hard-links \
   --stats \
   --exclude "Packages*" --exclude "Sources*" \
-  --exclude "Release*" \
+  --exclude "Release*" --exclude "InRelease" \
   ${RSYNCSOURCE} ${BASEDIR} || fatal "First stage of sync failed."
 
 rsync --recursive --times --links --hard-links \
