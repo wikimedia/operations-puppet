@@ -23,7 +23,7 @@ admin::groups:
 #
 cache::route_table:
   eqiad: 'direct'
-  codfw: 'direct'
+  codfw: 'eqiad'
   ulsfo: 'codfw'
   esams: 'codfw'
 varnish_version4: true
