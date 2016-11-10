@@ -2611,7 +2611,7 @@ host kafka2002 {
 }
 
 host kafka2003 {
-    hardware ethernet d4:ae:52:8b:eb:2e;
+    hardware ethernet 18:66:DA:7F:23:F0;
     fixed-address kafka2003.codfw.wmnet;
 }
 
