@@ -53,4 +53,8 @@ class labstore::monitoring::drbd($drbd_role, $cluster_ip, $resource = 'all') {
         require      => File['/usr/local/sbin/check_drbd_role'],
     }
 
+    # Set up DRBD service monitoring
+    nrpe::monitor_systemd_unit_state { 'drbd':
+        require => Service['drbd'],
+    }
 }

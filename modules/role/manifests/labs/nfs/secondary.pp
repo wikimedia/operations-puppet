@@ -79,9 +79,15 @@ class role::labs::nfs::secondary($monitor = 'eth0') {
 
     Interface::Ip['drbd-replication'] -> Labstore::Drbd::Resource[keys($drbd_resource_config)]
 
+    # state managed manually
+    service { 'drbd':
+        enable => false,
+    }
+
     class { 'labstore::monitoring::drbd':
         drbd_role  => $drbd_role,
         cluster_ip => $cluster_ip,
+        require    => Service['drbd'],
     }
 
     # state via nfs-manage
@@ -95,4 +101,5 @@ class role::labs::nfs::secondary($monitor = 'eth0') {
         owner   => 'root',
         group   => 'root',
     }
+
 }
