@@ -788,6 +788,10 @@ node 'db1069.eqiad.wmnet' {
     include base::firewall
 }
 
+node 'db1095.eqiad.wmnet' {
+    role(mariadb::sanitarium2)
+}
+
 # tendril db
 node 'db1011.eqiad.wmnet' {
     role(mariadb::tendril)
@@ -1436,16 +1440,6 @@ node 'labnodepool1001.eqiad.wmnet' {
 ## labsdb dbs
 node /labsdb100[13]\.eqiad\.wmnet/ {
     # this role is depecated and its nodes scheduled for decom
-    role(mariadb::labs, labs::db::views)
-}
-
-## labsdb dbs testing canary
-node /labsdb1008\.eqiad\.wmnet/ {
-
-    # Labsdb1008 has been assigned to pilot our
-    # setup logic for maintain-views.
-    # This hostname specification is temporary for untangling
-    # this historically unpuppetized logic.
     role(mariadb::labs, labs::db::views)
 }
 
