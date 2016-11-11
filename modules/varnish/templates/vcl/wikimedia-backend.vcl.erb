@@ -144,6 +144,7 @@ sub vcl_deliver {
 // Varnish4 vcl_synth+vcl_backend_error
 
 sub vcl_synth {
+	set resp.http.X-CDIS = "int";
 	call wm_common_xcache_deliver;
 	if (resp.status > 400 && resp.status != 413) {
 		call synth_errorpage;
@@ -152,9 +153,8 @@ sub vcl_synth {
 }
 
 sub vcl_backend_error {
-	if (beresp.status > 400 && beresp.status != 413) {
-		call backend_error_errorpage;
-	}
+	set beresp.http.X-CDIS = "int";
+	call backend_error_errorpage;
 	return (deliver);
 }
 
