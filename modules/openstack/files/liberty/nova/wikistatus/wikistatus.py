@@ -108,7 +108,8 @@ class WikiStatus(notifier._Driver):
     @staticmethod
     def _wiki_login(host):
         site = mwclient.Site(("https", host),
-                             retry_timeout=5)
+                             retry_timeout=10,
+                             max_retries=3)
         if site:
             # MW has a bug that kills a fair number of these logins,
             #  so give it a few tries.
