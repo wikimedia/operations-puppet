@@ -8,10 +8,10 @@ set -e
 
 function usage {
         echo -e "Usage:\n"
-        echo "exec-manage exec_host_name [status|depool|repool|test]"
+        echo "exec-manage [status|depool|repool|test] exec_host_name"
         echo "exec-manage [list]"
         echo ""
-        echo "Example: exec-manage tools-exec1001.eqiad.wmflabs status"
+        echo "Example: exec-manage status tools-exec1001.eqiad.wmflabs "
 }
 
 if [[ ! "$1" || "$1" == '-h' ]]; then
@@ -21,12 +21,12 @@ fi
 
 if [ "$#" -ne 2 ]; then
     echo "Wrong number of parameters"
-    echo "Usage: exec-manage.sh exec_host_name [status|depool|repool|test] "
+    usage
     exit 1
 fi
 
-exec_host=$1
-cmd=$2
+cmd=$1
+exec_host=$2
 
 case $cmd in
     status)
