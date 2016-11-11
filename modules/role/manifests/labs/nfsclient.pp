@@ -79,7 +79,7 @@ class role::labs::nfsclient(
         file { '/data/scratch':
             ensure  => 'link',
             target  => '/mnt/nfs/labstore1003-scratch',
-            require => Labstore::Nfs_mount['scratch-on-labstoresvc'],
+            require => Labstore::Nfs_mount['scratch-on-labstore1003'],
         }
     }
 }
