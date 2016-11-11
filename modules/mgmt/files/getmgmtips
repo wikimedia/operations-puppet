@@ -1,6 +1,8 @@
 #!/bin/bash
 # detect all IP addresses in the mgmt network
-# that actually have working DNS names and minus duplicates
+# (that actually have working DNS names, minus duplicates)
+# by looking at the DNS repository contents
+# dzahn 11/2016
 
 tempdir="/tmp/mgmtips"
 dnsrepo="https://gerrit.wikimedia.org/r/p/operations/dns.git"
@@ -30,7 +32,7 @@ fi
 echo -e "extracting mgmt hostnames from 10.in-addr.arpa..\n"
 mgmt_hosts=$(grep -o '[a-z].*\.mgmt\.[a-z].*' 10.in-addr.arpa)
 
-touch $resulfile.tmp
+touch $resultfile.tmp
 touch $rejectfile.tmp
 
 for mgmt_host in $mgmt_hosts; do
