@@ -51,15 +51,22 @@ class jenkins(
         mode    => '0644',
     }
 
-    # Legacy workaround for a Jenkins security issue. No more needed since
-    # Jenkins 1.638 and 1.625.2
-    # https://jenkins.io/blog/2015/11/06/mitigating-unauthenticated-remote-code-execution-0-day-in-jenkins-cli/
-    # https://github.com/jenkinsci-cert/SECURITY-218
+    # Workaround for a Jenkins security issue.
+    #
+    # Same fix as a previous one:
+    #   https://jenkins.io/blog/2015/11/06/mitigating-unauthenticated-remote-code-execution-0-day-in-jenkins-cli/
+    #   https://github.com/jenkinsci-cert/SECURITY-218
     file { '/var/lib/jenkins/init.groovy.d':
-        ensure => absent,
+        ensure => directory,
+        owner  => 'jenkins',
+        group  => 'jenkins',
+        mode   => '0755',
     }
     file { '/var/lib/jenkins/init.groovy.d/cli-shutdown.groovy':
-        ensure => absent,
+        source => 'puppet:///modules/jenkins/cli-shutdown.groovy',
+        owner  => 'jenkins',
+        group  => 'jenkins',
+        mode   => '0755',
     }
 
     $real_ensure = $service_ensure ? {
