@@ -1,6 +1,12 @@
 class profile::docker::builder {
-    $proxy_address = hiera('profile::docker::builder::proxy_address')
-    $proxy_port = hiera('profile::docker::builder::proxy_port')
+    $proxy = hiera('profile::docker::builder::proxy')
+    if $proxy {
+        $proxy_address = hiera('profile::docker::builder::proxy_address')
+        $proxy_port = hiera('profile::docker::builder::proxy_port')
+    } else {
+        $proxy_address = undef
+        $proxy_port = undef
+    }
 
     system::role { 'role::docker::builder':
         description => 'Docker images builder'
