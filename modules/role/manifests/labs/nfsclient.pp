@@ -61,7 +61,7 @@ class role::labs::nfsclient(
             project     => $::labsproject,
             options     => ['rw', 'hard'],
             mount_path  => '/mnt/nfs/labstore-secondary-tools-home',
-            server      => 'nfs-tools-project.eqiad.wmnet',
+            server      => 'nfs-tools-project.svc.eqiad.wmnet',
             share_path  => '/project/tools/home',
             lookupcache => $lookupcache,
         }
@@ -71,7 +71,7 @@ class role::labs::nfsclient(
             project     => $::labsproject,
             options     => ['rw', 'hard'],
             mount_path  => '/mnt/nfs/labstore-secondary-tools-project',
-            server      => 'nfs-tools-project.eqiad.wmnet',
+            server      => 'nfs-tools-project.svc.eqiad.wmnet',
             share_path  => '/project/tools/project',
             lookupcache => $lookupcache,
         }
