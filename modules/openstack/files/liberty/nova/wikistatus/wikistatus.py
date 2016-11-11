@@ -62,8 +62,10 @@ wiki_opts = [
                              'compute.instance.resize.end',
                              'compute.instance.create_ip.end',
                              'compute.instance.delete_ip.end',
-                             'compute.instance.suspend',
-                             'compute.instance.resume',
+                             'compute.instance.suspend.end',
+                             'compute.instance.resume.end',
+                             'compute.instance.shutdown.start',
+                             'compute.instance.shutdown.end',
                              'compute.instance.exists',
                              'compute.instance.forcewikistatusupdate',
                              'compute.instance.reboot.start',
@@ -147,6 +149,8 @@ class WikiStatus(notifier._Driver):
         if event_type not in CONF.wiki_eventtype_whitelist:
             LOG.debug("Ignoring message type %s" % event_type)
             return
+
+        LOG.debug("Handling message type %s" % event_type)
 
         payload = message['payload']
         instance = payload['instance_id']
