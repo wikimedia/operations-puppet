@@ -156,6 +156,8 @@ private:
       home: true
       project: true
       scratch: true
+      tools-home: true
+      tools-project: true
   toolsbeta:
     gid: 50610
     mounts:
