@@ -26,6 +26,7 @@ class role::labs::nfsclient(
     }
 
     if $::labsproject == 'maps' {
+
         labstore::nfs_mount { 'maps-on-labstore1003':
             mount_name  => 'maps',
             project     => $::labsproject,
@@ -36,32 +37,8 @@ class role::labs::nfsclient(
             lookupcache => $lookupcache,
         }
 
-        # Temp - to remove existing mounts from labstore1001
-        labstore::nfs_mount { 'maps-project-on-labstoresvc':
-            ensure      => 'absent',
-            mount_name  => 'project',
-            project     => $::labsproject,
-            options     => ['rw', $mode],
-            mount_path  => '/data/project',
-            share_path  => "/project/${::labsproject}/project",
-            server      => 'labstore.svc.eqiad.wmnet',
-            block       => true,
-            lookupcache => $lookupcache,
-        }
-
-        labstore::nfs_mount { 'maps-home-on-labstoresvc':
-            ensure      => 'absent',
-            mount_name  => 'home',
-            project     => $::labsproject,
-            options     => ['rw', 'hard'],
-            mount_path  => '/home',
-            share_path  => "/project/${::labsproject}/home",
-            server      => 'labstore.svc.eqiad.wmnet',
-            block       => true,
-            lookupcache => $lookupcache,
-        }
-
         if mount_nfs_volume($::labsproject, 'maps') {
+
             file { '/data/project':
                 ensure  => 'link',
                 target  => '/mnt/nfs/labstore1003-maps/project',
@@ -76,18 +53,6 @@ class role::labs::nfsclient(
                             Labstore::Nfs_mount['maps-home-on-labstoresvc']],
             }
         }
-
-    }
-
-    labstore::nfs_mount { 'scratch-on-labstoresvc':
-        ensure      => absent,
-        mount_name  => 'scratch',
-        project     => $::labsproject,
-        options     => ['rw', 'soft', 'timeo=300', 'retrans=3'],
-        mount_path  => '/data/scratch',
-        server      => 'labstore.svc.eqiad.wmnet',
-        share_path  => '/scratch',
-        lookupcache => $lookupcache,
     }
 
     labstore::nfs_mount { 'scratch-on-labstore1003':
@@ -100,15 +65,6 @@ class role::labs::nfsclient(
         lookupcache => $lookupcache,
     }
 
-    if mount_nfs_volume($::labsproject, 'scratch') {
-        file { '/data/scratch':
-            ensure  => 'link',
-            target  => '/mnt/nfs/labstore1003-scratch',
-            require => [Labstore::Nfs_mount['scratch-on-labstoresvc'],
-                        Labstore::Nfs_mount['scratch-on-labstore1003']],
-        }
-    }
-
     labstore::nfs_mount { 'dumps-on-labstore1003':
         mount_name  => 'dumps',
         project     => $::labsproject,
@@ -117,5 +73,13 @@ class role::labs::nfsclient(
         share_path  => '/dumps',
         server      => 'labstore1003.eqiad.wmnet',
         lookupcache => $lookupcache,
+    }
+
+    if mount_nfs_volume($::labsproject, 'scratch') {
+        file { '/data/scratch':
+            ensure  => 'link',
+            target  => '/mnt/nfs/labstore1003-scratch',
+            require => Labstore::Nfs_mount['scratch-on-labstoresvc'],
+        }
     }
 }
