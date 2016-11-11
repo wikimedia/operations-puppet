@@ -17,7 +17,8 @@ class role::toollabs::node::compute::general {
     system::role { 'toollabs::node::compute::general': description => 'General computation node' }
 
     class { 'gridengine::exec_host':
-        config => 'toollabs/gridengine/host-vmem.erb',
+        config  => 'toollabs/gridengine/host-vmem.erb',
+        require => Mount['/var/lib/gridengine'],
     }
 
     class { '::toollabs::hostgroups': groups => [ '@general' ] }
