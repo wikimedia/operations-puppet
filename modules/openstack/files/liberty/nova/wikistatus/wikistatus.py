@@ -219,6 +219,7 @@ class WikiStatus(notifier._Driver):
 
         if event_type == 'compute.instance.delete.start':
             delete_page = True
+            page_string = ""
         else:
             delete_page = False
             page_string = "%s\n{{InstanceStatus%s}}\n%s" % (begin_comment,
