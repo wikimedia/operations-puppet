@@ -120,4 +120,26 @@ class toollabs::master inherits toollabs {
         mode   => '0555',
         source => 'puppet:///modules/toollabs/gridscripts/runninggridjobsmail.py',
     }
+
+    # Mount the gridengine spool, where the engine stores queues &c.
+    include toollabs
+
+    file { "${toollabs::sysdir}/gridengine/spool":
+        ensure  => directory,
+        require => File[$toollabs::sysdir, $toollabs::geconf]
+    }
+
+    file { '/var/spool/gridengine':
+        ensure  => directory,
+    }
+
+    mount { '/var/spool/gridengine':
+        ensure  => mounted,
+        atboot  => false,
+        device  => "${toollabs::sysdir}/gridengine/spool",
+        fstype  => none,
+        options => 'rw,bind,noauto',
+        require => File["${toollabs::sysdir}/gridengine/spool",
+                        '/var/spool/gridengine'],
+    }
 }
