@@ -22,15 +22,14 @@ define labstore::device_backup (
         'saturday'  => 6,
     }
 
-    # Establish what list these alerts should go to
-    # environment => 'MAILTO=labs-admins@wikimedia.org'
     $block_sync='/usr/local/sbin/block_sync'
     cron { "block_sync-${remote_vg}/${remote_lv}=>${localdev}":
-        ensure  => 'present',
-        user    => 'root',
-        command => "${block_sync} ${remote_ip} ${remote_vg} ${remote_lv} ${remote_snapshot} ${localdev}",
-        weekday => $day[$weekday],
-        hour    => $hour,
-        minute  => $minute,
+        ensure      => 'present',
+        user        => 'root',
+        command     => "${block_sync} ${remote_ip} ${remote_vg} ${remote_lv} ${remote_snapshot} ${localdev}",
+        weekday     => $day[$weekday],
+        hour        => $hour,
+        minute      => $minute,
+        environment => 'MAILTO=labs-admin@lists.wikimedia.org'
     }
 }
