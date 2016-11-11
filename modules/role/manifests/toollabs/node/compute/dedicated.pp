@@ -40,7 +40,8 @@ class role::toollabs::node::compute::dedicated($dedicated_tool = $::node_dedicat
     }
 
     class { 'gridengine::exec_host':
-        config => 'toollabs/gridengine/host-unrestricted.erb',
+        config  => 'toollabs/gridengine/host-unrestricted.erb',
+        require => Mount['/var/lib/gridengine'],
     }
 
     file { '/usr/local/bin/jobkill':

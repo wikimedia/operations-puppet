@@ -23,7 +23,8 @@ class role::toollabs::node::web {
     }
 
     class { 'gridengine::exec_host':
-        config => 'toollabs/gridengine/host-web.erb',
+        config  => 'toollabs/gridengine/host-web.erb',
+        require => Mount['/var/lib/gridengine'],
     }
 
     file { '/usr/local/lib/python2.7/dist-packages/portgrabber.py':
