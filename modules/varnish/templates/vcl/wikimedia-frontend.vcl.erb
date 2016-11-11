@@ -429,6 +429,7 @@ sub vcl_deliver {
 // Varnish4 vcl_synth+vcl_backend_error
 
 sub vcl_synth {
+	set resp.http.X-CDIS = "int";
 	call deliver_synth_;
 	call https_error_redirect;
 	call cluster_fe_err_synth;
@@ -444,6 +445,7 @@ sub vcl_backend_error {
 	if (beresp.status == 503 && bereq.retries == 0 && bereq.method ~ "^(GET|HEAD|OPTIONS|PUT|DELETE)$") {
 		return(retry);
 	}
+	set beresp.http.X-CDIS = "int";
 	if (beresp.status > 400 && beresp.status != 413) {
 		call backend_error_errorpage;
 	}
