@@ -12,6 +12,7 @@
 #             checked out from gerrit using a default gerrit url.
 #             If you set this, please specify the full repository url.
 # $+branch+:: Branch you would like to check out.
+# $+bare+:: Create a bare repo
 # $+ensure+:: _absent_, _present_, or _latest_.  Defaults to _present_.
 #             - _present_ (default) will just clone once.
 #             - _latest_ will execute a git pull if there are any changes.
@@ -19,7 +20,8 @@
 # $+owner+:: Owner of $directory, default: _root_.  git commands will be run
 #  by this user.
 # $+group+:: Group owner of $directory, default: 'root'
-# $+recurse_submodules:: If true, git
+# $+recurse_submodules:: If true, append --recurse-submodules to the clone
+#                        command
 # $+shared+:: Enable git's core.sharedRepository=group setting for sharing the
 # repository between serveral users, default: false
 # $+umask+:: umask value that git operations should run under,
@@ -49,6 +51,7 @@
 define git::clone(
     $directory,
     $origin=undef,
+    $bare=false,
     $branch='',
     $ssh='',
     $ensure='present',
@@ -135,18 +138,26 @@ define git::clone(
                 $shared_arg = ''
             }
 
+            if $bare {
+                $bare_arg = '--bare '
+                $creates = "${directory}/HEAD"
+            } else {
+                $bare_arg = ''
+                $creates = "${directory}/.git/config"
+            }
+
             $git = '/usr/bin/git'
 
             # set PATH for following execs
             Exec { path => '/usr/bin:/bin' }
             # clone the repository
             exec { "git_clone_${title}":
-                command     => "${git} ${shared_arg} clone ${recurse_submodules_arg}${brancharg}${remote}${deptharg} ${directory}",
+                command     => "${git} ${shared_arg} clone ${recurse_submodules_arg}${brancharg}${bare_arg}${remote}${deptharg} ${directory}",
                 provider    => shell,
                 logoutput   => on_failure,
                 cwd         => '/tmp',
                 environment => $env,
-                creates     => "${directory}/.git/config",
+                creates     => $creates,
                 user        => $owner,
                 group       => $group,
                 umask       => $git_umask,
@@ -170,37 +181,50 @@ define git::clone(
                     ''      => 'remotes/origin/HEAD',
                     default => "remotes/origin/${branch}",
                 }
-                exec { "git_pull_${title}":
-                    cwd       => $directory,
-                    command   => "${git} ${shared_arg} pull ${recurse_submodules_arg}--quiet${deptharg}",
-                    provider  => shell,
-                    logoutput => on_failure,
-                    # git diff --quiet will exit 1 (return false)
-                    #  if there are differences
-                    unless    => "${git} fetch && ${git} diff --quiet ${remote_to_check}",
-                    user      => $owner,
-                    group     => $group,
-                    umask     => $git_umask,
-                    require   => Exec["git_clone_${title}"],
-                }
-                # If we want submodules up to date, then we need
-                # to run git submodule update --init after
-                # git pull is run.
-                if $recurse_submodules {
-                    exec { "git_submodule_update_${title}":
-                        command     => "${git} ${shared_arg} submodule update --init",
-                        provider    => shell,
-                        cwd         => $directory,
-                        environment => $env,
-                        refreshonly => true,
-                        user        => $owner,
-                        group       => $group,
-                        umask       => $git_umask,
-                        subscribe   => Exec["git_pull_${title}"],
+
+                if $bare {
+                    exec { "git_fetch_${title}":
+                        cwd       => $directory,
+                        command   => "${git} ${shared_arg} fetch --quiet${deptharg}",
+                        provider  => shell,
+                        logoutput => on_failure,
+                        user      => $owner,
+                        group     => $group,
+                        umask     => $git_umask,
+                        require   => Exec["git_clone_${title}"],
+                    }
+                } else {
+                    exec { "git_pull_${title}":
+                        cwd       => $directory,
+                        command   => "${git} ${shared_arg} pull ${recurse_submodules_arg}--quiet${deptharg}",
+                        provider  => shell,
+                        logoutput => on_failure,
+                        # git diff --quiet will exit 1 (return false)
+                        #  if there are differences
+                        unless    => "${git} fetch && ${git} diff --quiet ${remote_to_check}",
+                        user      => $owner,
+                        group     => $group,
+                        umask     => $git_umask,
+                        require   => Exec["git_clone_${title}"],
+                    }
+                    # If we want submodules up to date, then we need
+                    # to run git submodule update --init after
+                    # git pull is run.
+                    if $recurse_submodules {
+                        exec { "git_submodule_update_${title}":
+                            command     => "${git} ${shared_arg} submodule update --init",
+                            provider    => shell,
+                            cwd         => $directory,
+                            environment => $env,
+                            refreshonly => true,
+                            user        => $owner,
+                            group       => $group,
+                            umask       => $git_umask,
+                            subscribe   => Exec["git_pull_${title}"],
+                        }
                     }
                 }
             }
-
         }
     }
 }
