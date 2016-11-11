@@ -84,11 +84,6 @@ class role::labs::nfs::secondary($monitor = 'eth0') {
         enable => false,
     }
 
-    class { 'labstore::monitoring::drbd':
-        drbd_role  => $drbd_role,
-        cluster_ip => $cluster_ip,
-    }
-
     # state via nfs-manage
     service { 'nfs-kernel-server':
         enable => false,
@@ -101,4 +96,8 @@ class role::labs::nfs::secondary($monitor = 'eth0') {
         group   => 'root',
     }
 
+    class { 'labstore::monitoring::secondary':
+        drbd_role  => $drbd_role,
+        cluster_ip => $cluster_ip,
+    }
 }
