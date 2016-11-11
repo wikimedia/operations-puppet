@@ -27,7 +27,7 @@ class labstore::monitoring::secondary($drbd_role, $cluster_ip, $resource = 'all'
     }
 
     nrpe::monitor_service { 'check_drbd_status':
-        description  => 'Check status of DRBD node',
+        description  => 'DRBD node status',
         nrpe_command => "/usr/bin/sudo /usr/local/sbin/check_drbd_status ${resource}",
         require      => File['/usr/local/sbin/check_drbd_status'],
     }
@@ -40,7 +40,7 @@ class labstore::monitoring::secondary($drbd_role, $cluster_ip, $resource = 'all'
     }
 
     nrpe::monitor_service { 'check_drbd_role':
-        description  => 'Check DRBD role',
+        description  => 'DRBD role',
         nrpe_command => "/usr/bin/sudo /usr/local/sbin/check_drbd_role ${::hostname} ${drbd_role}",
         require      => File['/usr/local/sbin/check_drbd_role'],
     }
@@ -53,7 +53,7 @@ class labstore::monitoring::secondary($drbd_role, $cluster_ip, $resource = 'all'
     }
 
     nrpe::monitor_service { 'check_drbd_cluster_ip':
-        description  => 'Check DRBD Cluster IP assignment',
+        description  => 'DRBD Cluster IP assignment',
         nrpe_command => "/usr/bin/sudo /usr/local/sbin/check_drbd_cluster_ip ${::hostname} ${drbd_role} ${cluster_ip}",
         require      => File['/usr/local/sbin/check_drbd_cluster_ip'],
     }
@@ -71,7 +71,7 @@ class labstore::monitoring::secondary($drbd_role, $cluster_ip, $resource = 'all'
     }
 
     nrpe::monitor_service { 'check_nfs_status':
-        description  => 'Check if NFS is served over cluster IP',
+        description  => 'NFS served over cluster IP',
         nrpe_command => "/usr/bin/sudo /usr/local/sbin/check_nfs_status ${cluster_ip}",
         require      => File['/usr/local/sbin/check_nfs_status'],
     }
