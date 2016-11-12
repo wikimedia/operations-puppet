@@ -28,7 +28,7 @@ class ores::web(
         config          => {
             'wsgi-file'   => "${ores::base::config_path}/ores_wsgi.py",
             chdir         => $ores::base::config_path,
-            need-plugins  => 'python3,stats_pusher_statsd',
+            need-plugins  => 'python3,stats_pusher_statsd,logsocket',
             venv          => $ores::base::venv_path,
             logformat     => '[pid: %(pid)] %(addr) (%(user)) {%(vars) vars in %(pktsize) bytes} [%(ctime)] %(method) %(uri) => generated %(rsize) bytes in %(msecs) msecs (%(proto) %(status)) %(headers) headers in %(hsize) bytes (%(switches) switches on core %(core)) user agent "%(uagent)"',
             processes     => $processes,

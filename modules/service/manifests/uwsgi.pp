@@ -150,6 +150,22 @@ define service::uwsgi(
             http-socket => "0.0.0.0:${port}",
             processes   => $no_workers,
             die-on-term => true,
+            logger        => [
+                "local file:${log_dir}/main.log",
+                "logstash socket:${service::configuration::logstash_host}:${service::configuration::logstash_port}",
+            ],
+            log-route     => ['local .*', 'logstash .*'],
+            log-encoder   => [
+                # lint:ignore:single_quote_string_with_variables
+                # Add a timestamps to local log messages
+                'format:local [${strftime:%%Y-%%m-%%dT%%H:%%M:%%S}] ${msgnl}',
+
+                # Encode messages to the logstash logger as json datagrams.
+                # msgpack would be nicer, but the jessie uwsgi package doesn't
+                # include the msgpack formatter.
+                'json:logstash {"@timestamp":"${strftime:%%Y-%%m-%%dT%%H:%%M:%%S}","type":"${title}","logger_name":"uwsgi","host":"%h","level":"ERROR","message":"${msg}"}',
+                #lint:endignore
+            ],
     }
     $complete_config = deep_merge($base_config, $local_log_config, $config)
 
