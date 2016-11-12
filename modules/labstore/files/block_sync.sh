@@ -36,13 +36,18 @@ fi
 
 set -e
 
-$remote_connect "/usr/bin/test -e ${BDSYNC}"
-$remote_connect "/usr/bin/test -e ${SNAPSHOT_MGR}"
+(
+    /usr/bin/flock --nonblock --exclusive 200
 
-$remote_connect "${SNAPSHOT_MGR} create ${r_snapshot_name} ${r_vg}/${r_lv} --force"
+    $remote_connect "/usr/bin/test -e ${BDSYNC}"
+    $remote_connect "/usr/bin/test -e ${SNAPSHOT_MGR}"
 
-$BDSYNC --blocksize=$blocksize \
-        --remdata "${remote_connect} 'nice -${remotenice} ${BDSYNC} --server'" \
-        $localdev "/dev/${r_vg}/${r_snapshot_name}" | \
-        pv $PV_OPTIONS | \
-        sudo $BDSYNC --patch=$localdev
+    $remote_connect "${SNAPSHOT_MGR} create ${r_snapshot_name} ${r_vg}/${r_lv} --force"
+
+    $BDSYNC --blocksize=$blocksize \
+            --remdata "${remote_connect} 'nice -${remotenice} ${BDSYNC} --server'" \
+            $localdev "/dev/${r_vg}/${r_snapshot_name}" | \
+            pv $PV_OPTIONS | \
+            sudo $BDSYNC --patch=$localdev
+
+) 200>/var/lock/${r_vg}_${r_lv}_backup.lock
