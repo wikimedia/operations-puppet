@@ -11,6 +11,7 @@ class ores::web(
     $extra_config = undef,
 ) {
     require ::ores::base
+    include service::configuration
 
     # Need to be able to also restart the worker. The uwsgi service is
     # hopefully temporary
@@ -20,6 +21,7 @@ class ores::web(
     ]
 
     $processes = $::processorcount * $workers_per_core
+    $log_dir = "${service::configuration::log_dir}/ores"
     service::uwsgi { 'ores':
         port            => $port,
         sudo_rules      => $sudo_rules,
@@ -28,7 +30,7 @@ class ores::web(
         config          => {
             'wsgi-file'   => "${ores::base::config_path}/ores_wsgi.py",
             chdir         => $ores::base::config_path,
-            need-plugins  => 'python3,stats_pusher_statsd',
+            need-plugins  => 'python3,stats_pusher_statsd,logsocket',
             venv          => $ores::base::venv_path,
             logformat     => '[pid: %(pid)] %(addr) (%(user)) {%(vars) vars in %(pktsize) bytes} [%(ctime)] %(method) %(uri) => generated %(rsize) bytes in %(msecs) msecs (%(proto) %(status)) %(headers) headers in %(hsize) bytes (%(switches) switches on core %(core)) user agent "%(uagent)"',
             processes     => $processes,
@@ -36,6 +38,22 @@ class ores::web(
             max-requests  => 200,
             stats-push    => "statsd:${graphite_server}:8125,ores.${::hostname}.uwsgi",
             memory-report => true,
+            logger        => [
+                "local file:${log_dir}/main.log",
+                "logstash socket:${service::configuration::logstash_host}:${service::configuration::logstash_port}",
+            ],
+            log-route     => ['local .*', 'logstash .*'],
+            log-encoder   => [
+                # lint:ignore:single_quote_string_with_variables
+                # Add a timestamps to local log messages
+                'format:local [${strftime:%%Y-%%m-%%dT%%H:%%M:%%S}] ${msgnl}',
+
+                # Encode messages to the logstash logger as json datagrams.
+                # msgpack would be nicer, but the jessie uwsgi package doesn't
+                # include the msgpack formatter.
+                'json:logstash {"@timestamp":"${strftime:%%Y-%%m-%%dT%%H:%%M:%%S}","type":"ores","logger_name":"uwsgi","host":"%h","level":"ERROR","message":"${msg}"}',
+                #lint:endignore
+            ],
         },
     }
 
