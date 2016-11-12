@@ -54,6 +54,7 @@ wiki_opts = [
                help='Password for wiki_login.'),
     cfg.MultiStrOpt('wiki_eventtype_whitelist',
                     default=['compute.instance.delete.start',
+                             'compute.instance.delete.end',
                              'compute.instance.create.start',
                              'compute.instance.create.end',
                              'compute.instance.rebuild.start',
@@ -222,7 +223,7 @@ class WikiStatus(notifier._Driver):
         for key in template_param_dict:
             fields_string += "\n|%s=%s" % (key, template_param_dict[key])
 
-        if event_type == 'compute.instance.delete.start':
+        if event_type == 'compute.instance.delete.end':
             delete_page = True
             page_string = ""
         else:
