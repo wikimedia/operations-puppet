@@ -157,6 +157,7 @@ class WikiStatus(notifier._Driver):
         payload = message['payload']
         instance = payload['instance_id']
         instance_name = payload['display_name']
+        project_id = payload['tenant_id']
 
         template_param_dict = {}
         for field in self.RawTemplateFields:
@@ -164,18 +165,19 @@ class WikiStatus(notifier._Driver):
 
         template_param_dict['username'] = payload['user_id']
 
+        fqdn = "%s.%s.%s" % (instance_name, project_id,
+                             CONF.wiki_instance_dns_domain)
+        resource_name = fqdn
+
+        if event_type == 'compute.instance.delete.end':
+            # No need to gather up instance info, just delete the page
+            self.edit_page("", resource_name, True)
+            return
+
         inst = objects.Instance.get_by_uuid(ctxt, instance)
 
         simple_id = inst['id']
         ec2_id = 'i-%08x' % simple_id
-
-        if CONF.wiki_instance_dns_domain:
-            fqdn = "%s.%s.%s" % (instance_name, inst['project_id'],
-                                 CONF.wiki_instance_dns_domain)
-            resource_name = fqdn
-        else:
-            fqdn = instance_name
-            resource_name = ec2_id
 
         template_param_dict['cpu_count'] = inst['vcpus']
         template_param_dict['disk_gb_current'] = inst['ephemeral_gb']
@@ -185,7 +187,7 @@ class WikiStatus(notifier._Driver):
         template_param_dict['original_host'] = inst['launched_on']
         template_param_dict['fqdn'] = fqdn
         template_param_dict['ec2_id'] = ec2_id
-        template_param_dict['project_name'] = inst['project_id']
+        template_param_dict['project_name'] = project_id
         template_param_dict['region'] = CONF.wiki_instance_region
 
         ips = []
@@ -223,16 +225,11 @@ class WikiStatus(notifier._Driver):
         for key in template_param_dict:
             fields_string += "\n|%s=%s" % (key, template_param_dict[key])
 
-        if event_type == 'compute.instance.delete.end':
-            delete_page = True
-            page_string = ""
-        else:
-            delete_page = False
-            page_string = "%s\n{{InstanceStatus%s}}\n%s" % (begin_comment,
-                                                            fields_string,
-                                                            end_comment)
+        page_string = "%s\n{{InstanceStatus%s}}\n%s" % (begin_comment,
+                                                        fields_string,
+                                                        end_comment)
 
-        self.edit_page(page_string, resource_name, delete_page)
+        self.edit_page(page_string, resource_name, False)
 
     def edit_page(self, page_string, resource_name, delete_page,
                   second_try=False):
