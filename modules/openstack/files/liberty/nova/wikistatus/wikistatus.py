@@ -107,6 +107,7 @@ class WikiStatus(notifier._Driver):
 
     @staticmethod
     def _wiki_login(host):
+        LOG.warning("Logging in to wikitech to update a status page.")
         site = mwclient.Site(("https", host),
                              retry_timeout=10,
                              max_retries=3)
@@ -121,7 +122,7 @@ class WikiStatus(notifier._Driver):
                 except mwclient.APIError:
                     LOG.exception(
                         "mwclient login failed, %d more tries" % count)
-                    time.sleep(2)
+                    time.sleep(20)
             raise mwclient.MaximumRetriesExceeded()
         else:
             LOG.warning("Unable to reach %s.  We'll keep trying, "
