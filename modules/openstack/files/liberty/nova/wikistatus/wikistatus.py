@@ -103,11 +103,11 @@ class WikiStatus(notifier._Driver):
     def __init__(self, conf, topics, transport, version=1.0):
         self.host = CONF.wiki_host
         self._image_service = image.glance.get_default_image_service()
-        self._thread_local = threading.local()
+        self.site_lock = threading.Lock()
+        self._site = None
 
     @staticmethod
     def _wiki_login(host):
-        LOG.warning("Logging in to wikitech to update a status page.")
         site = mwclient.Site(("https", host),
                              retry_timeout=10,
                              max_retries=3)
@@ -131,11 +131,11 @@ class WikiStatus(notifier._Driver):
             return None
 
     def _get_site(self):
-        site = getattr(self._thread_local, 'site', None)
-        if site is None:
-            site = self._wiki_login(self.host)
-            self._thread_local.site = site
-        return site
+        if self._site is None:
+            with self.site_lock:
+                if self._site is None:
+                    self._site = self._wiki_login(self.host)
+        return self._site
 
     def _deserialize_context(self, contextdict):
         context = nova.context.RequestContext(**contextdict)
@@ -271,7 +271,8 @@ class WikiStatus(notifier._Driver):
             LOG.exception(
                 "Failed to update wiki page..."
                 " trying to re-login next time.")
-            self._thread_local.site = None
+            with self.site_lock:
+                self._site = None
             failed = True
 
         if failed and not second_try:
