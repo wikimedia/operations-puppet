@@ -65,6 +65,19 @@ class openstack::horizon::service(
         mode    => '0440',
     }
 
+    # We need a horizon-specific keystone policy because horizon does weird/special
+    #  things for admin_required policies which I don't totally understand.  In particular,
+    #  some permissive policies here (e.g. "") cause Horizon to panic, not ask Keystone for permission,
+    #  and log out the user.
+    file { '/etc/openstack-dashboard/keystone_policy.json':
+        source  => "puppet:///modules/openstack/${openstack_version}/horizon/keystone_policy.json",
+        owner   => 'horizon',
+        group   => 'horizon',
+        notify  => Service['apache2'],
+        require => Package['openstack-dashboard'],
+        mode    => '0440',
+    }
+
     # With luck, in the future all horizon policy files will be identical to the service policies
     #  like this one is.
     file { '/etc/openstack-dashboard/keystone_policy.json':
