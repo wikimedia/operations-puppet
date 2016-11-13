@@ -114,8 +114,8 @@ class WikiStatus(notifier._Driver):
                                domain=CONF.wiki_domain)
                     return site
                 except mwclient.APIError:
-                    LOG.warning("mwclient login failed, will try %s more times"
-                                % count)
+                    LOG.exception(
+                        "mwclient login failed, will try %d more times" % count)
                     time.sleep(2)
             raise mwclient.MaximumRetriesExceeded()
         else:
