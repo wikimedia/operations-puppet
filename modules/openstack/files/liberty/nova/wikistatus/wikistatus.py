@@ -13,6 +13,7 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 
+import threading
 import time
 
 import mwclient
@@ -100,6 +101,7 @@ class WikiStatus(notifier._Driver):
     def __init__(self, conf, topics, transport, version=1.0):
         self.host = CONF.wiki_host
         self._image_service = image.glance.get_default_image_service()
+        self._thread_local = threading.local()
 
     @staticmethod
     def _wiki_login(host):
@@ -123,6 +125,13 @@ class WikiStatus(notifier._Driver):
                         "but pages will be out of sync in the meantime."
                         % host)
             return None
+
+    def _get_site(self):
+        site = getattr(self._thread_local, 'site', None)
+        if site is None:
+            site = self._wiki_login(self.host)
+            self._thread_local.site = site
+        return site
 
     def _deserialize_context(self, contextdict):
         context = nova.context.RequestContext(**contextdict)
@@ -215,7 +224,7 @@ class WikiStatus(notifier._Driver):
                                                             fields_string,
                                                             end_comment)
 
-        site = self._wiki_login(self.host)
+        site = self._get_site()
         pagename = "%s%s" % (CONF.wiki_page_prefix, resourceName)
         LOG.debug("wikistatus:  Writing instance info"
                   " to page http://%s/wiki/%s" %
@@ -246,5 +255,7 @@ class WikiStatus(notifier._Driver):
                 page.save(newText, "Auto update of instance info.")
         except (mwclient.errors.InsufficientPermission,
                 mwclient.errors.LoginError):
-            LOG.debug("Failed to update wiki page..."
-                      " trying to re-login next time.")
+            LOG.exception(
+                "Failed to update wiki page..."
+                " trying to re-login next time.")
+            self._thread_local.site = None
