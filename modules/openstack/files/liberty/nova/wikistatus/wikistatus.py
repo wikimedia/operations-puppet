@@ -100,6 +100,7 @@ class WikiStatus(notifier._Driver):
     def __init__(self, conf, topics, transport, version=1.0):
         self.host = CONF.wiki_host
         self._image_service = image.glance.get_default_image_service()
+        self.site = None
 
     @staticmethod
     def _wiki_login(host):
@@ -215,13 +216,14 @@ class WikiStatus(notifier._Driver):
                                                             fields_string,
                                                             end_comment)
 
-        site = self._wiki_login(self.host)
+        if self.site is None:
+            self.site = self._wiki_login(self.host)
         pagename = "%s%s" % (CONF.wiki_page_prefix, resourceName)
         LOG.debug("wikistatus:  Writing instance info"
                   " to page http://%s/wiki/%s" %
                   (self.host, pagename))
 
-        page = site.Pages[pagename]
+        page = self.site.Pages[pagename]
         try:
             if delete_page:
                 page.delete(reason='Instance deleted')
@@ -246,5 +248,7 @@ class WikiStatus(notifier._Driver):
                 page.save(newText, "Auto update of instance info.")
         except (mwclient.errors.InsufficientPermission,
                 mwclient.errors.LoginError):
-            LOG.debug("Failed to update wiki page..."
-                      " trying to re-login next time.")
+            LOG.exception(
+                "Failed to update wiki page..."
+                " trying to re-login next time.")
+            self.site = None
