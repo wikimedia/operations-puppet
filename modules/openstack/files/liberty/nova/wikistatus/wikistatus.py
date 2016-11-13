@@ -119,7 +119,7 @@ class WikiStatus(notifier._Driver):
                     time.sleep(2)
             raise mwclient.MaximumRetriesExceeded()
         else:
-            LOG.warning("Unable to reach %s.  We'll keep trying, "
+            LOG.exception("Unable to reach %s.  We'll keep trying, "
                         "but pages will be out of sync in the meantime."
                         % host)
             return None
