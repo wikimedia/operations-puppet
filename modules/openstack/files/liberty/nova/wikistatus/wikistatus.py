@@ -13,6 +13,7 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 
+import threading
 import time
 
 import mwclient
@@ -100,6 +101,7 @@ class WikiStatus(notifier._Driver):
     def __init__(self, conf, topics, transport, version=1.0):
         self.host = CONF.wiki_host
         self._image_service = image.glance.get_default_image_service()
+        self._thread_local = threading.local()
 
     @staticmethod
     def _wiki_login(host):
@@ -115,7 +117,7 @@ class WikiStatus(notifier._Driver):
                     return site
                 except mwclient.APIError:
                     LOG.exception(
-                        "mwclient login failed, will try %d more times" % count)
+                        "mwclient login failed, %d more tries" % count)
                     time.sleep(2)
             raise mwclient.MaximumRetriesExceeded()
         else:
@@ -124,11 +126,19 @@ class WikiStatus(notifier._Driver):
                         % host)
             return None
 
+    def _get_site(self):
+        site = getattr(self._thread_local, 'site', None)
+        if site is None:
+            site = self._wiki_login(self.host)
+            self._thread_local.site = site
+        return site
+
     def _deserialize_context(self, contextdict):
         context = nova.context.RequestContext(**contextdict)
         return context
 
-    def notify(self, context, message, priority, retry=False):
+    def notify(self, context, message, priority,
+               retry=False):
         ctxt = self._deserialize_context(context)
 
         event_type = message.get('event_type')
@@ -156,10 +166,10 @@ class WikiStatus(notifier._Driver):
         if CONF.wiki_instance_dns_domain:
             fqdn = "%s.%s.%s" % (instance_name, inst['project_id'],
                                  CONF.wiki_instance_dns_domain)
-            resourceName = fqdn
+            resource_name = fqdn
         else:
             fqdn = instance_name
-            resourceName = ec2_id
+            resource_name = ec2_id
 
         template_param_dict['cpu_count'] = inst['vcpus']
         template_param_dict['disk_gb_current'] = inst['ephemeral_gb']
@@ -215,13 +225,18 @@ class WikiStatus(notifier._Driver):
                                                             fields_string,
                                                             end_comment)
 
-        site = self._wiki_login(self.host)
-        pagename = "%s%s" % (CONF.wiki_page_prefix, resourceName)
+        self.edit_page(page_string, resource_name, delete_page)
+
+    def edit_page(self, page_string, resource_name, delete_page,
+                  second_try=False):
+        site = self._get_site()
+        pagename = "%s%s" % (CONF.wiki_page_prefix, resource_name)
         LOG.debug("wikistatus:  Writing instance info"
                   " to page http://%s/wiki/%s" %
                   (self.host, pagename))
 
         page = site.Pages[pagename]
+        failed = False
         try:
             if delete_page:
                 page.delete(reason='Instance deleted')
@@ -246,5 +261,12 @@ class WikiStatus(notifier._Driver):
                 page.save(newText, "Auto update of instance info.")
         except (mwclient.errors.InsufficientPermission,
                 mwclient.errors.LoginError):
-            LOG.debug("Failed to update wiki page..."
-                      " trying to re-login next time.")
+            LOG.exception(
+                "Failed to update wiki page..."
+                " trying to re-login next time.")
+            self._thread_local.site = None
+            failed = True
+
+        if failed and not second_try:
+            self.edit_page(page_string, resource_name, delete_page,
+                           second_try=True)
