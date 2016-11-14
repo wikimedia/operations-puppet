@@ -153,8 +153,6 @@ private:
     gid: 50380
     mounts:
       dumps: true
-      home: true
-      project: true
       scratch: true
       tools-home: true
       tools-project: true
