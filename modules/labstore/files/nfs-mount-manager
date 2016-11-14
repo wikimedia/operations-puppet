@@ -20,7 +20,8 @@ to_umount () {
 case "$1" in
         check)
 
-            if /bin/grep -qs $2 /proc/mounts; then
+            if cat /proc/mounts | /usr/bin/awk '{print $2}' \
+                | /bin/grep -qs $2; then
                 echo "It's mounted."
             else
                 echo "It's not mounted."
