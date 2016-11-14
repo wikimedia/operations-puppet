@@ -14,12 +14,16 @@
 #
 class docker($version, $use_dockerproject=true, $proxy=undef){
     if $use_dockerproject {
+        $package = 'docker-engine'
+        $absent_package = 'docker.io'
+
         apt::repository { 'docker':
             uri        => 'https://apt.dockerproject.org/repo',
             dist       => 'debian-jessie',
             components => 'main',
             source     => false,
             keyfile    => 'puppet:///modules/docker/docker.gpg',
+            before     => Package[$package],
         }
 
         $proxy_ensure = $proxy ? {
@@ -32,9 +36,8 @@ class docker($version, $use_dockerproject=true, $proxy=undef){
             priority => '80',
             key      => 'Acquire::http::Proxy::apt.dockerproject.org',
             value    => $proxy,
+            before   => Package[$package],
         }
-        $package = 'docker-engine'
-        $absent_package = 'docker.io'
     }
     else {
         $package = 'docker.io'
