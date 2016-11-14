@@ -13,12 +13,15 @@ class base::standard_packages {
     $packages = [
         'acct',
         'ack-grep',
+        'apt-transport-https',
         'atop',
         'coreutils',
         'debian-goodies',
         'dstat',
         'ethtool',
         'gdisk',
+        'gdb',
+        'git',
         'htop',
         'httpry',
         'iperf',
@@ -47,9 +50,6 @@ class base::standard_packages {
     package { $packages:
         ensure => latest,
     }
-
-    require_package('gdb', 'apt-transport-https')
-    require_package('git')
 
     # for hardware monitoring via IPMI (T125205)
     if os_version('debian >= jessie') {

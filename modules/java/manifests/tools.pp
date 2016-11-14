@@ -5,13 +5,6 @@
 
 class java::tools {
 
-    # Can clash with base::standard_packages class
-    if ! defined ( Package['gdb'] ) {
-        package { 'gdb':
-            ensure => present
-        }
-    }
-
     # NOTE jmap is used, thus requiring a jdk to be installed
     file { '/usr/local/bin/jheapdump':
         ensure => file,
