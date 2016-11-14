@@ -36,7 +36,7 @@ class statistics::wmde {
         'openjdk-7-jdk',
         'php5',
         'php5-cli',
-        'git')
+    )
 
     include passwords::mysql::research
     # This file will render at
