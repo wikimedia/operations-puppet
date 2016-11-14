@@ -8,7 +8,7 @@ class wikidatabuilder {
         'npm',
         'php5',
         'php5-cli',
-        'git')
+    )
 
     group { 'wdbuilder':
         ensure => present,

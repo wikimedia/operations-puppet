@@ -26,7 +26,7 @@ class statistics::discovery {
   require_package(
     'php5',
     'php5-cli',
-    'git')
+  )
 
   $directories = [
     $dir,
