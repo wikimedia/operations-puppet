@@ -107,17 +107,16 @@ define labstore::nfs_mount(
 
     if ($ensure == 'absent') {
 
+        mount { $mount_path:
+            ensure  => absent,
+        }
+
         exec { "cleanup-${mount_path}":
             command   => "/usr/local/sbin/nfs-mount-manager umount ${mount_path}",
             onlyif    => "/usr/local/sbin/nfs-mount-manager check ${mount_path}",
             logoutput => true,
-            require   => File['/usr/local/sbin/nfs-mount-manager'],
-        }
-
-        mount { $mount_path:
-            ensure  => absent,
-            require => Exec["cleanup-${mount_path}"],
-            notify  => Exec["remove-${mount_path}"],
+            require   => [File['/usr/local/sbin/nfs-mount-manager'], Mount[$mount_path]],
+            notify    => Exec["remove-${mount_path}"],
         }
 
         exec { "remove-${mount_path}":
