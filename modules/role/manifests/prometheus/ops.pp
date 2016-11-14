@@ -70,9 +70,28 @@ class role::prometheus::ops {
       },
     ]
 
+    # Job definition for memcache_exporter
+    $memcached_jobs = [
+      {
+        'job_name'        => 'memcached',
+        'file_sd_configs' => [
+          { 'files' => [ "${targets_path}/memcached_*.yaml"] },
+        ]
+      },
+    ]
+
+    # Generate a list of hosts running memcached from Ganglia cluster definition
+    prometheus::cluster_config{ "memcached_${::site}":
+        dest    => "${targets_path}/memcached_${::site}.yaml",
+        site    => $::site,
+        cluster => 'memcached',
+        port    => '9150',
+        labels  => {}
+    }
+
     prometheus::server { 'ops':
         listen_address       => '127.0.0.1:9900',
-        scrape_configs_extra => array_concat($mysql_jobs, $varnish_jobs),
+        scrape_configs_extra => array_concat($mysql_jobs, $varnish_jobs, $memcached_jobs),
     }
 
     prometheus::web { 'ops':
