@@ -1,4 +1,6 @@
-class base::standard_packages {
+class base::standard_packages(
+    $common_packages,
+) {
 
     if os_version('ubuntu >= trusty') {
         package { [ "linux-tools-${::kernelrelease}", 'linux-tools-generic' ]:
@@ -10,44 +12,23 @@ class base::standard_packages {
         ensure => absent,
     }
 
-    $packages = [
+    package { $common_packages:
+        ensure => latest,
+    }
+
+    # Packages that are present only in VMs and hardware,
+    # do not make sense for containers.
+    package { [
         'acct',
-        'ack-grep',
-        'apt-transport-https',
         'atop',
-        'coreutils',
-        'debian-goodies',
-        'dstat',
         'ethtool',
         'gdisk',
-        'gdb',
-        'git',
-        'htop',
-        'httpry',
-        'iperf',
-        'jq',
+        'lldp',
         'lldpd',
         'molly-guard',
-        'moreutils',
         'ncdu',
-        'ngrep',
-        'quickstack',
-        'pv',
-        'screen',
-        'strace',
-        'sysstat',
-        'tcpdump',
-        'tmux',
-        'tree',
-        'tshark',
-        'tzdata',
-        'vim',
-        'wipe',
         'xfsprogs',
-        'zsh-beta',
-    ]
-
-    package { $packages:
+    ]:
         ensure => latest,
     }
 
