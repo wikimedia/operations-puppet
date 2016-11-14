@@ -24,24 +24,50 @@
 #   List of cassandra server names used by Kartotherian
 #
 class kartotherian(
+    $restbase_base_url,
+    $mwapi_uri,
+    $logstash_host,
+    $statsd_host,
+    $logstash_port    = 12201,
+    $statsd_port       = 8125,
     $conf_sources      = 'sources.prod.yaml',
     $contact_groups    = 'admins',
-    $cassandra_servers = hiera('cassandra::seeds'),
+    $cassandra_servers,
+    $port              = 6533,
+    $num_workers       = 'ncpu',
+    $cassandra_kartotherian_user = 'kartotherian',
+    $cassandra_kartotherian_pass,
+    $pgsql_kartotherian_user = 'kartotherian',
+    $pgsql_kartotherian_pass,
 ) {
 
     validate_array($cassandra_servers)
 
-    $cassandra_kartotherian_user = 'kartotherian'
-    $cassandra_kartotherian_pass = hiera('maps::cassandra_kartotherian_pass')
-    $pgsql_kartotherian_user = 'kartotherian'
-    $pgsql_kartotherian_pass = hiera('maps::postgresql_kartotherian_pass')
-
     service::node { 'kartotherian':
-        port            => 6533,
-        config          => template('kartotherian/config.yaml.erb'),
-        deployment      => 'scap3',
-        has_spec        => true,
-        healthcheck_url => '',
-        contact_groups  => $contact_groups,
+        port              => $port,
+        config            => template('kartotherian/config.yaml.erb'),
+        deployment        => 'scap3',
+        deployment_config => false,
+        deployment_vars   => {
+            logstash_host      => $logstash_host,
+            logstash_port      => $logstash_port,
+            metrics_host       => $statsd_host,
+            metrics_port       => $statsd_port,
+            num_workers        => $num_workers,
+            geoshapes_user     => $pgsql_kartotherian_user,
+            geoshapes_password => $pgsql_kartotherian_pass,
+            mwapi_uri          => $mwapi_uri,
+            port               => $port,
+            restbase_base_url  => $restbase_base_url,
+            conf_sources       => $conf_sources,
+            cassandra_user     => $cassandra_kartotherian_user,
+            cassandra_password => $cassandra_kartotherian_pass,
+            cassandra_servers  => $cassandra_servers,
+            osmdb_password     => $pgsql_kartotherian_pass,
+            osmdb_user         => $pgsql_kartotherian_user,
+        },
+        has_spec          => true,
+        healthcheck_url   => '',
+        contact_groups    => $contact_groups,
     }
 }
