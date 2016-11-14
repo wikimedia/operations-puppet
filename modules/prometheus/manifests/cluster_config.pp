@@ -1,18 +1,21 @@
-# == Define: prometheus::varnish_config
+# == Define: prometheus::cluster_config
 #
-# Generate prometheus targets configuration for varnish clusters.
+# Generate prometheus targets configuration for WMF clusters.
 # Data is gathered using get_clusters()
 
 # == Parameters
 # $dest:    The output file where to write the result.
 # $site:    The site to use.
 # $cluster: The cluster to use.
-# $port:    The port varnish_exporter is listening on.
+# $port:    The port to use for the target.
 # $labels:  Labels to attach to the cluster's hosts.
 
 # == Example
 #
-#  prometheus::varnish_config{ 'maps_fe':
+#  Configuration for varnish_exporter for maps, running on the frontend varnish
+#  instance.
+#
+#  prometheus::cluster_config{ 'maps_fe':
 #      dest    => "${targets_path}/varnish-maps_${::site}_frontend.yaml",
 #      site    => $::site,
 #      cluster => 'cache_maps',
@@ -20,7 +23,7 @@
 #      labels  => {'layer' => 'frontend' },
 #  }
 
-define prometheus::varnish_config(
+define prometheus::cluster_config(
   $dest,
   $site,
   $cluster,
@@ -38,6 +41,6 @@ define prometheus::varnish_config(
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-        content => template('prometheus/varnish_config.erb'),
+        content => template('prometheus/cluster_config.erb'),
     }
 }
