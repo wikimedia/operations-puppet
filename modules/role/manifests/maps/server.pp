@@ -6,7 +6,6 @@ class role::maps::server {
     include ::cassandra
     include ::cassandra::metrics
     include ::cassandra::logging
-    include ::kartotherian
     include ::tilerator
 
     ::cassandra::instance::monitoring{ 'default':
@@ -15,6 +14,19 @@ class role::maps::server {
                 'listen_address' => $::cassandra::listen_address,
             }
         },
+    }
+
+    $cassandra_hosts = hiera('cassandra::seeds')
+
+    # Some of the following parameters should be externalized in hiera as
+    # common parameters shared by multiple roles. For example, statsd or
+    # logstash configuration should not be specific to maps.
+    # Introducting global parameters is a potentially disruptive change, so it
+    # will be implemented in a specific change.
+    class { 'kartotherian':
+        cassandra_servers           => $cassandra_hosts,
+        cassandra_kartotherian_pass => hiera('maps::cassandra_kartotherian_pass'),
+        pgsql_kartotherian_pass     => hiera('maps::postgresql_kartotherian_pass'),
     }
 
     system::role { 'role::maps':
@@ -27,7 +39,6 @@ class role::maps::server {
         include ::lvs::realserver
     }
 
-    $cassandra_hosts = hiera('cassandra::seeds')
     $cassandra_hosts_ferm = join($cassandra_hosts, ' ')
 
     # Cassandra intra-node messaging
