@@ -28,12 +28,6 @@ class scap::scripts {
         mode   => '0555',
         source => 'puppet:///modules/scap/mwgrep',
     }
-    file { '/usr/local/bin/deploy2graphite':
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
-        source => 'puppet:///modules/scap/deploy2graphite',
-    }
     file { '/usr/local/bin/foreachwiki':
         owner  => 'root',
         group  => 'root',

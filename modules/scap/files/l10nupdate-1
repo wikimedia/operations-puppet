@@ -126,5 +126,4 @@ if [[ $LENGTH -lt 3600 ]]; then
 else
 	DURATION=$(date -ud @"$LENGTH" +'%-Hh %-Mm %-Ss')
 fi
-/usr/local/bin/deploy2graphite l10n $LENGTH
 /usr/local/bin/dologmsg "!log $LOGNAME@$HOSTNAME ResourceLoader cache refresh completed at $(date -ud @$ENDED) (duration $DURATION)"
