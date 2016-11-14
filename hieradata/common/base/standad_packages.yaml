@@ -1,0 +1,32 @@
+# List of packages to be installed as base everywhere
+# Production, Labs and Containers as well. Do not put
+# packages that only make sense on VMs / Hardware here.
+base::standard_packages::common_packages:
+  - acct
+  - ack-grep
+  - apt-transport-https
+  - atop
+  - coreutils
+  - debian-goodies
+  - dstat
+  - gdb
+  - git
+  - htop
+  - httpry
+  - iperf
+  - jq
+  - moreutils
+  - ngrep
+  - quickstack
+  - pv
+  - screen
+  - strace
+  - sysstat
+  - tcpdump
+  - tmux
+  - tree
+  - tshark
+  - tzdata
+  - vim
+  - wipe
+  - zsh-beta
