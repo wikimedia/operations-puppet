@@ -9,13 +9,6 @@ class authdns::scripts {
         }
     }
 
-    # Can clash with base::standard_packages class
-    if ! defined(Package['git']){
-        package { 'git':
-            ensure => present,
-        }
-    }
-
     file { '/usr/local/bin/authdns-gen-zones':
         ensure => present,
         mode   => '0555',
