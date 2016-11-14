@@ -76,50 +76,48 @@ class role::labs::nfsclient(
             lookupcache => $lookupcache,
         }
 
-        # Uncomment to remove existing mounts from labstore1001
-
         # Temp: can remove after migration
-        # labstore::nfs_mount { 'tools-project-on-labstoresvc':
-        #     ensure      => 'absent',
-        #     mount_name  => 'project',
-        #     project     => $::labsproject,
-        #     options     => ['rw', $mode],
-        #     mount_path  => '/data/project',
-        #     share_path  => "/project/${::labsproject}/project",
-        #     server      => 'labstore.svc.eqiad.wmnet',
-        #     block       => true,
-        #     lookupcache => $lookupcache,
-        # }
-        #
-        # labstore::nfs_mount { 'tools-home-on-labstoresvc':
-        #     ensure      => 'absent',
-        #     mount_name  => 'home',
-        #     project     => $::labsproject,
-        #     options     => ['rw', 'hard'],
-        #     mount_path  => '/home',
-        #     share_path  => "/project/${::labsproject}/home",
-        #     server      => 'labstore.svc.eqiad.wmnet',
-        #     block       => true,
-        #     lookupcache => $lookupcache,
-        # }
-        #
-        # # Sets up symlinks from new tools mounts to /data/project and /home
-        # if mount_nfs_volume($::labsproject, 'tools-project') {
-        #     file { '/data/project':
-        #         ensure  => 'link',
-        #         target  => '/mnt/nfs/labstore-secondary-tools-project',
-        #         require => [Labstore::Nfs_mount['tools-project-on-labstore-secondary'],
-        #                     Labstore::Nfs_mount['tools-project-on-labstoresvc']],
-        #     }
-        # }
-        # if mount_nfs_volume($::labsproject, 'tools-home')
-        #     file { '/home':
-        #         ensure  => 'link',
-        #         target  => '/mnt/nfs/labstore-secondary-tools-home',
-        #         require => [Labstore::Nfs_mount['tools-home-on-labstore-secondary'],
-        #                     Labstore::Nfs_mount['tools-home-on-labstoresvc']],
-        #     }
-        # }
+        labstore::nfs_mount { 'tools-project-on-labstoresvc':
+            ensure      => 'absent',
+            mount_name  => 'project',
+            project     => $::labsproject,
+            options     => ['rw', $mode],
+            mount_path  => '/data/project',
+            share_path  => "/project/${::labsproject}/project",
+            server      => 'labstore.svc.eqiad.wmnet',
+            block       => true,
+            lookupcache => $lookupcache,
+        }
+
+        labstore::nfs_mount { 'tools-home-on-labstoresvc':
+            ensure      => 'absent',
+            mount_name  => 'home',
+            project     => $::labsproject,
+            options     => ['rw', 'hard'],
+            mount_path  => '/home',
+            share_path  => "/project/${::labsproject}/home",
+            server      => 'labstore.svc.eqiad.wmnet',
+            block       => true,
+            lookupcache => $lookupcache,
+        }
+
+        # Sets up symlinks from new tools mounts to /data/project and /home
+        if mount_nfs_volume($::labsproject, 'tools-project') {
+            file { '/data/project':
+                ensure  => 'link',
+                target  => '/mnt/nfs/labstore-secondary-tools-project',
+                require => [Labstore::Nfs_mount['tools-project-on-labstore-secondary'],
+                            Labstore::Nfs_mount['tools-project-on-labstoresvc']],
+            }
+        }
+        if mount_nfs_volume($::labsproject, 'tools-home') {
+            file { '/home':
+                ensure  => 'link',
+                target  => '/mnt/nfs/labstore-secondary-tools-home',
+                require => [Labstore::Nfs_mount['tools-home-on-labstore-secondary'],
+                            Labstore::Nfs_mount['tools-home-on-labstoresvc']],
+            }
+        }
     }
 
     labstore::nfs_mount { 'scratch-on-labstore1003':
