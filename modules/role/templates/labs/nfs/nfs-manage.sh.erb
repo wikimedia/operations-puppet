@@ -33,7 +33,7 @@ case $CMD in
             -i eth0 <%= @subnet_gateway_ip %> &> /dev/null
 
         <% @drbd_resource_config.each do |resource, config| %>
-        mount <%= config['device'] %> <%= config['mount_path'] -%>
+        mount -o noatime <%= config['device'] %> <%= config['mount_path'] -%>
         <% end %>
 
         /usr/sbin/drbd-overview
