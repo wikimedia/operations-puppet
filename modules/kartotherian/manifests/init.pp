@@ -45,9 +45,8 @@ class kartotherian(
 
     service::node { 'kartotherian':
         port              => $port,
-        config            => template('kartotherian/config.yaml.erb'),
         deployment        => 'scap3',
-        deployment_config => false,
+        deployment_config => true,
         deployment_vars   => {
             logstash_host      => $logstash_host,
             logstash_port      => $logstash_port,
