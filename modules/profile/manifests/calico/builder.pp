@@ -16,10 +16,14 @@ class profile::calico::builder {
         package  => 'golang-go',
         pin      => 'release a=jessie-backports',
         priority => '1001',
-        before   => Class['packages::golang::go'],
+        before   => Package['golang-go'],
     }
 
-    require_package('build-essential', 'golang-go')
+    package { 'golang-go':
+        ensure => present,
+    }
+
+    require_package('build-essential')
 
     if $proxy_address {
         file_line { 'Docker proxy':
