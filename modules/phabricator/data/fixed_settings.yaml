@@ -9,6 +9,12 @@ ui.logo:
   'logoImagePHID': 'PHID-FILE-rs3pf2brupiulr6zcnrg'
   'wordmarkText': 'Phabricator'
 
+pygments.dropdown-choices:
+  'apache': 'Apache'
+  'cucumber': 'Cucumber'
+  'less': 'Less'
+  'shell': 'Shell'
+
 ui.footer-items:
   - {name: 'Content licensed under Creative Commons Attribution-ShareAlike 3.0 (CC-BY-SA) unless otherwise noted; code licensed under GNU General Public License (GPL) or other open source licenses. By using this site, you agree to the Terms of Use and Privacy Policy.'}
   - {href: 'https://www.wikimediafoundation.org/', name: Wikimedia Foundation}
