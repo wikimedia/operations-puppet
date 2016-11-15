@@ -36,7 +36,7 @@ class role::labs::instance {
     $mount_nfs = hiera('mount_nfs', true)
     # No NFS on labs metal for now.
     if $::virtual == 'kvm' and $mount_nfs{
-        include role::labs::nfsclient
+        require role::labs::nfsclient
     }
 
     if os_version('ubuntu <= precise') {

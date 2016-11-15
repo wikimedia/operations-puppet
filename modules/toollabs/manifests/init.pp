@@ -40,7 +40,6 @@ class toollabs (
         owner   => 'root',
         group   => "${::labsproject}.admin",
         mode    => '2775',
-        require => Labstore::Nfs_client['tools-project-on-labstore-secondary'],
     }
 
     file { $store:
