@@ -18,7 +18,7 @@ class role::toollabs::node::compute::general {
 
     class { 'gridengine::exec_host':
         config  => 'toollabs/gridengine/host-vmem.erb',
-        require => Mount['/var/lib/gridengine'],
+        require => File['/var/lib/gridengine'],
     }
 
     class { '::toollabs::hostgroups': groups => [ '@general' ] }
