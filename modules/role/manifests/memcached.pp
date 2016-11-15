@@ -34,6 +34,8 @@ class role::memcached {
         }
     }
 
+    include role::prometheus::memcached_exporter
+
     # `memkeys` is a `top`-like tool for inspecting memcache key usage in real time.
     # In addition to making it available for interactive use, we configure a cronjob
     # to run once a day and log 20 seconds' worth of memcached usage stats to a CSV
