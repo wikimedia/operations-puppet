@@ -16,12 +16,12 @@ docker push  calico/node:$VERSION <%= @registry_address %>
 popd
 # Now build calicoctl
 base=$(mktemp -d)
-GOPATH="${base}/gopath"
+export GOPATH="${base}/gopath"
 _go_base="${GOPATH}/src/github.com/projectcalico/"
 mkdir -p $_go_base
 cp -r $_dir $_go_base
-cd "${go_base}/calico-containers" && glide install && \
-   make release/calicoctl
+(cd "${_go_base}/calico-containers" && glide install && \
+   make dist-calicoctl)
 base_deb=${base}/debian
 # Debian control file
 mkdir -p ${base_deb}/DEBIAN
@@ -29,13 +29,13 @@ cp -ax ${_dir}/debian/control ${base_deb}/DEBIAN
 
 # The actual binary
 mkdir -p ${base_deb}/usr/bin
-cp "${go_base}/calico-containers/release/calicoctl-*" ${base_deb}/usr/bin/calicoctl
+cp "${_go_base}/calico-containers/dist/calicoctl" ${base_deb}/usr/bin/calicoctl
 
 # Changelog, etc
 deb_doc="${base_deb}/usr/share/doc/calicoctl"
 mkdir -p ${deb_doc}
-gzip -c ${_dir}/debian/Changelog > ${deb_doc}/changelog.Debian.gz
-gzip -c ${_dir}/debian/Changelog > ${deb_doc}/changelog.gz
+gzip -c ${_dir}/debian/changelog > ${deb_doc}/changelog.Debian.gz
+gzip -c ${_dir}/debian/changelog > ${deb_doc}/changelog.gz
 cp -ax ${_dir}/debian/copyright ${deb_doc}/copyright
 
 # Lintian, forgive me

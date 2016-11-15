@@ -23,7 +23,7 @@ class profile::calico::builder {
         ensure => present,
     }
 
-    require_package('build-essential')
+    require_package('build-essential', 'fakeroot')
 
     if $proxy_address {
         file_line { 'Docker proxy':
