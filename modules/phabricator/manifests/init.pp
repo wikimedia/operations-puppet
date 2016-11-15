@@ -54,6 +54,7 @@ class phabricator (
     $trusted_proxies  = [],
     $libraries        = [],
     $settings         = {},
+    $conf_files       = {},
     $mysql_admin_user = '',
     $mysql_admin_pass = '',
     $serveradmin      = '',
@@ -195,6 +196,13 @@ class phabricator (
     file { "${phabdir}/phabricator/conf/local/local.json":
         content => template('phabricator/local.json.erb'),
         require => $base_requirements,
+        owner   => 'root',
+        group   => 'www-data',
+        mode    => '0644',
+    }
+
+    if $conf_files {
+        create_resources(phabricator::conf_env, $conf_files)
     }
 
     #default location for phabricator tracked repositories
