@@ -53,6 +53,7 @@ class phabricator::phd (
         shell  => '/bin/false',
         home   => '/var/run/phd',
         system => true,
+        groups => ['www-data']
     }
 
     logrotate::conf { 'phd':
