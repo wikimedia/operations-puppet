@@ -110,6 +110,7 @@ function sign_salt {
 
 function set_pxe_and_reboot {
     mgmtname=${1}
+    local STATUS
     if [ -z "${IPMI_PASSWORD:-}" ]; then
         echo "WARNING: IPMI_PASSWORD not found."
         if ! tty -s; then
@@ -123,7 +124,14 @@ function set_pxe_and_reboot {
         IPMI_PASSWORD=$REPLY
     fi
     IPMI_PASSWORD=$IPMI_PASSWORD ipmitool -I lanplus -H ${mgmtname} -U root -E chassis bootdev pxe
-    IPMI_PASSWORD=$IPMI_PASSWORD ipmitool -I lanplus -H ${mgmtname} -U root -E chassis power cycle
+    STATUS=$(IPMI_PASSWORD=$IPMI_PASSWORD ipmitool -I lanplus -H "${mgmtname}" -U root -E chassis power status)
+    if [[ "${STATUS}" == "Chassis Power is off" ]]; then
+        echo "Current power status is off, turning it on"
+        IPMI_PASSWORD=$IPMI_PASSWORD ipmitool -I lanplus -H "${mgmtname}" -U root -E chassis power on
+    else
+        echo "Current power status is on, power cycling"
+        IPMI_PASSWORD=$IPMI_PASSWORD ipmitool -I lanplus -H "${mgmtname}" -U root -E chassis power cycle
+    fi
 }
 
 function enable_and_run_puppet {
