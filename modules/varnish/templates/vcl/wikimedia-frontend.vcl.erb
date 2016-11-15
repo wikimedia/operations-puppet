@@ -433,7 +433,7 @@ sub vcl_synth {
 	call deliver_synth_;
 	call https_error_redirect;
 	call cluster_fe_err_synth;
-	if (resp.status > 400 && resp.status != 413) {
+	if (resp.status >= 400) {
 		call synth_errorpage;
 	}
 	return (deliver);
