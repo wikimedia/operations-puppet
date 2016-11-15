@@ -1,0 +1,3 @@
+debdeploy::grains:
+  debdeploy-puppetmaster-puppetdb:
+    value: standard
