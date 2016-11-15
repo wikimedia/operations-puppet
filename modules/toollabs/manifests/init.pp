@@ -1,20 +1,6 @@
-# Class: toollabs
-#
-# This is a "sub" role included by the actual tool labs roles and would
-# normally not be included directly in node definitions.
-#
-# Parameters:
-#
-# Actions:
-#
-# Requires:
-#
-# Sample Usage:
-#
 class toollabs (
     $external_hostname = undef,
     $external_ip = undef,
-
     $is_mail_relay = false,
     $active_mail_relay = 'tools-mail.eqiad.wmflabs',
     $mail_domain = 'tools.wmflabs.org',
@@ -22,24 +8,56 @@ class toollabs (
 
     include labs_lvm
 
-    $sysdir = '/data/project/.system'
+    package { ['nano', 'at']:
+        ensure => latest,
+    }
+
+    alternatives::select { 'editor':
+        path => '/bin/nano',
+    }
+
+    $project_path = '/data/project'
+    # should match /etc/default/gridengine
+    $sge_root     = '/var/lib/gridengine'
+    $sysdir       = "${project_path}/.system"
+    $geconf       = "${sysdir}/gridengine"
+    $collectors   = "${geconf}/collectors"
+
+    # Weird use of NFS for config centralization.
+    # Nodes drop their config into a directory.
+    #  - SSH host keys for HBA
+    #  - known_hosts
+    # *any mention of this should die with SGE*
     $store  = "${sysdir}/store"
 
-    #
-    # The $store is an incredibly horrid workaround the fact that we cannot
-    # use exported resources in our puppet setup: individual instances store
-    # information in a shared filesystem that are collected locally into
-    # files to finish up the configuration.
-    #
-    # Case in point here: SSH host keys distributed around the project for
-    # known_hosts and HBA of the execution nodes.
-    #
+    exec {'ensure-grid-is-on-NFS':
+        command => '/bin/false',
+        unless  => "/usr/bin/timeout -k 3s 5s /usr/bin/test -e ${project_path}/herald",
+    }
 
     file { $sysdir:
-        ensure => directory,
-        owner  => 'root',
-        group  => "${::labsproject}.admin",
-        mode   => '2775',
+        ensure  => directory,
+        group   => "${::labsproject}.admin",
+        mode    => '2775',
+        owner   => 'root',
+        require => Exec['ensure-grid-is-on-NFS'],
+    }
+
+    file { $geconf:
+        ensure  => directory,
+        require => File[$sysdir],
+    }
+
+    file { $sge_root:
+        ensure  => link,
+        target  => $geconf,
+        force   => true,
+        require => File[$geconf],
+    }
+
+    file { $collectors:
+        ensure  => directory,
+        require => File[$geconf],
     }
 
     file { $store:
@@ -55,64 +73,31 @@ class toollabs (
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
+        content => "${::fqdn},${::hostname},${::ipaddress} ssh-rsa ${::sshrsakey}\n${::fqdn},${::hostname},${::ipaddress} ecdsa-sha2-nistp256 ${::sshecdsakey}\n",
         require => File[$store],
-        content => "${::fqdn},${::hostname},${::ipaddress} ssh-rsa ${::sshrsakey}\n${::fqdn},${::hostname},${::ipaddress} ecdsa-sha2-nistp256 ${::sshecdsakey}\n"
     }
 
     exec { 'make_known_hosts':
         command => "/bin/cat ${store}/hostkey-* >/etc/ssh/ssh_known_hosts~",
-        require => File[$store],
         onlyif  => "/usr/bin/test -n \"\$(/usr/bin/find ${store} -maxdepth 1 \\( -type d -or -type f -name hostkey-\\* \\) -newer /etc/ssh/ssh_known_hosts~)\" -o ! -s /etc/ssh/ssh_known_hosts~",
+        require => File[$store],
     }
 
     file { '/etc/ssh/ssh_known_hosts':
         ensure  => file,
-        require => Exec['make_known_hosts'],
         source  => '/etc/ssh/ssh_known_hosts~',
         mode    => '0444',
         owner   => 'root',
         group   => 'root',
+        require => Exec['make_known_hosts'],
     }
 
-    # This is atrocious, but the only way to make certain
-    # that the gridengine system directory is properly shared
-    # between all grid nodes for proper access to accounting
-    # and scheduling.  Yes, this uses before.
+    File['/var/lib/gridengine'] -> Package <| title == 'gridengine-common' |>
 
-    $geconf     = "${sysdir}/gridengine"
-    $collectors = "${geconf}/collectors"
-
-    file { $geconf:
-        ensure  => directory,
-        require => File[$sysdir],
-    }
-
-    file { $collectors:
-        ensure  => directory,
-        require => File[$geconf],
-    }
-
-    file { '/var/lib/gridengine':
-        ensure  => directory,
-    }
-
-    mount { '/var/lib/gridengine':
-        ensure  => mounted,
-        device  => "${sysdir}/gridengine",
-        fstype  => none,
-        options => 'rw,bind,noauto',
-        require => File[
-            $geconf,
-            '/var/lib/gridengine'
-        ],
-    }
-
-    Mount['/var/lib/gridengine'] -> Package <| title == 'gridengine-common' |>
-
-    # this is a link to shared folder
     file { '/shared':
-        ensure => link,
-        target => '/data/project/.shared'
+        ensure  => link,
+        target  => "${project_path}/.shared",
+        require => Exec['ensure-grid-is-on-NFS'],
     }
 
     file { '/root/.bashrc':
@@ -160,14 +145,10 @@ class toollabs (
     }
 
     file { '/var/mail':
-        ensure => link,
-        force  => true,
-        target => "${store}/mail",
-    }
-
-    # Install at on all hosts for maintenance tasks.
-    package { 'at':
-        ensure => latest,
+        ensure  => link,
+        force   => true,
+        target  => "${store}/mail",
+        require => File[$store],
     }
 
     # Link to currently active proxy
@@ -206,8 +187,6 @@ class toollabs (
         source => 'puppet:///modules/toollabs/logrotate.crondaily',
     }
 
-    diamond::collector::localcrontab { 'localcrontabcollector': }
-
     file { '/usr/local/bin/log-command-invocation':
         ensure => present,
         mode   => '0555',
@@ -216,12 +195,5 @@ class toollabs (
         source => 'puppet:///modules/toollabs/log-command-invocation',
     }
 
-    # Make sure nano is installed and the default editor
-    package { 'nano':
-        ensure => latest,
-    }
-
-    alternatives::select { 'editor':
-        path => '/bin/nano',
-    }
+    diamond::collector::localcrontab { 'localcrontabcollector': }
 }
