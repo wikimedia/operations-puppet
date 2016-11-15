@@ -1,6 +1,0 @@
-[Unit]
-Description=Clean replication snapshots from <%= @volume_group %>
-
-[Service]
-Type=oneshot
-ExecStart=/usr/local/sbin/cleanup-snapshots <%= @volume_group %> <%= @keep_free %>

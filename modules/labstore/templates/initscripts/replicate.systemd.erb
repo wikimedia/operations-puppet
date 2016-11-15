@@ -1,6 +1,0 @@
-[Unit]
-Description=Replicate storage between hosts (<%= @title %>)
-
-[Service]
-Type=oneshot
-ExecStart=/usr/local/sbin/storage-replicate <%= @src_path %> <%= @dest_host %> <%= @dest_path %>
