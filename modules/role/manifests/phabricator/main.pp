@@ -38,6 +38,26 @@ class role::phabricator::main {
         $dump_enabled = false
     }
 
+    $conf_files = [
+        'name'              => 'www',
+        'owner'             => 'root',
+        'group'             => 'www-data',
+        'phab_settings'     => {
+            'mysql.user'        => $passwords::mysql::phabricator::app_user,
+            'mysql.pass'        => $passwords::mysql::phabricator::app_pass,
+            'mysql.host'        => $mysql_host,
+        },
+        'name'              => 'phd',
+        'owner'             => 'root',
+        'group'             => 'phd',
+        'phab_settings'     => {
+            # todo: create a separate phd_user and phd_pass
+            'mysql.user'        => $passwords::mysql::phabricator::app_user,
+            'mysql.pass'        => $passwords::mysql::phabricator::app_pass,
+            'mysql.host'        => $mysql_host,
+        },
+    ]
+
     # lint:ignore:arrow_alignment
     class { '::phabricator':
         deploy_target    => $deploy_target,
@@ -71,6 +91,7 @@ class role::phabricator::main {
             'diffusion.ssh-host'                     => 'git-ssh.wikimedia.org',
             'gitblit.hostname'                       => 'git.wikimedia.org',
         },
+        'conf_files'     => $conf_files,
     }
     # lint:endignore
 
