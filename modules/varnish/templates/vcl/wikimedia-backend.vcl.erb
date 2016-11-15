@@ -146,7 +146,7 @@ sub vcl_deliver {
 sub vcl_synth {
 	set resp.http.X-CDIS = "int";
 	call wm_common_xcache_deliver;
-	if (resp.status > 400 && resp.status != 413) {
+	if (resp.status >= 400) {
 		call synth_errorpage;
 	}
 	return (deliver);
