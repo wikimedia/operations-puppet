@@ -38,6 +38,42 @@ class role::phabricator::main {
         $dump_enabled = false
     }
 
+    if $::realm == 'labs' {
+        $app_user = 'root'
+        $app_pass = 'labspass'
+        $daemons_user = 'root'
+        $daemons_pass = 'labspass'
+    } else {
+        # todo: change the password for app_user
+        $app_user = $passwords::mysql::phabricator::app_user
+        $app_pass = $passwords::mysql::phabricator::app_pass
+        # todo: create a separate phd_user and phd_pass
+        $daemons_user = $passwords::mysql::phabricator::app_user
+        $daemons_pass = $passwords::mysql::phabricator::app_pass
+    }
+
+    $conf_files = [
+        {
+            'environment'       => 'www',
+            'owner'             => 'root',
+            'group'             => 'www-data',
+            'phab_settings'     => {
+                'mysql.user'        => $app_user,
+                'mysql.pass'        => $app_pass,
+            }
+        },
+        {
+            'environment'       => 'phd',
+            'owner'             => 'root',
+            'group'             => 'phd',
+            'phab_settings'     => {
+                'mysql.user'        => $daemons_user,
+                'mysql.pass'        => $daemons_pass,
+            }
+        },
+    ]
+
+
     # lint:ignore:arrow_alignment
     class { '::phabricator':
         deploy_target    => $deploy_target,
@@ -56,8 +92,6 @@ class role::phabricator::main {
             'differential.allow-self-accept'         => true,
             'phabricator.base-uri'                   => "https://${domain}",
             'security.alternate-file-domain'         => "https://${altdom}",
-            'mysql.user'                             => $passwords::mysql::phabricator::app_user,
-            'mysql.pass'                             => $passwords::mysql::phabricator::app_pass,
             'mysql.host'                             => $mysql_host,
             'phpmailer.smtp-host'                    => inline_template('<%= @mail_smarthost.join(";") %>'),
             'metamta.default-address'                => "no-reply@${domain}",
@@ -71,6 +105,7 @@ class role::phabricator::main {
             'diffusion.ssh-host'                     => 'git-ssh.wikimedia.org',
             'gitblit.hostname'                       => 'git.wikimedia.org',
         },
+        conf_files     => $conf_files,
     }
     # lint:endignore
 
