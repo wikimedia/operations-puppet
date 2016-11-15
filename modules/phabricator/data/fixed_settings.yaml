@@ -218,48 +218,60 @@ phd.garbage-collection:
 # Add Lua to Syntax Highlighting dropdown in Paste (as Lua is not enabled by default)
 # https://phabricator.wikimedia.org/T100900
 pygments.dropdown-choices:
-  'apacheconf': 'Apache Configuration'
-  'bash': 'Bash Scripting'
-  'brainfuck': 'Brainf*ck'
-  'c': 'C'
-  'coffee-script': 'CoffeeScript'
-  'cpp': 'C++'
-  'csharp': 'C#'
-  'css': 'CSS'
-  'd': 'D'
-  'diff': 'Diff'
-  'django': 'Django Templating'
-  'docker': 'Docker'
-  'erb': 'Embedded Ruby/ERB'
-  'erlang': 'Erlang'
-  'go': 'Golang'
-  'groovy': 'Groovy'
-  'haskell': 'Haskell'
-  'html': 'HTML'
-  'http': 'HTTP'
-  'invisible': 'Invisible'
-  'java': 'Java'
-  'js': 'Javascript'
-  'json': 'JSON'
-  'lua': 'Lua'
-  'make': 'Makefile'
-  'mysql': 'MySQL'
-  'nginx': 'Nginx Configuration'
-  'objc': 'Objective-C'
-  'perl': 'Perl'
-  'php': 'PHP'
-  'postgresql': 'PostgreSQL'
-  'pot': 'Gettext Catalog'
-  'puppet': 'Puppet'
-  'python': 'Python'
-  'rainbow': 'Rainbow'
-  'remarkup': 'Remarkup'
-  'rst': 'reStructuredText'
-  'robotframework': 'RobotFramework'
-  'ruby': 'Ruby'
-  'sql': 'SQL'
-  'tex': 'LaTeX'
-  'text': 'Plain Text'
-  'twig': 'Twig'
-  'xml': 'XML'
-  'yaml': 'YAML'
+  'apacheconf': 'Apache Configuration',
+  'bash': 'Bash Scripting',
+  'brainfuck': 'Brainf*ck',
+  'c': 'C',
+  'coffee-script': 'CoffeeScript',
+  'cpp': 'C++',
+  'csharp': 'C#',
+  'css': 'CSS',
+  'cucumber': 'Cucumber',
+  'd': 'D',
+  'control': 'Debian control',
+  'diff': 'Diff',
+  'django': 'Django Templating',
+  'docker': 'Docker',
+  'emacs': 'ELisp',
+  'erb': 'Embedded Ruby/ERB',
+  'erlang': 'Erlang',
+  'go': 'Golang',
+  'groovy': 'Groovy',
+  'haskell': 'Haskell',
+  'html': 'HTML',
+  'http': 'HTTP',
+  'ini': 'INI Configuration',
+  'invisible': 'Invisible',
+  'irc': 'IRC Logs',
+  'java': 'Java',
+  'js': 'Javascript',
+  'json': 'JSON',
+  'less': 'Less',
+  'lisp': 'Common Lisp',
+  'lua': 'Lua',
+  'make': 'Makefile',
+  'mysql': 'MySQL',
+  'nginx': 'Nginx Configuration',
+  'objc': 'Objective-C',
+  'perl': 'Perl',
+  'php': 'PHP',
+  'postgresql': 'PostgreSQL',
+  'pot': 'Gettext Catalog',
+  'puppet': 'Puppet',
+  'python': 'Python',
+  'rainbow': 'Rainbow',
+  'remarkup': 'Remarkup',
+  'robotframework': 'RobotFramework',
+  'rst': 'reStructuredText',
+  'ruby': 'Ruby',
+  'rust': 'Rust',
+  'scheme': 'Scheme',
+  'shell': 'Shell',
+  'sql': 'SQL',
+  'swift': 'Swift',
+  'tex': 'LaTeX',
+  'text': 'Plain Text',
+  'twig': 'Twig',
+  'vim': 'Vim Script',
+  'xml': 'XML',
+  'yaml': 'YAML'  
