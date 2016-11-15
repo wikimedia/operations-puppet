@@ -6,6 +6,15 @@ class role::prometheus::ops {
     $targets_path = '/srv/prometheus/ops/targets'
     $rules_path = '/srv/prometheus/ops/rules'
 
+    $config_extra = {
+        # All metrics will get an additional 'site' label when queried by
+        # external systems (e.g. via federation)
+        'external_labels' => {
+            'site' => $::site,
+        },
+    }
+
+
     # Add one job for each of mysql 'group' (i.e. their broad function)
     # Each job will look for new files matching the glob and load the job
     # configuration automatically.
@@ -92,6 +101,7 @@ class role::prometheus::ops {
     prometheus::server { 'ops':
         listen_address       => '127.0.0.1:9900',
         scrape_configs_extra => array_concat($mysql_jobs, $varnish_jobs, $memcached_jobs),
+        global_config_extra  => $config_extra,
     }
 
     prometheus::web { 'ops':
