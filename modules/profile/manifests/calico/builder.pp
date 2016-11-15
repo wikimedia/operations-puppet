@@ -44,7 +44,7 @@ class profile::calico::builder {
         group  => 'root',
         mode   => '0755',
         # lint:ignore:puppet_url_without_modules
-        source => 'puppet://volatile/misc/glide-binaries/glide',
+        source => 'puppet:///volatile/misc/glide-binaries/glide',
         # lint:endignore
     }
 

@@ -2,14 +2,14 @@
 set -e
 _dir="<%= @directory %>/calico-containers"
 pushd $_dir
-<%- if @proxy_address -%>
+<%- if @proxy_address != "" -%>
 export HTTPS_PROXY=<%= @proxy_address %>; export http_proxy=<%= @proxy_address %>
 <%- end -%>
 # Releasing
-export VERSION=<% @calico_version %>
+export VERSION=<%= @calico_version %>
 git tag | fgrep -q $VERSION || git tag $VERSION
 CALICOCONTAINERS_VERSION=$VERSION make release-caliconode
-<%- if @registry_address -%>
+<%- if @registry_address != "" -%>
 docker login --username <%= @registry_user %> <%= @registry_address %>
 docker push  calico/node:$VERSION <%= @registry_address %>
 <%- end %>
