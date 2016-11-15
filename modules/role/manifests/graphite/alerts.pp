@@ -52,7 +52,8 @@ class role::graphite::alerts {
         metric      => 'transformNull(sumSeries(logstash.rate.mediawiki.fatal.ERROR.sum, logstash.rate.mediawiki.exception.ERROR.sum), 0)',
         warning     => 25,
         critical    => 50,
-        from        => '5min',
+        from        => '10min',
+        percentage  => 70,
     }
 }
 
