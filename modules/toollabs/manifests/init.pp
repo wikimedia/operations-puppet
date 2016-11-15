@@ -98,10 +98,9 @@ class toollabs (
 
     mount { '/var/lib/gridengine':
         ensure  => mounted,
-        atboot  => false,
         device  => "${sysdir}/gridengine",
         fstype  => none,
-        options => 'rw,bind',
+        options => 'rw,bind,noauto',
         require => File[
             $geconf,
             '/var/lib/gridengine'
