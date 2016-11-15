@@ -11,6 +11,8 @@
 <%- end %>
   DocumentRoot <%= @docroot %>
 
+  SetEnv PHABRICATOR_ENV www
+
   <IfModule mod_remoteip.c>
     RemoteIPHeader X-Client-IP
     RemoteIPInternalProxy <%= @trusted_proxies.join(' ') %>
