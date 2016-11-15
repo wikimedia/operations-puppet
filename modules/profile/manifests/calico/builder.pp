@@ -62,7 +62,7 @@ class profile::calico::builder {
         branch    => $calico_version,
         owner     => 'calicobuild',
         require   => User['calicobuild'],
-        directory => '/srv',
+        directory => "${directory}/calico-containers",
     }
 
     # Script to build the project and push it to our registry
