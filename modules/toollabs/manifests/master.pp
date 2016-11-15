@@ -89,7 +89,7 @@ class toollabs::master inherits toollabs {
         group   => 'root',
         mode    => '0444',
         source  => 'puppet:///modules/toollabs/host_aliases',
-        require => Mount['/var/lib/gridengine'],
+        require => File['/var/lib/gridengine'],
     }
 
     file { '/usr/local/bin/dequeugridnodes.sh':
