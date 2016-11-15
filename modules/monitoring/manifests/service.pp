@@ -75,7 +75,6 @@ define monitoring::service(
     $service = {
         "${::hostname} ${title}" => {
             ensure                 => $ensure,
-            mode                   => '0444',
             host_name              => $host,
             servicegroups          => $servicegroups,
             service_description    => $description_safe,
