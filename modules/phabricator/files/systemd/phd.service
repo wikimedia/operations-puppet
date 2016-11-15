@@ -7,7 +7,8 @@ Group=phd
 
 [Service]
 Type=oneshot
-Enviroment="PATH=/sbin:/usr/sbin:/usr/local/sbin:/usr/local/bin:/usr/bin:/bin"
+Environment="PATH=/sbin:/usr/sbin:/usr/local/sbin:/usr/local/bin:/usr/bin:/bin"
+Environment="PHABRICATOR_ENV=wmf/phd"
 ExecStart=/srv/phab/phabricator/bin/phd start
 ExecStop=/srv/phab/phabricator/bin/phd stop
 RemainAfterExit=yes
