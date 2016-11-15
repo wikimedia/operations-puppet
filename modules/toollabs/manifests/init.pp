@@ -36,11 +36,10 @@ class toollabs (
     #
 
     file { $sysdir:
-        ensure  => directory,
-        owner   => 'root',
-        group   => "${::labsproject}.admin",
-        mode    => '2775',
-        require => Labstore::Nfs_client['tools-project-on-labstore-secondary'],
+        ensure => directory,
+        owner  => 'root',
+        group  => "${::labsproject}.admin",
+        mode   => '2775',
     }
 
     file { $store:

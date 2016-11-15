@@ -2834,6 +2834,8 @@ node default {
     if $::realm == 'production' {
         include standard
     } else {
-        include role::labs::instance
+        # Require instead of include so we get NFS and other
+        # base things setup properly
+        require role::labs::instance
     }
 }
