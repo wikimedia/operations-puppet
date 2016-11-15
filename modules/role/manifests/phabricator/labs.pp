@@ -3,6 +3,28 @@
 class role::phabricator::labs(
         $settings,
 ) {
+
+    $conf_files = [
+        {
+            'environment'       => 'www',
+            'owner'             => 'root',
+            'group'             => 'www-data',
+            'phab_settings'     => {
+                'mysql.user'        => 'root',
+                'mysql.pass'        => 'labspass',
+            }
+        },
+        {
+            'environment'       => 'phd',
+            'owner'             => 'root',
+            'group'             => 'phd',
+            'phab_settings'     => {
+                'mysql.user'        => 'root',
+                'mysql.pass'        => 'labspass',
+            }
+        },
+    ]
+
     $role_settings = {
         'darkconsole.enabled'             => true,
         'phabricator.base-uri'            => "https://${::hostname}.wmflabs.org",
@@ -28,6 +50,7 @@ class role::phabricator::labs(
                           "${phab_root_dir}/libext/security/src",
                           "${phab_root_dir}/libext/misc/"],
         settings      => $phab_settings,
+        conf_files    => $conf_files,
     }
 
     package { 'mysql-server': ensure => present }

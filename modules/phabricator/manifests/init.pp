@@ -16,6 +16,9 @@
 #     A hash of configuration options for the local settings json file.
 #     https://secure.phabricator.com/book/phabricator/article/advanced_configuration/#configuration-sources
 #
+# [*conf_files*]
+#     A list of hashes which define phabricator::conf_env resources
+#
 # [*mysql_admin_user*]
 #     Specify to use a different user for schema upgrades and database
 #     maintenance
@@ -54,6 +57,7 @@ class phabricator (
     $trusted_proxies  = [],
     $libraries        = [],
     $settings         = {},
+    $conf_files       = [],
     $mysql_admin_user = '',
     $mysql_admin_pass = '',
     $serveradmin      = '',
@@ -61,6 +65,7 @@ class phabricator (
     $deploy_user      = 'phab-deploy',
     $deploy_target    = 'phabricator/deployment',
 ) {
+    validate_hash($conf_files)
 
     $deploy_root = "/srv/deployment/${deploy_target}"
 
@@ -195,6 +200,13 @@ class phabricator (
     file { "${phabdir}/phabricator/conf/local/local.json":
         content => template('phabricator/local.json.erb'),
         require => $base_requirements,
+        owner   => 'root',
+        group   => 'www-data',
+        mode    => '0644',
+    }
+
+    if !empty($conf_files) {
+        create_resources(phabricator::conf_env, $conf_files)
     }
 
     #default location for phabricator tracked repositories
