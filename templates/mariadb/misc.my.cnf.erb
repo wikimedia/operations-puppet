@@ -85,11 +85,10 @@ innodb_write_io_threads        = 8
 innodb_stats_sample_pages      = 16
 innodb_stats_method            = nulls_unequal
 innodb_locks_unsafe_for_binlog = 1
-<% if @shard == 'm5' -%>
 innodb_file_format             = barracuda
 innodb_large_prefix            = 1
+innodb_strict_mode             = 1
 # innodb_default_row_format is not available until 5.7.9 and maybe until 10.2
-<% end -%>
 aria_pagecache_buffer_size     = 512M
 
 # gtid_domain_id flag is needed for multisource replication and GTID.
