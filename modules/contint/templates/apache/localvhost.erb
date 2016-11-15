@@ -28,28 +28,14 @@
     RewriteRule ^/([\w-]+)/wiki(/.*?)$ %{DOCUMENT_ROOT}/$1/w/index.php [L]
 
     <Directory />
-	<IfVersion >= 2.4>
         Require all denied
-	</IfVersion>
-	<IfVersion < 2.4>
-        Order deny,allow
-        Deny from all
-	</IfVersion>
     </Directory>
 
     <Directory <%= @docroot %>>
         Options +Indexes
         Options FollowSymLinks
 
-	<IfVersion >= 2.4>
         Require local
-	</IfVersion>
-	<IfVersion < 2.4>
-        Order deny,allow
-        Deny from all
-        Allow from 127.0.0.1/32
-        Allow from ::1/128
-	</IfVersion>
     </Directory>
 
     LogLevel warn
