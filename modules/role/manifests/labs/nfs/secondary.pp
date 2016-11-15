@@ -96,6 +96,9 @@ class role::labs::nfs::secondary($monitor = 'eth0') {
         group   => 'root',
     }
 
+    include labstore::monitoring::interfaces
+    include labstore::monitoring::ldap
+    include labstore::monitoring::nfsd
     class { 'labstore::monitoring::secondary':
         drbd_role  => $drbd_role,
         cluster_ip => $cluster_ip,
