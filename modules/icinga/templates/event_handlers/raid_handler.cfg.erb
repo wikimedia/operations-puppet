@@ -1,4 +1,9 @@
 define command{
     command_name    raid_handler
-    command_line    $USER1$/eventhandlers/raid_handler -d -s $SERVICESTATE$ -t $SERVICESTATETYPE$ -a $SERVICEATTEMPT$ -H $HOSTNAME$ -m "$SERVICEOUTPUT$" -r $ARG1$ -D "$ARG2$" -c $ARG3$
+    command_line    $USER1$/eventhandlers/raid_handler -d -s $SERVICESTATE$ -t $SERVICESTATETYPE$ -a $SERVICEATTEMPT$ -H $HOSTNAME$ -D "$SERVICEDESC$" -m "$SERVICEOUTPUT$" -r "$ARG1$" -c "$ARG2$"
+    }
+
+define command{
+    command_name    raid_handler_skip_nrpe
+    command_line    $USER1$/eventhandlers/raid_handler -d -s $SERVICESTATE$ -t $SERVICESTATETYPE$ -a $SERVICEATTEMPT$ -H $HOSTNAME$ -D "$SERVICEDESC$" -m "$SERVICEOUTPUT$" --message-remain="$LONGSERVICEOUTPUT$" --skip-nrpe -r "$ARG1$" -c "$ARG2$"
     }
