@@ -24,6 +24,13 @@
         Require all granted
     </Directory>
 
+    <Directory /srv/org/wikimedia/doc>
+        Options FollowSymLinks
+        AllowOverride All
+        Order allow,deny
+        allow from all
+    </Directory>
+
     # Favicon proxy
     RewriteRule ^/favicon\.ico$ /favicon.php [L]
 
