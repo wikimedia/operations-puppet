@@ -98,7 +98,7 @@ class toollabs (
 
     mount { '/var/lib/gridengine':
         ensure  => mounted,
-        atboot  => False,
+        atboot  => false,
         device  => "${sysdir}/gridengine",
         fstype  => none,
         options => 'rw,bind',
