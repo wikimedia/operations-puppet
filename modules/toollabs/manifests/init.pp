@@ -40,7 +40,7 @@ class toollabs (
         owner   => 'root',
         group   => "${::labsproject}.admin",
         mode    => '2775',
-        require => Mount['/data/project'],
+        require => Labstore::Nfs_client['tools-project-on-labstore-secondary'],
     }
 
     file { $store:
@@ -103,8 +103,13 @@ class toollabs (
         device  => "${sysdir}/gridengine",
         fstype  => none,
         options => 'rw,bind',
-        require => File["${sysdir}/gridengine",
-                        '/var/lib/gridengine'],
+        require => [
+            File[
+                "${sysdir}/gridengine",
+                '/var/lib/gridengine'
+            ],
+            Labstore::Nfs_client['tools-project-on-labstore-secondary']
+        ]
     }
 
     Mount['/var/lib/gridengine'] -> Package <| title == 'gridengine-common' |>
