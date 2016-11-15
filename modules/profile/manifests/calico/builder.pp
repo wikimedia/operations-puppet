@@ -1,12 +1,12 @@
 class profile::calico::builder {
     # Calico builder version
-    $calico_version=hieradata('profile::calico::builder::version')
+    $calico_version=hiera('profile::calico::builder::version')
     # Calico builder directory
-    $directory=hieradata('profile::calico::builder::directory')
+    $directory=hiera('profile::calico::builder::directory')
     # Proxy url, if present
-    $proxy_address=hieradata('profile::calico::builder::proxy_address')
-    $registry_address=hieradata('docker::registry')
-    $registry_user=hieradata('docker::registry_user')
+    $proxy_address=hiera('profile::calico::builder::proxy_address')
+    $registry_address=hiera('docker::registry')
+    $registry_user=hiera('docker::registry_user')
 
     # Needs docker to be installed and working
     require ::docker
