@@ -186,7 +186,8 @@
     maxSubjectLength = 100
     maxLineLength = 120
 [receive]
-    maxObjectSizeLimit = 100m
+    maxObjectSizeLimit = 20m
+    maxBatchChanges = 10
     enableSignedPush = false
 [changeCleanup]
     # Not actually used, but Gerrit complains if unset
