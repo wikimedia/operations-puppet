@@ -80,6 +80,12 @@ wikidata.org: &wikidata.org
     - path: projects/wmf_wikidata.yaml
       options: *default_options
 
+# wiktionaries config
+wiktionary: &wiktionary_project
+  x-modules:
+    - path: projects/wmf_wiktionary.yaml
+      options: *default_options
+
 # Swagger spec root.
 root_spec: &root_spec
   title: "The RESTBase root"
@@ -104,13 +110,14 @@ root_spec: &root_spec
     /{domain:commons.wikimedia.beta.wmflabs.org}: *default_project
     /{domain:deployment.wikimedia.beta.wmflabs.org}: *default_project
     /{domain:de.wikipedia.beta.wmflabs.org}: *default_project
+    /{domain:de.wiktionary.beta.wmflabs.org}: *wiktionary_project
     /{domain:en-rtl.wikipedia.beta.wmflabs.org}: *default_project
     /{domain:en.wikibooks.beta.wmflabs.org}: *default_project
     /{domain:en.wikinews.beta.wmflabs.org}: *default_project
     /{domain:en.wikipedia.beta.wmflabs.org}: *en.wikipedia.org
     /{domain:en.wikiquote.beta.wmflabs.org}: *default_project
     /{domain:en.wikisource.beta.wmflabs.org}: *default_project
-    /{domain:en.wikitionary.beta.wmflabs.org}: *default_project
+    /{domain:en.wiktionary.beta.wmflabs.org}: *wiktionary_project
     /{domain:en.wikiversity.beta.wmflabs.org}: *default_project
     /{domain:en.wikivoyage.beta.wmflabs.org}: *default_project
     /{domain:eo.wikipedia.beta.wmflabs.org}: *default_project
