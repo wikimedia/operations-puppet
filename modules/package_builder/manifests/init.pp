@@ -45,6 +45,7 @@ class package_builder(
         'php5-dev',
         'kernel-wedge',
         'javahelper',
+        'pkg-kde-tools',
     ])
 
     if $::operatingsystem == 'Ubuntu' {
