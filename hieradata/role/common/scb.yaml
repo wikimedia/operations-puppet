@@ -52,11 +52,6 @@ debdeploy::grains:
     value: standard
 citoid::zotero_port: 1969
 citoid::zotero_host: "zotero.svc.%{::site}.wmnet"
-cxserver::no_proxy_list:
-  - "restbase.svc.%{::rb_site}.wmnet"
-  - "apertium.svc.%{::site}.wmnet"
-cxserver::yandex_url: https://translate.yandex.net
-cxserver::youdao_url: https://fanyi.youdao.com/paidapi/fanyiapi
 ores::web::redis_host: oresrdb1001.eqiad.wmnet
 
 # Stream configuration for Public EventStreams service
