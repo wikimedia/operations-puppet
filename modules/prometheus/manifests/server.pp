@@ -50,6 +50,7 @@ define prometheus::server (
     $scrape_interval = '60s',
     $base_path = "/srv/prometheus/${title}",
     $storage_retention = '4320h0m0s',
+    $storage_encoding = '1',
     $global_config_extra = {},
     $scrape_configs_extra = [],
     $rule_files_extra = [],
