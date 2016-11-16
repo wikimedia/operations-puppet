@@ -16,7 +16,6 @@ class role::mariadb {
 # wikitech hosts, etc.
 class role::mariadb::grants::production(
     $shard    = false,
-    $prompt   = '',
     $password = 'undefined',
     ) {
 
@@ -45,10 +44,7 @@ class role::mariadb::grants::production(
     }
 
     file { '/root/.my.cnf':
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0400',
-        content => template('mariadb/root.my.cnf.erb'),
+         ensure => absent,
     }
 
     if $shard {
@@ -239,7 +235,6 @@ class role::mariadb::misc(
 
     class { 'role::mariadb::grants::production':
         shard    => $shard,
-        prompt   => "MISC ${shard}",
         password => $passwords::misc::scripts::mysql_root_pass,
     }
 
@@ -328,7 +323,6 @@ class role::mariadb::misc::phabricator(
 
     class { 'role::mariadb::grants::production':
         shard    => $shard,
-        prompt   => "MISC ${shard}",
         password => $passwords::misc::scripts::mysql_root_pass,
     }
 
@@ -395,7 +389,6 @@ class role::mariadb::misc::eventlogging(
 
     class { 'role::mariadb::grants::production':
         shard    => $shard,
-        prompt   => "EVENTLOGGING ${shard}",
         password => $passwords::misc::scripts::mysql_root_pass,
     }
 
@@ -430,16 +423,11 @@ class role::mariadb::beta {
     }
 
     class { 'mariadb::config':
-        config  => 'mariadb/beta.my.cnf.erb',
+        config => 'mariadb/beta.my.cnf.erb',
     }
 
-    $password = $passwords::misc::scripts::mysql_beta_root_pass
-    $prompt = 'BETA'
     file { '/root/.my.cnf':
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0400',
-        content => template('mariadb/root.my.cnf.erb'),
+        ensure => absent,
     }
 }
 
@@ -489,7 +477,6 @@ class role::mariadb::dbstore(
 
     class { 'role::mariadb::grants::production':
         password => $passwords::misc::scripts::mysql_root_pass,
-        prompt   => 'DBSTORE',
     }
 
     include role::mariadb::monitor::dba
@@ -667,7 +654,6 @@ class role::mariadb::core(
     include role::mariadb::grants::core
     class { 'role::mariadb::grants::production':
         shard    => 'core',
-        prompt   => "PRODUCTION ${shard}",
         password => $passwords::misc::scripts::mysql_root_pass,
     }
 
@@ -1000,7 +986,6 @@ class role::mariadb::parsercache(
     include role::mariadb::grants::core
     class { 'role::mariadb::grants::production':
         shard    => 'parsercache',
-        prompt   => 'PARSERCACHE',
         password => $passwords::misc::scripts::mysql_root_pass,
     }
 
@@ -1083,16 +1068,11 @@ class role::mariadb::client {
     include passwords::misc::scripts
 
     class { 'mariadb::config':
-        ssl => 'puppet-cert',
+        ssl    => 'puppet-cert',
     }
 
-    $password = $passwords::misc::scripts::mysql_root_pass
-    $prompt = 'MARIADB'
     file { '/root/.my.cnf':
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0400',
-        content => template('mariadb/root.my.cnf.erb'),
+        ensure => absent,
     }
 
     package {
