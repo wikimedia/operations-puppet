@@ -22,8 +22,8 @@ class standard::ntp::client () {
     monitoring::service { 'ntp':
         description    => 'NTP',
         check_command  => 'check_ntp_time!0.5!1',
-        check_interval => 10,
-        retry_interval => 5,
+        check_interval => 30,
+        retry_interval => 15,
     }
 
 }
