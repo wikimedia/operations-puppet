@@ -120,4 +120,16 @@ class toollabs::master inherits toollabs {
         mode   => '0555',
         source => 'puppet:///modules/toollabs/gridscripts/runninggridjobsmail.py',
     }
+
+    exec {'ensure-gridmaster-is-on-NFS':
+        command => '/bin/false',
+        unless  => "/usr/bin/timeout -k 3s 5s /usr/bin/test -e ${project_path}/herald",
+    }
+
+    file { '/var/spool/gridengine':
+        ensure  => link,
+        target  => "${toollabs::sysdir}/gridengine/spool",
+        force   => true,
+        require => Exec['ensure-gridmaster-is-on-NFS'],
+    }
 }
