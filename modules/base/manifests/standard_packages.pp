@@ -23,7 +23,6 @@ class base::standard_packages(
         'atop',
         'ethtool',
         'gdisk',
-        'lldp',
         'lldpd',
         'molly-guard',
         'ncdu',
