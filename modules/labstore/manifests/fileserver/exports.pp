@@ -77,8 +77,10 @@ class labstore::fileserver::exports {
     }
 
     base::service_unit { 'nfs-exportd':
-        systemd         => true,
-        declare_service => false,
-        require         => File['/usr/local/bin/nfs-exportd'],
+        systemd        => true,
+        service_params => {
+            enable => true,
+        },
+        require        => File['/usr/local/bin/nfs-exportd'],
     }
 }
