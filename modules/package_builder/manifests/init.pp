@@ -46,6 +46,7 @@ class package_builder(
         'kernel-wedge',
         'javahelper',
         'pkg-kde-tools',
+        'subversion',
     ])
 
     if $::operatingsystem == 'Ubuntu' {
