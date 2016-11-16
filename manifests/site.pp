@@ -1141,7 +1141,7 @@ node /^(hassaleh|hassium)\.(codfw|eqiad)\.wmnet$/ {
 }
 
 node 'helium.eqiad.wmnet' {
-    role(poolcounter::server, backup::director, backup::storage)
+    role(backup::director, backup::storage)
 
     include standard
     interface::add_ip6_mapped { 'main':
