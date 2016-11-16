@@ -93,6 +93,8 @@ fullviews:
   - page
   - page_broken
   - pagelinks
+  - page_assessments
+  - page_assessments_projects
   - page_props
   - page_restrictions
   - pagetriage_log
