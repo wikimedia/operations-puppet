@@ -120,4 +120,18 @@ class toollabs::master inherits toollabs {
         mode   => '0555',
         source => 'puppet:///modules/toollabs/gridscripts/runninggridjobsmail.py',
     }
+
+    file { "${toollabs::geconf}/spool":
+        ensure  => directory,
+        owner   => 'sgeadmin',
+        group   => 'sgeadmin',
+        require => File[$toollabs::geconf],
+    }
+
+    file { '/var/spool/gridengine':
+        ensure  => link,
+        target  => "${toollabs::geconf}/spool",
+        force   => true,
+        require => File["${toollabs::geconf}/spool"],
+    }
 }
