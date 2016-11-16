@@ -2521,8 +2521,6 @@ host helium {
 host heze {
     hardware ethernet 90:b1:1c:13:3d:22;
     fixed-address heze.codfw.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host hydrogen {
