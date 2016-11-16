@@ -99,6 +99,7 @@ class role::prometheus::ops {
     }
 
     prometheus::server { 'ops':
+        storage_encoding     => '2',
         listen_address       => '127.0.0.1:9900',
         scrape_configs_extra => array_concat($mysql_jobs, $varnish_jobs, $memcached_jobs),
         global_config_extra  => $config_extra,
