@@ -11,6 +11,8 @@
     ErrorLog /var/log/apache2/doc_error.log
     CustomLog /var/log/apache2/doc_access.log wmf
 
+    DocumentRoot /srv/org/wikimedia/doc
+
     RewriteEngine On
 
     # T95164
@@ -18,7 +20,14 @@
     RewriteCond %{REQUEST_FILENAME} -d
     RewriteRule ^(.+[^/])$ https://doc.wikimedia.org/$1/ [R=301,QSA]
 
-    DocumentRoot /srv/org/wikimedia/doc
+    # Back-compat for T73060: Redirect mediawiki-core/master/php/html/ to mediawiki-core/master/php/
+    RewriteRule ^mediawiki-core/master/php/html/(.*)$ https://doc.wikimedia.org/mediawiki-core/master/php/$1 [L,QSA]
+
+    # DirectoryIndex would be neater, but doesn't work properly under Apache 2.2
+    RewriteCond %{REQUEST_FILENAME} -d
+    RewriteCond %{REQUEST_FILENAME}/index.php !-f
+    RewriteCond %{REQUEST_FILENAME}/index.html !-f
+    RewriteRule .* dir.php
 
     <Directory />
         Require all granted
