@@ -1,5 +1,3 @@
-# Class: toollabs::bastion
-#
 # This role sets up an bastion/dev instance in the Tool Labs model.
 #
 # [*nproc]
@@ -173,17 +171,17 @@ class toollabs::bastion(
 
     file {'/etc/security/limits.conf':
         ensure  => file,
-        mode    => '0444',
         owner   => 'root',
         group   => 'root',
+        mode    => '0444',
         content => template('toollabs/limits.conf.erb'),
     }
 
     file { '/etc/ssh/ssh_config':
         ensure => file,
-        mode   => '0444',
         owner  => 'root',
         group  => 'root',
+        mode   => '0444',
         source => 'puppet:///modules/toollabs/submithost-ssh_config',
     }
 
@@ -207,9 +205,9 @@ class toollabs::bastion(
     $cron_host = hiera('active_cronrunner')
     file { '/usr/local/bin/crontab':
         ensure  => file,
-        mode    => '0755',
         owner   => 'root',
         group   => 'root',
+        mode    => '0755',
         content => template('toollabs/crontab.erb'),
     }
 
@@ -228,5 +226,4 @@ class toollabs::bastion(
         mode   => '0655',
         source => 'puppet:///modules/toollabs/exec-manage',
     }
-
 }

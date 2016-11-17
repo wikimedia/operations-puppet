@@ -1,23 +1,10 @@
-# Class: toollabs::mailrelay
-#
 # This role sets up a mail relay in the Tool Labs model.
-#
-# Parameters:
-#
-# Actions:
-#
 # Requires:
 #  - Hiera: toollabs::is_mail_relay: true
 #  - Hiera: toollabs::external_hostname set
-#
-# Sample Usage:
-#
+
 class toollabs::mailrelay inherits toollabs
 {
-    include gridengine::submit_host
-    include toollabs::infrastructure
-
-    # Hiera sanity checks
 
     if !$toollabs::is_mail_relay {
         fail('Mail relay hosts must have toollabs::is_mail_relay set in Hiera')
@@ -26,6 +13,9 @@ class toollabs::mailrelay inherits toollabs
     if $toollabs::external_hostname == undef {
         fail('Mail relay hosts must have an toollabs::external_hostname defined in Hiera')
     }
+
+    include gridengine::submit_host
+    include toollabs::infrastructure
 
     class { 'exim4':
         queuerunner => 'combined',

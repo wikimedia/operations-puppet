@@ -1,13 +1,14 @@
 # A dynamic HTTP routing proxy, based on the dynamicproxy module.
+
 class toollabs::proxy(
     $ssl_certificate_name = 'star.wmflabs.org',
     $ssl_install_certificate = true,
     $web_domain = 'tools.wmflabs.org',
     $proxies = ['tools-webproxy-01', 'tools-webproxy-02'],
 ) {
+
     include toollabs::infrastructure
     include ::redis::client::python
-
     include base::firewall
 
     if $ssl_install_certificate {
@@ -112,5 +113,4 @@ class toollabs::proxy(
         logster_options => "-o statsd --statsd-host=labmon1001.eqiad.wmnet:8125 --metric-prefix=${graphite_metric_prefix}.",
         require         => File['/usr/local/lib/python2.7/dist-packages/toolsweblogster.py'],
     }
-
 }

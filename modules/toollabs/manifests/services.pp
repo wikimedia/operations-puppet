@@ -1,4 +1,3 @@
-# = Class: toollabs::services
 # Provides various services based off tools manifests
 #
 # = Parameters
@@ -6,6 +5,7 @@
 # [*active*]
 #   true if all the current set of services should run actively,
 #   false if they should just be hot standby
+
 class toollabs::services(
     $active = false,
 ) inherits toollabs {
@@ -20,8 +20,12 @@ class toollabs::services(
         ensure => latest,
     }
 
-    diamond::collector { 'SGE':
-        source   => 'puppet:///modules/toollabs/monitoring/sge.py',
+    file { '/usr/local/bin/webservice':
+        ensure => link,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        target => '/usr/bin/webservice',
     }
 
     service { 'webservicemonitor':
@@ -29,11 +33,7 @@ class toollabs::services(
         subscribe => Package['tools-manifest'],
     }
 
-    file { '/usr/local/bin/webservice':
-        ensure => link,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
-        target => '/usr/bin/webservice',
+    diamond::collector { 'SGE':
+        source   => 'puppet:///modules/toollabs/monitoring/sge.py',
     }
 }

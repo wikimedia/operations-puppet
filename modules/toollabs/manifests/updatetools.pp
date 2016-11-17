@@ -1,7 +1,9 @@
 # Set up a service to update the tools and users tables.
+
 class toollabs::updatetools(
-    $active
+    $active,
 ) {
+
     require_package('python-mysqldb')
 
     file { '/usr/local/bin/updatetools':

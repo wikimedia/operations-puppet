@@ -1,5 +1,10 @@
-# Set up a cronrunner.
 class toollabs::cronrunner {
+
+    motd::script { 'submithost-banner':
+        ensure => present,
+        source => "puppet:///modules/toollabs/40-${::labsproject}-submithost-banner",
+    }
+
     include gridengine::submit_host
     include toollabs
     include toollabs::hba
@@ -18,11 +23,6 @@ class toollabs::cronrunner {
         owner  => 'root',
         group  => 'root',
         source => 'puppet:///modules/toollabs/submithost-ssh_config',
-    }
-
-    motd::script { 'submithost-banner':
-        ensure => present,
-        source => "puppet:///modules/toollabs/40-${::labsproject}-submithost-banner",
     }
 
     file { '/usr/bin/jlocal':
@@ -48,6 +48,7 @@ class toollabs::cronrunner {
         group  => "${::labsproject}.admin",
         mode   => '0770',
     }
+
     file { "/data/project/.system/crontabs/${::fqdn}":
         ensure    => directory,
         source    => '/var/spool/cron/crontabs',

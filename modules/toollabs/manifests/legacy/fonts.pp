@@ -1,5 +1,3 @@
-# == Class: toollabs::legacy::fonts
-#
 # Copy of mediawiki::packages::fonts when it still ran on Precise.
 # Won't get updated, is just for precise.
 #
