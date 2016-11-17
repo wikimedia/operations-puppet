@@ -65,6 +65,15 @@ class role::phabricator::main {
                 'mysql.pass'        => $daemons_pass,
             }
         },
+        'vcs' => {
+            'environment'       => 'vcs',
+            'owner'             => 'root',
+            'group'             => 'vcs',
+            'phab_settings'     => {
+                'mysql.user'        => $daemons_user,
+                'mysql.pass'        => $daemons_pass,
+            }
+        },
     }
 
 
