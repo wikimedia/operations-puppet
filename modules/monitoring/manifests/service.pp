@@ -31,7 +31,7 @@ define monitoring::service(
         default => hiera('nagios_group',"${cluster_name}_${::site}")
     }
 
-    $notification_critical = $critical ? {
+    $notification_interval = $critical ? {
         true    => 240,
         default => 0,
     }
@@ -44,11 +44,11 @@ define monitoring::service(
     case $critical {
         true: {
             case $do_paging {
-                true:    { $contact_critical = "${contact_group},sms,admins" }
-                default: { $contact_critical = "${contact_group},admins" }
+                true:    { $real_contact_groups = "${contact_group},sms,admins" }
+                default: { $real_contact_groups = "${contact_group},admins" }
             }
         }
-        default: { $contact_critical = $contact_group }
+        default: { $real_contact_groups = $contact_group }
     }
 
     $is_active = $passive ? {
@@ -83,10 +83,10 @@ define monitoring::service(
             check_interval         => $check_interval,
             retry_interval         => $retry_interval,
             check_period           => '24x7',
-            notification_interval  => $notification_critical,
+            notification_interval  => $notification_interval,
             notification_period    => '24x7',
             notification_options   => 'c,r,f',
-            contact_groups         => $contact_critical,
+            contact_groups         => $real_contact_groups,
             passive_checks_enabled => 1,
             active_checks_enabled  => $is_active,
             is_volatile            => $check_volatile,

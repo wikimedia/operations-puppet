@@ -27,7 +27,7 @@ define monitoring::host (
         default => hiera('nagios_group',"${cluster_name}_${::site}")
     }
 
-    $is_critical = $critical ? {
+    $real_contact_groups = $critical ? {
         true    => "${contact_group},sms,admins",
         default => $contact_group,
     }
@@ -56,7 +56,7 @@ define monitoring::host (
             check_command         => 'check_ping!500,20%!2000,100%',
             check_period          => '24x7',
             max_check_attempts    => 2,
-            contact_groups        => $is_critical,
+            contact_groups        => $real_contact_groups,
             notification_interval => 0,
             notification_period   => '24x7',
             notification_options  => 'd,u,r,f',
