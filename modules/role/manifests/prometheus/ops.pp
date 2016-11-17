@@ -51,31 +51,43 @@ class role::prometheus::ops {
       },
     ]
 
+    # Leave only backend hostname (no VCL UUID) from "varnish_backend" metrics
+    # to avoid metric churn on VCL regeneration. See also T150479.
+    $varnish_be_uuid_relabel = {
+      'source_labels' => ['__name__', 'id'],
+      'regex'         => 'varnish_backend_.+;root:[-a-f0-9]+\.(.*)',
+      'target_label'  => 'id',
+    }
+
     # one job per varnish cache 'role'
     $varnish_jobs = [
       {
         'job_name'        => 'varnish-text',
         'file_sd_configs' => [
           { 'files' => [ "${targets_path}/varnish-text_*.yaml"] },
-        ]
+        ],
+        'metric_relabel_configs' => [$varnish_be_uuid_relabel],
       },
       {
         'job_name'        => 'varnish-upload',
         'file_sd_configs' => [
           { 'files' => [ "${targets_path}/varnish-upload_*.yaml"] },
-        ]
+        ],
+        'metric_relabel_configs' => [$varnish_be_uuid_relabel],
       },
       {
         'job_name'        => 'varnish-maps',
         'file_sd_configs' => [
           { 'files' => [ "${targets_path}/varnish-maps_*.yaml"] },
-        ]
+        ],
+        'metric_relabel_configs' => [$varnish_be_uuid_relabel],
       },
       {
         'job_name'        => 'varnish-misc',
         'file_sd_configs' => [
           { 'files' => [ "${targets_path}/varnish-misc_*.yaml"] },
-        ]
+        ],
+        'metric_relabel_configs' => [$varnish_be_uuid_relabel],
       },
     ]
 
