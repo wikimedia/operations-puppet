@@ -2486,7 +2486,7 @@ node /^restbase10[01][0-9]\.eqiad\.wmnet$/ {
 }
 
 # restbase codfw cluster
-node /^restbase20[01][1-9]\.codfw\.wmnet$/ {
+node /^restbase20[01][0-9]\.codfw\.wmnet$/ {
     role(restbase::server, cassandra)
 }
 
