@@ -2,13 +2,12 @@
 
 define gridengine::queue(
     $rname   = $title,
-    $config  = undef )
-{
+    $config  = undef,
+) {
 
     gridengine::resource { $rname:
         dir    => 'queues',
         config => $config,
     }
-
 }
 

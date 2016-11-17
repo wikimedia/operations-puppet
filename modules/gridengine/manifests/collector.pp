@@ -4,8 +4,9 @@ define gridengine::collector(
     $dir,
     $sourcedir,
     $rname   = $title,
-    $config  = undef )
-{
+    $config  = undef,
+) {
+
     $etcdir  = '/var/lib/gridengine/etc'
     $conf    = "${etcdir}/${dir}/${rname}"
     $dotfile = "${etcdir}/${dir}/.${rname}"
@@ -23,6 +24,4 @@ define gridengine::collector(
         command => "${etcdir}/bin/collector '${rname}' '${sourcedir}' '${dotfile}' '${conf}'",
         require => File[$dotfile],
     }
-
 }
-

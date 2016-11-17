@@ -2,8 +2,8 @@
 
 class gridengine::exec_host(
     $config = undef,
-)
-{
+) {
+
     include gridengine
 
     package { 'gridengine-exec':
@@ -24,5 +24,4 @@ class gridengine::exec_host(
         dir    => 'exechosts',
         config => $config,
     }
-
 }

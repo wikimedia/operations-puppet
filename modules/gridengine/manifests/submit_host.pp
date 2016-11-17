@@ -23,5 +23,4 @@ class gridengine::submit_host {
         dir    => 'submithosts',
         config => 'gridengine/nothing.erb', # the content here doesn't actually matter
     }
-
 }

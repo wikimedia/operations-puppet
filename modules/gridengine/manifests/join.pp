@@ -2,8 +2,9 @@
 
 define gridengine::join(
     $sourcedir,
-    $list  = undef )
-{
+    $list  = undef,
+) {
+
     if $list {
         file { "${sourcedir}/${::fqdn}":
             ensure  => file,
@@ -18,4 +19,3 @@ define gridengine::join(
         }
     }
 }
-

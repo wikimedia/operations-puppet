@@ -3,8 +3,9 @@
 define gridengine::resource(
     $dir,
     $rname   = $title,
-    $config  = undef )
-{
+    $config  = undef,
+) {
+
     $etcdir  = '/var/lib/gridengine/etc'
     $conf    = "${etcdir}/${dir}/${rname}"
 
