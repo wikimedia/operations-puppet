@@ -234,7 +234,9 @@ def write_kubeconfig(user, master):
     }
     dirpath = os.path.join('/data', 'project', user.name, '.kube')
     path = os.path.join(dirpath, 'config')
-    os.makedirs(dirpath, mode=0o775, exist_ok=False)
+    # exist_ok=True is fine here, and not a security issue (Famous last words?).
+    # We also keep it owned by root, which is fine.
+    os.makedirs(dirpath, mode=0o775, exist_ok=True)
     f = os.open(path, os.O_CREAT | os.O_WRONLY | os.O_NOFOLLOW)
     try:
         os.write(f, json.dumps(config, indent=4, sort_keys=True).encode('utf-8'))
@@ -252,11 +254,24 @@ def write_kubeconfig(user, master):
 def create_homedir(user):
     """
     Create homedirs for new users
+
     """
     homepath = os.path.join('/data', 'project', user.name)
-    os.makedirs(homepath, mode=0o775, exist_ok=False)
-    os.chmod(homepath, 0o775 | stat.S_ISGID)
-    os.chown(homepath, int(user.id), int(user.id))
+    if not os.path.exists(homepath):
+        # Try to not touch it if it already exists
+        # This prevents us from messing with permissions while also
+        # not crashing if homedirs already do exist
+        # This also protects against the race exploit that can be done
+        # by having a symlink from /data/project/$username point as a symlink
+        # to anywhere else. The ordering we have here prevents it - if
+        # it already exists in the race between the 'exists' check and the makedirs,
+        # we will just fail. Then we switch mode but not ownership, so attacker
+        # can not just delete and create a symlink to wherever. The chown
+        # happens last, so should be ok.
+        self.log.info('Homedir already exists for %s', homepath)
+        os.makedirs(homepath, mode=0o775, exist_ok=False)
+        os.chmod(homepath, 0o775 | stat.S_ISGID)
+        os.chown(homepath, int(user.id), int(user.id))
 
 
 def create_namespace(user):
