@@ -1,6 +1,5 @@
-# Class: toollabs::queue::continuous
-#
-#
+# manage continuous queue
+
 class toollabs::queue::continuous {
 
     $hostlist = '@general'
@@ -8,5 +7,4 @@ class toollabs::queue::continuous {
     gridengine::queue { 'continuous':
         config => 'toollabs/gridengine/queue-continuous.erb',
     }
-
 }

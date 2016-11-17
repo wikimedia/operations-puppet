@@ -1,15 +1,5 @@
-# Class: toollabs::hba
-#
-# This role sets up an instance to allow HBA from bastions
-#
-# Parameters:
-#
-# Actions:
-#
-# Requires:
-#
-# Sample Usage:
-#
+# Establish the ability to do Host Based Auth from bastions to execs/webgrid
+
 class toollabs::hba {
 
     file { '/usr/local/sbin/project-make-shosts':
@@ -22,8 +12,8 @@ class toollabs::hba {
 
     exec { 'make-shosts':
         command => '/usr/local/sbin/project-make-shosts >/etc/ssh/shosts.equiv~',
-        require => File['/usr/local/sbin/project-make-shosts'],
         onlyif  => "/usr/bin/test -n \"\$(/usr/bin/find /data/project/.system/store -maxdepth 1 \\( -type d -or -type f -name submithost-\\* \\) -newer /etc/ssh/shosts.equiv~)\" -o ! -s /etc/ssh/shosts.equiv~",
+        require => File['/usr/local/sbin/project-make-shosts'],
     }
 
     file { '/etc/ssh/shosts.equiv':
@@ -45,13 +35,12 @@ class toollabs::hba {
 
     exec { 'make-access':
         command => '/usr/local/sbin/project-make-access >/etc/project.access',
-        require => File['/usr/local/sbin/project-make-access'],
         onlyif  => "/usr/bin/test -n \"\$(/usr/bin/find /data/project/.system/store -maxdepth 1 \\( -type d -or -type f -name submithost-\\* \\) -newer /etc/project.access)\" -o ! -s /etc/project.access",
+        require => File['/usr/local/sbin/project-make-access'],
     }
 
     security::access::config { 'toollabs-hba':
         source  => '/etc/project.access',
         require => Exec['make-access'],
     }
-
 }

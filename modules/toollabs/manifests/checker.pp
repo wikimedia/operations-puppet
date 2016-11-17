@@ -1,12 +1,12 @@
-# = Class: toollabs::checker
-#
 # Exposes a set of web endpoints that perform an explicit check for a
 # particular set of internal services, and response OK (200) or not (anything else)
 # Used for external monitoring / collection of availability metrics
 #
 # This runs as an ldap user, toolschecker, so it can touch NFS without causing
 # idmapd related issues.
+
 class toollabs::checker inherits toollabs {
+
     include gridengine::submit_host
     include toollabs::infrastructure
 
@@ -64,6 +64,7 @@ class toollabs::checker inherits toollabs {
         mode   => '0400',
         source => "/var/lib/puppet/ssl/certs/${::fqdn}.pem"
     }
+
     file { '/var/lib/toolschecker/puppetcerts/key.pem':
         ensure => present,
         owner  => "${::labsproject}.toolschecker",

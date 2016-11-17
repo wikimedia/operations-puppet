@@ -1,6 +1,7 @@
 class toollabs::maintain_kubeusers(
     $k8s_master,
 ) {
+
     # We need a newer version of python3-ldap3 than what is in Jessie
     # For the connection time out / server pool features
     apt::pin { [

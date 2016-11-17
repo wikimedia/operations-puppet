@@ -1,35 +1,30 @@
-# Class: toollabs::redis
-#
 # This role sets up a redis node for use by tool-labs
 # Restricts usage of certain commands, to prevent
 # people from trampling on others' keys
 # Uses default amount of RAM (1G) specified by redis class
-#
-# Parameters:
-#
-# Actions:
-#
-# Requires:
-#
-# Sample Usage:
-#
+
 class toollabs::redis (
     $maxmemory = '12GB',
 ) {
+
     include toollabs::infrastructure
     include ::redis::client::python
+    include labs_lvm
+
+    package { 'python-virtualenv':
+        ensure => latest,
+    }
+
+    labs_lvm::volume { 'redis-disk':
+        mountat => '/srv',
+        size    => '100%FREE',
+    }
 
     $active_redis = hiera('active_redis')
     if $active_redis != $::fqdn {
         $slaveof = "${active_redis} 6379"
     } else {
         $slaveof = undef
-    }
-
-    include labs_lvm
-    labs_lvm::volume { 'redis-disk':
-        mountat => '/srv',
-        size    => '100%FREE',
     }
 
     redis::instance { 6379:
@@ -59,10 +54,6 @@ class toollabs::redis (
             },
         },
         require  => Labs_lvm::Volume['redis-disk'],
-    }
-
-    package { 'python-virtualenv':
-        ensure => latest,
     }
 
     diamond::collector { 'Redis':

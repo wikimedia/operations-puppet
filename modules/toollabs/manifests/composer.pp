@@ -1,12 +1,14 @@
 # Install composer (https://getcomposer.org/) to
 # /usr/local/bin/composer and keep it updated.  This class is based on
 # contint::composer
+
 class toollabs::composer {
+
     file { '/srv/composer':
         ensure => 'directory',
-        mode   => '0755',
         owner  => 'root',
         group  => 'root',
+        mode   => '0755',
     }
 
     git::clone { 'composer':

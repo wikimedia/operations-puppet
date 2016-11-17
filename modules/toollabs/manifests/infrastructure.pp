@@ -1,17 +1,6 @@
-# Class: toollabs::infrastructure
-#
-# This role configures the instance as part of the infrastructure
-# where endusers are not expected to log in.  This class is not intended
-# to be used directly, but is included from some other classes.
-#
-# Parameters:
-#
-# Actions:
-#
-# Requires:
-#
-# Sample Usage:
-#
+# This prevents normal users who are not a member of tools.admin
+# from authenticating via SSH.
+
 class toollabs::infrastructure {
 
     motd::script { 'infrastructure-banner':
@@ -24,5 +13,4 @@ class toollabs::infrastructure {
     security::access::config { 'labs-admin-only':
         content => "-:ALL EXCEPT (${::labsproject}.admin) root:ALL\n",
     }
-
 }

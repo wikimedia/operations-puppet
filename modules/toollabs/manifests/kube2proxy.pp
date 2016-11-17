@@ -1,17 +1,11 @@
 # Set up a kube2proxy service.
+
 class toollabs::kube2proxy(
     $master_host,
     $kube_token='test',
 ) {
-    include k8s::users
 
-    file { '/usr/local/sbin/kube2proxy':
-        ensure => present,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
-        source => 'puppet:///modules/toollabs/kube2proxy.py',
-    }
+    include k8s::users
 
     $packages = [
       'python3-pip',
@@ -20,6 +14,14 @@ class toollabs::kube2proxy(
       'python3-requests',]
 
     require_package($packages)
+
+    file { '/usr/local/sbin/kube2proxy':
+        ensure => present,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => 'puppet:///modules/toollabs/kube2proxy.py',
+    }
 
     # Temporarily not run on non-active proxies
     # note that having redis based replication
@@ -30,6 +32,7 @@ class toollabs::kube2proxy(
         $::hostname => 'running',
         default     => 'stopped'
     }
+
     $service_params = {'ensure' => $should_run}
 
     $users = hiera('k8s_infrastructure_users')
@@ -61,5 +64,4 @@ class toollabs::kube2proxy(
             '/etc/kube2proxy.yaml'
         ],
     }
-
 }
