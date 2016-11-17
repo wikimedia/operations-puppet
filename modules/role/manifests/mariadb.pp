@@ -435,7 +435,7 @@ class role::mariadb::beta {
     class { 'mariadb::service':
         ensure  => 'running',
         manage  => true,
-        enabled => true,
+        enable  => true,
         require => Class['mariadb::config'],
     }
 
