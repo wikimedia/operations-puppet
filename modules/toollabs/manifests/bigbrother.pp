@@ -1,7 +1,5 @@
-# Set up a bigbrother service.
 class toollabs::bigbrother($active) {
 
-    # bigbrother needs this perl package
     require_package('libxml-simple-perl')
 
     file { '/usr/local/sbin/bigbrother':

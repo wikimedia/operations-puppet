@@ -1,19 +1,10 @@
-# Class: toollabs::node::all
-#
 # Base class for all compute nodes
-#
-# Parameters:
-#
-# Actions:
-#
-# Requires:
-#
-# Sample Usage:
-#
+
 class toollabs::node::all(
     $swap_partition = true,
     $tmp_partition = true,
 ) {
+
     include toollabs
 
     if $tmp_partition {

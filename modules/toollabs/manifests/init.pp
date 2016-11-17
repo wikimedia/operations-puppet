@@ -1,3 +1,5 @@
+# This establishes the basics for every SGE node
+
 class toollabs (
     $external_hostname = undef,
     $external_ip = undef,
@@ -37,9 +39,9 @@ class toollabs (
 
     file { $sysdir:
         ensure  => directory,
+        owner   => 'root',
         group   => "${::labsproject}.admin",
         mode    => '2775',
-        owner   => 'root',
         require => Exec['ensure-grid-is-on-NFS'],
     }
 
@@ -86,9 +88,9 @@ class toollabs (
     file { '/etc/ssh/ssh_known_hosts':
         ensure  => file,
         source  => '/etc/ssh/ssh_known_hosts~',
-        mode    => '0444',
         owner   => 'root',
         group   => 'root',
+        mode    => '0444',
         require => Exec['make_known_hosts'],
     }
 
@@ -103,9 +105,9 @@ class toollabs (
     file { '/root/.bashrc':
         ensure => file,
         source => 'puppet:///modules/toollabs/rootrc',
-        mode   => '0750',
         owner  => 'root',
         group  => 'root',
+        mode   => '0750',
     }
 
     # Trustworthy enough
@@ -181,17 +183,17 @@ class toollabs (
 
     file { '/etc/cron.daily/logrotate':
         ensure => file,
-        mode   => '0555',
         owner  => 'root',
         group  => 'root',
+        mode   => '0555',
         source => 'puppet:///modules/toollabs/logrotate.crondaily',
     }
 
     file { '/usr/local/bin/log-command-invocation':
         ensure => present,
-        mode   => '0555',
         owner  => 'root',
         group  => 'root',
+        mode   => '0555',
         source => 'puppet:///modules/toollabs/log-command-invocation',
     }
 

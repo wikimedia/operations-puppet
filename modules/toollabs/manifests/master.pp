@@ -1,16 +1,7 @@
-# Class: toollabs::master
-#
-# This role sets up the grid master in the Tool Labs model.
-#
-# Parameters:
-#
-# Actions:
-#
-# Requires:
-#
-# Sample Usage:
-#
+# Establish the gridengine master role (one per cluster)
+
 class toollabs::master inherits toollabs {
+
     include gridengine::master
     include toollabs::infrastructure
     include toollabs::queue::continuous

@@ -1,8 +1,9 @@
-# Deploy and update root web.
+# This is responsible for http://tools.wmflabs.org/
 class toollabs::admin_web_updater(
     $active
 ) {
     if $active {
+
         # Deploy and update root web.
         git::clone { 'labs/toollabs':
             ensure    => latest,

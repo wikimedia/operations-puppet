@@ -1,5 +1,7 @@
 # Puppetmaster used in toollabs only for k8s nodes
+
 class toollabs::puppetmaster {
+
     class { '::puppet::self::master':
         server => $::fqdn,
     }

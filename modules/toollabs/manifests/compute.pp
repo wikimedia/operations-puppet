@@ -1,20 +1,11 @@
-# Class: toollabs::compute
-#
 # This role sets up a grid compute node in the Tool Labs model.
 #
 # On its own, this sets up a working node of the grid, but it is
 # useless without a more specific role from toollabs::node::* that
 # will add functionality and place it on queues or hostgroups.
-#
-# Parameters:
-#
-# Actions:
-#
-# Requires:
-#
-# Sample Usage:
-#
+
 class toollabs::compute inherits toollabs {
+
     include gridengine
     include toollabs::exec_environ
     include toollabs::hba
