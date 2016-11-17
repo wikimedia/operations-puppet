@@ -3,6 +3,7 @@
 # This is the name users should connect with
 VCSUSER=<%= @vcs_user %>
 ROOT="<%= @basedir %>/phabricator"
+export PHABRICATOR_ENV=vcs
 
 if [ "$1" != "$VCSUSER" ];
 then

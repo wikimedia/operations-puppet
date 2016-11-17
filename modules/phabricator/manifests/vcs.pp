@@ -27,11 +27,18 @@ class phabricator::vcs (
     $ssh_hook_path = '/usr/local/lib/phabricator-ssh-hook.sh'
     $sshd_config = '/etc/ssh/sshd_config.phabricator'
 
+    group { 'vcs':
+        ensure => present,
+        system => true,
+    }
+
     user { $vcs_user:
+        gid        => 'vcs',
         shell      => '/bin/sh',
         managehome => true,
         home       => "/var/lib/${vcs_user}",
         system     => true,
+
     }
 
     file { "${basedir}/phabricator/scripts/ssh/":
