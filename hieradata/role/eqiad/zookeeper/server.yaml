@@ -1,0 +1,3 @@
+debdeploy::grains:
+  debdeploy-zookeeper-eqiad:
+    value: standard
