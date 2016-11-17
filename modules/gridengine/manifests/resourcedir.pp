@@ -5,7 +5,8 @@ define gridengine::resourcedir(
     $modcmd,
     $delcmd,
     $dir = $title,
-){
+) {
+
     $etcdir     = '/var/lib/gridengine/etc'
     $confdir    = "${etcdir}/${dir}"
     $trackerdir = "${etcdir}/tracker/${dir}"
@@ -32,8 +33,6 @@ define gridengine::resourcedir(
 
     exec { "track-${dir}":
         command => "${etcdir}/bin/tracker '${confdir}' '${trackerdir}' '${addcmd}' '${modcmd}' '${delcmd}'",
-        require => File[ "${etcdir}/bin/tracker", $confdir, $trackerdir ],
+        require => File["${etcdir}/bin/tracker", $confdir, $trackerdir],
     }
-
 }
-

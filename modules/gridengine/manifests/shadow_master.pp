@@ -3,7 +3,7 @@
 class gridengine::shadow_master(
     $gridmaster = $grid_master,
     $sgeroot = '/var/lib/gridengine',
-  ) {
+) {
 
     include ::gridengine
     package { 'gridengine-master':
@@ -13,18 +13,18 @@ class gridengine::shadow_master(
 
     file { "${sgeroot}/default":
         ensure  => directory,
-        require => [ File[$sgeroot], Package['gridengine-common'] ],
         owner   => 'sgeadmin',
         group   => 'sgeadmin',
         mode    => '2775',
+        require => [ File[$sgeroot], Package['gridengine-common'] ],
     }
 
     file { "${sgeroot}/default/common":
         ensure  => directory,
-        require => File["${sgeroot}/default"],
         owner   => 'sgeadmin',
         group   => 'sgeadmin',
         mode    => '2775',
+        require => File["${sgeroot}/default"],
     }
 
     file { '/etc/default/gridengine':

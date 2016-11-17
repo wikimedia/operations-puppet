@@ -2,13 +2,12 @@
 
 define gridengine::hostgroup(
     $rname  = $title,
-    $config = undef )
-{
+    $config = undef,
+) {
 
     gridengine::resource { $rname:
         dir    => 'hostgroups',
         config => $config,
     }
-
 }
 
