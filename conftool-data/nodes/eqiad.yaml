@@ -297,7 +297,7 @@ swift:
   ms-fe1003.eqiad.wmnet: [swift-fe]
   ms-fe1004.eqiad.wmnet: [swift-fe]
 phabricator:
-  iridium-vcs.eqiad.wmnet: [git-ssh]
+  phab1001-vcs.eqiad.wmnet: [git-ssh]
 aqs:
   aqs1004.eqiad.wmnet: [aqs]
   aqs1005.eqiad.wmnet: [aqs]
