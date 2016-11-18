@@ -162,30 +162,25 @@ node 'baham.wikimedia.org' {
 
 # Bastion in Virginia
 node 'bast1001.wikimedia.org' {
-
     role(bastionhost::general)
 
-    interface::add_ip6_mapped { 'main':
-        interface => 'eth0',
-    }
-
+    interface::add_ip6_mapped { 'main': interface => 'eth0', }
     $cluster = 'misc'
 }
 
 # Bastion in Texas
 node 'bast2001.wikimedia.org' {
-    interface::add_ip6_mapped { 'main':
-        interface => 'eth0',
-    }
     role(bastionhost::general)
+
+    interface::add_ip6_mapped { 'main': interface => 'eth0', }
+    $cluster = 'misc'
 }
 
 # Bastion in the Netherlands
 node 'bast3001.wikimedia.org' {
-    interface::add_ip6_mapped { 'main':
-        interface => 'eth0',
-    }
     role(bastionhost::general, installserver::tftp_server, prometheus::ops)
+
+    interface::add_ip6_mapped { 'main': interface => 'eth0', }
 
     class { 'ganglia::monitor::aggregator':
         sites =>  'esams',
@@ -194,12 +189,10 @@ node 'bast3001.wikimedia.org' {
 
 # Bastion in California
 node 'bast4001.wikimedia.org' {
-    interface::add_ip6_mapped { 'main':
-        interface => 'eth0',
-    }
-
     role(bastionhost::general, ipmi::mgmt, installserver::tftp_server,
         prometheus::ops)
+
+    interface::add_ip6_mapped { 'main': interface => 'eth0', }
 
     class { 'ganglia::monitor::aggregator':
         sites =>  'ulsfo',
