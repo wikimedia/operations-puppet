@@ -123,7 +123,6 @@ sub text_common_hash {
 }
 
 sub text_common_backend_response_early {
-	<%- if @varnish_version4 -%>
 	// Re-do the same changes as evalute_cookie above, but on the bereq
 	// Cookie header and without bothering to save originals.  The reason we
 	// have to do this very late in the game here is that Varnish 4 uses
@@ -139,7 +138,6 @@ sub text_common_backend_response_early {
 	} else {
 		unset bereq.http.Cookie;
 	}
-	<%- end -%>
 }
 
 sub text_common_backend_response {
@@ -159,11 +157,7 @@ sub text_common_backend_response {
 	) {
 		set beresp.ttl = 607s;
 		set beresp.http.X-CDIS = "pass";
-		<%- if @varnish_version4 -%>
 		set beresp.uncacheable = true;
 		return (deliver);
-		<%- else -%>
-		return (hit_for_pass);
-		<%- end -%>
 	}
 }

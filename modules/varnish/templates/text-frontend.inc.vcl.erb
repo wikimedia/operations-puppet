@@ -199,22 +199,14 @@ sub cluster_fe_hash {
 sub cluster_fe_hit { }
 
 sub cluster_fe_miss {
-<% if not @varnish_version4 -%>
-	call text_common_misspass_restore_cookie;
-<% end -%>
 }
 
 sub cluster_fe_pass {
-<% if not @varnish_version4 -%>
-	call text_common_misspass_restore_cookie;
-<% end -%>
 }
 
-<% if @varnish_version4 -%>
 sub cluster_fe_backend_fetch {
 	call text_common_misspass_restore_cookie;
 }
-<% end -%>
 
 sub cluster_fe_backend_response_early {
 	call text_common_backend_response_early;
@@ -235,12 +227,8 @@ sub cluster_fe_backend_response {
             && bereq.http.X-CDIS == "miss"
             && beresp.http.X-Cache-Int !~ " hit/([4-9]|[0-9]{2,})$") {
 		set beresp.ttl = 0s;
-		<%- if @varnish_version4 -%>
 		set beresp.uncacheable = true;
 		return (deliver);
-		<%- else -%>
-		return (hit_for_pass);
-		<%- end -%>
 	}
 
 	return (deliver);
@@ -254,11 +242,7 @@ sub cluster_fe_deliver {
 		if (resp.status == 302) {
 			unset resp.http.Location;
 			set resp.status = 200;
-			<%- if @varnish_version4 -%>
 			set resp.reason = "OK";
-			<%- else -%>
-			set resp.response = "OK";
-			<%- end -%>
 		} elsif (resp.status == 301) {
 			// preserve the original client redirect preference on title redirects
 			if (resp.http.Location ~ "[?]") {

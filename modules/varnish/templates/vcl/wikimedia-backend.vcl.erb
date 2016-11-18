@@ -1,6 +1,4 @@
-<% if @varnish_version4 -%>
 vcl 4.0;
-<% end -%>
 
 // common backend code for all clusters
 include "<%= @varnish_include_path %>wikimedia-common_<%= @vcl %>.inc.vcl";
@@ -18,11 +16,6 @@ sub vcl_recv {
 		<%= error_synth(403, "Access denied") -%>
 	}
 
-<% if not @varnish_version4 -%>
-	if (req.restarts == 0) {
-		call wm_common_recv_set_xff;
-	}
-<% end -%>
 	call wm_common_recv_early;
 
 	// Backend loop detection: if a mistake is made in the code or config
@@ -45,16 +38,12 @@ sub vcl_recv {
 	// tier-one caches must select an applayer backend
 	call cluster_be_recv_applayer_backend;
 <% else -%>
-	<% if @varnish_version4 -%>
 	set req.backend_hint = cache_<%= @cache_route %>.backend();
-	<% else -%>
-	set req.backend = cache_<%= @cache_route %>;
-	<% end -%>
 <% end -%>
 
 	call wm_common_recv_grace;
 
-<% if @varnish_version4 and @websocket_support -%>
+<% if @websocket_support -%>
 	call wm_common_websocket_recv;
 <% end -%>
 
@@ -70,12 +59,10 @@ sub vcl_hash {
 	// default vcl_hash invokes here!
 }
 
-<% if @varnish_version4 -%>
 // http://book.varnish-software.com/4.0/chapters/Cache_Invalidation.html
 sub vcl_purge {
 	return (synth(204, "Purged"));
 }
-<% end -%>
 
 sub vcl_hit {
 	call wm_common_hit;
@@ -97,11 +84,7 @@ sub vcl_pass {
 	// pass-traffic should not use consistent hashing, to avoid unecessary
 	// traffic focus on one node and keep things performant, *if* we're
 	// fairly sure that all layers/tiers make equivalent pass decisions...
-	<% if @varnish_version4 -%>
 	set req.backend_hint = cache_<%= @cache_route %>_random.backend();
-	<% else -%>
-	set req.backend = cache_<%= @cache_route %>_random;
-	<% end -%>
 <% end -%>
 <% end -%>
 
@@ -109,23 +92,17 @@ sub vcl_pass {
 	return (<%= @fetch_pass %>); // no default VCL (which is just "return (<%= @fetch_pass %>)" anyways)
 }
 
-<% if @varnish_version4 and @websocket_support -%>
+<% if @websocket_support -%>
 sub vcl_pipe {
 	call wm_common_websocket_pipe;
 }
 <% end -%>
 
-<% if @varnish_version4 -%>
 sub vcl_backend_fetch {
     call cluster_be_backend_fetch;
 }
-<% end -%>
 
-<% if @varnish_version4 -%>
 sub vcl_backend_response {
-<% else -%>
-sub vcl_fetch {
-<% end -%>
 	call cluster_be_backend_response_early; // e.g. to fix up Vary-slotting in bereq
 	call wm_common_backend_response;
 	call cluster_be_backend_response;
@@ -138,8 +115,6 @@ sub vcl_deliver {
 	call cluster_be_deliver;
 	return (deliver); // no default VCL (which is just "return (deliver)" anyways)
 }
-
-<% if @varnish_version4 -%>
 
 // Varnish4 vcl_synth+vcl_backend_error
 
@@ -157,16 +132,3 @@ sub vcl_backend_error {
 	call backend_error_errorpage;
 	return (deliver);
 }
-
-<% else -%>
-
-// Varnish3 vcl_error
-sub vcl_error {
-	call wm_common_v3_purge_error;
-	if (obj.status > 400 && obj.status != 413) {
-		call synth_errorpage;
-	}
-	return (deliver);
-}
-
-<% end -%>

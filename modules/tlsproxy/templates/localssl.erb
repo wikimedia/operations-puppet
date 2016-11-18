@@ -4,7 +4,7 @@ upstream local_fe_<%= @basename %> {
 <%- @upstream_ports.each do |upstream_port| -%>
     server <%= @ipaddress %>:<%= upstream_port %> max_fails=0;
 <%- end -%>
-<% if @varnish_version4 and @keepalives_per_worker.to_i > 0 -%>
+<% if @keepalives_per_worker.to_i > 0 -%>
     keepalive <%= @keepalives_per_worker %>; # Note: commonly up to 48 workers!
 <% end -%>
 }
@@ -44,14 +44,12 @@ server {
 <% end -%>
 	location / {
 		proxy_pass http://local_fe_<%= @basename %>;
-<% if @varnish_version4 -%>
 		proxy_http_version 1.1;
 <% if @websocket_support -%>
 		proxy_set_header Upgrade $http_upgrade;
 		proxy_set_header Connection $connection_upgrade;
 <% elsif @keepalives_per_worker.to_i > 0 -%>
 		proxy_set_header Connection "";
-<% end -%>
 <% end -%>
 
 		# this should be in sync with Varnish's first_byte_timeout
