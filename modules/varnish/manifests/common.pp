@@ -1,12 +1,6 @@
 class varnish::common {
     require varnish::packages
 
-    if (hiera('varnish_version4', false)) {
-        $varnish4_python_suffix = '4'
-    } else {
-        $varnish4_python_suffix = ''
-    }
-
     # Mount /var/lib/ganglia as tmpfs to avoid Linux flushing mlocked
     # shm memory to disk
     mount { '/var/lib/varnish':
@@ -66,7 +60,7 @@ class varnish::common {
     }
 
     file { '/usr/local/lib/python2.7/dist-packages/varnishprocessor':
-        source  => "puppet:///modules/varnish/varnishprocessor${varnish4_python_suffix}",
+        source  => 'puppet:///modules/varnish/varnishprocessor4',
         owner   => 'root',
         group   => 'root',
         mode    => '0755',
@@ -86,29 +80,20 @@ class varnish::common {
         ensure => 'stopped'
     }
 
-    if (hiera('varnish_version4', false)) {
-        # varnishlog4.py depends on varnishapi. Install it.
-        file { '/usr/local/lib/python2.7/dist-packages/varnishapi.py':
-            source => 'puppet:///modules/varnish/varnishapi.py',
-            owner  => 'root',
-            group  => 'root',
-            mode   => '0444',
-        }
+    # varnishlog4.py depends on varnishapi. Install it.
+    file { '/usr/local/lib/python2.7/dist-packages/varnishapi.py':
+        source => 'puppet:///modules/varnish/varnishapi.py',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0444',
+    }
 
-        # Install varnishlog4.py, compatible with Varnish 4
-        file { '/usr/local/lib/python2.7/dist-packages/varnishlog.py':
-            source  => 'puppet:///modules/varnish/varnishlog4.py',
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0444',
-            require => File['/usr/local/lib/python2.7/dist-packages/varnishapi.py'],
-        }
-    } else {
-        file { '/usr/local/lib/python2.7/dist-packages/varnishlog.py':
-            source => 'puppet:///modules/varnish/varnishlog.py',
-            owner  => 'root',
-            group  => 'root',
-            mode   => '0444',
-        }
+    # Install varnishlog4.py, compatible with Varnish 4
+    file { '/usr/local/lib/python2.7/dist-packages/varnishlog.py':
+        source  => 'puppet:///modules/varnish/varnishlog4.py',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        require => File['/usr/local/lib/python2.7/dist-packages/varnishapi.py'],
     }
 }

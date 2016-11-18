@@ -15,11 +15,7 @@ define role::cache::instances (
     $cluster_nodes
 ) {
 
-    if hiera('varnish_version4', false) {
-        $chash_dir = 'vslp'
-    } else {
-        $chash_dir = 'chash'
-    }
+    $chash_dir = 'vslp'
 
     $cache_route_table = hiera('cache::route_table')
     $cache_route = $cache_route_table[$::site]

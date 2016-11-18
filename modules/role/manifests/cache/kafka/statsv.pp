@@ -16,13 +16,8 @@ class role::cache::kafka::statsv(
     $format  = "%{fake_tag0@hostname?${::fqdn}}x %{%FT%T@dt}t %{X-Client-IP@ip}o %{@uri_path}U %{@uri_query}q %{User-Agent@user_agent}i"
 
     # Set varnish.arg.q or varnish.arg.m according to Varnish version
-    if (hiera('varnish_version4', false)) {
-        $varnish_opts = { 'q' => 'ReqURL ~ "^/beacon/statsv\?"' }
-        $conf_template = 'varnishkafka/varnishkafka_v4.conf.erb'
-    } else {
-        $varnish_opts = { 'm' => 'RxURL:^/beacon/statsv\?' }
-        $conf_template = 'varnishkafka/varnishkafka.conf.erb'
-    }
+    $varnish_opts = { 'q' => 'ReqURL ~ "^/beacon/statsv\?"' }
+    $conf_template = 'varnishkafka/varnishkafka_v4.conf.erb'
 
     varnishkafka::instance { 'statsv':
         # FIXME - top-scope var without namespace, will break in puppet 2.8

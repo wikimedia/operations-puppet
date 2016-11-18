@@ -35,28 +35,14 @@ class role::cache::base(
         site         => $zero_site,
     }
 
-    ###########################################################################
-    # Varnish4 Transition
-    ###########################################################################
-
-    $varnish_version4 = hiera('varnish_version4', false)
-
-    if $varnish_version4 {
-        salt::grain { 'varnish_version':
-            ensure  => present,
-            replace => true,
-            value   => 4,
-        }
-    } else {
-        salt::grain { 'varnish_version':
-            ensure  => present,
-            replace => true,
-            value   => 3,
-        }
+    salt::grain { 'varnish_version':
+        ensure  => present,
+        replace => true,
+        value   => 4,
     }
 
     # XXX: temporary, we need this to mitigate T145661
-    if $::realm == 'production' and $varnish_version4 {
+    if $::realm == 'production' {
         $hnodes = hiera("cache::${cache_cluster}::nodes")
         $all_nodes = array_concat($hnodes['eqiad'], $hnodes['esams'], $hnodes['ulsfo'], $hnodes['codfw'])
         $times = cron_splay($all_nodes, 'weekly', "${cache_cluster}-backend-restarts")
@@ -177,13 +163,8 @@ class role::cache::base(
     varnish::setup_filesystem { $filesystems: }
     Varnish::Setup_filesystem <| |> -> Varnish::Instance <| |>
 
-    if ($varnish_version4) {
-        # https://www.varnish-cache.org/docs/trunk/phk/persistent.html
-        $persistent_name = 'deprecated_persistent'
-    }
-    else {
-        $persistent_name = 'persistent'
-    }
+    # https://www.varnish-cache.org/docs/trunk/phk/persistent.html
+    $persistent_name = 'deprecated_persistent'
 
     # This is the "normal" persistent storage varnish args, for consuming all available space
     # (upload uses something more complex than this based on our storage vars above as well!)

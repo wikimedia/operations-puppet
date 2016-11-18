@@ -1,8 +1,6 @@
 class varnish::common::vcl {
     require varnish::common
 
-    $varnish_version4 = hiera('varnish_version4', false)
-
     file { '/etc/varnish/errorpage.inc.vcl':
         owner   => 'root',
         group   => 'root',
@@ -33,13 +31,8 @@ class varnish::common::vcl {
         recurse => true,
     }
 
-    if $varnish_version4 {
-        $unsatisfiable_status = 416
-        $unsatisfiable_length = 0
-    } else {
-        $unsatisfiable_status = 200
-        $unsatisfiable_length = 20
-    }
+    $unsatisfiable_status = 416
+    $unsatisfiable_length = 0
 
     file { '/usr/local/bin/varnishtest-runner':
         owner   => 'root',

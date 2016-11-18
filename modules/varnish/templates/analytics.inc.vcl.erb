@@ -37,7 +37,6 @@ sub analytics_last_access_recv_ {
 /*****************************************************************************
  * !!! private to analytics_last_access_deliver !!!!
  * Use a 12h-resolution expiry so people cannot infer an exact request time.
-<% if @varnish_version4 -%>
  ****************************************************************************/
 sub set_last_access_cookie__ {
 	header.append(resp.http.Set-Cookie,
@@ -47,32 +46,6 @@ sub set_last_access_cookie__ {
 		+ std.time(std.time2integer(now + 32d, 0) / 43200 * 43200, now)
 	);
 }
-<% else -%>
- * This should be:
- *     header.append(resp.http.Set-Cookie,
- *         "WMF-Last-Access="
- *         + req.http.X-NowDay
- *         + ";Path=/;HttpOnly;secure;Expires="
- *         + (now + 32d)
- *     );
- * However, varnish3 is buggy wrt str + (time + duration), so we're forced to
- * drop to inline C a bit here and do what the VCL compiler should have done
- * for us above.  On top of all that, the C code now floors the expiry to the
- * next-lower 12 hour mark, which would've been a bit trickier in VCL...
- ****************************************************************************/
-C{#include <time.h>}C
-sub set_last_access_cookie__ { C{
-    Vmod_Func_header.append(sp, HDR_RESP, "\013Set-Cookie:",
-        "WMF-Last-Access=",
-        VRT_GetHdr(sp, HDR_REQ, "\011X-NowDay:"),
-        ";Path=/;HttpOnly;secure;Expires=",
-        VRT_time_string(sp, (double)(
-            ((time_t)VRT_r_now(sp) + 2764800) / 43200 * 43200
-        )),
-        vrt_magic_string_end
-    );
-}C }
-<% end -%>
 
 // Call from vcl_deliver near other X-Analytics code
 sub analytics_last_access_deliver_ {
