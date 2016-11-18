@@ -14,11 +14,12 @@ ADAPTER_LINE_STARTSWITH = 'Adapter #'
 EXIT_LINE_STARTSWITH = 'Exit Code:'
 
 # Hierarchically ordered contexts
-ORDERED_CONTEXTS = ('raw_disk', 'physical_drive', 'span', 'virtual_drive',
-                    'adapter')
+ORDERED_LOGICAL_CONTEXTS = (
+    'raw_disk', 'physical_drive', 'span', 'virtual_drive', 'adapter')
+ORDERED_PHYSICAL_CONTEXTS = ('raw_disk', 'enclosure', 'adapter')
 
 # Rules on how to interpret the megacli output and how to do the summary
-CONTEXTS = {
+LOGICAL_CONTEXTS = {
     'adapter': {
         'parent': None,
         'include_childs': False,
@@ -28,7 +29,7 @@ CONTEXTS = {
     'virtual_drive': {
         'parent': 'adapter',
         'include_childs': False,
-        'optimal_values': {'State': 'Optimal'},
+        'optimal_values': {'State': ['Optimal']},
         'print_keys': (
             'Virtual Drive',
             'RAID Level',
@@ -49,10 +50,10 @@ CONTEXTS = {
         'parent': 'span',
         'include_childs': True,
         'optimal_values': {
-            'Media Error Count': '0',
-            'Other Error Count': '0',
-            'Predictive Failure Count': '0',
-            'Last Predictive Failure Event Seq Number': '0',
+            'Media Error Count': ['0'],
+            'Other Error Count': ['0'],
+            'Predictive Failure Count': ['0'],
+            'Last Predictive Failure Event Seq Number': ['0'],
         },
         'print_keys': (
             'PD',
@@ -68,7 +69,7 @@ CONTEXTS = {
     'raw_disk': {
         'parent': 'physical_drive',
         'include_childs': False,
-        'optimal_values': {'Firmware state': 'Online, Spun Up'},
+        'optimal_values': {'Firmware state': ['Online, Spun Up']},
         'print_keys': (
             'Raw Size',
             'Firmware state',
@@ -78,6 +79,47 @@ CONTEXTS = {
     }
 }
 
+PHYSICAL_CONTEXTS = {
+    'adapter': {
+        'parent': None,
+        'include_childs': False,
+        'optimal_values': {},
+        'print_keys': ('name', ),
+    },
+    'enclosure': {
+        'parent': 'adapter',
+        'include_childs': True,
+        'optimal_values': {
+            'Media Error Count': ['0'],
+            'Other Error Count': ['0'],
+            'Predictive Failure Count': ['0'],
+            'Last Predictive Failure Event Seq Number': ['0'],
+        },
+        'print_keys': (
+            'Enclosure Device ID',
+            'Slot Number',
+            'Enclosure position',
+            'Device Id',
+            'Media Error Count',
+            'Other Error Count',
+            'Predictive Failure Count',
+            'Last Predictive Failure Event Seq Number',
+        ),
+    },
+    'raw_disk': {
+        'parent': 'enclosure',
+        'include_childs': False,
+        'optimal_values': {'Firmware state': ['JBOD', 'Online, Spun Up']},
+        'print_keys': (
+            'Raw Size',
+            'Firmware state',
+            'Media Type',
+            'Drive Temperature',
+        ),
+    }
+}
+
+
 # Keys that determines the change of context from one block to the next one
 KEY_TO_CONTEXT = {
     'Adapter': 'adapter',
@@ -85,13 +127,14 @@ KEY_TO_CONTEXT = {
     'Span': 'span',
     'PD': 'physical_drive',
     'Raw Size': 'raw_disk',
+    'Enclosure Device ID': 'enclosure',
 }
 
 
 class RaidStatus():
     """Representation of a RAID status with all it's components"""
 
-    def __init__(self):
+    def __init__(self, get_physical=False):
         """Class constructor"""
         self.adapters = []  # There can be multiple adapters
         self.current_context = None  # Pointer to the current context
@@ -102,6 +145,15 @@ class RaidStatus():
         self.span = None
         self.physical_drive = None
         self.raw_disk = None
+        self.enclosure = None
+
+        self.get_physical = get_physical
+        if get_physical:
+            self.contexts = PHYSICAL_CONTEXTS
+            self.ordered_contexts = ORDERED_PHYSICAL_CONTEXTS
+        else:
+            self.contexts = LOGICAL_CONTEXTS
+            self.ordered_contexts = ORDERED_LOGICAL_CONTEXTS
 
     def add_block(self, context, key, value):
         """ Initialize a new block and move it's related pointer
@@ -112,7 +164,7 @@ class RaidStatus():
             value   -- the value to be added to the new block for the given key
         """
 
-        self.consolidate(context)
+        self.consolidate(final_context=context)
         setattr(self, context, {
             'context': context,
             'optimal': True,
@@ -136,9 +188,9 @@ class RaidStatus():
         self.current_context[key] = value
 
         context_name = self.current_context['context']
-        optimal_values = CONTEXTS[context_name]['optimal_values']
+        optimal_values = self.contexts[context_name]['optimal_values']
 
-        if key in optimal_values.keys() and optimal_values[key] != value:
+        if key in optimal_values.keys() and value not in optimal_values[key]:
             self.current_context['optimal'] = False
             sep = '====='
             self.current_context[key] = '{}> {} <{}'.format(
@@ -146,10 +198,10 @@ class RaidStatus():
 
             # Mark as non optimal the whole parent chain
             while True:
-                if CONTEXTS[context_name]['parent'] is None:
+                if self.contexts[context_name]['parent'] is None:
                     break
 
-                parent = getattr(self, CONTEXTS[context_name]['parent'])
+                parent = getattr(self, self.contexts[context_name]['parent'])
                 parent['optimal'] = False
                 context_name = parent['context']
 
@@ -160,9 +212,9 @@ class RaidStatus():
             final_context -- the name of the context up to which consolidate
         """
 
-        for context in ORDERED_CONTEXTS:
+        for context in self.ordered_contexts:
             block = getattr(self, context)
-            parent_context = CONTEXTS[context]['parent']
+            parent_context = self.contexts[context]['parent']
 
             # End of parents chain reached
             if parent_context is None:
@@ -216,7 +268,7 @@ class RaidStatus():
         """
 
         status = []
-        for key in CONTEXTS[block['context']]['print_keys']:
+        for key in self.contexts[block['context']]['print_keys']:
             try:
                 status.append('{}{}: {}'.format(prefix, key, block[key]))
             except:
@@ -228,7 +280,7 @@ class RaidStatus():
             # Skip the child if not needed
             if not get_all and child['optimal']:
                 if (block['optimal'] or
-                        not CONTEXTS[block['context']]['include_childs']):
+                        not self.contexts[block['context']]['include_childs']):
                     continue
 
             status += self._get_block_status(
@@ -248,7 +300,11 @@ def parse_args():
         help='Compress with zlib the summary to overcome NRPE output limits.')
     parser.add_argument(
         '-a', dest='all', action='store_true',
-        help='Include all components in the summary.')
+        help='Include all components in the summary, not only failing ones.')
+    parser.add_argument(
+        '-p', '--physical', action='store_true',
+        help=('Get the status of the physical drives, by default logical ones'
+              'are checked.'))
 
     return parser.parse_args()
 
@@ -260,8 +316,12 @@ def parse_megacli_status(status):
         status -- a RaidStatus instance
     """
 
+    if status.get_physical:
+        command = ['/usr/sbin/megacli', '-PDList', '-aAll', '-NoLog']
+    else:
+        command = ['/usr/sbin/megacli', '-LdPdInfo', '-aAll', '-NoLog']
+
     try:
-        command = ['/usr/sbin/megacli', '-LdPdInfo', '-aAll']
         proc = subprocess.Popen(command, stdout=subprocess.PIPE)
     except:
         print('Unable to run: {}'.format(command))
@@ -294,7 +354,8 @@ def _process_line(line, status):
 
     key, value = [el.strip(' \t\r\n') for el in line.split(':', 1)]
 
-    if key in KEY_TO_CONTEXT.keys():
+    if (key in KEY_TO_CONTEXT.keys() and
+            KEY_TO_CONTEXT[key] in status.contexts.keys()):
         status.add_block(KEY_TO_CONTEXT[key], key, value)
     else:
         status.set_property(key, value)
@@ -303,7 +364,7 @@ def _process_line(line, status):
 if __name__ == '__main__':
     args = parse_args()
 
-    status = RaidStatus()
+    status = RaidStatus(get_physical=args.physical)
     parse_megacli_status(status)
     summary = status.get_status(get_all=args.all)
 
