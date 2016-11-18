@@ -27,10 +27,6 @@ class labstore::account_services {
         ensure => present,
     }
 
-    # Set to true only for the labstore that is currently
-    # actively serving files
-    $is_active = (hiera('active_labstore_host') == $::hostname)
-
     $ldapconfig = hiera_hash('labsldapconfig', {})
     include passwords::mysql::labsdb
 
@@ -77,21 +73,12 @@ class labstore::account_services {
         mode   => '0550',
     }
 
-    # Terrible hack
-    if $is_active {
-        $service_ensure = 'present'
-    } else {
-        $service_ensure = 'absent'
-    }
-
     base::service_unit { 'create-dbusers':
-        ensure  => $service_ensure,
+        ensure  => present,
         systemd => true,
     }
 
-    if $is_active {
-        nrpe::monitor_systemd_unit_state { 'create-dbusers':
-            description => 'Ensure mysql credential creation for tools users is running',
-        }
+    nrpe::monitor_systemd_unit_state { 'create-dbusers':
+        description => 'Ensure mysql credential creation for tools users is running',
     }
 }
