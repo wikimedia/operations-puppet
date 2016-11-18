@@ -6,19 +6,25 @@ Execute and parse megacli commands in order to print a summary of the RAID
 status. By default only components in non-optimal status are shown.
 """
 
+from __future__ import print_function
+
 import argparse
 import subprocess
+import sys
 import zlib
+
+from collections import Counter
 
 ADAPTER_LINE_STARTSWITH = 'Adapter #'
 EXIT_LINE_STARTSWITH = 'Exit Code:'
 
 # Hierarchically ordered contexts
-ORDERED_CONTEXTS = ('raw_disk', 'physical_drive', 'span', 'virtual_drive',
-                    'adapter')
+ORDERED_LOGICAL_CONTEXTS = (
+    'raw_disk', 'physical_drive', 'span', 'virtual_drive', 'adapter')
+ORDERED_PHYSICAL_CONTEXTS = ('raw_disk', 'enclosure_slot', 'adapter')
 
 # Rules on how to interpret the megacli output and how to do the summary
-CONTEXTS = {
+LOGICAL_CONTEXTS = {
     'adapter': {
         'parent': None,
         'include_childs': False,
@@ -28,7 +34,7 @@ CONTEXTS = {
     'virtual_drive': {
         'parent': 'adapter',
         'include_childs': False,
-        'optimal_values': {'State': 'Optimal'},
+        'optimal_values': {'State': ['Optimal']},
         'print_keys': (
             'Virtual Drive',
             'RAID Level',
@@ -48,11 +54,9 @@ CONTEXTS = {
     'physical_drive': {
         'parent': 'span',
         'include_childs': True,
+        'warning': True,
         'optimal_values': {
-            'Media Error Count': '0',
-            'Other Error Count': '0',
-            'Predictive Failure Count': '0',
-            'Last Predictive Failure Event Seq Number': '0',
+            'Predictive Failure Count': ['0'],
         },
         'print_keys': (
             'PD',
@@ -68,7 +72,7 @@ CONTEXTS = {
     'raw_disk': {
         'parent': 'physical_drive',
         'include_childs': False,
-        'optimal_values': {'Firmware state': 'Online, Spun Up'},
+        'optimal_values': {'Firmware state': ['Online, Spun Up']},
         'print_keys': (
             'Raw Size',
             'Firmware state',
@@ -78,6 +82,47 @@ CONTEXTS = {
     }
 }
 
+PHYSICAL_CONTEXTS = {
+    'adapter': {
+        'parent': None,
+        'include_childs': False,
+        'optimal_values': {},
+        'print_keys': ('name', ),
+    },
+    'enclosure_slot': {
+        'parent': 'adapter',
+        'include_childs': True,
+        'optimal_values': {
+            'Media Error Count': ['0'],
+            'Other Error Count': ['0'],
+            'Predictive Failure Count': ['0'],
+            'Last Predictive Failure Event Seq Number': ['0'],
+        },
+        'print_keys': (
+            'Enclosure Device ID',
+            'Slot Number',
+            'Enclosure position',
+            'Device Id',
+            'Media Error Count',
+            'Other Error Count',
+            'Predictive Failure Count',
+            'Last Predictive Failure Event Seq Number',
+        ),
+    },
+    'raw_disk': {
+        'parent': 'enclosure_slot',
+        'include_childs': False,
+        'optimal_values': {'Firmware state': ['JBOD', 'Online, Spun Up']},
+        'print_keys': (
+            'Raw Size',
+            'Firmware state',
+            'Media Type',
+            'Drive Temperature',
+        ),
+    }
+}
+
+
 # Keys that determines the change of context from one block to the next one
 KEY_TO_CONTEXT = {
     'Adapter': 'adapter',
@@ -85,13 +130,14 @@ KEY_TO_CONTEXT = {
     'Span': 'span',
     'PD': 'physical_drive',
     'Raw Size': 'raw_disk',
+    'Enclosure Device ID': 'enclosure_slot',
 }
 
 
 class RaidStatus():
     """Representation of a RAID status with all it's components"""
 
-    def __init__(self):
+    def __init__(self, physical=False):
         """Class constructor"""
         self.adapters = []  # There can be multiple adapters
         self.current_context = None  # Pointer to the current context
@@ -102,6 +148,18 @@ class RaidStatus():
         self.span = None
         self.physical_drive = None
         self.raw_disk = None
+        self.enclosure_slot = None
+
+        # Initialize counters
+        self.counters = Counter()
+        self.failed = Counter()
+
+        if physical:
+            self.contexts = PHYSICAL_CONTEXTS
+            self.ordered_contexts = ORDERED_PHYSICAL_CONTEXTS
+        else:
+            self.contexts = LOGICAL_CONTEXTS
+            self.ordered_contexts = ORDERED_LOGICAL_CONTEXTS
 
     def add_block(self, context, key, value):
         """ Initialize a new block and move it's related pointer
@@ -112,7 +170,7 @@ class RaidStatus():
             value   -- the value to be added to the new block for the given key
         """
 
-        self.consolidate(context)
+        self.consolidate(final_context=context)
         setattr(self, context, {
             'context': context,
             'optimal': True,
@@ -121,6 +179,7 @@ class RaidStatus():
 
         self.current_context = getattr(self, context)
         self.set_property(key, value)
+        self.counters[context] += 1
 
     def set_property(self, key, value):
         """ Set a property in the current context
@@ -136,21 +195,23 @@ class RaidStatus():
         self.current_context[key] = value
 
         context_name = self.current_context['context']
-        optimal_values = CONTEXTS[context_name]['optimal_values']
+        optimal_values = self.contexts[context_name]['optimal_values']
 
-        if key in optimal_values.keys() and optimal_values[key] != value:
+        if key in optimal_values.keys() and value not in optimal_values[key]:
             self.current_context['optimal'] = False
+            self.failed[context_name] += 1
             sep = '====='
             self.current_context[key] = '{}> {} <{}'.format(
                 sep, self.current_context[key], sep)
 
             # Mark as non optimal the whole parent chain
             while True:
-                if CONTEXTS[context_name]['parent'] is None:
+                if self.contexts[context_name]['parent'] is None:
                     break
 
-                parent = getattr(self, CONTEXTS[context_name]['parent'])
+                parent = getattr(self, self.contexts[context_name]['parent'])
                 parent['optimal'] = False
+                self.failed[parent['context']] += 1
                 context_name = parent['context']
 
     def consolidate(self, final_context='adapter'):
@@ -160,9 +221,9 @@ class RaidStatus():
             final_context -- the name of the context up to which consolidate
         """
 
-        for context in ORDERED_CONTEXTS:
+        for context in self.ordered_contexts:
             block = getattr(self, context)
-            parent_context = CONTEXTS[context]['parent']
+            parent_context = self.contexts[context]['parent']
 
             # End of parents chain reached
             if parent_context is None:
@@ -203,6 +264,33 @@ class RaidStatus():
 
         return '\n'.join(status)
 
+    def get_nagios_status(self):
+        """Return Nagios-compatible status message and exit status code"""
+        items = []
+        exit_code = 0
+
+        for context in self.ordered_contexts:
+            failed = self.failed[context]
+            total = self.counters[context]
+
+            if failed == 0:
+                items.append('{}: {} OK'.format(context, total))
+                continue
+
+            if ('warning' in self.contexts[context] and
+                    self.contexts[context]):
+                suffix = 'WARN'
+                if exit_code < 1:
+                    exit_code = 1  # Nagios WARNING
+            else:
+                suffix = 'CRIT'
+                exit_code = 2  # Nagios CRITICAL
+
+            items.append('{}: {}/{} {}'.format(
+                context, failed, total, suffix))
+
+        return ' | '.join(items), exit_code
+
     def _get_block_status(self, block, prefix='', get_all=False):
         """ Return an array of string with the summary of the given block
 
@@ -216,7 +304,7 @@ class RaidStatus():
         """
 
         status = []
-        for key in CONTEXTS[block['context']]['print_keys']:
+        for key in self.contexts[block['context']]['print_keys']:
             try:
                 status.append('{}{}: {}'.format(prefix, key, block[key]))
             except:
@@ -228,7 +316,7 @@ class RaidStatus():
             # Skip the child if not needed
             if not get_all and child['optimal']:
                 if (block['optimal'] or
-                        not CONTEXTS[block['context']]['include_childs']):
+                        not self.contexts[block['context']]['include_childs']):
                     continue
 
             status += self._get_block_status(
@@ -244,27 +332,27 @@ def parse_args():
         description=('Print a summarized status of all non-optimal components '
                      'of all detected MegaRAID controllers'))
     parser.add_argument(
-        '-c', dest='compress', action='store_true',
+        '-c', '--compress', action='store_true',
         help='Compress with zlib the summary to overcome NRPE output limits.')
     parser.add_argument(
-        '-a', dest='all', action='store_true',
-        help='Include all components in the summary.')
+        '-a', '--all', action='store_true',
+        help='Include all components in the summary, not only failing ones.')
+    parser.add_argument(
+        '-n', '--nagios', action='store_true',
+        help='Print a Nagios-compatible message and exit status code')
 
     return parser.parse_args()
 
 
-def parse_megacli_status(status):
-    """ Get the RAID status from the remote host through NRPE
+def parse_megacli_status(command, status):
+    """ Parse the RAID status
 
         Arguments:
-        status -- a RaidStatus instance
+        command -- the command to execute
+        status  -- the RaidStatus to use to store the parsed results
     """
 
-    try:
-        command = ['/usr/sbin/megacli', '-LdPdInfo', '-aAll']
-        proc = subprocess.Popen(command, stdout=subprocess.PIPE)
-    except:
-        print('Unable to run: {}'.format(command))
+    proc = subprocess.Popen(command, stdout=subprocess.PIPE)
 
     for line in proc.stdout:
         line = line.strip(' \t\r\n')
@@ -275,6 +363,22 @@ def parse_megacli_status(status):
         _process_line(line, status)
 
     proc.wait()
+
+
+def get_megacli_status():
+    """Get the RAID status and return a RaidStatus instance"""
+
+    status = RaidStatus()
+    command = ['/usr/sbin/megacli', '-LdPdInfo', '-aAll', '-NoLog']
+    parse_megacli_status(command, status)
+
+    # If no Virtual drive found, retry with physical ones
+    if status.counters['physical_drive'] == 0:
+        status = RaidStatus(physical=True)
+        command = ['/usr/sbin/megacli', '-PDList', '-aAll', '-NoLog']
+        parse_megacli_status(command, status)
+
+    return status
 
 
 def _process_line(line, status):
@@ -294,22 +398,40 @@ def _process_line(line, status):
 
     key, value = [el.strip(' \t\r\n') for el in line.split(':', 1)]
 
-    if key in KEY_TO_CONTEXT.keys():
+    if (key in KEY_TO_CONTEXT.keys() and
+            KEY_TO_CONTEXT[key] in status.contexts.keys()):
         status.add_block(KEY_TO_CONTEXT[key], key, value)
     else:
         status.set_property(key, value)
 
 
-if __name__ == '__main__':
-    args = parse_args()
+def main(args):
+    """Get the RAID status according to command line options"""
+    status = get_megacli_status()
 
-    status = RaidStatus()
-    parse_megacli_status(status)
-    summary = status.get_status(get_all=args.all)
+    if args.nagios:
+        message, exit_code = status.get_nagios_status()
+    else:
+        message = status.get_status(get_all=args.all)
+        exit_code = 0
 
     if args.compress:
         # NRPE doesn't handle NULL bytes, encoding them.
         # Given the specific domain there is no need of a full yEnc encoding
-        print(zlib.compress(summary).replace('\x00', '###NULL###'))
+        print(zlib.compress(message).replace('\x00', '###NULL###'))
     else:
-        print(summary)
+        print(message)
+
+    return exit_code
+
+
+if __name__ == '__main__':
+    try:
+        args = parse_args()
+        exit_code = main(args)
+    except Exception as e:
+        print("Failed to execute '{}': {} {}".format(
+            ' '.join(sys.argv), e.__class__.__name__, e.message))
+        exit_code = 3  # Nagios UNKNOWN
+
+    sys.exit(exit_code)
