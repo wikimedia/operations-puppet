@@ -36,7 +36,7 @@ define varnish::logging::reqstats(
 
     if ! defined(File['/usr/local/bin/varnishreqstats']) {
         file { '/usr/local/bin/varnishreqstats':
-            source  => "puppet:///modules/varnish/varnishreqstats${varnish::common::varnish4_python_suffix}",
+            source  => "puppet:///modules/varnish/varnishreqstats4",
             owner   => 'root',
             group   => 'root',
             mode    => '0555',

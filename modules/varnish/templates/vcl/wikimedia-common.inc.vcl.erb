@@ -8,21 +8,15 @@ import std;
 #   being set from different code.
 import header;
 
-<% if @varnish_version4 -%>
 import directors;
 
 # This is actually only needed if a vslp backend is defined. We could make
 # this import conditional on existing vslp backend definitions.
 import vslp;
-<% end %>
 
 <%
 def error_synth(status_code, message)
-        if @varnish_version4
-                return "return (synth(#{status_code}, \"#{message}\"));\n"
-        else
-                return "error #{status_code} \"#{message}\";\n"
-        end
+	return "return (synth(#{status_code}, \"#{message}\"));\n"
 end
 -%>
 
@@ -151,15 +145,8 @@ backend <%= name %> {
 <% end # backend loop -%>
 <% end # director loop -%>
 
-<%
-if @use_dynamic_directors and @dynamic_directors and not @varnish_version4 -%>
-include "directors.<%= @inst %>.vcl";
-<% end -%>
-
 sub wm_common_directors_init {
-<% if not @varnish_version4 -%>
-}
-<% elsif @use_dynamic_directors and @dynamic_directors -%>
+<% if @use_dynamic_directors and @dynamic_directors -%>
 include "directors.<%= @inst %>.vcl";
 <% end -%>
 
@@ -169,7 +156,6 @@ if (!@dynamic_directors or director['dynamic'] != 'yes')
 	backends = [*director['backends']]
 	if (!backends.empty?)
 -%>
-<% if @varnish_version4 -%>
 <% if director['type'] == 'vslp' -%>
 // Yes, the vslp director gets instantiated with vslp.vslp() instead of
 // directors.vslp(). Nobody said this would have been pretty.
@@ -177,9 +163,6 @@ new <%= director_name %> = vslp.<%= director['type'] %>();
 <% else -%>
 new <%= director_name %> = directors.<%= director['type'] %>();
 <% end %>
-<% else -%>
-director <%= director_name %> <%= director['type'] %> {
-<% end -%>
 <% if director['type'] == 'chash' -%>
 	.retries = <%= chash_def_retries(99, backends.size) %>;
 <% end -%>
@@ -193,7 +176,6 @@ director <%= director_name %> <%= director['type'] %> {
 			name = "vtc_backend";
 		end
 -%>
-<%	if @varnish_version4 -%>
 	<% if director['type'] == 'vslp' -%>
 	# VSLP has no per-backend weighting. We might want to add it as a
 	# functionality to the vmod.
@@ -202,27 +184,16 @@ director <%= director_name %> <%= director['type'] %> {
 	<% else -%>
 	<%= director_name %>.add_backend(<%= name %>, 100);
 	<% end -%>
-<%	else -%>
-	{
-		.backend = <%= name %>;
-		.weight = 100;
-	}
-<%	end #varnish_version4 -%>
 <% 	end #backends loop -%>
 <%	if director['type'] == 'vslp' -%>
 	# We should think about this value, probably setting it in a
 	# backend-count-sensitive manner.
 	<%= director_name %>.init_hashcircle(150);
 <%	end -%>
-<% if not @varnish_version4 # end of director block -%>
-}
-<% end -%>
 <% end #if !empty -%>
 <% end #if !dynamic -%>
 <% end #director loop -%>
-<% if @varnish_version4 -%>
 } # end wm_common_directors_init
-<% end -%>
 
 # Functions
 
@@ -240,19 +211,6 @@ sub wm_common_recv_purge {
 	}
 }
 
-<% if not @varnish_version4 -%>
-sub wm_common_recv_set_xff {
-	// XFF-appending is non-idempotent for restart purposes, should be in req.restarts == 0 block
-	// All layers need to update XFF with client.ip hop-by-hop so that it
-	// looks right to layers beneath, including the app layer
-	if (req.http.X-Forwarded-For) {
-		set req.http.X-Forwarded-For = req.http.X-Forwarded-For + ", " + client.ip;
-	} else {
-		set req.http.X-Forwarded-For = client.ip;
-	}
-}
-<% end -%>
-
 sub wm_common_recv_early {
 	unset req.http.X-CDIS; // clear internal cache-disposition header
 
@@ -269,7 +227,6 @@ sub wm_common_recv_early {
 }
 
 sub wm_common_recv_grace {
-<% if @varnish_version4 -%>
 	if (std.healthy(req.backend_hint)) {
 			# TODO: This is now handled in vcl_hit.
 			# set req.grace = 5m;
@@ -277,39 +234,14 @@ sub wm_common_recv_grace {
 			# TODO: This is now handled in vcl_hit.
 			# set req.grace = 60m;
 	}
-<% else -%>
-	if (req.backend.healthy) {
-		set req.grace = 5m;
-	} else {
-		set req.grace = 60m;
-	}
-<% end -%>
 }
 
 sub wm_common_hit {
-<% if not @varnish_version4 -%>
-	if (req.request == "PURGE") {
-		purge;
-		error 204 "Purged";
-	} else {
-		set req.http.X-CDIS = "hit";
-	}
-<% else -%>
 	set req.http.X-CDIS = "hit";
-<% end -%>
 }
 
 sub wm_common_miss {
-<% if not @varnish_version4 -%>
-	if (req.request == "PURGE") {
-		purge;
-		error 204 "Cache miss";
-	} else {
-		set req.http.X-CDIS = "miss";
-	}
-<% else -%>
 	set req.http.X-CDIS = "miss";
-<% end -%>
 }
 
 sub wm_common_pass {
@@ -360,12 +292,8 @@ sub wm_common_backend_response {
 	) {
 		set beresp.ttl = 601s;
 		set beresp.http.X-CDIS = "pass";
-		<%- if @varnish_version4 -%>
 		set beresp.uncacheable = true;
 		return (deliver);
-		<%- else -%>
-		return (hit_for_pass);
-		<%- end -%>
 	}
 }
 
@@ -399,17 +327,7 @@ sub wm_common_xcache_deliver {
 	}
 }
 
-// This is not needed with Varnish 4, the Connection header is set to
-// keep-alive by default
-<% if not @varnish_version4 -%>
-sub wm_common_v3_purge_error {
-	if (obj.status == 204 && req.request == "PURGE") {
-		set obj.http.Connection = "keep-alive";
-	}
-}
-<% end -%>
-
-<% if @varnish_version4 and @websocket_support -%>
+<% if @websocket_support -%>
 sub wm_common_websocket_recv {
 	if (req.http.upgrade ~ "(?i)websocket") {
 		return (pipe);

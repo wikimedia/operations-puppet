@@ -38,7 +38,7 @@ define varnish::logging::statsd(
 
     if ! defined(File['/usr/local/bin/varnishstatsd']) {
         file { '/usr/local/bin/varnishstatsd':
-            source  => "puppet:///modules/varnish/varnishstatsd${varnish::common::varnish4_python_suffix}",
+            source  => "puppet:///modules/varnish/varnishstatsd4",
             owner   => 'root',
             group   => 'root',
             mode    => '0555',

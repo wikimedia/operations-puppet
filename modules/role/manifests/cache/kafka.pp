@@ -7,20 +7,10 @@ class role::cache::kafka {
     # NOTE: This is used by inheriting classes role::cache::kafka::*
     $kafka_brokers = $kafka_config['brokers']['array']
 
-    # APT pinning for Varnish 3
-    if (hiera('varnish_version4', false)) {
-        apt::pin { 'varnishkafka':
-            ensure   => 'absent',
-            pin      => '',
-            priority => '',
-        }
-    } else {
-        # Prefer varnishkafka 1.0.7, compatible with varnish 3
-        apt::pin { 'varnishkafka':
-            package  => 'varnishkafka*',
-            pin      => 'version 1.0.7*',
-            priority => 1002,
-        }
+    apt::pin { 'varnishkafka':
+        ensure   => 'absent',
+        pin      => '',
+        priority => '',
     }
 
     # Make the Varnishkafka class depend on APT pinning. We want to ensure

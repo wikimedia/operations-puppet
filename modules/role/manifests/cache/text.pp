@@ -113,12 +113,7 @@ class role::cache::text(
 
     $common_runtime_params = ['default_ttl=2592000']
 
-    if ($::role::cache::base::varnish_version4) {
-        $text_storage_args = $::role::cache::base::file_storage_args
-    }
-    else {
-        $text_storage_args = $::role::cache::base::persistent_storage_args
-    }
+    $text_storage_args = $::role::cache::base::file_storage_args
 
     role::cache::instances { 'text':
         fe_mem_gb         => ceiling(0.4 * $::memorysize_mb / 1024.0),

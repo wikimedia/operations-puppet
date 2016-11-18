@@ -56,7 +56,6 @@ define tlsproxy::localssl(
 
     require tlsproxy::instance
 
-    $varnish_version4 = hiera('varnish_version4', false)
     $keepalives_per_worker = hiera('tlsproxy::localssl::keepalives_per_worker', 0)
     $websocket_support = hiera('cache::websocket_support', false)
     # Maximum number of pending TCP Fast Open requests before falling back to

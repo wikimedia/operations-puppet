@@ -15,19 +15,6 @@ end
 <% @directors.keys.sort.each do |director_name|
 director = @directors[director_name]
 if director['dynamic'] == 'yes' -%>
-<% if not @varnish_version4 -%>
-director <%= director_name %> <%= director['type'] %> {
-<%- keyspace = "#{@conftool_namespace}/#{director['dc']}/#{@group}/#{director['service']}" -%>
-	<%- if director['type'] == 'chash' %>
-	.retries = <%= chash_def_retries(99, [*director['backends']].size) %>;
-	<% end -%>
-	{{range $node := ls "<%= keyspace %>/"}}{{ $key := printf "<%= keyspace %>/%s" $node }}{{ $data := json (getv $key) }}{{ if eq $data.pooled "yes"}}
-	{
-		.backend = be_{{ $parts := split $node "." }}{{ join $parts "_" }};
-		.weight = {{ $data.weight }};
-	}{{end}}{{end}}
-}
-<% else -%>
 <% if director['type'] == 'vslp' -%>
 new <%= director_name %> = vslp.<%= director['type'] %>();
 <% else -%>
@@ -44,6 +31,5 @@ new <%= director_name %> = directors.<%= director['type'] %>();
 <% if director['type'] == 'vslp' -%>
 <%= director_name %>.init_hashcircle(150);
 <% end -%>
-<% end # if not @varnish_version4 %>
 <% end # if director['dynamic'] == 'yes' %>
 <% end # directors loop %>
