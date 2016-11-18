@@ -31,6 +31,8 @@ class kartotherian(
 
     validate_array($cassandra_servers)
 
+    ensure_packages('libmapnik3.0')
+
     $cassandra_kartotherian_user = 'kartotherian'
     $cassandra_kartotherian_pass = hiera('maps::cassandra_kartotherian_pass')
     $pgsql_kartotherian_user = 'kartotherian'
