@@ -270,6 +270,7 @@ if __name__ == '__main__':
 
     argparser.add_argument('--interval',
                            help='Seconds between between runs',
+                           type=int,
                            default=0)
 
     args = argparser.parse_args()
