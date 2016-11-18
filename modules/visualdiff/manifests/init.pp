@@ -9,6 +9,7 @@ class visualdiff {
         'nodejs',
         'npm',
         'build-essential',
+        'g++',
         'libopencv-highgui-dev',
         'libboost-program-options-dev',
     ]
