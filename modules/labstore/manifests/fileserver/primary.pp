@@ -8,7 +8,6 @@ class labstore::fileserver::primary {
 
     include labstore
     include labstore::fileserver::exports
-    include labstore::account_services
 
     require_package('python3-paramiko')
     require_package('python3-pymysql')
