@@ -9,6 +9,7 @@ class visualdiff {
         'nodejs',
         'npm',
         'build-essential',
+        'g++',
     ]
 
     require_package($visualdiff_packages)
