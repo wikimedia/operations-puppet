@@ -28,11 +28,18 @@ import subprocess
 
 
 class User:
+
     def __init__(self, project, name, uid, kind):
         self.project = project
         self.name = name
         self.uid = int(uid)
-        self.kind = kind  # either 'user' or 'servicegroup'
+
+        if kind not in ['user', 'servicegroup']:
+            raise("{} not allowed".format(kind))
+
+        self.kind = kind
+
+        self.project_root = '/exp/project'
 
     @property
     def db_username(self):
@@ -46,69 +53,107 @@ class User:
 
     @property
     def homedir(self):
-        prefix = '/srv/project/%s' % self.project
+        prefix = os.path.join(self.project_root, self.project)
+
         if self.kind == 'user':
-            return os.path.join(prefix, 'home', self.name)
+            trail = os.path.join(prefix,
+                                 'home',
+                                 self.name,
+                        )
         else:
-            return os.path.join(
-                prefix, 'project', self.name[len(self.project) + 1:]
-            )
+            trail = os.path.join(prefix,
+                                 'project',
+                                 self.name[len(self.project) + 1:],
+                        )
+
+        return trail
 
     def __repr__(self):
         return "%s(name=%s, uid=%s)" % (
             self.kind, self.name, self.uid)
 
     @classmethod
-    def from_ldap_servicegroups(cls, conn, projectname):
+    def from_ldap_servicegroups(cls, conn, project):
+
+        logging.debug('Collecting servicegroups from ldap for {}'.format(project))
         conn.search(
             'ou=people,ou=servicegroups,dc=wikimedia,dc=org',
-            '(cn=%s.*)' % projectname,
+            '(cn=%s.*)' % project,
             ldap3.SEARCH_SCOPE_WHOLE_SUBTREE,
             attributes=['uidNumber', 'cn'],
             time_limit=5
         )
+
         users = []
         for resp in conn.response:
             attrs = resp['attributes']
-            users.append(cls(projectname, attrs['cn'][0], attrs['uidNumber'][0], 'servicegroup'))
+            users.append(cls(project, attrs['cn'][0], attrs['uidNumber'][0], 'servicegroup'))
 
+        logging.debug('Found {} ldap servicegroups'.format(len(users)))
+        logging.debug('First 10 members of ldap servicegroups: {}'.format(users[:10]))
         return users
 
     @classmethod
-    def from_ldap_users(cls, conn, projectname):
+    def from_ldap_users(cls, conn, project):
+
+        logging.debug('Collecting ldap users for {}'.format(project))
         conn.search(
             'ou=groups,dc=wikimedia,dc=org',
-            '(cn=project-%s)' % projectname,
+            '(cn=project-%s)' % project,
             ldap3.SEARCH_SCOPE_WHOLE_SUBTREE,
             attributes=['member']
         )
+
         users = []
         members = conn.response[0]['attributes']['member']
+
+        logging.debug('Found {} ldap users'.format(len(members)))
+        logging.debug('First 10 members of ldap users: {} ...'.format(members[:10]))
+
+        # example member: uid=foo,ou=people,dc=wikimedia,dc=org
         for member in members:
-            # FIXME: Stupid hack
+
+            # strip off all but 'uid=foo'
             search_string = member.replace(',ou=people,dc=wikimedia,dc=org', '')
+
             conn.search(
                 'ou=people,dc=wikimedia,dc=org',
                 '(%s)' % search_string,
                 ldap3.SEARCH_SCOPE_WHOLE_SUBTREE,
                 attributes=['uid', 'uidNumber']
             )
+
+            # Example of ldap query response:
+            # [
+            #     {'type': 'searchResEntry',
+            #      'attributes': {
+            #          'uid': ['foo'],
+            #          'uidNumber': ['1111']},
+            #          'raw_attributes': {
+            #              'uid': [b'foo'],
+            #              'uidNumber': [b'1111']
+            #          },
+            #          'dn': 'uid=foo,ou=people,dc=wikimedia,dc=org'}
+            # ]
+
             if len(conn.response) == 0:
                 logging.error(
                     'No entry found for user {user} in project {project}'.format(
                         user=member,
-                        project=projectname
+                        project=project,
                     )
                 )
                 continue
+
             attrs = conn.response[0]['attributes']
             users.append(cls(
-                projectname,
+                project,
                 attrs['uid'][0],
                 attrs['uidNumber'][0],
                 'user'
             ))
 
+        logging.debug('Found {} ldap users with uidNumer'.format(len(users)))
         return users
 
     def write_user_file(self, path, content):
@@ -119,11 +164,12 @@ class User:
             # uid == gid
             os.fchown(f, self.uid, self.uid)
             os.fchmod(f, 0o400)
+
+            # Prevent removal or modification of the credentials file
             subprocess.check_output(['/usr/bin/chattr',
                                      '+i',
                                      path])
         except:
-
             os.remove(path)
             raise
         finally:
@@ -133,6 +179,7 @@ class User:
 class CredentialCreator:
     PASSWORD_LENGTH = 16
     PASSWORD_CHARS = string.ascii_letters + string.digits
+
     GRANT_SQL_TEMPLATE = """
     CREATE USER '{user_name}'@'%' IDENTIFIED BY '{user_pass}';
     GRANT SELECT, SHOW VIEW ON `%\_p`.* TO '{user_name}'@'%';
@@ -152,18 +199,24 @@ class CredentialCreator:
             CredentialCreator.PASSWORD_LENGTH))
 
     def write_credentials_file(self, path, user):
+
         password = self._generate_pass()
         replica_config = configparser.ConfigParser()
+
         replica_config['client'] = {
             'user': user.db_username,
             'password': password
         }
+
         self.create_user(user, password)
         # Because ConfigParser can only write to a file
         # and not just return the value as a string directly
         replica_buffer = io.StringIO()
         replica_config.write(replica_buffer)
+
+        logging.info("creating replica.my.cnf for %s as %s", user.name, user.db_username)
         user.write_user_file(path, replica_buffer.getvalue())
+        logging.debug('write: {} {}\n'.format(path, replica_buffer.getvalue()))
 
     def check_user_exists(self, user):
         exists = True
@@ -190,27 +243,40 @@ class CredentialCreator:
                     user_name=user.db_username,
                     user_pass=password
                 )
+
+                logging.debug('sql: {}'.format(str(sql)))
                 cur.execute(sql)
-                logging.info('Created user %s in %s', user.db_username, conn.host)
+                logging.info('Created user %s as %s in %s', user.name, user.db_username, conn.host)
+
             finally:
                 cur.close()
 
 
 if __name__ == '__main__':
+
     argparser = argparse.ArgumentParser()
-    argparser.add_argument('--config', help='Path to YAML config file')
-    argparser.add_argument('--debug', help='Turn on debug logging',
+
+    argparser.add_argument('--config',
+                           default='/etc/create-dbusers.yaml',
+                           help='Path to YAML config file')
+
+    argparser.add_argument('--debug',
+                           help='Turn on debug logging',
                            action='store_true')
-    argparser.add_argument('--project', help='Project name to create db users for',
+
+    argparser.add_argument('--project',
+                           help='Project name to create db users for',
                            default='tools')
-    argparser.add_argument('--interval', help='Seconds between between runs',
-                           default=300)
-    argparser.add_argument('--once', help='Run once and exit',
-                           action='store_true')
+
+    argparser.add_argument('--interval',
+                           help='Seconds between between runs',
+                           default=0)
+
     args = argparser.parse_args()
 
     loglvl = logging.DEBUG if args.debug else logging.INFO
-    logging.basicConfig(format='%(message)s', level=loglvl)
+    logging.basicConfig(format='%(message)s',
+                        level=loglvl)
 
     with open(args.config) as f:
         config = yaml.safe_load(f)
@@ -226,33 +292,36 @@ if __name__ == '__main__':
     logging.debug(str(args))
 
     while True:
+
         servers = ldap3.ServerPool([
             ldap3.Server(host, connect_timeout=1)
             for host in config['ldap']['hosts']
         ], ldap3.POOLING_STRATEGY_ROUND_ROBIN, active=True, exhaust=True)
+
         with ldap3.Connection(
             servers, read_only=True,
             user=config['ldap']['username'],
             auto_bind=True,
             password=config['ldap']['password']
-        ) as conn:
-            users = User.from_ldap_users(conn, args.project)
-            servicegroups = User.from_ldap_servicegroups(conn, args.project)
-            all_users = users + servicegroups
-            for u in all_users:
-                replica_path = os.path.join(u.homedir, 'replica.my.cnf')
-                if os.path.exists(u.homedir) and not os.path.exists(replica_path):
-                    if not cgen.check_user_exists(u):
-                        # No replica.my.cnf and no user in db
-                        # Generate new creds and put them in there!
-                        logging.debug('creating DB accounts for %s with db username %s', u.name, u.db_username)
-                        cgen.write_credentials_file(replica_path, u)
-                        logging.debug("created replica.my.cnf for %s, with username %s", u.name, u.db_username)
-                    else:
-                        logging.debug('missing replica.my.cnf for user %s despite grants present in db', u.name)
-            logging.info('completed pid %s create-dbusers run' % (pid,))
+            ) as conn:
+                users = User.from_ldap_users(conn, args.project)
+                servicegroups = User.from_ldap_servicegroups(conn, args.project)
+                all_users = users + servicegroups
 
-        if args.once:
+        for user in all_users:
+            replica_path = os.path.join(user.homedir, 'replica.my.cnf')
+            #logging.debug(replica_path)
+            if os.path.exists(user.homedir) and not os.path.exists(replica_path):
+                if not cgen.check_user_exists(user):
+                    # No replica.my.cnf and no user in db
+                    # Generate new creds and put them in there!
+                    cgen.write_credentials_file(replica_path, user)
+                else:
+                    logging.debug('missing replica.my.cnf for user %s despite grants present in db', user.name)
+
+        logging.info('completed pid %s create-dbusers run' % (pid,))
+
+        if not args.interval:
             break
 
         time.sleep(args.interval)
