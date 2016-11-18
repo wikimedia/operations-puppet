@@ -55,14 +55,19 @@ class labstore::account_services {
         owner   => 'root',
         group   => 'root',
         mode    => '0400',
+        require => [
+            Package['python3-ldap3'],
+            Package['python-yaml'],
+        ],
     }
 
     file { '/usr/local/sbin/create-dbusers':
-        source => 'puppet:///modules/labstore/create-dbusers',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
-        notify => Base::Service_unit['create-dbusers'],
+        source  => 'puppet:///modules/labstore/create-dbusers',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0555',
+        require => File['/etc/create-dbusers.yaml'],
+        notify  => Base::Service_unit['create-dbusers'],
     }
 
     # To delete users from all the labsdb mysql databases
@@ -76,6 +81,7 @@ class labstore::account_services {
     base::service_unit { 'create-dbusers':
         ensure  => present,
         systemd => true,
+        require => File['/usr/local/sbin/create-dbusers'],
     }
 
     nrpe::monitor_systemd_unit_state { 'create-dbusers':
