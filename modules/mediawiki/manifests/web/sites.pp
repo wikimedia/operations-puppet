@@ -45,4 +45,9 @@ class mediawiki::web::sites (
         content  => template('mediawiki/apache/sites/wwwportals.conf.erb'),
         priority => 1,
     }
+
+    apache::site { 'redirects':
+        source   => 'puppet:///modules/mediawiki/apache/sites/redirects.conf',
+        priority => 2,
+    }
 }

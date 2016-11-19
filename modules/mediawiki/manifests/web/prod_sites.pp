@@ -1,11 +1,6 @@
 class mediawiki::web::prod_sites {
     tag 'mediawiki', 'mw-apache-config'
 
-    apache::site { 'redirects':
-        source   => 'puppet:///modules/mediawiki/apache/sites/redirects.conf',
-        priority => 2,
-    }
-
     apache::site { 'main':
         source   => 'puppet:///modules/mediawiki/apache/sites/main.conf',
         priority => 3,
