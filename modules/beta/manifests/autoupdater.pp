@@ -25,8 +25,11 @@ class beta::autoupdater {
         owner   => 'root',
         group   => 'root',
         mode    => '0555',
-        require => Package['git'],
-        content => template('beta/wmf-beta-mwconfig-update.erb'),
+        require => [
+            Package['git'],
+            File['/etc/profile.d/mediawiki.sh']
+        ],
+        source  => 'puppet:///modules/beta/wmf-beta-mwconfig-update',
     }
 
     file { '/usr/local/bin/wmf-beta-update-databases.py':
