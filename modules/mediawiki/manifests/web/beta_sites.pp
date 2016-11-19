@@ -57,11 +57,6 @@ class mediawiki::web::beta_sites {
         priority => 11,
     }
 
-    apache::site { 'loginwiki':
-        source   => 'puppet:///modules/mediawiki/apache/beta/sites/loginwiki.conf',
-        priority => 12,
-    }
-
     apache::site { 'wikimedia':
         source   => 'puppet:///modules/mediawiki/apache/beta/sites/wikimedia.conf',
         priority => 16,
