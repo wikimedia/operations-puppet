@@ -42,11 +42,6 @@ class mediawiki::web::beta_sites {
         priority => 8,
     }
 
-    apache::site { 'testwiki':
-        source   => 'puppet:///modules/mediawiki/apache/beta/sites/testwiki.conf',
-        priority => 9,
-    }
-
     apache::site { 'wiktionary':
         source   => 'puppet:///modules/mediawiki/apache/beta/sites/wiktionary.conf',
         priority => 10,
