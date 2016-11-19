@@ -47,7 +47,7 @@ class coal( $endpoint ) {
         owner  => 'root',
         group  => 'root',
         mode   => '0555',
-        notify => Service['coal'],
+        notify => Service['uwsgi-coal'],
     }
 
     file { '/usr/local/bin/coal':
