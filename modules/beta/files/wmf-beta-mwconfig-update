@@ -4,13 +4,10 @@
 # Update operations/mediawiki-config.git clone in beta.
 #
 set -e
-
-# Directory containing checkout to update
-TARGET_DIR="<%= @stage_dir %>"
-
 set -x
 pwd
-cd "$TARGET_DIR"
+. /etc/profile.d/mediawiki.sh
+cd $MEDIAWIKI_STAGING_DIR
 pwd
 git remote update
 git reset --hard "$ZUUL_COMMIT"
