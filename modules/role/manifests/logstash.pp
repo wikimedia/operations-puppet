@@ -4,10 +4,10 @@
 # Provisions Logstash and ElasticSearch.
 #
 # == Parameters:
-# - $statsd_host: Host to send statsd data to.
+# - $statsd_host: Host to send statsd data to. Default: undef
 #
 class role::logstash (
-    $statsd_host,
+    $statsd_host = undef,
 ) {
     include ::role::logstash::elasticsearch
     include ::logstash
@@ -167,36 +167,38 @@ class role::logstash (
         require         => File['/etc/logstash/elasticsearch-template.json'],
     }
 
-    logstash::output::statsd { 'MW_channel_rate':
-        host            => $statsd_host,
-        guard_condition => '[type] == "mediawiki" and "es" in [tags]',
-        namespace       => 'logstash.rate',
-        sender          => 'mediawiki',
-        increment       => [ '%{channel}.%{level}' ],
-    }
+    if $statsd_host != {
+        logstash::output::statsd { 'MW_channel_rate':
+            host            => $statsd_host,
+            guard_condition => '[type] == "mediawiki" and "es" in [tags]',
+            namespace       => 'logstash.rate',
+            sender          => 'mediawiki',
+            increment       => [ '%{channel}.%{level}' ],
+        }
 
-    logstash::output::statsd { 'OOM_channel_rate':
-        host            => $statsd_host,
-        guard_condition => '[type] == "hhvm" and [message] =~ "request has exceeded memory limit"',
-        namespace       => 'logstash.rate',
-        sender          => 'oom',
-        increment       => [ '%{level}' ],
-    }
+        logstash::output::statsd { 'OOM_channel_rate':
+            host            => $statsd_host,
+            guard_condition => '[type] == "hhvm" and [message] =~ "request has exceeded memory limit"',
+            namespace       => 'logstash.rate',
+            sender          => 'oom',
+            increment       => [ '%{level}' ],
+        }
 
-    logstash::output::statsd { 'HHVM_channel_rate':
-        host            => $statsd_host,
-        guard_condition => '[type] == "hhvm" and [message] !~ "request has exceeded memory limit"',
-        namespace       => 'logstash.rate',
-        sender          => 'hhvm',
-        increment       => [ '%{level}' ],
-    }
+        logstash::output::statsd { 'HHVM_channel_rate':
+            host            => $statsd_host,
+            guard_condition => '[type] == "hhvm" and [message] !~ "request has exceeded memory limit"',
+            namespace       => 'logstash.rate',
+            sender          => 'hhvm',
+            increment       => [ '%{level}' ],
+        }
 
-    logstash::output::statsd { 'Apache2_channel_rate':
-        host            => $statsd_host,
-        guard_condition => '[type] == "apache2" and "syslog" in [tags]',
-        namespace       => 'logstash.rate',
-        sender          => 'apache2',
-        increment       => [ '%{level}' ],
+        logstash::output::statsd { 'Apache2_channel_rate':
+            host            => $statsd_host,
+            guard_condition => '[type] == "apache2" and "syslog" in [tags]',
+            namespace       => 'logstash.rate',
+            sender          => 'apache2',
+            increment       => [ '%{level}' ],
+        }
     }
 }
 
