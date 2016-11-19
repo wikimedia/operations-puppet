@@ -22,7 +22,7 @@ server {
 	error_log   /var/log/nginx/<%= @name %>.error.log;
 	access_log   off;
 
-	<%- @certs.each do |cert| -%>
+	<%- @certs_nginx.each do |cert| -%>
 	ssl_certificate /etc/ssl/localcerts/<%= cert %>.chained.crt;
 	ssl_certificate_key /etc/ssl/private/<%= cert %>.key;
 	<%- end -%>
