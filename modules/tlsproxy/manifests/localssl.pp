@@ -15,6 +15,12 @@
 #   support is required.  This is intended to support duplicate keys with
 #   differing crypto (e.g. ECDSA + RSA).
 #
+# [*certs_active*]
+#   Optional - if "certs" above is used, this defines the subset of the certs to
+#   actually configure on the server.  This allows for additional certs to be
+#   fully deployed and OCSP stapled (ready for use), which aren't actually used
+#   to serve traffic.  Defaults to the entire set from "certs".
+#
 # [*acme_subjects*]
 #   Optional - specify either this or certs.
 #   Array of certificate subjects, beginning with the canonical one - the rest
@@ -41,6 +47,7 @@
 
 define tlsproxy::localssl(
     $certs          = [],
+    $certs_active   = [],
     $acme_subjects  = [],
     $server_name    = $::fqdn,
     $server_aliases = [],
@@ -69,6 +76,13 @@ define tlsproxy::localssl(
         notify { 'tlsproxy localssl default_server':
             message => "tlsproxy::localssl instance ${title} with server name ${server_name} is the default server."
         }
+    }
+
+    if !empty($certs) and !empty($certs_active) {
+        # Ideally, we'd sanity-check that active is a subset of certs, too
+        $certs_nginx = $certs_active
+    } else {
+        $certs_nginx = $certs
     }
 
     if !empty($certs) {
