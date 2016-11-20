@@ -40,9 +40,58 @@ class mediawiki::web::sites (
         priority => 0,
     }
 
+    if $::realm == 'labs' {
+        # w-beta.wmflabs.org depends on proxy_http
+        include ::apache::mod::proxy_http
+        apache::site { 'beta-specific':
+            source   => 'puppet:///modules/mediawiki/apache/beta/sites/beta_specific.conf',
+            priority => 1,
+        }
+    }
+
     $rewrite_portal = $portal_dir != 'portal'
     apache::site { 'wwwportals':
         content  => template('mediawiki/apache/sites/wwwportals.conf.erb'),
         priority => 1,
+    }
+
+    apache::site { 'redirects':
+        source   => 'puppet:///modules/mediawiki/apache/sites/redirects.conf',
+        priority => 2,
+    }
+
+    apache::site { 'main':
+        content  => template('mediawiki/apache/sites/main.conf.erb'),
+        priority => 3,
+    }
+
+    apache::site { 'remnant':
+        content  => template('mediawiki/apache/sites/remnant.conf.erb'),
+        priority => 4,
+    }
+
+    apache::site { 'search.wikimedia':
+        source   => 'puppet:///modules/mediawiki/apache/sites/search.wikimedia.conf',
+        priority => 5,
+    }
+
+    apache::site { 'secure.wikimedia':
+        source   => 'puppet:///modules/mediawiki/apache/sites/secure.wikimedia.conf',
+        priority => 6,
+    }
+
+    apache::site { 'wikimania':
+        content  => template('mediawiki/apache/sites/wikimania.conf.erb'),
+        priority => 7,
+    }
+
+    apache::site { 'wikimedia':
+        content  => template('mediawiki/apache/sites/wikimedia.conf.erb'),
+        priority => 8,
+    }
+
+    apache::site { 'foundation':
+        source   => 'puppet:///modules/mediawiki/apache/sites/foundation.conf',
+        priority => 9,
     }
 }

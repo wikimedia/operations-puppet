@@ -74,8 +74,8 @@
 
 # Wikidata
 <VirtualHost *:80>
-    ServerName www.wikidata.org
-    ServerAlias *.wikidata.org
+    ServerName www.wikidata.<%= @domain_suffix %>
+    ServerAlias *.wikidata.<%= @domain_suffix %>
 
     DocumentRoot "/srv/mediawiki/docroot/wikidata"
 
@@ -104,7 +104,7 @@
 # Wiktionaries
 <VirtualHost *:80>
     ServerName wiktionary
-    ServerAlias *.wiktionary.org
+    ServerAlias *.wiktionary.<%= @domain_suffix %>
     UseCanonicalName off
     DocumentRoot "/srv/mediawiki/docroot/wiktionary.org"
 
@@ -163,7 +163,7 @@
 # Wikiquotes
 <VirtualHost *:80>
     ServerName wikiquote
-    ServerAlias *.wikiquote.org
+    ServerAlias *.wikiquote.<%= @domain_suffix %>
     UseCanonicalName off
     DocumentRoot "/srv/mediawiki/docroot/wikiquote.org"
 
@@ -259,7 +259,7 @@
 # Wikipedias
 <VirtualHost *:80>
     ServerName wikipedia
-    ServerAlias *.wikipedia.org
+    ServerAlias *.wikipedia.<%= @domain_suffix %>
     UseCanonicalName off
     DocumentRoot "/srv/mediawiki/docroot/wikipedia.org"
 
@@ -327,7 +327,7 @@
 # Wikibooks
 <VirtualHost *:80>
     ServerName wikibooks
-    ServerAlias *.wikibooks.org
+    ServerAlias *.wikibooks.<%= @domain_suffix %>
     UseCanonicalName off
     DocumentRoot "/srv/mediawiki/docroot/wikibooks.org"
 
@@ -387,7 +387,7 @@
 # Wikisource (note: approved languages only)
 <VirtualHost *:80>
     ServerName wikisource
-    ServerAlias *.wikisource.org
+    ServerAlias *.wikisource.<%= @domain_suffix %>
     UseCanonicalName off
     DocumentRoot "/srv/mediawiki/docroot/wikisource.org"
 
@@ -447,7 +447,7 @@
 # Wikinews (approved subdomains only)
 <VirtualHost *:80>
     ServerName wikinews
-    ServerAlias *.wikinews.org
+    ServerAlias *.wikinews.<%= @domain_suffix %>
     UseCanonicalName off
     DocumentRoot "/srv/mediawiki/docroot/wikinews.org"
 
@@ -508,7 +508,7 @@
 # Wikiversity (note: approved languages only)
 <VirtualHost *:80>
     ServerName wikiversity
-    ServerAlias *.wikiversity.org
+    ServerAlias *.wikiversity.<%= @domain_suffix %>
     UseCanonicalName off
     DocumentRoot "/srv/mediawiki/docroot/wikiversity.org"
 
@@ -568,7 +568,7 @@
 # Wikivoyage
 <VirtualHost *:80>
     ServerName wikivoyage
-    ServerAlias *.wikivoyage.org
+    ServerAlias *.wikivoyage.<%= @domain_suffix %>
 
     UseCanonicalName off
     DocumentRoot "/srv/mediawiki/docroot/wikivoyage.org"

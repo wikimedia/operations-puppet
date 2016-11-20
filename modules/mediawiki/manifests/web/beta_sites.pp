@@ -1,49 +1,38 @@
 class mediawiki::web::beta_sites {
     tag 'mediawiki', 'mw-apache-config'
 
-    apache::mod_conf { 'php5':
-        ensure => 'absent',
-    }
-
-    # w-beta.wmflabs.org depends on proxy_http
-    include ::apache::mod::proxy_http
-    apache::site { 'beta-specific':
-        source   => 'puppet:///modules/mediawiki/apache/beta/sites/beta_specific.conf',
-        priority => 1,
-    }
-
     apache::site { 'main':
-        source   => 'puppet:///modules/mediawiki/apache/beta/sites/main.conf',
+        ensure   => absent,
         priority => 1,
     }
 
     apache::site { 'wikibooks':
-        source   => 'puppet:///modules/mediawiki/apache/beta/sites/wikibooks.conf',
+        ensure   => absent,
         priority => 2,
     }
 
     apache::site { 'wikipedia':
-        source   => 'puppet:///modules/mediawiki/apache/beta/sites/wikipedia.conf',
+        ensure   => absent,
         priority => 3,
     }
 
     apache::site { 'wikidata':
-        source   => 'puppet:///modules/mediawiki/apache/beta/sites/wikidata.conf',
+        ensure   => absent,
         priority => 4,
     }
 
     apache::site { 'wikisource':
-        source   => 'puppet:///modules/mediawiki/apache/beta/sites/wikisource.conf',
+        ensure   => absent,
         priority => 5,
     }
 
     apache::site { 'wikiversity':
-        source   => 'puppet:///modules/mediawiki/apache/beta/sites/wikiversity.conf',
+        ensure   => absent,
         priority => 7,
     }
 
     apache::site { 'wikiquote':
-        source   => 'puppet:///modules/mediawiki/apache/beta/sites/wikiquote.conf',
+        ensure   => absent,
         priority => 8,
     }
 
@@ -53,32 +42,32 @@ class mediawiki::web::beta_sites {
     }
 
     apache::site { 'wiktionary':
-        source   => 'puppet:///modules/mediawiki/apache/beta/sites/wiktionary.conf',
+        ensure   => absent,
         priority => 10,
     }
 
     apache::site { 'wikinews':
-        source   => 'puppet:///modules/mediawiki/apache/beta/sites/wikinews.conf',
+        ensure   => absent,
         priority => 11,
     }
 
     apache::site { 'loginwiki':
-        source   => 'puppet:///modules/mediawiki/apache/beta/sites/loginwiki.conf',
+        ensure   => absent,
         priority => 12,
     }
 
     apache::site { 'wikimedia':
-        source   => 'puppet:///modules/mediawiki/apache/beta/sites/wikimedia.conf',
+        ensure   => absent,
         priority => 16,
     }
 
     apache::site { 'wikivoyage':
-        source   => 'puppet:///modules/mediawiki/apache/beta/sites/wikivoyage.conf',
+        ensure   => absent,
         priority => 17,
     }
 
     apache::site { 'remnant':
-        source   => 'puppet:///modules/mediawiki/apache/beta/sites/remnant.conf',
+        ensure   => absent,
         priority => 20,
     }
 
