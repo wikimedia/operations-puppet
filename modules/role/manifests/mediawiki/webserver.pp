@@ -4,9 +4,6 @@ class role::mediawiki::webserver {
     include ::mediawiki::web
     include ::mediawiki::web::sites
     include ::mediawiki::packages::fonts
-    if $::realm == 'labs' {
-        include ::mediawiki::web::beta_sites
-    }
 
     if hiera('has_lvs', true) {
         include ::lvs::configuration
