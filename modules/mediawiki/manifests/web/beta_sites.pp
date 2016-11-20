@@ -7,6 +7,11 @@ class mediawiki::web::beta_sites {
 
     # w-beta.wmflabs.org depends on proxy_http
     include ::apache::mod::proxy_http
+    apache::site { 'beta-specific':
+        source   => 'puppet:///modules/mediawiki/apache/beta/sites/beta_specific.conf',
+        priority => 1,
+    }
+
     apache::site { 'main':
         source   => 'puppet:///modules/mediawiki/apache/beta/sites/main.conf',
         priority => 1,
@@ -43,7 +48,7 @@ class mediawiki::web::beta_sites {
     }
 
     apache::site { 'testwiki':
-        source   => 'puppet:///modules/mediawiki/apache/beta/sites/testwiki.conf',
+        ensure   => absent,
         priority => 9,
     }
 
