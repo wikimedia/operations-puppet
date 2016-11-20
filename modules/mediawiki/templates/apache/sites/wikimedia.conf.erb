@@ -46,7 +46,7 @@
 
 # loginwiki
 <VirtualHost *:80>
-    ServerName login.wikimedia.org
+    ServerName login.wikimedia.<%= @domain_suffix %>
     Include "sites-enabled/wikimedia-common.incl"
 </VirtualHost>
 
@@ -84,10 +84,10 @@
 
 # zerowiki T83475
 <VirtualHost *:80>
-    ServerName zero.wikimedia.org
+    ServerName zero.wikimedia.<%= @domain_suffix %>
     RewriteEngine On
     RewriteCond %{HTTP:X-Forwarded-Proto} !https
-    RewriteRule ^/(.*)$ https://zero.wikimedia.org/$1 [R=301,L,NE]
+    RewriteRule ^/(.*)$ https://zero.wikimedia.<%= @domain_suffix %>/$1 [R=301,L,NE]
     Include "sites-enabled/wikimedia-common.incl"
 </VirtualHost>
 
@@ -95,8 +95,8 @@
 <VirtualHost *:80>
     DocumentRoot "/srv/mediawiki/docroot/wwwportal"
     # bare wikimedia.org is in redirects.dat
-    ServerName www.wikimedia.org
-    ServerAlias *.wikimedia.org # FIXME: Should this still be here?
+    ServerName www.wikimedia.<%= @domain_suffix %>
+    ServerAlias *.wikimedia.<%= @domain_suffix %> # FIXME: Should this still be here?
 
     RewriteEngine On
     RewriteRule . - [E=RW_PROTO:%{HTTP:X-Forwarded-Proto}]
