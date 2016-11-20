@@ -1,6 +1,6 @@
 # Meta
 <VirtualHost *:80>
-    ServerName meta.wikimedia.org
+    ServerName meta.wikimedia.<%= @domain_suffix %>
     RewriteEngine On
     RewriteRule . - [E=RW_PROTO:%{HTTP:X-Forwarded-Proto}]
     RewriteCond %{ENV:RW_PROTO} !=https
@@ -22,7 +22,7 @@
 # Wikisource
 <VirtualHost *:80>
     DocumentRoot "/srv/mediawiki/docroot/wikisource.org"
-    ServerName wikisource.org
+    ServerName wikisource.<%= @domain_suffix %>
 
     AllowEncodedSlashes On
 
@@ -58,7 +58,7 @@
 # Wikimedia Commons
 <VirtualHost *:80>
     DocumentRoot "/srv/mediawiki/docroot/commons"
-    ServerName commons.wikimedia.org
+    ServerName commons.wikimedia.<%= @domain_suffix %>
 
     AllowEncodedSlashes On
 
