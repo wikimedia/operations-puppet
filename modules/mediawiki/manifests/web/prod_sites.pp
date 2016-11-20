@@ -7,12 +7,12 @@ class mediawiki::web::prod_sites {
     }
 
     apache::site { 'main':
-        source   => 'puppet:///modules/mediawiki/apache/sites/main.conf',
+        content  => template('mediawiki/apache/sites/main.conf.erb'),
         priority => 3,
     }
 
     apache::site { 'remnant':
-        source   => 'puppet:///modules/mediawiki/apache/sites/remnant.conf',
+        content  => template('mediawiki/apache/sites/remnant.conf.erb'),
         priority => 4,
     }
 
@@ -32,7 +32,7 @@ class mediawiki::web::prod_sites {
     }
 
     apache::site { 'wikimedia':
-        source   => 'puppet:///modules/mediawiki/apache/sites/wikimedia.conf',
+        content  => template('mediawiki/apache/sites/wikimedia.conf.erb'),
         priority => 8,
     }
 
