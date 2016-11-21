@@ -1057,6 +1057,7 @@ lvs::configuration::lvs_services:
       service: eventstreams
     icinga:
       check_command: "check_http_lvs_on_port!eventstreams.svc.%{::site}.wmnet!8092!/_info"
+      critical: false
       sites:
         eqiad:
           hostname: eventstreams.svc.eqiad.wmnet
