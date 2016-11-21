@@ -5,7 +5,12 @@
 class webperf::statsv {
     include ::webperf
 
-    require_package('python-pykafka')
+    require_package('python-kafka')
+
+    # These are rendered in statsv.service
+    $kafka_config  = kafka_config('analytics')
+    $kafka_brokers = $kafka_config['brokers']['string']
+    $statsd        = hiera('statsd')
 
     package { 'statsv':
         ensure   => present,
@@ -13,14 +18,14 @@ class webperf::statsv {
     }
 
     file { '/lib/systemd/system/statsv.service':
-        ensure  => present,
-        source  => 'puppet:///modules/webperf/statsv.service',
+        ensure  => 'present',
+        content => template('webperf/statsv.service.erb'),
         require => Package['statsv'],
-        notify  => Service['statsv'],
     }
 
     service { 'statsv':
-        ensure   => running,
-        provider => 'systemd',
+        ensure    => 'running',
+        provider  => 'systemd',
+        subscribe => File['/lib/systemd/system/statsv.service'],
     }
 }
