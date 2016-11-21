@@ -32,9 +32,21 @@ class role::cache::ssl::unified(
             check_command => "check_ssl_unified!RSA!${check_cn}!${check_sans_str}",
         }
 
+        # We can refactor this better later, with $certs_active varying on datacenter
+        # for the 2016 set from GlobalSign + Digicert.
+        $certs = [
+            'ecc-uni.wikimedia.org', 'uni.wikimedia.org',
+            'globalsign-2016-ecdsa-unified', 'globalsign-2016-rsa-unified',
+        ]
+
+        $certs_active = [
+            'ecc-uni.wikimedia.org', 'uni.wikimedia.org',
+        ]
+
         tlsproxy::localssl { 'unified':
             server_name    => 'www.wikimedia.org',
-            certs          => ['ecc-uni.wikimedia.org', 'uni.wikimedia.org'],
+            certs          => $certs,
+            certs_active   => $certs_active,
             default_server => true,
             do_ocsp        => true,
             upstream_ports => [3120, 3121, 3122, 3123, 3124, 3125, 3126, 3127],
