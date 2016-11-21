@@ -10,6 +10,7 @@
 #
 # Sample Usage:
 #
+# filtertags: labs-project-tools
 class role::toollabs::node::compute::dedicated($dedicated_tool = $::node_dedicated_tool) {
 
     include ::toollabs::node::all

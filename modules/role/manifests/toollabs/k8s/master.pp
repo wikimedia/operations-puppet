@@ -1,3 +1,4 @@
+# filtertags: labs-project-tools
 class role::toollabs::k8s::master {
     include base::firewall
     include ::toollabs::infrastructure

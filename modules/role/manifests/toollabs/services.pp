@@ -1,3 +1,4 @@
+# filtertags: labs-project-tools
 class role::toollabs::services(
     $active_host = 'tools-services-01.eqiad.wmflabs',
 ) {

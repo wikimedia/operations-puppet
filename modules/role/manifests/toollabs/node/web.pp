@@ -12,6 +12,7 @@
 #
 # Sample Usage:
 #
+# filtertags: labs-project-tools
 class role::toollabs::node::web {
 
     include ::toollabs::node::all

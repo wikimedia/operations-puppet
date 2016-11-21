@@ -1,4 +1,6 @@
 # Recevies logs from rsyslogd via UDP and stores it centrally
+#
+# filtertags: labs-project-tools
 class role::toollabs::logging::centralserver {
     include base::firewall
 
