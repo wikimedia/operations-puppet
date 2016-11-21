@@ -1,13 +1,10 @@
 class varnish::packages($version='installed') {
-    require varnish::apt_preferences
-
     package { [
         'varnish',
         'varnish-dbg',
         'libvarnishapi1',
         ]:
         ensure  => $version,
-        require => Class['varnish::apt_preferences'],
     }
 
     # Install VMODs on Varnish 4 instances
@@ -21,6 +18,6 @@ class varnish::packages($version='installed') {
         'libvmod-vslp',
         ]:
         ensure  => 'installed',
-        require => [ Class['varnish::apt_preferences'], Package['libvmod-header'] ],
+        require => Package['libvmod-header'],
     }
 }
