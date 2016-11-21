@@ -292,14 +292,14 @@ groups:
                  * Delete users (e.g. unverified accounts due to wrong email address)
                  * Delete files (e.g. copyright violations)
     members: [aklapper]
-    privileges: ['ALL = NOPASSWD: /srv/phab/phabricator/bin/remove destroy F*',
-                 'ALL = NOPASSWD: /srv/phab/phabricator/bin/remove destroy r*',
-                 'ALL = NOPASSWD: /srv/phab/phabricator/bin/remove destroy @*',
-                 'ALL = NOPASSWD: /srv/phab/phabricator/bin/repository',
-                 'ALL = NOPASSWD: /srv/phab/phabricator/bin/phd',
-                 'ALL = NOPASSWD: /srv/phab/phabricator/bin/policy',
-                 'ALL = NOPASSWD: /srv/phab/phabricator/bin/worker',
-                 'ALL = NOPASSWD: /srv/phab/phabricator/bin/auth strip --all-types --user *']
+    privileges: ['ALL = NOPASSWD:SETENV: /srv/phab/phabricator/bin/remove destroy F*',
+                 'ALL = NOPASSWD:SETENV: /srv/phab/phabricator/bin/remove destroy r*',
+                 'ALL = NOPASSWD:SETENV: /srv/phab/phabricator/bin/remove destroy @*',
+                 'ALL = NOPASSWD:SETENV: /srv/phab/phabricator/bin/repository',
+                 'ALL = NOPASSWD:SETENV: /srv/phab/phabricator/bin/phd',
+                 'ALL = NOPASSWD:SETENV: /srv/phab/phabricator/bin/policy',
+                 'ALL = NOPASSWD:SETENV: /srv/phab/phabricator/bin/worker',
+                 'ALL = NOPASSWD:SETENV: /srv/phab/phabricator/bin/auth strip --all-types --user *']
   zotero-admin:
     gid: 747
     description: group of zotero admins
