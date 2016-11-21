@@ -3,7 +3,8 @@
 # This role provides both project-wide host discovery/monitoring (via cron
 # prometheus-labs-targets) and kubernetes discovery/monitoring via Prometheus'
 # native k8s support.
-
+#
+# filtertags: labs-project-tools
 class role::prometheus::tools {
     $bearer_token_file = '/srv/prometheus/tools/k8s.token'
     $master_host = hiera('k8s::master_host')
