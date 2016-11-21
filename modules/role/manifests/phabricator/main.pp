@@ -45,6 +45,9 @@ class role::phabricator::main {
     # todo: create a separate phd_user and phd_pass
     $daemons_user = $passwords::mysql::phabricator::app_user
     $daemons_pass = $passwords::mysql::phabricator::app_pass
+    # todo: create a separate mail_user and mail_pass?
+    $mail_user = $daemons_user
+    $mail_pass = $daemons_pass
 
     $conf_files = {
         'www' => {
@@ -72,6 +75,15 @@ class role::phabricator::main {
             'phab_settings'     => {
                 'mysql.user'        => $daemons_user,
                 'mysql.pass'        => $daemons_pass,
+            }
+        },
+        'mail' => {
+            'environment'       => 'mail',
+            'owner'             => 'root',
+            'group'             => 'mail',
+            'phab_settings'     => {
+                'mysql.user'        => $mail_user,
+                'mysql.pass'        => $mail_pass,
             }
         },
     }

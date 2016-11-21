@@ -53,6 +53,7 @@ import ConfigParser
 
 from phabricator import Phabricator
 
+os.environ['PHABRICATOR_ENV'] = 'mail'
 
 def extract_direct_task(list_of_dests):
     """returns a dest ticket number of available
