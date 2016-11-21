@@ -1,7 +1,7 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-#  Copyright © 2016 Alexandros Kosiaris <akosiaris@wikimedia.org>
+#  Copyright 2016 Alexandros Kosiaris <akosiaris@wikimedia.org>
 #
 #  Permission to use, copy, modify, and/or distribute this software for any
 #  purpose with or without fee is hereby granted, provided that the above
