@@ -13,7 +13,7 @@
 # Sample Usage
 #   include ganeti
 class ganeti(
-        $with_drbd=true
+    $with_drbd=true
     ) {
     include ganeti::kvm
 
@@ -42,6 +42,12 @@ class ganeti(
         exec { 'load-module-drbd' :
             unless  => "/bin/lsmod | /bin/grep -q '^drbd'",
             command => '/sbin/modprobe drbd',
+        }
+        # Disable the systemd service shipped with drbd8-utils. Ganeti handles
+        # DRBD on its own
+        service { 'drbd':
+            ensure => 'stopped',
+            enable => false,
         }
     }
     # Enable vhost_net
