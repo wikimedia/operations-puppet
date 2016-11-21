@@ -90,6 +90,6 @@ if __name__ == '__main__':
 
     classes.update(rest_response.get('roles', []))
     yaml.safe_dump({
-        'classes': list(classes),
+        'classes': sorted(list(classes)),
         'parameters': {}
     }, sys.stdout)
