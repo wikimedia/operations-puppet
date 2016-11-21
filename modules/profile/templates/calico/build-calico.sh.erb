@@ -1,6 +1,8 @@
 #!/bin/bash
 set -e
 _dir="<%= @directory %>/calico-containers"
+_cni_dir="<%= @directory %>/calico-cni"
+_pol_dir="<%= @directory %>/calico-k8s-policy-controller"
 pushd $_dir
 <%- if @proxy_address != "" -%>
 export HTTPS_PROXY=<%= @proxy_address %>; export http_proxy=<%= @proxy_address %>
@@ -45,3 +47,9 @@ pkg_dst="/tmp/calicoctl_$VERSION~wmf1_amd64.deb"
 cd ${base} && fakeroot dpkg-deb --build debian && mv debian.deb $pkg_dst
 echo "calicoctl built in ${pkg_dst}"
 rm -rf ${base}
+
+# Calico-cni
+cd $_cin_dir && git checkout master && gbp buildpackage
+
+# Calico policy controller
+cd $_pol_dir && make clean docker-image
