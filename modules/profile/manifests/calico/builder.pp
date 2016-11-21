@@ -1,6 +1,7 @@
 class profile::calico::builder {
     # Calico builder version
     $calico_version=hiera('profile::calico::builder::version')
+    $k8s_policy_version=hiera('profile::calico::builder::k8s_policy_version')
     # Calico builder directory
     $directory=hiera('profile::calico::builder::directory')
     # Proxy url, if present
@@ -72,4 +73,22 @@ class profile::calico::builder {
         mode    => '0755',
         content => template('profile/calico/build-calico.sh.erb'),
     }
+
+    # Clone the calico CNI plugin repository and the calico policy controller for kubernetes repository
+    git::clone { 'operations/calico-cni':
+        branch    => 'master',
+        owner     => 'calicobuild',
+        require   => User['calicobuild'],
+        directory => "${directory}/calico-cni",
+
+    }
+
+    git::clone { 'operations/calico-k8s-policy-controller':
+        branch    => $k8s_policy_version,
+        owner     => 'calicobuild',
+        require   => User['calicobuild'],
+        directory => "${directory}/calico-k8s-policy-controller",
+
+    }
+
 }
