@@ -27,6 +27,9 @@ class phabricator::tools (
     file { '/etc/phabtools.conf':
         content => template('phabricator/phabtools.conf.erb'),
         require => Package[$deploy_target],
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0660',
     }
 
     $dump_script = "${directory}/public_task_dump.py"
