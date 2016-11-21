@@ -1,6 +1,6 @@
 class role::cache::misc {
     include role::cache::base
-    include role::cache::ssl::misc
+    include role::cache::ssl::unified
 
     class { 'varnish::htcppurger':
         mc_addrs => [ '239.128.0.115' ],
