@@ -1,3 +1,4 @@
+# filtertags: labs-project-tools
 class role::toollabs::k8s::webproxy {
 
     $master_host = hiera('k8s_master')

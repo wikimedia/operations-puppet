@@ -10,6 +10,7 @@
 #
 # Sample Usage:
 #
+# filtertags: labs-project-tools
 class role::toollabs::node::web::lighttpd inherits role::toollabs::node::web {
 
     package { 'php5-cgi':

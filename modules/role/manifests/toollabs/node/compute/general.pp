@@ -10,6 +10,7 @@
 #
 # Sample Usage:
 #
+# filtertags: labs-project-tools
 class role::toollabs::node::compute::general {
 
     include ::toollabs::node::all

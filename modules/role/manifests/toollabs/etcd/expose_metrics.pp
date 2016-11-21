@@ -1,5 +1,7 @@
 # Helper class that sets up an nginx proxy to expose /metrics endpoint
 # of etcd to the wider world, so things like prometheus can hit it.
+#
+# filtertags: labs-project-tools
 class role::toollabs::etcd::expose_metrics {
     $exposed_port = '9051'
 
