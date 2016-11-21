@@ -40,7 +40,7 @@ class role::cache::ssl::unified(
         ]
 
         $certs_active = [
-            'ecc-uni.wikimedia.org', 'uni.wikimedia.org',
+            'globalsign-2016-ecdsa-unified', 'globalsign-2016-rsa-unified',
         ]
 
         tlsproxy::localssl { 'unified':
