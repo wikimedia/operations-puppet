@@ -27,6 +27,9 @@ tmp = {}
             if service['icinga']['contact_group']
                 tmp[hostname]['contact_group'] = service['icinga']['contact_group']
             end
+            if service['icinga'].key?('critical')
+                tmp[hostname]['critical'] = service['icinga']['critical']
+            end
 	    # End of lots of silly code
         end
     end
