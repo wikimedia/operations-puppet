@@ -24,7 +24,7 @@ class role::prometheus::global {
             '{__name__="mysql_version_info"}',
           ],
         },
-        'static_config' => [
+        'static_configs' => [
           'targets' => [
             'prometheus.svc.eqiad.wmnet/ops',
             'prometheus.svc.codfw.wmnet/ops',
