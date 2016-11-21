@@ -32,7 +32,7 @@ server {
 	<%- end -%>
 	<%- if @do_ocsp -%>
 	ssl_stapling on;
-	  <%- @certs.each do |cert| -%>
+	  <%- @certs_nginx.each do |cert| -%>
 	ssl_stapling_file /var/cache/ocsp/<%= cert %>.ocsp;
 	  <%- end -%>
 	<%- end -%>
