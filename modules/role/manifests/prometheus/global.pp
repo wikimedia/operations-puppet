@@ -6,9 +6,10 @@ class role::prometheus::global {
       {
         'job_name'        => 'federate-ops',
         'honor_labels'    => true,
-        'metrics_path'    => '/federate',
+        'metrics_path'    => '/ops/federate',
         'params'          => {
           # Pull the union of metrics matching the following queries.
+          # Note: all regexps are implicitly anchored with ^$
           'match[]' => [
             # Up status for targets and exporters
             '{__name__=~"up"}',
@@ -16,21 +17,23 @@ class role::prometheus::global {
             # Self-monitoring job
             '{job="prometheus"}',
             # Per-cluster aggregated metrics
-            '{__name__=~"^cluster:"}',
-            '{__name__=~"^cluster_device:"}',
+            '{__name__=~"cluster:.*"}',
+            '{__name__=~"cluster_device:.*"}',
             # Version stats for auditing purposes
             '{__name__="node_uname_info"}',
             '{__name__="varnish_version"}',
             '{__name__="mysql_version_info"}',
+            '{__name__="memcached_version"}',
           ],
         },
         'static_configs' => [
-          'targets' => [
-            'prometheus.svc.eqiad.wmnet/ops',
-            'prometheus.svc.codfw.wmnet/ops',
-            'prometheus.svc.ulsfo.wmnet/ops',
-            'prometheus.svc.esams.wmnet/ops',
-          ],
+          { 'targets' => [
+              'prometheus.svc.eqiad.wmnet',
+              'prometheus.svc.codfw.wmnet',
+              'prometheus.svc.ulsfo.wmnet',
+              'prometheus.svc.esams.wmnet',
+            ],
+          },
         ],
       },
     ]
