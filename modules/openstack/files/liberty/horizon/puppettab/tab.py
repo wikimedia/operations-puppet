@@ -42,7 +42,7 @@ class PuppetTab(tabs.TableTab):
         #  args, so extract them now if they're present
         if 'prefix' in kwargs:
             self.prefix = kwargs['prefix']
-            self.name = _("Prefix %s") % self.prefix
+            self.name = self.prefix
             del kwargs['prefix']
 
         if 'tenant_id' in kwargs:
