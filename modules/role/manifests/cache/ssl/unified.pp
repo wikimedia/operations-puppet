@@ -6,7 +6,7 @@ class role::cache::ssl::unified(
         $check_cn = 'en.wikipedia.org'
         $check_sans = [
             'wikipedia.org',   '*.wikipedia.org',   '*.m.wikipedia.org', '*.zero.wikipedia.org',
-            'wikimedia.org',   '*.wikimedia.org',   '*.m.wikimedia.org',
+            'wikimedia.org',   '*.wikimedia.org',   '*.m.wikimedia.org', '*.planet.wikimedia.org',
             'mediawiki.org',   '*.mediawiki.org',   '*.m.mediawiki.org',
             'wikibooks.org',   '*.wikibooks.org',   '*.m.wikibooks.org',
             'wikidata.org',    '*.wikidata.org',    '*.m.wikidata.org',
@@ -17,6 +17,7 @@ class role::cache::ssl::unified(
             'wikivoyage.org',  '*.wikivoyage.org',  '*.m.wikivoyage.org',
             'wiktionary.org',  '*.wiktionary.org',  '*.m.wiktionary.org',
             'wikimediafoundation.org', '*.wikimediafoundation.org', '*.m.wikimediafoundation.org',
+            'wmfusercontent.org', '*.wmfusercontent.org',
             'w.wiki',
         ]
 
