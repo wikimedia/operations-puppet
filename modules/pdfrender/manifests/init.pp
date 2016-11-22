@@ -39,7 +39,7 @@ class pdfrender(
     $home_dir = '/home/pdfrender'
 
     require_package('xvfb', 'xauth', 'firejail', 'nodejs', 'nodejs-legacy',
-        'libxss1', 'libnss3', 'xpra')
+        'libxss1', 'libnss3', 'libgconf2-4', 'xpra')
 
     monitoring::service { 'pdfrender':
         description   => 'pdfrender',
