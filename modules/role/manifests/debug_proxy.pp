@@ -11,16 +11,15 @@ class role::debug_proxy {
 
     # Backward compatibility
     $aliases = {
-        '1'                  => 'mwtest1001.eqiad.wmnet',
-        'mw1017.eqiad.wmnet' => 'mwtest1001.eqiad.wmnet',
-        'mw1099.eqiad.wmnet' => 'mwtest1002.eqiad.wmnet',
+        '1'                  => 'mwdebug1001.eqiad.wmnet',
+        'mw1017.eqiad.wmnet' => 'mwdebug1001.eqiad.wmnet',
+        'mw1099.eqiad.wmnet' => 'mwdebug1002.eqiad.wmnet',
     }
 
-    # - Allow X-Wikimedia-Debug to select mw1017 and mw1099 in EQIAD
-    #   and mw2017 and mw2099 in CODFW.
-    # - For back-compat, pass 'X-Wikimedia-Debug: 1' requests to mw1017.
+    # - Allow X-Wikimedia-Debug to select mwdebug hosts
+    # - For back-compat, pass 'X-Wikimedia-Debug: 1' requests to mwdebug1001.
     class { '::debug_proxy':
-        backend_regexp  => '^((mwtest1001|mwtest1002)\.eqiad\.wmnet|(mw2017|mw2099)\.codfw\.wmnet)',
+        backend_regexp  => '^((mwdebug1001|mwdebug1002)\.eqiad\.wmnet|(mw2017|mw2099)\.codfw\.wmnet)',
         backend_aliases => $aliases,
         resolver        => join($::nameservers, ' '),
     }

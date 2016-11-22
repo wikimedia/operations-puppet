@@ -49,6 +49,8 @@ scap::dsh::groups:
       - mw1279.eqiad.wmnet
   mediawiki-appserver-canaries:
     hosts:
+      - mwdebug1001.eqiad.wmnet
+      - mwdebug1002.eqiad.wmnet
       - mw1171.eqiad.wmnet
       - mw1172.eqiad.wmnet
       - mw1261.eqiad.wmnet
