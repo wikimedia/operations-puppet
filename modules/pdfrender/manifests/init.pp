@@ -8,6 +8,9 @@
 # [*port*]
 #   The port to bind the service to.
 #
+# [*running*]
+#   Should the service be running or not.
+#
 # [*width*]
 #   The default browser width to use when converting, if not specified in the
 #   request. Default: 1024
@@ -25,6 +28,7 @@
 #
 class pdfrender(
     $port,
+    $running,
     $width       = 1024,
     $height      = 768,
     $no_browsers = 1,
@@ -42,9 +46,11 @@ class pdfrender(
         'libxss1', 'libnss3', 'libgconf2-4', 'libgtk2.0-0', 'libasound2',
         'xpra')
 
-    monitoring::service { 'pdfrender':
-        description   => 'pdfrender',
-        check_command => "check_http_on_port!${port}",
+    if ($running) {
+        monitoring::service { 'pdfrender':
+            description   => 'pdfrender',
+            check_command => "check_http_on_port!${port}",
+        }
     }
 
     scap::target { 'electron-render/deploy':
@@ -101,9 +107,17 @@ class pdfrender(
         before      => Base::Service_unit['pdfrender'],
     }
 
-    base::service_unit { 'pdfrender':
-        ensure  => present,
-        systemd => true,
+    $params = {
+        ensure => $running ? {
+            true    => 'running',
+            default => 'stopped',
+        },
+        enable => $running,
     }
 
+    base::service_unit { 'pdfrender':
+        ensure         => present,
+        systemd        => true,
+        service_params => $params,
+    }
 }
