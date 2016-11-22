@@ -223,7 +223,10 @@ node 'californium.wikimedia.org' {
 
 # DHCP / TFTP
 node 'carbon.wikimedia.org' {
-    role(installserver, installserver::tftp_server, installserver::dhcp,
+    role(installserver,
+         installserver::tftp_server,
+         installserver::dhcp,
+         installserver::http,
         aptrepo::wikimedia)
     $cluster = 'misc'
 
