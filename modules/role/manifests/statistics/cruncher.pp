@@ -75,4 +75,8 @@ class role::statistics::cruncher inherits role::statistics::base {
         repository => 'limn-ee-data',
         output_dir => 'metrics/ee',
     }
+    reportupdater::job { 'interactive':
+        repository => 'discovery-stats',
+        output_dir => 'metrics/interactive',
+    }
 }
