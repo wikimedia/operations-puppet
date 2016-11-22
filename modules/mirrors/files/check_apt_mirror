@@ -11,8 +11,8 @@ fi
 
 FQDN=$(hostname -f)
 STAMP=${TO}/project/trace/${FQDN}
-WARN=6
-CRITICAL=12
+WARN=8
+CRITICAL=14
 
 while [ $# -gt 0 ]
 do
