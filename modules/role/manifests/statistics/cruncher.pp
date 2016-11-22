@@ -71,4 +71,8 @@ class role::statistics::cruncher inherits role::statistics::base {
         repository => 'limn-multimedia-data',
         output_dir => 'metrics/multimedia-health',
     }
+    reportupdater::job { 'interactive':
+        repository => 'discovery-stats',
+        output_dir => 'metrics/interactive',
+    }
 }
