@@ -95,7 +95,7 @@ class PageEditor():
             return self._site
 
     def edit_page(self, text, resource_name, delete_page,
-                  second_try=False):
+                  template='InstanceStatus', second_try=False):
         site = self._get_site()
         pagename = "%s%s" % (CONF.wiki_page_prefix, resource_name)
         LOG.debug("Writing wiki page http://%s/wiki/%s" %
@@ -108,9 +108,10 @@ class PageEditor():
                 page.delete(reason='Resource deleted')
             else:
 
-                page_string = "%s\n{{InstanceStatus%s}}\n%s" % (begin_comment,
-                                                                text,
-                                                                end_comment)
+                page_string = "%s\n{{%s%s}}\n%s" % (begin_comment,
+                                                    template,
+                                                    text,
+                                                    end_comment)
 
                 pText = page.edit()
                 start_replace_index = pText.find(begin_comment)
