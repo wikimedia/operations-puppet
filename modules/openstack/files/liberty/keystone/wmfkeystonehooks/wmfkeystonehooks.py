@@ -16,6 +16,8 @@
 from keystone.common import dependency
 from keystone import exception
 
+from wikistatus import pageeditor
+
 from oslo_log import log as logging
 from oslo_config import cfg
 from oslo_messaging.notify import notifier
@@ -39,7 +41,10 @@ wmfkeystone_opts = [
                default='projectadmin',
                help='Name of project-local admin role'),
     cfg.MultiStrOpt('wmf_keystone_eventtype_whitelist',
-                    default=['identity.project.deleted', 'identity.project.created'],
+                    default=['identity.project.deleted',
+                             'identity.project.created',
+                             'identity.role_assignment.created',
+                             'identity.role_assignment.deleted'],
                     help='Event types to always handle.'),
     cfg.MultiStrOpt('wmf_keystone_eventtype_blacklist',
                     default=[],
@@ -58,13 +63,19 @@ class KeystoneHooks(notifier._Driver):
     """Notifier class which handles extra project creation/deletion bits
     """
     def __init__(self, conf, topics, transport, version=1.0):
-        pass
+        self.page_editor = pageeditor.PageEditor()
 
     def _on_project_delete(self, project_id):
         LOG.warning("Beginning wmf hooks for project deletion: %s" % project_id)
 
-    def _on_project_create(self, project_id):
+        resource_name = project_id
+        self.page_editor.edit_page("", resource_name, True)
 
+    def _on_role_updated(self, project_id):
+        LOG.warning("Beginning wmf hooks for project update: %s" % project_id)
+        self._update_project_page(project_id)
+
+    def _on_project_create(self, project_id):
         LOG.warning("Beginning wmf hooks for project creation: %s" % project_id)
 
         rolelist = self.role_api.list_roles()
@@ -92,6 +103,26 @@ class KeystoneHooks(notifier._Driver):
                                                          project_id,
                                                          roledict[CONF.observer_role_name])
 
+        self._update_project_page(project_id)
+
+    def _update_project_page(self, project_id):
+        # Create wikitech project page
+        resource_name = project_id
+        template_param_dict = {}
+        template_param_dict['Resource Type'] = 'project'
+        template_param_dict['Project Name'] = project_id
+        admins = self.assignment_api.list_role_assignments_for_role(CONF.admin_role_name)
+        members = self.assignment_api.list_role_assignments_for_role(CONF.user_role_name)
+        template_param_dict['Admins'] = ",".join(["User:%s" % user for user in admins])
+        template_param_dict['Members'] = ",".join(["User:%s" % user for user in members])
+
+        fields_string = ""
+        for key in template_param_dict:
+            fields_string += "\n|%s=%s" % (key, template_param_dict[key])
+
+        self.page_editor.edit_page(fields_string, resource_name, False,
+                                   template='Nova Resource')
+
     def notify(self, context, message, priority, retry=False):
         event_type = message.get('event_type')
 
@@ -100,6 +131,10 @@ class KeystoneHooks(notifier._Driver):
 
         if event_type == 'identity.project.created':
             self._on_project_create(message['payload']['resource_info'])
+
+        if (event_type == 'identity.role_assignment.created' or
+            event_type == 'identity.role_assignment.deleted'):
+            self._on_role_updated(message['payload']['project'])
 
         # Eventually this will be used to update project resource pages:
         if event_type in CONF.wmf_keystone_eventtype_blacklist:
