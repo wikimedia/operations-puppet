@@ -34,10 +34,37 @@ class role::cache::misc {
     }
 
     # misc-cluster specific (for now!):
-    #   every director must have exactly one of...
-    #     'req_host' => request hostname (or array of them)
+    #
+    # Every director must have exactly one of...
+    #     'req_host'    => request hostname (or array of them)
     #     'req_host_re' => request hostname regex
-    # ...and for sanity's sake, there should be no overlap among them
+    # You may also add one of:
+    #     'req_url'     => url path (or an array of them)
+    #     'req_url_re'  => url path regex
+    #
+    # These two options will be used to build a series of conditional
+    # routes.  If you have overlapping conditions, make sure that
+    # the director with the more specific condition comes alphabetically
+    # before ones with less specific conditions.  E.g. given the following
+    # directors that both handle requests to mydirector.wikimedia.org,
+    #
+    #   '10_mydirector_special_case' => {
+    #       'req_host' => 'mydirector.wikimedia.org',
+    #       'req_url' => '/special/case'
+    #       ...
+    #   },
+    #   '20_mydirector' => {
+    #       'req_host' => 'mydirector.wikimedia.org'
+    #       ...
+    #   }
+    #
+    # It is important that the director with req_url comes alphabetically
+    # before the one without, as the VCL conditionals will be rendered in
+    # alphabetical order.  If this was not the case, the conditional that
+    # matches just req_host would evaluate before the one with req_url,
+    # and all requests would be handled by the director without req_url.
+    # If your req_host rule does not overlap with any other director
+    # here, then alphabetical order does not matter.
     #
     # Maintenance flag:
     # It is also possible to force a director to return a HTTP 503
