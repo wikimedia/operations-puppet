@@ -7,11 +7,29 @@ sub cluster_be_recv_applayer_backend {
     if_stmts = []
     @app_directors.keys.sort.each do |dirname|
         dir = @app_directors[dirname]
+
+        # Build Host header comparison part of conditional
         if dir.key?('req_host')
             hostcmp = [*dir['req_host']].map { |h| %Q[req.http.Host == "#{h}"] }.join(' || ')
         else
             hostcmp = %Q[req.http.Host ~ "#{dir['req_host_re']}"]
         end
+
+        # Build URL path comparision part of conditional
+        if dir.key?('req_url')
+            urlcmp = [*dir['req_url']].map { |u| %Q[req.url == "#{u}"] }.join(' || ')
+        elsif dir.key?('req_url_re')
+            urlcmp = %Q[req.url ~ "#{dir['req_url_re']}"]
+        end
+
+        # If we had a URL condition, then include it in our Host && url path check.
+        if urlcmp
+          condition = "(#{hostcmp}) && (#{urlcmp})"
+        # else just use the hostname conditional.
+        else
+          condition = "#{hostcmp}"
+        end
+
         if dir.key?('maintenance')
             action = %Q[return (synth(503, "#{dir['maintenance']}"));]
         else
@@ -21,7 +39,8 @@ sub cluster_be_recv_applayer_backend {
                 action = "set req.backend_hint = #{dirname}.backend();\n"
             end
         end
-        if_stmts.push("if (#{hostcmp}) {\n        #{action}    }")
+
+        if_stmts.push("if (#{condition}) {\n        #{action}    }")
     end
     all_ifs = if_stmts.join(' els')
 %>
