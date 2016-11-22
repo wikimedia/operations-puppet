@@ -52,8 +52,13 @@ class mediawiki::jobrunner (
         notify  => Service['jobrunner', 'jobchron'],
     }
 
+    $state = hiera('jobrunner_state', 'running')
     $params = {
-        ensure => hiera('jobrunner_state', 'running')
+        ensure => $state,
+        enable => $state ? {
+            'stopped' => false,
+            default   => true,
+        }
     }
 
     # We declare the service, but override its status with
