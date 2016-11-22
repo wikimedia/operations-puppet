@@ -20,6 +20,7 @@ role::lvs::realserver::pools:
   citoid: {}
   mathoid: {}
   eventstreams: {}
+  pdfrender: {}
 graphoid::allowed_domains:
   https:
     - mediawiki.org
