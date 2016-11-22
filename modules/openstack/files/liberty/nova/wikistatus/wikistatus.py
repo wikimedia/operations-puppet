@@ -13,11 +13,6 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 
-import threading
-import time
-
-import mwclient
-
 import nova.context
 from nova import exception
 from nova import image
@@ -28,30 +23,11 @@ from oslo_log import log as logging
 from oslo_config import cfg
 from oslo_messaging.notify import notifier
 
+import pageeditor
+
 LOG = logging.getLogger('nova.%s' % __name__)
 
 wiki_opts = [
-    cfg.StrOpt('wiki_host',
-               default='deployment.wikimedia.beta.wmflabs.org',
-               help='Mediawiki host to receive updates.'),
-    cfg.StrOpt('wiki_domain',
-               default='labs',
-               help='wiki domain to receive updates.'),
-    cfg.StrOpt('wiki_page_prefix',
-               default='InstanceStatus_',
-               help='Created pages will have form <prefix>_<instancename>.'),
-    cfg.StrOpt('wiki_instance_region',
-               default='Unknown',
-               help='Hard-coded region name for wiki page.  A bit of a hack.'),
-    cfg.StrOpt('wiki_instance_dns_domain',
-               default='',
-               help='Hard-coded domain for wiki page. E.g. pmtpa.wmflabs'),
-    cfg.StrOpt('wiki_login',
-               default='login',
-               help='Account used to edit wiki pages.'),
-    cfg.StrOpt('wiki_password',
-               default='password',
-               help='Password for wiki_login.'),
     cfg.MultiStrOpt('wiki_eventtype_whitelist',
                     default=['compute.instance.delete.start',
                              'compute.instance.delete.end',
@@ -83,10 +59,6 @@ CONF = cfg.CONF
 CONF.register_opts(wiki_opts)
 
 
-begin_comment = "<!-- autostatus begin -->"
-end_comment = "<!-- autostatus end -->"
-
-
 class WikiStatus(notifier._Driver):
     """Notifier class which posts instance info to a wiki page.
     """
@@ -102,40 +74,8 @@ class WikiStatus(notifier._Driver):
                          'state_description']
 
     def __init__(self, conf, topics, transport, version=1.0):
-        self.host = CONF.wiki_host
+        self.page_editor = pageeditor.PageEditor()
         self._image_service = image.glance.get_default_image_service()
-        self.site_lock = threading.Lock()
-        self._site = None
-
-    @staticmethod
-    def _wiki_login(host):
-        site = mwclient.Site(("https", host),
-                             retry_timeout=10,
-                             max_retries=3)
-        if site:
-            # MW has a bug that kills a fair number of these logins,
-            #  so give it a few tries.
-            for count in reversed(xrange(3)):
-                try:
-                    site.login(CONF.wiki_login, CONF.wiki_password,
-                               domain=CONF.wiki_domain)
-                    return site
-                except mwclient.APIError:
-                    LOG.exception(
-                        "mwclient login failed, %d more tries" % count)
-                    time.sleep(20)
-            raise mwclient.MaximumRetriesExceeded()
-        else:
-            LOG.warning("Unable to reach %s.  We'll keep trying, "
-                        "but pages will be out of sync in the meantime."
-                        % host)
-            return None
-
-    def _get_site(self):
-        with self.site_lock:
-            if self._site is None:
-                self._site = self._wiki_login(self.host)
-            return self._site
 
     def _deserialize_context(self, contextdict):
         context = nova.context.RequestContext(**contextdict)
@@ -171,7 +111,7 @@ class WikiStatus(notifier._Driver):
 
         if event_type == 'compute.instance.delete.end':
             # No need to gather up instance info, just delete the page
-            self.edit_page("", resource_name, True)
+            self.page_editor.edit_page("", resource_name, True)
             return
 
         inst = objects.Instance.get_by_uuid(ctxt, instance)
@@ -225,53 +165,4 @@ class WikiStatus(notifier._Driver):
         for key in template_param_dict:
             fields_string += "\n|%s=%s" % (key, template_param_dict[key])
 
-        page_string = "%s\n{{InstanceStatus%s}}\n%s" % (begin_comment,
-                                                        fields_string,
-                                                        end_comment)
-
-        self.edit_page(page_string, resource_name, False)
-
-    def edit_page(self, page_string, resource_name, delete_page,
-                  second_try=False):
-        site = self._get_site()
-        pagename = "%s%s" % (CONF.wiki_page_prefix, resource_name)
-        LOG.debug("wikistatus:  Writing instance info"
-                  " to page http://%s/wiki/%s" %
-                  (self.host, pagename))
-
-        page = site.Pages[pagename]
-        failed = False
-        try:
-            if delete_page:
-                page.delete(reason='Instance deleted')
-            else:
-                pText = page.edit()
-                start_replace_index = pText.find(begin_comment)
-                if start_replace_index == -1:
-                    # Just stick new text at the top.
-                    newText = "%s\n%s" % (page_string, pText)
-                else:
-                    # Replace content between comment tags.
-                    end_replace_index = pText.find(end_comment,
-                                                   start_replace_index)
-                    if end_replace_index == -1:
-                        end_replace_index = (start_replace_index +
-                                             len(begin_comment))
-                    else:
-                        end_replace_index += len(end_comment)
-                    newText = "%s%s%s" % (pText[:start_replace_index],
-                                          page_string,
-                                          pText[end_replace_index:])
-                page.save(newText, "Auto update of instance info.")
-        except (mwclient.errors.InsufficientPermission,
-                mwclient.errors.LoginError):
-            LOG.exception(
-                "Failed to update wiki page..."
-                " trying to re-login next time.")
-            with self.site_lock:
-                self._site = None
-            failed = True
-
-        if failed and not second_try:
-            self.edit_page(page_string, resource_name, delete_page,
-                           second_try=True)
+        self.page_editor.edit_page(fields_string, resource_name, False)
