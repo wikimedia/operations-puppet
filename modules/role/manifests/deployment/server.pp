@@ -100,10 +100,11 @@ class role::deployment::server(
         cron_ensure       => $deploy_ensure,
     }
 
+    $main_deployment_server = hiera('scap::deployment_server')
     motd::script { 'inactive_warning':
         ensure   => $deploy_ensure,
         priority => 01,
-        source   => 'puppet:///modules/role/deployment/inactive.motd',
+        content  => template('role/deployment/inactive.motd.erb'),
     }
 
     # Bacula backups (T125527)
