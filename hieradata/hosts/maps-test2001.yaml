@@ -4,3 +4,6 @@ role::maps::master::planet_sync_period: 'hour'
 role::maps::master::planet_sync_hour:   '*'
 role::maps::master::postgres_tile_storage: true
 tilerator::ui::storage_id: 'v5'
+
+# maps-test servers are just test servers, Ops don't need to be notified
+contact_groups: 'team-interactive'

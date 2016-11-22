@@ -65,7 +65,7 @@
 class tilerator::ui(
     $port           = 6535,
     $conf_sources   = 'sources.prod.yaml',
-    $contact_groups = 'admins',
+    $contact_groups = hiera('contactgroups', 'admins'),
     $statefile_dir  = '/var/run/tileratorui',
     $from_zoom      = 10,
     $before_zoom    = 16,

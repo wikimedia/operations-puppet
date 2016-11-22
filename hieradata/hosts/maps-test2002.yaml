@@ -1,2 +1,5 @@
 cassandra::rack: a5
 do_paging: false
+
+# maps-test servers are just test servers, Ops don't need to be notified
+contact_groups: 'team-interactive'

@@ -25,7 +25,7 @@
 #
 class kartotherian(
     $conf_sources      = 'sources.prod.yaml',
-    $contact_groups    = 'admins',
+    $contact_groups    = hiera('contactgroups', 'admins'),
     $cassandra_servers = hiera('cassandra::seeds'),
 ) {
 
