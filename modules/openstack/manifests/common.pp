@@ -1,13 +1,7 @@
 # common packages and config for openstack
 class openstack::common(
             $novaconfig,
-            $instance_status_wiki_host,
-            $instance_status_wiki_domain,
-            $instance_status_wiki_page_prefix,
-            $instance_status_wiki_region,
-            $instance_status_dns_domain,
-            $instance_status_wiki_user,
-            $instance_status_wiki_pass,
+            $wikitechstatusconfig,
             $openstack_version=$::openstack::version,
     ) {
 
