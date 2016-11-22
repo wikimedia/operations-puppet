@@ -130,12 +130,14 @@ class role::phabricator::main {
         address   => hiera('phabricator::vcs::address::v4'),
         prefixlen => '21',
     }
-    interface::ip { 'role::phabricator::main::ipv6':
-        interface => 'eth0',
-        address   => hiera('phabricator::vcs::address::v6'),
-        prefixlen => '128',
-        # mark as deprecated = never pick this address unless explicitly asked
-        options   => 'preferred_lft 0',
+    if hiera('phabricator::vcs::address::v6') != 'undef' {
+        interface::ip { 'role::phabricator::main::ipv6':
+            interface => 'eth0',
+            address   => hiera('phabricator::vcs::address::v6'),
+            prefixlen => '128',
+            # mark as deprecated = never pick this address unless explicitly asked
+            options   => 'preferred_lft 0',
+        }
     }
 
     class { '::phabricator::tools':
