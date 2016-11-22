@@ -54,3 +54,5 @@ etcd_hosts:
 prometheus_nodes:
   - prometheus2001.codfw.wmnet
   - prometheus2002.codfw.wmnet
+
+openstack::version: 'liberty'
