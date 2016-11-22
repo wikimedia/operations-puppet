@@ -80,6 +80,7 @@ class role::lvs::balancer {
             $sip['thumbor'][$::site],
             $sip['prometheus'][$::site],
             $sip['wdqs'][$::site],
+            $sip['eventstreams'][$::site],
             ],
 
         # esams + ulsfo
