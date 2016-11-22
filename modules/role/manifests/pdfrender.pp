@@ -1,4 +1,5 @@
 class role::pdfrender {
+    $is_active = hiera('role::pdfrender::is_active', false)
 
     system::role { 'role::pdfrender':
         description => 'A PDF render service based on Electron',
@@ -7,7 +8,8 @@ class role::pdfrender {
     $port = 5252
 
     class { '::pdfrender':
-        port => $port,
+        port    => $port,
+        running => $is_active,
     }
 
     ferm::service { "pdfrender_http_${port}":
@@ -17,4 +19,3 @@ class role::pdfrender {
     }
 
 }
-
