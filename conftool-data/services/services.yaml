@@ -63,6 +63,7 @@ scb:
     port: 8092
     datacenters:
     - eqiad
+    - codfw
     default_values:
       pooled: 'yes'
       weight: 10
