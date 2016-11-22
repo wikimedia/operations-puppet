@@ -2,7 +2,6 @@ class role::labs::openstack::nova::network {
 
     require openstack
     system::role { $name: }
-    include openstack::nova::hooks
     include role::labs::openstack::nova::common
     $novaconfig = $role::labs::openstack::nova::common::novaconfig
 

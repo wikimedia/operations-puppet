@@ -3,7 +3,6 @@ class role::labs::openstack::nova::controller {
     system::role { $name: }
 
     require openstack
-    include openstack::nova::hooks
     include role::labs::openstack::glance::server
     include role::labs::openstack::keystone::server
     include ::openstack::nova::conductor

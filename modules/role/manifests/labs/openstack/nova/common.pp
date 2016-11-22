@@ -1,7 +1,7 @@
 class role::labs::openstack::nova::common {
 
     include passwords::misc::scripts
-    include openstack::nova::hooks
+    include ::openstack::nova::hooks
 
     $novaconfig_pre                       = hiera_hash('novaconfig', {})
     $keystoneconfig                       = hiera_hash('keystoneconfig', {})
