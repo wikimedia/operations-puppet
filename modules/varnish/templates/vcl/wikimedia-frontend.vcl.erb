@@ -25,12 +25,12 @@ sub https_recv_redirect {
 				// temporary hole-punch for legacy redirect-incompatible rcstream clients: T134871
 				if (req.http.Host != "stream.wikimedia.org") {
 					set req.http.Location = "https://" + req.http.Host + req.url;
-					<%= error_synth(751, "TLS Redirect") -%>
+					return (synth(751, "TLS Redirect"));
 				}
 			}
 		}
 		else {
-			<%= error_synth(403, "Insecure Request Forbidden - use HTTPS - https://lists.wikimedia.org/pipermail/mediawiki-api-announce/2016-May/000110.html") -%>
+			return (synth(403, "Insecure Request Forbidden - use HTTPS - https://lists.wikimedia.org/pipermail/mediawiki-api-announce/2016-May/000110.html"));
 		}
 	}
 }
@@ -261,7 +261,7 @@ sub vcl_recv {
 		// They are handled by the log tailer (varnishkafka) that filters the
 		// Varnish shm log for reqs to these endpoints and forwards them to log
 		// processors for storage and analysis.
-		<%= error_synth(204, "") -%>
+		return (synth(204, ""));
 	}
 
 	if(req.restarts == 0) {

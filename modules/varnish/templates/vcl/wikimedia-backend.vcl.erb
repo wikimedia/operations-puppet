@@ -13,7 +13,7 @@ sub vcl_init {
 sub vcl_recv {
 	if (client.ip !~ wikimedia_trust) {
 		// Do not allow direct access to non-frontend layers
-		<%= error_synth(403, "Access denied") -%>
+		return (synth(403, "Access denied"));
 	}
 
 	call wm_common_recv_early;
@@ -26,7 +26,7 @@ sub vcl_recv {
 	if (req.restarts == 0) {
 		if (req.http.X-DCPath) {
 			if (req.http.X-DCPath ~ "<%= @site %>") {
-				<%= error_synth(508, "Loop Detected") -%>
+				return (synth(508, "Loop Detected"));
 			}
 			set req.http.X-DCPath = req.http.X-DCPath + ", <%= @site %>";
 		} else {
