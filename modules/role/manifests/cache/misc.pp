@@ -285,6 +285,16 @@ class role::cache::misc {
             'be_opts'  => merge($app_def_be_opts, { 'port' => 8081 }),
             'req_host' => 'ores.wikimedia.org',
         },
+        'eventstreams' => {
+            'dynamic'  => 'no',
+            'type'     => 'random',
+            'backends' => [ "eventstreams.svc.${::site}.wmnet" ],
+            # eventstreams port is configured via scb role hiera variable
+            # role::eventstreams::port, and defaults to 8092.  Not sure
+            # how to look up the port from the role class default.
+            'be_opts'  => merge($app_def_be_opts, { 'port' => 8092 }),
+            'req_host' => 'eventstreams.wikimedia.org',
+        },
     }
 
     $common_vcl_config = {
