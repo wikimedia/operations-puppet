@@ -2002,8 +2002,9 @@ node /^ms-be20(1[6-9]|2[0-7])\.codfw\.wmnet$/ {
 }
 
 # mw1017 and mw1099 are former test appservers
+# HW decom ticket: T151303
 node /^mw10(17|99)\.eqiad\.wmnet$/ {
-    role(mediawiki::canary_appserver)
+    role(spare::system)
     include base::firewall
 }
 
