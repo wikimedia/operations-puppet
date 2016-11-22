@@ -16,5 +16,6 @@ define phabricator::conf_env(
         group   => $group,
         mode    => '0640',
         content => template('phabricator/local.json.erb'),
+        require => [Package[$phabricator::deploy_target]],
     }
 }
