@@ -427,7 +427,7 @@ if __name__ == '__main__':
     # otherwise swallow, return generic, and go for syslog
     except EmailStatusError as e:
         print "%s\n\n%s" % (e, contact)
-        exit(1)
+        sys.exit(1)
     except EmailParsingError as e:
         syslog.syslog("EmailParsingError: %s" % (str(e)))
         print "%s\n\n%s" % (e, contact)
