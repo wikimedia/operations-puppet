@@ -22,22 +22,6 @@ end
 
 include "errorpage.inc.vcl";
 
-<%
-# Calculates number of director-level retries necessary for chash to hit all
-# "n" backends with probability percentage "p", given they're randomly-mixed
-# into an array considerably larger in size than "n".  This is an
-# overestimation in that it assumes an infinite array, but the values still
-# come out reasonably small compared to doing anything based on our actual
-# weight*num_backends.
-# Blame _joe_ for the math! :)
-def chash_def_retries(p, n)
-	x = n - 1
-	if (x <= 0)
-		return n
-	end
-	return ((Math.log10(100 - p) - 2) / (Math.log10(x) - Math.log10(n))).ceil
-end
--%>
 
 # ACLs
 
@@ -92,7 +76,7 @@ probe varnish {
 # @varnish_directors = {
 #     'director name' => {
 #         'dynamic'  => 'yes', # or 'no', required
-#         'type'     => 'chash', # required
+#         'type'     => 'vslp', # required
 #         'dc'       => 'eqiad', # required if dynamic==yes
 #         'service'  => 'foo',   # required if dynamic==yes
 #         'backends' => [ "backend1", "backend2" ], # required: array or single value
@@ -111,7 +95,7 @@ probe varnish {
 # the director name into the backend host's "backend" name as well, but so far
 # we have no cases where this is necessary! (whereas we do have cases of
 # duplicate backend hosts where the options are always identical, for
-# chashed-vs-random cache backends)
+# vslp-vs-random cache backends)
 #
 
 # Puppet-generated the Backend host definitions, regardless of 'dynamic'
@@ -163,9 +147,6 @@ new <%= director_name %> = vslp.<%= director['type'] %>();
 <% else -%>
 new <%= director_name %> = directors.<%= director['type'] %>();
 <% end %>
-<% if director['type'] == 'chash' -%>
-	.retries = <%= chash_def_retries(99, backends.size) %>;
-<% end -%>
 <%
 	backends.each do |backend|
 		name = 'be_' + backend.gsub(/[-.]/, '_')
