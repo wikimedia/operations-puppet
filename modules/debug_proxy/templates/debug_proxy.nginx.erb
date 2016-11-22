@@ -9,6 +9,8 @@
 # header does not contain a well-formed 'backend' attribute, then
 # the entire header is used as the backend value.
 
+map_hash_bucket_size 128;
+
 map $http_x_wikimedia_debug $debug_backend {
   "~backend=(?<h>[^;]+)" $h;
   default $http_x_wikimedia_debug;
