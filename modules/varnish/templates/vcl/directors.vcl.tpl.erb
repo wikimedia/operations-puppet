@@ -1,16 +1,3 @@
-<%
-# Calculates number of director-level retries necessary for chash to hit all
-# "n" backends with probability percentage "p", given they're randomly-mixed
-# into an array considerably larger in size than "n".  This is an
-# overestimation in that it assumes an infinite array, but the values still
-# come out reasonably small compared to doing anything based on our actual
-# weight*num_backends.
-# Blame _joe_ for the math! :)
-def chash_def_retries(p, n)
-    return n if n == 1
-	return ((Math.log10(100 - p) - 2) / (Math.log10(n - 1) - Math.log10(n))).ceil
-end
--%>
 
 <% @directors.keys.sort.each do |director_name|
 director = @directors[director_name]
