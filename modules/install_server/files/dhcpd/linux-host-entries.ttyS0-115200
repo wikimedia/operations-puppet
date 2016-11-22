@@ -123,6 +123,16 @@ host mendelevium {
     fixed-address mendelevium.eqiad.wmnet;
 }
 
+host mwdebug1001 {
+    hardware ethernet aa:00:00:6e:80:dc;
+    fixed-address mwdebug1001.eqiad.wmnet;
+}
+
+host mwdebug1002 {
+    hardware ethernet aa:00:00:14:d6:e0;
+    fixed-address mwdebug1002.eqiad.wmnet;
+}
+
 host mx1001 {
     hardware ethernet aa:00:00:b2:f5:b7;
     fixed-address mx1001.wikimedia.org;
