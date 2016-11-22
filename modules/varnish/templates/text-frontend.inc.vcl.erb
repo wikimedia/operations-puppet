@@ -41,7 +41,7 @@ sub mobile_redirect {
 			} else {
 				set req.http.Location = "http://" + req.http.MobileHost + req.url;
 			}
-			<%= error_synth(666, "Found") -%>
+			return (synth(666, "Found"));
 		}
 		unset req.http.MobileHost;
 	}
@@ -50,15 +50,15 @@ sub mobile_redirect {
 sub cluster_fe_recv_pre_purge {
 	// Forged UAs on zerodot. This largely handles lazywebtools below, incidentally.
 	if (req.http.host ~ "zero\.wikipedia\.org" && req.http.User-Agent && req.http.User-Agent ~ "Facebookbot|Googlebot") {
-		<%= error_synth(403, "Noise") -%>
+		return (synth(403, "Noise"));
 	}
 
 	if (req.http.referer && req.http.referer ~ "^http://(www\.(keeprefreshing|refreshthis|refresh-page|urlreload)\.com|tuneshub\.blogspot\.com|itunes24x7\.blogspot\.com|autoreload\.net|www\.lazywebtools\.co\.uk)/") {
-		<%= error_synth(403, "Noise") -%>
+		return (synth(403, "Noise"));
 	}
 
 	if (req.method == "POST" && req.url ~ "index\.php\?option=com_jce&task=plugin&plugin=imgmanager&file=imgmanager&method=form&cid=") {
-		<%= error_synth(403, "Noise") -%>
+		return (synth(403, "Noise"));
 	}
 
 	// FIXME: we're seeing an issue with Range requests and gzip/gunzip.
@@ -140,7 +140,7 @@ sub cluster_fe_recv_pre_purge {
 sub cluster_fe_recv {
 	// Experiment on dealing with a buggy UA that's spamming requests in T141786
 	if (req.http.User-Agent ~ "Windows NT .*Chrome/41\.0\.2272\.76" && req.url == "/" && req.http.X-Connection-Properties ~ "SSL=TLSv1.1; C=ECDHE-ECDSA-AES128-SHA;") {
-		<%= error_synth(741, "Buggy request, please report at https://phabricator.wikimedia.org/T141786") -%>
+		return (synth(741, "Buggy request, please report at https://phabricator.wikimedia.org/T141786"));
 	}
 
 	call mobile_redirect;
@@ -157,7 +157,7 @@ sub cluster_fe_recv {
 	// shortener URLs can be validated and restricted here
 	if (req.http.host == "<%= @vcl_config.fetch('shortener_domain') %>") {
 		if (req.url !~ "^/[23456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz$_]*$") {
-			<%= error_synth(404, "Short URL Not Found") -%>
+			return (synth(404, "Short URL Not Found"));
 		}
 	}
 
@@ -186,7 +186,7 @@ sub cluster_fe_recv {
 	   && req.url ~ "^/wiki/" && req.http.host !~ "\.m\."
 	   && req.http.Cookie !~ "Browser-Security=Awful"
 	   && std.random(0,100) < 2.0) {
-		<%= error_synth(787, "Browser Security Warning Redirect") -%>
+		return (synth(787, "Browser Security Warning Redirect"));
 	}
 
 	call text_common_recv;

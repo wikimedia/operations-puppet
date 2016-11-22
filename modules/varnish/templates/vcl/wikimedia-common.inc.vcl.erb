@@ -14,12 +14,6 @@ import directors;
 # this import conditional on existing vslp backend definitions.
 import vslp;
 
-<%
-def error_synth(status_code, message)
-	return "return (synth(#{status_code}, \"#{message}\"));\n"
-end
--%>
-
 include "errorpage.inc.vcl";
 
 
@@ -182,12 +176,12 @@ sub wm_common_recv_purge {
 	/* Support HTTP PURGE */
 	if (req.method == "PURGE") {
 		if (client.ip !~ local_host) {
-			<%= error_synth(405, "Method not allowed") -%>
+			return (synth(405, "Method not allowed"));
 		} elsif (req.http.Host ~ "<%= @vcl_config.fetch('purge_host_regex') %>") {
 			set req.hash_ignore_busy = true;
 			return (purge);
 		} else {
-			<%= error_synth(204, "Domain not cached here") -%>
+			return (synth(204, "Domain not cached here"));
 		}
 	}
 }
@@ -199,11 +193,11 @@ sub wm_common_recv_early {
 	// Additionally, if OPTIONS is allowed, it must be accompanied by Origin:
 	if (req.method !~ "<%= @vcl_config.fetch("allowed_methods", "^(GET|HEAD|POST|OPTIONS|PURGE)$") %>"
 		|| (req.method == "OPTIONS" && !req.http.Origin)) {
-		<%= error_synth(405, "Method not allowed") -%>
+		return (synth(405, "Method not allowed"));
 	}
 
 	if ( req.http.host ~ "^varnishcheck" ) {
-		<%= error_synth(200, "OK") -%>
+		return (synth(200, "OK"));
 	}
 }
 
