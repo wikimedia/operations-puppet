@@ -181,7 +181,6 @@ class role::phabricator::main {
     }
     include exim4::ganglia
 
-    $emailbotcert = $passwords::phabricator::emailbot_cert
     class { '::phabricator::mailrelay':
         default                 => {
             security     => 'users',
@@ -201,7 +200,7 @@ class role::phabricator::main {
             root_dir    => '/srv/phab/phabricator/',
             username    => 'emailbot',
             host        => "https://${domain}/api/",
-            certificate => $emailbotcert,
+            certificate => $passwords::phabricator::emailbot_cert,
         },
     }
 
