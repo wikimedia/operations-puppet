@@ -1,10 +1,6 @@
 # vim: set tabstop=4 shiftwidth=4 softtabstop=4 expandtab textwidth=80 smarttab
 # site.pp
 
-import 'realm.pp' # These ones first
-
-# Base nodes
-
 # Default variables. this way, they work with an ENC (as in labs) as well.
 if $cluster == undef {
     $cluster = 'misc'
