@@ -27,6 +27,7 @@ class role::labs::openstack::nova::common {
     class { '::openstack::common':
         novaconfig           => $novaconfig,
         wikitechstatusconfig => $wikitechstatusconfig,
+        openstack_version    => hiera('openstack::version'),
     }
 
     class { '::openstack::nova::hooks':
