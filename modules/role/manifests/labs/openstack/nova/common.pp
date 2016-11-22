@@ -5,6 +5,7 @@ class role::labs::openstack::nova::common {
 
     $novaconfig_pre                       = hiera_hash('novaconfig', {})
     $keystoneconfig                       = hiera_hash('keystoneconfig', {})
+    $wikitechstatusconfig                 = hiera_hash('wikitechstatusconfig', {})
 
     $keystone_host                        = hiera('labs_keystone_host')
     $nova_controller                      = hiera('labs_nova_controller')
@@ -25,14 +26,8 @@ class role::labs::openstack::nova::common {
     $novaconfig = deep_merge($novaconfig_pre, $extra_novaconfig)
 
     class { '::openstack::common':
-        novaconfig                       => $novaconfig,
-        instance_status_wiki_host        => $status_wiki_host_master,
-        instance_status_wiki_domain      => 'labs',
-        instance_status_wiki_page_prefix => 'Nova_Resource:',
-        instance_status_wiki_region      => $::site,
-        instance_status_dns_domain       => "${::site}.wmflabs",
-        instance_status_wiki_user        => $passwords::misc::scripts::wikinotifier_user,
-        instance_status_wiki_pass        => $passwords::misc::scripts::wikinotifier_pass,
+        novaconfig           => $novaconfig,
+        wikitechstatusconfig => $wikitechstatusconfig,
     }
 }
 
