@@ -2001,12 +2001,11 @@ node /^ms-be20(1[6-9]|2[0-7])\.codfw\.wmnet$/ {
     role(swift::storage)
 }
 
-# mw1017 and mw1099 are test appservers
+# mw1017 and mw1099 are former test appservers
 node /^mw10(17|99)\.eqiad\.wmnet$/ {
     role(mediawiki::canary_appserver)
     include base::firewall
 }
-
 
 # mw1161-1169 are job runners
 node /^mw116[1-9]\.eqiad\.wmnet$/ {
@@ -2014,8 +2013,14 @@ node /^mw116[1-9]\.eqiad\.wmnet$/ {
     include base::firewall
 }
 
-# mw1170-1188 are apaches
-node /^mw11(7[0-9]|8[0-8])\.eqiad\.wmnet$/ {
+# mw1170-71 are test appservers
+node /^mw117[01]\.eqiad\.wmnet$/ {
+    role(mediawiki::appserver)
+    include base::firewall
+}
+
+# mw1172-1188 are apaches
+node /^mw11(7[2-9]|8[0-8])\.eqiad\.wmnet$/ {
     role(mediawiki::appserver)
     include base::firewall
 }

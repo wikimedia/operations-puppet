@@ -9,16 +9,21 @@ class role::debug_proxy {
         description => 'X-Wikimedia-Debug proxy',
     }
 
+    # Backward compatibility
+    $aliases = {
+        '1'                  => 'mwtest1001.eqiad.wmnet',
+        'mw1017.eqiad.wmnet' => 'mwtest1001.eqiad.wmnet',
+        'mw1099.eqiad.wmnet' => 'mwtest1002.eqiad.wmnet',
+    }
+
     # - Allow X-Wikimedia-Debug to select mw1017 and mw1099 in EQIAD
     #   and mw2017 and mw2099 in CODFW.
     # - For back-compat, pass 'X-Wikimedia-Debug: 1' requests to mw1017.
-    # lint:ignore:arrow_alignment
     class { '::debug_proxy':
-        backend_regexp  => '^((mw1017|mw1099)\.eqiad\.wmnet|(mw2017|mw2099)\.codfw\.wmnet)',
-        backend_aliases => { '1' => 'mw1017.eqiad.wmnet' },
+        backend_regexp  => '^((mwtest1001|mwtest1002)\.eqiad\.wmnet|(mw2017|mw2099)\.codfw\.wmnet)',
+        backend_aliases => $aliases,
         resolver        => join($::nameservers, ' '),
     }
-    # lint:endignore
 
     ferm::service { 'debug_proxy':
         proto  => 'tcp',
