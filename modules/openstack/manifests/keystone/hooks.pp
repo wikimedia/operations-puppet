@@ -3,6 +3,9 @@
 class openstack::keystone::hooks(
     $openstack_version  = $::openstack::version)
 {
+    # This installs a python class that keystone also uses:
+    include openstack::nova::hooks
+
     file { '/usr/lib/python2.7/dist-packages/wmfkeystonehooks':
         source  => "puppet:///modules/openstack/${openstack_version}/keystone/wmfkeystonehooks",
         owner   => 'root',
