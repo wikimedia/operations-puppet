@@ -1,7 +1,7 @@
 class role::labs::openstack::nova::common {
 
     include passwords::misc::scripts
-    include role::labs::openstack::nova::wikiupdates
+    include openstack::nova::hooks
 
     $novaconfig_pre                       = hiera_hash('novaconfig', {})
     $keystoneconfig                       = hiera_hash('keystoneconfig', {})
@@ -163,7 +163,7 @@ class role::labs::openstack::nova::controller {
     system::role { $name: }
 
     require openstack
-    include role::labs::openstack::nova::wikiupdates
+    include openstack::nova::hooks
     include role::labs::openstack::glance::server
     include role::labs::openstack::keystone::server
     include ::openstack::nova::conductor
@@ -284,7 +284,7 @@ class role::labs::openstack::nova::network {
 
     require openstack
     system::role { $name: }
-    include role::labs::openstack::nova::wikiupdates
+    include openstack::nova::hooks
     include role::labs::openstack::nova::common
     $novaconfig = $role::labs::openstack::nova::common::novaconfig
 
@@ -303,33 +303,6 @@ class role::labs::openstack::nova::network {
 
     class { '::openstack::nova::network':
         novaconfig        => $novaconfig,
-    }
-}
-
-class role::labs::openstack::nova::wikiupdates {
-    require openstack
-    if ! defined(Package['python-mwclient']) {
-        package { 'python-mwclient':
-            ensure => latest,
-        }
-    }
-
-    file { '/usr/lib/python2.7/dist-packages/wikistatus':
-        source  => "puppet:///modules/openstack/${::openstack::version}/nova/wikistatus",
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0644',
-        require => Package['python-mwclient'],
-        recurse => true,
-    }
-
-    file { '/usr/lib/python2.7/dist-packages/wikistatus.egg-info':
-        source  => "puppet:///modules/openstack/${::openstack::version}/nova/wikistatus.egg-info",
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0644',
-        require => Package['python-mwclient'],
-        recurse => true,
     }
 }
 
