@@ -2,6 +2,9 @@
 # Lot of long lines (ssh keys for example).
 --no-80chars-check
 
+# even longer lines are also around
+--no-140chars-check
+
 # TO BE FIXED - T93645 - please help
 --no-autoloader_layout-check
 
