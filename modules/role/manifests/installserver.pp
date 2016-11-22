@@ -54,12 +54,6 @@ class role::installserver {
         srange => '$PRODUCTION_NETWORKS',
     }
 
-    include install_server::web_server
-    ferm::service { 'install_http':
-        proto => 'tcp',
-        port  => '(http https)'
-    }
-
     # Backup
     $sets = [ 'srv-autoinstall',
             ]
@@ -69,9 +63,5 @@ class role::installserver {
     monitoring::service { 'squid':
         description   => 'Squid',
         check_command => 'check_tcp!8080',
-    }
-    monitoring::service { 'http':
-        description   => 'HTTP',
-        check_command => 'check_http',
     }
 }
