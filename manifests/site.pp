@@ -227,6 +227,7 @@ node 'carbon.wikimedia.org' {
         installserver::tftp_server,
         installserver::dhcp,
         installserver::http,
+        installserver::proxy,
         aptrepo::wikimedia)
 
     $cluster = 'misc'
