@@ -32,7 +32,6 @@ class eventstreams(
     service::node { 'eventstreams':
         enable            => true,
         port              => $port,
-        healthcheck_url   => '',
         has_spec          => false, # TODO: figure out how to monitor stream with spec x-amples
         deployment        => 'scap3',
         deployment_config => true,
