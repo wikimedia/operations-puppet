@@ -1,6 +1,7 @@
 class role::labs::openstack::nova::common {
-
+    require openstack
     include passwords::misc::scripts
+    include ::openstack::nova::hooks
 
     $novaconfig_pre                       = hiera_hash('novaconfig', {})
     $keystoneconfig                       = hiera_hash('keystoneconfig', {})
@@ -27,11 +28,5 @@ class role::labs::openstack::nova::common {
     class { '::openstack::common':
         novaconfig           => $novaconfig,
         wikitechstatusconfig => $wikitechstatusconfig,
-        openstack_version    => hiera('openstack::version'),
-    }
-
-    class { '::openstack::nova::hooks':
-        openstack_version => hiera('openstack::version'),
     }
 }
-
