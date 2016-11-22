@@ -181,7 +181,6 @@ class role::phabricator::main {
     }
     include exim4::ganglia
 
-    $emailbotcert = $passwords::phabricator::emailbot_cert
     class { '::phabricator::mailrelay':
         default                 => {
             security     => 'users',
@@ -197,11 +196,11 @@ class role::phabricator::main {
             procurement => 'cdw.com,cyrusone.com,dasher.com,dell.com,globalsign.com,optiv.com,unitedlayer.com,us.ntt.net,wikimedia.org,zayo.com',
         },
 
-        phab_bot                => {
+        phab_bot        => {
             root_dir    => '/srv/phab/phabricator/',
             username    => 'emailbot',
             host        => "https://${domain}/api/",
-            certificate => $emailbotcert,
+            certificate => $passwords::phabricator::emailbot_cert,
         },
     }
 
