@@ -434,3 +434,5 @@ kafka_clusters:
         id: 2002
 
 deployment_server: tin.eqiad.wmnet
+
+openstack::version: 'liberty'
