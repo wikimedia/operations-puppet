@@ -34,6 +34,9 @@ while true; do
 			if [ $exitCode -gt 0 ]; then
 				echo -e "\n\nProcess failed with exit code $exitCode" >> $errorLog
 				echo 1 > $failureFile
+
+				#  Kill all remaining dumpers and start over.
+				pkill -P $$
 			fi
 		) &
 		let i++
@@ -52,7 +55,8 @@ while true; do
 			exit 1
 		fi
 
-		# Another attempt
+		# Wait 10 minutes (in case of database problems or other instabilities), then try again
+		sleep 600
 		continue
 	fi
 
