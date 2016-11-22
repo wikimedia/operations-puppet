@@ -102,8 +102,11 @@ class pdfrender(
     }
 
     base::service_unit { 'pdfrender':
-        ensure  => present,
-        systemd => true,
+        ensure         => present,
+        service_params => {
+            enable  => false,
+        },
+        systemd        => true,
     }
 
 }
