@@ -80,7 +80,7 @@ sub text_normalize_path {
 
 // fe+be common recv code
 sub text_common_recv {
-	if (<%= @req_method %> != "GET" && <%= @req_method %> != "HEAD") {
+	if (req.method != "GET" && req.method != "HEAD") {
 		return (pass);
 	}
 
@@ -141,7 +141,7 @@ sub text_common_backend_response_early {
 }
 
 sub text_common_backend_response {
-	if (<%= @bereq_req %>.http.X-Subdomain && (<%= @bereq_req %>.url ~ "mobileaction=" || <%= @bereq_req %>.url ~ "useformat=")) {
+	if (bereq.http.X-Subdomain && (bereq.url ~ "mobileaction=" || bereq.url ~ "useformat=")) {
 		set beresp.ttl = 60 s;
 	}
 
@@ -152,7 +152,7 @@ sub text_common_backend_response {
 	//    share a single hit-for-pass object here if the response
 	//    shouldn't be shared between users (Vary:Cookie).
 	if (
-		<%= @bereq_req %>.http.Cookie == "Token=1"
+		bereq.http.Cookie == "Token=1"
 		&& beresp.http.Vary ~ "(?i)(^|,)\s*Cookie\s*(,|$)"
 	) {
 		set beresp.ttl = 607s;

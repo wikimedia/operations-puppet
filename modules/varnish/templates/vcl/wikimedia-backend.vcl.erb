@@ -51,7 +51,7 @@ sub vcl_recv {
 	call wm_common_recv_purge;
 	call cluster_be_recv;
 
-	return (<%= @hash_lookup %>); // no default VCL
+	return (hash); // no default VCL
 }
 
 sub vcl_hash {
@@ -89,7 +89,7 @@ sub vcl_pass {
 <% end -%>
 
 	call cluster_be_pass;
-	return (<%= @fetch_pass %>); // no default VCL (which is just "return (<%= @fetch_pass %>)" anyways)
+	return (fetch); // no default VCL (which is just "return (fetch)" anyways)
 }
 
 <% if @websocket_support -%>
