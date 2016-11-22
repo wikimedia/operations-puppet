@@ -26,14 +26,11 @@ class role::labs::dns {
     #  Then, run 'designate-manage powerdns sync' for the new host
     #
     class { 'mariadb::packages_wmf':
-        package => 'wmf-mariadb10',
+        mariadb10 => true,
     }
 
     class { 'mariadb::service':
-        ensure  => running,
         package => 'wmf-mariadb10',
-        manage  => true,
-        enabled => true,
     }
 
     class { 'mariadb::config':
@@ -41,6 +38,11 @@ class role::labs::dns {
         datadir   => '/srv/sqldata',
         tmpdir    => '/srv/tmp',
         read_only => 'off',
+    }
+
+    service { 'mariadb':
+        ensure  => running,
+        require => Class['mariadb::packages_wmf', 'mariadb::config', 'mariadb::service'],
     }
 
     package { 'mysql-client':
