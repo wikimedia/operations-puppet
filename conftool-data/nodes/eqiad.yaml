@@ -1,6 +1,4 @@
 testserver:
-  mw1170.eqiad.wmnet: [apache2]
-  mw1171.eqiad.wmnet: [apache2]
   mw2017.codfw.wmnet: [apache2]
   mw2099.codfw.wmnet: [apache2]
   mwdebug1001.eqiad.wmnet: [apache2]
@@ -100,6 +98,8 @@ api_appserver:
   mw1289.eqiad.wmnet: [apache2]
   mw1290.eqiad.wmnet: [apache2]
 appserver:
+  mw1170.eqiad.wmnet: [apache2]
+  mw1171.eqiad.wmnet: [apache2]
   mw1172.eqiad.wmnet: [apache2]
   mw1173.eqiad.wmnet: [apache2]
   mw1174.eqiad.wmnet: [apache2]
