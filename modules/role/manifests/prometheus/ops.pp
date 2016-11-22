@@ -111,11 +111,62 @@ class role::prometheus::ops {
         labels  => {}
     }
 
+    # Job definition for hhvm_exporter
+    $hhvm_jobs = [
+      {
+        'job_name'        => 'hhvm',
+        'file_sd_configs' => [
+          { 'files' => [ "${targets_path}/hhvm_*.yaml"] },
+        ]
+      },
+    ]
+
+    # Generate a list of hosts running hhvm from Ganglia cluster definition
+    # TODO: generate the configuration based on hosts with hhvm class applied
+    prometheus::cluster_config{ "hhvm_jobrunner_${::site}":
+        dest    => "${targets_path}/hhvm_jobrunner_${::site}.yaml",
+        site    => $::site,
+        cluster => 'jobrunner',
+        port    => '9192',
+        labels  => {
+            'cluster' => 'jobrunner'
+        }
+    }
+    prometheus::cluster_config{ "hhvm_appserver_${::site}":
+        dest    => "${targets_path}/hhvm_appserver_${::site}.yaml",
+        site    => $::site,
+        cluster => 'appserver',
+        port    => '9192',
+        labels  => {
+            'cluster' => 'appserver'
+        }
+    }
+    prometheus::cluster_config{ "hhvm_api_appserver_${::site}":
+        dest    => "${targets_path}/hhvm_api_appserver_${::site}.yaml",
+        site    => $::site,
+        cluster => 'api_appserver',
+        port    => '9192',
+        labels  => {
+            'cluster' => 'api_appserver'
+        }
+    }
+    prometheus::cluster_config{ "hhvm_imagescaler_${::site}":
+        dest    => "${targets_path}/hhvm_imagescaler_${::site}.yaml",
+        site    => $::site,
+        cluster => 'imagescaler',
+        port    => '9192',
+        labels  => {
+            'cluster' => 'imagescaler'
+        }
+    }
+
     prometheus::server { 'ops':
         storage_encoding     => '2',
         listen_address       => '127.0.0.1:9900',
         storage_retention    => $storage_retention,
-        scrape_configs_extra => array_concat($mysql_jobs, $varnish_jobs, $memcached_jobs),
+        scrape_configs_extra => array_concat(
+            $mysql_jobs, $varnish_jobs, $memcached_jobs, $hhvm_jobs
+        ),
         global_config_extra  => $config_extra,
     }
 
