@@ -17,3 +17,6 @@ phabricator::vcs::listen_addresses:
 
 phabricator::vcs::address::v4: "10.64.32.186"
 phabricator::vcs::address::v6: "2620:0:861:103:10:64:32:186"
+
+phabricator::mysql::master: "m3-master.eqiad.wmnet"
+phabricator::mysql::slave: "m3-slave.eqiad.wmnet"

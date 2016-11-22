@@ -21,8 +21,8 @@ class role::phabricator::main {
     $cache_misc_nodes = hiera('cache::misc::nodes', [])
     $domain = 'phabricator.wikimedia.org'
     $altdom = 'phab.wmfusercontent.org'
-    $mysql_host = 'm3-master.eqiad.wmnet'
-    $mysql_slave = 'm3-slave.eqiad.wmnet'
+    $mysql_host = hiera('phabricator::mysql::master', 'localhost')
+    $mysql_slave = hiera('phabricator::mysql::slave', 'localhost')
     $phab_root_dir = '/srv/phab'
     $deploy_target = 'phabricator/deployment'
 
