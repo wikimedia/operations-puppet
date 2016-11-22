@@ -285,6 +285,20 @@ class role::cache::misc {
             'be_opts'  => merge($app_def_be_opts, { 'port' => 8081 }),
             'req_host' => 'ores.wikimedia.org',
         },
+        'eventstreams' => {
+            'dynamic'  => 'no',
+            'type'     => 'random',
+            # NOTE: codfw eventstreams should not be used as the production
+            # eventstreams.wikimedia.org at this time.  It is configured
+            # to consume from a Kafka cluster in eqiad.  See note in
+            # role::eventstreams.
+            'backends' => [ "eventstreams.svc.${::site}.wmnet" ],
+            # eventstreams port is configured via scb role hiera variable
+            # role::eventstreams::port, and defaults to 8092.  Not sure
+            # how to look up the port from the role class default.
+            'be_opts'  => merge($app_def_be_opts, { 'port' => 8092 }),
+            'req_host' => 'eventstreams.wikimedia.org',
+        },
     }
 
     $common_vcl_config = {
