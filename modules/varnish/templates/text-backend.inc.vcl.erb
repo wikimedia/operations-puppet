@@ -3,7 +3,7 @@
 include "text-common.inc.vcl";
 
 sub cluster_be_recv_pre_purge {
-	if (<%= @req_method %> == "PURGE") {
+	if (req.method == "PURGE") {
 		call text_normalize_path;
 	}
 }
@@ -91,8 +91,8 @@ sub cluster_be_backend_response {
 	// Make sure Set-Cookie responses are not cacheable, and log violations
 	// FIXME: exceptions are ugly; maybe get rid of the whole thing?
 	if (beresp.ttl > 0s && beresp.http.Set-Cookie &&
-		<%= @bereq_req %>.url !~ "^/wiki/Special:HideBanners") {
-		std.log("Cacheable object with Set-Cookie found. <%= @bereq_req %>.url: " + <%= @bereq_req %>.url + " Cache-Control: " + beresp.http.Cache-Control + " Set-Cookie: " + beresp.http.Set-Cookie);
+		bereq.url !~ "^/wiki/Special:HideBanners") {
+		std.log("Cacheable object with Set-Cookie found. bereq.url: " + bereq.url + " Cache-Control: " + beresp.http.Cache-Control + " Set-Cookie: " + beresp.http.Set-Cookie);
 		set beresp.http.Cache-Control = "private, max-age=0, s-maxage=0";
 		set beresp.ttl = 0s;
 		set beresp.http.X-CDIS = "pass";

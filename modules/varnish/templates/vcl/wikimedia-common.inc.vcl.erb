@@ -199,12 +199,12 @@ new <%= director_name %> = directors.<%= director['type'] %>();
 
 sub wm_common_recv_purge {
 	/* Support HTTP PURGE */
-	if (<%= @req_method %> == "PURGE") {
+	if (req.method == "PURGE") {
 		if (client.ip !~ local_host) {
 			<%= error_synth(405, "Method not allowed") -%>
 		} elsif (req.http.Host ~ "<%= @vcl_config.fetch('purge_host_regex') %>") {
 			set req.hash_ignore_busy = true;
-			return (<%= @purge_lookup %>);
+			return (purge);
 		} else {
 			<%= error_synth(204, "Domain not cached here") -%>
 		}
@@ -216,8 +216,8 @@ sub wm_common_recv_early {
 
 	// To pass this check, the method must be in allowed_methods (even OPTIONS must be there to be supported),
 	// Additionally, if OPTIONS is allowed, it must be accompanied by Origin:
-	if (<%= @req_method %> !~ "<%= @vcl_config.fetch("allowed_methods", "^(GET|HEAD|POST|OPTIONS|PURGE)$") %>"
-		|| (<%= @req_method %> == "OPTIONS" && !req.http.Origin)) {
+	if (req.method !~ "<%= @vcl_config.fetch("allowed_methods", "^(GET|HEAD|POST|OPTIONS|PURGE)$") %>"
+		|| (req.method == "OPTIONS" && !req.http.Origin)) {
 		<%= error_synth(405, "Method not allowed") -%>
 	}
 
@@ -299,7 +299,7 @@ sub wm_common_backend_response {
 
 // call just before wm_common_xcache_deliver, but only in vcl_deliver, not vcl_synth
 sub wm_common_deliver_hitcount {
-	if (<%= @req_method %> != "PURGE") {
+	if (req.method != "PURGE") {
 		if(req.http.X-CDIS == "hit") {
 			// obj.hits isn't known in vcl_hit, and not useful for other states
 			set req.http.X-CDIS = "hit/" + obj.hits;
@@ -308,7 +308,7 @@ sub wm_common_deliver_hitcount {
 }
 
 sub wm_common_xcache_deliver {
-	if (<%= @req_method %> != "PURGE") {
+	if (req.method != "PURGE") {
 		// we copy through from beresp->resp->req here for the initial hit-for-pass case
 		if (resp.http.X-CDIS) {
 			set req.http.X-CDIS = resp.http.X-CDIS;

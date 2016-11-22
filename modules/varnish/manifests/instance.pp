@@ -28,43 +28,6 @@ define varnish::instance(
 
     $netmapper_dir = '/var/netmapper'
 
-    # https://www.varnish-cache.org/docs/4.0/whats-new/upgrading.html#req-request-is-now-req-method
-    $req_method = 'req.method'
-
-    $bereq_method = 'bereq.method'
-
-    # http://www.gossamer-threads.com/lists/varnish/misc/32514
-    $bereq_retries = 'bereq.retries'
-
-    # Use the following X_Y variables anywhere the upgrade from v3 to v4
-    # requires replacing the string X with Y.
-
-    # https://www.varnish-cache.org/docs/4.0/whats-new/upgrading.html#req-not-available-in-vcl-backend-response
-    $bereq_req = 'bereq'
-
-    # https://www.varnish-cache.org/docs/4.0/whats-new/upgrading.html#obj-in-vcl-error-replaced-by-beresp-in-vcl-backend-error
-    $beresp_obj = 'beresp'
-
-    # storage has been renamed to storage_hint
-    $storage_hint_storage = 'storage_hint'
-
-    # https://www.varnish-cache.org/docs/4.0/whats-new/upgrading.html#obj-is-now-read-only
-    $resp_obj = 'resp'
-
-    # https://www.varnish-cache.org/docs/4.0/whats-new/upgrading.html#some-return-values-have-been-replaced
-    # vcl_recv must now return hash instead of lookup
-    $hash_lookup = 'hash'
-
-    # https://www.varnish-cache.org/docs/4.0/whats-new/upgrading.html#invalidation-with-purge
-    $purge_lookup = 'purge'
-
-    # vcl_pass must now return fetch instead of pass
-    $fetch_pass = 'fetch'
-
-    # The 'ip' function has been added to the Varnish Standard Module in
-    # v4. No need to use ipcast.
-    $std_ipcast = 'std'
-
     $varnish_directors = $directors
     $dynamic_directors = hiera('varnish::dynamic_directors', true)
 

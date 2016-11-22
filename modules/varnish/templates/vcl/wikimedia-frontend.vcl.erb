@@ -14,7 +14,7 @@ include "<%= @varnish_include_path %><%= @vcl %>.inc.vcl";
 // *** HTTPS-forcing recv code
 sub https_recv_redirect {
 	if (req.http.X-Forwarded-Proto != "https") {
-		if (<%= @req_method %> == "GET" || <%= @req_method %> == "HEAD") {
+		if (req.method == "GET" || req.method == "HEAD") {
 			// This is all of our unified cert wildcard domains, and
 			// also wmfusercontent.org which has a separate cert on
 			// cache_misc.  Note that *.planet.wikimedia.org has
@@ -37,10 +37,10 @@ sub https_recv_redirect {
 
 // *** HTTPS error code - implements 301 response for recv code
 sub https_error_redirect {
-	if (<%= @resp_obj %>.status == 751) {
-		set <%= @resp_obj %>.http.Location = req.http.Location;
-		set <%= @resp_obj %>.status = 301;
-		set <%= @resp_obj %>.http.Content-Length = "0"; // T64245
+	if (resp.status == 751) {
+		set resp.http.Location = req.http.Location;
+		set resp.status = 301;
+		set resp.http.Content-Length = "0"; // T64245
 		return(deliver);
 	}
 }
@@ -163,7 +163,7 @@ sub recv_fe_ip_processing {
 
 		// if it's an outside IP, use it to set XCIP (otherwise leave
 		// XCIP alone and it's still the proxy's IP)
-		if(req.http.maybe-xcip && <%= @std_ipcast %>.ip(req.http.maybe-xcip, "127.0.0.1") !~ wikimedia_nets) {
+		if(req.http.maybe-xcip && std.ip(req.http.maybe-xcip, "127.0.0.1") !~ wikimedia_nets) {
 			// the check for empty/false maybe-xcip is to prevent
 			// the same netmapper-1.3 breakage as the 192.0.2.1 hack
 			set req.http.X-Client-IP = req.http.maybe-xcip;
@@ -247,7 +247,7 @@ sub vcl_recv {
 
 	call wm_common_recv_grace;
 
-	if (<%= @req_method %> != "PURGE") {
+	if (req.method != "PURGE") {
 		call https_recv_redirect;
 	}
 
@@ -272,7 +272,7 @@ sub vcl_recv {
 	call wm_common_recv_purge;
 	call cluster_fe_recv;
 
-	return (<%= @hash_lookup %>); // no default VCL
+	return (hash); // no default VCL
 }
 
 sub vcl_hash {
@@ -308,7 +308,7 @@ sub vcl_pass {
 <% end -%>
 
 	call cluster_fe_pass;
-	return (<%= @fetch_pass %>); // no default VCL (which is just "return (<%= @fetch_pass %>)" anyways)
+	return (fetch); // no default VCL (which is just "return (fetch)" anyways)
 }
 
 <% if @websocket_support -%>
@@ -342,7 +342,7 @@ sub deliver_synth_ {
 	// In this block we also decipher X-Cache into an overall X-Cache-Status
 	// output header with one of 5 simple values: hit, miss, pass, int, or
 	// bug.
-	if (<%= @req_method %> != "PURGE") {
+	if (req.method != "PURGE") {
 		set resp.http.X-Cache = resp.http.X-Cache-Int;
 		unset resp.http.X-Cache-Int;
 		if (resp.http.X-Cache ~ "hit") {
