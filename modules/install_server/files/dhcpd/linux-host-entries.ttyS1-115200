@@ -5986,15 +5986,11 @@ host rdb2003 {
 host relforge1001 {
     hardware ethernet 14:58:d0:49:08:c4;
     fixed-address relforge1001.eqiad.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host relforge1002 {
     hardware ethernet 14:58:d0:49:c8:ec;
     fixed-address relforge1002.eqiad.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host restbase1007 {
