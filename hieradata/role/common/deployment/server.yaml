@@ -113,6 +113,7 @@ scap::sources:
   tilerator/deploy:
     repository: maps/tilerator/deploy
 #    lvs_service: tilerator
+  trending-edits/deploy: {}
   wdqs/wdqs:
     repository: wikidata/query/deploy
 #    lvs_service: wdqs
