@@ -9,6 +9,12 @@
     notifempty
     nocreate
     postrotate
+    <%- if scope.lookupvar('::initsystem') == 'systemd' -%>
+        if /bin/systemctl is-active jobrunner.service; then
+           /bin/syustemctl restart jobrunner.service
+        fi
+     <%- else -%>        
         /usr/sbin/service jobrunner restart > /dev/null 2>&1
+     <%- end -%>
     endscript
 }
