@@ -91,6 +91,12 @@ sub cluster_fe_backend_response {
 }
 
 sub cluster_fe_deliver {
+	// graphiq.com javascript bug (T151444)
+	if (resp.status == 404 && req.http.Referer ~ "^https://w.graphiq.com/w/") {
+		set resp.status = 401;
+		set resp.http.WWW-Authenticate = {"Basic realm="Buggy request, please report at https://www.graphiq.com/contact-us""};
+	}
+
 	call upload_common_deliver;
 
 	// The upload cluster does not serve page views or authenticated requests, so keep
