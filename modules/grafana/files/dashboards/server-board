@@ -59,7 +59,7 @@
             "enable": false
           },
           "bars": false,
-          "datasource": "${DS_GRAPHITE}",
+          "datasource": "graphite",
           "fill": 10,
           "grid": {
             "max": null,
@@ -175,7 +175,7 @@
             "enable": false
           },
           "bars": false,
-          "datasource": "${DS_GRAPHITE}",
+          "datasource": "graphite",
           "fill": 0,
           "grid": {
             "max": null,
@@ -266,7 +266,7 @@
             "enable": false
           },
           "bars": false,
-          "datasource": "${DS_GRAPHITE}",
+          "datasource": "graphite",
           "fill": 0,
           "grid": {
             "max": null,
@@ -376,7 +376,7 @@
             "enable": false
           },
           "bars": false,
-          "datasource": "${DS_GRAPHITE}",
+          "datasource": "graphite",
           "fill": 9,
           "grid": {
             "max": null,
@@ -507,7 +507,7 @@
             "enable": false
           },
           "bars": false,
-          "datasource": "${DS_GRAPHITE}",
+          "datasource": "graphite",
           "fill": 10,
           "grid": {
             "max": null,
@@ -615,7 +615,7 @@
             "enable": false
           },
           "bars": false,
-          "datasource": "${DS_GRAPHITE}",
+          "datasource": "graphite",
           "fill": 1,
           "grid": {
             "max": null,
@@ -717,7 +717,7 @@
             "enable": false
           },
           "bars": false,
-          "datasource": "${DS_GRAPHITE}",
+          "datasource": "graphite",
           "fill": 1,
           "grid": {
             "max": null,
@@ -824,7 +824,7 @@
             "enable": false
           },
           "bars": false,
-          "datasource": "${DS_GRAPHITE}",
+          "datasource": "graphite",
           "fill": 1,
           "grid": {
             "max": null,
@@ -918,7 +918,7 @@
             "enable": false
           },
           "bars": false,
-          "datasource": "${DS_GRAPHITE}",
+          "datasource": "graphite",
           "fill": 1,
           "grid": {
             "max": null,
@@ -1011,7 +1011,7 @@
             "enable": false
           },
           "bars": false,
-          "datasource": "${DS_GRAPHITE}",
+          "datasource": "graphite",
           "fill": 1,
           "grid": {
             "max": null,
@@ -1104,7 +1104,7 @@
         {
           "aliasColors": {},
           "bars": false,
-          "datasource": "${DS_GRAPHITE}",
+          "datasource": "graphite",
           "editable": true,
           "error": false,
           "fill": 1,
@@ -1175,7 +1175,7 @@
         {
           "aliasColors": {},
           "bars": false,
-          "datasource": "${DS_GRAPHITE}",
+          "datasource": "graphite",
           "editable": true,
           "error": false,
           "fill": 1,
@@ -1246,7 +1246,7 @@
         {
           "aliasColors": {},
           "bars": false,
-          "datasource": "${DS_GRAPHITE}",
+          "datasource": "graphite",
           "editable": true,
           "error": false,
           "fill": 1,
@@ -1317,7 +1317,7 @@
         {
           "aliasColors": {},
           "bars": false,
-          "datasource": "${DS_GRAPHITE}",
+          "datasource": "graphite",
           "editable": true,
           "error": false,
           "fill": 1,
@@ -1432,7 +1432,7 @@
       {
         "allFormat": "wildcard",
         "current": {},
-        "datasource": "${DS_GRAPHITE}",
+        "datasource": "graphite",
         "hide": 0,
         "includeAll": false,
         "name": "server",
@@ -1445,7 +1445,7 @@
       {
         "allFormat": "glob",
         "current": {},
-        "datasource": "${DS_GRAPHITE}",
+        "datasource": "graphite",
         "hide": 0,
         "includeAll": false,
         "name": "network",
