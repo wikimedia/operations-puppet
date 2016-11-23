@@ -18,12 +18,13 @@
 class logstash(
     $heap_memory_mb = 64,
     $filter_workers = 1,
+    $java_package   = 'openjdk-7-jdk',
 ) {
-    require_package('openjdk-7-jdk')
+    require_package($java_package)
 
     package { 'logstash':
         ensure  => 'present',
-        require => Package['openjdk-7-jdk'],
+        require => Package[$java_package],
     }
 
     package { 'logstash/plugins':
