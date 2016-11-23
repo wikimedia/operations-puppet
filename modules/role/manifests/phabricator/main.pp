@@ -38,13 +38,35 @@ class role::phabricator::main {
         $dump_enabled = false
     }
 
+    $phab_app_user = hiera('phabricator_app_user', undef)
+    $phab_app_pass = hiera('phabricator_app_pass', undef)
+    $phab_daemons_user = hiera('phabricator_daemons_user', undef)
+    $phab_daemons_pass = hiera('phabricator_daemons_pass', undef)
+
     # todo: change the password for app_user
-    $app_user = $passwords::mysql::phabricator::app_user
-    $app_pass = $passwords::mysql::phabricator::app_pass
+    if $phab_app_user == undef {
+        $app_user = $passwords::mysql::phabricator::app_user
+    } else {
+        $app_user = $phab_app_user
+    }
+    if $phab_app_pass == undef {
+        $app_pass = $passwords::mysql::phabricator::app_pass
+    } else {
+        $app_pass = $phab_app_pass
+    }
 
     # todo: create a separate phd_user and phd_pass
-    $daemons_user = $passwords::mysql::phabricator::app_user
-    $daemons_pass = $passwords::mysql::phabricator::app_pass
+    if $phab_daemons_user == undef {
+        $daemons_user = $passwords::mysql::phabricator::app_user
+    } else {
+        $daemons_user = $phab_daemons_user
+    }
+    if $phab_daemons_pass == undef {
+        $daemons_pass = $passwords::mysql::phabricator::app_pass
+    } else {
+        $daemons_pass = $phab_daemons_pass
+    }
+
     # todo: create a separate mail_user and mail_pass?
     $mail_user = $daemons_user
     $mail_pass = $daemons_pass
