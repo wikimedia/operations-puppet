@@ -1508,12 +1508,12 @@ node 'lithium.eqiad.wmnet' {
 }
 
 node /^logstash100[1-2]\.eqiad\.wmnet$/ {
-    role(logstash, kibana, logstash::apifeatureusage)
+    role(logstash::collector, kibana, logstash::apifeatureusage)
     include ::lvs::realserver
 }
 
 node /^logstash1003\.eqiad\.wmnet$/ {
-    role(logstash, kibana, logstash::apifeatureusage, logstash::eventlogging)
+    role(logstash::collector, kibana, logstash::apifeatureusage, logstash::eventlogging)
     include ::lvs::realserver
 }
 node /^logstash100[4-6]\.eqiad\.wmnet$/ {
