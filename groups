@@ -1,4 +1,4 @@
-# UUID                                  	Group Name
+# UUID                                   	Group Name
 #
-global:Registered-Users                 	Registered Users
+global:Registered-Users                  	Registered Users
 ldap:cn=ops,ou=groups,dc=wikimedia,dc=org	ldap/ops
