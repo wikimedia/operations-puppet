@@ -13,6 +13,7 @@ class statistics::discovery {
   user { $user:
     ensure     => present,
     home       => $dir,
+    groups     => 'stats',
     shell      => '/bin/bash',
     managehome => false,
     system     => true,
