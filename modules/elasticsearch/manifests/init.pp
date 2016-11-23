@@ -118,6 +118,7 @@ class elasticsearch(
     $graylog_hosts = undef,
     $graylog_port = 12201,
     $gc_log = true,
+    $java_package = 'openjdk-8-jdk',
 ) {
 
     # Check arguments
@@ -155,7 +156,9 @@ class elasticsearch(
         default => [],
     }
 
-    include ::elasticsearch::packages
+    class { 'elasticsearch::packages':
+        java_package => $java_package,
+    }
 
     file { '/etc/elasticsearch/elasticsearch.yml':
         ensure  => file,
