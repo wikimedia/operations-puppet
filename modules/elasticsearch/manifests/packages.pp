@@ -2,14 +2,16 @@
 #
 # Provisions Elasticsearch package and dependencies.
 #
-class elasticsearch::packages {
+class elasticsearch::packages (
+    $java_package,
+) {
     include ::java::tools
 
-    require_package('openjdk-7-jdk')
+    require_package($java_package)
 
     package { 'elasticsearch':
         ensure  => present,
-        require => Package['openjdk-7-jdk'],
+        require => Package[$java_package],
     }
 
     require_package('curl')
