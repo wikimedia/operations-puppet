@@ -92,58 +92,58 @@ class role::logstash (
     # move files into module?
     # lint:ignore:puppet_url_without_modules
     logstash::conf { 'filter_strip_ansi_color':
-        source   => 'puppet:///files/logstash/filter-strip-ansi-color.conf',
+        source   => 'puppet:///modules/role/logstash/filter-strip-ansi-color.conf',
         priority => 15,
     }
 
     ## Input specific processing (20)
 
     logstash::conf { 'filter_syslog':
-        source   => 'puppet:///files/logstash/filter-syslog.conf',
+        source   => 'puppet:///modules/role/logstash/filter-syslog.conf',
         priority => 20,
     }
 
     logstash::conf { 'filter_udp2log':
-        source   => 'puppet:///files/logstash/filter-udp2log.conf',
+        source   => 'puppet:///modules/role/logstash/filter-udp2log.conf',
         priority => 20,
     }
 
     logstash::conf { 'filter_gelf':
-        source   => 'puppet:///files/logstash/filter-gelf.conf',
+        source   => 'puppet:///modules/role/logstash/filter-gelf.conf',
         priority => 20,
     }
 
     logstash::conf { 'filter_logback':
-        source   => 'puppet:///files/logstash/filter-logback.conf',
+        source   => 'puppet:///modules/role/logstash/filter-logback.conf',
         priority => 20,
     }
 
     ## Application specific processing (50)
 
     logstash::conf { 'filter_mediawiki':
-        source   => 'puppet:///files/logstash/filter-mediawiki.conf',
+        source   => 'puppet:///modules/role/logstash/filter-mediawiki.conf',
         priority => 50,
     }
 
     logstash::conf { 'filter_striker':
-        source   => 'puppet:///files/logstash/filter-striker.conf',
+        source   => 'puppet:///modules/role/logstash/filter-striker.conf',
         priority => 50,
     }
 
     ## Global post-processing (70)
 
     logstash::conf { 'filter_add_normalized_message':
-        source   => 'puppet:///files/logstash/filter-add-normalized-message.conf',
+        source   => 'puppet:///modules/role/logstash/filter-add-normalized-message.conf',
         priority => 70,
     }
 
     logstash::conf { 'filter_normalize_log_levels':
-        source   => 'puppet:///files/logstash/filter-normalize-log-levels.conf',
+        source   => 'puppet:///modules/role/logstash/filter-normalize-log-levels.conf',
         priority => 70,
     }
 
     logstash::conf { 'filter_de_dot':
-        source   => 'puppet:///files/logstash/filter-de_dot.conf',
+        source   => 'puppet:///modules/role/logstash/filter-de_dot.conf',
         priority => 70,
     }
 
@@ -151,7 +151,7 @@ class role::logstash (
     # Template for Elasticsearch index creation
     file { '/etc/logstash/elasticsearch-template.json':
         ensure => present,
-        source => 'puppet:///files/logstash/elasticsearch-template.json',
+        source => 'puppet:///modules/role/logstash/elasticsearch-template.json',
         owner  => 'root',
         group  => 'root',
         mode   => '0444',
@@ -258,7 +258,7 @@ class role::logstash::puppetreports {
 
     # lint:ignore:puppet_url_without_modules
     logstash::conf { 'filter_puppet':
-        source   => 'puppet:///files/logstash/filter-puppet.conf',
+        source   => 'puppet:///modules/role/logstash/filter-puppet.conf',
         priority => 50,
     }
     # lint:endignore
@@ -283,7 +283,7 @@ class role::logstash::apifeatureusage {
     # lint:ignore:puppet_url_without_modules
     file { '/etc/logstash/apifeatureusage-template.json':
         ensure => present,
-        source => 'puppet:///files/logstash/apifeatureusage-template.json',
+        source => 'puppet:///modules/role/logstash/apifeatureusage-template.json',
         owner  => 'root',
         group  => 'root',
         mode   => '0444',
@@ -292,7 +292,7 @@ class role::logstash::apifeatureusage {
     # Add configuration to logstash
     # Needs to come after 'filter_mediawiki' (priority 50)
     logstash::conf { 'filter_apifeatureusage':
-        source   => 'puppet:///files/logstash/filter-apifeatureusage.conf',
+        source   => 'puppet:///modules/role/logstash/filter-apifeatureusage.conf',
         priority => 55,
     }
     # lint:endignore
@@ -325,7 +325,7 @@ class role::logstash::eventlogging {
     }
     # lint:ignore:puppet_url_without_modules
     logstash::conf { 'filter_eventlogging':
-        source   => 'puppet:///files/logstash/filter-eventlogging.conf',
+        source   => 'puppet:///modules/role/logstash/filter-eventlogging.conf',
         priority => 50,
     }
     # lint:endignore
