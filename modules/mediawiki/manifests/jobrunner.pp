@@ -81,17 +81,17 @@ class mediawiki::jobrunner (
     }
 
     file { '/etc/logrotate.d/mediawiki_jobchron':
-        source => 'puppet:///modules/mediawiki/logrotate.d_mediawiki_jobchron',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0444',
+        content => template('mediawiki/jobrunner/logrotate-jobchron.conf.erb'),
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
     }
 
     file { '/etc/logrotate.d/mediawiki_jobrunner':
-        source => 'puppet:///modules/mediawiki/logrotate.d_mediawiki_jobrunner',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0444',
+        content => template('mediawiki/jobrunner/logrotate.conf.erb'),
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
     }
 
     include ::apache::mod::proxy_fcgi
