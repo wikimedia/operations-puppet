@@ -219,6 +219,9 @@ class role::graphite::base(
         cors_origins      => $cors_origins,
     }
 
+    class { '::graphite::cleanup':
+        storage_dir => $storage_dir,
+    }
 
     include ::apache
     include ::apache::mod::uwsgi

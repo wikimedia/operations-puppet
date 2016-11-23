@@ -1,0 +1,22 @@
+#!/bin/bash
+# Cleanup old regular files and empty directories.
+
+set -e
+set -u
+
+dir="${1:-}"
+keep_days=${KEEP_DAYS:-30}
+force=${FORCE:-}
+
+if [ -z "$dir" ]; then
+  echo "usage: $(basename $0) DIR"
+  exit 1
+fi
+
+find_args=""
+if [ -n "$force" ]; then
+    find_args="${find_args} -delete"
+fi
+
+find $dir -type f -mtime +${keep_days} ${find_args}
+find $dir -type d -empty ${find_args}
