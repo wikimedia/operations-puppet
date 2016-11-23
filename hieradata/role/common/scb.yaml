@@ -11,6 +11,7 @@ admin::groups:
 - mobileapps-admin
 - changeprop-admin
 - ores-admin
+- pdfrender-admin
 role::lvs::realserver::pools:
   ores: {}
   apertium: {}
