@@ -5631,6 +5631,16 @@ host praseodymium {
     fixed-address praseodymium.eqiad.wmnet;
 }
 
+host prometheus2003 {
+    hardware ethernet 18:66:DA:7F:19:80;
+    fixed-address prometheus2003.codfw.wmnet;
+}
+
+host prometheus2004 {
+    hardware ethernet 18:66:DA:7F:20:93;
+    fixed-address prometheus2004.codfw.wmnet;
+}
+
 host promethium {
     hardware ethernet 90:B1:1C:2D:6F:0C;
     fixed-address promethium.eqiad.wmflabs;
