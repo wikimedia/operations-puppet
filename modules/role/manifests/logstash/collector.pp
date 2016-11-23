@@ -1,12 +1,13 @@
 # vim:sw=4 ts=4 sts=4 et:
-# == Class: role::logstash
+# == Class: role::logstash::collector
 #
-# Provisions Logstash and ElasticSearch.
+# Provisions Logstash and an Elasticsearch node to proxy requests to ELK stack
+# Elasticsearch cluster.
 #
 # == Parameters:
 # - $statsd_host: Host to send statsd data to.
 #
-class role::logstash (
+class role::logstash::collector (
     $statsd_host,
 ) {
     include ::role::logstash::elasticsearch
@@ -200,133 +201,3 @@ class role::logstash (
     }
 }
 
-# == Class: role::logstash::elasticsearch
-#
-# Provisions Elasticsearch backend node for a Logstash cluster.
-#
-class role::logstash::elasticsearch {
-    include standard
-    include ::elasticsearch::nagios::check
-    include ::elasticsearch::monitor::diamond
-    include base::firewall
-
-    if $::standard::has_ganglia {
-        include ::elasticsearch::ganglia
-    }
-
-    package { 'elasticsearch/plugins':
-        provider => 'trebuchet',
-    }
-
-    class { '::elasticsearch':
-        require      => Package['elasticsearch/plugins'],
-        java_package => 'openjdk-8-jdk',
-    }
-
-    $logstash_nodes = hiera('logstash::cluster_hosts')
-    $logstash_nodes_ferm = join($logstash_nodes, ' ')
-
-    ferm::service { 'logstash_elastic_internode':
-        proto   => 'tcp',
-        port    => 9300,
-        notrack => true,
-        srange  => "@resolve((${logstash_nodes_ferm}))",
-    }
-}
-
-# == Class: role::logstash::puppetreports
-#
-# Set up a TCP listener to listen for puppet failure reports.
-class role::logstash::puppetreports {
-    require ::role::logstash
-
-    if $::realm != 'labs' {
-        # Constrain to only labs, security issues in prod have not been worked out yet
-        fail('role::logstash::puppetreports may only be deployed to Labs.')
-    }
-
-    logstash::input::tcp { 'tcp_json':
-        port  => 5229,
-        codec => 'json_lines',
-    }
-
-    ferm::service { 'logstash_tcp_json':
-        proto  => 'tcp',
-        port   => '5229',
-        srange => '$DOMAIN_NETWORKS',
-    }
-
-    # lint:ignore:puppet_url_without_modules
-    logstash::conf { 'filter_puppet':
-        source   => 'puppet:///modules/role/logstash/filter-puppet.conf',
-        priority => 50,
-    }
-    # lint:endignore
-}
-
-
-# == Class: role::logstash::apifeatureusage
-#
-# Builds on role::logstash to insert sanitized data for
-# Extension:ApiFeatureUsage into Elasticsearch.
-#
-class role::logstash::apifeatureusage {
-    include ::role::logstash
-
-    # FIXME: make this a param and use hiera to vary by realm
-    $host            = $::realm ? {
-        'production' => '10.2.2.30', # search.svc.eqiad.wmnet
-        'labs'       => 'deployment-elastic05', # Pick one at random
-    }
-
-    # Template for Elasticsearch index creation
-    # lint:ignore:puppet_url_without_modules
-    file { '/etc/logstash/apifeatureusage-template.json':
-        ensure => present,
-        source => 'puppet:///modules/role/logstash/apifeatureusage-template.json',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0444',
-    }
-
-    # Add configuration to logstash
-    # Needs to come after 'filter_mediawiki' (priority 50)
-    logstash::conf { 'filter_apifeatureusage':
-        source   => 'puppet:///modules/role/logstash/filter-apifeatureusage.conf',
-        priority => 55,
-    }
-    # lint:endignore
-
-    # Output destined for separate Elasticsearch cluster from Logstash cluster
-    logstash::output::elasticsearch { 'apifeatureusage':
-        host            => $host,
-        guard_condition => '[type] == "api-feature-usage-sanitized"',
-        manage_indices  => true,
-        priority        => 95,
-        template        => '/etc/logstash/apifeatureusage-template.json',
-        require         => File['/etc/logstash/apifeatureusage-template.json'],
-    }
-}
-
-# == Class: role::logstash::eventlogging
-#
-# Configure Logstash to consume validation logs from EventLogging.
-#
-class role::logstash::eventlogging {
-    include ::role::logstash
-
-    $topic = 'eventlogging_EventError'
-    $kafka_config = kafka_config('analytics')
-
-    logstash::input::kafka { $topic:
-        tags       => [$topic, 'kafka'],
-        type       => 'eventlogging',
-        zk_connect => $kafka_config['zookeeper']['url'],
-    }
-    # lint:ignore:puppet_url_without_modules
-    logstash::conf { 'filter_eventlogging':
-        source   => 'puppet:///modules/role/logstash/filter-eventlogging.conf',
-        priority => 50,
-    }
-    # lint:endignore
-}
