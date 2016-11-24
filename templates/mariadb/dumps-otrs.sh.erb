@@ -3,10 +3,8 @@
 find /srv/backups/m2 -mtime +14 -type f -delete
 
 my="/usr/local/bin/mysql --skip-column-names -e"
-dump="/usr/local/bin/mysqldump --single-transaction --quick"
-dump_master="$dump --master-data=2 --gtid --skip-ssl"
-dump_slave="$dump --dump-slave=2 --include-master-host-port --gtid --skip-ssl"
+dump="/usr/local/bin/mysqldump --single-transaction --quick --master-data=2 --gtid --skip-ssl"
 
-$dump_slave -h m2-slave.eqiad.wmnet --max_allowed_packet=64M \
+$dump -h m2-slave.eqiad.wmnet --max_allowed_packet=64M \
     --databases otrs | \
     pigz > /srv/backups/m2/otrs-$(date +%Y%m%d%H%M%S).sql.gz
