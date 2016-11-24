@@ -110,6 +110,20 @@ class role::phabricator::main {
         },
     }
 
+    $phab_mysql_admin_user = hiera('phabricator_admin_user', undef)
+    $phab_mysql_admin_pass = hiera('phabricator_admin_pass', undef)
+
+    if $phab_mysql_admin_user == undef {
+        $mysql_admin_user = $passwords::mysql::phabricator::admin_user
+    } else {
+        $mysql_admin_user = $phab_mysql_admin_user
+    }
+
+    if $phab_mysql_admin_pass == undef {
+        $mysql_admin_pass = $passwords::mysql::phabricator::admin_pass
+    } else {
+        $mysql_admin_pass = $phab_mysql_admin_pass
+    }
 
     # lint:ignore:arrow_alignment
     class { '::phabricator':
@@ -119,8 +133,8 @@ class role::phabricator::main {
                               'bugzilla.wikimedia.org',
                               'bugs.wikimedia.org' ],
         trusted_proxies  => $cache_misc_nodes[$::site],
-        mysql_admin_user => $passwords::mysql::phabricator::admin_user,
-        mysql_admin_pass => $passwords::mysql::phabricator::admin_pass,
+        mysql_admin_user => $mysql_admin_user,
+        mysql_admin_pass => $mysql_admin_pass,
         libraries        => [ "${phab_root_dir}/libext/Sprint/src",
                               "${phab_root_dir}/libext/security/src",
                               "${phab_root_dir}/libext/misc/" ],
