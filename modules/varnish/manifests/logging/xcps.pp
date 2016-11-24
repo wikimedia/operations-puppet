@@ -19,7 +19,7 @@ define varnish::logging::xcps( $statsd_server = 'statsd' ) {
     include varnish::common
 
     file { '/usr/local/bin/varnishxcps':
-        source  => 'puppet:///modules/varnish/varnishxcps4',
+        source  => 'puppet:///modules/varnish/varnishxcps',
         owner   => 'root',
         group   => 'root',
         mode    => '0555',

@@ -27,7 +27,7 @@ define varnish::logging::xcache(
     include varnish::common
 
     file { '/usr/local/bin/varnishxcache':
-        source  => 'puppet:///modules/varnish/varnishxcache4',
+        source  => 'puppet:///modules/varnish/varnishxcache',
         owner   => 'root',
         group   => 'root',
         mode    => '0555',
