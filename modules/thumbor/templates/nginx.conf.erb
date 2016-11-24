@@ -9,7 +9,9 @@ upstream thumbor {
 server {
     listen <%= @listen_port %>;
 
-    keepalive_timeout 60;
+# Thumbor subprocesses have a timeout of 60s
+# Set by SUBPROCESS_TIMEOUT in the Thumbor configuration
+    keepalive_timeout 90;
 
     location / {
         proxy_redirect off;
