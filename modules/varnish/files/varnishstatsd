@@ -14,7 +14,8 @@
 
   If no statsd server is specified, prints stats to stdout instead.
 
-  Copyright 2015 Ori Livneh <ori@wikimedia.org>
+  Copyright 2015-2016 Ori Livneh <ori@wikimedia.org>
+                 2016 Emanuele Rocca <ema@wikimedia.org>
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -45,11 +46,17 @@ METRIC_FORMAT = (
 UDP_MTU_BYTES = 1472
 
 vsl_args = [
-    ('i', 'Backend'),
-    ('i', 'BackendXID'),
-    ('i', 'ReqEnd'),
-    ('i', 'RxStatus'),
-    ('i', 'TxRequest'),
+    # Backend HTTP response status code (eg: 200, 404)
+    ('i', 'BerespStatus'),
+    # Backend HTTP request method (eg: GET, POST)
+    ('i', 'BereqMethod'),
+    # The following two tags are logged when a new backend connection is opened
+    # or put up for reuse by a later connection. We need those to get the
+    # backend name
+    ('i', 'BackendOpen'),
+    ('i', 'BackendReuse'),
+    # Timestamp to compute TTFB (BerespBody)
+    ('i', 'Timestamp'),
 ]
 
 sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -97,61 +104,43 @@ statuses = collections.OrderedDict()
 buf = io.BytesIO()
 
 
-def log_value_err(callback):
-    def wrapper(transaction_id, tag, record, remote_party):
-        try:
-            return callback(transaction_id, tag, record, remote_party)
-        except ValueError as err:
-            print locals()
-            return
-
-    return wrapper
-
-
-@log_value_err
 def vsl_callback(transaction_id, tag, record, remote_party):
     global buf
 
-    if tag == 'Backend':
+    if tag in ("BackendOpen", "BackendReuse"):
         # Associate the transaction ID with the backend name.
-        tid, _, backend = record.split()
-        backends[int(tid)] = backend
+        backend_fullname = record.split()[1]
+        backend_name = backend_fullname.split('.')[-1]
+
+        backends[transaction_id] = backend_name
         if len(backends) > MAX_BACKLOG:
             backends.popitem(last=False)
 
-    elif tag == 'BackendXID':
-        # Associate the backend XID with its transaction ID.
-        xid = int(record) & 0xffffffff
-        xids[xid] = transaction_id
-        if len(xids) > MAX_BACKLOG:
-            xids.popitem(last=False)
-
-    elif tag == 'TxRequest' and remote_party == 'backend':
+    elif tag == "BereqMethod":
         # Associate the transaction ID with the request method.
         tids[transaction_id] = record
         if len(tids) > MAX_BACKLOG:
             tids.popitem(last=False)
 
-    elif tag == 'RxStatus' and remote_party == 'backend':
+    elif tag == "BerespStatus":
         # Associate the transaction ID with the response status code.
         if record[0] in '12345':
             statuses[transaction_id] = record[0] + 'xx'
         if len(statuses) > MAX_BACKLOG:
             statuses.popitem(last=False)
 
-    elif tag == 'ReqEnd':
+    # For our purposes this is like ReqEnd
+    elif tag == "Timestamp" and record.startswith('BerespBody:'):
         # Collate data and emit metric.
         parts = record.split()
-        xid = int(parts[0])
 
         try:
-            tid = xids.pop(xid)
             fields = {
                 'key_prefix': args.key_prefix,
-                'method': tids.pop(tid),
-                'backend': backends.pop(tid),
-                'status': statuses.pop(tid),
-                'ttfb': round(1000 * float(parts[4])),
+                'method': tids.pop(transaction_id),
+                'backend': backends.pop(transaction_id),
+                'status': statuses.pop(transaction_id),
+                'ttfb': round(1000 * float(parts[2])),
             }
         except KeyError:
             return 0
@@ -168,4 +157,5 @@ def vsl_callback(transaction_id, tag, record, remote_party):
 
     return 0
 
-varnishlog(vsl_args, vsl_callback)
+if __name__ == "__main__":
+    varnishlog(vsl_args, vsl_callback)

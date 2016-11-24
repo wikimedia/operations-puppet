@@ -120,7 +120,6 @@ vsl_callback.next_pub = time.time() + args.interval
 
 
 varnishlog.varnishlog((
-    ('i', 'TxHeader'),
-    ('I', '^X-Cache:'),
+    ('I', 'RespHeader:^X-Cache:'),
     ('n', 'frontend'),
 ), vsl_callback)

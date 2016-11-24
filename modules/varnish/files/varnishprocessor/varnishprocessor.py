@@ -63,13 +63,13 @@ class VarnishLogProcessor:
     def handle_log_record(self, transaction_id, tag, record, remote_party):
         """VSL_handler_f callback function."""
 
-        if tag == 'RxURL':
+        if tag == 'ReqURL':
             # RxURL is the first tag we expect. If there are any existing
             # records for this transaction ID, we clear them away.
             self.transactions[transaction_id] = {tag: record}
-        elif tag == 'ReqEnd':
-            # ReqEnd is the last tag we expect. We pop the transaction's
-            # records from the buffer and process it.
+        elif tag == 'Timestamp' and 'Resp' in record:
+            # This is the last tag we expect. We pop the transaction's records
+            # from the buffer and process it.
             transaction = self.transactions.pop(transaction_id, None)
             if transaction is not None:
                 transaction[tag] = record
