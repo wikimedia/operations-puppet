@@ -8,7 +8,8 @@ Reads varnish shared logs and emits counts for the following:
   - HTTP Status type (ok, error)
   - HTTP Method (GET, POST, etc.)
 
-  Copyright 2015 Andrew Otto <otto@wikimedia.org>
+  Copyright 2015-2016 Andrew Otto <otto@wikimedia.org>
+                 2016 Emanuele Rocca <ema@wikimedia.org>
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -110,6 +111,7 @@ def publish_statsd_counts(statsd_client, counts):
         for k in counts.keys():
             statsd_pipe.incr(k, counts[k])
 
+
 def reset_counts():
     """
     Resets the global counts and last_published_at
@@ -118,6 +120,7 @@ def reset_counts():
     global counts, last_published_at
     counts = copy.deepcopy(default_counts)
     last_published_at = time.time()
+
 
 def count_vsl_entries(
     vsl_args,
@@ -154,11 +157,11 @@ def count_vsl_entries(
             return
 
         # Count the http request method
-        if tag in ['TxRequest', 'RxRequest'] and is_valid_http_method(value):
+        if tag in ['BereqMethod', 'ReqMethod'] and is_valid_http_method(value):
             counts[remote_party + '.method.' + value.lower()] += 1
 
         # Count the http response status
-        elif tag in ['RxStatus', 'TxStatus'] and is_valid_http_status(value):
+        elif tag in ['BerespStatus', 'RespStatus'] and is_valid_http_status(value):
             key_prefix = remote_party + '.status.'
             counts[key_prefix + value[0] + 'xx'] += 1
 
@@ -173,7 +176,11 @@ def count_vsl_entries(
                 counts[key_prefix + 'error'] += 1
 
         # Thesee indicates we completed a request, count it.
-        elif tag in ['ReqEnd', 'BackendClose', 'BackendReuse']:
+        elif tag in ['BackendClose', 'BackendReuse']:
+            counts[remote_party + '.total'] += 1
+
+        # There is no ReqEnd in v4, let's use Timestamp for Resp
+        elif tag == 'Timestamp' and 'Resp' in value:
             counts[remote_party + '.total'] += 1
 
         # If interval seconds have passed, publish counts
@@ -204,11 +211,11 @@ if __name__ == '__main__':
     arguments = parser.parse_args()
 
     vsl_args = [
-        ('i', 'TxRequest'),
-        ('i', 'RxStatus'),
-        ('i', 'RxRequest'),
-        ('i', 'TxStatus'),
-        ('i', 'ReqEnd'),
+        ('i', 'BereqMethod'),
+        ('i', 'BerespStatus'),
+        ('i', 'ReqMethod'),
+        ('i', 'RespStatus'),
+        ('i', 'Timestamp'),
         ('i', 'BackendClose'),
         ('i', 'BackendReuse')
     ]
@@ -235,7 +242,7 @@ if __name__ == '__main__':
 
 # ##### Tests ######
 # To run:
-#   python -m unittest varnishstats-diamond-collector
+#   python -m unittest varnishreqstats
 #
 # This requires that varnishlog.test.data is present
 # in the current directory.  It contains 100 entries

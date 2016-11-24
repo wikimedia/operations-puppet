@@ -19,7 +19,7 @@ define varnish::logging::rls( $statsd_server = 'statsd' ) {
     include varnish::common
 
     file { '/usr/local/bin/varnishrls':
-        source  => 'puppet:///modules/varnish/varnishrls4',
+        source  => 'puppet:///modules/varnish/varnishrls',
         owner   => 'root',
         group   => 'root',
         mode    => '0555',

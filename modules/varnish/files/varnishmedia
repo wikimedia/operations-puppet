@@ -42,7 +42,7 @@ class MediaVarnishLogProcessor(varnishprocessor.VarnishLogProcessor):
 
     def process_transaction(self, transaction):
         """Process a single completed transaction."""
-        status_code = transaction.get('TxStatus')
+        status_code = transaction.get('RespStatus')
         if status_code is None:
             return
 
@@ -56,11 +56,11 @@ class MediaVarnishLogProcessor(varnishprocessor.VarnishLogProcessor):
 
     def start(self):
         varnishlog.varnishlog((
-            ('m', 'RxURL:/thumb/'), # Only look at thumb requests
-            ('n', 'frontend'),      # Consider the frontend Varnish instance
-            ('i', 'TxStatus'),      # Get TxStatus for the HTTP status code
-            ('i', 'RxURL'),         # Get RxURL to delimit requests
-            ('i', 'ReqEnd'),        # Get ReqEnd to delimit requests
+            ('q', 'ReqURL ~ "/thumb/"'), # Only look at thumb requests
+            ('n', 'frontend'),           # Only frontend Varnish instance
+            ('i', 'RespStatus'),         # RespStatus for the HTTP status code
+            ('i', 'ReqURL'),             # ReqURL to delimit requests
+            ('i', 'Timestamp'),          # Timestamp to delimit requests
         ), self.handle_log_record)
 
 lp = MediaVarnishLogProcessor()

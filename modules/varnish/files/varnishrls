@@ -14,6 +14,7 @@
 
   Copyright 2015 Ori Livneh <ori@wikimedia.org>
   Copyright 2015 Gilles Dubuc <gilles@wikimedia.org>
+  Copyright 2016 Emanuele Rocca <ema@wikimedia.org>
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -34,19 +35,20 @@ import re
 import varnishlog
 import varnishprocessor
 
+
 class ResourceLoaderVarnishLogProcessor(varnishprocessor.VarnishLogProcessor):
     description = 'ResourceLoader Browser Cache Hit Ratio StatsD Reporter'
     key_prefix = 'ResourceLoader'
 
     def process_transaction(self, transaction):
         """Process a single completed transaction."""
-        status_code = transaction['TxStatus']
+        status_code = transaction['RespStatus']
         metric_keys = ['reqs.all', 'resps.' + status_code]
 
-        if 'RxHeader' in transaction:
+        if 'ReqHeader' in transaction:
             metric_keys.append('reqs.if_none_match')
 
-        cache_control_header = transaction.get('TxHeader')
+        cache_control_header = transaction.get('RespHeader')
         cache_control = 'no'
         if cache_control_header:
             match = re.search(r'(?<=max-age=)\d+', cache_control_header)
@@ -62,20 +64,18 @@ class ResourceLoaderVarnishLogProcessor(varnishprocessor.VarnishLogProcessor):
             self.flush_stats()
 
     def start(self):
+        # VSL query matching ResourceLoader ReqURLs
+        query = 'ReqURL ~ "^/w/load.php"'
+
         varnishlog.varnishlog((
-            ('n', 'frontend'),  # Consider the frontend Varnish instance
-            ('c', None),        # Only consider interactions with the client
-            ('i', 'TxStatus'),  # Get TxStatus for the HTTP status code
-            ('i', 'RxHeader'),  # Get RxHeader for If-None-Match header
-            ('i', 'TxHeader'),  # Get TxHeader for Cache-control header
-            ('i', 'RxURL'),     # Get RxURL to match /w/load.php
-            ('i', 'ReqEnd'),    # Get ReqEnd to delimit requests
-            ('C', ''),          # Use case-insensitive matching
-            ('I', '^(/w/load\.php'   # ...to match ResourceLoader RxURLs
-                  '|if-none-match:'  # ...or If-None-Match RxHeaders
-                  '|cache-control:'  # ...or Cache-control TxHeaders
-                  '|([\d.]+ ?){6}$'  # ...or ReqEnd lines
-                  '|[1-5]\d{2}$)'),  # ...or RxStatus codes
+            ('q', query),         # VSL query
+            ('n', 'frontend'),    # Consider the frontend Varnish instance
+            ('i', 'RespStatus'),  # Get RespStatus for the HTTP status code
+            ('i', 'ReqURL'),      # Get ReqURL to match /w/load.php
+            ('i', 'Timestamp'),   # Timestamp lines
+            ('C', ''),            # Use case-insensitive matching
+            ('I', 'ReqHeader:if-none-match'),
+            ('I', 'RespHeader:cache-control'),
         ), self.handle_log_record)
 
 lp = ResourceLoaderVarnishLogProcessor()
