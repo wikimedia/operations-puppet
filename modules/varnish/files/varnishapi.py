@@ -289,7 +289,11 @@ class LIBVARNISHAPI:
         #VSM_Seq;
         #VSM_Head;
         #VSM_Find_Chunk;
+
         #VSM_Close;
+        self.VSM_Close = lib.VSM_Close
+        self.VSM_Close.argtypes = [c_void_p]
+
         #VSM_iter0;
         #VSM_intern;
         #
