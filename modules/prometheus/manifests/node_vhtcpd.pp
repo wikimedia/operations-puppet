@@ -1,0 +1,33 @@
+# = Class: prometheus::node_vhtcpd
+#
+# Periodically export vhtcpd stats via node-exporter textfile collector.
+#
+# Why not a vhtcpd_exporter?
+#
+# vhtcpd is very specific to WMF's deployment and there's only one instance per
+# server. We can consider vhtcp statistics to be "machine-level", thus it is
+# simpler to use Prometheus Python client and its write_to_textfile function to
+# write metrics in a plain text file to be exported by node-exporter
+#
+
+class prometheus::node_vhtcpd (
+    $outfile = '/var/lib/prometheus/node.d/vhtcpd.prom',
+) {
+    validate_re($outfile, '\.prom$')
+
+    require_package('python-prometheus-client')
+
+    file { '/usr/local/bin/vhtcpd_stats.py':
+        ensure => file,
+        mode   => '0555',
+        owner  => 'root',
+        group  => 'root',
+        source => 'puppet:///modules/prometheus/usr/local/bin/vhtcpd_stats.py',
+    }
+
+    cron { 'prometheus_vhtcpd_stats':
+        minute  => '*/5',
+        user    => 'root',
+        command => "/usr/local/bin/vhtcpd_stats.py --outfile ${outfile}"
+    }
+}
