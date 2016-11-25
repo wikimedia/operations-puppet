@@ -705,10 +705,7 @@
         {
           "aliasColors": {
             "0": "#DEDAF7",
-            "Transmission": "#1F78C1",
-            "scale(servers.gallium.network.eth0.tx_bit,-1)": "#1F78C1",
-            "servers.gallium.network.eth0.rx_bit": "#508642",
-            "servers.gallium.network.eth0.tx_bit": "#1F78C1"
+            "Transmission": "#1F78C1"
           },
           "annotate": {
             "enable": false
@@ -906,10 +903,7 @@
         {
           "aliasColors": {
             "0": "#DEDAF7",
-            "Transmission": "#1F78C1",
-            "scale(servers.gallium.network.eth0.tx_bit,-1)": "#1F78C1",
-            "servers.gallium.network.eth0.rx_bit": "#508642",
-            "servers.gallium.network.eth0.tx_bit": "#1F78C1"
+            "Transmission": "#1F78C1"
           },
           "annotate": {
             "enable": false
@@ -999,10 +993,7 @@
         {
           "aliasColors": {
             "0": "#DEDAF7",
-            "Transmission": "#1F78C1",
-            "scale(servers.gallium.network.eth0.tx_bit,-1)": "#1F78C1",
-            "servers.gallium.network.eth0.rx_bit": "#508642",
-            "servers.gallium.network.eth0.tx_bit": "#1F78C1"
+            "Transmission": "#1F78C1"
           },
           "annotate": {
             "enable": false
@@ -1444,7 +1435,7 @@
         "current": {
           "text": "eth0",
           "value": "eth0",
-          "tags": [],
+          "tags": []
         },
         "datasource": "graphite",
         "hide": 0,
