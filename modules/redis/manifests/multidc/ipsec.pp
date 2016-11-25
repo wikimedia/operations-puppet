@@ -8,7 +8,10 @@ class redis::multidc::ipsec($shards) {
     $my_ip = ipresolve($::fqdn, 4)
     $ipsec_host_list = redis_shard_hosts($my_ip, $shards)
 
-    class { 'role::ipsec':
-        hosts => $ipsec_host_list
+    # No reason to define IPsec if the host doesn't need replication.
+    if $ipsec_host_list != [] {
+        class { 'role::ipsec':
+            hosts => $ipsec_host_list
+        }
     }
 }
