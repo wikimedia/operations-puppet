@@ -8,6 +8,8 @@ class role::cache::upload(
         include varnish::monitoring::ganglia::vhtcpd
     }
 
+    class { 'prometheus::node_vhtcpd': }
+
     class { 'varnish::htcppurger':
         host_regex => 'upload',
         mc_addrs   => [ '239.128.0.112', '239.128.0.113' ],

@@ -13,6 +13,8 @@ class role::cache::text(
         include varnish::monitoring::ganglia::vhtcpd
     }
 
+    class { 'prometheus::node_vhtcpd': }
+
     class { 'varnish::htcppurger':
         mc_addrs => [ '239.128.0.112' ],
     }

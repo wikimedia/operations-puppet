@@ -2,6 +2,8 @@ class role::cache::misc {
     include role::cache::base
     include role::cache::ssl::unified
 
+    class { 'prometheus::node_vhtcpd': }
+
     class { 'varnish::htcppurger':
         mc_addrs => [ '239.128.0.115' ],
     }
