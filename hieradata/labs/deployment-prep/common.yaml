@@ -114,6 +114,7 @@ restbase::mobileapps_uri: http://appservice.wmflabs.org
 restbase::mathoid_uri: http://deployment-mathoid.deployment-prep.eqiad.wmflabs:10042
 restbase::aqs_uri: https://wikimedia.org/api/rest_v1/metrics
 restbase::eventlogging_service_uri: http://deployment-eventlogging04.deployment-prep.eqiad.wmflabs:8085/v1/events
+restbase::pdfrender_uri: http://deployment-pdfrender.deployment-prep.eqiad.wmflabs:5252
 "mediawiki::log_aggregator": deployment-fluorine02.eqiad.wmflabs:8420
 "mediawiki::forward_syslog": deployment-logstash2.deployment-prep.eqiad.wmflabs:10514
 mediawiki_memcached_servers:

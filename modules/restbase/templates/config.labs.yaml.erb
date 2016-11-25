@@ -49,6 +49,10 @@ default_project: &default_project
           cache_control: s-maxage=86400, max-age=86400
         # Cache headers for purged end points.
         purged_cache_control: s-maxage=1209600, max-age=0, must-revalidate
+        pdf:
+          cache_control: s-maxage=600, max-age=600
+          uri: <%= @pdfrender_uri %>
+          secret: <%= @pdfrender_key %>
 
 # A different project template, sharing configuration options.
 wikimedia.org: &wikimedia.org
