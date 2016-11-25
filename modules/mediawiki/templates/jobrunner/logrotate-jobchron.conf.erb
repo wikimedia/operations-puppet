@@ -11,7 +11,7 @@
     nocreate
     postrotate
     <%- if scope.lookupvar('::initsystem') == 'systemd' -%>
-        if /bin/systemctl is-active jobchron.service; then
+        if /bin/systemctl -q is-active jobchron.service; then
            /bin/systemctl restart jobchron.service
         fi
      <%- else -%>

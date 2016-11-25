@@ -10,7 +10,7 @@
     nocreate
     postrotate
     <%- if scope.lookupvar('::initsystem') == 'systemd' -%>
-        if /bin/systemctl is-active jobrunner.service; then
+        if /bin/systemctl -q is-active jobrunner.service; then
            /bin/systemctl restart jobrunner.service
         fi
      <%- else -%>
