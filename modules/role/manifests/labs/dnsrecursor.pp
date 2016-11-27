@@ -147,7 +147,7 @@ class role::labs::dnsrecursor {
         'fawikiquote', 'fawikisource', 'fawikivoyage', 'fawiktionary',
         'ffwiki', 'fiu_vrowiki', 'fiwikibooks', 'fiwikimedia',
         'fiwikinews', 'fiwikiquote', 'fiwikisource', 'fiwikiversity',
-        'fiwiktionary', 'fjwiki', 'fjwiktionary', 'foundationwiki',
+        'fiwikivoyage', 'fiwiktionary', 'fjwiki', 'fjwiktionary', 'foundationwiki',
         'fowiki', 'fowikisource', 'fowiktionary', 'frpwiki',
         'frrwiki', 'frwiki', 'frwikibooks', 'frwikinews',
         'frwikiquote', 'frwikisource', 'frwikiversity',
