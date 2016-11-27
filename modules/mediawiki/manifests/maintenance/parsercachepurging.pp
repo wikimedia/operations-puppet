@@ -9,7 +9,7 @@ class mediawiki::maintenance::parsercachepurging( $ensure = present ) {
         hour    => 1,
         weekday => 0,
         # Purge entries older than 30d * 86400s/d = 2592000s
-        command => '/usr/local/bin/mwscript purgeParserCache.php --wiki=aawiki --age=2592000 --msleep 100 >/dev/null 2>&1',
+        command => '/usr/local/bin/mwscript purgeParserCache.php --wiki=aawiki --age=2592000 --msleep 500 >/dev/null 2>&1',
     }
 }
 
