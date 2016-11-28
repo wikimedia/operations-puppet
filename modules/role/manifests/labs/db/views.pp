@@ -18,7 +18,7 @@ class role::labs::db::views {
     $view_pass = $::passwords::labsdb::maintainviews::db_pass
     file { '/etc/maintain-views.yaml':
         ensure  => file,
-        content => template('role/labsdb/maintain-views.yaml'),
+        content => template('role/labs/db/views/maintain-views.yaml'),
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
@@ -26,7 +26,7 @@ class role::labs::db::views {
 
     file { '/usr/local/sbin/maintain-views':
         ensure => file,
-        source => 'puppet:///modules/role/labsdb/maintain-views.py',
+        source => 'puppet:///modules/role/labs/db/views/maintain-views.py',
         owner  => 'root',
         group  => 'root',
         mode   => '0655',
@@ -34,7 +34,7 @@ class role::labs::db::views {
 
     file { '/usr/local/sbin/maintain-meta_p':
         ensure => file,
-        source => 'puppet:///modules/role/labsdb/maintain-meta_p.py',
+        source => 'puppet:///modules/role/labs/db/views/maintain-meta_p.py',
         owner  => 'root',
         group  => 'root',
         mode   => '0655',
@@ -42,7 +42,7 @@ class role::labs::db::views {
 
     file { '/usr/local/src/heartbeat-views.sql':
         ensure => file,
-        source => 'puppet:///modules/role/labsdb/heartbeat-views.sql',
+        source => 'puppet:///modules/role/labs/db/views/heartbeat-views.sql',
         owner  => 'root',
         group  => 'root',
         mode   => '0755',
