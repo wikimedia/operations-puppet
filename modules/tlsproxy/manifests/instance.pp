@@ -16,7 +16,6 @@ class tlsproxy::instance {
         },
     }
 
-    $keepalives_per_worker = hiera('tlsproxy::localssl::keepalives_per_worker', 0)
     $websocket_support = hiera('cache::websocket_support', false)
     $nginx_worker_connections = '131072'
     $nginx_ssl_conf = ssl_ciphersuite('nginx', 'compat')
