@@ -356,8 +356,11 @@ if __name__ == "__main__":
 
     if args.table:
         fullviews = [t for t in config["fullviews"] if t == args.table]
-        # TODO: stop ignoring customviews on table specification
+
         customviews = {}
+        for view, meta in config['customviews'].items():
+            if meta['source'] == args.table:
+                customviews[view] = config['customviews'][view]
     else:
         fullviews = config['fullviews']
         customviews = config['customviews']
@@ -379,7 +382,7 @@ if __name__ == "__main__":
 
     # This is weirdly arranged and should be cleaned up
     # to be more explicit at the config file layer
-    if customviews:
+    if 'logging' in customviews.keys():
         safelog = ("log_type IN ('" +
                    "', '".join(config["logging_whitelist"]) +
                    "')")
