@@ -96,9 +96,12 @@ class role::memcached {
         stop_writes_on_bgsave_error => false,
     }
 
+    # The 'eqiadswitch' dc shards are only a workaround to have eqiad
+    # replicas for T137345
     $shards = {
-        'eqiad' => hiera('mediawiki::redis_servers::eqiad'),
-        'codfw' => hiera('mediawiki::redis_servers::codfw')
+        'eqiad'       => hiera('mediawiki::redis_servers::eqiad'),
+        'codfw'       => hiera('mediawiki::redis_servers::codfw'),
+        'eqiadswitch' => hiera('mediawiki::redis_servers::eqiadswitch')
     }
 
     if os_version('Debian >= jessie') {
