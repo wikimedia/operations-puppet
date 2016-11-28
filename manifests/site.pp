@@ -1345,24 +1345,13 @@ node /kafka10(12|13|14|18|20|22)\.eqiad\.wmnet/ {
     include base::firewall
 }
 
-# Kafka Brokers - main-eqiad
+# Kafka Brokers - main-eqiad and main-codfw Kafka clusters.
 # For now, eventlogging-service-eventbus is also colocated
 # on these brokers.
-node /kafka100[123]\.eqiad\.wmnet/ {
+node /kafka[12]00[123]\.(eqiad|codfw)\.wmnet/ {
     role(kafka::main::broker,
-        # Mirror eqiad.* topics from Kafka main-eqiad into this main-codfw
-        kafka::main::mirror,
-        eventbus::eventbus)
-
-    include standard
-}
-
-# Kafka Brokers - main-codfw
-# For now, eventlogging-service-eventbus is also colocated
-# on these brokers.
-node /kafka200[12]\.codfw\.wmnet/ {
-    role(kafka::main::broker,
-        # Mirror eqiad.* topics from Kafka main-eqiad into this main-codfw
+        # Mirror eqiad.* topics from main-eqiad into main-codfw,
+        # or mirror codfw.* topics from main-codfw into main-eqiad.
         kafka::main::mirror,
         eventbus::eventbus)
 

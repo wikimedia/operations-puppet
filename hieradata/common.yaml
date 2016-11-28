@@ -432,5 +432,7 @@ kafka_clusters:
         id: 2001
       kafka2002.codfw.wmnet:
         id: 2002
+      kafka2003.codfw.wmnet:
+        id: 2003
 
 deployment_server: tin.eqiad.wmnet
