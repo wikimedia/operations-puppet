@@ -3,7 +3,9 @@
 # Adds credentials and conftool scripts to a mediawiki host
 class mediawiki::conftool {
     include ::conftool::scripts
-    conftool::credentials { 'mwdeploy': }
+    conftool::credentials { 'mwdeploy':
+        home => '/var/lib/mwdeploy',
+    }
 
     # Will re-enable a mediawiki appserver after running scap pull
     file { '/usr/local/bin/mw-pool':
