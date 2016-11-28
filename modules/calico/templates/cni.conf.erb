@@ -1,0 +1,18 @@
+{
+    "name": "calico-k8s-network",
+    "type": "calico",
+    "etcd_endpoints": "<%= @etcd_endpoints.join(',') %>",
+    "etcd_ca_cert_file": "/etc/ssl/certs/Puppet_Internal_CA.pem",
+    "etcd_key_file": "/etc/calico/ssl/server.key",
+    "etcd_cert_file": "/etc/calico/ssl/cert.pem",
+    "log_level": "info",
+    "ipam": {
+        "type": "calico-ipam"
+    },
+    "policy": {
+        "type": "k8s"
+    },
+    "kubernetes": {
+        "kubeconfig": "/etc/kubernetes/kubeconfig"
+    }
+}
