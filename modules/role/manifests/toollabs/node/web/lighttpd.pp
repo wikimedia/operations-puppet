@@ -33,4 +33,15 @@ class role::toollabs::node::web::lighttpd inherits role::toollabs::node::web {
         group  => 'www-data',
         mode   => '1777',
     }
+
+    # Override dpkg to specify mode 1777 for /var/run/lighttpd
+    #
+    #  Without this, lighttpd's init script recreates the directory
+    #  on startup with the wrong permissions.
+    #
+    #  TT142932
+    exec {
+        command => "/usr/bin/dpkg-statoverride --add www-data www-data 1777 /var/run/lighttpd",
+        unless  => "dpkg-statoverride --list /var/run/lighttpd",
+    }
 }
