@@ -348,8 +348,7 @@ customviews:
     source: user_properties
     view: select up_user, up_property, up_value
     where: >
-      up_property in ( 'disablemail', 'fancysig', 'gender', 'language',
-      'nickname', 'skin', 'timecorrection', 'variant' )
+      up_property in ( 'disablemail', 'fancysig', 'gender', 'nickname' )
   user_properties_anon:
     limit: 2
     source: ["user_properties", "user", "meta_p.properties_anon_whitelist" ]
