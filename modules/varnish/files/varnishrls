@@ -65,7 +65,7 @@ class ResourceLoaderVarnishLogProcessor(varnishprocessor.VarnishLogProcessor):
 
     def start(self):
         # VSL query matching ResourceLoader ReqURLs
-        query = 'ReqURL ~ "^/w/load.php"'
+        query = 'ReqURL ~ "^/w/load.php" and ReqMethod ne "PURGE"'
 
         varnishlog.varnishlog((
             ('q', query),         # VSL query

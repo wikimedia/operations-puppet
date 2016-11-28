@@ -46,6 +46,8 @@ METRIC_FORMAT = (
 UDP_MTU_BYTES = 1472
 
 vsl_args = [
+    # Skip PURGE requests
+    ('q', 'ReqMethod ne "PURGE"'),
     # Backend HTTP response status code (eg: 200, 404)
     ('i', 'BerespStatus'),
     # Backend HTTP request method (eg: GET, POST)

@@ -56,11 +56,12 @@ class MediaVarnishLogProcessor(varnishprocessor.VarnishLogProcessor):
 
     def start(self):
         varnishlog.varnishlog((
-            ('q', 'ReqURL ~ "/thumb/"'), # Only look at thumb requests
-            ('n', 'frontend'),           # Only frontend Varnish instance
-            ('i', 'RespStatus'),         # RespStatus for the HTTP status code
-            ('i', 'ReqURL'),             # ReqURL to delimit requests
-            ('i', 'Timestamp'),          # Timestamp to delimit requests
+            ('q', 'ReqMethod ne "PURGE"'),  # Skip PURGE requests
+            ('q', 'ReqURL ~ "/thumb/"'),    # Only look at thumb requests
+            ('n', 'frontend'),              # Only frontend Varnish instance
+            ('i', 'RespStatus'),            # RespStatus for the HTTP status code
+            ('i', 'ReqURL'),                # ReqURL to delimit requests
+            ('i', 'Timestamp'),             # Timestamp to delimit requests
         ), self.handle_log_record)
 
 lp = MediaVarnishLogProcessor()
