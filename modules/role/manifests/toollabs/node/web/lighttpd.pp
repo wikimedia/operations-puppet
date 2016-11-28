@@ -42,6 +42,6 @@ class role::toollabs::node::web::lighttpd inherits role::toollabs::node::web {
     #  TT142932
     exec { 'var-run-lighttpd-permissions':
         command => '/usr/bin/dpkg-statoverride --add www-data www-data 1777 /var/run/lighttpd',
-        unless  => 'dpkg-statoverride --list /var/run/lighttpd',
+        unless  => '/usr/bin/dpkg-statoverride --list /var/run/lighttpd',
     }
 }
