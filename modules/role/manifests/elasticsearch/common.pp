@@ -1,4 +1,16 @@
-class role::elasticsearch::common {
+#
+# This class configures elasticsearch
+#
+# == Parameters:
+# [*ferm_srange*]
+#   The network range that should be allowed access to elasticsearch. This
+#   needs to be customized for elasticsearch clusters serving non production
+#   traffic. The relforge cluster is an example.
+#   Default: $DOMAIN_NETWORKS
+#
+class role::elasticsearch::common(
+    $ferm_srange      = '$DOMAIN_NETWORKS',
+) {
 
     if ($::realm == 'production' and hiera('elasticsearch::rack', undef) == undef) {
         fail("Don't know rack for ${::hostname} and rack awareness should be turned on")
@@ -18,7 +30,7 @@ class role::elasticsearch::common {
         proto   => 'tcp',
         port    => '9200',
         notrack => true,
-        srange  => '$DOMAIN_NETWORKS',
+        srange  => $ferm_srange,
     }
 
     $elastic_nodes = hiera('elasticsearch::cluster_hosts')
@@ -29,13 +41,6 @@ class role::elasticsearch::common {
         port    => '9300',
         notrack => true,
         srange  => "@resolve((${elastic_nodes_ferm}))",
-    }
-
-    # TODO: remove this ferm::service once multicast discovery is disabled.
-    ferm::service { 'elastic-zen-discovery':
-        proto  => 'udp',
-        port   => '54328',
-        srange => '$DOMAIN_NETWORKS',
     }
 
     system::role { 'role::elasticsearch::server':
@@ -74,7 +79,9 @@ class role::elasticsearch::common {
         include ::elasticsearch::ganglia
     }
 
-    include ::elasticsearch::https
+    class { '::elasticsearch::https':
+        ferm_srange => $ferm_srange,
+    }
     include elasticsearch::monitor::diamond
     include ::elasticsearch::log::hot_threads
 
