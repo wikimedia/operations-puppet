@@ -120,6 +120,7 @@ vsl_callback.next_pub = time.time() + args.interval
 
 
 varnishlog.varnishlog((
+    ('q', 'ReqMethod ne "PURGE"'),
     ('I', 'RespHeader:^X-Cache:'),
     ('n', 'frontend'),
 ), vsl_callback)
