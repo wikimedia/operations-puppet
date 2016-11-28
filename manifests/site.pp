@@ -1924,6 +1924,13 @@ node /^mc10(0[1-9]|1[0-8])\.eqiad\.wmnet/ {
     role(memcached)
 }
 
+# First of the new memcached/redis hosts
+# that will replace mc1001->mc1018.
+# Bug: T137345
+node 'mc1019.eqiad.wmnet' {
+    role(memcached)
+}
+
 node /^mc20[01][0-9]\.codfw\.wmnet/ {
     role(memcached)
 }
