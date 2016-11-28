@@ -260,7 +260,7 @@ define confluent::kafka::mirror::jmxtrans(
                     'record-queue-time-max'     => { 'slope' => 'both', 'bucketType' => 'g' },
                     'record-retry-rate'         => { 'slope' => 'both', 'bucketType' => 'g' },
                     'record-send-rate'          => { 'slope' => 'both', 'bucketType' => 'g' },
-                    'recrod-size-avg'           => { 'slope' => 'both', 'bucketType' => 'g' },
+                    'record-size-avg'           => { 'slope' => 'both', 'bucketType' => 'g' },
                     'record-size-max'           => { 'slope' => 'both', 'bucketType' => 'g' },
                     'records-per-request-avg'   => { 'slope' => 'both', 'bucketType' => 'g' },
 
