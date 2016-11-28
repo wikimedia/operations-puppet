@@ -45,6 +45,8 @@ server {
 <% if @websocket_support -%>
 		proxy_set_header Upgrade $http_upgrade;
 		proxy_set_header Connection $connection_upgrade;
+<% else -%>
+		proxy_set_header Connection close; # should be default
 <% end -%>
 
 		# this should be in sync with Varnish's first_byte_timeout
