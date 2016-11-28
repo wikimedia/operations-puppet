@@ -10,10 +10,17 @@
 #   name that will be checked in the SSL certificate. This should probably
 #   match the value configured in `base::puppet::dns_alt_names` if it is set,
 #   unless the service is accessed directly by FQDN.
-
+#
+# [*ferm_srange*]
+#   The nework range that should be allowed access to elasticsearch. This needs
+#   to be customized for elasticsearch clusters serving non production traffic.
+#   The relforge cluster is an example.
+#   Default: $DOMAIN_NETWORKS
+#
 class elasticsearch::https (
     $ensure           = present,
     $certificate_name = $::fqdn,
+    $ferm_srange      = '$DOMAIN_NETWORKS',
 ){
 
     if $ensure == present {
@@ -47,7 +54,7 @@ class elasticsearch::https (
         ensure => $ensure,
         proto  => 'tcp',
         port   => '9243',
-        srange => '$DOMAIN_NETWORKS',
+        srange => $ferm_srange,
     }
 
 }
