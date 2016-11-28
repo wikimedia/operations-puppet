@@ -69,7 +69,9 @@ END {
     print "HHVM needs restart: using " sum "% of available memory";
     exit 0;
   }
-}'
+  exit 1;
+}' && exit 0
+
 
 # Queue size
 # If not defined, just exit as if everything is fine
