@@ -4552,6 +4552,11 @@ host mw1290 {
     fixed-address mw1290.eqiad.wmnet;
 }
 
+host thorium {
+    hardware ethernet 14:18:77:33:5E:97;
+    fixed-address thorium.eqiad.wmnet;
+}
+
 host thumbor1001 {
     hardware ethernet 14:18:77:61:3C:D3;
     fixed-address thumbor1001.eqiad.wmnet;
