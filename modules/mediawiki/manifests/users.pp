@@ -18,7 +18,7 @@ class mediawiki::users(
     user { 'mwdeploy':
         ensure     => present,
         shell      => '/bin/bash',
-        home       => '/home/mwdeploy',
+        home       => '/var/lib/mwdeploy',
         system     => true,
         managehome => true,
     }
