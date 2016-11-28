@@ -115,4 +115,16 @@ class phabricator::vcs (
         hasrestart => true,
         require    => File[$init_file],
     }
+
+    group { 'vcs':
+        ensure => present,
+        system => true,
+    }
+
+    user { 'vcs':
+        gid    => 'vcs',
+        shell  => '/bin/false',
+        home   => '/var/home/vcs',
+        system => true,
+    }
 }
