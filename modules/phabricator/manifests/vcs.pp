@@ -28,12 +28,18 @@ class phabricator::vcs (
     $sshd_config = '/etc/ssh/sshd_config.phabricator'
 
 
+    group { $vcs_user:
+        ensure => present,
+        system => true,
+    }
+
     user { $vcs_user:
         gid        => 'phd',
         shell      => '/bin/sh',
         managehome => true,
         home       => "/var/lib/${vcs_user}",
         system     => true,
+        require    => Group[$vcs_user],
     }
 
     file { "${basedir}/phabricator/scripts/ssh/":
