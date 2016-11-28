@@ -97,8 +97,9 @@ class role::memcached {
     }
 
     $shards = {
-        'eqiad' => hiera('mediawiki::redis_servers::eqiad'),
-        'codfw' => hiera('mediawiki::redis_servers::codfw')
+        'eqiad'       => hiera('mediawiki::redis_servers::eqiad'),
+        'codfw'       => hiera('mediawiki::redis_servers::codfw'),
+        'eqiadswitch' => hiera('mediawiki::redis_servers::eqiadswitch')
     }
 
     if os_version('Debian >= jessie') {

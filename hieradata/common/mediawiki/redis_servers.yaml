@@ -57,7 +57,7 @@ mediawiki::redis_servers::eqiad:
 
 mediawiki::redis_servers::codfw:
   shard01:
-    host: 10.192.0.34
+    host: 10.64.0.80
     port: 6379
   shard02:
     host: 10.192.0.35
@@ -110,3 +110,12 @@ mediawiki::redis_servers::codfw:
   shard18:
     host: 10.192.32.23
     port: 6380
+
+# Temporary DC used to allow the creation of a Redis eqiad slave,
+# that eventually will become the Redis master (the current eqiad master
+# needs to be put of of service for decom).
+# Bug: T137345
+#mediawiki::redis_servers::eqiadswitch:
+#  shard01:
+#    host: 10.64.0.80
+#    port: 6379
