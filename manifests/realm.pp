@@ -124,6 +124,7 @@ $use_puppetdb = ("${settings::storeconfigs_backend}" == 'puppetdb')
 ## puppet-accessible list of private wikis
 ## please keep alphabetized
 $private_wikis = [
+    'arbcom_cswiki',
     'arbcom_dewiki',
     'arbcom_enwiki',
     'arbcom_fiwiki',
