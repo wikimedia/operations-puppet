@@ -80,7 +80,7 @@ class varnish::common {
         ensure => 'stopped'
     }
 
-    # varnishlog4.py depends on varnishapi. Install it.
+    # varnishlog.py depends on varnishapi. Install it.
     file { '/usr/local/lib/python2.7/dist-packages/varnishapi.py':
         source => 'puppet:///modules/varnish/varnishapi.py',
         owner  => 'root',
@@ -88,9 +88,9 @@ class varnish::common {
         mode   => '0444',
     }
 
-    # Install varnishlog4.py, compatible with Varnish 4
+    # Install varnishlog.py
     file { '/usr/local/lib/python2.7/dist-packages/varnishlog.py':
-        source  => 'puppet:///modules/varnish/varnishlog4.py',
+        source  => 'puppet:///modules/varnish/varnishlog.py',
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
