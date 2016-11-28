@@ -4,9 +4,6 @@ upstream local_fe_<%= @basename %> {
 <%- @upstream_ports.each do |upstream_port| -%>
     server <%= @ipaddress %>:<%= upstream_port %> max_fails=0;
 <%- end -%>
-<% if @keepalives_per_worker.to_i > 0 -%>
-    keepalive <%= @keepalives_per_worker %>; # Note: commonly up to 48 workers!
-<% end -%>
 }
 
 # SSL proxying
@@ -48,8 +45,6 @@ server {
 <% if @websocket_support -%>
 		proxy_set_header Upgrade $http_upgrade;
 		proxy_set_header Connection $connection_upgrade;
-<% elsif @keepalives_per_worker.to_i > 0 -%>
-		proxy_set_header Connection "";
 <% end -%>
 
 		# this should be in sync with Varnish's first_byte_timeout
