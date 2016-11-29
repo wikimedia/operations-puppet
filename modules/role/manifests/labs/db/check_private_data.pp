@@ -26,7 +26,7 @@ class role::labs::db::check_private_data {
         mode    => '0744',
         require => [Package['python3-yaml', 'python3-pymysql'],
                     Git::Clone['operations/mediawiki-config'],
-                    File['/etc/mysql/filtered_columns.txt'],
+                    File['/etc/mysql/filtered_tables.txt'],
                     File['/etc/mysql/private_tables.txt'],
         ],
     }
