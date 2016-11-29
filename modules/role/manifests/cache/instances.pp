@@ -1,6 +1,5 @@
 # This defines the pair of varnish::instance for a 2-layer (fe+be) cache node
 define role::cache::instances (
-    $fe_mem_gb,
     $fe_jemalloc_conf,
     $fe_runtime_params,
     $be_runtime_params,
@@ -52,6 +51,18 @@ define role::cache::instances (
     }
 
     $our_backend_caches = hash_deselect_re("^cache_${::site}", $becaches_filtered)
+
+    # Frontend memory cache sizing
+    $mem_gb = $::memorysize_mb / 1024.0
+    if ($mem_gb < 60.0) {
+        # virtuals, test hosts, etc...
+        $fe_mem_gb = 1
+    } else {
+        # Removing a constant factor before scaling helps with
+        # low-memory hosts, as they need more relative space to
+        # handle all the non-cache basics.
+        $fe_mem_gb = ceiling(0.7 * ($mem_gb - 48.0))
+    }
 
     varnish::instance { "${title}-backend":
         name               => '',
