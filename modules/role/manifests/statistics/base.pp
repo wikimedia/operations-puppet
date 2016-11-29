@@ -7,6 +7,7 @@ class role::statistics::base {
     $statistics_servers = hiera(
         'statistics_servers',
         [
+            'thorium.eqiad.wmnet',
             'stat1001.eqiad.wmnet',
             'stat1002.eqiad.wmnet',
             'stat1003.eqiad.wmnet',
@@ -14,13 +15,12 @@ class role::statistics::base {
         ]
     )
 
-    # we are attempting to stop using /a and to start using
+    # We are attempting to stop using /a and to start using
     # /srv instead.  stat1002 still use
-    # /a by default.  # stat1001 and stat1003 use /srv.
+    # /a.  Everything else uses /srv.
     $working_path = $::hostname ? {
-        'stat1001' => '/srv',
-        'stat1003' => '/srv',
-        default    => '/a',
+        'stat1002' => '/a',
+        default    => '/srv',
     }
 
     class { '::statistics':
