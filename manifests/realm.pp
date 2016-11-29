@@ -36,11 +36,6 @@ $site = $main_ipaddress ? {
     default                                   => '(undefined)'
 }
 
-# Lab testing cluster all prefix labtest
-if $::hostname =~ /^labtest/ {
-    $realm = 'labtest'
-}
-
 if $realm == undef {
     $realm = hiera('realm', 'production')
 }
@@ -238,7 +233,6 @@ $wikimail_smarthost = $realm ? {
         'deployment-prep' => [ 'deployment-mx.eqiad.wmflabs' ],
         default           => [ 'mx1001.wikimedia.org', 'mx2001.wikimedia.org' ],
     },
-    'labtest' => [ 'wiki-mail-codfw.wikimedia.org', 'wiki-mail-eqiad.wikimedia.org' ],
 }
 # Generic, default servers (order matters!)
 $mail_smarthost = $realm ? {
@@ -249,5 +243,4 @@ $mail_smarthost = $realm ? {
     },
     # FIXME: find some SMTP servers for labs
     'labs'       => [ 'mx1001.wikimedia.org', 'mx2001.wikimedia.org' ],
-    'labtest'    => [ 'mx2001.wikimedia.org', 'mx1001.wikimedia.org' ],
 }
