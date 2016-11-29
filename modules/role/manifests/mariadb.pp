@@ -832,6 +832,9 @@ class role::mariadb::labs {
     include passwords::misc::scripts
     include role::mariadb::ferm
     include base::firewall
+    include role::labs::db::common
+    include role::labs::db::views
+    include role::labs::db::check_private_data
 
     class { 'role::mariadb::groups':
         mysql_group => 'labs',
