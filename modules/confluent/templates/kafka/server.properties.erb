@@ -65,6 +65,15 @@ num.partitions=<%= @num_partitions %>
 # Default to the number of brokers in this cluster.
 default.replication.factor=<%= @default_replication_factor %>
 
+# When a producer sets acks to "all" (or "-1"), min.insync.replicas specifies the minimum number of
+# replicas that must acknowledge a write for the write to be considered successful. If this minimum
+# cannot be met, then the producer will raise an exception (either NotEnoughReplicas or
+# NotEnoughReplicasAfterAppend). When used together, min.insync.replicas and acks allow you to
+# enforce greater durability guarantees. A typical scenario would be to create a topic with a
+# replication factor of 3, set min.insync.replicas to 2, and produce with acks of "all". This will
+# ensure that the producer raises an exception if a majority of replicas do not receive a write.
+min.insync.replicas=<%= @min_insync_replicas %>
+
 # Enable auto creation of topic on the server. If this is set to true
 # then attempts to produce, consume, or fetch metadata for a non-existent
 # topic will automatically create it with the default replication factor
