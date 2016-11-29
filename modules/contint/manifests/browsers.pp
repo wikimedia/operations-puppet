@@ -14,14 +14,22 @@ class contint::browsers {
             'chromedriver',
             'firefox-esr',
             # phantomjs is not available on Jessie
-        ]
+        ],
+        file { '/usr/local/bin/chromedriver':
+          ensure => link,
+          target => '/usr/lib/chromium/chromedriver',
+        }
     } elsif os_version('ubuntu >= trusty') {
         $latest_packages = [
             'chromium-browser',
             'chromium-chromedriver',
             'firefox',
             'phantomjs',
-        ]
+        ],
+        file { '/usr/local/bin/chromedriver':
+          ensure => link,
+          target => '/usr/lib/chromium-browser/chromedriver',
+        }
     } else {
         $latest_packages = [
             'chromium-browser',
