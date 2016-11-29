@@ -10,9 +10,9 @@ class role::labs::db::check_private_data {
         mode    => '0644',
     }
 
-    file { '/etc/mysql/filtered_columns.txt':
+    file { '/etc/mysql/filtered_tables.txt':
         ensure => file,
-        source => 'puppet:///modules/role/mariadb/filtered_columns.txt',
+        source => 'puppet:///modules/role/mariadb/filtered_tables.txt',
         owner  => 'root',
         group  => 'root',
         mode   => '0644',
