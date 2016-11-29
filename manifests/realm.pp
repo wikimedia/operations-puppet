@@ -121,42 +121,11 @@ $use_puppetdb = ("${settings::storeconfigs_backend}" == 'puppetdb')
 
 # TODO: Better nesting of settings inside classes
 
-## puppet-accessible list of private wikis
-## please keep alphabetized
-$private_wikis = [
-    'arbcom_cswiki',
-    'arbcom_dewiki',
-    'arbcom_enwiki',
-    'arbcom_fiwiki',
-    'arbcom_nlwiki',
-    'auditcomwiki',
-    'boardgovcomwiki',
-    'boardwiki',
-    'chairwiki',
-    'chapcomwiki',
-    'checkuserwiki',
-    'collabwiki',
-    'ecwikimedia',
-    'execwiki',
-    'fdcwiki',
-    'grantswiki',
-    'iegcomwiki',
-    'ilwikimedia',
-    'internalwiki',
-    'legalteamwiki',
-    'movementroleswiki',
-    'noboard_chapterswikimedia',
-    'officewiki',
-    'ombudsmenwiki',
-    'otrs_wikiwiki',
-    'projectcomwiki',
-    'searchcomwiki',
-    'spcomwiki',
-    'stewardwiki',
-    'transitionteamwiki',
-    'wg_enwiki',
-    'wikimaniateamwiki',
-    'zerowiki' ]
+## puppet-accessible list of private wikis (deprecated)
+## This is no longer maintained here, instead, puppet clones
+## operations/mediawiki-config repository and reads private.dblist
+## and deleted.dbslit
+# $private_wikis = [ ]
 
 $private_tables = [
     'accountaudit_login',
