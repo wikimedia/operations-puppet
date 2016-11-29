@@ -54,7 +54,9 @@ server {
     rewrite ^/sparql$ /bigdata/namespace/wdq/sparql last;
 
     location /bigdata/namespace/wdq/sparql {
-        proxy_pass http://localhost:9999;
+        # use IP address for the backend and not "localhost" to ensure
+        # connection is done over IPv4 (backend is configured as IPv4 only)
+        proxy_pass http://127.0.0.1:9999;
 
         # Allow only 5 connections per IP
         limit_conn byaddr 5;
