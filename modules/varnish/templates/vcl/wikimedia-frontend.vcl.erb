@@ -404,12 +404,14 @@ sub vcl_deliver {
 // Varnish4 vcl_synth+vcl_backend_error
 
 sub vcl_synth {
-	set resp.http.X-CDIS = "int";
-	call deliver_synth_;
-	call https_error_redirect;
-	call cluster_fe_err_synth;
-	if (resp.status >= 400) {
-		call synth_errorpage;
+	if (req.method != "PURGE") {
+		set resp.http.X-CDIS = "int";
+		call deliver_synth_;
+		call https_error_redirect;
+		call cluster_fe_err_synth;
+		if (resp.status >= 400) {
+			call synth_errorpage;
+		}
 	}
 	return (deliver);
 }
