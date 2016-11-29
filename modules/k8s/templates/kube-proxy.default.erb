@@ -1,0 +1,15 @@
+###
+# Kubernetes proxy config.
+
+# default config should be adequate
+
+<%-
+daemon_args = ['--kubeconfig=/etc/kubernetes/kubeconfig']
+if @proxy_mode
+	daemon_args.push("--proxy-mode='#{@proxy_mode}'")
+end
+if @masquerade_all
+	daemon_args.push("--masquerade-all=true")
+end
+-%>
+DAEMON_ARGS="<%= daemon_args.join(' ') %>"
