@@ -9,6 +9,9 @@ class contint::packages::php {
         'php5-sqlite',
         'php5-tidy',
         'php5-xdebug',
+        # MediaWikiFarm extension
+        # phpdocumentor/template-zend
+        'php5-xsl',
     ] )
     package { [
         'php5-parsekit',
