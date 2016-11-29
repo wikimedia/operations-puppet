@@ -7,6 +7,10 @@ class phabricator::phd (
     $settings = {},
     $basedir  = '/',
 ) {
+    group { 'phd':
+        ensure => present,
+        system => true,
+    }
 
     # PHD user needs perms to drop root perms on start
     file { "${basedir}/phabricator/scripts/daemon/":
@@ -27,25 +31,20 @@ class phabricator::phd (
 
     file { '/var/run/phd':
         ensure => directory,
-        owner  => $settings['phd.user'],
+        owner  => 'phd',
         group  => 'phd',
     }
 
     file { $settings['phd.pid-directory']:
         ensure => 'directory',
-        owner  => $settings['phd.user'],
+        owner  => 'phd',
         group  => 'phd',
     }
 
     file { $settings['phd.log-directory']:
         ensure => 'directory',
-        owner  => $settings['phd.user'],
+        owner  => 'phd',
         group  => 'phd',
-    }
-
-    group { 'phd':
-        ensure => present,
-        system => true,
     }
 
     user { $settings['phd.user']:

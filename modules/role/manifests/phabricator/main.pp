@@ -93,7 +93,7 @@ class role::phabricator::main {
         'vcs' => {
             'environment'       => 'vcs',
             'owner'             => 'root',
-            'group'             => 'vcs',
+            'group'             => 'phd',
             'phab_settings'     => {
                 'mysql.user'        => $daemons_user,
                 'mysql.pass'        => $daemons_pass,
