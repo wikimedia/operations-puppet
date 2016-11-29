@@ -2,6 +2,8 @@
 class statistics::discovery {
   Class['::statistics'] -> Class['::statistics::discovery']
 
+  include ::passwords::mysql::research
+
   $statistics_working_path = $::statistics::working_path
   $dir = "${statistics_working_path}/discovery-stats"
   $user = 'discovery-stats'
@@ -16,6 +18,14 @@ class statistics::discovery {
     shell      => '/bin/bash',
     managehome => false,
     system     => true,
+  }
+
+  ::mysql::config::client { 'discovery-stats':
+    user    => $::passwords::mysql::research::user,
+    pass    => $::passwords::mysql::research::pass,
+    group   => $user,
+    mode    => '0440',
+    require => User[$user],
   }
 
   # Path in which all crons will log to
