@@ -1,5 +1,5 @@
 class role::pdfrender {
-    $is_active = hiera('role::pdfrender::is_active', false)
+    $is_active = hiera('role::pdfrender::is_active', true)
 
     system::role { 'role::pdfrender':
         description => 'A PDF render service based on Electron',
