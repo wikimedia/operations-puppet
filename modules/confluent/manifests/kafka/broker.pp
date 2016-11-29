@@ -55,6 +55,11 @@
 #   The default replication factor for automatically created topics.
 #   Default: 1
 #
+# [*min_insync_replicas*]
+#   When producing with acks=all, this specifiies the number of replicas that should be in
+#   a partition's ISR.  If fewer than this are present, the produce request will fail.
+#   Default: 1
+#
 # [*replica_lag_time_max_ms*]
 #   If a follower hasn't sent any fetch requests for this window
 #   of time, the leader will remove the follower from ISR.
@@ -190,6 +195,7 @@ class confluent::kafka::broker(
 
     $num_partitions                      = 1,
     $default_replication_factor          = 1,
+    $min_insync_replicas                 = 1,
     $replica_lag_time_max_ms             = undef,
     $num_recovery_threads_per_data_dir   = undef,
     $replica_socket_timeout_ms           = undef,
