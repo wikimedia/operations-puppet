@@ -93,10 +93,7 @@ PHYSICAL_CONTEXTS = {
         'parent': 'adapter',
         'include_childs': True,
         'optimal_values': {
-            'Media Error Count': ['0'],
-            'Other Error Count': ['0'],
             'Predictive Failure Count': ['0'],
-            'Last Predictive Failure Event Seq Number': ['0'],
         },
         'print_keys': (
             'Enclosure Device ID',
