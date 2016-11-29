@@ -712,6 +712,9 @@ class role::mariadb::sanitarium {
     include mariadb::packages_wmf
     # do not add mariadb::service, multi-instance has its own way
 
+    include role::labs::db::common
+    include role::labs::db::check_private_data
+
     class { 'mariadb::config':
         config   => 'mariadb/sanitarium.my.cnf.erb',
     }
@@ -791,6 +794,8 @@ class role::mariadb::sanitarium2 {
     include passwords::misc::scripts
     include base::firewall
     include role::mariadb::ferm
+    include role::labs::db::common
+    include role::labs::db::check_private_data
 
     class { 'role::mariadb::groups':
         mysql_group => 'labs',
@@ -832,6 +837,9 @@ class role::mariadb::labs {
     include passwords::misc::scripts
     include role::mariadb::ferm
     include base::firewall
+    include role::labs::db::common
+    include role::labs::db::views
+    include role::labs::db::check_private_data
 
     class { 'role::mariadb::groups':
         mysql_group => 'labs',
