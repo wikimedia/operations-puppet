@@ -1,17 +1,5 @@
+# deploy scripts and its dependencies to create replica views
 class role::labs::db::views {
-
-    package {
-        ['python3-yaml', 'python3-pymysql']:
-            ensure => present,
-            before => File['/usr/local/sbin/maintain-views'],
-    }
-
-    git::clone { 'operations/mediawiki-config':
-        ensure             => 'latest',
-        directory          => '/usr/local/lib/mediawiki-config',
-        recurse_submodules => true,
-        before             => File['/usr/local/sbin/maintain-views'],
-    }
 
     include passwords::labsdb::maintainviews
     $view_user = $::passwords::labsdb::maintainviews::user
@@ -25,11 +13,14 @@ class role::labs::db::views {
     }
 
     file { '/usr/local/sbin/maintain-views':
-        ensure => file,
-        source => 'puppet:///modules/role/labs/db/views/maintain-views.py',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0655',
+        ensure  => file,
+        source  => 'puppet:///modules/role/labs/db/views/maintain-views.py',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0655',
+        require => [Package['python3-yaml', 'python3-pymysql'],
+                    Git::Clone['operations/mediawiki-config'],
+        ],
     }
 
     file { '/usr/local/sbin/maintain-meta_p':
