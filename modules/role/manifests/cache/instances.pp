@@ -1,6 +1,5 @@
 # This defines the pair of varnish::instance for a 2-layer (fe+be) cache node
 define role::cache::instances (
-    $fe_mem_gb,
     $fe_jemalloc_conf,
     $fe_runtime_params,
     $be_runtime_params,
@@ -74,6 +73,19 @@ define role::cache::instances (
 
     $our_backend_caches = hash_deselect_re("^cache_${::site}", $becaches_filtered)
     $be_directors = merge($app_directors, $our_backend_caches)
+
+    # Frontend memory cache sizing
+    $mem_gb = $::memorysize_mb / 1024.0
+    if ($mem_gb < 60.0) {
+        # virtuals, test hosts, etc...
+        $fe_mem_gb = 1
+    } else {
+	# remove a constant 32G for "other" memory usage, then take half of
+	# what's left for frontend cache space.  This formula aligns well with
+	# our empirical observations of reasonable max sizes on production hosts
+	# with ~96-264 GB of RAM running fe + be layers.
+	$fe_mem_gb = ceiling(0.5 * ($mem_gb - 32.0))
+    }
 
     varnish::instance { "${title}-backend":
         name               => '',
