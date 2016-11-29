@@ -6,5 +6,6 @@
 --no-autoloader_layout-check
 
 # T127797 - needs at least one comment line for each class
+# removing this this is an ongoing "Google Code-In" mentored task (TODO: add link ..)
 --no-documentation-check
 
