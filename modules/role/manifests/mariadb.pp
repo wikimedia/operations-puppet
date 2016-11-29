@@ -716,7 +716,8 @@ class role::mariadb::sanitarium {
     include role::labs::db::check_private_data
 
     class { 'mariadb::config':
-        config   => 'mariadb/sanitarium.my.cnf.erb',
+        config  => 'mariadb/sanitarium.my.cnf.erb',
+        require => Git::Clone['operations/mediawiki-config'],
     }
 
     ferm::service { 'mysqld_sanitarium':
@@ -807,7 +808,8 @@ class role::mariadb::sanitarium2 {
     }
 
     class { 'mariadb::config':
-        config   => 'mariadb/sanitarium2.my.cnf.erb',
+        config  => 'mariadb/sanitarium2.my.cnf.erb',
+        require => Git::Clone['operations/mediawiki-config'],
     }
 
     class {'mariadb::service':
