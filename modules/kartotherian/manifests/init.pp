@@ -44,7 +44,6 @@ class kartotherian(
         deployment        => 'scap3',
         deployment_config => true,
         deployment_vars   => {
-            entrypoint         => '""',
             geoshapes_user     => $pgsql_kartotherian_user,
             geoshapes_password => $pgsql_kartotherian_pass,
             conf_sources       => $conf_sources,
