@@ -31,7 +31,7 @@ metrics_port: <%= cvars['stat_port'] %>
 # service
 name: <%= @title %>
 module: <%= @starter_module %>
-entrypoint: <%= @entrypoint %>
+entrypoint: '<%= @entrypoint %>'
 port: <%= @port %>
 proxy: <%= cvars['proxy'] %>
 mwapi_uri: <%= cvars['mwapi'] %>
