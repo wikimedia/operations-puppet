@@ -4,7 +4,6 @@ class ldap::role::config::labs {
     $basedn = 'dc=wikimedia,dc=org'
     $servernames = [ $hieraldapconfig['hostname'], $hieraldapconfig['secondary_hostname'] ]
     $sudobasedn = $::realm ? {
-        'labtest'       => "ou=sudoers,cn=${::labsproject},ou=projects,${basedn}",
         'labs'       => "ou=sudoers,cn=${::labsproject},ou=projects,${basedn}",
         'production' => "ou=sudoers,${basedn}"
     }

@@ -69,40 +69,6 @@ class network::constants {
                     '2620:0:860:101:10:192:0:27', # puppetmaster2001.codfw.wmnet
                 ],
             },
-        'labtest' => {
-            'bastion_hosts' => [
-                    '208.80.154.149',                   # bast1001.wikimedia.org
-                    '2620:0:861:2:208:80:154:149',      # bast1001.wikimedia.org
-                    '208.80.153.5',                     # bast2001.wikimedia.org
-                    '2620:0:860:1:208:80:153:5',        # bast2001.wikimedia.org
-                    '91.198.174.112',                   # bast3001.wikimedia.org
-                    '2620:0:862:1:91:198:174:112',      # bast3001.wikimedia.org
-                    '198.35.26.5',                      # bast4001.wikimedia.org
-                    '2620:0:863:1:198:35:26:5',         # bast4001.wikimedia.org
-                    '208.80.154.151',                   # iron.wikimedia.org
-                    '2620:0:861:2:208:80:154:151',      # iron.wikimedia.org
-                ],
-            'monitoring_hosts' => [
-                    '208.80.153.74',                    # tegmen.wikimedia.org
-                    '2620:0:860:3:208:80:153:74',       # tegmen.wikimedia.org
-                    '208.80.155.119',                   # einsteinium.wikimedia.org
-                    '2620:0:860:3:208:80:155:119',      # einsteinium.wikimedia.org
-                    '208.80.154.53',                    # uranium.wikimedia.org (ganglia, gmetad needs it)
-                    '2620:0:861:1:208:80:154:53',       # uranium.wikimedia.org
-                ],
-            'deployment_hosts' => [
-                    '10.64.0.196',                      # tin.eqiad.wmnet
-                    '2620:0:861:101:10:64:0:196',       # tin.eqiad.wmnet
-                    '10.192.16.132',                    # mira.codfw.wmnet
-                    '2620:0:860:102:10:192:16:132',     # mira.codfw.wmnet
-                ],
-            'maintenance_hosts' => [
-                    '10.64.32.13',                      # terbium.eqiad.wmnet
-                    '2620:0:861:103:10:64:32:13',       # terbium.eqiad.wmnet
-                    '10.192.48.45',                     # wasat.codfw.wmnet
-                    '2620:0:860:104:10:192:48:45',      # wasat.codfw.wmnet
-                ],
-            },
         'labs' => {
             'bastion_hosts' => concat([
                     '10.68.17.232', # bastion-01.eqiad.wmflabs
@@ -162,9 +128,6 @@ class network::constants {
         $mw_appserver_networks = flatten([
             slice_network_constants('labs'),
             '127.0.0.1'])
-    } elsif $::realm == 'labtest' {
-        # This just a placeholder... .erb doesn't like this to be empty.
-        $mw_appserver_networks = ['208.80.152.0/22']
     }
 
     # Analytics subnets
