@@ -78,7 +78,7 @@ Puppet::Type.type(:scap_source).provide(:default) do
   end
 
   def checkout(name, path)
-    umask = 022
+    umask = 002
     file_mode = 02775
     unless Dir.exists?(path)
       FileUtils.makedirs path, :mode => file_mode
