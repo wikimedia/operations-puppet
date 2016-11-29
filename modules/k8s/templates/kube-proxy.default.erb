@@ -1,0 +1,12 @@
+###
+# Kubernetes proxy config.
+
+# default config should be adequate
+
+DAEMON_ARGS=" --kubeconfig=/etc/kubernetes/kubeconfig"
+<%- if @proxy_mode -%>
+DAEMON_ARGS="$DAEMON_ARGS --proxy-mode='<%= @proxy_mode %>'"
+<%- end -%>
+<%- if @masquerade_all -%>
+DAEMON_ARGS="$DAEMON_ARGS --masquerade-all=true"
+<%- end -%>
