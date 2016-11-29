@@ -116,46 +116,37 @@ class openstack::openstack_manager(
             target => '/srv/mediawiki';
     }
 
-    case $::realm {
-        'production': {
-            $wikidb = 'labswiki'
-
-            cron {
-                'db-bak':
-                    ensure  => present,
-                    user    => 'root',
-                    hour    => 1,
-                    minute  => 0,
-                    command => '/usr/local/sbin/db-bak.sh > /dev/null 2>&1',
-                    require => File['/a/backup'];
-                'mw-xml':
-                    ensure  => present,
-                    user    => 'root',
-                    hour    => 1,
-                    minute  => 30,
-                    command => '/usr/local/sbin/mw-xml.sh > /dev/null 2>&1',
-                    require => File['/a/backup'];
-                'mw-files':
-                    ensure  => present,
-                    user    => 'root',
-                    hour    => 2,
-                    minute  => 0,
-                    command => '/usr/local/sbin/mw-files.sh > /dev/null 2>&1',
-                    require => File['/a/backup'];
-                'backup-cleanup':
-                    ensure  => present,
-                    user    => 'root',
-                    hour    => 3,
-                    minute  => 0,
-                    command => 'find /a/backup -type f -mtime +4 -delete',
-                    require => File['/a/backup'];
-            }
-        }
-        'labtest': {
-            $wikidb = 'labtestwiki'
-        }
-        default: {
-            fail ("unknown realm ${::realm}")
+    $wikidb = hiera('wikitech_db_name')
+    if !$labtest {
+        cron {
+            'db-bak':
+                ensure  => present,
+                user    => 'root',
+                hour    => 1,
+                minute  => 0,
+                command => '/usr/local/sbin/db-bak.sh > /dev/null 2>&1',
+                require => File['/a/backup'];
+            'mw-xml':
+                ensure  => present,
+                user    => 'root',
+                hour    => 1,
+                minute  => 30,
+                command => '/usr/local/sbin/mw-xml.sh > /dev/null 2>&1',
+                require => File['/a/backup'];
+            'mw-files':
+                ensure  => present,
+                user    => 'root',
+                hour    => 2,
+                minute  => 0,
+                command => '/usr/local/sbin/mw-files.sh > /dev/null 2>&1',
+                require => File['/a/backup'];
+            'backup-cleanup':
+                ensure  => present,
+                user    => 'root',
+                hour    => 3,
+                minute  => 0,
+                command => 'find /a/backup -type f -mtime +4 -delete',
+                require => File['/a/backup'];
         }
     }
 
