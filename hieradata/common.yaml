@@ -283,6 +283,7 @@ statistics_servers:
   - stat1003.eqiad.wmnet
   - analytics1027.eqiad.wmnet
   - dataset1001.wikimedia.org
+  - thorium.eqiad.wmnet
 dataset_clients_snapshots:
   - snapshot1001.eqiad.wmnet
   - snapshot1005.eqiad.wmnet
