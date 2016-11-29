@@ -1,0 +1,36 @@
+###
+# kubernetes kubelet (minion) config
+
+# The address for the info server to serve on (set to 0.0.0.0 or "" for all interfaces)
+KUBELET_ADDRESS="--address=<%= @listen_address %>"
+
+# The port for the info server to serve on
+<%- if @listen_port -%>KUBELET_PORT="--port=<%= @listen_port %>"<%- end -%>
+
+# You may leave this blank to use the actual hostname
+KUBELET_HOSTNAME="--hostname-override=<%= @fqdn %>"
+
+# location of the api-server
+KUBELET_API_SERVER="--api-servers=http://<%= @master_host %>:6443"
+
+# Docker endpoint to connect to
+# Default: unix:///var/run/docker.sock
+#DOCKER_ENDPOINT="--docker-endpoint=unix:///var/run/docker.sock"
+
+# Port to listen on
+#CADVISOR_PORT="--cadvisor-port=4194"
+
+# Other options:
+# --container_runtime=rkt
+# --configure-cbr0={true|false}
+DAEMON_ARGS="--configure-cbr0=false --kubeconfig=/etc/kubernetes/kubeconfig"
+
+<%- if @pod_infra_container_image -%>
+DAEMON_ARGS="$DAEMON_ARGS=' --pod-infra-container-image=<%= @pod_infra_container_image %>'"
+<%- end -%>
+<%- if @tls_cert and @tls_key -%>
+DAEMON_ARGS="$DAEMON_ARGS=' --tls-private-key-file=<%= @tls_key %> --tls-cert-file=<%= @tls_cert %>'"
+<%- end -%>
+<%- if @cluster_domain -%>
+DAEMON_ARGS="$DAEMON_ARGS=' --cluster-domain=<%= @cluster_kube %>'"
+<%- end -%>
