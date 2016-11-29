@@ -11,27 +11,20 @@ class role::labs::openstack::nova::manager {
     include role::labs::openstack::nova::common
     $novaconfig = $role::labs::openstack::nova::common::novaconfig
 
-    case $::realm {
-        'production': {
-            $sitename = 'wikitech.wikimedia.org'
-            $certificate = $sitename
-            sslcert::certificate { $sitename: }
-            $cert_type = ''
+    $sitename = hiera('labs_osm_host')
+    if hiera('wikitech_use_letsencrypt', false) {
+        $sitename_split = split($sitename, '\.')
+        $certificate = $sitename_split[0]
+        letsencrypt::cert::integrated { $certificate:
+            subjects   => $sitename,
+            puppet_svc => 'apache2',
+            system_svc => 'apache2',
         }
-        'labtest': {
-            $sitename = 'labtestwikitech.wikimedia.org'
-            $certificate = 'labtestwikitech'
-            letsencrypt::cert::integrated { $certificate:
-                subjects   => $sitename,
-                puppet_svc => 'apache2',
-                system_svc => 'apache2',
-            }
-            $cert_type = '_letsencrypt'
-        }
-        default: {
-            notify {"unknown realm ${::realm}; https cert will not be installed.":}
-            $cert_type = ''
-        }
+        $cert_type = '_letsencrypt'
+    } else {
+        $certificate = $sitename
+        sslcert::certificate { $sitename: }
+        $cert_type = ''
     }
 
     monitoring::service { 'https':
