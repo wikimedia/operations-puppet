@@ -1,11 +1,20 @@
 [Unit]
-Description=Kubernetes Proxy
+Description=Kubernetes Kube-Proxy Server
+Documentation=https://github.com/kubernetes/kubernetes
+Documentation=man:kube-proxy
+After=network.target
 
 [Service]
-ExecStart=/usr/local/bin/kube-proxy \
-    --kubeconfig=/etc/kubernetes/kubeconfig \
-    --proxy-mode=iptables \
-    --masquerade-all=true
+Environment=KUBE_MASTER=--master=127.0.0.1:8080
+EnvironmentFile=-/etc/kubernetes/config
+EnvironmentFile=-/etc/default/%p
+ExecStart=/usr/bin/kube-proxy \
+    $KUBE_LOGTOSTDERR \
+    $KUBE_LOG_LEVEL \
+    $KUBE_MASTER \
+        $DAEMON_ARGS
+Restart=on-failure
+LimitNOFILE=65536
 
 [Install]
 WantedBy=multi-user.target
