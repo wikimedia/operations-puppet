@@ -137,6 +137,8 @@ lvs::configuration::lvs_service_ips:
   pdfrender: &ip_block034
     eqiad: 10.2.2.35
     codfw: 10.2.1.35
+  logstash: &ip_block035
+    eqiad: 10.2.2.36
 lvs::configuration::lvs_services:
   text:
     description: "Main wiki platform LVS service, text.%{::site}.wikimedia.org (Varnish)"
@@ -1102,3 +1104,26 @@ lvs::configuration::lvs_services:
           hostname: pdfrender.svc.eqiad.wmnet
         codfw:
           hostname: pdfrender.svc.codfw.wmnet
+  logstash:
+    description: Logstash ingestion
+    class: low-traffic
+    sites:
+    - eqiad
+    ip: *ip_block035
+    # TCP port (log4j)
+    port: 4560
+    bgp: 'yes'
+    depool-threshold: '.5'
+    scheduler: sh
+    monitors:
+      IdleConnection:
+        timeout-clean-reconnect: 3
+        max-delay: 300
+    conftool:
+      cluster: logstash
+      service: logstash
+    icinga:
+      check_command: "check_tcp_ip!logstash.svc.%{::site}.wmnet!4560"
+      sites:
+        eqiad:
+          hostname: logstash.svc.eqiad.wmnet

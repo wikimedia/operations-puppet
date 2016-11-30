@@ -1,2 +1,3 @@
 lvs::realserver::realserver_ips:
     - '10.2.2.33' # kibana.svc.eqiad.wmnet
+    - '10.2.2.36' # logstash.svc.eqiad.wmnet

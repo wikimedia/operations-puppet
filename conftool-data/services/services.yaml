@@ -183,3 +183,10 @@ logstash:
     default_values:
       pooled: 'no'
       weight: 10
+  logstash:
+    port: 4560
+    datacenters:
+    - eqiad
+    default_values:
+      pooled: 'no'
+      weight: 10
