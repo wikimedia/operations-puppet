@@ -73,4 +73,12 @@ class phabricator::tools (
         hour    => '1',
         require => Package[$deploy_target],
     }
+
+    # clean up old tmp files (T150396)
+    cron { 'phab_clean_tmp':
+        ensure  => present,
+        command => '/usr/bin/find /tmp -type d -user www-data -mtime +14 -delete',
+        user    => 'root',
+        hour    => '7',
+    } 
 }
