@@ -1031,7 +1031,7 @@ class role::mariadb::parsercache(
         config  => 'mariadb/parsercache.my.cnf.erb',
         datadir => '/srv/sqldata-cache',
         tmpdir  => '/srv/tmp',
-        ssl     => 'on',
+        ssl     => 'puppet-cert',
         p_s     => 'off',
     }
 
