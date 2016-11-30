@@ -32,6 +32,6 @@ class snapshot::addschanges(
         user        => $user,
         command     => "python ${repodir}/generatemiscdumps.py --configfile ${confsdir}/addschanges.conf --dumptype incrdumps",
         minute      => '50',
-        hour        => '23',
+        hour        => '20',
     }
 }
