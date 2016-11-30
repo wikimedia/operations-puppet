@@ -11,13 +11,13 @@
 class eventlogging::monitoring::graphite($kafka_brokers_graphite_wildcard) {
     $raw_events_rate_metric   = "sumSeries(kafka.cluster.analytics-eqiad.kafka.${kafka_brokers_graphite_wildcard}.kafka.server.BrokerTopicMetrics.MessagesInPerSec.eventlogging-client-side.OneMinuteRate)"
     $error_events_rate_metric = "sumSeries(kafka.cluster.analytics-eqiad.kafka.${kafka_brokers_graphite_wildcard}.kafka.server.BrokerTopicMetrics.MessagesInPerSec.eventlogging_EventError.OneMinuteRate)"
-    $navigation_timing_events_rate_metric = "sumSeries(kafka.cluster.analytics-eqiad.kafka.${kafka_brokers_graphite_wildcard}.kafka.server.BrokerTopicMetrics.MessagesInPerSec.eventlogging_NavigationTiming.OneMinuteRate)"
+    $navigation_timing_events_rate_metric = "keepLastValue(sumSeries(kafka.cluster.analytics-eqiad.kafka.${kafka_brokers_graphite_wildcard}.kafka.server.BrokerTopicMetrics.MessagesInPerSec.eventlogging_NavigationTiming.OneMinuteRate), 20)"
 
     # Warn if 15% of overall event throughput goes beyond 1000 events/s
     # in a 15 min period.
     # These thresholds are somewhat arbtirary.
     monitoring::graphite_threshold { 'eventlogging_throughput':
-        description   => 'Throughput of EvenLogging events',
+        description   => 'Throughput of EventLogging events',
         metric        => $raw_events_rate_metric,
         warning       => 1000,
         critical      => 5000,
