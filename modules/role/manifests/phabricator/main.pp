@@ -17,10 +17,22 @@ class role::phabricator::main {
     include base::firewall
     include ::apache::mod::remoteip
 
+    $phabricator_domain = hiera('phabricator_domain', undef)
+
+    $phabricator_security_domain = hiera('phabricator_security_domain', undef)
+
     # this site's misc-lb caching proxies hostnames
     $cache_misc_nodes = hiera('cache::misc::nodes', [])
-    $domain = 'phabricator.wikimedia.org'
-    $altdom = 'phab.wmfusercontent.org'
+    if $phabricator_domain == undef {
+        $domain = 'phabricator.wikimedia.org'
+    } else {
+        $domain = $phabricator_base_uri
+    }
+    if $phabricator_security_domain == undef {
+        $altdom = 'phab.wmfusercontent.org'
+    } else {
+        $altdom = $phabricator_security_domain
+    }
     $mysql_host = hiera('phabricator::mysql::master', 'localhost')
     $mysql_slave = hiera('phabricator::mysql::slave', 'localhost')
     $phab_root_dir = '/srv/phab'
@@ -125,6 +137,14 @@ class role::phabricator::main {
         $mysql_admin_pass = $phab_mysql_admin_pass
     }
 
+    $phabricator_diffusion_ssh = hiera('phabricator_diffusionssh', undef)
+
+    if $phabricator_diffusion_ssh == undef {
+        $phab_diffusion_ssh = 'git-ssh.wikimedia.org'
+    } else {
+        $phab_diffusion_ssh = $phabricator_diffusion_ssh
+    }
+
     # lint:ignore:arrow_alignment
     class { '::phabricator':
         deploy_target    => $deploy_target,
@@ -154,7 +174,7 @@ class role::phabricator::main {
             'events.listeners'                       => [],
             'diffusion.allow-http-auth'              => true,
             'diffusion.ssh-host'                     => 'git-ssh.wikimedia.org',
-            'gitblit.hostname'                       => 'git.wikimedia.org',
+            'gitblit.hostname'                       => $phab_diffusion_ssh,
         },
         conf_files     => $conf_files,
     }
