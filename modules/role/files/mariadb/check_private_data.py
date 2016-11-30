@@ -119,7 +119,7 @@ def column_has_private_data(conn, database, table, column):
     try:
         query = ("SELECT count(*)"
                  " FROM `{}`.`{}`"
-                 " WHERE IF(`{}` IS NULL, 0, `{}` <> '0'`").format(database,
+                 " WHERE IF(`{}` IS NULL, 0, `{}` <> '0')").format(database,
                                                                    table,
                                                                    column,
                                                                    column)
