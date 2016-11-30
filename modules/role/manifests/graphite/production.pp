@@ -25,6 +25,12 @@ class role::graphite::production {
         }
     }
 
+    # Cleanup stale labs instances data - T143405
+    tmpreaper::reap { 'graphite-labs-instances':
+        path => "${storage_dir}/instances",
+        age  => '30d',
+    }
+
     $graphite_hosts = [
         'graphite1001.eqiad.wmnet',
         'graphite1003.eqiad.wmnet',
