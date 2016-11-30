@@ -71,4 +71,8 @@ class role::statistics::cruncher inherits role::statistics::base {
         repository => 'limn-multimedia-data',
         output_dir => 'metrics/multimedia-health',
     }
+    reportupdater::job { 'ee-migration':
+        repository => 'limn-ee-data',
+        output_dir => 'metrics/ee',
+    }
 }
