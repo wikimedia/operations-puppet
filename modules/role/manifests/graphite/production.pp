@@ -5,8 +5,10 @@
 # Instance requires people to authenticate via LDAP before they can see metrics.
 #
 class role::graphite::production {
+    $storage_dir = '/var/lib/carbon'
+
     class { 'role::graphite::base':
-        storage_dir      => '/var/lib/carbon',
+        storage_dir      => $storage_dir,
         auth             => true,
         c_relay_settings => {
             forward_clusters => {
@@ -25,6 +27,12 @@ class role::graphite::production {
         }
     }
 
+    # Cleanup stale labs instances data - T143405
+    tmpreaper::reap { 'graphite-labs-instances':
+        path => "${storage_dir}/instances",
+        age  => '30d',
+    }
+
     $graphite_hosts = [
         'graphite1001.eqiad.wmnet',
         'graphite1003.eqiad.wmnet',
@@ -36,7 +44,7 @@ class role::graphite::production {
     include rsync::server
 
     rsync::server::module { 'carbon':
-        path        => '/var/lib/carbon',
+        path        => $storage_dir,
         uid         => '_graphite',
         gid         => '_graphite',
         hosts_allow => $graphite_hosts,
