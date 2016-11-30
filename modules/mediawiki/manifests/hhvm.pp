@@ -7,7 +7,7 @@ class mediawiki::hhvm {
 
     # Number of malloc arenas to use, see T151702
     # HHVM defaults to 1
-    $malloc_arenas = hiera('mediawiki::hhvm::malloc_arenas', undef)
+    $malloc_arenas = hiera('mediawiki::hhvm::malloc_arenas', $::processorcount)
     include ::hhvm::admin
     include ::hhvm::monitoring
     include ::hhvm::debug

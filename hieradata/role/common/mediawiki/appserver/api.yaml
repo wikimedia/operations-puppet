@@ -17,4 +17,3 @@ hhvm::extra::cli:
       connect_timeout: 3000
 apache::logrotate::rotate: 12
 nutcracker::verbosity: "4"
-mediawiki::hhvm::malloc_arenas: "%{::processorcount}"
