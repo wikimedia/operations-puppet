@@ -119,9 +119,10 @@ def column_has_private_data(conn, database, table, column):
     try:
         query = ("SELECT count(*)"
                  " FROM `{}`.`{}`"
-                 " WHERE NOT (`{}` IS NOT NULL"
-                 "            OR `{}` <> '')").format(database, table,
-                                                      column, column)
+                 " WHERE IFNULL(`{}`, 0, `{} <> '0'`").format(database,
+                                                              table,
+                                                              column,
+                                                              column)
         cursor.execute(query)
         result = cursor.fetchall()
         if int(result[0][0]) > 0:
@@ -148,6 +149,7 @@ def get_unfiltered_columns(conn, filtered_tables, public_wiki_dbs):
             for database in public_wiki_dbs:
                 if column_has_private_data(conn, database, table, column):
                     unfiltered_columns.append([database, table, column])
+
     return unfiltered_columns
 
 
@@ -157,7 +159,7 @@ def drop_databases(dbs):
     the list
     """
     for db in dbs:
-        print("DROP DATABASE `{}`".format(db))
+        print("DROP DATABASE IF EXISTS `{}`".format(db))
 
 
 def drop_tables(tables):
@@ -165,7 +167,7 @@ def drop_tables(tables):
     Prints a drop table statement for each of the database given on the list
     """
     for table in tables:
-        print("DROP TABLE `{}`.{}`".format(table[0], table[1]))
+        print("DROP TABLE IF EXISTS `{}`.{}`".format(table[0], table[1]))
 
 
 def update_columns(cols):
