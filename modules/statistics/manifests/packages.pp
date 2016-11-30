@@ -90,13 +90,25 @@ class statistics::packages {
         'libxt-dev'
     ])
 
-    # R packages
-    ensure_packages([
+    $r_packages = [
         'r-base',
         'r-base-dev',      # Needed for R packages that have to compile C++ code; see T147682
         'r-cran-rmysql',
         'r-recommended'    # CRAN-recommended packages (e.g. MASS, Matrix, boot)
-    ])
+    ]
+
+    # Use R from Jessie Backports on jessie boxes.
+    if os_version('debian == jessie') {
+        apt::pin { $r_packages:
+            pin      => 'release a=jessie-backports',
+            priority => '1001',
+            before   => Package[$r_packages],
+        }
+    }
+
+    package { $r_packages:
+        ensure => present,
+    }
 
     if os_version('ubuntu >= trusty') {
         # A lot of these packages don't exist on debian yet,
