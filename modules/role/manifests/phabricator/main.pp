@@ -125,6 +125,30 @@ class role::phabricator::main {
         $mysql_admin_pass = $phab_mysql_admin_pass
     }
 
+    $phabricator_base_uri = hiera('phabricator_baseuri', undef)
+
+    if $phabricator_base_uri == udef {
+        $phab_base_uri = "https://${domain}"
+    } else {
+        $phab_base_uri = $phabricator_base_uri
+    }
+
+    $phabricator_security_domain = hiera('phabricator_securitydomain', undef)
+
+    if $phabricator_security_domain == {
+        $phab_security_domain = "https://${altdom}"
+    } else {
+        $phab_security_domain = $phabricator_security_domain
+    }
+
+    $phabricator_diffusion_ssh = hiera('phabricator_diffusionssh', undef)
+
+    if $phabricator_diffusion_ssh == undef {
+        $phab_diffusion_ssh = 'git-ssh.wikimedia.org'
+    } else {
+        $phab_diffusion_ssh = $phabricator_diffusion_ssh
+    }
+
     # lint:ignore:arrow_alignment
     class { '::phabricator':
         deploy_target    => $deploy_target,
@@ -141,8 +165,8 @@ class role::phabricator::main {
         settings         => {
             'darkconsole.enabled'                    => false,
             'differential.allow-self-accept'         => true,
-            'phabricator.base-uri'                   => "https://${domain}",
-            'security.alternate-file-domain'         => "https://${altdom}",
+            'phabricator.base-uri'                   => $phab_base_uri,
+            'security.alternate-file-domain'         => $phab_security_domain,
             'mysql.host'                             => $mysql_host,
             'phpmailer.smtp-host'                    => inline_template('<%= @mail_smarthost.join(";") %>'),
             'metamta.default-address'                => "no-reply@${domain}",
@@ -154,7 +178,7 @@ class role::phabricator::main {
             'events.listeners'                       => [],
             'diffusion.allow-http-auth'              => true,
             'diffusion.ssh-host'                     => 'git-ssh.wikimedia.org',
-            'gitblit.hostname'                       => 'git.wikimedia.org',
+            'gitblit.hostname'                       => $phab_diffusion_ssh,
         },
         conf_files     => $conf_files,
     }
