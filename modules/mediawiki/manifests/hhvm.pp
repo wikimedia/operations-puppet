@@ -5,6 +5,9 @@
 class mediawiki::hhvm {
     requires_os('ubuntu >= trusty || Debian >= jessie')
 
+    # Number of malloc arenas to use, see T151702
+    # HHVM defaults to 1
+    $malloc_arenas = hiera('mediawiki::hhvm::malloc_arenas', undef)
     include ::hhvm::admin
     include ::hhvm::monitoring
     include ::hhvm::debug
@@ -57,6 +60,7 @@ class mediawiki::hhvm {
                 namedPools => 'cirrus-eqiad,cirrus-codfw',
             },
         },
+        malloc_arenas => $malloc_arenas,
         # lint:endignore
     }
 

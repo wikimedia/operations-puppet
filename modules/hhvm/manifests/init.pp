@@ -67,7 +67,8 @@ class hhvm(
     $base_jit_size  = to_bytes('400 Mb'),
     $log_dir        = '/var/log/hhvm',
     $tmp_dir        = '/var/tmp/hhvm',
-    $cache_dir      = '/var/cache/hhvm'
+    $cache_dir      = '/var/cache/hhvm',
+    $malloc_arenas  = undef,
     ) {
     requires_os('ubuntu >= trusty || Debian >= jessie')
 
