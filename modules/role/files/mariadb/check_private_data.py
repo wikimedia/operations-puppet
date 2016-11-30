@@ -119,7 +119,7 @@ def column_has_private_data(conn, database, table, column):
     try:
         query = ("SELECT count(*)"
                  " FROM `{}`.`{}`"
-                 " WHERE IFNULL(`{}`, 0, `{} <> '0'`").format(database,
+                 " WHERE IFNULL(`{}`, 0, `{}` <> '0'`").format(database,
                                                               table,
                                                               column,
                                                               column)
@@ -149,7 +149,9 @@ def get_unfiltered_columns(conn, filtered_tables, public_wiki_dbs):
             for database in public_wiki_dbs:
                 if column_has_private_data(conn, database, table, column):
                     unfiltered_columns.append([database, table, column])
-
+            for database in ['centralauth']:
+                if column_has_private_data(conn, database, table, column):
+                    unfiltered_columns.append([database, table, column])
     return unfiltered_columns
 
 
@@ -167,7 +169,7 @@ def drop_tables(tables):
     Prints a drop table statement for each of the database given on the list
     """
     for table in tables:
-        print("DROP TABLE IF EXISTS `{}`.{}`".format(table[0], table[1]))
+        print("DROP TABLE IF EXISTS `{}`.`{}`".format(table[0], table[1]))
 
 
 def update_columns(cols):
