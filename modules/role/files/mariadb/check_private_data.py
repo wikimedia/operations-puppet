@@ -161,7 +161,7 @@ def drop_databases(dbs):
     the list
     """
     for db in dbs:
-        print("DROP DATABASE IF EXISTS `{}`".format(db))
+        print("DROP DATABASE IF EXISTS `{}`;".format(db))
 
 
 def drop_tables(tables):
@@ -169,7 +169,7 @@ def drop_tables(tables):
     Prints a drop table statement for each of the database given on the list
     """
     for table in tables:
-        print("DROP TABLE IF EXISTS `{}`.`{}`".format(table[0], table[1]))
+        print("DROP TABLE IF EXISTS `{}`.`{}`;".format(table[0], table[1]))
 
 
 def update_columns(cols):
@@ -179,7 +179,7 @@ def update_columns(cols):
     """
     for col in cols:
         print(("-- UPDATE `{}`.{}`"
-               "   SET `{}` = NULL").format(col[0], col[1], col[2]))
+               "   SET `{}` = NULL;").format(col[0], col[1], col[2]))
 
 
 def main():
