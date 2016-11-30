@@ -14,16 +14,19 @@ skipwikislist=<%= scope.lookupvar('snapshot::dumps::dirs::dblistsdir') -%>/skipm
 adminsettings=private/PrivateSettings.php
 
 [output]
-incrementalsdir=<%= scope.lookupvar('snapshot::dumps::dirs::datadir') -%>/public/other/incr
+dumpdir=<%= scope.lookupvar('snapshot::dumps::dirs::datadir') -%>/public/other/incr
 templatedir=<%= scope.lookupvar('snapshot::dumps::dirs::templsdir') %>
+indextmpl=<%= scope.lookupvar('snapshot::dumps::dirs::templsdir') %>/incrs-index.html
 temp=<%= scope.lookupvar('snapshot::dumps::dirs::datadir') -%>/temp
 webroot=http://download.wikimedia.org
 fileperms=0644
 # revisions must be at least this much older than time of current run
 # (or from 23:59 on specified date) to be dumped
 delay=43200
+lockstale=900
 
 [database]
+max_allowed_packet=32M
 
 [tools]
 php=/usr/bin/php5
@@ -31,7 +34,6 @@ mysql=/usr/bin/mysql
 gzip=/bin/gzip
 bzip2=/bin/bzip2
 checkforbz2footer=/usr/local/bin/checkforbz2footer
-writeuptopageid=/usr/local/bin/writeuptopageid
 multiversion=<%= @apachedir -%>/multiversion/MWScript.php
 
 [cleanup]
