@@ -115,7 +115,8 @@ class phabricator (
     include apache::mod::headers
 
     $docroot = "${phabdir}/phabricator/webroot"
-    $phab_servername = $phab_settings['phabricator.base-uri']
+
+    $phab_servername = hiera('phabricator_servername', $phab_settings['phabricator.base-uri'])
 
     apache::site { 'phabricator':
         content => template('phabricator/phabricator-default.conf.erb'),
