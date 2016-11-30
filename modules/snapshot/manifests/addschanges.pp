@@ -30,7 +30,7 @@ class snapshot::addschanges(
         ensure      => 'present',
         environment => 'MAILTO=ops-dumps@wikimedia.org',
         user        => $user,
-        command     => "python ${repodir}/generateincrementals.py --configfile ${confsdir}/addschanges.conf",
+        command     => "python ${repodir}/generatemiscdumps.py --configfile ${confsdir}/addschanges.conf --dumptype incrdumps",
         minute      => '50',
         hour        => '23',
     }
