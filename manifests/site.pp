@@ -959,7 +959,6 @@ node /^elastic20[0-3][0-9]\.codfw\.wmnet/ {
 node /^es101[268]\.eqiad\.wmnet/ {
     class { 'role::mariadb::core':
         shard => 'es1',
-        ssl   => 'on'
     }
 }
 
@@ -968,7 +967,6 @@ node /^es201[123]\.codfw\.wmnet/ {
     class { 'role::mariadb::core':
         shard         => 'es1',
         binlog_format => 'ROW',
-        ssl           => 'on',
     }
 }
 
@@ -980,7 +978,6 @@ node 'es1015.eqiad.wmnet' {
         shard         => 'es2',
         master        => true,
         binlog_format => 'ROW',
-        ssl           => 'on',
     }
 }
 
@@ -988,7 +985,6 @@ node /^es101[13]\.eqiad\.wmnet/ {
     class { 'role::mariadb::core':
         shard         => 'es2',
         binlog_format => 'ROW',
-        ssl           => 'on',
     }
 }
 
@@ -998,7 +994,6 @@ node 'es2016.codfw.wmnet' {
         shard         => 'es2',
         master        => true,
         binlog_format => 'ROW',
-        ssl           => 'on',
     }
 }
 
@@ -1006,7 +1001,6 @@ node /^es201[45]\.codfw\.wmnet/ {
     class { 'role::mariadb::core':
         shard         => 'es2',
         binlog_format => 'ROW',
-        ssl           => 'on',
     }
 }
 
@@ -1018,7 +1012,6 @@ node 'es1019.eqiad.wmnet' {
         shard         => 'es3',
         master        => true,
         binlog_format => 'ROW',
-        ssl           => 'on',
     }
 }
 
@@ -1026,7 +1019,6 @@ node /^es101[47]\.eqiad\.wmnet/ {
     class { 'role::mariadb::core':
         shard         => 'es3',
         binlog_format => 'ROW',
-        ssl           => 'on',
     }
 }
 
@@ -1036,7 +1028,6 @@ node 'es2018.codfw.wmnet' {
         shard         => 'es3',
         master        => true,
         binlog_format => 'ROW',
-        ssl           => 'on',
     }
 }
 
@@ -1044,7 +1035,6 @@ node /^es201[79]\.codfw\.wmnet/ {
     class { 'role::mariadb::core':
         shard         => 'es3',
         binlog_format => 'ROW',
-        ssl           => 'on',
     }
 }
 
