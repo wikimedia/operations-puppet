@@ -151,6 +151,33 @@ def get_unfiltered_columns(conn, filtered_tables, public_wiki_dbs):
     return unfiltered_columns
 
 
+def drop_databases(dbs):
+    """
+    Prints an SQL drop database statement for each of the database given on
+    the list
+    """
+    for db in dbs:
+        print("DROP DATABASE `{}`".format(db))
+
+
+def drop_tables(tables):
+    """
+    Prints a drop table statement for each of the database given on the list
+    """
+    for table in tables:
+        print("DROP TABLE `{}`.{}`".format(table[0], table[1]))
+
+
+def update_columns(cols):
+    """
+    prints a commented update statement for each of the columns given
+    on the list
+    """
+    for col in cols:
+        print(("-- UPDATE `{}`.{}`"
+               "   SET `{}` = NULL").format(col[0], col[1], col[2]))
+
+
 def main():
     (private_dblist, private_tables, filtered_tables, public_wiki_dbs,
      public_view_dbs, public_dbs) = get_lists(all_dblist_path,
@@ -160,21 +187,22 @@ def main():
     db = pymysql.connect(host='localhost', user='root',
                          unix_socket='/tmp/mysql.sock')
 
-    print('Non-public databases that are present:')
+    print('-- Non-public databases that are present:')
     private_databases_present = get_private_databases(db, public_dbs,
                                                       public_view_dbs,
                                                       SYSTEM_DBS,
                                                       USER_DATABASES_REGEX)
-    print(private_databases_present)
+    drop_databases(private_databases_present)
 
-    print('Non-public tables that are present:')
+    print('-- Non-public tables that are present:')
     private_tables_present = get_private_tables(db, private_tables, SYSTEM_DBS,
                                                 USER_DATABASES_REGEX)
-    print(private_tables_present)
-    print('Unfiltered columns that are present:')
+    drop_tables(private_tables_present)
+
+    print('-- Unfiltered columns that are present:')
     unfiltered_columns_present = get_unfiltered_columns(db, filtered_tables,
                                                         public_wiki_dbs)
-    print(unfiltered_columns_present)
+    update_columns(unfiltered_columns_present)
 
 
 if __name__ == "__main__":
