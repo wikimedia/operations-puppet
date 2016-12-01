@@ -33,6 +33,18 @@ class openstack::keystone::service($keystoneconfig, $openstack_version=$::openst
             notify  => Service['keystone'],
             require => Package['keystone'],
             mode    => '0440';
+        '/etc/keystone/domains':
+            ensure  => 'directory',
+            mode    => '0555';
+            owner   => keystone,
+            group   => keystone,
+            require => Package['keystone'],
+        '/etc/keystone/domains/keystone.observer.conf':
+            source  => "puppet:///modules/openstack/${openstack_version}/keystone/keystone.observer.conf",
+            mode    => '0440',
+            owner   => keystone,
+            group   => keystone,
+            require => File['etc/keystone/domains'];
         '/etc/keystone/policy.json':
             source  => "puppet:///modules/openstack/${openstack_version}/keystone/policy.json",
             mode    => '0644',
