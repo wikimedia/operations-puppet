@@ -100,6 +100,33 @@ class pdfrender(
         before => Base::Service_unit['pdfrender'],
     }
 
+    # Enable font hinting
+    file { "${home_dir}/.config":
+        ensure => directory,
+        owner  => 'pdfrender',
+        group  => 'pdfrender',
+        mode   => '0555',
+    }
+
+    file { "${home_dir}/.config/fontconfig":
+        ensure  => directory,
+        owner   => 'pdfrender',
+        group   => 'pdfrender',
+        mode    => '0555',
+        require => File["${home_dir}/.config"],
+        before  => File["${home_dir}/.config/fontconfig/fonts.conf"],
+    }
+
+    file { "${home_dir}/.config/fontconfig/fonts.conf":
+        ensure => present,
+        owner  => 'pdfrender',
+        group  => 'pdfrender',
+        mode   => '0444',
+        source => 'puppet:///modules/pdfrender/fonts.conf',
+        before => Base::Service_unit['pdfrender'],
+    }
+    # end font hinting
+
     systemd::syslog { 'pdfrender':
         readable_by => 'all',
         base_dir    => $::service::configuration::log_dir,
