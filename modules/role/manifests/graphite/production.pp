@@ -28,9 +28,11 @@ class role::graphite::production {
     }
 
     # Cleanup stale labs instances data - T143405
-    tmpreaper::reap { 'graphite-labs-instances':
-        path => "${storage_dir}/instances",
-        age  => '90d',
+    cron { 'graphite-labs-instances':
+        command => "[ -d ${storage_dir}/whisper/instances ] && find ${storage_dir}/whisper/instances -type f -mtime +90 -delete && find ${storage_dir}/whisper/instances -type d -empty -delete",
+        user    => "_graphite",
+        hour    => "8",
+        minute  => fqdn_rand(60),
     }
 
     $graphite_hosts = [
