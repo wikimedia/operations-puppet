@@ -37,10 +37,7 @@ define udp2log::instance::monitoring(
 
     # Monitor that each filter process defined in
     # /etc/udp2log/$name is running
-    # FIXME - top-scope var without namespace, will break in puppet 2.8
-    # lint:ignore:variable_scope
-    if ($ensure_monitor_processes == true and $ensure == 'running') {
-    # lint:endignore
+    if ($monitor_processes == true and $ensure == 'running') {
         nrpe::monitor_service { "udp2log_procs-${name}":
             ensure        => 'present',
             description   => "udp2log processes for ${name}",
