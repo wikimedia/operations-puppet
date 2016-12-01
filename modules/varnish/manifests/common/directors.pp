@@ -21,7 +21,7 @@ define varnish::common::directors(
     $group = hiera('cluster', $::cluster)
 
     # https://bibwild.wordpress.com/2012/04/12/ruby-hash-select-1-8-7-and-1-9-3-simultaneously-compatible/
-    $keyspaces_str = inline_template("<%= Hash[ @directors.select{ |_k, v| v['dynamic'] == 'yes' } ].values.map{ |v| \"#{@conftool_namespace}/#{v['dc']}/#{@group}/#{v['service']}\" }.join('|') %>")
+    $keyspaces_str = inline_template("<%= @directors.values.map{ |v| \"#{@conftool_namespace}/#{v['dc']}/#{@group}/#{v['service']}\" }.join('|') %>")
     $keyspaces = sort(unique(split($keyspaces_str, '\|')))
     confd::file { "/etc/varnish/directors.${instance}.vcl":
         ensure     => present,
