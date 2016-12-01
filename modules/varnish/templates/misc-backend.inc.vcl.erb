@@ -12,15 +12,7 @@ sub cluster_be_recv_applayer_backend {
         else
             hostcmp = %Q[req.http.Host ~ "#{dir['req_host_re']}"]
         end
-        if dir.key?('maintenance')
-            action = %Q[return (synth(503, "#{dir['maintenance']}"));]
-        else
-            if dir['type'] == 'hash'
-                action = "set req.backend_hint = #{dirname}.backend(req.http.X-Client-IP);\n"
-            else
-                action = "set req.backend_hint = #{dirname}.backend();\n"
-            end
-        end
+        action = "set req.backend_hint = #{dirname}.backend();\n"
         if_stmts.push("if (#{hostcmp}) {\n        #{action}    }")
     end
     all_ifs = if_stmts.join(' els')
