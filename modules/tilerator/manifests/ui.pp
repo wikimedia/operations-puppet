@@ -63,6 +63,7 @@
 #   directory in which osmosis keeps its state
 #
 class tilerator::ui(
+    $cassandra_servers,
     $port           = 6535,
     $conf_sources   = 'sources.prod.yaml',
     $contact_groups = 'admins',
@@ -84,10 +85,20 @@ class tilerator::ui(
 
     service::node { 'tileratorui':
         port           => $port,
-        config         => template('tilerator/config_ui.yaml.erb'),
+        deployment_config => true,
         no_workers     => 0, # 0 on purpose to only have one instance running
         repo           => 'tilerator/deploy',
         deployment     => 'scap3',
+        deployment_vars   => {
+            entrypoint         => '""',
+            all_sources_public => true,
+            conf_sources       => $conf_sources,
+            cassandra_user     => $cassandra_tileratorui_user,
+            cassandra_password => $cassandra_tileratorui_pass,
+            cassandra_servers  => $cassandra_servers,
+            osmdb_user         => $pgsql_tileratorui_user,
+            osmdb_password     => $pgsql_tileratorui_pass,
+        },
         contact_groups => $contact_groups,
     }
 
