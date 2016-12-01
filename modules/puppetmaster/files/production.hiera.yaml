@@ -14,7 +14,6 @@
   - "hosts/%{::hostname}"
   - "regex/%{::fqdn}"
   - "%{::site}"
-  - "private/hosts/%{::hostname}" # TODO: Remove this once labtest realm dies. DO NOT USE THIS
   - "private/%{::site}"
   - "common"
   - "private/common"
