@@ -973,7 +973,7 @@ node /^es201[123]\.codfw\.wmnet/ {
 # External Storage, Shard 2 (es2) databases
 
 ## eqiad servers
-node 'es1015.eqiad.wmnet' {
+node 'es1011.eqiad.wmnet' {
     class { 'role::mariadb::core':
         shard         => 'es2',
         master        => true,
@@ -981,7 +981,7 @@ node 'es1015.eqiad.wmnet' {
     }
 }
 
-node /^es101[13]\.eqiad\.wmnet/ {
+node /^es101[35]\.eqiad\.wmnet/ {
     class { 'role::mariadb::core':
         shard         => 'es2',
         binlog_format => 'ROW',
