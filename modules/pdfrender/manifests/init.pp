@@ -100,6 +100,15 @@ class pdfrender(
         before => Base::Service_unit['pdfrender'],
     }
 
+    file { '${home_dir}/.fonts.conf':
+        ensure => present,
+        owner  => 'pdfrender',
+        group  => 'pdfrender',
+        mode   => '0444',
+        source => 'puppet:///modules/pdfrender/fonts.conf',
+        before => Base::Service_unit['pdfrender'],
+    }
+
     systemd::syslog { 'pdfrender':
         readable_by => 'all',
         base_dir    => $::service::configuration::log_dir,
