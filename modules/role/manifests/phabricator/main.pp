@@ -307,4 +307,6 @@ class role::phabricator::main {
         weekday      => 1, # Monday
         require      => Package[$deploy_target],
     }
+
+    include phabricator::rsync
 }
