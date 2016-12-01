@@ -39,7 +39,7 @@ CONF.register_opts(whitelist_ops, group='auth')
 
 
 def check_whitelist(user_id, remote_addr):
-    """Return True if the user_id/remote_addr is in our whitelist.
+    """Return True if the user_id/remote_addr combination is in our whitelist.
        Otherwise, return raise Unauthorized"""
     LOG.debug("Auth request for user %s from %s" % (user_id,
                                                     remote_addr))
