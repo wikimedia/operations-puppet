@@ -110,46 +110,6 @@ class phabricator (
             ensure => present;
     }
 
-    include apache::mod::php5
-    include apache::mod::rewrite
-    include apache::mod::headers
-
-    $docroot = "${phabdir}/phabricator/webroot"
-
-    $phab_servername = hiera('phabricator_servername', $phab_settings['phabricator.base-uri'])
-
-    apache::site { 'phabricator':
-        content => template('phabricator/phabricator-default.conf.erb'),
-        require => $base_requirements,
-    }
-
-    # git.wikimedia.org hosts rewrite rules to redirect old gitblit urls to
-    # equivilent diffusion urls.
-
-    $gitblit_servername = $phab_settings['gitblit.hostname']
-
-    file { '/srv/git.wikimedia.org':
-        ensure => 'directory',
-        owner  => 'root',
-        group  => 'root',
-    }
-
-    apache::site { 'git.wikimedia.org':
-        content => template('phabricator/gitblit_vhost.conf.erb'),
-        require => File['/srv/git.wikimedia.org'],
-    }
-
-    # Robots.txt disallowing to crawl the alias domain
-    if $serveraliases {
-        file {"${phabdir}/robots.txt":
-            ensure  => present,
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0444',
-            content => "User-agent: *\nDisallow: /\n",
-        }
-    }
-
     scap::target { $deploy_target:
         deploy_user => $deploy_user,
         key_name    => 'phabricator',
@@ -186,18 +146,6 @@ class phabricator (
         $phab_settings['load-libraries'] = $libraries
     }
 
-    file { '/etc/php5/apache2/php.ini':
-        content => template('phabricator/php.ini.erb'),
-        notify  => Service['apache2'],
-        require => Package['libapache2-mod-php5'],
-    }
-
-    file { '/etc/apache2/phabbanlist.conf':
-        source  => 'puppet:///modules/phabricator/apache/phabbanlist.conf',
-        require => Package['libapache2-mod-php5'],
-        notify  => Service['apache2'],
-    }
-
     file { "${phabdir}/phabricator/conf/local/local.json":
         content => template('phabricator/local.json.erb'),
         require => $base_requirements,
@@ -210,7 +158,7 @@ class phabricator (
         create_resources(phabricator::conf_env, $conf_files)
     }
 
-    #default location for phabricator tracked repositories
+    # default location for phabricator tracked repositories
     if ($phab_settings['repository.default-local-path']) {
         $repo_root = $phab_settings['repository.default-local-path']
         file { $repo_root:
@@ -235,6 +183,22 @@ class phabricator (
         require => $base_requirements,
     }
 
+    $docroot = "${phabdir}/phabricator/webroot"
+    $phab_servername = hiera('phabricator_servername', $phab_settings['phabricator.base-uri'])
+    $gitblit_servername = $settings['gitblit.hostname']
+
+    class { 'phabriccator::apache':
+        base_requirements  => $base_requirements,
+        settings           => $phab_settings,
+        serveradmin        => $serveradmin,
+        gitblit_servername => $gitblit_servername,
+        phab_servername    => $phab_servername,
+        docroot            => $docroot,
+        serveraliases      => $serveraliases,
+        timezone           => $timezone,
+    }
+
+
     class { 'phabricator::vcs':
         basedir  => $phabdir,
         settings => $phab_settings,
@@ -246,16 +210,6 @@ class phabricator (
         settings => $phab_settings,
         before   => Service['phd'],
         require  => $base_requirements,
-    }
-
-    if $::initsystem == 'systemd' {
-        file { '/etc/systemd/system/phd.service':
-            ensure => present,
-            owner  => 'root',
-            group  => 'root',
-            mode   => '0444',
-            source => 'puppet:///modules/phabricator/systemd/phd.service',
-        }
     }
 
     # phd service is only running on active server set in Hiera
