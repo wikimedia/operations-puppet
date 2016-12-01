@@ -119,14 +119,15 @@ def column_has_private_data(conn, database, table, column):
     try:
         query = ("SELECT count(*)"
                  " FROM `{}`.`{}`"
-                 " WHERE IF(`{}` IS NULL, 0, `{}` <> '0')").format(database,
-                                                                   table,
-                                                                   column,
-                                                                   column)
+                 " WHERE IF(`{}` IS NULL, 0,"
+                 "          `{}` NOT IN ('0', ''))").format(database, table,
+                                                            column, column)
         cursor.execute(query)
         result = cursor.fetchall()
         if int(result[0][0]) > 0:
             has_private_data = True
+            print('-- Found private data: {}.{} {}'.format(database, table,
+                                                           column, column))
     # Ignore "table doesn't exist" errors
     except pymysql.err.ProgrammingError:
         pass
