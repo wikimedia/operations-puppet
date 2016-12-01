@@ -48,6 +48,10 @@ class role::eventlogging {
 
     $kafka_brokers_array = $kafka_config['brokers']['array']
 
+    # Where possible, if this is set, it will be included in client configuration
+    # to avoid having to do API version for Kafka < 0.10 (where there is not a version API).
+    $kafka_api_version = $kafka_config['api_version']
+
     # By default, the EL Kafka writer writes events to
     # schema based topic names like eventlogging_SCHEMA,
     # with each message keyed by SCHEMA_REVISION.
@@ -153,7 +157,15 @@ class role::eventlogging::processor inherits role::eventlogging {
     # out why and stop it.  This either needs to be higher,
     # or it is a bug in kafka-python.
     # See: https://phabricator.wikimedia.org/T142430
-    $kafka_producer_args = 'retries=6&retry_backoff_ms=200'
+    $kafka_retries_args = 'retries=6&retry_backoff_ms=200'
+
+    # If $kafka_api_version is set (from hiera cluster config),
+    # add it to kafka-python producer args.
+    $kafka_producer_args = $kafka_api_version ? {
+        undef   => $kafka_retries_args,
+        default => "api_version=${kafka_api_version}&${kafka_retries_args}"
+    }
+
     eventlogging::service::processor { $client_side_processors:
         format         => '%q %{recvFrom}s %{seqId}d %t %o %{userAgent}i',
         input          => $kafka_client_side_raw_uri,
