@@ -15,8 +15,6 @@ define role::cache::instances (
     $cluster_nodes
 ) {
 
-    $chash_dir = 'vslp'
-
     $cache_route_table = hiera('cache::route_table')
     $cache_route = $cache_route_table[$::site]
 
@@ -30,34 +28,14 @@ define role::cache::instances (
 
     $backend_caches = {
         'cache_eqiad' => {
-            'dynamic'  => 'yes',
-            'type'     => $chash_dir,
             'dc'       => 'eqiad',
             'service'  => 'varnish-be',
-            'backends' => $cluster_nodes['eqiad'],
-            'be_opts'  => $be_cache_be_opts,
-        },
-        'cache_eqiad_random' => {
-            'dynamic'  => 'yes',
-            'type'     => 'random',
-            'dc'       => 'eqiad',
-            'service'  => 'varnish-be-rand',
             'backends' => $cluster_nodes['eqiad'],
             'be_opts'  => $be_cache_be_opts,
         },
         'cache_codfw' => {
-            'dynamic'  => 'yes',
-            'type'     => $chash_dir,
             'dc'       => 'codfw',
             'service'  => 'varnish-be',
-            'backends' => $cluster_nodes['codfw'],
-            'be_opts'  => $be_cache_be_opts,
-        },
-        'cache_codfw_random' => {
-            'dynamic'  => 'yes',
-            'type'     => 'random',
-            'dc'       => 'codfw',
-            'service'  => 'varnish-be-rand',
             'backends' => $cluster_nodes['codfw'],
             'be_opts'  => $be_cache_be_opts,
         },
@@ -73,7 +51,6 @@ define role::cache::instances (
     }
 
     $our_backend_caches = hash_deselect_re("^cache_${::site}", $becaches_filtered)
-    $be_directors = merge($app_directors, $our_backend_caches)
 
     varnish::instance { "${title}-backend":
         name               => '',
@@ -85,7 +62,8 @@ define role::cache::instances (
         runtime_parameters => $be_runtime_params,
         storage            => $be_storage,
         vcl_config         => $be_vcl_config,
-        directors          => $be_directors,
+        app_directors      => $app_directors,
+        backend_caches     => $our_backend_caches,
     }
 
     # lint:ignore:arrow_alignment
@@ -99,20 +77,10 @@ define role::cache::instances (
         runtime_parameters => $fe_runtime_params,
         storage            => "-s malloc,${fe_mem_gb}G",
         jemalloc_conf      => $fe_jemalloc_conf,
-        directors          => {
+        backend_caches     => {
             'cache_local' => {
-                'dynamic'  => 'yes',
-                'type'     => $chash_dir,
                 'dc'       => $::site,
                 'service'  => 'varnish-be',
-                'backends' => $cluster_nodes[$::site],
-                'be_opts'  => $fe_cache_be_opts,
-            },
-            'cache_local_random' => {
-                'dynamic'  => 'yes',
-                'type'     => 'random',
-                'dc'       => $::site,
-                'service'  => 'varnish-be-rand',
                 'backends' => $cluster_nodes[$::site],
                 'be_opts'  => $fe_cache_be_opts,
             },
