@@ -57,8 +57,8 @@ class role::labs::openstack::nova::controller {
     }
 
     include network::constants
-    $prod_networks = $network::constants::production_networks
-    $labs_networks = $network::constants::labs_networks
+    $prod_networks = join($network::constants::production_networks, ' ')
+    $labs_networks = join($network::constants::labs_networks, ' ')
 
     $fwrules = {
         wikitech_ssh_public => {
