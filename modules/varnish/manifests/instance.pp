@@ -8,7 +8,8 @@ define varnish::instance(
     $storage='-s malloc,1G',
     $jemalloc_conf=undef,
     $runtime_parameters=[],
-    $directors={},
+    $app_directors={},
+    $backend_caches={},
     $extra_vcl = []
 ) {
 
@@ -28,8 +29,7 @@ define varnish::instance(
 
     $netmapper_dir = '/var/netmapper'
 
-    $varnish_directors = $directors
-    $dynamic_directors = hiera('varnish::dynamic_directors', true)
+    $dynamic_backend_caches = hiera('varnish::dynamic_backend_caches', true)
 
     # Install VCL include files shared by all instances
     require varnish::common::vcl
@@ -39,31 +39,21 @@ define varnish::instance(
         before => Service["varnish${instancesuffix}"]
     }
 
-    # Write the dynamic directors configuration, if we need it
+    # Write the dynamic backend caches configuration, if we need it
     if $name == '' {
         $inst = 'backend'
     } else {
         $inst = $name
     }
 
-    # lint:ignore:quoted_booleans lint:ignore:double_quoted_strings
-    if inline_template("<%= @directors.map{|k,v| v['dynamic'] }.include?('yes') %>") == "true" {
-        $use_dynamic_directors = true
-    } else {
-        $use_dynamic_directors = false
-    }
-    # lint:endignore
-
-    if $use_dynamic_directors {
-        varnish::common::directors { $vcl:
-            instance  => $inst,
-            directors => $directors,
-            extraopts => $extraopts,
-            before    => [
-                File["/etc/varnish/wikimedia_${vcl}.vcl"],
-                Service["varnish${instancesuffix}"]
-            ],
-        }
+    varnish::common::directors { $vcl:
+        instance  => $inst,
+        directors => $backend_caches,
+        extraopts => $extraopts,
+        before    => [
+            File["/etc/varnish/wikimedia_${vcl}.vcl"],
+            Service["varnish${instancesuffix}"]
+        ],
     }
 
     # Hieradata switch to shut users out of a DC/cluster. T129424
