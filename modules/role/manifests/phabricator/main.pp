@@ -150,7 +150,6 @@ class role::phabricator::main {
             'phpmailer.smtp-host'                    => inline_template('<%= @mail_smarthost.join(";") %>'),
             'metamta.default-address'                => "no-reply@${domain}",
             'metamta.domain'                         => $domain,
-            'metamta.maniphest.public-create-email'  => "task@${domain}",
             'metamta.reply-handler-domain'           => $domain,
             'repository.default-local-path'          => '/srv/repos',
             'phd.taskmasters'                        => 10,
