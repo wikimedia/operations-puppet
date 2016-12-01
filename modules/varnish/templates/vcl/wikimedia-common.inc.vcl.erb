@@ -64,21 +64,31 @@ probe varnish {
 }
 
 <%
-# Directors / Backends
-
-# Expected directors data format:
-# @varnish_directors = {
-#     'director name' => {
-#         'dynamic'  => 'yes', # or 'no', required
-#         'type'     => 'vslp', # required
-#         'dc'       => 'eqiad', # required if dynamic==yes
-#         'service'  => 'foo',   # required if dynamic==yes
-#         'backends' => [ "backend1", "backend2" ], # required: array or single value
-#         'be_opts'  => { # every option but 'probe' and 'between_bytes_timeout' is required!
+# backend_caches and app_directors (two different kinds of backend!)
+# refactoring here is a W-I-P
+#
+# Expected data format:
+# @backend_caches = { # always defined
+#     'cache_eqiad' => {
+#         'dc'       => 'eqiad',
+#         'service'  => 'foo',
+#         'backends' => [ "backend1", "backend2" ], # required: array
+#         'be_opts'  => { # every option is required!
 #             'port' = 80,
 #             'connect_timeout' = '2s',
 #             'first_byte_timeout' = '4s',
-#             'between_bytes_timeout' = '4s',
+#             'max_connections' = 100, # per-backend!
+#         },
+#     },
+# }
+#
+# @app_directors = { # not always defined (e.g. frontends, for now)
+#     'foo' => {
+#         'backend' => "foo.svc.eqiad.wmnet", # required service hostname
+#         'be_opts' => { # every option is required!
+#             'port' = 80,
+#             'connect_timeout' = '2s',
+#             'first_byte_timeout' = '4s',
 #             'max_connections' = 100, # per-backend!
 #         },
 #     },
@@ -90,57 +100,69 @@ probe varnish {
 # we have no cases where this is necessary! (whereas we do have cases of
 # duplicate backend hosts where the options are always identical, for
 # vslp-vs-random cache backends)
-#
+%>
 
-# Puppet-generated the Backend host definitions, regardless of 'dynamic'
+<% if not @varnish_testing -%>
 
-be_seen = {}
-@varnish_directors.keys.sort.each do |director_name|
-	director = @varnish_directors[director_name]
+# Generated list of cache backend hosts for director consumption
+
+<%
+becache_seen = {}
+@backend_caches.keys.sort.each do |director_name|
+	director = @backend_caches[director_name]
 	be_opts	= director['be_opts']
 	[*director['backends']].each do |backend|
-		next if be_seen.key?(backend)
-		be_seen[backend] = 1
+		next if becache_seen.key?(backend)
+		becache_seen[backend] = 1
 		name = 'be_' + backend.gsub(/[-.]/, '_')
 -%>
 
-<% if not @varnish_testing -%>
 backend <%= name %> {
 	.host = "<%= backend %>";
 	.port = "<%= be_opts['port'] %>";
 	.connect_timeout = <%= be_opts['connect_timeout'] %>;
 	.first_byte_timeout = <%= be_opts['first_byte_timeout'] %>;
-<% if be_opts.key?('between_bytes_timeout') -%>
-	.between_bytes_timeout = <%= be_opts['between_bytes_timeout'] %>;
-<% end -%>
 	.max_connections = <%= be_opts['max_connections'] %>;
-<% if be_opts.key?('probe') -%>
-	.probe = <%= be_opts['probe'] %>;
-<% end -%>
+	.probe = varnish;
 }
-<% end -%>
 
 <% end # backend loop -%>
 <% end # director loop -%>
 
-sub wm_common_directors_init {
-<% if @use_dynamic_directors and @dynamic_directors -%>
-include "directors.<%= @inst %>.vcl";
-<% end -%>
+# Generated list of applayer backend hosts for director consumption
 
-<% @varnish_directors.keys.sort.each do |director_name|
-director = @varnish_directors[director_name]
-if (!@dynamic_directors or director['dynamic'] != 'yes')
-	backends = [*director['backends']]
-	if (!backends.empty?)
+<%
+apphost_seen = {}
+@app_directors.keys.sort.each do |director_name|
+	director = @app_directors[director_name]
+	be_opts	= director['be_opts']
+	backend = director['backend']
+	next if apphost_seen.key?(backend)
+	apphost_seen[backend] = 1
+	name = 'be_' + backend.gsub(/[-.]/, '_')
 -%>
-<% if director['type'] == 'vslp' -%>
-// Yes, the vslp director gets instantiated with vslp.vslp() instead of
-// directors.vslp(). Nobody said this would have been pretty.
-new <%= director_name %> = vslp.<%= director['type'] %>();
+
+backend <%= name %> {
+	.host = "<%= backend %>";
+	.port = "<%= be_opts['port'] %>";
+	.connect_timeout = <%= be_opts['connect_timeout'] %>;
+	.first_byte_timeout = <%= be_opts['first_byte_timeout'] %>;
+	.max_connections = <%= be_opts['max_connections'] %>;
+}
+
+<% end # app_directors loop -%>
+
+<% end # !varnish_testing -%>
+
+sub wm_common_directors_init {
+<% if @dynamic_backend_caches -%>
+include "directors.<%= @inst %>.vcl";
 <% else -%>
-new <%= director_name %> = directors.<%= director['type'] %>();
-<% end %>
+<% @backend_caches.keys.sort.each do |director_name|
+director = @backend_caches[director_name]
+backends = director['backends'] -%>
+	new <%= director_name %> = vslp.vslp();
+	new <%= director_name %>_random = directors.random();
 <%
 	backends.each do |backend|
 		name = 'be_' + backend.gsub(/[-.]/, '_')
@@ -151,23 +173,28 @@ new <%= director_name %> = directors.<%= director['type'] %>();
 			name = "vtc_backend";
 		end
 -%>
-	<% if director['type'] == 'vslp' -%>
-	# VSLP has no per-backend weighting. We might want to add it as a
-	# functionality to the vmod.
-	# See https://phabricator.wikimedia.org/T126206
-	<%= director_name %>.add_backend(<%= name %>);
-	<% else -%>
-	<%= director_name %>.add_backend(<%= name %>, 100);
-	<% end -%>
+		<%= director_name %>.add_backend(<%= name %>);
+		<%= director_name %>_random.add_backend(<%= name %>, 100);
 <% 	end #backends loop -%>
-<%	if director['type'] == 'vslp' -%>
-	# We should think about this value, probably setting it in a
-	# backend-count-sensitive manner.
 	<%= director_name %>.init_hashcircle(150);
-<%	end -%>
-<% end #if !empty -%>
-<% end #if !dynamic -%>
 <% end #director loop -%>
+
+<% end #dynamic_backend_caches -%>
+
+<% @app_directors.keys.sort.each do |director_name|
+director = @app_directors[director_name]
+backend = director['backend']
+if @varnish_testing
+	name = "vtc_backend";
+else
+	name = 'be_' + backend.gsub(/[-.]/, '_')
+end
+-%>
+	new <%= director_name %> = directors.random();
+
+		<%= director_name %>.add_backend(<%= name %>, 100);
+<% end # app_directors loop -%>
+
 } # end wm_common_directors_init
 
 # Functions
