@@ -8,8 +8,9 @@ class role::pdfrender {
     $port = 5252
 
     class { '::pdfrender':
-        port    => $port,
-        running => $is_active,
+        port        => $port,
+        no_browsers => 8,
+        running     => $is_active,
     }
 
     ferm::service { "pdfrender_http_${port}":
