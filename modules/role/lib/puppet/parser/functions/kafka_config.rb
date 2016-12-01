@@ -66,7 +66,7 @@ module Puppet::Parser::Functions
     zk_hosts = zk_clusters[zk_cluster_name]['hosts'].keys.sort
 
     jmx_port = '9999'
-    {
+    config = {
       'name'      => cluster_name,
       'brokers'   => {
         'hash'     => brokers,
@@ -85,5 +85,13 @@ module Puppet::Parser::Functions
         'url'    => "#{zk_hosts.join(',')}/kafka/#{cluster_name}"
       }
     }
+
+    if cluster.key?('api_version')
+      config['api_version'] = cluster['api_version']
+    else
+      config['api_version'] = nil
+    end
+
+    config
   end
 end
