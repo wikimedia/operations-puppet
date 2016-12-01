@@ -219,7 +219,8 @@ class role::logstash::elasticsearch {
     }
 
     class { '::elasticsearch':
-        require => Package['elasticsearch/plugins'],
+        require      => Package['elasticsearch/plugins'],
+        java_package => 'openjdk-8-jdk',
     }
 
     $logstash_nodes = hiera('logstash::cluster_hosts')
