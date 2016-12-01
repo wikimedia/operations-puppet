@@ -35,6 +35,7 @@ class statistics::packages {
         'build-essential', # Requested by halfak to install SciPy
         'nodejs',
         'openjdk-7-jdk',
+        'openjdk-8-jdk',
         'g++-4.8',         # Requested by bearloga (Mikhail) to ensure that there is a compiler with C++11 support that can compile R package 'Boom'; see T147682 and http://stackoverflow.com/a/36034866/1091835 for more info
         # GNU Scientific Library (GSL) requested by bearloga (Mikhail)
         'libgsl0ldbl',     # GSL part 1/3
