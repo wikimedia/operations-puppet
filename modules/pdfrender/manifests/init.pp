@@ -20,7 +20,7 @@
 #   request. Default: 768
 #
 # [*no_browsers*]
-#   The number of browser instances to launch in parallel. Default: 1
+#   The number of browser instances to launch in parallel. Default: 8
 #
 # [*timeout*]
 #   The maximum number of seconds to wait for a render to complete before
@@ -31,7 +31,7 @@ class pdfrender(
     $running,
     $width       = 1024,
     $height      = 768,
-    $no_browsers = 1,
+    $no_browsers = 8,
     $timeout     = 60,
 ) {
 
