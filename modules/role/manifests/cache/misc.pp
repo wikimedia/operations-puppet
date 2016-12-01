@@ -111,6 +111,12 @@ class role::cache::misc {
             'backend'     => 'planet1001.eqiad.wmnet',
             'be_opts'     => $app_def_be_opts,
         },
+        'phab2001' => { # codfw phab
+            'dynamic'  => 'no',
+            'type'     => 'random',
+            'backends' => ['phab2001.codfw.wmnet'],
+            'be_opts'  => $app_def_be_opts,
+        },
         'pybal_config' => {
             'backend'  => 'puppetmaster1001.eqiad.wmnet',
             'be_opts'  => $app_def_be_opts,
@@ -233,6 +239,7 @@ class role::cache::misc {
         },
         'performance.wikimedia.org'          => { 'director' => 'graphite1001' },
         'phabricator.wikimedia.org'          => { 'director' => 'iridium' },
+        'phabricator-new.wikimedia.org'      => { 'director' => 'phab2001' },
         'phab.wmfusercontent.org'            => { 'director' => 'iridium' },
         'pivot.wikimedia.org'                => { 'director' => 'thorium' },
         'piwik.wikimedia.org'                => {
