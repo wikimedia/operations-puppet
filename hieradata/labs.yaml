@@ -35,6 +35,8 @@ logstash::java_package: 'openjdk-8-jdk'
 archiva::proxy::ssl_enabled: false
 archiva::proxy::certificate_name: ssl-cert-snakeoil
 statsite::instance::graphite_host: 'labmon1001.eqiad.wmnet'
+puppetmaster::git_user: root
+puppetmaster::git_group: root
 
 # Default to Dummy authenticator in JupyterHubs in labs
 jupyterhub::authenticator: dummy
