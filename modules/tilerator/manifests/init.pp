@@ -31,7 +31,9 @@ class tilerator(
 
     validate_array($cassandra_servers)
 
-    include ::tilerator::ui
+    class { '::tilerator::ui':
+        cassandra_servers => $cassandra_servers,
+    }
 
     $cassandra_tilerator_user = 'tilerator'
     $cassandra_tilerator_pass = hiera('maps::cassandra_tilerator_pass')
@@ -44,11 +46,21 @@ class tilerator(
     # So there will never be LVS or anything else than health check requests to
     # this port
     service::node { 'tilerator':
-        port           => 6534,
-        config         => template('tilerator/config.yaml.erb'),
-        no_workers     => $::processorcount / 2,
-        deployment     => 'scap3',
-        contact_groups => $contact_groups,
+        port              => 6534,
+        deployment_config => true,
+        no_workers        => $::processorcount / 2,
+        deployment        => 'scap3',
+        deployment_vars   => {
+            entrypoint         => '""',
+            all_sources_public => false,
+            conf_sources       => $conf_sources,
+            cassandra_user     => $cassandra_tilerator_user,
+            cassandra_password => $cassandra_tilerator_pass,
+            cassandra_servers  => $cassandra_servers,
+            osmdb_user         => $pgsql_tilerator_user,
+            osmdb_password     => $pgsql_tilerator_pass,
+        },
+        contact_groups    => $contact_groups,
     }
 
 }
