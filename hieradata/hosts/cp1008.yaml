@@ -1,7 +1,7 @@
 debdeploy::grains:
   debdeploy-cp:
     value: canary
-varnish::dynamic_directors: false
+varnish::dynamic_backend_caches: false
 cache::text::nodes:
     eqiad:
       - 'cp1008.wikimedia.org'
