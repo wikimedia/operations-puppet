@@ -100,6 +100,7 @@ define labstore::nfs_mount(
         file { '/usr/local/sbin/nfs-mount-manager':
             ensure => present,
             owner  => 'root',
+            group  => 'root',
             mode   => '0655',
             source => 'puppet:///modules/labstore/nfs-mount-manager',
         }
@@ -135,6 +136,7 @@ define labstore::nfs_mount(
                 file { '/usr/local/sbin/block-for-export':
                     ensure => present,
                     owner  => 'root',
+                    group  => 'root',
                     mode   => '0555',
                     source => 'puppet:///modules/labstore/block-for-export',
                 }
