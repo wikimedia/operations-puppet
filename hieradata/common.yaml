@@ -401,6 +401,12 @@ kafka_clusters:
   # This is the analytics Kafka cluster, named just 'eqiad' for
   # historical reasons.
   eqiad:
+    # Optional api_version indicates the Kafka API version the
+    # brokers are running.  Clients can use this to override
+    # version discovery for versions of Kafka where the version
+    # request API doesn't exist (< 0.10).  Once all brokers
+    # are on 0.10, this shouldn't be needed.
+    api_version: 0.9
     zookeeper_cluster_name: main-eqiad
     brokers:
       kafka1012.eqiad.wmnet:
@@ -417,6 +423,7 @@ kafka_clusters:
         id: 22  # Row C
 
   main-eqiad:
+    api_version: 0.9
     zookeeper_cluster_name: main-eqiad
     brokers:
       kafka1001.eqiad.wmnet:
@@ -427,6 +434,7 @@ kafka_clusters:
         id: 1003
 
   main-codfw:
+    api_version: 0.9
     zookeeper_cluster_name: main-codfw
     brokers:
       kafka2001.codfw.wmnet:
