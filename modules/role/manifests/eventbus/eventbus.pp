@@ -36,6 +36,12 @@ class role::eventbus::eventbus {
     $kafka_brokers_array = $config['brokers']['array']
     $kafka_base_uri      = inline_template('kafka:///<%= @kafka_brokers_array.join(":9092,") + ":9092" %>')
 
+    # Append this to query params if set.
+    $kafka_api_version_param = $config['api_version'] ? {
+        undef   => '',
+        default => "&api_version=${kafka_api_version}"
+    }
+
     $outputs = [
         # When events are produced to kafka, the
         # topic produced to will be interpolated from the event
@@ -44,7 +50,7 @@ class role::eventbus::eventbus {
         #   meta[topic] == mediawiki.revision_create
         # in eqiad will be produced to
         #   eqiad.mediawiki.revsion_create
-        "${kafka_base_uri}?async=False&topic=${::site}.{meta[topic]}"
+        "${kafka_base_uri}?async=False&topic=${::site}.{meta[topic]}${kafka_api_version_param}"
     ]
 
     $access_log_level = $::realm ? {
