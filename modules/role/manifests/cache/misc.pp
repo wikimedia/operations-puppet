@@ -207,6 +207,15 @@ class role::cache::misc {
             'be_opts'     => $app_def_be_opts,
             'req_host_re' => '^([^.]+\.)?planet\.wikimedia\.org$'
         },
+        'phab2001' => { # codfw phab
+            'dynamic'  => 'no',
+            'type'     => 'random',
+            'backends' => ['phab2001.codfw.wmnet'],
+            'be_opts'  => $app_def_be_opts,
+            'req_host' => [
+                'phabricator-new.wikimedia.org',
+            ],
+        },
         'pybal_config' => {
             'dynamic'  => 'no',
             'type'     => 'random',
