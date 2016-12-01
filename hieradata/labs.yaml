@@ -98,7 +98,7 @@ role::cache::text::top_domain: 'beta.wmflabs.org'
 role::cache::base::storage_parts:
   - vdb
   - vdb
-varnish::dynamic_directors: false
+varnish::dynamic_backend_caches: false
 
 swift::proxy::tld: 'beta.wmflabs.org'
 
