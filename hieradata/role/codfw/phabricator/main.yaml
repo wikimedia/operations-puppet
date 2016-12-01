@@ -13,3 +13,6 @@ phabricator::mysql::slave: "m3-slave.eqiad.wmnet"
 
 phabricator_domain: "phabricator-new.wikimedia.org"
 phabricator_altdomain: "phabricator-new.wikimedia.org"
+
+phabricator_rsync: true
+
