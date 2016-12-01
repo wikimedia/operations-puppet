@@ -16,6 +16,9 @@
 from keystone.common import dependency
 from keystone import exception
 
+from keystone.resource.backends import sql as sql_backend
+from keystone.common import sql
+
 from oslo_log import log as logging
 from oslo_config import cfg
 from oslo_messaging.notify import notifier
@@ -66,6 +69,26 @@ class KeystoneHooks(notifier._Driver):
     def _on_project_create(self, project_id):
 
         LOG.warning("Beginning wmf hooks for project creation: %s" % project_id)
+
+        # ====================================
+        # Change project id to == project name
+        #
+        # ====================================
+        project = self.resource_api.get_project(project_id)
+        name = project['name']
+
+        # We have to do this by hand because the library functions
+        #  wisely decline to modify a record id.
+        with sql.transaction() as session:
+            project_ref = session.query(sql_backend.Project).get(project_id)
+            # Kids, don't try this at home!
+            setattr(project_ref, 'id', name)
+
+        project_id = name
+
+        # ===============================
+        # Add default roles to new project
+        # ===============================
 
         rolelist = self.role_api.list_roles()
         roledict = {}
