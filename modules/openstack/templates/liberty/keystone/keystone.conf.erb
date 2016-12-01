@@ -293,6 +293,8 @@ connection = mysql://<%= @keystoneconfig["db_user"] %>:<%= @keystoneconfig["db_p
 
 [identity]
 driver = ldap
+domain_specific_drivers_enabled = True
+domain_config_dir = /etc/keystone/domains
 
 [cache]
  
