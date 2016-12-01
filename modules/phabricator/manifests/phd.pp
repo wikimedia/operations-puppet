@@ -58,4 +58,14 @@ class phabricator::phd (
         ensure => present,
         source => 'puppet:///modules/phabricator/logrotate_phd',
     }
+
+    if $::initsystem == 'systemd' {
+        file { '/etc/systemd/system/phd.service':
+            ensure => present,
+            owner  => 'root',
+            group  => 'root',
+            mode   => '0444',
+            source => 'puppet:///modules/phabricator/systemd/phd.service',
+        }
+    }
 }
