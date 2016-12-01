@@ -1304,6 +1304,7 @@ node /^(iridium\.eqiad|phab2001\.codfw)\.wmnet$/ {
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
     }
+	role(phabricator::migration)
     role(phabricator::main, backup::host)
     include standard
     include ganglia
