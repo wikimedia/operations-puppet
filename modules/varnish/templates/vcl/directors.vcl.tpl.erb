@@ -1,22 +1,12 @@
 
 <% @directors.keys.sort.each do |director_name|
-director = @directors[director_name]
-if director['dynamic'] == 'yes' -%>
-<% if director['type'] == 'vslp' -%>
-new <%= director_name %> = vslp.<%= director['type'] %>();
-<% else -%>
-new <%= director_name %> = directors.<%= director['type'] %>();
-<% end -%>
+director = @directors[director_name] -%>
+new <%= director_name %> = vslp.vslp();
+new <%= director_name %>_random = directors.random();
 <%- keyspace = "#{@conftool_namespace}/#{director['dc']}/#{@group}/#{director['service']}" -%>
 	{{range $node := ls "<%= keyspace %>/"}}{{ $key := printf "<%= keyspace %>/%s" $node }}{{ $data := json (getv $key) }}{{ if eq $data.pooled "yes"}}
-	<% if director['type'] == 'vslp' -%>
     <%= director_name %>.add_backend(be_{{ $parts := split $node "." }}{{ join $parts "_" }});
-    <% else -%>
-    <%= director_name %>.add_backend(be_{{ $parts := split $node "." }}{{ join $parts "_" }}, {{ $data.weight }});
-    <% end -%>
+    <%= director_name %>_random.add_backend(be_{{ $parts := split $node "." }}{{ join $parts "_" }}, {{ $data.weight }});
 	{{end}}{{end}}
-<% if director['type'] == 'vslp' -%>
 <%= director_name %>.init_hashcircle(150);
-<% end -%>
-<% end # if director['dynamic'] == 'yes' %>
 <% end # directors loop %>

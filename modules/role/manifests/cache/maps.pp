@@ -36,9 +36,7 @@ class role::cache::maps {
     $apps = hiera('cache::maps::apps')
     $app_directors = {
         'kartotherian'   => {
-            'dynamic'  => 'no',
-            'type'     => 'random',
-            'backends' => $apps['kartotherian']['backends'][$apps['kartotherian']['route']],
+            'backend' => $apps['kartotherian']['backends'][$apps['kartotherian']['route']],
             'be_opts' => {
                 'port'                  => 6533,
                 'connect_timeout'       => '5s',
