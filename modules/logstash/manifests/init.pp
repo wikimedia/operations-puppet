@@ -18,7 +18,7 @@
 class logstash(
     $heap_memory_mb = 64,
     $filter_workers = 1,
-    $java_package   = 'openjdk-7-jdk',
+    $java_package   = 'openjdk-8-jdk',
 ) {
     require_package($java_package)
 
