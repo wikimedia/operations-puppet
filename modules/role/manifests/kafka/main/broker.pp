@@ -27,12 +27,6 @@ class role::kafka::main::broker {
     # If we've got at least 3 brokers, set default replication factor to 3.
     $replication_factor  = min(3, $config['brokers']['size'])
 
-    # Use 2 if replication factor is 3, else 1
-    $min_insync_replicas = $replication_factor ? {
-        3       => 2,
-        default => 1,
-    }
-
     file { '/srv/kafka':
         ensure => 'directory',
         mode   => '0755',
@@ -49,8 +43,6 @@ class role::kafka::main::broker {
         auto_leader_rebalance_enable => false,
 
         default_replication_factor   => $replication_factor,
-        min_insync_replicas          => $min_insync_replicas,
-
         # Start with a low number of (auto created) partitions per
         # topic.  This can be increased manually for high volume
         # topics if necessary.
