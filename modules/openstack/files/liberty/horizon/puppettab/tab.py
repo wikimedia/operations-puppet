@@ -37,7 +37,6 @@ class PuppetTab(tabs.TableTab):
     preload = False
 
     def __init__(self, *args, **kwargs):
-
         # For some reason our parent class can't deal with these
         #  args, so extract them now if they're present
         if 'prefix' in kwargs:
@@ -78,7 +77,6 @@ class PuppetTab(tabs.TableTab):
         self.config = puppet_config(self.prefix, self.tenant_id)
 
     def add_caption(self):
-
         self.capption = ""
         if self.tab_type == 'prefix':
             self.caption = _("These puppet settings will affect all VMs in the"
