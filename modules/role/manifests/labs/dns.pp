@@ -137,6 +137,7 @@ class role::labs::dns {
     monitoring::service { "${auth_soa_name} Auth DNS TCP":
         host          => $auth_soa_name,
         description   => 'Check for gridmaster host resolution TCP',
+        critical      => 'true',
         check_command => "check_dig_tcp!${auth_soa_name}!tools-grid-master.tools.eqiad.wmflabs",
     }
 }
