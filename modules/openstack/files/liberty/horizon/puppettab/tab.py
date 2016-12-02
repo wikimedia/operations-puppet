@@ -120,12 +120,14 @@ class PuppetTab(tabs.TableTab):
         elif 'caption' in self.tab_group.kwargs:
             context['caption'] = self.tab_group.kwargs['caption']
 
-        url = "horizon:project:puppet:edithiera"
         kwargs = {
             'prefix': self.prefix,
             'tenantid': self.tenant_id,
         }
-        context['edithieraurl'] = urlresolvers.reverse(url, kwargs=kwargs)
+        context['edithieraurl'] = urlresolvers.reverse(
+            "horizon:project:puppet:edithiera", kwargs=kwargs)
+        context['editunknownclassesurl'] = urlresolvers.reverse(
+            "horizon:project:puppet:editunknownclasses", kwargs=kwargs)
 
         url = "horizon:project:puppet:removepuppetprefix"
         context['removepuppetprefixurl'] = urlresolvers.reverse(url,

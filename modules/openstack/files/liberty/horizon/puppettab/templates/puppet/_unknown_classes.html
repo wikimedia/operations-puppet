@@ -1,0 +1,9 @@
+{% load i18n %}
+
+<div class="row-fluid">
+   <h3>{% trans "Other Classes" %}</h3>
+   <p>
+     <pre>{{ config.unknown_classes_text }}</pre>
+   </p>
+   <a href="{{ editunknownclassesurl }}" class="btn btn-primary ajax-modal">{% trans "Edit" %}</a>
+</div>
