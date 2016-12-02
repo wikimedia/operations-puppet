@@ -5,9 +5,6 @@
 class mediawiki::hhvm {
     requires_os('ubuntu >= trusty || Debian >= jessie')
 
-    # Number of malloc arenas to use, see T151702
-    # HHVM defaults to 1
-    $malloc_arenas = hiera('mediawiki::hhvm::malloc_arenas', $::processorcount)
     include ::hhvm::admin
     include ::hhvm::monitoring
     include ::hhvm::debug
@@ -21,6 +18,11 @@ class mediawiki::hhvm {
     $max_threads = min(
         floor(to_bytes($::memorysize) / to_bytes('120M')),
         $::processorcount*4)
+
+    # Number of malloc arenas to use, see T151702
+    # HHVM defaults to 1
+    # We want to have the same number of arenas as our threads
+    $malloc_arenas = $max_threads
 
     class { '::hhvm':
         # lint:ignore:arrow_alignment
