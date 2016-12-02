@@ -105,7 +105,7 @@ class pdfrender(
         ensure => directory,
         owner  => 'pdfrender',
         group  => 'pdfrender',
-        mode   => '0555',
+        mode   => '0700',
     }
 
     file { "${home_dir}/.config/fontconfig":
