@@ -64,24 +64,40 @@ class puppet_config():
             hiera_yaml = {}
         self.role_dict = {}
 
-        # Find the hiera lines that assign params to applied roles.
+        self.allroles = puppet_roles.available_roles()
+        allrole_dict = {role.name: role for role in self.allroles}
+
+        # other_classes is a list of roles that weren't enumerated by the puppet API.
+        #  These could be roles from a locally hacked puppet repo, or roles that have been
+        #  deleted from the puppet repo but still appear in the instance config.
+        self.other_classes = []
+
+        # Find the hiera lines that assign params to applied and known roles.
         #  these lines are removed from the hiera text and added as
         #  structured data to the role records instead.
-        for role in self.roles:
-            self.role_dict[role] = {}
-            for key in hiera_yaml.keys():
-                if key.startswith(role):
-                    # (len(role)+2) is the length of the rolename plus the ::,
-                    # getting us the raw param name
-                    argname = key[(len(role)+2):]
-                    if hiera_yaml[key]:
-                        self.role_dict[role][argname] = hiera_yaml[key]
-                        del hiera_yaml[key]
+        for role in list(self.roles):
+            if role in allrole_dict:
+                self.role_dict[role] = {}
+                for key in hiera_yaml.keys():
+                    if key.startswith(role):
+                        # (len(role)+2) is the length of the rolename plus the ::,
+                        # getting us the raw param name
+                        argname = key[(len(role)+2):]
+                        if hiera_yaml[key]:
+                            self.role_dict[role][argname] = hiera_yaml[key]
+                            del hiera_yaml[key]
+                allrole_dict[role].mark_applied(self.role_dict[role])
+            elif role:
+                # This is an unknown role. Don't try to structure anything, just
+                #  add the rolename to the list and let hiera take care of the
+                #  params.
+                self.other_classes.append(role)
+                self.roles.remove(role)
+            else:
+                # Sometimes we get empty strings from crappy parsing
+                self.roles.remove(role)
 
-        self.allroles = puppet_roles.available_roles()
-        for role in self.allroles:
-            if role.name in self.role_dict.keys():
-                role.mark_applied(self.role_dict[role.name])
+        self.other_classes_text = "\n".join(self.other_classes)
 
         # Move the applied roles to the top for UI clarity
         self.allroles.sort(key=lambda x: x.applied, reverse=True)
@@ -135,8 +151,8 @@ class puppet_config():
         self.set_role_list(roles)
         self.set_hiera(hiera)
 
-    def set_role_list(self, role_list):
-        list_dump = yaml.safe_dump(role_list, default_flow_style=False)
+    def set_roles(self, roles):
+        list_dump = yaml.safe_dump(roles, default_flow_style=False)
         roleurl = "%s/%s/prefix/%s/roles" % (self.apiurl,
                                              self.tenant_id,
                                              self.prefix)
@@ -146,6 +162,12 @@ class puppet_config():
                             headers={'Content-Type': 'application/x-yaml'})
         req.raise_for_status()
         self.refresh()
+
+    def set_other_class_list(self, other_class_list):
+        self.set_roles(other_class_list + self.roles)
+
+    def set_role_list(self, role_list):
+        self.set_roles(role_list + self.other_classes)
 
     def set_hiera(self, hiera_yaml):
         if not hiera_yaml:

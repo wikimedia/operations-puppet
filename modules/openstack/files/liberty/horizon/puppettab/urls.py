@@ -30,6 +30,9 @@ urlpatterns = patterns(
         'edithiera$',
         views.EditHieraView.as_view(), name='edithiera'),
     url(r'^(?P<prefix>[^/]+)/(?P<tenantid>[^/]+)/'
+        'editotherclasses$',
+        views.EditOtherClassesView.as_view(), name='editotherclasses'),
+    url(r'^(?P<prefix>[^/]+)/(?P<tenantid>[^/]+)/'
         'removepuppetprefix$',
         views.RemovePrefixView.as_view(), name='removepuppetprefix'),
 )
