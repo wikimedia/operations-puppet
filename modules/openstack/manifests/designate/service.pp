@@ -147,25 +147,32 @@ class openstack::designate::service (
             require =>  Package['designate'],
         }
 
+        # Page if designate processes die.  We only have one of each of these,
+        #  and new instance creation will be very broken if services die.
         nrpe::monitor_service { 'check_designate_sink_process':
             description  => 'designate-sink process',
             nrpe_command => "/usr/lib/nagios/plugins/check_procs -c 1: --ereg-argument-array '^/usr/bin/python /usr/bin/designate-sink'",
+            critical     => true,
         }
         nrpe::monitor_service { 'check_designate_api_process':
             description  => 'designate-api process',
             nrpe_command => "/usr/lib/nagios/plugins/check_procs -c 1: --ereg-argument-array '^/usr/bin/python /usr/bin/designate-api'",
+            critical     => true,
         }
         nrpe::monitor_service { 'check_designate_central_process':
             description  => 'designate-central process',
             nrpe_command => "/usr/lib/nagios/plugins/check_procs -c 1: --ereg-argument-array '^/usr/bin/python /usr/bin/designate-central'",
+            critical     => true,
         }
         nrpe::monitor_service { 'check_designate_mdns':
             description  => 'designate-mdns process',
             nrpe_command => "/usr/lib/nagios/plugins/check_procs -c 1: --ereg-argument-array '^/usr/bin/python /usr/bin/designate-mdns'",
+            critical     => true,
         }
         nrpe::monitor_service { 'check_designate_pool-manager':
             description  => 'designate-pool-manager process',
             nrpe_command => "/usr/lib/nagios/plugins/check_procs -c 1: --ereg-argument-array '^/usr/bin/python /usr/bin/designate-pool-manager'",
+            critical     => true,
         }
 
     } else {
