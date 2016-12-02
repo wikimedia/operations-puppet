@@ -78,6 +78,9 @@
 # [*pdfrender_uri*]
 #   PDF Render service URI. Default: http://pdfrender.svc.eqiad.wmnet:5252
 #
+# [*citoid_uri*]
+#   Citoid service URI. Default: http://citoid.svc.eqiad.wmnet:1970
+#
 # [*monitor_domain*]
 #   The domain to monitor during the service's operation.
 #   Default: en.wikipedia.org
@@ -114,6 +117,7 @@ class restbase(
     $eventlogging_service_uri =
     'http://eventbus.svc.eqiad.wmnet:8085/v1/events',
     $pdfrender_uri  = 'http://pdfrender.svc.eqiad.wmnet:5252',
+    $citoid_uri     = 'http://citoid.svc.eqiad.wmnet:1970',
     $monitor_domain = 'en.wikipedia.org',
     $hosts          = [$::ipaddress],
 ) {
