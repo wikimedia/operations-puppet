@@ -91,7 +91,7 @@ class gerrit::jetty(
     file { '/var/lib/gerrit2/.ssh/id_rsa':
         owner   => 'gerrit2',
         group   => 'gerrit2',
-        mode    => '0600',
+        mode    => '0400',
         require => File['/var/lib/gerrit2/.ssh'],
         content => secret('gerrit/id_rsa'),
     }
