@@ -141,6 +141,7 @@ class toollabs::exec_environ {
 
         # PHP libraries
         'php5-cli',
+        'php5-common',
         'php5-curl',
         'php5-gd',
         'php5-imagick',                # T71078.
@@ -394,6 +395,13 @@ class toollabs::exec_environ {
             mode    => '0644',
             source  => 'puppet:///modules/toollabs/php5.cron.d',
             require => Package['php5-cli'],
+        }
+
+        # Enable PHP mcrypt module (T97857).
+        exec { 'tools_enable_php_mcrypt_module':
+            command => '/usr/sbin/php5enmod mcrypt',
+            unless  => '/usr/sbin/php5query -s apache2 -m mcrypt && /usr/sbin/php5query -s cli -m mcrypt',
+            require => Package['php5-cli', 'php5-mcrypt'],
         }
     } elsif $::lsbdistcodename == 'jessie' {
         include ::toollabs::genpp::python_exec_jessie
