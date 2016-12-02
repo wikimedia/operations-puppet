@@ -7,8 +7,6 @@ class role::openldap::labs {
     $ldapconfig = hiera_hash('labsldapconfig', {})
     $ldap_labs_hostname = $ldapconfig['hostname']
 
-    $labs_keystone_ip = ipresolve(hiera('labs_keystone_host'),4)
-
     system::role { 'role::openldap::labs':
         description => 'LDAP servers for labs (based on OpenLDAP)'
     }
