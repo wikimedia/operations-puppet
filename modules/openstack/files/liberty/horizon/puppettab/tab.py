@@ -125,7 +125,10 @@ class PuppetTab(tabs.TableTab):
             'prefix': self.prefix,
             'tenantid': self.tenant_id,
         }
-        context['edithieraurl'] = urlresolvers.reverse(url, kwargs=kwargs)
+        context['edithieraurl'] = urlresolvers.reverse(
+            "horizon:project:puppet:edithiera", kwargs=kwargs)
+        context['editunknownclassesurl'] = urlresolvers.reverse(
+            "horizon:project:puppet:editunknownclasses", kwargs=kwargs)
 
         url = "horizon:project:puppet:removepuppetprefix"
         context['removepuppetprefixurl'] = urlresolvers.reverse(url,
