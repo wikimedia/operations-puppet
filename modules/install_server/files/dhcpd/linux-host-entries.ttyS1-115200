@@ -5824,6 +5824,21 @@ host restbase1015 {
     fixed-address restbase1015.eqiad.wmnet;
 }
 
+host restbase1016 {
+    hardware ethernet 18:66:DA:7F:25:5B;
+    fixed-address restbase1016.eqiad.wmnet;
+}
+
+host restbase1017 {
+    hardware ethernet 18:66:DA:7D:BD:EC;
+    fixed-address restbase1017.eqiad.wmnet;
+}
+
+host restbase1018 {
+    hardware ethernet 18:66:DA:7F:37:21;
+    fixed-address restbase1018.eqiad.wmnet;
+}
+
 host restbase2001 {
     hardware ethernet 3c:a8:2a:0a:ec:a0;
     fixed-address restbase2001.codfw.wmnet;
