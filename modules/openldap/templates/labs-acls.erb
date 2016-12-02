@@ -9,3 +9,9 @@ access to *
 # novaadmin needs to run queries on all users.  10,000 users is less than
 #  'unlimited' but should keep us happy for a year at least :/
 limits dn.exact="uid=novaadmin,ou=people,dc=wikimedia,dc=org" time=unlimited size=10000
+
+# novaobserver is an account used only for keystone access.  We don't want it
+#  to appear on wikitech, gerrit, etc. so limit access only to the keystone host
+access to dn=uid=novaobserver,ou=people,dc=wikimedia,dc=org
+	by peername.ip=<%= @labs_keystone_ip %>  users read
+	by * break
