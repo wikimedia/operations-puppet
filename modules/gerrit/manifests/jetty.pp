@@ -8,7 +8,7 @@ class gerrit::jetty(
     $ssh_host_key = undef,
     $heap_limit = '28g',
     $slave = false,
-    $java_home = '/usr/lib/jvm/java-7-openjdk-amd64/jre',
+    $java_home = '/usr/lib/jvm/java-8-openjdk-amd64/jre',
     ) {
 
     include nrpe
