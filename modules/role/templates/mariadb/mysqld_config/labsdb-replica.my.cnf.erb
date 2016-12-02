@@ -1,0 +1,76 @@
+[client]
+port   = 3306
+socket = /tmp/mysql.sock
+default-character-set = binary
+<%= scope.function_template('sections/ssl_client.erb') %>
+
+[mysqld]
+
+user       = mysql
+socket     = /tmp/mysql.sock
+port       = 3306
+datadir    = <%= @datadir %>
+tmpdir     = <%= @tmpdir %>
+server_id  = <%= @server_id %>
+read_only  = 0
+
+# enable socket authentication
+plugin-load = unix_socket=auth_socket.so
+
+log_bin
+log_slave_updates
+
+skip-external-locking
+skip-name-resolve
+temp-pool
+
+character-set-server           = binary
+collation-server               = binary
+
+secure_file_priv               = /dev/null
+max_connections                = 1024
+max_connect_errors             = 1000000000
+max_allowed_packet             = 32M
+connect_timeout                = 5
+query_cache_size               = 0
+query_cache_type               = 0
+event_scheduler                = 1
+log-warnings                   = 0
+thread_stack                   = 192K
+thread_cache_size              = 128
+interactive_timeout            = 28800
+wait_timeout                   = 600
+
+binlog_cache_size              = 1M
+max_binlog_size                = 100M
+binlog_format                  = <%= @binlog_format %>
+expire_logs_days               = 2
+slave_transaction_retries      = 4294967295
+
+table_open_cache               = 5000
+table_definition_cache         = 4000
+
+default-storage-engine         = InnoDB
+innodb_file_per_table          = 1
+innodb_buffer_pool_size        = <%= (Float(@memorysize.split[0]) * 0.75).round %>G
+innodb_buffer_pool_instances   = 1
+innodb_log_file_size           = 128M
+innodb_flush_log_at_trx_commit = 0
+innodb_thread_concurrency      = 0
+innodb_io_capacity             = 1000
+innodb_stats_sample_pages      = 16
+innodb_stats_method            = nulls_unequal
+
+<%= scope.function_template('sections/native_aio.erb') %>
+
+<%= scope.function_template('sections/buffer_pool_dump.erb') %>
+
+<%= scope.function_template('sections/ssl_server.erb') %>
+
+<%= scope.function_template('sections/performance_schema.erb') %>
+
+[mysqldump]
+
+quick
+max_allowed_packet = 32M
+
