@@ -24,4 +24,16 @@ class role::cache::kafka::eventlogging(
         topic_request_required_acks => '1',
         conf_template               => $conf_template,
     }
+
+    include ::standard
+
+    $cache_type = hiera('cache::cluster')
+    $graphite_metric_prefix = "varnishkafka.${::hostname}.eventlogging.${cache_type}"
+
+    # Sets up Logster to read from the Varnishkafka instance stats JSON file
+    # and report metrics to statsd.
+    varnishkafka::monitor { 'eventlogging':
+        graphite_metric_prefix => $graphite_metric_prefix,
+        statsd_host_port       => hiera('statsd'),
+    }
 }

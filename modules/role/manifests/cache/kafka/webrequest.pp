@@ -117,9 +117,7 @@ class role::cache::kafka::webrequest(
         require      => Class['::varnishkafka'],
     }
 
-    # Extract cache type name from topic for use in statsd prefix.
-    # There is probably a better way to do this.
-    $cache_type = regsubst($topic, '^webrequest_(.+)$', '\1')
+    $cache_type = hiera('cache::cluster')
     $graphite_metric_prefix = "varnishkafka.${::hostname}.webrequest.${cache_type}"
 
     # Test using logster to send varnishkafka stats to statsd -> graphite.
@@ -131,9 +129,12 @@ class role::cache::kafka::webrequest(
         logster_options => "-o statsd --statsd-host=statsd.eqiad.wmnet:8125 --metric-prefix=${graphite_metric_prefix}",
     }
 
-
-    # TEMPORARY test --until on all vk drerr alerts
-    $until = '0min'
+    # Sets up Logster to read from the Varnishkafka instance stats JSON file
+    # and report metrics to statsd.
+    varnishkafka::monitor { 'webrequest':
+        graphite_metric_prefix => $graphite_metric_prefix,
+        statsd_host_port       => hiera('statsd'),
+    }
 
     # Generate an alert if too many delivery report errors per minute
     # (logster only reports once a minute)
@@ -149,23 +150,6 @@ class role::cache::kafka::webrequest(
         # are over the threshold.
         percentage      => 80,
         from            => '10min',
-        until           => $until,
-        nagios_critical => false,
-        require         => Logster::Job['varnishkafka-webrequest'],
-    }
-
-    # Use graphite_anomaly to alert about anomolous deliver errors.
-    monitoring::graphite_anomaly { 'varnishkafka-anomaly-kafka_drerr':
-        # Disabling this.  It doesn't work like I wanted it to.
-        ensure          => 'absent',
-        description     => 'Varnishkafka Delivery Errors per minute anomaly',
-        metric          => "nonNegativeDerivative(transformNull(${graphite_metric_prefix}.varnishkafka.kafka_drerr, 0))",
-        over            => true,
-        # warn if more than 10 anomylous datapoints (last 10 minutes)
-        warning         => 5,
-        # critical if more than 45 anomylous datapoints (last 45 minutes)
-        critical        => 45,
-        nagios_critical => false,
         require         => Logster::Job['varnishkafka-webrequest'],
     }
 }
