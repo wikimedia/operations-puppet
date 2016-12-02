@@ -81,14 +81,14 @@ class phabricator::vcs (
     # must sudo to phd to for repo work.
     sudo::user { $vcs_user:
         privileges => [
-            "ALL=(${phd_user}) SETENV: NOPASSWD: /usr/bin/git-upload-pack, /usr/bin/git-receive-pack, /usr/bin/svnserve",
+            "ALL=(${phd_user}) SETENV: NOPASSWD: /usr/bin/git, /usr/bin/git-upload-pack, /usr/bin/git-receive-pack, /usr/bin/svnserve, /usr/bin/ssh",
         ],
         require    => User[$vcs_user],
     }
 
     sudo::user { 'www-data':
         privileges => [
-            "ALL=(${phd_user}) SETENV: NOPASSWD: /usr/local/bin/git-http-backend",
+            "ALL=(${phd_user}) SETENV: NOPASSWD: /usr/bin/git, /usr/local/bin/git-http-backend, /usr/bin/ssh",
         ],
         require    => File['/usr/local/bin/git-http-backend'],
     }
