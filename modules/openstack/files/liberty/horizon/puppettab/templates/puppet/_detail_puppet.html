@@ -12,5 +12,6 @@
     <h3>{% trans "Puppet Roles" %}</h3>
     {{ table.render }}
   </div>
+  {% include 'project/puppet/_unknown_classes.html' %}
   {% include 'project/puppet/_hiera.html' %}
 </div>

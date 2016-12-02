@@ -256,3 +256,64 @@ class RemovePrefixView(forms.ModalFormView):
         refer = self.request.META.get('HTTP_REFERER', '/')
         validate(refer)
         return refer
+
+
+class EditUnknownClassesForm(forms.SelfHandlingForm):
+    prefix = forms.CharField(widget=forms.HiddenInput())
+    tenant_id = forms.CharField(widget=forms.HiddenInput())
+    classes = forms.CharField(label=_("Unknown classes:"),
+                              widget=forms.Textarea(attrs={
+                                                    'cols': 80,
+                                                    'rows': 15}),
+                              required=False)
+
+    def handle(self, request, data):
+        unknown_class_list = [cls.strip() for cls in data['classes'].strip().split("\n") if cls]
+        config = puppet_config(data['prefix'], data['tenant_id'])
+        config.set_unknown_class_list(unknown_class_list)
+        return True
+
+
+class EditUnknownClassesView(forms.ModalFormView):
+    form_class = EditUnknownClassesForm
+    form_id = "edit_unknownclasses_form"
+    modal_header = _("Edit Unknown Classes")
+    submit_label = _("Apply Changes")
+    submit_url = "horizon:project:puppet:editunknownclasses"
+    template_name = "project/puppet/editunknownclasses.html"
+    context_object_name = 'unknownclassesconfig'
+
+    def get_context_data(self, **kwargs):
+        context = super(EditUnknownClassesView, self).get_context_data(**kwargs)
+        context['prefix'] = self.prefix
+        context['classes'] = self.classdata.unknown_classes
+        urlkwargs = {
+            'prefix': self.prefix,
+            'tenantid': self.tenant_id,
+        }
+        context['submit_url'] = urlresolvers.reverse(self.submit_url,
+                                                     kwargs=urlkwargs)
+        return context
+
+    def get_success_url(self):
+        validate = URLValidator()
+        refer = self.request.META.get('HTTP_REFERER', '/')
+        validate(refer)
+        return refer
+
+    def get_prefix(self):
+        return self.kwargs['prefix']
+
+    def get_tenant_id(self):
+        return self.kwargs['tenantid']
+
+    def get_initial(self):
+        initial = {}
+        self.prefix = self.get_prefix()
+        self.tenant_id = self.get_tenant_id()
+        self.classdata = puppet_config(self.prefix, self.tenant_id)
+        initial['classes'] = self.classdata.unknown_classes_text
+        initial['prefix'] = self.prefix
+        initial['tenant_id'] = self.tenant_id
+
+        return initial
