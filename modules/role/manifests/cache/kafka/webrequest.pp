@@ -117,55 +117,30 @@ class role::cache::kafka::webrequest(
         require      => Class['::varnishkafka'],
     }
 
-    # Extract cache type name from topic for use in statsd prefix.
-    # There is probably a better way to do this.
-    $cache_type = regsubst($topic, '^webrequest_(.+)$', '\1')
+    $cache_type = hiera('cache::cluster')
     $graphite_metric_prefix = "varnishkafka.${::hostname}.webrequest.${cache_type}"
 
-    # Test using logster to send varnishkafka stats to statsd -> graphite.
-    # This may be moved into the varnishkafka module.
-    logster::job { 'varnishkafka-webrequest':
-        minute          => '*/1',
-        parser          => 'JsonLogster',
-        logfile         => '/var/cache/varnishkafka/webrequest.stats.json',
-        logster_options => "-o statsd --statsd-host=statsd.eqiad.wmnet:8125 --metric-prefix=${graphite_metric_prefix}",
+    # Sets up Logster to read from the Varnishkafka instance stats JSON file
+    # and report metrics to statsd.
+    varnishkafka::monitor::statsd { 'webrequest':
+        graphite_metric_prefix => $graphite_metric_prefix,
+        statsd_host_port       => hiera('statsd'),
     }
-
-
-    # TEMPORARY test --until on all vk drerr alerts
-    $until = '0min'
 
     # Generate an alert if too many delivery report errors per minute
     # (logster only reports once a minute)
     monitoring::graphite_threshold { 'varnishkafka-kafka_drerr':
-        ensure          => 'present',
-        description     => 'Varnishkafka Delivery Errors per minute',
-        metric          => "derivative(transformNull(${graphite_metric_prefix}.varnishkafka.kafka_drerr, 0))",
+        ensure      => 'present',
+        description => 'Varnishkafka Delivery Errors per minute',
+        metric      => "derivative(transformNull(${graphite_metric_prefix}.varnishkafka.kafka_drerr, 0))",
         # More than 0 errors is warning threshold.
-        warning         => 0,
+        warning     => 0,
         # More than 20000 errors is critical threshold.
-        critical        => 20000,
+        critical    => 20000,
         # But only alert if a large percentage of the examined datapoints
         # are over the threshold.
-        percentage      => 80,
-        from            => '10min',
-        until           => $until,
-        nagios_critical => false,
-        require         => Logster::Job['varnishkafka-webrequest'],
-    }
-
-    # Use graphite_anomaly to alert about anomolous deliver errors.
-    monitoring::graphite_anomaly { 'varnishkafka-anomaly-kafka_drerr':
-        # Disabling this.  It doesn't work like I wanted it to.
-        ensure          => 'absent',
-        description     => 'Varnishkafka Delivery Errors per minute anomaly',
-        metric          => "nonNegativeDerivative(transformNull(${graphite_metric_prefix}.varnishkafka.kafka_drerr, 0))",
-        over            => true,
-        # warn if more than 10 anomylous datapoints (last 10 minutes)
-        warning         => 5,
-        # critical if more than 45 anomylous datapoints (last 45 minutes)
-        critical        => 45,
-        nagios_critical => false,
-        require         => Logster::Job['varnishkafka-webrequest'],
+        percentage  => 80,
+        from        => '10min',
+        require     => Logster::Job['varnishkafka-webrequest'],
     }
 }
