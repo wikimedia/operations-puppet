@@ -13,6 +13,7 @@ class role::scb {
     include role::eventstreams
     include role::pdfrender
 
+    include services::tools
     include standard
     include base::firewall
 

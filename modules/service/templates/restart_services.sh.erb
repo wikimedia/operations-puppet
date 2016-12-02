@@ -1,0 +1,42 @@
+#!/bin/bash
+# restart all services in a service group
+# depool, restart, repool
+
+# sca
+#declare -a services=(
+#    "zotero"
+#)
+
+# scb
+#declare -a services=(
+#    "graphoid"
+#    "mathoid"
+#    "cxserver"
+#    "mobileapps"
+#    "eventstreams"
+#    "changeprop"
+#    "citoid"
+#)
+
+# TODO: replace the above with a hiera lookup
+#declare -a service=(
+<%= @service_names %>
+# ) # TODO
+
+# TODO: make the sleep values a parameter
+depool
+
+sleep 60
+
+for service in "${services[@]}"
+do
+	echo "restarting $service"
+ 	systemctl restart $service.service
+ 	sleep 10
+ 	systemctl status $service.service
+ 	sleep 10
+done
+
+sleep 60
+
+pool
