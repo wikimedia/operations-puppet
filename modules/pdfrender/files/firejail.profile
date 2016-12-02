@@ -8,6 +8,7 @@ protocol unix,inet,inet6,netlink
 include /etc/firejail/default.profile
 
 blacklist /root
+whitelist /home/pdfrender/.config
 
 # Electron uses xvfb as the X11 engine by default, which
 # requires setuid root; that is not acceptable for firejail
