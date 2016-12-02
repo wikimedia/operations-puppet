@@ -885,7 +885,7 @@ node /^dbproxy100(4|9)\.eqiad\.wmnet$/ {
     }
 }
 
-node /^dbproxy10(05|10)\.eqiad\.wmnet$/ {
+node 'dbproxy1005.eqiad.wmnet' {
     class { 'role::mariadb::proxy::master':
         shard          => 'm5',
         primary_name   => 'db1009',
@@ -895,9 +895,25 @@ node /^dbproxy10(05|10)\.eqiad\.wmnet$/ {
     }
 }
 
-# production test proxy- soon to be moved to labs
+# labsdb proxies (controling replica service dbs)
+node 'dbproxy1010.eqiad.wmnet' {
+    class { 'role::mariadb::proxy::master':
+        shard          => 'labsdb',
+        primary_name   => 'labsdb1009',
+        primary_addr   => '10.64.4.14',
+        secondary_name => 'labsdb1010',
+        secondary_addr => '10.64.37.23',
+    }
+}
+
 node 'dbproxy1011.eqiad.wmnet' {
-    role(labs::db::proxy)
+    class { 'role::mariadb::proxy::master':
+        shard          => 'labsdb',
+        primary_name   => 'labsdb1011',
+        primary_addr   => '10.64.37.24',
+        secondary_name => 'labsdb1010',
+        secondary_addr => '10.64.37.23',
+    }
 }
 
 
