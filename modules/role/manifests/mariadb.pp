@@ -511,7 +511,7 @@ class role::mariadb::dbstore(
         config  => 'mariadb/dbstore.my.cnf.erb',
         datadir => '/srv/sqldata',
         tmpdir  => '/srv/tmp',
-        ssl     => 'on',
+        ssl     => 'puppet-cert',
         p_s     => 'off',
     }
 
