@@ -3,6 +3,7 @@
 class role::sca {
     include role::zotero
 
+    include service::tools
     include standard
     include base::firewall
     if $::realm == 'production' {

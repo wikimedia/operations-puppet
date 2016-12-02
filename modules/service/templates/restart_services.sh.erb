@@ -1,0 +1,54 @@
+#!/bin/bash
+# restart all services in a service group
+# depool, restart, repool
+
+# sca
+#declare -a services=(
+#    "zotero"
+#)
+
+# scb
+#declare -a services=(
+#    "graphoid"
+#    "mathoid"
+#    "cxserver"
+#    "mobileapps"
+#    "eventstreams"
+#    "changeprop"
+#    "citoid"
+#)
+
+# TODO: replace the above with a hiera lookup
+#declare -a service=(
+<%= @service_names %>
+# ) # TODO
+
+# TODO: we need the port numbers for each service too
+# and have them in $port
+
+# TODO: make the sleep values a parameter
+depool
+
+sleep 60
+
+for service in "${services[@]}"
+do
+    echo "restarting $service"
+    if ! systemctl restart $service.service ; then
+            echo "restarting $service failed. aborting"
+        exit 1
+    fi
+    sleep 10
+
+    if ! netstat -uln | grep $port ; then
+        echo "could not detect listening port. aborting"
+        exit 1
+    fi
+
+    systemctl status $service.service
+done
+
+sleep 60
+
+pool
+
