@@ -23,6 +23,7 @@ class role::labs::db::master {
         config    => 'mariadb/tools.my.cnf.erb',
         datadir   => '/srv/labsdb/data',
         tmpdir    => '/tmp',
+        ssl       => 'puppet-cert',
         read_only => 'OFF',
     }
 }

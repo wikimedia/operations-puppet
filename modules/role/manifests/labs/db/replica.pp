@@ -33,7 +33,7 @@ class role::labs::db::replica {
         tmpdir        => '/srv/tmp',
         read_only     => 'ON',
         p_s           => 'on',
-        ssl           => 'on',
+        ssl           => 'puppet-cert',
         binlog_format => 'ROW',
     }
 
