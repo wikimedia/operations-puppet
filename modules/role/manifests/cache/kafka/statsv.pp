@@ -36,7 +36,14 @@ class role::cache::kafka::statsv(
     }
 
     include ::standard
-    if $::standard::has_ganglia {
-        varnishkafka::monitor { 'statsv': }
+
+    $cache_type = hiera('cache::cluster')
+    $graphite_metric_prefix = "varnishkafka.${::hostname}.statsv.${cache_type}"
+
+    # Sets up Logster to read from the Varnishkafka instance stats JSON file
+    # and report metrics to statsd.
+    varnishkafka::monitor::statsd { 'statsv':
+        graphite_metric_prefix => $graphite_metric_prefix,
+        statsd_host_port       => hiera('statsd'),
     }
 }
