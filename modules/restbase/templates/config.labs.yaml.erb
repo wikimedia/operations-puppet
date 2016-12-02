@@ -41,6 +41,8 @@ default_project: &default_project
           cache-control: s-maxage=864000, max-age=86400
         mobileapps:
           host: <%= @mobileapps_uri %>
+        citoid:
+          host: <%= @citoid_uri %>
         events:
           uri: <%= @eventlogging_service_uri %>
           topic: resource_change
