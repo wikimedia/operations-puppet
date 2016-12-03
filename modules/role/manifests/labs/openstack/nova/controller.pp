@@ -8,6 +8,7 @@ class role::labs::openstack::nova::controller {
     include ::openstack::nova::conductor
     include ::openstack::nova::spiceproxy
     include ::openstack::nova::scheduler
+    include ::openstack::clientlib
     include role::labs::openstack::nova::common
     $novaconfig = $role::labs::openstack::nova::common::novaconfig
     $designateconfig = hiera_hash('designateconfig', {})

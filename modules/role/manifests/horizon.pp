@@ -15,6 +15,7 @@ class role::horizon {
         srange => '$PRODUCTION_NETWORKS',
     }
 
+    include ::openstack::clientlib
     class { '::openstack::envscripts':
         novaconfig      => $novaconfig,
         designateconfig => $designateconfig
