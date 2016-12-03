@@ -75,9 +75,11 @@ IgnoreUserKnownHosts yes
 # To enable empty passwords, change to yes (NOT RECOMMENDED)
 PermitEmptyPasswords no
 
+<% if @challenge_response_auth %>
 # Change to yes to enable challenge-response passwords (beware issues with
 # some PAM modules and threads)
 ChallengeResponseAuthentication yes
+<% end %>
 
 # Globally deny logon via password, only allow SSH-key login.  
 PasswordAuthentication no  
