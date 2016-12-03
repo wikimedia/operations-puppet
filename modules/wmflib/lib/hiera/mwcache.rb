@@ -40,8 +40,8 @@ class Hiera
         data = resp["*"]
         @cache[path][:data] = block_given? ? yield(data) : data
 
-        if !@cache[path][:data].is_a?(expected_type)
-          raise TypeError, "Data retrieved from #{path} is #{data.class} not #{expected_type}"
+        if !@cache[path][:data].nil? && !@cache[path][:data].is_a?(expected_type)
+          raise TypeError, "Data retrieved from #{path} is #{@cache[path][:data].class}, not #{expected_type} or nil"
         end
       end
 
