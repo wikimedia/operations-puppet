@@ -26,12 +26,6 @@ wmfkeystone_opts = [
     cfg.StrOpt('admin_user',
                default='novaadmin',
                help='Admin user to add to all new projects'),
-    cfg.StrOpt('observer_user',
-               default='novaobserver',
-               help='Observer user to add to all new projects'),
-    cfg.StrOpt('observer_role_name',
-               default='observer',
-               help='Name of observer role'),
     cfg.StrOpt('user_role_name',
                default='user',
                help='Name of simple project user role'),
@@ -72,9 +66,6 @@ class KeystoneHooks(notifier._Driver):
         # Make a dict to relate role names to ids
         for role in rolelist:
             roledict[role['name']] = role['id']
-        if CONF.observer_role_name not in roledict.keys():
-            LOG.error("Failed to find id for role %s" % CONF.observer_role_name)
-            raise exception.NotImplemented()
         if CONF.admin_role_name not in roledict.keys():
             LOG.error("Failed to find id for role %s" % CONF.admin_role_name)
             raise exception.NotImplemented()
@@ -88,9 +79,6 @@ class KeystoneHooks(notifier._Driver):
         self.assignment_api.add_role_to_user_and_project(CONF.admin_user,
                                                          project_id,
                                                          roledict[CONF.user_role_name])
-        self.assignment_api.add_role_to_user_and_project(CONF.observer_user,
-                                                         project_id,
-                                                         roledict[CONF.observer_role_name])
 
     def notify(self, context, message, priority, retry=False):
         event_type = message.get('event_type')
