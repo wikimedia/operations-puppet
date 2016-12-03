@@ -231,6 +231,7 @@ class openstack::horizon::service(
         path        => '/usr/bin',
         cwd         => '/usr/share/openstack-dashboard',
         require     => File['/etc/openstack-dashboard/local_settings.py'],
+        notify      => Service['apache2'],
         refreshonly => true
     }
 }
