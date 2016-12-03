@@ -2,7 +2,7 @@ class labspuppetbackend(
     $mysql_host,
     $mysql_db,
     $mysql_username,
-    $mysql_password,
+    $mysql_password = hiera('labspuppetbackend_mysql_password'),
     $statsd_host,
     $statsd_prefix,
 ) {
@@ -10,6 +10,7 @@ class labspuppetbackend(
                     'python3-statsd',
                     'python3-flask',
                     'python3-yaml')
+
 
     file { '/usr/local/lib/python3.4/dist-packages/labspuppetbackend.py':
         source => 'puppet:///modules/labspuppetbackend/labspuppetbackend.py',
