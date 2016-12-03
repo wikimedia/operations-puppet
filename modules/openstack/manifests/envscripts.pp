@@ -13,15 +13,7 @@ class openstack::envscripts(
         group   => 'root',
     }
 
-    # Handy script to set up environment for read-only credentials
-    file { '/root/observerenv.sh':
-        content => template('openstack/observerenv.sh.erb'),
-        mode    => '0755',
-        owner   => 'root',
-        group   => 'root',
-    }
-
-    # Handy script to set up environment for commandline nova magic
+    # Handy script to set up environment for commandline glance magic
     file { '/root/wmflabsorg-domainadminenv.sh':
         content => template('openstack/wmflabsorg-domainadminenv.sh.erb'),
         mode    => '0755',
