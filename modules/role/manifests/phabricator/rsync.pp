@@ -3,7 +3,7 @@ class role::phabricator::rsync {
     $phabricator_active_server = hiera('phabricator_active_server')
 
     if $::hostname != $phabricator_active_server {
-        $hosts_allow = "@resolve((${::pharicator_active_server}))"
+        $hosts_allow = "@resolve((${pharicator_active_server}))"
 
         ferm::service { 'phabricator-migration-rysnc':
             proto  => 'tcp',
