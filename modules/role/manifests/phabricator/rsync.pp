@@ -2,10 +2,10 @@
 # to allow pushing of /srv/repos from active to passive  (T137928)
 class role::phabricator::rsync {
 
-    $phabricator_active_server = hiera('phabricator_active_server')
+    $phabricator_active_server_fqdn = hiera('phabricator_active_server_fqdn')
 
-    if $::hostname != $phabricator_active_server {
-        $hosts_allow = "@resolve((${phabricator_active_server}))"
+    if $::fqdn != $phabricator_active_server_fqdn {
+        $hosts_allow = "@resolve((${phabricator_active_server_fqdn}))"
 
         ferm::service { 'phabricator-repo-rsync':
             proto  => 'tcp',
