@@ -77,7 +77,7 @@ PermitEmptyPasswords no
 
 # Change to yes to enable challenge-response passwords (beware issues with
 # some PAM modules and threads)
-ChallengeResponseAuthentication yes
+ChallengeResponseAuthentication <%= @challenge_response_auth ? 'yes': 'no' %>
 
 # Globally deny logon via password, only allow SSH-key login.  
 PasswordAuthentication no  
