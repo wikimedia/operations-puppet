@@ -10,7 +10,7 @@ class role::phabricator::rsync {
         ferm::service { 'phabricator-repo-rsync':
             proto  => 'tcp',
             port   => '873',
-            srange => "${hosts_allow}/32",
+            srange => $hosts_allow,
         }
 
         include rsync::server
