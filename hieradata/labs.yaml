@@ -114,6 +114,7 @@ zookeeper_clusters:
 nrpe::allowed_hosts: '10.68.16.195' # icinga
 
 ssh::server::disable_agent_forwarding: false
+ssh::server::challenge_response_auth: false
 labs_puppet_master: "labs-puppetmaster-eqiad.wikimedia.org"
 puppetmaster: "labs-puppetmaster-eqiad.wikimedia.org"
 saltmaster: "labs-puppetmaster-eqiad.wikimedia.org"

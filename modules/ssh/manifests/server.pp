@@ -8,6 +8,7 @@ class ssh::server (
     $explicit_macs = true, # Allow labs projects to temporarily opt out of more secure MACs
     $enable_hba = false,
     $disable_agent_forwarding = true,
+    $challenge_response_auth = true,  # Disable all password auth in labs, we don't use 2fa there
 ) {
     package { 'openssh-server':
         ensure => present,
