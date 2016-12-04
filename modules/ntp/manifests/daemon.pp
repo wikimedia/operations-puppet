@@ -4,8 +4,8 @@ define ntp::daemon($servers=[], $peers=[], $query_acl=[], $time_acl=[],
 
     file { 'ntp.conf':
         mode    => '0644',
-        owner   => root,
-        group   => root,
+        owner   => 'root',
+        group   => 'root',
         path    => '/etc/ntp.conf',
         content => template('ntp/ntp-conf.erb'),
     }

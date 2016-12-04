@@ -27,8 +27,8 @@ class openstack::ceilometer::controller ($novaconfig, $openstack_version=$::open
     file {
         '/etc/ceilometer/ceilometer.conf':
             content => template("openstack/${openstack_version}/ceilometer/ceilometer.conf.erb"),
-            owner   => ceilometer,
-            group   => ceilometer,
+            owner   => 'ceilometer',
+            group   => 'ceilometer',
             notify  => Service['ceilometer-api','ceilometer-collector','ceilometer-agent-central'],
             require => Package['ceilometer-api'],
             mode    => '0440';

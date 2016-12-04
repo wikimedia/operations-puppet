@@ -99,7 +99,7 @@ define labstore::nfs_mount(
     if !defined(File['/usr/local/sbin/nfs-mount-manager']) {
         file { '/usr/local/sbin/nfs-mount-manager':
             ensure => present,
-            owner  => root,
+            owner  => 'root',
             mode   => '0655',
             source => 'puppet:///modules/labstore/nfs-mount-manager',
         }
@@ -134,7 +134,7 @@ define labstore::nfs_mount(
                 # This script will block until the NFS volume is available
                 file { '/usr/local/sbin/block-for-export':
                     ensure => present,
-                    owner  => root,
+                    owner  => 'root',
                     mode   => '0555',
                     source => 'puppet:///modules/labstore/block-for-export',
                 }

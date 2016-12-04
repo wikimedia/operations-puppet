@@ -57,14 +57,14 @@ class openstack::glance::service(
         '/etc/glance/glance-api.conf':
             content => template("openstack/${openstack_version}/glance/glance-api.conf.erb"),
             owner   => 'glance',
-            group   => nogroup,
+            group   => 'nogroup',
             notify  => Service['glance-api'],
             require => Package['glance'],
             mode    => '0440';
         '/etc/glance/glance-registry.conf':
             content => template("openstack/${openstack_version}/glance/glance-registry.conf.erb"),
             owner   => 'glance',
-            group   => nogroup,
+            group   => 'nogroup',
             notify  => Service['glance-registry'],
             require => Package['glance'],
             mode    => '0440';

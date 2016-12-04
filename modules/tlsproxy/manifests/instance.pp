@@ -42,15 +42,15 @@ class tlsproxy::instance {
     file { $sysd_sec_dir:
         ensure => directory,
         mode   => '0555',
-        owner  => root,
-        group  => root,
+        owner  => 'root',
+        group  => 'root',
     }
 
     file { $sysd_sec_conf:
         ensure  => present,
         mode    => '0444',
-        owner   => root,
-        group   => root,
+        owner   => 'root',
+        group   => 'root',
         source  => 'puppet:///modules/tlsproxy/nginx-security.conf',
         before  => Class['nginx'],
         require => File[$sysd_sec_dir],

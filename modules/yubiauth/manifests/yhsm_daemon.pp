@@ -7,8 +7,8 @@ class yubiauth::yhsm_daemon(
 
     file { 'yhsm-daemon-default':
         mode    => '0440',
-        owner   => root,
-        group   => root,
+        owner   => 'root',
+        group   => 'root',
         path    => '/etc/default/yhsm-daemon',
         content => template('yubiauth/yhsm-daemon-default.erb'),
     }

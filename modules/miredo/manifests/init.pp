@@ -8,8 +8,8 @@ class miredo {
     }
 
     file { '/etc/miredo.conf':
-        owner   => root,
-        group   => root,
+        owner   => 'root',
+        group   => 'root',
         mode    => '0444',
         require => Package['miredo'],
         source  => 'puppet:///modules/miredo/miredo.conf',

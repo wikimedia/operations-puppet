@@ -63,8 +63,8 @@ class openstack::designate::service (
     file {
         '/etc/designate/designate.conf':
             content => template("openstack/${openstack_version}/designate/designate.conf.erb"),
-            owner   => designate,
-            group   => designate,
+            owner   => 'designate',
+            group   => 'designate',
             notify  => Service['designate-api','designate-sink','designate-central','designate-mdns','designate-pool-manager'],
             require => Package['designate-common'],
             mode    => '0440';

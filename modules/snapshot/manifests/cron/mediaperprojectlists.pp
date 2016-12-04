@@ -8,7 +8,7 @@ class snapshot::cron::mediaperprojectlists(
         path    => '/usr/local/bin/create-media-per-project-lists.sh',
         mode    => '0755',
         owner   => $user,
-        group   => root,
+        group   => 'root',
         content => template('snapshot/cron/create-media-per-project-lists.sh.erb'),
     }
 

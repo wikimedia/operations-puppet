@@ -15,8 +15,8 @@ class etcd::client::globalconfig(
     if $ssl_dir {
         file { '/etc/etcd/ca.pem':
             ensure => present,
-            owner  => root,
-            group  => root,
+            owner  => 'root',
+            group  => 'root',
             mode   => '0444',
             source => "${ssl_dir}/certs/ca.pem",
         }

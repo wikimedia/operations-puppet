@@ -7,8 +7,8 @@ class yubiauth::yhsm_yubikey_ksm(
 
     file { 'yhsm-yubikey-ksm-default':
         mode    => '0440',
-        owner   => root,
-        group   => root,
+        owner   => 'root',
+        group   => 'root',
         path    => '/etc/default/yhsm-yubikey-ksm',
         content => template('yubiauth/yhsm-yubikey-ksm-default.erb'),
     }

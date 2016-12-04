@@ -52,8 +52,8 @@ define systemd::sidekick (
         ensure  => $ensure,
         content => template('systemd/sidekick_service.erb'),
         mode    => '0444',
-        owner   => root,
-        group   => root,
+        owner   => 'root',
+        group   => 'root',
     }
 
     exec { "systemd reload for ${servname}":
