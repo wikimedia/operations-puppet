@@ -22,8 +22,8 @@
 define bacula::director::schedule($runs) {
     file { "/etc/bacula/conf.d/schedule-${name}.conf":
         ensure  => present,
-        owner   => root,
-        group   => bacula,
+        owner   => 'root',
+        group   => 'bacula',
         mode    => '0440',
         content => template('bacula/bacula-dir-schedule.erb'),
         notify  => Service['bacula-director'],

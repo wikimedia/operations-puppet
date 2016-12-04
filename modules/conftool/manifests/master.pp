@@ -17,8 +17,8 @@ class conftool::master($sync_dir = '/etc/conftool/data') {
 
     file { '/usr/local/bin/conftool-merge':
         ensure  => present,
-        owner   => root,
-        group   => root,
+        owner   => 'root',
+        group   => 'root',
         mode    => '0500',
         content => template('conftool/conftool-merge.erb')
     }

@@ -55,8 +55,8 @@ class lshell (
 
     file { '/etc/lshell.conf':
         content => template('lshell/lshell.conf.erb'),
-        owner   => root,
-        group   => root,
+        owner   => 'root',
+        group   => 'root',
         mode    => '0444',
     }
 }

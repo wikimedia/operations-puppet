@@ -105,15 +105,15 @@ class role::cache::base(
         ensure => present,
         source => 'puppet:///modules/role/cache/traffic-pool.service',
         mode   => '0444',
-        owner  => root,
-        group  => root,
+        owner  => 'root',
+        group  => 'root',
     }
 
     file { $varlib_path:
         ensure => directory,
         mode   => '0755',
-        owner  => root,
-        group  => root,
+        owner  => 'root',
+        group  => 'root',
     }
 
     exec { 'systemd reload+enable for traffic-pool':

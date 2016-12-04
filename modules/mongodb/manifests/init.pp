@@ -48,8 +48,8 @@ class mongodb (
 
     file { '/etc/mongodb.conf':
         content => template('mongodb/mongod.conf.erb'),
-        owner   => root,
-        group   => root,
+        owner   => 'root',
+        group   => 'root',
         mode    => '0644',
         require => Package['mongodb'],
     }

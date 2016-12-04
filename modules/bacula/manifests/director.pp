@@ -65,8 +65,8 @@ class bacula::director(
 
     file { '/etc/bacula/bacula-dir.conf':
         ensure  => present,
-        owner   => root,
-        group   => bacula,
+        owner   => 'root',
+        group   => 'bacula',
         mode    => '0440',
         notify  => Service['bacula-director'],
         content => template('bacula/bacula-dir.conf.erb'),
@@ -80,8 +80,8 @@ class bacula::director(
         force   => true,
         purge   => true,
         mode    => '0444',
-        owner   => root,
-        group   => bacula,
+        owner   => 'root',
+        group   => 'bacula',
         require => Package["bacula-director-${sqlvariant}"],
     }
 
@@ -92,8 +92,8 @@ class bacula::director(
         force   => true,
         purge   => true,
         mode    => '0444',
-        owner   => root,
-        group   => bacula,
+        owner   => 'root',
+        group   => 'bacula',
         require => Package["bacula-director-${sqlvariant}"],
     }
 
@@ -103,8 +103,8 @@ class bacula::director(
         force   => true,
         purge   => true,
         mode    => '0444',
-        owner   => root,
-        group   => bacula,
+        owner   => 'root',
+        group   => 'bacula',
         require => Package["bacula-director-${sqlvariant}"],
     }
 
@@ -112,8 +112,8 @@ class bacula::director(
     file { '/etc/bacula/jobs.d/restore-migrate-jobs.conf':
         ensure  => file,
         mode    => '0444',
-        owner   => root,
-        group   => bacula,
+        owner   => 'root',
+        group   => 'bacula',
         require => File['/etc/bacula/jobs.d'],
         content => template('bacula/restore-migrate-jobs.conf.erb'),
     }
@@ -125,8 +125,8 @@ class bacula::director(
         force   => true,
         purge   => true,
         mode    => '0444',
-        owner   => root,
-        group   => bacula,
+        owner   => 'root',
+        group   => 'bacula',
         require => Package["bacula-director-${sqlvariant}"],
     }
 
@@ -134,8 +134,8 @@ class bacula::director(
     @@file { '/etc/bacula/bconsole.conf':
         ensure  => present,
         mode    => '0440',
-        owner   => root,
-        group   => bacula,
+        owner   => 'root',
+        group   => 'bacula',
         content => template('bacula/bconsole.conf.erb'),
         tag     => "bacula-console-${::fqdn}",
     }

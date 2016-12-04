@@ -28,8 +28,8 @@ class openstack::keystone::service($keystoneconfig, $openstack_version=$::openst
     file {
         '/etc/keystone/keystone.conf':
             content => template("openstack/${openstack_version}/keystone/keystone.conf.erb"),
-            owner   => keystone,
-            group   => keystone,
+            owner   => 'keystone',
+            group   => 'keystone',
             notify  => Service['keystone'],
             require => Package['keystone'],
             mode    => '0440';

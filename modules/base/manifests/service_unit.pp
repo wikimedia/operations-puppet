@@ -127,8 +127,8 @@ define base::service_unit (
             ensure  => $ensure,
             content => template($template),
             mode    => $i_mode,
-            owner   => root,
-            group   => root,
+            owner   => 'root',
+            group   => 'root',
         }
 
         if $declare_service {

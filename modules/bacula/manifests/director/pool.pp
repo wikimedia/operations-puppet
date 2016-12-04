@@ -46,8 +46,8 @@ define bacula::director::pool(
 
     file { "/etc/bacula/conf.d/pool-${name}.conf":
         ensure  => present,
-        owner   => root,
-        group   => bacula,
+        owner   => 'root',
+        group   => 'bacula',
         mode    => '0440',
         content => template('bacula/bacula-dir-pool.erb'),
         notify  => Service['bacula-director'],

@@ -24,8 +24,8 @@
 define bacula::director::catalog($dbname, $dbuser, $dbhost, $dbport, $dbpassword) {
     file { "/etc/bacula/conf.d/catalog-${name}.conf":
         ensure  => present,
-        owner   => root,
-        group   => bacula,
+        owner   => 'root',
+        group   => 'bacula',
         mode    => '0440',
         content => template('bacula/bacula-dir-catalog.erb'),
         notify  => Service['bacula-director'],

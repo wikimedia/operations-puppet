@@ -94,8 +94,8 @@ class pivot(
 
     file { '/etc/pivot':
         ensure => directory,
-        owner  => root,
-        group  => root,
+        owner  => 'root',
+        group  => 'root',
         mode   => '0755',
     }
 

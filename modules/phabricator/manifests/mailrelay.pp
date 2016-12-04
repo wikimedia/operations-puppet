@@ -41,13 +41,13 @@ class phabricator::mailrelay(
         ensure => file,
         source => 'puppet:///modules/phabricator/phab_epipe.py',
         mode   => '0555',
-        owner  => mail,
-        group  => mail,
+        owner  => 'mail',
+        group  => 'mail',
     }
 
     file { '/etc/phab_epipe.conf':
         ensure  => file,
         content => template('phabricator/phab_epipe.conf.erb'),
-        owner   => mail,
+        owner   => 'mail',
     }
 }

@@ -32,8 +32,8 @@ class role::zuul::server {
     # Conf file is hosted in integration/config git repo
     git::clone { 'integration/config':
         directory => '/etc/zuul/wikimedia',
-        owner     => zuul,
-        group     => zuul,
+        owner     => 'zuul',
+        group     => 'zuul',
         mode      => '0775',
         umask     => '002',
         origin    => 'https://gerrit.wikimedia.org/r/p/integration/config.git',
