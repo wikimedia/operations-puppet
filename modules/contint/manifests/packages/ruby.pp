@@ -46,6 +46,9 @@ class contint::packages::ruby {
             'ruby2.1',
             'ruby2.1-dev',
             'bundler',
+            # Used by PoolCounter tests (T152338)
+            'ruby-rspec',
+            'cucumber',
             ]: ensure => present,
         }
     }
