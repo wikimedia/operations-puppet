@@ -120,8 +120,8 @@ def column_has_private_data(conn, database, table, column):
         query = ("SELECT count(*)"
                  " FROM `{}`.`{}`"
                  " WHERE IF(`{}` IS NULL, 0,"
-                 "          `{}` NOT IN ('0', ''))").format(database, table,
-                                                            column, column)
+                 "          TRIM(LEADING '\0' FROM `{}`) NOT IN ('0', ''))")
+        query = query.format(database, table, column, column)
         cursor.execute(query)
         result = cursor.fetchall()
         if int(result[0][0]) > 0:
