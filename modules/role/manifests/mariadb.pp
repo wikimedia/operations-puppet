@@ -28,6 +28,8 @@ class role::mariadb::grants::production(
     include passwords::prometheus
     include passwords::servermon
     include passwords::striker
+    include passwords::labspuppet
+    include passwords::labsdbaccounts
 
     $root_pass       = $passwords::misc::scripts::mysql_root_pass
     $repl_pass       = $passwords::misc::scripts::mysql_repl_pass
@@ -60,6 +62,8 @@ class role::mariadb::grants::production(
         $servermon_pass      = $passwords::servermon::db_password
         $striker_pass        = $passwords::striker::application_db_password
         $striker_admin_pass  = $passwords::striker::admin_db_password
+        $labspuppet_pass     = $passwords::labspuppet::db_password
+        $labsdbaccounts_pass = $passwords::labsdbaccounts::db_password
 
         file { '/etc/mysql/production-grants-shard.sql':
             ensure  => present,
