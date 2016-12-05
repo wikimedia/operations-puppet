@@ -392,7 +392,7 @@ class role::mariadb::misc::eventlogging(
         datadir       => '/srv/sqldata',
         tmpdir        => '/srv/tmp',
         read_only     => $read_only,
-        ssl           => 'on',
+        ssl           => 'puppet-cert',
         p_s           => 'off',
         binlog_format => 'MIXED',
     }
