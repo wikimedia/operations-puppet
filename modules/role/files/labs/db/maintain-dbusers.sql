@@ -8,13 +8,13 @@ CREATE TABLE accounts(
     mysql_username VARCHAR(255) NOT NULL,
     type enum('tool', 'user') NOT NULL,
     username VARCHAR(255) NOT NULL,
-    password VARCHAR(255) NOT NULL,
-) CHARSET=utf8mb4;
+    password VARCHAR(255) NOT NULL
+) ENGINE=InnoDB CHARSET=utf8mb4;
 CREATE UNIQUE INDEX account_type ON accounts(type, username);
 
 CREATE TABLE account_hosts(
     id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
     account_id INT UNSIGNED NOT NULL,
-    hostname VARCHAR(255) NOT NULL,
-) CHARSET=utf8mb4;
+    hostname VARCHAR(255) NOT NULL
+) ENGINE=InnoDB CHARSET=utf8mb4;
 CREATE INDEX account_host_status ON accounts(account_id, hostname);
