@@ -350,6 +350,7 @@ class toollabs::exec_environ {
             'pyflakes',                    # T59863
             'tclthread',                   # now called tcl-thread
             # no nodejs-legacy             (presumably, -legacy makes a symlink that is default in precise)
+            # No php5-readline (T136519).
             ]:
             ensure => latest,
         }
@@ -368,6 +369,7 @@ class toollabs::exec_environ {
             'python-flake8',
             'python3-flake8',
             'tcl-thread',
+            'php5-readline',               # T136519.
             ]:
             ensure => latest,
         }
@@ -406,6 +408,7 @@ class toollabs::exec_environ {
             'python-flake8',
             'python3-flake8',
             'tcl-thread',
+            'php5-readline',               # T136519.
             ]:
             ensure => latest,
         }
