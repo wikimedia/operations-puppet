@@ -38,6 +38,7 @@ class openstack::nova::network($novaconfig, $openstack_version=$::openstack::ver
     $dnsconfig = hiera_hash('labsdnsconfig', {})
     $labs_metal = hiera('labs_metal',{})
     $recursor_ip = ipresolve($dnsconfig['recursor'],4)
+    $recursor_secondary_ip = ipresolve($dnsconfig['recursor_secondary'],4)
     file { '/etc/dnsmasq-nova.conf':
         content => template("openstack/${openstack_version}/nova/dnsmasq-nova.conf.erb"),
         owner   => 'root',
