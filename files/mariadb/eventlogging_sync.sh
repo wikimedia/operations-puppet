@@ -19,9 +19,9 @@ ls="regexp '^[A-Z0-9].*[0-9]+$'"
 mhost='m4-master.eqiad.wmnet'
 shost="localhost"
 
-slave="mysql -h $shost --compress --skip-column-names --skip-ssl"
-master="mysql -h $mhost --compress --skip-column-names --skip-ssl"
-dump="mysqldump --skip-ssl -h $mhost --skip-opt --single-transaction --quick --skip-triggers"
+slave="mysql -h $shost --compress --skip-column-names"
+master="mysql -h $mhost --compress --skip-column-names"
+dump="mysqldump -h $mhost --skip-opt --single-transaction --quick --skip-triggers"
 dumpdata="$dump --no-create-info --insert-ignore --extended-insert --compress --hex-blob"
 querytables="select table_name from information_schema.tables where table_schema = '$db' and table_name"
 # select this many rows per table at a time
