@@ -111,10 +111,11 @@ class role::cache::kafka::webrequest(
     include ::standard
 
     # Generate icinga alert if varnishkafka is not running.
-    nrpe::monitor_service { 'varnishkafka':
-        description  => 'Varnishkafka log producer',
-        nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1: -C varnishkafka',
-        require      => Class['::varnishkafka'],
+    nrpe::monitor_service { 'varnishkafka-webrequest':
+        description   => 'Varnishkafka log producer',
+        nrpe_command  => "/usr/lib/nagios/plugins/check_procs -c 1: -a /usr/bin/varnishkafka -S /etc/varnishkafka/webrequest.conf",
+        contact_group => 'admins,analytics',
+        require       => Class['::varnishkafka'],
     }
 
     $cache_type = hiera('cache::cluster')
