@@ -19,6 +19,7 @@ class statistics::web {
     require_package([
         'mc',
         'unzip',
+        'zip',
     ])
 
 
