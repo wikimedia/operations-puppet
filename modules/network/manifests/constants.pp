@@ -94,7 +94,6 @@ class network::constants {
     # Networks hosting MediaWiki application servers
     # These are:
     #  - public hosts in eqiad/codfw
-    #  - nobelium in eqiad labs support
     #  - all private networks in eqiad/codfw
     if $::realm == 'production' {
         $mw_appserver_networks = flatten([
