@@ -1,0 +1,1 @@
+prometheus::server::storage_retention: '960h0m0s'
