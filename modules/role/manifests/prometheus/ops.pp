@@ -5,6 +5,7 @@ class role::prometheus::ops {
 
     $targets_path = '/srv/prometheus/ops/targets'
     $rules_path = '/srv/prometheus/ops/rules'
+    $storage_retention = hiera('prometheus::server::storage_retention', '4320h0m0s')
 
     $config_extra = {
         # All metrics will get an additional 'site' label when queried by
@@ -113,6 +114,7 @@ class role::prometheus::ops {
     prometheus::server { 'ops':
         storage_encoding     => '2',
         listen_address       => '127.0.0.1:9900',
+        storage_retention    => $storage_retention,
         scrape_configs_extra => array_concat($mysql_jobs, $varnish_jobs, $memcached_jobs),
         global_config_extra  => $config_extra,
     }
