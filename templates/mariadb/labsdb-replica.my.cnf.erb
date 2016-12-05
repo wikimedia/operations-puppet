@@ -25,6 +25,8 @@ socket     = /tmp/mysql.sock
 port       = 3306
 datadir    = <%= @datadir %>
 tmpdir     = <%= @tmpdir %>
+# needed for multisource replication + GTID.
+gtid_domain_id = <%= @server_id %>
 server_id  = <%= @server_id %>
 read_only  = 0
 
