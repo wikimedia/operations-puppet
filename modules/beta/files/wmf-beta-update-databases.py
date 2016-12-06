@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #######################################################################
 # WARNING: this file is managed by Puppet
-# puppet:///modules/beta/wmf-beta-update-databases.py
+# puppet:///beta/wmf-beta-update-databases.py
 #######################################################################
 
 """
