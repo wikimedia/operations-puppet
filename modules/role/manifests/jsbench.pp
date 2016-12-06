@@ -42,10 +42,8 @@ class role::jsbench {
         require    => File['/srv/profile'],
     }
 
-    # move files to module?
-    # lint:ignore:puppet_url_without_modules
     file { '/usr/local/bin/jsbench':
-        source => 'puppet:///files/jsbench/jsbench',
+        source => 'puppet:///modules/role/jsbench/jsbench',
         owner  => 'root',
         group  => 'root',
         mode   => '0555',
@@ -54,7 +52,7 @@ class role::jsbench {
     if $::initsystem == 'upstart' {
         file { '/etc/init/jsbench-browser.conf':
             ensure => present,
-            source => 'puppet:///files/jsbench/upstart',
+            source => 'puppet:///modules/role/jsbench/upstart',
             mode   => '0444',
         }
     }
@@ -62,14 +60,13 @@ class role::jsbench {
     if $::initsystem == 'systemd' {
         file { '/etc/systemd/system/jsbench-browser.service':
             ensure => present,
-            source => 'puppet:///files/jsbench/systemd',
+            source => 'puppet:///modules/role/jsbench/systemd',
             mode   => '0444',
         }
     }
 
     file { '/usr/local/share/jsbench':
-        source  => 'puppet:///files/jsbench/benchmarks',
+        source  => 'puppet:///modules/role/jsbench/benchmarks',
         recurse => true,
     }
-    # lint:endignore
 }
