@@ -13,10 +13,7 @@ class role::ganeti {
         ensure => present,
         user   => 'root',
         skey   => 'ganeti',
-        # move to ganeti module?
-        # lint:ignore:puppet_url_without_modules
-        source => 'puppet:///files/ganeti/id_dsa.pub',
-        # lint:endignore
+        source => 'puppet:///modules/role/ganeti/id_dsa.pub',
     }
 
     # And the private key
@@ -33,9 +30,7 @@ class role::ganeti {
         owner  => 'root',
         group  => 'root',
         mode   => '0400',
-        # lint:ignore:puppet_url_without_modules
-        source => 'puppet:///files/ganeti/id_dsa.pub',
-        # lint:endignore
+        source => 'puppet:///modules/role/ganeti/id_dsa.pub',
     }
 
     # If ganeti_cluster fact is not defined, the node has not been added to a
