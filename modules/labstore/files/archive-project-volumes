@@ -2,7 +2,7 @@
 
 #####################################################################
 # THIS FILE IS MANAGED BY PUPPET
-# puppet:///files/ldap/scripts/archive-managed-projects
+# puppet:///modules/labstore/archive-project-volumes
 #####################################################################
 """
  Sometimes labs projects are deleted.  When this happens,
