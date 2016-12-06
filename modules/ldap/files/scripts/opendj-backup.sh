@@ -2,7 +2,7 @@
 
 #####################################################################
 ### THIS FILE IS MANAGED BY PUPPET 
-### puppet:///modules/ldap/scripts/opendj-backup.sh
+### puppet:///ldap/scripts/opendj-backup.sh
 #####################################################################
 
 # LDAP backups shouldn't be readable by all
