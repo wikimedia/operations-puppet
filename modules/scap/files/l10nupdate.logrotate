@@ -1,6 +1,6 @@
 #####################################################################
 ### THIS FILE IS MANAGED BY PUPPET
-### puppet:///files/logrotate/l10nupdate
+### puppet:///modules/scap/l10nupdate.logrotate
 #####################################################################
 
 /var/log/l10nupdatelog/*.log {
