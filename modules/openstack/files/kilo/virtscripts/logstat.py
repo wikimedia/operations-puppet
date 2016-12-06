@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #####################################################################
 # THIS FILE IS MANAGED BY PUPPET
-# puppet:///modules/openstack/kilo/virtscripts/logstat.py
+# puppet:///openstack/kilo/virtscripts/logstat.py
 #####################################################################
 # encoding: utf-8
 """

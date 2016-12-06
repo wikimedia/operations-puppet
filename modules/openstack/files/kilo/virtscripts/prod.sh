@@ -1,7 +1,7 @@
 #!/bin/bash
 #####################################################################
 ### THIS FILE IS MANAGED BY PUPPET
-### puppet:///modules/openstack/kilo/virtscripts/prod.sh
+### puppet:///openstack/kilo/virtscripts/prod.sh
 #####################################################################
 
 set -x
