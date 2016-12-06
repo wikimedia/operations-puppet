@@ -35,14 +35,8 @@ class role::cache::ssl::unified(
 
         # We can refactor this better later, with $certs_active varying on datacenter
         # for the 2016 set from GlobalSign + Digicert.
-        $certs = [
-            'ecc-uni.wikimedia.org', 'uni.wikimedia.org',
-            'globalsign-2016-ecdsa-unified', 'globalsign-2016-rsa-unified',
-        ]
-
-        $certs_active = [
-            'globalsign-2016-ecdsa-unified', 'globalsign-2016-rsa-unified',
-        ]
+        $certs = hiera('tls_certs_unified')
+        $certs_active = hiera('tls_certs_active')
 
         tlsproxy::localssl { 'unified':
             server_name    => 'www.wikimedia.org',

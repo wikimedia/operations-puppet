@@ -445,3 +445,13 @@ kafka_clusters:
         id: 2003
 
 deployment_server: tin.eqiad.wmnet
+# TLS certificates for serving wikis
+tls_certs_unified:
+  - 'ecc-uni.wikimedia.org'
+  - 'uni.wikimedia.org'
+  - 'globalsign-2016-ecdsa-unified'
+  - 'globalsign-2016-rsa-unified'
+
+tls_certs_active:
+  - 'globalsign-2016-ecdsa-unified'
+  - 'globalsign-2016-rsa-unified'
