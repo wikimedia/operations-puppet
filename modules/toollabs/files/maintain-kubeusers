@@ -268,10 +268,17 @@ def create_homedir(user):
         # we will just fail. Then we switch mode but not ownership, so attacker
         # can not just delete and create a symlink to wherever. The chown
         # happens last, so should be ok.
-        logging.info('Homedir already exists for %s', homepath)
+
         os.makedirs(homepath, mode=0o775, exist_ok=False)
         os.chmod(homepath, 0o775 | stat.S_ISGID)
         os.chown(homepath, int(user.id), int(user.id))
+
+        logs_dir = os.path.join(homepath, 'logs')
+        os.makedirs(logs_dir, mode=0o775, exist_ok=False)
+        os.chmod(logs_dir, 0o775 | stat.S_ISGID)
+        os.chown(homepath, int(user.id), int(user.id))
+    else:
+        logging.info('Homedir already exists for %s', homepath)
 
 
 def create_namespace(user):
