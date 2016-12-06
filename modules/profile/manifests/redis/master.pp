@@ -33,6 +33,10 @@ class profile::redis::master(
         settings => { instances => join($uris, ', ') }
     }
 
+    ::profile::prometheus::redis_exporter{ $instances:
+        password => $password,
+    }
+
     ::ferm::service { 'redis_master_role':
         proto   => 'tcp',
         notrack => true,
