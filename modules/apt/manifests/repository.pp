@@ -38,6 +38,7 @@ define apt::repository(
             command => "/bin/sed -ri '/${binre}/s/^deb/#deb/' /etc/apt/sources.list",
             creates => "/etc/apt/sources.list.d/${name}.list",
             before  => File["/etc/apt/sources.list.d/${name}.list"],
+            onlyif  => "grep -E '^${binre}' /etc/apt/sources.list",
         }
     }
 
