@@ -1,6 +1,6 @@
 #####################################################################
 ### THIS FILE IS MANAGED BY PUPPET
-### puppet:///modules/contint/apache/proxy_jenkins
+### puppet:///contint/apache/proxy_jenkins
 #####################################################################
 # vim: filetype=apache
 

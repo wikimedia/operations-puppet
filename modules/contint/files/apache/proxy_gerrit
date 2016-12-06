@@ -1,6 +1,6 @@
 #####################################################################
 ### THIS FILE IS MANAGED BY PUPPET
-### puppet:///modules/contint/apache/proxy_gerrit
+### puppet:///contint/apache/proxy_gerrit
 #####################################################################
 # vim: filetype=apache
 

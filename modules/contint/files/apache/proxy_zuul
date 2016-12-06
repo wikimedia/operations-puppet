@@ -1,6 +1,6 @@
 #####################################################################
 ### THIS FILE IS MANAGED BY PUPPET
-### puppet:///modules/contint/apache/proxy_zuul
+### puppet:///contint/apache/proxy_zuul
 #####################################################################
 # vim: filetype=apache
 
