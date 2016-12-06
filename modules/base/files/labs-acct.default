@@ -1,6 +1,6 @@
 #####################################################################
 ### THIS FILE IS MANAGED BY PUPPET
-### puppet:///modules/base/labs-acct.default
+### puppet:///base/labs-acct.default
 #####################################################################
 
 # Defaults for acct

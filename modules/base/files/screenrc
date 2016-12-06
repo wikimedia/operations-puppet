@@ -1,6 +1,6 @@
 #####################################################################
 #### THIS FILE IS MANAGED BY PUPPET
-#### puppet:///modules/base/screenrc
+#### puppet:///base/screenrc
 ######################################################################
 
 #change the hardstatus settings to give an window list at the bottom of the

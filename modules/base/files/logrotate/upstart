@@ -1,6 +1,6 @@
 #####################################################################
 ### THIS FILE IS MANAGED BY PUPPET
-### puppet:///modules/base/logrotate/puppet
+### puppet:///base/logrotate/upstart
 #####################################################################
 
 #
