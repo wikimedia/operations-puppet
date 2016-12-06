@@ -90,4 +90,9 @@ class swift (
         source   => 'puppet:///modules/swift/swift.rsyslog.conf',
         priority => 40,
     }
+
+    # Removed in later ieee-data versions and cronspam generator - T152440
+    file { '/etc/cron.monthly/ieee-data':
+        ensure => absent,
+    }
 }
