@@ -69,11 +69,11 @@ dataCubes:
     introspection: autofill-all
 
 
-  - name: edit-history-test
-    title: Edit History test
-    description: WIP - Don't use for now (probably broken anyway)
+  - name: mediawiki-history-beta
+    title: Mediawiki History Beta
+    description: Mediawiki history, cleaned and shaped to be analytics-friendly.  Beta means this cube is not currently being updated and the data has not been fully vetted.  The schema may change a little bit going forward, based on what people find useful from the beta phase.  We expect to take this out of beta by March, 2017.
     clusterName: druid
-    source: edit-history-test
+    source: mediawiki-history-beta
     # The refresh rule describes how often the data cube looks for new data.
     # Default: 'query'/PT1M (every minute)
     refreshRule:
@@ -86,7 +86,7 @@ dataCubes:
     #defaultSortMeasure: deleted_revisions
 
     # The names of measures that are selected by default
-    #defaultSelectedMeasures: []
+    defaultSelectedMeasures: ['events']
 
     # The names of dimensions that are pinned by default (in order that they will appear in the pin bar)
 
