@@ -32,6 +32,10 @@ class profile::redis::slave(
         settings => { instances => join($uris, ', ') }
     }
 
+    profile::prometheus::redis_exporter{ $instances:
+        password => $password,
+    }
+
     ferm::service { 'redis_slave_role':
         proto   => 'tcp',
         notrack => true,
