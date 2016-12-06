@@ -4,7 +4,7 @@
 
 
 #####################################################################
-### puppet:///files/rsync/rsyncd.conf.globalopts
+### puppet:///dataset/rsync/rsyncd.conf.globalopts
 #####################################################################
 # rsync conf file for mirror sites of XML dumps
 #

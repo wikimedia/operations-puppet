@@ -1,5 +1,5 @@
 #####################################################################
-### puppet:///files/rsync/rsyncd.conf.phab_dump
+### puppet:///dataset/rsync/rsyncd.conf.phab_dump
 #####################################################################
 
 # write access from iridium to other/misc directory.
