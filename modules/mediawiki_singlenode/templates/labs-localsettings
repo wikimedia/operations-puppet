@@ -1,7 +1,7 @@
 <?php
 #####################################################################
 ### THIS FILE IS MANAGED BY PUPPET
-### puppet:///templates/mediawiki/labs-localsettings
+### puppet:///mediawiki_singlenode/labs-localsettings
 ###
 ###  Changes to this file will be clobbered by Puppet.
 ###  If you need to hand-edit local settings, modify
