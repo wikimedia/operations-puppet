@@ -5,7 +5,7 @@ from subprocess import Popen, PIPE
 
 #############################################################
 # This file is maintained by puppet!
-# puppet:///modules/snapshot/cron/runphpscriptletonallwikis.py
+# puppet:///snapshot/cron/runphpscriptletonallwikis.py
 #############################################################
 
 

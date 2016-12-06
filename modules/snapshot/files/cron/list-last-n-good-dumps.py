@@ -10,7 +10,7 @@ from os.path import exists, isdir
 
 #############################################################
 # This file is maintained by puppet!
-# puppet:///modules/snapshot/cron/list-last-n-good-dumps.py
+# puppet:///snapshot/cron/list-last-n-good-dumps.py
 #############################################################
 
 
