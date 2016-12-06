@@ -1,6 +1,6 @@
 #####################################################################
 ### THIS FILE IS MANAGED BY PUPPET
-### puppet:///elasticsearch/logrotate
+### puppet:///modules/elasticsearch/logrotate
 #####################################################################
 
 /var/log/elasticsearch/*.log {
