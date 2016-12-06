@@ -1,6 +1,6 @@
 #####################################################################
 ### THIS FILE IS MANAGED BY PUPPET
-### puppet:///files/logrotate/wikidata
+### puppet:///modules/mediawiki/maintenance/logrotate.d_wikidata
 #####################################################################
 
 /var/log/wikidata/*.log {
