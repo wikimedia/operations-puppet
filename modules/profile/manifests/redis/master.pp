@@ -3,7 +3,8 @@ class profile::redis::master(
     $settings = hiera('profile::redis::master::settings'),
     $password = hiera('profile::redis::master::password'),
     $aof = hiera('profile::redis::master::aof', false),
-    $clients = hiera('profile::redis::master::clients', [])
+    $clients = hiera('profile::redis::master::clients', []),
+    $prometheus_nodes = hiera('prometheus_nodes'),
 ){
     $uris = apply_format("localhost:%s/${password}", $instances)
     $redis_ports = join($instances, ' ')
@@ -31,6 +32,11 @@ class profile::redis::master(
 
     ::diamond::collector { 'Redis':
         settings => { instances => join($uris, ', ') }
+    }
+
+    ::profile::prometheus::redis_exporter{ $instances:
+        password         => $password,
+        prometheus_nodes => $prometheus_nodes,
     }
 
     ::ferm::service { 'redis_master_role':

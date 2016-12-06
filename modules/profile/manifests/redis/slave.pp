@@ -2,6 +2,7 @@ class profile::redis::slave(
     $settings = hiera('profile::redis::slave::settings'),
     $master = hiera('profile::redis::slave::master'),
     $aof = hiera('profile::redis::slave::aof', false),
+    $prometheus_nodes = hiera('prometheus_nodes'),
 ){
     # Figure out the redis instances running on the master from Puppetdb
     $resources = query_resources(
@@ -30,6 +31,11 @@ class profile::redis::slave(
 
     diamond::collector { 'Redis':
         settings => { instances => join($uris, ', ') }
+    }
+
+    profile::prometheus::redis_exporter{ $instances:
+        password         => $password,
+        prometheus_nodes => $prometheus_nodes,
     }
 
     ferm::service { 'redis_slave_role':
