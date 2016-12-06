@@ -61,4 +61,10 @@ class base {
             source => 'puppet:///modules/base/logrotate/upstart',
         }
     }
+
+    # cronspam generator, removed in later ieee-data versions (> jessie) - T152440
+    # To be removed when stretch is in place.
+    file { '/etc/cron.monthly/ieee-data':
+        ensure => absent,
+    }
 }
