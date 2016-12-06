@@ -2,7 +2,7 @@
 
 #####################################################################
 ### THIS FILE IS MANAGED BY PUPPET
-### puppet:///modules/ipmi/files/ipmi_mgmt
+### puppet:///modules/ipmi/ipmi_mgmt.sh
 #####################################################################
 
 export PATH=/bin:/sbin:/usr/bin:/usr/sbin
