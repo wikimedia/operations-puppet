@@ -15,8 +15,14 @@
 # [*mpm*]
 #   Name of the chosen MPM. Must be 'prefork', 'worker', or 'event'.
 #   The default is 'prefork'.
+# [*source*]
+#   A puppet URL to a file containing the mpm specific configuration required.
+#   Defaults to undef.
 #
-class apache::mpm( $mpm = 'prefork' ) {
+class apache::mpm(
+    $mpm = 'prefork',
+    $source = undef,
+) {
     include ::apache
 
     $available_mpms = ['prefork', 'worker', 'event']
@@ -27,6 +33,7 @@ class apache::mpm( $mpm = 'prefork' ) {
     $selected_mod = "mpm_${mpm}"
     $selected_pkg = "apache2-mpm-${mpm}"
     $selected_cfg = "/etc/apache2/mods-available/mpm_${mpm}.load"
+    $mpm_conf = "/etc/apache2/mods-available/mpm_${mpm}.conf"
 
     $rejected_mpms = reject($available_mpms, $mpm)
     $rejected_mods = prefix($rejected_mpms, 'mpm_')
@@ -58,6 +65,18 @@ class apache::mpm( $mpm = 'prefork' ) {
         mode    => '0444',
         before  => Apache::Mod_conf[$selected_mod],
         require => Package['apache2'],
+    }
+
+    if $source {
+        file { $mpm_conf:
+            ensure  => file,
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0444',
+            source  => $source,
+            before  => Apache::Mod_conf[$selected_mod],
+            require => Package['apache2'],
+        }
     }
 
     apache::mod_conf { $selected_mod:
