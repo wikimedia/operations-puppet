@@ -1,6 +1,6 @@
 #################################################################################
 ### THIS FILE IS MANAGED BY PUPPET
-### puppet:///modules/mediawiki/maintenance/logrotate.d_translationnotifications
+### puppet:///mediawiki/maintenance/logrotate.d_translationnotifications
 #################################################################################
 
 /var/log/translationnotifications/*.log {
