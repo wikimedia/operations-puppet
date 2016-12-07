@@ -21,6 +21,9 @@ PIGZD="/usr/bin/pigz -d"
 <% if @pigz_level -%>
 PIGZ="$PIGZ --<%= @pigz_level -%>"
 <% end -%>
+# this is a local dump, skip TLS and domain verification
+MYSQLDUMP="$MYSQLDUMP --skip-ssl"
+MYSQL="$MYSQL --skip-ssl "
 <% if @password_file -%>
 # This is just for a user with credentials to connect to the database
 MYSQL="$MYSQL --defaults-extra-file=<%= @password_file -%> "
@@ -28,11 +31,15 @@ MYSQLDUMP="$MYSQLDUMP --defaults-extra-file=<%= @password_file -%> "
 <% end -%>
 <% if @mysqldump_innodb_only -%>
 # Provided we only have innodb tables --single-transcation works wonders
-MYSQLDUMP="$MYSQLDUMP --single-transaction "
+MYSQLDUMP="$MYSQLDUMP --single-transaction"
+<% end -%>
+<% if @is_master -%>
+MYSQLDUMP="$MYSQLDUMP --master-data=2"
 <% end -%>
 <% if @is_slave -%>
-INNOBACKUPEX="$INNOBACKUPEX --slave-info --safe-slave-backup "
-MYSQLDUMP="$MYSQLDUMP --dump-slave=1 "
+INNOBACKUPEX="$INNOBACKUPEX --slave-info --safe-slave-backup"
+# We probably do not want slave dumps because it forces a STOP SLAVE
+MYSQLDUMP="$MYSQLDUMP --dump-slave=2 --include-master-host-port"
 <% end -%>
 
 <% if @per_database -%>
@@ -42,6 +49,7 @@ do
 echo "bpipe:/XTRABACKUP/$database:$INNOBACKUPEX --stream=xbstream --parallel=<%= Integer(@processorcount)/2 > 1 ? Integer(@processorcount/2) : 1 %> --databases=$database /dev/null | $PIGZ:$PIGZD | $XBSTREAM ; $INNOBACKUPEX --apply-log @xbstream_dir"
 <% else -%>
 <% if @local_dump_dir -%>
+# note the ':' sign separating the export ($MYSQLDUMP) and the import ($MYSQL) actions- it is easy to miss
 echo "bpipe:/MYSQLDUMP/$database.dump:$MYSQLDUMP --create-options -c $database | $TEE $LOCALDUMPDIR/$database-$DATE.dump |  $PIGZ:$PIGZD | $MYSQL $database"
 <% else -%>
 echo "bpipe:/MYSQLDUMP/$database.dump:$MYSQLDUMP --create-options -c $database | $PIGZ:$PIGZD | $MYSQL $database"
@@ -53,9 +61,9 @@ done
 echo "bpipe:/XTRABACKUP/all:$INNOBACKUPEX --stream=xbstream --parallel=<%= Integer(@processorcount)/2 > 1 ? Integer(@processorcount/2) : 1 %> /dev/null | $PIGZ:$PIGZD | $XBSTREAM ; $INNOBACKUPEX --apply-log <%= @xbstream_dir -%>"
 <% else -%>
 <% if @local_dump_dir -%>
-echo "bpipe:/MYSQLDUMP/all:$MYSQLDUMP --alldatabases --create-options -c | $TEE $LOCALDUMPDIR/all-$DATE.dump | $PIGZ:$PIGZD | $MYSQL"
+echo "bpipe:/MYSQLDUMP/all:$MYSQLDUMP --all-databases --create-options -c | $TEE $LOCALDUMPDIR/all-$DATE.dump | $PIGZ:$PIGZD | $MYSQL"
 <% else -%>
-echo "bpipe:/MYSQLDUMP/all:$MYSQLDUMP --alldatabases --create-options -c | $PIGZ:$PIGZD | $MYSQL"
+echo "bpipe:/MYSQLDUMP/all:$MYSQLDUMP --all-databases --create-options -c | $PIGZ:$PIGZD | $MYSQL"
 <% end -%>
 <% end -%>
 <% end %>
