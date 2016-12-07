@@ -19,6 +19,8 @@ class role::installserver::proxy {
         minute  => '15',
     }
 
+    include base::firewall
+
     ferm::service { 'proxy':
         proto  => 'tcp',
         port   => '8080',
