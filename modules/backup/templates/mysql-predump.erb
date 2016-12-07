@@ -22,10 +22,12 @@ PIGZD="/usr/bin/pigz -d"
 <% if @pigz_level -%>
 PIGZ="$PIGZ --<%= @pigz_level -%>"
 <% end -%>
+MYSQL="$MYSQL --skip-ssl"
+MYSQLDUMP="$MYSQLDUMP --skip-ssl"
 <% if @password_file -%>
 # This is just for a user with credentials to connect to the database
-MYSQL="$MYSQL --defaults-extra-file=<%= @password_file -%> "
-MYSQLDUMP="$MYSQLDUMP --defaults-extra-file=<%= @password_file -%> "
+MYSQL="$MYSQL --defaults-extra-file='<%= @password_file -%>'"
+MYSQLDUMP="$MYSQLDUMP --defaults-extra-file='<%= @password_file -%>'"
 <% end -%>
 <% if @innodb_only -%>
 # Provided we only have innodb tables --single-transcation works wonders
@@ -41,6 +43,7 @@ MYSQLDUMP="$MYSQLDUMP --master-data=2 "
 <% if @slave -%>
 # if the server is a slave, register the master binlog coordinates, too
 # this only works on multisource replication hosts with mariadb clients
+# Note this stops replication during the dump, which we may not want
 MYSQLDUMP="$MYSQLDUMP --dump-slave=2 --include-master-host-port "
 <% end -%>
 
