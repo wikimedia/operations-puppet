@@ -115,7 +115,7 @@ class gerrit::jetty(
         recurse => remote,
         owner   => 'gerrit2',
         group   => 'gerrit2',
-        mode    => '0644',
+        mode    => '0444',
         source  => 'puppet:///modules/gerrit/etc',
         require => File['/var/lib/gerrit2/review_site'],
     }
@@ -124,7 +124,7 @@ class gerrit::jetty(
         content => template('gerrit/gerrit.config.erb'),
         owner   => 'gerrit2',
         group   => 'gerrit2',
-        mode    => '0664',
+        mode    => '0444',
         require => File['/var/lib/gerrit2/review_site/etc'],
     }
 
@@ -132,7 +132,7 @@ class gerrit::jetty(
         content => template('gerrit/secure.config.erb'),
         owner   => 'gerrit2',
         group   => 'gerrit2',
-        mode    => '0660',
+        mode    => '0440',
         require => File['/var/lib/gerrit2/review_site/etc'],
     }
 
@@ -140,7 +140,7 @@ class gerrit::jetty(
         content => template('gerrit/log4j.properties.erb'),
         owner   => 'gerrit2',
         group   => 'gerrit2',
-        mode    => '0664',
+        mode    => '0444',
         require => File['/var/lib/gerrit2/review_site/etc'],
     }
 
@@ -158,7 +158,7 @@ class gerrit::jetty(
         content => template('gerrit/replication.config.erb'),
         owner   => 'gerrit2',
         group   => 'gerrit2',
-        mode    => '0664',
+        mode    => '0444',
         require => File['/var/lib/gerrit2/review_site/etc'],
     }
 
@@ -171,40 +171,11 @@ class gerrit::jetty(
         source  => 'puppet:///modules/gerrit/static',
     }
 
-    exec { 'install_gerrit_jetty':
-        creates => '/var/lib/gerrit2/review_site/bin',
-        user    => 'gerrit2',
-        group   => 'gerrit2',
-        cwd     => '/var/lib/gerrit2',
-        command => '/usr/bin/java -jar gerrit.war init -d review_site --batch --no-auto-start',
-        require => [
-            File['/var/lib/gerrit2/review_site/etc/gerrit.config'],
-            File['/var/lib/gerrit2/review_site/etc/secure.config'],
-            File['/var/lib/gerrit2/review_site/lib/mysql-connector-java.jar'],
-            File['/srv/gerrit/jvmlogs'],
-        ],
-    }
-
-    exec { 'reindex_gerrit_jetty':
-        creates => '/var/lib/gerrit2/review_site/index',
-        user    => 'gerrit2',
-        group   => 'gerrit2',
-        cwd     => '/var/lib/gerrit2',
-        command => '/usr/bin/java -jar gerrit.war reindex -d review_site --threads 4',
-        require => Exec['install_gerrit_jetty'],
-    }
-
     service { 'gerrit':
         ensure    => running,
-        subscribe => [
-            File['/var/lib/gerrit2/review_site/etc/gerrit.config'],
-            File['/var/lib/gerrit2/review_site/etc/secure.config'],
-            File['/var/lib/gerrit2/review_site/etc/log4j.properties']
-        ],
         enable    => true,
         hasstatus => false,
         status    => '/etc/init.d/gerrit check',
-        require   => Exec['reindex_gerrit_jetty'],
     }
 
     file { '/etc/default/gerritcodereview':
@@ -223,6 +194,5 @@ class gerrit::jetty(
         command => 'find /var/lib/gerrit2/review_site/logs/ -name "*.gz" -mtime +7 -delete',
         user    => 'root',
         hour    => 1,
-        require => Exec['install_gerrit_jetty'],
     }
 }
