@@ -69,6 +69,9 @@ sub normalize_request {
 
 	// Strip :port from req.http.host and normalize to lowercase
 	set req.http.Host = std.tolower(regsub(req.http.Host, ":.*$", ""));
+
+	// Strip away characters that don't belong in hostnames
+	set req.http.Host = regsuball(req.http.Host, "[^-.a-z0-9]+", "");
 }
 
 // Must be done at the top of vcl_recv, in our varnish-frontend layer only,
@@ -234,7 +237,7 @@ sub vcl_recv {
 	unset req.http.Proxy; // https://httpoxy.org/
 
 	if (req.restarts == 0) {
-		// This unwraps proxy-style URLs, strips :port from Host:, and downcases Host:
+		// This unwraps proxy-style URLs and sanitizes the Host header (lowercase, no port, no funny chars)
 		call normalize_request;
 
 		// IP processing is req->req mangling that shouldn't be re-done on restart
