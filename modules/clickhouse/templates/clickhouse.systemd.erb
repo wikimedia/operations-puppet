@@ -1,0 +1,18 @@
+# NOTE: This file is managed by Puppet
+# Systemd unit for Yandex Clickhouse
+[Unit]
+Description="clickhouse service"
+After=network.target
+
+[Service]
+User=clickhouse
+Group=clickhouse
+Restart=always
+RestartSec=2s
+# wait 60 seconds for a graceful restart before killing the master
+TimeoutStopSec=60
+ExecStart=/usr/bin/clickhouse-server --config-file=/etc/clickhouse-server/config.xml
+SyslogIdentifier=clickhouse
+
+[Install]
+WantedBy=multi-user.target
