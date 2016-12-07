@@ -9,12 +9,31 @@ class role::mariadb::backup {
         mode   => '0600', # implicitly 0700 for dirs
     }
 
+    file { '/usr/local/bin/dumps-misc.sh':
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0755',
+        content => template('mariadb/dumps-misc.sh.erb'),
+    }
+
     file { '/etc/mysql/conf.d/dumps.cnf':
         ensure  => present,
         owner   => 'root',
         group   => 'root',
         mode    => '0400',
         content => "[client]\nuser=${passwords::mysql::dump::user}\npassword=${passwords::mysql::dump::pass}\n",
+    }
+
+    cron { 'dumps-misc':
+        minute  => 0,
+        hour    => 1,
+        weekday => 3,
+        user    => 'root',
+        command => '/usr/local/bin/dumps-misc.sh >/srv/dumps-misc.log 2>&1',
+        require => [File['/usr/local/bin/dumps-misc.sh'],
+                    File['/srv/backups'],
+        ],
     }
 
     backup::mysqlset {'dbstore':
