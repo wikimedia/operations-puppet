@@ -7,6 +7,8 @@ class role::installserver::http {
 
     include install_server::web_server
 
+    include base::firewall
+
     ferm::service { 'install_http':
         proto => 'tcp',
         port  => '(http https)'
