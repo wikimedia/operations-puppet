@@ -1310,6 +1310,8 @@ node 'graphite2002.codfw.wmnet' {
 node 'install1001.wikimedia.org' {
     role(installserver::tftp,
         installserver::dhcp,
+        installserver::http,
+        installserver::proxy,
         installserver::preseed,
         aptrepo::wikimedia)
 
