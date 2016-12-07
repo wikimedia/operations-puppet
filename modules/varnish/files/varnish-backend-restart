@@ -2,9 +2,8 @@
 
 set -e
 
-# Depool varnish-be and varnish-be-rand
+# Depool varnish-be
 confctl --quiet select name=`hostname -f`,service='varnish-be' set/pooled=no
-confctl --quiet select name=`hostname -f`,service='varnish-be-rand' set/pooled=no
 
 # Wait a bit for the services to be drained
 sleep 30
@@ -26,6 +25,5 @@ chmod 644 /var/lib/varnish/*/*.vsm
 
 sleep 5
 
-# Repool varnish-be and varnish-be-rand
+# Repool varnish-be
 confctl --quiet select name=`hostname -f`,service='varnish-be' set/pooled=yes
-confctl --quiet select name=`hostname -f`,service='varnish-be-rand' set/pooled=yes
