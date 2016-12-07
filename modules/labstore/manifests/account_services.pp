@@ -29,6 +29,7 @@ class labstore::account_services {
 
     $ldapconfig = hiera_hash('labsldapconfig', {})
     include passwords::mysql::labsdb
+    include passwords::labsdbaccounts
 
     $creds = {
         'ldap' => {
@@ -47,6 +48,11 @@ class labstore::account_services {
             ],
             'username' => $::passwords::mysql::labsdb::user,
             'password' => $::passwords::mysql::labsdb::password,
+        },
+        'accounts-backend' => {
+            'host' => 'm5-master.eqiad.wmnet',
+            'username' => $::passwords::labsdbaccounts::db_user,
+            'password' => $::passwords::labsdbaccounts::db_password,
         }
     }
 
