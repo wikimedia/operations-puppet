@@ -129,7 +129,7 @@ class role::eventlogging::processor inherits role::eventlogging {
     # that eventlogging supports.  The default is kafka://.  Also available is kafka-confluent://
     # eventlogging::processor is the only configured analytics eventlogging kafka producer, so we
     # only need to define this here.
-    $kafka_producer_scheme = hiera('kafka_producer_scheme', 'kafka://')
+    $kafka_producer_scheme = hiera('eventlogging_kafka_producer_scheme', 'kafka://')
 
     # Read in raw events from Kafka, process them, and send them to
     # the schema corresponding to their topic in Kafka.
