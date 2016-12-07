@@ -776,8 +776,11 @@ class role::mariadb::sanitarium2 {
         package => 'wmf-mariadb101',
     }
 
+    include mariadb::config::privatewikis
+
     class { 'mariadb::config':
-        config   => 'mariadb/sanitarium2.my.cnf.erb',
+        config  => 'mariadb/sanitarium2.my.cnf.erb',
+        require => Class['mariadb::config::privatewikis'],
     }
 
     class {'mariadb::service':
