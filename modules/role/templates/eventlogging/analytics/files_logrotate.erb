@@ -1,0 +1,11 @@
+<%= @out_dir %>/*.log {
+       daily
+       olddir <%= @out_dir %>/archive
+       notifempty
+       maxage 30
+       rotate 1000
+       dateext
+       compress
+       delaycompress
+       missingok
+}
