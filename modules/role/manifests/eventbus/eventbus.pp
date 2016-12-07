@@ -51,7 +51,13 @@ class role::eventbus::eventbus {
         #   meta[topic] == mediawiki.revision_create
         # in eqiad will be produced to
         #   eqiad.mediawiki.revsion_create
-        "${kafka_base_uri}?async=False&topic=${::site}.{meta[topic]}${kafka_api_version_param}"
+        #
+        # We produce async=False so that we can be sure each request is ACKed by Kafka
+        # before we return an HTTP status, and wait up to 10 seconds for this to happen.
+        # In normal cases, this will be much much faster than 10 seconds, but during
+        # broker restarts, it can take a few seconds for meta data and leadership
+        # info to propagate to the kafka client.
+        "${kafka_base_uri}?async=False&sync_timeout=10.0&topic=${::site}.{meta[topic]}${kafka_api_version_param}"
     ]
 
     $access_log_level = $::realm ? {
