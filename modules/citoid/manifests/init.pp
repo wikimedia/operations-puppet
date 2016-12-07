@@ -16,12 +16,12 @@
 #   The zotero host's TCP port
 #
 # [*wskey*]
-#   The WorldCat Search API key to use. Default: '""'
+#   The WorldCat Search API key to use. Default: ''
 #
 class citoid(
     $zotero_host,
     $zotero_port,
-    $wskey = '""',
+    $wskey = '',
 ) {
     service::node { 'citoid':
         port              => 1970,
