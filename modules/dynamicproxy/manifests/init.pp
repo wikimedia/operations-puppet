@@ -49,6 +49,9 @@ class dynamicproxy (
 
     redis::instance { $redis_port:
         settings => {
+            # Protected by iptables  / ferm rules from elsewhere
+            # We need to allow this so we can replicate
+            bind           => '0.0.0.0',
             appendonly     => 'yes',
             appendfilename => "${::hostname}-${redis_port}.aof",
             maxmemory      => $redis_maxmemory,
