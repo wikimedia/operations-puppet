@@ -122,7 +122,7 @@
     html = <li class=\"ci_comment_test\"><span class=\"ci_comment_test_name\">$2$1</a></span> <span class=\"ci_comment_test_result\"><span class=\"ci_result_$3\">$3</span>$4</span></li>
 [commentlink "its-phabricator"]
     # $1 must hold the bug number because of the notification bots that are using this.
-    match =  "\\bT(\\d+)(#\\d+)?\\b(?![#\"]|</a>)"
+    match = "\\bT(\\d+)(#\\d+)?\\b(?![#\"]|</a>)"
     link = https://phabricator.wikimedia.org/T$1$2
 [mimetype "application/javascript"]
     safe = true
