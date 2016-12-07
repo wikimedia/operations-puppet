@@ -13,8 +13,12 @@
 #       Required (true, false). Whether backups will be taken per database or not
 #   $pigz_level
 #       pigz compression level. defaults to --fast (-1)
+#   $is_master
+#       Whether the host to be backed-up has the binarly logs enabled in which
+#       case, --master-data=2 is passed to store the host binary location
+#       Defaults to false
 #   $is_slave
-#       Whether the host to be backed-up is a slave in which case --dump-slave
+#       Whether the host to be backed-up is a slave in which case --dump-slave=2
 #       is passed to mysqldump and --slave-info --safe-slave-backup to xtrabackup
 #       Defaults to false
 #   $mysqldump_innodb_only
@@ -53,6 +57,7 @@ define bacula::client::mysql_bpipe(
                 $xtrabackup,
                 $xbstream_dir='/var/tmp/xbstream',
                 $pigz_level='fast',
+                $is_master=false,
                 $is_slave=false,
                 $mysqldump_innodb_only=false,
                 $password_file=undef,

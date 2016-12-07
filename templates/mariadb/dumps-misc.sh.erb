@@ -3,7 +3,7 @@
 find /srv/backups -mtime +14 -type f -delete
 
 my="/usr/local/bin/mysql --skip-column-names -e"
-dump="/usr/local/bin/mysqldump --single-transaction --quick --master-data=2 --gtid --skip-ssl"
+dump="/usr/local/bin/mysqldump --single-transaction --quick --master-data=2 --skip-ssl"
 
 $dump -h m1-slave --databases bacula etherpadlite librenms puppet racktables rt | \
     pigz > /srv/backups/m1-$(date +%Y%m%d%H%M%S).sql.gz &
