@@ -17,6 +17,7 @@ class eventlogging::dependencies {
     require_package([
         'python-dateutil',
         'python-jsonschema',
+        'python-confluent-kafka',
         'python-kafka',
         'python-mysqldb',
         'python-pygments',
