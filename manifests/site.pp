@@ -1325,6 +1325,9 @@ node 'install1001.wikimedia.org' {
 node 'install2001.wikimedia.org' {
     role(installserver::tftp,
         installserver::dhcp,
+        installserver::http,
+        installserver::proxy,
+        installserver::preseed,
         aptrepo::wikimedia)
 
     $cluster = 'misc'
