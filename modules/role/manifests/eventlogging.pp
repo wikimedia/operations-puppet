@@ -26,9 +26,6 @@ class role::eventlogging {
         description => 'EventLogging',
     }
 
-    # Get the Kafka configuration
-    $kafka_config = kafka_config('analytics')
-
     # EventLogging for analytics processing is deployed
     # as the eventlogging/analytics scap target.
     eventlogging::deployment::target { 'analytics': }
@@ -36,44 +33,21 @@ class role::eventlogging {
         eventlogging_path => '/srv/deployment/eventlogging/analytics'
     }
 
-    # Event data flows through several processes.
-    # By default, all processing is performed
-    # on one node, but the work could be easily distributed across
-    # multiple hosts.
-    $eventlogging_host   = hiera('eventlogging_host', $::ipaddress)
-
-    # Define statsd host url
-    # for beta cluster, set in https://wikitech.wikimedia.org/wiki/Hiera:Deployment-prep
-    $statsd_host         = hiera('eventlogging_statsd_host',      'statsd.eqiad.wmnet')
-
-    $kafka_brokers_array = $kafka_config['brokers']['array']
+    # Get the Kafka configuration
+    $kafka_config         = kafka_config('analytics')
+    $kafka_brokers_string = $kafka_config['brokers']['string']
 
     # Where possible, if this is set, it will be included in client configuration
     # to avoid having to do API version for Kafka < 0.10 (where there is not a version API).
     $kafka_api_version = $kafka_config['api_version']
 
-    # By default, the EL Kafka writer writes events to
-    # schema based topic names like eventlogging_SCHEMA,
-    # with each message keyed by SCHEMA_REVISION.
-    # If you want to write to a different topic, append topic=<TOPIC>
-    # to your query params.
-    $kafka_base_uri    = inline_template('kafka:///<%= @kafka_brokers_array.join(":9092,") + ":9092" %>')
+    # Using kafka-confluent as a consumer is not currently supported by this puppet module,
+    # but is implemented in eventlogging.  Hardcode the scheme for consumers for now.
+    $kafka_consumer_scheme = 'kafka://'
 
-    # Read in raw events from Kafka, process them, and send them to
-    # the schema corresponding to their topic in Kafka.
-    $kafka_schema_uri  = "${kafka_base_uri}?topic=eventlogging_{schema}"
-
-    # The downstream eventlogging MySQL consumer expects schemas to be
-    # all mixed up in a single stream.  We send processed events to a
-    # 'mixed' kafka topic in order to keep supporting it for now.
-    # We blacklist certain high volume schemas from going into this topic.
-    $mixed_schema_blacklist = hiera('eventlogging_valid_mixed_schema_blacklist', undef)
-    $kafka_mixed_uri = $mixed_schema_blacklist ? {
-        undef   => "${kafka_base_uri}?topic=eventlogging-valid-mixed",
-        default => "${kafka_base_uri}?topic=eventlogging-valid-mixed&blacklist=${mixed_schema_blacklist}"
-    }
-
-    $kafka_client_side_raw_uri = "${kafka_base_uri}?topic=eventlogging-client-side"
+    # Commonly used Kafka input URIs.
+    $kafka_mixed_uri = "${kafka_consumer_scheme}/${kafka_brokers_string}?topic=eventlogging-valid-mixed"
+    $kafka_client_side_raw_uri = "${kafka_consumer_scheme}/${kafka_brokers_string}?topic=eventlogging-client-side"
 
     # This check was written for eventlog1001, so only include it there.,
     if $::hostname == 'eventlog1001' {
@@ -101,7 +75,6 @@ class role::eventlogging {
 }
 
 
-
 #
 # ==== Data flow classes ====
 #
@@ -116,6 +89,7 @@ class role::eventlogging {
 # This forwarder class exists only for backwards compatibility for services
 # consuming from the legacy ZMQ stream now.
 class role::eventlogging::forwarder inherits role::eventlogging {
+    $eventlogging_host    = hiera('eventlogging_host', $::ipaddress)
 
     # This forwards the kafka eventlogging-valid-mixed topic to
     # ZMQ port 8600 for backwards compatibility.
@@ -150,8 +124,29 @@ class role::eventlogging::processor inherits role::eventlogging {
         ['client-side-00', 'client-side-01']
     )
 
+    # Choose the eventlogging URI scheme to use for consumers and producer (inputs vs outputs).
+    # This allows us to try out different Kafka handlers and different kafka clients
+    # that eventlogging supports.  The default is kafka://.  Also available is kafka-confluent://
+    # eventlogging::processor is the only configured analytics eventlogging kafka producer, so we
+    # only need to define this here.
+    $kafka_producer_scheme = hiera('kafka_producer_scheme', 'kafka://')
 
-    # Append this to query params if set.
+    # Read in raw events from Kafka, process them, and send them to
+    # the schema corresponding to their topic in Kafka.
+    $kafka_schema_output_uri  = "${kafka_producer_scheme}/${kafka_brokers_string}?topic=eventlogging_{schema}"
+
+    # The downstream eventlogging MySQL consumer expects schemas to be
+    # all mixed up in a single stream.  We send processed events to a
+    # 'mixed' kafka topic in order to keep supporting it for now.
+    # We blacklist certain high volume schemas from going into this topic.
+    $mixed_schema_blacklist = hiera('eventlogging_valid_mixed_schema_blacklist', undef)
+    $kafka_mixed_output_uri = $mixed_schema_blacklist ? {
+        undef   => "${kafka_producer_scheme}/${kafka_brokers_string}?topic=eventlogging-valid-mixed",
+        default => "${kafka_producer_scheme}/${kafka_brokers_string}?topic=eventlogging-valid-mixed&blacklist=${mixed_schema_blacklist}"
+    }
+
+    # Append this to query params of kafka-python writer if set.
+    # kafka-confluent defaults to setting this to 0.9 anyway.
     $kafka_api_version_param = $kafka_api_version ? {
         undef   => '',
         default => "&api_version=${kafka_api_version}"
@@ -164,15 +159,20 @@ class role::eventlogging::processor inherits role::eventlogging {
     # out why and stop it.  This either needs to be higher,
     # or it is a bug in kafka-python.
     # See: https://phabricator.wikimedia.org/T142430
-    $kafka_producer_args = "retries=6&retry_backoff_ms=200${kafka_api_version_param}"
+    $kafka_producer_args = $kafka_producer_scheme ? {
+        # args for kafka-confluent handler writer
+        'kafka-confluent://' => 'message.send.max.retries=6,retry.backoff.ms=200',
+        # args for kafka-python handler writer
+        'kafka://'           => "retries=6&retry_backoff_ms=200${kafka_api_version_param}"
+    }
 
     eventlogging::service::processor { $client_side_processors:
         format         => '%q %{recvFrom}s %{seqId}d %t %o %{userAgent}i',
         input          => "${kafka_client_side_raw_uri}${kafka_api_version_param}",
         sid            => $kafka_consumer_group,
         outputs        => [
-            "${kafka_schema_uri}&${kafka_producer_args}",
-            "${kafka_mixed_uri}&${kafka_producer_args}",
+            "${kafka_schema_output_uri}&${kafka_producer_args}",
+            "${kafka_mixed_output_uri}&${kafka_producer_args}",
         ],
         output_invalid => true,
     }
@@ -208,6 +208,10 @@ class role::eventlogging::consumer::mysql inherits role::eventlogging {
         undef   => '',
         default => "&api_version=${kafka_api_version}"
     }
+
+    # Define statsd host url to send mysql insert metrics.
+    # For beta cluster, set in https://wikitech.wikimedia.org/wiki/Hiera:Deployment-prep
+    $statsd_host          = hiera('eventlogging_statsd_host',      'statsd.eqiad.wmnet')
 
     # Kafka consumer group for this consumer is mysql-m4-master
     eventlogging::service::consumer { $mysql_consumers:
