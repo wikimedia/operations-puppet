@@ -8,8 +8,8 @@ CREATE TABLE accounts(
     mysql_username VARCHAR(255) NOT NULL,
     type enum('tool', 'user') NOT NULL,
     username VARCHAR(255) NOT NULL,
-    password VARCHAR(255) NOT NULL
-) ENGINE=InnoDB ROW_FORMAT=Dynamic CHARSET=utf8mb4;
+    password_hash BINARY(41) NOT NULL, -- MySQL password hash format
+  ) ENGINE=InnoDB ROW_FORMAT=Dynamic CHARSET=utf8mb4;
 CREATE UNIQUE INDEX account_type ON accounts(type, username);
 
 CREATE TABLE account_hosts(
