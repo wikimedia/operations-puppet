@@ -1,4 +1,5 @@
-class role::installserver {
+# sets up preseeding dir and config on an install server
+class role::installserver::preseed {
 
     include standard
     include role::backup::host

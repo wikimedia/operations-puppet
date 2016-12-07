@@ -7,6 +7,7 @@ class role::installserver::dhcp {
 
     include install_server::dhcp_server
 
+    include standard
     include base::firewall
 
     ferm::rule { 'dhcp':
