@@ -111,6 +111,14 @@ ssl-cert=/etc/mysql/ssl/cert.pem
 ssl-key=/etc/mysql/ssl/server.key
 ssl-cipher=TLSv1.2
 <% end %>
+
+# gtid_domain_id flag is needed for multisource replication and GTID.
+# Strictly it is only needed on masters or servers that can potentially be
+# masters but for consistency it should be set in all of them.
+# https://mariadb.com/kb/en/mariadb/gtid/
+
+gtid_domain_id  = <%= @server_id %>
+
 <% if @p_s == 'on' %>
 # Enabling performance_schema (disabled by default in MariaDB10)
 performance_schema                                     = 1
