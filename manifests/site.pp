@@ -1305,6 +1305,7 @@ node 'graphite2002.codfw.wmnet' {
 node 'install1001.wikimedia.org' {
     role(installserver::tftp,
         installserver::dhcp,
+        installserver::preseed,
         aptrepo::wikimedia)
 
     $cluster = 'misc'
