@@ -178,7 +178,9 @@ node 'bast2001.wikimedia.org' {
 
 # Bastion in the Netherlands
 node 'bast3001.wikimedia.org' {
-    role(bastionhost::general, installserver::tftp_server, prometheus::ops)
+    role(bastionhost::general,
+        installserver::tftp,
+        prometheus::ops)
 
     interface::add_ip6_mapped { 'main': interface => 'eth0', }
 
@@ -189,7 +191,9 @@ node 'bast3001.wikimedia.org' {
 
 # Bastion in California
 node 'bast4001.wikimedia.org' {
-    role(bastionhost::general, ipmi::mgmt, installserver::tftp_server,
+    role(bastionhost::general,
+        ipmi::mgmt,
+        installserver::tftp,
         prometheus::ops)
 
     interface::add_ip6_mapped { 'main': interface => 'eth0', }
@@ -224,7 +228,7 @@ node 'californium.wikimedia.org' {
 # DHCP / TFTP
 node 'carbon.wikimedia.org' {
     role(installserver,
-        installserver::tftp_server,
+        installserver::tftp,
         installserver::dhcp,
         installserver::http,
         installserver::proxy,
@@ -1299,7 +1303,10 @@ node 'graphite2002.codfw.wmnet' {
 
 # partially replaces carbon (T132757)
 node 'install1001.wikimedia.org' {
-    role(installserver::tftp_server, installserver::dhcp, aptrepo::wikimedia)
+    role(installserver::tftp,
+        installserver::dhcp,
+        aptrepo::wikimedia)
+
     $cluster = 'misc'
 
     interface::add_ip6_mapped { 'main':
@@ -1308,7 +1315,10 @@ node 'install1001.wikimedia.org' {
 }
 
 node 'install2001.wikimedia.org' {
-    role(installserver::tftp_server, installserver::dhcp, aptrepo::wikimedia)
+    role(installserver::tftp,
+        installserver::dhcp,
+        aptrepo::wikimedia)
+
     $cluster = 'misc'
 
     interface::add_ip6_mapped { 'main':

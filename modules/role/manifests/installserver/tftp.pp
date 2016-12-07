@@ -1,4 +1,4 @@
-# Class: role::install_server::tftp_server
+# Class: role::installserver::tftp
 #
 # A WMF role class used to install all the install_server TFTP stuff
 #
@@ -10,15 +10,15 @@
 #
 # Requires:
 #
-#   Class['install-_server::tftp_server']
+#   Class['install_server::tftp_server']
 #   Class['base::firewall']
 #   Define['ferm::rule']
 #
 # Sample Usage:
-#       include role::installserver::tftp_server
+#       role(installserver::tftp)
 
-class role::installserver::tftp_server {
-    system::role { 'role::install_server::tftp_server':
+class role::installserver::tftp {
+    system::role { 'role::installserver::tftp':
         description => 'WMF TFTP server',
     }
 
