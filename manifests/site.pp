@@ -1103,7 +1103,7 @@ node 'eventlog1001.eqiad.wmnet' {
         eventlogging::forwarder,
         eventlogging::processor,
         eventlogging::consumer::mysql,
-        eventlogging::consumer::files,
+        eventlogging::analytics::files,
         logging::mediawiki::errors)
 
     include standard
