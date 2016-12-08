@@ -1,6 +1,10 @@
 # deploy scripts and its dependencies to create replica views
 class role::labs::db::views {
 
+    package { ['python-simplejson', 'python-pymysql':
+        ensure => present,
+    }
+
     include passwords::labsdb::maintainviews
     $view_user = $::passwords::labsdb::maintainviews::user
     $view_pass = $::passwords::labsdb::maintainviews::db_pass
@@ -24,11 +28,12 @@ class role::labs::db::views {
     }
 
     file { '/usr/local/sbin/maintain-meta_p':
-        ensure => file,
-        source => 'puppet:///modules/role/labs/db/views/maintain-meta_p.py',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0655',
+        ensure  => file,
+        source  => 'puppet:///modules/role/labs/db/views/maintain-meta_p.py',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0655',
+        require => [Package['python-simplejson', 'python-pymysql']],
     }
 
     file { '/usr/local/src/heartbeat-views.sql':
