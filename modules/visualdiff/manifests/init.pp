@@ -8,6 +8,9 @@ class visualdiff {
     $visualdiff_packages = [
         'nodejs',
         'npm',
+        'uprightdiff',
+        # TODO: Remove packages needed for building once
+        # packaged version of uprightdiff is tested
         'build-essential',
         'g++',
         'libopencv-highgui-dev',
