@@ -235,25 +235,3 @@ scap::keyholder_agents:
     trusted_groups:
       - deploy-service
 
-# deployment-prep scap::source declarations.  These are created
-# by the role deployment::server.  Each source listed here
-# will be cloned on the scap deploy server.
-scap::sources:
-
-  phabricator/deployment:
-    repository: phabricator/deployment
-
-  # eventbus runs eventlogging-service.
-  # See: https://wikitech.wikimedia.org/wiki/EventBus
-  eventlogging/eventbus:
-    repository: eventlogging
-    scap_repository: eventlogging/scap/eventbus
-
-  # eventlogging/analytics is the original EventLogging server deployment.
-  eventlogging/analytics:
-    repository: eventlogging
-    scap_repository: eventlogging/scap/analytics
-
-  # Public EventStreams service
-  eventstreams/deploy:
-    repository: mediawiki/services/eventstreams/deploy
