@@ -232,7 +232,7 @@ groups:
               bmansurov, atgomez, amire80, kartik, pcoombe, foks, mpany, hjiang, jsamra, bcohn,
               jdlrobson, chelsyx, ovasileva, mtizzoni, panisson, paolotti, ciro,
               psinger, flemmerich, mkroetzsch, akrausetud, filippo, nschaaf, pmiazga, faidon,
-              zareen]
+              zareen, piccardi]
   analytics-admins:
     gid: 732
     description: Admin access to analytics cluster.
@@ -2206,3 +2206,11 @@ users:
     ssh_keys:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQD1r7OXp7M2oYoTVw/e7ccbF6tHdmM0ZeLpwwMzPAS07zfY31TQ9F3Ww0KPDyKcDt0Cndbg5izpkGlQ6rwTVaeeBlp3IbAwn+YtuZjVjoNny3OyTM1WRjmGbimxglrfUWWjn5yhu4VzrVkA9XYGn7mlJtCmV/kQzXzcAXgF19L9YCOnfBILy7HB5CPpj7H/N+ACmZVAaTiOCLpXb60P3ffVp93Lfzzlau7sPmel/MJOSSWAH8MUhIdGlUXTyk6+b06pSIGk3kAJjtAvtvT1ACjNeyPE1QYJSYm/Lk3MbrjxHvdJipquq3tgxp7StfqY9ppXq5GwvoEecFLd9D59WTHD ragada@thinkpad
     uid: 15338
+  piccardi:
+    ensure: present
+    gid: 500
+    name: piccardi
+    realname: Tiziano Piccardi
+    ssh_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAABJQAAAQEAozlVbJ2Cmn3TrZvHChyiHShcWIERWVtl0A+V/w2P5jrpq4WGe2qx/DMPkUDsS5AvhOwY2b9qtAGbx/M+26+b0+xkJihrnT9Fy/IwEDxBFRtcIZ0N1ZvRlK2epb12gfX3oTfQWiSJcmlZOhJCS/GUfeZAAvJiDifnyWeaJAYlkPxPaWVhbF0Xv/W+3zQTQYfPuQEp1S6IKecN3bvW0/8t8fANzbfIjRtwBTSfZiKtHNZwnphaVAPF+xF7wV36spPeRbrxaB6Xy/3pEU00uT7qvyoDpB511w6IVIQfhiAVROVfCbTwyrPtuP+BZHRGFGE7hyo8pFQDQUnEU0yM11NYdQ==
+    uid: 15999
