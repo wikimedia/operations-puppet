@@ -108,8 +108,10 @@ class VenvCreatingAuthenticator(Authenticator):
     @gen.coroutine
     def authenticate(self, handler, data):
         username = data['username']
-        # FIXME: Parameterize this groupname
-        if username not in grp.getgrnam('researchers').gr_mem:
+        allowed_groups = ['researchers', 'statistics-privatedata-users', 'ops']
+        if not any([
+                username not in grp.getgrnam(group).gr_mem
+                for group in allowed_groups]):
             self.log.warn('User %s not in researchers group' % username)
             return None
         return (yield super().authenticate(handler, data))
