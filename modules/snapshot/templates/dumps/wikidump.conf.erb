@@ -17,10 +17,7 @@ nonflowlist=<%= @apachedir -%>/dblists/nonflow.dblist
 flowlist=<%= @apachedir -%>/dblists/flow.dblist
 dir=<%= @apachedir %>
 adminsettings=private/PrivateSettings.php
-forcenormal=0
-
-#testing
-#halt=1
+tablejobs=<%= scope.lookupvar('snapshot::dumps::dirs::datadir') -%>/table_jobs.yaml
 
 [output]
 public=<%= scope.lookupvar('snapshot::dumps::dirs::datadir') -%>/public
