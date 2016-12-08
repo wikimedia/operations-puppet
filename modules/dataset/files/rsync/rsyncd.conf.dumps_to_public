@@ -17,6 +17,20 @@ exclude = **tmp/ **temp/ **bad/ **save/ **other/ **archive/
 # for odysseus.fi.muni.cz, contact: Jan Kasprzak <ftp-admin@fi.muni.cz>
 hosts allow = sagres.c3sl.ufpr.br odysseus.fi.muni.cz odysseus.linux.cz odysseus.ip6.fi.muni.cz poincare.acc.umu.se
 
+[dumpslastfive]
+read only = true
+# this will include only the last five good dumps.
+# include/exclude list coming soon...
+path = /data/xmldatadumps/public
+include = /*wik*/ /*wik*/2[0-9][0-9][0-9][0-9][0-9][0-9][0-9]/
+exclude = **tmp/ **temp/ **bad/ **save/ **other/ **archive/ /* /*/ /*/*/*
+include from = /data/xmldatadumps/public/rsync-filelist-last-5-good.txt
+# added sagres.c3sl.ufpr.br, Sept 6 2011 -- atg
+# for sagres.c3sl.ufpr.br, contact: Carlos Carvalho <carlos@fisica.ufpr.br>
+# added odysseus.fi.muni.cz, May 11, 2012 -- atg
+# for odysseus.fi.muni.cz, contact: Jan Kasprzak <ftp-admin@fi.muni.cz>
+hosts allow = sagres.c3sl.ufpr.br odysseus.fi.muni.cz odysseus.linux.cz odysseus.ip6.fi.muni.cz poincare.acc.umu.se
+
 [dumpmirrorsother]
 read only = true
 path = /data/xmldatadumps/public/other
