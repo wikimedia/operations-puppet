@@ -1,7 +1,7 @@
 # == Class role::eventlogging::analytics::files
 # Consumes streams of events and writes them to log files.
 #
-class role::eventlogging::analytisc::files {
+class role::eventlogging::analytics::files {
     include role::eventlogging::analytics::server
 
     # Log all raw log records and decoded events to flat files in
