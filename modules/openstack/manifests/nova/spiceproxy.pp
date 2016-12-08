@@ -37,10 +37,6 @@ class openstack::nova::spiceproxy(
             subscribe => File['/etc/nova/nova.conf'],
             require   => Package['nova-consoleauth'];
         }
-        monitoring::service { 'nova-spiceproxy-http':
-            description   => 'nova-spiceproxy http',
-            check_command => 'check_http_on_port!6082',
-        }
     } else {
         service { 'nova-spiceproxy':
             ensure  => stopped,
