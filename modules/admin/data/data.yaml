@@ -232,7 +232,7 @@ groups:
               bmansurov, atgomez, amire80, kartik, pcoombe, foks, mpany, hjiang, jsamra, bcohn,
               jdlrobson, chelsyx, ovasileva, mtizzoni, panisson, paolotti, ciro,
               psinger, flemmerich, mkroetzsch, akrausetud, filippo, nschaaf, pmiazga, faidon,
-              zareen]
+              zareen, piccardi]
   analytics-admins:
     gid: 732
     description: Admin access to analytics cluster.
@@ -2190,3 +2190,11 @@ users:
     ssh_keys:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDaREf06EZa5CoRLc7sUNqZqDJVIKIxaxpsMsiG98QixtEEGQLw6W0CCwRwls+NVunzERumXJsKaAPBX5ptn5wH4ZXMfrD1y9CWqQFYkImKI4BJjCCef7xo+PwdHGf694WD+MBzuNXWzhTUUAnFKYDTvs5WEqdeXYBH4cFNVPQzG5noy7+E6g/7jBXZFVhT91OUofMvEAsOL5eIzT1nmYZex0vOPsRN8+gH0nGc0XaQ8nRWGu+n4gAHnecCJUOAILvNcFC/JF0QzmD/58vbkiJVhhAkXBVTNzxsmWCk0q6r2cIoAjfiMbS0u4tNQezz2DcJQLO5HrHwmi5Q/SbvUKtT matanya@arch
     uid: 2497
+  piccardi:
+    ensure: present
+    gid: 500
+    name: piccardi
+    realname: Tiziano Piccardi
+    ssh_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAABJQAAAQEAozlVbJ2Cmn3TrZvHChyiHShcWIERWVtl0A+V/w2P5jrpq4WGe2qx/DMPkUDsS5AvhOwY2b9qtAGbx/M+26+b0+xkJihrnT9Fy/IwEDxBFRtcIZ0N1ZvRlK2epb12gfX3oTfQWiSJcmlZOhJCS/GUfeZAAvJiDifnyWeaJAYlkPxPaWVhbF0Xv/W+3zQTQYfPuQEp1S6IKecN3bvW0/8t8fANzbfIjRtwBTSfZiKtHNZwnphaVAPF+xF7wV36spPeRbrxaB6Xy/3pEU00uT7qvyoDpB511w6IVIQfhiAVROVfCbTwyrPtuP+BZHRGFGE7hyo8pFQDQUnEU0yM11NYdQ==
+    uid: 15999
