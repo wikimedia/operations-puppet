@@ -222,7 +222,7 @@ groups:
                  Those files are group readable by the analytics-privatedata-users group.
     members: [dartar, milimetric, yurik, dfoy, aude, jforrester,
               halfak, dr0ptp4kt, bearloga, cwdent, elukey,
-              nuria, otto, deskana, zhousquared,
+              nuria, otto, deskana, zhousquared, arnad, jgonsior,
               bsitzmann, dbrant, declerambaul, ellery, nettrom, leila,
               ezachte, mforns, reedy, west1, phuedx, awight, junikowski,
               joal, jamesur, akosiaris, jhobs, lpintscher, jkatz, madhuvishy, gpaumier,
@@ -2190,3 +2190,19 @@ users:
     ssh_keys:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDaREf06EZa5CoRLc7sUNqZqDJVIKIxaxpsMsiG98QixtEEGQLw6W0CCwRwls+NVunzERumXJsKaAPBX5ptn5wH4ZXMfrD1y9CWqQFYkImKI4BJjCCef7xo+PwdHGf694WD+MBzuNXWzhTUUAnFKYDTvs5WEqdeXYBH4cFNVPQzG5noy7+E6g/7jBXZFVhT91OUofMvEAsOL5eIzT1nmYZex0vOPsRN8+gH0nGc0XaQ8nRWGu+n4gAHnecCJUOAILvNcFC/JF0QzmD/58vbkiJVhhAkXBVTNzxsmWCk0q6r2cIoAjfiMbS0u4tNQezz2DcJQLO5HrHwmi5Q/SbvUKtT matanya@arch
     uid: 2497
+  arnad:
+    ensure: present
+    gid: 500
+    name: arnad
+    realname: Adrian Bielefeldt
+    ssh_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDDR23MLJl52/9i2syrOF+mSSHBCpyIEvymOarSFgc0FufWukmb04xTKLRNBjDdWtGzmROqhG9aiD8pptcanzBHXTryoPHDZxnpjik+BmY9IRNXqfhI8hoYE914epFIyM5I14tXra76LFbnVfc3dU2H0V3YCxiMqZkzglxU53Vr25N7e5nSPGdYlwIn3vt3WcF1h9AZdw67659kVX3dKJ0NLWvPJz+odPkJbPwxl3v3XWRW+a+TG42TOVFnoTMkgJ3Vh0Q/0hv00fSb7HzqtlyVfWqNR0KgvilLWkOfH+IX2dAZcPInPk6x9JhFRyfehi7X9t2FXgFlT2T8kmCf215H Adrian.Bielefeldt@mailbox.tu-dresden.de
+    uid: 15336
+  jgonsior:
+    ensure: present
+    gid: 500
+    name: jgonsior
+    realname: Julius Gonsior
+    ssh_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQD1r7OXp7M2oYoTVw/e7ccbF6tHdmM0ZeLpwwMzPAS07zfY31TQ9F3Ww0KPDyKcDt0Cndbg5izpkGlQ6rwTVaeeBlp3IbAwn+YtuZjVjoNny3OyTM1WRjmGbimxglrfUWWjn5yhu4VzrVkA9XYGn7mlJtCmV/kQzXzcAXgF19L9YCOnfBILy7HB5CPpj7H/N+ACmZVAaTiOCLpXb60P3ffVp93Lfzzlau7sPmel/MJOSSWAH8MUhIdGlUXTyk6+b06pSIGk3kAJjtAvtvT1ACjNeyPE1QYJSYm/Lk3MbrjxHvdJipquq3tgxp7StfqY9ppXq5GwvoEecFLd9D59WTHD ragada@thinkpad
+    uid: 15338
