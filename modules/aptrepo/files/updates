@@ -74,7 +74,7 @@ Suite: stable
 GetInRelease: no
 Architectures: amd64
 VerifyRelease: D27D666CD88E42B4
-ListShellHook: grep-dctrl -X -S elasticsearch || [ $? -eq 1 ]
+ListShellHook: grep-dctrl -X -S elasticsearch -a -F Version --eq 2.3.5 || [ $? -eq 1 ]
 
 Name: logstash
 Method: http://packages.elasticsearch.org/logstash/1.4/debian
