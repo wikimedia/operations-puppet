@@ -16,22 +16,11 @@
 class install_server::web_server {
     include ::nginx
 
-    letsencrypt::cert::integrated { 'apt':
-        subjects   => 'apt.wikimedia.org',
-        puppet_svc => 'nginx',
-        system_svc => 'nginx',
-    }
-    # TODO: Monitor SSL?
-
     $ssl_settings = ssl_ciphersuite('nginx', 'mid', true)
 
     file { '/etc/nginx/nginx.conf':
         content => template('install_server/nginx.conf.erb'),
         tag     => 'nginx',
-    }
-
-    nginx::site { 'apt.wikimedia.org':
-        content => template('install_server/apt.wikimedia.org.conf.erb'),
     }
 
     # prevent a /srv root autoindex; empty for now.
