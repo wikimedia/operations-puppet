@@ -29,9 +29,9 @@ class contint::packages::php {
             'php7.0-curl',
             # missing geoip
             'php7.0-intl',
-            # missing memcached
+            'php-memcached',
             'php7.0-mysql',
-            # missing redis
+            'php-redis',
             'php7.0-xmlrpc',
             # CI packages from above
             'php7.0-dev',
@@ -48,6 +48,7 @@ class contint::packages::php {
             'php7.0-bcmath',
             'php7.0-mbstring',
             'php7.0-xml',
+            'php-imagick',
             # for phan (T132636)
             'php-ast',
             ]:
