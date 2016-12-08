@@ -13,7 +13,7 @@ setgid www-data
 exec /usr/bin/uwsgi --plugin=python \
                     --master \
                     --workers=1 \
-                    --harakiri=60 \
+                    --harakiri=300 \
                     --harakiri-verbose \
                     --wsgi-file=/usr/local/lib/python2.7/dist-packages/toolschecker.py \
                     --callable=app \
