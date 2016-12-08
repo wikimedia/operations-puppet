@@ -1100,7 +1100,7 @@ node 'etherpad1001.eqiad.wmnet' {
 # to Kafka Schema based topics.
 node 'eventlog1001.eqiad.wmnet' {
     role(eventlogging,
-        eventlogging::forwarder,
+        eventlogging::analytics::zeromq,
         eventlogging::processor,
         eventlogging::consumer::mysql,
         eventlogging::analytics::files,
