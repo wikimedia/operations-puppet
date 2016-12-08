@@ -3,6 +3,7 @@ class snapshot::dumps::configs {
 
     $dblistsdir = $snapshot::dumps::dirs::dblistsdir
     $apachedir = $snapshot::dumps::dirs::apachedir
+    $confsdir = $snapshot::dumps::dirs::confsdir
 
     $config = {
         smallwikis => {
@@ -144,5 +145,14 @@ class snapshot::dumps::configs {
     snapshot::dumps::wikiconf { 'wikidump.conf.media':
         configtype => 'media',
         config     => $config,
+    }
+
+    file { "${confsdir}/table_jobs.yaml":
+        ensure => 'present',
+        path   => "${confsdir}/",
+        mode   => '0755',
+        owner  => 'root',
+        group  => 'root',
+        source => 'puppet:///modules/snapshot/dumps/table_jobs.yaml',
     }
 }

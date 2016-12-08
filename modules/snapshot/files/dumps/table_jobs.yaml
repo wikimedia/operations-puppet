@@ -1,0 +1,143 @@
+################################################
+# this file is maintained by puppet! no joke.
+# puppet:///modules/snapshot/dumps/tables_jobs.yaml
+################################################
+
+# list of public and private tables to dump
+
+tables:
+    user:
+      job: user
+      description: User account data.
+      type: private
+    watchlist:
+      job: watchlist
+      description: Users' watchlist settings.
+      type: private
+    ipblocks:
+      job: ipblocks
+      description: Data for blocks of IP addresses, ranges, and users.
+      type: private
+    archive:
+      job: archive
+      description: Deleted page and revision data.
+      type: private
+    logging:
+      job: logging
+      description: Data for various events (deletions, uploads, etc).
+      type: private
+    oldimage:
+      job: oldimage
+      description: Metadata on prior versions of uploaded images.
+      type: private
+
+    site_stats:
+      job: sitestats
+      description: A few statistics such as the page count.
+      type: public
+    image:
+      job: image
+      description: Metadata on current versions of uploaded media/files.
+      type: public
+    pagelinks:
+      job: pagelinks
+      description: Wiki page-to-page link records.
+      type: public
+    categorylinks:
+      job: categorylinks
+      description: Wiki category membership link records.
+      type: public
+    imagelinks:
+      job: imagelinks
+      description: Wiki media/files usage records.
+      type: public
+    templatelinks:
+      job: templatelinks
+      description: Wiki template inclusion link records.
+      type: public
+    externallinks:
+      job: externallinks
+      description: Wiki external URL link records.
+      type: public
+    langlinks:
+      job: langlinks
+      description: Wiki interlanguage link records.
+      type: public
+    user_groups:
+      job: usergroups
+      description: User group assignments.
+      type: public
+    category:
+      job: category
+      description: Category information.
+      type: public
+    page:
+      job: page
+      description: Base per-page data (id, title, old restrictions, etc).
+      type: public
+    page_restrictions:
+      job: pagerestrictions
+      description: Newer per-page restrictions table.
+      type: public
+    page_props:
+      job: pageprops
+      description: Name/value pairs for pages.
+      type: public
+    protected_titles:
+      job: protectedtitles
+      description: Nonexistent pages that have been protected.
+      type: public
+    redirect:
+      job: redirect
+      description: Redirect list
+      type: public
+    iwlinks:
+      job: iwlinks
+      description: Interwiki link tracking records
+      type: public
+    geo_tags:
+      job: geotags
+      description: List of pages' geographical coordinates
+      type: public
+    change_tag:
+      job: changetags
+      description: List of annotations (tags) for revisions and log entries
+      type: public
+    flaggedpages:
+      job: flaggedpages
+      description: This contains a row for each flagged article containing the stable revision ID, if the lastest edit was flagged, and how long edits have been pending.
+    flaggedrevs:
+      job: flaggedrevs
+      description: This contains a row for each flagged revision containing who flagged it, when it was flagged, reviewer comments, the flag values, and the quality tier those flags fall under.
+    wb_items_per_site:
+      job: wbitemspersite
+      description: For each Wikidata item, this contains rows with the corresponding page name on a given wiki project.
+      type: public
+    wb_terms:
+      job: wbterms
+      description: For each Wikidata item, this contains rows with a label, an alias and a description of the item in a given language.
+      type: public
+    wb_entity_per_page:
+      job: wbentityperpage
+      description: Contains a mapping of page ids and entity ids, with an additional entity type column.
+      type: public
+    wb_property_info:
+      job: wbpropertyinfo
+      description: Contains a mapping of Wikidata property ids and data types.
+      type: public
+    wb_changes_subscription:
+      job: wbchangessubscription
+      description: Tracks which Wikibase Client wikis are using which items.
+      type: public
+    sites:
+      job: sites
+      description: This contains the SiteMatrix information from meta.wikimedia.org provided as a table.
+      type: public
+    globalimagelinks:
+      job: globalimagelinks
+      description: Global wiki media/files usage records.
+      type: public
+    wbc_entity_usage:
+      job: wbcentityusage
+      description: Tracks which pages use which Wikidata items or properties and what aspect (e.g. item label) is used.
+      type: public
