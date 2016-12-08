@@ -30,7 +30,6 @@ elasticsearch::recover_after_time: "1m"
 elasticsearch::heap_memory: '2G'
 elasticsearch::expected_nodes: 1
 elasticsearch::recover_after_nodes: 1
-elasticsearch::java_package: 'openjdk-8-jdk'
 archiva::proxy::ssl_enabled: false
 archiva::proxy::certificate_name: ssl-cert-snakeoil
 statsite::instance::graphite_host: 'labmon1001.eqiad.wmnet'
