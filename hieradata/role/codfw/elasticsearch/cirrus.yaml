@@ -51,5 +51,3 @@ elasticsearch::graylog_hosts:
 
 elasticsearch::https::certificate_name: 'search.svc.codfw.wmnet'
 base::puppet::dns_alt_names:            'search.svc.codfw.wmnet'
-
-elasticsearch::java_package: 'openjdk-8-jdk'

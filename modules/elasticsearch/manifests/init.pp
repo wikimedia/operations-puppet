@@ -118,7 +118,7 @@ class elasticsearch(
     $graylog_hosts = undef,
     $graylog_port = 12201,
     $gc_log = true,
-    $java_package = 'openjdk-7-jdk',
+    $java_package = 'openjdk-8-jdk',
 ) {
 
     # Check arguments
