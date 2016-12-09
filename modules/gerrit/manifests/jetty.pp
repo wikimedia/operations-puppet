@@ -183,6 +183,11 @@ class gerrit::jetty(
         target => '/etc/default/gerrit',
     }
 
+    logstash::conf { 'gerrit-log4j':
+        content => 'input { log4j { mode => server host => "localhost" port => 5066 type => "log4j" } }
+          output { elasticsearch { host => "127.0.0.1" protocol => "http" port => "9200" } }'
+    }
+
     nrpe::monitor_service { 'gerrit':
         description  => 'gerrit process',
         nrpe_command => "/usr/lib/nagios/plugins/check_procs -w 1:1 -c 1:1 --ereg-argument-array '^GerritCodeReview .*-jar /var/lib/gerrit2/review_site/bin/gerrit.war'"
