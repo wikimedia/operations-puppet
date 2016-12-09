@@ -50,6 +50,14 @@ class varnish::common {
         require => File['/usr/local/share/dstat'],
     }
 
+    file { '/usr/local/share/dstat/dstat_varnish_hit.py':
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        source  => 'puppet:///modules/varnish/dstat_varnish_hit.py',
+        require => File['/usr/local/share/dstat'],
+    }
+
     # `vlogdump` is a small tool to filter the output of varnishlog
     # See <https://github.com/cosimo/vlogdump> for more.
     file { '/usr/local/bin/vlogdump':
