@@ -218,6 +218,7 @@ class puppetmaster::gitclone(
         git::clone { 'labs/private':
             require   => File["${puppetmaster::gitdir}/labs"],
             owner     => $user,
+            group     => $group,
             directory => "${puppetmaster::gitdir}/labs/private",
         }
 
@@ -232,6 +233,7 @@ class puppetmaster::gitclone(
         'operations/software':
             require   => File["${puppetmaster::gitdir}/operations"],
             owner     => $user,
+            group     => $group,
             directory => "${puppetmaster::gitdir}/operations/software",
             origin    => 'https://gerrit.wikimedia.org/r/p/operations/software';
     }
