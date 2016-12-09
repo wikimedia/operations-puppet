@@ -13,12 +13,22 @@
 # limitations under the License.
 #
 
-log4j.rootLogger=DEBUG, error_log
+log4j.rootLogger=DEBUG, error_log, tcp
 log4j.logger.com.google.gerrit.sshd.SshLog=DEBUG, sshd_log
 log4j.logger.com.google.gerrit.pgm.http.jetty.HttpLog=DEBUG, httpd_log
 log4j.logger.gc_log=DEBUG, gc_log
 # Prevent gc_log from outputting to error_log
 log4j.additivity.gc_log=false
+
+### Logstash
+
+log4j.appender.tcp=org.apache.log4j.net.SocketAppender
+log4j.appender.tcp.Port=5066
+log4j.appender.tcp.RemoteHost=logstash1002.eqiad.wmnet
+log4j.appender.tcp.ReconnectionDelay=10000
+log4j.appender.tcp.Application=playground
+
+###
 
 # Configure log appenders as defaults
 log4j.appender.error_log=org.apache.log4j.DailyRollingFileAppender
