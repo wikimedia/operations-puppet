@@ -40,12 +40,18 @@ class labstore::account_services {
             'username' => 'cn=proxyagent,ou=profile,dc=wikimedia,dc=org',
             'password' => $ldapconfig['proxypass'],
         },
-        'mysql' => {
-            'hosts' => [
-                'labsdb1001.eqiad.wmnet',
-                'labsdb1003.eqiad.wmnet',
-                'labsdb1005.eqiad.wmnet',
-            ],
+        'labsdbs' => {
+            'hosts' => {
+                'labsdb1001.eqiad.wmnet' => {
+                    'grant-type' => 'legacy',
+                },
+                'labsdb1003.eqiad.wmnet' => {
+                    'grant-type' => 'legacy',
+                },
+                'labsdb1005.eqiad.wmnet' => {
+                    'grant-type' => 'legacy',
+                }
+            },
             'username' => $::passwords::mysql::labsdb::user,
             'password' => $::passwords::mysql::labsdb::password,
         },
