@@ -45,7 +45,8 @@ class gerrit::jetty(
         'openjdk-7-jdk',
         'openjdk-8-jdk',
         'gerrit',
-        'libmysql-java'
+        'libmysql-java',
+        'logstash'
     ])
 
     file { '/srv/gerrit':
@@ -181,6 +182,11 @@ class gerrit::jetty(
     file { '/etc/default/gerritcodereview':
         ensure => 'link',
         target => '/etc/default/gerrit',
+    }
+
+    logstash::conf { 'gerrit-log4j':
+        content => 'input { log4j { mode => server host => "localhost" port => 5066 type => "log4j" } }
+          output { elasticsearch { host => "127.0.0.1" protocol => "http" port => "9200" } }'
     }
 
     nrpe::monitor_service { 'gerrit':
