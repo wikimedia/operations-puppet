@@ -282,8 +282,12 @@ if __name__ == '__main__':
     with open(args.config) as f:
         config = yaml.safe_load(f)
 
+    labsdb_hosts = [
+        k for k in config['labsdbs']['hosts']
+        if config['labsdb']['hosts'][k]['grant-type'] == 'legeacy'
+    ]
     cgen = CredentialCreator(
-        config['mysql']['hosts'],
+        labsdb_hosts,
         config['mysql']['username'],
         config['mysql']['password']
     )
