@@ -97,7 +97,7 @@ aria_pagecache_buffer_size     = 512M
 # masters but for consistency it should be set in all of them.
 # https://mariadb.com/kb/en/mariadb/gtid/
 
-gtid_domain_id  = <%= @server_id %>
+gtid_domain_id  = <%= @gtid_domain_id %>
 
 <% if @ssl == 'on' %>
 # ssl
