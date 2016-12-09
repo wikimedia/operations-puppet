@@ -87,7 +87,7 @@ def get_raid_status(host, raid_type):
     """
 
     try:
-        nrpe_command = [CHECK_NRPE_PATH, '-H', host,
+        nrpe_command = [CHECK_NRPE_PATH, '-4', '-H', host,
                         '-c', NRPE_REMOTE_COMMAND.format(raid_type)]
         proc = subprocess.Popen(nrpe_command, stdout=subprocess.PIPE)
         stdout, stderr = proc.communicate()
