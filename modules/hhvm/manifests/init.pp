@@ -173,6 +173,7 @@ class hhvm(
                     enable => true,
                     ttl    => to_seconds('5 minutes'),
                 },
+                request_timeout_seconds => 60,
             },
         },
     }
