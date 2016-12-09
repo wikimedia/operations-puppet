@@ -1,0 +1,12 @@
+paths:
+    - /srv/tools/shared/tools/project/stashbot/logs
+end_with:
+    - log
+    - err
+    - out
+min_rotate_size: 0
+# Force rotate on non rotation days if file size exceeds 10M
+max_copytruncate: 10240000
+tail_lines: 10000
+rotation_day: 'friday',
+debug: False
