@@ -110,31 +110,69 @@ class role::labs::nfs::secondary(
     class { 'labstore::monitoring::interfaces':
         monitor_iface => $monitor_iface,
     }
+
     class { 'labstore::monitoring::secondary':
         drbd_role     => $drbd_role,
         cluster_iface => $monitor_iface,
         cluster_ip    => $cluster_ip,
     }
 
+    file {'/usr/local/sbin/logcleanup':
+        source => 'puppet:///modules/labstore/logcleanup.py',
+        mode   => '0744',
+        owner  => 'root',
+        group  => 'root',
+    }
+
+    file {'/etc/logcleanup-config.yaml':
+        source => 'puppet:///modules/role/labs/labstore/secondary/logcleanup-config.yaml',
+        mode   => '0644',
+        owner  => 'root',
+        group  => 'root',
+    }
+
+    file { '/usr/local/sbin/safe-du':
+        source => 'puppet:///modules/labstore/monitor/safe-du.sh',
+        mode   => '0744',
+        owner  => 'root',
+        group  => 'root',
+    }
+
+    sudo::user { 'diamond_dir_size_tracker':
+        user       => 'diamond',
+        privileges => ['ALL = NOPASSWD: /usr/local/sbin/safe-du'],
+        require    => File['/usr/local/sbin/safe-du'],
+    }
+
     if($drbd_role == 'primary') {
-
-        file { '/usr/local/sbin/safe-du':
-            source => 'puppet:///modules/labstore/monitor/safe-du.sh',
-            mode   => '0744',
-            owner  => 'root',
-            group  => 'root',
-        }
-
-        sudo::user { 'diamond_dir_size_tracker':
-            user       => 'diamond',
-            privileges => ['ALL = NOPASSWD: /usr/local/sbin/safe-du'],
-            require    => File['/usr/local/sbin/safe-du'],
-        }
 
         diamond::collector { 'DirectorySize':
             source      => 'puppet:///modules/labstore/monitor/dir_size_tracker.py',
             config_file => 'puppet:///modules/labstore/monitor/DirectorySizeCollector.conf',
             require     => Sudo::User['diamond_dir_size_tracker'],
+        }
+
+        cron { 'logcleanup':
+            ensure      => present,
+            environment => 'MAILTO=labs-admin@lists.wikimedia.org',
+            command     => '/usr/local/sbin/logcleanup --config /etc/logcleanup-config.yaml',
+            user        => 'root',
+            minute      => '0',
+            hour        => '14',
+            require     => [File['/usr/local/sbin/logcleanup'], File['/etc/logcleanup-config.yaml']],
+
+        }
+    }
+
+    if($drbd_role != 'primary') {
+        cron { 'logcleanup':
+            ensure      => absent,
+            environment => 'MAILTO=labs-admin@lists.wikimedia.org',
+            command     => '/usr/local/sbin/logcleanup --config /etc/logcleanup-config.yaml',
+            user        => 'root',
+            minute      => '0',
+            hour        => '14',
+            require     => [File['/usr/local/sbin/logcleanup'], File['/etc/logcleanup-config.yaml']],
         }
     }
 }
