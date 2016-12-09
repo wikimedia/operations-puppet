@@ -50,6 +50,15 @@ class labstore::account_services {
                 },
                 'labsdb1005.eqiad.wmnet' => {
                     'grant-type' => 'legacy',
+                },
+                'labsdb1009.eqiad.wmnet' => {
+                    'grant-type' => 'role',
+                },
+                'labsdb1010.eqiad.wmnet' => {
+                    'grant-type' => 'role',
+                },
+                'labsdb1011.eqiad.wmnet' => {
+                    'grant-type' => 'role',
                 }
             },
             'username' => $::passwords::mysql::labsdb::user,
