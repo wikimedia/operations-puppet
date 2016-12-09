@@ -200,6 +200,8 @@ def acknowledge_nagios_alert(host, service_description, task_uri):
 def main():
     """Run the Nagios/Icinga Event Handler for RAID checks"""
 
+    args = parse_args()
+
     log_formatter = logging.Formatter(
         fmt='%(asctime)s [%(levelname)s] %(name)s::%(funcName)s: %(message)s',
         datefmt='%F %T')
@@ -210,7 +212,6 @@ def main():
     logger.raiseExceptions = False
     logger.setLevel(logging.INFO)
 
-    args = parse_args()
     if args.debug:
         logger.setLevel(logging.DEBUG)
 
