@@ -126,5 +126,30 @@ class role::labs::nfs::secondary($monitor = 'eth0') {
             config_file => 'puppet:///modules/labstore/monitor/DirectorySizeCollector.conf',
             require     => Sudo::User['diamond_dir_size_tracker'],
         }
+
+        file {'/usr/local/sbin/logrotate':
+            source => 'puppet:///modules/labstore/log-rotate.py',
+            mode   => '0744',
+            owner  => 'root',
+            group  => 'root',
+        }
+
+        file {'/etc/logrotate-config.yaml':
+            source => 'puppet:///modules/role/labs/labstore/secondary/logrotate-config.yaml',
+            mode   => '0644',
+            owner  => 'root',
+            group  => 'root',
+        }
+
+        cron { 'logrotate':
+            ensure      => present,
+            environment => 'MAILTO=labs-admin@lists.wikimedia.org',
+            command     => '/usr/local/sbin/logrotate --config /etc/logrotate-config.yaml',
+            user        => 'root',
+            minute      => '0',
+            hour        => '0',
+            require     => [File['/usr/local/sbin/logrotate'], File['/etc/logrotate-config.yaml']],
+
+        }
     }
 }
