@@ -284,12 +284,12 @@ if __name__ == '__main__':
 
     labsdb_hosts = [
         k for k in config['labsdbs']['hosts']
-        if config['labsdb']['hosts'][k]['grant-type'] == 'legacy'
+        if config['labsdbs']['hosts'][k]['grant-type'] == 'legacy'
     ]
     cgen = CredentialCreator(
         labsdb_hosts,
-        config['mysql']['username'],
-        config['mysql']['password']
+        config['labsdbs']['username'],
+        config['labsdbs']['password']
     )
 
     pid = os.getpid()
