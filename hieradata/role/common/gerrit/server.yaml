@@ -6,6 +6,9 @@ debdeploy::grains:
     value: standard
 gerrit::host: 'gerrit.wikimedia.org'
 gerrit::master_host: 'cobalt.wikimedia.org'
+# Logstash host to send logs to
+gerrit::log_host: 'logstash1002.eqiad.wmnet'
+gerrit::log_port: '4560'
 # Assume all production nodes are slaves
 gerrit::slave: true
 gerrit::jetty::git_dir: '/srv/gerrit/git'
