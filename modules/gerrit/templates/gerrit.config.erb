@@ -27,6 +27,8 @@
     groupBase = ou=groups,<%= @ldap_base_dn %>
     groupMemberPattern = (&(objectClass=groupOfNames)(member=${dn}))
     groupScope = one
+    # Fixes T152640
+    localUsernameToLowerCase = true
 [sendemail]
     includeDiff = true
     smtpServerPort = 25
