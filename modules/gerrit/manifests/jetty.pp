@@ -9,6 +9,8 @@ class gerrit::jetty(
     $heap_limit = '28g',
     $slave = false,
     $java_home = '/usr/lib/jvm/java-8-openjdk-amd64/jre',
+    $log_host = "logstash1002.eqiad.wmnet",
+    $log_port = "4560"
     ) {
 
     include nrpe
