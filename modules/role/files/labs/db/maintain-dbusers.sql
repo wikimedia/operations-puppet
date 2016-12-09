@@ -3,14 +3,14 @@
 -- Schema is set up to be able to trivially query the following things:
 --  1. What labsdb hosts does this tool / user *not* have an account on.
 --  2. What's the mysql username / password for this tool / user.
-CREATE TABLE accounts(
+CREATE TABLE account(
     id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
     mysql_username VARCHAR(255) NOT NULL,
     type enum('tool', 'user') NOT NULL,
     username VARCHAR(255) NOT NULL,
-    password_hash BINARY(41) NOT NULL, -- MySQL password hash format
+    password_hash BINARY(41) NOT NULL -- MySQL password hash format
   ) ENGINE=InnoDB ROW_FORMAT=Dynamic CHARSET=utf8mb4;
-CREATE UNIQUE INDEX account_type ON accounts(type, username);
+CREATE UNIQUE INDEX account_type ON account(type, username);
 
 CREATE TABLE account_hosts(
     id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
