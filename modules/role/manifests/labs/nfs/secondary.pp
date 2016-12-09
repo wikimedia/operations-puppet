@@ -136,5 +136,30 @@ class role::labs::nfs::secondary(
             config_file => 'puppet:///modules/labstore/monitor/DirectorySizeCollector.conf',
             require     => Sudo::User['diamond_dir_size_tracker'],
         }
+
+        file {'/usr/local/sbin/logcleanup':
+            source => 'puppet:///modules/labstore/logcleanup.py',
+            mode   => '0744',
+            owner  => 'root',
+            group  => 'root',
+        }
+
+        file {'/etc/logcleanup-config.yaml':
+            source => 'puppet:///modules/role/labs/labstore/secondary/logcleanup-config.yaml',
+            mode   => '0644',
+            owner  => 'root',
+            group  => 'root',
+        }
+
+        cron { 'logcleanup':
+            ensure      => present,
+            environment => 'MAILTO=labs-admin@lists.wikimedia.org',
+            command     => '/usr/local/sbin/logcleanup --config /etc/logcleanup-config.yaml',
+            user        => 'root',
+            minute      => '0',
+            hour        => '14',
+            require     => [File['/usr/local/sbin/logcleanup'], File['/etc/logcleanup-config.yaml']],
+
+        }
     }
 }
