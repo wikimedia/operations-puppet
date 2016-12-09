@@ -153,7 +153,7 @@ if ($check eq "slave_sql_state")
 		exit($EOK);
 	}
 	# sanitize the query for icinga:
-	$status->{Last_SQL_Error} =~ s/Query:\s+'(.*)'/Query: [snipped]/;
+        $status->{Last_SQL_Error} =~ s/Query.*$/[Query snipped]/;
 
 	# Both SQL and IO threads running? OK
 	if ($status->{Slave_SQL_Running} eq "Yes") {
