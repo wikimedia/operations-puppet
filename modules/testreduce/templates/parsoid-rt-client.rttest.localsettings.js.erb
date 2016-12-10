@@ -11,15 +11,6 @@ exports.setup = function(parsoidConfig) {
 	// Point at WMF's wikis
 	parsoidConfig.loadWMF = true;
 
-	// The URL of your MediaWiki API endpoint.
-	if (process.env.PARSOID_MOCKAPI_URL) {
-		parsoidConfig.setMwApi({
-			prefix: 'customwiki',
-			domain: 'customwiki',
-			uri: process.env.PARSOID_MOCKAPI_URL,
-		});
-	}
-
 	// Use the API backends directly without hitting the text varnishes.
 	// API requests are not cacheable anyway.
 	parsoidConfig.defaultAPIProxyURI = 'http://api.svc.<%= scope.lookupvar('::mw_primary') %>.wmnet';
@@ -27,11 +18,15 @@ exports.setup = function(parsoidConfig) {
 	// Turn on the batching API
 	parsoidConfig.useBatchAPI = true;
 
-	// Use selective serialization (default false)
+	// Use selective serialization
 	parsoidConfig.useSelser = true;
 
-	// The URL of your LintBridge API endpoint
-	//  parsoidConfig.linterAPI = 'http://lintbridge.wmflabs.org/add';
+	// Enabled the linting code
+	parsoidConfig.linting = true;
+	// at a low sampling rate
+	parsoidConfig.linterAPISampling = 1000;  // 0.1%
+	// and send it to logs
+	parsoidConfig.linterSendAPI = false;
 
 	// Set rtTestMode to true for round-trip testing
 	parsoidConfig.rtTestMode = true;

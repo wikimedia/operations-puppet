@@ -21,11 +21,6 @@
 				// Talk to the existing Parsoid service.
 				// No need to spin up our own private Parsoid service.
 				parsoidURL: 'http://localhost:8142',
-
-				// FIXME: Weird! rt-testing code, for some reason, uses the Parsoid config too.
-				// It is posting requests to Parsoid to run tests, so not sure why it needs the
-				// config. Refactor that code to eliminate this dependency, if possible.
-				parsoidConfig: '/srv/deployment/parsoid/deploy/src/tests/testreduce/parsoid-rt-client.rttest.localsettings.js',
 			},
 
 			runTest: require('/srv/deployment/parsoid/deploy/src/tests/testreduce/rtTestWrapper.js').runRoundTripTest,
