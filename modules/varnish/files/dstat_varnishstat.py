@@ -49,22 +49,11 @@ class dstat_plugin(dstat):  # noqa F821 undefined name 'dstat'
         if os.system("varnishstat -1 > /dev/null") != 0:
             raise Exception("Non-zero exit code from varnishstat")
 
-    def version(self):
-        cmd = os.popen("""varnishstat -V 2>&1 |
-                          awk 'NR==1 { print $2 }' |
-                          tr -d '('
-                       """)
-        return cmd.readline().rstrip()
-
     def varnishstat(self, frontend=False):
-        if "varnish-4" in self.version():
-            cmd = ("varnishstat -1 -f MAIN.n_object -f MAIN.n_lru_nuked "
-                   "-f MAIN.backend_fail -f MAIN.threads "
-                   "-f MAIN.threads_created "
-                   "-f MAIN.exp_mailed -f MAIN.exp_received")
-        else:
-            cmd = ("varnishstat -1 -f n_object -f n_lru_nuked "
-                   "-f backend_fail -f n_wrk -f n_wrk_create")
+        cmd = ("varnishstat -1 -f MAIN.n_object -f MAIN.n_lru_nuked "
+               "-f MAIN.backend_fail -f MAIN.threads "
+               "-f MAIN.threads_created "
+               "-f MAIN.exp_mailed -f MAIN.exp_received")
 
         if frontend:
             cmd += " -n frontend"
@@ -82,12 +71,6 @@ class dstat_plugin(dstat):  # noqa F821 undefined name 'dstat'
             item = "%s-%s" % (label, row[0].replace("MAIN.", ""))
             value = float(row[1])
             total[item] = value
-
-        if "varnish-3" in self.version():
-            total["fe-threads_created"] = total.get("fe-n_wrk_create", 0)
-            total["be-threads_created"] = total.get("be-n_wrk_create", 0)
-            total["fe-threads"] = total.get("fe-n_wrk", 0)
-            total["be-threads"] = total.get("be-n_wrk", 0)
 
         # Expiry mailbox lag
         total["fe-exp-lag"] = total.get("fe-exp_mailed", 0) - \
