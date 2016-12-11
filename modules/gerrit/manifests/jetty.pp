@@ -45,7 +45,8 @@ class gerrit::jetty(
         'openjdk-7-jdk',
         'openjdk-8-jdk',
         'gerrit',
-        'libmysql-java'
+        'libmysql-java',
+        'filebeat'
     ])
 
     file { '/srv/gerrit':
