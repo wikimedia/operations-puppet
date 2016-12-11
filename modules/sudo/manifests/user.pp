@@ -34,18 +34,12 @@ define sudo::user(
 
     if $ensure == 'present' {
         file { $filename:
-            ensure  => $ensure,
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0440',
-            content => template('sudo/sudoers.erb'),
-        }
-
-        exec { "sudo_user_${title}_linting":
-            command     => "/bin/rm -f ${filename} && /bin/false",
-            unless      => "/usr/sbin/visudo -cqf ${filename}",
-            refreshonly => true,
-            subscribe   => File[$filename],
+            ensure       => $ensure,
+            owner        => 'root',
+            group        => 'root',
+            mode         => '0440',
+            content      => template('sudo/sudoers.erb'),
+            validate_cmd => '/usr/sbin/visudo -cqf %'
         }
     } else {
         file { $filename:
