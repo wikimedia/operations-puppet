@@ -146,11 +146,18 @@ class toollabs (
         }
     }
 
+    # TODO: Remove after Puppet cycle.
     file { '/var/mail':
-        ensure  => link,
-        force   => true,
-        target  => "${store}/mail",
-        require => File[$store],
+        ensure => directory,
+        owner  => 'root',
+        group  => 'mail',
+        mode   => '2775',
+    }
+
+    # TODO: Remove after Puppet cycle.
+    file { "${store}/mail":
+        ensure => absent,
+        force  => true,
     }
 
     # Link to currently active proxy
