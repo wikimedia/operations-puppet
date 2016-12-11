@@ -39,20 +39,6 @@ class role::labs::instance {
         require role::labs::nfsclient
     }
 
-    if os_version('ubuntu <= precise') {
-        # Was used by ssh earlier, not any more
-        # Remove in a few weeks?
-        file { '/public/keys':
-            ensure  => absent,
-            force   => true,
-            require => Mount['/public/keys'],
-        }
-
-        mount { '/public/keys':
-            ensure  => absent,
-        }
-    }
-
     # In production, we try to be punctilious about having Puppet manage
     # system state, and thus it's reasonable to purge Apache site configs
     # that have not been declared via Puppet. But on Labs we want to allow
