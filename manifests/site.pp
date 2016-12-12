@@ -2734,8 +2734,7 @@ node 'stat1004.eqiad.wmnet' {
     # stat1004 contains all the tools and libraries to access
     # the Analytics Cluster services.
 
-    role(analytics_cluster::client, analytics_cluster::refinery,
-        statistics::migration)
+    role(analytics_cluster::client, analytics_cluster::refinery)
 
     include standard
 }
