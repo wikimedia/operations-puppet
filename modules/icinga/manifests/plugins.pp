@@ -73,6 +73,12 @@ class icinga::plugins {
         group  => 'root',
         mode   => '0755',
     }
+    file { '/usr/lib/nagios/plugins/keystonerolechecks':
+        source => 'puppet:///modules/icinga/keystonerolechecks',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+    }
     file { '/usr/lib/nagios/plugins/check_mysql-replication.pl':
         source => 'puppet:///modules/icinga/check_mysql-replication.pl',
         owner  => 'root',
