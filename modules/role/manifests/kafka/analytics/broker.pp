@@ -7,6 +7,8 @@
 class role::kafka::analytics::broker {
 
     require_package('openjdk-7-jdk')
+    # kafkacat is handy!
+    require_package('kafkacat')
 
     $config         = kafka_config('analytics')
     $cluster_name   = $config['name']

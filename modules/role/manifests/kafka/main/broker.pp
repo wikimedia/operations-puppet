@@ -7,6 +7,8 @@
 class role::kafka::main::broker {
 
     require_package('openjdk-7-jdk')
+    # kafkacat is handy!
+    require_package('kafkacat')
 
     $config         = kafka_config('main')
     $cluster_name   = $config['name']
