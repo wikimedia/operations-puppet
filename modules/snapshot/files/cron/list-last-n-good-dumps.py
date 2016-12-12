@@ -63,11 +63,11 @@ def get_projectlist_copy_fname():
     return "all.dblist"
 
 
-def get_dir_status(dir_to_check, day):
+def get_dir_status(dir_to_check):
     """read and return text from the status html file for a given dump"""
-    if isdir(os.path.join(dir_to_check, day)):
+    if isdir(dir_to_check):
         try:
-            statusfile = os.path.join(dir_to_check, day, "status.html")
+            statusfile = os.path.join(dir_to_check, "status.html")
             fdesc = open(statusfile, "r")
             text = fdesc.read()
             fdesc.close()
@@ -95,7 +95,7 @@ def get_first_dir(dirs, dir_to_check):
     if not dirs:
         return False
     for day in dirs:
-        text = get_dir_status(dir_to_check, day)
+        text = get_dir_status(os.path.join(dir_to_check, day))
         if text is None:
             continue
         if "failed" not in text:
@@ -104,7 +104,7 @@ def get_first_dir(dirs, dir_to_check):
     # no dump in there that's not failed. meh.
     # try again and take the first one we can read
     for day in dirs:
-        text = get_dir_status(dir_to_check, day)
+        text = get_dir_status(os.path.join(dir_to_check, day))
         if text is None:
             continue
         return day
@@ -123,6 +123,18 @@ def fillin_fname_templ(templ, number):
         return templ
 
 
+def is_in_progress(dir_to_check):
+    """
+    check if status of run in specified directory is
+    in progress, return True if so, False otherwise
+    or if status cannot be checked
+    """
+    text = get_dir_status(dir_to_check)
+    if text is None:
+        return False
+    return bool("in-progress" in text)
+
+
 class DumpList(object):
     """This class generates a list of the last n sets of XML
     dump files per project that were successful, adding failed
@@ -132,7 +144,7 @@ class DumpList(object):
     lists are produced for all dumps in one pass."""
 
     def __init__(self, config, dumps_num_list,
-                 templs, output_dir, projects_url, flags):
+                 templs, output_dir, flags):
         """constructor"""
 
         self.config = config
@@ -143,20 +155,17 @@ class DumpList(object):
         self.output_dir = output_dir
         if self.output_dir and self.output_dir.endswith(os.sep):
             self.output_dir = self.output_dir[:-1 * len(os.sep)]
-        self.projects_url = projects_url
-        self.contents = None
-        self.projects = []
 
-    def get_projlist_from_urlorconf(self):
+    def get_projlist_from_urlorconf(self, projects_url):
         """try to retrieve the list of known projects from a specified
         url; if there was no url given, try contents read from the filename
         given for 'dblist' in the config file"""
         contents = ""
-        if self.projects_url:
+        if projects_url:
             try:
                 # e.g. http://noc.wikimedia.org/conf/all.dblist
-                infd = urllib.urlopen(self.projects_url)
-                self.contents = infd.read()
+                infd = urllib.urlopen(projects_url)
+                contents = infd.read()
                 infd.close()
             except Exception:
                 sys.stderr.write("Warning: Failed to retrieve project"
@@ -218,45 +227,46 @@ class DumpList(object):
             sys.stderr.write("Warning: Failed to save project list"
                              " to file %s\n" % dblist)
 
-    def load_projectlist(self):
+    def load_projectlist(self, projects_url):
         """Get and store the list of all projects known to us; this
         includes closed projects but may not include all projects
         that ever existed, for example tlhwik."""
 
-        self.projects = []
+        projects = []
         old_contents = self.get_proj_list_from_old_file()
         if len(old_contents):
             old_projects = old_contents.splitlines()
         else:
             old_projects = []
 
-        self.contents = self.get_projlist_from_urlorconf()
-        if len(self.contents):
-            self.projects = self.contents.splitlines()
+        contents = self.get_projlist_from_urlorconf(projects_url)
+        if len(contents):
+            projects = contents.splitlines()
         else:
-            self.projects = []
+            projects = []
 
         # check that this list is not comlete crap compared to the
         # previous list, if any, before we get started. arbitrarily:
         # a change of more than 5% in size
         if (len(old_projects) and
-                float(len(self.projects)) / float(len(old_projects)) < .95):
+                float(len(projects)) / float(len(old_projects)) < .95):
             sys.stderr.write("Warning: New list of projects is much"
                              " smaller than previous run, %s"
-                             " compared to %s\n" % (len(self.projects),
+                             " compared to %s\n" % (len(projects),
                                                     len(old_projects)))
             sys.stderr.write("Warning: Using old list; remove old list"
                              " %s to override\n"
                              % os.path.join(self.get_tempdir(),
                                             get_projectlist_copy_fname()))
 
-            self.projects = old_projects
-            self.contents = old_contents
+            projects = old_projects
+            contents = old_contents
 
-        if not len(self.projects):
+        if not len(projects):
             raise DumpListError("List of projects is empty, giving up")
 
-        self.save_projectlist(self.contents)
+        self.save_projectlist(contents)
+        return projects
 
     def get_abs_pubdirpath(self, name):
         """return full path to the location of public dumps,
@@ -302,7 +312,7 @@ class DumpList(object):
         for day in dirs:
             if day == dir_first:
                 continue
-            text = get_dir_status(dir_to_check, day)
+            text = get_dir_status(os.path.join(dir_to_check, day))
             if text is None:
                 continue
 
@@ -319,22 +329,65 @@ class DumpList(object):
         dirs_reported.extend(dirs_failed)
         return dirs_reported
 
+    def get_files_with_extensions(self, dir_name, extensions):
+        """pass in regexp of extensions of files wanted
+        from directory; receive a list of all such files in
+        supplied dir name, or [] if there are none or there is
+        some error"""
+        files_wanted = []
+        try:
+            dir_contents = os.listdir(dir_name)
+            files_wanted = ([os.path.join(dir_name, f) for f in dir_contents
+                             if re.search(extensions, f)])
+            if self.flags['relative']:
+                files_wanted = [self.strip_pubdir(f) for f in files_wanted]
+        except Exception:
+            pass
+        return files_wanted
+
+    def get_completed_files(self, dir_name):
+        """get files that are completely written for a dump,
+         by looking at the md5sums list."""
+        # we want only files that are complete, read the list out of the uh. FIXME
+        # check an md5sum file for the names :-/ dewiki-20161201-md5sums.txt
+        files_wanted = []
+        dir_components = dir_name.split(os.path.sep)
+        project, date = dir_components[-2], dir_components[-1]
+        filename = "%s-%s-md5sums.txt" % (project, date)
+        try:
+            infd = open(os.path.join(dir_name, filename), "r")
+            entries = infd.readlines()
+            infd.close()
+            files_wanted = [entry.split[-1] for entry in entries]
+            if self.flags['relative']:
+                files_wanted = [self.strip_pubdir(f) for f in files_wanted]
+        except Exception:
+            pass
+        return files_wanted
+
     def get_fnames_from_dir(self, dir_name):
         """given a dump directory (the full path to a specific run),
         get the names of the files we want to list; we only pick
         up the files that are part of the public run, not scratch or other
         files, and the filenames are either full paths or are relative
         to the base directory of the public dumps, depending on
-        user-specified options."""
+        user-specified options.
+        if the dump has 'in-progress' status, we return that info too.
+        """
+        in_progress = is_in_progress(dir_name)
         files_wanted = []
-        files_wanted_pattern = r'(\.gz|\.bz2|\.7z|\.html|\.txt|\.xml)$'
-        if self.templs['file_list_templ']:
-            dir_contents = os.listdir(dir_name)
-            files_wanted = ([os.path.join(dir_name, f) for f in dir_contents
-                             if re.search(files_wanted_pattern, f)])
-            if self.flags['relative']:
-                files_wanted = [self.strip_pubdir(f) for f in files_wanted]
-        return files_wanted
+        if not in_progress:
+            # we want all the files
+            if self.templs['file_list_templ']:
+                files_wanted = self.get_files_with_extensions(
+                    dir_name, r'(\.gz|\.bz2|\.7z|\.html|\.txt|\.xml)$')
+        else:
+            # these files have been completed for the dump run
+            files_wanted = self.get_completed_files(dir_name)
+            # these files do not contain dump job output but we want them, like
+            # index.html files, files with md5sums, status files, etc
+            files_wanted.extend(self.get_files_with_extensions(dir_name, r'(\.html|\.txt)$'))
+        return files_wanted, in_progress
 
     def truncate_outfiles(self):
         """call this once at the beginning of any run to truncate
@@ -350,12 +403,12 @@ class DumpList(object):
                     pass
 
     def write_filenames(self, num, dir_name, fnames_to_write,
-                        skip_dirs=False):
+                        skip_dirs=False, in_progress=False):
         """write supplied list of filenames from the project dump
         of a particular run into files named as specified by the
         user, and write the project dump directory name into
         separate files named as specified by the user"""
-        if self.templs['file_list_templ']:
+        if self.templs['file_list_templ'] and not in_progress:
             output_fname = self.get_abs_outdirpath(
                 fillin_fname_templ(
                     self.templs['file_list_templ'], num) + ".tmp")
@@ -372,6 +425,16 @@ class DumpList(object):
             dirsfd = open(output_fname, "a")
             dirsfd.write(dir_name + '\n')
             dirsfd.close()
+        if self.templs['rsync_incr_templ']:
+            output_fname = self.get_abs_outdirpath(
+                fillin_fname_templ(
+                    self.templs['rsync_incr_templ'], num) + ".tmp")
+            rsyncsfd = open(output_fname, "a")
+            rsyncsfd.write(dir_name + '\n')
+            if in_progress:
+                filesfd.write('\n'.join(fnames_to_write))
+                filesfd.write('\n')
+            rsyncsfd.close()
 
     def write_file_dir_lists_for_proj(self, project):
         """for a given project, write all dirs and all files from
@@ -385,12 +448,12 @@ class DumpList(object):
             if index >= self.max_dump_num:
                 break
             if self.templs['file_list_templ']:
-                fnames_to_write = self.get_fnames_from_dir(os.path.join(
+                fnames_to_write, in_progress = self.get_fnames_from_dir(os.path.join(
                     project_path, dirs[index]))
             for dnum in self.dumps_num_list:
                 if index < int(dnum):
                     self.write_filenames(dnum, os.path.join(
-                        project_path, dirs[index]), fnames_to_write)
+                        project_path, dirs[index]), fnames_to_write, in_progress)
             index = index + 1
 
     def strip_pubdir(self, line):
@@ -450,15 +513,16 @@ class DumpList(object):
         the appropriate output files."""
         fnames_to_write = self.get_toplevelfiles()
         for dnum in self.dumps_num_list:
+            # FIXME this may no longer work. ?
             self.write_filenames(dnum, None, fnames_to_write, skip_dirs=True)
 
-    def gen_dumpfile_dirlists(self):
+    def gen_dumpfile_dirlists(self, projects):
         """produce all files of dir lists and file lists from
         all desired dump runs for all projects"""
         self.truncate_outfiles()
         if self.flags['top_level']:
             self.write_toplevelfiles()
-        for proj in self.projects:
+        for proj in projects:
             self.write_file_dir_lists_for_proj(proj)
 
         fname_templs = self.templs().keys()
@@ -642,9 +706,9 @@ def do_main():
                   templs['file_list_templ'], templs['rsync_incl_templ'])
 
     config = WikiConfig(configfile)
-    dlist = DumpList(config, templs, dumps_num_list, output_dir, projects_url, flags)
-    dlist.load_projectlist()
-    dlist.gen_dumpfile_dirlists()
+    dlist = DumpList(config, templs, dumps_num_list, output_dir, flags)
+    projects = dlist.load_projectlist(projects_url)
+    dlist.gen_dumpfile_dirlists(projects)
 
 
 if __name__ == "__main__":
