@@ -70,7 +70,7 @@
     "identity:ec2_delete_credential": "rule:admin_required or (rule:owner and user_id:%(target.credential.user_id)s)",
  
     "identity:get_role": "",
-    "identity:list_roles": "rule:admin_required",
+    "identity:list_roles": "",
     "identity:create_role": "rule:admin_required",
     "identity:update_role": "rule:admin_required",
     "identity:delete_role": "rule:admin_required",
@@ -80,7 +80,7 @@
     "identity:create_grant": "rule:admin_required",
     "identity:revoke_grant": "rule:admin_required",
  
-    "identity:list_role_assignments": "rule:admin_required",
+    "identity:list_role_assignments": "",
  
     "identity:get_policy": "rule:admin_required",
     "identity:list_policies": "rule:admin_required",
