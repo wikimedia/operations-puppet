@@ -338,6 +338,10 @@ scap::sources:
   prometheus/jmx_exporter:
     repository: operations/software/prometheus_jmx_exporter
 
+  # Wikimania scholarships app
+  scholarships/scholarships:
+    repository: wikimedia/wikimania-scholarships
+
 prometheus_nodes:
   - deployment-prometheus01.deployment-prep.eqiad.wmflabs
 profile::recommendation_api::wdqs_uri: http://wdqs-test.wmflabs.org
