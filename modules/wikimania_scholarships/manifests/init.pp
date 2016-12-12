@@ -47,6 +47,11 @@ class wikimania_scholarships(
         provider => 'trebuchet',
     }
 
+    scap::target { 'wikimedia/wikimania-scholarships':
+        service_name => 'scholarships',
+        deploy_user => 'deploy-service'
+    }
+
     apache::site { 'scholarships.wikimedia.org':
         content => template('wikimania_scholarships/apache.conf.erb'),
     }
