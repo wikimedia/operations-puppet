@@ -11,7 +11,6 @@ class role::toollabs::k8s::master {
     }
 
     class { '::k8s::apiserver':
-        master_host                => $master_host,
         etcd_servers               => $etcd_url,
         docker_registry            => hiera('docker::registry'),
         host_automounts            => ['/var/run/nslcd/socket'],
