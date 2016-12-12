@@ -12,6 +12,7 @@ class role::scb {
     include role::apertium
     include role::eventstreams
     include role::pdfrender
+    include role::trendingedits
 
     include standard
     include base::firewall
