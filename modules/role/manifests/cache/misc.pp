@@ -187,8 +187,8 @@ class role::cache::misc {
             'be_opts'  => $app_def_be_opts,
             'req_host' => 'people.wikimedia.org',
         },
-        'stat1001' => { # metrics and metrics-api
-            'backend'  => 'stat1001.eqiad.wmnet',
+        'thorium' => { # metrics and metrics-api
+            'backend'  => 'thorium.eqiad.wmnet',
             'be_opts'  => $app_def_be_opts,
             'req_host' => [
                 'metrics.wikimedia.org',
