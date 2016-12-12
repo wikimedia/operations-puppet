@@ -1,3 +1,7 @@
+"""
+generate a list of directories and/or files of the last
+so many good dump runs
+"""
 import re
 import urllib
 import sys
@@ -18,14 +22,19 @@ from os.path import exists, isdir
 
 
 class DumpListError(Exception):
+    """for things that should never happen while generating
+    list of dirs/files of dump runs"""
     pass
 
 
 class WikiConfig(object):
-
+    """configuration settings from file:
+    path to temp directory, where local cache is stored
+    path to public directory, where output files are written
+    path to list of all wikis, one per line"""
     def __init__(self, configfile):
         home = os.path.dirname(sys.argv[0])
-        self.files = [
+        files = [
             os.path.join(home, configfile),
             "/etc/wikidump.conf",
             os.path.join(os.getenv("HOME"), ".wikidump.conf")]
@@ -37,7 +46,7 @@ class WikiConfig(object):
             "temp": "/dumps/temp",
         }
         self.conf = ConfigParser.SafeConfigParser(defaults)
-        self.conf.read(self.files)
+        self.conf.read(files)
         if not self.conf.has_section('output'):
             self.conf.add_section('output')
         if not self.conf.has_section('wiki'):
@@ -50,11 +59,12 @@ class WikiConfig(object):
 
 
 def get_projectlist_copy_fname():
-    """returns name we use for the local copy of the project list"""
+    """returns name of local cache of the project list"""
     return "all.dblist"
 
 
 def get_dir_status(dir_to_check, day):
+    """read and return text from the status html file for a given dump"""
     if isdir(os.path.join(dir_to_check, day)):
         try:
             statusfile = os.path.join(dir_to_check, day, "status.html")
@@ -70,6 +80,18 @@ def get_dir_status(dir_to_check, day):
 
 
 def get_first_dir(dirs, dir_to_check):
+    """
+    given a sorted list of subdir names (expect them to be
+    date strings yyyymmdd and sorted earliest to latest),
+    and a base dir of these subdirs,
+    find and return the first subdir name that has a non-failed
+    dump run status.
+
+    if there are none, return the name of the first subdir that
+    has a readable status file.
+
+    if there are none of those, return None
+    """
     if not dirs:
         return False
     for day in dirs:
@@ -428,8 +450,10 @@ class DumpList(object):
                 " and error '" + error + "'")
 
     def get_toplevelfiles(self):
-        # list *html and *txt files in top level dir
-        # test, with "" does this work?
+        """
+        list *html and *txt files in top level dir
+        test, with "" does this work?
+        """
         files_in_dir = [f for f in os.listdir(self.get_abs_pubdirpath(""))
                         if f.endswith(".html") or f.endswith(".txt")]
         return files_in_dir
@@ -526,6 +550,11 @@ python list-last-n-good-dumps.py --dumpsnumber 3,5
 
 
 def do_main():
+    """main entry point.
+    set default option values,
+    read, parse and check options from command line,
+    load list of known wikis,
+    generate list of files and/or dirs of good dump runs"""
     configfile = "wikidump.conf"
     dumps_num = "5"
     relative = False
