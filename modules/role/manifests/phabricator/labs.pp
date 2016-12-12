@@ -4,8 +4,8 @@ class role::phabricator::labs(
         $settings,
 ) {
 
-    $conf_files = [
-        {
+    $conf_files = {
+        'www' => {
             'environment'       => 'www',
             'owner'             => 'root',
             'group'             => 'www-data',
@@ -14,7 +14,7 @@ class role::phabricator::labs(
                 'mysql.pass'        => 'labspass',
             }
         },
-        {
+        'phd' => {
             'environment'       => 'phd',
             'owner'             => 'root',
             'group'             => 'phd',
@@ -23,7 +23,7 @@ class role::phabricator::labs(
                 'mysql.pass'        => 'labspass',
             }
         },
-    ]
+    }
 
     $role_settings = {
         'darkconsole.enabled'             => true,
