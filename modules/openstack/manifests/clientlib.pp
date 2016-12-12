@@ -15,9 +15,9 @@ class openstack::clientlib {
     require_package($packages)
 
     # Handy script to set up environment for read-only credentials
-    file { '/root/observerenv.sh':
+    file { '/usr/local/bin/observerenv.sh':
         content => template('openstack/observerenv.sh.erb'),
-        mode    => '0755',
+        mode    => '0555',
         owner   => 'root',
         group   => 'root',
     }
