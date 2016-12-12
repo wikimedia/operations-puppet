@@ -8,4 +8,19 @@ class role::labs::openstack::keystone::server {
     class { 'openstack::keystone::service':
         keystoneconfig => $keystoneconfig,
     }
+
+    # Monitor project membership
+    include ::openstack::clientlib
+
+    # Make sure novaobserver is in every project and only has observer rights
+    monitoring::service { 'novaobserver project roles':
+        description   => 'novaobserver has only observer role',
+        check_command => 'check_keystone_roles!novaobserver!observer',
+    }
+
+    # Make sure novaadmin is in every project with 'user' and 'projectadmin'
+    monitoring::service { 'novaobserver project roles':
+        description   => 'novaobserver has only observer role',
+        check_command => 'check_keystone_roles!novaadmin!user|projectadmin',
+    }
 }
