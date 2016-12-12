@@ -181,4 +181,11 @@ class puppetmaster(
         # This is required for the conftool perser function
         include ::conftool
     }
+    # Small utility to generate ECDSA certs and submit the CSR to the puppet master
+    file { '/usr/local/bin/puppet-ecdsacert':
+        source => 'puppet:///modules/puppetmaster/puppet_ecdsacert.rb',
+        mode   => '0660',
+        owner  => 'root',
+        group  => 'root',
+    }
 }
