@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 # Wrapper script around clush to add some additional features
 #  - Make sure it is *not* being called by someone as root.
 #    We do not want people to be using it directly interactively as
@@ -9,7 +9,7 @@ set -e
 
 CALLINGUSER="$(whoami)"
 
-if [[ $CALLINGUSER == "root" ]]; then
+if [ "$CALLINGUSER" = root ]; then
     echo "Only members of tools.admin group can use clush interactively"
     echo "This is to make sure we have a nice and clean audit trail"
     echo "Do not run this directly as root or use sudo"
