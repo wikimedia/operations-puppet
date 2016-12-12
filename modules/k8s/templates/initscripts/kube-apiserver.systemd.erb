@@ -1,26 +1,34 @@
 [Unit]
 Description=Kubernetes API Server
+Documentation=https://github.com/kubernetes/kubernetes
+Documentation=man:kube-apiserver
+After=network.target
 
 [Service]
+EnvironmentFile=-/etc/kubernetes/config
+EnvironmentFile=-/etc/default/%p
 User=kubernetes
 Group=kubernetes
-ExecStart=/usr/local/bin/kube-apiserver \
-    --etcd-servers=<%= @etcd_servers %> \
-    --service-cluster-ip-range=192.168.0.0/24 \
-    --token-auth-file=/etc/kubernetes/tokenauth \
-    --admission-control=NamespaceLifecycle,ResourceQuota,LimitRanger,UidEnforcer,RegistryEnforcer,HostAutomounter,HostPathEnforcer \
-    --authorization-mode=ABAC \
-    --authorization-policy-file=/etc/kubernetes/abac \
-    --tls-private-key-file=/etc/ssl/private/<%= @ssl_certificate_name %>.key \
-    --tls-cert-file=/etc/ssl/localcerts/<%= @ssl_certificate_name %>.chained.crt \
-    --enforced-docker-registry=<%= @docker_registry %> \
-    --host-automounts=<%= @host_automounts_string %> \
-    --host-paths-allowed=<%= @host_paths_allowed_string %> \
-    --host-path-prefixes-allowed=<%= @host_path_prefixes_allowed_string %>
+ExecStart=/usr/bin/kube-apiserver \
+    $KUBE_LOGTOSTDERR \
+    $KUBE_LOG_LEVEL \
+    $KUBE_ALLOW_PRIV \
+        $KUBE_API_ADDRESS \
+        $KUBE_API_PORT \
+        $KUBELET_PORT \
+        $KUBE_ETCD_SERVERS \
+        $KUBE_SERVICE_ADDRESSES \
+        $KUBE_ADMISSION_CONTROL \
+        $DAEMON_ARGS
+
+# Reevaluate Restart=always
 Restart=on-failure
 # Really large limit - defaults to 1024 otherwise for some reason?
 # That runs out pretty quickly, so we do 1024 * 1024
 LimitNOFILE=1048576
+# Allow apiserver to opportunistically notify systemd of startup.
+# See https://github.com/kubernetes/kubernetes/issues/8311
+Type=notify
 
 [Install]
 WantedBy=multi-user.target
