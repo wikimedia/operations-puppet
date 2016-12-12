@@ -1,0 +1,7 @@
+###
+## The following values are used to configure the kubernetes controller-manager
+#
+## defaults from config and apiserver should be adequate
+# This is the default anyway in 1.4 at least, but specify to ensure backwards compatibility
+DAEMON_ARGS="--cluster-cidr=<%= @cluster_cidr %> --leader-elect=true"
+#
