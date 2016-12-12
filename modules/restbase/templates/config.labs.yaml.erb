@@ -56,6 +56,16 @@ default_project: &default_project
           uri: <%= @pdfrender_uri %>
           secret: <%= @pdfrender_key %>
 
+# A separate project for en.wikipedia because it is more feature-rich
+en.wikipedia.org: &en.wikipedia.org
+  x-modules:
+    - path: projects/wmf_enwiki.yaml
+      options:
+        <<: *default_options
+        trending:
+          host: <%= @trendingedits_uri %>
+          cache_control: s-maxage=60, max-age=60
+
 # A different project template, sharing configuration options.
 wikimedia.org: &wikimedia.org
   x-modules:
@@ -97,7 +107,7 @@ root_spec: &root_spec
     /{domain:en-rtl.wikipedia.beta.wmflabs.org}: *default_project
     /{domain:en.wikibooks.beta.wmflabs.org}: *default_project
     /{domain:en.wikinews.beta.wmflabs.org}: *default_project
-    /{domain:en.wikipedia.beta.wmflabs.org}: *default_project
+    /{domain:en.wikipedia.beta.wmflabs.org}: *en.wikipedia.org
     /{domain:en.wikiquote.beta.wmflabs.org}: *default_project
     /{domain:en.wikisource.beta.wmflabs.org}: *default_project
     /{domain:en.wikitionary.beta.wmflabs.org}: *default_project

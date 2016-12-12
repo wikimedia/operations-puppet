@@ -116,6 +116,7 @@ restbase::aqs_uri: https://wikimedia.org/api/rest_v1/metrics
 restbase::eventlogging_service_uri: http://deployment-eventlogging04.deployment-prep.eqiad.wmflabs:8085/v1/events
 restbase::pdfrender_uri: http://deployment-pdfrender02.deployment-prep.eqiad.wmflabs:5252
 restbase::citoid_uri: http://deployment-sca02.deployment-prep.eqiad.wmflabs:1970
+restbase::trendingedits_uri: http://deployment-trending01.deployment-prep.eqiad.wmflabs:6699
 "mediawiki::log_aggregator": deployment-fluorine02.eqiad.wmflabs:8420
 "mediawiki::forward_syslog": deployment-logstash2.deployment-prep.eqiad.wmflabs:10514
 mediawiki_memcached_servers:
