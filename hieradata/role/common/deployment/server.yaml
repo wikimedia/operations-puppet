@@ -114,6 +114,8 @@ scap::sources:
     repository: maps/tilerator/deploy
 #    lvs_service: tilerator
   trending-edits/deploy: {}
+  wikimedia/wikimania-scholarships:
+    repository: scholarships/scholarships
   wdqs/wdqs:
     repository: wikidata/query/deploy
 #    lvs_service: wdqs

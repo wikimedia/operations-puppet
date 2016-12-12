@@ -35,8 +35,6 @@ role::deployment::repo_config:
   elasticsearch/plugins:
     gitfat_enabled: true
     upstream: https://gerrit.wikimedia.org/r/operations/software/elasticsearch/plugins
-  scholarships/scholarships:
-    upstream: https://gerrit.wikimedia.org/r/wikimedia/wikimania-scholarships
   librenms/librenms:
     upstream: https://gerrit.wikimedia.org/r/operations/software/librenms
   iegreview/iegreview:

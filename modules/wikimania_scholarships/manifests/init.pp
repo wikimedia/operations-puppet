@@ -43,21 +43,16 @@ class wikimania_scholarships(
         description => 'Wikimania Scholarships server'
     }
 
-    package { 'scholarships':
-        provider => 'trebuchet',
+    scap::target { 'wikimedia/wikimania-scholarships':
+        service_name => 'scholarships',
+        deploy_user  => 'deploy-service'
     }
 
     apache::site { 'scholarships.wikimedia.org':
         content => template('wikimania_scholarships/apache.conf.erb'),
     }
 
-    ensure_resource('file', '/srv/deployment', {'ensure' => 'directory' })
-
-    file { [ '/srv/deployment/scholarships', $deploy_dir ]:
-        ensure  => directory,
-    }
-
-    file { "${deploy_dir}/.env":
+    file { '/etc/wikimania-scholarships.ini':
         ensure  => present,
         mode    => '0444',
         owner   => 'root',
