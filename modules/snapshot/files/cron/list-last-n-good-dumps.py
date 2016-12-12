@@ -131,23 +131,21 @@ class DumpList(object):
     list of numbers of dumps desired, and the corresponding
     lists are produced for all dumps in one pass."""
 
-    def __init__(self, config, dumps_num_list, relative,
-                 rsynclists, dir_list_templ, file_list_templ,
-                 output_dir, projects_url, top_level):
+    def __init__(self, config, dumps_num_list,
+                 dir_list_templ, file_list_templ,
+                 output_dir, projects_url, flags):
         """constructor"""
 
         self.config = config
         self.dumps_num_list = dumps_num_list
         self.max_dump_num = max(self.dumps_num_list)
-        self.relative = relative
-        self.rsynclists = rsynclists
+        self.flags = flags
         self.dir_list_templ = dir_list_templ
         self.file_list_templ = file_list_templ
         self.output_dir = output_dir
         if self.output_dir and self.output_dir.endswith(os.sep):
             self.output_dir = self.output_dir[:-1 * len(os.sep)]
         self.projects_url = projects_url
-        self.top_level = top_level
         self.contents = None
         self.projects = []
 
@@ -345,7 +343,7 @@ class DumpList(object):
             dir_contents = os.listdir(dir_name)
             files_wanted = ([os.path.join(dir_name, f) for f in dir_contents
                              if re.search(files_wanted_pattern, f)])
-            if self.relative:
+            if self.flags['relative']:
                 files_wanted = [self.strip_pubdir(f) for f in files_wanted]
         return files_wanted
 
@@ -380,7 +378,7 @@ class DumpList(object):
             output_fname = self.get_abs_outdirpath(
                 fillin_fname_templ(
                     self.dir_list_templ, num) + ".tmp")
-            if self.relative:
+            if self.flags['relative']:
                 dir_name = self.strip_pubdir(dir_name)
             dirsfd = open(output_fname, "a")
             dirsfd.write(dir_name + '\n')
@@ -425,7 +423,7 @@ class DumpList(object):
         lines = infd.readlines()
         infd.close()
         for line in lines:
-            if not self.relative:
+            if not self.flags['relative']:
                 outfd.write(self.strip_pubdir(line))
             else:
                 outfd.write(line)
@@ -469,7 +467,7 @@ class DumpList(object):
         """produce all files of dir lists and file lists from
         all desired dump runs for all projects"""
         self.truncate_outfiles()
-        if self.top_level:
+        if self.flags['top_level']:
             self.write_toplevelfiles()
         for proj in self.projects:
             self.write_file_dir_lists_for_proj(proj)
@@ -489,7 +487,7 @@ class DumpList(object):
                     raise DumpListError("No output file %s created. "
                                         "Something is wrong." % fpath + ".tmp")
 
-                if self.rsynclists:
+                if self.flags['rsynclists']:
                     self.convert_fnames_for_rsyncin(fdesc)
                     self.do_rsync_list_only(fdesc)
 
@@ -549,17 +547,57 @@ python list-last-n-good-dumps.py --dumpsnumber 3,5
     sys.exit(1)
 
 
+def check_options(dumps_num_list, dir_list_templ, file_list_templ):
+    """check the supplied options for validity"""
+    for dnum in dumps_num_list:
+        if not dnum.isdigit() or not int(dnum):
+            usage("dumpsnumber must be a number or a comma-separated"
+                  " list of numbers each greater than 0")
+
+    if not dir_list_templ and not file_list_templ:
+        usage("At least one of --dirlisting or"
+              " --filelisting must be specified")
+
+    if (file_list_templ and len(dumps_num_list) > 1 and
+            '%s' not in file_list_templ):
+        usage("In order to write more than one output file with"
+              " dump runs, the value specified for filelisting"
+              " must contain '%s' which will be replaced by the"
+              " number of dumps to write to the given output file")
+
+    if (file_list_templ and len(dumps_num_list) > 1 and
+            '%s' not in file_list_templ):
+        usage("In order to write more than one output file with"
+              " dump runs, the value specified for dirlisting must"
+              " contain '%s' which will be replaced by the number"
+              " of dumps to write to the given output file")
+
+
+def get_flag_defaults():
+    """return default values for command line flags"""
+    return {'relative': False, 'rsynclists': False, 'top_level': False}
+
+
+def get_flags(opt, flags):
+    """parse command line flags, set and return appropriate values"""
+    if opt == '--relpath':
+        flags['relative'] = True
+    if opt == '--rsynclists':
+        flags['rsynclists'] = True
+    if opt == "--toplevel":
+        flags['top_level'] = True
+
+
 def do_main():
     """main entry point.
     set default option values,
     read, parse and check options from command line,
     load list of known wikis,
     generate list of files and/or dirs of good dump runs"""
+
     configfile = "wikidump.conf"
     dumps_num = "5"
-    relative = False
-    rsynclists = False
-    top_level = False
+    flags = get_flag_defaults()
     dir_list_templ = None
     file_list_templ = None
     projects_url = None
@@ -587,49 +625,23 @@ def do_main():
             dumps_num = val
         elif opt == '--outputdir':
             output_dir = val
-        elif opt == '--relpath':
-            relative = True
-        elif opt == '--rsynclists':
-            rsynclists = True
         elif opt == "--dirlisting":
             dir_list_templ = val
         elif opt == "--filelisting":
             file_list_templ = val
-        elif opt == "--toplevel":
-            top_level = True
+        else:
+            get_flags(opt, flags)
 
     if ',' not in dumps_num:
         dumps_num_list = [dumps_num.strip()]
     else:
         dumps_num_list = [d.strip() for d in dumps_num.split(',')]
 
-    for dnum in dumps_num_list:
-        if not dnum.isdigit() or not int(dnum):
-            usage("dumpsnumber must be a number or a comma-separated"
-                  " list of numbers each greater than 0")
-
-    if not dir_list_templ and not file_list_templ:
-        usage("At least one of --dirlisting or"
-              " --filelisting must be specified")
-
-    if (file_list_templ and len(dumps_num_list) > 1 and
-            '%s' not in file_list_templ):
-        usage("In order to write more than one output file with"
-              " dump runs, the value specified for filelisting"
-              " must contain '%s' which will be replaced by the"
-              " number of dumps to write to the given output file")
-
-    if (file_list_templ and len(dumps_num_list) > 1 and
-            '%s' not in file_list_templ):
-        usage("In order to write more than one output file with"
-              " dump runs, the value specified for dirlisting must"
-              " contain '%s' which will be replaced by the number"
-              " of dumps to write to the given output file")
+    check_options(dumps_num_list, dir_list_templ, file_list_templ)
 
     config = WikiConfig(configfile)
-    dlist = DumpList(config, dumps_num_list, relative, rsynclists,
-                     dir_list_templ, file_list_templ, output_dir,
-                     projects_url, top_level)
+    dlist = DumpList(config, dumps_num_list, dir_list_templ, file_list_templ,
+                     output_dir, projects_url, flags)
     dlist.load_projectlist()
     dlist.gen_dumpfile_dirlists()
 
