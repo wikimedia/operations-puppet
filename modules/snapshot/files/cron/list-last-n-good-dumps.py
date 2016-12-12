@@ -1,10 +1,10 @@
-import os
 import re
 import urllib
 import sys
 import getopt
 import ConfigParser
 from subprocess import Popen, PIPE
+import os
 from os.path import exists, isdir
 
 
@@ -12,6 +12,9 @@ from os.path import exists, isdir
 # This file is maintained by puppet!
 # puppet:///modules/snapshot/cron/list-last-n-good-dumps.py
 #############################################################
+
+
+# pylint: disable=broad-except
 
 
 class DumpListError(Exception):
@@ -41,8 +44,61 @@ class WikiConfig(object):
             self.conf.add_section('wiki')
         self.public_dir = self.conf.get("output", "public")
         self.temp_dir = self.conf.get("output", "temp")
-        self.db_list = sorted(filter(None, [db.strip() for db in open(
-            self.conf.get("wiki", "dblist")).readlines()]))
+        db_list = sorted([db.strip() for db in open(
+            self.conf.get("wiki", "dblist")).readlines()])
+        self.db_list = [dbname for dbname in db_list if dbname]
+
+
+def get_projectlist_copy_fname():
+    """returns name we use for the local copy of the project list"""
+    return "all.dblist"
+
+
+def get_dir_status(dir_to_check, day):
+    if isdir(os.path.join(dir_to_check, day)):
+        try:
+            statusfile = os.path.join(dir_to_check, day, "status.html")
+            fdesc = open(statusfile, "r")
+            text = fdesc.read()
+            fdesc.close()
+        except Exception:
+            # if there is no status file, the dir could have any
+            # kind of random junk in it so don't risk it
+            return None
+        return text
+    return None
+
+
+def get_first_dir(dirs, dir_to_check):
+    if not dirs:
+        return False
+    for day in dirs:
+        text = get_dir_status(dir_to_check, day)
+        if text is None:
+            continue
+        if "failed" not in text:
+            return day
+
+    # no dump in there that's not failed. meh.
+    # try again and take the first one we can read
+    for day in dirs:
+        text = get_dir_status(dir_to_check, day)
+        if text is None:
+            continue
+        return day
+
+    # no dumps with status we can read. give up
+    return False
+
+
+def fillin_fname_templ(templ, number):
+    """given a filename template which expects to have a number
+    plugged into it someplace (indicated by a '%s'), make
+    the substitution and return the new name"""
+    if '%s' in templ:
+        return templ % number
+    else:
+        return templ
 
 
 class DumpList(object):
@@ -56,9 +112,7 @@ class DumpList(object):
     def __init__(self, config, dumps_num_list, relative,
                  rsynclists, dir_list_templ, file_list_templ,
                  output_dir, projects_url, top_level):
-        """constructor; besides the obvious, sets up the list of
-        filetypes we want to include in our list, see
-        self.files_wantedPattern"""
+        """constructor"""
 
         self.config = config
         self.dumps_num_list = dumps_num_list
@@ -70,9 +124,6 @@ class DumpList(object):
         self.output_dir = output_dir
         if self.output_dir and self.output_dir.endswith(os.sep):
             self.output_dir = self.output_dir[:-1 * len(os.sep)]
-        self.files_wanted_pattern = re.compile(
-            r'(\.gz|\.bz2|\.7z|\.html|\.txt|\.xml)$')
-        self.ymd_pattern = re.compile('^2[0-1][0-9]{6}$')
         self.projects_url = projects_url
         self.top_level = top_level
         self.contents = None
@@ -89,14 +140,14 @@ class DumpList(object):
                 infd = urllib.urlopen(self.projects_url)
                 self.contents = infd.read()
                 infd.close()
-            except:
+            except Exception:
                 sys.stderr.write("Warning: Failed to retrieve project"
                                  " list via http, using old list\n")
 
         elif self.config.db_list:
             try:
                 contents = '\n'.join(self.config.db_list) + '\n'
-            except:
+            except Exception:
                 sys.stderr.write("Warning: Failed to retrieve good"
                                  " project list from %s as specified"
                                  " in config file, using old list\n"
@@ -111,10 +162,6 @@ class DumpList(object):
             tempdir = self.get_abs_outdirpath('tmp')
         return tempdir
 
-    def get_projectlist_copy_fname(self):
-        """returns name we use for the local copy of the project list"""
-        return "all.dblist"
-
     def get_proj_list_from_old_file(self):
         """We try to save a temp copy of the list of known projects
         on every run; retrieve that copy"""
@@ -122,14 +169,14 @@ class DumpList(object):
         contents = ""
 
         tempdir = self.get_tempdir()
-        dblist = os.path.join(tempdir, self.get_projectlist_copy_fname())
+        dblist = os.path.join(tempdir, get_projectlist_copy_fname())
 
         # read previous contents, if any...
         try:
             infd = open(dblist, "r")
             contents = infd.read()
             infd.close()
-        except:
+        except Exception:
             sys.stderr.write("Warning: Old project list %s from"
                              " previous run is unavailable\n" % dblist)
         return contents
@@ -138,7 +185,7 @@ class DumpList(object):
         """save local copy of the project list we presumably
         retrieved from elsewhere"""
         tempdir = self.get_tempdir()
-        dblist = os.path.join(tempdir, self.get_projectlist_copy_fname())
+        dblist = os.path.join(tempdir, get_projectlist_copy_fname())
 
         try:
             # ok it passes the smell test (or we filled it with
@@ -148,7 +195,7 @@ class DumpList(object):
             outfd = open(dblist, "wt")
             outfd.write(contents)
             outfd.close()
-        except:
+        except Exception:
             # we can still do our work so don't die, but do complain
             sys.stderr.write("Warning: Failed to save project list"
                              " to file %s\n" % dblist)
@@ -183,7 +230,7 @@ class DumpList(object):
             sys.stderr.write("Warning: Using old list; remove old list"
                              " %s to override\n"
                              % os.path.join(self.get_tempdir(),
-                                            self.get_projectlist_copy_fname()))
+                                            get_projectlist_copy_fname()))
 
             self.projects = old_projects
             self.contents = old_contents
@@ -206,41 +253,6 @@ class DumpList(object):
         else:
             return os.path.join(self.config.public_dir, name)
 
-    def get_dir_status(self, dir_to_check, day):
-        if isdir(os.path.join(dir_to_check, day)):
-            try:
-                statusfile = os.path.join(dir_to_check, day, "status.html")
-                fdesc = open(statusfile, "r")
-                text = fdesc.read()
-                fdesc.close()
-            except:
-                # if there is no status file, the dir could have any
-                # kind of random junk in it so don't risk it
-                return None
-            return text
-        return None
-
-    def get_first_dir(self, dirs, dir_to_check):
-        if not dirs:
-            return False
-        for day in dirs:
-            text = self.get_dir_status(dir_to_check, day)
-            if text is None:
-                continue
-            if "failed" not in text:
-                return day
-
-        # no dump in there that's not failed. meh.
-        # try again and take the first one we can read
-        for day in dirs:
-            text = self.get_dir_status(dir_to_check, day)
-            if text is None:
-                continue
-            return day
-
-        # no dumps with status we can read. give up
-        return False
-
     def list_dump_for_proj(self, project):
         """get list of dump directories for a given project
         ordered by good dumps first, most recent to oldest, then
@@ -253,7 +265,8 @@ class DumpList(object):
         dirs = os.listdir(dir_to_check)
         # dirs have the format yyyymmdd and we want only those and
         # listed most recent first by date, not by ctime or mtime.
-        dirs = [d for d in dirs if self.ymd_pattern.search(d)]
+        ymd_pattern = r'^2[0-1][0-9]{6}$'
+        dirs = [d for d in dirs if re.search(ymd_pattern, d)]
         dirs.sort()
         dirs.reverse()
 
@@ -263,7 +276,7 @@ class DumpList(object):
 
         dirs_reported = []
 
-        dir_first = self.get_first_dir(dirs, dir_to_check)
+        dir_first = get_first_dir(dirs, dir_to_check)
         if not dir_first:
             # never dumped
             return dirs_reported
@@ -271,7 +284,7 @@ class DumpList(object):
         for day in dirs:
             if day == dir_first:
                 continue
-            text = self.get_dir_status(dir_to_check, day)
+            text = get_dir_status(dir_to_check, day)
             if text is None:
                 continue
 
@@ -294,18 +307,8 @@ class DumpList(object):
         the last n dumps, and the template for the lists of dirs
         of the last n dumps"""
         fname_templs = []
-        fname_templs.extend(filter(None, [self.dir_list_templ,
-                                          self.file_list_templ]))
-        return fname_templs
-
-    def fillin_fname_templ(self, templ, number):
-        """given a filename template which expects to have a number
-        plugged into it someplace (indicated by a '%s'), make
-        the substitution and return the new name"""
-        if '%s' in templ:
-            return templ % number
-        else:
-            return templ
+        fname_templs.extend([self.dir_list_templ, self.file_list_templ])
+        return [templ for templ in fname_templs if templ]
 
     def get_fnames_from_dir(self, dir_name):
         """given a dump directory (the full path to a specific run),
@@ -315,10 +318,11 @@ class DumpList(object):
         to the base directory of the public dumps, depending on
         user-specified options."""
         files_wanted = []
+        files_wanted_pattern = r'(\.gz|\.bz2|\.7z|\.html|\.txt|\.xml)$'
         if self.file_list_templ:
             dir_contents = os.listdir(dir_name)
             files_wanted = ([os.path.join(dir_name, f) for f in dir_contents
-                             if self.files_wanted_pattern.search(f)])
+                             if re.search(files_wanted_pattern, f)])
             if self.relative:
                 files_wanted = [self.strip_pubdir(f) for f in files_wanted]
         return files_wanted
@@ -329,11 +333,11 @@ class DumpList(object):
         fname_templs = self.list_file_templs()
         for templ in fname_templs:
             for num in self.dumps_num_list:
-                fname = self.fillin_fname_templ(templ, num)
+                fname = fillin_fname_templ(templ, num)
                 try:
                     fdesc = open(self.get_abs_outdirpath(fname + ".tmp"), "wt")
                     fdesc.close()
-                except:
+                except Exception:
                     pass
 
     def write_filenames(self, num, dir_name, fnames_to_write,
@@ -344,7 +348,7 @@ class DumpList(object):
         separate files named as specified by the user"""
         if self.file_list_templ:
             output_fname = self.get_abs_outdirpath(
-                self.fillin_fname_templ(
+                fillin_fname_templ(
                     self.file_list_templ, num) + ".tmp")
             filesfd = open(output_fname, "a")
             filesfd.write('\n'.join(fnames_to_write))
@@ -352,7 +356,7 @@ class DumpList(object):
             filesfd.close()
         if self.dir_list_templ and not skip_dirs:
             output_fname = self.get_abs_outdirpath(
-                self.fillin_fname_templ(
+                fillin_fname_templ(
                     self.dir_list_templ, num) + ".tmp")
             if self.relative:
                 dir_name = self.strip_pubdir(dir_name)
@@ -416,7 +420,7 @@ class DumpList(object):
         command_string = " ".join(command)
         proc = Popen(command_string, shell=True, stderr=PIPE)
         # output will be None, we can ignore it
-        output_unused, error = proc.communicate()
+        dummy_output, error = proc.communicate()
         if proc.returncode:
             raise DumpListError(
                 "command '" + command_string +
@@ -449,7 +453,7 @@ class DumpList(object):
         fname_templs = self.list_file_templs()
         for templ in fname_templs:
             for num in self.dumps_num_list:
-                fdesc = self.fillin_fname_templ(templ, num)
+                fdesc = fillin_fname_templ(templ, num)
                 # do this last so that if someone is using the file
                 # in the meantime, they  aren't interrupted
                 fpath = self.get_abs_outdirpath(fdesc)
@@ -539,7 +543,7 @@ def do_main():
                                'relpath', 'rsynclists',
                                'toplevel', 'dirlisting=',
                                'filelisting='])
-    except:
+    except Exception:
         usage("Unknown option specified")
 
     if len(remainder):
