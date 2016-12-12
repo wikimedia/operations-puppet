@@ -36,6 +36,9 @@ class role::icinga(
     include standard
     include base::firewall
 
+    # Dependencies for the check_keystone_roles script
+    include ::openstack::clientlib
+
     $monitoring_groups = hiera('monitoring::groups')
     create_resources(monitoring::group, $monitoring_groups)
 
