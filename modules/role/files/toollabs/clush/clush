@@ -20,4 +20,4 @@ fi
 # Write an entry into the 'log file'
 echo "`date +%Y-%m-%d:%H:%M:%S` ${CALLINGUSER} ${@}" |
     sudo tee --append /var/log/clush.log >/dev/null
-sudo /usr/bin/clush $@
+sudo /usr/bin/clush "$@"
