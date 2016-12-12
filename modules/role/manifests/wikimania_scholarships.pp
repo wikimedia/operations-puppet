@@ -24,5 +24,10 @@ class role::wikimania_scholarships {
         port  => '80',
     }
 
+    scap::target { 'wikimedia/wikimania-scholarships':
+        service_name => 'scholarships',
+        deploy_user  => 'deploy-service'
+    }
+
 }
 # vim:sw=4 ts=4 sts=4 et:
