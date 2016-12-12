@@ -20,7 +20,7 @@ class role::labs::openstack::keystone::server {
 
     # Make sure novaadmin is in every project with 'user' and 'projectadmin'
     monitoring::service { 'novaadmin project roles':
-        description   => 'novaobserver has only observer role',
+        description   => 'novaadmin has roles in every project',
         check_command => 'check_keystone_roles!novaadmin!user!projectadmin',
     }
 }
