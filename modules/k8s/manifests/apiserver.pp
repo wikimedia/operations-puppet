@@ -3,9 +3,22 @@ class k8s::apiserver(
     $master_host,
     $docker_registry,
     $ssl_certificate_name,
+    $kube_api_port = undef,
+    $kubelet_port = undef,
+    $service_cluster_ip_range = '192.168.0.0/24',
+    $admission_controllers = [
+        'NamespaceLifecycle',
+        'ResourceQuota',
+        'LimitRanger',
+        'UidEnforcer',
+        'RegistryEnforcer',
+        'HostAutomounter',
+        'HostPathEnforcer',
+    ],
     $host_automounts = [],
     $host_paths_allowed = [],
     $host_path_prefixes_allowed = [],
+    $use_package = false,
 ) {
     include k8s::users
 
@@ -16,9 +29,19 @@ class k8s::apiserver(
         mode   => '0700',
     }
 
+    if $use_package {
+        require('kubernetes-master')
+    } else {
+        file { '/usr/bin/kube-apiserver':
+            ensure => link,
+            target => '/usr/local/bin/kube-apiserver',
+        }
+    }
+
     $host_automounts_string = join($host_automounts, ',')
     $host_paths_allowed_string = join(concat($host_paths_allowed, $host_automounts), ',')
     $host_path_prefixes_allowed_string = join($host_path_prefixes_allowed, ',')
+    $admission_control = join($admission_controllers, ',')
 
     $users = hiera('k8s_infrastructure_users')
     file { '/etc/kubernetes/infrastructure-users':
@@ -26,6 +49,14 @@ class k8s::apiserver(
         owner   => 'kubernetes',
         group   => 'kubernetes',
         mode    => '0400',
+    }
+
+    file { '/etc/default/kube-apiserver':
+        ensure  => file,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        content => template('k8s/kube-apiserver.default.erb'),
     }
 
     base::service_unit { 'kube-apiserver':
