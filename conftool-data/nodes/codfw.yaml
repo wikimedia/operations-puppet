@@ -257,10 +257,10 @@ sca:
   sca2003.codfw.wmnet: [zotero]
   sca2004.codfw.wmnet: [zotero]
 scb:
-  scb2001.codfw.wmnet: [mobileapps, mathoid, graphoid, citoid, apertium, cxserver, ores, eventstreams, pdfrender]
-  scb2002.codfw.wmnet: [mobileapps, mathoid, graphoid, citoid, apertium, cxserver, ores, eventstreams, pdfrender]
-  scb2003.codfw.wmnet: [mobileapps, mathoid, graphoid, citoid, apertium, cxserver, ores, eventstreams, pdfrender]
-  scb2004.codfw.wmnet: [mobileapps, mathoid, graphoid, citoid, apertium, cxserver, ores, eventstreams, pdfrender]
+  scb2001.codfw.wmnet: [mobileapps, mathoid, graphoid, citoid, apertium, cxserver, ores, eventstreams, pdfrender, trendingedits]
+  scb2002.codfw.wmnet: [mobileapps, mathoid, graphoid, citoid, apertium, cxserver, ores, eventstreams, pdfrender, trendingedits]
+  scb2003.codfw.wmnet: [mobileapps, mathoid, graphoid, citoid, apertium, cxserver, ores, eventstreams, pdfrender, trendingedits]
+  scb2004.codfw.wmnet: [mobileapps, mathoid, graphoid, citoid, apertium, cxserver, ores, eventstreams, pdfrender, trendingedits]
 eventbus:
   kafka2001.codfw.wmnet: [eventbus]
   kafka2002.codfw.wmnet: [eventbus]

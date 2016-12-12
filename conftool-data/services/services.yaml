@@ -123,6 +123,14 @@ scb:
     datacenters:
     - eqiad
     - codfw
+  trendingedits:
+    port: 6699
+    default_values:
+      pooled: 'no'
+      weight: 10
+    datacenters:
+    - eqiad
+    - codfw
 restbase:
   restbase:
     port: 7231
