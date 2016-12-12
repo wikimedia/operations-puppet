@@ -21,6 +21,7 @@ role::lvs::realserver::pools:
   mathoid: {}
   eventstreams: {}
   pdfrender: {}
+  trendingedits: {}
 graphoid::allowed_domains:
   https:
     - mediawiki.org
