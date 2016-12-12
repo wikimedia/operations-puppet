@@ -132,16 +132,14 @@ class DumpList(object):
     lists are produced for all dumps in one pass."""
 
     def __init__(self, config, dumps_num_list,
-                 dir_list_templ, file_list_templ,
-                 output_dir, projects_url, flags):
+                 templs, output_dir, projects_url, flags):
         """constructor"""
 
         self.config = config
         self.dumps_num_list = dumps_num_list
         self.max_dump_num = max(self.dumps_num_list)
         self.flags = flags
-        self.dir_list_templ = dir_list_templ
-        self.file_list_templ = file_list_templ
+        self.templs = templs
         self.output_dir = output_dir
         if self.output_dir and self.output_dir.endswith(os.sep):
             self.output_dir = self.output_dir[:-1 * len(os.sep)]
@@ -321,15 +319,6 @@ class DumpList(object):
         dirs_reported.extend(dirs_failed)
         return dirs_reported
 
-    def list_file_templs(self):
-        """list the templates for filenames that were provided
-        by the caller, i.e. the template for the lists of files of
-        the last n dumps, and the template for the lists of dirs
-        of the last n dumps"""
-        fname_templs = []
-        fname_templs.extend([self.dir_list_templ, self.file_list_templ])
-        return [templ for templ in fname_templs if templ]
-
     def get_fnames_from_dir(self, dir_name):
         """given a dump directory (the full path to a specific run),
         get the names of the files we want to list; we only pick
@@ -339,7 +328,7 @@ class DumpList(object):
         user-specified options."""
         files_wanted = []
         files_wanted_pattern = r'(\.gz|\.bz2|\.7z|\.html|\.txt|\.xml)$'
-        if self.file_list_templ:
+        if self.templs['file_list_templ']:
             dir_contents = os.listdir(dir_name)
             files_wanted = ([os.path.join(dir_name, f) for f in dir_contents
                              if re.search(files_wanted_pattern, f)])
@@ -350,7 +339,7 @@ class DumpList(object):
     def truncate_outfiles(self):
         """call this once at the beginning of any run to truncate
         all output files before beginning to write to them"""
-        fname_templs = self.list_file_templs()
+        fname_templs = self.templs().keys()
         for templ in fname_templs:
             for num in self.dumps_num_list:
                 fname = fillin_fname_templ(templ, num)
@@ -366,18 +355,18 @@ class DumpList(object):
         of a particular run into files named as specified by the
         user, and write the project dump directory name into
         separate files named as specified by the user"""
-        if self.file_list_templ:
+        if self.templs['file_list_templ']:
             output_fname = self.get_abs_outdirpath(
                 fillin_fname_templ(
-                    self.file_list_templ, num) + ".tmp")
+                    self.templs['file_list_templ'], num) + ".tmp")
             filesfd = open(output_fname, "a")
             filesfd.write('\n'.join(fnames_to_write))
             filesfd.write('\n')
             filesfd.close()
-        if self.dir_list_templ and not skip_dirs:
+        if self.templs['dir_list_templ'] and not skip_dirs:
             output_fname = self.get_abs_outdirpath(
                 fillin_fname_templ(
-                    self.dir_list_templ, num) + ".tmp")
+                    self.templs['dir_list_templ'], num) + ".tmp")
             if self.flags['relative']:
                 dir_name = self.strip_pubdir(dir_name)
             dirsfd = open(output_fname, "a")
@@ -395,7 +384,7 @@ class DumpList(object):
         while index < len(dirs):
             if index >= self.max_dump_num:
                 break
-            if self.file_list_templ:
+            if self.templs['file_list_templ']:
                 fnames_to_write = self.get_fnames_from_dir(os.path.join(
                     project_path, dirs[index]))
             for dnum in self.dumps_num_list:
@@ -457,7 +446,7 @@ class DumpList(object):
         return files_in_dir
 
     def write_toplevelfiles(self):
-        """write the html and txt files in the top level dirextory to
+        """write the html and txt files in the top level directory to
         the appropriate output files."""
         fnames_to_write = self.get_toplevelfiles()
         for dnum in self.dumps_num_list:
@@ -472,7 +461,7 @@ class DumpList(object):
         for proj in self.projects:
             self.write_file_dir_lists_for_proj(proj)
 
-        fname_templs = self.list_file_templs()
+        fname_templs = self.templs().keys()
         for templ in fname_templs:
             for num in self.dumps_num_list:
                 fdesc = fillin_fname_templ(templ, num)
@@ -499,6 +488,7 @@ def usage(message=None):
     usage_message = """Usage: list-last-n-good-dumps.py [--dumpsnumber n]
                 [--configfile filename] [--relpath] [--rsynclists]
                 [--dirlisting filename-format] [--filelisting filename-format]
+                [--rsynclisting filename-format]
 
 Options:
 
@@ -527,15 +517,20 @@ rsynclists  -- for each file that is produced, write a second file with the
 toplevel    -- include .html and .txt files from the top level directory in
                the filename listing
 
-One of the two options below must be specified:
+At least one of the three options below must be specified:
 
-dirlisting  -- produce a file named with the specified format listing the
-               directories (e.g. /aawiki/20120309) with no filenames
-               default value: none
-filelisting -- produce a file named with the specified format listing the
-               filenames (e.g. /aawiki/20120309/aawiki-20120309-abstract.xml)
-               with no dirnames
-               default value: none
+dirlisting   -- produce a file named with the specified format listing the
+                directories (e.g. /aawiki/20120309) with no filenames
+                default value: none
+filelisting  -- produce a file named with the specified format listing the
+                filenames (e.g. /aawiki/20120309/aawiki-20120309-abstract.xml)
+                with no dirnames
+                default value: none
+rsynclisting -- produce a file named with the specified format listing the
+                directories of complete dumps (e.g. /aawiki/20120309/) and
+                the filenames of completed files from in-progress dumps
+                (e.g. /aawiki/20120309/aawiki-20120309-abstract.xml)
+                default value: none
 
 Example use:
 python list-last-n-good-dumps.py --dumpsnumber 3,5
@@ -547,30 +542,27 @@ python list-last-n-good-dumps.py --dumpsnumber 3,5
     sys.exit(1)
 
 
-def check_options(dumps_num_list, dir_list_templ, file_list_templ):
+def check_options(dumps_num_list, dir_list_templ,
+                  file_list_templ, rsync_incl_templ):
     """check the supplied options for validity"""
     for dnum in dumps_num_list:
         if not dnum.isdigit() or not int(dnum):
             usage("dumpsnumber must be a number or a comma-separated"
                   " list of numbers each greater than 0")
 
-    if not dir_list_templ and not file_list_templ:
-        usage("At least one of --dirlisting or"
-              " --filelisting must be specified")
+    if not dir_list_templ and not file_list_templ and not rsync_incl_templ:
+        usage("At least one of --dirlisting, --filelisting, or"
+              " --rsynclisting must be specified")
 
-    if (file_list_templ and len(dumps_num_list) > 1 and
-            '%s' not in file_list_templ):
-        usage("In order to write more than one output file with"
-              " dump runs, the value specified for filelisting"
-              " must contain '%s' which will be replaced by the"
-              " number of dumps to write to the given output file")
-
-    if (file_list_templ and len(dumps_num_list) > 1 and
-            '%s' not in file_list_templ):
-        usage("In order to write more than one output file with"
-              " dump runs, the value specified for dirlisting must"
-              " contain '%s' which will be replaced by the number"
-              " of dumps to write to the given output file")
+    for (templ_name, option_name) in [(file_list_templ, "filelisting"),
+                                      (dir_list_templ, "dirlisting"),
+                                      (rsync_incl_templ, "rsynclisting")]:
+        if templ_name and len(dumps_num_list) > 1 and '%s' not in templ_name:
+            usage("In order to write more than one output file with"
+                  " dump runs, the value specified for %s"
+                  " must contain '%s' which will be replaced by the"
+                  " number of dumps to write to the given output file"
+                  % option_name)
 
 
 def get_flag_defaults():
@@ -588,6 +580,20 @@ def get_flags(opt, flags):
         flags['top_level'] = True
 
 
+def get_templs(opt, val, templs):
+    """parse options providing templates of output file names,
+    returning True if an option matches for parsing, False otherwise"""
+    if opt == "--dirlisting":
+        templs['dir_list_templ'] = val
+    elif opt == "--filelisting":
+        templs['file_list_templ'] = val
+    elif opt == "--rsynclisting":
+        templs['rsync_incl_templ'] = val
+    else:
+        return False
+    return True
+
+
 def do_main():
     """main entry point.
     set default option values,
@@ -598,8 +604,7 @@ def do_main():
     configfile = "wikidump.conf"
     dumps_num = "5"
     flags = get_flag_defaults()
-    dir_list_templ = None
-    file_list_templ = None
+    templs = {}
     projects_url = None
     output_dir = None
 
@@ -609,7 +614,7 @@ def do_main():
                                'outputdir=', 'projectlisturl=',
                                'relpath', 'rsynclists',
                                'toplevel', 'dirlisting=',
-                               'filelisting='])
+                               'filelisting=', 'rsynclisting='])
     except Exception:
         usage("Unknown option specified")
 
@@ -625,11 +630,7 @@ def do_main():
             dumps_num = val
         elif opt == '--outputdir':
             output_dir = val
-        elif opt == "--dirlisting":
-            dir_list_templ = val
-        elif opt == "--filelisting":
-            file_list_templ = val
-        else:
+        elif not get_templs(opt, val, templs):
             get_flags(opt, flags)
 
     if ',' not in dumps_num:
@@ -637,11 +638,11 @@ def do_main():
     else:
         dumps_num_list = [d.strip() for d in dumps_num.split(',')]
 
-    check_options(dumps_num_list, dir_list_templ, file_list_templ)
+    check_options(dumps_num_list, templs['dir_list_templ'],
+                  templs['file_list_templ'], templs['rsync_incl_templ'])
 
     config = WikiConfig(configfile)
-    dlist = DumpList(config, dumps_num_list, dir_list_templ, file_list_templ,
-                     output_dir, projects_url, flags)
+    dlist = DumpList(config, templs, dumps_num_list, output_dir, projects_url, flags)
     dlist.load_projectlist()
     dlist.gen_dumpfile_dirlists()
 
