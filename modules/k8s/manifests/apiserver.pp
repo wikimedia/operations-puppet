@@ -1,6 +1,5 @@
 class k8s::apiserver(
     $etcd_servers,
-    $master_host,
     $docker_registry,
     $ssl_certificate_name,
     $host_automounts = [],
