@@ -81,6 +81,10 @@
 # [*citoid_uri*]
 #   Citoid service URI. Default: http://citoid.svc.eqiad.wmnet:1970
 #
+# [*trendingedits_uri*]
+#   Trending edits service URI. Default:
+#   http://trendingedits.svc.eqiad.wmnet:6699
+#
 # [*monitor_domain*]
 #   The domain to monitor during the service's operation.
 #   Default: en.wikipedia.org
@@ -118,6 +122,7 @@ class restbase(
     'http://eventbus.svc.eqiad.wmnet:8085/v1/events',
     $pdfrender_uri  = 'http://pdfrender.svc.eqiad.wmnet:5252',
     $citoid_uri     = 'http://citoid.svc.eqiad.wmnet:1970',
+    $trendingedits_uri = 'http://trendingedits.svc.eqiad.wmnet:6699',
     $monitor_domain = 'en.wikipedia.org',
     $hosts          = [$::ipaddress],
 ) {
