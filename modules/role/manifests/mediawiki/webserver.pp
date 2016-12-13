@@ -67,4 +67,31 @@ class role::mediawiki::webserver {
         description  => 'HHVM processes',
         nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1: -C hhvm',
     }
+    if (hiera('role::mediawiki::webserver::tls', false)) {
+        # TLSproxy instance to accept traffic on port 443
+        if !getvar('pool') {
+            $certs = [$::fqdn]
+        } else {
+            $certs = [ "${pool}.svc.${::site}.wmnet"]
+        }
+        tlsproxy::localssl { 'unified':
+            server_name    => 'www.wikimedia.org',
+            certs          => $certs,
+            certs_active   => $certs,
+            default_server => true,
+            do_ocsp        => false,
+            upstream_ports => [80],
+        }
+        monitoring::service { 'appserver https':
+            description    => 'Nginx local proxy to apache',
+            check_command  => 'check_https_url!en.wikipedia.org!/',
+            retries        => 2,
+            retry_interval => 2,
+        }
+        ferm::service { 'mediawiki-https':
+            proto   => 'tcp',
+            notrack => true,
+            port    => 'https',
+        }
+    }
 }
