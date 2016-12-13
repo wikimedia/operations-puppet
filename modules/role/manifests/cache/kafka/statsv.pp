@@ -1,16 +1,22 @@
-# == Class role::cache::kafka::statsv
+# === Define role::cache::kafka::statsv
+#
 # Sets up a varnishkafka logging endpoint for collecting
 # application level metrics. We are calling this system
 # statsv, as it is similar to statsd, but uses varnish
 # as its logging endpoint.
 #
-# == Parameters
-# $varnish_name - the name of the varnish instance to read shared logs from.  Default $::hostname
-# $varnish_svc_name - the name of the varnish init service to read shared logs from.  Default 'varnish'
+# === Parameters
+#
+# [*varnish_name*]
+#   The name of the varnish instance to read shared logs from.
+#   Default 'frontend'
+# [*varnish_svc_name*]
+#   The name of the init unit for the above.
+#   Default 'varnish-frontend'
 #
 class role::cache::kafka::statsv(
-    $varnish_name = $::hostname,
-    $varnish_svc_name = 'varnish',
+    $varnish_name = 'frontend',
+    $varnish_svc_name = 'varnish-frontend'
 ) inherits role::cache::kafka
 {
     $format  = "%{fake_tag0@hostname?${::fqdn}}x %{%FT%T@dt}t %{X-Client-IP@ip}o %{@uri_path}U %{@uri_query}q %{User-Agent@user_agent}i"
