@@ -1,3 +1,5 @@
 debdeploy::grains:
   debdeploy-mediawiki-maintenance-eqiad:
     value: standard
+
+mediawiki::maintenance::generatecaptcha::ensure: absent
