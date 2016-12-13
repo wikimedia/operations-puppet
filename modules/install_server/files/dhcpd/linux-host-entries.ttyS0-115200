@@ -3,6 +3,11 @@
 #### puppet:///modules/install_server/dhcpd/linux-host-entries.ttyS0-115200
 ######################################################################
 
+host argon {
+    hardware ethernet aa:00:00:fe:6b:df;
+    fixed-address argon.eqiad.wmnet;
+}
+
 host alsafi {
     hardware ethernet aa:00:00:c7:16:43;
     fixed-address alsafi.wikimedia.org;
@@ -21,6 +26,11 @@ host bohrium {
 host bromine {
     hardware ethernet aa:00:00:f1:36:3a;
     fixed-address bromine.eqiad.wmnet;
+}
+
+host chlorine {
+    hardware ethernet aa:00:00:37:a8:4d;
+    fixed-address chlorine.eqiad.wmnet;
 }
 
 host darmstadtium {
