@@ -75,6 +75,10 @@ class role::cache::misc {
             'backend'  => 'etherpad1001.eqiad.wmnet',
             'be_opts'  => merge($app_def_be_opts, { 'port' => 9001 }),
         },
+        'eventstreams' => {
+            'backend'  => 'eventstreams.svc.eqiad.wmnet',
+            'be_opts'  => merge($app_def_be_opts, { 'port' => 8092 }),
+        },
         'contint1001' => { # CI server
             'backend'  => 'contint1001.wikimedia.org',
             'be_opts'  => $app_def_be_opts,
@@ -246,8 +250,14 @@ class role::cache::misc {
         'static-bugzilla.wikimedia.org'      => { 'director' => 'bromine' },
         'stats.wikimedia.org'                => { 'director' => 'thorium' },
         'stream.wikimedia.org'               => {
-            'director' => 'rcstream',
-            'caching'  => 'websockets',
+            'director' => 'eventstreams',
+            'caching'  => 'pipe',
+            'subpaths' => {
+                '^/(socket\.io|rc(stream_status)?)(/|$)' => {
+                    'director' => 'rcstream',
+                    'caching'  => 'websockets',
+                },
+            },
         },
         'ticket.wikimedia.org'               => {
             'director' => 'mendelevium',
