@@ -3884,22 +3884,22 @@ host ms-fe2004 {
 }
 
 host ms-fe2005 {
-    hardware ethernet 18:66:DA:81:FF:DF;
+    hardware ethernet F4:E9:D4:AE:B5:C0;
     fixed-address ms-fe2005.codfw.wmnet;
 }
 
 host ms-fe2006 {
-    hardware ethernet 18:66:DA:82:21:AC;
+    hardware ethernet F4:E9:D4:AF:02:60;
     fixed-address ms-fe2006.codfw.wmnet;
 }
 
 host ms-fe2007 {
-    hardware ethernet 18:66:DA:82:EB:05;
+    hardware ethernet F4:E9:D4:AE:F5:10;
     fixed-address ms-fe2007.codfw.wmnet;
 }
 
 host ms-fe2008 {
-    hardware ethernet 18:66:DA:82:29:51;
+    hardware ethernet F4:E9:D4:AE:F8:A0;
     fixed-address ms-fe2008.codfw.wmnet;
 }
 
