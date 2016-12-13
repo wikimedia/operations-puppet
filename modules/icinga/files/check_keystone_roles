@@ -1,4 +1,27 @@
 #!/usr/bin/python
+
+"""
+2016 Andrew Bogott
+
+Check that a given keystone project has a specific set
+of roles in all projects.
+
+If a project has no roles at all (presumably due to the
+project being created out-of-band) raise a warning.
+
+If a project has the wrong roles, return critical.  This
+is a possible security issue as a read-only account (novaobserver)
+might have actual user or projectadmin roles.
+
+Example for user 'novaadmin' and roles 'projectadmin' and 'user':
+
+check_keystone_roles novaadmin projectadmin user
+
+"""
+
+
+
+
 import argparse
 import sys
 
