@@ -12,6 +12,9 @@ class role::eventbus::eventbus {
     include base::firewall
     require ::eventschemas
 
+    # for /srv/log dir creation
+    require ::service::configuration
+
     if hiera('has_lvs', true) {
         include ::role::lvs::realserver
     }
@@ -65,18 +68,6 @@ class role::eventbus::eventbus {
         default      => 'INFO',
     }
 
-    # We ensure the /srv/log (parent of $out_dir) manually here, as
-    # there is no proper class to rely on for this, and starting a
-    # separate would be an overkill for now.  We create these directories
-    # so we can save failed EventError events from eventbus here.
-    if !defined(File['/srv/log']) {
-        file { '/srv/log':
-            ensure => 'directory',
-            mode   => '0755',
-            owner  => 'root',
-            group  => 'root',
-        }
-    }
     if !defined(File['/srv/log/eventlogging']) {
         file { '/srv/log/eventlogging':
             ensure => 'directory',
