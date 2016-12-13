@@ -44,7 +44,7 @@ define rsyslog::conf(
     # append a trailing newline if omitted
     $content_formatted = $content ? {
         undef   => undef,
-        default => regsubst($content, "\n?$", "\n")
+        default => regsubst($content, "\n?$", "\n", 'M')
     }
 
     file { $filename:
