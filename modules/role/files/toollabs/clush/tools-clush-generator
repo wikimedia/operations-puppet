@@ -46,21 +46,21 @@ TOOLS_PREFIX_CLASSIFIER = {
 }
 
 
-def get_hostgroups(classifier):
+def get_hostgroups(classifier, project_name):
     hostgroups = {name: [] for name in classifier.values()}
 
     api_url = 'https://wikitech.wikimedia.org/w/api.php' \
             '?action=query&list=novainstances&niregion=eqiad&format=json' \
-            '&niproject=tools'
+            '&niproject=' + project_name
 
     data = json.loads(urlopen(api_url).read().decode('utf-8'))
 
     for instance in data['query']['novainstances']:
         name = instance['name']
         for prefix in classifier:
-            if name.startswith('tools-' + prefix):
+            if name.startswith('%s-%s' % (project_name, prefix)):
                 role = classifier[prefix]
-                hostgroups[role].append(name + ".tools.eqiad.wmflabs")
+                hostgroups[role].append('%s.%s.eqiad.wmflabs' % (name, project_name))
 
     return hostgroups
 
@@ -73,6 +73,9 @@ if __name__ == '__main__':
     )
     args = parser.parse_args()
 
-    hostgroups = get_hostgroups(TOOLS_PREFIX_CLASSIFIER)
+    with open('/etc/wmflabs-project', 'r') as f:
+        project_name = f.read().rstrip('\n')
+
+    hostgroups = get_hostgroups(TOOLS_PREFIX_CLASSIFIER, project_name)
     with open(args.outputpath, 'w') as f:
         f.write(yaml.safe_dump(hostgroups, default_flow_style=False))
