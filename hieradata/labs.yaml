@@ -327,3 +327,22 @@ network::subnets:
         labs-instances1-d-codfw:
           ipv4: 10.196.48.0/24
           ipv6: 2620:0:860:204::/64
+
+
+# These are needed on labs for, among other things, observerenv.sh
+labs_nova_controller: &labsnovacontroller "labcontrol1001.wikimedia.org"
+novaconfig:
+  db_host: 'm5-master.eqiad.wmnet'
+  glance_host: *labsnovacontroller
+  rabbit_host: *labsnovacontroller
+  cc_host: *labsnovacontroller
+  controller_hostname: *labsnovacontroller
+  ldap_host: *labsnovacontroller
+  puppet_host: *labsnovacontroller
+  puppet_db_host: *labsnovacontroller
+  dhcp_domain: 'eqiad.wmflabs'
+  live_migration_uri: 'qemu://%s.eqiad.wmnet/system?pkipath=/var/lib/nova'
+  zone: eqiad
+  spice_hostname: 'labspice.wikimedia.org'
+  scheduler_pool:
+    - labvirt1001
