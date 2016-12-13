@@ -71,8 +71,10 @@ class role::mediawiki::webserver {
         # TLSproxy instance to accept traffic on port 443
         if !getvar('pool') {
             $certs = [$::fqdn]
-        } else {
-            $certs = [ "${pool}.svc.${::site}.wmnet"]
+        }
+        else {
+            $pooldata = pick($::lvs::configuration::lvs_services[$pool], {})
+            $certs = [pick($pooldata['icinga']['sites'][$::site]['hostname'], $::fqdn)]
         }
         tlsproxy::localssl { 'unified':
             server_name    => 'www.wikimedia.org',
