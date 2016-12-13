@@ -3,17 +3,7 @@
 class role::statistics::base {
     include ::deployment::umask_wikidev
 
-    # Manually set a list of statistics servers.
-    $statistics_servers = hiera(
-        'statistics_servers',
-        [
-            'thorium.eqiad.wmnet',
-            'stat1001.eqiad.wmnet',
-            'stat1002.eqiad.wmnet',
-            'stat1003.eqiad.wmnet',
-            'analytics1027.eqiad.wmnet',
-        ]
-    )
+    $statistics_servers = hiera('statistics_servers')
 
     # We are attempting to stop using /a and to start using
     # /srv instead.  stat1002 still use

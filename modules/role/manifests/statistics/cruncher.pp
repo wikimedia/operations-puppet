@@ -34,11 +34,11 @@ class role::statistics::cruncher inherits role::statistics::base {
 
 
     # Set up reportupdater to be executed on this machine
-    # and rsync the output base path to stat1001.
+    # and rsync the output base path to thorium.
     class { 'reportupdater':
         base_path => "${::statistics::working_path}/reportupdater",
         user      => $::statistics::user::username,
-        rsync_to  => 'stat1001.eqiad.wmnet::srv/limn-public-data/',
+        rsync_to  => 'thorium.eqiad.wmnet::srv/limn-public-data/',
     }
 
     # Set up various jobs to be executed by reportupdater
