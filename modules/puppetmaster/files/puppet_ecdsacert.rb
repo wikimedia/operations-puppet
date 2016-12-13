@@ -1,3 +1,4 @@
+#!/usr/bin/env ruby
 # Copyright (c) 2016 Giuseppe Lavagetto, Wikimedia Foundation
 # Loosely based on https://github.com/ripienaar/mcollective-choria/blob/master/lib/mcollective/util/choria.rb
 require 'net/http'
