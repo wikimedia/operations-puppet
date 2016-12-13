@@ -4,7 +4,7 @@
   varnishxcps
   ~~~~~~~~~~~
 
-  Accumulate X-Client-Connection stats and report them to StatsD.
+  Accumulate X-Connection-Properties stats and report them to StatsD.
 
   Usage: varnishxcps [--statsd-server SERVER] [--key-prefix PREFIX]
 
@@ -12,6 +12,7 @@
     --key-prefix PREFIX     metric key prefix (default: varnish.clients)
 
   Copyright 2015 Ori Livneh <ori@wikimedia.org>
+  Copyright 2016 Emanuele Rocca <ema@wikimedia.org>
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -26,78 +27,37 @@
   limitations under the License.
 
 """
-import argparse
-import io
+
 import re
-import socket
-import threading
-import urlparse
-import time
 
-import varnishlog
+from cachestats import CacheStatsSender
 
 
-def parse_statsd_server_string(server_string):
-    parsed = urlparse.urlparse('//' + server_string)
-    return parsed.hostname, parsed.port or 8125
+class XcpsCacheStatsSender(CacheStatsSender):
+
+    cmd = ["varnishncsa", "-n", "frontend",
+           "-q", 'ReqMethod ne "PURGE"',
+           "-F", '%{X-Connection-Properties}i']
+
+    description = 'X-Connection-Properties StatsD reporter'
+
+    def __init__(self):
+        CacheStatsSender.__init__(self)
+        self.key_value_pairs = re.compile('([A-Z][A-Z0-9]*)=([^;]+)')
+
+    def gen_stats(self, record):
+        for k, v in self.key_value_pairs.findall(record):
+            if k == 'SSR':
+                k = 'ssl_sessions'
+                v = 'reused' if v == '1' else 'negotiated'
+            elif k == 'C':
+                k = 'ssl_cipher'
+            elif k == 'EC':
+                k = 'ssl_ecdhe_curve'
+            v = v.replace('.', '_')
+            s = '.'.join((self.args.key_prefix, k, v)).lower()
+            self.stats[s] = self.stats.get(s, 0) + 1
 
 
-def parse_prefix_string(key_prefix):
-    key_prefix = key_prefix.strip('.')
-    if not key_prefix:
-        raise ValueError('Key prefix must not be empty')
-    return key_prefix
-
-
-ap = argparse.ArgumentParser(
-    description='X-Connection-Properties StatsD reporter',
-    epilog='If no statsd server is specified, prints stats to stdout instead.'
-)
-ap.add_argument('--statsd-server', help='statsd server',
-                type=parse_statsd_server_string, default=None)
-ap.add_argument('--key-prefix', help='metric key prefix',
-                type=parse_prefix_string, default='varnish.clients')
-ap.add_argument('--interval', help='send interval',
-                type=int, default=30)
-args = ap.parse_args()
-
-sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-key_value_pairs = re.compile('([A-Z][A-Z0-9]*)=([^;]+)')
-stats = {}
-
-
-def vsl_callback(transaction_id, tag, record, remote_party):
-    for k, v in key_value_pairs.findall(record):
-        if k == 'SSR':
-            k = 'ssl_sessions'
-            v = 'reused' if v == '1' else 'negotiated'
-        elif k == 'C':
-            k = 'ssl_cipher'
-        elif k == 'EC':
-            k = 'ssl_ecdhe_curve'
-        v = v.replace('.', '_')
-        s = '.'.join((args.key_prefix, k, v)).lower()
-        stats[s] = stats.get(s, 0) + 1
-
-    now = time.time()
-    if now >= vsl_callback.next_pub:
-        vsl_callback.next_pub = now + args.interval
-        buf = io.BytesIO()
-        while stats:
-            metric = '%s:%s|c\n' % stats.popitem()
-            buf.write(metric.encode('utf-8'))
-        buf.seek(io.SEEK_SET)
-        if args.statsd_server:
-            sock.sendto(buf.read(), args.statsd_server)
-        else:
-            print(buf.read().decode('utf-8', errors='replace').rstrip())
-
-    return 0
-
-vsl_callback.next_pub = time.time() + args.interval
-
-varnishlog.varnishlog((
-    ('q', 'ReqMethod ne "PURGE"'),
-    ('I', 'ReqHeader:^X-Connection-Properties:'),
-    ('n', 'frontend'),
-), vsl_callback)
+if __name__ == "__main__":
+    XcpsCacheStatsSender().main()
