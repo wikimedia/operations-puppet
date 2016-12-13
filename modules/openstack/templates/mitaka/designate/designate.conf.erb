@@ -307,6 +307,10 @@ control_exchange = nova
 format = %(hostname)s.%(project_name)s.%(domain)s, %(hostname)s.%(domain)s
 ldapusername = uid=novaadmin,ou=people,dc=wikimedia,dc=org
 ldappassword = <%= @keystoneconfig['ldap_user_pass'] %>
+nova_auth_name = "novaadmin"
+nova_auth_pass = "<%= @keystoneconfig['ldap_user_pass'] %>"
+nova_auth_project = "<%= @keystoneconfig['admin_project_name'] %>"
+nova_auth_url = "http://<%= @designateconfig['controller_hostname'] %>:35357/v2.0"
 keystone_auth_name = "novaadmin"
 keystone_auth_pass = "<%= @keystoneconfig['ldap_user_pass'] %>"
 keystone_auth_project = <%= @keystoneconfig['admin_project_id'] %>
