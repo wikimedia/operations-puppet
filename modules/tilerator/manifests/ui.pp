@@ -97,6 +97,9 @@ class tilerator::ui(
             cassandra_servers  => $cassandra_servers,
             osmdb_user         => $pgsql_tileratorui_user,
             osmdb_password     => $pgsql_tileratorui_pass,
+            redis_server       => $redis_server,
+            ui_only            => true,
+            daemon_only        => false,
         },
         contact_groups    => $contact_groups,
     }

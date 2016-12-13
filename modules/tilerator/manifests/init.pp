@@ -58,6 +58,9 @@ class tilerator(
             cassandra_servers  => $cassandra_servers,
             osmdb_user         => $pgsql_tilerator_user,
             osmdb_password     => $pgsql_tilerator_pass,
+            redis_server       => $redis_server,
+            ui_only            => false,
+            daemon_only        => true,
         },
         contact_groups    => $contact_groups,
     }
