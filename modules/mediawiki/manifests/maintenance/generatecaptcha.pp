@@ -1,4 +1,12 @@
 class mediawiki::maintenance::generatecaptcha( $ensure = present ) {
+
+    file { '/etc/fancycaptcha':
+        ensure => $ensure,
+        mode   => '0555',
+        owner  => 'root',
+        group  => 'root',
+    }
+
     file { '/etc/fancycaptcha/words':
         ensure  => $ensure,
         mode    => '0444',
