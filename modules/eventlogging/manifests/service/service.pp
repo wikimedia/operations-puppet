@@ -103,15 +103,21 @@ define eventlogging::service::service(
         default => $_log_file,
     }
 
+    # ensure the rsyslog log file has sane permisions
+    file { $_log_file:
+        ensure  => present,
+        replace => false,
+        content => '',
+        owner   => 'eventlogging',
+        group   => 'eventlogging',
+        mode    => '0644',
+        before  => Rsyslog::Conf[$service_name],
+    }
     # Rsyslog configuration that routes logs to a file.
-    file { "/etc/rsyslog.d/80-${service_name}.conf":
-        # FIXME - top-scope var without namespace, will break in puppet 2.8
-        # lint:ignore:variable_scope
-        ensure  => $ensure,
-        # lint:endignore
-        content => template('eventlogging/rsyslog.conf.erb'),
-        mode    => '0444',
-        notify  => Service['rsyslog'],
+    rsyslog::conf { $service_name:
+        content  => template('eventlogging/rsyslog.conf.erb'),
+        priority => 80,
+        before   => Base::Service_unit[$service_name],
     }
     # Python logging conf file that properly formats
     # output with $programname prefix so that rsyslog
