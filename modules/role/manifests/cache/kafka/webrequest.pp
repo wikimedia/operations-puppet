@@ -1,11 +1,18 @@
-# == Class role::cache::kafka::webrequest
+# === Define role::cache::kafka::webrequest
+#
 # Sets up a varnishkafka instance producing varnish
 # webrequest logs to the analytics Kafka brokers in eqiad.
 #
-# == Parameters
-# $topic            - the name of kafka topic to which to send messages
-# $varnish_name - the name of the varnish instance to read shared logs from.  Default 'frontend'
-# $varnish_svc_name - the name of the init unit for the above, default 'varnish-frontend'
+# === Parameters
+#
+# [*topic*]
+#   the name of kafka topic to which to send messages.
+# [*varnish_name*]
+#   The name of the varnish instance to read shared logs from.
+#   Default 'frontend'
+# [*varnish_svc_name*]
+#   The name of the init unit for the above.
+#   Default 'varnish-frontend'
 #
 class role::cache::kafka::webrequest(
     $topic,

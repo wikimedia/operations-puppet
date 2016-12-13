@@ -1,6 +1,22 @@
+# == Class role::cache::kafka::eventlogging
+#
+# Sets up a varnishkafka logging endpoint for collecting
+# analytics events coming from external clients.
+#
+# More info: https://wikitech.wikimedia.org/wiki/Analytics/EventLogging
+#
+# === Parameters
+#
+# [*varnish_name*]
+#   The name of the varnish instance to read shared logs from.
+#   Default 'frontend'
+# [*varnish_svc_name*]
+#   The name of the init unit for the above.
+#   Default 'varnish-frontend'
+#
 class role::cache::kafka::eventlogging(
-    $varnish_name = $::hostname,
-    $varnish_svc_name = 'varnish',
+    $varnish_name = 'frontend',
+    $varnish_svc_name = 'varnish-frontend'
 ) inherits role::cache::kafka
 {
     # Set varnish.arg.q or varnish.arg.m according to Varnish version
