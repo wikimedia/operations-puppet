@@ -27,7 +27,7 @@ class role::labs::openstack::keystone::server {
     # Make sure keystone admin and observer projects exist, and that
     #  keystone project ids == keystone project names
     monitoring::service { 'keystone projects exist':
-        description   => 'Keystone admin and observer roles exist',
+        description   => 'Keystone admin and observer projects exist',
         check_command => 'check_keystone_projects',
     }
 }
