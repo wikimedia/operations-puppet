@@ -1,0 +1,11 @@
+Code-Review+1: Merlijn van Deen <valhallasw@arctus.nl>
+Code-Review+1: 20after4 <mmodell@wikimedia.org>
+Code-Review+1: Dereckson <dereckson@espace-win.org>
+Code-Review+1: Hashar <hashar@free.fr>
+Verified+2: jenkins-bot
+Code-Review+2: Filippo Giunchedi <fgiunchedi@wikimedia.org>
+Submitted-by: Filippo Giunchedi <fgiunchedi@wikimedia.org>
+Submitted-at: Tue, 13 Dec 2016 17:07:31 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/297975
+Project: operations/puppet
+Branch: refs/heads/production
