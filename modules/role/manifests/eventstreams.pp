@@ -34,6 +34,9 @@
 # [*role::eventstreams::streams*]
 #   Default: test and revision-create.
 #
+# [*role::eventstreams::rdkafka_config*]
+#   Default: {}
+#
 class role::eventstreams {
     system::role { 'role::eventstreams':
         description => 'Exposes configured event streams from Kafka to public internet via HTTP SSE',
@@ -60,10 +63,14 @@ class role::eventstreams {
         }
     })
 
+    # Any extra librdkafka configuration
+    $rdkafka_config = hiera('role::eventstreams::rdkafka_config', {});
+
     class { '::eventstreams':
-        port        => $port,
-        log_level   => $log_level,
-        broker_list => $kafka_config['brokers']['string'],
-        streams     => $streams,
+        port           => $port,
+        log_level      => $log_level,
+        broker_list    => $kafka_config['brokers']['string'],
+        streams        => $streams,
+        rdkafka_config => $rdkafka_config,
     }
 }
