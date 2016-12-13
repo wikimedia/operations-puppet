@@ -49,7 +49,7 @@ TOOLS_PREFIX_CLASSIFIER = {
 }
 
 
-def get_hostgroups(classifier, observer_pass):
+def get_hostgroups(classifier, observer_pass, project_name):
     hostgroups = {name: [] for name in classifier.values()}
     client = novaclient.Client(
         "2.0",
@@ -57,7 +57,7 @@ def get_hostgroups(classifier, observer_pass):
             auth_url="http://labcontrol1001.wikimedia.org:5000/v3",
             username="novaobserver",
             password=observer_pass,
-            project_name='tools',
+            project_name=project_name,
             user_domain_name='default',
             project_domain_name='default'
         ))
@@ -65,9 +65,9 @@ def get_hostgroups(classifier, observer_pass):
     for instance in client.servers.list():
         name = instance.name
         for prefix in classifier:
-            if name.startswith('tools-' + prefix):
+            if name.startswith('%s-%s' % (project_name, prefix)):
                 role = classifier[prefix]
-                hostgroups[role].append(name + ".tools.eqiad.wmflabs")
+                hostgroups[role].append('%s.%s.eqiad.wmflabs' % (name, project_name))
 
     return hostgroups
 
@@ -85,6 +85,9 @@ if __name__ == '__main__':
     )
     args = parser.parse_args()
 
-    hostgroups = get_hostgroups(TOOLS_PREFIX_CLASSIFIER, args.observer_pass)
+    with open('/etc/wmflabs-project', 'r') as f:
+        project_name = f.read().rstrip('\n')
+
+    hostgroups = get_hostgroups(TOOLS_PREFIX_CLASSIFIER, args.observer_pass, project_name)
     with open(args.outputpath, 'w') as f:
         f.write(yaml.safe_dump(hostgroups, default_flow_style=False))
