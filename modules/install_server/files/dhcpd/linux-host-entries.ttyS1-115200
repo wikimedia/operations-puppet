@@ -5929,6 +5929,21 @@ host tegmen {
     fixed-address tegmen.wikimedia.org;
 }
 
+host restbase-test1001 {
+    hardware ethernet 90:B1:1C:06:BF:03;
+    fixed-address restbase-test1001.eqiad.wmnet;
+}
+
+host restbase-test1002 {
+    hardware ethernet 90:B1:1C:12:68:34;
+    fixed-address restbase-test1002.eqiad.wmnet;
+}
+
+host restbase-test1003 {
+    hardware ethernet 90:B1:1C:12:88:4A;
+    fixed-address restbase-test1003.eqiad.wmnet;
+}
+
 host restbase-test2001 {
     hardware ethernet 90:B1:1C:2A:2F:0A;
     fixed-address restbase-test2001.codfw.wmnet;
