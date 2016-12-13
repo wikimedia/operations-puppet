@@ -1,4 +1,4 @@
-# (throrium)
+# (thorium)
 class role::statistics::web inherits role::statistics::base {
     system::role { 'role::statistics::web':
         description => 'Statistics private data host and general compute node'
