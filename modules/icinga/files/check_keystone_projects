@@ -1,0 +1,32 @@
+#!/usr/bin/python
+import sys
+
+import mwopenstackclients
+
+SpecialProjects = ['admin', 'wmflabsdotorg']
+
+OK = 0
+WARNING = 1
+CRITICAL = 2
+UNKNOWN = 3
+
+
+def main():
+    clients = mwopenstackclients.clients('/usr/local/bin/observerenv.sh')
+    allprojects = clients.allprojects()
+    allprojectslist = [project.name for project in allprojects]
+
+    requiredprojects = ['admin', 'observer']
+    for project in requiredprojects:
+        if project not in allprojectslist:
+            print("%s project missing from Keystone." % project)
+            sys.exit(WARNING)
+
+    for project in allprojects:
+        if project.id != project.name:
+            print("Keystone project with name %s has mismatched key %s" %
+                  (project['name'], project['id']))
+            sys.exit(WARNING)
+
+if __name__ == '__main__':
+    main()

@@ -23,4 +23,11 @@ class role::labs::openstack::keystone::server {
         description   => 'novaadmin has roles in every project',
         check_command => 'check_keystone_roles!novaadmin!user!projectadmin',
     }
+
+    # Make sure keystone admin and observer projects exist, and that
+    #  keystone project ids == keystone project names
+    monitoring::service { 'keystone projects exist':
+        description   => 'Keystone admin and observer roles exist',
+        check_command => 'check_keystone_projects',
+    }
 }
