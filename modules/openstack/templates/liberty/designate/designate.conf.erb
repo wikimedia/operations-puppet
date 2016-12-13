@@ -36,14 +36,14 @@ root_helper = sudo designate-rootwrap /etc/designate/rootwrap.conf
 
 # we have a lot of instances, so raise quotas:
 quota_zones = 25
-quota_zone_recordsets = 5000
-quota_zone_records = 5000
+quota_zone_recordsets = 10000
+quota_zone_records = 10000
 quota_recordset_records = 20
 quota_api_export_size = 1000
 
 # These are used in Liberty but are (I think) deprecated in future versions.
-quota_domain_records = 5000
-quota_domain_recordsets = 5000
+quota_domain_records = 10000
+quota_domain_recordsets = 10000
 
 ########################
 ## Service Configuration
