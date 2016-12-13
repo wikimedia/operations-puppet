@@ -104,4 +104,12 @@ class varnish::common {
         mode    => '0444',
         require => File['/usr/local/lib/python2.7/dist-packages/varnishapi.py'],
     }
+
+    # Install cachestats.py
+    file { '/usr/local/lib/python2.7/dist-packages/cachestats.py':
+        source => 'puppet:///modules/varnish/cachestats.py',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0444',
+    }
 }

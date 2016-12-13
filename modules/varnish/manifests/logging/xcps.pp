@@ -23,7 +23,7 @@ define varnish::logging::xcps( $statsd_server = 'statsd' ) {
         owner   => 'root',
         group   => 'root',
         mode    => '0555',
-        require => File['/usr/local/lib/python2.7/dist-packages/varnishlog.py'],
+        require => File['/usr/local/lib/python2.7/dist-packages/cachestats.py'],
         notify  => Service['varnishxcps'],
     }
 
