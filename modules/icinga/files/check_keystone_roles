@@ -43,7 +43,7 @@ def check_roles(user, requiredroles, all_projects=True):
 
             rstring = ("In %s, user %s should have roles %s but has %s" %
                        (project, user, requiredroles, namelist))
-            return (WARNING, rstring)
+            return (CRITICAL, rstring)
 
     if all_projects:
         allprojects = clients.allprojects()
@@ -92,5 +92,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
-check_roles('novaadmin', ['projectadmin', 'user'])
