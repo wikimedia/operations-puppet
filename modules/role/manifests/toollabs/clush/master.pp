@@ -4,8 +4,7 @@
 # command execution on classes of toollabs instances. Hits
 # the wikitech API to do discovery of all instances in
 # toollabs. They are then classified by prefix using a list,
-# maintained in modules/role/files/toollabs/clush/toollabs-clush-generator.
-# This is refreshed every hour.
+# maintained in modules/role/files/toollabs/clush/toollabs-clush-generator.py.
 #
 # You'll have to be a member of tools.admin to run this. All accesses
 # are logged to /var/log/clush.log.
@@ -24,23 +23,18 @@ class role::toollabs::clush::master {
         username => 'clushuser',
     }
 
-    require_package('python3-yaml')
-
     include ::openstack::clientlib
     file { '/usr/local/sbin/tools-clush-generator':
         ensure => file,
-        source => 'puppet:///modules/role/toollabs/clush/tools-clush-generator',
+        source => 'puppet:///modules/role/toollabs/clush/tools-clush-generator.py',
         owner  => 'root',
         group  => 'root',
         mode   => '0555',
     }
 
+    # TODO: Remove after Puppet cycle.
     file { '/usr/local/sbin/tools-clush-interpreter':
-        ensure => file,
-        source => 'puppet:///modules/role/toollabs/clush/tools-clush-interpreter',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
+        ensure => absent,
     }
 
     # override /usr/bin/clush with this! Just does additional logging
@@ -56,11 +50,15 @@ class role::toollabs::clush::master {
 
     $novaconfig = hiera_hash('novaconfig', {})
     $observer_pass = $novaconfig['observer_password']
+
+    # TODO: Remove after Puppet cycle.
     cron { 'update_tools_clush':
-        ensure  => present,
-        command => "/usr/local/sbin/tools-clush-generator /etc/clustershell/tools.yaml --observer-pass ${observer_pass}",
-        hour    => '*/1',
-        user    => 'root',
+        ensure => absent,
+    }
+
+    # TODO: Remove after Puppet cycle.
+    file { '/etc/clustershell/tools.yaml':
+        ensure => absent,
     }
 
     $groups_config = {
@@ -68,9 +66,9 @@ class role::toollabs::clush::master {
             'default' => 'Tools',
         },
         'Tools' => {
-            'map' => '/usr/local/sbin/tools-clush-interpreter --hostgroups /etc/clustershell/tools.yaml map $GROUP',
-            'list' => '/usr/local/sbin/tools-clush-interpreter --hostgroups /etc/clustershell/tools.yaml list',
-        },
+            'map' => "/usr/local/sbin/tools-clush-generator map --observer-pass ${observer_pass} --project ${::labsproject} \$GROUP",
+            'list' => '/usr/local/sbin/tools-clush-generator list',
+        }
     }
 
     file { '/etc/clustershell/groups.conf':
