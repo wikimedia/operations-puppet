@@ -17,6 +17,7 @@ class role::toollabs::node::web {
 
     include ::toollabs::node::all
     include gridengine::submit_host
+    include ::openstack::clientlib
 
     # New style webservices!
     package { 'toollabs-webservice':
