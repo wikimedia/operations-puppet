@@ -228,10 +228,10 @@ port = 53
 <% if @secondary_pdns_ip != @primary_pdns_ip %>
 # the 'pool_target' is the pdns database, which we write to for zone creation and deletion
 [pool_target:f845cc43-2052-4d4b-a159-db6fce37b110]
-options = connection: mysql://<%= @designateconfig["pdns_db_user"] %>:<%= @designateconfig["pdns_db_pass"] %>@<%=@secondary_pdns_ip%>/<%= @designateconfig["pdns_db_name"] %>, host: <%= @primary_pdns_ip %>, port: 53
+options = connection: mysql://<%= @designateconfig["pdns_db_user"] %>:<%= @designateconfig["pdns_db_pass"] %>@<%=@secondary_pdns_ip%>/<%= @designateconfig["pdns_db_name"] %>, host: <%= @secondary_pdns_ip %>, port: 53
 # This is an alternate db account with more rights -- this setting should
 #  be used when running the db-sync command and the like during upgrades.
-#options = connection: mysql://<%= @designateconfig["db_admin_user"] %>:<%= @designateconfig["db_admin_pass"] %>@<%=@secondary_pdns_ip%>/<%= @designateconfig["pdns_db_name"] %>, host: <%= @primary_pdns_ip %>, port: 53
+#options = connection: mysql://<%= @designateconfig["db_admin_user"] %>:<%= @designateconfig["db_admin_pass"] %>@<%=@secondary_pdns_ip%>/<%= @designateconfig["pdns_db_name"] %>, host: <%= @secondary_pdns_ip %>, port: 53
 # This is a comma separated list of the mdns servers.
 #  Note that for this to take effect, the list of masters must also be set in the pdns database:
 #  UPDATE pdns.domains SET master="<comman-separated list of masters>"
