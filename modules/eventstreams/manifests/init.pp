@@ -19,11 +19,15 @@
 # [*log_level*]
 #   Log level for service logger. Default: info
 #
+# [*rdkafka_config*]
+#   Extra librdkafka configuration to provide to node-rdkafka.  Default: {}
+#
 class eventstreams(
     $broker_list,
     $streams,
-    $port      = 8092,
-    $log_level = 'info'
+    $port           = 8092,
+    $log_level      = 'info',
+    $rdkafka_config = {},
 ) {
     service::packages { 'eventstreams':
         pkgs     => ['librdkafka++1', 'librdkafka1'],
@@ -36,10 +40,11 @@ class eventstreams(
         deployment        => 'scap3',
         deployment_config => true,
         deployment_vars   => {
-            log_level   => $log_level,
-            site        => $::site,
-            broker_list => $broker_list,
-            streams     => $streams,
+            log_level      => $log_level,
+            site           => $::site,
+            broker_list    => $broker_list,
+            rdkafka_config => $rdkafka_config
+            streams        => $streams,
         },
         auto_refresh      => false,
         init_restart      => false,
