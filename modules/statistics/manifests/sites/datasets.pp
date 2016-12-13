@@ -38,6 +38,15 @@ class statistics::sites::datasets {
         mode   => '0640',
     }
 
+    # symlink /var/www/limn-public-data to $working_path/limn-public-data
+    file { '/var/www/limn-public-data':
+        ensure => 'link',
+        target => "${working_path}/limn-public-data",
+        owner  => 'root',
+        group  => 'www-data',
+        mode   => '0640',
+    }
+
     # rsync from stat1003:/srv/public-datasets to $working_path/public-datasets
     cron { 'rsync public datasets':
         command => "/usr/bin/rsync -rt --delete stat1003.eqiad.wmnet::srv/public-datasets/* ${working_path}/public-datasets/",
