@@ -1,9 +1,24 @@
 #!/usr/bin/python
+"""
+2016 Andrew Bogott
+
+Miscellaneous keystone state monitoring:
+
+- Ensure that certain utility projects ('admin,' 'observer')
+  exist
+
+- Make sure that all projects have their name == their id.  Various
+  of our tools depend on this, but if projects are created out of
+  band (e.g. via a direct commandline action) a uuid might be assigned
+  instead, which can cause bad things
+
+"""
+
+
+
 import sys
 
 import mwopenstackclients
-
-SpecialProjects = ['admin', 'wmflabsdotorg']
 
 OK = 0
 WARNING = 1
