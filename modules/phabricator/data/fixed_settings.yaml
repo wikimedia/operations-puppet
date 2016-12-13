@@ -167,7 +167,7 @@ metamta.public-replies: true
 # https://secure.phabricator.com/book/phabricator/article/configuring_file_storage/
 # Needs to match php.ini upload_max_filesize
 # Needs to match php.ini post_max_size for conduit
-storage.mysql-engine.max-size: 10000000
+storage.mysql-engine.max-size: 20000000
 
 phabricator.serious-business: true
 
