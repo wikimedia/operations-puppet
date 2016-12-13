@@ -430,6 +430,8 @@ lvs::configuration::lvs_services:
       sites:
         eqiad:
           hostname: appservers.svc.eqiad.wmnet
+        codfw:
+          hostname: appservers.svc.codfw.wmnet
   rendering:
     description: "MediaWiki thumbnail rendering cluster, rendering.svc.%{::site}.wmnet"
     class: low-traffic
@@ -459,6 +461,8 @@ lvs::configuration::lvs_services:
       sites:
         eqiad:
           hostname: rendering.svc.eqiad.wmnet
+        codfw:
+          hostname: rendering.svc.codfw.wmnet
   api:
     description: "MediaWiki API cluster, api.svc.%{::site}.wmnet"
     class: low-traffic
@@ -488,6 +492,8 @@ lvs::configuration::lvs_services:
       sites:
         eqiad:
           hostname: api.svc.eqiad.wmnet
+        codfw:
+          hostname: api.svc.codfw.wmnet
   swift:
     description: Swift/Ceph media storage
     class: low-traffic
