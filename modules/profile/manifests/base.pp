@@ -4,6 +4,7 @@ class profile::base(
     $use_apt_proxy = hiera('profile::base::use_apt_proxy', true),
     $domain_search = hiera('profile::base::domain_search', $::domain),
     $remote_syslog = hiera('profile::base:remote_syslog', ['syslog.eqiad.wmnet', 'syslog.codfw.wmnet']),
+    $monitoring = hiera('profile::base::monitoring', true),
     $core_dump_pattern = hiera('profile::base::core_dump_pattern', '/var/tmp/core/core.%h.%e.%p.%t'),
     $ssh_server_settings = hiera('profile::base::ssh_server_settings', {}),
     $nrpe_allowed_hosts = hiera('profile::base::nrpe_allowed_hosts', '127.0.0.1,208.80.154.14,208.80.153.74,208.80.155.119'),
@@ -90,13 +91,13 @@ class profile::base(
         class { '::base::initramfs': }
     }
 
-    # include base::monitor::host.
-    # if contactgroups is set, then use it
-    # as the monitor host's contact group.
-    class { '::base::monitoring::host':
-        contact_group            => $group_contact,
-        nrpe_check_disk_options  => $check_disk_options,
-        nrpe_check_disk_critical => $check_disk_critical,
+    # unless disabled in Hiera, have Icinga monitoring (T151632)
+    if $monitoring {
+        class { '::base::monitoring::host':
+            contact_group            => $group_contact,
+            nrpe_check_disk_options  => $check_disk_options,
+            nrpe_check_disk_critical => $check_disk_critical,
+        }
     }
 
     if os_version('ubuntu == trusty') {
