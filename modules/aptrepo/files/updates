@@ -122,3 +122,12 @@ Suite: stable
 Architectures: amd64
 VerifyRelease: 670540C841468433
 ListShellHook: grep-dctrl -e -P '^confluent-kafka-2\.11\.7$' || [ $? -eq 1 ]
+
+Name: docker
+Method: http://apt.dockerproject.org/repo
+Components: main>thirdparty
+UDebComponents:
+Suite: debian-jessie
+Architectures: amd64
+VerifyRelease: F76221572C52609D
+ListShellHook: grep-dctrl -X -P docker-engine || [ $? -eq 1 ]
