@@ -2,7 +2,7 @@
 
 find /srv/backups -mtime +14 -type f -delete
 
-my="/usr/local/bin/mysql --skip-column-names -e"
+my="/usr/local/bin/mysql --skip-column-names --skip-ssl"
 dump="/usr/local/bin/mysqldump --single-transaction --quick --master-data=2 --skip-ssl"
 
 $dump -h m1-slave --databases bacula etherpadlite librenms puppet racktables rt | \
@@ -17,9 +17,8 @@ $dump -h m2-slave --databases iegreview reviewdb scholarships | \
 
 sql="select schema_name from information_schema.schemata where schema_name regexp '^(phab|phlegal)'"
 
-$dump -h m3-slave --ignore-table=phabricator_search.search_documentfield \
-    --max_allowed_packet=32M \
-    --databases $($my -h m3-slave "$sql" | tr '\n' ' ') | \
+$dump -h m3-slave \
+    --databases $($my -h m3-slave -e "$sql" | tr '\n' ' ') | \
     pigz > /srv/backups/m3-phabricator-phlegal-$(date +%Y%m%d%H%M%S).sql.gz
 
 $dump -h m5-slave --databases ceilometer glance keystone neutron nova \
