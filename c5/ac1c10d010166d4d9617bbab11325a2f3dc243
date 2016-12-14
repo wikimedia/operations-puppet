@@ -1,0 +1,8 @@
+Code-Review+1: Nemo bis <federicoleva@tiscali.it>
+Verified+2: jenkins-bot
+Code-Review+2: Dzahn <dzahn@wikimedia.org>
+Submitted-by: Dzahn <dzahn@wikimedia.org>
+Submitted-at: Wed, 14 Dec 2016 06:28:23 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/308435
+Project: operations/puppet
+Branch: refs/heads/production
