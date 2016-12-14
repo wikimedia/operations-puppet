@@ -19,10 +19,9 @@ class role::postgres::master {
         description => 'Postgres db master',
     }
 
-    # FIXME - top-scope var without namespace, will break in puppet 2.8
-    # lint:ignore:variable_scope
+    $postgres_slave = hiera('role::postgres::master::slave', undef)
+    $postgres_slave_v4 = ipresolve($postgres_slave, 4)
     if $postgres_slave_v4 {
-    # lint:endignore
         postgresql::user { "replication@${::postgres_slave}-v4":
             ensure   => 'present',
             user     => 'replication',
@@ -35,21 +34,6 @@ class role::postgres::master {
         }
     }
 
-    # FIXME - top-scope var without namespace, will break in puppet 2.8
-    # lint:ignore:variable_scope
-    if $postgres_slave_v6 {
-    # lint:endignore
-        postgresql::user { "replication@${::postgres_slave}-v6":
-            ensure   => 'present',
-            user     => 'replication',
-            password => $passwords::postgres::replication_pass,
-            cidr     => "${::postgres_slave_v6}/128",
-            type     => 'host',
-            method   => 'md5',
-            attrs    => 'REPLICATION',
-            database => 'replication',
-        }
-    }
     # An admin user for labs
     postgresql::user { 'labsadmin@labs':
             ensure   => 'present',
