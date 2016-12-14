@@ -26,17 +26,14 @@ log = logging.getLogger(__name__)
 
 
 # TODO(filippo) collect 'services' metrics
-# TODO(filippo) use rcode as key=value instead?
 def collect_gdnsd_stats(stats, registry):
     dns_stats = {}
     udp_stats = {}
     tcp_stats = {}
 
-    for rcode in ('noerror', 'refused', 'nxdomain', 'notimp',
-                  'badvers', 'formerr', 'dropped'):
-        dns_stats[rcode] = Gauge(
-            'rcode_{}'.format(rcode), 'RCODE {} sent'.format(rcode),
-            namespace='gdnsd', registry=registry)
+    dns_stats['requests'] = Gauge(
+        'request', 'Requests processed', ['status'],
+        namespace='gdnsd', registry=registry)
     dns_stats['edns'] = Gauge(
         'request_edns', 'EDNS requests', namespace='gdnsd', registry=registry)
     dns_stats['edns_client_subnet'] = Gauge(
@@ -50,7 +47,10 @@ def collect_gdnsd_stats(stats, registry):
 
     try:
         for name, value in stats['stats'].items():
-            if name in dns_stats:
+            if name in ('noerror', 'refused', 'nxdomain', 'notimp',
+                        'badvers', 'formerr', 'dropped'):
+                dns_stats['requests'].labels(status=name).set(value)
+            elif name in dns_stats:
                 dns_stats[name].set(value)
         for name, value in stats['udp'].items():
             udp_stats[name] = Gauge(
