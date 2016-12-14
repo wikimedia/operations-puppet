@@ -93,6 +93,7 @@ class role::analytics_cluster::hadoop::worker {
         'python-sympy',
         'python-docopt',
         'python3-docopt',
+        'libgomp1',
     )
 
     # This allows Hadoop daemons to talk to each other.
