@@ -15,6 +15,7 @@ CREATE UNIQUE INDEX account_type ON account(type, username);
 CREATE TABLE account_host(
     id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
     account_id INT UNSIGNED NOT NULL,
-    hostname VARCHAR(255) NOT NULL
+    hostname VARCHAR(255) NOT NULL,
+    status enum('present', 'absent') NOT NULL
 ) ENGINE=InnoDB ROW_FORMAT=Dynamic CHARSET=utf8mb4;
-CREATE UNIQUE INDEX account_host_status ON account_host(account_id, hostname);
+CREATE UNIQUE INDEX account_host_status ON account_host(account_id, hostname, status);
