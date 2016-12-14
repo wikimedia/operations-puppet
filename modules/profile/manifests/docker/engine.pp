@@ -11,13 +11,11 @@ class profile::docker::engine {
     $docker_settings = hiera_hash('profile::docker::engine::settings', {})
     # Version to install; the default is not to pick one.
     $docker_version = hiera('profile::docker::engine::version', 'present')
-    $apt_proxy = hiera('profile::docker::engine::proxy', undef)
     $service_ensure = hiera('profile::docker::engine::service', 'running')
 
     # Install docker
     class { 'docker':
         version => $docker_version,
-        proxy   => $apt_proxy,
     }
 
     # Docker config
