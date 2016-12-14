@@ -1,3 +1,5 @@
 debdeploy::grains:
   debdeploy-spare:
     value: standard
+
+profile::base::icinga_monitoring: false

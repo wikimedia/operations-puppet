@@ -8,6 +8,7 @@ class profile::base(
     $ssh_server_settings = hiera('profile::base::ssh_server_settings', {}),
     $nrpe_allowed_hosts = hiera('profile::base::nrpe_allowed_hosts', '127.0.0.1,208.80.154.14,208.80.153.74,208.80.155.119'),
     $group_contact = hiera('contactgroups', 'admins'),
+    $icinga_monitoring = hiera('profile::base::monitoring', true),
     $check_disk_options = hiera('profile::base::check_disk_options', '-w 6% -c 3% -l -e -A -i "/srv/sd[a-b][1-3]" --exclude-type=tracefs'),
     $check_disk_critical = hiera('profile::base::check_disk_critical', false),
 ) {
@@ -90,15 +91,14 @@ class profile::base(
         class { '::base::initramfs': }
     }
 
-    # include base::monitor::host.
-    # if contactgroups is set, then use it
-    # as the monitor host's contact group.
+    # unless disabled in Hiera, have Icinga monitoring
+    if $icinga_monitoring {
     class { '::base::monitoring::host':
-        contact_group            => $group_contact,
-        nrpe_check_disk_options  => $check_disk_options,
-        nrpe_check_disk_critical => $check_disk_critical,
+            contact_group            => $group_contact,
+            nrpe_check_disk_options  => $check_disk_options,
+            nrpe_check_disk_critical => $check_disk_critical,
+        }
     }
-
     if os_version('ubuntu == trusty') {
         file { '/etc/logrotate.d/upstart':
             mode   => '0444',
