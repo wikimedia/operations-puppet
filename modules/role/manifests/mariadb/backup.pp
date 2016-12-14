@@ -14,7 +14,7 @@ class role::mariadb::backup {
         owner   => 'root',
         group   => 'root',
         mode    => '0755',
-        content => template('mariadb/dumps-misc.sh.erb'),
+        content => template('mariadb/backups/dumps-misc.sh.erb'),
     }
 
     file { '/etc/mysql/conf.d/dumps.cnf':
