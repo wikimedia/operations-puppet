@@ -1474,10 +1474,6 @@ node /labsdb10(09|10|11)\.eqiad\.wmnet/ {
 }
 
 node 'labsdb1004.eqiad.wmnet' {
-    # Bug: T101233
-    #$postgres_slave = 'labsdb1005.eqiad.wmnet'
-    #$postgres_slave_v4 = '10.64.37.9'
-
     role(postgres::master, labs::db::slave)
 }
 
