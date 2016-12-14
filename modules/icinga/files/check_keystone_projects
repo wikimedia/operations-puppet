@@ -27,7 +27,7 @@ UNKNOWN = 3
 
 
 def main():
-    clients = mwopenstackclients.clients('/usr/local/bin/observerenv.sh')
+    clients = mwopenstackclients.clients('/etc/novaobserver.yaml')
     allprojects = clients.allprojects()
     allprojectslist = [project.name for project in allprojects]
 
