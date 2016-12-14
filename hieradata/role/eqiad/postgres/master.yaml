@@ -1,0 +1,1 @@
+role::postgres::master::slave_v4: 10.64.37.9  # labsdb1005.eqiad.wmnet
