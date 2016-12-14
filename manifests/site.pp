@@ -1478,9 +1478,6 @@ node 'labsdb1004.eqiad.wmnet' {
 }
 
 node 'labsdb1005.eqiad.wmnet' {
-    # Bug: T101233
-    # $postgres_master = 'labsdb1004.eqiad.wmnet'
-    # include role::postgres::slave
     role(labs::db::master)
 }
 
