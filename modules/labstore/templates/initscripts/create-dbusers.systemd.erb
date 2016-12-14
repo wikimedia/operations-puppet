@@ -1,7 +1,0 @@
-[Unit]
-Description=DB Accounts and Grants creator
-
-[Service]
-ExecStart=/usr/local/sbin/create-dbusers --interval 300 --config /etc/create-dbusers.yaml
-Restart=no
-Nice=19
