@@ -1,0 +1,9 @@
+OS_USERNAME: "<%= @novaconfig['observer_user'] %>"
+OS_PROJECT_DOMAIN_ID: "default"
+OS_USER_DOMAIN_ID: "default"
+OS_PASSWORD: "<%= @novaconfig['observer_password'] %>"
+OS_AUTH_URL: "http://<%= @novaconfig['controller_hostname'] %>:5000/v3"
+OS_REGION_NAME: "<%= @nova_region %>"
+OS_TENANT_NAME: "observer"
+OS_NO_CACHE: 1
+OS_IDENTITY_API_VERSION: 3
