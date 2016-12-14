@@ -6170,6 +6170,11 @@ host wdqs2002 {
     fixed-address wdqs2002.codfw.wmnet;
 }
 
+host wdqs2003 {
+    hardware ethernet 94:18:82:71:f7:30;
+    fixed-address wdqs2003.codfw.wmnet;
+}
+
 host wtp1001 {
     hardware ethernet 90:B1:1C:2D:85:30;
     fixed-address wtp1001.eqiad.wmnet;
