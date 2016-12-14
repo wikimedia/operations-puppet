@@ -15,20 +15,24 @@
 class docker($version, $use_dockerproject=true, $proxy=undef){
     if $use_dockerproject {
         apt::repository { 'docker':
+            ensure     => absent,
             uri        => 'https://apt.dockerproject.org/repo',
             dist       => 'debian-jessie',
             components => 'main',
             source     => false,
-            keyfile    => 'puppet:///modules/docker/docker.gpg',
         }
 
-        $proxy_ensure = $proxy ? {
-            undef   => 'absent',
-            default => 'present'
+        file { '/var/lib/apt/keys/docker.gpg':
+            ensure => absent,
+        }
+
+        exec { '/usr/bin/apt-key del 2C52609D':
+            subscribe   => File['/var/lib/apt/keys/docker.gpg'],
+            refreshonly => true,
         }
 
         apt::conf { 'dockerproject-org-proxy':
-            ensure   => $proxy_ensure,
+            ensure   => absent,
             priority => '80',
             key      => 'Acquire::http::Proxy::apt.dockerproject.org',
             value    => $proxy,
