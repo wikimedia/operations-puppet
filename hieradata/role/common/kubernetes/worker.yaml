@@ -4,4 +4,3 @@ debdeploy::grains:
 cluster: kubernetes
 profile::docker::storage::physical_volumes: "/dev/md2"
 profile::docker::engine::version: "1.12.2-0~jessie"
-profile::docker::engine::proxy: "http://webproxy.%{::site}.wmnet:8080"
