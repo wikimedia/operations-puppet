@@ -12,7 +12,7 @@ class role::mariadb::otrsbackups {
         owner   => 'root',
         group   => 'root',
         mode    => '0755',
-        content => template('mariadb/dumps-otrs.sh.erb'),
+        content => template('mariadb/backups/dumps-otrs.sh.erb'),
     }
 
     cron { 'otrsbackups':
