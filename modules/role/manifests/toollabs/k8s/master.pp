@@ -14,7 +14,10 @@ class role::toollabs::k8s::master {
         master_host                => $master_host,
         etcd_servers               => $etcd_url,
         docker_registry            => hiera('docker::registry'),
-        host_automounts            => ['/var/run/nslcd/socket'],
+        host_automounts            => [
+            '/var/run/nslcd/socket',
+            '/etc/ldap.yaml',
+        ],
         ssl_certificate_name       => 'star.tools.wmflabs.org',
         host_path_prefixes_allowed => [
             '/data/project/',
