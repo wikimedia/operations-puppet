@@ -183,15 +183,13 @@ class puppetmaster(
     }
     # Small utility to generate ECDSA certs and submit the CSR to the puppet master
     file { '/usr/local/bin/puppet-ecdsacert':
+        ensure => absent,
         source => 'puppet:///modules/puppetmaster/puppet_ecdsacert.rb',
         mode   => '0550',
         owner  => 'root',
         group  => 'root',
     }
     file { '/usr/local/bin/puppet-wildcardsign':
-        source => 'puppet:///modules/puppetmaster/puppet_wildcardsign.rb',
-        mode   => '0550',
-        owner  => 'root',
-        group  => 'root',
+        ensure => absent,
     }
 }
