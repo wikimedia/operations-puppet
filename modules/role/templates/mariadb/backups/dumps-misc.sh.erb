@@ -19,7 +19,7 @@ sql="select schema_name from information_schema.schemata where schema_name regex
 
 $dump -h m3-slave --ignore-table=phabricator_search.search_documentfield \
     --max_allowed_packet=32M \
-    --databases $($my "$sql" | tr '\n' ' ') | \
+    --databases $($my -h m3-slave "$sql" | tr '\n' ' ') | \
     pigz > /srv/backups/m3-phabricator-phlegal-$(date +%Y%m%d%H%M%S).sql.gz
 
 $dump -h m5-slave --databases ceilometer glance keystone neutron nova \
