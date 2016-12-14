@@ -59,10 +59,7 @@ class role::lists::server {
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-        # move to module? exim? lists?
-        # lint:ignore:puppet_url_without_modules
-        source  => 'puppet:///files/exim/listserver_aliases',
-        # lint:endignore
+        source  => 'puppet:///modules/role/exim/listserver_aliases',
         require => Class['exim4'],
     }
 
