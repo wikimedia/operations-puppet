@@ -37,6 +37,9 @@ class role::toollabs::k8s::master(
         ],
         docker_registry            => hiera('docker::registry'),
         host_automounts            => [
+            '/etc/ldap.conf',
+            '/etc/ldap.yaml',
+            '/etc/novaobserver.yaml',
             '/var/run/nslcd/socket',
         ],
         authz_mode                 => 'abac',
