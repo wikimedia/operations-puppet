@@ -1,16 +1,49 @@
 #!/usr/bin/env ruby
 # Copyright (c) 2016 Giuseppe Lavagetto, Wikimedia Foundation
 # Loosely based on https://github.com/ripienaar/mcollective-choria/blob/master/lib/mcollective/util/choria.rb
+require 'json'
+require 'logger'
 require 'net/http'
 require 'openssl'
-require 'yaml'
 require 'optparse'
-require 'json'
+require 'yaml'
+
+require 'puppet'
+require 'puppet/ssl/certificate_authority'
+require 'puppet/util/command_line'
 
 OpenSSL::PKey::EC.send(:alias_method, :private?, :private_key?)
 
 class PuppetECDSAGenError < StandardError
 end
+
+args = {
+  configfile: nil,
+  cert_dir: '/var/lib/puppet/ssl/certs',
+  key_dir: '/var/lib/puppet/ssl/private_keys',
+  organization: 'Wikimedia Foundation, Inc',
+  country: 'US',
+  state: 'California',
+  locality: 'San Francisco',
+  puppetca: 'puppet',
+  altnames: [],
+  asn1_oid: 'prime256v1'
+}
+
+
+Log = Logger.new(STDOUT)
+
+Log.level = Logger::INFO
+Log.formatter = proc do |severity, datetime, progname, msg|
+  date_format = datetime.strftime("%Y-%m-%d %H:%M:%S")
+  progname = "puppet-ecdsacert"
+  if severity == "INFO" or severity == "WARN"
+    "[#{date_format}] #{severity}  (#{progname}): #{msg}\n"
+  else
+    "[#{date_format}] #{severity} (#{progname}): #{msg}\n"
+  end
+end
+
 
 # Ecdsa certificates generator class
 # Generates the cert, the CSR, and sends the signing request to the puppetmaster
@@ -28,7 +61,12 @@ class PuppetECDSAGen
     parse_config args[:configfile] if args[:configfile]
 
     @common_name = args[:common_name]
-    @dns_alt_names = args[:altnames]
+    @dns_alt_names = args[:altnames].map { |domain| "DNS:#{domain}" }
+    # We need the CN in the SAN if we want to validate against it
+    @dns_alt_names << "DNS:#{@common_name}"
+    Log.info "Creating and signing ECDSA certificate for #{@common_name}"
+    Log.info "DNS subjectAltNames: #{@dns_alt_names}"
+    Log.info "Using NIST curve #{@config[:asn1_oid]}"
   end
 
   def parse_config(filename)
@@ -46,6 +84,7 @@ class PuppetECDSAGen
     ec_domain_key.generate_key
 
     private_key_file = File.join @config[:key_dir], "#{@common_name}.key"
+    Log.info "Storing the private key in #{private_key_file}"
     File.open(private_key_file, 'w', 0o0640) { |f| f.write(ec_domain_key.to_pem) }
     ec_domain_key
   end
@@ -64,6 +103,7 @@ class PuppetECDSAGen
     csr.public_key = ec_public
     csr_alt_names csr
     csr.sign ec_domain_key, OpenSSL::Digest::SHA256.new
+    Log.info "Generated CSR at #{csr_path}"
     File.open(csr_path, "w", 0o0644) {|f| f.write(csr.to_pem)}
   end
 
@@ -79,10 +119,9 @@ class PuppetECDSAGen
   end
 
   def csr_alt_names(csr)
-    san_list = @dns_alt_names.map { |domain| "DNS:#{domain}" }
     extensions = [
       OpenSSL::X509::ExtensionFactory.new.create_extension(
-        'subjectAltName', san_list.join(',')
+        'subjectAltName', @dns_alt_names.join(',')
       )
     ]
     # add SAN extension to the CSR
@@ -109,27 +148,42 @@ class PuppetECDSAGen
     req = Net::HTTP::Put.new("/production/certificate_request/#{@common_name}",
                              'Content-Type' => 'text/plain')
     req.body = File.read csr_path
+    Log.info "Submitting CSR for signing to #{@config[:puppetca]}"
     resp, _ = https.request(req)
     fail(PuppetECDSAGenError,
          format('Signing request to %s failed with code %s: %s',
                 @config[:puppetca], resp.code, resp.body)
         ) unless resp.code == '200'
-    puts resp.message
+    Log.info "CSR request succeeded"
+  end
+
+  def cleanup
+    Log.debug "Removing file #{csr_path} if present"
+    File.delete csr_path if File.exists? csr_path
   end
 end
 
-args = {
-  configfile: nil,
-  cert_dir: '/var/lib/puppet/ssl/certs',
-  key_dir: '/var/lib/puppet/ssl/private_keys',
-  organization: 'Wikimedia Foundation',
-  country: 'US',
-  state: 'CA',
-  locality: 'San Francisco',
-  puppetca: 'puppet',
-  altnames: [],
-  asn1_oid: 'prime256v1'
-}
+module Puppet
+  module SSL
+    # Extend the signing checks
+    module CertificateAuthorityExtensions
+      def check_internal_signing_policies(hostname, csr, _allow_dns_alt_names)
+        super(hostname, csr, true)
+      rescue Puppet::SSL::CertificateAuthority::CertificateSigningError => e
+        if e.message.start_with?("CSR '#{csr.name}' subjectAltName contains a wildcard")
+          true
+        else
+          raise
+        end
+      end
+    end
+    # Extend the base class
+    class CertificateAuthority
+      prepend Puppet::SSL::CertificateAuthorityExtensions
+    end
+  end
+end
+
 
 OptionParser.new do |opts|
   opts.banner = "Usage: puppetecdsamanager [-c configfile] [-a SAN1,SAN2] common-name "
@@ -143,7 +197,7 @@ end.parse!
 
 args[:common_name] = ARGV.shift || ''
 
-fail(PuppetECDSAGenError, 'You must provide a common name') unless args[:common_name]
+fail(PuppetECDSAGenError, 'You must provide a common name') unless args[:common_name] != ''
 
 begin
   manager = PuppetECDSAGen.new args
@@ -151,6 +205,13 @@ begin
   manager.generate_csr(ecdsa_key)
   manager.sign
 rescue PuppetECDSAGenError => e
-  puts "Error: #{e.message}"
+  Log.error "#{e.message}"
+  manager.cleanup
   exit 1
+else
+  manager.cleanup unless manager.nil?
 end
+
+Log.info "Now signing the certificate"
+# Now sign the cert using puppet's own commandline interpreter
+Puppet::Util::CommandLine.new('cert', ['sign', args[:common_name]]).execute
