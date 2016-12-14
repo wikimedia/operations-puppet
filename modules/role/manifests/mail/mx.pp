@@ -55,10 +55,7 @@ class role::mail::mx(
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-        # move to exim module?
-        # lint:ignore:puppet_url_without_modules
-        source  => 'puppet:///files/exim/wikimedia_domains',
-        # lint:endignore
+        source  => 'puppet:///modules/role/exim/wikimedia_domains',
         require => Class['exim4'],
     }
 
@@ -67,10 +64,7 @@ class role::mail::mx(
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-        # move to mailman module?
-        # lint:ignore:puppet_url_without_modules
-        source  => 'puppet:///files/exim/legacy_mailing_lists',
-        # lint:endignore
+        source  => 'puppet:///modules/role/exim/legacy_mailing_lists',
         require => Class['exim4'],
     }
     exim4::dkim { 'wikimedia.org':
