@@ -7,7 +7,7 @@ class role::labs::nfs::secondary($monitor = 'eth0') {
     include labstore::fileserver::exports
     include labstore::fileserver::secondary
     include labstore::backup_keys
-    include labstore::account_services
+    include role::labs::db::maintain_dbusers
 
     # Enable RPS to balance IRQs over CPUs
     interface::rps { $monitor: }

@@ -7,7 +7,7 @@
 #   - MySQL replica / toolsdb accounts
 #
 
-class labstore::account_services {
+class role::labs::db::maintain_dbusers {
 
     # We need a newer version of python3-ldap3 than what is in Jessie
     # For the connection time out / server pool features
@@ -71,7 +71,7 @@ class labstore::account_services {
         }
     }
 
-    file { '/etc/create-dbusers.yaml':
+    file { '/etc/dbusers.yaml':
         content => ordered_json($creds),
         owner   => 'root',
         group   => 'root',
@@ -82,13 +82,13 @@ class labstore::account_services {
         ],
     }
 
-    file { '/usr/local/sbin/create-dbusers':
-        source  => 'puppet:///modules/labstore/create-dbusers',
+    file { '/usr/local/sbin/maintain-dbusers':
+        source  => 'puppet:///modules/role/labs/db/maintain-dbusers.py',
         owner   => 'root',
         group   => 'root',
         mode    => '0555',
-        require => File['/etc/create-dbusers.yaml'],
-        notify  => Base::Service_unit['create-dbusers'],
+        require => File['/etc/dbusers.yaml'],
+        notify  => Base::Service_unit['maintain-dbusers'],
     }
 
     # To delete users from all the labsdb mysql databases
@@ -99,13 +99,13 @@ class labstore::account_services {
         mode   => '0550',
     }
 
-    base::service_unit { 'create-dbusers':
+    base::service_unit { 'maintain-dbusers':
         ensure  => present,
         systemd => true,
-        require => File['/usr/local/sbin/create-dbusers'],
+        require => File['/usr/local/sbin/maintain-dbusers'],
     }
 
-    nrpe::monitor_systemd_unit_state { 'create-dbusers':
+    nrpe::monitor_systemd_unit_state { 'maintain-dbusers':
         description => 'Ensure mysql credential creation for tools users is running',
     }
 }
