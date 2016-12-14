@@ -20,17 +20,19 @@ class role::postgres::master {
     }
 
     $postgres_slave = hiera('role::postgres::master::slave', undef)
-    $postgres_slave_v4 = ipresolve($postgres_slave, 4)
-    if $postgres_slave_v4 {
-        postgresql::user { "replication@${::postgres_slave}-v4":
-            ensure   => 'present',
-            user     => 'replication',
-            password => $passwords::postgres::replication_pass,
-            cidr     => "${::postgres_slave_v4}/32",
-            type     => 'host',
-            method   => 'md5',
-            attrs    => 'REPLICATION',
-            database => 'all',
+    if $postgres_slave != 'undef' {
+        $postgres_slave_v4 = ipresolve($postgres_slave, 4)
+        if $postgres_slave_v4 {
+            postgresql::user { "replication@${::postgres_slave}-v4":
+                ensure   => 'present',
+                user     => 'replication',
+                password => $passwords::postgres::replication_pass,
+                cidr     => "${::postgres_slave_v4}/32",
+                type     => 'host',
+                method   => 'md5',
+                attrs    => 'REPLICATION',
+                database => 'all',
+            }
         }
     }
 
