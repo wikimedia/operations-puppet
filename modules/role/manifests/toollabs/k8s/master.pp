@@ -35,7 +35,12 @@ class role::toollabs::k8s::master(
         etcd_servers               => $etcd_url,
         use_package                => true,
         docker_registry            => hiera('docker::registry'),
-        host_automounts            => ['/var/run/nslcd/socket'],
+        host_automounts            => [
+            '/etc/ldap.conf',
+            '/etc/ldap.yaml',
+            '/etc/novaobserver.yaml',
+            '/var/run/nslcd/socket',
+        ],
         ssl_cert_path              => $ssl_cert_path,
         ssl_key_path               => $ssl_key_path,
         host_path_prefixes_allowed => [
