@@ -1,4 +1,5 @@
 import os
+import yaml
 
 import glanceclient
 from keystoneclient.auth.identity import generic
@@ -29,16 +30,11 @@ class clients(object):
                 raise Exception("envfile is incompatible with specific args")
 
             with open(envfile) as f:
-                for line in iter(f):
-                    pieces = line.strip().split("=")
-                    if pieces[0].endswith('OS_USERNAME'):
-                        self.username = pieces[1].strip('"')
-                    if pieces[0].endswith('OS_PASSWORD'):
-                        self.password = pieces[1].strip('"')
-                    if pieces[0].endswith('OS_AUTH_URL'):
-                        self.url = pieces[1].strip('"')
-                    if pieces[0].endswith('OS_TENANT_NAME'):
-                        self.project = pieces[1].strip('"')
+                env = yaml.load(f)
+                self.username = env['OS_USERNAME']
+                self.password = env['OS_PASSWORD']
+                self.url = env['OS_AUTH_URL']
+                self.project = env['OS_TENANT_NAME']
         else:
             if username:
                 self.username = username
