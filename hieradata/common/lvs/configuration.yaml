@@ -453,7 +453,7 @@ lvs::configuration::lvs_services:
       cluster: appserver
       service: nginx
     icinga:
-      check_command: check_https_lvs!en.wikipedia.org!/wiki/Special:BlankPage
+      uri: en.wikipedia.org!/wiki/Special:BlankPage
       sites:
         eqiad:
           hostname: appservers.svc.eqiad.wmnet
