@@ -1,11 +1,11 @@
 cassandra::rack: 'b'
 cassandra::num_tokens: 256
-#cassandra::instances:
-#  a:
-#    jmx_port: 7189
-#    listen_address: 10.64.32.130
-#    rpc_address: 10.64.32.130
-#    rpc_interface: eth0
+cassandra::instances:
+  a:
+    jmx_port: 7189
+    listen_address: 10.64.32.130
+    rpc_address: 10.64.32.130
+    rpc_interface: eth0
 #  b:
 #    jmx_port: 7190
 #    listen_address: 10.64.32.131
