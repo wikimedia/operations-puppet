@@ -20,6 +20,16 @@ from oslo_log import log as logging
 from oslo_config import cfg
 from oslo_messaging.notify import notifier
 
+# These imports are for the id monkeypatch at the bottom of this
+#  file.  Including up here to make flake8 happy
+from keystone.resource import controllers as resource_controllers
+from keystone.common import controller
+from keystone.common import validation
+from keystone.resource import schema
+from keystone import notifications
+from keystone.i18n import _
+
+
 LOG = logging.getLogger('nova.%s' % __name__)
 
 wmfkeystone_opts = [
@@ -108,3 +118,42 @@ class KeystoneHooks(notifier._Driver):
             return
 
         return
+
+
+# HACK ALERT
+#
+#  Ensure that project id == project name, which supports reverse-
+#   compatibility for a bunch of our custom code and tools.
+#
+#  We can't alter the project ID in a notification hook, because
+#   by that time the record has already been created and the old
+#   ID returned to Horizon.  So, instead, monkeypatch the function
+#   that creates the project and modify the ID.
+#
+@controller.protected()
+@validation.validated(schema.project_create, 'project')
+def create_project(self, context, project):
+    LOG.warn("Monkypatch in action!  Hacking the new project id to equal "
+             "the new project name.")
+
+    ref = self._assign_unique_id(self._normalize_dict(project))
+    ref = self._normalize_domain_id(context, ref)
+
+    # This is the only line that's different
+    ref['id'] = project['name']
+
+    if ref.get('is_domain'):
+        msg = _('The creation of projects acting as domains is not '
+                'allowed yet.')
+        raise exception.NotImplemented(msg)
+
+    initiator = notifications._get_request_audit_info(context)
+    try:
+        ref = self.resource_api.create_project(ref['id'], ref,
+                                               initiator=initiator)
+    except exception.DomainNotFound as e:
+        raise exception.ValidationError(e)
+    return resource_controllers.ProjectV3.wrap_member(context, ref)
+
+
+resource_controllers.ProjectV3.create_project = create_project
