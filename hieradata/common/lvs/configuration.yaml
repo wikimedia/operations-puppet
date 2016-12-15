@@ -432,6 +432,33 @@ lvs::configuration::lvs_services:
           hostname: appservers.svc.eqiad.wmnet
         codfw:
           hostname: appservers.svc.codfw.wmnet
+  appservers-https:
+    description: "Main MediaWiki application server cluster, appservers.svc.%{::site}.wmnet (https)"
+    class: low-traffic
+    sites:
+#    - eqiad
+    - codfw
+    ip: *ip_block007
+    port: 443
+    bgp: 'yes'
+    depool-threshold: '.6'
+    monitors:
+      ProxyFetch:
+        url:
+        - https://en.wikipedia.org/wiki/Special:BlankPage
+      IdleConnection:
+        timeout-clean-reconnect: 3
+        max-delay: 300
+    conftool:
+      cluster: appserver
+      service: nginx
+    icinga:
+      check_command: check_https_lvs!en.wikipedia.org!/wiki/Special:BlankPage
+      sites:
+        eqiad:
+          hostname: appservers.svc.eqiad.wmnet
+        codfw:
+          hostname: appservers.svc.codfw.wmnet
   rendering:
     description: "MediaWiki thumbnail rendering cluster, rendering.svc.%{::site}.wmnet"
     class: low-traffic
@@ -463,6 +490,33 @@ lvs::configuration::lvs_services:
           hostname: rendering.svc.eqiad.wmnet
         codfw:
           hostname: rendering.svc.codfw.wmnet
+  rendering-https:
+    description: "MediaWiki thumbnail rendering cluster, rendering.svc.%{::site}.wmnet (https)"
+    class: low-traffic
+    sites:
+#    - eqiad
+    - codfw
+    ip: *ip_block008
+    port: 443
+    bgp: 'yes'
+    depool-threshold: '.74'
+    monitors:
+      ProxyFetch:
+        url:
+        - https://en.wikipedia.org/favicon.ico
+      IdleConnection:
+        timeout-clean-reconnect: 3
+        max-delay: 300
+    conftool:
+      cluster: imagescaler
+      service: nginx
+    icinga:
+      check_command: check_https_lvs!en.wikipedia.org!/wiki/Special:BlankPage
+      sites:
+        eqiad:
+          hostname: rendering.svc.eqiad.wmnet
+        codfw:
+          hostname: rendering.svc.codfw.wmnet
   api:
     description: "MediaWiki API cluster, api.svc.%{::site}.wmnet"
     class: low-traffic
@@ -489,6 +543,33 @@ lvs::configuration::lvs_services:
       service: apache2
     icinga:
       check_command: check_http_lvs!en.wikipedia.org!/w/api.php?action=query&meta=siteinfo
+      sites:
+        eqiad:
+          hostname: api.svc.eqiad.wmnet
+        codfw:
+          hostname: api.svc.codfw.wmnet
+  api-https:
+    description: "MediaWiki API cluster, api.svc.%{::site}.wmnet"
+    class: low-traffic
+    sites:
+#    - eqiad
+    - codfw
+    ip: *ip_block009
+    port: 443
+    bgp: 'yes'
+    depool-threshold: '.6'
+    monitors:
+      ProxyFetch:
+        url:
+        - https://en.wikipedia.org/w/api.php
+      IdleConnection:
+        timeout-clean-reconnect: 3
+        max-delay: 300
+    conftool:
+      cluster: api_appserver
+      service: nginx
+    icinga:
+      check_command: check_https_lvs!en.wikipedia.org!/w/api.php?action=query&meta=siteinfo
       sites:
         eqiad:
           hostname: api.svc.eqiad.wmnet
