@@ -14,6 +14,7 @@
 
   Copyright 2015 Ori Livneh <ori@wikimedia.org>
   Copyright 2015 Gilles Dubuc <gilles@wikimedia.org>
+  Copyright 2016 Emanuele Rocca <ema@wikimedia.org>
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -28,40 +29,34 @@
   limitations under the License.
 
 """
-from __future__ import division
 
-import re
+import sys
 
-import varnishlog
-import varnishprocessor
+from cachestats import CacheStatsSender
 
 
-class MediaVarnishLogProcessor(varnishprocessor.VarnishLogProcessor):
+class MediaCacheStatsSender(CacheStatsSender):
+
+    cmd = ['/usr/bin/varnishncsa', '-n', 'frontend',
+           '-q', 'ReqMethod ne "PURGE"',
+           '-q', 'ReqURL ~ "/thumb/"',
+           # Status sent to the client
+           '-F', '%s']
+
     description = 'Media Browser Cache Hit Ratio StatsD Reporter'
+
     key_prefix = 'media.thumbnail.varnish'
 
-    def process_transaction(self, transaction):
-        """Process a single completed transaction."""
-        status_code = transaction.get('RespStatus')
-        if status_code is None:
+    def gen_stats(self, record):
+        if not record.isdigit():
             return
 
-        metric_keys = ['reqs.all', 'resps.' + status_code]
+        status_code = record
 
-        for key in metric_keys:
-            self.stats[key] = self.stats.get(key, 0) + 1
+        for key in ('reqs.all', 'resps.' + status_code):
+            s = "{0}.{1}".format(self.args.key_prefix, key)
+            self.stats[s] = self.stats.get(s, 0) + 1
 
-        if self.stats['reqs.all'] > 10000:
-            self.flush_stats()
 
-    def start(self):
-        varnishlog.varnishlog((
-            ('q', 'ReqMethod ne "PURGE"'),  # Skip PURGE requests
-            ('q', 'ReqURL ~ "/thumb/"'),    # Only look at thumb requests
-            ('n', 'frontend'),              # Only frontend Varnish instance
-            ('i', 'RespStatus'),            # RespStatus for the HTTP status code
-            ('i', 'ReqURL'),                # ReqURL to delimit requests
-            ('i', 'Timestamp'),             # Timestamp to delimit requests
-        ), self.handle_log_record)
-
-lp = MediaVarnishLogProcessor()
+if __name__ == "__main__":
+    MediaCacheStatsSender(sys.argv[1:]).main()
