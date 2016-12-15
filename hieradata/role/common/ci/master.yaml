@@ -1,3 +1,10 @@
+admin::groups:
+  - contint-users
+  - contint-admins
+  - contint-roots
+cluster: misc
+contactgroups: 'admins,contint'
+
 debdeploy::grains:
   debdeploy-ci:
     value: standard
