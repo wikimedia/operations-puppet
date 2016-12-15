@@ -13,11 +13,7 @@ Miscellaneous keystone state monitoring:
   instead, which can cause bad things
 
 """
-
-
-
 import sys
-
 import mwopenstackclients
 
 OK = 0
