@@ -18,11 +18,11 @@ sub cluster_fe_recv {
 
 	// Look for a "download" request parameter
 	if (req.url ~ "(?i)(\?|&)download(=|&|$)") {
-		// Pretend that the parameter wasn't there for caching purposes
-		set req.url = regsub(req.url, "(?i)(\?|&)download(=[^&]+)?$", "");
-		set req.url = regsub(req.url, "(?i)(\?|&)download(=[^&]+)?&", "\1");
 		set req.http.X-Content-Disposition = "attachment";
 	}
+
+	// Strip away all query parameters
+	req.url = regsub(req.url, "\?.*$", "");
 
 	// Replace double slashes
 	set req.url = regsuball(req.url, "/{2,}", "/");
