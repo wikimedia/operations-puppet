@@ -127,7 +127,7 @@ class role::labs::nfsclient(
     labstore::nfs_mount { 'scratch-on-labstore1003':
         mount_name  => 'scratch',
         project     => $::labsproject,
-        options     => ['rw', 'soft', 'timeo=300', 'retrans=3'],
+        options     => ['rw', 'soft', 'timeo=300', 'retrans=3', 'nosuid'],
         mount_path  => '/mnt/nfs/labstore1003-scratch',
         server      => 'labstore1003.eqiad.wmnet',
         share_path  => '/scratch',
