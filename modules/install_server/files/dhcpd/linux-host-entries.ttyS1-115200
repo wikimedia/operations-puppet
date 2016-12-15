@@ -6165,6 +6165,11 @@ host wdqs1002 {
     fixed-address wdqs1002.eqiad.wmnet;
 }
 
+host wdqs1003 {
+    hardware ethernet 94:18:82:71:f7:c0;
+    fixed-address wdqs1003.eqiad.wmnet;
+}
+
 host wdqs2001 {
     hardware ethernet 18:66:DA:63:49:35;
     fixed-address wdqs2001.codfw.wmnet;
