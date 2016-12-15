@@ -27,5 +27,5 @@ $dump -h m5-slave --databases ceilometer glance keystone neutron nova \
 
 sql="select schema_name from information_schema.schemata where schema_name regexp '^(wik|flowdb)'"
 
-$dump -h x1-slave --databases $($my "$sql" | tr '\n' ' ') | \
+$dump -h x1-slave --databases $($my -h x1-slave -e "$sql" | tr '\n' ' ') | \
     pigz > /srv/backups/x1-$(date +%Y%m%d%H%M%S).sql.gz
