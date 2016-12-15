@@ -426,7 +426,7 @@ lvs::configuration::lvs_services:
       cluster: appserver
       service: apache2
     icinga:
-      check_command: check_http_lvs!en.wikipedia.org!/wiki/Special:BlankPage
+      uri: en.wikipedia.org!/wiki/Special:BlankPage
       sites:
         eqiad:
           hostname: appservers.svc.eqiad.wmnet
@@ -484,7 +484,7 @@ lvs::configuration::lvs_services:
       cluster: imagescaler
       service: apache2
     icinga:
-      check_command: check_http_lvs!en.wikipedia.org!/wiki/Special:BlankPage
+      uri: en.wikipedia.org!/wiki/Special:BlankPage
       sites:
         eqiad:
           hostname: rendering.svc.eqiad.wmnet
@@ -511,7 +511,7 @@ lvs::configuration::lvs_services:
       cluster: imagescaler
       service: nginx
     icinga:
-      check_command: check_https_lvs!en.wikipedia.org!/wiki/Special:BlankPage
+      uri: en.wikipedia.org!/wiki/Special:BlankPage
       sites:
         eqiad:
           hostname: rendering.svc.eqiad.wmnet
@@ -542,7 +542,7 @@ lvs::configuration::lvs_services:
       cluster: api_appserver
       service: apache2
     icinga:
-      check_command: check_http_lvs!en.wikipedia.org!/w/api.php?action=query&meta=siteinfo
+      uri: en.wikipedia.org!/w/api.php?action=query&meta=siteinfo
       sites:
         eqiad:
           hostname: api.svc.eqiad.wmnet
@@ -569,7 +569,7 @@ lvs::configuration::lvs_services:
       cluster: api_appserver
       service: nginx
     icinga:
-      check_command: check_https_lvs!en.wikipedia.org!/w/api.php?action=query&meta=siteinfo
+      uri: en.wikipedia.org!/w/api.php?action=query&meta=siteinfo
       sites:
         eqiad:
           hostname: api.svc.eqiad.wmnet
