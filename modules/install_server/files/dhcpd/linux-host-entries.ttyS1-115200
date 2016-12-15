@@ -973,6 +973,11 @@ host contint1001 {
      fixed-address contint1001.wikimedia.org;
 }
 
+host contint2001 {
+     hardware ethernet 14:18:77:5B:2C:B2;
+     fixed-address contint2001.wikimedia.org;
+}
+
 host dataset1001 {
     hardware ethernet 78:2b:cb:76:42:ee;
     fixed-address dataset1001.wikimedia.org;
