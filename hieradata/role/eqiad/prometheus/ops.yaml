@@ -1,1 +1,3 @@
 prometheus::server::storage_retention: '960h0m0s'
+lvs::realserver::realserver_ips:
+ - 10.2.2.25
