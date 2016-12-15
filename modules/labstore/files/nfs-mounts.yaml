@@ -36,13 +36,6 @@ private:
     mounts:
       scratch: true
       dumps: true
-  cvresearch:
-    gid: 50118
-    mounts:
-      dumps: true
-      home: true
-      project: true
-      scratch: true
   dumps:
     gid: 50124
     mounts:
@@ -65,29 +58,8 @@ private:
       home: true
       project: true
       scratch: true
-  fatg:
-    gid: 52291
-    mounts:
-      dumps: true
-      home: true
-      project: true
-      scratch: true
-  gsoc2014-fonttailor-demo:
-    gid: 52253
-    mounts:
-      dumps: true
-      home: true
-      project: true
-      scratch: true
   huggle:
     gid: 50168
-    mounts:
-      dumps: true
-      home: true
-      project: true
-      scratch: true
-  ircnotifier:
-    gid: 52361
     mounts:
       dumps: true
       home: true
@@ -109,13 +81,6 @@ private:
       project: true
       scratch: true
       dumps: true
-  megacron:
-    gid: 51769
-    mounts:
-      dumps: true
-      home: true
-      project: true
-      scratch: true
   mwoffliner:
     gid: 52376
     mounts:
@@ -211,13 +176,6 @@ private:
       scratch: true
   wikisource-tools:
     gid: 50336
-    mounts:
-      dumps: true
-      home: true
-      project: true
-      scratch: true
-  wikispy:
-    gid: 52518
     mounts:
       dumps: true
       home: true
