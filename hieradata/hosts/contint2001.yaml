@@ -1,2 +1,5 @@
+# master is contint1001
 jenkins::service_ensure: unmanaged
 jenkins::service_enable: false
+zuul::server::service_ensure: stopped
+zuul::server::service_enable: mask
