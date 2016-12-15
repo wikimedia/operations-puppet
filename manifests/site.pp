@@ -301,17 +301,15 @@ node 'contint1001.wikimedia.org' {
 
 # CI warm
 node 'contint2001.wikimedia.org' {
-    # Not ready yet for zuul::server
-    # T1150771
     role(ci::master,
         ci::slave,
         ci::website,
+        zuul::server,
         backup::host)
 
     include standard
     interface::add_ip6_mapped { 'main': interface => 'eth0', }
     include contint::firewall
-
 }
 
 # Debian package/docker images building host in production
