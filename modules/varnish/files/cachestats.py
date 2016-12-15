@@ -106,7 +106,7 @@ class CacheStatsSender(object):
 
         try:
             while True:
-                line = p.stdout.readline()
+                line = p.stdout.readline().rstrip('\n')
                 self.handle_record(line)
         except KeyboardInterrupt:
             os.waitpid(p.pid, 0)
