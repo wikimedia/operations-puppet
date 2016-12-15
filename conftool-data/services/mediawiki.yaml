@@ -7,6 +7,14 @@ appserver:
     datacenters:
       - eqiad
       - codfw
+  nginx:
+    port: 443
+    default_values:
+      "pooled": "no"
+      "weight": 10
+    datacenters:
+      - eqiad
+      - codfw
 api_appserver:
   apache2:
     port: 80
@@ -16,9 +24,25 @@ api_appserver:
     datacenters:
       - eqiad
       - codfw
+  nginx:
+    port: 443
+    default_values:
+      "pooled": "no"
+      "weight": 10
+    datacenters:
+      - eqiad
+      - codfw
 imagescaler:
   apache2:
     port: 80
+    default_values:
+      "pooled": "no"
+      "weight": 10
+    datacenters:
+      - eqiad
+      - codfw
+  nginx:
+    port: 443
     default_values:
       "pooled": "no"
       "weight": 10
@@ -52,4 +76,3 @@ testserver:
     datacenters:
       - eqiad
       - codfw
-  
