@@ -18,10 +18,6 @@ Example for user 'novaadmin' and roles 'projectadmin' and 'user':
 check_keystone_roles novaadmin projectadmin user
 
 """
-
-
-
-
 import argparse
 import sys
 
@@ -33,7 +29,6 @@ OK = 0
 WARNING = 1
 CRITICAL = 2
 UNKNOWN = 3
-
 
 def check_roles(user, requiredroles, all_projects=True):
     clients = mwopenstackclients.clients('/etc/novaobserver.yaml')
