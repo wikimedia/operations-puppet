@@ -1033,11 +1033,10 @@ class role::mariadb::client {
     include passwords::misc::scripts
 
     class { 'mariadb::config':
-        ssl => 'puppet-cert',
+	config => 'role/mariadb/client.my.cnf.erb',
+        ssl    => 'puppet-cert',
     }
 
-    $password = $passwords::misc::scripts::mysql_root_pass
-    $prompt = 'MARIADB'
     file { '/root/.my.cnf':
         owner   => 'root',
         group   => 'root',
