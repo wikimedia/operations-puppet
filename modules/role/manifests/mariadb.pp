@@ -1028,16 +1028,18 @@ class role::mariadb::maintenance {
 }
 
 # hosts with client utilities to conect to remote servers
+# This role provides remote access to mysql server
+# **DO NOT ADD** to non-dedicated hosts**
 class role::mariadb::client {
-    include mysql
+    include mariadb::packages_client
     include passwords::misc::scripts
 
     class { 'mariadb::config':
-        ssl => 'puppet-cert',
+        config => 'role/mariadb/mysqld_config/client.my.cnf.erb',
+        ssl    => 'puppet-cert',
     }
 
     $password = $passwords::misc::scripts::mysql_root_pass
-    $prompt = 'MARIADB'
     file { '/root/.my.cnf':
         owner   => 'root',
         group   => 'root',
@@ -1045,10 +1047,4 @@ class role::mariadb::client {
         content => template('mariadb/root.my.cnf.erb'),
     }
 
-    package {
-        [ 'percona-toolkit',
-          'parallel',
-        ]:
-        ensure => latest,
-    }
 }
