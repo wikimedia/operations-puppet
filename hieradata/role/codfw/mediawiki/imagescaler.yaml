@@ -1,4 +1,3 @@
 debdeploy::grains:
   debdeploy-imagescaler-codfw:
     value: standard
-role::mediawiki::webserver::tls: true
