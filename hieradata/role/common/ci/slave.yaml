@@ -1,0 +1,4 @@
+# Jenkins does not support KEX/MAC
+# T103351
+ssh::server::disable_nist_kex: false
+ssh::server::explicit_macs: false

@@ -286,7 +286,7 @@ node /^conf200[123]\.codfw\.wmnet$/ {
     include base::firewall
 }
 
-# New CI master
+# CI master
 node 'contint1001.wikimedia.org' {
     role(ci::master,
         ci::slave,
@@ -297,6 +297,21 @@ node 'contint1001.wikimedia.org' {
     include standard
     interface::add_ip6_mapped { 'main': interface => 'eth0', }
     include contint::firewall
+}
+
+# CI warm
+node 'contint2001.wikimedia.org' {
+    # Not ready yet for zuul::server
+    # T1150771
+    role(ci::master,
+        ci::slave,
+        ci::website,
+        backup::host)
+
+    include standard
+    interface::add_ip6_mapped { 'main': interface => 'eth0', }
+    include contint::firewall
+
 }
 
 # Debian package/docker images building host in production
