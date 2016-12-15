@@ -436,7 +436,7 @@ lvs::configuration::lvs_services:
     description: "Main MediaWiki application server cluster, appservers.svc.%{::site}.wmnet (https)"
     class: low-traffic
     sites:
-#    - eqiad
+    - eqiad
     - codfw
     ip: *ip_block007
     port: 443
@@ -494,7 +494,7 @@ lvs::configuration::lvs_services:
     description: "MediaWiki thumbnail rendering cluster, rendering.svc.%{::site}.wmnet (https)"
     class: low-traffic
     sites:
-#    - eqiad
+    - eqiad
     - codfw
     ip: *ip_block008
     port: 443
@@ -552,7 +552,7 @@ lvs::configuration::lvs_services:
     description: "MediaWiki API cluster, api.svc.%{::site}.wmnet"
     class: low-traffic
     sites:
-#    - eqiad
+    - eqiad
     - codfw
     ip: *ip_block009
     port: 443
