@@ -13,6 +13,14 @@ define package_builder::pbuilder_hook(
         mode   => '0755',
     }
 
+    file { "${basepath}/hooks/${distribution}/C10shell.wikimedia.org":
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0555',
+        content => template('package_builder/C10shell.wikimedia.org.erb'),
+    }
+
     file { "${basepath}/hooks/${distribution}/D01apt.wikimedia.org":
         ensure  => present,
         owner   => 'root',
@@ -39,6 +47,7 @@ define package_builder::pbuilder_hook(
 
 
     # Dependency info
+    File["${basepath}/hooks/${distribution}"] -> File["${basepath}/hooks/${distribution}/C10shell.wikimedia.org"]
     File["${basepath}/hooks/${distribution}"] -> File["${basepath}/hooks/${distribution}/D01apt.wikimedia.org"]
     File["${basepath}/hooks/${distribution}"] -> File["${basepath}/hooks/${distribution}/D02backports"]
     File["${basepath}/hooks/${distribution}"] -> File["${basepath}/hooks/${distribution}/D05localsources"]
