@@ -1,4 +1,4 @@
 debdeploy::grains:
   debdeploy-appserver-codfw:
     value: standard
-
+role::mediawiki::webserver::tls: true
