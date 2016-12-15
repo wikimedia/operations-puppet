@@ -42,6 +42,8 @@ class XcpsCacheStatsSender(CacheStatsSender):
 
     description = 'X-Connection-Properties StatsD reporter'
 
+    key_prefix = 'varnish.clients'
+
     def __init__(self, argument_list):
         super(XcpsCacheStatsSender, self).__init__(argument_list)
         self.key_value_pairs = re.compile('([A-Z][A-Z0-9]*)=([^;]+)')

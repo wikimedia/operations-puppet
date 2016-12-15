@@ -52,6 +52,7 @@ class CacheStatsSender(object):
 
     cmd = []
     description = ''
+    key_prefix = ''
 
     def __init__(self, argument_list):
         """Parse CLI arguments, initialize self.stats and statsd socket.
@@ -65,7 +66,7 @@ class CacheStatsSender(object):
         ap.add_argument('--statsd-server', help='statsd server',
                         type=parse_statsd_server_string, default=None)
         ap.add_argument('--key-prefix', help='metric key prefix',
-                        type=parse_prefix_string, default='varnish.clients')
+                        type=parse_prefix_string, default=self.key_prefix)
         ap.add_argument('--interval', help='send interval',
                         type=int, default=30)
         self.args = ap.parse_args(argument_list)
