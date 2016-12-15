@@ -160,12 +160,62 @@ class role::prometheus::ops {
         }
     }
 
+    # Job definition for apache_exporter
+    $apache_jobs = [
+      {
+        'job_name'        => 'apache',
+        'file_sd_configs' => [
+          { 'files' => [ "${targets_path}/apache_*.yaml"] },
+        ]
+      },
+    ]
+
+    # Generate a list of hosts running apache from Ganglia cluster definition
+    # TODO(filippo): generate the configuration based on hosts with apache class applied
+    prometheus::cluster_config{ "apache_jobrunner_${::site}":
+        dest    => "${targets_path}/apache_jobrunner_${::site}.yaml",
+        site    => $::site,
+        cluster => 'jobrunner',
+        port    => '9192',
+        labels  => {
+            'cluster' => 'jobrunner'
+        }
+    }
+    prometheus::cluster_config{ "apache_appserver_${::site}":
+        dest    => "${targets_path}/apache_appserver_${::site}.yaml",
+        site    => $::site,
+        cluster => 'appserver',
+        port    => '9192',
+        labels  => {
+            'cluster' => 'appserver'
+        }
+    }
+    prometheus::cluster_config{ "apache_api_appserver_${::site}":
+        dest    => "${targets_path}/apache_api_appserver_${::site}.yaml",
+        site    => $::site,
+        cluster => 'api_appserver',
+        port    => '9192',
+        labels  => {
+            'cluster' => 'api_appserver'
+        }
+    }
+    prometheus::cluster_config{ "apache_imagescaler_${::site}":
+        dest    => "${targets_path}/apache_imagescaler_${::site}.yaml",
+        site    => $::site,
+        cluster => 'imagescaler',
+        port    => '9192',
+        labels  => {
+            'cluster' => 'imagescaler'
+        }
+    }
+
     prometheus::server { 'ops':
         storage_encoding     => '2',
         listen_address       => '127.0.0.1:9900',
         storage_retention    => $storage_retention,
         scrape_configs_extra => array_concat(
-            $mysql_jobs, $varnish_jobs, $memcached_jobs, $hhvm_jobs
+            $mysql_jobs, $varnish_jobs, $memcached_jobs, $hhvm_jobs,
+            $apache_jobs
         ),
         global_config_extra  => $config_extra,
     }
