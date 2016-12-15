@@ -73,4 +73,11 @@ class statistics::discovery {
     user    => $user,
   }
 
+  cron { 'discovery-stats-daily':
+    command => "${scripts_dir}/bin/daily.sh >> ${log_dir}/daily.log 2>&1",
+    hour    => 3,
+    minute  => '14',
+    require => Git::Clone['analytics/discovery-stats'],
+    user    => $user,
+  }
 }
