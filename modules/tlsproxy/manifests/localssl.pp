@@ -87,12 +87,14 @@ define tlsproxy::localssl(
     if !empty($certs) {
         sslcert::certificate { $certs:
             skip_private => $skip_private,
+            before       => Service['nginx'],
         }
     } elsif !empty($acme_subjects) {
         letsencrypt::cert::integrated { $server_name:
             subjects   => join($acme_subjects, ','),
             puppet_svc => 'nginx',
             system_svc => 'nginx',
+            before     => Service['nginx'],
         }
         # TODO: Maybe add monitoring to this in role::cache::ssl::unified
     }
