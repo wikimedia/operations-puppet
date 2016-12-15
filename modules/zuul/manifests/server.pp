@@ -17,8 +17,18 @@
 #
 # === Parameters
 #
-# **statsd_host** IP/hostname of a statsd daemon to send metrics to. If unset
+# [*statsd_host*] IP/hostname of a statsd daemon to send metrics to. If unset
 # (the default), nothing is ported.
+#
+# [*service_ensure*]
+#
+# Passed to Puppet Service['jenkins']. If set to 'unmanaged', pass undef to
+# prevent Puppet from managing the service. Default: 'running'.
+#
+# [*service_enable*]
+#
+# Passed to Puppet Service['jenkins'] as 'enable'. Default: true.
+#
 class zuul::server (
     $gerrit_server,
     $gerrit_user,
@@ -28,6 +38,8 @@ class zuul::server (
     $jenkins_user,
     $jenkins_apikey,
     $url_pattern,
+    $service_ensure  = 'running',
+    $service_enable = true,
     $statsd_host    = '',
     $gerrit_baseurl = 'https://gerrit.wikimedia.org/r',
     $gerrit_event_delay = '5',
@@ -107,9 +119,14 @@ class zuul::server (
         ensure  => absent,
     }
 
+    $real_ensure = $service_ensure ? {
+        'unmanaged' => undef,
+        default     => $service_ensure,
+    }
     service { 'zuul':
+        ensure     => $real_ensure,
         name       => 'zuul',
-        enable     => true,
+        enable     => $service_enable,
         hasrestart => true,
         require    => [
             File['/etc/default/zuul'],
