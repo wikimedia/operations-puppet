@@ -24,7 +24,7 @@ class icinga::plugins {
         mode   => '0755',
     }
     file { '/usr/lib/nagios/plugins/eventhandlers/submit_check_result':
-        source => 'puppet:///modules/icinga/submit_check_result',
+        source => 'puppet:///modules/icinga/submit_check_result.sh',
         owner  => 'root',
         group  => 'root',
         mode   => '0755',
@@ -68,19 +68,19 @@ class icinga::plugins {
         mode   => '0755',
     }
     file { '/usr/lib/nagios/plugins/check_wikitech_static':
-        source => 'puppet:///modules/icinga/check_wikitech_static',
+        source => 'puppet:///modules/icinga/check_wikitech_static.sh',
         owner  => 'root',
         group  => 'root',
         mode   => '0755',
     }
     file { '/usr/lib/nagios/plugins/check_keystone_roles':
-        source => 'puppet:///modules/icinga/check_keystone_roles',
+        source => 'puppet:///modules/icinga/check_keystone_roles.py',
         owner  => 'root',
         group  => 'root',
         mode   => '0755',
     }
     file { '/usr/lib/nagios/plugins/check_keystone_projects':
-        source => 'puppet:///modules/icinga/check_keystone_projects',
+        source => 'puppet:///modules/icinga/check_keystone_projects.py',
         owner  => 'root',
         group  => 'root',
         mode   => '0755',
@@ -92,7 +92,7 @@ class icinga::plugins {
         mode   => '0755',
     }
     file { '/usr/lib/nagios/plugins/check_longqueries':
-        source => 'puppet:///modules/icinga/check_longqueries',
+        source => 'puppet:///modules/icinga/check_longqueries.pl',
         owner  => 'root',
         group  => 'root',
         mode   => '0755',

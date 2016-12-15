@@ -133,7 +133,7 @@ class role::lists::server {
         owner  => 'root',
         group  => 'root',
         mode   => '0755',
-        source => 'puppet:///modules/icinga/check_iostat',
+        source => 'puppet:///modules/icinga/check_iostat.sh',
     }
 
     # lint:ignore:quoted_booleans
