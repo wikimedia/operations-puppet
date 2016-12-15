@@ -39,7 +39,7 @@ class icinga(
     # Setup icinga custom init script
     # FIXME: This should be provided by the package
     file { '/etc/init.d/icinga':
-        source  => 'puppet:///modules/icinga/icinga-init',
+        source  => 'puppet:///modules/icinga/icinga-init.sh',
         owner   => 'root',
         group   => 'root',
         mode    => '0755',
@@ -183,7 +183,7 @@ class icinga(
     # script to schedule host downtimes
     file { '/usr/local/bin/icinga-downtime':
         ensure => present,
-        source => 'puppet:///modules/icinga/icinga-downtime',
+        source => 'puppet:///modules/icinga/icinga-downtime.sh',
         owner  => 'root',
         group  => 'root',
         mode   => '0550',
