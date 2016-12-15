@@ -24,13 +24,13 @@ class role::zuul::merger {
         zuul_git_dir => $conf_merger['git_dir'],
     }
 
-    # We run a git-daemon process to exposes the zuul-merger git repositories.
+    # We run a git-daemon process to expose the zuul-merger git repositories.
     # The slaves fetch changes from it over the git:// protocol.
     # It is only meant to be used from slaves, so only accept internal
     # connections.
     ferm::service { 'git-daemon_internal':
         proto  => 'tcp',
         port   => '9418',
-        srange => '(($LABS_NETWORKS @resolve(contint1001.wikimedia.org) ))',
+        srange => '(($LABS_NETWORKS @resolve(contint1001.wikimedia.org) @resolve(contint2001.wikimedia.org)))',
     }
 }
