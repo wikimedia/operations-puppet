@@ -18,10 +18,6 @@ Example for user 'novaadmin' and roles 'projectadmin' and 'user':
 check_keystone_roles novaadmin projectadmin user
 
 """
-
-
-
-
 import argparse
 import sys
 
