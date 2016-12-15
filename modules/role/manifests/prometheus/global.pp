@@ -17,13 +17,16 @@ class role::prometheus::global {
             # Self-monitoring job
             '{job="prometheus"}',
             # Per-cluster aggregated metrics
-            '{__name__=~"cluster:.*"}',
-            '{__name__=~"cluster_device:.*"}',
+            '{__name__=~"^cluster.*:.*"}',
+            '{__name__=~"^instance.*:.*"}',
             # Version stats for auditing purposes
             '{__name__="node_uname_info"}',
+            '{__name__="node_exporter_build_info"}',
             '{__name__="varnish_version"}',
             '{__name__="mysql_version_info"}',
+            '{__name__="mysqld_exporter_build_info"}',
             '{__name__="memcached_version"}',
+            '{__name__="hhvm_build_info"}',
           ],
         },
         'static_configs' => [
