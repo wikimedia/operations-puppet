@@ -402,7 +402,7 @@ groups:
     description: Service deploy users
     members: [bd808, eevans, gwicke, mobrovac, ppchelko, demon, twentyafterfour, thcipriani, dduvall,
               yurik, bsitzmann, mholloway-shell, kartik, halfak, ladsgroup, smalyshev, hoo,
-              ssastry, cscott, arlolra]
+              ssastry, cscott, arlolra, jdlrobson]
     privileges: []
 
   deploy-aqs:
