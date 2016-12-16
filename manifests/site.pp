@@ -291,8 +291,8 @@ node /^(contint1001|contint2001)\.wikimedia\.org$/ {
     role(ci::master,
         ci::slave,
         ci::website,
-        zuul::server,
-        backup::host)
+        zuul::server)
+
 
     include standard
     interface::add_ip6_mapped { 'main': interface => 'eth0', }
