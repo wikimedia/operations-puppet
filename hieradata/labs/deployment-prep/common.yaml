@@ -110,7 +110,7 @@ restbase::statsd_host: labmon1001.eqiad.wmnet
 restbase::logstash_host: deployment-logstash2.deployment-prep.eqiad.wmflabs
 restbase::cassandra_default_consistency: localQuorum
 restbase::graphoid_uri: http://deployment-sca01.deployment-prep.eqiad.wmflabs:19000
-restbase::mobileapps_uri: http://appservice.wmflabs.org
+restbase::mobileapps_uri: http://deployment-mcs01.deployment-prep.eqiad.wmflabs:8888
 restbase::mathoid_uri: http://deployment-mathoid.deployment-prep.eqiad.wmflabs:10042
 restbase::aqs_uri: https://wikimedia.org/api/rest_v1/metrics
 restbase::eventlogging_service_uri: http://deployment-eventlogging04.deployment-prep.eqiad.wmflabs:8085/v1/events
