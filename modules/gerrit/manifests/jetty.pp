@@ -29,6 +29,11 @@ class gerrit::jetty(
     $ldap_proxyagent_pass = $ldapconfig['proxypass']
 
     $java_options = [
+        '-XX:+UseG1GC',
+        '-XX:MaxHeapFreeRatio=30',
+        '-XX:MinHeapFreeRatio=20',
+        '-XX:InitiatingHeapOccupancyPercent=3',
+        '-XX:MaxGCPauseMillis=200',
         '-Xloggc:/srv/gerrit/jvmlogs/jvm_gc.%p.log',
         '-XX:+PrintGCApplicationStoppedTime',
         '-XX:+PrintGCDetails',
