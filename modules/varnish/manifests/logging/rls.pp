@@ -23,7 +23,7 @@ define varnish::logging::rls( $statsd_server = 'statsd' ) {
         owner   => 'root',
         group   => 'root',
         mode    => '0555',
-        require => File['/usr/local/lib/python2.7/dist-packages/varnishlog.py'],
+        require => File['/usr/local/lib/python2.7/dist-packages/cachestats.py'],
         notify  => Service['varnishrls'],
     }
 
@@ -33,7 +33,7 @@ define varnish::logging::rls( $statsd_server = 'statsd' ) {
         strict         => false,
         template_name  => 'varnishrls',
         require        => File['/usr/local/bin/varnishrls'],
-        subscribe      => File['/usr/local/lib/python2.7/dist-packages/varnishlog.py'],
+        subscribe      => File['/usr/local/lib/python2.7/dist-packages/cachestats.py'],
         service_params => {
             enable => true,
         },
