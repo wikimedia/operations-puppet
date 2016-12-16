@@ -7,21 +7,12 @@
 # classes as well as conform to a de-facto standard of having a module for every
 # service
 #
-# === Parameters
-#
-# [*user_agent*]
-#   The user agent header to send to other services. Default: WMF Mobile Content
-#   Service
-#
-class mobileapps(
-    $user_agent   = 'WMF Mobile Content Service',
-) {
+class mobileapps() {
     service::node { 'mobileapps':
-        port            => 8888,
-        config          => template('mobileapps/config.yaml.erb'),
-        heap_limit      => 450,
-        has_spec        => true,
-        healthcheck_url => '',
-        deployment      => 'scap3',
+        port              => 8888,
+        has_spec          => true,
+        healthcheck_url   => '',
+        deployment        => 'scap3',
+        deployment_config => true,
     }
 }
