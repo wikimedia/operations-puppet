@@ -19,6 +19,9 @@ class role::ci::master {
     include ::jenkins,
         contint::proxy_jenkins
 
+    # Backups
+    include role::backup::host
+    backup::set {'var-lib-jenkins-config': }
     backup::set { 'contint' : }
 
     # Nodepool spawn non ephemeral slaves which causes config-history plugin to
@@ -64,9 +67,4 @@ class role::ci::master {
     }
 
     require contint::master_dir
-
-    # backups
-    include role::backup::host
-    backup::set {'var-lib-jenkins-config': }
-
 }
