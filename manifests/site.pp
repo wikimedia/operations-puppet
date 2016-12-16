@@ -291,12 +291,7 @@ node /^contint[12]001\.wikimedia\.org$/ {
     role(ci::master,
         ci::slave,
         ci::website,
-        zuul::server,
-        backup::host)
-
-    include standard
-    interface::add_ip6_mapped { 'main': interface => 'eth0', }
-    include contint::firewall
+        zuul::server)
 }
 
 # Debian package/docker images building host in production

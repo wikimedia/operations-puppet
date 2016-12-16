@@ -19,7 +19,13 @@ class role::ci::master {
     include ::jenkins,
         contint::proxy_jenkins
 
+    include role::backup::host
     backup::set { 'contint' : }
+
+    include standard
+    interface::add_ip6_mapped { 'main': interface => 'eth0', }
+
+    include contint::firewall
 
     # Nodepool spawn non ephemeral slaves which causes config-history plugin to
     # fill up entries until it reaches the limit of 32k inodes. T126552
