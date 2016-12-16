@@ -1,13 +1,16 @@
 #!/bin/bash
 #
 # invoke shell if build fails.
-cd /tmp/buildd/*/debian/..
+#
+if [ "${SHELL_ON_FAILURE}" = "yes" ]; then
+	cd /tmp/buildd/*/debian/..
 
-echo "**************************************************************"
-echo "The build has failed. We are now running a shell in the chroot"
-echo "used  for building, giving  you the chance  to investigate the"
-echo "failure. Note that leaving this shell means exiting the chroot"
-echo "itself and the chroot will be removed  immediately afterwards."
-echo "**************************************************************"
+	echo "**************************************************************"
+	echo "The build has failed. We are now running a shell in the chroot"
+	echo "used  for building, giving  you the chance  to investigate the"
+	echo "failure. Note that leaving this shell means exiting the chroot"
+	echo "itself and the chroot will be removed  immediately afterwards."
+	echo "**************************************************************"
 
-/bin/bash < /dev/tty > /dev/tty 2> /dev/tty
+	/bin/bash < /dev/tty > /dev/tty 2> /dev/tty
+fi

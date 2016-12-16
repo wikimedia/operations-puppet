@@ -48,6 +48,15 @@ Architectures
 ARCH=amd64, or ARCH=i386 is supported if you feel like building for
 different architecture versions.
 
+Debugging
+=========
+
+By default, if the build fails, a hook is executed, providing the user with a
+shell allowing them to debug the build further. If that's not desired, there's a
+variable that can be defined to avoid that behavior. Example:
+
+    SHELL_ON_FAILURE=no pdebuild
+
 Using built packages as dependencies
 ====================================
 
