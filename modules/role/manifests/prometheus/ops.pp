@@ -176,7 +176,7 @@ class role::prometheus::ops {
         dest    => "${targets_path}/apache_jobrunner_${::site}.yaml",
         site    => $::site,
         cluster => 'jobrunner',
-        port    => '9192',
+        port    => '9117',
         labels  => {
             'cluster' => 'jobrunner'
         }
@@ -185,7 +185,7 @@ class role::prometheus::ops {
         dest    => "${targets_path}/apache_appserver_${::site}.yaml",
         site    => $::site,
         cluster => 'appserver',
-        port    => '9192',
+        port    => '9117',
         labels  => {
             'cluster' => 'appserver'
         }
@@ -194,7 +194,7 @@ class role::prometheus::ops {
         dest    => "${targets_path}/apache_api_appserver_${::site}.yaml",
         site    => $::site,
         cluster => 'api_appserver',
-        port    => '9192',
+        port    => '9117',
         labels  => {
             'cluster' => 'api_appserver'
         }
@@ -203,7 +203,7 @@ class role::prometheus::ops {
         dest    => "${targets_path}/apache_imagescaler_${::site}.yaml",
         site    => $::site,
         cluster => 'imagescaler',
-        port    => '9192',
+        port    => '9117',
         labels  => {
             'cluster' => 'imagescaler'
         }
