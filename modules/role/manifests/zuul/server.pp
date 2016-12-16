@@ -3,7 +3,14 @@ class role::zuul::server {
     system::role { 'role::zuul::server': description => 'Zuul server (scheduler)' }
 
     include contint::proxy_zuul
-    include ::zuul::monitoring::server
+
+    $monitoring_active = hiera('zuul::server::service_enable') ? {
+        false   => 'absent',
+        default => 'present',
+    }
+    class { '::zuul::monitoring::server':
+        ensure => $monitoring_active,
+    }
 
     # Zuul server needs an API key to interact with Jenkins:
     require passwords::misc::contint::jenkins
