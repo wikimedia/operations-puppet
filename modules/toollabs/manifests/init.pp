@@ -178,7 +178,7 @@ class toollabs (
         mode   => '0440',
         owner  => 'root',
         group  => 'root',
-        source => 'puppet:///modules/toollabs/40-tools-sudoers-no-warning',
+        source => 'puppet:///modules/toollabs/40-tools-sudoers-no-warning.sh',
     }
 
     file { '/etc/cron.daily/logrotate':

@@ -166,7 +166,7 @@ class toollabs::bastion(
 
     motd::script { 'bastion-banner':
         ensure => present,
-        source => "puppet:///modules/toollabs/40-${::labsproject}-bastion-banner",
+        source => "puppet:///modules/toollabs/40-${::labsproject}-bastion-banner.sh
     }
 
     file {'/etc/security/limits.conf':

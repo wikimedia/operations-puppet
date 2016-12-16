@@ -2,7 +2,7 @@ class toollabs::cronrunner {
 
     motd::script { 'submithost-banner':
         ensure => present,
-        source => "puppet:///modules/toollabs/40-${::labsproject}-submithost-banner",
+        source => "puppet:///modules/toollabs/40-${::labsproject}-submithost-banner.sh
     }
 
     include gridengine::submit_host
