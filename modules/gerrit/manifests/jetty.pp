@@ -42,7 +42,6 @@ class gerrit::jetty(
     ]
 
     require_package([
-        'openjdk-7-jdk',
         'openjdk-8-jdk',
         'gerrit',
         'libmysql-java'
