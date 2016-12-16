@@ -8,3 +8,5 @@ contactgroups: 'admins,contint'
 debdeploy::grains:
   debdeploy-ci:
     value: standard
+
+contint::master_host: 'contint1001.wikimedia.org'
