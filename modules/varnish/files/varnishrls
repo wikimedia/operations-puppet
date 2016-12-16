@@ -29,53 +29,46 @@
   limitations under the License.
 
 """
-from __future__ import division
 
 import re
-import varnishlog
-import varnishprocessor
+import sys
+
+from cachestats import CacheStatsSender
 
 
-class ResourceLoaderVarnishLogProcessor(varnishprocessor.VarnishLogProcessor):
+class RlsCacheStatsSender(CacheStatsSender):
+
+    cmd = ['/usr/bin/varnishncsa', '-n', 'frontend',
+           # VSL query matching ResourceLoader ReqURLs
+           '-q', 'ReqURL ~ "^/w/load.php" and ReqMethod ne "PURGE"',
+           # status code - CC - INM
+           '-F', '%s\t%{Cache-Control}o\t%{If-None-Match}i']
+
     description = 'ResourceLoader Browser Cache Hit Ratio StatsD Reporter'
     key_prefix = 'ResourceLoader'
 
-    def process_transaction(self, transaction):
-        """Process a single completed transaction."""
-        status_code = transaction['RespStatus']
+    def gen_stats(self, record):
+        status_code, cache_control_header, inm = record.split('\t')
+
+        if not status_code.isdigit():
+            return
+
         metric_keys = ['reqs.all', 'resps.' + status_code]
 
-        if 'ReqHeader' in transaction:
+        if inm != "-":
             metric_keys.append('reqs.if_none_match')
 
-        cache_control_header = transaction.get('RespHeader')
         cache_control = 'no'
-        if cache_control_header:
-            match = re.search(r'(?<=max-age=)\d+', cache_control_header)
-            if match:
-                cache_control = 'short' if match.group() == '300' else 'long'
+        match = re.search(r'(?<=max-age=)\d+', cache_control_header)
+        if match:
+            cache_control = 'short' if match.group() == '300' else 'long'
         metric_keys.append('responses.%s_cache_control.%s' %
                            (cache_control, status_code))
 
         for key in metric_keys:
-            self.stats[key] = self.stats.get(key, 0) + 1
+            s = "{0}.{1}".format(self.args.key_prefix, key)
+            self.stats[s] = self.stats.get(s, 0) + 1
 
-        if self.stats['reqs.all'] > 10000:
-            self.flush_stats()
 
-    def start(self):
-        # VSL query matching ResourceLoader ReqURLs
-        query = 'ReqURL ~ "^/w/load.php" and ReqMethod ne "PURGE"'
-
-        varnishlog.varnishlog((
-            ('q', query),         # VSL query
-            ('n', 'frontend'),    # Consider the frontend Varnish instance
-            ('i', 'RespStatus'),  # Get RespStatus for the HTTP status code
-            ('i', 'ReqURL'),      # Get ReqURL to match /w/load.php
-            ('i', 'Timestamp'),   # Timestamp lines
-            ('C', ''),            # Use case-insensitive matching
-            ('I', 'ReqHeader:if-none-match'),
-            ('I', 'RespHeader:cache-control'),
-        ), self.handle_log_record)
-
-lp = ResourceLoaderVarnishLogProcessor()
+if __name__ == "__main__":
+    RlsCacheStatsSender(sys.argv[1:]).main()
