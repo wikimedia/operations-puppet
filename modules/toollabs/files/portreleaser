@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 """
 Unregisters all ports registered with proxy for current tool user
 """

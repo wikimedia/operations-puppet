@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 """
 Simple helper for the cdnjs mirror
 Makes a packages.json that is just a list containing

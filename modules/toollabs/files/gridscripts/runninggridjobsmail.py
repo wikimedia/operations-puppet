@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 #
 # THIS FILE IS MAINTAINED BY PUPPET
 # source: modules/toollabs/files/gridscripts/
