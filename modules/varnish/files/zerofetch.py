@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 
 # This script fetches the Zero carriers and proxies JSON data
 #  and deposits it on-disk for vmod_netmapper consumption.
