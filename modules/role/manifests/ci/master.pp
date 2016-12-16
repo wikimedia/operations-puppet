@@ -19,9 +19,11 @@ class role::ci::master {
     include ::jenkins,
         contint::proxy_jenkins
 
+    # Backups
+    include role::backup::host
+    backup::set {'var-lib-jenkins-config': }
     backup::set { 'contint' : }
 
-    # Nodepool spawn non ephemeral slaves which causes config-history plugin to
     # fill up entries until it reaches the limit of 32k inodes. T126552
     cron { 'tidy_jenkins_ephemeral_nodes_configs':
         ensure      => present,
@@ -64,9 +66,4 @@ class role::ci::master {
     }
 
     require contint::master_dir
-
-    # backups
-    include role::backup::host
-    backup::set {'var-lib-jenkins-config': }
-
 }
