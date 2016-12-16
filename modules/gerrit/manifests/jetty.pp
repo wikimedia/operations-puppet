@@ -51,6 +51,8 @@ class gerrit::jetty(
     $ldap_proxyagent_pass = $ldapconfig['proxypass']
 
     $java_options = [
+        '-XX:+UseG1GC',
+        '-XX:MaxGCPauseMillis=300',
         "-Xmx${heap_limit} -Xms${heap_limit}",
         '-Dlog4j.configuration=file:///var/lib/gerrit2/review_site/etc/log4j.xml',
         # These settings apart from the bottom control logging for gc
