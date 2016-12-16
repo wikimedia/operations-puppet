@@ -112,7 +112,7 @@ groups:
               jminor, asherman, etonkovidova, sbisson, addshore, matmarex, elukey,
               nikerabbit, nschaaf, dstrine, joewalsh, mpany, hjiang, jsamra, bcohn,
               jdittrich, chelsyx, ovasileva, mtizzoni, panisson, paolotti, ciro, debt,
-              samwalton9, zareen]
+              samwalton9, zareen, fdans]
   ldap-admins:
     gid: 715
     description: ldap admins
@@ -168,7 +168,7 @@ groups:
   statistics-web-users:
     gid: 724
     description: access for stats.wikimedia.org
-    members: [ezachte, joal, milimetric, tomasz]
+    members: [ezachte, joal, milimetric, tomasz, fdans]
   statistics-privatedata-users:
     gid: 725
     description: Access to stat boxes that host private data, including
@@ -180,7 +180,8 @@ groups:
     members: [ezachte, milimetric, dartar, yurik, halfak, awight, dr0ptp4kt, nuria,
               leila, ellery, nettrom, mforns, bmansurov, tbayer, joal,
               madhuvishy, tjones, legoktm, dcausse, bearloga, dpatrick, atgomez, dstrine,
-              joewalsh, marktraceur, mtizzoni, panisson, paolotti, ciro, melodykramer, zareen]
+              joewalsh, marktraceur, mtizzoni, panisson, paolotti, ciro, melodykramer, zareen,
+              fdans]
   statistics-users:
     gid: 726
     description: Access statistics number crunching hosts. NO PRIVS.
@@ -195,7 +196,7 @@ groups:
   statistics-admins:
     posix_name: stats
     description: access files created by stats user cron jobs
-    members: [ezachte, milimetric, joal, mforns, bearloga, nuria]
+    members: [ezachte, milimetric, joal, mforns, bearloga, nuria, fdans]
     privileges: ['ALL = (stats) NOPASSWD: ALL']
   oit:
     gid: 727
@@ -232,20 +233,20 @@ groups:
               bmansurov, atgomez, amire80, kartik, pcoombe, foks, mpany, hjiang, jsamra, bcohn,
               jdlrobson, chelsyx, ovasileva, mtizzoni, panisson, paolotti, ciro,
               psinger, flemmerich, mkroetzsch, akrausetud, filippo, nschaaf, pmiazga, faidon,
-              zareen, piccardi]
+              zareen, piccardi, fdans]
   analytics-admins:
     gid: 732
     description: Admin access to analytics cluster.
                  This will grant shell access on all Analytics Cluster nodes, as well
                  as the ability to sudo to certain Analytics Cluster system users.
-    members: [joal, elukey, nuria, mforns, milimetric]
+    members: [joal, elukey, nuria, mforns, milimetric, fdans]
     privileges: ['ALL = (hdfs)  NOPASSWD: ALL',
                  'ALL = (oozie) NOPASSWD: ALL',
                  'ALL = (hive)  NOPASSWD: ALL']
   eventlogging-admins:
     gid: 733
     description: Login access for EventLogging deployment and investigation
-    members: [nuria, milimetric, mforns, joal, legoktm, otto, elukey]
+    members: [nuria, milimetric, mforns, joal, legoktm, otto, elukey, fdans]
   citoid-admin:
     gid: 736
     description: group of citoid admins
@@ -570,7 +571,7 @@ groups:
   druid-admins:
     gid: 788
     description: admins for the Analytics Druid cluster
-    members: [nuria, milimetric, joal, mforns]
+    members: [nuria, milimetric, joal, mforns, fdans]
     privileges: ['ALL = NOPASSWD: /bin/systemctl start druid-*.service',
                  'ALL = NOPASSWD: /bin/systemctl stop druid-*.service',
                  'ALL = NOPASSWD: /bin/systemctl restart druid-*.service',
@@ -2222,3 +2223,11 @@ users:
     ssh_keys:
       - ssh-rsa AAAAB3NzaC1yc2EAAAABJQAAAQEAozlVbJ2Cmn3TrZvHChyiHShcWIERWVtl0A+V/w2P5jrpq4WGe2qx/DMPkUDsS5AvhOwY2b9qtAGbx/M+26+b0+xkJihrnT9Fy/IwEDxBFRtcIZ0N1ZvRlK2epb12gfX3oTfQWiSJcmlZOhJCS/GUfeZAAvJiDifnyWeaJAYlkPxPaWVhbF0Xv/W+3zQTQYfPuQEp1S6IKecN3bvW0/8t8fANzbfIjRtwBTSfZiKtHNZwnphaVAPF+xF7wV36spPeRbrxaB6Xy/3pEU00uT7qvyoDpB511w6IVIQfhiAVROVfCbTwyrPtuP+BZHRGFGE7hyo8pFQDQUnEU0yM11NYdQ==
     uid: 15999
+  fdans:
+    ensure: present
+    gid: 500
+    name: fdans
+    realname: Francisco Dans
+    ssh_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCusvafyr2JyFMUuWJ3N7NMIrKXVGk3dpEhdeqkJIZdRU5+Zyq7sA47bKBP13M06oFhtDQv/77rsqKSS1zy4CSFs9RPR/WDzeRcuHRxxWbtA0+6A0pfmvxCfrF/008Scw5TH4MJPAuQjCFc5obqfNzgwAiOVikMAhpgYloywPBSMG9mPek7KSJ6b2bZy8Z7+gnesFqzaZ1o/UET+5lmyaMlFWhaKiSzNt/naa6prumQvuEvJf6tIOqsoEs/BsL4mTKTLuSnw/iEA9m/oJaOjyPnbHbn07ZHLRVoA/CwyJEf0VwfornPVAc/Uar6e7QdA+6/PSruHE/sVfj7B93pjgKUiFEfHZz90qZYnObbl47odVRvv182IfmugNOkTMJ199pKTzIvhNldto2zKH1aOgbBtNnkpZ6KLu3d1e1yTdRdcGS0jZsgyLZZSC6kFD/6JztfEbtcdO4aCsIR1tNT9ZxepwlZLavv76MVKxA57D4We7/TZ9ZSMRBCY0HUATAUjWBjxOsl47zj26Z3QGHI837xt4nD8lk97mH8x2owNUjp+zrqL57cYWe5nNNryi8T9nU0oGxNvG0twTHJlhDodHtJyWMXKMUymYrvCCXkLX4tlGpikWCUuHhW3MPpvRRay6nUHKE/DSg9mqgeD2f1p6xn2T3MmvarHUdhZqiQjTYtcQ== fdans@wikimedia.org
+    uid: 16067
