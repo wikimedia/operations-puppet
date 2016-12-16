@@ -18,4 +18,5 @@ CREATE TABLE account_host(
     hostname VARCHAR(255) NOT NULL,
     status enum('present', 'absent') NOT NULL
 ) ENGINE=InnoDB ROW_FORMAT=Dynamic CHARSET=utf8mb4;
-CREATE UNIQUE INDEX account_host_status ON account_host(account_id, hostname, status);
+-- We need to ensure that there's no two entries for same host / account combo
+CREATE UNIQUE INDEX account_host(account_id, hostname);
