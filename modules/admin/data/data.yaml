@@ -516,6 +516,7 @@ groups:
                'ALL = NOPASSWD: /usr/sbin/service mathoid *',
                'ALL = NOPASSWD: /usr/sbin/service mobileapps *',
                'ALL = NOPASSWD: /usr/sbin/service pdfrender *',
+               'ALL = NOPASSWD: /usr/sbin/service trendingedits *',
                'ALL = NOPASSWD: /usr/sbin/service zotero *',
                'ALL = NOPASSWD: /usr/bin/firejail --join=*']
   notebook-roots:
@@ -592,6 +593,12 @@ groups:
     members: [gwicke, ppchelko, eevans, mobrovac]
     privileges: ['ALL = NOPASSWD: /usr/sbin/service pdfrender *',
                  'ALL = (pdfrender) NOPASSWD: ALL']
+  trendingedits-admin:
+    description: Group of trendingedits admins
+    gid: 791
+    members: [gwicke, ppchelko, eevans, mobrovac, jdlrobson, bsitzmann]
+    privileges: ['ALL = NOPASSWD: /usr/sbin/service trendingedits *',
+                 'ALL = (trendingedits) NOPASSWD: ALL']
 
 users:
   rush:

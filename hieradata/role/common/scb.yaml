@@ -12,6 +12,7 @@ admin::groups:
 - changeprop-admin
 - ores-admin
 - pdfrender-admin
+- trendingedits-admin
 role::lvs::realserver::pools:
   ores: {}
   apertium: {}
