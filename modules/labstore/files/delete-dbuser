@@ -18,12 +18,17 @@ if __name__ == '__main__':
     with open(args.config) as f:
         config = yaml.safe_load(f)
 
-    
-    for host in config['mysql']['hosts']:
+
+    # Only on old' style labsdbs for now!
+    hosts = [
+        h for h in config['labsdbs']['hosts']
+        if config['labsdbs']['hosts'][h]['grant-type'] == 'legacy'
+    ]
+    for host in hosts:
         conn = pymysql.connect(
             host,
-            config['mysql']['username'],
-            config['mysql']['password']
+            config['labsdbs']['username'],
+            config['labsdbs']['password']
         )
         cur = conn.cursor()
         try:
