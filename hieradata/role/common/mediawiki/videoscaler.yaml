@@ -2,7 +2,7 @@ cluster: videoscaler
 admin::groups:
   - deployment
   - perf-roots
-mediawiki::jobrunner::runners_transcode: 5
+mediawiki::jobrunner::runners_transcode: 2
 nutcracker::verbosity: "4"
 hhvm::extra::fcgi:
   hhvm:
