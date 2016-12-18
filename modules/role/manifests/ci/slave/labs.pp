@@ -119,7 +119,7 @@ class role::ci::slave::labs {
         # upstart, it won't instruct upstart to enable the service, thus not
         # reverting setting it to manual.
         provider => 'debian',
-        require  => Exec['create-mysql-datadir'],
+        require  => [ Exec['create-mysql-datadir'], Mount['/mnt/home/jenkins-deploy/tmpfs'] ],
     }
 
 }
