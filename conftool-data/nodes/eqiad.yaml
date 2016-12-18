@@ -254,6 +254,9 @@ restbase:
   restbase1013.eqiad.wmnet: [restbase]
   restbase1014.eqiad.wmnet: [restbase]
   restbase1015.eqiad.wmnet: [restbase]
+  restbase1016.eqiad.wmnet: [restbase]
+  restbase1017.eqiad.wmnet: [restbase]
+  restbase1018.eqiad.wmnet: [restbase]
 maps:
   maps1001.eqiad.wmnet: [kartotherian]
   maps1002.eqiad.wmnet: [kartotherian]

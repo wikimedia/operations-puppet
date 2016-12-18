@@ -253,6 +253,9 @@ restbase:
   restbase2007.codfw.wmnet: [restbase]
   restbase2008.codfw.wmnet: [restbase]
   restbase2009.codfw.wmnet: [restbase]
+  restbase2010.codfw.wmnet: [restbase]
+  restbase2011.codfw.wmnet: [restbase]
+  restbase2012.codfw.wmnet: [restbase]
 sca:
   sca2003.codfw.wmnet: [zotero]
   sca2004.codfw.wmnet: [zotero]
