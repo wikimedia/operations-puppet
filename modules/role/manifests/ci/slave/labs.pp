@@ -100,6 +100,7 @@ class role::ci::slave::labs {
         creates => '/var/lib/mysql/.created',
         command => 'mysql_install_db --user=mysql --datadir=/var/lib/mysql && touch /var/lib/mysql/.created',
         require => [ File['/var/lib/mysql'], Package['mysql-server'] ],
+        notify  => Service['mysql']
     }
 
     file { '/etc/init/mysql.override':
