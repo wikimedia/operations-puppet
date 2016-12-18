@@ -16,14 +16,15 @@ class role::toollabs::services(
         mode   => '0770',
     }
 
-    file { "/data/project/.system/aptly/${::fqdn}":
-        ensure    => directory,
-        source    => '/srv/packages',
-        owner     => 'root',
-        group     => "${::labsproject}.admin",
-        mode      => '0440',
-        recurse   => true,
-        show_diff => false,
+    # TODO: It would look nicer not to subscribe to the Execs but the
+    # defined type, if the Exec triggers the defined type.  Needs to
+    # be tested.
+    exec { 'backup_aptly_packages':
+        command   => "/usr/bin/rsync --chmod 440 --chown root:${::labsproject}.admin -ilrt /srv/packages/ /data/project/.system/aptly/${::fqdn}",
+        subscribe => Exec["publish-aptly-repo-jessie-${::labsproject}",
+                          "publish-aptly-repo-precise-${::labsproject}",
+                          "publish-aptly-repo-trusty-${::labsproject}"],
+        logoutput => true,
     }
 
     class { '::toollabs::services':
