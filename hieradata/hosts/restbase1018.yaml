@@ -6,11 +6,11 @@ cassandra::instances:
     listen_address: 10.64.48.98
     rpc_address: 10.64.48.98
     rpc_interface: eth0
-#  b:
-#    jmx_port: 7190
-#    listen_address: 10.64.48.99
-#    rpc_address: 10.64.48.99
-#    rpc_interface: eth0
+  b:
+    jmx_port: 7190
+    listen_address: 10.64.48.99
+    rpc_address: 10.64.48.99
+    rpc_interface: eth0
 #  c:
 #    jmx_port: 7191
 #    listen_address: 10.64.48.100
