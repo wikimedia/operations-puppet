@@ -68,13 +68,7 @@ class varnish::common {
     }
 
     file { '/usr/local/lib/python2.7/dist-packages/varnishprocessor':
-        source  => 'puppet:///modules/varnish/varnishprocessor',
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0755',
-        recurse => true,
-        purge   => true,
-        force   => true,
+        ensure => absent,
     }
 
     # We are not using varnishncsa, make sure it's stopped
