@@ -182,9 +182,10 @@ def certs_fetch_ocsp(out_temp, args):
                                 (ocsp_uri, this_ocsp_uri))
 
     cmd = [
-        "openssl", "ocsp", "-nonce", "-resp_text",
+        "openssl", "ocsp", "-resp_text",
         "-respout", out_temp,
         "-issuer", issuer_path,
+        "-verify_other", issuer_path,
     ]
 
     if proxy:
@@ -240,25 +241,23 @@ def certs_fetch_ocsp(out_temp, args):
         if next_up > cert_notafter_compare:
             cert_notafter_compare = next_up
 
-    # Check the signing cert's validity
+    # Check the signing cert's validity, if included in response
     v_pat = (
         '^\s*Validity\n'
         + '\s*Not Before: ([^\n]+)\n'
         + '\s*Not After : ([^\n]+)\n'
     )
     v_res = re.search(v_pat, ocsp_text, re.M)
-    if not v_res:
-        raise Exception("Did not find cert validity in output:\n%s" %
-                        (ocsp_text))
-    cert_notbefore = ossl_parse_stamp(v_res.group(1))
-    cert_notafter = ossl_parse_stamp(v_res.group(2))
-    cert_notbefore_compare = now_dt + datetime.timedelta(0, o_start)
-    if cert_notbefore > cert_notbefore_compare:
-        raise Exception("OCSP cert validity starts > %i secs in the future!" %
-                        (o_start))
-    if cert_notafter < cert_notafter_compare:
-        raise Exception("OCSP cert validity ends before %s!" %
-                        (cert_notafter_compare))
+    if v_res:
+        cert_notbefore = ossl_parse_stamp(v_res.group(1))
+        cert_notafter = ossl_parse_stamp(v_res.group(2))
+        cert_notbefore_compare = now_dt + datetime.timedelta(0, o_start)
+        if cert_notbefore > cert_notbefore_compare:
+            raise Exception("signing cert starts > %i secs in the future!" %
+                            (o_start))
+        if cert_notafter < cert_notafter_compare:
+            raise Exception("signing cert ends before %s!" %
+                            (cert_notafter_compare))
 
 
 def mkdir_p(path):
