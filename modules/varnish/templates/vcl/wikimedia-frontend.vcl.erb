@@ -22,8 +22,10 @@ sub https_recv_redirect {
 			// this isn't a problematic subdomain in spite of it not
 			// matching the unified wildcards for wikimedia.org.
 			if (req.http.Host ~ "((^|\.)(wikipedia|wikimedia|wikibooks|wikinews|wikiquote|wikisource|wikiversity|wikivoyage|wikidata|wikimediafoundation|wiktionary|mediawiki|wmfusercontent)(\.beta\.wmflabs)?\.org|^w\.wiki|^upload\.beta\.wmflabs\.org)$") {
-				// temporary hole-punch for legacy redirect-incompatible rcstream clients: T134871
-				if (req.http.Host != "stream.wikimedia.org") {
+				if (req.http.Host == "stream.wikimedia.org" && req.url ~ '^/(socket\.io|rc(stream_status)?)(/|$)') {
+					// NO-OP, temporary hole-punch for legacy redirect-incompatible rcstream clients
+				}
+				else {
 					set req.http.Location = "https://" + req.http.Host + req.url;
 					return (synth(751, "TLS Redirect"));
 				}
