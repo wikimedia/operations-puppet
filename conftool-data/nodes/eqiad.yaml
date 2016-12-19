@@ -4,6 +4,8 @@ testserver:
   mwdebug1001.eqiad.wmnet: [apache2]
   mwdebug1002.eqiad.wmnet: [apache2]
 videoscaler:
+  mw1168.eqiad.wmnet: [apache2]
+  mw1169.eqiad.wmnet: [apache2]
   mw1259.eqiad.wmnet: [apache2]
   mw1260.eqiad.wmnet: [apache2]
   mw2152.codfw.wmnet: [apache2]
@@ -16,8 +18,6 @@ jobrunner:
   mw1165.eqiad.wmnet: [apache2]
   mw1166.eqiad.wmnet: [apache2]
   mw1167.eqiad.wmnet: [apache2]
-  mw1168.eqiad.wmnet: [apache2]
-  mw1169.eqiad.wmnet: [apache2]
   mw1299.eqiad.wmnet: [apache2]
   mw1300.eqiad.wmnet: [apache2]
   mw1301.eqiad.wmnet: [apache2]

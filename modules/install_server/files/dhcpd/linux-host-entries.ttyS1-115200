@@ -3976,11 +3976,15 @@ host mw1167 {
 host mw1168 {
     hardware ethernet 90:B1:1C:27:88:5B;
     fixed-address mw1168.eqiad.wmnet;
+    option pxelinux.pathprefix "trusty-installer/";
+    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1169 {
     hardware ethernet 90:B1:1C:28:CD:24;
     fixed-address mw1169.eqiad.wmnet;
+    option pxelinux.pathprefix "trusty-installer/";
+    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1170 {
