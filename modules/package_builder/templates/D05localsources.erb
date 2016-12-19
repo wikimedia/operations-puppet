@@ -3,8 +3,11 @@
 if [ "${APT_USE_BUILT}" = "yes" -a -d ${BUILDRESULT} ]; then
     apt-get install -y apt-utils
 
-    (cd $BUILDRESULT;
-    apt-ftparchive packages . > Packages)
+    # make-like behaviour
+    newest_file=$(ls --almost-all --reverse --sort=time ${BUILDRESULT}/*.deb ${BUILDRESULT}/*.dsc | tail -n 1)
+    if [ "${newest_file}" -nt "${BUILDRESULT}/Packages" ]; then
+        ( cd $BUILDRESULT && apt-ftparchive packages . > Packages )
+    fi
 
     echo "deb [trusted=yes] file://${BUILDRESULT} ./" > /etc/apt/sources.list.d/local.list
     apt-get update
