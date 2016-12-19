@@ -11,7 +11,7 @@ skipdblist=<%= @config[@configtype]['skipdblist'] %>
 flowlist=<%= @apachedir -%>/dblists/flow.dblist
 dir=<%= @apachedir %>
 adminsettings=private/PrivateSettings.php
-tablejobs=<%= scope.lookupvar('snapshot::dumps::dirs::datadir') -%>/table_jobs.yaml
+tablejobs=<%= scope.lookupvar('snapshot::dumps::dirs::confsdir') -%>/table_jobs.yaml
 
 [output]
 public=<%= scope.lookupvar('snapshot::dumps::dirs::datadir') -%>/public
