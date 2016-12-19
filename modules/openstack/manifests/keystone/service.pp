@@ -39,18 +39,20 @@ class openstack::keystone::service($keystoneconfig, $openstack_version=$::openst
             owner   => 'root',
             group   => 'root',
             require => Package['keystone'];
-        '/usr/lib/python2.7/dist-packages/keystone/auth/plugins/wmtotp.py':
-            source  => "puppet:///modules/openstack/${openstack_version}/keystone/wmtotp.py",
-            mode    => '0644',
+        '/usr/lib/python2.7/dist-packages/wmfkeystoneauth':
+            source  => "puppet:///modules/openstack/${openstack_version}/keystone/wmfkeystoneauth",
             owner   => 'root',
             group   => 'root',
-            require => Package['keystone'];
-        '/usr/lib/python2.7/dist-packages/keystone/auth/plugins/password_whitelist.py':
-            source  => "puppet:///modules/openstack/${openstack_version}/keystone/password_whitelist.py",
             mode    => '0644',
+            notify  => Service['keystone'],
+            recurse => true;
+        '/usr/lib/python2.7/dist-packages/wmfkeystoneauth.egg-info':
+            source  => "puppet:///modules/openstack/${openstack_version}/keystone/wmfkeystoneauth.egg-info",
             owner   => 'root',
             group   => 'root',
-            require => Package['keystone'];
+            mode    => '0644',
+            notify  => Service['keystone'],
+            recurse => true;
     }
 
     if $::fqdn == hiera('labs_nova_controller') {

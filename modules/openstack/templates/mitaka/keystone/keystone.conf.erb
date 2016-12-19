@@ -410,7 +410,9 @@ password = <%= @keystoneconfig["ldap_user_pass"] %>
 [auth]
 methods = external,password,token,wmtotp
 
-wmtotp = keystone.auth.plugins.wmtotp.Wmtotp
+# Override the default password plugin with a custom
+#  one that checks source IPs.
+password = whitelist
 
 [oath]
 
