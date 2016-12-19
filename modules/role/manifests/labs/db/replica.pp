@@ -29,10 +29,9 @@ class role::labs::db::replica {
 
     include passwords::misc::scripts
 
-    # add when labsdb1009/10/11 are in service
-    # include role::labs::db::common
-    # include role::labs::db::views
-    # include role::labs::db::check_private_data
+    include role::labs::db::common
+    include role::labs::db::views
+    include role::labs::db::check_private_data
 
     class { 'role::mariadb::groups':
         mysql_group => 'labs',
