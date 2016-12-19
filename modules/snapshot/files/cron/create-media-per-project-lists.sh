@@ -2,13 +2,13 @@
 
 #############################################################
 # This file is maintained by puppet!
-# modules/snapshot/templates/cron/create-media-per-project-lists.sh.erb
+# modules/snapshot/cron/create-media-per-project-lists.sh
 #############################################################
 
+source /usr/local/etc/set_dump_dirs.sh
+
 DATE=`/bin/date '+%Y%m%d'`
-outputdir="<%= scope.lookupvar('snapshot::dumps::dirs::datadir') -%>/public/other/imageinfo/$DATE"
-repodir="<%= scope.lookupvar('snapshot::dumps::dirs::repodir') -%>"
-confsdir="<%= scope.lookupvar('snapshot::dumps::dirs::confsdir') %>"
+outputdir="${datadir}/public/other/imageinfo/$DATE"
 configfile="${confsdir}/wikidump.conf.media"
 errors=0
 

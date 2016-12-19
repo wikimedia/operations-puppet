@@ -1,8 +1,10 @@
 #!/bin/bash
 #############################################################
 # This file is maintained by puppet!
-# modules/snapshot/templates/cron/dumpcontentxlation.sh.erb
+# modules/snapshot/cron/dumpcontentxlation.sh
 #############################################################
+
+source /usr/local/etc/set_dump_dirs.sh
 
 checkval() {
     setting=$1
@@ -49,10 +51,8 @@ usage() {
 # MAIN
 #####################
 
-confsdir="<%= scope.lookupvar('snapshot::dumps::dirs::confsdir') -%>"
-repodir="<%= scope.lookupvar('snapshot::dumps::dirs::repodir') -%>"
 configfile="${confsdir}/wikidump.conf"
-otherdir="<%= scope.lookupvar('snapshot::dumps::dirs::datadir') -%>/public/other"
+otherdir="${datadir}/public/other"
 dryrun="false"
 
 #####################

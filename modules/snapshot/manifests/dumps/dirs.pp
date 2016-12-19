@@ -57,4 +57,14 @@ class snapshot::dumps::dirs {
     }
 
     $repodir = '/srv/deployment/dumps/dumps/xmldumps-backup'
+
+    file { '/usr/local/etc/set_dump_dirs.sh':
+        ensure  => 'present',
+        path    => '/usr/local/etc/set_dump_dirs.sh',
+        mode    => '0755',
+        owner   => 'root',
+        group   => 'root',
+        content => template('snapshot/set_dump_dirs.sh.erb'),
+    }
+
 }

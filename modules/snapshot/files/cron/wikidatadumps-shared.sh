@@ -1,14 +1,14 @@
 #!/bin/bash
 #############################################################
 # This file is maintained by puppet!
-# modules/snapshot/templates/cron/wikidatadumps-shared.sh.erb
+# modules/snapshot/cron/wikidatadumps-shared.sh
 #############################################################
 #
 # Shared variable and function declarations for creating Wikidata dumps
 #
 # Marius Hoch < hoo@online.de >
 
-confdir="<%= scope.lookupvar('snapshot::dumps::dirs::confsdir') -%>"
+source /usr/local/etc/set_dump_dirs.sh
 configfile="${confdir}/wikidump.conf"
 
 today=`date +'%Y%m%d'`

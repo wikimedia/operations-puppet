@@ -1,20 +1,24 @@
 #!/bin/bash
 #############################################################
 # This file is maintained by puppet!
-# modules/snapshot/templates/cron/dumpcirrussearch.sh.erb
+# modules/snapshot/cron/dumpcirrussearch.sh
 #############################################################
 #
 # Generate a json dump of cirrussearch indices for all enabled
 # wikis and remove old ones.
+
+source /usr/local/etc/set_dump_dirs.sh
+
 usage() {
 	echo "Usage: $0 [--config <pathtofile>] [--dryrun]"
 	echo
 	echo "  --config  path to configuration file for dump generation"
-	echo "            (default value: <%= scope.lookupvar('snapshot::dumps::dirs::confsdir') -%>/wikidump.conf"
+	echo "            (default value: ${confsdir}/wikidump.conf"
 	echo "  --dryrun  don't run dump, show what would have been done"
 	exit 1
 }
-configFile="<%= scope.lookupvar('snapshot::dumps::dirs::confsdir') -%>/wikidump.conf"
+
+configFile="${confsdir}/wikidump.conf"
 dryrun="false"
 
 while [ $# -gt 0 ]; do
