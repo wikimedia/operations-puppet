@@ -19,7 +19,7 @@ from oslo_config import cfg
 
 from keystone import auth
 from keystone.auth import plugins as auth_plugins
-from keystone.auth.plugins import password_whitelist
+import password_whitelist
 from keystone.common import dependency
 from keystone import exception
 from keystone.i18n import _
