@@ -1092,8 +1092,7 @@ node /^etcd100[123]\.eqiad\.wmnet$/ {
 
 # kubernetes masters
 node /^(argon|chlorine)\.eqiad\.wmnet$/ {
-    include standard
-    include base::firewall
+    role(kubernetes::master)
 }
 
 # Etcd cluster for "virtual" networking
