@@ -2776,6 +2776,7 @@ node 'terbium.eqiad.wmnet' {
     role(mariadb::maintenance, mediawiki::maintenance, openldap::management)
     include role::noc::site
     include ldap::role::client::labs
+    include restbase::cass_report
     include base::firewall
 
     interface::add_ip6_mapped { 'main':
