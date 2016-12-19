@@ -20,16 +20,14 @@ export no_proxy=".wmnet"
 alias proxy-on="export http_proxy=$webproxy_url https_proxy=$webproxy_url"
 alias proxy-off="unset http_proxy https_proxy"
 
-# set options for interactive-only shells below
-if [ -n "$PS1" ]; then
-    config_interactive()
-fi
-
 function config_interactive() {
-
     RESET="$(tput sgr0)"
     BRIGHT="$(tput bold)"
     RED="$(tput setaf 1)"
     WHITE="$(tput setaf 7)"
     export PS1='\[$BRIGHT\]\[$RED\]\h\[$RESET\]:\w\[$BRIGHT\]\[$WHITE\]\$\[$RESET\] '
 }
+
+if [ -n "$PS1" ]; then
+    config_interactive
+fi
