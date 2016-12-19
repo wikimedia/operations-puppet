@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """
   varnishxcache
-  ~~~~~~~~~~~
+  ~~~~~~~~~~~~~
 
   Accumulate X-Cache stats and report them to StatsD.
 
@@ -12,6 +12,7 @@
     --key-prefix PREFIX     metric key prefix (default: varnish.xcache)
 
   Copyright 2016 Brandon Black <bblack@wikimedia.org>
+  Copyright 2016 Emanuele Rocca <ema@wikimedia.org>
   Copyright 2015 Ori Livneh <ori@wikimedia.org>
 
   Licensed under the Apache License, Version 2.0 (the "License");
@@ -27,100 +28,59 @@
   limitations under the License.
 
 """
-import argparse
-import io
 import re
-import socket
-import threading
-import urlparse
-import time
+import sys
 
-import varnishlog
+from cachestats import CacheStatsSender
 
 
-def parse_statsd_server_string(server_string):
-    parsed = urlparse.urlparse('//' + server_string)
-    return parsed.hostname, parsed.port or 8125
+class XCacheStatsSender(CacheStatsSender):
+    cmd = ['/usr/bin/varnishncsa', '-n', 'frontend',
+           '-q', 'ReqMethod ne "PURGE"',
+           '-F', '%{X-Cache}o']
 
+    description = 'X-Cache StatsD reporter'
+    key_prefix = 'varnish.xcache'
+    default_keys = (
+        'unknown',
+        'hit-front',
+        'hit-local',
+        'hit-remote',
+        'int-front',
+        'int-local',
+        'int-remote',
+        'pass',
+        'miss',
+    )
 
-def parse_prefix_string(key_prefix):
-    key_prefix = key_prefix.strip('.')
-    if not key_prefix:
-        raise ValueError('Key prefix must not be empty')
-    return key_prefix
+    def __init__(self, argument_list):
+        super(XCacheStatsSender, self).__init__(argument_list)
 
+        self.key_value_pairs = re.compile(r'([A-Z][A-Z0-9]*)=([^;]+)')
 
-ap = argparse.ArgumentParser(
-    description='X-Cache StatsD reporter',
-    epilog='If no statsd server is specified, prints stats to stdout instead.'
-)
-ap.add_argument('--statsd-server', help='statsd server',
-                type=parse_statsd_server_string, default=None)
-ap.add_argument('--key-prefix', help='metric key prefix',
-                type=parse_prefix_string, default='test.varnish.xcache')
-ap.add_argument('--interval', help='send interval',
-                type=int, default=30)
-args = ap.parse_args()
+        self.re_simplify = re.compile(
+            'cp[0-9]{4} (hit|miss|pass|int)(?:/[0-9]+)?')
 
-sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-key_value_pairs = re.compile(r'([A-Z][A-Z0-9]*)=([^;]+)')
-stats = {
-    'unknown': 0,
-    'hit-front': 0,
-    'hit-local': 0,
-    'hit-remote': 0,
-    'int-front': 0,
-    'int-local': 0,
-    'int-remote': 0,
-    'pass': 0,
-    'miss': 0,
-}
+        self.state_finder = [
+            [re.compile(r'hit$'),        'hit-front'],
+            [re.compile(r'hit,[^,]+$'),  'hit-local'],
+            [re.compile(r'hit'),         'hit-remote'],
+            [re.compile(r'int$'),        'int-front'],
+            [re.compile(r'int,[^,]+$'),  'int-local'],
+            [re.compile(r'int'),         'int-remote'],
+            [re.compile(r'pass,[^,]+$'), 'pass'],
+            [re.compile(r'miss'),        'miss'],
+        ]
 
-re_simplify = re.compile('cp[0-9]{4} (hit|miss|pass|int)(?:/[0-9]+)?')
-state_finder = [
-    [re.compile(r'hit$'),        'hit-front'],
-    [re.compile(r'hit,[^,]+$'),  'hit-local'],
-    [re.compile(r'hit'),         'hit-remote'],
-    [re.compile(r'int$'),        'int-front'],
-    [re.compile(r'int,[^,]+$'),  'int-local'],
-    [re.compile(r'int'),         'int-remote'],
-    [re.compile(r'pass,[^,]+$'), 'pass'],
-    [re.compile(r'miss'),        'miss'],
-]
+    def gen_stats(self, record):
+        record = self.re_simplify.sub(r'\1', record)
+        state = 'unknown'
+        for sf in self.state_finder:
+            if sf[0].search(record):
+                state = sf[1]
+                break
 
+        self.stats[state] += 1
 
-def vsl_callback(transaction_id, tag, record, remote_party):
-    record = record.split(': ')[1]
-
-    record = re_simplify.sub(r'\1', record)
-    state = 'unknown'
-    for sf in state_finder:
-        if sf[0].search(record):
-            state = sf[1]
-            break
-    stats[state] += 1
-
-    now = time.time()
-    if now >= vsl_callback.next_pub:
-        vsl_callback.next_pub = now + args.interval
-        buf = io.BytesIO()
-        for k, v in stats.iteritems():
-            metric = '%s.%s:%s|c\n' % (args.key_prefix, k, v)
-            buf.write(metric.encode('utf-8'))
-            stats[k] = 0
-        buf.seek(io.SEEK_SET)
-        if args.statsd_server:
-            sock.sendto(buf.read(), args.statsd_server)
-        else:
-            print(buf.read().decode('utf-8', errors='replace').rstrip())
-
-    return 0
-
-vsl_callback.next_pub = time.time() + args.interval
-
-
-varnishlog.varnishlog((
-    ('q', 'ReqMethod ne "PURGE"'),
-    ('I', 'RespHeader:^X-Cache:'),
-    ('n', 'frontend'),
-), vsl_callback)
+if __name__ == "__main__":
+    XCacheStatsSender(sys.argv[1:]).main()
