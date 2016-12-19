@@ -149,7 +149,7 @@ class snapshot::dumps::configs {
 
     file { "${confsdir}/table_jobs.yaml":
         ensure => 'present',
-        path   => "${confsdir}/",
+        path   => "${confsdir}/table_jobs.yaml",
         mode   => '0755',
         owner  => 'root',
         group  => 'root',
