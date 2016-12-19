@@ -13,7 +13,7 @@ class role::analytics_cluster::refinery::camus {
     # for a particular camus::job instance by setting the parameter on
     # the camus::job declaration.
     Camus::Job {
-        script        => "export PYTHONPATH=\${PYTHONPATH}:${role::analytics_cluster::refinery::path}/python && ${role::analytics_cluster::refinery::path}/camus",
+        script        => "export PYTHONPATH=\${PYTHONPATH}:${role::analytics_cluster::refinery::path}/python && ${role::analytics_cluster::refinery::path}/bin/camus",
         kafka_brokers => suffix($kafka_config['brokers']['array'], ':9092'),
         camus_jar     => "${role::analytics_cluster::refinery::path}/artifacts/org/wikimedia/analytics/camus-wmf/camus-wmf-0.1.0-wmf7.jar",
         check_jar     => "${role::analytics_cluster::refinery::path}/artifacts/org/wikimedia/analytics/refinery/refinery-camus-0.0.35.jar",
