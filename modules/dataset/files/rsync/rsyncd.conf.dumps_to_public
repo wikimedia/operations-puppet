@@ -5,17 +5,37 @@
 
 # rsync config for public retrievers/mirrors of XML dumps
 
-[dumpmirrorslastfivedumps]
-read only = true
-# this will include only the last five good dumps.
-# include/exclude list coming soon...
-path = /data/xmldatadumps/public
-exclude = **tmp/ **temp/ **bad/ **save/ **other/ **archive/
 # added sagres.c3sl.ufpr.br, Sept 6 2011 -- atg
 # for sagres.c3sl.ufpr.br, contact: Carlos Carvalho <carlos@fisica.ufpr.br>
 # added odysseus.fi.muni.cz, May 11, 2012 -- atg
 # for odysseus.fi.muni.cz, contact: Jan Kasprzak <ftp-admin@fi.muni.cz>
+# added poincare.acc.umu.se, Oct 25 2016 -- atg
+# for poincare.acc.umu.se contact: ftp-adm@acc.umu.se
+# added mirror.fr.wickedway.nl, June 8 2012 -- atg
+# for mirror.fr.wickedway.nl contact:  mirror@wickedway.nl
+# added 199.47.196.26 (wansecurity hosted), Jan 25 2012 -- atg
+# we manage this
+# for wansecurity, contact: Robert Smith <rtsmith@wansecurity.com>
+# added your.org, Feb 2 2012 -- atg
+# they manage it but we have access
+# for your.org, contact: Kevin Day <kevin@your.org>
+# added 69.28.137.74 Apr 28 2016
+# primary contact: Valentino Vaschetto <val@iconicindustry.com>
+# added crcdtn01.crc.nd.edu Apr 25 2016
+# primary contact: Matt <mvanderw@nd.edu>
+
+# added amazonaws.com, Oct 31 2012 -- atg
+# probably will never go live tbh
+# it will eventually be managed by folks at amazon
+
+[dumpmirrorslastfivedumps]
+# not really, we should transition people to using the module below
+read only = true
+path = /data/xmldatadumps/public
+exclude = **tmp/ **temp/ **bad/ **save/ **other/ **archive/
 hosts allow = sagres.c3sl.ufpr.br odysseus.fi.muni.cz odysseus.linux.cz odysseus.ip6.fi.muni.cz poincare.acc.umu.se
+
+# these are the modules to advertise
 
 [dumpslastfive]
 read only = true
@@ -24,18 +44,48 @@ path = /data/xmldatadumps/public
 include = /*wik*/
 exclude = **tmp/ **temp/ **bad/ **save/ **other/ **archive/ **not/ /* /*/ /*/*/
 include from = /data/xmldatadumps/public/rsync-incl-last-5.txt
-# added sagres.c3sl.ufpr.br, Sept 6 2011 -- atg
-# for sagres.c3sl.ufpr.br, contact: Carlos Carvalho <carlos@fisica.ufpr.br>
-# added odysseus.fi.muni.cz, May 11, 2012 -- atg
-# for odysseus.fi.muni.cz, contact: Jan Kasprzak <ftp-admin@fi.muni.cz>
+hosts allow = sagres.c3sl.ufpr.br odysseus.fi.muni.cz odysseus.linux.cz odysseus.ip6.fi.muni.cz poincare.acc.umu.se
+
+[dumpslastfour]
+read only = true
+# this includes only the last four good dumps.
+path = /data/xmldatadumps/public
+include = /*wik*/
+exclude = **tmp/ **temp/ **bad/ **save/ **other/ **archive/ **not/ /* /*/ /*/*/
+include from = /data/xmldatadumps/public/rsync-incl-last-4.txt
+hosts allow = sagres.c3sl.ufpr.br odysseus.fi.muni.cz odysseus.linux.cz odysseus.ip6.fi.muni.cz poincare.acc.umu.se
+
+[dumpslastthree]
+read only = true
+# this includes only the last three good dumps.
+path = /data/xmldatadumps/public
+include = /*wik*/
+exclude = **tmp/ **temp/ **bad/ **save/ **other/ **archive/ **not/ /* /*/ /*/*/
+include from = /data/xmldatadumps/public/rsync-incl-last-3.txt
+hosts allow = sagres.c3sl.ufpr.br odysseus.fi.muni.cz odysseus.linux.cz odysseus.ip6.fi.muni.cz poincare.acc.umu.se
+
+[dumpslasttwo]
+read only = true
+# this includes only the last two good dumps.
+path = /data/xmldatadumps/public
+include = /*wik*/
+exclude = **tmp/ **temp/ **bad/ **save/ **other/ **archive/ **not/ /* /*/ /*/*/
+include from = /data/xmldatadumps/public/rsync-incl-last-2.txt
+hosts allow = sagres.c3sl.ufpr.br odysseus.fi.muni.cz odysseus.linux.cz odysseus.ip6.fi.muni.cz poincare.acc.umu.se
+
+[dumpslastone]
+read only = true
+# this includes only the last good dump.
+path = /data/xmldatadumps/public
+include = /*wik*/
+exclude = **tmp/ **temp/ **bad/ **save/ **other/ **archive/ **not/ /* /*/ /*/*/
+include from = /data/xmldatadumps/public/rsync-incl-last-1.txt
 hosts allow = sagres.c3sl.ufpr.br odysseus.fi.muni.cz odysseus.linux.cz odysseus.ip6.fi.muni.cz poincare.acc.umu.se
 
 [dumpmirrorsother]
 read only = true
 path = /data/xmldatadumps/public/other
 exclude = **tmp/ **temp/ **bad/ **save/ **archive/
-# added poincare.acc.umu.se, Oct 25 2016 -- atg
-# for poincare.acc.umu.se contact: ftp-adm@acc.umu.se
 hosts allow = poincare.acc.umu.se
 
 [dumpmirrorsalldumps]
@@ -43,8 +93,6 @@ read only = true
 # this includes only dumps, no archives, no other datasets
 path = /data/xmldatadumps/public
 exclude = **tmp/ **temp/ **bad/ **save/ **other/ **archive/
-# added mirror.fr.wickedway.nl, June 8 2012 -- atg
-# for mirror.fr.wickedway.nl contact:  mirror@wickedway.nl
 hosts allow = mirror.fr.wickedway.nl
 
 [dumpmirrorseverything]
@@ -52,17 +100,4 @@ read only = true
 # this includes archives, other datasets
 path = /data/xmldatadumps/public
 exclude = **tmp/ **temp/ **bad/ **save/
-# added 69.28.137.74 Apr 28 2016
-# primary contact: Valentino Vaschetto <val@iconicindustry.com>
-# added crcdtn01.crc.nd.edu Apr 25 2016
-# primary contact: Matt <mvanderw@nd.edu>
-# added 199.47.196.26 (wansecurity hosted), Jan 25 2012 -- atg
-# for wansecurity, contact: Robert Smith <rtsmith@wansecurity.com>
-# we manage this
-# added your.org, Feb 2 2012 -- atg
-# for your.org, contact: Kevin Day <kevin@your.org>
-# they manage it but we have access
-# added amazonaws.com, Oct 31 2012 -- atg
-# probably will never go live tbh
-# it will eventually be managed by folks at amazon
 hosts allow = 199.47.196.26 ftpmirror.your.org ec2-174-129-186-231.compute-1.amazonaws.com 69.31.98.2 crcdtn01.crc.nd.edu wmrsync.crc.nd.edu 69.28.137.74
