@@ -1,0 +1,50 @@
+<%-
+  # compile the environment
+  env = if @environment.kind_of?(Hash)
+    @environment.map do |key, value|
+      "#{key[0] == '$' ? '' : '$'}#{key}#{key}=#{value}"
+    end.join("\n")
+  else
+    @environment.strip
+  end
+  # figure out the redirects
+  redir = if @redirect.kind_of?(String)
+    [@redirect.strip, '&1']
+  elsif @redirect.kind_of?(Array)
+    unless @redirect.empty?
+      @redirect[0, 2].size == 2 ? @redirect[0, 2] : [@redirect[0], '&1']
+    else
+      ['/dev/null', '&1']
+    end
+  else
+    ['/dev/null', '&1']
+  end
+  redir.each_index { |i| redir[i] = "#{i + 1}>#{redir[i]}" }
+  redir.push(redir.shift) if '1>&2' == redir[0]
+  # handle the supplied times
+  times = @time.kind_of?(Array) ? @time : [@time]
+  times.map! do |time|
+    if [String, Integer, Symbol].include?(time.class)
+      [time.to_s.strip]
+    elsif time.kind_of?(Array)
+      (0...5).map { |i| time[i] || '*' }
+    elsif time.kind_of?(Hash)
+      ['mm', 'hh', 'day', 'mon', 'dow'].map { |f| time.has_key?(f) && time[f] || '*' }
+    else
+      ['*'] * 5
+    end.join(' ')
+  end
+-%>
+# This file is managed by Puppet
+# Do not edit manually
+
+# Cron tab for <%= @title %>
+
+# Environment
+PATH=/sbin:/usr/sbin:/bin:/usr/bin:/usr/local/sbin:/usr/local/bin
+<%= env %>
+
+# Schedule
+<%- @time.each do |time| -%>
+<%= time %>    <%= @user %>    <%= @command.strip %>    <%= redir.join(' ') %>
+<%- end -%>
