@@ -9,15 +9,30 @@ class contint::browsers {
     }
 
     if $::operatingsystem == 'Debian' {
+        apt::source { 'Debian-stretch':
+          comment     => 'The Debian Repo',
+          location    => 'http://ftp.de.debian.org/debian',
+          release     => 'stretch',
+          repos       => 'main',
+          include_src => false,
+          include_deb => true
+        }
         $latest_packages = [
-            'chromium',
-            'chromedriver',
             'firefox-esr',
             # phantomjs is not available on Jessie
         ]
         file { '/usr/local/bin/chromedriver':
           ensure => link,
           target => '/usr/lib/chromium/chromedriver',
+        }
+
+        package {'chromium':
+          ensure  => latest,
+          require => Apt::Source['Debian-stretch'],
+        }
+        package {'chromedriver':
+          ensure  => latest,
+          require => Apt::Source['Debian-stretch'],
         }
     } elsif os_version('ubuntu >= trusty') {
         $latest_packages = [
