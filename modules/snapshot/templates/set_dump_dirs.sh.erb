@@ -1,0 +1,7 @@
+#!/bin/bash
+
+# set some directory paths many cron jobs need
+confsdir="<%= scope.lookupvar('snapshot::dumps::dirs::confsdir') -%>"
+repodir="<%= scope.lookupvar('snapshot::dumps::dirs::repodir') -%>"
+datadir="<%= scope.lookupvar('snapshot::dumps::dirs::datadir') -%>"
+dumpsdir="<%= scope.lookupvar('snapshot::dumps::dirs::dumpsdir') -%>"
