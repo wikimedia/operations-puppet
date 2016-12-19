@@ -37,6 +37,7 @@ class role::cache::ssl::unified(
         # for the 2016 set from GlobalSign + Digicert.
         $certs = [
             'globalsign-2016-ecdsa-unified', 'globalsign-2016-rsa-unified',
+            'digicert-2016-ecdsa-unified', 'digicert-2016-rsa-unified',
         ]
 
         $certs_active = [
