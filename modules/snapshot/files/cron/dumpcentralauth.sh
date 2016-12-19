@@ -1,8 +1,10 @@
 #!/bin/bash
 #############################################################
 # This file is maintained by puppet!
-# modules/snapshot/templates/cron/dumpcentralauth.sh.erb
+# modules/snapshot/cron/dumpcentralauth.sh
 #############################################################
+
+source /usr/local/etc/set_dump_dirs.sh
 
 usage() {
     echo "Usage: $0 --site <datacenter> [--config <pathtofile>] [--dryrun]"
@@ -14,7 +16,6 @@ usage() {
     exit 1
 }
 
-confsdir="<%= scope.lookupvar('snapshot::dumps::dirs::confsdir') -%>"
 configfile="${confsdir}/wikidump.conf"
 dryrun="false"
 site=""
