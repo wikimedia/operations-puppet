@@ -7,5 +7,6 @@ nutcracker::verbosity: "4"
 hhvm::extra::fcgi:
   hhvm:
     server:
-      connection_timeout_seconds: 1200
-  max_execution_time: 1200
+      connection_timeout_seconds: 86400
+      thread_count: 10
+  max_execution_time: 86400
