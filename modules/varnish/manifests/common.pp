@@ -68,10 +68,7 @@ class varnish::common {
     }
 
     file { '/usr/local/lib/python2.7/dist-packages/varnishprocessor':
-        source  => 'puppet:///modules/varnish/varnishprocessor',
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0755',
+        ensure  => absent,
         recurse => true,
         purge   => true,
         force   => true,
