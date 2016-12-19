@@ -13,7 +13,20 @@ class role::labs::db::replica {
     }
     include role::mariadb::monitor
     include base::firewall
-    include role::mariadb::ferm
+
+    ferm::service{ 'mariadb_internal':
+        proto   => 'tcp',
+        port    => '3306',
+        notrack => true,
+        srange  => "(@resolve((db1011.eqiad.wmnet)) \
+@resolve((neodymium.eqiad.wmnet)) @resolve((sarin.codfw.wmnet)) \
+@resolve((dbproxy1010.eqiad.wmnet)) @resolve((dbproxy1011.eqiad.wmnet)) \
+@resolve((labstore1004.eqiad.wmnet)) @resolve((labstore1005.eqiad.wmnet)))",
+    }
+    ferm::rule { 'mariadb_dba':
+        rule => 'saddr @resolve((db1011.eqiad.wmnet)) proto tcp dport (3307) ACCEPT;',
+    }
+
     include passwords::misc::scripts
 
     # add when labsdb1009/10/11 are in service
