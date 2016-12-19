@@ -2,6 +2,8 @@ class role::mediawiki::jobrunner {
     system::role { 'role::mediawiki::jobrunner': }
 
     include ::role::mediawiki::common
+    include ::role::prometheus::apache_exporter
+    include ::role::prometheus::hhvm_exporter
     include ::mediawiki::jobrunner
 
     monitoring::service { 'jobrunner_http_hhvm':
