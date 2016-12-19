@@ -55,5 +55,16 @@ class role::graphite::alerts {
         from        => '10min',
         percentage  => 70,
     }
+
+    # Monitor EventBus 4xx and 5xx HTTP response rate.
+    monitoring::graphite_threshold { 'eventbus_http_error_rate':
+        description => 'EventBus HTTP Error Rate (4xx + 5xx)',
+        metric      => 'transformNull(sumSeries(eventbus.counters.eventlogging.service.EventHandler.POST.[45]*.rate))',
+        # If > 50% of datapoints over last 10 minutes is over thresholds, then alert.
+        warning     => 1,
+        critical    => 10,
+        from        => '10min',
+        percentage  => 50,
+    }
 }
 
