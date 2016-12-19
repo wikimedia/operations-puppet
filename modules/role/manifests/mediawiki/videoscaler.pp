@@ -11,5 +11,14 @@ class role::mediawiki::videoscaler {
         notrack => true,
         srange  => '$DOMAIN_NETWORKS',
     }
-}
 
+    # Change the apache2.conf Timeout setting
+    augeas { 'apache timeout':
+        incl    => '/etc/apache2/apache2.conf',
+        lens    => 'Httpd.lns',
+        changes => [
+            'set /files/etc/apache2/apache2.conf/directive[self::directive="Timeout"]/arg 86400',
+        ],
+        notify  => Service['apache2'],
+    }
+}
