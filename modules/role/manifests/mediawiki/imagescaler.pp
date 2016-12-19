@@ -3,6 +3,8 @@ class role::mediawiki::imagescaler {
 
     include ::role::mediawiki::scaler
     include ::role::mediawiki::webserver
+    include ::role::prometheus::apache_exporter
+    include ::role::prometheus::hhvm_exporter
     include ::base::firewall
 }
 
