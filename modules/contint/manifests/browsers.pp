@@ -10,8 +10,6 @@ class contint::browsers {
 
     if $::operatingsystem == 'Debian' {
         $latest_packages = [
-            'chromium',
-            'chromedriver',
             'firefox-esr',
             # phantomjs is not available on Jessie
         ]
@@ -19,10 +17,14 @@ class contint::browsers {
           ensure => link,
           target => '/usr/lib/chromium/chromedriver',
         }
+        package { 'chromium-browser':
+            ensure => '53.0.2785',
+        }
+        package { 'chromium-chromedriver':
+            ensure => '53.0.2785',
+        }
     } elsif os_version('ubuntu >= trusty') {
         $latest_packages = [
-            'chromium-browser',
-            'chromium-chromedriver',
             'firefox',
             'phantomjs',
         ]
@@ -30,12 +32,22 @@ class contint::browsers {
           ensure => link,
           target => '/usr/lib/chromium-browser/chromedriver',
         }
+        package { 'chromium-browser':
+            ensure => '53.0.2785',
+        }
+        package { 'chromium-chromedriver':
+            ensure => '53.0.2785',
+        }
     } else {
         $latest_packages = [
             'chromium-browser',
             'firefox',
             'phantomjs',
         ]
+    }
+
+    package { 'chromium-browser':
+        ensure => '53.0.2785',
     }
 
     package { $latest_packages:
