@@ -31,6 +31,7 @@ class graphoid(
 ) {
 
     require ::graphoid::packages
+    require ::mediawiki::packages::fonts
 
     requires_os('debian >= jessie')
 
