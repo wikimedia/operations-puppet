@@ -38,7 +38,7 @@ class role::otrs::webserver {
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-        source  => 'puppet:///files/exim/wikimedia_domains',
+        source  => 'puppet:///modules/role/exim/wikimedia_domains'
         require => Class['exim4'],
     }
     # lint:endignore
