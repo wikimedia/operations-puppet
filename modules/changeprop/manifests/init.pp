@@ -15,14 +15,21 @@
 # [*purge_port*]
 #   The port the vhtcp daemon listens to. Default: 4827
 #
+# [*restbase_uri*]
+#   RESTBase's URI. Note that this is redefined here so that async update
+#   requests can be sent to the inactive DC. Default:
+#   'http://restbase.svc.eqiad.wmnet:7231'
+#
+#
 # [*ores_uri*]
 #   The host where ORES service is running. Default: http://ores.svc.eqiad.wmnet:8081
 #
 class changeprop(
     $broker_list,
     $purge_host   = '239.128.0.112',
-    $ores_uri     = 'http://ores.svc.eqiad.wmnet:8081',
     $purge_port   = 4827,
+    $restbase_uri = 'http://restbase.svc.eqiad.wmnet:7231',
+    $ores_uri     = 'http://ores.svc.eqiad.wmnet:8081',
 ) {
 
     include ::service::configuration
