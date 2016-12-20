@@ -74,7 +74,10 @@ class puppetmaster::passenger(
             group   => 'root',
             mode    => '0444',
             source  => 'puppet:///modules/puppetmaster/default',
-            require => Package['puppetmaster-passenger'],
+            require => [
+                Package['puppetmaster-passenger'],
+                Package['puppetmaster-common']
+            ],
         }
     }
 
