@@ -2220,6 +2220,13 @@ node /^mw22(4[7-9]|50)\.codfw\.wmnet$/ {
     include base::firewall
 }
 
+# mw logging host codfw - setup pending
+node 'mwlog2001.codfw.wmnet' {
+
+    include base::firewall
+    include standard
+}
+
 node 'mx1001.wikimedia.org' {
     role(mail::mx)
     include standard
@@ -2606,13 +2613,6 @@ node 'silver.wikimedia.org' {
     include standard
 
     interface::add_ip6_mapped { 'main': }
-}
-
-# mw logging host codfw - setup pending
-node 'sinistra.codfw.wmnet' {
-
-    include base::firewall
-    include standard
 }
 
 node 'sodium.wikimedia.org' {

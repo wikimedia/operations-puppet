@@ -3928,6 +3928,11 @@ host mwlog1001 {
     fixed-address mwlog1001.eqiad.wmnet;
 }
 
+host mwlog2001 {
+    hardware ethernet 14:18:77:4E:31:59;
+    fixed-address mwlog2001.codfw.wmnet;
+}
+
 host mw1017 {
     hardware ethernet 78:2b:cb:08:79:0c;
     fixed-address mw1017.eqiad.wmnet;
@@ -6043,11 +6048,6 @@ host silver {
     fixed-address silver.wikimedia.org;
     option pxelinux.pathprefix "trusty-installer/";
     filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
-}
-
-host sinistra {
-    hardware ethernet 14:18:77:4E:31:59;
-    fixed-address sinistra.codfw.wmnet;
 }
 
 host snapshot1001 {
