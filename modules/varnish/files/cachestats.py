@@ -26,6 +26,7 @@
 """
 
 import argparse
+import copy
 import io
 import os
 import socket
@@ -53,6 +54,7 @@ class CacheStatsSender(object):
     cmd = []
     description = ''
     key_prefix = ''
+    default_stats = {}
 
     def __init__(self, argument_list):
         """Parse CLI arguments, initialize self.stats and statsd socket.
@@ -74,7 +76,13 @@ class CacheStatsSender(object):
         self.next_pub = time.time() + self.args.interval
 
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        self.stats = {}
+
+        # Initialize stats to default values
+        self.reset_stats()
+
+    def reset_stats(self):
+        """Reset stats to default values"""
+        self.stats = copy.deepcopy(self.default_stats)
 
     def gen_stats(self, record):
         """Update the self.stats dictionary. Implementation left to the
@@ -91,13 +99,21 @@ class CacheStatsSender(object):
             self.next_pub = now + self.args.interval
             buf = io.BytesIO()
             while self.stats:
-                metric = '%s:%s|c\n' % self.stats.popitem()
+                key, value = self.stats.popitem()
+
+                # Add key prefix
+                key = "{0}.{1}".format(self.args.key_prefix, key)
+
+                # Build and write metric
+                metric = '{0}:{1}|c\n'.format(key, value)
                 buf.write(metric.encode('utf-8'))
             buf.seek(io.SEEK_SET)
             if self.args.statsd_server:
                 self.sock.sendto(buf.read(), self.args.statsd_server)
             else:
                 print(buf.read().decode('utf-8', errors='replace').rstrip())
+
+            self.reset_stats()
 
     def main(self):
         """Execute the command specified in self.cmd and call handle_record for
