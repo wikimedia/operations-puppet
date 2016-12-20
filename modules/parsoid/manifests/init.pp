@@ -24,7 +24,8 @@
 #   Default: scap3
 #
 # [*mwapi_server*]
-#   The MW API server to contact when issuing direct requests to it. Default: ''
+#   The full URI of the MW API endpoint to contact when issuing direct
+#   requests to it. Default: ''
 #
 # [*mwapi_proxy*]
 #   The proxy to use to contact the MW API. Note that you usually want to set
