@@ -30,4 +30,39 @@ class role::labs::openstack::keystone::server {
         description   => 'Keystone admin and observer projects exist',
         check_command => 'check_keystone_projects',
     }
+
+    # Keystone admin API
+    service::uwsgi { 'keystone_admin':
+        port            => $keystoneconfig['auth_port'],
+        healthcheck_url => '/',
+        deployment      => None,
+        config          => {
+            wsgi-file    => '/usr/bin/keystone-wsgi-public',
+            uid          => 'keystone',
+            processes    => '10',
+            threads      => '2',
+            chmod-socket => '666',
+            logger       => [
+                'local file:/var/log/keystone/keystone-admin.log',
+            ],
+            log-route    => ['local .*'],
+        },
+    }
+    service::uwsgi { 'keystone_public':
+        port            => $keystoneconfig['public_port'],
+        healthcheck_url => '/',
+        deployment      => None,
+        config          => {
+            wsgi-file    => '/usr/bin/keystone-wsgi-public',
+            uid          => 'keystone',
+            processes    => '10',
+            threads      => '2',
+            chmod-socket => '666',
+            logger       => [
+                'local file:/var/log/keystone/keystone-public.log',
+            ],
+            log-route    => ['local .*'],
+
+        },
+    }
 }
