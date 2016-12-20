@@ -3981,7 +3981,6 @@ host mw1167 {
 host mw1168 {
     hardware ethernet 90:B1:1C:27:88:5B;
     fixed-address mw1168.eqiad.wmnet;
-    next-server 208.80.154.83; # install1001 (tftp server)
     option pxelinux.pathprefix "trusty-installer/";
     filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
