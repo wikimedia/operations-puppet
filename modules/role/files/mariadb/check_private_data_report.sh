@@ -1,0 +1,19 @@
+#!/bin/bash
+
+REPORTS_DIR='/var/log'
+REPORT_NAME=`echo private_data_report_$(hostname)_$(date +"%Y%m%d").txt`
+
+# remove older than 7 days files
+
+find $REPORTS_DIR/$REPORT_NAME -type f -mtime 7 -exec rm -f {} \;
+
+# run the script
+
+/usr/local/sbin/check_private_data.py 2>&1 > $REPORTS_DIR/$REPORT_NAME
+
+DATA=`cat $REPORTS_DIR/$REPORT_NAME | grep -v "-" | wc -l`
+
+if [ $DATA -gt 0 ]
+then
+        echo "Private data detected at `hostname` check: /var/log/private_data_report_$(hostname)_$(date +"%Y%m%d").txt"  | mail -s "Private data found at `hostname`" marostegui@wikimedia.org
+fi
