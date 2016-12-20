@@ -4,7 +4,6 @@ class role::prometheus::ops {
     include base::firewall
 
     $targets_path = '/srv/prometheus/ops/targets'
-    $rules_path = '/srv/prometheus/ops/rules'
     $storage_retention = hiera('prometheus::server::storage_retention', '4320h0m0s')
 
     $config_extra = {
@@ -268,7 +267,8 @@ class role::prometheus::ops {
         source => "puppet:///modules/role/prometheus/mysql-labs_${::site}.yaml",
     }
 
-    file { "${rules_path}/rules_ops.conf":
+    prometheus::rule { 'rules_ops.conf':
+        instance => 'ops',
         source => 'puppet:///modules/role/prometheus/rules_ops.conf',
     }
 
