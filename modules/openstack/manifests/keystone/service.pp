@@ -26,13 +26,28 @@ class openstack::keystone::service($keystoneconfig, $openstack_version=$::openst
     $labs_networks = $network::constants::labs_networks
 
     file {
+        '/var/log/keystone':
+            ensure  => directory,
+            owner   => 'www-data',
+            group   => 'www-data',
+            mode    => '0755';
+        '/var/log/keystone/uwsgi':
+            ensure  => directory,
+            owner   => 'www-data',
+            group   => 'www-data',
+            mode    => '0755';
+        '/etc/keystone':
+            ensure  => directory,
+            owner   => 'keystone',
+            group   => 'keystone',
+            mode    => '0755';
         '/etc/keystone/keystone.conf':
             content => template("openstack/${openstack_version}/keystone/keystone.conf.erb"),
             owner   => 'keystone',
             group   => 'keystone',
-            notify  => Service['keystone'],
+            notify  => Service['uwsgi-keystone-admin', 'uwsgi-keystone-public'],
             require => Package['keystone'],
-            mode    => '0440';
+            mode    => '0444';
         '/etc/keystone/policy.json':
             source  => "puppet:///modules/openstack/${openstack_version}/keystone/policy.json",
             mode    => '0644',
@@ -44,22 +59,52 @@ class openstack::keystone::service($keystoneconfig, $openstack_version=$::openst
             owner   => 'root',
             group   => 'root',
             mode    => '0644',
-            notify  => Service['keystone'],
+            notify  => Service['uwsgi-keystone-admin', 'uwsgi-keystone-public'],
             recurse => true;
         '/usr/lib/python2.7/dist-packages/wmfkeystoneauth.egg-info':
             source  => "puppet:///modules/openstack/${openstack_version}/keystone/wmfkeystoneauth.egg-info",
             owner   => 'root',
             group   => 'root',
             mode    => '0644',
-            notify  => Service['keystone'],
+            notify  => Service['uwsgi-keystone-admin', 'uwsgi-keystone-public'],
             recurse => true;
+        # Disable the keystone process itself; this will be handled
+        #  by nginx and uwsgi
+        '/etc/init/keystone.conf':
+            ensure  => 'absent';
     }
 
     if $::fqdn == hiera('labs_nova_controller') {
-        service { 'keystone':
-            ensure    => running,
-            subscribe => File['/etc/keystone/keystone.conf'],
-            require   => Package['keystone'];
+        # Set up uwsgi services
+
+        # Keystone admin API
+        service::uwsgi { 'keystone-admin':
+            port            => $keystoneconfig['auth_port'],
+            healthcheck_url => '/',
+            deployment      => None,
+            config          => {
+                wsgi-file => '/usr/bin/keystone-wsgi-admin',
+                name      => 'keystone',
+                processes => '10',
+                threads   => '2',
+                logto     => '/var/log/keystone/uwsgi/keystone-admin.log',
+                logger    => 'file:/var/log/keystone/uwsgi/keystone-admin-uwsgi.log',
+            },
+            require         => File['/var/log/uwsgi/keystone'],
+        }
+        service::uwsgi { 'keystone-public':
+            port            => $keystoneconfig['public_port'],
+            healthcheck_url => '/',
+            deployment      => None,
+            config          => {
+                wsgi-file => '/usr/bin/keystone-wsgi-public',
+                name      => 'keystone',
+                processes => '10',
+                threads   => '2',
+                logto     => '/var/log/keystone/uwsgi/keystone-public.log',
+                logger    => 'file:/var/log/keystone/uwsgi/keystone-public-uwsgi.log',
+            },
+            require         => File['/var/log/uwsgi/keystone'],
         }
 
         # Clean up expired keystone tokens, because keystone seems to leak them
@@ -75,10 +120,6 @@ class openstack::keystone::service($keystoneconfig, $openstack_version=$::openst
                 command => "/usr/bin/mysql ${keystone_db_name} -h${keystone_db_host} -u${keystone_db_user} -p${keystone_db_pass} -e 'DELETE FROM token WHERE NOW() - INTERVAL 2 day > expires LIMIT 10000;'",
         }
 
-        nrpe::monitor_service { 'check_keystone_process':
-            description  => 'keystone process',
-            nrpe_command => "/usr/lib/nagios/plugins/check_procs -c 1: --ereg-argument-array '^/usr/bin/python /usr/bin/keystone-all'",
-        }
         monitoring::service { 'keystone-http-35357':
             description   => 'keystone http',
             check_command => 'check_http_on_port!35357',
@@ -87,10 +128,12 @@ class openstack::keystone::service($keystoneconfig, $openstack_version=$::openst
             description   => 'keystone http',
             check_command => 'check_http_on_port!5000',
         }
-    } else {
-        service { 'keystone':
-            ensure  => stopped,
-            require => Package['keystone'];
-        }
+    }
+
+    # stop the keystone process itself; this will be handled
+    #  by nginx and uwsgi
+    service { 'keystone':
+        ensure  => stopped,
+        require => Package['keystone'];
     }
 }
