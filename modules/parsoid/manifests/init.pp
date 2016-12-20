@@ -23,12 +23,22 @@
 #   Deployment system to use: available are trebuchet, scap3 or git.
 #   Default: scap3
 #
+# [*mwapi_server*]
+#   The MW API server to contact when issuing direct requests to it. Default: ''
+#
+# [*mwapi_proxy*]
+#   The proxy to use to contact the MW API. Note that you usually want to set
+#   either mwapi_server or this variable. Do not set both! Default:
+#   'http://api.svc.eqiad.wmnet'
+#
 class parsoid(
     $port          = 8000,
     $settings_file = 'conf/wmf/localsettings.js',
     $logging_name  = 'parsoid',
     $statsd_prefix = 'parsoid',
     $deployment    = 'scap3',
+    $mwapi_server  = '',
+    $mwapi_proxy   = 'http://api.svc.eqiad.wmnet',
 ) {
 
     service::node { 'parsoid':
@@ -49,6 +59,10 @@ class parsoid(
         auto_refresh      => false,
         deployment        => $deployment,
         deployment_config => true,
+        deployment_vars   => {
+            mwapi_server => $mwapi_server,
+            mwapi_proxy  => $mwapi_proxy,
+        },
     }
 
 }

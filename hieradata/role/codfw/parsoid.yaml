@@ -1,3 +1,5 @@
+parsoid::mwapi_server: https://api.svc.eqiad.wmnet
+parsoid::mwapi_proxy: ''
 debdeploy::grains:
   debdeploy-parsoid-codfw:
     value: standard
