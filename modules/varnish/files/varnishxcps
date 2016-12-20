@@ -58,7 +58,7 @@ class XcpsCacheStatsSender(CacheStatsSender):
             elif k == 'EC':
                 k = 'ssl_ecdhe_curve'
             v = v.replace('.', '_')
-            s = '.'.join((self.args.key_prefix, k, v)).lower()
+            s = '.'.join((k, v)).lower()
             self.stats[s] = self.stats.get(s, 0) + 1
 
 
