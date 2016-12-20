@@ -54,8 +54,7 @@ class MediaCacheStatsSender(CacheStatsSender):
         status_code = record
 
         for key in ('reqs.all', 'resps.' + status_code):
-            s = "{0}.{1}".format(self.args.key_prefix, key)
-            self.stats[s] = self.stats.get(s, 0) + 1
+            self.stats[key] = self.stats.get(key, 0) + 1
 
 
 if __name__ == "__main__":
