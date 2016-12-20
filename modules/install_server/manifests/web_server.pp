@@ -16,12 +16,14 @@
 class install_server::web_server {
     include ::nginx
 
-    letsencrypt::cert::integrated { 'apt':
-        subjects   => 'apt.wikimedia.org',
-        puppet_svc => 'nginx',
-        system_svc => 'nginx',
+    if hiera('apt::wikimedia::active-host', false) {
+        letsencrypt::cert::integrated { 'apt':
+            subjects   => 'apt.wikimedia.org',
+            puppet_svc => 'nginx',
+            system_svc => 'nginx',
+        }
+        # TODO: Monitor SSL?
     }
-    # TODO: Monitor SSL?
 
     $ssl_settings = ssl_ciphersuite('nginx', 'mid', true)
 

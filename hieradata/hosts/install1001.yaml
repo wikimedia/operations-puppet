@@ -2,3 +2,5 @@
 debdeploy::grains:
   debdeploy-tftpserver:
     value: standard
+
+apt::wikimedia::active-host: false
