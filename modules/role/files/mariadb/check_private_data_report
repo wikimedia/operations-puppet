@@ -1,0 +1,28 @@
+#!/bin/bash
+set -e
+
+PRIVATE_DATA="/usr/local/sbin/check_private_data.py"
+REPORT_PATH="/var/log/private_data_report_${HOSTNAME}.log"
+
+if [ ! -f "$PRIVATE_DATA" ]
+then
+    echo "$PRIVATE_DATA is not present"
+    exit 1
+fi
+
+# run the script
+
+if [ "$HOSTNAME" == "db1069" ]
+then
+    echo "This script will not work on db1069 as it has multiple instances"
+    exit 1
+fi
+echo "Start time: $(date)" > "$REPORT_PATH"
+$PRIVATE_DATA >> "$REPORT_PATH" 2>&1
+
+DATA=$(/bin/egrep -v "^--|^Start time" -c "$REPORT_PATH")
+
+if [ "$DATA" -gt "0" ]
+then
+    echo "Private data detected at $HOSTNAME check: $REPORT_PATH" | /usr/bin/mail -s "Private data found at $HOSTNAME" marostegui@wikimedia.org
+fi
