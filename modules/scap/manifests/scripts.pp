@@ -64,9 +64,6 @@ class scap::scripts {
         mode   => '0555',
         source => 'puppet:///modules/scap/purge-varnish',
     }
-    file { '/usr/local/bin/refreshWikiversionsCDB':
-        ensure => absent,
-    }
     file { '/usr/local/bin/set-group-write':
         owner  => 'root',
         group  => 'root',
