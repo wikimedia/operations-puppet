@@ -17,7 +17,7 @@ server {
 	server_name <%= ([@server_name] + @server_aliases).join(" ") %>;
 
 	error_log   /var/log/nginx/<%= @name %>.error.log;
-	access_log   off;
+	access_log   <% if @access_log %>/var/log/nginx/<%= @name %>.access.log<% else %>off<% end %>;
 
 	<%- @certs_nginx.each do |cert| -%>
 	ssl_certificate /etc/ssl/localcerts/<%= cert %>.chained.crt;
