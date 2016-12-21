@@ -16,11 +16,6 @@ class role::statistics::cruncher inherits role::statistics::base {
     # include stuff common to statistics compute nodes
     include ::statistics::compute
 
-    # Aaron Halfaker (halfak) wants MongoDB for his project.
-    class { 'mongodb':
-        dbpath  => "${::statistics::working_path}/mongodb",
-    }
-
     # rsync logs from logging hosts
     include ::statistics::rsync::eventlogging
 
