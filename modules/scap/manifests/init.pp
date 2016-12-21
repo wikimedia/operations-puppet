@@ -11,7 +11,7 @@
 #    Default 'deployment-tin.eqiad.wmflabs'.
 class scap (
     $deployment_server = 'deployment',
-    $wmflabs_master = 'deployment-tin.eqiad.wmflabs',
+    $wmflabs_master = 'deployment-tin.deployment-prep.eqiad.wmflabs',
     $version = '3.4.2-1',
 ) {
     package { 'scap':
