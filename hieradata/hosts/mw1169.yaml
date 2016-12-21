@@ -1,0 +1,5 @@
+mediawiki::jobrunner::runners_transcode: 10
+hhvm::extra::fcgi:
+  hhvm:
+    server:
+      thread_count: 15
