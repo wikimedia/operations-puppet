@@ -2,4 +2,6 @@ mediawiki::jobrunner::runners_transcode: 10
 hhvm::extra::fcgi:
   hhvm:
     server:
+      connection_timeout_seconds: 86400
       thread_count: 15
+  max_execution_time: 86400
