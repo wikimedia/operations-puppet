@@ -41,7 +41,7 @@ class role::labs::nfs::secondary($monitor = 'eth0') {
     }
 
     # TODO: hiera this
-
+    # TODO: use hiera in maintain_dbusers too when this is hiera'd
 
     # Floating IP assigned to drbd primary(active NFS server). Should come from hiera
     $cluster_ip = '10.64.37.18'
