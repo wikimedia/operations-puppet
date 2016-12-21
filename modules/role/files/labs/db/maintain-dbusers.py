@@ -63,6 +63,7 @@ import pymysql
 import random
 from hashlib import sha1
 import subprocess
+import netifaces
 
 PROJECT = 'tools'
 PASSWORD_LENGTH = 16
@@ -422,6 +423,24 @@ def delete_account(config, account):
         """, ('tool', account))
         acct_db.commit()
 
+
+def is_active_nfs(config):
+    """
+    Return true if current host is the active NFS host
+
+    It looks for an interface attached to the current host that has an IP
+    that is the NFS cluster service IP.
+    """
+    for iface in netifaces.interfaces():
+        ifaddress = netifaces.ifaddresses(iface)
+        if netifaces.AF_INET not in ifaddress:
+            continue
+        if any([
+                ip['addr'] == config['nfs-cluster-ip']
+                for ip in ifaddress[netifaces.AF_INET]]):
+            return True
+    return False
+
 if __name__ == '__main__':
     argparser = argparse.ArgumentParser()
 
@@ -457,7 +476,7 @@ if __name__ == '__main__':
         delete:
 
         Deletes a given user. Provide a username like tools.admin,
-        not a mysql user name.
+        not a mysql user name. 
         """
     )
     argparser.add_argument(
@@ -483,8 +502,14 @@ if __name__ == '__main__':
         harvest_replica_accts(config)
     elif args.action == 'maintain':
         while True:
-            populate_new_tools(config)
-            create_accounts(config)
+            # Check if we're the primary NFS server.
+            # If we aren't, just loop lamely, not exit. This allows this script to
+            # run continuously on both labstores, making for easier monitoring given
+            # our puppet situation and also easy failover. When NFS primaries are
+            # switched, nothing new needs to be done to switch this over.
+            if is_active_nfs(config):
+                populate_new_tools(config)
+                create_accounts(config)
             time.sleep(60)
     elif args.action == 'delete':
         if args.extra_args is None:

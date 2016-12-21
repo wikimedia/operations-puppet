@@ -22,7 +22,8 @@ class role::labs::db::maintain_dbusers {
 
     package { [
         'python3-ldap3',
-        'python-yaml',
+        'python3-yaml',
+        'python3-netifaces',
     ]:
         ensure => present,
     }
@@ -68,7 +69,10 @@ class role::labs::db::maintain_dbusers {
             'host' => 'm5-master.eqiad.wmnet',
             'username' => $::passwords::labsdbaccounts::db_user,
             'password' => $::passwords::labsdbaccounts::db_password,
-        }
+        },
+        # Pick this up from Hiera once it gets put into hiera
+        # in role::labs::nfs::secondary
+        'nfs-cluster-ip'   => '10.64.37.18',
     }
 
     file { '/etc/dbusers.yaml':
