@@ -119,7 +119,7 @@ restbase::eventlogging_service_uri: http://deployment-eventlogging04.deployment-
 restbase::pdfrender_uri: http://deployment-pdfrender02.deployment-prep.eqiad.wmflabs:5252
 restbase::citoid_uri: http://deployment-sca02.deployment-prep.eqiad.wmflabs:1970
 restbase::trendingedits_uri: http://deployment-trending01.deployment-prep.eqiad.wmflabs:6699
-"mediawiki::log_aggregator": deployment-fluorine02.eqiad.wmflabs:8420
+"mediawiki::log_aggregator": deployment-fluorine02.deployment-prep.eqiad.wmflabs:8420
 "mediawiki::forward_syslog": deployment-logstash2.deployment-prep.eqiad.wmflabs:10514
 mediawiki_memcached_servers:
     - 10.68.23.25:11211:1  # deployment-memc04
@@ -139,7 +139,7 @@ ssh::server::explicit_macs: false
 "misc::syslog-server::basepath": /data/project/syslog
 "cxserver::apertium": http://apertium-beta.wmflabs.org
 role::deployment::mediawiki::key_fingerprint: f0:54:06:fa:17:27:97:a2:cc:69:a0:a7:df:4c:0a:e3
-"role::deployment::salt_masters::deployment_server": deployment-tin.eqiad.wmflabs
+"role::deployment::salt_masters::deployment_server": deployment-tin.deployment-prep.eqiad.wmflabs
 "hhvm::extra::fcgi":
     hhvm:
         pcre_cache_type: lru
