@@ -240,10 +240,6 @@ node 'carbon.wikimedia.org' {
         interface => 'eth0',
     }
 
-    class { 'ganglia::monitor::aggregator':
-        sites =>  'eqiad',
-    }
-
 }
 
 # cerium, praseodymium and xenon are Cassandra test hosts
@@ -1319,6 +1315,10 @@ node 'install1001.wikimedia.org' {
 
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
+    }
+
+    class { 'ganglia::monitor::aggregator':
+        sites =>  'eqiad',
     }
 }
 
