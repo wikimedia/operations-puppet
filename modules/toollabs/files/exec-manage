@@ -11,7 +11,7 @@ function usage {
         echo "exec-manage [status|depool|repool|test] exec_host_name"
         echo "exec-manage [list]"
         echo ""
-        echo "Example: exec-manage status tools-exec1001.eqiad.wmflabs "
+        echo "Example: exec-manage status tools-exec1001.tools.eqiad.wmflabs"
 }
 
 if [[ ! "$1" || "$1" == '-h' ]]; then
