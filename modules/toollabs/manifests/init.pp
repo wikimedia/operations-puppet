@@ -4,7 +4,7 @@ class toollabs (
     $external_hostname = undef,
     $external_ip = undef,
     $is_mail_relay = false,
-    $active_mail_relay = 'tools-mail.eqiad.wmflabs',
+    $active_mail_relay = 'tools-mail.tools.eqiad.wmflabs',
     $mail_domain = 'tools.wmflabs.org',
 ) {
 
