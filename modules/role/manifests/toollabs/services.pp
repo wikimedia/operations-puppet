@@ -1,6 +1,6 @@
 # filtertags: labs-project-tools
 class role::toollabs::services(
-    $active_host = 'tools-services-01.eqiad.wmflabs',
+    $active_host = 'tools-services-01.tools.eqiad.wmflabs',
 ) {
     system::role { 'role::toollabs::services':
         description => 'Tool Labs manifest based services',
