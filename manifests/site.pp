@@ -925,6 +925,10 @@ node 'dbproxy1011.eqiad.wmnet' {
     }
 }
 
+node /^dbmonitor[12]001\.wikimedia\.org$/ {
+    role(tendril)
+}
+
 
 # Analytics Druid servers.
 # https://wikitech.wikimedia.org/wiki/Analytics/Data_Lake#Druid

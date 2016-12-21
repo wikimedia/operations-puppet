@@ -38,6 +38,16 @@ host darmstadtium {
      fixed-address darmstadtium.eqiad.wmnet;
 }
 
+host dbmonitor1001 {
+     hardware ethernet aa:00:00:d6:5c:05;
+     fixed-address dbmonitor1001.wikimedia.org;
+}
+
+host dbmonitor2001 {
+     hardware ethernet aa:00:00:de:d7:57;
+     fixed-address dbmonitor2001.wikimedia.org;
+}
+
 # ganeti VM used for d-i testing
 host d-i-test {
     hardware ethernet aa:00:00:3b:60:cb;
