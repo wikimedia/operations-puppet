@@ -8,12 +8,14 @@
 # - $package_dir:  Directory where the service should be installed.
 # - $data_dir: Directory where the database should be stored
 # - $log_dir: Directory where the logs go
+# - $endpoint: External endpoint name
 class wdqs(
     $use_git_deploy = true,
     $username = 'blazegraph',
     $package_dir = '/srv/deployment/wdqs/wdqs',
     $data_dir = '/var/lib/wdqs',
     $log_dir = '/var/log/wdqs',
+    $endpoint = '',
 ) {
 
     $deploy_user = 'deploy-service'
