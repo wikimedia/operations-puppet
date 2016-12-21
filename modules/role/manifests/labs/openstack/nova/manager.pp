@@ -7,6 +7,7 @@ class role::labs::openstack::nova::manager {
     include ::mediawiki::packages::tex
     include ::mediawiki::cgroup
     include ::scap::scripts
+    include ::openstack::clientlib
 
     include role::labs::openstack::nova::common
     $novaconfig = $role::labs::openstack::nova::common::novaconfig
