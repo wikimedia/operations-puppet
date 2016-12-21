@@ -2,6 +2,6 @@
 Description=Maintain labsdb accounts
 
 [Service]
-ExecStart=/usr/local/sbin/maintain-dbusers --config /etc/dbusers.yaml
-Restart=no
+ExecStart=/usr/local/sbin/maintain-dbusers maintain
+Restart=always
 Nice=19
