@@ -3,6 +3,7 @@
 #
 # Set up to only allow root to add packages
 class aptly(
+    $manage_apache=false,
     $manage_nginx=true,
     $owner='root',
     $group='root',
@@ -23,6 +24,13 @@ class aptly(
         owner  => 'root',
         group  => 'root',
         mode   => '0444',
+    }
+
+    if $manage_apache {
+        apache::static_site { 'aptly-server':
+            servername => $::fqdn,
+            docroot    => '/srv/packages/public',
+        }
     }
 
     if $manage_nginx {
