@@ -91,14 +91,6 @@ class role::labs::db::maintain_dbusers {
         notify  => Base::Service_unit['maintain-dbusers'],
     }
 
-    # To delete users from all the labsdb mysql databases
-    file { '/usr/local/sbin/delete-dbuser':
-        source => 'puppet:///modules/labstore/delete-dbuser',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0550',
-    }
-
     base::service_unit { 'maintain-dbusers':
         ensure        => present,
         systemd       => true,

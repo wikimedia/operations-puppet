@@ -49,6 +49,7 @@ In normal usage, just a continuous process running `populate_new_tools` and
 TODO:
   - Support for maintaining per-tool restrictions (number of connections + time)
 """
+import sys
 import ldap3
 import logging
 import argparse
@@ -373,6 +374,47 @@ def create_accounts(config):
                     logging.info('Created account in %s for %s', host, row['username'])
 
 
+def delete_account(config, account):
+    """
+    Deletes a mysql user account
+
+    - Deletes replica.my.cnf
+    - Removes them from accounts db
+    - Drops users from labsdbs
+    """
+    acct_db = get_accounts_db_conn(config)
+
+    for host in config['labsdbs']['hosts']:
+        labsdb = pymysql.connect(
+            host,
+            config['labsdbs']['username'],
+            config['labsdbs']['password'])
+        with acct_db.cursor() as cur:
+            cur.execute("""
+            SELECT mysql_username, password_hash, username, hostname,
+                   account_host.id as account_host_id
+            FROM account JOIN account_host on account.id = account_host.account_id
+            WHERE hostname = %s AND username = %s AND status = 'present'
+            """, (host, account))
+            for row in cur:
+                with labsdb.cursor() as labsdb_cur:
+                    labsdb_cur.execute("DROP USER %s" % row['mysql_username'])
+                    labsdb.commit()
+                with acct_db.cursor() as write_cur:
+                    write_cur.execute("""
+                    UPDATE account_host
+                    SET status='absent'
+                    WHERE id = %s
+                    """, (row['account_host_id'],))
+                    acct_db.commit()
+                    logging.info('Deleted account in %s for %s', host, row['username'])
+
+    # Now we get rid of the file
+    replica_file_path = get_replica_path('tool', )
+    subprocess.check_output(['/usr/bin/chattr', '+i', replica_file_path])
+    os.remove(replica_file_path)
+    logging.info('Deleted %s', replica_file_path)
+
 if __name__ == '__main__':
     argparser = argparse.ArgumentParser()
 
@@ -389,7 +431,7 @@ if __name__ == '__main__':
     )
     argparser.add_argument(
         'action',
-        choices=['harvest', 'maintain'],
+        choices=['harvest', 'maintain', 'delete'],
         help="""
         What action to take.
 
@@ -404,6 +446,20 @@ if __name__ == '__main__':
         Runs as a daemon that watches for new tools being created, creates accounts
         for them in all the labsdbs, maintains state in the account database, and
         writes out replica.my.cnf files.
+
+        delete:
+
+        Deletes a given user. Provide a username like tools.admin,
+        not a mysql user name.
+        """
+    )
+    argparser.add_argument(
+        'extra_args',
+        nargs='?',
+        help="""
+        Optional argument used when more info needs to be passed in.
+
+        Currently used with `delete` to pass in a username.
         """
     )
     args = argparser.parse_args()
@@ -423,3 +479,8 @@ if __name__ == '__main__':
             populate_new_tools(config)
             create_accounts(config)
             time.sleep(60)
+    elif args.action == 'delete':
+        if args.extra_args is None:
+            logging.error('Need to provide username to delete')
+            sys.exit(1)
+        delete_account(config, args.extra_args)
