@@ -44,6 +44,10 @@
 #   correct configuration directives in the site's nginx config file as well
 #   as creates the OCSP data file itself and ensures a cron is running to
 #   keep it up to date.  Does not work for ACME (letsencrypt) yet!
+#
+# [*access_log*]
+#   Boolean. If true, sets up the access log for the localssl virtualhost.
+#   Do NOT enable on the cache nodes. Defaults to false
 
 define tlsproxy::localssl(
     $certs          = [],
@@ -56,6 +60,7 @@ define tlsproxy::localssl(
     $redir_port     = undef,
     $do_ocsp        = false,
     $skip_private   = false,
+    $access_log     = false,
 ) {
     if (!empty($certs) and !empty($acme_subjects)) or (empty($certs) and empty($acme_subjects)) {
         fail('Specify either certs or acme_subjects, not both and not neither.')
