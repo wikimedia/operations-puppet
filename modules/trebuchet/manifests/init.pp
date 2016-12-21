@@ -8,7 +8,7 @@ class trebuchet(
     $deployment_server = $::deployment_server_override
 ) {
     $trebuchet_master = $::realm ? {
-        labs       => pick($deployment_server, "${::labsproject}-deploy.eqiad.wmflabs"),
+        labs       => pick($deployment_server, "${::labsproject}-deploy.${::labsproject}.eqiad.wmflabs"),
         default    => hiera('deployment_server','tin.eqiad.wmnet'),
     }
 
