@@ -86,7 +86,8 @@ dataCubes:
     # to ensure some values get shown.
     defaultDuration: P3M
 
-    defaultSortMeasure: events
+    # Commenting, hitting a bug when set
+    #defaultSortMeasure: events
 
     # The names of measures that are selected by default
     defaultSelectedMeasures:
@@ -94,9 +95,10 @@ dataCubes:
 
     # The names of dimensions that are pinned by default (in order that they will appear in the pin bar)
 
-    defaultPinnedDimensions:
-        - event_entity
-        - event_type
+    # Commenting those because are misleading instead of helpfull
+    #defaultPinnedDimensions:
+    #    - event_entity
+    #    - event_type
 
     # How the dataset should be introspected
     # possible options are:
