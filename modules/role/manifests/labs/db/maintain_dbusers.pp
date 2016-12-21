@@ -79,10 +79,6 @@ class role::labs::db::maintain_dbusers {
         owner   => 'root',
         group   => 'root',
         mode    => '0400',
-        require => [
-            Package['python3-ldap3'],
-            Package['python-yaml'],
-        ],
     }
 
     file { '/usr/local/sbin/maintain-dbusers':
