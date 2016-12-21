@@ -81,7 +81,7 @@ cache::text::apps:
   restbase:
     route: eqiad
     backends:
-      eqiad: 'deployment-restbase01.eqiad.wmflabs'
+      eqiad: 'deployment-restbase01.deployment-prep.eqiad.wmflabs'
 cache::upload::apps:
   swift:
     route: eqiad
