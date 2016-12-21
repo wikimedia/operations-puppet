@@ -2404,6 +2404,12 @@ host es2019 {
     fixed-address es2019.codfw.wmnet;
 }
 
+
+host europium {
+    hardware ethernet 90:B1:1C:00:B1:93;
+    fixed-address europium.eqiad.wmnet;
+}
+
 host eventlog1001 {
     hardware ethernet 90:B1:1C:2D:80:E4;
     fixed-address eventlog1001.eqiad.wmnet;
