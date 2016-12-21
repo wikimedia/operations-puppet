@@ -14,7 +14,7 @@
     hostname = <%= @db_host %>
     database = <%= @db_name %>
     username = <%= @db_user %>
-    url = jdbc:mysql://<%= @db_host %>/<%= @db_name %>?characterSetResults=utf8&characterEncoding=utf8&connectionCollation=utf8_unicode_ci
+    url = jdbc:mysql://<%= @db_host %>/<%= @db_name %>?characterSetResults=utf8mb4&characterEncoding=utf8mb4&connectionCollation=utf8mb4_unicode_ci
 [auth]
     type = LDAP
     cookieSecure = true
