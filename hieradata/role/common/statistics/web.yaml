@@ -3,5 +3,5 @@ admin::groups:
   - statistics-web-users
   - statistics-admins
 debdeploy::grains:
-  debdeploy-stat:
+  debdeploy-analytics-web:
     value: standard
