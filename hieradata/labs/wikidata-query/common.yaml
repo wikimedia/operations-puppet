@@ -3,4 +3,5 @@
 "wdqs::use_git_deploy": false
 "wdqs::package_dir": '/srv/wdqs/blazegraph'
 "wdqs::data_dir": '/srv/wdqs/blazegraph'
+"wdqs::endpoint": ''
 
