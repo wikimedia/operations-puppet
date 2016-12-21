@@ -43,7 +43,6 @@ define apache::static_site(
     validate_ensure($ensure)
     validate_absolute_path($docroot)
 
-    $ldap_groups     = any2array($restricted_to)
     $servername_safe = regsubst($servername, '[\W_]', '-', 'G')
     $servername_real = is_domain_name($servername) ? {
         true  => $servername,
@@ -54,7 +53,7 @@ define apache::static_site(
     include ::apache::mod::headers
     include ::apache::mod::rewrite
 
-    if ! empty($ldap_groups) {
+    if ! empty($restricted_to) {
         include ::apache::mod::authnz_ldap
         include ::passwords::ldap::production
     }
@@ -66,9 +65,8 @@ define apache::static_site(
     }
 
     apache::site { $name:
-        ensure    => $ensure,
-        content   => template('apache/static.conf.erb'),
-        conf_type => 'sites',
-        priority  => $priority,
+        ensure   => $ensure,
+        content  => template('apache/static_site.conf.erb'),
+        priority => $priority,
     }
 }

@@ -11,14 +11,14 @@
     Header always merge Vary X-Forwarded-Proto
     Header set Strict-Transport-Security "max-age=604800"
 
-<%- if @ldap_groups.length -%>
+<%- if @restricted_to -%>
     AuthName "<%= @auth_realm %>"
     AuthType Basic
     AuthBasicProvider ldap
     AuthLDAPBindDN cn=proxyagent,ou=profile,dc=wikimedia,dc=org
     AuthLDAPBindPassword <%= scope.lookupvar('::passwords::ldap::production::proxypass') %>
     AuthLDAPURL "ldaps://ldap-labs.eqiad.wikimedia.org ldap-labs.codfw.wikimedia.org/ou=people,dc=wikimedia,dc=org?cn"
-    <%- @ldap_groups.each do |group| -%>
+    <%- (@restricted_to.kind_of?(String) ? [@restricted_to] : @restricted_to).each do |group| -%>
     Require ldap-group "cn=<%= group %>,ou=groups,dc=wikimedia,dc=org"
     <%- end -%>
 <%- end -%>
