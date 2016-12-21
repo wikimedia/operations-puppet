@@ -11,7 +11,11 @@ import yaml
 
 if __name__ == '__main__':
     argparser = argparse.ArgumentParser()
-    argparser.add_argument('--config', help='Path to YAML config file')
+    argparser.add_argument(
+        '--config',
+        default='/etc/dbusers.yaml',
+        help='Path to YAML config file'
+    )
     argparser.add_argument('username', help='mysql username to delete')
     args = argparser.parse_args()
 
@@ -19,11 +23,7 @@ if __name__ == '__main__':
         config = yaml.safe_load(f)
 
 
-    # Only on old' style labsdbs for now!
-    hosts = [
-        h for h in config['labsdbs']['hosts']
-        if config['labsdbs']['hosts'][h]['grant-type'] == 'legacy'
-    ]
+    hosts = [h for h in config['labsdbs']['hosts']]
     for host in hosts:
         conn = pymysql.connect(
             host,
