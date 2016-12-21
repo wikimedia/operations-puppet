@@ -81,7 +81,6 @@ class role::labs::db::maintain_dbusers {
         mode    => '0400',
         require => [
             Package['python3-ldap3'],
-            Package['python-yaml'],
         ],
     }
 
