@@ -62,3 +62,4 @@ role::eventstreams::streams:
     topics:
       - eqiad.mediawiki.revision-create
       - codfw.mediawiki.revision-create
+changeprop::restbase_uri: http://restbase.svc.codfw.wmnet:7231
