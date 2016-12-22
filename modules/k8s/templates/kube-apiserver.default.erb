@@ -31,7 +31,6 @@ DAEMON_ARGS="--token-auth-file=/etc/kubernetes/tokenauth \
 --authorization-policy-file=/etc/kubernetes/abac \
 --tls-cert-file=<%= @real_ssl_cert_path %> \
 --tls-private-key-file=<%= @real_ssl_key_path %> \
---tls-cert-file=/etc/ssl/localcerts/<%= @ssl_certificate_name %>.chained.crt \
 --enforced-docker-registry=<%= @docker_registry %> \
 --host-automounts=<%= @host_automounts_string %> \
 --host-paths-allowed=<%= @host_paths_allowed_string %> \
