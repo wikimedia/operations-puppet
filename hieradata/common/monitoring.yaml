@@ -194,6 +194,8 @@ monitoring::groups:
     description: Restbase test/staging eqiad
   restbase_test_codfw:
     description: Restbase test/staging codfw
+  restbase_dev_eqiad:
+    description: Services development testing eqiad
 
 # Service Clusters
   sca_eqiad:
