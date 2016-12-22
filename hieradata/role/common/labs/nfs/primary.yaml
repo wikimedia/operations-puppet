@@ -12,3 +12,5 @@ ssh::server::authorized_keys_file: /etc/ssh/userkeys/%u /etc/ssh/userkeys/%u.d/l
 debdeploy::grains:
   debdeploy-labsnfs:
     value: standard
+
+openstack::version: mitaka
