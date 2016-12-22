@@ -96,6 +96,13 @@ class role::grafana::base(
             'snapshots'  => {
                 external_enabled => false,
             },
+
+            # Email is used to send alerts
+            'smtp'       => {
+                enabled      => true,
+                host         => $::mail_smarthost[0],
+                from_address => "grafana@${::fqdn}",
+            },
         },
     }
 
