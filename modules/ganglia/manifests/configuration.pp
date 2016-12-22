@@ -6,7 +6,7 @@ class ganglia::configuration {
     $url = 'http://ganglia.wikimedia.org'
     $gmetad_hosts = [ '208.80.154.53']
     $aggregator_hosts = {
-        'eqiad' => [ ipresolve('carbon.wikimedia.org') ],
+        'eqiad' => [ ipresolve('install1001.wikimedia.org') ],
         'esams' => [ ipresolve('bast3001.wikimedia.org') ],
         'codfw' => [ ipresolve('install2001.wikimedia.org') ],
         'ulsfo' => [ ipresolve('bast4001.wikimedia.org') ],
