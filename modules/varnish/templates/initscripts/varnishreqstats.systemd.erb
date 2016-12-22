@@ -4,7 +4,7 @@ After=<%= @varnish_service_name %>.service
 Requires=<%= @varnish_service_name %>.service
 
 [Service]
-ExecStart=/usr/local/bin/varnishreqstats <%= /\w/.match(@instance_name) ? "--varnish-name=#{@instance_name}" : ""  %> --statsd=<%= @statsd %> --metric-prefix=<%= @metric_prefix %> --interval=<%= @interval %>
+ExecStart=/usr/local/bin/varnishreqstats --statsd-server=<%= @statsd %> --key-prefix=<%= @key_prefix %> --interval=<%= @interval %>
 Restart=always
 RestartSec=5s
 
