@@ -26,253 +26,98 @@ Reads varnish shared logs and emits counts for the following:
   Author: Andrew Otto
 
 """
-import argparse
-import copy
-import datetime
-import statsd
+import re
 import sys
-import time
-import unittest
 
-from varnishlog import varnishlog
-
-valid_http_methods = (
-    'get',
-    'head',
-    'post',
-    'put',
-    'delete',
-    'trace',
-    'connect',
-    'options',
-    'purge',
-)
-
-# Initialize a dict of default counts
-# we will always report.
-default_counts = {
-    'backend.status.1xx': 0,
-    'backend.status.2xx': 0,
-    'backend.status.3xx': 0,
-    'backend.status.4xx': 0,
-    'backend.status.5xx': 0,
-    'backend.status.ok': 0,
-    'backend.status.error': 0,
-    'backend.total': 0,
-
-    'client.status.1xx': 0,
-    'client.status.2xx': 0,
-    'client.status.3xx': 0,
-    'client.status.4xx': 0,
-    'client.status.5xx': 0,
-    'client.status.ok': 0,
-    'client.status.error': 0,
-    'client.total': 0,
-}
-# Include valid http_methods in default_counts.
-for m in valid_http_methods:
-    default_counts['backend.method.' + m] = 0
-    default_counts['client.method.' + m] = 0
+from cachestats import CacheStatsSender
 
 
-def is_valid_http_method(m):
-    """
-    Returns True if m is in the list of valid_http_methods.
-    """
-    return m.lower() in valid_http_methods
+class ReqStatsSender(CacheStatsSender):
+    cmd = ['/usr/bin/varnishncsa', '-n', 'frontend',
+           # remote_party - method - status
+           '-F', '%{Varnish:side}x\t%m\t%s']
 
+    description = __doc__
+    key_prefix = 'varnish'
+    default_keys = (
+        'backend.status.1xx',
+        'backend.status.2xx',
+        'backend.status.3xx',
+        'backend.status.4xx',
+        'backend.status.5xx',
+        'backend.status.ok',
+        'backend.status.error',
+        'backend.total',
 
-def is_valid_http_status(s):
-    """
-    Returns True if s is in a valid HTTP status range.
-    """
-    try:
-        return 100 <= int(s) < 600
-    except ValueError:
-        return False
-
-
-def print_counts(counts):
-    """
-    Formats and prints out the contents of the counts dict.
-    """
-    keys = counts.keys()
-    keys.sort()
-    print(
-        datetime.datetime.now().strftime('%Y-%m-%dT%H:%M:%S').center(31, '-')
+        'client.status.1xx',
+        'client.status.2xx',
+        'client.status.3xx',
+        'client.status.4xx',
+        'client.status.5xx',
+        'client.status.ok',
+        'client.status.error',
+        'client.total',
     )
-    for k in keys:
-        print("{0} {1}".format(str(counts[k]).rjust(10), k))
-    print('')
+    valid_http_methods = (
+        'get',
+        'head',
+        'post',
+        'put',
+        'delete',
+        'trace',
+        'connect',
+        'options',
+        'purge',
+    )
 
+    def __init__(self, argument_list):
+        super(ReqStatsSender, self).__init__(argument_list)
 
-def publish_statsd_counts(statsd_client, counts):
-    with statsd_client.pipeline() as statsd_pipe:
-        for k in counts.keys():
-            statsd_pipe.incr(k, counts[k])
+        valid_methods_metrics = []
+        for method in self.valid_http_methods:
+            valid_methods_metrics.append('backend.method.' + method)
+            valid_methods_metrics.append('client.method.' + method)
 
+        self.default_keys = self.default_keys + tuple(valid_methods_metrics)
 
-def reset_counts():
-    """
-    Resets the global counts and last_published_at
-    variables.
-    """
-    global counts, last_published_at
-    counts = copy.deepcopy(default_counts)
-    last_published_at = time.time()
+    def is_valid_http_method(self, method):
+        return method.lower() in self.valid_http_methods
 
+    def gen_stats(self, record):
+        """TODO: deal with --key-prefix"""
+        remote_party, method, status_code = record.split('\t')
 
-def count_vsl_entries(
-    vsl_args,
-    interval=60,
-    verbose=False,
-    statsd_client=None
-):
-    """
-    Starts varnishlog and stores counts for http status
-    and http method in the global counts dict.  If varnishlog
-    finshes (because vsl_args has -k or -r).  Every interval
-    seconds, counts will either be printed or sent to statsd.
-
-    """
-
-    # These need to be global, since they will be reset by
-    # count_vsl_entry_callback and we don't want them to
-    # end up in local scope.
-    global counts, last_published_at
-
-    # Initialize the global counts dict and reset
-    # the last_published_at timestamp.
-    reset_counts()
-
-    def count_vsl_entry_callback(
-        transaction_id,
-        tag,
-        value,
-        remote_party
-    ):
-        global counts, last_published_at
-
-        if remote_party not in ['backend', 'client']:
+        if not status_code.isdigit():
             return
 
-        # Count the http request method
-        if tag in ['BereqMethod', 'ReqMethod'] and is_valid_http_method(value):
-            counts[remote_party + '.method.' + value.lower()] += 1
-
-        # Count the http response status
-        elif tag in ['BerespStatus', 'RespStatus'] and is_valid_http_status(value):
-            key_prefix = remote_party + '.status.'
-            counts[key_prefix + value[0] + 'xx'] += 1
-
-            http_status_key = key_prefix + value
-            counts[http_status_key] = (
-                counts.setdefault(http_status_key, 0) + 1
-            )
-            # Increment ok/error status metric.
-            if value[0] in '123':
-                counts[key_prefix + 'ok'] += 1
-            elif value[0] in '45':
-                counts[key_prefix + 'error'] += 1
-
-        # Thesee indicates we completed a request, count it.
-        elif tag in ['BackendClose', 'BackendReuse']:
-            counts[remote_party + '.total'] += 1
-
-        # There is no ReqEnd in v4, let's use Timestamp for Resp
-        elif tag == 'Timestamp' and 'Resp' in value:
-            counts[remote_party + '.total'] += 1
-
-        # If interval seconds have passed, publish counts
-        # and reset the last_published_at timestamp.
-        if last_published_at + interval < time.time():
-            if verbose:
-                print_counts(counts)
-            if statsd_client:
-                publish_statsd_counts(statsd_client, counts)
-
-            reset_counts()
-
-    # Run varnishlog with the count_vsl_entry_callback
-    # called for every VSL entry.
-    varnishlog(vsl_args, count_vsl_entry_callback)
-
-
-if __name__ == '__main__':
-    parser = argparse.ArgumentParser(
-        description=__doc__,
-        formatter_class=argparse.RawTextHelpFormatter
-    )
-    parser.add_argument('--varnish-name', default=None)
-    parser.add_argument('--interval', default=60, type=int)
-    parser.add_argument('--verbose', default=False, action='store_true')
-    parser.add_argument('--statsd', default=None)
-    parser.add_argument('--metric-prefix', default='varnish')
-    arguments = parser.parse_args()
-
-    vsl_args = [
-        ('i', 'BereqMethod'),
-        ('i', 'BerespStatus'),
-        ('i', 'ReqMethod'),
-        ('i', 'RespStatus'),
-        ('i', 'Timestamp'),
-        ('i', 'BackendClose'),
-        ('i', 'BackendReuse')
-    ]
-    if arguments.varnish_name:
-        vsl_args.append(('n', arguments.varnish_name))
-
-    if arguments.statsd:
-        statsd_parts = arguments.statsd.split(':')
-        if len(statsd_parts) == 1:
-            (host, port) = (statsd_parts[0], 8125)
+        if remote_party == 'b':
+            remote_party = 'backend'
+        elif remote_party == 'c':
+            remote_party = 'client'
         else:
-            (host, port) = (statsd_parts[0], statsd_parts[1])
-        statsd_client = statsd.StatsClient(host, int(port), prefix=arguments.metric_prefix)
-    else:
-        statsd_client = None
+            return
 
-    count_vsl_entries(
-        vsl_args,
-        interval=arguments.interval,
-        verbose=arguments.verbose,
-        statsd_client=statsd_client
-    )
+        if not self.is_valid_http_method(method):
+            return
 
+        self.stats[remote_party + '.method.' + method.lower()] += 1
+        key_prefix = remote_party + '.status.'
 
-# ##### Tests ######
-# To run:
-#   python -m unittest varnishreqstats
-#
-# This requires that varnishlog.test.data is present
-# in the current directory.  It contains 100 entries
-# spread across 6 transactions.  It was collected from
-# a real text varnish server using the varnishlog utility.
-#
-class TestVarnishreqstats(unittest.TestCase):
-    varnishlog_test_data_file = 'varnishlog.test.data'
+        self.stats[key_prefix + status_code[0] + 'xx'] += 1
 
-    def test_is_valid_http_method(self):
-        self.assertTrue(is_valid_http_method('GET'))
-        self.assertTrue(is_valid_http_method('get'))
-        self.assertTrue(is_valid_http_method('post'))
-        self.assertFalse(is_valid_http_method('nogood'))
+        http_status_key = key_prefix + status_code
 
-    def test_is_valid_http_status(self):
-        self.assertTrue(is_valid_http_status('200'))
-        self.assertTrue(is_valid_http_status('404'))
-        self.assertTrue(is_valid_http_status(301))
-        self.assertFalse(is_valid_http_status('nogood'))
-        self.assertFalse(is_valid_http_status('1000'))
+        self.stats[http_status_key] = (
+            self.stats.setdefault(http_status_key, 0) + 1
+        )
 
-    def test_count_vsl_entries(self):
-        # Test on 100 records from varnishlog.test.data file
-        extra_vsl_args = [('r', self.varnishlog_test_data_file)]
-        d = count_vsl_entries(extra_vsl_args)
+        # Increment ok/error status metric.
+        if status_code[0] in '123':
+            self.stats[key_prefix + 'ok'] += 1
+        elif status_code[0] in '45':
+            self.stats[key_prefix + 'error'] += 1
 
-        self.assertEqual(d['client.method.post'],  0)
-        self.assertEqual(d['client.status.200'],   1)
-        self.assertEqual(d['client.status.2xx'],   1)
-        self.assertEqual(d['client.status.ok'],    1)
-        self.assertEqual(d['client.status.error'], 0)
-        self.assertEqual(d['client.total'],        1)
+        self.counts[remote_party + '.total'] += 1
+
+if __name__ == "__main__":
+    ReqStatsSender(sys.argv[1:]).main()
