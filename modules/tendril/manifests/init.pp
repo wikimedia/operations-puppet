@@ -16,6 +16,12 @@ class tendril (
     $tendril_user_web = $passwords::tendril::db_user_web
     $tendril_pass_web = $passwords::tendril::db_pass_web
 
+    include ::apache::mod::rewrite
+    include ::apache::mod::headers
+    include ::apache::mod::ssl
+    include ::apache::mod::php5
+    include ::apache::mod::authnz_ldap
+
     apache::site { $site_name:
         content => template("tendril/apache/${site_name}.erb");
     }
