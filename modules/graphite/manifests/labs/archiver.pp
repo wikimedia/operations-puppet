@@ -10,9 +10,11 @@ class graphite::labs::archiver {
         mode   => '0700',
     }
 
+    $novaconfig = hiera_hash('novaconfig', {})
+    $observer_pass = $novaconfig['observer_password']
     cron { 'archive-deleted-instances':
         ensure  => present,
-        command => '/usr/local/bin/archive-instances',
+        command => "/usr/local/bin/archive-instances ${observer_pass}",
         user    => '_graphite',
         minute  => 0,
         hour    => 13,
