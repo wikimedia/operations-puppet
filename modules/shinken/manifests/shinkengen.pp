@@ -2,29 +2,22 @@
 #
 # Sets up shinkengen python package to generate hosts & services
 # config for Shinken by hittig the wikitech API
-#
-# = Parameters
-#
-# [*ldap_server*]
-#   LDAP server to use to grab information about hosts from
-#
-# [*ldap_bindas*]
-#   What to bind as when connecting to LDAP server
-class shinken::shinkengen(
-    $ldap_server = 'ldap-labs.eqiad.wikimedia.org',
-    $ldap_bindas = 'cn=proxyagent,ou=profile,dc=wikimedia,dc=org',
-){
-
+class shinken::shinkengen {
     include shinken
-    $ldapconfig = hiera_hash('labsldapconfig', {})
-    $ldap_pass = $ldapconfig['proxypass']
 
     package { [
-        'python3-ldap3', # Custom package of https://pypi.python.org/pypi/python3-ldap
         'python3-yaml',
         'python3-requests',
     ]:
         ensure => present,
+    }
+
+    $novaconfig = hiera_hash('novaconfig', {})
+    $observer_pass = $novaconfig['observer_password']
+    include ::openstack::clientlib
+
+    if $::openstack::version == 'liberty' {
+        fail('openstack::verison must be set to Mitaka or later for python3 dependencies.')
     }
 
     file { '/etc/shinkengen.yaml':
@@ -38,7 +31,7 @@ class shinken::shinkengen(
         owner   => 'shinken',
         group   => 'shinken',
         mode    => '0555',
-        require => Package['python3-ldap3', 'python3-yaml'],
+        require => Package['python3-yaml'],
     }
 
     exec { '/usr/local/bin/shinkengen':
