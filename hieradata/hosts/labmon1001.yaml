@@ -1,2 +1,3 @@
 statsite::instance::graphite_host: 'localhost'
 statsite::instance::extended_counters: 1
+openstack::version: mitaka
