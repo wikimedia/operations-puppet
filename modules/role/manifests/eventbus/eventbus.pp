@@ -107,7 +107,7 @@ class role::eventbus::eventbus {
     ferm::service { 'eventlogging-service-eventbus':
         proto  => 'tcp',
         port   => '8085',
-        srange => '$INTERNAL',
+        srange => '$DOMAIN_NETWORKS',
     }
 
 }
