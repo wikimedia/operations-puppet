@@ -275,6 +275,11 @@ ganglia_clusters:
     id: 58
     sites:
       codfw: []
+  services_dev_test:
+    description: "Services development test"
+    id: 59
+    sites:
+      eqiad: []
 puppetmaster: "puppet"
 active_labstore_host: 'labstore1001'
 statistics_servers:
