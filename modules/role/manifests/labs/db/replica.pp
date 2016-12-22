@@ -14,7 +14,7 @@ class role::labs::db::replica {
     include role::mariadb::monitor
     include ::base::firewall
 
-    ferm::service{ 'mariadb_internal':
+    ferm::service{ 'mariadb_labs_db_replica':
         proto   => 'tcp',
         port    => '3306',
         notrack => true,
