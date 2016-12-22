@@ -13,7 +13,7 @@
 #   StatsD server address, in "host:port" format.
 #   Defaults to localhost:8125
 #
-# [*metric_prefix*]
+# [*key_prefix*]
 #   Prefix of the stats that will be sent to statsd.
 #   Default: varnish.$site.$name.request.
 #   If $name is text.frontend,  this will create graphite keys that look like:
@@ -23,7 +23,7 @@ define varnish::logging::reqstats(
     $instance_name = $name,
     $interval      = 60,
     $statsd        = 'localhost:8125',
-    $metric_prefix = "varnish.${::site}.${name}.request",
+    $key_prefix    = "varnish.${::site}.${name}.request",
     $ensure        = 'present',
 ) {
     if $instance_name != '' {

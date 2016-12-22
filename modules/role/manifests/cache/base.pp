@@ -82,8 +82,8 @@ class role::cache::base(
 
     # Parse varnishlogs for request statistics and send to statsd.
     varnish::logging::reqstats { 'frontend':
-        metric_prefix => "varnish.${::site}.${cache_cluster}.frontend.request",
-        statsd        => hiera('statsd'),
+        key_prefix => "varnish.${::site}.${cache_cluster}.frontend.request",
+        statsd     => hiera('statsd'),
     }
 
     ::varnish::logging::xcache { 'xcache':
