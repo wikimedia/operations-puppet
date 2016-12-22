@@ -49,7 +49,7 @@ event_scheduler    = 1
 
 table_open_cache       = 50000
 table_definition_cache = 50000
-default-storage-engine = Aria
+default-storage-engine = InnoDB
 
 # InnoDB file-per-table + TokuDB love those file descriptors
 open-files-limit = 400000
@@ -59,7 +59,7 @@ character_set_filesystem = binary
 collation_server         = binary
 
 innodb_file_per_table          = 1
-innodb_buffer_pool_size        = 24G
+innodb_buffer_pool_size        = 100G
 innodb_log_file_size           = 4G
 innodb_flush_log_at_trx_commit = 0
 innodb_flush_method            = O_DIRECT
@@ -68,7 +68,6 @@ innodb_io_capacity             = 1000
 innodb_stats_sample_pages      = 16
 innodb_stats_method            = nulls_unequal
 innodb_locks_unsafe_for_binlog = 1
-aria_pagecache_buffer_size     = 16G
 
 # dump and load innodb buffer at start and stop
 innodb_buffer_pool_load_at_startup  = 1
@@ -77,11 +76,11 @@ innodb_buffer_pool_dump_at_shutdown = 1
 optimizer_switch='engine_condition_pushdown=on,optimize_join_buffer_size=on'
 join_cache_level = 8
 
-plugin-load = ha_tokudb
-tokudb_cache_size = 24G
+#plugin-load = ha_tokudb
+#tokudb_cache_size = 24G
 # Tokudb will stop working when there is less than 1% of free disk space
 # (5% by default)
-tokudb_fs_reserve_percent = 1
+#tokudb_fs_reserve_percent = 1
 
 skip-slave-start
 slave_transaction_retries = 4294967295
