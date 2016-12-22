@@ -13,7 +13,7 @@ class role::analytics_cluster::hive::metastore {
     ferm::service{ 'hive_metastore':
         proto  => 'tcp',
         port   => '9083',
-        srange => '$INTERNAL',
+        srange => '$ANALYTICS_NETWORKS',
     }
 
     # Include icinga alerts if production realm.
