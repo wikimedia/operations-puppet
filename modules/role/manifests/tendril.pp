@@ -28,4 +28,8 @@ class role::tendril {
         auth_name    => 'WMF Labs (use wiki login name not shell) - nda/ops/wmf',
     }
 
+    ferm::service { 'tendril-http-https':
+        proto => 'tcp',
+        port  => '(http https)',
+    }
 }
