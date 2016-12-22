@@ -43,7 +43,7 @@ class k8s::apiserver(
     }
 
     if $use_package {
-        require('kubernetes-master')
+        require_package('kubernetes-master')
     } else {
         file { '/usr/bin/kube-apiserver':
             ensure => link,

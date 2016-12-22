@@ -9,6 +9,7 @@ class profile::kubernetes::master(
     }
     $etcd_servers = join($etcd_urls, ',')
     class { '::k8s::apiserver':
+        use_package          => true,
         etcd_servers         => $etcd_servers,
         docker_registry      => $docker_registry,
         ssl_cert_path        => '/etc/kubernetes/ssl/cert.pem',
@@ -16,8 +17,8 @@ class profile::kubernetes::master(
         ssl_certificate_name => '',
     }
 
-    class { '::k8s::scheduler': }
-    class { '::k8s::controller': }
+    class { '::k8s::scheduler': use_package => true }
+    class { '::k8s::controller': use_package => true }
 
     ferm::service { 'apiserver-https':
         proto  => 'tcp',
