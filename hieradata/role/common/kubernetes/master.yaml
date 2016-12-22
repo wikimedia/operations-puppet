@@ -3,7 +3,7 @@ debdeploy::grains:
     value: standard
 cluster: kubernetes
 profile::kubernetes::master::etcd_urls:
- - https://etcd1001.eqiad.wmnet:2739
- - https://etcd1002.eqiad.wmnet:2739
- - https://etcd1003.eqiad.wmnet:2739
+ - https://etcd1001.eqiad.wmnet:2379
+ - https://etcd1002.eqiad.wmnet:2379
+ - https://etcd1003.eqiad.wmnet:2379
 profile::kubernetes::master::docker_registry: darmstadtium.eqiad.wmnet
