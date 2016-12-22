@@ -61,6 +61,7 @@ class labstore::fileserver::exports {
         require => File['/etc/nfs-mounts.yaml'],
     }
 
+    include ::openstack::clientlib
     file { '/usr/local/bin/nfs-exportd':
         owner   => 'root',
         group   => 'root',
@@ -76,6 +77,8 @@ class labstore::fileserver::exports {
         source => 'puppet:///modules/labstore/archive-project-volumes',
     }
 
+    $novaconfig = hiera_hash('novaconfig', {})
+    $observer_pass = $novaconfig['observer_password']
     base::service_unit { 'nfs-exportd':
         systemd        => true,
         service_params => {

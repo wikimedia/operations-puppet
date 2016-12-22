@@ -13,3 +13,5 @@ profile::base::ssh_server_settings:
 debdeploy::grains:
   debdeploy-labsnfs:
     value: standard
+
+openstack::version: mitaka
