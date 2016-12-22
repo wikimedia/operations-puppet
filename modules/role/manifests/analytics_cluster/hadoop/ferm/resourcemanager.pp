@@ -29,7 +29,7 @@ class role::analytics_cluster::hadoop::ferm::resourcemanager {
     ferm::service{ 'hadoop-yarn-resourcemanager-http-ui':
         proto  => 'tcp',
         port   => '8088',
-        srange => '$INTERNAL',
+        srange => '$ANALYTICS_NETWORKS',
     }
 
     ferm::service{ 'hadoop-mapreduce-historyserver':
