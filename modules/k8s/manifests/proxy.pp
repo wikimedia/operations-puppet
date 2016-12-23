@@ -9,7 +9,7 @@ class k8s::proxy(
     $master_ip = ipresolve($master_host, 4, $::nameservers[0])
 
     if $use_package {
-        require('kubernetes-node')
+        require_package('kubernetes-node')
     } else {
         file { '/usr/bin/kube-proxy':
             ensure => link,
