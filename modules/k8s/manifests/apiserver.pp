@@ -20,6 +20,7 @@ class k8s::apiserver(
     $host_paths_allowed = [],
     $host_path_prefixes_allowed = [],
     $use_package = false,
+    $authz_mode = 'abac',
 ) {
     include k8s::users
 
@@ -44,6 +45,7 @@ class k8s::apiserver(
 
     if $use_package {
         require_package('kubernetes-master')
+        require_package('kubernetes-client')
     } else {
         file { '/usr/bin/kube-apiserver':
             ensure => link,
