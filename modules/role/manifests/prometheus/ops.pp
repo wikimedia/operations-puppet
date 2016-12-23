@@ -159,6 +159,16 @@ class role::prometheus::ops {
         }
     }
 
+    prometheus::cluster_config{ "hhvm_videoscaler_${::site}":
+        dest    => "${targets_path}/hhvm_videoscaler_${::site}.yaml",
+        site    => $::site,
+        cluster => 'videoscaler',
+        port    => '9192',
+        labels  => {
+            'cluster' => 'videoscaler'
+        }
+    }
+
     # Job definition for apache_exporter
     $apache_jobs = [
       {
@@ -205,6 +215,15 @@ class role::prometheus::ops {
         port    => '9117',
         labels  => {
             'cluster' => 'imagescaler'
+        }
+    }
+    prometheus::cluster_config{ "apache_videoscaler_${::site}":
+        dest    => "${targets_path}/apache_videoscaler_${::site}.yaml",
+        site    => $::site,
+        cluster => 'videoscaler',
+        port    => '9117',
+        labels  => {
+            'cluster' => 'videoscaler'
         }
     }
 
