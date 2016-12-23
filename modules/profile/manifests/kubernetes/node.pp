@@ -19,5 +19,6 @@ class profile::kubernetes::node {
     }
     class { 'k8s::proxy':
         master_host => $master_host,
+        use_package => true,
     }
 }
