@@ -27,6 +27,7 @@ class base::standard_packages {
         'iperf',
         'jq',
         'lldpd',
+	'lswh',
         'molly-guard',
         'moreutils',
         'ncdu',
