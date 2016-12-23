@@ -36,7 +36,7 @@ groups:
   gerrit-root:
     gid: 703
     description: manage gerrit server
-    members: [demon, catrope]
+    members: [demon, catrope, twentyafterfour]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
   gerrit-admin:
     gid: 704
