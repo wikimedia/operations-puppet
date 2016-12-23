@@ -4,8 +4,8 @@ class profile::kubernetes::node {
 
     base::expose_puppet_certs { '/etc/kubernetes':
         provide_private => true,
-        user            => 'kubernetes',
-        group           => 'kubernetes',
+        user            => 'root',
+        group           => 'root',
     }
     class { '::k8s::kubelet':
         master_host               => $master_host,
