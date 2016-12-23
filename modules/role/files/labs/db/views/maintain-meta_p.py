@@ -262,8 +262,8 @@ def main():
             url = canonical[dbInfo['family']].replace('$lang', lang)
 
         if url:
-            dbInfo['url'] = url
             canon = url.replace('_', '-')
+            dbInfo['url'] = canon
             try:
                 url_tail = "/w/api.php?action=query&meta=siteinfo&siprop=general&format=json"
                 header = {"User-Agent": "Labsdb maintain-meta_p.py"}
