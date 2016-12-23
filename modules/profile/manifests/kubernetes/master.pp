@@ -1,5 +1,6 @@
 class profile::kubernetes::master(
     $etcd_urls=hiera('profile::kubernetes::master::etcd_urls'),
+    $kubenodes=hiera('profile::kubernetes::master::kubenodes'),
     $docker_registry=hiera('profile::kubernetes::master::docker_registry'),
 ){
     base::expose_puppet_certs { '/etc/kubernetes':
@@ -15,15 +16,18 @@ class profile::kubernetes::master(
         ssl_cert_path        => '/etc/kubernetes/ssl/cert.pem',
         ssl_key_path         => '/etc/kubernetes/ssl/server.key',
         ssl_certificate_name => '',
+        authz_mode           => '',
     }
 
     class { '::k8s::scheduler': use_package => true }
     class { '::k8s::controller': use_package => true }
 
+    $kubenodes_ferm = join($kubenodes, ' ')
+
     ferm::service { 'apiserver-https':
         proto  => 'tcp',
         port   => '6443',
-        srange => '$DOMAIN_NETWORKS',
+        srange => "(@resolve((${kubenodes_ferm})))",
     }
 
     diamond::collector { 'Kubernetes':
