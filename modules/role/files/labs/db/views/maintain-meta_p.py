@@ -257,7 +257,8 @@ def main():
         if db in canonical:
             url = canonical[db]
         else:
-            lang = db[:2]
+            matches = re.match("^(.*)(wik[it].*)", db)
+            lang = matches.group(1)
             url = canonical[dbInfo['family']].replace('$lang', lang)
 
         if url:
