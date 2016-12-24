@@ -75,7 +75,6 @@ class role::logstash::collector (
         srange  => '$DOMAIN_NETWORKS',
     }
 
-    # Also used for UDP JSON logging from python-logstash lib (e.g. Striker)
     logstash::input::udp { 'logback':
         port  => 11514,
         codec => 'json',
@@ -83,6 +82,18 @@ class role::logstash::collector (
 
     ferm::service { 'logstash_udp':
         proto   => 'udp',
+        port    => '11514',
+        notrack => true,
+        srange  => '$DOMAIN_NETWORKS',
+    }
+
+    logstash::input::tcp { 'json_lines':
+        port  => 11514,
+        codec => 'json_lines',
+    }
+
+    ferm::service { 'logstash_json_lines':
+        proto   => 'tcp',
         port    => '11514',
         notrack => true,
         srange  => '$DOMAIN_NETWORKS',
@@ -119,6 +130,10 @@ class role::logstash::collector (
         priority => 20,
     }
 
+    logstash::conf { 'filter_json_lines':
+        source   => 'puppet:///modules/role/logstash/filter-json-lines.conf',
+        priority => 20,
+    }
     ## Application specific processing (50)
 
     logstash::conf { 'filter_mediawiki':
