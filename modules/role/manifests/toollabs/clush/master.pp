@@ -24,6 +24,7 @@ class role::toollabs::clush::master {
 
     require_package('python3-yaml')
 
+    include ::openstack::clientlib
     file { '/usr/local/sbin/tools-clush-generator':
         ensure => file,
         source => 'puppet:///modules/role/toollabs/clush/tools-clush-generator',
@@ -51,9 +52,11 @@ class role::toollabs::clush::master {
         mode   => '0555',
     }
 
+    $novaconfig = hiera_hash('novaconfig', {})
+    $observer_pass = $novaconfig['observer_password']
     cron { 'update_tools_clush':
         ensure  => present,
-        command => '/usr/local/sbin/tools-clush-generator /etc/clustershell/tools.yaml',
+        command => "/usr/local/sbin/tools-clush-generator /etc/clustershell/tools.yaml --observer-pass ${observer_pass}",
         hour    => '*/1',
         user    => 'root'
     }
