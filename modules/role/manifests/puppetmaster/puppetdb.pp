@@ -30,8 +30,6 @@ class role::puppetmaster::puppetdb {
         description => 'PuppetDB server',
     }
 
-    ganglia::plugin::python { 'diskstat': }
-
     ferm::service { 'postgresql_puppetdb':
         proto  => 'tcp',
         port   => 5432,
@@ -62,9 +60,13 @@ class role::puppetmaster::puppetdb {
         srange  => "@resolve((${puppetmasters_ferm}))",
     }
 
-    class { 'postgresql::ganglia':
-        pgstats_user => $passwords::postgres::ganglia_user,
-        pgstats_pass => $passwords::postgres::ganglia_pass,
+    if $::standard::has_ganglia {
+        class { 'postgresql::ganglia':
+            pgstats_user => $passwords::postgres::ganglia_user,
+            pgstats_pass => $passwords::postgres::ganglia_pass,
+        }
+
+        ganglia::plugin::python { 'diskstat': }
     }
 
     # Tuning
