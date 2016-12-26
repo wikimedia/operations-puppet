@@ -62,4 +62,10 @@ role::eventstreams::streams:
     topics:
       - eqiad.mediawiki.revision-create
       - codfw.mediawiki.revision-create
+
+# rdkafka config for Public EventStreams service.
+role::eventstreams::rdkafka_config:
+  # Send rdkafka stats to statsd once per minute.
+  statistics.interval.ms: 60000
+
 changeprop::restbase_uri: http://restbase.svc.codfw.wmnet:7231
