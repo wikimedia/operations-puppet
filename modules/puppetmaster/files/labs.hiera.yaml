@@ -4,6 +4,8 @@
   - nuyaml
 :nuyaml:
   :datadir: /etc/puppet/hieradata
+  :expand_path:
+    - common
 :mwyaml:
   :host: https://wikitech.wikimedia.org
   :cache_ttl: 120
