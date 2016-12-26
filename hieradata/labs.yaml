@@ -37,6 +37,8 @@ statsite::instance::graphite_host: 'labmon1001.eqiad.wmnet'
 puppetmaster::servers:
   "%{hiera('puppetmaster')}":
     - { worker: "%{hiera('puppetmaster')}", loadfactor: 10 }
+puppetmaster::puppetdb::master: "%{::fqdn}"
+puppetmaster::puppetdb::slaves: []
 
 # Default to Dummy authenticator in JupyterHubs in labs
 jupyterhub::authenticator: dummy
