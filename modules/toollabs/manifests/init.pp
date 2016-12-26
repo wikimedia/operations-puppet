@@ -181,14 +181,6 @@ class toollabs (
         source => 'puppet:///modules/toollabs/40-tools-sudoers-no-warning.sh',
     }
 
-    file { '/etc/cron.daily/logrotate':
-        ensure => file,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
-        source => 'puppet:///modules/toollabs/logrotate.crondaily',
-    }
-
     file { '/usr/local/bin/log-command-invocation':
         ensure => present,
         owner  => 'root',
