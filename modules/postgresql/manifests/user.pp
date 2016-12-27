@@ -58,18 +58,15 @@ define postgresql::user(
             user    => 'postgres',
             unless  => $userexists,
         }
-        # This will set the password and attributes on every puppet run. We explicitly dont
-        # depend on anything to ensure consistency with configuration and that
-        # password is always the one defined
-        # NOTE: This has the potential of the password leaking by process
-        # listing tools like ps. Need to investigate better ways of setting the
-        # password .e.g. hashed with md5 in the manifest
+
         # This will not be run on a slave as it is read-only
         if $master {
+            $password_md5 = md5("${password}${user}")
+
             exec { "pass_set-${name}":
                 command   => $pass_set,
                 user      => 'postgres',
-                onlyif    => $userexists,
+                onlyif    => "/usr/bin/test -n \"\$(/usr/bin/psql -Atc \"SELECT 1 FROM pg_shadow WHERE usename = '${user}' AND passwd <> 'md5${password_md5}';\")\"",
                 subscribe => Exec["create_user-${name}"],
             }
         }
