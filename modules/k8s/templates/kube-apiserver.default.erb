@@ -22,7 +22,7 @@ KUBE_ETCD_SERVERS="--etcd-servers=<%= @etcd_servers %>"
 KUBE_SERVICE_ADDRESSES="--service-cluster-ip-range=<%= @service_cluster_ip_range %>"
 <%- end -%>
 #
-<%- if @service_cluster_ip_range %>
+<%- if @admission_control %>
 KUBE_ADMISSION_CONTROL="--admission-control=<%= @admission_control %>"
 <%- end -%>
 
