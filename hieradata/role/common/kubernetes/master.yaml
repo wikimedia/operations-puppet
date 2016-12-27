@@ -12,3 +12,4 @@ profile::kubernetes::master::kubenodes:
  - kubernetes1002.eqiad.wmnet
  - kubernetes1003.eqiad.wmnet
  - kubernetes1004.eqiad.wmnet
+profile::kubernetes::master::service_cluster_ip_range: 192.168.30.0/24
