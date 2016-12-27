@@ -2,7 +2,8 @@
 <%-
 scope.function_query_resources([false, '@@Sshkey', false, 'title asc']).each do |resource|
   parameters = resource['parameters']
-  aliases = parameters['host_aliases'].select{ |el| el !~ /^---/}.join(',')
+  aliases = parameters['host_aliases'].select{ |el| el !~ /^---/ && el != 'undef'}.join(',')
+
   if parameters['ensure'] == 'present' -%>
 <%= resource['certname'] %>,<%= aliases %> <%= parameters['type'] %> <%= parameters['key'] %>
 <%-
