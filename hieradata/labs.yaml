@@ -39,6 +39,7 @@ puppetmaster::servers:
     - { worker: "%{hiera('puppetmaster')}", loadfactor: 10 }
 puppetmaster::puppetdb::master: "%{::fqdn}"
 puppetmaster::puppetdb::slaves: []
+puppetmaster::config::puppetdb_host: "%{::fqdn}"
 
 # Default to Dummy authenticator in JupyterHubs in labs
 jupyterhub::authenticator: dummy

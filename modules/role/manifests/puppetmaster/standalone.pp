@@ -33,6 +33,8 @@
 #  Hostname for the puppetmaster. Defaults to fqdn. Is used for SSL
 #  certificates, virtualhost routing, etc
 #
+# [*use_puppetdb*]
+#  Set to true to use PuppetDB.  Defaults to false.
 # filtertags: labs-common
 class role::puppetmaster::standalone(
     $autosign = false,
@@ -42,6 +44,7 @@ class role::puppetmaster::standalone(
     $extra_auth_rules = '',
     $server_name = $::fqdn,
     $use_enc = true,
+    $use_puppetdb = false,
 ) {
     if ! $use_enc {
         fail('Ldap puppet node definitions are no longer supported.  The $use_enc param must be true.')
@@ -68,11 +71,21 @@ class role::puppetmaster::standalone(
         group  => 'root',
     }
 
-    $config = {
+    $base_config = {
         'node_terminus'     => 'exec',
         'external_nodes'    => '/usr/local/bin/puppet-enc',
         'thin_storeconfigs' => false,
         'autosign'          => $autosign,
+    }
+    $puppetdb_config = {
+        'storeconfigs'         => true,
+        'storeconfigs_backend' => 'puppetdb',
+    }
+
+    if $use_puppetdb {
+        $config = merge($base_config, $puppetdb_config)
+    } else {
+        $config = $base_config
     }
 
     class { '::puppetmaster':
@@ -82,6 +95,14 @@ class role::puppetmaster::standalone(
         prevent_cherrypicks => $prevent_cherrypicks,
         extra_auth_rules    => $extra_auth_rules,
         config              => $config,
+    }
+
+    if $use_puppetdb {
+        $puppetdb_host = hiera('puppetmaster::config::puppetdb_host')
+
+        class { 'puppetmaster::puppetdb::client':
+            host => $puppetdb_host,
+        }
     }
 
     # Update git checkout
