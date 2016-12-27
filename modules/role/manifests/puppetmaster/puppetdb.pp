@@ -39,22 +39,7 @@ class role::puppetmaster::puppetdb {
     }
 
     # Only the TLS-terminating nginx proxy will be exposed
-    # TODO: Use map() once we migrate to the future parser
-    # It should have been
-    #
-    # $puppetmasters = map(values(hiera('puppetmaster::servers')) |p| { p['worker'] })
-    #
-    # Instead, we will have to jump through hoops (templates, yaml parsing,
-    # parser functions) for this simple thing. So don't and just hardcode it.
-    #  Does it suck ? Yes it does. But we are not going through all that
-    $puppetmasters = [
-        'puppetmaster1001.eqiad.wmnet',
-        'puppetmaster1002.eqiad.wmnet',
-        'puppetmaster2001.codfw.wmnet',
-        'puppetmaster2002.codfw.wmnet',
-        'rhodium.eqiad.wmnet',
-    ]
-    $puppetmasters_ferm = join($puppetmasters, ' ')
+    $puppetmasters_ferm = inline_template('<%= scope.function_hiera([\'puppetmaster::servers\']).values.flatten(1).map { |p| p[\'worker\'] }.sort.join(\' \')%>')
     ferm::service { 'puppetdb':
         proto   => 'tcp',
         port    => 443,
