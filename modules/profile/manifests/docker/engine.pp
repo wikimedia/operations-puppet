@@ -6,7 +6,9 @@
 class profile::docker::engine {
 
     # Optional parameters
-    $docker_settings = hiera('profile::docker::engine::settings', {})
+    # We want to get settings across the hierarchy, some per host, some fleet
+    # wide. So use hiera_array to merge keys across the hierarchy
+    $docker_settings = hiera_array('profile::docker::engine::settings', {})
     # Version to install; the default is not to pick one.
     $docker_version = hiera('profile::docker::engine::version', 'present')
     $apt_proxy = hiera('profile::docker::engine::proxy', undef)
