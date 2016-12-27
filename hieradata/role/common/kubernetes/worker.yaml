@@ -7,3 +7,6 @@ profile::docker::engine::version: "1.12.2-0~jessie"
 profile::docker::engine::proxy: "http://webproxy.%{::site}.wmnet:8080"
 profile::kubernetes::master_host: 'argon.eqiad.wmnet'
 profile::kubernetes::infra_pod: 'darmstadtium.eqiad.wmnet/pause'
+profile::docker::engine::settings:
+   iptables: false
+   ip-masq: false
