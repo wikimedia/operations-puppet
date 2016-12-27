@@ -12,7 +12,7 @@ class wikilabels::web (
     # this to deb packages in the future if needed.
     # FIXME: Use debian packages for all the packages needing compilation
     ensure_packages(['virtualenv', 'python3-dev', 'libffi-dev',
-        'libpq-dev', 'g++', 'libmemcached-dev'])
+        'libpq-dev', 'g++', 'libmemcached-dev', 'nodejs'])
 
     file { '/srv':
         ensure => directory,
