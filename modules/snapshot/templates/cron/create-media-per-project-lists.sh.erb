@@ -24,7 +24,7 @@ if [ $? -ne 0 ]; then
 fi
 
 # determine which wiki has the global image links table and set as base wiki for the run
-globalusagelist=$(egrep "^globalusagelist=" "$configfile" | mawk -Fglobalusagelist= '{ print $2 }')
+globalusagelist="<%= scope.lookupvar('snapshot::dumps::dirs::dblistsdir') -%>/globalusage.dblist"
 basewiki=`cat "$globalusagelist"`
 
 python "${repodir}/onallwikis.py" --outdir "$outputdir" \
