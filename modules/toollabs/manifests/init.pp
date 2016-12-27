@@ -70,28 +70,15 @@ class toollabs (
         require => File[$sysdir],
     }
 
+    # TODO: Remove after Puppet cycle.
     file { "${store}/hostkey-${::fqdn}":
-        ensure  => file,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        content => "${::fqdn},${::hostname},${::ipaddress} ssh-rsa ${::sshrsakey}\n${::fqdn},${::hostname},${::ipaddress} ecdsa-sha2-nistp256 ${::sshecdsakey}\n",
+        ensure  => absent,
         require => File[$store],
     }
 
-    exec { 'make_known_hosts':
-        command => "/bin/cat ${store}/hostkey-* >/etc/ssh/ssh_known_hosts~",
-        onlyif  => "/usr/bin/test -n \"\$(/usr/bin/find ${store} -maxdepth 1 \\( -type d -or -type f -name hostkey-\\* \\) -newer /etc/ssh/ssh_known_hosts~)\" -o ! -s /etc/ssh/ssh_known_hosts~",
-        require => File[$store],
-    }
-
-    file { '/etc/ssh/ssh_known_hosts':
-        ensure  => file,
-        source  => '/etc/ssh/ssh_known_hosts~',
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        require => Exec['make_known_hosts'],
+    # TODO: Remove after Puppet cycle.
+    file { '/etc/ssh/ssh_known_hosts~':
+        ensure => absent,
     }
 
     File['/var/lib/gridengine'] -> Package <| title == 'gridengine-common' |>
