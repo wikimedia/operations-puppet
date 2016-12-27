@@ -21,6 +21,7 @@ class k8s::apiserver(
     $host_path_prefixes_allowed = [],
     $use_package = false,
     $authz_mode = 'abac',
+    $apiserver_count = undef,
 ) {
     include k8s::users
 

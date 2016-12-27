@@ -3,6 +3,7 @@ class profile::kubernetes::master(
     $kubenodes=hiera('profile::kubernetes::master::kubenodes'),
     $docker_registry=hiera('profile::kubernetes::master::docker_registry'),
     $service_cluster_ip_range=hiera('profile::kubernetes::master::service_cluster_ip_range'),
+    $apiserver_count=hiera('profile::kubernetes::master::apiserver_count'),
 ){
     base::expose_puppet_certs { '/etc/kubernetes':
         provide_private => true,
@@ -19,6 +20,7 @@ class profile::kubernetes::master(
         ssl_certificate_name     => '',
         authz_mode               => '',
         service_cluster_ip_range => $service_cluster_ip_range,
+        apiserver_count          => $apiserver_count,
     }
 
     class { '::k8s::scheduler': use_package => true }

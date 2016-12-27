@@ -32,6 +32,9 @@ DAEMON_ARGS=" \
 --authorization-mode=ABAC \
 --authorization-policy-file=/etc/kubernetes/abac \
 <%- end -%>
+<%- if @apiserver_count -%>
+--apiserver-count=<%= @apiserver_count %> \
+<%- end -%>
 --tls-cert-file=<%= @real_ssl_cert_path %> \
 --tls-private-key-file=<%= @real_ssl_key_path %> \
 --enforced-docker-registry=<%= @docker_registry %> \
