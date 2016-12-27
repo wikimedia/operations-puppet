@@ -1,4 +1,4 @@
-# The OpenStack Dashboard Project
+# The OpenStack Das2hboard Project
 # http://docs.openstack.org/developer/horizon/
 class openstack::horizon::service(
     $novaconfig,
@@ -14,8 +14,9 @@ class openstack::horizon::service(
         require => Class['openstack::repo',  '::apache::mod::wsgi'];
     }
 
-    package { [ 'python-keystoneclient',
-                'python-openstack-auth',
+    require_package('python-keystoneclient')
+
+    package { [ 'python-openstack-auth',
                 'python-designate-dashboard' ]:
         ensure  => present,
     }
@@ -111,18 +112,16 @@ class openstack::horizon::service(
 
     # Homemade totp plugin for keystoneclient
     file { '/usr/lib/python2.7/dist-packages/keystoneclient/auth/identity/v3/wmtotp.py':
-        source  => "puppet:///modules/openstack/${openstack_version}/keystoneclient/wmtotp.py",
-        owner   => 'root',
-        group   => 'root',
-        require => Package['python-keystoneclient'],
-        mode    => '0644',
+        source => "puppet:///modules/openstack/${openstack_version}/keystoneclient/wmtotp.py",
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0644',
     }
     file { '/usr/lib/python2.7/dist-packages/keystoneclient/auth/identity/v3/__init__.py':
-        source  => "puppet:///modules/openstack/${openstack_version}/keystoneclient/__init__.py",
-        owner   => 'root',
-        group   => 'root',
-        require => Package['python-keystoneclient'],
-        mode    => '0644',
+        source => "puppet:///modules/openstack/${openstack_version}/keystoneclient/__init__.py",
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0644',
     }
 
     # Homemade totp plugin for openstack_auth
