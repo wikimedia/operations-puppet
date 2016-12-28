@@ -64,12 +64,28 @@ class role::puppetmaster::puppetdb (
     }
 
     # Tuning
-    file { '/etc/postgresql/9.4/main/tuning.conf':
-        ensure  => 'present',
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        content => template('role/puppetdb/tuning.conf.erb'),
+    if $::realm == 'production' {
+        file { '/etc/postgresql/9.4/main/tuning.conf':
+            ensure  => 'present',
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0444',
+            content => template('role/puppetdb/tuning.conf.erb'),
+        }
+    } else {
+        # tuning.conf is tailored for the actual production hosts
+        # PuppetDB runs on.  For Labs, rather than trying to optimize
+        # for possibly vastly different environments (small vs. large
+        # instances, instances with only PuppetDB running or other
+        # applications as well, etc.), we rely on PostgreSQL defaults
+        # instead.
+        file { '/etc/postgresql/9.4/main/tuning.conf':
+            ensure  => 'present',
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0444',
+            content => '',
+        }
     }
 
     sysctl::parameters { 'postgres_shmem':
