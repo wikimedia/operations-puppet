@@ -114,7 +114,7 @@ within each DC uniquely.
     output['minute'] = tval % 60
 
     if period == 'hourly'
-      outout['hour'] = '*'
+      output['hour'] = '*'
     else
       output['hour'] = (tval / 60) % 24
     end
