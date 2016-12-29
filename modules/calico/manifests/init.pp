@@ -17,7 +17,7 @@ class calico(
 
     base::expose_puppet_certs { '/etc/calico':
         ensure          => present,
-        provide_private => false,
+        provide_private => true,
         require         => File['/etc/calico'],
     }
 
