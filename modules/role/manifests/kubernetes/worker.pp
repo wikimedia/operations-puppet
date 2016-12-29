@@ -6,4 +6,5 @@ class role::kubernetes::worker {
     include ::profile::docker::storage
     include ::profile::docker::engine
     include ::profile::kubernetes::node
+    include ::profile::calico::kubernetes
 }
