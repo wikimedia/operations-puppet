@@ -73,6 +73,7 @@ class k8s::apiserver(
         group   => 'root',
         mode    => '0444',
         content => template('k8s/kube-apiserver.default.erb'),
+        notify  => Service['kube-apiserver'],
     }
 
     base::service_unit { 'kube-apiserver':
