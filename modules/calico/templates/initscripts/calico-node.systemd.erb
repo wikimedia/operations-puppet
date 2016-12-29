@@ -31,7 +31,7 @@ ExecStart=/usr/bin/docker run \
   -v /run/docker/plugins:/run/docker/plugins \
   -v /var/run/docker.sock:/var/run/docker.sock \
   -v /var/log/calico:/var/log/calico \
-  calico/node:<%= @calico_node_version %>
+  <%= @registry %>/calico/node:<%= @calico_node_version %>
 ExecStop=/usr/bin/docker rm -f calico-node
 Restart=always
 RestartSec=10
