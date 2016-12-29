@@ -19,3 +19,10 @@ profile::calico::kubernetes::etcd_endpoints:
 - https://etcd1002.eqiad.wmnet:2379
 - https://etcd1003.eqiad.wmnet:2379
 profile::calico::kubernetes::docker::registry: darmstadtium.eqiad.wmnet
+profile::calico::kubernetes::bgp_peers:
+- kubernetes1001.eqiad.wmnet
+- kubernetes1002.eqiad.wmnet
+- kubernetes1003.eqiad.wmnet
+- kubernetes1004.eqiad.wmnet
+- cr1-eqiad.wikimedia.org
+- cr2-eqiad.wikimedia.org

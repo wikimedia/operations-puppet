@@ -5,6 +5,7 @@
 
 class profile::calico::kubernetes {
     $etcd_endpoints = hiera('profile::calico::kubernetes::etcd_endpoints')
+    $bgp_peers = hiera('profile::calico::kubernetes::bgp_peers')
     $calico_version = hiera('profile::calico::kubernetes::calico_version')
     $registry = hiera('profile::calico::kubernetes::docker::registry')
 
@@ -15,5 +16,12 @@ class profile::calico::kubernetes {
     }
 
     class { '::calico::cni':
+    }
+
+    $bgp_peers_ferm = join($bgp_peers, ' ')
+    ferm::service { 'calico-bird':
+        proto  => 'tcp',
+        port   => '179', # BGP
+        srange => "(@resolve((${bgp_peers_ferm})))",
     }
 }
