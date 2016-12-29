@@ -2,7 +2,7 @@ debdeploy::grains:
   debdeploy-packagebuild:
     value: standard
 docker::registry: darmstadtium.eqiad.wmnet
-profile::docker::engine::version: "1.11.2-0~jessie"
+profile::docker::engine::version: "1.12.5-0~debian-jessie"
 profile::docker::engine::proxy: "http://webproxy.%{::site}.wmnet:8080"
 profile::docker::storage::loopback::source_dir: "/srv/docker-dm"
 profile::docker::builder::proxy_address: "webproxy.%{::site}.wmnet"
