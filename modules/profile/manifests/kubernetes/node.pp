@@ -15,6 +15,7 @@ class profile::kubernetes::node {
         listen_address            => '0.0.0.0',
         cluster_dns_ip            => '192.168.0.100',
         use_package               => true,
+        cni                       => true,
         pod_infra_container_image => $infra_pod,
         cluster_domain            => undef,
         tls_cert                  => '/etc/kubernetes/ssl/cert.pem',
