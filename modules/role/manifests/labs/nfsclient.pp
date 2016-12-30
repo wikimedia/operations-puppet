@@ -25,6 +25,30 @@ class role::labs::nfsclient(
         lookupcache => $lookupcache,
     }
 
+    # Dual mount /project for misc (other) projects under /mnt/nfs/labstore-secondary-project
+    labstore::nfs_mount { 'project-on-labstore-secondary':
+        mount_name  => 'project',
+        project     => $::labsproject,
+        options     => ['rw', $mode],
+        mount_path  => '/mnt/nfs/labstore-secondary-project',
+        share_path  => "/project/${::labsproject}/project",
+        server      => 'nfs-tools-project.svc.eqiad.wmnet',
+        block       => true,
+        lookupcache => $lookupcache,
+    }
+
+    # Dual mount /home for misc (other) projects under /mnt/nfs/labstore-secondary-home
+    labstore::nfs_mount { 'home-on-labstore-secondary':
+        mount_name  => 'home',
+        project     => $::labsproject,
+        options     => ['rw', 'hard'],
+        mount_path  => '/mnt/nfs/labstore-secondary-home',
+        share_path  => "/project/${::labsproject}/home",
+        server      => 'nfs-tools-project.svc.eqiad.wmnet',
+        block       => true,
+        lookupcache => $lookupcache,
+    }
+
     if $::labsproject == 'maps' {
 
         labstore::nfs_mount { 'maps-on-labstore1003':
