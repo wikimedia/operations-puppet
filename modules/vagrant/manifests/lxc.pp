@@ -115,6 +115,11 @@ class vagrant::lxc {
             'ALL=(root) NOPASSWD: /usr/bin/env /etc/init.d/nfs-kernel-server *',
             'ALL=(root) NOPASSWD: /usr/bin/env sed -r -e * -ibak /tmp/exports',
             'ALL=(root) NOPASSWD: /usr/bin/env cp /tmp/exports /etc/exports',
+
+            # Vagrant 1.9.1
+            # NFS
+            'ALL=(root) NOPASSWD: /bin/chown 0\:0 /tmp/vagrant*',
+            'ALL=(root) NOPASSWD: /bin/mv -f /tmp/vagrant* /etc/exports',
         ],
     }
 }
