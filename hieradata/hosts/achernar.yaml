@@ -1,3 +1,4 @@
 debdeploy::grains:
   debdeploy-dnsrecursor:
     value: canary
+ntp::daemon::ensure: present
