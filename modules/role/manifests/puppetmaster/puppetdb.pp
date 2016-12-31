@@ -1,6 +1,7 @@
 # filtertags: labs-project-deployment-prep labs-project-automation-framework labs-project-toolsbeta
 class role::puppetmaster::puppetdb (
-    $shared_buffers = '7680MB'
+    $shared_buffers = '7680MB',
+    $webfrontend = 'nginx'
 ) {
     include ::standard
     include ::base::firewall
@@ -101,6 +102,7 @@ class role::puppetmaster::puppetdb (
     }
 
     class { '::puppetmaster::puppetdb':
-        master => $master,
+        master      => $master,
+        webfrontend => $webfrontend,
     }
 }

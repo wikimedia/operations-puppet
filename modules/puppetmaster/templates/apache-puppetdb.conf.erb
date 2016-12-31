@@ -1,0 +1,19 @@
+# This file is managed by Puppet!
+
+<VirtualHost *:<%= @port %>>
+    ServerName <%= @fqdn %>
+
+    SSLEngine on
+    <%= @ssl_settings.join("\n    ") %>
+    SSLCertificateFile      /var/lib/puppet/ssl/certs/<%= @fqdn %>.pem
+    SSLCertificateKeyFile   /var/lib/puppet/ssl/private_keys/<%= @fqdn %>.pem
+    SSLCACertificateFile    /var/lib/puppet/ssl/certs/ca.pem
+    SSLCertificateChainFile /var/lib/puppet/ssl/certs/ca.pem
+
+    DocumentRoot /dev/null
+
+    RequestHeader set X-Real-IP %{REMOTE_ADDR}s
+    ProxyPass     / http://localhost:<%= @jetty_port %>/
+
+    CustomLog /var/log/apache2/puppetdb.log wmf
+</VirtualHost>
