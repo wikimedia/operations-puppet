@@ -17,7 +17,7 @@
     SSLCertificateFile /etc/acme/cert/librenms.crt
     SSLCertificateChainFile /etc/acme/cert/librenms.chain.crt
     SSLCertificateKeyFile /etc/acme/key/librenms.key
-    <%= @ssl_settings.join("\n") %>
+    <%= @ssl_settings.join("\n    ") %>
 
     DocumentRoot <%= @install_dir %>/html
     <Directory <%= @install_dir %>/html>
