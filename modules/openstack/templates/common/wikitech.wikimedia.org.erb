@@ -57,7 +57,7 @@
     SSLCertificateFile /etc/acme/cert/<%= @certificate %>.crt
     SSLCertificateChainFile /etc/acme/cert/<%= @certificate %>.chain.crt
     SSLCertificateKeyFile /etc/acme/key/<%= @certificate %>.key
-    <%= @ssl_settings.join("\n") %>
+    <%= @ssl_settings.join("\n    ") %>
 
     RedirectMatch ^/$ https://<%= @webserver_hostname %>/wiki/
 
