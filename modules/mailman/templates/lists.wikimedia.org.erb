@@ -16,7 +16,7 @@
     SSLCertificateFile /etc/ssl/localcerts/lists.wikimedia.org.crt
     SSLCertificateChainFile /etc/ssl/localcerts/lists.wikimedia.org.chain.crt
     SSLCertificateKeyFile /etc/ssl/private/lists.wikimedia.org.key
-    <%= @ssl_settings.join("\n") %>
+    <%= @ssl_settings.join("\n    ") %>
 
     # Does not obey robots.txt; causing operational issues, 2014-06-23
     BrowserMatch "ArchiveTeam ArchiveBot" bad_browser
