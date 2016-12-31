@@ -65,7 +65,7 @@
     SSLCertificateChainFile /etc/ssl/localcerts/<%= @certificate %>.chain.crt
     SSLCertificateKeyFile /etc/ssl/private/<%= @certificate %>.key
 <% end -%>
-    <%= @ssl_settings.join("\n") %>
+    <%= @ssl_settings.join("\n    ") %>
 
     RedirectMatch ^/$ https://<%= @webserver_hostname %>/wiki/
 
