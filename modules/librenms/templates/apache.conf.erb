@@ -15,7 +15,7 @@
     SSLCertificateFile /etc/ssl/localcerts/<%= @sitename %>.crt
     SSLCertificateChainFile /etc/ssl/localcerts/<%= @sitename %>.chain.crt
     SSLCertificateKeyFile /etc/ssl/private/<%= @sitename %>.key
-    <%= @ssl_settings.join("\n") %>
+    <%= @ssl_settings.join("\n    ") %>
 
     DocumentRoot <%= @install_dir %>/html
     <Directory <%= @install_dir %>/html>
