@@ -9,7 +9,7 @@
     SSLCertificateFile /etc/ssl/localcerts/tendril.wikimedia.org.crt
     SSLCertificateChainFile /etc/ssl/localcerts/tendril.wikimedia.org.chain.crt
     SSLCertificateKeyFile /etc/ssl/private/tendril.wikimedia.org.key
-    <%= @ssl_settings.join("\n") %>
+    <%= @ssl_settings.join("\n    ") %>
     DocumentRoot <%= @docroot %>
     php_admin_flag short_open_tag on
 
