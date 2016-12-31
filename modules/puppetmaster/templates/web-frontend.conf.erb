@@ -3,7 +3,7 @@
     ServerName <%= @server_name %>
 <%- if @alt_names %>    ServerAlias <%= @alt_names.sort.join(" ") %><% end %>
     SSLEngine on
-    <%= @ssl_settings.join("\n") %>
+    <%= @ssl_settings.join("\n    ") %>
     SSLCertificateFile      <%= @ssldir %>/certs/<%= @server_name %>.pem
     SSLCertificateKeyFile   <%= @ssldir %>/private_keys/<%= @server_name %>.pem
     SSLCACertificateFile    /var/lib/puppet/ssl/certs/ca.pem
