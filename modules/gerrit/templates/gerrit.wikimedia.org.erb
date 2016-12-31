@@ -56,7 +56,7 @@ NameVirtualHost *:443
     SSLCertificateFile /etc/acme/cert/gerrit.crt
     SSLCertificateChainFile /etc/acme/cert/gerrit.chain.crt
     SSLCertificateKeyFile /etc/acme/key/gerrit.key
-    <%= @ssl_settings.join("\n") %>
+    <%= @ssl_settings.join("\n    ") %>
 
     RedirectMatch ^/$ /r/
     RedirectMatch ^/r$ /r/
