@@ -47,7 +47,7 @@
     SSLCertificateFile /etc/acme/cert/toolserver.crt
     SSLCertificateChainFile /etc/acme/cert/toolserver.chain.crt
     SSLCertificateKeyFile /etc/acme/key/toolserver.key
-    <%= @ssl_settings.join("\n") %>
+    <%= @ssl_settings.join("\n    ") %>
 
     DocumentRoot /var/www/html
 
