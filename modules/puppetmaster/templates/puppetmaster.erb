@@ -2,7 +2,7 @@
 
 <VirtualHost <%= scope.lookupvar('puppetmaster::passenger::bind_address') %>:8140>
     SSLEngine on
-    <%= @ssl_settings.join("\n") %>
+    <%= @ssl_settings.join("\n    ") %>
     SSLCertificateFile      /var/lib/puppet/server/ssl/certs/<%= scope.lookupvar('puppetmaster::server_name') %>.pem
     SSLCertificateKeyFile   /var/lib/puppet/server/ssl/private_keys/<%= scope.lookupvar('puppetmaster::server_name') %>.pem
     SSLCACertificateFile    /var/lib/puppet/server/ssl/ca/ca_crt.pem
