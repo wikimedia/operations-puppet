@@ -21,7 +21,7 @@ server {
 
    ssl_certificate /etc/acme/cert/apt.chained.crt;
    ssl_certificate_key /etc/acme/key/apt.key;
-   <%= @ssl_settings.join("\n")  %>
+   <%= @ssl_settings.join("\n   ") %>
 
    root /srv;
 
