@@ -20,7 +20,6 @@ class standard::ntp::client () {
     }
 
     monitoring::service { 'ntp':
-        ensure         => absent,
         description    => 'NTP',
         check_command  => 'check_ntp_time!0.5!1',
         check_interval => 30,
