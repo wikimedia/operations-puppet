@@ -18,7 +18,7 @@
   SSLCertificateFile /etc/acme/cert/rt.crt
   SSLCertificateChainFile /etc/acme/cert/rt.chain.crt
   SSLCertificateKeyFile /etc/acme/key/rt.key
-  <%= @ssl_settings.join("\n") %>
+  <%= @ssl_settings.join("\n  ") %>
 
   AddDefaultCharset UTF-8
 
