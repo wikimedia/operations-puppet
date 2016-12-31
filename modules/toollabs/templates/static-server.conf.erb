@@ -31,7 +31,7 @@ server {
     ssl_session_cache shared:SSL:50m;
     ssl_session_timeout 5m;
 
-    <%= @ssl_settings.join("\n") %>
+    <%= @ssl_settings.join("\n    ") %>
 
     <%- end -%>
 
