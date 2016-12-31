@@ -27,7 +27,7 @@ server {
 
    ssl_certificate /etc/acme/cert/mirrors.chained.crt;
    ssl_certificate_key /etc/acme/key/mirrors.key;
-   <%= @ssl_settings.join("\n")  %>
+   <%= @ssl_settings.join("\n   ") %>
 
    root /srv/mirrors;
 
