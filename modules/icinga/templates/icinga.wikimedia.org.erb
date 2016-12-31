@@ -23,7 +23,7 @@ Alias /icinga /usr/share/icinga/htdocs
     SSLCertificateFile /etc/acme/cert/icinga.crt
     SSLCertificateChainFile /etc/acme/cert/icinga.chain.crt
     SSLCertificateKeyFile /etc/acme/key/icinga.key
-    <%= @ssl_settings.join("\n") %>
+    <%= @ssl_settings.join("\n    ") %>
 
     DocumentRoot /usr/share/icinga/htdocs
 
