@@ -1,29 +1,54 @@
 # Class puppetmaster::puppetdb
 #
 # Sets up a puppetdb instance and the corresponding database server.
-class puppetmaster::puppetdb($master, $port=443, $jetty_port=8080) {
+class puppetmaster::puppetdb($master, $port=443, $jetty_port=8080, $webfrontend='nginx') {
     requires_os('Debian >= jessie')
 
     $puppetdb_pass = hiera('puppetdb::password::rw')
 
     ## TLS Termination
-    # Set up nginx as a reverse-proxy
-    ::base::expose_puppet_certs { '/etc/nginx':
-        ensure          => present,
-        provide_private => true,
-        require         => Class['nginx'],
-    }
+    case $webfrontend {
+        'apache': {
+            # Set up Apache as a reverse-proxy.
+            include ::apache::mod::headers
+            include ::apache::mod::proxy
+            include ::apache::mod::proxy_http
+            include ::apache::mod::ssl
 
-    $ssl_settings = ssl_ciphersuite('nginx', 'mid')
-    include ::sslcert::dhparam
-    ::nginx::site { 'puppetdb':
-        ensure  => present,
-        content => template('puppetmaster/nginx-puppetdb.conf.erb'),
-        require => Class['::sslcert::dhparam'],
-    }
+            $ssl_settings = ssl_ciphersuite('apache', 'mid', true)
+            include ::sslcert::dhparam
+            ::apache::site { 'puppetdb':
+                ensure  => present,
+                content => template('puppetmaster/apache-puppetdb.conf.erb'),
+                require => Class['::sslcert::dhparam'],
+            }
 
-    diamond::collector::nginx{ $::fqdn:
-        port => 10080,
+        }
+
+        'nginx': {
+            # Set up nginx as a reverse-proxy.
+            ::base::expose_puppet_certs { '/etc/nginx':
+                ensure          => present,
+                provide_private => true,
+                require         => Class['nginx'],
+            }
+
+            $ssl_settings = ssl_ciphersuite('nginx', 'mid')
+            include ::sslcert::dhparam
+            ::nginx::site { 'puppetdb':
+                ensure  => present,
+                content => template('puppetmaster/nginx-puppetdb.conf.erb'),
+                require => Class['::sslcert::dhparam'],
+            }
+
+            diamond::collector::nginx{ $::fqdn:
+                port => 10080,
+            }
+        }
+
+        default: {
+            fail("Unknown webfrontend '${webfrontend}'")
+        }
     }
 
     ## PuppetDB installation
