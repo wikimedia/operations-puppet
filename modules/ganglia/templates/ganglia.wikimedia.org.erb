@@ -16,7 +16,7 @@
     SSLCertificateFile <%= @ganglia_ssl_cert %>
     SSLCertificateChainFile <%= @ganglia_ssl_chain %>
     SSLCertificateKeyFile <%= @ganglia_ssl_key %>
-    <%= @ssl_settings.join("\n") %>
+    <%= @ssl_settings.join("\n    ") %>
 
     <Directory "<%= @doc_root %>">
     Options FollowSymLinks
