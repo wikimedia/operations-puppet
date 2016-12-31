@@ -2,7 +2,7 @@
 
 <VirtualHost <%= @bind_address %>:8141>
     SSLEngine on
-    <%= @ssl_settings.join("\n") %>
+    <%= @ssl_settings.join("\n    ") %>
 
     SSLCertificateFile      /var/lib/puppet/ssl/certs/<%= @fqdn %>.pem
     SSLCertificateKeyFile   /var/lib/puppet/ssl/private_keys/<%= @fqdn %>.pem
