@@ -32,7 +32,8 @@ cdh::hadoop::datanode_mounts:
 cdh::hadoop::net_topology_script_template: 'role/analytics_cluster/hadoop/net-topology.py.erb'
 
 # Increase NameNode heapsize independent from other daemons
-cdh::hadoop::hadoop_namenode_opts: "-Xmx4096m"
+cdh::hadoop::hadoop_namenode_heapsize: 4096
+cdh::hadoop::hadoop_namenode_opts: "-Xmx%{cdh::hadoop::hadoop_namenode_heapsize}m"
 
 cdh::hadoop::mapreduce_reduce_shuffle_parallelcopies: 10
 cdh::hadoop::mapreduce_task_io_sort_mb: 200
