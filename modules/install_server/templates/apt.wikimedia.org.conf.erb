@@ -7,6 +7,10 @@ server {
 
    include /etc/acme/challenge-nginx.conf;
 
+   location = / {
+      return 302 https://wikitech.wikimedia.org/wiki/APT_repository;
+   }
+
    location / {
       index index.html index.htm;
       autoindex on;
@@ -24,6 +28,10 @@ server {
    <%= @ssl_settings.join("\n   ") %>
 
    root /srv;
+
+   location = / {
+      return 302 https://wikitech.wikimedia.org/wiki/APT_repository;
+   }
 
    location / {
       index index.html index.htm;
