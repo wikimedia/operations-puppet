@@ -34,6 +34,9 @@ cdh::hadoop::net_topology_script_template: 'role/analytics_cluster/hadoop/net-to
 # Increase NameNode heapsize independent from other daemons
 cdh::hadoop::hadoop_namenode_opts: "-Xmx4096m"
 
+# Used only to set JVM heap alarm thresholds
+cdh::hadoop::hadoop_namenode_heapsize: 4096
+
 cdh::hadoop::mapreduce_reduce_shuffle_parallelcopies: 10
 cdh::hadoop::mapreduce_task_io_sort_mb: 200
 cdh::hadoop::mapreduce_task_io_sort_factor: 10
