@@ -31,6 +31,18 @@ class role::analytics_cluster::hadoop::standby {
             contact_group => 'admins,analytics',
             require       => Class['cdh::hadoop::namenode::standby'],
         }
+
+        # Java heap space used alerts
+        # The goal is to get alarms for long running memory leaks like T153951
+        monitoring::graphite_threshold { 'analytics_hadoop_namenode_hdfs':
+            description   => 'HDFS standby Namenode JVM Heap usage',
+            metric        => "Hadoop.NameNode.${::hostname}_eqiad_wmnet_9980.Hadoop.NameNode.JvmMetrics.MemHeapUsedM.upper",
+            from          => '60min',
+            warning       => '2867', # 70% of available space
+            critical      => '3868', # 90% of available space
+            percentage    => '60',
+            contact_group => 'admins,analytics',
+        }
     }
 
     # Firewall

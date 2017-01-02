@@ -53,6 +53,27 @@ class role::analytics_cluster::hadoop::worker {
             nrpe_command  => '/usr/local/lib/nagios/plugins/check_hadoop_yarn_node_state',
             contact_group => 'admins,analytics',
         }
+
+        # Java heap space used alerts
+        # The goal is to get alarms for long running memory leaks like T153951
+        monitoring::graphite_threshold { 'analytics_hadoop_yarn_nodemanager':
+            description   => 'YARN NodeManager JVM Heap usage',
+            metric        => "Hadoop.NodeManager.${::hostname}_eqiad_wmnet_9984.Hadoop.NodeManager.JvmMetrics.MemHeapUsedM.upper",
+            from          => '60min',
+            warning       => '1433', # 70% of available space
+            critical      => '1843', # 90% of available space
+            percentage    => '60',
+            contact_group => 'admins,analytics',
+        }
+        monitoring::graphite_threshold { 'analytics_hadoop_datanode_hdfs':
+            description   => 'HDFS DataNode JVM Heap usage',
+            metric        => "Hadoop.DataNode.${::hostname}_eqiad_wmnet_9981.Hadoop.DataNode.JvmMetrics.MemHeapUsedM.upper",
+            from          => '60min',
+            warning       => '1433', # 70% of available space
+            critical      => '1843', # 90% of available space
+            percentage    => '60',
+            contact_group => 'admins,analytics',
+        }
     }
 
     # hive::client is nice to have for jobs launched
