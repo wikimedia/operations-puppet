@@ -251,6 +251,8 @@ class Threshold(GraphiteCheck):
         '''
         datapoints = defaultdict(list)
         datapoints['_total'] = 0
+        if len(result) == 0:
+            return datapoints
         for (data, time) in result[0]['datapoints']:
             if not isinstance(data, Real):
                 datapoints['UNKNOWN'].append((time, data))
