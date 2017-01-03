@@ -44,6 +44,7 @@ class openstack::nova::network($novaconfig, $openstack_version=$::openstack::ver
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
+        notify  => Service['nova-network'],
     }
 
     sysctl::parameters { 'openstack':
@@ -73,6 +74,7 @@ class openstack::nova::network($novaconfig, $openstack_version=$::openstack::ver
         group  => 'root',
         mode   => '0444',
         source => 'puppet:///modules/base/firewall/nf_conntrack.conf',
+        notify  => Service['nova-network'],
     }
 
     file { '/usr/lib/nagios/plugins/check_conntrack':
