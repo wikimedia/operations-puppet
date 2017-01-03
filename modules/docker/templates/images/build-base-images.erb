@@ -20,20 +20,25 @@ docker push <%= @docker_registry %>/wikimedia-trusty
 <%- end -%>
 <%- if @distributions.include?('alpine') -%>
 
+<%- if @proxy_address -%>
+export https_proxy=http://<%= @proxy_address %>:<%= @proxy_port %>
+<%- end -%>
 # Build the latest alpine version
 (cd /srv/images/alpine && git checkout master && git pull --rebase)
 AP_BASE="/srv/images/alpine/versions"
-AP_VERSIONS=("${AP_BASE}/library-?.?")
-AP_DIR=${AP_VERSIONS[-1]}
+AP_VERSIONS=( ${AP_BASE}/library-?.? )
+AP_DIR="${AP_VERSIONS[-1]}"
 AP_BRANCH="rootfs/${AP_DIR#$AP_BASE}"
 
-(cd $ALPINE_DIR && git remote update && \
-     git checkout $AP_BRANCH && docker build .)
+(cd $AP_DIR && git remote update && \
+     git checkout $AP_BRANCH)
 # Now get the release tag from the repos own variables
 source ${AP_DIR}/options
+(cd $AP_DIR && docker build . -t ${TAGS[0]})
 for tag in $TAGS; do
+    docker tag ${TAGS[0]} <%= @docker_registry %>/${tag};
     docker push <%= @docker_registry %>/${tag};
 done;
 # This is the latest version, so...
-docker push <%= @docker_registry %>/alpine
-<%- end -%>
+docker tag ${TAGS[0]} <%= @docker_registry %>/alpine:latest
+docker push <%= @docker_registry %>/alpine:latest
