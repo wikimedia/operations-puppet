@@ -387,11 +387,11 @@ class SeriesThreshold(Threshold):
             return message
 
     def format_message(self, messages):
-        if not (messages['CRITICAL'] or messages['WARNING'] or messages['UNKNOWN']):
+        if not (messages['CRITICAL'] or messages['WARNING'] or ('UNKNOWN' in messages and messages['UNKNOWN'])):
             return 'All targets OK'
         sign = '<' if self.under else '>'
         message = ''
-        if messages['UNKNOWN']:
+        if 'UNKNOWN' in messages and messages['UNKNOWN']:
             message += ' '.join(['%s (%s)' % (k, v) for k, v in messages['UNKNOWN']])
         if messages['CRITICAL']:
             message += ' '.join(['%s (%s%3.2f%%)' % (k, sign, v) for k, v in messages['CRITICAL']])
