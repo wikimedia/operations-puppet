@@ -28,7 +28,7 @@ export https_proxy=http://<%= @proxy_address %>:<%= @proxy_port %>
 AP_BASE="/srv/images/alpine/versions"
 AP_VERSIONS=( ${AP_BASE}/library-?.? )
 AP_DIR="${AP_VERSIONS[-1]}"
-AP_BRANCH="rootfs/${AP_DIR#$AP_BASE}"
+AP_BRANCH="rootfs${AP_DIR#$AP_BASE}"
 
 (cd $AP_DIR && git remote update && \
      git checkout $AP_BRANCH)
