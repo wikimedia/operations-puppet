@@ -18,3 +18,22 @@ docker push <%= @docker_registry %>/wikimedia-jessie
 # Push it to the repo
 docker push <%= @docker_registry %>/wikimedia-trusty
 <%- end -%>
+<%- if @distributions.include?('alpine') -%>
+
+# Build the latest alpine version
+(cd /srv/images/alpine && git checkout master && git pull --rebase)
+AP_BASE="/srv/images/alpine/versions"
+AP_VERSIONS=("${AP_BASE}/library-?.?")
+AP_DIR=${AP_VERSIONS[-1]}
+AP_BRANCH="rootfs/${AP_DIR#$AP_BASE}"
+
+(cd $ALPINE_DIR && git remote update && \
+     git checkout $AP_BRANCH && docker build .)
+# Now get the release tag from the repos own variables
+source ${AP_DIR}/options
+for tag in $TAGS; do
+    docker push <%= @docker_registry %>/${tag};
+done;
+# This is the latest version, so...
+docker push <%= @docker_registry %>/alpine
+<%- end -%>

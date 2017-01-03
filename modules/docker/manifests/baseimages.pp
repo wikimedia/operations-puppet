@@ -47,7 +47,24 @@ class docker::baseimages(
         owner   => 'root',
         group   => 'root',
         mode    => '0544',
-        require => File['/srv/images/base']
+        require => File['/srv/images/base'],
+    }
+
+    if 'alpine' in $distributions {
+        if $proxy_address {
+            $env = ["https_proxy=http://${proxy_address}:${proxy_port}"]
+        }
+        else {
+            $env = undef
+        }
+
+        exec { 'git clone alpine linux':
+            command     => '/usr/bin/git clone https://github.com/gliderlabs/docker-alpine.git alpine',
+            creates     => '/srv/images/alpine',
+            cwd         => '/srv/images',
+            environment => $env,
+            require     => File['/srv/images'],
+        }
     }
 
     file { '/usr/local/bin/build-base-images':
