@@ -94,6 +94,8 @@ class BigBrother(object):
             sb = os.stat(rcfile)
         except OSError:
             # File doesn't exist
+            # T94500: clear any jobs that we were tracking
+            self.watchdb[tool]['jobs'] = {}
             return
         if sb.st_mtime <= self.watchdb[tool]['mtime']:
             # File hasn't changed since the last time we read it
