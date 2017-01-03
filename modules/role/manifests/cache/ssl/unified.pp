@@ -33,15 +33,16 @@ class role::cache::ssl::unified(
             check_command => "check_ssl_unified!RSA!${check_cn}!${check_sans_str}",
         }
 
-        # We can refactor this better later, with $certs_active varying on datacenter
-        # for the 2016 set from GlobalSign + Digicert.
+	# These certs are deployed to all caches and OCSP stapled, ready for use in $certs_active as options
         $certs = [
             'globalsign-2016-ecdsa-unified', 'globalsign-2016-rsa-unified',
             'digicert-2016-ecdsa-unified', 'digicert-2016-rsa-unified',
         ]
 
+	# These are the active set of certs, varies by datacenter in hieradata
+	$ucv = hiera('cache::unified_cert_vendor'); # 'globalsign' or 'digicert'
         $certs_active = [
-            'globalsign-2016-ecdsa-unified', 'globalsign-2016-rsa-unified',
+            "${ucv}-2016-ecdsa-unified", "${ucv}-2016-rsa-unified",
         ]
 
         tlsproxy::localssl { 'unified':

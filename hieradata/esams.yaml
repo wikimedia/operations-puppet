@@ -1,3 +1,6 @@
 ganglia_aggregators: bast3001.wikimedia.org:11649
 prometheus_nodes:
   - bast3001.wikimedia.org
+
+# Which of our redundant unified cert vendors to use in each DC
+cache::unified_cert_vendor: "globalsign"
