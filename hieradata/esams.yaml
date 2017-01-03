@@ -3,4 +3,4 @@ prometheus_nodes:
   - bast3001.wikimedia.org
 
 # Which of our redundant unified cert vendors to use in each DC
-public_tls_unified_cert_vendor: "globalsign"
+public_tls_unified_cert_vendor: "digicert"
