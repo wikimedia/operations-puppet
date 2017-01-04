@@ -47,6 +47,13 @@ class role::puppetmaster::puppetdb {
         srange  => "@resolve((${puppetmasters_ferm}))",
     }
 
+    ferm::service { 'puppetdb-cumin':
+        proto   => 'tcp',
+        port    => 443,
+        notrack => true,
+        srange  => '$CUMIN_MASTERS',
+    }
+
     class { 'postgresql::ganglia':
         pgstats_user => $passwords::postgres::ganglia_user,
         pgstats_pass => $passwords::postgres::ganglia_pass,
