@@ -1,6 +1,6 @@
 # This is there because we have a ssh::userkey stanza
 # and it will not be used without this hack.  Same pattern ganeti uses.
-ssh::server::authorized_keys_file: /etc/ssh/userkeys/%u /etc/ssh/userkeys/%u.d/labstore
+ssh::server::authorized_keys_file: /etc/ssh/userkeys/%u /etc/ssh/userkeys/%u.d/cumin /etc/ssh/userkeys/%u.d/labstore
 # Paramiko needs to ssh into these for replication/backups
 # Otherwise throws: SSHException: Incompatible ssh peer (no acceptable kex algorithm)
 "ssh::server::disable_nist_kex": false
