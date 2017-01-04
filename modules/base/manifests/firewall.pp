@@ -47,6 +47,13 @@ class base::firewall($ensure = 'present') {
         rule   => 'saddr $MONITORING_HOSTS ACCEPT;',
     }
 
+    ::ferm::service { 'ssh-from-cumin-masters':
+        ensure => $ensure,
+        proto  => 'tcp',
+        port   => '22',
+        srange => '$CUMIN_MASTERS ACCEPT',
+    }
+
     file { '/usr/lib/nagios/plugins/check_conntrack':
         source => 'puppet:///modules/base/firewall/check_conntrack.py',
         mode   => '0755',
