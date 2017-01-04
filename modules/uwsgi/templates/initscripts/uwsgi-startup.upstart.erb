@@ -4,4 +4,4 @@ start on mounted MOUNTPOINT=/run TYPE=tmpfs
 
 task
 
-exec install -d -o www-data -g www-data /run/uwsgi
+exec install -d -o root -g root /run/uwsgi

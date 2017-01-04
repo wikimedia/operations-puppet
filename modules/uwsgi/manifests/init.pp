@@ -44,8 +44,8 @@ class uwsgi {
 
     file { '/run/uwsgi':
         ensure => directory,
-        owner  => 'www-data',
-        group  => 'www-data',
+        owner  => 'root',
+        group  => 'root',
         mode   => '0755',
     }
 
@@ -56,7 +56,7 @@ class uwsgi {
             owner   => 'root',
             group   => 'root',
             mode    => '0444',
-            content => 'd /run/uwsgi 0755 www-data www-data',
+            content => 'd /run/uwsgi 0755 root root',
         }
     } else {
         base::service_unit { 'uwsgi-startup':

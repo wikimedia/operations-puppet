@@ -4,8 +4,8 @@ Description = <%= @title %> uwsgi app
 
 [Service]
 ExecStart = /usr/bin/uwsgi --die-on-term --autoload --ini <%= @inipath %>
-User = www-data
-Group = www-data
+User = root
+Group = root
 SyslogIdentifier = uwsgi-<%= @basename %>
 
 [Install]

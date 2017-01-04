@@ -1,8 +1,8 @@
 # This file is managed by Puppet
 description "<%= @title %> uwsgi app"
 
-setuid www-data
-setgid www-data
+setuid root
+setgid root
 
 exec /usr/bin/uwsgi --die-on-term --autoload --ini <%= @inipath %>
 
