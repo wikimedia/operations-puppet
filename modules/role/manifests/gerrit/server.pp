@@ -44,5 +44,10 @@ class role::gerrit::server($ipv4, $ipv6 = undef, $bacula = undef) {
             port  => 'https',
         }
 
+        ferm::service { 'gerrit_logstash':
+            proto => 'tcp',
+            port  => '4560',
+        }
+
         class { '::gerrit': }
 }
