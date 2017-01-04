@@ -80,6 +80,18 @@ class openstack::keystone::service($keystoneconfig, $openstack_version=$::openst
         #  by nginx and uwsgi
         '/etc/init/keystone.conf':
             ensure  => 'absent';
+        '/etc/logrotate.d/keystone-public-uwsgi':
+            ensure => present,
+            source => 'puppet:///modules/openstack/keystone-public-uwsgi.logrotate',
+            owner  => 'root',
+            group  => 'root',
+            mode   => '0444';
+        '/etc/logrotate.d/keystone-admin-uwsgi':
+            ensure => present,
+            source => 'puppet:///modules/openstack/keystone-admin-uwsgi.logrotate',
+            owner  => 'root',
+            group  => 'root',
+            mode   => '0444';
     }
 
     if $::fqdn == hiera('labs_nova_controller') {
