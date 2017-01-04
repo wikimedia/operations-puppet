@@ -453,4 +453,11 @@ kafka_clusters:
         id: 2003
 
 deployment_server: tin.eqiad.wmnet
+<<<<<<< HEAD
 install_server: carbon.wikimedia.org
+=======
+
+cumin_masters:
+  - neodymium.eqiad.wmnet
+  - sarin.codfw.wmnet
+>>>>>>> Cumin: allow connection to the targets

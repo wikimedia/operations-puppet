@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 profile::base::ssh_server_settings:
   # Paramiko needs to ssh into these for replication/backups
   # Otherwise throws: SSHException: Incompatible ssh peer (no acceptable kex algorithm)
@@ -7,6 +8,16 @@ profile::base::ssh_server_settings:
   # and it will not be used without this hack.  Same pattern ganeti uses.
   authorized_keys_file: /etc/ssh/userkeys/%u /etc/ssh/userkeys/%u.d/labstore
 profile::base::check_disk_options: -w 10% -c 5% -l -e -A -i /run/lock/storage-replicate-.*/snapshot -i /exp/.*
+=======
+# This is there because we have a ssh::userkey stanza
+# and it will not be used without this hack.  Same pattern ganeti uses.
+ssh::server::authorized_keys_file: /etc/ssh/userkeys/%u /etc/ssh/userkeys/%u.d/cumin /etc/ssh/userkeys/%u.d/labstore
+# Paramiko needs to ssh into these for replication/backups
+# Otherwise throws: SSHException: Incompatible ssh peer (no acceptable kex algorithm)
+"ssh::server::disable_nist_kex": false
+"ssh::server::explicit_macs": false
+base::monitoring::host::nrpe_check_disk_options: -w 10% -c 5% -l -e -A -i /run/lock/storage-replicate-.*/snapshot -i /exp/.*
+>>>>>>> Cumin: allow connection to the targets
 debdeploy::grains:
   debdeploy-labsnfs:
     value: standard
