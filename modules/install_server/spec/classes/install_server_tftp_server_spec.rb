@@ -16,10 +16,10 @@ describe 'install_server::tftp_server', :type => :class do
 
     it do
         should contain_file('/srv/tftpboot').with({
-            'mode'   => '0444',
-            'owner'  => 'root',
-            'group'  => 'root',
-            'recurse'  => 'remote',
+            'mode'    => '0444',
+            'owner'   => 'root',
+            'group'   => 'root',
+            'recurse' => 'remote',
         })
     end
 end
