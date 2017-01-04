@@ -271,6 +271,7 @@ Style/RedundantSelf:
     - 'modules/puppetmaster/lib/puppet/reports/logstash.rb'
     - 'modules/puppetmaster/lib/puppet/reports/servermon.rb'
     - 'modules/wmflib/lib/hiera/backend/proxy_backend.rb'
+    - 'modules/wmflib/lib/puppet/parser/functions/role.rb'
 
 # Offense count: 23
 # Cop supports --auto-correct.
@@ -371,10 +372,10 @@ Style/SpecialGlobalVars:
 Style/StringLiterals:
   Enabled: false
 
-# Offense count: 117
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyleForMultiline, SupportedStyles.
-Style/TrailingComma:
+Style/TrailingCommaInLiteral:
+  Enabled: false
+
+Style/TrailingCommaInArguments:
   Enabled: false
 
 # Offense count: 1
