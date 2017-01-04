@@ -8,6 +8,7 @@ class standard(
     ) {
     include ::profile::base
     include ::standard::ntp
+    include ::profile::cumin::target
 
     if hiera('use_timesyncd', false) or (os_version('debian >= stretch')) {
         unless $::fqdn in $::standard::ntp::wmf_peers[$::site] {
