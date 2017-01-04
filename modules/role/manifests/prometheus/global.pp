@@ -61,4 +61,15 @@ class role::prometheus::global {
         port   => '80',
         srange => '$DOMAIN_NETWORKS',
     }
+
+    # Move Prometheus metrics to new HW - T148408
+    include rsync::server
+
+    $prometheus_nodes = hiera('prometheus_nodes')
+    rsync::server::module { 'prometheus-global':
+        path        => '/srv/prometheus/global/metrics',
+        uid         => 'prometheus',
+        gid         => 'prometheus',
+        hosts_allow => $prometheus_nodes,
+    }
 }

@@ -350,4 +350,21 @@ class role::prometheus::ops {
         targets_path => $targets_path,
         cache_name   => 'upload',
     }
+
+    # Move Prometheus metrics to new HW - T148408
+    include rsync::server
+
+    $prometheus_nodes = hiera('prometheus_nodes')
+    rsync::server::module { 'prometheus-ops':
+        path        => '/srv/prometheus/ops/metrics',
+        uid         => 'prometheus',
+        gid         => 'prometheus',
+        hosts_allow => $prometheus_nodes,
+    }
+
+    ferm::service { 'rsync-prometheus':
+        proto  => 'tcp',
+        port   => '873',
+        srange => "@resolve((${prometheus_nodes}))",
+    }
 }
