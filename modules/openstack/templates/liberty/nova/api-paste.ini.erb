@@ -141,9 +141,7 @@ paste.filter_factory = keystoneclient.middleware.auth_token:filter_factory
 service_protocol = http
 service_host = <%= @novaconfig["keystone_auth_host"] %>
 service_port = 5000
-auth_host = <%= @novaconfig["keystone_auth_host"] %>
-auth_port = <%= @novaconfig["keystone_auth_port"] %>
-auth_protocol = <%= @novaconfig["keystone_auth_protocol"] %>
 admin_token = <%= @novaconfig["keystone_admin_token"] %>
 signing_dir = /tmp/keystone-signing-nova
 auth_uri = <%= @novaconfig["auth_uri"] %>/v2.0
+identity_uri = <%= @novaconfig["auth_uri"] %>
