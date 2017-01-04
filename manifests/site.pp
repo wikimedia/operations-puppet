@@ -2292,7 +2292,7 @@ node 'notebook1002.eqiad.wmnet' {
 node 'neodymium.eqiad.wmnet' {
     role(salt::masters::production, deployment::salt_masters,
       debdeploy::master, ipmi::mgmt, access_new_install, mariadb::client,
-      mgmt::drac_ilo)
+      mgmt::drac_ilo, cumin::master)
     include standard
     include base::firewall
 }
@@ -2566,7 +2566,7 @@ node 'ruthenium.eqiad.wmnet' {
 
 # salt master fallback
 node 'sarin.codfw.wmnet' {
-    role(salt::masters::production, mariadb::client)
+    role(salt::masters::production, mariadb::client, cumin::master)
     include standard
     include base::firewall
 }

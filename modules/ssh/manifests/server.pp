@@ -22,7 +22,7 @@ class ssh::server (
     if $authorized_keys_file {
         $ssh_authorized_keys_file = $authorized_keys_file
     } else {
-        $ssh_authorized_keys_file ='/etc/ssh/userkeys/%u'
+        $ssh_authorized_keys_file ='/etc/ssh/userkeys/%u /etc/ssh/userkeys/%u.d/cumin'
     }
 
     file { '/etc/ssh/userkeys':
