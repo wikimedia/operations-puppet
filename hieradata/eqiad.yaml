@@ -145,7 +145,6 @@ wikitechstatusconfig:
 
 keystoneconfig:
   auth_port: '35357'
-  public_port: '5000'
   auth_protocol: 'http'
   auth_host: 208.80.154.92
   admin_project_id: 'admin'
