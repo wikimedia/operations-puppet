@@ -31,7 +31,7 @@ GEM
       puppet-syntax
       rake
       rspec-puppet
-    rainbow (2.0.0)
+    rainbow (2.2.1)
     rake (10.4.2)
     rspec (3.4.0)
       rspec-core (~> 3.4.0)
