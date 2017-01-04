@@ -53,12 +53,14 @@ class openstack::keystone::service($keystoneconfig, $openstack_version=$::openst
             mode    => '0644',
             owner   => 'root',
             group   => 'root',
+            notify  => Service['uwsgi-keystone-admin', 'uwsgi-keystone-public'],
             require => Package['keystone'];
         '/etc/keystone/logging.conf':
             source  => "puppet:///modules/openstack/${openstack_version}/keystone/logging.conf",
             mode    => '0644',
             owner   => 'root',
             group   => 'root',
+            notify  => Service['uwsgi-keystone-admin', 'uwsgi-keystone-public'],
             require => Package['keystone'];
         '/usr/lib/python2.7/dist-packages/wmfkeystoneauth':
             source  => "puppet:///modules/openstack/${openstack_version}/keystone/wmfkeystoneauth",
