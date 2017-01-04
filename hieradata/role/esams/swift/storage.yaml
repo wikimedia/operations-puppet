@@ -3,3 +3,4 @@ debdeploy::grains:
     value: standard
 admin::groups:
   - swift-roots
+use_timesyncd: true
