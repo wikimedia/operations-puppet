@@ -28,9 +28,9 @@ class openstack::keystone::service($keystoneconfig, $openstack_version=$::openst
     file {
         '/var/log/keystone':
             ensure  => directory,
-            owner   => 'www-data',
+            owner   => 'keystone',
             group   => 'www-data',
-            mode    => '0755';
+            mode    => '0775';
         '/var/log/keystone/uwsgi':
             ensure  => directory,
             owner   => 'www-data',
