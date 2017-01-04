@@ -42,6 +42,11 @@ class base::firewall($ensure = 'present') {
         rule   => 'proto tcp dport ssh saddr $BASTION_HOSTS ACCEPT;',
     }
 
+    ferm::rule { 'cumin-ssh':
+        ensure => $ensure,
+        rule   => 'proto tcp dport ssh saddr $CUMIN_MASTERS ACCEPT;',
+    }
+
     ferm::rule { 'monitoring-all':
         ensure => $ensure,
         rule   => 'saddr $MONITORING_HOSTS ACCEPT;',

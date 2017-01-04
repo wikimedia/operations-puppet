@@ -38,6 +38,7 @@ class base {
     include nrpe
     include base::kernel
     include base::debdeploy
+    include profile::cumin::target
 
     if $::is_virtual == false {
         include ipmi::monitor
