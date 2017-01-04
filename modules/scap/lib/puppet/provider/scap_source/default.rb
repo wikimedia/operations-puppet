@@ -136,7 +136,6 @@ Puppet::Type.type(:scap_source).provide(:default) do
     Puppet.debug("Checking out #{repo} into #{target_path}")
     checkout repo, target_path
     Puppet.debug("Repository checked out in #{target_path}")
-    # rubocop:disable GuardClause
     if resource[:scap_repository]
       target = File.join(target_path, 'scap')
       checkout resource[:scap_repository], target
