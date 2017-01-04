@@ -68,6 +68,12 @@ class network::constants {
                     '10.192.0.27',                # puppetmaster2001.codfw.wmnet
                     '2620:0:860:101:10:192:0:27', # puppetmaster2001.codfw.wmnet
                 ],
+            'cumin_masters' => [
+                    '10.64.32.20',                        # neodymium.eqiad.wmnet
+                    '2620:0:861:103:92b1:1cff:fe2d:798c', # neodymium.eqiad.wmnet
+                    '10.192.0.140',                       # sarin.eqiad.wmnet
+                    '2620:0:860:101:92b1:1cff:fe2d:8540', # sarin.eqiad.wmnet
+                ],
             },
         'labs' => {
             'bastion_hosts' => concat([

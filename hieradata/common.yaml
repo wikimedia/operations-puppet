@@ -452,3 +452,7 @@ kafka_clusters:
         id: 2003
 
 deployment_server: tin.eqiad.wmnet
+
+cumin_masters:
+  - neodymium.eqiad.wmnet
+  - sarin.codfw.wmnet
