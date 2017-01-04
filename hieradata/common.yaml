@@ -454,3 +454,7 @@ kafka_clusters:
 
 deployment_server: tin.eqiad.wmnet
 install_server: carbon.wikimedia.org
+
+cumin_masters:
+  - neodymium.eqiad.wmnet
+  - sarin.codfw.wmnet
