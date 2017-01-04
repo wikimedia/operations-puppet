@@ -4,3 +4,4 @@ swift::proxy::memcached_servers: [
   'ms-fe3002.esams.wmnet:11211'
 # no trailing comma!
 ]
+use_timesyncd: true
