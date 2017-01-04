@@ -6,7 +6,7 @@ class standard::ntp::timesyncd () {
     require standard::ntp
 
     package { 'ntp':
-        ensure => absent,
+        ensure => purged,
     }
 
     $wmf_peers = $::standard::ntp::wmf_peers
