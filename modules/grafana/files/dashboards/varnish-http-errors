@@ -15,10 +15,10 @@
     ]
   },
   "editable": true,
+  "gnetId": null,
   "hideControls": true,
   "id": 92,
   "links": [],
-  "originalTitle": "Varnish: HTTP Errors",
   "refresh": "5m",
   "rows": [
     {
@@ -37,6 +37,13 @@
           ],
           "datasource": "graphite",
           "format": "percent",
+          "gauge": {
+            "maxValue": 100,
+            "minValue": 0,
+            "show": false,
+            "thresholdLabels": false,
+            "thresholdMarkers": true
+          },
           "height": "",
           "hideTimeOverride": true,
           "id": 18,
@@ -49,6 +56,17 @@
               "type": "dashboard"
             }
           ],
+          "mappingType": 1,
+          "mappingTypes": [
+            {
+              "name": "value to text",
+              "value": 1
+            },
+            {
+              "name": "range to text",
+              "value": 2
+            }
+          ],
           "maxDataPoints": "",
           "nullPointMode": "connected",
           "nullText": null,
@@ -56,6 +74,13 @@
           "postfixFontSize": "50%",
           "prefix": "",
           "prefixFontSize": "50%",
+          "rangeMaps": [
+            {
+              "from": "null",
+              "text": "N/A",
+              "to": "null"
+            }
+          ],
           "span": 4,
           "sparkline": {
             "fillColor": "rgba(31, 118, 189, 0.18)",
@@ -90,17 +115,35 @@
           "colorBackground": false,
           "colorValue": true,
           "colors": [
-            "rgba(129, 237, 0, 0.7)",
+            "rgba(245, 54, 54, 0.7)",
             "rgba(237, 129, 40, 0.7)",
-            "rgba(245, 54, 54, 0.7)"
+            "rgba(129, 237, 0, 0.7)"
           ],
           "datasource": "graphite",
           "format": "short",
+          "gauge": {
+            "maxValue": 100,
+            "minValue": 0,
+            "show": false,
+            "thresholdLabels": false,
+            "thresholdMarkers": true
+          },
           "height": "",
           "hideTimeOverride": true,
           "id": 12,
           "interval": null,
           "links": [],
+          "mappingType": 1,
+          "mappingTypes": [
+            {
+              "name": "value to text",
+              "value": 1
+            },
+            {
+              "name": "range to text",
+              "value": 2
+            }
+          ],
           "maxDataPoints": "",
           "nullPointMode": "connected",
           "nullText": null,
@@ -108,9 +151,16 @@
           "postfixFontSize": "50%",
           "prefix": "HTTP 5xx",
           "prefixFontSize": "50%",
+          "rangeMaps": [
+            {
+              "from": "null",
+              "text": "N/A",
+              "to": "null"
+            }
+          ],
           "span": 4,
           "sparkline": {
-            "fillColor": "rgba(31, 118, 189, 0.18)",
+            "fillColor": "rgba(193, 221, 252, 0.18)",
             "full": true,
             "lineColor": "rgb(31, 120, 193)",
             "show": true
@@ -146,11 +196,29 @@
           ],
           "datasource": "graphite",
           "format": "short",
+          "gauge": {
+            "maxValue": 100,
+            "minValue": 0,
+            "show": false,
+            "thresholdLabels": false,
+            "thresholdMarkers": true
+          },
           "height": "",
           "hideTimeOverride": true,
           "id": 11,
           "interval": null,
           "links": [],
+          "mappingType": 1,
+          "mappingTypes": [
+            {
+              "name": "value to text",
+              "value": 1
+            },
+            {
+              "name": "range to text",
+              "value": 2
+            }
+          ],
           "maxDataPoints": "",
           "nullPointMode": "connected",
           "nullText": null,
@@ -158,9 +226,16 @@
           "postfixFontSize": "50%",
           "prefix": "HTTP 500",
           "prefixFontSize": "50%",
+          "rangeMaps": [
+            {
+              "from": "null",
+              "text": "N/A",
+              "to": "null"
+            }
+          ],
           "span": 4,
           "sparkline": {
-            "fillColor": "rgba(31, 118, 189, 0.18)",
+            "fillColor": "rgba(188, 221, 249, 0.18)",
             "full": true,
             "lineColor": "rgb(31, 120, 193)",
             "show": true
@@ -206,6 +281,13 @@
           ],
           "datasource": "graphite",
           "format": "percent",
+          "gauge": {
+            "maxValue": 100,
+            "minValue": 0,
+            "show": false,
+            "thresholdLabels": false,
+            "thresholdMarkers": true
+          },
           "height": "",
           "hideTimeOverride": true,
           "id": 19,
@@ -219,6 +301,17 @@
               "type": "dashboard"
             }
           ],
+          "mappingType": 1,
+          "mappingTypes": [
+            {
+              "name": "value to text",
+              "value": 1
+            },
+            {
+              "name": "range to text",
+              "value": 2
+            }
+          ],
           "maxDataPoints": "",
           "nullPointMode": "connected",
           "nullText": null,
@@ -226,6 +319,13 @@
           "postfixFontSize": "50%",
           "prefix": "",
           "prefixFontSize": "50%",
+          "rangeMaps": [
+            {
+              "from": "null",
+              "text": "N/A",
+              "to": "null"
+            }
+          ],
           "span": 4,
           "sparkline": {
             "fillColor": "rgba(31, 118, 189, 0.18)",
@@ -266,10 +366,28 @@
           ],
           "datasource": "graphite",
           "format": "none",
+          "gauge": {
+            "maxValue": 100,
+            "minValue": 0,
+            "show": false,
+            "thresholdLabels": false,
+            "thresholdMarkers": true
+          },
           "height": "",
           "id": 13,
           "interval": null,
           "links": [],
+          "mappingType": 1,
+          "mappingTypes": [
+            {
+              "name": "value to text",
+              "value": 1
+            },
+            {
+              "name": "range to text",
+              "value": 2
+            }
+          ],
           "maxDataPoints": "",
           "nullPointMode": "connected",
           "nullText": null,
@@ -277,6 +395,13 @@
           "postfixFontSize": "50%",
           "prefix": "HTTP 4xx",
           "prefixFontSize": "50%",
+          "rangeMaps": [
+            {
+              "from": "null",
+              "text": "N/A",
+              "to": "null"
+            }
+          ],
           "span": 4,
           "sparkline": {
             "fillColor": "rgba(31, 118, 189, 0.18)",
@@ -312,13 +437,31 @@
             "rgba(237, 129, 40, 0.7)",
             "rgba(245, 54, 54, 0.7)"
           ],
-          "datasource": "graphite",
+          "datasource": null,
           "format": "short",
+          "gauge": {
+            "maxValue": 100,
+            "minValue": 0,
+            "show": false,
+            "thresholdLabels": false,
+            "thresholdMarkers": true
+          },
           "height": "",
           "hideTimeOverride": true,
           "id": 23,
           "interval": null,
           "links": [],
+          "mappingType": 1,
+          "mappingTypes": [
+            {
+              "name": "value to text",
+              "value": 1
+            },
+            {
+              "name": "range to text",
+              "value": 2
+            }
+          ],
           "maxDataPoints": "",
           "nullPointMode": "connected",
           "nullText": null,
@@ -326,6 +469,13 @@
           "postfixFontSize": "50%",
           "prefix": "",
           "prefixFontSize": "50%",
+          "rangeMaps": [
+            {
+              "from": "null",
+              "text": "N/A",
+              "to": "null"
+            }
+          ],
           "span": 4,
           "sparkline": {
             "fillColor": "rgba(31, 118, 189, 0.18)",
@@ -371,14 +521,8 @@
           "datasource": "graphite",
           "fill": 3,
           "grid": {
-            "leftLogBase": 1,
-            "leftMax": null,
-            "leftMin": 0,
             "max": null,
             "min": null,
-            "rightLogBase": 1,
-            "rightMax": null,
-            "rightMin": null,
             "threshold1": 100,
             "threshold1Color": "rgba(216, 200, 27, 0.27)",
             "threshold2": 400,
@@ -388,7 +532,6 @@
           "height": "",
           "id": 7,
           "interactive": true,
-          "leftYAxisLabel": "",
           "legend": {
             "alignAsTable": false,
             "avg": true,
@@ -422,125 +565,51 @@
               "refId": "A",
               "target": "alias(movingMedian(scale(sumSeries(varnish.*.*.frontend.request.client.status.500.rate), 60), 5), '500 resp/min')",
               "textEditor": false
-            }
-          ],
-          "timeFrom": null,
-          "timeShift": null,
-          "timezone": "browser",
-          "title": "HTTP 500 Responses",
-          "tooltip": {
-            "query_as_alias": true,
-            "shared": true,
-            "value_type": "cumulative"
-          },
-          "type": "graph",
-          "x-axis": true,
-          "y-axis": true,
-          "y_formats": [
-            "short",
-            "short"
-          ],
-          "zerofill": true
-        }
-      ],
-      "showTitle": false,
-      "title": "500"
-    },
-    {
-      "collapse": false,
-      "editable": true,
-      "height": "350px",
-      "panels": [
-        {
-          "aliasColors": {},
-          "annotate": {
-            "enable": false
-          },
-          "bars": false,
-          "datasource": "graphite",
-          "decimals": null,
-          "fill": 1,
-          "grid": {
-            "leftLogBase": 1,
-            "leftMax": null,
-            "leftMin": 0,
-            "max": null,
-            "min": null,
-            "rightLogBase": 1,
-            "rightMax": null,
-            "rightMin": null,
-            "threshold1": null,
-            "threshold1Color": "rgba(216, 200, 27, 0.27)",
-            "threshold2": null,
-            "threshold2Color": "rgba(234, 112, 112, 0.22)",
-            "thresholdLine": true
-          },
-          "height": "",
-          "id": 17,
-          "interactive": true,
-          "leftYAxisLabel": "",
-          "legend": {
-            "alignAsTable": false,
-            "avg": false,
-            "current": true,
-            "max": true,
-            "min": false,
-            "show": true,
-            "total": false,
-            "values": true
-          },
-          "legend_counts": true,
-          "lines": true,
-          "linewidth": 1,
-          "links": [],
-          "nullPointMode": "connected",
-          "options": false,
-          "percentage": false,
-          "pointradius": 5,
-          "points": false,
-          "renderer": "flot",
-          "resolution": 100,
-          "scale": 1,
-          "seriesOverrides": [
-            {
-              "alias": "5xx resp/min",
-              "fill": 3,
-              "linewidth": 2,
-              "zindex": 1
-            }
-          ],
-          "span": 12,
-          "spyable": true,
-          "stack": false,
-          "steppedLine": false,
-          "targets": [
+            },
             {
               "hide": false,
-              "refId": "A",
-              "target": "alias(movingMedian(scale(sumSeries(varnish.*.*.frontend.request.client.status.5xx.rate), 60), 5), '5xx resp/min')",
+              "refId": "B",
+              "target": "alias(movingMedian(scale(sumSeries(varnish.*.*.frontend.request.client.status.503.rate), 60), 5), '503 resp/min')",
               "textEditor": false
             }
           ],
           "timeFrom": null,
           "timeShift": null,
           "timezone": "browser",
-          "title": "HTTP 5xx Responses",
+          "title": "HTTP 500 / 503 Responses",
           "tooltip": {
+            "msResolution": false,
             "query_as_alias": true,
             "shared": true,
+            "sort": 0,
             "value_type": "cumulative"
           },
           "type": "graph",
-          "x-axis": true,
-          "y-axis": true,
-          "y_formats": [
-            "short",
-            "short"
+          "xaxis": {
+            "show": true
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "label": "",
+              "logBase": 1,
+              "max": null,
+              "min": 0,
+              "show": true
+            },
+            {
+              "format": "short",
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
           ],
           "zerofill": true
         }
       ],
-      "title": "5xx"
+      "showTitle": false,
+      "title": "500"
     },
     {
       "collapse": false,
@@ -558,14 +627,8 @@
           "datasource": "graphite",
           "fill": 1,
           "grid": {
-            "leftLogBase": 1,
-            "leftMax": null,
-            "leftMin": null,
             "max": null,
             "min": null,
-            "rightLogBase": 1,
-            "rightMax": null,
-            "rightMin": null,
             "threshold1": 35000,
             "threshold1Color": "rgba(216, 200, 27, 0.27)",
             "threshold2": 60000,
@@ -574,7 +637,6 @@
           "height": "",
           "id": 9,
           "interactive": true,
-          "leftYAxisLabel": "",
           "legend": {
             "alignAsTable": true,
             "avg": true,
@@ -614,16 +676,32 @@
           "timezone": "browser",
           "title": "HTTP 4xx Responses",
           "tooltip": {
+            "msResolution": false,
             "query_as_alias": true,
             "shared": true,
+            "sort": 0,
             "value_type": "cumulative"
           },
           "type": "graph",
-          "x-axis": true,
-          "y-axis": true,
-          "y_formats": [
-            "short",
-            "short"
+          "xaxis": {
+            "show": true
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "label": "",
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
           ],
           "zerofill": true
         }
@@ -631,7 +709,7 @@
       "title": "4xx"
     },
     {
-      "collapse": true,
+      "collapse": false,
       "editable": true,
       "height": "350px",
       "panels": [
@@ -644,14 +722,8 @@
           "datasource": "graphite",
           "fill": 1,
           "grid": {
-            "leftLogBase": 1,
-            "leftMax": null,
-            "leftMin": null,
             "max": null,
             "min": null,
-            "rightLogBase": 1,
-            "rightMax": null,
-            "rightMin": null,
             "threshold1": null,
             "threshold1Color": "rgba(216, 200, 27, 0.27)",
             "threshold2": null,
@@ -661,7 +733,6 @@
           "height": "",
           "id": 22,
           "interactive": true,
-          "leftYAxisLabel": "",
           "legend": {
             "alignAsTable": false,
             "avg": false,
@@ -674,7 +745,7 @@
           },
           "legend_counts": true,
           "lines": true,
-          "linewidth": 1,
+          "linewidth": 2,
           "links": [],
           "nullPointMode": "connected",
           "options": false,
@@ -686,9 +757,9 @@
           "scale": 1,
           "seriesOverrides": [
             {
-              "alias": "reqs/min",
-              "fill": 3,
-              "linewidth": 2,
+              "alias": "/yester|last/",
+              "fill": 0,
+              "linewidth": 1,
               "zindex": 1
             }
           ],
@@ -701,19 +772,19 @@
               "hide": false,
               "refId": "A",
               "target": "alias(movingAverage(sumSeries(varnish.*.*.frontend.request.client.total.sum), 5), 'reqs/min')",
-              "textEditor": true
+              "textEditor": false
             },
             {
               "hide": false,
               "refId": "B",
               "target": "alias(timeShift(movingAverage(  sumSeries(varnish.*.*.frontend.request.client.total.sum), 5), '1d'), 'yesterday')",
-              "textEditor": true
+              "textEditor": false
             },
             {
               "hide": false,
               "refId": "C",
               "target": "alias(timeShift(movingAverage( sumSeries(varnish.*.*.frontend.request.client.total.sum) , 5), '7d'), 'last week')",
-              "textEditor": true
+              "textEditor": false
             }
           ],
           "timeFrom": null,
@@ -721,16 +792,32 @@
           "timezone": "browser",
           "title": "HTTP Requests (total)",
           "tooltip": {
+            "msResolution": false,
             "query_as_alias": true,
             "shared": true,
+            "sort": 0,
             "value_type": "cumulative"
           },
           "type": "graph",
-          "x-axis": true,
-          "y-axis": true,
-          "y_formats": [
-            "short",
-            "short"
+          "xaxis": {
+            "show": true
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "label": "",
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": false
+            }
           ],
           "zerofill": true
         },
@@ -746,14 +833,8 @@
           "decimals": 2,
           "fill": 1,
           "grid": {
-            "leftLogBase": 1,
-            "leftMax": null,
-            "leftMin": null,
             "max": null,
             "min": null,
-            "rightLogBase": 1,
-            "rightMax": null,
-            "rightMin": null,
             "threshold1": null,
             "threshold1Color": "rgba(216, 200, 27, 0.27)",
             "threshold2": null,
@@ -762,7 +843,6 @@
           "height": "200px",
           "id": 24,
           "interactive": true,
-          "leftYAxisLabel": "reqs/min",
           "legend": {
             "alignAsTable": false,
             "avg": false,
@@ -785,7 +865,12 @@
           "renderer": "flot",
           "resolution": 100,
           "scale": 1,
-          "seriesOverrides": [],
+          "seriesOverrides": [
+            {
+              "alias": "weekly",
+              "fill": 0
+            }
+          ],
           "span": 12,
           "spyable": true,
           "stack": false,
@@ -807,16 +892,32 @@
           "timezone": "browser",
           "title": "History",
           "tooltip": {
+            "msResolution": false,
             "query_as_alias": true,
             "shared": true,
+            "sort": 0,
             "value_type": "cumulative"
           },
           "type": "graph",
-          "x-axis": true,
-          "y-axis": true,
-          "y_formats": [
-            "short",
-            "short"
+          "xaxis": {
+            "show": true
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "label": "reqs/min",
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
           ],
           "zerofill": true
         }
@@ -825,7 +926,7 @@
       "title": "HTTP Request count"
     }
   ],
-  "schemaVersion": 10,
+  "schemaVersion": 12,
   "sharedCrosshair": true,
   "style": "light",
   "tags": [
@@ -869,5 +970,5 @@
   },
   "timezone": "utc",
   "title": "Varnish: HTTP Errors",
-  "version": 28
+  "version": 42
 }
