@@ -2255,13 +2255,10 @@ node 'notebook1002.eqiad.wmnet' {
     include ::standard
 }
 
-# salt master
+# cluster management (salt master, cumin master) + other management tools
 node 'neodymium.eqiad.wmnet' {
-    role(salt::masters::production, deployment::salt_masters,
-      debdeploy::master, ipmi::mgmt, access_new_install, mariadb::client,
-      mgmt::drac_ilo)
-    include ::standard
-    include ::base::firewall
+    role(deployment::salt_masters, debdeploy::master, ipmi::mgmt,
+      access_new_install, mgmt::drac_ilo, cluster::management)
 }
 
 node 'nescio.wikimedia.org' {
@@ -2536,11 +2533,9 @@ node 'ruthenium.eqiad.wmnet' {
 
 }
 
-# salt master fallback
+# cluster management (salt master, cumin master)
 node 'sarin.codfw.wmnet' {
-    role(salt::masters::production, mariadb::client)
-    include ::standard
-    include ::base::firewall
+    role(cluster::management)
 }
 
 # Services 'A'
