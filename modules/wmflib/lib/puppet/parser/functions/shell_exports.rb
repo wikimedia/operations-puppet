@@ -22,7 +22,7 @@
 #  export APACHE_PID_FILE="/var/run/apache2/apache2.pid"
 #
 module Puppet::Parser::Functions
-  newfunction(:shell_exports, :type  => :rvalue, :arity => 1) do |args|
+  newfunction(:shell_exports, :type => :rvalue, :arity => 1) do |args|
     vars, uppercase_keys = args
     fail(ArgumentError, 'validate_ensure(): hash argument required') unless vars.is_a?(Hash)
     vars = Hash[vars.map { |k, v| [k.upcase, v] }] unless uppercase_keys == false
