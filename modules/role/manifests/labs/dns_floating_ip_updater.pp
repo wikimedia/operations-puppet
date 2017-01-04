@@ -34,6 +34,6 @@ class role::labs::dns_floating_ip_updater {
     cron { 'floating-ip-ptr-record-updater':
         minute  => '*/10',
         user    => 'root',
-        command => '/etc/dns-floating-ip-updater.py > /dev/null',
+        command => '/etc/dns-floating-ip-updater.py >/dev/null 2>/dev/null',
     }
 }
