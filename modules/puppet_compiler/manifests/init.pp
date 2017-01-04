@@ -1,11 +1,11 @@
 # Installs the puppet compiler and all the other software we need.
 class puppet_compiler(
     $version = '0.0.4',
-    $workdir = '/mnt/jenkins-workspace/puppet-compiler',
+    $workdir = '/srv/jenkins-workspace/puppet-compiler',
     $libdir  = '/var/lib/catalog-differ',
     $ensure  = 'present',
     $user    = 'jenkins-deploy',
-    $homedir = '/mnt/home/jenkins-deploy',
+    $homedir = '/srv/home/jenkins-deploy',
     ) {
 
     require ::puppet_compiler::packages
