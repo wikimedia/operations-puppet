@@ -357,7 +357,6 @@ keystoneconfig:
   ldap_proxyagent : 'cn=proxyagent,ou=profile,dc=wikimedia,dc=org'
   auth_protocol: 'http'
   auth_port: '35357'
-  public_port: '5000'
   db_host: 'm5-master.eqiad.wmnet'
   ldap_host: 'ldap-labs.eqiad.wikimedia.org'
   token_driver: 'normal'
