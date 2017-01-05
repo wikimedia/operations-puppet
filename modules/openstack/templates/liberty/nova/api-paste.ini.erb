@@ -144,5 +144,5 @@ service_port = 5000
 admin_user = novaadmin
 admin_password = <%= @novaconfig['ldap_user_pass'] %>
 signing_dir = /tmp/keystone-signing-nova
-auth_uri = <%= @novaconfig["auth_uri"] %>/v2.0
+auth_uri = <%= @novaconfig["auth_uri"] %>/v3
 identity_uri = <%= @novaconfig["admin_uri"] %>
