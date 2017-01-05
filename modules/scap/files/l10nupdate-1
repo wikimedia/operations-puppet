@@ -108,6 +108,8 @@ do
 			# The "9" argument is the file descriptor that is being locked.
 			# See 9>$SCAP_LOCK below and `man -s1 flock`.
 			flock --exclusive 9 &&
+			echo "Staging l10nupdate changes" >&9 &&
+			echo "Locked $SCAP_LOCK" &&
 			# Stage l10n changes
 			cp --preserve=timestamps --force "$tempCacheDir"/l10n_cache-* $MEDIAWIKI_STAGING_DIR/php-"$mwVerNum"/cache/l10n &&
 			# Include JSON versions of the CDB files and add MD5 files
@@ -117,6 +119,8 @@ do
 			banglog "Failed to stage l10n changes for '$mwVerNum'"
 			exit 1
 		fi
+		# Clean up the lock file
+		rm $SCAP_LOCK
 		echo "Syncing to Apaches at `date --rfc-3339=seconds`"
 		sudo -u mwdeploy -n -- /usr/bin/scap sync-l10n --verbose $mwVerNum
 		if [[ $? -ne 0 ]]; then
