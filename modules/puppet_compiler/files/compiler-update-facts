@@ -3,16 +3,17 @@
 
 set -e
 set -u
+set -x
 
 master=${PUPPET_MASTER:-rhodium.eqiad.wmnet}
 compiler=${PUPPET_COMPILER:-compiler02.puppet3-diffs.eqiad.wmflabs}
 
-ssh $master 'sudo /usr/local/bin/puppet-facts-export'
+ssh $master 'sudo /usr/local/bin/puppet-facts-export 1>/dev/null'
 # tunnel via your localhost without ever the file touching the disk
 ssh $master cat /tmp/puppet-facts-export.tar.xz | \
     ssh $compiler 'cat > puppet-facts-export.tar.xz'
 ssh $master 'sudo rm /tmp/puppet-facts-export.tar.xz'
-ssh $compiler 'sudo tar Jxvf puppet-facts-export.tar.xz \
+ssh $compiler 'sudo tar Jxf puppet-facts-export.tar.xz \
     --directory /var/lib/catalog-differ/puppet \
     && rm puppet-facts-export.tar.xz'
 ssh $compiler 'sudo chown -R jenkins-deploy:wikidev /var/lib/catalog-differ/puppet/yaml'
