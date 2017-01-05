@@ -142,6 +142,37 @@ MANHOLE_DEBUGGING = True
 # Overrides the community core class in order to install manhole
 APP_CLASS = 'wikimedia_thumbor.app.App'
 
+# PoolCounter configuration
+
+POOLCOUNTER_SERVER = 'poolcounter1001.eqiad.wmnet'
+POOLCOUNTER_PORT = 7531
+POOLCOUNTER_RELEASE_TIMEOUT = 120
+
+# Up to "workers" thumbnails can be generated at once for a given IP
+# address, with up to "maxqueue" thumbnails queued per IP
+POOLCOUNTER_CONFIG_PER_IP = {
+    'workers': 32,
+    'maxqueue': 500,
+    'timeout': 8
+}
+
+# Up to "workers" thumbnails can be generated at once for the same original
+# with up to a "maxqueue" other thumbnail requests for that original queued
+POOLCOUNTER_CONFIG_PER_ORIGINAL = {
+    'workers': 2,
+    'maxqueue': 100,
+    'timeout': 8
+}
+
+# An absolute maximum of "workers" expensive thumbnails can be processed at the same time,
+# queueing up to "maxqueue" other expensive thumbnails
+POOLCOUNTER_CONFIG_EXPENSIVE = {
+    'workers': 16,
+    'maxqueue': 100,
+    'timeout': 8,
+    'extensions': ['xcf', 'djvu', 'pdf', 'tiff']
+}
+
 
 ################################### Logging ##################################
 
