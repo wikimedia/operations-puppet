@@ -10,7 +10,9 @@ class standard(
     include ::standard::ntp
 
     if hiera('use_timesyncd', false) {
-        include standard::ntp::timesyncd
+        unless $::fqdn in $::standard::ntp::wmf_peers[$::site] {
+            include standard::ntp::timesyncd
+        }
     }
     else
     {
