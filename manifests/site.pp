@@ -2518,6 +2518,11 @@ node /^restbase-test200[1-3]\.codfw\.wmnet$/ {
     role(restbase::server, cassandra)
 }
 
+# cassandra/restbase dev cluster
+node /^restbase-dev100[1-3]\.eqiad\.wmnet$/ {
+    role(restbase::server, cassandra)
+}
+
 # network insights (netflow/pmacct, etc.)
 node 'rhenium.wikimedia.org' {
     role(pmacct)
