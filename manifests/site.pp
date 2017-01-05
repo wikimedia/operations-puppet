@@ -2141,25 +2141,6 @@ node /^mw20(17|99)\.codfw\.wmnet$/ {
     include base::firewall
 }
 
-#mw2075-2079 are api appservers
-node /^mw207[5-9]\.codfw\.wmnet$/ {
-    role(mediawiki::appserver::api)
-    include base::firewall
-}
-
-
-# ROW B codfw appservers: mw2080-mw2147
-#mw2080-mw2085 are jobrunners
-node /^mw208[0-5]\.codfw\.wmnet$/ {
-    role(mediawiki::jobrunner)
-    include base::firewall
-}
-
-#mw2086-mw2089 are imagescalers
-node /^mw208[6-9]\.codfw\.wmnet$/ {
-    role(mediawiki::imagescaler)
-}
-
 #mw2090-mw2098, mw2100-mw2119 are appservers
 node /^mw2(09[0-8]|1[0-1][0-9])\.codfw\.wmnet$/ {
     role(mediawiki::appserver)
