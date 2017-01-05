@@ -41,10 +41,17 @@ class icinga::web {
     include ::apache::mod::authnz_ldap
 
     $ssl_settings = ssl_ciphersuite('apache', 'mid', true)
-    sslcert::certificate { 'icinga.wikimedia.org': }
+
+    letsencrypt::cert::integrated { 'icinga':
+        subjects   => 'icinga.wikimedia.org',
+        puppet_svc => 'apache2',
+        system_svc => 'apache2',
+        require    => Class['apache::mod::ssl']
+    }
 
     apache::site { 'icinga.wikimedia.org':
         content => template('icinga/icinga.wikimedia.org.erb'),
+        require => Letsencrypt::Cert::Integrated['icinga'],
     }
 
     # remove icinga default config
