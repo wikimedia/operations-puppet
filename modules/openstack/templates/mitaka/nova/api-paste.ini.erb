@@ -118,13 +118,12 @@ paste.app_factory = nova.api.openstack.volume.versions:Versions.factory
 paste.filter_factory = nova.api.auth:NovaKeystoneContext.factory
 
 [filter:authtoken]
-paste.filter_factory = keystoneclient.middleware.auth_token:filter_factory
+paste.filter_factory = keystonemiddleware.auth_token:filter_factory
 service_protocol = http
 service_host = <%= @novaconfig["keystone_auth_host"] %>
 service_port = 5000
-auth_host = <%= @novaconfig["keystone_auth_host"] %>
-auth_port = <%= @novaconfig["keystone_auth_port"] %>
-auth_protocol = <%= @novaconfig["keystone_auth_protocol"] %>
-admin_token = <%= @novaconfig["keystone_admin_token"] %>
+admin_user = novaadmin
+admin_password = <%= @novaconfig['ldap_user_pass'] %>
 signing_dir = /tmp/keystone-signing-nova
-auth_uri = <%= @novaconfig["auth_uri"] %>/v2.0
+auth_uri = <%= @novaconfig["auth_uri"] %>/v3
+identity_uri = <%= @novaconfig["admin_uri"] %>

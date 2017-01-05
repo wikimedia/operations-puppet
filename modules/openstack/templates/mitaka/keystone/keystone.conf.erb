@@ -253,14 +253,6 @@ notification_driver = wmfkeystonehooks
 # From oslo.service.service
 #
  
-# Enable eventlet backdoor.  Acceptable values are 0, <port>, and
-# <start>:<end>, where 0 results in listening on a random tcp port number;
-# <port> results in listening on the specified port number (and not enabling
-# backdoor if that port is in use); and <start>:<end> results in listening on
-# the smallest unused port number within the specified range of port numbers.
-# The chosen port is displayed in the service's log file. (string value)
-#backdoor_port = <None>
- 
 # Enables or disables logging values of all registered options when starting a
 # service (at DEBUG level). (boolean value)
 #log_options = true
@@ -268,21 +260,6 @@ notification_driver = wmfkeystonehooks
 [assignment]
 driver = sql
  
-
-[eventlet_server]
-# The IP address of the network interface to listen on
-# bind_host = 0.0.0.0
-
-# The port number which the public service listens on
-# public_port = 5000
-
-# The port number which the public admin listens on
-admin_port = <%= @keystoneconfig["auth_port"] %>
-
-# The port number which the OpenStack Compute service listens on
-# compute_port = 8774
-
-
 [sql]
 # the timeout before idle sql connections are reaped
 # idle_timeout = 200
@@ -381,13 +358,6 @@ expiration = 613440
 [policy]
 driver = rules
 
-[eventlet_server_ssl]
-enable = False
-#certfile = /etc/keystone/ssl/certs/keystone.pem
-#keyfile = /etc/keystone/ssl/private/keystonekey.pem
-#ca_certs = /etc/keystone/ssl/certs/ca.pem
-#cert_required = True
-
 [signing]
 #provider = uuid
 #certfile = /etc/keystone/ssl/certs/signing_cert.pem
@@ -413,6 +383,13 @@ methods = external,password,token,wmtotp
 # Override the default password plugin with a custom
 #  one that checks source IPs.
 password = whitelist
+
+<% @labs_networks.each do |subnet| -%>
+password_whitelist = novaobserver:<%=subnet%>
+<% end -%>
+<% @prod_networks.each do |subnet| -%>
+password_whitelist = *:<%=subnet%>
+<% end -%>
 
 [oath]
 
