@@ -94,7 +94,6 @@ define tlsproxy::localssl(
             subjects   => join($acme_subjects, ','),
             puppet_svc => 'nginx',
             system_svc => 'nginx',
-            before     => Service['nginx'],
         }
         # TODO: Maybe add monitoring to this in role::cache::ssl::unified
     }
