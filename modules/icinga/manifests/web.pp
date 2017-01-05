@@ -45,6 +45,7 @@ class icinga::web {
 
     apache::site { 'icinga.wikimedia.org':
         content => template('icinga/icinga.wikimedia.org.erb'),
+        require => Letsencrypt::Cert::Integrated['icinga'],
     }
 
     # remove icinga default config
