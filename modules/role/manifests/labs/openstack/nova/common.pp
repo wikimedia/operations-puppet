@@ -20,6 +20,7 @@ class role::labs::openstack::nova::common {
         keystone_admin_token   => $keystoneconfig['admin_token'],
         keystone_auth_protocol => $keystoneconfig['auth_protocol'],
         auth_uri               => "http://${nova_controller}:5000",
+        admin_uri              => "http://${nova_controller}:35357",
         api_ip                 => ipresolve($nova_api_host,4),
         controller_address     => ipresolve($nova_controller,4),
     }

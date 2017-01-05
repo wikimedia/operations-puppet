@@ -144,4 +144,4 @@ service_port = 5000
 admin_token = <%= @novaconfig["keystone_admin_token"] %>
 signing_dir = /tmp/keystone-signing-nova
 auth_uri = <%= @novaconfig["auth_uri"] %>/v2.0
-identity_uri = <%= @novaconfig["auth_uri"] %>
+identity_uri = <%= @novaconfig["admin_uri"] %>
