@@ -40,6 +40,9 @@ class icinga::web {
     include ::apache::mod::rewrite
     include ::apache::mod::authnz_ldap
 
+    $ssl_settings = ssl_ciphersuite('apache', 'mid', true)
+    sslcert::certificate { 'icinga.wikimedia.org': }
+
     apache::site { 'icinga.wikimedia.org':
         content => template('icinga/icinga.wikimedia.org.erb'),
     }
