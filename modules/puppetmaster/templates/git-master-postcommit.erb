@@ -1,7 +1,7 @@
 #!/bin/sh
-#
-# announce this change
-git log --pretty=format:'From %H %cd%nFrom: %ae%nTo: ops@wikimedia.org%nDate: %ad%nSubject: [puppet-private] (%h) %s%n%b%n' -1 --name-status | sendmail -i ops@wikimedia.org
+
+set -e
+set -u
 
 # Refresh the local copy
 su -c 'cd /var/lib/git/operations/private && git pull' gitpuppet
@@ -16,3 +16,6 @@ su -c 'cd /var/lib/git/operations/private && git pull' gitpuppet
 su -c "export GIT_SSH=/srv/private/.git/ssh_wrapper.sh ; git push ssh://<%= workerhash['worker'] %>/srv/private master" gitpuppet
 <%- end -%>
 <%- end -%>
+
+# Finally, announce this change
+git log --pretty=format:'From %H %cd%nFrom: %ae%nTo: ops@wikimedia.org%nDate: %ad%nSubject: [puppet-private] (%h) %s%n%b%n' -1 --name-status | sendmail -i ops@wikimedia.org
