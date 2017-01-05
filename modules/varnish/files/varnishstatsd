@@ -5,17 +5,15 @@
   ~~~~~~~~~~~~~
   Report backend response times and request counts aggregated by status.
 
-  Usage: varnishstatsd [--varnish-name NAME] [--statsd-server SERVER]
-                       [--key-prefix PREFIX]
+  Usage: varnishstatsd [--statsd-server SERVER] [--key-prefix PREFIX]
 
-    --varnish-name NAME     varnish name
     --statsd-server SERVER  statsd server
     --key-prefix PREFIX     metric key prefix
 
   If no statsd server is specified, prints stats to stdout instead.
 
   Copyright 2015-2016 Ori Livneh <ori@wikimedia.org>
-                 2016 Emanuele Rocca <ema@wikimedia.org>
+            2016-2017 Emanuele Rocca <ema@wikimedia.org>
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -30,134 +28,58 @@
   limitations under the License.
 
 """
-import argparse
-import collections
 import io
-import socket
-import urlparse
-from varnishlog import varnishlog
+import sys
 
+from cachestats import CacheStatsSender
 
 METRIC_FORMAT = (
-    '%(key_prefix)s%(backend)s.%(method)s:%(ttfb)d|ms\n'
-    '%(key_prefix)s%(backend)s.%(status)s:1|c\n'
+    '%(key_prefix)s.%(backend)s.%(method)s:%(ttfb)d|ms\n'
+    '%(key_prefix)s.%(backend)s.%(status)sxx:1|c\n'
 )
 
 UDP_MTU_BYTES = 1472
 
-vsl_args = [
-    # Skip PURGE requests
-    ('q', 'ReqMethod ne "PURGE"'),
-    # Backend HTTP response status code (eg: 200, 404)
-    ('i', 'BerespStatus'),
-    # Backend HTTP request method (eg: GET, POST)
-    ('i', 'BereqMethod'),
-    # The following two tags are logged when a new backend connection is opened
-    # or put up for reuse by a later connection. We need those to get the
-    # backend name
-    ('i', 'BackendOpen'),
-    ('i', 'BackendReuse'),
-    # Timestamp to compute TTFB (BerespBody)
-    ('i', 'Timestamp'),
-]
 
-sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+class StatsdStatsSender(CacheStatsSender):
+    cmd = ['/usr/bin/varnishncsa', '-b',
+           '-q', 'BereqMethod ne "PURGE"',
+           '-F', '%m\t%s\t%{VSL:BackendOpen[2]}x\t%{Varnish:time_firstbyte}x']
 
+    description = 'Varnish backend response time metric logger'
+    key_prefix = 'varnish.backends'
 
-def parse_statsd_server_string(server_string):
-    parsed = urlparse.urlparse('//' + server_string)
-    return parsed.hostname, parsed.port or 8125
+    def __init__(self, argument_list):
+        super(StatsdStatsSender, self).__init__(argument_list)
+        self.buf = io.BytesIO()
 
+    def handle_record(self, record):
+        method, status_code, backend, ttfb = record.split('\t')
+        ttfb = round(1000 * float(ttfb))
+        backend = backend.split('.')[-1]
 
-def parse_key_prefix(key_prefix):
-    return key_prefix.strip('.') + '.'
-
-
-ap = argparse.ArgumentParser(
-    description='Varnish backend response time metric logger',
-    epilog='If no statsd server is specified, prints stats to stdout instead.'
-)
-ap.add_argument('--varnish-name', help='varnish name')
-ap.add_argument('--statsd-server', help='statsd server',
-                type=parse_statsd_server_string, default=None)
-ap.add_argument('--key-prefix', help='metric key prefix',
-                default='varnish.backends',
-                type=parse_key_prefix)
-args = ap.parse_args()
-
-if args.varnish_name:
-    vsl_args.append(('n', args.varnish_name))
-
-# Maximum number of log records to keep in memory.
-MAX_BACKLOG = 100
-
-# Map of transaction ID: request method ('GET', 'POST', etc.)
-tids = collections.OrderedDict()
-
-# Map of backend XID: transaction ID
-xids = collections.OrderedDict()
-
-# Map of transaction ID: backend name
-backends = collections.OrderedDict()
-
-# Map of transaction ID: response status code (200, 404, etc.)
-statuses = collections.OrderedDict()
-
-buf = io.BytesIO()
-
-
-def vsl_callback(transaction_id, tag, record, remote_party):
-    global buf
-
-    if tag in ("BackendOpen", "BackendReuse"):
-        # Associate the transaction ID with the backend name.
-        backend_fullname = record.split()[1]
-        backend_name = backend_fullname.split('.')[-1]
-
-        backends[transaction_id] = backend_name
-        if len(backends) > MAX_BACKLOG:
-            backends.popitem(last=False)
-
-    elif tag == "BereqMethod":
-        # Associate the transaction ID with the request method.
-        tids[transaction_id] = record
-        if len(tids) > MAX_BACKLOG:
-            tids.popitem(last=False)
-
-    elif tag == "BerespStatus":
-        # Associate the transaction ID with the response status code.
-        if record[0] in '12345':
-            statuses[transaction_id] = record[0] + 'xx'
-        if len(statuses) > MAX_BACKLOG:
-            statuses.popitem(last=False)
-
-    # For our purposes this is like ReqEnd
-    elif tag == "Timestamp" and record.startswith('BerespBody:'):
-        # Collate data and emit metric.
-        parts = record.split()
-
-        try:
-            fields = {
-                'key_prefix': args.key_prefix,
-                'method': tids.pop(transaction_id),
-                'backend': backends.pop(transaction_id),
-                'status': statuses.pop(transaction_id),
-                'ttfb': round(1000 * float(parts[2])),
-            }
-        except KeyError:
-            return 0
+        fields = {
+            'key_prefix': self.args.key_prefix,
+            'method': method,
+            'backend': backend,
+            'status': status_code[0],
+            'ttfb': ttfb
+        }
 
         metric_string = (METRIC_FORMAT % fields).encode('utf-8')
-        if buf.tell() + len(metric_string) >= UDP_MTU_BYTES:
-            buf.seek(io.SEEK_SET)
-            if args.statsd_server:
-                sock.sendto(buf.read(), args.statsd_server)
-            else:
-                print(buf.read().decode('utf-8', errors='replace').rstrip())
-            buf = io.BytesIO()
-        buf.write(metric_string)
+        if self.buf.tell() + len(metric_string) >= UDP_MTU_BYTES:
+            self.buf.seek(io.SEEK_SET)
 
-    return 0
+            data = self.buf.read()
+
+            if self.args.statsd_server:
+                self.sock.sendto(data, self.args.statsd_server)
+            else:
+                print(data.decode('utf-8', errors='replace').rstrip())
+
+            self.buf = io.BytesIO()
+
+        self.buf.write(metric_string)
 
 if __name__ == "__main__":
-    varnishlog(vsl_args, vsl_callback)
+    StatsdStatsSender(sys.argv[1:]).main()
