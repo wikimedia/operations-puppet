@@ -49,7 +49,13 @@ class role::icinga(
     }
 
     $ssl_settings = ssl_ciphersuite('apache', 'mid', true)
-    sslcert::certificate { 'icinga.wikimedia.org': }
+
+    letsencrypt::cert::integrated { 'icinga':
+        subjects   => 'icinga.wikimedia.org',
+        puppet_svc => 'apache2',
+        system_svc => 'apache2',
+        require    => Class['apache::mod::ssl']
+    }
 
     monitoring::service { 'https':
         description   => 'HTTPS',
