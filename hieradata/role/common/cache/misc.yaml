@@ -22,7 +22,7 @@ cache::cluster: misc
 cache::route_table:
   eqiad: 'direct'
   codfw: 'eqiad'
-  ulsfo: 'codfw'
+  ulsfo: 'eqiad'
   esams: 'eqiad'
 varnish_version4: true
 cache::websocket_support: true
