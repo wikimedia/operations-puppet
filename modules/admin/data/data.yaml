@@ -6,7 +6,7 @@ groups:
               mwalker, nimishg, rainman, ssmith, swalling, sumanah, werdna, rmoen,
               johnflewis, marc, jkrauska, akumar, mnoushad, spage, tnegrin, msyed, kleduc,
               manybubbles, haithams, jzerebecki, ashwinpp, ironholds, robla, asherman,
-              laner, declerambaul]
+              laner, declerambaul, srijan]
   wikidev:
     gid: 500
     description: container group for primary user groups.
@@ -109,7 +109,7 @@ groups:
               nuria, ori, otto, springle, yurik, yuvipanda,
               mforns, jdlrobson, dr0ptp4kt, tgr, marktraceur, jhernandez, joal,
               daisy, tomasz, mholloway-shell, madhuvishy, ebernhardson, niedzielski,
-              neilpquinn-wmf, tbayer, moushira, dbrant, maxsem, srijan,
+              neilpquinn-wmf, tbayer, moushira, dbrant, maxsem,
               jminor, etonkovidova, sbisson, addshore, matmarex, elukey,
               nikerabbit, nschaaf, dstrine, joewalsh, mpany, hjiang, jsamra, bcohn,
               jdittrich, chelsyx, ovasileva, mtizzoni, panisson, paolotti, ciro, debt,
@@ -1771,11 +1771,11 @@ users:
     ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDFBwfxSdeDwBy5ypWAfsfnmwqJ3R2ks+T9wbnqq30zPyOvZjzequ6vA5JzboCce6OqZ5+mLg3LPQqczlTXbJakWJTjGz7a1Wjhhb6m1/UWWXWjBbSzRwk6Mit77Vq0zlEm06//rFzsukMIMliwmjZcVrIP8Wyb74pABfpM1NvgDXFYjzbbBxY+LugiIk7sl9quDYWUTR6SETnTGOIET7ONZuZfFAHQltyvhUZkLmV9VbNZXxspoWRLyKJZjMkhHvnIeA55IrDBIdJ0VsruFjEn7wvZodjXAjS4xWvIH68vIiXiL3LTCmZjBk0pNEjfpAjvZ5MX8/bgR4ab2/7H6Voj tjones@wikimedia.org]
     uid: 12510
   srijan:
-    ensure: present
+    ensure: absent
     gid: 500
     name: srijan
     realname: Srijan Kumar
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDe6n6czECv3pzmwxKgfdd9A/XWmoqssk2MByt/Tra4DihPF25EhbcsoyeqosGcgCmkaDXZCQj6BfOh/VHGOUx6nkMf0bFkQrO25n8pdznMBnUfvGNAQUG2tWllA5q1uzmsQD80EqMtsbjr+Yl3HHE5StiqI6O9Ewxcsj2YsDA350ABzulcf4S81M7ej5ZIV/fmbNPJmCCKD3Ke33k3MCNJqCQpSDohKs9tZYKyhobb09n/OUsl+PNKn3VdDTPJMr+h0el8Y3QM1xHW2qbrUPg5qWSFHtLCBFhWlYhtciznhZTvdv7L7sOdwVCZahNNeAK5Cv4nyBHRjo09p7do9MSz srijankedia@gmail.com]
+    ssh_keys: []
     uid: 12423
   bearloga:
     ensure: present
