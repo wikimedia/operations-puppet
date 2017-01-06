@@ -60,6 +60,7 @@ NameVirtualHost *:443
 
     RedirectMatch ^/$ /r/
     RedirectMatch ^/r$ /r/
+    RedirectMatch ^/changes/$ /r/changes/
 
     # Misbehaving bots
     SetEnvIf User-Agent 80legs bad_browser
