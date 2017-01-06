@@ -21,4 +21,3 @@ gerrit::jetty::replication:
             - '+refs/heads/*:refs/heads/*'
             - '+refs/tags/*:refs/tags/*'
 role::gerrit::server::bacula: 'srv-gerrit-git'
-gerrit::jetty::log_host: 'logstash1002.eqiad.wmnet'
