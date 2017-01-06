@@ -1,7 +1,11 @@
 <VirtualHost *:80>
     ServerName <%= @ganglia_servername %>
     ServerAlias <%= @ganglia_serveralias %>
+
+    Include /etc/acme/challenge-apache.conf
+
     RewriteEngine on
+    RewriteCond %{REQUEST_URI} !^/\.well-known/acme-challenge/
     RewriteRule ^/(.*)$ https://<%= @ganglia_servername %>/$1 [R=301]
 </VirtualHost>
 <VirtualHost *:443>
