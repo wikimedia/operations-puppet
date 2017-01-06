@@ -17,6 +17,7 @@ mediawiki::maintenance::jobqueue_stats::ensure: absent
 mediawiki::maintenance::updatequerypages::ensure: absent
 mediawiki::maintenance::cirrussearch::ensure: absent
 mediawiki::maintenance::generatecaptcha::ensure: absent
+mediawiki::maintenance::pageassessments::ensure: absent
 tendril::maintenance::ensure: absent
 debdeploy::grains:
   debdeploy-mediawiki-maintenance-codfw:
