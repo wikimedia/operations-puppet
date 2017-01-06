@@ -16,6 +16,7 @@ class shinken::shinkengen(
 ){
 
     include shinken
+    include openstack::client
     $ldapconfig = hiera_hash('labsldapconfig', {})
     $ldap_pass = $ldapconfig['proxypass']
 

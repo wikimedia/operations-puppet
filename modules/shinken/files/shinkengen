@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/python
 #   Copyright 2014 Yuvi Panda <yuvipanda@gmail.com>
 #
 #   Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +14,8 @@
 #   limitations under the License.
 #
 """
-Generates config about labs instances for shinken, taking info from LDAP.
+Generates config about labs instances for shinken, taking info from
+OpenStack clients.
 
 Emits a host definition for each instance in the whitelisted projects
 (whitelist in the config file).
@@ -34,9 +35,10 @@ can be used when constructing graphite metric paths.
 import argparse
 import sys
 import yaml
-import ldap3
 import requests
 from collections import OrderedDict
+
+import mwopenstackclients
 
 
 class ConfigObject():
@@ -58,49 +60,6 @@ class ConfigObject():
         return 'define %s {\n%s}\n' % (self.type, config_str)
 
 
-class LDAPSource(object):
-    """
-    A source of information about labs instances, querying LDAP
-    """
-    def __init__(self, server, bindas, passwd):
-        server = ldap3.Server(server)
-        self.conn = ldap3.Connection(server, read_only=True,
-                                     user=bindas, password=passwd)
-        self.conn.bind()
-        self.conn.start_tls()
-
-    def get_instances(self, project):
-        """
-        Get info about all instances in the given project.
-
-        Returns the following information for each instance in given project:
-            - ec2id: Permanent id for this particular instance
-            - ip: Internal IP of this instance
-            - region: Which OpenStack Region this Instance is in
-            - puppetClasses: List of puppet classes applied to this instance via
-                             configure page in wikitech.
-            - project: Name of project the instance is contained in
-            - name: Name of the instance
-        """
-        self.conn.search('ou=hosts,dc=wikimedia,dc=org',
-                         '(dc=*.%s.eqiad.wmflabs)' % project,
-                         ldap3.SEARCH_SCOPE_WHOLE_SUBTREE,
-                         attributes=ldap3.ALL_ATTRIBUTES)
-        hosts = []
-        for responseitem in self.conn.response:
-            hostinfo = responseitem['attributes']
-            ip = [a for a in hostinfo['aRecord'] if a.startswith('10.')][0]
-            instancename, projectname, site, realm = hostinfo['dc'][0].split(".")
-            hosts.append({
-                'ip': ip,
-                'puppetClasses': hostinfo.get('puppetClass', []),
-                'project': project,
-                'name': instancename,
-                'fqdn': hostinfo['dc'][0]
-            })
-
-        return hosts
-
 def get_instance_roles(project, fqdn):
     url = 'http://labcontrol1001.wikimedia.org:8100/v1/{project}/node/{fqdn}'.format(
         project=project,
@@ -117,25 +76,23 @@ if __name__ == '__main__':
     with open('/etc/shinkengen.yaml') as f:
         config = yaml.load(f)
 
-    ldapsource = LDAPSource(config['ldap']['server'],
-                            config['ldap']['bindas'],
-                            config['ldap']['password'])
+    osclients = mwopenstackclients.clients('/etc/novaobserver.yaml')
 
     for project in config['projects']:
-        instances = ldapsource.get_instances(project)
+        instances = osclients.novaclient(project).servers.list()
         host_configs = []
         for instance in instances:
             co = ConfigObject('host')
             co.properties['use'] = 'generic-host'
-            co.properties['host_name'] = instance['name']
-            co.properties['address'] = instance['ip']
+            co.properties['host_name'] = instance.name
+            co.properties['address'] = instance.addresses['public'][0]['addr']
             # Each role applied to this instance explicitly, via
             # wikitech, is added as a hostgroup, so we can target
             # particular roles with checks.  role::labs::instance is
             # implicitly applied to all instances via
             # manifests/site.pp, so we need to add it here explicitly.
-            hostgroups = [project, 'role::labs::instance'] + instance['puppetClasses']
-            hostgroups += get_instance_roles(instance['project'], instance['fqdn'])
+            fqdn = "%s.%s.%s.wmflabs" % (instance.name, project, config['site'])
+            hostgroups = get_instance_roles(project, fqdn)
             co.properties['hostgroups'] = ','.join(sorted(set(hostgroups)))
             # For each project added to monitoring we expect a contactgroup with the same
             # name added.

@@ -1,6 +1,3 @@
 projects: [ 'tools', 'deployment-prep', 'extdist', 'analytics', 'integration', 'shinken', 'cvn', 'wdq-mm', 'wmt' ]
 output_path: '/etc/shinken/generated'
-ldap:
-  server: <%= @ldap_server %>
-  bindas: <%= @ldap_bindas %>
-  password: <%= @ldap_pass %>
+site: <%= @::site %>
