@@ -16,6 +16,8 @@ class tendril (
     $tendril_user_web = $passwords::tendril::db_user_web
     $tendril_pass_web = $passwords::tendril::db_pass_web
 
+    $ssl_settings = ssl_ciphersuite('apache', 'mid', true)
+
     include ::apache::mod::rewrite
     include ::apache::mod::headers
     include ::apache::mod::ssl
@@ -25,6 +27,14 @@ class tendril (
     apache::site { $site_name:
         content => template("tendril/apache/${site_name}.erb");
     }
+
+    letsencrypt::cert::integrated { 'tendril':
+        subjects   => $site_name,
+        puppet_svc => 'apache2',
+        system_svc => 'apache2',
+        require    => Class['apache::mod::ssl']
+    }
+
     require_package('php5-mysql')
 
     file { '/srv/tendril':
