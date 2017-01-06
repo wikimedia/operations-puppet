@@ -6,9 +6,9 @@
     # https://httpoxy.org/
     RequestHeader unset Proxy early
     SSLEngine On
-    SSLCertificateFile /etc/ssl/localcerts/tendril.wikimedia.org.crt
-    SSLCertificateChainFile /etc/ssl/localcerts/tendril.wikimedia.org.chain.crt
-    SSLCertificateKeyFile /etc/ssl/private/tendril.wikimedia.org.key
+    SSLCertificateFile /etc/acme/cert/tendril.crt
+    SSLCertificateChainFile /etc/acme/cert/tendril.chain.crt
+    SSLCertificateKeyFile /etc/acme/key/tendril.key
     <%= @ssl_settings.join("\n") %>
     DocumentRoot <%= @docroot %>
     php_admin_flag short_open_tag on

@@ -23,8 +23,10 @@ class tendril (
     include ::apache::mod::authnz_ldap
 
     apache::site { $site_name:
-        content => template("tendril/apache/${site_name}.erb");
+        content => template("tendril/apache/${site_name}.erb"),
+        require => Letsencrypt::Cert::Integrated['tendril'],
     }
+
     require_package('php5-mysql')
 
     file { '/srv/tendril':
