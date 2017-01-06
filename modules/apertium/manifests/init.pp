@@ -6,13 +6,13 @@
 # === Parameters
 #
 # [*num_of_processes*]
-# Number of APY instance processes to run
+#   Number of APY instance processes to run.
 # [*max_idle_seconds*]
-# Seconds to wait before shutdown idle process
+#   Seconds to wait before shutdown idle process.
 # [*uid*]
-# The username apertium-apy will run with
+#   The username apertium-apy will run with.
 # [*gid*]
-# The group apertium-apy will run with
+#   The group apertium-apy will run with.
 class apertium(
     $num_of_processes = 1,
     $max_idle_seconds = 300,
