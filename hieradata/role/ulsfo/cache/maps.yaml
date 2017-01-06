@@ -1,3 +1,4 @@
 debdeploy::grains:
   debdeploy-cp-ulsfo-maps:
     value: standard
+use_timesyncd: true
