@@ -7,9 +7,6 @@ class role::tendril {
 
     system::role { 'role::tendril': description => 'tendril server' }
 
-    sslcert::certificate { 'tendril.wikimedia.org': }
-    $ssl_settings = ssl_ciphersuite('apache', 'mid', true)
-
     monitoring::service { 'https-tendril':
         description   => 'HTTPS-tendril',
         check_command => 'check_ssl_http!tendril.wikimedia.org',

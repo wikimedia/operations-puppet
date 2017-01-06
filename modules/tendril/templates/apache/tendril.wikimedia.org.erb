@@ -6,10 +6,10 @@
     # https://httpoxy.org/
     RequestHeader unset Proxy early
     SSLEngine On
-    SSLCertificateFile /etc/ssl/localcerts/tendril.wikimedia.org.crt
-    SSLCertificateChainFile /etc/ssl/localcerts/tendril.wikimedia.org.chain.crt
-    SSLCertificateKeyFile /etc/ssl/private/tendril.wikimedia.org.key
-    <%= @ssl_settings.join("\n    ") %>
+    SSLCertificateFile /etc/acme/cert/tendril.crt
+    SSLCertificateChainFile /etc/acme/cert/tendril.chain.crt
+    SSLCertificateKeyFile /etc/acme/key/tendril.key
+    <%= @ssl_settings.join("    \n") %>
     DocumentRoot <%= @docroot %>
     php_admin_flag short_open_tag on
 
@@ -18,8 +18,8 @@
         Options +ExecCGI +FollowSymLinks
         DirectoryIndex index.php
         AllowOverride All
-	# This is only for pre 2.4 apache versions. In apache 2.4 IP based
-	# authorization is just another Require and is chained
+        # This is only for pre 2.4 apache versions. In apache 2.4 IP based
+        # authorization is just another Require and is chained
         <IfVersion < 2.4>
             Order Allow,Deny
             Allow From All
@@ -44,7 +44,10 @@
     ServerName <%= @site_name %>
     DocumentRoot <%= @docroot %>
 
+    Include /etc/acme/challenge-apache.conf
+
     RewriteEngine on
     RewriteCond %{SERVER_PORT} !^443$
+    RewriteCond %{REQUEST_URI} !^/\.well-known/acme-challenge/
     RewriteRule ^/(.*)$ https://<%= @site_name %>/$1 [L,R=301]
 </VirtualHost>

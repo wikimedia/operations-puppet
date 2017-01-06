@@ -25,6 +25,16 @@ class tendril (
     apache::site { $site_name:
         content => template("tendril/apache/${site_name}.erb");
     }
+
+    $ssl_settings = ssl_ciphersuite('apache', 'mid', true)
+
+    letsencrypt::cert::integrated { 'tendril':
+        subjects   => $site_name,
+        puppet_svc => 'apache2',
+        system_svc => 'apache2',
+        require    => Class['apache::mod::ssl']
+    }
+
     require_package('php5-mysql')
 
     file { '/srv/tendril':
