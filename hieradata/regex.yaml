@@ -1,40 +1,40 @@
 es_codfw_rack_a5:
-  __regex: !ruby/regexp /^elastic20(01|02|03)\.codfw\.wmnet$/
+  __regex: !ruby/regexp /^elastic20(01|02|03|25)\.codfw\.wmnet$/
   elasticsearch::rack: A5
   elasticsearch::row:  A
 
 es_codfw_rack_a8:
-  __regex: !ruby/regexp /^elastic20(04|05|06)\.codfw\.wmnet$/
+  __regex: !ruby/regexp /^elastic20(04|05|06|26|27)\.codfw\.wmnet$/
   elasticsearch::rack: A8
   elasticsearch::row:  A
 
 es_codfw_rack_b5:
-  __regex: !ruby/regexp /^elastic20(07|08|09)\.codfw\.wmnet$/
+  __regex: !ruby/regexp /^elastic20(07|08|09|28)\.codfw\.wmnet$/
   elasticsearch::rack: B5
   elasticsearch::row:  B
 
 es_codfw_rack_b8:
-  __regex: !ruby/regexp /^elastic20(10|11|12)\.codfw\.wmnet$/
+  __regex: !ruby/regexp /^elastic20(10|11|12|29|30)\.codfw\.wmnet$/
   elasticsearch::rack: B8
   elasticsearch::row:  B
 
 es_codfw_rack_c1:
-  __regex: !ruby/regexp /^elastic20(13|14|15)\.codfw\.wmnet$/
+  __regex: !ruby/regexp /^elastic20(13|14|15|31)\.codfw\.wmnet$/
   elasticsearch::rack: C1
   elasticsearch::row:  C
 
 es_codfw_rack_c5:
-  __regex: !ruby/regexp /^elastic20(16|17|18)\.codfw\.wmnet$/
+  __regex: !ruby/regexp /^elastic20(16|17|18|32|33)\.codfw\.wmnet$/
   elasticsearch::rack: C5
   elasticsearch::row:  C
 
 es_codfw_rack_d1:
-  __regex: !ruby/regexp /^elastic20(19|20|21)\.codfw\.wmnet$/
+  __regex: !ruby/regexp /^elastic20(19|20|21|34)\.codfw\.wmnet$/
   elasticsearch::rack: D1
   elasticsearch::row:  D
 
 es_codfw_rack_d5:
-  __regex: !ruby/regexp /^elastic20(22|23|24)\.codfw\.wmnet$/
+  __regex: !ruby/regexp /^elastic20(22|23|24|35|36)\.codfw\.wmnet$/
   elasticsearch::rack: D5
   elasticsearch::row:  D
 
