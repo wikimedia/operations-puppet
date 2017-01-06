@@ -3,7 +3,12 @@ class role::ganglia::web {
     include role::ganglia::config
     include role::ganglia::views
 
-    sslcert::certificate { 'ganglia.wikimedia.org': }
+    letsencrypt::cert::integrated { 'ganglia':
+        subjects   => 'ganglia.wikimedia.org',
+        puppet_svc => 'apache2',
+        system_svc => 'apache2',
+        require    => Class['apache::mod::ssl']
+    }
 
     monitoring::service { 'https':
         description   => 'HTTPS',

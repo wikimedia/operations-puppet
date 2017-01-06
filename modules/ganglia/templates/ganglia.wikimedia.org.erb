@@ -1,7 +1,11 @@
 <VirtualHost *:80>
     ServerName <%= @ganglia_servername %>
     ServerAlias <%= @ganglia_serveralias %>
+
+    Include /etc/acme/challenge-apache.conf
+
     RewriteEngine on
+    RewriteCond %{REQUEST_URI} !^/\.well-known/acme-challenge/
     RewriteRule ^/(.*)$ https://<%= @ganglia_servername %>/$1 [R=301]
 </VirtualHost>
 <VirtualHost *:443>
@@ -16,7 +20,7 @@
     SSLCertificateFile <%= @ganglia_ssl_cert %>
     SSLCertificateChainFile <%= @ganglia_ssl_chain %>
     SSLCertificateKeyFile <%= @ganglia_ssl_key %>
-    <%= @ssl_settings.join("\n") %>
+    <%= @ssl_settings.join("\n    ") %>
 
     <Directory "<%= @doc_root %>">
     Options FollowSymLinks
