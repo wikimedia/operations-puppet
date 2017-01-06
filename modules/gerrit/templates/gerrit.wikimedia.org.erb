@@ -124,6 +124,8 @@ NameVirtualHost *:443
     # Gerrit in Firefox and look in the Network Monitor for a similarly named .cache.js file.
     RewriteRule ^/r/gerrit_ui/undefined.cache.js$ https://<%= @host %>/r/gerrit_ui/AFCF57AB10C0BF746D7926C5246142C1.cache.js
 
+    RewriteRule ^/changes/[.*]$ https://<%= @host %>/r/changes/$1
+
     <%- if @maint_mode -%>
     RedirectMatch temp "/r" "/error.html#"
     <%- else -%>
