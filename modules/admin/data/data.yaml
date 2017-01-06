@@ -5,7 +5,7 @@ groups:
               handrade, howief, jdouglas, jgonera, jsahleen, mah, maryana, mglaser, mvolz,
               mwalker, nimishg, rainman, ssmith, swalling, sumanah, werdna, rmoen,
               johnflewis, marc, jkrauska, akumar, mnoushad, spage, tnegrin, msyed, kleduc,
-              manybubbles, haithams, jzerebecki, ashwinpp, ironholds, robla]
+              manybubbles, haithams, jzerebecki, ashwinpp, ironholds, robla, asherman]
   wikidev:
     gid: 500
     description: container group for primary user groups.
@@ -109,7 +109,7 @@ groups:
               mforns, jdlrobson, dr0ptp4kt, tgr, marktraceur, jhernandez, joal,
               daisy, tomasz, mholloway-shell, madhuvishy, ebernhardson, niedzielski,
               neilpquinn-wmf, tbayer, moushira, dbrant, maxsem, srijan,
-              jminor, asherman, etonkovidova, sbisson, addshore, matmarex, elukey,
+              jminor, etonkovidova, sbisson, addshore, matmarex, elukey,
               nikerabbit, nschaaf, dstrine, joewalsh, mpany, hjiang, jsamra, bcohn,
               jdittrich, chelsyx, ovasileva, mtizzoni, panisson, paolotti, ciro, debt,
               samwalton9, zareen, fdans]
@@ -1821,11 +1821,11 @@ users:
     ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDKBIRu2KwmxKyLk2zOtpvzJzLwckzIdsAcB7ajJZQnVhaMGlQlelKL3X85lmuHuL2Pb+jqJ+wfufl+XZHAQy8ZmHIpHpGujfFAv0uNsm4MmnGTjlhpjfuXqVx3QKy58KnuuhEhN3+JCgHhD5D5z40wXZVYjEvdYp75wtxbBLlFCVYjo/tpcU+RcrATMrZab+TQ9DxaqqOtR5AzcBicmsVptZLxBSibDnDFFcNn2SSn0PNwO0Bbv1GppVL+e0J81vEXLxUeeQl3TzxYJyeqcGfQJfSdC8V5ekP3WoVCHF8ap7EOlt5h9/CLqLP2cIfKsE2ciYfJVpSEVEng+9oVMweH junikowski@WMF485.corp.wikimedia.org]
     uid: 13018
   asherman:
-    ensure: present
+    ensure: absent
     gid: 500
     name: asherman
     realname: Andrew Sherman
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCoNjOK45S7G5ZyAFFE4lLfNvcW+67JMyLPhivnXIYPckEKdA08FW3GNNuvLqfeSseKvhLGHwBEVeK3osA1ZFwbsKUyRPxHxL2iIaCj7JUp/3QoHjxUa4pFCRM408mrlEnhMYMJwjQ5irXkO7LHyE/89v3Jv2ext6S3vOGSdVDrQcAlS6zZnuWtlMeIh/oj0+0HrW6e6HoMeYqbb9t0tUr/X18emh9K9jQ3bKmbnEv4iVEKBBImJ6MVpXaDAX7zwAcAXGgtfXp1oNIR7z21uM1RuxlcP1Sj60x/RNPc3dbD+xi25ddaIfVC4mO6VoHcBsxwSHHWVVsyqHalRP666kK7 Andrew@Andrews-MBP-2]
+    ssh_keys: []
     uid: 12989
   pt1979:
     ensure: present
