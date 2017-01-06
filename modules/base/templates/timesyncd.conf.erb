@@ -1,6 +1,4 @@
 ## THIS FILE IS MANAGED BY PUPPET
-#
-# See timesyncd.conf(5) for details.
 
 [Time]
 NTP=<%@ntp_servers[@site].sort.each do |ntpserver| -%> <%= ntpserver -%>
