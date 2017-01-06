@@ -7,8 +7,14 @@ class role::tendril {
 
     system::role { 'role::tendril': description => 'tendril server' }
 
-    sslcert::certificate { 'tendril.wikimedia.org': }
     $ssl_settings = ssl_ciphersuite('apache', 'mid', true)
+
+    letsencrypt::cert::integrated { 'tendril':
+        subjects   => 'tendril.wikimedia.org',
+        puppet_svc => 'apache2',
+        system_svc => 'apache2',
+        require    => Class['apache::mod::ssl']
+    }
 
     monitoring::service { 'https-tendril':
         description   => 'HTTPS-tendril',
