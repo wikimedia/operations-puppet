@@ -1,5 +1,4 @@
 ## THIS FILE IS MANAGED BY PUPPET
 
 [Time]
-NTP=<%@ntp_servers[@site].sort.each do |ntpserver| -%> <%= ntpserver -%>
-<% end %>
+Servers=<%@ntp_servers[@site].sort.each do |ntpserver| -%><%= ntpserver -%> <% end %>
