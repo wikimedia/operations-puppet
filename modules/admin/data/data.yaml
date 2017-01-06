@@ -5,7 +5,8 @@ groups:
               handrade, howief, jdouglas, jgonera, jsahleen, mah, maryana, mglaser, mvolz,
               mwalker, nimishg, rainman, ssmith, swalling, sumanah, werdna, rmoen,
               johnflewis, marc, jkrauska, akumar, mnoushad, spage, tnegrin, msyed, kleduc,
-              manybubbles, haithams, jzerebecki, ashwinpp, ironholds, robla, asherman]
+              manybubbles, haithams, jzerebecki, ashwinpp, ironholds, robla, asherman,
+              laner]
   wikidev:
     gid: 500
     description: container group for primary user groups.
@@ -18,7 +19,7 @@ groups:
   ops:
     gid: 700
     description: include everywhere ops folks
-    members: &ops_members [filippo, jgreen, bblack, andrew, faidon, rush, oblivian, laner, yuvipanda,
+    members: &ops_members [filippo, jgreen, bblack, andrew, faidon, rush, oblivian, yuvipanda,
               dzahn, akosiaris, springle, mark, ariel, cmjohnson, otto, robh, tstarling,
               ori, midom, jmm, jynus, aaron, ema, elukey, gehel, volans, madhuvishy, marostegui]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
@@ -1385,12 +1386,11 @@ users:
     uid: 4816
 # T109521
   laner:
-    ensure: present
+    ensure: absent
     gid: 500
     name: laner
     realname: Ryan Lane
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDRsK78adkRJfbYrsZznpbwldoSpQyyQXrXG6WzrJEBAVIAKz5gPSM8zmJ/kj89QygYRaKRPWAcuF5GZhSho15dwDXm5M0ZTva4/m/Hu4H3j7oxx3PKjZKBiygP7mSu/32TJs7FynPGAFVl/B766Snn9Ll/xwrx4lg3v9ZNEpNMJZ0DQTFZ1xXD2Ns08JvxW1csAEoNrpqH6tTdXdHmhurXdKQq1G/JmKR3/KVWbB1MNvUwCY0mQbN1icuy+JsOXbvXEftumigXRV16reLvX3q4sNmYSFfOGOMMW7K9d+nDc4TRNrUjm8R0AEZ6BxTJsvpahDi1gCOfZnGmpGKUEWgZ
-        laner@Free-Public-Wifi.local]
+    ssh_keys: []
     uid: 553
   midom:
     ensure: present
