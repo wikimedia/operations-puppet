@@ -13,9 +13,9 @@ class ganglia::web(
     $ganglia_servername = 'ganglia.wikimedia.org'
     $ganglia_serveralias = 'uranium.wikimedia.org'
     $ganglia_webdir = '/usr/share/ganglia-webfrontend'
-    $ganglia_ssl_cert = '/etc/ssl/localcerts/ganglia.wikimedia.org.crt'
-    $ganglia_ssl_chain = '/etc/ssl/localcerts/ganglia.wikimedia.org.chain.crt'
-    $ganglia_ssl_key = '/etc/ssl/private/ganglia.wikimedia.org.key'
+    $ganglia_ssl_cert = '/etc/acme/cert/ganglia.crt'
+    $ganglia_ssl_chain = '/etc/acme/cert/ganglia.chain.crt'
+    $ganglia_ssl_key = '/etc/acme/key/ganglia.key'
     $ssl_settings = ssl_ciphersuite('apache', 'mid', true)
     # Apache's docroot. Used for populating robots.txt
     $doc_root = '/var/www'
