@@ -6,7 +6,7 @@ groups:
               mwalker, nimishg, rainman, ssmith, swalling, sumanah, werdna, rmoen,
               johnflewis, marc, jkrauska, akumar, mnoushad, spage, tnegrin, msyed, kleduc,
               manybubbles, haithams, jzerebecki, ashwinpp, ironholds, robla, asherman,
-              laner]
+              laner, declerambaul]
   wikidev:
     gid: 500
     description: container group for primary user groups.
@@ -102,7 +102,7 @@ groups:
     description: Access statistics number crunching hosts (like
                  statistics-users) and also provides access to research mysql
                  credentials on stat1003 (currently the only such host)
-    members: [awight, bmansurov, catrope, dartar, declerambaul, deskana,
+    members: [awight, bmansurov, catrope, dartar, deskana,
               dduvall, ellery, ezachte, gilles, halfak,
               jforrester, jkatz, jmorgan, kaldari,
               leila, mattflaschen, milimetric, nettrom, bearloga,
@@ -225,7 +225,7 @@ groups:
     members: [dartar, milimetric, yurik, dfoy, aude, jforrester,
               halfak, dr0ptp4kt, bearloga, cwdent, elukey,
               nuria, otto, deskana, zhousquared, arnad, jgonsior,
-              bsitzmann, dbrant, declerambaul, ellery, nettrom, leila,
+              bsitzmann, dbrant, ellery, nettrom, leila,
               ezachte, mforns, reedy, west1, phuedx, awight, junikowski,
               joal, jamesur, akosiaris, jhobs, lpintscher, jkatz, madhuvishy, gpaumier,
               andyrussg, niedzielski, maxsem, hoo, daniel, tbayer, krinkle, tgr,
@@ -1479,11 +1479,11 @@ users:
     ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDPe9i/PI48Xk3BwCBSJ3L/o4n8noRBEFrINAPLVw4SDPmMOgPu5/HyvdxWkS47li2PQnDx4EobYE4WErxdQ0nB/Fe43ZzWEFQ6RvWuuPAxUwEFcGhraDHFFQc/TLh7adtNA247jUhLCQN/O3Nb6Qq1RPuAZgF59UuWKPNwnSOCOyLV0zHvqhjUkWmDcCI7sln1Kbv+JiEKBrVyokpv18pgCgyKL54UvFRbVD/aU7qu1DyJCFZ0GTitqFX0OMHjEyCo2bGPFUAHBkbKn/lsNz4hXNjF9iorxBvl1ZXLCRMkdRJBA6xGgLGWPXBQOXbUTc+9ow05KH0kHmQu5lXez7CZ twentyafterfour@wikiafterfour]
     uid: 4967
   declerambaul:
-    ensure: present
+    ensure: absent
     gid: 500
     name: declerambaul
     realname: Fabian Kaelin
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA3aScUQs0HeQEp/pnMuJ6JKWTwEa8IPVKa7Gkrx2DJ3z1qUtA5wzxSG6m//MJBokIntwBAGuqRazAqs5cB3m4GVqViA1fabxZy55l1/GB+962/d8goVEbtkj/MO47vuUBosVSy5GGjGOs3hWtKId9q6+AU0OCNZwC3j12tXGIX3ztcf4Ef2pdBoCfJMgrvlnIpdFDBftrua9kVvYRQj6tVr5rTbFlEioNgNcdQXhvDP0sU81i1NG/nAeOZMDYOzUscDHa6JcCts3nRyqrqgaMixxGjF7WG42tqS+AEqKi9IOqFnaiHtwipZrnJJ8IxtDOve3HHA3VctBsh03qB4RZ6w== declerembaul@fabian.local]
+    ssh_keys: []
     uid: 2042
   ellery:
     ensure: present
