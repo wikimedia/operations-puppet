@@ -48,42 +48,36 @@ class role::puppetmaster::standalone(
     $ldapconfig = $ldap::role::config::labs::ldapconfig
     $basedn = $ldapconfig['basedn']
 
-    if $use_enc {
-        # Setup ENC
-        require_package('python3-yaml', 'python3-ldap3')
+    if ! $use_enc {
+        fail('Ldap puppet node definitions are no longer supported.  The $use_enc param must be true.')
+    }
 
-        include ldap::yamlcreds
+    # Setup ENC
+    require_package('python3-yaml', 'python3-ldap3')
 
-        file { '/etc/puppet-enc.yaml':
-            content => ordered_yaml({
-                host => hiera('labs_puppet_master'),
-            }),
-            mode    => '0444',
-            owner   => 'root',
-            group   => 'root',
-        }
+    include ldap::yamlcreds
 
-        file { '/usr/local/bin/puppet-enc':
-            source => 'puppet:///modules/role/labs/puppet-enc.py',
-            mode   => '0555',
-            owner  => 'root',
-            group  => 'root',
-        }
+    file { '/etc/puppet-enc.yaml':
+        content => ordered_yaml({
+            host => hiera('labs_puppet_master'),
+        }),
+        mode    => '0444',
+        owner   => 'root',
+        group   => 'root',
+    }
 
-        $encconfig = {
-            'node_terminus'  => 'exec',
-            'external_nodes' => '/usr/local/bin/puppet-enc',
-        }
-    } else {
-        $encconfig = {
-            'ldapserver'    => $ldapconfig['servernames'][0],
-            'ldapbase'      => "ou=hosts,${basedn}",
-            'ldapstring'    => '(&(objectclass=puppetClient)(associatedDomain=%s))',
-            'ldapuser'      => $ldapconfig['proxyagent'],
-            'ldappassword'  => $ldapconfig['proxypass'],
-            'ldaptls'       => true,
-            'node_terminus' => 'ldap'
-        }
+    file { '/usr/local/bin/puppet-enc':
+        source => 'puppet:///modules/role/labs/puppet-enc.py',
+        mode   => '0555',
+        owner  => 'root',
+        group  => 'root',
+    }
+
+    $config = {
+        'node_terminus'  => 'exec',
+        'external_nodes' => '/usr/local/bin/puppet-enc',
+        'thin_storeconfigs' => false,
+        'autosign'          => $autosign,
     }
 
     class { '::puppetmaster':
@@ -93,10 +87,7 @@ class role::puppetmaster::standalone(
         include_conftool    => false,
         prevent_cherrypicks => $prevent_cherrypicks,
         extra_auth_rules    => $extra_auth_rules,
-        config              => merge($encconfig, {
-            'thin_storeconfigs' => false,
-            'autosign'          => $autosign,
-        }),
+        config              => $config,
     }
 
     # Update git checkout

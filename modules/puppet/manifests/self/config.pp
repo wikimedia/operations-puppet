@@ -23,53 +23,37 @@ class puppet::self::config(
     if os_version('ubuntu == precise') {
         fail('Self hosted puppetmasters on Ubuntu precise no longer supported')
     }
-    if $use_enc {
-        require_package('python3-yaml', 'python3-ldap3')
 
-        include ldap::yamlcreds
-
-        file { '/etc/puppet-enc.yaml':
-            content => ordered_yaml({
-                host => hiera('labs_puppet_master'),
-                }),
-            mode    => '0444',
-            owner   => 'root',
-            group   => 'root',
-        }
-
-        file { '/usr/local/bin/puppet-enc':
-            source => 'puppet:///modules/role/labs/puppet-enc.py',
-            mode   => '0555',
-            owner  => 'root',
-            group  => 'root',
-        }
-
-        $encconfig = {
-            'node_terminus'  => 'exec',
-            'external_nodes' => '/usr/local/bin/puppet-enc',
-        }
-    } else {
-        include ldap::role::config::labs
-
-        $ldapconfig = $ldap::role::config::labs::ldapconfig
-        $basedn = $ldapconfig['basedn']
-
-        $encconfig = {
-            'node_terminus' => 'ldap',
-            'ldapserver'    => $ldapconfig['servernames'][0],
-            'ldapbase'      => "ou=hosts,${basedn}",
-            'ldapstring'    => '(&(objectclass=puppetClient)(associatedDomain=%s))',
-            'ldapuser'      => $ldapconfig['proxyagent'],
-            'ldappassword'  => $ldapconfig['proxypass'],
-            'ldaptls'       => true,
-        }
+    if ! $use_enc {
+        fail('Ldap puppet node definitions are no longer supported.  The $use_enc param must be true.')
     }
 
-    $config = merge($encconfig, {
-        'dbadapter'     => 'sqlite3',
-        'autosign'      => $autosign
-    })
+    require_package('python3-yaml', 'python3-ldap3')
 
+    include ldap::yamlcreds
+
+    file { '/etc/puppet-enc.yaml':
+        content => ordered_yaml({
+            host => hiera('labs_puppet_master'),
+            }),
+        mode    => '0444',
+        owner   => 'root',
+        group   => 'root',
+    }
+
+    file { '/usr/local/bin/puppet-enc':
+        source => 'puppet:///modules/role/labs/puppet-enc.py',
+        mode   => '0555',
+        owner  => 'root',
+        group  => 'root',
+    }
+
+    $config = {
+        'node_terminus'  => 'exec',
+        'external_nodes' => '/usr/local/bin/puppet-enc',
+        'dbadapter'     => 'sqlite3',
+        'autosign'      => $autosign,
+    }
 
     # This is set to something different than the default
     # /var/lib/puppet/ssl to avoid conflicts with previously
