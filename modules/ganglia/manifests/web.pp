@@ -79,4 +79,13 @@ class ganglia::web(
         matches => ['ganglia-graph*'],
         type    => 'mtime',
     }
+
+    file { "${ganglia_webdir}/templates/default/user_header.tpl":
+        ensure  => $ensure,
+        mode    => '0444',
+        owner   => 'root',
+        group   => 'root',
+        source  => 'puppet:///modules/ganglia/user_header.tpl',
+        require => Package['ganglia-webfrontend'],
+    }
 }
