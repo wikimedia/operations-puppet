@@ -65,45 +65,45 @@ class role::backup::director {
         dbuser     => 'bacula',
         dbhost     => $role::backup::config::database,
         dbport     => '3306',
-        dbpassword => $passwords::bacula::database
+        dbpassword => $passwords::bacula::database,
     }
 
     # This has been taken straight from old files/backup/disklist-*
     bacula::director::fileset { 'root':
-        includes     => [ '/' ]
+        includes     => [ '/' ],
     }
     bacula::director::fileset { 'a-sqldata':
-        includes     => [ '/a/sqldata' ]
+        includes     => [ '/a/sqldata' ],
     }
     bacula::director::fileset { 'a-backup':
-        includes => [ '/a/backup' ]
+        includes => [ '/a/backup' ],
     }
     bacula::director::fileset { 'a-eventlogging':
-        includes => [ '/a/eventlogging' ]
+        includes => [ '/a/eventlogging' ],
     }
     bacula::director::fileset { 'a-geowiki-data-private-bare':
-        includes => [ $::geowiki::params::private_data_bare_path ]
+        includes => [ $::geowiki::params::private_data_bare_path ],
     }
     bacula::director::fileset { 'home':
-        includes => [ '/home' ]
+        includes => [ '/home' ],
     }
     bacula::director::fileset { 'mnt-a':
-        includes => [ '/mnt/a' ]
+        includes => [ '/mnt/a' ],
     }
     bacula::director::fileset { 'roothome':
-        includes => [ '/root' ]
+        includes => [ '/root' ],
     }
     bacula::director::fileset { 'srv-autoinstall':
-        includes => [ '/srv/autoinstall' ]
+        includes => [ '/srv/autoinstall' ],
     }
     bacula::director::fileset { 'srv-tftpboot':
-        includes => [ '/srv/tftpboot' ]
+        includes => [ '/srv/tftpboot' ],
     }
     bacula::director::fileset { 'srv-wikimedia':
-        includes => [ '/srv/wikimedia' ]
+        includes => [ '/srv/wikimedia' ],
     }
     bacula::director::fileset { 'srv-org-wikimedia':
-        includes => [ '/srv/org/wikimedia' ]
+        includes => [ '/srv/org/wikimedia' ],
     }
     bacula::director::fileset { 'var-lib-archiva':
         includes     => [ '/var/lib/archiva' ],
@@ -112,83 +112,83 @@ class role::backup::director {
         includes     => [ '/var/lib/jenkins/config.xml' ],
     }
     bacula::director::fileset { 'srv-gerrit-git':
-        includes => [ '/srv/gerrit/git' ]
+        includes => [ '/srv/gerrit/git' ],
     }
     bacula::director::fileset { 'var-lib-jenkins-backups':
-        includes => [ '/var/lib/jenkins/backups' ]
+        includes => [ '/var/lib/jenkins/backups' ],
     }
     bacula::director::fileset { 'var-lib-mailman':
-        includes => [ '/var/lib/mailman' ]
+        includes => [ '/var/lib/mailman' ],
     }
     bacula::director::fileset { 'var-lib-puppet-ssl':
-        includes => [ '/var/lib/puppet/ssl' ]
+        includes => [ '/var/lib/puppet/ssl' ],
     }
     bacula::director::fileset { 'var-lib-puppet-volatile':
-        includes => [ '/var/lib/puppet/volatile' ]
+        includes => [ '/var/lib/puppet/volatile' ],
     }
     bacula::director::fileset { 'var-opendj-backups':
-        includes => [ '/var/opendj/backups' ]
+        includes => [ '/var/opendj/backups' ],
     }
     bacula::director::fileset { 'var-vmail':
-        includes => [ '/var/vmail' ]
+        includes => [ '/var/vmail' ],
     }
     bacula::director::fileset { 'mysql-srv-backups':
-        includes => [ '/srv/backups' ]
+        includes => [ '/srv/backups' ],
     }
     bacula::director::fileset { 'var-lib-carbon-whisper':
-        includes => [ '/var/lib/carbon/whisper' ]
+        includes => [ '/var/lib/carbon/whisper' ],
     }
     bacula::director::fileset { 'var-lib-ganglia':
-        includes => [ '/var/lib/ganglia' ]
+        includes => [ '/var/lib/ganglia' ],
     }
     bacula::director::fileset { 'srv-ganglia':
-        includes => [ '/srv/ganglia' ]
+        includes => [ '/srv/ganglia' ],
     }
     bacula::director::fileset { 'bugzilla-static':
-        includes => [ '/srv/org/wikimedia/static-bugzilla' ]
+        includes => [ '/srv/org/wikimedia/static-bugzilla' ],
     }
     bacula::director::fileset { 'bugzilla-backup':
-        includes => [ '/srv/org/wikimedia/bugzilla-backup' ]
+        includes => [ '/srv/org/wikimedia/bugzilla-backup' ],
     }
     bacula::director::fileset { 'srv-deployment':
-        includes => [ '/srv' ]
+        includes => [ '/srv' ],
     }
     # As all /a this will hopefully no longer be needed at some point and will
     # be killed with fire
     bacula::director::fileset { 'mysql-a-backups':
-        includes => [ '/a/backups' ]
+        includes => [ '/a/backups' ],
     }
     bacula::director::fileset { 'mysql-bpipe-xfalse-pfalse-ifalse':
         includes => [],
-        plugins  => [ 'mysql-bpipe-xfalse-pfalse-ifalse',]
+        plugins  => [ 'mysql-bpipe-xfalse-pfalse-ifalse',],
     }
     bacula::director::fileset { 'mysql-bpipe-xfalse-pfalse-itrue':
         includes => [],
-        plugins  => [ 'mysql-bpipe-xfalse-pfalse-itrue',]
+        plugins  => [ 'mysql-bpipe-xfalse-pfalse-itrue',],
     }
     bacula::director::fileset { 'mysql-bpipe-xfalse-ptrue-ifalse':
         includes => [],
-        plugins  => [ 'mysql-bpipe-xfalse-ptrue-ifalse',]
+        plugins  => [ 'mysql-bpipe-xfalse-ptrue-ifalse',],
     }
     bacula::director::fileset { 'mysql-bpipe-xfalse-ptrue-itrue':
         includes => [],
-        plugins  => [ 'mysql-bpipe-xfalse-ptrue-itrue',]
+        plugins  => [ 'mysql-bpipe-xfalse-ptrue-itrue',],
     }
     bacula::director::fileset { 'mysql-bpipe-xtrue-pfalse-ifalse':
         includes => [],
-        plugins  => [ 'mysql-bpipe-xtrue-pfalse-ifalse',]
+        plugins  => [ 'mysql-bpipe-xtrue-pfalse-ifalse',],
     }
     bacula::director::fileset { 'mysql-bpipe-xtrue-pfalse-itrue':
         includes => [],
-        plugins  => [ 'mysql-bpipe-xtrue-pfalse-itrue',]
+        plugins  => [ 'mysql-bpipe-xtrue-pfalse-itrue',],
     }
     bacula::director::fileset { 'mysql-bpipe-xtrue-ptrue-ifalse':
         includes => [],
-        plugins  => [ 'mysql-bpipe-xtrue-ptrue-ifalse',]
+        plugins  => [ 'mysql-bpipe-xtrue-ptrue-ifalse',],
     }
     bacula::director::fileset { 'mysql-bpipe-xtrue-ptrue-itrue':
         includes => [],
-        plugins  => [ 'mysql-bpipe-xtrue-ptrue-itrue',]
+        plugins  => [ 'mysql-bpipe-xtrue-ptrue-itrue',],
     }
     bacula::director::fileset { 'bpipe-mysql-xfalse-ptrue-itrue':
         includes => [],
@@ -211,10 +211,10 @@ class role::backup::director {
         excludes => [ '/srv/ssd', '/srv/jenkins/builds', '/var/lib/jenkins/builds', ],
     }
     bacula::director::fileset { 'etcd':
-        includes => [ '/srv/backups/etcd' ]
+        includes => [ '/srv/backups/etcd' ],
     }
     bacula::director::fileset { 'otrsdb':
-        includes => [ '/srv/backups/m2' ]
+        includes => [ '/srv/backups/m2' ],
     }
 
     # The console should be on the director

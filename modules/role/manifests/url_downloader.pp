@@ -23,7 +23,7 @@
 #       }
 class role::url_downloader {
     system::role { 'url_downloader':
-        description => 'Upload-by-URL proxy'
+        description => 'Upload-by-URL proxy',
     }
     include network::constants
     include standard

@@ -18,6 +18,6 @@ class role::horizon {
     include ::openstack::clientlib
     class { '::openstack::envscripts':
         novaconfig      => $novaconfig,
-        designateconfig => $designateconfig
+        designateconfig => $designateconfig,
     }
 }

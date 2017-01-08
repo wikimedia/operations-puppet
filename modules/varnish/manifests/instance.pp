@@ -36,7 +36,7 @@ define varnish::instance(
 
     $extra_vcl_variable_to_make_puppet_parser_happy = suffix($extra_vcl, " ${instancesuffix}")
     extra_vcl{ $extra_vcl_variable_to_make_puppet_parser_happy:
-        before => Service["varnish${instancesuffix}"]
+        before => Service["varnish${instancesuffix}"],
     }
 
     # Write the dynamic backend caches configuration, if we need it
@@ -131,7 +131,7 @@ define varnish::instance(
                 File["/etc/varnish/wikimedia-common_${vcl}.inc.vcl"],
                 Mount['/var/lib/varnish'],
             ],
-        }
+        },
     }
 
     # This mechanism with the touch/rm conditionals in the pair of execs

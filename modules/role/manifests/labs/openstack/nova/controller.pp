@@ -19,16 +19,16 @@ class role::labs::openstack::nova::controller {
     }
 
     class { '::openstack::adminscripts':
-        novaconfig => $novaconfig
+        novaconfig => $novaconfig,
     }
 
     class { '::openstack::envscripts':
         novaconfig      => $novaconfig,
-        designateconfig => $designateconfig
+        designateconfig => $designateconfig,
     }
 
     class { '::openstack::spreadcheck':
-        novaconfig => $novaconfig
+        novaconfig => $novaconfig,
     }
 
     # TOBE: hiera'd

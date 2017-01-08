@@ -24,7 +24,7 @@ class role::archiva {
     if $::realm == 'production' {
         include role::backup::host
         backup::set { 'var-lib-archiva':
-            require => Class['::archiva']
+            require => Class['::archiva'],
         }
     }
 

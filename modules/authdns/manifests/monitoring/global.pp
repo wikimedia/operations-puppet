@@ -10,7 +10,7 @@
 define authdns::monitoring::global($address, $prefixlen=undef) {
     $hostlabel = $title # just for semantic clarity below
 
-    @monitoring::host { $hostlabel: ip_address => $address }
+    @monitoring::host { $hostlabel: ip_address => $address, }
 
     @monitoring::service { $hostlabel:
         host          => $hostlabel,

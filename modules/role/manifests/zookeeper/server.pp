@@ -20,7 +20,7 @@ class role::zookeeper::server {
     $cluster_name = $::role::zookeeper::client::cluster_name
 
     system::role { 'role::zookeeper::server':
-        description => "${cluster_name} Cluster Zookeeper Server"
+        description => "${cluster_name} Cluster Zookeeper Server",
     }
 
     class { '::zookeeper::server':
@@ -32,7 +32,7 @@ class role::zookeeper::server {
         # There seems to be no elegant way to avoid the JVM spam,
         # so until somebody finds a better way we redirect stdout to /dev/null
         # and we filter out JAVA_TOOL_OPTIONS messages from stderr.
-        cleanup_script_args => '-n 10 2>&1 > /dev/null | grep -v JAVA_TOOL_OPTIONS'
+        cleanup_script_args => '-n 10 2>&1 > /dev/null | grep -v JAVA_TOOL_OPTIONS',
     }
 
     ferm::service { 'zookeeper':

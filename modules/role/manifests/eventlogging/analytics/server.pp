@@ -10,7 +10,7 @@ class role::eventlogging::analytics::server {
     # as the eventlogging/analytics scap target.
     eventlogging::deployment::target { 'analytics': }
     class { 'eventlogging::server':
-        eventlogging_path => '/srv/deployment/eventlogging/analytics'
+        eventlogging_path => '/srv/deployment/eventlogging/analytics',
     }
 
     # Get the Kafka configuration

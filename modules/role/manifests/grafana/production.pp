@@ -17,7 +17,7 @@ class role::grafana::production {
             'cn=nda,ou=groups,dc=wikimedia,dc=org',
             'cn=wmf,ou=groups,dc=wikimedia,dc=org',
             'cn=grafana-admin,ou=groups,dc=wikimedia,dc=org',
-        ]
+        ],
     }
 
     grafana::dashboard { 'varnish-http-errors':

@@ -6,7 +6,7 @@ class role::openldap::corp {
     include base::firewall
 
     system::role { 'role::openldap::corp':
-        description => 'Corp OIT openldap Mirror server'
+        description => 'Corp OIT openldap Mirror server',
     }
 
     $master = 'ldap1.corp.wikimedia.org'
@@ -50,6 +50,6 @@ class role::openldap::corp {
             'host'     => "ldap-corp.${::site}.wikimedia.org",
             'username' => '"cn=monitor,dc=corp,dc=wikimedia,dc=org"',
             'password' => $passwords::openldap::corp::monitor_pass,
-        }
+        },
     }
 }

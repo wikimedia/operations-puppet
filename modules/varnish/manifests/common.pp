@@ -82,7 +82,7 @@ class varnish::common {
 
     # We don't use varnishlog at all, and it can become an issue, see T135700
     service { 'varnishlog':
-        ensure => 'stopped'
+        ensure => 'stopped',
     }
 
     # varnishlog.py depends on varnishapi. Install it.

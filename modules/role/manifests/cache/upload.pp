@@ -44,7 +44,7 @@ class role::cache::upload(
                 'connect_timeout'       => '5s',
                 'first_byte_timeout'    => '35s',
                 'max_connections'       => 10000,
-            }
+            },
         },
         'swift_thumbs'   => {
             'backend' => $apps['swift_thumbs']['backends'][$apps['swift_thumbs']['route']],
@@ -53,7 +53,7 @@ class role::cache::upload(
                 'connect_timeout'       => '5s',
                 'first_byte_timeout'    => '35s',
                 'max_connections'       => 10000,
-            }
+            },
         },
     }
 

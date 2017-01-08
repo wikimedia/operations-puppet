@@ -30,12 +30,12 @@ class role::labs::novaproxy(
     ferm::service { 'dynamicproxy-api-http':
         port  => '5668',
         proto => 'tcp',
-        desc  => 'API for adding / removing proxies from dynamicproxy domainproxy'
+        desc  => 'API for adding / removing proxies from dynamicproxy domainproxy',
     }
 
     if $::hostname != $active_proxy {
         $redis_replication = {
-            "${::hostname}" => $active_proxy
+            "${::hostname}" => $active_proxy,
         }
     } else {
         $redis_replication = undef
@@ -64,6 +64,6 @@ class role::labs::novaproxy(
     include dynamicproxy::api
 
     nginx::site { 'wmflabs.org':
-        content => template('role/labs/novaproxy-wmflabs.org.conf')
+        content => template('role/labs/novaproxy-wmflabs.org.conf'),
     }
 }

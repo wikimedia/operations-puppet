@@ -8,7 +8,7 @@ class role::puppetmaster::frontend {
     backup::set { 'var-lib-puppet-volatile': }
 
     system::role { 'puppetmaster':
-        description => 'Puppetmaster frontend'
+        description => 'Puppetmaster frontend',
     }
 
     # Puppet frontends are git masters at least for their datacenter
@@ -32,7 +32,7 @@ class role::puppetmaster::frontend {
         base_config => {
             'ca'        => $ca,
             'ca_server' => $ca_server,
-        }
+        },
     }
 
 
@@ -77,17 +77,17 @@ class role::puppetmaster::frontend {
     ferm::service { 'ssh_puppet_merge':
         proto  => 'tcp',
         port   => '22',
-        srange => "(@resolve((${puppetmaster_frontend_ferm})) @resolve((${puppetmaster_frontend_ferm}), AAAA))"
+        srange => "(@resolve((${puppetmaster_frontend_ferm})) @resolve((${puppetmaster_frontend_ferm}), AAAA))",
     }
 
     ferm::service { 'rsync_puppet_frontends':
         proto  => 'tcp',
         port   => '873',
-        srange => "(@resolve((${puppetmaster_frontend_ferm})) @resolve((${puppetmaster_frontend_ferm}), AAAA))"
+        srange => "(@resolve((${puppetmaster_frontend_ferm})) @resolve((${puppetmaster_frontend_ferm}), AAAA))",
     }
     ferm::service { 'puppetmaster-backend':
         proto  => 'tcp',
         port   => 8141,
-        srange => "(@resolve((${puppetmaster_frontend_ferm})) @resolve((${puppetmaster_frontend_ferm}), AAAA))"
+        srange => "(@resolve((${puppetmaster_frontend_ferm})) @resolve((${puppetmaster_frontend_ferm}), AAAA))",
     }
 }

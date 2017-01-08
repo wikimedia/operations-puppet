@@ -64,7 +64,7 @@ class puppet_compiler(
         git_tag   => $version,
         directory => $compiler_dir,
         owner     => $user,
-        notify    => Exec['install compiler']
+        notify    => Exec['install compiler'],
     }
 
     # Install the compiler
@@ -79,7 +79,7 @@ class puppet_compiler(
     file { '/etc/puppet-compiler.conf':
         ensure  => $ensure,
         owner   => $user,
-        content => template('puppet_compiler/puppet-compiler.conf.erb')
+        content => template('puppet_compiler/puppet-compiler.conf.erb'),
     }
 
 
@@ -94,7 +94,7 @@ class puppet_compiler(
         auth    => false,
         hosts   => [
             'http://127.0.0.1:2379',
-        ]
+        ],
     }
 
     tidy { "${::puppet_compiler::workdir}/output":

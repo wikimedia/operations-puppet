@@ -98,7 +98,7 @@ class role::prometheus::tools {
                 }
             ]
             },
-        ]
+        ],
     }
 
     prometheus::web { 'tools':

@@ -87,7 +87,7 @@ class role::deployment::server(
 
     $deployment_server = hiera('deployment_server', 'tin.eqiad.wmnet')
     class { '::deployment::redis':
-        deployment_server => $deployment_server
+        deployment_server => $deployment_server,
     }
 
     $deploy_ensure = $deployment_server ? {

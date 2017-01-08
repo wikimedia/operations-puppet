@@ -81,7 +81,7 @@ class package_builder(
         group   => 'root',
         mode    => '0444',
         source  => 'puppet:///modules/package_builder/wikimedia.profile',
-        require => File['/usr/share/lintian/profiles/wikimedia']
+        require => File['/usr/share/lintian/profiles/wikimedia'],
     }
 
     file { '/usr/share/lintian/vendors/wikimedia':

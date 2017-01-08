@@ -19,12 +19,12 @@ class role::graphite::production {
                 'big_users' => [
                   'graphite1003.eqiad.wmnet:1903',
                   'graphite2002.codfw.wmnet:1903',
-                ]
+                ],
             },
             cluster_routes   => [
                 ['^cassandra\.', 'big_users'],
-            ]
-        }
+            ],
+        },
     }
 
     # Cleanup stale labs instances data - T143405

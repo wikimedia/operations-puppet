@@ -15,7 +15,7 @@ class role::eventlogging::analytics::zeromq {
     # This forwards the kafka eventlogging-valid-mixed topic to
     # ZMQ port 8600 for backwards compatibility.
     eventlogging::service::forwarder { 'legacy-zmq':
-        input   => "${$kafka_mixed_uri}&enable_auto_commit=False&identity=eventlogging_legacy_zmq",
+        input   => "${kafka_mixed_uri}&enable_auto_commit=False&identity=eventlogging_legacy_zmq",
         outputs => ["tcp://${eventlogging_host}:8600"],
     }
 

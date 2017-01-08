@@ -1,7 +1,7 @@
 define interface::tun6to4($remove=undef) {
     if $remove == true {
         $augeas_cmd = [ "rm auto[./1 = 'tun6to4']",
-                "rm iface[. = 'tun6to4']"
+                "rm iface[. = 'tun6to4']",
             ]
     } else {
         $augeas_cmd = [ "set auto[./1 = 'tun6to4']/1 'tun6to4'",

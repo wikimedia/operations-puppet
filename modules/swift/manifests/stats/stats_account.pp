@@ -19,7 +19,7 @@ define swift::stats::stats_account (
             owner   => 'root',
             group   => 'root',
             mode    => '0440',
-            content => "export ST_AUTH=${auth_url}/auth/v1.0\nexport ST_USER=${user}\nexport ST_KEY=${key}\n"
+            content => "export ST_AUTH=${auth_url}/auth/v1.0\nexport ST_USER=${user}\nexport ST_KEY=${key}\n",
         }
 
         cron { "swift-account-stats_${user}":

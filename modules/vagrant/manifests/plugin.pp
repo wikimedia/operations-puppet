@@ -18,7 +18,7 @@ define vagrant::plugin (
     Exec {
         user        => 'mwvagrant',
         cwd         => $::vagrant::vagrant_home,
-        environment => "VAGRANT_HOME=${::vagrant::vagrant_home}"
+        environment => "VAGRANT_HOME=${::vagrant::vagrant_home}",
     }
 
     if $ensure == 'present' {

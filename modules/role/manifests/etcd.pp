@@ -1,7 +1,7 @@
 # === Class role::etcd
 class role::etcd {
     system::role { 'role::etcd':
-        description => 'Highly-consistent distributed k/v store'
+        description => 'Highly-consistent distributed k/v store',
     }
 
     require standard

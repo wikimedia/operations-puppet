@@ -2,7 +2,7 @@
 class role::tor::relay {
 
     system::role { 'tor::relay':
-        description => 'Tor relay'
+        description => 'Tor relay',
     }
 
     include passwords::tor

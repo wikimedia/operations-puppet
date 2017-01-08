@@ -54,7 +54,7 @@ class bacula::client(
         require => [
                     Package['bacula-fd'],
                     Exec['concat-bacula-keypair'],
-                ]
+                ],
     }
 
     # To avoid reimplementing a PKI infrastructure we use puppet's already well

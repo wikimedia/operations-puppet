@@ -56,6 +56,6 @@ class role::ipsec ($hosts = undef) {
 
     class { '::strongswan':
         puppet_certname => $puppet_certname,
-        hosts           => $targets
+        hosts           => $targets,
     }
 }

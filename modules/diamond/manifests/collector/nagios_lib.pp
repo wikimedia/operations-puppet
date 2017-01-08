@@ -1,7 +1,7 @@
 # support class, to be include'd multiple times
 class diamond::collector::nagios_lib {
     diamond::collector { 'Nagios':
-        source   => 'puppet:///modules/diamond/collector/nagios.py'
+        source   => 'puppet:///modules/diamond/collector/nagios.py',
     }
 
     file { '/etc/diamond/nagios.d':

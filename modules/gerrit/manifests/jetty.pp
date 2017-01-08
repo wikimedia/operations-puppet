@@ -44,7 +44,7 @@ class gerrit::jetty(
     require_package([
         'openjdk-8-jdk',
         'gerrit',
-        'libmysql-java'
+        'libmysql-java',
     ])
 
     file { '/srv/gerrit':
@@ -184,7 +184,7 @@ class gerrit::jetty(
 
     nrpe::monitor_service { 'gerrit':
         description  => 'gerrit process',
-        nrpe_command => "/usr/lib/nagios/plugins/check_procs -w 1:1 -c 1:1 --ereg-argument-array '^GerritCodeReview .*-jar /var/lib/gerrit2/review_site/bin/gerrit.war'"
+        nrpe_command => "/usr/lib/nagios/plugins/check_procs -w 1:1 -c 1:1 --ereg-argument-array '^GerritCodeReview .*-jar /var/lib/gerrit2/review_site/bin/gerrit.war'",
     }
 
     cron { 'clear_gerrit_logs':

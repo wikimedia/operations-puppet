@@ -52,7 +52,7 @@ class haproxy(
             group   => 'root',
             source  => 'puppet:///modules/haproxy/haproxy.service',
             require => File['/usr/local/bin/generate_haproxy_default.sh'],
-            notify  => Exec['/bin/systemctl daemon-reload']
+            notify  => Exec['/bin/systemctl daemon-reload'],
         }
 
         exec { '/bin/systemctl daemon-reload':

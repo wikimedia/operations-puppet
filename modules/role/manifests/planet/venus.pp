@@ -224,7 +224,7 @@ class role::planet::venus {
         planet_languages   => $planet_languages,
         planet_meta_link   => $planet_meta_link,
         planet_http_proxy  => $planet_http_proxy,
-        planet_active_dc   => $planet_active_dc
+        planet_active_dc   => $planet_active_dc,
     }
 
     ferm::service { 'planet-http':

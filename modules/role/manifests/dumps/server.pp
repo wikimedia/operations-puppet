@@ -6,7 +6,7 @@ class role::dumps::server {
 
     monitoring::service { 'http':
         description   => 'HTTP',
-        check_command => 'check_http'
+        check_command => 'check_http',
     }
 
     monitoring::service { 'https':

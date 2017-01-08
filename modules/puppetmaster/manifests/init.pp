@@ -96,7 +96,7 @@ class puppetmaster(
         'rails',
         'ruby-json',
         'ruby-mysql',
-        'ruby-ldap'
+        'ruby-ldap',
         ]:
         ensure  => present,
     }
@@ -112,7 +112,7 @@ class puppetmaster(
         bind_address  => $bind_address,
         verify_client => $verify_client,
         allow_from    => $allow_from,
-        deny_from     => $deny_from
+        deny_from     => $deny_from,
     }
 
 

@@ -14,7 +14,7 @@ class statistics::aggregator {
         ensure => 'directory',
         owner  => $user,
         group  => $group,
-        mode   => '0755'
+        mode   => '0755',
     }
 
     git::clone { 'aggregator_code':

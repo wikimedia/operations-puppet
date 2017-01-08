@@ -10,6 +10,6 @@
 class authdns::monitoring {
     monitoring::service { 'auth dns':
         description   => 'Auth DNS',
-        check_command => 'check_dns!www.wikipedia.org'
+        check_command => 'check_dns!www.wikipedia.org',
     }
 }

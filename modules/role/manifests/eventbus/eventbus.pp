@@ -60,7 +60,7 @@ class role::eventbus::eventbus {
         # In normal cases, this will be much much faster than 10 seconds, but during
         # broker restarts, it can take a few seconds for meta data and leadership
         # info to propagate to the kafka client.
-        "${kafka_base_uri}?async=False&sync_timeout=10.0&topic=${::site}.{meta[topic]}${kafka_api_version_param}"
+        "${kafka_base_uri}?async=False&sync_timeout=10.0&topic=${::site}.{meta[topic]}${kafka_api_version_param}",
     ]
 
     $access_log_level = $::realm ? {

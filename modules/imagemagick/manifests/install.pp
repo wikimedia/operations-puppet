@@ -17,6 +17,6 @@ class imagemagick::install {
         group   => 'root',
         mode    => '0644',
         source  => 'puppet:///modules/imagemagick/policy.xml',
-        require => Class['packages::imagemagick']
+        require => Class['packages::imagemagick'],
     }
 }

@@ -81,7 +81,7 @@ class base::puppet(
         mode    => '0555',
         owner   => 'root',
         group   => 'root',
-        content => template('base/puppet-run.erb')
+        content => template('base/puppet-run.erb'),
     }
 
     file { '/usr/local/sbin/run-no-puppet':

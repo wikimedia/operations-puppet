@@ -15,7 +15,7 @@ class role::kafka::analytics::burrow {
         kafka_brokers      => $config['brokers']['array'],
         smtp_server        => 'mx1001.wikimedia.org',
         from_email         => "burrow@${::fqdn}",
-        to_emails          => ['analytics-alerts@wikimedia.org']
+        to_emails          => ['analytics-alerts@wikimedia.org'],
     }
 
     # Burrow has an HTTP REST API on port 8000

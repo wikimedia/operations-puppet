@@ -37,7 +37,7 @@ class role::labs::nfs::misc($dump_servers_ips, $maps_project_internal_ips) {
         path        => '/srv/statistics',
         read_only   => 'no',
         hosts_allow => $statistics_servers,
-        require     => File['/srv/statistics']
+        require     => File['/srv/statistics'],
     }
 
     # This has a flat exports list

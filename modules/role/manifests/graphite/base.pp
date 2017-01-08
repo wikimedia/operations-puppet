@@ -234,7 +234,7 @@ class role::graphite::base(
         $ldap_groups   = [
             'cn=ops,ou=groups,dc=wikimedia,dc=org',
             'cn=nda,ou=groups,dc=wikimedia,dc=org',
-            'cn=wmf,ou=groups,dc=wikimedia,dc=org'
+            'cn=wmf,ou=groups,dc=wikimedia,dc=org',
         ]
         $auth_realm    = 'WMF Labs (use wiki login name not shell) - nda/ops/wmf'
         $apache_auth   = template('role/graphite/apache-auth-ldap.erb')

@@ -110,7 +110,7 @@ class apertium(
             enable     => true,
             hasstatus  => true,
             hasrestart => true,
-        }
+        },
     }
     # lint:endignore
     file { $log_dir:

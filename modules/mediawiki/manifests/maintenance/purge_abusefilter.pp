@@ -4,6 +4,6 @@ class mediawiki::maintenance::purge_abusefilter( $ensure = present ) {
         command => '/usr/local/bin/foreachwiki extensions/AbuseFilter/maintenance/purgeOldLogIPData.php >/dev/null 2>&1',
         user    => $::mediawiki::users::web,
         hour    => 1,
-        minute  => 15
+        minute  => 15,
     }
 }

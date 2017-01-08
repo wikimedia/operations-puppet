@@ -79,7 +79,7 @@ define eventlogging::service::service(
     # https://packages.debian.org/jessie-backports/python-tornado
     if !defined(Package['python-tornado']) {
         package { 'python-tornado':
-            ensure => '4.4.2-1~bpo8+1'
+            ensure => '4.4.2-1~bpo8+1',
         }
     }
     # This allows tornado to automatically send stats to statsd.
@@ -150,7 +150,7 @@ define eventlogging::service::service(
             File[$config_file],
             File["/etc/rsyslog.d/80-${service_name}.conf"],
             Package['python-tornado'],
-        ]
+        ],
     }
 
     # eventlogging-service can be SIGHUPed via service reload.

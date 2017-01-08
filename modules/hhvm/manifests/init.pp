@@ -160,8 +160,8 @@ class hhvm(
             perf_pid_map      => true,  # See <http://www.brendangregg.com/perf.html#JIT%20Symbols>
             repo              => {
                 central => {
-                    path => "${cache_dir}/fcgi.hhbc.sq3"
-                }
+                    path => "${cache_dir}/fcgi.hhbc.sq3",
+                },
             },
             admin_server      => { port => 9001 },
             server            => {
@@ -184,8 +184,8 @@ class hhvm(
             repo         => {
                 central => { path => "${cache_dir}/cli.hhbc.sq3" },
                 local   => { mode => '--' },
-            }
-        }
+            },
+        },
     }
 
     $cli_hiera    = hiera_hash('hhvm::extra::cli', {})

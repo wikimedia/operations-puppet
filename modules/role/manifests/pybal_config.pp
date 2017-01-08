@@ -8,7 +8,7 @@ class role::pybal_config {
             'config-master.esams.wmnet',
             'config-master.ulsfo.wmnet',
             'config-master.wikimedia.org',
-            ]
+            ],
     }
 
     ferm::service { 'pybal_conf-http':

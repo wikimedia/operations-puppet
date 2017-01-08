@@ -132,7 +132,7 @@ class role::lvs::balancer {
         lvs_services         => $lvs::configuration::lvs_services,
         lvs_class_hosts      => $lvs::configuration::lvs_class_hosts,
         pybal_global_options => $lvs::configuration::pybal,
-        site                 => $::site
+        site                 => $::site,
     }
 
     if os_version('Debian >= jessie') {

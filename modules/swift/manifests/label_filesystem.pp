@@ -7,6 +7,6 @@ define swift::label_filesystem {
         command => "xfs_admin -L ${fs_label} ${dev}",
         path    => '/usr/sbin:/usr/bin:/sbin:/bin',
         require => Package['xfsprogs'],
-        unless  => "xfs_admin -l ${dev} | grep -q ${fs_label}"
+        unless  => "xfs_admin -l ${dev} | grep -q ${fs_label}",
     }
 }

@@ -84,12 +84,12 @@ class role::lists::server {
 
     nrpe::monitor_service { 'procs_mailmanctl':
         description  => 'mailman_ctl',
-        nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1:1 -u list --ereg-argument-array=\'/mailman/bin/mailmanctl\''
+        nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1:1 -u list --ereg-argument-array=\'/mailman/bin/mailmanctl\'',
     }
 
     nrpe::monitor_service { 'procs_mailman_qrunner':
         description  => 'mailman_qrunner',
-        nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 8:8 -u list --ereg-argument-array=\'/mailman/bin/qrunner\''
+        nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 8:8 -u list --ereg-argument-array=\'/mailman/bin/qrunner\'',
     }
 
     monitoring::service { 'mailman_listinfo':
@@ -164,6 +164,6 @@ class role::lists::server {
     }
 
     ferm::rule { 'mailman-spamd-local':
-        rule => 'proto tcp dport 783 { saddr (127.0.0.1 ::1) ACCEPT; }'
+        rule => 'proto tcp dport 783 { saddr (127.0.0.1 ::1) ACCEPT; }',
     }
 }

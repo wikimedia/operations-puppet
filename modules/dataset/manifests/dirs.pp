@@ -77,7 +77,7 @@ class dataset::dirs {
     # needs to be relative because it is mounted via NFS at differing names
     file { "${publicdir}/wikidatawiki/entities":
         ensure => 'link',
-        target => "../${relative_wikidatawiki}"
+        target => "../${relative_wikidatawiki}",
     }
 
     # Legacy

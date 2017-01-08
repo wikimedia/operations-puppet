@@ -44,7 +44,7 @@ class otrs::mail(
         require => [
             Class['spamassassin'],
             Class['clamav'],
-        ]
+        ],
     }
     class { 'spamassassin':
         required_score        => '3.5',# (5.0)

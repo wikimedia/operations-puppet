@@ -55,7 +55,7 @@ class changeprop(
         auto_refresh      => false,
         init_restart      => false,
         environment       => {
-            'UV_THREADPOOL_SIZE' => 128
+            'UV_THREADPOOL_SIZE' => 128,
         },
     }
 

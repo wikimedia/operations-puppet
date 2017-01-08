@@ -16,14 +16,14 @@ class role::jobqueue_redis {
         mediawiki::jobqueue_redis { $instances: slaveof => $slaveof}
         # Monitoring
         redis::monitoring::instance { $instances:
-            settings => {slaveof => $slaveof}
+            settings => {slaveof => $slaveof},
         }
     } else {
         # Local master
         # Encrypt the replication
         if os_version('Debian >= jessie') {
             class { 'redis::multidc::ipsec':
-                shards => $shards
+                shards => $shards,
             }
         }
         $instances = redis_get_instances($ip, $shards)
@@ -36,7 +36,7 @@ class role::jobqueue_redis {
 
     $uris = apply_format("localhost:%s/${password}", $instances)
     diamond::collector { 'Redis':
-        settings => { instances => join($uris, ', ') }
+        settings => { instances => join($uris, ', ') },
     }
 
     # Firewall rules

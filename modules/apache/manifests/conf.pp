@@ -71,7 +71,7 @@ define apache::conf(
     }
 
     $title_safe  = regsubst($title, '[\W_]', '-', 'G')
-    $file_ext    = $conf_type ? { env => 'sh', default => 'conf' }
+    $file_ext    = $conf_type ? { 'env' => sh, default => 'conf' }
     $conf_file   = sprintf('%02d-%s.%s', $priority, $title_safe, $file_ext)
     $content_formatted = $content ? {
         undef   => undef,

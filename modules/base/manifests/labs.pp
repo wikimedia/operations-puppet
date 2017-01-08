@@ -59,7 +59,7 @@ class base::labs inherits base {
         user { 'root':
             password => regsubst(
                 generate('/usr/local/sbin/make-labs-root-password', $::labsproject),
-                '\s$', '')
+                '\s$', ''),
         }
     }
 }

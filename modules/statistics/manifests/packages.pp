@@ -88,7 +88,7 @@ class statistics::packages {
         'libploticus0',
         'libcairo2',
         'libcairo2-dev',
-        'libxt-dev'
+        'libxt-dev',
     ])
 
     $r_packages = [

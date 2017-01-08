@@ -65,7 +65,7 @@ class recommendation_api {
                 'socket'      => '/run/uwsgi/recommendation_api.sock',
                 'pythonpath'  => $lib_dir,
                 'processes'   => inline_template('<%= @processorcount.to_i %>'),
-            }
+            },
         },
         require  => [
             Exec['pip_install_wheels'],

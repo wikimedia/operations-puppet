@@ -8,6 +8,6 @@ class role::extdist {
     include role::labs::lvm::srv
 
     class { '::extdist':
-        require => Mount['/srv']
+        require => Mount['/srv'],
     }
 }

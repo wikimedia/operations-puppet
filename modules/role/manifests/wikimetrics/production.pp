@@ -16,11 +16,11 @@ class role::wikimetrics::production {
     }
 
     class { '::wikimetrics::queue':
-        require => Class['::wikimetrics::redis']
+        require => Class['::wikimetrics::redis'],
     }
 
     class { '::wikimetrics::scheduler':
-        require => Class['::wikimetrics::redis']
+        require => Class['::wikimetrics::redis'],
     }
 }
 

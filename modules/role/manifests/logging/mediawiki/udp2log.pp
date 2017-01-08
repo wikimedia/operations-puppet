@@ -77,7 +77,7 @@ class role::logging::mediawiki::udp2log(
         command => '/usr/local/bin/mw-log-cleanup',
         user    => 'root',
         hour    => 2,
-        minute  => 0
+        minute  => 0,
     }
 
     # move files to module?

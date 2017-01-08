@@ -71,6 +71,6 @@ class scap::master(
         user       => 'mwdeploy',
         privileges => [
             'ALL = (root) NOPASSWD: /usr/local/bin/scap-master-sync',
-        ]
+        ],
     }
 }

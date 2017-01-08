@@ -2,7 +2,7 @@
 class role::ipmi::mgmt {
 
     system::role { 'role::ipmi::mgmt':
-        description => 'IPMI Management'
+        description => 'IPMI Management',
     }
 
     include ::ipmi::mgmt

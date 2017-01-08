@@ -15,20 +15,20 @@ class role::labs::ores::worker {
                 'ores_redis' => {
                     'host' => 'ores-redis-02',
                     'port' => '6380',
-                }
+                },
             },
             'score_processors' => {
                 'ores_celery' => {
                     'BROKER_URL'            => 'redis://ores-redis-02:6379',
                     'CELERY_RESULT_BACKEND' => 'redis://ores-redis-02:6379',
-                }
+                },
             },
             'scoring_systems'  => {
                 'celery_queue' => {
                     'BROKER_URL'            => 'redis://ores-redis-02:6379',
                     'CELERY_RESULT_BACKEND' => 'redis://ores-redis-02:6379',
-                }
-            }
+                },
+            },
         },
         priority => '99',
     }

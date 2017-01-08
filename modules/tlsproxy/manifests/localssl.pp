@@ -73,7 +73,7 @@ define tlsproxy::localssl(
     # resource will conflict.
     if $default_server {
         notify { 'tlsproxy localssl default_server':
-            message => "tlsproxy::localssl instance ${title} with server name ${server_name} is the default server."
+            message => "tlsproxy::localssl instance ${title} with server name ${server_name} is the default server.",
         }
     }
 
@@ -112,6 +112,6 @@ define tlsproxy::localssl(
 
     nginx::site { $name:
         require => Notify['tlsproxy localssl default_server'],    # Ensure a default_server has been defined
-        content => template('tlsproxy/localssl.erb')
+        content => template('tlsproxy/localssl.erb'),
     }
 }

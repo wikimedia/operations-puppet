@@ -10,7 +10,7 @@ class role::labs::dns_floating_ip_updater {
         'admin_project_name'                       => $keystoneconfig['admin_project_name'],
         'floating_ip_ptr_zone'                     => $designateconfig['floating_ip_ptr_zone'],
         'floating_ip_ptr_fqdn_matching_regex'      => $designateconfig['floating_ip_ptr_fqdn_matching_regex'],
-        'floating_ip_ptr_fqdn_replacement_pattern' => $designateconfig['floating_ip_ptr_fqdn_replacement_pattern']
+        'floating_ip_ptr_fqdn_replacement_pattern' => $designateconfig['floating_ip_ptr_fqdn_replacement_pattern'],
     }
 
     file { '/etc/labs-floating-ips-dns-config.yaml':
@@ -28,7 +28,7 @@ class role::labs::dns_floating_ip_updater {
         group   => 'root',
         mode    => '0750',
         source  => 'puppet:///modules/role/labs/dns-floating-ip-updater.py',
-        require => Package['python-ipaddress']
+        require => Package['python-ipaddress'],
     }
 
     cron { 'floating-ip-ptr-record-updater':

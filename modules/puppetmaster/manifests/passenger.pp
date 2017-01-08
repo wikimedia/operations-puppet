@@ -37,7 +37,7 @@ class puppetmaster::passenger(
         apache::env { 'use-utf-locale':
             ensure => present,
             vars   => {
-                'LANG' => 'en_US.UTF-8'
+                'LANG' => 'en_US.UTF-8',
             },
         }
     }

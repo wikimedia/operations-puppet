@@ -12,7 +12,7 @@ class role::installserver::http {
 
     ferm::service { 'install_http':
         proto => 'tcp',
-        port  => '(http https)'
+        port  => '(http https)',
     }
 
     monitoring::service { 'http':

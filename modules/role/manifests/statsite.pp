@@ -6,7 +6,7 @@
 #
 class role::statsite {
     system::role { 'role::statsite':
-        description => 'statsite server'
+        description => 'statsite server',
     }
 
     class { '::statsite': }

@@ -82,7 +82,7 @@ class druid::broker(
         'druid.broker.cache.useCache'       => true,
         'druid.broker.cache.populateCache'  => true,
         'druid.cache.type'                  => 'local',
-        'druid.cache.sizeInBytes'           => '10000000'
+        'druid.cache.sizeInBytes'           => '10000000',
     }
 
     $default_env = {

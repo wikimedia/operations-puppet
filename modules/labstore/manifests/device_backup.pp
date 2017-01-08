@@ -30,6 +30,6 @@ define labstore::device_backup (
         weekday     => $day[$weekday],
         hour        => $hour,
         minute      => $minute,
-        environment => 'MAILTO=labs-admin@lists.wikimedia.org'
+        environment => 'MAILTO=labs-admin@lists.wikimedia.org',
     }
 }

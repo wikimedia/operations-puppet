@@ -48,11 +48,11 @@ class udp2log(
     if !$default_instance {
         file { '/etc/init.d/udp2log':
             ensure  => absent,
-            require => Package['udplog']
+            require => Package['udplog'],
         }
         exec { '/usr/sbin/update-rc.d -f udp2log remove':
             subscribe   => File['/etc/init.d/udp2log'],
-            refreshonly => true
+            refreshonly => true,
         }
     }
 }

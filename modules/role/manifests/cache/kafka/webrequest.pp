@@ -61,7 +61,7 @@ class role::cache::kafka::webrequest(
     $varnish_opts = {
         'q' => 'ReqMethod ne "PURGE" and not Timestamp:Pipe and not ReqHeader:Upgrade ~ "[wW]ebsocket" and not HttpGarbage',
         'T' => '1500',
-        'L' => '10000'
+        'L' => '10000',
     }
     $conf_template = 'varnishkafka/varnishkafka_v4.conf.erb'
 

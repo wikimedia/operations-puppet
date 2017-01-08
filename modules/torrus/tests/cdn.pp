@@ -16,7 +16,7 @@ class role::cache::configuration {
                     'ulsfo' => [
                         'cp4008.ulsfo.wmnet',
                         'cp4018.ulsfo.wmnet',
-                    ]
+                    ],
                 },
                 'upload' => {
                     'eqiad' => [
@@ -41,13 +41,13 @@ class role::cache::configuration {
                     ],
                     'ulsfo' => ['cp4011.ulsfo.wmnet',
                                 'cp4020.ulsfo.wmnet',
-                    ]
+                    ],
                 },
                 'misc' => {
                     'eqiad' => [],
                     'esams' => [],
                     'ulsfo' => [],
-                }
+                },
             },
             'labs' => {
                 'mobile' => {
@@ -93,7 +93,7 @@ class role::cache::configuration {
                 'appservers_debug' => {
                     'eqiad' => [ '10.68.19.128' ],  # deployment-mediawiki04
                 },
-            }
+            },
         }
 }
 

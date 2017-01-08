@@ -21,7 +21,7 @@ class toollabs::kubebuilder(
         ensure => directory,
         owner  => 'www-data',
         group  => 'www-data',
-        mode   => '0555'
+        mode   => '0555',
     }
 
     file { '/usr/local/bin/build-kubernetes':

@@ -9,11 +9,11 @@ class contint::firewall::labs {
     ferm::service { 'contint1001_ssh_to_slaves':
         proto  => 'tcp',
         port   => '22',
-        srange => '@resolve(contint1001.wikimedia.org)'
+        srange => '@resolve(contint1001.wikimedia.org)',
     }
     ferm::service { 'contint2001_ssh_to_slaves':
         proto  => 'tcp',
         port   => '22',
-        srange => '@resolve(contint2001.wikimedia.org)'
+        srange => '@resolve(contint2001.wikimedia.org)',
     }
 }

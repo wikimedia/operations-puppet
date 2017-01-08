@@ -12,6 +12,6 @@ define shinken::config(
         owner   => 'shinken',
         group   => 'shinken',
         notify  => Service['shinken'],
-        require => Package['shinken']
+        require => Package['shinken'],
     }
 }

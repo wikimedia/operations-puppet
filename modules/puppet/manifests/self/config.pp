@@ -122,7 +122,7 @@ class puppet::self::config(
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-        content => template('puppet/auth-self.conf.erb')
+        content => template('puppet/auth-self.conf.erb'),
     }
 
     file { '/etc/puppet/fileserver.conf':

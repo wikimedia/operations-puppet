@@ -9,11 +9,11 @@ class contint::firewall {
 
     # Jenkins on port 8080, reacheable via Apache proxying the requests
     ferm::rule { 'jenkins_localhost_only':
-        rule => 'proto tcp dport 8080 { saddr (127.0.0.1 ::1) ACCEPT; }'
+        rule => 'proto tcp dport 8080 { saddr (127.0.0.1 ::1) ACCEPT; }',
     }
     # Zuul status page on port 8001, reacheable via Apache proxying the requests
     ferm::rule { 'zuul_localhost_only':
-        rule => 'proto tcp dport 8001 { saddr (127.0.0.1 ::1) ACCEPT; }'
+        rule => 'proto tcp dport 8001 { saddr (127.0.0.1 ::1) ACCEPT; }',
     }
 
     # Gearman is used between Zuul and the Jenkin master, both on the same

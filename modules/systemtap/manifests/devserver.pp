@@ -11,7 +11,7 @@ class systemtap::devserver {
     require_package([
         'build-essential',
         "linux-image-${::kernelrelease}-dbg",
-        "linux-headers-${::kernelrelease}"
+        "linux-headers-${::kernelrelease}",
     ])
 
     # require_package creates a dynamic intermediate class that makes declaring

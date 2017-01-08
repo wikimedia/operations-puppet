@@ -44,7 +44,7 @@ class toollabs::kube2proxy(
         'kubernetes'  => {
             'master'  => "https://${master_host}:6443",
             'token'   => $client_token,
-        }
+        },
     }
 
     file { '/etc/kube2proxy.yaml':

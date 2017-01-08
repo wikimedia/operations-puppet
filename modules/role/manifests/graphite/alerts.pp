@@ -13,7 +13,7 @@ class role::graphite::alerts {
 
     # Alerts for EventLogging metrics in Kafka.
     class { '::eventlogging::monitoring::graphite':
-        kafka_brokers_graphite_wildcard => $kafka_config['brokers']['graphite']
+        kafka_brokers_graphite_wildcard => $kafka_config['brokers']['graphite'],
     }
 
     swift::monitoring::graphite_alerts { 'eqiad-prod': }

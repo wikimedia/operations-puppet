@@ -10,6 +10,6 @@ class quarry::database {
         config_hash  => {
             'datadir'      => $data_path,
             'bind_address' => '0.0.0.0',
-        }
+        },
     }
 }

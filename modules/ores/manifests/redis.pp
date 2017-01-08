@@ -26,7 +26,7 @@ class ores::redis(
             maxmemory      => $cache_maxmemory,
             appendfilename => "${::hostname}-6380.aof",
             dbfilename     => "${::hostname}-6380.rdb",
-        }
+        },
     }
 
     # If we specified a password use it

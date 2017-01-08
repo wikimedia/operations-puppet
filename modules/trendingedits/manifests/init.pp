@@ -31,7 +31,7 @@ class trendingedits(
             site        => $::site,
         },
         environment       => {
-            'UV_THREADPOOL_SIZE' => 16
+            'UV_THREADPOOL_SIZE' => 16,
         },
     }
 

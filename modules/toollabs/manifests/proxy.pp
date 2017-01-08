@@ -21,7 +21,7 @@ class toollabs::proxy(
 
     if $::hostname != $active_proxy {
         $redis_replication = {
-            "${::hostname}" => $active_proxy
+            "${::hostname}" => $active_proxy,
         }
     } else {
         $redis_replication = undef
@@ -74,7 +74,7 @@ class toollabs::proxy(
         proto  => 'tcp',
         port   => '8282',
         srange => '$LABS_NETWORKS',
-        desc   => 'Proxylistener port, open to just labs'
+        desc   => 'Proxylistener port, open to just labs',
     }
 
     file { '/var/www/error/favicon.ico':
@@ -86,13 +86,13 @@ class toollabs::proxy(
     file { '/var/www/error/tool-labs-logo.png':
         ensure  => file,
         source  => 'puppet:///modules/toollabs/tool-labs-logo.png',
-        require => [File['/var/www/error']]
+        require => [File['/var/www/error']],
     }
 
     file { '/var/www/error/tool-labs-logo-2x.png':
         ensure  => file,
         source  => 'puppet:///modules/toollabs/tool-labs-logo-2x.png',
-        require => [File['/var/www/error']]
+        require => [File['/var/www/error']],
     }
 
     require_package('goaccess')  # webserver statistics, T121233

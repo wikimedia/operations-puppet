@@ -74,7 +74,7 @@ class role::labs::openstack::nova::compute($instance_dev='/dev/md1') {
             'sort_by_uuid' => 'true',
             'disk_stats'   => 'true',
             # lint:endignore
-        }
+        },
     }
 
     # Starting with 3.18 (34666d467cbf1e2e3c7bb15a63eccfb582cdd71f) the netfilter code

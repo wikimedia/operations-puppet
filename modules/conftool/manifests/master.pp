@@ -20,7 +20,7 @@ class conftool::master($sync_dir = '/etc/conftool/data') {
         owner   => 'root',
         group   => 'root',
         mode    => '0500',
-        content => template('conftool/conftool-merge.erb')
+        content => template('conftool/conftool-merge.erb'),
     }
 
     if $::conftool::auth {
@@ -28,8 +28,8 @@ class conftool::master($sync_dir = '/etc/conftool/data') {
         etcd_role { 'conftool':
             ensure => present,
             acls   => {
-                '/conftool/*' => 'RW'
-            }
+                '/conftool/*' => 'RW',
+            },
         }
 
         if $::conftool::password != undef {

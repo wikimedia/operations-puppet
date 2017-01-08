@@ -11,4 +11,5 @@ gem 'safe_yaml', '~> 1.0.4'
 gem 'rake', '~> 10.4', '>= 10.4.2'
 gem 'git', '1.3.0'
 gem 'puppet-lint', '1.1.0'
+gem 'puppet-lint-trailing_comma-check', '0.3.2'
 gem 'rubocop', '~> 0.35.1', require: false

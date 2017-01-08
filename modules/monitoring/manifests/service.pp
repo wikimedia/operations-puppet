@@ -93,7 +93,7 @@ define monitoring::service(
             check_freshness        => $check_fresh,
             freshness_threshold    => $is_fresh,
             event_handler          => $event_handler,
-        }
+        },
     }
     # This is a hack. We detect if we are running on the scope of an icinga
     # host and avoid exporting the resource if yes

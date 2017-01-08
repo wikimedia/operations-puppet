@@ -7,7 +7,7 @@ class role::mediawiki::maintenance {
 
     file { $::mediawiki::scap::mediawiki_staging_dir:
         ensure => link,
-        target => '/srv/mediawiki'
+        target => '/srv/mediawiki',
     }
 
     include mediawiki::maintenance::pagetriage

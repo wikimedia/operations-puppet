@@ -34,7 +34,7 @@ class role::aqs {
         $default_instances = {
             'default' => {
                 'listen_address' => $::cassandra::listen_address,
-            }
+            },
         }
         ::cassandra::instance::monitoring { 'default':
             instances     => $default_instances,
