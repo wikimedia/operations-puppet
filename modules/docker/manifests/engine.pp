@@ -30,7 +30,7 @@ class docker::engine(
         require => [
             Apt::Repository['docker'],
             File['/usr/local/bin/setup-docker']
-        ]
+        ],
     }
 
     if $declare_service {

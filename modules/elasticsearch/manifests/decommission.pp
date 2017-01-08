@@ -5,7 +5,7 @@
 class elasticsearch::decommission {
     # Remove package
     package { 'elasticsearch':
-        ensure  => absent
+        ensure  => absent,
     }
 
     # Remove configuration

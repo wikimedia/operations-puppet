@@ -7,7 +7,7 @@ class role::syslog::centralserver {
     include base::firewall
 
     system::role { 'role::syslog::centralserver':
-        description => 'Central syslog server'
+        description => 'Central syslog server',
     }
 
     ferm::service { 'rsyslog-receiver':

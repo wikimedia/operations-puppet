@@ -34,7 +34,7 @@ class role::labs::dnsrecursor {
 
     interface::ip { 'role::lab::dnsrecursor':
         interface => 'eth0',
-        address   => $recursor_ip
+        address   => $recursor_ip,
     }
 
     #  We need to alias some public IPs to their corresponding private IPs.
@@ -73,11 +73,11 @@ class role::labs::dnsrecursor {
         password           => $wikitech_nova_ldap_user_pass,
         nova_api_url       => "http://${nova_controller_hostname}:35357/v2.0",
         alias_file         => $alias_file,
-        admin_project_name => $wikitech_nova_admin_project_name
+        admin_project_name => $wikitech_nova_admin_project_name,
     }
     class { '::dnsrecursor::metalresolver':
         metal_resolver => $metal_resolver,
-        tld            => $tld
+        tld            => $tld,
     }
 
     # There are three replica servers (c1, c2, c3).  The mapping of
@@ -304,7 +304,7 @@ class role::labs::dnsrecursor {
         ensure => directory,
         owner  => 'root',
         group  => 'root',
-        mode   => '0444'
+        mode   => '0444',
     }
 
     file { '/var/zones/labsdb':
@@ -314,7 +314,7 @@ class role::labs::dnsrecursor {
         mode    => '0444',
         notify  => Service['pdns-recursor'],
         content => template('role/labs/dns/db_aliases.erb'),
-        require => File['/var/zones']
+        require => File['/var/zones'],
     }
 
     ::dnsrecursor::monitor { $listen_addresses: }

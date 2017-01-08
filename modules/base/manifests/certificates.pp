@@ -23,7 +23,7 @@ class base::certificates {
     $puppet_ssl_dir = puppet_ssldir()
 
     sslcert::ca { 'Puppet_Internal_CA':
-        source => "${puppet_ssl_dir}/certs/ca.pem"
+        source => "${puppet_ssl_dir}/certs/ca.pem",
     }
 
     # install all CAs before generating certificates

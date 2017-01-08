@@ -56,10 +56,10 @@ class role::eventstreams {
 
     $streams = hiera('role::eventstreams::streams', {
         'test' => {
-            'topics' => ["${::site}.test.event"]
+            'topics' => ["${::site}.test.event"],
         },
         'revision-create' => {
-            'topics' => ["${::site}.mediawiki.revision-create"]
+            'topics' => ["${::site}.mediawiki.revision-create"],
         }
     })
 

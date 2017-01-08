@@ -40,7 +40,7 @@ class wikimania_scholarships(
     $log_file   = "udp://${udp2log_dest}/scholarships"
 
     system::role { 'wikimania_scholarships':
-        description => 'Wikimania Scholarships server'
+        description => 'Wikimania Scholarships server',
     }
 
     package { 'scholarships':

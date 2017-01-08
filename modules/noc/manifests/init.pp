@@ -52,13 +52,13 @@ class noc {
         owner   => 'mwdeploy',
         group   => 'mwdeploy',
         content => template('noc/dbtree.config.php.erb'),
-        require => Git::Clone['operations/software/dbtree']
+        require => Git::Clone['operations/software/dbtree'],
     }
 
     # Monitoring
     monitoring::service { 'http-noc':
         description   => 'HTTP-noc',
-        check_command => 'check_http_url!noc.wikimedia.org!http://noc.wikimedia.org'
+        check_command => 'check_http_url!noc.wikimedia.org!http://noc.wikimedia.org',
     }
 
 }

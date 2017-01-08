@@ -9,7 +9,7 @@ class wikimetrics::redis(
         ensure => directory,
         owner  => 'redis',
         group  => 'redis',
-        mode   => '0774'
+        mode   => '0774',
     }
 
     redis::instance { '6379':
@@ -19,6 +19,6 @@ class wikimetrics::redis(
             maxmemory     => $queue_maxmemory,
             tcp_keepalive => 60,
         },
-        require  => File['/srv/redis/queue']
+        require  => File['/srv/redis/queue'],
     }
 }

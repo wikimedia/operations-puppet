@@ -70,8 +70,8 @@ class memcached(
         systemd        => true,
         strict         => false,
         service_params => {
-            enable => true
-        }
+            enable => true,
+        },
     }
 
     # Prefer a direct check if memcached is not running on localhost.

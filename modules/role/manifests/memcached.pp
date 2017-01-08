@@ -31,7 +31,7 @@ class role::memcached {
         extra_options => {
             '-o' => join($extended_options, ','),
             '-D' => ':',
-        }
+        },
     }
 
     include role::prometheus::memcached_exporter
@@ -100,12 +100,12 @@ class role::memcached {
 
     $shards = {
         'eqiad' => hiera('mediawiki::redis_servers::eqiad'),
-        'codfw' => hiera('mediawiki::redis_servers::codfw')
+        'codfw' => hiera('mediawiki::redis_servers::codfw'),
     }
 
     if os_version('Debian >= jessie') {
         class { 'redis::multidc::ipsec':
-            shards => $shards
+            shards => $shards,
         }
     }
 
@@ -115,8 +115,8 @@ class role::memcached {
         map      => {
             '6380' => {
                 dbfilename => "${::hostname}-6380.rdb",
-            }
-        }
+            },
+        },
     }
 
 

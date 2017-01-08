@@ -52,6 +52,6 @@ class calico(
     base::service_unit { 'calico-node':
         ensure  => present,
         systemd => true,
-        require => Package["${registry}/calico/node"]
+        require => Package["${registry}/calico/node"],
     }
 }

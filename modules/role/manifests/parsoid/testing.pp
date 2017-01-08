@@ -2,7 +2,7 @@
 # Ex: Parsoid roundtrip testing, Parsoid & PHP parser visual diff testing
 class role::parsoid::testing {
     system::role { 'role::parsoid::testing':
-        description => 'Parsoid server (rt-testing, visual-diffing, etc.)'
+        description => 'Parsoid server (rt-testing, visual-diffing, etc.)',
     }
 
     class { '::parsoid':

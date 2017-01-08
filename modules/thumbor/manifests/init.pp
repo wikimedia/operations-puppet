@@ -56,7 +56,7 @@ class thumbor (
         mode    => '0755',
         owner   => 'thumbor',
         group   => 'thumbor',
-        require => File['/srv/log']
+        require => File['/srv/log'],
     }
 
     file { '/usr/local/lib/thumbor/tinyrgb.icc':

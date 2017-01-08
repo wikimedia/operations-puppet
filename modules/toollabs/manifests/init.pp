@@ -169,7 +169,7 @@ class toollabs (
         content => template('toollabs/hosts.erb'),
         owner   => 'root',
         group   => 'root',
-        mode    => '0644'
+        mode    => '0644',
     }
 
     # Silence e-mails sent when regular users try to sudo (T95882)

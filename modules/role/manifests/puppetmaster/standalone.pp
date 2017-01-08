@@ -82,7 +82,7 @@ class role::puppetmaster::standalone(
             'ldapuser'      => $ldapconfig['proxyagent'],
             'ldappassword'  => $ldapconfig['proxypass'],
             'ldaptls'       => true,
-            'node_terminus' => 'ldap'
+            'node_terminus' => 'ldap',
         }
     }
 

@@ -27,19 +27,19 @@ class role::labs::ores::staging {
                 'ores_redis' => {
                     'host' => '127.0.0.1',
                     'port' => '6380',
-                }
+                },
             },
             'score_processors' => {
                 'ores_celery' => {
                     'BROKER_URL'            => 'redis://127.0.0.1:6379',
                     'CELERY_RESULT_BACKEND' => 'redis://127.0.0.1:6379',
-                }
+                },
             },
             'scoring_systems'  => {
                 'celery_queue' => {
                     'BROKER_URL'            => 'redis://127.0.0.1:6379',
                     'CELERY_RESULT_BACKEND' => 'redis://127.0.0.1:6379',
-                }
+                },
             },
         },
         priority => '99',

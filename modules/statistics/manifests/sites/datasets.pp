@@ -12,7 +12,7 @@ class statistics::sites::datasets {
     $working_path = $::statistics::working_path
     file { [
         "${working_path}/public-datasets",
-        "${working_path}/aggregate-datasets"
+        "${working_path}/aggregate-datasets",
     ]:
         ensure => 'directory',
         owner  => 'root',

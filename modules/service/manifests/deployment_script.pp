@@ -14,7 +14,7 @@ define service::deployment_script(
         owner   => 'root',
         group   => 'root',
         mode    => '0555',
-        content => template('service/deployment_script.sh.erb')
+        content => template('service/deployment_script.sh.erb'),
     }
 
 }

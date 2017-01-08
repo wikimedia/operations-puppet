@@ -56,7 +56,7 @@ class role::cache::misc {
                 'endowment.wikimedia.org',
                 'transparency.wikimedia.org',
                 '15.wikipedia.org',
-                'releases.wikimedia.org'
+                'releases.wikimedia.org',
             ],
         },
         'bohrium' => {
@@ -102,7 +102,7 @@ class role::cache::misc {
             'be_opts'  => $app_def_be_opts,
             'req_host' => [
                 'doc.wikimedia.org',
-                'integration.wikimedia.org'
+                'integration.wikimedia.org',
             ],
         },
         'graphite1001' => {
@@ -110,7 +110,7 @@ class role::cache::misc {
             'be_opts'  => $app_def_be_opts,
             'req_host' => [
                 'performance.wikimedia.org',
-                'graphite.wikimedia.org'
+                'graphite.wikimedia.org',
             ],
         },
         'iridium' => { # main phab
@@ -121,7 +121,7 @@ class role::cache::misc {
                 'phab.wmfusercontent.org',
                 'bugzilla.wikimedia.org',
                 'bugs.wikimedia.org',
-                'git.wikimedia.org'
+                'git.wikimedia.org',
             ],
         },
         'krypton' => { # ganeti VM for misc. PHP apps
@@ -132,7 +132,7 @@ class role::cache::misc {
                 'iegreview.wikimedia.org',
                 'racktables.wikimedia.org',
                 'grafana.wikimedia.org',
-                'grafana-admin.wikimedia.org'
+                'grafana-admin.wikimedia.org',
             ],
         },
         'labmon1001' => {
@@ -150,7 +150,7 @@ class role::cache::misc {
             'req_host' => [
                 'servermon.wikimedia.org',
                 'smokeping.wikimedia.org',
-                'torrus.wikimedia.org'
+                'torrus.wikimedia.org',
             ],
         },
         'noc' => { # noc.wikimedia.org and dbtree.wikimedia.org
@@ -158,13 +158,13 @@ class role::cache::misc {
             'be_opts'  => $app_def_be_opts,
             'req_host' => [
                 'noc.wikimedia.org',
-                'dbtree.wikimedia.org'
+                'dbtree.wikimedia.org',
             ],
         },
         'planet1001' => {
             'backend'     => 'planet1001.eqiad.wmnet',
             'be_opts'     => $app_def_be_opts,
-            'req_host_re' => '^([^.]+\.)?planet\.wikimedia\.org$'
+            'req_host_re' => '^([^.]+\.)?planet\.wikimedia\.org$',
         },
         'pybal_config' => {
             'backend'  => 'puppetmaster1001.eqiad.wmnet',

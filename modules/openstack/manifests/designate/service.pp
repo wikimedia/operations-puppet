@@ -118,7 +118,7 @@ class openstack::designate::service (
         owner   => 'designate',
         group   => 'designate',
         mode    => '0400',
-        content => secret('ssh/puppet_cert_manager/cert_manager')
+        content => secret('ssh/puppet_cert_manager/cert_manager'),
     }
 
     # include rootwrap.d entries
@@ -199,7 +199,7 @@ class openstack::designate::service (
             require        =>  Package['designate'],
             service_params => {
             # lint:ignore:ensure_first_param
-                ensure => stopped
+                ensure => stopped,
             # lint:endignore
             },
         }

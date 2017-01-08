@@ -2,7 +2,7 @@
 class role::parsoid {
 
     system::role { 'role::parsoid':
-        description => "Parsoid ${::realm}"
+        description => "Parsoid ${::realm}",
     }
 
     include base::firewall

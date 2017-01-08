@@ -3,7 +3,7 @@
 class icinga::monitor::legal {
 
     @monitoring::host { 'en.wikipedia.org':
-        host_fqdn => 'en.wikipedia.org'
+        host_fqdn => 'en.wikipedia.org',
     }
 
     @monitoring::host { 'en.m.wikipedia.org':
@@ -11,7 +11,7 @@ class icinga::monitor::legal {
     }
 
     @monitoring::host { 'en.wikibooks.org':
-        host_fqdn => 'en.wikibooks.org'
+        host_fqdn => 'en.wikibooks.org',
     }
 
     monitoring::service { 'en.wp.o-legal-html':

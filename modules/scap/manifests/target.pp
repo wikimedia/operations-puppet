@@ -128,7 +128,7 @@ define scap::target(
             command => "/bin/chown -R ${chown_user} ${chown_target}",
             # perform the chown only if root is the effective owner
             onlyif  => "/usr/bin/test -O /srv/deployment/${package_name}",
-            require => [User[$deploy_user], Group[$deploy_user]]
+            require => [User[$deploy_user], Group[$deploy_user]],
         }
     }
 

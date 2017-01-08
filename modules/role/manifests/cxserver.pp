@@ -2,7 +2,7 @@
 
 class role::cxserver {
     system::role { 'role::cxserver':
-        description => 'content translation server'
+        description => 'content translation server',
     }
 
     include ::passwords::cxserver

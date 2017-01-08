@@ -40,6 +40,6 @@ class icinga::nsca::firewall {
           $CODFW_PRIVATE_FRACK_FUNDRAISING_CODFW \
           $CODFW_PRIVATE_FRACK_LISTENERDMZ_CODFW \
           $CODFW_PRIVATE_FRACK_MANAGEMENT_CODFW \
-          ) proto tcp dport 5667 ACCEPT;'
+          ) proto tcp dport 5667 ACCEPT;',
     }
 }

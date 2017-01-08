@@ -4,7 +4,7 @@ class role::puppetmaster::backend {
     include base::firewall
 
     system::role { 'puppetmaster':
-        description => 'Puppetmaster backend'
+        description => 'Puppetmaster backend',
     }
 
     $ca_server = hiera('puppetmaster::ca_server', 'puppetmaster1001.eqiad.wmnet')
@@ -13,24 +13,24 @@ class role::puppetmaster::backend {
         base_config => {
             'ca'        => false,
             'ca_server' => $ca_server,
-        }
+        },
     }
 
     class { '::puppetmaster':
         server_type => 'backend',
-        config      => $::role::puppetmaster::common::config
+        config      => $::role::puppetmaster::common::config,
     }
 
     $puppetmaster_frontend_ferm = join(keys(hiera('puppetmaster::servers')), ' ')
     ferm::service { 'ssh_puppet_merge':
         proto  => 'tcp',
         port   => '22',
-        srange => "(@resolve((${puppetmaster_frontend_ferm})) @resolve((${puppetmaster_frontend_ferm}), AAAA))"
+        srange => "(@resolve((${puppetmaster_frontend_ferm})) @resolve((${puppetmaster_frontend_ferm}), AAAA))",
     }
     ferm::service { 'puppetmaster-backend':
         proto  => 'tcp',
         port   => 8141,
-        srange => "(@resolve((${puppetmaster_frontend_ferm})) @resolve((${puppetmaster_frontend_ferm}), AAAA))"
+        srange => "(@resolve((${puppetmaster_frontend_ferm})) @resolve((${puppetmaster_frontend_ferm}), AAAA))",
     }
 
 }

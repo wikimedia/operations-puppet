@@ -8,7 +8,7 @@
 
 class role::prometheus::labs_project {
   prometheus::server { 'labs':
-    listen_address => '127.0.0.1:9901'
+    listen_address => '127.0.0.1:9901',
   }
 
   prometheus::web { 'labs':

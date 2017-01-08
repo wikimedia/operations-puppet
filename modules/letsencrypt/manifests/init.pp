@@ -53,7 +53,7 @@ class letsencrypt {
         owner  => 'root',
         group  => 'root',
         mode   => '0555',
-        source => 'puppet:///modules/letsencrypt/acme_tiny.py'
+        source => 'puppet:///modules/letsencrypt/acme_tiny.py',
     }
 
     file { '/usr/local/sbin/acme-setup':
@@ -89,11 +89,11 @@ class letsencrypt {
 
     # LE Intermediate: current since ~2016-03-26
     sslcert::ca { 'Lets_Encrypt_Authority_X3':
-        source  => 'puppet:///modules/letsencrypt/lets-encrypt-x3-cross-signed.pem'
+        source  => 'puppet:///modules/letsencrypt/lets-encrypt-x3-cross-signed.pem',
     }
 
     # LE Intermediate: disaster recovery fallback since ~2016-03-26
     sslcert::ca { 'Lets_Encrypt_Authority_X4':
-        source  => 'puppet:///modules/letsencrypt/lets-encrypt-x4-cross-signed.pem'
+        source  => 'puppet:///modules/letsencrypt/lets-encrypt-x4-cross-signed.pem',
     }
 }

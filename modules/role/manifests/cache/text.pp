@@ -20,7 +20,7 @@ class role::cache::text(
     }
 
     class { '::lvs::realserver':
-        realserver_ips => $lvs::configuration::service_ips['text'][$::site]
+        realserver_ips => $lvs::configuration::service_ips['text'][$::site],
     }
 
     $fe_cache_be_opts = {

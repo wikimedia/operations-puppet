@@ -70,7 +70,7 @@ class salt::master(
         source => 'puppet:///modules/salt/wmfpuppet.py',
         mode   => '0755',
         owner  => 'root',
-        group  => 'root'
+        group  => 'root',
     }
 
     sysctl::parameters { 'salt-master':
@@ -78,7 +78,7 @@ class salt::master(
             'net.core.somaxconn'          => 4096,
             'net.core.netdev_max_backlog' => 4096,
             'net.ipv4.tcp_mem'            => '16777216 16777216 16777216',
-        }
+        },
     }
 
     # Reducing permissions on the master cache, by default is 0755

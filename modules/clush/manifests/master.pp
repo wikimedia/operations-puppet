@@ -59,7 +59,7 @@ class clush::master(
             # someone can MITM us here we are screwed
             # anyway.
             'ssh_options'     => "-i /root/.ssh/${username} -oStrictHostKeyChecking=no",
-        }
+        },
     }
 
     file { '/etc/clustershell/clush.conf':

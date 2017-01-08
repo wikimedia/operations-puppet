@@ -83,7 +83,7 @@ class ocg (
             'zip',
         ]:
         ensure => present,
-        before => Service['ocg']
+        before => Service['ocg'],
     }
 
 

@@ -7,7 +7,7 @@ class icinga::web {
 
     # Apparently required for the web interface
     package { 'icinga-doc':
-        ensure => present
+        ensure => present,
     }
     include ::apache
     include ::apache::mod::php5
@@ -46,7 +46,7 @@ class icinga::web {
         subjects   => 'icinga.wikimedia.org',
         puppet_svc => 'apache2',
         system_svc => 'apache2',
-        require    => Class['apache::mod::ssl']
+        require    => Class['apache::mod::ssl'],
     }
 
     apache::site { 'icinga.wikimedia.org':

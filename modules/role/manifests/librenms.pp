@@ -81,7 +81,7 @@ class role::librenms {
         require     => Package['librenms/librenms'],
     }
     class { '::librenms::syslog':
-        require => Class['::librenms']
+        require => Class['::librenms'],
     }
 
     class { '::librenms::web':

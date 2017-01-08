@@ -20,7 +20,7 @@ class etcd::auth::common($root_password, $active = true) {
             settings => {
                 username => 'root',
                 password => $root_password,
-            }
+            },
         }
     }
 }

@@ -15,7 +15,7 @@ class statistics::user {
         groups     => ['wikidev'],
         shell      => '/bin/bash',
         managehome => true,
-        system     => true
+        system     => true,
     }
 
     # lint:ignore:arrow_alignment

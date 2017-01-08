@@ -19,7 +19,7 @@ class role::requesttracker::labs {
     class { 'mysql::server':
         config_hash => {
             'datadir' => $datadir,
-        }
+        },
     }
 
     exec { 'rt-db-initialize':

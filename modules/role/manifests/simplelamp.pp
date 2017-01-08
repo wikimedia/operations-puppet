@@ -24,6 +24,6 @@ class role::simplelamp(
         config_hash => {
             'datadir'      => $mysql_datadir,
             'bind_address' => $bind_address,
-        }
+        },
     }
 }

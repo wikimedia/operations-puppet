@@ -32,7 +32,7 @@ class docker::registry(
                     'container' => $swift_container,
                 },
                 'cache' => {
-                    'blobdescriptor' => 'inmemory'
+                    'blobdescriptor' => 'inmemory',
                 },
             }
         }
@@ -69,6 +69,6 @@ class docker::registry(
         require => File[
             '/etc/docker',
             '/etc/docker/registry/config.yml'
-        ]
+        ],
     }
 }

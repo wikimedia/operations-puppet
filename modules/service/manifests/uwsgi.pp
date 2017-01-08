@@ -159,7 +159,7 @@ define service::uwsgi(
     uwsgi::app { $title:
         settings => {
             uwsgi => $complete_config,
-        }
+        },
     }
 
 

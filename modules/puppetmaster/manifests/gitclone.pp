@@ -156,14 +156,14 @@ class puppetmaster::gitclone(
                 owner   => $user,
                 group   => $group,
                 mode    => '0550',
-                require => File['/srv/private']
+                require => File['/srv/private'],
             }
             file { '/srv/private/.git/config':
                 source  => 'puppet:///modules/puppetmaster/git/private/gitconfig-master',
                 owner   => $user,
                 group   => $group,
                 mode    => '0550',
-                require => File['/srv/private']
+                require => File['/srv/private'],
             }
         } else {
             puppetmaster::gitprivate { '/srv/private':
@@ -179,7 +179,7 @@ class puppetmaster::gitclone(
                 owner   => $user,
                 group   => $group,
                 mode    => '0550',
-                require => Puppetmaster::Gitprivate['/srv/private']
+                require => Puppetmaster::Gitprivate['/srv/private'],
             }
         }
 

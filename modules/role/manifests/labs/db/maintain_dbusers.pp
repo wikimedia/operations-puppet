@@ -35,7 +35,7 @@ class role::labs::db::maintain_dbusers {
         'ldap' => {
             'hosts'    => [
                 'ldap-labs.eqiad.wikimedia.org',
-                'ldap-labs.codfw.wikimedia.org'
+                'ldap-labs.codfw.wikimedia.org',
             ],
             'username' => 'cn=proxyagent,ou=profile,dc=wikimedia,dc=org',
             'password' => $ldapconfig['proxypass'],
@@ -59,7 +59,7 @@ class role::labs::db::maintain_dbusers {
                 },
                 'labsdb1011.eqiad.wmnet' => {
                     'grant-type' => 'role',
-                }
+                },
             },
             'username' => $::passwords::mysql::labsdb::user,
             'password' => $::passwords::mysql::labsdb::password,

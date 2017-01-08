@@ -1,6 +1,6 @@
 class role::mail::mx(
     $verp_domains = [
-        'wikimedia.org'
+        'wikimedia.org',
     ],
     $verp_post_connect_server = 'meta.wikimedia.org',
     $verp_bounce_post_url = "api.svc.${::mw_primary}.wmnet/w/api.php",

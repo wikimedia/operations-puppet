@@ -9,7 +9,7 @@ class varnish::packages($version='installed') {
 
     # Install VMODs on Varnish 4 instances
     package { 'libvmod-header':
-        ensure => 'absent'
+        ensure => 'absent',
     }
     package { [
         'varnish-modules',

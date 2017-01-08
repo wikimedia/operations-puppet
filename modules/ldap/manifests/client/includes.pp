@@ -8,7 +8,7 @@ class ldap::client::includes($ldapincludes, $ldapconfig) {
 
     if 'pam' in $ldapincludes {
         class { 'ldap::client::pam':
-            ldapconfig => $ldapconfig
+            ldapconfig => $ldapconfig,
         }
     } else {
         # The ldap nss package recommends this package
@@ -21,19 +21,19 @@ class ldap::client::includes($ldapincludes, $ldapconfig) {
 
     if 'nss' in $ldapincludes {
         class { 'ldap::client::nss':
-            ldapconfig => $ldapconfig
+            ldapconfig => $ldapconfig,
         }
     }
 
     if 'sudo' in $ldapincludes {
         class { 'ldap::client::sudo':
-            ldapconfig => $ldapconfig
+            ldapconfig => $ldapconfig,
         }
     }
 
     if 'utils' in $ldapincludes {
         class { 'ldap::client::utils':
-            ldapconfig => $ldapconfig
+            ldapconfig => $ldapconfig,
         }
     }
 

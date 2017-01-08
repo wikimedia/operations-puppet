@@ -17,7 +17,7 @@ class role::labs::graphite {
         target  => '/srv/carbon',
         owner   => '_graphite',
         group   => '_graphite',
-        require => Class['role::graphite::base']
+        require => Class['role::graphite::base'],
     }
 
     include role::statsite

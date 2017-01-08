@@ -156,7 +156,7 @@ class phabricator (
         sudo_rules  => [
             'ALL=(root) NOPASSWD: /usr/sbin/service phd *',
             'ALL=(root) NOPASSWD: /usr/sbin/service apache2 *',
-        ]
+        ],
     }
 
     file { $phabdir:

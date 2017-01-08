@@ -25,7 +25,7 @@ class role::mirrors {
 
     ferm::service { 'mirrors_http':
         proto => 'tcp',
-        port  => '(http https)'
+        port  => '(http https)',
     }
     ferm::service { 'mirrors_rsync':
         proto => 'tcp',

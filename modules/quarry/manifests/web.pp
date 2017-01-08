@@ -20,12 +20,12 @@ class quarry::web {
                 'master'    => true,
                 'processes' => 8,
                 'chdir'     => $clone_path,
-            }
-        }
+            },
+        },
     }
 
     nginx::site { 'quarry-web-nginx':
         require => Uwsgi::App['quarry-web'],
-        content => template('quarry/quarry-web.nginx.erb')
+        content => template('quarry/quarry-web.nginx.erb'),
     }
 }

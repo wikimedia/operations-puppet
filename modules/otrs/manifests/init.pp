@@ -144,7 +144,7 @@ class otrs(
             enable     => true,
             hasstatus  => true,
             hasrestart => false,
-        }
+        },
     }
     # lint:endignore
 }

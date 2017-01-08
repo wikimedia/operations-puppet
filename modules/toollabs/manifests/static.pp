@@ -15,7 +15,7 @@ class toollabs::static(
 
     labs_lvm::volume { 'cdnjs-disk':
         mountat => '/srv',
-        size    => '100%FREE'
+        size    => '100%FREE',
     }
 
     # This is a 11Gig pure content repository with no executable code

@@ -12,7 +12,7 @@ class role::maps::server {
         instances => {
             'default' => {
                 'listen_address' => $::cassandra::listen_address,
-            }
+            },
         },
     }
 

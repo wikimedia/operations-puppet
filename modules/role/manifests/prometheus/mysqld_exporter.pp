@@ -13,7 +13,7 @@ class role::prometheus::mysqld_exporter {
 -collect.info_schema.processlist.min_time 0 \
 -collect.slave_status \
 -collect.info_schema.tables false \
-"
+",
     }
 
     $prometheus_nodes = hiera('prometheus_nodes')

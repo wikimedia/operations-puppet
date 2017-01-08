@@ -127,7 +127,7 @@ class toollabs::dev_environ {
 
     file { [
         '/usr/local/bin/webservice2',
-        '/usr/local/bin/webservice'
+        '/usr/local/bin/webservice',
     ]:
         ensure => link,
         target => '/usr/bin/webservice',

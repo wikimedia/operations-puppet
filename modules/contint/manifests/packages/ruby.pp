@@ -18,7 +18,7 @@ class contint::packages::ruby {
             # Ruby gems is provided within ruby since Trusty
             'rubygems',
         ]:
-            ensure => present
+            ensure => present,
         }
         # Ubuntu Precise version is too old.  Instead use either:
         # /srv/deployment/integration/slave-scripts/tools/bundler/bundle
@@ -29,7 +29,7 @@ class contint::packages::ruby {
         package { [
             'ruby-bundler',
         ]:
-            ensure => absent
+            ensure => absent,
         }
     }
     if os_version('ubuntu >= trusty') {

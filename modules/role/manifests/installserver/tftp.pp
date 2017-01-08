@@ -28,7 +28,7 @@ class role::installserver::tftp {
     include install_server::tftp_server
 
     ferm::rule { 'tftp':
-        rule => 'proto udp dport tftp { saddr $PRODUCTION_NETWORKS ACCEPT; }'
+        rule => 'proto udp dport tftp { saddr $PRODUCTION_NETWORKS ACCEPT; }',
     }
 
     backup::set { 'srv-tftpboot': }

@@ -19,7 +19,7 @@ class role::performance::site {
         owner     => 'www-data',
         group     => 'www-data',
         directory => '/srv/org/wikimedia/performance',
-        notify    => Service['apache2']
+        notify    => Service['apache2'],
     }
 
     apache::site { 'performance.wikimedia.org':

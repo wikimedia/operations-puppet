@@ -1,6 +1,6 @@
 class role::pybaltest {
     system::role { 'pybaltest':
-        description => 'pybal testing/development'
+        description => 'pybal testing/development',
     }
 
     include base::firewall

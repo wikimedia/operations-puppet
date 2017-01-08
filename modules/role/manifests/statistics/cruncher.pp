@@ -1,7 +1,7 @@
 # (stat1003)
 class role::statistics::cruncher inherits role::statistics::base {
     system::role { 'role::statistics::cruncher':
-        description => 'Statistics general compute node (non private data)'
+        description => 'Statistics general compute node (non private data)',
     }
 
     include standard

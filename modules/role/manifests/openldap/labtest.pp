@@ -9,7 +9,7 @@ class role::openldap::labtest {
     $ldap_labs_hostname = $ldapconfig['hostname']
 
     system::role { 'role::openldap::labtest':
-        description => 'LDAP servers for labs test cluster (based on OpenLDAP)'
+        description => 'LDAP servers for labs test cluster (based on OpenLDAP)',
     }
 
     # Certificate needs to be readable by slapd

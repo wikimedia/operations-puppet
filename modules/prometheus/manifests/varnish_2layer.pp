@@ -11,7 +11,7 @@ define prometheus::varnish_2layer(
         cluster => "cache_${cache_name}",
         port    => '9131',
         labels  => {
-          'layer' => 'backend'
+          'layer' => 'backend',
         },
     }
 
@@ -21,7 +21,7 @@ define prometheus::varnish_2layer(
         cluster => "cache_${cache_name}",
         port    => '9331',
         labels  => {
-          'layer' => 'frontend'
+          'layer' => 'frontend',
         },
     }
 }

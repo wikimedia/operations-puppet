@@ -8,7 +8,7 @@ class quarry::querykiller {
     file { '/var/log/quarry':
         ensure => directory,
         owner  => 'quarry',
-        group  => 'quarry'
+        group  => 'quarry',
     }
 
     cron { 'query-killer':

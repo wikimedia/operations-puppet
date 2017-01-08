@@ -16,11 +16,11 @@ class tendril::maintenance (
 
     # We want to control if cron is running, not if the scripts are installed.
     Cron {
-        ensure => $ensure
+        ensure => $ensure,
     }
 
     File {
-        ensure => present
+        ensure => present,
     }
 
     $watchdog_user = $wd_user ? {
@@ -99,7 +99,7 @@ class tendril::maintenance (
             File['/usr/local/bin/tendril-cron-5m.pl'],
             File['/var/log/tendril-cron-5m.log'],
             File['/var/log/tendril-cron-5m.err'],
-        ]
+        ],
     }
 
     cron { 'tendril-queries':
@@ -111,6 +111,6 @@ class tendril::maintenance (
             File['/var/log/tendril-queries.log'],
             File['/var/log/tendril-queries.err'],
             File['/etc/mysql/tendril.cnf'],
-        ]
+        ],
     }
 }

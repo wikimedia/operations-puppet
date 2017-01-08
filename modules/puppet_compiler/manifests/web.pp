@@ -11,6 +11,6 @@ class puppet_compiler::web($ensure='present') {
         line    => "    text/plain                            txt pson err diff;",
         match   => '\s+text/plain\s+txt',
         require => Nginx::Site['puppet-compiler'],
-        notify  => Service['nginx']
+        notify  => Service['nginx'],
     }
 }

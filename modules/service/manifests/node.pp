@@ -192,7 +192,7 @@ define service::node(
         default: {
             if ! defined(Service::Deploy::Trebuchet[$repo]) {
                 service::deploy::trebuchet{ $repo:
-                    before => Base::Service_unit[$title]
+                    before => Base::Service_unit[$title],
                 }
             }
         }
@@ -276,7 +276,7 @@ define service::node(
             command => "/bin/chown ${chown_user} ${chown_target}",
             # perform the chown only if root is the effective owner
             onlyif  => "/usr/bin/test -O ${chown_target}",
-            require => [User[$deployment_user], Group[$deployment_user]]
+            require => [User[$deployment_user], Group[$deployment_user]],
         }
         file { "/etc/${title}/config-vars.yaml":
             ensure  => present,
@@ -361,7 +361,7 @@ define service::node(
             content => template('service/node/tail-log.erb'),
             owner   => 'root',
             group   => 'root',
-            mode    => '0755'
+            mode    => '0755',
         }
         # we first placed tail-${title} in /usr/bin, so make sure
         # it's not there any more

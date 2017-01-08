@@ -845,7 +845,7 @@ class role::mariadb::labs {
         values => {
             'kernel/mm/transparent_hugepage/enabled' => 'never',
             'kernel/mm/transparent_hugepage/defrag'  => 'never',
-        }
+        },
     }
 }
 

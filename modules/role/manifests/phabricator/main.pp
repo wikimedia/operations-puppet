@@ -2,7 +2,7 @@
 class role::phabricator::main {
 
     system::role { 'role::phabricator::main':
-        description => 'Phabricator (Main)'
+        description => 'Phabricator (Main)',
     }
 
     mailalias { 'root':
@@ -80,7 +80,7 @@ class role::phabricator::main {
             'phab_settings'     => {
                 'mysql.user'        => $app_user,
                 'mysql.pass'        => $app_pass,
-            }
+            },
         },
         'phd' => {
             'environment'       => 'phd',
@@ -89,7 +89,7 @@ class role::phabricator::main {
             'phab_settings'     => {
                 'mysql.user'        => $daemons_user,
                 'mysql.pass'        => $daemons_pass,
-            }
+            },
         },
         'vcs' => {
             'environment'       => 'vcs',
@@ -98,7 +98,7 @@ class role::phabricator::main {
             'phab_settings'     => {
                 'mysql.user'        => $daemons_user,
                 'mysql.pass'        => $daemons_pass,
-            }
+            },
         },
         'mail' => {
             'environment'       => 'mail',
@@ -107,7 +107,7 @@ class role::phabricator::main {
             'phab_settings'     => {
                 'mysql.user'        => $mail_user,
                 'mysql.pass'        => $mail_pass,
-            }
+            },
         },
     }
 
@@ -198,7 +198,7 @@ class role::phabricator::main {
         phabtools_user  => $passwords::phabricator::phabtools_user,
         gerritbot_token => $passwords::phabricator::gerritbot_token,
         dump            => $dump_enabled,
-        require         => Package[$deploy_target]
+        require         => Package[$deploy_target],
     }
 
     cron { 'phab_dump':

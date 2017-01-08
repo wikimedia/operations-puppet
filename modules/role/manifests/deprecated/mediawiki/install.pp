@@ -9,6 +9,6 @@ class role::deprecated::mediawiki::install {
     include ::memcached
 
     class { 'mediawiki_singlenode':
-        ensure => present
+        ensure => present,
     }
 }

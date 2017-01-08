@@ -69,7 +69,7 @@ class mysql::server (
         require     => [File['/etc/apparmor.d/usr.sbin.mysqld']],
         tries       => 2,
         refreshonly => true,
-        subscribe   => File['/etc/mysql/my.cnf']
+        subscribe   => File['/etc/mysql/my.cnf'],
       }
   }
 }

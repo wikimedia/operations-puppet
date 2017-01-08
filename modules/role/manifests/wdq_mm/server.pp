@@ -16,6 +16,6 @@ class role::wdq_mm::server {
         require => [
             Class['::labs_debrepo'],
             Labs_lvm::Volume['instance-storage'],
-        ]
+        ],
     }
 }

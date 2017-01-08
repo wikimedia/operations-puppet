@@ -34,7 +34,7 @@ class mediawiki::maintenance::cirrussearch( $ensure = present ) {
         ensure => ensure_directory($ensure),
         owner  => $::mediawiki::users::web,
         group  => $::mediawiki::users::web,
-        mode   => '0775'
+        mode   => '0775',
     }
 
     logrotate::conf { 'cirrus-suggest':
@@ -46,7 +46,7 @@ class mediawiki::maintenance::cirrussearch( $ensure = present ) {
         ensure => ensure_directory($ensure),
         owner  => $::mediawiki::users::web,
         group  => $::mediawiki::users::web,
-        mode   => '0775'
+        mode   => '0775',
     }
 
     logrotate::conf { 'cirrus-sanitize':

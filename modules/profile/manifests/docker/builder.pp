@@ -18,7 +18,7 @@ class profile::docker::builder(
     ) {
 
     system::role { 'role::docker::builder':
-        description => 'Docker images builder'
+        description => 'Docker images builder',
     }
 
     class { 'docker::baseimages':

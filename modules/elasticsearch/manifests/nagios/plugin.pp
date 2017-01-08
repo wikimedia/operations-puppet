@@ -8,7 +8,7 @@ class elasticsearch::nagios::plugin {
       owner  => 'root',
       group  => 'root',
       mode   => '0755',
-      tag    => 'nagiosplugin'
+      tag    => 'nagiosplugin',
     }
 
     # new version, can do more fine-grained checks
@@ -17,7 +17,7 @@ class elasticsearch::nagios::plugin {
       owner  => 'root',
       group  => 'root',
       mode   => '0755',
-      tag    => 'nagiosplugin'
+      tag    => 'nagiosplugin',
     }
 
     package { 'python-requests':

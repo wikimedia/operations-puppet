@@ -2,7 +2,7 @@
 
 class role::mathoid{
     system::role { 'role::mathoid':
-        description => 'mathoid server'
+        description => 'mathoid server',
     }
 
     include ::mathoid

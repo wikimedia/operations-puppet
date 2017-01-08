@@ -81,7 +81,7 @@ class scap::l10nupdate(
             # Allow l10nupdate user to run anything as the unprivledged web
             # user. Needed for mwscript actions and related operations.
             "ALL = (${::mediawiki::users::web}) NOPASSWD: ALL",
-        ]
+        ],
     }
 
     # T119746: make git fetch happy by setting up git identity
@@ -118,7 +118,7 @@ class scap::l10nupdate(
 
     logrotate::conf { 'l10nupdate':
         ensure => present,
-        source => 'puppet:///modules/scap/l10nupdate.logrotate'
+        source => 'puppet:///modules/scap/l10nupdate.logrotate',
     }
 
     # Git clones for the l10update git job

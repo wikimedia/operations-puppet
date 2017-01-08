@@ -47,7 +47,7 @@ class role::osm::master(
     # Import planet.osm
     osm::planet_import { 'gis':
         input_pbf_file => '/srv/labsdb/planet-latest-osm.pbf',
-        require        => Postgresql::Spatialdb['gis']
+        require        => Postgresql::Spatialdb['gis'],
     }
     osm::planet_sync { 'gis':
         pg_password => hiera('osm::postgresql_osmupdater_pass'),
@@ -60,14 +60,14 @@ class role::osm::master(
         database         => 'gis',
         input_shape_file => '/srv/labsdb/coastlines-split-4326/lines',
         shape_table      => 'coastlines',
-        require          => Postgresql::Spatialdb['gis']
+        require          => Postgresql::Spatialdb['gis'],
     }
     # Add split land polygons
     osm::shapefile_import { 'gis-land_polygons':
         database         => 'gis',
         input_shape_file => '/srv/labsdb/land-polygons-split-4326/land_polygons',
         shape_table      => 'land_polygons',
-        require          => Postgresql::Spatialdb['gis']
+        require          => Postgresql::Spatialdb['gis'],
     }
 
     if $osm_slave_v4 {

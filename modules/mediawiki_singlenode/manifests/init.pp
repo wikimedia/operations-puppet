@@ -28,7 +28,7 @@ class mediawiki_singlenode(
     class { '::mysql::server':
         config_hash => {
             datadir => '/mnt/mysql',
-        }
+        },
     }
 
     require_package('php5-mysql')
@@ -81,7 +81,7 @@ class mediawiki_singlenode(
     exec { 'password_gen':
         require => [ Git::Clone['mediawiki'],  File["${install_path}/orig"] ],
         creates => "${install_path}/orig/adminpass",
-        command => "/usr/bin/openssl rand -base64 32 | tr -dc _A-Z-a-z-0-9 > ${install_path}/orig/adminpass"
+        command => "/usr/bin/openssl rand -base64 32 | tr -dc _A-Z-a-z-0-9 > ${install_path}/orig/adminpass",
     }
 
     exec { 'mediawiki_setup':

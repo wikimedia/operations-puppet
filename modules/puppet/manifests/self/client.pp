@@ -7,7 +7,7 @@
 #
 class puppet::self::client($server) {
     system::role { 'puppetclient':
-        description => "Puppet client of ${server}"
+        description => "Puppet client of ${server}",
     }
 
     # Most of the defaults in puppet::self::config
