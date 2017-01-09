@@ -31,8 +31,7 @@ class role::lists::server {
     letsencrypt::cert::integrated { 'lists':
         subjects   => 'lists.wikimedia.org',
         puppet_svc => 'apache2',
-        system_svc => 'apache2',
-        require    => Class['apache::mod::ssl']
+        system_svc => 'apache2'
     }
 
     include mailman
