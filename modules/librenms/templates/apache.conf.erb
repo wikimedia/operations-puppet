@@ -16,7 +16,7 @@
     SSLEngine on
     SSLCertificateFile /etc/acme/cert/librenms.crt
     SSLCertificateChainFile /etc/acme/cert/librenms.chain.crt
-    SSLCertificateKeyFile /etc/acme/certlibrenms.key
+    SSLCertificateKeyFile /etc/acme/cert/librenms.key
     <%= @ssl_settings.join("\n") %>
 
     DocumentRoot <%= @install_dir %>/html
