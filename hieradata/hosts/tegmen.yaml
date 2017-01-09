@@ -5,7 +5,9 @@ base::resolving::domain_search:
   - esams.wmnet
   - ulsfo.wmnet
 # Note that our paging infrastructure (AQL as of 20161101) may need an update of it's sender whitelist
+# tegmen is the backup icinga server. All these flags need to be converted accordingly for it to assume the identity of the primary
 icinga::enable_notifications: 0
 icinga::enable_event_handlers: 0
 icinga::ircbot::ensure: absent
 role::tcpircbot::ensure: absent
+do_acme: false
