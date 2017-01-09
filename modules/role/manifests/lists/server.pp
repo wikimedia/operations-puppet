@@ -28,8 +28,12 @@ class role::lists::server {
     $outbound_ips = hiera_array('mailman::server_ip')
     $list_outbound_ips = hiera_array('mailman::lists_ip')
 
-    sslcert::certificate { 'lists.wikimedia.org':
+    letsencrypt::cert::integrated { 'lists':
+        subjects   => 'lists.wikimedia.org',
+        puppet_svc => 'apache2',
+        system_svc => 'apache2',
         group => 'Debian-exim',
+        require    => Class['apache::mod::ssl']
     }
 
     include mailman
