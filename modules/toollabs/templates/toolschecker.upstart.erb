@@ -1,5 +1,5 @@
 # This file is managed by Puppet
-description "toolchecker UWSGI application"
+description "toolchecker UWSGI application - check <%= @check_name %>"
 
 start on (filesystem and net-device-up IFACE!=lo)
 stop on runlevel [!2345]
@@ -17,7 +17,7 @@ exec /usr/bin/uwsgi --plugin=python \
                     --harakiri-verbose \
                     --wsgi-file=/usr/local/lib/python2.7/dist-packages/toolschecker.py \
                     --callable=app \
-                    --socket=/run/toolschecker/toolschecker.sock \
+                    --socket=/run/toolschecker/toolschecker_<%= @check_name %>.sock \
                     --chmod-socket=664 \
                     --die-on-term
 
