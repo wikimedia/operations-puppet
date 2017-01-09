@@ -1,8 +1,10 @@
 <VirtualHost *:80>
     ServerName librenms.wikimedia.org
     ServerAdmin noc@wikimedia.org
-
-    Redirect permanent / https://<%= @sitename %>
+    Include /etc/acme/challenge-apache.conf
+    RewriteEngine on
+    RewriteCond %{REQUEST_URI} !^/\.well-known/acme-challenge/
+    RewriteRule ^/(.*)$ https://<%= @site_name %>/$1 [L,R=301]
 </VirtualHost>
 
 <VirtualHost *:443>
@@ -12,9 +14,9 @@
     RequestHeader unset Proxy early
 
     SSLEngine on
-    SSLCertificateFile /etc/ssl/localcerts/<%= @sitename %>.crt
-    SSLCertificateChainFile /etc/ssl/localcerts/<%= @sitename %>.chain.crt
-    SSLCertificateKeyFile /etc/ssl/private/<%= @sitename %>.key
+    SSLCertificateFile /etc/acme/cert/<%= @sitename %>.crt
+    SSLCertificateChainFile /etc/acme/cert/<%= @sitename %>.chain.crt
+    SSLCertificateKeyFile /etc/acme/cert/<%= @sitename %>.key
     <%= @ssl_settings.join("\n") %>
 
     DocumentRoot <%= @install_dir %>/html
