@@ -13,7 +13,12 @@ class librenms::web(
         content => template('librenms/apache.conf.erb'),
     }
 
-    sslcert::certificate { $sitename: }
+    letsencrypt::cert::integrated { 'librenms':
+        subjects   => 'librenms.wikimedia.org',
+        puppet_svc => 'apache2',
+        system_svc => 'apache2',
+        require    => Class['apache::mod::ssl']
+    }
 
     monitoring::service { 'https':
         description   => 'HTTPS',
