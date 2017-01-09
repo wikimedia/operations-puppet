@@ -55,6 +55,13 @@ class toollabs::checker inherits toollabs {
         mode   => '0755',
     }
 
+    file { '/etc/init/toolschecker':
+        ensure => directory,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0644',
+    }
+
     # We need this host's puppet cert and key (readable) so we can check
     #  puppet status
     file { '/var/lib/toolschecker/puppetcerts/cert.pem':
@@ -73,15 +80,6 @@ class toollabs::checker inherits toollabs {
         source => "/var/lib/puppet/ssl/private_keys/${::fqdn}.pem",
     }
 
-    file { '/etc/init/toolschecker.conf':
-        ensure  => present,
-        content => template('toollabs/toolschecker.upstart.erb'),
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0644',
-        notify  => Service['toolschecker'],
-    }
-
     sudo::user { 'tools.toolschecker':
         privileges => [
             'ALL=(tools.toolschecker-k8s-ws) NOPASSWD: ALL',
@@ -89,14 +87,91 @@ class toollabs::checker inherits toollabs {
         ],
     }
 
-    service { 'toolschecker':
-        ensure  => running,
-        require => File['/run/toolschecker'],
+    $checks = {
+        'self'                   => {
+            path                 => '/self'
+        },
+        'puppet_catalog'         => {
+            path                 => '/labs-puppetmaster/eqiad',
+        },
+        'labs_private'           => {
+            path                 => '/labs-dns/private',
+        },
+        'nfs_showmount'          => {
+            path                 => '/nfs/showmount',
+        },
+        'ldap'                   => {
+            path                 => '/ldap',
+        },
+        'nfs_home'               => {
+            path                 => '/nfs/home',
+        },
+        'redis'                  => {
+            path                 => '/redis',
+        },
+        'labsdb_labsdb1001'      => {
+            path                 => '/labsdb/labsdb1001',
+        },
+        'labsdb_labsdb1003'      => {
+            path                 => '/labsdb/labsdb1003',
+        },
+        'labsdb_labsdb1005'      => {
+            path                 => '/labsdb/labsdb1005',
+        },
+        'labsdb_labsdb1001rw'    => {
+            path                 => '/labsdb/labsdb1001rw',
+        },
+        'labsdb_labsdb1003rw'    => {
+            path                 => '/labsdb/labsdb1003rw',
+        },
+        'labsdb_labsdb1004rw'    => {
+            path                 => '/labsdb/labsdb1004rw',
+        },
+        'toolsdb'                => {
+            path                 => '/toolsdb',
+        },
+        'dumps'                  => {
+            path                 => '/dumps',
+        },
+        'continuous_job_trusty'  => {
+            path                 => '/continuous/trusty',
+        },
+        'continuous_job_precise' => {
+            path                 => '/continuous/precise',
+        },
+        'grid_start_trusty'      => {
+            path                 => '/grid/start/trusty',
+        },
+        'grid_start_precise'     => {
+            path                 => '/grid/start/precise',
+        },
+        'cron'                   => {
+            path                 => '/toolscron',
+        },
+        'flannel_etcd'           => {
+            path                 => '/etcd/flannel',
+        },
+        'kubernetes_etcd'        => {
+            path                 => '/k8s/flannel',
+        },
+        'kubernetes_nodes_ready' => {
+            path                 => '/k8s/nodes/ready',
+        },
+        'webservice_kubernetes'  => {
+            path                 => '/webservice/kubernetes',
+        },
+        'service_start'          => {
+            path                 => '/service/start',
+        },
     }
 
+    create_resources(toollabs::check, $checks)
 
     nginx::site { 'toolschecker-nginx':
         require => Service['toolschecker'],
         content => template('toollabs/toolschecker.nginx.erb'),
     }
+
+    File['/run/toolschecker'] -> Toollabs::Check[keys($checks)] -> Nginx::Site['toolschecker-nginx']
+
 }
