@@ -30,6 +30,11 @@ require 'puppet-lint/tasks/puppet-lint'
 require 'puppet-strings/tasks/generate'
 require 'rubocop/rake_task'
 
+# For puppet parser validate
+require 'puppet/face/parser'
+require 'puppet/util/log'
+require 'puppet/pops'
+
 # Find files modified in HEAD
 def git_changed_in_head(file_exts=[])
     g = Git.open('.')
@@ -42,6 +47,26 @@ def git_changed_in_head(file_exts=[])
         files.select { |fname| fname.end_with?(*file_exts) }
     end
 end
+
+task :validate_head do
+    err = 0
+    Puppet::Util::Log.newdestination(:console)
+    d = Puppet::Face.define(:parser, :current)
+
+    (git_changed_in_head ['.pp']).each do |f|
+        p "#{f}"
+        res = d.dump_parse(
+            File.read(f),
+            f, # filename
+            { :validate => true },  # options
+            true  # show_filename
+        )
+        err += 1 if res == ""
+    end
+    fail if err > 0
+end
+
+
 
 RuboCop::RakeTask.new(:rubocop)
 
@@ -57,25 +82,6 @@ PuppetLint::RakeTask.new :puppetlint_head do |config|
     config.pattern = git_changed_in_head ['.pp']
 end
 
-# Only care about color when using a tty.
-if Rake.application.tty_output?
-    # Since we are going to use puppet internal stuff, we might as
-    # well attempt to reuse their colorization utility. Note the utility class
-    # is not available in older puppet versions.
-    begin
-        require'puppet/util/colors'
-        include Puppet::Util::Colors
-    rescue LoadError
-        puts "Cant load puppet/util/colors .. no color for you!"
-    end
-end
-
-unless respond_to? :console_color
-    # Define our own colorization method that simply outputs the message.
-    def console_color(_level, message)
-        message
-    end
-end
 
 task :default => [:help]
 
@@ -128,38 +134,6 @@ task :doc do
         'false', # backtrace
         'rdoc',  # markup format
     )
-end
-
-desc "Validate puppet syntax (default: manifests/site.pp)"
-task :validate, [:files ] do |_t, args|
-
-    success = true
-
-    if args.files
-        puts console_color(:info, "Validating " + args.files.inspect)
-        ok = puppet_parser_validate args.files
-    else
-        ok = puppet_parser_validate 'manifests/site.pp'
-        success &&= ok
-
-        Dir.glob("modules/*").each do |dir|
-            puts console_color(:info, "Validating manifests in '#{dir}'")
-            ok = puppet_parser_validate Dir.glob("#{dir}/**/*.pp")
-            success &&= ok
-        end
-    end
-
-    if success
-        puts "[OK] " + console_color(:info,  "files looks fine!")
-    else
-        raise console_color(:alert, "puppet failed to validate files (exit: #{res.exitstatus}")
-    end
-end
-
-# Validate manifests passed as an array of filenames.
-def puppet_parser_validate(*manifests)
-    manifests = manifests.join(' ')
-    sh "puppet parser validate #{manifests}"
 end
 
 desc "Run spec tests found in modules"
