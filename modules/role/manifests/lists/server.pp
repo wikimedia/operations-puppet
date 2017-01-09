@@ -32,7 +32,6 @@ class role::lists::server {
         subjects   => 'lists.wikimedia.org',
         puppet_svc => 'apache2',
         system_svc => 'apache2',
-        group      => 'Debian-exim',
         require    => Class['apache::mod::ssl']
     }
 
