@@ -15,9 +15,9 @@
     # https://httpoxy.org/
     RequestHeader unset Proxy early
     SSLEngine On
-    SSLCertificateFile /etc/ssl/localcerts/lists.wikimedia.org.crt
-    SSLCertificateChainFile /etc/ssl/localcerts/lists.wikimedia.org.chain.crt
-    SSLCertificateKeyFile /etc/ssl/private/lists.wikimedia.org.key
+    SSLCertificateFile /etc/acme/cert/lists.crt
+    SSLCertificateChainFile /etc/acme/cert/lists.chain.crt
+    SSLCertificateKeyFile /etc/acme/key/lists.key
     <%= @ssl_settings.join("\n") %>
 
     # Does not obey robots.txt; causing operational issues, 2014-06-23
