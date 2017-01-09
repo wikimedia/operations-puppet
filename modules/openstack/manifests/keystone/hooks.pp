@@ -8,7 +8,7 @@ class openstack::keystone::hooks(
         owner   => 'root',
         group   => 'root',
         mode    => '0644',
-        notify  => service['keystone'],
+        notify  => Service['keystone'],
         recurse => true
     }
     file { '/usr/lib/python2.7/dist-packages/wmfkeystonehooks.egg-info':
@@ -16,7 +16,7 @@ class openstack::keystone::hooks(
         owner   => 'root',
         group   => 'root',
         mode    => '0644',
-        notify  => service['keystone'],
+        notify  => Service['keystone'],
         recurse => true
     }
 }
