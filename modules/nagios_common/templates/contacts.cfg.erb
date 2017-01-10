@@ -3,9 +3,9 @@
 #
 
 <%- @contacts.each do |contact| -%>
-<%- period = contact.include? 'period' ? contact['period'] : '24x7' -%>
-<%- email = contact.include? 'email' ? contact['email'] : 'nowhere' -%>
-<%- commands = contact.include? 'commands' ? contact['commands']: ['by-email'] -%>
+<%- period = (contact.include? 'period') ? contact['period'] : '24x7' -%>
+<%- email = (contact.include? 'email') ? contact['email'] : 'nowhere' -%>
+<%- commands = (contact.include? 'commands') ? contact['commands']: ['by-email'] -%>
 define contact{
         contact_name                    <%= contact['name'] %>
         alias                           <%= contact['alias'] %>
