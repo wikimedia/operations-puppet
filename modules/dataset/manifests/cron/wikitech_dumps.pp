@@ -24,7 +24,7 @@ class dataset::cron::wikitech_dumps(
 
     $wget = '/usr/bin/wget'
     # don't get anything with query params
-    $wgetreject = "--reject-regex '(.*)\?(.*)'"
+    $wgetreject = "--reject-regex '(.*)\\?(.*)'"
     $wgetargs = "-nv -e robots=off -k -nH --wait 30 -np -m ${url} -P ${wikitechdir}"
     # filter out any whines about missing timestamp for index.html
     # as well url download announcements and summary, we only care about anything else
