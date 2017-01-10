@@ -43,7 +43,7 @@ class ganglia::views::dns {
             'metric_regex' => '^gdnsd_stats_edns_clientsub$',
             'type'         => 'stack',
             },
-        ]
+        ],
     }
 
     ganglia::web::view { 'recursive_dns':
@@ -92,7 +92,7 @@ class ganglia::views::dns {
             'metric_regex' => '^pdns_nxdomain-asnwers$',
             'type'         => 'stack',
             },
-        ]
+        ],
     }
 }
 

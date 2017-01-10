@@ -2,6 +2,6 @@
 define ganglia::monitor::aggregator::site_instances() {
     $cluster_list = suffix(keys($ganglia::configuration::clusters), "_${title}")
     instance { $cluster_list:
-        monitored_site => $title
+        monitored_site => $title,
     }
 }

@@ -63,12 +63,12 @@ class ganglia::web(
         line   => 'memory_limit = 768M',
         match  => '^memory_limit\s*=',
         path   => '/etc/php5/apache2/php.ini',
-        notify => Class['::apache']
+        notify => Class['::apache'],
     }
     file_line { 'php.ini-opcache':
         line   => 'opcache.enable=1',
         path   => '/etc/php5/apache2/php.ini',
-        notify => Class['::apache']
+        notify => Class['::apache'],
     }
 
     # clean up after ganglia T97637

@@ -7,7 +7,7 @@ class planet::dirs {
         '/usr/share/planet-venus/wikimedia',
         '/usr/share/planet-venus/theme/wikimedia',
         '/usr/share/planet-venus/theme/common',
-        '/var/cache/planet'
+        '/var/cache/planet',
         ]:
         ensure => 'directory',
         owner  => 'planet',
