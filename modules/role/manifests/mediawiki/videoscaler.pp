@@ -1,6 +1,7 @@
 class role::mediawiki::videoscaler {
     system::role { 'role::mediawiki::videoscaler': }
 
+    include ::role::mediawiki::common
     include ::role::mediawiki::scaler
     include ::role::prometheus::apache_exporter
     include ::role::prometheus::hhvm_exporter
