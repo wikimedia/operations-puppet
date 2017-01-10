@@ -22,13 +22,6 @@
 #   The group which should own the check config files.
 #   Defaults to 'icinga'
 #
-# [*contacts*]
-#   The list of contacts to include in the configuration.
-#
-# [*content*]
-#   Allows to input the data as a content string.  The default is
-#   template('nagios_common/contacts.cfg.erb')
-#
 class nagios_common::contactgroups(
     $source,
     $ensure = present,
