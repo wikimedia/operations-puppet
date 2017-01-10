@@ -44,7 +44,7 @@ class role::kafka::main::mirror {
         destination_brokers       => split($destination_config['brokers']['string'], ','),
         # Only mirror topics from the source that are prefixed with
         # $source_site[\._].
-        whitelist                 => "^${source_site}[\._].+",
+        whitelist                 => "^${source_site}[\\._].+",
         jmx_port                  => 9997,
         num_streams               => 2,
         offset_commit_interval_ms => 5000,
