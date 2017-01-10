@@ -39,12 +39,13 @@ class role::kafka::main::mirror {
     # The local site's Kafka cluster will be the destination cluster.
     $destination_config = kafka_config('main')
 
+    $whitelist_tail = '[\.].+'
     ::confluent::kafka::mirror::instance { "main-${source_site}_to_main-${::site}":
         source_zookeeper_url      => $source_config['zookeeper']['url'],
         destination_brokers       => split($destination_config['brokers']['string'], ','),
         # Only mirror topics from the source that are prefixed with
         # $source_site[\._].
-        whitelist                 => "^${source_site}[\._].+",
+        whitelist                 => "^${source_site}${whitelist_tail}",
         jmx_port                  => 9997,
         num_streams               => 2,
         offset_commit_interval_ms => 5000,
