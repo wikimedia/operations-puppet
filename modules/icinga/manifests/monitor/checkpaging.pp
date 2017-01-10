@@ -9,6 +9,6 @@ class icinga::monitor::checkpaging {
         check_interval => 1,
         retry_interval => 1,
         contact_group  => 'admins',
-        critical       => false
+        critical       => false,
     }
 }

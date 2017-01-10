@@ -6,7 +6,7 @@ class icinga::monitor::certs {
 
     # blog.wikimedia.org (external, Wordpress/Automattic)
     @monitoring::host { 'blog.wikimedia.org':
-        host_fqdn     => 'blog.wikimedia.org'
+        host_fqdn     => 'blog.wikimedia.org',
     }
     monitoring::service { 'https_blog':
         description   => 'HTTPS-blog',
@@ -16,7 +16,7 @@ class icinga::monitor::certs {
 
     # policy.wikimedia.org (external, Wordpress/Automattic)
     @monitoring::host { 'policy.wikimedia.org':
-        host_fqdn     => 'policy.wikimedia.org'
+        host_fqdn     => 'policy.wikimedia.org',
     }
     monitoring::service { 'https_policy':
         description   => 'HTTPS-policy',
@@ -26,7 +26,7 @@ class icinga::monitor::certs {
 
     # eventdonations.wikimedia.org (Fundraising)
     @monitoring::host { 'eventdonations.wikimedia.org':
-        host_fqdn     => 'eventdonations.wikimedia.org'
+        host_fqdn     => 'eventdonations.wikimedia.org',
     }
     monitoring::service { 'https_eventdonations':
         description   => 'HTTPS-eventdonations',
@@ -42,7 +42,7 @@ class icinga::monitor::certs {
 
     # *.planet.wikimedia.org (has its own wildcard cert on misc cp cluster)
     @monitoring::host { 'en.planet.wikimedia.org':
-        host_fqdn     => 'en.planet.wikimedia.org'
+        host_fqdn     => 'en.planet.wikimedia.org',
     }
     monitoring::service { 'https_planet':
         description   => 'HTTPS-planet',
@@ -59,7 +59,7 @@ class icinga::monitor::certs {
 
     # *.wmfusercontent.org (wildcard cert, testing phab.wmfusercontent.org)
     @monitoring::host { 'phab.wmfusercontent.org':
-        host_fqdn     => 'phab.wmfusercontent.org'
+        host_fqdn     => 'phab.wmfusercontent.org',
     }
     monitoring::service { 'https_wmfusercontent':
         description   => 'HTTPS-wmfusercontent',

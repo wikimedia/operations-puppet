@@ -119,7 +119,7 @@ class icinga::plugins {
 
     class { [
         'nagios_common::commands',
-        'nagios_common::check::redis'
+        'nagios_common::check::redis',
     ] :
     }
 
@@ -132,7 +132,7 @@ class icinga::plugins {
         content    => template('icinga/check_commands/smtp.cfg.erb'),
         config_dir => '/etc/icinga',
         owner      => 'icinga',
-        group      => 'icinga'
+        group      => 'icinga',
     }
 
     nagios_common::check_command::config { 'mysql.cfg':
@@ -140,7 +140,7 @@ class icinga::plugins {
         content    => template('icinga/check_commands/mysql.cfg.erb'),
         config_dir => '/etc/icinga',
         owner      => 'icinga',
-        group      => 'icinga'
+        group      => 'icinga',
     }
 
     nagios_common::check_command::config { 'check_ripe_atlas.cfg':
@@ -148,7 +148,7 @@ class icinga::plugins {
         content    => template('icinga/check_commands/check_ripe_atlas.cfg.erb'),
         config_dir => '/etc/icinga',
         owner      => 'icinga',
-        group      => 'icinga'
+        group      => 'icinga',
     }
 
     nagios_common::check_command::config { 'check_legal_html.cfg':
@@ -156,7 +156,7 @@ class icinga::plugins {
         content    => template('icinga/check_commands/check_legal_html.cfg.erb'),
         config_dir => '/etc/icinga',
         owner      => 'icinga',
-        group      => 'icinga'
+        group      => 'icinga',
     }
 
     nagios_common::check_command::config { 'check_wikitech_static.cfg':
@@ -164,7 +164,7 @@ class icinga::plugins {
         content    => template('icinga/check_commands/check_wikitech_static.cfg.erb'),
         config_dir => '/etc/icinga',
         owner      => 'icinga',
-        group      => 'icinga'
+        group      => 'icinga',
     }
 
     nagios_common::check_command::config { 'check_keystone_roles.cfg':
@@ -172,7 +172,7 @@ class icinga::plugins {
         content    => template('icinga/check_commands/check_keystone_roles.cfg.erb'),
         config_dir => '/etc/icinga',
         owner      => 'icinga',
-        group      => 'icinga'
+        group      => 'icinga',
     }
 
     nagios_common::check_command::config { 'check_keystone_projects.cfg':
@@ -180,7 +180,7 @@ class icinga::plugins {
         content    => template('icinga/check_commands/check_keystone_projects.cfg.erb'),
         config_dir => '/etc/icinga',
         owner      => 'icinga',
-        group      => 'icinga'
+        group      => 'icinga',
     }
 
     # Include check_elasticsearch from elasticsearch module
