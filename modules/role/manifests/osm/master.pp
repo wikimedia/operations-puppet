@@ -36,6 +36,10 @@ class role::osm::master(
     class { 'osm::ganglia':
         state_path   => '/srv/osmosis/state.txt',
     }
+    class { 'osm::prometheus':
+        state_path      => '/srv/osmosis/state.txt',
+        prometheus_path => '/var/lib/prometheus/node-exporter/osm_sync_lag.prom',
+    }
 
     system::role { 'role::osm::master':
         ensure      => 'present',
