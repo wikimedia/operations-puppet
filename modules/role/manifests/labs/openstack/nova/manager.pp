@@ -13,24 +13,19 @@ class role::labs::openstack::nova::manager {
     $novaconfig = $role::labs::openstack::nova::common::novaconfig
 
     $sitename = hiera('labs_osm_host')
-    if hiera('wikitech_use_letsencrypt', false) {
-        $sitename_split = split($sitename, '\.')
-        $certificate = $sitename_split[0]
-        letsencrypt::cert::integrated { $certificate:
-            subjects   => $sitename,
-            puppet_svc => 'apache2',
-            system_svc => 'apache2',
-        }
-        $cert_type = '_letsencrypt'
-    } else {
-        $certificate = $sitename
-        sslcert::certificate { $sitename: }
-        $cert_type = ''
+    $sitename_split = split($sitename, '\.')
+    $certificate = $sitename_split[0]
+    letsencrypt::cert::integrated { $certificate:
+        subjects   => $sitename,
+        puppet_svc => 'apache2',
+        system_svc => 'apache2',
     }
+
+    sslcert::certificate { $sitename: ensure => absent }
 
     monitoring::service { 'https':
         description   => 'HTTPS',
-        check_command => "check_ssl_http${cert_type}!${sitename}",
+        check_command => "check_ssl_http_letsencrypt!${sitename}",
     }
 
     $ssl_settings = ssl_ciphersuite('apache', 'compat', true)
