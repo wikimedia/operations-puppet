@@ -9,3 +9,12 @@ discovery::app_routes:
   graphoid: "%{::site}"
   mathoid: "%{::site}"
   aqs: 'eqiad'
+
+# confctl-based dynamic global discovery pooling
+discovery::services:
+  appservers-ro:
+    lvs: apaches
+    active_active: true
+  appservers-rw:
+    lvs: apaches
+    active_active: false
