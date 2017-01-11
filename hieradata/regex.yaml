@@ -467,7 +467,6 @@ labtest:
   labs_glance_controller: &labsglancecontroller "labtestcontrol2001.wikimedia.org"
   labs_puppet_master: &labspuppetmaster "labtestcontrol2001.wikimedia.org"
   labs_keystone_host: &labskeystonehost "labtestcontrol2001.wikimedia.org"
-  wikitech_use_letsencrypt: true
   wikitech_db_name: 'labtestwiki'
   labsldapconfig:
     hostname: labtestservices2001.wikimedia.org

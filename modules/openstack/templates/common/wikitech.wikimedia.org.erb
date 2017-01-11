@@ -31,10 +31,8 @@
 
     RewriteEngine on
     RewriteCond %{SERVER_PORT} !^443$
-<% if @labtest -%>
     Include /etc/acme/challenge-apache.conf
     RewriteCond %{REQUEST_URI} !^/\.well-known/acme-challenge/
-<% end -%>
     RewriteRule ^/(.*)$ https://<%= @webserver_hostname %>/$1 [L,R=301]
 
     ErrorLog /var/log/apache2/error.log
@@ -56,15 +54,9 @@
 
     RewriteEngine on
     SSLEngine on
-<% if @labtest -%>
     SSLCertificateFile /etc/acme/cert/<%= @certificate %>.crt
     SSLCertificateChainFile /etc/acme/cert/<%= @certificate %>.chain.crt
     SSLCertificateKeyFile /etc/acme/key/<%= @certificate %>.key
-<% else -%>
-    SSLCertificateFile /etc/ssl/localcerts/<%= @certificate %>.crt
-    SSLCertificateChainFile /etc/ssl/localcerts/<%= @certificate %>.chain.crt
-    SSLCertificateKeyFile /etc/ssl/private/<%= @certificate %>.key
-<% end -%>
     <%= @ssl_settings.join("\n") %>
 
     RedirectMatch ^/$ https://<%= @webserver_hostname %>/wiki/
