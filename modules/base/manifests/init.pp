@@ -39,7 +39,7 @@ class base {
     include base::kernel
     include base::debdeploy
 
-    if $::is_virtual == false {
+    if $::is_virtual == 'false' {
         include ipmi::monitor
     }
 
