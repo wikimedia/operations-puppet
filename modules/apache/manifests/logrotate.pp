@@ -13,7 +13,7 @@ class apache::logrotate(
         incl    => '/etc/logrotate.d/apache2',
         changes => [
                     "set rule/schedule ${period}",
-                    "set rule/rotate ${rotate}"
-        ]
+                    "set rule/rotate ${rotate}",
+        ],
     }
 }
