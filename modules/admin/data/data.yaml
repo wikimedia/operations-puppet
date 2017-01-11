@@ -30,6 +30,10 @@ groups:
               ori, jmm, jynus, aaron, ema, elukey, gehel, volans, madhuvishy, marostegui,
               ayounsi, herron, aborrero]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
+  opsextragroup1:
+    description: Use the standard system provided staff group to provide ops with privileges that would allow easier administrative tasks
+    members: *ops_members
+    posix_name: staff
   parsoid-roots:
     gid: 701
     description: RT 5934
