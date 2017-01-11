@@ -39,9 +39,7 @@ class base {
     include base::kernel
     include base::debdeploy
 
-    if $::is_virtual == false {
-        include ipmi::monitor
-    }
+    include ipmi::monitor
 
     if os_version('debian >= jessie') {
         include base::initramfs
