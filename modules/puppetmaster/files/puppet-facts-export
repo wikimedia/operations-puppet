@@ -24,7 +24,7 @@ find $tmpdir/yaml -type f -name "*.yaml" | \
     -e 's@boardserialnumber:.*@boardserialnumber: "4242"@' \
     -e 's@boardproductname:.*@boardproductname: "424242"@' \
     -e 's@serialnumber:.*@serialnumber: "42424242"@' \
-    -e '/^ +trusted\:/ d'
+    -e '/^ *trusted\:/ d'
 
 tar cJvf $outfile --directory $tmpdir yaml
 
