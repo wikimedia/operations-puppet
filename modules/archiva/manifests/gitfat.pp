@@ -48,7 +48,7 @@ class archiva::gitfat {
 
     # this uses modules/rsync to
     # set up an rsync daemon service
-    include rsync::server
+    include ::rsync::server
 
     # Set up an rsync module so that anybody
     # can rsync read from $gitfat_archiva_path.
