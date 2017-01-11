@@ -5,6 +5,8 @@ class authdns(
     $nameservers = [ $::fqdn ],
     $gitrepo = undef,
     $monitoring = true,
+    $lvs_services,
+    $discovery_services,
 ) {
     require ::authdns::account
     require ::authdns::scripts
@@ -84,4 +86,39 @@ class authdns(
     if $monitoring {
         include ::authdns::monitoring
     }
+
+    # Discovery Magic
+
+    file { '/etc/gdnsd/discovery-geo-resources':
+        ensure  => 'present',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        content => template("${module_name}/discovery-geo-resources.erb"),
+        require => File['/etc/gdnsd'],
+        notify  => Service['gdnsd'],
+    }
+
+    file { '/etc/gdnsd/discovery-metafo-resources':
+        ensure  => 'present',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        content => template("${module_name}/discovery-metafo-resources.erb"),
+        require => File['/etc/gdnsd'],
+        notify  => Service['gdnsd'],
+    }
+
+    file { '/etc/gdnsd/discovery-states':
+        ensure  => 'present',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        content => template("${module_name}/discovery-states.erb"),
+        require => File['/etc/gdnsd'],
+        notify  => Service['gdnsd'],
+    }
+
+    $dsvcs = keys($discovery_services)
+    ::authdns::discovery_statefile { $dsvcs: lvs_services => $lvs_services }
 }
