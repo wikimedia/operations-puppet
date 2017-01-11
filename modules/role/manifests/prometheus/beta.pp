@@ -32,6 +32,15 @@ class role::prometheus::beta {
       },
     ]
 
+    $cassandra_jobs = [
+      {
+        'job_name'        => 'cassandra-restbase',
+        'file_sd_configs' => [
+          { 'files' => [ "${targets_path}/cassandra-restbase_*.yaml"] },
+        ]
+      },
+    ]
+
     $web_jobs = [
       {
         'job_name'        => 'apache',
@@ -55,7 +64,8 @@ class role::prometheus::beta {
 
     prometheus::server { 'beta':
         listen_address       => '127.0.0.1:9903',
-        scrape_configs_extra => array_concat($varnish_jobs, $mysql_jobs, $web_jobs),
+        scrape_configs_extra => array_concat($varnish_jobs, $mysql_jobs, $web_jobs,
+            $cassandra_jobs),
     }
 
     prometheus::web { 'beta':
