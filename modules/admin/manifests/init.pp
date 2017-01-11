@@ -11,7 +11,7 @@
 
 class admin(
     $groups=[],
-    $always_groups=['absent', 'ops', 'wikidev'],
+    $always_groups=['absent', 'ops', 'wikidev', 'ops-staff-group'],
 )
 {
     include ::sudo
