@@ -14,8 +14,10 @@ class role::authdns::server {
     )
 
     class { 'authdns':
-        nameservers => $role::authdns::data::nameservers,
-        gitrepo     => $role::authdns::data::gitrepo,
+        nameservers        => $role::authdns::data::nameservers,
+        gitrepo            => $role::authdns::data::gitrepo,
+        lvs_services       => hiera('lvs::configuration::lvs_services'),
+        discovery_services => hiera('discovery::services'),
     }
 
     ferm::service { 'udp_dns_auth':
