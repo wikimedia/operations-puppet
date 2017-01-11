@@ -29,12 +29,7 @@ describe 'mirrors::debian', :type => :class do
         })
     end
     it do
-        should contain_cron('update-debian-mirror').with({
-            'ensure'  => 'present',
-            'command' => '/var/lib/mirror/archvsync/bin/ftpsync',
-            'user'    => 'mirror',
-            'hour'    => '*/6',
-            'minute'  => '03',
-        })
+        # 18eaf6c70 changed to push mirroring
+        should_not contain_cron('update-debian-mirror')
     end
 end
