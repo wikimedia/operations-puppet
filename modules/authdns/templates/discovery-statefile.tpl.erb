@@ -1,0 +1,3 @@
+<% @lvs_services[@lvs]['ip'].keys.sort.each do |dc| -%>
+<%= @lvs_services[@lvs]['ip'][dc] %> => {{ $data := json (getv "discovery/<%= @title %>/<%= dc %>") }}{{ if $data }}UP{{ else }}DOWN{{ end }}
+<% end -%>
