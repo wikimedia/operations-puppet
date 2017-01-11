@@ -110,9 +110,10 @@ class VenvCreatingAuthenticator(Authenticator):
         username = data['username']
         allowed_groups = ['researchers', 'statistics-privatedata-users', 'ops']
         if not any([
-                username not in grp.getgrnam(group).gr_mem
+                username in grp.getgrnam(group).gr_mem
                 for group in allowed_groups]):
-            self.log.warn('User %s not in researchers group' % username)
+            self.log.warn('User %s not in allowed groups (%s)'
+                          % (username, ', '.join(allowed_groups)))
             return None
         return (yield super().authenticate(handler, data))
 
