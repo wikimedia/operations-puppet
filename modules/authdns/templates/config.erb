@@ -15,6 +15,10 @@ options => {
     tcp_threads = <%= @physicalcorecount %>
 }
 
+service_types => {
+   $include{discovery-states}
+}
+
 plugins => {
     geoip => {
         maps => {
@@ -22,6 +26,12 @@ plugins => {
         },
         resources => {
             $include{geo-resources},
+            $include{discovery-geo-resources},
+        },
+    },
+    metafo => {
+        resources => {
+            $include{discovery-metafo-resources},
         },
     },
 }
