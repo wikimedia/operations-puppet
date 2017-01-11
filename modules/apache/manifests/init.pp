@@ -18,11 +18,11 @@
 # on both Precise and Trusty.
 #
 class apache {
-    include apache::mod::access_compat  # enables allow/deny syntax in 2.4
-    include apache::mod::filter         # enables AddOutputFilterByType in 2.4
-    include apache::mod::version        # enables <IfVersion> config guards
-    include apache::monitoring          # send metrics to Diamond and Ganglia
-    include apache::mpm                 # prefork by default
+    include '::apache::mod::access_compat'  # enables allow/deny syntax in 2.4
+    include '::apache::mod::filter'         # enables AddOutputFilterByType in 2.4
+    include '::apache::mod::version'        # enables <IfVersion> config guards
+    include '::apache::monitoring'          # send metrics to Diamond and Ganglia
+    include '::apache::mpm'                 # prefork by default
 
     $conf_types     = ['conf', 'env', 'sites']
     $available_dirs = apply_format('/etc/apache2/%s-available', $conf_types)
@@ -104,7 +104,7 @@ class apache {
     #
     # The augeas rule in apache::logrotate needs /etc/logrotate.d/apache2 which
     # is provided by apache2 package
-    class {'apache::logrotate':
+    class {'::apache::logrotate':
         require => Package['apache2'],
     }
 }
