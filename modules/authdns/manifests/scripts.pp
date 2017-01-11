@@ -48,4 +48,12 @@ class authdns::scripts {
         group  => 'root',
         source => "puppet:///modules/${module_name}/authdns-git-pull",
     }
+
+    file { '/usr/local/bin/authdns-check-active-passive':
+        ensure  => 'present',
+        mode    => '0555',
+        owner   => 'root',
+        group   => 'root',
+        source  => "puppet:///modules/${module_name}/authdns-check-active-passive",
+    }
 }
