@@ -96,7 +96,8 @@ class role::lists::server {
 
     monitoring::service { 'mailman_listinfo':
         description   => 'mailman list info',
-        check_command => 'check_https_url_for_string!lists.wikimedia.org!/mailman/listinfo/wikimedia-l!\'Discussion list for the Wikimedia community\'',
+        check_command =>
+'check_https_url_for_string!lists.wikimedia.org!/mailman/listinfo/wikimedia-l!\'Wikimedia Mailing List\'',
     }
 
     monitoring::service { 'mailman_archives':
@@ -109,7 +110,7 @@ class role::lists::server {
         owner  => 'root',
         group  => 'root',
         mode   => '0755',
-        source => 'puppet:///modules/icinga/check_mailman_queue',
+        source => 'puppet:///modules/icinga/check_mailman_queue.sh',
     }
 
     sudo::user { 'nagios_mailman_queue':
@@ -146,7 +147,8 @@ class role::lists::server {
 
     nrpe::monitor_service { 'mailman_iostat':
         description  => 'mailman I/O stats',
-        nrpe_command => "/usr/local/lib/nagios/plugins/check_iostat -i -w 250,350,300,14000,7500 -c 500,400,600,28000,11000 -d ${iostat_device}",
+        nrpe_command => "/usr/local/lib/nagios/plugins/check_iostat \
+                        -i -w 250,350,300,14000,7500 -c 500,400,600,28000,11000 -d ${iostat_device}",
         timeout      => '30',
     }
 
