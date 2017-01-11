@@ -17,7 +17,8 @@
                 "gwtoolsetUploadMediafileJob",
                 "gwtoolsetUploadMetadataJob",
                 "uploadFromUrl",
-                "webVideoTranscode"
+                "webVideoTranscode",
+                "webVideoTranscodePrioritized",
             ],
             "low-priority": [
                 "cirrusSearchLinksUpdate",
@@ -44,6 +45,12 @@
             "runners": <%= @runners_transcode %>,
             "include": [
                 "webVideoTranscode"
+            ]
+        },
+        "transcode_prioritized": {
+            "runners": <%= @runners_transcode_prioritized %>,
+            "include": [
+                "webVideoTranscodePrioritized"
             ]
         },
         "translate": {
