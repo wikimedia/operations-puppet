@@ -14,7 +14,7 @@ class admin(
     $always_groups=['absent', 'ops', 'wikidev'],
 )
 {
-    include sudo
+    include '::sudo'
 
     $module_path = get_module_path($module_name)
     $base_data = loadyaml("${module_path}/data/data.yaml")
