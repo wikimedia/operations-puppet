@@ -23,6 +23,10 @@ groups:
               dzahn, akosiaris, springle, mark, ariel, cmjohnson, otto, robh, tstarling,
               ori, midom, jmm, jynus, aaron, ema, elukey, gehel, volans, madhuvishy, marostegui]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
+  staff:
+    gid: 50
+    description: Add ops to staff group to ease everyday tasks like apache log access
+    members: *ops_members
   parsoid-roots:
     gid: 701
     description: RT 5934
