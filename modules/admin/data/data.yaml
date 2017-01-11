@@ -7,6 +7,10 @@ groups:
               johnflewis, marc, jkrauska, akumar, mnoushad, spage, tnegrin, msyed, kleduc,
               manybubbles, haithams, jzerebecki, ashwinpp, ironholds, robla, asherman,
               laner, declerambaul, srijan]
+  staff:
+    gid: 50
+    description: Add ops to staff group to ease everyday tasks like apache log access
+    members: *ops_members
   wikidev:
     gid: 500
     description: container group for primary user groups.
