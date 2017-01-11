@@ -152,7 +152,7 @@ class role::osm::master(
         prio   => '50',
         proto  => 'tcp',
         port   => 873,
-        srange => '($EQIAD_PRIVATE_LABS_INSTANCES1_A_EQIAD $EQIAD_PRIVATE_LABS_INSTANCES1_B_EQIAD $EQIAD_PRIVATE_LABS_INSTANCES1_C_EQIAD $EQIAD_PRIVATE_LABS_INSTANCES1_D_EQIAD)',
+        srange => '$LABS_NETWORKS',
     }
     ferm::service { 'postgres_from_slave':
         proto  => 'tcp',
@@ -161,7 +161,9 @@ class role::osm::master(
     }
     nrpe::monitor_service { 'rsync_server_running':
         description  => 'Check if rsync server is running',
-        nrpe_command => "/usr/lib/nagios/plugins/check_procs -w 1:1 -c 1:1 -C rsync --ereg-argument-array '/usr/bin/rsync --no-detach --daemon'",
+        nrpe_command => "/usr/lib/nagios/plugins/check_procs -w 1:1 -c 1:1 \
+                         -C rsync --ereg-argument-array '/usr/bin/rsync \
+                         --no-detach --daemon'",
     }
 }
 
