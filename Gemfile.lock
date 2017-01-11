@@ -60,6 +60,7 @@ GEM
     ruby-progressbar (1.7.5)
     safe_yaml (1.0.4)
     tins (1.6.0)
+    xmlrpc (0.2.1)
     yard (0.9.5)
 
 PLATFORMS
@@ -75,3 +76,4 @@ DEPENDENCIES
   rspec-puppet (~> 2.3.2)
   rubocop (~> 0.35.1)
   safe_yaml (~> 1.0.4)
+  xmlrpc (~> 0.2.1)

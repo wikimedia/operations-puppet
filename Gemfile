@@ -8,6 +8,10 @@ gem 'puppetlabs_spec_helper', '< 2.0.0'
 # https://tickets.puppetlabs.com/browse/PUP-3796
 gem 'safe_yaml', '~> 1.0.4'
 
+# XMLRPC is a bundled gem since ruby 2.4.0, which bundler ignores.
+# https://bugs.ruby-lang.org/issues/12160
+gem 'xmlrpc', '~> 0.2.1'
+
 gem 'rake', '~> 10.4', '>= 10.4.2'
 gem 'git', '1.3.0'
 gem 'puppet-lint', '1.1.0'
