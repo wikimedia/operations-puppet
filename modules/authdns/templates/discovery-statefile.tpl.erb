@@ -1,0 +1,4 @@
+<% lvs_svc_name = @discovery_services[@title]['lvs'] -%>
+<% @lvs_services[lvs_svc_name]['ip'].keys.sort.each do |dc| -%>
+<%= @lvs_services[lvs_svc_name]['ip'][dc] %> => {{ $data := json (getv "discovery/<%= @title %>/<%= dc %>") }}{{ if eq $data.pooled "yes" }}UP{{ else }}DOWN{{ end }}
+<% end -%>
