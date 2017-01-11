@@ -6,9 +6,9 @@ class authdns(
     $gitrepo = undef,
     $monitoring = true,
 ) {
-    require authdns::account
-    require authdns::scripts
-    require geoip::data::puppet
+    require ::authdns::account
+    require ::authdns::scripts
+    require ::geoip::data::puppet
 
     package { 'gdnsd':
         ensure => installed,
@@ -82,6 +82,6 @@ class authdns(
     }
 
     if $monitoring {
-        include authdns::monitoring
+        include ::authdns::monitoring
     }
 }

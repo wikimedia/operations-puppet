@@ -2,8 +2,8 @@
 # A class to lint Wikimedia's authoritative DNS system
 #
 class authdns::lint {
-    include authdns::scripts
-    include geoip
+    include ::authdns::scripts
+    include ::geoip
 
     package { 'gdnsd':
         ensure => installed,
