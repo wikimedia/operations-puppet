@@ -20,10 +20,6 @@ class role::salt::masters::labs {
         salt_auto_accept    => true,
     }
 
-    class { 'salt::reactors':
-        salt_reactor_options => { 'puppet_server' => $puppet_master },
-    }
-
     if ! defined(Class['puppetmaster::certmanager']) {
         include role::labs::openstack::nova::common
         $novaconfig = $role::labs::openstack::nova::common::novaconfig
