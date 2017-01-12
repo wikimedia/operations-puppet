@@ -39,6 +39,20 @@ require 'rubocop/rake_task'
 # Needed by docs
 require 'puppet-strings/tasks/generate'
 
+# rspec-core supports extra arguments via the SPEC_OPTS environment
+def jenkins_rspec_opt(puppet_module)
+    return {} unless ENV.fetch('JENKINS_URL', false)
+
+    junit_file = "#{ENV['WORKSPACE']}/log/junit-#{puppet_module}.xml"
+    { 'SPEC_OPTS' => ENV.fetch('SPEC_OPTS', '') + \
+      # for color output when enabled
+      ' --tty ' + \
+      '--format progress ' + \
+      '--format RspecJunitFormatter ' + \
+      "-o '#{junit_file}'"
+    }
+end
+
 # Monkey-patch PuppetSyntax and its rake task
 module PuppetSyntax
   @manifests_paths = ["**/*.pp"]
@@ -252,7 +266,9 @@ class TaskGen < ::Rake::TaskLib
         desc "Run spec for module #{module_name}"
         task module_name do
           puts "---> spec:#{module_name}"
-          spec_result = system("cd 'modules/#{module_name}' && rake spec")
+          spec_result = system(
+              jenkins_rspec_opt(module_name),
+              "cd 'modules/#{module_name}' && rake spec")
           if !spec_result
             @failed_specs << module_name
           end
@@ -338,7 +354,9 @@ namespace :global do
       module_name = Regexp.last_match(1)
       desc "Run spec for module #{module_name}"
       task module_name do
-        spec_result = system("cd 'modules/#{module_name}' && rake spec")
+        spec_result = system(
+            jenkins_rspec_opt(module_name),
+            "cd 'modules/#{module_name}' && rake spec")
         spec_failed << module_name if !spec_result
       end
       spec_tasks << "spec:#{module_name}"
