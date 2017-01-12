@@ -25,7 +25,7 @@ describe 'bacula::client::mysql_bpipe', :type => :define do
             :mysqldump_innodb_only => false,
             }
         }
-        it { should contain_file('/etc/bacula/scripts/something').with_content(/alldatabases/) }
+        it { should contain_file('/etc/bacula/scripts/something').with_content(/\$MYSQLDUMP --all-databases/) }
     end
     context 'with xtrabackup' do
         let(:params) { {
