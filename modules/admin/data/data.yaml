@@ -1437,8 +1437,7 @@ users:
     gid: 500
     name: bsitzmann
     realname: Bernd Sitzmann
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCyvGjFrt694WfWaeFBJKsaU25oLBTx/yiYQbnAunn6zu98yW374HqCXAvYdn+V0qNNO8uxp+TvIqibfud4Y59Ija2apeY2ck5E0TEeOJD9sbq+gbczJ+IFTQy4+/sr+MRXAsyAmUr6HrDqQYXgrE04kGkuKAac65ga7mq9KKE9GGIbqFl8kcN8WET8I5wTfb3vvB8unmyrLHYR3ewfXcpoPk6MpEDJD8uvf1fWz/Uqpe9IXhsfV37uiCaG+nfU+PlZA6KJSdZ4ceVHNBMlpeCEGX/BB38TtE7QqtK8ghjsl8/SeJ29uXz3OjPTZ4bjtJ0uD/DEoRoq+dpuNnC1RbLN
-        bsitzmann@wikimedia.org]
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCtXfxL/esjFQbskJlnO1q0cBwXOww12q5IBxm/Lwv3k157Klb3AG0syPTvxJF/JvuMCZZZpEKQL6NaySXj4b8ZaQZmF0WePfrauUT8iSDhjS4Bii2RtZ0WhM9o7cqONetZ6w9xHYTR4i+fF4iu3sK+zjST8+0tEQd/G5k9sMloZj7DN+Zt1nDgHftAo6iAyIApKSanVi6vu15p3HryNPsWM5HEy3dJ3I2wGbjvtzLbaFO/ItdZkZvUZGSMuwy67bdTZNpaaw5GtmyPDWENtJJXgDXV2rOFADBTQoCpMe2iU79UWWQ6B9LWSUMbXCeOBvNDlA0XoqO+syjbfC0iMpG2u+r/eG2AcDlMvadHN8hVYUMQn06WE2Pt4f3/7+JH/WQSoZPA8YgR1AUrlQh2563xa+dx9mWFkmX3NY/ZNMi4INPvqt+Ls/7/PudhF00HSs7/LvAPHkiEfmsxfyODQPpmPaF/j8FDVT3pEZR8GwyPKsOC2xhdVIbGFftc5HchtHU9LmUEJaQrOPYyBuMbbl5DUwQ9JE2VveHYLeQP+h05WDAIdFH83IobXldCG2xa/B5ltJ5/e6yrlQ15b4ZFy8YJ+owbgOmQSazXpbluJuTqXINMozyErW6yphs+MY64LKhShYb5ZLJvf7kTCc11vspDQyZ1pFNJ5Hitm/CCm8tdjw== besi@besiair.local
     uid: 5037
   deskana:
     ensure: present
