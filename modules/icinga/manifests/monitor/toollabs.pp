@@ -7,7 +7,7 @@ class icinga::monitor::toollabs {
 
     # toolserver.org (redirect page to Tool Labs)
     @monitoring::host { 'www.toolserver.org':
-        host_fqdn     => 'www.toolserver.org'
+        host_fqdn     => 'www.toolserver.org',
     }
 
     # monitoring of https://meta.wikimedia.org/wiki/PAWS

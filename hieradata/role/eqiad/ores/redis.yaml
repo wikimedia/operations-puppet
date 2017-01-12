@@ -3,3 +3,5 @@ ores::redis::client_hosts:
   - scb1002.eqiad.wmnet
   - scb1003.eqiad.wmnet
   - scb1004.eqiad.wmnet
+  - oresrdb1001.eqiad.wmnet
+  - oresrdb1002.eqiad.wmnet
