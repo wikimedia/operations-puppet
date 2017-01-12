@@ -50,12 +50,18 @@ define sslcert::certificate(
 
     # lint:ignore:puppet_url_without_modules
     # FIXME
-    file { "/etc/ssl/localcerts/${title}.crt":
-        ensure => $ensure,
-        owner  => 'root',
-        group  => $group,
-        mode   => '0444',
-        source => "puppet:///files/ssl/${title}.crt",
+    if $ensure != 'absent' {
+        file { "/etc/ssl/localcerts/${title}.crt":
+            ensure => $ensure,
+            owner  => 'root',
+            group  => $group,
+            mode   => '0444',
+            source => "puppet:///files/ssl/${title}.crt",
+        }
+    } else {
+        file { "/etc/ssl/localcerts/${title}.crt":
+            ensure => $ensure,
+        }
     }
     # lint:endignore
 
