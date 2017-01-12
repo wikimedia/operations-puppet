@@ -30,6 +30,9 @@ require 'puppet-lint/tasks/puppet-lint'
 require 'puppet-strings/tasks/generate'
 require 'rubocop/rake_task'
 
+system('git submodule update --init --recursive')
+system('git submodule update --help')
+
 # Find files modified in HEAD
 def git_changed_in_head(file_exts=[])
     g = Git.open('.')
