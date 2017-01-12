@@ -44,7 +44,6 @@ class gerrit::jetty(
     require_package([
         'openjdk-8-jdk',
         'gerrit',
-        'libmysql-java',
     ])
 
     file { '/srv/gerrit':
