@@ -30,3 +30,6 @@
 # Jetbrain's IDEA editor settings
 /.idea
 /*.iml
+
+# Wikimedia Jenkins build results
+/log
