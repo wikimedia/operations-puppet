@@ -1,0 +1,13 @@
+#####################################################################
+### Note: This file is managed by Puppet.
+#####################################################################
+
+# write access from stat1002 and stat1003 to media directory.
+# Erik Z uses this.
+[media]
+uid = datasets
+gid = wikidev
+read only = false
+path = /data/xmldatadumps/public/other/media
+hosts allow = stat1002.eqiad.wmnet stat1003.eqiad.wmnet
+
