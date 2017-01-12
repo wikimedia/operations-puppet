@@ -160,6 +160,20 @@ def puppet_parser_validate(*manifests)
     sh "puppet parser validate #{manifests}"
 end
 
+# rspec-core supports extra arguments via the SPEC_OPTS environment
+def jenkins_rspec_opt(puppet_module)
+    return {} unless ENV.fetch('JENKINS_URL', false)
+
+    junit_file = "#{ENV['WORKSPACE']}/log/junit-#{puppet_module}.xml"
+    { 'SPEC_OPTS' => ENV.fetch('SPEC_OPTS', '') + \
+      # for color output when enabled
+      ' --tty ' + \
+      '--format progress ' + \
+      '--format RspecJunitFormatter ' + \
+      "-o '#{junit_file}'"
+    }
+end
+
 def spec_modules
     module_names = []
     FileList['modules/*/spec'].each do |m|
@@ -172,7 +186,10 @@ namespace :spec do
     spec_modules.each do |module_name|
         desc "Run spec for module #{module_name}"
         task module_name do
-            spec_result = system("cd 'modules/#{module_name}' && rake spec")
+            spec_result = system(
+                jenkins_rspec_opt(module_name),
+                "cd 'modules/#{module_name}' && rake spec"
+            )
             raise "Module #{module_name} failed to pass spec" if !spec_result
         end
     end
