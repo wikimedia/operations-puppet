@@ -161,9 +161,9 @@ class role::osm::master(
     }
     nrpe::monitor_service { 'rsync_server_running':
         description  => 'Check if rsync server is running',
-        nrpe_command => "/usr/lib/nagios/plugins/check_procs -w 1:1 -c 1:1 \
-                         -C rsync --ereg-argument-array '/usr/bin/rsync \
-                         --no-detach --daemon'",
+        nrpe_command => "/usr/lib/nagios/plugins/check_procs \
+                         -w 1:1 -c 1:1 -C rsync --ereg-argument-array \
+                         '/usr/bin/rsync --no-detach --daemon'",
     }
 }
 
