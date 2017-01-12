@@ -97,6 +97,8 @@ cassandra::seeds:
 cassandra::logstash_host: deployment-logstash2.deployment-prep.eqiad.wmflabs
 cassandra::target_version: '2.2'
 cassandra::metrics::graphite_host: labmon1001.eqiad.wmnet
+cassandra::additional_jvm_opts:
+  - '-javaagent:/srv/deployment/cassandra/jmx_exporter/lib/jmx_prometheus_javaagent-0.8-SNAPSHOT.jar=7800:/etc/cassandra/jmx_exporter.yaml'
 restbase::seeds:
   - 10.68.16.128 # deployment-restbase01
   - 10.68.17.189 # deployment-restbase02
@@ -252,3 +254,5 @@ scap::sources:
   # Public EventStreams service
   eventstreams/deploy:
     repository: mediawiki/services/eventstreams/deploy
+prometheus_nodes:
+  - deployment-prometheus01.deployment-prep.eqiad.wmflabs

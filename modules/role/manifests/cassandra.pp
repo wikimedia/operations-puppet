@@ -42,6 +42,9 @@ class role::cassandra {
     $cassandra_hosts = hiera('cassandra::seeds')
     $cassandra_hosts_ferm = join($cassandra_hosts, ' ')
 
+    $prometheus_nodes = hiera('prometheus_nodes')
+    $prometheus_nodes_ferm = join($prometheus_nodes, ' ')
+
     # Cassandra intra-node messaging
     ferm::service { 'cassandra-intra-node':
         proto  => 'tcp',
@@ -66,6 +69,12 @@ class role::cassandra {
         proto  => 'tcp',
         port   => '9042',
         srange => "@resolve((${cassandra_hosts_ferm}))",
+    }
+    # Prometheus jmx_exporter for Cassandra
+    ferm::service { 'cassandra-jmx_exporter':
+        proto  => 'tcp',
+        port   => '7300',
+        srange => "@resolve((${prometheus_nodes_ferm}))",
     }
 
 }
