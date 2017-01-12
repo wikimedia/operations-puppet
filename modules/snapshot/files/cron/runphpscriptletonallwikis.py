@@ -46,8 +46,8 @@ class PhpRunner(object):
     def get_php_code(self):
         if self.multiversion:
             php_setup = (
-                "require_once( '%s/MWVersion.php' ); "
-                "$dir = getMediaWikiCli(''); "
+                "require_once( '%s/MWMultiVersion.php' ); "
+                "$dir = MWMultiVersion::getMediaWikiCli(''); "
                 "require_once( \"$dir/maintenance/Maintenance.php\" );"
                 % self.script_path)
         else:
