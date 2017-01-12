@@ -145,7 +145,7 @@ auth_uri = http://<%= @nova_controller_ip %>:5000
 # List of notification handlers to enable, configuration of these needs to
 # correspond to a [handler:my_driver] section below or else in the config
 # Can be one or more of : nova_fixed, neutron_floatingip
-enabled_notification_handlers = nova_fixed_multi, nova_ldap
+enabled_notification_handlers = nova_fixed_multi, wmf_sink
 
 #-----------------------
 # mDNS Service
@@ -297,9 +297,9 @@ keystone_auth_project = <%= @keystoneconfig['admin_project_id'] %>
 keystone_auth_url = "http://<%= @designateconfig['controller_hostname'] %>:35357/v3"
 
 #-----------------------
-# Nova Fixed Ldap Handler
+# WMF-specific handler for Fixed IPs
 #-----------------------
-[handler:nova_ldap]
+[handler:wmf_sink]
 # Domain ID of domain to create records in. For a pre-existing domain, in this case eqiad.wmflabs
 domain_id = '<%= @designateconfig["domain_id_internal_forward"] %>'
 notification_topics = monitor

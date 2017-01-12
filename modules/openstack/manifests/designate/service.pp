@@ -30,15 +30,15 @@ class openstack::designate::service (
         'python-novaclient'
     )
 
-    file { '/usr/lib/python2.7/dist-packages/nova_ldap':
-        source  => "puppet:///modules/openstack/${::openstack::version}/designate/nova_ldap",
+    file { '/usr/lib/python2.7/dist-packages/wmf_sink':
+        source  => "puppet:///modules/openstack/${::openstack::version}/designate/wmf_sink",
         owner   => 'root',
         group   => 'root',
         mode    => '0644',
         recurse => true,
     }
-    file { '/usr/lib/python2.7/dist-packages/nova_ldap.egg-info':
-        source  => "puppet:///modules/openstack/${::openstack::version}/designate/nova_ldap.egg-info",
+    file { '/usr/lib/python2.7/dist-packages/wmf_sink.egg-info':
+        source  => "puppet:///modules/openstack/${::openstack::version}/designate/wmf_sink.egg-info",
         owner   => 'root',
         group   => 'root',
         mode    => '0644',

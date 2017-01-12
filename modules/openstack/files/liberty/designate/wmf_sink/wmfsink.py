@@ -18,14 +18,14 @@
 #  in the designate source at designate/notification_handler/nova.py
 
 from oslo_config import cfg
-from nova_ldap.base import BaseAddressLdapHandler
+from wmf_sink.base import BaseAddressWMFHandler
 from oslo_log import log as logging
 
 LOG = logging.getLogger(__name__)
 
 cfg.CONF.register_group(cfg.OptGroup(
-    name='handler:nova_ldap',
-    title="Configuration for Nova Ldap Handler (WMF-specific transitional)"
+    name='handler:wmf_sink',
+    title="Configuration for WMF-specific event handling)"
 ))
 
 cfg.CONF.register_opts([
@@ -51,12 +51,12 @@ cfg.CONF.register_opts([
     cfg.StrOpt('keystone_auth_pass', default=None),
     cfg.StrOpt('keystone_auth_project', default=None),
     cfg.StrOpt('keystone_auth_url', default=None),
-], group='handler:nova_ldap')
+], group='handler:wmf_sink')
 
 
-class NovaFixedLdapHandler(BaseAddressLdapHandler):
+class NovaFixedWMFHandler(BaseAddressWMFHandler):
     """ Handler for Nova's notifications """
-    __plugin_name__ = 'nova_ldap'
+    __plugin_name__ = 'wmf_sink'
 
     def get_exchange_topics(self):
         exchange = cfg.CONF[self.name].control_exchange
@@ -72,7 +72,7 @@ class NovaFixedLdapHandler(BaseAddressLdapHandler):
         ]
 
     def process_notification(self, context, event_type, payload):
-        LOG.debug('NovaLdapHandler received notification - %s' % event_type)
+        LOG.debug('received notification - %s' % event_type)
 
         if event_type == 'compute.instance.create.end':
             self._create(payload['fixed_ips'], payload,

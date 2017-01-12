@@ -32,7 +32,7 @@ LOG = logging.getLogger(__name__)
 central_api = central_rpcapi.CentralAPI()
 
 
-class BaseAddressLdapHandler(BaseAddressHandler):
+class BaseAddressWMFHandler(BaseAddressHandler):
     @staticmethod
     def _get_ip_data(addr_dict):
         ip = addr_dict['address']
