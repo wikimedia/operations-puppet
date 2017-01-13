@@ -84,10 +84,17 @@ def available_roles():
                          "https://labcontrol1001.wikimedia.org:8140/puppet"
                          )
         roleurl = "%s/resource_types/role" % apiurl
-
         req = requests.get(roleurl, verify=False)
         req.raise_for_status()
-        res = req.json()
+        roleres = req.json()
+
+        profileurl = "%s/resource_types/profile" % apiurl
+        req = requests.get(profileurl, verify=False)
+        req.raise_for_status()
+        profileres = req.json()
+
+        res = roleres + profileres
+
         roles = []
         for role in res:
             if role['kind'] != 'class':
@@ -116,10 +123,9 @@ def available_roles():
                         newdoc += "%s\n" % line
                 obj.docs = newdoc
 
-            simplename = obj.name.split('role::')[1]
             html = '<span title="%s">%s</>' % (
                 escape(obj.docs),
-                escape(simplename)
+                escape(obj.name)
             )
             obj.html_name = mark_safe(html)
 
