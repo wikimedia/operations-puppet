@@ -13,8 +13,12 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 
+from keystoneclient.auth.identity import generic
+from keystoneclient import session as keystone_session
 from keystone.common import dependency
 from keystone import exception
+from novaclient import client as nova_client
+from novaclient import exceptions
 
 from oslo_log import log as logging
 from oslo_config import cfg
@@ -36,6 +40,12 @@ wmfkeystone_opts = [
     cfg.StrOpt('admin_user',
                default='novaadmin',
                help='Admin user to add to all new projects'),
+    cfg.StrOpt('admin_pass',
+               default='',
+               help='Admin password, used to authenticate with other services'),
+    cfg.StrOpt('auth_url',
+               default='',
+               help='Keystone URL, used to authenticate with other services'),
     cfg.StrOpt('observer_user',
                default='novaobserver',
                help='Observer user to add to all new projects'),
@@ -48,10 +58,10 @@ wmfkeystone_opts = [
     cfg.StrOpt('admin_role_name',
                default='projectadmin',
                help='Name of project-local admin role'),
-    cfg.MultiStrOpt('wmf_keystone_eventtype_whitelist',
+    cfg.MultiStrOpt('eventtype_whitelist',
                     default=['identity.project.deleted', 'identity.project.created'],
                     help='Event types to always handle.'),
-    cfg.MultiStrOpt('wmf_keystone_eventtype_blacklist',
+    cfg.MultiStrOpt('eventtype_blacklist',
                     default=[],
                     help='Event types to always ignore.'
                     'In the event of a conflict, '
@@ -60,7 +70,7 @@ wmfkeystone_opts = [
 
 
 CONF = cfg.CONF
-CONF.register_opts(wmfkeystone_opts)
+CONF.register_opts(wmfkeystone_opts, group='wmfhooks')
 
 
 @dependency.requires('assignment_api', 'resource_api', 'role_api')
@@ -82,25 +92,75 @@ class KeystoneHooks(notifier._Driver):
         # Make a dict to relate role names to ids
         for role in rolelist:
             roledict[role['name']] = role['id']
-        if CONF.observer_role_name not in roledict.keys():
-            LOG.error("Failed to find id for role %s" % CONF.observer_role_name)
+        if CONF.wmfhooks.observer_role_name not in roledict.keys():
+            LOG.error("Failed to find id for role %s" % CONF.wmfhooks.observer_role_name)
             raise exception.NotImplemented()
-        if CONF.admin_role_name not in roledict.keys():
-            LOG.error("Failed to find id for role %s" % CONF.admin_role_name)
+        if CONF.wmfhooks.admin_role_name not in roledict.keys():
+            LOG.error("Failed to find id for role %s" % CONF.wmfhooks.admin_role_name)
             raise exception.NotImplemented()
-        if CONF.user_role_name not in roledict.keys():
-            LOG.error("Failed to find id for role %s" % CONF.user_role_name)
+        if CONF.wmfhooks.user_role_name not in roledict.keys():
+            LOG.error("Failed to find id for role %s" % CONF.wmfhooks.user_role_name)
             raise exception.NotImplemented()
 
-        self.assignment_api.add_role_to_user_and_project(CONF.admin_user,
+        self.assignment_api.add_role_to_user_and_project(CONF.wmfhooks.admin_user,
                                                          project_id,
-                                                         roledict[CONF.admin_role_name])
-        self.assignment_api.add_role_to_user_and_project(CONF.admin_user,
+                                                         roledict[CONF.wmfhooks.admin_role_name])
+        self.assignment_api.add_role_to_user_and_project(CONF.wmfhooks.admin_user,
                                                          project_id,
-                                                         roledict[CONF.user_role_name])
-        self.assignment_api.add_role_to_user_and_project(CONF.observer_user,
+                                                         roledict[CONF.wmfhooks.user_role_name])
+        self.assignment_api.add_role_to_user_and_project(CONF.wmfhooks.observer_user,
                                                          project_id,
-                                                         roledict[CONF.observer_role_name])
+                                                         roledict[CONF.wmfhooks.observer_role_name])
+
+        # Use the nova api to set up security groups for the new project
+        auth = generic.Password(
+            auth_url=CONF.wmfhooks.auth_url,
+            username=CONF.wmfhooks.admin_user,
+            password=CONF.wmfhooks.admin_pass,
+            user_domain_name='Default',
+            project_domain_name='Default',
+            project_name=project_id)
+        session = keystone_session.Session(auth=auth)
+        client = nova_client.Client('2', session=session)
+        allgroups = client.security_groups.list()
+        defaultgroup = filter(lambda group: group.name == 'default', allgroups)
+        if defaultgroup:
+            groupid = defaultgroup[0].id
+            try:
+                client.security_group_rules.create(groupid,
+                                                   ip_protocol='icmp',
+                                                   from_port='-1',
+                                                   to_port='-1',
+                                                   cidr='0.0.0.0/0')
+            except (exceptions.ClientException):
+                LOG.warning("icmp security rule already exists.")
+            try:
+                client.security_group_rules.create(groupid,
+                                                   ip_protocol='tcp',
+                                                   from_port='22',
+                                                   to_port='22',
+                                                   cidr='10.0.0.0/8')
+            except (exceptions.ClientException):
+                LOG.warning("Port 22 security rule already exists.")
+            try:
+                client.security_group_rules.create(groupid,
+                                                   ip_protocol='tcp',
+                                                   from_port='5666',
+                                                   to_port='5666',
+                                                   cidr='10.0.0.0/8')
+            except (exceptions.ClientException):
+                LOG.warning("Port 5666 security rule already exists.")
+            try:
+                client.security_group_rules.create(groupid,
+                                                   ip_protocol='tcp',
+                                                   from_port='1',
+                                                   to_port='65535',
+                                                   cidr='',
+                                                   group_id=groupid)
+            except (exceptions.ClientException):
+                LOG.warning("Project security rule already exists.")
+        else:
+            LOG.warning("Failed to find default security group in new project.")
 
     def notify(self, context, message, priority, retry=False):
         event_type = message.get('event_type')
@@ -112,9 +172,9 @@ class KeystoneHooks(notifier._Driver):
             self._on_project_create(message['payload']['resource_info'])
 
         # Eventually this will be used to update project resource pages:
-        if event_type in CONF.wmf_keystone_eventtype_blacklist:
+        if event_type in CONF.wmfhooks.eventtype_blacklist:
             return
-        if event_type not in CONF.wmf_keystone_eventtype_whitelist:
+        if event_type not in CONF.wmfhooks.eventtype_whitelist:
             return
 
         return
