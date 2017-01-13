@@ -47,6 +47,11 @@ class gerrit::jetty(
         'libmysql-java',
     ])
 
+    sudo::conf { 'gerrit2':
+        ensure  => present,
+        content => 'gerrit2 ALL= NOPASSWD: /usr/sbin/service gerrit*',
+    }
+
     file { '/srv/gerrit':
         ensure => directory,
         owner  => 'gerrit2',
