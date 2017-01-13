@@ -297,17 +297,17 @@ keystone_auth_project = <%= @keystoneconfig['admin_project_id'] %>
 keystone_auth_url = "http://<%= @designateconfig['controller_hostname'] %>:35357/v3"
 
 #-----------------------
-# WMF-specific handler for Fixed IPs
+# WMF-specific handler to clean up after instance deletion
+#
+#  this deletes puppet and salt certs for the deleted instance.
 #-----------------------
 [handler:wmf_sink]
-# Domain ID of domain to create records in. For a pre-existing domain, in this case eqiad.wmflabs
+# Domain ID of domain for instances.
+#  For a pre-existing domain, in this case eqiad.wmflabs
 domain_id = '<%= @designateconfig["domain_id_internal_forward"] %>'
 notification_topics = monitor
 notification_topics = notifications
 control_exchange = nova
-format = %(hostname)s.%(project_name)s.%(domain)s, %(hostname)s.%(domain)s
-ldapusername = uid=novaadmin,ou=people,dc=wikimedia,dc=org
-ldappassword = <%= @keystoneconfig['ldap_user_pass'] %>
 keystone_auth_name = "novaadmin"
 keystone_auth_pass = "<%= @keystoneconfig['ldap_user_pass'] %>"
 keystone_auth_project = <%= @keystoneconfig['admin_project_id'] %>
