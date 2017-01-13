@@ -175,7 +175,7 @@ class ApplyRoleForm(forms.SelfHandlingForm):
 class ApplyRoleView(RoleViewBase):
     form_class = ApplyRoleForm
     form_id = "apply_role_form"
-    modal_header = _("Apply Role")
+    modal_header = _("Apply Class")
     submit_label = _("Apply")
     submit_url = "horizon:project:puppet:applypuppetrole"
     template_name = "project/puppet/apply.html"
@@ -198,7 +198,7 @@ class RemoveRoleForm(forms.SelfHandlingForm):
 class RemoveRoleView(RoleViewBase):
     form_class = RemoveRoleForm
     form_id = "remove_role_form"
-    modal_header = _("Remove Role")
+    modal_header = _("Remove Class")
     submit_label = _("Remove")
     submit_url = "horizon:project:puppet:removepuppetrole"
     template_name = "project/puppet/remove.html"

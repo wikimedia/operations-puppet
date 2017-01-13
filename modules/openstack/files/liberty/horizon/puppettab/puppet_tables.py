@@ -27,7 +27,7 @@ LOG = logging.getLogger(__name__)
 
 class RemoveRole(tables.LinkAction):
     name = 'remove'
-    verbose_name = _("Remove Role")
+    verbose_name = _("Remove Class")
     classes = ("ajax-modal",)
     data_type_singular = _("Role")
 
@@ -48,7 +48,7 @@ class RemoveRole(tables.LinkAction):
 
 class ApplyRole(tables.LinkAction):
     name = 'apply_role'
-    verbose_name = _("Apply Role")
+    verbose_name = _("Apply Class")
     classes = ("ajax-modal",)
     icon = "plus"
     policy_rules = (("compute", "compute:delete"),)
