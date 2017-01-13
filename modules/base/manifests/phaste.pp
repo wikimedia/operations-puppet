@@ -4,7 +4,7 @@
 # onto Phabricator.
 #
 class base::phaste( $ensure = present ) {
-    include passwords::phabricator
+    include ::passwords::phabricator
 
     $conf = {
         user => 'ProdPasteBot',
