@@ -47,6 +47,15 @@ class gerrit::jetty(
         'libmysql-java',
     ])
 
+    file { '/etc/sudoers.d/10_gerrit2':
+        ensure  => file,
+        recurse => remote,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0777',
+        source  => 'puppet:///modules/gerrit/sudo_gerrit',
+    }
+
     file { '/srv/gerrit':
         ensure => directory,
         owner  => 'gerrit2',
