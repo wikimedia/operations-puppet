@@ -397,3 +397,8 @@ dbuser = <%= @keystoneconfig["oath_dbuser"] %>
 dbpass = <%= @keystoneconfig["oath_dbpass"] %>
 dbname = <%= @keystoneconfig["oath_dbname"] %>
 dbhost = <%= @keystoneconfig["oath_dbhost"] %>
+
+[wmfhooks]
+
+admin_pass = <%= @keystoneconfig["ldap_user_pass"] %>
+auth_url = <%= @keystoneconfig["auth_protocol"] %>://<%= @fqdn %>:<%= @keystoneconfig["auth_port"] %>/v3
