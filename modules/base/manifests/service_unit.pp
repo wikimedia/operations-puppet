@@ -119,7 +119,7 @@ define base::service_unit (
                 owner  => 'root',
                 group  => 'root',
                 mode   => '0555',
-                before => File[$path]
+                before => File[$path],
             }
         }
 
@@ -153,13 +153,13 @@ define base::service_unit (
 
     if $declare_service {
         $enable = $ensure ? {
-            present => true,
-            default => false,
+            'present' => true,
+            default   => false,
         }
         $base_params = {
             ensure   => ensure_service($ensure),
             provider => $::initsystem,
-            enable   => $enable
+            enable   => $enable,
         }
         $params = merge($base_params, $service_params)
         ensure_resource('service', $name, $params)

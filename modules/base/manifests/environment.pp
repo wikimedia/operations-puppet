@@ -19,7 +19,7 @@ class base::environment(
                         /^#alias ll=/ s/^#//
                         /^#alias la=/ s/^#//
                     ' /root/.bashrc",
-                onlyif  => "grep -q '^#alias ll' /root/.bashrc"
+                onlyif  => "grep -q '^#alias ll' /root/.bashrc",
             }
 
             file { '/etc/profile.d/mysql-ps1.sh':
@@ -73,7 +73,7 @@ class base::environment(
     ### Settings commons to all realms
 
     $wikimedia_cluster = $::realm ? {
-        labs    => "labs\n",
+        'labs'  => "labs\n",
         default => "${::site}\n",
     }
 

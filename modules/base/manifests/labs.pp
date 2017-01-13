@@ -1,6 +1,6 @@
 class base::labs inherits base {
-    include apt::unattendedupgrades,
-        apt::noupgrade
+    include ::apt::unattendedupgrades
+    include ::apt::noupgrade
 
     # Labs instances /var is quite small, provide our own default
     # to keep less records (T71604).
@@ -59,7 +59,7 @@ class base::labs inherits base {
         user { 'root':
             password => regsubst(
                 generate('/usr/local/sbin/make-labs-root-password', $::labsproject),
-                '\s$', '')
+                '\s$', ''),
         }
     }
 }

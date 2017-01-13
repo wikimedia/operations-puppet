@@ -1,8 +1,8 @@
 # Don't include this sub class on all hosts yet
 # NOTE: Policy is DROP by default
 class base::firewall($ensure = 'present') {
-    include network::constants
-    include ferm
+    include ::network::constants
+    include ::ferm
 
     $defscontent = $::realm ? {
         'labs'  => template('base/firewall/defs.erb', 'base/firewall/defs.labs.erb'),

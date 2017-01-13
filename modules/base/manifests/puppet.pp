@@ -3,8 +3,8 @@ class base::puppet(
     $certname=undef,
     $dns_alt_names=undef,
     ) {
-    include passwords::puppet::database
-    include base::puppet::params
+    include ::passwords::puppet::database
+    include ::base::puppet::params
     $interval = $base::puppet::params::interval
     $crontime = $base::puppet::params::crontime
     $freshnessinterval = $base::puppet::params::freshnessinterval
@@ -51,7 +51,7 @@ class base::puppet(
         }
     }
 
-    class { 'puppet_statsd':
+    class { '::puppet_statsd':
         statsd_host   => 'statsd.eqiad.wmnet',
         metric_format => 'puppet.<%= metric %>',
     }
@@ -81,7 +81,7 @@ class base::puppet(
         mode    => '0555',
         owner   => 'root',
         group   => 'root',
-        content => template('base/puppet-run.erb')
+        content => template('base/puppet-run.erb'),
     }
 
     file { '/usr/local/sbin/run-no-puppet':
