@@ -175,7 +175,7 @@ class ApplyRoleForm(forms.SelfHandlingForm):
 class ApplyRoleView(RoleViewBase):
     form_class = ApplyRoleForm
     form_id = "apply_role_form"
-    modal_header = _("Apply Role")
+    modal_header = _("Apply Class")
     submit_label = _("Apply")
     submit_url = "horizon:project:puppet:applypuppetrole"
     template_name = "project/puppet/apply.html"

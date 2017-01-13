@@ -48,7 +48,7 @@ class RemoveRole(tables.LinkAction):
 
 class ApplyRole(tables.LinkAction):
     name = 'apply_role'
-    verbose_name = _("Apply Role")
+    verbose_name = _("Apply Class")
     classes = ("ajax-modal",)
     icon = "plus"
     policy_rules = (("compute", "compute:delete"),)
