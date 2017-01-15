@@ -1,5 +1,5 @@
 class mediawiki::maintenance::wikidata( $ensure = present ) {
-    require mediawiki::users
+    require ::mediawiki::users
 
     # Starts a dispatcher instance every 3 minutes
     # They will run for a maximum of 9 minutes, so we can only have 3 concurrent instances.

@@ -11,7 +11,7 @@ class mediawiki::monitoring::graphite {
         warning         => 1,
         critical        => 0,
         under           => true,
-        nagios_critical => false
+        nagios_critical => false,
         # this will be enabled shortly if we don't see false positives
     }
 
@@ -23,7 +23,7 @@ class mediawiki::monitoring::graphite {
         warning         => 1,
         critical        => 0,
         under           => true,
-        nagios_critical => false
+        nagios_critical => false,
         # this will be enabled shortly if we don't see false positives
     }
 }
