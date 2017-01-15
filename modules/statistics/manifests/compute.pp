@@ -6,8 +6,8 @@ class statistics::compute {
     Class['::statistics::user'] -> Class['::statistics::compute']
 
 
-    include statistics::dataset_mount
-    include statistics::packages
+    include ::statistics::dataset_mount
+    include ::statistics::packages
 
     require_package('udp-filter')
 
@@ -24,7 +24,7 @@ class statistics::compute {
         group     => 'wikidev',
     }
 
-    include passwords::mysql::research
+    include ::passwords::mysql::research
     # This file will render at
     # /etc/mysql/conf.d/stats-research-client.cnf.
     mysql::config::client { 'stats-research':

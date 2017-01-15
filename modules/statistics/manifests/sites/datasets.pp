@@ -7,12 +7,12 @@
 # dataset1001 datasets_mount.
 #
 class statistics::sites::datasets {
-    require statistics::web
+    require ::statistics::web
 
     $working_path = $::statistics::working_path
     file { [
         "${working_path}/public-datasets",
-        "${working_path}/aggregate-datasets"
+        "${working_path}/aggregate-datasets",
     ]:
         ensure => 'directory',
         owner  => 'root',
@@ -63,7 +63,7 @@ class statistics::sites::datasets {
         minute  => '*/30',
     }
 
-    include apache::mod::headers
+    include ::apache::mod::headers
     apache::site { 'datasets':
         source  => 'puppet:///modules/statistics/datasets.wikimedia.org',
     }

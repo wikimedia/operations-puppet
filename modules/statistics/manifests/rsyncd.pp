@@ -13,7 +13,7 @@ class statistics::rsyncd($path, $hosts_allow)
 
     # this uses modules/rsync to
     # set up an rsync daemon service
-    class { 'rsync::server':
+    class { '::rsync::server':
         # the default timeout of 300 is too low
         timeout => 1000,
     }

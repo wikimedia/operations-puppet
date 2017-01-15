@@ -14,7 +14,7 @@
 #
 define statistics::rsync_job($source, $destination, $retention_days = undef, $ensure = 'present') {
     Class['::statistics'] -> Statistics::Rsync_job[$name]
-    require statistics::user
+    require ::statistics::user
 
     # ensure that the destination directory exists
     unless defined(File[$destination]) {
