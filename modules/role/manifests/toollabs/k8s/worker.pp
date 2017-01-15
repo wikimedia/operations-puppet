@@ -25,12 +25,12 @@ class role::toollabs::k8s::worker {
         notify          => Class['k8s::kubelet'],
     }
 
-    class { 'k8s::kubelet':
+    class { '::k8s::kubelet':
         master_host => $master_host,
         require     => Class['::k8s::docker'],
     }
 
-    class { 'k8s::proxy':
+    class { '::k8s::proxy':
         master_host => $master_host,
     }
 

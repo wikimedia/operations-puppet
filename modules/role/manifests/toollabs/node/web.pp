@@ -16,14 +16,14 @@
 class role::toollabs::node::web {
 
     include ::toollabs::node::all
-    include gridengine::submit_host
+    include ::gridengine::submit_host
 
     # New style webservices!
     package { 'toollabs-webservice':
         ensure => latest,
     }
 
-    class { 'gridengine::exec_host':
+    class { '::gridengine::exec_host':
         config  => 'toollabs/gridengine/host-web.erb',
         require => File['/var/lib/gridengine'],
     }

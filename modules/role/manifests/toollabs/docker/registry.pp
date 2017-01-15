@@ -2,7 +2,7 @@
 class role::toollabs::docker::registry {
     include ::toollabs::infrastructure
 
-    require role::labs::lvm::srv
+    require ::role::labs::lvm::srv
 
     sslcert::certificate { 'star.tools.wmflabs.org':
         before       => Class['::docker::registry'],
