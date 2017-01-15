@@ -6,7 +6,7 @@ class geowiki::job {
 
     include ::geowiki::params
     include ::geowiki::mysql_conf
-    include geoip
+    include ::geoip
 
     # This is not a complete list of
     # python packages that geowiki requires.
