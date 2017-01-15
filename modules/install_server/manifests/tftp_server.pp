@@ -14,7 +14,7 @@
 
 class install_server::tftp_server {
 
-    include standard
+    include ::standard
 
     file { '/srv/tftpboot':
         # config files in the puppet repository,
@@ -22,7 +22,7 @@ class install_server::tftp_server {
         source       => [
             'puppet:///modules/install_server/tftpboot',
             # lint:ignore:puppet_url_without_modules
-            'puppet:///volatile/tftpboot'
+            'puppet:///volatile/tftpboot',
             # lint:endignore
         ],
         sourceselect => all,

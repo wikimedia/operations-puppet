@@ -1,2 +1,2 @@
 #
-include install_server::dhcp_server
+include ::install_server::dhcp_server
