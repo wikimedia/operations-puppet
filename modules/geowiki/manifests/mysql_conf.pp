@@ -4,7 +4,7 @@
 #
 class geowiki::mysql_conf {
     include ::geowiki::params
-    include passwords::mysql::research
+    include ::passwords::mysql::research
 
     $research_mysql_user = $passwords::mysql::research::user
     $research_mysql_pass = $passwords::mysql::research::pass
