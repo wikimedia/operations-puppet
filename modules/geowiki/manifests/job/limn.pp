@@ -2,7 +2,7 @@
 # Installs a cron job to create limn files from the geocoded editor data.
 #
 class geowiki::job::limn inherits geowiki::job {
-    require geowiki::private_data
+    require ::geowiki::private_data
 
     git::clone { 'geowiki-data-public':
         ensure    => 'latest',
