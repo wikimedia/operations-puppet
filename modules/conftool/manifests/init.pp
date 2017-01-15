@@ -11,7 +11,7 @@ class conftool(
     $hosts       = [
         'https://conf1001.eqiad.wmnet:2379',
         'https://conf1002.eqiad.wmnet:2379',
-        'https://conf1003.eqiad.wmnet:2379'
+        'https://conf1003.eqiad.wmnet:2379',
     ],
     $tcpircbot_host = 'icinga.wikimedia.org',
     $tcpircbot_port = 9200,
@@ -37,13 +37,13 @@ class conftool(
             tcpircbot_host => $tcpircbot_host,
             tcpircbot_port => $tcpircbot_port,
             driver_options => {
-                allow_reconnect => true
-            }
+                allow_reconnect => true,
+            },
         }),
     }
 
     if $auth {
         # Install basic auth data
-        require etcd::auth::common
+        require ::etcd::auth::common
     }
 }
