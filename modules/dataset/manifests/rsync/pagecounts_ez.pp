@@ -6,8 +6,8 @@ class dataset::rsync::pagecounts_ez($enable=true) {
         $ensure = 'absent'
     }
 
-    include dataset::common
-    include dataset::rsync::common
+    include ::dataset::common
+    include ::dataset::rsync::common
 
     file { '/etc/rsyncd.d/30-rsync-pagecounts_ez.conf':
         ensure => $ensure,

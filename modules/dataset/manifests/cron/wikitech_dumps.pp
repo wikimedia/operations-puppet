@@ -11,7 +11,7 @@ class dataset::cron::wikitech_dumps(
         $ensure = 'absent'
     }
 
-    include dataset::dirs
+    include ::dataset::dirs
 
     $wikitechdir = "${dataset::dirs::otherdir}/wikitech"
 

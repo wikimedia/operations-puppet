@@ -6,9 +6,9 @@ class dataset::rsync::phab_dump($enable=true) {
         $ensure = 'absent'
     }
 
-    include dataset::common
+    include ::dataset::common
 
-    include dataset::rsync::common
+    include ::dataset::rsync::common
     file { '/etc/rsyncd.d/40-rsync-phab_dump.conf':
         ensure => $ensure,
         mode   => '0444',

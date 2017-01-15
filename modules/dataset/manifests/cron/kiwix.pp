@@ -9,7 +9,7 @@ class dataset::cron::kiwix(
         $ensure = 'absent'
     }
 
-    include dataset::common
+    include ::dataset::common
 
     group { 'mirror':
         ensure => 'present',
