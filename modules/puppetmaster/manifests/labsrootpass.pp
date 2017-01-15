@@ -19,7 +19,7 @@ class puppetmaster::labsrootpass {
         owner  => 'root',
         group  => 'root',
         mode   => '0555',
-        source => 'puppet:///modules/puppetmaster/make-labs-root-password'
+        source => 'puppet:///modules/puppetmaster/make-labs-root-password',
     }
 
     file { '/var/local/labs-root-passwords':
