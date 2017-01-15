@@ -11,7 +11,7 @@ define diamond::collector::minimalpuppetagent {
     # puppet, since /var/lib/puppet doesn't have +x set
     sudo::user { 'diamond_sudo_for_puppet':
         user       => 'diamond',
-        privileges => ['ALL=(puppet) NOPASSWD: /bin/cat /var/lib/puppet/state/last_run_summary.yaml']
+        privileges => ['ALL=(puppet) NOPASSWD: /bin/cat /var/lib/puppet/state/last_run_summary.yaml'],
     }
 
     diamond::collector { 'MinimalPuppetAgent':
