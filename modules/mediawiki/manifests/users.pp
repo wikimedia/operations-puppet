@@ -36,7 +36,7 @@ class mediawiki::users(
             'ALL = (root) NOPASSWD: /usr/sbin/service apache2 start',
             'ALL = (root) NOPASSWD: /sbin/start hhvm',
             'ALL = (root) NOPASSWD: /usr/sbin/apache2ctl graceful-stop',
-        ]
+        ],
     }
 
     # The pybal-check account is used by PyBal to monitor server health

@@ -10,6 +10,6 @@ define mediawiki::php_enmod {
         refreshonly => true,
         user        => 'root',
         group       => 'root',
-        subscribe   => File["/etc/php5/mods-available/${title}.ini"]
+        subscribe   => File["/etc/php5/mods-available/${title}.ini"],
     }
 }
