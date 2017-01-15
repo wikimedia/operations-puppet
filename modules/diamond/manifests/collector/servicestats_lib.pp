@@ -3,8 +3,8 @@ class diamond::collector::servicestats_lib {
     diamond::collector { 'ServiceStats':
         source   => 'puppet:///modules/diamond/collector/servicestats.py',
         settings => {
-          initsystem => $::initsystem
-        }
+          initsystem => $::initsystem,
+        },
     }
 
     file { '/usr/share/diamond/collectors/servicestats/servicestats_lib.py':
