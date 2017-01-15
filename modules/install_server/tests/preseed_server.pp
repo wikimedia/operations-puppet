@@ -1,2 +1,2 @@
 #
-include install_server::preseed_server
+include ::install_server::preseed_server

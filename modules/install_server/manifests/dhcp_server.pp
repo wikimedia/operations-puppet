@@ -14,7 +14,7 @@
 
 class install_server::dhcp_server {
 
-    include standard
+    include ::standard
 
     file { '/etc/dhcp':
         ensure  => directory,
