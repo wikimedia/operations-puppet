@@ -7,7 +7,7 @@ class toollabs::static(
     $ssl_settings = ssl_ciphersuite('nginx', 'compat'),
 ) {
 
-    include toollabs::infrastructure
+    include ::toollabs::infrastructure
 
     if $ssl_certificate_name != false {
         sslcert::certificate { $ssl_certificate_name: }
@@ -15,7 +15,7 @@ class toollabs::static(
 
     labs_lvm::volume { 'cdnjs-disk':
         mountat => '/srv',
-        size    => '100%FREE'
+        size    => '100%FREE',
     }
 
     # This is a 11Gig pure content repository with no executable code

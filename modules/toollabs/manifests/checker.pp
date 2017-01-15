@@ -7,8 +7,8 @@
 
 class toollabs::checker inherits toollabs {
 
-    include gridengine::submit_host
-    include toollabs::infrastructure
+    include ::gridengine::submit_host
+    include ::toollabs::infrastructure
 
     require_package('python-flask',
                     'python-psycopg2',
@@ -62,7 +62,7 @@ class toollabs::checker inherits toollabs {
         owner  => "${::labsproject}.toolschecker",
         group  => 'www-data',
         mode   => '0400',
-        source => "/var/lib/puppet/ssl/certs/${::fqdn}.pem"
+        source => "/var/lib/puppet/ssl/certs/${::fqdn}.pem",
     }
 
     file { '/var/lib/toolschecker/puppetcerts/key.pem':
@@ -70,7 +70,7 @@ class toollabs::checker inherits toollabs {
         owner  => "${::labsproject}.toolschecker",
         group  => 'www-data',
         mode   => '0400',
-        source => "/var/lib/puppet/ssl/private_keys/${::fqdn}.pem"
+        source => "/var/lib/puppet/ssl/private_keys/${::fqdn}.pem",
     }
 
     file { '/etc/init/toolschecker.conf':
@@ -86,7 +86,7 @@ class toollabs::checker inherits toollabs {
         privileges => [
             'ALL=(tools.toolschecker-k8s-ws) NOPASSWD: ALL',
             'ALL=(tools.toolschecker-ge-ws) NOPASSWD: ALL',
-        ]
+        ],
     }
 
     service { 'toolschecker':

@@ -2,10 +2,10 @@
 
 class toollabs::master inherits toollabs {
 
-    include gridengine::master
-    include toollabs::infrastructure
-    include toollabs::queue::continuous
-    include toollabs::queue::task
+    include ::gridengine::master
+    include ::toollabs::infrastructure
+    include ::toollabs::queue::continuous
+    include ::toollabs::queue::task
 
     gridengine_resource { 'h_vmem':
         ensure      => present,
