@@ -9,7 +9,7 @@ class puppetmaster::generators($ensure = 'present'){
         group   => 'root',
         mode    => '0555',
         source  => 'puppet:///modules/puppetmaster/naggen2',
-        require => Package[$packages]
+        require => Package[$packages],
     }
 
     file {'/usr/local/bin/sshknowngen':
@@ -18,7 +18,7 @@ class puppetmaster::generators($ensure = 'present'){
         group   => 'root',
         mode    => '0555',
         source  => 'puppet:///modules/puppetmaster/sshknowngen',
-        require => Package[$packages]
+        require => Package[$packages],
     }
 
     file {'/usr/local/bin/prometheus-ganglia-gen':
@@ -27,6 +27,6 @@ class puppetmaster::generators($ensure = 'present'){
         group   => 'root',
         mode    => '0555',
         source  => 'puppet:///modules/puppetmaster/prometheus-ganglia-gen',
-        require => Package[$packages]
+        require => Package[$packages],
     }
 }
