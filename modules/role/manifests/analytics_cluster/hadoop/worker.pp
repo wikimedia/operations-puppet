@@ -5,13 +5,13 @@ class role::analytics_cluster::hadoop::worker {
         description => 'Hadoop Worker (DataNode & NodeManager)',
     }
 
-    require role::analytics_cluster::hadoop::client
-    include role::analytics_cluster::monitoring::disks
+    require ::role::analytics_cluster::hadoop::client
+    include ::role::analytics_cluster::monitoring::disks
 
-    class { 'cdh::hadoop::worker': }
+    class { '::cdh::hadoop::worker': }
 
     # Use jmxtrans for sending metrics
-    class { 'cdh::hadoop::jmxtrans::worker':
+    class { '::cdh::hadoop::jmxtrans::worker':
         statsd  => hiera('statsd'),
     }
 
@@ -61,21 +61,21 @@ class role::analytics_cluster::hadoop::worker {
     # This installs hive-hcatalog package on worker nodes to get
     # hcatalog jars, including Hive JsonSerde for using
     # JSON backed Hive tables.
-    include role::analytics_cluster::hive::client
+    include ::role::analytics_cluster::hive::client
 
     # Spark Python stopped working in Spark 1.5.0 with Oozie,
     # for complicated reasons.  We need to be able to set
     # SPARK_HOME in an oozie launcher, and that SPARK_HOME
     # needs to point at a locally installed spark directory
     # in order load Spark Python dependencies.
-    include cdh::spark
+    include ::cdh::spark
 
     # sqoop needs to be on worker nodes if Oozie is to
     # launch sqoop jobs.
-    include cdh::sqoop
+    include ::cdh::sqoop
 
     # Install MaxMind databases for geocoding UDFs
-    include geoip
+    include ::geoip
 
     # Install packages that are useful for distributed
     # computation in Hadoop, and thus should be available on

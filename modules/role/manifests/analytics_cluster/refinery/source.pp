@@ -2,7 +2,7 @@
 # Clones analytics/refinery/source repo and keeps it up-to-date
 #
 class role::analytics_cluster::refinery::source {
-    require statistics
+    require ::statistics
 
     $path = "${::statistics::working_path}/refinery-source"
 

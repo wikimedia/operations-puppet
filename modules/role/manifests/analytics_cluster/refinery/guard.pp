@@ -3,7 +3,7 @@
 # sends out an email upon issues
 #
 class role::analytics_cluster::refinery::guard {
-    require role::analytics_cluster::refinery::source
+    require ::role::analytics_cluster::refinery::source
 
     include ::maven
 
