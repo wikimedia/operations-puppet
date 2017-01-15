@@ -8,10 +8,10 @@
 #
 class role::analytics_cluster::oozie::server::database {
     # Install a database server (MariaDB)
-    require role::analytics_cluster::database::meta
+    require ::role::analytics_cluster::database::meta
 
     # Ensure that the oozie db is created.
-    class { 'cdh::oozie::database::mysql':
+    class { '::cdh::oozie::database::mysql':
         require => Class['role::analytics_cluster::database::meta'],
     }
 

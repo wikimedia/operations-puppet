@@ -5,13 +5,13 @@ class role::analytics_cluster::hadoop::standby {
     system::role { 'analytics_cluster::hadoop::standby':
         description => 'Hadoop Standby NameNode',
     }
-    require role::analytics_cluster::hadoop::client
-    include role::analytics_cluster::monitoring::disks
+    require ::role::analytics_cluster::hadoop::client
+    include ::role::analytics_cluster::monitoring::disks
 
-    class { 'cdh::hadoop::namenode::standby': }
+    class { '::cdh::hadoop::namenode::standby': }
 
     # Use jmxtrans for sending metrics
-    class { 'cdh::hadoop::jmxtrans::namenode':
+    class { '::cdh::hadoop::jmxtrans::namenode':
         statsd  => hiera('statsd'),
     }
 
@@ -34,15 +34,15 @@ class role::analytics_cluster::hadoop::standby {
     }
 
     # Firewall
-    include role::analytics_cluster::hadoop::ferm::namenode
+    include ::role::analytics_cluster::hadoop::ferm::namenode
 
     # If this is a resourcemanager host, then go ahead
     # and include a resourcemanager on all standby nodes as well
     # as the master node.
     if $::fqdn in $::cdh::hadoop::resourcemanager_hosts {
-        include cdh::hadoop::resourcemanager
+        include ::cdh::hadoop::resourcemanager
         # Firewall
-        include role::analytics_cluster::hadoop::ferm::resourcemanager
+        include ::role::analytics_cluster::hadoop::ferm::resourcemanager
     }
 
 }

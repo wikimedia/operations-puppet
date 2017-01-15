@@ -8,7 +8,7 @@ class role::analytics_cluster::java {
     # to LD_LIBRARY_PATH.  We dont't need this
     # package anyway, so ensure it is absent.
     package { 'icedtea-7-jre-jamvm':
-        ensure => 'absent'
+        ensure => 'absent',
     }
 
     # Make sure file.encoding is UTF-8 for all java processes.
