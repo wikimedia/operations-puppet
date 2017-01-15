@@ -8,7 +8,7 @@ class toollabs (
     $mail_domain = 'tools.wmflabs.org',
 ) {
 
-    include labs_lvm
+    include ::labs_lvm
 
     package { ['nano', 'at']:
         ensure => latest,
@@ -139,7 +139,7 @@ class toollabs (
     }
 
     if !$is_mail_relay {
-        class { 'exim4':
+        class { '::exim4':
             queuerunner => 'queueonly',
             config      => template('toollabs/route-to-mail-relay.exim4.conf.erb'),
             variant     => 'light',
@@ -169,7 +169,7 @@ class toollabs (
         content => template('toollabs/hosts.erb'),
         owner   => 'root',
         group   => 'root',
-        mode    => '0644'
+        mode    => '0644',
     }
 
     # Silence e-mails sent when regular users try to sudo (T95882)
