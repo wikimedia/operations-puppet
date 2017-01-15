@@ -5,9 +5,9 @@ class toollabs::cronrunner {
         source => "puppet:///modules/toollabs/40-${::labsproject}-submithost-banner.sh",
     }
 
-    include gridengine::submit_host
-    include toollabs
-    include toollabs::hba
+    include ::gridengine::submit_host
+    include ::toollabs
+    include ::toollabs::hba
 
     # We need to include exec environment here since the current
     # version of jsub checks the local environment to find the full
@@ -15,7 +15,7 @@ class toollabs::cronrunner {
     # that jsub is always run in an environment identical to the exec
     # nodes. This is kind of terrible, so we need to fix that eventually.
     # Until then...
-    include toollabs::exec_environ
+    include ::toollabs::exec_environ
 
     file { '/etc/ssh/ssh_config':
         ensure => file,

@@ -14,10 +14,10 @@ class toollabs::mailrelay inherits toollabs
         fail('Mail relay hosts must have an toollabs::external_hostname defined in Hiera')
     }
 
-    include gridengine::submit_host
-    include toollabs::infrastructure
+    include ::gridengine::submit_host
+    include ::toollabs::infrastructure
 
-    class { 'exim4':
+    class { '::exim4':
         queuerunner => 'combined',
         config      => template('toollabs/mail-relay.exim4.conf.erb'),
         variant     => 'heavy',

@@ -7,9 +7,9 @@ class toollabs::redis (
     $maxmemory = '12GB',
 ) {
 
-    include toollabs::infrastructure
+    include ::toollabs::infrastructure
     include ::redis::client::python
-    include labs_lvm
+    include ::labs_lvm
 
     package { 'python-virtualenv':
         ensure => latest,
