@@ -1,5 +1,5 @@
 class snapshot::dumps::templates {
-    include snapshot::dumps::dirs
+    include ::snapshot::dumps::dirs
     $templsdir = $snapshot::dumps::dirs::templsdir
 
     file { "${templsdir}/download-index.html":

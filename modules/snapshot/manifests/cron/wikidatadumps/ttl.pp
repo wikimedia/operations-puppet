@@ -1,7 +1,7 @@
 class snapshot::cron::wikidatadumps::ttl(
     $user   = undef,
 ) {
-    include snapshot::cron::wikidatadumps::common
+    include ::snapshot::cron::wikidatadumps::common
 
     $scriptpath = '/usr/local/bin/dumpwikidatattl.sh'
     file { $scriptpath:

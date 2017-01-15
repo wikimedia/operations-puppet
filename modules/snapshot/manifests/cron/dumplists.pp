@@ -1,7 +1,7 @@
 class snapshot::cron::dumplists(
     $user   = undef,
 ) {
-    include snapshot::dumps::dirs
+    include ::snapshot::dumps::dirs
 
     file { '/usr/local/bin/list-last-good-dumps.sh':
         ensure  => 'present',
