@@ -5,7 +5,7 @@ class toollabs::kube2proxy(
     $kube_token='test',
 ) {
 
-    include k8s::users
+    include ::k8s::users
 
     $packages = [
       'python3-pip',
@@ -44,7 +44,7 @@ class toollabs::kube2proxy(
         'kubernetes'  => {
             'master'  => "https://${master_host}:6443",
             'token'   => $client_token,
-        }
+        },
     }
 
     file { '/etc/kube2proxy.yaml':
