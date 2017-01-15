@@ -10,7 +10,7 @@ class role::analytics_cluster::hue {
     # have their corresponding clients
     # and configs installed.
     # Include Hadoop ecosystem client classes.
-    require role::analytics_cluster::hadoop::client,
+    require ::role::analytics_cluster::hadoop::client,
         role::analytics_cluster::hive::client,
         role::analytics_cluster::oozie::client,
         # These don't require any extra configuration,
@@ -21,9 +21,9 @@ class role::analytics_cluster::hue {
         cdh::spark
 
     # LDAP Labs config is the same as LDAP in production.
-    include ldap::role::config::labs
+    include ::ldap::role::config::labs
 
-    class { 'cdh::hue':
+    class { '::cdh::hue':
         # We always host hive-server on the same node as hive-metastore.
         hive_server_host        => hiera('cdh::hive::metastore_host'),
         smtp_host               => $::mail_smarthost[0],

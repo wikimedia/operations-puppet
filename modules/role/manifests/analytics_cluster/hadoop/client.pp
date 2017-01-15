@@ -3,7 +3,7 @@
 #
 class role::analytics_cluster::hadoop::client {
     # Need Java before Hadoop is installed.
-    require role::analytics_cluster::java
+    require ::role::analytics_cluster::java
 
     $hadoop_var_directory                     = '/var/lib/hadoop'
     $hadoop_name_directory                    = "${hadoop_var_directory}/name"
@@ -22,7 +22,7 @@ class role::analytics_cluster::hadoop::client {
     $zookeeper_cluster_name = hiera('zookeeper_cluster_name')
     $zookeeper_hosts        = keys($zookeeper_clusters[$zookeeper_cluster_name]['hosts'])
 
-    class { 'cdh::hadoop':
+    class { '::cdh::hadoop':
         # Default to using running resourcemanager on the same hosts
         # as the namenodes.
         resourcemanager_hosts                       => hiera(
@@ -73,7 +73,7 @@ class role::analytics_cluster::hadoop::client {
     }
     # This will only enable logstash logging if
     # $cdh::hadoop::gelf_logging_enabled is true.
-    include role::analytics_cluster::hadoop::logstash
+    include ::role::analytics_cluster::hadoop::logstash
 
     # If in production AND the current node is a journalnode, then
     # go ahead and include an icinga alert for the JournalNode process.

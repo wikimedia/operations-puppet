@@ -3,7 +3,7 @@
 # import data from Kafka into Hadoop.
 #
 class role::analytics_cluster::refinery::camus {
-    require role::analytics_cluster::refinery
+    require ::role::analytics_cluster::refinery
 
     $kafka_config = kafka_config('analytics')
 

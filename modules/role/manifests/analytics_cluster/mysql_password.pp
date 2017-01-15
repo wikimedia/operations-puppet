@@ -10,7 +10,7 @@
 class role::analytics_cluster::mysql_password {
     Class['role::analytics_cluster::hadoop::client'] -> Class['role::analytics_cluster::mysql_password']
 
-    include passwords::mysql::research
+    include ::passwords::mysql::research
     $password = $::passwords::mysql::research::pass
     $path     = '/user/hdfs/mysql-analytics-research-client-pw.txt'
 
