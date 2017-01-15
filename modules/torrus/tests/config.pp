@@ -1,3 +1,3 @@
 #
 
-include torrus::config
+include ::torrus::config

@@ -37,6 +37,6 @@ class torrus {
         hasrestart => false,
     }
 
-    include torrus::xmlconfig
-    include torrus::discovery
+    include ::torrus::xmlconfig
+    include ::torrus::discovery
 }

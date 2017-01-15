@@ -1,6 +1,6 @@
 class torrus::discovery {
-    require torrus::config
-    require torrus::xmlconfig
+    require ::torrus::config
+    require ::torrus::xmlconfig
 
     file { '/etc/torrus/discovery':
         ensure => directory,
