@@ -1,7 +1,7 @@
 # Include this to add cron jobs calling refreshLinks.php on all clusters. (RT-2355)
 class mediawiki::maintenance::refreshlinks( $ensure = present ) {
 
-    require mediawiki
+    require ::mediawiki
 
     file { [ '/var/log/mediawiki/refreshLinks' ]:
         ensure => ensure_directory($ensure),

@@ -1,6 +1,6 @@
 class mediawiki::maintenance::pagetriage( $ensure = present ) {
 
-    require mediawiki
+    require ::mediawiki
 
     system::role { 'mediawiki::maintenance::pagetriage': description => 'Mediawiki Maintenance Server: pagetriage extension' }
 
