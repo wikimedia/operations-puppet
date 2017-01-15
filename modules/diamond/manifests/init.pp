@@ -131,15 +131,15 @@ class diamond(
               'TCPFastOpenActive', 'TCPFastOpenActiveFail',
               'TCPFastOpenPassive', 'TCPFastOpenPassiveFail',
               'TCPFastOpenListenOverflow', 'TCPFastOpenCookieReqd',
-              'TCPSynRetrans', 'TCPOrigDataSent'
+              'TCPSynRetrans', 'TCPOrigDataSent',
             ],
             gauges        => [
               'CurrEstab', 'MaxConn',
               'TCPFastOpenActive', 'TCPFastOpenActiveFail',
               'TCPFastOpenPassive', 'TCPFastOpenPassiveFail',
-              'TCPFastOpenListenOverflow', 'TCPFastOpenCookieReqd'
+              'TCPFastOpenListenOverflow', 'TCPFastOpenCookieReqd',
             ],
-        }
+        },
     }
 
     diamond::collector { 'Ntpd': }
