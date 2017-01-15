@@ -42,7 +42,7 @@ define puppetmaster::gitprivate (
             group   => $group,
             cwd     => $title,
             creates => $creates,
-            require => File[$title]
+            require => File[$title],
         }
     }
 
