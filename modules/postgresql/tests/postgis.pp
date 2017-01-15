@@ -1,3 +1,3 @@
 #
 
-include postgresql::postgis
+include ::postgresql::postgis

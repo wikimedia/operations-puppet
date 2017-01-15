@@ -1,4 +1,4 @@
 #
 
-include postgresql::server
+include ::postgresql::server
 postgresql::spatialdb { 'gis': }

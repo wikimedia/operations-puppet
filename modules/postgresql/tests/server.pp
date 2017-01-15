@@ -1,3 +1,3 @@
 #
 
-include postgresql::server
+include ::postgresql::server
