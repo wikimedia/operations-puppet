@@ -7,7 +7,7 @@ class toollabs::puppetmaster {
     }
 
     # Auto pull everything every minute!
-    class { 'puppetmaster::gitsync':
+    class { '::puppetmaster::gitsync':
         run_every_minutes => '1',
     }
 }
