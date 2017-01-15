@@ -1,6 +1,6 @@
 #
 
-include postgresql::server
+include ::postgresql::server
 postgresql::user { 'testuser':
   ensure   => 'present',
   user     => 'testuser',
