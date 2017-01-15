@@ -1,7 +1,7 @@
 # sets up a Ganglia Aggregator service
 class ganglia::monitor::aggregator($sites) {
-    require ganglia::monitor::packages
-    include ganglia::configuration
+    require ::ganglia::monitor::packages
+    include ::ganglia::configuration
 
     system::role { 'ganglia::monitor::aggregator': description => 'central Ganglia aggregator' }
 

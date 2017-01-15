@@ -1,6 +1,6 @@
 #
 
-class { 'ganglia::gmetad':
+class { '::ganglia::gmetad':
     grid             => 'mygrid',
     gmetad_root      => '/var/lib/ganglia',
     rrd_rootdir      => '/var/lib/ganglia/rrds',
