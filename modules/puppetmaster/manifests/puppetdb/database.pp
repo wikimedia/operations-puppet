@@ -8,7 +8,7 @@ class puppetmaster::puppetdb::database($master) {
     if $master == $::fqdn {
         # We do this for the require in postgres::db
         $require_class = 'postgresql::master'
-        class { 'postgresql::master':
+        class { '::postgresql::master':
             includes => ['tuning.conf'],
             root_dir => '/srv/postgres',
             use_ssl  => true,
@@ -16,7 +16,7 @@ class puppetmaster::puppetdb::database($master) {
         $on_master = true
     } else {
         $require_class = 'postgresql::slave'
-        class { 'postgresql::slave':
+        class { '::postgresql::slave':
             includes         => ['tuning.conf'],
             master_server    => $master,
             root_dir         => '/srv/postgres',
@@ -30,7 +30,7 @@ class puppetmaster::puppetdb::database($master) {
     if $postgres_users {
         $postgres_users_defaults = {
             pgversion => 9.4,
-            master    => $on_master
+            master    => $on_master,
         }
         create_resources(postgresql::user, $postgres_users,
             $postgres_users_defaults)
@@ -57,7 +57,7 @@ class puppetmaster::puppetdb::database($master) {
         command => '/usr/bin/psql puppetdb -c "create extension pg_trgm"',
         unless  => '/usr/bin/psql puppetdb -c \'\dx\' | /bin/grep -q pg_trgm',
         user    => 'postgres',
-        require => Postgresql::Db['puppetdb']
+        require => Postgresql::Db['puppetdb'],
     }
 
 }

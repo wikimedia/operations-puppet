@@ -1,2 +1,2 @@
 #
-include puppetmaster::labs
+include ::puppetmaster::labs

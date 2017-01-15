@@ -21,9 +21,9 @@ class puppetmaster::geoip(
 
     if $fetch_private {
         # Fetch the proprietary paid-for MaxMind database
-        include passwords::geoip
+        include ::passwords::geoip
 
-        class { 'geoip::data::maxmind':
+        class { '::geoip::data::maxmind':
             data_directory => $geoip_destdir,
             proxy          => $webproxy,
             user_id        => $passwords::geoip::user_id,
@@ -41,7 +41,7 @@ class puppetmaster::geoip(
                 ],
         }
     } else {
-        class { 'geoip::data::maxmind':
+        class { '::geoip::data::maxmind':
             data_directory => $geoip_destdir,
             proxy          => $webproxy,
             product_ids    => [

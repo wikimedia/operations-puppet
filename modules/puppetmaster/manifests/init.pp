@@ -66,7 +66,7 @@ class puppetmaster(
 
     # Require /etc/puppet.conf to be in place,
     # so the postinst scripts do the right things.
-    class { 'puppetmaster::config':
+    class { '::puppetmaster::config':
         config      => $config,
         server_type => $server_type,
     }
@@ -96,7 +96,7 @@ class puppetmaster(
         'rails',
         'ruby-json',
         'ruby-mysql',
-        'ruby-ldap'
+        'ruby-ldap',
         ]:
         ensure  => present,
     }
@@ -108,11 +108,11 @@ class puppetmaster(
         }
     }
 
-    class { 'puppetmaster::passenger':
+    class { '::puppetmaster::passenger':
         bind_address  => $bind_address,
         verify_client => $verify_client,
         allow_from    => $allow_from,
-        deny_from     => $deny_from
+        deny_from     => $deny_from,
     }
 
 
@@ -146,11 +146,11 @@ class puppetmaster(
         }
     }
 
-    class { 'puppetmaster::ssl':
+    class { '::puppetmaster::ssl':
         server_name => $server_name,
     }
 
-    class { 'puppetmaster::gitclone':
+    class { '::puppetmaster::gitclone':
         secure_private      => $secure_private,
         is_git_master       => $is_git_master,
         prevent_cherrypicks => $prevent_cherrypicks,
@@ -158,11 +158,11 @@ class puppetmaster(
         group               => $git_group,
     }
 
-    include puppetmaster::scripts
-    include puppetmaster::geoip
-    include puppetmaster::gitpuppet
-    include puppetmaster::monitoring
-    include puppetmaster::generators
+    include ::puppetmaster::scripts
+    include ::puppetmaster::geoip
+    include ::puppetmaster::gitpuppet
+    include ::puppetmaster::monitoring
+    include ::puppetmaster::generators
 
     file { '/etc/puppet/auth.conf':
         owner   => 'root',
