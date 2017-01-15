@@ -20,6 +20,6 @@ class install_server::preseed_server {
         group   => 'root',
         source  => 'puppet:///modules/install_server/autoinstall',
         recurse => true,
-        links   => manage
+        links   => manage,
     }
 }
