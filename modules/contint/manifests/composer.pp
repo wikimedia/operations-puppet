@@ -5,7 +5,7 @@
 #
 class contint::composer {
 
-    require contint::deployment_dir
+    require ::contint::deployment_dir
 
     git::clone { 'jenkins CI Composer':
         ensure             => 'latest',

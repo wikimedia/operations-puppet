@@ -19,5 +19,5 @@ class contint::packages::ops {
 
     # For Jenkins job operations-dns-lint
     # Production DNS migrated to Jessie T98003
-    include authdns::lint
+    include ::authdns::lint
 }
