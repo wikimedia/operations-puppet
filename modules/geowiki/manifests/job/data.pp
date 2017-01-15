@@ -4,7 +4,7 @@
 # editor geocoding statistics, saved back into a db.
 #
 class geowiki::job::data inherits geowiki::job {
-    include passwords::mysql::globaldev
+    include ::passwords::mysql::globaldev
 
     # install MySQL conf files for db acccess
     $globaldev_mysql_user = $passwords::mysql::globaldev::user
