@@ -8,10 +8,10 @@
 # Bug: T132407
 #
 class statistics::sites::analytics {
-    require statistics::web
+    require ::statistics::web
 
     # /srv/analytics.wikimedia.org
-    $document_root = "${$::statistics::working_path}/analytics.wikimedia.org"
+    $document_root = "${::statistics::working_path}/analytics.wikimedia.org"
     # Allow statistics-web-users to modify files in this directory.
 
     git::clone { 'analytics.wikimedia.org':
@@ -23,7 +23,7 @@ class statistics::sites::analytics {
         mode      => '0775',
     }
 
-    include apache::mod::headers
+    include ::apache::mod::headers
     apache::site { 'analytics':
         content => template('statistics/analytics.wikimedia.org.erb'),
         require => File[$document_root],

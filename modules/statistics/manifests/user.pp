@@ -1,5 +1,5 @@
 class statistics::user {
-    include passwords::statistics::user
+    include ::passwords::statistics::user
 
     $username = 'stats'
     $homedir  = "/var/lib/${username}"
@@ -15,7 +15,7 @@ class statistics::user {
         groups     => ['wikidev'],
         shell      => '/bin/bash',
         managehome => true,
-        system     => true
+        system     => true,
     }
 
     # lint:ignore:arrow_alignment

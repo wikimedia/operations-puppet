@@ -4,7 +4,7 @@
 define statistics::mysql_credentials(
     $group,
 ) {
-    include passwords::mysql::research
+    include ::passwords::mysql::research
     # This file will render at
     # /etc/mysql/conf.d/research-client.cnf.
     mysql::config::client { $title:
