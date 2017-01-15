@@ -7,7 +7,7 @@
 # Bug: T116192
 #
 class statistics::sites::yarn {
-    require statistics::web
+    require ::statistics::web
 
     include ::apache::mod::proxy_http
     include ::apache::mod::proxy

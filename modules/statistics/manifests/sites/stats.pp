@@ -1,10 +1,10 @@
 # == Class statistics::sites::stats
 # stats.wikimedia.org
 class statistics::sites::stats {
-    require statistics::web
+    require ::statistics::web
 
-    require geowiki::private_data
-    include geowiki::params
+    require ::geowiki::private_data
+    include ::geowiki::params
 
     $geowiki_private_directory     = '/srv/stats.wikimedia.org/htdocs/geowiki-private'
     $geowiki_private_htpasswd_file = '/etc/apache2/htpasswd.stats-geowiki'
