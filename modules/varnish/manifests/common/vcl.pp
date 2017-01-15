@@ -1,5 +1,5 @@
 class varnish::common::vcl {
-    require varnish::common
+    require ::varnish::common
 
     file { '/etc/varnish/errorpage.inc.vcl':
         owner   => 'root',

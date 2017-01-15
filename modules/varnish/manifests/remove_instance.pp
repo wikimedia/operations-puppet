@@ -3,7 +3,7 @@
 # defined varnish::instance is configured and/or started.
 
 define varnish::remove_instance() {
-    require varnish::common
+    require ::varnish::common
 
     $suffix = $title
 
