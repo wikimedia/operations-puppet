@@ -7,8 +7,8 @@
 
 class toollabs::exec_environ {
 
-    include locales::extended
-    include identd
+    include ::locales::extended
+    include ::identd
     include ::redis::client::python
 
     # Mediawiki fontlist no longer supports precise systems
@@ -337,7 +337,7 @@ class toollabs::exec_environ {
     # Note: Every package *must* have equivalent package in both the
     # branches. If one is unavailable, please mark it as such with a comment.
     if $::lsbdistcodename == 'precise' {
-        include toollabs::genpp::python_exec_precise
+        include ::toollabs::genpp::python_exec_precise
         package { [
             'libboost-python1.48.0',
             'libgdal1-1.7.0',              # T58995
@@ -357,7 +357,7 @@ class toollabs::exec_environ {
             ensure => latest,
         }
     } elsif $::lsbdistcodename == 'trusty' {
-        include toollabs::genpp::python_exec_trusty
+        include ::toollabs::genpp::python_exec_trusty
         # No obvious package available for libgdal
         package { [
             'hhvm',                        # T78783
@@ -397,7 +397,7 @@ class toollabs::exec_environ {
             require => Package['php5-cli'],
         }
     } elsif $::lsbdistcodename == 'jessie' {
-        include toollabs::genpp::python_exec_jessie
+        include ::toollabs::genpp::python_exec_jessie
         # No obvious package available for libgdal
         package { [
             'hhvm',                        # T78783

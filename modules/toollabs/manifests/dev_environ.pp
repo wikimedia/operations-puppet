@@ -7,11 +7,11 @@
 
 class toollabs::dev_environ {
 
-    include toollabs::composer
+    include ::toollabs::composer
 
     if os_version('ubuntu trusty') {
-        include toollabs::genpp::python_dev_trusty
-        include phabricator::arcanist # T139738
+        include ::toollabs::genpp::python_dev_trusty
+        include ::phabricator::arcanist # T139738
         package { [
             'bundler',  # T120287
             # Previously we installed libmariadbclient-dev, but that causes
@@ -25,7 +25,7 @@ class toollabs::dev_environ {
             ensure  => latest,
         }
     } elsif os_version('ubuntu precise') {
-        include toollabs::genpp::python_dev_precise
+        include ::toollabs::genpp::python_dev_precise
         package { [
             'libmariadbclient-dev',
             'libboost-python1.48-dev',
@@ -33,8 +33,8 @@ class toollabs::dev_environ {
             ensure  => latest,
         }
     } elsif os_version('debian jessie') {
-        include toollabs::genpp::python_dev_jessie
-        include phabricator::arcanist # T139738
+        include ::toollabs::genpp::python_dev_jessie
+        include ::phabricator::arcanist # T139738
         package { [
             'bundler',  # T120287
             'libmariadb-client-lgpl-dev',
@@ -127,7 +127,7 @@ class toollabs::dev_environ {
 
     file { [
         '/usr/local/bin/webservice2',
-        '/usr/local/bin/webservice'
+        '/usr/local/bin/webservice',
     ]:
         ensure => link,
         target => '/usr/bin/webservice',
