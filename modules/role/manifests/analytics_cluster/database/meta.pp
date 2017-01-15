@@ -4,9 +4,9 @@
 #
 class role::analytics_cluster::database::meta {
     # Some CDH database init scripts need Java to run.
-    require role::analytics_cluster::java
+    require ::role::analytics_cluster::java
 
-    include mariadb::packages_wmf
+    include ::mariadb::packages_wmf
 
     $config_template = $::realm ? {
         # Production instance has large innodb_buffer_pool_size.
@@ -16,7 +16,7 @@ class role::analytics_cluster::database::meta {
         default      => 'mariadb/analytics-meta.my.cnf.erb',
     }
 
-    class { 'mariadb::config':
+    class { '::mariadb::config':
         config    => $config_template,
         datadir   => '/var/lib/mysql',
         read_only => false,
@@ -34,7 +34,7 @@ class role::analytics_cluster::database::meta {
         }
     }
 
-    class { 'mariadb::service':
+    class { '::mariadb::service':
         ensure  => 'running',
         manage  => true,
         enable  => true,

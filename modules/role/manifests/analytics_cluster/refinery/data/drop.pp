@@ -3,7 +3,7 @@
 # and delete old data from HDFS.
 #
 class role::analytics_cluster::refinery::data::drop {
-    require role::analytics_cluster::refinery
+    require ::role::analytics_cluster::refinery
 
     $webrequest_log_file     = "${role::analytics_cluster::refinery::log_dir}/drop-webrequest-partitions.log"
     $eventlogging_log_file   = "${role::analytics_cluster::refinery::log_dir}/drop-eventlogging-partitions.log"

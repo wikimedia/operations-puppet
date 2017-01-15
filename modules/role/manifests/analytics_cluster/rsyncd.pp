@@ -14,7 +14,7 @@ class role::analytics_cluster::rsyncd {
         read_only   => 'yes',
         list        => 'yes',
         hosts_allow => $hosts_allow,
-        require     => Class['cdh::hadoop::mount']
+        require     => Class['cdh::hadoop::mount'],
     }
 
     $hosts_allow_ferm = join($hosts_allow, ' ')
