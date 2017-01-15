@@ -1,6 +1,6 @@
 #
 
-class { 'bacula::storage':
+class { '::bacula::storage':
     director           => 'dir.example.com',
     sd_max_concur_jobs => 5,
     sqlvariant         => 'mysql',

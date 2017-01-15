@@ -1,6 +1,6 @@
 #
 
-class { 'bacula::client':
+class { '::bacula::client':
     director       => 'dir.example.com',
     catalog        => 'example',
     file_retention => '60 days',

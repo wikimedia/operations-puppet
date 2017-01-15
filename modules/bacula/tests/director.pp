@@ -1,6 +1,6 @@
 #
 
-class { 'bacula::director':
+class { '::bacula::director':
     sqlvariant          => 'mysql',
     max_dir_concur_jobs => '10',
 }
