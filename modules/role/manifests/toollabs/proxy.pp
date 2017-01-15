@@ -1,7 +1,7 @@
 # filtertags: labs-project-tools
 class role::toollabs::proxy {
     include ::toollabs::proxy
-    include role::toollabs::k8s::webproxy
+    include ::role::toollabs::k8s::webproxy
 
     ferm::service { 'proxymanager':
         proto  => 'tcp',
