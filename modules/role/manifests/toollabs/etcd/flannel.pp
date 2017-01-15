@@ -2,7 +2,7 @@
 class role::toollabs::etcd::flannel {
     include ::etcd
 
-    include base::firewall
+    include ::base::firewall
     include ::role::toollabs::etcd::expose_metrics
 
     $worker_hosts = join(hiera('k8s::worker_hosts'), ' ')
@@ -14,12 +14,12 @@ class role::toollabs::etcd::flannel {
     ferm::service { 'flannel-clients':
         proto  => 'tcp',
         port   => '2379',
-        srange => "@resolve((${worker_hosts} ${peer_hosts} ${proxy_hosts} ${bastion_hosts} ${checker_hosts}))"
+        srange => "@resolve((${worker_hosts} ${peer_hosts} ${proxy_hosts} ${bastion_hosts} ${checker_hosts}))",
     }
 
     ferm::service { 'flannel-peers':
         proto  => 'tcp',
         port   => '2380',
-        srange => "@resolve((${peer_hosts}))"
+        srange => "@resolve((${peer_hosts}))",
     }
 }
