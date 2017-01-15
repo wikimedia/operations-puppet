@@ -40,7 +40,7 @@ class mediawiki::web {
 
     # Not needed anymore. TODO: remove at a later stage
     apache::def { 'HHVM':
-        ensure => absent
+        ensure => absent,
     }
 
     # Set the Server response header to be equal to the app server FQDN.
