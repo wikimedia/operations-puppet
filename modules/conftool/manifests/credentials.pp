@@ -16,7 +16,7 @@ define conftool::credentials(
         settings => {
             username => 'conftool',
             password => $::conftool::password,
-        }
+        },
     }
 
 }
