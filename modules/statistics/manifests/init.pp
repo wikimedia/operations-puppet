@@ -12,7 +12,7 @@ class statistics(
     $servers,
     $working_path = '/srv'
 ) {
-    include statistics::user
+    include ::statistics::user
 
     file { $working_path:
         ensure => 'directory',
@@ -31,7 +31,7 @@ class statistics(
 
     # set up rsync modules for copying files
     # on statistic servers in $working_path
-    class { 'statistics::rsyncd':
+    class { '::statistics::rsyncd':
         path        => $working_path,
         hosts_allow => $servers,
     }

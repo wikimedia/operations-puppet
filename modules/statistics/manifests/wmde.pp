@@ -15,8 +15,8 @@ class statistics::wmde {
     Class['::statistics'] -> Class['::statistics::wmde']
 
     $statistics_working_path = $::statistics::working_path
-    class { 'statistics::wmde::user':
-        homedir => "${statistics_working_path}/analytics-wmde"
+    class { '::statistics::wmde::user':
+        homedir => "${statistics_working_path}/analytics-wmde",
     }
     $user = $statistics::wmde::user::username
     $dir = $statistics::wmde::user::homedir
@@ -38,7 +38,7 @@ class statistics::wmde {
         'php5-cli',
     )
 
-    include passwords::mysql::research
+    include ::passwords::mysql::research
     # This file will render at
     # /etc/mysql/conf.d/research-wmde-client.cnf.
     mysql::config::client { 'research-wmde':
@@ -53,7 +53,7 @@ class statistics::wmde {
         $dir,
         "${dir}/src",
         "${dir}/data",
-        $log_dir
+        $log_dir,
     ]
 
     file { $directories:
