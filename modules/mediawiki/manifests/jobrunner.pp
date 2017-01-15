@@ -41,7 +41,7 @@ class mediawiki::jobrunner (
         owner  => 'root',
         group  => 'root',
         mode   => '0555',
-        before => Service['jobrunner']
+        before => Service['jobrunner'],
     }
 
     file { '/etc/jobrunner/jobrunner.conf':
@@ -58,7 +58,7 @@ class mediawiki::jobrunner (
         enable => $state ? {
             'stopped' => false,
             default   => true,
-        }
+        },
     }
 
     # We declare the service, but override its status with
@@ -96,7 +96,7 @@ class mediawiki::jobrunner (
 
     include ::apache::mod::proxy_fcgi
 
-    class { 'apache::mpm':
+    class { '::apache::mpm':
         mpm => 'worker',
     }
 
@@ -107,7 +107,7 @@ class mediawiki::jobrunner (
 
     apache::site{ 'hhvm_jobrunner':
         priority => 1,
-        content  => template('mediawiki/jobrunner/site.conf.erb')
+        content  => template('mediawiki/jobrunner/site.conf.erb'),
     }
 
     # Hack for T122069: on servers running GWT jobs, restart HHVM
@@ -119,7 +119,7 @@ class mediawiki::jobrunner (
         }
     } else {
         cron { 'periodic_hhvm_restart':
-            ensure => absent
+            ensure => absent,
         }
     }
 }
