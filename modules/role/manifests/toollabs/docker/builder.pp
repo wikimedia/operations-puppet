@@ -18,8 +18,8 @@ class role::toollabs::docker::builder {
         'auths' => {
             "${docker_registry}" => {
                 'auth' => $docker_auth,
-            }
-        }
+            },
+        },
     }
 
     file { '/root/.docker':
