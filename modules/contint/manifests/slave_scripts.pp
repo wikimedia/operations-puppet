@@ -8,7 +8,7 @@ class contint::slave_scripts {
         fail('contint::slave_scripts must not be used in production. Slaves are already Trebuchet deployment targets.')
     }
 
-    require contint::deployment_dir
+    require ::contint::deployment_dir
 
     git::clone { 'jenkins CI slave scripts':
         ensure             => 'latest',

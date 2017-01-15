@@ -6,7 +6,7 @@
 # still depends on a local copy.
 class contint::phpunit {
 
-    require contint::deployment_dir
+    require ::contint::deployment_dir
 
     git::clone { 'jenkins CI phpunit':
         ensure             => 'latest',
