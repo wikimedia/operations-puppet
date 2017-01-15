@@ -146,7 +146,7 @@ class druid(
 {
     if $use_cdh {
         # Create links to CDH Hadoop Client dependencies.
-        include druid::cdh::hadoop::dependencies
+        include ::druid::cdh::hadoop::dependencies
     }
 
     # If metadata storage is in MySQL, set some nice defaults.  Note that
@@ -164,7 +164,7 @@ class druid(
             # this if you want to change the database name.
             'druid.metadata.storage.connector.connectURI' => inline_template(
                 'jdbc:mysql://<%= @properties.fetch("druid.metadata.storage.connector.host", "localhost") %>:<%= @properties.fetch("druid.metadata.storage.connector.port", "3306") %>/druid'
-            )
+            ),
         }
         # Set this variable so it is included in the union
         # for $extensions below.
@@ -182,7 +182,7 @@ class druid(
             # this if you want to change the path to the derby database file.
             'druid.metadata.storage.connector.connectURI' => inline_template(
                 'jdbc:derby://<%= @properties.fetch("druid.metadata.storage.connector.host", "localhost") %>:<%= @properties.fetch("druid.metadata.storage.connector.port", "1527") %>/var/lib/druid/metadata.db;create=true'
-            )
+            ),
         }
         # No extra metadata extensions needed
         $metadata_extensions         = []
@@ -224,7 +224,7 @@ class druid(
     $default_extensions = [
         'druid-histogram',
         'druid-datasketches',
-        'druid-namespace-lookup'
+        'druid-namespace-lookup',
     ]
     # Get a unique list of extensions to load built up from
     # the defaults configured here.  Note that if
@@ -263,6 +263,6 @@ class druid(
     require_package('druid-common')
 
     file { '/etc/druid/common.runtime.properties':
-        content => template('druid/runtime.properties.erb')
+        content => template('druid/runtime.properties.erb'),
     }
 }
