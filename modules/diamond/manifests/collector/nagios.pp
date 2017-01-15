@@ -27,12 +27,12 @@ define diamond::collector::nagios (
         ensure  => $ensure,
         content => ordered_json({
             name    => $title,
-            command => $command
+            command => $command,
         }),
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-        notify  => Service['diamond']
+        notify  => Service['diamond'],
     }
 }
 
