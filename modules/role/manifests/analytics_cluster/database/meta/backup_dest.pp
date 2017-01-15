@@ -12,7 +12,7 @@ class role::analytics_cluster::database::meta::backup_dest {
         mode   => '0750',
     }
 
-    include rsync::server
+    include ::rsync::server
 
     # These are probably the same host, but in case they
     # aren't, allow either use of this rsync server module.

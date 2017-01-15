@@ -4,7 +4,7 @@
 # These checks walk HDFS through the plain file system.
 #
 class role::analytics_cluster::refinery::data::check {
-    require role::analytics_cluster::refinery
+    require ::role::analytics_cluster::refinery
 
     # This should not be hardcoded.  Instead, one should be able to use
     # $::cdh::hadoop::mount::mount_point to reference the user supplied
