@@ -13,7 +13,7 @@ class druid::cdh::hadoop::dependencies {
     # "hadoopDependencyCoordinates": ["org.apache.hadoop:hadoop-client:cdh"].
     file { '/usr/share/druid/hadoop-dependencies/hadoop-client/cdh':
         ensure => 'link',
-        target => '/usr/lib/hadoop/client'
+        target => '/usr/lib/hadoop/client',
     }
 
     # druid-hdfs-storage is shipped with Hadoop 2.3.0 jars.  We need a

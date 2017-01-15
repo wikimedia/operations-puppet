@@ -62,7 +62,7 @@ class druid::historical(
     $should_subscribe = false,
 )
 {
-    require druid
+    require ::druid
 
     $default_properties = {
         'druid.port'                        => 8083,
