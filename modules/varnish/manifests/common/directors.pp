@@ -9,7 +9,7 @@ define varnish::common::directors(
 {
     $conftool_namespace = '/conftool/v1/pools'
 
-    require varnish::common::director_scripts
+    require ::varnish::common::director_scripts
 
     $service_name = $instance ? {
         'frontend' => 'varnish-frontend',

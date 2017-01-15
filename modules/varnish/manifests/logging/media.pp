@@ -16,7 +16,7 @@
 #  }
 #
 define varnish::logging::media( $statsd_server = 'statsd' ) {
-    include varnish::common
+    include ::varnish::common
 
     file { '/usr/local/bin/varnishmedia':
         source  => 'puppet:///modules/varnish/varnishmedia',

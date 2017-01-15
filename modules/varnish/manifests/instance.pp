@@ -13,7 +13,7 @@ define varnish::instance(
     $extra_vcl = []
 ) {
 
-    include varnish::common
+    include ::varnish::common
 
     $runtime_params = join(prefix($runtime_parameters, '-p '), ' ')
     if $name == '' {
@@ -32,11 +32,11 @@ define varnish::instance(
     $dynamic_backend_caches = hiera('varnish::dynamic_backend_caches', true)
 
     # Install VCL include files shared by all instances
-    require varnish::common::vcl
+    require ::varnish::common::vcl
 
     $extra_vcl_variable_to_make_puppet_parser_happy = suffix($extra_vcl, " ${instancesuffix}")
     extra_vcl{ $extra_vcl_variable_to_make_puppet_parser_happy:
-        before => Service["varnish${instancesuffix}"]
+        before => Service["varnish${instancesuffix}"],
     }
 
     # Write the dynamic backend caches configuration, if we need it
@@ -131,7 +131,7 @@ define varnish::instance(
                 File["/etc/varnish/wikimedia-common_${vcl}.inc.vcl"],
                 Mount['/var/lib/varnish'],
             ],
-        }
+        },
     }
 
     # This mechanism with the touch/rm conditionals in the pair of execs
