@@ -5,9 +5,9 @@
 
 class toollabs::shadow($gridmaster) inherits toollabs {
 
-    include toollabs::infrastructure
+    include ::toollabs::infrastructure
 
-    class { 'gridengine::shadow_master':
+    class { '::gridengine::shadow_master':
         gridmaster => $gridmaster,
         sgeroot    => "${toollabs::sysdir}/gridengine",
     }
