@@ -38,9 +38,9 @@ class postgresql::master(
     $master_server=$::fqdn,
     $includes=[],
     $pgversion = $::lsbdistcodename ? {
-        jessie  => '9.4',
-        precise => '9.1',
-        trusty  => '9.3',
+        'jessie'  => '9.4',
+        'precise' => '9.1',
+        'trusty'  => '9.3',
     },
     $ensure='present',
     $max_wal_senders=5,
@@ -53,7 +53,7 @@ class postgresql::master(
 
     $data_dir = "${root_dir}/${pgversion}/main"
 
-    class { 'postgresql::server':
+    class { '::postgresql::server':
         ensure    => $ensure,
         pgversion => $pgversion,
         includes  => [ $includes, 'master.conf'],
