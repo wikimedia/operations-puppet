@@ -21,6 +21,6 @@ class role::analytics_cluster::users {
     user { 'analytics-search':
         ensure => present,
         gid    => 'analytics-search',
-        system => true
+        system => true,
     }
 }

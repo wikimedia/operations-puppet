@@ -7,7 +7,7 @@
 # be added to druid daemon
 class role::analytics_cluster::druid::worker {
     # Require common druid package and configuration.
-    require role::analytics_cluster::druid::common
+    require ::role::analytics_cluster::druid::common
 
     # Auto reload daemons in labs, but not in production.
     $should_subscribe = $::realm ? {

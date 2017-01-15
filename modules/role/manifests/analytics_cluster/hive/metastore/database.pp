@@ -8,7 +8,7 @@
 #
 class role::analytics_cluster::hive::metastore::database {
     # Install a database server (MariaDB)
-    require role::analytics_cluster::database::meta
+    require ::role::analytics_cluster::database::meta
     # Need to have hive package installed to
     # get /usr/lib/hive/bin/schematool.
     # require role::analytics_cluster::hive::client
@@ -22,7 +22,7 @@ class role::analytics_cluster::hive::metastore::database {
     # after cdh::hive::metastore::mysql makes puppet fail.
 
 
-    class { 'cdh::hive::metastore::mysql':
+    class { '::cdh::hive::metastore::mysql':
         require => Class['role::analytics_cluster::database::meta'],
     }
 
