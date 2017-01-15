@@ -5,7 +5,7 @@
 # Disabled for now due to restructuring of geowiki.
 #
 class geowiki::job::monitoring inherits geowiki::job {
-    include passwords::geowiki
+    include ::passwords::geowiki
 
     $geowiki_http_user    = $passwords::geowiki::user
     $geowiki_http_pass    = $passwords::geowiki::pass

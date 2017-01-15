@@ -17,7 +17,7 @@ class geowiki::private_data {
     # It only needs backup (as the repo is not living in gerrit)
     # Other hosts need to rsync it over
     if $::fqdn == $::geowiki::params::private_data_bare_host {
-        include role::backup::host
+        include ::role::backup::host
         backup::set { 'a-geowiki-data-private-bare': }
     }
     else {
@@ -37,8 +37,8 @@ class geowiki::private_data {
         origin    => "file://${::geowiki::params::private_data_bare_path}",
         owner     => $::geowiki::params::user,
         group     => 'www-data',
-        mode      => 0750,
-        umask     => 027,
+        mode      => '0750',
+        umask     => '027',
         require   => File[$::geowiki::params::private_data_bare_path],
     }
 }
