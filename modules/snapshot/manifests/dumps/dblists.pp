@@ -17,7 +17,7 @@ class snapshot::dumps::dblists {
 
     $globalusage_dblist = 'commonswiki'
 
-    include snapshot::dumps::dirs
+    include ::snapshot::dumps::dirs
 
     $dblistsdir = $snapshot::dumps::dirs::dblistsdir
 

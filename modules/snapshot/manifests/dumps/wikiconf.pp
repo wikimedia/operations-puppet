@@ -3,7 +3,7 @@ define snapshot::dumps::wikiconf(
     $config     = undef,
     ) {
 
-    include snapshot::dumps::dirs
+    include ::snapshot::dumps::dirs
     $confsdir = $snapshot::dumps::dirs::confsdir
 
     file { "${confsdir}/${title}":

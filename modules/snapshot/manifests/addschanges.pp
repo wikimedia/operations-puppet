@@ -1,7 +1,7 @@
 class snapshot::addschanges(
     $user=undef,
 ) {
-    include snapshot::dumps::dirs
+    include ::snapshot::dumps::dirs
 
     $repodir = $snapshot::dumps::dirs::repodir
     $confsdir = $snapshot::dumps::dirs::confsdir
