@@ -43,7 +43,7 @@ class contint::browsers {
     }
 
 
-    class { 'xvfb':
+    class { '::xvfb':
         display    => 94,
         resolution => '1280x1024x24',
     }
