@@ -1,3 +1,3 @@
 #
 
-include torrus::web
+include ::torrus::web

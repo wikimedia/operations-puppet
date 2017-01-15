@@ -1,6 +1,6 @@
 class torrus::xmlconfig {
-    require torrus::config
-    include passwords::network
+    require ::torrus::config
+    include ::passwords::network
 
     file { '/etc/torrus/xmlconfig/':
         source  => 'puppet:///modules/torrus/xmlconfig/',
