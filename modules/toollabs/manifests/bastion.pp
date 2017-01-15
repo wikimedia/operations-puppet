@@ -8,10 +8,10 @@ class toollabs::bastion(
         $nproc = 30,
     ) inherits toollabs {
 
-    include gridengine::admin_host
-    include gridengine::submit_host
-    include toollabs::dev_environ
-    include toollabs::exec_environ
+    include ::gridengine::admin_host
+    include ::gridengine::submit_host
+    include ::toollabs::dev_environ
+    include ::toollabs::exec_environ
 
     if os_version('ubuntu trusty') {
 
@@ -199,7 +199,7 @@ class toollabs::bastion(
         ensure  => absent,
     }
 
-    include ldap::role::config::labs
+    include ::ldap::role::config::labs
     $ldapconfig = $ldap::role::config::labs::ldapconfig
 
     $cron_host = hiera('active_cronrunner')

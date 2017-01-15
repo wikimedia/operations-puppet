@@ -10,7 +10,7 @@ class toollabs::services(
     $active = false,
 ) inherits toollabs {
 
-    include gridengine::submit_host
+    include ::gridengine::submit_host
 
     package { 'tools-manifest':
         ensure => latest,
