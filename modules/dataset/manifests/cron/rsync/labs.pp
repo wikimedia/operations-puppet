@@ -1,5 +1,5 @@
 class dataset::cron::rsync::labs($enable=true) {
-    include dataset::common
+    include ::dataset::common
 
     if ($enable) {
         $ensure = 'present'

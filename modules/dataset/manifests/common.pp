@@ -3,5 +3,5 @@ class dataset::common {
         ensure => present,
     }
 
-    include vm::higher_min_free_kbytes
+    include ::vm::higher_min_free_kbytes
 }

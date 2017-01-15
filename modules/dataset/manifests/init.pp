@@ -17,12 +17,12 @@ class dataset(
     $grabs   = {}
     ) {
 
-    include dataset::common
-    require dataset::user
+    include ::dataset::common
+    require ::dataset::user
 
     $rsync_public_enable = has_key($rsync,'public')
-    class { 'dataset::rsync::public': enable => $rsync_public_enable }
-    class { 'dataset::rsync::default': public => $rsync_public_enable }
+    class { '::dataset::rsync::public': enable => $rsync_public_enable }
+    class { '::dataset::rsync::default': public => $rsync_public_enable }
 
     if ($nfs) {
         $nfs_enable = true
@@ -30,25 +30,25 @@ class dataset(
     else {
         $nfs_enable = false
     }
-    class { 'dataset::nfs': enable => $nfs_enable }
+    class { '::dataset::nfs': enable => $nfs_enable }
 
     $rsync_peers_enable = has_key($rsync,'peers')
-    class { 'dataset::rsync::peers': enable => $rsync_peers_enable }
-    class { 'dataset::cron::rsync::peers': enable => $rsync_peers_enable }
+    class { '::dataset::rsync::peers': enable => $rsync_peers_enable }
+    class { '::dataset::cron::rsync::peers': enable => $rsync_peers_enable }
 
     $rsync_labs_enable = has_key($rsync,'labs')
-    class { 'dataset::cron::rsync::labs': enable => $rsync_labs_enable }
+    class { '::dataset::cron::rsync::labs': enable => $rsync_labs_enable }
 
     $uploads_pagecounts_ez_enable = has_key($uploads,'pagecounts_ez')
-    class { 'dataset::rsync::pagecounts_ez':
+    class { '::dataset::rsync::pagecounts_ez':
         enable => $uploads_pagecounts_ez_enable }
 
     $uploads_phab_dump_enable = has_key($uploads,'phab')
-    class { 'dataset::rsync::phab_dump':
+    class { '::dataset::rsync::phab_dump':
         enable => $uploads_phab_dump_enable }
 
     $grabs_kiwix_enable = has_key($grabs,'kiwix')
-    class { 'dataset::cron::kiwix': enable => $grabs_kiwix_enable }
+    class { '::dataset::cron::kiwix': enable => $grabs_kiwix_enable }
 
-    include dataset::html
+    include ::dataset::html
 }

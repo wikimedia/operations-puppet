@@ -6,8 +6,8 @@ class dataset::rsync::public($enable=true) {
         $ensure = 'absent'
     }
 
-    include dataset::common
-    include dataset::rsync::common
+    include ::dataset::common
+    include ::dataset::rsync::common
     file { '/etc/rsyncd.d/20-rsync-dumps_to_public.conf':
         ensure => $ensure,
         mode   => '0444',

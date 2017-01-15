@@ -4,7 +4,7 @@ class dataset::cron::rsync::nginxlogs (
     $user   = 'root',
 )
 {
-    include dataset::common
+    include ::dataset::common
 
     $ensure = $enable ? {
         true    => 'present',
