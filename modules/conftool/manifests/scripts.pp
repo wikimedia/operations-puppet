@@ -13,7 +13,7 @@
 #    include conftool::scripts
 #}
 class conftool::scripts {
-    require conftool
+    require ::conftool
 
     file { '/usr/local/bin/pooler-loop':
         ensure => present,
@@ -28,7 +28,7 @@ class conftool::scripts {
         owner   => 'root',
         group   => 'root',
         mode    => '0555',
-        content => template('conftool/pool.erb')
+        content => template('conftool/pool.erb'),
     }
 
     file { '/usr/local/bin/depool':
@@ -36,7 +36,7 @@ class conftool::scripts {
         owner   => 'root',
         group   => 'root',
         mode    => '0555',
-        content => template('conftool/depool.erb')
+        content => template('conftool/depool.erb'),
     }
 
     file { '/usr/local/bin/drain':
@@ -44,7 +44,7 @@ class conftool::scripts {
         owner   => 'root',
         group   => 'root',
         mode    => '0555',
-        content => template('conftool/drain.erb')
+        content => template('conftool/drain.erb'),
     }
 
     file { '/usr/local/bin/decommission':
@@ -52,7 +52,7 @@ class conftool::scripts {
         owner   => 'root',
         group   => 'root',
         mode    => '0555',
-        content => template('conftool/decommission.erb')
+        content => template('conftool/decommission.erb'),
     }
 
 }
