@@ -33,9 +33,9 @@ class postgresql::slave(
     $replication_pass,
     $includes=[],
     $pgversion = $::lsbdistcodename ? {
-        jessie  => '9.4',
-        precise => '9.1',
-        trusty  => '9.3',
+        'jessie'  => '9.4',
+        'precise' => '9.1',
+        'trusty'  => '9.3',
     },
     $ensure='present',
     $root_dir='/var/lib/postgresql',
@@ -45,7 +45,7 @@ class postgresql::slave(
 
     $data_dir = "${root_dir}/${pgversion}/main"
 
-    class { 'postgresql::server':
+    class { '::postgresql::server':
         ensure    => $ensure,
         pgversion => $pgversion,
         includes  => [ $includes, 'slave.conf'],
