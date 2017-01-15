@@ -15,7 +15,7 @@ class contint::packages::androidsdk {
         'xorg',
         # Image diffing
         'imagemagick',
-        'python-pillow'
+        'python-pillow',
         ]: ensure => present,
     }
 }
