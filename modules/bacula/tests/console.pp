@@ -1,5 +1,5 @@
 #
 
-class { 'bacula::console':
+class { '::bacula::console':
     director        => 'dir.example.com',
 }
