@@ -1,7 +1,7 @@
 # filtertags: labs-project-tools
 class role::toollabs::etcd::k8s {
     include ::etcd
-    include base::firewall
+    include ::base::firewall
 
     include ::role::toollabs::etcd::expose_metrics
 
@@ -12,12 +12,12 @@ class role::toollabs::etcd::k8s {
     ferm::service { 'etcd-clients':
         proto  => 'tcp',
         port   => '2379',
-        srange => "@resolve((${master_hosts} ${peer_nodes} ${checker_hosts}))"
+        srange => "@resolve((${master_hosts} ${peer_nodes} ${checker_hosts}))",
     }
 
     ferm::service { 'etcd-peers':
         proto  => 'tcp',
         port   => '2380',
-        srange => "@resolve((${peer_nodes}))"
+        srange => "@resolve((${peer_nodes}))",
     }
 }
