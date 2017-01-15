@@ -5,7 +5,7 @@ class toollabs::node::all(
     $tmp_partition = true,
 ) {
 
-    include toollabs
+    include ::toollabs
 
     if $tmp_partition {
         labs_lvm::volume { 'separate-tmp':
