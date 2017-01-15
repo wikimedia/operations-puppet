@@ -12,7 +12,7 @@
 class role::analytics_cluster::druid::common
 {
     # Need Java before Druid is installed.
-    require role::analytics_cluster::java
+    require ::role::analytics_cluster::java
 
     $zookeeper_cluster_name = hiera('zookeeper_cluster_name')
     $zookeeper_clusters     = hiera('zookeeper_clusters')

@@ -8,7 +8,7 @@ class role::analytics_cluster::client {
     }
 
     # Include Hadoop ecosystem client classes.
-    require role::analytics_cluster::hadoop::client,
+    require ::role::analytics_cluster::hadoop::client,
         role::analytics_cluster::hive::client,
         role::analytics_cluster::oozie::client,
         # These don't require any extra configuration,
@@ -20,7 +20,7 @@ class role::analytics_cluster::client {
 
     # Mount HDFS via Fuse on Analytics client nodes.
     # This will mount HDFS at /mnt/hdfs read only.
-    class { 'cdh::hadoop::mount': }
+    class { '::cdh::hadoop::mount': }
 
     # These packages are useful, install them.
     require_package(
