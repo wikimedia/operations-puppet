@@ -7,7 +7,7 @@ class dataset::html(
     $analytics      = true,
     ) {
 
-    include dataset::dirs
+    include ::dataset::dirs
 
     if ($other) {
         file { "${dataset::dirs::otherdir}/index.html":

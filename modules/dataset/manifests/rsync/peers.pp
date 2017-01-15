@@ -6,9 +6,9 @@ class dataset::rsync::peers($enable=true) {
         $ensure = 'absent'
     }
 
-    include dataset::common
+    include ::dataset::common
 
-    include dataset::rsync::common
+    include ::dataset::rsync::common
     file { '/etc/rsyncd.d/10-rsync-datasets_to_peers.conf':
         ensure => $ensure,
         mode   => '0444',
