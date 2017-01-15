@@ -1,2 +1,2 @@
 #
-include puppetmaster::ssl
+include ::puppetmaster::ssl

@@ -1,2 +1,2 @@
 #
-include puppetmaster::scripts
+include ::puppetmaster::scripts

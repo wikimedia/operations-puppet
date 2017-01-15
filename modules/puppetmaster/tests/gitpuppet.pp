@@ -1,2 +1,2 @@
 #
-include puppetmaster::gitpuppet
+include ::puppetmaster::gitpuppet

@@ -19,7 +19,7 @@ class puppetmaster::puppetdb($master, $port=443, $jetty_port=8080) {
     ::nginx::site { 'puppetdb':
         ensure  => present,
         content => template('puppetmaster/nginx-puppetdb.conf.erb'),
-        require => Class['::sslcert::dhparam']
+        require => Class['::sslcert::dhparam'],
     }
 
     diamond::collector::nginx{ $::fqdn:
@@ -41,7 +41,7 @@ class puppetmaster::puppetdb($master, $port=443, $jetty_port=8080) {
         group   => 'root',
         mode    => '0750',
         recurse => true,
-        require => Package['puppetdb']
+        require => Package['puppetdb'],
     }
 
     # Ensure the default debian config file is not there
@@ -88,7 +88,7 @@ class puppetmaster::puppetdb($master, $port=443, $jetty_port=8080) {
         }
     )
     puppetmaster::puppetdb::config { 'read-database':
-        settings => $read_db_settings
+        settings => $read_db_settings,
     }
 
     ::base::expose_puppet_certs { '/etc/puppetdb':
@@ -107,18 +107,18 @@ class puppetmaster::puppetdb($master, $port=443, $jetty_port=8080) {
             'ssl-cert'    => '/etc/puppetdb/ssl/cert.pem',
             'ssl-ca-cert' => '/etc/ssl/certs/Puppet_Internal_CA.pem',
         },
-        require  => Base::Expose_puppet_certs['/etc/puppetdb']
+        require  => Base::Expose_puppet_certs['/etc/puppetdb'],
     }
 
     puppetmaster::puppetdb::config { 'global':
         settings => {
             'vardir'         => '/var/lib/puppetdb',
-            'logging-config' => '/etc/puppetdb/logback.xml'
-        }
+            'logging-config' => '/etc/puppetdb/logback.xml',
+        },
     }
 
     puppetmaster::puppetdb::config { 'repl':
-        settings => {'enabled' => false}
+        settings => {'enabled' => false},
     }
 
     ## Enable the service itself
