@@ -1,6 +1,6 @@
 class contint::php {
 
-    require contint::slave_scripts
+    require ::contint::slave_scripts
 
     alternatives::install { 'php':
         link     => '/usr/bin/php',
