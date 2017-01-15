@@ -1,3 +1,3 @@
 #
 
-include torrus::discovery
+include ::torrus::discovery
