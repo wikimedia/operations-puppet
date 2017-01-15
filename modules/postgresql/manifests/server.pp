@@ -29,9 +29,9 @@
 #
 class postgresql::server(
     $pgversion        = $::lsbdistcodename ? {
-        jessie  => '9.4',
-        precise => '9.1',
-        trusty  => '9.3',
+        'jessie'  => '9.4',
+        'precise' => '9.1',
+        'trusty'  => '9.3',
     },
     $ensure           = 'present',
     $includes         = [],
@@ -50,8 +50,8 @@ class postgresql::server(
     $data_dir = "${root_dir}/${pgversion}/main"
 
     $service_name = $::lsbdistcodename ? {
-        jessie => "postgresql@${pgversion}-main",
-        default => 'postgresql'
+        'jessie' => "postgresql@${pgversion}-main",
+        default  => 'postgresql',
     }
     exec { 'pgreload':
         command     => "/usr/bin/pg_ctlcluster ${pgversion} main reload",

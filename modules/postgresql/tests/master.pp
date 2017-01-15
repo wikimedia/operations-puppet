@@ -1,3 +1,3 @@
 #
 
-include postgresql::master
+include ::postgresql::master

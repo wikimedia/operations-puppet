@@ -22,9 +22,9 @@
 #
 class postgresql::packages(
     $pgversion        = $::lsbdistcodename ? {
-        jessie  => '9.4',
-        precise => '9.1',
-        trusty  => '9.3',
+        'jessie'  => '9.4',
+        'precise' => '9.1',
+        'trusty'  => '9.3',
     },
     $ensure           = 'present',
 ) {
