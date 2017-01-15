@@ -1,5 +1,5 @@
 class snapshot::dumps::configs {
-    include snapshot::dumps::dirs
+    include ::snapshot::dumps::dirs
 
     $dblistsdir = $snapshot::dumps::dirs::dblistsdir
     $apachedir = $snapshot::dumps::dirs::apachedir

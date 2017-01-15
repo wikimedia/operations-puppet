@@ -1,7 +1,7 @@
 class snapshot::cron::centralauthdump(
     $user   = undef,
 ) {
-    include snapshot::dumps::dirs
+    include ::snapshot::dumps::dirs
     $confsdir = $snapshot::dumps::dirs::confsdir
 
     file { '/usr/local/bin/dumpcentralauth.sh':

@@ -3,7 +3,7 @@ define snapshot::dumps::stagesconf(
     $stages     = undef,
     ) {
 
-    include snapshot::dumps::dirs
+    include ::snapshot::dumps::dirs
     $stagesdir = $snapshot::dumps::dirs::stagesdir
 
     file { "${stagesdir}/${title}":
