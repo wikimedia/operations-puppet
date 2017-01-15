@@ -1,2 +1,2 @@
 #
-include install_server::web_server
+include ::install_server::web_server
