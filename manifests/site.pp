@@ -14,7 +14,7 @@ if $cluster == undef {
 
 node /^(acamar|achernar)\.wikimedia\.org$/ {
     role(dnsrecursor, ntp)
-    include standard
+    include ::standard
 
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
@@ -39,8 +39,8 @@ node 'analytics1001.eqiad.wmnet' {
         # Need druid user and HDFS directories
         analytics_cluster::druid::hadoop)
 
-    include standard
-    include base::firewall
+    include ::standard
+    include ::base::firewall
 }
 
 
@@ -58,8 +58,8 @@ node 'analytics1002.eqiad.wmnet' {
         # Need druid user and HDFS directories
         analytics_cluster::druid::hadoop)
 
-    include standard
-    include base::firewall
+    include ::standard
+    include ::base::firewall
 }
 
 # This node hosts Oozie and Hive servers,
@@ -78,8 +78,8 @@ node 'analytics1003.eqiad.wmnet' {
         analytics_cluster::hive::server,
         analytics_cluster::oozie::server)
 
-    include standard
-    include base::firewall
+    include ::standard
+    include ::base::firewall
 }
 
 # analytics1028-analytics1057 are Hadoop worker nodes.
@@ -91,8 +91,8 @@ node 'analytics1003.eqiad.wmnet' {
 node /analytics10(2[89]|3[0-9]|4[0-9]|5[0-7]).eqiad.wmnet/ {
     role(analytics_cluster::hadoop::worker)
 
-    include base::firewall
-    include standard
+    include ::base::firewall
+    include ::standard
 }
 
 
@@ -129,8 +129,8 @@ node 'analytics1027.eqiad.wmnet' {
         # is a little special and standalone, so we do it here.
         analytics_cluster::hive::site_hdfs)
 
-    include standard
-    include base::firewall
+    include ::standard
+    include ::base::firewall
 }
 
 # Analytics Query Service
@@ -152,7 +152,7 @@ node 'baham.wikimedia.org' {
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
     }
-    include standard
+    include ::standard
 }
 
 # Bastion in Virginia
@@ -179,7 +179,7 @@ node 'bast3001.wikimedia.org' {
 
     interface::add_ip6_mapped { 'main': interface => 'eth0', }
 
-    class { 'ganglia::monitor::aggregator':
+    class { '::ganglia::monitor::aggregator':
         sites =>  'esams',
     }
 }
@@ -193,21 +193,21 @@ node 'bast4001.wikimedia.org' {
 
     interface::add_ip6_mapped { 'main': interface => 'eth0', }
 
-    class { 'ganglia::monitor::aggregator':
+    class { '::ganglia::monitor::aggregator':
         sites =>  'ulsfo',
     }
 }
 
 node 'bohrium.eqiad.wmnet' {
     role(piwik::server)
-    include standard
+    include ::standard
 }
 
 # virtual machine for static misc. services
 node 'bromine.eqiad.wmnet' {
     role(bugzilla::static, microsites::annualreport, microsites::transparency,
         microsites::releases, microsites::endowment)
-    include standard
+    include ::standard
 }
 
 # Californium hosts openstack-dashboard AKA horizon
@@ -215,9 +215,9 @@ node 'bromine.eqiad.wmnet' {
 #  It's proxied by the misc-web varnishes
 node 'californium.wikimedia.org' {
     role(horizon, striker::web)
-    include standard
-    include base::firewall
-    include openstack::horizon::puppetpanel
+    include ::standard
+    include ::base::firewall
+    include ::openstack::horizon::puppetpanel
 }
 
 # DHCP / TFTP
@@ -244,7 +244,7 @@ node /^(cerium|praseodymium|xenon)\.eqiad\.wmnet$/ {
 # DNS recursor
 node 'chromium.wikimedia.org' {
     role(dnsrecursor, ntp)
-    include standard
+    include ::standard
 
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
@@ -259,11 +259,11 @@ node 'cobalt.wikimedia.org' {
 # conf100x are zookeeper and etcd discovery service nodes in eqiad
 node /^conf100[123]\.eqiad\.wmnet$/ {
     role(etcd, zookeeper::server)
-    include base::firewall
-    include standard
+    include ::base::firewall
+    include ::standard
     if ($::fqdn == 'conf1001.eqiad.wmnet') {
-        include etcd::auth
-        include etcd::auth::users
+        include ::etcd::auth
+        include ::etcd::auth::users
     }
 }
 
@@ -272,8 +272,8 @@ node /^conf100[123]\.eqiad\.wmnet$/ {
 # but will be probably done on a later stage.
 node /^conf200[123]\.codfw\.wmnet$/ {
     role(zookeeper::server)
-    include standard
-    include base::firewall
+    include ::standard
+    include ::base::firewall
 }
 
 # CI master / CI standby (switch in Hiera)
@@ -284,9 +284,9 @@ node /^(contint1001|contint2001)\.wikimedia\.org$/ {
         zuul::server)
 
 
-    include standard
+    include ::standard
     interface::add_ip6_mapped { 'main': interface => 'eth0', }
-    include contint::firewall
+    include ::contint::firewall
 }
 
 # Debian package/docker images building host in production
@@ -366,7 +366,7 @@ node /^cp30(19|2[0-1])\.esams\.wmnet$/ {
 }
 
 node 'cp3022.esams.wmnet' {
-    include standard
+    include ::standard
 }
 
 node /^cp30[34][0123]\.esams\.wmnet$/ {
@@ -421,7 +421,7 @@ node 'dataset1001.wikimedia.org' {
 # s1 (enwiki) core production dbs on eqiad
 # eqiad master
 node 'db1057.eqiad.wmnet' {
-    class { 'role::mariadb::core':
+    class { '::role::mariadb::core':
         shard         => 's1',
         master        => true,
         binlog_format => 'STATEMENT',
@@ -429,14 +429,14 @@ node 'db1057.eqiad.wmnet' {
 }
 
 node /^db10(51|55|65|66|72|73|80|83|89)\.eqiad\.wmnet/ {
-    class { 'role::mariadb::core':
+    class { '::role::mariadb::core':
         shard => 's1',
     }
 }
 
 # Testing row-based replication to sanitarium2 (T150960)
 node 'db1052.eqiad.wmnet' {
-    class { 'role::mariadb::core':
+    class { '::role::mariadb::core':
         shard         => 's1',
         binlog_format => 'ROW',
     }
@@ -445,7 +445,7 @@ node 'db1052.eqiad.wmnet' {
 # s1 (enwiki) core production dbs on codfw
 # codfw master
 node 'db2016.codfw.wmnet' {
-    class { 'role::mariadb::core':
+    class { '::role::mariadb::core':
         shard         => 's1',
         master        => true,
         binlog_format => 'STATEMENT',
@@ -453,7 +453,7 @@ node 'db2016.codfw.wmnet' {
 }
 
 node /^db20(34|42|48|55|62|69|70)\.codfw\.wmnet/ {
-    class { 'role::mariadb::core':
+    class { '::role::mariadb::core':
         shard         => 's1',
         binlog_format => 'ROW',
     }
@@ -462,7 +462,7 @@ node /^db20(34|42|48|55|62|69|70)\.codfw\.wmnet/ {
 # s2 (large wikis) core production dbs on eqiad
 # eqiad master
 node 'db1018.eqiad.wmnet' {
-    class { 'role::mariadb::core':
+    class { '::role::mariadb::core':
         shard         => 's2',
         master        => true,
         binlog_format => 'STATEMENT',
@@ -470,7 +470,7 @@ node 'db1018.eqiad.wmnet' {
 }
 
 node /^db10(21|24|36|54|60|63|67|74|76|90)\.eqiad\.wmnet/ {
-    class { 'role::mariadb::core':
+    class { '::role::mariadb::core':
         shard => 's2',
     }
 }
@@ -478,7 +478,7 @@ node /^db10(21|24|36|54|60|63|67|74|76|90)\.eqiad\.wmnet/ {
 # s2 (large wikis) core production dbs on codfw
 # codfw master
 node 'db2017.codfw.wmnet' {
-    class { 'role::mariadb::core':
+    class { '::role::mariadb::core':
         shard         => 's2',
         master        => true,
         binlog_format => 'STATEMENT',
@@ -486,7 +486,7 @@ node 'db2017.codfw.wmnet' {
 }
 
 node /^db20(35|41|49|56|63|64)\.codfw\.wmnet/ {
-    class { 'role::mariadb::core':
+    class { '::role::mariadb::core':
         shard         => 's2',
         binlog_format => 'ROW',
     }
@@ -496,7 +496,7 @@ node /^db20(35|41|49|56|63|64)\.codfw\.wmnet/ {
 # Lots of tables!
 # eqiad master
 node 'db1075.eqiad.wmnet' {
-    class { 'role::mariadb::core':
+    class { '::role::mariadb::core':
         shard         => 's3',
         master        => true,
         binlog_format => 'STATEMENT',
@@ -504,14 +504,14 @@ node 'db1075.eqiad.wmnet' {
 }
 
 node /^db10(15|35|38|77|78)\.eqiad\.wmnet/ {
-    class { 'role::mariadb::core':
+    class { '::role::mariadb::core':
         shard => 's3',
     }
 }
 
 # Testing row-based replication to sanitarium2 (T150802)
 node 'db1044.eqiad.wmnet' {
-    class { 'role::mariadb::core':
+    class { '::role::mariadb::core':
         shard         => 's3',
         binlog_format => 'ROW',
     }
@@ -520,7 +520,7 @@ node 'db1044.eqiad.wmnet' {
 # s3 (default) core production dbs on codfw
 # codfw master
 node 'db2018.codfw.wmnet' {
-    class { 'role::mariadb::core':
+    class { '::role::mariadb::core':
         shard         => 's3',
         master        => true,
         binlog_format => 'STATEMENT',
@@ -528,7 +528,7 @@ node 'db2018.codfw.wmnet' {
 }
 
 node /^db20(36|43|50|57)\.codfw\.wmnet/ {
-    class { 'role::mariadb::core':
+    class { '::role::mariadb::core':
         shard         => 's3',
         binlog_format => 'ROW',
     }
@@ -537,7 +537,7 @@ node /^db20(36|43|50|57)\.codfw\.wmnet/ {
 # s4 (commons) core production dbs on eqiad
 # eqiad master
 node 'db1040.eqiad.wmnet' {
-    class { 'role::mariadb::core':
+    class { '::role::mariadb::core':
         shard         => 's4',
         master        => true,
         binlog_format => 'STATEMENT',
@@ -545,7 +545,7 @@ node 'db1040.eqiad.wmnet' {
 }
 
 node /^db10(53|56|59|64|68|81|84|91)\.eqiad\.wmnet/ {
-    class { 'role::mariadb::core':
+    class { '::role::mariadb::core':
         shard => 's4',
     }
 }
@@ -557,7 +557,7 @@ node /^db10(19|42)\.eqiad\.wmnet/ {
 # s4 (commons) core production dbs on codfw
 # codfw master
 node 'db2019.codfw.wmnet' {
-    class { 'role::mariadb::core':
+    class { '::role::mariadb::core':
         shard         => 's4',
         master        => true,
         binlog_format => 'STATEMENT',
@@ -565,7 +565,7 @@ node 'db2019.codfw.wmnet' {
 }
 
 node /^db20(37|44|51|58|65)\.codfw\.wmnet/ {
-    class { 'role::mariadb::core':
+    class { '::role::mariadb::core':
         shard         => 's4',
         binlog_format => 'ROW',
     }
@@ -574,7 +574,7 @@ node /^db20(37|44|51|58|65)\.codfw\.wmnet/ {
 # s5 (wikidata/dewiki) core production dbs on eqiad
 # eqiad master
 node 'db1049.eqiad.wmnet' {
-    class { 'role::mariadb::core':
+    class { '::role::mariadb::core':
         shard         => 's5',
         master        => true,
         binlog_format => 'STATEMENT',
@@ -582,7 +582,7 @@ node 'db1049.eqiad.wmnet' {
 }
 
 node /^db10(26|45|70|71|82|87|92)\.eqiad\.wmnet/ {
-    class { 'role::mariadb::core':
+    class { '::role::mariadb::core':
         shard => 's5',
     }
 }
@@ -590,7 +590,7 @@ node /^db10(26|45|70|71|82|87|92)\.eqiad\.wmnet/ {
 # s5 (wikidata/dewiki) core production dbs on codfw
 # codfw master
 node 'db2023.codfw.wmnet' {
-    class { 'role::mariadb::core':
+    class { '::role::mariadb::core':
         shard         => 's5',
         master        => true,
         binlog_format => 'STATEMENT',
@@ -598,7 +598,7 @@ node 'db2023.codfw.wmnet' {
 }
 
 node /^db20(38|45|52|59|66)\.codfw\.wmnet/ {
-    class { 'role::mariadb::core':
+    class { '::role::mariadb::core':
         shard         => 's5',
         binlog_format => 'ROW',
     }
@@ -607,7 +607,7 @@ node /^db20(38|45|52|59|66)\.codfw\.wmnet/ {
 # s6 core production dbs on eqiad
 # eqiad master
 node 'db1050.eqiad.wmnet' {
-    class { 'role::mariadb::core':
+    class { '::role::mariadb::core':
         shard         => 's6',
         master        => true,
         binlog_format => 'STATEMENT',
@@ -615,7 +615,7 @@ node 'db1050.eqiad.wmnet' {
 }
 
 node /^db10(22|23|30|37|61|85|88|93)\.eqiad\.wmnet/ {
-    class { 'role::mariadb::core':
+    class { '::role::mariadb::core':
         shard => 's6',
     }
 }
@@ -623,7 +623,7 @@ node /^db10(22|23|30|37|61|85|88|93)\.eqiad\.wmnet/ {
 # s6 core production dbs on codfw
 # codfw master
 node 'db2028.codfw.wmnet' {
-    class { 'role::mariadb::core':
+    class { '::role::mariadb::core':
         shard         => 's6',
         master        => true,
         binlog_format => 'STATEMENT',
@@ -631,7 +631,7 @@ node 'db2028.codfw.wmnet' {
 }
 
 node /^db20(39|46|53|60|67)\.codfw\.wmnet/ {
-    class { 'role::mariadb::core':
+    class { '::role::mariadb::core':
         shard         => 's6',
         binlog_format => 'ROW',
     }
@@ -640,7 +640,7 @@ node /^db20(39|46|53|60|67)\.codfw\.wmnet/ {
 # s7 (centralauth, meta et al.) core production dbs on eqiad
 # eqiad master
 node 'db1041.eqiad.wmnet' {
-    class { 'role::mariadb::core':
+    class { '::role::mariadb::core':
         shard         => 's7',
         master        => true,
         binlog_format => 'STATEMENT',
@@ -648,7 +648,7 @@ node 'db1041.eqiad.wmnet' {
 }
 
 node /^db10(28|33|34|39|62|79|86|94)\.eqiad\.wmnet/ {
-    class { 'role::mariadb::core':
+    class { '::role::mariadb::core':
         shard => 's7',
     }
 }
@@ -656,7 +656,7 @@ node /^db10(28|33|34|39|62|79|86|94)\.eqiad\.wmnet/ {
 # s7 (centralauth, meta et al.) core production dbs on codfw
 # codfw master
 node 'db2029.codfw.wmnet' {
-    class { 'role::mariadb::core':
+    class { '::role::mariadb::core':
         shard         => 's7',
         master        => true,
         binlog_format => 'STATEMENT',
@@ -664,7 +664,7 @@ node 'db2029.codfw.wmnet' {
 }
 
 node /^db20(40|47|54|61|68)\.codfw\.wmnet/ {
-    class { 'role::mariadb::core':
+    class { '::role::mariadb::core':
         shard         => 's7',
         binlog_format => 'ROW',
     }
@@ -673,7 +673,7 @@ node /^db20(40|47|54|61|68)\.codfw\.wmnet/ {
 ## x1 shard
 # eqiad
 node 'db1031.eqiad.wmnet' {
-    class { 'role::mariadb::core':
+    class { '::role::mariadb::core':
         shard         => 'x1',
         master        => true,
         binlog_format => 'ROW',
@@ -681,7 +681,7 @@ node 'db1031.eqiad.wmnet' {
 }
 
 node 'db1029.eqiad.wmnet' {
-    class { 'role::mariadb::core':
+    class { '::role::mariadb::core':
         shard         => 'x1',
         binlog_format => 'ROW',
     }
@@ -689,7 +689,7 @@ node 'db1029.eqiad.wmnet' {
 
 # codfw
 node 'db2033.codfw.wmnet' {
-    class { 'role::mariadb::core':
+    class { '::role::mariadb::core':
         shard         => 'x1',
         master        => true,
         binlog_format => 'ROW',
@@ -699,102 +699,102 @@ node 'db2033.codfw.wmnet' {
 ## m1 shard
 
 node 'db1016.eqiad.wmnet' {
-    class { 'role::mariadb::misc':
+    class { '::role::mariadb::misc':
         shard  => 'm1',
         master => true,
     }
-    include base::firewall
+    include ::base::firewall
 }
 
 node 'db1001.eqiad.wmnet' {
-    class { 'role::mariadb::misc':
+    class { '::role::mariadb::misc':
         shard  => 'm1',
     }
-    include base::firewall
+    include ::base::firewall
 }
 
 node 'db2010.codfw.wmnet' {
-    class { 'role::mariadb::misc':
+    class { '::role::mariadb::misc':
         shard => 'm1',
     }
-    include base::firewall
+    include ::base::firewall
 }
 
 ## m2 shard
 node 'db1020.eqiad.wmnet' {
-    class { 'role::mariadb::misc':
+    class { '::role::mariadb::misc':
         shard  => 'm2',
         master => true,
     }
 }
 
 node 'db2011.codfw.wmnet' {
-    class { 'role::mariadb::misc':
+    class { '::role::mariadb::misc':
         shard => 'm2',
     }
 }
 
 ## m3 shard
 node 'db1043.eqiad.wmnet' {
-    class { 'role::mariadb::misc::phabricator':
+    class { '::role::mariadb::misc::phabricator':
         shard  => 'm3',
         master => true,
     }
-    include base::firewall
+    include ::base::firewall
 }
 
 node 'db1048.eqiad.wmnet' {
-    class { 'role::mariadb::misc::phabricator':
+    class { '::role::mariadb::misc::phabricator':
         shard => 'm3',
     }
-    include base::firewall
+    include ::base::firewall
 }
 
 node 'db2012.codfw.wmnet' {
-    class { 'role::mariadb::misc::phabricator':
+    class { '::role::mariadb::misc::phabricator':
         shard => 'm3',
     }
-    include base::firewall
+    include ::base::firewall
 }
 
 # m4 shard
 node 'db1046.eqiad.wmnet' {
-    class { 'role::mariadb::misc::eventlogging':
+    class { '::role::mariadb::misc::eventlogging':
         shard  => 'm4',
         master => true,
     }
-    include base::firewall
+    include ::base::firewall
 }
 node 'db1047.eqiad.wmnet' {
     # this slave has an m4 custom replication protocol
     # this slave additionally replicates s1 and s2
     role(mariadb::analytics, mariadb::analytics::custom_repl_slave)
-    class { 'role::mariadb::misc::eventlogging':
+    class { '::role::mariadb::misc::eventlogging':
         shard  => 'm4',
         master => false,
     }
-    include base::firewall
+    include ::base::firewall
 }
 
 # m5 shard
 node 'db1009.eqiad.wmnet' {
-    class { 'role::mariadb::misc':
+    class { '::role::mariadb::misc':
         shard  => 'm5',
         master => true,
     }
 }
 
 node 'db2030.codfw.wmnet' {
-    class { 'role::mariadb::misc':
+    class { '::role::mariadb::misc':
         shard => 'm5',
     }
-    include base::firewall
+    include ::base::firewall
 }
 
 # sanitarium
 node 'db1069.eqiad.wmnet' {
     role(mariadb::sanitarium)
-    include base::firewall
+    include ::base::firewall
 }
 
 node 'db1095.eqiad.wmnet' {
@@ -804,48 +804,48 @@ node 'db1095.eqiad.wmnet' {
 # tendril db
 node 'db1011.eqiad.wmnet' {
     role(mariadb::tendril)
-    include base::firewall
+    include ::base::firewall
 }
 
 node 'dbstore1001.eqiad.wmnet' {
-    include role::mariadb::backup
+    include ::role::mariadb::backup
     # 24h delay on all repl streams
-    class { 'role::mariadb::dbstore':
+    class { '::role::mariadb::dbstore':
         lag_warn     => 90000,
         lag_crit     => 180000,
         # Delayed slaves legitimately and cleanly (errno = 0) stop the SQL thread, so
         # don't spam Icinga with warnings. This will not block properly critical alerts.
         warn_stopped => false,
     }
-    include base::firewall
+    include ::base::firewall
 }
 
 node 'dbstore1002.eqiad.wmnet' {
     # this slave has an m4 custom replication protocol
     role(mariadb::dbstore, mariadb::analytics::custom_repl_slave)
-    include base::firewall
+    include ::base::firewall
 }
 
 node 'dbstore2001.codfw.wmnet' {
     # 24h delay on all repl streams
-    class { 'role::mariadb::dbstore':
+    class { '::role::mariadb::dbstore':
         lag_warn     => 90000,
         lag_crit     => 180000,
         # Delayed slaves legitimately and cleanly (errno = 0) stop the SQL thread, so
         # don't spam Icinga with warnings. This will not block properly critical alerts.
         warn_stopped => false,
     }
-    include base::firewall
+    include ::base::firewall
 }
 
 node 'dbstore2002.codfw.wmnet' {
     role(mariadb::dbstore)
-    include base::firewall
+    include ::base::firewall
 }
 
 # Proxies for misc databases
 node /^dbproxy100(1|6)\.eqiad\.wmnet$/ {
-    class { 'role::mariadb::proxy::master':
+    class { '::role::mariadb::proxy::master':
         shard          => 'm1',
         primary_name   => 'db1016',
         primary_addr   => '10.64.0.20',
@@ -855,7 +855,7 @@ node /^dbproxy100(1|6)\.eqiad\.wmnet$/ {
 }
 
 node /^dbproxy100(2|7)\.eqiad\.wmnet$/ {
-    class { 'role::mariadb::proxy::master':
+    class { '::role::mariadb::proxy::master':
         shard          => 'm2',
         primary_name   => 'db1020',
         primary_addr   => '10.64.16.9',
@@ -865,7 +865,7 @@ node /^dbproxy100(2|7)\.eqiad\.wmnet$/ {
 }
 
 node /^dbproxy100(3|8)\.eqiad\.wmnet$/ {
-    class { 'role::mariadb::proxy::master':
+    class { '::role::mariadb::proxy::master':
         shard          => 'm3',
         primary_name   => 'db1043',
         primary_addr   => '10.64.16.32',
@@ -875,7 +875,7 @@ node /^dbproxy100(3|8)\.eqiad\.wmnet$/ {
 }
 
 node /^dbproxy100(4|9)\.eqiad\.wmnet$/ {
-    class { 'role::mariadb::proxy::master':
+    class { '::role::mariadb::proxy::master':
         shard          => 'm4',
         primary_name   => 'db1046',
         primary_addr   => '10.64.16.35',
@@ -885,7 +885,7 @@ node /^dbproxy100(4|9)\.eqiad\.wmnet$/ {
 }
 
 node 'dbproxy1005.eqiad.wmnet' {
-    class { 'role::mariadb::proxy::master':
+    class { '::role::mariadb::proxy::master':
         shard          => 'm5',
         primary_name   => 'db1009',
         primary_addr   => '10.64.0.13',
@@ -896,7 +896,7 @@ node 'dbproxy1005.eqiad.wmnet' {
 
 # labsdb proxies (controling replica service dbs)
 node 'dbproxy1010.eqiad.wmnet' {
-    class { 'role::mariadb::proxy::master':
+    class { '::role::mariadb::proxy::master':
         shard          => 'labsdb',
         primary_name   => 'labsdb1009',
         primary_addr   => '10.64.4.14',
@@ -906,7 +906,7 @@ node 'dbproxy1010.eqiad.wmnet' {
 }
 
 node 'dbproxy1011.eqiad.wmnet' {
-    class { 'role::mariadb::proxy::master':
+    class { '::role::mariadb::proxy::master':
         shard          => 'labsdb',
         primary_name   => 'labsdb1011',
         primary_addr   => '10.64.37.24',
@@ -930,8 +930,8 @@ node /^druid100[123].eqiad.wmnet$/ {
         # is a separate druid zookeeper cluster.
         zookeeper::server)
 
-    include base::firewall
-    include standard
+    include ::base::firewall
+    include ::standard
 }
 
 node 'eeden.wikimedia.org' {
@@ -940,7 +940,7 @@ node 'eeden.wikimedia.org' {
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
     }
-    include standard
+    include ::standard
 }
 
 # icinga based monitoring host in eqiad
@@ -950,40 +950,40 @@ node 'einsteinium.wikimedia.org' {
 
 node /^elastic101[7-9]\.eqiad\.wmnet/ {
     role(elasticsearch::cirrus)
-    include base::firewall
-    include standard
+    include ::base::firewall
+    include ::standard
 }
 
 node /^elastic10[2-3][0-9]\.eqiad\.wmnet/ {
     role(elasticsearch::cirrus)
-    include base::firewall
-    include standard
+    include ::base::firewall
+    include ::standard
 }
 
 node /^elastic104[0-7]\.eqiad\.wmnet/ {
     role(elasticsearch::cirrus)
-    include base::firewall
-    include standard
+    include ::base::firewall
+    include ::standard
 }
 
 node /^elastic20[0-3][0-9]\.codfw\.wmnet/ {
     role(elasticsearch::cirrus)
-    include base::firewall
-    include standard
+    include ::base::firewall
+    include ::standard
 }
 
 # External Storage, Shard 1 (es1) databases
 
 ## eqiad servers
 node /^es101[268]\.eqiad\.wmnet/ {
-    class { 'role::mariadb::core':
+    class { '::role::mariadb::core':
         shard => 'es1',
     }
 }
 
 ## codfw servers
 node /^es201[123]\.codfw\.wmnet/ {
-    class { 'role::mariadb::core':
+    class { '::role::mariadb::core':
         shard         => 'es1',
         binlog_format => 'ROW',
     }
@@ -993,7 +993,7 @@ node /^es201[123]\.codfw\.wmnet/ {
 
 ## eqiad servers
 node 'es1011.eqiad.wmnet' {
-    class { 'role::mariadb::core':
+    class { '::role::mariadb::core':
         shard         => 'es2',
         master        => true,
         binlog_format => 'ROW',
@@ -1001,7 +1001,7 @@ node 'es1011.eqiad.wmnet' {
 }
 
 node /^es101[35]\.eqiad\.wmnet/ {
-    class { 'role::mariadb::core':
+    class { '::role::mariadb::core':
         shard         => 'es2',
         binlog_format => 'ROW',
     }
@@ -1009,7 +1009,7 @@ node /^es101[35]\.eqiad\.wmnet/ {
 
 ## codfw servers
 node 'es2016.codfw.wmnet' {
-    class { 'role::mariadb::core':
+    class { '::role::mariadb::core':
         shard         => 'es2',
         master        => true,
         binlog_format => 'ROW',
@@ -1017,7 +1017,7 @@ node 'es2016.codfw.wmnet' {
 }
 
 node /^es201[45]\.codfw\.wmnet/ {
-    class { 'role::mariadb::core':
+    class { '::role::mariadb::core':
         shard         => 'es2',
         binlog_format => 'ROW',
     }
@@ -1027,7 +1027,7 @@ node /^es201[45]\.codfw\.wmnet/ {
 
 ## eqiad servers
 node 'es1014.eqiad.wmnet' {
-    class { 'role::mariadb::core':
+    class { '::role::mariadb::core':
         shard         => 'es3',
         master        => true,
         binlog_format => 'ROW',
@@ -1035,7 +1035,7 @@ node 'es1014.eqiad.wmnet' {
 }
 
 node /^es101[79]\.eqiad\.wmnet/ {
-    class { 'role::mariadb::core':
+    class { '::role::mariadb::core':
         shard         => 'es3',
         binlog_format => 'ROW',
     }
@@ -1043,7 +1043,7 @@ node /^es101[79]\.eqiad\.wmnet/ {
 
 ## codfw servers
 node 'es2018.codfw.wmnet' {
-    class { 'role::mariadb::core':
+    class { '::role::mariadb::core':
         shard         => 'es3',
         master        => true,
         binlog_format => 'ROW',
@@ -1051,7 +1051,7 @@ node 'es2018.codfw.wmnet' {
 }
 
 node /^es201[79]\.codfw\.wmnet/ {
-    class { 'role::mariadb::core':
+    class { '::role::mariadb::core':
         shard         => 'es3',
         binlog_format => 'ROW',
     }
@@ -1062,17 +1062,17 @@ node /^es201[79]\.codfw\.wmnet/ {
 # storage on the backup system
 node 'es2001.codfw.wmnet' {
     role(mariadb::otrsbackups)
-    include standard
-    include base::firewall
+    include ::standard
+    include ::base::firewall
     # temporary measure until mysql is uninstalled
-    include mariadb::mysqld_safe
+    include ::mariadb::mysqld_safe
 }
 
 node /^es200[234]\.codfw\.wmnet/ {
-    include standard
-    include base::firewall
+    include ::standard
+    include ::base::firewall
     # temporary measure until mysql is uninstalled
-    include mariadb::mysqld_safe
+    include ::mariadb::mysqld_safe
 }
 
 # Etcd cluster for kubernetes
@@ -1104,15 +1104,15 @@ node 'eventlog1001.eqiad.wmnet' {
         eventlogging::analytics::files,
         logging::mediawiki::errors)
 
-    include standard
-    include base::firewall
+    include ::standard
+    include ::base::firewall
     interface::add_ip6_mapped { 'main': interface => 'eth0', }
 }
 
 # EventLogging Analytics does not (yet?) run in codfw.
 node 'eventlog2001.codfw.wmnet' {
-    include standard
-    include base::firewall
+    include ::standard
+    include ::base::firewall
 }
 
 # virtual machine for mailman list server
@@ -1125,9 +1125,9 @@ node 'fluorine.eqiad.wmnet' {
     role(xenon)
     $cluster = 'misc'
 
-    include standard
+    include ::standard
 
-    class { 'role::logging::mediawiki::udp2log':
+    class { '::role::logging::mediawiki::udp2log':
         monitor       => false,
         log_directory => '/a/mw-log',
     }
@@ -1137,13 +1137,13 @@ node 'fluorine.eqiad.wmnet' {
 node 'francium.eqiad.wmnet' {
 
     role(dumps::zim)
-    include standard
+    include ::standard
 }
 
 # Virtualization hosts
 node /^ganeti[12]00[0-9]\.(codfw|eqiad)\.wmnet$/ {
     role(ganeti)
-    include standard
+    include ::standard
 }
 
 # Hosts visualization / monitoring of EventLogging event streams
@@ -1151,21 +1151,21 @@ node /^ganeti[12]00[0-9]\.(codfw|eqiad)\.wmnet$/ {
 node 'hafnium.eqiad.wmnet' {
     role(webperf)
 
-    include standard
-    include base::firewall
+    include ::standard
+    include ::base::firewall
 }
 
 # debug_proxy hosts; Varnish backend for X-Wikimedia-Debug reqs
 node /^(hassaleh|hassium)\.(codfw|eqiad)\.wmnet$/ {
     role(debug_proxy)
-    include standard
-    include base::firewall
+    include ::standard
+    include ::base::firewall
 }
 
 node 'helium.eqiad.wmnet' {
     role(backup::director, backup::storage)
 
-    include standard
+    include ::standard
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
     }
@@ -1174,13 +1174,13 @@ node 'helium.eqiad.wmnet' {
 # Bacula storage
 node 'heze.codfw.wmnet' {
     role(backup::storage)
-    include standard
+    include ::standard
 }
 
 # DNS recursor
 node 'hydrogen.wikimedia.org' {
     role(dnsrecursor, ntp)
-    include standard
+    include ::standard
 
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
@@ -1198,40 +1198,40 @@ node 'kraz.wikimedia.org' {
 node 'labservices1001.wikimedia.org' {
     role(labs::dns, labs::openstack::designate::server, labs::dnsrecursor,
         labs::dns_floating_ip_updater)
-    include standard
-    include base::firewall
-    include ldap::role::client::labs
+    include ::standard
+    include ::base::firewall
+    include ::ldap::role::client::labs
 }
 
 node 'labservices1002.wikimedia.org' {
     role(labs::dns, labs::openstack::designate::server, labs::dnsrecursor)
-    include standard
-    include base::firewall
-    include ldap::role::client::labs
+    include ::standard
+    include ::base::firewall
+    include ::ldap::role::client::labs
 }
 
 node 'labtestneutron2001.codfw.wmnet' {
-    include standard
+    include ::standard
 }
 
 node 'labtestvirt2001.codfw.wmnet' {
     role(labs::openstack::nova::compute)
-    include standard
+    include ::standard
 }
 
 node 'labtestnet2001.codfw.wmnet' {
     role(labs::openstack::nova::api, labs::openstack::nova::network)
-    include standard
+    include ::standard
 }
 
 node 'labtestmetal2001.codfw.wmnet' {
-    include standard
-    include base::firewall
+    include ::standard
+    include ::base::firewall
 }
 
 node 'labtestcontrol2001.wikimedia.org' {
-    include standard
-    include base::firewall
+    include ::standard
+    include ::base::firewall
     role(labs::openstack::nova::controller, labs::puppetmaster)
 
     # Labtest is weird; the mysql server is on labtestcontrol2001.  So
@@ -1260,43 +1260,43 @@ node 'labtestcontrol2001.wikimedia.org' {
 node 'labtestservices2001.wikimedia.org' {
     role(labs::dns, labs::openstack::designate::server, labs::dnsrecursor, openldap::labtest,
         labs::dns_floating_ip_updater)
-    include standard
-    include base::firewall
+    include ::standard
+    include ::base::firewall
 }
 
 # Primary graphite machines
 node 'graphite1001.eqiad.wmnet' {
     role(graphite::production, statsd, performance::site, graphite::alerts,
         restbase::alerts, graphite::alerts::reqstats, elasticsearch::alerts)
-    include standard
-    include base::firewall
+    include ::standard
+    include ::base::firewall
 }
 
 # graphite test machine, currently with SSD caching + spinning disks
 node 'graphite1002.eqiad.wmnet' {
     role(test::system)
-    include base::firewall
+    include ::base::firewall
 }
 
 # graphite additional machine, for additional space
 node 'graphite1003.eqiad.wmnet' {
     role(graphite::production, statsd)
-    include standard
-    include base::firewall
+    include ::standard
+    include ::base::firewall
 }
 
 # Primary graphite machines
 node 'graphite2001.codfw.wmnet' {
     role(graphite::production, statsd)
-    include standard
-    include base::firewall
+    include ::standard
+    include ::base::firewall
 }
 
 # graphite additional machine, for additional space
 node 'graphite2002.codfw.wmnet' {
     role(graphite::production, statsd)
-    include standard
-    include base::firewall
+    include ::standard
+    include ::base::firewall
 }
 
 # partially replaces carbon (T132757)
@@ -1314,7 +1314,7 @@ node 'install1001.wikimedia.org' {
         interface => 'eth0',
     }
 
-    class { 'ganglia::monitor::aggregator':
+    class { '::ganglia::monitor::aggregator':
         sites =>  'eqiad',
     }
 }
@@ -1333,7 +1333,7 @@ node 'install2001.wikimedia.org' {
         interface => 'eth0',
     }
 
-    class { 'ganglia::monitor::aggregator':
+    class { '::ganglia::monitor::aggregator':
         sites =>  'codfw',
     }
 }
@@ -1344,8 +1344,8 @@ node /^(iridium\.eqiad|phab2001\.codfw)\.wmnet$/ {
         interface => 'eth0',
     }
     role(phabricator::main, backup::host)
-    include standard
-    include ganglia
+    include ::standard
+    include ::ganglia
 }
 
 node 'iron.wikimedia.org' {
@@ -1370,8 +1370,8 @@ node /kafka10(12|13|14|18|20|22)\.eqiad\.wmnet/ {
         kafka::analytics::mirror,
         ipsec)
 
-    include standard
-    include base::firewall
+    include ::standard
+    include ::base::firewall
 }
 
 # Kafka Brokers - main-eqiad and main-codfw Kafka clusters.
@@ -1384,7 +1384,7 @@ node /kafka[12]00[123]\.(eqiad|codfw)\.wmnet/ {
         kafka::main::mirror,
         eventbus::eventbus)
 
-    include standard
+    include ::standard
 }
 
 # virtual machine for misc. PHP apps
@@ -1394,12 +1394,12 @@ node 'krypton.eqiad.wmnet' {
     # <s>monitoring host</s> (not really, it's just misc apps)
     role(wikimania_scholarships, iegreview::app, grafana::production,
         kafka::analytics::burrow, racktables::server)
-    include standard
+    include ::standard
 }
 
 node /kubernetes100[1-4].eqiad.wmnet/ {
     role(kubernetes::worker)
-    include standard
+    include ::standard
 }
 
 node 'labcontrol1001.wikimedia.org' {
@@ -1408,9 +1408,9 @@ node 'labcontrol1001.wikimedia.org' {
           salt::masters::labs,
           deployment::salt_masters)
 
-    include base::firewall
-    include standard
-    include ldap::role::client::labs
+    include ::base::firewall
+    include ::standard
+    include ::ldap::role::client::labs
 }
 
 # labcontrol1002 is a hot spare for 1001.  Switching it on
@@ -1424,9 +1424,9 @@ node 'labcontrol1002.wikimedia.org' {
           salt::masters::labs,
           deployment::salt_masters)
 
-    include base::firewall
-    include standard
-    include ldap::role::client::labs
+    include ::base::firewall
+    include ::standard
+    include ::ldap::role::client::labs
 }
 
 # This is the testlab server that implements both:
@@ -1434,9 +1434,9 @@ node 'labcontrol1002.wikimedia.org' {
 #  - californium (horizon.wikimedia.org)
 node 'labtestweb2001.wikimedia.org' {
     role(labs::openstack::nova::manager, mariadb::wikitech, horizon)
-    include base::firewall
-    include standard
-    include openstack::horizon::puppetpanel
+    include ::base::firewall
+    include ::standard
+    include ::openstack::horizon::puppetpanel
 
     interface::add_ip6_mapped { 'main': }
 }
@@ -1444,25 +1444,25 @@ node 'labtestweb2001.wikimedia.org' {
 # Labs Graphite and StatsD host
 node 'labmon1001.eqiad.wmnet' {
     role(labs::graphite, grafana::labs)
-    include standard
-    include base::firewall
+    include ::standard
+    include ::base::firewall
 }
 
 node 'labnet1001.eqiad.wmnet' {
     role(labs::openstack::nova::api, labs::openstack::nova::network)
-    include standard
+    include ::standard
 }
 
 node 'labnet1002.eqiad.wmnet' {
     role(labs::openstack::nova::api)
-    include standard
+    include ::standard
 }
 
 node 'labnodepool1001.eqiad.wmnet' {
     $nagios_contact_group = 'admins,contint'
     role(labs::openstack::nodepool)
-    include standard
-    include base::firewall
+    include ::standard
+    include ::base::firewall
 }
 
 ## labsdb dbs
@@ -1497,36 +1497,36 @@ node 'labsdb1007.eqiad.wmnet' {
 
 node /labstore100[12]\.eqiad\.wmnet/ {
     role(labs::nfs::primary)
-    include standard
+    include ::standard
 }
 
 node 'labstore1003.eqiad.wmnet' {
     role(labs::nfs::misc)
-    include standard
+    include ::standard
 }
 
 node /labstore100[45]\.eqiad\.wmnet/ {
     role(labs::nfs::secondary)
-    include standard
+    include ::standard
 }
 
 node /labstore200[1-2]\.codfw\.wmnet/ {
-    include standard
+    include ::standard
 }
 
 node 'labstore2003.codfw.wmnet' {
     role(labs::nfs::secondary_backup::tools)
-    include standard
+    include ::standard
 }
 
 node 'labstore2004.codfw.wmnet' {
     role(labs::nfs::secondary_backup::misc)
-    include standard
+    include ::standard
 }
 
 node 'lithium.eqiad.wmnet' {
     role(backup::host, syslog::centralserver)
-    include standard
+    include ::standard
 }
 
 node /^logstash100[1-2]\.eqiad\.wmnet$/ {
@@ -1556,7 +1556,7 @@ node /lvs100[1-6]\.wikimedia\.org/ {
         interface => 'eth0',
     }
 
-    include lvs::configuration
+    include ::lvs::configuration
     $ips = $lvs::configuration::subnet_ips
 
     # Set up tagged interfaces to all subnets with real servers in them
@@ -1657,7 +1657,7 @@ node /^lvs10(0[789]|1[012])\.eqiad\.wmnet$/ {
         interface => 'eth0',
     }
 
-    include lvs::configuration
+    include ::lvs::configuration
     $ips = $lvs::configuration::subnet_ips
 
     # Set up tagged interfaces to all subnets with real servers in them
@@ -1755,7 +1755,7 @@ node /lvs200[1-6]\.codfw\.wmnet/ {
 
     interface::add_ip6_mapped { 'main': interface => 'eth0' }
 
-    include lvs::configuration
+    include ::lvs::configuration
     $ips = $lvs::configuration::subnet_ips
 
     # Set up tagged interfaces to all subnets with real servers in them
@@ -1858,7 +1858,7 @@ node /^lvs300[1-4]\.esams\.wmnet$/ {
         interface => 'eth0',
     }
 
-    include lvs::configuration
+    include ::lvs::configuration
     $ips = $lvs::configuration::subnet_ips
 
     interface::tagged { 'eth0.100':
@@ -1900,7 +1900,7 @@ node /^lvs400[1-4]\.ulsfo\.wmnet$/ {
 
 node 'maerlant.wikimedia.org' {
     role(dnsrecursor, ntp)
-    include standard
+    include ::standard
 
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
@@ -1950,7 +1950,7 @@ node /^mc20[01][0-9]\.codfw\.wmnet/ {
 node 'meitnerium.wikimedia.org' {
     $cluster = 'misc'
     role(archiva)
-    include standard
+    include ::standard
 }
 
 # OTRS - ticket.wikimedia.org
@@ -1978,7 +1978,7 @@ node 'ms1001.wikimedia.org' {
 }
 
 node 'ms1002.eqiad.wmnet' {
-    include standard
+    include ::standard
 }
 
 # Whenever adding a new node there, you have to ask MediaWiki to recognize the
@@ -1986,7 +1986,7 @@ node 'ms1002.eqiad.wmnet' {
 # rate limiting purposes (T66622)
 node /^ms-fe1001\.eqiad\.wmnet$/ {
     role(swift::proxy, swift::stats_reporter)
-    include lvs::realserver
+    include ::lvs::realserver
 }
 
 node /^ms-fe100[2-4]\.eqiad\.wmnet$/ {
@@ -2039,50 +2039,50 @@ node /^ms-be20(1[6-9]|2[0-7])\.codfw\.wmnet$/ {
 # They replace mw1017 and mw1099
 node /^mwdebug100[12]\.eqiad\.wmnet$/ {
     role(mediawiki::canary_appserver)
-    include base::firewall
+    include ::base::firewall
 }
 
 # mw1017 and mw1099 are former test appservers
 # HW decom ticket: T151303
 node /^mw10(17|99)\.eqiad\.wmnet$/ {
     role(spare::system)
-    include base::firewall
+    include ::base::firewall
 }
 
 # mw1161-1167 are job runners
 node /^mw116[1-7]\.eqiad\.wmnet$/ {
     role(mediawiki::jobrunner)
-    include base::firewall
+    include ::base::firewall
 }
 
 # mw1170-1188 are apaches
 node /^mw11(7[0-9]|8[0-8])\.eqiad\.wmnet$/ {
     role(mediawiki::appserver)
-    include base::firewall
+    include ::base::firewall
 }
 
 # mw1189-1208 are api apaches
 node /^mw1(189|19[0-9]|20[0-8])\.eqiad\.wmnet$/ {
     role(mediawiki::appserver::api)
-    include base::firewall
+    include ::base::firewall
 }
 
 # mw1209-1216, 1218-1220 are apaches
 node /^mw12(09|1[012345689]|20)\.eqiad\.wmnet$/ {
     role(mediawiki::appserver)
-    include base::firewall
+    include ::base::firewall
 }
 
 #mw1221-mw1235 are api apaches
 node /^mw12(2[1-9]|3[0-5])\.eqiad\.wmnet$/ {
     role(mediawiki::appserver::api)
-    include base::firewall
+    include ::base::firewall
 }
 
 #mw1236-mw1258 are apaches
 node /^mw12(3[6-9]|4[0-9]|5[0-8])\.eqiad\.wmnet$/ {
     role(mediawiki::appserver)
-    include base::firewall
+    include ::base::firewall
 }
 
 #mw1259-60 are videoscalers
@@ -2096,24 +2096,24 @@ node /^mw1(16[89]|259|260)\.eqiad\.wmnet/ {
 
 node /^mw126[1-5]\.eqiad\.wmnet$/ {
     role(mediawiki::canary_appserver)
-    include base::firewall
+    include ::base::firewall
 }
 
 node /^mw12(6[6-9]|7[0-5])\.eqiad\.wmnet$/ {
     role(mediawiki::appserver)
-    include base::firewall
+    include ::base::firewall
 }
 
 # ROW A eqiad api appserver
 # mw1276 - mw1290
 node /^mw127[6-9]\.eqiad\.wmnet$/ {
     role(mediawiki::appserver::canary_api)
-    include base::firewall
+    include ::base::firewall
 }
 
 node /^mw12(8[0-9]|90)\.eqiad\.wmnet$/ {
     role(mediawiki::appserver::api)
-    include base::firewall
+    include ::base::firewall
 }
 
 # ROW A eqiad imagescalers
@@ -2124,7 +2124,7 @@ node /^mw129[3-8]\.eqiad\.wmnet$/ {
 # ROW A eqiad jobrunners
 node /^mw1(299|30[0-6])\.eqiad\.wmnet$/ {
     role(mediawiki::jobrunner)
-    include base::firewall
+    include ::base::firewall
 }
 
 # ROW A codfw appservers: mw2017, mw2075-mw2079, and mw2215-2250
@@ -2132,19 +2132,19 @@ node /^mw1(299|30[0-6])\.eqiad\.wmnet$/ {
 # mw2017/mw2099 are codfw test appservers
 node /^mw20(17|99)\.codfw\.wmnet$/ {
     role(mediawiki::canary_appserver)
-    include base::firewall
+    include ::base::firewall
 }
 
 #mw2090-mw2098, mw2100-mw2119 are appservers
 node /^mw2(09[0-8]|1[0-1][0-9])\.codfw\.wmnet$/ {
     role(mediawiki::appserver)
-    include base::firewall
+    include ::base::firewall
 }
 
 #mw2120-2147 are api appservers
 node /^mw21([2-3][0-9]|4[0-7])\.codfw\.wmnet$/ {
     role(mediawiki::appserver::api)
-    include base::firewall
+    include ::base::firewall
 }
 
 # ROW C codfw appservers: mw2148-mw2234
@@ -2162,19 +2162,19 @@ node 'mw2152.codfw.wmnet' {
 #mw2153-62 are jobrunners
 node /^mw21(5[3-9]|6[0-2])\.codfw\.wmnet$/ {
     role(mediawiki::jobrunner)
-    include base::firewall
+    include ::base::firewall
 }
 
 #mw2163-mw2199 are appservers
 node /^mw21(6[3-9]|[6-9][0-9])\.codfw\.wmnet$/ {
     role(mediawiki::appserver)
-    include base::firewall
+    include ::base::firewall
 }
 
 #mw2200-2214 are api appservers
 node /^mw22(0[0-9]|1[0-4])\.codfw\.wmnet$/ {
     role(mediawiki::appserver::api)
-    include base::firewall
+    include ::base::firewall
 }
 
 # New Appservers, in row A3/A4
@@ -2182,13 +2182,13 @@ node /^mw22(0[0-9]|1[0-4])\.codfw\.wmnet$/ {
 #mw2215-2220 are api appservers
 node /^mw22(1[5-9]|20)\.codfw\.wmnet$/ {
     role(mediawiki::appserver::api)
-    include base::firewall
+    include ::base::firewall
 }
 
 # mw2221-45 are appservers
 node /^mw22(2[1-9]|3[0-9]|4[0-5])\.codfw\.wmnet$/ {
     role(mediawiki::appserver)
-    include base::firewall
+    include ::base::firewall
 }
 
 
@@ -2200,19 +2200,19 @@ node 'mw2246.codfw.wmnet' {
 # mw2247-2250 are jobrunners
 node /^mw22(4[7-9]|50)\.codfw\.wmnet$/ {
     role(mediawiki::jobrunner)
-    include base::firewall
+    include ::base::firewall
 }
 
 # mw logging host codfw - setup pending
 node 'mwlog2001.codfw.wmnet' {
 
-    include base::firewall
-    include standard
+    include ::base::firewall
+    include ::standard
 }
 
 node 'mx1001.wikimedia.org' {
     role(mail::mx)
-    include standard
+    include ::standard
     interface::add_ip6_mapped { 'main': }
 
     interface::ip { 'wiki-mail-eqiad.wikimedia.org_v4':
@@ -2232,7 +2232,7 @@ node 'mx1001.wikimedia.org' {
 
 node 'mx2001.wikimedia.org' {
     role(mail::mx)
-    include standard
+    include ::standard
     interface::add_ip6_mapped { 'main': }
 
     interface::ip { 'wiki-mail-codfw.wikimedia.org_v4':
@@ -2255,12 +2255,12 @@ node 'notebook1001.eqiad.wmnet' {
     # Equivalent of stat1003
     role(paws_internal::jupyterhub, paws_internal::mysql_access)
 
-    include standard
+    include ::standard
 }
 node 'notebook1002.eqiad.wmnet' {
     # Equivalent to stat1002
     role(paws_internal::jupyterhub, analytics_cluster::client)
-    include standard
+    include ::standard
 }
 
 # salt master
@@ -2268,13 +2268,13 @@ node 'neodymium.eqiad.wmnet' {
     role(salt::masters::production, deployment::salt_masters,
       debdeploy::master, ipmi::mgmt, access_new_install, mariadb::client,
       mgmt::drac_ilo)
-    include standard
-    include base::firewall
+    include ::standard
+    include ::base::firewall
 }
 
 node 'nescio.wikimedia.org' {
     role(dnsrecursor, ntp)
-    include standard
+    include ::standard
 
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
@@ -2284,13 +2284,13 @@ node 'nescio.wikimedia.org' {
 # network monitoring tool server
 node 'netmon1001.wikimedia.org' {
     role(rancid::server, librenms, servermon::wmf, torrus, smokeping)
-    include standard
-    include passwords::network
-    include base::firewall
+    include ::standard
+    include ::passwords::network
+    include ::base::firewall
 
     interface::add_ip6_mapped { 'main': }
 
-    class { 'ganglia::monitor::aggregator':
+    class { '::ganglia::monitor::aggregator':
         sites => ['eqiad', 'codfw'],
     }
 }
@@ -2313,7 +2313,7 @@ node /^oresrdb100[12]\.eqiad\.wmnet$/ {
 node 'osmium.eqiad.wmnet' {
     role(ve)
     include ::standard
-    include base::firewall
+    include ::base::firewall
 }
 
 # oxygen runs a kafkatee instance that consumes webrequest from Kafka
@@ -2322,54 +2322,54 @@ node 'oxygen.eqiad.wmnet'
 {
     role(logging::kafkatee::webrequest::ops)
 
-    include base::firewall
-    include standard
+    include ::base::firewall
+    include ::standard
 }
 
 # parser cache databases
 # eqiad
 node 'pc1004.eqiad.wmnet' {
-    class { 'role::mariadb::parsercache':
+    class { '::role::mariadb::parsercache':
         shard  => 'pc1',
     }
 
-    include base::firewall
+    include ::base::firewall
 }
 node 'pc1005.eqiad.wmnet' {
-    class { 'role::mariadb::parsercache':
+    class { '::role::mariadb::parsercache':
         shard  => 'pc2',
     }
 
-    include base::firewall
+    include ::base::firewall
 }
 node 'pc1006.eqiad.wmnet' {
-    class { 'role::mariadb::parsercache':
+    class { '::role::mariadb::parsercache':
         shard  => 'pc3',
     }
 
-    include base::firewall
+    include ::base::firewall
 }
 # codfw
 node 'pc2004.codfw.wmnet' {
-    class { 'role::mariadb::parsercache':
+    class { '::role::mariadb::parsercache':
         shard  => 'pc1',
     }
 
-    include base::firewall
+    include ::base::firewall
 }
 node 'pc2005.codfw.wmnet' {
-    class { 'role::mariadb::parsercache':
+    class { '::role::mariadb::parsercache':
         shard  => 'pc2',
     }
 
-    include base::firewall
+    include ::base::firewall
 }
 node 'pc2006.codfw.wmnet' {
-    class { 'role::mariadb::parsercache':
+    class { '::role::mariadb::parsercache':
         shard  => 'pc3',
     }
 
-    include base::firewall
+    include ::base::firewall
 }
 
 # virtual machines hosting https://wikitech.wikimedia.org/wiki/Planet.wikimedia.org
@@ -2382,26 +2382,26 @@ node /^planet[12]001\.(eqiad|codfw)\.wmnet$/ {
 # LDAP servers relied on by OIT for mail
 node /(dubnium|pollux)\.wikimedia\.org/ {
     role(openldap::corp, backup::host)
-    include standard
+    include ::standard
     backup::openldapset {'openldap_oit':}
 }
 
 node 'poolcounter1001.eqiad.wmnet' {
     role(poolcounter::server)
-    include standard
+    include ::standard
 }
 
 node 'poolcounter1002.eqiad.wmnet' {
     role(poolcounter::server)
-    include standard
+    include ::standard
 }
 
 node /^prometheus200[12]\.codfw\.wmnet$/ {
     role(prometheus::ops, prometheus::global)
 
-    include base::firewall
-    include standard
-    include lvs::realserver
+    include ::base::firewall
+    include ::standard
+    include ::lvs::realserver
 
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
@@ -2411,9 +2411,9 @@ node /^prometheus200[12]\.codfw\.wmnet$/ {
 node /^prometheus100[12]\.eqiad\.wmnet$/ {
     role(prometheus::ops)
 
-    include base::firewall
-    include standard
-    include lvs::realserver
+    include ::base::firewall
+    include ::standard
+    include ::lvs::realserver
 
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
@@ -2426,7 +2426,7 @@ node /^puppetmaster[12]001\.(codfw|eqiad)\.wmnet$/ {
         puppetmaster::frontend, conftool::master,
         pybal_config
     )
-    include standard
+    include ::standard
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
     }
@@ -2434,7 +2434,7 @@ node /^puppetmaster[12]001\.(codfw|eqiad)\.wmnet$/ {
 
 node /^puppetmaster[12]002\.(codfw|eqiad)\.wmnet$/ {
     role(puppetmaster::backend)
-    include standard
+    include ::standard
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
     }
@@ -2444,14 +2444,14 @@ node /^puppetmaster[12]002\.(codfw|eqiad)\.wmnet$/ {
 # pybal-test200X VMs are used for pybal testing/development
 node /^pybal-test200[12]\.codfw\.wmnet$/ {
     role(pybaltest)
-    include standard
+    include ::standard
 }
 
 # pybal-test2003 is used for pybal testing/development
 # and for redis multi-instance testing/development
 node 'pybal-test2003.codfw.wmnet' {
     role(pybaltest)
-    include standard
+    include ::standard
 
     redis::instance { 6370: }
     redis::instance { 6371: }
@@ -2461,8 +2461,8 @@ node 'pybal-test2003.codfw.wmnet' {
 node 'radium.wikimedia.org' {
     role(tor::relay)
 
-    include base::firewall
-    include standard
+    include ::base::firewall
+    include ::standard
 
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
@@ -2475,7 +2475,7 @@ node 'radon.wikimedia.org' {
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
     }
-    include standard
+    include ::standard
 }
 
 # Live Recent Changes WebSocket stream
@@ -2484,23 +2484,23 @@ node 'rcs1001.eqiad.wmnet', 'rcs1002.eqiad.wmnet' {
         interface => 'eth0',
     }
     role(rcstream)
-    include base::firewall
+    include ::base::firewall
 }
 
 node /^rdb100[1-9]\.eqiad\.wmnet/ {
     role(jobqueue_redis)
-    include base::firewall
+    include ::base::firewall
 }
 
 node /^rdb200[1-6]\.codfw\.wmnet/ {
     role(jobqueue_redis)
-    include base::firewall
+    include ::base::firewall
 }
 
 node /^relforge100[1-2]\.eqiad\.wmnet/ {
     role(elasticsearch::relforge)
-    include base::firewall
-    include standard
+    include ::base::firewall
+    include ::standard
 }
 
 # restbase eqiad cluster
@@ -2547,15 +2547,15 @@ node 'ruthenium.eqiad.wmnet' {
 # salt master fallback
 node 'sarin.codfw.wmnet' {
     role(salt::masters::production, mariadb::client)
-    include standard
-    include base::firewall
+    include ::standard
+    include ::base::firewall
 }
 
 # T95046 install/deploy scandium as zuul merger (ci) server
 node 'scandium.eqiad.wmnet' {
     role(zuul::merger)
-    include standard
-    include base::firewall
+    include ::standard
+    include ::base::firewall
 
     file { '/srv/ssd':
         ensure => 'directory',
@@ -2589,30 +2589,30 @@ node /^scb[12]00[1234]\.(eqiad|codfw)\.wmnet$/ {
 # Codfw, eqiad ldap servers, aka ldap-$::site
 node /^(seaborgium|serpens)\.wikimedia\.org$/ {
     role(openldap::labs, backup::host)
-    include standard
-    include base::firewall
+    include ::standard
+    include ::base::firewall
     backup::openldapset {'openldap_labs':}
 }
 
 # Silver is the new home of the wikitech web server.
 node 'silver.wikimedia.org' {
     role(labs::openstack::nova::manager, mariadb::wikitech, labs::instance_info_dumper)
-    include base::firewall
-    include standard
+    include ::base::firewall
+    include ::standard
 
     interface::add_ip6_mapped { 'main': }
 }
 
 node 'sodium.wikimedia.org' {
     role(mirrors)
-    include standard
+    include ::standard
 
     interface::add_ip6_mapped { 'main': }
 }
 
 node /^rhodium.eqiad.wmnet/ {
     role(puppetmaster::backend)
-    include standard
+    include ::standard
 
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
@@ -2640,8 +2640,8 @@ node 'thorium.eqiad.wmnet' {
         analytics_cluster::druid::pivot)
 
 
-    include standard
-    include base::firewall
+    include ::standard
+    include ::base::firewall
 }
 
 node 'stat1002.eqiad.wmnet' {
@@ -2679,7 +2679,7 @@ node 'stat1002.eqiad.wmnet' {
         # to this node.
         elasticsearch::analytics)
 
-    include standard
+    include ::standard
 
     # Include the MySQL research password at
     # /etc/mysql/conf.d/analytics-research-client.cnf
@@ -2709,12 +2709,12 @@ node 'stat1004.eqiad.wmnet' {
 
     role(analytics_cluster::client, analytics_cluster::refinery)
 
-    include standard
+    include ::standard
 }
 
 node /^snapshot1001\.eqiad\.wmnet/ {
     role(snapshot::testbed)
-    include standard
+    include ::standard
 }
 
 node /^snapshot100[5-7]\.eqiad\.wmnet/ {
@@ -2728,7 +2728,7 @@ node /^snapshot100[5-7]\.eqiad\.wmnet/ {
 # codfw poolcounters
 node /(subra|suhail)\.codfw\.wmnet/ {
     role(poolcounter::server)
-    include standard
+    include ::standard
 }
 
 # icinga based monitoring host in codfw
@@ -2739,9 +2739,9 @@ node 'tegmen.wikimedia.org' {
 # https://wikitech.wikimedia.org/wiki/Terbium
 node 'terbium.eqiad.wmnet' {
     role(mariadb::maintenance, mediawiki::maintenance, openldap::management)
-    include role::noc::site
-    include ldap::role::client::labs
-    include base::firewall
+    include ::role::noc::site
+    include ::ldap::role::client::labs
+    include ::base::firewall
 
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
@@ -2752,14 +2752,14 @@ node 'terbium.eqiad.wmnet' {
 node /^thumbor100[12].eqiad.wmnet/ {
     role(thumbor::mediawiki)
 
-    include standard
-    include base::firewall
+    include ::standard
+    include ::base::firewall
 }
 
 # deployment servers
 node 'tin.eqiad.wmnet', 'mira.codfw.wmnet' {
     role(deployment::server)
-    include base::firewall
+    include ::base::firewall
 
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
@@ -2769,7 +2769,7 @@ node 'tin.eqiad.wmnet', 'mira.codfw.wmnet' {
 # test system for performance team (T117888)
 node 'tungsten.eqiad.wmnet' {
     role(test::system, xhgui::app)
-    include base::firewall
+    include ::base::firewall
 }
 
 # replaced magnesium (RT) (T119112 T123713)
@@ -2785,8 +2785,8 @@ node 'ununpentium.wikimedia.org' {
 # Ganglia Web UI
 node 'uranium.wikimedia.org' {
     role(ganglia::web)
-    include standard
-    include base::firewall
+    include ::standard
+    include ::base::firewall
 
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
@@ -2796,20 +2796,20 @@ node 'uranium.wikimedia.org' {
 node /^labvirt100[0-9].eqiad.wmnet/ {
     openstack::nova::partition{ '/dev/sdb': }
     role(labs::openstack::nova::compute)
-    include standard
+    include ::standard
 }
 
 node /^labvirt101[0-4].eqiad.wmnet/ {
     role(labs::openstack::nova::compute)
-    include standard
+    include ::standard
 }
 
 # mediawiki maintenance server (like terbium)
 node 'wasat.codfw.wmnet' {
     role(mariadb::maintenance, mediawiki::maintenance)
-    include role::noc::site
-    include ldap::role::client::labs
-    include base::firewall
+    include ::role::noc::site
+    include ::ldap::role::client::labs
+    include ::base::firewall
 
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
@@ -2819,28 +2819,28 @@ node 'wasat.codfw.wmnet' {
 # Wikidata query service
 node /^wdqs100[1-2]\.eqiad\.wmnet$/ {
     role(wdqs)
-    include lvs::realserver
+    include ::lvs::realserver
 }
 
 node /^wdqs200[1-2]\.codfw\.wmnet$/ {
     role(wdqs)
-    include lvs::realserver
+    include ::lvs::realserver
 }
 
 node 'wezen.codfw.wmnet' {
     role(backup::host, syslog::centralserver)
-    include standard
+    include ::standard
 }
 
 # https://www.mediawiki.org/wiki/Parsoid
 node /^wtp10(0[1-9]|1[0-9]|2[0-4])\.eqiad\.wmnet$/ {
     role(parsoid)
-    include standard
+    include ::standard
 }
 
 node /^wtp20(0[1-9]|1[0-9]|2[0-4])\.codfw\.wmnet$/ {
     role(parsoid)
-    include standard
+    include ::standard
 }
 
 # T138650 - tools for the security team
@@ -2852,10 +2852,10 @@ node 'zosma.codfw.wmnet' {
 
 node default {
     if $::realm == 'production' {
-        include standard
+        include ::standard
     } else {
         # Require instead of include so we get NFS and other
         # base things setup properly
-        require role::labs::instance
+        require ::role::labs::instance
     }
 }
