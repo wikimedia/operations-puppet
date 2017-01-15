@@ -23,12 +23,12 @@ class mediawiki_singlenode(
     $apache_site_template = 'mediawiki_singlenode/mediawiki_singlenode.erb',
     $mediawiki_hostname = $::labs_mediawiki_hostname
     ) {
-    require base::mysterious_sysctl
+    require ::base::mysterious_sysctl
 
     class { '::mysql::server':
         config_hash => {
             datadir => '/mnt/mysql',
-        }
+        },
     }
 
     require_package('php5-mysql')
@@ -38,7 +38,7 @@ class mediawiki_singlenode(
     require_package('php-apc', 'php5-cli')
 
     if !defined(Class['memcached']) {
-        class { 'memcached':
+        class { '::memcached':
             ip   => '127.0.0.1',
             size => $memcached_size,
         }
@@ -81,7 +81,7 @@ class mediawiki_singlenode(
     exec { 'password_gen':
         require => [ Git::Clone['mediawiki'],  File["${install_path}/orig"] ],
         creates => "${install_path}/orig/adminpass",
-        command => "/usr/bin/openssl rand -base64 32 | tr -dc _A-Z-a-z-0-9 > ${install_path}/orig/adminpass"
+        command => "/usr/bin/openssl rand -base64 32 | tr -dc _A-Z-a-z-0-9 > ${install_path}/orig/adminpass",
     }
 
     exec { 'mediawiki_setup':
