@@ -4,5 +4,5 @@
 # only be included on Hadoop NameNodes.
 #
 class role::analytics_cluster::druid::hadoop {
-    include druid::cdh::hadoop::setup
+    include ::druid::cdh::hadoop::setup
 }

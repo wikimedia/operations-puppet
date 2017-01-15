@@ -2,7 +2,7 @@
 # Installs base configs and packages for hive client nodes.
 #
 class role::analytics_cluster::hive::client {
-    require role::analytics_cluster::hadoop::client
+    require ::role::analytics_cluster::hadoop::client
 
     # The WMF webrequest table uses HCatalog's JSON Serde.
     # Automatically include this in Hive client classpaths.

@@ -44,7 +44,7 @@ class role::analytics_cluster::refinery {
 
     # Put refinery python module in user PYTHONPATH
     file { '/etc/profile.d/refinery.sh':
-        content => "export PYTHONPATH=\${PYTHONPATH}:${path}/python"
+        content => "export PYTHONPATH=\${PYTHONPATH}:${path}/python",
     }
 
     # Create directory in /var/log for general purpose Refinery job logging.
