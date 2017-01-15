@@ -5,9 +5,9 @@ class contint::packages::labs {
 
     Package['puppet-lint'] -> Class['contint::packages::labs']
 
-    require contint::packages::apt
+    require ::contint::packages::apt
 
-    include contint::packages::base
+    include ::contint::packages::base
 
     include ::mediawiki::packages
     include ::mediawiki::packages::multimedia  # T76661
@@ -19,8 +19,8 @@ class contint::packages::labs {
 
     if os_version('ubuntu >= trusty || Debian >= jessie') {
         # Fonts needed for browser tests screenshots (T71535)
-        include mediawiki::packages::fonts
-        include phabricator::arcanist
+        include ::mediawiki::packages::fonts
+        include ::phabricator::arcanist
     }
 
     include ::contint::packages::analytics

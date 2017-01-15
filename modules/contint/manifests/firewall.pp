@@ -1,19 +1,19 @@
 # vim: set ts=4 sw=4 et:
 class contint::firewall {
 
-    include base::firewall
-    include network::constants
+    include ::base::firewall
+    include ::network::constants
 
     # Restrict some services to be only reacheable from localhost over both
     # IPv4 and IPv6 (to be safe)
 
     # Jenkins on port 8080, reacheable via Apache proxying the requests
     ferm::rule { 'jenkins_localhost_only':
-        rule => 'proto tcp dport 8080 { saddr (127.0.0.1 ::1) ACCEPT; }'
+        rule => 'proto tcp dport 8080 { saddr (127.0.0.1 ::1) ACCEPT; }',
     }
     # Zuul status page on port 8001, reacheable via Apache proxying the requests
     ferm::rule { 'zuul_localhost_only':
-        rule => 'proto tcp dport 8001 { saddr (127.0.0.1 ::1) ACCEPT; }'
+        rule => 'proto tcp dport 8001 { saddr (127.0.0.1 ::1) ACCEPT; }',
     }
 
     # Gearman is used between Zuul and the Jenkin master, both on the same

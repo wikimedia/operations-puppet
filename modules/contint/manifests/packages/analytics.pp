@@ -5,7 +5,7 @@
 class contint::packages::analytics {
 
     # need geoip to build udp-filter
-    include geoip
+    include ::geoip
 
     # these are needed to build libanon and udp-filter
     package { ['pkg-config', 'libpcap-dev', 'libdb-dev']:

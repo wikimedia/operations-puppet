@@ -3,7 +3,7 @@
 # Apt configuration needed for contint hosts
 #
 class contint::packages::apt {
-    include apt::unattendedupgrades
+    include ::apt::unattendedupgrades
 
     apt::conf { 'unattended-upgrades-wikimedia':
         priority => '51',
