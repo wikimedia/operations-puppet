@@ -24,7 +24,7 @@ define varnish::logging::xcache(
     $statsd_server = 'localhost:8125',
     $key_prefix = 'test.varnish.xcache',
 ) {
-    include varnish::common
+    include ::varnish::common
 
     file { '/usr/local/bin/varnishxcache':
         source  => 'puppet:///modules/varnish/varnishxcache',

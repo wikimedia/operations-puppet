@@ -16,7 +16,7 @@
 #  }
 #
 define varnish::logging::xcps( $statsd_server = 'statsd' ) {
-    include varnish::common
+    include ::varnish::common
 
     file { '/usr/local/bin/varnishxcps':
         source  => 'puppet:///modules/varnish/varnishxcps',

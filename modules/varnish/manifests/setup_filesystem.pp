@@ -15,7 +15,7 @@ define varnish::setup_filesystem() {
     $mount_options = "noatime${custom_mount_opts}"
 
     if $::realm == 'labs' and $::site == 'eqiad' {
-      include labs_lvm
+      include ::labs_lvm
       labs_lvm::volume { $title:
         mountat => "/srv/${title}",
         options => $mount_options,
