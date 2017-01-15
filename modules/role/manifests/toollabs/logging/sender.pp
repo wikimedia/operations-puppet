@@ -5,6 +5,6 @@ class role::toollabs::logging::sender(
     $centralserver_ips,
 ) {
     rsyslog::conf{ 'everything':
-        content => template('role/toollabs/sendlogs.conf.erb')
+        content => template('role/toollabs/sendlogs.conf.erb'),
     }
 }

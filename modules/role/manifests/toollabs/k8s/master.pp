@@ -1,6 +1,6 @@
 # filtertags: labs-project-tools
 class role::toollabs::k8s::master {
-    include base::firewall
+    include ::base::firewall
     include ::toollabs::infrastructure
 
     $master_host = hiera('k8s::master_host', $::fqdn)
@@ -26,9 +26,9 @@ class role::toollabs::k8s::master {
         k8s_master => $master_host,
     }
 
-    class { 'k8s::scheduler': }
+    class { '::k8s::scheduler': }
 
-    class { 'k8s::controller': }
+    class { '::k8s::controller': }
 
     ferm::service { 'apiserver-https':
         proto => 'tcp',
