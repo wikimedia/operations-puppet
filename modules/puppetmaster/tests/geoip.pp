@@ -1,2 +1,2 @@
 #
-include puppetmaster::geoip
+include ::puppetmaster::geoip
