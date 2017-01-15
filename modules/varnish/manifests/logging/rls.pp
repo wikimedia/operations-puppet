@@ -16,7 +16,7 @@
 #  }
 #
 define varnish::logging::rls( $statsd_server = 'statsd' ) {
-    include varnish::common
+    include ::varnish::common
 
     file { '/usr/local/bin/varnishrls':
         source  => 'puppet:///modules/varnish/varnishrls',

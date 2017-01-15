@@ -1,6 +1,6 @@
 # Zero-specific update stuff
 class varnish::zero_update($site) {
-    require 'varnish::netmapper_update_common'
+    require '::varnish::netmapper_update_common'
 
     package { 'python-requests':
         ensure => installed;
