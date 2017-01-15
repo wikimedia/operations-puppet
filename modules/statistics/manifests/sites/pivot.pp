@@ -21,7 +21,7 @@
 # Bug: T138262
 #
 class statistics::sites::pivot {
-    require statistics::web
+    require ::statistics::web
 
     include ::apache::mod::proxy_http
     include ::apache::mod::proxy

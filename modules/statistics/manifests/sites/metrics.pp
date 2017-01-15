@@ -3,7 +3,7 @@
 # They should just redirect to Wikimetrics
 #
 class statistics::sites::metrics {
-    require statistics::web
+    require ::statistics::web
 
     include ::apache::mod::alias
 

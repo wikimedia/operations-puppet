@@ -6,7 +6,7 @@
 # being calculated
 #
 class statistics::aggregator::projectview {
-    require statistics::aggregator
+    require ::statistics::aggregator
 
     # This class uses the cdh::hadoop::mount in order to get
     # data files out of HDFS.
@@ -30,7 +30,7 @@ class statistics::aggregator::projectview {
         ensure => 'directory',
         owner  => $user,
         group  => $group,
-        mode   => '0755'
+        mode   => '0755',
     }
 
     git::clone { 'aggregator_projectview_data':

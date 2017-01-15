@@ -2,8 +2,8 @@
 # Various packages useful for statistics crunching on stat-type hosts
 class statistics::packages {
     # include mysql module base class to install mysql client
-    include mysql
-    include geoip
+    include ::mysql
+    include ::geoip
     include ::imagemagick::install
 
     ensure_packages([
@@ -88,7 +88,7 @@ class statistics::packages {
         'libploticus0',
         'libcairo2',
         'libcairo2-dev',
-        'libxt-dev'
+        'libxt-dev',
     ])
 
     $r_packages = [
