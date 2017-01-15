@@ -6,14 +6,14 @@ class role::analytics_cluster::oozie::server {
     system::role { 'analytics_cluster::oozie::server':
         description => 'Oozie Server',
     }
-    require role::analytics_cluster::oozie::client
+    require ::role::analytics_cluster::oozie::client
 
     # cdh::oozie::server will ensure that its MySQL DB is
     # properly initialized.  For puppet to do this,
     # it needs a mysql client.
     require_package('mysql-client')
 
-    class { 'cdh::oozie::server':
+    class { '::cdh::oozie::server':
         smtp_host                                   => $::mail_smarthost[0],
         smtp_from_email                             => "oozie@${::fqdn}",
         # This is not currently working.  Disabling

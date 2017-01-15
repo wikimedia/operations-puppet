@@ -6,18 +6,18 @@ class role::analytics_cluster::hadoop::master {
         description => 'Hadoop Master (NameNode & ResourceManager)',
     }
 
-    require role::analytics_cluster::hadoop::client
-    include role::analytics_cluster::monitoring::disks
+    require ::role::analytics_cluster::hadoop::client
+    include ::role::analytics_cluster::monitoring::disks
 
-    class { 'cdh::hadoop::master': }
+    class { '::cdh::hadoop::master': }
 
     # Master should run httpfs daemon.
-    class { 'cdh::hadoop::httpfs':
+    class { '::cdh::hadoop::httpfs':
         require => Class['cdh::hadoop::master'],
     }
 
     # Use jmxtrans for sending metrics
-    class { 'cdh::hadoop::jmxtrans::master':
+    class { '::cdh::hadoop::jmxtrans::master':
         statsd  => hiera('statsd'),
     }
 
@@ -26,14 +26,14 @@ class role::analytics_cluster::hadoop::master {
     # This only needs to be run on the NameNode
     # where all users that want to use Hadoop
     # must have shell accounts anyway.
-    class { 'cdh::hadoop::users':
+    class { '::cdh::hadoop::users':
         require => Class['cdh::hadoop::master'],
     }
 
     # We need to include this class somewhere, and the master
     # role is as good as place as any, since we only need it to
     # be included on one node.
-    include role::analytics_cluster::mysql_password
+    include ::role::analytics_cluster::mysql_password
 
     # FairScheduler is creating event logs in hadoop.log.dir/fairscheduler/
     # It rotates them but does not delete old ones.  Set up cronjob to
@@ -93,6 +93,6 @@ class role::analytics_cluster::hadoop::master {
     }
 
     # Firewall
-    include role::analytics_cluster::hadoop::ferm::namenode
-    include role::analytics_cluster::hadoop::ferm::resourcemanager
+    include ::role::analytics_cluster::hadoop::ferm::namenode
+    include ::role::analytics_cluster::hadoop::ferm::resourcemanager
 }
