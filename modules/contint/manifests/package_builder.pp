@@ -32,7 +32,7 @@ class contint::package_builder {
         ],
         # Cowdancer is confused by /var/cache/pbuilder being a symlink
         # causing it to fail to properly --update cow images. T125999
-        basepath => '/mnt/pbuilder'
+        basepath => '/mnt/pbuilder',
     }
 
     package { [

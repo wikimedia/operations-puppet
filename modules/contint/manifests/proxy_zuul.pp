@@ -1,7 +1,7 @@
 # A http proxy in front of Zuul status page
 class contint::proxy_zuul {
 
-  include proxy_common
+  include ::proxy_common
 
   file {
     '/etc/apache2/conf.d/zuul_proxy':
