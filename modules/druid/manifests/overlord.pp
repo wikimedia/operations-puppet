@@ -49,7 +49,7 @@ class druid::overlord(
     $should_subscribe = false,
 )
 {
-    require druid
+    require ::druid
 
     $default_properties = {
         'druid.port'                     => 8090,
