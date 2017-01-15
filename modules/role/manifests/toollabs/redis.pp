@@ -2,7 +2,7 @@
 class role::toollabs::redis {
     system::role {
         'role::toollabs::redis':
-        description => 'Server that hosts shared Redis instance'
+        description => 'Server that hosts shared Redis instance',
     }
 
     include ::toollabs::redis

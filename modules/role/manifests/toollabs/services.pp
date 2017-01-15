@@ -6,7 +6,7 @@ class role::toollabs::services(
         description => 'Tool Labs manifest based services',
     }
 
-    include role::aptly::server
+    include ::role::aptly::server
     # Backup packages!
     # FIXME: Find out if we deserve better than this
     file { '/data/project/.system/aptly':
@@ -39,6 +39,6 @@ class role::toollabs::services(
     }
 
     class { '::toollabs::admin_web_updater':
-        active => ($::fqdn == $active_host)
+        active => ($::fqdn == $active_host),
     }
 }

@@ -55,7 +55,7 @@ class role::toollabs::clush::master {
         ensure  => present,
         command => '/usr/local/sbin/tools-clush-generator /etc/clustershell/tools.yaml',
         hour    => '*/1',
-        user    => 'root'
+        user    => 'root',
     }
 
     $groups_config = {
@@ -65,7 +65,7 @@ class role::toollabs::clush::master {
         'Tools' => {
             'map' => '/usr/local/sbin/tools-clush-interpreter --hostgroups /etc/clustershell/tools.yaml map $GROUP',
             'list' => '/usr/local/sbin/tools-clush-interpreter --hostgroups /etc/clustershell/tools.yaml list',
-        }
+        },
     }
 
     file { '/etc/clustershell/groups.conf':

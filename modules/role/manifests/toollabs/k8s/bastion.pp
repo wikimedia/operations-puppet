@@ -13,7 +13,7 @@ class role::toollabs::k8s::bastion {
         etcd_endpoints => $etcd_url,
     }
 
-    class { 'k8s::proxy':
+    class { '::k8s::proxy':
         master_host => $master_host,
     }
 
