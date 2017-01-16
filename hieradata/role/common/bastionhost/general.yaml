@@ -1,5 +1,5 @@
 cluster: misc
-base::resolving::domain_search:
+profile::base::domain_search:
   - wikimedia.org
   - eqiad.wmnet
   - codfw.wmnet
