@@ -19,7 +19,7 @@ labsdnsconfig:
 
 # Additional base overrides
 standard::has_admin: false
-base::remote_syslog::enable: false
+profile::base::remote_syslog: false
 
 # Labs statsd instance
 statsd: labmon1001.eqiad.wmnet:8125
@@ -112,17 +112,17 @@ zookeeper_clusters:
     hosts:
       "%{::fqdn}": 1
 
-nrpe::allowed_hosts: '10.68.16.195' # icinga
-
-ssh::server::disable_agent_forwarding: false
-ssh::server::challenge_response_auth: false
+profile::base::nrpe_allowed_hosts: '10.68.16.195' # icinga
+profile::base::ssh_server_settings:
+  disable_agent_forwarding: false
+  challenge_response_auth: false
 labs_puppet_master: "labs-puppetmaster-eqiad.wikimedia.org"
 puppetmaster: "labs-puppetmaster-eqiad.wikimedia.org"
 saltmaster: "labs-puppetmaster-eqiad.wikimedia.org"
 mysql::server::use_apparmor: false  # The images we have for debian don't support it
 
 # All labs instances have internet connectivity, so do not bother with proxies
-apt::use_proxy: false
+profile::base::use_apt_proxy: false
 
 # By default, nag project admins about puppet breakage
 send_puppet_failure_emails: true
