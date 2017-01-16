@@ -4,6 +4,7 @@
 # Chromium instance that supports remote debugging.
 #
 class role::ve {
+    include ::standard
     include ::role::jsbench
     include ::mediawiki
     include ::mediawiki::web

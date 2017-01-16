@@ -6,7 +6,7 @@ class standard(
     $has_admin = true,
     $has_ganglia = true,
     ) {
-    include ::base
+    include ::profile::base
     include ::standard::ntp
 
     if hiera('use_timesyncd', false) {

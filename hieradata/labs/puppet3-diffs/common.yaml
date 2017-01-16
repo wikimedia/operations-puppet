@@ -1,5 +1,8 @@
-ssh::server::disable_nist_kex: false
-ssh::server::explicit_macs: false
+# T100509 Java7 on gallium does not support the hardned sshd MAC and KEX setup
+#         causing slaves to be unreacheable.
+profile::base::ssh_server_settings:
+  disable_nist_kex: false
+  explicit_macs: false
 puppet_compiler::version: 0.1.6
 etcd::peers_list: compiler02=http://127.0.0.1:2380
 etcd::client::globalconfig::host: 127.0.0.1
