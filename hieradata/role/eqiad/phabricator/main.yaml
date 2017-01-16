@@ -1,6 +1,7 @@
 # this provides the listen_address for sshd_config, used for admin logins
 # all other IPs are used by phabricator::vcs (aka git-ssh.wikimedia.org)
-ssh::server::listen_address: "10.64.32.150"
+profile::base::ssh_server_settings:
+  listen_address: "10.64.32.150"
 
 lvs::realserver::realserver_ips:
   - "208.80.154.250"
