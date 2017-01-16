@@ -1,6 +1,7 @@
 # Paramiko needs to ssh into these, to support designate
-"ssh::server::disable_nist_kex": false
-"ssh::server::explicit_macs": false
+profile::base::ssh_server_settings:
+  disable_nist_kex: false
+  explicit_macs: false
 debdeploy::grains:
   debdeploy-nova-control:
     value: standard
