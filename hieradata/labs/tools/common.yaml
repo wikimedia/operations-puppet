@@ -1,4 +1,4 @@
-"base::environment::core_dump_pattern": core
+"profile::base::core_dump_pattern": core
 classes:
     - role::aptly::client
 role::aptly::client::servername: tools-services-01
