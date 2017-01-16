@@ -1,0 +1,11 @@
+profile::base::use_apt_proxy: true
+profile::base::domain_search: "%{::domain}"
+profile::base::remote_syslog:
+  - syslog.eqiad.wmnet
+  - syslog.codfw.wmnet
+profile::base::core_dump_pattern: '/var/tmp/core/core.%h.%e.%p.%t'
+profile::base::nrpe_allowed_hosts: '127.0.0.1,208.80.154.14,208.80.153.74,208.80.155.119'
+profile::base::check_disk_options: '-w 6% -c 3% -l -e -A -i "/srv/sd[a-b][1-3]" --exclude-type=tracefs'
+profile::base::check_disk_critical: false
+profile::base::dns_alt_names: false
+profile::base::ssh_server_settings: {}
