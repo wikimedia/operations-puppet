@@ -20,7 +20,8 @@ class role::dataset::primary {
     }
     $uploads = {
         'pagecounts_ez' => true,
-        'phab'       => true,
+        'phab'          => true,
+        'media'         => true,
     }
     class { 'dataset':
         rsync   => $rsync,

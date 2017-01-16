@@ -7,6 +7,8 @@ class dataset(
     #            'labs'   for rsync of some dumps to labs public fileshare
     #    $uploads: 'pagecounts_ez' to allow the corresponding rsync
     #              to those directories from the appropriate hosts
+    #              'media' to allow the corresponding rsync
+    #              to other/media from the appropriate hosts
     #              'phab' for rsync of phabricator dump from hosts that have it
     #    $grabs: 'kiwix' to copy kiwix (offline wiki) tarballs from upstream
     #            to local filesystem
@@ -49,6 +51,10 @@ class dataset(
 
     $grabs_kiwix_enable = has_key($grabs,'kiwix')
     class { '::dataset::cron::kiwix': enable => $grabs_kiwix_enable }
+
+    $uploads_media = has_key($uploads,'media')
+    class { '::dataset::rsync::media':
+        enable => $uploads_media }
 
     include ::dataset::html
 }
