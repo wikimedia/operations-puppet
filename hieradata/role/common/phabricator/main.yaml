@@ -15,6 +15,6 @@ phabricator_servers:
   - phab1001.eqiad.wmnet
   - phab2001.codfw.wmnet
 
-base::resolving::domain_search:
+profile::base::domain_search:
   - eqiad.wmnet
   - codfw.wmnet

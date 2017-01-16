@@ -2,7 +2,7 @@ admin::groups:
   - restricted
   - deployment
   - ldap-admins
-base::resolving::domain_search:
+profile::base::domain_search:
   - wikimedia.org
   - eqiad.wmnet
   - codfw.wmnet

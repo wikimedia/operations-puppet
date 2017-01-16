@@ -1,4 +1,5 @@
-class base::labs inherits base {
+class profile::base::labs {
+    require ::profile::base
     include ::apt::unattendedupgrades
     include ::apt::noupgrade
 

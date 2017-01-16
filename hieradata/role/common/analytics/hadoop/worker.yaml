@@ -8,4 +8,4 @@ debdeploy::grains:
 
 # Analytics worker disks are large.  We will install a custom
 # NRPE check for them, so the base module's should ignore them.
-base::monitoring::host::nrpe_check_disk_options: -w 6% -c 3% -l -e -A -i "/var/lib/hadoop/data"
+profile::base::check_disk_options: -w 6% -c 3% -l -e -A -i "/var/lib/hadoop/data"
