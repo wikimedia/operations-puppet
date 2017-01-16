@@ -1,2 +1,2 @@
-base::monitoring::host::nrpe_check_disk_options: -w 5% -c 1% -l -e --exclude-type=tracefs
-base::monitoring::host::nrpe_check_disk_critical: false
+profile::base::check_disk_options: -w 5% -c 1% -l -e --exclude-type=tracefs
+profile::base::check_disk_critical: false

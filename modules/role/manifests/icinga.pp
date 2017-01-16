@@ -32,7 +32,6 @@ class role::icinga(
     include netops::monitoring
     include scap::dsh
     include mysql
-    include nrpe
     include standard
     include base::firewall
 
