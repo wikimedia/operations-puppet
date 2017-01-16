@@ -17,6 +17,6 @@ elasticsearch::minimum_master_nodes: 2
 elasticsearch::recover_after_time: '20m'
 
 # T130329
-base::monitoring::host::nrpe_check_disk_options: -w 18% -c 12% -l -e -A -i "/srv/sd[a-b][1-3]" --exclude-type=tracefs
+profile::base::check_disk_options: -w 18% -c 12% -l -e -A -i "/srv/sd[a-b][1-3]" --exclude-type=tracefs
 
 elasticsearch::awareness_attributes: 'row'

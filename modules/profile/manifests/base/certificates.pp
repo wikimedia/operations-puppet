@@ -1,4 +1,4 @@
-class base::certificates {
+class profile::base::certificates {
     include ::sslcert
 
     sslcert::ca { 'wmf_ca_2014_2017':
