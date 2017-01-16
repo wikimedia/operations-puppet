@@ -4,7 +4,7 @@ debdeploy::grains:
 admin::groups:
   - gitpuppet
   - datacenter-ops
-base::resolving::domain_search:
+profile::base::domain_search:
   - wikimedia.org
   - eqiad.wmnet
   - codfw.wmnet
