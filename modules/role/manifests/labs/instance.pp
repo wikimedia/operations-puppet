@@ -1,7 +1,7 @@
 class role::labs::instance {
 
     include standard
-    include base::labs
+    include profile::base::labs
     include sudo
     include base::instance_upstarts
 

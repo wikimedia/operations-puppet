@@ -44,10 +44,6 @@ class base::standard_packages {
 
     package { 'tzdata': ensure => latest }
 
-    if $::network_zone == 'internal' {
-        include ::nrpe
-    }
-
     # uninstall these packages
     package { [
             'apport',

@@ -1,7 +1,11 @@
 # T100509 Java7 on gallium does not support the hardned sshd MAC and KEX setup
 #         causing slaves to be unreacheable.
-ssh::server::disable_nist_kex: false
-ssh::server::explicit_macs: false
+profile::base::ssh_server_settings:
+  disable_nist_kex: false
+  explicit_macs: false
+  disable_agent_forwarding: false
+  challenge_response_auth: false
+
 # Hosts running zuul-merger process
 # Use ip addresses since the values are injected in iptables rules.
 #
