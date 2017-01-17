@@ -124,9 +124,7 @@ show "no dumpscheduler running so proceeding"
 
 python="/usr/bin/python"
 
-dumpsdir="<%= scope.lookupvar('snapshot::dumps::dirs::dumpsdir') %>"
-repodir="<%= scope.lookupvar('snapshot::dumps::dirs::repodir') %>"
-confsdir="<%= scope.lookupvar('snapshot::dumps::dirs::confsdir') %>"
+source /usr/local/etc/set_dump_dirs.sh
 
 if [ -z "$repodir" -o ! -e "$repodir" ]; then
     #fallback
@@ -169,6 +167,7 @@ case $wikitype in
         ;;
 esac
 
+# FIXME lookup of hiera value inside of shell script
 maxjobs=<%= scope.lookupvar('snapshot::dumps::cron::maxjobs') %>
 
 case $dumptype in
