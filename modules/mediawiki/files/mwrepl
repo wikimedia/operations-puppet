@@ -33,10 +33,10 @@ if ! expanddblist all | grep "^${MW_WIKI}\$" > /dev/null; then
 	usage "Unknown wiki: $MW_WIKI"
 fi
 
-PROLOGUE="MW_WIKI=${MW_WIKI} MEDIAWIKI_WEB_USER=${MEDIAWIKI_WEB_USER}"
+PROLOGUE="MW_WIKI=${MW_WIKI} MEDIAWIKI_WEB_USER=${MEDIAWIKI_WEB_USER} MEDIAWIKI_MAINT_INIT_ONLY=1"
 
 if [[ $USER != $MEDIAWIKI_WEB_USER ]]; then
     PROLOGUE="/usr/bin/sudo -u ${MEDIAWIKI_WEB_USER} ${PROLOGUE}"
 fi
 
-$PROLOGUE /usr/bin/hhvm --mode=debug --debug-extension="${MEDIAWIKI_DEPLOYMENT_DIR_DIR_USE}/multiversion/MWMinimalScriptInit.php"
+$PROLOGUE /usr/bin/hhvm --mode=debug --debug-extension="${MEDIAWIKI_DEPLOYMENT_DIR_DIR_USE}/multiversion/MWScript.php"
