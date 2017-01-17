@@ -5,7 +5,7 @@ set -e
 set -u
 set -x
 
-master=${PUPPET_MASTER:-rhodium.eqiad.wmnet}
+master=${PUPPET_MASTER:-puppet.eqiad.wmnet}
 compiler=${PUPPET_COMPILER:-compiler02.puppet3-diffs.eqiad.wmflabs}
 
 ssh $master 'sudo /usr/local/bin/puppet-facts-export 1>/dev/null'
