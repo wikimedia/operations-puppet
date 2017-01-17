@@ -1939,7 +1939,7 @@ users:
     name: ppchelko
     realname: Petr Pchelko
     ssh_keys:
-      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDSxkE+b4Jc+3FoCgYqZvQJZ8a0Hk2UhC2Qb1zi1CiThsE8oBPf6n1Mki58o/mHBrtfgAPutCFFylkLwuPDE5tDojENvNx3roMxEmpQhDTs3iKTfXF98IVdsrI8gmrpCQoy+fny3K/O89rmAza2WTK2ogB2rDBLRAC0hYz6pzuA38+4ybmYbqVn/SQSDyMsX0366xBsn3r6pEwyttZsLhO/5HDG1O5cUkrxwXr5XACIGGHZyG2ev2uLtZj/6py5skxvp2xLs1/m7qP1Sykvz8QungW7KfyzNCVKb07RxKlsUQEnAqnQY2fnB3VjKSe4FNUafQHkmFJ1MLr0zH31uMOF pchelko@Petrs-MBP.corp.wikimedia.org
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDHNR+XRCk117WXwM2NO9aW3g/xHHMVmO0NuxmXpA1luZorUWw314CwcUXfny49jen4V6o0jVFbeDi8xov/CfFbFjvSN09i/BbcR+lOk39MFlK/hLcXnnzJ4cJeU4svWYpNkGwNkc2L1riJVS4sGwqZXJKgQz5WkRV7ZLzey8R20C9wfkShGbk3Gjj9rmsRKZrTfBtW7BbVWZq7a7LOIOWVon+uWsekloguioYxPn3boZMyobxAsRyNe19XzAN9/xls+io0rAa3h2ywd6onl3Fgw+1O7rdYMQvq6W5C/w94AInkd+vsYmis07yqGmDLi6KQF260b5XGkAJXSz55QXrV pchelko@Petrs-MacBook-Pro.local
     uid: 12460
   akumar:
     ensure: absent
