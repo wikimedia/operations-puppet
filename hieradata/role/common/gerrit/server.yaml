@@ -22,4 +22,4 @@ gerrit::jetty::replication:
             - '+refs/tags/*:refs/tags/*'
 role::gerrit::server::bacula: 'srv-gerrit-git'
 
-# gerrit::jetty::log_host: 'logstash1002.eqiad.wmnet'
+gerrit::jetty::log_host: 'logstash1002.eqiad.wmnet'
