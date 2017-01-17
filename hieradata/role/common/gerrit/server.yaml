@@ -34,4 +34,8 @@ gerrit::jetty::replication:
         mirror: true
         replicateProjectDeletions: true
         replicateHiddenProjects: true
-# gerrit::jetty::log_host: 'logstash1002.eqiad.wmnet'
+
+role::gerrit::server::bacula: 'srv-gerrit-git'
+
+gerrit::jetty::log_host: 'logstash1002.eqiad.wmnet'
+
