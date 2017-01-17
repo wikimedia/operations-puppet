@@ -25,16 +25,10 @@ describe 'mirrors::debian', :type => :class do
             'owner'   => 'mirror',
             'group'   => 'mirror',
             'mode'    => '0555',
-            'source'  => 'puppet:///modules/mirrors/ftpsync.conf',
         })
     end
     it do
-        should contain_cron('update-debian-mirror').with({
-            'ensure'  => 'present',
-            'command' => '/var/lib/mirror/archvsync/bin/ftpsync',
-            'user'    => 'mirror',
-            'hour'    => '*/6',
-            'minute'  => '03',
-        })
+        # 18eaf6c70 changed to push mirroring
+        should_not contain_cron('update-debian-mirror')
     end
 end
