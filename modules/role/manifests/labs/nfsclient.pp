@@ -43,16 +43,14 @@ class role::labs::nfsclient(
                 ensure  => 'link',
                 force   => true,
                 target  => '/mnt/nfs/labstore1003-maps/project',
-                require => [Labstore::Nfs_mount['maps-on-labstore1003'],
-                            Labstore::Nfs_mount['maps-project-on-labstoresvc']],
+                require => Labstore::Nfs_mount['maps-on-labstore1003'],
             }
 
             file { '/home':
                 ensure  => 'link',
                 force   => true,
                 target  => '/mnt/nfs/labstore1003-maps/home',
-                require => [Labstore::Nfs_mount['maps-on-labstore1003'],
-                            Labstore::Nfs_mount['maps-home-on-labstoresvc']],
+                require => Labstore::Nfs_mount['maps-on-labstore1003'],
             }
         }
     }
