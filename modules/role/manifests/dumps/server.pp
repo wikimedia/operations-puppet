@@ -11,7 +11,7 @@ class role::dumps::server {
 
     monitoring::service { 'https':
         description   => 'HTTPS',
-        check_command => 'check_ssl_http!dumps.wikimedia.org',
+        check_command => 'check_ssl_http_letsencrypt!dumps.wikimedia.org',
     }
 
     # By default the resolve() function in ferm performs only an IPv4/A DNS
