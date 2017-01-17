@@ -342,3 +342,7 @@ JVM_OPTS="$JVM_OPTS $JVM_EXTRA_OPTS"
 <% if not @additional_jvm_opts.empty? -%>
 JVM_OPTS="$JVM_OPTS <%= Array(@additional_jvm_opts).join(' ') %>"
 <% end -%>
+
+<% if @jmx_exporter_enabled -%>
+JVM_OPTS="$JVM_OPTS -javaagent:/srv/deployment/prometheus/jmx_exporter/lib/jmx_prometheus_javaagent-0.8-SNAPSHOT.jar=<%= @listen_address %>:7800:/etc/cassandra/jmx_exporter.yaml"
+<% end -%>
