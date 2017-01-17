@@ -4,7 +4,11 @@ server {
    listen [::]:80 default ipv6only=off;
    server_name dumps.wikimedia.org;
 
-   return 301 https://dumps.wikimedia.org$request_uri;
+   include /etc/acme/challenge-nginx.conf
+
+   location !^/\.well-known/acme-challenge/ {
+      return 301 https://dumps.wikimedia.org$request_uri;
+   }
 }
 
 server {
