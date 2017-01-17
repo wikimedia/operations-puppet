@@ -21,8 +21,6 @@ class role::labs::openstack::nova::manager {
         system_svc => 'apache2',
     }
 
-    sslcert::certificate { $sitename: ensure => absent }
-
     monitoring::service { 'https':
         description   => 'HTTPS',
         check_command => "check_ssl_http_letsencrypt!${sitename}",
