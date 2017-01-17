@@ -16,6 +16,10 @@ class contint::packages::ops {
         ensure => latest,
     }
 
+    package { ['python-conftool']:
+        ensure => latest,
+    }
+
 
     # For Jenkins job operations-dns-lint
     # Production DNS migrated to Jessie T98003
