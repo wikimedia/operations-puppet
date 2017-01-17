@@ -24,6 +24,6 @@ admin::groups:
 cache::route_table:
   eqiad: 'direct'
   codfw: 'eqiad'
-  ulsfo: 'eqiad'
+  ulsfo: 'codfw'
   esams: 'eqiad'
 varnish_version4: true
