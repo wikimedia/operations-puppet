@@ -2615,11 +2615,6 @@ node /^rhodium.eqiad.wmnet/ {
 }
 
 
-# stat1001 has been replaced by thorium: T149438
-node 'stat1001.eqiad.wmnet' {
-    role(spare::system)
-}
-
 node 'thorium.eqiad.wmnet' {
     # thorium is mainly used to host Analytics websites like:
     # - https://stats.wikimedia.org (Wikistats)
