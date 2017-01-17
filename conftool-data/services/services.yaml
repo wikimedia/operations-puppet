@@ -140,6 +140,10 @@ restbase:
     datacenters:
     - eqiad
     - codfw
+  cassandra:
+    datacenters:
+    - eqiad
+    - codfw
 maps:
   kartotherian:
     port: 6533
@@ -149,12 +153,18 @@ maps:
     datacenters:
     - codfw
     - eqiad
+  cassandra:
+    datacenters:
+    - codfw
 aqs:
   aqs:
     port: 7232
     default_values:
       pooled: 'no'
       weight: 10
+    datacenters:
+    - eqiad
+  cassandra:
     datacenters:
     - eqiad
 eventbus:
