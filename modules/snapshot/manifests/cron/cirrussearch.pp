@@ -18,10 +18,10 @@ class snapshot::cron::cirrussearch(
 
     $scriptpath = '/usr/local/bin/dumpcirrussearch.sh'
     file { $scriptpath:
-        mode    => '0755',
-        owner   => 'root',
-        group   => 'root',
-        content => template('snapshot/cron/dumpcirrussearch.sh.erb'),
+        mode   => '0755',
+        owner  => 'root',
+        group  => 'root',
+        source => 'puppet:///modules/snapshot/cron/dumpcirrussearch.sh',
     }
 
     cron { 'cirrussearch-dump':

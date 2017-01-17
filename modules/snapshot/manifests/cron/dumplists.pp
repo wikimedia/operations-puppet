@@ -4,12 +4,12 @@ class snapshot::cron::dumplists(
     include ::snapshot::dumps::dirs
 
     file { '/usr/local/bin/list-last-good-dumps.sh':
-        ensure  => 'present',
-        path    => '/usr/local/bin/list-last-good-dumps.sh',
-        mode    => '0755',
-        owner   => $user,
-        group   => 'root',
-        content => template('snapshot/cron/list-last-good-dumps.sh.erb'),
+        ensure => 'present',
+        path   => '/usr/local/bin/list-last-good-dumps.sh',
+        mode   => '0755',
+        owner  => $user,
+        group  => 'root',
+        source => 'puppet:///modules/snapshot/cron/list-last-good-dumps.sh',
     }
     file { '/usr/local/bin/list-last-n-good-dumps.py':
         ensure => 'present',

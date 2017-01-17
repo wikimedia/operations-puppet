@@ -5,10 +5,10 @@ class snapshot::cron::centralauthdump(
     $confsdir = $snapshot::dumps::dirs::confsdir
 
     file { '/usr/local/bin/dumpcentralauth.sh':
-        mode    => '0755',
-        owner   => 'root',
-        group   => 'root',
-        content => template('snapshot/cron/dumpcentralauth.sh.erb'),
+        mode   => '0755',
+        owner  => 'root',
+        group  => 'root',
+        source => 'puppet:///modules/snapshot/cron/dumpcentralauth.sh',
     }
 
     # used by script to find the name of the corresponding db.php file

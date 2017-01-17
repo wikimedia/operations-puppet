@@ -1,9 +1,9 @@
 class snapshot::cron::wikidatadumps::common {
     file { '/usr/local/bin/wikidatadumps-shared.sh':
-        mode    => '0755',
-        owner   => 'root',
-        group   => 'root',
-        content => template('snapshot/cron/wikidatadumps-shared.sh.erb'),
+        mode   => '0755',
+        owner  => 'root',
+        group  => 'root',
+        source => 'puppet:///modules/snapshot/cron/wikidatadumps-shared.sh',
     }
 
     file { '/var/log/wikidatadump':

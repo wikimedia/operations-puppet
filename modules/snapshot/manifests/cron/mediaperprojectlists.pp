@@ -4,12 +4,12 @@ class snapshot::cron::mediaperprojectlists(
     include ::snapshot::dumps::dirs
 
     file { '/usr/local/bin/create-media-per-project-lists.sh':
-        ensure  => 'present',
-        path    => '/usr/local/bin/create-media-per-project-lists.sh',
-        mode    => '0755',
-        owner   => $user,
-        group   => 'root',
-        content => template('snapshot/cron/create-media-per-project-lists.sh.erb'),
+        ensure => 'present',
+        path   => '/usr/local/bin/create-media-per-project-lists.sh',
+        mode   => '0755',
+        owner  => $user,
+        group  => 'root',
+        source => 'puppet:///modules/snapshot/cron/create-media-per-project-lists.sh',
     }
 
     cron { 'list-media-per-project':
