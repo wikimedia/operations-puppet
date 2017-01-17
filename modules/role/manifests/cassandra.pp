@@ -73,7 +73,7 @@ class role::cassandra {
     # Prometheus jmx_exporter for Cassandra
     ferm::service { 'cassandra-jmx_exporter':
         proto  => 'tcp',
-        port   => '7300',
+        port   => '7800',
         srange => "@resolve((${prometheus_nodes_ferm}))",
     }
 
