@@ -84,8 +84,7 @@ class role::labs::nfsclient(
                 ensure  => 'link',
                 force   => true,
                 target  => '/mnt/nfs/labstore-secondary-tools-project',
-                require => [Labstore::Nfs_mount['tools-project-on-labstore-secondary'],
-                            Labstore::Nfs_mount['tools-project-on-labstoresvc']],
+                require => Labstore::Nfs_mount['tools-project-on-labstore-secondary'],
             }
         }
         if mount_nfs_volume($::labsproject, 'tools-home') {
@@ -93,8 +92,7 @@ class role::labs::nfsclient(
                 ensure  => 'link',
                 force   => true,
                 target  => '/mnt/nfs/labstore-secondary-tools-home',
-                require => [Labstore::Nfs_mount['tools-home-on-labstore-secondary'],
-                            Labstore::Nfs_mount['tools-home-on-labstoresvc']],
+                require => Labstore::Nfs_mount['tools-home-on-labstore-secondary'],
             }
         }
     }
