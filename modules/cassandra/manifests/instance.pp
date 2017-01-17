@@ -33,7 +33,7 @@
 #   will be inherited here and can be used e.g. in templates.
 #
 #   Default: $::cassandra::instances
-
+#
 define cassandra::instance(
     $instances = $::cassandra::instances,
 ) {
@@ -42,11 +42,13 @@ define cassandra::instance(
         fail("instance ${instance_name} not found in ${instances}")
     }
 
-    $this_instance  = $instances[$instance_name]
-    $jmx_port       = $this_instance['jmx_port']
-    $listen_address = $this_instance['listen_address']
-    $rpc_address    = $this_instance['rpc_address']
-    $rpc_interface  = $this_instance['rpc_interface']
+    $this_instance        = $instances[$instance_name]
+    $jmx_port             = $this_instance['jmx_port']
+    $listen_address       = $this_instance['listen_address']
+    $rpc_address          = $this_instance['rpc_address']
+    $rpc_interface        = $this_instance['rpc_interface']
+    $jmx_exporter_enabled = $this_instance['jmx_exporter_enabled']
+
     if $rpc_interface {
         interface::ip { "cassandra-${instance_name}_rpc_${rpc_interface}":
             interface => $rpc_interface,
@@ -159,6 +161,15 @@ define cassandra::instance(
         content => template("${module_name}/cqlshrc.erb"),
         owner   => 'root',
         group   => 'root',
+        mode    => '0400',
+        require => Package['cassandra'],
+    }
+
+    file { "${config_directory}/prometheus_jmx_exporter.yaml":
+        ensure  => present,
+        source  => "puppet:///modules/${module_name}/prometheus_jmx_exporter.yaml",
+        owner   => 'cassandra',
+        group   => 'cassandra',
         mode    => '0400',
         require => Package['cassandra'],
     }
