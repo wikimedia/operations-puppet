@@ -6118,13 +6118,6 @@ host snapshot1007 {
     filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
-host stat1001 {
-    hardware ethernet 78:2b:cb:35:c4:f7;
-    fixed-address stat1001.eqiad.wmnet;
-    option pxelinux.pathprefix "jessie-installer/";
-    filename "jessie-installer/debian-installer/amd64/pxelinux.0";
-}
-
 host stat1002 {
     hardware ethernet 78:2b:cb:0a:0e:fc;
     fixed-address stat1002.eqiad.wmnet;

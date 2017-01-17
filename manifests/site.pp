@@ -2615,7 +2615,7 @@ node /^rhodium.eqiad.wmnet/ {
 }
 
 
-# stat1001 is being replaced by thorium: T149438
+# stat1001 has been replaced by thorium: T149438
 node 'stat1001.eqiad.wmnet' {
     role(spare::system)
 }
