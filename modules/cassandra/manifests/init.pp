@@ -485,4 +485,9 @@ class cassandra(
         group  => 'cassandra',
         mode   => '0755',
     }
+
+    scap::target { 'cassandra/prometheus_jmx_exporter':
+        deploy_user => 'deploy-service',
+        manage_user => true,
+    }
 }
