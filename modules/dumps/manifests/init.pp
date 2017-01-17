@@ -1,15 +1,23 @@
+# https://wikitech.wikimedia.org/wiki/Dumps
 class dumps {
-    sslcert::certificate { 'dumps.wikimedia.org': }
 
     class { '::nginx':
         variant => 'extras',
     }
+
     $ssl_settings = ssl_ciphersuite('nginx', 'mid', true)
+
+    letsencrypt::cert::integrated { 'dumps':
+        subjects   => 'dumps.wikimedia.org, download.wikimedia.org',
+        puppet_svc => 'nginx',
+        system_svc => 'nginx',
+    }
 
     nginx::site { 'dumps':
         content => template('dumps/nginx.dumps.conf.erb'),
         notify  => Service['nginx'],
     }
+
     nginx::site { 'download':
         source => 'puppet:///modules/dumps/nginx.download.conf',
         notify => Service['nginx'],
