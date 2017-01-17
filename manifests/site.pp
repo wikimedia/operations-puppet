@@ -2198,11 +2198,17 @@ node /^mw22(4[7-9]|50)\.codfw\.wmnet$/ {
     include ::base::firewall
 }
 
-# mw logging host codfw - setup pending
+# mw logging host codfw
 node 'mwlog2001.codfw.wmnet' {
+    role(xenon)
+    $cluster = 'misc'
 
     include ::base::firewall
     include ::standard
+
+    class { 'role::logging::mediawiki::udp2log':
+        monitor => false,
+    }
 }
 
 node 'mx1001.wikimedia.org' {

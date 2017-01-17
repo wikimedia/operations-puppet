@@ -3,6 +3,7 @@ class role::logging::mediawiki::udp2log(
     $monitor = true,
     $log_directory = '/srv/mw-log',
     $rotate = 1000,
+    $rsync_slow_parse = false,
 ) {
     system::role { 'role::logging:mediawiki::udp2log':
         description => 'MediaWiki log collector',
@@ -13,12 +14,14 @@ class role::logging::mediawiki::udp2log(
     # Rsync archived slow-parse logs to dumps.wikimedia.org.
     # These are available for download at http://dumps.wikimedia.org/other/slow-parse/
     include ::dataset::user
-    cron { 'rsync_slow_parse':
-        command     => "/usr/bin/rsync -rt ${log_directory}/archive/slow-parse.log*.gz dumps.wikimedia.org::slow-parse/",
-        hour        => 23,
-        minute      => 15,
-        environment => 'MAILTO=ops-dumps@wikimedia.org',
-        user        => 'datasets',
+    if ($rsync_slow_parse) {
+        cron { 'rsync_slow_parse':
+            command     => "/usr/bin/rsync -rt ${log_directory}/archive/slow-parse.log*.gz dumps.wikimedia.org::slow-parse/",
+            hour        => 23,
+            minute      => 15,
+            environment => 'MAILTO=ops-dumps@wikimedia.org',
+            user        => 'datasets',
+        }
     }
 
     class { '::udp2log':
