@@ -9,11 +9,11 @@ describe 'ipresolve' do
   end
 
   it "should resolve ipv6 addresses" do
-    should run.with_params('install1001.wikimedia.org', '6').and_return('2620::861:1:208:80:154:83')
+    should run.with_params('install1001.wikimedia.org', '6').and_return('2620::861:3:208:80:154:83')
   end
 
   it "should be able to perform a reverse DNS lookup" do
-    should run.with_params('2620::861:1:208:80:154:83', 'ptr').and_return('install1001.wikimedia.org')
+    should run.with_params('2620::861:3:208:80:154:83', 'ptr').and_return('install1001.wikimedia.org')
     should run.with_params('208.80.154.83', 'ptr').and_return('install1001.wikimedia.org')
   end
 
