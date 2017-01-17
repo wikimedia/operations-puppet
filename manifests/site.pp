@@ -2016,12 +2016,7 @@ node /^ms-fe2001\.codfw\.wmnet$/ {
     include ::lvs::realserver
 }
 
-node /^ms-fe2002\.codfw\.wmnet$/ {
-    role(swift::proxy)
-    include ::lvs::realserver
-}
-
-node /^ms-fe200[3-4]\.codfw\.wmnet$/ {
+node /^ms-fe200[2-8]\.codfw\.wmnet$/ {
     role(swift::proxy)
     include ::lvs::realserver
 }

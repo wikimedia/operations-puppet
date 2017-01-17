@@ -201,6 +201,10 @@ swift:
   ms-fe2002.codfw.wmnet: [swift-fe]
   ms-fe2003.codfw.wmnet: [swift-fe]
   ms-fe2004.codfw.wmnet: [swift-fe]
+  ms-fe2005.codfw.wmnet: [swift-fe]
+  ms-fe2006.codfw.wmnet: [swift-fe]
+  ms-fe2007.codfw.wmnet: [swift-fe]
+  ms-fe2008.codfw.wmnet: [swift-fe]
 dns:
   acamar.wikimedia.org: [pdns_recursor]
   achernar.wikimedia.org: [pdns_recursor]

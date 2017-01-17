@@ -8,6 +8,10 @@ swift::proxyhosts:
   - ms-fe2002.codfw.wmnet
   - ms-fe2003.codfw.wmnet
   - ms-fe2004.codfw.wmnet
+  - ms-fe2005.codfw.wmnet
+  - ms-fe2006.codfw.wmnet
+  - ms-fe2007.codfw.wmnet
+  - ms-fe2008.codfw.wmnet
   - ms-fe3001.esams.wmnet
   - ms-fe3002.esams.wmnet
 
