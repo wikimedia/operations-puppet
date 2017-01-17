@@ -63,4 +63,8 @@ class ores::redis(
         settings => $common_settings,
         map      => $instance_settings_real,
     }
+    redis::monitoring::instance { ['6379', '6380']:
+        settings => $common_settings,
+        map      => $instance_settings_real,
+    }
 }
