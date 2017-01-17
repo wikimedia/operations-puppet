@@ -33,17 +33,27 @@ define redis::monitoring::instance(
     } else {
         $slaveof = undef
     }
+    if has_key($map, $port) and has_key($map[$port], 'masterauth') {
+        $password = $map[$port]['masterauth']
+    }
+    if $password {
+        $repl_command = "check_redis_replication!${port}!${lag_warning}!${lag_critical}!${password}"
+        $check_command = "check_redis!${port}!${password}"
+    } else {
+        $repl_command = "check_redis_replication!${port}!${lag_warning}!${lag_critical}"
+        $check_command = "check_redis!${port}"
+    }
 
     if $slaveof {
         monitoring::service{ "redis.${instance_name}":
             description    => "Redis replication status ${instance_name}",
-            check_command  => "check_redis_replication!${port}!${lag_warning}!${lag_critical}",
+            check_command  => $repl_command,
             retry_interval => 2,
         }
     } else {
         monitoring::service{ "redis.${instance_name}":
             description   => "Redis status ${instance_name}",
-            check_command => "check_redis!${port}"
+            check_command => $check_command,
         }
     }
 }
