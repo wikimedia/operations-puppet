@@ -52,7 +52,7 @@ groups:
               brion, cscott, csteipp, demon, ebernhardson, esanders, gilles,
               gjg, gwicke, halfak, hashar, hoo, kaldari, kartik, khorn, krinkle,
               maxsem, mattflaschen, marktraceur, milimetric, mlitn, andyrussg,
-              nikerabbit, reedy, ssastry, tomasz, yurik,
+              nikerabbit, reedy, ssastry, tomasz,
               tgr, phuedx, ejegg, twentyafterfour, legoktm, catrope, krenair,
               mobrovac, nuria, thcipriani, joal, eevans, mforns, dpatrick, dcausse,
               bsitzmann, mholloway-shell, dduvall, gehel, dereckson,
@@ -106,7 +106,7 @@ groups:
               dduvall, ellery, ezachte, gilles, halfak,
               jforrester, jkatz, jmorgan, kaldari,
               leila, mattflaschen, milimetric, nettrom, bearloga,
-              nuria, ori, otto, springle, yurik, yuvipanda,
+              nuria, ori, otto, springle, yuvipanda,
               mforns, jdlrobson, dr0ptp4kt, tgr, marktraceur, jhernandez, joal,
               daisy, tomasz, mholloway-shell, madhuvishy, ebernhardson, niedzielski,
               neilpquinn-wmf, tbayer, moushira, dbrant, maxsem,
@@ -178,7 +178,7 @@ groups:
                  stat1002 to access webrequest logs in the Hadoop cluster
                  you should put them in the analytics-privatedata-users
                  group.
-    members: [ezachte, milimetric, dartar, yurik, halfak, awight, dr0ptp4kt, nuria,
+    members: [ezachte, milimetric, dartar, halfak, awight, dr0ptp4kt, nuria,
               leila, ellery, nettrom, mforns, bmansurov, tbayer, joal,
               madhuvishy, tjones, legoktm, dcausse, bearloga, dpatrick, atgomez, dstrine,
               joewalsh, marktraceur, mtizzoni, panisson, paolotti, ciro, melodykramer, zareen,
@@ -187,7 +187,7 @@ groups:
     gid: 726
     description: Access statistics number crunching hosts. NO PRIVS.
     members: [dartar, halfak, jdlrobson, jmorgan, bearloga,
-              mattflaschen, mhurd, yurik, awight, jforrester,
+              mattflaschen, mhurd, awight, jforrester,
               marktraceur, nuria, leila, gilles,
               dbrant, tgr, dr0ptp4kt, brion, bsitzmann, amire80,
               deskana, dduvall, nettrom, mforns, jkatz, ebernhardson,
@@ -222,7 +222,7 @@ groups:
                  This will grant shell access on Hadoop client nodes (stat1002) and on
                  Hadoop NameNodes.  Some files in HDFS have sensitive data in them.
                  Those files are group readable by the analytics-privatedata-users group.
-    members: [dartar, milimetric, yurik, dfoy, aude, jforrester,
+    members: [dartar, milimetric, dfoy, aude, jforrester,
               halfak, dr0ptp4kt, bearloga, cwdent, elukey,
               nuria, otto, deskana, zhousquared, arnad, jgonsior,
               bsitzmann, dbrant, ellery, nettrom, leila,
@@ -319,7 +319,7 @@ groups:
   graphoid-admin:
     gid: 750
     description: group of graphoid admins
-    members: [mobrovac, yurik]
+    members: [mobrovac]
     privileges: ['ALL = NOPASSWD: /usr/sbin/service graphoid *',
                  'ALL = (graphoid) NOPASSWD: ALL']
   traceback-roots:
@@ -330,7 +330,7 @@ groups:
   maps-admins:
     gid: 753
     description: admin for maps-test cluster
-    members: [maxsem, yurik, eevans]
+    members: [maxsem, eevans]
     # TODO: Revisit this when moving into production
     privileges: ['ALL = NOPASSWD: /usr/sbin/service cassandra *',
                  'ALL = NOPASSWD: /bin/systemctl mask cassandra.service',
@@ -344,7 +344,7 @@ groups:
   kartotherian-admin:
     description: Group of kartotherian admins
     gid: 754
-    members: [yurik, maxsem]
+    members: [maxsem]
     privileges: ['ALL = NOPASSWD: /usr/sbin/service kartotherian *',
                  'ALL = NOPASSWD: /bin/systemctl mask kartotherian.service',
                  'ALL = NOPASSWD: /bin/systemctl unmask kartotherian.service',
@@ -372,7 +372,7 @@ groups:
   tilerator-admin:
     description: Group of tilerator admins
     gid: 758
-    members: [yurik, maxsem]
+    members: [maxsem]
     privileges: ['ALL = NOPASSWD: /usr/sbin/service tilerator *',
                  'ALL = NOPASSWD: /bin/systemctl mask tilerator.service',
                  'ALL = NOPASSWD: /bin/systemctl unmask tilerator.service',
@@ -403,7 +403,7 @@ groups:
     gid: 763
     description: Service deploy users
     members: [bd808, eevans, gwicke, mobrovac, ppchelko, demon, twentyafterfour, thcipriani, dduvall,
-              yurik, bsitzmann, mholloway-shell, kartik, halfak, ladsgroup, smalyshev, hoo,
+              bsitzmann, mholloway-shell, kartik, halfak, ladsgroup, smalyshev, hoo,
               ssastry, cscott, arlolra, jdlrobson]
     privileges: []
 
@@ -1100,11 +1100,11 @@ users:
     ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDYg99M+6cGbfoDwzd7KRFL2zGg8CPZHLqejuCwCijpHjqnMtOBOAjMDpfA8glqpqUL4xW22kgwcUI9H8bkd4X/DazJ0QvTxjJkGPocobfyCkd/yeZ/n5HjaEL/WWeNQZ/OfFW6yiTbWrQttl6+/7QELG2pHXgDqAxaCLEnghRXG+zGbVNkPgJGAZnUoSSPjZj1eZhG10U9I0foUp09qyMTXhWB9c2dbeZyaWJ7LA5I6slKPiVyYQWq+0Kc0zoCpaPGrwkR/sDrzqHBfiwKWR3IJEFn0WhDCE1fHiM31+tQ2YmbVrDCWxoUzdiUWkzbgydlIH88603LoegBLo9xTwrZ tfinc@kumo.local]
     uid: 1155
   yurik:
-    ensure: present
+    ensure: absent
     gid: 500
     name: yurik
     realname: Yuri Astrakhan
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC+OjjYJFZVdNjn+fu6u5NcIBmAM82ULWG4U+hnz9rTktMUN5GYcNpSkG4tCuPxGrD3dBAgReX1eP+4UULD0FJFtPCHxkd2j36lTkfNP1I3j3EILxizhD5jye1iBSu7ebRbmSVEeqvKKPVJNRoBQKc8qWnDLDkplZAyIHcTaCHan4m5gn/CBWZmvHibmYuNOBbYlQTUJ04gjWOsgmx8ea/EO8HXLeabzvN4/nk3s9unwWkssXwCL/7FBJfji7wlZs0B1lEnCA9YnD7rliPsFH8vWuvG5XpQJX821dXh+riEGWyTskny7kFq3yaNLnh5nW0ctdGjRJh0j/T3m9ij763x yurik@wikimedia.org]
+    ssh_keys: []
     uid: 1011
   jgonera:
     ensure: absent
