@@ -28,10 +28,9 @@ define redis::monitoring::instance(
     # Check if slaveof in settings, and not empty
     if has_key($settings, 'slaveof') {
         $slaveof = $settings['slaveof']
+    } elsif (has_key($map, $port) and has_key($map[$port], 'slaveof')) {
+        $slaveof = $map[$title]['slaveof']
     }
-    #elsif (has_key($map, $port) and has_key($map[$port], 'slaveof')) {
-    #    $slaveof = $map[$title]['slaveof']
-    #}
     else {
         $slaveof = undef
     }
