@@ -214,7 +214,7 @@ node 'bromine.eqiad.wmnet' {
 # and Tool Labs admin console AKA Striker
 #  It's proxied by the misc-web varnishes
 node 'californium.wikimedia.org' {
-    role(horizon, striker::web)
+    role(horizon, striker::web, labs::instance_info_dumper)
     include ::standard
     include ::base::firewall
     include ::openstack::horizon::puppetpanel
@@ -2597,7 +2597,7 @@ node /^(seaborgium|serpens)\.wikimedia\.org$/ {
 
 # Silver is the new home of the wikitech web server.
 node 'silver.wikimedia.org' {
-    role(labs::openstack::nova::manager, mariadb::wikitech, labs::instance_info_dumper)
+    role(labs::openstack::nova::manager, mariadb::wikitech)
     include ::base::firewall
     include ::standard
 
