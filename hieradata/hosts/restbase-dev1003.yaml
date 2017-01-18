@@ -1,14 +1,14 @@
-#cassandra::rack: 'rack3'
-#cassandra::instances:
-#  a:
-#    jmx_port: 7189
-#    listen_address: 10.64.48.117
-#    rpc_address: 10.64.48.117
-#    rpc_interface: eth0
-#  b:
-#    jmx_port: 7190
-#    listen_address: 10.64.48.118
-#    rpc_address: 10.64.48.118
-#    rpc_interface: eth0
+cassandra::rack: 'rack3'
+cassandra::instances:
+  a:
+    jmx_port: 7189
+    listen_address: 10.64.48.117
+    rpc_address: 10.64.48.117
+    rpc_interface: eth0
+  b:
+    jmx_port: 7190
+    listen_address: 10.64.48.118
+    rpc_address: 10.64.48.118
+    rpc_interface: eth0
 
 do_paging: false
