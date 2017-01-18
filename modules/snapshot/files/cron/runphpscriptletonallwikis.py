@@ -79,7 +79,7 @@ def usage(message):
 
 Options:
 
---scriptpath:    path to MWVersion.php, if multiversion option is set,
+--scriptpath:    path to MWMultiVersion.php, if multiversion option is set,
                  or to maintenance/Maintenance.php, otherwise
 --wikilist:        path to list of wiki database names one per line
                  if filename is '-' then the list will be read from stdin
