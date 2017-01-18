@@ -1,3 +1,4 @@
+#cassandra::rack: 'c'
 #cassandra::instances:
 #  a:
 #    jmx_port: 7189
