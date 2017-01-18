@@ -18,6 +18,11 @@ class role::maps::server {
 
     $cassandra_hosts = hiera('cassandra::seeds')
 
+    # Stick with nodejs 4.6, kartotherian isn't ready for node 6 yet
+    package { 'nodejs':
+        ensure => '4.6.0~dfsg-1+wmf2',
+    }
+
     # Some of the following parameters should be externalized in hiera as
     # common parameters shared by multiple roles. For example, statsd or
     # logstash configuration should not be specific to maps.
