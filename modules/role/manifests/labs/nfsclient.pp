@@ -3,7 +3,10 @@ class role::labs::nfsclient(
     $lookupcache = 'none',
 ) {
 
+    # Mark mounts from labstore1001 as absent. Temp: Can remove after migration
+
     labstore::nfs_mount { 'project-on-labstoresvc':
+        ensure      => 'absent',
         mount_name  => 'project',
         project     => $::labsproject,
         options     => ['rw', $mode],
@@ -15,6 +18,7 @@ class role::labs::nfsclient(
     }
 
     labstore::nfs_mount { 'home-on-labstoresvc':
+        ensure      => 'absent',
         mount_name  => 'home',
         project     => $::labsproject,
         options     => ['rw', 'hard'],
@@ -47,6 +51,23 @@ class role::labs::nfsclient(
         server      => 'nfs-tools-project.svc.eqiad.wmnet',
         block       => true,
         lookupcache => $lookupcache,
+    }
+
+    # FIXME Remove dependency on absent mounts from labstoresvc after migration
+    file { '/data/project':
+        ensure  => 'link',
+        force   => true,
+        target  => '/mnt/nfs/labstore-secondary-project',
+        require => [Labstore::Nfs_mount['project-on-labstore-secondary'],
+                    Labstore::Nfs_mount['project-on-labstoresvc']],
+    }
+
+    file { '/home':
+        ensure  => 'link',
+        force   => true,
+        target  => '/mnt/nfs/labstore-secondary-home',
+        require => [Labstore::Nfs_mount['home-on-labstore-secondary'],
+                    Labstore::Nfs_mount['home-on-labstoresvc']],
     }
 
     if $::labsproject == 'maps' {
