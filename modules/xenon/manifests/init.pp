@@ -92,9 +92,10 @@ class xenon(
         notify => Service['xenon-log'],
     }
 
-    service { 'xenon-log':
+    base::service_unit { 'xenon-log':
         ensure   => ensure_service($ensure),
-        provider => 'upstart',
+        systemd  => true,
+        upstart  => true,
     }
 
 
