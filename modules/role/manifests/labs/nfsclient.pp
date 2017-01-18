@@ -54,20 +54,24 @@ class role::labs::nfsclient(
     }
 
     # FIXME Remove dependency on absent mounts from labstoresvc after migration
-    file { '/data/project':
-        ensure  => 'link',
-        force   => true,
-        target  => '/mnt/nfs/labstore-secondary-project',
-        require => [Labstore::Nfs_mount['project-on-labstore-secondary'],
-                    Labstore::Nfs_mount['project-on-labstoresvc']],
+    if mount_nfs_volume($::labsproject, 'project') {
+        file { '/data/project':
+            ensure  => 'link',
+            force   => true,
+            target  => '/mnt/nfs/labstore-secondary-project',
+            require => [Labstore::Nfs_mount['project-on-labstore-secondary'],
+                        Labstore::Nfs_mount['project-on-labstoresvc']],
+        }
     }
 
-    file { '/home':
-        ensure  => 'link',
-        force   => true,
-        target  => '/mnt/nfs/labstore-secondary-home',
-        require => [Labstore::Nfs_mount['home-on-labstore-secondary'],
-                    Labstore::Nfs_mount['home-on-labstoresvc']],
+    if mount_nfs_volume($::labsproject, 'home') {
+        file { '/home':
+            ensure  => 'link',
+            force   => true,
+            target  => '/mnt/nfs/labstore-secondary-home',
+            require => [Labstore::Nfs_mount['home-on-labstore-secondary'],
+                        Labstore::Nfs_mount['home-on-labstoresvc']],
+        }
     }
 
     if $::labsproject == 'maps' {
