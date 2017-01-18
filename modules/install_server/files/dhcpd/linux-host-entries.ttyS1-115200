@@ -3926,6 +3926,26 @@ host ms-fe1004 {
     filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
+host ms-fe1005 {
+    hardware ethernet F4:E9:D4:AE:F4:E0;
+    fixed-address ms-fe1005.eqiad.wmnet;
+}
+
+host ms-fe1006 {
+    hardware ethernet F4:E9:D4:AE:DC:30;
+    fixed-address ms-fe1006.eqiad.wmnet;
+}
+
+host ms-fe1007 {
+    hardware ethernet F4:E9:D4:AF:01:F0;
+    fixed-address ms-fe1007.eqiad.wmnet;
+}
+
+host ms-fe1008 {
+    hardware ethernet F4:E9:D4:AE:BC:70;
+    fixed-address ms-fe1008.eqiad.wmnet;
+}
+
 host ms-fe2001 {
     hardware ethernet 00:0A:F7:72:AA:64;
     fixed-address ms-fe2001.codfw.wmnet;
