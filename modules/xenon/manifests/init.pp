@@ -86,17 +86,11 @@ class xenon(
         notify => Service['xenon-log'],
     }
 
-    file { '/etc/init/xenon-log.conf':
-        ensure => $ensure,
-        source => 'puppet:///modules/xenon/xenon-log.conf',
-        notify => Service['xenon-log'],
+    base::service_unit { 'xenon-log':
+        ensure    => $ensure,
+        systemd   => true,
+        upstart   => true,
     }
-
-    service { 'xenon-log':
-        ensure   => ensure_service($ensure),
-        provider => 'upstart',
-    }
-
 
     # This is the Perl script that generates flame graphs.
     # It comes from <https://github.com/brendangregg/FlameGraph>.
