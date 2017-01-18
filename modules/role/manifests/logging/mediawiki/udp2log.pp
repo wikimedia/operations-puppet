@@ -4,6 +4,7 @@ class role::logging::mediawiki::udp2log(
     $log_directory = '/srv/mw-log',
     $rotate = 1000,
     $rsync_slow_parse = false,
+    $forward_messages = false,
 ) {
     system::role { 'role::logging:mediawiki::udp2log':
         description => 'MediaWiki log collector',
@@ -60,6 +61,7 @@ class role::logging::mediawiki::udp2log(
         monitor_log_age    =>    false,
         monitor_processes  =>    false,
         rotate             =>    $rotate,
+        forward_messages   =>    $forward_messages,
         template_variables => {
             error_processor_host => 'eventlog1001.eqiad.wmnet',
             error_processor_port => 8423,

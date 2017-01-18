@@ -19,6 +19,8 @@
 #                        /proc/sys/net/core/rmem_max.
 # $logrotate_template  - Path to template file to use for logrotate.  Default:
 #                        udp2log_logrotate.erb
+# $forward_messages    - Whether to forward received messages to other hosts.
+#                        Default: false
 #
 define udp2log::instance(
     $port                = '8420',
@@ -32,6 +34,7 @@ define udp2log::instance(
     $recv_queue          = undef,
     $logrotate_template  = 'udp2log/logrotate_udp2log.erb',
     $rotate              = 1000,
+    $forward_messages    = false,
 ){
     # This define requires that the udp2log class has
     # been included.  The udp2log class is parameterized,
