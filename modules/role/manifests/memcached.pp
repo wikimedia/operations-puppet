@@ -119,6 +119,14 @@ class role::memcached {
         }
     }
 
+    # Install base Redis instance without replication if the host has not
+    # been configured to act as MediaWiki Redis shard.
+    if size($::redis::multidc::instances::instances) == 0 {
+        redis::instance{ '6379':
+            ensure   => present,
+            settings => $settings,
+        }
+    }
 
     # Monitoring
 
