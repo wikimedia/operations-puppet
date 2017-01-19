@@ -12,8 +12,9 @@ if '-h' in sys.argv:
     print "failures     = how many failures before CRITICAL (in one poll)"
     sys.exit(0)
 
-ripeurl = 'https://atlas.ripe.net/api/v1/status-checks/'
+ripeurl = 'https://atlas.ripe.net/api/v2/measurements/{0}/status-check/'
 UDM_id = sys.argv[1]
+ripeurl = ripeurl.format(UDM_id)
 loss_allowed = sys.argv[2]
 allowed_failures = sys.argv[3]
 msg = "%s - failed %d probes of %d (alerts on %s) - " \
@@ -22,10 +23,9 @@ msg = "%s - failed %d probes of %d (alerts on %s) - " \
 
 def main():
 
-    udm = '%s/' % (UDM_id,)
     failures = '?permitted_total_alerts=%s' % (allowed_failures,)
     loss = '&max_packet_loss=%s' % (loss_allowed)
-    url = ripeurl + udm + failures + loss
+    url = ripeurl + failures + loss
 
     request = urllib2.Request(url)
     jout = json.load(urllib2.urlopen(request, timeout=120))
