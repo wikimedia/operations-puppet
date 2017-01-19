@@ -8,7 +8,7 @@ class dumps {
     $ssl_settings = ssl_ciphersuite('nginx', 'mid', true)
 
     letsencrypt::cert::integrated { 'dumps':
-        subjects   => 'dumps.wikimedia.org, download.wikimedia.org',
+        subjects   => 'dumps.wikimedia.org,download.wikimedia.org',
         puppet_svc => 'nginx',
         system_svc => 'nginx',
     }
