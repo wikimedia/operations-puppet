@@ -16,6 +16,7 @@ class role::grafana::labs {
             'cn=ops,ou=groups,dc=wikimedia,dc=org',
             'cn=nda,ou=groups,dc=wikimedia,dc=org',
             'cn=wmf,ou=groups,dc=wikimedia,dc=org',
+            'cn=wmde,ou=groups,dc=wikimedia,dc=org',
             'cn=grafana-admin,ou=groups,dc=wikimedia,dc=org',
             'cn=project-bastion,ou=groups,dc=wikimedia,dc=org'
         ]
