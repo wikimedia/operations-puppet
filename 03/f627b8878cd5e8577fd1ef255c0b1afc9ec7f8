@@ -1,0 +1,9 @@
+Code-Review+1: Juniorsys <juniorsys_wikimedia@outlook.com>
+Code-Review+1: Alex Monk <krenair@gmail.com>
+Code-Review+2: Dzahn <dzahn@wikimedia.org>
+Verified+2: jenkins-bot
+Submitted-by: Dzahn <dzahn@wikimedia.org>
+Submitted-at: Thu, 19 Jan 2017 14:44:28 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/332953
+Project: operations/puppet
+Branch: refs/heads/production
