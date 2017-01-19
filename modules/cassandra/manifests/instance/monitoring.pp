@@ -39,7 +39,7 @@ define cassandra::instance::monitoring (
     if hiera('cassandra::tls_cluster_name', '') {
         monitoring::service { "${service_name}-ssl":
             description   => "${service_name} SSL ${listen_address}:7001",
-            check_command => "check_ssl_http_on_host_port!${::hostname}-${instance_name}!${listen_address}!7001",
+            check_command => "check_ssl_on_host_port!${::hostname}-${instance_name}!${listen_address}!7001",
             contact_group => $contact_group,
         }
     }

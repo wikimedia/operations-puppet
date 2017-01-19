@@ -47,7 +47,7 @@ class elasticsearch::https (
     } -> ::monitoring::service { 'elasticsearch-https':
         ensure        => $ensure,
         description   => 'Elasticsearch HTTPS',
-        check_command => "check_ssl_http_on_port!${certificate_name}!9243",
+        check_command => "check_ssl_on_port!${certificate_name}!9243",
     }
 
     ::ferm::service { 'elastic-https':
