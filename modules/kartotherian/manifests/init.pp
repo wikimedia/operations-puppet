@@ -24,15 +24,15 @@
 #   List of cassandra server names used by Kartotherian
 #
 class kartotherian(
+    $cassandra_servers,
+    $cassandra_kartotherian_pass,
+    $pgsql_kartotherian_pass,
     $conf_sources      = 'sources.prod.yaml',
     $contact_groups    = 'admins',
-    $cassandra_servers,
     $port              = 6533,
     $num_workers       = 'ncpu',
     $cassandra_kartotherian_user = 'kartotherian',
-    $cassandra_kartotherian_pass,
     $pgsql_kartotherian_user = 'kartotherian',
-    $pgsql_kartotherian_pass,
 ) {
 
     validate_array($cassandra_servers)
