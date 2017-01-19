@@ -2,6 +2,7 @@
 import urllib2
 import json
 import sys
+import traceback
 
 if '-h' in sys.argv:
     print "Monitor the failure rate of a target with RIPE Atlas"
@@ -60,4 +61,10 @@ def main():
                      total_probes,
                      allowed_failures,
                      UDM_id)
-main()
+
+if __name__ == "__main__":
+    try:
+        main()
+    except:
+        traceback.print_exc()
+        sys.exit(2)
