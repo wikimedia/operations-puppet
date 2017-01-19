@@ -31,9 +31,6 @@ require 'puppet-strings/tasks/generate'
 require 'puppet-syntax/tasks/puppet-syntax'
 require 'rubocop/rake_task'
 
-# site.pp still uses an import statement for realm.pp (T154915)
-PuppetSyntax.fail_on_deprecation_notices = false
-
 # Find files modified in HEAD
 def git_changed_in_head(file_exts=[])
     g = Git.open('.')
