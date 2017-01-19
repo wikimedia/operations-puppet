@@ -2211,6 +2211,19 @@ node 'mwlog2001.codfw.wmnet' {
     }
 }
 
+# mw logging host eqiad
+node 'mwlog1001.eqiad.wmnet' {
+    role(xenon)
+    $cluster = 'misc'
+
+    include ::base::firewall
+    include ::standard
+
+    class { 'role::logging::mediawiki::udp2log':
+        monitor => false,
+    }
+}
+
 node 'mx1001.wikimedia.org' {
     role(mail::mx)
     include ::standard
