@@ -1,9 +1,9 @@
 # Class proxysql
 
 class proxysql (
+    $admin_password,
     $datadir         = '/var/lib/proxysql',
     $admin_user      = 'admin',
-    $admin_password,
     $admin_port      = 6032,
     $admin_interface = '127.0.0.1',
     $admin_socket    = '/tmp/proxysql_admin.sock',
