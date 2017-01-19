@@ -2,9 +2,9 @@ class labspuppetbackend(
     $mysql_host,
     $mysql_db,
     $mysql_username,
-    $mysql_password = hiera('labspuppetbackend_mysql_password'),
     $statsd_host,
     $statsd_prefix,
+    $mysql_password = hiera('labspuppetbackend_mysql_password'),
 ) {
     require_package('python3-pymysql',
                     'python3-statsd',
