@@ -1,5 +1,5 @@
 # defines an rsync server on an instance
-define instancersync (
+define openstack::nova::instancersync (
     $hostname = undef) {
 
     rsync::server::module { "nova_instance_rsync_${hostname}":
