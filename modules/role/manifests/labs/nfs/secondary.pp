@@ -18,7 +18,7 @@ class role::labs::nfs::secondary($monitor = 'eth0') {
 
     if $::hostname == 'labstore1005' {
         # Define DRBD role for this host, should come from hiera
-        $drbd_role = 'secondary'
+        $drbd_role = 'primary'
 
         interface::ip { 'drbd-replication':
             interface => 'eth1',
@@ -30,7 +30,7 @@ class role::labs::nfs::secondary($monitor = 'eth0') {
 
     if $::hostname == 'labstore1004' {
         # Define DRBD role for this host, should come from hiera
-        $drbd_role = 'primary'
+        $drbd_role = 'secondary'
 
         interface::ip { 'drbd-replication':
             interface => 'eth1',
