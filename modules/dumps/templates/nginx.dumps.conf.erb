@@ -4,16 +4,14 @@ server {
    listen [::]:80 default ipv6only=off;
    server_name dumps.wikimedia.org;
 
-   include /etc/acme/challenge-nginx.conf;
-
-   location !^/\.well-known/acme-challenge/ {
-      return 301 https://dumps.wikimedia.org$request_uri;
-   }
+   return 301 https://dumps.wikimedia.org$request_uri;
 }
 
 server {
    listen [::]:443 default ssl ipv6only=off;
    server_name dumps.wikimedia.org;
+
+   include /etc/acme/challenge-nginx.conf;
 
    ssl_certificate /etc/acme/cert/dumps.chained.crt;
    ssl_certificate_key /etc/acme/key/dumps.key;
