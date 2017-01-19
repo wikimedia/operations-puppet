@@ -1,6 +1,7 @@
 source 'https://rubygems.org'
 
 gem 'puppet', '~> 3.7.0'
+gem 'xmlrpc' if RUBY_VERSION >= '2.4.0'
 gem 'puppet-strings', '~> 1.0.0'
 gem 'rspec-puppet', '~> 2.3.2'
 gem 'puppetlabs_spec_helper', '< 2.0.0'
