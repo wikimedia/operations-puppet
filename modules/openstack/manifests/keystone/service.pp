@@ -27,20 +27,20 @@ class openstack::keystone::service($keystoneconfig, $openstack_version=$::openst
 
     file {
         '/var/log/keystone':
-            ensure  => directory,
-            owner   => 'keystone',
-            group   => 'www-data',
-            mode    => '0775';
+            ensure => directory,
+            owner  => 'keystone',
+            group  => 'www-data',
+            mode   => '0775';
         '/var/log/keystone/uwsgi':
-            ensure  => directory,
-            owner   => 'www-data',
-            group   => 'www-data',
-            mode    => '0755';
+            ensure => directory,
+            owner  => 'www-data',
+            group  => 'www-data',
+            mode   => '0755';
         '/etc/keystone':
-            ensure  => directory,
-            owner   => 'keystone',
-            group   => 'keystone',
-            mode    => '0755';
+            ensure => directory,
+            owner  => 'keystone',
+            group  => 'keystone',
+            mode   => '0755';
         '/etc/keystone/keystone.conf':
             content => template("openstack/${openstack_version}/keystone/keystone.conf.erb"),
             owner   => 'keystone',
