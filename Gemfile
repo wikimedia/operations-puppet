@@ -1,6 +1,7 @@
 source 'https://rubygems.org'
 
 gem 'puppet', '~> 3.7.0'
+gem 'xmlrpc'
 gem 'puppet-strings', '~> 1.0.0'
 gem 'rspec-puppet', '~> 2.3.2'
 gem 'rspec_junit_formatter', '~> 0.2.3'
