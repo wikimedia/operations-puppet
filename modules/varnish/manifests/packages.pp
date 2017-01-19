@@ -8,9 +8,6 @@ class varnish::packages($version='installed') {
     }
 
     # Install VMODs on Varnish 4 instances
-    package { 'libvmod-header':
-        ensure => 'absent',
-    }
     package { [
         'varnish-modules',
         'libvmod-netmapper',
@@ -18,6 +15,5 @@ class varnish::packages($version='installed') {
         'libvmod-vslp',
         ]:
         ensure  => 'installed',
-        require => Package['libvmod-header'],
     }
 }
