@@ -30,4 +30,11 @@ class dumps {
         mode    => '0444',
         require => Package['nginx-extras'],
     }
+
+    file { '/data/xmldatadumps/public/favicon.ico':
+        source  => 'puppet:///modules/dumps/favicon.ico',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+    }
 }
