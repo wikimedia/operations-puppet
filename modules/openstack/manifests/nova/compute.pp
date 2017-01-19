@@ -74,7 +74,7 @@ class openstack::nova::compute(
             use_chroot => 'no',
         }
         # Support rsyncing instance files between labvirts.
-        @@instancersync { "${::hostname}instancersync":
+        @@openstack::nova::instancersync { "${::hostname}instancersync":
             hostname => $::hostname,
         }
         Instancersync <<| |>>
