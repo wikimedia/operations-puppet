@@ -1,0 +1,8 @@
+HOST=<%= @source.sub(/^(.+)\/([^\/]+)$/, '\1') %>
+ARCHIVE=<%= @source.sub(/^(.+)\/([^\/]+)$/, '\2') %>
+ARCHTYPE=<%= @source.sub(/.+\.(tar|tgz|zip)$/, '\1') %>
+CONF=<%= @listname %>
+DEST=<%= @destdir %>
+<%- @options.sort.each do |key, value| -%>
+<%= key %>=<%= value %>
+<%- end -%>
