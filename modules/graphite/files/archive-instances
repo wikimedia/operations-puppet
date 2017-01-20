@@ -16,27 +16,22 @@ Logs to /var/log/graphite/instance-archiver.log
 '''
 import os
 import time
+import urllib.request
+import codecs
+import json
 import logging
-import sys
 
-from keystoneclient.session import Session as KeystoneSession
-from keystoneclient.auth.identity.v3 import Password as KeystonePassword
-from keystoneclient.client import Client as KeystoneClient
 
-from novaclient import client as novaclient
+# Hostname Mapping, for hosts that have a different name in graphite
+# and on wikitech. This seems like a bug in diamond that needs to be
+# fixed. In the mean time, update this mapping! Can be moved into
+# an external file if this gets too big.
+# Maps hostname as in wikitech to graphite metric name.
+HOSTNAME_MAPPING = {
+    'tools-webproxy': 'tools',
+}
 
 WHISPER_PATH = '/srv/carbon/whisper'
-
-
-def get_keystone_session(project_name):
-    return KeystoneSession(auth=KeystonePassword(
-        auth_url="http://labcontrol1001.wikimedia.org:5000/v3",
-        username="novaobserver",
-        password=sys.argv[1],
-        project_name=project_name,
-        user_domain_name='default',
-        project_domain_name='default'
-    ))
 
 
 def archive_host(project_name, host_name):
@@ -79,20 +74,30 @@ def get_hosts_for_project(project_name):
     '''
     Get hosts that are currently present in the given project
     '''
-    client = novaclient.Client("2.0", session=get_keystone_session(project_name))
-    return [instance.name for instance in client.servers.list()]
+    req = urllib.request.urlopen(
+        'https://wikitech.wikimedia.org/w/api.php' +
+        '?action=query&list=novainstances&niproject=%s&niregion=eqiad&format=json' % (
+            project_name,
+        )
+    )
+    reader = codecs.getreader('utf-8')
+    data = json.load(reader(req))
+    logging.info('Fetched instance list for project %s', project_name)
+    return [HOSTNAME_MAPPING.get(instance['name'], instance['name'])
+            for instance in data['query']['novainstances']]
 
 
 def get_projects_list():
     '''
     Get a list of all active projects from the wikitech API
     '''
-    keystone_client = KeystoneClient(
-        session=get_keystone_session('observer'),
-        endpoint="http://labcontrol1001.wikimedia.org:5000/v3",
-        interface='public'
+    req = urllib.request.urlopen(
+        'https://wikitech.wikimedia.org/w/api.php?action=query&list=novaprojects&format=json'
     )
-    return [project.name for project in keystone_client.projects.list()]
+    reader = codecs.getreader('utf-8')
+    data = json.load(reader(req))
+    return data['query']['novaprojects']
+
 
 def get_deleted_instances():
     '''
