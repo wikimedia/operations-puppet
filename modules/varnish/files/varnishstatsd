@@ -55,6 +55,11 @@ class StatsdStatsSender(CacheStatsSender):
 
     def handle_record(self, record):
         method, status_code, backend, ttfb = record.split('\t')
+
+        # Temporary fix to avoid crashes
+        if len(ttfb) == 0:
+            return
+
         ttfb = round(1000 * float(ttfb))
         backend = backend.split('.')[-1]
 
@@ -80,6 +85,7 @@ class StatsdStatsSender(CacheStatsSender):
             self.buf = io.BytesIO()
 
         self.buf.write(metric_string)
+
 
 if __name__ == "__main__":
     StatsdStatsSender(sys.argv[1:]).main()
