@@ -21,7 +21,7 @@ case "$1" in
         check)
 
             if cat /proc/mounts | /usr/bin/awk '{print $2}' \
-                | /bin/grep -qs $2; then
+                | /bin/grep -qs "^$2$"; then
                 echo "It's mounted."
             else
                 echo "It's not mounted."
