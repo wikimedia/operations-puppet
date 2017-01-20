@@ -22,7 +22,7 @@ alias ll='ls $LS_OPTIONS -lAhrt'
 alias l='ls $LS_OPTIONS -lAh'
 
 # Bash history
-export HISTCONTROL=erasedups
+export HISTCONTROL=ignoreboth
 export HISTSIZE=30000
 export HISTFILESIZE=50000
 shopt -s histappend
