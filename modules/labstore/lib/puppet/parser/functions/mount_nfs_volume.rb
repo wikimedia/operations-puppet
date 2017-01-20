@@ -21,6 +21,10 @@ module Puppet::Parser::Functions
     config = @@labs_nfs_config['private']
     project = args[0]
     mount = args[1]
+    if mount == 'any'
+      # return true if any NFS mounts are mounted
+      config[project]['mounts'].values.all?
+    end
     if config.key?(project) && config[project].key?('mounts') \
         && config[project]['mounts'].key?(mount)
       config[project]['mounts'][mount]
