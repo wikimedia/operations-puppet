@@ -79,12 +79,6 @@ class puppetmaster::gitclone(
             owner  => 'root',
             group  => 'puppet',
             mode   => '0750';
-        '/var/log/puppet-post-merge.log':
-            ensure  => file,
-            replace => false,
-            owner   => $user,
-            group   => $group,
-            mode    => '0640';
     }
 
     if $secure_private {
