@@ -18,11 +18,6 @@ class dumps {
         notify  => Service['nginx'],
     }
 
-    nginx::site { 'download':
-        source => 'puppet:///modules/dumps/nginx.download.conf',
-        notify => Service['nginx'],
-    }
-
     file { '/etc/logrotate.d/nginx':
         source  => 'puppet:///modules/dumps/logrotate.conf',
         owner   => 'root',
