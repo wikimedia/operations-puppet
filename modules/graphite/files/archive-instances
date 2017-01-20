@@ -22,6 +22,7 @@ import sys
 from keystoneclient.session import Session as KeystoneSession
 from keystoneclient.auth.identity.v3 import Password as KeystonePassword
 from keystoneclient.client import Client as KeystoneClient
+from keystoneclient.exceptions import Unauthorized as KeystoneUnauthorisedException
 
 from novaclient import client as novaclient
 
@@ -104,7 +105,10 @@ def get_deleted_instances():
     deleted_hosts = {}
     for project in projects:
         hosts_with_metrics = get_hosts_with_metrics(project)
-        actual_hosts = get_hosts_for_project(project)
+        try:
+            actual_hosts = get_hosts_for_project(project)
+        except KeystoneUnauthorisedException:
+            continue
         deleted = set(hosts_with_metrics) - set(actual_hosts)
         if deleted:
             deleted_hosts[project] = deleted
