@@ -104,7 +104,10 @@ def get_deleted_instances():
     deleted_hosts = {}
     for project in projects:
         hosts_with_metrics = get_hosts_with_metrics(project)
-        actual_hosts = get_hosts_for_project(project)
+        try:
+            actual_hosts = get_hosts_for_project(project)
+        except Exception:
+            continue
         deleted = set(hosts_with_metrics) - set(actual_hosts)
         if deleted:
             deleted_hosts[project] = deleted
