@@ -284,6 +284,21 @@ host aqs1006 {
     fixed-address aqs1006.eqiad.wmnet;
 }
 
+host aqs1007 {
+    hardware ethernet 18:66:DA:82:FF:26;
+    fixed-address aqs1007.eqiad.wmnet;
+}
+
+host aqs1008 {
+    hardware ethernet 18:66:DA:82:F1:89;
+    fixed-address aqs1008.eqiad.wmnet;
+}
+
+host aqs1009 {
+    hardware ethernet 18:66:DA:83:1A:2A;
+    fixed-address aqs1009.eqiad.wmnet;
+}
+
 host auth1001 {
     hardware ethernet C8:1F:66:BF:71:5A;
     fixed-address auth1001.eqiad.wmnet;
