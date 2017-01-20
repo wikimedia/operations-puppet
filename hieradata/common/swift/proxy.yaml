@@ -56,4 +56,20 @@ swift::proxy::shard_container_list: [
 # no trailing comma!
  ]
 
-swift::proxy::thumbor_wiki_list: []
+swift::proxy::thumbor_wiki_list: [
+  'wikimedia-commons',
+  'wikipedia-en', 'wikipedia-ja', 'wikipedia-de', 'wikipedia-ru',
+  'wikipedia-it', 'wikipedia-pt', 'wikipedia-he', 'wikipedia-fr',
+  'wikipedia-id', 'wikipedia-zh', 'wikipedia-th', 'wikipedia-uk',
+  'wikipedia-ar', 'wikipedia-tr', 'wikipedia-es',
+  'wikipedia-fa', 'wikipedia-vi', 'wikipedia-fi', 'wikipedia-hu',
+  'wikipedia-ro', 'wikipedia-sr', 'wikipedia-ko', 'wikipedia-ms',
+  'wikipedia-arz', 'wikipedia-az', 'wikipedia-el', 'wikipedia-lt',
+  'wikipedia-hr', 'wikipedia-lv', 'wikipedia-af', 'wikipedia-bs',
+  'wikipedia-te', 'wikipedia-ka', 'wikipedia-ta', 'wikipedia-sq',
+  'wikipedia-kk', 'wikibooks-de', 'wikipedia-hi', 'wikipedia-sl',
+  'wikibooks-en', 'wikipedia-cy', 'wikipedia-bn', 'wikipedia-ca',
+  'wikiversity-en', 'wikipedia-mr', 'wikipedia-gl', 'wikipedia-sh',
+  'wikipedia-hy', 'wikisource-ar', 'wikipedia-my'
+# no trailing comma!
+]
