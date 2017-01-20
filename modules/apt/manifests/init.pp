@@ -62,6 +62,12 @@ class apt(
                 key      => 'Acquire::http::Proxy::security-cdn.debian.org',
                 value    => $http_proxy,
             }
+            apt::conf { 'mirantis-mitaka-proxy':
+                ensure   => present,
+                priority => '80',
+                key      => 'Acquire::http::Proxy::mitaka-jessie.pkgs.mirantis.com',
+                value    => $http_proxy,
+            }
         } elsif $::operatingsystem == 'Ubuntu' {
             apt::conf { 'security-ubuntu-proxy':
                 ensure   => present,
