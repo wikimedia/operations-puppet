@@ -79,7 +79,7 @@ groups:
   elasticsearch-roots:
     gid: 709
     description: manage elasticsearch nodes
-    members: [demon, ebernhardson, dcausse, tomasz, gehel]
+    members: [demon, ebernhardson, dcausse, tomasz]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
   dataset-admins:
     gid: 710
