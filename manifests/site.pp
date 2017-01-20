@@ -928,7 +928,7 @@ node 'eeden.wikimedia.org' {
 
 # icinga based monitoring host in eqiad
 node 'einsteinium.wikimedia.org' {
-    role(icinga, tendril, tcpircbot)
+    role(icinga, tendril, tcpircbot, certspotter)
 }
 
 node /^elastic101[7-9]\.eqiad\.wmnet/ {
@@ -2719,7 +2719,7 @@ node /(subra|suhail)\.codfw\.wmnet/ {
 
 # icinga based monitoring host in codfw
 node 'tegmen.wikimedia.org' {
-    role(icinga, tendril, tcpircbot)
+    role(icinga, tendril, tcpircbot, certspotter)
 }
 
 # https://wikitech.wikimedia.org/wiki/Terbium
