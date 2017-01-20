@@ -1,10 +1,11 @@
 # logrotate(8) config for <%= @title %>
 
-<%= @local_logdir %>/* {
+<%= @local_logdir %>/*.log {
     daily
     copytruncate
     missingok
     compress
+    delaycompress
     notifempty
     rotate 15
     size 256M
