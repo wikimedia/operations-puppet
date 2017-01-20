@@ -1,0 +1,55 @@
+varnishtest "cache_text mobile hostname rewrites"
+
+server s1 {
+    rxreq
+    expect req.http.x-dt-host == "www.mediawiki.org"
+    txresp
+
+    rxreq
+    expect req.http.x-dt-host == "www.wikidata.org"
+    txresp
+
+    rxreq
+    expect req.http.x-dt-host == "wikimediafoundation.org"
+    txresp
+
+    rxreq
+    expect req.http.x-dt-host == "it.wikipedia.org"
+    txresp
+
+    rxreq
+    expect req.http.x-dt-host == "wikipedia.org"
+    txresp
+
+    rxreq
+    expect req.http.x-dt-host == "en.wikipedia.org"
+    txresp
+} -start
+
+varnish v1 -arg "-p cc_command='exec cc -fpic -shared -Wl,-x -L/usr/local/lib/ -o %o %s -lmaxminddb' -p vcc_allow_inline_c=true -p vcc_err_unref=false" -vcl+backend {
+    backend vtc_backend {
+        .host = "${s1_addr}"; .port = "${s1_port}";
+    }
+
+    include "/usr/share/varnish/tests/wikimedia_text-frontend.vcl";
+} -start
+
+client c1 {
+    txreq -url "/" -hdr "Host: m.mediawiki.org" -hdr "X-Forwarded-Proto: https"
+    rxresp
+
+    txreq -url "/" -hdr "Host: m.wikidata.org" -hdr "X-Forwarded-Proto: https"
+    rxresp
+
+    txreq -url "/" -hdr "Host: m.wikimediafoundation.org" -hdr "X-Forwarded-Proto: https"
+    rxresp
+
+    txreq -url "/" -hdr "Host: it.m.wikipedia.org" -hdr "X-Forwarded-Proto: https"
+    rxresp
+
+    txreq -url "/" -hdr "Host: m.wikipedia.org" -hdr "X-Forwarded-Proto: https"
+    rxresp
+
+    txreq -url "/" -hdr "Host: en.zero.wikipedia.org" -hdr "X-Forwarded-Proto: https"
+    rxresp
+} -run
