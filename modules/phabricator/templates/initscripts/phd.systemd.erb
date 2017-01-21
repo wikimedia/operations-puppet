@@ -6,9 +6,8 @@ User=phd
 Group=phd
 
 [Service]
-Type=oneshot
+Type=forking
 Environment="PHABRICATOR_ENV=phd"
-
 ExecStart=/srv/phab/phabricator/bin/phd start
 ExecStop=/srv/phab/phabricator/bin/phd stop
 RemainAfterExit=yes
