@@ -1,0 +1,53 @@
+#!/bin/bash
+# ========================
+# chkconfig: 3 99 99
+# description: phd, deamon service.
+# processname: phd
+# ========================
+
+### BEGIN INIT INFO
+# Provides:          phd
+# Required-Start:    $named $remote_fs $syslog
+# Required-Stop:     $named $remote_fs $syslog
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Start/stop Phabricator's phd service
+# Description:       phd is phabricator's deamon service.
+### END INIT INFO
+
+start() {
+        PHABRICATOR_ENV=phd
+        echo -n "Starting phd service: "
+            /srv/phab/phabricator/bin/phd start
+        echo "Successfully started phd service startup"
+}
+
+stop() {
+        PHABRICATOR_ENV=phd
+        echo -n "Stopping phd service: "
+        /srv/phab/phabricator/bin/phd stop --force
+}
+
+### main logic ###
+case "$1" in
+  start)
+        start
+        ;;
+  stop)
+        stop
+        ;;
+  restart)
+        /srv/phab/phabricator/bin/phd restart
+        ;;
+  reload)
+        /srv/phab/phabricator/bin/phd reload
+        ;;
+  status)
+        /srv/phab/phabricator/bin/phd status
+        ;;
+  *)
+        echo $"Usage: $0 {start|stop|restart|reload|status}"
+        exit 1
+esac
+
+exit 0
