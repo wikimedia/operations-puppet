@@ -24,9 +24,14 @@ class phabricator::phd (
         recurse => true,
     }
 
-    file { '/etc/init.d/phd':
-        ensure => 'link',
-        target => "${basedir}/phabricator/bin/phd",
+    base::service_unit { 'phd':
+        ensure         => present,
+        systemd        => true,
+        sysvinit       => true,
+        strict         => false,
+        service_params => {
+            enable => true,
+        },
     }
 
     file { '/var/run/phd':
