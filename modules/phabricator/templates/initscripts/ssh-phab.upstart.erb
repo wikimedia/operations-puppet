@@ -24,4 +24,4 @@ pre-start script
     mkdir -p -m0755 /var/run/sshd
 end script
 
-exec /usr/sbin/sshd -D -f <%= @sshd_config %>
+exec /usr/sbin/sshd -D -f <%- if @sshd_labs -%><%= @sshd_labs %><%- else -%><%= @sshd_config %><%- end -%>
