@@ -2,3 +2,5 @@ admin::groups:
   - deployment
 
 apache::logrotate::rotate: 12
+
+openstack::version: mitaka
