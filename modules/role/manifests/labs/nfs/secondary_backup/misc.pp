@@ -13,7 +13,8 @@ class role::labs::nfs::secondary_backup::misc {
         remote_lv       => 'misc-project',
         remote_snapshot => 'misc-snap',
         localdev        => '/dev/backup/misc-project',
-        weekday         => 'tuesday',
+        weekday         => 'wednesday',
+        hour            => 22,
     }
 
 }

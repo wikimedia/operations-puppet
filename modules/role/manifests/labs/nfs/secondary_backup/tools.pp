@@ -13,7 +13,8 @@ class role::labs::nfs::secondary_backup::tools {
         remote_lv       => 'tools-project',
         remote_snapshot => 'tools-snap',
         localdev        => '/dev/backup/tools-project',
-        weekday         => 'monday',
+        weekday         => 'tuesday',
+        hour            => 22,
     }
 
 }
