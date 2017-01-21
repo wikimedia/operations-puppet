@@ -63,7 +63,6 @@ class NovaFixedWMFHandler(BaseAddressWMFHandler):
 
     def get_event_types(self):
         return [
-            'compute.instance.create.end',
             'compute.instance.delete.start',
         ]
 
