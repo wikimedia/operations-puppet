@@ -24,9 +24,20 @@ class phabricator::phd (
         recurse => true,
     }
 
-    file { '/etc/init.d/phd':
-        ensure => 'link',
-        target => "${basedir}/phabricator/bin/phd",
+    if $::initsystem == 'systemd' {
+        $init_file = '/etc/init/phd'
+        $init_soorce = 'puppet:///modules/phabricator/phd.conf'
+    } else {
+        $init_file = '/etc/systemd/system/phd.service'
+        $init_source = 'puppet:///modules/phabricator/phd.service'
+    }
+
+    file { $init_file:
+        ensure => present,
+        source => $init_source,
+        mode   => '0644',
+        owner  => 'root',
+        group  => 'root',
     }
 
     file { '/var/run/phd':
