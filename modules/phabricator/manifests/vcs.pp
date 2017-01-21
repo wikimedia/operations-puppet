@@ -93,26 +93,16 @@ class phabricator::vcs (
         require    => File['/usr/local/bin/git-http-backend'],
     }
 
-    if $::initsystem == 'upstart' {
-        $init_file = '/etc/init/ssh-phab.conf'
-        $init_soorce = 'puppet:///modules/phabricator/sshd-phab.conf'
-    } else {
-        $init_file = '/etc/systemd/system/ssh-phab.service'
-        $init_source = 'puppet:///modules/phabricator/sshd-phab.service'
-    }
-
-    file { $init_file:
-        source  => $init_source,
-        mode    => '0644',
-        owner   => 'root',
-        group   => 'root',
-        require => Package['openssh-server'],
-    }
-
-    service { 'ssh-phab':
-        ensure     => running,
-        provider   => $::initsystem,
-        hasrestart => true,
-        require    => File[$init_file],
+    base::service_unit { 'ssh-phab':
+        ensure         => 'present',
+        systemd        => true,
+        upstart        => true,
+        strict         => false,
+        require        => Package['openssh-server'],
+        service_params => {
+            ensure     => running,
+            provider   => $::initsystem,
+            hasrestart => true,
+        },
     }
 }
