@@ -72,11 +72,17 @@ class ssh::server (
         err("No valid SSH host key found for ${::fqdn}")
     }
 
+    if $::ipaddress6 == undef {
+        $aliases = [ $::hostname, $::ipaddress ]
+    } else {
+        $aliases = [ $::hostname, $::ipaddress, $::ipaddress6 ]
+    }
+
     debug("Storing ${type} SSH hostkey for ${::fqdn}")
     @@sshkey { $::fqdn:
         ensure       => present,
         type         => $type,
         key          => $key,
-        host_aliases => [ $::hostname, $::ipaddress, $::ipaddress6 ],
+        host_aliases => $aliases,
     }
 }
