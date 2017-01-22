@@ -1,4 +1,6 @@
-class role::puppetmaster::puppetdb {
+class role::puppetmaster::puppetdb (
+    $shared_buffers = '7680MB'
+) {
     include standard
     include ::base::firewall
     include ::passwords::postgres
@@ -56,11 +58,11 @@ class role::puppetmaster::puppetdb {
 
     # Tuning
     file { '/etc/postgresql/9.4/main/tuning.conf':
-        ensure => 'present',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0444',
-        source => 'puppet:///modules/role/puppetdb/tuning.conf',
+        ensure  => 'present',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        content => template('role/puppetdb/tuning.conf.erb'),
     }
 
     sysctl::parameters { 'postgres_shmem':
