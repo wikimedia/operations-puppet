@@ -85,13 +85,15 @@ class toollabs (
         require => File[$store],
     }
 
-    file { '/etc/ssh/ssh_known_hosts':
-        ensure  => file,
-        source  => '/etc/ssh/ssh_known_hosts~',
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        require => Exec['make_known_hosts'],
+    if !$::use_puppetdb {
+        file { '/etc/ssh/ssh_known_hosts':
+            ensure  => file,
+            source  => '/etc/ssh/ssh_known_hosts~',
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0444',
+            require => Exec['make_known_hosts'],
+        }
     }
 
     File['/var/lib/gridengine'] -> Package <| title == 'gridengine-common' |>
