@@ -22,8 +22,7 @@ class role::labs::instance_info_dumper {
             'auth_url' => "http://${novaconfig['controller_hostname']}:35357/v2.0",
         },
     'enc_host'    => hiera('labs_puppet_master'),
-    # FIXME: This is terrible, since this will get wiped at every deploy
-    'output_path' => '/srv/mediawiki/docroot/instance-info-v1.json',
+    'output_path' => '/srv/instance-info.yaml',
     }
 
 
