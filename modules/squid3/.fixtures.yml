@@ -1,0 +1,5 @@
+fixtures:
+    symlinks:
+        squid3: "#{source_dir}"
+        stdlib: "../../../../stdlib"
+        wmflib: "../../../../wmflib"
