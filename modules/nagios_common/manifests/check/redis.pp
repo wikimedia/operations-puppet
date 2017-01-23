@@ -20,6 +20,13 @@ class nagios_common::check::redis(
         mode    => '0400',
         content => $::passwords::redis::main_password,
     }
+    file { '/etc/icinga/.ores_redis_secret':
+        ensure  => present,
+        owner   => $owner,
+        group   => $group,
+        mode    => '0400',
+        content => $::passwords::redis::ores_password,
+    }
 
     ::nagios_common::check_command { 'check_redis':
         require    => [

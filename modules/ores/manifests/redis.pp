@@ -64,7 +64,8 @@ class ores::redis(
         map      => $instance_settings_real,
     }
     redis::monitoring::instance { ['6379', '6380']:
-        settings => $common_settings,
-        map      => $instance_settings_real,
+        settings  => $common_settings,
+        map       => $instance_settings_real,
+        cred_file => '/etc/icinga/.ores_redis_secret',
     }
 }

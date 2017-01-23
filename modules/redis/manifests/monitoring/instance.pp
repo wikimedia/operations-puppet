@@ -11,6 +11,7 @@ define redis::monitoring::instance(
     $map = {},
     $lag_warning = 60,
     $lag_critical = 600,
+    $cred_file = '/etc/icinga/.redis_secret',
     ) {
 
     validate_ensure($ensure)
@@ -37,13 +38,13 @@ define redis::monitoring::instance(
     if $slaveof {
         monitoring::service{ "redis.${instance_name}":
             description    => "Redis replication status ${instance_name}",
-            check_command  => "check_redis_replication!${port}!${lag_warning}!${lag_critical}",
+            check_command  => "check_redis_replication!${port}!${lag_warning}!${lag_critical}!${cred_file}",
             retry_interval => 2,
         }
     } else {
         monitoring::service{ "redis.${instance_name}":
             description   => "Redis status ${instance_name}",
-            check_command => "check_redis!${port}"
+            check_command => "check_redis!${port}!${cred_file}"
         }
     }
 }
