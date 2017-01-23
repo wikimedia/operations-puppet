@@ -22,4 +22,5 @@ class role::aptrepo::wikimedia {
     include role::backup::host
     backup::set { 'srv-wikimedia': }
 
+    include aptrepo::rsync
 }
