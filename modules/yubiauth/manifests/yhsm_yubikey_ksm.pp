@@ -1,4 +1,4 @@
-# yhsm-yubikey-ksm ‐ Yubikey key storage module using a YubiHSM
+# yhsm-yubikey-ksm - Yubikey key storage module using a YubiHSM
 class yubiauth::yhsm_yubikey_ksm(
     $yhsmdevice = '/dev/ttyACM0',
 ) {

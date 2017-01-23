@@ -152,7 +152,7 @@ class statistics::packages {
             'myspell-ku', # Kurdish (Kurmanji) dictionary for myspell
             'myspell-lt', # myspell dictionary for Lithuanian (LT)
             'myspell-lv', # Latvian dictionary for Myspell
-            'myspell-nb', # Norwegian Bokmål dictionary for myspell
+            'myspell-nb', # Norwegian Bokmal dictionary for myspell
             'myspell-nl', # Dutch dictionary for Hunspell
             'myspell-nn', # Norwegian Nynorsk dictionary for myspell
             'myspell-nr', # The Ndebele dictionary for myspell
