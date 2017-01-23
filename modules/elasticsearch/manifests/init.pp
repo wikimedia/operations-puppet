@@ -150,8 +150,8 @@ class elasticsearch(
             '-XX:+PrintGCCause',
             '-XX:+PrintGCApplicationStoppedTime',
             '-XX:+UseGCLogFileRotation',
-            '-XX:NumberOfGCLogFiles=10',
-            '-XX:GCLogFileSize=2M',
+            '-XX:NumberOfGCLogFiles=5',
+            '-XX:GCLogFileSize=20M',
         ],
         default => [],
     }
