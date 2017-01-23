@@ -29,18 +29,16 @@ define redis::monitoring::instance(
     if has_key($settings, 'slaveof') {
         $slaveof = $settings['slaveof']
     } elsif (has_key($map, $port) and has_key($map[$port], 'slaveof')) {
-        $slaveof = $map[$title]['slaveof']
-    }
-    else {
+        $slaveof = $map[$port]['slaveof']
+    } else {
         $slaveof = undef
     }
 
-    if ($slaveof) {
+    if $slaveof {
         monitoring::service{ "redis.${instance_name}":
             description    => "Redis status ${instance_name}",
             check_command  => "check_redis_replication!${port}!${lag_warning}!${lag_critical}",
             retry_interval => 2,
-
         }
     } else {
         monitoring::service{ "redis.${instance_name}":
