@@ -151,7 +151,7 @@ class elasticsearch(
             '-XX:+PrintGCApplicationStoppedTime',
             '-XX:+UseGCLogFileRotation',
             '-XX:NumberOfGCLogFiles=10',
-            '-XX:GCLogFileSize=2M',
+            '-XX:GCLogFileSize=20M',
         ],
         default => [],
     }
@@ -199,6 +199,15 @@ class elasticsearch(
         group  => 'root',
         mode   => '0444',
         source => 'puppet:///modules/elasticsearch/logrotate',
+    }
+    # GC logs rotation is done by the JVM, but on JVM restart, the logs left by
+    # the previous instance are left alone. This cron takes care of cleaning up
+    # GC logs older than 30 days.
+    cron { 'elasticsearch-gc-log-cleanup':
+        ensure => present,
+        minute => 12,
+        hour   => 2,
+        command => 'find /var/log/elasticsearch -name "*_jvm_gc.pid*" -mtime +30 -delete',
     }
     # Note that we don't notify the Elasticsearch service of changes to its
     # config files because you need to be somewhat careful when restarting it.
