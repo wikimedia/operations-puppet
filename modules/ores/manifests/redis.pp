@@ -15,6 +15,7 @@ class ores::redis(
             stop_writes_on_bgsave_error => false,
             slave_read_only             => false,
             tcp_keepalive               => 60,
+            icinga_credentials          => '/etc/icinga/.ores_redis_secret',
     }
     $instance_settings = {
         '6379' => {
