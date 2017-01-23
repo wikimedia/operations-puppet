@@ -34,8 +34,20 @@ elasticsearch::cluster_hosts:
   - elastic2022.codfw.wmnet
   - elastic2023.codfw.wmnet
   - elastic2024.codfw.wmnet
+  - elastic2025.codfw.wmnet
+  - elastic2026.codfw.wmnet
+  - elastic2027.codfw.wmnet
+  - elastic2028.codfw.wmnet
+  - elastic2029.codfw.wmnet
+  - elastic2030.codfw.wmnet
+  - elastic2031.codfw.wmnet
+  - elastic2032.codfw.wmnet
+  - elastic2033.codfw.wmnet
+  - elastic2034.codfw.wmnet
+  - elastic2035.codfw.wmnet
+  - elastic2036.codfw.wmnet
 
-elasticsearch::expected_nodes: 24
+elasticsearch::expected_nodes: 36
 
 # We should be able to run "OK" with 11 servers.
 elasticsearch::recover_after_nodes: 11
