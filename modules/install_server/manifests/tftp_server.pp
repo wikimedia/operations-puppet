@@ -13,9 +13,6 @@
 #   include install_server::tftp_server
 
 class install_server::tftp_server {
-
-    include ::standard
-
     file { '/srv/tftpboot':
         # config files in the puppet repository,
         # larger files like binary images in volatile
