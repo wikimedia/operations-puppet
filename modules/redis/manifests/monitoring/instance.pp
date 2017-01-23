@@ -36,7 +36,7 @@ define redis::monitoring::instance(
 
     if $slaveof {
         monitoring::service{ "redis.${instance_name}":
-            description    => "Redis status ${instance_name}",
+            description    => "Redis replication status ${instance_name}",
             check_command  => "check_redis_replication!${port}!${lag_warning}!${lag_critical}",
             retry_interval => 2,
         }
