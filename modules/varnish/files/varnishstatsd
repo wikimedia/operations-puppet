@@ -43,7 +43,10 @@ UDP_MTU_BYTES = 1472
 
 class StatsdStatsSender(CacheStatsSender):
     cmd = ['/usr/bin/varnishncsa', '-b',
-           '-q', 'BereqMethod ne "PURGE"',
+           # Exclude client requests resulting in a pipe as they do not
+           # generate a backend request. Varnish blindly passes on bytes in
+           # both directions in that case, so there is no status and no ttfb.
+           '-q', 'BereqMethod ne "PURGE" and VCL_call ne "PIPE"',
            '-F', '%m\t%s\t%{VSL:BackendOpen[2]}x\t%{Varnish:time_firstbyte}x']
 
     description = 'Varnish backend response time metric logger'
@@ -56,7 +59,7 @@ class StatsdStatsSender(CacheStatsSender):
     def handle_record(self, record):
         method, status_code, backend, ttfb = record.split('\t')
 
-        # Temporary fix to avoid crashes
+        # Stop here if ttfb is missing
         if len(ttfb) == 0:
             return
 
