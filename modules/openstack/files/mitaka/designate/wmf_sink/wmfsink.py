@@ -34,6 +34,10 @@ cfg.CONF.register_opts([
     cfg.StrOpt('domain_id', default=None),
     cfg.StrOpt('site', default='eqiad'),
 
+    cfg.ListOpt('format', default=[]),
+    cfg.StrOpt('ldapusername', default=None),
+    cfg.StrOpt('ldappassword', default=None),
+
     cfg.ListOpt('puppetdefaultclasses', default=[]),
     cfg.ListOpt('puppetdefaultvars', default=[]),
 
@@ -70,8 +74,12 @@ class NovaFixedWMFHandler(BaseAddressWMFHandler):
     def process_notification(self, context, event_type, payload):
         LOG.debug('received notification - %s' % event_type)
 
-        # This plugin only handles cleanup.
-        if event_type == 'compute.instance.delete.start':
+        if event_type == 'compute.instance.create.end':
+            self._create(payload['fixed_ips'], payload,
+                         resource_id=payload['instance_id'],
+                         resource_type='instance')
+
+        elif event_type == 'compute.instance.delete.start':
             self._delete(payload,
                          resource_id=payload['instance_id'],
                          resource_type='instance')

@@ -23,6 +23,8 @@ from keystoneclient.v3 import projects
 from keystoneclient import session
 from oslo_log import log as logging
 
+import ldap
+import ldap.modlist
 import pipes
 import subprocess
 
@@ -31,6 +33,144 @@ central_api = central_rpcapi.CentralAPI()
 
 
 class BaseAddressWMFHandler(BaseAddressHandler):
+    @staticmethod
+    def _get_ip_data(addr_dict):
+        ip = addr_dict['address']
+        version = addr_dict['version']
+
+        data = {
+            'ip_version': version,
+        }
+
+        # TODO(endre): Add v6 support
+        if version == 4:
+            data['ip_address'] = ip.replace('.', '-')
+            ip_data = ip.split(".")
+            for i in [0, 1, 2, 3]:
+                data["octet%s" % i] = ip_data[i]
+        return data
+
+    @staticmethod
+    def _getLdapInfo(attr, conffile="/etc/ldap.conf"):
+        try:
+            f = open(conffile)
+        except IOError:
+            if conffile == "/etc/ldap.conf":
+                # fallback to /etc/ldap/ldap.conf, which will likely
+                # have less information
+                f = open("/etc/ldap/ldap.conf")
+        for line in f:
+            if line.strip() == "":
+                continue
+            if line.split()[0].lower() == attr.lower():
+                return line.split(None, 1)[1].strip()
+                break
+
+    def _openLdap(self):
+        ldapHost = self._getLdapInfo("uri")
+        sslType = self._getLdapInfo("ssl")
+
+        binddn = cfg.CONF[self.name].get('ldapusername')
+        bindpw = cfg.CONF[self.name].get('ldappassword')
+        ds = ldap.initialize(ldapHost)
+        ds.protocol_version = ldap.VERSION3
+        if sslType == "start_tls":
+            ds.start_tls_s()
+
+        try:
+            ds.simple_bind_s(binddn, bindpw)
+            return ds
+        except ldap.CONSTRAINT_VIOLATION:
+            LOG.debug("LDAP bind failure:  Too many failed attempts.\n")
+        except ldap.INVALID_DN_SYNTAX:
+            LOG.debug("LDAP bind failure:  The bind DN is incorrect... \n")
+        except ldap.NO_SUCH_OBJECT:
+            LOG.debug("LDAP bind failure:  "
+                      "Unable to locate the bind DN account.\n")
+        except ldap.UNWILLING_TO_PERFORM as msg:
+            LOG.debug("LDAP bind failure:  "
+                      "The LDAP server was unwilling to perform the action"
+                      " requested.\nError was: %s\n" % msg[0]["info"])
+        except ldap.INVALID_CREDENTIALS:
+            LOG.debug("LDAP bind failure:  Password incorrect.\n")
+
+        return None
+
+    def _create(self, addresses, extra, managed=True,
+                resource_type=None, resource_id=None):
+        """
+        Create a a record from addresses
+
+        :param addresses: Address objects like
+                          {'version': 4, 'ip': '10.0.0.1'}
+        :param extra: Extra data to use when formatting the record
+        :param managed: Is it a managed resource
+        :param resource_type: The managed resource type
+        :param resource_id: The managed resource ID
+        """
+        ds = self._openLdap()
+        if not ds:
+            return
+
+        LOG.debug('Using DomainID: %s' % cfg.CONF[self.name].domain_id)
+        domain = self.get_domain(cfg.CONF[self.name].domain_id)
+        LOG.debug('Domain: %r' % domain)
+
+        data = extra.copy()
+        LOG.debug('Event data: %s' % data)
+        data['domain'] = domain['name']
+
+        project_name = self._resolve_project_name(data['tenant_id'])
+        data['project_name'] = project_name
+
+        # Just one ldap entry per host, please.
+        addr = addresses[0]
+
+        event_data = data.copy()
+        event_data.update(self._get_ip_data(addr))
+        dc = "%(hostname)s.%(project_name)s.%(domain)s" % event_data
+        # ldap doesn't like trailing .s
+        dc = dc.rstrip('.').encode('utf8')
+        dn = "dc=%s,ou=hosts,dc=wikimedia,dc=org" % dc
+
+        hostEntry = {}
+        hostEntry['objectClass'] = ['domainrelatedobject',
+                                    'dnsdomain',
+                                    'puppetclient',
+                                    'domain',
+                                    'dcobject',
+                                    'top']
+        hostEntry['l'] = cfg.CONF[self.name].site
+        hostEntry['dc'] = dc
+        hostEntry['aRecord'] = addr['address'].encode('utf8')
+        hostEntry['puppetClass'] = []
+        hostEntry['puppetVar'] = []
+        for cls in cfg.CONF[self.name].get('puppetdefaultclasses'):
+            hostEntry['puppetClass'].append(cls)
+        for var in cfg.CONF[self.name].get('puppetdefaultvars'):
+            hostEntry['puppetVar'].append(var)
+        hostEntry['associatedDomain'] = []
+        hostEntry['puppetVar'].append('instanceproject=%s' %
+                                      event_data['project_name'].encode(
+                                          'utf8'))
+        hostEntry['puppetVar'].append('instancename=%s' %
+                                      event_data['hostname'].encode(
+                                          'utf8'))
+
+        for fmt in cfg.CONF[self.name].get('format'):
+            hostEntry['associatedDomain'].append(
+                (fmt % event_data).rstrip('.').encode('utf8'))
+
+        if managed:
+            LOG.debug('Creating ldap record')
+
+            modlist = ldap.modlist.addModlist(hostEntry)
+            try:
+                ds.add_s(dn, modlist)
+            except ldap.LDAPError as e:
+                LOG.debug('Ldap exception %s' % e)
+
+        ds.unbind()
 
     def _delete(self, extra, managed=True, resource_id=None,
                 resource_type='instance', criterion={}):
@@ -39,7 +179,13 @@ class BaseAddressWMFHandler(BaseAddressHandler):
 
         :param criterion: Criterion to search and destroy records
         """
+        ds = self._openLdap()
+        if not ds:
+            return
+
+        LOG.debug('Delete using DomainID: %s' % cfg.CONF[self.name].domain_id)
         domain = self.get_domain(cfg.CONF[self.name].domain_id)
+        LOG.debug('Domain: %r' % domain)
 
         data = extra.copy()
         LOG.debug('Event data: %s' % data)
@@ -50,7 +196,20 @@ class BaseAddressWMFHandler(BaseAddressHandler):
 
         event_data = data.copy()
 
-        # Clean salt and puppet keys for deleted instance
+        dc = "%(hostname)s.%(project_name)s.%(domain)s" % event_data
+        dc = dc.rstrip('.').encode('utf8')
+        dn = "dc=%s,ou=hosts,dc=wikimedia,dc=org" % dc
+
+        LOG.debug('Deleting ldap record: %s' % dn)
+        try:
+            ds.delete_s(dn)
+        except ldap.NO_SUCH_OBJECT:
+            LOG.debug('Warning:  %s not found in ldap.  Not deleted.' % dn)
+
+        ds.unbind()
+
+        # WMF-specific add-on:  Clean salt and puppet keys for deleted
+        #  instance
         if (cfg.CONF[self.name].puppet_key_format and
                 cfg.CONF[self.name].puppet_master_host):
             puppetkey = cfg.CONF[self.name].puppet_key_format % event_data
