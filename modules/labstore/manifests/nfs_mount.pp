@@ -105,7 +105,7 @@ define labstore::nfs_mount(
         }
     }
 
-    if ($ensure == 'absent') {
+    if ($ensure == 'absent') and mount_nfs_volume($project, $mount_name) {
 
         exec { "cleanup-${mount_path}":
             command   => "/usr/local/sbin/nfs-mount-manager umount ${mount_path}",
