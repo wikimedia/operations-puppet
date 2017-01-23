@@ -9,7 +9,7 @@
 # Marius Hoch < hoo@online.de >
 
 source /usr/local/etc/set_dump_dirs.sh
-configfile="${confdir}/wikidump.conf"
+configfile="${confsdir}/wikidump.conf"
 
 today=`date +'%Y%m%d'`
 daysToKeep=70

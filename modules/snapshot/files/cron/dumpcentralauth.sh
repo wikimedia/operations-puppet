@@ -11,7 +11,7 @@ usage() {
     echo
     echo "  --site     codfw, eqiad, etc"
     echo "  --config   path to configuration file for dump generation"
-    echo "             (default value: <%= scope.lookupvar('snapshot::dumps::dirs::confsdir') -%>/wikidump.conf"
+    echo "             (default value: ${confsdir}/wikidump.conf"
     echo "  --dryrun   don't run dump, show what would have been done"
     exit 1
 }
