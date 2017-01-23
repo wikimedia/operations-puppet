@@ -39,6 +39,7 @@ class elasticsearch::https (
         ensure          => $ensure,
         provide_private => true,
         require         => Class['nginx'],
+        notify          => Exec['nginx-reload'],
     }
 
     ::nginx::site { 'elasticsearch-ssl-termination':

@@ -22,12 +22,16 @@
 # [*ssldir*]
 #   The source directory containing the original SSL certificates.
 #
+# [*notify*]
+#   Can be used to notify a service that SSL certificates have changed. For
+#   example, nginx should be restarted in case of certificate changes.
 define base::expose_puppet_certs(
     $ensure          = 'present',
     $provide_private = false,
     $user            = 'root',
     $group           = 'root',
     $ssldir          = puppet_ssldir(),
+    $notify          = undef,
 ) {
     validate_absolute_path($ssldir)
 
@@ -48,6 +52,7 @@ define base::expose_puppet_certs(
         ensure => $ensure,
         mode   => '0444',
         source => "${ssldir}/certs/${puppet_cert_name}.pem",
+        notify => $notify,
     }
 
     $private_key_ensure = $ensure ? {
@@ -62,5 +67,6 @@ define base::expose_puppet_certs(
         ensure => $private_key_ensure,
         mode   => '0400',
         source => "${ssldir}/private_keys/${puppet_cert_name}.pem",
+        notify => $notify,
     }
 }
