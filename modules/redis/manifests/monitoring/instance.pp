@@ -25,13 +25,14 @@ define redis::monitoring::instance(
         fail('redis::monitoring::instance title must be a TCP port.')
     }
 
+    notify { "map: ${map}": }
+
     # Check if slaveof in settings, and not empty
     if has_key($settings, 'slaveof') {
         $slaveof = $settings['slaveof']
     } elsif (has_key($map, $port) and has_key($map[$port], 'slaveof')) {
-        $slaveof = $map[$title]['slaveof']
-    }
-    else {
+        $slaveof = $map[$port]['slaveof']
+    } else {
         $slaveof = undef
     }
 
