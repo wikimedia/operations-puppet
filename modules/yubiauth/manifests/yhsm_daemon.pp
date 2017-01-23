@@ -1,4 +1,4 @@
-# yhsm-daemon ‐ Allow multiple users of a YubiHSM
+# yhsm-daemon - Allow multiple users of a YubiHSM
 class yubiauth::yhsm_daemon(
     $yhsmdevice = '/dev/ttyACM0',
 ) {
