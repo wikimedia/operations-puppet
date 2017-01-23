@@ -3,33 +3,6 @@ class role::labs::nfsclient(
     $lookupcache = 'none',
 ) {
 
-    # Mark mounts from labstore1001 as absent. Temp: Can remove after migration
-
-    labstore::nfs_mount { 'project-on-labstoresvc':
-        ensure      => 'absent',
-        mount_name  => 'project',
-        project     => $::labsproject,
-        options     => ['rw', $mode],
-        mount_path  => '/data/project',
-        share_path  => "/project/${::labsproject}/project",
-        server      => 'labstore.svc.eqiad.wmnet',
-        block       => true,
-        lookupcache => $lookupcache,
-    }
-
-    labstore::nfs_mount { 'home-on-labstoresvc':
-        ensure      => 'absent',
-        mount_name  => 'home',
-        project     => $::labsproject,
-        options     => ['rw', 'hard'],
-        mount_path  => '/home',
-        share_path  => "/project/${::labsproject}/home",
-        server      => 'labstore.svc.eqiad.wmnet',
-        block       => true,
-        lookupcache => $lookupcache,
-    }
-
-    # Dual mount /project for misc (other) projects under /mnt/nfs/labstore-secondary-project
     labstore::nfs_mount { 'project-on-labstore-secondary':
         mount_name  => 'project',
         project     => $::labsproject,
@@ -41,7 +14,6 @@ class role::labs::nfsclient(
         lookupcache => $lookupcache,
     }
 
-    # Dual mount /home for misc (other) projects under /mnt/nfs/labstore-secondary-home
     labstore::nfs_mount { 'home-on-labstore-secondary':
         mount_name  => 'home',
         project     => $::labsproject,
@@ -53,14 +25,12 @@ class role::labs::nfsclient(
         lookupcache => $lookupcache,
     }
 
-    # FIXME Remove dependency on absent mounts from labstoresvc after migration
     if mount_nfs_volume($::labsproject, 'project') {
         file { '/data/project':
             ensure  => 'link',
             force   => true,
             target  => '/mnt/nfs/labstore-secondary-project',
-            require => [Labstore::Nfs_mount['project-on-labstore-secondary'],
-                        Labstore::Nfs_mount['project-on-labstoresvc']],
+            require => Labstore::Nfs_mount['project-on-labstore-secondary'],
         }
     }
 
@@ -69,8 +39,7 @@ class role::labs::nfsclient(
             ensure  => 'link',
             force   => true,
             target  => '/mnt/nfs/labstore-secondary-home',
-            require => [Labstore::Nfs_mount['home-on-labstore-secondary'],
-                        Labstore::Nfs_mount['home-on-labstoresvc']],
+            require => Labstore::Nfs_mount['home-on-labstore-secondary'],
         }
     }
 
@@ -105,6 +74,7 @@ class role::labs::nfsclient(
     }
 
     if $::labsproject == 'tools' {
+
         labstore::nfs_mount { 'tools-home-on-labstore-secondary':
             mount_name  => 'tools-home',
             project     => $::labsproject,
