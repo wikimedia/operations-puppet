@@ -19,12 +19,4 @@ class role::toollabs::k8s::bastion {
     }
 
     require_package('kubernetes-client')
-
-    # Deployment script (for now!)
-    file { '/usr/local/bin/deploy-bastion':
-        source => 'puppet:///modules/role/toollabs/deploy-bastion.bash',
-        mode   => '0555',
-        owner  => 'root',
-        group  => 'root',
-    }
 }
