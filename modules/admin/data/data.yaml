@@ -2208,6 +2208,7 @@ users:
     ssh_keys:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC5+qOyQlchRnrwpMI0ojTd5WbXlAY2YrYqt0tap9/4u/9X+FqHcnRsHtsrwcAdUVJE3NJRWyqsz/yhmXQyFBNQ9qGvfGZRanIZAIVACgWttjhNvZxB/u/Em1AxsetH61fv/IrlquBR1heO8zzpNPBC0DA5Xirnxz27RAok046JL1zf56/of+iHAsqoN6rJsF1SaOjXQg+w6yCyurP/mfbLYc83kTYEQChtj7ys82Bn2m3v9EWDk2g302k3L2zIgUJb4a32I1HwZBgRig4+GfD/HJVQyUa6Era53QNfORp5Zrf45x0KMnce2mo2Nwytxhd/y7pYzS7n9jRiaxOYF2LD Michele@macbook-pro-di-michele-tizzoni-2.local
     uid: 15221
+    expiry_date: 2017-02-05
   panisson:
     ensure: present
     gid: 500
@@ -2216,6 +2217,7 @@ users:
     ssh_keys:
       - ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAsBQKrAubJDt58PL86InNxz0/BEYRJoWbrJw6FCI8B6/GUkGRWiL17Kt7XhiB/6ShNtD6/Md4puA/fB08LJ+GUYxV58eVLpWfdCSTu25AIC2lAiFXwWcFKX7YY4xMYWPCiMkXInODLut8s2o7IuJsikB88m29scZxEVdkxEEupvuf78V7obBjcXGTwed4qMgAzcKjuj3TJZ3DNfGzlylos3NAYGPZ2O0dVIIaGnjsft/quuFKpZHGJe9Td/JUcZ3ddgG8/gO9QXsmNJ4xDUCLdnfen8eI01gfUG5Oe1dJpNw+H2k3HlTefSDUKPrT2SQo9x/tKcstxlKXRxGXaCYt8w== panisson@nbdotti33
     uid: 15217
+    expiry_date: 2017-02-05
   paolotti:
     ensure: present
     gid: 500
@@ -2224,6 +2226,7 @@ users:
     ssh_keys:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQD6lmYG3kuDwouTAy19p33dHldzI1Y4JrMv46Ga23FFSKVR3R2yv7Eu6YFt2Gm7W+TUHkE3EjMlNvLFxtxQMqeoWRK8ahuqQruUAocO55jOmhJvIRW6OP3wGABznwaIM7PWvZPmyuUpZj1zKuhnK5EnVPv9v/9258eCltJtvD8sSpA9CNm6h+RpQFSvvgtnUw0qr8t5RiOr3KK0mXuO1YHQI9LO12Fl+LoszlyV7dF1tChNyN6hYX7QBgNDDhRXahkTmUSEmXMqIhO1wW+GiRyYFIjMBfXA/+HHcCgZzg74qnlU2Pb9QXWQrFwx3vK/KMLchl7iV5H9gfLSX4jzC5eZ daniela.paolotti@gmail.com
     uid: 15237
+    expiry_date: 2017-02-05
   ciro:
     ensure: present
     gid: 500
@@ -2232,6 +2235,7 @@ users:
     ssh_keys:
       - ssh-dss AAAAB3NzaC1kc3MAAACBAJMN2HY4SvYvpse+DMZPY2Rn2W0Uy2Og01tug+vpF96RwN4bad7Z0ryRNno4LcnlaWtl5D6yhLDbibxZSNFn1pXN/Iqj3Took4YJsyXuLkFFN5IYY/ETWphRDqGXIYFWwG9oVLayKk+5wfPz8STBsajXLcliU67YmPyC5tk2IX49AAAAFQDoPyrcuaMbMvHNynsZWXM5h6lF9wAAAIAGd8MyyN9sMosoow783UgLyM0cF0XjdIl0Pzk9Ry5qmYtOp/hWEJRM9bC2I7R+ZhLzoqm1eOJGw8lNbt1PRa3woafJLtget9fPJujn9Csa1jMP2hHjzjSX6C8jtLPGHMVlWu0dgNOfelhcnidP3atjo4bp+gEvXNBRB/W9ZwNNZQAAAIBDPtyrwmvbI3vjwVwOIbFV66B4CTzRzIucmfRjrdKcwHe3eG7K597yP+kUFpMdUq8GlWFeHRpLDZd7nGZ2fXkZZz1ar95EpxPf7Q842We17B6EXgQNr9yZgso3x378eoUGJP9TKgR9ZSZ4iK4S4qIcstflhMheOxb5fZ5ckg2bfw==
     uid: 15247
+    expiry_date: 2017-02-05
   psinger:
     ensure: present
     gid: 500
