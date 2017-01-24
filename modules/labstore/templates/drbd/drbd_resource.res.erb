@@ -2,14 +2,14 @@ resource <%= @name %> {
 
   on <%= @drbd_hosts.first %> {
     device    <%= @device %>;
-    address   <%= scope.function_ipresolve([@drbd_cluster[@drbd_hosts.first], 4]) %>:<%= @port %>;
+    address   <%= @drbd_cluster[@drbd_hosts.first] %>:<%= @port %>;
     disk      <%= @disk %>;
     meta-disk internal;
   }
 
   on <%= @drbd_hosts.last %> {
     device    <%= @device %>;
-    address   <%= scope.function_ipresolve([@drbd_cluster[@drbd_hosts.last], 4]) %>:<%= @port %>;
+    address   <%= @drbd_cluster[@drbd_hosts.last] %>:<%= @port %>;
     disk      <%= @disk %>;
     meta-disk internal;
   }
