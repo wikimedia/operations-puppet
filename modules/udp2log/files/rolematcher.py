@@ -4,7 +4,7 @@
 '''
 This script parses the packet-loss.log file and for each server entry
 it determines what it's role is. Server role data has been obtained
-from noc.wikimeda.org/pybal and can either be downloaded or the
+from noc.wikimedia.org/pybal and can either be downloaded or the
 hard-coded version can be used.
 
 Purpose of this script is to use it in conjunction with
