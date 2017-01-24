@@ -168,6 +168,7 @@ class elasticsearch(
         mode    => '0444',
         require => Package['elasticsearch'],
     }
+    # logging.yml is used by elasticsearch 2.x
     file { '/etc/elasticsearch/logging.yml':
         ensure  => file,
         owner   => 'root',
@@ -176,6 +177,15 @@ class elasticsearch(
         mode    => '0444',
         require => Package['elasticsearch'],
     }
+    file { '/etc/elasticsearch/log4j2.properties':
+        ensure  => file,
+        owner   => 'root',
+        group   => 'root',
+        content => template('elasticsearch/log4j2.properties.erb'),
+        mode    => '0444',
+        require => Package['elasticsearch'],
+    }
+
     # elasticsearch refuses to start without the "scripts" directory, even if
     # do not actually use any scripts.
     file { '/etc/elasticsearch/scripts':
