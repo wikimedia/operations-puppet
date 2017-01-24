@@ -9,7 +9,7 @@ class role::lists::migration {
         port  => '80',
     }
 
-    ferm::service { 'mailman-migration-rysnc':
+    ferm::service { 'mailman-migration-rsync':
         proto  => 'tcp',
         port   => '873',
         srange => "${sourceip}/32",

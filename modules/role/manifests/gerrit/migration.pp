@@ -2,7 +2,7 @@ class role::gerrit::migration {
 
     $sourceip='208.80.154.82'
 
-    ferm::service { 'gerrit-migration-rysnc':
+    ferm::service { 'gerrit-migration-rsync':
         proto  => 'tcp',
         port   => '873',
         srange => "${sourceip}/32",
