@@ -34,7 +34,7 @@ GetInRelease: no
 Suite: jessie
 Architectures: amd64 source
 VerifyRelease: 6005210E23B3D3B4
-ListShellHook: grep-dctrl -e -S '^megacli|arcconf|lsiutil$' || [ $? -eq 1 ]
+ListShellHook: grep-dctrl -e -S '^megacli$' || [ $? -eq 1 ]
 
 Name: hp-mcp-trusty
 Method:  http://downloads.linux.hpe.com/SDR/repo/mcp
