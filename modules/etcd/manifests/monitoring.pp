@@ -26,7 +26,7 @@ class etcd::monitoring {
 
     nrpe::monitor_service{ 'etcd_cluster_health':
         description  => 'Etcd cluster health',
-        nrpe_command => "/usr/local/bin/nrpe_etcd_cluster_health --url ${::etcd::client_url}",
+        nrpe_command => "/usr/local/bin/nrpe_etcd_cluster_health --url ${::etcd::adv_client_url}",
         require      => [
           File['/usr/local/bin/nrpe_etcd_cluster_health'],
           Sudo::User['nagios_check_etcd'],
