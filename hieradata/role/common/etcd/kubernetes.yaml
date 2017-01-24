@@ -2,7 +2,8 @@ debdeploy::grains:
   debdeploy-kubernetes-eqiad:
     value: etcd
 cluster: kubernetes
-etcd::cluster_name: 'k8s.eqiad'
-etcd::srv_dns: 'k8s.eqiad.wmnet'
-etcd::use_client_certs: false
-etcd::do_backup: true
+profile::etcd::cluster_name: 'k8s.eqiad'
+profile::etcd::discovery: "dns:k8s.eqiad.wmnet"
+profile::etcd::use_client_certs: false
+profile::etcd::do_backup: true
+profile::etcd::use_proxy: false
