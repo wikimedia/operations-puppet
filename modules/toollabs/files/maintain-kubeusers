@@ -286,7 +286,7 @@ def create_namespace(user):
     Creates a namespace for the given user if it doesn't exist
     """
     p = subprocess.Popen([
-        '/usr/local/bin/kubectl',
+        '/usr/bin/kubectl',
         'create',
         '--validate=false',
         '-f',
