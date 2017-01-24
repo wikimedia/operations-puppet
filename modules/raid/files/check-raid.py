@@ -1,7 +1,6 @@
 #!/usr/bin/python
 
 import argparse
-import os
 import os.path
 import re
 import subprocess
@@ -12,30 +11,17 @@ import glob
 def main():
 
     options = parse_args()
-    osName = os.uname()[0]
     if options.driver:
         driver = options.driver
-    elif osName == 'SunOS':
-        driver = 'zpool'
-    elif osName == 'Linux':
-        driver = autoDetectDriver()
     else:
-        print('WARNING: operating system "%s" is not '
-              'supported by this check script' % (osName))
-        sys.exit(1)
+        driver = autoDetectDriver()
 
     try:
         if driver is None:
             print 'OK: no RAID installed'
             status = 0
-        elif driver == 'aac':
-            status = checkAdaptec()
-        elif driver == 'twe':
-            status = check3ware()
         elif driver == 'megacli':
             status = checkMegaSas(options.policy)
-        elif driver == 'zpool':
-            status = checkZfs()
         elif driver == 'mpt':
             status = checkmptsas()
         elif driver == 'md':
@@ -72,26 +58,6 @@ def parse_args():
 
 
 def autoDetectDriver():
-    f = open("/proc/devices", "r")
-    regex = re.compile('^\s*\d+\s+(\w+)')
-    driver = None
-    for line in f:
-        m = regex.match(line)
-        if m is None:
-            continue
-        name = m.group(1)
-
-        if name == 'aac':
-            driver = 'aac'
-            break
-        elif name == 'twe':
-            driver = 'twe'
-            break
-
-    f.close()
-    if driver is not None:
-        return driver
-
     if len(glob.glob("/sys/bus/pci/drivers/megaraid_sas/00*")) > 0:
         return 'megacli'
 
@@ -162,119 +128,6 @@ def checkmptsas():
     proc.wait()
 
     return status
-
-
-def checkAdaptec():
-    # Need to change directory so that the log file goes to the right place
-    oldDir = os.getcwd()
-    os.chdir('/var/log')
-    devNull = open('/dev/null', 'w')
-
-    # Run the command
-    try:
-        proc = subprocess.Popen(['/usr/sbin/arcconf', 'getconfig', '1'],
-                                stdout=subprocess.PIPE, stderr=devNull)
-    except:
-        print 'WARNING: unable to execute arcconf'
-        os.chdir(oldDir)
-        return 1
-
-    dre = '^\s*Defunct disk drive count\s*:\s*(\d+)'
-    defunctRegex = re.compile(dre)
-    lre = '^\s*Logical devices/Failed/Degraded\s*:\s*(\d+)/(\d+)/(\d+)'
-    logicalRegex = re.compile(lre)
-    status = 0
-    numLogical = None
-    for line in proc.stdout:
-        m = defunctRegex.match(line)
-        if m is not None and m.group(1) != '0':
-            print 'CRITICAL: defunct disk drive count: ' + m.group(1)
-            status = 2
-            break
-
-        m = logicalRegex.match(line)
-        if m is not None:
-            numLogical = int(m.group(1))
-            if m.group(2) != '0' and m.group(3) != '0':
-                print 'CRITICAL: logical devices: %s failed and %s defunct' % \
-                    (m.group(2), m.group(3))
-                status = 2
-                break
-            if m.group(2) != '0':
-                print 'CRITICAL: logical devices: %s failed' % \
-                    (m.group(2))
-                status = 2
-                break
-            if m.group(3) != '0':
-                print 'CRITICAL: logical devices: %s defunct' % \
-                    (m.group(3))
-                status = 2
-                break
-
-    ret = proc.wait()
-    if status == 0 and ret != 0:
-        print 'WARNING: arcconf returned exit status %d' % (ret)
-        status = 1
-
-    if status == 0 and numLogical is None:
-        print 'WARNING: unable to parse output from arcconf'
-        status = 1
-
-    if status == 0:
-        print 'OK: %d logical device(s) checked' % numLogical
-
-    os.chdir(oldDir)
-    return status
-
-
-def check3ware():
-    # Get the list of controllers
-    try:
-        proc = subprocess.Popen(['/usr/bin/tw_cli', 'show'],
-                                stdout=subprocess.PIPE)
-    except:
-        print 'WARNING: error executing tw_cli'
-        return 1
-
-    regex = re.compile('^(c\d+)')
-    controllers = []
-    for line in proc.stdout:
-        m = regex.match(line)
-        if m is not None:
-            controllers.push('/' + m.group(1))
-
-    ret = proc.wait()
-    if ret != 0:
-        print 'WARNING: tw_cli returned exit status %d' % (ret)
-        return 1
-
-    # Check each controller
-    regex = re.compile('^(p\d+)\s+([\w-]+)')
-    failedDrives = []
-    numDrives = 0
-    for controller in controllers:
-        proc = subprocess.Popen(['/usr/bin/tw_cli', controller, 'show'],
-                                stdout=subprocess.PIPE)
-        for line in proc.stdout():
-            m = regex.match(line)
-            if m is not None:
-                numDrives += 1
-                if m.group(2) != 'OK':
-                    failedDrives.push(controller + '/' + m.group(1))
-
-        proc.wait()
-
-    if len(failedDrives) != 0:
-        print('CRITICAL: %d failed drive(s): %s' %
-              (len(failedDrives), ', '.join(failedDrives)))
-        return 2
-
-    if numDrives == 0:
-        print 'WARNING: no physical drives found, tw_cli parse error?'
-        return 1
-    else:
-        print 'OK: %d drives checked' % numDrives
-        return 0
 
 
 def checkMegaSas(policy=None):
@@ -366,42 +219,6 @@ def checkMegaSas(policy=None):
         print 'OK: optimal, %d logical, %d physical, %s policy' % (
             numLD, numPD, policy)
     return 0
-
-
-def checkZfs():
-    try:
-        proc = subprocess.Popen(['/sbin/zpool', 'list', '-Honame,health'],
-                                stdout=subprocess.PIPE)
-    except:
-        error = sys.exc_info()[1]
-        print 'WARNING: error executing zpool: %s' % str(error)
-        return 1
-
-    regex = re.compile('^(\S+)\s+(\S+)')
-    status = 0
-    msg = ''
-    for line in proc.stdout:
-        m = regex.match(line)
-        if m is not None:
-            name = m.group(1)
-            health = m.group(2)
-            if health != 'ONLINE':
-                status = 2
-
-            if msg != '':
-                msg += ', '
-            msg += name + ': ' + health
-
-    ret = proc.wait()
-    if ret != 0:
-        print 'WARNING: zpool returned exit status %d' % (ret)
-        return 1
-
-    if status:
-        print 'CRITICAL: ' + msg
-    else:
-        print 'OK: ' + msg
-    return status
 
 
 def checkSoftwareRaid():
