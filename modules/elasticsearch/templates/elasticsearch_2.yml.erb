@@ -300,7 +300,6 @@ indices.recovery.concurrent_streams: 3
 # than 1 when running more than 2 nodes in the cluster.
 #
 discovery.zen.minimum_master_nodes: <%= @minimum_master_nodes %>
-discovery.zen.ping.multicast.group: <%= @multicast_group %>
 
 # Set the time to wait for ping responses from other nodes when discovering.
 # Set this option to a higher value on a slow or congested network
@@ -317,11 +316,7 @@ discovery.zen.ping.multicast.group: <%= @multicast_group %>
 #
 # 1. Disable multicast discovery (enabled by default):
 #
-<% if @multicast_enabled -%>
-#discovery.zen.ping.multicast.enabled: false
-<% else -%>
 discovery.zen.ping.multicast.enabled: false
-<% end -%>
 #
 # 2. Configure an initial list of master nodes in the cluster
 #    to perform discovery when new nodes (master or data) are started:
@@ -470,7 +465,7 @@ metrics.statsd.host: <%= @statsd_host %>
 ##
 # Merge Threads
 ##
-index.merge.scheduler.max_thread_count: <%= @merge_threads %>
+index.merge.scheduler.max_thread_count: 1
 
 <% unless @load_fixed_bitset_filters_eagerly -%>
 ##
