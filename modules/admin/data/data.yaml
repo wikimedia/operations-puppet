@@ -6,7 +6,7 @@ groups:
               mwalker, nimishg, rainman, ssmith, swalling, sumanah, werdna, rmoen,
               johnflewis, marc, jkrauska, akumar, mnoushad, spage, tnegrin, msyed, kleduc,
               manybubbles, haithams, jzerebecki, ashwinpp, ironholds, robla, asherman,
-              laner, declerambaul, srijan]
+              laner, declerambaul, srijan, junikowski]
   wikidev:
     gid: 500
     description: container group for primary user groups.
@@ -226,7 +226,7 @@ groups:
               halfak, dr0ptp4kt, bearloga, cwdent, elukey,
               nuria, otto, deskana, zhousquared, arnad, jgonsior,
               bsitzmann, dbrant, ellery, nettrom, leila,
-              ezachte, mforns, reedy, west1, phuedx, awight, junikowski,
+              ezachte, mforns, reedy, west1, phuedx, awight,
               joal, jamesur, akosiaris, jhobs, lpintscher, jkatz, madhuvishy, gpaumier,
               andyrussg, niedzielski, maxsem, hoo, daniel, tbayer, krinkle, tgr,
               csteipp, smalyshev, ebernhardson, addshore, jminor, chedasaurus, neilpquinn-wmf,
@@ -1912,11 +1912,11 @@ users:
     uid: 4608
     email: egalvez@wikimedia.org
   junikowski:
-    ensure: present
+    ensure: absent
     gid: 500
     name: junikowski
     realname: Jonathan Unikowski
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDKBIRu2KwmxKyLk2zOtpvzJzLwckzIdsAcB7ajJZQnVhaMGlQlelKL3X85lmuHuL2Pb+jqJ+wfufl+XZHAQy8ZmHIpHpGujfFAv0uNsm4MmnGTjlhpjfuXqVx3QKy58KnuuhEhN3+JCgHhD5D5z40wXZVYjEvdYp75wtxbBLlFCVYjo/tpcU+RcrATMrZab+TQ9DxaqqOtR5AzcBicmsVptZLxBSibDnDFFcNn2SSn0PNwO0Bbv1GppVL+e0J81vEXLxUeeQl3TzxYJyeqcGfQJfSdC8V5ekP3WoVCHF8ap7EOlt5h9/CLqLP2cIfKsE2ciYfJVpSEVEng+9oVMweH junikowski@WMF485.corp.wikimedia.org]
+    ssh_keys: []
     uid: 13018
   asherman:
     ensure: absent
