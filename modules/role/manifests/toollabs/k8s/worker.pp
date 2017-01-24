@@ -28,10 +28,12 @@ class role::toollabs::k8s::worker {
     class { '::k8s::kubelet':
         master_host => $master_host,
         require     => Class['::k8s::docker'],
+        use_package => true,
     }
 
     class { '::k8s::proxy':
         master_host => $master_host,
+        use_package => true,
     }
 
     # Deployment script (for now!)
@@ -44,16 +46,6 @@ class role::toollabs::k8s::worker {
 
     $version = hiera('k8s::version')
     $docker_builder = hiera('docker::builder_host')
-
-    exec { 'initial-kube-deploy':
-        command => "/usr/local/bin/fetch-worker http://${docker_builder} ${version}",
-        creates => '/usr/local/bin/kubelet',
-        require => File['/usr/local/bin/fetch-worker'],
-        before  => [
-            Class['k8s::kubelet'],
-            Class['k8s::proxy']
-        ],
-    }
 
     file { '/usr/local/bin/deploy-worker':
         source => 'puppet:///modules/role/toollabs/deploy-worker.bash',
