@@ -385,7 +385,10 @@ def checkSoftwareRaid():
     deviceRegex = re.compile(dre)
     sre = '^ *(Active|Working|Failed|Spare) Devices *: *(\d+)'
     statRegex = re.compile(sre)
+    statere = '^ *State *: *(.+) *'
+    stateRegex = re.compile(statere)
     currentDevice = None
+    degraded = False
     stats = {
         'Active': 0,
         'Working': 0,
@@ -393,6 +396,12 @@ def checkSoftwareRaid():
         'Spare': 0
     }
     for line in proc.stdout:
+        m = stateRegex.match(line)
+        if m is not None:
+            if 'degraded' in m.group(1):
+                degraded = True
+            continue
+
         m = deviceRegex.match(line)
         if m is None:
             if currentDevice is None:
@@ -413,12 +422,14 @@ def checkSoftwareRaid():
         return 1
 
     msg = ''
+    if degraded:
+        msg += 'State: degraded'
     for name in ('Active', 'Working', 'Failed', 'Spare'):
         if msg != '':
             msg += ', '
         msg += name + ': ' + str(stats[name])
 
-    if stats['Failed'] > 0:
+    if degraded or stats['Failed'] > 0:
         print 'CRITICAL: ' + msg
         return 2
     else:
