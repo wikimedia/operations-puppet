@@ -1479,6 +1479,7 @@ users:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCwniGVe6HpYxdbN9IQl+Lb0n0tJE1/KfywrHP0x+7FwK6piUP+sj3IsoZXrxS2TGOQ1pJ6FFaHUDskt5coGX5QmAQXJjsGVU3cQkuARvQGZ3Y3SvUSqJ5Sn3s5fVTPWWbQfNkhE4ARuA2GhiJMyGRGvy5SFKwcim+cUSt95vy+rKWi+Qptb25gGC2SMbaaZX97N6LWj7JOVoodgeyG2S8t3lxIi2U7fUKRShVmZWFSfD3KnspFN9TsTYskQjzizDVYUyw5qpDDL/u/ycGGXwgcI7c8ZD5LvtE8rzkG+a+79xdT1xkhWXavO4OWN6iIB/GpoFkFW+G2ldh3sNnhvgM9 wmf
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCaDwtmxgjrgNp4cp9ArJmQagmkAr5GXEwwpDgtH2wVqDCCB7DiMcdd8cxjQnf548ZuVpR2OL1R4n7duH+J1HK9rNoqlKE/Zjx+FT+yKVqVdPH6ZmXOcuVPEmSyuHhpI0Faw9JWlTzx67wIXM3DLWbacA1PEcRxNaFtJ9qc/47poVvNqL73jHoQI+MQvAyu+0wqwiE2RdqWb4Sr+iAd3ioGQQtwQqrHuCUInaxPHu1i9t1R2ENb2Ek/TD2BgGke8ljyKkeLy9bf/xHI1CgLmt5RwJ6vRFj6G0gof4GXEC0wqJAxMtQMqU4Xl2jQhP0Evs82Qoxz/hPzPCMSEmb5GDd9 nano
     uid: 2220
+    email: ori.livneh@gmail.com
   jkrauska:
     ensure: absent
     gid: 500
@@ -2094,6 +2095,7 @@ users:
     ssh_keys:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC72LsfzAEKAXX1184vQojgMfAE2bz3deNtM2vAyxNnpkAzvaqM2Oe1JjJ08E1qS9l5Gtc7zqLrbvSpf2uNkqAYAm/0O3098ykQdv7MOXwcDJNraJx0l5rdSkNxEryQZ9xlwPQ+eKp2avNCaL+YW5YPN7vjvu5bibJN8KtIsIsmBNhhQdTiLcaAX2ZlyOfVybVzLiPz5f0if38AgZlWJdKaNcXn1Yndw5cBzPrNl2Y9ODREFxrEEEz/OjwSHESbGHrkablfg8YiZV5V6p/0IYIfrkHMmKea4+l8f7f57XKCochFhqJP5oZ4/k4OWt63wSwu9hKqsBMjVMbxddBOit79t/dXdvlv3O05V399bW+I9C04rww9xuLJ8ujfmhQtk/sO08caJOBjgXx+EH8/+114n+PdL74AYLDnjE4nSUuJLL7aAmOu70d7C5R7kyBkK+P2AL67tq13VvORwYjbRP8EwRredQ/HHP2jqFXaF6+2/uVQ3Bv0uVvfVCcgprPl0d0OA+C0dBiSVaFfyVPtgj8qbRsntQMcHN+GN4rxZe6A4VEXOUZj+/XVWdKb0m36KlnDwPUHVkZvoc7czeJGX/d1s7RwW5BMn2PxUPcuBLi/100CVaHHC3HCShZpLm9vh2eaHsV927oZg9TuS9ptB9LYEpn46yIHY47b0jYDwY0StQ== dereckson-wikimedia-prod-20160324
     uid: 2362
+    email: dereckson@espace-win.org
   dstrine:
     ensure: present
     gid: 500
@@ -2209,6 +2211,7 @@ users:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC5+qOyQlchRnrwpMI0ojTd5WbXlAY2YrYqt0tap9/4u/9X+FqHcnRsHtsrwcAdUVJE3NJRWyqsz/yhmXQyFBNQ9qGvfGZRanIZAIVACgWttjhNvZxB/u/Em1AxsetH61fv/IrlquBR1heO8zzpNPBC0DA5Xirnxz27RAok046JL1zf56/of+iHAsqoN6rJsF1SaOjXQg+w6yCyurP/mfbLYc83kTYEQChtj7ys82Bn2m3v9EWDk2g302k3L2zIgUJb4a32I1HwZBgRig4+GfD/HJVQyUa6Era53QNfORp5Zrf45x0KMnce2mo2Nwytxhd/y7pYzS7n9jRiaxOYF2LD Michele@macbook-pro-di-michele-tizzoni-2.local
     uid: 15221
     expiry_date: 2017-02-05
+    expiry_contact: dario@wikimedia.org, dandreescu@wikimedia.org
   panisson:
     ensure: present
     gid: 500
@@ -2218,6 +2221,7 @@ users:
       - ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAsBQKrAubJDt58PL86InNxz0/BEYRJoWbrJw6FCI8B6/GUkGRWiL17Kt7XhiB/6ShNtD6/Md4puA/fB08LJ+GUYxV58eVLpWfdCSTu25AIC2lAiFXwWcFKX7YY4xMYWPCiMkXInODLut8s2o7IuJsikB88m29scZxEVdkxEEupvuf78V7obBjcXGTwed4qMgAzcKjuj3TJZ3DNfGzlylos3NAYGPZ2O0dVIIaGnjsft/quuFKpZHGJe9Td/JUcZ3ddgG8/gO9QXsmNJ4xDUCLdnfen8eI01gfUG5Oe1dJpNw+H2k3HlTefSDUKPrT2SQo9x/tKcstxlKXRxGXaCYt8w== panisson@nbdotti33
     uid: 15217
     expiry_date: 2017-02-05
+    expiry_contact: dario@wikimedia.org, dandreescu@wikimedia.org
   paolotti:
     ensure: present
     gid: 500
@@ -2227,6 +2231,7 @@ users:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQD6lmYG3kuDwouTAy19p33dHldzI1Y4JrMv46Ga23FFSKVR3R2yv7Eu6YFt2Gm7W+TUHkE3EjMlNvLFxtxQMqeoWRK8ahuqQruUAocO55jOmhJvIRW6OP3wGABznwaIM7PWvZPmyuUpZj1zKuhnK5EnVPv9v/9258eCltJtvD8sSpA9CNm6h+RpQFSvvgtnUw0qr8t5RiOr3KK0mXuO1YHQI9LO12Fl+LoszlyV7dF1tChNyN6hYX7QBgNDDhRXahkTmUSEmXMqIhO1wW+GiRyYFIjMBfXA/+HHcCgZzg74qnlU2Pb9QXWQrFwx3vK/KMLchl7iV5H9gfLSX4jzC5eZ daniela.paolotti@gmail.com
     uid: 15237
     expiry_date: 2017-02-05
+    expiry_contact: dario@wikimedia.org, dandreescu@wikimedia.org
   ciro:
     ensure: present
     gid: 500
@@ -2236,6 +2241,7 @@ users:
       - ssh-dss AAAAB3NzaC1kc3MAAACBAJMN2HY4SvYvpse+DMZPY2Rn2W0Uy2Og01tug+vpF96RwN4bad7Z0ryRNno4LcnlaWtl5D6yhLDbibxZSNFn1pXN/Iqj3Took4YJsyXuLkFFN5IYY/ETWphRDqGXIYFWwG9oVLayKk+5wfPz8STBsajXLcliU67YmPyC5tk2IX49AAAAFQDoPyrcuaMbMvHNynsZWXM5h6lF9wAAAIAGd8MyyN9sMosoow783UgLyM0cF0XjdIl0Pzk9Ry5qmYtOp/hWEJRM9bC2I7R+ZhLzoqm1eOJGw8lNbt1PRa3woafJLtget9fPJujn9Csa1jMP2hHjzjSX6C8jtLPGHMVlWu0dgNOfelhcnidP3atjo4bp+gEvXNBRB/W9ZwNNZQAAAIBDPtyrwmvbI3vjwVwOIbFV66B4CTzRzIucmfRjrdKcwHe3eG7K597yP+kUFpMdUq8GlWFeHRpLDZd7nGZ2fXkZZz1ar95EpxPf7Q842We17B6EXgQNr9yZgso3x378eoUGJP9TKgR9ZSZ4iK4S4qIcstflhMheOxb5fZ5ckg2bfw==
     uid: 15247
     expiry_date: 2017-02-05
+    expiry_contact: dario@wikimedia.org, dandreescu@wikimedia.org
   psinger:
     ensure: present
     gid: 500
