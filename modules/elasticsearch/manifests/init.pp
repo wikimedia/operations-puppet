@@ -69,8 +69,6 @@
 # - $bulk_thread_pool_executors: number of executors for bulk actions on each
 #       node.
 # - $statsd_host: host to send statsd data to
-# - $merge_threads: Number of merge threads to use. Default 3. Set
-#        to 1 if using spinning disks.
 # - $load_fixed_bitset_filters_eagerly: set to false to disable loading
 #        bitsets in memory when opening indices will slowdown queries but can
 #        significantly reduce heap usage.
@@ -112,7 +110,6 @@ class elasticsearch(
     $bulk_thread_pool_executors = undef,
     $bulk_thread_pool_capacity = undef,
     $statsd_host = undef,
-    $merge_threads = 3,
     $load_fixed_bitset_filters_eagerly = true,
     $graylog_hosts = undef,
     $graylog_port = 12201,
@@ -159,14 +156,27 @@ class elasticsearch(
         java_package => $java_package,
     }
 
+    # Elasticsearch 5 doesn't allow setting the plugin path, we need
+    # to symlink it into place
+    file { '/usr/share/elasticsearch/plugins':
+        ensure => 'link',
+        target => $plugins_dir,
+    }
+
+    $elasticsearch_yml_template = hiera('elasticsearch', 'version') ? {
+        5       => 'elasticsearch/elasticsearch_5.yml.erb',
+        default => 'elasticsearch/elasticsearch_2.yml.erb'
+    }
+
     file { '/etc/elasticsearch/elasticsearch.yml':
         ensure  => file,
         owner   => 'root',
         group   => 'root',
-        content => template('elasticsearch/elasticsearch.yml.erb'),
+        content => template($elasticsearch_yml_template),
         mode    => '0444',
         require => Package['elasticsearch'],
     }
+    # logging.yml is used by elasticsearch 2.x
     file { '/etc/elasticsearch/logging.yml':
         ensure  => file,
         owner   => 'root',
@@ -175,6 +185,15 @@ class elasticsearch(
         mode    => '0444',
         require => Package['elasticsearch'],
     }
+    file { '/etc/elasticsearch/log4j2.properties':
+        ensure  => file,
+        owner   => 'root',
+        group   => 'root',
+        content => template('elasticsearch/log4j2.properties.erb'),
+        mode    => '0444',
+        require => Package['elasticsearch'],
+    }
+
     # elasticsearch refuses to start without the "scripts" directory, even if
     # do not actually use any scripts.
     file { '/etc/elasticsearch/scripts':
@@ -228,6 +247,7 @@ class elasticsearch(
             File['/etc/elasticsearch/logging.yml'],
             File['/etc/default/elasticsearch'],
             File[$data_dir],
+            File['/usr/share/elasticsearch/plugins'],
         ],
     }
 

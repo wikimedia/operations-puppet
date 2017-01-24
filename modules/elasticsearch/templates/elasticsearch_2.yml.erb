@@ -470,7 +470,7 @@ metrics.statsd.host: <%= @statsd_host %>
 ##
 # Merge Threads
 ##
-index.merge.scheduler.max_thread_count: <%= @merge_threads %>
+index.merge.scheduler.max_thread_count: 1
 
 <% unless @load_fixed_bitset_filters_eagerly -%>
 ##

@@ -3,6 +3,9 @@ cluster: elasticsearch
 admin::groups:
   - elasticsearch-roots
 
+# Version of elasticsearch to build configuration for
+elasticsearch::version: 2
+
 # More than 30G isn't very useful
 elasticsearch::heap_memory: '30G'
 
