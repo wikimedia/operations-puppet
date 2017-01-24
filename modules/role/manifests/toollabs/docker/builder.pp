@@ -37,12 +37,4 @@ class role::toollabs::docker::builder {
         notify  => Service['docker'],
         require => File['/root/.docker'],
     }
-    # Temporarily build kubernetes too! We'll eventually have this
-    # be done somewhere else.
-    include ::toollabs::kubebuilder
-
-    ferm::service { 'kubebuilder-http':
-        port  => '80',
-        proto => 'tcp',
-    }
 }
