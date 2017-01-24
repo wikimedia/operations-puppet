@@ -6,8 +6,16 @@ class aptrepo::rsync {
 
     # only activate rsync/firewall hole on the server that is NOT active
     if $::fqdn != $primary_server {
+
         $ensure = 'present'
         include rsync::server
+
+        rsync::server::module { 'aptrepo-basedir':
+            ensure      => $aptrepo::rsync::ensure,
+            path        => $aptrepo::basedir,
+            read_only   => 'no',
+            hosts_allow => "@resolve(${primary_server})",
+        }
     } else {
         $ensure = 'absent'
     }
@@ -16,7 +24,7 @@ class aptrepo::rsync {
         ensure => $aptrepo::rsync::ensure,
         proto  => 'tcp',
         port   => '873',
-        srange => "@resolve(${primary_server})/32",
+        srange => "@resolve(${primary_server})",
     }
 
     rsync::server::module { 'aptrepo-basedir':
