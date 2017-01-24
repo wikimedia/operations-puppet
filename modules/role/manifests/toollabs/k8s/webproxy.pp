@@ -21,12 +21,4 @@ class role::toollabs::k8s::webproxy {
         master_host => $master_host,
         use_package => true,
     }
-
-    # Deployment script (for now!)
-    file { '/usr/local/bin/deploy-proxy':
-        source => 'puppet:///modules/role/toollabs/deploy-proxy.bash',
-        mode   => '0555',
-        owner  => 'root',
-        group  => 'root',
-    }
 }

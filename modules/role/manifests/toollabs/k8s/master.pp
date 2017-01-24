@@ -40,14 +40,6 @@ class role::toollabs::k8s::master {
         port  => '6443',
     }
 
-    # Deployment script (for now!)
-    file { '/usr/local/bin/deploy-master':
-        source => 'puppet:///modules/role/toollabs/deploy-master.bash',
-        mode   => '0555',
-        owner  => 'root',
-        group  => 'root',
-    }
-
     diamond::collector { 'Kubernetes':
         source => 'puppet:///modules/diamond/collector/kubernetes.py',
     }
