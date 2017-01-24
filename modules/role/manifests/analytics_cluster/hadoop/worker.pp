@@ -49,9 +49,10 @@ class role::analytics_cluster::hadoop::worker {
             mode   => '0755',
         }
         nrpe::monitor_service { 'hadoop_yarn_node_state':
-            description   => 'YARN NodeManager Node-State',
-            nrpe_command  => '/usr/local/lib/nagios/plugins/check_hadoop_yarn_node_state',
-            contact_group => 'admins,analytics',
+            description    => 'YARN NodeManager Node-State',
+            nrpe_command   => '/usr/local/lib/nagios/plugins/check_hadoop_yarn_node_state',
+            contact_group  => 'admins,analytics',
+            retry_interval => 3,
         }
     }
 
