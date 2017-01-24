@@ -12,6 +12,7 @@ class role::toollabs::k8s::master {
 
     class { '::k8s::apiserver':
         etcd_servers               => $etcd_url,
+        use_package                => true,
         docker_registry            => hiera('docker::registry'),
         host_automounts            => ['/var/run/nslcd/socket'],
         ssl_certificate_name       => 'star.tools.wmflabs.org',
@@ -26,9 +27,13 @@ class role::toollabs::k8s::master {
         k8s_master => $master_host,
     }
 
-    class { '::k8s::scheduler': }
+    class { '::k8s::scheduler':
+        use_package => true,
+    }
 
-    class { '::k8s::controller': }
+    class { '::k8s::controller':
+        use_package => true,
+    }
 
     ferm::service { 'apiserver-https':
         proto => 'tcp',
