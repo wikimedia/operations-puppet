@@ -16,3 +16,9 @@ profile::redis::multidc::settings:
   slave_read_only: false
   stop_writes_on_bgsave_error: false
 profile::redis::multidc::aof: false
+profile::memcached::version: 'present'
+profile::memcached::growth_factor: '1.05'
+profile::memcached::size: '89088'
+profile::memcached::extended_options:
+  - 'slab_reassign'
+profile::memcached::port: '11211'
