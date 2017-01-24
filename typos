@@ -12,6 +12,9 @@ kakfa
 pmpta
 wikmedia
 wqds
+rysnc
+rsnyc
+wikimeda
 (?<!WMF)[^1][[:digit:]]{3}\.eqiad\.wmnet
 (?<!WMF)[^2][[:digit:]]{3}\.codfw\.wmnet
 (?<!WMF)[^3][[:digit:]]{3}\.(esams|knams)\.wmnet
