@@ -125,6 +125,12 @@ restbase::trendingedits_uri: http://deployment-trending01.deployment-prep.eqiad.
 mediawiki_memcached_servers:
     - 10.68.23.25:11211:1  # deployment-memc04
     - 10.68.23.49:11211:1  # deployment-memc05
+profile::memcached::version: 'present'
+profile::memcached::growth_factor: '1.05'
+profile::memcached::size: '3000'
+profile::memcached::extended_options:
+  - 'slab_reassign'
+profile::memcached::port: '11211'
 "varnish::packages::version": latest
 "keyholder::trusted_groups":
    - wikidev
