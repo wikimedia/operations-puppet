@@ -32,7 +32,7 @@ while true; do
 			php $multiversionscript extensions/Wikidata/extensions/Wikibase/repo/maintenance/dumpJson.php --wiki wikidatawiki --shard $i --sharding-factor $shards --snippet 2>> $errorLog | gzip > $tempDir/wikidataJson.$i.gz
 			exitCode=$?
 			if [ $exitCode -gt 0 ]; then
-				echo -e "\n\nProcess failed with exit code $exitCode" >> $errorLog
+				echo -e "\n\n(`date --iso-8601=minutes`) Process for shard $i failed with exit code $exitCode" >> $errorLog
 				echo 1 > $failureFile
 
 				#  Kill all remaining dumpers and start over.
@@ -49,7 +49,7 @@ while true; do
 		rm -f $failureFile
 		rm -f $tempDir/wikidataJson.*.gz
 		let retries++
-		echo "Dumping one or more shards failed. Retrying." >> $mainLogFile
+		echo "(`date --iso-8601=minutes`) Dumping one or more shards failed. Retrying." >> $mainLogFile
 
 		if [ $retries -eq 3 ]; then
 			exit 1
