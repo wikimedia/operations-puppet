@@ -1,3 +1,10 @@
 cluster: memcached
 admin::groups:
   - perf-roots
+profile::memcached::version: 'present'
+profile::memcached::growth_factor: '1.05'
+profile::memcached::size: '89088'
+profile::memcached::extended_options:
+  - 'slab_reassign'
+profile::memcached::port: '11211'
+profile::redis::settings: {}
