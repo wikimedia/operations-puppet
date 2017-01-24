@@ -3,7 +3,7 @@
 #ES_GROUP=elasticsearch
 
 # Heap Size (defaults to 256m min, 1g max)
-ES_HEAP_SIZE=<%= @heap_memory %>
+#ES_HEAP_SIZE=<%= @heap_memory %>
 
 # Heap new generation
 #ES_HEAP_NEWSIZE=
@@ -37,4 +37,4 @@ DATA_DIR=<%= @data_dir %>
 # Additional Java OPTS
 # Note: We've seen problems on some jessie hosts when this setting is
 # constructed by consecutive ES_JAVA_OPTS="${ES_JAVA_OPTS} ..." settings
-ES_JAVA_OPTS="-XX:HeapDumpPath=<%= @data_dir %> -XX:GCTimeLimit=70 -XX:GCHeapFreeLimit=10 <%= gc_log_flags.join(' ') %>"
+ES_JAVA_OPTS="-XX:HeapDumpPath=<%= @data_dir %> -XX:GCTimeLimit=70 -XX:GCHeapFreeLimit=10 <%= gc_log_flags.join(' ') %> -Xmx<%= @heap_memory %> -Xms<%= @heap_memory %>"
