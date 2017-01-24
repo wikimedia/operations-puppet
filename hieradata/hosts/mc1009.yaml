@@ -4,9 +4,9 @@ debdeploy::grains:
 # The maximum number of slab classes is 64 from >= 1.4.25
 # so a different growth factor is needed to manage the same workload.
 # More info: T129963
-memcached::version: '1.4.25-2~wmf1'
-memcached::growth_factor: '1.15'
-memcached::extended_options:
+profile::memcached::version: '1.4.25-2~wmf1'
+profile::memcached::growth_factor: '1.15'
+profile::memcached::extended_options:
   - 'slab_reassign'
   - 'slab_automove'
   - 'lru_crawler'
