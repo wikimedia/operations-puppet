@@ -35,22 +35,4 @@ class role::toollabs::k8s::worker {
         master_host => $master_host,
         use_package => true,
     }
-
-    # Deployment script (for now!)
-    file { '/usr/local/bin/fetch-worker':
-        source => 'puppet:///modules/role/toollabs/fetch-worker.bash',
-        mode   => '0555',
-        owner  => 'root',
-        group  => 'root',
-    }
-
-    $version = hiera('k8s::version')
-    $docker_builder = hiera('docker::builder_host')
-
-    file { '/usr/local/bin/deploy-worker':
-        source => 'puppet:///modules/role/toollabs/deploy-worker.bash',
-        mode   => '0555',
-        owner  => 'root',
-        group  => 'root',
-    }
 }
