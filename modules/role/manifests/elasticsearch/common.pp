@@ -69,9 +69,6 @@ class role::elasticsearch::common(
         filter_cache_size          => '20%',
         bulk_thread_pool_executors => 6,
         bulk_thread_pool_capacity  => 1000,
-        # Use only 1 merge thread (instead of 3) to avoid updates interfering with
-        # actual searches
-        merge_threads              => 1,
     }
 
     include ::standard

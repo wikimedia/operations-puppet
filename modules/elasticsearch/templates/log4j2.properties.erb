@@ -1,0 +1,77 @@
+
+rootLogger.level = info
+rootLogger.appenderRef.console.ref = console
+rootLogger.appenderRef.file.ref = file
+<% if @send_logs_to_logstash %>
+#rootLogger.appenderRef.ship_to_logstash.ref = ship_to_logstash
+<% end %>
+
+# log action execution errors for easier debugging
+logger.action.name = org.elasticsearch.action
+logger.action.level = debug
+
+# This is noisy and already filed upstream:
+# https://github.com/elasticsearch/elasticsearch/issues/4203
+# @TODO: Still needed?
+logger.node_stats.name = org.elasticsearch.action.admin.cluster.node.stats
+logger.node_stats.level = info
+
+# If you need to know more about shard allocation you to set this to debug.
+# Trace seems to generate enough logs to slow down the process.
+# logger.cluster.name = org.elasticsearch.cluster
+# logger.cluster.level = debug
+
+# peer shard recovery
+# logger.indices_recovery.name = org.elasticsearch.indices.recovery
+# logger.indices_recovery.level = debug
+
+# discovery
+# logger.discovery.name = org.elasticsearch.discovery
+# logger.discovery.level = trace
+
+logger.search_slowlog.name = index.search.slowlog
+logger.search_slowlog.level = trace
+logger.search_slowlog.additivity = false
+logger.search_slowlog.appenderRef.slowlog.ref = index_search_slow_log_file
+logger.indexing_slowlog.name = index.indexing.slowlog
+logger.indexing_slowlog.level = info
+logger.indexing_slowlog.additivity = false
+logger.indexing_slowlog.appenderRef.slowlog.ref = index_search_slow_log_file
+
+appender.console.type = Console
+appender.console.name = console
+appender.console.layout.type = PatternLayout
+appender.console.layout.pattern = [%d{ISO8601}][%-5p][%-25c] %m%n
+
+appender.file.name = file
+appender.file.type = File
+appender.file.fileName = ${sys:es.logs}.log
+appender.file.append = true
+appender.file.layout.type = PatternLayout
+appender.file.layout.pattern = [%d{ISO8601}][%-5p][%-25c] %m%n
+
+appender.index_search_slow_log_file.name = index_search_slow_log_file
+appender.index_search_slow_log_file.type = File
+appender.index_search_slow_log_file.fileName = ${sys:es.logs}_index_search_slowlog.log
+appender.index_search_slow_log_file.append = true
+appender.index_search_slow_log_file.layout.type = PatternLayout
+appender.index_search_slow_log_file.layout.pattern = [%d{ISO8601}][%-5p][%-25c] %m%n
+
+appender.index_indexing_slow_log_file.name = index_indexing_slow_log_file
+appender.index_indexing_slow_log_file.type = File
+appender.index_indexing_slow_log_file.fileName = ${sys:es.logs}_index_indexing_slowlog.log
+appender.index_indexing_slow_log_file.append = true
+appender.index_indexing_slow_log_file.layout.type = PatternLayout
+appender.index_indexing_slow_log_file.layout.pattern = [%d{ISO8601}][%-5p][%-25c] %m%n
+
+# ship_to_logstash needs to also be added to rootLogger to actually ship logs
+# @TODO This class is for log4j v1, for v2 should we test
+# org.graylog2.log4j2.GelfAppender ?
+#appender.ship_to_logstash.name = ship_to_logstash
+#appender.ship_to_logstash.type = biz.paluch.logging.gelf.log4j.GelfLogAppender
+#appender.ship_to_logstash.host = udp:<%= @graylog_host %>
+#appender.ship_to_logstash.port <%= @graylog_port %>
+#appender.ship_to_logstash.originHost = <%= @hostname %>
+#appender.ship_to_logstash.facility = elasticsearch
+#appender.ship_to_logstash.extractStackTrace = true
+#appender.ship_to_logstash.threshold = DEBUG
