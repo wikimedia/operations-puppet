@@ -20,8 +20,8 @@ Environment=ETCD_DISCOVERY_FALLBACK=exit
 Environment=ETCD_INITIAL_ADVERTISE_PEER_URLS=<%= @peer_url %>
 Environment=ETCD_LISTEN_PEER_URLS=<%= @peer_url %>
 Environment=ETCD_LISTEN_CLIENT_URLS=<%= @client_url %>
-Environment=ETCD_ADVERTISE_CLIENT_URLS=<%= @client_url %>
-<% if @use_ssl -%>
+Environment=ETCD_ADVERTISE_CLIENT_URLS=<%= @adv_client_url %>
+<% if @use_ssl and @scheme == 'https' -%>
 # TLS certs, see https://github.com/coreos/etcd/blob/v2.0.10/Documentation/security.md
 # Also note that peer auth is currently broken.
 Environment=ETCD_CERT_FILE=/var/lib/etcd/ssl/certs/cert.pem
