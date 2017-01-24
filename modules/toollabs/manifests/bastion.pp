@@ -191,7 +191,7 @@ class toollabs::bastion(
         group   => 'root',
         mode    => '0444',
         require => File[$toollabs::store],
-        content => "${::ipaddress}\n",
+        content => "${::ipaddress_eth0}\n",
     }
 
     # Display tips.
