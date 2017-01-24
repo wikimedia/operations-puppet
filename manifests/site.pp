@@ -427,6 +427,14 @@ node 'db1057.eqiad.wmnet' {
         binlog_format => 'STATEMENT',
     }
 }
+# soon-to-be master
+node 'db1052.eqiad.wmnet' {
+    class { '::role::mariadb::core':
+        shard         => 's1',
+        master        => false,
+        binlog_format => 'STATEMENT',
+    }
+}
 
 node /^db10(51|55|66|72|73|80|83|89)\.eqiad\.wmnet/ {
     class { '::role::mariadb::core':
@@ -434,14 +442,7 @@ node /^db10(51|55|66|72|73|80|83|89)\.eqiad\.wmnet/ {
     }
 }
 
-# Testing row-based replication to sanitarium2 (T150960)
-node 'db1052.eqiad.wmnet' {
-    class { '::role::mariadb::core':
-        shard         => 's1',
-        binlog_format => 'ROW',
-    }
-}
-
+# row-based replication to sanitarium2 (T150960)
 node 'db1065.eqiad.wmnet' {
     class { '::role::mariadb::core':
         shard         => 's1',
