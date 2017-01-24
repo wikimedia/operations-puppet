@@ -7,6 +7,7 @@ admin::groups:
 # ES-specific
 # NOTE: cluster_name must be kept in sync with the backend
 # node config in hieradata/role/common/logstash.yaml
+elasticsearch::version: 2
 elasticsearch::auto_create_index: true
 elasticsearch::cluster_name: production-logstash-eqiad
 elasticsearch::expected_nodes: 3

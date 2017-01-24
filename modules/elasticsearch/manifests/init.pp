@@ -10,8 +10,6 @@
 # - $heap_memory:   amount of memory to allocate to elasticsearch.  Defaults to
 #       "2G".  Should be set to about half of ram or a 30G, whichever is
 #       smaller.
-# - $multicast_group:  multicast group to use for peer discovery.  Defaults to
-#       elasticsearch's default: '224.2.2.4'.
 # - $data_dir: Where elasticsearch stores its data.
 #       Default: /srv/elasticsearch
 # - $plugins_dir: value for path.plugins.  Defaults to /srv/deployment/elasticsearch/plugins.
@@ -46,18 +44,8 @@
 #       to undef meaning don't set it.
 # - $rack: rack this node is on.  Can be used for allocation awareness.
 #       Defaults to undef meaning don't set it.
-# - $multicast_enabled: Should multicast be enabled. See
-#       https://www.elastic.co/guide/en/elasticsearch/reference/1.7/modules-discovery-zen.html
-#       for more documentation.
-#       Note: It make sense to have multicast configuration separated from
-#       unicast. It is valid to have both unicast and multicast enabled at the
-#       same time and can be useful as a transition state.
-#       Defaults to 'false'
 # - $unicast_hosts: hosts to seed Elasticsearch's unicast discovery mechanism.
-#       In an environment without reliable multicast (OpenStack) add all the
-#       hosts in the cluster to this list.  Elasticsearch will still use
-#       multicast discovery but this will keep it from getting lost if none of
-#       its pings reach other servers.
+#       Add all the hosts in the cluster to this list.
 # - $bind_networks: networks to bind (both transport and http connectors)
 #       see https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-network.html#network-interface-values
 # - $publish_host: host to publish (both transport and http connectors)
@@ -69,8 +57,6 @@
 # - $bulk_thread_pool_executors: number of executors for bulk actions on each
 #       node.
 # - $statsd_host: host to send statsd data to
-# - $merge_threads: Number of merge threads to use. Default 3. Set
-#        to 1 if using spinning disks.
 # - $load_fixed_bitset_filters_eagerly: set to false to disable loading
 #        bitsets in memory when opening indices will slowdown queries but can
 #        significantly reduce heap usage.
@@ -90,7 +76,6 @@
 class elasticsearch(
     $cluster_name,
     $heap_memory = '2G',
-    $multicast_group = '224.2.2.4',
     $data_dir = '/srv/elasticsearch',
     $plugins_dir = '/srv/deployment/elasticsearch/plugins',
     $plugins_mandatory = undef,
@@ -104,20 +89,19 @@ class elasticsearch(
     $awareness_attributes = undef,
     $row = undef,
     $rack = undef,
-    $multicast_enabled = false,
-    $unicast_hosts = undef,
+    $unicast_hosts = [],
     $bind_networks = ['_local_', '_site_'],
     $publish_host = '_eth0_',
     $filter_cache_size = '10%',
     $bulk_thread_pool_executors = undef,
     $bulk_thread_pool_capacity = undef,
     $statsd_host = undef,
-    $merge_threads = 3,
     $load_fixed_bitset_filters_eagerly = true,
     $graylog_hosts = undef,
     $graylog_port = 12201,
     $gc_log = true,
     $java_package = 'openjdk-8-jdk',
+    $version = 5,
 ) {
 
     # Check arguments
@@ -125,7 +109,11 @@ class elasticsearch(
         fail('$cluster_name must not be set to "elasticsearch"')
     }
 
-    validate_bool($multicast_enabled)
+    case $version {
+        2, 5: {}
+        default: { fail("Unsupported elasticsearch version: ${version}") }
+    }
+
     validate_bool($gc_log)
 
     # if no graylog_host is given, do not send logs
@@ -159,24 +147,64 @@ class elasticsearch(
         java_package => $java_package,
     }
 
+    # Elasticsearch 5 doesn't allow setting the plugin path, we need
+    # to symlink it into place
+    file { '/usr/share/elasticsearch/plugins':
+        ensure => 'link',
+        target => $plugins_dir,
+    }
+
     file { '/etc/elasticsearch/elasticsearch.yml':
         ensure  => file,
         owner   => 'root',
         group   => 'root',
-        content => template('elasticsearch/elasticsearch.yml.erb'),
+        content => template("elasticsearch/elasticsearch_${version}.yml.erb"),
         mode    => '0444',
         require => Package['elasticsearch'],
     }
-    file { '/etc/elasticsearch/logging.yml':
-        ensure  => file,
-        owner   => 'root',
-        group   => 'root',
-        content => template('elasticsearch/logging.yml.erb'),
-        mode    => '0444',
-        require => Package['elasticsearch'],
+    if $version == 2 {
+        # logging.yml is used by elasticsearch 2.x
+        file { '/etc/elasticsearch/logging.yml':
+            ensure  => file,
+            owner   => 'root',
+            group   => 'root',
+            content => template('elasticsearch/logging.yml.erb'),
+            mode    => '0444',
+            require => Package['elasticsearch'],
+        }
+        # Needs to be defined so the service definition can depend on
+        # it being setup in elasticsearch 5
+        file { '/etc/elasticsearch/log4j2.properties':
+            ensure => absent,
+        }
+        file { '/etc/elasticsearch/jvm.options':
+            ensure => absent,
+        }
+    } else {
+        file { '/etc/elasticsearch/logging.yml':
+            ensure => absent,
+        }
+        # log4j2.properties is used by elasticsearch 5.x
+        file { '/etc/elasticsearch/log4j2.properties':
+            ensure  => file,
+            owner   => 'root',
+            group   => 'root',
+            content => template('elasticsearch/log4j2.properties.erb'),
+            mode    => '0444',
+            require => Package['elasticsearch'],
+        }
+        file { '/etc/elasticsearch/jvm.options':
+            ensure  => file,
+            owner   => 'root',
+            group   => 'root',
+            content => template('elasticsearch/jvm.options.erb'),
+            mode    => '0444',
+            require => Package['elasticsearch'],
+        }
     }
+
     # elasticsearch refuses to start without the "scripts" directory, even if
-    # do not actually use any scripts.
+    # we do not actually use any scripts.
     file { '/etc/elasticsearch/scripts':
         ensure  => directory,
         owner   => 'root',
@@ -188,7 +216,7 @@ class elasticsearch(
         ensure  => file,
         owner   => 'root',
         group   => 'root',
-        content => template('elasticsearch/elasticsearch.erb'),
+        content => template("elasticsearch/elasticsearch_${version}.erb"),
         mode    => '0444',
         require => Package['elasticsearch'],
     }
@@ -226,7 +254,10 @@ class elasticsearch(
             Package['elasticsearch'],
             File['/etc/elasticsearch/elasticsearch.yml'],
             File['/etc/elasticsearch/logging.yml'],
+            File['/etc/elasticsearch/log4j2.properties'],
+            File['/etc/elasticsearch/jvm.options'],
             File['/etc/default/elasticsearch'],
+            File['/usr/share/elasticsearch/plugins'],
             File[$data_dir],
         ],
     }
