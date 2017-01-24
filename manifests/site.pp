@@ -428,19 +428,28 @@ node 'db1057.eqiad.wmnet' {
     }
 }
 
-node /^db10(51|55|65|66|72|73|80|83|89)\.eqiad\.wmnet/ {
+node /^db10(51|55|65|66|72|80|83|89)\.eqiad\.wmnet/ {
     class { '::role::mariadb::core':
         shard => 's1',
     }
 }
 
-# Testing row-based replication to sanitarium2 (T150960)
+# Preparation for the master switch over #T156008
 node 'db1052.eqiad.wmnet' {
+    class { '::role::mariadb::core':
+        shard         => 's1',
+        binlog_format => 'STATEMENT',
+    }
+}
+
+# New sanitarium2 (db1095) master - #T156008
+node 'db1073.eqiad.wmnet' {
     class { '::role::mariadb::core':
         shard         => 's1',
         binlog_format => 'ROW',
     }
 }
+
 
 # s1 (enwiki) core production dbs on codfw
 # codfw master
