@@ -12,6 +12,10 @@
 # [*client_port*]
 #   TCP port for the client connections
 #
+# [*adv_client_port*]
+#   The TCP port the ETCD server will advertise to clients. Useful if you
+#   proxy to etcd via nginx or some similar https terminator
+#
 # [*peer_port*]
 #   TCP port for the cluster traffic
 #
@@ -35,8 +39,9 @@
 #   Whether to require use of SSL certificates to connect to etcd.
 #
 class etcd (
-    $host      = '127.0.0.1',
+    $host             = '127.0.0.1',
     $client_port      = 2379,
+    $adv_client_port  = 2379,
     $peer_port        = 2380,
     $cluster_name     = $::domain,
     $cluster_state    = undef,
@@ -62,13 +67,22 @@ class etcd (
 
     # SSL setup
     if $use_ssl {
-        $scheme = 'https'
-        include etcd::ssl
+        $adv_scheme = 'https'
+        # If we're being proxied from a TLS terminator
+        # let's keep it into account
+        if ($adv_client_port != $client_port) {
+            include etcd::ssl
+            $scheme = 'https'
+        } else {
+            $scheme = 'http'
+        }
     } else {
+        $adv_scheme = 'http'
         $scheme = 'http'
     }
 
     $client_url = "${scheme}://${host}:${client_port}"
+    $adv_client_url = "${adv_scheme}://${host}:${adv_client_port}"
     $peer_url = "http://${host}:${peer_port}" # Peer TLS is currently broken?
     $etcd_data_dir = "/var/lib/etcd/${cluster_name}"
 
