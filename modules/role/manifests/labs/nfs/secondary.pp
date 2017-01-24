@@ -22,8 +22,8 @@ class role::labs::nfs::secondary($monitor = 'eth0') {
 
         interface::ip { 'drbd-replication':
             interface => 'eth1',
-            address   => '10.64.37.26',
-            prefixlen => '24',
+            address   => '192.168.0.2',
+            prefixlen => '30',
             require   => Interface::Manual['eth1'],
         }
     }
@@ -34,8 +34,8 @@ class role::labs::nfs::secondary($monitor = 'eth0') {
 
         interface::ip { 'drbd-replication':
             interface => 'eth1',
-            address   => '10.64.37.25',
-            prefixlen => '24',
+            address   => '192.168.0.1',
+            prefixlen => '30',
             require   => Interface::Manual['eth1'],
         }
     }
@@ -71,8 +71,8 @@ class role::labs::nfs::secondary($monitor = 'eth0') {
 
     $drbd_defaults = {
         'drbd_cluster' => {
-            'labstore1004' => 'eth1.labstore1004.eqiad.wmnet',
-            'labstore1005' => 'eth1.labstore1005.eqiad.wmnet',
+            'labstore1004' => '192.168.0.1',
+            'labstore1005' => '192.168.0.2',
         },
     }
 
