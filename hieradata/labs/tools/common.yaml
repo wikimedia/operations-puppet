@@ -11,6 +11,7 @@ k8s_admin_users:
   - yuvipanda
 
 # Elasticsearch
+elasticsearch::version: 2
 elasticsearch::auto_create_index: true
 elasticsearch::cluster_name: labs-tools
 elasticsearch::expected_nodes: 3

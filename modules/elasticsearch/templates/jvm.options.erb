@@ -1,0 +1,6 @@
+-Xms<%= @heap_memory %>
+-Xmx<%= @heap_memory %>
+-XX:HeapDumpPath=<%= @data_dir %>
+-XX:GCTimeLimit=70
+-XX:GCHeapFreeLimit=10
+<%= gc_log_flags.join('\n') %>
