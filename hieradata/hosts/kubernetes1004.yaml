@@ -1,2 +1,0 @@
-profile::docker::engine::settings:
-   bip: 192.168.34.1/24
