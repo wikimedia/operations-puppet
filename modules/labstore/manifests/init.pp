@@ -11,6 +11,21 @@ class labstore {
     require_package('lvm2')
     require_package('nfsd-ldap')
 
+    # Nethogs is useful to monitor NFS client resource utilization
+    # The version in jessie has a bug that shows up in linux kernel 4.2+,
+    # so using newer version from backports.
+    if os_version('debian jessie') {
+        apt::pin {'nethogs':
+            pin      => 'release a=jessie-backports',
+            priority => '1001',
+            before   => Package['nethogs'],
+        }
+    }
+
+    package { 'nethogs':
+        ensure => present,
+    }
+
     $ldapincludes = ['openldap', 'nss', 'utils']
     class { '::ldap::role::client::labs': ldapincludes => $ldapincludes }
 
