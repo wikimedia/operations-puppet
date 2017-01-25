@@ -45,6 +45,7 @@ ganglia_clusters:
     id: 6
     sites:
       eqiad: []
+      codfw: []
   eventbus:
     description: "Eventbus"
     id: 7
