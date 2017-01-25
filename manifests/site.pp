@@ -1957,8 +1957,9 @@ node 'mendelevium.eqiad.wmnet' {
     role(otrs::webserver)
 }
 
+# misc. test server, keep (T156208)
 node 'multatuli.wikimedia.org' {
-    role(spare::system)
+    role(test::system)
 
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
