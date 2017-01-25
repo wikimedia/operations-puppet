@@ -27,7 +27,7 @@ class toollabs (
 
     # Weird use of NFS for config centralization.
     # Nodes drop their config into a directory.
-    #  - SSH host keys for HBA
+    #  - SSH host keys for toollabs::hba
     #  - known_hosts
     # *any mention of this should die with SGE*
     $store  = "${sysdir}/store"
