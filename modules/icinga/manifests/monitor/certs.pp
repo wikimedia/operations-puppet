@@ -9,9 +9,10 @@ class icinga::monitor::certs {
         host_fqdn     => 'blog.wikimedia.org',
     }
     monitoring::service { 'https_blog':
-        description   => 'HTTPS-blog',
-        check_command => 'check_ssl_http_letsencrypt!blog.wikimedia.org',
-        host          => 'blog.wikimedia.org',
+        description    => 'HTTPS-blog',
+        check_command  => 'check_ssl_http_letsencrypt!blog.wikimedia.org',
+        host           => 'blog.wikimedia.org',
+        contact_groups => 'wikitech-static',
     }
 
     # policy.wikimedia.org (external, Wordpress/Automattic)
