@@ -185,15 +185,6 @@ class toollabs::bastion(
         source => 'puppet:///modules/toollabs/submithost-ssh_config',
     }
 
-    file { "${toollabs::store}/submithost-${::fqdn}":
-        ensure  => file,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        require => File[$toollabs::store],
-        content => "${::ipaddress_eth0}\n",
-    }
-
     # Display tips.
     file { '/etc/profile.d/motd-tips.sh':
         ensure  => absent,
