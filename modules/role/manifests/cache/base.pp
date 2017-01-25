@@ -35,12 +35,6 @@ class role::cache::base(
         site         => $zero_site,
     }
 
-    salt::grain { 'varnish_version':
-        ensure  => present,
-        replace => true,
-        value   => 4,
-    }
-
     # XXX: temporary, we need this to mitigate T145661
     if $::realm == 'production' {
         $hnodes = hiera("cache::${cache_cluster}::nodes")
