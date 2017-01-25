@@ -9,19 +9,31 @@
 class statistics::sites::datasets {
     require ::statistics::web
 
+    # $working_path should be /srv
     $working_path = $::statistics::working_path
+    $document_root = "${working_path}/datasets.wikimedia.org"
+
     file { [
         "${working_path}/public-datasets",
         "${working_path}/aggregate-datasets",
+        "${working_path}/limn-public-data",
     ]:
         ensure => 'directory',
         owner  => 'root',
         group  => 'www-data',
-        mode   => '0640',
+        mode   => '0750',
     }
 
-    # symlink /var/www/public-datasets to $working_path/public-datasets
-    file { '/var/www/public-datasets':
+    file { $document_root:
+        ensure => 'directory',
+        owner  => 'root',
+        group  => 'www-data',
+        mode   => '0755',
+    }
+
+
+    # symlink datasets.wikimedia.org/public-datasets to $working_path/public-datasets
+    file { "${document_root}/public-datasets":
         ensure => 'link',
         target => "${working_path}/public-datasets",
         owner  => 'root',
@@ -29,8 +41,8 @@ class statistics::sites::datasets {
         mode   => '0640',
     }
 
-    # symlink /var/www/aggregate-datasets to $working_path/aggregate-datasets
-    file { '/var/www/aggregate-datasets':
+    # symlink datasets.wikimedia.org/aggregate-datasets to $working_path/aggregate-datasets
+    file {  "${document_root}/aggregate-datasets":
         ensure => 'link',
         target => "${working_path}/aggregate-datasets",
         owner  => 'root',
@@ -38,8 +50,8 @@ class statistics::sites::datasets {
         mode   => '0640',
     }
 
-    # symlink /var/www/limn-public-data to $working_path/limn-public-data
-    file { '/var/www/limn-public-data':
+    # symlink datasets.wikimedia.org/limn-public-data to $working_path/limn-public-data
+    file {  "${document_root}/limn-public-data":
         ensure => 'link',
         target => "${working_path}/limn-public-data",
         owner  => 'root',
