@@ -12,6 +12,9 @@
     Header set Access-Control-Allow-Origin "*"
   </Directory>
 
+   # Alias analytics.wikimedia.org/datasets to /srv/datasets. T132594
+   Alias "/datasets" "<%= @working_path %>/datasets"
+
    # Cache json, yaml, csv, and tsv files 1 day
    # (could be all files but wanted to be more restrictive to start)
    <IfModule mod_headers.c>
