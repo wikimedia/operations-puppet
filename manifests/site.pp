@@ -267,13 +267,9 @@ node /^conf100[123]\.eqiad\.wmnet$/ {
     }
 }
 
-# conf200x are zookeeper service nodes in codfw
-# Note: etcd is not running on these machines yet,
-# but will be probably done on a later stage.
+# conf200x are etcd/zookeeper service nodes in codfw
 node /^conf200[123]\.codfw\.wmnet$/ {
-    role(zookeeper::server)
-    include ::standard
-    include ::base::firewall
+    role(configcluster)
 }
 
 # CI master / CI standby (switch in Hiera)
