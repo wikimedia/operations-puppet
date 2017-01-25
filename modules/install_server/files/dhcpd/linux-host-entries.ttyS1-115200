@@ -708,67 +708,6 @@ host cp3010 {
     fixed-address cp3010.esams.wmnet;
 }
 
-host cp3011 {
-    hardware ethernet 24:B6:FD:F5:B2:D4;
-    fixed-address cp3011.esams.wmnet;
-}
-
-host cp3012 {
-    hardware ethernet 24:B6:FD:F5:AB:B4;
-    fixed-address cp3012.esams.wmnet;
-}
-
-host cp3013 {
-    hardware ethernet 24:B6:FD:F5:AD:9C;
-    fixed-address cp3013.esams.wmnet;
-}
-
-host cp3014 {
-    hardware ethernet 24:B6:FD:F5:7C:38;
-    fixed-address cp3014.esams.wmnet;
-}
-
-host cp3015 {
-    hardware ethernet D4:AE:52:8C:7C:E9;
-    fixed-address cp3015.esams.wmnet;
-}
-
-host cp3016 {
-    hardware ethernet D4:AE:52:7A:C4:AB;
-    fixed-address cp3016.esams.wmnet;
-}
-
-host cp3017 {
-    hardware ethernet D4:AE:52:7A:C3:CE;
-    fixed-address cp3017.esams.wmnet;
-}
-
-host cp3018 {
-    hardware ethernet D4:AE:52:8C:86:31;
-    fixed-address cp3018.esams.wmnet;
-}
-
-host cp3019 {
-    hardware ethernet D4:AE:52:8A:73:9A;
-    fixed-address cp3019.esams.wmnet;
-}
-
-host cp3020 {
-    hardware ethernet D4:AE:52:8A:75:62;
-    fixed-address cp3020.esams.wmnet;
-}
-
-host cp3021 {
-    hardware ethernet D4:AE:52:8A:70:82;
-    fixed-address cp3021.esams.wmnet;
-}
-
-host cp3022 {
-    hardware ethernet D4:AE:52:8A:6E:03;
-    fixed-address cp3022.esams.wmnet;
-}
-
-
 host cp3030 {
     hardware ethernet 44:a8:42:0a:11:18;
     fixed-address cp3030.esams.wmnet;
