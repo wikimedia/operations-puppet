@@ -73,7 +73,9 @@ class Login(django_auth_forms.AuthenticationForm):
         if getattr(settings,
                    'OPENSTACK_KEYSTONE_MULTIDOMAIN_SUPPORT',
                    False):
+            last_domain = self.request.COOKIES.get('login_domain', None)
             self.fields['domain'] = forms.CharField(
+                initial=last_domain,
                 label=_("Domain"),
                 required=True,
                 widget=forms.TextInput(attrs={"autofocus": "autofocus"}))
