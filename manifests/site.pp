@@ -95,15 +95,6 @@ node /analytics10(2[89]|3[0-9]|4[0-9]|5[0-7]).eqiad.wmnet/ {
     include ::standard
 }
 
-
-node 'analytics1015.eqiad.wmnet' {
-    role(spare::system)
-}
-
-node 'analytics1026.eqiad.wmnet' {
-    role(spare::system)
-}
-
 # analytics1027 hosts hue.wikimedia.org, and is used for launching
 # cron based Hadoop jobs.
 node 'analytics1027.eqiad.wmnet' {
