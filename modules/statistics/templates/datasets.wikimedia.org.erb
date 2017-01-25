@@ -1,9 +1,9 @@
 <VirtualHost *:80>
   ServerName datasets.wikimedia.org
 
-  DocumentRoot <%= @document_Root %>
+  DocumentRoot <%= @document_root %>
 
-  <Directory <%= @document_Root %> >
+  <Directory <%= @document_root %> >
     Options Indexes FollowSymLinks MultiViews
     AllowOverride None
     Require all granted
