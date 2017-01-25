@@ -66,4 +66,14 @@ class icinga::monitor::certs {
         check_command => 'check_ssl_http!phab.wmfusercontent.org',
         host          => 'phab.wmfusercontent.org',
     }
+
+    # wikitech-static.wikimedia.org (external, Rackspace)
+    @monitoring::host { 'wikitech-static.wikimedia.org':
+        host_fqdn     => 'wikitech-static.wikimedia.org',
+    }
+    monitoring::service { 'https_policy':
+        description   => 'HTTPS-policy',
+        check_command => 'check_ssl_http!wikitech-static.wikimedia.org',
+        host          => 'wikitech-static.wikimedia.org',
+    }
 }
