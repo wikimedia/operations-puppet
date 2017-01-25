@@ -2830,7 +2830,7 @@ node /^wdqs100[1-2]\.eqiad\.wmnet$/ {
     include ::lvs::realserver
 }
 
-node /^wdqs200[1-2]\.codfw\.wmnet$/ {
+node /^wdqs200[1-3]\.codfw\.wmnet$/ {
     role(wdqs)
     include ::lvs::realserver
 }
