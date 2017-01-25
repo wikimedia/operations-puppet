@@ -32,7 +32,7 @@ my $threads = 50; # how many concurrent threads?
 my $timeout_limit = 3; # how many timeouts to tolerate before dropping a server
 my $timeout = 10; # seconds before LWP gives up on a web request
 my $pad_length = 25; # server hostname column width in report
-my $default_staging_server = 'mw1017.eqiad.wmnet';
+my $default_staging_server = 'mwdebug1001.eqiad.wmnet';
 
 # get a list of servers to test
 my $servers;
