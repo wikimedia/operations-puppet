@@ -9,9 +9,9 @@ class icinga::monitor::certs {
         host_fqdn     => 'blog.wikimedia.org',
     }
     monitoring::service { 'https_blog':
-        description   => 'HTTPS-blog',
-        check_command => 'check_ssl_http_letsencrypt!blog.wikimedia.org',
-        host          => 'blog.wikimedia.org',
+        description    => 'HTTPS-blog',
+        check_command  => 'check_ssl_http_letsencrypt!blog.wikimedia.org',
+        host           => 'blog.wikimedia.org',
     }
 
     # policy.wikimedia.org (external, Wordpress/Automattic)
@@ -70,10 +70,12 @@ class icinga::monitor::certs {
     # wikitech-static.wikimedia.org (external, Rackspace)
     @monitoring::host { 'wikitech-static.wikimedia.org':
         host_fqdn     => 'wikitech-static.wikimedia.org',
+        contact_groups=> 'wikitech-static',
     }
     monitoring::service { 'https_wikitech-static':
         description   => 'HTTPS-wikitech-static',
         check_command => 'check_ssl_http_letsencrypt!wikitech-static.wikimedia.org',
         host          => 'wikitech-static.wikimedia.org',
+        contact_groups => 'wikitech-static',
     }
 }
