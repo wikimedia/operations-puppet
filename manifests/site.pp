@@ -411,18 +411,18 @@ node 'dataset1001.wikimedia.org' {
 
 # s1 (enwiki) core production dbs on eqiad
 # eqiad master
-node 'db1057.eqiad.wmnet' {
+node 'db1052.eqiad.wmnet' {
     class { '::role::mariadb::core':
         shard         => 's1',
         master        => true,
         binlog_format => 'STATEMENT',
     }
 }
-# soon-to-be master
-node 'db1052.eqiad.wmnet' {
+# old master
+node 'db1057.eqiad.wmnet' {
     class { '::role::mariadb::core':
         shard         => 's1',
-        master        => false,
+        master        => true,
         binlog_format => 'STATEMENT',
     }
 }
