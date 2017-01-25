@@ -11,66 +11,61 @@ class statistics::sites::datasets {
 
     # $working_path should be /srv
     $working_path = $::statistics::working_path
-    $document_root = "${working_path}/datasets.wikimedia.org"
+    # TODO: This site will be deprecated and redirected from analytics.wm.org as part of T132594.
+    $document_root = "${working_path}/datasets"
 
     file { [
-        "${working_path}/public-datasets",
-        "${working_path}/aggregate-datasets",
-        "${working_path}/limn-public-data",
+        # /srv/datasets contains various datasets that are intended to be exposed publicly.
+        $document_root,
+        # TODO: These subdirs will be moved to common/legacy as part of T125854.
+        "${document_root}/public-datasets",
+        "${document_root}/aggregate-datasets",
+        "${document_root}/limn-public-data",
     ]:
         ensure => 'directory',
         owner  => 'root',
         group  => 'www-data',
-        mode   => '0750',
+        mode   => '0775',
     }
 
-    file { $document_root:
-        ensure => 'directory',
-        owner  => 'root',
-        group  => 'www-data',
-        mode   => '0755',
-    }
-
-
-    # symlink datasets.wikimedia.org/public-datasets to $working_path/public-datasets
-    file { "${document_root}/public-datasets":
+    # TODO: These Symlinks from /srv/* -> /srv/datasets/* should be removed as part of T125854
+    # symlink /srv/public-datasets to $working_path/datasets/public-datasets
+    file { "${working_path}/public-datasets":
         ensure => 'link',
-        target => "${working_path}/public-datasets",
+        target => "${document_root}/public-datasets",
         owner  => 'root',
         group  => 'www-data',
-        mode   => '0640',
     }
 
-    # symlink datasets.wikimedia.org/aggregate-datasets to $working_path/aggregate-datasets
-    file {  "${document_root}/aggregate-datasets":
+    # symlink /srv/aggregate-datasets to $working_path/datasets/aggregate-datasets
+    file {  "${working_path}/aggregate-datasets":
         ensure => 'link',
-        target => "${working_path}/aggregate-datasets",
+        target => "${document_root}/aggregate-datasets",
         owner  => 'root',
         group  => 'www-data',
-        mode   => '0640',
     }
 
-    # symlink datasets.wikimedia.org/limn-public-data to $working_path/limn-public-data
-    file {  "${document_root}/limn-public-data":
+    # symlink /srv/limn-public-data to $working_path/datasets/limn-public-data
+    file {  "${working_path}/limn-public-data":
         ensure => 'link',
-        target => "${working_path}/limn-public-data",
+        target => "${working_path}/datasets/limn-public-data",
         owner  => 'root',
         group  => 'www-data',
-        mode   => '0640',
     }
+
 
     # rsync from stat1003:/srv/public-datasets to $working_path/public-datasets
     cron { 'rsync public datasets':
-        command => "/usr/bin/rsync -rt --delete stat1003.eqiad.wmnet::srv/public-datasets/* ${working_path}/public-datasets/",
-        require => File["${working_path}/public-datasets"],
+        command => "/usr/bin/rsync -rt --delete stat1003.eqiad.wmnet::srv/public-datasets/* ${document_root}/public-datasets/",
+        require => File["${document_root}/public-datasets"],
         user    => 'root',
         minute  => '*/30',
     }
 
     # rsync from stat1002:/srv/aggregate-datasets to $working_path/aggregate-datasets
     cron { 'rsync aggregate datasets from stat1002':
-        command => "/usr/bin/rsync -rt --delete stat1002.eqiad.wmnet::srv/aggregate-datasets/* ${working_path}/aggregate-datasets/",
-        require => File["${working_path}/aggregate-datasets"],
+        command => "/usr/bin/rsync -rt --delete stat1002.eqiad.wmnet::srv/aggregate-datasets/* ${document_root}/aggregate-datasets/",
+        require => File["${document_root}/aggregate-datasets"],
         user    => 'root',
         minute  => '*/30',
     }
