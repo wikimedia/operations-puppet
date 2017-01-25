@@ -2036,13 +2036,6 @@ node /^mwdebug100[12]\.eqiad\.wmnet$/ {
     include ::base::firewall
 }
 
-# mw1017 and mw1099 are former test appservers
-# HW decom ticket: T151303
-node /^mw10(17|99)\.eqiad\.wmnet$/ {
-    role(spare::system)
-    include ::base::firewall
-}
-
 # mw1161-1167 are job runners
 node /^mw116[1-7]\.eqiad\.wmnet$/ {
     role(mediawiki::jobrunner)
