@@ -1,0 +1,17 @@
+cluster: etcd
+
+profile::etcd::cluster_name: "%{::domain}"
+profile::etcd::cluster_bootstrap: true
+profile::etcd::discovery: "dns:%{::domain}"
+profile::etcd::use_proxy: true
+profile::etcd::use_client_certs: false
+profile::etcd::do_backup: true
+profile::etcd::allow_from: "$DOMAIN_NETWORKS"
+# This cert is generated using puppet-ecdsacert, and includes
+# all the hostnames for the etcd machines in the SANs
+# Will need to be regenerated if we add servers to the cluster.
+profile::etcd::tlsproxy::cert_name: "etcd.%{::domain}"
+profile::etcd::tlsproxy::acls: { /: ["root"], /conftool: ["root", "conftool"], /eventlogging: []}
+# These should come from the private hieradata
+#profile::etcd::tlsproxy::accounts
+#profile::etcd::tlsproxy::salt
