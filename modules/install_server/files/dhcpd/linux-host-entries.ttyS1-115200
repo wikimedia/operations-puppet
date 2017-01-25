@@ -4058,16 +4058,6 @@ host mwlog2001 {
     fixed-address mwlog2001.codfw.wmnet;
 }
 
-host mw1017 {
-    hardware ethernet 78:2b:cb:08:79:0c;
-    fixed-address mw1017.eqiad.wmnet;
-}
-
-host mw1099 {
-    hardware ethernet 84:2b:2b:77:e7:72;
-    fixed-address mw1099.eqiad.wmnet;
-}
-
 host mw1161 {
     hardware ethernet 90:B1:1C:27:90:98;
     fixed-address mw1161.eqiad.wmnet;
