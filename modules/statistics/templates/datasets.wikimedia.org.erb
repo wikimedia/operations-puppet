@@ -1,9 +1,9 @@
 <VirtualHost *:80>
   ServerName datasets.wikimedia.org
 
-  DocumentRoot /srv/datasets.wikimedia.org
+  DocumentRoot <%= @document_Root %>
 
-  <Directory /srv/datasets.wikimedia.org >
+  <Directory <%= @document_Root %> >
     Options Indexes FollowSymLinks MultiViews
     AllowOverride None
     Require all granted
@@ -31,4 +31,3 @@
   CustomLog /var/log/apache2/datasets_access.log wmf
   ServerSignature Off
 </VirtualHost>
-
