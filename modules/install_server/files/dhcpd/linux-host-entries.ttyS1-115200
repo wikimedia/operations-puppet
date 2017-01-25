@@ -4043,11 +4043,6 @@ host ms-fe3002 {
     fixed-address ms-fe3002.esams.wmnet;
 }
 
-host multatuli {
-    hardware ethernet a4:ba:db:30:d5:99;
-    fixed-address multatuli.wikimedia.org;
-}
-
 host mwlog1001 {
     hardware ethernet 14:18:77:33:4A:C0;
     fixed-address mwlog1001.eqiad.wmnet;

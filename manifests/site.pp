@@ -1958,14 +1958,6 @@ node 'mendelevium.eqiad.wmnet' {
     role(otrs::webserver)
 }
 
-node 'multatuli.wikimedia.org' {
-    role(spare::system)
-
-    interface::add_ip6_mapped { 'main':
-        interface => 'eth0',
-    }
-}
-
 # also see dataset1001
 node 'ms1001.wikimedia.org' {
     $cluster = 'misc'
