@@ -44,7 +44,7 @@ define redis::monitoring::instance(
     } else {
         monitoring::service{ "redis.${instance_name}":
             description   => "Redis status ${instance_name}",
-            check_command => "check_redis!${port}!${cred_file}"
+            check_command => "check_redis!${port}!${cred_file}",
         }
     }
 }

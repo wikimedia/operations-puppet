@@ -24,7 +24,7 @@ class redis {
     # Disabling transparent hugepages is strongly recommended
     # in http://redis.io/topics/latency.
     sysfs::parameters { 'disable_transparent_hugepages':
-        values => { 'kernel/mm/transparent_hugepage/enabled' => 'never' }
+        values => { 'kernel/mm/transparent_hugepage/enabled' => 'never' },
     }
 
     # Background save may fail under low memory condition unless
@@ -41,7 +41,7 @@ class redis {
         owner  => 'root',
         group  => 'root',
         mode   => '0644',
-        before => File['/etc/redis/redis.conf']
+        before => File['/etc/redis/redis.conf'],
     }
 
     # Distro-specific common directives go here
