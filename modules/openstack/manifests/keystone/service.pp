@@ -1,8 +1,8 @@
 # keystone is the identity service of openstack
 # http://docs.openstack.org/developer/keystone/
 class openstack::keystone::service($keystoneconfig, $openstack_version=$::openstack::version) {
-    include openstack::repo
-    include keystone::hooks
+    include ::openstack::repo
+    include ::openstack::keystone::hooks
 
     package { 'keystone':
         ensure  => present,
@@ -21,7 +21,7 @@ class openstack::keystone::service($keystoneconfig, $openstack_version=$::openst
         }
     }
 
-    include network::constants
+    include ::network::constants
     $prod_networks = $network::constants::production_networks
     $labs_networks = $network::constants::labs_networks
 
@@ -120,9 +120,9 @@ class openstack::keystone::service($keystoneconfig, $openstack_version=$::openst
             $enable_uwsgi = false
 
             service { 'keystone':
-                ensure  => running,
+                ensure    => running,
                 subscribe => File['/etc/keystone/keystone.conf'],
-                require => Package['keystone'];
+                require   => Package['keystone'];
             }
             service { 'uwsgi-keystone-admin':
                 ensure => stopped,

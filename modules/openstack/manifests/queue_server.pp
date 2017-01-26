@@ -4,7 +4,7 @@ class openstack::queue_server(
         $rabbit_monitor_password
     ) {
 
-    include openstack::repo
+    include ::openstack::repo
 
     package { [ 'rabbitmq-server' ]:
         ensure  => present,

@@ -7,7 +7,7 @@ class openstack::horizon::service(
     $webserver_hostname = 'horizon.wikimedia.org'
 ) {
     # basic horizon packages and config
-    include openstack::repo
+    include ::openstack::repo
 
     package { 'openstack-dashboard':
         ensure  => present,
@@ -203,7 +203,7 @@ class openstack::horizon::service(
         mode    => '0644',
         require => Package['python-designate-dashboard', 'openstack-dashboard'],
         notify  => Exec['djangorefresh'],
-        recurse => true
+        recurse => true,
     }
     file { '/usr/share/openstack-dashboard/openstack_dashboard/local/enabled/_1922_project_proxy_panel.py':
         source  => "puppet:///modules/openstack/${openstack_version}/horizon/proxy_enable.py",
@@ -257,6 +257,6 @@ class openstack::horizon::service(
         cwd         => '/usr/share/openstack-dashboard',
         require     => File['/etc/openstack-dashboard/local_settings.py'],
         notify      => Service['apache2'],
-        refreshonly => true
+        refreshonly => true,
     }
 }

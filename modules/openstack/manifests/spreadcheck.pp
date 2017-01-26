@@ -5,7 +5,7 @@ class openstack::spreadcheck(
     $novaconfig,
 ) {
 
-    include passwords::labs::toollabs
+    include ::passwords::labs::toollabs
 
     $nova_user = $passwords::labs::toollabs::nova_user
     $nova_password = $passwords::labs::toollabs::nova_password

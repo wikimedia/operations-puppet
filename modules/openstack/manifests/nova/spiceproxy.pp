@@ -5,7 +5,7 @@
 class openstack::nova::spiceproxy(
     $openstack_version=$::openstack::version,
 ){
-    include openstack::repo
+    include ::openstack::repo
 
     package { ['nova-spiceproxy', 'nova-consoleauth', 'spice-html5', 'websockify']:
         ensure  => present,

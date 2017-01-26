@@ -1,8 +1,8 @@
 # Utilities for querying openstack
 class openstack::clientlib {
-    include openstack::observerenv
-    include openstack
-    include openstack::repo
+    include ::openstack::observerenv
+    include ::openstack
+    include ::openstack::repo
 
     $packages = [
         'python-novaclient',

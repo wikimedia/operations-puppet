@@ -2,7 +2,7 @@
 # https://wiki.openstack.org/wiki/Ceilometer
 class openstack::ceilometer::compute ($novaconfig, $openstack_version=$::openstack::version) {
 
-    include openstack::repo
+    include ::openstack::repo
 
     package { [ceilometer-agent-compute]:
         ensure  => present,
