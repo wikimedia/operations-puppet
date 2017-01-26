@@ -452,4 +452,4 @@ kafka_clusters:
         id: 2003
 
 deployment_server: tin.eqiad.wmnet
-install_server: install1001.wikimedia.org
+install_server: carbon.wikimedia.org
