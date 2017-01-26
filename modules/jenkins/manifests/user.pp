@@ -1,6 +1,6 @@
 class jenkins::user {
 
-    include jenkins::group
+    include ::jenkins::group
 
     user { 'jenkins':
         home       => '/var/lib/jenkins',
