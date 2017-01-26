@@ -61,6 +61,9 @@ monitoring::groups:
   etcd_eqiad:
     description: eqiad Etcd
 
+  etcd_codfw:
+    description: codfw Etcd
+
   # Eventbus
   eventbus_eqiad:
     description: eventbus eqiad servers
