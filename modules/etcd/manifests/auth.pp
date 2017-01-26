@@ -10,7 +10,7 @@ class etcd::auth {
     file { '/etc/etcd/local/':
         ensure => directory,
         owner  => 'root',
-        group  => 'root'
+        group  => 'root',
     }
 
     # Overrides the global config to run locally
