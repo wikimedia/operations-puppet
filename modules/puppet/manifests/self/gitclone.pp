@@ -33,7 +33,7 @@ class puppet::self::gitclone {
         directory => "${gitdir}/labs/private",
         origin    => 'https://gerrit.wikimedia.org/r/labs/private.git',
         ssh       => "${gitdir}/ssh",
-        require   => File["${gitdir}/labs"]
+        require   => File["${gitdir}/labs"],
     }
 
     # Intentionally readable / writeable only by root and puppet
