@@ -20,8 +20,8 @@ class dnsrecursor(
     $export_etc_hosts         = 'off',
 ) {
 
-    include network::constants
-    include metrics
+    include ::network::constants
+    include ::metrics
     $forward_zones = 'wmnet=208.80.154.238;208.80.153.231;91.198.174.239, 10.in-addr.arpa=208.80.154.238;208.80.153.231;91.198.174.239'
 
     system::role { 'dnsrecursor':
