@@ -2610,8 +2610,6 @@ host hafnium {
 host helium {
     hardware ethernet 78:2b:cb:09:0f:c8;
     fixed-address helium.eqiad.wmnet;
-    option pxelinux.pathprefix "precise-installer/";
-    filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host heze {
