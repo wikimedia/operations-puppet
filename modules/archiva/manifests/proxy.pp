@@ -15,7 +15,7 @@
 #
 class archiva::proxy(
     $ssl_enabled      = true,
-    $certificate_name = 'archiva.wikimedia.org',
+    $certificate_name = 'archiva',
 ) {
     Class['::archiva'] -> Class['::archiva::proxy']
 
@@ -49,9 +49,9 @@ class archiva::proxy(
 
         $ssl_certificate_chained = $certificate_name ? {
             'ssl-cert-snakeoil' => '/etc/ssl/certs/ssl-cert-snakeoil.pem',
-            default             => "/etc/ssl/localcerts/${certificate_name}.chained.crt",
+            default             => "/etc/acme/cert/${certificate_name}.chained.crt",
         }
-        $ssl_certificate_key = "/etc/ssl/private/${certificate_name}.key"
+        $ssl_certificate_key = "/etc/acme/key/${certificate_name}.key"
 
         # Use puppet's stupidity to flatten these into a single array.
         $server_properties = [
