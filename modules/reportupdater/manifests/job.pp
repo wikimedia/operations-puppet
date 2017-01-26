@@ -59,7 +59,7 @@ define reportupdater::job(
             ensure    => 'latest',
             directory => $path,
             origin    => "https://gerrit.wikimedia.org/r/p/${repository_name}.git",
-            owner     => $::reportupdater::user
+            owner     => $::reportupdater::user,
         }
     }
 
