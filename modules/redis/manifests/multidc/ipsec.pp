@@ -10,8 +10,8 @@ class redis::multidc::ipsec($shards) {
 
     # No reason to define IPsec if the host doesn't need replication.
     if size($ipsec_host_list) > 0 {
-        class { 'role::ipsec':
-            hosts => $ipsec_host_list
+        class { '::role::ipsec':
+            hosts => $ipsec_host_list,
         }
     }
 }
