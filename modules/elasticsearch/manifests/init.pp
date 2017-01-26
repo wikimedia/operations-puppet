@@ -156,7 +156,7 @@ class elasticsearch(
         default => [],
     }
 
-    class { 'elasticsearch::packages':
+    class { '::elasticsearch::packages':
         java_package => $java_package,
     }
 
@@ -231,13 +231,13 @@ class elasticsearch(
     # thus leaving old files with no useful information named in such a way that
     # someone might think they contain useful logs.
     file { '/var/log/elasticsearch/elasticsearch.log':
-        ensure => absent
+        ensure => absent,
     }
     file { '/var/log/elasticsearch/elasticsearch_index_indexing_slowlog.log':
-        ensure => absent
+        ensure => absent,
     }
     file { '/var/log/elasticsearch/elasticsearch_index_search_slowlog.log':
-        ensure => absent
+        ensure => absent,
     }
 
     # Cluster management tool, trusty only
@@ -248,7 +248,7 @@ class elasticsearch(
             group   => 'root',
             mode    => '0755',
             source  => 'puppet:///modules/elasticsearch/es-tool',
-            require => [Package['python-elasticsearch'], Package['python-ipaddr']]
+            require => [Package['python-elasticsearch'], Package['python-ipaddr']],
         }
     }
 }
