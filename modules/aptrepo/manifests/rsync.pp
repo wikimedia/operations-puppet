@@ -10,11 +10,11 @@ class aptrepo::rsync {
         $ensure = 'present'
         include rsync::server
 
-        rsync::server::module { 'aptrepo-basedir':
+        rsync::server::module { 'aptrepo':
             ensure      => $aptrepo::rsync::ensure,
             path        => $aptrepo::basedir,
             read_only   => 'no',
-            hosts_allow => "@resolve(${primary_server})",
+            hosts_allow => $primary_server,
         }
     } else {
         $ensure = 'absent'
