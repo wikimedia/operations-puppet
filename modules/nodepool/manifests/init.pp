@@ -184,7 +184,7 @@ class nodepool(
         mode    => '0440',
         content => join([
             shell_exports($nodepool_user_env),
-            "\ncd\n"
+            "\ncd\n",
         ]),
     }
 
@@ -238,6 +238,6 @@ class nodepool(
         content => template('nodepool/nodepool.yaml.erb'),
         require => [
             Package['nodepool'],
-        ]
+        ],
     }
 }

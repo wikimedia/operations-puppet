@@ -9,7 +9,7 @@
 #  include netops::monitoring
 
 class netops::monitoring {
-    include passwords::network
+    include ::passwords::network
 
     # core/mgmt routers
     $routers_defaults = {
