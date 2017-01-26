@@ -31,22 +31,22 @@ class otrs::mail(
     $otrs_mysql_password,
     $trusted_networks,
 ){
-    class { 'clamav':
+    class { '::clamav':
         proxy => "webproxy.${::site}.wmnet:8080",
     }
 
-    include exim4::ganglia
+    include ::exim4::ganglia
 
-    class { 'exim4':
+    class { '::exim4':
         variant => 'heavy',
         config  => template('otrs/exim4.conf.otrs.erb'),
         filter  => template('otrs/system_filter.conf.otrs.erb'),
         require => [
             Class['spamassassin'],
             Class['clamav'],
-        ]
+        ],
     }
-    class { 'spamassassin':
+    class { '::spamassassin':
         required_score        => '3.5',# (5.0)
         use_bayes             => '1',  # 0|(1)
         bayes_auto_learn      => '0',  # 0|(1)
