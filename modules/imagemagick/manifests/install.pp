@@ -21,6 +21,6 @@ class imagemagick::install {
         require => [
             Class['packages::imagemagick'],
             Class['packages::webp']
-        ]
+        ],
     }
 }
