@@ -44,8 +44,20 @@ fi
 project=`curl http://169.254.169.254/openstack/latest/meta_data.json/ | sed -r 's/^.*project_id\": \"//'  | sed -r 's/\".*$//g'`
 ip=`curl http://169.254.169.254/1.0/meta-data/local-ipv4 2> /dev/null`
 hostname=`hostname`
+
 # domain is the last two domain sections, e.g. eqiad.wmflabs
 domain=`hostname -d | sed -r 's/.*\.([^.]+\.[^.]+)$/\1/'`
+
+if [ -z $domain ]; then
+   echo "hostname -d failed, trying to parse dhcp lease"
+   domain=`grep "option domain-name " /var/lib/dhcp/dhclient.eth0.leases | head -n1 | cut -d \" -f2`
+fi
+
+if [ -z $domain ]; then
+    echo "Unable to determine domain; all is lost."
+    exit 1
+fi
+
 fqdn=${hostname}.${project}.${domain}
 saltfinger="c5:b1:35:45:3e:0a:19:70:aa:5f:3a:cf:bf:a0:61:dd"
 if [ "${domain}" == "eqiad.wmflabs" ]
