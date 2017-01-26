@@ -1,3 +1,3 @@
 #
 
-include otrs::web
+include ::otrs::web
