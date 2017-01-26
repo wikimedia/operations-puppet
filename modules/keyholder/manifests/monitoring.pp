@@ -40,6 +40,6 @@ class keyholder::monitoring( $ensure = present ) {
     diamond::collector::nagios { 'keyholder_status':
         ensure  => $ensure,
         command => [ '/usr/bin/sudo', $plugin_path ],
-        require => Sudo::User['diamond_check_keyholder']
+        require => Sudo::User['diamond_check_keyholder'],
     }
 }
