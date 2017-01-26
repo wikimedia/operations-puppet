@@ -4,7 +4,7 @@ class gridengine::exec_host(
     $config = undef,
 ) {
 
-    include gridengine
+    include ::gridengine
 
     package { 'gridengine-exec':
         ensure  => latest,
