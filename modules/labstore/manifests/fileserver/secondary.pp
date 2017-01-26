@@ -2,7 +2,7 @@ class labstore::fileserver::secondary {
 
     requires_os('Debian >= jessie')
 
-    include labstore
+    include ::labstore
 
     package { [
             'python3-paramiko',

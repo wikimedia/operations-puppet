@@ -12,7 +12,7 @@ class labstore {
     require_package('nfsd-ldap')
 
     $ldapincludes = ['openldap', 'nss', 'utils']
-    class { 'ldap::role::client::labs': ldapincludes => $ldapincludes }
+    class { '::ldap::role::client::labs': ldapincludes => $ldapincludes }
 
     file { '/usr/local/sbin/snapshot-manager':
         ensure => present,

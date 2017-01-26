@@ -58,7 +58,7 @@ define labstore::drbd::resource (
     $mount_path,
 ) {
 
-    require labstore::drbd::node
+    require ::labstore::drbd::node
 
     $drbd_hosts = keys($drbd_cluster)
 

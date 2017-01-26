@@ -47,7 +47,7 @@ define labstore::nfs_mount(
 )
     {
 
-    include labstore::traffic_shaping
+    include ::labstore::traffic_shaping
 
     $set_opts = ['vers=4',
                 'bg',
