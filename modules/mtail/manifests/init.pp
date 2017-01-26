@@ -41,6 +41,6 @@ class mtail (
 
     base::service_unit { 'mtail':
         ensure  => present,
-        systemd => true
+        systemd => true,
     }
 }

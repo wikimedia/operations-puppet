@@ -13,7 +13,7 @@
 #   include mirrors::ubuntu
 
 class mirrors::ubuntu {
-    require mirrors
+    require ::mirrors
 
     file { '/srv/mirrors/ubuntu':
         ensure => directory,
