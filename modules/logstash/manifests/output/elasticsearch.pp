@@ -40,7 +40,7 @@ define logstash::output::elasticsearch(
     $template        = undef,
     $template_name   = $title,
 ) {
-    require logstash::output::elasticsearch::scripts
+    require ::logstash::output::elasticsearch::scripts
 
     logstash::conf{ "output-elasticsearch-${title}":
         ensure   => $ensure,
