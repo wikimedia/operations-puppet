@@ -9,6 +9,6 @@ class k8s::users {
         shell      => '/bin/false',
         system     => true,
         managehome => false,
-        groups     => ['ssl-cert']
+        groups     => ['ssl-cert'],
     }
 }
