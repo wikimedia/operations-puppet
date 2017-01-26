@@ -202,6 +202,20 @@ class openstack::horizon::service(
         require => Package['python-designate-dashboard', 'openstack-dashboard'],
     }
 
+    if $openstack_version != 'liberty' {
+        # Override some .js files to provide a simplified user experience.  Alas
+        #  we can't do this via the overrides.py monkeypatch below
+
+        file { '/usr/share/openstack-dashboard/openstack_dashboard/dashboards/project/static/dashboard/project/workflow/launch-instance/launch-instance-workflow.service.js':
+            source  => "puppet:///modules/openstack/${openstack_version}/horizon/jsoverrides/launch-instance-workflow.service.py",
+            owner   => 'root',
+            group   => 'root',
+            require => Package['openstack-dashboard'],
+            notify  => Exec['djangorefresh'],
+            mode    => '0644',
+        }
+    }
+
     # Monkeypatches for Horizon customization
     file { '/usr/lib/python2.7/dist-packages/horizon/overrides.py':
         source  => "puppet:///modules/openstack/${openstack_version}/horizon/overrides.py",
