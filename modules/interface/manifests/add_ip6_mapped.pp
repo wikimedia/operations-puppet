@@ -25,7 +25,7 @@ define interface::add_ip6_mapped($interface=undef, $ipv4_address=undef) {
         interface::ip { $title:
             interface => $intf,
             address   => $ipv6_address,
-            prefixlen => '64'
+            prefixlen => '64',
         }
 
         # The above sets up an "up" command to add the fixed IPv6 mapping of the v4

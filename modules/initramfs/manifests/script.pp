@@ -1,5 +1,5 @@
 define initramfs::script($boot_stage='', $content='') {
-    include initramfs
+    include ::initramfs
 
     case $boot_stage {
         'init-bottom', 'init-premount', 'init-top', 'local-bottom', 'local-premount', 'local-top', 'nfs-bottom', 'nfs-premount', 'nfs-top', 'panic': {}

@@ -1,5 +1,5 @@
 define initramfs::hook($content='') {
-    include initramfs
+    include ::initramfs
 
     file { "/etc/initramfs-tools/hooks/${title}":
         owner   => 'root',
