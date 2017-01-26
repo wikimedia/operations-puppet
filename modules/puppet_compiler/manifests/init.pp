@@ -8,7 +8,7 @@ class puppet_compiler(
     $homedir = '/mnt/home/jenkins-deploy',
     ) {
 
-    require puppet_compiler::packages
+    require ::puppet_compiler::packages
 
     $vardir = "${libdir}/puppet"
 
@@ -19,7 +19,7 @@ class puppet_compiler(
     }
 
     if $ensure == 'present' {
-        class { 'puppet_compiler::setup':
+        class { '::puppet_compiler::setup':
             user    => $user,
             vardir  => $vardir,
             homedir => $homedir,
@@ -64,7 +64,7 @@ class puppet_compiler(
         git_tag   => $version,
         directory => $compiler_dir,
         owner     => $user,
-        notify    => Exec['install compiler']
+        notify    => Exec['install compiler'],
     }
 
     # Install the compiler
@@ -79,7 +79,7 @@ class puppet_compiler(
     file { '/etc/puppet-compiler.conf':
         ensure  => $ensure,
         owner   => $user,
-        content => template('puppet_compiler/puppet-compiler.conf.erb')
+        content => template('puppet_compiler/puppet-compiler.conf.erb'),
     }
 
 
@@ -89,12 +89,12 @@ class puppet_compiler(
 
     include ::etcd
 
-    class { 'conftool':
+    class { '::conftool':
         use_ssl => false,
         auth    => false,
         hosts   => [
             'http://127.0.0.1:2379',
-        ]
+        ],
     }
 
     tidy { "${::puppet_compiler::workdir}/output":

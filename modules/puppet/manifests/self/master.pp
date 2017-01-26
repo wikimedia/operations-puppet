@@ -56,7 +56,7 @@ class puppet::self::master(
 
     # We'd best be sure that our ldap config is set up properly
     # before puppet goes to work.
-    class { 'puppet::self::config':
+    class { '::puppet::self::config':
         is_puppetmaster      => true,
         server               => $server,
         bindaddress          => $bindaddress,
@@ -64,7 +64,7 @@ class puppet::self::master(
         certname             => $certname,
         require              => File['/etc/ldap/ldap.conf', '/etc/ldap.conf', '/etc/nslcd.conf'],
     }
-    class { 'puppet::self::gitclone':
+    class { '::puppet::self::gitclone':
         require => Class['puppet::self::config'],
     }
 
@@ -125,5 +125,5 @@ class puppet::self::master(
         ],
     }
 
-    include puppetmaster::scripts
+    include ::puppetmaster::scripts
 }
