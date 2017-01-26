@@ -1,4 +1,4 @@
 #
-class { 'puppet::self::master':
+class { '::puppet::self::master':
     server => 'localhost',
 }

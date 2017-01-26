@@ -1,4 +1,4 @@
 #
-class { 'puppet::self::client':
+class { '::puppet::self::client':
     server => 'nonexistent',
 }
