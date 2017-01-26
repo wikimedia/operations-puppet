@@ -18,8 +18,8 @@ class jenkins(
     $service_enable = true,
 )
 {
-    require jenkins::user
-    require jenkins::group
+    require ::jenkins::user
+    require ::jenkins::group
 
     # We want to run Jenkins under Java 7.
     ensure_packages(['openjdk-7-jre-headless'])
@@ -85,7 +85,7 @@ class jenkins(
     nrpe::monitor_service { 'jenkins':
         description   => 'jenkins_service_running',
         contact_group => 'contint',
-        nrpe_command  => "/usr/lib/nagios/plugins/check_procs -w 1:1 -c 1:1 --ereg-argument-array '^/usr/bin/java .*-jar /usr/share/jenkins/jenkins.war'"
+        nrpe_command  => "/usr/lib/nagios/plugins/check_procs -w 1:1 -c 1:1 --ereg-argument-array '^/usr/bin/java .*-jar /usr/share/jenkins/jenkins.war'",
     }
 
     file { '/var/lib/jenkins':
