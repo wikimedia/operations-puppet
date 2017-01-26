@@ -19,6 +19,7 @@ server {
 
 server {
   listen <%= @listen %>;
+    include /etc/acme/challenge-nginx.conf;
 
 <% if @server_properties -%>
   <%= @server_properties.sort.join("\n  ") -%>
