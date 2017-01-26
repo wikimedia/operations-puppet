@@ -2,10 +2,10 @@
 class role::authdns::server {
     system::role { 'authdns': description => 'Authoritative DNS server' }
 
-    include base::firewall
-    include authdns::ganglia
-    include prometheus::node_gdnsd
-    include role::authdns::data
+    include ::base::firewall
+    include ::authdns::ganglia
+    include ::prometheus::node_gdnsd
+    include ::role::authdns::data
 
     create_resources(
         interface::ip,
@@ -13,7 +13,7 @@ class role::authdns::server {
         { interface => 'lo' }
     )
 
-    class { 'authdns':
+    class { '::authdns':
         nameservers => $role::authdns::data::nameservers,
         gitrepo     => $role::authdns::data::gitrepo,
     }
