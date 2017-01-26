@@ -3,7 +3,7 @@ class ldap::role::client::labs(
     $restricted_to = $::restricted_to,
     $restricted_from = $::restricted_from,
 ) {
-    include ldap::role::config::labs
+    include ::ldap::role::config::labs
 
     if ( $::realm == 'labs' ) {
         $includes = ['openldap', 'pam', 'nss', 'sudo', 'utils']
@@ -50,7 +50,7 @@ class ldap::role::client::labs(
         $includes = $ldapincludes
     }
 
-    class{ 'ldap::client::includes':
+    class{ '::ldap::client::includes':
         ldapincludes => $includes,
         ldapconfig   => $ldap::role::config::labs::ldapconfig,
     }
