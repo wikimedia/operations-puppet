@@ -2,7 +2,7 @@
 #
 # Sets up icinga RAID event handler
 class icinga::event_handlers::raid {
-    include passwords::phabricator
+    include ::passwords::phabricator
 
     class { '::phabricator::bot':
         username => 'ops-monitoring-bot',

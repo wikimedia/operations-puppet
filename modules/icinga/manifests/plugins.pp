@@ -118,12 +118,12 @@ class icinga::plugins {
     }
 
     class { [
-        'nagios_common::commands',
-        'nagios_common::check::redis',
+        '::nagios_common::commands',
+        '::nagios_common::check::redis',
     ] :
     }
 
-    include passwords::nagios::mysql
+    include ::passwords::nagios::mysql
 
     $nagios_mysql_check_pass = $passwords::nagios::mysql::mysql_check_pass
 
@@ -184,5 +184,5 @@ class icinga::plugins {
     }
 
     # Include check_elasticsearch from elasticsearch module
-    include elasticsearch::nagios::plugin
+    include ::elasticsearch::nagios::plugin
 }

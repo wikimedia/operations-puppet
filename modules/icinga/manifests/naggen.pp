@@ -3,7 +3,7 @@
 # Runs naggen2 to generate hosts, service and hostext config
 # from exported puppet resources
 class icinga::naggen {
-    include icinga
+    include ::icinga
     $dbarg = $::use_puppetdb ? {
         true    => '--puppetdb',
         default => '--activerecord',

@@ -14,7 +14,7 @@ class icinga(
 ) {
     # Setup icinga user
     # FIXME: This should be done by the package
-    include icinga::group
+    include ::icinga::group
 
     group { 'icinga':
         ensure => present,
@@ -73,22 +73,22 @@ class icinga(
         notify  => Service['icinga'],
     }
 
-    class { 'nagios_common::contactgroups':
+    class { '::nagios_common::contactgroups':
         source  => 'puppet:///modules/nagios_common/contactgroups.cfg',
         require => Package['icinga'],
         notify  => Service['icinga'],
     }
 
-    class { 'nagios_common::contacts':
+    class { '::nagios_common::contacts':
         content => secret('nagios/contacts.cfg'),
         require => Package['icinga'],
         notify  => Service['icinga'],
     }
 
     class { [
-      'nagios_common::user_macros',
-      'nagios_common::timeperiods',
-      'nagios_common::notification_commands',
+      '::nagios_common::user_macros',
+      '::nagios_common::timeperiods',
+      '::nagios_common::notification_commands',
     ] :
         require => Package['icinga'],
         notify  => Service['icinga'],
@@ -101,7 +101,7 @@ class icinga(
     }
 
     # Setup all plugins!
-    class { 'icinga::plugins':
+    class { '::icinga::plugins':
         require => Package['icinga'],
         notify  => Service['icinga'],
     }
