@@ -131,7 +131,7 @@ define confluent::kafka::mirror::instance(
         content => template($log4j_properties_template),
     }
 
-    file { "/etc/kafka/mirror/${$mirror_name}/consumer.properties":
+    file { "/etc/kafka/mirror/${mirror_name}/consumer.properties":
         content => template($consumer_properties_template),
     }
 
@@ -156,7 +156,7 @@ define confluent::kafka::mirror::instance(
         refresh       => false,
         require       => [
             File["/etc/kafka/mirror/${mirror_name}/log4j.properties"],
-            File["/etc/kafka/mirror/${$mirror_name}/consumer.properties"],
+            File["/etc/kafka/mirror/${mirror_name}/consumer.properties"],
             File["/etc/kafka/mirror/${mirror_name}/producer.properties"],
             File["/etc/default/kafka-mirror-${mirror_name}"],
         ],
