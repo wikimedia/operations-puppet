@@ -73,15 +73,17 @@ class etcd (
         if ($adv_client_port == $client_port) {
             include etcd::ssl
             $scheme = 'https'
+            $listen_host = $host
         } else {
             $scheme = 'http'
+            $listen_host = '127.0.0.1'
         }
     } else {
         $adv_scheme = 'http'
         $scheme = 'http'
     }
 
-    $client_url = "${scheme}://${host}:${client_port}"
+    $client_url = "${scheme}://${listen_host}:${client_port}"
     $adv_client_url = "${adv_scheme}://${host}:${adv_client_port}"
     $peer_url = "http://${host}:${peer_port}" # Peer TLS is currently broken?
     $etcd_data_dir = "/var/lib/etcd/${cluster_name}"
