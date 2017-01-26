@@ -78,6 +78,7 @@ fi
 
 if [ -z $domain ]; then
     echo "Unable to determine domain; all is lost."
+    exit 1
 fi
 
 
