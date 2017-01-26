@@ -15,7 +15,7 @@ class profile::etcd::tlsproxy(
         ensure  => directory,
         mode    => '0550',
         owner   => 'www-data',
-        require => Package['nginx'],
+        require => Package['nginx-full'],
         before  => Service['nginx']
     }
 
@@ -23,7 +23,7 @@ class profile::etcd::tlsproxy(
         ensure  => directory,
         mode    => '0550',
         owner   => 'www-data',
-        require => Package['nginx'],
+        require => Package['nginx-full'],
         before  => Service['nginx']
     }
 
