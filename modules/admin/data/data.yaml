@@ -2350,6 +2350,9 @@ users:
     ssh_keys:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDKJFKzMQRJcDPrtRBIi7/b8hWbngR59UA3VCHZXbWVaNCKe+mOz9gXUvmAmeSr29p5vnmAP7tafnWYktvYbqGV02e1x5P09fvAWOvOaQob/A7/5shTGwtVxsip3/Ky2viP5Kycb8THbRHOtOt0DmeUVrWlhwie5M9AeKSWmTVJOivoME8g//nIlq7cXTCYyv+NHFSDIPKDmvlLbVFFdBbhYdDWlT6DQvTPFjTAyD23pltRBDo2WwufnSZB1sQ7spg+6+SN7e2fIcRiGXv8ar8fjwiolLtNz2I5nsLoBsb6q0ZHSwOdta4EhnkmswMrjNAgo6ayImKzXMeG35dvHvZh ZareenFarooqui@ZAREENs-MacBook.local
     uid: 15813
+    email: zareenf@gmail.com
+    expiry_date: 2017-05-01
+    expiry_contact: tbayer@wikimedia.org, jkatz@wikimedia.org
   matanya:
     ensure: present
     gid: 500
