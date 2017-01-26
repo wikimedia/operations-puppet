@@ -55,7 +55,7 @@ define prometheus::server (
     $scrape_configs_extra = [],
     $rule_files_extra = [],
 ) {
-    include prometheus
+    include ::prometheus
 
     requires_os('debian >= jessie')
 
