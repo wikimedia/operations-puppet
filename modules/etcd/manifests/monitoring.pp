@@ -1,7 +1,7 @@
 # === Class etcd::monitoring
 #
 class etcd::monitoring {
-    require etcd
+    require ::etcd
 
     # For now, this is not critical, but should probably be in the future.
     nrpe::monitor_systemd_unit_state { 'etcd':
