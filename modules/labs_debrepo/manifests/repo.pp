@@ -27,7 +27,7 @@ define labs_debrepo::repo ($dir = $title, $handle = 'labsdebrepo') {
 Package: *
 Pin: origin
 Pin-Priority: 1500
-'
+',
     }
 }
 
