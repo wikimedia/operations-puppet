@@ -9,7 +9,7 @@ class quarry::redis {
             bind      => '0.0.0.0',
             dir       => '/srv/redis',
             maxmemory => '2GB',
-        }
+        },
     }
 }
 

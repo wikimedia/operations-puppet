@@ -3,12 +3,12 @@
 #
 # Sets up a cron based query-killer
 class quarry::querykiller {
-    require quarry::base
+    require ::quarry::base
 
     file { '/var/log/quarry':
         ensure => directory,
         owner  => 'quarry',
-        group  => 'quarry'
+        group  => 'quarry',
     }
 
     cron { 'query-killer':

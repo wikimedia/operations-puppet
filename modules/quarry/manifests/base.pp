@@ -15,18 +15,18 @@ class quarry::base(
         'python-unicodecsv',
         'python-translitcodec',
     ]:
-        ensure => latest
+        ensure => latest,
     }
 
     user { 'quarry':
         ensure => present,
-        system => true
+        system => true,
     }
 
     file { [$clone_path, $result_path_parent, $result_path]:
         ensure  => directory,
         owner   => 'quarry',
-        require => User['quarry']
+        require => User['quarry'],
     }
 
     git::clone { 'analytics/quarry/web':
@@ -35,6 +35,6 @@ class quarry::base(
         branch    => 'master',
         require   => [File[$clone_path], User['quarry']],
         owner     => 'quarry',
-        group     => 'www-data'
+        group     => 'www-data',
     }
 }
