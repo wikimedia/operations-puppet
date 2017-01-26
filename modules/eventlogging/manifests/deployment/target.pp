@@ -38,7 +38,7 @@ define eventlogging::deployment::target(
     $sudo_rules   = undef,
 ) {
     # Install eventlogging dependencies from .deb packages.
-    include eventlogging::dependencies
+    include ::eventlogging::dependencies
 
     scap::target { "eventlogging/${title}":
         package_name => $package_name,
