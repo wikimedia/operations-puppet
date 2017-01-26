@@ -50,7 +50,7 @@ class lshell (
     }
 
     package { 'lshell':
-        ensure => present
+        ensure => present,
     }
 
     file { '/etc/lshell.conf':

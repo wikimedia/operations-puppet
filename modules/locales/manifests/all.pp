@@ -4,7 +4,7 @@
 # long time on Ubuntu systems; consider using locales::extended.
 
 class locales::all {
-    include locales
+    include ::locales
 
     # Debian ships a locales-all package which has all locales pre-generated.
     # Ubuntu doesn't, so we're forced to generate them locally every time :(
