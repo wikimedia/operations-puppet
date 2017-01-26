@@ -13,6 +13,7 @@
 <% if @ssl_enabled %>
 server {
     listen 80;
+    include /etc/acme/challenge-nginx.conf;
     return 301 https://$host$request_uri;
     }
 <% end %>
