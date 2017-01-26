@@ -22,6 +22,17 @@ class statistics::web {
         'zip',
     ])
 
+    # Install hardsync shell script.
+    # This allows us to present the contents of multiple source directories
+    # in a single directory by hardlink copying the files into the destination.
+    # This is mainly used so dataset files from multiple stat* boxes can
+    # be published in a single directory.  See: T125854
+    file { '/usr/local/bin/hardsync':
+        source => 'puppet:///modules/statistics/hardsync.sh',
+        mode   => '0755',
+        owner  => 'root',
+        group  => 'root',
+    }
 
     include ::apache::mod::rewrite
     include ::apache::mod::proxy
