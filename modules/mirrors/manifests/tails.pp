@@ -13,7 +13,7 @@
 #   include mirrors::tails
 
 class mirrors::tails {
-    require mirrors
+    require ::mirrors
 
     file { '/srv/mirrors/tails':
         ensure => directory,

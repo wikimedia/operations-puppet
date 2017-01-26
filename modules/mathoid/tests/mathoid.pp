@@ -1,1 +1,1 @@
-class { 'mathoid': }
+class { '::mathoid': }
