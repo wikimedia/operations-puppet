@@ -111,7 +111,7 @@ class nagios_common::commands(
         content    => undef,
         config_dir => $config_dir,
         owner      => $owner,
-        group      => $group
+        group      => $group,
     }
 
     # Check that the icinga config works
