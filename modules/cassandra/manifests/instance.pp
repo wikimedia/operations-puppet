@@ -53,7 +53,7 @@ define cassandra::instance(
         interface::ip { "cassandra-${instance_name}_rpc_${rpc_interface}":
             interface => $rpc_interface,
             address   => $rpc_address,
-            prefixlen => '32'
+            prefixlen => '32',
         }
     }
 

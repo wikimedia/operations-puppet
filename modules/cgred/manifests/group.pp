@@ -46,7 +46,7 @@ define cgred::group (
 )
     {
 
-    include cgred
+    include ::cgred
     file {"/etc/cgconfig.d/${name}.conf":
         ensure  => $ensure,
         mode    => '0444',

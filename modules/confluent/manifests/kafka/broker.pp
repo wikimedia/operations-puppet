@@ -258,7 +258,7 @@ class confluent::kafka::broker(
     group { 'kafka':
         ensure  => 'present',
         system  => true,
-        require => Class['confluent::kafka::client']
+        require => Class['confluent::kafka::client'],
     }
     # Kafka system user
     user { 'kafka':
