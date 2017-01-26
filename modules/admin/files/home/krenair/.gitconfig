@@ -1,7 +1,0 @@
-[user]
-	name = Alex Monk
-	email = krenair@gmail.com
-[color]
-	ui = true
-[core]
-	editor = nano --const
