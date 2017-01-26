@@ -13,8 +13,8 @@
 #   include mirrors::debian
 
 class mirrors::debian {
-    require mirrors
-    include passwords::mirrors
+    require ::mirrors
+    include ::passwords::mirrors
 
     file { '/srv/mirrors/debian':
         ensure => directory,

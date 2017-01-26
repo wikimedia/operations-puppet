@@ -24,6 +24,6 @@ class mirrors::serve {
     }
 
     # rsync
-    include rsync::server
+    include ::rsync::server
 
 }

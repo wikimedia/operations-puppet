@@ -29,5 +29,5 @@ class motd {
         purge   => true,
     }
 
-    include motd::defaults
+    include ::motd::defaults
 }
