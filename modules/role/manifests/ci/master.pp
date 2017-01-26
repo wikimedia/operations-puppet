@@ -16,8 +16,8 @@ class role::ci::master {
     require role::ci::website
 
     # Load the Jenkins module, that setup a Jenkins master
-    include ::jenkins,
-        contint::proxy_jenkins
+    include ::jenkins
+    include ::contint::proxy_jenkins
 
     # Backups
     include role::backup::host

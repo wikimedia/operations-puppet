@@ -10,15 +10,15 @@ class role::analytics_cluster::hue {
     # have their corresponding clients
     # and configs installed.
     # Include Hadoop ecosystem client classes.
-    require ::role::analytics_cluster::hadoop::client,
-        role::analytics_cluster::hive::client,
-        role::analytics_cluster::oozie::client,
-        # These don't require any extra configuration,
-        # so no role class is needed.
-        cdh::pig,
-        cdh::sqoop,
-        cdh::mahout,
-        cdh::spark
+    require ::role::analytics_cluster::hadoop::client
+    require ::role::analytics_cluster::hive::client
+    require ::role::analytics_cluster::oozie::client
+    # These don't require any extra configuration,
+    # so no role class is needed.
+    require ::cdh::pig
+    require ::cdh::sqoop
+    require ::cdh::mahout
+    require ::cdh::spark
 
     # LDAP Labs config is the same as LDAP in production.
     include ::ldap::role::config::labs
