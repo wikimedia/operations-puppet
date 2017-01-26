@@ -23,7 +23,7 @@ class k8s::apiserver(
     $authz_mode = 'abac',
     $apiserver_count = undef,
 ) {
-    include k8s::users
+    include ::k8s::users
 
     file { '/etc/kubernetes':
         ensure => directory,
