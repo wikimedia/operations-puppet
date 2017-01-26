@@ -18,7 +18,7 @@ class rancid {
         system     => true,
     }
 
-    include passwords::rancid
+    include ::passwords::rancid
 
     file { '/etc/rancid/rancid.conf':
         require => Package['rancid'],
