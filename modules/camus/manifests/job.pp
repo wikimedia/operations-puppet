@@ -65,7 +65,7 @@ define camus::job (
     $weekday            = undef,
 )
 {
-    require camus
+    require ::camus
 
     $properties_file = "${camus::config_directory}/${title}.properties"
     $log_file        = "${camus::log_directory}/${title}.log"
