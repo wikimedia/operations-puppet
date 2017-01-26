@@ -47,8 +47,8 @@ class otrs(
     $trusted_networks,
 ) {
     # Implementation classes
-    include otrs::web
-    class { 'otrs::mail':
+    include ::otrs::web
+    class { '::otrs::mail':
         otrs_mysql_database => $exim_database_name,
         otrs_mysql_user     => $exim_database_user,
         otrs_mysql_password => $exim_database_pass,
@@ -144,7 +144,7 @@ class otrs(
             enable     => true,
             hasstatus  => true,
             hasrestart => false,
-        }
+        },
     }
     # lint:endignore
 }
