@@ -418,16 +418,8 @@ node 'db1052.eqiad.wmnet' {
         binlog_format => 'STATEMENT',
     }
 }
-# old master
-node 'db1057.eqiad.wmnet' {
-    class { '::role::mariadb::core':
-        shard         => 's1',
-        master        => true,
-        binlog_format => 'STATEMENT',
-    }
-}
 
-node /^db10(51|55|66|72|73|80|83|89)\.eqiad\.wmnet/ {
+node /^db10(51|55|57|66|72|73|80|83|89)\.eqiad\.wmnet/ {
     class { '::role::mariadb::core':
         shard => 's1',
     }
