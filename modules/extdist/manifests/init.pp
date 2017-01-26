@@ -20,7 +20,7 @@ class extdist(
         'LOG_FILE'  => "${log_dir}/extdist",
         'SRC_PATH'  => $src_path,
         'PID_FILE'  => "${pid_folder}/pid.lock",
-        'COMPOSER'  => "${composer_dir}/vendor/bin/composer"
+        'COMPOSER'  => "${composer_dir}/vendor/bin/composer",
     }
 
     $skin_settings = {
@@ -30,7 +30,7 @@ class extdist(
         'LOG_FILE'  => "${log_dir}/skindist",
         'SRC_PATH'  => $src_path,
         'PID_FILE'  => "${pid_folder}/skinpid.lock",
-        'COMPOSER'  => "${composer_dir}/vendor/bin/composer"
+        'COMPOSER'  => "${composer_dir}/vendor/bin/composer",
     }
 
     user { 'extdist':
@@ -41,7 +41,7 @@ class extdist(
     file { '/home/extdist':
         ensure  => directory,
         owner   => 'extdist',
-        require => User['extdist']
+        require => User['extdist'],
     }
 
     file { [$dist_dir, $clone_dir, $src_path,
@@ -79,14 +79,14 @@ class extdist(
         ensure  => present,
         content => ordered_json($ext_settings),
         owner   => 'extdist',
-        require => User['extdist']
+        require => User['extdist'],
     }
 
     file { '/etc/skindist.conf':
         ensure  => present,
         content => ordered_json($skin_settings),
         owner   => 'extdist',
-        require => User['extdist']
+        require => User['extdist'],
     }
 
     cron { 'extdist-generate-tarballs':
@@ -98,7 +98,7 @@ class extdist(
             Git::Clone['labs/tools/extdist'],
             User['extdist'],
             File['/etc/extdist.conf']
-        ]
+        ],
     }
 
     cron { 'skindist-generate-tarballs':
@@ -110,7 +110,7 @@ class extdist(
             Git::Clone['labs/tools/extdist'],
             User['extdist'],
             File['/etc/skindist.conf']
-        ]
+        ],
     }
 
     nginx::site { 'extdist':
