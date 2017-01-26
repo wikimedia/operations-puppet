@@ -15,7 +15,7 @@
 class ganeti(
     $with_drbd=true
     ) {
-    include ganeti::kvm
+    include ::ganeti::kvm
 
     package { [
             'ganeti',

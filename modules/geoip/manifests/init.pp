@@ -17,6 +17,6 @@
 class geoip {
   # load the data from the puppetmaster. You need to make sure the puppetmaster
   # includes one or more of the other data classes
-  include geoip::data::puppet
-  include geoip::bin
+  include ::geoip::data::puppet
+  include ::geoip::bin
 }
