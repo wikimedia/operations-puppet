@@ -11,16 +11,16 @@ class gerrit($host = undef, $master_host = $::fqdn) {
         default => true
     }
 
-    class { 'gerrit::jetty':
+    class { '::gerrit::jetty':
         slave => $slave,
     }
 
     if !$slave {
-        class { 'gerrit::proxy':
+        class { '::gerrit::proxy':
             require => Class['gerrit::jetty'],
         }
 
-        class { 'gerrit::crons':
+        class { '::gerrit::crons':
             require => Class['gerrit::jetty'],
         }
     }

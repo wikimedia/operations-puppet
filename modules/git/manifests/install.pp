@@ -72,7 +72,7 @@ define git::install(
                 source  => $post_checkout,
                 owner   => $owner,
                 group   => $group,
-                require => Git::Clone[$title]
+                require => Git::Clone[$title],
             }
         }
 
@@ -98,7 +98,7 @@ define git::install(
             cwd         => $directory,
             user        => $owner,
             path        => '/usr/bin/',
-            refreshonly => true
+            refreshonly => true,
         }
     }
 }

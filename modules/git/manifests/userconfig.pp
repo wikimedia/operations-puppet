@@ -27,7 +27,7 @@ define git::userconfig($homedir, $settings) {
     owner   => 'root',
     group   => 'root',
     mode    => '0444',
-    content => template( 'git/gitconfig.erb' )
+    content => template( 'git/gitconfig.erb' ),
   }
 
 }

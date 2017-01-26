@@ -13,16 +13,16 @@ class gerrit::jetty(
     $log_port = '4560'
     ) {
 
-    include nrpe
+    include ::nrpe
 
     # Private config
-    include passwords::gerrit
+    include ::passwords::gerrit
     $email_key = $passwords::gerrit::gerrit_email_key
     $db_pass = $passwords::gerrit::gerrit_db_pass
     $phab_cert = $passwords::gerrit::gerrit_phab_cert
 
     # Setup LDAP
-    include ldap::role::config::labs
+    include ::ldap::role::config::labs
     $ldapconfig = $ldap::role::config::labs::ldapconfig
 
     $ldap_hosts = $ldapconfig['servernames']
