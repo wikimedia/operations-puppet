@@ -6,7 +6,7 @@ groups:
               mwalker, nimishg, rainman, ssmith, swalling, sumanah, werdna, rmoen,
               johnflewis, marc, jkrauska, akumar, mnoushad, spage, tnegrin, msyed, kleduc,
               manybubbles, haithams, jzerebecki, ashwinpp, ironholds, robla, asherman,
-              laner, declerambaul, srijan, junikowski]
+              laner, declerambaul, srijan, junikowski, krenair]
   wikidev:
     gid: 500
     description: container group for primary user groups.
@@ -53,7 +53,7 @@ groups:
               gjg, gwicke, halfak, hashar, hoo, kaldari, kartik, khorn, krinkle,
               maxsem, mattflaschen, marktraceur, milimetric, mlitn, andyrussg,
               nikerabbit, reedy, ssastry, tomasz,
-              tgr, phuedx, ejegg, twentyafterfour, legoktm, catrope, krenair,
+              tgr, phuedx, ejegg, twentyafterfour, legoktm, catrope,
               mobrovac, nuria, thcipriani, joal, eevans, mforns, dpatrick, dcausse,
               bsitzmann, mholloway-shell, dduvall, gehel, dereckson,
               ladsgroup, bawolff, zfilipin, addshore, niharika29, ppchelko, pmiazga]
@@ -494,7 +494,7 @@ groups:
   labtest-roots:
     gid: 776
     description: allows full sudo on labtest cluster, T131166
-    members: [bd808, krenair]
+    members: [bd808]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
   swift-roots:
     gid: 777
@@ -1654,12 +1654,11 @@ users:
     ssh_keys: []
     uid: 11223
   krenair:
-    ensure: present
+    ensure: absent
     gid: 500
     name: krenair
     realname: Alex Monk
-    ssh_keys:
-      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCjyQjatHRgTqYDmKtdneyNM8ujhXx2eso3U2oFIqTsyBCH6Svn7BU/xAGfXjgWSh75h7SjwsUmXWE9eyE/BF1rypsOVC5Tjy56i7anul6f0ffGKgnMWN8gKlIdiQY4WTCi+3UQiv5vLXKsFAPLvPOQIrcWZKHARJzjx0M5lcHxC95TXn8e85S9ZCXdBNSgQfPQU2/0oVH0E2IsHbxcA/WJBxCUc1YNGxFUNk3O4JbBZX4QXFa8K9HMxoGMuhVHmiF/RHu06JJdaPt0bvHLfYoSvnvEoW6zM16wLQpVeS46ZH7ED+dgKC/DZ1Y9uL2Q6BkYeWI4hu8ojh1VpVOTihLl krenair@yubikey prod
+    ssh_keys: []
     uid: 2170
   tbayer:
     ensure: present
