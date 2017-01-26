@@ -59,16 +59,12 @@ ores::web::redis_host: oresrdb.svc.eqiad.wmnet
 # Maps stream route names to composite Kafka topics.
 role::eventstreams::streams:
   recentchange:
-    description: >
-      Mediawiki RecentChanges feed.
-      Schema: https://github.com/wikimedia/mediawiki-event-schemas/tree/master/jsonschema/mediawiki/recentchange
+    description: "Mediawiki RecentChanges feed. Schema: https://github.com/wikimedia/mediawiki-event-schemas/tree/master/jsonschema/mediawiki/recentchange"
     topics:
       - eqiad.mediawiki.recentchange
       - codfw.mediawiki.recentchange
   test:
-    description: >
-      Meaningless test event.  A new event is posted about once a minute.
-      Schema: https://github.com/wikimedia/mediawiki-event-schemas/tree/master/jsonschema/test/event
+    description: "Test event stream. A new event is posted about once a minute. Schema: https://github.com/wikimedia/mediawiki-event-schemas/tree/master/jsonschema/test/event"
     topics:
       - eqiad.test.event
       - codfw.test.event
