@@ -8,7 +8,7 @@ class aptrepo::rsync {
     if $::fqdn != $primary_server {
 
         $ensure = 'present'
-        include rsync::server
+        include ::rsync::server
 
         # just APT data (/srv/wikimedia/)
         rsync::server::module { 'aptrepo':
