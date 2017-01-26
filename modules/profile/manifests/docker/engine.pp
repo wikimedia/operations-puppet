@@ -14,7 +14,7 @@ class profile::docker::engine {
     $service_ensure = hiera('profile::docker::engine::service', 'running')
 
     # Install docker
-    class { 'docker':
+    class { '::docker':
         version => $docker_version,
     }
 
@@ -31,7 +31,7 @@ class profile::docker::engine {
     }
 
     # We need to import one storage config
-    class { 'docker::configuration':
+    class { '::docker::configuration':
         settings => merge($docker_settings, $docker_storage_options),
     }
 

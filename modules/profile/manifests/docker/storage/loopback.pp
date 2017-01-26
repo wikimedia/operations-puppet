@@ -24,7 +24,7 @@ class profile::docker::storage::loopback {
         file { $dm_target_dir:
             ensure => link,
             target => $dm_source_dir,
-            before => Service['docker']
+            before => Service['docker'],
         }
     } else {
         file { $dm_target_dir:

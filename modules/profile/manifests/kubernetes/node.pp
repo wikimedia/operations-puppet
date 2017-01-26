@@ -21,7 +21,7 @@ class profile::kubernetes::node {
         tls_cert                  => '/etc/kubernetes/ssl/cert.pem',
         tls_key                   => '/etc/kubernetes/ssl/server.key',
     }
-    class { 'k8s::proxy':
+    class { '::k8s::proxy':
         master_host => $master_host,
         use_package => true,
     }
