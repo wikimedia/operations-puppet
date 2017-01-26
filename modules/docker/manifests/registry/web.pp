@@ -34,7 +34,7 @@ class docker::registry::web(
 
     if $http_endpoint {
         nginx::site { 'registry-http':
-            content => template('docker/registry-http-nginx.conf.erb')
+            content => template('docker/registry-http-nginx.conf.erb'),
         }
     }
 
