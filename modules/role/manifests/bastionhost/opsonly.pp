@@ -5,9 +5,9 @@ class role::bastionhost::opsonly {
     }
 
     include ::bastionhost
-    include standard
-    include base::firewall
-    include role::backup::host
+    include ::standard
+    include ::base::firewall
+    include ::role::backup::host
 
     backup::set {'home': }
 

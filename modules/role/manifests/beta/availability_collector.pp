@@ -6,7 +6,7 @@ class role::beta::availability_collector {
         settings => {
             path_prefix => $::labsproject,
             path        => 'availability',
-        }
+        },
     }
 }
 

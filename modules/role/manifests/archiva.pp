@@ -7,7 +7,7 @@
 class role::archiva {
     system::role { 'role::archiva': description => 'Apache Archiva Host' }
 
-    include base::firewall
+    include ::base::firewall
 
     require_package('openjdk-7-jdk')
 
@@ -22,9 +22,9 @@ class role::archiva {
 
     # Bacula backups for /var/lib/archiva.
     if $::realm == 'production' {
-        include role::backup::host
+        include ::role::backup::host
         backup::set { 'var-lib-archiva':
-            require => Class['::archiva']
+            require => Class['::archiva'],
         }
     }
 

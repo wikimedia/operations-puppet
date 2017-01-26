@@ -11,8 +11,8 @@ class role::aqs {
 
     include ::passwords::aqs
 
-    include standard
-    include base::firewall
+    include ::standard
+    include ::base::firewall
 
     #
     # Set up Cassandra for AQS.
@@ -34,7 +34,7 @@ class role::aqs {
         $default_instances = {
             'default' => {
                 'listen_address' => $::cassandra::listen_address,
-            }
+            },
         }
         ::cassandra::instance::monitoring { 'default':
             instances     => $default_instances,
@@ -57,7 +57,7 @@ class role::aqs {
         srange => "@resolve((${cassandra_hosts_ferm}))",
     }
     # Allow analytics networks to populate cassandra
-    include network::constants
+    include ::network::constants
     $analytics_networks = join($network::constants::analytics_networks, ' ')
 
     # In addition to the IP assigned to the Cassandra multi instances, these rules
@@ -78,7 +78,7 @@ class role::aqs {
     include ::aqs
     include ::aqs::monitoring
 
-    include role::lvs::realserver
+    include ::role::lvs::realserver
 
     ferm::service {'aqs_web':
         proto => 'tcp',
