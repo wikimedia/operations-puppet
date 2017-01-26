@@ -17,7 +17,7 @@ class librenms::web(
         subjects   => 'librenms.wikimedia.org',
         puppet_svc => 'apache2',
         system_svc => 'apache2',
-        require    => Class['apache::mod::ssl']
+        require    => Class['apache::mod::ssl'],
     }
 
     monitoring::service { 'https':
