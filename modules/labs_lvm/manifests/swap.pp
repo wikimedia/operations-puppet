@@ -9,7 +9,7 @@ define labs_lvm::swap(
     $size,
 ) {
 
-    include labs_lvm
+    include ::labs_lvm
 
     $volume_path = "/dev/vd/${name}"
 
@@ -30,7 +30,7 @@ define labs_lvm::swap(
         options => 'defaults',
         fstype  => 'swap',
         require => Exec["create-swap-${name}"],
-        notify  => Exec["swapon-${name}"]
+        notify  => Exec["swapon-${name}"],
     }
 
     exec { "swapon-${name}":

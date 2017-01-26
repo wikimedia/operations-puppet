@@ -10,7 +10,7 @@ class labs_bootstrapvz() {
     $bootstrap_filepath = '/etc/bootstrap-vz/'
 
     file { $bootstrap_filepath:
-        ensure => directory
+        ensure => directory,
     }
 
     file { "${bootstrap_filepath}/manifests":

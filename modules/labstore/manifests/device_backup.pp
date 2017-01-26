@@ -9,7 +9,7 @@ define labstore::device_backup (
     $minute=0,
 ) {
 
-    include labstore::bdsync
+    include ::labstore::bdsync
     $remote_ip = ipresolve($remotehost, 4)
 
     $day = {
@@ -30,6 +30,6 @@ define labstore::device_backup (
         weekday     => $day[$weekday],
         hour        => $hour,
         minute      => $minute,
-        environment => 'MAILTO=labs-admin@lists.wikimedia.org'
+        environment => 'MAILTO=labs-admin@lists.wikimedia.org',
     }
 }
