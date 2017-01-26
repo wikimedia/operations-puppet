@@ -96,7 +96,7 @@ class profile::etcd(
         }
 
         #FIXME: this is like this while we migrate to profiles
-        include role::backup::host
+        include ::role::backup::host
         backup::set { 'etcd': }
     }
 
