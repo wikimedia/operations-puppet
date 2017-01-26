@@ -4,10 +4,10 @@ class role::bastionhost::twofa {
     }
 
     include ::bastionhost
-    include standard
-    include base::firewall
-    include role::backup::host
-    include passwords::yubiauth
+    include ::standard
+    include ::base::firewall
+    include ::role::backup::host
+    include ::passwords::yubiauth
 
     backup::set {'home': }
 
