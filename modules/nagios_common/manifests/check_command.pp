@@ -61,7 +61,7 @@ define nagios_common::check_command(
         content    => $config_content,
         config_dir => $config_dir,
         owner      => $owner,
-        group      => $group
+        group      => $group,
     }
 }
 
