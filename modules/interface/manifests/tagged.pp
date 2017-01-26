@@ -28,7 +28,7 @@ define interface::tagged($base_interface, $vlan_id, $address=undef, $netmask=und
 
     if $remove == true {
         $augeas_cmd = [ "rm auto[./1 = '${intf}']",
-                "rm iface[. = '${intf}']"
+                "rm iface[. = '${intf}']",
             ]
     } else {
         $augeas_cmd = [ "set auto[./1 = '${intf}']/1 '${intf}'",
