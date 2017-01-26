@@ -12,7 +12,7 @@
 #
 
 class grub::defaults {
-    include grub
+    include ::grub
 
     # The augeas Shellvars_list lens can't handle backticks for versions < 1.2
     # We fallback to the legacy grep/sed method in that case.
