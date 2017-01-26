@@ -10,7 +10,7 @@ define facilities::monitor_pdu_service(
     $redundant= true
 ) {
 
-    include passwords::nagios::snmp
+    include ::passwords::nagios::snmp
 
     $servertech_tree = '.1.3.6.1.4.1.1718'
     $infeedload      = '.3.2.2.1.7'
