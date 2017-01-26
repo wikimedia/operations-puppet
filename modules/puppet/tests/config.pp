@@ -1,2 +1,2 @@
 #
-include puppet::self::config
+include ::puppet::self::config

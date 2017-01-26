@@ -30,7 +30,7 @@ class puppet::self::config(
 
     require_package('python3-yaml', 'python3-ldap3')
 
-    include ldap::yamlcreds
+    include ::ldap::yamlcreds
 
     file { '/etc/puppet-enc.yaml':
         content => ordered_yaml({
@@ -62,7 +62,7 @@ class puppet::self::config(
         $ssldir = puppet_ssldir('master')
         # include puppetmaster::ssl for self hosted
         # puppetmasters.  (This sets up the ssl directories).
-        class { 'puppetmaster::ssl':
+        class { '::puppetmaster::ssl':
             server_name => $::fqdn,
         }
 
@@ -106,7 +106,7 @@ class puppet::self::config(
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-        content => template('puppet/auth-self.conf.erb')
+        content => template('puppet/auth-self.conf.erb'),
     }
 
     file { '/etc/puppet/fileserver.conf':
