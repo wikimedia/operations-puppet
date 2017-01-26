@@ -83,7 +83,7 @@ class ocg (
             'zip',
         ]:
         ensure => present,
-        before => Service['ocg']
+        before => Service['ocg'],
     }
 
 
@@ -151,7 +151,7 @@ class ocg (
     }
 
     # Change this if you change the value of $nodebin
-    include apparmor
+    include ::apparmor
     $nodebin_dots = regsubst($nodebin, '/', '.', 'G')
 
     file { "/etc/apparmor.d/${nodebin_dots}":
@@ -214,7 +214,7 @@ class ocg (
     # makes some basic logfiles readable for non-roots
     # in labs this is used by default in role/labs
     if $::realm == 'production' {
-        class { 'base::syslogs':
+        class { '::base::syslogs':
             readable => true,
             logfiles => ['syslog','messages','ocg.log'],
         }

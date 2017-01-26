@@ -87,7 +87,7 @@ class network::constants {
                     '',  # deployment-terbium.deployment-prep.eqiad.wmflabs ?
                     '',  # deployment-wasat.deployment-prep.eqiad.wmflabs ?
                 ],
-            }
+            },
     }
 
 
