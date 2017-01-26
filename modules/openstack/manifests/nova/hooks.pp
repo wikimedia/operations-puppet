@@ -3,7 +3,7 @@
 class openstack::nova::hooks(
     $openstack_version  = $::openstack::version)
 {
-    require openstack
+    require ::openstack
     if ! defined(Package['python-mwclient']) {
         package { 'python-mwclient':
             ensure => latest,

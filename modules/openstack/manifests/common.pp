@@ -5,7 +5,7 @@ class openstack::common(
             $openstack_version=$::openstack::version,
     ) {
 
-    include openstack::repo
+    include ::openstack::repo
 
     $packages = [
         'unzip',
