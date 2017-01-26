@@ -1,7 +1,7 @@
 class k8s::scheduler(
     $use_package = false,
 ) {
-    include k8s::users
+    include ::k8s::users
 
     if $use_package {
         require_package('kubernetes-master')

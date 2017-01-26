@@ -2,7 +2,7 @@ class k8s::controller(
     $use_package = false,
     $cluster_cidr = '192.168.0.0/24',
 ){
-    include k8s::users
+    include ::k8s::users
 
     if $use_package {
         require_package('kubernetes-master')
