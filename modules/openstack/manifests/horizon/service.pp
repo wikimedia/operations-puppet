@@ -207,7 +207,7 @@ class openstack::horizon::service(
         #  we can't do this via the overrides.py monkeypatch below
 
         file { '/usr/share/openstack-dashboard/openstack_dashboard/dashboards/project/static/dashboard/project/workflow/launch-instance/launch-instance-workflow.service.js':
-            source  => "puppet:///modules/openstack/${openstack_version}/horizon/jsoverrides/launch-instance-workflow.service.py",
+            source  => "puppet:///modules/openstack/${openstack_version}/horizon/jsoverrides/launch-instance-workflow.service.js",
             owner   => 'root',
             group   => 'root',
             require => Package['openstack-dashboard'],
