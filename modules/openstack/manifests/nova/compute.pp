@@ -5,7 +5,7 @@ class openstack::nova::compute(
     $novaconfig,
     $openstack_version=$::openstack::version
 ){
-    include openstack::repo
+    include ::openstack::repo
 
     if ( $::realm == 'production' ) {
         $certname = "labvirt-star.${::site}.wmnet"
@@ -70,7 +70,7 @@ class openstack::nova::compute(
             require => File['/var/lib/nova/.ssh'],
         }
 
-        class { 'rsync::server':
+        class { '::rsync::server':
             use_chroot => 'no',
         }
         # Support rsyncing instance files between labvirts.
