@@ -12,7 +12,7 @@ class ifttt::base(
         'python-dev',
         'libmysqlclient-dev',
         'libxml2-dev',
-        'libxslt1-dev'
+        'libxslt1-dev',
     ])
 
 }

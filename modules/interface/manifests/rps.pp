@@ -11,8 +11,8 @@
 #   Must contain a single "%d" format character for the queue number
 #   (on bnx2x, this would be "eth0-fp-%d")
 define interface::rps( $rss_pattern='' ) {
-    require interface::rpstools
-    require interface::rps::modparams
+    require ::interface::rpstools
+    require ::interface::rps::modparams
 
     $interface = $title
     if $rss_pattern != '' {
@@ -24,7 +24,7 @@ define interface::rps( $rss_pattern='' ) {
 
     # Disable irqbalance if RSS in use
     if $rss_pattern != '' {
-        require irqbalance::disable
+        require ::irqbalance::disable
     }
 
     # Add to ifup commands in /etc/network/interfaces
@@ -42,10 +42,10 @@ define interface::rps( $rss_pattern='' ) {
 }
 
 class interface::rps::modparams {
-    include initramfs
+    include ::initramfs
 
     file { '/etc/modprobe.d/rps.conf':
         content => template("${module_name}/rps.conf.erb"),
-        notify  => Exec['update-initramfs']
+        notify  => Exec['update-initramfs'],
     }
 }
