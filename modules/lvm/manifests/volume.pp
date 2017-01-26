@@ -80,7 +80,7 @@ define lvm::volume (
         volume_group { $vg:
           ensure           => present,
           physical_volumes => $pv,
-          before           => Physical_volume[$pv]
+          before           => Physical_volume[$pv],
         }
 
         logical_volume { $name:
@@ -88,7 +88,7 @@ define lvm::volume (
           volume_group => $vg,
           size         => $size,
           initial_size => $initial_size,
-          before       => Volume_group[$vg]
+          before       => Volume_group[$vg],
         }
       }
     }
@@ -99,7 +99,7 @@ define lvm::volume (
       logical_volume { $name:
         ensure       => absent,
         volume_group => $vg,
-        size         => $size
+        size         => $size,
       }
     }
     #
@@ -115,7 +115,7 @@ define lvm::volume (
         volume_group { $vg:
           ensure           => present,
           physical_volumes => $pv,
-          require          => Physical_volume[$pv]
+          require          => Physical_volume[$pv],
         }
       }
 
@@ -124,14 +124,14 @@ define lvm::volume (
         volume_group => $vg,
         size         => $size,
         extents      => $extents,
-        require      => Volume_group[$vg]
+        require      => Volume_group[$vg],
       }
 
       if $fstype != undef {
         filesystem { "/dev/${vg}/${name}":
           ensure  => present,
           fs_type => $fstype,
-          require => Logical_volume[$name]
+          require => Logical_volume[$name],
         }
       }
 
