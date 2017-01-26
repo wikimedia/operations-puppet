@@ -5,7 +5,7 @@
 # their relative usefulness.
 
 class locales::extended {
-    include locales
+    include ::locales
 
     # Ubuntu has a nice supported.d mechanism; Debian doesn't, so fall back
     # into overwriting the systems config. For Debian systems, though,
