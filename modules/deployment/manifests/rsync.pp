@@ -4,7 +4,7 @@
 #
 
 class deployment::rsync($deployment_server, $cron_ensure='absent') {
-    include rsync::server
+    include ::rsync::server
 
     rsync::server::module { 'trebuchet_server':
         path        => '/srv/deployment',
