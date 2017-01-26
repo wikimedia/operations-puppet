@@ -70,12 +70,12 @@ class icinga::monitor::certs {
     # wikitech-static.wikimedia.org (external, Rackspace)
     @monitoring::host { 'wikitech-static.wikimedia.org':
         host_fqdn      => 'wikitech-static.wikimedia.org',
-        contact_groups => 'wikitech-static',
+        contact_group  => 'wikitech-static',
     }
     monitoring::service { 'https_wikitech-static':
         description    => 'HTTPS-wikitech-static',
         check_command  => 'check_ssl_http_letsencrypt!wikitech-static.wikimedia.org',
         host           => 'wikitech-static.wikimedia.org',
-        contact_groups => 'wikitech-static',
+        contact_group  => 'wikitech-static',
     }
 }
