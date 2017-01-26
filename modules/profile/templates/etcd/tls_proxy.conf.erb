@@ -45,7 +45,7 @@ server {
         <%- else -%>
         limit_except GET HEAD OPTIONS {
             auth_basic "etcd";
-            auth_basic_user_file "/etc/nginx/auth/<%= url.gsub('/', '_') %>.htpasswd %>";
+            auth_basic_user_file "/etc/nginx/auth/<%= url.gsub('/', '_') %>.htpasswd";
         }
         <%- end -%>
     }
