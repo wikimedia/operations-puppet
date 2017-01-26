@@ -14,7 +14,7 @@ class graphite::monitoring::graphite {
         from            => '10minutes',
         warning         => 200,
         critical        => 1000,
-        nagios_critical => false
+        nagios_critical => false,
     }
 
     # is carbon-cache able to write to disk (e.g. permissions)
@@ -24,7 +24,7 @@ class graphite::monitoring::graphite {
         from            => '10minutes',
         warning         => 1,
         critical        => 8,
-        nagios_critical => false
+        nagios_critical => false,
     }
 
     # are carbon-cache queues overflowing their capacity?
@@ -34,7 +34,7 @@ class graphite::monitoring::graphite {
         from            => '10minutes',
         warning         => 1,
         critical        => 8,
-        nagios_critical => false
+        nagios_critical => false,
     }
 
     # are we creating too many metrics?
@@ -44,6 +44,6 @@ class graphite::monitoring::graphite {
         from            => '1hour',
         warning         => 500,
         critical        => 1000,
-        nagios_critical => false
+        nagios_critical => false,
     }
 }
