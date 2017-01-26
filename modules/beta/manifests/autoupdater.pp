@@ -4,7 +4,7 @@
 # cluster. This is the lame way to automatically pull any code merged in master
 # branches.
 class beta::autoupdater {
-    require scap::scripts
+    require ::scap::scripts
 
     $stage_dir = '/srv/mediawiki-staging'
 
@@ -59,7 +59,7 @@ class beta::autoupdater {
 
     file { "${stage_dir}/docroot/wwwportal/portal-master":
         ensure => 'link',
-        target => '../../portal-master/prod'
+        target => '../../portal-master/prod',
     }
 
     file { "${stage_dir}/php-master/LocalSettings.php":

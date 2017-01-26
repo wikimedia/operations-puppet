@@ -8,7 +8,7 @@ class aptrepo::rsync {
     if $::fqdn != $primary_server {
 
         $ensure = 'present'
-        include rsync::server
+        include ::rsync::server
 
         rsync::server::module { 'aptrepo':
             ensure      => $aptrepo::rsync::ensure,
