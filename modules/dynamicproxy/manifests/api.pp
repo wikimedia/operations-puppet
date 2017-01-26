@@ -20,7 +20,7 @@ class dynamicproxy::api(
                 callable           => 'app',
                 manage-script-name => true,
                 workers            => 4,
-            }
+            },
         },
         subscribe => File['/usr/local/bin/invisible-unicorn.py'],
     }
