@@ -26,11 +26,11 @@ class programdashboard::app(
     $owner,
     $group,
 ) {
-    require programdashboard
+    require ::programdashboard
 
-    include apt
-    include apache
-    include apache::mod::passenger
+    include ::apt
+    include ::apache
+    include ::apache::mod::passenger
 
     require_package($dependencies)
 

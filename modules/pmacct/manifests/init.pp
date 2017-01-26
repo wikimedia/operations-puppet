@@ -9,7 +9,7 @@
 #  include pmacct
 
 class pmacct {
-    require geoip
+    require ::geoip
 
     package { 'pmacct':
         ensure => present,
