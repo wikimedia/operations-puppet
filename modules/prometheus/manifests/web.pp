@@ -12,7 +12,7 @@ define prometheus::web (
     $proxy_pass,
     $ensure = present,
 ) {
-    include prometheus
+    include ::prometheus
 
     # Nginx configuration snippet with proxy pass.
     $title_safe  = regsubst($title, '[\W_]', '-', 'G')
