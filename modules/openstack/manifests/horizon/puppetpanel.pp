@@ -10,7 +10,7 @@ class openstack::horizon::puppetpanel(
         mode    => '0644',
         require => Package['openstack-dashboard'],
         notify  => Exec['djangorefresh'],
-        recurse => true
+        recurse => true,
     }
     file { '/usr/share/openstack-dashboard/openstack_dashboard/local/enabled/_1923_puppet_group_add.py':
         source  => "puppet:///modules/openstack/${openstack_version}/horizon/puppet_group_add.py",

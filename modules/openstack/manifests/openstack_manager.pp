@@ -7,7 +7,7 @@ class openstack::openstack_manager(
     $webserver_hostname_aliases = 'wikitech.m.wikimedia.org wmflabs.org www.wmflabs.org',
 ) {
 
-    require mediawiki::users
+    require ::mediawiki::users
     include ::mediawiki::multimedia
     include ::apache
     include ::apache::mod::alias
@@ -17,10 +17,10 @@ class openstack::openstack_manager(
     include ::mediawiki::scap
     include ::apache::mod::rewrite
     include ::apache::mod::headers
-    include role::backup::host
-    include nrpe
+    include ::role::backup::host
+    include ::nrpe
 
-    include openstack::wikitechprivatesettings
+    include ::openstack::wikitechprivatesettings
 
     include ::imagemagick::install
 
@@ -45,7 +45,7 @@ class openstack::openstack_manager(
             notify  => Exec['apt-get update'],
         }
 
-        class { 'memcached':
+        class { '::memcached':
             ip  => '127.0.0.1',
         }
     }
