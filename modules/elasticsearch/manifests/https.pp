@@ -27,7 +27,7 @@ class elasticsearch::https (
         validate_string($certificate_name)
     }
 
-    class { [ 'nginx', 'nginx::ssl' ]:
+    class { [ '::nginx', '::nginx::ssl' ]:
         ensure => $ensure,
     }
 
