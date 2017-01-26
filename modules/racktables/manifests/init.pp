@@ -8,8 +8,8 @@ class racktables (
     $racktables_db      = 'racktables',
 ) {
 
-    include mysql
-    include passwords::racktables
+    include ::mysql
+    include ::passwords::racktables
     include ::apache
     include ::apache::mod::php5
     include ::apache::mod::ssl

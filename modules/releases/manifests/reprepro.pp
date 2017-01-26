@@ -84,8 +84,8 @@ class releases::reprepro {
                 'Description'   => 'MediaWiki packages for Debian jessie',
                 'SignWith'      => 'default',
                 'Log'           => "jessie-mediawiki\n  log",
-            }
-        }
+            },
+        },
     }
 }
 
