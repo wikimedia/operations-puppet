@@ -221,7 +221,7 @@ class role::cache::misc {
         'integration.wikimedia.org'          => { 'director' => 'contint1001' },
         'labspice.wikimedia.org'             => { 'director' => 'labspice' },
         'labtestspice.wikimedia.org'         => { 'director' => 'labtestspice' },
-        'latesthorizon.wikimedia.org'        => { 'director' => 'labtestweb2001' },
+        'labtesthorizon.wikimedia.org'       => { 'director' => 'labtestweb2001' },
         'logstash.wikimedia.org'             => { 'director' => 'logstash_director' },
         'metrics.wikimedia.org'              => { 'director' => 'thorium' },
         'noc.wikimedia.org'                  => { 'director' => 'noc' },
