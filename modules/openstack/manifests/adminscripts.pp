@@ -76,7 +76,7 @@ class openstack::adminscripts(
         owner   => 'nova',
         group   => 'nova',
         mode    => '0600',
-        require => Package['nova-common']
+        require => Package['nova-common'],
     }
 
     # Script to rsync shutoff instances between compute nodes.

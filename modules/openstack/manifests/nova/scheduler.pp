@@ -3,7 +3,7 @@
 class openstack::nova::scheduler(
     $openstack_version=$::openstack::version,
 ){
-    include openstack::repo
+    include ::openstack::repo
 
     package { 'nova-scheduler':
         ensure  => present,

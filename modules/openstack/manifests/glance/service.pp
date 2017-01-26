@@ -7,7 +7,7 @@ class openstack::glance::service(
     $openstack_version=$::openstack::version,
     $glance_data = '/srv/glance/',
 ) {
-    include openstack::repo
+    include ::openstack::repo
 
     $glance_images_dir = "${glance_data}/images"
     $keystone_host_ip  = ipresolve($keystone_host,4)
