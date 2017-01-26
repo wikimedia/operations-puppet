@@ -110,9 +110,9 @@ class phabricator (
             ensure => present;
     }
 
-    include apache::mod::php5
-    include apache::mod::rewrite
-    include apache::mod::headers
+    include ::apache::mod::php5
+    include ::apache::mod::rewrite
+    include ::apache::mod::headers
 
     $docroot = "${phabdir}/phabricator/webroot"
 
@@ -156,7 +156,7 @@ class phabricator (
         sudo_rules  => [
             'ALL=(root) NOPASSWD: /usr/sbin/service phd *',
             'ALL=(root) NOPASSWD: /usr/sbin/service apache2 *',
-        ]
+        ],
     }
 
     file { $phabdir:
@@ -235,13 +235,13 @@ class phabricator (
         require => $base_requirements,
     }
 
-    class { 'phabricator::vcs':
+    class { '::phabricator::vcs':
         basedir  => $phabdir,
         settings => $phab_settings,
         require  => $base_requirements,
     }
 
-    class { 'phabricator::phd':
+    class { '::phabricator::phd':
         basedir  => $phabdir,
         settings => $phab_settings,
         before   => Service['phd'],
@@ -281,6 +281,6 @@ class phabricator (
     }
 
     if $phab_settings['notification.servers'] {
-        include phabricator::aphlict
+        include ::phabricator::aphlict
     }
 }

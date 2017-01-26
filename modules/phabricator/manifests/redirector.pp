@@ -17,10 +17,10 @@ define phabricator::redirector(
 ) {
     file { "${rootdir}/phabricator/support/preamble.php":
         content => template('phabricator/preamble.php.erb'),
-        require => File["${rootdir}/phabricator/support/redirect_config.json"]
+        require => File["${rootdir}/phabricator/support/redirect_config.json"],
     }
 
     file { "${rootdir}/phabricator/support/redirect_config.json":
-        content => template('phabricator/redirect_config.json.erb')
+        content => template('phabricator/redirect_config.json.erb'),
     }
 }
