@@ -61,7 +61,7 @@ class etcd (
         fail('We need either the domain name for DNS discovery or an explicit peers list')
     }
 
-    require etcd::logging
+    require ::etcd::logging
 
     require_package('etcd')
 
@@ -71,7 +71,7 @@ class etcd (
         # If we're being proxied from a TLS terminator
         # let's keep it into account
         if ($adv_client_port == $client_port) {
-            include etcd::ssl
+            include ::etcd::ssl
             $scheme = 'https'
         } else {
             $scheme = 'http'
