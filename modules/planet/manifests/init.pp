@@ -31,11 +31,11 @@ class planet (
     include locales::extended
 
     # things done once for all planets
-    include planet::webserver,
-            planet::packages,
-            planet::dirs,
-            planet::user,
-            planet::index_site
+    include ::planet::webserver
+    include ::planet::packages
+    include ::planet::dirs
+    include ::planet::user
+    include ::planet::index_site
 
     # TODO change this to be one per language
     file { '/usr/share/planet-venus/theme/common/images/planet-wm2.png':
