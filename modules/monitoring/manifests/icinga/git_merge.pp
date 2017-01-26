@@ -19,14 +19,14 @@ define monitoring::icinga::git_merge (
         owner   => 'root',
         group   => 'root',
         mode    => '0555',
-        content => template('monitoring/check_git-needs-merge.erb')
+        content => template('monitoring/check_git-needs-merge.erb'),
     }
 
     nrpe::monitor_service { "${sane_title}_merged":
         description  => "Unmerged changes on repository ${title}",
         nrpe_command => "/usr/bin/sudo ${filename}",
         retries      => $interval,
-        require      => File[$file_resource]
+        require      => File[$file_resource],
     }
 
     file { "sudo_nagios_${sane_title}":
