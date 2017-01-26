@@ -23,12 +23,6 @@ from designate.central import rpcapi as central_rpcapi
 from designate.context import DesignateContext
 from designate.notification_handler.base import BaseAddressHandler
 from designate.objects import Record
-from keystoneclient.auth.identity import v3
-from keystoneclient import client
-from keystoneclient import exceptions as keystoneexceptions
-from keystoneclient.v3 import projects
-from keystoneclient import session
-
 
 LOG = logging.getLogger(__name__)
 central_api = central_rpcapi.CentralAPI()
@@ -73,18 +67,9 @@ class BaseAddressMultiHandler(BaseAddressHandler):
 
         context = DesignateContext.get_admin_context(all_tenants=True)
 
-        # Extra magic!  The event record contains a tenant id but not a tenant name.  So
-        #  if our formats include project_name then we need to ask keystone for the name.
-        need_project_name = False
-        for fmt in cfg.CONF[self.name].get('format'):
-            if 'project_name' in fmt:
-                need_project_name = True
-                break
-        if 'project_name' in cfg.CONF[self.name].get('reverse_format'):
-            need_project_name = True
-        if need_project_name:
-            project_name = self._resolve_project_name(data['tenant_id'])
-            data['project_name'] = project_name
+        # We have a hack elsewhere in keystone to ensure that tenant id == tenant name.
+        #  So... we can safely use the id in the fqdn.
+        data['project_name'] = data['tenant_id']
 
         for addr in addresses:
             event_data = data.copy()
@@ -209,31 +194,3 @@ class BaseAddressMultiHandler(BaseAddressHandler):
                 central_api.delete_record(context,
                                           reverse_domain_id,
                                           record['recordset_id'], record['id'])
-
-    def _resolve_project_name(self, tenant_id):
-        try:
-            username = cfg.CONF[self.name].keystone_auth_name
-            passwd = cfg.CONF[self.name].keystone_auth_pass
-            project = cfg.CONF[self.name].keystone_auth_project
-            url = cfg.CONF[self.name].keystone_auth_url
-        except KeyError:
-            LOG.warn('Missing a config setting for keystone auth.')
-            return
-
-        try:
-            auth = v3.Password(auth_url=url,
-                               user_id=username,
-                               password=passwd,
-                               project_id=project)
-            sess = session.Session(auth=auth)
-            keystone = client.Client(session=sess, auth_url=url)
-        except keystoneexceptions.AuthorizationFailure:
-            LOG.warn('Keystone client auth failed.')
-            return
-        projectmanager = projects.ProjectManager(keystone)
-        proj = projectmanager.get(tenant_id)
-        if proj:
-            LOG.debug('Resolved project id %s as %s' % (tenant_id, proj.name))
-            return proj.name
-        else:
-            return 'unknown'

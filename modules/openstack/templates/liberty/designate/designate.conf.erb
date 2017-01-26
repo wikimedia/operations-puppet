@@ -291,10 +291,6 @@ format = '%(hostname)s.%(project_name)s.%(domain)s'
 format = '%(hostname)s.%(domain)s'
 reverse_domain_id = '<%= @designateconfig["domain_id_internal_reverse"] %>'
 reverse_format = '%(hostname)s.%(project_name)s.%(domain)s'
-keystone_auth_name = "novaadmin"
-keystone_auth_pass = "<%= @keystoneconfig['ldap_user_pass'] %>"
-keystone_auth_project = <%= @keystoneconfig['admin_project_id'] %>
-keystone_auth_url = "http://<%= @designateconfig['controller_hostname'] %>:35357/v3"
 
 #-----------------------
 # WMF-specific handler to clean up after instance deletion
