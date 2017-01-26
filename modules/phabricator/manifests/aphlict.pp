@@ -91,7 +91,7 @@ class phabricator::aphlict(
     logrotate::conf { 'aphlict':
         ensure  => $ensure,
         source  => 'puppet:///modules/phabricator/logrotate_aphlict',
-        require => File['/var/log/aphlict/']
+        require => File['/var/log/aphlict/'],
     }
 
     # accounts
