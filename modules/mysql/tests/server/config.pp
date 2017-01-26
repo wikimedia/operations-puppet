@@ -5,7 +5,7 @@ mysql::server::config { 'testfile':
       'read-only'    => true,
     },
     'client' => {
-      'port' => '3306'
-    }
-  }
+      'port' => '3306',
+    },
+  },
 }
