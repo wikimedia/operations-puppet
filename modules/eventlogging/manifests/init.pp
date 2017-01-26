@@ -8,7 +8,7 @@
 # pull it.
 #
 class eventlogging {
-    include eventlogging::dependencies
+    include ::eventlogging::dependencies
 
     # TEMPORARY HACK!!!
     # TODO: use scap everywhere: T118772
@@ -17,7 +17,7 @@ class eventlogging {
     # Once we use scap, we might be able to remove this.
     if $::operatingsystem == 'Ubuntu' or $::hostname == 'hafnium' {
         package { 'eventlogging/eventlogging':
-            provider => 'trebuchet'
+            provider => 'trebuchet',
         }
     }
 }
