@@ -51,7 +51,7 @@ class iegreview(
     include ::apache::mod::rewrite
     include ::apache::mod::headers
 
-    include passwords::mysql::iegreview
+    include ::passwords::mysql::iegreview
 
     system::role { 'iegreview':
         description => 'Grants review application server - iegreview.wikimedia.org',
