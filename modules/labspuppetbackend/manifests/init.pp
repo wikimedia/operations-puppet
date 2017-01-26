@@ -46,8 +46,8 @@ class labspuppetbackend(
                 # The sum effect is to allow POSTs only from horizon.
                 #
                 'route-remote-addr' => "^${horizon_host_ip}\$ continue:\nroute-if=equal:\${REQUEST_METHOD};POST break:403 Forbidden",
-            }
+            },
         },
-        subscribe => File['/usr/local/lib/python3.4/dist-packages/labspuppetbackend.py']
+        subscribe => File['/usr/local/lib/python3.4/dist-packages/labspuppetbackend.py'],
     }
 }
