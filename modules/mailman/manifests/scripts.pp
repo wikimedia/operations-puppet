@@ -6,7 +6,7 @@ class mailman::scripts {
         owner  => 'root',
         group  => 'list',
         mode   => '0550',
-        source => 'puppet:///modules/mailman/scripts/remove_from_private.sh'
+        source => 'puppet:///modules/mailman/scripts/remove_from_private.sh',
     }
 
     file { '/usr/local/sbin/disable_list':
@@ -14,7 +14,7 @@ class mailman::scripts {
         owner  => 'root',
         group  => 'list',
         mode   => '0550',
-        source => 'puppet:///modules/mailman/scripts/disable_list.sh'
+        source => 'puppet:///modules/mailman/scripts/disable_list.sh',
     }
 
     file { '/usr/local/sbin/rsync_lists':
@@ -22,7 +22,7 @@ class mailman::scripts {
         owner  => 'root',
         group  => 'list',
         mode   => '0550',
-        source => 'puppet:///modules/mailman/scripts/rsync_lists.sh'
+        source => 'puppet:///modules/mailman/scripts/rsync_lists.sh',
     }
 
     file { '/usr/local/sbin/rsync_exim':
@@ -30,7 +30,7 @@ class mailman::scripts {
         owner  => 'root',
         group  => 'list',
         mode   => '0550',
-        source => 'puppet:///modules/mailman/scripts/rsync_exim.sh'
+        source => 'puppet:///modules/mailman/scripts/rsync_exim.sh',
     }
 
     file { '/usr/local/sbin/rename_list':
@@ -38,7 +38,7 @@ class mailman::scripts {
         owner  => 'root',
         group  => 'list',
         mode   => '0550',
-        source => 'puppet:///modules/mailman/scripts/rename_list.sh'
+        source => 'puppet:///modules/mailman/scripts/rename_list.sh',
     }
 
     file { '/usr/local/sbin/queue_data':
@@ -46,7 +46,7 @@ class mailman::scripts {
         owner  => 'root',
         group  => 'list',
         mode   => '0550',
-        source => 'puppet:///modules/mailman/scripts/queue_data.sh'
+        source => 'puppet:///modules/mailman/scripts/queue_data.sh',
     }
 
 }
