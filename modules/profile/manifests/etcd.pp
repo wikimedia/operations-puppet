@@ -53,17 +53,20 @@ class profile::etcd(
     }
 
     if $use_proxy {
+        $host = '127.0.0.1'
         $client_port = 2378
         $adv_client_port = 2379
     }
     else {
+        $host = $::fqdn
         $client_port = 2379
         $adv_client_port = 2379
     }
 
     # Service & firewalls
     class { '::etcd':
-        host             => $::fqdn,
+        host             => $host,
+        peer_host        => $::fqdn,
         cluster_name     => $cluster_name,
         cluster_state    => $cluster_state,
         client_port      => $client_port,
