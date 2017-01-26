@@ -1,7 +1,7 @@
 class ores::worker(
     $log_level = 'ERROR',
 ) {
-    require ores::base
+    require ::ores::base
 
     celery::worker { 'ores-worker':
         app             => 'ores_celery.application',

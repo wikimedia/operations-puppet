@@ -24,7 +24,7 @@ class otrs::web {
     # Otherwise, OTRS memory leaks through the roof causing OOM to show up
     # We use the declarative form of the class instead of the inclusion to
     # explicitly show that we use the prefork mpm
-    class { 'apache::mpm':
+    class { '::apache::mpm':
         mpm    => 'prefork',
         source => 'puppet:///modules/otrs/mpm_prefork.conf',
     }
