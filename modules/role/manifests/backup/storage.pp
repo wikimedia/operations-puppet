@@ -1,6 +1,6 @@
 class role::backup::storage() {
-    include role::backup::config
-    include base::firewall
+    include ::role::backup::config
+    include ::base::firewall
 
     system::role { 'role::backup::storage': description => 'Backup Storage' }
 
@@ -18,7 +18,7 @@ class role::backup::storage() {
         require => File['/srv/baculasd2'],
     }
 
-    class { 'bacula::storage':
+    class { '::bacula::storage':
         director           => $role::backup::config::director,
         sd_max_concur_jobs => 5,
         sqlvariant         => 'mysql',

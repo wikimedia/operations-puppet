@@ -1,9 +1,9 @@
 class role::backup::host {
-    include role::backup::config
+    include ::role::backup::config
 
     $pool = $role::backup::config::pool
 
-    class { 'bacula::client':
+    class { '::bacula::client':
         director       => $role::backup::config::director,
         catalog        => 'production',
         file_retention => '60 days',

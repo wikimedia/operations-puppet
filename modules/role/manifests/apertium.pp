@@ -3,7 +3,7 @@ class role::apertium(
     $port = '2737',
 ) {
     system::role { 'role::apertium':
-        description => 'Apertium APY server'
+        description => 'Apertium APY server',
     }
 
     include ::apertium
