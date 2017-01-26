@@ -6,8 +6,8 @@ class labstore::fileserver::primary {
     # actively serving files
     $is_active = (hiera('active_labstore_host') == $::hostname)
 
-    include labstore
-    include labstore::fileserver::exports
+    include ::labstore
+    include ::labstore::fileserver::exports
 
     require_package('python3-paramiko')
     require_package('python3-pymysql')
