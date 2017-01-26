@@ -1,1 +1,1 @@
-include package_builder::hooks
+include ::package_builder::hooks

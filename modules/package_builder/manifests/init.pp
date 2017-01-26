@@ -10,10 +10,10 @@
 class package_builder(
     $basepath='/var/cache/pbuilder',
 ) {
-    class { 'package_builder::hooks':
+    class { '::package_builder::hooks':
         basepath => $basepath,
     }
-    class { 'package_builder::environments':
+    class { '::package_builder::environments':
         basepath => $basepath,
     }
 
@@ -81,7 +81,7 @@ class package_builder(
         group   => 'root',
         mode    => '0444',
         source  => 'puppet:///modules/package_builder/wikimedia.profile',
-        require => File['/usr/share/lintian/profiles/wikimedia']
+        require => File['/usr/share/lintian/profiles/wikimedia'],
     }
 
     file { '/usr/share/lintian/vendors/wikimedia':

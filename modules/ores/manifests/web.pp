@@ -10,7 +10,7 @@ class ores::web(
     $celery_workers = 40,
     $extra_config = undef,
 ) {
-    require ores::base
+    require ::ores::base
 
     # Need to be able to also restart the worker. The uwsgi service is
     # hopefully temporary
@@ -36,7 +36,7 @@ class ores::web(
             max-requests  => 200,
             stats-push    => "statsd:${graphite_server}:8125,ores.${::hostname}.uwsgi",
             memory-report => true,
-        }
+        },
     }
 
     # lint:ignore:arrow_alignment
@@ -44,32 +44,32 @@ class ores::web(
         'metrics_collectors' => {
             'wmflabs_statsd' => {
                 'host' => $graphite_server,
-            }
+            },
         },
         'ores' => {
             'data_paths' => {
                 'nltk' => "${::ores::base::config_path}/submodules/wheels/nltk/",
-            }
+            },
         },
         'score_caches' => {
             'ores_redis' => {
                 'host' => $redis_host,
                 'port' => '6380',
-            }
+            },
         },
         'score_processors' => {
             'ores_celery' => {
                 'BROKER_URL'            => "redis://${redis_host}:6379",
                 'CELERY_RESULT_BACKEND' => "redis://${redis_host}:6379",
                 'CELERYD_CONCURRENCY'   => $celery_workers,
-            }
+            },
         },
         'scoring_systems' => {
             'celery_queue' => {
                 'BROKER_URL'            => "redis://${redis_host}:6379",
                 'CELERY_RESULT_BACKEND' => "redis://${redis_host}:6379",
                 'CELERYD_CONCURRENCY'   => $celery_workers,
-            }
+            },
         },
     }
     if $redis_password {
@@ -77,19 +77,19 @@ class ores::web(
             'score_caches' => {
                 'ores_redis' => {
                     'password' => $redis_password,
-                }
+                },
             },
             'score_processors' => {
                 'ores_celery' => {
                     'BROKER_URL'            => "redis://:${redis_password}@${redis_host}:6379",
                     'CELERY_RESULT_BACKEND' => "redis://:${redis_password}@${redis_host}:6379",
-                }
+                },
             },
             'scoring_systems' => {
                 'celery_queue' => {
                     'BROKER_URL'            => "redis://:${redis_password}@${redis_host}:6379",
                     'CELERY_RESULT_BACKEND' => "redis://:${redis_password}@${redis_host}:6379",
-                }
+                },
             },
         }
         $config = deep_merge($base_config, $pass_config)
