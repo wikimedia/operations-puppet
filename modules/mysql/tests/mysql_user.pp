@@ -1,9 +1,9 @@
 $mysql_root_pw = 'password'
 
-class { 'mysql::server':
+class { '::mysql::server':
   config_hash => {
     root_password => 'password',
-  }
+  },
 }
 
 database_user{ 'redmine@localhost':
@@ -14,7 +14,7 @@ database_user{ 'redmine@localhost':
 
 database_user{ 'dan@localhost':
   ensure        => present,
-  password_hash => mysql_password('blah')
+  password_hash => mysql_password('blah'),
 }
 
 database_user{ 'dan@%':

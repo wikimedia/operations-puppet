@@ -34,7 +34,7 @@ class mysql::server (
 
   create_resources( 'class', $config_class )
 
-  class {'mysql::server::package':
+  class {'::mysql::server::package':
     package_name => $package_name,
   }
 
@@ -49,7 +49,7 @@ class mysql::server (
   }
 
   if $use_apparmor {
-      include apparmor
+      include ::apparmor
       # mysql is protected by apparmor.  Need to
       # reload apparmor if the file changes.
       file { '/etc/apparmor.d/usr.sbin.mysqld':
@@ -69,7 +69,7 @@ class mysql::server (
         require     => [File['/etc/apparmor.d/usr.sbin.mysqld']],
         tries       => 2,
         refreshonly => true,
-        subscribe   => File['/etc/mysql/my.cnf']
+        subscribe   => File['/etc/mysql/my.cnf'],
       }
   }
 }

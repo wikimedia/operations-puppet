@@ -85,7 +85,7 @@ define mysql::server::config (
   $settings,
   $notify_service = false
 ) {
-  include mysql::config
+  include ::mysql::config
 
   if is_hash($settings) {
     $content = template('mysql/my.conf.cnf.erb')
