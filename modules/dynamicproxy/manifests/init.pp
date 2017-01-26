@@ -60,7 +60,7 @@ class dynamicproxy (
         },
     }
 
-    class { 'nginx':
+    class { '::nginx':
         variant => 'extras',
     }
 
