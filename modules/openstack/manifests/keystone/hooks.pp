@@ -9,7 +9,7 @@ class openstack::keystone::hooks(
         group   => 'root',
         mode    => '0644',
         notify  => Service['keystone'],
-        recurse => true
+        recurse => true,
     }
     file { '/usr/lib/python2.7/dist-packages/wmfkeystonehooks.egg-info':
         source  => "puppet:///modules/openstack/${openstack_version}/keystone/wmfkeystonehooks.egg-info",
@@ -17,7 +17,7 @@ class openstack::keystone::hooks(
         group   => 'root',
         mode    => '0644',
         notify  => Service['keystone'],
-        recurse => true
+        recurse => true,
     }
 }
 
