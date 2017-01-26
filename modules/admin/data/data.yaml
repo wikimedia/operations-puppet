@@ -948,6 +948,7 @@ users:
        - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCcNLT7ND174wiCEzvGm3xVNyhn/PiBURvMD5SofUN2sY505IY2+X2tayZl+ASp3fqRxMXRJS3UcT3Pi3bI2i3RNjCJCryx4YL09w/KcuhsJjGgRIdV9o+ZLjD3V0+B0xt/igTQwxq3UepQzzZIbGGkRf3iJVRFqjmdW8iwg49MMG0hsmu6dTvf3lGLgm2pihbXYIDDTCOAFhpDjGkLGeygp9tymAnxByUDyRW5sclu0Q9ftkCKlRwj79gFP4f9UeroOXG2UOqB+E0nc/9HyX5lGbGU54Q35iwAczWf0taw4lGXwxZfBWwsai9eGzt+4JlPwf/s/8gA7KWcz3LS/qKja8/xhcOcUgr+B/Lv3LgwutgCMYmORDtEQgzXhc8IDABZp6kb7wSYzxEQ/c2JhzPub257+l3r1WPIZKvi6DKHznHE+4lHsD8G0zzW9ZRyrchn4KXFiUzSSaqdvoT6rb1zV5UANIrlz6ndPSgLkra/dwinru1WzwJDZtBWMaP9GVCOSWxWWFwS0PEqo9FOj/exVgEU2NiqzhKZ3Zi4dbJOB5S6h/oTXf0zHtULclXgnd+S8Z86oXjcJmh61LmOVkETEc/ydZnw5P9AOs1Xq7FTDQtCzZziahjRgZcsPaJz0m026tR3qEI3AVulQ2kcuj5QVx1ZO5ogAjeCxvHLV4FQWw== hoch_m@marius-notebook
        - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDJWiqRWxcuL4waqckHygYI5QANx3g4srb71i3w1zIwfnDrxa4z35WB9UBK5s3XpxkJZ4d4nCOFWhTerzjkoSd8zzllD90Ucrk87kgsP5ad2mjtV8ofTU099fWIMvGY3BlxTgZCdhAGABCYTt13IHgCBtNxhCwx3MJ7tCQqcuxGzcjf0R+AvCHj342K4QkfCgM8iEdG0ld3I/P2kK4O99Ep5IZfQEK801bS6Uly7vP7dX//izcIFt5y1/nK/vvEVF9gx/JF0soorKXKGwpnJEkpg2v1DSWsI1HYoPgdUDa1eA4GUQK2d+jsnTPR6eirMQCsmtsSCUJVB+cL/1eNxk3cEAvdg71n375onMQbPqFML/iiMV0rGPV/xH/7pdDUh8St8aa0v7DOWt4HDrKwPVXLqd0KwBJJClty5prr/H+sx6B+o/bwxpYZVpKy3rfQDumBciW63l7ZPCWWgcZajBmsbxIFK5n8kRkfSUw39y0pONjNb83Y4Zm1/4l++k0uzKxlz+DdG2pNUsNmtgN9kA25CDH1HNjSv0nc3T90It56W7twF6ZgPSeZcsbzKYFPHDJeSSXjkOjA4AKJQ1cYarKKrETEukgytcVFkrHJDKwXTkkgKMtEqGFxXIPy+nJeRxhzPiZZudpdM9cci7F4N0edcFRv7Fla1937HStH6V0KEw== hoch_m@marius-latitude
     uid: 2133
+    email: marius.hoch@wikimedia.de
   kaldari:
     ensure: present
     gid: 500
@@ -1196,6 +1197,7 @@ users:
     ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAABJQAAAIEAuH1eNAxPgzMG0GoCZBtNx/eTnneQRT0Z/IZvbj0uQusaNlSG7MlFrUEI/HWCwIcWZlAdMBCvp2Ywc7+flvgH+JuBzbjvXDhhkC9o0/9wxKEwGRnP8RDnNBlaouzk/ROP4m8L2FZahAahFzoqDqYxzBl7bQ/iw+N811rAo+R0AGU=
         daniel.kinzler@wikimedia.de]
     uid: 545
+    email: daniel.kinzler@wikimedia.de
   dartar:
     ensure: present
     gid: 500
@@ -1752,6 +1754,7 @@ users:
     realname: Lydia Pintscher
     ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA38VRVZ7vOG5Ltv8PdPWShwHb934pIWNav2cRc4qRiaU71YT5Rc9QGQV3t0Cs3fYJ+eh8O2Xr1K6t+2KKJLuDJE84MXq9G9ptGCis9vDb/JimZuaL3Jol16rB5wbzekoCNZyysIHQ4t+gNKnjUA3OXjeAoJy9m76tUvh+cp31LN5DPNJ29QuVO4aTP4IgAl/BYf+j6GBOpkTd4RicUnS9lGGckAcfETk4AYyYqMf4sw5RSyBQESV8Bb0MtTcNNHTSErSFhxT67ijfC1FA5eKTY5MgvHjItNI16lM+Z3SoASlyIIPz4cyQVnM7TswsuF6oYyE1JV4Rlywv6WvWWMm4/w== lydia@hel]
     uid: 2222
+    email: lydia.pintscher@wikimedia.de
   jmm:
     ensure: present
     gid: 500
@@ -1897,6 +1900,7 @@ users:
     ssh_keys:
       - ssh-rsa AAAAB3NzaC1yc2EAAAABJQAAAQEAzgRlylV838q00yOqBhigvoFWYSCZK8H9f8hR83AGsxY+guW335xYjWwgtvTPTJm5hZghIMB2RnHjt9uI8IEGic4kF3o7aM/002JWTpfCi0bEbJLNifJ9SkgTskHdYMAZwoN54ruMWLExG4arcF0wvz/z9o0eRTdzhZ1bdfggasrAcGH8CLhtKonjBTjaTyas758/EliZ8hiO9aPrQG4fYYdEDSUpS2ADKIcAm+sxujItjSSaIPGWFdRZDm7xkhvTK/n850/q9S7iu34uwxqp2Q1TuoTioWmDByjZO0FFj07pQsRQ5CdQ8unQairUMvDzY9nmyoRn5t4crnUmhbG4cw== rsa-key-20160809-wmfprod
     uid: 2178
+    email: adam.shorland@wikimedia.de
   jminor:
     ensure: present
     gid: 500
