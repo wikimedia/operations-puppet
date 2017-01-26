@@ -53,48 +53,12 @@
           formName: 'launchInstanceFlavorForm'
         },
         {
-          id: 'networks',
-          title: gettext('Networks'),
-          templateUrl: basePath + 'network/network.html',
-          helpUrl: basePath + 'network/network.help.html',
-          formName: 'launchInstanceNetworkForm',
-          requiredServiceTypes: ['network']
-        },
-        {
-          id: 'ports',
-          title: gettext('Network Ports'),
-          templateUrl: basePath + 'networkports/ports.html',
-          helpUrl: basePath + 'networkports/ports.help.html',
-          formName: 'launchInstanceNetworkPortForm',
-          requiredServiceTypes: ['network']
-        },
-        {
           id: 'secgroups',
           title: gettext('Security Groups'),
           templateUrl: basePath + 'security-groups/security-groups.html',
           helpUrl: basePath + 'security-groups/security-groups.help.html',
           formName: 'launchInstanceAccessAndSecurityForm'
         },
-        {
-          id: 'keypair',
-          title: gettext('Key Pair'),
-          templateUrl: basePath + 'keypair/keypair.html',
-          helpUrl: basePath + 'keypair/keypair.help.html',
-          formName: 'launchInstanceKeypairForm'
-        },
-        {
-          id: 'configuration',
-          title: gettext('Configuration'),
-          templateUrl: basePath + 'configuration/configuration.html',
-          helpUrl: basePath + 'configuration/configuration.help.html',
-          formName: 'launchInstanceConfigurationForm'
-        },
-        {
-          title: gettext('Metadata'),
-          templateUrl: basePath + 'metadata/metadata.html',
-          helpUrl: basePath + 'metadata/metadata.help.html',
-          formName: 'launchInstanceMetadataForm'
-        }
       ],
 
       btnText: {
