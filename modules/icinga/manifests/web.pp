@@ -3,7 +3,7 @@
 # Sets up an apache instance for icinga web interface,
 # protected with ldap authentication
 class icinga::web {
-    include icinga
+    include ::icinga
 
     # Apparently required for the web interface
     package { 'icinga-doc':
@@ -26,7 +26,7 @@ class icinga::web {
 
     require_package('php5-gd')
 
-    include passwords::ldap::wmf_cluster
+    include ::passwords::ldap::wmf_cluster
     $proxypass = $passwords::ldap::wmf_cluster::proxypass
 
     file { '/usr/share/icinga/htdocs/images/logos/ubuntu.png':
