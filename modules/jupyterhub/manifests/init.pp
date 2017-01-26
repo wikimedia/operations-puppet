@@ -118,7 +118,7 @@ class jupyterhub (
         group   => 'root',
         mode    => '0440',
         notify  => Base::Service_unit['jupyterhub'],
-        require => Exec['setup-virtualenv']
+        require => Exec['setup-virtualenv'],
     }
 
     exec { "${name}-make-configproxy_auth_token":
