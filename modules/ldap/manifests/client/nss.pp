@@ -38,7 +38,7 @@ class ldap::client::nss(
     }
 
     # So scripts don't have to parse the ldap.conf format
-    include ldap::yamlcreds
+    include ::ldap::yamlcreds
 
     # Allow labs projects to give people custom shells
     $shell_override = hiera('user_login_shell', false)
