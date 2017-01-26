@@ -106,7 +106,7 @@ class openstack::keystone::service($keystoneconfig, $openstack_version=$::openst
                 wsgi-file => '/usr/bin/keystone-wsgi-admin',
                 name      => 'keystone',
                 processes => '20',
-                threads   => '2',
+                threads   => '4',
                 logto     => '/var/log/keystone/uwsgi/keystone-admin.log',
                 logger    => 'file:/var/log/keystone/uwsgi/keystone-admin-uwsgi.log',
             },
