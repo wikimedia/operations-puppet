@@ -60,7 +60,10 @@ class role::eventstreams {
         },
         'revision-create' => {
             'topics' => ["${::site}.mediawiki.revision-create"]
-        }
+        },
+        'recentchange' => {
+            'topics' => ["${::site}.mediawiki.recentchange"]
+        },
     })
 
     # Any extra librdkafka configuration
