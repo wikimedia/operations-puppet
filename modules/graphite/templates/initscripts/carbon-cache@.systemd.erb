@@ -10,6 +10,8 @@ LimitNOFILE=65536
 ExecStart=/usr/bin/carbon-cache --config=/etc/carbon/carbon.conf --instance %i --pidfile=/var/run/carbon/carbon-cache@%i.pid --logdir=/var/log/carbon/carbon-cache@%i/ start
 ExecReload=/bin/kill -USR1 $MAINPID
 PIDFile=/var/run/carbon/carbon-cache@%i.pid
+Restart=on-failure
+RestartSec=5s
 
 [Install]
 WantedBy=carbon.service

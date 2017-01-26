@@ -5,6 +5,7 @@ PartOf=carbon.service
 [Service]
 User=carbon-c-relay
 ExecStart=/usr/bin/carbon-c-relay -H <%= "#{scope.lookupvar('::hostname')}_local" -%> -p 1903 -f /etc/carbon/local-relay.conf
+Restart=on-failure
 
 [Install]
 WantedBy=carbon.service
