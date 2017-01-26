@@ -38,8 +38,8 @@ server {
     }
 
     <%- @acls.each do |url, users| -%>    
-    location /v2/keys<%= url %>/ {
-        proxy_pass http://etcd/v2/keys<%= url %>/;
+    location /v2/keys<%= url %> {
+        proxy_pass http://etcd/v2/keys<%= url %>;
         <%- if users.empty? -%>
         auth_basic off;
         <%- else -%>

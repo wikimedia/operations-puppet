@@ -30,8 +30,7 @@ class profile::etcd::tlsproxy(
     # Simulate the etcd auth error
     file { '/etc/nginx/etcd-errors/401.json':
         ensure => present,
-        mode   => '0440',
-
+        mode   => '0444',
     }
 
     # I know, this is pretty horrible. Puppet is too, with its
