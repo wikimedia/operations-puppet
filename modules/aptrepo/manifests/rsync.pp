@@ -10,12 +10,21 @@ class aptrepo::rsync {
         $ensure = 'present'
         include rsync::server
 
+        # just APT data (/srv/wikimedia/)
         rsync::server::module { 'aptrepo':
             ensure      => $aptrepo::rsync::ensure,
             path        => $aptrepo::basedir,
             read_only   => 'no',
             hosts_allow => $primary_server,
         }
+        # also other data like junos, megacli, (all of /srv/)
+        rsync::server::module { 'install-srv':
+            ensure      => $aptrepo::rsync::ensure,
+            path        => '/srv',
+            read_only   => 'no',
+            hosts_allow => $primary_server,
+        }
+
     } else {
         $ensure = 'absent'
     }
