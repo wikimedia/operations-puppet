@@ -21,72 +21,6 @@ class toollabs::checker inherits toollabs {
         ensure => latest,
     }
 
-    file { '/usr/local/lib/python2.7/dist-packages/toolschecker.py':
-        ensure => file,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0444',
-        source => 'puppet:///modules/toollabs/toolschecker.py',
-        notify => Service['toolschecker'],
-    }
-
-    file { '/data/project/toolschecker/www/python/src/app.py':
-        ensure => file,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
-        source => 'puppet:///modules/toollabs/toolschecker_generic_service.py',
-        notify => Service['toolschecker'],
-    }
-
-    file { '/data/project/toolschecker/public_html/index.php':
-        ensure => file,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
-        source => 'puppet:///modules/toollabs/toolschecker_lighttpd_service.php',
-        notify => Service['toolschecker'],
-    }
-
-    file { ['/run/toolschecker', '/var/lib/toolschecker', '/var/lib/toolschecker/puppetcerts']:
-        ensure => directory,
-        owner  => "${::labsproject}.toolschecker",
-        group  => 'www-data',
-        mode   => '0755',
-    }
-
-    file { '/etc/init/toolschecker':
-        ensure => directory,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0644',
-    }
-
-    # We need this host's puppet cert and key (readable) so we can check
-    #  puppet status
-    file { '/var/lib/toolschecker/puppetcerts/cert.pem':
-        ensure => present,
-        owner  => "${::labsproject}.toolschecker",
-        group  => 'www-data',
-        mode   => '0400',
-        source => "/var/lib/puppet/ssl/certs/${::fqdn}.pem",
-    }
-
-    file { '/var/lib/toolschecker/puppetcerts/key.pem':
-        ensure => present,
-        owner  => "${::labsproject}.toolschecker",
-        group  => 'www-data',
-        mode   => '0400',
-        source => "/var/lib/puppet/ssl/private_keys/${::fqdn}.pem",
-    }
-
-    sudo::user { 'tools.toolschecker':
-        privileges => [
-            'ALL=(tools.toolschecker-k8s-ws) NOPASSWD: ALL',
-            'ALL=(tools.toolschecker-ge-ws) NOPASSWD: ALL',
-        ],
-    }
-
     $checks = {
         'self'                   => {
             path                 => '/self'
@@ -165,13 +99,78 @@ class toollabs::checker inherits toollabs {
         },
     }
 
+    file { '/usr/local/lib/python2.7/dist-packages/toolschecker.py':
+        ensure => file,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0444',
+        source => 'puppet:///modules/toollabs/toolschecker.py',
+        notify => Toollabs::Check[keys($checks)],
+    }
+
+    file { '/data/project/toolschecker/www/python/src/app.py':
+        ensure => file,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => 'puppet:///modules/toollabs/toolschecker_generic_service.py',
+        notify => Toollabs::Check[keys($checks)],
+    }
+
+    file { '/data/project/toolschecker/public_html/index.php':
+        ensure => file,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => 'puppet:///modules/toollabs/toolschecker_lighttpd_service.php',
+        notify => Toollabs::Check[keys($checks)],
+    }
+
+    file { ['/run/toolschecker', '/var/lib/toolschecker', '/var/lib/toolschecker/puppetcerts']:
+        ensure => directory,
+        owner  => "${::labsproject}.toolschecker",
+        group  => 'www-data',
+        mode   => '0755',
+        before => Toollabs::Check[keys($checks)],
+    }
+
+    file { '/etc/init/toolschecker':
+        ensure => directory,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0644',
+    }
+
+    # We need this host's puppet cert and key (readable) so we can check
+    #  puppet status
+    file { '/var/lib/toolschecker/puppetcerts/cert.pem':
+        ensure => present,
+        owner  => "${::labsproject}.toolschecker",
+        group  => 'www-data',
+        mode   => '0400',
+        source => "/var/lib/puppet/ssl/certs/${::fqdn}.pem",
+    }
+
+    file { '/var/lib/toolschecker/puppetcerts/key.pem':
+        ensure => present,
+        owner  => "${::labsproject}.toolschecker",
+        group  => 'www-data',
+        mode   => '0400',
+        source => "/var/lib/puppet/ssl/private_keys/${::fqdn}.pem",
+    }
+
+    sudo::user { 'tools.toolschecker':
+        privileges => [
+            'ALL=(tools.toolschecker-k8s-ws) NOPASSWD: ALL',
+            'ALL=(tools.toolschecker-ge-ws) NOPASSWD: ALL',
+        ],
+    }
+
     create_resources(toollabs::check, $checks)
 
     nginx::site { 'toolschecker-nginx':
-        require => Service['toolschecker'],
         content => template('toollabs/toolschecker.nginx.erb'),
+        require => Toollabs::Check[keys($checks)],
     }
-
-    File['/run/toolschecker'] -> Toollabs::Check[keys($checks)] -> Nginx::Site['toolschecker-nginx']
 
 }
