@@ -3508,6 +3508,96 @@ host mc2018 {
     fixed-address mc2018.codfw.wmnet;
 }
 
+host mc2019 {
+    hardware ethernet 94:18:82:79:36:ac;
+    fixed-address mc2019.codfw.wmnet;
+}
+
+host mc2020 {
+    hardware ethernet 94:18:82:79:63:38;
+    fixed-address mc2020.codfw.wmnet;
+}
+
+host mc2021 {
+    hardware ethernet 94:18:82:75:af:8c;
+    fixed-address mc2021.codfw.wmnet;
+}
+
+host mc2022 {
+    hardware ethernet 94:18:82:79:a3:c4;
+    fixed-address mc2022.codfw.wmnet;
+}
+
+host mc2023 {
+    hardware ethernet 94:18:82:79:a3:48;
+    fixed-address mc2023.codfw.wmnet;
+}
+
+host mc2024 {
+    hardware ethernet 94:18:82:79:36:74;
+    fixed-address mc2024.codfw.wmnet;
+}
+
+host mc2025 {
+    hardware ethernet 94:18:82:79:83:88;
+    fixed-address mc2025.codfw.wmnet;
+}
+
+host mc2026 {
+    hardware ethernet 94:18:82:79:93:08;
+    fixed-address mc2026.codfw.wmnet;
+}
+
+host mc2027 {
+    hardware ethernet 94:18:82:79:93:a0;
+    fixed-address mc2027.codfw.wmnet;
+}
+
+host mc2028 {
+    hardware ethernet 94:18:82:79:36:44;
+    fixed-address mc2028.codfw.wmnet;
+}
+
+host mc2029 {
+    hardware ethernet 94:18:82:79:93:68;
+    fixed-address mc2029.codfw.wmnet;
+}
+
+host mc2030 {
+    hardware ethernet 94:18:82:79:93:54;
+    fixed-address mc2030.codfw.wmnet;
+}
+
+host mc2031 {
+    hardware ethernet 94:18:82:75:af:94;
+    fixed-address mc2031.codfw.wmnet;
+}
+
+host mc2032 {
+    hardware ethernet 94:18:82:79:a3:bc;
+    fixed-address mc2032.codfw.wmnet;
+}
+
+host mc2033 {
+    hardware ethernet 94:18:82:79:93:88;
+    fixed-address mc2033.codfw.wmnet;
+}
+
+host mc2034 {
+    hardware ethernet 94:18:82:77:05:34;
+    fixed-address mc2034.codfw.wmnet;
+}
+
+host mc2035 {
+    hardware ethernet 94:18:82:79:a3:8c;
+    fixed-address mc2035.codfw.wmnet;
+}
+
+host mc2036 {
+    hardware ethernet 94:18:82:79:c3:c4;
+    fixed-address mc2036.codfw.wmnet;
+}
+
 host mira {
     hardware ethernet D4:AE:52:AD:59:99;
     fixed-address mira.codfw.wmnet;
