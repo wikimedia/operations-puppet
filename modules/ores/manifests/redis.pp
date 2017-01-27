@@ -57,15 +57,21 @@ class ores::redis(
     } else {
         $slave_settings = {}
     }
+    $instances = keys($instance_settings)
     $instance_settings_real = deep_merge($instance_settings, $password_settings, $slave_settings)
 
-    redis::instance { ['6379', '6380']:
+    redis::instance { $instances:
         settings => $common_settings,
         map      => $instance_settings_real,
     }
-    redis::monitoring::instance { ['6379', '6380']:
+    redis::monitoring::instance { $instances:
         settings  => $common_settings,
         map       => $instance_settings_real,
         cred_file => '/etc/icinga/.ores_redis_secret',
+    }
+
+    $uris = apply_format("localhost:%s/${password}", $instances)
+    diamond::collector { 'Redis':
+        settings => { instances => join($uris, ', ') },
     }
 }
