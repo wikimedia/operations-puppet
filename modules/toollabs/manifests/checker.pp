@@ -109,14 +109,6 @@ class toollabs::checker inherits toollabs {
         before => Toollabs::Check[keys($checks)],
     }
 
-    file { '/etc/init/toolschecker':
-        ensure => directory,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0644',
-        before => Toollabs::Check[keys($checks)],
-    }
-
     file { '/usr/local/lib/python2.7/dist-packages/toolschecker.py':
         ensure => file,
         owner  => 'root',

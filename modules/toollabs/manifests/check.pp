@@ -7,7 +7,7 @@ define toollabs::check (
     # cheap way to ensure uniqueness across resources
     toollabs::check::path {$path: }
 
-    file { "/etc/init/toolschecker/toolschecker_${check_name}.conf":
+    file { "/etc/init/toolschecker_${check_name}.conf":
         ensure  => present,
         content => template('toollabs/toolschecker.upstart.erb'),
         owner   => 'root',
