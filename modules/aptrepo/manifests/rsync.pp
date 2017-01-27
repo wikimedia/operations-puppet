@@ -6,7 +6,13 @@ class aptrepo::rsync {
     $secondary_server = hiera('install_server_failover', 'install2002.wikimedia.org')
 
     # only activate rsync/firewall hole on the server that is NOT active
-    if $::fqdn != $primary_server {
+    if $::fqdn == $primary_server {
+
+        $ensure_ferm = 'absent'
+        $ensure_cron = 'present'
+        $ensure_sync = 'absent'
+
+    } else {
 
         $ensure_ferm = 'present'
         $ensure_cron = 'absent'
@@ -28,11 +34,6 @@ class aptrepo::rsync {
             read_only   => 'no',
             hosts_allow => $primary_server,
         }
-
-    } else {
-        $ensure_ferm = 'absent'
-        $ensure_cron = 'present'
-        $ensure_sync = 'absent'
     }
 
     ferm::service { 'aptrepo-rsync':
@@ -45,7 +46,7 @@ class aptrepo::rsync {
     cron { 'rsync-aptrepo':
         ensure  => $ensure_cron,
         user    => 'root',
-        command => "rsync -avp ${aptrepo::basedir} rsync://${secondary_server}/aptrepo",
+        command => "rsync -avp ${aptrepo::basedir}/ rsync://${secondary_server}/aptrepo",
         hour    => '*/6',
         minute  => '42',
     }
