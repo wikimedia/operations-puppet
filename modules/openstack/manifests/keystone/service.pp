@@ -95,35 +95,7 @@ class openstack::keystone::service($keystoneconfig, $openstack_version=$::openst
     }
 
     if $::fqdn == hiera('labs_nova_controller') {
-        # Set up uwsgi services
-
-        # Keystone admin API
-        service::uwsgi { 'keystone-admin':
-            port            => $keystoneconfig['auth_port'],
-            healthcheck_url => '/',
-            deployment      => None,
-            config          => {
-                wsgi-file => '/usr/bin/keystone-wsgi-admin',
-                name      => 'keystone',
-                processes => '20',
-                threads   => '2',
-                logto     => '/var/log/keystone/uwsgi/keystone-admin.log',
-                logger    => 'file:/var/log/keystone/uwsgi/keystone-admin-uwsgi.log',
-            },
-        }
-        service::uwsgi { 'keystone-public':
-            port            => $keystoneconfig['public_port'],
-            healthcheck_url => '/',
-            deployment      => None,
-            config          => {
-                wsgi-file => '/usr/bin/keystone-wsgi-public',
-                name      => 'keystone',
-                processes => '20',
-                threads   => '2',
-                logto     => '/var/log/keystone/uwsgi/keystone-public.log',
-                logger    => 'file:/var/log/keystone/uwsgi/keystone-public-uwsgi.log',
-            },
-        }
+        $enable_uwsgi = true;
 
         # Clean up expired keystone tokens, because keystone seems to leak them
         $keystone_db_name = $keystoneconfig['db_name']
@@ -147,14 +119,43 @@ class openstack::keystone::service($keystoneconfig, $openstack_version=$::openst
             check_command => 'check_http_on_port!5000',
         }
     } else {
-        # Don't run uwsgi services on the spare
-        service { 'uwsgi-keystone-admin':
-            ensure => stopped,
-        }
-        service { 'uwsgi-keystone-public':
-            ensure => stopped,
-        }
+        $enable_uwsgi = false;
     }
+
+    # Set up uwsgi services
+
+    # Keystone admin API
+    uwsgi::app { 'keystone-admin':
+        enabled  => $enable_uwsgi,
+        settings => {
+            uwsgi => {
+                die-on-term => true,
+                http        => "0.0.0.0:${keystoneconfig['auth_port']}",
+                logger      => 'file:/var/log/keystone/uwsgi/keystone-admin-uwsgi.log',
+                master      => true,
+                name        => 'keystone',
+                plugins     => 'python, python3, logfile',
+                processes   => '20',
+                wsgi-file   => '/usr/bin/keystone-wsgi-admin',
+            },
+        },
+    }
+    uwsgi::app { 'keystone-public':
+        enabled  => $enable_uwsgi,
+        settings => {
+            uwsgi => {
+                die-on-term => true,
+                http        => "0.0.0.0:${keystoneconfig['public_port']}",
+                logger      => 'file:/var/log/keystone/uwsgi/keystone-public-uwsgi.log',
+                master      => true,
+                name        => 'keystone',
+                plugins     => 'python, python3, logfile',
+                processes   => '20',
+                wsgi-file   => '/usr/bin/keystone-wsgi-public',
+            },
+        },
+    }
+
 
     # stop the keystone process itself; this will be handled
     #  by nginx and uwsgi
