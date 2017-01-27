@@ -996,6 +996,7 @@ users:
        - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC4VTfdeTSboPh/af2zT6ov13A7kSygXEspRgq3/d2BWcNFvwIIpgtpCnHzA6YPvuhrjksw34jk3OvuuQoTyWYfuwql8Wu8O9f32WD4dhrKhB8Rchxj6rrncBrGS5k0HeLr+HMrknVSSXGH60GAFNRGYLCGA+zBXLAja+xROTipIRHOF0SLlsfpY04HTrEtKcKdj8n9BnGpbT7vFp+AmXeSHg9DwRn6yvem3x1ghBFdfg+XwmIqsV4wR2b7GLX2Y6+ei53657v2VxVsORdfn4yV7FcjeVYnwNxMOVMfYcFCz+1LU9ROPDw5sCqyDPMtyQPxExiprKNT9UHkUj7aqE61o4AF1vSb9AEdUpjGgiMl+Dr8Sd+T2sNOq5uFxtWSfuNqgGHY+nOYPmSHsxthwXc7CH7x/eBDefUZwTdwX8Vf/FYOAyiviknCzwLoAbkQwRjOwFZVqJMwRwRyMToKODTTgOM0s3g/5P8n5AYwTLt1I6dLeC3nju3lywyeWb6DkFOB48mg561AU1soTnSKffse7AtJ5Ye3GFEBKxBCRJUpc7EVesOhjTdcmBWYeSSmwxHCjiCact4tyk8ZiLuRqd3EZ0KFT/6W5d4csrJUwBDNWo+7M69gVIMn/zDCy3ZViGMsqPFfXSrpKw8k0WtPBTKdHFPJ0KoLERctzkrNkfBTVw== Ladsgroup @ prod
        - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCY5EyIRrtuxDgh8SOkTQl8tYAu5ZOGMO0MA9RiqMb6za8ossDmKCwD5JKwooYmT8yFA5JnvyOC0adsCCA+enylrX6r6FK0ur+dekfCGF/dsyxSJU9aw6WwVr2BThrfPjzbMR1IuN4I0t134fYE0VUvibod1kGoxSGYdWvqEFf+v7b2MqWtU+xASBFEbrx2knqVBjyy6+O8sUikfKX+vyCSxiQa2GE66LM8SuX+0JnhlDNuXleQzdFpJ9novw/+/1KqOJOg3i8/Jb1/AEMf/eChombWdjNccGtPueRyJAXEl2tCuLvt9Vf7PBZaoxhAV0Bo0GcwRVBwvsyaNDuVabLJ
     uid: 3182
+    email: amir.tafreshi_ext@wikimedia.de
   manybubbles:
     ensure: absent
     gid: 500
@@ -2245,6 +2246,7 @@ users:
     ssh_keys:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQD6lmYG3kuDwouTAy19p33dHldzI1Y4JrMv46Ga23FFSKVR3R2yv7Eu6YFt2Gm7W+TUHkE3EjMlNvLFxtxQMqeoWRK8ahuqQruUAocO55jOmhJvIRW6OP3wGABznwaIM7PWvZPmyuUpZj1zKuhnK5EnVPv9v/9258eCltJtvD8sSpA9CNm6h+RpQFSvvgtnUw0qr8t5RiOr3KK0mXuO1YHQI9LO12Fl+LoszlyV7dF1tChNyN6hYX7QBgNDDhRXahkTmUSEmXMqIhO1wW+GiRyYFIjMBfXA/+HHcCgZzg74qnlU2Pb9QXWQrFwx3vK/KMLchl7iV5H9gfLSX4jzC5eZ daniela.paolotti@gmail.com
     uid: 15237
+    email: daniela.paolotti@gmail.com
     expiry_date: 2017-02-05
     expiry_contact: dario@wikimedia.org, dandreescu@wikimedia.org
   ciro:
