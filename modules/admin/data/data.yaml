@@ -435,6 +435,7 @@ groups:
                  'ALL = NOPASSWD: /usr/bin/salt-key *',
                  'ALL = NOPASSWD: /usr/bin/puppet cert *',
                  'ALL = NOPASSWD: /usr/bin/puppet agent -t -v',
+                 'ALL = NOPASSWD: /bin/journalctl *',
                  'ALL = (syslog) NOPASSWD: ALL']
   perf-roots:
     gid: 766
