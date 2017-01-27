@@ -1579,6 +1579,9 @@ users:
     realname: Morten Warncke-Wang
     ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAmjVSpmltf5d+0BTwdxRL6HmtvBKT8G2tsyET/Q0QJSu7jAEKoXHtsQlpWLJJecOe/9kCUDc5X3/1EOBTvlSOKRz4iPCgscGjIr4C8wT6tbboE5VkLlBPZqyC0pi0dTsILu599CPCBkwpr2K1yUwXwAJ0W3Y0XmsmJQmsDRyWP0Ck69EQ1NOfYp44NpZXdm63DzvIozNHRXNfyGQDHp8aNokegeuyd/cjDEVsUotH7ll0NoayStezJsL364i/yc9MWGEhHxsBRNaK9W9OPb6guaNwdXbwCiIgu+5WkTcJ9WauBl3DrY529aGQoqEps61VGeYkHKk/p+12TDPOZdKcYw== morten@fjord]
     uid: 3290
+    comment: Research fellow, Wikimedia Google account, but MOU needs to be extended every six months
+    expiry_date: 2017-02-23
+    expiry_contact: halfak@wikimedia.org
     email: mwang@wikimedia.org
   mforns:
     ensure: present
@@ -1625,6 +1628,9 @@ users:
     realname: Bob West
     ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAweYNj2Fsw5NjS+tM3JwvzpAymkw2GNE2NhgI79VuJukffj1XGPGYSJQVxRgIKuLCrmizCc/wYyF2gB+aO3iOmu1pSa84i3Xv141cO8ib5XHGdgPkfb8cvCOg0eD0OEe5esCbNLQrCe/6kzlhWLDkE9UZ++2lKt3j5IN9FEj2qLRv9zVEIBU001ciP/qA0YwIffweVzmX4FpcNF6h8pSKJpx3y+lHwIoD1Hm6d2IH39jPV3k/LmwNLHLjSxlIqXuU1EIeK4Rs+cKOpZatfT4Q8wpiZknvhGxXexhJAwSQ2DM8lONqmFF+AyWZSKahbjN4biBfsjJXLxQFw9yrn3XU2w== west1@madmax4.stanford.edu]
     uid: 1097
+    comment: Research fellow, Wikimedia Google account, but MOU needs to be extended every six months
+    expiry_date: 2017-05-13
+    expiry_contact: halfak@wikimedia.org
     email: rwest@wikimedia.org
   jhernandez:
     ensure: present
