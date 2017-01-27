@@ -109,6 +109,14 @@ class toollabs::checker inherits toollabs {
         before => Toollabs::Check[keys($checks)],
     }
 
+    file { '/etc/init/toolschecker':
+        ensure => directory,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0644',
+        before => Toollabs::Check[keys($checks)],
+    }
+
     file { '/usr/local/lib/python2.7/dist-packages/toolschecker.py':
         ensure => file,
         owner  => 'root',
@@ -134,13 +142,6 @@ class toollabs::checker inherits toollabs {
         mode   => '0555',
         source => 'puppet:///modules/toollabs/toolschecker_lighttpd_service.php',
         notify => Toollabs::Check[keys($checks)],
-    }
-
-    file { '/etc/init/toolschecker':
-        ensure => directory,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0644',
     }
 
     # We need this host's puppet cert and key (readable) so we can check

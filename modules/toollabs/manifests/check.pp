@@ -13,7 +13,6 @@ define toollabs::check (
         owner   => 'root',
         group   => 'root',
         mode    => '0644',
-        require => File['etc/init/toolschecker'],
         notify  => Service["toolschecker_${check_name}"],
     }
 
