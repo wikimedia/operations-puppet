@@ -120,6 +120,18 @@ class openstack::keystone::service($keystoneconfig, $openstack_version=$::openst
         }
     } else {
         $enable_uwsgi = false
+
+        # Because of the enabled => false, the uwsgi::app
+        #  declarations below don't actually define
+        #  services for the keystone processes.  We need
+        #  to define them here (even though they're stopped)
+        #  so we can refer to them elsewhere.
+        service { 'uwsgi-keystone-admin':
+            ensure => stopped,
+        }
+        service { 'uwsgi-keystone-public':
+            ensure => stopped,
+        }
     }
 
     # Set up uwsgi services
