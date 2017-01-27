@@ -98,30 +98,32 @@ class openstack::keystone::service($keystoneconfig, $openstack_version=$::openst
         # Set up uwsgi services
 
         # Keystone admin API
-        service::uwsgi { 'keystone-admin':
-            port            => $keystoneconfig['auth_port'],
-            healthcheck_url => '/',
-            deployment      => None,
-            config          => {
-                wsgi-file => '/usr/bin/keystone-wsgi-admin',
-                name      => 'keystone',
-                processes => '20',
-                threads   => '2',
-                logto     => '/var/log/keystone/uwsgi/keystone-admin.log',
-                logger    => 'file:/var/log/keystone/uwsgi/keystone-admin-uwsgi.log',
+        uwsgi::app { 'keystone-admin':
+            ensure     => present,
+            enabled    => true,
+            config     => {
+                die-on-term => 'true',
+                http-socket => "0.0.0.0:${keystoneconfig['admin_port']}",
+                logger      => 'file:/var/log/keystone/uwsgi/keystone-admin-uwsgi.log',
+                master      => 'true'
+                name        => 'keystone',
+                plugins     => 'python, python3, logfile',
+                processes   => '20',
+                wsgi-file   => '/usr/bin/keystone-wsgi-admin',
             },
         }
         service::uwsgi { 'keystone-public':
-            port            => $keystoneconfig['public_port'],
-            healthcheck_url => '/',
-            deployment      => None,
-            config          => {
-                wsgi-file => '/usr/bin/keystone-wsgi-public',
-                name      => 'keystone',
-                processes => '20',
-                threads   => '2',
-                logto     => '/var/log/keystone/uwsgi/keystone-public.log',
-                logger    => 'file:/var/log/keystone/uwsgi/keystone-public-uwsgi.log',
+            ensure     => present,
+            enabled    => true,
+            config     => {
+                die-on-term => 'true',
+                http-socket => "0.0.0.0:${keystoneconfig['public_port']}",
+                logger      => 'file:/var/log/keystone/uwsgi/keystone-public-uwsgi.log',
+                master      => 'true'
+                name        => 'keystone',
+                plugins     => 'python, python3, logfile',
+                processes   => '20',
+                wsgi-file   => '/usr/bin/keystone-wsgi-public',
             },
         }
 
@@ -148,11 +150,13 @@ class openstack::keystone::service($keystoneconfig, $openstack_version=$::openst
         }
     } else {
         # Don't run uwsgi services on the spare
-        service { 'uwsgi-keystone-admin':
-            ensure => stopped,
+        uwsgi::app { 'keystone-public':
+            ensure  => absent,
+            enabled => false,
         }
-        service { 'uwsgi-keystone-public':
-            ensure => stopped,
+        uwsgi::app { 'keystone-admin':
+            ensure  => absent,
+            enabled => false,
         }
     }
 
