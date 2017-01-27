@@ -814,6 +814,7 @@ users:
     ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC4isIiXTX8cAcOD30Pb5Auy/NqidYSEqzrybfEti/qbJf0cTuqPzrNnp3cPK76yTwW+6aTjH8LC71GjaM7gHs2hn4xQJDJVPvH8FHd+RWjndigIOAEPlKtlyXPRor32lNhDFjNDMwS0gJgwJWGyzdDSPap4A9oAYvOlXHMbwF86gPoTKTCIhKSwryUyn9XXYKpa3nwYHchJ0ugVrxo31KHu107YbGpquocEg3I+fPftJHRxDlhVho09OnzZedTKacNJvAkH+8F9AWEl8mQRYxA/5Bpm4ty1spCHcPU0LEpMFFRnSjb13p1e3Xh+rhwLg3NREW+nRI9DKHassaUvkfQnVipCjNpFy3gX70LS0u+M+vg8wUM88AYVMn1VohN9RbXFPnMHHZACeWJCClCj08qI/Z5WDEUCKBAv4B3nrlYHxMGsa+HAKHREvH+YQI3l4WauIq1Ri5qCVkhEZQKEKVH5uMny1bE3XMolsi1jwxQTiRWbctmGOPjUtXeSBe9N8yWzWmcduzbd60ipItclRqD8gh6FvE1Nb5AtWTkR1wdu691VZpN1BNf14joYz8eq8I6W2JupB4EYUnru3PQS0wQI+/RqWApCvWG4ajtp8hOTicwPSrXRhsYBWbg+HNzhI/KlQelwhm4MnZAESRtm+VgOl1g2kRpicHoiS+oGh1iXQ==
         katie@katie-UX303LNB]
     uid: 1185
+    email: aude.wiki@gmail.com
   awight:
     ensure: present
     gid: 500
@@ -882,6 +883,7 @@ users:
     ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDsUn5XTWrJ8ojk6O7kF7kdQS1RrKtjkaMk2QtsdYOOCPo3YbK+70Q3Dy6gVBNOhsRWHeCimzfH2Uv/pVb0wNkrwenmBeD7nQyNICudewEANcnt5YF2znlke3lsW6TGzKUzrXIncdhDh4LWjmpJR/+hnKyGz7uQKXm8xWw9LGk1PEpeHpt+0TH/bUWzWjpYXfbt5W4GbYPwnHo1Pn27pcGwqgsgb8whX9ufDjw5qyLPTVW3AqP4XPRXYDB5Ui7udQeuCk4Omou9CirtC36o4ih2NrZ4CsacHyIMJf09HZo6yLE9EeGM06SO7qYqjYwapKGv6csZGney84udKaCHcdm/
         Chris Steipp]
     uid: 2246
+    email: csteipp@gmail.com
   ebernhardson:
     ensure: present
     gid: 500
@@ -2253,6 +2255,7 @@ users:
     ssh_keys:
       - ssh-dss AAAAB3NzaC1kc3MAAACBAJMN2HY4SvYvpse+DMZPY2Rn2W0Uy2Og01tug+vpF96RwN4bad7Z0ryRNno4LcnlaWtl5D6yhLDbibxZSNFn1pXN/Iqj3Took4YJsyXuLkFFN5IYY/ETWphRDqGXIYFWwG9oVLayKk+5wfPz8STBsajXLcliU67YmPyC5tk2IX49AAAAFQDoPyrcuaMbMvHNynsZWXM5h6lF9wAAAIAGd8MyyN9sMosoow783UgLyM0cF0XjdIl0Pzk9Ry5qmYtOp/hWEJRM9bC2I7R+ZhLzoqm1eOJGw8lNbt1PRa3woafJLtget9fPJujn9Csa1jMP2hHjzjSX6C8jtLPGHMVlWu0dgNOfelhcnidP3atjo4bp+gEvXNBRB/W9ZwNNZQAAAIBDPtyrwmvbI3vjwVwOIbFV66B4CTzRzIucmfRjrdKcwHe3eG7K597yP+kUFpMdUq8GlWFeHRpLDZd7nGZ2fXkZZz1ar95EpxPf7Q842We17B6EXgQNr9yZgso3x378eoUGJP9TKgR9ZSZ4iK4S4qIcstflhMheOxb5fZ5ckg2bfw==
     uid: 15247
+    email: ciro.cattuto@gmail.com
     expiry_date: 2017-02-05
     expiry_contact: dario@wikimedia.org, dandreescu@wikimedia.org
   psinger:
@@ -2369,6 +2372,9 @@ users:
     ssh_keys:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDDR23MLJl52/9i2syrOF+mSSHBCpyIEvymOarSFgc0FufWukmb04xTKLRNBjDdWtGzmROqhG9aiD8pptcanzBHXTryoPHDZxnpjik+BmY9IRNXqfhI8hoYE914epFIyM5I14tXra76LFbnVfc3dU2H0V3YCxiMqZkzglxU53Vr25N7e5nSPGdYlwIn3vt3WcF1h9AZdw67659kVX3dKJ0NLWvPJz+odPkJbPwxl3v3XWRW+a+TG42TOVFnoTMkgJ3Vh0Q/0hv00fSb7HzqtlyVfWqNR0KgvilLWkOfH+IX2dAZcPInPk6x9JhFRyfehi7X9t2FXgFlT2T8kmCf215H Adrian.Bielefeldt@mailbox.tu-dresden.de
     uid: 15336
+    email: Adrian.Bielefeldt@mailbox.tu-dresden.de
+    expiry_date: 2017-05-30
+    expiry_contact: leila@wikimedia.org
   jgonsior:
     ensure: present
     gid: 500
@@ -2377,6 +2383,9 @@ users:
     ssh_keys:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQD1r7OXp7M2oYoTVw/e7ccbF6tHdmM0ZeLpwwMzPAS07zfY31TQ9F3Ww0KPDyKcDt0Cndbg5izpkGlQ6rwTVaeeBlp3IbAwn+YtuZjVjoNny3OyTM1WRjmGbimxglrfUWWjn5yhu4VzrVkA9XYGn7mlJtCmV/kQzXzcAXgF19L9YCOnfBILy7HB5CPpj7H/N+ACmZVAaTiOCLpXb60P3ffVp93Lfzzlau7sPmel/MJOSSWAH8MUhIdGlUXTyk6+b06pSIGk3kAJjtAvtvT1ACjNeyPE1QYJSYm/Lk3MbrjxHvdJipquq3tgxp7StfqY9ppXq5GwvoEecFLd9D59WTHD ragada@thinkpad
     uid: 15338
+    email: julius@gaenseri.ch
+    expiry_date: 2017-05-30
+    expiry_contact: leila@wikimedia.org
   piccardi:
     ensure: present
     gid: 500
