@@ -16,6 +16,14 @@ class aptrepo::rsync {
             read_only   => 'no',
             hosts_allow => "@resolve(${primary_server})",
         }
+
+        rsync::server::module { 'install-srv':
+            ensure      => $aptrepo::rsync::ensure,
+            path        => '/srv',
+            read_only   => 'no',
+            hosts_allow => "@resolve(${primary_server})",
+	}
+
     } else {
         $ensure = 'absent'
     }
