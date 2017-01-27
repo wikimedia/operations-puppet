@@ -154,6 +154,14 @@ class toollabs::checker inherits toollabs {
         source => "/var/lib/puppet/ssl/private_keys/${::fqdn}.pem",
     }
 
+    file { '/usr/local/sbin/toolscheckerctl':
+        ensure => file,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0655',
+        source => 'puppet:///modules/toollabs/toolscheckerctl',
+    }
+
     sudo::user { 'tools.toolschecker':
         privileges => [
             'ALL=(tools.toolschecker-k8s-ws) NOPASSWD: ALL',
