@@ -2050,6 +2050,9 @@ users:
     realname: Justin Clark
     ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCvfaLmde8biy5hfFR1fOnkfu8eitpGkyWuTXziVHEAFmeiuF87LdnkUDaM/Egom3/fNJKjrzLZPcaJxqa/BeJfWzoz6Ua0dsA/uG1D/l4eIXCEj2QhcvdQT8mbLmXqws3deISARUAIp9DnXG9BQ5LVq6ihwyDgQ9sQiAZsbryKRA5opgSJUE5ynNGBh0M8gIY0+1xBVG9CtrnnyWi7ufklOonzcOo9rssGtE8bHPKnHexKb8FIiVWHy1IrkKLwPBhmLesXTeGnQvAg3VOmeJT7mPG4hH7m5FLB3PvfcCSD27/o/VmVIXUj3ypu0+SBzmJd4uwANMUOuBuNKCXSYB+P jdcc-berkman@work]
     uid: 13978
+    email: jclark@cyber.law.harvard.edu
+    expiry_date: 2017-07-01
+    expiry_contact: zzhou@wikimedia.org
   gehel:
     ensure: present
     gid: 500
@@ -2414,6 +2417,9 @@ users:
     ssh_keys:
       - ssh-rsa AAAAB3NzaC1yc2EAAAABJQAAAQEAozlVbJ2Cmn3TrZvHChyiHShcWIERWVtl0A+V/w2P5jrpq4WGe2qx/DMPkUDsS5AvhOwY2b9qtAGbx/M+26+b0+xkJihrnT9Fy/IwEDxBFRtcIZ0N1ZvRlK2epb12gfX3oTfQWiSJcmlZOhJCS/GUfeZAAvJiDifnyWeaJAYlkPxPaWVhbF0Xv/W+3zQTQYfPuQEp1S6IKecN3bvW0/8t8fANzbfIjRtwBTSfZiKtHNZwnphaVAPF+xF7wV36spPeRbrxaB6Xy/3pEU00uT7qvyoDpB511w6IVIQfhiAVROVfCbTwyrPtuP+BZHRGFGE7hyo8pFQDQUnEU0yM11NYdQ==
     uid: 15999
+    email: tiziano.piccardi@epfl.ch
+    expiry_date: 2017-05-29
+    expiry_contact: leila@wikimedia.org
   fdans:
     ensure: present
     gid: 500
