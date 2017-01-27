@@ -86,7 +86,7 @@ class toollabs::checker inherits toollabs {
             path                 => '/etcd/flannel',
         },
         'kubernetes_etcd'        => {
-            path                 => '/k8s/flannel',
+            path                 => '/etcd/k8s',
         },
         'kubernetes_nodes_ready' => {
             path                 => '/k8s/nodes/ready',
