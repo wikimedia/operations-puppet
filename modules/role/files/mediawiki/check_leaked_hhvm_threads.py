@@ -36,9 +36,24 @@ PERC_WARNING = 1.2
 # And alarm when the number is twice that
 PERC_CRITICAL = 2.0
 
+# Perform checks only if the uptime is more than this threshold (seconds).
+UPTIME_THRESHOLD = 7200
+
 # I know there is a race condition here. But we can live with that.
 try:
     apache_status = requests.get('http://127.0.0.1/server-status?auto')
+    # For some versions of httpd (like 2.4.7), BusyWorkers are set to zero when
+    # a graceful restart happens, even if outstanding requests are not dropped
+    # or marked as Graceful closing.
+    # This means that daily tasks like logrotate cause false positives.
+    # A quick workaround is to limit the check only when the Uptime is more
+    # than a couple of hours, to give httpd time to restore its busy workers.
+    # This is not an ideal solution but a constant rate of false positives
+    # decreases the perceived importance of the alarm over time.
+    uptime = re.search('Uptime: (\d+)', apache_status.text)
+    if int(uptime) < UPTIME_THRESHOLD:
+        print('OK')
+        sys.exit(0)
     match = re.search('BusyWorkers: (\d+)', apache_status.text)
     if not match:
         print('UNKNOWN - Could not find apache busy workers in apache status')
