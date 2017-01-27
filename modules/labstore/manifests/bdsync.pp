@@ -6,7 +6,7 @@ class labstore::bdsync {
     }
 
     file { '/usr/local/sbin/block_sync':
-        source => 'puppet:///modules/labstore/block_sync.sh',
+        source => 'puppet:///modules/labstore/block_sync.py',
         owner  => 'root',
         group  => 'root',
         mode   => '0755',
