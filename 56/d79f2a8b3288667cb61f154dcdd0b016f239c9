@@ -1,0 +1,9 @@
+Code-Review+1: Alex Monk <krenair@gmail.com>
+Code-Review+1: Ottomata <aotto@wikimedia.org>
+Verified+2: jenkins-bot
+Code-Review+2: Dzahn <dzahn@wikimedia.org>
+Submitted-by: Dzahn <dzahn@wikimedia.org>
+Submitted-at: Fri, 27 Jan 2017 19:39:30 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/334207
+Project: operations/puppet
+Branch: refs/heads/production
