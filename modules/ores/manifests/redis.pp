@@ -68,4 +68,9 @@ class ores::redis(
         map       => $instance_settings_real,
         cred_file => '/etc/icinga/.ores_redis_secret',
     }
+
+    $uris = apply_format("localhost:%s/${password}", ['6379', '6380'])
+    diamond::collector { 'Redis':
+        settings => { instances => join($uris, ', ') },
+    }
 }
