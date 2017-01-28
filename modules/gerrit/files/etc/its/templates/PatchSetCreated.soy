@@ -1,0 +1,8 @@
+{namespace com.google.gerrit.server.mail.template}
+
+{template .PatchSetCreated autoescape="strict"}
+  Change $change-number had a related patch set uploaded (by $uploader-name):
+  $subject
+
+  ${its.formatLink($change-url)}
+{/template}
