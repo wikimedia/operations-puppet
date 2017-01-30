@@ -7,6 +7,7 @@ class role::analytics_cluster::refinery::data::drop {
 
     $webrequest_log_file     = "${role::analytics_cluster::refinery::log_dir}/drop-webrequest-partitions.log"
     $eventlogging_log_file   = "${role::analytics_cluster::refinery::log_dir}/drop-eventlogging-partitions.log"
+    $mediawiki_log_file      = "${role::analytics_cluster::refinery::log_dir}/drop-mediawiki-partitions.log"
 
     # keep this many days of raw webrequest data
     $raw_retention_days = 31
@@ -34,4 +35,14 @@ class role::analytics_cluster::refinery::data::drop {
         minute  => '15',
         hour    => '*/4',
     }
+
+    $mediawiki_retention_days = 90
+    ['CirrusSearchRequestSet', 'ApiAction'].each |log_type| do
+        cron {"refinery-drop-${type}-partitions":
+            command => "export PYTHONPATH=\${PYTHONPATH}:${role::analytics_cluster::refinery::path}/python && ${role::analytics_cluster::refinery::path}/bin/refinery-drop-eventlogging-partitions -d ${mediawiki_retention_days} -l /wmf/data/raw/mediawiki/mediawiki_${log_type} >> ${mediawiki_log_file} 2>&1",
+            user    => 'hdfs',
+            minute  => '15',
+            hour    => '*/4',
+        }
+    end
 }
