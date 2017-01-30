@@ -647,6 +647,7 @@ users:
     ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDZ632eqrXOJ2vVKmxwode44lGL6UGEXUWG8muUP1ItqSCdYqmG11zaeH3uJNfsbqUu0jJbKpO7uiKSwolaYrHDPLDl5v5jNyRx7aQDzMgCjtVGAZIN3zQGGybl7v8ZQ635L9SAaATuYd7nOdDGa5TZ46YiAv1BA/+RGnUSz5h/ycb09V7o+RlQbHRTsTCIxjIMg45Rqnn3ukBeGNEZAU4IgaTRkg19PfPeSH9q6Ni6Wa1jz32ygmotT38vKuCvOXZxigrHJKwovS6xdfdxC67UBMV5J+KICpRPVAn1iIQMyiatdG4tBlPOUEecZcL6f7QaZufZwI/gU3wkC2zlVchF
         sean@mintaka]
     uid: 3391
+    email: sean.pringle@gmail.com
   robh:
     ensure: present
     gid: 500
@@ -1089,6 +1090,7 @@ users:
     ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA3k6XjeMEmIHonzsmRBbHCkeVhxS6oObibs3PPP4DAO3WYXPIGBye+OpPtCpSZUuVp4t/GwnqIHCM0MrlVoFKeFcC3tHtVwmxhIsTp/RQRPjjKNdH60Iz6RlDTZ3TJDaYkYOiW7spdCONLzkYpOgkiph973aMNQ3D0vS87jht1apUl06bkxYeC+Bziq4DSBVNqpGKa+NqSYOvtS1kapwCYTtRm6YASb0YeMXzTUyfClgvq86h9XLsbx7klWgjHfKbfi/yheAm5EY6jxicnYaVAmy2gq2ERO9e2dVbpJihHmhPTpdRba5Eln0CoPkWrLVX0jyiAVB4biRtYoTtxGDPww==
         reedy]
     uid: 1226
+    email: sreed@wikimedia.org
   rmoen:
     ensure: absent
     gid: 500
@@ -1828,6 +1830,7 @@ users:
     realname: Daniel Kahn Gillmor
     ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC8NY6C8j5WYDAeXbs3C0L9Prr+cAuOgvkoeYwLpV3l+WuYTC6m0LpnaZ53d9o/r5zqKaIDC4F2FgP4cU52qikFqNorqvsZ3sFHAy5XWFtvSzsaRTGUKhs+Y14TKKpQ2Y+oynsuZFN8wm4N6U8ZepeFT+fDtPBPT9lrzooxGydnyw2246LRhx7jtrYwnAMi78+dPTBTNXVQm5oHHAwDpLnEgNe35ii78qZxSlS1qnfwXKfNrdRafCwHDetR8VEiZgsVkZ15GaKZ441rvXYsLkuzBqC1BseRfaPAYZ5hFq3ikP2zW6JNJ5IS8k8JfR9wMmuSB8J+U2op/qoCJQQ3HMAb dkg]
     uid: 12138
+    email: dkg@fifthhorseman.net
   jynus:
     ensure: present
     gid: 500
@@ -2198,6 +2201,7 @@ users:
     ssh_keys:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC30CobMFZjzo1EMN2EzzU/sDlW8RnQI7xhF5w9Le+dgOUiVwYY9NzeWy5bX4cfLzNTt8lgOYUgsG5IVy7AA41S0RjdMS/vJm9FUkX/9r0cJGCiEd+Fb6UgKBqLdzMo5iWyWx/Mp4Q0hhZgQAJOXGXMiKbg7NWvZwlZVfqk1bgRVAp2tsVpTEAX+veoczfDEsK6hUMLcOR/UFIuPyjtTUnHoWH+s1fQh7C+Tw4GtmAQ82/hgsKvxBD+Q4HeS/4mQufgLVrr9H74K+dK4Ik46vNbXRyIhRZ0Cs/YNfMkMj1NQHLYxZuoqkLrOmAp1Rg2US3zchyjZM3+P6xkFa8cyo8pG8JHg7pYDrdGEEE8dCUrGrA/trBlYYpxO+Lvwtz2X1bmR2Q0pil9ncE12OKlJjO4AhtH7xBhG2ZAKCNR3bb3DoxEJ5HNu2cKE0A6AzcFnbcGtB1Y+EmkNJFWjUHIG+dDy+KZ/nWY3E/S894jgcO+JkpF8CkUIvng5gq3Hg7raqDmZYDqc5YUUwXBB9MFL6veNE6YW99JSkwTaT5lhYdPX9HkN5ZN/ZHWRcQ+gzhvsrADzLhfWSMyYfnfgTqvwF2qK6V8WNt5TZyqiHp7Gyjh/5oiqlrXl1HNMg7hNiTy1wSBkrUjyz4xK9S+JotWHns2uvzt6QEWqf+FSdVj/848Vw== jan.dittrich@wikimedia.de
     uid: 14685
+    email: jan.dittrich@wikimedia.de
   niharika29:
     ensure: present
     gid: 500
