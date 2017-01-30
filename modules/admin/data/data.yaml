@@ -164,7 +164,7 @@ groups:
   logstash-roots:
     gid: 722
     description: users with root access on logstash nodes (rt 6366, 6896)
-    members: [aaron, bd808, demon, reedy]
+    members: [bd808, demon, reedy]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
   statistics-web-users:
     gid: 724
