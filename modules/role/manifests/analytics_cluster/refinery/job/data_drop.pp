@@ -8,6 +8,7 @@ class role::analytics_cluster::refinery::job::data_drop {
     $webrequest_log_file     = "${role::analytics_cluster::refinery::log_dir}/drop-webrequest-partitions.log"
     $eventlogging_log_file   = "${role::analytics_cluster::refinery::log_dir}/drop-eventlogging-partitions.log"
     $wdqs_extract_log_file   = "${role::analytics_cluster::refinery::log_dir}/drop-wdqs-extract-partitions.log"
+    $mediawiki_log_file      = "${role::analytics_cluster::refinery::log_dir}/drop-mediawiki-log-partitions.log"
 
     # Shortcut var to DRY up cron commands.
     $env = "export PYTHONPATH=\${PYTHONPATH}:${role::analytics_cluster::refinery::path}/python"
@@ -46,5 +47,20 @@ class role::analytics_cluster::refinery::job::data_drop {
         user    => 'hdfs',
         minute  => '0',
         hour    => '1',
+    }
+
+    # keep this many days of mediawiki application logs
+    $mediawiki_log_retention_days = 90
+    cron {'refinery-drop-apiaction-partitions':
+        command => "export PYTHONPATH=\${PYTHONPATH}:${role::analytics_cluster::refinery::path}/python && ${role::analytics_cluster::refinery::path}/bin/refinery-drop-hourly-partitions -d ${mediawiki_log_retention_days} -D wmf_raw -t apiaction -p camus -l /wmf/data/raw/mediawiki/mediawiki_ApiAction/hourly >> ${mediawiki_log_file} 2>&1",
+        user    => 'hdfs',
+        minute  => '15',
+        hour    => '*/4',
+    }
+    cron {'refinery-drop-cirrussearchrequestset-partitions':
+        command => "export PYTHONPATH=\${PYTHONPATH}:${role::analytics_cluster::refinery::path}/python && ${role::analytics_cluster::refinery::path}/bin/refinery-drop-hourly-partitions -d ${mediawiki_log_retention_days} -D wmf_raw -t apiaction -p camus -l /wmf/data/raw/mediawiki/mediawiki_CirrusSearchRequestSet/hourly >> ${mediawiki_log_file} 2>&1",
+        user    => 'hdfs',
+        minute  => '25',
+        hour    => '*/4',
     }
 }
