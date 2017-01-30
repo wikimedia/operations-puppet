@@ -1,6 +1,7 @@
 cassandra::rack: a5
 do_paging: false
-role::maps::master::planet_sync_period: 'hour'
+role::maps::master::planet_sync_period: 'minute'
 role::maps::master::planet_sync_hour:   '*'
+role::maps::master::planet_sync_minute: '*'
 role::maps::master::postgres_tile_storage: true
 tilerator::ui::storage_id: 'v5'
