@@ -240,7 +240,7 @@ groups:
     description: Admin access to analytics cluster.
                  This will grant shell access on all Analytics Cluster nodes, as well
                  as the ability to sudo to certain Analytics Cluster system users.
-    members: [joal, elukey, nuria, mforns, milimetric, fdans]
+    members: [joal, nuria, mforns, milimetric, fdans]
     privileges: ['ALL = (hdfs)  NOPASSWD: ALL',
                  'ALL = (oozie) NOPASSWD: ALL',
                  'ALL = (hive)  NOPASSWD: ALL']
