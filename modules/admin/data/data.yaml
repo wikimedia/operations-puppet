@@ -126,7 +126,7 @@ groups:
   contint-users:
     gid: 718
     description: users with accounts on jenkins hosts
-    members: [aaron, csteipp]
+    members: [csteipp]
   contint-admins:
     gid: 719
     description: users with some sudo permissions on jenkins and nodepool hosts
