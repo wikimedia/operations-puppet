@@ -299,6 +299,7 @@ aqs:
   aqs1004.eqiad.wmnet: [aqs]
   aqs1005.eqiad.wmnet: [aqs]
   aqs1006.eqiad.wmnet: [aqs]
+  aqs1007.eqiad.wmnet: [aqs]
 eventbus:
   kafka1001.eqiad.wmnet: [eventbus]
   kafka1002.eqiad.wmnet: [eventbus]
