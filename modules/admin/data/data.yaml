@@ -463,7 +463,7 @@ groups:
   piwik-roots:
     gid: 770
     description: users who have root on analytics piwik servers
-    members: [mforns, milimetric, nuria, otto, joal]
+    members: [mforns, milimetric, nuria, joal]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
   analytics-search-users:
     gid: 771
