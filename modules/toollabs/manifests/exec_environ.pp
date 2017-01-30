@@ -294,6 +294,7 @@ class toollabs::exec_environ {
         'mailutils',                   # T114073
         'mdbtools',                    # T50805.
         'melt',                        # T71365
+        'mktorrent',                   # T155470
         'openbabel',                   # T68995
         'p7zip-full',                  # requested by Betacommand and danilo to decompress 7z files
         'pdf2svg',                     # T70092.
