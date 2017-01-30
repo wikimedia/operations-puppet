@@ -59,6 +59,7 @@ class role::labs::novaproxy(
             luahandler        => 'domainproxy',
             redis_replication => $redis_replication,
         }
+        $ssl_settings = []
     }
 
     include dynamicproxy::api
