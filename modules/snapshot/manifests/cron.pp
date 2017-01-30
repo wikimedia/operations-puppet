@@ -4,7 +4,6 @@ class snapshot::cron(
     class { '::snapshot::cron::mediaperprojectlists': user => $user }
     class { '::snapshot::cron::pagetitles': user   => $user }
     class { '::snapshot::cron::cirrussearch': user   => $user }
-    class { '::snapshot::cron::centralauthdump': user   => $user }
     class { '::snapshot::cron::dumplists': user   => $user }
     class { '::snapshot::cron::wikidatadumps::json': user   => $user }
     class { '::snapshot::cron::wikidatadumps::ttl': user   => $user }
