@@ -476,6 +476,7 @@ class role::mariadb::tendril {
         config  => 'mariadb/tendril.my.cnf.erb',
         datadir => '/srv/sqldata',
         tmpdir  => '/srv/tmp',
+        ssl     => 'puppet-cert',
     }
 }
 

@@ -5,6 +5,21 @@
 [client]
 port   = 3306
 socket = /tmp/mysql.sock
+<% if @ssl == 'on' %>
+# ssl
+ssl-ca=/etc/mysql/ssl/cacert.pem
+ssl-cert=/etc/mysql/ssl/server-cert.pem
+ssl-key=/etc/mysql/ssl/server-key.pem
+# skip server cert validation until we generate one cert per server
+# it would check the cert's common name against the host
+# ssl-verify-server-cert
+<% elsif @ssl == 'puppet-cert' %>
+# ssl
+ssl-ca=/etc/ssl/certs/Puppet_Internal_CA.pem
+ssl-cert=/etc/mysql/ssl/cert.pem
+ssl-key=/etc/mysql/ssl/server.key
+ssl-verify-server-cert
+<% end %>
 
 [mysqld]
 
@@ -46,6 +61,24 @@ innodb_flush_log_at_trx_commit = 0
 innodb_flush_method            = O_DIRECT
 aria_pagecache_buffer_size     = 1G
 tokudb_cache_size              = 24G
+
+# dump and load innodb buffer at start and stop
+innodb_buffer_pool_load_at_startup  = 1
+innodb_buffer_pool_dump_at_shutdown = 1
+
+<% if @ssl == 'on' %>
+# ssl
+ssl-ca=/etc/mysql/ssl/cacert.pem
+ssl-cert=/etc/mysql/ssl/server-cert.pem
+ssl-key=/etc/mysql/ssl/server-key.pem
+ssl-cipher=TLSv1.2
+<% elsif @ssl == 'puppet-cert' %>
+# ssl
+ssl-ca=/etc/ssl/certs/Puppet_Internal_CA.pem
+ssl-cert=/etc/mysql/ssl/cert.pem
+ssl-key=/etc/mysql/ssl/server.key
+ssl-cipher=TLSv1.2
+<% end %>
 
 optimizer_switch='engine_condition_pushdown=on,optimize_join_buffer_size=on'
 join_cache_level = 8
