@@ -6,7 +6,7 @@ groups:
               mwalker, nimishg, rainman, ssmith, swalling, sumanah, werdna, rmoen,
               johnflewis, marc, jkrauska, akumar, mnoushad, spage, tnegrin, msyed, kleduc,
               manybubbles, haithams, jzerebecki, ashwinpp, ironholds, robla, asherman,
-              laner, declerambaul, srijan, junikowski, krenair]
+              laner, declerambaul, srijan, junikowski, krenair, springle]
   wikidev:
     gid: 500
     description: container group for primary user groups.
@@ -20,7 +20,7 @@ groups:
     gid: 700
     description: include everywhere ops folks
     members: &ops_members [filippo, jgreen, bblack, andrew, faidon, rush, oblivian, yuvipanda,
-              dzahn, akosiaris, springle, mark, ariel, cmjohnson, otto, robh, tstarling,
+              dzahn, akosiaris, mark, ariel, cmjohnson, otto, robh, tstarling,
               ori, midom, jmm, jynus, aaron, ema, elukey, gehel, volans, madhuvishy, marostegui]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
   parsoid-roots:
@@ -106,7 +106,7 @@ groups:
               dduvall, ellery, ezachte, gilles, halfak,
               jforrester, jkatz, jmorgan, kaldari,
               leila, mattflaschen, milimetric, nettrom, bearloga,
-              nuria, ori, otto, springle, yuvipanda,
+              nuria, ori, otto, yuvipanda,
               mforns, jdlrobson, dr0ptp4kt, tgr, marktraceur, jhernandez, joal,
               daisy, tomasz, mholloway-shell, madhuvishy, ebernhardson, niedzielski,
               neilpquinn-wmf, tbayer, moushira, dbrant, maxsem,
@@ -641,14 +641,12 @@ users:
     uid: 2186
     email: fliambotis@wikimedia.org
   springle:
-    ensure: present
+    ensure: absent
     gid: 500
     name: springle
     realname: Sean Pringle
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDZ632eqrXOJ2vVKmxwode44lGL6UGEXUWG8muUP1ItqSCdYqmG11zaeH3uJNfsbqUu0jJbKpO7uiKSwolaYrHDPLDl5v5jNyRx7aQDzMgCjtVGAZIN3zQGGybl7v8ZQ635L9SAaATuYd7nOdDGa5TZ46YiAv1BA/+RGnUSz5h/ycb09V7o+RlQbHRTsTCIxjIMg45Rqnn3ukBeGNEZAU4IgaTRkg19PfPeSH9q6Ni6Wa1jz32ygmotT38vKuCvOXZxigrHJKwovS6xdfdxC67UBMV5J+KICpRPVAn1iIQMyiatdG4tBlPOUEecZcL6f7QaZufZwI/gU3wkC2zlVchF
-        sean@mintaka]
+    ssh_keys: []
     uid: 3391
-    email: sean.pringle@gmail.com
   robh:
     ensure: present
     gid: 500
