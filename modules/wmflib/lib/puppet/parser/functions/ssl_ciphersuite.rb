@@ -7,7 +7,7 @@
 #
 # Takes three arguments:
 #
-# - The server to configure for: 'apache' or 'nginx'
+# - The server to configure for: 'apache', 'nginx', or 'exim4'
 # - The compatibility mode, trades security vs compatibility.
 #   Note that due to POODLE, SSLv3 is universally disabled and none of these
 #   options are compatible with SSLv3-only clients such as IE6/XP.
@@ -40,6 +40,7 @@
 #
 #     ssl_ciphersuite('apache', 'compat', true)
 #     ssl_ciphersuite('nginx', 'strong')
+#     ssl_ciphersuite('exim4', 'compat')
 #
 # == License
 #
@@ -135,6 +136,7 @@ Examples:
    ssl_ciphersuite('apache', 'compat', true) # Compatible config for apache
    ssl_ciphersuite('apache', 'mid', true) # FS-only for apache
    ssl_ciphersuite('nginx', 'strong', true) # FS-only, AEAD-only, TLSv1.2-only
+   ssl_ciphersuite('exim4', 'strong') # FS-only, AEAD-only, TLSv1.2-only
 END
               ) do |args|
 
@@ -146,7 +148,7 @@ END
     end
 
     server = args.shift
-    if server != 'apache' && server != 'nginx'
+    if server != 'apache' && server != 'nginx' && server != 'raw'
       fail(ArgumentError, "ssl_ciphersuite(): unknown server string '#{server}'")
     end
 
@@ -199,7 +201,7 @@ END
       if do_hsts
         output.push("Header always set Strict-Transport-Security \"#{hsts_val}\"")
       end
-    else # nginx
+    elsif server == 'nginx'
       if ciphersuite == 'strong'
         output.push('ssl_protocols TLSv1.2;')
       else
@@ -217,6 +219,9 @@ END
             output.push("add_header Strict-Transport-Security \"#{hsts_val}\";")
         end
       end
+    else # exim4
+      output.push("tls_require_ciphers = #{cipherlist}")
+      output.push('tls_dhparam = /etc/ssl/dhparam.pem')
     end
     return output
   end
