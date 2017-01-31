@@ -10,10 +10,25 @@
 #
 # [*use_dockerproject*] Whether to use dockerproject.org packages or not.
 #
-class docker($version, $use_dockerproject=true){
+# [*use_docker_io_repo*] Use upstream's docker repo directly
+class docker(
+    $version,
+    $use_dockerproject=true,
+    $use_docker_io_repo=false
+){
     if $use_dockerproject {
         $package = 'docker-engine'
         $absent_package = 'docker.io'
+
+        if $use_docker_io_repo {
+            apt::repository { 'docker':
+                uri        => 'https://apt.dockerproject.org/repo',
+                dist       => 'debian-jessie',
+                components => 'main',
+                source     => false,
+                keyfile    => 'puppet:///modules/docker/docker.gpg',
+            }
+        }
     }
     else {
         $package = 'docker.io'
