@@ -1,9 +1,6 @@
 # Helper class to setup building toollabs related images
 
 class toollabs::images {
-
-    require ::docker::engine
-
     class { '::docker::baseimages':
         docker_registry => hiera('docker::registry'),
     }
