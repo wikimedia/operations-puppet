@@ -1925,7 +1925,11 @@ node 'mc1019.eqiad.wmnet' {
     role(memcached)
 }
 
-node /^mc20[01][0-9]\.codfw\.wmnet/ {
+node /^mc20(0[1-9]|1[0-6])\.codfw\.wmnet/ {
+    role(memcached)
+}
+
+node /^mc20(19|2[1-9]|3[0-6])\.codfw\.wmnet/ {
     role(memcached)
 }
 
