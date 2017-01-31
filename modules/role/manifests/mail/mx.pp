@@ -33,6 +33,7 @@ class role::mail::mx(
     include passwords::exim
     $otrs_mysql_password = $passwords::exim::otrs_mysql_password
     $smtp_ldap_password  = $passwords::exim::smtp_ldap_password
+    $tls_settings = ssl_ciphersuite('exim4', 'compat')
 
     class { 'exim4':
         variant => 'heavy',

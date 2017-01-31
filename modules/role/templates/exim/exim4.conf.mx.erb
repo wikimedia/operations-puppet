@@ -95,6 +95,7 @@ keep_environment =
 tls_certificate = /etc/ssl/localcerts/mail.wikimedia.org.chained.crt
 tls_privatekey = /etc/ssl/private/mail.wikimedia.org.key
 tls_advertise_hosts = *
+<%= @tls_settings.join("\n") %>
 
 # force Gmail over IPv4 due to reports of bad spam reputation over IPv6
 dns_ipv4_lookup = gmail-smtp-in.l.google.com : aspmx.l.google.com

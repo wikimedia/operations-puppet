@@ -45,6 +45,8 @@ class role::lists::server {
 
     include privateexim::listserve
 
+    $tls_settings = ssl_ciphersuite('exim4', 'compat')
+
     class { 'exim4':
         variant => 'heavy',
         config  => template('role/exim/exim4.conf.mailman.erb'),
