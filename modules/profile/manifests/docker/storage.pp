@@ -7,16 +7,16 @@
 #
 # https://github.com/docker/docker/issues/15629
 #
-class profile::docker::storage {
-    # Parameters that need to be defined in hiera
+class profile::docker::storage(
     # list of physical volumes to use.
-    $physical_volumes = hiera('profile::docker::storage::physical_volumes')
+    $physical_volumes = hiera('profile::docker::storage::physical_volumes'),
     # Optional parameters
     # Volume group to substitute.
-    $vg_to_remove = hiera('profile::docker::storage::vg_to_remove', undef)
+    $vg_to_remove = hiera('profile::docker::storage::vg_to_remove', undef),
+) {
     # Size of the thin pool and the metadata pool.
-    $extents = hiera('profile::docker::storage::extents', '95%VG')
-    $metadata_size = hiera('profile::docker::storage::metadata_size', '5%VG')
+    $extents = '95%VG'
+    $metadata_size = '5%VG'
 
     Class['::profile::docker::storage'] -> Service['docker']
 
