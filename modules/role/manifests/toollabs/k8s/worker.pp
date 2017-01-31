@@ -16,8 +16,18 @@ class role::toollabs::k8s::worker {
         etcd_endpoints => $etcd_url,
     }
 
-    class { '::k8s::docker':
-        require => Class['::k8s::flannel'],
+    class {'::profile::docker::storage':
+        vg_to_remove     => 'vd',
+        physical_volumes => '/dev/vda4',
+    }
+
+    class { '::profile::docker::engine':
+        settings => {
+            'iptables' => false,
+            'ip-masq'  => false,
+        },
+        version  => '1.11.2-0~jessie',
+        require  => Class['::profile::docker::storage'],
     }
 
     class { '::k8s::ssl':
