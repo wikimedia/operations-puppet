@@ -1486,11 +1486,6 @@ host db2014 {
     fixed-address db2014.codfw.wmnet;
 }
 
-host db2015 {
-    hardware ethernet D4:AE:52:7C:A6:FD;
-    fixed-address db2015.codfw.wmnet;
-}
-
 host db2016 {
     hardware ethernet d4:ae:52:90:39:8c;
     fixed-address db2016.codfw.wmnet;
