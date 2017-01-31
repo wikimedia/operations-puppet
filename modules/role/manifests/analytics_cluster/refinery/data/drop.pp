@@ -18,7 +18,10 @@ class role::analytics_cluster::refinery::data::drop {
     }
 
     # keep this many days of refined webrequest data
-    $refined_retention_days = 62
+    # $refined_retention_days = 62
+    # Temporarily extending retention to 90 days so we can recompute fundraising banner impressions
+    # for December.  T155141
+    $refined_retention_days = 90
     cron { 'refinery-drop-webrequest-refined-partitions':
         command => "export PYTHONPATH=\${PYTHONPATH}:${role::analytics_cluster::refinery::path}/python && ${role::analytics_cluster::refinery::path}/bin/refinery-drop-webrequest-partitions -d ${refined_retention_days} -D wmf -l /wmf/data/wmf/webrequest -w refined >> ${webrequest_log_file} 2>&1",
         user    => 'hdfs',
