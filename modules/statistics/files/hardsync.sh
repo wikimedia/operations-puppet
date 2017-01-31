@@ -110,6 +110,8 @@ source_dirs=${@:1:$argc}
 # The last argument is the destination directory
 dest_dir="${!#}"
 
+# Make an empty dest_dir if it already doesn't exist.
+test -d "${dest_dir}" || cmd mkdir -p $dest_dir
 
 # Check that we have $source_dirs and a $dest_dir.
 if [ -z "${source_dirs}" -o -z "${dest_dir}" ]; then
@@ -157,6 +159,7 @@ done
 
 #  Remove any existent $dest_dir and mv $temp_dest to $dest_dir
 test -e $dest_dir && cmd mv -f $dest_dir $temp_dest_trash
+cmd chmod 755 $temp_dest
 cmd mv -f $temp_dest $dest_dir
 cmd rm -rf $temp_dest_trash
 
