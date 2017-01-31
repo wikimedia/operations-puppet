@@ -196,6 +196,14 @@ class nodepool(
         source => 'puppet:///modules/nodepool/become-nodepool.sh',
     }
 
+    file { '/usr/local/bin/check_nodepool_states':
+        ensure => present,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => 'puppet:///modules/nodepool/check_nodepool_states.py',
+    }
+
     file { '/var/lib/nodepool/.ssh':
         ensure => directory,
         owner  => 'nodepool',
