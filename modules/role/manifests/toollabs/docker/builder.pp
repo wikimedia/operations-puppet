@@ -2,7 +2,19 @@
 class role::toollabs::docker::builder {
     include ::toollabs::infrastructure
 
-    class { '::docker::engine': }
+    class { '::profile::docker::storage':
+        vg_to_remove     => 'vd',
+        physical_volumes => '/dev/vda4',
+    }
+
+    class { '::profile::docker::engine':
+        settings => {
+            'iptables' => false,
+            'ip-masq'  => false,
+        },
+        version  => '1.11.2-0~jessie',
+        require  => Class['::profile::docker::storage'],
+    }
 
     class { '::toollabs::images': }
 
