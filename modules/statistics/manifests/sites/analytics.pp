@@ -24,6 +24,28 @@ class statistics::sites::analytics {
         mode      => '0775',
     }
 
+    # Use hardsync script to hardlink merge files from various stat box published-dataset
+    # directories.  These are rsync pushed here from the stat boxes.
+    file { "${working_path}/published-datasets-rsynced":
+        ensure => 'directory',
+        owner  => 'root',
+        group  => 'www-data',
+        mode   => '0775',
+    }
+
+
+    # Merge files in published-datasets-rsynced/* via hardlinks into $document_root/datasets
+    cron { 'hardsync-published-datasets':
+        # This script is installed by ::statistics::web.
+        command => "/usr/local/bin/hardsync -t ${working_path} ${working_path}/published-datasets-rsynced/* ${document_root}/datasets 2>&1 > /dev/null",
+        user    => 'root',
+        minute  => '*/30',
+        require => [
+            File["${working_path}/published-datasets-rsynced"],
+            Git::Clone['analytics.wikimedia.org'],
+        ],
+    }
+
     include ::apache::mod::headers
     apache::site { 'analytics':
         content => template('statistics/analytics.wikimedia.org.erb'),
