@@ -2803,7 +2803,7 @@ node 'wasat.codfw.wmnet' {
 }
 
 # Wikidata query service
-node /^wdqs100[1-2]\.eqiad\.wmnet$/ {
+node /^wdqs100[1-3]\.eqiad\.wmnet$/ {
     role(wdqs)
     include ::lvs::realserver
 }
