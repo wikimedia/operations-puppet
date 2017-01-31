@@ -1302,6 +1302,21 @@ node 'install1001.wikimedia.org' {
     }
 }
 
+node 'install1002.wikimedia.org' {
+    role(installserver::tftp,
+        installserver::dhcp,
+        installserver::http,
+        installserver::proxy,
+        installserver::preseed,
+        aptrepo::wikimedia)
+
+    $cluster = 'misc'
+
+    interface::add_ip6_mapped { 'main':
+        interface => 'eth0',
+    }
+}
+
 node 'install2001.wikimedia.org' {
     role(installserver::tftp,
         installserver::dhcp,
@@ -1318,6 +1333,21 @@ node 'install2001.wikimedia.org' {
 
     class { '::ganglia::monitor::aggregator':
         sites =>  'codfw',
+    }
+}
+
+node 'install2002.wikimedia.org' {
+    role(installserver::tftp,
+        installserver::dhcp,
+        installserver::http,
+        installserver::proxy,
+        installserver::preseed,
+        aptrepo::wikimedia)
+
+    $cluster = 'misc'
+
+    interface::add_ip6_mapped { 'main':
+        interface => 'eth0',
     }
 }
 
