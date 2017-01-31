@@ -1,3 +1,2 @@
-wdqs::data_dir: /srv/wdqs
 lvs::realserver::realserver_ips:
     - '10.2.1.32' # wdqs.svc.codfw.wmnet

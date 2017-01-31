@@ -13,7 +13,7 @@ class wdqs(
     $use_git_deploy = true,
     $username = 'blazegraph',
     $package_dir = '/srv/deployment/wdqs/wdqs',
-    $data_dir = '/var/lib/wdqs',
+    $data_dir = '/srv/wdqs',
     $log_dir = '/var/log/wdqs',
     $endpoint = '',
 ) {
