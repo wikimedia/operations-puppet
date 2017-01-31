@@ -35,7 +35,7 @@ class statistics::compute {
     # See: statistics::sites::analytics.
     cron { 'rsync-published-datasets':
         command => "/usr/bin/rsync -rt --delete ${working_path}/published-datasets/ thorium.eqiad.wmnet::srv/published-datasets-rsynced/${::hostname}/",
-        require => File["${working_path}/public-datasets"],
+        require => File["${working_path}/published-datasets"],
         user    => 'root',
         minute  => '*/30',
     }
