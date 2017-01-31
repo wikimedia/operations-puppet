@@ -719,7 +719,8 @@ class role::mariadb::sanitarium2 {
     }
 
     class { 'mariadb::config':
-        config   => 'mariadb/sanitarium2.my.cnf.erb',
+        config => 'mariadb/sanitarium2.my.cnf.erb',
+        ssl    => 'puppet-cert',
     }
 
     class {'mariadb::service':
