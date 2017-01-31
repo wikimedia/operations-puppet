@@ -395,6 +395,16 @@ class cassandra(
         ensure  => 'installed',
     }
 
+    # Cassandra and JVM utils
+    package { 'cassandra-tools-wmf':
+        ensure  => 'installed',
+        require => Package['cassandra'],
+    }
+    package { 'jvm-tools':
+        ensure  => 'installed',
+        require => Package['openjdk-8-jdk'],
+    }
+
     # We pin the version to a specific one
     $package_version = $target_version ? {
         '2.1' => hiera('cassandra::version', '2.1.13'),
