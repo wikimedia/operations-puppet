@@ -78,4 +78,15 @@ class icinga::monitor::certs {
         host          => 'wikitech-static.wikimedia.org',
         contact_group => 'wikitech-static',
     }
+
+    # *.corp.wikiemdia.org (OIT)
+    @monitoring::host { 'https_directory-corp':
+        host_fqdn     => 'directory.corp.wikimedia.org',
+    }
+    monitoring::service { 'https_directory-corp':
+        description   => 'HTTPS-directory_corp',
+        check_command => 'check_ssl_http!directory.corp.wikimedia.org',
+        host          => 'directory.corp.wikimedia.org',
+    }
+
 }
