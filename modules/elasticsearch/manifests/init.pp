@@ -200,6 +200,12 @@ class elasticsearch(
         mode   => '0444',
         source => 'puppet:///modules/elasticsearch/logrotate',
     }
+    file { $data_dir:
+      ensure => directory,
+      owner  => 'elasticsearch',
+      group  => 'elasticsearch',
+      mode   => '0755',
+    }
     # GC logs rotation is done by the JVM, but on JVM restart, the logs left by
     # the previous instance are left alone. This cron takes care of cleaning up
     # GC logs older than 30 days.
@@ -222,6 +228,7 @@ class elasticsearch(
             File['/etc/elasticsearch/elasticsearch.yml'],
             File['/etc/elasticsearch/logging.yml'],
             File['/etc/default/elasticsearch'],
+            File[$data_dir],
         ],
     }
 
