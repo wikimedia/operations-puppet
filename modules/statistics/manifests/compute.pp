@@ -5,11 +5,40 @@ class statistics::compute {
     Class['::statistics']       -> Class['::statistics::compute']
     Class['::statistics::user'] -> Class['::statistics::compute']
 
-
     include ::statistics::dataset_mount
     include ::statistics::packages
 
     require_package('udp-filter')
+
+    $working_path = $::statistics::working_path
+    # Create $working_path/published-datasets.  Anything in this directory
+    # will be available at analytics.wikimedia.org/datasets.
+    # See: class statistics::sites::analytics.
+    file { "${working_path}/published-datasets":
+        ensure => 'directory',
+        owner  => 'root',
+        group  => 'wikidev',
+        mode   => '0775',
+    }
+    file { "${working_path}/published-datasets/README":
+        ensure => 'present',
+        source => 'puppet:///modules/statistics/published-datasets-readme.txt',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0644',
+    }
+
+    # Rync push published-datasets from this host to thorium,
+    # the analytics.wikimedia.org web host.  These will end up at
+    # /srv/published-datasets-rsynced/$hostname, and then the hardsync script
+    # will sync them into /srv/analytics.wikimedia.org/datasets.
+    # See: statistics::sites::analytics.
+    cron { 'rsync-published-datasets':
+        command => "/usr/bin/rsync -rt --delete ${working_path}/published-datasets/ thorium.eqiad.wmnet::srv/published-datasets-rsynced/${::hostname}/",
+        require => File["${working_path}/public-datasets"],
+        user    => 'root',
+        minute  => '*/30',
+    }
 
     # clones mediawiki core at $working_path/mediawiki/core
     # and ensures that it is at the latest revision.
