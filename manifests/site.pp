@@ -531,9 +531,17 @@ node 'db1040.eqiad.wmnet' {
     }
 }
 
-node /^db10(53|56|59|64|68|81|84|91)\.eqiad\.wmnet/ {
+node /^db10(53|56|59|68|81|84|91)\.eqiad\.wmnet/ {
     class { '::role::mariadb::core':
         shard => 's4',
+    }
+}
+
+# row-based replication to sanitarium2 (T150960)
+node 'db1064.eqiad.wmnet' {
+    class { 'role::mariadb::core':
+        shard         => 's4',
+        binlog_format => 'ROW',
     }
 }
 
