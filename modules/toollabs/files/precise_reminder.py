@@ -37,6 +37,7 @@ import json
 import ldap3
 import logging
 import smtplib
+import textwrap
 import yaml
 
 logging.basicConfig(
@@ -170,33 +171,34 @@ def notify_admins(member_tools, member_emails):
         recip_email = member_emails[member]
         subject = '[Weekly reminder][action required] Your Precise Tools need migration'
         body = """
-All  Tools/bots/webservices running on Ubuntu Precise 12.04 (jsub release=precise)
-will no longer function starting on Monday, March 6, 2017, and will crash with an error.
+        All Tools/bots/webservices running on Ubuntu Precise 12.04 (jsub release=precise)
+        will no longer function starting on Monday, March 6, 2017, and will crash with an error.
 
-Ubuntu Precise was released in April 2012, and support for it
-(including security updates) will cease in April 2017. We need to shut
-down all Precise hosts before the end of support date to ensure that
-Tool Labs remains a secure platform.
+        Ubuntu Precise was released in April 2012, and support for it
+        (including security updates) will cease in April 2017. We need to shut
+        down all Precise hosts before the end of support date to ensure that
+        Tool Labs remains a secure platform.
 
-You (username: {}) are registered as admin/maintainer for the following tools,
-that are still on Precise: \n{}
+        You (username: {}) are registered as admin/maintainer for the following tools,
+        that are still on Precise: \n{}
 
-Please make sure to migrate these over to Trusty as early as possible, to
-ensure continued operation.
+        Please make sure to migrate these over to Trusty as early as possible, to
+        ensure continued operation.
 
-The steps to migrate to Trusty, and more information about the Precise deprecation
-are here - https://wikitech.wikimedia.org/wiki/Tools_Precise_deprecation#What_should_I_do.3F.
+        The steps to migrate to Trusty, and more information about the
+        Precise deprecation are here -
+        https://wikitech.wikimedia.org/wiki/Tools_Precise_deprecation#What_should_I_do.3F.
 
-A quick tip for webservices - running `webservice stop; webservice start` -
-will migrate it to trusty (webservice restart currently sticks).
-Additional information on running precise jobs can be seen at our Precise tools dashboard here -
-https://tools.wmflabs.org/precise-tools/
+        A quick tip for webservices - running `webservice stop; webservice start` -
+        will migrate it to trusty (webservice restart currently sticks).
+        Additional information on running precise jobs can be seen at our Precise tools
+        dashboard here - https://tools.wmflabs.org/precise-tools/
 
-Do feel free to reach out with questions/help at #wikimedia-labs on IRC.
-    """.format(member, '\n'.join(sorted(tools)))
+        Do feel free to reach out with questions/help at #wikimedia-labs on IRC.
+        """.format(member, '\n'.join(sorted(tools)))
 
         with smtplib.SMTP('mx1001.wikimedia.org') as s:
-            msg = MIMEText(body)
+            msg = MIMEText(textwrap.dedent(body))
             msg['Subject'] = subject
             msg['From'] = 'Madhumitha Viswanathan <mviswanathan@wikimedia.org>'
             msg['To'] = recip_email
@@ -205,8 +207,11 @@ Do feel free to reach out with questions/help at #wikimedia-labs on IRC.
                 s.send_message(msg, 'mviswanathan@wikimedia.org', [recip_email])
                 logging.info('Sent email to user {}'.format(member))
             except smtplib.SMTPRecipientsRefused as e:
+                logging.error('Recipients refused error while sending to {}'.format(member))
                 logging.error(e)
-
+            except Exception as e:
+                logging.error('Error while sending to {}'.format(member))
+                logging.error(e)
 
 with open('/etc/ldap.yaml') as f:
     config = yaml.safe_load(f)
