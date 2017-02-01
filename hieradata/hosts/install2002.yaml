@@ -1,0 +1,6 @@
+# Not assigned via the role, since overlap with various bastion hosts which also have that role
+debdeploy::grains:
+  debdeploy-tftpserver:
+    value: standard
+
+apt::wikimedia::active-host: false
