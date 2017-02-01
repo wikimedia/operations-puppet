@@ -48,6 +48,6 @@ class xdummy(
             Package['Xorg'],
             Package['xpra'],
             User['xdummy']
-        ]
+        ],
     }
 }
