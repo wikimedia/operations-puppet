@@ -16,7 +16,7 @@ targetFileBzip2=$targetDir/$filename.ttl.bz2
 failureFile=/tmp/dumpwikidatattl-failure
 mainLogFile=/var/log/wikidatadump/dumpwikidatattl-$filename-main.log
 
-shards=4
+shards=5
 
 # Try to create the dump (up to three times).
 retries=0
