@@ -129,7 +129,8 @@ def available_roles():
             )
             obj.html_name = mark_safe(html)
 
-            roles.append(obj)
+            if obj.filter_tags:
+                roles.append(obj)
 
         cache.set(key, roles, 300)
 
