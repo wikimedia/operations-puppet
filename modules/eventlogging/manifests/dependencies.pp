@@ -28,5 +28,6 @@ class eventlogging::dependencies {
         'python-statsd',
         'python-yaml',
         'python-zmq',
+        'python-ua-parser'
     ])
 }
