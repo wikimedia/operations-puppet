@@ -2556,6 +2556,11 @@ host ganeti2006 {
     fixed-address ganeti2006.codfw.wmnet;
 }
 
+host gerrit2001 {
+    hardware ethernet 14:18:77:5B:0D:7E;
+    fixed-address gerrit2001.wikimedia.org;
+}
+
 host graphite1001 {
     hardware ethernet B0:83:FE:DF:2B:64;
     fixed-address graphite1001.eqiad.wmnet;
