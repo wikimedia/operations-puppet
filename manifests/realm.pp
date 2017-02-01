@@ -50,7 +50,7 @@ if $realm == 'labs' {
     }
 
     if $::labsproject == undef {
-        fail('Failed to determined $::labsproject')
+        fail('Failed to determine $::labsproject')
     }
 
     if $::projectgroup == undef {
