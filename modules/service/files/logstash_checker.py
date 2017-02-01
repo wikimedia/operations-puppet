@@ -91,13 +91,15 @@ class CheckService(object):
     """Shell class for checking services."""
 
     def __init__(self, host, service_name, logstash_host, user='', password='',
-                 verbose=False, delay=120, fail_threshold=2):
+                 verbose=False, delay=120, fail_threshold=2.0,
+                 absolute_threshold=1.0):
         """Initialize the checker."""
         self.host = host
         self.service_name = service_name
         self.logstash_host = logstash_host
         self.delay = delay
         self.fail_threshold = fail_threshold
+        self.absolute_threshold = absolute_threshold
         self.auth = None
         self.logger = logging.getLogger(__name__)
 
@@ -256,7 +258,9 @@ class CheckService(object):
         mean_after = float(sum(counts_after)) / max(1, len(counts_after))
 
         # Check if there was a significant increase in the rate.
-        target_error_rate = (mean_before * self.fail_threshold)
+        target_error_rate = max(
+            self.absolute_threshold, (mean_before * self.fail_threshold))
+
         over_threshold = mean_after > target_error_rate
 
         if over_threshold:
@@ -303,6 +307,11 @@ def main():
     parser.add_argument('--fail-threshold', type=float, default=2.0,
                         help='Event rate change ratio before / after delay '
                              'that is considered a failure')
+    parser.add_argument('--absolute-threshold', type=float, default=1.0,
+                        help='Average error rate per 10s above which we '
+                             'will compare the error rate before / after '
+                             'delay (i.e., if the 10s error rate is below '
+                             'this threshold -- all is well')
     parser.add_argument('--user', '-u',
                         help='User for logstash authentication')
     parser.add_argument('--password', '-p', action='store_true',
