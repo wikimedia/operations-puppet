@@ -59,6 +59,10 @@ class base::standard_packages {
         ensure => absent,
     }
 
+    if os_version('ubuntu >= precise') {
+        package { 'ntfs-3g': ensure => absent }
+    }
+
     # real-hardware specific
     # As of September 2015, mcelog still does not support newer AMD processors.
     # See <http://www.mcelog.org/faq.html#18>.
