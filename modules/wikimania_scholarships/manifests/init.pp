@@ -29,9 +29,9 @@ class wikimania_scholarships(
     $smtp_host    = 'localhost'
 ) {
 
-    include passwords::mysql::wikimania_scholarships,
-        ::apache,
-        ::apache::mod::php5
+    include ::passwords::mysql::wikimania_scholarships
+    include ::apache
+    include ::apache::mod::php5
 
     require_package('php5-mysql')
 

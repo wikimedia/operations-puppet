@@ -34,7 +34,7 @@ class planet (
     include ::planet::webserver
     include ::planet::packages
     include ::planet::dirs
-    include ::planet::use
+    include ::planet::user
     include ::planet::index_site
 
     # TODO change this to be one per language
