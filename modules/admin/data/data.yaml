@@ -6,7 +6,7 @@ groups:
               mwalker, nimishg, rainman, ssmith, swalling, sumanah, werdna, rmoen,
               johnflewis, marc, jkrauska, akumar, mnoushad, spage, tnegrin, msyed, kleduc,
               manybubbles, haithams, jzerebecki, ashwinpp, ironholds, robla, asherman,
-              laner, declerambaul, srijan, junikowski, krenair, springle]
+              laner, declerambaul, srijan, junikowski, krenair, springle, jhobs]
   wikidev:
     gid: 500
     description: container group for primary user groups.
@@ -227,7 +227,7 @@ groups:
               nuria, otto, deskana, zhousquared, arnad, jgonsior,
               bsitzmann, dbrant, ellery, nettrom, leila,
               ezachte, mforns, reedy, west1, phuedx, awight,
-              joal, jamesur, akosiaris, jhobs, lpintscher, jkatz, madhuvishy, gpaumier,
+              joal, jamesur, akosiaris, lpintscher, jkatz, madhuvishy, gpaumier,
               andyrussg, niedzielski, maxsem, hoo, daniel, tbayer, krinkle, tgr,
               csteipp, smalyshev, ebernhardson, addshore, jminor, chedasaurus, neilpquinn-wmf,
               dcausse, bd808, tjones, mobrovac, jgirault, jdrewniak, ejegg, jdcc, ori,
@@ -1749,13 +1749,12 @@ users:
     uid: 11774
     email: eevans@wikimedia.org
   jhobs:
-    ensure: present
+    ensure: absent
     gid: 500
     name: jhobs
     realname: Jeff Hobson
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC1sw+mDWAPUMff1DaTRNVYAxhReV1bRLMEp32689l9dFHcyP+pjLuzJ5IeLQaHi5cd7iEWiQBQYvTtcwqOkar2ozapUbckT+HTDz6sSZqQcOhqc8ZpCm2BdMtXm+oR3bwjFodPhA3qvb/N7EwmoLUxQzmm2LK6/wlb34s3iOnmRF3nl4IN2FqvJlUBPRegJNycO3ntzpV5MN6cVATPkX88Sh05KtjMuNXb0W0gntn8hp1h5YazfDfHWavnAldncwNGG9xIBgF8ENb9lqPo7fcmBqZVZsrQAWuY09SqBfPrKeaP7uaXKIkIEG9sGZUPCUdFefsaw7WjDfZ0vwkwPzFX jhobson@wikimedia.org]
+    ssh_keys: []
     uid: 10542
-    email: jhobson@wikimedia.org
   lpintscher:
     ensure: present
     gid: 500
