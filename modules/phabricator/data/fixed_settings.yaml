@@ -7,7 +7,7 @@
 
 search.elastic.host: 'https://search.svc.eqiad.wmnet:9243'
 search.elastic.version: '2'
-search.elastic.enabled: false
+search.elastic.enabled: true
 
 ui.logo:
   'logoImagePHID': 'PHID-FILE-rs3pf2brupiulr6zcnrg'
