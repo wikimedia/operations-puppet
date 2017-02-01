@@ -195,16 +195,17 @@ https://tools.wmflabs.org/precise-tools/
 Do feel free to reach out with questions/help at #wikimedia-labs on IRC.
     """.format(member, '\n'.join(sorted(tools)))
 
-    with smtplib.SMTP('mx1001.wikimedia.org') as s:
-        msg = MIMEText(body)
-        msg['Subject'] = subject
-        msg['From'] = 'Madhumitha Viswanathan <mviswanathan@wikimedia.org>'
-        msg['To'] = recip_email
-        msg['List-Unsubscribe'] = '<mailto:mviswanathan@wikimedia.org>'
-        try:
-            s.send_message(msg, 'mviswanathan@wikimedia.org', [recip_email])
-        except smtplib.SMTPRecipientsRefused as e:
-            logging.error(e)
+        with smtplib.SMTP('mx1001.wikimedia.org') as s:
+            msg = MIMEText(body)
+            msg['Subject'] = subject
+            msg['From'] = 'Madhumitha Viswanathan <mviswanathan@wikimedia.org>'
+            msg['To'] = recip_email
+            msg['List-Unsubscribe'] = '<mailto:mviswanathan@wikimedia.org>'
+            try:
+                s.send_message(msg, 'mviswanathan@wikimedia.org', [recip_email])
+                logging.info('Sent email to user {}'.format(member))
+            except smtplib.SMTPRecipientsRefused as e:
+                logging.error(e)
 
 
 with open('/etc/ldap.yaml') as f:
@@ -213,6 +214,6 @@ with open('/etc/ldap.yaml') as f:
 tool_to_members = tools_members(config, accounting_tools() + grid_precise_tools())
 logging.info("Tools on precise: \n {}".format(tool_to_members.keys()))
 mt = members_tools(tool_to_members)
-logging.info("Users being nagged: \n {}".format(mt.keys()))
+logging.info("Users being reminded: \n {}".format(mt.keys()))
 emails = member_emails(mt.keys())
 notify_admins(mt, emails)
