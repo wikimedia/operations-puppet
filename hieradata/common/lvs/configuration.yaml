@@ -1056,6 +1056,7 @@ lvs::configuration::lvs_services:
       service: thumbor
     icinga:
       check_command: "check_http_lvs_on_port!thumbor.svc.%{::site}.wmnet!8800!/healthcheck"
+      critical: false
       sites:
         eqiad:
           hostname: thumbor.svc.eqiad.wmnet
