@@ -2614,11 +2614,29 @@ host install1001 {
     filename "lpxelinux.0";
 }
 
+host install1002 {
+    hardware ethernet aa:00:00:3c:d7:80;
+    fixed-address install1002.wikimedia.org;
+
+    next-server 208.80.154.83; # install1001 (tftp server)
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
+    filename "lpxelinux.0";
+}
+
 host install2001 {
     hardware ethernet D4:AE:52:AA:06:C3;
     fixed-address install2001.wikimedia.org;
 
     next-server 208.80.154.83; # install1001 (tftp server)
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
+    filename "lpxelinux.0";
+}
+
+host install2002 {
+    hardware ethernet aa:00:00:6b:d7:3f;
+    fixed-address install2002.wikimedia.org;
+
+    next-server 208.80.153.4; # install2001 (tftp server)
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
     filename "lpxelinux.0";
 }
