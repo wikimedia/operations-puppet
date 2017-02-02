@@ -73,12 +73,18 @@ class phabricator (
     # save as a var since this will be required by many resources in this class
     $base_requirements = [Package[$deploy_target]]
 
+    $elastic_search         = {
+      "search.elastic.host" => hiera('phabricator_elasticsearch_host', "https://search.svc.eqiad.wmnet:9243"),
+      "search.elastic.version" => hiera('phabricator_elasticsearch_version', 2),
+      "search.elastic.enabled" => hiera('phabricator_elasticsearch_enable', true),
+    }
+
     #A combination of static and dynamic conf parameters must be merged
     $module_path = get_module_path($module_name)
     $fixed_settings = loadyaml("${module_path}/data/fixed_settings.yaml")
 
     #per stdlib merge the dynamic settings will take precendence for conflicts
-    $phab_settings = merge($fixed_settings, $settings)
+    $phab_settings = merge($elastic_search, $fixed_settings, $settings)
 
     if empty($mysql_admin_user) {
         $storage_user = $phab_settings['mysql.user']
