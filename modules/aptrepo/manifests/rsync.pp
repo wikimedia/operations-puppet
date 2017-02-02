@@ -40,7 +40,7 @@ class aptrepo::rsync {
         ensure => $ensure_ferm,
         proto  => 'tcp',
         port   => '873',
-        srange => "@resolve(${primary_server})",
+        srange => "(@resolve((${primary_server})) @resolve((${primary_server}), AAAA))",
     }
 
     cron { 'rsync-aptrepo':
