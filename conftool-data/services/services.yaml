@@ -141,7 +141,7 @@ restbase:
     - eqiad
     - codfw
   cassandra:
-    defaul_values:
+    default_values:
       pooled: 'no'
       weight: 10
     datacenters:
@@ -157,7 +157,7 @@ maps:
     - codfw
     - eqiad
   cassandra:
-    defaul_values:
+    default_values:
       pooled: 'no'
       weight: 10
     datacenters:
@@ -171,7 +171,7 @@ aqs:
     datacenters:
     - eqiad
   cassandra:
-    defaul_values:
+    default_values:
       pooled: 'no'
       weight: 10
     datacenters:
