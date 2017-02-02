@@ -35,6 +35,7 @@ define udp2log::instance(
     $logrotate_template  = 'udp2log/logrotate_udp2log.erb',
     $rotate              = 1000,
     $forward_messages    = false,
+    $mirror_destinations = undef,
 ){
     # This define requires that the udp2log class has
     # been included.  The udp2log class is parameterized,

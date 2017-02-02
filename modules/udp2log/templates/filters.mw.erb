@@ -13,3 +13,11 @@ pipe 1 egrep '^(fatal|exception) ' | /usr/bin/log2udp -h <%= @template_variables
 # not yet directly connected to logstash and should be relayed here.
 pipe 1 egrep '^(scap|scholarships|iegreview) ' | /usr/bin/log2udp -h <%= @template_variables['logstash_host'] %> -p <%= @template_variables['logstash_port'] %>
 <% end -%>
+
+<% if @mirror_destinations -%>
+
+<% @mirror_destinations.each do |destination| -%>
+pipe 1 /usr/bin/log2udp -h <%= destination %> -p 8420
+<% end -%>
+
+<% end -%>
