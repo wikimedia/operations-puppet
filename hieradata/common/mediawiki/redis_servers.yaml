@@ -60,10 +60,10 @@ mediawiki::redis_servers::codfw:
     host: 10.192.0.83
     port: 6379
   shard02:
-    host: 10.192.0.35
+    host: 10.192.0.84
     port: 6379
   shard03:
-    host: 10.192.0.36
+    host: 10.192.0.85
     port: 6379
   shard04:
     host: 10.192.0.37
