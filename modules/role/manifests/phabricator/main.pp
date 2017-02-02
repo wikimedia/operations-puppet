@@ -128,6 +128,10 @@ class role::phabricator::main {
 
     $phab_diffusion_ssh_host = hiera('phabricator_diffusion_ssh_host', 'git-ssh.wikimedia.org')
 
+    $elasticsearch_host = hiera('phabricator_elasticsearch_host', 'https://search.svc.eqiad.wmnet:9243')
+    $elasticsearch_version = hiera('phabricator_elasticsearch_version', 2)
+    $elasticsearch_enabled = hiera('phabricator_elasticsearch_enabled', true)
+
     # lint:ignore:arrow_alignment
     class { '::phabricator':
         deploy_target    => $deploy_target,
@@ -142,6 +146,9 @@ class role::phabricator::main {
                               "${phab_root_dir}/libext/security/src",
                               "${phab_root_dir}/libext/misc/" ],
         settings         => {
+            'search.elastic.host'                    => $elasticsearch_host,
+            'search.elastic.version'                 => $elasticsearch_version,
+            'search.elastic.enabled'                 => $elasticsearch_enabled,
             'darkconsole.enabled'                    => false,
             'differential.allow-self-accept'         => true,
             'phabricator.base-uri'                   => "https://${domain}",
