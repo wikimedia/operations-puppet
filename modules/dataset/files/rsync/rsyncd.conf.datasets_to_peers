@@ -18,4 +18,4 @@ uid = datasets
 gid = datasets
 read only = false
 path = /data/xmldatadumps/public/other/slow-parse
-hosts allow = fluorine.eqiad.wmnet, 2620:0:861:101:7a2b:cbff:fe08:baa9
+hosts allow = fluorine.eqiad.wmnet, 2620:0:861:101:7a2b:cbff:fe08:baa9, mwlog1001.eqiad.wmnet, 2620:0:861:103:1618:77ff:fe33:4ac0, mwlog2001.codfw.wmnet, 2620:0:860:103:1618:77ff:fe4e:3159
