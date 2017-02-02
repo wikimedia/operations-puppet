@@ -4,6 +4,9 @@
 #
 class wdqs::monitor::blazegraph {
     require ::wdqs::service
+
+    require_package('python-dateutil')
+
     diamond::collector { 'Blazegraph':
         settings => {
             counters => [
@@ -24,6 +27,7 @@ class wdqs::monitor::blazegraph {
             ],
         },
         source   => 'puppet:///modules/wdqs/monitor/blazegraph.py',
+        require  => Package['python-dateutil'],
     }
 
     # TODO: add monitoring of the http and https endpoints, and of the service
