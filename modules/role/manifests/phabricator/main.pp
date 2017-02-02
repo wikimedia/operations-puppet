@@ -142,6 +142,9 @@ class role::phabricator::main {
                               "${phab_root_dir}/libext/security/src",
                               "${phab_root_dir}/libext/misc/" ],
         settings         => {
+            'search.elastic.host'                    => hiera('phabricator_elasticsearch_host', 'https://search.svc.eqiad.wmnet:9243'),
+            'search.elastic.version'                 => hiera('phabricator_elasticsearch_version', 2),
+            'search.elastic.enabled'                 => hiera('phabricator_elasticsearch_enable', true),
             'darkconsole.enabled'                    => false,
             'differential.allow-self-accept'         => true,
             'phabricator.base-uri'                   => "https://${domain}",
