@@ -5,10 +5,6 @@
 # in Phabricator but only for administrators.  If you do not have the ability to restart the
 # associated daemons do not merge changes to this file.
 
-search.elastic.host: 'https://search.svc.eqiad.wmnet:9243'
-search.elastic.version: '2'
-search.elastic.enabled: true
-
 ui.logo:
   'logoImagePHID': 'PHID-FILE-rs3pf2brupiulr6zcnrg'
   'wordmarkText': 'Phabricator'
