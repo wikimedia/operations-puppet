@@ -1,9 +1,31 @@
 # coding=utf-8
 
+import datetime
 import diamond.collector
+import json
 import urllib2
+import urllib
+from datetime import tzinfo, timedelta
+from dateutil.parser import parse
+from exceptions import ValueError
 from xml.etree import ElementTree
 from urllib import urlencode
+
+
+ZERO = timedelta(0)
+
+
+class UTC(tzinfo):
+    def utcoffset(self, dt):
+        return ZERO
+
+    def tzname(self, dt):
+        return "UTC"
+
+    def dst(self, dt):
+        return ZERO
+
+utc = UTC()
 
 
 class BlazegraphCollector(diamond.collector.Collector):
@@ -13,6 +35,7 @@ class BlazegraphCollector(diamond.collector.Collector):
         chelp.update({
             'url': 'URL of the blazegraph instance',
             'counters': 'List of counters to report',
+            'sparql_endpoint': 'HTTP endpoint which can be used to query blazegraph',
         })
         return chelp
 
@@ -24,6 +47,7 @@ class BlazegraphCollector(diamond.collector.Collector):
         config.update({
             'url': 'http://localhost:9999/bigdata/',
             'counters': ["/Query Engine/queryDoneCount"],
+            'sparql_endpoint': 'http://localhost:9999/bigdata/namespace/wdq/sparql',
         })
         return config
 
@@ -52,9 +76,38 @@ class BlazegraphCollector(diamond.collector.Collector):
                 return cnt.attrib['value']
         return None
 
-    def collect(self):
+    def collect_jolokia(self):
         for counter in self.config['counters']:
             metric_name = self.query_to_metric(counter)
             metric_value = self.get_counter(counter)
             if metric_value is not None:
                 self.publish(metric_name, metric_value)
+
+    def execute_sparql(self, query):
+        params = urllib.urlencode({'format': 'json', 'query': query})
+        request = urllib2.Request(self.config['sparql_endpoint'] + "?" + params)
+        response = urllib2.urlopen(request)
+        return json.loads(response.read())
+
+    def collect_sparql(self):
+        query = """ prefix schema: <http://schema.org/>
+                    SELECT * WHERE { {
+                      SELECT ( COUNT( * ) AS ?count ) { ?s ?p ?o }
+                    } UNION {
+                      SELECT * WHERE { <http://www.wikidata.org> schema:dateModified ?y }
+                    } }"""
+        data = self.execute_sparql(query)
+        for binding in data['results']['bindings']:
+            if 'count' in binding:
+                triple_count = binding['count']['value']
+                self.publish('triples', triple_count)
+            elif 'y' in binding:
+                lastUpdated = parse(binding['y']['value'])
+                lag = datetime.datetime.now(utc) - lastUpdated
+                self.publish('lag', lag.total_seconds())
+            else:
+                raise ValueError('SPARQL binding returned with unexpected key')
+
+    def collect(self):
+        self.collect_jolokia()
+        self.collect_sparql()
