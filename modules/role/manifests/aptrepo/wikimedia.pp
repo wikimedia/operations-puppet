@@ -23,4 +23,10 @@ class role::aptrepo::wikimedia {
     backup::set { 'srv-wikimedia': }
 
     include aptrepo::rsync
+
+    # disable autoconfigured EUI64 addresses (but not router advertisements)
+    sysctl::parameters { 'disable_eui64':
+        values  => { 'net.ipv6.conf.eth0.autoconf' => '0', },
+    }
+
 }
