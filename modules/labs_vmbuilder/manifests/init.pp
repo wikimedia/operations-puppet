@@ -65,6 +65,19 @@ class labs_vmbuilder($vmbuilder_version) {
                     ],
     }
 
+    # Overwrite the sudoers.tmpl that ships with python-vm-builder
+    #  The built-in one diverges from the actual sudoers file
+    #  in modern Trusty versions; that causes apt to get upset
+    #  about config file changes.
+    #
+    # This can be removed if https://bugs.launchpad.net/ubuntu/+source/vm-builder/+bug/1618899
+    #  is ever fixed.
+    file { '/etc/vmbuilder/ubuntu/sudoers.tmpl':
+        mode    => '0444',
+        source  => 'puppet:///modules/labs_vmbuilder/sudoers.tmpl',
+        require => Package['python-vm-builder'],
+    }
+
     # FIXME - top-scope var without namespace, will break in puppet 2.8
     # lint:ignore:variable_scope
     $projectregex = "s/${labsproject}/_PROJECT_/g"
