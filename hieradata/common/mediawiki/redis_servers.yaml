@@ -21,16 +21,16 @@ mediawiki::redis_servers::eqiad:
     host: 10.64.32.161
     port: 6379
   shard08:
-    host: 10.64.32.162
+    host: 10.192.16.194
     port: 6379
   shard09:
-    host: 10.64.32.163
+    host: 10.192.32.159
     port: 6379
   shard10:
-    host: 10.64.32.164
+    host: 10.192.32.160
     port: 6379
   shard11:
-    host: 10.64.32.165
+    host: 10.192.32.161
     port: 6379
   shard12:
     host: 10.64.32.166
