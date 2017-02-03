@@ -22,6 +22,15 @@ tmpdir    = <%= @tmpdir %>
 server_id = <%= @server_id %>
 read_only = 0
 
+<% if @shard == 's4' -%>
+# gtid_domain_id flag is needed for multisource replication and GTID.
+# Strictly it is only needed on masters or servers that can potentially be
+# masters but for consistency it should be set in all of them.
+# https://mariadb.com/kb/en/mariadb/gtid/
+
+gtid_domain_id  = <%= @gtid_domain_id %>
+<% end -%>
+
 secure_file_priv   = /dev/null
 max_allowed_packet = 16M
 sync_binlog        = 1
