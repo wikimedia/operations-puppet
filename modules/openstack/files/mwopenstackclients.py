@@ -89,7 +89,7 @@ class clients(object):
         if project not in self.keystoneclients:
             session = self.session(project)
             self.keystoneclients[project] = keystone_client.Client(
-                session=session)
+                session=session, interface='public')
         return self.keystoneclients[project]
 
     def novaclient(self, project=None):
