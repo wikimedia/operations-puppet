@@ -87,6 +87,10 @@ class role::cache::misc {
             'backend'  => 'graphite1001.eqiad.wmnet',
             'be_opts'  => $app_def_be_opts,
         },
+        'graphite2001' => {
+            'backend'  => 'graphite2001.codfw.wmnet',
+            'be_opts'  => $app_def_be_opts,
+        },
         'iridium' => { # main phab
             'backend'  => 'iridium.eqiad.wmnet',
             'be_opts'  => $app_def_be_opts,
@@ -214,7 +218,7 @@ class role::cache::misc {
             'caching'  => 'pass',
         },
         'graphite-labs.wikimedia.org'        => { 'director' => 'labmon1001' },
-        'graphite.wikimedia.org'             => { 'director' => 'graphite1001' },
+        'graphite.wikimedia.org'             => { 'director' => 'graphite2001' },
         'horizon.wikimedia.org'              => { 'director' => 'californium' },
         'hue.wikimedia.org'                  => { 'director' => 'analytics1027' },
         'iegreview.wikimedia.org'            => { 'director' => 'krypton' },
@@ -231,7 +235,7 @@ class role::cache::misc {
             'director' => 'rutherfordium',
             'caching'  => 'pass',
         },
-        'performance.wikimedia.org'          => { 'director' => 'graphite1001' },
+        'performance.wikimedia.org'          => { 'director' => 'graphite2001' },
         'phabricator.wikimedia.org'          => { 'director' => 'iridium' },
         'phab.wmfusercontent.org'            => { 'director' => 'iridium' },
         'pivot.wikimedia.org'                => { 'director' => 'thorium' },
