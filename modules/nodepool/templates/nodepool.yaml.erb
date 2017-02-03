@@ -60,13 +60,13 @@ targets:
 #
 labels:
   - name: ci-jessie-wikimedia
-    image: ci-jessie-wikimedia
+    image: snapshot-ci-jessie
     ready-script: ready.sh
     min-ready: 6
     providers:
       - name: wmflabs-eqiad
   - name: ci-trusty-wikimedia
-    image: ci-trusty-wikimedia
+    image: snapshot-ci-trusty
     ready-script: ready.sh
     min-ready: 3
     providers:
@@ -89,15 +89,15 @@ providers:
     template-hostname: '{image.name}-{timestamp}'
     images:
       # RelEng manually build and upload the images to Glance
-      - name: ci-jessie-wikimedia
-        base-image: ci-jessie-wikimedia
+      - name: snapshot-ci-jessie
+        base-image: image-ci-jessie
         min-ram: 0
         name-filter: 'm1.medium'
         setup: setup_node.sh
         username: jenkins
         private-key: /var/lib/nodepool/.ssh/id_rsa
-      - name: ci-trusty-wikimedia
-        base-image: ci-trusty-wikimedia
+      - name: snapshot-ci-trusty
+        base-image: image-ci-trusty
         min-ram: 0
         name-filter: 'm1.medium'
         setup: setup_node.sh
