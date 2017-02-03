@@ -104,4 +104,15 @@ class role::labs::nfs::secondary($monitor = 'eth0') {
         drbd_role  => $drbd_role,
         cluster_ip => $cluster_ip,
     }
+
+    if($drbd_role == 'primary') {
+        diamond::collector { 'ToolsNFSUsage':
+            source   => 'puppet:///modules/labstore/monitor/tools_nfs_usage.py',
+            settings => {
+                interval        => 3600,
+                tools_base_path => '/srv/tools/shared/tools',
+                hostname        => 'labstore-secondary',
+            },
+        }
+    }
 }
