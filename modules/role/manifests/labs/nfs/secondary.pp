@@ -104,4 +104,34 @@ class role::labs::nfs::secondary($monitor = 'eth0') {
         drbd_role  => $drbd_role,
         cluster_ip => $cluster_ip,
     }
+
+    if($drbd_role == 'primary') {
+        diamond::collector { 'DirectoryUsage':
+            source   => 'puppet:///modules/labstore/monitor/dir_size_tracker.py',
+            settings => {
+                interval                   => 86400,
+                hostname                   => 'labstore-secondary',
+                path_prefix                => 'labstore',
+                base_glob_list             => ['/srv/tools/shared/tools/home/*',
+                                               '/srv/tools/shared/tools/project/*'],
+                build_prefix_from_dir_path => true,
+                build_prefix_depth         => 3,
+            },
+        }
+
+        diamond::collector { 'DirectoryUsage':
+            source   => 'puppet:///modules/labstore/monitor/dir_size_tracker.py',
+            settings => {
+                interval                   => 86400,
+                hostname                   => 'labstore-secondary',
+                path_prefix                => 'labstore.misc',
+                base_glob_path             => ['/srv/misc/shared/*/home',
+                                               '/srv/misc/shared/*/project'],
+                base_glob_exclude          => '/tools/',
+                build_prefix_from_dir_path => true,
+                build_prefix_depth         => 2,
+            },
+        }
+
+    }
 }
