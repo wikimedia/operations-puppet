@@ -129,7 +129,7 @@ class role::phabricator::main {
     $phab_diffusion_ssh_host = hiera('phabricator_diffusion_ssh_host', 'git-ssh.wikimedia.org')
 
     $elasticsearch_host = hiera('phabricator_elasticsearch_host', 'https://search.svc.eqiad.wmnet:9243')
-    $elasticsearch_version = hiera('phabricator_elasticsearch_version', 2)
+    $elasticsearch_version = hiera('phabricator_elasticsearch_version', '2')
     $elasticsearch_enabled = hiera('phabricator_elasticsearch_enabled', true)
 
     # lint:ignore:arrow_alignment
