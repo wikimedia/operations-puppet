@@ -1,4 +1,6 @@
 # A salt master manages minions within a project
+#
+# filtertags: labs-project-servermon labs-project-debdeploy labs-project-integration labs-project-ttmserver
 class role::salt::masters::labs::project_master {
 
     $salt_state_roots    = { 'base' => ['/srv/salt'] }

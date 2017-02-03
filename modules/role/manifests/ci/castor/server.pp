@@ -1,6 +1,8 @@
 # == Class role::ci::castor::server
 #
 # rsync server to store cache related material from CI jobs.
+#
+# filtertags: labs-project-integration
 class role::ci::castor::server {
     requires_realm( 'labs' )
 

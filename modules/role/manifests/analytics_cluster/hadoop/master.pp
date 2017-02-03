@@ -1,6 +1,7 @@
 # == Class role::analytics_cluster::hadoop::master
 # Includes cdh::hadoop::master classes
 #
+# filtertags: labs-project-analytics labs-project-math
 class role::analytics_cluster::hadoop::master {
     system::role { 'analytics_cluster::hadoop::master':
         description => 'Hadoop Master (NameNode & ResourceManager)',

@@ -1,5 +1,6 @@
-
 # Role class for changeprop
+#
+# filtertags: labs-project-deployment-prep
 class role::changeprop {
 
     $kafka_config = kafka_config('main')

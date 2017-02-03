@@ -1,3 +1,4 @@
+# filtertags: labs-project-deployment-prep
 class role::swift::stats_reporter {
     system::role { 'role::swift::stats_reporter':
         description => 'swift statistics reporter',

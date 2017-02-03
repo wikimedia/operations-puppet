@@ -1,5 +1,7 @@
 # A dynamic HTTP routing proxy, based on nginx+lua+redis
 # Is accessed from Special:NovaProxy in wikitech
+#
+# filtertags: labs-project-openstack labs-project-project-proxy
 class role::labs::novaproxy(
     $all_proxies,
     $active_proxy,

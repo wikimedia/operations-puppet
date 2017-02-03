@@ -1,3 +1,4 @@
+# filtertags: labs-project-git labs-project-integration labs-project-ci-staging
 class role::ci::slave::labs {
     requires_realm('labs')
 

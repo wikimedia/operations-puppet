@@ -28,6 +28,7 @@
 # [*role::eventstreams::port*]
 #   Default: 8092
 #
+# filtertags: labs-project-deployment-prep
 # [*role::eventstreams::log_level*]
 #   Default: info
 #

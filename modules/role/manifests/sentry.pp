@@ -4,6 +4,7 @@
 #
 # Provisions Sentry
 #
+# filtertags: labs-project-deployment-prep
 class role::sentry {
     include ::sentry
 

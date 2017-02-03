@@ -1,6 +1,8 @@
 # == Class role::ci::slave::android
 #
 # A continuous integration slave that runs Android based tests.
+#
+# filtertags: labs-project-integration
 class role::ci::slave::android {
 
     requires_realm('labs')

@@ -3,6 +3,7 @@
 #
 # Configure Logstash to consume validation logs from EventLogging.
 #
+# filtertags: labs-project-deployment-prep
 class role::logstash::eventlogging {
     include ::role::logstash::collector
 

@@ -12,6 +12,7 @@
 # Sample Usage:
 #       include role::servermon::wmf
 #
+# filtertags: labs-project-servermon
 class role::servermon::wmf {
     include ::apache
     include ::apache::mod::proxy_http

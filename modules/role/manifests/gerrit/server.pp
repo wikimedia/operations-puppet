@@ -1,4 +1,6 @@
 # modules/role/manifests/gerrit/production.pp
+#
+# filtertags: labs-project-git labs-project-ci-staging
 class role::gerrit::server($ipv4, $ipv6 = undef, $bacula = undef) {
         system::role { 'role::gerrit::server': description => 'Gerrit server' }
 

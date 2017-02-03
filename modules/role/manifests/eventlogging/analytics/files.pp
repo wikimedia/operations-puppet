@@ -1,6 +1,7 @@
 # == Class role::eventlogging::analytics::files
 # Consumes streams of events and writes them to log files.
 #
+# filtertags: labs-project-deployment-prep
 class role::eventlogging::analytics::files {
     include role::eventlogging::analytics::server
 

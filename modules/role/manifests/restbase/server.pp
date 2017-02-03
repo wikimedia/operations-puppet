@@ -1,5 +1,7 @@
 # == Class role::restbase
 # Config should be pulled from hiera
+#
+# filtertags: labs-project-deployment-prep
 class role::restbase::server {
     system::role { 'restbase': description => "Restbase ${::realm}" }
 

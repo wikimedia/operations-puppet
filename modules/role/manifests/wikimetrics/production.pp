@@ -1,5 +1,7 @@
 # == Class role::wikimetrics::production
 # This is the production wikimetrics role
+#
+# filtertags: labs-project-wikimetrics
 class role::wikimetrics::production {
     include ::wikimetrics::base
 

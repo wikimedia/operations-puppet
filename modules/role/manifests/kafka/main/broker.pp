@@ -4,6 +4,7 @@
 #
 # See modules/role/manifests/kafka/README.md for more information.
 #
+# filtertags: labs-project-deployment-prep labs-project-analytics
 class role::kafka::main::broker {
 
     require_package('openjdk-7-jdk')

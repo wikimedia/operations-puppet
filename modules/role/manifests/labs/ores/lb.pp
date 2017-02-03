@@ -1,4 +1,6 @@
 # Simple nginx HTTP load balancer for ores
+#
+# filtertags: labs-project-ores
 class role::labs::ores::lb {
     labs_lvm::volume { 'srv':
         mountat => '/srv',

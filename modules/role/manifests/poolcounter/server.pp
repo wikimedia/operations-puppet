@@ -1,3 +1,4 @@
+# filtertags: labs-project-deployment-prep
 class role::poolcounter::server {
     include ::poolcounter
     include base::firewall

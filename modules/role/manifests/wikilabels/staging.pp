@@ -1,3 +1,4 @@
+# filtertags: labs-project-wikilabels
 class role::wikilabels::staging {
     class { 'wikilabels::web':
         branch => 'master',

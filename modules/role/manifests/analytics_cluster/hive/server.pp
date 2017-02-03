@@ -1,6 +1,7 @@
 # == Class role::analytics_cluster::hive::server
 # Sets up Hive Server2
 #
+# filtertags: labs-project-analytics labs-project-math
 class role::analytics_cluster::hive::server {
     system::role { 'analytics_cluster::hive::server':
         description => 'hive-server2 service',

@@ -1,6 +1,7 @@
 # == Class role::analytics_cluster::hive::metastore
 # Sets up Hive Metastore service
 #
+# filtertags: labs-project-analytics labs-project-math
 class role::analytics_cluster::hive::metastore {
     system::role { 'analytics_cluster::hive::metastore':
         description => 'hive-metastore service',

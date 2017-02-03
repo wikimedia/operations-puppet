@@ -1,3 +1,4 @@
+# filtertags: labs-project-deployment-prep labs-project-swift
 class role::swift::proxy {
     system::role { 'role::swift::proxy':
         description => 'swift frontend proxy',

@@ -2,6 +2,8 @@
 # Installs Oozie server
 # Make sure you set hiera variables for cdh::oozie::server appropriately,
 # especially if you are hosting
+#
+# filtertags: labs-project-analytics labs-project-math
 class role::analytics_cluster::oozie::server {
     system::role { 'analytics_cluster::oozie::server':
         description => 'Oozie Server',

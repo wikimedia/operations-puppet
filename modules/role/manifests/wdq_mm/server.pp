@@ -1,6 +1,8 @@
 # == Class: role::wdq_mm::server
 # Role class for setting up an instance of
 # Magnus' WDQ on labs
+#
+# filtertags: labs-project-wdq-mm
 class role::wdq_mm::server {
     requires_realm('labs')
 

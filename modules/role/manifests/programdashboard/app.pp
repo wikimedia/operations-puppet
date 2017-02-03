@@ -3,6 +3,7 @@
 # This role sets up Program Dashboard dependencies and an Apache/Passenger
 # configuration for running the Rails application.
 #
+# filtertags: labs-project-globaleducation
 class role::programdashboard::app {
     include ::programdashboard::app
 

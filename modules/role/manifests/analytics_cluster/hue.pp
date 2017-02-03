@@ -1,6 +1,7 @@
 # == Class role::analytics_cluster::hue
 # Installs Hue server.
 #
+# filtertags: labs-project-analytics
 class role::analytics_cluster::hue {
     system::role { 'analytics_cluster::hue':
         description => 'Hue (Hadoop User Experience) WebGUI',

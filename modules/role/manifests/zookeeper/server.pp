@@ -15,6 +15,7 @@
 # zookeeper_cluster_name in hiera will be used to make jmxtrans
 # properly prefix zookeeper statsd (and graphite) metrics.
 #
+# filtertags: labs-project-deployment-prep labs-project-analytics
 class role::zookeeper::server {
     include role::zookeeper::client
     $cluster_name = $::role::zookeeper::client::cluster_name

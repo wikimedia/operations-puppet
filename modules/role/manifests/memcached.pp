@@ -1,4 +1,6 @@
 # vim: noet
+#
+# filtertags: labs-project-deployment-prep
 class role::memcached {
     system::role { 'role::memcached': }
 

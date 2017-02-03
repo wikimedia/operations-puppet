@@ -1,3 +1,4 @@
+# filtertags: labs-project-deployment-prep
 class role::mediawiki::appserver {
     system::role { 'role::mediawiki::appserver': }
 

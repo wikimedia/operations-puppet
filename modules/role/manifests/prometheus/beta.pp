@@ -2,6 +2,8 @@
 #
 # This class provides a Prometheus server used to monitor Beta
 # (deployment-prep) labs project.
+#
+# filtertags: labs-project-deployment-prep
 
 class role::prometheus::beta {
     $targets_path = '/srv/prometheus/beta/targets'

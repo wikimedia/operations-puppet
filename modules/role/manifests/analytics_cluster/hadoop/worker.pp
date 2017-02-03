@@ -1,5 +1,7 @@
 # == Class role::role::analytics_cluster::hadoop::worker
 # Includes cdh::hadoop::worker classes
+#
+# filtertags: labs-project-analytics labs-project-math
 class role::analytics_cluster::hadoop::worker {
     system::role { 'role::analytics_cluster::hadoop::worker':
         description => 'Hadoop Worker (DataNode & NodeManager)',

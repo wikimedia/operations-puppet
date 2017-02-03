@@ -1,5 +1,7 @@
 # Common class for all etcd clusters. Should be a profile
 # in the role/profile view
+#
+# filtertags: labs-project-deployment-prep
 class role::etcd::common {
     # Configuration
     $cluster_name = hiera('etcd::cluster_name', $::domain)

@@ -1,3 +1,4 @@
+# filtertags: labs-project-deployment-prep
 class role::mail::mx(
     $verp_domains = [
         'wikimedia.org'

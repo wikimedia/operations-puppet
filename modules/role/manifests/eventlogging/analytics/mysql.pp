@@ -1,7 +1,8 @@
-
 # == Class role::eventlogging::analytics::mysql
 # Consumes the mixed stream of events and writes them to MySQL
 #
+#
+# filtertags: labs-project-deployment-prep
 class role::eventlogging::analytics::mysql {
     include role::eventlogging::analytics::server
 

@@ -1,4 +1,6 @@
 # mediawiki udp2log instance.  Does not use monitoring.
+#
+# filtertags: labs-project-deployment-prep
 class role::logging::mediawiki::udp2log(
     $monitor = true,
     $log_directory = '/srv/mw-log',

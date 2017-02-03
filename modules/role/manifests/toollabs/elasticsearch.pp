@@ -2,6 +2,7 @@
 #
 # Provisions Elasticsearch node with nginx reverse proxy
 #
+# filtertags: labs-project-tools
 class role::toollabs::elasticsearch {
     include ::base::firewall
     include ::elasticsearch

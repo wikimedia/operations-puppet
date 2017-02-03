@@ -2,6 +2,7 @@
 # Reads raw events, parses and validates them, and then sends
 # them along for further consumption.
 #
+# filtertags: labs-project-deployment-prep
 class role::eventlogging::analytics::processor{
     include role::eventlogging::analytics::server
 
