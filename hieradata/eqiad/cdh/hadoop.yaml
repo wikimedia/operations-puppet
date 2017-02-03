@@ -32,6 +32,8 @@ cdh::hadoop::datanode_mounts:
 cdh::hadoop::net_topology_script_template: 'role/analytics_cluster/hadoop/net-topology.py.erb'
 
 # Increase NameNode heapsize independent from other daemons
+# The opts value will be used for the JVM, meanwhile the raw number for alarms.
+cdh::hadoop::hadoop_namenode_heapsize: 4096
 cdh::hadoop::hadoop_namenode_opts: "-Xmx4096m"
 
 cdh::hadoop::mapreduce_reduce_shuffle_parallelcopies: 10
