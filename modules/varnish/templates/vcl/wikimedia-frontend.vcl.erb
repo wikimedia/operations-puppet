@@ -15,12 +15,7 @@ include "<%= @varnish_include_path %><%= @vcl %>.inc.vcl";
 sub https_recv_redirect {
 	if (req.http.X-Forwarded-Proto != "https") {
 		if (req.method == "GET" || req.method == "HEAD") {
-			// This is all of our unified cert wildcard domains, and
-			// also wmfusercontent.org which has a separate cert on
-			// cache_misc.  Note that *.planet.wikimedia.org has
-			// a separate cert on cache_misc as well, which is why
-			// this isn't a problematic subdomain in spite of it not
-			// matching the unified wildcards for wikimedia.org.
+			// This is all of our unified cert wildcard domains
 			if (req.http.Host ~ "((^|\.)(wikipedia|wikimedia|wikibooks|wikinews|wikiquote|wikisource|wikiversity|wikivoyage|wikidata|wikimediafoundation|wiktionary|mediawiki|wmfusercontent)(\.beta\.wmflabs)?\.org|^w\.wiki|^upload\.beta\.wmflabs\.org)$") {
 				if (req.http.Host == "stream.wikimedia.org" && req.url ~ "^/(socket\.io|rc(stream_status)?)(/|$)") {
 					// NO-OP, temporary hole-punch for legacy redirect-incompatible rcstream clients
