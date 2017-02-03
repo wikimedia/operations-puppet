@@ -1270,7 +1270,8 @@ node 'graphite1003.eqiad.wmnet' {
 
 # Primary graphite machines
 node 'graphite2001.codfw.wmnet' {
-    role(graphite::production, statsd, performance::site)
+    role(graphite::production, statsd, performance::site, graphite::alerts,
+        restbase::alerts, graphite::alerts::reqstats, elasticsearch::alerts)
     include ::standard
     include ::base::firewall
 }
