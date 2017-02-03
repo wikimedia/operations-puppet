@@ -54,7 +54,6 @@ class nutcracker(
         group   => 'root',
         mode    => '0444',
         require => Package['nutcracker'],
-        notify  => Service['nutcracker'],
     }
 
     if (
