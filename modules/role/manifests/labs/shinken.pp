@@ -6,6 +6,7 @@
 # [*ircbot*]
 #   Setup an ircbot using ircecho to support echoing notifications
 #
+# filtertags: labs-project-shinken
 class role::labs::shinken(
     $ircbot = true,
 ){

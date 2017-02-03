@@ -2,6 +2,8 @@
 #
 # Role to provision prometheus machine metrics exporter. See also
 # https://github.com/prometheus/node_exporter and the module's documentation.
+#
+# filtertags: labs-project-automation-framework labs-project-graphite
 
 class role::prometheus::node_exporter {
     include ::prometheus::node_exporter

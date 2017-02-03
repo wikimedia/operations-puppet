@@ -1,5 +1,7 @@
 # Uses the prometheus module and generates the specific configuration
 # needed for WMF production
+#
+# filtertags: labs-project-monitoring
 class role::prometheus::ops {
     include base::firewall
 

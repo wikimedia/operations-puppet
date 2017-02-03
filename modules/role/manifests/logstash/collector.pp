@@ -7,6 +7,7 @@
 # == Parameters:
 # - $statsd_host: Host to send statsd data to.
 #
+# filtertags: labs-project-deployment-prep
 class role::logstash::collector (
     $statsd_host,
 ) {

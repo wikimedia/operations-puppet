@@ -1,3 +1,4 @@
+# filtertags: labs-project-wikilabels
 class role::wikilabels::server {
     class { 'wikilabels::web':
         branch => 'deploy',

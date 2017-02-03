@@ -1,3 +1,4 @@
+# filtertags: labs-project-ores-staging
 class role::labs::ores::staging {
     include ::ores::base
     include ::ores::web

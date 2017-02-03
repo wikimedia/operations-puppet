@@ -3,6 +3,8 @@
 # The role sets up one exporter per instance:
 #   default on tcp/9131
 #   frontend on tcp/9331 (ie. default + 200)
+#
+# filtertags: labs-project-deployment-prep
 
 class role::prometheus::varnish_exporter {
     if $::realm == 'labs' {

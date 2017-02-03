@@ -1,3 +1,4 @@
+# filtertags: labs-project-tools
 class role::toollabs::checker {
     include ::toollabs::checker
 

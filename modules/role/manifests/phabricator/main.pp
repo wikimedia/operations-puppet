@@ -1,4 +1,6 @@
 # production phabricator instance
+#
+# filtertags: labs-project-deployment-prep labs-project-phabricator
 class role::phabricator::main {
 
     system::role { 'role::phabricator::main':

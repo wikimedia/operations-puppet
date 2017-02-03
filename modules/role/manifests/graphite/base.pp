@@ -15,6 +15,7 @@
 #
 #   Set to true to enable LDAP based authentication to access the graphite interface
 #
+# filtertags: labs-project-graphite
 class role::graphite::base(
     $storage_dir      = '/var/lib/carbon',
     $auth             = true,

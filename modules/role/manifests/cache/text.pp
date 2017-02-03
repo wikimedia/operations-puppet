@@ -1,3 +1,4 @@
+# filtertags: labs-project-deployment-prep
 class role::cache::text(
     # static_host must serve MediaWiki (e.g. not wwwportal)
     $static_host = 'en.wikipedia.org',

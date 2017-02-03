@@ -6,6 +6,7 @@
 # and then finally ensures grants and permissions are
 # set so that configured hosts can properly connect to this database.
 #
+# filtertags: labs-project-analytics labs-project-math
 class role::analytics_cluster::oozie::server::database {
     # Install a database server (MariaDB)
     require ::role::analytics_cluster::database::meta

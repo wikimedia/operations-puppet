@@ -2,6 +2,8 @@
 # == Class: role::logstash::puppetreports
 #
 # Set up a TCP listener to listen for puppet failure reports.
+#
+# filtertags: labs-project-deployment-prep
 class role::logstash::puppetreports {
     require ::role::logstash::collector
 

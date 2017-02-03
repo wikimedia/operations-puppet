@@ -3,7 +3,8 @@
 #
 # This is temporary role, being applied to tools-bastion-03
 # and can be removed after the Precise deprecation
-
+#
+# filtertags: labs-project-tools
 class role::toollabs::precise_reminder {
 
     file { '/usr/local/sbin/precise-reminder':

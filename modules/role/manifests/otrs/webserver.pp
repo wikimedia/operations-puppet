@@ -1,6 +1,8 @@
 # vim: set ts=4 et sw=4:
 # sets up an instance of the 'Open-source Ticket Request System'
 # https://en.wikipedia.org/wiki/OTRS
+#
+# filtertags: labs-project-otrs
 class role::otrs::webserver {
 
     system::role { 'role::otrs::webserver':

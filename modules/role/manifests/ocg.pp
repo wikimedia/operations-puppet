@@ -1,6 +1,8 @@
 # vim: set ts=4 et sw=4:
 # role/ocg.pp
 # Offline content generator for the MediaWiki collection extension
+#
+# filtertags: labs-project-deployment-prep labs-project-ocg
 class role::ocg {
     include base::firewall
     include standard

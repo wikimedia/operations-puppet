@@ -1,3 +1,4 @@
+# filtertags: labs-project-deployment-prep
 class role::jobqueue_redis {
     include ::standard
     include ::passwords::redis

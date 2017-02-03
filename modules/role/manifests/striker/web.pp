@@ -3,6 +3,7 @@
 # Striker is a Django application for managing data related to Tool Labs
 # tools.
 #
+# filtertags: labs-project-striker
 class role::striker::web {
     include ::memcached
     include ::striker::apache

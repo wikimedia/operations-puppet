@@ -2,6 +2,8 @@
 # Role that takes a list of hostnames and a basepath
 # and sets up Apache to serve a static site from
 # each basepath/hostname location.
+#
+# filtertags: labs-project-dashiki
 
 class role::simplestatic (
     $host_names = [],

@@ -11,6 +11,7 @@
 # [*redirects*]
 #   Hash of (Host, target URL) values
 #
+# filtertags: labs-project-redirects
 class role::labs::redirector(
     $default_url,
     $redirects,

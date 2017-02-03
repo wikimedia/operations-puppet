@@ -3,6 +3,8 @@
 # Intermediary rsync hosts in labs to let Jenkins slave publish their results
 # safely.  The production machine hosting doc.wikimedia.org can then fetch the
 # doc from there.
+#
+# filtertags: labs-project-integration
 class role::ci::publisher::labs {
 
     include role::labs::lvm::srv

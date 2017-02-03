@@ -15,6 +15,7 @@
 # - $ldap_binddn: AuthLDAPBindDN for $auth_type == 'ldap'
 # - $ldap_groups: List of ldap-group names for $auth_type == 'ldap'
 #
+# filtertags: labs-project-deployment-prep
 class role::kibana (
     $vhost,
     $serveradmin,

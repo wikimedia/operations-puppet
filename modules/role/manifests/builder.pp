@@ -1,3 +1,4 @@
+# filtertags: labs-project-packaging
 class role::builder {
     include standard
     include base::firewall

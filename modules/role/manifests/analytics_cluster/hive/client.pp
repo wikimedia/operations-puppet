@@ -1,6 +1,7 @@
 # == Class role::analytics_cluster::hive::client
 # Installs base configs and packages for hive client nodes.
 #
+# filtertags: labs-project-analytics labs-project-math
 class role::analytics_cluster::hive::client {
     require ::role::analytics_cluster::hadoop::client
 

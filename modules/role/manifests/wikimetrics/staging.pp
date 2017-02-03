@@ -1,5 +1,7 @@
 # == Class role::wikimetrics::staging
 # This is the staging specific wikimetrics role
+#
+# filtertags: labs-project-wikimetrics
 class role::wikimetrics::staging {
     include ::wikimetrics::base
 

@@ -4,6 +4,7 @@
 # Builds on role::logstash to insert sanitized data for
 # Extension:ApiFeatureUsage into Elasticsearch.
 #
+# filtertags: labs-project-deployment-prep
 class role::logstash::apifeatureusage {
     include ::role::logstash::collector
 

@@ -4,6 +4,7 @@
 # that streams recent changes from MediaWiki to users via socket.io,
 # a convenience layer over the WebSockets protocol.
 #
+# filtertags: labs-project-deployment-prep
 class role::rcstream {
     include standard
 

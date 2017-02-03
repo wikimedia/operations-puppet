@@ -1,3 +1,4 @@
+# filtertags: labs-project-deployment-prep
 class role::cache::upload(
     $upload_domain = 'upload.wikimedia.org',
 ) {

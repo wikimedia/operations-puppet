@@ -1,3 +1,4 @@
+# filtertags: labs-project-deployment-prep labs-project-swift
 class role::swift::storage {
     system::role { 'role::swift::storage':
         description => 'swift storage brick',

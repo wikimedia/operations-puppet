@@ -1,4 +1,6 @@
 # === Class role::etcd
+#
+# filtertags: labs-project-chasetest
 class role::etcd {
     system::role { 'role::etcd':
         description => 'Highly-consistent distributed k/v store'

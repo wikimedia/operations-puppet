@@ -1,6 +1,7 @@
 # == Class role::analytics_cluster::hadoop::client
 # Installs Hadoop client pacakges and configuration.
 #
+# filtertags: labs-project-analytics
 class role::analytics_cluster::hadoop::client {
     # Need Java before Hadoop is installed.
     require ::role::analytics_cluster::java

@@ -8,6 +8,7 @@
 # TODO: Move this class back to role::eventbus once
 # https://phabricator.wikimedia.org/T119042 works.
 #
+# filtertags: labs-project-deployment-prep
 class role::eventbus::eventbus {
     include base::firewall
     require ::eventschemas

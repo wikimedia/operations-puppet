@@ -1,5 +1,6 @@
 # == Class role::cassandra
 #
+# filtertags: labs-project-deployment-prep
 class role::cassandra {
     include ::passwords::cassandra
     include base::firewall

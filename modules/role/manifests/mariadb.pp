@@ -1,4 +1,6 @@
 # Generic Server
+#
+# filtertags: labs-project-servermon labs-project-monitoring
 class role::mariadb {
 
     system::role { 'role::mariadb':
@@ -411,6 +413,8 @@ class role::mariadb::misc::eventlogging(
 
 # Beta Cluster Master
 # Should add separate role for slaves
+#
+# filtertags: labs-project-deployment-prep
 class role::mariadb::beta {
 
     system::role { 'role::mariadb::beta':

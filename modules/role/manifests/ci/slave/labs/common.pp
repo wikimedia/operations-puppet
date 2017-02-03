@@ -1,4 +1,6 @@
 # Common configuration to be applied on any labs Jenkins slave
+#
+# filtertags: labs-project-deployment-prep labs-project-git labs-project-ci-staging
 class role::ci::slave::labs::common {
 
     # Jenkins slaves need to access beta cluster for the browsertests

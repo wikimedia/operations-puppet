@@ -1,6 +1,7 @@
 # == Class role::analytics_cluster::hadoop::standby
 # Include standby NameNode classes
 #
+# filtertags: labs-project-analytics
 class role::analytics_cluster::hadoop::standby {
     system::role { 'analytics_cluster::hadoop::standby':
         description => 'Hadoop Standby NameNode',

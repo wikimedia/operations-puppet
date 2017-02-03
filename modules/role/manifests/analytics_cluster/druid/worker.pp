@@ -5,6 +5,8 @@
 #
 # Note that if /etc/hadoop/conf files exist, they will
 # be added to druid daemon
+#
+# filtertags: labs-project-analytics
 class role::analytics_cluster::druid::worker {
     # Require common druid package and configuration.
     require ::role::analytics_cluster::druid::common

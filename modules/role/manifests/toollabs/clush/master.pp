@@ -15,6 +15,8 @@
 #
 # This will run it on all the k8s-workers, collect the output
 # from them all (the -b option), dedupes them and displays them. You can specify fanout with -f - the default is 16.
+#
+# filtertags: labs-project-toolsbeta labs-project-tools
 class role::toollabs::clush::master {
     include ::toollabs::infrastructure
 

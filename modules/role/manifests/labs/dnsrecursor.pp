@@ -18,6 +18,8 @@
 #
 #
 # Eventually all labs instances will point to one of these in resolv.conf
+#
+# filtertags: labs-project-openstack
 
 class role::labs::dnsrecursor {
 

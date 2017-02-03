@@ -5,6 +5,8 @@
 #
 # This class exists only for backwards compatibility for services
 # consuming from the legacy ZMQ stream now.
+#
+# filtertags: labs-project-deployment-prep
 class role::eventlogging::analytics::zeromq {
     include role::eventlogging::analytics::server
 

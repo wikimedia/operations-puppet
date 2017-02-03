@@ -1,3 +1,4 @@
+# filtertags: labs-project-deployment-prep labs-project-automation-framework labs-project-toolsbeta
 class role::puppetmaster::puppetdb (
     $shared_buffers = '7680MB'
 ) {

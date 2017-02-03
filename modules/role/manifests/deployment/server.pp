@@ -1,3 +1,4 @@
+# filtertags: labs-project-deployment-prep labs-project-phabricator labs-project-striker
 class role::deployment::server(
     $apache_fqdn = $::fqdn,
     $deployment_group = 'wikidev',
