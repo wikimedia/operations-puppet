@@ -1146,6 +1146,7 @@ users:
     realname: Tomasz Finc
     ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDYg99M+6cGbfoDwzd7KRFL2zGg8CPZHLqejuCwCijpHjqnMtOBOAjMDpfA8glqpqUL4xW22kgwcUI9H8bkd4X/DazJ0QvTxjJkGPocobfyCkd/yeZ/n5HjaEL/WWeNQZ/OfFW6yiTbWrQttl6+/7QELG2pHXgDqAxaCLEnghRXG+zGbVNkPgJGAZnUoSSPjZj1eZhG10U9I0foUp09qyMTXhWB9c2dbeZyaWJ7LA5I6slKPiVyYQWq+0Kc0zoCpaPGrwkR/sDrzqHBfiwKWR3IJEFn0WhDCE1fHiM31+tQ2YmbVrDCWxoUzdiUWkzbgydlIH88603LoegBLo9xTwrZ tfinc@kumo.local]
     uid: 1155
+    email: tomasz@gmail.com
   yurik:
     ensure: absent
     gid: 500
@@ -1469,6 +1470,7 @@ users:
       - ssh-dss AAAAB3NzaC1kc3MAAACBAMOWDta08PH5U6hxvnHq7xT7lqIxWxMzP8wr20np4thUtlOqLsxmpJzHzdWJMlaEu0cLrJXxYq2Bm5jBpDb8Tmfo2TeIPgmFWmLgLpF9A4biXmMA6V9Dp5W/eyZgmlHjWlTLu6Y5WaK+Dr42rKzCMHeSxY8T/gvVIXvjZliNb7cvAAAAFQCLTv4hEekK6nLpqX2j/ac7Wj4eHQAAAIA3D0eTxabhSGD8a1IL/2i+Fb8YBLm6uJOXHmeIZNrpl78ml7lOcXxlQSlrQ8Gixc9eKz1a4vzuqKhxqdSFMFcA3wK0cGtXQuCtbiKGgFdKDsK1uBk/5d5mowqYNwZ62taA41NO4VGB7rYHga8Wg2ph5NZ5yuQgmOI8JqlbALH9oQAAAIAwDc1SQBOYJacBv/NeXhQIuDUO2x7gnqyr9Ud8hlnzy34GQldo+03AvL9vq2RSemCQBjnEqxXYUGhHqDshUvnHq5JxpeWjKRP+p5e0Xy7aepss3g9/IzUUrZ5m9HskczSfrlNBwDG5ybgaCJfyRX0MXnV1GCjaGlI2k0iymqGT+w== domas-wikimedia-200904
       - ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAIEAomwyIAuPEDxmRFl3O11IH1yH+n7th+meS4dmB9OzKxh5Sg/aURrfFPUV/rSh+2QqfR7M7kB59ganKpc/7tCXW9mxoIr/c1kQ9jBzpyc7VUox/VTlSTZOFJA9sH9PUVIDINVNPyPFLNy9RtvWkSfHwffo6LHNju+us9PaUlmAaE0= root@zwinger.wikimedia.org
     uid: 527
+    email: domas.mituzas@gmail.com
   tstarling:
     ensure: present
     gid: 500
