@@ -1638,10 +1638,12 @@ host db2049 {
 host db2050 {
     hardware ethernet 40:a8:f0:35:63:c8;
     fixed-address db2050.codfw.wmnet;
+}
 
 host db2051 {
     hardware ethernet 40:a8:f0:35:22:34;
     fixed-address db2051.codfw.wmnet;
+}
 
 host db2052 {
     hardware ethernet 40:a8:f0:35:59:70;
