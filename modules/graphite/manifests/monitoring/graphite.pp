@@ -10,7 +10,7 @@ class graphite::monitoring::graphite {
     # is carbon-relay queue full? (i.e. dropping data)
     monitoring::graphite_threshold { 'carbon-relay_queue_full':
         description     => 'carbon-relay queue full',
-        metric          => 'sumSeries(transformNull(carbon.relays.graphite1001-*.destinations.*.fullQueueDrops))',
+        metric          => 'sumSeries(transformNull(carbon.relays.graphite2001-*.destinations.*.fullQueueDrops))',
         from            => '10minutes',
         warning         => 200,
         critical        => 1000,
@@ -20,7 +20,7 @@ class graphite::monitoring::graphite {
     # is carbon-cache able to write to disk (e.g. permissions)
     monitoring::graphite_threshold { 'carbon-cache_write_error':
         description     => 'carbon-cache write error',
-        metric          => 'secondYAxis(sumSeries(carbon.agents.graphite1001-*.errors))',
+        metric          => 'secondYAxis(sumSeries(carbon.agents.graphite2001-*.errors))',
         from            => '10minutes',
         warning         => 1,
         critical        => 8,
@@ -30,7 +30,7 @@ class graphite::monitoring::graphite {
     # are carbon-cache queues overflowing their capacity?
     monitoring::graphite_threshold { 'carbon-cache_overflow':
         description     => 'carbon-cache queues overflow',
-        metric          => 'secondYAxis(sumSeries(carbon.agents.graphite1001-*.cache.overflow))',
+        metric          => 'secondYAxis(sumSeries(carbon.agents.graphite2001-*.cache.overflow))',
         from            => '10minutes',
         warning         => 1,
         critical        => 8,
@@ -40,7 +40,7 @@ class graphite::monitoring::graphite {
     # are we creating too many metrics?
     monitoring::graphite_threshold { 'carbon-cache_many_creates':
         description     => 'carbon-cache too many creates',
-        metric          => 'sumSeries(carbon.agents.graphite1001-*.creates)',
+        metric          => 'sumSeries(carbon.agents.graphite2001-*.creates)',
         from            => '1hour',
         warning         => 500,
         critical        => 1000,
