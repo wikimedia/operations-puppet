@@ -104,4 +104,50 @@ class role::labs::nfs::secondary($monitor = 'eth0') {
         drbd_role  => $drbd_role,
         cluster_ip => $cluster_ip,
     }
+
+    if($drbd_role == 'primary') {
+
+        sudo::user { 'diamond_dir_size_tracker':
+            user       => 'diamond',
+            privileges => ['diamond ALL = NOPASSWD: /usr/bin/timeout 10m /usr/bin/nice -n 19 /usr/bin/ionice -c 3 /usr/bin/du -k -s'],
+        }
+
+        $dir_size_collector_config = [
+            {
+                base_glob_pattern          => '/exp/project/*/home',
+                base_glob_exclude          => '/tools/',
+                build_prefix_from_dir_path => True,
+                build_prefix_depth         => 2,
+                custom_prefix              => 'misc',
+            },
+            {
+                base_glob_pattern          => '/exp/project/*/project',
+                base_glob_exclude          => '/tools/',
+                build_prefix_from_dir_path => True,
+                build_prefix_depth         => 2,
+                custom_prefix              => 'misc',
+            },
+            {
+                base_glob_pattern          => '/exp/project/tools/home/*',
+                build_prefix_from_dir_path => True,
+                build_prefix_depth         => 2,
+            },
+            {
+                base_glob_pattern          => '/exp/project/tools/project/*',
+                build_prefix_from_dir_path => True,
+                build_prefix_depth         => 2,
+            },
+        ]
+
+        diamond::collector { 'DirectorySize':
+            source   => 'puppet:///modules/labstore/monitor/dir_size_tracker.py',
+            settings => {
+                interval                  => 86400,
+                hostname                  => 'labstore-secondary',
+                path_prefix               => 'labstore',
+                dir_size_collector_config => $dir_size_collector_config,
+            },
+            require  => Sudo::User['diamond_dir_size_tracker'],
+        }
+    }
 }
