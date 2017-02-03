@@ -54,13 +54,4 @@ class role::toollabs::node::web {
         source  => 'puppet:///modules/toollabs/portreleaser',
         require => File['/usr/local/lib/python2.7/dist-packages/portgrabber.py'],
     }
-
-    file { '/usr/local/bin/jobkill':
-        ensure => file,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
-        source => 'puppet:///modules/toollabs/jobkill',
-    }
-
 }

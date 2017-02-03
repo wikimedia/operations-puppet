@@ -44,13 +44,4 @@ class role::toollabs::node::compute::dedicated($dedicated_tool = $::node_dedicat
         config  => 'toollabs/gridengine/host-unrestricted.erb',
         require => File['/var/lib/gridengine'],
     }
-
-    file { '/usr/local/bin/jobkill':
-        ensure => file,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
-        source => 'puppet:///modules/toollabs/jobkill',
-    }
-
 }
