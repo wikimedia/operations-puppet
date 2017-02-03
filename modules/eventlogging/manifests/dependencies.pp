@@ -15,6 +15,7 @@
 class eventlogging::dependencies {
     # Install all eventlogging dependencies from .debs.
     require_package([
+        'python-uaparser',
         'python-dateutil',
         'python-jsonschema',
         'python-confluent-kafka',
