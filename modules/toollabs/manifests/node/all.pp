@@ -21,4 +21,12 @@ class toollabs::node::all(
             size => inline_template('<%= @memorysize_mb.to_i * 3 %>MB'),
         }
     }
+
+    file { '/usr/local/bin/jobkill':
+        ensure => file,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => 'puppet:///modules/toollabs/jobkill',
+    }
 }
