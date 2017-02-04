@@ -1,0 +1,14 @@
+# Docker override systemd for v1.11.2-0~jessie
+[Unit]
+After=network.target docker.socket flannel.service
+Requires=docker.socket flannel.service
+
+[Service]
+EnvironmentFile=/run/flannel/subnet.env
+ExecStart=/usr/bin/docker daemon -H fd:// \
+            --bip=${FLANNEL_SUBNET} \
+            --mtu=${FLANNEL_MTU} \
+            --iptables=false \
+            --ip-masq=false \
+            --storage-opt dm.datadev=/dev/docker/data \
+            --storage-opt dm.metadatadev=/dev/docker/metadata
