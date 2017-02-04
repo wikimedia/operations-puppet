@@ -16,9 +16,28 @@ class role::toollabs::k8s::worker {
         etcd_endpoints => $etcd_url,
     }
 
-    class { '::k8s::docker':
-        require => Class['::k8s::flannel'],
+    $docker_version = '1.11.2-0~jessie'
+
+    class { '::profile::docker::storage':
+        physical_volumes => '/dev/vda4',
+        vg_to_remove     => 'vd',
     }
+
+    class { '::profile::docker::engine':
+        settings        => {
+            'iptables' => false,
+            'ip-masq'  => false,
+        },
+        version         => $docker_version,
+        declare_service => false,
+        require         => Class['::profile::docker::storage'],
+    }
+
+    class { '::profile::docker::flannel':
+        docker_version => $docker_version,
+        require        => Class['::profile::docker::engine'],
+    }
+
 
     class { '::k8s::ssl':
         provide_private => true,
@@ -27,7 +46,7 @@ class role::toollabs::k8s::worker {
 
     class { '::k8s::kubelet':
         master_host => $master_host,
-        require     => Class['::k8s::docker'],
+        require     => Class[::profile::docker::flannel],
         use_package => true,
     }
 

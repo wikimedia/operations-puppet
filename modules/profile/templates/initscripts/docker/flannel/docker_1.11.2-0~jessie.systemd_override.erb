@@ -1,0 +1,13 @@
+# Docker override systemd for v1.11.2-0~jessie
+[Unit]
+After=network.target docker.socket flannel.service
+Requires=docker.socket flannel.service
+
+[Service]
+EnvironmentFile=/run/flannel/subnet.env
+# We need to clear ExecStart first before setting it again
+ExecStart=
+ExecStart=/usr/bin/docker daemon -H fd:// \
+            --config-file=/etc/docker/daemon.json \
+            --bip=${FLANNEL_SUBNET} \
+            --mtu=${FLANNEL_MTU}
