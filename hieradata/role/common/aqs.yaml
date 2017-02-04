@@ -31,6 +31,7 @@ cassandra::seeds:
     - aqs1007-b.eqiad.wmnet
     - aqs1008-a.eqiad.wmnet
     - aqs1008-b.eqiad.wmnet
+    - aqs1009-a.eqiad.wmnet
 cassandra::max_heap_size: 16g
 # 1/4 heap size, no more than 100m/thread
 cassandra::heap_newsize: 2048m
@@ -82,6 +83,7 @@ aqs::seeds:
     - aqs1007-b.eqiad.wmnet
     - aqs1008-a.eqiad.wmnet
     - aqs1008-b.eqiad.wmnet
+    - aqs1009-a.eqiad.wmnet
 aqs::logstash_host: logstash1001.eqiad.wmnet
 aqs::cassandra_default_consistency: localOne
 aqs::cassandra_local_dc: "%{::site}"
@@ -97,3 +99,4 @@ aqs_hosts:
     - aqs1006.eqiad.wmnet
     - aqs1007.eqiad.wmnet
     - aqs1008.eqiad.wmnet
+    - aqs1009.eqiad.wmnet
