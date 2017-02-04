@@ -125,7 +125,7 @@ node 'analytics1027.eqiad.wmnet' {
 }
 
 # Analytics Query Service
-node /aqs100[45678]\.eqiad\.wmnet/ {
+node /aqs100[456789]\.eqiad\.wmnet/ {
     role(aqs)
 }
 
