@@ -8,12 +8,13 @@ class role::toollabs::docker::builder {
     }
 
     class { '::profile::docker::engine':
-        settings => {
+        settings        => {
             'iptables' => false,
             'ip-masq'  => false,
         },
-        version  => '1.12.6-0~jessie',
-        require  => Class['::profile::docker::storage'],
+        version         => '1.12.6-0~jessie',
+        declare_service => true,
+        require         => Class['::profile::docker::storage'],
     }
 
     class { '::toollabs::images': }
