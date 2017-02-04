@@ -16,7 +16,7 @@ class wikistats::updates {
     }
 
     # update cron jobs: usage: <project prefix>@<hour>
-    wikistats::cronjob { [
+    wikistats::cronjob::update { [
                 'wp@0',  # Wikipedias
                 'lx@1',  # LXDE
                 'si@1',  # Wikisite
@@ -50,5 +50,10 @@ class wikistats::updates {
                 'ga@22', # Gamepedias
                 'w3@23', # W3C
                 ]: }
+
+    # imports (fetching lists of wikis itself)
+    wikistats::cronjob::import { [
+        'miraheze@5', # https://phabricator.wikimedia.org/T153930
+    ]: }
 
 }

@@ -1,6 +1,6 @@
 # define a cronjob to update a wikistats table
 # usage: <project prefix>@<hour>
-define wikistats::cronjob() {
+define wikistats::cronjob::update() {
 
     $project = regsubst($name, '@.*', '\1')
     $hour    = regsubst($name, '.*@', '\1')
