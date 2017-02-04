@@ -10,7 +10,8 @@ cat <<EOF
     [33;1m/ [31m![33m \[0m
    [33;1m/_____\[0m         "No user-serviceable parts inside."
 
-           *** This is a [31mstable [0mserver ***
+           *** This is supposed to be a [31mstable [0mserver ***
+           *** Laugh or cry as appropriate ***
 
 EOF
 
