@@ -9,6 +9,9 @@ class profile::docker::engine(
     $settings = hiera_hash('profile::docker::engine::settings'),
     # Version to install; the default is not to pick one.
     $version = hiera('profile::docker::engine::version'),
+    # Set to false if we don't want to declare the docker service here
+    # We want this to be on if we want to use a different docker systemd service (with flannel support, for eg.)
+    $declare_service = hiera('profile::docker::engine::declare_service')
 ) {
 
     # Install docker
@@ -42,8 +45,10 @@ class profile::docker::engine(
         value => '1',
     }
 
-    # Service declaration
-    service { 'docker':
-        ensure => 'running',
+    if $declare_service {
+        # Service declaration
+        service { 'docker':
+            ensure => 'running',
+        }
     }
 }
