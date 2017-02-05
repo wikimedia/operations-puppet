@@ -7,7 +7,7 @@ class ores::web(
     $port = 8081,
     $graphite_server = 'graphite-in.eqiad.wmnet',
     $deployment = 'scap3',
-    $celery_workers = 40,
+    $celery_workers = 45,
     $extra_config = undef,
 ) {
     require ::ores::base
