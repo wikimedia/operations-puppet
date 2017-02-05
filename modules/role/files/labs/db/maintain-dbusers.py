@@ -9,8 +9,7 @@ functions are not 'pure' - they could even be separate scripts. They
 mutate the DB in some way. They are also supposed to be idempotent -
 if they have nothing to do, they should not do anything.
 
-Some of the functions are one-time only, allowing migration from
-create-dbusers. These are:
+Some of the functions are one-time only. These are:
 
 ## harvest_cnf_files ##
 
