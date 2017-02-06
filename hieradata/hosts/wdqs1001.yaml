@@ -1,2 +1,0 @@
-# temporary data_dir, reimage required to move it to standard /srv/wdqs location
-wdqs::data_dir: /var/lib/wdqs
