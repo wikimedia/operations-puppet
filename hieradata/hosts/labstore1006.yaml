@@ -3,6 +3,7 @@ profile::dumps::xmldumpspublicdir: '/srv/dumps/xmldatadumps/public'
 profile::dumps::dumpstempdir: '/srv/dumps/xmldatadumps/temp'
 
 profile::dumps::cleanup::isreplica: true
+profile::dumps::cleanup::labscopy: false
 
 profile::dumps::rsyncer:
   dumps_user: 'dumpsgen'

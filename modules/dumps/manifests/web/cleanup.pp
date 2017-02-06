@@ -1,6 +1,7 @@
 class dumps::web::cleanup(
     $miscdumpsdir = undef,
     $isreplica = undef,
+    $labscopy = undef,
     $xmldumpsdir = undef,
     $dumpstempdir = undef,
     $user = undef,
@@ -24,6 +25,7 @@ class dumps::web::cleanup(
     class {'dumps::web::cleanups::miscdumps':
         miscdumpsdir => $miscdumpsdir,
         isreplica    => $isreplica,
+        labscopy     => $labscopy,
     }
 
     class {'::dumps::web::cleanups::xmldumps':
@@ -31,5 +33,6 @@ class dumps::web::cleanup(
         dumpstempdir => $dumpstempdir,
         user         => $user,
         isreplica    => $isreplica,
+        labscopy     => $labscopy,
     }
 }

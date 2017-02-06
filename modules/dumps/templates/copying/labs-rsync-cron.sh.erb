@@ -7,33 +7,40 @@
 bwlimit="--bwlimit=50000"
 
 do_rsync (){
-    srcdir=$1
-    destdir=$2
-    base_srcdir=$3
+    srcdir="$1"
+    desthost="$2"
+    destdir="$3"
 
-    running=`pgrep -u root -f -x "/usr/bin/rsync -rlptqgo $bwlimit ${base_srcdir}/${srcdir} ${desthost}::dumps/${destdir}"`
+    running=`pgrep -u root -f -x "/usr/bin/rsync -rlptqgo $bwlimit "$srcdir" ${desthost}::dumps/${destdir}"`
     if [ -z "$running" ]; then
-        /usr/bin/rsync -rlptqgo "$bwlimit" "${base_srcdir}/${srcdir}" "${desthost}::dumps/${destdir}"
+        /usr/bin/rsync -rlptqgo "$bwlimit" "$srcdir" "${desthost}::dumps/${destdir}"
     fi
 }
 
 if [ -z "$1" -o -z "$2" -o -z "$3" ]; then
-    echo "Usage: $0 hostname sourcedir destdir"
+    echo "Usage: $0 xmldumps-sourcedir miscdumps-source-basedir dest-hostname"
+    echo "Example: $0 /data/xmldatadumps/public /data/xmldatadumps/public/other labstore1003.eqiad.wmnet"
     exit 1
 fi
 
-desthost="$1"
-sourcedir="$2"
-destdir="$3"
 
-running=`pgrep -u root -f   "python /usr/local/bin/wmfdumpsmirror.py --dest_hostname ${desthost}"`
+xmldumpsdir="$1"
+miscbasedir="$2"
+desthost="$3"
+
+running=`pgrep -u root -f "/usr/bin/rsync -rlptqgo $bwlimit ${xmldumpsdir}/ ${desthost}::dumps/public/"`
 if [ -z "$running" ]; then
-    python /usr/local/bin/wmfdumpsmirror.py --dest_hostname ${desthost} --sourcedir $sourcedir --destdir dumps/public --filesperjob 50 --sizeperjob 5G --workercount 1 --rsynclist rsync-filelist-last-3-good.txt.rsync --rsyncargs -rlptqgo,--bwlimit=50000
+    /usr/bin/rsync -rlptqgo $bwlimit ${xmldumpsdir}/ ${desthost}::dumps/public/ \
+         --exclude='*.inprog' --exclude='*.tmp' --exclude='**tmp/' \
+         --exclude='**temp/' --exclude='**bad/' --exclude='**save/' \
+         --exclude='**other/' --exclude='**archive/' --exclude='**not/' \
+         --include-from=/data/xmldatadumps/public/rsync-inc-last-3.txt \
+         --include='/*wik*/'  --exclude='/*' --exclude='/*/' --exclude='/*/*/'
 fi
 
 # fixme need to ensure ${desthost}::dumps/public/wikidatawiki/entities/ exists
 
-#copy from our dumps "other" directory to the labs host copy of dumps
-do_rsync "incr" "" "$destdir"
-do_rsync "wikibase/wikidatawiki/" "public/wikidatawiki/entities/" "$destdir"
-do_rsync "pageviews" "" "$destdir"
+#copy from our misc dumps/datasets directory to the labs host copy of dumps
+do_rsync "${miscbasedir}/incr" $desthost ""
+do_rsync "${miscbasedir}/wikibase/wikidatawiki/" $desthost "public/wikidatawiki/entities/"
+do_rsync "${miscbasedir}/pageviews" $desthost ""

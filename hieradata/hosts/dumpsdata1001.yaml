@@ -3,3 +3,4 @@ profile::dumps::xmldumpspublicdir: '/data/xmldatadumps/public'
 profile::dumps::dumpstempdir: '/data/xmldatadumps/temp'
 
 profile::dumps::cleanup::isreplica: false
+profile::dumps::cleanup::labscopy: false
