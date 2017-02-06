@@ -1,5 +1,6 @@
 class dumps::web::cleanups::miscdumps(
     $isreplica = undef,
+    $labscopy = undef,
     $miscdumpsdir = undef,
 ) {
     file { '/usr/local/bin/cleanup_old_miscdumps.sh':
@@ -13,8 +14,11 @@ class dumps::web::cleanups::miscdumps(
 
     $keep_generator=['categoriesrdf:3', 'cirrussearch:3', 'contenttranslation:3', 'globalblocks:3', 'imageinfo:3', 'mediatitles:3', 'pagetitles:3', 'wikibase/wikidatawiki:3']
     $keep_replicas=['categoriesrdf:11', 'cirrussearch:11', 'contenttranslation:14', 'globalblocks:13', 'imageinfo:32', 'mediatitles:90', 'pagetitles:90', 'wikibase/wikidatawiki:20']
+    $keep_labscopy=['categoriesrdf:11', 'cirrussearch:11', 'contenttranslation:14', 'globalblocks:13', 'imageinfo:32', 'mediatitles:90', 'pagetitles:90', 'wikibase/wikidatawiki:20']
     if ($isreplica == true) {
         $content= join($keep_replicas, "\n")
+    } elsif ($labscopy == true) {
+        $content= join($keep_labscopy, "\n")
     } else {
         $content= join($keep_generator, "\n")
     }
@@ -31,6 +35,8 @@ class dumps::web::cleanups::miscdumps(
     $cleanup_miscdumps = "/bin/bash /usr/local/bin/cleanup_old_miscdumps.sh --miscdumpsdir ${miscdumpsdir} --configfile /etc/dumps/confs/cleanup_misc.conf"
 
     if ($isreplica == true) {
+        $addschanges_keeps = '40'
+    } elsif ($labscopy == true) {
         $addschanges_keeps = '40'
     } else {
         $addschanges_keeps = '7'

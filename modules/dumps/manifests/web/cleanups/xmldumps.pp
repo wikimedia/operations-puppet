@@ -3,6 +3,7 @@ class dumps::web::cleanups::xmldumps(
     $dumpstempdir = undef,
     $user = undef,
     $isreplica = undef,
+    $labscopy = undef,
 ) {
     $wikilist_dir = '/etc/dumps/dblists'
     file { $wikilist_dir:
@@ -53,9 +54,12 @@ class dumps::web::cleanups::xmldumps(
     # revision content, etc.
     $keep_generator = ['hugewikis.dblist:3', 'bigwikis.dblist:3', 'default:3']
     $keep_replicas = ['hugewikis.dblist:7', 'bigwikis.dblist:8', 'default:10']
+    $keep_labscopy = ['hugewikis.dblist:3', 'bigwikis.dblist:3', 'default:3']
 
     if ($isreplica == true) {
         $content= join($keep_replicas, "\n")
+    } elsif ($labscopy == true) {
+        $content= join($keep_labscopy, "\n")
     } else {
         $content= join($keep_generator, "\n")
     }

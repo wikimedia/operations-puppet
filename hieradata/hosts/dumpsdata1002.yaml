@@ -6,6 +6,7 @@ profile::dumps::dumpstempdir: '/data/xmldatadumps/temp'
 # we configure cleanups of old files there the
 # same way we do the active generating host
 profile::dumps::cleanup::isreplica: false
+profile::dumps::cleanup::labscopy: false
 
 profile::dumps::rsyncer:
   dumps_user: 'dumpsgen'
