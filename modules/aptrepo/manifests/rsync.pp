@@ -46,7 +46,7 @@ class aptrepo::rsync {
     cron { 'rsync-aptrepo':
         ensure  => $ensure_cron,
         user    => 'root',
-        command => "rsync -avp ${aptrepo::basedir}/ rsync://${secondary_server}/aptrepo",
+        command => "rsync -avp ${aptrepo::basedir}/ rsync://${secondary_server}/aptrepo > /dev/null",
         hour    => '*/6',
         minute  => '42',
     }
