@@ -4,7 +4,7 @@
 
 module Puppet::Parser::Functions
   newfunction(:hash, :type => :rvalue, :doc => <<-EOS
-This function converts and array into a hash.
+This function converts an array into a hash.
 
 *Examples:*
 
@@ -29,7 +29,7 @@ Would return: {'a'=>1,'b'=>2,'c'=>3}
       # This is to make it compatible with older version of Ruby ...
       array  = array.flatten
       result = Hash[*array]
-    rescue Exception
+    rescue StandardError
       raise(Puppet::ParseError, 'hash(): Unable to compute ' +
         'hash from array given')
     end
