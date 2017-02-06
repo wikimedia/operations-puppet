@@ -49,7 +49,7 @@ class role::icinga(
 
     monitoring::service { 'https':
         description   => 'HTTPS',
-        check_command => 'check_ssl_http!icinga.wikimedia.org',
+        check_command => 'check_ssl_http_letsencrypt!icinga.wikimedia.org',
     }
 
     class { '::icinga':            }
