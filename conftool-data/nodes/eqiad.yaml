@@ -300,6 +300,8 @@ aqs:
   aqs1005.eqiad.wmnet: [aqs, cassandra]
   aqs1006.eqiad.wmnet: [aqs, cassandra]
   aqs1007.eqiad.wmnet: [aqs, cassandra]
+  aqs1008.eqiad.wmnet: [aqs, cassandra]
+  aqs1009.eqiad.wmnet: [aqs, cassandra]
 eventbus:
   kafka1001.eqiad.wmnet: [eventbus]
   kafka1002.eqiad.wmnet: [eventbus]
