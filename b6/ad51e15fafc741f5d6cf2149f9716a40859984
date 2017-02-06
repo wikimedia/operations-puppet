@@ -1,0 +1,8 @@
+Code-Review+1: Jcrespo <jcrespo@wikimedia.org>
+Verified+2: jenkins-bot
+Code-Review+2: Marostegui <marostegui@wikimedia.org>
+Submitted-by: Marostegui <marostegui@wikimedia.org>
+Submitted-at: Mon, 06 Feb 2017 07:23:49 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/335817
+Project: operations/puppet
+Branch: refs/heads/production
