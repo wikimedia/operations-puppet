@@ -2444,3 +2444,64 @@ users:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC5jAvhIngD3svnIyBaHkhZTPEJc80jM363NfWUaFNcdi7n/VudTa3t8vL9jb1OZBUWnL/gfIW4VeLU4rKsfQkcpw6BpL9Qmr50Ewex9eU2pN3/tu1JN9OGNoJry8q81ZaxpH2wJD0JmCC4nlL84Ie7YjZQdcDpeDp4NL/eqEN30DilejVc34cMFpxcH2UYtJnoHGgSPBNsRvftrSniENKlWBrNF+Gjeg+awidUnlpTfGA0q8AGa5Fo69GkHxAzUymgNgeCY6w2H/HqgFcKT53YWgkViBZC0vi3Y0X0EDxnTgYbbKmSij7JU7Z4qJzzd+Tscd/xcO20hPsAYXcW/nF5 musikanimal@wikimedia.org
     uid: 11106
     email: lziemba@wikimedia.org
+ldap_only_users:
+  abartov:
+    ensure: present
+    realname: Asaf Bartov
+    email: abartov@wikimedia.org
+  apalmer:
+    ensure: present
+    realname: Aeryn Palmer
+    email: apalmer@wikimedia.org
+  cmadeo:
+    ensure: present
+    realname: Carolyn Li-Madeo
+    email: cmadeo@wikimedia.org
+  coreyfloyd:
+    ensure: present
+    realname: Corey Floyd
+    email: cfloyd@wikimedia.org
+  ferdbold:
+    ensure: present
+    realname: Frederic Bolduc
+    email: fbolduc@wikimedia.org
+  heather:
+    ensure: present
+    realname: Heather Walls
+    email: hwalls@wikimedia.org
+  jbuatti:
+    ensure: present
+    realname: James Buatti
+    email: jbuatti@wikimedia.org
+  jrobell:
+    ensure: present
+    realname: Jessica Robell
+    email: jrobell@wikimedia.org
+  kemayo:
+    ensure: present
+    realname: David Lynch
+    email: dlynch@wikimedia.org
+  mhernandez:
+    ensure: present
+    realname: Megan Hernandez
+    email: mhernandez@wikimedia.org
+  nirzar:
+    ensure: present
+    realname: Nirzar Pangarkar
+    email: npangarkar@wikimedia.org
+  phedenskog:
+    ensure: present
+    realname: Peter Hedenskog
+    email: phedenskog@wikimedia.org
+  prtksxna:
+    ensure: present
+    realname: Prateek Saxena
+    email: psaxena@wikimedia.org
+  qgil:
+    ensure: present
+    realname: Quim Gil
+    email: qgil@wikimedia.org
+  seddon:
+    ensure: present
+    realname: Joseph Seddon
+    email: jseddon@wikimedia.org
