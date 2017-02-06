@@ -234,7 +234,7 @@ groups:
               bmansurov, atgomez, amire80, kartik, pcoombe, foks, mpany, hjiang, jsamra, bcohn,
               jdlrobson, chelsyx, ovasileva, mtizzoni, panisson, paolotti, ciro,
               psinger, flemmerich, mkroetzsch, akrausetud, filippo, nschaaf, pmiazga, faidon,
-              zareen, piccardi, fdans, eevans, anomie, demon, ladsgroup]
+              zareen, piccardi, fdans, eevans, anomie, demon, ladsgroup, musikanimal]
   analytics-admins:
     gid: 732
     description: Admin access to analytics cluster.
@@ -2435,3 +2435,12 @@ users:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCusvafyr2JyFMUuWJ3N7NMIrKXVGk3dpEhdeqkJIZdRU5+Zyq7sA47bKBP13M06oFhtDQv/77rsqKSS1zy4CSFs9RPR/WDzeRcuHRxxWbtA0+6A0pfmvxCfrF/008Scw5TH4MJPAuQjCFc5obqfNzgwAiOVikMAhpgYloywPBSMG9mPek7KSJ6b2bZy8Z7+gnesFqzaZ1o/UET+5lmyaMlFWhaKiSzNt/naa6prumQvuEvJf6tIOqsoEs/BsL4mTKTLuSnw/iEA9m/oJaOjyPnbHbn07ZHLRVoA/CwyJEf0VwfornPVAc/Uar6e7QdA+6/PSruHE/sVfj7B93pjgKUiFEfHZz90qZYnObbl47odVRvv182IfmugNOkTMJ199pKTzIvhNldto2zKH1aOgbBtNnkpZ6KLu3d1e1yTdRdcGS0jZsgyLZZSC6kFD/6JztfEbtcdO4aCsIR1tNT9ZxepwlZLavv76MVKxA57D4We7/TZ9ZSMRBCY0HUATAUjWBjxOsl47zj26Z3QGHI837xt4nD8lk97mH8x2owNUjp+zrqL57cYWe5nNNryi8T9nU0oGxNvG0twTHJlhDodHtJyWMXKMUymYrvCCXkLX4tlGpikWCUuHhW3MPpvRRay6nUHKE/DSg9mqgeD2f1p6xn2T3MmvarHUdhZqiQjTYtcQ== fdans@wikimedia.org
     uid: 16067
     email: fdans@wikimedia.org
+  musikanimal:
+    ensure: present
+    gid: 500
+    name: musikanimal
+    realname: Leon Ziemba
+    ssh_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC5jAvhIngD3svnIyBaHkhZTPEJc80jM363NfWUaFNcdi7n/VudTa3t8vL9jb1OZBUWnL/gfIW4VeLU4rKsfQkcpw6BpL9Qmr50Ewex9eU2pN3/tu1JN9OGNoJry8q81ZaxpH2wJD0JmCC4nlL84Ie7YjZQdcDpeDp4NL/eqEN30DilejVc34cMFpxcH2UYtJnoHGgSPBNsRvftrSniENKlWBrNF+Gjeg+awidUnlpTfGA0q8AGa5Fo69GkHxAzUymgNgeCY6w2H/HqgFcKT53YWgkViBZC0vi3Y0X0EDxnTgYbbKmSij7JU7Z4qJzzd+Tscd/xcO20hPsAYXcW/nF5 musikanimal@wikimedia.org
+    uid: 11106
+    email: lziemba@wikimedia.org
