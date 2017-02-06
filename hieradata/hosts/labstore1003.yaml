@@ -1,3 +1,9 @@
+profile::dumps::cleanup::isreplica: false
+profile::dumps::cleanup::labscopy: true
+profile::dumps::xmldumpspublicdir: '/srv/dumps/xmldatadumps/public'
+profile::dumps::miscdumpsdir: '/srv/dumps/xmldatadumps'
+profile::dumps::dumpstempdir: '/srv/dumps/xmldatadumps/temp'
+
 profile::base::domain_search:
   - wikimedia.org
   - eqiad.wmnet
