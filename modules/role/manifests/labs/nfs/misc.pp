@@ -27,6 +27,7 @@ class role::labs::nfs::misc(
     # servers, they have cleanups already added
     # in the role
     include ::profile::dumps::web::cleanup
+    include ::profile::dumps::web::dumpsuser
 
     rsync::server::module { 'pagecounts':
         path        => '/srv/dumps/pagecounts',
