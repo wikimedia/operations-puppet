@@ -13,6 +13,7 @@ alias ln='ln -i'
 alias top='top -cd 1'
 alias free='free -m'
 alias my='sudo mysql --defaults-file=/root/.my.cnf'
+alias ppless='sudo less -R /var/log/puppet.log'
 
 # ls aliases
 export LS_OPTIONS='--color=auto'
