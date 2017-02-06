@@ -14,9 +14,12 @@ do_rsync (){
 }
 
 
-running=`pgrep -u root -f   "python /usr/local/bin/wmfdumpsmirror.py --dest_hostname labstore1003.eqiad.wmnet"`
+running=`pgrep -u root -f   "rsync -rlptqgo --bwlimit=50000 /data/xmldatadumps/public ${desthost}::dumps/public"`
 if [ -z "$running" ]; then
-    python /usr/local/bin/wmfdumpsmirror.py --dest_hostname labstore1003.eqiad.wmnet --sourcedir /data/xmldatadumps/public --destdir dumps/public --filesperjob 50 --sizeperjob 5G --workercount 1 --rsynclist rsync-filelist-last-3-good.txt.rsync --rsyncargs -rlptqgo,--bwlimit=50000
+    rsync -rlptqgo --bwlimit=50000 /data/xmldatadumps/public/ ${desthost}::dumps/public/ \
+	  --include-from=/data/xmldatadumps/public/rsync-inc-last-3.txt \
+	  --include='/*wik*/' \
+	  --exclude='**tmp/ **temp/ **bad/ **save/ **other/ **archive/ **not/ /* /*/ /*/*/'
 fi
 
 # fixme need to ensure ${desthost}::dumps/public/wikidatawiki/entities/ exists
