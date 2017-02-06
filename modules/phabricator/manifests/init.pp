@@ -186,6 +186,8 @@ class phabricator (
         $phab_settings['load-libraries'] = $libraries
     }
 
+    $opcache_validate = hiera('phabricator_opcache_validate', 0)
+
     file { '/etc/php5/apache2/php.ini':
         content => template('phabricator/php.ini.erb'),
         notify  => Service['apache2'],
