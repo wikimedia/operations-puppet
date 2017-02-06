@@ -148,6 +148,7 @@ class role::phabricator::main {
         settings         => {
             'search.elastic.host'                    => $elasticsearch_host,
             'search.elastic.version'                 => $elasticsearch_version,
+            'search.elasticsearch.version'           => $elasticsearch_version,
             'search.elastic.enabled'                 => $elasticsearch_enabled,
             'darkconsole.enabled'                    => false,
             'differential.allow-self-accept'         => true,
