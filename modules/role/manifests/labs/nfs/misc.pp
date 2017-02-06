@@ -21,6 +21,13 @@ class role::labs::nfs::misc(
     # to be included post ldap integration
     # include labstore::monitoring::ldap
 
+    # for cleanup of old xmldumps, other datasets
+    # copied over from dataset1001. this should
+    # not be carried over to the new labstore6,7
+    # servers, they have cleanups already added
+    # in the role
+    include ::profile::dumps::web::cleanup
+
     rsync::server::module { 'pagecounts':
         path        => '/srv/dumps/pagecounts',
         read_only   => 'no',

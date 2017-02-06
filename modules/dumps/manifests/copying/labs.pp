@@ -3,12 +3,6 @@ class dumps::copying::labs(
     $xmldumpsdir = undef,
     $miscdatasetsdir = undef,
 ) {
-    file { '/usr/local/bin/wmfdumpsmirror.py':
-        ensure => 'present',
-        mode   => '0755',
-        source => 'puppet:///modules/dumps/copying/wmfdumpsmirror.py',
-    }
-
     file{ '/usr/local/sbin/labs-rsync-cron.sh':
         ensure  => 'present',
         mode    => '0755',
@@ -20,10 +14,9 @@ class dumps::copying::labs(
         user        => 'root',
         minute      => '50',
         hour        => '3',
-        command     => "/usr/local/sbin/labs-rsync-cron.sh ${labhost} ${xmldumpsdir} ${miscdatasetsdir}",
+        command     => "/usr/local/sbin/labs-rsync-cron.sh ${xmldumpsdir} ${miscdatasetsdir} ${labhost}",
         environment => 'MAILTO=ops-dumps@wikimedia.org',
-        require     => File['/usr/local/bin/wmfdumpsmirror.py',
-                            '/usr/local/sbin/labs-rsync-cron.sh'],
+        require     => File['/usr/local/sbin/labs-rsync-cron.sh'],
     }
 }
 
