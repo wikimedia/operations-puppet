@@ -43,3 +43,19 @@ SignWith: default
 DebOverride: deb-override
 Log:
  log
+
+Origin: Wikimedia
+Label: Wikimedia
+Suite: stretch-wikimedia
+Codename: stretch-wikimedia
+AlsoAcceptFor: stretch stretch-backports
+Version: 8
+Architectures: source amd64 i386
+Components: main backports thirdparty experimental
+UDebComponents: main backports thirdparty experimental
+Update: hwraid
+Description: Wikimedia packages for Debian stretch
+SignWith: default
+DebOverride: deb-override
+Log:
+ log
