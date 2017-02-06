@@ -1,42 +1,44 @@
-#! /usr/bin/env ruby
-
 require 'spec_helper'
-require 'rspec-puppet'
 
 describe 'ensure_packages' do
-  let(:scope) { PuppetlabsSpec::PuppetInternals.scope }
+  it { is_expected.not_to eq(nil) }
+  it { is_expected.to run.with_params().and_raise_error(Puppet::ParseError) }
+  it {
+    pending("should not accept numbers as arguments")
+    is_expected.to run.with_params(1).and_raise_error(Puppet::ParseError)
+  }
+  it {
+    pending("should not accept numbers as arguments")
+    is_expected.to run.with_params(["packagename", 1]).and_raise_error(Puppet::ParseError)
+  }
+  it { is_expected.to run.with_params("packagename") }
+  it { is_expected.to run.with_params(["packagename1", "packagename2"]) }
 
-  describe 'argument handling' do
-    it 'fails with no arguments' do
-      should run.with_params().and_raise_error(Puppet::ParseError)
+  context 'given a catalog with "package { puppet: ensure => absent }"' do
+    let(:pre_condition) { 'package { puppet: ensure => absent }' }
+
+    describe 'after running ensure_package("facter")' do
+      before { subject.call(['facter']) }
+
+      # this lambda is required due to strangeness within rspec-puppet's expectation handling
+      it { expect(lambda { catalogue }).to contain_package('puppet').with_ensure('absent') }
+      it { expect(lambda { catalogue }).to contain_package('facter').with_ensure('present') }
     end
-    it 'requires an array' do
-      lambda { scope.function_ensure_packages([['foo']]) }.should_not raise_error
-    end
-    it 'fails when given a string' do
-      should run.with_params('foo').and_raise_error(Puppet::ParseError)
+
+    describe 'after running ensure_package("facter", { "provider" => "gem" })' do
+      before { subject.call(['facter', { "provider" => "gem" }]) }
+
+      # this lambda is required due to strangeness within rspec-puppet's expectation handling
+      it { expect(lambda { catalogue }).to contain_package('puppet').with_ensure('absent').without_provider() }
+      it { expect(lambda { catalogue }).to contain_package('facter').with_ensure('present').with_provider("gem") }
     end
   end
 
-  context 'given a catalog containing Package[puppet]{ensure => absent}' do
-    let :pre_condition do
-      'package { puppet: ensure => absent }'
-    end
+  context 'given hash of packages' do
+    before { subject.call([{"foo" => { "provider" => "rpm" }, "bar" => { "provider" => "gem" }}, { "ensure" => "present"}]) }
 
-    # NOTE: should run.with_params has the side effect of making the compiler
-    # available to the test harness.
-    it 'has no effect on Package[puppet]' do
-      should run.with_params(['puppet'])
-      rsrc = compiler.catalog.resource('Package[puppet]')
-      rsrc.to_hash.should == {:ensure => "absent"}
-    end
-  end
-
-  context 'given a clean catalog' do
-    it 'declares package resources with ensure => present' do
-      should run.with_params(['facter'])
-      rsrc = compiler.catalog.resource('Package[facter]')
-      rsrc.to_hash.should == {:name => "facter", :ensure => "present"}
-    end
+    # this lambda is required due to strangeness within rspec-puppet's expectation handling
+    it { expect(lambda { catalogue }).to contain_package('foo').with({'provider' => 'rpm', 'ensure' => 'present'}) }
+    it { expect(lambda { catalogue }).to contain_package('bar').with({'provider' => 'gem', 'ensure' => 'present'}) }
   end
 end

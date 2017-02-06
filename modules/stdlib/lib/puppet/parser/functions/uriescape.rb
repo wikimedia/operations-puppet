@@ -14,19 +14,17 @@ module Puppet::Parser::Functions
       "given (#{arguments.size} for 1)") if arguments.size < 1
 
     value = arguments[0]
-    klass = value.class
-    unsafe = ":/?#[]@!$&'()*+,;= "
 
-    unless [Array, String].include?(klass)
+    unless value.is_a?(Array) || value.is_a?(String)
       raise(Puppet::ParseError, 'uriescape(): Requires either ' +
         'array or string to work with')
     end
 
     if value.is_a?(Array)
       # Numbers in Puppet are often string-encoded which is troublesome ...
-      result = value.collect { |i| i.is_a?(String) ? URI.escape(i,unsafe) : i }
+      result = value.collect { |i| i.is_a?(String) ? URI.escape(i) : i }
     else
-      result = URI.escape(value,unsafe)
+      result = URI.escape(value)
     end
 
     return result
