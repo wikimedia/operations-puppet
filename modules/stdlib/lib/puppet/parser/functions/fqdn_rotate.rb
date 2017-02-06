@@ -2,20 +2,26 @@
 # fqdn_rotate.rb
 #
 
-module Puppet::Parser::Functions
-  newfunction(:fqdn_rotate, :type => :rvalue, :doc => <<-EOS
-Rotates an array a random number of times based on a nodes fqdn.
-    EOS
-  ) do |arguments|
+Puppet::Parser::Functions.newfunction(
+  :fqdn_rotate,
+  :type => :rvalue,
+  :doc => "Usage: `fqdn_rotate(VALUE, [SEED])`. VALUE is required and
+  must be an array or a string. SEED is optional and may be any number
+  or string.
+
+  Rotates VALUE a random number of times, combining the `$fqdn` fact and
+  the value of SEED for repeatable randomness. (That is, each node will
+  get a different random rotation from this function, but a given node's
+  result will be the same every time unless its hostname changes.) Adding
+  a SEED can be useful if you need more than one unrelated rotation.") do |args|
 
     raise(Puppet::ParseError, "fqdn_rotate(): Wrong number of arguments " +
-      "given (#{arguments.size} for 1)") if arguments.size < 1
+      "given (#{args.size} for 1)") if args.size < 1
 
-    value = arguments[0]
-    klass = value.class
+    value = args.shift
     require 'digest/md5'
 
-    unless [Array, String].include?(klass)
+    unless value.is_a?(Array) || value.is_a?(String)
       raise(Puppet::ParseError, 'fqdn_rotate(): Requires either ' +
         'array or string to work with')
     end
@@ -32,15 +38,26 @@ Rotates an array a random number of times based on a nodes fqdn.
 
     elements = result.size
 
-    srand(Digest::MD5.hexdigest([lookupvar('::fqdn'),arguments].join(':')).hex)
-    rand(elements).times {
+    seed = Digest::MD5.hexdigest([lookupvar('::fqdn'),args].join(':')).hex
+    # deterministic_rand() was added in Puppet 3.2.0; reimplement if necessary
+    if Puppet::Util.respond_to?(:deterministic_rand)
+      offset = Puppet::Util.deterministic_rand(seed, elements).to_i
+    else
+      if defined?(Random) == 'constant' && Random.class == Class
+        offset = Random.new(seed).rand(elements)
+      else
+        old_seed = srand(seed)
+        offset = rand(elements)
+        srand(old_seed)
+      end
+    end
+    offset.times {
        result.push result.shift
     }
 
     result = string ? result.join : result
 
     return result
-  end
 end
 
 # vim: set ts=2 sw=2 et :

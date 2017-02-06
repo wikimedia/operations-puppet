@@ -4,7 +4,7 @@
 
 module Puppet::Parser::Functions
   newfunction(:chomp, :type => :rvalue, :doc => <<-'EOS'
-    Removes the record separator from the end of a string or an array of 
+    Removes the record separator from the end of a string or an array of
     strings, for example `hello\n` becomes `hello`.
     Requires a single string or array as an input.
     EOS
@@ -14,9 +14,8 @@ module Puppet::Parser::Functions
       "given (#{arguments.size} for 1)") if arguments.size < 1
 
     value = arguments[0]
-    klass = value.class
 
-    unless [Array, String].include?(klass)
+    unless value.is_a?(Array) || value.is_a?(String)
       raise(Puppet::ParseError, 'chomp(): Requires either ' +
         'array or string to work with')
     end

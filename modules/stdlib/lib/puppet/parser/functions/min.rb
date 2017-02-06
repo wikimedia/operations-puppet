@@ -8,7 +8,14 @@ module Puppet::Parser::Functions
     raise(Puppet::ParseError, "min(): Wrong number of arguments " +
           "need at least one") if args.size == 0
 
-    result = args.map(&:to_f).min
-    return result.to_i == result ? result.to_i : result
+    # Sometimes we get numbers as numerics and sometimes as strings.
+    # We try to compare them as numbers when possible
+    return args.min do |a,b|
+      if a.to_s =~ /\A^-?\d+(.\d+)?\z/ and b.to_s =~ /\A-?\d+(.\d+)?\z/ then
+        a.to_f <=> b.to_f
+      else
+        a.to_s <=> b.to_s
+      end
+    end
   end
 end

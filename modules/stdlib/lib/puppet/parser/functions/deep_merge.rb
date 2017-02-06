@@ -19,6 +19,16 @@ module Puppet::Parser::Functions
       raise Puppet::ParseError, ("deep_merge(): wrong number of arguments (#{args.length}; must be at least 2)")
     end
 
+    deep_merge = Proc.new do |hash1,hash2|
+      hash1.merge(hash2) do |key,old_value,new_value|
+        if old_value.is_a?(Hash) && new_value.is_a?(Hash)
+          deep_merge.call(old_value, new_value)
+        else
+          new_value
+        end
+      end
+    end
+
     result = Hash.new
     args.each do |arg|
       next if arg.is_a? String and arg.empty? # empty string is synonym for puppet's undef
@@ -27,26 +37,8 @@ module Puppet::Parser::Functions
         raise Puppet::ParseError, "deep_merge: unexpected argument type #{arg.class}, only expects hash arguments"
       end
 
-      # Now we have to traverse our hash assigning our non-hash values
-      # to the matching keys in our result while following our hash values
-      # and repeating the process.
-      overlay( result, arg )
+      result = deep_merge.call(result, arg)
     end
     return( result )
   end
 end
-
-def overlay( hash1, hash2 )
-    hash2.each do |key, value|
-        if( value.is_a?(Hash) )
-            if( ! hash1.has_key?( key ) or ! hash1[key].is_a?(Hash))
-                hash1[key] = value
-            else
-                overlay( hash1[key], value )
-            end
-        else
-            hash1[key] = value
-        end
-    end
-end
-

@@ -25,22 +25,29 @@ integers automatically)
 Will return: ["a","b","c"]
 
     range("host01", "host10")
-
 Will return: ["host01", "host02", ..., "host09", "host10"]
+NB Be explicit in including trailing zeros. Otherwise the underlying ruby function will fail.
+
+Passing a third argument will cause the generated range to step by that
+interval, e.g.
+
+    range("0", "9", "2")
+
+Will return: [0,2,4,6,8]
     EOS
   ) do |arguments|
 
-    # We support more than one argument but at least one is mandatory ...
-    raise(Puppet::ParseError, "range(): Wrong number of " +
-      "arguments given (#{arguments.size} for 1)") if arguments.size < 1
+    raise(Puppet::ParseError, 'range(): Wrong number of ' +
+      'arguments given (0 for 1)') if arguments.size == 0
 
     if arguments.size > 1
       start = arguments[0]
       stop  = arguments[1]
+      step  = arguments[2].nil? ? 1 : arguments[2].to_i.abs
 
-      type = '..' # We select simplest type for Range available in Ruby ...
+      type = '..' # Use the simplest type of Range available in Ruby
 
-    elsif arguments.size > 0
+    else # arguments.size == 1
       value = arguments[0]
 
       if m = value.match(/^(\w+)(\.\.\.?|\-)(\w+)$/)
@@ -48,30 +55,30 @@ Will return: ["host01", "host02", ..., "host09", "host10"]
         stop  = m[3]
 
         type = m[2]
-
+        step = 1
       elsif value.match(/^.+$/)
-        raise(Puppet::ParseError, 'range(): Unable to compute range ' +
-          'from the value given')
+        raise(Puppet::ParseError, "range(): Unable to compute range " +
+          "from the value: #{value}")
       else
-        raise(Puppet::ParseError, 'range(): Unknown format of range given')
+        raise(Puppet::ParseError, "range(): Unknown range format: #{value}")
       end
     end
 
-      # Check whether we have integer value if so then make it so ...
-      if start.match(/^\d+$/)
-        start = start.to_i
-        stop  = stop.to_i
-      else
-        start = start.to_s
-        stop  = stop.to_s
-      end
+    # If we were given an integer, ensure we work with one
+    if start.to_s.match(/^\d+$/)
+      start = start.to_i
+      stop  = stop.to_i
+    else
+      start = start.to_s
+      stop  = stop.to_s
+    end
 
-      range = case type
-        when /^(\.\.|\-)$/ then (start .. stop)
-        when /^(\.\.\.)$/  then (start ... stop) # Exclusive of last element ...
-      end
+    range = case type
+      when /^(\.\.|\-)$/ then (start .. stop)
+      when '...'         then (start ... stop) # Exclusive of last element
+    end
 
-      result = range.collect { |i| i } # Get them all ... Pokemon ...
+    result = range.step(step).to_a
 
     return result
   end

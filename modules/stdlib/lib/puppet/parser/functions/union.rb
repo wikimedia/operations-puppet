@@ -5,8 +5,11 @@
 module Puppet::Parser::Functions
   newfunction(:union, :type => :rvalue, :doc => <<-EOS
 This function returns a union of two or more arrays.
+
 *Examples:*
+
     union(["a","b","c"],["b","c","d"])
+
 Would return: ["a","b","c","d"]
     EOS
   ) do |arguments|
