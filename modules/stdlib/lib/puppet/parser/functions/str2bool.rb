@@ -4,9 +4,9 @@
 
 module Puppet::Parser::Functions
   newfunction(:str2bool, :type => :rvalue, :doc => <<-EOS
-This converts a string to a boolean. This attempt to convert strings that 
-contain things like: y, 1, t, true to 'true' and strings that contain things
-like: 0, f, n, false, no to 'false'.
+This converts a string to a boolean. This attempt to convert strings that
+contain things like: Y,y, 1, T,t, TRUE,true to 'true' and strings that contain things
+like: 0, F,f, N,n, false, FALSE, no to 'false'.
     EOS
   ) do |arguments|
 
@@ -15,8 +15,13 @@ like: 0, f, n, false, no to 'false'.
 
     string = arguments[0]
 
+    # If string is already Boolean, return it
+    if !!string == string
+      return string
+    end
+
     unless string.is_a?(String)
-      raise(Puppet::ParseError, 'str2bool(): Requires either ' +
+      raise(Puppet::ParseError, 'str2bool(): Requires ' +
         'string to work with')
     end
 
@@ -27,8 +32,8 @@ like: 0, f, n, false, no to 'false'.
       # We yield false in this case.
       #
       when /^$/, '' then false # Empty string will be false ...
-      when /^(1|t|y|true|yes)$/  then true
-      when /^(0|f|n|false|no)$/  then false
+      when /^(1|t|y|true|yes)$/i  then true
+      when /^(0|f|n|false|no)$/i  then false
       when /^(undef|undefined)$/ then false # This is not likely to happen ...
       else
         raise(Puppet::ParseError, 'str2bool(): Unknown type of boolean given')

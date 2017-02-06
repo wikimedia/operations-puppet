@@ -19,7 +19,16 @@ module Puppet::Parser::Functions
       raise Puppet::ParseError, ("getvar(): wrong number of arguments (#{args.length}; must be 1)")
     end
 
-    self.lookupvar("#{args[0]}")
+    begin
+      result = nil
+      catch(:undefined_variable) do
+        result = self.lookupvar("#{args[0]}")
+      end
+
+      # avoid relying on incosistent behaviour around ruby return values from catch
+      result
+    rescue Puppet::ParseError # Eat the exception if strict_variables = true is set
+    end
 
   end
 
