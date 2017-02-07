@@ -1290,10 +1290,6 @@ node 'install1001.wikimedia.org' {
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
     }
-
-    class { '::ganglia::monitor::aggregator':
-        sites =>  'eqiad',
-    }
 }
 
 node 'install1002.wikimedia.org' {
@@ -1308,6 +1304,10 @@ node 'install1002.wikimedia.org' {
 
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
+    }
+
+    class { '::ganglia::monitor::aggregator':
+        sites =>  'eqiad',
     }
 }
 
