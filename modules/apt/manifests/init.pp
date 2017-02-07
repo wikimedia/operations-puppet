@@ -1,5 +1,6 @@
 class apt(
     $use_proxy = true
+    $use_experimental = hiera('apt::use_experimental', false)
 ) {
     exec { 'apt-get update':
         path        => '/usr/bin',
@@ -114,6 +115,23 @@ class apt(
             dist        => "${::lsbdistcodename}-backports",
             components  => 'main contrib non-free',
             comment_old => true,
+        }
+    }
+
+    $use_experimental_ensure = $use_experimental ? {
+        true    => present,
+        false   => absent,
+        default => absent,
+    }
+
+    if $use_experimental {
+        if $::operatingsystem == 'Debian' {
+            apt::repository { 'wikimedia-experimental':
+                ensure     => $use_experimental_ensure,
+                uri        => 'http://apt.wikimedia.org/wikimedia',
+                dist       => "${::lsbdistcodename}-wikimedia",
+                components => 'experimental',
+            }
         }
     }
 
