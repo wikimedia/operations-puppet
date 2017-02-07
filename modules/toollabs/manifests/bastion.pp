@@ -114,6 +114,8 @@ class toollabs::bastion(
                 '*:/usr/bin/nano              memory  /utilities',
                 '*:/bin/tar                   cpu     /utilities',
                 '%                            memory  /utilities',
+                '*:/bin/bzip2                  cpu     /utilities',
+                '%                            memory  /utilities',
                 '*:/bin/gzip                  cpu     /utilities',
                 '%                            memory  /utilities',
                 '*:/usr/bin/md5sum            cpu     /utilities',
