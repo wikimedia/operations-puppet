@@ -118,15 +118,6 @@ class role::lvs::balancer {
         replace => true,
     }
 
-    # temporary experimental component used here as it includes a newer Linux kernel
-    if $::operatingsystem == 'Debian' {
-        apt::repository { 'wikimedia-experimental':
-            uri        => 'http://apt.wikimedia.org/wikimedia',
-            dist       => "${::lsbdistcodename}-wikimedia",
-            components => 'experimental',
-        }
-    }
-
     class { '::lvs::balancer':
         service_ips          => $lvs_balancer_ips,
         lvs_services         => $lvs::configuration::lvs_services,

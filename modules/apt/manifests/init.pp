@@ -117,6 +117,16 @@ class apt(
         }
     }
 
+    if hiera('add_experimental_repo', false) {
+        if $::operatingsystem == 'Debian' {
+            apt::repository { 'wikimedia-experimental':
+                uri        => 'http://apt.wikimedia.org/wikimedia',
+                dist       => "${::lsbdistcodename}-wikimedia",
+                components => 'experimental',
+            }
+        }
+    }
+
     # apt-get should not install recommended packages
     apt::conf { 'no-recommends':
         ensure   => 'present',
