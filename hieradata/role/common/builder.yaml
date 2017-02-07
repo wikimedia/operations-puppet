@@ -3,6 +3,7 @@ debdeploy::grains:
     value: standard
 docker::registry: darmstadtium.eqiad.wmnet
 profile::docker::engine::version: "1.12.5-0~debian-jessie"
+profile::docker::engine::declare_service: true
 profile::docker::engine::settings:
   live-restore: true
 profile::docker::storage::loopback::source_dir: "/srv/docker-dm"
