@@ -30,7 +30,7 @@ class role::mediawiki::scaler {
     nrpe::monitor_service { 'check_leaked_hhvm_threads':
         description    => 'Check HHVM threads for leakage',
         nrpe_command   => '/usr/local/lib/nagios/plugins/check_leaked_hhvm_threads',
-        retry_interval => 1800,
+        retry_interval => 30,
         retries        => 3,
         require        => File['/usr/local/lib/nagios/plugins/check_leaked_hhvm_threads'],
     }
