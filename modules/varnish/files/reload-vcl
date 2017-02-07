@@ -159,6 +159,10 @@ then
     then
 	printf "$msg_compile_only" $varnishadm $mgmt_interface $vcl_label
     else
+	# Warm-up period before switching to the new configuration
+	# https://phabricator.wikimedia.org/T157430
+	sleep 2
+
 	if $varnishadm $instance vcl.use $vcl_label
 	then
 	    printf "$msg_use_ok" $vcl_label
