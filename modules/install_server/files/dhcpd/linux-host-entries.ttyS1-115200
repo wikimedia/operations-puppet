@@ -2008,253 +2008,181 @@ host elastic1047 {
 host elastic2001 {
     hardware ethernet 3c:a8:2a:20:ac:48;
     fixed-address elastic2001.codfw.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host elastic2002 {
     hardware ethernet 3c:a8:2a:20:cb:f0;
     fixed-address elastic2002.codfw.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host elastic2003 {
     hardware ethernet 3c:a8:2a:20:83:48;
     fixed-address elastic2003.codfw.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host elastic2004 {
     hardware ethernet 3c:a8:2a:20:4a:ec;
     fixed-address elastic2004.codfw.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host elastic2005 {
     hardware ethernet 3c:a8:2a:20:2e:a0;
     fixed-address elastic2005.codfw.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host elastic2006 {
     hardware ethernet 3c:a8:2a:20:f3:20;
     fixed-address elastic2006.codfw.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host elastic2007 {
     hardware ethernet 3c:a8:2a:23:ae:98;
     fixed-address elastic2007.codfw.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host elastic2008 {
     hardware ethernet 3c:a8:2a:20:07:20;
     fixed-address elastic2008.codfw.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host elastic2009 {
     hardware ethernet 3c:a8:2a:20:7c:8c;
     fixed-address elastic2009.codfw.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host elastic2010 {
     hardware ethernet 3c:a8:2a:20:45:c0;
     fixed-address elastic2010.codfw.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host elastic2011 {
     hardware ethernet ec:b1:d7:83:89:50;
     fixed-address elastic2011.codfw.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host elastic2012 {
     hardware ethernet 3c:a8:2a:1f:26:d0;
     fixed-address elastic2012.codfw.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host elastic2013 {
     hardware ethernet ec:b1:d7:83:0e:c8;
     fixed-address elastic2013.codfw.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host elastic2014 {
     hardware ethernet 3c:a8:2a:20:64:08;
     fixed-address elastic2014.codfw.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host elastic2015 {
     hardware ethernet ec:b1:d7:83:89:20;
     fixed-address elastic2015.codfw.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host elastic2016 {
     hardware ethernet 3c:a8:2a:20:44:58;
     fixed-address elastic2016.codfw.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host elastic2017 {
     hardware ethernet 3c:a8:2a:20:c4:5c;
     fixed-address elastic2017.codfw.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host elastic2018 {
     hardware ethernet 3c:a8:2a:20:9c:a8;
     fixed-address elastic2018.codfw.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host elastic2019 {
     hardware ethernet 3c:a8:2a:20:d4:44;
     fixed-address elastic2019.codfw.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host elastic2020 {
     hardware ethernet 3c:a8:2a:20:3e:18;
     fixed-address elastic2020.codfw.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host elastic2021 {
     hardware ethernet 3c:a8:2a:20:5a:bc;
     fixed-address elastic2021.codfw.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host elastic2022 {
     hardware ethernet 3c:a8:2a:20:da:a8;
     fixed-address elastic2022.codfw.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host elastic2023 {
     hardware ethernet 3c:a8:2a:20:45:b8;
     fixed-address elastic2023.codfw.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host elastic2024 {
     hardware ethernet 3c:a8:2a:20:17:78;
     fixed-address elastic2024.codfw.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host elastic2025 {
     hardware ethernet 94:18:82:6f:08:f4;
     fixed-address elastic2025.codfw.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host elastic2026 {
     hardware ethernet 94:18:82:6f:28:b8;
     fixed-address elastic2026.codfw.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host elastic2027 {
     hardware ethernet 94:18:82:6f:28:10;
     fixed-address elastic2027.codfw.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host elastic2028 {
     hardware ethernet 94:18:82:6f:08:b8;
     fixed-address elastic2028.codfw.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host elastic2029 {
     hardware ethernet 94:18:82:6f:18:44;
     fixed-address elastic2029.codfw.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host elastic2030 {
     hardware ethernet 94:18:82:6f:08:fc;
     fixed-address elastic2030.codfw.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host elastic2031 {
     hardware ethernet 94:18:82:6f:38:28;
     fixed-address elastic2031.codfw.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host elastic2032 {
     hardware ethernet 94:18:82:6f:18:f4;
     fixed-address elastic2032.codfw.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host elastic2033 {
     hardware ethernet 94:18:82:6f:18:1c;
     fixed-address elastic2033.codfw.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host elastic2034 {
     hardware ethernet 94:18:82:6f:08:e4;
     fixed-address elastic2034.codfw.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host elastic2035 {
     hardware ethernet 94:18:82:69:bc:d0;
     fixed-address elastic2035.codfw.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host elastic2036 {
     hardware ethernet 94:18:82:6f:18:34;
     fixed-address elastic2036.codfw.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host es1011 {
