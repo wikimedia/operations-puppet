@@ -106,12 +106,11 @@ define base::service_unit (
         }
 
         # systemd complains if unit files are executable
-        if $initscript == 'systemd' {
+        if $initscript == 'systemd' or $initscript == 'systemd_override' {
             $i_mode = '0444'
         } else {
             $i_mode = '0544'
         }
-
 
         if $systemd_override {
             file { "/etc/systemd/system/${name}.service.d":
