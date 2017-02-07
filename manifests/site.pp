@@ -1338,10 +1338,6 @@ node 'install2001.wikimedia.org' {
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
     }
-
-    class { '::ganglia::monitor::aggregator':
-        sites =>  'codfw',
-    }
 }
 
 node 'install2002.wikimedia.org' {
@@ -1356,6 +1352,10 @@ node 'install2002.wikimedia.org' {
 
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
+    }
+
+    class { '::ganglia::monitor::aggregator':
+        sites =>  'codfw',
     }
 }
 
