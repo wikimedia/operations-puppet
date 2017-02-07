@@ -30,6 +30,6 @@ class mediawiki::maintenance::generatecaptcha( $ensure = present ) {
         hour     => 1,
         minute   => 0,
         require  => File['/etc/fancycaptcha/words', '/etc/fancycaptcha/badwords'],
-        command  => '/usr/local/bin/mwscript extensions/ConfirmEdit/maintenance/GenerateFancyCaptchas.php aawiki --wordlist=/etc/fancycaptcha/words --font=/usr/share/fonts/truetype/freefont/FreeMonoBoldOblique.ttf --blacklist=/etc/fancycaptcha/badwords --fill=10000 --oldcaptcha --delete >/dev/null 2>&1',
+        command  => '/usr/local/bin/mwscript extensions/ConfirmEdit/maintenance/GenerateFancyCaptchas.php enwiki --wordlist=/etc/fancycaptcha/words --font=/usr/share/fonts/truetype/freefont/FreeMonoBoldOblique.ttf --blacklist=/etc/fancycaptcha/badwords --fill=10000 --oldcaptcha --delete >/dev/null 2>&1',
     }
 }
