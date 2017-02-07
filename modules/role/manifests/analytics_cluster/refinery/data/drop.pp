@@ -8,7 +8,7 @@ class role::analytics_cluster::refinery::data::drop {
     $webrequest_log_file     = "${role::analytics_cluster::refinery::log_dir}/drop-webrequest-partitions.log"
     $eventlogging_log_file   = "${role::analytics_cluster::refinery::log_dir}/drop-eventlogging-partitions.log"
 
-    # keep this many days of raw webrequest data
+    # Keep this many days of raw webrequest data.
     $raw_retention_days = 31
     cron { 'refinery-drop-webrequest-raw-partitions':
         command => "export PYTHONPATH=\${PYTHONPATH}:${role::analytics_cluster::refinery::path}/python && ${role::analytics_cluster::refinery::path}/bin/refinery-drop-webrequest-partitions -d ${raw_retention_days} -D wmf_raw -l /wmf/data/raw/webrequest -w raw >> ${webrequest_log_file} 2>&1",
@@ -17,11 +17,8 @@ class role::analytics_cluster::refinery::data::drop {
         hour    => '*/4',
     }
 
-    # keep this many days of refined webrequest data
-    # $refined_retention_days = 62
-    # Temporarily extending retention to 90 days so we can recompute fundraising banner impressions
-    # for December.  T155141
-    $refined_retention_days = 90
+    # Keep this many days of refined webrequest data.
+    $refined_retention_days = 62
     cron { 'refinery-drop-webrequest-refined-partitions':
         command => "export PYTHONPATH=\${PYTHONPATH}:${role::analytics_cluster::refinery::path}/python && ${role::analytics_cluster::refinery::path}/bin/refinery-drop-webrequest-partitions -d ${refined_retention_days} -D wmf -l /wmf/data/wmf/webrequest -w refined >> ${webrequest_log_file} 2>&1",
         user    => 'hdfs',
@@ -29,7 +26,7 @@ class role::analytics_cluster::refinery::data::drop {
         hour    => '*/4',
     }
 
-    # keep this many days of eventlogging data
+    # Keep this many days of eventlogging data.
     $eventlogging_retention_days = 90
     cron {'refinery-drop-eventlogging-partitions':
         command => "export PYTHONPATH=\${PYTHONPATH}:${role::analytics_cluster::refinery::path}/python && ${role::analytics_cluster::refinery::path}/bin/refinery-drop-eventlogging-partitions -d ${eventlogging_retention_days} -l /wmf/data/raw/eventlogging >> ${eventlogging_log_file} 2>&1",
