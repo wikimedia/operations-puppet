@@ -238,7 +238,6 @@ class toollabs::exec_environ {
         'tesseract-ocr-vie',
 
         # Other packages
-        'adminbot',
         'bison',                       # T67974.
         'calibre',                     # T100165
         'csh',                         # common user request
