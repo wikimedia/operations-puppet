@@ -2403,7 +2403,7 @@ node /^prometheus200[12]\.codfw\.wmnet$/ {
     }
 }
 
-node /^prometheus100[12]\.eqiad\.wmnet$/ {
+node /^prometheus100[1234]\.eqiad\.wmnet$/ {
     role(prometheus::ops)
 
     include ::base::firewall
