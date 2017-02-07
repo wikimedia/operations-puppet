@@ -8,8 +8,8 @@ cassandra::instances:
     listen_address: 10.64.48.122 #aqs1009-a.eqiad.wmnet
     rpc_address: 10.64.48.122
     rpc_interface: eth0
-#  b:
-#    jmx_port: 7190
-#    listen_address: 10.64.48.123 #aqs1009-b.eqiad.wmnet
-#    rpc_address: 10.64.48.123
-#    rpc_interface: eth0
+  b:
+    jmx_port: 7190
+    listen_address: 10.64.48.123 #aqs1009-b.eqiad.wmnet
+    rpc_address: 10.64.48.123
+    rpc_interface: eth0
