@@ -8,8 +8,15 @@
 #
 # CI test server as per T79623
 #
+# == Parameters
+#
+# [*jenkins_experimental*] configure apt to use the 'experimental' component
+# for Jenkins.  Requires apt::use_experimental: true
+#
 # filtertags: labs-project-ci-staging
-class role::ci::master {
+class role::ci::master(
+    $jenkins_experimental = hiera('role::ci::master::jenkins_experimental'),
+) {
 
     system::role { 'role::ci::master': description => 'CI Jenkins master' }
 
@@ -17,8 +24,29 @@ class role::ci::master {
     # as of July 2013.  So make sure the website has been included on the node.
     require role::ci::website
 
+
+    # Promoted Jenkins is in jessie-wikimedia/thirdparty with priority 1001
+    # The new Jenkins is in jessie-wikimedia/experimental and pinned 1002
+    $experimental_ensure = $jenkins_experimental ? {
+        true    => 'present',
+        false   => 'absent',
+        default => 'absent',
+    }
+
+    apt::pin { 'jenkins':
+        ensure   => $experimental_ensure,
+        package  => 'jenkins',
+        pin      => "release a=${::lsbdistcodename}-wikimedia,c=experimental",
+        priority => '1002',  # takes over jessie-wikimedia/thirdparty
+        require  => Class['apt'],  # for apt::use_experimental
+    }
+
     # Load the Jenkins module, that setup a Jenkins master
-    include ::jenkins
+    class { '::jenkins':
+        require => [
+            Apt::Pin['jenkins'],
+        ]
+    }
     include ::contint::proxy_jenkins
 
     # Backups

@@ -1,5 +1,11 @@
+# == contint2001 ==
+#
 # master is contint1001
 jenkins::service_ensure: unmanaged
 jenkins::service_enable: false
+
+apt::use_experimental: true
+role::ci::master::jenkins_experimental: true
+
 zuul::server::service_ensure: stopped
 zuul::server::service_enable: false
