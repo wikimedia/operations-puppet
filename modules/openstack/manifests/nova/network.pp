@@ -4,7 +4,7 @@
 class openstack::nova::network($novaconfig, $openstack_version=$::openstack::version) {
     include openstack::repo
 
-    $tftp_host = 'install1001.wikimedia.org'
+    $tftp_host = 'install1002.wikimedia.org'
 
     package {  [ 'nova-network', 'dnsmasq' ]:
         ensure  => present,
