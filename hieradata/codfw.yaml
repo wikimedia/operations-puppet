@@ -19,7 +19,7 @@ mediawiki_memcached_servers:
   - '10.192.48.80:11211:1 "shard18"'
 
 jobrunner_state: 'stopped'
-ganglia_aggregators: install2001.wikimedia.org:10649
+ganglia_aggregators: install2002.wikimedia.org:10649
 
 # Default zookeeper cluster to use in codfw.
 # The cluster config is in common.yaml in zookeeper_clusters.
