@@ -25,6 +25,7 @@ logstash::cluster_hosts:
   - logstash1004.eqiad.wmnet
   - logstash1005.eqiad.wmnet
   - logstash1006.eqiad.wmnet
+elasticsearch::data_dir: '/var/lib/elasticsearch'
 debdeploy::grains:
   debdeploy-logstash:
     value: standard

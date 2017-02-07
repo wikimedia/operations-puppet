@@ -12,9 +12,8 @@
 #       smaller.
 # - $multicast_group:  multicast group to use for peer discovery.  Defaults to
 #       elasticsearch's default: '224.2.2.4'.
-# - $data_dir: Where elasticsearch stores its data. We want to move this to
-#       /srv/elasticsearch for new deployments.
-#       Default: /var/lib/elasticsearch
+# - $data_dir: Where elasticsearch stores its data.
+#       Default: /srv/elasticsearch
 # - $plugins_dir: value for path.plugins.  Defaults to /srv/deployment/elasticsearch/plugins.
 # - $plugins_mandatory: list of mandatory plugins.  Defaults to undef.
 # - $minimum_master_nodes:  how many master nodes must be online for this node
@@ -92,7 +91,7 @@ class elasticsearch(
     $cluster_name,
     $heap_memory = '2G',
     $multicast_group = '224.2.2.4',
-    $data_dir = '/var/lib/elasticsearch',
+    $data_dir = '/srv/elasticsearch',
     $plugins_dir = '/srv/deployment/elasticsearch/plugins',
     $plugins_mandatory = undef,
     $minimum_master_nodes = 1,
