@@ -13,13 +13,17 @@ do_rsync (){
     fi
 }
 
+cutoff=$(date -d "-1 month" +%Y%m%d)
 
 running=`pgrep -u root -f   "rsync -rlptqgo --bwlimit=50000 /data/xmldatadumps/public ${desthost}::dumps/public"`
 if [ -z "$running" ]; then
-    rsync -rlptqgo --bwlimit=50000 /data/xmldatadumps/public ${desthost}::dumps/public \
+    rsync -rlptqgo --bwlimit=50000 /data/xmldatadumps/public/ ${desthost}::dumps/public/ \
+	  --include-from=/data/xmldatadumps/public/rsync-inc-last-3.txt \
 	  --include='/*wik*/' \
-	  --exclude='**tmp/ **temp/ **bad/ **save/ **other/ **archive/ **not/ /* /*/ /*/*/' \
-	  --include-from=/data/xmldatadumps/public/rsync-inc-last-3.txt
+	  --exclude='**tmp/ **temp/ **bad/ **save/ **other/ **archive/ **not/ /* /*/ /*/*/'
+   python wmf_rsync_cleanup.py --desthost $desthost
+                --destdir /srv/dumps --sourcedir /data/xmldatadumps/public --cutoff $cutoff
+
 fi
 
 # fixme need to ensure ${desthost}::dumps/public/wikidatawiki/entities/ exists
