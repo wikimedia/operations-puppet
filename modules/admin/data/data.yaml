@@ -2449,6 +2449,12 @@ ldap_only_users:
     ensure: present
     realname: Asaf Bartov
     email: abartov@wikimedia.org
+  adavenport:
+    ensure: present
+    realname: Allison Davenport
+    email: adavenport@wikimedia.org
+    expiry_date: 2017-04-04
+    expiry_contact: rstallman@wikimedia.org
   apalmer:
     ensure: present
     realname: Aeryn Palmer
@@ -2481,6 +2487,10 @@ ldap_only_users:
     ensure: present
     realname: David Lynch
     email: dlynch@wikimedia.org
+  lmixter:
+    ensure: present
+    realname: Leighanna Mixter
+    email: lmixter@wikimedia.org
   mhernandez:
     ensure: present
     realname: Megan Hernandez
@@ -2501,7 +2511,47 @@ ldap_only_users:
     ensure: present
     realname: Quim Gil
     email: qgil@wikimedia.org
+  raqstallman:
+    ensure: present
+    realname: Rachel Stallman
+    email: rstallman@wikimedia.org
+  rho:
+    ensure: present
+    realname: Rita Ho
+    email: rho@wikimedia.org
+  ryasmeen:
+    ensure: present
+    realname: Rummana Yasmeen
+    email: ryasmeen@wikimedia.org
   seddon:
     ensure: present
     realname: Joseph Seddon
     email: jseddon@wikimedia.org
+  slaporte:
+    ensure: present
+    realname: Stephen Laporte
+    email: slaporte@wikimedia.org
+  spatton:
+    ensure: present
+    realname: Sam Patton
+    email: spatton@wikimedia.org
+  thecore:
+    ensure: present
+    realname: Wes Moran
+    email: wmoran@wikimedia.org
+  tnegrin:
+    ensure: present
+    realname: Toby Negrin
+    email: tnegrin@wikimedia.org
+  wikigit:
+    ensure: present
+    realname: Moriel Schottlender
+    email: mschottlender@wikimedia.org
+  wubwubwub:
+    ensure: present
+    realname: Amanda Bittaker
+    email: abittaker@wikimedia.org
+  zacklabs:
+    ensure: present
+    realname: Zachary McCune
+    email: zmccune@wikimedia.org
