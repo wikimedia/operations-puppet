@@ -6,7 +6,8 @@ groups:
               mwalker, nimishg, rainman, ssmith, swalling, sumanah, werdna, rmoen,
               johnflewis, marc, jkrauska, akumar, mnoushad, spage, tnegrin, msyed, kleduc,
               manybubbles, haithams, jzerebecki, ashwinpp, ironholds, robla, asherman,
-              laner, declerambaul, srijan, junikowski, krenair, springle, jhobs]
+              laner, declerambaul, srijan, junikowski, krenair, springle, jhobs, vbaranetsky,
+              yurik, bsimmers]
   wikidev:
     gid: 500
     description: container group for primary user groups.
