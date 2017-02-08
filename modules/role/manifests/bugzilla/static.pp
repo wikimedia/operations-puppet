@@ -2,7 +2,7 @@
 # role for a Bugzilla server
 class role::bugzilla::static {
 
-    include base::firewall
+    include ::base::firewall
     system::role { 'role::bugzilla_static': description => 'Static HTML Bugzilla server' }
 
     ferm::service { 'bugzilla_static_http':
@@ -10,7 +10,7 @@ class role::bugzilla::static {
         port  => '80',
     }
 
-    include role::backup::host
+    include ::role::backup::host
 
     backup::set { 'bugzilla-static' : }
     backup::set { 'bugzilla-backup' : }
