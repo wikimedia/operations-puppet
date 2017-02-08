@@ -78,4 +78,16 @@ class icinga::monitor::certs {
         host          => 'wikitech-static.wikimedia.org',
         contact_group => 'wikitech-static',
     }
+
+    # benefactorevents.wikimedia.org (Fundraising, T156850)
+    @monitoring::host { 'benefactorevents.wikimedia.org':
+        host_fqdn     => 'benefactorevents.wikimedia.org',
+        contact_group => 'fr-tech',
+    }
+    monitoring::service { 'https_benefactorevents':
+        description   => 'HTTPS-benefactorevents',
+        check_command => 'check_ssl_http!benefactorevents.wikimedia.org',
+        host          => 'benefactorevents.wikimedia.org',
+        contact_group => 'fr-tech',
+    }
 }
