@@ -4,4 +4,5 @@ class role::configcluster {
     include ::role::zookeeper::server
     include ::profile::etcd
     include ::profile::etcd::tlsproxy
+    include ::profile::etcd::replication
 }

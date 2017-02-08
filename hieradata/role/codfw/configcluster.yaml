@@ -1,3 +1,4 @@
 debdeploy::grains:
   debdeploy-etcd-codfw:
     value: standard
+profile::etcd::replication::sources: {}
