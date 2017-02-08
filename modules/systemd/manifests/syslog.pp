@@ -64,8 +64,8 @@ define systemd::syslog(
         ensure  => present,
         replace => false,
         content => '',
-        owner   => $title,
-        group   => $title,
+        owner   => $owner,
+        group   => $group,
         mode    => $filemode,
         before  => Rsyslog::Conf[$title],
     }
