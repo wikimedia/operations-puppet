@@ -2355,10 +2355,10 @@ users:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDBSqKkOktF20xShNmJgeOpkhDYXFgcCvNPKbexn67on5M0hPNTKZjptFPCeoQh/i3suAvPDFakDt0pEcCZzzzcwArM21LJ2EFWeqwl6il20L45aD52y8zYYPrTtAi2YaqP77kbSl7/jVW0AFzM6m/G9e5550oeZKDbHGkANpi9uAqn7EjTI88i0txnTEGG6Bwu4G4H/08BsKbkW2C3sB2/h4V1GEHMhxlDEfhlEsVqfaYgrxmXJsTyAjsgawx+fIuqDJsrIFCWlu7IIfur+g0o+DVIDE5kCzZLUeD7FfwP0ym03f7fXF/yjg0sQzXKPF1eXLKXod+7Mn+KOnxLnj+d Swalton@wikimedia.org
     uid: 15557
     email: swalton@wikimedia.org
-  volkere:
+  volker-e:
     ensure: present
     gid: 500
-    name: volkere
+    name: volker-e
     realname: Volker Eckl
     ssh_keys:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDKpQEVtQw8XJCKvG7oNL9d+dveFqRpHCzduUvdzi6MK7zgtY9xUKF7ZcQObgP5fCpgLonDUu2b61WRzYgiPoBkhhnTKqRkCx6sT6KfsHaSE2iZefW5N7qEyRqpWCoXfmGnXJdP3r4cCgxBqdAJ/aoFNcvzpLUrcgw7wfI+gJ6VV897fwkH9SEnjVUxn/AZDAxsK6xa2gDmCUjG+Biwl6LsRCXtop87jtJ6SdgKmDkmGNh8t2y6YJxE0vjYuzNH2E2bEaYOgFRS/GULbNh+U+UqrN3sE4RTHUzAOqXh3iYShpNnwgm9nj41j3Q4h1S51muPEywRz60nU16JfaAvvvA3vyrS2L1P3zB7F+MbvhVVhdprmMvQf7hXbqSNhcxBWwvYfGGA67jy6hDL8WCd8+ql5F7tGw66FxStDjs2GYCiLp0zaDeBkl5Fx9GKjTXD8kCtA7Y8JDLuW1L/7ROX58C8tO6SyHjHHQO4hpSUavieUHt+2CFLYWvGtBZFStdL+esQmOC6qjX1KdwSQxlRXN9D436VxGusVdo3gkbaVvPFVx25gefWrKQ0/a17iU3eDL02sVkNa91Xs3AfeNNTqOv111UfoZjsatva7ZhBujeD131Ky7wolm1IVYtwfF4ifEpgLwjHtSzgfmdMLJSv4IweGYebc71JILMOHZCQGJ3/iw== volker.e@wikimedia.org
