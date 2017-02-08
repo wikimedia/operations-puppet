@@ -2533,6 +2533,10 @@ ldap_only_users:
     ensure: present
     realname: Joseph Seddon
     email: jseddon@wikimedia.org
+  siddharth11:
+    ensure: present
+    realname: Siddarth Parmar
+    email: sparmar@wikimedia.org
   slaporte:
     ensure: present
     realname: Stephen Laporte
@@ -2541,6 +2545,10 @@ ldap_only_users:
     ensure: present
     realname: Sam Patton
     email: spatton@wikimedia.org
+  tchanders:
+    ensure: present
+    realname: Thalia Chan
+    email: tchan@wikimedia.org
   thecore:
     ensure: present
     realname: Wes Moran
