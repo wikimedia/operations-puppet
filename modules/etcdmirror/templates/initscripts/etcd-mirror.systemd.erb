@@ -1,0 +1,17 @@
+[Unit]
+Description=Etcd mirrormaker
+After=network.target
+
+[Service]
+EnvironmentFile=-/etc/default/etcd-mirror
+Environment=ETCD_SRC_PREFIX=<%= @src_path %>
+Environment=ETCD_DST_PREFIX=<%= @dst_path %>
+Environment=ETCD_MIRROR_SRC_URL=<%= @src_host %>
+Environment=ETCD_MIRROR_DST_URL=<%= @dst_host %>
+ExecStart=/usr/local/bin/etcd-mirror --src-prefix $ETCD_MIRROR_SRC_PREFIX --dst-prefix $ETCD_MIRROR_DST_PREFIX $ETCD_MIRROR_SRC_URL $ETCD_MIRROR_DST_URL
+Restart=always
+RestartPreventExitStatus=1 2
+RestartSec=1s
+
+[Install]
+WantedBy=multi-user.target
