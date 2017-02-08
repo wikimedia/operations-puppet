@@ -179,7 +179,7 @@ def update_columns(cols):
     on the list
     """
     for col in cols:
-        print(("-- UPDATE `{}`.{}`"
+        print(("-- UPDATE `{}`.`{}`"
                "   SET `{}` = NULL;").format(col[0], col[1], col[2]))
 
 
