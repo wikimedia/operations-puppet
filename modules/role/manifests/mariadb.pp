@@ -1,6 +1,7 @@
 # Generic Server
 #
 # filtertags: labs-project-servermon labs-project-monitoring
+# lint:ignore:autoloader_layout
 class role::mariadb {
 
     system::role { 'role::mariadb':
@@ -983,3 +984,4 @@ class role::mariadb::maintenance {
         tendril_password => $passwords::tendril::db_pass,
     }
 }
+# lint:endignore
