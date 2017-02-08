@@ -9,8 +9,6 @@ class role::toollabs::docker::builder {
 
     class { '::profile::docker::engine':
         settings        => {
-            'iptables'     => false,
-            'ip-masq'      => false,
             'live-restore' => true,
         },
         version         => '1.12.6-0~debian-jessie',
