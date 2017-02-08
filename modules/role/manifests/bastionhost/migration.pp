@@ -9,7 +9,7 @@ class role::bastionhost::migration {
         srange => "${sourceip}/32",
     }
 
-    include rsync::server
+    include ::rsync::server
 
     file { [ '/srv/bast1001', '/srv/bast1001/home' ]:
         ensure => 'directory',
