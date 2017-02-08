@@ -22,7 +22,7 @@ class role::ci::master {
     include ::contint::proxy_jenkins
 
     # Backups
-    include role::backup::host
+    include ::role::backup::host
     backup::set {'var-lib-jenkins-config': }
     backup::set { 'contint' : }
 
