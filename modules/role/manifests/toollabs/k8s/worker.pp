@@ -16,7 +16,7 @@ class role::toollabs::k8s::worker {
         etcd_endpoints => $etcd_url,
     }
 
-    $docker_version = '1.11.2-0~jessie'
+    $docker_version = '1.12.6-0~debian-jessie'
 
     class { '::profile::docker::storage':
         physical_volumes => '/dev/vda4',
@@ -25,8 +25,9 @@ class role::toollabs::k8s::worker {
 
     class { '::profile::docker::engine':
         settings        => {
-            'iptables' => false,
-            'ip-masq'  => false,
+            'iptables'     => false,
+            'ip-masq'      => false,
+            'live-restore' => true,
         },
         version         => $docker_version,
         declare_service => false,
