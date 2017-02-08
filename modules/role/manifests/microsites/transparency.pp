@@ -12,7 +12,7 @@ class role::microsites::transparency {
     include ::passwords::misc::private_static_site
     include ::passwords::ldap::production
 
-    include base::firewall
+    include ::base::firewall
 
     $repo_dir = '/srv/org/wikimedia/TransparencyReport'
     $docroot  = "${repo_dir}/build"

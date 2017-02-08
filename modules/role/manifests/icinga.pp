@@ -33,7 +33,7 @@ class role::icinga(
     include scap::dsh
     include mysql
     include standard
-    include base::firewall
+    include ::base::firewall
 
     # Dependencies for the check_keystone_roles script
     include ::openstack::clientlib

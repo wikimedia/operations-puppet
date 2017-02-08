@@ -4,7 +4,7 @@ class role::requesttracker::server {
 
     include passwords::misc::rt
     include standard
-    include base::firewall
+    include ::base::firewall
 
     class { '::requesttracker':
         apache_site => 'rt.wikimedia.org',

@@ -16,7 +16,7 @@ class role::phabricator::main {
     include phabricator::monitoring
     include phabricator::mpm
     include ::lvs::realserver
-    include base::firewall
+    include ::base::firewall
     include ::apache::mod::remoteip
 
     # this site's misc-lb caching proxies hostnames

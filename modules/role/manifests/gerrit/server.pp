@@ -6,7 +6,7 @@ class role::gerrit::server($ipv4, $ipv6 = undef, $bacula = undef) {
 
         include standard
         include ::role::backup::host
-        include base::firewall
+        include ::base::firewall
 
         monitoring::service { 'gerrit_ssh':
             description   => 'SSH access',

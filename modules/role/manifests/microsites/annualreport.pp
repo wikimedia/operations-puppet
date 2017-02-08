@@ -6,7 +6,7 @@ class role::microsites::annualreport {
     system::role { 'role::microsites::annualreport': description => 'WMF Annual report server - annual.wikimedia.org' }
 
     include ::annualreport
-    include base::firewall
+    include ::base::firewall
 
     ferm::service { 'annualreport_http':
         proto => 'tcp',

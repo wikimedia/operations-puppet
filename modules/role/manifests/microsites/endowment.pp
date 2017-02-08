@@ -5,7 +5,7 @@ class role::microsites::endowment {
     system::role { 'role::microsites::endowment': description => 'endowment.wikimedia.org' }
 
     include ::endowment
-    include base::firewall
+    include ::base::firewall
 
     ferm::service { 'endowment_http':
         proto => 'tcp',

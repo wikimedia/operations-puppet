@@ -11,7 +11,7 @@
 # Requires:
 #
 #   Class['install_server::tftp_server']
-#   Class['base::firewall']
+#   Class['::base::firewall']
 #   Define['ferm::rule']
 #
 # Sample Usage:
@@ -23,7 +23,7 @@ class role::installserver::tftp {
     }
 
     include standard
-    include base::firewall
+    include ::base::firewall
     include ::role::backup::host
     include install_server::tftp_server
 
