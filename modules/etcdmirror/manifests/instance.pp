@@ -12,9 +12,10 @@ define etcdmirror::instance($sources, $dst) {
     $prefix = regsubst("etcdmirror${title}", '\W', '-', 'G')
 
     base::service_unit { $prefix:
-        ensure        => present,
-        systemd       => true,
-        template_name => 'etcd-mirror',
+        ensure          => present,
+        systemd         => true,
+        declare_service => false,
+        template_name   => 'etcd-mirror',
     }
 
     systemd::syslog { $prefix:
