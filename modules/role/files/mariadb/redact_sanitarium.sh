@@ -25,7 +25,7 @@ else
     dsn="-h $host -P $port"
 fi
 
-query="mysql --skip-column-names $dsn -e "
+query="mysql --skip-ssl --skip-column-names $dsn -e "
 
 for tbl in $(egrep ',F' /etc/mysql/filtered_tables.txt | awk -F ',' '{print $1}' | uniq); do
 
