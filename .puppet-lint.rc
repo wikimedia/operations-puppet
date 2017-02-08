@@ -2,9 +2,6 @@
 # Lot of long lines (ssh keys for example).
 --no-80chars-check
 
-# TO BE FIXED - T93645 - please help
---no-autoloader_layout-check
-
 # T127797 - needs at least one comment line for each class
 --no-documentation-check
 
