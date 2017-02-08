@@ -19,7 +19,7 @@ class role::installserver::proxy {
         minute  => '15',
     }
 
-    include standard
+    include ::standard
     include ::base::firewall
 
     ferm::service { 'proxy':

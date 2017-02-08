@@ -3,7 +3,7 @@ class role::requesttracker::server {
     system::role { 'requesttracker::server': description => 'RT server' }
 
     include passwords::misc::rt
-    include standard
+    include ::standard
     include ::base::firewall
 
     class { '::requesttracker':

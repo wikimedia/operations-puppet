@@ -7,7 +7,7 @@ class role::installserver::http {
 
     include install_server::web_server
 
-    include standard
+    include ::standard
     include ::base::firewall
 
     ferm::service { 'install_http':

@@ -1,7 +1,7 @@
 # let users publish their own HTML in their home dirs
 class role::microsites::peopleweb {
 
-    include standard
+    include ::standard
     include ::base::firewall
 
     class { '::publichtml':

@@ -1,6 +1,6 @@
 # sets up an Etherpad lite server
 class role::etherpad::server{
-    include standard
+    include ::standard
     include ::base::firewall
     include passwords::etherpad_lite
 

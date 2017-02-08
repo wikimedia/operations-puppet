@@ -22,7 +22,7 @@ class role::installserver::tftp {
         description => 'WMF TFTP server',
     }
 
-    include standard
+    include ::standard
     include ::base::firewall
     include ::role::backup::host
     include install_server::tftp_server

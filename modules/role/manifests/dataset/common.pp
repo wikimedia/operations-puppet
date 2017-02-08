@@ -1,5 +1,5 @@
 class role::dataset::common {
-    include standard
+    include ::standard
     include base::firewall
 
     ferm::service { 'nfs_rpc_mountd':
