@@ -1,0 +1,3 @@
+# Override here so that replication can happen
+profile::etcd::replication::sources:
+  "/conftool@eqiad.wmnet": "https://conf1002.eqiad.wmnet:2379"
