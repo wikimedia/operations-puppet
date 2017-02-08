@@ -32,7 +32,7 @@ class role::icinga(
     include netops::monitoring
     include scap::dsh
     include mysql
-    include standard
+    include ::standard
     include ::base::firewall
 
     # Dependencies for the check_keystone_roles script

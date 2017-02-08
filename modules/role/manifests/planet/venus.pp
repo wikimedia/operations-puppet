@@ -2,7 +2,7 @@
 
 class role::planet::venus {
 
-    include base::firewall
+    include ::base::firewall
 
     system::role { 'role::planet::venus': description => 'Planet (venus) weblog aggregator' }
 

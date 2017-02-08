@@ -10,8 +10,8 @@ class role::racktables::server {
 
     system::role { 'role::racktables::server': description => 'Racktables server' }
 
-    include standard
-    include base::firewall
+    include ::standard
+    include ::base::firewall
 
     # be flexible about labs vs. prod
     case $::realm {

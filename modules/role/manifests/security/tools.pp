@@ -1,5 +1,5 @@
 class role::security::tools {
 
-    include standard
-    include base::firewall
+    include ::standard
+    include ::base::firewall
 }

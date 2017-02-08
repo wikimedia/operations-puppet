@@ -1,6 +1,6 @@
 class role::dataset::common {
-    include standard
-    include base::firewall
+    include ::standard
+    include ::base::firewall
 
     ferm::service { 'nfs_rpc_mountd':
         proto  => 'tcp',

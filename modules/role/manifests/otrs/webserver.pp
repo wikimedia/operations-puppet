@@ -8,8 +8,8 @@ class role::otrs::webserver {
     system::role { 'role::otrs::webserver':
         description => 'OTRS Web Application Server',
     }
-    include standard
-    include base::firewall
+    include ::standard
+    include ::base::firewall
 
     include passwords::mysql::otrs
     include passwords::exim

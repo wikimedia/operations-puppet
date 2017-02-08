@@ -2,7 +2,7 @@
 #
 # filtertags: labs-project-puppet
 class role::test::system {
-    include standard
+    include ::standard
 
     system::role { 'role::test::system': description => 'Unpuppetised system for testing' }
 }

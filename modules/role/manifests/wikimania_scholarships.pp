@@ -4,7 +4,7 @@
 #
 class role::wikimania_scholarships {
 
-    include base::firewall
+    include ::base::firewall
 
     class { '::wikimania_scholarships':
         hostname     => 'scholarships.wikimedia.org',

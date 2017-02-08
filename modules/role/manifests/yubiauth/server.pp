@@ -3,8 +3,8 @@
 # This class configures a Yubi 2FA authentication server
 #
 class role::yubiauth::server {
-    include standard
-    include base::firewall
+    include ::standard
+    include ::base::firewall
     include ::role::backup::host
 
     include yubiauth::yhsm_daemon
