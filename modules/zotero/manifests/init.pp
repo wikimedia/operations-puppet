@@ -116,6 +116,14 @@ class zotero( $http_proxy = undef ) {
         notify      => Service['zotero'],
     }
 
+    file { '/etc/cron.d/zotero-restart':
+        mode    => '0444',
+        owner   => 'root',
+        group   => 'root',
+        source  => 'puppet:///modules/zotero/cron.file',
+        require => Service['zotero'],
+    }
+
     service { 'zotero':
         ensure     => running,
         hasstatus  => true,
