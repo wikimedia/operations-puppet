@@ -3,3 +3,5 @@ jenkins::service_ensure: unmanaged
 jenkins::service_enable: false
 zuul::server::service_ensure: stopped
 zuul::server::service_enable: false
+
+zuul::merger::git_dir: /srv/zuul/git

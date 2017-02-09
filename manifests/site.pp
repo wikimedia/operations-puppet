@@ -268,6 +268,7 @@ node /^(contint1001|contint2001)\.wikimedia\.org$/ {
     role(ci::master,
         ci::slave,
         ci::website,
+        zuul::merger,
         zuul::server)
 
 
