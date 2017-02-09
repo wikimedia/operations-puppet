@@ -19,7 +19,7 @@ define interface::add_ip6_mapped(
     $ipv4_address_with_colons = regsubst($ipv4_address, '\.', ':', 'G')
     $v6_mapped_lower64 = "::${ipv4_address_with_colons}"
 
-    $ipv6_address = inline_template("<%= require 'ipaddr'; (IPAddr.new(scope.lookupvar(\"::ipaddress6_${interface}\")).mask(64) | IPAddr.new(@v6_mapped_lower64)).to_s() %>")
+    $ipv6_address = inline_template("<%= require 'ipaddr'; require 'socket'; (IPAddr.new(scope.lookupvar(\"::ipaddress6_${interface}\"), Socket::AF_INET6).mask(64) | IPAddr.new(@v6_mapped_lower64, Socket::AF_INET6)).to_s() %>")
     interface::ip { $title:
         interface => $interface,
         address   => $ipv6_address,
