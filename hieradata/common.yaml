@@ -284,7 +284,6 @@ ganglia_clusters:
 puppetmaster: "puppet"
 active_labstore_host: 'labstore1001'
 statistics_servers:
-  - stat1001.eqiad.wmnet
   - stat1002.eqiad.wmnet
   - stat1003.eqiad.wmnet
   - analytics1027.eqiad.wmnet
