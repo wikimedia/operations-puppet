@@ -72,12 +72,12 @@ class zuul::merger (
         source => 'puppet:///modules/zuul/merger-logging.conf',
     }
 
-    service { 'zuul-merger':
-        name       => 'zuul-merger',
-        enable     => true,
-        hasrestart => true,
-        subscribe  => File['/etc/zuul/zuul-merger.conf'],
-        require    => [
+    base::service_unit { 'zuul-merger':
+        ensure    => present,
+        sysvinit  => false,
+        systemd   => true,
+        subscribe => File['/etc/zuul/zuul-merger.conf'],
+        require   => [
             File['/etc/default/zuul-merger'],
             File['/etc/zuul/merger-logging.conf'],
             File['/etc/zuul/zuul-merger.conf'],
