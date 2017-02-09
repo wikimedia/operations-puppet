@@ -100,7 +100,10 @@ class diamond(
         hasrestart => true,
         hasstatus  => true,
         require    => Package['diamond'],
-        subscribe  => File['/etc/diamond/diamond.conf'],
+        subscribe  => [
+            File['/etc/diamond/diamond.conf'],
+            File["/etc/diamond/handlers/${handler_class}.conf"],
+        ],
     }
 
 
