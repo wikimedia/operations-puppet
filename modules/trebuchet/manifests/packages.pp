@@ -7,7 +7,7 @@ class trebuchet::packages {
 
     if !defined(Package['git-fat']) {
         package { 'git-fat':
-            ensure => '0.1.2',
+            ensure => '0.1.2-2',
         }
     }
 }

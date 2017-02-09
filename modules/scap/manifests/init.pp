@@ -33,9 +33,11 @@ class scap (
         'python-jinja2',
     ])
 
+    # Using straight up package resource here instead
+    # of require_package so that I can specify version.
     if !defined(Package['git-fat']) {
         package { 'git-fat':
-            ensure => '0.1.2',
+            ensure => '0.1.2-2',
         }
     }
 }
