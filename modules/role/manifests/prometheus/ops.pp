@@ -228,6 +228,36 @@ class role::prometheus::ops {
             'cluster' => 'videoscaler'
         }
     }
+    # Job definition for etcd_exporter
+    $etcd_jobs = [
+      {
+        'job_name'        => 'etcd',
+        'metrics_path'    => '/metrics',
+        'scheme'          => 'https',
+        'file_sd_configs' => [
+          { 'files' => [ "${targets_path}/etcd_*.yaml" ]}
+        ],
+      },
+    ]
+
+    # Gather etcd metrics from machines exposing them via http
+    prometheus::class_config{ "etcd_servers_${::site}":
+        dest       => "${targets_path}/etcd_${::site}.yaml",
+        site       => $::site,
+        class_name => 'profile::etcd::tlsproxy',
+        port       => 2379,
+    }
+
+    # Gather replication stats where etcd-mirror is running.
+    prometheus::class_config{ "etcd_mirror_${::site}":
+        dest             => "${targets_path}/etcd_mirror_${::site}.yaml",
+        site             => $::site,
+        class_name       => 'profile::etcd::replication',
+        class_parameters => {
+            'active' => true
+        },
+        port             => 8000,
+    }
 
     prometheus::server { 'ops':
         storage_encoding     => '2',
@@ -235,7 +265,7 @@ class role::prometheus::ops {
         storage_retention    => $storage_retention,
         scrape_configs_extra => array_concat(
             $mysql_jobs, $varnish_jobs, $memcached_jobs, $hhvm_jobs,
-            $apache_jobs
+            $apache_jobs, $etcd_jobs
         ),
         global_config_extra  => $config_extra,
     }
