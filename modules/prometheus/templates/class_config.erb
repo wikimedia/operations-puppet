@@ -1,0 +1,20 @@
+<%-
+# All labels / targets list
+all = []
+
+
+# Find all servers in the current site, and filter them by the servers list we just found
+@site_clusters.each do |cluster, val|
+  targets = val[@site].select { |server| @servers.include?(server) }
+  if targets.length > 0
+    all.push(
+      {
+        'labels' => @labels.merge({'cluster' => cluster, 'site' => @site}),
+        'targets' => targets.map{|t| "#{t.split('.')[0]}:#{@port}" },
+      }
+    )
+  end
+end
+-%>
+# This file is managed by puppet
+<%= scope.function_ordered_yaml([all]) %>
