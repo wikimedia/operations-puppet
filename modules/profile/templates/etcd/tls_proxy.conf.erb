@@ -6,7 +6,7 @@ server {
     listen 2379 ssl default_server;
     listen [::]:2379 ssl default_server ipv6only=on;
     server_name <%= @fqdn %>;
-    
+
     # SSL settings
     ssl on;
     ssl_certificate /etc/ssl/localcerts/<%= @cert_name %>.chained.crt;
@@ -37,7 +37,16 @@ server {
         client_max_body_size 20971520;
     }
 
-    <%- @acls.each do |url, users| -%>    
+    # Prometheus metrics
+    location /metrics {
+        proxy_pass http://etcd/metrics;
+        proxy_http_version 1.1;
+        proxy_set_header    X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header    X-Real-IP $remote_addr;
+    }
+
+
+    <%- @acls.each do |url, users| -%>
     location /v2/keys<%= url %> {
         proxy_pass http://etcd/v2/keys<%= url %>;
         <%- if users.empty? -%>
