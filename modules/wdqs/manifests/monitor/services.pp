@@ -28,7 +28,7 @@ class wdqs::monitor::services(
 
     nrpe::monitor_service { 'WDQS_Blazegraph_process':
         description  => 'Blazegraph process',
-        nrpe_command => "/usr/lib/nagios/plugins/check_procs -c 1:1 -u ${username} --ereg-argument-array '^java .* blazegraph-service-.*-dist.war'",
+        nrpe_command => "/usr/lib/nagios/plugins/check_procs -c 1:1 -u ${username} --ereg-argument-array '^java .* blazegraph-service-.*war'",
     }
 
     nrpe::monitor_service { 'WDQS_Updater_process':
