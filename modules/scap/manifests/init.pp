@@ -32,4 +32,10 @@ class scap (
         'python-requests',
         'python-jinja2',
     ])
+
+    if !defined(Package['git-fat'] {
+        package { 'git-fat':
+            ensure => '0.1.2',
+        }
+    }
 }
