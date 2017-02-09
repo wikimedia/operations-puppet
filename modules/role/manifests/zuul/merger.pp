@@ -5,7 +5,7 @@ class role::zuul::merger {
 
     $conf_common = hiera('zuul::common')
     $conf_merger = hiera('zuul::merger')
-    class { '::zuul::merger':
+    ::zuul::merger::instance{ 'default':
         # Shared settings
         gerrit_server       => $conf_common['gerrit_server'],
         gerrit_user         => $conf_common['gerrit_user'],

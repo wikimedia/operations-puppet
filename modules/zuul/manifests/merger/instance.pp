@@ -13,9 +13,9 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
-# == Class: zuul::merger
+# == Define: zuul::merger::instance
 #
-class zuul::merger (
+define zuul::merger::instance (
     $gearman_server,
     $gerrit_server,
     $gerrit_user,
@@ -25,10 +25,11 @@ class zuul::merger (
     $git_email      = "zuul-merger@${::hostname}",
     $git_name       = 'Wikimedia Zuul Merger',
     $zuul_url       = $::fqdn,
+    $instance_name  = $name,
 ) {
 
     class { '::zuul': }
-    Class['::zuul'] -> Class['zuul::merger']
+    Class['::zuul'] -> Define['zuul::merger::instance']
 
     exec { 'zuul merger recursive mkdir of git_dir':
         command => "/bin/mkdir -p ${git_dir}",
