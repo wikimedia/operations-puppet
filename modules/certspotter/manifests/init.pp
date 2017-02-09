@@ -38,12 +38,14 @@ class certspotter(
         shell      => '/bin/sh',
         comment    => 'certspotter user',
         gid        => 'certspotter',
+        system     => true,
         managehome => true,
         require    => Group['certspotter'],
     }
 
     group { 'certspotter':
         ensure => present,
+        system => true,
     }
 
     file { $configdir:
