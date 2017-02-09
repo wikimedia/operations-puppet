@@ -2498,6 +2498,8 @@ ldap_only_users:
     ensure: present
     realname: Leighanna Mixter
     email: lmixter@wikimedia.org
+    expiry_date: 2017-10-01
+    expiry_contact: rstallman@wikimedia.org
   mhernandez:
     ensure: present
     realname: Megan Hernandez
@@ -2538,6 +2540,8 @@ ldap_only_users:
     ensure: present
     realname: Siddarth Parmar
     email: sparmar@wikimedia.org
+    expiry_date: 2017-03-01
+    expiry_contact: rstallman@wikimedia.org
   slaporte:
     ensure: present
     realname: Stephen Laporte
