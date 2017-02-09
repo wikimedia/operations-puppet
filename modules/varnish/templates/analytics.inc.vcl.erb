@@ -34,6 +34,18 @@ sub analytics_last_access_recv_ {
     }
 }
 
+sub analytics_last_access_global_recv_ {
+    unset req.http.X-WMF-LastGlobalStamp; // clear any sent by the user
+    if (req.http.Cookie ~ "(^|;\s*)WMF-Last-Access-Global=[0-9]{2}-[A-Za-z]{3}-[0-9]{4}(;|$)") {
+        // Save the value for use later in _deliver
+        set req.http.X-WMF-LastGlobalStamp = regsub(
+            req.http.Cookie,
+            "^(?:.*;\s*)?WMF-Last-Access-Global=([^;]+).*$",
+            "\1"
+        );
+    }
+}
+
 /*****************************************************************************
  * !!! private to analytics_last_access_deliver !!!!
  * Use a 12h-resolution expiry so people cannot infer an exact request time.
@@ -47,6 +59,21 @@ sub set_last_access_cookie__ {
 	);
 }
 
+/******************************************************************************
+ * Same as set_last_access_cookie__ but with Domain attribute
+ * (eg: Domain=.wikipedia.org)
+ ******************************************************************************/
+sub set_last_access_global_cookie__ {
+	header.append(resp.http.Set-Cookie,
+		"WMF-Last-Access-Global="
+		+ req.http.X-NowDay
+		+ ";Path=/;Domain=."
+		+ regsub(req.http.Host, "^([a-z0-9-]+\.)*([a-z0-9-]+\.<%= @vcl_config.fetch('top_domain') %>)$", "\2")
+		+ ";HttpOnly;secure;Expires="
+		+ std.time(std.time2integer(now + 32d, 0) / 43200 * 43200, now)
+	);
+}
+
 // Call from vcl_deliver near other X-Analytics code
 sub analytics_last_access_deliver_ {
     // Create X-NowDay in "01-Jan-2000" form, from "now"
@@ -54,6 +81,9 @@ sub analytics_last_access_deliver_ {
         now, "^..., (..) (...) (....) .*$", "\1-\2-\3"
     );
 
+    /*
+     * WMF-Last-Access
+     */
     if(req.http.X-WMF-LastStamp) {
         set resp.http.X-Analytics = resp.http.X-Analytics
             + ";WMF-Last-Access="
@@ -68,6 +98,25 @@ sub analytics_last_access_deliver_ {
     else {
         // sets the initial cookie if no valid one existed
         call set_last_access_cookie__;
+    }
+
+    /*
+     * WMF-Last-Access-Global
+     */
+    if(req.http.X-WMF-LastGlobalStamp) {
+        set resp.http.X-Analytics = resp.http.X-Analytics
+            + ";WMF-Last-Access-Global="
+            + req.http.X-WMF-LastGlobalStamp;
+
+        // re-set the cookie if it's not from today
+        if (req.http.X-NowDay != req.http.X-WMF-LastGlobalStamp) {
+            call set_last_access_global_cookie__;
+        }
+
+    }
+    else {
+        // sets the initial cookie if no valid one existed
+        call set_last_access_global_cookie__;
     }
 
     // we could clean up req.http.X-WMF-LastStamp + req.http.X-NowDay
@@ -124,6 +173,7 @@ sub analytics_recv {
     }
 
     call analytics_last_access_recv_;
+    call analytics_last_access_global_recv_;
     call analytics_provenance_recv_;
 }
 
