@@ -1,0 +1,10 @@
+[Unit]
+Description=Zuul merger
+
+[Service]
+User=zuul
+ExecStart=/usr/bin/zuul-merger -d -c /etc/zuul/zuul-merger.conf
+EnvironmentFile=/etc/default/zuul-merger
+
+[Install]
+WantedBy=multi-user.target
