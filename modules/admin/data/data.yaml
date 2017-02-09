@@ -2546,6 +2546,10 @@ ldap_only_users:
     ensure: present
     realname: Sam Patton
     email: spatton@wikimedia.org
+  tbolliger:
+    ensure: present
+    realname: Trevor Bolliger
+    email: tbolliger@wikimedia.org
   tchanders:
     ensure: present
     realname: Thalia Chan
