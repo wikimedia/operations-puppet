@@ -12,9 +12,6 @@
 #   Import path and class name of diamond.handler.Handler subclass to
 #   publish metrics too.
 #
-#   NOTE:
-#      An empty handler string will purge all handlers
-#
 #   See: <https://github.com/BrightcoveOS/Diamond/wiki/Handlers>
 #
 # [*interval*]
@@ -65,6 +62,9 @@ class diamond(
     },
 ) {
     require_package('python-statsd')
+    if empty($handler) {
+        fail('$handler cannot be empty')
+    }
 
     package { [ 'diamond', ]:
         ensure  => present,
@@ -86,12 +86,10 @@ class diamond(
         require => File['/etc/diamond/collectors', '/etc/diamond/handlers'],
     }
 
-    if !empty($handler) {
-        # Truncate the import path, leaving only the class name.
-        $handler_class = regsubst($handler, '.*\.', '')
-        file { "/etc/diamond/handlers/${handler_class}.conf":
-            content => template('diamond/handler.conf.erb'),
-        }
+    # Truncate the import path, leaving only the class name.
+    $handler_class = regsubst($handler, '.*\.', '')
+    file { "/etc/diamond/handlers/${handler_class}.conf":
+        content => template('diamond/handler.conf.erb'),
     }
 
     service { 'diamond':
@@ -100,7 +98,10 @@ class diamond(
         hasrestart => true,
         hasstatus  => true,
         require    => Package['diamond'],
-        subscribe  => File['/etc/diamond/diamond.conf'],
+        subscribe  => [
+            File['/etc/diamond/diamond.conf'],
+            File["/etc/diamond/handlers/${handler_class}.conf"],
+        ],
     }
 
 
