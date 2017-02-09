@@ -194,7 +194,7 @@ groups:
               deskana, dduvall, nettrom, mforns, jkatz, ebernhardson,
               mlitn, tbayer, joal, tomasz, kartik, nikerabbit, pcoombe,
               neilpquinn-wmf, maxsem, jminor, dpatrick, atgomez, dstrine,
-              ladsgroup, ovasileva]
+              ladsgroup, ovasileva, samtar]
   statistics-admins:
     posix_name: stats
     description: access files created by stats user cron jobs
@@ -2445,6 +2445,15 @@ users:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC5jAvhIngD3svnIyBaHkhZTPEJc80jM363NfWUaFNcdi7n/VudTa3t8vL9jb1OZBUWnL/gfIW4VeLU4rKsfQkcpw6BpL9Qmr50Ewex9eU2pN3/tu1JN9OGNoJry8q81ZaxpH2wJD0JmCC4nlL84Ie7YjZQdcDpeDp4NL/eqEN30DilejVc34cMFpxcH2UYtJnoHGgSPBNsRvftrSniENKlWBrNF+Gjeg+awidUnlpTfGA0q8AGa5Fo69GkHxAzUymgNgeCY6w2H/HqgFcKT53YWgkViBZC0vi3Y0X0EDxnTgYbbKmSij7JU7Z4qJzzd+Tscd/xcO20hPsAYXcW/nF5 musikanimal@wikimedia.org
     uid: 11106
     email: lziemba@wikimedia.org
+  samtar:
+    ensure: present
+    gid: 500
+    name: samtar
+    realname: Sam Tarling
+    ssh_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAABJQAAAQEAthC8yN9ImF+F6DQsI4GqYdAKhEtwfZ/+S7xBg2V5Kz5LLrN/KWUN9uiKsUZJfyl2xD12mpu5Mf3nU7c9QoSyZz40Z2GCN/J3IsYLI6bPFKM7iA65lWHkWcX93JBH0QBlvua9wOAEMMndzeZrloVzJW3PwDa42UikznWYSyoaF60L6eEh+cUs91zZk14GS1gpD5h99nzNlBBmgv5aTv53q5JqzdaWXA83X7sZAjQNfLjpT1EDna0z97Agt7DKcKhHbhJqQ67EEZyVH66DtaoNod2cgn0Os74MDX6aNXu69u4pBxGHD7Oh/TY63kY9sB6pHuZ44X5iC2RbhvKSBjw==
+    uid: 12744
+    email: samtar.on.en.wp@gmail.com
 ldap_only_users:
   abartov:
     ensure: present
