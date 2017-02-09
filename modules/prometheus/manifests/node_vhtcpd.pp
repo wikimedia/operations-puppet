@@ -28,6 +28,6 @@ class prometheus::node_vhtcpd (
     # Collect every minute
     cron { 'prometheus_vhtcpd_stats':
         user    => 'root',
-        command => "/usr/local/bin/prometheus-vhtcpd-stats --outfile ${outfile}",
+        command => "systemctl is-active -q vhtcpd && /usr/local/bin/prometheus-vhtcpd-stats --outfile ${outfile}",
     }
 }
