@@ -318,7 +318,6 @@ class toollabs::exec_environ {
         'xsltproc',                    # T68962.
         'xvfb',                        # T100268
         'zbar-tools',                  # T58996
-        'zsh',                         # T58995
         'debootstrap',                 # T138138
         'fakechroot',                  # T138138
         ]:
