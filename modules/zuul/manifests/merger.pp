@@ -27,7 +27,7 @@ class zuul::merger (
     $zuul_url       = $::fqdn,
 ) {
 
-    class { '::zuul': }
+    include ::zuul
     Class['::zuul'] -> Class['zuul::merger']
 
     exec { 'zuul merger recursive mkdir of git_dir':
