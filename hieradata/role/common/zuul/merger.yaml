@@ -2,16 +2,13 @@ debdeploy::grains:
   debdeploy-zuulmerger:
     value: standard
 
-admin::groups:
-  - contint-users
-  - contint-admins
 cluster: misc
 contactgroups: 'admins,contint'
 
 zuul::merger:
     gearman_server: '208.80.154.17'  # contint1001.wikimedia.org
     gerrit_ssh_key_file: 'ssh/ci/jenkins-bot_gerrit_id_rsa'
-    git_dir: '/srv/ssd/zuul/git'
+    git_dir: '/srv/zuul/git'
     git_email: "zuul-merger@%{::hostname}"
     git_name: 'Wikimedia Zuul Merger'
     zuul_url: "git://%{::fqdn}"

@@ -40,7 +40,7 @@ class role::ci::slave::labs {
 
     include role::ci::slave::labs::common
 
-    class { '::zuul': }
+    include ::zuul
 
     if os_version('ubuntu >= trusty || debian >= jessie') {
         include contint::browsers
