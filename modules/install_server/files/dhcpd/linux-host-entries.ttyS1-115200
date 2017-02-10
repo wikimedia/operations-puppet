@@ -2420,8 +2420,6 @@ host gerrit2001 {
 host graphite1001 {
     hardware ethernet B0:83:FE:DF:2B:64;
     fixed-address graphite1001.eqiad.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host graphite1002 {
