@@ -11,7 +11,8 @@ dumps::rsync_clients:
   - odysseus.fi.muni.cz
   - odysseus.linux.cz
   - mirror.fr.wickedway.nl
-  - wikimedia.wansec.com
+# disable Feb 10 2017, looking into dns issues
+#  - wikimedia.wansec.com
   - ftpmirror.your.org
   - ec2-174-129-186-231.compute-1.amazonaws.com
   - ftpmirror-ae0-4.us.your.org
