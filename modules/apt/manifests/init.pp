@@ -62,8 +62,9 @@ class apt(
                 key      => 'Acquire::http::Proxy::security-cdn.debian.org',
                 value    => $http_proxy,
             }
+            # FIXME: remove this
             apt::conf { 'mirantis-mitaka-proxy':
-                ensure   => present,
+                ensure   => absent,
                 priority => '80',
                 key      => 'Acquire::http::Proxy::mitaka-jessie.pkgs.mirantis.com',
                 value    => $http_proxy,
