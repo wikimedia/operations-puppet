@@ -259,5 +259,9 @@ scap::sources:
   # Public EventStreams service
   eventstreams/deploy:
     repository: mediawiki/services/eventstreams/deploy
+
+  # Prometheus JMX exporter
+  prometheus/jmx_exporter:
+    repository: operations/software/prometheus_jmx_exporter
 prometheus_nodes:
   - deployment-prometheus01.deployment-prep.eqiad.wmflabs
