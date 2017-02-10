@@ -2576,10 +2576,24 @@ node 'sarin.codfw.wmnet' {
 }
 
 # T95046 install/deploy scandium as zuul merger (ci) server
-# T150936 Phase out scandium
 node 'scandium.eqiad.wmnet' {
+    role(zuul::merger)
     include ::standard
     include ::base::firewall
+
+    file { '/srv/ssd':
+        ensure => 'directory',
+        owner  => 'root',
+        group  => 'root',
+    }
+    mount { '/srv/ssd':
+        ensure  => mounted,
+        device  => '/dev/md2',
+        fstype  => 'xfs',
+        options => 'noatime,nodiratime,nobarrier,logbufs=8',
+        require => File['/srv/ssd'],
+    }
+
 }
 
 # Services 'A'
