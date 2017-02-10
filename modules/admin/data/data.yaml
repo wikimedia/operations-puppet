@@ -2161,7 +2161,7 @@ users:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDbRaAUzTfgxalgYGZ7ztelMGXC7vDJ4VwFtFlMt9IvApeYViRh+eIwcr2+94cwextv5fuFD/UWAhk38KKsEnr2SDu1BhTeqlXM1Tfibb8vfq5SrUXzANh61HgqAt9XIyWPXhOFGBJWGZKIHE9DJaDZn5xCmkwz+KPe0smxa0QLHgJTs/Z0sHYu5wcJYPQ/D+b1lBQAPHMUzCIDz8t6ctFysb/pPubX7kbnILao+Q60D7L85+6jgPx2mGFHfsv4LiZP80BhsbrLjwOpuILy3A8jS9aJ9WI0q6Yap9vuRXa8D0DNiymeoGo5X6ye0vdtfe4NZuV9eru3BWBjbSFmRwXP MJP@MJPwork.local
     uid: 15095
     email: maximilian.pany@gmail.com
-    expiry_date: 2017-01-31
+    expiry_date: 2017-06-07
     expiry_contact: mhernandez@wikimedia.org
   jsamra:
     ensure: present
@@ -2172,7 +2172,7 @@ users:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQD2q9U+VYKkFz/WjwG0B+dF01CE4l8NZgBDXGU4AYXqxFk7Vuz2lWTEOeij4r8UgmSsdqq65yOfZYUtjYRm8iHdoIUufWar2XORcBCWqNMeRnId/XX9kMNefzhfl2z7j7UtiAVPsIJZQ0nSFwYY6AxrJdmpBOvinwz8X47FL955/ig4gZvvvV1qzBJ4pvx54U3/e7fwcMGpYrxCUoWuAgIYsc2OS9rW5meBln2bVlJjWRRcid5u9ZM9Za6Jqy/2OIrwhG2AzjpO+5RerflbiVAb6pP7cjU4t+4Cg8fzPTfXuwZ6sjEq6sWJkaz9BaQKC8LDC+nTugokNRlhNj/XxAe3 jasmeetsamra@Jasmeets-MacBook.local
     uid: 15103
     email: jksamra2014@gmail.com
-    expiry_date: 2017-01-31
+    expiry_date: 2017-06-07
     expiry_contact: mhernandez@wikimedia.org
   hjiang:
     ensure: present
@@ -2192,7 +2192,7 @@ users:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDKiINRPK0puzicpOyHuwiMc6ygmgPGXHZ70ltX2zVK5awSIB8ZAwh+ay8Pp9vHlBXFOaDIII7pVuV2k3AC4TH+gXipvZDRBNYABxVgW3V5ZGLkBxFm1sCThajE2jThebq3O7+iNx17Lbqe99CKyDpZ14wxw0ZOxkUYk21tcc3oz20r2b/7GzBmMCWjZlYwFU5CNSncjlyCtNqZrlBdQGIpGPZxzu+bMi/3dJ8vtGL4uxtGtw0+d4eQDmwFZ8ixHrGaAV0Nl7ZuDlbNxXu9isyro4NgY3pxcGJmuiMqrk3fUAgxkJSVMja3lsUSTmazKWf38y7T3L4KmMYjEVxucNXp bcohn@Brents-MacBook-Pro.local
     uid: 15121
     email: brentjoseph@gmail.com
-    expiry_date: 2017-01-31
+    expiry_date: 2017-06-07
     expiry_contact: mhernandez@wikimedia.org
   jdittrich:
     ensure: present
