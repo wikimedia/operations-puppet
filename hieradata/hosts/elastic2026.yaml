@@ -1,3 +1,0 @@
-# temporarily override the default data directory, this will be removed when
-# server is reimaged with new data directory on /srv
-elasticsearch::data_dir: '/var/lib/elasticsearch'
