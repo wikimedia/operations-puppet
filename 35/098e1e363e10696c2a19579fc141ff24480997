@@ -1,0 +1,9 @@
+Code-Review+1: Hashar <hashar@free.fr>
+Code-Review+1: Reedy <reedy@wikimedia.org>
+Code-Review+2: Jcrespo <jcrespo@wikimedia.org>
+Verified+2: jenkins-bot
+Submitted-by: Jcrespo <jcrespo@wikimedia.org>
+Submitted-at: Fri, 10 Feb 2017 11:04:13 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/336964
+Project: operations/puppet
+Branch: refs/heads/production
