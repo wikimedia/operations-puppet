@@ -9,6 +9,5 @@ contint::nodepool_host: '10.64.20.18'  # labnodepool1001.eqiad.wmnet
 # Use ip addresses since the values are injected in iptables rules.
 #
 contint::zuul_merger_hosts:
-    - 10.64.4.12  # scandium.eqiad.wmnet T95046
     - 208.80.154.17 # contint1001.wikimedia.org T150936, T140297
     - 208.80.153.15 # contint2001.wikimedia.org
