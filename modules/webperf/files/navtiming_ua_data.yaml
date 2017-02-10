@@ -1,59 +1,154 @@
+# https://developer.chrome.com/multidevice/user-agent#webview_user_agent
+
 Android.4:
-  # https://developer.chrome.com/multidevice/user-agent#webview_user_agent
   - 'Mozilla/5.0 (Linux; U; Android 4.1.1; en-gb; Build/KLP) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Safari/534.30'
+  - '{"os_minor": "1", "os_major": "4", "device_family": "Generic Smartphone", "os_family": "Android", "wmf_app_version": "-", "browser_major": "4", "browser_family": "Android"}'
+  # ua_parser: Chrome_Mobile.30
   - 'Mozilla/5.0 (Linux; Android 4.4; Nexus 5 Build/_BuildID_) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/30.0.0.0 Mobile Safari/537.36'
+
 Android.5:
+  # ua_parser: Chrome_Mobile.43
   - 'Mozilla/5.0 (Linux; Android 5.1.1; Nexus 5 Build/LMY48B; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/43.0.2357.65 Mobile Safari/537.36'
+
+Android.7:
+  - '{"browser_major":"7","os_family":"Android","os_major":"7","device_family":"VS995","browser_family":"Android","os_minor":"0","wmf_app_version":"-"}'
 
 Chromium.10:
   - 'Mozilla/5.0 (X11; U; Linux i686; en-US) AppleWebKit/534.16 (KHTML, like Gecko) Ubuntu/10.10 Chromium/10.0.648.133 Chrome/10.0.648.133 Safari/534.16'
+  - '{"os_minor": "10", "os_major": "10", "device_family": "Other", "os_family": "Ubuntu", "wmf_app_version": "-", "browser_major": "10", "browser_family": "Chromium"}'
+
+Chrome.9:
+  - '{"browser_major":"9","os_family":"Windows XP","os_major":"-","device_family":"Other","browser_family":"Chrome","os_minor":"-","wmf_app_version":"-"}'
+
 Chrome.50:
   - 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2652.0 Safari/537.36'
+  - '{"os_minor": "10", "os_major": "10", "device_family": "Other", "os_family": "Mac OS X", "wmf_app_version": "-", "browser_major": "50", "browser_family": "Chrome"}'
+
 Chrome_Mobile.35:
   - 'Mozilla/5.0 (Linux; Android 4.4.2; Nexus 5 Build/KOT49H) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/35.0.1916.122 Mobile Safari/537.36'
+  - '{"os_minor": "4", "os_major": "4", "device_family": "Nexus 5", "os_family": "Android", "wmf_app_version": "-", "browser_major": "35", "browser_family": "Chrome Mobile"}'
+
+Chrome_Mobile.52:
+  - '{"browser_major":"52","os_family":"Android","os_major":"4","device_family":"Ultra Wave","browser_family":"Chrome Mobile","os_minor":"4","wmf_app_version":"-"}'
+
 Chrome_Mobile_iOS.19:
   - 'Mozilla/5.0 (iPhone; U; CPU iPhone OS 5_1_1 like Mac OS X; en-gb) AppleWebKit/534.46.0 (KHTML, like Gecko) CriOS/19.0.1084.60 Mobile/9B206 Safari/7534.48.3'
+  - '{"os_minor": "1", "os_major": "5", "device_family": "iPhone", "os_family": "iOS", "wmf_app_version": "-", "browser_major": "19", "browser_family": "Chrome Mobile iOS"}'
+
+Chrome_Mobile_iOS.56:
+  - '{"browser_major":"56","os_family":"iOS","os_major":"10","device_family":"iPad","browser_family":"Chrome Mobile iOS","os_minor":"2","wmf_app_version":"-"}'
+
+Firefox.9:
+  - '{"browser_major":"9","os_family":"Windows Vista","os_major":"-","device_family":"Other","browser_family":"Firefox","os_minor":"-","wmf_app_version":"-"}'
 
 Firefox.43:
   - 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:43.0) Gecko/20100101 Firefox/43.0'
+  - '{"os_minor": "10", "os_major": "10", "device_family": "Other", "os_family": "Mac OS X", "wmf_app_version": "-", "browser_major": "43", "browser_family": "Firefox"}'
+
+Firefox_Mobile.53:
+  - '{"browser_major":"53","os_family":"Android","os_major":"7","device_family":"Generic Smartphone","browser_family":"Firefox Mobile","os_minor":"1","wmf_app_version":"-"}'
+
 Firefox_Mobile.41:
   - 'Mozilla/5.0 (Android 5.0; Tablet; rv:41.0) Gecko/41.0 Firefox/41.0'
+  - '{"os_minor": "0", "os_major": "5", "device_family": "Generic Tablet", "os_family": "Android", "wmf_app_version": "-", "browser_major": "41", "browser_family": "Firefox Mobile"}'
 
 Opera.9:
   - 'Opera/9.50 (Nintendo DSi; Opera/507; U; en-US)'
+  - '{"os_minor": null, "os_major": null, "device_family": "Nintendo DSi", "os_family": "Other", "wmf_app_version": "-", "browser_major": "9", "browser_family": "Opera"}'
+  - '{"browser_major":"9","os_family":"Windows XP","os_major":"-","device_family":"HTC P3700","browser_family":"Opera","os_minor":"-","wmf_app_version":"-"}'
+
 Opera.10:
   - 'Opera/9.80 (Windows NT 5.1; U; ru) Presto/2.5.24 Version/10.53'
+  - '{"os_minor": null, "os_major": null, "device_family": "Other", "os_family": "Windows XP", "wmf_app_version": "-", "browser_major": "10", "browser_family": "Opera"}'
+
+Opera.16:
+  - '{"browser_major":"16","os_family":"Android","os_major":"4","device_family":"CAT-01","browser_family":"Opera","os_minor":"2","wmf_app_version":"-"}'
+
 Opera.33:
   - 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.86 Safari/537.36 OPR/33.0.1990.115'
+  - '{"os_minor": "10", "os_major": "10", "device_family": "Other", "os_family": "Mac OS X", "wmf_app_version": "-", "browser_major": "33", "browser_family": "Opera"}'
 
 Opera_Mobile.14:
   - 'Mozilla/5.0 (Linux; Android; 4.1.2; GT) AppleWebKit/537.22 (KHTML, like Gecko) Chrome/25.0.1234.12 Mobile Safari/537.22 OPR/14.0.123.123'
+  - '{"os_minor": null, "os_major": null, "device_family": "Generic Smartphone", "os_family": "Android", "wmf_app_version": "-", "browser_major": "14", "browser_family": "Opera Mobile"}'
 
 Edge.12:
   - 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36 Edge/12.9600'
+  - '{"os_minor": null, "os_major": null, "device_family": "Other", "os_family": "Windows 10", "wmf_app_version": "-", "browser_major": "12", "browser_family": "Edge"}'
+
+Edge.15:
+  - '{"browser_major":"15","os_family":"Windows 10","os_major":"-","device_family":"Lumia 535","browser_family":"Edge","os_minor":"-","wmf_app_version":"-"}'
 
 MSIE.11:
   - 'Mozilla/5.0 (Windows NT 6.3; Win64; x64; Trident/7.0; rv:11.0) like Gecko'
+  - '{"browser_major":"11","os_family":"Windows Vista","os_major":"-","device_family":"Other","browser_family":"IE","os_minor":"-","wmf_app_version":"-"}'
+
 MSIE.10:
   - 'Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.2; ARM; Trident/6.0)'
+  - '{"os_minor": null, "os_major": null, "device_family": "Other", "os_family": "Windows RT", "wmf_app_version": "-", "browser_major": "10", "browser_family": "IE"}'
+
 MSIE.8:
   - 'Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 5.1; Trident/4.0; GTB6; .NET CLR 2.0.50727; .NET CLR 1.1.4322)'
+  - '{"os_minor": null, "os_major": null, "device_family": "Other", "os_family": "Windows XP", "wmf_app_version": "-", "browser_major": "8", "browser_family": "IE"}'
+  - '{"browser_major":"8","os_family":"Windows 10","os_major":"-","device_family":"Other","browser_family":"IE","os_minor":"-","wmf_app_version":"-"}'
+
+Safari.7:
+  - '{"browser_major":"7","os_family":"Mac OS X","os_major":"-","device_family":"Other","browser_family":"Safari","os_minor":"-","wmf_app_version":"-"}'
 
 Safari.9:
   - 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/601.4.4 (KHTML, like Gecko) Version/9.0.3 Safari/601.4.4'
+  - '{"os_minor": "10", "os_major": "10", "device_family": "Other", "os_family": "Mac OS X", "wmf_app_version": "-", "browser_major": "9", "browser_family": "Safari"}'
 
 Mobile_Safari.4_0:
+  # ua_parser: Mobile_Safari.4
   - 'Mozilla/5.0 (iPad; U; CPU OS 3_2 like Mac OS X; en-us) AppleWebKit/531.21.10 (KHTML, like Gecko) Version/4.0.4 Mobile/7B367 Safari/531.21.10'
+
 Mobile_Safari.5_0:
+  # ua_parser: Mobile_Safari.5
   - 'Mozilla/5.0 (iPod; U; CPU iPhone OS 4_3_2 like Mac OS X; en-us) AppleWebKit/533.17.9 (KHTML, like Gecko) Version/5.0.2 Mobile/8H7 Safari/6533.18.5'
-Mobile_Safari.5_0:
+  # ua_parser: Mobile_Safari.5
   - 'Mozilla/5.0 (iPad; U; CPU OS 4_3_2 like Mac OS X; en-us) AppleWebKit/533.17.9 (KHTML, like Gecko) Version/5.0.2 Mobile/8H7 Safari'
 
-iOS_WebView.7_1:
-  - 'Mozilla/5.0 (iPhone; CPU iPhone OS 7_1_2 like Mac OS X) AppleWebKit/537.51.2 (KHTML, like Gecko) Mobile/11D257'
+Mobile_Safari.9:
+  - '{"browser_major":"9","os_family":"iOS","os_major":"9","device_family":"iPod","browser_family":"Mobile Safari","os_minor":"3","wmf_app_version":"-"}'
+
 iOS_WebView.4_3:
+  # ua_parser: iOS_other.4
   - 'Mozilla/5.0 (iPad; U; CPU OS 4_3_2 like Mac OS X; en-us) AppleWebKit/533.17.9 (KHTML, like Gecko) Mobile'
+
+iOS_WebView.7_1:
+  # ua_parser: iOS_other.7
+  - 'Mozilla/5.0 (iPhone; CPU iPhone OS 7_1_2 like Mac OS X) AppleWebKit/537.51.2 (KHTML, like Gecko) Mobile/11D257'
+
+iOS_WebView.9:
+  - '{"browser_major":"9","os_family":"iOS","os_major":"9","device_family":"iPhone8,2","browser_family":"Mobile Safari UIWebView","os_minor":"3","wmf_app_version":"-"}'
+
+iOS_other.99:
+  - '{"browser_major":"99","os_family":"iOS","os_major":"9","device_family":"iPhone8,1","browser_family":"Facebook","os_minor":"2","wmf_app_version":"-"}'
 
 # Undetected, but here to catch regressions
 Other._:
   - 'Mozilla/5.0 (X11; U; Linux i686; en-US; rv:11.03.16) Gecko/20110302 Conkeror/0.9.2 (Debian-0.9.2)'
+  - '{"browser_major":"1","os_family":"Other","os_major":"-","device_family":"Other","browser_family":"SeaMonkey","os_minor":"-","wmf_app_version":"-"}'
+  - '{"browser_major":"99","os_family":"Android","os_major":"7","device_family":"XT1650","browser_family":"Facebook","os_minor":"0","wmf_app_version":"-"}'
+  - '{"os_minor": null, "os_major": null, "device_family": "Other", "os_family": "Windows Vista", "wmf_app_version": "-", "browser_major": null, "browser_family": "Other"}'
+
+# cases that ua_parser parses differently
+
+Chrome_Mobile.30:
+  - '{"os_minor": "4", "os_major": "4", "device_family": "Nexus 5", "os_family": "Android", "wmf_app_version": "-", "browser_major": "30", "browser_family": "Chrome Mobile"}'
+Chrome_Mobile.43:
+  - '{"os_minor": "1", "os_major": "5", "device_family": "Nexus 5", "os_family": "Android", "wmf_app_version": "-", "browser_major": "43", "browser_family": "Chrome Mobile"}'
+Opera_Mobile.14:
+  - '{"browser_major":"14","os_family":"Android","os_major":"6","device_family":"Moto G (4)","browser_family":"Opera Mobile","os_minor":"0","wmf_app_version":"-"}'
+Opera_Mobile.18:
+  - '{"browser_major":"18","os_family":"Android","os_major":"4","device_family":"2014811","browser_family":"Opera Mobile","os_minor":"4","wmf_app_version":"-"}'
+Mobile_Safari.4:
+  - '{"os_minor": "2", "os_major": "3", "device_family": "iPad", "os_family": "iOS", "wmf_app_version": "-", "browser_major": "4", "browser_family": "Mobile Safari"}'
+Mobile_Safari.5:
+  - '{"os_minor": "3", "os_major": "4", "device_family": "iPod", "os_family": "iOS", "wmf_app_version": "-", "browser_major": "5", "browser_family": "Mobile Safari"}'
+  - '{"os_minor": "3", "os_major": "4", "device_family": "iPad", "os_family": "iOS", "wmf_app_version": "-", "browser_major": "5", "browser_family": "Mobile Safari"}'
+iOS_other.4:
+  - '{"os_minor": "3", "os_major": "4", "device_family": "iPad", "os_family": "iOS", "wmf_app_version": "-", "browser_major": "4", "browser_family": "Mobile Safari UI/WKWebView"}'
+iOS_other.7:
+  - '{"os_minor": "1", "os_major": "7", "device_family": "iPhone", "os_family": "iOS", "wmf_app_version": "-", "browser_major": "7", "browser_family": "Mobile Safari UI/WKWebView"}'
