@@ -12,6 +12,9 @@ class role::analytics_cluster::refinery {
     # Clone mediawiki/event-schemas so refinery can use them.
     include ::eventschemas
 
+    # Include geoip for geolocating
+    include ::geoip
+
     # Some refinery python scripts use docopt for CLI parsing.
     if !defined(Package['python-docopt']) {
         package { 'python-docopt':
