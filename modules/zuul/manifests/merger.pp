@@ -41,13 +41,23 @@ class zuul::merger (
         require => Exec['zuul merger recursive mkdir of git_dir'],
     }
 
+    file { '/var/lib/zuul/.ssh':
+        ensure => 'directory',
+        owner  => 'zuul',
+        group  => 'zuul',
+        mode   => '0700',
+    }
+
     file { '/var/lib/zuul/.ssh/id_rsa':
         ensure  => present,
         owner   => 'zuul',
         group   => 'zuul',
         mode    => '0400',
         content => secret($gerrit_ssh_key_file),
-        require => User['zuul'],
+        require => [
+            User['zuul'],
+            File['/var/lib/zuul/.ssh'],
+        ],
     }
 
     # Configuration file for the zuul merger
