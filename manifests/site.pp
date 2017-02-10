@@ -1277,22 +1277,7 @@ node 'graphite2002.codfw.wmnet' {
     include ::base::firewall
 }
 
-# partially replaces carbon (T132757)
-node 'install1001.wikimedia.org' {
-    role(installserver::tftp,
-        installserver::dhcp,
-        installserver::http,
-        installserver::proxy,
-        installserver::preseed,
-        aptrepo::wikimedia)
-
-    $cluster = 'misc'
-
-    interface::add_ip6_mapped { 'main':
-        interface => 'eth0',
-    }
-}
-
+# replaced carbon and install1001 (T132757)
 node 'install1002.wikimedia.org' {
     role(installserver::tftp,
         installserver::dhcp,
@@ -1312,21 +1297,7 @@ node 'install1002.wikimedia.org' {
     }
 }
 
-node 'install2001.wikimedia.org' {
-    role(installserver::tftp,
-        installserver::dhcp,
-        installserver::http,
-        installserver::proxy,
-        installserver::preseed,
-        aptrepo::wikimedia)
-
-    $cluster = 'misc'
-
-    interface::add_ip6_mapped { 'main':
-        interface => 'eth0',
-    }
-}
-
+# replaced carbon and install2001 (T84380, T156440)
 node 'install2002.wikimedia.org' {
     role(installserver::tftp,
         installserver::dhcp,
