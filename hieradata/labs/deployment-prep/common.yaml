@@ -325,6 +325,10 @@ scap::sources:
   # Recommendation API
   recommendation-api/deploy: {}
 
+  # Prometheus JMX exporter
+  prometheus/jmx_exporter:
+    repository: operations/software/prometheus_jmx_exporter
+
 prometheus_nodes:
   - deployment-prometheus01.deployment-prep.eqiad.wmflabs
 profile::recommendation_api::wdqs_uri: http://wdqs-test.wmflabs.org
