@@ -39,7 +39,7 @@ class base::standard_packages {
         'vim',
         'wipe',
         'xfsprogs',
-        'zsh-beta',
+        'zsh',
     ])
 
     package { 'tzdata': ensure => latest }

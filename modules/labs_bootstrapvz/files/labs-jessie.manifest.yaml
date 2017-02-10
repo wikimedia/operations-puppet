@@ -37,7 +37,7 @@ packages:
     - snmp
     - wipe
     - tzdata
-    - zsh-beta
+    - zsh
     - jfsutils
     - xfsprogs
     - screen
