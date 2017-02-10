@@ -3,10 +3,6 @@ class role::cache::maps {
     include role::cache::ssl::unified
     include ::standard
 
-    if $::standard::has_ganglia {
-        include varnish::monitoring::ganglia::vhtcpd
-    }
-
     class { 'prometheus::node_vhtcpd': }
 
     class { 'varnish::htcppurger':
