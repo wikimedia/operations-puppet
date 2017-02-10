@@ -9,7 +9,7 @@ class standard(
     include ::profile::base
     include ::standard::ntp
 
-    if hiera('use_timesyncd', false) {
+    if hiera('use_timesyncd', false) or (os_version('debian >= stretch')) {
         unless $::fqdn in $::standard::ntp::wmf_peers[$::site] {
             include ::standard::ntp::timesyncd
         }
