@@ -142,7 +142,9 @@ class diamond(
         },
     }
 
-    diamond::collector { 'Ntpd': }
+    unless hiera('use_timesyncd', false) {
+        diamond::collector { 'Ntpd': }
+    }
 
     diamond::collector { 'DiskUsage':
         settings => {
