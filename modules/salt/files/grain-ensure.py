@@ -41,6 +41,7 @@ import argparse
 
 import salt.client
 import salt.config
+import salt.minion
 
 
 class SaltLocalCaller(salt.client.Caller):
