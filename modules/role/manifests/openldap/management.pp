@@ -13,4 +13,25 @@ class role::openldap::management {
         user     => $ldapconfig['script_user_dn'],
         password => $ldapconfig['script_user_pass'],
     }
+
+    file { "/usr/local/bin/cross-validate-accounts":
+        ensure => present,
+        source => 'puppet:///modules/openldap/cross-validate-accounts.py',
+        mode   => '0555',
+        owner  => 'root',
+        group  => 'root',
+    }
+
+    user { 'accountcheck':
+        ensure => present,
+        system => true,
+    }
+
+    cron { 'daily_account_consistency_check':
+        require => [ File['/usr/local/bin/cross-validate-accounts'], User['accountcheck']] ,
+        command => '/usr/local/bin/cross-validate-accounts',
+        user    => 'accountcheck',
+        minute  => '4',
+        minute  => '0',
+    }
 }
