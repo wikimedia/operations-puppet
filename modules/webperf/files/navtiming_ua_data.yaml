@@ -59,3 +59,76 @@
 # Undetected, but here to catch regressions
 - result:
   ua: 'Mozilla/5.0 (X11; U; Linux i686; en-US; rv:11.03.16) Gecko/20110302 Conkeror/0.9.2 (Debian-0.9.2)'
+
+- result: Other.-
+  ua: '{"browser_major":"1","os_family":"Other","os_major":"-","device_family":"Other","browser_family":"SeaMonkey","os_minor":"-","wmf_app_version":"-"}'
+
+- result: Other.-
+  ua:   '{"browser_major":"99","os_family":"Android","os_major":"7","device_family":"XT1650","browser_family":"Facebook","os_minor":"0","wmf_app_version":"-"}'
+
+# Opera (desktop)
+- result: Opera.9
+  ua:   '{"browser_major":"9","os_family":"Windows XP","os_major":"-","device_family":"HTC P3700","browser_family":"Opera","os_minor":"-","wmf_app_version":"-"}'
+
+# Other iOS
+- result: iOS_other.99 
+  ua:   '{"browser_major":"99","os_family":"iOS","os_major":"9","device_family":"iPhone8,1","browser_family":"Facebook","os_minor":"2","wmf_app_version":"-"}'
+
+# Safari (Desktop)
+- result: Safari.7
+  ua:   '{"browser_major":"7","os_family":"Mac OS X","os_major":"-","device_family":"Other","browser_family":"Safari","os_minor":"-","wmf_app_version":"-"}'
+
+# Chrome/Chromium
+- result: Chrome.9
+  ua: '{"browser_major":"9","os_family":"Windows XP","os_major":"-","device_family":"Other","browser_family":"Chrome","os_minor":"-","wmf_app_version":"-"}'
+
+# Edge
+- result: Edge.15
+  ua:   '{"browser_major":"15","os_family":"Windows 10","os_major":"-","device_family":"Lumia 535","browser_family":"Edge","os_minor":"-","wmf_app_version":"-"}'
+
+# Firefox
+- result: Firefox.9
+  ua:   '{"browser_major":"9","os_family":"Windows Vista","os_major":"-","device_family":"Other","browser_family":"Firefox","os_minor":"-","wmf_app_version":"-"}'
+
+# Firefox for Android
+- result: Firefox_Mobile.53
+  ua:   '{"browser_major":"53","os_family":"Android","os_major":"7","device_family":"Generic Smartphone","browser_family":"Firefox Mobile","os_minor":"1","wmf_app_version":"-"}'
+
+# Internet Explorer <= 10
+- result: MSIE.8
+  ua:   '{"browser_major":"8","os_family":"Windows 10","os_major":"-","device_family":"Other","browser_family":"IE","os_minor":"-","wmf_app_version":"-"}'
+
+# Internet Explorer 11
+- result: MSIE.11 
+  ua:   '{"browser_major":"11","os_family":"Windows Vista","os_major":"-","device_family":"Other","browser_family":"IE","os_minor":"-","wmf_app_version":"-"}'
+
+# Opera >= 15 (Desktop)
+- result: Opera.16
+  ua:   '{"browser_major":"16","os_family":"Android","os_major":"4","device_family":"CAT-01","browser_family":"Opera","os_minor":"2","wmf_app_version":"-"}'
+
+# Chrome on Android 
+- result: Chrome_Mobile.52
+  ua:   '{"browser_major":"52","os_family":"Android","os_major":"4","device_family":"Ultra Wave","browser_family":"Chrome Mobile","os_minor":"4","wmf_app_version":"-"}'
+
+# Android browser (pre Android 4.4)
+- result: Android.7
+  ua:   '{"browser_major":"7","os_family":"Android","os_major":"7","device_family":"VS995","browser_family":"Android","os_minor":"0","wmf_app_version":"-"}'
+
+# Opera >14 for Android (WebKit-based)
+- result: Opera_Mobile.14
+  ua:   '{"browser_major":"14","os_family":"Android","os_major":"6","device_family":"Moto G (4)","browser_family":"Opera Mobile","os_minor":"0","wmf_app_version":"-"}'
+
+- result: Opera_Mobile.18
+  ua:   '{"browser_major":"18","os_family":"Android","os_major":"4","device_family":"2014811","browser_family":"Opera Mobile","os_minor":"4","wmf_app_version":"-"}'
+
+# iOS Webview
+- result: iOS_WebView.9
+  ua:   '{"browser_major":"9","os_family":"iOS","os_major":"9","device_family":"iPhone8,2","browser_family":"Mobile Safari UIWebView","os_minor":"3","wmf_app_version":"-"}'
+
+# Mobile Safari on iOS
+- result: Mobile_Safari.9  
+  ua:   '{"browser_major":"9","os_family":"iOS","os_major":"9","device_family":"iPod","browser_family":"Mobile Safari","os_minor":"3","wmf_app_version":"-"}'
+
+# Chrome for iOS
+- result: Chrome_Mobile_iOS.56
+  ua:   '{"browser_major":"56","os_family":"iOS","os_major":"10","device_family":"iPad","browser_family":"Chrome Mobile iOS","os_minor":"2","wmf_app_version":"-"}'
