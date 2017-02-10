@@ -14,6 +14,8 @@ import unittest
 import zmq
 import yaml
 
+# for CR: how are dependencies fullfilled where this script runs?
+import json
 
 handlers = {}
 
@@ -86,9 +88,16 @@ iso_3166_top_40_plus_australia = {
     'ZA': 'South Africa',   'AU': 'Australia',
 }
 
+# Only return the small subset of browsers we whitelisted, this to avoid arbitrary growth
+# in Graphite with low-sampled properties that are not useful
+# (which has lots of other negative side effects too).
+# Anything not in the whitelist should go into "Other" instead.
+
 
 def parse_ua(ua):
     """Return a tuple of browser_family and browser_major, or None.
+
+    Can parse a raw user agent or a json object alredy digested by ua-parser
 
     Inspired by https://github.com/ua-parser/uap-core
 
@@ -96,6 +105,103 @@ def parse_ua(ua):
     - Must return a string in form "<browser_family>.<browser_major>".
     - Use the same family name as ua-parser.
     - Ensure version number match doesn't contain dots (or transform them).
+
+    """
+    # trick, if app version is there this is a digested user agent
+    m = re.search('wmf_app_version', ua)
+
+    if m is not None:
+        return parse_ua_obj(ua)
+    else:
+        return parse_ua_legacy(ua)
+
+
+def parse_ua_obj(ua):
+    """
+    Parses user agent digested by ua-parser
+    Note that only browser major is reported
+    """
+    ua_obj = json.loads(ua)
+
+    browser_family = "Other"
+
+    # Chrome for iOS
+    if ua_obj['browser_family'] == 'Chrome Mobile iOS' and ua_obj['os_family'] == 'iOS':
+        browser_family = 'Chrome_Mobile_iOS'
+
+    # Mobile Safari on iOS
+    elif ua_obj['browser_family'] == 'Mobile Safari' and ua_obj['os_family'] == 'iOS':
+        browser_family = 'Mobile_Safari'
+
+    # iOS WebView
+    elif ua_obj['os_family'] == 'iOS' and ua_obj['browser_family'] == 'Mobile Safari UIWebView':
+        browser_family = 'iOS_WebView'
+
+    # Opera >=14 for Android (WebKit-based)
+    elif ua_obj['browser_family'] == 'Opera Mobile' and ua_obj['os_family'] == 'Android':
+        browser_family = 'Opera_Mobile'
+
+    # Android browser (pre Android 4.4)
+    elif ua_obj['browser_family'] == 'Android' and ua_obj['os_family'] == 'Android':
+        browser_family = 'Android'
+
+    # Chrome for Android
+    elif ua_obj['browser_family'] == 'Chrome Mobile' and ua_obj['os_family'] == 'Android':
+        browser_family = 'Chrome_Mobile'
+
+    # Opera >= 15 (Desktop)
+    # todo assuming all operas not iOS or Android are desktop
+    elif (ua_obj['browser_family'] == 'Opera' and int(ua_obj['browser_major']) >= 15
+            and ua_obj['os_family'] != 'Android' and ua_obj['os_family'] != 'iOS'):
+        browser_family = 'Opera'
+
+    # Internet Explorer 11
+    elif ua_obj['browser_family'] == 'IE' and ua_obj['browser_major'] == '11':
+        browser_family = 'MSIE'
+
+    # Internet Explorer <= 10
+    elif ua_obj['browser_family'] == 'IE' and int(ua_obj['browser_major']) < 11:
+        browser_family = 'MSIE'
+
+    # Firefox for Android
+    elif ua_obj['browser_family'] == 'Firefox Mobile' and ua_obj['os_family'] == 'Android':
+        browser_family = 'Firefox_Mobile'
+
+    # Firefox (Desktop)
+    elif ua_obj['browser_family'] == 'Firefox':
+        browser_family = 'Firefox'
+
+    # Microsoft Edge (but note, not 'Edge Mobile')
+    elif ua_obj['browser_family'] == 'Edge':
+        browser_family = 'Edge'
+
+    # Chrome/Chromium
+    elif ua_obj['browser_family'] == 'Chrome' or ua_obj['browser_family'] == 'Chromium':
+        browser_family = ua_obj['browser_family']
+
+    # Safari (Desktop)
+    elif ua_obj['browser_family'] == 'Safari' and ua_obj['os_family'] != 'iOS':
+        browser_family = 'Safari'
+
+    # Misc iOS
+    elif ua_obj['os_family'] == 'iOS':
+        browser_family = 'iOS_other'
+
+    # Opera (Desktop)
+    elif ua_obj['browser_family'] == 'Opera':
+        browser_family = 'Opera'
+
+    # 'Other' should report no version
+    else:
+        browser_family == 'Other'
+        ua_obj['browser_major'] = '-'
+
+    return (browser_family, ua_obj['browser_major'])
+
+
+def parse_ua_legacy(ua):
+    """
+    Parses raw user agent
     """
 
     # Chrome for iOS
