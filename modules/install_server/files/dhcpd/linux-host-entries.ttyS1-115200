@@ -5990,11 +5990,6 @@ host sarin {
     fixed-address sarin.codfw.wmnet;
 }
 
-host scandium {
-    hardware ethernet 84:2b:2b:fd:be:52;
-    fixed-address scandium.eqiad.wmnet;
-}
-
 host scb1001 {
     hardware ethernet 90:b1:1c:2d:7f:6b;
     fixed-address scb1001.eqiad.wmnet;

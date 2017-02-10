@@ -2546,13 +2546,6 @@ node 'sarin.codfw.wmnet' {
     include ::base::firewall
 }
 
-# T95046 install/deploy scandium as zuul merger (ci) server
-# T150936 Phase out scandium
-node 'scandium.eqiad.wmnet' {
-    include ::standard
-    include ::base::firewall
-}
-
 # Services 'A'
 node /^sca[12]00[1234]\.(eqiad|codfw)\.wmnet$/ {
     role(sca)
