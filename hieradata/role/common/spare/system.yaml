@@ -2,4 +2,3 @@ debdeploy::grains:
   debdeploy-spare:
     value: standard
 
-profile::base::monitoring: false
