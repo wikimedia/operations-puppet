@@ -142,7 +142,15 @@ class diamond(
         },
     }
 
-    diamond::collector { 'Ntpd': }
+    if hiera('use_timesyncd', false) or (os_version('debian >= stretch')) {
+        diamond::collector { 'Ntpd':
+            ensure => 'absent',
+        }
+    }
+    else
+    {
+        diamond::collector { 'Ntpd': }
+    }
 
     diamond::collector { 'DiskUsage':
         settings => {
