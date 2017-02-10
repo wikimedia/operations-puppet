@@ -212,6 +212,13 @@ class toollabs::bastion(
         mode    => '0755',
         content => template('toollabs/crontab.erb'),
     }
+    file { '/etc/toollabs-cronhost':
+        ensure  => file,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0644',
+        content => $cron_host,
+    }
 
     file { '/usr/local/bin/killgridjobs.sh':
         ensure => file,
