@@ -1,6 +1,6 @@
 mediawiki::redis_servers::eqiad:
   shard01:
-    host: 10.64.0.180
+    host: 10.64.0.80
     port: 6379
   shard02:
     host: 10.64.0.181
