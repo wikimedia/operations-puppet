@@ -43,7 +43,7 @@ class profile::etcd::replication(
         # Monitoring lag is less than 5 operations. TODO: take this from prometheus.
         monitoring::service{ 'etcd_replication_lag':
             description   => 'Etcd replication lag',
-            check_command => "check_http_url_for_regexp_on_port!${::fqdn}!${etcdmirror_web_port}!/lag!^(1|[0-5])[^0-9]+\$",
+            check_command => "check_http_url_for_regexp_on_port!${::fqdn}!${etcdmirror_web_port}!/lag!'^(-1|[0-5])[^0-9]+\$'",
         }
     }
 
