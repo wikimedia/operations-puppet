@@ -2005,6 +2005,31 @@ host elastic1047 {
     filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
+host elastic1048 {
+    hardware ethernet 94:18:82:6F:18:CC;
+    fixed-address elastic1048.eqiad.wmnet;
+}
+
+host elastic1049 {
+    hardware ethernet 94:18:82:6F:18:18;
+    fixed-address elastic1049.eqiad.wmnet;
+}
+
+host elastic1050 {
+    hardware ethernet 94:18:82:6F:18:08;
+    fixed-address elastic1050.eqiad.wmnet;
+}
+
+host elastic1051 {
+    hardware ethernet 94:18:82:69:3C:84;
+    fixed-address elastic1051.eqiad.wmnet;
+}
+
+host elastic1052 {
+    hardware ethernet 94:18:82:6F:18:00;
+    fixed-address elastic1052.eqiad.wmnet;
+}
+
 host elastic2001 {
     hardware ethernet 3c:a8:2a:20:ac:48;
     fixed-address elastic2001.codfw.wmnet;
