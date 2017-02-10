@@ -52,6 +52,8 @@ host dbmonitor2001 {
 host d-i-test {
     hardware ethernet aa:00:00:3b:60:cb;
     fixed-address d-i-test.eqiad.wmnet;
+    option pxelinux.pathprefix "stretch-installer/";
+    filename "stretch-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host dubnium {
