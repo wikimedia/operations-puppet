@@ -14,6 +14,8 @@ import unittest
 import zmq
 import yaml
 
+# for CR: how are dependencies fullfilled where this script runs?
+import json
 
 handlers = {}
 
@@ -90,12 +92,36 @@ iso_3166_top_40_plus_australia = {
 def parse_ua(ua):
     """Return a tuple of browser_family and browser_major, or None.
 
+    Can parse a raw user agent or a json object alredy digested by ua-parser
+
     Inspired by https://github.com/ua-parser/uap-core
 
     - Add unit test with sample user agent string for each match.
     - Must return a string in form "<browser_family>.<browser_major>".
     - Use the same family name as ua-parser.
     - Ensure version number match doesn't contain dots (or transform them).
+
+    """
+    # trick, if app version is there this is a digested user agent
+    m = re.search('wmf_app_version', ua)
+
+    if m is not None:
+        return parse_ua_obj(ua)
+    else:
+        return parse_ua_legacy(ua)
+
+
+def parse_ua_obj(ua):
+    """
+    Parses user agent digested by ua-parser
+    Note that only browser major is reported
+    """
+    ua_obj = json.loads(ua)
+    return (ua_obj["browser_family"], ua_obj["browser_major"])
+
+def parse_ua_legacy(ua):
+    """
+    Parses raw user agent
     """
 
     # Chrome for iOS

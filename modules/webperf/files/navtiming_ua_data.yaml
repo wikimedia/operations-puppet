@@ -59,3 +59,9 @@
 # Undetected, but here to catch regressions
 - result:
   ua: 'Mozilla/5.0 (X11; U; Linux i686; en-US; rv:11.03.16) Gecko/20110302 Conkeror/0.9.2 (Debian-0.9.2)'
+
+- result: Chrome.56
+  ua: "{\"os_minor\": null, \"os_major\": null, \"device_family\": \"Other\", \"os_family\": \"Windows 10\", \"wmf_app_version\": \"-\", \"browser_major\": \"56\", \"browser_family\": \"Chrome\"}"
+
+- result: Chrome.56
+  ua: "{\"os_minor\": \"11\", \"os_major\": \"10\", \"device_family\": \"Other\", \"os_family\": \"Mac OS X\", \"wmf_app_version\": \"-\", \"browser_major\": \"56\", \"browser_family\": \"Chrome\"}"
