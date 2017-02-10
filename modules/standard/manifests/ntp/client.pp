@@ -13,6 +13,7 @@ class standard::ntp::client () {
         ulsfo => array_concat($wmf_peers['eqiad'], $wmf_peers['codfw']),
     }
 
+    diamond::collector { 'Ntpd': }
 
     ntp::daemon { 'client':
         servers   => $client_upstreams[$::site],

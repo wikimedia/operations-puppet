@@ -27,6 +27,11 @@ class standard::ntp::timesyncd () {
         notify  => Service['systemd-timesyncd'],
     }
 
+    # The diamond collector is specific to ISC ntpd and not useful with timesyncd, T157794
+    diamond::collector { 'Ntpd':
+        ensure => 'absent',
+    }
+
     service { 'systemd-timesyncd':
         ensure   => running,
         provider => systemd,

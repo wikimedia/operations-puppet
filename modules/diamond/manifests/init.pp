@@ -143,8 +143,6 @@ class diamond(
         },
     }
 
-    diamond::collector { 'Ntpd': }
-
     diamond::collector { 'DiskUsage':
         settings => {
             devices => 'PhysicalDrive[0-9]+$|md[0-9]+$|sd[a-z]+$|x?vd[a-z]+$|disk[0-9]+$|dm-[0-9]+$',
