@@ -10,9 +10,6 @@ class role::cache::text(
     include role::cache::base
     include role::cache::ssl::unified
     include ::standard
-    if $::standard::has_ganglia {
-        include varnish::monitoring::ganglia::vhtcpd
-    }
 
     class { 'prometheus::node_vhtcpd': }
 
