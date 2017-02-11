@@ -1,4 +1,4 @@
-mediawiki::jobrunner::runners_transcode: 4
+mediawiki::jobrunner::runners_transcode: 12
 mediawiki::jobrunner::runners_transcode_prioritized: 12
 hhvm::extra::fcgi:
   hhvm:
