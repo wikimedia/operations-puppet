@@ -453,5 +453,5 @@ kafka_clusters:
 
 deployment_server: tin.eqiad.wmnet
 
-install_server: carbon.wikimedia.org
-install_server_failover: install1002.wikimedia.org
+install_server: install1002.wikimedia.org
+install_server_failover: install2002.wikimedia.org
