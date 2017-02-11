@@ -211,16 +211,9 @@ node 'californium.wikimedia.org' {
     include ::openstack::horizon::puppetpanel
 }
 
-# DHCP / TFTP
+# ex-installserver, replaced by install1002/install2002, to be decom'ed (T158020)
 node 'carbon.wikimedia.org' {
-    role(installserver::tftp,
-        installserver::dhcp,
-        installserver::http,
-        installserver::proxy,
-        installserver::preseed,
-        aptrepo::wikimedia)
-
-    $cluster = 'misc'
+    role(spare)
 
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
