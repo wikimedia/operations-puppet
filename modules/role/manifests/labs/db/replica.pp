@@ -12,7 +12,7 @@ class role::labs::db::replica {
         package => 'wmf-mariadb101',
     }
     include role::mariadb::monitor
-    include base::firewall
+    include ::base::firewall
 
     ferm::service{ 'mariadb_internal':
         proto   => 'tcp',

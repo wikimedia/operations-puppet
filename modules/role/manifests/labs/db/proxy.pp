@@ -9,7 +9,7 @@ class role::labs::db::proxy {
 
     include standard
     include passwords::labs::db::proxy
-    include base::firewall
+    include ::base::firewall
 
     $admin_user = $passwords::labs::db::proxy::admin_user
     $admin_password = $passwords::labs::db::proxy::admin_password

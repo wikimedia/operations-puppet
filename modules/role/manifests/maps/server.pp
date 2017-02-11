@@ -2,7 +2,7 @@
 # the services kartotherian and tilerator
 class role::maps::server {
     include standard
-    include base::firewall
+    include ::base::firewall
     include ::cassandra
     include ::cassandra::metrics
     include ::cassandra::logging
