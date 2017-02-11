@@ -18,13 +18,6 @@ class contint::packages::javascript {
         'npm'       => '2.15.2',
     }
 
-    $npm_options = $::lsbdistcodename ? {
-        # Default npm that ships with Ubuntu Precise's node predates npmjs.org SSL
-        # http://blog.npmjs.org/post/78085451721/npms-self-signed-certificate-is-no-more
-        'precise' => '--ca=null --force',
-        default   => '',
-    }
-
     if (os_version('ubuntu >= trusty') or os_version('debian >= jessie')) {
         # Provide 'node' alias for 'nodejs' because Debian/Ubuntu
         # already has a package called 'node'
@@ -36,7 +29,7 @@ class contint::packages::javascript {
     }
 
     exec { 'pin npm':
-        command => "/usr/bin/npm install ${npm_options} -g npm@${versions['npm']}",
+        command => "/usr/bin/npm install -g npm@${versions['npm']}",
         onlyif  => "/usr/bin/test \"`/usr/bin/npm --version`\" != \"${versions['npm']}\"",
         require => Package['npm'],
     }
