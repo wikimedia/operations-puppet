@@ -36,7 +36,7 @@ class role::ganeti {
     # If ganeti_cluster fact is not defined, the node has not been added to a
     # cluster yet, so don't monitor and don't setup a firewall
     if $::ganeti_cluster {
-        include base::firewall
+        include ::base::firewall
         # Interpolate the ganeti_cluster fact to get the list of nodes in a
         # cluster
         $ganeti_nodes = hiera("ganeti::${::ganeti_cluster}::nodes")

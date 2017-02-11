@@ -15,7 +15,7 @@ class role::scb {
     include role::trendingedits
 
     include standard
-    include base::firewall
+    include ::base::firewall
 
     if hiera('has_lvs', true) {
         include role::lvs::realserver

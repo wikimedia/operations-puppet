@@ -5,7 +5,7 @@
 # filtertags: labs-project-deployment-prep labs-project-packaging labs-project-tools
 class role::package::builder {
     include ::package_builder
-    include base::firewall
+    include ::base::firewall
 
     system::role { 'role::package::builder':
         description => 'Debian package builder'

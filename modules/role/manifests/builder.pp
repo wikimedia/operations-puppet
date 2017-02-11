@@ -1,7 +1,7 @@
 # filtertags: labs-project-packaging
 class role::builder {
     include standard
-    include base::firewall
+    include ::base::firewall
     include role::package::builder
     include profile::docker::storage::loopback
     include profile::docker::engine

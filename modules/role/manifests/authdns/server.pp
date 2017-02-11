@@ -2,7 +2,7 @@
 class role::authdns::server {
     system::role { 'authdns': description => 'Authoritative DNS server' }
 
-    include base::firewall
+    include ::base::firewall
     include authdns::ganglia
     include prometheus::node_gdnsd
     include role::authdns::data
