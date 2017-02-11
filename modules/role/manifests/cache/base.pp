@@ -4,7 +4,7 @@ class role::cache::base(
     $purge_host_not_upload_re = '^(?!upload\.wikimedia\.org)',
     $storage_parts = ['sda3', 'sdb3'],
 ) {
-    include standard
+    include ::standard
     include nrpe
     include lvs::configuration
     include network::constants

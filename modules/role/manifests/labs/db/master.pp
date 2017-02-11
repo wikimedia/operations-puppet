@@ -4,7 +4,7 @@ class role::labs::db::master {
         description => 'Labs user database master',
     }
 
-    include standard
+    include ::standard
     class { 'mariadb::packages_wmf':
         mariadb10 => false
     }

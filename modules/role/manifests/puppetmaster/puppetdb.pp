@@ -2,7 +2,7 @@
 class role::puppetmaster::puppetdb (
     $shared_buffers = '7680MB'
 ) {
-    include standard
+    include ::standard
     include ::base::firewall
     include ::passwords::postgres
 

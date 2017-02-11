@@ -4,7 +4,7 @@ class role::labs::db::slave {
         description => 'Labs user database slave',
     }
 
-    include standard
+    include ::standard
     include mariadb::packages_wmf
     include mariadb::service
     include role::mariadb::monitor

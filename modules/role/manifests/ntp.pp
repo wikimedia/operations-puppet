@@ -2,7 +2,7 @@
 #
 # Ntp server role
 class role::ntp {
-    include standard::ntp
+    include ::standard::ntp
     system::role { 'ntp': description => 'NTP server' }
 
     $wmf_peers = $::standard::ntp::wmf_peers
