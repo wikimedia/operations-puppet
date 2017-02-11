@@ -39,12 +39,7 @@ class labs_vagrant(
         group      => 'wikidev',
     }
 
-    # precise-compat branch should be checked out if this is a precise installation
-    if $::lsbdistcodename == 'precise' {
-        $branch_name = 'precise-compat'
-    } else {
-        $branch_name = 'master'
-    }
+    $branch_name = 'master'
 
     git::clone { 'vagrant':
         directory => $install_directory,
