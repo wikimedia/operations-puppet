@@ -5,7 +5,7 @@ class role::swift::proxy {
     }
 
     include standard
-    include base::firewall
+    include ::base::firewall
     include ::swift::params
     include ::swift
     include ::swift::ring

@@ -5,7 +5,7 @@
 #
 # filtertags: labs-project-deployment-prep
 class role::beta::mediawiki {
-    include base::firewall
+    include ::base::firewall
 
     $ips = join($network::constants::special_hosts[$::realm]['deployment_hosts'], ' ')
     security::access::config { 'scap-allow-mwdeploy':
