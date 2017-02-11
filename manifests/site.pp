@@ -211,22 +211,6 @@ node 'californium.wikimedia.org' {
     include ::openstack::horizon::puppetpanel
 }
 
-# DHCP / TFTP
-node 'carbon.wikimedia.org' {
-    role(installserver::tftp,
-        installserver::dhcp,
-        installserver::http,
-        installserver::proxy,
-        installserver::preseed,
-        aptrepo::wikimedia)
-
-    $cluster = 'misc'
-
-    interface::add_ip6_mapped { 'main':
-        interface => 'eth0',
-    }
-}
-
 # cerium, praseodymium and xenon are Cassandra test hosts
 node /^(cerium|praseodymium|xenon)\.eqiad\.wmnet$/ {
     role(restbase::server, cassandra)
