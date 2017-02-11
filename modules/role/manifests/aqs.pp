@@ -13,7 +13,7 @@ class role::aqs {
     include ::passwords::aqs
 
     include standard
-    include base::firewall
+    include ::base::firewall
 
     #
     # Set up Cassandra for AQS.

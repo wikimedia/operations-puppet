@@ -5,7 +5,7 @@
 # filtertags: labs-project-deployment-prep
 
 class role::thumbor::mediawiki {
-    include base::firewall
+    include ::base::firewall
     include role::statsite
 
 
