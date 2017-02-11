@@ -14,7 +14,7 @@ class role::scb {
     include role::pdfrender
     include role::trendingedits
 
-    include standard
+    include ::standard
     include ::base::firewall
 
     if hiera('has_lvs', true) {

@@ -1,6 +1,6 @@
 # filtertags: labs-project-packaging
 class role::kubernetes::worker {
-    include standard
+    include ::standard
     include ::base::firewall
 
     # Sets up docker on the machine

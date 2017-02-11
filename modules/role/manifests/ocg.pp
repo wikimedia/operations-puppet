@@ -5,7 +5,7 @@
 # filtertags: labs-project-deployment-prep labs-project-ocg
 class role::ocg {
     include ::base::firewall
-    include standard
+    include ::standard
 
     # size of tmpfs filesystem
     $tmpfs_size = hiera('role::ocg::tmpfs_size', '512M')

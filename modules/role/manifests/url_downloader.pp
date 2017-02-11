@@ -28,7 +28,7 @@ class role::url_downloader {
         description => 'Upload-by-URL proxy'
     }
     include network::constants
-    include standard
+    include ::standard
     include ::base::firewall
 
     $url_downloader_ip = hiera('url_downloader_ip', $::ipaddress)

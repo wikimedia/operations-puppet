@@ -4,7 +4,7 @@ class role::statistics::cruncher inherits role::statistics::base {
         description => 'Statistics general compute node (non private data)'
     }
 
-    include standard
+    include ::standard
     include ::base::firewall
     include role::backup::host
     backup::set { 'home' : }

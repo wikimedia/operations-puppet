@@ -1,7 +1,7 @@
 # This role class sets up a maps server with
 # the services kartotherian and tilerator
 class role::maps::server {
-    include standard
+    include ::standard
     include ::base::firewall
     include ::cassandra
     include ::cassandra::metrics

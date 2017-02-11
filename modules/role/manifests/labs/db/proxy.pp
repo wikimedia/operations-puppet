@@ -7,7 +7,7 @@ class role::labs::db::proxy {
         description => 'LabsDB proxy',
     }
 
-    include standard
+    include ::standard
     include passwords::labs::db::proxy
     include ::base::firewall
 

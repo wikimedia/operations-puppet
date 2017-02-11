@@ -11,13 +11,13 @@ class standard(
 
     if hiera('use_timesyncd', false) {
         unless $::fqdn in $::standard::ntp::wmf_peers[$::site] {
-            include standard::ntp::timesyncd
+            include ::standard::ntp::timesyncd
         }
     }
     else
     {
         unless $::fqdn in $::standard::ntp::wmf_peers[$::site] {
-            include standard::ntp::client
+            include ::standard::ntp::client
         }
     }
 

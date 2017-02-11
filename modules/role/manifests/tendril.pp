@@ -3,7 +3,7 @@
 
 class role::tendril {
     include ::base::firewall
-    include standard
+    include ::standard
 
     system::role { 'role::tendril': description => 'tendril server' }
 

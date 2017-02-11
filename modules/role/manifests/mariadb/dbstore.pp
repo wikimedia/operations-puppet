@@ -12,7 +12,7 @@ class role::mariadb::dbstore(
     include mariadb::packages_wmf
     include mariadb::service
 
-    include standard
+    include ::standard
     include passwords::misc::scripts
 
     class { 'role::mariadb::grants::production':

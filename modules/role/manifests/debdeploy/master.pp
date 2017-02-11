@@ -1,5 +1,5 @@
 class role::debdeploy::master {
-    include standard
+    include ::standard
 
     system::role { 'role::debdeploymaster':
         description => 'debdeploy master',

@@ -4,7 +4,7 @@
 #
 # filtertags: labs-project-wikidata-query
 class role::wdqs  {
-    include standard
+    include ::standard
     include ::base::firewall
 
     $nagios_contact_group = 'admins,wdqs-admins'

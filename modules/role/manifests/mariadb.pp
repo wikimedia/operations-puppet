@@ -8,7 +8,7 @@ class role::mariadb {
         description => 'database server',
     }
 
-    include standard
+    include ::standard
     include ::mariadb
 }
 
@@ -222,7 +222,7 @@ class role::mariadb::misc(
         false => 'slave',
     }
 
-    include standard
+    include ::standard
     include role::mariadb::monitor
     include passwords::misc::scripts
     include role::mariadb::ferm
@@ -272,7 +272,7 @@ class role::mariadb::misc::phabricator(
         description => "Misc Services Database ${shard} (phabricator)",
     }
 
-    include standard
+    include ::standard
     include mariadb::packages_wmf
     include mariadb::service
 
@@ -370,7 +370,7 @@ class role::mariadb::misc::eventlogging(
         false => 'slave',
     }
 
-    include standard
+    include ::standard
     include role::mariadb::monitor::dba
     include passwords::misc::scripts
     include role::mariadb::ferm
@@ -422,7 +422,7 @@ class role::mariadb::beta {
         description => 'beta cluster database server',
     }
 
-    include standard
+    include ::standard
     include mariadb::packages_wmf
     include passwords::misc::scripts
 
@@ -467,7 +467,7 @@ class role::mariadb::tendril {
     include mariadb::packages_wmf
     include mariadb::service
 
-    include standard
+    include ::standard
     include role::mariadb::monitor::dba
     include passwords::misc::scripts
     include role::mariadb::ferm
@@ -540,7 +540,7 @@ class role::mariadb::core(
         description => "Core DB Server ${shard}",
     }
 
-    include standard
+    include ::standard
     include ::base::firewall
     include role::mariadb::monitor
     include passwords::misc::scripts
@@ -620,7 +620,7 @@ class role::mariadb::sanitarium {
         description => 'Sanitarium DB Server',
     }
 
-    include standard
+    include ::standard
     include passwords::misc::scripts
     class { 'role::mariadb::groups':
         mysql_group => 'labs',
@@ -708,7 +708,7 @@ class role::mariadb::sanitarium2 {
         description => 'Sanitarium DB Server',
     }
 
-    include standard
+    include ::standard
     include passwords::misc::scripts
     include ::base::firewall
     include role::mariadb::ferm
@@ -760,7 +760,7 @@ class role::mariadb::labs {
         description => 'Labs DB Slave',
     }
 
-    include standard
+    include ::standard
     include role::mariadb::monitor
     include passwords::misc::scripts
     include role::mariadb::ferm
@@ -814,7 +814,7 @@ class role::mariadb::wikitech {
         description => 'Wikitech Database',
     }
 
-    include standard
+    include ::standard
     include role::mariadb::grants::wikitech
     include role::mariadb::monitor
     include passwords::misc::scripts
@@ -858,7 +858,7 @@ class role::mariadb::proxy(
         description => "DB Proxy ${shard}",
     }
 
-    include standard
+    include ::standard
 
     package { [
         'mysql-client',
@@ -921,7 +921,7 @@ class role::mariadb::parsercache(
     $shard,
     ) {
 
-    include standard
+    include ::standard
 
     include role::mariadb::monitor
     include role::mariadb::ferm

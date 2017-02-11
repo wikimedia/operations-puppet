@@ -4,7 +4,7 @@ class role::deployment::server(
     $deployment_group = 'wikidev',
 ) {
 
-    include standard
+    include ::standard
     $base_path = '/srv/deployment'
     include role::deployment::mediawiki
 

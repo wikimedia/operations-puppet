@@ -8,7 +8,7 @@
 #
 # filtertags: labs-project-puppet
 class role::spare::system {
-    include standard
+    include ::standard
     include ::base::firewall
 
     system::role { 'role::spare::system': description => 'Unused spare system' }

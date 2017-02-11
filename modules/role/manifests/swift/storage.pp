@@ -4,7 +4,7 @@ class role::swift::storage {
         description => 'swift storage brick',
     }
 
-    include standard
+    include ::standard
     include ::base::firewall
     include ::swift::params
     include ::swift

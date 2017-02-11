@@ -1,6 +1,6 @@
 class role::snapshot::common {
     include ::dataset::user
-    include standard
+    include ::standard
     include ::base::firewall
 
     # mw packages and dependencies, dataset server nfs mount,

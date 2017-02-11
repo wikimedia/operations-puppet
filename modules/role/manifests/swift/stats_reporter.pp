@@ -4,7 +4,7 @@ class role::swift::stats_reporter {
         description => 'swift statistics reporter',
     }
 
-    include standard
+    include ::standard
     include ::swift::params
     include ::swift::stats::dispersion
     include ::swift::stats::accounts

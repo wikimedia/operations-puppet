@@ -1,5 +1,5 @@
 class role::osm::common {
-    include standard
+    include ::standard
 
     $root_dir = '/srv/postgres'
 

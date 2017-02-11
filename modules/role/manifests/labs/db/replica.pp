@@ -4,7 +4,7 @@ class role::labs::db::replica {
         description => 'Labs replica database',
     }
 
-    include standard
+    include ::standard
     class { 'mariadb::packages_wmf':
         package => 'wmf-mariadb101',
     }

@@ -12,7 +12,7 @@ class role::aqs {
 
     include ::passwords::aqs
 
-    include standard
+    include ::standard
     include ::base::firewall
 
     #

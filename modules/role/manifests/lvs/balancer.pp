@@ -104,7 +104,7 @@ class role::lvs::balancer {
             ],
     }
 
-    include standard
+    include ::standard
 
     salt::grain { 'lvs':
         grain   => 'lvs',

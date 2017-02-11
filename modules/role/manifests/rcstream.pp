@@ -6,7 +6,7 @@
 #
 # filtertags: labs-project-deployment-prep
 class role::rcstream {
-    include standard
+    include ::standard
 
     system::role { 'role::rcstream':
         description => 'MediaWiki Recent Changes stream',
