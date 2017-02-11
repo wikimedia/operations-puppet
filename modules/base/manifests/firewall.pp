@@ -1,6 +1,6 @@
 # Don't include this sub class on all hosts yet
 # NOTE: Policy is DROP by default
-class base::firewall($ensure = 'present') {
+class ::base::firewall($ensure = 'present') {
     include ::network::constants
     include ::ferm
 

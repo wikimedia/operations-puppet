@@ -541,7 +541,7 @@ class role::mariadb::core(
     }
 
     include standard
-    include base::firewall
+    include ::base::firewall
     include role::mariadb::monitor
     include passwords::misc::scripts
     include role::mariadb::ferm
@@ -710,7 +710,7 @@ class role::mariadb::sanitarium2 {
 
     include standard
     include passwords::misc::scripts
-    include base::firewall
+    include ::base::firewall
     include role::mariadb::ferm
     include role::labs::db::common
     include role::labs::db::check_private_data
@@ -764,7 +764,7 @@ class role::mariadb::labs {
     include role::mariadb::monitor
     include passwords::misc::scripts
     include role::mariadb::ferm
-    include base::firewall
+    include ::base::firewall
     include role::labs::db::common
     include role::labs::db::views
     include role::labs::db::check_private_data

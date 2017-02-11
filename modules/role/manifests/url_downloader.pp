@@ -29,7 +29,7 @@ class role::url_downloader {
     }
     include network::constants
     include standard
-    include base::firewall
+    include ::base::firewall
 
     $url_downloader_ip = hiera('url_downloader_ip', $::ipaddress)
     $url_downloader_port = hiera('url_downloader_port', 8080)

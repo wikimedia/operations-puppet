@@ -3,7 +3,7 @@
 # vim: set ts=4 et sw=4:
 class role::openldap::corp {
     include passwords::openldap::corp
-    include base::firewall
+    include ::base::firewall
 
     system::role { 'role::openldap::corp':
         description => 'Corp OIT openldap Mirror server'

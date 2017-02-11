@@ -1,7 +1,7 @@
 # vim: set tabstop=4 shiftwidth=4 softtabstop=4 expandtab textwidth=80 smarttab
 
 class role::puppetmaster::frontend {
-    include base::firewall
+    include ::base::firewall
 
     include role::backup::host
     backup::set { 'var-lib-puppet-ssl': }

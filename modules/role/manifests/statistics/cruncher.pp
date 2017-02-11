@@ -5,7 +5,7 @@ class role::statistics::cruncher inherits role::statistics::base {
     }
 
     include standard
-    include base::firewall
+    include ::base::firewall
     include role::backup::host
     backup::set { 'home' : }
 

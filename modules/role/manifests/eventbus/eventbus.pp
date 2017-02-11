@@ -10,7 +10,7 @@
 #
 # filtertags: labs-project-deployment-prep
 class role::eventbus::eventbus {
-    include base::firewall
+    include ::base::firewall
     require ::eventschemas
 
     # for /srv/log dir creation
