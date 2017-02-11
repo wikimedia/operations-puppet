@@ -6,7 +6,7 @@ class role::memcached {
 
     include standard
     include base::mysterious_sysctl
-    include base::firewall
+    include ::base::firewall
     include passwords::redis
 
     $memcached_size = $::realm ? {

@@ -7,7 +7,7 @@ class role::logstash::elasticsearch {
     include standard
     include ::elasticsearch::nagios::check
     include ::elasticsearch::monitor::diamond
-    include base::firewall
+    include ::base::firewall
 
     if $::standard::has_ganglia {
         include ::elasticsearch::ganglia

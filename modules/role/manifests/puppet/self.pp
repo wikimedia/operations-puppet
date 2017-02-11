@@ -46,7 +46,7 @@ class role::puppet::self(
             include puppetmaster::gitsync
         }
 
-        # Allow access to the Puppetmaster when base::firewall is applied
+        # Allow access to the Puppetmaster when ::base::firewall is applied
         ferm::service { 'puppetmaster-self':
             proto => 'tcp',
             port  => 8140,

@@ -4,7 +4,7 @@
 #
 # filtertags: labs-project-deployment-prep labs-project-ocg
 class role::ocg {
-    include base::firewall
+    include ::base::firewall
     include standard
 
     # size of tmpfs filesystem

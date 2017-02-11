@@ -1,5 +1,5 @@
 class role::prometheus::global {
-    include base::firewall
+    include ::base::firewall
 
     # Pull selected metrics from all DC-local Prometheus servers.
     $federation_jobs = [

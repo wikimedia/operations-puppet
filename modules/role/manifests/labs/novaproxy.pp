@@ -7,7 +7,7 @@ class role::labs::novaproxy(
     $active_proxy,
     $use_ssl = true,
 ) {
-    include base::firewall
+    include ::base::firewall
 
     $proxy_nodes = join($all_proxies, ' ')
     # Open up redis to all proxies!

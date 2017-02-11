@@ -2,7 +2,7 @@
 # tendril: MariaDB Analytics
 
 class role::tendril {
-    include base::firewall
+    include ::base::firewall
     include standard
 
     system::role { 'role::tendril': description => 'tendril server' }
