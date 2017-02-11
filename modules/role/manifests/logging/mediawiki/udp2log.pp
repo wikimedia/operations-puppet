@@ -13,7 +13,7 @@ class role::logging::mediawiki::udp2log(
         description => 'MediaWiki log collector',
     }
 
-    include base::firewall
+    include ::base::firewall
 
     # Rsync archived slow-parse logs to dumps.wikimedia.org.
     # These are available for download at http://dumps.wikimedia.org/other/slow-parse/

@@ -1,6 +1,6 @@
 # filtertags: labs-project-tools
 class role::toollabs::k8s::worker {
-    # NOTE: No base::firewall!
+    # NOTE: No ::base::firewall!
     # ferm and kube-proxy will conflict
     include ::toollabs::infrastructure
 

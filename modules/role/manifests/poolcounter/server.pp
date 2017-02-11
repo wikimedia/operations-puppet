@@ -1,7 +1,7 @@
 # filtertags: labs-project-deployment-prep
 class role::poolcounter::server {
     include ::poolcounter
-    include base::firewall
+    include ::base::firewall
 
     system::role { 'role::poolcounter':
         description => 'PoolCounter server',

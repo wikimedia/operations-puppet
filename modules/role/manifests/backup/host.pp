@@ -23,7 +23,7 @@ class role::backup::host {
     }
     File <| tag == 'backup-motd' |>
 
-    # If the machine includes base::firewall then let director connect to us
+    # If the machine includes ::base::firewall then let director connect to us
     ferm::service { 'bacula-file-demon':
         proto  => 'tcp',
         port   => '9102',

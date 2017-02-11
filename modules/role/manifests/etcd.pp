@@ -7,7 +7,7 @@ class role::etcd {
     }
 
     require standard
-    include base::firewall
+    include ::base::firewall
 
     include etcd
     include etcd::monitoring

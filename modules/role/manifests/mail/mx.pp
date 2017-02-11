@@ -8,7 +8,7 @@ class role::mail::mx(
 ) {
     include network::constants
     include privateexim::aliases::private
-    include base::firewall
+    include ::base::firewall
 
     system::role { 'role::mail::mx':
         description => 'Mail router',
