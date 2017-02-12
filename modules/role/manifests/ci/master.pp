@@ -68,5 +68,4 @@ class role::ci::master {
         group  => 'jenkins',
     }
 
-    require contint::master_dir
 }
