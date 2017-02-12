@@ -1,5 +1,13 @@
+# == Class contint::proxy_jenkins
+#
 # A http proxy in front of Jenkins
-class contint::proxy_jenkins {
+#
+# [*prefix*]
+# The HTTP path used to reach the Jenkins instance. Must have a leading slash.
+# Example: /ci
+class contint::proxy_jenkins (
+    $prefix,
+) {
 
   include ::contint::proxy_common
 
@@ -16,7 +24,7 @@ class contint::proxy_jenkins {
       owner  => 'root',
       group  => 'root',
       mode   => '0444',
-      source => 'puppet:///modules/contint/apache/proxy_jenkins',
+      conent => template('contint/apache/proxy_jenkins.erb'),
   }
 
 }
