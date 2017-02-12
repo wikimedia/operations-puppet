@@ -9,6 +9,14 @@ class dataset::html(
 
     include ::dataset::dirs
 
+    file { "${dataset::dirs::publicdir}/dumps.css":
+        ensure => 'present',
+        path   => "${dataset::dirs::publicdir}/dumps.css",
+        mode   => '0644',
+        owner  => 'root',
+        group  => 'root',
+        source => 'puppet:///modules/dataset/html/dumps.css',
+    }
     if ($other) {
         file { "${dataset::dirs::otherdir}/index.html":
             ensure => 'present',

@@ -433,13 +433,14 @@ class DumpList(object):
         if not in_progress:
             # we want all the files
             files_wanted = self.get_files_with_extensions(
-                dir_name, r'(\.gz|\.bz2|\.7z|\.html|\.txt|\.xml)$')
+                dir_name, r'(\.gz|\.bz2|\.7z|\.html|\.txt|\.xml|\.css|\.json)$')
         else:
             # these files have been completed for the dump run
             files_wanted = self.get_completed_files(dir_name)
             # these files do not contain dump job output but we want them, like
             # index.html files, files with md5sums, status files, etc
-            files_wanted.extend(self.get_files_with_extensions(dir_name, r'(\.html|\.txt)$'))
+            files_wanted.extend(self.get_files_with_extensions(
+                dir_name, r'(\.html|\.txt|\.css|\.json)$'))
         return files_wanted
 
     def truncate_outfiles(self):
@@ -576,11 +577,12 @@ class DumpList(object):
 
     def get_toplevelfiles(self):
         """
-        list *html and *txt files in top level dir
+        list .html, .json, .css, .txt files in top level dir
         test, with "" does this work?
         """
         files_in_dir = [f for f in os.listdir(self.paths.get_abs_pubdirpath(""))
-                        if f.endswith(".html") or f.endswith(".txt") or f.endswith(".old")]
+                        if f.endswith(".html") or f.endswith(".txt") or f.endswith(".old")
+                        or f.endswith(".css") or f.endswith(".json")]
         return files_in_dir
 
     def write_toplevelfiles(self):
@@ -668,8 +670,8 @@ rsynclists  -- for each file that is produced, write a second file with the
                feeding the original file as input to rsync with the
                --list-only option
                default value: False
-toplevel    -- include .html and .txt files from the top level directory in
-               the filename listing
+toplevel    -- include .html, .txt, .css and .json files from the top level
+               directory in the filename listing
 
 At least one of the three options below must be specified:
 
