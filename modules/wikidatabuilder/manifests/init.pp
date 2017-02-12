@@ -1,4 +1,10 @@
-# licence AGPL version 3 or later
+# == Class wikidatabuilder
+#
+# Licence AGPL version 3 or later
+#
+# The builder will interact with Gerrit review system over ssh. You would need
+# the host key to be added to known_host which can be done by including
+# role::gerrit::client or accepted manually.
 class wikidatabuilder {
 
     requires_realm('labs')
