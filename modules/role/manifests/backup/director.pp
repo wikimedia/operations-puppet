@@ -208,7 +208,7 @@ class role::backup::director {
     }
     bacula::director::fileset { 'contint':
         includes => [ '/srv', '/var/lib/zuul', '/var/lib/jenkins' ],
-        excludes => [ '/srv/ssd', '/srv/jenkins/builds', '/var/lib/jenkins/builds', ],
+        excludes => [ '/srv/jenkins/builds', '/var/lib/jenkins/builds', ],
     }
     bacula::director::fileset { 'etcd':
         includes => [ '/srv/backups/etcd' ]

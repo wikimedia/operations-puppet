@@ -60,5 +60,4 @@ class role::ci::master {
         require => File['/var/lib/jenkins/email-templates'],
     }
 
-    require contint::master_dir
 }
