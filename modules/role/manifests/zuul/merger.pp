@@ -1,6 +1,8 @@
 class role::zuul::merger {
     system::role { 'role::zuul::merger': description => 'Zuul merger' }
 
+    include ::role::gerrit::client
+
     include ::zuul::monitoring::merger
 
     $conf_common = hiera('zuul::common')
