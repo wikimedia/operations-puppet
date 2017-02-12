@@ -4,16 +4,19 @@
 #
 # == Parameters:
 #
-# [*service_ensure*]
+# [*prefix*]
+# Prefix for web access to use with Apache proxying. Must be the full path with
+# a leading slash. Example: /ci
 #
+# [*service_ensure*]
 # Passed to Puppet Service['jenkins']. If set to 'unmanaged', pass undef to
 # prevent Puppet from managing the service. Default: 'running'.
 #
 # [*service_enable*]
-#
 # Passed to Puppet Service['jenkins'] as 'enable'. Default: true.
 #
 class jenkins(
+    $prefix,
     $service_ensure  = 'running',
     $service_enable = true,
 )
@@ -129,7 +132,7 @@ class jenkins(
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-        source  => 'puppet:///modules/jenkins/etc_default_jenkins',
+        content => template('jenkins/etc/default/jenkins.sh.erb'),
         require => Package['openjdk-7-jre-headless'],
     }
 

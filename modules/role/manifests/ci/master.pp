@@ -8,8 +8,14 @@
 #
 # CI test server as per T79623
 #
+# [*jenkins_prefix*]
+# The HTTP path used to reach the Jenkins instance. Must have a leading slash.
+# Default: '/ci'.
+#
 # filtertags: labs-project-ci-staging
-class role::ci::master {
+class role::ci::master(
+    $jenkins_prefix = '/ci'
+) {
 
     system::role { 'role::ci::master': description => 'CI Jenkins master' }
 
@@ -18,8 +24,12 @@ class role::ci::master {
     require role::ci::website
 
     # Load the Jenkins module, that setup a Jenkins master
-    include ::jenkins
-    include ::contint::proxy_jenkins
+    class { '::jenkins':
+        prefix => $jenkins_prefix,
+    }
+    class { '::contint::proxy_jenkins':
+        prefix => $jenkins_prefix,
+    }
 
     # Backups
     include ::role::backup::host
