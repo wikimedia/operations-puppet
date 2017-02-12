@@ -18,8 +18,21 @@ class jenkins(
     $service_enable = true,
 )
 {
-    require ::jenkins::user
-    require ::jenkins::group
+    user { 'jenkins':
+        home       => '/var/lib/jenkins',
+        shell      => '/bin/bash',  # admins need to be able to login
+        gid        => 'jenkins',
+        system     => true,
+        managehome => false,
+        require    => Group['jenkins'],
+    }
+
+    group { 'jenkins':
+        ensure    => present,
+        name      => 'jenkins',
+        system    => true,
+        allowdupe => false,
+    }
 
     # We want to run Jenkins under Java 7.
     ensure_packages(['openjdk-7-jre-headless'])
