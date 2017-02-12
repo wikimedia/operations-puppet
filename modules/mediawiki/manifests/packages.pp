@@ -16,7 +16,8 @@ class mediawiki::packages {
     include ::imagemagick::install
 
     package { [
-        'python-imaging',
+        'python-pil',
+        'python3-pil',
         'python-pygments',
         'tidy',
     ]:
