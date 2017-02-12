@@ -4,14 +4,14 @@
 #####################################################################
 # vim: filetype=apache
 
-ProxyPass       /ci http://localhost:8080/ci
-ProxyPassReverse    /ci http://localhost:8080/ci
+ProxyPass       <%= @prefix -%> http://localhost:8080<%= @prefix -%>
+ProxyPassReverse    <%= @prefix -%> http://localhost:8080<%= @prefix -%>
 ProxyRequests       Off
 
 # Local reverse proxy authorization override
 # Most unix distribution deny proxy by default (ie /etc/apache2/mods-enabled/proxy.conf in Ubuntu)
 
-<Proxy http://localhost:8080/ci*>
+<Proxy http://localhost:8080<%= @prefix -%>*>
 
     # user agent blacklisting for Jenkins
     SetEnvIf User-Agent 80legs bad_browser
@@ -37,11 +37,11 @@ ProxyRequests       Off
     Header set Cache-Control "no-cache,must-revalidate" env=NO_CACHE
 
     # Prevent access to certain URLs - T63964
-    SetEnvIf Request_URI ^/ci/computer/.*/builds DENY_BUILDS_ACCESS
-    SetEnvIf Request_URI ^/ci/user/.*/builds DENY_BUILDS_ACCESS
-    SetEnvIf Request_URI ^/ci/view/.*/builds DENY_BUILDS_ACCESS
+    SetEnvIf Request_URI ^<%= @prefix -%>/computer/.*/builds DENY_BUILDS_ACCESS
+    SetEnvIf Request_URI ^<%= @prefix -%>/user/.*/builds DENY_BUILDS_ACCESS
+    SetEnvIf Request_URI ^<%= @prefix -%>/view/.*/builds DENY_BUILDS_ACCESS
     # Blacklist RSS feeds entirely
-    SetEnvIf Request_URI ^/ci/.*/rss(All|Failed|Latest) DENY_BUILDS_ACCESS
+    SetEnvIf Request_URI ^<%= @prefix -%>/.*/rss(All|Failed|Latest) DENY_BUILDS_ACCESS
     Order deny,allow
     deny from env=DENY_BUILDS_ACCESS
 </Proxy>
