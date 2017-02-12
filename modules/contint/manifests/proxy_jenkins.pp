@@ -16,7 +16,7 @@ class contint::proxy_jenkins {
       owner  => 'root',
       group  => 'root',
       mode   => '0444',
-      source => 'puppet:///modules/contint/apache/proxy_jenkins',
+      conent => template('contint/apache/proxy_jenkins.erb'),
   }
 
 }
