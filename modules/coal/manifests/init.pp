@@ -66,13 +66,9 @@ class coal( $endpoint ) {
         before => Service['coal'],
     }
 
-    file { '/etc/init/coal.conf':
-        content => template('coal/coal.conf.erb'),
-        notify  => Service['coal'],
-    }
-
-    service { 'coal':
-        ensure   => running,
-        provider => upstart,
+    base::service_unit { 'coal':
+        ensure  => present,
+        systemd => true,
+        upstart => true,
     }
 }
