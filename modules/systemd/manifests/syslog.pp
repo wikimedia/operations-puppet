@@ -29,16 +29,24 @@
 #   Filename of the logging file.
 #   Default: 'syslog.log'
 #
+# [*program_compare*]
+#   rsyslog compare-operation to compare the programname against this resource
+#   title. contains, isequal, startswith.  Refer to rsyslog.conf(5) for full
+#   description.
+#   Default: 'startswith'
+#
 define systemd::syslog(
-    $base_dir     = '/var/log',
-    $owner        = $title,
-    $group        = $title,
-    $readable_by  = 'group',
-    $log_filename = 'syslog.log'
+    $base_dir        = '/var/log',
+    $owner           = $title,
+    $group           = $title,
+    $readable_by     = 'group',
+    $log_filename    = 'syslog.log',
+    $program_compare = 'startswith'
     ) {
     if $::initsystem != 'systemd' {
         fail('systemd::syslog is useful only with systemd')
     }
+    validate_re($program_compare, '^(contains|isequal|startswith)$')
 
     # File permissions
     $dirmode = '0755'
