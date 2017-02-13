@@ -59,5 +59,3 @@ elasticsearch::graylog_hosts:
 
 elasticsearch::https::certificate_name: 'search.svc.eqiad.wmnet'
 profile::base::dns_alt_names:           'search.svc.eqiad.wmnet'
-
-elasticsearch::data_dir: '/var/lib/elasticsearch'
