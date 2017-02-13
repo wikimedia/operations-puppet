@@ -14,6 +14,10 @@
 # [*http_port*]
 # HTTP port for the web service. Default: 8080
 #
+# [*max_open_files*]
+# Maximum number of file descriptors. Passed to systemd LimitNOFILE.
+# Default: 8192.
+#
 # [*service_ensure*]
 # Passed to Puppet Service['jenkins']. If set to 'unmanaged', pass undef to
 # prevent Puppet from managing the service. Default: 'running'.
@@ -22,12 +26,13 @@
 # Passed to Puppet Service['jenkins'] as 'enable'. Default: true.
 #
 # [*umask*]
-# Control permission bits of files created by Jenkins. Passed to 'daemon'.
+# Control permission bits of files created by Jenkins. Passed to systemd.
 # Default: '0002'
 class jenkins(
     $prefix,
     $access_log = false,
     $http_port = '8080',
+    $max_open_files = '8192',
     $service_ensure  = 'running',
     $service_enable = true,
     $umask = '0002'
@@ -89,15 +94,31 @@ class jenkins(
         mode   => '0755',
     }
 
+    systemd::syslog { 'jenkins':
+        base_dir            => '/var/log',
+        owner               => 'jenkins',
+        group               => 'jenkins',
+        readable_by         => 'group',
+        log_filename        => 'jenkins.log',
+        programname_compare => 'isequal',
+    }
+
     $real_ensure = $service_ensure ? {
         'unmanaged' => undef,
         default     => $service_ensure,
     }
-    service { 'jenkins':
-        ensure     => $real_ensure,
-        enable     => $service_enable,
-        hasrestart => true,
-        require    => File['/etc/default/jenkins'],
+
+    base::service_unit { 'jenkins':
+        ensure         => $real_ensure,
+        sysvinit       => false,
+        systemd        => true,
+        service_params => {
+            enable => $service_enable,
+        },
+        require        => [
+            Systemd::Syslog['jenkins'],
+            File['/etc/default/jenkins'],
+        ],
     }
 
     # nagios monitoring
