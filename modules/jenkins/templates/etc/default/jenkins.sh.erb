@@ -75,9 +75,11 @@ AJP_PORT=-1
 # servlet context, important if you want to use apache proxying  
 PREFIX=<%= @prefix %>
 
+<%- if @access_log -%>
 # Hack to enable accesslog for Jenkins.
 # Append it to JENKINS_ARGS below to enable.
-JENKINS_ACCESSLOG_ENABLE="--accessLoggerClassName=winstone.accesslog.SimpleAccessLogger --simpleAccessLogger.format=combined --simpleAccessLogger.file=/var/log/jenkins/access.log"
+JENKINS_ACCESSLOG_ENABLE="--accessLoggerClassName=winstone.accesslog.SimpleAccessLogger --simpleAccessLogger.format=combined --simpleAccessLogger.file=/var/log/$NAME/access.log"
+<%- end -%>
 
 # arguments to pass to jenkins.
 # --javahome=$JAVA_HOME
