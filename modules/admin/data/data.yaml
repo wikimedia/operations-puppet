@@ -223,7 +223,7 @@ groups:
                  This will grant shell access on Hadoop client nodes (stat1002) and on
                  Hadoop NameNodes.  Some files in HDFS have sensitive data in them.
                  Those files are group readable by the analytics-privatedata-users group.
-    members: [dartar, milimetric, dfoy, aude, jforrester,
+    members: [dartar, milimetric, dfoy, aude, jforrester, nithum
               halfak, dr0ptp4kt, bearloga, cwdent, elukey,
               nuria, otto, deskana, zhousquared, arnad, jgonsior,
               bsitzmann, dbrant, ellery, nettrom, leila,
@@ -2454,6 +2454,15 @@ users:
       - ssh-rsa AAAAB3NzaC1yc2EAAAABJQAAAQEAthC8yN9ImF+F6DQsI4GqYdAKhEtwfZ/+S7xBg2V5Kz5LLrN/KWUN9uiKsUZJfyl2xD12mpu5Mf3nU7c9QoSyZz40Z2GCN/J3IsYLI+6bPFKM7iA65lWHkWcX93JBH0QBlvua9wOAEMMndzeZrloVzJW3PwDa42UikznWYSyoaF60L6eEh+cUs91zZk14GS1gpD+5h+99nzNlBBmgv5aTv53q5JqzdaWXA83X7sZAjQNfLjpT1EDna0z97Agt7DKcKhHbhJqQ67EEZyVH66DtaoNod2cgn0Os74MDX6aNXu69u4pBxGHD7Oh/TY63kY9sB6pHuZ44X5iC2RbhvKSBjw==
     uid: 12744
     email: samtar.on.en.wp@gmail.com
+  nithum:
+    ensure: present
+    gid: 500
+    name: nithum
+    realname: Nithum Thain
+    ssh_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDdoZ4fXmaua+K80DRZ93bLfohcl3IXOixTXZ+WLUwcVPvKKZpHriUC2PmmMGU9cqgnYP5f3Rix4h9dTkHhZneW4qFyhwdeuseLjFbCJ3E7bOY9fvsIj6fVlbUWn48UG2UfkQLI+8vf5jtxfocurIgoCPkx3yxpVjfflW/l9v2hVEvdQWngKy/Skn1+3IqScvwZ0GTqPG7GKOfPPSnFrCRb6+1fiOTRMEov0WoVGqBx3H0klVQQtbAJksrUw+yNvykVGIhfXzRiSfXcch+DBgUNmk8WgMGxwKMSmE5kdDx1+mY/z/7Yz69Y8zURr/DF5SnijLdNVkoFYJn6IXL1eElx nithum@MBP.local
+    uid: 15708
+    email: nithum@gmail.com
 ldap_only_users:
   abartov:
     ensure: present
