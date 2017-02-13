@@ -3,4 +3,3 @@ debdeploy::grains:
   debdeploy-tftpserver:
     value: standard
 
-do_acme: false
