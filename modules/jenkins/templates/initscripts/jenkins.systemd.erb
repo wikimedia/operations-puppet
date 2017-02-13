@@ -1,0 +1,23 @@
+[Unit]
+Description=Jenkins Continuous Integration Server
+After=network.target
+
+[Service]
+Type=simple
+User=jenkins
+Group=jenkins
+SyslogIdentifier=jenkins
+UMask=<%= @umask %>
+LimitNOFILE=<%= @max_open_files %>
+
+# Passed to Java:
+Environment="JENKINS_JAVA_ARGS=<%= @java_args %>"
+
+# Passed to Jenkins:
+Environment=JENKINS_HTTP_PORT=<%= @http_port %>
+Environment=JENKINS_PREFIX=<%= @prefix %>
+
+ExecStart=/usr/bin/java $JENKINS_JAVA_ARGS -jar /usr/share/jenkins/jenkins.war --httpPort=${JENKINS_HTTP_PORT} --ajp13Port=-1 --prefix=${JENKINS_PREFIX}
+
+[Install]
+WantedBy=multi-user.target
