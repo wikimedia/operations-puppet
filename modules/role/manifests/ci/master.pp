@@ -25,8 +25,9 @@ class role::ci::master(
 
     # Load the Jenkins module, that setup a Jenkins master
     class { '::jenkins':
-        prefix => $jenkins_prefix,
-        umask  => '0002',
+        access_log => true,
+        prefix     => $jenkins_prefix,
+        umask      => '0002',
     }
     class { '::contint::proxy_jenkins':
         prefix => $jenkins_prefix,
