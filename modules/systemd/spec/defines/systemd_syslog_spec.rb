@@ -58,5 +58,23 @@ describe 'systemd::syslog' do
                     .with_content(%r%^:programname, .* /var/log/dummyservice/instance01\.log$%)
             end
         end
+
+        describe 'when changing rsylog comparison via $programname_compare' do
+
+            context 'and passing an invalid $programname_compare value' do
+                let(:params) { { :programname_compare => nil } }
+                it 'should fail to compile' do
+                    should compile.and_raise_error(/"nil" does not match/)
+                end
+            end
+            context "and passing $programname_compare='isequal'" do
+                let(:params) { { :programname_compare => 'isequal' } }
+                it 'should make rsyslog to use isequal comparison operator' do
+                    should contain_file('/etc/rsyslog.d/20-dummyservice.conf')
+                        .with_content(/^:programname, isequal,/)
+                end
+            end
+        end
+
     end
 end
