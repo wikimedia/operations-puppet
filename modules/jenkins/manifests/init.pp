@@ -18,8 +18,21 @@ class jenkins(
     $service_enable = true,
 )
 {
-    require ::jenkins::user
-    require ::jenkins::group
+    user { 'jenkins':
+        home       => '/var/lib/jenkins',
+        shell      => '/bin/bash',  # admins need to be able to login
+        gid        => 'jenkins',
+        system     => true,
+        managehome => false,
+        require    => Group['jenkins'],
+    }
+
+    group { 'jenkins':
+        ensure    => present,
+        name      => 'jenkins',
+        system    => true,
+        allowdupe => false,
+    }
 
     # We want to run Jenkins under Java 7.
     ensure_packages(['openjdk-7-jre-headless'])
@@ -101,19 +114,6 @@ class jenkins(
         owner  => 'jenkins',
         group  => 'jenkins',
     }
-
-    #FIXME: jenkins log rotation and init script
-    # access.log rotation. Not provided by upstream Debian package
-    # https://issues.jenkins-ci.org/browse/JENKINS-18870
-    #  file { '/etc/logrotate.d/jenkins_accesslog':
-    #  owner  => 'root',
-    #  group  => 'root',
-    #  mode   => '0444',
-    #  source => 'puppet:///modules/jenkins/jenkins_accesslog.logrotate',
-    #  }
-    # Jenkins init script is broken and does not track the proper PID
-    # additionally kill -s ALRM kills jenkins instead of making it reopen
-    # its files.
 
     file { '/etc/logrotate.d/jenkins':
         ensure  => present,
