@@ -2,10 +2,14 @@
 #
 # A http proxy in front of Jenkins
 #
+# [*http_port*]
+# HTTP port for a Jenkins instance webservice. Example: 8080
+#
 # [*prefix*]
 # The HTTP path used to reach the Jenkins instance. Must have a leading slash.
 # Example: /ci
 class contint::proxy_jenkins (
+    $http_port,
     $prefix,
 ) {
 
