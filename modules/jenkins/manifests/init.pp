@@ -14,6 +14,10 @@
 # [*http_port*]
 # HTTP port for the web service. Default: 8080
 #
+# [*max_open_files*]
+# Maximum number of file descriptors. Passed to systemd LimitNOFILE.
+# Default: 8192.
+#
 # [*service_ensure*]
 # Passed to Puppet Service['jenkins']. If set to 'unmanaged', pass undef to
 # prevent Puppet from managing the service. Default: 'running'.
@@ -22,12 +26,13 @@
 # Passed to Puppet Service['jenkins'] as 'enable'. Default: true.
 #
 # [*umask*]
-# Control permission bits of files created by Jenkins. Passed to 'daemon'.
+# Control permission bits of files created by Jenkins. Passed to systemd.
 # Default: '0002'
 class jenkins(
     $prefix,
     $access_log = false,
     $http_port = '8080',
+    $max_open_files = '8192',
     $service_ensure  = 'running',
     $service_enable = true,
     $umask = '0002'
@@ -87,15 +92,53 @@ class jenkins(
         mode   => '0755',
     }
 
-    $real_ensure = $service_ensure ? {
-        'unmanaged' => undef,
-        default     => $service_ensure,
+    systemd::syslog { 'jenkins':
+        base_dir     => '/var/log',
+        owner        => 'jenkins',
+        group        => 'jenkins',
+        readable_by  => 'group',
+        log_filename => 'jenkins.log',
     }
-    service { 'jenkins':
-        ensure     => $real_ensure,
-        enable     => $service_enable,
-        hasrestart => true,
-        require    => File['/etc/default/jenkins'],
+
+    $java_access_log_arg = $access_log ? {
+        true    => '--accessLoggerClassName=winstone.accesslog.SimpleAccessLogger --simpleAccessLogger.format=combined --simpleAccessLogger.file=/var/log/jenkins/access.log',
+        default => '',
+    }
+    $java_args = join([
+        # Allow graphs etc. to work even when an X server is present
+        '-Djava.awt.headless=true',
+        # Make Git plugin verbose which dramatically helps debugging
+        '-Dhudson.plugins.git.GitSCM.verbose=true',
+        # Prevents Jenkins 1.651.2+ from stripping parameters injected by the
+        # Gearman plugin.
+        #
+        # References:
+        #   https://phabricator.wikimedia.org/T133737
+        #   https://jenkins.io/blog/2016/05/11/security-update/
+        #   https://wiki.jenkins-ci.org/display/SECURITY/Jenkins+Security+Advisory+2016-05-11
+        '-Dhudson.model.ParametersAction.keepUndefinedParameters=true',
+        $java_access_log_arg,
+    ], ' ')
+
+    $real_service_ensure = $service_ensure ? {
+        'unmanaged' => undef,
+        # Normalize to 'running' or 'stopped'
+        default     => ensure_service($service_ensure),
+    }
+
+    base::service_unit { 'jenkins':
+        ensure         => 'present',
+        sysvinit       => false,
+        systemd        => true,
+        refresh        => false,
+        service_params => {
+            enable => $service_enable,
+            ensure => $real_service_ensure,
+        },
+        require        => [
+            Systemd::Syslog['jenkins'],
+            File['/etc/default/jenkins'],
+        ],
     }
 
     # nagios monitoring
@@ -119,22 +162,9 @@ class jenkins(
         group  => 'jenkins',
     }
 
-    file { '/etc/logrotate.d/jenkins':
-        ensure  => present,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        source  => 'puppet:///modules/jenkins/jenkins_log.logrotate',
-        require => Package['jenkins'],
-    }
-
     file { '/etc/default/jenkins':
-        ensure  => present,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        content => template('jenkins/etc/default/jenkins.sh.erb'),
-        require => Package['openjdk-7-jre-headless'],
+        ensure  => absent,
+        require => Package['jenkins'],
     }
 
 }
