@@ -1,0 +1,11 @@
+[Unit]
+Description=Navigation Timing Whisper logger
+
+[Service]
+User=coal
+Group=coal
+Restart=always
+ExecStart=/usr/local/bin/coal --whisper-dir "/var/lib/coal" "<%= @endpoint %>"
+
+[Install]
+WantedBy=multi-user.target

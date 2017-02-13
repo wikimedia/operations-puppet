@@ -71,8 +71,9 @@ class coal( $endpoint ) {
         notify  => Service['coal'],
     }
 
-    service { 'coal':
-        ensure   => running,
-        provider => upstart,
+    base::service_unit { 'coal':
+        ensure  => present,
+        systemd => true,
+        upstart => true,
     }
 }
