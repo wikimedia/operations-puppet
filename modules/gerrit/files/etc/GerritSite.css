@@ -226,3 +226,11 @@ table.changeTable a.gwt-Anchor {
 	color: #e39f00;
 }
 li.ci_comment_test { list-style-type: none; }
+
+/** Make Post button a little bit look like OOUI */
+.com-google-gerrit-client-change-Resources-Style-button,
+.com-google-gerrit-client-change-Resources-Style-popup button,
+.com-google-gerrit-client-change-Resources-Style-popup input[type="button"] {
+	background-color: #36c;
+	background-image: -webkit-linear-gradient(top, #36c, #36c);
+}
