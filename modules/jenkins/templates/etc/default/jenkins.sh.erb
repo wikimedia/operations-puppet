@@ -64,7 +64,7 @@ MAXOPENFILES=8192
 #   If commented out, the value from the OS is inherited,  which is normally 022 (as of Ubuntu 12.04,
 #   by default umask comes from pam_umask(8) and /etc/login.defs
 
-# UMASK=027
+UMASK=<%= @umask %>
 
 # port for HTTP connector (default 8080; disable with -1)
 HTTP_PORT=8080
