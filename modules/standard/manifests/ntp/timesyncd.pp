@@ -41,10 +41,11 @@ class standard::ntp::timesyncd () {
     }
 
     nrpe::monitor_service { 'timesynd_ntp_status':
-        ensure        => 'present',
-        description   => 'Check the NTP synchronisation status of timesyncd',
-        nrpe_command  => '/usr/lib/nagios/plugins/check_timedatectl',
-        require       => File['/usr/lib/nagios/plugins/check_timedatectl'],
-        contact_group => 'admins',
+        ensure         => 'present',
+        description    => 'Check the NTP synchronisation status of timesyncd',
+        nrpe_command   => '/usr/lib/nagios/plugins/check_timedatectl',
+        require        => File['/usr/lib/nagios/plugins/check_timedatectl'],
+        contact_group  => 'admins',
+        check_interval => 30,
     }
 }
