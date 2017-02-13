@@ -1,0 +1,20 @@
+[Unit]
+Description=Jenkins Continuous Integration Server
+After=network.target
+
+[Service]
+Type=simple
+User=jenkins
+Group=jenkins
+SyslogIdentifier=jenkins
+UMask=<%= @umask %>
+LimitNOFILE=<%= @max_open_files %>
+
+Environment=JENKINS_HOME=/var/lib/jenkins
+ExecStart=/usr/bin/java <%= @java_args -%> -jar /usr/share/jenkins/jenkins.war --httpPort=<%= @http_port -%> --ajp13Port=-1 --prefix=<%= @prefix %>
+
+# We send SIGTERM(15), java exit code is 143 = 128 + 15
+SuccessExitStatus=143
+
+[Install]
+WantedBy=multi-user.target
