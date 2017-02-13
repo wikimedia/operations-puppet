@@ -14,6 +14,12 @@ class role::performance::site {
         endpoint => 'tcp://eventlogging.eqiad.wmnet:8600',
     }
 
+    file { '/srv/org/wikimedia':
+        ensure => directory,
+        owner  => 'www-data',
+        group  => 'www-data',
+    }
+
     git::clone { 'performance/docroot':
         ensure    => latest,
         owner     => 'www-data',
