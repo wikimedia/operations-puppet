@@ -4,14 +4,14 @@
 #####################################################################
 # vim: filetype=apache
 
-ProxyPass       <%= @prefix -%> http://localhost:8080<%= @prefix %>
-ProxyPassReverse    <%= @prefix -%> http://localhost:8080<%= @prefix %>
+ProxyPass       <%= @prefix -%> http://localhost:<%= @http_port -%><%= @prefix %>
+ProxyPassReverse    <%= @prefix -%> http://localhost:<%= @http_port -%><%= @prefix %>
 ProxyRequests       Off
 
 # Local reverse proxy authorization override
 # Most unix distribution deny proxy by default (ie /etc/apache2/mods-enabled/proxy.conf in Ubuntu)
 
-<Proxy http://localhost:8080<%= @prefix -%>*>
+<Proxy http://localhost:<%= @http_port -%><%= @prefix -%>*>
 
     # user agent blacklisting for Jenkins
     SetEnvIf User-Agent 80legs bad_browser
