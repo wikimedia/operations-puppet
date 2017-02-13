@@ -1782,218 +1782,156 @@ host einsteinium {
 host elastic1017 {
     hardware ethernet B0:83:FE:C0:B0:D2;
     fixed-address elastic1017.eqiad.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host elastic1018 {
     hardware ethernet B0:83:FE:BE:E6:93;
     fixed-address elastic1018.eqiad.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host elastic1019 {
     hardware ethernet B0:83:FE:C0:9C:24;
     fixed-address elastic1019.eqiad.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host elastic1020 {
     hardware ethernet B0:83:FE:C0:AE:DB;
     fixed-address elastic1020.eqiad.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host elastic1021 {
     hardware ethernet B0:83:FE:C0:97:E8;
     fixed-address elastic1021.eqiad.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host elastic1022 {
     hardware ethernet B0:83:FE:C0:B4:6F;
     fixed-address elastic1022.eqiad.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host elastic1023 {
     hardware ethernet B0:83:FE:C0:BF:C7;
     fixed-address elastic1023.eqiad.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host elastic1024 {
     hardware ethernet B0:83:FE:BE:F8:47;
     fixed-address elastic1024.eqiad.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host elastic1025 {
     hardware ethernet B0:83:FE:BE:F8:17;
     fixed-address elastic1025.eqiad.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host elastic1026 {
     hardware ethernet B0:83:FE:C0:B8:DB;
     fixed-address elastic1026.eqiad.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host elastic1027 {
     hardware ethernet B0:83:FE:C0:99:44;
     fixed-address elastic1027.eqiad.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host elastic1028 {
     hardware ethernet  B0:83:FE:C0:B3:EF;
     fixed-address elastic1028.eqiad.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host elastic1029 {
     hardware ethernet B0:83:FE:BE:F9:0F;
     fixed-address elastic1029.eqiad.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host elastic1030 {
     hardware ethernet B0:83:FE:BE:E5:87;
     fixed-address elastic1030.eqiad.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host elastic1031 {
     hardware ethernet B0:83:FE:C0:A2:EF;
     fixed-address elastic1031.eqiad.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host elastic1032 {
     hardware ethernet 14:02:EC:06:FE:54;
     fixed-address elastic1032.eqiad.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host elastic1033 {
     hardware ethernet 14:02:EC:07:31:C4;
     fixed-address elastic1033.eqiad.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host elastic1034 {
     hardware ethernet 14:02:EC:06:AE:70;
     fixed-address elastic1034.eqiad.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host elastic1035 {
     hardware ethernet 14:02:EC:07:D3:F0;
     fixed-address elastic1035.eqiad.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host elastic1036 {
     hardware ethernet 14:02:EC:06:AE:80;
     fixed-address elastic1036.eqiad.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host elastic1037 {
     hardware ethernet 14:02:EC:06:DE:20;
     fixed-address elastic1037.eqiad.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host elastic1038 {
     hardware ethernet 14:02:EC:06:9E:DC;
     fixed-address elastic1038.eqiad.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host elastic1039 {
     hardware ethernet 14:02:EC:06:AE:3C;
     fixed-address elastic1039.eqiad.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host elastic1040 {
     hardware ethernet 14:02:EC:06:BE:E4;
     fixed-address elastic1040.eqiad.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host elastic1041 {
     hardware ethernet 14:02:EC:06:BE:18;
     fixed-address elastic1041.eqiad.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host elastic1042 {
     hardware ethernet 14:02:EC:06:BE:6C;
     fixed-address elastic1042.eqiad.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host elastic1043 {
     hardware ethernet 14:02:EC:07:D3:58;
     fixed-address elastic1043.eqiad.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host elastic1044 {
     hardware ethernet 14:02:EC:07:E3:9C;
     fixed-address elastic1044.eqiad.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host elastic1045 {
     hardware ethernet 14:02:EC:06:BE:14;
     fixed-address elastic1045.eqiad.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host elastic1046 {
     hardware ethernet 14:02:EC:07:E3:F8;
     fixed-address elastic1046.eqiad.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host elastic1047 {
     hardware ethernet 14:02:EC:07:D3:D4;
     fixed-address elastic1047.eqiad.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host elastic1048 {
