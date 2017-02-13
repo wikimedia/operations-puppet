@@ -15,10 +15,14 @@
 # [*service_enable*]
 # Passed to Puppet Service['jenkins'] as 'enable'. Default: true.
 #
+# [*umask*]
+# Control permission bits of files created by Jenkins. Passed to 'daemon'.
+# Default: '0002'
 class jenkins(
     $prefix,
     $service_ensure  = 'running',
     $service_enable = true,
+    $umask = '0002'
 )
 {
     user { 'jenkins':
@@ -53,18 +57,8 @@ class jenkins(
         require => Package['openjdk-7-jre-headless'],
     }
 
-
-    # Jenkins should write everything group writable so admins can interact with
-    # files easily, hence we need it to run with umask 0002.
-    # The Jenkins software is daemonized in the init script using
-    # /usr/bin/daemon which reset the umask value.  Daemon accepts per user
-    # configuration via the ~/.daemonrc, set the umask there.
     file { '/var/lib/jenkins/.daemonrc':
-        ensure  => 'present',
-        content => "jenkins umask=0002\n",
-        owner   => 'jenkins',
-        group   => 'jenkins',
-        mode    => '0644',
+        ensure  => 'absent',
     }
 
     # Workaround for a Jenkins security issue.
@@ -93,8 +87,7 @@ class jenkins(
         ensure     => $real_ensure,
         enable     => $service_enable,
         hasrestart => true,
-        # Better have umask properly set before starting
-        require    => File['/var/lib/jenkins/.daemonrc'],
+        require    => File['/etc/default/jenkins'],
     }
 
     # nagios monitoring
