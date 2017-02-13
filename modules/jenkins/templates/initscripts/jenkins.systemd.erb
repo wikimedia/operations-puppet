@@ -1,0 +1,16 @@
+[Unit]
+Description=Jenkins Continuous Integration Server
+After=network.target
+
+[Service]
+Type=simple
+User=jenkins
+Group=jenkins
+UMask=<%= @umask -%>
+
+EnvironmentFile=/etc/default/jenkins
+LimitNOFILE=<%= @max_open_files -%>
+ExecStart=$JAVA $JAVA_ARGS -jar $JENKINS_WAR $JENKINS_ARGS
+
+[Install]
+WantedBy=multi-user.target
