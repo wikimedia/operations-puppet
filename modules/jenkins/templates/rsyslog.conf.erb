@@ -1,0 +1,6 @@
+# rsyslog(8) configuration file for jenkins.
+# This file is managed by Puppet.
+#
+# XXX systemd::syslog matches programname with 'startswith' when we want an
+# exact match.
+if $programname == 'jenkins' then <%= @local_syslogfile -%>

@@ -14,6 +14,10 @@
 # [*http_port*]
 # HTTP port for the web service. Default: 8080
 #
+# [*max_open_files*]
+# Maximum number of file descriptors. Passed to systemd LimitNOFILE.
+# Default: 8192.
+#
 # [*service_ensure*]
 # Passed to Puppet Service['jenkins']. If set to 'unmanaged', pass undef to
 # prevent Puppet from managing the service. Default: 'running'.
@@ -22,12 +26,13 @@
 # Passed to Puppet Service['jenkins'] as 'enable'. Default: true.
 #
 # [*umask*]
-# Control permission bits of files created by Jenkins. Passed to 'daemon'.
+# Control permission bits of files created by Jenkins. Passed to systemd.
 # Default: '0002'
 class jenkins(
     $prefix,
     $access_log = false,
     $http_port = '8080',
+    $max_open_files = '8192',
     $service_ensure  = 'running',
     $service_enable = true,
     $umask = '0002'
@@ -93,11 +98,32 @@ class jenkins(
         'unmanaged' => undef,
         default     => $service_ensure,
     }
-    service { 'jenkins':
-        ensure     => $real_ensure,
-        enable     => $service_enable,
-        hasrestart => true,
-        require    => File['/etc/default/jenkins'],
+
+    # XXX systemd::syslog matches programname with 'startswith' when we want an
+    # exact match.
+    $local_syslogfile = '/var/log/jenkins/jenkins.log'
+    file { $local_syslogfile:
+        ensure  => present,
+        replace => false,
+        content => '',
+        owner   => 'jenkins',
+        group   => 'jenkins',
+        mode    => '0640',
+        before  => Rsyslog::Conf['jenkins'],
+    }
+
+    rsyslog::conf { 'jenkins':
+        content  => template('jenkins/rsyslog.conf.erb'),
+        priority => 20,
+        before   => Base::Service_unit['jenkins'],
+    }
+
+    base::service_unit { 'jenkins':
+        ensure         => $real_ensure,
+        sysvinit       => false,
+        systemd        => true,
+        service_params => { enable => $service_enable },
+        require        => File['/etc/default/jenkins'],
     }
 
     # nagios monitoring
