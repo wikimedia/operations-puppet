@@ -1,0 +1,3 @@
+debdeploy::grains:
+  debdeploy-dbmonitor:
+    value: standard
