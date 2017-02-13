@@ -114,7 +114,7 @@ groups:
               jminor, etonkovidova, sbisson, addshore, matmarex, elukey,
               nikerabbit, nschaaf, dstrine, joewalsh, mpany, hjiang, jsamra, bcohn,
               jdittrich, chelsyx, ovasileva, mtizzoni, panisson, paolotti, ciro, debt,
-              samwalton9, zareen, fdans]
+              samwalton9, zareen, fdans, samtar]
   ldap-admins:
     gid: 715
     description: ldap admins
@@ -194,7 +194,7 @@ groups:
               deskana, dduvall, nettrom, mforns, jkatz, ebernhardson,
               mlitn, tbayer, joal, tomasz, kartik, nikerabbit, pcoombe,
               neilpquinn-wmf, maxsem, jminor, dpatrick, atgomez, dstrine,
-              ladsgroup, ovasileva, samtar]
+              ladsgroup, ovasileva]
   statistics-admins:
     posix_name: stats
     description: access files created by stats user cron jobs
