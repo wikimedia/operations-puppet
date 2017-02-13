@@ -26,6 +26,7 @@ class role::ci::master(
     # Load the Jenkins module, that setup a Jenkins master
     class { '::jenkins':
         access_log => true,
+        http_port  => '8080',
         prefix     => $jenkins_prefix,
         umask      => '0002',
     }
