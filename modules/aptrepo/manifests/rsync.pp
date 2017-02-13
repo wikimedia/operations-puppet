@@ -20,14 +20,6 @@ class aptrepo::rsync {
 
         include rsync::server
 
-        # just APT data (/srv/wikimedia/)
-        rsync::server::module { 'aptrepo':
-            ensure      => $ensure_sync,
-            path        => $aptrepo::basedir,
-            read_only   => 'no',
-            hosts_allow => $primary_server,
-        }
-        # also other data like junos, megacli, (all of /srv/)
         rsync::server::module { 'install-srv':
             ensure      => $aptrepo::rsync::ensure,
             path        => '/srv',
@@ -46,7 +38,7 @@ class aptrepo::rsync {
     cron { 'rsync-aptrepo':
         ensure  => $ensure_cron,
         user    => 'root',
-        command => "rsync -avp ${aptrepo::basedir}/ rsync://${secondary_server}/aptrepo > /dev/null",
+        command => "rsync -avp /srv/ rsync://${secondary_server}/install-srv > /dev/null",
         hour    => '*/6',
         minute  => '42',
     }
