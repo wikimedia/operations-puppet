@@ -7,7 +7,7 @@ groups:
               johnflewis, marc, jkrauska, akumar, mnoushad, spage, tnegrin, msyed, kleduc,
               manybubbles, haithams, jzerebecki, ashwinpp, ironholds, robla, asherman,
               laner, declerambaul, srijan, junikowski, krenair, springle, jhobs, vbaranetsky,
-              yurik, bsimmers]
+              yurik, bsimmers, bcohn]
   wikidev:
     gid: 500
     description: container group for primary user groups.
@@ -112,7 +112,7 @@ groups:
               daisy, tomasz, mholloway-shell, madhuvishy, ebernhardson, niedzielski,
               neilpquinn-wmf, tbayer, moushira, dbrant, maxsem,
               jminor, etonkovidova, sbisson, addshore, matmarex, elukey,
-              nikerabbit, nschaaf, dstrine, joewalsh, mpany, hjiang, jsamra, bcohn,
+              nikerabbit, nschaaf, dstrine, joewalsh, mpany, hjiang, jsamra,
               jdittrich, chelsyx, ovasileva, mtizzoni, panisson, paolotti, ciro, debt,
               samwalton9, zareen, fdans, samtar]
   ldap-admins:
@@ -232,7 +232,7 @@ groups:
               andyrussg, niedzielski, maxsem, hoo, daniel, tbayer, krinkle, tgr,
               csteipp, smalyshev, ebernhardson, addshore, jminor, chedasaurus, neilpquinn-wmf,
               dcausse, bd808, tjones, mobrovac, jgirault, jdrewniak, ejegg, jdcc, ori,
-              bmansurov, atgomez, amire80, kartik, pcoombe, foks, mpany, hjiang, jsamra, bcohn,
+              bmansurov, atgomez, amire80, kartik, pcoombe, foks, mpany, hjiang, jsamra,
               jdlrobson, chelsyx, ovasileva, mtizzoni, panisson, paolotti, ciro,
               psinger, flemmerich, mkroetzsch, akrausetud, filippo, nschaaf, pmiazga, faidon,
               zareen, piccardi, fdans, eevans, anomie, demon, ladsgroup, musikanimal]
@@ -2184,16 +2184,12 @@ users:
     uid: 15082
     email: hjiang@wikimedia.org
   bcohn:
-    ensure: present
+    ensure: absent
     gid: 500
     name: bcohn
     realname: Brent Cohn
-    ssh_keys:
-      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDKiINRPK0puzicpOyHuwiMc6ygmgPGXHZ70ltX2zVK5awSIB8ZAwh+ay8Pp9vHlBXFOaDIII7pVuV2k3AC4TH+gXipvZDRBNYABxVgW3V5ZGLkBxFm1sCThajE2jThebq3O7+iNx17Lbqe99CKyDpZ14wxw0ZOxkUYk21tcc3oz20r2b/7GzBmMCWjZlYwFU5CNSncjlyCtNqZrlBdQGIpGPZxzu+bMi/3dJ8vtGL4uxtGtw0+d4eQDmwFZ8ixHrGaAV0Nl7ZuDlbNxXu9isyro4NgY3pxcGJmuiMqrk3fUAgxkJSVMja3lsUSTmazKWf38y7T3L4KmMYjEVxucNXp bcohn@Brents-MacBook-Pro.local
+    ssh_keys: []
     uid: 15121
-    email: brentjoseph@gmail.com
-    expiry_date: 2017-06-07
-    expiry_contact: mhernandez@wikimedia.org
   jdittrich:
     ensure: present
     gid: 500
