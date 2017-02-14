@@ -1584,7 +1584,7 @@ users:
     ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAmjVSpmltf5d+0BTwdxRL6HmtvBKT8G2tsyET/Q0QJSu7jAEKoXHtsQlpWLJJecOe/9kCUDc5X3/1EOBTvlSOKRz4iPCgscGjIr4C8wT6tbboE5VkLlBPZqyC0pi0dTsILu599CPCBkwpr2K1yUwXwAJ0W3Y0XmsmJQmsDRyWP0Ck69EQ1NOfYp44NpZXdm63DzvIozNHRXNfyGQDHp8aNokegeuyd/cjDEVsUotH7ll0NoayStezJsL364i/yc9MWGEhHxsBRNaK9W9OPb6guaNwdXbwCiIgu+5WkTcJ9WauBl3DrY529aGQoqEps61VGeYkHKk/p+12TDPOZdKcYw== morten@fjord]
     uid: 3290
     comment: Research fellow, Wikimedia Google account, but MOU needs to be extended every six months
-    expiry_date: 2017-02-23
+    expiry_date: 2017-08-24
     expiry_contact: halfak@wikimedia.org
     email: mwang@wikimedia.org
   mforns:
