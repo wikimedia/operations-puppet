@@ -10,6 +10,9 @@ admin::groups:
   - deploy-phabricator
   - analytics-admins
 
+# Newer git version, not needed on stretch - T140927
+apt::use_experimental: true
+
 debdeploy::grains:
   debdeploy-deployment:
     value: standard
