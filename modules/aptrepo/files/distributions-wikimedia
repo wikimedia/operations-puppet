@@ -19,9 +19,9 @@ Suite: trusty-wikimedia
 Codename: trusty-wikimedia
 Version: 14.04
 Architectures: source amd64 i386
-Components: main universe non-free thirdparty
+Components: main universe non-free thirdparty cloudera
 UDebComponents: main
-Update: hwraid cloudera elasticsearch logstash hp-mcp-trusty confluent
+Update: hwraid cloudera-trusty elasticsearch logstash hp-mcp-trusty confluent
 Description: Wikimedia specific packages for Ubuntu Trusty Tahr
 SignWith: 09DBD9F93F6CD44A
 DebOverride: deb-override
@@ -35,9 +35,9 @@ Codename: jessie-wikimedia
 AlsoAcceptFor: jessie jessie-backports
 Version: 8
 Architectures: source amd64 i386
-Components: main backports thirdparty experimental
+Components: main backports thirdparty experimental cloudera
 UDebComponents: main backports thirdparty experimental
-Update: hwraid cassandra grafana tor hp-mcp-jessie confluent cloudera kibana elasticsearch docker
+Update: hwraid cassandra cloudera-jessie grafana tor hp-mcp-jessie confluent kibana elasticsearch docker
 Description: Wikimedia packages for Debian Jessie
 SignWith: 09DBD9F93F6CD44A
 DebOverride: deb-override
