@@ -137,4 +137,13 @@ class role::deployment::server(
 
     # Bug T126262
     require_package('php5-readline')
+
+    # Newer git version, not needed on stretch - T140927
+    if os_version('debian <= jessie') {
+        apt::repository { 'wikimedia-experimental':
+            uri        => 'http://apt.wikimedia.org/wikimedia',
+            dist       => "${::lsbdistcodename}-wikimedia",
+            components => 'experimental',
+        }
+    }
 }
