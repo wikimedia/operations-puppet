@@ -68,7 +68,7 @@ sub set_last_access_global_cookie__ {
 		"WMF-Last-Access-Global="
 		+ req.http.X-NowDay
 		+ ";Path=/;Domain=."
-		+ regsub(req.http.Host, "^([a-z0-9-]+\.)*([a-z0-9-]+\.<%= @vcl_config.fetch('top_domain') %>)$", "\2")
+		+ regsub(req.http.Host, "^([a-z0-9-]+\.)*([a-z0-9-]+\.<%= @vcl_config.fetch('top_domain', 'org') %>)$", "\2")
 		+ ";HttpOnly;secure;Expires="
 		+ std.time(std.time2integer(now + 32d, 0) / 43200 * 43200, now)
 	);
