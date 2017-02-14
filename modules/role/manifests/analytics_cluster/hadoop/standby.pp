@@ -35,7 +35,7 @@ class role::analytics_cluster::hadoop::standby {
 
         # Java heap space used alerts
         # The goal is to get alarms for long running memory leaks like T153951
-        $namenode_jvm_warning_threshold  = hiera(cdh::hadoop::hadoop_namenode_heapsize) * 0.7
+        $namenode_jvm_warning_threshold  = hiera(cdh::hadoop::hadoop_namenode_heapsize) * 0.8
         $namenode_jvm_critical_threshold = hiera(cdh::hadoop::hadoop_namenode_heapsize) * 0.9
         monitoring::graphite_threshold { 'analytics_hadoop_namenode_hdfs':
             description   => 'HDFS standby Namenode JVM Heap usage',
@@ -66,11 +66,11 @@ class role::analytics_cluster::hadoop::standby {
 
         # Java heap space used alerts
         # The goal is to get alarms for long running memory leaks like T153951
-        $rm_jvm_warning_threshold  = hiera(cdh::hadoop::yarn_heapsize) * 0.7
+        $rm_jvm_warning_threshold  = hiera(cdh::hadoop::yarn_heapsize) * 0.8
         $rm_jvm_critical_threshold = hiera(cdh::hadoop::yarn_heapsize) * 0.9
         monitoring::graphite_threshold { 'analytics_hadoop_yarn_resource_manager':
             description   => 'YARN Resource Manager JVM Heap usage',
-            metric        => "Hadoop.ResourceManager.${::hostname}_eqiad_wmnet_9984.Hadoop.ResourceManager.JvmMetrics.MemHeapUsedM.upper",
+            metric        => "Hadoop.ResourceManager.${::hostname}_eqiad_wmnet_9983.Hadoop.ResourceManager.JvmMetrics.MemHeapUsedM.upper",
             from          => '60min',
             warning       => $rm_jvm_warning_threshold,
             critical      => $rm_jvm_critical_threshold,
