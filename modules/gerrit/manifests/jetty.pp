@@ -6,7 +6,7 @@ class gerrit::jetty(
     $db_user = 'gerrit',
     $git_dir = 'git',
     $ssh_host_key = undef,
-    $heap_limit = '28g',
+    $heap_limit = '10g',
     $slave = false,
     $java_home = '/usr/lib/jvm/java-8-openjdk-amd64/jre',
     $log_host = undef,
