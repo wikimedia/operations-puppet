@@ -11,16 +11,17 @@ class statistics::compute {
     require_package('udp-filter')
 
     $working_path = $::statistics::working_path
+    $published_datasets_path = "${working_path}/published-datasets"
     # Create $working_path/published-datasets.  Anything in this directory
     # will be available at analytics.wikimedia.org/datasets.
     # See: class statistics::sites::analytics.
-    file { "${working_path}/published-datasets":
+    file { $published_datasets_path:
         ensure => 'directory',
         owner  => 'root',
         group  => 'wikidev',
         mode   => '0775',
     }
-    file { "${working_path}/published-datasets/README":
+    file { "${published_datasets_path}/README":
         ensure => 'present',
         source => 'puppet:///modules/statistics/published-datasets-readme.txt',
         owner  => 'root',
@@ -34,8 +35,8 @@ class statistics::compute {
     # will sync them into /srv/analytics.wikimedia.org/datasets.
     # See: statistics::sites::analytics.
     cron { 'rsync-published-datasets':
-        command => "/usr/bin/rsync -rt --delete ${working_path}/published-datasets/ thorium.eqiad.wmnet::srv/published-datasets-rsynced/${::hostname}/",
-        require => File["${working_path}/published-datasets"],
+        command => "/usr/bin/rsync -rtL --delete ${published_datasets_path}/ thorium.eqiad.wmnet::srv/published-datasets-rsynced/${::hostname}/",
+        require => File[$published_datasets_path],
         user    => 'root',
         minute  => '*/30',
     }
