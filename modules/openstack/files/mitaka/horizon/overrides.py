@@ -152,3 +152,26 @@ def _get_tenant_compute_usages_fixed(request, usages, disabled_quotas, tenant_id
 
 from openstack_dashboard.usage import quotas
 quotas._get_tenant_compute_usages = _get_tenant_compute_usages_fixed
+
+
+# Backport a fix which evaulates policy rules improperly
+# https://bugs.launchpad.net/horizon/+bug/1653792
+def _can_access_fixed(self, request):
+    policy_check = getattr(settings, "POLICY_CHECK_FUNCTION", None)
+
+    # this check is an OR check rather than an AND check that is the
+    # default in the policy engine, so calling each rule individually
+    if policy_check and self.policy_rules:
+        for rule in self.policy_rules:
+            rule_param = rule
+            if not any(isinstance(r, (list, tuple)) for r in rule):
+                rule_param = (rule,)
+            if policy_check(rule_param, request):
+                return True
+        return False
+
+    # default to allowed
+    return True
+
+from horizon import base as horizonbase
+horizonbase._can_access = _can_access_fixed
