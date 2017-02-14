@@ -2148,14 +2148,14 @@ node /^mw22(0[0-9]|1[0-4])\.codfw\.wmnet$/ {
 
 # New Appservers, in row A3/A4
 
-#mw2215-2220 are api appservers
-node /^mw22(1[5-9]|20)\.codfw\.wmnet$/ {
+#mw2215-2223 are api appservers
+node /^mw22(1[5-9]|2[0123])\.codfw\.wmnet$/ {
     role(mediawiki::appserver::api)
     include ::base::firewall
 }
 
-# mw2221-45 are appservers
-node /^mw22(2[1-9]|3[0-9]|4[0-5])\.codfw\.wmnet$/ {
+# mw2224-45 are appservers
+node /^mw22(2[4-9]|3[0-9]|4[0-5])\.codfw\.wmnet$/ {
     role(mediawiki::appserver)
     include ::base::firewall
 }
