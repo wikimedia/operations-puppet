@@ -88,6 +88,18 @@ class openstack::horizon::service(
         mode    => '0440',
     }
 
+    # This is a trivial policy file that forbids everything.  We'll use it
+    #  for services that we don't support to prevent Horizon from
+    #  displaying spurious panels.
+    file { '/etc/openstack-dashboard/disabled_policy.json':
+        source  => "puppet:///modules/openstack/${openstack_version}/horizon/disabled_policy.json",
+        owner   => 'horizon',
+        group   => 'horizon',
+        notify  => Service['apache2'],
+        require => Package['openstack-dashboard'],
+        mode    => '0440',
+    }
+
     file { '/usr/share/openstack-dashboard/openstack_dashboard/static/dashboard/img/logo.png':
         source  => 'puppet:///modules/openstack/horizon/216px-Wikimedia_labs_dashboard_logo.png',
         owner   => 'horizon',
