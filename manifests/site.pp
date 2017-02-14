@@ -2154,12 +2154,16 @@ node /^mw22(1[5-9]|2[0123])\.codfw\.wmnet$/ {
     include ::base::firewall
 }
 
-# mw2224-45 are appservers
-node /^mw22(2[4-9]|3[0-9]|4[0-5])\.codfw\.wmnet$/ {
+# mw2224-43 are appservers
+node /^mw22(2[4-9]|3[0-9]|4[0-3])\.codfw\.wmnet$/ {
     role(mediawiki::appserver)
     include ::base::firewall
 }
 
+#mw2244-mw2245 are imagescalers
+node /^mw224[45]\.codfw\.wmnet$/ {
+    role(mediawiki::imagescaler)
+}
 
 # mw2246 is a videoscaler
 node 'mw2246.codfw.wmnet' {
