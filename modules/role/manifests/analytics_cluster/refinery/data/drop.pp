@@ -39,7 +39,7 @@ class role::analytics_cluster::refinery::data::drop {
     # keep this many days of wdqs_extract data
     $wdqs_extract_retention_days = 90
     cron {'refinery-drop-wdqs-extract-partitions':
-        command => "export PYTHONPATH=\${PYTHONPATH}:${role::analytics_cluster::refinery::path}/python && ${role::analytics_cluster::refinery::path}/bin/refinery-drop-hourly-partitions -d ${wdqs_extract_retention_days} -D wmf -t wdqs_extract -l /wmf/data/wmf/wdqs_extract >> ${wdqs_extract_log_file} 2>&1",
+        command => "export PYTHONPATH=\${PYTHONPATH}:${role::analytics_cluster::refinery::path}/python && ${role::analytics_cluster::refinery::path}/bin/refinery-drop-hourly-partitions -d ${wdqs_extract_retention_days} -p hive -D wmf -t wdqs_extract -l /wmf/data/wmf/wdqs_extract >> ${wdqs_extract_log_file} 2>&1",
         user    => 'hdfs',
         minute  => '0',
         hour    => '1',
