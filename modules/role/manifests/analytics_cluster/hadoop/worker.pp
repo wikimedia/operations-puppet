@@ -59,9 +59,9 @@ class role::analytics_cluster::hadoop::worker {
 
         # Java heap space used alerts
         # The goal is to get alarms for long running memory leaks like T153951
-        $dn_jvm_warning_threshold  = hiera(cdh::hadoop::hadoop_heapsize) * 0.7
+        $dn_jvm_warning_threshold  = hiera(cdh::hadoop::hadoop_heapsize) * 0.8
         $dn_jvm_critical_threshold = hiera(cdh::hadoop::hadoop_heapsize) * 0.9
-        $nm_jvm_warning_threshold  = hiera(cdh::hadoop::yarn_heapsize) * 0.7
+        $nm_jvm_warning_threshold  = hiera(cdh::hadoop::yarn_heapsize) * 0.8
         $nm_jvm_critical_threshold = hiera(cdh::hadoop::yarn_heapsize) * 0.9
         monitoring::graphite_threshold { 'analytics_hadoop_yarn_nodemanager':
             description   => 'YARN NodeManager JVM Heap usage',
