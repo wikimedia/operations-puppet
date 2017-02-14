@@ -73,7 +73,11 @@ def get_verify(prompt, invalid, valid):
             break
 
 
-def run_remote(node, username, cmd, debug=False):
+def run_remote(node,
+               username,
+               keyfile,
+               cmd,
+               debug=False):
     """ Execute a remote command using SSH
     :param node: str
     :param cmd: str
@@ -96,7 +100,7 @@ def run_remote(node, username, cmd, debug=False):
         '-o',
         'LogLevel={}'.format('DEBUG' if debug else 'ERROR'),
         '-i',
-        'id_osstackcanary_rsa',
+        keyfile,
         '{}@{}'.format(username, node),
     ]
 
@@ -133,7 +137,7 @@ def verify_dns(hostname, nameservers, timeout=2.0):
     return ns.interval
 
 
-def verify_ssh(address, user, timeout):
+def verify_ssh(address, user, keyfile, timeout):
     """ ensure SSH works to an instance
     :param address: str
     :param timeout: int
@@ -142,9 +146,9 @@ def verify_ssh(address, user, timeout):
     with Timer() as vs:
         logging.info('SSH to {}'.format(address))
         while True:
-            time.sleep(60)
+            time.sleep(30)
             try:
-                run_remote(address, user, '/bin/true')
+                run_remote(address, user, keyfile, '/bin/true')
                 break
             except subprocess.CalledProcessError as e:
                 logging.debug(e)
@@ -156,7 +160,7 @@ def verify_ssh(address, user, timeout):
     return vs.interval
 
 
-def verify_puppet(address, user, timeout):
+def verify_puppet(address, user, keyfile, timeout):
     """ Ensure Puppet has run on an instance
     :param address: str
     :param timeout: init
@@ -167,7 +171,7 @@ def verify_puppet(address, user, timeout):
         while True:
             try:
                 cp = 'sudo cat /var/lib/puppet/state/last_run_summary.yaml'
-                out = run_remote(address, user, cp)
+                out = run_remote(address, user, keyfile, cp)
                 break
             except subprocess.CalledProcessError as e:
                 logging.debug(e)
@@ -277,6 +281,18 @@ def main():
     )
 
     argparser.add_argument(
+        '--keyfile',
+        default='',
+        help='Path to SSH key file for verification',
+    )
+
+    argparser.add_argument(
+        '--user',
+        default='',
+        help='Set username (Expected to be the same across all backends)',
+    )
+
+    argparser.add_argument(
         '--prepend',
         default='test-create',
         help='String to add to beginning of instance names',
@@ -304,7 +320,7 @@ def main():
 
     argparser.add_argument(
         '--creation-timeout',
-        default=120,
+        default=180,
         type=int,
         help='Allow this long for creation to succeed.',
     )
@@ -400,10 +416,17 @@ def main():
         logging.error("cannot skip SSH with adhoc command specified")
         sys.exit(1)
 
+    try:
+        with open(args.keyfile, 'r') as f:
+            f.read()
+    except:
+        logging.error("keyfile {} cannot be read".format(args.keyfile))
+        sys.exit(1)
+
     fulltimer = Timer()
 
     pw = os.environ.get('OS_PASSWORD')
-    user = os.environ.get('OS_USERNAME')
+    user = os.environ.get('OS_USERNAME') or args.user
     project = os.environ.get('OS_TENANT_NAME') or args.project
     if not all([user, pw, project]):
         logging.error('Set username and password environment variables')
@@ -464,12 +487,14 @@ def main():
         if not args.skip_ssh:
             vs = verify_ssh(addr,
                             user,
+                            args.keyfile,
                             args.ssh_timeout)
 
             stat('verify.ssh', vs)
             if args.adhoc_command:
                 sshout = run_remote(addr,
                                     user,
+                                    args.keyfile,
                                     args.adhoc_command,
                                     debug=args.debug)
                 logging.debug(sshout)
@@ -477,6 +502,7 @@ def main():
         if not args.skip_puppet:
             ps, puppetrun = verify_puppet(addr,
                                           user,
+                                          args.keyfile,
                                           args.puppet_timeout)
             stat('verify.puppet', ps)
 
