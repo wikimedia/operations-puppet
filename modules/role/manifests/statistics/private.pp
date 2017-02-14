@@ -55,13 +55,21 @@ class role::statistics::private inherits role::statistics::base {
     # access to required files in Hadoop.
     class { 'reportupdater':
         base_path => "${::statistics::working_path}/reportupdater",
-        rsync_to  => 'thorium.eqiad.wmnet::srv/limn-public-data/metrics/',
         user      => 'hdfs',
         # We know that this is included on stat1002, but unfortunetly
         # it is done so outside of this role.  Perhaps
         # reportupdater should have its own role!
         require   => Class['cdh::hadoop'],
     }
+    # And set up a link for periodic jobs to be included in published reports.
+    # Because periodic is in published_datasets_path, files will be synced to
+    # analytics.wikimedia.org/datasets/periodic
+    file { "${::statistics::compute::published_datasets_path}/periodic":
+        ensure  => 'link',
+        target  => "${::statistics::working_path}/reportupdater/output",
+        require => Class['reportupdater'],
+    }
+
     # Set up a job to create browser reports on hive db.
     reportupdater::job { 'browser':
         repository  => 'reportupdater-queries',
