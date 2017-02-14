@@ -29,11 +29,17 @@ class role::statistics::cruncher inherits role::statistics::base {
 
 
     # Set up reportupdater to be executed on this machine
-    # and rsync the output base path to thorium.
     class { 'reportupdater':
         base_path => "${::statistics::working_path}/reportupdater",
         user      => $::statistics::user::username,
-        rsync_to  => 'thorium.eqiad.wmnet::srv/limn-public-data/',
+    }
+    # And set up a link for periodic jobs to be included in published reports.
+    # Because periodic is in published_datasets_path, files will be synced to
+    # analytics.wikimedia.org/datasets/periodic/reports
+    file { "${::statistics::compute::published_datasets_path}/periodic/reports":
+        ensure  => 'link',
+        target  => "${::statistics::working_path}/reportupdater/output",
+        require => Class['reportupdater'],
     }
 
     # Set up various jobs to be executed by reportupdater
