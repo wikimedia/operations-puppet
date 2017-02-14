@@ -29,12 +29,12 @@ class role::statistics::cruncher inherits role::statistics::base {
 
 
     # Set up reportupdater to be executed on this machine
-    # and rsync the output base path to thorium.
     class { 'reportupdater':
         base_path => "${::statistics::working_path}/reportupdater",
         user      => $::statistics::user::username,
-        rsync_to  => 'thorium.eqiad.wmnet::srv/limn-public-data/',
     }
+    # And set up a link for periodic jobs to be included in published reports
+    ## TODO: ln -s "${::statistics::working_path}/reportupdater/output" "${::statistics::working_path}/published-datasets/periodic"
 
     # Set up various jobs to be executed by reportupdater
     # creating several reports on mysql research db.
