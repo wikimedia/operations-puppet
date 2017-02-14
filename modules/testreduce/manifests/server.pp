@@ -29,11 +29,10 @@ define testreduce::server(
     $db_name,
     $db_user,
     $db_pass,
-    $db_host       = 'localhost',
-    $db_port       = 3306,
-    $coord_port    = 8002,
-    $webapp_port   = 8003,
-    $service_state = running,
+    $db_host     = 'localhost',
+    $db_port     = 3306,
+    $coord_port  = 8002,
+    $webapp_port = 8003,
 ) {
     file { "/etc/testreduce/${instance_name}.settings.js":
         # FIXME: Ideally this would be testreduce/settings.js.rb
@@ -55,7 +54,7 @@ define testreduce::server(
     }
 
     service { $instance_name:
-        ensure  => $service_state,
+        ensure  => running,
         require => [
             File["/etc/testreduce/${instance_name}.settings.js"],
             File["/lib/systemd/system/${instance_name}.service"],

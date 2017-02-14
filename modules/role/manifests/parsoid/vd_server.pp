@@ -13,7 +13,6 @@ class role::parsoid::vd_server {
         db_pass       => $passwords::testreduce::mysql::db_pass,
         webapp_port   => 8010,
         coord_port    => 8011,
-        service_state => stopped,
     }
 
 }

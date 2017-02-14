@@ -5,6 +5,5 @@ class role::parsoid::vd_client {
 
     testreduce::client { 'parsoid-vd-client':
         instance_name => 'parsoid-vd-client',
-        service_state => stopped,
     }
 }
