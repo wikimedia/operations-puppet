@@ -109,7 +109,7 @@ class role::labs::nfs::secondary($monitor = 'eth0') {
 
         sudo::user { 'diamond_dir_size_tracker':
             user       => 'diamond',
-            privileges => ['diamond ALL = NOPASSWD: /usr/bin/timeout 10m /usr/bin/nice -n 19 /usr/bin/ionice -c 3 /usr/bin/du -k -s'],
+            privileges => ['ALL = NOPASSWD: /usr/bin/timeout 10m /usr/bin/nice -n 19 /usr/bin/ionice -c 3 /usr/bin/du -k -s'],
         }
 
         $dir_size_collector_config = [
