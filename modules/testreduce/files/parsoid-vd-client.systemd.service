@@ -8,7 +8,7 @@ Group=testreduce
 
 # The proxy is needed by phantomjs to access wmf wikis
 # via the public entrypoints.
-Environment=PATH=/srv/visualdiff/node_modules/phantomjs/bin:/sbin:/usr/sbin:/bin:/usr/bin HTTP_PROXY_IP_AND_PORT=http://208.80.154.10:8080
+Environment=PATH=/srv/visualdiff/node_modules/phantomjs/bin:/sbin:/usr/sbin:/bin:/usr/bin HTTP_PROXY_IP_AND_PORT=http://webproxy.eqiad.wmnet:8080
 WorkingDirectory=/srv/testreduce/client
 ExecStart=/usr/bin/nodejs client-cluster.js -c 4 /etc/testreduce/parsoid-vd-client.config.js
 StandardOutput=journal
