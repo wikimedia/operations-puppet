@@ -12,9 +12,6 @@ import subprocess
 
 class DirectorySizeCollector(diamond.collector.Collector):
 
-    def __init__(self):
-        self.config = self.get_default_config()
-
     def get_default_config_help(self):
         config_help = super(DirectorySizeCollector, self).get_default_config_help()
         config_help.update({
