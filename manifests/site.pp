@@ -213,7 +213,7 @@ node 'californium.wikimedia.org' {
 
 # ex-installserver, replaced by install1002/install2002, to be decom'ed (T158020)
 node 'carbon.wikimedia.org' {
-    role(spare)
+    role(spare::system)
 
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
