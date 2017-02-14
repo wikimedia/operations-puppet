@@ -6,8 +6,7 @@
 #   Name of the testreduce client service
 #
 define testreduce::client(
-    $instance_name,
-    $service_state = running,
+    $instance_name
 ) {
     file { "/etc/testreduce/${instance_name}.config.js":
         content => template("testreduce/${instance_name}.config.js.erb"),
@@ -26,6 +25,6 @@ define testreduce::client(
     }
 
     service { $instance_name:
-        ensure => $service_state,
+        ensure => running,
     }
 }
