@@ -3,6 +3,11 @@
 #
 # filtertags: labs-project-analytics
 class role::analytics_cluster::hadoop::client {
+    # Include Wikimedia's thirdparty/cloudera apt component
+    # as an apt source on all Hadoop hosts.  This is needed
+    # to install CDH packages from our apt repo mirror.
+    require ::role::analytics_cluster::apt
+
     # Need Java before Hadoop is installed.
     require ::role::analytics_cluster::java
 
