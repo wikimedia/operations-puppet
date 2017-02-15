@@ -288,6 +288,11 @@ elasticsearch:
   elastic1045.eqiad.wmnet: [elasticsearch, elasticsearch-ssl]
   elastic1046.eqiad.wmnet: [elasticsearch, elasticsearch-ssl]
   elastic1047.eqiad.wmnet: [elasticsearch, elasticsearch-ssl]
+  elastic1048.eqiad.wmnet: [elasticsearch, elasticsearch-ssl]
+  elastic1049.eqiad.wmnet: [elasticsearch, elasticsearch-ssl]
+  elastic1050.eqiad.wmnet: [elasticsearch, elasticsearch-ssl]
+  elastic1051.eqiad.wmnet: [elasticsearch, elasticsearch-ssl]
+  elastic1052.eqiad.wmnet: [elasticsearch, elasticsearch-ssl]
 swift:
   ms-fe1001.eqiad.wmnet: [swift-fe]
   ms-fe1002.eqiad.wmnet: [swift-fe]

@@ -41,9 +41,14 @@ elasticsearch::cluster_hosts:
   - elastic1045.eqiad.wmnet
   - elastic1046.eqiad.wmnet
   - elastic1047.eqiad.wmnet
+  - elastic1048.eqiad.wmnet
+  - elastic1049.eqiad.wmnet
+  - elastic1050.eqiad.wmnet
+  - elastic1051.eqiad.wmnet
+  - elastic1052.eqiad.wmnet
 
 # TODO at what point do we need to update this number?
-elasticsearch::expected_nodes: 31
+elasticsearch::expected_nodes: 36
 
 # We should be able to run "OK" with 24 servers.
 elasticsearch::recover_after_nodes: 24
