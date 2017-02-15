@@ -60,13 +60,5 @@ class role::ci::master {
         require => File['/var/lib/jenkins/email-templates'],
     }
 
-    # Jenkins build records path is set to:
-    # ${JENKINS_HOME}/builds/${ITEM_FULL_NAME}
-    file { '/var/lib/jenkins/builds':
-        ensure => directory,
-        mode   => '2775', # group sticky bit
-        group  => 'jenkins',
-    }
-
     require contint::master_dir
 }
