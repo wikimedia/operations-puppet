@@ -29,13 +29,11 @@ class zuul::monitoring::server (
         nrpe_command  => '/usr/lib/nagios/plugins/check_tcp -H 127.0.0.1 -p 4730 --timeout=2',
     }
 
-    # HoltWinters window in minutes
-    $check_window = 30
     monitoring::graphite_anomaly { 'zuul_gearman_wait_queue':
         ensure        => $ensure,
-        description   => "Work requests waiting in Zuul Gearman server https://grafana.wikimedia.org/dashboard/db/zuul-gearman?panelId=20&fullscreen&var-check_window=${check_window}&from=now-${check_window}m&to=now",
+        description   => 'Work requests waiting in Zuul Gearman server https://grafana.wikimedia.org/dashboard/db/zuul-gearman',
         metric        => 'zuul.geard.queue.waiting',
-        check_window  => $check_window,
+        check_window  => 30,  # HoltWinters window in minutes
         # Alarms when metric is above the HoltWinters upper confidence band
         warning       => 5,
         critical      => 10,
