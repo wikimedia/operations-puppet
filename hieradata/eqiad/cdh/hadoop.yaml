@@ -31,9 +31,12 @@ cdh::hadoop::datanode_mounts:
 
 cdh::hadoop::net_topology_script_template: 'role/analytics_cluster/hadoop/net-topology.py.erb'
 
-# Increase NameNode heapsize independent from other daemons
-# The opts value will be used for the JVM, meanwhile the raw number for alarms.
-cdh::hadoop::hadoop_namenode_heapsize: 4096
+# Increase NameNode heapsize independent from other daemons.
+# Note that hadoop_namenode_heapsize is not a cdh class parameter.
+# It exists so that we can configure icinga alerts properly,
+# without having to parse the -Xmx4096m value.  These
+# two should be set to the same megabyte value.
+hadoop_namenode_heapsize: 4096
 cdh::hadoop::hadoop_namenode_opts: "-Xmx4096m"
 
 cdh::hadoop::mapreduce_reduce_shuffle_parallelcopies: 10
