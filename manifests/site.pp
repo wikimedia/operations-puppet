@@ -924,13 +924,13 @@ node /^elastic101[7-9]\.eqiad\.wmnet/ {
     include ::standard
 }
 
-node /^elastic10[2-3][0-9]\.eqiad\.wmnet/ {
+node /^elastic10[2-4][0-9]\.eqiad\.wmnet/ {
     role(elasticsearch::cirrus)
     include ::base::firewall
     include ::standard
 }
 
-node /^elastic104[0-7]\.eqiad\.wmnet/ {
+node /^elastic105[0-2]\.eqiad\.wmnet/ {
     role(elasticsearch::cirrus)
     include ::base::firewall
     include ::standard
