@@ -45,14 +45,14 @@ class role::mariadb::grants::production(
         owner   => 'root',
         group   => 'root',
         mode    => '0400',
-        content => template('mariadb/production-grants.sql.erb'),
+        content => template('role/mariadb/grants/production.sql.erb'),
     }
 
     file { '/root/.my.cnf':
         owner   => 'root',
         group   => 'root',
         mode    => '0400',
-        content => template('mariadb/root.my.cnf.erb'),
+        content => template('role/mariadb/mysqld_config/root.my.cnf.erb'),
     }
 
     if $shard {
@@ -72,7 +72,7 @@ class role::mariadb::grants::production(
             owner   => 'root',
             group   => 'root',
             mode    => '0400',
-            content => template("mariadb/production-grants-${shard}.sql.erb"),
+            content => template("role/mariadb/grants/production-${shard}.sql.erb"),
         }
     }
 }
@@ -90,7 +90,7 @@ class role::mariadb::grants::core {
         owner   => 'root',
         group   => 'root',
         mode    => '0400',
-        content => template('mariadb/production-grants-core.sql.erb'),
+        content => template('role/mariadb/grants/production-core.sql.erb'),
     }
 }
 
@@ -106,7 +106,7 @@ class role::mariadb::grants::wikitech {
         owner   => 'root',
         group   => 'root',
         mode    => '0400',
-        content => template('mariadb/grants-wikitech.sql.erb'),
+        content => template('role/mariadb/grants/wikitech.sql.erb'),
     }
 }
 
@@ -236,7 +236,7 @@ class role::mariadb::misc(
     include mariadb::service
 
     class { 'mariadb::config':
-        config    => 'mariadb/misc.my.cnf.erb',
+        config    => 'role/mariadb/mysqld_config/misc.my.cnf.erb',
         datadir   => '/srv/sqldata',
         tmpdir    => '/srv/tmp',
         ssl       => 'puppet-cert',
@@ -299,7 +299,7 @@ class role::mariadb::misc::phabricator(
     $stopwords_database = 'phabricator_search'
 
     class { 'mariadb::config':
-        config    => 'mariadb/phabricator.my.cnf.erb',
+        config    => 'role/mariadb/mysqld_config/phabricator.my.cnf.erb',
         datadir   => '/srv/sqldata',
         tmpdir    => '/srv/tmp',
         sql_mode  => 'STRICT_ALL_TABLES',
@@ -390,7 +390,7 @@ class role::mariadb::misc::eventlogging(
     }
 
     class { 'mariadb::config':
-        config        => 'mariadb/eventlogging.my.cnf.erb',
+        config        => 'role/mariadb/mysqld_config/eventlogging.my.cnf.erb',
         datadir       => '/srv/sqldata',
         tmpdir        => '/srv/tmp',
         read_only     => $read_only,
@@ -437,7 +437,7 @@ class role::mariadb::beta {
     }
 
     class { 'mariadb::config':
-        config  => 'mariadb/beta.my.cnf.erb',
+        config  => 'role/mariadb/mysqld_config/beta.my.cnf.erb',
     }
 
     class { 'mariadb::service':
@@ -478,7 +478,7 @@ class role::mariadb::tendril {
     }
 
     class { 'mariadb::config':
-        config  => 'mariadb/tendril.my.cnf.erb',
+        config  => 'role/mariadb/mysqld_config/tendril.my.cnf.erb',
         datadir => '/srv/sqldata',
         tmpdir  => '/srv/tmp',
         ssl     => 'puppet-cert',
@@ -578,7 +578,7 @@ class role::mariadb::core(
 
     # Read only forced on also for the masters of the primary datacenter
     class { 'mariadb::config':
-        config           => 'mariadb/production.my.cnf.erb',
+        config           => 'role/mariadb/mysqld_config/production.my.cnf.erb',
         datadir          => '/srv/sqldata',
         tmpdir           => '/srv/tmp',
         p_s              => 'on',
@@ -634,7 +634,7 @@ class role::mariadb::sanitarium {
     include role::labs::db::check_private_data
 
     class { 'mariadb::config':
-        config   => 'mariadb/sanitarium.my.cnf.erb',
+        config   => 'role/mariadb/mysqld_config/sanitarium.my.cnf.erb',
     }
 
     ferm::service { 'mysqld_sanitarium':
@@ -725,7 +725,7 @@ class role::mariadb::sanitarium2 {
     }
 
     class { 'mariadb::config':
-        config => 'mariadb/sanitarium2.my.cnf.erb',
+        config => 'role/mariadb/mysqld_config/sanitarium2.my.cnf.erb',
         ssl    => 'puppet-cert',
     }
 
@@ -827,7 +827,7 @@ class role::mariadb::wikitech {
     include mariadb::service
 
     class { 'mariadb::config':
-        config  => 'mariadb/wikitech.my.cnf.erb',
+        config  => 'role/mariadb/mysqld_config/wikitech.my.cnf.erb',
         datadir => '/srv/sqldata',
         tmpdir  => '/srv/tmp',
     }
@@ -947,7 +947,7 @@ class role::mariadb::parsercache(
     }
 
     class { 'mariadb::config':
-        config  => 'mariadb/parsercache.my.cnf.erb',
+        config  => 'role/mariadb/mysqld_config/parsercache.my.cnf.erb',
         datadir => '/srv/sqldata-cache',
         tmpdir  => '/srv/tmp',
         ssl     => 'puppet-cert',
