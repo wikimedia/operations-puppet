@@ -205,14 +205,14 @@ customviews:
       if(ar_deleted&4,null,ar_user) as ar_user, if(ar_deleted&4,null,ar_user_text) as
       ar_user_text, ar_timestamp, ar_minor_edit, ar_flags, ar_rev_id, if(ar_deleted&1,null,ar_text_id)
       as ar_text_id, ar_deleted, if(ar_deleted&1,null,ar_len) as ar_len, ar_page_id, ar_parent_id,
-      if(ar_deleted&1,null,ar_sha1) as ar_sha1
+      if(ar_deleted&1,null,ar_sha1) as ar_sha1, ar_content_model, ar_content_format
   archive_userindex:
     source: archive
     view: >
       select ar_id, ar_namespace, ar_title, NULL as ar_text, NULL as ar_comment, ar_user,
       ar_user_text, ar_timestamp, ar_minor_edit, ar_flags, ar_rev_id, if(ar_deleted&1,null,ar_text_id)
       as ar_text_id, ar_deleted, if(ar_deleted&1,null,ar_len) as ar_len, ar_page_id, ar_parent_id,
-      if(ar_deleted&1,null,ar_sha1) as ar_sha1
+      if(ar_deleted&1,null,ar_sha1) as ar_sha1, ar_content_model, ar_content_format
     where: (ar_deleted&4)=0
   filearchive:
     source: filearchive
