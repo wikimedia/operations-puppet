@@ -1,0 +1,12 @@
+fixtures:
+    symlinks:
+        jenkins: "#{source_dir}"
+        base: "../../../../base"
+        alternatives: "../../../../alternatives"
+        monitoring: "../../../../monitoring"
+        nrpe: "../../../../nrpe"
+        rsyslog: "../../../../rsyslog"
+        ssh: "../../../../ssh"
+        stdlib: "../../../../stdlib"
+        systemd: "../../../../systemd"
+        wmflib: "../../../../wmflib"
