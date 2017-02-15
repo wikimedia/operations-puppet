@@ -32,7 +32,8 @@ TOOL_ALLOWED_RESOURCES = [
     'deployments',
     'replicasets',
     'configmaps',
-    'jobs'
+    'jobs',
+    'cronjobs'
 ]
 
 
