@@ -252,11 +252,11 @@ class phabricator (
 
     if $::initsystem == 'systemd' {
         file { '/etc/systemd/system/phd.service':
-            ensure => present,
-            owner  => 'root',
-            group  => 'root',
-            mode   => '0444',
-            source => 'puppet:///modules/phabricator/systemd/phd.service',
+            ensure  => present,
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0444',
+            content => template('phabricator/initscripts/phd.service.erb'),
         }
     }
 
