@@ -23,15 +23,12 @@
 # Maps tool users to precise tools, and sends reminder emails to all tool
 # maintainers to move their tools of precise before deprecation.
 #
-# Run like tail -500000 /data/project/.system/accounting | ./precise-reminder.py
-# from tools bastions
+# Run ./precise-reminder.py from tools bastions
 #
 
 from email.mime.text import MIMEText
 
 import collections
-import datetime
-import fileinput
 import http.client
 import json
 import ldap3
@@ -62,35 +59,21 @@ def ldap_conn(config):
                             password=config['password'])
 
 
-def uid_from_dn(dn):
-    keys = dn.split(',')
-    uid_key = keys[0]
-    uid = uid_key.split('=')[1]
-    return uid
-
-
-def tools_members(config, tools):
+def tools_members():
     """
-    Return a dict that has members of a tool associated with each tool
+    Query the precise-tools tool and return a dict with tool names associated with
+    a list of members
     Ex:
-    {'tools.musikbot': ['musikanimal'],
-     'tools.ifttt': ['slaporte', 'mahmoud', 'madhuvishy', 'ori']}
+    {'musikbot': ['musikanimal'],
+     'ifttt': ['slaporte', 'mahmoud', 'madhuvishy', 'ori']}
     """
-    tool_to_members = collections.defaultdict(list)
-    with ldap_conn(config) as conn:
-        for tool in tools:
-            conn.search(
-                'ou=servicegroups,dc=wikimedia,dc=org',
-                '(cn={})'.format(tool),
-                ldap3.SEARCH_SCOPE_WHOLE_SUBTREE,
-                attributes=['member', 'cn'],
-                time_limit=5
-            )
-            for resp in conn.response:
-                attributes = resp.get('attributes')
-                members = attributes.get('member', [])
-                tool_to_members[tool].extend([uid_from_dn(member) for member in members])
-    return tool_to_members
+    conn = http.client.HTTPConnection('tools.wmflabs.org')
+    conn.request("GET", "/precise-tools/json",
+                 headers={"User-Agent": "Precise reminder emailer|labs-admin@lists.wikimedia.org"})
+    res = conn.getresponse().read().decode('utf-8')
+    if res:
+        tools = json.loads(res)["tools"]
+    return {tool_name: tool_info["members"] for tool_name, tool_info in tools.items()}
 
 
 def members_tools(tool_to_members):
@@ -100,53 +83,6 @@ def members_tools(tool_to_members):
             if tool not in member_to_tools[m]:
                 member_to_tools[m].append(tool)
     return member_to_tools
-
-
-def is_precise_host(hostname):
-    if hostname[-4:].startswith('12'):
-        return True
-
-
-def grid_precise_tools():
-    all_precise_tools = []
-    conn = http.client.HTTPConnection('tools.wmflabs.org')
-    conn.request("GET", "/gridengine-status",
-                 headers={"User-Agent": "Precise tools finder|labs-admin@lists.wikimedia.org"})
-    res = conn.getresponse().read().decode('utf-8')
-    if res:
-        grid_info = json.loads(res)["data"]["attributes"]
-    for hostname, info in grid_info.items():
-        if is_precise_host(hostname):
-            if info["jobs"]:
-                all_precise_tools.extend([job["job_owner"] for job in info["jobs"].values()])
-    return all_precise_tools
-
-
-def accounting_tools():
-    DAYS = 7
-    FIELD_NAMES = [
-        'qname', 'hostname', 'group', 'owner', 'job_name', 'job_number', 'account',
-        'priority', 'submission_time', 'start_time', 'end_time', 'failed',
-        'exit_status', 'ru_wallclock', 'ru_utime', 'ru_stime', 'ru_maxrss',
-        'ru_ixrss', 'ru_ismrss', 'ru_idrss', 'ru_isrss', 'ru_minflt', 'ru_majflt',
-        'ru_nswap', 'ru_inblock', 'ru_oublock', 'ru_msgsnd', 'ru_msgrcv',
-        'ru_nsignals', 'ru_nvcsw', 'ru_nivcsw', 'project', 'department',
-        'granted_pe', 'slots', 'task_number', 'cpu', 'mem', 'io', 'category',
-        'iow', 'pe_taskid', 'maxvemem', 'arid', 'ar_submission_time',
-    ]
-
-    cutoff = (datetime.datetime.now() - datetime.timedelta(days=DAYS)).timestamp()
-    precise_tools = []
-
-    for line in fileinput.input():
-        parts = line.split(':')
-        job = dict(zip(FIELD_NAMES, parts))
-        if int(job['end_time']) < cutoff:
-            continue
-        if 'release=precise' in job['category'] and job['owner'] not in precise_tools:
-            precise_tools.append(job['owner'])
-
-    return precise_tools
 
 
 def member_emails(member_uids):
@@ -216,7 +152,7 @@ def notify_admins(member_tools, member_emails):
 with open('/etc/ldap.yaml') as f:
     config = yaml.safe_load(f)
 
-tool_to_members = tools_members(config, accounting_tools() + grid_precise_tools())
+tool_to_members = tools_members()
 logging.info("Tools on precise: \n {}".format(tool_to_members.keys()))
 mt = members_tools(tool_to_members)
 logging.info("Users being reminded: \n {}".format(mt.keys()))
