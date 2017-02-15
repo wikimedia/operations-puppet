@@ -92,30 +92,37 @@ class role::analytics_cluster::hadoop::master {
             ],
         }
 
-        # Java heap space used alerts
-        # The goal is to get alarms for long running memory leaks like T153951
-        $namenode_jvm_warning_threshold  = hiera(cdh::hadoop::hadoop_namenode_heapsize) * 0.8
-        $namenode_jvm_critical_threshold = hiera(cdh::hadoop::hadoop_namenode_heapsize) * 0.9
-        monitoring::graphite_threshold { 'analytics_hadoop_hdfs_namenode':
-            description   => 'HDFS active Namenode JVM Heap usage',
-            metric        => "Hadoop.NameNode.${::hostname}_eqiad_wmnet_9980.Hadoop.NameNode.JvmMetrics.MemHeapUsedM.upper",
-            from          => '60min',
-            warning       => $namenode_jvm_warning_threshold,
-            critical      => $namenode_jvm_critical_threshold,
-            percentage    => '60',
-            contact_group => 'admins,analytics',
+        # Java heap space used alerts.
+        # The goal is to get alarms for long running memory leaks like T153951.
+        # Only include heap size alerts if heap size is configured.
+        $hadoop_namenode_heapsize = hiera('cdh::hadoop::namenode_heapsize', undef)
+        if $hadoop_namenode_heapsize {
+            $nn_jvm_warning_threshold  = $hadoop_namenode_heapsize * 0.8
+            $nn_jvm_critical_threshold = $hadoop_namenode_heapsize * 0.9
+            monitoring::graphite_threshold { 'hadoop-hdfs-namenode-heap-usaage':
+                description   => 'HDFS active Namenode JVM Heap usage',
+                metric        => "Hadoop.NameNode.${::hostname}_eqiad_wmnet_9980.Hadoop.NameNode.JvmMetrics.MemHeapUsedM.upper",
+                from          => '60min',
+                warning       => $nn_jvm_warning_threshold,
+                critical      => $nn_jvm_critical_threshold,
+                percentage    => '60',
+                contact_group => 'admins,analytics',
+            }
         }
 
-        $rm_jvm_warning_threshold  = hiera(cdh::hadoop::yarn_heapsize) * 0.8
-        $rm_jvm_critical_threshold = hiera(cdh::hadoop::yarn_heapsize) * 0.9
-        monitoring::graphite_threshold { 'analytics_hadoop_yarn_resource_manager':
-            description   => 'Yarn active ResourceManager JVM Heap usage',
-            metric        => "Hadoop.ResourceManager.${::hostname}_eqiad_wmnet_9983.Hadoop.ResourceManager.JvmMetrics.MemHeapUsedM.upper",
-            from          => '60min',
-            warning       => $rm_jvm_warning_threshold,
-            critical      => $rm_jvm_critical_threshold,
-            percentage    => '60',
-            contact_group => 'admins,analytics',
+        $hadoop_resourcemanager_heapsize = $::cdh::hadoop::yarn_heapsize
+        if $hadoop_resourcemanager_heapsize {
+            $rm_jvm_warning_threshold  = $hadoop_resourcemanager_heapsize * 0.8
+            $rm_jvm_critical_threshold = $hadoop_resourcemanager_heapsize * 0.9
+            monitoring::graphite_threshold { 'hadoop-yarn-resourcemananager-heap-usage':
+                description   => 'YARN active ResourceManager JVM Heap usage',
+                metric        => "Hadoop.ResourceManager.${::hostname}_eqiad_wmnet_9983.Hadoop.ResourceManager.JvmMetrics.MemHeapUsedM.upper",
+                from          => '60min',
+                warning       => $rm_jvm_warning_threshold,
+                critical      => $rm_jvm_critical_threshold,
+                percentage    => '60',
+                contact_group => 'admins,analytics',
+            }
         }
     }
 
