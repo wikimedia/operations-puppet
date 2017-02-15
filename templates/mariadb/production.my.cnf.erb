@@ -48,7 +48,9 @@ thread_pool_stall_limit        = 10
 <% else -%>
 thread_pool_stall_limit        = 100
 <% end -%>
-<% if Integer(@processorcount) <= 32 -%>
+<% if Float(@memorysize.split[0]) > 200.0 -%>
+thread_pool_size               = 64
+<% elsif Integer(@processorcount) <= 32 -%>
 thread_pool_size               = 32
 <% else -%>
 thread_pool_size               = <%= @processorcount %>
