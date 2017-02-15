@@ -21,6 +21,8 @@
 #                        udp2log_logrotate.erb
 # $forward_messages    - Whether to forward received messages to other hosts.
 #                        Default: false
+# $mirror_destinations - Mirror received packets onto these hosts, using $port
+#                        Default: undef
 #
 define udp2log::instance(
     $ensure              = present,
@@ -50,6 +52,10 @@ define udp2log::instance(
     require_package('psmisc')
 
     require_package('udplog')
+
+    if $mirror_destinations {
+        require_package('socat')
+    }
 
     base::service_unit { "udp2log-${name}":
         ensure        => $ensure,

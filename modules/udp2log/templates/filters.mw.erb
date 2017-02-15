@@ -17,7 +17,7 @@ pipe 1 egrep '^(scap|scholarships|iegreview) ' | /usr/bin/log2udp -h <%= @templa
 <% if @mirror_destinations -%>
 
 <% @mirror_destinations.each do |destination| -%>
-pipe 1 /usr/bin/log2udp -h <%= destination %> -p 8420
+pipe 1 /usr/bin/socat - UDP-SENDTO:<%= destination %>:8420
 <% end -%>
 
 <% end -%>
