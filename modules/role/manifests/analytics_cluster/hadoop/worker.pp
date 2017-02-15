@@ -57,30 +57,39 @@ class role::analytics_cluster::hadoop::worker {
             retry_interval => 3,
         }
 
-        # Java heap space used alerts
-        # The goal is to get alarms for long running memory leaks like T153951
-        $dn_jvm_warning_threshold  = hiera(cdh::hadoop::hadoop_heapsize) * 0.8
-        $dn_jvm_critical_threshold = hiera(cdh::hadoop::hadoop_heapsize) * 0.9
-        $nm_jvm_warning_threshold  = hiera(cdh::hadoop::yarn_heapsize) * 0.8
-        $nm_jvm_critical_threshold = hiera(cdh::hadoop::yarn_heapsize) * 0.9
-        monitoring::graphite_threshold { 'analytics_hadoop_yarn_nodemanager':
-            description   => 'YARN NodeManager JVM Heap usage',
-            metric        => "Hadoop.NodeManager.${::hostname}_eqiad_wmnet_9984.Hadoop.NodeManager.JvmMetrics.MemHeapUsedM.upper",
-            from          => '60min',
-            warning       => $dn_jvm_warning_threshold,
-            critical      => $dn_jvm_critical_threshold,
-            percentage    => '60',
-            contact_group => 'admins,analytics',
+        # Java heap space used alerts.
+        # The goal is to get alarms for long running memory leaks like T153951.
+        # Only include heap size alerts if heap size is configured.
+        $hadoop_datanode_heapsize = $::cdh::hadoop::hadoop_heapsize
+        if $hadoop_datanode_heapsize {
+            $dn_jvm_warning_threshold  = $hadoop_datanode_heapsize * 0.8
+            $dn_jvm_critical_threshold = $hadoop_datanode_heapsize * 0.9
+            monitoring::graphite_threshold { 'analytics_hadoop_hdfs_datanode':
+                description   => 'HDFS DataNode JVM Heap usage',
+                metric        => "Hadoop.DataNode.${::hostname}_eqiad_wmnet_9981.Hadoop.DataNode.JvmMetrics.MemHeapUsedM.upper",
+                from          => '60min',
+                warning       => $dn_jvm_critical_threshold,
+                critical      => $dn_jvm_critical_threshold,
+                percentage    => '60',
+                contact_group => 'admins,analytics',
+            }
         }
-        monitoring::graphite_threshold { 'analytics_hadoop_hdfs_datanode':
-            description   => 'HDFS DataNode JVM Heap usage',
-            metric        => "Hadoop.DataNode.${::hostname}_eqiad_wmnet_9981.Hadoop.DataNode.JvmMetrics.MemHeapUsedM.upper",
-            from          => '60min',
-            warning       => $nm_jvm_warning_threshold,
-            critical      => $nm_jvm_critical_threshold,
-            percentage    => '60',
-            contact_group => 'admins,analytics',
+
+        $hadoop_nodemanager_heapsize = $::cdh::hadoop::yarn_heapsize
+        if $hadoop_nodemanager_heapsize {
+            $nm_jvm_warning_threshold  = $hadoop_nodemanager_heapsize * 0.8
+            $nm_jvm_critical_threshold = $hadoop_nodemanager_heapsize * 0.9
+            monitoring::graphite_threshold { 'analytics_hadoop_yarn_nodemanager':
+                description   => 'YARN NodeManager JVM Heap usage',
+                metric        => "Hadoop.NodeManager.${::hostname}_eqiad_wmnet_9984.Hadoop.NodeManager.JvmMetrics.MemHeapUsedM.upper",
+                from          => '60min',
+                warning       => $nm_jvm_critical_threshold,
+                critical      => $nm_jvm_critical_threshold,
+                percentage    => '60',
+                contact_group => 'admins,analytics',
+            }
         }
+
     }
 
     # hive::client is nice to have for jobs launched

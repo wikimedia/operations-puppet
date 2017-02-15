@@ -33,18 +33,22 @@ class role::analytics_cluster::hadoop::standby {
             require       => Class['cdh::hadoop::namenode::standby'],
         }
 
-        # Java heap space used alerts
-        # The goal is to get alarms for long running memory leaks like T153951
-        $namenode_jvm_warning_threshold  = hiera(cdh::hadoop::hadoop_namenode_heapsize) * 0.8
-        $namenode_jvm_critical_threshold = hiera(cdh::hadoop::hadoop_namenode_heapsize) * 0.9
-        monitoring::graphite_threshold { 'analytics_hadoop_namenode_hdfs':
-            description   => 'HDFS standby Namenode JVM Heap usage',
-            metric        => "Hadoop.NameNode.${::hostname}_eqiad_wmnet_9980.Hadoop.NameNode.JvmMetrics.MemHeapUsedM.upper",
-            from          => '60min',
-            warning       => $namenode_jvm_warning_threshold,
-            critical      => $namenode_jvm_critical_threshold,
-            percentage    => '60',
-            contact_group => 'admins,analytics',
+        $hadoop_namenode_heapsize = hiera('hadoop_namenode_heapsize', undef)
+        # Java heap space used alerts.
+        # The goal is to get alarms for long running memory leaks like T153951.
+        # Only include heap size alerts if heap size is configured.
+        if $hadoop_namenode_heapsize {
+            $namenode_jvm_warning_threshold  = $hadoop_namenode_heapsize * 0.8
+            $namenode_jvm_critical_threshold = $hadoop_namenode_heapsize * 0.9
+            monitoring::graphite_threshold { 'analytics_hadoop_namenode_hdfs':
+                description   => 'HDFS standby Namenode JVM Heap usage',
+                metric        => "Hadoop.NameNode.${::hostname}_eqiad_wmnet_9980.Hadoop.NameNode.JvmMetrics.MemHeapUsedM.upper",
+                from          => '60min',
+                warning       => $namenode_jvm_warning_threshold,
+                critical      => $namenode_jvm_critical_threshold,
+                percentage    => '60',
+                contact_group => 'admins,analytics',
+            }
         }
     }
 
@@ -64,18 +68,25 @@ class role::analytics_cluster::hadoop::standby {
             statsd  => hiera('statsd'),
         }
 
-        # Java heap space used alerts
-        # The goal is to get alarms for long running memory leaks like T153951
-        $rm_jvm_warning_threshold  = hiera(cdh::hadoop::yarn_heapsize) * 0.8
-        $rm_jvm_critical_threshold = hiera(cdh::hadoop::yarn_heapsize) * 0.9
-        monitoring::graphite_threshold { 'analytics_hadoop_yarn_resource_manager':
-            description   => 'YARN Resource Manager JVM Heap usage',
-            metric        => "Hadoop.ResourceManager.${::hostname}_eqiad_wmnet_9983.Hadoop.ResourceManager.JvmMetrics.MemHeapUsedM.upper",
-            from          => '60min',
-            warning       => $rm_jvm_warning_threshold,
-            critical      => $rm_jvm_critical_threshold,
-            percentage    => '60',
-            contact_group => 'admins,analytics',
+        # Include icinga alerts if production realm.
+        if $::realm == 'production' {
+            # Java heap space used alerts.
+            # The goal is to get alarms for long running memory leaks like T153951.
+            # Only include heap size alerts if heap size is configured.
+            $hadoop_resourcemanager_heapsize = $::cdh::hadoop::yarn_heapsize
+            if $hadoop_resourcemanager_heapsize {
+                $rm_jvm_warning_threshold = $hadoop_resourcemanager_heapsize * 0.8
+                $rm_jvm_warning_threshold = $hadoop_resourcemanager_heapsize * 0.9
+                monitoring::graphite_threshold { 'analytics_hadoop_yarn_resource_manager':
+                    description   => 'YARN Resource Manager JVM Heap usage',
+                    metric        => "Hadoop.ResourceManager.${::hostname}_eqiad_wmnet_9983.Hadoop.ResourceManager.JvmMetrics.MemHeapUsedM.upper",
+                    from          => '60min',
+                    warning       => $rm_jvm_warning_threshold,
+                    critical      => $rm_jvm_critical_threshold,
+                    percentage    => '60',
+                    contact_group => 'admins,analytics',
+                }
+            }
         }
     }
 
