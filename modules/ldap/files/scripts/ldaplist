@@ -24,11 +24,6 @@ signal(SIGPIPE, SIG_DFL)
 def main():
     "An application that implements the functionality of Solaris's ldaplist."
 
-    print '\033[91m'
-    print 'If you are still relying on ldaplist and not using ldapsearch,'
-    print 'please comment on https://phabricator.wikimedia.org/T114063'
-    print 'before 30 August 2016. If nobody comments, ldaplist will be removed!'
-    print '\033[0m'
     parser = OptionParser(conflict_handler="resolve")
     parser.set_usage("ldaplist [options] [database] [object-name]\n\nexample: ldaplist -l passwd ldap_user")
 
