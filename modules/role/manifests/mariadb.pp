@@ -778,7 +778,7 @@ class role::mariadb::labs {
     include mariadb::service
 
     class { 'mariadb::config':
-        config  => 'mariadb/labs.my.cnf.erb',
+        config  => 'role/mariadb/mysqld_config/labs.my.cnf.erb',
         datadir => '/srv/sqldata',
         tmpdir  => '/srv/tmp',
     }
