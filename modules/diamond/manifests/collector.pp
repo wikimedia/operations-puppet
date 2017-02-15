@@ -21,6 +21,11 @@
 #   A hash of configuration settings for the collector.
 #   The 'enabled' setting is set to true by default.
 #
+# [*config_file*]
+#   Optional to the settings param, provide a puppet file reference to a
+#   ConfigObj style config file that can be used directly as the collector's
+#   config file. This makes no assumptions about the 'enabled' setting.
+#
 # [*source*]
 #   A Puppet file reference to the Python collector source file. This parameter
 #   may be omitted if the collector is part of the Diamond distribution. It
@@ -56,8 +61,14 @@
 #    },
 #  }
 #
+# Configure a custom collector:
+#  diamond::collector{ 'Custom':
+#    source      => 'puppet:///modules/example/custom_collector.py',
+#    config_file => 'puppet:///modules/example/CustomCollector.conf'.
+#  }
 define diamond::collector(
     $settings    = undef,
+    $config_file = undef,
     $ensure      = present,
     $source      = undef,
     $content     = undef,
@@ -68,11 +79,21 @@ define diamond::collector(
 
     $collector = regsubst($name, '(Collector)?$', 'Collector')
 
-    file { "/etc/diamond/collectors/${collector}.conf":
-        ensure  => $ensure,
-        content => template('diamond/collector.conf.erb'),
-        require => File['/etc/diamond/collectors'],
-        notify  => Service['diamond'],
+    if $config_file != undef {
+        file { "/etc/diamond/collectors/${collector}.conf":
+            ensure  => $ensure,
+            source  => $config_file,
+            require => File['/etc/diamond/collectors'],
+            notify  => Service['diamond'],
+        }
+    }
+    else {
+        file { "/etc/diamond/collectors/${collector}.conf":
+            ensure  => $ensure,
+            content => template('diamond/collector.conf.erb'),
+            require => File['/etc/diamond/collectors'],
+            notify  => Service['diamond'],
+        }
     }
 
     # Install a custom diamond collector if $source or $content were provided.
