@@ -12,8 +12,13 @@
     <Directory /srv/xenon>
         Options +Indexes
         AllowOverride None
-        Order allow,deny
-        allow from all
+        <IfVersion >= 2.4>
+          Require all granted
+        </IfVersion>
+        <IfVersion < 2.4>
+          Order allow,deny
+          allow from all
+        </IfVersion>
 
         AddType image/svg+xml svg svgz
         AddEncoding gzip svgz
