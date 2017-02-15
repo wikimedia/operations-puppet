@@ -32,6 +32,7 @@ class zuul::monitoring::server (
     # HoltWinters window in minutes
     $check_window = 30
     monitoring::graphite_anomaly { 'zuul_gearman_wait_queue':
+        ensure        => $ensure,
         description   => "Work requests waiting in Zuul Gearman server https://grafana.wikimedia.org/dashboard/db/zuul-gearman?panelId=20&fullscreen&var-check_window=${check_window}&from=now-${check_window}m&to=now",
         metric        => 'zuul.geard.queue.waiting',
         check_window  => $check_window,
