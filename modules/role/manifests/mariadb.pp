@@ -313,7 +313,7 @@ class role::mariadb::misc::phabricator(
         owner   => 'root',
         group   => 'root',
         mode    => '0644',
-        content => template('mariadb/phabricator-stopwords.txt.erb'),
+        content => template('role/phabricator/stopwords.txt.erb'),
     }
 
     file { '/etc/mysql/phabricator-stopwords-update.sql':
@@ -321,7 +321,7 @@ class role::mariadb::misc::phabricator(
         owner   => 'root',
         group   => 'root',
         mode    => '0644',
-        content => template('mariadb/phabricator-stopwords-update.sql.erb'),
+        content => template('role/phabricator/stopwords-update.sql.erb'),
     }
 
     file { '/etc/mysql/phabricator-init.sql':
@@ -329,7 +329,7 @@ class role::mariadb::misc::phabricator(
         owner   => 'root',
         group   => 'root',
         mode    => '0644',
-        content => template('mariadb/phabricator-init.sql.erb'),
+        content => template('role/phabricator/init.sql.erb'),
     }
 
     class { 'role::mariadb::grants::production':
