@@ -686,7 +686,7 @@ class role::mariadb::sanitarium {
         owner   => 'root',
         group   => 'root',
         mode    => '0755',
-        content => template('mariadb/sanitarium.sysvinit.erb'),
+        content => template('role/mariadb/sanitarium.sysvinit.erb'),
     }
     file { '/etc/init.d/mysql':
         ensure => link,
