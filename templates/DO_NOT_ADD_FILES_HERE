@@ -1,5 +1,0 @@
-Using a templatedir is not only deprecated, but also prints large red
-warnings for every damn catalog compilation or other puppet action. 
-
-We're getting rid of them as fast as possible. If you add one, well,
-that means you've done so disregarding this large sign...
