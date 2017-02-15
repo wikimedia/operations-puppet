@@ -56,7 +56,7 @@ groups:
               nikerabbit, reedy, ssastry, tomasz,
               tgr, phuedx, ejegg, twentyafterfour, legoktm, catrope,
               mobrovac, nuria, thcipriani, joal, eevans, mforns, dpatrick, dcausse,
-              bsitzmann, mholloway-shell, dduvall, gehel, dereckson,
+              bsitzmann, mholloway-shell, dduvall, dereckson,
               ladsgroup, bawolff, zfilipin, addshore, niharika29, ppchelko, pmiazga]
     privileges: ['ALL = (www-data,apache,mwdeploy,l10nupdate) NOPASSWD: ALL',
                  'ALL = NOPASSWD: /sbin/restart hhvm',
