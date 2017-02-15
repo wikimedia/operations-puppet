@@ -868,7 +868,7 @@ class role::mariadb::proxy(
     }
 
     class { 'haproxy':
-        template => 'mariadb/haproxy.cfg.erb',
+        template => 'role/haproxy/db.cfg.erb',
     }
 }
 
@@ -890,7 +890,7 @@ class role::mariadb::proxy::master(
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-        content => template('mariadb/haproxy-master.cfg.erb'),
+        content => template('role/haproxy/db-master.cfg.erb'),
     }
 
     nrpe::monitor_service { 'haproxy_failover':
@@ -912,7 +912,7 @@ class role::mariadb::proxy::slaves(
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-        content => template('mariadb/haproxy-slaves.cfg.erb'),
+        content => template('role/haproxy/db-slaves.cfg.erb'),
     }
 }
 
