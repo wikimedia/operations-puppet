@@ -37,7 +37,7 @@ class role::labs::dns {
     }
 
     class { 'mariadb::config':
-        config    => 'role/mariadb/mysqld_config/dns.my.cnf.erb',
+        config    => 'mariadb/dns.my.cnf.erb',
         datadir   => '/srv/sqldata',
         tmpdir    => '/srv/tmp',
         read_only => 'off',
@@ -55,7 +55,7 @@ class role::labs::dns {
         owner   => 'root',
         group   => 'root',
         mode    => '0400',
-        content => template('role/mariadb/grants/dns.sql.erb'),
+        content => template('mariadb/grants-dns.sql.erb'),
     }
 
     ferm::service { 'udp_dns_rec':

@@ -39,7 +39,7 @@ class role::parsoid::testing {
     }
 
     file { '/etc/my.cnf':
-        content => template('role/mariadb/mysqld_config/parsoid_testing.my.cnf'),
+        content => template('mariadb/parsoid_testing.my.cnf'),
         owner   => 'root',
         group   => 'parsoid-test-roots',
         mode    => '0440',

@@ -18,7 +18,7 @@ class role::labs::db::slave {
     }
 
     class { 'mariadb::config':
-        config        => 'role/mariadb/mysqld_config/tools.my.cnf.erb',
+        config        => 'mariadb/tools.my.cnf.erb',
         datadir       => '/srv/labsdb/data',
         tmpdir        => '/srv/labsdb/tmp',
         read_only     => 'ON',
