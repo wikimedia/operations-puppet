@@ -17,7 +17,8 @@ class DirectorySizeCollector(diamond.collector.Collector):
         config_help.update({
             'dir_size_collector_config':
                 '''
-                List of dicts with optional keys:
+                Nested dict with format {<name>: <dict_of_keys>}, where dict_of_keys
+                is a dict with one or more of the following optional keys:
 
                 base_glob_pattern: Glob pattern to match directories to track size for
                                    e.g. /srv/misc/shared/*/home
@@ -39,13 +40,7 @@ class DirectorySizeCollector(diamond.collector.Collector):
         """
         config = super(DirectorySizeCollector, self).get_default_config()
         config.update({
-            'dir_size_collector_config': [
-                {'base_glob_pattern': '',
-                 'base_glob_exclude': '',
-                 'build_prefix_from_dir_path': False,
-                 'build_prefix_depth': None,
-                 'custom_prefix': ''}
-            ]
+            'dir_size_collector_config': {}
         })
         return config
 
@@ -98,7 +93,7 @@ class DirectorySizeCollector(diamond.collector.Collector):
         """
         Publish directory sizes in kilobytes
         """
-        for config in self.config['dir_size_collector_config']:
+        for config in self.config['dir_size_collector_config'].values():
             glob_pattern = config.get('base_glob_pattern', '')
             glob_exclude = config.get('base_glob_exclude', '')
             for directory in self.directories(glob_pattern, glob_exclude):
