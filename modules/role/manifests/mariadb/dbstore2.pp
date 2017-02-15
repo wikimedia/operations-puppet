@@ -30,7 +30,7 @@ class role::mariadb::dbstore2(
     }
 
     class { 'mariadb::config':
-        config  => 'mariadb/dbstore2.my.cnf.erb',
+        config  => 'role/mariadb/mysqld_config/dbstore2.my.cnf.erb',
         datadir => '/srv/sqldata',
         tmpdir  => '/srv/tmp',
         ssl     => 'puppet-cert',
