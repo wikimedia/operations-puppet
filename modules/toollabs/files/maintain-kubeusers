@@ -32,7 +32,9 @@ TOOL_ALLOWED_RESOURCES = [
     'deployments',
     'replicasets',
     'configmaps',
-    'jobs'
+    'jobs',
+    'cronjobs', # k8s 1.5.x
+    'scheduledjobs' # k8s 1.4.x
 ]
 
 
