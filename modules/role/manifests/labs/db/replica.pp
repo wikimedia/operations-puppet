@@ -40,7 +40,7 @@ class role::labs::db::replica {
     }
 
     class { 'mariadb::config':
-        config        => 'mariadb/labsdb-replica.my.cnf.erb',
+        config        => 'role/mariadb/mysqld_config/labsdb-replica.my.cnf.erb',
         datadir       => '/srv/sqldata',
         tmpdir        => '/srv/tmp',
         read_only     => 'ON',
