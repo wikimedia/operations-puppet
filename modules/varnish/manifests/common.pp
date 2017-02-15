@@ -114,7 +114,7 @@ class varnish::common {
     # and the expiry thread not being able to catch up with its mailbox
     file { '/usr/local/lib/nagios/plugins/check_varnish_expiry_mailbox_lag':
         ensure => present,
-        source => 'puppet:///modules/role/varnish/check_varnish_expiry_mailbox_lag.sh',
+        source => 'puppet:///modules/varnish/check_varnish_expiry_mailbox_lag.sh',
         mode   => '0555',
         owner  => 'root',
         group  => 'root',
