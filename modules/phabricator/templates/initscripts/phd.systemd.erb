@@ -1,0 +1,16 @@
+[Unit]
+Description=phabricator-phd
+After=syslog.target network.target
+Before=apache2.service
+User=phd
+Group=phd
+
+[Service]
+Type=forking
+Environment="PHABRICATOR_ENV=phd"
+ExecStart=/srv/phab/phabricator/bin/phd start
+ExecStop=/srv/phab/phabricator/bin/phd stop
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target
