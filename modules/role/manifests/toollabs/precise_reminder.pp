@@ -18,7 +18,7 @@ class role::toollabs::precise_reminder {
     cron { 'precise-reminder':
         ensure      => 'present',
         user        => 'root',
-        command     => '/usr/bin/tail -500000 /data/project/.system/accounting | /usr/local/sbin/precise-reminder',
+        command     => '/usr/local/sbin/precise-reminder',
         weekday     => 3,
         hour        => 22,
         minute      => 15,
