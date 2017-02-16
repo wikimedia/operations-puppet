@@ -34,6 +34,7 @@
 #                         graphite. Defaults to 10 seconds
 # over                  - check only for values above the limit
 # under                 - check only for values below the limit
+# upper_floor           - normalize upper band to be at least given value
 # $host
 # $retries
 # $group
@@ -46,6 +47,7 @@
 
 define monitoring::graphite_anomaly(
     $description,
+    # check_graphite check_anomaly
     $metric,
     $warning,
     $critical,
@@ -54,6 +56,8 @@ define monitoring::graphite_anomaly(
     $timeout               = 10,
     $over                  = false,
     $under                 = false,
+    $upper_floor           = undef,
+    # Icinga
     $host                  = $::hostname,
     $retries               = 3,
     $group                 = undef,
@@ -76,6 +80,12 @@ define monitoring::graphite_anomaly(
     else {
         $modifier = ''
     }
+    if $upper_floor != undef {
+        $arg_upper_floor = "--upper-floor ${upper_floor}"
+    } else {
+        $arg_upper_floor = ''
+    }
+    $extra_args = join([$modifier, $arg_upper_floor], ' ')
 
     if $metric =~ /'/ {
         fail("single quotes will be stripped from graphite metric ${metric}, consider using double quotes")
@@ -94,7 +104,7 @@ define monitoring::graphite_anomaly(
     monitoring::service { $title:
         ensure         => $ensure,
         description    => $description,
-        check_command  => "check_graphite_anomaly!${graphite_url}!${timeout}!${metric}!${warning}!${critical}!${check_window}!${modifier}",
+        check_command  => "check_graphite_anomaly!${graphite_url}!${timeout}!${metric}!${warning}!${critical}!${check_window}!${extra_args}",
         retries        => $retries,
         group          => $group,
         critical       => $nagios_critical,

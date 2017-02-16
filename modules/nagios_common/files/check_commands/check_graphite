@@ -443,6 +443,15 @@ sampling (we will still require 1w of data)''',
             action='store_true',
             default=False,
             help='If alarms should happen when we are below normal values')
+        p.add_argument(
+            '--upper-floor',
+            dest='upper_floor',
+            default=None,
+            type=float,
+            help='Normalize upper band to be at least the given value. '
+                 'A metric having a minimum of zero may have an upper band '
+                 'being negative. --upper-floor 1 would prevent that. '
+                 'Default: None')
 
         return p
 
@@ -463,6 +472,7 @@ sampling (we will still require 1w of data)''',
         self.crit = args.crit
         self.over = args.over
         self.under = args.under
+        self.upper_floor = args.upper_floor
 
     def parse_result(self, result):
         '''
@@ -480,7 +490,7 @@ sampling (we will still require 1w of data)''',
         for i in xrange(self.check_window):
             data, time = measures[i]
             l = lowerbound[i][0]
-            u = upperbound[i][0]
+            u = max(self.upper_floor, upperbound[i][0])
             if not isinstance(data, Real):
                 datapoints['unknown'].append((time, data))
             elif data >= u:

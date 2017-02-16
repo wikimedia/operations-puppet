@@ -37,6 +37,8 @@ class zuul::monitoring::server (
         # Alarms when metric is above the HoltWinters upper confidence band
         warning       => 5,
         critical      => 10,
+        # Normalize upper confidence band to be at least 1. T70113
+        upper_floor   => 1,
         # Only alarms when the metric goes above the upper confident band
         over          => true,
         contact_group => 'contint',
