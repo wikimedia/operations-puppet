@@ -2,11 +2,11 @@
 Description=phabricator-phd
 After=syslog.target network.target
 Before=apache2.service
-User=phd
 Group=phd
 
 [Service]
-Type=oneshot
+User=phd
+Type=forking
 Environment="PHABRICATOR_ENV=phd"
 
 ExecStart=/srv/phab/phabricator/bin/phd start
