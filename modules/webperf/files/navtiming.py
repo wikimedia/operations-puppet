@@ -317,11 +317,13 @@ class TestParseUa(unittest.TestCase):
         with open('navtiming_ua_data.yaml') as f:
             data = yaml.safe_load(f)
             for case in data:
-                if case['result']:
-                    expect = tuple(case['result'].split('.'))
-                else:
+                if case == 'Other._':
                     expect = None
-                self.assertEqual(
-                    parse_ua(case['ua']),
-                    expect
-                )
+                else:
+                    expect = tuple(case.split('.'))
+                uas = data.get(case)
+                for ua in uas:
+                    self.assertEqual(
+                        parse_ua(ua),
+                        expect
+                    )
