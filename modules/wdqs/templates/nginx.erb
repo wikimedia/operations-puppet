@@ -82,7 +82,8 @@ server {
         }
 
         proxy_set_header X-BIGDATA-MAX-QUERY-MILLIS $xmaxqueryheader;
-
+        proxy_set_header X-BIGDATA-READ-ONLY "yes";
+		
         add_header X-Served-By <%= @hostname %> always;
         add_header Access-Control-Allow-Origin * always;
         add_header Cache-Control "public, max-age=300";
@@ -99,7 +100,7 @@ server {
         proxy_max_temp_file_size 10m;
         proxy_read_timeout 300;
 
-        limit_except GET OPTIONS {
+        limit_except GET OPTIONS POST {
             deny all;
         }
 
