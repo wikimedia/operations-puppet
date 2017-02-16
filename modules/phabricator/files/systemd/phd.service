@@ -6,7 +6,7 @@ User=phd
 Group=phd
 
 [Service]
-Type=oneshot
+Type=forking
 Environment="PHABRICATOR_ENV=phd"
 
 ExecStart=/srv/phab/phabricator/bin/phd start
