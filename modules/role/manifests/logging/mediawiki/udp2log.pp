@@ -50,6 +50,13 @@ class role::logging::mediawiki::udp2log(
         source => 'puppet:///modules/udp2log/demux.py',
     }
 
+    file { '/usr/local/bin/udpmirror.py':
+        mode   => '0544',
+        owner  => 'root',
+        group  => 'root',
+        source => 'puppet:///modules/udp2log/udpmirror.py',
+    }
+
     $logstash_host = $::realm ? {
         # TODO: Find a way to use multicast that doesn't cause duplicate
         # messages to be stored in logstash. This is a SPOF.
