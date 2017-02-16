@@ -33,6 +33,11 @@ require 'rubocop/rake_task'
 
 # site.pp still uses an import statement for realm.pp (T154915)
 PuppetSyntax.fail_on_deprecation_notices = false
+PuppetSyntax.exclude_paths = [
+    'modules/stdlib/types/*.pp',
+    'modules/stdlib/types/compat/*.pp',
+    'modules/stdlib/spec/fixtures/test/manifests/*.pp',
+]
 
 # Find files modified in HEAD
 def git_changed_in_head(file_exts=[])
