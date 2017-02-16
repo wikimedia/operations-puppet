@@ -1,6 +1,4 @@
 testserver:
-  mw2017.codfw.wmnet: [apache2]
-  mw2099.codfw.wmnet: [apache2]
   mwdebug1001.eqiad.wmnet: [apache2]
   mwdebug1002.eqiad.wmnet: [apache2]
 videoscaler:
@@ -8,8 +6,6 @@ videoscaler:
   mw1169.eqiad.wmnet: [apache2]
   mw1259.eqiad.wmnet: [apache2]
   mw1260.eqiad.wmnet: [apache2]
-  mw2152.codfw.wmnet: [apache2]
-  mw2246.codfw.wmnet: [apache2]
 jobrunner:
   mw1161.eqiad.wmnet: [apache2]
   mw1162.eqiad.wmnet: [apache2]
@@ -26,20 +22,6 @@ jobrunner:
   mw1304.eqiad.wmnet: [apache2]
   mw1305.eqiad.wmnet: [apache2]
   mw1306.eqiad.wmnet: [apache2]
-  mw2153.codfw.wmnet: [apache2]
-  mw2154.codfw.wmnet: [apache2]
-  mw2155.codfw.wmnet: [apache2]
-  mw2156.codfw.wmnet: [apache2]
-  mw2157.codfw.wmnet: [apache2]
-  mw2158.codfw.wmnet: [apache2]
-  mw2159.codfw.wmnet: [apache2]
-  mw2160.codfw.wmnet: [apache2]
-  mw2161.codfw.wmnet: [apache2]
-  mw2162.codfw.wmnet: [apache2]
-  mw2247.codfw.wmnet: [apache2]
-  mw2248.codfw.wmnet: [apache2]
-  mw2249.codfw.wmnet: [apache2]
-  mw2250.codfw.wmnet: [apache2]
 api_appserver:
   mw1189.eqiad.wmnet: [apache2,nginx]
   mw1190.eqiad.wmnet: [apache2,nginx]
