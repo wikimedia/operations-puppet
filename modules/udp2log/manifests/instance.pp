@@ -53,10 +53,6 @@ define udp2log::instance(
 
     require_package('udplog')
 
-    if $mirror_destinations {
-        require_package('socat')
-    }
-
     base::service_unit { "udp2log-${name}":
         ensure        => $ensure,
         sysvinit      => true,
