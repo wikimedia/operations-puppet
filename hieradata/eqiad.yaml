@@ -186,6 +186,8 @@ analytics_cluster_meta_database_backup_rsync_dest: analytics1002.eqiad.wmnet::ba
 prometheus_nodes:
     - prometheus1001.eqiad.wmnet
     - prometheus1002.eqiad.wmnet
+    - prometheus1003.eqiad.wmnet
+    - prometheus1004.eqiad.wmnet
 
 # Which of our redundant unified cert vendors to use in each DC
 public_tls_unified_cert_vendor: "globalsign"
