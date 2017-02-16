@@ -2582,6 +2582,10 @@ ldap_only_users:
     ensure: present
     realname: Toby Negrin
     email: tnegrin@wikimedia.org
+  valhallasw:
+    ensure: present
+    realname: Merlijn van Deen
+    email: valhallasw@arctus.nl
   wikigit:
     ensure: present
     realname: Moriel Schottlender
