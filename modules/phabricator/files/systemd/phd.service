@@ -1,12 +1,12 @@
 [Unit]
 Description=phabricator-phd
-After=syslog.target network.target
+After=syslog.target network.target mysql.service
 Before=apache2.service
-User=phd
-Group=phd
 
 [Service]
-Type=oneshot
+Type=forking
+User=phd
+Group=phd
 Environment="PHABRICATOR_ENV=phd"
 
 ExecStart=/srv/phab/phabricator/bin/phd start
