@@ -121,8 +121,10 @@ class varnish::common {
     }
 
     nrpe::monitor_service { 'check_varnish_expiry_mailbox_lag':
-        description  => 'Check Varnish expiry mailbox lag',
-        nrpe_command => '/usr/local/lib/nagios/plugins/check_varnish_expiry_mailbox_lag',
-        require      => File['/usr/local/lib/nagios/plugins/check_varnish_expiry_mailbox_lag'],
+        description    => 'Check Varnish expiry mailbox lag',
+        nrpe_command   => '/usr/local/lib/nagios/plugins/check_varnish_expiry_mailbox_lag',
+        retries        => 10,
+        check_interval => 10,
+        require        => File['/usr/local/lib/nagios/plugins/check_varnish_expiry_mailbox_lag'],
     }
 }
