@@ -77,6 +77,24 @@ Adding user 'foo':
 # IRC (definitely if not registered/identified with nickserv)
 # RT-only (because it can be emailed)
 
+Add the ''realname'' of the user (most labs accounts don't have a real name set)
+
+Add the ''email'' address of the users:
+- If the user is WMF staff use the email address of his/her Google account
+  (usually the first letter of the first name and the surname, you can
+  double-check the account name in the Gmail interface). Some users have
+  aliases for their nickname e.g., don't use these, use the official Google
+  account (this allows cross-checking data against OIT corp LDAP)
+- If the user is a volunteer, a researcher or contractor without access to a
+  wikimedia.org account, ask for a contact email address (to have a reliable
+  contact e.g. in case of an account compromise)
+
+If the user to be added is someone with a time-limited access (e.g. interns,
+researchers (who have time-limited MOUs) or short term contractor), add the
+estimated account end date as ''expiry_date'' (format is YYYY-MM-DD) and add
+a staff contact as ''expiry_contact''
+
+
 Adding user 'foo' to adm:
 
     groups:
