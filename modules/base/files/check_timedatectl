@@ -26,6 +26,37 @@ set -e
 set -u
 
 MAX=2
+SYNSTATUSONLY="0"
+
+usage(){
+	ret=$1
+
+	cat <<EOF
+$0: usage:
+	$0 <options>
+
+	Check NTP sync status (per timedatectl's output) and offset to RTC clock.
+	The latter is particularly interesting for VMs.
+
+	-o <secs>   Maximum offset to tolerate (Default: $MAX)
+	-s          Check sync status only, do not diff against RTC.
+EOF
+
+	exit $ret
+}
+
+while getopts o:sh opt ; do
+	case "$opt" in
+		o) MAX="$OPTARG" ;;
+		s) SYNSTATUSONLY="1";;
+		h) usage 0
+	esac
+done
+shift $(($OPTIND - 1))
+if [ "$#" -gt 0 ]; then
+	usage 1 >&2
+fi
+
 
 temp="$(mktemp)"
 trap "rm -f '$temp'" EXIT
@@ -33,29 +64,41 @@ trap "rm -f '$temp'" EXIT
 timedatectl > "$temp"
 ut=$(sed '/Universal time:/ { s/^[^:]*: *//; p}; d' "$temp")
 rtc=$(sed '/RTC time:/ { s/^[^:]*: *//; p}; d' "$temp")
+ntpenabled=$(sed '/\(NTP enabled\|Network time on\):/ { s/^[^:]*: *//; p}; d' "$temp")
+ntpsynced=$(sed '/NTP synchronized:/ { s/^[^:]*: *//; p}; d' "$temp")
 
-uts=$(date -d "$ut" +%s)
-rtcs=$(date -d "$rtc" +%s)
-
-d=$((uts - rtcs))
-
-if [ "$d" -lt "-$MAX" ] ||
-   [ "$d" -gt "$MAX" ]; then
-	echo "Warning: time desync $d: RTC vs. system time: $rtc vs. $ut"
-	exit 1
+uts=$(TZ=UTC date -d "$ut" +%s)
+rtcs=$(TZ=UTC date -d "$rtc" +%s 2>/dev/null || echo "N/A")
+if [ "$rtcs" != "N/A" ]; then
+	delta=$((uts - rtcs))
 fi
 
+if [ "$SYNSTATUSONLY" -ge 1 ]; then
+	if [ "$ntpsynced" != "yes" ]; then
+		echo "Warning: not synced with NTP."
+		exit 1
+	fi
+else
+	if [ "$rtcs" = "N/A" ]; then
+		echo "Warning: Cannot parse RTC $rtc."
+		exit 1
+	fi
 
-bool=$(sed '/NTP enabled:/ { s/^[^:]*: *//; p}; d' "$temp")
-if [ "$bool" != "yes" ]; then
-	echo "Warning: NTP not enabled!"
-	exit 1
-fi
+	if [ "$delta" -lt "-$MAX" ] ||
+	   [ "$delta" -gt "$MAX" ]; then
+		echo "Warning: time desync $delta: RTC vs. system time: $rtc vs. $ut"
+		exit 1
+	fi
 
-bool=$(sed '/NTP synchronized:/ { s/^[^:]*: *//; p}; d' "$temp")
-if [ "$bool" != "yes" ]; then
-	echo "Warning: not synced with NTP (but clock is OK for now)."
-	exit 1
+	if [ "$ntpenabled" != "yes" ]; then
+		echo "Warning: NTP not enabled!"
+		exit 1
+	fi
+
+	if [ "$ntpsynced" != "yes" ]; then
+		echo "Warning: not synced with NTP (but clock is OK for now)."
+		exit 1
+	fi
 fi
 
 echo "OK: synced at $ut."
