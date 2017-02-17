@@ -9,4 +9,4 @@
     end
  end
 -%>
-saddr (0.0.0.0/0 ::/0) daddr (<%= addresses.join(' ') %>) proto tcp dport (22) ACCEPT;
+saddr (0.0.0.0/0 ::/0) daddr (<%= addresses.join(' ') %>) proto tcp dport (<%= ssh_port %>) ACCEPT;
