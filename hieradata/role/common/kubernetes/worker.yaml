@@ -4,7 +4,7 @@ debdeploy::grains:
 cluster: kubernetes
 profile::docker::storage::physical_volumes: "/dev/md2"
 profile::docker::storage::vg_to_remove: ''
-profile::docker::engine::version: "1.12.5-0~debian-jessie"
+profile::docker::engine::version: "1.12.6-0~debian-jessie"
 profile::docker::engine::declare_service: true
 profile::kubernetes::master_hosts:
 - argon.eqiad.wmnet
@@ -13,6 +13,7 @@ profile::kubernetes::infra_pod: 'darmstadtium.eqiad.wmnet/pause'
 profile::docker::engine::settings:
    iptables: false
    ip-masq: false
+   live-restore: true
 profile::base::check_disk_options: -w 10% -c 5% -l -e -A -i /var/lib/docker/containers/* -i /run/docker/netns/* --exclude-type=tracefs
 profile::calico::kubernetes::calico_version: 2.0
 profile::calico::kubernetes::etcd_endpoints:
