@@ -27,7 +27,6 @@ class phabricator::vcs (
     $ssh_hook_path = '/usr/local/lib/phabricator-ssh-hook.sh'
     $sshd_config = '/etc/ssh/sshd_config.phabricator'
 
-
     user { $vcs_user:
         gid        => 'phd',
         shell      => '/bin/sh',
@@ -95,14 +94,14 @@ class phabricator::vcs (
 
     if $::initsystem == 'upstart' {
         $init_file = '/etc/init/ssh-phab.conf'
-        $init_soorce = 'puppet:///modules/phabricator/sshd-phab.conf'
+        $init_template = 'phabricator/sshd-phab.conf.erb'
     } else {
         $init_file = '/etc/systemd/system/ssh-phab.service'
-        $init_source = 'puppet:///modules/phabricator/sshd-phab.service'
+        $init_template = 'phabricator/sshd-phab.service.erb'
     }
 
     file { $init_file:
-        source  => $init_source,
+        content => template($init_template),
         mode    => '0644',
         owner   => 'root',
         group   => 'root',
