@@ -20,6 +20,15 @@ to_umount () {
 case "$1" in
         check)
 
+            # notify if check path is a symlink
+            if /usr/bin/test -L $2; then
+                /usr/bin/file -s $2
+
+               # TODO: it should be safe to exit if link is
+               # true but there are some legacy cases we
+               # need to verify are removed.
+            fi
+
             if cat /proc/mounts | /usr/bin/awk '{print $2}' \
                 | /bin/grep -qs "^$2$"; then
                 echo "It's mounted."
