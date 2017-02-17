@@ -44,14 +44,14 @@ class role::logging::mediawiki::udp2log(
     }
 
     file { '/usr/local/bin/demux.py':
-        mode   => '0544',
+        mode   => '0555',
         owner  => 'root',
         group  => 'root',
         source => 'puppet:///modules/udp2log/demux.py',
     }
 
     file { '/usr/local/bin/udpmirror.py':
-        mode   => '0544',
+        mode   => '0555',
         owner  => 'root',
         group  => 'root',
         source => 'puppet:///modules/udp2log/udpmirror.py',

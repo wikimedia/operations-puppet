@@ -53,6 +53,10 @@ define udp2log::instance(
 
     require_package('udplog')
 
+    if $mirror_destinations {
+        require_package('python3')
+    }
+
     base::service_unit { "udp2log-${name}":
         ensure        => $ensure,
         sysvinit      => true,
