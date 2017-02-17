@@ -261,3 +261,32 @@ rsync_protocol() {
     fi
     unset RSYNC_VERSION RSYNC_REGEX
 }
+
+# Search config files in various locations
+search_config() {
+  local file
+  if [ "$BASEDIR" ]; then
+    file="$BASEDIR/etc/$1"
+    if [ -f "$file" ]; then
+      echo "$file"
+      return
+    fi
+  fi
+  for i in ~/.config/archvsync /etc/archvsync; do
+    file="$i/$1"
+    if [ -f "$file" ]; then
+      echo "$file"
+      return
+    fi
+  done
+}
+
+# Read config file
+read_config() {
+  local config=$(search_config "$1")
+  if [ "$config" ]; then
+    . "$config"
+    return 0
+  fi
+  return 1
+}

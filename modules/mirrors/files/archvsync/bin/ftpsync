@@ -42,10 +42,10 @@ BASEDIR=${BASEDIR:-"$(readlink -f $(dirname "$0")/..)"}
 # Script version. DO NOT CHANGE, *unless* you change the master copy maintained
 # by Joerg Jaspert and the Debian mirroradm group.
 # This is used to track which mirror is using which script version.
-VERSION="20160306"
+VERSION="20170204"
 
 # Source our common functions
-. "${BASEDIR}/etc/common"
+. "${BASEDIR}/bin/common"
 
 ########################################################################
 ########################################################################
@@ -200,24 +200,15 @@ tracefile() {
                         echo "Used ftpsync version: ${VERSION}"
                         echo "Running on host: ${TRACEHOST}"
                         if [[ full = ${EXTENDEDTRACE} ]]; then
-                            ARCHLIST=""
+                            ARCH=$((find ${TO}/dists -name Release -exec sed -ne 's/^Architecture: //p' '{}' + 2>/dev/null || echo "unknown") | sort -u | tr '\n' ' ')
+                            echo "Architectures: ${ARCH}"
                             if [[ ${ARCH_INCLUDE} ]]; then
-                                AINCLUDE="^${ARCH_INCLUDE// /\$|^}$"
-                                for ARCH in ${GLOBALARCHLIST}; do
-                                    if [[ ${ARCH} =~ ${AINCLUDE} ]]; then
-                                        ARCHLIST="${ARCHLIST} ${ARCH}"
-                                    fi
-                                done
+                                echo "Architectures-Configuration: INCLUDE $(tr ' ' '\n' <<< ${ARCH_INCLUDE} | sort -u | tr '\n' ' ')"
+                            elif [[ ${ARCH_EXCLUDE} ]]; then
+                                echo "Architectures-Configuration: EXCLUDE $(tr ' ' '\n' <<< ${ARCH_EXCLUDE} | sort -u | tr '\n' ' ')"
                             else
-                                AEXCLUDE="^${ARCH_EXCLUDE// /\$|^}$"
-                                for ARCH in ${GLOBALARCHLIST}; do
-                                    if ! [[ ${ARCH} =~ ${AEXCLUDE} ]]; then
-                                        ARCHLIST="${ARCHLIST} ${ARCH}"
-                                    fi
-                                done
+                                echo "Architectures-Configuration: ALL"
                             fi
-                            out="GUESSED:{${ARCHLIST}}"
-                            echo "Architectures: ${out}"
                             echo "Upstream-mirror: ${RSYNC_HOST}"
                             echo "SSL: ${RSYNC_SSL}"
                             total=0
@@ -364,9 +355,7 @@ fi
 # Now source the config for the archive we run on.
 # (Yes, people can also overwrite the options above in the config file
 # if they want to)
-if [[ -f ${BASEDIR}/etc/${NAME}.conf ]]; then
-    . "${BASEDIR}/etc/${NAME}.conf"
-else
+if ! read_config "${NAME}.conf"; then
     echo "Nono, you can't tell us about random archives. Bad boy!"
     exit 1
 fi
@@ -452,7 +441,7 @@ fi
 # Default rsync options for *every* rsync call
 RSYNC_OPTIONS=${RSYNC_OPTIONS:-"-prltvHSB8192 --timeout 3600 --stats ${RSYNC_FILTER}"}
 # Options we only use in the first pass, where we do not want packages/sources to fly in yet and don't want to delete files
-RSYNC_OPTIONS1=${RSYNC_OPTIONS1:-"--exclude=Packages* --exclude=Sources* --exclude=Release* --exclude=InRelease --exclude=i18n/* --exclude=ls-lR*"}
+RSYNC_OPTIONS1=${RSYNC_OPTIONS1:-"--exclude=Packages* --exclude=Sources* --exclude=Release* --exclude=InRelease --include=i18n/by-hash/** --exclude=i18n/* --exclude=ls-lR*"}
 # Options for the second pass, where we do want everything, including deletion of old and now unused files
 RSYNC_OPTIONS2=${RSYNC_OPTIONS2:-"--max-delete=40000 --delay-updates --delete --delete-excluded"}
 # Which rsync share to use on our upstream mirror?
@@ -546,8 +535,6 @@ HUB=${HUB:-"false"}
 # Really nothing to see below here. Only code follows.                 #
 ########################################################################
 ########################################################################
-GLOBALARCHLIST="source amd64 arm64 armel armhf hurd-i386 i386 ia64 kfreebsd-amd64 kfreebsd-i386 mips mips64el mipsel powerpc ppc64el s390 s390x sparc"
-
 DATE_STARTED=$(LC_ALL=POSIX LANG=POSIX date -u -R)
 
 # Exclude architectures defined in $ARCH_EXCLUDE
@@ -606,6 +593,7 @@ fi
 trap cleanup ERR TERM HUP INT QUIT
 
 # Start log by redirecting stdout and stderr there and closing stdin
+mkdir -p "$LOGDIR"
 exec >"$LOG" 2>&1 <&-
 log "Mirrorsync start"
 
