@@ -237,10 +237,13 @@ class phabricator (
         require => $base_requirements,
     }
 
+    $phab_ssh_port = hiera('phabricator_ssh_port', '23')
+
     class { '::phabricator::vcs':
         basedir  => $phabdir,
         settings => $phab_settings,
         require  => $base_requirements,
+        ssh_port => $phab_ssh_port,
     }
 
     class { '::phabricator::phd':

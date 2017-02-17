@@ -18,7 +18,7 @@ class phabricator::vcs (
     $basedir               = '/',
     $settings              = {},
     $listen_addresses      = [],
-    $ssh_port              = '22',
+    $ssh_port              = '23',
     $proxy                 = "http://url-downloader.${::site}.wikimedia.org:8080",
 ) {
 
