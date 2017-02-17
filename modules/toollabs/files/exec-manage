@@ -107,6 +107,10 @@ case $cmd in
             *"-12"*)
                 release="precise"
                 ;;
+            *)
+                echo "Could not determine release version for execution node $exec_host."
+                exit 1
+                ;;
         esac
 
         echo "Submitting a test job to $exec_host"
