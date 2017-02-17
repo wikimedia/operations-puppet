@@ -73,6 +73,13 @@ class phabricator (
     # save as a var since this will be required by many resources in this class
     $base_requirements = [Package[$deploy_target]]
 
+    $ssh_port = hiera('phabricator_ssh_port', '22')
+    if $ssh_port != '22' {
+      $settings = {
+        'diffusion.ssh-port' => $ssh_port,
+      }
+    }
+
     #A combination of static and dynamic conf parameters must be merged
     $module_path = get_module_path($module_name)
     $fixed_settings = loadyaml("${module_path}/data/fixed_settings.yaml")
@@ -237,10 +244,13 @@ class phabricator (
         require => $base_requirements,
     }
 
+    $phab_ssh_port = hiera('phabricator_ssh_port', '22')
+
     class { '::phabricator::vcs':
         basedir  => $phabdir,
         settings => $phab_settings,
         require  => $base_requirements,
+        ssh_port => $phab_ssh_port,
     }
 
     class { '::phabricator::phd':
