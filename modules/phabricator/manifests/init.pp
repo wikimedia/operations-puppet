@@ -73,12 +73,20 @@ class phabricator (
     # save as a var since this will be required by many resources in this class
     $base_requirements = [Package[$deploy_target]]
 
+    $ssh_port = hiera('phabricator_ssh_port', '22')
+    if $ssh_port != '22' {
+      $setting = {
+        'diffusion.ssh-port' => $ssh_port,
+      }
+    }
+    $settings_2 merge($settings, $setting)
+
     #A combination of static and dynamic conf parameters must be merged
     $module_path = get_module_path($module_name)
     $fixed_settings = loadyaml("${module_path}/data/fixed_settings.yaml")
 
     #per stdlib merge the dynamic settings will take precendence for conflicts
-    $phab_settings = merge($fixed_settings, $settings)
+    $phab_settings = merge($fixed_settings, $settings_2)
 
     if empty($mysql_admin_user) {
         $storage_user = $phab_settings['mysql.user']
@@ -237,10 +245,13 @@ class phabricator (
         require => $base_requirements,
     }
 
+    $phab_ssh_port = hiera('phabricator_ssh_port', '22')
+
     class { '::phabricator::vcs':
         basedir  => $phabdir,
         settings => $phab_settings,
         require  => $base_requirements,
+        ssh_port => $phab_ssh_port,
     }
 
     class { '::phabricator::phd':
