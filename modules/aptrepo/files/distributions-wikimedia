@@ -6,7 +6,7 @@ Version: 12.04
 Architectures: source amd64 i386
 Components: main universe non-free thirdparty mariadb
 UDebComponents: main
-Update: jenkins cloudera hwraid elasticsearch logstash hp-mcp-precise
+Update: jenkins hwraid elasticsearch logstash hp-mcp-precise
 Description: Wikimedia specific packages for Ubuntu Precise
 SignWith: 09DBD9F93F6CD44A
 DebOverride: deb-override
