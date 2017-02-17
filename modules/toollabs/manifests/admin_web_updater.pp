@@ -1,4 +1,4 @@
-# This is responsible for http://tools.wmflabs.org/
+# This is responsible for https://tools.wmflabs.org/
 class toollabs::admin_web_updater(
     $active
 ) {

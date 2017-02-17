@@ -16,9 +16,9 @@ cat <<EOF
 [34;1m ##  [32;1m####'       """###[34;1m  ##  [0m
 [34;1m ##  [32;1m### # ###   #<<###[34;1m  ##  [0mUse of this system is subject to the Tool Labs
 [34;1m  ##  [32;1m### ### ,# #####[34;1m  ##   [0mTerms of Use and Privacy Policies:
-[34;1m   ###  [32;1m############[34;1m  ###    [0m- [4mhttp://tools.wmflabs.org/?Rules[0m
+[34;1m   ###  [32;1m############[34;1m  ###    [0m- [4mhttps://tools.wmflabs.org/?Rules[0m
 [34;1m    ####   [32;1m######[34;1m   ####     [0m
 [34;1m      #####      [34;1m#####       [0mGeneral guidance and help can be found at:
-[34;1m         ####  [34;1m####          [0m- [4mhttp://tools.wmflabs.org/?Help[0m
+[34;1m         ####  [34;1m####          [0m- [4mhttps://tools.wmflabs.org/?Help[0m
 
 EOF
