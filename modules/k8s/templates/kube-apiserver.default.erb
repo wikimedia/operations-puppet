@@ -36,8 +36,8 @@ DAEMON_ARGS=" \
 --apiserver-count=<%= @apiserver_count %> \
 <%- end -%>
 --runtime-config=batch/v2alpha1 \
---tls-cert-file=<%= @real_ssl_cert_path %> \
---tls-private-key-file=<%= @real_ssl_key_path %> \
+--tls-cert-file=<%= @ssl_cert_path %> \
+--tls-private-key-file=<%= @ssl_key_path %> \
 --enforced-docker-registry=<%= @docker_registry %> \
 --host-automounts=<%= @host_automounts_string %> \
 --host-paths-allowed=<%= @host_paths_allowed_string %> \

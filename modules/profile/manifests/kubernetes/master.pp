@@ -18,7 +18,6 @@ class profile::kubernetes::master(
         docker_registry          => $docker_registry,
         ssl_cert_path            => '/etc/kubernetes/ssl/cert.pem',
         ssl_key_path             => '/etc/kubernetes/ssl/server.key',
-        ssl_certificate_name     => '',
         authz_mode               => '',
         service_cluster_ip_range => $service_cluster_ip_range,
         apiserver_count          => $apiserver_count,
