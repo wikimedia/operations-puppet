@@ -24,14 +24,11 @@ class k8s::apiserver(
 ) {
     include ::k8s::users
 
-    if !defined(File['/etc/kubernetes']) {
-        # because base::expose_puppet_certs also does this
-        file { '/etc/kubernetes':
-            ensure => directory,
-            owner  => 'kubernetes',
-            group  => 'kubernetes',
-            mode   => '0700',
-        }
+    file { '/etc/kubernetes':
+        ensure => directory,
+        owner  => 'kubernetes',
+        group  => 'kubernetes',
+        mode   => '0700',
     }
 
     if $use_package {

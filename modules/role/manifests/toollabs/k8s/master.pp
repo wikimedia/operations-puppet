@@ -9,12 +9,15 @@ class role::toollabs::k8s::master(
     $etcd_url = join(prefix(suffix(hiera('k8s::etcd_hosts'), ':2379'), 'https://'), ',')
 
     if $use_puppet_certs {
+        # Do not explicitly set a before here, since it
+        # seems to make puppet think there's a circular
+        # dependency cycle?!
         base::expose_puppet_certs { '/etc/kubernetes':
             provide_private => true,
             user            => 'kubernetes',
             group           => 'kubernetes',
-            before          => Class['::k8s::apiserver']
         }
+
         $ssl_cert_path = '/etc/kubernetes/ssl/cert.pem'
         $ssl_key_path = '/etc/kubernetes/ssl/server.key'
 
