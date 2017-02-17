@@ -101,10 +101,10 @@ case $cmd in
         # Determine release version of Exec node. Logic for now:
         # Hosts with 14xx - Trusty, 12xx - Precise
         case "$exec_host" in
-            *"14"*)
+            *"-14"*)
                 release="trusty"
                 ;;
-            *"12"*)
+            *"-12"*)
                 release="precise"
                 ;;
         esac
