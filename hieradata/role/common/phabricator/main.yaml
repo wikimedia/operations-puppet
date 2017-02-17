@@ -18,3 +18,5 @@ phabricator_servers:
 profile::base::domain_search:
   - eqiad.wmnet
   - codfw.wmnet
+
+phabricator_ssh_port: '22'
