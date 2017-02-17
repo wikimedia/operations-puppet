@@ -75,7 +75,6 @@ def parse_users(yamldata):
 
             if table == 'users':
                 users[username] = {
-                    'realname': userdata['realname'],
                     'ldap_only': False,
                     'uid': userdata['uid'],
                     'prod_groups': groups,
@@ -83,9 +82,11 @@ def parse_users(yamldata):
                 }
             elif table == 'ldap_only_users':
                 users[username] = {
-                    'realname': userdata['realname'],
                     'ldap_only': True,
                 }
+
+            if userdata.get('realname', None):
+                users[username]['realname'] = userdata.get('realname', None)
 
             if userdata.get('email', None) is None:
                 users[username]['email'] = 'undefined'
