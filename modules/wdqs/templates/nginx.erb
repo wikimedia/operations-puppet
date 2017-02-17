@@ -73,8 +73,8 @@ server {
         # drop cookies
         proxy_set_header Cookie "";
 
-        # Default 30 second max query time
-        set $xmaxqueryheader "30000";
+        # Default 60 second max query time
+        set $xmaxqueryheader "60000";
 
         # 5 minute max query time for internal requests on port 8888
         if ( $server_port = 8888 ) {
