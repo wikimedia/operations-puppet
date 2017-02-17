@@ -134,6 +134,8 @@ class role::phabricator::main {
     $elasticsearch_version = hiera('phabricator_elasticsearch_version', '2')
     $elasticsearch_enabled = hiera('phabricator_elasticsearch_enabled', true)
 
+    $phab_ssh_port = hiera('phabricator_ssh_port', undef)
+
     # lint:ignore:arrow_alignment
     class { '::phabricator':
         deploy_target    => $deploy_target,
@@ -148,6 +150,7 @@ class role::phabricator::main {
                               "${phab_root_dir}/libext/security/src",
                               "${phab_root_dir}/libext/misc/" ],
         settings         => {
+            'diffusion.ssh-port'                     => $phab_ssh_port,
             'search.elastic.host'                    => $elasticsearch_host,
             'search.elastic.version'                 => $elasticsearch_version,
             'search.elastic.enabled'                 => $elasticsearch_enabled,
