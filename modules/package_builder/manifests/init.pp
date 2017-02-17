@@ -24,6 +24,7 @@ class package_builder(
         'debhelper',
         'cdbs',
         'devscripts',
+        'debian-keyring',
         'dh-make',
         'dh-autoreconf',
         'dh-php5',
