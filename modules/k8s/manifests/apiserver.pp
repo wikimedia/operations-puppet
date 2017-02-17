@@ -1,7 +1,6 @@
 class k8s::apiserver(
     $etcd_servers,
     $docker_registry,
-    $ssl_certificate_name,
     $ssl_cert_path=undef,
     $ssl_key_path=undef,
     $kube_api_port = undef,
@@ -30,18 +29,6 @@ class k8s::apiserver(
         owner  => 'kubernetes',
         group  => 'kubernetes',
         mode   => '0700',
-    }
-
-    if $ssl_cert_path {
-        $real_ssl_cert_path = $ssl_cert_path
-    } else {
-        $real_ssl_cert_path = "/etc/ssl/localcerts/${ssl_certificate_name}.chained.crt"
-    }
-
-    if $ssl_key_path {
-        $real_ssl_key_path = $ssl_key_path
-    } else {
-        $real_ssl_key_path = "/etc/ssl/private/${ssl_certificate_name}.key"
     }
 
     if $use_package {
