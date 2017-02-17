@@ -107,7 +107,7 @@ class toollabs::dev_environ {
         ensure => latest,
     }
 
-    # pastebinit configuration for http://tools.wmflabs.org/paste/.
+    # pastebinit configuration for https://tools.wmflabs.org/paste/.
     file { '/etc/pastebin.d':
         ensure  => 'directory',
         require => Package['pastebinit'],
