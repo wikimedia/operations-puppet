@@ -24,8 +24,8 @@ class mirrors::debian {
     }
 
     # this is <https://ftp-master.debian.org/git/archvsync.git>
-    # right now we just ship bin/ftpsync & etc/common; if more are needed in
-    # the future this should probably become a git::install resource
+    # right now we just ship bin/ftpsync & bin/common
+    # there is soon going to be a Debian package, use that then instead
     file { "${mirrors::homedir}/archvsync":
         ensure  => directory,
         recurse => true,
@@ -40,6 +40,14 @@ class mirrors::debian {
     file { "${mirrors::homedir}/archvsync/log":
         ensure => directory,
         purge  => false,
+        owner  => 'mirror',
+        group  => 'mirror',
+        mode   => '0755',
+    }
+
+    # move to .config/archvsync or /etc/archvsync?
+    file { "${mirrors::homedir}/archvsync/etc":
+        ensure => directory,
         owner  => 'mirror',
         group  => 'mirror',
         mode   => '0755',
