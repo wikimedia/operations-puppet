@@ -4,12 +4,7 @@
 # ldap database will then be listed as users of the system, so use care.
 
 class ldap::client::utils($ldapconfig) {
-    package { [
-        'python-ldap',
-        'python-pycurl',
-    ]:
-        ensure => present,
-    }
+    require_package('python-ldap', 'python-pycurl')
 
     file { '/usr/local/sbin/add-ldap-group':
         owner  => 'root',
