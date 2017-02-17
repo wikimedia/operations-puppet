@@ -3,7 +3,6 @@
   "settings" : {
     "number_of_shards" : 1,
     "number_of_replicas" : 2,
-    "index.cache.field.type" : "soft",
     "index.refresh_interval" : "5s",
     "analysis" : {
       "analyzer" : {
