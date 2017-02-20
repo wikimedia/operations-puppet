@@ -2553,11 +2553,8 @@ ldap_only_users:
     realname: Joseph Seddon
     email: jseddon@wikimedia.org
   siddharth11:
-    ensure: present
+    ensure: absent
     realname: Siddarth Parmar
-    email: sparmar@wikimedia.org
-    expiry_date: 2017-03-01
-    expiry_contact: rstallman@wikimedia.org
   slaporte:
     ensure: present
     realname: Stephen Laporte
