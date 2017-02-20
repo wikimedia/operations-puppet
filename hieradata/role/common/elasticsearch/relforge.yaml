@@ -4,7 +4,7 @@ admin::groups:
   - elasticsearch-roots
 
 # Version of elasticsearch to configure
-elasticsearch::version: 5
+elasticsearch::version: 2
 
 # Nodes should not be master eligible by default in prod
 elasticsearch::master_eligible: false
