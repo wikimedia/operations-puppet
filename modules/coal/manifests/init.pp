@@ -30,7 +30,8 @@ class coal( $endpoint ) {
     }
 
     uwsgi::app { 'coal':
-        settings => {
+        service_settings => '--die-on-term',
+        settings         => {
             uwsgi => {
                 'plugins'   => 'python',
                 'socket'    => '/run/uwsgi/coal.sock',
