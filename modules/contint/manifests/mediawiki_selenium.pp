@@ -1,11 +1,9 @@
-# == Class contint::browsertests
+# == Class contint::mediawiki_selenium
 #
-class contint::browsertests {
+# Base dependencies required for the mediawiki_selenium ruby gem.
+class contint::mediawiki_selenium {
 
     include ::contint::packages::ruby
-
-    # Provides phantomjs, firefox and xvfb
-    include ::contint::browsers
 
     # For Selenium jobs recording (T113520)
     package { 'libav-tools':
