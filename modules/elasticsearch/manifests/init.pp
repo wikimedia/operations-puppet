@@ -258,7 +258,7 @@ class elasticsearch(
             File['/etc/elasticsearch/log4j2.properties'],
             File['/etc/elasticsearch/jvm.options'],
             File['/etc/default/elasticsearch'],
-            File['/usr/share/elasticsearch/plugins'],
+            # File['/usr/share/elasticsearch/plugins'],
             File[$data_dir],
         ],
     }
