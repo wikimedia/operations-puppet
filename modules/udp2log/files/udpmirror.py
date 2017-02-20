@@ -37,7 +37,7 @@ def main():
 
         for addrinfo in gai:
             try:
-                sock.sendto(line, addrinfo[4])
+                sock.sendto(line.encode(), addrinfo[4])
             except (socket.gaierror, socket.error):
                 log.exception('Error sending to %e:', addrinfo[4])
                 continue
