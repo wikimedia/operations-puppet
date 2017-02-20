@@ -4,6 +4,10 @@
 #
 class contint::packages::ruby {
 
+    require_package(
+        'build-essential',
+    )
+
     package { 'rubygems-integration':
         ensure => present,
     }
