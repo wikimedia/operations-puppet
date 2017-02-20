@@ -1,3 +1,4 @@
+# currently unused, as it only contains the latest LTS
 Name: jenkins
 Method: http://pkg.jenkins-ci.org/debian-stable/
 Suite: binary
