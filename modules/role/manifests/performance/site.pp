@@ -7,6 +7,7 @@ class role::performance::site {
     include ::apache
     include ::apache::mod::headers
     include ::apache::mod::proxy
+    include ::apache::mod::proxy_http
     include ::apache::mod::rewrite
     include ::apache::mod::uwsgi
 
