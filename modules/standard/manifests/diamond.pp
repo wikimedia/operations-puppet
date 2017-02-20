@@ -11,7 +11,7 @@ class standard::diamond {
             $service       = true
         }
         default: {
-            $host          = '10.192.16.33' # graphite2001
+            $host          = '10.64.32.155' # graphite1001
             $port          = '2003'
             $path_prefix   = 'servers'
             $keep_logs_for = '5'
