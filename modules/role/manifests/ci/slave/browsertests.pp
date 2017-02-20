@@ -1,3 +1,7 @@
+# == Class role::ci::slave::browsertests
+#
+# Configure an instance to be used for running Selenium tests against a locally
+# installed MediaWiki.
 class role::ci::slave::browsertests {
     requires_realm('labs')
 
