@@ -149,10 +149,11 @@ class elasticsearch(
 
     # Elasticsearch 5 doesn't allow setting the plugin path, we need
     # to symlink it into place
-    file { '/usr/share/elasticsearch/plugins':
-        ensure => 'link',
-        target => $plugins_dir,
-    }
+    # TODO: temporary fix, fix for real later
+    # file { '/usr/share/elasticsearch/plugins':
+    #     ensure => 'link',
+    #     target => $plugins_dir,
+    # }
 
     file { '/etc/elasticsearch/elasticsearch.yml':
         ensure  => file,
