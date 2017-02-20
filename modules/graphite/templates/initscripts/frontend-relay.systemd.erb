@@ -6,6 +6,7 @@ PartOf=carbon.service
 User=carbon-c-relay
 ExecStart=/usr/bin/carbon-c-relay -H <%= "#{scope.lookupvar('::hostname')}_frontend" -%> -p 2003 -f /etc/carbon/frontend-relay.conf
 Restart=on-failure
+LimitNOFILE=65535
 
 [Install]
 WantedBy=carbon.service
