@@ -211,15 +211,6 @@ node 'californium.wikimedia.org' {
     include ::openstack::horizon::puppetpanel
 }
 
-# ex-installserver, replaced by install1002/install2002, to be decom'ed (T158020)
-node 'carbon.wikimedia.org' {
-    role(spare::system)
-
-    interface::add_ip6_mapped { 'main':
-        interface => 'eth0',
-    }
-}
-
 # cerium, praseodymium and xenon are Cassandra test hosts
 node /^(cerium|praseodymium|xenon)\.eqiad\.wmnet$/ {
     role(restbase::server, cassandra)
