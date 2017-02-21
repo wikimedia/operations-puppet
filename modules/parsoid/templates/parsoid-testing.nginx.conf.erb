@@ -27,7 +27,7 @@ server {
     # parsoid (used for a specific test case below)
     location  /parsoid {
         rewrite /parsoid/(.*) /$1  break;
-        proxy_pass         http://localhost:8142;
+        proxy_pass         http://localhost:<%= @parsoid_port %>;
         proxy_redirect     off;
         proxy_set_header   Host $host;
     }
@@ -39,4 +39,3 @@ server {
         proxy_set_header   Host $host;
     }
 }
-
