@@ -12,6 +12,7 @@
 #    WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
 #    License for the specific language governing permissions and limitations
 #    under the License.
+import ldapgroups
 
 from keystoneclient.auth.identity import generic
 from keystoneclient import session as keystone_session
@@ -80,6 +81,35 @@ class KeystoneHooks(notifier._Driver):
     def __init__(self, conf, topics, transport, version=1.0):
         pass
 
+    def _get_role_dict(self):
+        rolelist = self.role_api.list_roles()
+        roledict = {}
+        # Make a dict to relate role names to ids
+        for role in rolelist:
+            roledict[role['name']] = role['id']
+
+        return roledict
+
+    def _get_current_assignments(self, project_id):
+        reverseroledict = dict((v, k) for k, v in self._get_role_dict().iteritems())
+
+        rawassignments = self.assignment_api.list_role_assignments(project_id=project_id)
+        assignments = {}
+        for assignment in rawassignments:
+            rolename = reverseroledict[assignment["role_id"]]
+            if rolename not in assignments:
+                assignments[rolename] = set()
+            assignments[rolename].add(assignment["user_id"])
+        return assignments
+
+    # There are a bunch of different events which might update project membership,
+    #  and the generic 'identity.projectupdated' comes in the wrong order.  So
+    #  we're probably going to wind up getting called several times in quick succession,
+    #  possible in overlapping invocations.  Watch out for race conditions!
+    def _on_member_update(self, project_id):
+        assignments = self._get_current_assignments(project_id)
+        ldapgroups._sync_ldap_project_group(project_id, assignments)
+
     def _on_project_delete(self, project_id):
         LOG.warning("Beginning wmf hooks for project deletion: %s" % project_id)
 
@@ -87,11 +117,8 @@ class KeystoneHooks(notifier._Driver):
 
         LOG.warning("Beginning wmf hooks for project creation: %s" % project_id)
 
-        rolelist = self.role_api.list_roles()
-        roledict = {}
-        # Make a dict to relate role names to ids
-        for role in rolelist:
-            roledict[role['name']] = role['id']
+        roledict = self._get_role_dict()
+
         if CONF.wmfhooks.observer_role_name not in roledict.keys():
             LOG.error("Failed to find id for role %s" % CONF.wmfhooks.observer_role_name)
             raise exception.NotImplemented()
@@ -190,6 +217,10 @@ class KeystoneHooks(notifier._Driver):
 
         if event_type == 'identity.project.created':
             self._on_project_create(message['payload']['resource_info'])
+
+        if (event_type == 'identity.role_assignment.deleted' or
+                event_type == 'identity.role_assignment.created'):
+            self._on_member_update(message['payload']['project'])
 
         # Eventually this will be used to update project resource pages:
         if event_type in CONF.wmfhooks.eventtype_blacklist:
