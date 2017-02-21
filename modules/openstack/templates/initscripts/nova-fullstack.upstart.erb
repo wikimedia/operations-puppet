@@ -14,14 +14,14 @@ respawn
 
 script
     export OS_USERNAME="osstackcanary"
-    export OS_PASSWORD="<%= @fullstack_pass %>"
+    export OS_PASSWORD="<%= @password %>"
     /usr/local/sbin/nova-fullstack
-                                       --interval 600 \
+                                       --interval <%= @interval %> \
                                        --max-pool 1 \
                                        --project admin-monitoring \
                                        --prepend fullstackd \
                                        --image debian-8.6-jessie \
                                        --flavor m1.small \
-                                       --keyfile /var/lib/osstackcanary/osstackcanary_id \
+                                       --keyfile <%= @keyfile %> \
                                        --statsd statsd.eqiad.wmnet
 end script

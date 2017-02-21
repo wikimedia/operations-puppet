@@ -1,7 +1,13 @@
-class openstack::nova::fullstack {
+# [*password*]
+#  password for fullstack test user (same across backends)
+#
+# [*interval*]
+#  seconds between fullstack test runs
 
-    $novaconfig = hiera_hash('novaconfig', {})
-    $fullstack_pass = $novaconfig['osstackcanary_pass']
+class openstack::nova::fullstack(
+    $password,
+    $interval = 300,
+    ) {
 
     group { 'osstackcanary':
         ensure => present,
@@ -26,7 +32,8 @@ class openstack::nova::fullstack {
         source => 'puppet:///modules/openstack/nova_fullstack_test.py',
     }
 
-    file { '/var/lib/osstackcanary/osstackcanary_id':
+    $keyfile = '/var/lib/osstackcanary/osstackcanary_id'
+    file { $keyfile:
         ensure  => present,
         mode    => '0600',
         owner   => 'osstackcanary',
