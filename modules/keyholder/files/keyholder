@@ -33,9 +33,18 @@ REQUIRE_ENCRYPTED_KEYS="yes"
 is_valid_private_key() {
   [ $REQUIRE_ENCRYPTED_KEYS == "yes" ] || return 0;
 
-  # check that $1 is a password-protected rsa private key file.
-  [ -f "$1" ] && /usr/bin/openssl rsa -in "$1" -check -pubout -passin pass: 2>&1 | \
-    /bin/grep -q "bad password"
+  [ -f "$1" ] || return 1
+  # Check that the key is one of RSA, ED25519
+  /usr/bin/ssh-keygen -l -f "$1" | /bin/egrep -q '\((RSA|ED25519)\)$' || return 1
+  # Temporary change permission of the file to avoid unprotected private file error
+  PERM=$(stat -c "%a" "$1")
+  chmod 0400 "$1"
+  RETURN=0
+  # Check that the key is a password-protected private key file.
+  /usr/bin/ssh-keygen -y -f "$1" -P "" 2>&1 | /bin/grep -q "load failed" || RETURN=1
+  # Restore permissions
+  chmod 0$PERM "$1"
+  return $RETURN
 }
 
 is_root()       { [ "$EUID" -eq 0 -o ! -z "$SUDO_COMMAND" ] ; }
@@ -70,7 +79,7 @@ case "$command" in
     KEYS=""
     for key in /etc/keyholder.d/*; do
       [[ $key = *.pub ]] && continue
-      is_valid_private_key "$key" || ( echo "$key is not an acceptable key. Does it have a passphrase?"; exit 1 ) || continue
+      is_valid_private_key "$key" || ( echo "$key is not an acceptable key. Is it an RSA or ED25519 key with passphrase?"; exit 1 ) || continue
       KEYS="$KEYS $key"
     done
     $0 add $KEYS
