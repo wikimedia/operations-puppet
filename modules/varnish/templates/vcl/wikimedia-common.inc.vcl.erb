@@ -148,6 +148,12 @@ backend <%= name %> {
 	.connect_timeout = <%= be_opts['connect_timeout'] %>;
 	.first_byte_timeout = <%= be_opts['first_byte_timeout'] %>;
 	.max_connections = <%= be_opts['max_connections'] %>;
+	<%- if be_opts.key?('probe') -%>
+	.probe = {
+		.url = "<%= be_opts['probe']['url'] %>";
+		.timeout = <%= be_opts['probe']['timeout'] %>;
+	}
+	<%- end -%>
 }
 
 <% end # app_directors loop -%>
