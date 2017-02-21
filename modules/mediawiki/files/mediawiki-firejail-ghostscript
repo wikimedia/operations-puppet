@@ -1,5 +1,6 @@
 #! /usr/bin/python
 # -*- coding: utf-8 -*-
 
-import sys, subprocess
+import subprocess
+import sys
 subprocess.call(['/usr/bin/firejail', '--profile=/etc/firejail/mediawiki-converters.profile', '/usr/bin/gs'] + sys.argv[1:])
