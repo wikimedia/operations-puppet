@@ -83,7 +83,7 @@ probe varnish {
 # }
 #
 #
-# @app_def_be_opts = { # every option is required!
+# @app_def_be_opts = { # exactly these 4 options supported/required
 #     'port' = 80,
 #     'connect_timeout' = '2s',
 #     'first_byte_timeout' = '4s',
@@ -92,11 +92,15 @@ probe varnish {
 # @app_directors = { # not always defined (e.g. frontends, for now)
 #     'foo' => {
 #         'backend' => "foo.svc.eqiad.wmnet", # required service hostname
-#         'be_opts' => { # be_opts + subkeys all optional, app_def_be_opts is defaults!
+#         'be_opts' => { # optional overrides of app_def_be_opts
 #             'port' = 80,
 #             'connect_timeout' = '2s',
 #             'first_byte_timeout' = '4s',
 #             'max_connections' = 100, # per-backend!
+#         },
+#         'probe'   => { # optional probe
+#             'url'     => '/piwik.php',
+#             'timeout' => '3s',
 #         },
 #     },
 # }
@@ -155,6 +159,12 @@ backend <%= name %> {
 	.connect_timeout = <%= be_opts['connect_timeout'] %>;
 	.first_byte_timeout = <%= be_opts['first_byte_timeout'] %>;
 	.max_connections = <%= be_opts['max_connections'] %>;
+	<%- if director.key?('probe') -%>
+	.probe = {
+		.url = "<%= director['probe']['url'] %>";
+		.timeout = <%= director['probe']['timeout'] %>;
+	}
+	<%- end -%>
 }
 
 <% end # app_directors loop -%>
