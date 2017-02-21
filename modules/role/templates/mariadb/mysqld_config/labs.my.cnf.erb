@@ -2,12 +2,12 @@
 
 [client]
 port   = 3306
-socket = /tmp/mysql.sock
+socket = <%= @socket %>
 
 [mysqld]
 
 user      = mysql
-socket    = /tmp/mysql.sock
+socket    = <%= @socket %>
 port      = 3306
 datadir   = <%= @datadir %>
 tmpdir    = <%= @tmpdir %>
@@ -112,4 +112,3 @@ s7.replicate-wild-do-table = heartbeat.%
 quick
 max_allowed_packet = 32M
 
-#!includedir /etc/mysql/conf.d/

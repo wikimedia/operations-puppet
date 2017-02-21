@@ -1,7 +1,9 @@
 # hosts with client utilities to conect to remote servers
 # This role provides remote access to mysql server
 # **DO NOT ADD** to non-dedicated hosts**
-class role::mariadb::client {
+class role::mariadb::client (
+    $socket = '/var/run/mysqld/mysqld.sock',
+) {
 
     # prevent accidental addition on a db server or a non-dedicated client
     if !($::fqdn in ['neodymium.eqiad.wmnet', 'sarin.codfw.wmnet']) {
@@ -15,6 +17,7 @@ class role::mariadb::client {
     class { 'mariadb::config':
         config => 'role/mariadb/mysqld_config/client.my.cnf.erb',
         ssl    => 'puppet-cert',
+        socket => $socket,
     }
 
     $password = $passwords::misc::scripts::mysql_root_pass

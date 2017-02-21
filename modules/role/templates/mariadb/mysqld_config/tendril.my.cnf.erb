@@ -4,16 +4,8 @@
 
 [client]
 port   = 3306
-socket = /tmp/mysql.sock
-<% if @ssl == 'on' %>
-# ssl
-ssl-ca=/etc/mysql/ssl/cacert.pem
-ssl-cert=/etc/mysql/ssl/server-cert.pem
-ssl-key=/etc/mysql/ssl/server-key.pem
-# skip server cert validation until we generate one cert per server
-# it would check the cert's common name against the host
-# ssl-verify-server-cert
-<% elsif @ssl == 'puppet-cert' %>
+socket = <%= @socket %>
+<% if @ssl == 'on' or @ssl == 'puppet-cert' %>
 # ssl
 ssl-ca=/etc/ssl/certs/Puppet_Internal_CA.pem
 ssl-cert=/etc/mysql/ssl/cert.pem
@@ -28,12 +20,12 @@ skip-name-resolve
 temp-pool
 
 user      = mysql
-socket    = /tmp/mysql.sock
+socket    = <%= @socket %>
 port      = 3306
 datadir   = <%= @datadir %>
 tmpdir    = <%= @tmpdir %>
 server_id = <%= @server_id %>
-read_only = 0
+read_only = <%= @read_only %>
 
 # enable socket authentication
 plugin-load = unix_socket=auth_socket.so
@@ -66,13 +58,7 @@ tokudb_cache_size              = 24G
 innodb_buffer_pool_load_at_startup  = 1
 innodb_buffer_pool_dump_at_shutdown = 1
 
-<% if @ssl == 'on' %>
-# ssl
-ssl-ca=/etc/mysql/ssl/cacert.pem
-ssl-cert=/etc/mysql/ssl/server-cert.pem
-ssl-key=/etc/mysql/ssl/server-key.pem
-ssl-cipher=TLSv1.2
-<% elsif @ssl == 'puppet-cert' %>
+<% if @ssl == 'on' or @ssl == 'puppet-cert' %>
 # ssl
 ssl-ca=/etc/ssl/certs/Puppet_Internal_CA.pem
 ssl-cert=/etc/mysql/ssl/cert.pem
