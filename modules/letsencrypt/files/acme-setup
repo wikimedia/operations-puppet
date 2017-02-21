@@ -97,7 +97,8 @@
 # -- global files generated once:
 # /etc/acme/acct/acct.key      - acme_user:root/400 # persists indefinitely
 # -- files generated when run with id "x":
-# /etc/acme/key/x.key          - root:root/400 # persists indefinitely
+# /etc/acme/key/x.key          - key_user:key_group/440 # persists indefinitely
+#                                    ^ 440 if key_group non-root, 400 otherwise
 # /etc/acme/csr/x.pem          - root:root/644 # persists if no subj change
 # /etc/acme/cert/x.crt         - root:root/644 # just our signed cert
 # /etc/acme/cert/x.chain.crt   - root:root/644 # intermediate (apache)
@@ -115,6 +116,7 @@ import re
 import os
 import sys
 import pwd
+import grp
 import stat
 import errno
 import shutil
@@ -166,6 +168,12 @@ def parse_options():
     parser.add_argument('-w', dest='svc', type=str,
                         help='reload on new ACME cert (def %(default)s)',
                         default=None)
+    parser.add_argument('--key-user', dest='key_user', type=str,
+                        help='User owning private key (def %(default)s)',
+                        default='root')
+    parser.add_argument('--key-group', dest='key_group', type=str,
+                        help='Group owning private key (def %(default)s)',
+                        default='root')
 
     return parser.parse_args()
 
@@ -429,7 +437,8 @@ def ensure_crt_self(id, cert_dir, tls_key, csr, subjects, force):
     ensure_real_fs(tls_crt, 0o644, 0, 0, False, cert_create, cert_force)
 
 
-def acme_setup(id, subjects, mode, exp_days, exp_rand, acme_user, svc):
+def acme_setup(id, subjects, mode, exp_days, exp_rand, acme_user, svc,
+               key_uid, key_gid):
     """Do all the things this script does"""
 
     # Directory structure
@@ -451,7 +460,11 @@ def acme_setup(id, subjects, mode, exp_days, exp_rand, acme_user, svc):
     acct_key = os.path.join(acct_dir, 'acct.key')
     ensure_key(acct_key, acme_user.pw_uid, 0, 0o400, 4096)
     tls_key = os.path.join(key_dir, '%s.key' % id)
-    force_csr = ensure_key(tls_key, 0, 0, 0o400, 2048)
+    if key_gid != 0:
+        key_mode = 0o440
+    else:
+        key_mode = 0o400
+    force_csr = ensure_key(tls_key, key_uid, key_gid, key_mode, 2048)
     os.umask(022)
 
     # CSR based on tls_key + subjects
@@ -481,10 +494,15 @@ def main():
         raise Exception('-i must match ^[-a-zA-Z0-9_]+$ ')
 
     acme_user = pwd.getpwnam(args.acme_user)
+    key_uid = pwd.getpwnam(args.key_user).pw_uid
+    key_gid = grp.getgrnam(args.key_group).gr_gid
+
     subjects = list(set([item.lower() for item in args.subjects]))
     subjects.sort()
+
     acme_setup(args.id, subjects, args.mode,
-               args.exp_days, args.exp_rand, acme_user, args.svc)
+               args.exp_days, args.exp_rand, acme_user, args.svc,
+               key_uid, key_gid)
 
 
 if __name__ == '__main__':
