@@ -46,6 +46,12 @@
 #   The system-level service name for the same as the above, for use in commands
 #   like: 'service $system_service reload'
 #
+# [*key_user*]
+#   The system user name which should own the private key, defaults to root
+#
+# [*key_group*]
+#   The system group name which should own the private key, defaults to root
+#
 # === Hieradata control: do_acme
 #
 # If the hieradata key 'do_acme' is set to false (default is true), the
@@ -103,11 +109,11 @@
 #       </VirtualHost>
 #
 
-define letsencrypt::cert::integrated($subjects, $puppet_svc, $system_svc) {
+define letsencrypt::cert::integrated($subjects, $puppet_svc, $system_svc, $key_user='root', $key_group='root') {
     require ::letsencrypt
 
     $safe_title = regsubst($title, '\W', '_', 'G')
-    $base_cmd = "/usr/local/sbin/acme-setup -i ${safe_title} -s ${subjects}"
+    $base_cmd = "/usr/local/sbin/acme-setup -i ${safe_title} -s ${subjects} --key-user ${key_user} --key-group ${key_group}"
 
     # Pre-setup with self-signed cert if necessary, to let $puppet_svc start
     exec { "acme-setup-self-${safe_title}":
