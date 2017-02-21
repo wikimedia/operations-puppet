@@ -7,13 +7,21 @@
 # if there is any dropping of datapoints in their queues or errors otherwise.
 
 class graphite::monitoring::graphite {
-    # is carbon-relay queue full? (i.e. dropping data)
-    monitoring::graphite_threshold { 'carbon-relay_queue_full':
-        description     => 'carbon-relay queue full',
-        metric          => 'sumSeries(transformNull(carbon.relays.graphite1001-*.destinations.*.fullQueueDrops))',
-        from            => '10minutes',
-        warning         => 200,
-        critical        => 1000,
+    monitoring::graphite_threshold { 'carbon-frontend-relay_drops':
+        description     => 'carbon-frontend-relay metric drops',
+        metric          => 'sumSeries(transformNull(perSecond(carbon.relays.graphite*_frontend.destinations.*.dropped)))',
+        from            => '5minutes',
+        warning         => 25,
+        critical        => 100,
+        nagios_critical => false,
+    }
+
+    monitoring::graphite_threshold { 'carbon-local-relay_drops':
+        description     => 'carbon-local-relay metric drops',
+        metric          => 'sumSeries(transformNull(perSecond(carbon.relays.graphite*_local.destinations.*.dropped)))',
+        from            => '5minutes',
+        warning         => 25,
+        critical        => 100,
         nagios_critical => false,
     }
 
