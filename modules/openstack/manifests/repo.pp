@@ -13,22 +13,26 @@ class openstack::repo(
             keyfile    => 'puppet:///modules/openstack/ubuntu-cloud.key';
         }
     } elsif os_version('debian jessie') {
-        apt::conf { 'mirantis-mitaka-jessie-proxy':
-            priority => '80',
-            key      => 'Acquire::http::Proxy::mitaka-jessie.pkgs.mirantis.com',
-            value    => "http://webproxy.${::site}.wmnet:8080",
-        }
-        apt::repository { 'mirantis':
-            uri        => "http://${openstack_version}-jessie.pkgs.mirantis.com/debian",
-            dist       => "jessie-${openstack_version}-backports",
-            components => 'main',
-            keyfile    => "puppet:///modules/openstack/mirantis-${openstack_version}.key";
-        }
-        apt::repository { 'mirantis-nochange':
-            uri        => "http://${openstack_version}-jessie.pkgs.mirantis.com/debian",
-            dist       => "jessie-${openstack_version}-backports-nochange",
-            components => 'main',
-            keyfile    => "puppet:///modules/openstack/mirantis-${openstack_version}.key";
+        # Stock Jessie seems to come with Liberty packages, so only set
+        #  up a special repo for non-Liberty packages
+        if ($openstack_version != 'liberty') {
+            apt::conf { 'mirantis-jessie-proxy':
+                priority => '80',
+                key      => "Acquire::http::Proxy::${openstack_version}-jessie.pkgs.mirantis.com",
+                value    => "http://webproxy.${::site}.wmnet:8080",
+            }
+            apt::repository { 'mirantis':
+                uri        => "http://${openstack_version}-jessie.pkgs.mirantis.com/debian",
+                dist       => "jessie-${openstack_version}-backports",
+                components => 'main',
+                keyfile    => "puppet:///modules/openstack/mirantis-${openstack_version}.key";
+            }
+            apt::repository { 'mirantis-nochange':
+                uri        => "http://${openstack_version}-jessie.pkgs.mirantis.com/debian",
+                dist       => "jessie-${openstack_version}-backports-nochange",
+                components => 'main',
+                keyfile    => "puppet:///modules/openstack/mirantis-${openstack_version}.key";
+            }
         }
     }
 }
