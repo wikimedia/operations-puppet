@@ -1468,7 +1468,7 @@ node 'labsdb1007.eqiad.wmnet' {
 }
 
 node /labstore100[12]\.eqiad\.wmnet/ {
-    role(labs::nfs::primary)
+    # soon to be recommissioned in T158196
     include ::standard
 }
 
