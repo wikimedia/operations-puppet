@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/python
 '''
 Archives graphite metrics for labs hosts that have been deleted.
 
