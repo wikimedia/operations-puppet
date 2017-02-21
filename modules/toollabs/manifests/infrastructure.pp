@@ -3,9 +3,16 @@
 
 class toollabs::infrastructure {
 
+    if member(['tools', 'toolsbeta'], $::labsproject) {
+        $banner = "modules/toollabs/40-${::labsproject}-infrastructure-banner.sh"
+    }
+    else {
+        $banner = "Default ${name} banner."
+    }
+
     motd::script { 'infrastructure-banner':
         ensure => present,
-        source => "puppet:///modules/toollabs/40-${::labsproject}-infrastructure-banner.sh",
+        source => "puppet:///${banner}",
     }
 
     # Infrastructure instances are limited to an (arbitrarily picked) local
