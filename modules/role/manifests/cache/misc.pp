@@ -47,9 +47,13 @@ class role::cache::misc {
             'backend'  => 'bromine.eqiad.wmnet',
             'be_opts'  => $app_def_be_opts,
         },
-        'bohrium' => {
-            'backend'  => 'bohrium.eqiad.wmnet',
-            'be_opts'  => $app_def_be_opts,
+        'bohrium'     => {
+            'backend' => 'bohrium.eqiad.wmnet',
+            'be_opts' => $app_def_be_opts,
+            'probe'   => {
+                'url'     => '/piwik.php',
+                'timeout' => '3s',
+            },
         },
         'californium' => {
             'backend'  => 'californium.wikimedia.org',
