@@ -14,6 +14,7 @@ for now.
 
 Logs to /var/log/graphite/instance-archiver.log
 '''
+import errno
 import os
 import time
 import logging
@@ -40,6 +41,16 @@ def get_keystone_session(project_name):
     ))
 
 
+def makedirs_exist_ok(path, mode='0o777'):
+    try:
+        os.makedirs(path, mode)
+    except OSError as exc:  # Python >2.5
+        if exc.errno == errno.EEXIST and os.path.isdir(path):
+            pass
+        else:
+            raise
+
+
 def archive_host(project_name, host_name):
     '''
     Archives all metrics for a particular host in a particular project.
@@ -58,7 +69,7 @@ def archive_host(project_name, host_name):
             project_name,
             archived_name
         )
-        os.makedirs(os.path.dirname(archived_path), 0o755, exist_ok=True)
+        makedirs_exist_ok(os.path.dirname(archived_path), 0o755)
         os.rename(cur_path, archived_path)
         logging.info('Archived host %s, renamed to %s', host_name, archived_name)
     else:
@@ -94,6 +105,7 @@ def get_projects_list():
         interface='public'
     )
     return [project.name for project in keystone_client.projects.list()]
+
 
 def get_deleted_instances():
     '''
