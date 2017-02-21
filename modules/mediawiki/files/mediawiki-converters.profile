@@ -1,3 +1,7 @@
+# Prevents firejail from emitting to stderr which ends up collected by HHVM and
+# pollutes logstash
+quiet
+
 # system directories
 blacklist /sbin
 blacklist /usr/sbin
