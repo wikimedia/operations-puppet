@@ -172,6 +172,7 @@ class role::mariadb::groups(
     $mysql_group,
     $mysql_role,
     $mysql_shard = '',
+    $socket,
     ) {
 
     salt::grain { 'mysql_group':
@@ -196,12 +197,17 @@ class role::mariadb::groups(
 
     include role::prometheus::node_exporter
     include role::prometheus::mysqld_exporter
+
+    class { 'include role::prometheus::mysqld_exporter':
+        socket => $socket,
+    }
 }
 
 # miscellaneous services clusters
 class role::mariadb::misc(
     $shard  = 'm1',
     $master = false,
+    $socket = '/tmp/mysql.sock',
     ) {
 
     system::role { 'role::mariadb::misc':
@@ -226,6 +232,7 @@ class role::mariadb::misc(
         mysql_group => 'misc',
         mysql_shard => $shard,
         mysql_role  => $mysql_role,
+        socket      => $socket,
     }
 
     include mariadb::packages_wmf
@@ -235,6 +242,7 @@ class role::mariadb::misc(
         config    => 'role/mariadb/mysqld_config/misc.my.cnf.erb',
         datadir   => '/srv/sqldata',
         tmpdir    => '/srv/tmp',
+        socket    => $socket,
         ssl       => 'puppet-cert',
         read_only => $read_only,
     }
@@ -259,9 +267,9 @@ class role::mariadb::misc::phabricator(
     $shard     = 'm3',
     $master    = false,
     $snapshot  = false,
+    $socket    = '/tmp/mysql.sock',
     $ssl       = 'puppet-cert',
     $p_s       = 'on',
-    $mariadb10 = true,
     ) {
 
     system::role { 'role::mariadb::misc':
@@ -285,6 +293,7 @@ class role::mariadb::misc::phabricator(
         mysql_group => 'misc',
         mysql_shard => $shard,
         mysql_role  => $mysql_role,
+        socket      => $socket,
     }
 
     $read_only = $master ? {
@@ -298,6 +307,7 @@ class role::mariadb::misc::phabricator(
         config    => 'role/mariadb/mysqld_config/phabricator.my.cnf.erb',
         datadir   => '/srv/sqldata',
         tmpdir    => '/srv/tmp',
+        socket    => $socket,
         sql_mode  => 'STRICT_ALL_TABLES',
         read_only => $read_only,
         ssl       => $ssl,
@@ -355,6 +365,7 @@ class role::mariadb::misc::phabricator(
 class role::mariadb::misc::eventlogging(
     $shard  = 'm4',
     $master = false,
+    $socket = '/tmp/mysql.sock',
     ) {
 
     system::role { 'role::mariadb::misc':
@@ -375,6 +386,7 @@ class role::mariadb::misc::eventlogging(
         mysql_group => 'misc',
         mysql_shard => $shard,
         mysql_role  => $mysql_role,
+        socket      => $socket,
     }
 
     include mariadb::packages_wmf
@@ -389,6 +401,7 @@ class role::mariadb::misc::eventlogging(
         config        => 'role/mariadb/mysqld_config/eventlogging.my.cnf.erb',
         datadir       => '/srv/sqldata',
         tmpdir        => '/srv/tmp',
+        socket        => $socket,
         read_only     => $read_only,
         ssl           => 'puppet-cert',
         p_s           => 'off',
@@ -434,6 +447,7 @@ class role::mariadb::beta {
 
     class { 'mariadb::config':
         config  => 'role/mariadb/mysqld_config/beta.my.cnf.erb',
+        socket  => '/tmp/mysql.sock',
     }
 
     class { 'mariadb::service':
@@ -468,15 +482,18 @@ class role::mariadb::tendril {
     include passwords::misc::scripts
     include role::mariadb::ferm
 
+    $socket = '/tmp/mysql.sock'
     class {'role::mariadb::groups':
         mysql_group => 'tendril',
         mysql_role  => 'standalone',
+        socket      => $socket,
     }
 
     class { 'mariadb::config':
         config  => 'role/mariadb/mysqld_config/tendril.my.cnf.erb',
         datadir => '/srv/sqldata',
         tmpdir  => '/srv/tmp',
+        socket  => $socket,
         ssl     => 'puppet-cert',
     }
 }
@@ -530,6 +547,7 @@ class role::mariadb::core(
     $ssl           = 'puppet-cert',
     $binlog_format = 'MIXED',
     $master        = false,
+    $socket        = '/tmp/mysql.sock',
     ) {
 
     system::role { 'role::mariadb::core':
@@ -554,6 +572,7 @@ class role::mariadb::core(
         mysql_group => 'core',
         mysql_shard => $shard,
         mysql_role  => $mysql_role,
+        socket      => $socket,
     }
 
 
@@ -577,6 +596,7 @@ class role::mariadb::core(
         config           => 'role/mariadb/mysqld_config/production.my.cnf.erb',
         datadir          => '/srv/sqldata',
         tmpdir           => '/srv/tmp',
+        socket           => $socket,
         p_s              => 'on',
         ssl              => $ssl,
         binlog_format    => $binlog_format,
@@ -711,9 +731,11 @@ class role::mariadb::sanitarium2 {
     include role::labs::db::common
     include role::labs::db::check_private_data
 
+    $socket = '/tmp/mysql.sock'
     class { 'role::mariadb::groups':
         mysql_group => 'labs',
         mysql_role  => 'slave',
+        socket      => $socket,
     }
 
     class {'mariadb::packages_wmf':
@@ -722,6 +744,7 @@ class role::mariadb::sanitarium2 {
 
     class { 'mariadb::config':
         config => 'role/mariadb/mysqld_config/sanitarium2.my.cnf.erb',
+        socket => $socket,
         ssl    => 'puppet-cert',
     }
 
@@ -765,9 +788,11 @@ class role::mariadb::labs {
     include role::labs::db::views
     include role::labs::db::check_private_data
 
+    $socket = '/tmp/mysql.sock'
     class { 'role::mariadb::groups':
         mysql_group => 'labs',
         mysql_role  => 'slave',
+        socket      => $socket,
     }
 
     include mariadb::packages_wmf
@@ -777,6 +802,7 @@ class role::mariadb::labs {
         config  => 'role/mariadb/mysqld_config/labs.my.cnf.erb',
         datadir => '/srv/sqldata',
         tmpdir  => '/srv/tmp',
+        socket  => $socket,
     }
 
     file { '/srv/innodb':
@@ -814,9 +840,12 @@ class role::mariadb::wikitech {
     include role::mariadb::grants::wikitech
     include role::mariadb::monitor
     include passwords::misc::scripts
+
+    $socket = '/tmp/mysql.sock'
     class { 'role::mariadb::groups':
         mysql_group => 'wikitech',
         mysql_role  => 'standalone',
+        socket      => $socket,
     }
 
     include mariadb::packages_wmf
@@ -826,6 +855,7 @@ class role::mariadb::wikitech {
         config  => 'role/mariadb/mysqld_config/wikitech.my.cnf.erb',
         datadir => '/srv/sqldata',
         tmpdir  => '/srv/tmp',
+        socket  => $socket,
     }
 
     # mysql monitoring access from tendril (db1011)
@@ -915,6 +945,7 @@ class role::mariadb::proxy::slaves(
 # parsercache (pc) specific configuration
 class role::mariadb::parsercache(
     $shard,
+    $socket = '/tmp/mysql.sock',
     ) {
 
     include ::standard
@@ -926,6 +957,7 @@ class role::mariadb::parsercache(
         mysql_group => 'parsercache',
         mysql_shard => $shard,
         mysql_role  => 'master',
+        socket      => $socket,
     }
 
     system::role { 'role::mariadb::parsercache':
@@ -946,6 +978,7 @@ class role::mariadb::parsercache(
         config  => 'role/mariadb/mysqld_config/parsercache.my.cnf.erb',
         datadir => '/srv/sqldata-cache',
         tmpdir  => '/srv/tmp',
+        socket  => $socket,
         ssl     => 'puppet-cert',
         p_s     => 'off',
     }

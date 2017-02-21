@@ -3,6 +3,7 @@ class role::mariadb::dbstore2(
     $lag_warn = 300,
     $lag_crit = 600,
     $warn_stopped = true,
+    $socket = '/tmp/mysql.sock',
     ) {
 
     system::role { 'role::mariadb::dbstore2':
@@ -27,12 +28,14 @@ class role::mariadb::dbstore2(
     class {'role::mariadb::groups':
         mysql_group => 'dbstore',
         mysql_role  => 'slave',
+        socket      => $socket,
     }
 
     class { 'mariadb::config':
         config  => 'role/mariadb/mysqld_config/dbstore2.my.cnf.erb',
         datadir => '/srv/sqldata',
         tmpdir  => '/srv/tmp',
+        socket  => $socket,
         ssl     => 'puppet-cert',
         p_s     => 'off',
     }
