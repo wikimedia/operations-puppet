@@ -58,7 +58,13 @@ def archive_host(project_name, host_name):
             project_name,
             archived_name
         )
-        os.makedirs(os.path.dirname(archived_path), 0o755, exist_ok=True)
+        try:
+            os.makedirs(os.path.dirname(archived_path), 0o755)
+        except OSError as exc:
+            if exc.errno == errno.EEXIST and os.path.isdir(path):
+                pass
+            else:
+                raise
         os.rename(cur_path, archived_path)
         logging.info('Archived host %s, renamed to %s', host_name, archived_name)
     else:
