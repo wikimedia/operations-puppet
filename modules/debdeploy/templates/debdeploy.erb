@@ -30,7 +30,7 @@ kubernetes-all: debdeploy-kubernetes-eqiad:standard, debdeploy-kubernetes-eqiad:
 kubernetes-etcd: deploy-kubernetes-eqiad:etcd
 kubernetes: debdeploy-kubernetes-eqiad:standard, debdeploy-kubernetes-eqiad:control
 kubernetes-workers: debdeploy-kubernetes-eqiad:standard
-kubernetes-masters: debdeploy-kubernetes-eqiad:control
+kubernetes-masters: debdeploy-kubernetes-eqiad:standard
 mx = debdeploy-mx:standard
 ocg = debdeploy-ocg:standard
 sca = debdeploy-sca:standard, debdeploy-sca:canary
