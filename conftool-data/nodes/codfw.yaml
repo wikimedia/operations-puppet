@@ -26,8 +26,6 @@ appserver:
   mw2115.codfw.wmnet: [apache2,nginx]
   mw2116.codfw.wmnet: [apache2,nginx]
   mw2117.codfw.wmnet: [apache2,nginx]
-  mw2118.codfw.wmnet: [apache2,nginx]
-  mw2119.codfw.wmnet: [apache2,nginx]
   mw2163.codfw.wmnet: [apache2,nginx]
   mw2164.codfw.wmnet: [apache2,nginx]
   mw2165.codfw.wmnet: [apache2,nginx]
@@ -84,7 +82,6 @@ appserver:
   mw2240.codfw.wmnet: [apache2,nginx]
   mw2241.codfw.wmnet: [apache2,nginx]
   mw2242.codfw.wmnet: [apache2,nginx]
-  mw2243.codfw.wmnet: [apache2,nginx]
 api_appserver:
   mw2120.codfw.wmnet: [apache2,nginx]
   mw2121.codfw.wmnet: [apache2,nginx]
@@ -156,11 +153,14 @@ jobrunner:
   mw2160.codfw.wmnet: [apache2]
   mw2161.codfw.wmnet: [apache2]
   mw2162.codfw.wmnet: [apache2]
+  mw2243.codfw.wmnet: [apache2]
   mw2247.codfw.wmnet: [apache2]
   mw2248.codfw.wmnet: [apache2]
   mw2249.codfw.wmnet: [apache2]
   mw2250.codfw.wmnet: [apache2]
 videoscaler:
+  mw2118.codfw.wmnet: [apache2]
+  mw2119.codfw.wmnet: [apache2]
   mw2152.codfw.wmnet: [apache2]
   mw2246.codfw.wmnet: [apache2]
 testserver:
