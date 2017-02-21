@@ -70,7 +70,7 @@ case "$command" in
     KEYS=""
     for key in /etc/keyholder.d/*; do
       [[ $key = *.pub ]] && continue
-      is_valid_private_key "$key" || ( echo "$key is not an acceptable key. Does it have a passphrase?"; continue )
+      is_valid_private_key "$key" || ( echo "$key is not an acceptable key. Does it have a passphrase?"; exit 1 ) || continue
       KEYS="$KEYS $key"
     done
     $0 add $KEYS
