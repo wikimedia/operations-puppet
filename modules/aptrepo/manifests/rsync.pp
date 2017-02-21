@@ -26,6 +26,13 @@ class aptrepo::rsync {
             read_only   => 'no',
             hosts_allow => $primary_server,
         }
+
+        rsync::server::module { 'install-home':
+            ensure      => $aptrepo::rsync::ensure,
+            path        => '/home',
+            read_only   => 'no',
+            hosts_allow => $primary_server,
+        }
     }
 
     ferm::service { 'aptrepo-rsync':
