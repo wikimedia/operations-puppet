@@ -51,7 +51,7 @@ class base::firewall($ensure = 'present') {
         ensure => $ensure,
         proto  => 'tcp',
         port   => '22',
-        srange => '$CUMIN_MASTERS ACCEPT',
+        srange => '$CUMIN_MASTERS',
     }
 
     file { '/usr/lib/nagios/plugins/check_conntrack':
