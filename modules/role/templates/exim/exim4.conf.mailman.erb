@@ -69,8 +69,8 @@ add_environment = <; PATH=/bin:/usr/bin
 keep_environment =
 
 # TLS
-tls_certificate = /etc/ssl/localcerts/lists.wikimedia.org.chained.crt
-tls_privatekey = /etc/ssl/private/lists.wikimedia.org.key
+tls_certificate = /etc/acme/cert/lists.chained.crt
+tls_privatekey = /etc/acme/key/lists.key
 tls_advertise_hosts = *
 
 # force Gmail over IPv4 due to reports of bad spam reputation over IPv6
