@@ -107,9 +107,17 @@ class role::labs::nfs::secondary($monitor = 'eth0') {
 
     if($drbd_role == 'primary') {
 
+        file { '/usr/local/sbin/safe-du':
+            source => 'puppet:///modules/labstore/monitor/safe-du.sh',
+            mode   => '0744',
+            owner  => 'root',
+            group  => 'root',
+        }
+
         sudo::user { 'diamond_dir_size_tracker':
             user       => 'diamond',
-            privileges => ['ALL = NOPASSWD: /usr/bin/timeout 10m /usr/bin/nice -n 19 /usr/bin/ionice -c 3 /usr/bin/du -k -s'],
+            privileges => ['ALL = NOPASSWD: /usr/local/sbin/safe-du'],
+            require    => File['/usr/local/sbin/safe-du'],
         }
 
         diamond::collector { 'DirectorySize':
