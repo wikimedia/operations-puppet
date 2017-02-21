@@ -35,7 +35,8 @@ if (typeof module === 'object') {
 			// HTML2 generator options
 			html2: {
 				name: 'parsoid',
-				server: 'http://parsoid.svc.<%= scope.lookupvar("::parsoid_site") %>.wmnet:8000',
+				// Test with local dev version of Parsoid
+				server: 'http://localhost:<%= @parsoid_port %>',
 				dumpHTML: false,
 				postprocessorScript: '/srv/visualdiff/lib/parsoid.postprocess.js',
 				stylesYamlFile: '/srv/visualdiff/lib/parsoid.custom_styles.yaml',
@@ -57,7 +58,8 @@ if (typeof module === 'object') {
 
 		postJSON: true,
 
-		gitCommitFetch: clientScripts.gitCommitFetch,
+		// Path of the git repo
+		gitRepoPath: '/srv/deployment/parsoid/deploy/src',
 
 		runTest: clientScripts.generateVisualDiff,
 	};

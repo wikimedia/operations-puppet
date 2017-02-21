@@ -5,8 +5,10 @@ class role::parsoid::testing {
         description => 'Parsoid server (rt-testing, visual-diffing, etc.)'
     }
 
+    $parsoid_port = hiera('parsoid::testing::parsoid_port')
+
     class { '::parsoid':
-        port          => 8142,
+        port          => $parsoid_port,
         settings_file => '/srv/deployment/parsoid/deploy/src/localsettings.js',
         deployment    => 'git',
     }
@@ -46,8 +48,8 @@ class role::parsoid::testing {
     }
 
     nginx::site { 'nginx-parsoid-testing':
-        source => 'puppet:///modules/parsoid/parsoid-testing.nginx.conf',
-        notify => Service['nginx'],
+        content => template('parsoid/parsoid-testing.nginx.conf.erb'),
+        notify  => Service['nginx'],
     }
 
     ferm::service { 'nginx-parsoid-testing':
