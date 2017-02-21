@@ -1,6 +1,5 @@
 
 rootLogger.level = info
-rootLogger.appenderRef.console.ref = console
 rootLogger.appenderRef.file.ref = file
 <% if @send_logs_to_logstash %>
 #rootLogger.appenderRef.ship_to_logstash.ref = ship_to_logstash
@@ -37,11 +36,6 @@ logger.indexing_slowlog.name = index.indexing.slowlog
 logger.indexing_slowlog.level = info
 logger.indexing_slowlog.additivity = false
 logger.indexing_slowlog.appenderRef.slowlog.ref = index_search_slow_log_file
-
-appender.console.type = Console
-appender.console.name = console
-appender.console.layout.type = PatternLayout
-appender.console.layout.pattern = [%d{ISO8601}][%-5p][%-25c] %m%n
 
 appender.file.name = file
 appender.file.type = File
