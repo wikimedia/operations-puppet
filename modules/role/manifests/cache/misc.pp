@@ -35,6 +35,11 @@ class role::cache::misc {
         'max_connections'       => 100,
     }
 
+    $piwik_probe = {
+	'url' => '/piwik.php',
+	'timeout' => 3s,
+    }
+
     # $app_directors defines the backend applayer services this varnish can
     # route requests to.
     #
@@ -49,7 +54,7 @@ class role::cache::misc {
         },
         'bohrium' => {
             'backend'  => 'bohrium.eqiad.wmnet',
-            'be_opts'  => $app_def_be_opts,
+            'be_opts'  => merge($app_def_be_opts, { 'probe' => $piwik_probe }),
         },
         'californium' => {
             'backend'  => 'californium.wikimedia.org',
