@@ -13,9 +13,9 @@ class openstack::repo(
             keyfile    => 'puppet:///modules/openstack/ubuntu-cloud.key';
         }
     } elsif os_version('debian jessie') {
-        apt::conf { 'mirantis-mitaka-jessie-proxy':
+        apt::conf { 'mirantis-jessie-proxy':
             priority => '80',
-            key      => 'Acquire::http::Proxy::mitaka-jessie.pkgs.mirantis.com',
+            key      => "Acquire::http::Proxy::${openstack_version}-jessie.pkgs.mirantis.com",
             value    => "http://webproxy.${::site}.wmnet:8080",
         }
         apt::repository { 'mirantis':
