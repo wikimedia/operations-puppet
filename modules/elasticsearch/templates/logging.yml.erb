@@ -1,4 +1,4 @@
-rootLogger: INFO, console, file<% if @send_logs_to_logstash %>, ship_to_logstash<% end %>
+rootLogger: INFO, file<% if @send_logs_to_logstash %>, ship_to_logstash<% end %>
 logger:
   # log action execution errors for easier debugging
   action: DEBUG
@@ -33,12 +33,6 @@ additivity:
   index.indexing.slowlog: false
 
 appender:
-  console:
-    type: console
-    layout:
-      type: consolePattern
-      conversionPattern: "[%d{ISO8601}][%-5p][%-25c] %m%n"
-
   file:
     type: file
     file: ${path.logs}/${cluster.name}.log
