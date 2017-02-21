@@ -1,6 +1,5 @@
 
 rootLogger.level = info
-rootLogger.appenderRef.console.ref = console
 rootLogger.appenderRef.file.ref = file
 <% if @send_logs_to_logstash %>
 #rootLogger.appenderRef.ship_to_logstash.ref = ship_to_logstash
@@ -75,3 +74,15 @@ appender.index_indexing_slow_log_file.layout.pattern = [%d{ISO8601}][%-5p][%-25c
 #appender.ship_to_logstash.facility = elasticsearch
 #appender.ship_to_logstash.extractStackTrace = true
 #appender.ship_to_logstash.threshold = DEBUG
+
+# only send specific logs to console
+logger.bootstrap.name = bootstrap
+logger.bootstrap.appenderRef.console.ref = console
+logger.discovery.name = discovery
+logger.discovery.appenderRef.console.ref = console
+logger.env.name = env
+logger.env.appenderRef.console.ref = console
+logger.node.name = node
+logger.node.appenderRef.console.ref = console
+logger.transport.name = transport
+logger.transport.appenderRef.console.ref = console

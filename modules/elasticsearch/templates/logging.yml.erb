@@ -1,4 +1,4 @@
-rootLogger: INFO, console, file<% if @send_logs_to_logstash %>, ship_to_logstash<% end %>
+rootLogger: INFO, file<% if @send_logs_to_logstash %>, ship_to_logstash<% end %>
 logger:
   # log action execution errors for easier debugging
   action: DEBUG
@@ -27,6 +27,13 @@ logger:
 
   index.search.slowlog: TRACE, index_search_slow_log_file
   index.indexing.slowlog: INFO, index_indexing_slow_log_file
+
+  # only send specific logs to console
+  bootstrap: INFO, console
+  discovery: INFO, console
+  env: INFO, console
+  node: INFO, console
+  transport: INFO, console
 
 additivity:
   index.search.slowlog: false
