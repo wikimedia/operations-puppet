@@ -2105,7 +2105,7 @@ node /^mw20(17|99)\.codfw\.wmnet$/ {
 }
 
 #mw2090-mw2098, mw2100-mw2119 are appservers
-node /^mw2(09[0-8]|1[0-1][0-9])\.codfw\.wmnet$/ {
+node /^mw2(09[0-8]|10[0-9]|11[0-7])\.codfw\.wmnet$/ {
     role(mediawiki::appserver)
     include ::base::firewall
 }
@@ -2114,6 +2114,12 @@ node /^mw2(09[0-8]|1[0-1][0-9])\.codfw\.wmnet$/ {
 node /^mw21([2-3][0-9]|4[0-7])\.codfw\.wmnet$/ {
     role(mediawiki::appserver::api)
     include ::base::firewall
+}
+
+# ROW B codfw appservers
+
+node /^mw211[89]\.codfw\.wmnet$/ {
+    role(mediawiki::videoscaler)
 }
 
 # ROW C codfw appservers: mw2148-mw2234
@@ -2155,7 +2161,7 @@ node /^mw22(1[5-9]|2[0123])\.codfw\.wmnet$/ {
 }
 
 # mw2224-43 are appservers
-node /^mw22(2[4-9]|3[0-9]|4[0-3])\.codfw\.wmnet$/ {
+node /^mw22(2[4-9]|3[0-9]|4[0-2])\.codfw\.wmnet$/ {
     role(mediawiki::appserver)
     include ::base::firewall
 }
@@ -2171,7 +2177,7 @@ node 'mw2246.codfw.wmnet' {
 }
 
 # mw2247-2250 are jobrunners
-node /^mw22(4[7-9]|50)\.codfw\.wmnet$/ {
+node /^mw22(4[3789]|50)\.codfw\.wmnet$/ {
     role(mediawiki::jobrunner)
     include ::base::firewall
 }
