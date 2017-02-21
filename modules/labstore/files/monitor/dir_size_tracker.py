@@ -51,9 +51,9 @@ class DirectorySizeCollector(diamond.collector.Collector):
         size = None
         if os.path.isdir(directory):
             try:
-                size = subprocess.check_output(
-                    shlex.split('/usr/bin/timeout 10m /usr/bin/nice -n 19 /usr/bin/ionice -c 3 \
-                    /usr/bin/du -k -s {}'.format(directory))).decode('utf-8').split('\t')[0]
+                size = subprocess.check_output(shlex.split(
+                    'sudo /usr/local/sbin/safe-du {}'.format(directory)))\
+                    .decode('utf-8').split('\t')[0]
             except subprocess.CalledProcessError as e:
                 print("du failed for directory {}".format(directory), e)
         return size
@@ -84,7 +84,7 @@ class DirectorySizeCollector(diamond.collector.Collector):
         if config.get('custom_prefix'):
             prefix_list.append(config['custom_prefix'])
         if(config.get('build_prefix_from_dir_path', False)):
-            depth = config.get('build_prefix_depth')
+            depth = int(config.get('build_prefix_depth'))
             prefix_list.append(self.prefix_from_dir_path(directory, depth))
         prefix_list.append('size')
         return '.'.join(prefix_list)
