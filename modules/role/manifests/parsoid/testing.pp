@@ -6,6 +6,10 @@ class role::parsoid::testing {
     }
 
     class { '::parsoid':
+        # If this port # changes, update:
+        # 1. modules/testreduce/templates/parsoid-rt-client.config.js.erb
+        # 2. modules/testreduce/templates/parsoid-vd-client.config.js.erb
+        # 3. modules/parsoid/files/parsoid-testing.nginx.conf
         port          => 8142,
         settings_file => '/srv/deployment/parsoid/deploy/src/localsettings.js',
         deployment    => 'git',
