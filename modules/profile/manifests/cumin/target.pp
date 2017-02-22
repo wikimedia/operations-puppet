@@ -5,7 +5,7 @@ class profile::cumin::target(
 
     # FIXME: require new Puppet parser
     $ssh_authorized_sources = inline_template(
-        "<%= @cumin_masters.map{|m| scope.function_ipresolve([m])}.join(',') %>")
+        "<%= @cumin_masters.map{|m| scope.function_ipresolve([m], 4) + ',' + scope.function_ipresolve([m], 6)}.join(',') %>")
     $cumin_master_pub_key = secret('keyholder/cumin_master.pub')
 
     ssh::userkey { 'root-cumin':
