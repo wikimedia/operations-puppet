@@ -76,10 +76,6 @@ class openstack::keystone::service($keystoneconfig, $openstack_version=$::openst
             mode    => '0644',
             notify  => Service['uwsgi-keystone-admin', 'uwsgi-keystone-public'],
             recurse => true;
-        # Disable the keystone process itself; this will be handled
-        #  by nginx and uwsgi
-        '/etc/init/keystone.conf':
-            ensure  => 'absent';
         '/etc/logrotate.d/keystone-public-uwsgi':
             ensure => present,
             source => 'puppet:///modules/openstack/keystone-public-uwsgi.logrotate',
@@ -142,6 +138,9 @@ class openstack::keystone::service($keystoneconfig, $openstack_version=$::openst
             service { 'keystone':
                 ensure  => stopped,
                 require => Package['keystone'];
+            }
+            file {'/etc/init/keystone.conf':
+                ensure  => 'absent';
             }
         }
     } else {
