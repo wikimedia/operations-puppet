@@ -47,11 +47,13 @@ class base::firewall($ensure = 'present') {
         rule   => 'saddr $MONITORING_HOSTS ACCEPT;',
     }
 
-    ::ferm::service { 'ssh-from-cumin-masters':
-        ensure => $ensure,
-        proto  => 'tcp',
-        port   => '22',
-        srange => '$CUMIN_MASTERS',
+    if $::realm == 'production' {
+        ::ferm::service { 'ssh-from-cumin-masters':
+            ensure => $ensure,
+            proto  => 'tcp',
+            port   => '22',
+            srange => '$CUMIN_MASTERS',
+        }
     }
 
     file { '/usr/lib/nagios/plugins/check_conntrack':
