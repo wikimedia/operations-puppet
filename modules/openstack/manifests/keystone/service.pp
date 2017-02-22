@@ -128,6 +128,12 @@ class openstack::keystone::service($keystoneconfig, $openstack_version=$::openst
                 subscribe => File['/etc/keystone/keystone.conf'],
                 require => Package['keystone'];
             }
+            service { 'uwsgi-keystone-admin':
+                ensure => stopped,
+            }
+            service { 'uwsgi-keystone-public':
+                ensure => stopped,
+            }
         } else {
             $enable_uwsgi = true
 
