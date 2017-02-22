@@ -89,7 +89,7 @@ class clients(object):
         if project not in self.keystoneclients:
             session = self.session(project)
             self.keystoneclients[project] = keystone_client.Client(
-                session=session, interface='public')
+                session=session, interface='public', connect_retries=5)
         return self.keystoneclients[project]
 
     def novaclient(self, project=None):
@@ -99,7 +99,8 @@ class clients(object):
         if project not in self.novaclients:
             session = self.session(project)
             self.novaclients[project] = nova_client.Client('2',
-                                                           session=session)
+                                                           session=session,
+                                                           connect_retries=5)
         return self.novaclients[project]
 
     def glanceclient(self, project=None):
@@ -109,7 +110,8 @@ class clients(object):
         if project not in self.glanceclients:
             session = self.session(project)
             self.glanceclients[project] = glanceclient.Client('1',
-                                                              session=session)
+                                                              session=session,
+                                                              connect_retries=5)
         return self.glanceclients[project]
 
     def allprojects(self):
