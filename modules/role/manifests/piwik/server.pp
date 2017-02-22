@@ -30,6 +30,8 @@ class role::piwik::server {
     include ::passwords::ldap::production
     include ::base::firewall
 
+    include ::role::prometheus::apache_exporter
+
     require_package('piwik')
     require_package('mysql-server')
 
