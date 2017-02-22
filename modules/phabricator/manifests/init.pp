@@ -256,7 +256,7 @@ class phabricator (
             owner  => 'root',
             group  => 'root',
             mode   => '0444',
-            source => 'puppet:///modules/phabricator/systemd/phd.service',
+            content => template(phabricator/phd.service.erb),
         }
     }
 
