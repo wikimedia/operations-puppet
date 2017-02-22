@@ -2257,6 +2257,10 @@ node 'notebook1002.eqiad.wmnet' {
 node 'neodymium.eqiad.wmnet' {
     role(deployment::salt_masters, debdeploy::master, ipmi::mgmt,
       access_new_install, mgmt::drac_ilo, cluster::management)
+
+    interface::add_ip6_mapped { 'main':
+      interface => 'eth0',
+    }
 }
 
 node 'nescio.wikimedia.org' {
@@ -2534,6 +2538,10 @@ node 'ruthenium.eqiad.wmnet' {
 # cluster management (salt master, cumin master)
 node 'sarin.codfw.wmnet' {
     role(cluster::management)
+
+    interface::add_ip6_mapped { 'main':
+      interface => 'eth0',
+    }
 }
 
 # Services 'A'
