@@ -28,7 +28,8 @@ def main():
     logging.basicConfig(level=logging.INFO)
     log = logging.getLogger(__name__)
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    gai = socket.getaddrinfo(args.host, args.port, socket.AF_INET)
+    gai = socket.getaddrinfo(args.host, args.port, socket.AF_INET,
+                             socket.SOCK_DGRAM)
 
     while True:
         line = sys.stdin.readline()
