@@ -279,6 +279,9 @@ def get_ipmi_password():
     else:
         logger.info('Found IPMI_PASSWORD in the environment, using it')
 
+    if len(ipmi_password) == 0:
+        raise RuntimeError('Empty IPMI_PASSWORD, please verify it')
+
     return ipmi_password
 
 
