@@ -95,8 +95,6 @@ class openstack::keystone::service($keystoneconfig, $openstack_version=$::openst
     }
 
     if $::fqdn == hiera('labs_nova_controller') {
-        $enable_uwsgi = true
-
         # Clean up expired keystone tokens, because keystone seems to leak them
         $keystone_db_name = $keystoneconfig['db_name']
         $keystone_db_user = $keystoneconfig['db_user']
@@ -118,6 +116,28 @@ class openstack::keystone::service($keystoneconfig, $openstack_version=$::openst
             description   => 'keystone http',
             check_command => 'check_http_on_port!5000',
         }
+
+        if $(openstack_version == 'liberty') {
+            # Keystone says that you should run it with uwsgi in Liberty,
+            #  but it's actually buggy and terrible in that config.  So, use eventlet
+            #  ('keystone' service) on liberty, and we'll try uwsgi again on mitaka.
+            $enable_uwsgi = false
+
+            service { 'keystone':
+                ensure  => running,
+                subscribe => File['/etc/keystone/keystone.conf'],
+                require => Package['keystone'];
+            }
+        } else {
+            $enable_uwsgi = true
+
+            # stop the keystone process itself; this will be handled
+            #  by uwsgi
+            service { 'keystone':
+                ensure  => stopped,
+                require => Package['keystone'];
+            }
+        }
     } else {
         $enable_uwsgi = false
 
@@ -131,6 +151,10 @@ class openstack::keystone::service($keystoneconfig, $openstack_version=$::openst
         }
         service { 'uwsgi-keystone-public':
             ensure => stopped,
+        }
+        service { 'keystone':
+            ensure  => stopped,
+            require => Package['keystone'];
         }
     }
 
@@ -166,13 +190,5 @@ class openstack::keystone::service($keystoneconfig, $openstack_version=$::openst
                 wsgi-file   => '/usr/bin/keystone-wsgi-public',
             },
         },
-    }
-
-
-    # stop the keystone process itself; this will be handled
-    #  by nginx and uwsgi
-    service { 'keystone':
-        ensure  => stopped,
-        require => Package['keystone'];
     }
 }
