@@ -41,7 +41,7 @@ def get_keystone_session(project_name):
     ))
 
 
-def makedirs_exist_ok(path, mode='0o777'):
+def makedirs_exist_ok(path, mode=0o777):
     try:
         os.makedirs(path, mode)
     except OSError as exc:  # Python >2.5
