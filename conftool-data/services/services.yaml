@@ -7,6 +7,14 @@ swift:
     datacenters:
     - eqiad
     - codfw
+  nginx:
+    port: 443
+    default_values:
+      pooled: 'no'
+      weight: 10
+    datacenters:
+      - eqiad
+      - codfw
 parsoid:
   parsoid:
     port: 8000

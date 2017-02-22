@@ -601,6 +601,33 @@ lvs::configuration::lvs_services:
           hostname: ms-fe.svc.eqiad.wmnet
         codfw:
           hostname: ms-fe.svc.codfw.wmnet
+  swift-https:
+    description: Swift/Ceph media storage
+    class: low-traffic
+    sites:
+    - codfw
+    - eqiad
+    ip: *ip_block010
+    port: 443
+    bgp: 'yes'
+    depool-threshold: '.5'
+    monitors:
+      ProxyFetch:
+        url:
+        - https://localhost/monitoring/backend
+      IdleConnection:
+        timeout-clean-reconnect: 3
+        max-delay: 300
+    conftool:
+      cluster: swift
+      service: nginx
+    icinga:
+      check_command: "check_https_lvs!ms-fe.svc.%{::site}.wmnet!/monitoring/backend"
+      sites:
+        codfw:
+          hostname: ms-fe.svc.codfw.wmnet
+        eqiad:
+          hostname: ms-fe.svc.codfw.wmnet
   parsoid:
     description: "Parsoid wikitext parser for VisualEditor (%{::site})"
     class: low-traffic
