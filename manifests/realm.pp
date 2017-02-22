@@ -154,6 +154,7 @@ $private_wikis = [
     'zerowiki' ]
 
 $private_tables = [
+    '__wmf_checksums',
     'accountaudit_login',
     'arbcom1_vote',
     'archive_old',
