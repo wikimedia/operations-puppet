@@ -38,11 +38,10 @@ define prometheus::class_config(
     validate_hash($labels)
     validate_hash($class_parameters)
 
-    if $class_parameters {
-        $param_query = inline_template('{<%=  @class_parameters.map{ |k,v| "#{k} = \"#{v}\"" }.join(", ") %>}')
-    }
-    else {
+    if empty($class_parameters) {
         $param_query = ''
+     } else {
+        $param_query = inline_template('{<%=  @class_parameters.map{ |k,v| "#{k} = \"#{v}\"" }.join(", ") %>}')
     }
 
     $query = "Class['${class_name}']${param_query}"
