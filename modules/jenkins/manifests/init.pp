@@ -8,9 +8,6 @@
 # Prefix for web access to use with Apache proxying. Must be the full path with
 # a leading slash. Example: /ci
 #
-# [*access_log*]
-# Whether to enable the web service access.log. Boolean. Default: false
-#
 # [*service_ensure*]
 # Passed to Puppet Service['jenkins']. If set to 'unmanaged', pass undef to
 # prevent Puppet from managing the service. Default: 'running'.
@@ -23,7 +20,6 @@
 # Default: '0002'
 class jenkins(
     $prefix,
-    $access_log = false,
     $service_ensure  = 'running',
     $service_enable = true,
     $umask = '0002'
