@@ -37,7 +37,7 @@ define systemd::sidekick (
     $ensure = present,
 ) {
     if $::initsystem != 'systemd' {
-        fail('base::service_sidekick only works with systemd')
+        fail('systemd::service_sidekick only works with systemd')
     }
 
     validate_ensure($ensure)
