@@ -7,3 +7,4 @@ debdeploy::grains:
     value: standard
 admin::groups:
   - swift-roots
+role::swift::proxy::use_tls: true
