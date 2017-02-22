@@ -1,0 +1,18 @@
+<%-
+def escape_param(param)
+  if param.is_a?(String)
+    "\"#{param}\""
+  elsif param.is_a?(TrueClass) || param.is_a?(FalseClass)
+    param
+  else
+    raise Error, "only strings and booleans are supported"
+  end
+end
+
+query = "Class['#{@class_name}']"
+unless @class_parameters.empty?
+       params = @class_parameters.map{ |k,v| "#{k} = escape_param(v)" }.join(", ")
+       query += "{#{params}}"
+end
+-%>
+<%= query %>
