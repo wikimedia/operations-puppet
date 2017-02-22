@@ -25,6 +25,10 @@ Metrics/MethodLength:
 Style/Alias:
   Enabled: false
 
+# Let us whatever delimiters we want eg: %{One Two} or %r%/tmp%
+Style/PercentLiteralDelimiters:
+  Enabled: false
+
 Style/SignalException:
   Enabled: false
 
