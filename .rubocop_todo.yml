@@ -228,17 +228,6 @@ Style/ParenthesesAroundCondition:
   Exclude:
     - 'modules/wmflib/lib/puppet/parser/functions/ipresolve.rb'
 
-# Offense count: 10
-# Cop supports --auto-correct.
-# Configuration parameters: PreferredDelimiters.
-Style/PercentLiteralDelimiters:
-  Exclude:
-    - 'modules/apt/lib/facter/apt.rb'
-    - 'modules/base/lib/facter/initsystem.rb'
-    - 'modules/base/lib/facter/lldp.rb'
-    - 'modules/ganeti/lib/facter/ganeti.rb'
-    - 'modules/gridengine/lib/puppet/provider/gridengine_resource/parsed.rb'
-
 # Offense count: 2
 # Cop supports --auto-correct.
 Style/PerlBackrefs:
