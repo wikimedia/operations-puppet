@@ -898,8 +898,8 @@ users:
     gid: 500
     name: esanders
     realname: Ed Sanders
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDPnesJV7Wrq1QxdtBPJbPturV/sVX5rUE3kL3n+hhYyxLcId95Abkvf/p1WC8Fulv99wS+lq7b+9Pw64mA/mnuE0xljoBvS/JXQEM9Gls/BTBffmomm84kidrmUxCeMHcRuFbL2aPc3lIm/6N7unB1VvOyAM5oY1I3Zk3XHHTOHmpqMFS4R7bWWrkTJZZ4dNZffhYqMQRQgiey1b+JD0/pIPy2PQwyECvAC/3Ms9QY1wc4O5k6cQMYhqHEJQ9/qruIRB7sTEhpXREwcJYTdXkhFU3yrmPw1KxpQqe5+44u4asR70AE7FevR7y1rR6W+kg7ityfXd/dzrpIYwsFhjKJ
-        ed@ESanders-LinuxBookPro]
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCsDfQpB/f1CvRhX3z5R4oktQNPXHUz7On3pCfj9ZjDYM6WkFF2eBJ2ntBTnIgR0hbv+8iWOsuqJu30+w6rgVQ9ae83WqyXt0ihbndWSRqv0uE0RDnyA2CNDvWlsgytc5DUq5EfVUNdhHjFGj8fQEpzRuBA8xdizpu1s50E56ShIuwUuywaynNMdnXVkSFmkExWrLow4lmIHaVq4OqGtsGiYBxigcLYe/IeLMtJHZVKI236P4s8/eWbV1DCHGPmJ0zvooRTRbHQ4XvxpQm7AzQTwViZ+Yz62iXAsY/3wGvqhsn3gKgJdwMdugV9RYN4Opd/SDilj+74CLcm/6JTvKSP
+        ed@ed-ThinkPad]
     uid: 2875
     email: esanders@wikimedia.org
   gilles:
