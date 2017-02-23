@@ -1,5 +1,5 @@
 <% @settings.keys.sort.each do |k| -%>
-<%- if @settings[k] != :undef -%>
+<%- if @settings[k] != :undef and @settings[k] != '' -%>
 <%= k %>: <%= @settings[k] %>
 <%- end -%>
 <% end %>
