@@ -162,7 +162,7 @@ node.data: <%= @holds_data %>
 
 # Path to where plugins are installed:
 #
-path.plugins: <%= @plugins_dir %>
+#path.plugins: <%= @plugins_dir %>
 
 
 #################################### Plugin ###################################
@@ -336,13 +336,13 @@ discovery.zen.ping.unicast.hosts: [<%= @unicast_hosts.collect{ |x| "\"#{x}\"" }.
 
 ################################## GC Logging ################################
 
-monitor.jvm.gc.ParNew.warn: 1000ms
-monitor.jvm.gc.ParNew.info: 700ms
-monitor.jvm.gc.ParNew.debug: 400ms
-
-monitor.jvm.gc.ConcurrentMarkSweep.warn: 10s
-monitor.jvm.gc.ConcurrentMarkSweep.info: 5s
-monitor.jvm.gc.ConcurrentMarkSweep.debug: 2s
+#monitor.jvm.gc.ParNew.warn: 1000ms
+#monitor.jvm.gc.ParNew.info: 700ms
+#monitor.jvm.gc.ParNew.debug: 400ms
+#
+#monitor.jvm.gc.ConcurrentMarkSweep.warn: 10s
+#monitor.jvm.gc.ConcurrentMarkSweep.info: 5s
+#monitor.jvm.gc.ConcurrentMarkSweep.debug: 2s
 
 ################################### Actions #################################
 ## Modulo some small changes to comments this section comes directly from the
