@@ -1567,7 +1567,7 @@ users:
     realname: Ellery Wulczyn
     ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDCKFGOn5NPv0el5EtWWwffENDgrt8GKzXTUdhOOWOBemPc98MGEMkKoeAY3RAZW1xbJo+b+ZDTDORVWw3A5Lw6b8Es/fBnJR2rfChKOwj7VzeMLyIFzjgkzI+UekgfWcCsEk24ic6aJAAFLvhVV6Ib9vg1l8p+ZJFL+5+54XMt0MphZtN2w3pgv/SccJzF/kodPyu7N7jRmzweOosH7dY20cSXbnkoz8jCDs6HeLTvLErLsjYWUtwnzjhDp4lBvvZVpzkMXpp/Ju44ksypgyfzEBa/+iP1QQpls6KqRMb6wD56Z8E5BFm2s/nbff3BP3Hk7dsTLJPXYGZw48pWMwWD ellerywulczyn@administorsair4.corp.wikimedia.org]
     uid: 10517
-    email: ewulczyn@wikimedia.org
+    email: ellerywulczyn@gmail.com
   dduvall:
     ensure: present
     gid: 500
