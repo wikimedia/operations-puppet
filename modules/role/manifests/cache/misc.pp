@@ -41,120 +41,100 @@ class role::cache::misc {
     $app_directors = {
         'analytics1027' => { # Hue (Hadoop GUI)
             'backend'  => 'analytics1027.eqiad.wmnet',
-            'be_opts'  => merge($app_def_be_opts, { 'port' => 8888 }),
+            'be_opts'  => { 'port' => 8888 },
         },
         'bromine' => { # ganeti VM for misc. static HTML sites
             'backend'  => 'bromine.eqiad.wmnet',
-            'be_opts'  => $app_def_be_opts,
         },
         'bohrium' => {
             'backend'  => 'bohrium.eqiad.wmnet',
-            'be_opts'  => $app_def_be_opts,
         },
         'californium' => {
             'backend'  => 'californium.wikimedia.org',
-            'be_opts'  => $app_def_be_opts,
         },
         'darmstadtium' => {
             'backend'  => 'darmstadtium.eqiad.wmnet',
-            'be_opts'  => merge($app_def_be_opts, {'port' => 81, 'max_connections' => 5}),
+            'be_opts'  => {'port' => 81, 'max_connections' => 5},
         },
         'labtestweb2001' => {
             'backend'  => 'labtestweb2001.wikimedia.org',
-            'be_opts'  => $app_def_be_opts,
         },
         'labtestspice' => {
             'backend'  => 'labtestcontrol2001.wikimedia.org',
-            'be_opts'  => merge($app_def_be_opts, { 'port' => 6082 }),
+            'be_opts'  => { 'port' => 6082 },
         },
         'labspice' => {
             'backend'  => 'labcontrol1001.wikimedia.org',
-            'be_opts'  => merge($app_def_be_opts, { 'port' => 6082 }),
+            'be_opts'  => { 'port' => 6082 },
         },
         'etherpad1001' => {
             'backend'  => 'etherpad1001.eqiad.wmnet',
-            'be_opts'  => merge($app_def_be_opts, { 'port' => 9001 }),
+            'be_opts'  => { 'port' => 9001 },
         },
         'eventstreams' => {
             'backend'  => 'eventstreams.svc.eqiad.wmnet',
-            'be_opts'  => merge($app_def_be_opts, { 'port' => 8092 }),
+            'be_opts'  => { 'port' => 8092 },
         },
         'contint1001' => { # CI server
             'backend'  => 'contint1001.wikimedia.org',
-            'be_opts'  => $app_def_be_opts,
         },
         'graphite1001' => {
             'backend'  => 'graphite1001.eqiad.wmnet',
-            'be_opts'  => $app_def_be_opts,
         },
         'graphite2001' => {
             'backend'  => 'graphite2001.codfw.wmnet',
-            'be_opts'  => $app_def_be_opts,
         },
         'iridium' => { # main phab
             'backend'  => 'iridium.eqiad.wmnet',
-            'be_opts'  => $app_def_be_opts,
         },
         'krypton' => { # ganeti VM for misc. PHP apps
             'backend'  => 'krypton.eqiad.wmnet',
-            'be_opts'  => $app_def_be_opts,
         },
         'labmon1001' => {
             'backend'  => 'labmon1001.eqiad.wmnet',
-            'be_opts'  => $app_def_be_opts,
         },
         'netmon1001' => { # servermon
             'backend'  => 'netmon1001.wikimedia.org',
-            'be_opts'  => $app_def_be_opts,
         },
         'noc' => { # noc.wikimedia.org and dbtree.wikimedia.org
             'backend'  => 'terbium.eqiad.wmnet',
-            'be_opts'  => $app_def_be_opts,
         },
         'planet1001' => {
             'backend'     => 'planet1001.eqiad.wmnet',
-            'be_opts'     => $app_def_be_opts,
         },
         'pybal_config' => {
             'backend'  => 'puppetmaster1001.eqiad.wmnet',
-            'be_opts'  => $app_def_be_opts,
         },
         'rcstream' => {
             'backend'  => 'rcs1001.eqiad.wmnet',
             # 'backend'  => 'rcs1002.eqiad.wmnet', # manual backup option if 1001 fails
-            'be_opts'  => merge($app_def_be_opts, { max_connections => 1000 }),
+            'be_opts'  => { max_connections => 1000 },
         },
         'ruthenium' => { # parsoid rt test server
             'backend'  => 'ruthenium.eqiad.wmnet',
-            'be_opts'  => merge($app_def_be_opts, { 'port' => 8001 }),
+            'be_opts'  => { 'port' => 8001 },
         },
         'rutherfordium' => { # people.wikimedia.org
             'backend'  => 'rutherfordium.eqiad.wmnet',
-            'be_opts'  => $app_def_be_opts,
         },
         'thorium' => { # metrics and metrics-api
             'backend'  => 'thorium.eqiad.wmnet',
-            'be_opts'  => $app_def_be_opts,
         },
         'ununpentium' => { # rt.wikimedia.org
             'backend'  => 'ununpentium.wikimedia.org',
-            'be_opts'  => $app_def_be_opts,
         },
         'mendelevium' => { # OTRS
             'backend'  => 'mendelevium.eqiad.wmnet',
-            'be_opts'  => $app_def_be_opts,
         },
         'logstash_director' => {
             'backend'  => 'kibana.svc.eqiad.wmnet',
-            'be_opts'  => $app_def_be_opts,
         },
         'wdqs_director' => {
             'backend'  => 'wdqs.svc.eqiad.wmnet',
-            'be_opts'  => $app_def_be_opts,
         },
         'ores' => {
             'backend'  => 'ores.svc.eqiad.wmnet',
-            'be_opts'  => merge($app_def_be_opts, { 'port' => 8081 }),
+            'be_opts'  => { 'port' => 8081 },
         },
     }
 
@@ -294,6 +274,7 @@ class role::cache::misc {
         fe_runtime_params => $common_runtime_params,
         be_runtime_params => $common_runtime_params,
         app_directors     => $app_directors,
+        app_def_be_opts   => $app_def_be_opts,
         fe_vcl_config     => $fe_vcl_config,
         be_vcl_config     => $be_vcl_config,
         fe_extra_vcl      => ['misc-common'],
