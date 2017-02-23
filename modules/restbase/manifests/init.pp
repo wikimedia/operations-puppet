@@ -129,6 +129,7 @@ class restbase(
 
     require ::service::configuration
     $pdfrender_key = $::service::configuration::pdfrender_key
+    $local_logfile = "${service::configuration::log_dir}/${title}/main.log"
 
     service::node { 'restbase':
         port            => $port,
@@ -138,7 +139,6 @@ class restbase(
         healthcheck_url => "/${monitor_domain}/v1",
         has_spec        => true,
         starter_script  => 'restbase/server.js',
-        local_logging   => false,
         auto_refresh    => false,
     }
 

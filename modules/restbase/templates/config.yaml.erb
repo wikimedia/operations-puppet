@@ -948,6 +948,8 @@ logging:
   - type: gelf
     host: <%= @logstash_host %>
     port: <%= @logstash_port %>
+  - type: file
+    path: <%= @local_logfile %>
 
 # StatsD metrics collection
 metrics:
