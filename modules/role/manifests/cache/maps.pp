@@ -29,16 +29,17 @@ class role::cache::maps {
         'probe'                 => 'varnish',
     }
 
+    $app_def_be_opts = {
+        'port'                  => 6533,
+        'connect_timeout'       => '5s',
+        'first_byte_timeout'    => '35s',
+        'max_connections'       => 1000,
+    }
+
     $apps = hiera('cache::maps::apps')
     $app_directors = {
         'kartotherian'   => {
             'backend' => $apps['kartotherian']['backends'][$apps['kartotherian']['route']],
-            'be_opts' => {
-                'port'                  => 6533,
-                'connect_timeout'       => '5s',
-                'first_byte_timeout'    => '35s',
-                'max_connections'       => 1000,
-            },
         },
     }
 
@@ -56,6 +57,7 @@ class role::cache::maps {
         fe_runtime_params => $common_runtime_params,
         be_runtime_params => $common_runtime_params,
         app_directors     => $app_directors,
+        app_def_be_opts   => $app_def_be_opts,
         fe_vcl_config     => $common_vcl_config,
         be_vcl_config     => $common_vcl_config,
         fe_extra_vcl      => [],
