@@ -1,6 +1,6 @@
 groups:
   absent:
-    description: meta group for absented users
+    description: meta group for absented users with previous cluster shell access
     members: [ananthrk, avar, bsitu, cmcmahon, csalvia, diederik, edenhill, erik, gage,
               handrade, howief, jdouglas, jgonera, jsahleen, mah, maryana, mglaser, mvolz,
               mwalker, nimishg, rainman, ssmith, swalling, sumanah, werdna, rmoen,
@@ -8,6 +8,9 @@ groups:
               manybubbles, haithams, jzerebecki, ashwinpp, ironholds, robla, asherman,
               laner, declerambaul, srijan, junikowski, krenair, springle, jhobs, vbaranetsky,
               yurik, bsimmers, bcohn, hjiang]
+  absent_ldap:
+    description: meta group for absented users which had privileged LDAP access in the past
+    members: [siddharth11]
   wikidev:
     gid: 500
     description: container group for primary user groups.
