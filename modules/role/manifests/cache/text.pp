@@ -37,51 +37,13 @@ class role::cache::text(
         'probe'                 => 'varnish',
     }
 
-    $app_def_be_opts = {
-        'port'                  => 80,
-        'connect_timeout'       => '5s',
-        'first_byte_timeout'    => '180s',
-        'max_connections'       => 1000,
-    }
-
-    $apps = hiera('cache::text::apps')
-    $app_directors = {
-        'appservers'       => {
-            'backend' => $apps['appservers']['backends'][$apps['appservers']['route']],
-        },
-        'api'              => {
-            'backend' => $apps['api']['backends'][$apps['api']['route']],
-        },
-        'rendering'        => {
-            'backend' => $apps['rendering']['backends'][$apps['rendering']['route']],
-        },
-        'security_audit'   => {
-            'backend' => $apps['security_audit']['backends'][$apps['security_audit']['route']],
-        },
-        'appservers_debug'   => {
-            'backend' => $apps['appservers_debug']['backends'][$apps['appservers_debug']['route']],
-            'be_opts'  => { 'max_connections' => 20 },
-        },
-        'restbase_backend' => {
-            'backend' => $apps['restbase']['backends'][$apps['restbase']['route']],
-            'be_opts'  => { 'port' => 7231, 'max_connections' => 5000 },
-        },
-        'cxserver_backend' => { # LEGACY: should be removed eventually
-            'backend' => $apps['cxserver']['backends'][$apps['cxserver']['route']],
-            'be_opts'  => { 'port' => 8080 },
-        },
-        'citoid_backend'   => { # LEGACY: should be removed eventually
-            'backend' => $apps['citoid']['backends'][$apps['citoid']['route']],
-            'be_opts'  => { 'port' => 1970 },
-        },
-    }
-
     $common_vcl_config = {
         'purge_host_regex' => $::role::cache::base::purge_host_not_upload_re,
         'static_host'      => $static_host,
         'top_domain'       => $top_domain,
         'shortener_domain' => $shortener_domain,
         'pass_random'      => true,
+        'req_handling'     => hiera('cache::req_handling'),
     }
 
     $be_vcl_config = $common_vcl_config
@@ -100,8 +62,8 @@ class role::cache::text(
         fe_jemalloc_conf  => 'lg_dirty_mult:8,lg_chunk:16',
         fe_runtime_params => $common_runtime_params,
         be_runtime_params => $common_runtime_params,
-        app_directors     => $app_directors,
-        app_def_be_opts   => $app_def_be_opts,
+        app_directors     => hiera('cache::app_directors'),
+        app_def_be_opts   => hiera('cache::app_def_be_opts'),
         fe_vcl_config     => $fe_vcl_config,
         be_vcl_config     => $be_vcl_config,
         fe_extra_vcl      => ['text-common', 'zero', 'normalize_path', 'geoip'],

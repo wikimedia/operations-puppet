@@ -10,11 +10,78 @@ sub vcl_init {
 	call wm_common_directors_init;
 }
 
+sub set_backend__ {
+<%
+    def set_director(dirname, debug_dir)
+        indirect_act = "set req.backend_hint = cache_#{@cache_route}.backend(); set req.http.X-Next-Is-Cache = 1;"
+        dirs = @app_directors[dirname]['backends']
+        if dirs.empty?
+            dir_act = "XXX no backends defined, return an error!"
+        elsif dirs.key?(@site)
+            dir_act = "set req.backend_hint = #{dirname}.backend();"
+        else
+            dir_act = indirect_act
+        end
+        if debug_dir.nil?
+            return dir_act
+        else
+            debug_dirs = @app_directors[debug_dir]['backends']
+            if debug_dirs.empty?
+                debug_act = "XXX no backends defined, return an error!"
+            elsif debug_dirs.key?(@site)
+                debug_act = "set req.backend_hint = #{debug_dir}.backend();"
+            else
+                debug_act = indirect_act
+            end
+            return "if (req.http.X-Wikimedia-Debug) { #{debug_act} } else { #{dir_act} }"
+        end
+    end
+
+    def_action = 'return (synth(404, "Domain not served here"));'
+    if_stmts = []
+    @vcl_config['req_handling'].keys.sort.each do |reqhost|
+        options = @vcl_config['req_handling'][reqhost]
+        host_action = set_director(options['director'], options['debug_director'])
+        if options.has_key?('subpaths')
+            path_ifs = []
+            options['subpaths'].keys.sort.each do |subpath|
+                path_action = set_director(options['subpaths'][subpath]['director'], options['subpaths'][subpath]['debug_director'])
+                path_ifs.push(%Q[if (req.url ~ "#{subpath}") {\n            #{path_action}\n        }])
+            end
+            path_ifs.push(%Q[e {\n            #{host_action}\n        }])
+            host_action = path_ifs.join(' els')
+        end
+
+        if reqhost == 'default'
+            def_action = host_action
+        else
+            if reqhost =~ /^[-.A-Za-z0-9]+$/
+                hostop = '=='
+            else
+                hostop = '~'
+            end
+            hostcmp = %Q[req.http.Host #{hostop} "#{reqhost}"]
+            if_stmts.push("if (#{hostcmp}) {\n        #{host_action}\n    }")
+        end
+    end
+    if if_stmts.empty?
+        set_backend = def_action
+    else
+        if_stmts.push("e {\n        #{def_action}\n    }")
+        set_backend = if_stmts.join(' els')
+    end
+%>
+    <%= set_backend %>
+}
+
 sub vcl_recv {
 	if (client.ip !~ wikimedia_trust) {
 		// Do not allow direct access to non-frontend layers
 		return (synth(403, "Access denied"));
 	}
+
+	// Used to signal to other logic whether this request jumps next to another cache or the applayer
+	unset req.http.X-Next-Is-Cache;
 
 	call wm_common_recv_early;
 
@@ -34,16 +101,12 @@ sub vcl_recv {
 		}
 	}
 
-<% if @cache_route == 'direct' -%>
-	// tier-one caches must select an applayer backend
-	call cluster_be_recv_applayer_backend;
-<% else -%>
-	set req.backend_hint = cache_<%= @cache_route %>.backend();
-<% end -%>
+	call set_backend__;
 
 	call cluster_be_recv_pre_purge;
 	call wm_common_recv_purge;
 	call cluster_be_recv;
+	call wm_common_recv_pass;
 
 	return (hash); // no default VCL
 }
@@ -77,12 +140,12 @@ sub vcl_pass {
 	call wm_common_pass;
 
 <% if @vcl_config.fetch("pass_random", false) -%>
-<% if @cache_route != 'direct' -%>
-	// pass-traffic should not use consistent hashing, to avoid unecessary
-	// traffic focus on one node and keep things performant, *if* we're
-	// fairly sure that all layers/tiers make equivalent pass decisions...
-	set req.backend_hint = cache_<%= @cache_route %>_random.backend();
-<% end -%>
+	if (req.http.X-Next-Is-Cache) {
+		// pass-traffic should not use consistent hashing, to avoid unecessary
+		// traffic focus on one node and keep things performant, *if* we're
+		// fairly sure that all layers/tiers make equivalent pass decisions...
+		set req.backend_hint = cache_<%= @cache_route %>_random.backend();
+	}
 <% end -%>
 
 	call cluster_be_pass;
