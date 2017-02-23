@@ -15,7 +15,7 @@ respawn
 script
     export OS_USERNAME="osstackcanary"
     export OS_PASSWORD="<%= @password %>"
-    /usr/local/sbin/nova-fullstack
+    /usr/local/sbin/nova-fullstack \
                                        --interval <%= @interval %> \
                                        --max-pool 1 \
                                        --project admin-monitoring \
