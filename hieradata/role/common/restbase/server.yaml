@@ -23,6 +23,7 @@ restbase::cassandra_password: "%{passwords::cassandra::restbase}"
 restbase::monitoring::monitor_domain: en.wikipedia.org
 role::lvs::realserver::pools:
   restbase: {}
+service::configuration::log_dir: "/var/log"
 
 admin::groups:
   - restbase-roots
