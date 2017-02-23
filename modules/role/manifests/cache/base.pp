@@ -5,11 +5,13 @@ class role::cache::base(
     $storage_parts = ['sda3', 'sdb3'],
 ) {
     include ::standard
+    require ::profile::conftool::client
     include nrpe
     include lvs::configuration
     include network::constants
     include conftool::scripts
     include ::role::prometheus::varnish_exporter
+
 
     $cache_cluster = hiera('cache::cluster')
 

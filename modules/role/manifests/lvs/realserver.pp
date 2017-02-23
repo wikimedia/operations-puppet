@@ -16,6 +16,8 @@ class role::lvs::realserver {
         realserver_ips => $realserver_ips,
     }
 
+    require ::profile::conftool::client
+
     Conftool::Scripts::Service {
         lvs_class_hosts     => $::lvs::configuration::lvs_class_hosts,
         lvs_services_config => $lvs::configuration::lvs_services,
