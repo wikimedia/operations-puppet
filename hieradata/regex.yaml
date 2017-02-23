@@ -544,7 +544,7 @@ labtest:
     auth_protocol: 'http'
     auth_host: 208.80.153.47
     admin_project_name: 'admin'
-    admin_project_id: '93f988e6a8a34da087f5fbec50aca26b'
+    admin_project_id: 'admin'
     oath_dbname: 'labtestwiki'
     oath_dbhost: 'labtestweb2001.wikimedia.org'
   designateconfig:
