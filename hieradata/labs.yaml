@@ -43,7 +43,7 @@ jupyterhub::authenticator: dummy
 
 # Cache-layer stuff
 cache::route_table:
-    eqiad: 'direct'
+    eqiad: 'eqiad'
 cache::text::nodes:
     eqiad:
       - 'deployment-cache-text04.deployment-prep.eqiad.wmflabs'

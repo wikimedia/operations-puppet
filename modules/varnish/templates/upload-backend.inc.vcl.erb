@@ -29,14 +29,6 @@ sub pick_stevedore {
 
 sub cluster_be_recv_pre_purge { }
 
-sub cluster_be_recv_applayer_backend {
-	if (req.url ~ "^/+[^/]+/[^/]+/thumb/") {
-		set req.backend_hint = swift_thumbs.backend();
-	} else {
-		set req.backend_hint = swift.backend();
-	}
-}
-
 sub cluster_be_recv {
 	call upload_common_recv;
 }

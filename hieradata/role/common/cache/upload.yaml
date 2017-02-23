@@ -4,26 +4,35 @@ admin::groups:
   - perf-roots
 cache::tune_for_media: true
 # The contents of this hash control our DC->DC routing for varnish backend
-# daemons.  There should be a key for every cache datacenter, and the
-# values can be another datacenter or 'direct', which means contact the
-# applayer directly.
-#
-# Currently, the possible datacenter-name values for non-direct are limited
-# to 'eqiad', and 'codfw' because they're the only ones defined in
-# 'backend_caches' in role::cache::instances.
-#
-# Note that it is possible to create permanent or temporary-race-condition
-# loops by making poor changes to this hash!  Keeping in mind that the
-# state here will be applied to cache daemons asynchronously, the general
-# rules of safety would be:
-# 1. Obviously, a commit should not create actual loops which do not
-#    eventually resolve to 'direct'
-# 2. A single commit->deploy should only change one single value at a time
-#    unless you're absolutely certain of what you're doing, as changing
-#    multiple values could cause a race-condition of intermediate states.
+# daemons.  There should be a key for every cache datacenter.  The values must
+# be a core datacenter (eqiad or codfw), or at least must lead indirectly to
+# a core datacenter when traversing the table recursively.  A loop between
+# the two core datacenters is expected and normal here.  The only reason to
+# edit this is to remove a datacenter from active service (due to fault or
+# maintenance) by routing around it from the edge sites.
 #
 cache::route_table:
-  eqiad: 'direct'
+  eqiad: 'codfw'
   codfw: 'eqiad'
   ulsfo: 'codfw'
   esams: 'eqiad'
+cache::app_def_be_opts:
+  port: 80
+  connect_timeout: '5s'
+  first_byte_timeout: '35s'
+  max_connections: 10000
+cache::app_directors:
+  swift:
+    backends:
+      eqiad: 'ms-fe.svc.eqiad.wmnet'
+      # codfw: 'ms-fe.svc.codfw.wmnet'
+  swift_thumbs:
+    backends:
+      eqiad: 'ms-fe-thumbs.svc.eqiad.wmnet'
+      # codfw: 'ms-fe-thumbs.svc.codfw.wmnet'
+cache::req_handling:
+  default:
+    director: 'swift'
+    subpaths:
+      '^/+[^/]+/[^/]+/thumb/':
+        director: 'swift_thumbs'
