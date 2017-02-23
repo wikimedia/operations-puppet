@@ -595,7 +595,7 @@ lvs::configuration::lvs_services:
       cluster: swift
       service: swift-fe
     icinga:
-      check_command: "check_http_lvs!ms-fe.svc.%{::site}.wmnet!/monitoring/backend"
+      uri: "ms-fe.svc.%{::site}.wmnet!/monitoring/backend"
       sites:
         eqiad:
           hostname: ms-fe.svc.eqiad.wmnet
@@ -622,7 +622,7 @@ lvs::configuration::lvs_services:
       cluster: swift
       service: nginx
     icinga:
-      check_command: "check_https_lvs!ms-fe.svc.%{::site}.wmnet!/monitoring/backend"
+      uri: "ms-fe.svc.%{::site}.wmnet!/monitoring/backend"
       sites:
         codfw:
           hostname: ms-fe.svc.codfw.wmnet
