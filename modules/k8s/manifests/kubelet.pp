@@ -24,6 +24,9 @@ class k8s::kubelet(
         }
     }
 
+    # Needed on k8s nodes for kubectl proxying to work
+    ensure_packages(['socat'])
+
     file { '/etc/default/kubelet':
         ensure  => file,
         owner   => 'root',
