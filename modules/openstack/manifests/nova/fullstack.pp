@@ -41,13 +41,6 @@ class openstack::nova::fullstack(
         content => secret('nova/osstackcanary'),
     }
 
-    file { '/etc/init/nova-fullstack.conf':
-        ensure  => present,
-        owner   => 'root',
-        group   => 'root',
-        content => template('openstack/initscripts/nova-fullstack.upstart.erb'),
-    }
-
     base::service_unit { 'nova-fullstack':
         ensure    => present,
         upstart   => true,
