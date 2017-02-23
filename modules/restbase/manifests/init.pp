@@ -138,7 +138,6 @@ class restbase(
         healthcheck_url => "/${monitor_domain}/v1",
         has_spec        => true,
         starter_script  => 'restbase/server.js',
-        local_logging   => false,
         auto_refresh    => false,
     }
 
