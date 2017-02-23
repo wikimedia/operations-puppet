@@ -15,6 +15,7 @@ class conftool(
     ],
     $tcpircbot_host = 'icinga.wikimedia.org',
     $tcpircbot_port = 9200,
+    $namespace      = '/conftool'
     ) {
     require_package('python-conftool')
 
@@ -39,6 +40,7 @@ class conftool(
             driver_options => {
                 allow_reconnect => true,
             },
+            namespace      => $namespace,
         }),
     }
 
