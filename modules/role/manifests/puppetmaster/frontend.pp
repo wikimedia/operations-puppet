@@ -2,8 +2,11 @@
 
 class role::puppetmaster::frontend {
     include ::base::firewall
-
+    include ::profile::conftool::client
+    include ::profile::conftool::master
     include role::backup::host
+
+    # Everything below this point belongs in a profile
     backup::set { 'var-lib-puppet-ssl': }
     backup::set { 'var-lib-puppet-volatile': }
 
