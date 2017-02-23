@@ -8,21 +8,21 @@
 # - The etcd credentials for the root user in /root/.etcdrc
 #
 class profile::conftool::client(
-    $srv_dns = hiera('etcd::srv_dns'),
-    $host = hiera('etcd::host'),
-    $port = hiera('etcd::port'),
+    $srv_domain = hiera('etcd_client_srv_dns'),
+    $host = hiera('etcd_host'),
+    $port = hiera('etcd_port'),
     $root_password = hiera('etcd::auth::common::root_password'),
-    $tcpircbot_host = hiera('profile::conftool::client::tcpircbot_host')
-    $tcpircbot_port = hiera('profile::conftool::client::tcpircbot_port'),
-    $namespace      = hiera('profile::conftool::client::namespace')
+    $namespace      = hiera('profile::conftool::client::namespace', '/conftool'),
+    $tcpircbot_host = hiera('profile::conftool::client::tcpircbot_host', 'icinga.wikimedia.org')
+    $tcpircbot_port = hiera('profile::conftool::client::tcpircbot_port', 9200),
 ) {
     require_package('python-conftool')
 
     class { '::etcd::client::globalconfig':
-        srv_dns  => $srv_dns,
-        host     => $host,
-        port     => $port,
-        protocol => 'https',
+        srv_domain => $srv_domain,
+        host       => $host,
+        port       => $port,
+        protocol   => 'https',
     }
 
     ::etcd::client::config { '/root/.etcdrc',
