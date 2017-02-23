@@ -7,7 +7,6 @@ define conftool::credentials(
     $home="/home/${title}",
     $group=$title,
     ) {
-    require ::conftool
 
     etcd::client::config { "${home}/.etcdrc":
         ensure   => present,
