@@ -3,26 +3,81 @@ cache::cluster: text
 admin::groups:
   - perf-roots
 # The contents of this hash control our DC->DC routing for varnish backend
-# daemons.  There should be a key for every cache datacenter, and the
-# values can be another datacenter or 'direct', which means contact the
-# applayer directly.
-#
-# Currently, the possible datacenter-name values for non-direct are limited
-# to 'eqiad', and 'codfw' because they're the only ones defined in
-# 'backend_caches' in role::cache::instances.
-#
-# Note that it is possible to create permanent or temporary-race-condition
-# loops by making poor changes to this hash!  Keeping in mind that the
-# state here will be applied to cache daemons asynchronously, the general
-# rules of safety would be:
-# 1. Obviously, a commit should not create actual loops which do not
-#    eventually resolve to 'direct'
-# 2. A single commit->deploy should only change one single value at a time
-#    unless you're absolutely certain of what you're doing, as changing
-#    multiple values could cause a race-condition of intermediate states.
+# daemons.  There should be a key for every cache datacenter.  The values must
+# be a core datacenter (eqiad or codfw), or at least must lead indirectly to
+# a core datacenter when traversing the table recursively.  A loop between
+# the two core datacenters is expected and normal here.  The only reason to
+# edit this is to remove a datacenter from active service (due to fault or
+# maintenance) by routing around it from the edge sites.
 #
 cache::route_table:
-  eqiad: 'direct'
+  eqiad: 'codfw'
   codfw: 'eqiad'
   ulsfo: 'codfw'
   esams: 'eqiad'
+cache::app_def_be_opts:
+  port: 80
+  connect_timeout: '5s'
+  first_byte_timeout: '180s'
+  max_connections: 1000
+cache::app_directors:
+  appservers:
+    backends:
+      eqiad: 'appservers.svc.eqiad.wmnet'
+      # codfw: 'appservers.svc.codfw.wmnet'
+  api:
+    backends:
+      eqiad: 'api.svc.eqiad.wmnet'
+      # codfw: 'api.svc.codfw.wmnet'
+  rendering:
+    backends:
+      eqiad: 'rendering.svc.eqiad.wmnet'
+      # codfw: 'rendering.svc.codfw.wmnet'
+  security_audit:
+    backends:
+      eqiad: 'appservers.svc.eqiad.wmnet'
+      # codfw: 'appservers.svc.codfw.wmnet'
+  appservers_debug:
+    be_opts:
+      max_connections: 20
+    backends:
+      # eqiad: 'hassium.eqiad.wmnet'
+      codfw: 'hassaleh.codfw.wmnet'
+  restbase_backend:
+    be_opts:
+      port: 7231
+      max_connections: 5000
+    backends:
+      eqiad: 'restbase.svc.eqiad.wmnet'
+      # codfw: 'restbase.svc.codfw.wmnet'
+  cxserver_backend:
+    be_opts:
+      port: 8080
+    backends:
+      eqiad: 'cxserver.svc.eqiad.wmnet'
+      # codfw: 'cxserver.svc.codfw.wmnet'
+  citoid_backend:
+    be_opts:
+      port: 1970
+    backends:
+      eqiad: 'citoid.svc.eqiad.wmnet'
+      # codfw: 'citoid.svc.codfw.wmnet'
+cache::req_handling:
+  cxserver.wikimedia.org:
+    director: 'cxserver_backend'
+    caching: 'pass'
+  citoid.wikimedia.org:
+    director: 'citoid_backend'
+    caching: 'pass'
+  default:
+    director: 'appservers'
+    debug_director: 'appservers_debug'
+    subpaths:
+      '^/api/rest_v1/':
+        director: 'restbase_backend'
+      '^/w/api\.php':
+        director: 'api'
+        debug_director: 'appservers_debug'
+      '^/w/thumb(_handler)?\.php':
+        director: 'rendering'
+        debug_director: 'appservers_debug'
