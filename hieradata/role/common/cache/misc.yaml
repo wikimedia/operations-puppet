@@ -1,28 +1,261 @@
 cluster: cache_misc
 cache::cluster: misc
+# note this only affects tlsproxy now, should be moved to param there...
+cache::websocket_support: true
 # The contents of this hash control our DC->DC routing for varnish backend
-# daemons.  There should be a key for every cache datacenter, and the
-# values can be another datacenter or 'direct', which means contact the
-# applayer directly.
-#
-# Currently, the possible datacenter-name values for non-direct are limited
-# to 'eqiad', and 'codfw' because they're the only ones defined in
-# 'backend_caches' in role::cache::instances.
-#
-# Note that it is possible to create permanent or temporary-race-condition
-# loops by making poor changes to this hash!  Keeping in mind that the
-# state here will be applied to cache daemons asynchronously, the general
-# rules of safety would be:
-# 1. Obviously, a commit should not create actual loops which do not
-#    eventually resolve to 'direct'
-# 2. A single commit->deploy should only change one single value at a time
-#    unless you're absolutely certain of what you're doing, as changing
-#    multiple values could cause a race-condition of intermediate states.
+# daemons.  There should be a key for every cache datacenter.  The values must
+# be a core datacenter (eqiad or codfw), or at least must lead indirectly to
+# a core datacenter when traversing the table recursively.  A loop between
+# the two core datacenters is expected and normal here.  The only reason to
+# edit this is to remove a datacenter from active service (due to fault or
+# maintenance) by routing around it from the edge sites.
 #
 cache::route_table:
-  eqiad: 'direct'
+  eqiad: 'codfw'
   codfw: 'eqiad'
   ulsfo: 'codfw'
   esams: 'eqiad'
-# note this only affects tlsproxy now, should be moved to param there...
-cache::websocket_support: true
+cache::app_def_be_opts:
+  port: 80
+  connect_timeout: '5s'
+  first_byte_timeout: '185s'
+  max_connections: 100
+cache::app_directors:
+  analytics1027:
+    be_opts:
+      port: 8888
+    backends:
+      eqiad: 'analytics1027.eqiad.wmnet'
+  bromine:
+    backends:
+      eqiad: 'bromine.eqiad.wmnet'
+  bohrium:
+    backends:
+      eqiad: 'bohrium.eqiad.wmnet'
+  californium:
+    backends:
+      eqiad: 'californium.wikimedia.org'
+  darmstadtium:
+    be_opts:
+      port: 81
+      max_connections: 5
+    backends:
+      eqiad: 'darmstadtium.eqiad.wmnet'
+  labtestweb2001:
+    backends:
+      eqiad: 'labtestweb2001.wikimedia.org'
+  labtestspice:
+    be_opts:
+      port: 6082
+    backends:
+      eqiad: 'labtestcontrol2001.wikimedia.org'
+  labspice:
+    be_opts:
+      port: 6082
+    backends:
+      eqiad: 'labcontrol1001.wikimedia.org'
+  etherpad1001:
+    be_opts:
+      port: 9001
+    backends:
+      eqiad: 'etherpad1001.eqiad.wmnet'
+  eventstreams:
+    be_opts:
+      port: 8092
+    backends:
+      eqiad: 'eventstreams.svc.eqiad.wmnet'
+  contint1001:
+    backends:
+      eqiad: 'contint1001.wikimedia.org'
+  graphite1001:
+    backends:
+      eqiad: 'graphite1001.eqiad.wmnet'
+  graphite2001:
+    backends:
+      eqiad: 'graphite2001.codfw.wmnet'
+  iridium:
+    backends:
+      eqiad: 'iridium.eqiad.wmnet'
+  krypton:
+    backends:
+      eqiad: 'krypton.eqiad.wmnet'
+  labmon1001:
+    backends:
+      eqiad: 'labmon1001.eqiad.wmnet'
+  netmon1001:
+    backends:
+      eqiad: 'netmon1001.wikimedia.org'
+  noc:
+    backends:
+      eqiad: 'terbium.eqiad.wmnet'
+  planet1001:
+    backends:
+      eqiad: 'planet1001.eqiad.wmnet'
+  pybal_config:
+    backends:
+      eqiad: 'puppetmaster1001.eqiad.wmnet'
+  rcstream:
+    be_opts:
+      max_connections: 1000
+    backends:
+      eqiad: 'rcs1001.eqiad.wmnet'
+  ruthenium:
+    be_opts:
+      port: 8001
+    backends:
+      eqiad: 'ruthenium.eqiad.wmnet'
+  rutherfordium:
+    backends:
+      eqiad: 'rutherfordium.eqiad.wmnet'
+  thorium:
+    backends:
+      eqiad: 'thorium.eqiad.wmnet'
+  ununpentium:
+    backends:
+      eqiad: 'ununpentium.wikimedia.org'
+  mendelevium:
+    backends:
+      eqiad: 'mendelevium.eqiad.wmnet'
+  logstash_director:
+    backends:
+      eqiad: 'kibana.svc.eqiad.wmnet'
+  wdqs_director:
+    backends:
+      eqiad: 'wdqs.svc.eqiad.wmnet'
+  wdqs_director_ldf:
+    backends:
+      eqiad: 'wdqs1001.eqiad.wmnet'
+  ores:
+    be_opts:
+      port: 8081
+    backends:
+      eqiad: 'ores.svc.eqiad.wmnet'
+cache::req_handling:
+  15.wikipedia.org:
+    director: 'bromine'
+  analytics.wikimedia.org:
+    director: 'thorium'
+  annual.wikimedia.org:
+    director: 'bromine'
+  bugs.wikimedia.org:
+    director: 'iridium'
+  bugzilla.wikimedia.org:
+    director: 'iridium'
+  config-master.wikimedia.org:
+    director: 'pybal_config'
+    caching: 'pass'
+  datasets.wikimedia.org:
+    director: 'thorium'
+    caching: 'pass'
+  dbtree.wikimedia.org:
+    director: 'noc'
+  docker-registry.wikimedia.org:
+    director: 'darmstadtium'
+  doc.wikimedia.org:
+    director: 'contint1001'
+  endowment.wikimedia.org:
+    director: 'bromine'
+  etherpad.wikimedia.org:
+    director: 'etherpad1001'
+    caching: 'websockets'
+  git.wikimedia.org:
+    director: 'iridium'
+  grafana-admin.wikimedia.org:
+    director: 'krypton'
+    caching: 'pass'
+  grafana-labs-admin.wikimedia.org:
+    director: 'labmon1001'
+    caching: 'pass'
+  grafana-labs.wikimedia.org:
+    director: 'labmon1001'
+    caching: 'pass'
+  grafana.wikimedia.org:
+    director: 'krypton'
+    caching: 'pass'
+  graphite-labs.wikimedia.org:
+    director: 'labmon1001'
+  graphite.wikimedia.org:
+    director: 'graphite1001'
+  horizon.wikimedia.org:
+    director: 'californium'
+  hue.wikimedia.org:
+    director: 'thorium'
+  iegreview.wikimedia.org:
+    director: 'krypton'
+  integration.wikimedia.org:
+    director: 'contint1001'
+  labspice.wikimedia.org:
+    director: 'labspice'
+  labtestspice.wikimedia.org:
+    director: 'labtestspice'
+  labtesthorizon.wikimedia.org:
+    director: 'labtestweb2001'
+  logstash.wikimedia.org:
+    director: 'logstash_director'
+  metrics.wikimedia.org:
+    director: 'thorium'
+  noc.wikimedia.org:
+    director: 'noc'
+  ores.wikimedia.org:
+    director: 'ores'
+  parsoid-rt-tests.wikimedia.org:
+    director: 'ruthenium'
+  parsoid-vd-tests.wikimedia.org:
+    director: 'ruthenium'
+  people.wikimedia.org:
+    director: 'rutherfordium'
+    caching: 'pass'
+  performance.wikimedia.org:
+    director: 'graphite1001'
+  phabricator.wikimedia.org:
+    director: 'iridium'
+  phab.wmfusercontent.org:
+    director: 'iridium'
+  pivot.wikimedia.org:
+    director: 'thorium'
+  piwik.wikimedia.org:
+    director: 'bohrium'
+    caching: 'pass'
+  '^([^.]+\.)?planet\.wikimedia\.org$':
+    director: 'planet1001'
+  query.wikidata.org:
+    director: 'wdqs_director'
+    subpaths:
+      '^/bigdata/ldf.*':
+        director: 'wdqs_director_ldf'
+  racktables.wikimedia.org:
+    director: 'krypton'
+  releases.wikimedia.org:
+    director: 'bromine'
+  rt.wikimedia.org:
+    director: 'ununpentium'
+  scholarships.wikimedia.org:
+    director: 'krypton'
+  servermon.wikimedia.org:
+    director: 'netmon1001'
+  smokeping.wikimedia.org:
+    director: 'netmon1001'
+  static-bugzilla.wikimedia.org:
+    director: 'bromine'
+  stats.wikimedia.org:
+    director: 'thorium'
+  stream.wikimedia.org:
+    director: 'eventstreams'
+    subpaths:
+      '^/v2/stream/.+':
+        director: 'eventstreams'
+        caching: 'pipe'
+      '^/(socket\.io|rc(stream_status)?)(/|$)':
+        director: 'rcstream'
+        caching: 'websockets'
+  ticket.wikimedia.org:
+    director: 'mendelevium'
+    caching: 'pass'
+  toolsadmin.wikimedia.org:
+    director: 'californium'
+  torrus.wikimedia.org:
+    director: 'netmon1001'
+  transparency.wikimedia.org:
+    director: 'bromine'
+  yarn.wikimedia.org:
+    director: 'thorium'

@@ -29,24 +29,11 @@ class role::cache::maps {
         'probe'                 => 'varnish',
     }
 
-    $app_def_be_opts = {
-        'port'                  => 6533,
-        'connect_timeout'       => '5s',
-        'first_byte_timeout'    => '35s',
-        'max_connections'       => 1000,
-    }
-
-    $apps = hiera('cache::maps::apps')
-    $app_directors = {
-        'kartotherian'   => {
-            'backend' => $apps['kartotherian']['backends'][$apps['kartotherian']['route']],
-        },
-    }
-
     $common_vcl_config = {
         'purge_host_regex' => $::role::cache::base::purge_host_not_upload_re,
         'ttl_cap'          => '1d',
         'pass_random'      => true,
+        'req_handling'     => hiera('cache::req_handling'),
     }
 
     $common_runtime_params = ['default_ttl=86400']
@@ -56,8 +43,8 @@ class role::cache::maps {
         fe_jemalloc_conf  => 'lg_dirty_mult:8,lg_chunk:17',
         fe_runtime_params => $common_runtime_params,
         be_runtime_params => $common_runtime_params,
-        app_directors     => $app_directors,
-        app_def_be_opts   => $app_def_be_opts,
+        app_directors     => hiera('cache::app_directors'),
+        app_def_be_opts   => hiera('cache::app_def_be_opts'),
         fe_vcl_config     => $common_vcl_config,
         be_vcl_config     => $common_vcl_config,
         fe_extra_vcl      => [],

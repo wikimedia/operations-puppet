@@ -91,7 +91,12 @@ probe varnish {
 # }
 # @app_directors = { # not always defined (e.g. frontends, for now)
 #     'foo' => {
-#         'backend' => "foo.svc.eqiad.wmnet", # required service hostname
+#         'backends' => {
+#             # At least one core DC must be defined here
+#             # If more than one DC, service is active:active
+#             'eqiad' => 'foo.svc.eqiad.wmnet',
+#             'codfw' => 'foo.svc.codfw.wmnet',
+#         },
 #         'be_opts' => { # optional overrides of app_def_be_opts
 #             'port' = 80,
 #             'connect_timeout' = '2s',
@@ -147,10 +152,11 @@ apphost_seen = {}
 @app_directors.keys.sort.each do |director_name|
 	director = @app_directors[director_name]
 	be_opts = @app_def_be_opts.merge(director['be_opts'] || {})
-	backend = director['backend']
-	next if apphost_seen.key?(backend)
-	apphost_seen[backend] = 1
-	name = 'be_' + backend.gsub(/[-.]/, '_')
+        if director['backends'].key?(@site)
+		backend = director['backends'][@site]
+		next if apphost_seen.key?(backend)
+		apphost_seen[backend] = 1
+		name = 'be_' + backend.gsub(/[-.]/, '_')
 -%>
 
 backend <%= name %> {
@@ -167,6 +173,7 @@ backend <%= name %> {
 	<%- end -%>
 }
 
+<% end # @site if-condition -%>
 <% end # app_directors loop -%>
 
 <% end # !varnish_testing -%>
@@ -198,23 +205,98 @@ backends = director['backends'] -%>
 
 <% end #dynamic_backend_caches -%>
 
-<% @app_directors.keys.sort.each do |director_name|
-director = @app_directors[director_name]
-backend = director['backend']
-if @varnish_testing
-	name = "vtc_backend";
-else
-	name = 'be_' + backend.gsub(/[-.]/, '_')
-end
+<%
+@app_directors.keys.sort.each do |director_name|
+        if @app_directors[director_name]['backends'].key?(@site)
+		backend = @app_directors[director_name]['backends'][@site]
+		if @varnish_testing
+			name = "vtc_backend";
+		else
+			name = 'be_' + backend.gsub(/[-.]/, '_')
+		end
 -%>
 	new <%= director_name %> = directors.random();
 
 		<%= director_name %>.add_backend(<%= name %>, 100);
+<% end # @site if-condition -%>
 <% end # app_directors loop -%>
 
 } # end wm_common_directors_init
 
 # Functions
+
+sub wm_common_recv_pass {
+<%
+    def uc_action(uc)
+        if uc == "pass"
+            return "return (pass);"
+        elsif uc == "pipe"
+            return "return (pipe);"
+        elsif uc == "websockets"
+            return %Q[if (req.http.upgrade ~ "(?i)websocket") { return (pipe); } else { return (pass); }]
+        elsif uc == "normal"
+            return ""
+        else
+            raise Error, "Invalid caching action #{uc}"
+        end
+    end
+
+    caching = []
+    caching_default = false
+    @vcl_config['req_handling'].keys.sort.each do |reqhost|
+        if reqhost == 'default'
+            host_cmp = %Q[e] # "else" when join(' els') applied later
+        elsif reqhost =~ /^[-.A-Za-z0-9]+$/
+            host_cmp = %Q[if (req.http.host == "#{reqhost}")]
+        else
+            host_cmp = %Q[if (req.http.host ~ "#{reqhost}")]
+        end
+
+        need_host = false
+        host_action = false
+        options = @vcl_config['req_handling'][reqhost]
+        if options.has_key?('caching')
+            host_action = uc_action(options['caching'])
+            need_host = true
+        end
+
+        if options.has_key?('subpaths')
+            path_ifs = []
+            options['subpaths'].keys.sort.each do |subpath|
+                path_options = options['subpaths'][subpath]
+                path_cmp = %Q[\n        if (req.url ~ "#{subpath}")]
+                if path_options.has_key?('caching')
+                    need_host = true
+                    path_action = uc_action(path_options['caching'])
+                    path_ifs.push(%Q[#{path_cmp} {\n             #{path_action}\n        }])
+                else
+                    path_ifs.push(%Q[#{path_cmp} { }])
+                end
+            end
+            if host_action
+                path_ifs.push(%Q[e { #{host_action} }])
+            end
+            if need_host
+                host_action = path_ifs.join(' els')
+            end
+        end
+
+        if need_host
+            if reqhost == 'default'
+                caching_default = %Q[#{host_cmp} { #{host_action} }]
+            else
+                caching.push(%Q[#{host_cmp} { #{host_action} }])
+            end
+        end
+    end
+
+    if caching_default
+        caching.push(caching_default)
+    end
+    caching_vcl = caching.join("\n    ");
+%>
+    <%= caching_vcl %>
+}
 
 sub wm_common_recv_purge {
 	/* Support HTTP PURGE */
