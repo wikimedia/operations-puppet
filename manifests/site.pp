@@ -2412,7 +2412,7 @@ node /^prometheus100[1234]\.eqiad\.wmnet$/ {
 node /^puppetmaster[12]001\.(codfw|eqiad)\.wmnet$/ {
     role(
         ipmi::mgmt, access_new_install,
-        puppetmaster::frontend, conftool::master,
+        puppetmaster::frontend,
         pybal_config
     )
     include ::standard

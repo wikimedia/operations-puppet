@@ -459,3 +459,8 @@ install_server_failover: install2002.wikimedia.org
 cumin_masters:
   - neodymium.eqiad.wmnet
   - sarin.codfw.wmnet
+
+# Etcd client global configuration
+etcd_client_srv_domain: "%{::site}.wmnet"
+etcd_host: ''
+etcd_port: ''

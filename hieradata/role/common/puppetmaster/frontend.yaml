@@ -14,3 +14,6 @@ confd::monitor_files: false
 apache::logrotate::period: "daily"
 apache::logrotate::rotate: 7
 cluster: puppet
+# Conftool
+profile::conftool::client::namespace: "/conftool"
+profile::conftool::master::sync_dir: "/etc/conftool/data"
