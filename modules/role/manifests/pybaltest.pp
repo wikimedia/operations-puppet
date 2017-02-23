@@ -17,4 +17,7 @@ class role::pybaltest {
         port   => '581',
         srange => "@resolve((${pybaltest_hosts_ferm}))",
     }
+
+    # Install conftool-master for conftool testing
+    include ::profile::conftool::master
 }
