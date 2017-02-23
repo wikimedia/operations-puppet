@@ -5,24 +5,30 @@
 <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
         <title>%(db)s dump progress on %(date)s</title>
+        <link rel="stylesheet" type="text/css" href="/dumps.css" />
         <style type="text/css">
-                html, body {
-                        background-color: #eee;
-                        color: black;
-                }
                 .siteinfo {
                         text-align: center;
                 }
                 li {
-                        background-color: #f4f4f4;
                         list-style-type: none;
+                        padding: 0.5em 1.5em 0.5em 1.5em;
+                        background: #fff;
+                        margin-bottom: 1em;
                 }
                 li li {
                         background-color: white;
+                        box-shadow: none;
+                        border-top: none;
+                        padding: 0px;
+                        margin-bottom: 0em;
                 }
                 li ul {
                         margin-top: 4px;
                         margin-bottom: 8px;
+                        box-shadow: none;
+                        border-top: none;
+                        padding: 0.5em 0px 0px;
                 }
                 .detail {
                         font-weight: normal;
@@ -39,24 +45,36 @@
                         padding-left: 1em;
                         padding-right: 1em;
                 }
-                .in-progress {
+                li.in-progress {
+                        border-top: 3px solid #3366cc;
+                        box-shadow: 0 8px 12px -8px #375baf;
                         font-weight: bold;
+                }
+                .done {
+                        border-top: 3px solid #00af89;
+                        box-shadow: 0 8px 12px -8px #0a4337;
                 }
                 .failed {
-                        color: Maroon;
+                        color: #b32424;
                         font-weight: bold;
-                }
-                .notice {
-                        color: Maroon;
-                        font-weight: normal;
+                        border-top: 3px solid #b32424;
+                        box-shadow: 0 8px 12px -8px #5a1212;
                 }
                 .waiting {
-                        color: Silver; /* Gray ? */
+                        color: #c8ccd1;
+                        box-shadow: none;
+                        border-top: none;
                 }
                 .progress {
                         font-family: monospace;
                         font-size: 80%%;
                         margin-left: .5in;
+                }
+                .notice {
+                        border: none;
+                        background-color: transparent;
+                        font-weight: normal;
+                        color: #b32424;
                 }
         </style>
 </head>
