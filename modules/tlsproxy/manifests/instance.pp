@@ -17,11 +17,24 @@ class tlsproxy::instance {
     }
 
     $websocket_support = hiera('cache::websocket_support', false)
+    $lua_support = hiera('cache::lua_support', false)
     $nginx_worker_connections = '131072'
     $nginx_ssl_conf = ssl_ciphersuite('nginx', 'compat')
     $nginx_tune_for_media = hiera('cache::tune_for_media', false)
 
     class { 'nginx': managed => false, }
+
+    if $lua_support {
+        require_package([ 'libnginx-mod-http-lua', 'libnginx-mod-http-ndk' ])
+
+        # Directory for Lua modules
+        file { '/etc/nginx/lua/':
+            ensure => directory,
+            owner  => 'root',
+            group  => 'root',
+            mode   => '0755',
+        }
+    }
 
     file { '/etc/nginx/nginx.conf':
         content => template('tlsproxy/nginx.conf.erb'),

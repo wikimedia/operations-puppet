@@ -7,4 +7,4 @@ cache::text::nodes:
       - 'cp1008.wikimedia.org'
     codfw:
       - 'cp1008.wikimedia.org'
-
+cache::lua_support: true
