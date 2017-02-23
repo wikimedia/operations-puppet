@@ -33,27 +33,11 @@ class role::cache::upload(
         'probe'                 => 'varnish',
     }
 
-    $app_def_be_opts = {
-        'port'                  => 80,
-        'connect_timeout'       => '5s',
-        'first_byte_timeout'    => '35s',
-        'max_connections'       => 10000,
-    }
-
-    $apps = hiera('cache::upload::apps')
-    $app_directors = {
-        'swift'   => {
-            'backend' => $apps['swift']['backends'][$apps['swift']['route']],
-        },
-        'swift_thumbs'   => {
-            'backend' => $apps['swift_thumbs']['backends'][$apps['swift_thumbs']['route']],
-        },
-    }
-
     $common_vcl_config = {
         'purge_host_regex' => $::role::cache::base::purge_host_only_upload_re,
         'upload_domain'    => $upload_domain,
         'allowed_methods'  => '^(GET|HEAD|OPTIONS|PURGE)$',
+        'req_handling'     => hiera('cache::req_handling'),
     }
 
     # Note pass_random true in BE, false in FE below.
@@ -100,8 +84,8 @@ class role::cache::upload(
         fe_jemalloc_conf  => 'lg_dirty_mult:8,lg_chunk:17',
         fe_runtime_params => $common_runtime_params,
         be_runtime_params => concat($common_runtime_params, $be_runtime_params),
-        app_directors     => $app_directors,
-        app_def_be_opts   => $app_def_be_opts,
+        app_directors     => hiera('cache::app_directors'),
+        app_def_be_opts   => hiera('cache::app_def_be_opts'),
         fe_vcl_config     => $fe_vcl_config,
         be_vcl_config     => $be_vcl_config,
         fe_extra_vcl      => ['upload-common'],

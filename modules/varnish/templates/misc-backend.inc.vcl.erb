@@ -2,45 +2,6 @@ include "misc-common.inc.vcl";
 
 sub cluster_be_recv_pre_purge { }
 
-sub cluster_be_recv_applayer_backend {
-<%
-    def set_director(dirname)
-        return "set req.backend_hint = #{dirname}.backend();"
-    end
-
-    def_action = 'return (synth(404, "Domain not served here"));'
-    if_stmts = []
-    @vcl_config['req_handling'].keys.sort.each do |reqhost|
-        options = @vcl_config['req_handling'][reqhost]
-        host_action = set_director(options['director'])
-        if options.has_key?('subpaths')
-            path_ifs = []
-            options['subpaths'].keys.sort.each do |subpath|
-                path_action = set_director(options['subpaths'][subpath]['director'])
-                path_ifs.push(%Q[if (req.url ~ "#{subpath}") {\n            #{path_action}\n        }])
-            end
-            path_ifs.push(%Q[e {\n            #{host_action}\n        }])
-            host_action = path_ifs.join(' els')
-        end
-
-        if reqhost == 'default'
-            def_action = host_action
-        else
-            if reqhost =~ /^[-.A-Za-z0-9]+$/
-                hostop = '=='
-            else
-                hostop = '~'
-            end
-            hostcmp = %Q[req.http.Host #{hostop} "#{reqhost}"]
-            if_stmts.push("if (#{hostcmp}) {\n        #{host_action}\n    }")
-        end
-    end
-    if_stmts.push("e {\n        #{def_action}\n    }")
-    set_backend = if_stmts.join(' els')
-%>
-    <%= set_backend %>
-}
-
 sub cluster_be_recv {
     call misc_recv_pass;
 }
@@ -60,14 +21,18 @@ sub cluster_be_backend_response {
         return (deliver);
     }
 
-<% if @cache_route == 'direct' or @varnish_testing -%>
-    // Direct backend caches:
-    // Disable streaming if no Content-Length present.  This is the default in
-    // varnish3, but in varnish4 this should convert them to responses
-    // containing a Content-Length in the common case, so that upper caches
-    // can make size-based decisions.
-    if (!beresp.http.Content-Length) {
-        set beresp.do_stream = false;
+<% if not @varnish_testing -%>
+    if (!req.http.X-Next-Is-Cache) {
+<% end -%>
+        // Direct backend caches:
+        // Disable streaming if no Content-Length present.  This is the default in
+        // varnish3, but in varnish4 this should convert them to responses
+        // containing a Content-Length in the common case, so that upper caches
+        // can make size-based decisions.
+        if (!beresp.http.Content-Length) {
+            set beresp.do_stream = false;
+        }
+<% if not @varnish_testing -%>
     }
 <% end -%>
 }
