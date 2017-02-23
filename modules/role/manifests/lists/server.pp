@@ -32,7 +32,7 @@ class role::lists::server {
         subjects   => 'lists.wikimedia.org',
         puppet_svc => 'apache2',
         system_svc => 'apache2',
-        key_group  => 'Debian-exim4',
+        key_group  => 'Debian-exim',
     }
 
     include mailman
