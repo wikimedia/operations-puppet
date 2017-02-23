@@ -48,35 +48,31 @@ class role::cache::text(
     $app_directors = {
         'appservers'       => {
             'backend' => $apps['appservers']['backends'][$apps['appservers']['route']],
-            'be_opts'  => $app_def_be_opts,
         },
         'api'              => {
             'backend' => $apps['api']['backends'][$apps['api']['route']],
-            'be_opts'  => $app_def_be_opts,
         },
         'rendering'        => {
             'backend' => $apps['rendering']['backends'][$apps['rendering']['route']],
-            'be_opts'  => $app_def_be_opts,
         },
         'security_audit'   => {
             'backend' => $apps['security_audit']['backends'][$apps['security_audit']['route']],
-            'be_opts'  => $app_def_be_opts,
         },
         'appservers_debug'   => {
             'backend' => $apps['appservers_debug']['backends'][$apps['appservers_debug']['route']],
-            'be_opts'  => merge($app_def_be_opts, { 'max_connections' => 20 }),
+            'be_opts'  => { 'max_connections' => 20 },
         },
         'restbase_backend' => {
             'backend' => $apps['restbase']['backends'][$apps['restbase']['route']],
-            'be_opts'  => merge($app_def_be_opts, { 'port' => 7231, 'max_connections' => 5000 }),
+            'be_opts'  => { 'port' => 7231, 'max_connections' => 5000 },
         },
         'cxserver_backend' => { # LEGACY: should be removed eventually
             'backend' => $apps['cxserver']['backends'][$apps['cxserver']['route']],
-            'be_opts'  => merge($app_def_be_opts, { 'port' => 8080 }),
+            'be_opts'  => { 'port' => 8080 },
         },
         'citoid_backend'   => { # LEGACY: should be removed eventually
             'backend' => $apps['citoid']['backends'][$apps['citoid']['route']],
-            'be_opts'  => merge($app_def_be_opts, { 'port' => 1970 }),
+            'be_opts'  => { 'port' => 1970 },
         },
     }
 
@@ -105,6 +101,7 @@ class role::cache::text(
         fe_runtime_params => $common_runtime_params,
         be_runtime_params => $common_runtime_params,
         app_directors     => $app_directors,
+        app_def_be_opts   => $app_def_be_opts,
         fe_vcl_config     => $fe_vcl_config,
         be_vcl_config     => $be_vcl_config,
         fe_extra_vcl      => ['text-common', 'zero', 'normalize_path', 'geoip'],

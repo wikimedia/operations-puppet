@@ -9,6 +9,7 @@ define varnish::instance(
     $jemalloc_conf=undef,
     $runtime_parameters=[],
     $app_directors={},
+    $app_def_be_opts={},
     $backend_caches={},
     $extra_vcl = []
 ) {

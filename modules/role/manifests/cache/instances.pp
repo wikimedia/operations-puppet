@@ -5,6 +5,7 @@ define role::cache::instances (
     $fe_runtime_params,
     $be_runtime_params,
     $app_directors,
+    $app_def_be_opts,
     $fe_vcl_config,
     $be_vcl_config,
     $fe_extra_vcl,
@@ -63,6 +64,7 @@ define role::cache::instances (
         storage            => $be_storage,
         vcl_config         => $be_vcl_config,
         app_directors      => $app_directors,
+        app_def_be_opts    => $app_def_be_opts,
         backend_caches     => $our_backend_caches,
     }
 

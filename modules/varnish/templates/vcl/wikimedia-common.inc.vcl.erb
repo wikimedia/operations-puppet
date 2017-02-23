@@ -82,10 +82,17 @@ probe varnish {
 #     },
 # }
 #
+#
+# @app_def_be_opts = { # every option is required!
+#     'port' = 80,
+#     'connect_timeout' = '2s',
+#     'first_byte_timeout' = '4s',
+#     'max_connections' = 100, # per-backend!
+# }
 # @app_directors = { # not always defined (e.g. frontends, for now)
 #     'foo' => {
 #         'backend' => "foo.svc.eqiad.wmnet", # required service hostname
-#         'be_opts' => { # every option is required!
+#         'be_opts' => { # be_opts + subkeys all optional, app_def_be_opts is defaults!
 #             'port' = 80,
 #             'connect_timeout' = '2s',
 #             'first_byte_timeout' = '4s',
@@ -135,7 +142,10 @@ backend <%= name %> {
 apphost_seen = {}
 @app_directors.keys.sort.each do |director_name|
 	director = @app_directors[director_name]
-	be_opts	= director['be_opts']
+	be_opts = @app_def_be_opts
+	if director.key?('be_opts')
+		be_opts.merge!(director['be_opts'])
+	end
 	backend = director['backend']
 	next if apphost_seen.key?(backend)
 	apphost_seen[backend] = 1

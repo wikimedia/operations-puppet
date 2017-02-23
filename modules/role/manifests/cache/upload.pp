@@ -33,25 +33,20 @@ class role::cache::upload(
         'probe'                 => 'varnish',
     }
 
+    $app_def_be_opts = {
+        'port'                  => 80,
+        'connect_timeout'       => '5s',
+        'first_byte_timeout'    => '35s',
+        'max_connections'       => 10000,
+    }
+
     $apps = hiera('cache::upload::apps')
     $app_directors = {
         'swift'   => {
             'backend' => $apps['swift']['backends'][$apps['swift']['route']],
-            'be_opts'  => {
-                'port'                  => 80,
-                'connect_timeout'       => '5s',
-                'first_byte_timeout'    => '35s',
-                'max_connections'       => 10000,
-            }
         },
         'swift_thumbs'   => {
             'backend' => $apps['swift_thumbs']['backends'][$apps['swift_thumbs']['route']],
-            'be_opts'  => {
-                'port'                  => 80,
-                'connect_timeout'       => '5s',
-                'first_byte_timeout'    => '35s',
-                'max_connections'       => 10000,
-            }
         },
     }
 
@@ -106,6 +101,7 @@ class role::cache::upload(
         fe_runtime_params => $common_runtime_params,
         be_runtime_params => concat($common_runtime_params, $be_runtime_params),
         app_directors     => $app_directors,
+        app_def_be_opts   => $app_def_be_opts,
         fe_vcl_config     => $fe_vcl_config,
         be_vcl_config     => $be_vcl_config,
         fe_extra_vcl      => ['upload-common'],
