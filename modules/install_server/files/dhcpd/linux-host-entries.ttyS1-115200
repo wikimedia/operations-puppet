@@ -6024,11 +6024,6 @@ host stat1004 {
     filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
-host strontium {
-    hardware ethernet 18:03:73:f4:ef:51;
-    fixed-address strontium.eqiad.wmnet;
-}
-
 host subra {
     hardware ethernet D4:AE:52:AD:62:75;
     fixed-address subra.codfw.wmnet;
