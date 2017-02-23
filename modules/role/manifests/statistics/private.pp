@@ -78,6 +78,7 @@ class role::statistics::private inherits role::statistics::base {
 
     # Set up a job to create browser reports on hive db.
     reportupdater::job { 'browser':
-        repository  => 'reportupdater-queries',
+        repository => 'reportupdater-queries',
+        output_dir => 'metrics/browser',
     }
 }
