@@ -44,6 +44,5 @@ class openstack::nova::fullstack(
     base::service_unit { 'nova-fullstack':
         ensure    => present,
         upstart   => true,
-        subscribe => File['/etc/init/nova-fullstack.conf'],
     }
 }
