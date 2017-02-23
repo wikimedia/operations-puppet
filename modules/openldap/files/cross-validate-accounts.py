@@ -52,11 +52,12 @@ def fetch_yaml_data():
 def validate_absented_users(yamldata):
     log = ""
     absented_users = yamldata['groups']['absent']['members']
+    absented_users += yamldata['groups']['absent_ldap']['members']
     for table in ['users', 'ldap_only_users']:
         for username, userdata in yamldata[table].items():
             if userdata['ensure'] == 'absent':
                 if username not in absented_users:
-                    log += username + " is absent, but missing in absent group\n"
+                    log += username + " is absent, but missing in absent groups\n"
     return log
 
 
@@ -148,7 +149,7 @@ def validate_common_ops_group(yamldata):
 def validate_all_yaml_group_members_are_defined(known_users, yamldata):
     log = ""
     for group, groupdata in yamldata['groups'].items():
-        if group == "absent":
+        if group == "absent" or group == "absent_ldap":
             continue
         for member in groupdata['members']:
             if member not in known_users:
