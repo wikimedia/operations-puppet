@@ -32,5 +32,5 @@ class role::puppetmaster::backend {
         port   => 8141,
         srange => "(@resolve((${puppetmaster_frontend_ferm})) @resolve((${puppetmaster_frontend_ferm}), AAAA))"
     }
-
+    require ::profile::conftool::client
 }

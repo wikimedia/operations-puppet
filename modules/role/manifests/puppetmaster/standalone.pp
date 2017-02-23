@@ -79,7 +79,6 @@ class role::puppetmaster::standalone(
         server_name         => $server_name,
         allow_from          => $allow_from,
         secure_private      => false,
-        include_conftool    => false,
         prevent_cherrypicks => $prevent_cherrypicks,
         extra_auth_rules    => $extra_auth_rules,
         config              => $config,
