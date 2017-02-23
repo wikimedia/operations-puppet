@@ -3,4 +3,6 @@
 -XX:HeapDumpPath=<%= @data_dir %>
 -XX:GCTimeLimit=70
 -XX:GCHeapFreeLimit=10
-<%= gc_log_flags.join('\n') %>
+<% @gc_log_flags.each do |gc_log_flag| -%>
+<%= gc_log_flag %>
+<% end -%>
