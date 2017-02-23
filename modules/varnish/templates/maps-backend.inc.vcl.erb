@@ -1,11 +1,6 @@
 // Varnish VCL include file for maps backends
 
 sub cluster_be_recv_pre_purge { }
-
-sub cluster_be_recv_applayer_backend {
-	set req.backend_hint = kartotherian.backend();
-}
-
 sub cluster_be_recv { }
 sub cluster_be_hash { }
 sub cluster_be_hit { }
