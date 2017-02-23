@@ -29,7 +29,6 @@ class labstore::fileserver::exports {
         privileges => [
             'ALL = NOPASSWD: /bin/mkdir -p /srv/*',
             'ALL = NOPASSWD: /bin/rmdir /srv/*',
-            'ALL = NOPASSWD: /usr/local/sbin/sync-exports',
             'ALL = NOPASSWD: /usr/sbin/exportfs',
         ],
         require    => User['nfsmanager'],
@@ -43,8 +42,6 @@ class labstore::fileserver::exports {
         require => [Package['python3'], Package['python3-yaml']],
     }
 
-    # Effectively replaces /usr/local/sbin/sync-exports but
-    # makes assumptions only true on newer systems at the moment
     file { '/usr/local/sbin/nfs-manage-binds':
         owner   => 'root',
         group   => 'root',
@@ -53,13 +50,6 @@ class labstore::fileserver::exports {
         require => File['/etc/nfs-mounts.yaml'],
     }
 
-    file { '/usr/local/sbin/sync-exports':
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0555',
-        source  => 'puppet:///modules/labstore/sync-exports',
-        require => File['/etc/nfs-mounts.yaml'],
-    }
 
     include ::openstack::clientlib
     file { '/usr/local/bin/nfs-exportd':
@@ -67,7 +57,7 @@ class labstore::fileserver::exports {
         group   => 'root',
         mode    => '0555',
         source  => 'puppet:///modules/labstore/nfs-exportd',
-        require => File['/usr/local/sbin/sync-exports'],
+        require => File['/usr/local/sbin/nfs-manage-binds'],
     }
 
     file { '/usr/local/sbin/archive-project-volumes':
