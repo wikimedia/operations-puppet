@@ -55,7 +55,6 @@ class puppetmaster(
     $hiera_config=$::realm,
     $secure_private=true,
     $extra_auth_rules='',
-    $include_conftool=true,
     $prevent_cherrypicks=true,
     $git_user='gitpuppet',
     $git_group='gitpuppet',
@@ -177,10 +176,6 @@ class puppetmaster(
         source => "puppet:///modules/puppetmaster/${hiera_config}.hiera.yaml",
     }
 
-    if $include_conftool {
-        # This is required for the conftool perser function
-        include ::conftool
-    }
     # Small utility to generate ECDSA certs and submit the CSR to the puppet master
     file { '/usr/local/bin/puppet-ecdsacert':
         ensure => present,
