@@ -20,6 +20,10 @@ private:
       home: true
       project: true
       scratch: true
+  chasetestproject:
+    gid: 53308
+    mounts:
+      project: true
   contributors:
     gid: 50408
     mounts:
