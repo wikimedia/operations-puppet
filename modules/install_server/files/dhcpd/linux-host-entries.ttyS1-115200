@@ -1728,8 +1728,6 @@ host dbproxy1011 {
 host dbstore1001 {
     hardware ethernet C8:1F:66:B8:2A:04;
     fixed-address dbstore1001.eqiad.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host dbstore1002 {
