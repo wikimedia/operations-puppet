@@ -43,55 +43,13 @@ jupyterhub::authenticator: dummy
 
 # Cache-layer stuff
 cache::route_table:
-    eqiad: 'direct'
+    eqiad: 'eqiad'
 cache::text::nodes:
     eqiad:
       - 'deployment-cache-text04.deployment-prep.eqiad.wmflabs'
 cache::upload::nodes:
     eqiad:
       - 'deployment-cache-upload04.deployment-prep.eqiad.wmflabs'
-cache::text::apps:
-  appservers:
-    route: eqiad
-    backends:
-      eqiad: 'deployment-mediawiki04.deployment-prep.eqiad.wmflabs'
-  api:
-    route: eqiad
-    backends:
-      eqiad: 'deployment-mediawiki05.deployment-prep.eqiad.wmflabs'
-  rendering:
-    route: eqiad
-    backends:
-      eqiad: 'deployment-mediawiki05.deployment-prep.eqiad.wmflabs'
-  security_audit:
-    route: eqiad
-    backends:
-      eqiad: 'deployment-mediawiki06.deployment-prep.eqiad.wmflabs'
-  appservers_debug:
-    route: eqiad
-    backends:
-      eqiad: 'deployment-mediawiki04.deployment-prep.eqiad.wmflabs'
-  cxserver:
-    route: eqiad
-    backends:
-      eqiad: 'cxserver-beta.wmflabs.org'
-  citoid:
-    route: eqiad
-    backends:
-      eqiad: 'citoid.wmflabs.org'
-  restbase:
-    route: eqiad
-    backends:
-      eqiad: 'deployment-restbase01.deployment-prep.eqiad.wmflabs'
-cache::upload::apps:
-  swift:
-    route: eqiad
-    backends:
-      eqiad: 'deployment-ms-fe01.deployment-prep.eqiad.wmflabs'
-  swift_thumbs:
-    route: eqiad
-    backends:
-      eqiad: 'deployment-ms-fe01.deployment-prep.eqiad.wmflabs'
 role::cache::base::zero_site: 'https://zero.wikimedia.beta.wmflabs.org'
 role::cache::base::purge_host_only_upload_re: '^upload\.beta\.wmflabs\.org$'
 role::cache::base::purge_host_not_upload_re: '^(?!upload\.beta\.wmflabs\.org)'
