@@ -44,35 +44,35 @@ class role::cache::text(
         'max_connections'       => 1000,
     }
 
-    $apps = hiera('cache::text::apps')
     $app_directors = {
         'appservers'       => {
-            'backend' => $apps['appservers']['backends'][$apps['appservers']['route']],
+            'backend' => 'appservers.svc.eqiad.wmnet',
         },
         'api'              => {
-            'backend' => $apps['api']['backends'][$apps['api']['route']],
+            'backend' => 'api.svc.eqiad.wmnet',
         },
         'rendering'        => {
-            'backend' => $apps['rendering']['backends'][$apps['rendering']['route']],
+            'backend' => 'rendering.svc.eqiad.wmnet',
         },
         'security_audit'   => {
-            'backend' => $apps['security_audit']['backends'][$apps['security_audit']['route']],
+            'backend' => 'appservers.svc.eqiad.wmnet',
         },
         'appservers_debug'   => {
-            'backend' => $apps['appservers_debug']['backends'][$apps['appservers_debug']['route']],
-            'be_opts'  => { 'max_connections' => 20 },
+            # 'backend' => 'hassium.eqiad.wmnet',
+            'backend' => 'hassaleh.codfw.wmnet',
+            'be_opts' => { 'max_connections' => 20 },
         },
         'restbase_backend' => {
-            'backend' => $apps['restbase']['backends'][$apps['restbase']['route']],
-            'be_opts'  => { 'port' => 7231, 'max_connections' => 5000 },
+            'backend' => 'restbase.svc.eqiad.wmnet',
+            'be_opts' => { 'port' => 7231, 'max_connections' => 5000 },
         },
         'cxserver_backend' => { # LEGACY: should be removed eventually
-            'backend' => $apps['cxserver']['backends'][$apps['cxserver']['route']],
-            'be_opts'  => { 'port' => 8080 },
+            'backend' => 'cxserver.svc.eqiad.wmnet',
+            'be_opts' => { 'port' => 8080 },
         },
         'citoid_backend'   => { # LEGACY: should be removed eventually
-            'backend' => $apps['citoid']['backends'][$apps['citoid']['route']],
-            'be_opts'  => { 'port' => 1970 },
+            'backend' => 'citoid.svc.eqiad.wmnet',
+            'be_opts' => { 'port' => 1970 },
         },
     }
 

@@ -43,10 +43,10 @@ class role::cache::upload(
     $apps = hiera('cache::upload::apps')
     $app_directors = {
         'swift'   => {
-            'backend' => $apps['swift']['backends'][$apps['swift']['route']],
+            'backend' => 'ms-fe.svc.eqiad.wmnet',
         },
         'swift_thumbs'   => {
-            'backend' => $apps['swift_thumbs']['backends'][$apps['swift_thumbs']['route']],
+            'backend' => 'ms-fe-thumbs.svc.eqiad.wmnet',
         },
     }
 

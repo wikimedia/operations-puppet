@@ -39,7 +39,7 @@ class role::cache::maps {
     $apps = hiera('cache::maps::apps')
     $app_directors = {
         'kartotherian'   => {
-            'backend' => $apps['kartotherian']['backends'][$apps['kartotherian']['route']],
+            'backend' => 'kartotherian.svc.eqiad.wmnet',
         },
     }
 
