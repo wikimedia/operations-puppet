@@ -4,6 +4,8 @@ class role::puppetmaster::frontend {
     include ::base::firewall
 
     include role::backup::host
+
+    # Everything below this point belongs in a profile
     backup::set { 'var-lib-puppet-ssl': }
     backup::set { 'var-lib-puppet-volatile': }
 
@@ -90,4 +92,8 @@ class role::puppetmaster::frontend {
         port   => 8141,
         srange => "(@resolve((${puppetmaster_frontend_ferm})) @resolve((${puppetmaster_frontend_ferm}), AAAA))"
     }
+
+    # This is the role again
+    include ::profile::conftool::client
+    include ::profile::conftool::master
 }
