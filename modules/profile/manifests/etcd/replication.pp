@@ -23,6 +23,8 @@ class profile::etcd::replication(
     $prometheus_nodes = hiera('prometheus_nodes'),
     $active = hiera('profile::etcd::replication::active'),
 ) {
+    require ::passwords::etcd
+    $accounts = $::passwords::etcd::accounts
     # Replica is always from remote to local. This means only the local account
     # is needed.
     $resource_title = "${origin['path']}@${origin['cluster_name']}"
