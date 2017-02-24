@@ -49,7 +49,10 @@
     RewriteRule ^/wiki/(ar|bs|cs|cy|da|de|dk|el|en|eo|es|fr|gd|gv|he|hi|hr|hu|ja|ko|ml|ms|nl|pl|ro|ru|sh|sl|sr|sv|tr|zh|zh-cn|zh-tw|nds):(.*)$ %{ENV:RW_PROTO}://$1.wikipedia.<%= @domain_suffix %>/wiki/$2 [R,L]
 
     # English Wikipedia pages
+    # ErrorDocument defined in sites-available/01-main.conf should be served directly and not redirected
+    RewriteCond %{REQUEST_URI} !=/w/404.php
     RewriteRule ^/(upload|wiki|stats|w)/(.*)$ %{ENV:RW_PROTO}://en.wikipedia.<%= @domain_suffix %>/$1/$2 [R=301,L]
+
     RewriteRule ^/wiki$ %{ENV:RW_PROTO}://en.wikipedia.<%= @domain_suffix %>/ [R=301,L]
 
     # Mailing lists...
@@ -58,6 +61,7 @@
     # Old-style english wikipedia
     RewriteCond %{QUERY_STRING} ([^&;]+)
     RewriteRule ^/wiki\.cgi$ %{ENV:RW_PROTO}://en.wikipedia.<%= @domain_suffix %>/wiki/%1 [R=302,L]
+
     RewriteRule ^/wiki\.cgi$ %{ENV:RW_PROTO}://en.wikipedia.<%= @domain_suffix %>/ [R=302,L]
 
     # Prevent the catch-all redirect below from breaking the apple-app-site-association alias
@@ -65,6 +69,8 @@
     Alias /apple-app-site-association /srv/mediawiki/docroot/wikipedia.org/apple-app-site-association
 
     # Everything else
+    # ErrorDocument defined in sites-available/01-main.conf should be served directly and not redirected
+    RewriteCond %{REQUEST_URI} !=/w/404.php
     RewriteRule ^(.*)$ %{ENV:RW_PROTO}://en.wikipedia.<%= @domain_suffix %>$1 [R=301,L]
 
     <IfModule mod_php5.c>
@@ -123,6 +129,8 @@
     RewriteRule ^/search-redirect.php /w/search-redirect.php [L]
 
     # Everything else
+    # ErrorDocument defined in sites-available/01-main.conf should be served directly and not redirected
+    RewriteCond %{REQUEST_URI} !=/w/404.php
     RewriteRule ^(.*)$ %{ENV:RW_PROTO}://en.wiktionary.<%= @domain_suffix %>$1 [R=301,L]
 </VirtualHost>
 
@@ -160,6 +168,8 @@
     RewriteRule ^/search-redirect.php /w/search-redirect.php [L]
 
     # Everything else
+    # ErrorDocument defined in sites-available/01-main.conf should be served directly and not redirected
+    RewriteCond %{REQUEST_URI} !=/w/404.php
     RewriteRule ^(.*)$ %{ENV:RW_PROTO}://en.wikinews.<%= @domain_suffix %>$1 [R=301,L]
 </VirtualHost>
 
@@ -197,6 +207,8 @@
     RewriteRule ^/search-redirect.php /w/search-redirect.php [L]
 
     # Everything else
+    # ErrorDocument defined in sites-available/01-main.conf should be served directly and not redirected
+    RewriteCond %{REQUEST_URI} !=/w/404.php
     RewriteRule ^(.*)$ %{ENV:RW_PROTO}://en.wikiquote.<%= @domain_suffix %>$1 [R=301,L]
 </VirtualHost>
 
@@ -234,6 +246,8 @@
     RewriteRule ^/search-redirect.php /w/search-redirect.php [L]
 
     # Everything else
+    # ErrorDocument defined in sites-available/01-main.conf should be served directly and not redirected
+    RewriteCond %{REQUEST_URI} !=/w/404.php
     RewriteRule ^(.*)$ %{ENV:RW_PROTO}://en.wikiversity.<%= @domain_suffix %>$1 [R=301,L]
 </VirtualHost>
 
@@ -271,6 +285,8 @@
     RewriteRule ^/search-redirect.php /w/search-redirect.php [L]
 
     # Everything else
+    # ErrorDocument defined in sites-available/01-main.conf should be served directly and not redirected
+    RewriteCond %{REQUEST_URI} !=/w/404.php
     RewriteRule ^(.*)$ %{ENV:RW_PROTO}://en.wikibooks.<%= @domain_suffix %>$1 [R=301,L]
 </VirtualHost>
 
@@ -313,6 +329,8 @@
     RewriteRule ^/it/(.*)$ %{ENV:RW_PROTO}://it.wikivoyage.<%= @domain_suffix %>/wiki/$1 [R=301,L]
 
     # Everything else
+    # ErrorDocument defined in sites-available/01-main.conf should be served directly and not redirected
+    RewriteCond %{REQUEST_URI} !=/w/404.php
     RewriteRule ^(.*)$ %{ENV:RW_PROTO}://en.wikivoyage.<%= @domain_suffix %>$1 [R=301,L]
 </VirtualHost>
 
