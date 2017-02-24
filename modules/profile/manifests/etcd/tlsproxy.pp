@@ -1,10 +1,12 @@
 class profile::etcd::tlsproxy(
     $cert_name = hiera('profile::etcd::tlsproxy::cert_name'),
-    $accounts = hiera('profile::etcd::tlsproxy::accounts'),
     $acls = hiera('profile::etcd::tlsproxy::acls'),
     $salt = hiera('profile::etcd::tlsproxy::salt')
 ){
     require ::tlsproxy::instance
+    require ::passwords::etcd
+
+    $accounts = $::passwords::etcd::accounts
 
     sslcert::certificate { $cert_name:
         skip_private => false,
