@@ -1907,14 +1907,6 @@ node 'mc1019.eqiad.wmnet' {
     role(memcached)
 }
 
-# Decommissioned nodes
-# T157675
-node /^mc20(0[1-9]|1[0-6])\.codfw\.wmnet/ {
-    role(spare::system)
-}
-
-# New hardware to replace mc2001->mc2016
-# T155755
 node /^mc20(19|2[0-9]|3[0-6])\.codfw\.wmnet/ {
     role(memcached)
 }
