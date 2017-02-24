@@ -1,0 +1,15 @@
+appserver:
+  apache2: [eqiad, codfw]
+  nginx: [eqiad, codfw]
+api_appserver:
+  apache2: [eqiad, codfw]
+  nginx: [eqiad, codfw]
+imagescaler:
+  apache2: [eqiad, codfw]
+  nginx: [eqiad, codfw]
+swift:
+  swift-fe: [eqiad, codfw]
+  nginx: [eqiad,codfw]
+thumbor:
+  thumbor:
+    - eqiad

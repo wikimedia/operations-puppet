@@ -1,0 +1,66 @@
+parsoid:
+  parsoid: [eqiad, codfw]
+elasticsearch:
+  elasticsearch: [eqiad, codfw]
+  elasticsearch-ssl: [eqiad, codfw]
+pdf:
+  ocg: [eqiad]
+sca:
+  zotero:
+    - eqiad
+    - codfw
+scb:
+  mobileapps:
+    - eqiad
+    - codfw
+  eventstreams:
+    - eqiad
+    - codfw
+  mathoid:
+    - eqiad
+    - codfw
+  graphoid:
+    - eqiad
+    - codfw
+  citoid:
+    - eqiad
+    - codfw
+  apertium:
+    - eqiad
+    - codfw
+  cxserver:
+    - eqiad
+    - codfw
+  ores:
+    - eqiad
+    - codfw
+  pdfrender:
+    - eqiad
+    - codfw
+  trendingedits:
+    - eqiad
+    - codfw
+restbase:
+  restbase:
+    - eqiad
+    - codfw
+maps:
+  kartotherian:
+    - codfw
+    - eqiad
+aqs:
+  aqs:
+    - eqiad
+eventbus:
+  eventbus:
+    datacenters:
+    - eqiad
+    - codfw
+wdqs:
+  wdqs:
+    - eqiad
+    - codfw
+logstash:
+  kibana:
+    datacenters:
+    - eqiad
