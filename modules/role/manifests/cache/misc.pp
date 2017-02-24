@@ -40,104 +40,164 @@ class role::cache::misc {
     #
     $app_directors = {
         'analytics1027' => { # Hue (Hadoop GUI)
-            'backend'  => 'analytics1027.eqiad.wmnet',
+            'backends' => {
+                'eqiad' => 'analytics1027.eqiad.wmnet',
+            },
             'be_opts'  => { 'port' => 8888 },
         },
         'bromine' => { # ganeti VM for misc. static HTML sites
-            'backend'  => 'bromine.eqiad.wmnet',
+            'backends' => {
+                'eqiad' => 'bromine.eqiad.wmnet',
+            },
         },
         'bohrium' => {
-            'backend'  => 'bohrium.eqiad.wmnet',
+            'backends' => {
+                'eqiad' => 'bohrium.eqiad.wmnet',
+            },
             'probe'   => {
                 'url'     => '/piwik.php',
                 'timeout' => '3s',
             },
         },
         'californium' => {
-            'backend'  => 'californium.wikimedia.org',
+            'backends' => {
+                'eqiad' => 'californium.wikimedia.org',
+            },
         },
         'darmstadtium' => {
-            'backend'  => 'darmstadtium.eqiad.wmnet',
+            'backends' => {
+                'eqiad' => 'darmstadtium.eqiad.wmnet',
+            },
             'be_opts'  => {'port' => 81, 'max_connections' => 5},
         },
         'labtestweb2001' => {
-            'backend'  => 'labtestweb2001.wikimedia.org',
+            'backends' => {
+                'eqiad' => 'labtestweb2001.wikimedia.org',
+            },
         },
         'labtestspice' => {
-            'backend'  => 'labtestcontrol2001.wikimedia.org',
+            'backends' => {
+                'eqiad' => 'labtestcontrol2001.wikimedia.org',
+            },
             'be_opts'  => { 'port' => 6082 },
         },
         'labspice' => {
-            'backend'  => 'labcontrol1001.wikimedia.org',
+            'backends' => {
+                'eqiad' => 'labcontrol1001.wikimedia.org',
+            },
             'be_opts'  => { 'port' => 6082 },
         },
         'etherpad1001' => {
-            'backend'  => 'etherpad1001.eqiad.wmnet',
+            'backends' => {
+                'eqiad' => 'etherpad1001.eqiad.wmnet',
+            },
             'be_opts'  => { 'port' => 9001 },
         },
         'eventstreams' => {
-            'backend'  => 'eventstreams.svc.eqiad.wmnet',
+            'backends' => {
+                'eqiad' => 'eventstreams.svc.eqiad.wmnet',
+            },
             'be_opts'  => { 'port' => 8092 },
         },
         'contint1001' => { # CI server
-            'backend'  => 'contint1001.wikimedia.org',
+            'backends' => {
+                'eqiad' => 'contint1001.wikimedia.org',
+            },
         },
         'graphite1001' => {
-            'backend'  => 'graphite1001.eqiad.wmnet',
+            'backends' => {
+                'eqiad' => 'graphite1001.eqiad.wmnet',
+            },
         },
         'graphite2001' => {
-            'backend'  => 'graphite2001.codfw.wmnet',
+            'backends' => {
+                'eqiad' => 'graphite2001.codfw.wmnet',
+            },
         },
         'iridium' => { # main phab
-            'backend'  => 'iridium.eqiad.wmnet',
+            'backends' => {
+                'eqiad' => 'iridium.eqiad.wmnet',
+            },
         },
         'krypton' => { # ganeti VM for misc. PHP apps
-            'backend'  => 'krypton.eqiad.wmnet',
+            'backends' => {
+                'eqiad' => 'krypton.eqiad.wmnet',
+            },
         },
         'labmon1001' => {
-            'backend'  => 'labmon1001.eqiad.wmnet',
+            'backends' => {
+                'eqiad' => 'labmon1001.eqiad.wmnet',
+            },
         },
         'netmon1001' => { # servermon
-            'backend'  => 'netmon1001.wikimedia.org',
+            'backends' => {
+                'eqiad' => 'netmon1001.wikimedia.org',
+            },
         },
         'noc' => { # noc.wikimedia.org and dbtree.wikimedia.org
-            'backend'  => 'terbium.eqiad.wmnet',
+            'backends' => {
+                'eqiad' => 'terbium.eqiad.wmnet',
+            },
         },
         'planet1001' => {
-            'backend'     => 'planet1001.eqiad.wmnet',
+            'backends' => {
+                'eqiad' => 'planet1001.eqiad.wmnet',
+            },
         },
         'pybal_config' => {
-            'backend'  => 'puppetmaster1001.eqiad.wmnet',
+            'backends' => {
+                'eqiad' => 'puppetmaster1001.eqiad.wmnet',
+            },
         },
         'rcstream' => {
-            'backend'  => 'rcs1001.eqiad.wmnet',
-            # 'backend'  => 'rcs1002.eqiad.wmnet', # manual backup option if 1001 fails
+            'backends' => {
+                'eqiad' => 'rcs1001.eqiad.wmnet',
+            },
+            # 'backends' => {
+                'eqiad' => 'rcs1002.eqiad.wmnet',
+            }, # manual backup option if 1001 fails
             'be_opts'  => { max_connections => 1000 },
         },
         'ruthenium' => { # parsoid rt test server
-            'backend'  => 'ruthenium.eqiad.wmnet',
+            'backends' => {
+                'eqiad' => 'ruthenium.eqiad.wmnet',
+            },
             'be_opts'  => { 'port' => 8001 },
         },
         'rutherfordium' => { # people.wikimedia.org
-            'backend'  => 'rutherfordium.eqiad.wmnet',
+            'backends' => {
+                'eqiad' => 'rutherfordium.eqiad.wmnet',
+            },
         },
         'thorium' => { # metrics and metrics-api
-            'backend'  => 'thorium.eqiad.wmnet',
+            'backends' => {
+                'eqiad' => 'thorium.eqiad.wmnet',
+            },
         },
         'ununpentium' => { # rt.wikimedia.org
-            'backend'  => 'ununpentium.wikimedia.org',
+            'backends' => {
+                'eqiad' => 'ununpentium.wikimedia.org',
+            },
         },
         'mendelevium' => { # OTRS
-            'backend'  => 'mendelevium.eqiad.wmnet',
+            'backends' => {
+                'eqiad' => 'mendelevium.eqiad.wmnet',
+            },
         },
         'logstash_director' => {
-            'backend'  => 'kibana.svc.eqiad.wmnet',
+            'backends' => {
+                'eqiad' => 'kibana.svc.eqiad.wmnet',
+            },
         },
         'wdqs_director' => {
-            'backend'  => 'wdqs.svc.eqiad.wmnet',
+            'backends' => {
+                'eqiad' => 'wdqs.svc.eqiad.wmnet',
+            },
         },
         'ores' => {
-            'backend'  => 'ores.svc.eqiad.wmnet',
+            'backends' => {
+                'eqiad' => 'ores.svc.eqiad.wmnet',
+            },
             'be_opts'  => { 'port' => 8081 },
         },
     }
