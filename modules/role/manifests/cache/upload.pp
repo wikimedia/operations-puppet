@@ -40,7 +40,6 @@ class role::cache::upload(
         'max_connections'       => 10000,
     }
 
-    $apps = hiera('cache::upload::apps')
     $app_directors = {
         'swift'   => {
             'backend' => 'ms-fe.svc.eqiad.wmnet',
@@ -50,10 +49,20 @@ class role::cache::upload(
         },
     }
 
+    $req_handling = {
+        'director' => 'swift',
+        'subpaths' => {
+            '^/+[^/]+/[^/]+/thumb/' => {
+                director => 'swift_thumbs',
+            },
+        },
+    }
+
     $common_vcl_config = {
         'purge_host_regex' => $::role::cache::base::purge_host_only_upload_re,
         'upload_domain'    => $upload_domain,
         'allowed_methods'  => '^(GET|HEAD|OPTIONS|PURGE)$',
+        'req_handling'     => $req_handling,
     }
 
     # Note pass_random true in BE, false in FE below.

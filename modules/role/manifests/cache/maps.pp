@@ -36,7 +36,6 @@ class role::cache::maps {
         'max_connections'       => 1000,
     }
 
-    $apps = hiera('cache::maps::apps')
     $app_directors = {
         'kartotherian'   => {
             'backend' => 'kartotherian.svc.eqiad.wmnet',
@@ -47,6 +46,7 @@ class role::cache::maps {
         'purge_host_regex' => $::role::cache::base::purge_host_not_upload_re,
         'ttl_cap'          => '1d',
         'pass_random'      => true,
+        'req_handling'     => { director => 'kartotherian' },
     }
 
     $common_runtime_params = ['default_ttl=86400']
