@@ -10,6 +10,58 @@ sub vcl_init {
 	call wm_common_directors_init;
 }
 
+sub set_backend_app__ {
+<%
+    def set_director(dirname, debug_dir)
+        if debug_dir.nil?
+            return "set req.backend_hint = #{dirname}.backend();"
+        else
+            return "if (req.http.X-Wikimedia-Debug) { set req.backend_hint = #{debug_dir}.backend(); } else { set req.backend_hint = #{dirname}.backend(); }"
+        end
+    end
+
+    def_action = 'return (synth(404, "Domain not served here"));'
+    if_stmts = []
+    @vcl_config['req_handling'].keys.sort.each do |reqhost|
+        options = @vcl_config['req_handling'][reqhost]
+        host_action = set_director(options['director'], options['debug_director'])
+        if options.has_key?('subpaths')
+            path_ifs = []
+            options['subpaths'].keys.sort.each do |subpath|
+                path_action = set_director(options['subpaths'][subpath]['director'], options['subpaths'][subpath]['debug_director'])
+                path_ifs.push(%Q[if (req.url ~ "#{subpath}") {\n            #{path_action}\n        }])
+            end
+            path_ifs.push(%Q[e {\n            #{host_action}\n        }])
+            host_action = path_ifs.join(' els')
+        end
+
+        if reqhost == 'default'
+            def_action = host_action
+        else
+            if reqhost =~ /^[-.A-Za-z0-9]+$/
+                hostop = '=='
+            else
+                hostop = '~'
+            end
+            hostcmp = %Q[req.http.Host #{hostop} "#{reqhost}"]
+            if_stmts.push("if (#{hostcmp}) {\n        #{host_action}\n    }")
+        end
+    end
+    if_stmts.push("e {\n        #{def_action}\n    }")
+    set_backend = if_stmts.join(' els')
+%>
+    <%= set_backend %>
+}
+
+sub set_backend__ {
+<% if @cache_route == 'direct' -%>
+	// tier-one caches must select an applayer backend
+	call set_backend_app__;
+<% else -%>
+	set req.backend_hint = cache_<%= @cache_route %>.backend();
+<% end -%>
+}
+
 sub vcl_recv {
 	if (client.ip !~ wikimedia_trust) {
 		// Do not allow direct access to non-frontend layers
@@ -34,17 +86,13 @@ sub vcl_recv {
 		}
 	}
 
-<% if @cache_route == 'direct' -%>
-	// tier-one caches must select an applayer backend
-	call cluster_be_recv_applayer_backend;
-<% else -%>
-	set req.backend_hint = cache_<%= @cache_route %>.backend();
-<% end -%>
+	call set_backend__;
 
 	call wm_common_recv_grace;
 	call cluster_be_recv_pre_purge;
 	call wm_common_recv_purge;
 	call cluster_be_recv;
+	call wm_common_recv_pass;
 
 	return (hash); // no default VCL
 }

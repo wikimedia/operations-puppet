@@ -268,6 +268,7 @@ sub vcl_recv {
 	call cluster_fe_recv_pre_purge;
 	call wm_common_recv_purge;
 	call cluster_fe_recv;
+	call wm_common_recv_pass;
 
 	return (hash); // no default VCL
 }
