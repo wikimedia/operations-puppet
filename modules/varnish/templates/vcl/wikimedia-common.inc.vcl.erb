@@ -91,7 +91,12 @@ probe varnish {
 # }
 # @app_directors = { # not always defined (e.g. frontends, for now)
 #     'foo' => {
-#         'backend' => "foo.svc.eqiad.wmnet", # required service hostname
+#         'backends' => {
+#             # If more than one DC listed here, service is active:active
+#             # If zero DCs listed here, service is effictively disabled
+#             'eqiad' => 'foo.svc.eqiad.wmnet',
+#             'codfw' => 'foo.svc.codfw.wmnet',
+#         },
 #         'be_opts' => { # optional overrides of app_def_be_opts
 #             'port' = 80,
 #             'connect_timeout' = '2s',
@@ -147,10 +152,11 @@ apphost_seen = {}
 @app_directors.keys.sort.each do |director_name|
 	director = @app_directors[director_name]
 	be_opts = @app_def_be_opts.merge(director['be_opts'] || {})
-	backend = director['backend']
-	next if apphost_seen.key?(backend)
-	apphost_seen[backend] = 1
-	name = 'be_' + backend.gsub(/[-.]/, '_')
+        if director['backends'].key?(@site)
+		backend = director['backends'][@site]
+		next if apphost_seen.key?(backend)
+		apphost_seen[backend] = 1
+		name = 'be_' + backend.gsub(/[-.]/, '_')
 -%>
 
 backend <%= name %> {
@@ -167,6 +173,7 @@ backend <%= name %> {
 	<%- end -%>
 }
 
+<% end # @site if-condition -%>
 <% end # app_directors loop -%>
 
 <% end # !varnish_testing -%>
@@ -198,18 +205,20 @@ backends = director['backends'] -%>
 
 <% end #dynamic_backend_caches -%>
 
-<% @app_directors.keys.sort.each do |director_name|
-director = @app_directors[director_name]
-backend = director['backend']
-if @varnish_testing
-	name = "vtc_backend";
-else
-	name = 'be_' + backend.gsub(/[-.]/, '_')
-end
+<%
+@app_directors.keys.sort.each do |director_name|
+        if @app_directors[director_name]['backends'].key?(@site)
+		backend = @app_directors[director_name]['backends'][@site]
+		if @varnish_testing
+			name = "vtc_backend";
+		else
+			name = 'be_' + backend.gsub(/[-.]/, '_')
+		end
 -%>
 	new <%= director_name %> = directors.random();
 
 		<%= director_name %>.add_backend(<%= name %>, 100);
+<% end # @site if-condition -%>
 <% end # app_directors loop -%>
 
 } # end wm_common_directors_init
