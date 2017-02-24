@@ -1,0 +1,13 @@
+# Discovery objects. they will represent a sequence of cluster/service/dc combinations
+discovery:
+  path: "discovery"
+  tags:
+    - cluster
+    - service
+  schema:
+    pooled:
+      type: "bool"
+      default: false
+    url:
+      type: "string"
+      default: ""

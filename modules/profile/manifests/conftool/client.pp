@@ -40,4 +40,13 @@ class profile::conftool::client(
         tcpircbot_port => $tcpircbot_port,
         hosts          => [],
     }
+
+    # Conftool schema. Let's assume we will only have one.
+    file { '/etc/conftool/schema.yaml':
+        ensure => present,
+        source => 'puppet:///modules/profile/conftool/schema.yaml',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0444',
+    }
 }
