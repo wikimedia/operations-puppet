@@ -2281,7 +2281,7 @@ users:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDoA+dwV71A3HjSLT1LjxjtXv0fb4/ycQGhqIdqPtulshi5/PZlG3tncFSQpwcOtgbwbRIMUnxhezHdQSUQONTOD02lKOk93dVma4TN6FAkb/ZIK6c9eRU/TQwy3OCXqj6O1CQohVj60kRKBvTKMUpw/oRM9lgTT3USc6UE3Uy8/0eHPiR37nhrA3E5uZ9KgEyIY6z+WCT6inghxEFE+uDFowY/8wwd2Rq4Nsa2F88I7488G1lmZpkye/BtbNbjt3QtLt9Qk8yfJqj8Rpniroxaj1Z+MNvVAXJFK+c4ziwjjAvNHcN9ngsJCURIOlOKgpLahNYofv8OmQ2PpQwGHDj/ psinger@gobbo
     uid: 15296
     email: philipp.singer@gesis.org
-    expiry_date: 2017-02-24
+    expiry_date: 2017-08-24
     expiry_contact: leila@wikimedia.org
   flemmerich:
     ensure: present
@@ -2292,7 +2292,7 @@ users:
       - ssh-rsa AAAAB3NzaC1yc2EAAAABJQAAAQEAhAOVYD/NaXnew0HlVw4i/3LYT6wn6b8D+5Yun2tWRGd8DaODevafjW0Bzf+XwjSNoRIP52ZRM4Vmhg4H6sL4g31FuMfEVgLwjI0WCTxUxIrR2aGuumXRVYRwLOhFkC2RT7TcjTkDzeMa7DijyDxjI9+/rqCgGHcQwIk/c20VYZ4AzHPpGWqeb2JQblDRu/Jz1enmzUt1rwX/4Kxo/lmkLAtJxzVKgNfn13Acj3BSu1w0DIbPBT7EjKCuzKx7ZthanoYIh+BV5KyErp13AB6dxoxSQNfcIbftBoG6idlUSkEqnzednYoVBQSWa4xNaA2NDbjqpxfbMhERRs8FSn9/iw==
     uid: 15297
     email: Florian.Lemmerich@gesis.org
-    expiry_date: 2017-02-24
+    expiry_date: 2017-08-24
     expiry_contact: leila@wikimedia.org
   marostegui:
     ensure: present
