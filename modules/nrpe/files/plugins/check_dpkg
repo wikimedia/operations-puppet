@@ -16,7 +16,7 @@ print_help() {
         echo ""
         print_usage
         echo ""
-        echo "This plugin checks hardware status using the lm_sensors package."
+        echo "This plugin checks DPKG for packages that are in a wrong state."
         echo ""
         support
         exit 0
@@ -48,7 +48,7 @@ case "$1" in
 		if test ${status} -eq 0 ; then
 			echo DPKG CRITICAL dpkg reports broken packages
 			exit 2
-		else 
+		else
 			echo All packages OK
 			exit 0
 		fi
