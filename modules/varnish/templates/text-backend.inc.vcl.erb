@@ -22,27 +22,25 @@ sub cluster_be_hash {
 	call text_common_hash;
 }
 
-<% if @cache_route == 'direct' -%>
 sub misspass_mangle {
-	// Mobile hostname mangling for MediaWiki
-	if (bereq.http.X-Subdomain) {
-		set bereq.http.host = bereq.http.x-dt-host;
-	}
+	if (!req.http.X-Next-Is-Cache) {
+		// Mobile hostname mangling for MediaWiki
+		if (bereq.http.X-Subdomain) {
+			set bereq.http.host = bereq.http.x-dt-host;
+		}
 
-	// RB request mangling
-	if (bereq.url ~ "^/api/rest_v1/") {
-		set bereq.url = "/" + bereq.http.host + regsub(bereq.url, "^/api/rest_v1/", "/v1/");
-	}
+		// RB request mangling
+		if (bereq.url ~ "^/api/rest_v1/") {
+			set bereq.url = "/" + bereq.http.host + regsub(bereq.url, "^/api/rest_v1/", "/v1/");
+		}
 
-	// Redirect url shortener w.wiki urls to meta (T133485)
-	if (bereq.http.host == "<%= @vcl_config.fetch('shortener_domain') %>" && bereq.url != "/") {
-		set bereq.http.host = "meta.wikimedia.<%= @vcl_config.fetch('top_domain') %>";
-		set bereq.url = "/wiki/Special:UrlRedirector" + bereq.url;
+		// Redirect url shortener w.wiki urls to meta (T133485)
+		if (bereq.http.host == "<%= @vcl_config.fetch('shortener_domain') %>" && bereq.url != "/") {
+			set bereq.http.host = "meta.wikimedia.<%= @vcl_config.fetch('top_domain') %>";
+			set bereq.url = "/wiki/Special:UrlRedirector" + bereq.url;
+		}
 	}
 }
-<% else -%>
-sub misspass_mangle { }
-<% end -%>
 
 sub cluster_be_hit { }
 

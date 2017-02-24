@@ -21,14 +21,18 @@ sub cluster_be_backend_response {
         return (deliver);
     }
 
-<% if @cache_route == 'direct' or @varnish_testing -%>
-    // Direct backend caches:
-    // Disable streaming if no Content-Length present.  This is the default in
-    // varnish3, but in varnish4 this should convert them to responses
-    // containing a Content-Length in the common case, so that upper caches
-    // can make size-based decisions.
-    if (!beresp.http.Content-Length) {
-        set beresp.do_stream = false;
+<% if not @varnish_testing -%>
+    if (!req.http.X-Next-Is-Cache) {
+<% end -%>
+        // Direct backend caches:
+        // Disable streaming if no Content-Length present.  This is the default in
+        // varnish3, but in varnish4 this should convert them to responses
+        // containing a Content-Length in the common case, so that upper caches
+        // can make size-based decisions.
+        if (!beresp.http.Content-Length) {
+            set beresp.do_stream = false;
+        }
+<% if not @varnish_testing -%>
     }
 <% end -%>
 }
