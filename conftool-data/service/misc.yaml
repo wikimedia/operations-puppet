@@ -1,0 +1,28 @@
+dns:
+  pdns_recursor:
+    port: 53
+    default_values:
+      "pooled": "no"
+      "weight": 10
+    datacenters:
+      - codfw
+      - eqiad
+      - esams
+      - ulsfo
+phabricator:
+  git-ssh:
+    port: 22
+    default_values:
+      "pooled": "no"
+      "weight": 10
+    datacenters:
+      - eqiad
+prometheus:
+  prometheus:
+    port: 80
+    default_values:
+      "pooled": "no"
+      "weight": 10
+    datacenters:
+      - eqiad
+      - codfw
