@@ -42,10 +42,14 @@ class role::cache::upload(
 
     $app_directors = {
         'swift'   => {
-            'backend' => 'ms-fe.svc.eqiad.wmnet',
+            'backends' => {
+                'eqiad' => 'ms-fe.svc.eqiad.wmnet',
+            },
         },
         'swift_thumbs'   => {
-            'backend' => 'ms-fe-thumbs.svc.eqiad.wmnet',
+            'backends' => {
+                'eqiad' => 'ms-fe-thumbs.svc.eqiad.wmnet',
+            },
         },
     }
 

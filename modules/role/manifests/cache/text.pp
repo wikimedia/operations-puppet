@@ -46,32 +46,48 @@ class role::cache::text(
 
     $app_directors = {
         'appservers'       => {
-            'backend' => 'appservers.svc.eqiad.wmnet',
+            'backends' => {
+                'eqiad' => 'appservers.svc.eqiad.wmnet',
+            },
         },
         'api'              => {
-            'backend' => 'api.svc.eqiad.wmnet',
+            'backends' => {
+                'eqiad' => 'api.svc.eqiad.wmnet',
+            },
         },
         'rendering'        => {
-            'backend' => 'rendering.svc.eqiad.wmnet',
+            'backends' => {
+                'eqiad' => 'rendering.svc.eqiad.wmnet',
+            },
         },
         'security_audit'   => {
-            'backend' => 'appservers.svc.eqiad.wmnet',
+            'backends' => {
+                'eqiad' => 'appservers.svc.eqiad.wmnet',
+            },
         },
         'appservers_debug'   => {
-            # 'backend' => 'hassium.eqiad.wmnet',
-            'backend' => 'hassaleh.codfw.wmnet',
+            'backends' => {
+                'eqiad' => 'hassium.eqiad.wmnet',
+                # 'codfw' => 'hassaleh.codfw.wmnet',
+            },
             'be_opts' => { 'max_connections' => 20 },
         },
         'restbase_backend' => {
-            'backend' => 'restbase.svc.eqiad.wmnet',
+            'backends' => {
+                'eqiad' => 'restbase.svc.eqiad.wmnet',
+            },
             'be_opts' => { 'port' => 7231, 'max_connections' => 5000 },
         },
         'cxserver_backend' => { # LEGACY: should be removed eventually
-            'backend' => 'cxserver.svc.eqiad.wmnet',
+            'backends' => {
+                'eqiad' => 'cxserver.svc.eqiad.wmnet',
+            },
             'be_opts' => { 'port' => 8080 },
         },
         'citoid_backend'   => { # LEGACY: should be removed eventually
-            'backend' => 'citoid.svc.eqiad.wmnet',
+            'backends' => {
+                'eqiad' => 'citoid.svc.eqiad.wmnet',
+            },
             'be_opts' => { 'port' => 1970 },
         },
     }
