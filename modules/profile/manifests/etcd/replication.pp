@@ -12,14 +12,11 @@
 #
 # [*destination_path*] Destination path on the local machine
 #
-# [*accounts*] Accounts on the local cluster, 'root' must be defined
-#
 # [*active*] If replication is active. For now, only one server per cluster
 #
 class profile::etcd::replication(
     $origin = hiera('profile::etcd::replication::origin'),
     $destination_path = hiera('profile::etcd::replication::destination_path'),
-    $accounts = hiera('profile::etcd::tlsproxy::accounts'),
     $prometheus_nodes = hiera('prometheus_nodes'),
     $active = hiera('profile::etcd::replication::active'),
 ) {
