@@ -93,25 +93,17 @@ class phabricator::vcs (
     }
 
     if $::initsystem == 'upstart' {
-        $init_file = '/etc/init/ssh-phab.conf'
-        $init_template = 'phabricator/sshd-phab.conf.erb'
-    } else {
-        $init_file = '/etc/systemd/system/ssh-phab.service'
-        $init_template = 'phabricator/sshd-phab.service.erb'
-    }
 
-    file { $init_file:
-        content => template($init_template),
-        mode    => '0644',
-        owner   => 'root',
-        group   => 'root',
-        require => Package['openssh-server'],
-    }
-
-    service { 'ssh-phab':
-        ensure     => running,
-        provider   => $::initsystem,
-        hasrestart => true,
-        require    => File[$init_file],
+    base::service_unit { 'ssh-phab':
+        ensure         => 'present',
+        systemd        => true,
+        upstart        => true,
+        strict         => false,
+        require        => Package['openssh-server'],
+        service_params => {
+            ensure     => 'running',
+            provider   => $::initsystem,
+            hasrestart => true,
+        },
     }
 }
