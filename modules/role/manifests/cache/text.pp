@@ -76,12 +76,41 @@ class role::cache::text(
         },
     }
 
+    $req_handling = {
+        'cxserver.wikimedia.org' => {
+            'director' => 'cxserver_backend',
+            'caching'  => 'pass',
+        },
+        'citoid.wikimedia.org'   => {
+            'director' => 'citoid_backend',
+            'caching'  => 'pass',
+        },
+        'default'                => {
+            'director'       => 'appservers',
+            'debug_director' => 'appservers_debug',
+            'subpaths' => {
+                '^/api/rest_v1/' => {
+                    'director' => 'restbase_backend'
+                },
+                '^/w/api\.php'   => {
+                    'director'       => 'api',
+                    'debug_director' => 'appservers_debug',
+                },
+                '^/w/thumb(_handler)?\.php' => {
+                    'director'       => 'rendering',
+                    'debug_director' => 'appservers_debug',
+                }
+            }
+        },
+    }
+
     $common_vcl_config = {
         'purge_host_regex' => $::role::cache::base::purge_host_not_upload_re,
         'static_host'      => $static_host,
         'top_domain'       => $top_domain,
         'shortener_domain' => $shortener_domain,
         'pass_random'      => true,
+        'req_handling'     => $req_handling,
     }
 
     $be_vcl_config = $common_vcl_config

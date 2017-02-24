@@ -88,11 +88,6 @@ sub text_common_recv {
 		return (pass);
 	}
 
-	# LEGACY: to be removed eventually
-	if (req.http.Host ~ "^(cxserver|citoid)\.wikimedia\.org$" ) {
-		return (pass);
-	}
-
 	call evaluate_cookie;
 	call pass_authorization;
 }

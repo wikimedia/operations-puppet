@@ -8,40 +8,14 @@ sub cluster_be_recv_pre_purge {
 	}
 }
 
-sub cluster_be_recv_applayer_backend {
-	if (req.http.Host == "cxserver.wikimedia.org" ) { # LEGACY: to be removed eventually
-		set req.backend_hint = cxserver_backend.backend();
-	} else if (req.http.Host == "citoid.wikimedia.org" ) { # LEGACY: to be removed eventually
-		set req.backend_hint = citoid_backend.backend();
-	} else { // default for all other hostnames
-		if (req.url ~ "^/api/rest_v1/") {
-			set req.backend_hint = restbase_backend.backend();
-		} else if (req.url ~ "^/w/api\.php") {
-			set req.backend_hint = api.backend();
-			set req.http.X-Backend-is-Mediawiki = 1;
-		} else if (req.url ~ "^/w/thumb(_handler)?\.php") {
-			set req.backend_hint = rendering.backend();
-			set req.http.X-Backend-is-Mediawiki = 1;
-		} else {
-			set req.backend_hint = appservers.backend();
-			set req.http.X-Backend-is-Mediawiki = 1;
-		}
-	}
-
-	if (req.http.X-Wikimedia-Debug && req.http.X-Backend-is-Mediawiki) {
-		set req.backend_hint = appservers_debug.backend();
-		unset req.http.X-Backend-is-Mediawiki;
-	}
-
+sub cluster_be_recv {
+	call text_common_recv;
+// This only applies for beta, which only has a fake "eqiad" and always goes "direct"...
 <% if @realm != "production" %>
 	if (req.http.X-Wikimedia-Security-Audit == "1") {
 		set req.backend_hint = security_audit.backend();
 	}
 <% end %>
-}
-
-sub cluster_be_recv {
-	call text_common_recv;
 }
 
 sub cluster_be_hash {
