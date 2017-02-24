@@ -62,7 +62,7 @@ sub normalize_request {
 	if(req.url ~ "(?i)^https?://[^/]") {
 		# this strips away 'user:pass@' and ':port' when copying from URI to Host:
 		set req.http.Host = regsub(req.url, "(?i)^https?://(.*@)?([^/:]+).*$", "\2");
-		set req.url = regsub(req.url, "(?i)^https?://[^/]+", "");
+		set req.url = regsub(req.url, "(?i)^https?://[^/]+/?", "/");
 	}
 
 	// Strip :port from req.http.host and normalize to lowercase
