@@ -348,7 +348,7 @@ def main():
 
     argparser.add_argument(
         '--image',
-        default='debian-8.6-jessie',
+        default='debian-8.7-jessie',
         help='Image to use',
     )
 

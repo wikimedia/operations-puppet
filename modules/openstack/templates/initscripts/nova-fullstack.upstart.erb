@@ -19,11 +19,11 @@ script
     export OS_USERNAME="osstackcanary"
     export OS_PASSWORD="<%= @password %>"
     /usr/local/sbin/nova-fullstack \
+                                       --creation-timeout <%= creation_timeout %> \
                                        --interval <%= @interval %> \
-                                       --max-pool 1 \
+                                       --max-pool <%= @max_pool %>  \
                                        --project admin-monitoring \
                                        --prepend fullstackd \
-                                       --image debian-8.6-jessie \
                                        --flavor m1.small \
                                        --keyfile <%= @keyfile %> \
                                        --statsd statsd.eqiad.wmnet
