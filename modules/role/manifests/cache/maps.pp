@@ -38,7 +38,9 @@ class role::cache::maps {
 
     $app_directors = {
         'kartotherian'   => {
-            'backend' => 'kartotherian.svc.eqiad.wmnet',
+            'backends' => {
+                'eqiad' => 'kartotherian.svc.eqiad.wmnet',
+            },
         },
     }
 

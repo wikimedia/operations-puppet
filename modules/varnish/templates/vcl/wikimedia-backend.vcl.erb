@@ -10,13 +10,35 @@ sub vcl_init {
 	call wm_common_directors_init;
 }
 
-sub set_backend_app__ {
+sub set_backend__ {
 <%
     def set_director(dirname, debug_dir)
-        if debug_dir.nil?
-            return "set req.backend_hint = #{dirname}.backend();"
+        dirs = @app_directors[dirname]['backends']
+        if dirs.key?(@site)
+            next_dir = dirname
         else
-            return "if (req.http.X-Wikimedia-Debug) { set req.backend_hint = #{debug_dir}.backend(); } else { set req.backend_hint = #{dirname}.backend(); }"
+            next_dir = "cache_#{@cache_route}"
+        end
+        if dirs.empty?
+            dir_act = "XXX no backends defined, return an error!"
+        else
+            dir_act = "set req.backend_hint = #{next_dir}.backend();"
+        end
+        if debug_dir.nil?
+            return dir_act
+        else
+            debug_dirs = @app_directors[debug_dir]['backends']
+            if debug_dirs.key?(@site)
+                next_debug_dir = debug_dir
+            else
+                next_debug_dir = "cache_#{@cache_route}"
+            end
+            if debug_dirs.empty?
+                debug_act = "XXX no backends defined, return an error!"
+            else
+                debug_act = "set req.backend_hint = #{next_debug_dir}.backend();"
+            end
+            return "if (req.http.X-Wikimedia-Debug) { #{debug_act} } else { #{dir_act} }"
         end
     end
 
@@ -51,15 +73,6 @@ sub set_backend_app__ {
     set_backend = if_stmts.join(' els')
 %>
     <%= set_backend %>
-}
-
-sub set_backend__ {
-<% if @cache_route == 'direct' -%>
-	// tier-one caches must select an applayer backend
-	call set_backend_app__;
-<% else -%>
-	set req.backend_hint = cache_<%= @cache_route %>.backend();
-<% end -%>
 }
 
 sub vcl_recv {
