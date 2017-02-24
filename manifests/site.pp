@@ -175,6 +175,12 @@ node 'bast3001.wikimedia.org' {
     }
 }
 
+node 'bast3002.wikimedia.org' {
+    role(bastionhost::general)
+
+    interface::add_ip6_mapped { 'main': interface => 'eth0', }
+}
+
 # Bastion in California
 node 'bast4001.wikimedia.org' {
     role(bastionhost::general,
