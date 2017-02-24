@@ -20,7 +20,7 @@ class profile::conftool::master(
     # We also need to know where the puppet repo is. We cannot require a profile
     # here because the puppet classes are not well structured. TODO: fix this
     # and transform the git dir into a parameter
-    require ::puppetmaster::gitclone
+    require ::puppetmaster::base_repo
 
     file { '/etc/conftool/data':
         ensure => link,
