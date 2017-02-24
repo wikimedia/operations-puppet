@@ -1,0 +1,36 @@
+esams:
+  cache_text:
+    cp3030.esams.wmnet: [varnish-fe, varnish-be, nginx]
+    cp3031.esams.wmnet: [varnish-fe, varnish-be, nginx]
+    cp3032.esams.wmnet: [varnish-fe, varnish-be, nginx]
+    cp3033.esams.wmnet: [varnish-fe, varnish-be, nginx]
+    cp3040.esams.wmnet: [varnish-fe, varnish-be, nginx]
+    cp3041.esams.wmnet: [varnish-fe, varnish-be, nginx]
+    cp3042.esams.wmnet: [varnish-fe, varnish-be, nginx]
+    cp3043.esams.wmnet: [varnish-fe, varnish-be, nginx]
+  cache_upload:
+    cp3034.esams.wmnet: [varnish-fe, varnish-be, nginx]
+    cp3035.esams.wmnet: [varnish-fe, varnish-be, nginx]
+    cp3036.esams.wmnet: [varnish-fe, varnish-be, nginx]
+    cp3037.esams.wmnet: [varnish-fe, varnish-be, nginx]
+    cp3038.esams.wmnet: [varnish-fe, varnish-be, nginx]
+    cp3039.esams.wmnet: [varnish-fe, varnish-be, nginx]
+    cp3044.esams.wmnet: [varnish-fe, varnish-be, nginx]
+    cp3045.esams.wmnet: [varnish-fe, varnish-be, nginx]
+    cp3046.esams.wmnet: [varnish-fe, varnish-be, nginx]
+    cp3047.esams.wmnet: [varnish-fe, varnish-be, nginx]
+    cp3048.esams.wmnet: [varnish-fe, varnish-be, nginx]
+    cp3049.esams.wmnet: [varnish-fe, varnish-be, nginx]
+  cache_maps:
+    cp3003.esams.wmnet: [varnish-fe, varnish-be, nginx]
+    cp3004.esams.wmnet: [varnish-fe, varnish-be, nginx]
+    cp3005.esams.wmnet: [varnish-fe, varnish-be, nginx]
+    cp3006.esams.wmnet: [varnish-fe, varnish-be, nginx]
+  cache_misc:
+    cp3007.esams.wmnet: [varnish-fe, varnish-be, nginx]
+    cp3008.esams.wmnet: [varnish-fe, varnish-be, nginx]
+    cp3009.esams.wmnet: [varnish-fe, varnish-be, nginx]
+    cp3010.esams.wmnet: [varnish-fe, varnish-be, nginx]
+  dns:
+    maerlant.wikimedia.org: [pdns_recursor]
+    nescio.wikimedia.org: [pdns_recursor]
