@@ -16,3 +16,21 @@ cache::route_table:
   codfw: 'eqiad'
   ulsfo: 'codfw'
   esams: 'eqiad'
+cache::app_def_be_opts:
+  port: 80
+  connect_timeout: '5s'
+  first_byte_timeout: '35s'
+  max_connections: 10000
+cache::app_directors:
+  swift:
+    backends:
+      eqiad: 'ms-fe.svc.eqiad.wmnet'
+  swift_thumbs:
+    backends:
+      eqiad: 'ms-fe-thumbs.svc.eqiad.wmnet'
+cache::req_handling:
+  default:
+    director: 'swift'
+    subpaths:
+      '^/+[^/]+/[^/]+/thumb/':
+        director: 'swift_thumbs'

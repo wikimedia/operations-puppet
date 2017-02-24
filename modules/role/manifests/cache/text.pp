@@ -37,96 +37,13 @@ class role::cache::text(
         'probe'                 => 'varnish',
     }
 
-    $app_def_be_opts = {
-        'port'                  => 80,
-        'connect_timeout'       => '5s',
-        'first_byte_timeout'    => '180s',
-        'max_connections'       => 1000,
-    }
-
-    $app_directors = {
-        'appservers'       => {
-            'backends' => {
-                'eqiad' => 'appservers.svc.eqiad.wmnet',
-            },
-        },
-        'api'              => {
-            'backends' => {
-                'eqiad' => 'api.svc.eqiad.wmnet',
-            },
-        },
-        'rendering'        => {
-            'backends' => {
-                'eqiad' => 'rendering.svc.eqiad.wmnet',
-            },
-        },
-        'security_audit'   => {
-            'backends' => {
-                'eqiad' => 'appservers.svc.eqiad.wmnet',
-            },
-        },
-        'appservers_debug'   => {
-            'backends' => {
-                'eqiad' => 'hassium.eqiad.wmnet',
-                # 'codfw' => 'hassaleh.codfw.wmnet',
-            },
-            'be_opts' => { 'max_connections' => 20 },
-        },
-        'restbase_backend' => {
-            'backends' => {
-                'eqiad' => 'restbase.svc.eqiad.wmnet',
-            },
-            'be_opts' => { 'port' => 7231, 'max_connections' => 5000 },
-        },
-        'cxserver_backend' => { # LEGACY: should be removed eventually
-            'backends' => {
-                'eqiad' => 'cxserver.svc.eqiad.wmnet',
-            },
-            'be_opts' => { 'port' => 8080 },
-        },
-        'citoid_backend'   => { # LEGACY: should be removed eventually
-            'backends' => {
-                'eqiad' => 'citoid.svc.eqiad.wmnet',
-            },
-            'be_opts' => { 'port' => 1970 },
-        },
-    }
-
-    $req_handling = {
-        'cxserver.wikimedia.org' => {
-            'director' => 'cxserver_backend',
-            'caching'  => 'pass',
-        },
-        'citoid.wikimedia.org'   => {
-            'director' => 'citoid_backend',
-            'caching'  => 'pass',
-        },
-        'default'                => {
-            'director'       => 'appservers',
-            'debug_director' => 'appservers_debug',
-            'subpaths' => {
-                '^/api/rest_v1/' => {
-                    'director' => 'restbase_backend'
-                },
-                '^/w/api\.php'   => {
-                    'director'       => 'api',
-                    'debug_director' => 'appservers_debug',
-                },
-                '^/w/thumb(_handler)?\.php' => {
-                    'director'       => 'rendering',
-                    'debug_director' => 'appservers_debug',
-                }
-            }
-        },
-    }
-
     $common_vcl_config = {
         'purge_host_regex' => $::role::cache::base::purge_host_not_upload_re,
         'static_host'      => $static_host,
         'top_domain'       => $top_domain,
         'shortener_domain' => $shortener_domain,
         'pass_random'      => true,
-        'req_handling'     => $req_handling,
+        'req_handling'     => hiera('cache::req_handling'),
     }
 
     $be_vcl_config = $common_vcl_config
@@ -145,8 +62,8 @@ class role::cache::text(
         fe_jemalloc_conf  => 'lg_dirty_mult:8,lg_chunk:16',
         fe_runtime_params => $common_runtime_params,
         be_runtime_params => $common_runtime_params,
-        app_directors     => $app_directors,
-        app_def_be_opts   => $app_def_be_opts,
+        app_directors     => hiera('cache::app_directors'),
+        app_def_be_opts   => hiera('cache::app_def_be_opts'),
         fe_vcl_config     => $fe_vcl_config,
         be_vcl_config     => $be_vcl_config,
         fe_extra_vcl      => ['text-common', 'zero', 'normalize_path', 'geoip'],

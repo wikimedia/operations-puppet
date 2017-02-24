@@ -15,3 +15,62 @@ cache::route_table:
   codfw: 'eqiad'
   ulsfo: 'codfw'
   esams: 'eqiad'
+cache::app_def_be_opts:
+  port: 80
+  connect_timeout: '5s'
+  first_byte_timeout: '180s'
+  max_connections: 1000
+cache::app_directors:
+  appservers:
+    backends:
+      eqiad: 'appservers.svc.eqiad.wmnet'
+  api:
+    backends:
+      eqiad: 'api.svc.eqiad.wmnet'
+  rendering:
+    backends:
+      eqiad: 'rendering.svc.eqiad.wmnet'
+  security_audit:
+    backends:
+      eqiad: 'appservers.svc.eqiad.wmnet'
+  appservers_debug:
+    be_opts:
+      max_connections: 20
+    backends:
+      eqiad: 'hassium.eqiad.wmnet'
+      # codfw: 'hassaleh.codfw.wmnet'
+  restbase_backend:
+    be_opts:
+      port: 7231
+      max_connections: 5000
+    backends:
+      eqiad: 'restbase.svc.eqiad.wmnet'
+  cxserver_backend:
+    be_opts:
+      port: 8080
+    backends:
+      eqiad: 'cxserver.svc.eqiad.wmnet'
+  citoid_backend:
+    be_opts:
+      port: 1970
+    backends:
+      eqiad: 'citoid.svc.eqiad.wmnet'
+cache::req_handling:
+  cxserver.wikimedia.org:
+    director: 'cxserver_backend'
+    caching: 'pass'
+  citoid.wikimedia.org:
+    director: 'citoid_backend'
+    caching: 'pass'
+  default:
+    director: 'appservers'
+    debug_director: 'appservers_debug'
+    subpaths:
+    '^/api/rest_v1/':
+      director: 'restbase_backend'
+    '^/w/api\.php':
+      director: 'api'
+      debug_director: 'appservers_debug'
+    '^/w/thumb(_handler)?\.php':
+      director: 'rendering'
+      debug_director: 'appservers_debug'
