@@ -97,8 +97,8 @@ class role::analytics_cluster::hadoop::master {
         # Only include heap size alerts if heap size is configured.
         $hadoop_namenode_heapsize = hiera('cdh::hadoop::namenode_heapsize', undef)
         if $hadoop_namenode_heapsize {
-            $nn_jvm_warning_threshold  = $hadoop_namenode_heapsize * 0.8
-            $nn_jvm_critical_threshold = $hadoop_namenode_heapsize * 0.9
+            $nn_jvm_warning_threshold  = $hadoop_namenode_heapsize * 0.9
+            $nn_jvm_critical_threshold = $hadoop_namenode_heapsize * 0.95
             monitoring::graphite_threshold { 'hadoop-hdfs-namenode-heap-usaage':
                 description   => 'HDFS active Namenode JVM Heap usage',
                 metric        => "Hadoop.NameNode.${::hostname}_eqiad_wmnet_9980.Hadoop.NameNode.JvmMetrics.MemHeapUsedM.upper",
@@ -106,14 +106,14 @@ class role::analytics_cluster::hadoop::master {
                 warning       => $nn_jvm_warning_threshold,
                 critical      => $nn_jvm_critical_threshold,
                 percentage    => '60',
-                contact_group => 'admins,analytics',
+                contact_group => 'analytics',
             }
         }
 
         $hadoop_resourcemanager_heapsize = $::cdh::hadoop::yarn_heapsize
         if $hadoop_resourcemanager_heapsize {
-            $rm_jvm_warning_threshold  = $hadoop_resourcemanager_heapsize * 0.8
-            $rm_jvm_critical_threshold = $hadoop_resourcemanager_heapsize * 0.9
+            $rm_jvm_warning_threshold  = $hadoop_resourcemanager_heapsize * 0.9
+            $rm_jvm_critical_threshold = $hadoop_resourcemanager_heapsize * 0.95
             monitoring::graphite_threshold { 'hadoop-yarn-resourcemananager-heap-usage':
                 description   => 'YARN active ResourceManager JVM Heap usage',
                 metric        => "Hadoop.ResourceManager.${::hostname}_eqiad_wmnet_9983.Hadoop.ResourceManager.JvmMetrics.MemHeapUsedM.upper",
@@ -121,7 +121,7 @@ class role::analytics_cluster::hadoop::master {
                 warning       => $rm_jvm_warning_threshold,
                 critical      => $rm_jvm_critical_threshold,
                 percentage    => '60',
-                contact_group => 'admins,analytics',
+                contact_group => 'analytics',
             }
         }
     }

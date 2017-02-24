@@ -62,8 +62,8 @@ class role::analytics_cluster::hadoop::worker {
         # Only include heap size alerts if heap size is configured.
         $hadoop_datanode_heapsize = $::cdh::hadoop::hadoop_heapsize
         if $hadoop_datanode_heapsize {
-            $dn_jvm_warning_threshold  = $hadoop_datanode_heapsize * 0.8
-            $dn_jvm_critical_threshold = $hadoop_datanode_heapsize * 0.9
+            $dn_jvm_warning_threshold  = $hadoop_datanode_heapsize * 0.9
+            $dn_jvm_critical_threshold = $hadoop_datanode_heapsize * 0.95
             monitoring::graphite_threshold { 'analytics_hadoop_hdfs_datanode':
                 description   => 'HDFS DataNode JVM Heap usage',
                 metric        => "Hadoop.DataNode.${::hostname}_eqiad_wmnet_9981.Hadoop.DataNode.JvmMetrics.MemHeapUsedM.upper",
@@ -71,14 +71,14 @@ class role::analytics_cluster::hadoop::worker {
                 warning       => $dn_jvm_critical_threshold,
                 critical      => $dn_jvm_critical_threshold,
                 percentage    => '60',
-                contact_group => 'admins,analytics',
+                contact_group => 'analytics',
             }
         }
 
         $hadoop_nodemanager_heapsize = $::cdh::hadoop::yarn_heapsize
         if $hadoop_nodemanager_heapsize {
-            $nm_jvm_warning_threshold  = $hadoop_nodemanager_heapsize * 0.8
-            $nm_jvm_critical_threshold = $hadoop_nodemanager_heapsize * 0.9
+            $nm_jvm_warning_threshold  = $hadoop_nodemanager_heapsize * 0.9
+            $nm_jvm_critical_threshold = $hadoop_nodemanager_heapsize * 0.95
             monitoring::graphite_threshold { 'analytics_hadoop_yarn_nodemanager':
                 description   => 'YARN NodeManager JVM Heap usage',
                 metric        => "Hadoop.NodeManager.${::hostname}_eqiad_wmnet_9984.Hadoop.NodeManager.JvmMetrics.MemHeapUsedM.upper",
@@ -86,7 +86,7 @@ class role::analytics_cluster::hadoop::worker {
                 warning       => $nm_jvm_critical_threshold,
                 critical      => $nm_jvm_critical_threshold,
                 percentage    => '60',
-                contact_group => 'admins,analytics',
+                contact_group => 'analytics',
             }
         }
 
