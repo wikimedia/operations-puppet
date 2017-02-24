@@ -34,7 +34,8 @@
   "tags": [
     "operations",
     "source:puppet.git",
-    "readonly"
+    "readonly",
+    "featured"
   ],
   "style": "light",
   "timezone": "utc",
