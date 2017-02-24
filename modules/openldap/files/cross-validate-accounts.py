@@ -145,6 +145,27 @@ def validate_common_ops_group(yamldata):
         return ""
 
 
+# Every account in the wmf group should be registered in data.yaml with a wikimedia.org address
+# Google account and every member in the nda group with a non-wikimedia.org address
+def validate_privileged_ldap_groups_memberships(users):
+    log = ""
+    wmf_members = set()
+    nda_members = set(get_ldap_group_members('nda'))
+
+    for member in get_ldap_group_members('wmf'):
+        if member in users.keys():  # flagged via different account check
+            if 'email' in users[member].keys():
+                if not users[member]['email'].endswith('wikimedia.org'):
+                    log += member + " is in wmf group, but not registered with a WMF account\n"
+
+    for member in get_ldap_group_members('nda'):
+        if member in users.keys():  # flagged via different account check
+            if 'email' in users[member].keys():
+                if users[member]['email'].endswith('wikimedia.org'):
+                    log += member + " is in nda group, but registered with a WMF account\n"
+    return log
+
+
 # Make sure that all group members are defined in the YAML file
 def validate_all_yaml_group_members_are_defined(known_users, yamldata):
     log = ""
@@ -237,6 +258,7 @@ def main():
     run_test(validate_all_ldap_group_members_are_defined(known_users))
     run_test(validate_duplicated_ops_permissions(users))
     run_test(print_pending_account_expirys(users))
+    run_test(validate_privileged_ldap_groups_memberships(users))
 
 
 if __name__ == '__main__':
