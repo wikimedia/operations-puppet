@@ -92,6 +92,8 @@ def run_remote(node,
     ssh = [
         '/usr/bin/ssh',
         '-o',
+        'ConnectTimeout=5',
+        '-o',
         'UserKnownHostsFile=/dev/null',
         '-o',
         'StrictHostKeyChecking=no',
@@ -146,7 +148,7 @@ def verify_ssh(address, user, keyfile, timeout):
     with Timer() as vs:
         logging.info('SSH to {}'.format(address))
         while True:
-            time.sleep(30)
+            time.sleep(10)
             try:
                 run_remote(address, user, keyfile, '/bin/true')
                 break
@@ -180,7 +182,7 @@ def verify_puppet(address, user, keyfile, timeout):
             pwait = pv.progress()
             if pwait > timeout:
                 raise Exception("Puppet for {} timed out".format(address))
-            time.sleep(30)
+            time.sleep(10)
 
     logging.debug(out)
     try:
@@ -348,7 +350,7 @@ def main():
 
     argparser.add_argument(
         '--image',
-        default='debian-8.6-jessie',
+        default='debian-8.7-jessie',
         help='Image to use',
     )
 
