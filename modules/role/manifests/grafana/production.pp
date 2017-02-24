@@ -32,6 +32,6 @@ class role::grafana::production {
         source => 'puppet:///modules/grafana/dashboards/swift',
     }
     grafana::dashboard { 'server-board':
-        source => 'puppet:///modules/grafana/dashboards/server-board',
+        source => 'puppet:///modules/grafana/dashboards/server-board.json',
     }
 }
