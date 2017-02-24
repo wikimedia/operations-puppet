@@ -3,7 +3,7 @@ class mirrors::serve {
     include ::nginx
 
     letsencrypt::cert::integrated { 'mirrors':
-        subjects   => 'mirrors.wikimedia.org,ubuntu.wikimedia.org',
+        subjects   => 'mirrors.wikimedia.org',
         puppet_svc => 'nginx',
         system_svc => 'nginx',
     }
