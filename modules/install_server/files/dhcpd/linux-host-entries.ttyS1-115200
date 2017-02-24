@@ -326,6 +326,15 @@ host bast3001 {
     filename "pxelinux.0";
 }
 
+host bast3001 {
+    hardware ethernet a4:ba:db:30:d7:70;
+    fixed-address bast3002.wikimedia.org;
+
+    next-server 208.80.154.86; # install1002 (tftp server)
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
+    filename "pxelinux.0";
+}
+
 host bast4001 {
     hardware ethernet 90:b1:1c:4d:42:49;
     fixed-address bast4001.wikimedia.org;
