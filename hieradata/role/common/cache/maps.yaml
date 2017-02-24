@@ -14,3 +14,15 @@ cache::route_table:
   codfw: 'eqiad'
   ulsfo: 'codfw'
   esams: 'eqiad'
+cache::app_def_be_opts:
+    port:               6533
+    connect_timeout:    '5s'
+    first_byte_timeout: '35s'
+    max_connections:    1000
+cache::app_directors:
+    kartotherian:
+        backends:
+            eqiad: 'kartotherian.svc.eqiad.wmnet'
+cache::req_handling:
+    default:
+        director: 'kartotherian'
