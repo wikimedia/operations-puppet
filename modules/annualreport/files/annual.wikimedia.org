@@ -11,6 +11,8 @@
     LogLevel warn
     CustomLog /var/log/apache2/access.log wmf
 
+    Header always append X-Frame-Options DENY
+
     <Directory /srv/org/wikimedia/annualreport>
         Require all granted
     </Directory>
