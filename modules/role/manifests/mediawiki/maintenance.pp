@@ -30,6 +30,12 @@ class role::mediawiki::maintenance {
     include mediawiki::maintenance::generatecaptcha
     include mediawiki::maintenance::pageassessments
 
+    # Include the cache warmup script; requires node and conftool
+    require ::profile::conftool::client
+    class { '::mediawiki::maintenance::cache_warmup':
+        ensure => present,
+    }
+
     # backup home directories to bacula, people work on these
     include backup::host
     backup::set {'home': }
