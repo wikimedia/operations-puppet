@@ -1,0 +1,17 @@
+extends: wikimedia
+parserOptions:
+  ecmaVersion: 6
+env:
+  es6: true
+  node: true
+rules:
+  no-console: off
+  quote-props:
+    - error
+    - as-needed
+  dot-notation:
+    - error
+    - allowKeywords: true
+  no-use-before-define:
+    - error
+    - functions: false
