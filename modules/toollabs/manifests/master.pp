@@ -11,6 +11,7 @@ class toollabs::master inherits toollabs {
         ensure      => present,
         requestable => 'FORCED',
         consumable  => 'YES',
+        require     => Service['gridengine-master'],
     }
 
     gridengine_resource { 'release':
@@ -22,6 +23,7 @@ class toollabs::master inherits toollabs {
         consumable  => 'NO',
         default     => 'NONE',
         urgency     => '0',
+        require     => Service['gridengine-master'],
     }
 
     gridengine_resource { 'user_slot':
@@ -33,6 +35,7 @@ class toollabs::master inherits toollabs {
         consumable  => 'YES',
         default     => '0',
         urgency     => '0',
+        require     => Service['gridengine-master'],
     }
 
     file { "${toollabs::collectors}/hostgroups":
