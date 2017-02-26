@@ -2099,6 +2099,7 @@ users:
     realname: Riccardo Coccioli
     ssh_keys:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC1iu4OcsLv8Nb+sWHDs9RZ4X9mtBpyf+fhJGrbKjFjaXDRVB5h/CXrqsMz8GJH44HJPBj5Gf/4bwvqRy7MLJGwpHjDJv1xeEOc0Oq5Aa/6/k6h8h0tCDWIGw/ghTOX+u9TZBAr4UHnBHjippEi+9G/jougFjQ2Hu9P62yYU69/mqdmXfLV0JnAXZl13vrzrjLyNWvH64tpwly9HLQXFCpxCI5DKUsmeGeJ7N5+o7XKRTDF4+vtCC3Ro3+FnoIzZP8iV+MzDwt4Z51wtmDY3IDl0PBNjI1OjWBrsCaGB6t3nm/5/mq3ggffgcQIXgjYTB6lxjkbYS0tO2oroFopnaVgx65mENIsWaX/YVpI7VOWN5ylVGljkDVZ+iYX7soDOwiBafZyDdQZ9VSNZDvOnt/sbbWCyYWhcreUfXehiNPLKjxugf7LUaXOqePeyg4swKuwQXzyHssdROjNcNScQn8ze0rety9UQwmkEu8TuSSwXBRxUR8uQhtuk9cxUlRw3qs5yljMVcL33JKF7aQ9b84pV2ARqSouD/zAOQSSrjIAdctlAHR5lYmXn1f3Gz5BMgK0vwcgknGsMHAndW/yejYQi8lQGGgq3MCTMcpvf5qJLgCA/myn/C2XQ20snyJg0Ci7lZpQR0r8EZd4kPD3IiYcWlLcLy3aROcnGGZtPl/jkw== rcoccioli@wikimedia.org
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPLPtrz3vy1SKNu4Rez8Jr+my9QhlNO0/iWLb4/cZB8V Riccardo Coccioli (volans) <rcoccioli@wikimedia.org>
     uid: 14150
     email: rcoccioli@wikimedia.org
   nschaaf:
