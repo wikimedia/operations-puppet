@@ -34,7 +34,7 @@ class role::openldap::corp {
     ferm::service { 'corp_ldap':
         proto  => 'tcp',
         port   => '389', # Yes, explicitly not supporting LDAPS (port 636)
-        srange => '@resolve((dubnium.wikimedia.org pollux.wikimedia.org mx1001.wikimedia.org mx2001.wikimedia.org))',
+        srange => '@resolve((dubnium.wikimedia.org pollux.wikimedia.org mx1001.wikimedia.org mx2001.wikimedia.org terbium.eqiad.wmnet))',
     }
 
     monitoring::service { 'corp_ldap_mirror':
