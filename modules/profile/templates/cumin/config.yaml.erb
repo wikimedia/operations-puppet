@@ -11,3 +11,7 @@ puppetdb:
 clustershell:
     environment:
         SSH_AUTH_SOCK: /run/keyholder/proxy.sock
+    ssh_options:
+        - '-o BatchMode=yes'
+        - '-o ConnectTimeout=2'
+        - '-o StrictHostKeyChecking=yes'
