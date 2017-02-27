@@ -20,7 +20,7 @@ fi
 echo "Start time: $(date)" > "$REPORT_PATH"
 $PRIVATE_DATA >> "$REPORT_PATH" 2>&1
 
-DATA=$(/bin/egrep -v "^--|^Start time" -c "$REPORT_PATH")
+DATA=$(/bin/egrep -v "^--|^Start time|wmf_checksums" -c "$REPORT_PATH")
 
 if [ "$DATA" -gt "0" ]
 then
