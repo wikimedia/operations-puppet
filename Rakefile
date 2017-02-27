@@ -96,7 +96,7 @@ end
 task :default => [:help]
 
 desc 'Run all build/tests commands (CI entry point)'
-task test: [:lint_head]
+task test: [:lint_head, :spec]
 
 desc 'Run all linting commands'
 task lint: [:rubocop, :syntax, :puppetlint]
