@@ -19,8 +19,8 @@ script
     export OS_USERNAME="osstackcanary"
     export OS_PASSWORD="<%= @password %>"
     /usr/local/sbin/nova-fullstack \
-                                       --ssh-timeout <%= ssh_timeout %> \
-                                       --creation-timeout <%= creation_timeout %> \
+                                       --ssh-timeout <%= @ssh_timeout %> \
+                                       --creation-timeout <%= @creation_timeout %> \
                                        --interval <%= @interval %> \
                                        --max-pool <%= @max_pool %>  \
                                        --project admin-monitoring \
