@@ -163,13 +163,6 @@ node 'bast2001.wikimedia.org' {
 }
 
 # Bastion in the Netherlands
-node 'bast3001.wikimedia.org' {
-    role(bastionhost::general)
-
-    interface::add_ip6_mapped { 'main': interface => 'eth0', }
-
-}
-
 node 'bast3002.wikimedia.org' {
     role(bastionhost::general,
          installserver::tftp,
