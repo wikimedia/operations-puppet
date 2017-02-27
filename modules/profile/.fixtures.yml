@@ -1,0 +1,5 @@
+fixtures:
+    symlinks:
+        profile: "#{source_dir}"
+        sslcert: "../../../../sslcert"
+        wmflib: "../../../../wmflib"
