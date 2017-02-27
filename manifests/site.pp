@@ -170,15 +170,13 @@ node 'bast3001.wikimedia.org' {
 
     interface::add_ip6_mapped { 'main': interface => 'eth0', }
 
-    class { '::ganglia::monitor::aggregator':
-        sites =>  'esams',
-    }
 }
 
 node 'bast3002.wikimedia.org' {
     role(bastionhost::general)
 
     interface::add_ip6_mapped { 'main': interface => 'eth0', }
+    class { '::ganglia::monitor::aggregator': sites =>  'esams', }
 }
 
 # Bastion in California

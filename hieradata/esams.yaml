@@ -1,4 +1,4 @@
-ganglia_aggregators: bast3001.wikimedia.org:11649
+ganglia_aggregators: bast3002.wikimedia.org:11649
 prometheus_nodes:
   - bast3001.wikimedia.org
 
