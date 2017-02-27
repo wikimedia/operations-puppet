@@ -48,7 +48,7 @@ class role::puppetmaster::standalone(
     }
 
     # Setup ENC
-    require_package('python3-yaml', 'python3-ldap3')
+    require_package('python3-yaml')
 
     include ldap::yamlcreds
 

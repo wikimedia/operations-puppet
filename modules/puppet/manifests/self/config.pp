@@ -28,7 +28,7 @@ class puppet::self::config(
         fail('Ldap puppet node definitions are no longer supported.  The $use_enc param must be true.')
     }
 
-    require_package('python3-yaml', 'python3-ldap3')
+    require_package('python3-yaml')
 
     include ::ldap::yamlcreds
 
