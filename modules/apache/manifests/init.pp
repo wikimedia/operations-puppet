@@ -80,16 +80,6 @@ class apache {
         require => Package['apache2'],
     }
 
-    if os_version('ubuntu < trusty') {
-        # Early releases of Apache manage configuration snippets in conf.d/.
-        # We standardize on conf-enabled/*.conf with this small shim.
-        file { '/etc/apache2/conf.d/load-conf-enabled.conf':
-            content => "Include /etc/apache2/conf-enabled/*.conf\n",
-            require => File['/etc/apache2/conf-enabled'],
-            notify  => Service['apache2'],
-        }
-    }
-
     apache::conf { 'defaults':
         source   => 'puppet:///modules/apache/defaults.conf',
         priority => 0,
