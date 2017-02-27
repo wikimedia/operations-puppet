@@ -1,20 +1,5 @@
 Origin: Wikimedia
 Label: Wikimedia
-Suite: precise-wikimedia
-Codename: precise-wikimedia
-Version: 12.04
-Architectures: source amd64 i386
-Components: main universe non-free thirdparty mariadb
-UDebComponents: main
-Update: hwraid hp-mcp-precise
-Description: Wikimedia specific packages for Ubuntu Precise
-SignWith: 09DBD9F93F6CD44A
-DebOverride: deb-override
-Log:
- log
-
-Origin: Wikimedia
-Label: Wikimedia
 Suite: trusty-wikimedia
 Codename: trusty-wikimedia
 Version: 14.04
