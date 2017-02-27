@@ -239,8 +239,14 @@ class role::cache::misc {
         'stats.wikimedia.org'                => { 'director' => 'thorium' },
         'stream.wikimedia.org'               => {
             'director' => 'eventstreams',
-            'caching'  => 'pipe',
             'subpaths' => {
+                # Pipe /v2/stream/.+ requests directly to eventstreams service
+                '^/v2/stream/.+' => {
+                    'director' => 'eventstreams',
+                    'caching'  => 'pipe',
+                },
+                # Pipe RCStream requests to rcstream service.  This is to be
+                # deprecated and shut down in July 2017.
                 '^/(socket\.io|rc(stream_status)?)(/|$)' => {
                     'director' => 'rcstream',
                     'caching'  => 'websockets',
