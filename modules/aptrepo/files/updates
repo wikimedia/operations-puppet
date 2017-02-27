@@ -27,24 +27,14 @@ VerifyRelease: 327574EE02A818DD
 ListShellHook: grep-dctrl -e -S '^(avro-libs|bigtop-jsvc|bigtop-tomcat|bigtop-utils|crunch|hadoop|hbase|hive|hue|impala|kite|llama|mahout|oozie|parquet|parquet-format|pig|pig-udf-datafu|sentry|solr|flume-ng|spark-core|sqoop|sqoop2|whirr|zookeeper)$' || [ $? -eq 1 ]
 
 Name: hwraid
-Method: http://hwraid.le-vert.net/ubuntu
+Method: http://hwraid.le-vert.net/debian
 Components: main>thirdparty
 UDebComponents:
 GetInRelease: no
-Suite: precise
+Suite: jessie
 Architectures: amd64 source
 VerifyRelease: 6005210E23B3D3B4
 ListShellHook: grep-dctrl -e -S '^megacli|arcconf|lsiutil$' || [ $? -eq 1 ]
-
-Name: hp-mcp-precise
-Method:  http://downloads.linux.hpe.com/SDR/repo/mcp
-Components: non-free>thirdparty
-UDebComponents:
-GetInRelease: no
-Suite: precise/current
-Architectures: amd64
-VerifyRelease: FADD8D64B1275EA3|C208ADDE26C2B797
-ListShellHook: grep-dctrl -e -S '^hp-health|hpssa|hpssacli|hpssaducli|hpacucli$' || [ $? -eq 1 ]
 
 Name: hp-mcp-trusty
 Method:  http://downloads.linux.hpe.com/SDR/repo/mcp
