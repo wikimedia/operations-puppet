@@ -38,14 +38,22 @@ mkdir -p $TESTDIR/etc/zones
 if [ ! -e "$WORKINGDIR/templates" ]; then
     die "templates not found, system misconfigured?"
 fi
-if [ ! -e "$WORKINGDIR/config-geo" ]; then
-    die "config-geo not found, system misconfigured?"
+if [ ! -e "$WORKINGDIR/config-geo-test" ]; then
+    die "config-geo-test not found, system misconfigured?"
+fi
+if [ ! -e "$WORKINGDIR/geo-maps" ]; then
+    die "geo-maps not found, system misconfigured?"
+fi
+if [ ! -e "$WORKINGDIR/geo-resources" ]; then
+    die "geo-resources not found, system misconfigured?"
 fi
 
 echo "Generating zonefiles from zone templates"
 authdns-gen-zones $WORKINGDIR/templates $TESTDIR/etc/zones
 
 echo "Generating gdnsd config"
-cp -f $WORKINGDIR/config-geo $TESTDIR/etc/config
+cp -f $WORKINGDIR/config-geo-test $TESTDIR/etc/config
+cp -f $WORKINGDIR/geo-maps $TESTDIR/etc/geo-maps
+cp -f $WORKINGDIR/geo-resources $TESTDIR/etc/geo-resources
 
 gdnsd -sSc $TESTDIR/etc checkconf
