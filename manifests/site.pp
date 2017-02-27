@@ -168,12 +168,12 @@ node 'bast3001.wikimedia.org' {
         prometheus::ops)
 
     interface::add_ip6_mapped { 'main': interface => 'eth0', }
-
 }
 
 node 'bast3002.wikimedia.org' {
     role(bastionhost::general,
-        installserver::tftp)
+        installserver::tftp,
+        prometheus::ops)
 
     interface::add_ip6_mapped { 'main': interface => 'eth0', }
     class { '::ganglia::monitor::aggregator': sites =>  'esams', }
