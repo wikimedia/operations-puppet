@@ -1,0 +1,35 @@
+#!/bin/bash
+set -e
+_puppetmaster="puppetmaster1001.eqiad.wmnet"
+_dir=$(cd `dirname $0` && pwd)
+
+
+function usage {
+    echo "${0} CERT_NAME SAN1 [SAN2 .. SANN]"
+    exit 1
+}
+
+function commasep { local IFS=",";  shift; echo "$*"; }
+# Find out the SAN list we need to sign with
+if [ $# -lt 1 ]; then
+    usage
+fi
+
+name=$1
+SAN=$(commasep $@)
+
+if ssh $_puppetmaster sudo puppet cert list $name > /dev/null 2>&1; then
+    echo "Skipping ${name}, already signed";
+    exit 1;
+fi
+echo "Generating cert for ${name}"
+echo "with SubjectAltNames ${SAN}"
+ssh $_puppetmaster sudo /usr/local/bin/puppet-ecdsacert -a "${SAN}" "${name}";
+ssh $_puppetmaster sudo cp -ax "/var/lib/puppet/ssl/private_keys/${name}.key" \
+    "/srv/private/modules/secret/secrets/ssl/${name}.key"
+ssh $_puppetmaster sudo git -C /srv/private add "modules/secret/secrets/ssl/${name}.key"
+echo "Private key generated and added to the private git repo. Don't forget to commit it!"
+scp "$_puppetmaster:/var/lib/puppet/server/ssl/ca/signed/${name}.pem" \
+    "${_dir}/../files/ssl/${name}.crt"
+git add "${_dir}/../files/ssl/${name}.crt"
+echo "Public key generated and added to git"
