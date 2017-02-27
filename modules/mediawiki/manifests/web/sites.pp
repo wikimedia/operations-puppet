@@ -40,9 +40,8 @@ class mediawiki::web::sites (
         priority => 0,
     }
 
-    $rewrite_portal = $portal_dir != 'portal'
-    apache::site { 'wwwportals':
-        content  => template('mediawiki/apache/sites/wwwportals.conf.erb'),
-        priority => 1,
+    class { 'mediawiki::web::portals':
+        portal_dir => $portal_dir,
     }
+
 }

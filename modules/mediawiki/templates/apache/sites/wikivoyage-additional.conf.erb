@@ -1,0 +1,4 @@
+# Old /de
+RewriteRule ^/de/(.*)$ %{ENV:RW_PROTO}://de.wikivoyage.<%= @domain_suffix %>/wiki/$1 [R=301,L]
+# Old /it
+RewriteRule ^/it/(.*)$ %{ENV:RW_PROTO}://it.wikivoyage.<%= @domain_suffix %>/wiki/$1 [R=301,L]
