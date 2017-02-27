@@ -164,8 +164,7 @@ node 'bast2001.wikimedia.org' {
 
 # Bastion in the Netherlands
 node 'bast3001.wikimedia.org' {
-    role(bastionhost::general,
-        prometheus::ops)
+    role(bastionhost::general)
 
     interface::add_ip6_mapped { 'main': interface => 'eth0', }
 
@@ -173,7 +172,8 @@ node 'bast3001.wikimedia.org' {
 
 node 'bast3002.wikimedia.org' {
     role(bastionhost::general,
-         installserver::tftp)
+         installserver::tftp,
+         prometheus::ops)
 
     interface::add_ip6_mapped { 'main': interface => 'eth0', }
     class { '::ganglia::monitor::aggregator': sites =>  'esams', }
