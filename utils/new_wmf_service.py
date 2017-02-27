@@ -344,7 +344,7 @@ class role::%(name)s {
         return False
 
     def setup_conftool_data(self):
-        filename = "conftool-data/services/services.yaml"
+        filename = "conftool-data/service/services.yaml"
         with open(filename, 'r') as f:
             data = ordered_load(f)
         if self.cluster not in data:
@@ -458,7 +458,7 @@ def main():
     if not s.setup_conftool_data():
         print 'Failed to setup conftool'
         return False
-    Git.add_file('conftool-data/services/services.yaml')
+    Git.add_file('conftool-data/service/services.yaml')
     # Let's commit the third batch
     Git.commit('Setup LVS for %s service on %s cluster' % (s.service_name, s.cluster))
 
