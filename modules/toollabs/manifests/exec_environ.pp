@@ -400,7 +400,7 @@ class toollabs::exec_environ {
         # Enable PHP mcrypt module (T97857).
         exec { 'tools_enable_php_mcrypt_module':
             command => '/usr/sbin/php5enmod mcrypt',
-            unless  => '/usr/sbin/php5query -s apache2 -m mcrypt && /usr/sbin/php5query -s cli -m mcrypt',
+            unless  => '/usr/sbin/php5query -S | /usr/bin/xargs -rI {} /usr/sbin/php5query -s {} -m mcrypt',
             require => Package['php5-cli', 'php5-mcrypt'],
         }
     } elsif $::lsbdistcodename == 'jessie' {
