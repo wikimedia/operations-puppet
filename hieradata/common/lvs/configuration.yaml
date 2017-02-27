@@ -627,7 +627,7 @@ lvs::configuration::lvs_services:
         codfw:
           hostname: ms-fe.svc.codfw.wmnet
         eqiad:
-          hostname: ms-fe.svc.codfw.wmnet
+          hostname: ms-fe.svc.eqiad.wmnet
   parsoid:
     description: "Parsoid wikitext parser for VisualEditor (%{::site})"
     class: low-traffic
