@@ -7,7 +7,7 @@ groups:
               johnflewis, marc, jkrauska, akumar, mnoushad, spage, tnegrin, msyed, kleduc,
               manybubbles, haithams, jzerebecki, ashwinpp, ironholds, robla, asherman,
               laner, declerambaul, srijan, junikowski, krenair, springle, jhobs, vbaranetsky,
-              yurik, bsimmers, bcohn]
+              yurik, bsimmers, bcohn, hjiang]
   wikidev:
     gid: 500
     description: container group for primary user groups.
@@ -112,7 +112,7 @@ groups:
               daisy, tomasz, mholloway-shell, madhuvishy, ebernhardson, niedzielski,
               neilpquinn-wmf, tbayer, moushira, dbrant, maxsem,
               jminor, etonkovidova, sbisson, addshore, matmarex, elukey,
-              nikerabbit, nschaaf, dstrine, joewalsh, mpany, hjiang, jsamra,
+              nikerabbit, nschaaf, dstrine, joewalsh, mpany, jsamra,
               jdittrich, chelsyx, ovasileva, mtizzoni, panisson, paolotti, ciro, debt,
               samwalton9, zareen, fdans, samtar, mlitn]
   ldap-admins:
@@ -232,7 +232,7 @@ groups:
               andyrussg, niedzielski, maxsem, hoo, daniel, tbayer, krinkle, tgr,
               csteipp, smalyshev, ebernhardson, addshore, jminor, chedasaurus, neilpquinn-wmf,
               dcausse, bd808, tjones, mobrovac, jgirault, jdrewniak, ejegg, jdcc, ori,
-              bmansurov, atgomez, amire80, kartik, pcoombe, foks, mpany, hjiang, jsamra,
+              bmansurov, atgomez, amire80, kartik, pcoombe, foks, mpany, jsamra,
               jdlrobson, chelsyx, ovasileva, mtizzoni, panisson, paolotti, ciro,
               psinger, flemmerich, mkroetzsch, akrausetud, filippo, nschaaf, pmiazga, faidon,
               zareen, piccardi, fdans, eevans, anomie, demon, ladsgroup, musikanimal]
@@ -2175,14 +2175,12 @@ users:
     expiry_date: 2017-06-07
     expiry_contact: mhernandez@wikimedia.org
   hjiang:
-    ensure: present
+    ensure: absent
     gid: 500
     name: hjiang
     realname: Helen Jiang
-    ssh_keys:
-      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDaary3YNmqf/fNSfBuhAkOQjOJhAKmwUjlKM5eQXlBMTyYdkFxdhEzBVKQeba2O8WSoazfx9fgmtdrJY4LVBH5Xk6DVe7tZcsS6ovpkPFqdey5bOVUOV4IYviuINBIuHjo8Z1LEXGibbB2EsrqsXsm+9NX9bcPifUhFK1ymd6LPjaD/XMeYWld29WwXqK8VW56SWdWpCcSmnVASaHrTXlqgDw6FY3sOjGZbUxoRz2qknSaapMIT2W6rkFoPrDiG5eqi2dS45/vMpEN7FBN6sx3FbjStM3kGu0PrfVDyDcK3+YyvwNgshV4RiW7VMWcsYkpxSWJlKBJMmQwEQDWNabH helen@localhost.localdomain
+    ssh_keys: []
     uid: 15082
-    email: hjiang@wikimedia.org
   bcohn:
     ensure: absent
     gid: 500
