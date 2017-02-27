@@ -49,7 +49,7 @@ groups:
   deployment:
     gid: 705
     description: replaces 'mortals' for software deployment
-    members: [aaron, dr0ptp4kt, anomie, aude, awight, awjrichards, bd808,
+    members: [dr0ptp4kt, anomie, aude, awight, awjrichards, bd808,
               brion, cscott, csteipp, demon, ebernhardson, esanders, gilles,
               gjg, gwicke, halfak, hashar, hoo, kaldari, kartik, khorn, krinkle,
               maxsem, mattflaschen, marktraceur, milimetric, mlitn, andyrussg,
