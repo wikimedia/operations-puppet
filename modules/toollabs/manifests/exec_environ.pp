@@ -429,14 +429,6 @@ class toollabs::exec_environ {
         ensure => latest,
     }
 
-    file { '/usr/bin/sql':
-        ensure => file,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0755',
-        source => 'puppet:///modules/toollabs/sql',
-    }
-
     sysctl::parameters { 'tool labs':
         values => {
             'vm.overcommit_memory' => 2,
