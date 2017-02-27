@@ -31,7 +31,6 @@ class apache::mpm(
     }
 
     $selected_mod = "mpm_${mpm}"
-    $selected_pkg = "apache2-mpm-${mpm}"
     $selected_cfg = "/etc/apache2/mods-available/mpm_${mpm}.load"
     $mpm_conf = "/etc/apache2/mods-available/mpm_${mpm}.conf"
 
@@ -48,14 +47,6 @@ class apache::mpm(
 
     apache::mod_conf { $rejected_mods:
         ensure => absent,
-    }
-
-    #Those are not needed in modern apache packages.
-    if os_version('ubuntu < trusty') {
-        package { $selected_pkg:
-            ensure => present,
-            before => File[$selected_cfg],
-        }
     }
 
     file { $selected_cfg:
