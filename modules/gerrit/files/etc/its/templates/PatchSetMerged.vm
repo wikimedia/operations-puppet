@@ -1,0 +1,4 @@
+Change $change-number merged by $uploader-name:
+[$project] $subject
+
+${its.formatLink($change-url)}
