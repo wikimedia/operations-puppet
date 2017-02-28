@@ -1,4 +1,4 @@
 Change $change-number had a related patch set uploaded (by $uploader-name; owner: $author-name):
-$subject
+[$project] $subject
 
 ${its.formatLink($change-url)}
