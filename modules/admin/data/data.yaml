@@ -408,7 +408,7 @@ groups:
     description: Service deploy users
     members: [bd808, eevans, gwicke, mobrovac, ppchelko, demon, twentyafterfour, thcipriani, dduvall,
               bsitzmann, mholloway-shell, kartik, halfak, ladsgroup, smalyshev, hoo,
-              ssastry, cscott, arlolra, jdlrobson]
+              ssastry, cscott, arlolra, jdlrobson, maxsem]
     privileges: []
 
   deploy-aqs:
