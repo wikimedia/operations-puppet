@@ -11,7 +11,7 @@ Environment="PHABRICATOR_ENV=phd"
 ExecStartPre=-/bin/mkdir /var/run/phd
 ExecStartPre=/bin/chown -R phd:phd /var/run/phd/
 ExecStart=/srv/phab/phabricator/bin/phd start
-ExecStop=/srv/phab/phabricator/bin/phd stop
+ExecStop=/srv/phab/phabricator/bin/phd stop --force
 RemainAfterExit=yes
 
 [Install]
