@@ -1,0 +1,5 @@
+fixtures:
+    symlinks:
+        interface: "#{source_dir}"
+        stdlib: "../../../../stdlib"
+        wmflib: "../../../../wmflib"
