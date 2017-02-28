@@ -24,6 +24,14 @@ class role::openldap::management {
         group  => 'root',
     }
 
+    file { '/usr/local/bin/offboard-user':
+        ensure => present,
+        source => 'puppet:///modules/openldap/offboard-user.py',
+        mode   => '0555',
+        owner  => 'root',
+        group  => 'root',
+    }
+
     user { 'accountcheck':
         ensure => present,
         system => true,
