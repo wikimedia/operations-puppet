@@ -41,7 +41,6 @@ sub vcl_recv {
 	set req.backend_hint = cache_<%= @cache_route %>.backend();
 <% end -%>
 
-	call wm_common_recv_grace;
 	call cluster_be_recv_pre_purge;
 	call wm_common_recv_purge;
 	call cluster_be_recv;
@@ -61,6 +60,7 @@ sub vcl_purge {
 
 sub vcl_hit {
 	call wm_common_hit;
+	call wm_common_hit_grace;
 	call cluster_be_hit;
 	return (deliver); // no default VCL (which is just "return (deliver)" anyways)
 }

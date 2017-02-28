@@ -246,8 +246,6 @@ sub vcl_recv {
 
 	set req.backend_hint = cache_local.backend();
 
-	call wm_common_recv_grace;
-
 	if (req.method != "PURGE") {
 		call https_recv_redirect;
 	}
@@ -284,6 +282,7 @@ sub vcl_purge {
 
 sub vcl_hit {
 	call wm_common_hit;
+	call wm_common_hit_grace;
 	call cluster_fe_hit;
 	return (deliver); // no default VCL (which is just "return (deliver)" anyways)
 }

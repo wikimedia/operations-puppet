@@ -245,13 +245,30 @@ sub wm_common_recv_early {
 	}
 }
 
-sub wm_common_recv_grace {
+sub wm_common_hit_grace {
+	if (obj.ttl >= 0s) {
+		# normal hit
+		return (deliver);
+	}
+
+	# No fresh objects. Let's look at the stale ones.
 	if (std.healthy(req.backend_hint)) {
-			# TODO: This is now handled in vcl_hit.
-			# set req.grace = 5m;
+		# Backend is healthy. Limit age to 5m.
+		if (obj.ttl + 5m > 0s) {
+			return (deliver);
+		} else {
+			# No candidate for grace. Fetch a fresh object.
+			return (fetch);
+		}
 	} else {
-			# TODO: This is now handled in vcl_hit.
-			# set req.grace = 60m;
+		# The backend is sick - use full grace. We set beresp.grace in
+		# wm_common_backend_response.
+		if (obj.ttl + obj.grace > 0s) {
+			return (deliver);
+		} else {
+			# no graced object.
+			return (fetch);
+		}
 	}
 }
 
