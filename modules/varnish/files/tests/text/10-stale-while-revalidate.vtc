@@ -1,0 +1,60 @@
+varnishtest "stale-while-revalidate"
+
+server s1 {
+    rxreq
+    txresp -hdr "Cache-control: max-age = 2" -body "1111\n"
+
+    rxreq
+    txresp -hdr "Cache-control: max-age = 2" -body "22222\n"
+} -start
+
+varnish v1 -arg "-p cc_command='exec cc -fpic -shared -Wl,-x -L/usr/local/lib/ -o %o %s -lmaxminddb' -p vcc_allow_inline_c=true -p vcc_err_unref=false" -vcl+backend {
+    backend vtc_backend {
+        .host = "${s1_addr}"; .port = "${s1_port}";
+    }
+
+    include "/usr/share/varnish/tests/wikimedia_text-backend.vcl";
+} -start
+
+client c1 {
+    # cache miss
+    txreq
+    rxresp
+    expect resp.status == 200
+    expect resp.bodylen == 5
+    expect resp.http.X-Cache-Int ~ "miss"
+    expect resp.http.Age == 0
+
+    delay 1
+
+    # cache hit
+    txreq
+    rxresp
+    expect resp.status == 200
+    expect resp.bodylen == 5
+    expect resp.http.X-Cache-Int ~ "hit/1"
+    expect resp.http.Age == 1
+} -run
+
+delay 3
+
+client c1 {
+    # stale object
+    txreq
+    rxresp
+    expect resp.status == 200
+    expect resp.bodylen == 5
+    expect resp.http.X-Cache-Int ~ "hit/2"
+    expect resp.http.Age == 4
+
+    # fresh one
+    txreq
+    rxresp
+    expect resp.status == 200
+    expect resp.bodylen == 6
+
+    # this is considered a cache hit because the actual object fetch happened
+    # asynchronously in the background while we were in vcl_hit
+    expect resp.http.X-Cache-Int ~ "hit/1"
+    expect resp.http.Age == 0
+} -run
