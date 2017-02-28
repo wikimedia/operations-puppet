@@ -14,11 +14,19 @@ class role::openldap::management {
         password => $ldapconfig['script_user_pass'],
     }
 
-    require_package('python-yaml')
+    require_package('python-yaml', 'python-ldap')
 
     file { '/usr/local/bin/cross-validate-accounts':
         ensure => present,
         source => 'puppet:///modules/openldap/cross-validate-accounts.py',
+        mode   => '0555',
+        owner  => 'root',
+        group  => 'root',
+    }
+
+    file { '/usr/local/bin/offboard-user':
+        ensure => present,
+        source => 'puppet:///modules/openldap/offboard-user.py',
         mode   => '0555',
         owner  => 'root',
         group  => 'root',
