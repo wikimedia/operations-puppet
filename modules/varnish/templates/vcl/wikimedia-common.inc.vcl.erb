@@ -245,13 +245,23 @@ sub wm_common_recv_early {
 	}
 }
 
-sub wm_common_recv_grace {
-	if (std.healthy(req.backend_hint)) {
-			# TODO: This is now handled in vcl_hit.
-			# set req.grace = 5m;
-	} else {
-			# TODO: This is now handled in vcl_hit.
-			# set req.grace = 60m;
+sub wm_common_hit_grace {
+	if (obj.ttl < 0s) {
+		# TTL expired
+		if (std.healthy(req.backend_hint)) {
+			# Backend is healthy. Limit age to 5m.
+			if (obj.ttl + 5m <= 0s) {
+				# No candidate for grace. Fetch a fresh object.
+				return (miss);
+			}
+		} else {
+			# Backend is sick, use full grace. We set beresp.grace in
+			# wm_common_backend_response.
+			if (obj.ttl + obj.grace <= 0s) {
+				# No candidate for grace.
+				return (miss);
+			}
+		}
 	}
 }
 
@@ -289,6 +299,12 @@ sub wm_common_backend_response {
 	}
 
 	set beresp.grace = 60m;
+
+	if (beresp.ttl < 1d) {
+		set beresp.keep = beresp.ttl;
+	} else {
+		set beresp.keep = 1d;
+	}
 
 	// Compress compressible things if the backend didn't already
 	if (beresp.http.content-type ~ "json|text|html|script|xml|icon|ms-fontobject|ms-opentype|x-font") {
