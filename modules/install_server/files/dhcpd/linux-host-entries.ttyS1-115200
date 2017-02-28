@@ -5552,6 +5552,11 @@ host oresrdb1002{
     fixed-address oresrdb1002.eqiad.wmnet;
 }
 
+host oresrdb2001 {
+    hardware ethernet aa:00:00:3b:a3:0e;
+    fixed-address oresrdb2001.codfw.wmnet;
+}
+
 host osmium {
     hardware ethernet F0:1F:AF:E6:72:40;
     fixed-address osmium.eqiad.wmnet;
