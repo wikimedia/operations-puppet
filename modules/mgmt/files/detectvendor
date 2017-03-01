@@ -1,0 +1,55 @@
+#!/bin/bash
+# try to detect whether a mgmt interface
+# is Dell or HP by looking at the ssh banner
+# Daniel Zahn - Wikimedia Foundation Inc.
+#
+# input: IP address of a management interface
+# output: string "dell" or "hp" or "unknown"
+
+# example IP for each device class:
+# HP:     10.193.3.19
+# Dell:   10.193.2.253
+# Juniper 10.193.0.19
+# PDU:    10.193.0.25
+#
+# requires: netcat
+
+
+if [ ! -f /bin/nc ]; then
+    echo "I can't find netcat. Please make sure /bin/nc exists."
+    exit 2
+fi
+
+mgmtip=$1
+
+if [ -e $1 ]; then
+    echo "usage: $0 <IP address>"
+    exit 2
+fi
+
+banner=$(echo "" | /bin/nc $mgmtip 22 | head -n1 | tr -dc '[:alnum:]-_.')
+
+# echo "The banner is: '${banner}'."
+
+case $banner in
+"SSH-2.0-mpSSH_0.2.1")
+    vendor="HP"
+    ;;
+"SSH-2.0-OpenSSH_6.6")
+    vendor="Dell"
+    ;;
+"SSH-2.0-OpenSSH_6.4")
+    vendor="Juniper"
+    ;;
+"SSH-2.0-MocanaSSH")
+    vendor="PDU"
+    ;;
+*)
+    vendor="unknown"
+    ;;
+esac
+
+# echo "The vendor seems to be: '${vendor}'"
+
+echo $vendor
+
