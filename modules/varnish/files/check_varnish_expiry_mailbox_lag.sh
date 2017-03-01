@@ -16,7 +16,7 @@ END {
     msg = "expiry mailbox lag is "
     lag = m - r
 
-    if (lag > 50000) {
+    if (lag > 500000) {
         print "CRITICAL: " msg lag
         exit 2
     } else {
