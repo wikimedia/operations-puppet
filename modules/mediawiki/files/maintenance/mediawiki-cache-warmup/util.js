@@ -179,7 +179,9 @@ function worker( options, dataset, handler ) {
 			timing: {
 				min: Infinity,
 				max: -Infinity,
-				avg: 0
+				avg: 0,
+				// wall of shame, top 5
+				wos: []
 			},
 			count: {
 				min: Infinity,
@@ -191,11 +193,27 @@ function worker( options, dataset, handler ) {
 	function expandDiff( diff ) {
 		return diff[ 0 ] * 1e9 + diff[ 1 ]; // in nanoseconds
 	}
-	function writeStats( diff ) {
+	function writeStats( diff, task, group ) {
 		var duration, oldTotal;
 		duration = expandDiff( diff );
 		oldTotal = stats.count.total;
 		stats.timing.min = Math.min( stats.timing.min, duration );
+		// Keep track of the slowest 5
+		if ( stats.timing.wos.length < 5 || duration > stats.timing.wos[ 0 ].duration ) {
+			let insertAt = 0;
+			for ( let i = 0; i < stats.timing.wos.length; i++ ) {
+				let item = stats.timing.wos[ i ];
+				if ( duration > item.duration ) {
+					insertAt = i + 1;
+				} else {
+					break;
+				}
+			}
+			stats.timing.wos.splice( insertAt, 0, { duration, group, task } );
+		}
+		if ( stats.timing.wos.length > 5 ) {
+			stats.timing.wos.shift();
+		}
 		stats.timing.max = Math.max( stats.timing.max, duration );
 		stats.timing.avg = ( ( stats.timing.avg * oldTotal ) + duration ) / ( oldTotal + 1 );
 		stats.count.total++;
@@ -220,7 +238,7 @@ function worker( options, dataset, handler ) {
 			ret = handler( task, group );
 			Promise.resolve( ret )
 				.then( function () {
-					writeStats( process.hrtime( start ) );
+					writeStats( process.hrtime( start ), task, group );
 					concurrency.global--;
 					concurrency.groups[ group ]--;
 					handlePending();
