@@ -85,6 +85,16 @@ Architectures: amd64
 VerifyRelease: D27D666CD88E42B4
 ListShellHook: grep-dctrl -X -S elasticsearch -a -F Version --eq 2.3.5 || [ $? -eq 1 ]
 
+Name: elasticsearch5x
+Method: https://artifacts.elastic.co/packages/5.x/apt
+Components: experimental>thirdparty
+UDebComponents:
+Suite: stable
+GetInRelease: no
+Architectures: amd64
+VerifyRelease: D27D666CD88E42B4
+ListShellHook: grep-dctrl -X -S elasticsearch -a -F Version --eq 5.2.1 || [ $? -eq 1 ]
+
 Name: logstash
 Method: http://packages.elasticsearch.org/logstash/1.4/debian
 Components: main>thirdparty
