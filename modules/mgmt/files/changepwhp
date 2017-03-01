@@ -1,0 +1,45 @@
+#!/bin/bash
+# change the password of a ILO mgmt interface
+# (c) Papaul Tshibamba, Wikimedia Foundation Inc. 2016
+#sshpass needs to be installed on the host from where this script will run
+echo -n "Enter ILO root password (password will not be displayed):"
+read -s ILOPASS
+echo
+echo -n "Enter ILO root new password (password will not be displayed):"
+read -s ILO_NEW_PASS
+echo
+
+#Host ip list file location
+host_list=ip_list.txt
+
+#Logfile to keep the logs of the execution
+logfile=config.log
+ #get a list of IPs for the servers
+        function getServers () {
+                cat $host_list
+}
+
+        #check if the file with the hosts IPs exist
+        if [ ! -r $host_list ]; then
+                echo "IP address file $host_list not found or cannot be read"
+                exit
+        #Make a log file. The logfile gets overwritten at each exection
+                else echo "Starting Bash configuration of HP ILO for file $host_list" >$logfile
+
+        fi
+for host_ip in $(getServers); do
+        echo "========================================" >> $logfile
+        echo "Changing ILO password for  $host_ip " >>$logfile
+
+        sshpass -p "$ILOPASS" ssh -o StrictHostKeyChecking=no -l root $host_ip set /map1/accounts1/root password="$ILO_NEW_PASS" | sed s/$ILO_NEW_PASS/XXXXX/g  >>$logfile 2>&1
+
+        if [ $? -ne 0 ]; then
+                echo "Failed. See logfile for details"
+        else
+                echo "ILO configured successfully on $host_ip"
+        fi
+
+
+
+done <$host_list
+echo " complete"
