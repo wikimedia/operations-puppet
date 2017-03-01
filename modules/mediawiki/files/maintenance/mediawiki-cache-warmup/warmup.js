@@ -1,5 +1,4 @@
 var fs = require( 'fs' ),
-	http = require( 'http' ),
 	path = require( 'path' ),
 	url = require( 'url' ),
 	exec = require( 'child_process' ).execSync,
@@ -106,9 +105,12 @@ function doRequests( dataset, options ) {
 		console.log(
 			`Statistics:
 	- timing: min = ${stats.timing.min / 1e9}s | max = ${stats.timing.max / 1e9}s | avg = ${stats.timing.avg / 1e9}s | total = ${Math.round( stats.timing.total / 1e9 )}s
-	- concurrency: min = ${stats.count.min} | max = ${stats.count.max} | avg = ${Math.round( stats.count.avg )}
-	`
+	- concurrency: min = ${stats.count.min} | max = ${stats.count.max} | avg = ${Math.round( stats.count.avg )}`
 		);
+		console.log( 'Slowest 5:\n' + stats.timing.wos.reverse().map( obj => {
+			let duration = ( obj.duration / 1e9 ).toFixed( 3 );
+			return ` - ${duration}s (${obj.group}) ${obj.task}`;
+		} ).join( '\n' ) );
 		console.log( 'Done!' );
 	} ).catch( function ( err ) {
 		console.log( err );
@@ -135,7 +137,7 @@ util.expandUrlList( urlList ).then( function ( urlList ) {
 		console.log( '[clone] Sending ' + urlList.length + ' urls to ' + Object.keys( dataset ).length + ' servers.' );
 
 		doRequests( dataset, {
-			globalConcurrency: 3000,
+			globalConcurrency: 2500,
 			groupConcurrency: 150
 		} );
 	} else if ( arg.mode === 'spread' ) {
