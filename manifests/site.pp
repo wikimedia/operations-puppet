@@ -2308,6 +2308,11 @@ node /^oresrdb100[12]\.eqiad\.wmnet$/ {
     include ::standard
 }
 
+node /^oresrdb200[12]\.codfw\.wmnet$/ {
+    role(ores::redis)
+    include ::standard
+}
+
 # VisualEditor performance testing rig
 node 'osmium.eqiad.wmnet' {
     role(ve)

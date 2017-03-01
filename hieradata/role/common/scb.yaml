@@ -53,7 +53,7 @@ debdeploy::grains:
     value: standard
 citoid::zotero_port: 1969
 citoid::zotero_host: "zotero.svc.%{::site}.wmnet"
-ores::web::redis_host: oresrdb.svc.eqiad.wmnet
+ores::web::redis_host: "oresrdb.svc.%{::site}.wmnet"
 
 # Stream configuration for Public EventStreams service
 # Maps stream route names to composite Kafka topics.
