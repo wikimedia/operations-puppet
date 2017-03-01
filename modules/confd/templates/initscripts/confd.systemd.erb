@@ -1,3 +1,13 @@
+<%-
+if @interval
+   opts = "-interval=#{@interval}"
+else
+   opts = "-watch"
+end
+if @prefix and !@prefix.empty?
+   opts += " -prefix=#{@prefix}"
+end
+-%>
 [Unit]
 Description=confd
 
@@ -9,7 +19,7 @@ Environment="CONFD_DISCOVERY=-node <%= @node %>"
 <%- else -%>
 Environment="CONFD_DISCOVERY=-srv-domain <%= @srv_dns %> -scheme <%= @scheme %>"
 <%- end -%>
-Environment="CONFD_OPTS=<% if @interval %>-interval <%= @interval %><% else %>-watch<% end %>"
+Environment="CONFD_OPTS=<%= opts %>"
 ExecStart=/usr/bin/confd -backend $CONFD_BACKEND $CONFD_DISCOVERY $CONFD_OPTS
 Restart=on-failure
 RestartSec=10s
