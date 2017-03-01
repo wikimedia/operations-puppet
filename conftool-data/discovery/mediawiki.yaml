@@ -1,3 +1,6 @@
+mediawiki:
+  readwrite: [eqiad, codfw]
+  readonly: [eqiad, codfw]
 appserver:
   apache2: [eqiad, codfw]
   nginx: [eqiad, codfw]
