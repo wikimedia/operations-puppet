@@ -1,0 +1,70 @@
+#!/bin/bash
+# Try to detect the vendor of a device
+# from the SSH banner of its mgmt interface.
+
+# Daniel Zahn - Wikimedia Foundation Inc.
+
+# input: IP address of a management interface
+# output: string "dell" or "hp" or "unknown"
+
+# example IP for each device class:
+
+# HP:     10.193.3.19
+# Dell:   10.193.2.253
+# Juniper 10.193.0.19
+# PDU:    10.193.0.25
+
+
+# requirements:: netcat, tr, head
+
+if [ ! -f /bin/nc ]; then
+    echo "I can't find netcat. Please make sure /bin/nc exists."
+    exit 2
+fi
+
+if [ ! -f /usr/bin/tr ]; then
+    echo "I can't find tr. Please make sure /usr/bin/tr exists."
+    exit 2
+fi
+
+if [ ! -f /usr/bin/head ]; then
+    echo "I can't find head. Please make sure /usr/bin/head exists."
+    exit 2
+fi
+##
+
+mgmtip=$1
+mgmtport=22
+
+if [ -e $1 ]; then
+    echo "usage: $0 <IP address>"
+    exit 1
+fi
+
+# send an empty echo on connect, take just the first line, filter out special chars
+banner=$(echo "" | /bin/nc $mgmtip $mgmtport | /usr/bin/head -n1 | /usr/bin/tr -dc '[:alnum:]-_.')
+
+# echo "The banner is: '${banner}'."
+
+case $banner in
+"SSH-2.0-mpSSH_0.2.1")
+    vendor="HP"
+    ;;
+"SSH-2.0-OpenSSH_6.6")
+    vendor="Dell"
+    ;;
+"SSH-2.0-OpenSSH_6.4")
+    vendor="Juniper"
+    ;;
+"SSH-2.0-MocanaSSH")
+    vendor="PDU"
+    ;;
+*)
+    vendor="unknown"
+    ;;
+esac
+
+# echo "The vendor seems to be: '${vendor}'"
+
+echo $vendor
+
