@@ -13,3 +13,7 @@ elasticsearch::recover_after_time: '1m'
 # T130329
 profile::base::check_disk_options: -w 18% -c 15% -l -e -A -i "/srv/sd[a-b][1-3]" --exclude-type=tracefs
 
+# use elasticsearch 5, which is only available in experimental at the moment.
+# once all elasticsearch clusters are upgraded to version 5, we will move
+# elasticsearch to our main repo and remove this configuration
+apt::use_experimental: true
