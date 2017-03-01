@@ -22,7 +22,7 @@ class role::maps::server {
     $node_version = hiera('maps::node_version', 4)
 
     $node_package_version = $node_version ? {
-        6       => '6.9.1~dfsg-1',
+        6       => '6.9.1~dfsg-1+wmf1',
         default => '4.6.0~dfsg-1+wmf2',
     }
 
