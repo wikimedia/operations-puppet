@@ -13,11 +13,6 @@ server=<%= @gearman_server %>
 [gearman_server]
 start=<%= @gearman_server_start %>
 log_config=/etc/zuul/gearman-logging.conf
-
-[jenkins]
-server=<%= @jenkins_server %>
-user=<%= @jenkins_user %>
-apikey=<%= @jenkins_apikey %>
 <% end -%>
 
 [gerrit]

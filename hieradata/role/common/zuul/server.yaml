@@ -3,8 +3,6 @@ zuul::server:
     gearman_server: 127.0.0.1
     config_git_branch: master
     gearman_server_start: true
-    jenkins_server: http://127.0.0.1:8080/ci
-    jenkins_user: zuul-bot
     # FIXME use a lookup?
     statsd_host: statsd.eqiad.wmnet
     url_pattern: 'https://integration.wikimedia.org/ci/job/{job.name}/{build.number}/console'
