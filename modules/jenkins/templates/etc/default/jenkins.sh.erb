@@ -90,4 +90,4 @@ JENKINS_ACCESSLOG_ENABLE="--accessLoggerClassName=winstone.accesslog.SimpleAcces
 # --argumentsRealm.roles.$ADMIN_USER=admin
 # --webroot=~/.jenkins/war
 # --prefix=$PREFIX
-JENKINS_ARGS="--webroot=/var/run/jenkins/war --httpPort=$HTTP_PORT --ajp13Port=$AJP_PORT --prefix=$PREFIX $JENKINS_ACCESSLOG_ENABLE"
+JENKINS_ARGS="--webroot=/var/cache/jenkins/war --httpPort=$HTTP_PORT --ajp13Port=$AJP_PORT --prefix=$PREFIX $JENKINS_ACCESSLOG_ENABLE"
