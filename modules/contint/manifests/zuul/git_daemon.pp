@@ -26,8 +26,11 @@ class contint::zuul::git_daemon(
     ensure     => running,
     enable     => true,
     hasrestart => true,
+    hasstatus  => true,
+    status     => '/usr/sbin/service git-daemon status | grep "running"',
     subscribe  => File['/etc/default/git-daemon'],
     require    => Package['git-daemon-sysvinit'],
   }
 
 }
+
