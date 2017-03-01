@@ -23,7 +23,7 @@ class contint::zuul::git_daemon(
   }
 
   service { 'git-daemon':
-    ensure     => running,
+    ensure     => 'running',
     enable     => true,
     hasrestart => true,
     subscribe  => File['/etc/default/git-daemon'],
