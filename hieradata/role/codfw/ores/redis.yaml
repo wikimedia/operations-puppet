@@ -1,0 +1,6 @@
+ores::redis::client_hosts:
+  - scb2001.codfw.wmnet
+  - scb2002.codfw.wmnet
+  - scb2003.codfw.wmnet
+  - scb2004.codfw.wmnet
+  - oresrdb2001.codfw.wmnet
