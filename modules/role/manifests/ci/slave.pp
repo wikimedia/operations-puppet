@@ -31,8 +31,4 @@ class role::ci::slave {
         },  # end of settings
         require  => User['jenkins-slave'],
     }
-
-    # Ganglia diskstat plugin is being evaluated on contint production slaves
-    # servers merely to evaluate it for the standard role. -- hashar, 23-Oct-2013
-    ganglia::plugin::python { 'diskstat': }
 }
