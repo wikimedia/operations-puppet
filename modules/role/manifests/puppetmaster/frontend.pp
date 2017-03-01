@@ -96,4 +96,5 @@ class role::puppetmaster::frontend {
     # This is the role again
     include ::profile::conftool::client
     include ::profile::conftool::master
+    include ::profile::discovery::client
 }
