@@ -460,3 +460,6 @@ install_server_failover: install2002.wikimedia.org
 etcd_client_srv_domain: "%{::site}.wmnet"
 etcd_host: ''
 etcd_port: ''
+
+# Conftool global prefix (will be per-dc)
+conftool_prefix: "/conftool/v1"
