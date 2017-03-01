@@ -1,0 +1,7 @@
+Verified+2: jenkins-bot
+Code-Review+2: Gehel <guillaume.lederrey@wikimedia.org>
+Submitted-by: Gehel <guillaume.lederrey@wikimedia.org>
+Submitted-at: Wed, 01 Mar 2017 08:52:49 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/340480
+Project: operations/puppet
+Branch: refs/heads/production
