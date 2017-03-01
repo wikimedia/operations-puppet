@@ -77,7 +77,7 @@ class role::lists::server {
 
     monitoring::service { 'smtp':
         description   => 'Exim SMTP',
-        check_command => 'check_smtp_tls',
+        check_command => 'check_smtp_tls_le',
     }
 
     monitoring::service { 'https':
