@@ -45,7 +45,7 @@ class role::archiva {
 
     monitoring::service { 'https_archiva':
         description   => 'HTTPS',
-        check_command => 'check_ssl_http!archiva.wikimedia.org',
+        check_command => 'check_ssl_http_letsencrypt!archiva.wikimedia.org',
     }
 }
 
