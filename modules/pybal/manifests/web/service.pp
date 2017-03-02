@@ -9,7 +9,7 @@ define pybal::web::service($config) {
         $cluster = $service_config['conftool']['cluster']
         $service_name = $service_config['conftool']['service']
 
-        $path = "${::pybal::web::conftool_dir}/${name}"
+        $path = "${::pybal::web::pools_dir}/${name}"
 
         pybal::conf_file { $path:
             dc      => $dc,
