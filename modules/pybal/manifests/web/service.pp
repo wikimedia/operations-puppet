@@ -15,7 +15,7 @@ define pybal::web::service($config) {
             dc      => $dc,
             cluster => $cluster,
             service => $service_name,
-            require => File[$::pybal::web::conftool_dir],
+            require => File[$::pybal::web::root_dir],
         }
     }
 }
