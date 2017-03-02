@@ -2360,8 +2360,6 @@ host graphite1003 {
 host graphite2001 {
     hardware ethernet B0:83:FE:DF:24:CA;
     fixed-address graphite2001.codfw.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host graphite2002 {
