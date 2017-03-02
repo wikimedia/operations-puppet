@@ -124,6 +124,19 @@ NameVirtualHost *:443
     # Gerrit in Firefox and look in the Network Monitor for a similarly named .cache.js file.
     RewriteRule ^/r/gerrit_ui/undefined.cache.js$ https://<%= @host %>/r/gerrit_ui/AFCF57AB10C0BF746D7926C5246142C1.cache.js
 
+    # Polygerrit rewrites, needing because of
+    # https://bugs.chromium.org/p/gerrit/issues/detail?id=3795
+    RewriteRule ^/q/(.*)$ https://<%= @host %>/r/q/$1
+    RewriteRule ^/styles/(.*)$ https://<%= @host %>/r/styles/$1
+    RewriteRule ^/bower_components/(.*)$ https://<%= @host %>/r/bower_components/$1
+    RewriteRule ^/elements/(.*)$ https://<%= @host %>/r/elements/$1
+    RewriteRule ^/config/(.*)$ https://<%= @host %>/r/config/$1
+    RewriteRule ^/accounts/(.*)$ https://<%= @host %>/r/accounts/$1
+    RewriteRule ^/login/(.*)$ https://<%= @host %>/r/login/$1
+    RewriteRule ^/changes/(.*)$ https://<%= @host %>/r/changes/$1
+    RewriteRule ^/projects/(.*)$ https://<%= @host %>/r/projects/$1
+    RewriteRule ^/c/(.*)$ https://<%= @host %>/r/c/$1
+
     <%- if @maint_mode -%>
     RedirectMatch temp "/r" "/error.html#"
     <%- else -%>
