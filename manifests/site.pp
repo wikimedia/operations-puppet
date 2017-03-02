@@ -164,12 +164,12 @@ node 'bast2001.wikimedia.org' {
 
 # formerly 'Bastion in the Netherlands', replaced by bast3002 (T156506)
 node 'bast3001.wikimedia.org' {
-    role(spare)
+    role(spare::system)
 
     interface::add_ip6_mapped { 'main': interface => 'eth0', }
 }
 
-# Bastion in the Netherlands, active
+# Bastion in the Netherlands
 node 'bast3002.wikimedia.org' {
     role(bastionhost::general,
         installserver::tftp,
