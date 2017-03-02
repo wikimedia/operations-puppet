@@ -1,35 +1,21 @@
 # == Class pybal::web
 #
-# Sets up the virtualhost and the other resources for serving the pybal configs.
-#
-# == Parameters
-#
-# [*chostname*]
-# The ServerAlias hostname to add to the virtual host.
+# Writes down all the files to be served from config-master
+# to expose the pybal conf file pools
 #
 
-class pybal::web ($ensure = 'present', $vhostnames = ['pybal-config.eqiad.wmnet']) {
+class pybal::web ($datacenters, $root_dir, $ensure = 'present',) {
 
+    # TODO: remove cleaned up.
     apache::site { 'pybal-config':
-        ensure   => $ensure,
-        priority => 50,
-        content  => template('pybal/config-vhost.conf.erb'),
-        notify   => Service['apache2'],
-        require  => File['/srv/pybal-config'],
+        ensure => absent,
     }
 
-    file { '/srv/pybal-config':
-        ensure => ensure_directory($ensure),
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0755',
-    }
 
-    $conftool_dir = '/srv/pybal-config/conftool'
-    $datacenters = hiera('datacenters')
-    $dc_dirs = prefix($datacenters, "${conftool_dir}/")
+    $pools_dir = "${root_dir}/pybal"
+    $dc_dirs = prefix($datacenters, "${root_dir}/")
 
-    file { $conftool_dir:
+    file { $pools_dir:
         ensure => ensure_directory($ensure),
         owner  => 'root',
         group  => 'root',
@@ -51,5 +37,4 @@ class pybal::web ($ensure = 'present', $vhostnames = ['pybal-config.eqiad.wmnet'
     }
 
     pybal::web::dc_pools { $datacenters: }
-
 }

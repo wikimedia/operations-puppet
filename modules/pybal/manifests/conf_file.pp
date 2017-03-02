@@ -11,13 +11,16 @@
 # [*service*]
 #   The service we're writing the file for.
 #
+# [*prefix*]
+#   Prefix for the conftool call
 define pybal::conf_file (
     $cluster,
     $service,
     $dc=$::site,
-    $ensure=present
+    $prefix = '/conftool/v1',
+    $ensure=present,
 ){
-    $watch_keys = ["/conftool/v1/pools/${dc}/${cluster}/${service}/"]
+    $watch_keys = ["/${prefix}/pools/${dc}/${cluster}/${service}/"]
 
     confd::file { $name:
         ensure     => $ensure,

@@ -1,0 +1,15 @@
+<VirtualHost *:80>
+    ServerName pybal-config
+    ServerAlias <%= @vhostnames.join(' ') %>
+    
+    DocumentRoot <%= @root_dir %>
+
+    <Directory "<%= @root_dir %>">
+         Require all granted
+         Options +Indexes +Followsymlinks
+         AllowOverride None
+     </Directory>
+
+     CustomLog ${APACHE_LOG_DIR}/configmaster-access.log wmf
+     ErrorLog ${APACHE_LOG_DIR}/configmaster-error.log
+</VirtualHost>

@@ -2415,7 +2415,6 @@ node /^puppetmaster[12]001\.(codfw|eqiad)\.wmnet$/ {
     role(
         ipmi::mgmt, access_new_install,
         puppetmaster::frontend,
-        pybal_config
     )
     include ::standard
     interface::add_ip6_mapped { 'main':
