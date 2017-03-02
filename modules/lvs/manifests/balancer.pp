@@ -12,7 +12,8 @@ class lvs::balancer(
     $lvs_class_hosts,
     $pybal_global_options,
     $site,
-    $service_ips=[]
+    $service_ips=[],
+    $conftool_prefix = '/conftool/v1',
     ) {
 
     include ::pybal
@@ -27,6 +28,7 @@ class lvs::balancer(
         lvs_services    => $lvs_services,
         lvs_class_hosts => $lvs_class_hosts,
         site            => $site,
+        conftool_prefix => $conftool_prefix,
     }
 
     file { '/etc/modprobe.d/lvs.conf':

@@ -38,7 +38,7 @@ scheduler = <%= service.fetch('scheduler', "wrr") %>
 
 <% if @config == 'etcd' -%>
 <%- conftool = service['conftool'] -%>
-config = etcd://<%= @config_host %>/conftool/v1/pools/<%= @site %>/<%= conftool['cluster'] %>/<%= conftool['service'] %>/
+config = etcd://<%= @config_host %><%= @conftool_prefix %>/pools/<%= @site %>/<%= conftool['cluster'] %>/<%= conftool['service'] %>/
 <%- else -%>
 config = http://<%= @config_host %>/pybal/<%= @site %>/<%= servicename %>
 <% end -%>
