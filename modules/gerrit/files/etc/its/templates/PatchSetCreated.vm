@@ -1,8 +1,8 @@
-#if ( $uploader-name != $author-name  )
-Change $change-number had a related patch set uploaded (by $uploader-name; owner: $author-name):
+#if ( $uploader-username != $author-username  )
+Change $change-number had a related patch set uploaded (by $uploader-username; owner: $author-username):
 [$project] $subject
 #else
-Change $change-number had a related patch set uploaded (by $uploader-name):
+Change $change-number had a related patch set uploaded (by $uploader-username):
 [$project] $subject
 #end
 
