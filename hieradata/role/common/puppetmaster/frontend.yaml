@@ -16,3 +16,5 @@ apache::logrotate::rotate: 7
 cluster: puppet
 # Conftool
 profile::conftool::master::sync_dir: "/etc/conftool/data"
+profile::discovery::path: "/srv/config-master/discovery"
+profile::discovery::watch_interval: 60
