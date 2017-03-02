@@ -120,6 +120,14 @@ class authdns(
         notify  => Service['gdnsd'],
     }
 
+    file { '/etc/gdnsd/discovery-map':
+        ensure => 'present',
+        mode   => '0444',
+        owner  => 'root',
+        group  => 'root',
+        source => "puppet:///modules/${module_name}/discovery-map",
+    }
+
     class { 'confd':
         prefix => $conftool_prefix,
     }
