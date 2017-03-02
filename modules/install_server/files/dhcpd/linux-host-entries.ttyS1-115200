@@ -5879,6 +5879,16 @@ host scb2004 {
     fixed-address scb2004.codfw.wmnet;
 }
 
+host scb2005 {
+    hardware ethernet 18:66:DA:7D:AC:B2;
+    fixed-address scb2005.codfw.wmnet;
+}
+
+host scb2006 {
+    hardware ethernet 18:66:DA:7D:BD:8C;
+    fixed-address scb2006.codfw.wmnet;
+}
+
 host silver {
     hardware ethernet 18:03:73:f1:58:67;
     fixed-address silver.wikimedia.org;
