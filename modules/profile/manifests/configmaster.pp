@@ -20,10 +20,6 @@ class profile::configmaster(
         group  => 'root',
         mode   => '0755',
     }
-    # ensure the prefix is passed down
-    Pybal::Conf_file {
-        prefix => $conftool_prefix,
-    }
 
     # Write pybal pools
     class { '::pybal::web':
