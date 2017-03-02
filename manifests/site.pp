@@ -1982,12 +1982,16 @@ node /^ms-be300[1-4]\.esams\.wmnet$/ {
     role(swift::storage)
 }
 
-node /^ms-fe2001\.codfw\.wmnet$/ {
+node /^ms-fe200[1-4]\.codfw\.wmnet$/ {
+    role(spare::system)
+}
+
+node /^ms-fe2005\.codfw\.wmnet$/ {
     role(swift::proxy, swift::stats_reporter)
     include ::lvs::realserver
 }
 
-node /^ms-fe200[2-8]\.codfw\.wmnet$/ {
+node /^ms-fe200[6-8]\.codfw\.wmnet$/ {
     role(swift::proxy)
     include ::lvs::realserver
 }
