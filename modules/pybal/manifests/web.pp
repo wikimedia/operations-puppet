@@ -13,7 +13,7 @@ class pybal::web ($datacenters, $root_dir, $ensure = 'present',) {
 
 
     $pools_dir = "${root_dir}/pybal"
-    $dc_dirs = prefix($datacenters, "${root_dir}/")
+    $dc_dirs = prefix($datacenters, "${pools_dir}/")
 
     file { $pools_dir:
         ensure => ensure_directory($ensure),
