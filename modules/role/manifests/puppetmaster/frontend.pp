@@ -96,4 +96,8 @@ class role::puppetmaster::frontend {
     # This is the role again
     include ::profile::conftool::client
     include ::profile::conftool::master
+
+    # config-master.wikimedia.org
+    include ::profile::configmaster
+    include ::profile::discovery::client
 }
