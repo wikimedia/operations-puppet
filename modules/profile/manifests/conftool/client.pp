@@ -13,7 +13,7 @@ class profile::conftool::client(
     $srv_domain = hiera('etcd_client_srv_domain'),
     $host = hiera('etcd_host'),
     $port = hiera('etcd_port'),
-    $namespace      = hiera('profile::conftool::client::namespace', '/conftool'),
+    $namespace      = hiera('conftool_prefix'),
     $tcpircbot_host = hiera('profile::conftool::client::tcpircbot_host', 'icinga.wikimedia.org'),
     $tcpircbot_port = hiera('profile::conftool::client::tcpircbot_port', 9200),
 ) {
