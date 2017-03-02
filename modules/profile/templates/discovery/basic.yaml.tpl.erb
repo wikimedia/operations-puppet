@@ -1,6 +1,5 @@
-{{ range gets "/*/*/*" }}{{ $tags := split (dir .Key) "/"  }}{{ $dc := base .Key }}{{ $vals := json .Value }}
-- cluster: "{{ index $tags 1 }}"
-  service: "{{ index $tags 2 }}"
+{{ range gets "/*/*" }}{{ $dnsdisc := dir .Key  }}{{ $dc := base .Key }}{{ $vals := json .Value }}
+- dnsdisc: "{{ $dnsdisc }}"
   datacenter: "{{ $dc }}"
   pooled: {{ index $vals "pooled" }}
-  url: "{{ index $vals "url" }}"{{ end }}
+  services: "{{ index $vals "references" }}"{{ end }}
