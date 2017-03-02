@@ -1,6 +1,5 @@
 ganglia_aggregators: bast3002.wikimedia.org:11649
 prometheus_nodes:
-  - bast3001.wikimedia.org
   - bast3002.wikimedia.org
 
 # Which of our redundant unified cert vendors to use in each DC
