@@ -12,7 +12,7 @@ define authdns::discovery_statefile($lvs, $lvs_services, $active_active) {
         gid        => '0',
         mode       => '0444',
         content    => template("${module_name}/discovery-statefile.tpl.erb"),
-        watch_keys => "${keyspace}/${title}",
+        watch_keys => ["${keyspace}/${title}"],
         check      => $check,
     }
 }
