@@ -1953,15 +1953,12 @@ node 'ms1002.eqiad.wmnet' {
     include ::standard
 }
 
-# Whenever adding a new node there, you have to ask MediaWiki to recognize the
-# new server IP as a trusted proxy so X-Forwarded-For headers are trusted for
-# rate limiting purposes (T66622)
 node /^ms-fe1001\.eqiad\.wmnet$/ {
     role(swift::proxy, swift::stats_reporter)
     include ::lvs::realserver
 }
 
-node /^ms-fe100[2-4]\.eqiad\.wmnet$/ {
+node /^ms-fe100[2-8]\.eqiad\.wmnet$/ {
     role(swift::proxy)
     include ::lvs::realserver
 }
