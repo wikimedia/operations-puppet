@@ -3656,6 +3656,66 @@ host ms-be2027 {
     fixed-address ms-be2027.codfw.wmnet;
 }
 
+host ms-be2028 {
+    hardware ethernet e0:07:1b:ef:15:98;
+    fixed-address ms-be2028.codfw.wmnet;
+}
+
+host ms-be2029 {
+    hardware ethernet e0:07:1b:ef:55:40;
+    fixed-address ms-be2029.codfw.wmnet;
+}
+
+host ms-be2030 {
+    hardware ethernet e0:07:1b:ef:55:98;
+    fixed-address ms-be2030.codfw.wmnet;
+}
+
+host ms-be2031 {
+    hardware ethernet e0:07:1b:ef:b4:d8;
+    fixed-address ms-be2031.codfw.wmnet;
+}
+
+host ms-be2032 {
+    hardware ethernet e0:07:1b:ef:34:a0;
+    fixed-address ms-be2032.codfw.wmnet;
+}
+
+host ms-be2033 {
+    hardware ethernet e0:07:1b:ef:85:e0;
+    fixed-address ms-be2033.codfw.wmnet;
+}
+
+host ms-be2034 {
+    hardware ethernet e0:07:1b:ef:94:e0;
+    fixed-address ms-be2034.codfw.wmnet;
+}
+
+host ms-be2035 {
+    hardware ethernet e0:07:1b:ef:b4:d0;
+    fixed-address ms-be2035.codfw.wmnet;
+}
+
+host ms-be2036 {
+    hardware ethernet e0:07:1b:ef:54:e0;
+    fixed-address ms-be2036.codfw.wmnet;
+}
+
+host ms-be2037 {
+    hardware ethernet e0:07:1b:ef:b5:f8;
+    fixed-address ms-be2037.codfw.wmnet;
+}
+
+host ms-be2038 {
+    hardware ethernet e0:07:1b:ef:35:80;
+    fixed-address ms-be2038.codfw.wmnet;
+}
+
+host ms-be2039 {
+    hardware ethernet e0:07:1b:ef:26:70;
+    fixed-address ms-be2039.codfw.wmnet;
+}
+
 host ms-be3001 {
     hardware ethernet 24:B6:FD:F6:13:AC;
     fixed-address ms-be3001.esams.wmnet;
