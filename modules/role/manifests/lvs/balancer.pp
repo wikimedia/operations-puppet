@@ -118,12 +118,14 @@ class role::lvs::balancer {
         replace => true,
     }
 
+    # TODO: refactor the whole set of classes
     class { '::lvs::balancer':
         service_ips          => $lvs_balancer_ips,
         lvs_services         => $lvs::configuration::lvs_services,
         lvs_class_hosts      => $lvs::configuration::lvs_class_hosts,
         pybal_global_options => $lvs::configuration::pybal,
-        site                 => $::site
+        site                 => $::site,
+        conftool_prefix      => hiera('conftool_prefix'),
     }
 
     if os_version('Debian >= jessie') {
