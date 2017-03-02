@@ -36,7 +36,7 @@ define confd::file (
 
 ) {
 
-    require ::confd
+    include ::confd
 
     $safe_name = regsubst($name, '/', '_', 'G')
 
