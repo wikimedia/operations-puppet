@@ -172,6 +172,7 @@ node 'bast3001.wikimedia.org' {
 # Bastion in the Netherlands
 node 'bast3002.wikimedia.org' {
     role(bastionhost::general,
+        bastionhost::migration,
         installserver::tftp,
         prometheus::ops)
 
