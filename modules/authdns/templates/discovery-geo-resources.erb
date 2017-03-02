@@ -1,5 +1,5 @@
 <% @discovery_services.keys.sort.each do |svc| -%>
-<% if @discovery_services[svc][active_active] -%>
+<% if @discovery_services[svc]['active_active'] -%>
 disc-<%= svc %> => {
 <% else -%>
 disc-geo-<%= svc %> => {
