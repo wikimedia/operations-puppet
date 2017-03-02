@@ -1,17 +1,9 @@
-mediawiki:
-  readwrite: [eqiad, codfw]
-  readonly: [eqiad, codfw]
-appserver:
-  apache2: [eqiad, codfw]
-  nginx: [eqiad, codfw]
-api_appserver:
-  apache2: [eqiad, codfw]
-  nginx: [eqiad, codfw]
-imagescaler:
-  apache2: [eqiad, codfw]
-  nginx: [eqiad, codfw]
-swift:
-  swift-fe: [eqiad, codfw]
-  nginx: [eqiad, codfw]
-thumbor:
-  thumbor: [eqiad]
+appservers_rw: [eqiad, codfw]
+appservers_ro: [eqiad, codfw]
+api_rw: [eqiad, codfw]
+api_ro: [eqiad, codfw]
+imagescaler_rw: [eqiad, codfw]
+imagescaler_ro: [eqiad, codfw]
+swift_rw: [eqiad, codfw]
+swift_ro: [eqiad, codfw]
+thumbor: [eqiad, codfw]
