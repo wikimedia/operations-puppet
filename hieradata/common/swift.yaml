@@ -4,6 +4,10 @@ swift::proxyhosts:
   - ms-fe1002.eqiad.wmnet
   - ms-fe1003.eqiad.wmnet
   - ms-fe1004.eqiad.wmnet
+  - ms-fe1005.eqiad.wmnet
+  - ms-fe1006.eqiad.wmnet
+  - ms-fe1007.eqiad.wmnet
+  - ms-fe1008.eqiad.wmnet
   - ms-fe2005.codfw.wmnet
   - ms-fe2006.codfw.wmnet
   - ms-fe2007.codfw.wmnet
