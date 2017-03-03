@@ -10,7 +10,7 @@
 #
 # [*restbase_uri*]
 #   The host/IP where to reach RESTBase. Default:
-#   http://restbase.svc.${::rb_site}.wmnet:7231
+#   http://restbase.discovery.wmnet:7231
 #
 # [*pdfrender_key*]
 #   The access key to use when issuing requests to the PDF rendering service.
@@ -41,7 +41,7 @@
 #
 class service::configuration(
     $mwapi_uri     = "http://api.svc.${::mw_primary}.wmnet/w/api.php",
-    $restbase_uri  = "http://restbase.svc.${::rb_site}.wmnet:7231",
+    $restbase_uri  = 'http://restbase.discovery.wmnet:7231',
     $pdfrender_key = 'secret',
     $http_proxy    = undef,
     $statsd_host   = 'localhost',
