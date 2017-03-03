@@ -12,10 +12,10 @@ restbase::cassandra_datacenters:
 restbase::statsd_host: statsd.eqiad.wmnet
 restbase::parsoid_uri: "http://parsoid.discovery.wmnet:8000"
 restbase::graphoid_uri: "http://graphoid.discovery.wmnet:19000"
-restbase::mobileapps_uri: "http://mobileapps.svc.%{::mbapps_site}.wmnet:8888"
-restbase::mathoid_uri: "http://mathoid.svc.%{::mathoid_site}.wmnet:10042"
+restbase::mobileapps_uri: "http://mobileapps.discovery.wmnet:8888"
+restbase::mathoid_uri: "http://mathoid.discovery.wmnet:10042"
 restbase::aqs_uri: "http://aqs.svc.%{::aqs_site}.wmnet:7232/analytics.wikimedia.org/v1"
-restbase::pdfrender_uri: "http://pdfrender.svc.%{::site}.wmnet:5252"
+restbase::pdfrender_uri: "http://pdfrender.discovery.wmnet:5252"
 restbase::citoid_uri: "http://citoid.discovery.wmnet:1970"
 restbase::trendingedits_uri: "http://trendingedits.svc.%{::site}.wmnet:6699"
 restbase::cassandra_user: restb

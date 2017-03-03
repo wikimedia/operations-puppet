@@ -4,8 +4,6 @@
 discovery::app_routes:
   mediawiki: 'eqiad'
   restbase: "%{::site}"
-  mobileapps: "%{::site}"
-  mathoid: "%{::site}"
   aqs: 'eqiad'
 
 # confctl-based dynamic global discovery pooling
