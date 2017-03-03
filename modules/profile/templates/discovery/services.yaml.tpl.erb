@@ -2,5 +2,4 @@
 - service: {{ $service }}
   cluster: {{ $cluster }}
   port: {{ index $vals "port" }}
-  datacenters: {{ index $vals "datacenters" }}
-  
+  datacenters: {{ index $vals "datacenters" }}{{ end }}
