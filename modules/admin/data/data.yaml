@@ -2515,6 +2515,10 @@ ldap_only_users:
     ensure: present
     realname: James Buatti
     email: jbuatti@wikimedia.org
+  jk:
+    ensure: present
+    realname: Jonas Kress
+    email: jonas.kress@wikimedia.de
   jrobell:
     ensure: present
     realname: Jessica Robell
