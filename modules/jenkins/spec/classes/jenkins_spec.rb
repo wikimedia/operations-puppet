@@ -67,7 +67,7 @@ describe 'jenkins' do
             } }
             it 'should set Jenkins access logger' do
                 should contain_file('/lib/systemd/system/jenkins.service')
-                    .with_content(/^ExecStart=.+SimpleAccessLogger.+/)
+                    .with_content(/SimpleAccessLogger.+\\$/)
             end
         end
     end

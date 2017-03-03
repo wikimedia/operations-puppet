@@ -100,7 +100,7 @@ class jenkins(
         log_filename => 'jenkins.log',
     }
 
-    $java_access_log_arg = $access_log ? {
+    $jenkins_access_log_arg = $access_log ? {
         true    => '--accessLoggerClassName=winstone.accesslog.SimpleAccessLogger --simpleAccessLogger.format=combined --simpleAccessLogger.file=/var/log/jenkins/access.log',
         default => '',
     }
@@ -117,7 +117,6 @@ class jenkins(
         #   https://jenkins.io/blog/2016/05/11/security-update/
         #   https://wiki.jenkins-ci.org/display/SECURITY/Jenkins+Security+Advisory+2016-05-11
         '-Dhudson.model.ParametersAction.keepUndefinedParameters=true',
-        $java_access_log_arg,
     ], ' ')
 
     $real_service_ensure = $service_ensure ? {
