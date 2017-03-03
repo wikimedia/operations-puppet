@@ -3,7 +3,6 @@
 # while other services should be polled locally
 discovery::app_routes:
   mediawiki: 'eqiad'
-  parsoid: "%{::site}"
   restbase: "%{::site}"
   mobileapps: "%{::site}"
   graphoid: "%{::site}"
@@ -18,3 +17,6 @@ discovery::services:
   appservers-rw:
     lvs: apaches
     active_active: false
+  parsoid:
+    lvs: parsoid
+    active_active: true
