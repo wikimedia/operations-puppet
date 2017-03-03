@@ -1,10 +1,3 @@
-# Application routes
-# MediaWiki should be reached to the master datacenter,
-# while other services should be polled locally
-discovery::app_routes:
-  mediawiki: 'eqiad'
-  aqs: 'eqiad'
-
 # confctl-based dynamic global discovery pooling
 discovery::services:
   appservers-ro:

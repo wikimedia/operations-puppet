@@ -68,11 +68,18 @@ $other_site = $site ? {
     default => '(undefined)'
 }
 
-$app_routes = hiera('discovery::app_routes')
-
 # Shortcut variables to use e.g. in hiera
-$mw_primary = $app_routes['mediawiki']
-$aqs_site = $app_routes['aqs']
+$mw_primary_ip = ipresolve('appservers-rw.discovery.wmnet')
+if $realm == 'production' {
+    $mw_primary = $mw_primary_ip ? {
+        '10.2.2.1' => 'eqiad',
+        '10.2.1.1' => 'codfw',
+        default    => fail('Cannot run puppet during a mediawiki switchover.'),
+    }
+} else {
+    $mw_primary = 'eqiad'
+}
+$aqs_site = 'eqiad'
 
 $network_zone = $main_ipaddress ? {
     /^10./  => 'internal',
