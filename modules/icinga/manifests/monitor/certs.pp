@@ -26,7 +26,8 @@ class icinga::monitor::certs {
 
     # eventdonations.wikimedia.org (Fundraising)
     @monitoring::host { 'eventdonations.wikimedia.org':
-        host_fqdn     => 'eventdonations.wikimedia.org',
+        host_fqdn  => 'eventdonations.wikimedia.org',
+        ip_address => '127.0.0.1', # real IP does not respond to ICMP but we need a host for the service
     }
     monitoring::service { 'https_eventdonations':
         description   => 'HTTPS-eventdonations',
@@ -82,6 +83,7 @@ class icinga::monitor::certs {
     # benefactorevents.wikimedia.org (Fundraising, T156850)
     @monitoring::host { 'benefactorevents.wikimedia.org':
         host_fqdn     => 'benefactorevents.wikimedia.org',
+        ip_address    => '127.0.0.1', # real IP does not respond to ICMP but we need a host for the service
         contact_group => 'fr-tech-ops',
     }
     monitoring::service { 'https_benefactorevents':
