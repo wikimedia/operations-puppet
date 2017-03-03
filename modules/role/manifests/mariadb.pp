@@ -168,10 +168,13 @@ class role::mariadb::monitor::dba {
 #   such as read-only 'es1' hosts; wikitech, or tendril
 
 #FIXME: move node_exporter to standard and remove it from here when ready
+#FIXME: temporarely make the socket '/tmp/mysql.sock' until all manifests
+#       are updated
 class role::mariadb::groups(
     $mysql_group,
     $mysql_role,
     $mysql_shard = '',
+    $socket = '/tmp/mysql.sock',
     ) {
 
     salt::grain { 'mysql_group':
@@ -195,7 +198,9 @@ class role::mariadb::groups(
     }
 
     include role::prometheus::node_exporter
-    include role::prometheus::mysqld_exporter
+    class { 'role::prometheus::mysqld_exporter':
+        socket => $socket,
+    }
 }
 
 # miscellaneous services clusters
