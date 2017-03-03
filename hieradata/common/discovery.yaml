@@ -5,7 +5,6 @@ discovery::app_routes:
   mediawiki: 'eqiad'
   restbase: "%{::site}"
   mobileapps: "%{::site}"
-  graphoid: "%{::site}"
   mathoid: "%{::site}"
   aqs: 'eqiad'
 
