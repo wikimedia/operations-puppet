@@ -1,0 +1,445 @@
+<%= @exporter_module %>:
+  <% if @community -%>
+  auth:
+    community: <%= @community %>
+  <% end -%>
+  walk:
+  - 1.3.6.1.2.1.1.3
+  - 1.3.6.1.2.1.2
+  - 1.3.6.1.2.1.31.1.1
+  metrics:
+  - name: sysUpTime
+    oid: 1.3.6.1.2.1.1.3
+    type: gauge
+  - name: ifNumber
+    oid: 1.3.6.1.2.1.2.1
+    type: gauge
+  - name: ifIndex
+    oid: 1.3.6.1.2.1.2.2.1.1
+    type: gauge
+    indexes:
+    - labelname: ifDescr
+      type: Integer
+    lookups:
+    - labels:
+      - ifDescr
+      labelname: ifDescr
+      oid: 1.3.6.1.2.1.2.2.1.2
+  - name: ifDescr
+    oid: 1.3.6.1.2.1.2.2.1.2
+    type: string
+    indexes:
+    - labelname: ifDescr
+      type: Integer
+    lookups:
+    - labels:
+      - ifDescr
+      labelname: ifDescr
+      oid: 1.3.6.1.2.1.2.2.1.2
+  - name: ifType
+    oid: 1.3.6.1.2.1.2.2.1.3
+    type: gauge
+    indexes:
+    - labelname: ifDescr
+      type: Integer
+    lookups:
+    - labels:
+      - ifDescr
+      labelname: ifDescr
+      oid: 1.3.6.1.2.1.2.2.1.2
+  - name: ifMtu
+    oid: 1.3.6.1.2.1.2.2.1.4
+    type: gauge
+    indexes:
+    - labelname: ifDescr
+      type: Integer
+    lookups:
+    - labels:
+      - ifDescr
+      labelname: ifDescr
+      oid: 1.3.6.1.2.1.2.2.1.2
+  - name: ifSpeed
+    oid: 1.3.6.1.2.1.2.2.1.5
+    type: gauge
+    indexes:
+    - labelname: ifDescr
+      type: Integer
+    lookups:
+    - labels:
+      - ifDescr
+      labelname: ifDescr
+      oid: 1.3.6.1.2.1.2.2.1.2
+  - name: ifAdminStatus
+    oid: 1.3.6.1.2.1.2.2.1.7
+    type: gauge
+    indexes:
+    - labelname: ifDescr
+      type: Integer
+    lookups:
+    - labels:
+      - ifDescr
+      labelname: ifDescr
+      oid: 1.3.6.1.2.1.2.2.1.2
+  - name: ifOperStatus
+    oid: 1.3.6.1.2.1.2.2.1.8
+    type: gauge
+    indexes:
+    - labelname: ifDescr
+      type: Integer
+    lookups:
+    - labels:
+      - ifDescr
+      labelname: ifDescr
+      oid: 1.3.6.1.2.1.2.2.1.2
+  - name: ifLastChange
+    oid: 1.3.6.1.2.1.2.2.1.9
+    type: gauge
+    indexes:
+    - labelname: ifDescr
+      type: Integer
+    lookups:
+    - labels:
+      - ifDescr
+      labelname: ifDescr
+      oid: 1.3.6.1.2.1.2.2.1.2
+  - name: ifInOctets
+    oid: 1.3.6.1.2.1.2.2.1.10
+    type: counter
+    indexes:
+    - labelname: ifDescr
+      type: Integer
+    lookups:
+    - labels:
+      - ifDescr
+      labelname: ifDescr
+      oid: 1.3.6.1.2.1.2.2.1.2
+  - name: ifInUcastPkts
+    oid: 1.3.6.1.2.1.2.2.1.11
+    type: counter
+    indexes:
+    - labelname: ifDescr
+      type: Integer
+    lookups:
+    - labels:
+      - ifDescr
+      labelname: ifDescr
+      oid: 1.3.6.1.2.1.2.2.1.2
+  - name: ifInNUcastPkts
+    oid: 1.3.6.1.2.1.2.2.1.12
+    type: counter
+    indexes:
+    - labelname: ifDescr
+      type: Integer
+    lookups:
+    - labels:
+      - ifDescr
+      labelname: ifDescr
+      oid: 1.3.6.1.2.1.2.2.1.2
+  - name: ifInDiscards
+    oid: 1.3.6.1.2.1.2.2.1.13
+    type: counter
+    indexes:
+    - labelname: ifDescr
+      type: Integer
+    lookups:
+    - labels:
+      - ifDescr
+      labelname: ifDescr
+      oid: 1.3.6.1.2.1.2.2.1.2
+  - name: ifInErrors
+    oid: 1.3.6.1.2.1.2.2.1.14
+    type: counter
+    indexes:
+    - labelname: ifDescr
+      type: Integer
+    lookups:
+    - labels:
+      - ifDescr
+      labelname: ifDescr
+      oid: 1.3.6.1.2.1.2.2.1.2
+  - name: ifInUnknownProtos
+    oid: 1.3.6.1.2.1.2.2.1.15
+    type: counter
+    indexes:
+    - labelname: ifDescr
+      type: Integer
+    lookups:
+    - labels:
+      - ifDescr
+      labelname: ifDescr
+      oid: 1.3.6.1.2.1.2.2.1.2
+  - name: ifOutOctets
+    oid: 1.3.6.1.2.1.2.2.1.16
+    type: counter
+    indexes:
+    - labelname: ifDescr
+      type: Integer
+    lookups:
+    - labels:
+      - ifDescr
+      labelname: ifDescr
+      oid: 1.3.6.1.2.1.2.2.1.2
+  - name: ifOutUcastPkts
+    oid: 1.3.6.1.2.1.2.2.1.17
+    type: counter
+    indexes:
+    - labelname: ifDescr
+      type: Integer
+    lookups:
+    - labels:
+      - ifDescr
+      labelname: ifDescr
+      oid: 1.3.6.1.2.1.2.2.1.2
+  - name: ifOutNUcastPkts
+    oid: 1.3.6.1.2.1.2.2.1.18
+    type: counter
+    indexes:
+    - labelname: ifDescr
+      type: Integer
+    lookups:
+    - labels:
+      - ifDescr
+      labelname: ifDescr
+      oid: 1.3.6.1.2.1.2.2.1.2
+  - name: ifOutDiscards
+    oid: 1.3.6.1.2.1.2.2.1.19
+    type: counter
+    indexes:
+    - labelname: ifDescr
+      type: Integer
+    lookups:
+    - labels:
+      - ifDescr
+      labelname: ifDescr
+      oid: 1.3.6.1.2.1.2.2.1.2
+  - name: ifOutErrors
+    oid: 1.3.6.1.2.1.2.2.1.20
+    type: counter
+    indexes:
+    - labelname: ifDescr
+      type: Integer
+    lookups:
+    - labels:
+      - ifDescr
+      labelname: ifDescr
+      oid: 1.3.6.1.2.1.2.2.1.2
+  - name: ifOutQLen
+    oid: 1.3.6.1.2.1.2.2.1.21
+    type: gauge
+    indexes:
+    - labelname: ifDescr
+      type: Integer
+    lookups:
+    - labels:
+      - ifDescr
+      labelname: ifDescr
+      oid: 1.3.6.1.2.1.2.2.1.2
+  - name: ifName
+    oid: 1.3.6.1.2.1.31.1.1.1.1
+    type: string
+    indexes:
+    - labelname: ifDescr
+      type: Integer
+    lookups:
+    - labels:
+      - ifDescr
+      labelname: ifDescr
+      oid: 1.3.6.1.2.1.2.2.1.2
+  - name: ifInMulticastPkts
+    oid: 1.3.6.1.2.1.31.1.1.1.2
+    type: counter
+    indexes:
+    - labelname: ifDescr
+      type: Integer
+    lookups:
+    - labels:
+      - ifDescr
+      labelname: ifDescr
+      oid: 1.3.6.1.2.1.2.2.1.2
+  - name: ifInBroadcastPkts
+    oid: 1.3.6.1.2.1.31.1.1.1.3
+    type: counter
+    indexes:
+    - labelname: ifDescr
+      type: Integer
+    lookups:
+    - labels:
+      - ifDescr
+      labelname: ifDescr
+      oid: 1.3.6.1.2.1.2.2.1.2
+  - name: ifOutMulticastPkts
+    oid: 1.3.6.1.2.1.31.1.1.1.4
+    type: counter
+    indexes:
+    - labelname: ifDescr
+      type: Integer
+    lookups:
+    - labels:
+      - ifDescr
+      labelname: ifDescr
+      oid: 1.3.6.1.2.1.2.2.1.2
+  - name: ifOutBroadcastPkts
+    oid: 1.3.6.1.2.1.31.1.1.1.5
+    type: counter
+    indexes:
+    - labelname: ifDescr
+      type: Integer
+    lookups:
+    - labels:
+      - ifDescr
+      labelname: ifDescr
+      oid: 1.3.6.1.2.1.2.2.1.2
+  - name: ifHCInOctets
+    oid: 1.3.6.1.2.1.31.1.1.1.6
+    type: counter
+    indexes:
+    - labelname: ifDescr
+      type: Integer
+    lookups:
+    - labels:
+      - ifDescr
+      labelname: ifDescr
+      oid: 1.3.6.1.2.1.2.2.1.2
+  - name: ifHCInUcastPkts
+    oid: 1.3.6.1.2.1.31.1.1.1.7
+    type: counter
+    indexes:
+    - labelname: ifDescr
+      type: Integer
+    lookups:
+    - labels:
+      - ifDescr
+      labelname: ifDescr
+      oid: 1.3.6.1.2.1.2.2.1.2
+  - name: ifHCInMulticastPkts
+    oid: 1.3.6.1.2.1.31.1.1.1.8
+    type: counter
+    indexes:
+    - labelname: ifDescr
+      type: Integer
+    lookups:
+    - labels:
+      - ifDescr
+      labelname: ifDescr
+      oid: 1.3.6.1.2.1.2.2.1.2
+  - name: ifHCInBroadcastPkts
+    oid: 1.3.6.1.2.1.31.1.1.1.9
+    type: counter
+    indexes:
+    - labelname: ifDescr
+      type: Integer
+    lookups:
+    - labels:
+      - ifDescr
+      labelname: ifDescr
+      oid: 1.3.6.1.2.1.2.2.1.2
+  - name: ifHCOutOctets
+    oid: 1.3.6.1.2.1.31.1.1.1.10
+    type: counter
+    indexes:
+    - labelname: ifDescr
+      type: Integer
+    lookups:
+    - labels:
+      - ifDescr
+      labelname: ifDescr
+      oid: 1.3.6.1.2.1.2.2.1.2
+  - name: ifHCOutUcastPkts
+    oid: 1.3.6.1.2.1.31.1.1.1.11
+    type: counter
+    indexes:
+    - labelname: ifDescr
+      type: Integer
+    lookups:
+    - labels:
+      - ifDescr
+      labelname: ifDescr
+      oid: 1.3.6.1.2.1.2.2.1.2
+  - name: ifHCOutMulticastPkts
+    oid: 1.3.6.1.2.1.31.1.1.1.12
+    type: counter
+    indexes:
+    - labelname: ifDescr
+      type: Integer
+    lookups:
+    - labels:
+      - ifDescr
+      labelname: ifDescr
+      oid: 1.3.6.1.2.1.2.2.1.2
+  - name: ifHCOutBroadcastPkts
+    oid: 1.3.6.1.2.1.31.1.1.1.13
+    type: counter
+    indexes:
+    - labelname: ifDescr
+      type: Integer
+    lookups:
+    - labels:
+      - ifDescr
+      labelname: ifDescr
+      oid: 1.3.6.1.2.1.2.2.1.2
+  - name: ifLinkUpDownTrapEnable
+    oid: 1.3.6.1.2.1.31.1.1.1.14
+    type: gauge
+    indexes:
+    - labelname: ifDescr
+      type: Integer
+    lookups:
+    - labels:
+      - ifDescr
+      labelname: ifDescr
+      oid: 1.3.6.1.2.1.2.2.1.2
+  - name: ifHighSpeed
+    oid: 1.3.6.1.2.1.31.1.1.1.15
+    type: gauge
+    indexes:
+    - labelname: ifDescr
+      type: Integer
+    lookups:
+    - labels:
+      - ifDescr
+      labelname: ifDescr
+      oid: 1.3.6.1.2.1.2.2.1.2
+  - name: ifPromiscuousMode
+    oid: 1.3.6.1.2.1.31.1.1.1.16
+    type: gauge
+    indexes:
+    - labelname: ifDescr
+      type: Integer
+    lookups:
+    - labels:
+      - ifDescr
+      labelname: ifDescr
+      oid: 1.3.6.1.2.1.2.2.1.2
+  - name: ifConnectorPresent
+    oid: 1.3.6.1.2.1.31.1.1.1.17
+    type: gauge
+    indexes:
+    - labelname: ifDescr
+      type: Integer
+    lookups:
+    - labels:
+      - ifDescr
+      labelname: ifDescr
+      oid: 1.3.6.1.2.1.2.2.1.2
+  - name: ifAlias
+    oid: 1.3.6.1.2.1.31.1.1.1.18
+    type: string
+    indexes:
+    - labelname: ifDescr
+      type: Integer
+    lookups:
+    - labels:
+      - ifDescr
+      labelname: ifDescr
+      oid: 1.3.6.1.2.1.2.2.1.2
+  - name: ifCounterDiscontinuityTime
+    oid: 1.3.6.1.2.1.31.1.1.1.19
+    type: gauge
+    indexes:
+    - labelname: ifDescr
+      type: Integer
+    lookups:
+    - labels:
+      - ifDescr
+      labelname: ifDescr
+      oid: 1.3.6.1.2.1.2.2.1.2
