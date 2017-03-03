@@ -3,7 +3,6 @@
 # while other services should be polled locally
 discovery::app_routes:
   mediawiki: 'eqiad'
-  parsoid: "%{::site}"
   restbase: "%{::site}"
   mobileapps: "%{::site}"
   mathoid: "%{::site}"
