@@ -86,7 +86,9 @@ class role::mediawiki::webserver {
             default_server => true,
             do_ocsp        => false,
             upstream_ports => [80],
+            access_log     => true,
         }
+
         monitoring::service { 'appserver https':
             description    => 'Nginx local proxy to apache',
             check_command  => 'check_https_url!en.wikipedia.org!/',
