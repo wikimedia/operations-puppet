@@ -11,7 +11,7 @@ restbase::cassandra_datacenters:
     - "codfw"
 restbase::statsd_host: statsd.eqiad.wmnet
 restbase::parsoid_uri: "http://parsoid.discovery.wmnet:8000"
-restbase::graphoid_uri: "http://graphoid.svc.%{::graphoid_site}.wmnet:19000"
+restbase::graphoid_uri: "http://graphoid.discovery.wmnet:19000"
 restbase::mobileapps_uri: "http://mobileapps.svc.%{::mbapps_site}.wmnet:8888"
 restbase::mathoid_uri: "http://mathoid.svc.%{::mathoid_site}.wmnet:10042"
 restbase::aqs_uri: "http://aqs.svc.%{::aqs_site}.wmnet:7232/analytics.wikimedia.org/v1"

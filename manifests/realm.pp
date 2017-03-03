@@ -74,7 +74,6 @@ $app_routes = hiera('discovery::app_routes')
 $mw_primary = $app_routes['mediawiki']
 $rb_site = $app_routes['restbase']
 $mbapps_site = $app_routes['mobileapps']
-$graphoid_site = $app_routes['graphoid']
 $mathoid_site = $app_routes['mathoid']
 $aqs_site = $app_routes['aqs']
 
