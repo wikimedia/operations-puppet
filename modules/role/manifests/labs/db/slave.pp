@@ -11,10 +11,14 @@ class role::labs::db::slave {
     include role::mariadb::ferm
     include passwords::misc::scripts
 
+    # FIXME: Add the socket location to make the transition easier.
+    $socket = '/var/run/mysqld/mysqld.sock'
+
     class { 'role::mariadb::groups':
         mysql_group => 'labs',
         mysql_role  => 'slave',
         mysql_shard => 'tools',
+        socket      => $socket,
     }
 
     class { 'mariadb::config':
@@ -25,6 +29,7 @@ class role::labs::db::slave {
         p_s           => 'on',
         ssl           => 'puppet-cert',
         binlog_format => 'ROW',
+        socket        => $socket,
     }
 
     #mariadb::monitor_replication { 'tools':
