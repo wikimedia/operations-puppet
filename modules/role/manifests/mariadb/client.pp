@@ -13,8 +13,11 @@ class role::mariadb::client {
     include passwords::misc::scripts
 
     class { 'mariadb::config':
-        config => 'role/mariadb/mysqld_config/client.my.cnf.erb',
-        ssl    => 'puppet-cert',
+        config   => 'role/mariadb/mysqld_config/client.my.cnf.erb',
+        ssl      => 'puppet-cert',
+        ssl_ca   => '/etc/ssl/certs/Puppet_Internal_CA.pem',
+        ssl_cert => '/etc/mysql/ssl/cert.pem',
+        ssl_key  => '/etc/mysql/ssl/server.key',
     }
 
     $password = $passwords::misc::scripts::mysql_root_pass

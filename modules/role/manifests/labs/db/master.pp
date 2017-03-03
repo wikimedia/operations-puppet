@@ -10,10 +10,13 @@ class role::labs::db::master {
     include role::mariadb::monitor
     include passwords::misc::scripts
 
+    $socket = '/var/run/mysqld/mysqld.sock'
+
     class { 'role::mariadb::groups':
         mysql_group => 'labs',
         mysql_role  => 'master',
         mysql_shard => 'tools',
+        socket      => $socket,
     }
 
     class { 'mariadb::config':
@@ -23,5 +26,6 @@ class role::labs::db::master {
         ssl           => 'puppet-cert',
         binlog_format => 'ROW',
         read_only     => 'OFF',
+        socket        => $socket,
     }
 }
