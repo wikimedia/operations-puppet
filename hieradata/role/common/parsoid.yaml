@@ -4,3 +4,4 @@ admin::groups:
 cluster: parsoid
 role::lvs::realserver::pools:
   parsoid: {}
+profile::parsoid::mw_host: "api-rw.discovery.wmnet"
