@@ -25,14 +25,20 @@ class profile::discovery::client(
         prefix   => $conftool_prefix,
     }
 
-    $keyspace = '/discovery'
-
     confd::file { "${path}/discovery-basic.yaml":
         ensure     => present,
         content    => template('profile/discovery/basic.yaml.tpl.erb'),
         watch_keys => ['/'],
-        prefix     => $keyspace,
+        prefix     => '/discovery',
         mode       => '0444',
         check      => 'ruby -e \"require \'yaml\'; YAML.load_file(\'{{ .src }}\')\"',
+    }
+
+    confd::file { "${path}/services.yaml":
+        ensure     => present,
+        content    => template('profile/discovery/services.yaml.tpl.erb'),
+        watch_keys => ['/'],
+        prefix     => '/service',
+        mode       => '0444',
     }
 }

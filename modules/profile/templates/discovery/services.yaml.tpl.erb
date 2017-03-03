@@ -1,0 +1,6 @@
+{{ range gets "/*/*" }}{{ $cluster := dir .Key }}{{ $service := base .Key }}{{ $vals := json .Value }}
+- service: {{ $service }}
+  cluster: {{ $cluster }}
+  port: {{ index $vals "port" }}
+  datacenters: {{ index $vals "datacenters" }}
+  
