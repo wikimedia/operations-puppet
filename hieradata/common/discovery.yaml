@@ -13,6 +13,12 @@ discovery::services:
   appservers-rw:
     lvs: apaches
     active_active: false
+  api-ro:
+    lvs: api
+    active-active: true
+  api-rw:
+    lvs: api
+    active-active: false
   parsoid:
     lvs: parsoid
     active_active: true
