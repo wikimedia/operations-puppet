@@ -6,7 +6,6 @@ discovery::app_routes:
   parsoid: "%{::site}"
   restbase: "%{::site}"
   mobileapps: "%{::site}"
-  graphoid: "%{::site}"
   mathoid: "%{::site}"
   aqs: 'eqiad'
 
