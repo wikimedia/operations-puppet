@@ -35,7 +35,7 @@ if (typeof module === 'object') {
 			// HTML2 generator options
 			html2: {
 				name: 'parsoid',
-				server: 'http://parsoid.svc.<%= scope.lookupvar("::parsoid_site") %>.wmnet:8000',
+				server: 'http://parsoid.discovery.wmnet:8000',
 				dumpHTML: false,
 				postprocessorScript: '/srv/visualdiff/lib/parsoid.postprocess.js',
 				stylesYamlFile: '/srv/visualdiff/lib/parsoid.custom_styles.yaml',

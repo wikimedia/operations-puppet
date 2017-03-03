@@ -72,7 +72,6 @@ $app_routes = hiera('discovery::app_routes')
 
 # Shortcut variables to use e.g. in hiera
 $mw_primary = $app_routes['mediawiki']
-$parsoid_site = $app_routes['parsoid']
 $rb_site = $app_routes['restbase']
 $mbapps_site = $app_routes['mobileapps']
 $graphoid_site = $app_routes['graphoid']
