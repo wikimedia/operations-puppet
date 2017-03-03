@@ -38,7 +38,7 @@ class profile::discovery::client(
         ensure     => present,
         content    => template('profile/discovery/services.yaml.tpl.erb'),
         watch_keys => ['/'],
-        prefix     => '/service',
+        prefix     => '/services',
         mode       => '0444',
     }
 }
