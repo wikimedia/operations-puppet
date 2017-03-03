@@ -101,4 +101,14 @@ class wdqs(
         deploy_user  => $deploy_user,
         manage_user  => true,
     }
+
+    # GC logs rotation is done by the JVM, but on JVM restart, the logs left by
+    # the previous instance are left alone. This cron takes care of cleaning up
+    # GC logs older than 30 days.
+    cron { 'wdqs-gc-log-cleanup':
+      ensure  => present,
+      minute  => 12,
+      hour    => 2,
+      command => "find /var/log/wdqs -name 'wdqs-*_jvm_gc.*.log*' -mtime +30 -delete",
+    }
 }
