@@ -120,8 +120,6 @@ novaconfig:
   zone: eqiad
   spice_hostname: 'labspice.wikimedia.org'
   scheduler_pool:
-    - labvirt1001
-    - labvirt1002
     - labvirt1003
     - labvirt1004
     - labvirt1005
