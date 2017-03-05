@@ -6,9 +6,9 @@ access to *
 	by group/groupOfUniqueNames/uniqueMember="cn=Directory Managers,ou=groups,dc=wikimedia,dc=org" write
 	by * break
 
-# novaadmin needs to run queries on all users.  10,000 users is less than
-#  'unlimited' but should keep us happy for a year at least :/
-limits dn.exact="uid=novaadmin,ou=people,dc=wikimedia,dc=org" time=unlimited size=10000
+# novaadmin needs to run queries on all users.  This limit as set at 10,000 but
+#  we've passed that so I'm raising to 20,000 (AGB)
+limits dn.exact="uid=novaadmin,ou=people,dc=wikimedia,dc=org" time=unlimited size=20000
 
 # novaobserver is an account used only for keystone access.  We don't want it
 #  to appear on wikitech, gerrit, etc. so limit access only to the keystone host
