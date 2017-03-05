@@ -1,0 +1,32 @@
+Listen 9000
+
+<VirtualHost *:9000>
+    # ServerAdmin noc@wikimedia.org
+    ServerName <%= @sitename %>
+
+    DocumentRoot <%= @static_path %>
+
+    ErrorLog /var/log/apache2/error.log
+    LogLevel warn
+    CustomLog /var/log/apache2/access.log wmf
+
+    Alias <%= @url_prefix %> <%= @static_path %>
+
+    <Directory <%= @static_path %>>
+        Options FollowSymLinks
+        Require all granted
+    </Directory>
+
+    <Location <%= @static_path %>>
+        AuthName "PAWS Internal"
+        AuthType Basic
+        AuthBasicProvider ldap
+        AuthLDAPBindDN cn=proxyagent,ou=profile,dc=wikimedia,dc=org
+        AuthLDAPBindPassword <%= @proxypass %>
+        AuthLDAPURL "ldaps://ldap-labs.eqiad.wikimedia.org ldap-labs.codfw.wikimedia.org/ou=people,dc=wikimedia,dc=org?cn"
+        <% @ldap_groups.each do |group| -%>
+        Require ldap-group <%= group %>
+        <% end -%>
+    </Location>
+
+</VirtualHost>
