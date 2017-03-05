@@ -1,0 +1,15 @@
+#####################################################################
+### THIS FILE IS MANAGED BY PUPPET
+#####################################################################
+
+/var/log/mediawiki/generate-fancycaptcha/*.log {
+	monthly
+	notifempty
+	maxage 90
+	rotate 3
+	dateext
+	compress
+	delaycompress
+	missingok
+	nocreate
+}
