@@ -185,6 +185,23 @@ def write_abac(users, path):
                 "apiGroup": "*",
             }
         }
+        # This allows all users to get info about all namespaces,
+        # but not to edit them. This is important, because
+        # readonly access to all namespaces is needed for helm
+        # to work, but we must make sure users can't write to
+        # namespaces - since that could allow them to modify the
+        # RunAsUser annotation and gain root on the cluster.
+        yield {
+            "apiVersion": "abac.authorization.kubernetes.io/v1beta1",
+            "kind": "Policy",
+            "spec": {
+                "user": "*",
+                "resource": "namespaces",
+                "readonly": True,
+                "apiGroup": "*",
+                "namespace": "*"
+            }
+        }
 
         for user in users:
             if user.group == 'tool':
