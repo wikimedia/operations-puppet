@@ -125,9 +125,9 @@ sub cluster_fe_deliver {
 	set resp.http.Timing-Allow-Origin = "*";
 
 	// Restrict uploads from loading external resources. (T117618)
-	// Currently experimental and testing on test/test2/el/fr.wikipedia.org only.
-	if (req.url ~ "^/wikipedia/(el|fr|test)") {
-		set resp.http.Content-Security-Policy-Report-Only = "default-src 'none'; style-src 'unsafe-inline' data:; font-src data:; img-src data: https://upload.wikimedia.org/favicon.ico; media-src data:; sandbox; report-uri https://test.wikipedia.org/w/api.php?reportonly=1&source=image&action=cspreport&format=json&";
+	// Currently experimental and testing on large but not huge wikis.
+	if (req.url ~ "^/wikipedia/(el|fr|ru|it|de|uk|ja|id|he|fi|zh|test)") {
+		set resp.http.Content-Security-Policy-Report-Only = "default-src 'none'; style-src 'unsafe-inline' data:; font-src data:; img-src data: https://upload.wikimedia.org/favicon.ico; media-src data:; sandbox; report-uri https://commons.wikimedia.org/w/api.php?reportonly=1&source=image&action=cspreport&format=json&";
 		set resp.http.X-Content-Security-Policy-Report-Only = resp.http.Content-Security-Policy-Report-Only;
 		set resp.http.X-Webkit-CSP-Report-Only = resp.http.Content-Security-Policy-Report-Only;
 	}
