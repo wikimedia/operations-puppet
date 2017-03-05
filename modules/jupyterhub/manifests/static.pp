@@ -22,6 +22,9 @@ class jupyterhub::static (
     $ldap_groups = [],
 ) {
 
+    include ::apache::mod::auth_basic
+    include ::apache::mod::authnz_ldap
+
     include ::passwords::ldap::wmf_cluster
     $proxypass = $passwords::ldap::wmf_cluster::proxypass
 
