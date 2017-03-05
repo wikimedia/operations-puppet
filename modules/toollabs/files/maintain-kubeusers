@@ -185,6 +185,16 @@ def write_abac(users, path):
                 "apiGroup": "*",
             }
         }
+        yield {
+            "apiVersion": "abac.authorization.kubernetes.io/v1beta1",
+            "kind": "Policy",
+            "spec": {
+                "user": "*",
+                "resource": "namespaces",
+                "readonly": True,
+                "apiGroup": "*",
+            }
+        }
 
         for user in users:
             if user.group == 'tool':
