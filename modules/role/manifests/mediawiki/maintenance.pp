@@ -29,6 +29,7 @@ class role::mediawiki::maintenance {
     include mediawiki::maintenance::cirrussearch
     include mediawiki::maintenance::generatecaptcha
     include mediawiki::maintenance::pageassessments
+    include mediawiki::maintenance::uploads
 
     # Include the cache warmup script; requires node and conftool
     require ::profile::conftool::client
