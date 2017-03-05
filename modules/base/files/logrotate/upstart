@@ -5,11 +5,13 @@
 
 #
 # This should be identical to the packaged config, with the addition
-#  of 'delaycompress'.  If
+#  of 'copytruncate'.  copytruncate isn't great,  but without it
+#  we wind up with a lot of .1 logfiles that grow without bound and
+#  are ignored by logrotate, e.g. prometheus-node-exporter.log.1
+#
+# Also somewhat related:
 #
 #    https://bugs.launchpad.net/ubuntu/+source/upstart/+bug/1350782
-#
-#  is ever resolved then this won't need to be puppetized anymore.
 #
 /var/log/upstart/*.log {
         daily
@@ -18,5 +20,5 @@
         compress
         notifempty
         nocreate
-        delaycompress
+        copytruncate
 }
