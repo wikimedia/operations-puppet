@@ -11,4 +11,15 @@ class role::paws_internal::jupyterhub {
         base_path   => '/srv/paws-internal',
         wheels_repo => 'operations/wheels/paws-internal',
     }
+
+    class { '::jupyterhub::static':
+        sitename    => 'paws-internal.wikimedia.org',
+        static_path => '/srv/paws-internal/static',
+        url_prefix  => '/public',
+        ldap_groups => [
+            'cn=ops,ou=groups,dc=wikimedia,dc=org',
+            'cn=researchers,ou=groups,dc=wikimedia,dc=org',
+        ],
+    }
+
 }
