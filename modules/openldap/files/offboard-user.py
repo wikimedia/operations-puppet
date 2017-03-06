@@ -64,6 +64,8 @@ member: {user_dn}
     privileged_groups = ['cn=nda,ou=groups,dc=wikimedia,dc=org',
                          'cn=wmf,ou=groups,dc=wikimedia,dc=org',
                          'cn=ops,ou=groups,dc=wikimedia,dc=org',
+                         'cn=librenms-readers,ou=groups,dc=wikimedia,dc=org',
+                         'cn=grafana-admin,ou=groups,dc=wikimedia,dc=org',
                          'cn=tools.admin,ou=servicegroups,dc=wikimedia,dc=org']
     uid = args[0]
     ldapdata = ldap_conn.search_s(
