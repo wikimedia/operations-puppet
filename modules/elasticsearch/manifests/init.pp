@@ -154,6 +154,7 @@ class elasticsearch(
         ensure => 'link',
         target => $plugins_dir,
         force  => true,
+        require => File[$plugins_dir],
     }
 
     file { '/etc/elasticsearch/elasticsearch.yml':
