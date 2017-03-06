@@ -18,7 +18,6 @@ class role::paws_internal::jupyterhub {
         url_prefix  => '/public',
         ldap_groups => [
             'cn=ops,ou=groups,dc=wikimedia,dc=org',
-            'cn=researchers,ou=groups,dc=wikimedia,dc=org',
         ],
     }
 
