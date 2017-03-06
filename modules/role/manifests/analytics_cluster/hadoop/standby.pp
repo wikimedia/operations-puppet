@@ -8,6 +8,7 @@ class role::analytics_cluster::hadoop::standby {
     }
     require ::role::analytics_cluster::hadoop::client
     include ::role::analytics_cluster::monitoring::disks
+    include ::base::firewall
 
     class { '::cdh::hadoop::namenode::standby': }
 
