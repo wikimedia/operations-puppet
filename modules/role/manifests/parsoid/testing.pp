@@ -49,4 +49,17 @@ class role::parsoid::testing {
         source => 'puppet:///modules/parsoid/parsoid-testing.nginx.conf',
         notify => Service['nginx'],
     }
+
+    ferm::service { 'nginx-parsoid-testing':
+        proto  => 'tcp',
+        port   => 8001,
+        srange => '$PRODUCTION_NETWORKS',
+    }
+
+    # Presented by the @remote links shown on parsoid-tests.wikimedia.org
+    ferm::service { 'parsoid-testing':
+        proto  => 'tcp',
+        port   => 8142,
+        srange => '$PRODUCTION_NETWORKS',
+    }
 }
