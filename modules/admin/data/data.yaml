@@ -2599,7 +2599,7 @@ ldap_only_users:
   thecore:
     ensure: present
     realname: Wes Moran
-    email: wmoran@wikimedia.org
+    email: westonnh@gmail.com
   tnegrin:
     ensure: present
     realname: Toby Negrin
