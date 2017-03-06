@@ -59,7 +59,9 @@ class profile::gerrit::server(
     }
 
     if $bacula != undef and !$slave {
-        backup::set { $bacula: }
+        backup::set { $bacula:
+            jobdefaults => "Hourly-${role::backup::host::day}-${role::backup::host::pool}"
+        }
     }
 
     class { '::gerrit':
