@@ -147,15 +147,6 @@ class elasticsearch(
         java_package => $java_package,
     }
 
-    # Elasticsearch 5 doesn't allow setting the plugin path, we need
-    # to symlink it into place. The directory already exists as part of the
-    # debian package, so we need to force the creation of the symlink.
-    file { '/usr/share/elasticsearch/plugins':
-        ensure => 'link',
-        target => $plugins_dir,
-        force  => true,
-    }
-
     file { '/etc/elasticsearch/elasticsearch.yml':
         ensure  => file,
         owner   => 'root',

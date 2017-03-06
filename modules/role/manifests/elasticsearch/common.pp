@@ -51,10 +51,22 @@ class role::elasticsearch::common(
     package { 'elasticsearch/plugins':
         provider => 'trebuchet',
     }
+    # Elasticsearch 5 doesn't allow setting the plugin path, we need
+    # to symlink it into place. The directory already exists as part of the
+    # debian package, so we need to force the creation of the symlink.
+    file { '/usr/share/elasticsearch/plugins':
+      ensure  => 'link',
+      target  => '/srv/deployment/elasticsearch/plugins/',
+      force   => true,
+      require => Package['elasticsearch/plugins'],
+    }
 
     # Install
     class { '::elasticsearch':
-        require                    => Package['elasticsearch/plugins'],
+        require                    => [
+            Package['elasticsearch/plugins'],
+            File['/usr/share/elasticsearch/plugins'],
+        ],
         # Production elasticsearch needs these plugins to be loaded in order
         # to work properly.  This will keep elasticsearch from starting
         # if these plugins are  not available.
