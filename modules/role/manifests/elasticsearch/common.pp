@@ -56,7 +56,7 @@ class role::elasticsearch::common(
     # debian package, so we need to force the creation of the symlink.
     file { '/usr/share/elasticsearch/plugins':
       ensure  => 'link',
-      target  => '/srv/deployment/elasticsearch/plugins/',
+      target  => '/srv/deployment/elasticsearch/plugins',
       force   => true,
       require => Package['elasticsearch/plugins'],
     }
