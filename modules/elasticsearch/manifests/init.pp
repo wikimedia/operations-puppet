@@ -261,6 +261,7 @@ class elasticsearch(
             File['/etc/default/elasticsearch'],
             File['/usr/share/elasticsearch/plugins'],
             File[$data_dir],
+            File[$plugins_dir],
         ],
     }
 
