@@ -9,6 +9,11 @@ class role::analytics_cluster::hadoop::standby {
     require ::role::analytics_cluster::hadoop::client
     include ::role::analytics_cluster::monitoring::disks
 
+    # Ferm rules use production-specific network definitions
+    if $::realm == 'production' {
+        include ::base::firewall
+    }
+
     class { '::cdh::hadoop::namenode::standby': }
 
     # Use jmxtrans for sending metrics

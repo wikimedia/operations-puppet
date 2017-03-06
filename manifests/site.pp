@@ -59,7 +59,6 @@ node 'analytics1002.eqiad.wmnet' {
         analytics_cluster::druid::hadoop)
 
     include ::standard
-    include ::base::firewall
 }
 
 # This node hosts Oozie and Hive servers,
