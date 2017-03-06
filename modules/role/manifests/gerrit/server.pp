@@ -15,7 +15,9 @@ class role::gerrit::server($ipv4, $ipv6 = undef, $bacula = undef) {
         }
 
         if $bacula != undef {
-            backup::set { $bacula: }
+            backup::set { $bacula:
+                jobdefaults => "Hourly-${role::backup::host::day}-${role::backup::host::pool}"
+            }
         }
 
         interface::ip { 'role::gerrit::server_ipv4':
