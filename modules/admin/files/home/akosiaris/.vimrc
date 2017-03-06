@@ -2,8 +2,10 @@
 
 " Basics {
      set nocompatible " explicitly get out of vi-compatible mode
+     call pathogen#infect()
 "    set noexrc " don't use local version of .(g)vimrc, .exrc
 "    set background=dark " we plan to use a dark background
+     colorscheme solarized
      set cpoptions=aABceFsmq
      "             |||||||||
      "             ||||||||+-- When joining lines, leave the cursor
@@ -58,7 +60,7 @@
 " Vim UI {
 "    set cursorcolumn " highlight the current column
 "    set cursorline " highlight current line
-"    set incsearch " BUT do highlight as you type you
+     set incsearch " BUT do highlight as you type you
                    " search phrase
      set laststatus=2 " always show the status line
      set lazyredraw " do not redraw while running macros
@@ -72,7 +74,8 @@
 "    set nohlsearch " do not highlight searched for phrases
 "    set nostartofline " leave my cursor where it was
     set novisualbell " don't blink
-"   set number " turn on line numbers
+"   set title " update the title of your window
+    set number " turn on line numbers
     set numberwidth=5 " We are good up to 99999 lines
 "    set report=0 " tell us when anything is changed via :...
     set ruler " Always show current positions along the bottom

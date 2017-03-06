@@ -1,1 +1,1 @@
-autocmd BufNewFile,BufReadPost *.sieve setlocal fileformat=dos
+autocmd BufNewFile,BufRead *.sieve setlocal filetype=sieve fileformat=dos
