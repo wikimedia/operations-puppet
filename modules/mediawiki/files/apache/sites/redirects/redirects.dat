@@ -482,3 +482,7 @@ funnel	svn.mediawiki.org	https://phabricator.wikimedia.org/diffusion/
 # rewrite download.wiki(m|p)edia to dumps.wikimedia - T107575
 rewrite	download.wikimedia.org	https://dumps.wikimedia.org
 rewrite	download.wikipedia.org	https://dumps.wikimedia.org
+
+# redirect 2030.wikimedia.org to meta (T158981)
+funnel	2030.wikimedia.org	//meta.wikimedia.org/wiki/Strategy/Wikimedia_movement/2017
+
