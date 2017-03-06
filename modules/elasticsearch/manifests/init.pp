@@ -151,10 +151,9 @@ class elasticsearch(
     # to symlink it into place. The directory already exists as part of the
     # debian package, so we need to force the creation of the symlink.
     file { '/usr/share/elasticsearch/plugins':
-        ensure  => 'link',
-        target  => $plugins_dir,
-        force   => true,
-        require => File[$plugins_dir],
+        ensure => 'link',
+        target => $plugins_dir,
+        force  => true,
     }
 
     file { '/etc/elasticsearch/elasticsearch.yml':
