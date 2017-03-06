@@ -37,6 +37,6 @@ class zuul::monitoring::server (
         from          => '15min',
         percentage    => 30,
         warning       => 90,
-        criticial     => 140,
+        critical      => 140,
     }
 }
