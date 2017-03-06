@@ -26,3 +26,6 @@
   - "secret/common"
   - "private/common"
   - "httpyaml/%{::labsproject}/node/%{::fqdn}"
+:role_hierarchy:
+  - "labs/common"
+  - "common"

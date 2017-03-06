@@ -1,0 +1,5 @@
+# use elasticsearch 5, which is only available in experimental at the moment.
+# once all elasticsearch clusters are upgraded to version 5, we will move
+# elasticsearch to our main repo and remove this configuration
+apt::use_experimental: true
+
