@@ -19,3 +19,4 @@ wikimeda
 (?<!WMF)[^2][[:digit:]]{3}\.codfw\.wmnet
 (?<!WMF)[^3][[:digit:]]{3}\.(esams|knams)\.wmnet
 (?<!WMF)[^4][[:digit:]]{3}\.ulsfo\.wmnet
+criticial
