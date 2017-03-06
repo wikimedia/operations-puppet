@@ -2537,10 +2537,18 @@ ldap_only_users:
     ensure: present
     realname: Megan Hernandez
     email: mhernandez@wikimedia.org
+  multichill:
+    ensure: present
+    realname: Maarten Dammers
+    email: maarten@mdammers.nl
   nirzar:
     ensure: present
     realname: Nirzar Pangarkar
     email: npangarkar@wikimedia.org
+  parent5446:
+    ensure: present
+    realname: Tyler Romeo
+    email: tylerromeo@gmail.com
   phedenskog:
     ensure: present
     realname: Peter Hedenskog
