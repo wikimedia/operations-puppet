@@ -94,10 +94,10 @@ class phabricator::vcs (
 
     if $::initsystem == 'upstart' {
         $init_file = '/etc/init/ssh-phab.conf'
-        $init_template = 'phabricator/initscripts/sshd-phab.conf.erb'
+        $init_template = 'phabricator/initscripts/ssh-phab.upstart.erb'
     } else {
         $init_file = '/etc/systemd/system/ssh-phab.service'
-        $init_template = 'phabricator/initscripts/sshd-phab.service.erb'
+        $init_template = 'phabricator/initscripts/ssh-phab.systemd.erb'
     }
 
     file { $init_file:
