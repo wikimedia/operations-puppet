@@ -1,0 +1,28 @@
+# Phabricator daemons init script
+# You will need to change PHD_HOME to suit your installation
+description     "PHABRICATOR_ENV=phd"
+author          "Wikimedia Foundation"
+
+start on started mysql
+stop on runlevel [!2345]
+
+respawn
+respawn limit 10 5
+oom never
+
+kill timeout 86400 #If it's given a stop order, this is how long it will take to stop.
+
+setuid phd
+setgid phd
+
+env PHD_HOME=/srv/phab/phabricator/bin
+
+pre-start script
+    # Start phd
+    exec /srv/phab/phabricator/bin/phd start --force
+end script
+
+post-stop script
+    # Stop phd
+    exec /srv/phab/phabricator/bin/phd stop --force
+end script
