@@ -13,7 +13,7 @@ class role::authdns::server {
         { interface => 'lo' }
     )
 
-    class { 'authdns':
+    class { 'authdns::ns':
         nameservers        => $role::authdns::data::nameservers,
         gitrepo            => $role::authdns::data::gitrepo,
         lvs_services       => hiera('lvs::configuration::lvs_services'),
