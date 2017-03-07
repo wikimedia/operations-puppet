@@ -27,12 +27,13 @@ class kartotherian(
     $cassandra_servers,
     $cassandra_pass,
     $pgsql_pass,
-    $conf_sources      = 'sources.prod.yaml',
-    $contact_groups    = 'admins',
-    $port              = 6533,
-    $num_workers       = 'ncpu',
+    $conf_sources   = 'sources.prod.yaml',
+    $contact_groups = 'admins',
+    $port           = 6533,
+    $num_workers    = 'ncpu',
     $cassandra_user = 'kartotherian',
-    $pgsql_user = 'kartotherian',
+    $pgsql_user     = 'kartotherian',
+    $deployment     = 'scap3',
 ) {
 
     validate_array($cassandra_servers)
@@ -41,7 +42,7 @@ class kartotherian(
 
     service::node { 'kartotherian':
         port              => $port,
-        deployment        => 'scap3',
+        deployment        => $deployment,
         deployment_config => true,
         deployment_vars   => {
             geoshapes_user     => $pgsql_user,

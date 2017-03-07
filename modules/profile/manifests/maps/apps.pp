@@ -14,6 +14,7 @@ class profile::maps::apps {
     $redis_server = hiera('profile::maps::apps::redis_server')
     $conf_sources = hiera('profile::maps::apps::conf_sources')
     $storage_id = hiera('profile::maps::apps::storage_id')
+    $deployment = hiera('profile::maps::apps::deployment', 'scap3') # settign deployment to 'git' is only useful for labs
 
 
     $contact_groups = 'admins,team-interactive'
@@ -25,6 +26,7 @@ class profile::maps::apps {
         redis_server      => $redis_server,
         conf_sources      => $conf_sources,
         contact_groups    => $contact_groups,
+        deployment        => $deployment,
     }
 
     class { '::tilerator::ui':
@@ -35,6 +37,7 @@ class profile::maps::apps {
         conf_sources      => $conf_sources,
         contact_groups    => $contact_groups,
         storage_id        => $storage_id,
+        deployment        => $deployment,
         require           => Class['::tilerator'],
     }
 
@@ -44,6 +47,7 @@ class profile::maps::apps {
         pgsql_pass        => $pgsql_kartotherian_pass,
         conf_sources      => $conf_sources,
         contact_groups    => $contact_groups,
+        deployment        => $deployment,
     }
 
 }

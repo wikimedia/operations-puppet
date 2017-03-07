@@ -1,10 +1,10 @@
 checkpoint_completion_target = 0.9
-effective_cache_size = 22GB
-work_mem = 192MB
+effective_cache_size = <%= @effective_cache_size %>
+work_mem = <%= @work_mem %>
 wal_buffers = 8MB
-shared_buffers = 7680MB
+shared_buffers = <%= @shared_buffers %>
 max_connections = 120
-track_activity_query_size = 16384
+track_activity_query_size = <%= @track_activity_query_size %>
 
 # Minimize DB bloat
 autovacuum_vacuum_scale_factor = 0.05
@@ -14,8 +14,8 @@ autovacuum_analyze_scale_factor = 0.02
 cpu_tuple_cost = 0.05
 
 # rendering DBs involve large index builds, but you don't want to have autovacuum take up that much memory
-maintenance_work_mem = 4GB
-autovacuum_work_mem = 1GB
+maintenance_work_mem = <%= @maintenance_work_mem %>
+autovacuum_work_mem = <%= @autovacuum_work_mem %>
 
 # increase WAL size to correspond with large data loads (this should be enabled when migrating to postgresql >= 9.5)
 # max_wal_size = 4GB

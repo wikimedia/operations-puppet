@@ -30,6 +30,7 @@ class tilerator(
     $cassandra_servers,
     $conf_sources      = 'sources.prod.yaml',
     $contact_groups    = 'admins',
+    $deployment        = 'scap3',
 ) {
 
     validate_array($cassandra_servers)
@@ -45,7 +46,7 @@ class tilerator(
         port              => 6534,
         deployment_config => true,
         no_workers        => $::processorcount / 2,
-        deployment        => 'scap3',
+        deployment        => $deployment,
         deployment_vars   => {
             entrypoint         => '""',
             conf_sources       => $conf_sources,

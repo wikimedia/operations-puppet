@@ -78,6 +78,7 @@ class tilerator::ui(
     $delete_empty   = true,
     $osmosis_dir    = '/srv/osmosis',
     $expire_dir     = '/srv/osm_expire/',
+    $deployment     = 'scap3',
 ) {
     $statefile = "${statefile_dir}/expire.state"
     $cassandra_user = 'tileratorui'
@@ -88,7 +89,7 @@ class tilerator::ui(
         deployment_config => true,
         no_workers        => 0, # 0 on purpose to only have one instance running
         repo              => 'tilerator/deploy',
-        deployment        => 'scap3',
+        deployment        => $deployment,
         deployment_vars   => {
             entrypoint         => '""',
             conf_sources       => $conf_sources,
