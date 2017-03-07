@@ -15,5 +15,14 @@ discovery-map => {
         2620:0:863::/48   => [codfw, eqiad], # ulsfo
         198.73.209.0/24   => [codfw, eqiad], # WMF OIT
         2620:62:c000::/48 => [codfw, eqiad], # WMF OIT
+        # Wikimedia 10/8 private space
+        10.2.1.0/24       => [codfw, eqiad], # codfw LVS
+        10.2.2.0/24       => [eqiad, codfw], # eqiad LVS
+        10.2.3.0/24       => [eqiad, codfw], # esams LVS
+        10.2.4.0/24       => [codfw, eqiad], # ulsfo LVS
+        10.20.0.0/23      => [eqiad, codfw], # esams private/mgmt
+        10.64.0.0/12      => [eqiad, codfw], # eqiad private/mgmt
+        10.128.0.0/16     => [codfw, eqiad], # ulsfo private/mgmt
+        10.192.0.0/12     => [codfw, eqiad], # codfw private/mgmt
     }
 }
