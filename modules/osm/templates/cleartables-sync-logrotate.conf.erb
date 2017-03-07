@@ -1,0 +1,15 @@
+#####################################################################
+### THIS FILE IS MANAGED BY PUPPET
+#####################################################################
+
+<%= @log_dir %>/planet-update.log {
+  daily
+  notifempty
+  maxage 30
+  rotate 5
+  dateext
+  compress
+  delaycompress
+  missingok
+  nocreate
+}
