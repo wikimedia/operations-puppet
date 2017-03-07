@@ -23,6 +23,7 @@ role::labs::nfs::misc::maps_project_internal_ips:
   - '10.68.16.125'
   - '10.68.17.33'
   - '10.68.16.70'
+  - '10.68.20.112'
 debdeploy::grains:
   debdeploy-labsnfs:
     value: standard
