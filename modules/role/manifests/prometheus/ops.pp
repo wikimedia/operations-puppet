@@ -267,13 +267,55 @@ class role::prometheus::ops {
         port             => 8000,
     }
 
+    $pdu_jobs = [
+      {
+        'job_name'        => 'pdu',
+        'metrics_path'        => '/snmp',
+        'params' => {
+           'module' => ["pdu_${::site}"],
+         },
+        'file_sd_configs' => [
+          { 'files' => [ "${targets_path}/pdu_*.yaml" ]}
+        ],
+        $netmon_snmp_relabel_config,
+      },
+    ]
+
+    $netmon_snmp_relabel_config = {
+      'relabel_configs' => [
+         { 'source_labels' => ['__address__'],
+           'target_label' => '__param_target',
+         },
+         { 'source_labels' => ['__param_target'],
+           'target_label' => 'instance',
+         },
+         { 'source_labels' => ['__address__'],
+           'target_label' => hiera('role::prometheus::snmp_exporter::address'),
+         },
+       ]
+    }
+
+    $pdu_targets = [
+      {
+        'targets': hiera('role::prometheus::snmp_exporter::pdu', [])
+      },
+    ]
+
+    file { "${targets_path}/pdu_${::site}.yaml":
+        ensure  => present,
+        mode    => '0444',
+        owner   => 'root',
+        group   => 'root',
+        content => ordered_yaml($pdu_targets),
+    }
+
     prometheus::server { 'ops':
         storage_encoding     => '2',
         listen_address       => '127.0.0.1:9900',
         storage_retention    => $storage_retention,
         scrape_configs_extra => array_concat(
             $mysql_jobs, $varnish_jobs, $memcached_jobs, $hhvm_jobs,
-            $apache_jobs, $etcd_jobs, $etcdmirror_jobs
+            $apache_jobs, $etcd_jobs, $etcdmirror_jobs, $pdu_jobs
         ),
         global_config_extra  => $config_extra,
     }
