@@ -1,5 +1,7 @@
 define facilities::monitor_pdu_3phase(
     $ip,
+    $row,
+    $site,
     $breaker  = '30',
     $redundant= true
 ) {
