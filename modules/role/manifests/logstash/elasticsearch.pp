@@ -31,6 +31,7 @@ class role::logstash::elasticsearch {
           Package['elasticsearch/plugins'],
           File['/usr/share/elasticsearch/plugins'],
       ],
+      plugins_dir => '/srv/deployment/elasticsearch/plugins',
     }
 
     $logstash_nodes = hiera('logstash::cluster_hosts')

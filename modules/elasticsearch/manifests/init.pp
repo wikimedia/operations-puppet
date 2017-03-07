@@ -12,7 +12,6 @@
 #       smaller.
 # - $data_dir: Where elasticsearch stores its data.
 #       Default: /srv/elasticsearch
-# - $plugins_dir: value for path.plugins.  Defaults to /srv/deployment/elasticsearch/plugins.
 # - $plugins_mandatory: list of mandatory plugins.  Defaults to undef.
 # - $minimum_master_nodes:  how many master nodes must be online for this node
 #       to believe that the Elasticsearch cluster is functioning correctly.
@@ -77,7 +76,6 @@ class elasticsearch(
     $cluster_name,
     $heap_memory = '2G',
     $data_dir = '/srv/elasticsearch',
-    $plugins_dir = '/srv/deployment/elasticsearch/plugins',
     $plugins_mandatory = undef,
     $minimum_master_nodes = 1,
     $master_eligible = true,
