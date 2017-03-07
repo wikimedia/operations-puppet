@@ -4,13 +4,15 @@
 define facilities::monitor_pdu_service(
     $host,
     $ip,
+    $row,
+    $site,
     $tower,
     $infeed,
     $breaker  = '30',
     $redundant= true
 ) {
 
-    include ::passwords::nagios::snmp
+    include ::passwords::network
 
     $servertech_tree = '.1.3.6.1.4.1.1718'
     $infeedload      = '.3.2.2.1.7'
@@ -27,11 +29,16 @@ define facilities::monitor_pdu_service(
         $crit_hi = $breaker * 0.8 * 100
     }
 
+    $snmp_community = $site ? {
+        'codfw' => $passwords::network::snmp_ro_community_pdus_codfw,
+        default => $passwords::network::snmp_ro_community,
+    }
+
     @monitoring::service { $title:
         host          => $host,
         group         => 'pdus',
         description   => $title,
-        check_command => "check_snmp_generic!${passwords::nagios::snmp::pdu_snmp_pass}!${oid}!${title}!${warn_hi}!${crit_hi}",
+        check_command => "check_snmp_generic!${snmp_community}!${oid}!${title}!${warn_hi}!${crit_hi}",
     }
 
 }
