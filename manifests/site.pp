@@ -2523,7 +2523,7 @@ node 'ruthenium.eqiad.wmnet' {
     role(test::system,
         parsoid::testing, parsoid::rt_server, parsoid::rt_client,
         parsoid::vd_server, parsoid::vd_client)
-
+    include ::base::firewall
 }
 
 # cluster management (salt master, cumin master)
