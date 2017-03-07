@@ -35,11 +35,23 @@ fi
 echo "Using $TESTDIR as the output working directory (gdnsd chroot)"
 mkdir -p $TESTDIR/etc/zones
 
+if [ ! -e /var/lib/gdnsd/testconfig/config ]; then
+    die "main config file not found, system misconfigured?"
+fi
+if [ ! -e /var/lib/gdnsd/testconfig/discovery-geo-resources ]; then
+    die "discovery-geo-resources not found, system misconfigured?"
+fi
+if [ ! -e /var/lib/gdnsd/testconfig/discovery-metafo-resources ]; then
+    die "discovery-metafo-resources not found, system misconfigured?"
+fi
+if [ ! -e /var/lib/gdnsd/testconfig/discovery-states ]; then
+    die "discovery-states not found, system misconfigured?"
+fi
+if [ ! -e /var/lib/gdnsd/testconfig/discovery-map ]; then
+    die "discovery-map not found, system misconfigured?"
+fi
 if [ ! -e "$WORKINGDIR/templates" ]; then
     die "templates not found, system misconfigured?"
-fi
-if [ ! -e "$WORKINGDIR/config-geo-test" ]; then
-    die "config-geo-test not found, system misconfigured?"
 fi
 if [ ! -e "$WORKINGDIR/geo-maps" ]; then
     die "geo-maps not found, system misconfigured?"
@@ -52,7 +64,11 @@ echo "Generating zonefiles from zone templates"
 authdns-gen-zones $WORKINGDIR/templates $TESTDIR/etc/zones
 
 echo "Generating gdnsd config"
-cp -f $WORKINGDIR/config-geo-test $TESTDIR/etc/config
+cp -f /var/lib/gdnsd/testconfig/config $TESTDIR/etc/
+cp -f /var/lib/gdnsd/testconfig/discovery-geo-resources $TESTDIR/etc/
+cp -f /var/lib/gdnsd/testconfig/discovery-metafo-resources $TESTDIR/etc/
+cp -f /var/lib/gdnsd/testconfig/discovery-states $TESTDIR/etc/
+cp -f /var/lib/gdnsd/testconfig/discovery-map $TESTDIR/etc/
 cp -f $WORKINGDIR/geo-maps $TESTDIR/etc/geo-maps
 cp -f $WORKINGDIR/geo-resources $TESTDIR/etc/geo-resources
 
