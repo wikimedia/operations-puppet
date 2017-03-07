@@ -1234,7 +1234,6 @@ node 'graphite1001.eqiad.wmnet' {
 # graphite test machine, currently with SSD caching + spinning disks
 node 'graphite1002.eqiad.wmnet' {
     role(test::system)
-    include ::base::firewall
 }
 
 # graphite additional machine, for additional space
@@ -1923,7 +1922,6 @@ node 'mendelevium.eqiad.wmnet' {
 # misc. test server, keep (T156208)
 node 'multatuli.wikimedia.org' {
     role(test::system)
-    include ::base::firewall
 
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
@@ -2528,7 +2526,6 @@ node 'ruthenium.eqiad.wmnet' {
     role(test::system,
         parsoid::testing, parsoid::rt_server, parsoid::rt_client,
         parsoid::vd_server, parsoid::vd_client)
-    include ::base::firewall
 }
 
 # cluster management (salt master, cumin master)
@@ -2732,7 +2729,6 @@ node 'tin.eqiad.wmnet', 'mira.codfw.wmnet' {
 # test system for performance team (T117888)
 node 'tungsten.eqiad.wmnet' {
     role(test::system, xhgui::app)
-    include ::base::firewall
 }
 
 # replaced magnesium (RT) (T119112 T123713)
