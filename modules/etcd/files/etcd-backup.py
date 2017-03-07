@@ -90,7 +90,7 @@ def main():
     parser.add_argument('cluster_name', help="Name of the cluster")
     parser.add_argument('backup_dir', help="Backup directory (full path)")
     parser.add_argument(
-        '--keep', default=7,
+        '--keep', type=int, default=7,
         help="Number of old backups to keep")
     args = parser.parse_args()
     rotate_logs(args.cluster_name, args.backup_dir, args.keep)
