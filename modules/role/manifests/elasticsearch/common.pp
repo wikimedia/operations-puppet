@@ -54,9 +54,10 @@ class role::elasticsearch::common(
     # Elasticsearch 5 doesn't allow setting the plugin path, we need
     # to symlink it into place. The directory already exists as part of the
     # debian package, so we need to force the creation of the symlink.
+    $plugins_dir = '/srv/deployment/elasticsearch/plugins'
     file { '/usr/share/elasticsearch/plugins':
       ensure  => 'link',
-      target  => '/srv/deployment/elasticsearch/plugins',
+      target  => $plugins_dir,
       force   => true,
       require => Package['elasticsearch/plugins'],
     }
@@ -75,6 +76,7 @@ class role::elasticsearch::common(
             'extra',
             'analysis-icu',
         ],
+        plugins_dir                => $plugins_dir,
         # Let apifeatureusage create their indices
         auto_create_index          => '+apifeatureusage-*,-*',
         # Production can get a lot of use out of the filter cache.
