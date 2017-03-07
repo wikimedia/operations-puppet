@@ -20,14 +20,14 @@ class statistics::rsync::mediawiki {
 
     # Search request logs from fluorine
     statistics::rsync_job { 'CirrusSearchUserTesting':
-        source         => 'fluorine.eqiad.wmnet::udp2log/archive/CirrusSearchUserTesting.*.gz',
+        source         => 'mwlog1001.eqiad.wmnet::udp2log/archive/CirrusSearchUserTesting.*.gz',
         destination    => "${working_path}/mw-log/archive/CirrusSearchUserTesting",
         retention_days => $retention_days,
     }
 
     # Api logs from fluorine
     statistics::rsync_job { 'mw-api':
-        source         => 'fluorine.eqiad.wmnet::udp2log/archive/api.log-*.gz',
+        source         => 'mwlog1001.eqiad.wmnet::udp2log/archive/api.log-*.gz',
         destination    => "${working_path}/mw-log/archive/api",
         # Retention of 30 days to save disk space
         retention_days => 30,
