@@ -9,5 +9,9 @@ sub cluster_fe_pass { }
 sub cluster_fe_backend_fetch { }
 sub cluster_fe_backend_response_early { }
 sub cluster_fe_backend_response { }
-sub cluster_fe_deliver { }
+sub cluster_fe_deliver {
+	// Similarly to upload, maps does not serve authenticated requests. Make it
+	// cookie-free.
+	unset resp.http.Set-Cookie;
+}
 sub cluster_fe_err_synth { }

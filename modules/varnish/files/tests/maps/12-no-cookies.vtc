@@ -1,0 +1,22 @@
+varnishtest "Strip cookies"
+
+server s1 {
+    rxreq
+    txresp -hdr "Set-Cookie: foo" -hdr "Set-Cookie: bar"
+} -start
+
+varnish v1 -arg "-p vcc_err_unref=false" -vcl+backend {
+    backend vtc_backend {
+        .host = "${s1_addr}"; .port = "${s1_port}";
+    }
+
+    include "/usr/share/varnish/tests/wikimedia_maps-frontend.vcl";
+} -start
+
+client c1 {
+    txreq -url "/test" -hdr "X-Forwarded-Proto: https" -hdr "Host: maps.wikimedia.org"
+    rxresp
+
+    expect resp.status == 200
+    expect resp.http.Set-Cookie == <undef>
+} -run
