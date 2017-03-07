@@ -1,14 +1,29 @@
 # Sets up a maps server master
+#
+# == Parameters:
+#
+# [*cleartables*]
+#   Set to `true` to use the clear tables schema (https://github.com/ClearTables/ClearTables)
+#
 class role::maps::master(
     $planet_sync_period = 'day', # Remove this as soon as we get down to minute
     $planet_sync_hour = '1',
     $planet_sync_minute = '27',
     $postgres_tile_storage = false,
+    $cleartables = false,
 ) {
+
+    $db_name = $cleartables ? {
+        true    => 'ct',
+        default => 'gis',
+    }
+
     include ::postgresql::master
     include ::role::maps::postgresql_common
     include ::osm
-    include ::osm::import_waterlines
+    class { 'osm::import_waterlines':
+        database => $db_name,
+    }
 
     system::role { 'role::maps::master':
         ensure      => 'present',
@@ -31,8 +46,8 @@ class role::maps::master(
     postgresql::user { 'kartotherian':
         user     => 'kartotherian',
         password => $kartotherian_pass,
-        database => 'gis',
-        require  => Postgresql::Spatialdb['gis'],
+        database => $db_name,
+        require  => Postgresql::Spatialdb[$db_name],
     }
 
     role::maps::tilerator_user { 'localhost':
@@ -51,20 +66,20 @@ class role::maps::master(
     postgresql::user { 'tileratorui':
         user     => 'tileratorui',
         password => $tileratorui_pass,
-        database => 'gis',
-        require  => Postgresql::Spatialdb['gis'],
+        database => $db_name,
+        require  => Postgresql::Spatialdb[$db_name],
     }
     postgresql::user { 'osmimporter':
         user     => 'osmimporter',
         password => $osmimporter_pass,
-        database => 'gis',
-        require  => Postgresql::Spatialdb['gis'],
+        database => $db_name,
+        require  => Postgresql::Spatialdb[$db_name],
     }
     postgresql::user { 'osmupdater':
         user     => 'osmupdater',
         password => $osmupdater_pass,
-        database => 'gis',
-        require  => Postgresql::Spatialdb['gis'],
+        database => $db_name,
+        require  => Postgresql::Spatialdb[$db_name],
     }
 
     # Grants
@@ -82,7 +97,7 @@ class role::maps::master(
     }
 
     # DB setup
-    postgresql::spatialdb { 'gis':
+    postgresql::spatialdb { $db_name:
         require => Class['::postgresql::postgis'],
     }
 
@@ -126,16 +141,25 @@ class role::maps::master(
         ],
     }
 
-    osm::planet_sync { 'gis':
-        ensure                => present,
-        flat_nodes            => true,
-        expire_levels         => '15',
-        num_threads           => 4,
-        pg_password           => $osmupdater_pass,
-        period                => $planet_sync_period,
-        hour                  => $planet_sync_hour,
-        minute                => $planet_sync_minute,
-        postreplicate_command => 'sudo -u tileratorui /usr/local/bin/notify-tilerator',
+    if $cleartables {
+        osm::cleartables_sync { $db_name:
+            ensure      => present,
+            pg_password => $osmupdater_pass,
+            hour        => $planet_sync_hour,
+            minute      => $planet_sync_minute,
+        }
+    } else {
+        osm::planet_sync { $db_name:
+            ensure                => present,
+            flat_nodes            => true,
+            expire_levels         => '15',
+            num_threads           => 4,
+            pg_password           => $osmupdater_pass,
+            period                => $planet_sync_period,
+            hour                  => $planet_sync_hour,
+            minute                => $planet_sync_minute,
+            postreplicate_command => 'sudo -u tileratorui /usr/local/bin/notify-tilerator',
+        }
     }
 
     # Cassandra grants
