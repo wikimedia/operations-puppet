@@ -8,8 +8,8 @@ Type=forking
 User=phd
 Group=phd
 Environment="PHABRICATOR_ENV=phd"
-ExecStartPre=-/usr/bin/mkdir /var/run/phd
-ExecStartPre=/usr/bin/chown -R phd:phd /var/run/phd/
+ExecStartPre=-/bin/mkdir /var/run/phd
+ExecStartPre=/bin/chown -R phd:phd /var/run/phd/
 ExecStart=/srv/phab/phabricator/bin/phd start
 ExecStop=/srv/phab/phabricator/bin/phd stop
 RemainAfterExit=yes
