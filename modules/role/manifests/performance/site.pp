@@ -15,6 +15,12 @@ class role::performance::site {
         endpoint => 'tcp://eventlogging.eqiad.wmnet:8600',
     }
 
+    file { '/srv/org':
+        ensure => directory,
+        owner  => 'root',
+        group  => 'root',
+    }
+
     file { '/srv/org/wikimedia':
         ensure => directory,
         owner  => 'www-data',
