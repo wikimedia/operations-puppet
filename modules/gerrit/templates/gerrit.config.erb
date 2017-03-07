@@ -1,56 +1,7 @@
-[gerrit]
-    basePath = <%= @git_dir %>
-    canonicalWebUrl = <%= @url %>
-    reportBugUrl = https://phabricator.wikimedia.org/maniphest/task/create/?projects=PHID-PROJ-lc5rwomzjp6fmcdpbw43
-    serverId = e9e9afe9-4712-486d-8885-f54b72dd1951
-[core]
-    packedGitOpenFiles = 4096
-    packedGitLimit = 2g
-    packedGitWindowSize = 16k
-    streamFileThreshold = 100m
-    useRecursiveMerge = true
-[database]
-    type = mysql
-    hostname = <%= @db_host %>
-    database = <%= @db_name %>
-    username = <%= @db_user %>
-    url = jdbc:mysql://<%= @db_host %>/<%= @db_name %>?characterSetResults=utf8&characterEncoding=utf8&connectionCollation=utf8_unicode_ci
 [auth]
     type = LDAP
     cookieSecure = true
     registerUrl = https://wikitech.wikimedia.org/w/index.php?title=Special:UserLogin&returnto=Help%3AGetting+Started&type=signup
-[ldap]
-    server = <% @ldap_hosts.each do |ldap_host| %>ldaps://<%= ldap_host %> <% end %>
-    accountBase = ou=people,<%= @ldap_base_dn %>
-    accountPattern = (&(objectClass=person)(cn=${username}))
-    accountFullName = cn
-    groupBase = ou=groups,<%= @ldap_base_dn %>
-    groupMemberPattern = (&(objectClass=groupOfNames)(member=${dn}))
-    groupScope = one
-    # Fixes T152640
-    localUsernameToLowerCase = true
-[sendemail]
-    includeDiff = true
-    smtpServerPort = 25
-    connectTimeout = 1 min
-    smtpServer = <%= @mail_smarthost[0] %>
-[container]
-    user = gerrit2
-    javaHome = <%= @java_home %>
-    javaOptions = <% @java_options.each do |jvm_opt| %><%= jvm_opt %> <% end %>
-    heapLimit = <%= @heap_limit %>
-    slave = <%= @slave %>
-[sshd]
-    listenAddress = *:29418
-    threads = 8
-    batchThreads = 2
-    idleTimeout = 864000
-[httpd]
-    listenUrl = proxy-https://127.0.0.1:8080/r/
-    maxQueued = 500
-    minThreads = 10
-    maxThreads = 60
-    maxWait = 5 min
 [cache]
     directory = cache
 [cache "ldap_groups_byinclude"]
@@ -65,6 +16,69 @@
     maxAge = 90 days
     memoryLimit = 2048
     diskLimit = 256m
+[changeCleanup]
+    # Not actually used, but Gerrit complains if unset
+    interval = 1 week
+[changeMerge]
+    test = true
+    checkFrequency = 0
+[commentlink "bugzilla"]
+    match = "\\b[bB][uU][gG]\\:?\\s+#?(\\d+)\\b"
+    link = https://bugzilla.wikimedia.org/$1
+[commentlink "changeid"]
+    match = \\b(I[0-9a-f]{7,40})\\b
+    link = "#/q/$1"
+[commentlink "ci-test-result"]
+    match = <li>([^ ]+) (<a href=\"https://integration\\.wikimedia\\.org/ci/[a-zA-Z0-9/_.-]+\" target=\"_blank\" rel=\"nofollow\">)[^<]+</a> : ([a-zA-Z_]+)([^<]*)</li>
+    html = <li class=\"ci_comment_test\"><span class=\"ci_comment_test_name\">$2$1</a></span> <span class=\"ci_comment_test_result\"><span class=\"ci_result_$3\">$3</span>$4</span></li>
+[commentlink "codereview"]
+    match = \\br(\\d+)\\b
+    link = https://phabricator.wikimedia.org/rSVN$1
+[commentlink "commit"]
+    match = (^|\\s|[:,!?\\(\\[\\{])([0-9a-f]{7,40})\\b
+    html = "$1<a href=\"#/q/$2\">$2</a>"
+[commentlink "cve"]
+    match = \\b(CVE\\-\\d{4}\\-\\d+)\\b
+    link = https://cve.mitre.org/cgi-bin/cvename.cgi?name=$1
+[commentlink "its-phabricator"]
+    # $1 must hold the bug number because of the notification bots that are using this.
+    match = "\\bT(\\d+)(#\\d+)?\\b(?![#\"]|</a>)"
+    link = https://phabricator.wikimedia.org/T$1$2
+[commentlink "mingle-analytics"]
+    match = "\\b([aA]nalytics\\s*[:-]?\\s*[cC]ard|[cC]ard\\s*[:-]?\\s*[aA]nalytics)\\s*\\#?\\s*(\\d+)\\b"
+    link = https://wikimedia.mingle.thoughtworks.com/projects/analytics/cards/$2
+[commentlink "rt"]
+    match = "\\b[rR][tT]\\:?\\s+#?(\\d+)\\b"
+    link = https://rt.wikimedia.org/Ticket/Display.html?id=$1
+[commentlink "scid"]
+    match = "\\b[sS][cC][iI][dD]\\:?\\s+#?(\\d+)\\b"
+    link = https://meta.wikimedia.org/w/index.php?oldid=$1
+[commitmessage]
+    maxSubjectLength = 100
+    maxLineLength = 120
+[container]
+    user = gerrit2
+    javaHome = <%= @java_home %>
+    javaOptions = <% @java_options.each do |jvm_opt| %><%= jvm_opt %> <% end %>
+    heapLimit = <%= @heap_limit %>
+    slave = <%= @slave %>
+[core]
+    packedGitOpenFiles = 4096
+    packedGitLimit = 2g
+    packedGitWindowSize = 16k
+    streamFileThreshold = 100m
+    useRecursiveMerge = true
+[database]
+    type = mysql
+    hostname = <%= @db_host %>
+    database = <%= @db_name %>
+    username = <%= @db_user %>
+    url = jdbc:mysql://<%= @db_host %>/<%= @db_name %>?characterSetResults=utf8&characterEncoding=utf8&connectionCollation=utf8_unicode_ci
+[gerrit]
+    basePath = <%= @git_dir %>
+    canonicalWebUrl = <%= @url %>
+    reportBugUrl = https://phabricator.wikimedia.org/maniphest/task/create/?projects=PHID-PROJ-lc5rwomzjp6fmcdpbw43
+    serverId = e9e9afe9-4712-486d-8885-f54b72dd1951
 [gitweb]
     url = https://phabricator.wikimedia.org
     type = custom
@@ -77,39 +91,34 @@
     linkname = diffusion
     linkDrafts = true
     urlEncode = false
-[user]
-    email = gerrit@wikimedia.org
-[commentlink "changeid"]
-    match = \\b(I[0-9a-f]{7,40})\\b
-    link = "#/q/$1"
-[commentlink "commit"]
-    match = (^|\\s|[:,!?\\(\\[\\{])([0-9a-f]{7,40})\\b
-    html = "$1<a href=\"#/q/$2\">$2</a>"
-[commentlink "bugzilla"]
-    match = "\\b[bB][uU][gG]\\:?\\s+#?(\\d+)\\b"
-    link = https://bugzilla.wikimedia.org/$1
-[commentlink "codereview"]
-    match = \\br(\\d+)\\b
-    link = https://phabricator.wikimedia.org/rSVN$1
-[commentlink "rt"]
-    match = "\\b[rR][tT]\\:?\\s+#?(\\d+)\\b"
-    link = https://rt.wikimedia.org/Ticket/Display.html?id=$1
-[commentlink "scid"]
-    match = "\\b[sS][cC][iI][dD]\\:?\\s+#?(\\d+)\\b"
-    link = https://meta.wikimedia.org/w/index.php?oldid=$1
-[commentlink "cve"]
-    match = \\b(CVE\\-\\d{4}\\-\\d+)\\b
-    link = https://cve.mitre.org/cgi-bin/cvename.cgi?name=$1
-[commentlink "mingle-analytics"]
-    match = "\\b([aA]nalytics\\s*[:-]?\\s*[cC]ard|[cC]ard\\s*[:-]?\\s*[aA]nalytics)\\s*\\#?\\s*(\\d+)\\b"
-    link = https://wikimedia.mingle.thoughtworks.com/projects/analytics/cards/$2
-[commentlink "ci-test-result"]
-    match = <li>([^ ]+) (<a href=\"https://integration\\.wikimedia\\.org/ci/[a-zA-Z0-9/_.-]+\" target=\"_blank\" rel=\"nofollow\">)[^<]+</a> : ([a-zA-Z_]+)([^<]*)</li>
-    html = <li class=\"ci_comment_test\"><span class=\"ci_comment_test_name\">$2$1</a></span> <span class=\"ci_comment_test_result\"><span class=\"ci_result_$3\">$3</span>$4</span></li>
-[commentlink "its-phabricator"]
-    # $1 must hold the bug number because of the notification bots that are using this.
-    match = "\\bT(\\d+)(#\\d+)?\\b(?![#\"]|</a>)"
-    link = https://phabricator.wikimedia.org/T$1$2
+[httpd]
+    listenUrl = proxy-https://127.0.0.1:8080/r/
+    maxQueued = 500
+    minThreads = 10
+    maxThreads = 60
+    maxWait = 5 min
+[index]
+    type = LUCENE
+[its-phabricator]
+    url = https://phabricator.wikimedia.org/
+    username = gerritbot
+    commentOnChangeAbandoned = false
+    commentOnChangeMerged = false
+    commentOnChangeRestored = false
+    commentOnChangeCreated = false
+    commentOnCommentAdded = false
+    commentOnPatchSetCreated = false
+    commentOnRefUpdatedGitWeb = false
+[ldap]
+    server = <% @ldap_hosts.each do |ldap_host| %>ldaps://<%= ldap_host %> <% end %>
+    accountBase = ou=people,<%= @ldap_base_dn %>
+    accountPattern = (&(objectClass=person)(cn=${username}))
+    accountFullName = cn
+    groupBase = ou=groups,<%= @ldap_base_dn %>
+    groupMemberPattern = (&(objectClass=groupOfNames)(member=${dn}))
+    groupScope = one
+    # Fixes T152640
+    localUsernameToLowerCase = true
 [mimetype "application/javascript"]
     safe = true
 [mimetype "application/x-php"]
@@ -120,9 +129,9 @@
     safe = true
 [mimetype "image/jpeg"]
     safe = true
-[mimetype "image/tiff"]
-    safe = true
 [mimetype "image/png"]
+    safe = true
+[mimetype "image/tiff"]
     safe = true
 [mimetype "image/x-icon"]
     safe = true
@@ -134,14 +143,28 @@
     safe = true
 [mimetype "text/x-php"]
     safe = true
+[pack]
+    deltacompression = true
+[receive]
+    maxObjectSizeLimit = 100m
+    maxBatchChanges = 10
+    enableSignedPush = false
 [repository "*"]
     ownerGroup = Project and Group Creators
 [repository "mediawiki/*"]
     ownerGroup = mediawiki
 [repository "operations/*"]
     ownerGroup = ldap/ops
-[pack]
-    deltacompression = true
+[sendemail]
+    includeDiff = true
+    smtpServerPort = 25
+    connectTimeout = 1 min
+    smtpServer = <%= @mail_smarthost[0] %>
+[sshd]
+    listenAddress = *:29418
+    threads = 8
+    batchThreads = 2
+    idleTimeout = 864000
 [theme]
     backgroundColor = fff
     topMenuColor = fff
@@ -149,10 +172,6 @@
     selectionColor = d8edf9
     tableOddRowColor = f7f7f7
     tableEvenRowColor = fff
-[trackingid "rt"]
-    footer = RT:
-    match = "\\#?\\d{1,6}"
-    system = RT
 [trackingid "bugzilla"]
     footer = Bug:
     match = "\\#?\\d{1,6}"
@@ -161,28 +180,9 @@
     footer = Bug:
     match = "T\\d+"
     system = Phab
-[changeMerge]
-    test = true
-    checkFrequency = 0
-[its-phabricator]
-    url = https://phabricator.wikimedia.org/
-    username = gerritbot
-    commentOnChangeAbandoned = false
-    commentOnChangeMerged = false
-    commentOnChangeRestored = false
-    commentOnChangeCreated = false
-    commentOnCommentAdded = false
-    commentOnPatchSetCreated = false
-    commentOnRefUpdatedGitWeb = false
-[commitmessage]
-    maxSubjectLength = 100
-    maxLineLength = 120
-[receive]
-    maxObjectSizeLimit = 100m
-    maxBatchChanges = 10
-    enableSignedPush = false
-[changeCleanup]
-    # Not actually used, but Gerrit complains if unset
-    interval = 1 week
-[index]
-    type = LUCENE
+[trackingid "rt"]
+    footer = RT:
+    match = "\\#?\\d{1,6}"
+    system = RT
+[user]
+    email = gerrit@wikimedia.org
