@@ -9,6 +9,8 @@ class osm::import_waterlines (
     $proxy = 'webproxy.eqiad.wmnet:8080'
 ) {
 
+    $log_dir = '/var/log/waterlines'
+
     $proxy_opt = $proxy ? {
         undef   => '',
         ''      => '',
@@ -23,12 +25,24 @@ class osm::import_waterlines (
         content => template('osm/import_waterlines.erb'),
     }
 
+    file { $log_dir:
+        ensure => directory,
+        owner  => 'postgres',
+        group  => 'postgres',
+        mode   => '0755',
+    }
+
+    logrotate::conf { 'eventlogging':
+        ensure  => present,
+        content => template('osm/logrotate.erb'),
+    }
+
     cron { 'import_waterlines':
         ensure   => present,
         hour     => 9,
         minute   => 13,
         monthday => 1,
         user     => 'postgres',
-        command  => '/usr/local/bin/import_waterlines >/dev/null 2>&1',
+        command  => "/usr/local/bin/import_waterlines > ${log_dir}/import.log 2>&1",
     }
 }
