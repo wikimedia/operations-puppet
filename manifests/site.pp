@@ -2548,7 +2548,7 @@ node /^sca[12]00[1234]\.(eqiad|codfw)\.wmnet$/ {
 }
 
 # Services 'B'
-node /^scb[12]00[1234]\.(eqiad|codfw)\.wmnet$/ {
+node /^scb[12]00[123456]\.(eqiad|codfw)\.wmnet$/ {
     role(scb)
 
     interface::add_ip6_mapped { 'main': }
