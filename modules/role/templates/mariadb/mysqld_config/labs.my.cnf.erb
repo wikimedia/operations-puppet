@@ -12,6 +12,14 @@ port      = 3306
 datadir   = <%= @datadir %>
 tmpdir    = <%= @tmpdir %>
 server_id = <%= @server_id %>
+
+# gtid_domain_id flag is needed for multisource replication and GTID.
+# # Strictly it is only needed on masters or servers that can potentially be
+# # masters but for consistency it should be set in all of them.
+# # https://mariadb.com/kb/en/mariadb/gtid/
+#
+gtid_domain_id  = <%= @gtid_domain_id %>
+
 read_only = 0
 
 # enable socket authentication
