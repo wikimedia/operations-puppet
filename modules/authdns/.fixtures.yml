@@ -1,0 +1,4 @@
+fixtures:
+    symlinks:
+        authdns: "#{source_dir}"
+        geoip: "../../../../geoip"
