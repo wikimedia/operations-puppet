@@ -1,0 +1,28 @@
+<%-
+# All labels / targets list
+all = []
+
+# Aggregate PDUs per-row into row_pdus
+row_pdus = Hash.new{|h,k| h[k] = []}
+
+@pdu_resources.each do |res|
+  site = res["parameters"]["site"]
+  row = res["parameters"]["row"]
+  title = res["title"]
+  next unless site == @site
+
+  row_pdus[row].push(title)
+end
+
+row_pdus.each do |row, pdus|
+  all.push(
+    {
+      'labels'  => @labels.merge({'row' => row}),
+      'targets' => pdus,
+    }
+  )
+end
+-%>
+
+# This file is managed by puppet
+<%= scope.function_ordered_yaml([all]) %>

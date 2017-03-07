@@ -269,6 +269,35 @@ class role::prometheus::ops {
         port             => 8000,
     }
 
+    $pdu_jobs = [
+      {
+        'job_name'        => 'pdu',
+        'metrics_path'    => '/snmp',
+        'params'          => {
+          'module' => [ "pdu_${::site}" ],
+        },
+        'file_sd_configs' => [
+          { 'files' => [ "${targets_path}/pdu_*.yaml" ] }
+        ],
+        'relabel_configs' => [
+          { 'source_labels' => ['__address__'],
+            'target_label'  => '__param_target',
+          },
+          { 'source_labels' => ['__param_target'],
+            'target_label'  => 'instance',
+          },
+          { 'target_label' => ['__address__'],
+            'replacement'  => 'netmon1001.wikimedia.org:9116',
+          },
+        ],
+      },
+    ]
+
+    prometheus::pdu_config { "pdu_${::site}":
+        dest       => "${targets_path}/pdu_${::site}.yaml",
+        site       => $::site,
+    }
+
     prometheus::server { 'ops':
         storage_encoding      => '2',
         listen_address        => '127.0.0.1:9900',
@@ -277,7 +306,7 @@ class role::prometheus::ops {
         memory_chunks         => $memory_chunks,
         scrape_configs_extra  => array_concat(
             $mysql_jobs, $varnish_jobs, $memcached_jobs, $hhvm_jobs,
-            $apache_jobs, $etcd_jobs, $etcdmirror_jobs
+            $apache_jobs, $etcd_jobs, $etcdmirror_jobs, $pdu_jobs
         ),
         global_config_extra   => $config_extra,
     }
