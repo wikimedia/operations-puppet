@@ -1335,63 +1335,6 @@ host db1095 {
     fixed-address db1095.eqiad.wmnet;
 }
 
-host db2001 {
-    hardware ethernet 78:2b:cb:6b:dd:4c;
-    fixed-address db2001.codfw.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
-}
-
-host db2002 {
-    hardware ethernet 78:2b:cb:6b:e0:e6;
-    fixed-address db2002.codfw.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
-}
-
-host db2003 {
-    hardware ethernet 78:2b:cb:6b:d0:f6;
-    fixed-address db2003.codfw.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
-}
-
-host db2004 {
-    hardware ethernet 78:2b:cb:6b:e2:c4;
-    fixed-address db2004.codfw.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
-}
-
-host db2005 {
-    hardware ethernet 78:2b:cb:67:fd:1f;
-    fixed-address db2005.codfw.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
-}
-
-host db2006 {
-    hardware ethernet 78:2b:cb:6b:d2:82;
-    fixed-address db2006.codfw.wmnet;
-}
-
-host db2007 {
-    hardware ethernet 78:2b:cb:6b:aa:33;
-    fixed-address db2007.codfw.wmnet;
-}
-
-host db2008 {
-    hardware ethernet 78:2b:cb:66:ce:4b;
-    fixed-address db2008.codfw.wmnet;
-}
-
-host db2009 {
-    hardware ethernet 78:2b:cb:6b:ce:d0;
-    fixed-address db2009.codfw.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
-}
-
 host db2010 {
     hardware ethernet 78:2b:cb:6b:c6:ef;
     fixed-address db2010.codfw.wmnet;
