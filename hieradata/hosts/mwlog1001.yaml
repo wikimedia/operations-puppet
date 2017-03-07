@@ -2,7 +2,5 @@ admin::groups:
   - deployment
   - restricted
   - mw-log-readers
-role::logging::mediawiki::udp2log::rsync_slow_parse: false
-role::logging::mediawiki::udp2log::forward_messages: false
-role::logging::mediawiki::udp2log::mirror_destinations:
- - fluorine.eqiad.wmnet
+role::logging::mediawiki::udp2log::rsync_slow_parse: true
+role::logging::mediawiki::udp2log::forward_messages: true
