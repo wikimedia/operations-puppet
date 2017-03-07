@@ -7,7 +7,7 @@
 class openstack::nova::fullstack(
     $password,
     $interval = 300,
-    $max_pool = 3,
+    $max_pool = 7,
     $creation_timeout = 480,
     $ssh_timeout = 360,
     ) {
