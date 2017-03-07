@@ -46,6 +46,7 @@ class role::zuul::server {
         umask     => '002',
         origin    => 'https://gerrit.wikimedia.org/r/p/integration/config.git',
         branch    => $conf_server['config_git_branch'],
+        require   => Package['zuul'],  # for /etc/zuul
     }
 
 }
