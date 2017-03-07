@@ -75,6 +75,7 @@ class role::elasticsearch::common(
             'extra',
             'analysis-icu',
         ],
+	plugins_dir => '/srv/deployment/elasticsearch/plugins',
         # Let apifeatureusage create their indices
         auto_create_index          => '+apifeatureusage-*,-*',
         # Production can get a lot of use out of the filter cache.
