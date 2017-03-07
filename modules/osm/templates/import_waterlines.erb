@@ -2,6 +2,16 @@
 
 set -e
 
+echo "`date` - Starting to import waterlines"
+
+temp_dir=$(mktemp -d)
+
+function cleanup {
+  echo "removing temporary directory ${temp_dir}"
+  if [[ ! -z ${temp_dir} && -d ${temp_dir} ]]; then rm -rf ${temp_dir}; fi
+}
+trap cleanup EXIT
+
 if [ "${1}" == "create" ]; then
   SHP2PGSQL_OPERATION="-c"
   TRANSFORMATION=""
@@ -10,9 +20,11 @@ else
   TRANSFORMATION='/^BEGIN;$/aTRUNCATE water_polygons;'
 fi
 
-cd /srv/downloads
+cd ${temp_dir}
 curl -O <%= @proxy_opt %> http://data.openstreetmapdata.com/water-polygons-split-3857.zip
 unzip water-polygons-split-3857.zip
 rm water-polygons-split-3857.zip
 shp2pgsql ${SHP2PGSQL_OPERATION} -s 3857:900913 -g way water-polygons-split-3857/water_polygons.shp water_polygons | sed "${TRANSFORMATION}" | psql <%= @database %>
 rm -rf water-polygons-split-3857
+
+echo "`date` - waterlines import completed"
