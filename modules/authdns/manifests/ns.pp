@@ -6,10 +6,9 @@ class authdns::ns(
     $gitrepo = undef,
     $monitoring = true,
     $conftool_prefix = hiera('conftool_prefix'),
+    $lvs_services,
+    $discovery_services,
 ) {
-    $lvs_services = hiera('lvs::configuration::lvs_services')
-    $discovery_services = hiera('discovery::services')
-
     class { 'authdns':
         nameservers => $nameservers,
         gitrepo     => $gitrepo,

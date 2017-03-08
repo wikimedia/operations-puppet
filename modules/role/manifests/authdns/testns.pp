@@ -3,7 +3,9 @@
 class role::authdns::testns {
     include role::authdns::data
     class { 'authdns::ns':
-        gitrepo    => $role::authdns::data::gitrepo,
-        monitoring => false,
+        gitrepo            => $role::authdns::data::gitrepo,
+        monitoring         => false,
+        lvs_services       => hiera('lvs::configuration::lvs_services'),
+        discovery_services => hiera('discovery::services'),
     }
 }

@@ -20,9 +20,6 @@ class authdns(
 ) {
     require ::authdns::scripts
 
-    $lvs_services = hiera('lvs::configuration::lvs_services')
-    $discovery_services = hiera('discovery::services')
-
     if $gitrepo {
         require ::geoip::data::puppet
         $svc_ensure = 'running'
