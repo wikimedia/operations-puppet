@@ -44,6 +44,7 @@ class role::openldap::corp {
         critical      => true,
     }
 
+    backup::openldapset {'openldap_oit':}
     # NOTE: username is in double quotes cause otherwise it get's auto split
     # into array hence the nested quoting
     diamond::collector { 'OpenLDAP':
