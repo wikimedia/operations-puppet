@@ -137,8 +137,6 @@ host analytics1040 {
 host analytics1041 {
     hardware ethernet C8:1F:66:F1:1B:4D;
     fixed-address analytics1041.eqiad.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host analytics1042 {
