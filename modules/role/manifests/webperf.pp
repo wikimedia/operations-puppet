@@ -16,8 +16,9 @@ class role::webperf {
     # NavigationTiming MediaWiki extension and send them to Graphite.
     # See <https://www.mediawiki.org/wiki/Extension:NavigationTiming>
     class { '::webperf::navtiming':
-        endpoint    => "tcp://${eventlogging_host}:8600",
-        statsd_host => $statsd_host,
+        endpoint          => "tcp://${eventlogging_host}:8600",
+        eventlogging_path => $eventlogging_path,
+        statsd_host       => $statsd_host,
     }
 
     # Report VisualEditor performance measurements to Graphite.

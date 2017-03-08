@@ -10,6 +10,10 @@
 #   URI of EventLogging event publisher to subscribe to.
 #   Example: 'tcp://eventlogging.corp.org:8600'.
 #
+# [*eventlogging_path*]
+#   Path where the EventLogging python library is installed.
+#   Example: '/srv/deployment/eventlogging'.
+#
 # [*statsd_host*]
 #   Write stats to this StatsD instance. Default: '127.0.0.1'.
 #
@@ -18,6 +22,7 @@
 #
 class webperf::navtiming(
     $endpoint,
+    $eventlogging_path,
     $statsd_host = '127.0.0.1',
     $statsd_port = 8125,
 ) {
