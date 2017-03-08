@@ -22,9 +22,9 @@ class profile::backup::director(
 
     # One pool for all
     bacula::director::pool { $pool:
-        max_vols         => 50,
+        max_vols         => 60,
         storage          => "${onsite_sd}-FileStorage1",
-        volume_retention => '60 days',
+        volume_retention => '30 days',
         label_fmt        => $pool,
         max_vol_bytes    => '536870912000',
         next_pool        => $offsite_pool,
@@ -48,9 +48,9 @@ class profile::backup::director(
 
     # Off site pool for off site backups
     bacula::director::pool { $offsite_pool:
-        max_vols         => 50,
+        max_vols         => 60,
         storage          => "${offsite_sd}-FileStorage1",
-        volume_retention => '60 days',
+        volume_retention => '30 days',
         label_fmt        => $offsite_pool,
         max_vol_bytes    => '536870912000',
     }

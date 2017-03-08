@@ -20,8 +20,8 @@ class profile::backup::host(
         class { 'bacula::client':
             director       => $director,
             catalog        => 'production',
-            file_retention => '60 days',
-            job_retention  => '60 days',
+            file_retention => '30 days',
+            job_retention  => '30 days',
         }
 
         # This will use uniqueid fact to distribute (hopefully evenly) machines on
