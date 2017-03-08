@@ -215,6 +215,7 @@ class role::cache::misc {
         'noc.wikimedia.org'                  => { 'director' => 'noc' },
         'ores.wikimedia.org'                 => { 'director' => 'ores' },
         'parsoid-tests.wikimedia.org'        => { 'director' => 'ruthenium' },
+        'parsoid-vd-tests.wikimedia.org'     => { 'director' => 'ruthenium' },
         'people.wikimedia.org'               => {
             'director' => 'rutherfordium',
             'caching'  => 'pass',
