@@ -130,7 +130,8 @@ class role::phabricator::main {
 
     $phab_diffusion_ssh_host = hiera('phabricator_diffusion_ssh_host', 'git-ssh.wikimedia.org')
 
-    $elasticsearch_host = hiera('phabricator_elasticsearch_host', 'https://search.svc.eqiad.wmnet:9243')
+    $elasticsearch_host = hiera('phabricator_elasticsearch_hostname', 'search.svc.eqiad.wmnet')
+    $elasticsearch_port = hiera('phabricator_elasticsearch_port', 9243)
     $elasticsearch_version = hiera('phabricator_elasticsearch_version', '2')
     $elasticsearch_enabled = hiera('phabricator_elasticsearch_enabled', true)
 
@@ -148,6 +149,31 @@ class role::phabricator::main {
                               "${phab_root_dir}/libext/security/src",
                               "${phab_root_dir}/libext/misc/" ],
         settings         => {
+            'cluster.search' => [
+                {
+                    'type' => 'elasticsearch',
+                    'hosts' => [
+                        {
+                            'protocol'  => 'https',
+                            'host'      => $elasticsearch_host,
+                            'port'      => $elasticsearch_port,
+                            'path'      => '/phabricator',
+                            'version'   => $elasticsearch_version,
+                            'roles'     => {
+                                'read'  => $elasticsearch_enabled,
+                                'write' => $elasticsearch_enabled,
+                            },
+                        },
+                    ],
+                },
+                {
+                    'type' => 'mysql',
+                    'roles' => {
+                        'read' => false,
+                        'write' => true,
+                    }
+                },
+            ],
             'search.elastic.host'                    => $elasticsearch_host,
             'search.elastic.version'                 => $elasticsearch_version,
             'search.elastic.enabled'                 => $elasticsearch_enabled,
