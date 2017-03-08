@@ -214,7 +214,7 @@ class role::cache::misc {
         'metrics.wikimedia.org'              => { 'director' => 'thorium' },
         'noc.wikimedia.org'                  => { 'director' => 'noc' },
         'ores.wikimedia.org'                 => { 'director' => 'ores' },
-        'parsoid-tests.wikimedia.org'        => { 'director' => 'ruthenium' },
+        'parsoid-rt-tests.wikimedia.org'     => { 'director' => 'ruthenium' },
         'parsoid-vd-tests.wikimedia.org'     => { 'director' => 'ruthenium' },
         'people.wikimedia.org'               => {
             'director' => 'rutherfordium',
