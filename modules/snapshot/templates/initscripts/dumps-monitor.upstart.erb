@@ -14,4 +14,4 @@ respawn
 
 chdir <%= @repodir %>
 
-exec /bin/bash <%= @repodir -%>/monitor --configfile <%= @confsdir -%>/wikidump.conf.monitor
+exec /bin/bash <%= @repodir -%>/monitor --configfile <%= @confsdir -%>/wikidump.conf.monitor --basedir <%= @repodir %>

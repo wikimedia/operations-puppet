@@ -9,7 +9,7 @@ After=network.target
 [Service]
 User=datasets
 WorkingDirectory=<%= @repodir %>
-ExecStart=/bin/bash <%= @repodir -%>/monitor --configfile <%= @confsdir -%>/wikidump.conf.monitor
+ExecStart=/bin/bash <%= @repodir -%>/monitor --configfile <%= @confsdir -%>/wikidump.conf.monitor --basedir <%= @repodir %>
 
 [Install]
 WantedBy=multi-user.target
