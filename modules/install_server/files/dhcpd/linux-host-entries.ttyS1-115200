@@ -2548,8 +2548,6 @@ host labsdb1006 {
 host labsdb1007 {
     hardware ethernet d4:be:d9:f0:0d:81;
     fixed-address labsdb1007.eqiad.wmnet;
-    option pxelinux.pathprefix "precise-installer/";
-    filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host labsdb1009 {
