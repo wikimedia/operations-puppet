@@ -21,8 +21,10 @@ class role::webperf {
     # Report VisualEditor performance measurements to Graphite.
     # See <https://meta.wikimedia.org/wiki/Schema:TimingData>
     class { '::webperf::ve':
-        endpoint    => "tcp://${eventlogging_host}:8600",
-        statsd_host => $statsd_host,
+        endpoint          => "tcp://${eventlogging_host}:8600",
+        # Installed by eventlogging class using trebuchet
+        eventlogging_path => "/srv/deployment/eventlogging",
+        statsd_host       => $statsd_host,
     }
 
     # Provisions a service which gather stats about static assets count

@@ -4,6 +4,7 @@ After=network-online.target
 
 [Service]
 WorkingDirectory=/srv/webperf
+Environment="PYTHONPATH=<%= @eventlogging_path %>"
 ExecStart=/usr/bin/python /srv/webperf/ve.py \
     <%= @endpoint %> \
     --statsd-host <%= @statsd_host %> \
