@@ -6,8 +6,8 @@ class role::backup::host {
     class { 'bacula::client':
         director       => $role::backup::config::director,
         catalog        => 'production',
-        file_retention => '60 days',
-        job_retention  => '60 days',
+        file_retention => '15 days',
+        job_retention  => '15 days',
     }
 
 

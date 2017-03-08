@@ -19,7 +19,7 @@ class role::backup::director {
     bacula::director::pool { $pool:
         max_vols         => 50,
         storage          => "${onsite_sd}-FileStorage1",
-        volume_retention => '60 days',
+        volume_retention => '15 days',
         label_fmt        => $pool,
         max_vol_bytes    => '536870912000',
         next_pool        => $offsite_pool,
@@ -45,7 +45,7 @@ class role::backup::director {
     bacula::director::pool { $offsite_pool:
         max_vols         => 50,
         storage          => "${offsite_sd}-FileStorage1",
-        volume_retention => '60 days',
+        volume_retention => '15 days',
         label_fmt        => $offsite_pool,
         max_vol_bytes    => '536870912000',
     }
