@@ -277,3 +277,25 @@ syntax.filemap:
   '@\\.arclint$@': 'js'
   '@\\.divinerconfig$@': 'js'
   '@\\.rs$@': 'rust'
+
+cluster.search:
+  - {
+      'type': 'elasticsearch'
+      'hosts':
+        - {
+            'protocol': 'https'
+            'host': 'search.svc.eqiad.wmnet'
+            'port': 9243
+            'path': '/phabricator'
+            'version': 2
+            'roles':
+              'read': true
+              'write': true
+          }
+    }
+  - {
+      'type': 'mysql'
+      'roles':
+        'read': false
+        'write': true
+    }
