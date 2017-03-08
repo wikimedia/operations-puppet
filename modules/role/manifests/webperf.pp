@@ -9,6 +9,8 @@ class role::webperf {
 
     $eventlogging_host = 'eventlog1001.eqiad.wmnet'
     $statsd_host = 'statsd.eqiad.wmnet'
+    # Installed by eventlogging class using trebuchet
+    $eventlogging_path = '/srv/deployment/eventlogging'
 
     # Aggregate client-side latency measurements collected via the
     # NavigationTiming MediaWiki extension and send them to Graphite.
@@ -21,8 +23,9 @@ class role::webperf {
     # Report VisualEditor performance measurements to Graphite.
     # See <https://meta.wikimedia.org/wiki/Schema:TimingData>
     class { '::webperf::ve':
-        endpoint    => "tcp://${eventlogging_host}:8600",
-        statsd_host => $statsd_host,
+        endpoint          => "tcp://${eventlogging_host}:8600",
+        eventlogging_path => $eventlogging_path,
+        statsd_host       => $statsd_host,
     }
 
     # Provisions a service which gather stats about static assets count
