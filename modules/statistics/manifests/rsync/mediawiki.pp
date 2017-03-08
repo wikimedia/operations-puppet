@@ -18,14 +18,14 @@ class statistics::rsync::mediawiki {
         mode   => '0775',
     }
 
-    # Search request logs from fluorine
+    # Search request logs
     statistics::rsync_job { 'CirrusSearchUserTesting':
         source         => 'mwlog1001.eqiad.wmnet::udp2log/archive/CirrusSearchUserTesting.*.gz',
         destination    => "${working_path}/mw-log/archive/CirrusSearchUserTesting",
         retention_days => $retention_days,
     }
 
-    # Api logs from fluorine
+    # Api logs
     statistics::rsync_job { 'mw-api':
         source         => 'mwlog1001.eqiad.wmnet::udp2log/archive/api.log-*.gz',
         destination    => "${working_path}/mw-log/archive/api",

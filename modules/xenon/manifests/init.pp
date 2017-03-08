@@ -22,7 +22,7 @@
 #
 #  class { 'xenon':
 #      ensure     => present,
-#      redis_host => 'fluorine.eqiad.wmnet',
+#      redis_host => 'mwlog.example.net',
 #      redis_port => 6379,
 #  }
 #

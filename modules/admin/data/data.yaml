@@ -69,7 +69,7 @@ groups:
                  'ALL = NOPASSWD: /usr/bin/renice']
   restricted:
     gid: 706
-    description: access to terbium, fluorine (private data) and bastion hosts
+    description: access to terbium, mwlog hosts (private data) and bastion hosts
                  restricted folks use sudo to access apache / www-data resources
     members: [daniel, dartar, ellery, bearloga,
               ezachte, hoo, jamesur, jdlrobson, khorn, tparscal, ssastry, smalyshev,
@@ -394,7 +394,7 @@ groups:
                  'ALL = (mobileapps) NOPASSWD: ALL']
   mw-log-readers:
     gid: 760
-    description: users who can login on fluorine and read mediawiki logs
+    description: users who can login on mwlog hosts and read mediawiki logs
     members: [tjones, addshore, matanya]
 
   apertium-admins:
