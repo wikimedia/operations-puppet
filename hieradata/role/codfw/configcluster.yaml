@@ -3,11 +3,12 @@ debdeploy::grains:
     value: standard
 profile::etcd::replication::origin:
   cluster_name: eqiad.wmnet
-  path: /
+  path: /conftool
   servers:
     - conf1001.eqiad.wmnet
     - conf1002.eqiad.wmnet
     - conf1003.eqiad.wmnet
 profile::etcd::replication::destination_path: /eqiad.wmnet
+profile::etcd::replication::strip: false
 # only conf2002 is active
 profile::etcd::replication::active: false

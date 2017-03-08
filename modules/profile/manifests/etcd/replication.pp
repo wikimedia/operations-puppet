@@ -12,11 +12,14 @@
 #
 # [*destination_path*] Destination path on the local machine
 #
+# [*strip*] strip away the origin key from the resulting key
+#
 # [*active*] If replication is active. For now, only one server per cluster
 #
 class profile::etcd::replication(
     $origin = hiera('profile::etcd::replication::origin'),
     $destination_path = hiera('profile::etcd::replication::destination_path'),
+    $strip = hiera('profile::etcd::replication::destination_path'),
     $prometheus_nodes = hiera('prometheus_nodes'),
     $active = hiera('profile::etcd::replication::active'),
 ) {
@@ -32,8 +35,9 @@ class profile::etcd::replication(
     etcdmirror::instance { $resource_title:
         src      => "https://${hosts[0]}:2379",
         src_path => $origin['path'],
-        dst      => "https://root:${accounts['root']}@${::fqdn}:2379",
+        dst      => 'http://localhost:2378',
         dst_path => $destination_path,
+        strip    => $strip,
         enable   => $active,
     }
 
