@@ -139,4 +139,20 @@ class thumbor (
         command  => '/bin/systemd-tmpfiles --clean --prefix=/srv/thumbor/tmp',
         user     => 'thumbor',
     }
+
+    file { '/usr/local/bin/generate-thumbor-age-metrics.sh':
+        ensure => present,
+        mode   => '0555',
+        source => 'puppet:///modules/thumbor/generate-thumbor-age-metrics.sh',
+    }
+
+    cron { 'process-age-statsd':
+        minute   => '*',
+        hour     => '*',
+        monthday => '*',
+        month    => '*',
+        weekday  => '*',
+        command  => "/usr/local/bin/generate-thumbor-age-metrics.sh | /bin/nc -w 1 -u ${statsd_host} ${statsd_port}",
+        user     => 'thumbor',
+    }
 }
