@@ -63,6 +63,8 @@ network::subnets:
           ipv6: 2620:0:861:108::/64
         private1-lvs-eqiad:
           ipv4: 10.2.2.0/24
+        private1-kubernetes-eqiad:
+          ipv4: 10.64.64.0/23
     codfw:
       public:
         public1-a-codfw:
