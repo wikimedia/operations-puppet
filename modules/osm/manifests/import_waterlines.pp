@@ -32,9 +32,9 @@ class osm::import_waterlines (
         mode   => '0755',
     }
 
-    logrotate::conf { 'eventlogging':
+    logrotate::conf { 'import_waterline':
         ensure  => present,
-        content => template('osm/logrotate.erb'),
+        content => template('osm/import_waterlines.erb'),
     }
 
     cron { 'import_waterlines':
