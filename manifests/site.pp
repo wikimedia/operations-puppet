@@ -2364,7 +2364,6 @@ node /^planet[12]001\.(eqiad|codfw)\.wmnet$/ {
 node /(dubnium|pollux)\.wikimedia\.org/ {
     role(openldap::corp)
     include ::standard
-    backup::openldapset {'openldap_oit':}
 }
 
 node 'poolcounter1001.eqiad.wmnet' {
@@ -2548,7 +2547,6 @@ node /^(seaborgium|serpens)\.wikimedia\.org$/ {
     role(openldap::labs)
     include ::standard
     include ::base::firewall
-    backup::openldapset {'openldap_labs':}
 }
 
 # Silver is the new home of the wikitech web server.
