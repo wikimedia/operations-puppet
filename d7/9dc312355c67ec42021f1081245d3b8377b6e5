@@ -1,0 +1,7 @@
+Verified+2: jenkins-bot
+Code-Review+2: BBlack <bblack@wikimedia.org>
+Submitted-by: BBlack <bblack@wikimedia.org>
+Submitted-at: Wed, 08 Mar 2017 02:48:01 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/341564
+Project: operations/puppet
+Branch: refs/heads/production
