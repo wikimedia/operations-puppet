@@ -90,8 +90,11 @@ class geoip::data::maxmind(
 
   # logrotate for geoipupdate.log
   logrotate::conf { 'geoipupdate':
-    ensure  => present,
-    content => template('geoip/geoipupdate.logrotate.erb'),
-    require => Cron['geoipupdate'],
+    ensure       => present,
+    file_pattern => $geoipupdate_log,
+    size         => '1M',
+    rotate       => 1,
+    missing_ok   => true,
+    not_if_empty => true,
   }
 }
