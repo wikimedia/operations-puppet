@@ -9,7 +9,7 @@ Environment=ETCD_MIRROR_DST_PREFIX=<%= @dst_path %>
 Environment=ETCD_MIRROR_SRC_URL=<%= @src %>
 Environment=ETCD_MIRROR_DST_URL=<%= @dst %>
 SyslogIdentifier=<%= @title %>
-ExecStart=/usr/bin/etcd-mirror --src-prefix $ETCD_MIRROR_SRC_PREFIX --dst-prefix $ETCD_MIRROR_DST_PREFIX $ETCD_MIRROR_SRC_URL $ETCD_MIRROR_DST_URL
+ExecStart=/usr/bin/etcd-mirror <% if @strip %>--strip<% end %> --src-prefix $ETCD_MIRROR_SRC_PREFIX --dst-prefix $ETCD_MIRROR_DST_PREFIX $ETCD_MIRROR_SRC_URL $ETCD_MIRROR_DST_URL
 Restart=always
 RestartPreventExitStatus=1 2
 RestartSec=1s

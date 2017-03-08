@@ -15,7 +15,9 @@
 #
 # [*enable*] If service is to be enabled or not
 #
-define etcdmirror::instance($src, $src_path, $dst, $dst_path, $enable) {
+# [*strip*] strip away the origin key from the resulting key
+#
+define etcdmirror::instance($src, $src_path, $dst, $dst_path, $enable, $strip) {
     require_package('etcd-mirror')
 
     # safe version of the title
