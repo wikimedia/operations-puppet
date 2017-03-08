@@ -61,6 +61,8 @@ network::subnets:
         analytics1-d-eqiad:
           ipv4: 10.64.53.0/24
           ipv6: 2620:0:861:108::/64
+        private1-lvs-eqiad:
+          ipv4: 10.2.2.0/24
     codfw:
       public:
         public1-a-codfw:
@@ -97,6 +99,8 @@ network::subnets:
         labs-support1-b-codfw:
           ipv4: 10.192.21.0/24
           ipv6: 2620:0:860:122::/64
+        private1-lvs-codfw:
+          ipv4: 10.2.1.0/24
     esams:
       public:
         public1-esams:
@@ -109,6 +113,8 @@ network::subnets:
         private1-esams:
           ipv4: 10.20.0.0/24
           ipv6: 2620:0:862:102::/64
+        private1-lvs-esams:
+          ipv4: 10.2.3.0/24
     ulsfo:
       public:
         public1-ulsfo:
@@ -121,6 +127,8 @@ network::subnets:
         private1-ulsfo:
           ipv4: 10.128.0.0/24
           ipv6: 2620:0:863:101::/64
+        private1-lvs-ulsfo:
+          ipv4: 10.2.4.0/24
   frack:
     eqiad:
       public:
