@@ -9,9 +9,9 @@
 #
 # The input pathnames for the cert and the private key are fixed at our
 # standard locations and based on the resource's title.  For example, if the
-# resource title is "foo", the cert source will be "files/ssl/foo.crt", and the
-# private key should be located at "modules/secret/secrets/ssl/foo.key" in the
-# private repository.
+# resource title is "foo", the cert source will be "modules/sslcert/files/certs/foo.crt",
+# and the private key should be located at "modules/secret/secrets/ssl/foo.key"
+# in the private repository.
 #
 # === Parameters
 #
@@ -56,7 +56,7 @@ define sslcert::certificate(
             owner  => 'root',
             group  => $group,
             mode   => '0444',
-            source => "puppet:///files/ssl/${title}.crt",
+            source => "puppet:///modules/sslcert/certs/${title}.crt",
         }
     } else {
         file { "/etc/ssl/localcerts/${title}.crt":
