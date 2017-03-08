@@ -11,7 +11,7 @@ import re
 import socket
 import unittest
 
-import zmq
+import eventlogging
 import yaml
 
 
@@ -291,23 +291,17 @@ if __name__ == '__main__':
     ap.add_argument('--statsd-host', default='localhost',
                     type=socket.gethostbyname)
     ap.add_argument('--statsd-port', default=8125, type=int)
-
     args = ap.parse_args()
 
     logging.basicConfig(format='%(asctime)-15s %(message)s',
                         level=logging.INFO, stream=sys.stdout)
 
-    ctx = zmq.Context()
-    zsock = ctx.socket(zmq.SUB)
-    zsock.hwm = 3000
-    zsock.linger = 0
-    zsock.connect(args.endpoint)
-    zsock.subscribe = b''
-
     addr = args.statsd_host, args.statsd_port
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
-    for meta in iter(zsock.recv_json, ''):
+    events = eventlogging.connect(args.endpoint)
+
+    for meta in events:
         f = handlers.get(meta['schema'])
         if f is not None:
             f(meta)
