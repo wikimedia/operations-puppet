@@ -9,16 +9,18 @@ class phabricator::monitoring {
 
     $phabricator_active_server = hiera('phabricator_active_server')
 
+    # (only if) on active server monitor that PHD is running,
+    # and send actual SMS to contacts. monitor https on all though.
     if $::hostname == $phabricator_active_server {
         $phab_contact_groups = 'admins,phabricator,sms'
+
+        nrpe::monitor_service { 'check_phab_taskmaster':
+            description   => 'PHD should be supervising processes',
+            nrpe_command  => '/usr/lib/nagios/plugins/check_procs -c 3:150 -u phd',
+            contact_group => $phab_contact_groups,
+        }
     } else {
         $phab_contact_groups = 'admins,phabricator'
-    }
-
-    nrpe::monitor_service { 'check_phab_taskmaster':
-        description   => 'PHD should be supervising processes',
-        nrpe_command  => '/usr/lib/nagios/plugins/check_procs -c 3:150 -u phd',
-        contact_group => $phab_contact_groups,
     }
 
     monitoring::service { 'phabricator-https':
