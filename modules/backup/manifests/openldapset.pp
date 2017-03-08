@@ -20,8 +20,7 @@ define backup::openldapset(){
         'ClientRunBeforeJob' => '/etc/bacula/scripts/openldap-pre',
         'ClientRunAfterJob' => '/etc/bacula/scripts/openldap-post',
     }
-    bacula::client::job { 'openldap-backup':
-        fileset     => 'openldap',
+    backup::set { 'openldap':
         jobdefaults => $profile::backup::host::jobdefaults,
         extras      => $run_scripts,
     }
