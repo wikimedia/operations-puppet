@@ -23,6 +23,9 @@ RestartSec=2s
 TimeoutStopSec=60
 WorkingDirectory=/srv/deployment/electron-render/deploy
 ExecStart=/usr/bin/firejail --profile=/etc/firejail/pdfrender.profile /usr/bin/nodejs /srv/deployment/electron-render/deploy/src/bin/electron-render-service.js
+# Delay restart for 10s to work around xpra shutdown race
+# See https://phabricator.wikimedia.org/T159922.
+ExecStopPost=/bin/sleep 10
 
 [Install]
 WantedBy=multi-user.target
