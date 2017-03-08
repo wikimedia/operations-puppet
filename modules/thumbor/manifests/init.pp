@@ -139,4 +139,14 @@ class thumbor (
         command  => '/bin/systemd-tmpfiles --clean --prefix=/srv/thumbor/tmp',
         user     => 'thumbor',
     }
+
+    cron { 'process-age-statsd':
+        minute   => '*',
+        hour     => '*',
+        monthday => '*',
+        month    => '*',
+        weekday  => '*',
+        command  => "/bin/ps -eo comm,cmd:44,etimes= | /bin/grep \"^thumbor\" | /usr/bin/awk -v HOSTNAME=$(/bin/hostname) '{print \"thumbor.\"HOSTNAME\".process.\"\$5\".age:\"\$6\"|g\"}' | /bin/nc -w 1 -u ${statsd_host} ${statsd_port}",
+        user     => 'thumbor',
+    }
 }
