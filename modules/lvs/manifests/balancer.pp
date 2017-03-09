@@ -76,4 +76,17 @@ class lvs::balancer(
             'net.ipv4.icmp_ratelimit'         => 200,
         },
     }
+
+    # The ip_vs kernel module is loaded upon pybal.service startup. However,
+    # the sysctl parameters defined above are loaded during early boot by
+    # systemd-sysctl.service. Add the module to modules-load.d, causing it to
+    # be loaded statically before sysctl settings are applied as described in
+    # sysctl.d(5).
+    file { '/etc/modules-load.d/lvs.conf':
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        content => 'ip_vs\n',
+    }
 }
