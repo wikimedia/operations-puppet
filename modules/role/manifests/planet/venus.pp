@@ -1,23 +1,11 @@
 # planet RSS feed aggregator 2.0 (planet-venus)
-
 class role::planet::venus {
 
     include ::base::firewall
 
     system::role { 'role::planet::venus': description => 'Planet (venus) weblog aggregator' }
 
-    # be flexible about labs vs. prod
-    case $::realm {
-        'labs': {
-            $planet_domain_name = 'wmflabs.org'
-        }
-        'production': {
-            $planet_domain_name = 'wikimedia.org'
-        }
-        default: {
-            fail('unknown realm, should be labs or production')
-        }
-    }
+    $planet_domain_name= hiera('planet_domain_name', 'wikimedia.org')
 
     # List all planet languages and translations for
     # index.html.tmpl here. Configurations, directories and
