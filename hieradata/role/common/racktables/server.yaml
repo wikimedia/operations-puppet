@@ -2,3 +2,5 @@ standard::has_default_mail_relay: false
 debdeploy::grains:
   debdeploy-racktables:
     value: standard
+
+racktables_host: 'racktables.wikimedia.org'

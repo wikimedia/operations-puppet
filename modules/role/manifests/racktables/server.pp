@@ -13,18 +13,7 @@ class role::racktables::server {
     include ::standard
     include ::base::firewall
 
-    # be flexible about labs vs. prod
-    case $::realm {
-        'labs': {
-            $racktables_host = $::fqdn
-        }
-        'production': {
-            $racktables_host = 'racktables.wikimedia.org'
-        }
-        default: {
-            fail('unknown realm, should be labs or production')
-        }
-    }
+    $racktables_host = hiera('racktables_host'), $::fqdn)
 
     ferm::service { 'racktables-http':
         proto => 'tcp',
