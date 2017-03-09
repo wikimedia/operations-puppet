@@ -129,7 +129,6 @@ class restbase(
 
     require ::service::configuration
     $pdfrender_key = $::service::configuration::pdfrender_key
-    $local_logfile = "${service::configuration::log_dir}/${title}/main.log"
 
     service::node { 'restbase':
         port            => $port,
