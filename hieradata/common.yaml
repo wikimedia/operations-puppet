@@ -461,5 +461,5 @@ etcd_client_srv_domain: "%{::site}.wmnet"
 etcd_host: ''
 etcd_port: ''
 
-# Conftool global prefix (will be per-dc)
-conftool_prefix: "/conftool/v1"
+# Conftool global prefix (the dc prefix should be the active etcd cluster)
+conftool_prefix: "/eqiad.wmnet/conftool/v1"
