@@ -25,6 +25,9 @@
 # [*cassandra_datacenters*]
 #   The full list of member datacenters.
 #
+# [*cassandra_tls*]
+#   An associative array of TLS options for the Cassandra driver.
+#
 # [*port*]
 #   Port where to run the restbase service. Default: 7231
 #
@@ -100,6 +103,7 @@ class restbase(
     $cassandra_default_consistency = 'localQuorum',
     $cassandra_local_dc = 'datacenter1',
     $cassandra_datacenters = [ 'datacenter1' ],
+    $cassandra_tls  = undef,
     $port           = 7231,
     $salt_key       = 'secretkey',
     $page_size      = 250,
