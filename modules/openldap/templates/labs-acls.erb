@@ -3,7 +3,7 @@
 # considered for this rule
 access to *
 	by dn="cn=admin,<%= @suffix %>" write
-	by group/groupOfUniqueNames/uniqueMember="cn=Directory Managers,ou=groups,dc=wikimedia,dc=org" write
+	by group/groupOfNames/member="cn=ldap_ops,ou=groups,dc=wikimedia,dc=org" write
 	by * break
 
 # novaadmin needs to run queries on all users.  This limit as set at 10,000 but
