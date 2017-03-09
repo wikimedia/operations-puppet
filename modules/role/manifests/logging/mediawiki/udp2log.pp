@@ -125,4 +125,5 @@ class role::logging::mediawiki::udp2log(
         mode   => '0555',
         source => 'puppet:///modules/role/logging/fatalmonitor',
     }
+    # lint:endignore
 }
