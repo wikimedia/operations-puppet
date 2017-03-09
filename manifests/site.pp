@@ -1429,7 +1429,7 @@ node 'labnodepool1001.eqiad.wmnet' {
 ## labsdb dbs
 node /labsdb100[13]\.eqiad\.wmnet/ {
     # this role is depecated and its nodes scheduled for decom
-    role(mariadb::labs)
+    role(mariadb::labs_deprecated)
 }
 
 node /labsdb10(09|10|11)\.eqiad\.wmnet/ {
