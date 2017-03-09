@@ -81,7 +81,7 @@ class role::elasticsearch::common(
         auto_create_index          => '+apifeatureusage-*,-*',
         # Production can get a lot of use out of the filter cache.
         filter_cache_size          => '20%',
-        bulk_thread_pool_executors => 6,
+        bulk_thread_pool_executors => hiera('elasticsearch::bulk_thread_pool_executors', 6),
         bulk_thread_pool_capacity  => 1000,
     }
 
