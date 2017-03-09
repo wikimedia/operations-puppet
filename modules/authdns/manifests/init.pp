@@ -2,12 +2,12 @@
 # A class to implement Wikimedia's authoritative DNS system
 #
 class authdns(
+    $lvs_services,
+    $discovery_services,
     $nameservers = [ $::fqdn ],
     $gitrepo = undef,
     $monitoring = true,
     $conftool_prefix = hiera('conftool_prefix'),
-    $lvs_services,
-    $discovery_services,
 ) {
     require ::authdns::account
     require ::authdns::scripts
