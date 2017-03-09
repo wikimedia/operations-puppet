@@ -202,6 +202,8 @@ cassandra_test_eqiad:
   cassandra::start_rpc: 'true'
   cassandra::target_version: '2.2'
   cassandra::client_encryption_enabled: true
+  restbase::cassandra_tls:
+    cert: /dev/null
 
 cassandra_test_codfw:
   __regex: !ruby/regexp /^restbase-test200[1-3]\.codfw\.wmnet$/
@@ -289,6 +291,8 @@ cassandra_test_codfw:
   cassandra::start_rpc: 'true'
   cassandra::target_version: '2.2'
   cassandra::client_encryption_enabled: true
+  restbase::cassandra_tls:
+    cert: /dev/null
 
 restbase_dev_eqiad:
   __regex: !ruby/regexp /^restbase-dev100[1-3]\.eqiad\.wmnet$/
