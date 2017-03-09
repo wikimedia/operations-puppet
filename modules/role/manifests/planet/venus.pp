@@ -6,19 +6,8 @@ class role::planet::venus {
 
     system::role { 'role::planet::venus': description => 'Planet (venus) weblog aggregator' }
 
-    # be flexible about labs vs. prod
-    case $::realm {
-        'labs': {
-            $planet_domain_name = 'wmflabs.org'
-        }
-        'production': {
-            $planet_domain_name = 'wikimedia.org'
-        }
-        default: {
-            fail('unknown realm, should be labs or production')
-        }
-    }
-
+    $planet_domain_name= hiera('planet_domain_name', 'wikimedia.org')
+    
     # List all planet languages and translations for
     # index.html.tmpl here. Configurations, directories and
     # cronjobs are auto-created from this hash.
