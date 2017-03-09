@@ -56,7 +56,6 @@
 # - $bulk_thread_pool_capacity: queue depth for bulk actions of each node.
 # - $bulk_thread_pool_executors: number of executors for bulk actions on each
 #       node.
-# - $statsd_host: host to send statsd data to
 # - $load_fixed_bitset_filters_eagerly: set to false to disable loading
 #        bitsets in memory when opening indices will slowdown queries but can
 #        significantly reduce heap usage.
@@ -95,7 +94,6 @@ class elasticsearch(
     $filter_cache_size = '10%',
     $bulk_thread_pool_executors = undef,
     $bulk_thread_pool_capacity = undef,
-    $statsd_host = undef,
     $load_fixed_bitset_filters_eagerly = true,
     $graylog_hosts = undef,
     $graylog_port = 12201,
