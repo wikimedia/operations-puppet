@@ -228,34 +228,27 @@ class role::mariadb::analytics::custom_repl_slave {
     }
 }
 
-# MariaDB 10 labsdb multiple-shards slave.
-# This role is deprecated but still in use
-# It should be migrated to labs::db::slave
-class role::mariadb::labs {
+# wikitech instance (silver)
+class role::mariadb::wikitech {
 
-    system::role { 'role::mariadb::labs':
-        description => 'Labs DB Slave',
+    system::role { 'role::mariadb::wikitech':
+        description => 'Wikitech Database',
     }
 
     include ::standard
+    include role::mariadb::grants::wikitech
     include role::mariadb::monitor
     include passwords::misc::scripts
-    include role::mariadb::ferm
-    include ::base::firewall
-    include role::labs::db::common
-    include role::labs::db::views
-    include role::labs::db::check_private_data
-
     class { 'role::mariadb::groups':
-        mysql_group => 'labs',
-        mysql_role  => 'slave',
+        mysql_group => 'wikitech',
+        mysql_role  => 'standalone',
     }
 
     include mariadb::packages_wmf
     include mariadb::service
 
     class { 'mariadb::config':
-        config  => 'role/mariadb/mysqld_config/labs.my.cnf.erb',
+        config  => 'role/mariadb/mysqld_config/wikitech.my.cnf.erb',
         datadir => '/srv/sqldata',
         tmpdir  => '/srv/tmp',
     }
@@ -284,4 +277,106 @@ class role::mariadb::labs {
     }
 }
 
+    # mysql monitoring access from tendril (db1011)
+    ferm::rule { 'mysql_tendril':
+        rule => 'saddr 10.64.0.15 proto tcp dport (3306) ACCEPT;',
+    }
+
+    # mysql from deployment master servers and terbium (T98682, T109736)
+    ferm::service { 'mysql_deployment_terbium':
+        proto  => 'tcp',
+        port   => '3306',
+        srange => '@resolve((tin.eqiad.wmnet mira.codfw.wmnet terbium.eqiad.wmnet wasat.codfw.wmnet))',
+    }
+
+    service { 'mariadb':
+        ensure  => running,
+        require => Class['mariadb::packages_wmf', 'mariadb::config'],
+    }
+}
+
+class role::mariadb::proxy(
+    $shard
+    ) {
+
+    system::role { 'role::mariadb::proxy':
+        description => "DB Proxy ${shard}",
+    }
+
+    include ::standard
+
+    package { [
+        'mysql-client',
+        'percona-toolkit',
+    ]:
+        ensure => present,
+    }
+
+    class { 'haproxy':
+        template => 'role/haproxy/db.cfg.erb',
+    }
+}
+
+class role::mariadb::proxy::master(
+    $shard,
+    $primary_name,
+    $primary_addr,
+    $secondary_name,
+    $secondary_addr,
+    ) {
+
+    include role::mariadb::ferm
+
+    class { 'role::mariadb::proxy':
+        shard => $shard,
+    }
+
+    file { '/etc/haproxy/conf.d/db-master.cfg':
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        content => template('role/haproxy/db-master.cfg.erb'),
+    }
+
+    nrpe::monitor_service { 'haproxy_failover':
+        description  => 'haproxy failover',
+        nrpe_command => '/usr/lib/nagios/plugins/check_haproxy --check=failover',
+    }
+}
+
+class role::mariadb::proxy::slaves(
+    $shard,
+    $servers,
+    ) {
+
+    class { 'role::mariadb::proxy':
+        shard => $shard,
+    }
+
+    file { '/etc/haproxy/conf.d/db-slaves.cfg':
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        content => template('role/haproxy/db-slaves.cfg.erb'),
+    }
+}
+
+# the contents of the next 2 classes should go over to
+# db_maintenance module on puppet db-classes refactoring
+class role::mariadb::maintenance {
+    # TODO: check if both of these are still needed
+    include mysql
+    package { 'percona-toolkit':
+        ensure => latest,
+    }
+
+    # place from which tendril-related cron jobs are run
+    include passwords::tendril
+
+    class { 'tendril::maintenance':
+        tendril_host     => 'db1011.eqiad.wmnet',
+        tendril_user     => 'watchdog',
+        tendril_password => $passwords::tendril::db_pass,
+    }
+}
 # lint:endignore
