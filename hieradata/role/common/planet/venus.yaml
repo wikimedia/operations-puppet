@@ -2,3 +2,5 @@ debdeploy::grains:
   debdeploy-planet:
     value: standard
 cluster: misc
+
+planet_domain_name: 'wikimedia.org'
