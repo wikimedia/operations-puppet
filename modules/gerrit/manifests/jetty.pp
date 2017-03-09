@@ -103,6 +103,7 @@ class gerrit::jetty(
         group   => 'gerrit2',
         mode    => '0644',
         require => [File['/var/lib/gerrit2'],Package['gerrit']],
+        recurse => true,
     }
 
     file { '/var/lib/gerrit2/review_site/lib/mysql-connector-java.jar':
