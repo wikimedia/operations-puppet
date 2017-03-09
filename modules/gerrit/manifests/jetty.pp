@@ -109,6 +109,8 @@ class gerrit::jetty(
         ensure  => 'link',
         target  => '/usr/share/java/mysql-connector-java.jar',
         require => [Package['gerrit'], Package['libmysql-java']],
+        owner   => 'gerrit2',
+        group   => 'gerrit2',
     }
 
     file { '/var/lib/gerrit2/review_site/etc':
@@ -170,6 +172,11 @@ class gerrit::jetty(
         group   => 'gerrit2',
         mode    => '0444',
         source  => 'puppet:///modules/gerrit/static',
+    }
+
+    exec { 'gerrit2 chown':
+         command  => "/bin/chown -R gerrit2:gerrit2 /var/lib/gerrit2",
+         require  => File['/var/lib/gerrit2'],
     }
 
     service { 'gerrit':
