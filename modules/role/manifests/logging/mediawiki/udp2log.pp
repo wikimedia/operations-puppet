@@ -96,8 +96,6 @@ class role::logging::mediawiki::udp2log(
         minute  => 0
     }
 
-    # move files to module?
-    # lint:ignore:puppet_url_without_modules
     file { '/usr/local/bin/mw-log-cleanup':
         owner  => 'root',
         group  => 'root',
