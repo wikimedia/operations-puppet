@@ -417,14 +417,6 @@ thread_pool:
 <% end -%>
 <% end -%>
 
-<% if @statsd_host -%>
-##
-# Statsd plugin configuration
-##
-metrics.statsd.host: <%= @statsd_host %>
-<% end -%>
-
-
 
 <% unless @load_fixed_bitset_filters_eagerly -%>
 ##

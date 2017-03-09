@@ -190,7 +190,6 @@ scap::dsh::groups:
 "elasticsearch::heap_memory": 4G
 "elasticsearch::recover_after_nodes": 3
 "elasticsearch::bulk_thread_pool_executors": 5
-"elasticsearch::statsd_host": labmon1001.eqiad.wmnet
 "elasticsearch::unicast_hosts":
     - deployment-elastic05
     - deployment-elastic06
