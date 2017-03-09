@@ -94,22 +94,6 @@ class role::mariadb::grants::core {
     }
 }
 
-class role::mariadb::grants::wikitech {
-
-    include passwords::misc::scripts
-    $wikiadmin_pass = $passwords::misc::scripts::wikiadmin_pass
-    $keystoneconfig  = hiera_hash('keystoneconfig', {})
-    $oathreader_pass = $keystoneconfig['oath_dbpass']
-
-    file { '/etc/mysql/grants-wikitech.sql':
-        ensure  => present,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0400',
-        content => template('role/mariadb/grants/wikitech.sql.erb'),
-    }
-}
-
 # Annoy people in #wikimedia-operations
 class role::mariadb::monitor {
 
@@ -228,60 +212,22 @@ class role::mariadb::analytics::custom_repl_slave {
     }
 }
 
-# MariaDB 10 labsdb multiple-shards slave.
-# This role is deprecated but still in use
-# It should be migrated to labs::db::slave
-class role::mariadb::labs {
-
-    system::role { 'role::mariadb::labs':
-        description => 'Labs DB Slave',
+# the contents of the next 2 classes should go over to
+# db_maintenance module on puppet db-classes refactoring
+class role::mariadb::maintenance {
+    # TODO: check if both of these are still needed
+    include mysql
+    package { 'percona-toolkit':
+        ensure => latest,
     }
 
-    include ::standard
-    include role::mariadb::monitor
-    include passwords::misc::scripts
-    include role::mariadb::ferm
-    include ::base::firewall
-    include role::labs::db::common
-    include role::labs::db::views
-    include role::labs::db::check_private_data
+    # place from which tendril-related cron jobs are run
+    include passwords::tendril
 
-    class { 'role::mariadb::groups':
-        mysql_group => 'labs',
-        mysql_role  => 'slave',
-    }
-
-    include mariadb::packages_wmf
-    include mariadb::service
-
-    class { 'mariadb::config':
-        config  => 'role/mariadb/mysqld_config/labs.my.cnf.erb',
-        datadir => '/srv/sqldata',
-        tmpdir  => '/srv/tmp',
-    }
-
-    file { '/srv/innodb':
-        ensure => directory,
-        owner  => 'mysql',
-        group  => 'mysql',
-        mode   => '0755',
-    }
-
-    file { '/srv/tokudb':
-        ensure => directory,
-        owner  => 'mysql',
-        group  => 'mysql',
-        mode   => '0755',
-    }
-
-    # Required for TokuDB to start
-    # See https://mariadb.com/kb/en/mariadb/enabling-tokudb/#check-for-transparent-hugepage-support-on-linux
-    sysfs::parameters { 'disable-transparent-hugepages':
-        values => {
-            'kernel/mm/transparent_hugepage/enabled' => 'never',
-            'kernel/mm/transparent_hugepage/defrag'  => 'never',
-        }
+    class { 'tendril::maintenance':
+        tendril_host     => 'db1011.eqiad.wmnet',
+        tendril_user     => 'watchdog',
+        tendril_password => $passwords::tendril::db_pass,
     }
 }
-
 # lint:endignore
