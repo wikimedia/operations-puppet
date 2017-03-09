@@ -21,20 +21,14 @@ define osm::planet_import(
     ) {
 
     # Check if our db tables exist
-    $tables_exist = "/usr/bin/psql -d ${name} --tuples-only -c \'SELECT table_name FROM information_schema.tables;\' | /bin/grep \'planet_osm\'"
+    $tables_exist="/usr/bin/psql -d ${name} --tuples-only -c \'SELECT table_name FROM information_schema.tables;\'|/bin/grep \'planet_osm\'"
 
     # Note. This is not needed anymore with osm2pgsql 0.81
-    exec { "load_900913-${name}":
-        command => "/usr/bin/psql -d ${name} -f /usr/share/osm2pgsql/osm2pgsql/900913.sql",
-        user    => 'postgres',
-        unless  => $tables_exist,
-    }
-
-    $load_planet_cmd = inline_template("<%- data=@memoryfree.split(' '); multi={'MB' => 1, 'GB' => 1000}[data[1]]-%>/usr/bin/osm2pgsql -k -s -C <%= data[0].to_i*multi %> -d <%= @name %> --number-processes <%= @processorcount %> <%= @input_pbf_file %>")
-    exec { "load_planet_osm-${name}":
-        command     => $load_planet_cmd,
-        user        => 'postgres',
-        refreshonly => true,
-        subscribe   => Exec["load_900913-${name}"],
+    if os_version('ubuntu <= precise') {
+        exec { "load_900913-${name}":
+            command => "/usr/bin/psql -d ${name} -f /usr/share/osm2pgsql/osm2pgsql/900913.sql",
+            user    => 'postgres',
+            unless  => $tables_exist,
+        }
     }
 }
