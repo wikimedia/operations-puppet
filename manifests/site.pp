@@ -1088,10 +1088,6 @@ node 'fermium.wikimedia.org' {
     interface::add_ip6_mapped { 'main': interface => 'eth0' }
 }
 
-node 'fluorine.eqiad.wmnet' {
-    role(spare::system)
-}
-
 # ZIM dumps (https://en.wikipedia.org/wiki/ZIM_%28file_format%29)
 node 'francium.eqiad.wmnet' {
 
