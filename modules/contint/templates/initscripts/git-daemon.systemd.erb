@@ -1,0 +1,20 @@
+[Unit]
+Description=Git daemon for Zuul merger
+
+[Service]
+User=gitdaemon
+Group=nogroup
+Environment="PATH=/sbin:/usr/sbin:/bin:/usr/bin:/usr/lib/git-core"
+Environment="HOME=/var/lib/gitdaemon"
+
+# We dont want to honor `git send-pack` commands so make sure the
+# receive-pack service is always disabled.
+ExecStart=/usr/lib/git-core/git-daemon \
+          --syslog \
+          --reuseaddr \
+          <%= @daemon_options -%> \
+          --base-path=<%= @base_path -%> \
+          <%= @directory -%>
+
+[Install]
+WantedBy=multi-user.target
