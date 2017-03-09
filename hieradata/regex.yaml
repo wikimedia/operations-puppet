@@ -201,6 +201,8 @@ cassandra_test_eqiad:
   restbase::skip_updates: true
   cassandra::start_rpc: 'true'
   cassandra::target_version: '2.2'
+  restbase::cassandra_tls:
+    cert: /dev/null
 
 cassandra_test_codfw:
   __regex: !ruby/regexp /^restbase-test200[1-3]\.codfw\.wmnet$/
@@ -287,6 +289,8 @@ cassandra_test_codfw:
   restbase::skip_updates: true
   cassandra::start_rpc: 'true'
   cassandra::target_version: '2.2'
+  restbase::cassandra_tls:
+    cert: /dev/null
 
 restbase_dev_eqiad:
   __regex: !ruby/regexp /^restbase-dev100[1-3]\.eqiad\.wmnet$/
