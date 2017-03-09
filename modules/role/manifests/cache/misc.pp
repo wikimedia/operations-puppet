@@ -48,10 +48,6 @@ class role::cache::misc {
         },
         'bohrium' => {
             'backend'  => 'bohrium.eqiad.wmnet',
-            'probe'   => {
-                'url'     => '/piwik.php',
-                'timeout' => '3s',
-            },
         },
         'californium' => {
             'backend'  => 'californium.wikimedia.org',
