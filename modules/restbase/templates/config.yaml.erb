@@ -23,6 +23,12 @@ default_project: &default_project
           username: <%= @cassandra_user %>
           password: <%= @cassandra_password %>
           defaultConsistency: <%= @cassandra_default_consistency %>
+          <% if @cassandra_tls.is_a?(Hash) && @cassandra_tls.keys.size > 0 %>
+          tls:
+          <% @cassandra_tls.keys.sort.each do |tls_key| -%>
+             <%= tls_key %>: <%= @cassandra_tls[tls_key] %>
+          <% end -%>
+          <% end %>
           storage_groups:
             - name: phase0.group.local
               domains:
