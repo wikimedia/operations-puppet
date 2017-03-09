@@ -13,6 +13,6 @@ class role::logging::mediawiki::errors {
     ferm::service { 'mediawiki-exceptions-logging':
         proto  => 'udp',
         port   => '8423',
-        srange => '@resolve((fluorine.eqiad.wmnet mwlog1001.eqiad.wmnet mwlog2001.codfw.wmnet))',
+        srange => '@resolve((mwlog1001.eqiad.wmnet mwlog2001.codfw.wmnet))',
     }
 }
