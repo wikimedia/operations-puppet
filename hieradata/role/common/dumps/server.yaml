@@ -1,6 +1,5 @@
 dumps::rsync_clients:
   - dataset1001.wikimedia.org
-  - fluorine.eqiad.wmnet
   - mwlog1001.eqiad.wmnet
   - mwlog2001.codfw.wmnet
   - iridium.eqiad.wmnet
