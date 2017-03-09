@@ -1,9 +1,14 @@
 class role::osm::common {
     include ::standard
+    $pgversion = $::lsbdistcodename ? {
+        'jessie'  => '9.4',
+        'precise' => '9.1',
+        'trusty'  => '9.3',
+    }
 
     $root_dir = '/srv/postgres'
 
-    file { '/etc/postgresql/9.1/main/tuning.conf':
+    file { "/etc/postgresql/${pgversion}/main/tuning.conf":
         ensure => 'present',
         owner  => 'root',
         group  => 'root',
