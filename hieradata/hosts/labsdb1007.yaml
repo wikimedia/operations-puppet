@@ -1,0 +1,2 @@
+postgresql::spatialdb::pgversion: 9.4
+postgresql::spatialdb::postgis_version: 2.1
