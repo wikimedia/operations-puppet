@@ -91,8 +91,8 @@ class role::prometheus::tools {
                 ]
             },
             {
-            'job_name'        => 'etcd',
-            'file_sd_configs' => [
+            'job_name'            => 'etcd',
+            'file_sd_configs'     => [
                 {
                     'files' => [ "${targets_path}/etcd_*.yml" ]
                 }
