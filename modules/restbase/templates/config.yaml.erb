@@ -940,9 +940,9 @@ logging:
   level: <%= @logging_level %>
   sampled_levels:
     # Target is about 1 request logged per minute @1000 req/s
-    trace/request: 0.00005
+    info/request: 0.00005
     # Not sure what the rate of these is, so start conservatively.
-    trace/request/slow: 0.001
+    info/request/slow: 0.001
   streams:
   # XXX: Use gelf-stream -> logstash
   - type: gelf
