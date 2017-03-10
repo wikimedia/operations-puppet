@@ -1,8 +1,8 @@
-# == Class role::analytics_cluster::refinery::guard
+# == Class role::analytics_cluster::refinery::job::guard
 # Configures a cron job that runs analytics/refinery/source guards daily and
 # sends out an email upon issues
 #
-class role::analytics_cluster::refinery::guard {
+class role::analytics_cluster::refinery::job::guard {
     require ::role::analytics_cluster::refinery::source
 
     include ::maven

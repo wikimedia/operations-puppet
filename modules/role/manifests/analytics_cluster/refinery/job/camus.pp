@@ -1,8 +1,8 @@
-# == Class role::analytics_cluster::refinery::camus
+# == Class role::analytics_cluster::refinery::job::camus
 # Uses camus::job to set up cron jobs to
 # import data from Kafka into Hadoop.
 #
-class role::analytics_cluster::refinery::camus {
+class role::analytics_cluster::refinery::job::camus {
     require ::role::analytics_cluster::refinery
 
     $kafka_config = kafka_config('analytics')
