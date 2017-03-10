@@ -1,9 +1,9 @@
-# == Class role::analytics_cluster::refinery::data::check
+# == Class role::analytics_cluster::refinery::job::data_check
 # Configures cron jobs that send email about the faultyness of webrequest data
 #
 # These checks walk HDFS through the plain file system.
 #
-class role::analytics_cluster::refinery::data::check {
+class role::analytics_cluster::refinery::job::data_check {
     require ::role::analytics_cluster::refinery
 
     # This should not be hardcoded.  Instead, one should be able to use
