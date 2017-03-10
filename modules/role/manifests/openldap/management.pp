@@ -4,6 +4,7 @@
 class role::openldap::management {
 
     require ::ldap::role::config::labs
+    include passwords::phabricator
 
     $ldapconfig = $ldap::role::config::labs::ldapconfig
 
@@ -44,5 +45,12 @@ class role::openldap::management {
         hour        => '4',
         minute      => '0',
         environment => 'MAILTO=moritz@wikimedia.org',
+    }
+
+    class { '::phabricator::bot':
+        username => 'offboarding',
+        token    => $passwords::phabricator::offboarding_script_token,
+        owner    => 'root',
+        group    => 'ops',
     }
 }
