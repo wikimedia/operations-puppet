@@ -2,3 +2,5 @@ cluster: lvs
 # fqdn should resolve to the IP on eth0
 profile::base::ssh_server_settings:
   listen_address: "%{::ipaddress_eth0}"
+prometheus::node_exporter::collectors_extra:
+  - ipvs
