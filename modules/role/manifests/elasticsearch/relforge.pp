@@ -4,9 +4,8 @@
 #
 class role::elasticsearch::relforge {
 
-    class { '::role::elasticsearch::common':
-        ferm_srange => '$LABS_NETWORKS',
-    }
+    include ::profile::elasticsearch::common
+
     include ::elasticsearch::nagios::check
 
     # the relforge cluster is serving labs, it should never be connected from
