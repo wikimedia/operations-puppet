@@ -104,10 +104,16 @@ class eventlogging::server(
         mode   => '0644',
     }
 
-    logrotate::conf { 'eventlogging':
-        ensure  => present,
-        content => template('eventlogging/logrotate.erb'),
-        require => File[$log_dir],
+    logrotate::rule { 'eventlogging':
+        ensure         => present,
+        file_pattern   => "${log_dir}/*.log",
+        not_if_empty   => true,
+        max_age        => 30,
+        rotate         => 2,
+        date_ext       => true,
+        compress       => true,
+        delay_compress => true,
+        missing_ok     => true,
     }
 
     # Temporary conditional while we migrate eventlogging service over to
