@@ -1,4 +1,4 @@
-class role::microsites::releases {
+class profile::microsites::releases {
     system::role { 'releases': description => 'Releases webserver' }
 
     include ::base::firewall
