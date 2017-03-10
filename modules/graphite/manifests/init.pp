@@ -171,8 +171,17 @@ class graphite(
             source => 'puppet:///modules/graphite/rsyslog.conf',
         }
 
-        logrotate::conf { 'graphite':
-            source => 'puppet:///modules/graphite/logrotate.conf',
+        logrotate::rule { 'graphite':
+            file_pattern   => '/var/log/uwsgi-graphite-web.log',
+            daily          => true,
+            date_ext       => true,
+            date_yesterday => true,
+            rotate         => 14,
+            missing_ok     => true,
+            no_create      => true,
+            compress       => true,
+            delay_compress => true,
+            post_rotate    => 'service rsyslog rotate >/dev/null 2>&1 || true',
         }
 
         base::service_unit { 'carbon-cache@':

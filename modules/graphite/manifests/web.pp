@@ -145,13 +145,15 @@ class graphite::web(
         require => File['/usr/local/sbin/graphite-auth'],
     }
 
-    file { '/etc/logrotate.d/graphite-web':
-        ensure  => present,
-        mode    => '0444',
-        owner   => 'root',
-        group   => 'root',
-        source  => 'puppet:///modules/graphite/graphite-web-logrotate',
-        require => File['/var/log/graphite-web'],
+    logrotate::rule { 'graphite-web':
+        file_pattern   => '/var/log/graphite-web/*.log',
+        daily          => true,
+        compress       => true,
+        delay_compress => true,
+        size           => '100M',
+        rotate         => 3,
+        missing_ok     => true,
+        post_rotate    => '/usr/sbin/service uwsgi-graphite-web restart > /dev/null',
     }
 
 }
