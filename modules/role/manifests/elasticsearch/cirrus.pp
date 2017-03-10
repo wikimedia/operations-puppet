@@ -4,7 +4,5 @@
 #
 # filtertags: labs-project-deployment-prep labs-project-search labs-project-math
 class role::elasticsearch::cirrus {
-
-    include ::role::elasticsearch::common
-
+    include ::profile::elasticsearch::common
 }
