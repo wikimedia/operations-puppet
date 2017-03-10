@@ -70,14 +70,8 @@ class toollabs::checker inherits toollabs {
         'continuous_job_trusty'  => {
             path                 => '/continuous/trusty',
         },
-        'continuous_job_precise' => {
-            path                 => '/continuous/precise',
-        },
         'grid_start_trusty'      => {
             path                 => '/grid/start/trusty',
-        },
-        'grid_start_precise'     => {
-            path                 => '/grid/start/precise',
         },
         'cron'                   => {
             path                 => '/toolscron',
