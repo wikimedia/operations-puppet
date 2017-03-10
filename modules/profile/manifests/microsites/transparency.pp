@@ -1,9 +1,7 @@
-# == Class: role::transparency
-#
-# This role provisions the Wikimedia Transparency Report static site,
+# Provisions the Wikimedia Transparency Report static site,
 # hosted at <http://transparency.wikimedia.org>.
 #
-class role::microsites::transparency {
+class profile::microsites::transparency {
     include ::apache
     include ::apache::mod::authnz_ldap
     include ::apache::mod::rewrite
@@ -11,8 +9,6 @@ class role::microsites::transparency {
 
     include ::passwords::misc::private_static_site
     include ::passwords::ldap::production
-
-    include ::base::firewall
 
     $repo_dir = '/srv/org/wikimedia/TransparencyReport'
     $docroot  = "${repo_dir}/build"
@@ -50,6 +46,9 @@ class role::microsites::transparency {
     apache::site { 'transparency.wikimedia.org':
         content => template('role/apache/sites/transparency.wikimedia.org.erb'),
     }
+
+    # Firewalling
+    include ::base::firewall
 
     ferm::service { 'transparency_http':
         proto => 'tcp',
