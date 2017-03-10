@@ -134,7 +134,11 @@ class role::phabricator::main {
     $elasticsearch_port = hiera('phabricator_elasticsearch_port', 9243)
     $elasticsearch_protocol = hiera('phabricator_elasticsearch_protocol', 'https')
     $elasticsearch_version = hiera('phabricator_elasticsearch_version', '2')
-    $elasticsearch_enabled = hiera('phabricator_elasticsearch_enabled', true)
+    $elasticsearch_read = hiera('phabricator_elasticsearch_read', true)
+    $elasticsearch_write = hiera('phabricator_elasticsearch_write', true)
+
+    $mysql_search_read = hiera('phabricator_mysql_read', false)
+    $mysql_search_write = hiera('phabricator_mysql_read', true)
 
     # lint:ignore:arrow_alignment
     class { '::phabricator':
@@ -161,8 +165,8 @@ class role::phabricator::main {
                             'path'      => '/phabricator',
                             'version'   => $elasticsearch_version,
                             'roles'     => {
-                                'read'  => $elasticsearch_enabled,
-                                'write' => $elasticsearch_enabled,
+                                'read'  => $elasticsearch_read,
+                                'write' => $elasticsearch_write,
                             },
                         },
                     ],
@@ -170,8 +174,8 @@ class role::phabricator::main {
                 {
                     'type' => 'mysql',
                     'roles' => {
-                        'read' => false,
-                        'write' => true,
+                        'read' => $mysql_search_read,
+                        'write' => $mysql_search_write,
                     }
                 },
             ],
