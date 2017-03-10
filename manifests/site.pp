@@ -924,27 +924,23 @@ node 'einsteinium.wikimedia.org' {
 }
 
 node /^elastic101[7-9]\.eqiad\.wmnet/ {
-    role(elasticsearch::cirrus)
+    role(elasticsearch::cirrus, lvs::realserver)
     include ::base::firewall
-    include ::standard
 }
 
 node /^elastic10[2-4][0-9]\.eqiad\.wmnet/ {
-    role(elasticsearch::cirrus)
+    role(elasticsearch::cirrus, lvs::realserver)
     include ::base::firewall
-    include ::standard
 }
 
 node /^elastic105[0-2]\.eqiad\.wmnet/ {
-    role(elasticsearch::cirrus)
+    role(elasticsearch::cirrus, lvs::realserver)
     include ::base::firewall
-    include ::standard
 }
 
 node /^elastic20[0-3][0-9]\.codfw\.wmnet/ {
-    role(elasticsearch::cirrus)
+    role(elasticsearch::cirrus, lvs::realserver)
     include ::base::firewall
-    include ::standard
 }
 
 # External Storage, Shard 1 (es1) databases
@@ -2501,7 +2497,6 @@ node /^rdb200[246]\.codfw\.wmnet/ {
 node /^relforge100[1-2]\.eqiad\.wmnet/ {
     role(elasticsearch::relforge)
     include ::base::firewall
-    include ::standard
 }
 
 # restbase eqiad cluster
