@@ -113,9 +113,11 @@ m3.replicate-wild-do-table = phlegal%.%
 m3.replicate-wild-do-table = heartbeat.%
 m4.replicate-wild-do-table = log.%
 m4.replicate-wild-do-table = heartbeat.%
-x1.replicate-wild-do-table = flowdb.%
-x1.replicate-wild-do-table = wikishared.%
-x1.replicate-wild-do-table = heartbeat.%
+x1.replicate-wild-ignore-table = mysql.%
+x1.replicate-wild-ignore-table = ops.%
+x1.replicate-wild-ignore-table = trash.%
+x1.replicate-wild-ignore-table = sys.%
+x1.replicate-wild-ignore-table = percona.%
 
 <% if @kernelversion < "3.19" %>
 # Until kernel 3.16 http://www.spinics.net/lists/stable/msg61873.html
