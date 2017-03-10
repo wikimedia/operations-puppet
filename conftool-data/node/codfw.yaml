@@ -83,6 +83,13 @@ codfw:
     mw2240.codfw.wmnet: [apache2,nginx]
     mw2241.codfw.wmnet: [apache2,nginx]
     mw2242.codfw.wmnet: [apache2,nginx]
+    mw2254.codfw.wmnet: [apache2,nginx]
+    mw2255.codfw.wmnet: [apache2,nginx]
+    mw2256.codfw.wmnet: [apache2,nginx]
+    mw2257.codfw.wmnet: [apache2,nginx]
+    mw2258.codfw.wmnet: [apache2,nginx]
+    mw2259.codfw.wmnet: [apache2,nginx]
+    mw2260.codfw.wmnet: [apache2,nginx]
   api_appserver:
     mw2120.codfw.wmnet: [apache2,nginx]
     mw2121.codfw.wmnet: [apache2,nginx]
@@ -136,6 +143,9 @@ codfw:
     mw2221.codfw.wmnet: [apache2,nginx]
     mw2222.codfw.wmnet: [apache2,nginx]
     mw2223.codfw.wmnet: [apache2,nginx]
+    mw2251.codfw.wmnet: [apache2,nginx]
+    mw2252.codfw.wmnet: [apache2,nginx]
+    mw2253.codfw.wmnet: [apache2,nginx]
   imagescaler:
     mw2148.codfw.wmnet: [apache2,nginx]
     mw2149.codfw.wmnet: [apache2,nginx]

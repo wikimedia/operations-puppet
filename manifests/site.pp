@@ -2158,6 +2158,18 @@ node /^mw22(4[3789]|50)\.codfw\.wmnet$/ {
     include ::base::firewall
 }
 
+#mw2251-2253 are api-appservers
+node /^mw225[1-3]\.codfw\.wmnet$/ {
+    role(mediawiki::appserver::api)
+    include ::base::firewall
+}
+
+#mw2254-2260 are appservers
+node /^mw22(5[4-9]|60)\.codfw\.wmnet$/ {
+    role(mediawiki::appserver)
+    include ::base::firewall
+}
+
 # mw logging host codfw
 node 'mwlog2001.codfw.wmnet' {
     role(xenon)
