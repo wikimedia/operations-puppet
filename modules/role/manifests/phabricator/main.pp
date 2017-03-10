@@ -175,9 +175,6 @@ class role::phabricator::main {
                     }
                 },
             ],
-            'search.elastic.host'                    => $elasticsearch_host,
-            'search.elastic.version'                 => $elasticsearch_version,
-            'search.elastic.enabled'                 => $elasticsearch_enabled,
             'darkconsole.enabled'                    => false,
             'differential.allow-self-accept'         => true,
             'phabricator.base-uri'                   => "https://${domain}",
