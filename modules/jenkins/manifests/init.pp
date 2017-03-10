@@ -11,6 +11,9 @@
 # [*access_log*]
 # Whether to enable the web service access.log. Boolean. Default: false
 #
+# [*log_group*]
+# Unix group for the log files under /var/log/jenkins. Default: 'wikidev'
+#
 # [*http_port*]
 # HTTP port for the web service. Default: 8080
 #
@@ -31,6 +34,7 @@
 class jenkins(
     $prefix,
     $access_log = false,
+    $log_group = 'wikidev',
     $http_port = '8080',
     $max_open_files = '8192',
     $service_ensure  = 'running',
@@ -95,15 +99,26 @@ class jenkins(
     systemd::syslog { 'jenkins':
         base_dir     => '/var/log',
         owner        => 'jenkins',
-        group        => 'jenkins',
+        group        => $log_group,
         readable_by  => 'group',
         log_filename => 'jenkins.log',
     }
 
-    $jenkins_access_log_arg = $access_log ? {
-        true    => '--accessLoggerClassName=winstone.accesslog.SimpleAccessLogger --simpleAccessLogger.format=combined --simpleAccessLogger.file=/var/log/jenkins/access.log',
-        default => '',
+    if $access_log {
+        $jenkins_access_log_arg = '--accessLoggerClassName=winstone.accesslog.SimpleAccessLogger --simpleAccessLogger.format=combined --simpleAccessLogger.file=/var/log/jenkins/access.log'
+        file { '/var/log/jenkins/access.log':
+            ensure  => present,
+            replace => false,
+            owner   => 'jenkins',
+            group   => $log_group,
+            mode    => '0640',
+            before  =>  Systemd::Syslog['jenkins'],
+        }
+
+    } else {
+        $jenkins_access_log_arg = ''
     }
+
     $java_args = join([
         # Allow graphs etc. to work even when an X server is present
         '-Djava.awt.headless=true',
