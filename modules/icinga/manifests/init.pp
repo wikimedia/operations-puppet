@@ -95,9 +95,13 @@ class icinga(
     }
 
     # FIXME: This should be in the package?
-    logrotate::conf { 'icinga':
-        ensure => present,
-        source => 'puppet:///modules/icinga/logrotate.conf',
+    logrotate::rule { 'icinga':
+        file_pattern  => '/var/log/icinga/icinga.log',
+        daily         => true,
+        copy_truncate => true,
+        missing_ok    => true,
+        not_if_empty  => true,
+        rotate        => 7,
     }
 
     # Setup all plugins!
