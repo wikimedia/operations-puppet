@@ -186,11 +186,6 @@ def job_running(name):
         return False
 
 
-@check('/continuous/precise')
-def continuous_job_precise():
-    return job_running('test-long-running-precise')
-
-
 @check('/continuous/trusty')
 def continuous_job_trusty():
     return job_running('test-long-running-trusty')
@@ -227,11 +222,6 @@ def grid_check_start(release):
 @check('/grid/start/trusty')
 def grid_check_start_trusty():
     return grid_check_start('trusty')
-
-
-@check('/grid/start/precise')
-def grid_check_start_precise():
-    return grid_check_start('precise')
 
 
 def db_read_write_check(host, db):
