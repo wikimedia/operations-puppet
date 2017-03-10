@@ -1,15 +1,22 @@
-# planet RSS feed aggregator 2.0 (planet-venus)
-class role::planet::venus {
-
-    include ::base::firewall
-
-    system::role { 'role::planet::venus': description => 'Planet (venus) weblog aggregator' }
-
-    $planet_domain_name= hiera('planet_domain_name', 'wikimedia.org')
-
-    # List all planet languages and translations for
-    # index.html.tmpl here. Configurations, directories and
-    # cronjobs are auto-created from this hash.
+# sets up a planet RSS feed aggregator (planet-venus aka planet 2.0)
+#
+# $planet_domain_name: domain name used, e.g. wikimedia.org or wmflabs.org
+#
+# $planet_meta_link: protocol-relative link to a meta or index page for all planets
+#
+# $planet_http_proxy: since we are on a private IP now we need to proxy to fetch external URLs
+#
+# $planet_active_dc: set to the currently active DC. feed updates are only running here.
+#
+# $planet_languages: translated strings for the UI in various languages
+#                    list all planet languages and translations for index.html.tmpl here.
+#                    configurations, directories and cronjobs are auto-created from this hash.
+#
+class profile::planet::venus (
+    $planet_domain_name = hiera('planet_domain_name'),
+    $planet_meta_link = 'meta.wikimedia.org/wiki/Planet_Wikimedia',
+    $planet_http_proxy = "http://url-downloader.${::site}.wikimedia.org:8080",
+    $planet_active_dc = 'eqiad',
     $planet_languages = {
         ar => {
             'subscribe'     => '&#1575;&#1588;&#1578;&#1585;&#1603;',
@@ -196,17 +203,10 @@ class role::planet::venus {
             'planetarium'   => '&#22825;&#25991;&#39208;',
         },
     }
+) {
 
-    # protocol-relative link to a meta or index page for all planets
-    $planet_meta_link = 'meta.wikimedia.org/wiki/Planet_Wikimedia'
+    system::role { 'role::planet::venus': description => 'Planet (venus) weblog aggregator' }
 
-    # since we are on a private IP now we need to proxy to fetch external URLs
-    $planet_http_proxy = "http://url-downloader.${::site}.wikimedia.org:8080"
-
-    # set to the currently active DC. feed updates are only running here.
-    $planet_active_dc = 'eqiad'
-
-    # the 'planet' class from modules/planet/init.pp does the setup
     class {'::planet':
         planet_domain_name => $planet_domain_name,
         planet_languages   => $planet_languages,
@@ -215,6 +215,8 @@ class role::planet::venus {
         planet_active_dc   => $planet_active_dc
     }
 
+    # firewalling
+    include ::base::firewall
     ferm::service { 'planet-http':
         proto => 'tcp',
         port  => '80',
