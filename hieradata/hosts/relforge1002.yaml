@@ -1,1 +1,1 @@
-elasticsearch::master_eligible: true
+profile::elasticsearch::master_eligible: true
