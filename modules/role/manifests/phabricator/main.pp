@@ -135,12 +135,16 @@ class role::phabricator::main {
     $elasticsearch_port = hiera('phabricator_elasticsearch_port', 9243)
     $elasticsearch_protocol = hiera('phabricator_elasticsearch_protocol', 'https')
     $elasticsearch_version = hiera('phabricator_elasticsearch_version', '2')
-    $elasticsearch_enabled = hiera('phabricator_elasticsearch_enabled', true)
+    $elasticsearch_read = hiera('phabricator_elasticsearch_read', true)
+    $elasticsearch_write = hiera('phabricator_elasticsearch_write', true)
 
     $elasticsearch_mirror = hiera('phabricator_elasticsearch_mirror', 'search.svc.codfw.wmnet')
     $elasticsearch_mirror_version = hiera('phabricator_elasticsearch_mirror_version', '5')
     $elasticsearch_mirror_read = hiera('phabricator_elasticsearch_mirror_read', false)
     $elasticsearch_mirror_write = hiera('phabricator_elasticsearch_mirror_write', true)
+
+    $mysql_search_read = hiera('phabricator_mysql_read', false)
+    $mysql_search_write = hiera('phabricator_mysql_write', true)
 
     # lint:ignore:arrow_alignment
     class { '::phabricator':
@@ -152,9 +156,11 @@ class role::phabricator::main {
         trusted_proxies  => $cache_misc_nodes[$::site],
         mysql_admin_user => $mysql_admin_user,
         mysql_admin_pass => $mysql_admin_pass,
-        libraries        => [ "${phab_root_dir}/libext/Sprint/src",
-                              "${phab_root_dir}/libext/security/src",
-                              "${phab_root_dir}/libext/misc/" ],
+        libraries        => [
+          "${phab_root_dir}/libext/Sprint/src",
+          "${phab_root_dir}/libext/security/src",
+          "${phab_root_dir}/libext/misc/"
+        ],
         settings         => {
             'cluster.search' => [
                 {
@@ -167,8 +173,8 @@ class role::phabricator::main {
                             'path'      => '/phabricator',
                             'version'   => $elasticsearch_version,
                             'roles'     => {
-                                'read'  => $elasticsearch_enabled,
-                                'write' => $elasticsearch_enabled,
+                                'read'  => $elasticsearch_read,
+                                'write' => $elasticsearch_write,
                             },
                         },
                         {
@@ -187,8 +193,8 @@ class role::phabricator::main {
                 {
                     'type' => 'mysql',
                     'roles' => {
-                        'read' => false,
-                        'write' => true,
+                        'read'  => $mysql_search_read,
+                        'write' => $mysql_search_write,
                     }
                 },
             ],
@@ -360,3 +366,4 @@ class role::phabricator::main {
 
     include role::phabricator::rsync
 }
+
