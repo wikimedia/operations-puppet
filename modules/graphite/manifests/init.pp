@@ -171,8 +171,16 @@ class graphite(
             source => 'puppet:///modules/graphite/rsyslog.conf',
         }
 
-        logrotate::conf { 'graphite':
-            source => 'puppet:///modules/graphite/logrotate.conf',
+        logrotate::rule { 'graphite':
+            file_glob      => '/var/log/uwsgi-graphite-web.log',
+            frequency      => 'daily',
+            date_ext       => true,
+            date_yesterday => true,
+            rotate         => 14,
+            missing_ok     => true,
+            no_create      => true,
+            compress       => true,
+            post_rotate    => 'service rsyslog rotate >/dev/null 2>&1 || true',
         }
 
         systemd::unit { 'carbon-cache@.service':
