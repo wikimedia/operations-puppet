@@ -44,6 +44,7 @@ class nagios_common::commands(
         'check_all_memcached.php',
         'check_bgp',
         'check_dsh_groups',
+        'check_grafana_alert',
         'check_graphite',
         'check_graphite_freshness',
         'check_ifstatus_nomon',
