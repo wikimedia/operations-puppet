@@ -191,11 +191,9 @@ node 'bohrium.eqiad.wmnet' {
     include ::standard
 }
 
-# virtual machine for static misc. services
+# VM with webserver for misc. static sites
 node 'bromine.eqiad.wmnet' {
-    role(bugzilla::static, microsites::annualreport, microsites::transparency,
-        microsites::releases, microsites::endowment)
-    include ::standard
+    role('webserver_misc_static')
 }
 
 # Californium hosts openstack-dashboard AKA horizon
