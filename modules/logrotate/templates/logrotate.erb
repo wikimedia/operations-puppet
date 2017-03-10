@@ -1,0 +1,45 @@
+# This file is managed by Puppet.
+# puppet:///logrotate/logrotate.erb
+
+<%= @file_glob %> {
+<% if @not_if_empty -%>
+    notifempty
+<% end -%>
+<% if @frequency -%>
+    <%= @frequency %>
+<% end -%>
+<% if @date_yesterday -%>
+    dateyesterday
+<% end -%>
+<% if @copy_truncate -%>
+    copytruncate
+<% end -%>
+<% if @max_age -%>
+    maxage <%= @max_age %>
+<% end -%>
+<% if @rotate -%>
+    rotate <%= @rotate %>
+<% end -%>
+<% if @date_ext -%>
+    dateext
+<% end -%>
+<% if @compress -%>
+    compress
+    delaycompress
+<% end -%>
+<% if @missing_ok -%>
+    missingok
+<% end -%>
+<% if @actual_size -%>
+    <%= @actual_size %>
+<% end -%>
+<% if @no_create -%>
+    nocreate
+<% end -%>
+<% if @post_rotate -%>
+    sharedscripts
+    postrotate
+        <%= @post_rotate %>
+    endscript
+<% end -%>
+}
