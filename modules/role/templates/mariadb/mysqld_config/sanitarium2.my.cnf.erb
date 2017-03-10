@@ -20,14 +20,20 @@ ssl-verify-server-cert
 <% end %>
 
 [mysqld]
+user           = mysql
 port           = 3306
 socket         = /tmp/mysql.sock
 datadir        = /srv/sqldata
 tmpdir         = /srv/tmp
-# needed for multisource replication + GTID.
-gtid_domain_id = <%= @server_id %>
 server_id      = <%= @server_id %>
-user           = mysql
+
+# gtid_domain_id flag is needed for multisource replication and GTID.
+# Strictly it is only needed on masters or servers that can potentially be
+# masters but for consistency it should be set in all of them.
+# https://mariadb.com/kb/en/mariadb/gtid/
+
+gtid_domain_id  = <%= @gtid_domain_id %>
+
 read_only      = 1
 
 # enable socket authentication
