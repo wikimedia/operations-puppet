@@ -2128,6 +2128,19 @@ node /^mw22(0[0-9]|1[0-4])\.codfw\.wmnet$/ {
     include ::base::firewall
 }
 
+#mw2254-2260 are appservers
+node /^mw22(5[4-9]|60)\.codfw\.wmnet$/ {
+    role(mediawiki::appserver)
+    include ::base::firewall
+}
+
+#mw2254-2260 are api-appservers
+node /^mw225[1-3]\.codfw\.wmnet$/ {
+    role(mediawiki::appserver)
+    include ::base::firewall
+}
+
+
 # New Appservers, in row A3/A4
 
 #mw2215-2223 are api appservers
