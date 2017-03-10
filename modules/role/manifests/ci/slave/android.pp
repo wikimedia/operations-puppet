@@ -22,4 +22,7 @@ class role::ci::slave::android {
         command => '/usr/sbin/usermod -aG kvm jenkins-deploy',
     }
 
+    file { '/etc/environment':
+        content => 'ANDROID_HOME=/srv/jenkins-workspace/workspace/apps-android-wikipedia-periodic-test/.sdk'
+    }
 }
