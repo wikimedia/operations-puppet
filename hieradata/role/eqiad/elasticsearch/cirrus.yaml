@@ -1,15 +1,16 @@
 # eqiad prod name
-elasticsearch::cluster_name: production-search-eqiad
+profile::elasticsearch::cluster_name: production-search-eqiad
 
 # ES-specific: Not default
-elasticsearch::unicast_hosts: # this should be set to the list of master eligible nodes
+profile::elasticsearch::unicast_hosts: # this is also the list of master eligible nodes
   - elastic1030.eqiad.wmnet
   - elastic1036.eqiad.wmnet
   - elastic1040.eqiad.wmnet
 
-lvs::realserver::realserver_ips: "10.2.2.30"
+role::lvs::realserver::pools:
+  search: {}
 
-elasticsearch::cluster_hosts:
+profile::elasticsearch::cluster_hosts:
   - elastic1017.eqiad.wmnet
   - elastic1018.eqiad.wmnet
   - elastic1019.eqiad.wmnet
@@ -48,19 +49,19 @@ elasticsearch::cluster_hosts:
   - elastic1052.eqiad.wmnet
 
 # TODO at what point do we need to update this number?
-elasticsearch::expected_nodes: 36
+profile::elasticsearch::expected_nodes: 36
 
 # We should be able to run "OK" with 24 servers.
-elasticsearch::recover_after_nodes: 24
+profile::elasticsearch::recover_after_nodes: 24
 
 debdeploy::grains:
   debdeploy-elastic-eqiad:
     value: standard
 
-elasticsearch::graylog_hosts:
+profile::elasticsearch::graylog_hosts:
   - logstash1001.eqiad.wmnet
   - logstash1002.eqiad.wmnet
   - logstash1003.eqiad.wmnet
 
-elasticsearch::https::certificate_name: 'search.svc.eqiad.wmnet'
-profile::base::dns_alt_names:           'search.svc.eqiad.wmnet'
+profile::elasticsearch::certificate_name: 'search.svc.eqiad.wmnet'
+profile::base::dns_alt_names:             'search.svc.eqiad.wmnet'

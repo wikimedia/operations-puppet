@@ -95,14 +95,14 @@ aqs_hosts:
 aqs::cassandra_default_consistency: localOne
 cassandra::listen_address: '%{::ipaddress_eth0}'
 cassandra::rpc_address: '%{::ipaddress_eth0}'
+cassandra::seeds:
+  - deployment-restbase01.deployment-prep.eqiad.wmflabs
+  - deployment-restbase02.deployment-prep.eqiad.wmflabs
 cassandra::logstash_host: deployment-logstash2.deployment-prep.eqiad.wmflabs
 cassandra::target_version: '2.2'
 cassandra::metrics::graphite_host: labmon1001.eqiad.wmnet
 cassandra::additional_jvm_opts:
-  - '-javaagent:/srv/deployment/prometheus/jmx_exporter/lib/jmx_prometheus_javaagent-0.8-20170117.190412-1.jar=7800:/etc/cassandra/prometheus_jmx_exporter.yaml'
-restbase::seeds:
-  - 10.68.16.128 # deployment-restbase01
-  - 10.68.17.189 # deployment-restbase02
+  - '-javaagent:/srv/deployment/prometheus/jmx_exporter/lib/jmx_prometheus_javaagent-0.8-SNAPSHOT.jar=7800:/etc/cassandra/jmx_exporter.yaml'
 # used for rate limiting
 restbase::hosts:
   - deployment-restbase01.deployment-prep.eqiad.wmflabs
@@ -189,18 +189,22 @@ scap::dsh::groups:
 "mediawiki::users::mwdeploy_pub_key": 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDFwlmBBBJAr1GI+vuYjFh5vq0YIVa5fqE5DZdpzUZISlQ0Kt+9bIr2qNHIj+Jl5Bc6ZY1mkh8l693tAHVx+8tayoiFWYNs9IVsxR+iHgOOhAdDIBXaHaUattdiye5bQmdvJVXaVegckNX2gbmUCOc09jvZvlk3blKFTSEpZRU8dmpXQzKdZgaAq2VTajAegoFnuN9FbC7hzBPA+1NxFNKn94eIeFPSlo5rWr44OEb5Uy3O0B5c6WPM+IgfiygetP+yGL4cKv7qEjZ0Sxok/Rh1lBh1vP1YQ/Mc6tMV0s+kOv7Wz+P88bfU1/uWvy479OZdfh3NQqDTrLzqHwVW1vef root@deployment-salt'
 # NOTE: these elasticsearch settings will need to be overloaded on a per-host
 # basis for the Logstash Elasticsearch cluster.
-"elasticsearch::version": 5
-"elasticsearch::expected_nodes": 3
-"elasticsearch::minimum_master_nodes": 2
-"elasticsearch::heap_memory": 4G
-"elasticsearch::recover_after_nodes": 3
-"elasticsearch::bulk_thread_pool_executors": 5
-"elasticsearch::unicast_hosts":
+"profile::elasticsearch::expected_nodes": 3
+"profile::elasticsearch::minimum_master_nodes": 2
+"profile::elasticsearch::heap_memory": 4G
+"profile::elasticsearch::recover_after_nodes": 3
+"profile::elasticsearch::bulk_thread_pool_executors": 5
+"profile::elasticsearch::ferm_srange": ''
+"profile::elasticsearch::unicast_hosts":
+    - deployment-elastic05.deployment-prep.eqiad.wmflabs
+    - deployment-elastic06.deployment-prep.eqiad.wmflabs
+    - deployment-elastic07.deployment-prep.eqiad.wmflabs
+"profile::elasticsearch::cluster_hosts":
     - deployment-elastic05
     - deployment-elastic06
     - deployment-elastic07
-"elasticsearch::cluster_name": beta-search
-"elasticsearch::graylog_hosts":
+"profile::elasticsearch::cluster_name": beta-search
+"profile::elasticsearch::graylog_hosts":
   - deployment-logstash2.deployment-prep.eqiad.wmflabs
 role::logstash::collector::statsd_host: labmon1001.eqiad.wmnet
 "mediawiki::redis_servers::eqiad":

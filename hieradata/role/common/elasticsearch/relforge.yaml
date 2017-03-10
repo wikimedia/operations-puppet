@@ -3,12 +3,11 @@ cluster: relforge
 admin::groups:
   - elasticsearch-roots
 
-# Nodes should not be master eligible by default in prod
-elasticsearch::master_eligible: false
-
 # We should be able to run "OK" with a single server.
-elasticsearch::recover_after_nodes: 1
-elasticsearch::recover_after_time: '1m'
+profile::elasticsearch::recover_after_nodes: 1
+profile::elasticsearch::recover_after_time: '1m'
+
+profile::elasticsearch::ferm_srange: '$LABS_NETWORKS'
 
 # T130329
 profile::base::check_disk_options: -w 18% -c 15% -l -e -A -i "/srv/sd[a-b][1-3]" --exclude-type=tracefs
