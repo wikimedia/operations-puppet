@@ -194,29 +194,6 @@ class openstack::nova::compute(
             ensure  => absent,
     }
 
-    # Live hack to use qcow2 ephemeral base images. Need to upstream
-    # a config option for this.
-    if ($::lsbdistcodename == 'precise') {
-        file { '/usr/share/pyshared/nova/virt/libvirt/driver.py':
-            source  => "puppet:///modules/openstack/${openstack_version}/nova/virt-libvirt-driver",
-            notify  => Service['nova-compute'],
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0444',
-            require => Package['nova-common'],
-        }
-    }
-    if ($::lsbdistcodename == 'trusty') {
-        file { '/usr/lib/python2.7/dist-packages/nova/virt/libvirt/driver.py':
-            source  => "puppet:///modules/openstack/${openstack_version}/nova/virt-libvirt-driver",
-            notify  => Service['nova-compute'],
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0444',
-            require => Package['nova-common'],
-        }
-    }
-
     nrpe::monitor_service { 'check_nova_compute_process':
         description  => 'nova-compute process',
         nrpe_command => "/usr/lib/nagios/plugins/check_procs -c 1: --ereg-argument-array '^/usr/bin/python /usr/bin/nova-compute'",
