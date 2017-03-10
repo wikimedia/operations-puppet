@@ -117,14 +117,6 @@ class icinga::monitor::toollabs {
         retry_interval => 5,
     }
 
-    monitoring::service { 'tools-checker-grid-start-precise':
-        description    => 'Start a job and verify on Precise',
-        check_command  => "${checker}!/grid/start/precise!OK",
-        host           => $test_entry_host,
-        check_interval => 5,
-        retry_interval => 5,
-    }
-
     monitoring::service { 'tools-checker-etcd-flannel':
         description   => 'All Flannel etcd nodes are healthy',
         check_command => "${checker}!/etcd/flannel!OK",
