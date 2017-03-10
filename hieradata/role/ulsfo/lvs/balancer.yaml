@@ -3,5 +3,3 @@ debdeploy::grains:
     value: standard
 pybal::configuration::config: etcd
 pybal::configuration::config_host: conf1001.eqiad.wmnet
-prometheus::node_exporter::collectors_extra:
-  - ipvs
