@@ -8,22 +8,29 @@
 #   traffic. The relforge cluster is an example.
 #   Default: $DOMAIN_NETWORKS
 #
-class role::elasticsearch::common(
-    $ferm_srange      = '$DOMAIN_NETWORKS',
+# For documentation of other parameters, see the elasticsearch class.
+#
+class profile::elasticsearch (
+    $cluster_name,
+    $ferm_srange,
+    $elastic_nodes,
+    $unicast_hosts,
+    $minimum_master_nodes,
+    $heap_memory,
+    $expected_nodes,
+    $graylog_hosts,
+    $rack                       = undef, # FIXME: default to undef does not work as expected
+    $row                        = undef, # FIXME: default to undef does not work as expected
+    $awareness_attributes       = undef,
+    $bulk_thread_pool_executors = 6,
+    $certificate_name           = $::fqdn,
+    $recover_after_time         = '1s',
+    $recover_after_nodes        = 1,
+    $master_eligible            = false,
 ) {
 
-    if ($::realm == 'production' and hiera('elasticsearch::rack', undef) == undef) {
-        fail("Don't know rack for ${::hostname} and rack awareness should be turned on")
-    }
-
-    if ($::realm == 'labs' and hiera('elasticsearch::cluster_name', undef) == undef) {
-        $msg = '\$::elasticsearch::cluster_name must be set to something unique to the labs project.'
-        $msg2 = 'You can set it in the hiera config of the project'
-        fail("${msg}\n${msg2}")
-    }
-
-    if hiera('has_lvs', true) {
-        include ::lvs::realserver
+    if ($::realm == 'production' and $row == undef) {
+        fail("Don't know row for ${::hostname} and row awareness should be turned on")
     }
 
     ferm::service { 'elastic-http':
@@ -33,7 +40,6 @@ class role::elasticsearch::common(
         srange  => $ferm_srange,
     }
 
-    $elastic_nodes = hiera('elasticsearch::cluster_hosts')
     $elastic_nodes_ferm = join($elastic_nodes, ' ')
 
     ferm::service { 'elastic-inter-node':
@@ -56,10 +62,10 @@ class role::elasticsearch::common(
     # debian package, so we need to force the creation of the symlink.
     $plugins_dir = '/srv/deployment/elasticsearch/plugins'
     file { '/usr/share/elasticsearch/plugins':
-      ensure  => 'link',
-      target  => $plugins_dir,
-      force   => true,
-      require => Package['elasticsearch/plugins'],
+        ensure  => 'link',
+        target  => $plugins_dir,
+        force   => true,
+        require => Package['elasticsearch/plugins'],
     }
 
     # Install
@@ -81,19 +87,27 @@ class role::elasticsearch::common(
         auto_create_index          => '+apifeatureusage-*,-*',
         # Production can get a lot of use out of the filter cache.
         filter_cache_size          => '20%',
-        bulk_thread_pool_executors => hiera('elasticsearch::bulk_thread_pool_executors', 6),
+        bulk_thread_pool_executors => $bulk_thread_pool_executors,
         bulk_thread_pool_capacity  => 1000,
-    }
-
-    include ::standard
-    if $::standard::has_ganglia {
-        include ::elasticsearch::ganglia
+        rack                       => $rack,
+        row                        => $row,
+        awareness_attributes       => $awareness_attributes,
+        cluster_name               => $cluster_name,
+        unicast_hosts              => $unicast_hosts,
+        minimum_master_nodes       => $minimum_master_nodes,
+        recover_after_time         => $recover_after_time,
+        recover_after_nodes        => $recover_after_nodes,
+        heap_memory                => $heap_memory,
+        expected_nodes             => $expected_nodes,
+        master_eligible            => $master_eligible,
+        graylog_hosts              => $graylog_hosts,
     }
 
     class { '::elasticsearch::https':
-        ferm_srange => $ferm_srange,
+        ferm_srange      => $ferm_srange,
+        certificate_name => $certificate_name,
     }
-    include elasticsearch::monitor::diamond
-    include ::elasticsearch::log::hot_threads
+    class { '::elasticsearch::monitor::diamond': }
+    class { '::elasticsearch::log::hot_threads': }
 
 }

@@ -4,22 +4,24 @@ admin::groups:
   - elasticsearch-roots
 
 # Version of elasticsearch to build configuration for
-elasticsearch::version: 2
+profile::elasticsearch::version: 2
 
 # More than 30G isn't very useful
-elasticsearch::heap_memory: '30G'
+profile::elasticsearch::heap_memory: '30G'
 
 # Nodes should not be master eligible by default in prod
-elasticsearch::master_eligible: false
+profile::elasticsearch::master_eligible: false
 
 # Don't run if more than 1 master missing
-elasticsearch::minimum_master_nodes: 2
+profile::elasticsearch::minimum_master_nodes: 2
 
 # But it'd save time if we just waited for all of them to come back so
 # lets give them plenty of time to restart.
-elasticsearch::recover_after_time: '20m'
+profile::elasticsearch::recover_after_time: '20m'
 
 # T130329
 profile::base::check_disk_options: -w 18% -c 12% -l -e -A -i "/srv/sd[a-b][1-3]" --exclude-type=tracefs
 
-elasticsearch::awareness_attributes: 'row'
+profile::elasticsearch::awareness_attributes: 'row'
+
+profile::elasticsearch::ferm_srange: '$DOMAIN_NETWORKS'

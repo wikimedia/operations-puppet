@@ -1,92 +1,92 @@
 es_codfw_rack_a5:
   __regex: !ruby/regexp /^elastic20(01|02|03|25)\.codfw\.wmnet$/
-  elasticsearch::rack: A5
-  elasticsearch::row:  A
+  profile::elasticsearch::rack: A5
+  profile::elasticsearch::row:  A
 
 es_codfw_rack_a8:
   __regex: !ruby/regexp /^elastic20(04|05|06|26|27)\.codfw\.wmnet$/
-  elasticsearch::rack: A8
-  elasticsearch::row:  A
+  profile::elasticsearch::rack: A8
+  profile::elasticsearch::row:  A
 
 es_codfw_rack_b5:
   __regex: !ruby/regexp /^elastic20(07|08|09|28)\.codfw\.wmnet$/
-  elasticsearch::rack: B5
-  elasticsearch::row:  B
+  profile::elasticsearch::rack: B5
+  profile::elasticsearch::row:  B
 
 es_codfw_rack_b8:
   __regex: !ruby/regexp /^elastic20(10|11|12|29|30)\.codfw\.wmnet$/
-  elasticsearch::rack: B8
-  elasticsearch::row:  B
+  profile::elasticsearch::rack: B8
+  profile::elasticsearch::row:  B
 
 es_codfw_rack_c1:
   __regex: !ruby/regexp /^elastic20(13|14|15|31)\.codfw\.wmnet$/
-  elasticsearch::rack: C1
-  elasticsearch::row:  C
+  profile::elasticsearch::rack: C1
+  profile::elasticsearch::row:  C
 
 es_codfw_rack_c5:
   __regex: !ruby/regexp /^elastic20(16|17|18|32|33)\.codfw\.wmnet$/
-  elasticsearch::rack: C5
-  elasticsearch::row:  C
+  profile::elasticsearch::rack: C5
+  profile::elasticsearch::row:  C
 
 es_codfw_rack_d1:
   __regex: !ruby/regexp /^elastic20(19|20|21|34)\.codfw\.wmnet$/
-  elasticsearch::rack: D1
-  elasticsearch::row:  D
+  profile::elasticsearch::rack: D1
+  profile::elasticsearch::row:  D
 
 es_codfw_rack_d5:
   __regex: !ruby/regexp /^elastic20(22|23|24|35|36)\.codfw\.wmnet$/
-  elasticsearch::rack: D5
-  elasticsearch::row:  D
+  profile::elasticsearch::rack: D5
+  profile::elasticsearch::row:  D
 
 es_eqiad_rack_a3:
   __regex: !ruby/regexp /^(elastic10(30|31|32|33|34|35)|relforge1001)\.eqiad\.wmnet$/
-  elasticsearch::rack: A3
-  elasticsearch::row:  A
+  profile::elasticsearch::rack: A3
+  profile::elasticsearch::row:  A
 
 es_eqiad_rack_a6:
   __regex: !ruby/regexp /^elastic10(44|45|48)\.eqiad\.wmnet$/
-  elasticsearch::rack: A6
-  elasticsearch::row:  A
+  profile::elasticsearch::rack: A6
+  profile::elasticsearch::row:  A
 
 es_eqiad_rack_b3:
   __regex: !ruby/regexp /^elastic10(36|37|38|39)\.eqiad\.wmnet$/
-  elasticsearch::rack: B3
-  elasticsearch::row:  B
+  profile::elasticsearch::rack: B3
+  profile::elasticsearch::row:  B
 
 es_eqiad_rack_b4:
   __regex: !ruby/regexp /^elastic10(49|50)\.eqiad\.wmnet$/
-  elasticsearch::rack: B4
-  elasticsearch::row:  B
+  profile::elasticsearch::rack: B4
+  profile::elasticsearch::row:  B
 
 es_eqiad_rack_b6:
   __regex: !ruby/regexp /^elastic10(28|46|47)\.eqiad\.wmnet$/
-  elasticsearch::rack: B6
-  elasticsearch::row:  B
+  profile::elasticsearch::rack: B6
+  profile::elasticsearch::row:  B
 
 es_eqiad_rack_c4:
   __regex: !ruby/regexp /^elastic10(21|22|29)\.eqiad\.wmnet$/
-  elasticsearch::rack: C4
-  elasticsearch::row:  C
+  profile::elasticsearch::rack: C4
+  profile::elasticsearch::row:  C
 
 es_eqiad_rack_c5:
   __regex: !ruby/regexp /^(elastic10(40|41|42|43)|relforge1002)\.eqiad\.wmnet$/
-  elasticsearch::rack: C5
-  elasticsearch::row:  C
+  profile::elasticsearch::rack: C5
+  profile::elasticsearch::row:  C
 
 es_eqiad_rack_c7:
   __regex: !ruby/regexp /^elastic10(51|52)\.eqiad\.wmnet$/
-  elasticsearch::rack: C7
-  elasticsearch::row:  C
+  profile::elasticsearch::rack: C7
+  profile::elasticsearch::row:  C
 
 es_eqiad_rack_d3:
   __regex: !ruby/regexp /^elastic10(17|18|19|20)\.eqiad\.wmnet$/
-  elasticsearch::rack: D3
-  elasticsearch::row:  D
+  profile::elasticsearch::rack: D3
+  profile::elasticsearch::row:  D
 
 es_eqiad_rack_d4:
   __regex: !ruby/regexp /^elastic10(23|24|25|26|27)\.eqiad\.wmnet$/
-  elasticsearch::rack: D4
-  elasticsearch::row:  D
+  profile::elasticsearch::rack: D4
+  profile::elasticsearch::row:  D
 
 mysql_eqiad:
   __regex: !ruby/regexp /^(db10[0-9][0-9]|dbstore100[1-2]|dbproxy10[01][0-9]|es101[1-9]|pc100[4-6]|labsdb10[01][0-9])\.eqiad\.wmnet$/
