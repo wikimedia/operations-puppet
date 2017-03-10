@@ -1,15 +1,16 @@
 # codfw prod name
-elasticsearch::cluster_name: production-search-codfw
+profile::elasticsearch::cluster_name: production-search-codfw
 
 # ES-specific: Not default
-elasticsearch::unicast_hosts: # this should be set to the list of master eligible nodes
+profile::elasticsearch::unicast_hosts: # this is also the list of master eligible nodes
   - elastic2001.codfw.wmnet
   - elastic2007.codfw.wmnet
   - elastic2013.codfw.wmnet
 
-lvs::realserver::realserver_ips: "10.2.1.30"
+role::lvs::realserver::pools:
+  search: {}
 
-elasticsearch::cluster_hosts:
+profile::elasticsearch::cluster_hosts:
   - elastic2001.codfw.wmnet
   - elastic2002.codfw.wmnet
   - elastic2003.codfw.wmnet
@@ -47,19 +48,19 @@ elasticsearch::cluster_hosts:
   - elastic2035.codfw.wmnet
   - elastic2036.codfw.wmnet
 
-elasticsearch::expected_nodes: 36
+profile::elasticsearch::expected_nodes: 36
 
 # We should be able to run "OK" with 11 servers.
-elasticsearch::recover_after_nodes: 11
+profile::elasticsearch::recover_after_nodes: 11
 
 debdeploy::grains:
   debdeploy-elastic-codfw:
     value: standard
 
-elasticsearch::graylog_hosts:
+profile::elasticsearch::graylog_hosts:
   - logstash1001.eqiad.wmnet
   - logstash1002.eqiad.wmnet
   - logstash1003.eqiad.wmnet
 
-elasticsearch::https::certificate_name: 'search.svc.codfw.wmnet'
-profile::base::dns_alt_names:           'search.svc.codfw.wmnet'
+profile::elasticsearch::certificate_name: 'search.svc.codfw.wmnet'
+profile::base::dns_alt_names:             'search.svc.codfw.wmnet'
