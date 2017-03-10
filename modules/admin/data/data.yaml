@@ -2573,6 +2573,10 @@ ldap_only_users:
     ensure: present
     realname: Rummana Yasmeen
     email: ryasmeen@wikimedia.org
+  scfc:
+    ensure: present
+    realname: Tim Landscheidt
+    email: tim@tim-landscheidt.de
   seddon:
     ensure: present
     realname: Joseph Seddon
