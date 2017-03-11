@@ -160,6 +160,7 @@
     smtpServerPort = 25
     connectTimeout = 1 min
     smtpServer = <%= @mail_smarthost[0] %>
+    threadPoolSize = 5
 [sshd]
     listenAddress = *:29418
     threads = 8
