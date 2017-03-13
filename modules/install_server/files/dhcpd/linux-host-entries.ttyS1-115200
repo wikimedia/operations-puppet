@@ -48,85 +48,61 @@ host analytics1027 {
 host analytics1028 {
     hardware ethernet C8:1F:66:F1:23:88;
     fixed-address analytics1028.eqiad.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host analytics1029 {
     hardware ethernet C8:1F:66:F0:FB:E1;
     fixed-address analytics1029.eqiad.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host analytics1030 {
     hardware ethernet C8:1F:66:F1:0E:FA;
     fixed-address analytics1030.eqiad.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host analytics1031 {
     hardware ethernet C8:1F:66:F1:0D:AA;
     fixed-address analytics1031.eqiad.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host analytics1032 {
     hardware ethernet C8:1F:66:F1:0D:9E;
     fixed-address analytics1032.eqiad.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host analytics1033 {
     hardware ethernet C8:1F:66:F1:13:DA;
     fixed-address analytics1033.eqiad.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host analytics1034 {
     hardware ethernet C8:1F:66:F1:24:71;
     fixed-address analytics1034.eqiad.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host analytics1035 {
     hardware ethernet C8:1F:66:F1:1B:79;
     fixed-address analytics1035.eqiad.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host analytics1036 {
     hardware ethernet C8:1F:66:F0:FE:42;
     fixed-address analytics1036.eqiad.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host analytics1037 {
     hardware ethernet C8:1F:66:F1:12:40;
     fixed-address analytics1037.eqiad.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host analytics1038 {
     hardware ethernet C8:1F:66:EE:89:EF;
     fixed-address analytics1038.eqiad.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host analytics1039 {
     hardware ethernet C8:1F:66:ED:70:A6;
     fixed-address analytics1039.eqiad.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host analytics1040 {
@@ -142,113 +118,81 @@ host analytics1041 {
 host analytics1042 {
     hardware ethernet 44:A8:42:24:92:35;
     fixed-address analytics1042.eqiad.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host analytics1043 {
     hardware ethernet 44:A8:42:24:CC:34;
     fixed-address analytics1043.eqiad.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host analytics1044 {
     hardware ethernet 44:A8:42:24:9D:F7;
     fixed-address analytics1044.eqiad.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host analytics1045 {
     hardware ethernet 44:A8:42:24:FA:21;
     fixed-address analytics1045.eqiad.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host analytics1046 {
     hardware ethernet 44:A8:42:25:07:31;
     fixed-address analytics1046.eqiad.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host analytics1047 {
     hardware ethernet 44:A8:42:24:FB:52;
     fixed-address analytics1047.eqiad.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host analytics1048 {
     hardware ethernet 44:A8:42:24:9B:B3;
     fixed-address analytics1048.eqiad.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host analytics1049 {
     hardware ethernet 44:A8:42:24:D0:32;
     fixed-address analytics1049.eqiad.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host analytics1050 {
     hardware ethernet 44:A8:42:25:02:7B;
     fixed-address analytics1050.eqiad.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host analytics1051 {
     hardware ethernet 44:A8:42:25:18:1D;
     fixed-address analytics1051.eqiad.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host analytics1052 {
     hardware ethernet 44:A8:42:1D:83:E4;
     fixed-address analytics1052.eqiad.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host analytics1053 {
     hardware ethernet 54:9F:35:25:BF:BC;
     fixed-address analytics1053.eqiad.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host analytics1054 {
     hardware ethernet 44:A8:42:24:FB:5A;
     fixed-address analytics1054.eqiad.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host analytics1055 {
     hardware ethernet 44:A8:42:25:27:78;
     fixed-address analytics1055.eqiad.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host analytics1056 {
     hardware ethernet 44:A8:42:25:16:24;
     fixed-address analytics1056.eqiad.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host analytics1057 {
     hardware ethernet 44:A8:42:25:03:F0;
     fixed-address analytics1057.eqiad.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host aqs1004 {
