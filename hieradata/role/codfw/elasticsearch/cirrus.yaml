@@ -63,3 +63,8 @@ elasticsearch::graylog_hosts:
 
 elasticsearch::https::certificate_name: 'search.svc.codfw.wmnet'
 profile::base::dns_alt_names:           'search.svc.codfw.wmnet'
+
+# use elasticsearch 5, which is only available in experimental at the moment.
+# once all elasticsearch clusters are upgraded to version 5, we will move
+# elasticsearch to our main repo and remove this configuration
+apt::use_experimental: true
