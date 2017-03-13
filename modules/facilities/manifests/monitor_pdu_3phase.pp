@@ -13,8 +13,6 @@ define facilities::monitor_pdu_3phase(
     facilities::monitor_pdu_service { "${title}-infeed-load-tower-A-phase-X":
         host      => $title,
         ip        => $ip,
-        row       => $row,
-        site      => $site,
         tower     => '1',
         infeed    => '1',
         breaker   => $breaker,
@@ -24,8 +22,6 @@ define facilities::monitor_pdu_3phase(
     facilities::monitor_pdu_service { "${title}-infeed-load-tower-A-phase-Y":
         host      => $title,
         ip        => $ip,
-        row       => $row,
-        site      => $site,
         tower     => '1',
         infeed    => '2',
         breaker   => $breaker,
@@ -34,8 +30,6 @@ define facilities::monitor_pdu_3phase(
     facilities::monitor_pdu_service { "${title}-infeed-load-tower-A-phase-Z":
         host      => $title,
         ip        => $ip,
-        row       => $row,
-        site      => $site,
         tower     => '1',
         infeed    => '3',
         breaker   => $breaker,
@@ -46,8 +40,6 @@ define facilities::monitor_pdu_3phase(
         facilities::monitor_pdu_service { "${title}-infeed-load-tower-B-phase-X":
             host      => $title,
             ip        => $ip,
-            row       => $row,
-            site      => $site,
             tower     => '2',
             infeed    => '1',
             breaker   => $breaker,
@@ -56,8 +48,6 @@ define facilities::monitor_pdu_3phase(
         facilities::monitor_pdu_service { "${title}-infeed-load-tower-B-phase-Y":
             host      => $title,
             ip        => $ip,
-            row       => $row,
-            site      => $site,
             tower     => '2',
             infeed    => '2',
             breaker   => $breaker,
@@ -66,8 +56,6 @@ define facilities::monitor_pdu_3phase(
         facilities::monitor_pdu_service { "${title}-infeed-load-tower-B-phase-Z":
             host      => $title,
             ip        => $ip,
-            row       => $row,
-            site      => $site,
             tower     => '2',
             infeed    => '3',
             breaker   => $breaker,
