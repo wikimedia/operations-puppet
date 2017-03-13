@@ -1,3 +1,6 @@
+# Version of elasticsearch to build configuration for
+elasticsearch::version: 2
+
 # eqiad prod name
 elasticsearch::cluster_name: production-search-eqiad
 
