@@ -282,7 +282,7 @@ cluster.routing.allocation.node_initial_primaries_recoveries: 3
 cluster.routing.allocation.node_concurrent_recoveries: 2
 
 # Set to throttle throughput when recovering (eg. 100mb, by default 20mb):
-indices.recovery.max_bytes_per_sec: 20mb
+indices.recovery.max_bytes_per_sec: 40mb
 
 
 ################################## Discovery ##################################
@@ -364,9 +364,9 @@ action.destructive_requires_name: true
 ##
 cluster.routing.allocation.disk.threshold_enabled: true
 # Stop allocating new shards to nodes with 85% disk utilization
-cluster.routing.allocation.disk.watermark.low: 0.90
+cluster.routing.allocation.disk.watermark.low: 0.75
 # Move shards off of nodes with 95% disk utilization
-cluster.routing.allocation.disk.watermark.high: 0.95
+cluster.routing.allocation.disk.watermark.high: 0.80
 # Check disk utilization every 60 seconds
 cluster.info.update.interval: 60s
 
