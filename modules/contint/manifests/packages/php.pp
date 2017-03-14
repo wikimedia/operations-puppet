@@ -82,8 +82,17 @@ class contint::packages::php {
         package { ['hhvm-dev']:
             ensure => present,
         }
-
-
     }
+
+    # PHP Extensions dependencies (mediawiki/php/*.git)
+    package { [
+        'libthai-dev',      # wikidiff2
+        'luajit',           # luasandbox
+        'liblua5.1.0-dev',  # luasandbox
+    ]:
+        ensure => present
+    }
+
+
 
 }
