@@ -225,7 +225,7 @@ node 'chromium.wikimedia.org' {
 
 # New https://www.mediawiki.org/wiki/Gerrit (T147597)
 node 'cobalt.wikimedia.org' {
-    role(gerrit::server)
+    role(gerrit_server)
 }
 
 # conf100x are zookeeper and etcd discovery service nodes in eqiad
