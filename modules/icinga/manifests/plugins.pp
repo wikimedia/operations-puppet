@@ -73,18 +73,6 @@ class icinga::plugins {
         group  => 'root',
         mode   => '0755',
     }
-    file { '/usr/lib/nagios/plugins/check_keystone_roles':
-        source => 'puppet:///modules/icinga/check_keystone_roles.py',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0755',
-    }
-    file { '/usr/lib/nagios/plugins/check_keystone_projects':
-        source => 'puppet:///modules/icinga/check_keystone_projects.py',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0755',
-    }
     file { '/usr/lib/nagios/plugins/check_mysql-replication.pl':
         source => 'puppet:///modules/icinga/check_mysql-replication.pl',
         owner  => 'root',
@@ -162,22 +150,6 @@ class icinga::plugins {
     nagios_common::check_command::config { 'check_wikitech_static.cfg':
         ensure     => present,
         content    => template('icinga/check_commands/check_wikitech_static.cfg.erb'),
-        config_dir => '/etc/icinga',
-        owner      => 'icinga',
-        group      => 'icinga',
-    }
-
-    nagios_common::check_command::config { 'check_keystone_roles.cfg':
-        ensure     => present,
-        content    => template('icinga/check_commands/check_keystone_roles.cfg.erb'),
-        config_dir => '/etc/icinga',
-        owner      => 'icinga',
-        group      => 'icinga',
-    }
-
-    nagios_common::check_command::config { 'check_keystone_projects.cfg':
-        ensure     => present,
-        content    => template('icinga/check_commands/check_keystone_projects.cfg.erb'),
         config_dir => '/etc/icinga',
         owner      => 'icinga',
         group      => 'icinga',
