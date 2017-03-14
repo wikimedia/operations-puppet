@@ -36,7 +36,7 @@ def main():
     for project in allprojects:
         if project.id != project.name:
             print("Keystone project with name %s has mismatched key %s" %
-                  (project['name'], project['id']))
+                  (project.name, project.id))
             sys.exit(WARNING)
 
     print "Keystone projects exist and have matching names and ids."
