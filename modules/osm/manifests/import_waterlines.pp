@@ -34,7 +34,7 @@ class osm::import_waterlines (
 
     logrotate::conf { 'import_waterline':
         ensure  => present,
-        content => template('osm/import_waterlines.erb'),
+        content => template('osm/waterlines.logrotate.erb'),
     }
 
     cron { 'import_waterlines':
