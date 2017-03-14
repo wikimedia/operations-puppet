@@ -20,7 +20,6 @@ from novaclient import client as novaclient
 
 # Maps prefixes to hostgroup names
 TOOLS_PREFIX_CLASSIFIER = {
-    'webgrid-lighttpd-12': 'webgrid-lighttpd-precise',
     'webgrid-lighttpd-14': 'webgrid-lighttpd-trusty',
     'webgrid-generic': 'webgrid-generic',
     'webgrid-': 'webgrid',
