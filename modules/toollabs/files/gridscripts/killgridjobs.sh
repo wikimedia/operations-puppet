@@ -9,7 +9,7 @@
 #
 # Example:
 #
-# ./killjobs.sh tools-exec-1211 tools-exec-1212 tools-exec-1215
+# ./killjobs.sh tools-exec-1411 tools-exec-1412 tools-exec-1415
 #
 
 if [ `hostname` != 'tools-bastion-01' ]; then

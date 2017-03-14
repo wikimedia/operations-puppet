@@ -9,7 +9,7 @@ owners about doomed jobs.
 
 Example:
 
-./runningtasks.py tools-exec-1211 tools-exec-1212 tools-exec-1215 | jobmail.py
+./runningtasks.py tools-exec-1411 tools-exec-1412 tools-exec-1415 | jobmail.py
 
 '''
 import yaml
