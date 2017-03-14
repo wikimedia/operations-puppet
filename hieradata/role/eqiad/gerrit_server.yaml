@@ -1,0 +1,3 @@
+gerrit::jetty::db_host: "m2-master.eqiad.wmnet"
+profile::gerrit::server::ipv4: '208.80.154.85'
+profile::gerrit::server::ipv6: '2620:0:861:3:208:80:154:85'
