@@ -2729,12 +2729,7 @@ node 'tungsten.eqiad.wmnet' {
 
 # replaced magnesium (RT) (T119112 T123713)
 node 'ununpentium.wikimedia.org' {
-    role(requesttracker::server)
-
-    interface::add_ip6_mapped { 'main':
-        interface => 'eth0',
-    }
-
+    role('requesttracker_server')
 }
 
 # Ganglia Web UI
