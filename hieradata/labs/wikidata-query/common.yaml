@@ -4,4 +4,4 @@
 "wdqs::package_dir": '/srv/wdqs/blazegraph'
 "wdqs::data_dir": '/srv/wdqs/blazegraph'
 "wdqs::endpoint": ''
-
+"wdqs::blazegraph_heap_size": '8g'
