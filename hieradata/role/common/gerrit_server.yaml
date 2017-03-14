@@ -4,10 +4,12 @@ admin::groups:
 debdeploy::grains:
   debdeploy-gerrit:
     value: standard
-gerrit::host: 'gerrit.wikimedia.org'
-gerrit::master_host: 'cobalt.wikimedia.org'
+
+profile::gerrit::server::host: 'gerrit.wikimedia.org'
+profile::gerrit::server::master_host: 'cobalt.wikimedia.org'
+profile::gerrit::server::bacula: 'srv-gerrit-git'
+
 # Assume all production nodes are slaves
-gerrit::slave: true
 gerrit::jetty::git_dir: '/srv/gerrit/git'
 gerrit::jetty::ssh_host_key: 'ssh_host_key'
 gerrit::jetty::replication:
@@ -20,6 +22,4 @@ gerrit::jetty::replication:
         push:
             - '+refs/heads/*:refs/heads/*'
             - '+refs/tags/*:refs/tags/*'
-role::gerrit::server::bacula: 'srv-gerrit-git'
-
 # gerrit::jetty::log_host: 'logstash1002.eqiad.wmnet'
