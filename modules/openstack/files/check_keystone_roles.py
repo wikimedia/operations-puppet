@@ -47,6 +47,8 @@ def check_roles(user, requiredroles, all_projects=True):
 
     assignmentdict = {}
     for assignment in assignments:
+        if 'project' not in assignment.scope:
+            continue
         project = assignment.scope['project']['id']
         if project not in assignmentdict:
             assignmentdict[project] = set()
