@@ -73,4 +73,14 @@ class contint::packages::php {
         }
     }
 
+    # PHP Extensions dependencies (mediawiki/php/*.git)
+    package { [
+        'libthai-dev',      # wikidiff2
+        'luajit',           # luasandbox
+        'liblua5.1.0-dev',  # luasandbox
+        'libtidy-dev',      # tidy
+    ]:
+        ensure => present
+    }
+
 }
