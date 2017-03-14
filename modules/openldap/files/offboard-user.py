@@ -12,6 +12,14 @@
 
 import sys
 from optparse import OptionParser
+import sys
+import ConfigParser
+
+try:
+    from phabricator import Phabricator
+except ImportError:
+    print "Unable to import Python Phabricator module"
+    sys.exit(1)
 
 try:
     import ldap
@@ -20,27 +28,10 @@ except ImportError:
     sys.exit(1)
 
 
-def main():
-
-    ldif = ""
-
-    parser = OptionParser()
-    parser.set_usage("offboard-user [--drop-all] [--list-only] [--turn-volunteer] [<username>")
-    parser.add_option("--drop-all", action="store_true", dest="remove_all_groups", default=False,
-                      help="""By default unprivileged group group memberships are retained.
-                      If this option is set, then all group memberships are removed""")
-    parser.add_option("--list-only", action="store_true", dest="dry_run", default=False,
-                      help="Only list group memberships, don't do anything")
-    parser.add_option("--turn-volunteer", action="store_true", dest="turn_volunteer", default=False,
-                      help="If a former WMF staff member wishes to resume under a volunteer NDA")
-
-    (options, args) = parser.parse_args()
-
-    if len(args) < 1 or len(args) > 1:
-        parser.error("You need to specify a username to offboard")
-
+def offboard_ldap(uid, remove_all_groups, turn_volunteer, dry_run):
     ldap_conn = ldap.initialize('ldaps://ldap-labs.eqiad.wikimedia.org:636')
     ldap_conn.protocol_version = ldap.VERSION3
+    ldif = ""
 
     base_dn = "dc=wikimedia,dc=org"
     projects_dn = "ou=projects," + base_dn
@@ -67,13 +58,16 @@ member: {user_dn}
                          'cn=librenms-readers,ou=groups,dc=wikimedia,dc=org',
                          'cn=grafana-admin,ou=groups,dc=wikimedia,dc=org',
                          'cn=tools.admin,ou=servicegroups,dc=wikimedia,dc=org']
-    uid = args[0]
     ldapdata = ldap_conn.search_s(
         base_dn,
         ldap.SCOPE_SUBTREE,
         "(&(objectclass=posixAccount)(uid=" + uid + "))",
         attrlist=['uid'],
     )
+
+    if len(ldapdata) == 0:
+        print "LDAP user", uid, "not found"
+        return
 
     user_dn = ldapdata[0][0]
 
@@ -116,7 +110,7 @@ member: {user_dn}
         print "Is member of the following unprivileged LDAP groups:"
         for group in memberships:
             if group not in priv_set:
-                if options.remove_all_groups:
+                if remove_all_groups:
                     ldif += REMOVE_GROUP.format(group_name=group, user_dn=user_dn)
                     print " ", group, "(removing)"
                 else:
@@ -127,7 +121,7 @@ member: {user_dn}
     else:
         print "Is project admin of the following projects:"
         for group in project_admins:
-            if options.remove_all_groups:
+            if remove_all_groups:
                 ldif += REMOVE_GROUP.format(group_name=group, user_dn=user_dn)
                 print " ", group, "(removing)"
             else:
@@ -136,8 +130,8 @@ member: {user_dn}
     if len(member_set & priv_set) > 0:
         print "Privileged groups:"
         for priv_group in set(member_set & priv_set):
-            if not options.remove_all_groups:  # Skip if we're pruning all groups anyway
-                if options.turn_volunteer:
+            if not remove_all_groups:  # Skip if we're pruning all groups anyway
+                if turn_volunteer:
                     if priv_group == 'cn=wmf,ou=groups,dc=wikimedia,dc=org':
                         ldif += REMOVE_GROUP.format(group_name=priv_group, user_dn=user_dn)
                         ldif += ADD_GROUP.format(group_name=priv_group, user_dn=user_dn)
@@ -150,14 +144,134 @@ member: {user_dn}
     else:
         print "Is not a member in any privileged group"
 
-    if not options.dry_run:
+    if not dry_run:
         try:
             with open(uid + ".ldif", "w") as ldif_file:
                 ldif_file.write(ldif)
             print "LDIF file written to ", uid + ".ldif"
+            print "Please review and if all is well, you can effect the change running"
+            cmd = 'ldapmodify -h ldap-labs.eqiad.wikimedia.org -p 389 -x'
+            cmd += ' -D "cn=scriptuser,ou=profile,dc=wikimedia,dc=org" -W -f ' + uid + ".ldif"
+            print cmd
         except IOError, e:
             print "Error:", e
             sys.exit(1)
+
+
+def get_phabricator_client():
+    """Return a Phabricator client instance"""
+
+    phab_bot_conf = '/etc/phabricator_offboarding.conf'
+    parser = ConfigParser.SafeConfigParser()
+    parser.read(phab_bot_conf)
+
+    try:
+        client = Phabricator(
+            username=parser.get('phabricator_bot', 'username'),
+            token=parser.get('phabricator_bot', 'token'),
+            host=parser.get('phabricator_bot', 'host'))
+    except ConfigParser.NoSectionError:
+        print "Failed to open config file for Phabricator bot user:", phab_bot_conf
+        sys.exit(1)
+
+    return client
+
+
+def remove_user_from_project(user_phid, project_phid, phab_client):
+    t = {}
+    t['type'] = 'members.remove'
+    t['value'] = [user_phid]
+    trans = [t]
+
+    project_edit = phab_client.project.edit(transactions=[t], objectIdentifier=project_phid)
+
+
+def confirm_removal(group):
+    choice = ""
+    while choice not in ["y", "n"]:
+        choice = raw_input("Remove group " + group + "? ").strip().lower()
+    return choice == "y"
+
+
+def offboard_phabricator(username, remove_all_groups, dry_run):
+    phab_client = get_phabricator_client()
+    user_query = phab_client.user.query(usernames=[username])
+
+    group_memberships = []
+
+    # TODO: add more groups after validating priv. status
+    privileged_projects = ['WMF-NDA', 'Security']
+
+    if len(user_query) == 0:
+        print "Phabricator user", username, "not found"
+        sys.exit(1)
+    else:
+        phid_user = user_query[0]['phid']
+
+    project_query = phab_client.project.query(members=[phid_user])
+    if len(project_query['data']) == 0:
+        print "Not present in any project, nothing to be done"
+        return
+    else:
+        groups = project_query['data'].keys()
+        for membership in groups:
+            group_memberships.append(
+                (project_query['data'][membership]['name'],
+                 project_query['data'][membership]['phid']))
+
+    member_set = set([i[0] for i in group_memberships])
+    priv_set = set(privileged_projects)
+
+    if dry_run:
+        print "Phabricator user", username, "is present in the following groups:"
+        for i in group_memberships:
+            if dry_run:
+                print i[0]
+    else:
+        for i in group_memberships:
+            if remove_all_groups:
+                if confirm_removal(i[0]):
+                    remove_user_from_project(phid_user, i[1], phab_client)
+            else:
+                if i[0] in priv_set:
+                    if confirm_removal(i[0]):
+                        remove_user_from_project(phid_user, i[1], phab_client)
+                else:
+                    print i[0], "is an unprivileged group, can be retained"
+
+
+def main():
+
+    parser = OptionParser()
+    parser.set_usage("offboard-user [--drop-all] [--list-only] [--turn-volunteer] [ -p  | -l ]")
+    parser.add_option("--drop-all", action="store_true", dest="remove_all_groups", default=False,
+                      help="""By default unprivileged group group memberships are retained.
+                      If this option is set, then all group memberships are removed""")
+    parser.add_option("--list-only", action="store_true", dest="dry_run", default=False,
+                      help="Only list group memberships, don't do anything")
+    parser.add_option("--turn-volunteer", action="store_true", dest="turn_volunteer", default=False,
+                      help="If a former WMF staff member wishes to resume under a volunteer NDA")
+
+    parser.add_option("--ldap-user", "-l", action="store", dest="ldap_username", default=False,
+                      help="User name in LDAP/wikitech of the user to be removed")
+    parser.add_option("--phab-user", "-p", action="store", dest="phab_username", default=False,
+                      help="User name in Phabricator of the user to be removed")
+
+    (options, args) = parser.parse_args()
+
+    if not options.ldap_username and not options.phab_username:
+        parser.error("You need to specify a username in LDAP (-l) and/or Phabricator (-p)")
+
+    if options.ldap_username:
+        offboard_ldap(options.ldap_username, options.remove_all_groups,
+                      options.turn_volunteer, options.dry_run)
+    else:
+        print "Skipping LDAP offboarding, use -l USERNAME to run it at a later point"
+
+    if options.phab_username:
+        offboard_phabricator(options.phab_username, options.remove_all_groups, options.dry_run)
+    else:
+        print "Skipping Phabricator offboarding, use -p USERNAME to run it at later point"
 
 
 if __name__ == '__main__':
