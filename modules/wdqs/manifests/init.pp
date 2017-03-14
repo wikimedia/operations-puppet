@@ -9,6 +9,7 @@
 # - $data_dir: Directory where the database should be stored
 # - $log_dir: Directory where the logs go
 # - $endpoint: External endpoint name
+# - $blazegraph_heap_size: heapsize for blazegraph
 class wdqs(
     $use_git_deploy = true,
     $username = 'blazegraph',
@@ -16,6 +17,7 @@ class wdqs(
     $data_dir = '/srv/wdqs',
     $log_dir = '/var/log/wdqs',
     $endpoint = '',
+    $blazegraph_heap_size = '16g',
 ) {
 
     $deploy_user = 'deploy-service'
@@ -74,6 +76,15 @@ class wdqs(
         owner  => 'root',
         group  => $config_dir_group,
         mode   => '0775',
+    }
+
+    file { '/etc/default/wdqs-blazegraph':
+        ensure  => present,
+        content => template('wdqs/blazegraph-default.erb'),
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0644',
+        before => Base::Service_unit['wdqs-blazegraph'],
     }
 
     file { '/etc/wdqs/vars.yaml':
