@@ -5,6 +5,8 @@ class role::labs::openstack::nova::network {
     include role::labs::openstack::nova::common
     $novaconfig = $role::labs::openstack::nova::common::novaconfig
 
+    include ::openstack::keystonechecks
+
     interface::ip { 'openstack::network_service_public_dynamic_snat':
         interface => 'lo',
         address   => $novaconfig['network_public_ip'],
