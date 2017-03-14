@@ -208,6 +208,14 @@ define cassandra::instance(
             mode    => '0400',
             require => File["${config_directory}/tls"],
         }
+
+        file { "${config_directory}/tls/rootCa.crt":
+            content => secret("cassandra/${tls_cluster_name}/rootCa.crt"),
+            owner   => 'cassandra',
+            group   => 'cassandra',
+            mode    => '0400',
+            require => File["${config_directory}/tls"],
+        }
     }
 
     if $instance_name != 'default' {
