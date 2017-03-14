@@ -86,4 +86,9 @@ class statsite {
             declare_service => false,
         }
     }
+
+    rsyslog::conf { 'statsite':
+        source   => 'puppet:///modules/statsite/rsyslog.conf',
+        priority => 20,
+    }
 }
