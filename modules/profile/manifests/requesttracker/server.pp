@@ -1,10 +1,11 @@
-#  Production RT
-class role::requesttracker::server {
-    system::role { 'requesttracker::server': description => 'RT server' }
+# server running "Request Tracker"
+# https://bestpractical.com/request-tracker
+class profile::requesttracker::server {
+    system::role { 'role::requesttracker::server': description => 'RT server' }
 
-    include passwords::misc::rt
-    include ::standard
-    include ::base::firewall
+    interface::add_ip6_mapped { 'main': }
+
+    include ::passwords::misc::rt
 
     class { '::requesttracker':
         apache_site => 'rt.wikimedia.org',
@@ -19,7 +20,10 @@ class role::requesttracker::server {
         config  => template('role/exim/exim4.conf.rt.erb'),
         filter  => template('role/exim/system_filter.conf.erb'),
     }
+
     include exim4::ganglia
+
+    include ::base::firewall
 
     # allow RT to receive mail from mail smarthosts
     ferm::service { 'rt-smtp':
