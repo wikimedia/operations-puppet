@@ -43,6 +43,6 @@ class osm::import_waterlines (
         minute   => 13,
         monthday => 1,
         user     => 'postgres',
-        command  => "/usr/local/bin/import_waterlines > ${log_dir}/import.log 2>&1",
+        command  => "/usr/local/bin/import_waterlines >> ${log_dir}/import.log 2>&1",
     }
 }
