@@ -8,7 +8,7 @@
 class role::toollabs::precise_reminder {
 
     file { '/usr/local/sbin/precise-reminder':
-        ensure => file,
+        ensure => absent,
         owner  => 'root',
         group  => 'root',
         mode   => '0555',
@@ -16,7 +16,7 @@ class role::toollabs::precise_reminder {
     }
 
     cron { 'precise-reminder':
-        ensure      => 'present',
+        ensure      => 'absent',
         user        => 'root',
         command     => '/usr/local/sbin/precise-reminder',
         weekday     => 3,
