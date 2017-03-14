@@ -1,3 +1,11 @@
 [authentication]
 username = <%= @super_username %>
 password = <%= @super_password %>
+
+<% if @client_encryption_enabled -%>
+[connection]
+factory = cqlshlib.ssl.ssl_transport_factory
+
+[ssl]
+certfile = <%= config_directory %>/tls/rootCa.crt
+<% end -%>
