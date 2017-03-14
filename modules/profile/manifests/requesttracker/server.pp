@@ -1,6 +1,7 @@
-#  Production RT
-class role::requesttracker::server {
-    system::role { 'requesttracker::server': description => 'RT server' }
+# server running "Request Tracker"
+# https://bestpractical.com/request-tracker
+class profile::requesttracker::server {
+    system::role { 'role::requesttracker::server': description => 'RT server' }
 
     include passwords::misc::rt
     include ::standard
