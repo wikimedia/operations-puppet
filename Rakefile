@@ -22,6 +22,7 @@
 # Continuous integration invokes 'bundle exec rake test'.
 
 require 'bundler/setup'
+require 'English'
 require 'git'
 require 'puppet-lint/tasks/puppet-lint'
 require 'puppet-strings/tasks/generate'
@@ -99,10 +100,10 @@ desc 'Run all build/tests commands (CI entry point)'
 task test: [:lint_head]
 
 desc 'Run all linting commands'
-task lint: [:rubocop, :syntax, :puppetlint]
+task lint: [:typos, :rubocop, :syntax, :puppetlint]
 
 desc 'Run all linting commands against HEAD'
-task lint_head: [:rubocop, :"syntax:head", :puppetlint_head]
+task lint_head: [:typos, :rubocop, :"syntax:head", :puppetlint_head]
 
 
 desc 'Show the help'
@@ -205,6 +206,34 @@ task :tags do
     puts
     puts "See https://github.com/majutsushi/tagbar/wiki#puppet for vim"
     puts "integration with the vim tagbar plugin."
+end
+
+desc "Check common typos from /typos"
+task :typos do
+    def gnu_grep(cmd='grep')
+        return cmd if system(
+            "#{cmd} --version|grep '(GNU grep)'",
+            { :out => '/dev/null' , :err => '/dev/null' })
+    end
+    cmd = gnu_grep || gnu_grep('ggrep')
+    raise 'Can not find GNU grep (grep or ggrep).' unless cmd
+
+    system("#{cmd} -E -r --binary-files=without-match --color=always --file=typos --exclude=typos --exclude-dir=.git .")
+
+    # 0   One or more lines were selected.
+    # 1   No lines were selected.
+    # >1  An error occurred.
+    #
+    # Flip 0 and 1 meanings.
+    case $CHILD_STATUS.exitstatus
+    when 0
+        fail "Typo found!"
+    when 1
+        puts "No typo found."
+        next
+    else
+        fail "Some error occured"
+    end
 end
 
 # lint
