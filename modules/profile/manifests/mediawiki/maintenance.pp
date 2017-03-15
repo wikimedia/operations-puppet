@@ -1,9 +1,26 @@
-# mediawiki maintenance scripts
-class role::mediawiki::maintenance {
-    include scap::scripts
-    include role::mediawiki::common
+# mediawiki maintenance server
+class profile::mediawiki::maintenance {
 
+    # Mediawiki
+    include ::role::mediawiki::common
     include ::mediawiki::packages::php5
+
+    # NOC - https://noc.wikimedia.org/
+    include ::role::noc::site
+
+    # Deployment
+    include ::scap::scripts
+
+    # MariaDB (Tendril)
+    include ::role::mariadb::maintenance
+
+    # LDAP
+    include ::role::openldap::management
+    include ::ldap::role::client::labs
+
+    include ::base::firewall
+
+    interface::add_ip6_mapped { 'main': interface => 'eth0', }
 
     file { $::mediawiki::scap::mediawiki_staging_dir:
         ensure => link,
@@ -14,6 +31,7 @@ class role::mediawiki::maintenance {
         default => 'absent',
     }
 
+    # Mediawiki maintenance scripts (cron jobs)
     class { 'mediawiki::maintenance::pagetriage': ensure => $ensure }
     class { 'mediawiki::maintenance::translationnotifications': ensure => $ensure }
     class { 'mediawiki::maintenance::updatetranslationstats': ensure => $ensure }
