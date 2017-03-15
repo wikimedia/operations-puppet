@@ -1,0 +1,40 @@
+text-addrs => {
+    map => generic-map
+    service_types => up
+    dcmap => {
+        eqiad => { addrs_v4 => 208.80.154.224, addrs_v6 => 2620:0:861:ed1a::1 }
+        codfw => { addrs_v4 => 208.80.153.224, addrs_v6 => 2620:0:860:ed1a::1 }
+        esams => { addrs_v4 => 91.198.174.192, addrs_v6 => 2620:0:862:ed1a::1 }
+        ulsfo => { addrs_v4 => 198.35.26.96,   addrs_v6 => 2620:0:863:ed1a::1 }
+    }
+}
+upload-addrs => {
+    map => generic-map
+    service_types => up
+    dcmap => {
+        eqiad => { addrs_v4 => 208.80.154.240, addrs_v6 => 2620:0:861:ed1a::2:b }
+        codfw => { addrs_v4 => 208.80.153.240, addrs_v6 => 2620:0:860:ed1a::2:b }
+        esams => { addrs_v4 => 91.198.174.208, addrs_v6 => 2620:0:862:ed1a::2:b }
+        ulsfo => { addrs_v4 => 198.35.26.112,  addrs_v6 => 2620:0:863:ed1a::2:b }
+    }
+}
+maps-addrs => {
+    map => generic-map
+    service_types => up
+    dcmap => {
+        eqiad => { addrs_v4 => 208.80.154.244, addrs_v6 => 2620:0:861:ed1a::2:d }
+        codfw => { addrs_v4 => 208.80.153.244, addrs_v6 => 2620:0:860:ed1a::2:d }
+        esams => { addrs_v4 => 91.198.174.209, addrs_v6 => 2620:0:862:ed1a::2:d }
+        ulsfo => { addrs_v4 => 198.35.26.113,  addrs_v6 => 2620:0:863:ed1a::2:d }
+    }
+}
+misc-addrs => {
+    map => generic-map
+    service_types => up
+    dcmap => {
+        eqiad => { addrs_v4 => 208.80.154.251, addrs_v6 => 2620:0:861:ed1a::3:d }
+        codfw => { addrs_v4 => 208.80.153.248, addrs_v6 => 2620:0:860:ed1a::3:d }
+        esams => { addrs_v4 => 91.198.174.217, addrs_v6 => 2620:0:862:ed1a::3:d }
+        ulsfo => { addrs_v4 => 198.35.26.120,  addrs_v6 => 2620:0:863:ed1a::3:d }
+    }
+}

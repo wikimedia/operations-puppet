@@ -1,8 +1,5 @@
 # Authdns configuration data
 class role::authdns::data {
-    # Our DNS data repo URL
-    $gitrepo = 'https://gerrit.wikimedia.org/r/p/operations/dns.git'
-
     # These are the real fqdn's of the authdns machines
     # There should normally be a 1:1 correlation between entries
     # in this list and node definitions in manifests/site.pp
