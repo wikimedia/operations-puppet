@@ -1,0 +1,65 @@
+; vim: set expandtab:smarttab
+@           1D  IN SOA  ns0.wikimedia.org.  hostmaster.wikimedia.org.   (
+                    <%= File.stat(@file).mtime.strftime('%Y%m%d%H') %>    ; serial
+                    12H     ; refresh
+                    2H      ; retry
+                    2W      ; expiry
+                    1H      ; negative cache TTL
+                    )
+
+; Name servers
+
+            1D  IN NS   ns0.wikimedia.org.
+            1D  IN NS   ns1.wikimedia.org.
+            1D  IN NS   ns2.wikimedia.org.
+
+; Mail exchangers
+            1H  IN MX   10  mx1001.wikimedia.org.
+            1H  IN MX   50  mx2001.wikimedia.org.
+
+; Canonical names
+
+            1H  IN A    188.40.41.16
+
+; servers
+
+america     1H  IN A    5.9.71.41
+asia        1H  IN A    188.40.41.16
+
+; services
+
+www         1H      IN CNAME    asia
+mail        1H      IN A        188.40.41.16
+
+; projects / special
+
+arch        1H  IN CNAME    asia
+assoc       1H  IN CNAME    asia
+blog        1H  IN CNAME    asia
+dumps       1H  IN CNAME    asia
+general     1H  IN CNAME    asia
+hist        1H  IN CNAME    asia
+shared      1H  IN CNAME    asia
+svn         1H  IN CNAME    asia
+tech        1H  IN CNAME    asia
+testing     1H  IN CNAME    asia
+wts         1H  IN CNAME    america
+
+; wikis / languages
+
+de          1H  IN CNAME    asia
+en          1H  IN CNAME    america
+es          1H  IN CNAME    america
+fi          1H  IN CNAME    america
+fr          1H  IN CNAME    america
+hu          1H  IN CNAME    america
+it          1H  IN CNAME    asia
+ja          1H  IN CNAME    america
+nl          1H  IN CNAME    america
+pl          1H  IN CNAME    america
+pt          1H  IN CNAME    america
+ro          1H  IN CNAME    america
+ru          1H  IN CNAME    america
+sv          1H  IN CNAME    america
+zh          1H  IN CNAME    america
+

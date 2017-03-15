@@ -23,20 +23,29 @@ if [ -z "$NAMESERVERS" -o -z "$FQDN" ]; then
 fi
 
 SKIP=""
+NO_PUPPET="false"
 while [ -n "$1" ]; do
     if [ "$1" = "-s" ]; then
         # Skip the following slaves
         SKIP="$SKIP $2"
+        shift
+    elif [ "$1" = "--no-puppet"]; then
+        NO_PUPPET="true"
     fi
     shift
 done
 
 # update the local instance first -- this may call a review interactively
-echo "Updating $FQDN (self)..."
 # this might seem silly at first, ssh'ing to self; however, this is a paranoid
 # step to ensure that we're running in the exact same way as the slaves and if
 # it fails, it fail for all of them, instead of having a split-brain.
-ssh $SSH_OPTIONS $SSH_USER $FQDN authdns-local-update
+if [ $NO_PUPPET != "false" ]; then
+    echo "Updating $FQDN (self) directly from /srv/authdns/staging-rsync/ ..."
+    ssh $SSH_OPTIONS $SSH_USER $FQDN authdns-local-update $FQDN
+else
+    echo "Updating $FQDN (self) from puppet ..."
+    ssh $SSH_OPTIONS $SSH_USER $FQDN authdns-local-update
+fi
 
 for slave in $NAMESERVERS; do
     if [ "$FQDN" = "$slave" ]; then
