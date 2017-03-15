@@ -1,0 +1,200 @@
+; vim: set expandtab:smarttab
+@                       1D      IN SOA  ns0.wikimedia.org.       hostmaster.wikimedia.org.        (
+                                        <%= File.stat(file).mtime.strftime('%Y%m%d%H') %>    ; serial
+                                        12H             ; refresh
+                                        2H              ; retry
+                                        2W              ; expiry
+                                        1H              ; negative cache TTL
+                                        )
+
+; Name servers
+
+                        1D      IN NS   ns0.wikimedia.org.
+                        1D      IN NS   ns1.wikimedia.org.
+                        1D      IN NS   ns2.wikimedia.org.
+
+; 208.80.155.0/27 Frack Payments subnet
+
+1   1H IN PTR   vlan-1131.pfw-eqiad.wikimedia.org.
+2   1H IN PTR   pay-lvs1001.wikimedia.org.
+3   1H IN PTR   pay-lvs1002.wikimedia.org.
+5   1H IN PTR   payments.wikimedia.org.
+6   1H IN PTR   frack-default-net-eqiad.wikimedia.org.
+7   1H IN PTR   frack-payments-nat-eqiad.wikimedia.org.
+9   1H IN PTR   tellurium.wikimedia.org.
+10  1H IN PTR   frdata-eqiad.wikimedia.org.
+11  1H IN PTR   civicrm.wikimedia.org.
+12  1H IN PTR   payments-listener-eqiad.wikimedia.org.
+13  1H IN PTR   frdev-eqiad.wikimedia.org.
+14  1H IN PTR   fundraising-eqiad.wikimedia.org.
+
+; 208.80.155.32/27 Infrastructure block
+
+; 208.80.155.32/30 cr1-esams <-> cr2-eqiad GRE tunnel
+
+33  1H IN PTR   gr-5-2-0-1.cr2-eqiad.wikimedia.org.
+34  1H IN PTR   gr-0-0-0-1.cr1-esams.wikimedia.org.
+
+;208.80.155.64/28 sandbox1-b-eqiad subnet
+65  1H IN PTR   vrrp-gw-1202.wikimedia.org.
+66  1H IN PTR   ae2-1202.cr1-eqiad.wikimedia.org.
+67  1H IN PTR   ae2-1202.cr2-eqiad.wikimedia.org.
+69  1H IN PTR   ripe-atlas-eqiad.wikimedia.org.
+
+; 208.80.155.96/27 public1-d-eqiad subnet
+
+97  1H IN PTR   vrrp-gw-1004.wikimedia.org.
+98  1H IN PTR   ae4-1004.cr1-eqiad.wikimedia.org.
+99  1H IN PTR   ae4-1004.cr2-eqiad.wikimedia.org.
+100 1H IN PTR   vl1004-eth3.lvs1001.wikimedia.org.
+101 1H IN PTR   vl1004-eth3.lvs1002.wikimedia.org.
+102 1H IN PTR   vl1004-eth3.lvs1003.wikimedia.org.
+103 1H IN PTR   vl1004-eth3.lvs1004.wikimedia.org.
+104 1H IN PTR   vl1004-eth3.lvs1005.wikimedia.org.
+105 1H IN PTR   vl1004-eth3.lvs1006.wikimedia.org.
+
+110 1H IN PTR   astatine.wikimedia.org.
+111 1H IN PTR   vl1004-eth3.lvs1007.eqiad.wmnet.
+112 1H IN PTR   vl1004-eth3.lvs1008.eqiad.wmnet.
+113 1H IN PTR   vl1004-eth3.lvs1009.eqiad.wmnet.
+114 1H IN PTR   vl1004-eth3.lvs1010.eqiad.wmnet.
+115 1H IN PTR   vl1004-eth3.lvs1011.eqiad.wmnet.
+116 1H IN PTR   vl1004-eth3.lvs1012.eqiad.wmnet.
+117 1H IN PTR   labservices1001.wikimedia.org.
+118 1H IN PTR   labs-recursor0.wikimedia.org.
+119 1H IN PTR   einsteinium.wikimedia.org.
+
+; 208.80.155.128/25 Eqiad Labs virtualization subnet
+; Delegate 208.80.155.128 - 208.80.155.255 to labs-ns*
+
+128-25 IN NS labs-ns0.wikimedia.org.
+       IN NS labs-ns1.wikimedia.org.
+
+128 1H IN CNAME 128.128-25
+129 1H IN CNAME 129.128-25
+130 1H IN CNAME 130.128-25
+131 1H IN CNAME 131.128-25
+132 1H IN CNAME 132.128-25
+133 1H IN CNAME 133.128-25
+134 1H IN CNAME 134.128-25
+135 1H IN CNAME 135.128-25
+136 1H IN CNAME 136.128-25
+137 1H IN CNAME 137.128-25
+138 1H IN CNAME 138.128-25
+139 1H IN CNAME 139.128-25
+140 1H IN CNAME 140.128-25
+141 1H IN CNAME 141.128-25
+142 1H IN CNAME 142.128-25
+143 1H IN CNAME 143.128-25
+144 1H IN CNAME 144.128-25
+145 1H IN CNAME 145.128-25
+146 1H IN CNAME 146.128-25
+147 1H IN CNAME 147.128-25
+148 1H IN CNAME 148.128-25
+149 1H IN CNAME 149.128-25
+150 1H IN CNAME 150.128-25
+151 1H IN CNAME 151.128-25
+152 1H IN CNAME 152.128-25
+153 1H IN CNAME 153.128-25
+154 1H IN CNAME 154.128-25
+155 1H IN CNAME 155.128-25
+156 1H IN CNAME 156.128-25
+157 1H IN CNAME 157.128-25
+158 1H IN CNAME 158.128-25
+159 1H IN CNAME 159.128-25
+160 1H IN CNAME 160.128-25
+161 1H IN CNAME 161.128-25
+162 1H IN CNAME 162.128-25
+163 1H IN CNAME 163.128-25
+164 1H IN CNAME 164.128-25
+165 1H IN CNAME 165.128-25
+166 1H IN CNAME 166.128-25
+167 1H IN CNAME 167.128-25
+168 1H IN CNAME 168.128-25
+169 1H IN CNAME 169.128-25
+170 1H IN CNAME 170.128-25
+171 1H IN CNAME 171.128-25
+172 1H IN CNAME 172.128-25
+173 1H IN CNAME 173.128-25
+174 1H IN CNAME 174.128-25
+175 1H IN CNAME 175.128-25
+176 1H IN CNAME 176.128-25
+177 1H IN CNAME 177.128-25
+178 1H IN CNAME 178.128-25
+179 1H IN CNAME 179.128-25
+180 1H IN CNAME 180.128-25
+181 1H IN CNAME 181.128-25
+182 1H IN CNAME 182.128-25
+183 1H IN CNAME 183.128-25
+184 1H IN CNAME 184.128-25
+185 1H IN CNAME 185.128-25
+186 1H IN CNAME 186.128-25
+187 1H IN CNAME 187.128-25
+188 1H IN CNAME 188.128-25
+189 1H IN CNAME 189.128-25
+190 1H IN CNAME 190.128-25
+191 1H IN CNAME 191.128-25
+192 1H IN CNAME 192.128-25
+193 1H IN CNAME 193.128-25
+194 1H IN CNAME 194.128-25
+195 1H IN CNAME 195.128-25
+196 1H IN CNAME 196.128-25
+197 1H IN CNAME 197.128-25
+198 1H IN CNAME 198.128-25
+199 1H IN CNAME 199.128-25
+200 1H IN CNAME 200.128-25
+201 1H IN CNAME 201.128-25
+202 1H IN CNAME 202.128-25
+203 1H IN CNAME 203.128-25
+204 1H IN CNAME 204.128-25
+205 1H IN CNAME 205.128-25
+206 1H IN CNAME 206.128-25
+207 1H IN CNAME 207.128-25
+208 1H IN CNAME 208.128-25
+209 1H IN CNAME 209.128-25
+210 1H IN CNAME 210.128-25
+211 1H IN CNAME 211.128-25
+212 1H IN CNAME 212.128-25
+213 1H IN CNAME 213.128-25
+214 1H IN CNAME 214.128-25
+215 1H IN CNAME 215.128-25
+216 1H IN CNAME 216.128-25
+217 1H IN CNAME 217.128-25
+218 1H IN CNAME 218.128-25
+219 1H IN CNAME 219.128-25
+220 1H IN CNAME 220.128-25
+221 1H IN CNAME 221.128-25
+222 1H IN CNAME 222.128-25
+223 1H IN CNAME 223.128-25
+224 1H IN CNAME 224.128-25
+225 1H IN CNAME 225.128-25
+226 1H IN CNAME 226.128-25
+227 1H IN CNAME 227.128-25
+228 1H IN CNAME 228.128-25
+229 1H IN CNAME 229.128-25
+230 1H IN CNAME 230.128-25
+231 1H IN CNAME 231.128-25
+232 1H IN CNAME 232.128-25
+233 1H IN CNAME 233.128-25
+234 1H IN CNAME 234.128-25
+235 1H IN CNAME 235.128-25
+236 1H IN CNAME 236.128-25
+237 1H IN CNAME 237.128-25
+238 1H IN CNAME 238.128-25
+239 1H IN CNAME 239.128-25
+240 1H IN CNAME 240.128-25
+241 1H IN CNAME 241.128-25
+242 1H IN CNAME 242.128-25
+243 1H IN CNAME 243.128-25
+244 1H IN CNAME 244.128-25
+245 1H IN CNAME 245.128-25
+246 1H IN CNAME 246.128-25
+247 1H IN CNAME 247.128-25
+248 1H IN CNAME 248.128-25
+249 1H IN CNAME 249.128-25
+250 1H IN CNAME 250.128-25
+251 1H IN CNAME 251.128-25
+252 1H IN CNAME 252.128-25
+253 1H IN CNAME 253.128-25
+254 1H IN CNAME 254.128-25
+255 1H IN CNAME 255.128-25

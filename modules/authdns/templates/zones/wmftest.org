@@ -1,0 +1,40 @@
+; vim: set expandtab:smarttab
+@           1D  IN SOA  ns0.wikimedia.org.  hostmaster.wikimedia.org.   (
+                    <%= File.stat(file).mtime.strftime('%Y%m%d%H') %>        ; serial
+                    12H     ; refresh
+                    2H      ; retry
+                    2W      ; expiry
+                    1H      ; negative cache TTL
+                    )
+
+; Name servers
+
+            1D  IN NS   ns0.wikimedia.org.
+            1D  IN NS   ns1.wikimedia.org.
+            1D  IN NS   ns2.wikimedia.org.
+
+; Mail exchangers
+
+            1H  IN MX   10      ASPMX.L.GOOGLE.COM.
+            1H  IN MX   20      ALT1.ASPMX.L.GOOGLE.COM.
+            1H  IN MX   30      ALT2.ASPMX.L.GOOGLE.COM.
+            1H  IN MX   40      ASPMX2.GOOGLEMAIL.COM.
+            1H  IN MX   50      ASPMX3.GOOGLEMAIL.COM.
+
+
+; Canonical names
+
+; Servers (alphabetic order)
+
+; WebPageTest controller on AWS
+; see https://phabricator.wikimedia.org/T109666
+wpt                     1H      IN A    54.69.228.169
+
+; Service aliases
+; Wildcard to support name-based virtual hosts in local development environments
+*.local                 1H      IN A    127.0.0.1
+
+; Wikis (alphabetic order)
+
+; Other websites
+googleffffffffbd5bc537  1h  IN CNAME    google.com.

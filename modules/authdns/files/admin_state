@@ -1,0 +1,71 @@
+##############################################################################
+#
+# *** README ***
+#
+# This file is managed via the operations/dns repo!
+# This file takes effect immediately when pushed via authdns-update!
+#
+#   The contents of this file administratively override the UP/DOWN states of
+# gdnsd dynamic resources.  When something is disabled at a datacenter,
+# resolution will fail over to the next datacenter in the failover list for
+# each location in the map from the config-geo file.
+#   For example: "NA => { US => { CA => [ulsfo, eqiad] } }" means California
+# is normally mapped to ulsfo, but if ulsfo is disabled for some or all
+# services in this file, California traffic for the affected services will be
+# sent to eqiad.
+#   In the event that all datacenters in the failover list of a given location
+# are marked DOWN, resolution acts as if they were all UP (goes back to the
+# first entry).
+#
+# Currently, all our production services use the same map named 'generic-map',
+#
+# To disable all services at a given cache datacenter:
+# ----------------------------------------------------
+#     geoip/generic-map/DCNAME => DOWN
+#     (where DCNAME is one of 'ulsfo' or 'esams')
+#
+# To disable individual services at given cache datacenter:
+# ---------------------------------------------------------
+#     geoip/SERVICE/DCNAME => DOWN
+#     (where SERVICE is one of e.g. 'text-addrs', 'upload-addrs', etc)
+#
+# Glob-style pattern matching is allowed:
+# ---------------------------------------
+#     geoip/text*/ulsfo => DOWN
+#     (matches text-addrs and text-addrs-v4 in ulsfo)
+#
+# If multiple lines are present, the following basic rules apply:
+# ---------------------------------------------------------------
+#     1) Map-level overrides have lower precedence than service-level
+#        overrides, regardless of any globbing, because the service-level is
+#        the more specific of the two.
+#     2) Lines are processed in-order, and the last one wins in case
+#        of any direct overlap/conflict at the per-map or per-service
+#        level.
+#
+# Examples:
+# ------------------------------------------------------------
+#
+#     # Disable all traffic to esams:
+#     geoip/generic-map/esams => DOWN
+#
+#     # Disable just text-addrs, text-addrs-v4, and mobile-addrs in esams:
+#     geoip/text*/esams => DOWN
+#     geoip/mobile-addrs/esams => DOWN
+#
+#     # Disable all services except text-addrs + text-addrs-v4 in ulsfo,
+#     #   regardless of the order of these lines:
+#     geoip/generic-map/ulsfo => DOWN
+#     geoip/text-*/ulsfo => UP
+#
+#     # Disable all services except text-addrs in ulsfo:
+#     geoip/generic-map/ulsfo => DOWN
+#     geoip/text-*/ulsfo => UP # marks both text UP as prev example, but...
+#     geoip/text-addrs-v4/ulsfo => DOWN # this overrides the above for -v4
+#
+#     # Disables all services except text-addrs + text-addrs-v4 in ulsfo:
+#     geoip/generic-map/ulsfo => DOWN
+#     geoip/text-addrs-v4/ulsfo => DOWN # this does nothing because...
+#     geoip/text-*/ulsfo => UP # ... this overrides the line above completely
+#
+##############################################################################

@@ -1,0 +1,174 @@
+; vim: set expandtab:smarttab
+@   1D  IN SOA  ns0.wikimedia.org.       hostmaster.wikimedia.org.        (
+                <%= File.stat(file).mtime.strftime('%Y%m%d%H') %>    ; serial
+                12H             ; refresh
+                2H              ; retry
+                2W              ; expiry
+                1H              ; negative cache TTL
+                )
+
+; Name servers
+
+    1D  IN NS   ns0.wikimedia.org.
+    1D  IN NS   ns1.wikimedia.org.
+    1D  IN NS   ns2.wikimedia.org.
+
+; 208.80.154.0/26 (public1-a-eqiad) (.0 - .63)
+1   1H  IN PTR  vrrp-gw-1001.wikimedia.org.
+2   1H  IN PTR  ae1-1001.cr1-eqiad.wikimedia.org.
+3   1H  IN PTR  ae1-1001.cr2-eqiad.wikimedia.org.
+4   1H  IN PTR  lists.wikimedia.org.
+
+11  1H  IN PTR  dataset1001.wikimedia.org.
+12  1H  IN PTR  labservices1002.wikimedia.org.
+
+15  1H  IN PTR  sodium.wikimedia.org.
+16  1H  IN PTR  ms1001.wikimedia.org.
+17  1H  IN PTR  contint1001.wikimedia.org.
+
+20  1H  IN PTR  labs-recursor1.wikimedia.org.
+39  1H  IN PTR  radium.wikimedia.org.
+
+42  1H  IN PTR  cp1008.wikimedia.org.
+43  1H  IN PTR  vl1001-eth0.lvs1007.eqiad.wmnet.
+44  1H  IN PTR  vl1001-eth0.lvs1008.eqiad.wmnet.
+45  1H  IN PTR  vl1001-eth0.lvs1009.eqiad.wmnet.
+46  1H  IN PTR  vl1001-eth1.lvs1010.eqiad.wmnet.
+47  1H  IN PTR  vl1001-eth1.lvs1011.eqiad.wmnet.
+48  1H  IN PTR  vl1001-eth1.lvs1012.eqiad.wmnet.
+
+50  1H  IN PTR  hydrogen.wikimedia.org.
+52  1H  IN PTR  rhenium.wikimedia.org.
+53  1H  IN PTR  uranium.wikimedia.org.
+55  1H  IN PTR  lvs1001.wikimedia.org.
+56  1H  IN PTR  lvs1002.wikimedia.org.
+57  1H  IN PTR  lvs1003.wikimedia.org.
+58  1H  IN PTR  vl1001-eth1.lvs1004.wikimedia.org.
+59  1H  IN PTR  vl1001-eth1.lvs1005.wikimedia.org.
+60  1H  IN PTR  vl1001-eth1.lvs1006.wikimedia.org.
+
+; 208.80.154.64/26 (public1-c-eqiad) (.64 - .127)
+
+65  1H  IN PTR  vrrp-gw-1003.wikimedia.org.
+66  1H  IN PTR  ae3-1003.cr1-eqiad.wikimedia.org.
+67  1H  IN PTR  ae3-1003.cr2-eqiad.wikimedia.org.
+68  1H  IN PTR  vl1003-eth2.lvs1002.wikimedia.org.
+69  1H  IN PTR  vl1003-eth2.lvs1003.wikimedia.org.
+70  1H  IN PTR  vl1003-eth2.lvs1004.wikimedia.org.
+71  1H  IN PTR  vl1003-eth2.lvs1005.wikimedia.org.
+72  1H  IN PTR  vl1003-eth2.lvs1006.wikimedia.org.
+73  1H  IN PTR  meitnerium.wikimedia.org. ; VM on the ganeti01.svc.eqiad.wmnet cluster
+74  1H  IN PTR  fermium.wikimedia.org. ; VM on the ganeti01.svc.eqiad.wmnet cluster
+75  1H  IN PTR  lists.wikimedia.org. ; Service IP for lists on fermium
+76  1H  IN PTR  mx1001.wikimedia.org. ; VM on the ganeti01.svc.eqiad.wmnet cluster
+77  1H  IN PTR  dubnium.wikimedia.org. ; VM on the ganeti01.svc.eqiad.wmnet cluster
+78  1H  IN PTR  vl1003-eth2.lvs1001.wikimedia.org.
+79  1H  IN PTR  seaborgium.wikimedia.org. ; VM on the ganeti01.svc.eqiad.wmnet cluster
+80  1H  IN PTR  aluminium.wikimedia.org. ; VM on the ganeti01.svc.eqiad.wmnet cluster
+81  1H  IN PTR  cobalt.wikimedia.org.
+82  1H  IN PTR  dbmonitor1001.wikimedia.org. ; VM on the ganeti01.svc.eqiad.wmnet cluster
+84  1H  IN PTR  ununpentium.wikimedia.org. ; VM on the ganeti01.svc.eqiad.wmnet cluster
+85  1H  IN PTR  gerrit.wikimedia.org.
+86  1H  IN PTR  install1002.wikimedia.org. ; VM on the ganeti01.svc.eqiad.wmnet cluster
+91  1H  IN PTR  wiki-mail-eqiad.wikimedia.org.
+92  1H  IN PTR  labcontrol1001.wikimedia.org.
+93  1H  IN PTR  radon.wikimedia.org.
+94  1H  IN PTR  labs-ns0.wikimedia.org.
+95  1H  IN PTR  labcontrol1002.wikimedia.org.
+96  1H  IN PTR  vl1003-eth1.lvs1007.eqiad.wmnet.
+97  1H  IN PTR  vl1003-eth1.lvs1008.eqiad.wmnet.
+98  1H  IN PTR  vl1003-eth1.lvs1009.eqiad.wmnet.
+99  1H  IN PTR  vl1003-eth0.lvs1010.eqiad.wmnet.
+100 1H  IN PTR  vl1003-eth0.lvs1011.eqiad.wmnet.
+101 1H  IN PTR  vl1003-eth0.lvs1012.eqiad.wmnet.
+
+; 208.80.154.128/26 (public1-b-eqiad) (.128 - .191)
+
+129 1H  IN PTR  vrrp-gw-1002.wikimedia.org.
+130 1H  IN PTR  ae2-1002.cr1-eqiad.wikimedia.org.
+131 1H  IN PTR  ae2-1002.cr2-eqiad.wikimedia.org.
+
+136 1H  IN PTR  silver.wikimedia.org.
+137 1H  IN PTR  lvs1004.wikimedia.org.
+138 1H  IN PTR  lvs1005.wikimedia.org.
+139 1H  IN PTR  lvs1006.wikimedia.org.
+140 1H  IN PTR  vl1002-eth1.lvs1001.wikimedia.org.
+141 1H  IN PTR  vl1002-eth1.lvs1002.wikimedia.org.
+142 1H  IN PTR  vl1002-eth1.lvs1003.wikimedia.org.
+
+144 1H  IN PTR  molybdenum.wikimedia.org.
+147 1H  IN PTR  californium.wikimedia.org.
+149 1H  IN PTR  bast1001.wikimedia.org.
+151 1H  IN PTR  iron.wikimedia.org.
+157 1H  IN PTR  chromium.wikimedia.org.
+
+159 1H  IN PTR  netmon1001.wikimedia.org.
+
+161 1H  IN PTR  vl1002-eth2.lvs1007.eqiad.wmnet.
+162 1H  IN PTR  vl1002-eth2.lvs1008.eqiad.wmnet.
+163 1H  IN PTR  vl1002-eth2.lvs1009.eqiad.wmnet.
+164 1H  IN PTR  vl1002-eth2.lvs1010.eqiad.wmnet.
+165 1H  IN PTR  vl1002-eth2.lvs1011.eqiad.wmnet.
+166 1H  IN PTR  vl1002-eth2.lvs1012.eqiad.wmnet.
+
+
+; Neighbor blocks (208.80.154.192/27)
+
+; 208.80.154.192/30 (cr1 <--> cr2)
+193 1H  IN PTR  ae0.cr1-eqiad.wikimedia.org.
+194 1H  IN PTR  ae0.cr2-eqiad.wikimedia.org.
+
+; 208.80.154.196/30 (loopbacks)
+196 1H  IN PTR  cr1-eqiad.wikimedia.org.
+197 1H  IN PTR  cr2-eqiad.wikimedia.org.
+198 1H  IN PTR  cr1-eqord.wikimedia.org.
+199 1H  IN PTR  mr1-eqiad.wikimedia.org.
+
+; 208.80.154.200/30
+
+; 208.80.154.204/31 (cr1-eqiad <--> mr1-eqiad)
+204 1H  IN PTR  ae1-401.cr1-eqiad.wikimedia.org.
+205 1H  IN PTR  ge-0-0-1-401.mr1-eqiad.wikimedia.org.
+
+; 208.80.154.206/31 (cr2-eqiad <--> mr1-eqiad)
+206 1H  IN PTR  ae1-402.cr2-eqiad.wikimedia.org.
+207 1H  IN PTR  ge-0-0-1-402.mr1-eqiad.wikimedia.org.
+
+; 208.80.154.208/31 (cr2-eqiad <--> cr1-eqord)
+208 1H  IN PTR  xe-4-2-0.cr2-eqiad.wikimedia.org.
+209 1H  IN PTR  xe-1-1-0.cr1-eqord.wikimedia.org.
+
+; 208.80.154.216/31 (cr1-eqiad <--> pfw-eqiad)
+216 1H  IN PTR  xe-3-3-2.cr1-eqiad.wikimedia.org.
+217 1H  IN PTR  xe-6-0-0.pfw-eqiad.wikimedia.org.
+
+; 208.80.154.218 - 219 (loopbacks)
+218 1H  IN PTR  pfw-eqiad.wikimedia.org.
+
+; 208.80.154.220/31 (cr2-eqiad <--> pfw-eqiad)
+220 1H  IN PTR  xe-3-3-2.cr2-eqiad.wikimedia.org.
+221 1H  IN PTR  xe-15-0-0.pfw-eqiad.wikimedia.org.
+
+; 208.80.154.222/31 (pfw-eqiad <--> pfw-codfw)
+222 1H  IN PTR  st0.pfw-eqiad.wikimedia.org.
+223 1H  IN PTR  st0.pfw-codfw.wikimedia.org.
+
+; 208.80.154.224/27 (224-255) LVS Service IPs
+
+; - 208.80.154.224/28 (224-239) LVS high-traffic1 (Text)
+
+224 1H  IN PTR  text-lb.eqiad.wikimedia.org.
+
+; wrong subnet? but not important...
+238 1H  IN PTR  ns0.wikimedia.org.
+
+; - 208.80.154.240/28 (240-255) LVS high-traffic2 (Multimedia & Misc)
+
+240 1H  IN PTR  upload-lb.eqiad.wikimedia.org.
+
+244 1H  IN PTR  maps-lb.eqiad.wikimedia.org.
+
+250 1H  IN PTR  git-ssh.eqiad.wikimedia.org.
+251 1H  IN PTR  misc-web-lb.eqiad.wikimedia.org.
+
+254 1H  IN PTR  dns-rec-lb.eqiad.wikimedia.org. ; not actually public!

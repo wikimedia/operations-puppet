@@ -1,0 +1,30 @@
+; vim: set expandtab:smarttab
+@                       1D      IN SOA  ns0.wikimedia.org.       hostmaster.wikimedia.org.        (
+                                        <%= File.stat(file).mtime.strftime('%Y%m%d%H') %>    ; serial
+                                        12H             ; refresh
+                                        2H              ; retry
+                                        2W              ; expiry
+                                        1H              ; negative cache TTL
+                                        )
+
+; Name servers
+
+                        1D      IN NS   ns0.wikimedia.org.
+                        1D      IN NS   ns1.wikimedia.org.
+                        1D      IN NS   ns2.wikimedia.org.
+
+; 208.80.152.224/28 frack-codfw (208.80.152.224 - 208.80.152.239)
+228 1H IN PTR   payments-codfw.wikimedia.org.
+229 1H IN PTR   frack-payments-nat-codfw.wikimedia.org.
+230 1H IN PTR   frack-default-nat-codfw.wikimedia.org.
+231 1H IN PTR   rigel.wikimedia.org.
+232 1H IN PTR   civicrm.wikimedia.org.
+233 1H IN PTR   payments-listener-codfw.wikimedia.org.
+234 1H IN PTR   fundraising-codfw.wikimedia.org.
+
+; 208.80.152.240/28 sandbox1-a-codfw (208.80.152.240 - 208.80.152.255)
+241 1H IN PTR   vrrp-gw-2201.wikimedia.org.
+242 1H IN PTR   ae1-2201.cr1-codfw.wikimedia.org.
+243 1H IN PTR   ae1-2201.cr2-codfw.wikimedia.org.
+244 1H IN PTR   ripe-atlas-codfw.wikimedia.org.
+245 1H IN PTR   procyon.wikimedia.org.
