@@ -383,7 +383,7 @@ node 'db1052.eqiad.wmnet' {
     }
 }
 
-node /^db10(51|55|57|66|72|73|80|83|89)\.eqiad\.wmnet/ {
+node /^db10(51|55|57|66|67|72|73|80|83|89)\.eqiad\.wmnet/ {
     class { '::role::mariadb::core':
         shard => 's1',
     }
@@ -424,7 +424,7 @@ node 'db1018.eqiad.wmnet' {
     }
 }
 
-node /^db10(21|24|36|54|60|63|67|74|76|90)\.eqiad\.wmnet/ {
+node /^db10(21|24|36|54|60|63|74|76|90)\.eqiad\.wmnet/ {
     class { '::role::mariadb::core':
         shard => 's2',
     }
