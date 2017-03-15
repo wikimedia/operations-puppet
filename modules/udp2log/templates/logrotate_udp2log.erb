@@ -9,10 +9,11 @@
 	notifempty
 	nocreate
 	maxage 90
-    rotate <%= @rotate %>
+	rotate <%= @rotate %>
 	dateext
 	compress
 	delaycompress
+	missingok
 	postrotate
 		/usr/bin/killall -HUP udp2log
 	endscript
