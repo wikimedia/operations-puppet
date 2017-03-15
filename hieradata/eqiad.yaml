@@ -189,3 +189,13 @@ prometheus_nodes:
 
 # Which of our redundant unified cert vendors to use in each DC
 public_tls_unified_cert_vendor: "globalsign"
+
+#
+# Thumbor
+#
+thumbor_memcached_servers:
+  - thumbor1001.eqiad.wmnet
+  - thumbor1002.eqiad.wmnet
+thumbor_memcached_servers_nutcracker:
+  - '10.64.16.56:11211:1 "shard01"' # thumbor1001
+  - '10.64.16.57:11211:1 "shard02"' # thumbor1002
