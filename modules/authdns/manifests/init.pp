@@ -5,13 +5,35 @@ class authdns(
     $lvs_services,
     $discovery_services,
     $nameservers = [ $::fqdn ],
-    $gitrepo = undef,
     $monitoring = true,
     $conftool_prefix = hiera('conftool_prefix'),
 ) {
     require ::authdns::account
     require ::authdns::scripts
+    require ::authdns::config
+    require ::authdns::rsync
     require ::geoip::data::puppet
+
+    file { '/etc/gdnsd':
+        ensure => 'directory',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+    }
+
+    file { '/etc/gdnsd/zones':
+        ensure => 'directory',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+    }
+
+    file { '/var/lib/gdnsd':
+        ensure => 'directory',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+    }
 
     package { 'gdnsd':
         ensure => installed,
@@ -24,32 +46,9 @@ class authdns(
         require    => Package['gdnsd'],
     }
 
-    # the package creates this, but we want to set up the config before we
-    # install the package, so that the daemon starts up with a well-known
-    # config that leaves no window where it'd refuse to answer properly
-    file { '/etc/gdnsd':
-        ensure => 'directory',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0755',
+    if $monitoring {
+        include ::authdns::monitoring
     }
-    file { '/etc/gdnsd/config':
-        ensure  => 'present',
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        content => template("${module_name}/config.erb"),
-        require => File['/etc/gdnsd'],
-        notify  => Service['gdnsd'],
-    }
-    file { '/etc/gdnsd/zones':
-        ensure => 'directory',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0755',
-    }
-
-    $workingdir = '/srv/authdns/git' # export to template
 
     file { '/etc/wikimedia-authdns.conf':
         ensure  => 'present',
@@ -59,73 +58,20 @@ class authdns(
         content => template("${module_name}/wikimedia-authdns.conf.erb"),
     }
 
-    # do the initial clone via puppet
-    git::clone { $workingdir:
-        directory => $workingdir,
-        origin    => $gitrepo,
-        branch    => 'master',
-        owner     => 'authdns',
-        group     => 'authdns',
-        notify    => Exec['authdns-local-update'],
-    }
-
     exec { 'authdns-local-update':
-        command     => '/usr/local/sbin/authdns-local-update --skip-review',
-        user        => root,
-        refreshonly => true,
-        timeout     => 60,
-        require     => [
-                File['/etc/wikimedia-authdns.conf'],
-                File['/etc/gdnsd/config'],
-                Git::Clone['/srv/authdns/git'],
-            ],
+        command => '/usr/local/sbin/authdns-local-update --skip-review',
+        user    => root,
+        timeout => 60,
+        creates => '/etc/gdnsd/discovery-geo-maps', # some unique ::config file
+        require => [
+            File['/etc/wikimedia-authdns.conf'],
+            File['/etc/gdnsd'],
+            File['/etc/gdnsd/zones'],
+            File['/var/lib/gdnsd'],
+        ],
         # we prepare the config even before the package gets installed, leaving
         # no window where service would be started and answer with REFUSED
-        before      => Package['gdnsd'],
-    }
-
-    if $monitoring {
-        include ::authdns::monitoring
-    }
-
-    # Discovery Magic
-
-    file { '/etc/gdnsd/discovery-geo-resources':
-        ensure  => 'present',
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        content => template("${module_name}/discovery-geo-resources.erb"),
-        require => File['/etc/gdnsd'],
-        notify  => Service['gdnsd'],
-    }
-
-    file { '/etc/gdnsd/discovery-metafo-resources':
-        ensure  => 'present',
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        content => template("${module_name}/discovery-metafo-resources.erb"),
-        require => File['/etc/gdnsd'],
-        notify  => Service['gdnsd'],
-    }
-
-    file { '/etc/gdnsd/discovery-states':
-        ensure  => 'present',
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        content => template("${module_name}/discovery-states.erb"),
-        require => File['/etc/gdnsd'],
-        notify  => Service['gdnsd'],
-    }
-
-    file { '/etc/gdnsd/discovery-map':
-        ensure => 'present',
-        mode   => '0444',
-        owner  => 'root',
-        group  => 'root',
-        source => "puppet:///modules/${module_name}/discovery-map",
+        before  => Package['gdnsd'],
     }
 
     class { 'confd':

@@ -1,0 +1,27 @@
+; vim: set expandtab:smarttab
+@           1D  IN SOA  ns0.wikimedia.org.  hostmaster.wikimedia.org.   (
+                    <%= File.stat(@file).mtime.strftime('%Y%m%d%H') %>        ; serial
+                    12H     ; refresh
+                    2H      ; retry
+                    2W      ; expiry
+                    1H      ; negative cache TTL
+                    )
+
+; Name servers
+
+            1D  IN NS   ns0.wikimedia.org.
+            1D  IN NS   ns1.wikimedia.org.
+            1D  IN NS   ns2.wikimedia.org.
+
+; Mail exchangers
+
+            1H  IN MX   10 toolserver.org.
+
+; legacy support - this lives in labs as
+; relic.wmflabs.org in the toolserver-legacy project
+;
+; It can't just be a CNAME because of the MX RR :-(
+
+@           1H  IN A    208.80.155.197
+*           1H  IN A    208.80.155.197
+

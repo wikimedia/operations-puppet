@@ -1,0 +1,154 @@
+; vim: set expandtab:smarttab
+@                       1D      IN SOA  ns0.wikimedia.org.       hostmaster.wikimedia.org.        (
+                                        <%= File.stat(@file).mtime.strftime('%Y%m%d%H') %>    ; serial
+                                        12H             ; refresh
+                                        2H              ; retry
+                                        2W              ; expiry
+                                        1H              ; negative cache TTL
+                                        )
+
+; Name servers
+
+                        1D      IN NS   ns0.wikimedia.org.
+                        1D      IN NS   ns1.wikimedia.org.
+                        1D      IN NS   ns2.wikimedia.org.
+
+; 208.80.153.0/27 (public1-a-codfw)
+1   1H  IN PTR  vrrp-gw-2001.wikimedia.org.
+2   1H  IN PTR  ae1-2001.cr1-codfw.wikimedia.org.
+3   1H  IN PTR  ae1-2001.cr2-codfw.wikimedia.org.
+5   1H  IN PTR  bast2001.wikimedia.org.
+6   1H  IN PTR  vl2001-eth0.lvs2001.codfw.wmnet.
+7   1H  IN PTR  vl2001-eth0.lvs2002.codfw.wmnet.
+8   1H  IN PTR  vl2001-eth0.lvs2003.codfw.wmnet.
+9   1H  IN PTR  vl2001-eth1.lvs2004.codfw.wmnet.
+10  1H  IN PTR  vl2001-eth1.lvs2005.codfw.wmnet.
+11  1H  IN PTR  vl2001-eth1.lvs2006.codfw.wmnet.
+12  1H  IN PTR  acamar.wikimedia.org.
+13  1H  IN PTR  baham.wikimedia.org.
+14  1H  IN PTR  labtestweb2001.wikimedia.org.
+15  1H  IN PTR  contint2001.wikimedia.org.
+
+; 208.80.153.32/27 (public1-b-codfw)
+33  1H  IN PTR  vrrp-gw-2002.wikimedia.org.
+34  1H  IN PTR  ae2-2002.cr1-codfw.wikimedia.org.
+35  1H  IN PTR  ae2-2002.cr2-codfw.wikimedia.org.
+36  1H  IN PTR  vl2002-eth0.lvs2004.codfw.wmnet.
+37  1H  IN PTR  vl2002-eth0.lvs2005.codfw.wmnet.
+38  1H  IN PTR  vl2002-eth0.lvs2006.codfw.wmnet.
+39  1H  IN PTR  vl2002-eth1.lvs2001.codfw.wmnet.
+40  1H  IN PTR  vl2002-eth1.lvs2002.codfw.wmnet.
+41  1H  IN PTR  vl2002-eth1.lvs2003.codfw.wmnet.
+42  1H  IN PTR  achernar.wikimedia.org.
+43  1H  IN PTR  pollux.wikimedia.org. ; VM on the ganeti01.svc.codfw.wmnet cluster
+44  1H  IN PTR  kraz.wikimedia.org. ; VM on the ganeti01.svc.codfw.wmnet cluster
+45  1H  IN PTR  mx2001.wikimedia.org. ; VM on the ganeti01.svc.codfw.wmnet cluster
+46  1H  IN PTR  wiki-mail-codfw.wikimedia.org.
+47  1H  IN PTR  labtestcontrol2001.wikimedia.org.
+48  1H  IN PTR  labtestservices2001.wikimedia.org.
+49  1H  IN PTR  serpens.wikimedia.org. ; VM on the ganeti01.svc.codfw.wmnet cluster
+50  1H  IN PTR  alsafi.wikimedia.org.  ; VM on the ganeti01.svc.codfw.wmnet cluster
+51  1H  IN PTR  labtest-recursor0.wikimedia.org. ; additional IP on labtestservices2001
+52  1H  IN PTR  dbmonitor2001.wikimedia.org. ; VM on the ganeti01.svc.codfw.wmnet cluster
+53  1H  IN PTR  install2002.wikimedia.org. ; VM on the ganeti01.svc.codfw.wmnet cluster
+
+; 208.80.153.64/27 (public1-c-codfw)
+65  1H  IN PTR  vrrp-gw-2003.wikimedia.org.
+66  1H  IN PTR  ae3-2003.cr1-codfw.wikimedia.org.
+67  1H  IN PTR  ae3-2003.cr2-codfw.wikimedia.org.
+68  1H  IN PTR  vl2003-eth2.lvs2001.codfw.wmnet.
+69  1H  IN PTR  vl2003-eth2.lvs2002.codfw.wmnet.
+70  1H  IN PTR  vl2003-eth2.lvs2003.codfw.wmnet.
+71  1H  IN PTR  vl2003-eth2.lvs2004.codfw.wmnet.
+72  1H  IN PTR  vl2003-eth2.lvs2005.codfw.wmnet.
+73  1H  IN PTR  vl2003-eth2.lvs2006.codfw.wmnet.
+74  1H  IN PTR  tegmen.wikimedia.org.
+
+; 208.80.153.96/27 (public1-d-codfw)
+97  1H  IN PTR  vrrp-gw-2004.wikimedia.org.
+98  1H  IN PTR  ae4-2004.cr1-codfw.wikimedia.org.
+99  1H  IN PTR  ae4-2004.cr2-codfw.wikimedia.org.
+100 1H  IN PTR  vl2004-eth3.lvs2001.codfw.wmnet.
+101 1H  IN PTR  vl2004-eth3.lvs2002.codfw.wmnet.
+102 1H  IN PTR  vl2004-eth3.lvs2003.codfw.wmnet.
+103 1H  IN PTR  vl2004-eth3.lvs2004.codfw.wmnet.
+104 1H  IN PTR  vl2004-eth3.lvs2005.codfw.wmnet.
+105 1H  IN PTR  vl2004-eth3.lvs2006.codfw.wmnet.
+106 1H  IN PTR  gerrit2001.wikimedia.org.
+
+; 208.80.153.128/27 labtest codfw public IPs (pool used by openstack)
+
+; Neighbor blocks & loopbacks (208.80.153.192/27)
+
+; loopbacks
+
+192 1H  IN PTR  cr1-codfw.wikimedia.org.
+193 1H  IN PTR  cr2-codfw.wikimedia.org.
+194 1H  IN PTR  pim-rp.wikimedia.org.
+195 1H  IN PTR  pfw-codfw.wikimedia.org.
+196 1H  IN PTR  mr1-codfw.wikimedia.org.
+
+198 1H  IN PTR  cr1-eqdfw.wikimedia.org.
+
+; neighbor blocks
+
+; 208.80.153.204/31 (cr2-codfw <--> cr2-eqiad)
+204 1H  IN PTR  xe-5-0-1.cr2-codfw.wikimedia.org.
+205 1H  IN PTR  xe-3-2-3.cr2-eqiad.wikimedia.org.
+
+; 208.80.153.206/31 (cr1-codfw <--> mr1-codfw)
+206 1H  IN PTR  xe-5-3-3.cr1-codfw.wikimedia.org.
+207 1H  IN PTR  ge-0-0-0-401.mr1-codfw.wikimedia.org.
+
+; 208.80.153.208/31 (cr2-codfw <--> mr1-codfw)
+208 1H  IN PTR  xe-5-3-3.cr2-codfw.wikimedia.org.
+209 1H  IN PTR  ge-0-0-0-402.mr1-codfw.wikimedia.org.
+
+; 208.80.153.210/31 (cr1-codfw <--> cr1-eqdfw)
+210 1H  IN PTR  xe-5-0-0.cr1-codfw.wikimedia.org.
+211 1H  IN PTR  xe-0-0-0.cr1-eqdfw.wikimedia.org.
+
+; 208.80.153.212/31 (cr2-codfw <--> cr1-eqdfw)
+212 1H  IN PTR  xe-5-0-0.cr2-codfw.wikimedia.org.
+213 1H  IN PTR  xe-1-0-0.cr1-eqdfw.wikimedia.org.
+
+; 208.80.153.214/31 (cr1-codfw <--> pfw-codfw)
+214 1H  IN PTR  xe-5-0-3.cr1-codfw.wikimedia.org.
+215 1H  IN PTR  xe-6-0-0.pfw-codfw.wikimedia.org.
+
+; 208.80.153.216/31 (cr2-codfw <--> pfw-codfw)
+216 1H  IN PTR  xe-5-0-3.cr2-codfw.wikimedia.org.
+217 1H  IN PTR  xe-15-0-0.pfw-codfw.wikimedia.org.
+
+; 208.80.153.218/31 (cr1-codfw <--> cr2-codfw)
+218 1H  IN PTR  ae0.cr1-codfw.wikimedia.org.
+219 1H  IN PTR  ae0.cr2-codfw.wikimedia.org.
+
+; 208.80.153.220/31 (cr1-eqiad <--> cr1-codfw)
+220 1H  IN PTR  xe-4-2-0.cr1-eqiad.wikimedia.org.
+221 1H  IN PTR  xe-5-2-1.cr1-codfw.wikimedia.org.
+
+; 208.80.153.222/31 (cr1-eqord <--> cr2-codfw)
+222 1H  IN PTR  xe-0-0-0.cr1-eqord.wikimedia.org.
+223 1H  IN PTR  xe-5-2-1.cr2-codfw.wikimedia.org.
+
+; 208.80.153.224/27 (224-255) LVS Service IPs
+
+; - 208.80.153.224/28 (224-239) LVS high-traffic1 (Text)
+
+224 1H  IN PTR  text-lb.codfw.wikimedia.org.
+
+; wrong subnet, but not important...
+231 1H  IN PTR  ns1.wikimedia.org.
+
+; - 208.80.153.240/28 (240-255) LVS high-traffic2 (Multimedia & Misc)
+
+240 1H  IN PTR  upload-lb.codfw.wikimedia.org.
+
+244 1H  IN PTR  maps-lb.codfw.wikimedia.org.
+
+248  1H  IN PTR misc-web-lb.codfw.wikimedia.org.
+
+250  1H  IN PTR git-ssh.codfw.wikimedia.org.
+
+254  1H  IN PTR dns-rec-lb.codfw.wikimedia.org. ; not actually public!

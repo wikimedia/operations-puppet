@@ -4,6 +4,7 @@
 # regenerate zones & configuration and reload the DNS server.
 #
 # Written by Faidon Liambotis, Jul 2013
+# Updated for rsync+puppet methods by Brandon Black, Mar 2017
 
 set -e
 
@@ -31,112 +32,78 @@ if ! flock -xn $LOCKFD; then
     die "failed to lock, another update running?"
 fi
 
-while :; do
-    case "$1" in
-        --skip-reload)
-            SKIP_RELOAD="true"
-            shift
-            ;;
-        --skip-review)
-            SKIP_REVIEW="true"
-            shift
-            ;;
-        *)
-            break
-            ;;
-    esac
-done
+# If $REMOTE (only arg) is not present, the first step is requiring a
+#   successful puppet agent run and then rsyncing that output locally from
+#   staging-puppet to staging-rsync.  The lack of $REMOTE also triggers human
+#   review before deployment.
+# If $REMOTE is specified and not ourselves, the above replaced by an rsync of
+#   $REMOTE's staging-rsync to our own
+# If $REMOTE is specified and is ourselves, we trust the existing contents of
+#   our staging-rsync
 
-REMOTE=""
-if [ -z "$1" ]; then
-    if [ -z "$ORIGIN" ]; then
-        die "no master given and no origin defined in config"
+REMOTE=$1
+if [ -z "$REMOTE" ]; then
+    if [ -f /var/lib/puppet/state/agent_disabled.lock ]; then
+        $MSG=`jq -r '.disabled_message' < /var/lib/puppet/state/agent_disabled.lock`
+        die "Puppet agent disabled ($MSG), aborting";
     fi
-    REMOTE=$ORIGIN
-    if [ "$SKIP_REVIEW" = "true" ]; then
-        PULL_ARGS="--skip-review"
-    fi
-else
-    REMOTE="ssh://${1}${WORKINGDIR}"
-    PULL_ARGS="--skip-review"
-fi
-echo "Pulling the current revision from $REMOTE"
-(cd $WORKINGDIR; sudo -u authdns authdns-git-pull $PULL_ARGS $REMOTE)
-
-if [ ! -e "/etc/gdnsd/config" ]; then
-    die "config not found, system misconfigured?"
-fi
-if [ ! -e "$WORKINGDIR/templates" ]; then
-    die "templates not found, system misconfigured?"
-fi
-if [ ! -e "$WORKINGDIR/config-geo-test" ]; then
-    die "config-geo-test not found, system misconfigured?"
-fi
-if [ ! -e "$WORKINGDIR/geo-maps" ]; then
-    die "geo-maps not found, system misconfigured?"
-fi
-if [ ! -e "$WORKINGDIR/geo-resources" ]; then
-    die "geo-resources not found, system misconfigured?"
-fi
-if [ ! -e "$WORKINGDIR/admin_state" ]; then
-    die "admin_state not found, system misconfigured?"
+    while :; do
+        puppet agent -t
+        if [ $? == 0 -o $? == 2 ]; then
+           break # success
+        elif [ $? == 1 ]; then
+           sleep 1 # another agent still running
+        else
+           die "Puppet agent failed, aborting"
+        fi
+    done
+    run-no-puppet rsync --delete -cai /srv/authdns/staging-puppet/ /srv/authdns/staging-rsync/
+elif [ "$REMOTE" != "$FQDN" ]; then
+    rsync --delete -cai rsync://${REMOTE}/srv/authdns/staging-rsync/ /srv/authdns/staging-rsync/
 fi
 
-echo "Generating zonefiles from zone templates"
-authdns-gen-zones $WORKINGDIR/templates /etc/gdnsd/zones
+## Now that the data is in staging-rsync, validate it, and do a human
+## review/confirm if no remote specified (which may be ourselves)
 
-echo "Doing sanity checks"
-if [ `ls /etc/gdnsd/zones |wc -l` -le 10 ]; then
+if [ `ls /srv/authdns/staging-rsync/etc/zones |wc -l` -le 10 ]; then
     die "less than 10 zones, something's probably wrong, aborting";
 fi
 
-echo "Copy config-geo bits"
-cp -f /etc/gdnsd/config-geo-test /etc/gdnsd/config-geo-test~ 2>/dev/null || true
-cp -f /etc/gdnsd/geo-maps /etc/gdnsd/geo-maps~ 2>/dev/null || true
-cp -f /etc/gdnsd/geo-resources /etc/gdnsd/geo-resources~ 2>/dev/null || true
-cp -f $WORKINGDIR/config-geo-test /etc/gdnsd/
-cp -f $WORKINGDIR/geo-maps /etc/gdnsd/geo-maps
-cp -f $WORKINGDIR/geo-resources /etc/gdnsd/geo-resources
+gdnsd -Ssc /srv/authdns/staging-rsync/etc checkconf
+
+DIFFCMD="diff --color=always -durN"
+if [ -z "$REMOTE" ]; then
+    ($DIFFCMD /var/lib/gdnsd/admin_state /srv/authdns/staging-rsync/var/admin_state;
+    $DIFFCMD /etc/gdnsd/ /srv/authdns/staging-rsync/etc/ )|less -EXr
+    echo ""
+    echo -n "Merge these changes? (yes/no)? "
+    read answer
+    if [ "x${answer}" != "xyes" ]; then
+        echo "Aborting merge."
+        exit 1
+    fi
+fi
+
+## Sync the data to live config:
+## The grep catchines rsync output indicating deletions or file modifications
+##   other than those in the zones/ subdirectory...
+
+NEEDS_RESTART="false"
+cp /srv/authdns/staging-rsync/var/admin_state /var/lib/gdnsd/admin_state
+rsync --delete -cai /srv/authdns/staging-rsync/etc/ /etc/gdnsd/ \
+  |grep -qP '^(\*deleting  |[^.]f.........) (?!zones/)' && NEEDS_RESTART="true"
+
+## Take final action for potential reload/restart:
 
 # initial run, before gdnsd was installed
-if ! which gdnsd > /dev/null || [ "$SKIP_RELOAD" = "true" ]; then
-    rm -f /etc/gdnsd/config-geo-test~
-    rm -f /etc/gdnsd/geo-maps~
-    rm -f /etc/gdnsd/geo-resources~
+if ! which gdnsd > /dev/null; then
     exit 0
 fi
 
-if ! gdnsd checkconf >/dev/null; then
-    if [ -f /etc/gdnsd/config-geo-test~ ]; then
-        mv /etc/gdnsd/config-geo-test~ /etc/gdnsd/config-geo-test
-    fi
-    if [ -f /etc/gdnsd/geo-maps~ ]; then
-        mv /etc/gdnsd/geo-maps~ /etc/gdnsd/geo-maps
-    fi
-    if [ -f /etc/gdnsd/geo-resources~ ]; then
-        mv /etc/gdnsd/geo-resources~ /etc/gdnsd/geo-resources
-    fi
-    die "gdnsd checkconf failed, aborting"
-fi
-
-echo "Copying admin_state into place; will take effect immediately"
-mkdir -p /var/lib/gdnsd
-cp -f $WORKINGDIR/admin_state /var/lib/gdnsd/
-
-### reload
-
-if ( ! cmp --quiet /etc/gdnsd/config-geo-test~ /etc/gdnsd/config-geo-test ) \
-  || ( ! cmp --quiet /etc/gdnsd/geo-maps~ /etc/gdnsd/geo-maps ) \
-  || ( ! cmp --quiet /etc/gdnsd/geo-resources~ /etc/gdnsd/geo-resources ); then
-    rm -f /etc/gdnsd/config-geo-test~
-    rm -f /etc/gdnsd/geo-maps~
-    rm -f /etc/gdnsd/geo-resources~
+if [ $NEEDS_RESTART != "false" ]; then
     echo "Restarting to update zones & config"
     service gdnsd restart >/dev/null
 else
-    rm -f /etc/gdnsd/config-geo-test~
-    rm -f /etc/gdnsd/geo-maps~
-    rm -f /etc/gdnsd/geo-resources~
     echo "Reloading zones"
     gdnsd reload-zones
 fi
