@@ -1,0 +1,42 @@
+; vim: set expandtab:smarttab
+@           1D  IN SOA  ns0.wikimedia.org.  hostmaster.wikimedia.org.   (
+                    <%= File.stat(@file).mtime.strftime('%Y%m%d%H') %>    ; serial
+                    12H     ; refresh
+                    2H      ; retry
+                    2W      ; expiry
+                    1H      ; negative cache TTL
+                    )
+
+; Name servers
+
+            1D  IN NS   ns0.wikimedia.org.
+            1D  IN NS   ns1.wikimedia.org.
+            1D  IN NS   ns2.wikimedia.org.
+
+; Mail exchangers
+
+            1H  IN MX   10  mx1001.wikimedia.org.
+            1H  IN MX   50  mx2001.wikimedia.org.
+
+
+; Canonical names
+            600 IN DYNA geoip!text-addrs
+
+; Google Webmaster Tools verification record for search management
+            600 IN TXT  "google-site-verification=5JHI3pfbO766dhRWL8b4E4CcKiUjsTLtz98zIwhEEMU"
+
+; Servers (alphabetic order)
+
+; Service aliases
+
+; Wikis (alphabetic order)
+
+mul         600 IN DYNA     geoip!text-addrs
+www         600 IN DYNA     geoip!text-addrs
+
+; All languages will automatically be included here.
+<%= @geolang %>
+
+; Mobile
+m           600 IN DYNA     geoip!text-addrs
+mul.m       600 in DYNA     geoip!text-addrs
