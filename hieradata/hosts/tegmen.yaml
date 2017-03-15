@@ -11,3 +11,5 @@ icinga::enable_event_handlers: 0
 icinga::ircbot::ensure: absent
 role::tcpircbot::ensure: absent
 do_acme: false
+role::icinga::partner: einsteinium.wikimedia.org
+role::icinga::passive: true
