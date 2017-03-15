@@ -2700,16 +2700,9 @@ node 'tegmen.wikimedia.org' {
     role(icinga, tendril, tcpircbot, certspotter)
 }
 
-# https://wikitech.wikimedia.org/wiki/Terbium
-node 'terbium.eqiad.wmnet' {
-    role(mariadb::maintenance, mediawiki::maintenance, openldap::management)
-    include ::role::noc::site
-    include ::ldap::role::client::labs
-    include ::base::firewall
-
-    interface::add_ip6_mapped { 'main':
-        interface => 'eth0',
-    }
+# mediawiki maintenance servers (https://wikitech.wikimedia.org/wiki/Terbium)
+node 'terbium.eqiad.wmnet', 'wasat.codfw.wmnet' {
+    role('mediawiki_maintenance_server')
 }
 
 # Thumbor servers for MediaWiki image scaling
