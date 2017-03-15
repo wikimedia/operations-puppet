@@ -1,9 +1,11 @@
 # mediawiki maintenance scripts
-class role::mediawiki::maintenance {
-    include scap::scripts
-    include role::mediawiki::common
-
+class profile::mediawiki::maintenance {
+    include ::scap::scripts
+    include ::role::mediawiki::common
     include ::mediawiki::packages::php5
+    include ::role::noc::site
+    include ::ldap::role::client::labs
+    include ::base::firewall
 
     file { $::mediawiki::scap::mediawiki_staging_dir:
         ensure => link,
