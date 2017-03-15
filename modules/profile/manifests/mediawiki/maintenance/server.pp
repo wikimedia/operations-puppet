@@ -1,5 +1,5 @@
 # mediawiki maintenance scripts
-class role::mediawiki::maintenance {
+class profile::mediawiki::maintenance::server {
     include scap::scripts
     include role::mediawiki::common
 
