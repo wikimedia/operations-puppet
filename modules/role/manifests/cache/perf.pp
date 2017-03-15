@@ -33,7 +33,7 @@ class role::cache::perf {
     sysctl::parameters { 'cache proxy network tuning':
         values => {
             # Increase the number of ephemeral ports
-            'net.ipv4.ip_local_port_range'       => [ 4000, 65534 ],
+            'net.ipv4.ip_local_port_range'       => [ 4001, 65534 ],
 
             # All prod caches are 10GbE, standard recommendation is 300K for 10G
             # and 30K for 1G.  Our inbound traffic max is closer to 1G levels,
