@@ -1,0 +1,88 @@
+; vim: set expandtab:smarttab
+@                       1D      IN SOA  ns0.wikimedia.org.       hostmaster.wikimedia.org.        (
+                                        <%= File.stat(file).mtime.strftime('%Y%m%d%H') %>    ; serial
+                                        12H             ; refresh
+                                        2H              ; retry
+                                        2W              ; expiry
+                                        1H              ; negative cache TTL
+                                        )
+
+; Name servers
+
+                        1D      IN NS   ns0.wikimedia.org.
+                        1D      IN NS   ns1.wikimedia.org.
+                        1D      IN NS   ns2.wikimedia.org.
+
+
+; Public services subnet 91.198.174.0/25 (91.198.174.0 - 91.198.174.127)
+
+1   1H IN PTR   vrrp-gw-100.esams.wikimedia.org.
+2   1H IN PTR   ae1-100.cr1-esams.wikimedia.org.
+3   1H IN PTR   ae1-100.cr2-esams.wikimedia.org.
+
+11  1H IN PTR   vl100-eth0.lvs3001.esams.wmnet.
+12  1H IN PTR   vl100-eth0.lvs3002.esams.wmnet.
+13  1H IN PTR   vl100-eth0.lvs3003.esams.wmnet.
+14  1H IN PTR   vl100-eth0.lvs3004.esams.wmnet.
+
+106 1H IN PTR   nescio.wikimedia.org.
+
+113 1H IN PTR   bast3002.wikimedia.org.
+114 1H IN PTR   multatuli.wikimedia.org.
+
+121 1H IN PTR   eeden.wikimedia.org.
+122 1H IN PTR   maerlant.wikimedia.org.
+
+; unused 91.198.174.128/26 (91.198.174.128 - 91.198.174.191)
+
+; 91.198.174.192/27 (192-223) LVS Service IPs
+
+; - 91.198.174.192/28 (192-207) LVS high-traffic1 (Text)
+
+192 1H  IN PTR  text-lb.esams.wikimedia.org.
+
+; - 91.198.174.208/28 (208-223) LVS high-traffic2 (Multimedia & Misc)
+
+208 1H IN PTR   upload-lb.esams.wikimedia.org.
+209 1H IN PTR   maps-lb.esams.wikimedia.org.
+
+216 1H IN PTR   dns-rec-lb.esams.wikimedia.org. ; not actually public!
+217 1H IN PTR   misc-web-lb.esams.wikimedia.org.
+
+; 91.198.174.224/28 (224-239) out-of-subnet LVS service IPs
+
+239 1H IN PTR   ns2.wikimedia.org.
+
+; unused 91.198.174.240/31
+
+; Neighbor block between cr1-esams and cr2-knams (91.198.174.242/31)
+
+242 1H IN PTR   ae1-401.cr1-esams.wikimedia.org.
+243 1H IN PTR   ae2-401.cr2-knams.wikimedia.org.
+
+; Loopback IPs
+
+244 1H IN PTR   cr2-esams.wikimedia.org.
+245 1H IN PTR   cr1-esams.wikimedia.org.
+246 1H IN PTR   cr2-knams.wikimedia.org.
+247 1H IN PTR   mr1-esams.wikimedia.org.
+
+; Neighbor block between cr2-eqiad and cr2-esams (91.198.174.248/31)
+
+248 1H IN PTR   xe-4-1-3.cr2-eqiad.wikimedia.org.
+249 1H IN PTR   xe-0-1-3.cr2-esams.wikimedia.org.
+
+; Neighbor block between cr1-eqiad and cr2-knams (91.198.174.250/31)
+
+250 1H IN PTR   xe-4-2-2.cr1-eqiad.wikimedia.org.
+251 1H IN PTR   xe-1-1-0.cr2-knams.wikimedia.org.
+
+; Neighbor block between cr2-esams and cr2-knams (91.198.174.252/31)
+
+252 1H IN PTR   ae1-402.cr2-esams.wikimedia.org.
+253 1H IN PTR   ae1-402.cr1-esams.wikimedia.org.
+
+; Neighbor block between cr2-esams and cr1-esams (91.198.174.254/31)
+
+254 1H IN PTR   ae1-403.cr2-esams.wikimedia.org.
+255 1H IN PTR   ae1-403.cr2-knams.wikimedia.org.

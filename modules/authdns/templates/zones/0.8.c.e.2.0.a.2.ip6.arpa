@@ -1,0 +1,20 @@
+; vim: set expandtab:smarttab
+@                       1D      IN SOA  ns0.wikimedia.org.       hostmaster.wikimedia.org.        (
+                                        <%= File.stat(file).mtime.strftime('%Y%m%d%H') %>    ; serial
+                                        12H             ; refresh
+                                        2H              ; retry
+                                        2W              ; expiry
+                                        1H              ; negative cache TTL
+                                        )
+
+; Name servers
+
+                        1D      IN NS   ns0.wikimedia.org.
+                        1D      IN NS   ns1.wikimedia.org.
+                        1D      IN NS   ns2.wikimedia.org.
+
+;  OOB Tilaa transit subnet (2a02:ec80:500:1::/64)
+
+$ORIGIN 1.0.0.0.0.0.5.0.<%= @zonename %>.
+
+1   1H  IN PTR  ge-2-0-0-2483.mr1-esams.wikimedia.org.
