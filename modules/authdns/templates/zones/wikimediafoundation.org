@@ -1,0 +1,38 @@
+; vim: set expandtab:smarttab
+@           1D  IN SOA  ns0.wikimedia.org.  hostmaster.wikimedia.org.   (
+                    <%= File.stat(@file).mtime.strftime('%Y%m%d%H') %>    ; serial
+                    12H     ; refresh
+                    2H      ; retry
+                    2W      ; expiry
+                    1H      ; negative cache TTL
+                    )
+
+; Name servers
+
+            1D  IN NS   ns0.wikimedia.org.
+            1D  IN NS   ns1.wikimedia.org.
+            1D  IN NS   ns2.wikimedia.org.
+
+; Mail exchangers
+
+            1H  IN MX   10  mx1001.wikimedia.org.
+            1H  IN MX   50  mx2001.wikimedia.org.
+
+
+; Canonical names
+            600 IN DYNA geoip!text-addrs
+
+; DKIM domain policy record
+_domainkey  1H  IN TXT  "o=~; r=hostmaster@wikimediafoundation.org;"
+
+; DKIM selector key(s)
+fundraising._domainkey  1H  IN TXT  "v=DKIM1; h=sha256; k=rsa; p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC61rCxt6xGKmVoId8fqGM1UTnBugf5chUdQfoCDpsgXqQVF1tOacwj3bF9fQdnqVhWeoGwiWOhfB13k/cfPKELgsJKKXEyk7cyBTV4BQ2JqmbPS4m0dD+imISrviPKjNG4uHA4FrjzYiVuv8EzZQw7tUtJuMC26BXZYqi/5YIpFQIDAQAB;"
+
+; Servers (alphabetic order)
+
+; Service aliases
+
+; Wikis (alphabetic order)
+
+www         600 IN DYNA     geoip!text-addrs
+m           600 IN DYNA     geoip!text-addrs
