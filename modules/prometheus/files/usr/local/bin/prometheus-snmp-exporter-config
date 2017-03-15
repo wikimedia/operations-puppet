@@ -33,7 +33,7 @@ def main():
             log.error('Empty YAML assembled')
             return 1
 
-        os.chmod(tmpconfig.name, 0400)
+        os.chmod(tmpconfig.name, 0o400)
         os.rename(tmpconfig.name, args.config_file)
 
         # Temporary file has been atomically renamed to its final destination.
