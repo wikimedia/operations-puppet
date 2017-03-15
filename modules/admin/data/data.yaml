@@ -1852,7 +1852,7 @@ users:
     realname: Moushira Elamrawy
     ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDlLVCGLVRhQeS0w/xDYFsc53o0t0FV2Vi5MsTv9NlNIVAPvmQOPvLtp55qqb1ix7q2tOktTgFA1yVCW+CfQKoCRqAflAca1CJhNe4xve3FBX2E9zpwjm7ivfKDvfPTRh4ls4n2NdBXke8WKmAbggLE+uaP9G4eIVKy2RKrKZp7EM/25CqxWZe/cRQ9JegmkhVqb2s8s8kEB4aa9to4u4FulCuYyU5WrvCEa4T8oI/mtVQabRO4kjvL5TOdn2tzjnD+4YC9SL4JtcyllVbdpsYa7PpsV9/Ix1MLEqjucFDUVoGd9v5JCsSQclSCxbqn3R7O4bGlYC04WLGBPDpvjaOx melamrawy@wikimedia.org]
     uid: 12239
-    email: melamrawy@wikimedia.org
+    email: moushirah@gmail.com
   aklapper:
     ensure: present
     gid: 500
