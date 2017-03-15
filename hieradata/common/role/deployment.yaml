@@ -1,13 +1,4 @@
 role::deployment::repo_config:
-  integration/mediawiki-tools-codesniffer:
-    upstream: https://gerrit.wikimedia.org/r/mediawiki/tools/codesniffer
-  integration/phpunit:
-    upstream: https://gerrit.wikimedia.org/r/integration/phpunit
-  integration/php-coveralls:
-    upstream: https://gerrit.wikimedia.org/r/integration/php-coveralls
-  integration/slave-scripts:
-    upstream: https://gerrit.wikimedia.org/r/integration/jenkins
-    checkout_submodules: true
   jobrunner/jobrunner:
     upstream: https://gerrit.wikimedia.org/r/mediawiki/services/jobrunner
     service_name: jobrunner
