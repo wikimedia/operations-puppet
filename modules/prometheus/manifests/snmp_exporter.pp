@@ -34,7 +34,7 @@ class prometheus::snmp_exporter {
     file { '/etc/prometheus/snmp.yml':
         ensure => present,
         mode   => '0400',
-        owner  => 'root',
+        owner  => 'prometheus',
         group  => 'root',
     }
 
