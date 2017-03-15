@@ -2,6 +2,8 @@
 # Sets up user, group, sudo SSH keys & git-shell commands for authdns
 #
 class authdns::account {
+    require_package('git') # for git-shell stuff
+
     $user  = 'authdns'
     $group = 'authdns'
     $home  = '/srv/authdns'

@@ -1,0 +1,80 @@
+; vim: set expandtab:smarttab
+@           1D  IN SOA  ns0.wikimedia.org.  hostmaster.wikimedia.org.   (
+                    <%= File.stat(file).mtime.strftime('%Y%m%d%H') %>    ; serial
+                    12H     ; refresh
+                    2H      ; retry
+                    2W      ; expiry
+                    1H      ; negative cache TTL
+                    )
+
+; Name servers
+
+            1D  IN NS   ns0.wikimedia.org.
+            1D  IN NS   ns1.wikimedia.org.
+            1D  IN NS   ns2.wikimedia.org.
+
+; Mail exchangers
+
+            1H  IN MX   10  mx1001.wikimedia.org.
+            1H  IN MX   50  mx2001.wikimedia.org.
+
+; Canonical names
+            600 IN DYNA geoip!text-addrs
+
+; Google Webmaster Tools verification record for search management
+            600 IN TXT  "google-site-verification=AMHkgs-4ViEvIJf5znZle-BSE2EPNFqM1nDJGRyn2qk"
+
+; DMARC records http://dmarc.org/ -- policy none (monitor), for now
+_dmarc                  600     IN TXT "v=DMARC1; p=none; sp=none; rua=mailto:dmarc-rua@wikimedia.org; ruf=mailto:dmarc-ruf@wikimedia.org;"
+
+; SPF records
+@                       600     IN TXT  "v=spf1 include:wikimedia.org ?all"
+
+; Wikis (alphabetic order)
+
+arbcom-cs               600     IN DYNA         geoip!text-addrs
+arbcom-de               600     IN DYNA         geoip!text-addrs
+arbcom-en               600     IN DYNA         geoip!text-addrs
+arbcom-fi               600     IN DYNA         geoip!text-addrs
+arbcom-nl               600     IN DYNA         geoip!text-addrs
+arbcom-nl.m             600     IN DYNA         geoip!text-addrs
+commons                 600     IN DYNA         geoip!text-addrs
+meta                    600     IN DYNA         geoip!text-addrs
+nostalgia               600     IN DYNA         geoip!text-addrs
+quote                   600     IN DYNA         geoip!text-addrs
+quality                 600     IN DYNA         geoip!text-addrs
+quality.m               600     IN DYNA         geoip!text-addrs
+sep11                   600     IN DYNA         geoip!text-addrs
+sources                 600     IN DYNA         geoip!text-addrs
+species                 600     IN DYNA         geoip!text-addrs
+ten                     600     IN DYNA         geoip!text-addrs
+ten.m                   600     IN DYNA         geoip!text-addrs
+test                    600     IN DYNA         geoip!text-addrs
+test2                   600     IN DYNA         geoip!text-addrs
+test.m                  600     IN DYNA         geoip!text-addrs
+test2.m                 600     IN DYNA         geoip!text-addrs
+textbook                600     IN DYNA         geoip!text-addrs
+wg-en                   600     IN DYNA         geoip!text-addrs
+www                     600     IN DYNA         geoip!text-addrs
+zh-tw                   600     IN DYNA         geoip!text-addrs
+
+; All languages will automatically be included here.
+<%= @geolang_zero %>
+
+; Other websites
+
+15              600 IN DYNA     geoip!misc-addrs
+bugzilla        600 IN DYNA     geoip!text-addrs
+careers         600 IN DYNA     geoip!text-addrs
+donate          600 IN DYNA     geoip!text-addrs
+download        600 IN DYNA     geoip!text-addrs
+jobs            600 IN DYNA     geoip!text-addrs
+m               600 IN DYNA     geoip!text-addrs
+mail            600 IN DYNA     geoip!text-addrs
+shop            600 IN DYNA     geoip!text-addrs
+stats           1H  IN CNAME    stats.wikimedia.org.
+store           600 IN DYNA     geoip!text-addrs
+zero            600 IN DYNA     geoip!text-addrs
+
+; TLS testing, "temporary"
+pinkunicorn     600 IN A        208.80.154.42
