@@ -10,10 +10,11 @@ class mediawiki::scap {
     include ::scap
     include ::mediawiki::users
 
-    $mediawiki_deployment_dir = '/srv/mediawiki'
-    $mediawiki_staging_dir    = '/srv/mediawiki-staging'
-    $scap_bin_dir             = '/usr/bin'
-    $mediawiki_web_user       = $::mediawiki::users::web
+    $mediawiki_deployment_dir      = '/srv/mediawiki'
+    $mediawiki_staging_dir         = '/srv/mediawiki-staging'
+    $mediawiki_scap_deployment_dir = '/srv/deployment/mediawiki'
+    $scap_bin_dir                  = '/usr/bin'
+    $mediawiki_web_user            = $::mediawiki::users::web
 
     # /srv/mediawiki is the root path of the MediaWiki deployment tree.
 
@@ -24,6 +25,12 @@ class mediawiki::scap {
         mode   => '0775',
     }
 
+    # As we migrate to scap3, we'll want to have mediawiki available at
+    # /srv/deployment/mediawiki
+    file { $mediawiki_scap_deployment_dir:
+        ensure => 'link',
+        target => $mediawiki_deployment_dir,
+    }
 
     # /etc/profile.d/mediawiki.sh declares the MEDIAWIKI_DEPLOYMENT_DIR
     # and MEDIAWIKI_STAGING_DIR environment variables and adds scap to
