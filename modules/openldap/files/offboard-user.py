@@ -64,6 +64,8 @@ member: {user_dn}
     privileged_groups = ['cn=nda,ou=groups,dc=wikimedia,dc=org',
                          'cn=wmf,ou=groups,dc=wikimedia,dc=org',
                          'cn=ops,ou=groups,dc=wikimedia,dc=org',
+                         'cn=ldap_ops,ou=groups,dc=wikimedia,dc=org',
+                         'cn=wmde,ou=groups,dc=wikimedia,dc=org',
                          'cn=librenms-readers,ou=groups,dc=wikimedia,dc=org',
                          'cn=grafana-admin,ou=groups,dc=wikimedia,dc=org',
                          'cn=tools.admin,ou=servicegroups,dc=wikimedia,dc=org']
