@@ -1,0 +1,77 @@
+; vim: set expandtab:smarttab
+@                       1D      IN SOA  ns0.wikimedia.org.       hostmaster.wikimedia.org.        (
+                                        <%= File.stat(@file).mtime.strftime('%Y%m%d%H') %>    ; serial
+                                        12H             ; refresh
+                                        2H              ; retry
+                                        2W              ; expiry
+                                        1H              ; negative cache TTL
+                                        )
+
+; Name servers
+
+                        1D      IN NS   ns0.wikimedia.org.
+                        1D      IN NS   ns1.wikimedia.org.
+                        1D      IN NS   ns2.wikimedia.org.
+
+; 198.35.26.0/23 (198.35.26.0 - 198.35.27.255)
+; West Coast Discrete network
+
+; 198.35.26.0/28 (198.35.26.0 - 198.35.26.63)
+; Subnet public1-ulsfo
+
+1   1H IN PTR   vrrp-gw-1201.wikimedia.org.
+2   1H IN PTR   ae1-1201.cr1-ulsfo.wikimedia.org.
+3   1H IN PTR   ae1-1201.cr2-ulsfo.wikimedia.org.
+5   1H IN PTR   bast4001.wikimedia.org.
+
+; 198.35.26.96/27 (96-127) LVS Service IPs
+
+; - 198.35.26.96/28 (96-111) LVS high-traffic1 (Text)
+
+96  1H IN PTR   text-lb.ulsfo.wikimedia.org.
+
+; - 198.35.26.112/28 (112-127) LVS high-traffic2 (Multimedia & Misc)
+
+112 1H IN PTR   upload-lb.ulsfo.wikimedia.org.
+113 1H IN PTR   maps-lb.ulsfo.wikimedia.org.
+
+120 1H IN PTR   misc-web-lb.ulsfo.wikimedia.org.
+
+; 198.35.26.192/27
+; Infrastructure Space
+
+192 1H IN PTR   cr1-ulsfo.wikimedia.org.
+193 1H IN PTR   cr2-ulsfo.wikimedia.org.
+194 1H IN PTR   mr1-ulsfo.wikimedia.org.
+
+; 198.35.26.196/31
+196 1H IN PTR   ae0.cr1-ulsfo.wikimedia.org.
+197 1H IN PTR   ae0.cr2-ulsfo.wikimedia.org.
+
+; 198.35.26.198/31
+198 1H IN PTR   ae1-401.cr1-ulsfo.wikimedia.org.
+199 1H IN PTR   fe-0-0-4-401.mr1-ulsfo.wikimedia.org.
+
+; 198.35.26.200/31
+200 1H IN PTR   ae1-402.cr2-ulsfo.wikimedia.org.
+201 1H IN PTR   fe-0-0-4-402.mr1-ulsfo.wikimedia.org.
+
+; 198.35.26.202/31
+
+; 198.35.26.204/31
+
+; 198.35.26.206/31
+
+; 198.35.26.208/31 (cr1-ulsfo <--> cr1-eqord)
+208 1H  IN PTR  xe-1-2-0.cr1-ulsfo.wikimedia.org.
+209 1H  IN PTR  xe-0-0-1.cr1-eqord.wikimedia.org.
+
+; 198.35.26.210/31 (cr2-ulsfo <--> cr1-codfw)
+210 1H  IN PTR  xe-1-3-0.cr2-ulsfo.wikimedia.org.
+211 1H  IN PTR  xe-5-0-2.cr1-codfw.wikimedia.org.
+
+; 198.35.26.240/28 sandbox1-ulsfo (198.35.26.240 - 198.35.26.255)
+241 1H IN PTR   vrrp-gw-1221.wikimedia.org.
+242 1H IN PTR   ae1-1221.cr1-ulsfo.wikimedia.org.
+243 1H IN PTR   ae1-1221.cr2-ulsfo.wikimedia.org.
+244 1H IN PTR   ripe-atlas-ulsfo.wikimedia.org.
