@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import ldap, argparse, sys
+import ldap, argparse, sys, time
 from ldap import modlist as modlist
 
 group_container = "ou=groups,dc=wikimedia,dc=org"
@@ -42,6 +42,7 @@ try:
     empty_ldif = modlist.modifyModlist(members, empty_group)
     refill_ldif = modlist.modifyModlist(empty_group, members)
     l.modify_s(dn, empty_ldif)
+    time.sleep(65)
     l.modify_s(dn, refill_ldif)
 except ldap.LDAPError, e:
     print e
