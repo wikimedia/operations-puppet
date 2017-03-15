@@ -1,0 +1,750 @@
+; vim: set expandtab:smarttab
+@           1D  IN SOA ns0 hostmaster (
+                    <%= File.stat(file).mtime.strftime('%Y%m%d%H') %>    ; serial
+                    12H     ; refresh
+                    2H      ; retry
+                    2W      ; expiry
+                    600     ; negative cache TTL
+            )
+
+; Name servers
+
+            1D  IN NS   ns0
+            1D  IN NS   ns1
+            1D  IN NS   ns2
+
+; Mail exchangers
+
+            1H  IN MX   10  mx1001
+            1H  IN MX   50  mx2001
+
+; Canonical names
+            600 IN DYNA geoip!text-addrs
+
+; Google Webmaster Tools verification record for search management
+            600 IN TXT  "google-site-verification=APNaeC69s87mS4z-sfYqFYONgimBx4Bw22eCIaYEd_g"
+
+; Delegations
+
+; Corporate office name server delegation
+corp        1D  IN NS   ns1.corp
+            1D  IN NS   ns2.corp
+ns1.corp    1H  IN A    198.73.209.15
+ns2.corp    1H  IN A    198.73.209.16
+
+; DKIM policy records & ADSP (also see DMARC below); policy is "some mails /may/ be signed"
+_domainkey              1H  IN TXT  "o=~; r=postmaster@wikimedia.org;"
+_adsp._domainkey        1H  IN TXT  "dkim=unknown;"
+
+_domainkey.lists        1H  IN TXT  "o=~; r=postmaster@wikimedia.org;"
+_adsp._domainkey.lists  1H  IN TXT  "dkim=unknown;"
+
+; DKIM selector keys
+fundraising._domainkey  1H  IN TXT  "v=DKIM1; k=rsa; p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC61rCxt6xGKmVoId8fqGM1UTnBugf5chUdQfoCDpsgXqQVF1tOacwj3bF9fQdnqVhWeoGwiWOhfB13k/cfPKELgsJKKXEyk7cyBTV4BQ2JqmbPS4m0dD+imISrviPKjNG4uHA4FrjzYiVuv8EzZQw7tUtJuMC26BXZYqi/5YIpFQIDAQAB"
+wikimedia._domainkey    1H  IN TXT  "v=DKIM1; k=rsa; p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC49AATZHm1B+6V90esy7TkZnitTupAOlPisTyJSbIF5G1iXVzYljo8ZHdeYdXpgfOp79avTxz23YQXJRNWv7QqO8RuTrS8DSQhYMjwIkJkZ+VA4O2NI2bueaUVM67JylpxzIi3LajjII+CEspMBKHwqTygTQAr8uRXIGYfTcb+4wIDAQAB"
+wiki-mail._domainkey    1H  IN TXT  "v=DKIM1; k=rsa; g=wiki*; p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDOZG4udzEAJiq1D0TG+5BYil0vuh8/iuBmsrmAZQcWYaMcBIlthxg0a/5xktMpE4A6w135mgl/q61dbDnT6d3Y3veWMOy0xI0q/wS9DCmRqU2VIb7L/Asjp9evwzEJywODigjOohkk4+/aIbppU1/GLGCoc6b9h7m0iandPkKTXwIDAQAB"
+google._domainkey       1H  IN TXT "v=DKIM1; k=rsa; p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCwyTx0t/PibozaSBs+TcKL6G5lK0CMzwYzX46GUIkbIU1SfAwvwdsbq3JaSRmO+WAt9Tv3zQIJvXAV++tVq3VWsc4mKdtJCz4piY8LrDAor+kvyUMyZlYfO6YPkDNUCLbKBCMp7Fyd3gGvI9cjAmFSFrbLmXnMDQQocFYDfoXD2wIDAQAB"
+wikimedia._domainkey.lists  1H  IN TXT  "v=DKIM1; k=rsa; p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC7iVvYIGUbjtvFcLTUuN9Lsc1w17f8QHc01BxIr6jHJUMAMyxHSchdU6Il/hX1Or3JyOfdBi35SGqotI3G86xxQE7PZD7u+EediP5uhRTn+opv+nX5hEuxlnty8mPXem0DHhfSL0+3Ciu5WD0mNATb4NwC9jQjy2FzaLHn9D44PwIDAQAB"
+
+; DMARC records http://dmarc.org/ -- policy none (monitor), for now
+_dmarc          1H  IN TXT "v=DMARC1; p=none; sp=none; rua=mailto:dmarc-rua@wikimedia.org; ruf=mailto:dmarc-ruf@wikimedia.org;"
+_dmarc.lists    1H  IN TXT "v=DMARC1; p=none; rua=mailto:dmarc-rua@wikimedia.org, ruf=mailto:dmarc-ruf@wikimedia.org;"
+
+; SPF txt and rr records
+wikimedia.org.      600 IN TXT  "v=spf1 ip4:91.198.174.0/24 ip4:208.80.152.0/22 ip6:2620:0:860::/46 include:_spf.google.com ip4:74.121.51.111 ?all"
+
+donate          5M  IN TXT  "v=spf1 ip4:91.198.174.0/24 ip4:208.80.152.0/22 ip6:2620:0:860::/46 include:_spf.google.com ip4:74.121.51.111 ?all"
+
+scs-ext         1H  IN A    84.40.25.238
+
+dumps           1H  IN CNAME dataset1001
+
+lists           1H  IN A    208.80.154.75
+lists           1H  IN AAAA 2620:0:861:3::2
+lists           1H  IN MX   10 lists
+lists           1H  IN TXT  "v=spf1 mx ?all"
+
+wiki-mail       1H  IN CNAME    mx1001    ; used by Jenkins and possibly others
+
+ns0         1H  IN A    208.80.154.238
+ns1         1H  IN A    208.80.153.231
+ns2         1H  IN A    91.198.174.239
+
+recursor0       1H  IN A    208.80.154.254  ; eqiad LVS (dns-rec-lb)
+recursor1       1H  IN A    91.198.174.216  ; esams LVS (dns-rec-lb)
+
+; Geodynamic records
+text-lb     600 DYNA geoip!text-addrs
+upload      600 DYNA geoip!upload-addrs
+maps        600 DYNA geoip!maps-addrs
+m           600 DYNA geoip!text-addrs
+misc-web-lb 600 DYNA geoip!misc-addrs
+donate      600 DYNA geoip!text-addrs
+                1H  IN MX       10 mx1001
+                1H  IN MX       50 mx2001
+
+; Servers (alphabetic order) << WHAT PART ABOUT THIS IS SO HARD TO UNDERSTAND?
+
+acamar          1H  IN A    208.80.153.12
+acamar          1H  IN AAAA 2620:0:860:1:208:80:153:12
+achernar        1H  IN A    208.80.153.42
+                1H  IN AAAA 2620:0:860:2:208:80:153:42
+alsafi          1H  IN A    208.80.153.50
+alsafi          1H  IN AAAA 2620:0:860:2:208:80:153:50
+aluminium       1H  IN A    208.80.154.80 ; VM on the ganeti01.svc.eqiad.wmnet cluster
+aluminium       1H  IN AAAA 2620:0:861:3:208:80:154:80
+astatine        1H  IN A    208.80.155.110
+baham           1H  IN A    208.80.153.13
+                1H  IN AAAA 2620:0:860:1:208:80:153:13
+barium          1H  IN A    208.80.155.11
+bast1001        1H  IN A    208.80.154.149
+bast1001        1H  IN AAAA 2620:0:861:2:208:80:154:149
+bast2001        1H  IN A    208.80.153.5
+bast2001        1H  IN AAAA 2620:0:860:1:208:80:153:5
+bast3002        1H  IN A    91.198.174.113
+bast3002        1H  IN AAAA 2620:0:862:1:91:198:174:113
+bast4001        1H  IN A    198.35.26.5
+bast4001        1H  IN AAAA 2620:0:863:1:198:35:26:5
+californium     1H  IN A    208.80.154.147
+chromium        1H  IN A    208.80.154.157
+                1H  IN AAAA 2620:0:861:2:208:80:154:157
+cobalt          1H  IN A    208.80.154.81
+cobalt          1H  IN AAAA 2620:0:861:3:208:80:154:81
+contint1001     1H  IN A    208.80.154.17
+contint1001     1H  IN AAAA 2620:0:861:1:208:80:154:17
+contint2001     1H  IN A    208.80.153.15
+contint2001     1H  IN AAAA 2620:0:860:1:208:80:153:15
+dubnium         1H  IN A    208.80.154.77
+cp1008          1H  IN A    208.80.154.42
+dataset1001     1H  IN A    208.80.154.11
+dataset1001     1H  IN AAAA 2620:0:861:1:208:80:154:11
+eeden           1H  IN A    91.198.174.121
+                1H  IN AAAA 2620:0:862:1:91:198:174:121
+einsteinium     1H  IN A    208.80.155.119
+einsteinium     1H  IN AAAA 2620:0:861:4:208:80:155:119
+fermium         1H  IN A    208.80.154.74 ; VM on the ganeti01.svc.eqiad.wmnet cluster
+fermium         1H  IN AAAA 2620:0:861:3:208:80:154:74
+frdata-eqiad      1H  IN A    208.80.155.10
+frdev-eqiad       1H  IN A    208.80.155.13
+fundraising-eqiad 1H  IN A    208.80.155.14
+gerrit2001      1H  IN A    208.80.153.106
+gerrit2001      1H  IN AAAA 2620:0:860:4:208:80:153:106
+hydrogen        1H  IN A    208.80.154.50
+                1H  IN AAAA 2620:0:861:1:208:80:154:50
+install1002     1H  IN A    208.80.154.86
+install1002     1H  IN AAAA 2620:0:861:3:208:80:154:86
+install2002     1H  IN A    208.80.153.53
+install2002     1H  IN AAAA 2620:0:860:2:208:80:153:53
+iron            1H  IN A    208.80.154.151
+iron            1H  IN AAAA 2620:0:861:2:208:80:154:151
+kraz            1H  IN A    208.80.153.44
+kraz            1H  IN AAAA 2620:0:860:2:208:80:153:44
+labcontrol1001      1H  IN A    208.80.154.92
+labcontrol1002      1H  IN A    208.80.154.95
+labtestweb2001      1H  IN A    208.80.153.14
+labtestweb2001      1H  IN AAAA 2620:0:860:1:208:80:153:14
+labservices1001     1H  IN A    208.80.155.117
+labservices1002     1H  IN A    208.80.154.12
+labtestcontrol2001  1H  IN A    208.80.153.47
+labtestservices2001 1H  IN A    208.80.153.48
+lvs1001         1H  IN A    208.80.154.55
+lvs1002         1H  IN A    208.80.154.56
+lvs1003         1H  IN A    208.80.154.57
+lvs1004         1H  IN A    208.80.154.137
+lvs1005         1H  IN A    208.80.154.138
+lvs1006         1H  IN A    208.80.154.139
+maerlant        1H  IN A    91.198.174.122
+                1H  IN AAAA 2620:0:862:1:91:198:174:122
+meitnerium      1H  IN A    208.80.154.73 ; VM on the ganeti01.svc.eqiad.wmnet cluster
+sodium          1H  IN A    208.80.154.15
+sodium          1H  IN AAAA 2620:0:861:1:208:80:154:15
+ms1001          1H  IN A    208.80.154.16
+ms1001          1H  IN AAAA 2620:0:861:1:208:80:154:16
+multatuli       1H  IN A    91.198.174.114
+multatuli       1H  IN AAAA 2620:0:862:1:91:198:174:114
+mx1001          1H  IN A    208.80.154.76 ; VM on the ganeti01.svc.eqiad.wmnet cluster
+                1H  IN AAAA 2620:0:861:3:208:80:154:76
+mx2001          1H  IN A    208.80.153.45 ; VM on the ganeti01.svc.codfw.wmnet cluster
+                1H  IN AAAA 2620:0:860:2:208:80:153:45
+nescio          1H  IN A    91.198.174.106
+                1H  IN AAAA 2620:0:862:1:91:198:174:106
+netmon1001      1H  IN A    208.80.154.159
+netmon1001      1H  IN AAAA 2620:0:861:2:208:80:154:159
+pay-lvs1001     1H  IN A    208.80.155.2
+pay-lvs1002     1H  IN A    208.80.155.3
+pollux          1H  IN A    208.80.153.43 ; VM on the ganeti01.svc.codfw.wmnet cluster
+procyon         1H  IN A    208.80.152.245
+radium          1H  IN A    208.80.154.39
+radium          1H  IN AAAA 2620:0:861:1:208:80:154:39
+radon           1H  IN A    208.80.154.93
+                1H  IN AAAA 2620:0:861:3:208:80:154:93
+rhenium         1H  IN A    208.80.154.52
+rigel           1H  IN A    208.80.152.231
+ripe-atlas-eqiad 1H IN A    208.80.155.69
+ripe-atlas-eqiad 1H IN AAAA 2620:0:861:202:208:80:155:69
+ripe-atlas-codfw 1H IN A    208.80.152.244
+ripe-atlas-codfw 1H IN AAAA 2620:0:860:201:208:80:152:244
+ripe-atlas-ulsfo 1H IN A    198.35.26.244
+ripe-atlas-ulsfo 1H IN AAAA 2620:0:863:201:198:35:26:244
+seaborgium      1H  IN A    208.80.154.79 ; VM on the ganeti01.svc.eqiad.wmnet cluster
+serpens         1H  IN A    208.80.153.49 ; VM on the ganeti01.svc.codfw.wmnet cluster
+silver          1H  IN A    208.80.154.136
+silver          1H  IN AAAA 2620:0:861:2:208:80:154:136
+tegmen          1H  IN A    208.80.153.74
+tegmen          1H  IN AAAA 2620:0:860:3:208:80:153:74
+tellurium       1H  IN A    208.80.155.9
+ununpentium     1H  IN A    208.80.154.84
+uranium         1H  IN A    208.80.154.53
+uranium         1H  IN AAAA 2620:0:861:1:208:80:154:53
+
+; Service aliases
+
+;;; eqiad
+ntp.eqiad           1H  IN CNAME hydrogen
+
+;;; ulsfo
+ntp.ulsfo           1H  IN CNAME hydrogen
+
+;;; codfw
+ntp.codfw           1H  IN CNAME acamar
+
+;;; esams
+ntp.esams           1H  IN CNAME maerlant
+
+; Round Robin LVS Service records
+
+;;; eqiad
+text-lb.eqiad       600 IN DYNA geoip!text-addrs/eqiad
+upload-lb.eqiad     600 IN DYNA geoip!upload-addrs/eqiad
+maps-lb.eqiad       600 IN DYNA geoip!maps-addrs/eqiad
+misc-web-lb.eqiad   600 IN DYNA geoip!misc-addrs/eqiad
+donate-lb.eqiad     600 IN DYNA geoip!text-addrs/eqiad
+                IN MX 10 mx1001
+                IN MX 50 mx2001
+;;; ns0                 208.80.154.238
+dns-rec-lb.eqiad    1H  IN A    208.80.154.254
+                    1H  IN AAAA 2620:0:861:ed1a::3:fe
+
+; These legacy entries should eventually move to RESTBase
+cxserver            600 IN DYNA geoip!text-addrs
+citoid              600 IN DYNA geoip!text-addrs
+
+; ORES
+ores                600 IN DYNA geoip!misc-addrs
+
+git-ssh.eqiad       1H  IN A    208.80.154.250
+git-ssh.eqiad       1H  IN AAAA 2620:0:861:ed1a::3:16
+git-ssh             1H  IN A    208.80.154.250
+git-ssh             1H  IN AAAA 2620:0:861:ed1a::3:16
+
+;;; ulsfo
+text-lb.ulsfo       600 IN DYNA geoip!text-addrs/ulsfo
+upload-lb.ulsfo     600 IN DYNA geoip!upload-addrs/ulsfo
+maps-lb.ulsfo       600 IN DYNA geoip!maps-addrs/ulsfo
+misc-web-lb.ulsfo   600 IN DYNA geoip!misc-addrs/ulsfo
+donate-lb.ulsfo     600 IN DYNA geoip!text-addrs/ulsfo
+            1H  IN MX 10    mx1001
+            1H  IN MX 50    mx2001
+
+;;; codfw
+dns-rec-lb.codfw    1H  IN A    208.80.153.254
+                    1H  IN AAAA 2620:0:860:ed1a::3:fe
+text-lb.codfw       600 IN DYNA geoip!text-addrs/codfw
+upload-lb.codfw     600 IN DYNA geoip!upload-addrs/codfw
+maps-lb.codfw       600 IN DYNA geoip!maps-addrs/codfw
+misc-web-lb.codfw   600 IN DYNA geoip!misc-addrs/codfw
+donate-lb.codfw     600 IN DYNA geoip!text-addrs/codfw
+
+git-ssh.codfw       1H  IN A    208.80.153.250
+git-ssh.codfw       1H  IN AAAA 2620:0:860:ed1a::3:fa
+
+;;; esams
+text-lb.esams       600 IN DYNA geoip!text-addrs/esams
+upload-lb.esams     600 IN DYNA geoip!upload-addrs/esams
+maps-lb.esams       600 IN DYNA geoip!maps-addrs/esams
+misc-web-lb.esams   600 IN DYNA geoip!misc-addrs/esams
+donate-lb.esams     600 IN DYNA geoip!text-addrs/esams
+              1H  IN MX 10    mx1001
+              1H  IN MX 50    mx2001
+dns-rec-lb.esams    1H  IN A    91.198.174.216
+              1H  IN AAAA 2620:0:862:ed1a::3:fe
+
+; Mobile
+
+advisory.m          600 IN DYNA     geoip!text-addrs
+ar.m                600 IN DYNA     geoip!text-addrs
+bd.m                600 IN DYNA     geoip!text-addrs
+be.m                600 IN DYNA     geoip!text-addrs
+br.m                600 IN DYNA     geoip!text-addrs
+ca.m                600 IN DYNA     geoip!text-addrs
+chapcom.m           600 IN DYNA     geoip!text-addrs
+checkuser.m         600 IN DYNA     geoip!text-addrs
+cn.m                600 IN DYNA     geoip!text-addrs
+co.m                600 IN DYNA     geoip!text-addrs
+commons.m           600 IN DYNA     geoip!text-addrs
+dk.m                600 IN DYNA     geoip!text-addrs
+ec.m                600 IN DYNA     geoip!text-addrs
+ee.m                600 IN DYNA     geoip!text-addrs
+et.m                600 IN DYNA     geoip!text-addrs
+incubator.m         600 IN DYNA     geoip!text-addrs
+fdc.m               600 IN DYNA     geoip!text-addrs
+fi.m                600 IN DYNA     geoip!text-addrs
+legalteam.m         600 IN DYNA     geoip!text-addrs
+meta.m              600 IN DYNA     geoip!text-addrs
+mk.m                600 IN DYNA     geoip!text-addrs
+mx.m                600 IN DYNA     geoip!text-addrs
+nl.m                600 IN DYNA     geoip!text-addrs
+no.m                600 IN DYNA     geoip!text-addrs
+nostalgia.m         600 IN DYNA     geoip!text-addrs
+nyc.m               600 IN DYNA     geoip!text-addrs
+nz.m                600 IN DYNA     geoip!text-addrs
+office.m            600 IN DYNA     geoip!text-addrs
+otrs-wiki.m         600 IN DYNA     geoip!text-addrs
+outreach.m          600 IN DYNA     geoip!text-addrs
+quality.m           600 IN DYNA     geoip!text-addrs
+pa-us.m             600 IN DYNA     geoip!text-addrs
+pl.m                600 IN DYNA     geoip!text-addrs
+pt.m                600 IN DYNA     geoip!text-addrs
+rs.m                600 IN DYNA     geoip!text-addrs
+ru.m                600 IN DYNA     geoip!text-addrs
+se.m                600 IN DYNA     geoip!text-addrs
+species.m           600 IN DYNA     geoip!text-addrs
+steward.m           600 IN DYNA     geoip!text-addrs
+strategy.m          600 IN DYNA     geoip!text-addrs
+tr.m                600 IN DYNA     geoip!text-addrs
+ua.m                600 IN DYNA     geoip!text-addrs
+usability.m         600 IN DYNA     geoip!text-addrs
+vote.m              600 IN DYNA     geoip!text-addrs
+wikimania2005.m     600 IN DYNA     geoip!text-addrs
+wikimania2006.m     600 IN DYNA     geoip!text-addrs
+wikimania2007.m     600 IN DYNA     geoip!text-addrs
+wikimania2008.m     600 IN DYNA     geoip!text-addrs
+wikimania2009.m     600 IN DYNA     geoip!text-addrs
+wikimania2010.m     600 IN DYNA     geoip!text-addrs
+wikimania2011.m     600 IN DYNA     geoip!text-addrs
+wikimania2012.m     600 IN DYNA     geoip!text-addrs
+wikimania2013.m     600 IN DYNA     geoip!text-addrs
+wikimania2014.m     600 IN DYNA     geoip!text-addrs
+wikimania2015.m     600 IN DYNA     geoip!text-addrs
+wikimania2016.m     600 IN DYNA     geoip!text-addrs
+wikimania2017.m     600 IN DYNA     geoip!text-addrs
+wikimania2018.m     600 IN DYNA     geoip!text-addrs
+
+; Networking
+cr1-eqiad       1H  IN A    208.80.154.196
+                1H  IN AAAA 2620:0:861:ffff::1
+cr2-eqiad       1H  IN A    208.80.154.197
+                1H  IN AAAA 2620:0:861:ffff::2
+cr1-eqord       1H  IN A    208.80.154.198
+                1H  IN AAAA 2620:0:861:ffff::5
+mr1-eqiad       1H  IN A    208.80.154.199
+                1H  IN AAAA 2620:0:861:ffff::6
+mr1-eqiad.oob   1H  IN A    198.32.107.153
+                1H  IN AAAA 2607:f6f0:205::153
+
+cr1-codfw       1H  IN A    208.80.153.192
+                1H  IN AAAA 2620:0:860:ffff::1
+cr2-codfw       1H  IN A    208.80.153.193
+                1H  IN AAAA 2620:0:860:ffff::2
+mr1-codfw       1H  IN A    208.80.153.196
+                1H  IN AAAA 2620:0:860:ffff::6
+mr1-codfw.oob   1H  IN A    216.117.46.36
+cr1-eqdfw       1H  IN A    208.80.153.198
+                1H  IN AAAA 2620:0:860:ffff::5
+
+cr1-esams       1H  IN A    91.198.174.245
+                1H  IN AAAA 2620:0:862:ffff::5
+cr2-esams       1H  IN A    91.198.174.244
+                1H  IN AAAA 2620:0:862:ffff::3
+cr2-knams       1H  IN A    91.198.174.246
+                1H  IN AAAA 2620:0:862:ffff::4
+mr1-esams       1H  IN A    91.198.174.247
+                1H  IN AAAA 2620:0:862:ffff::1
+mr1-esams.oob   1H  IN A    164.138.24.90
+;mr1-esams.oob   1H  IN AAAA    2a02:2770:c011::2 ; does not ping
+
+cr1-ulsfo       1H  IN A    198.35.26.192
+                1H  IN AAAA 2620:0:863:ffff::1
+cr2-ulsfo       1H  IN A    198.35.26.193
+                1H  IN AAAA 2620:0:863:ffff::2
+mr1-ulsfo       1H  IN A    198.35.26.194
+                1H  IN AAAA 2620:0:863:ffff::6
+mr1-ulsfo.oob   1H  IN A    209.237.234.242
+
+vl1001-eth1.lvs1004 1H  IN A    208.80.154.58
+vl1001-eth1.lvs1005 1H  IN A    208.80.154.59
+vl1001-eth1.lvs1006 1H  IN A    208.80.154.60
+vl1002-eth1.lvs1001 1H  IN A    208.80.154.140
+vl1002-eth1.lvs1002 1H  IN A    208.80.154.141
+vl1002-eth1.lvs1003 1H  IN A    208.80.154.142
+vl1003-eth2.lvs1001 1H  IN A    208.80.154.78
+vl1003-eth2.lvs1002 1H  IN A    208.80.154.68
+vl1003-eth2.lvs1003 1H  IN A    208.80.154.69
+vl1003-eth2.lvs1004 1H  IN A    208.80.154.70
+vl1003-eth2.lvs1005 1H  IN A    208.80.154.71
+vl1003-eth2.lvs1006 1H  IN A    208.80.154.72
+vl1004-eth3.lvs1001 1H  IN A    208.80.155.100
+vl1004-eth3.lvs1002 1H  IN A    208.80.155.101
+vl1004-eth3.lvs1003 1H  IN A    208.80.155.102
+vl1004-eth3.lvs1004 1H  IN A    208.80.155.103
+vl1004-eth3.lvs1005 1H  IN A    208.80.155.104
+vl1004-eth3.lvs1006 1H  IN A    208.80.155.105
+
+vl1017-eth0.lvs1001 1H  IN A    10.64.1.1
+vl1017-eth0.lvs1002 1H  IN A    10.64.1.2
+vl1017-eth0.lvs1003 1H  IN A    10.64.1.3
+vl1017-eth1.lvs1004 1H  IN A    10.64.1.4
+vl1017-eth1.lvs1005 1H  IN A    10.64.1.5
+vl1017-eth1.lvs1006 1H  IN A    10.64.1.6
+vl1018-eth1.lvs1001 1H  IN A    10.64.17.1
+vl1018-eth1.lvs1002 1H  IN A    10.64.17.2
+vl1018-eth1.lvs1003 1H  IN A    10.64.17.3
+vl1018-eth0.lvs1004 1H  IN A    10.64.17.4
+vl1018-eth0.lvs1005 1H  IN A    10.64.17.5
+vl1018-eth0.lvs1006 1H  IN A    10.64.17.6
+vl1019-eth2.lvs1001 1H  IN A    10.64.33.1
+vl1019-eth2.lvs1002 1H  IN A    10.64.33.2
+vl1019-eth2.lvs1003 1H  IN A    10.64.33.3
+vl1019-eth2.lvs1004 1H  IN A    10.64.33.4
+vl1019-eth2.lvs1005 1H  IN A    10.64.33.5
+vl1019-eth2.lvs1006 1H  IN A    10.64.33.6
+vl1020-eth3.lvs1001 1H  IN A    10.64.49.1
+vl1020-eth3.lvs1002 1H  IN A    10.64.49.2
+vl1020-eth3.lvs1003 1H  IN A    10.64.49.3
+vl1020-eth3.lvs1004 1H  IN A    10.64.49.4
+vl1020-eth3.lvs1005 1H  IN A    10.64.49.5
+vl1020-eth3.lvs1006 1H  IN A    10.64.49.6
+
+pfw-eqiad       1H  IN A     208.80.154.218
+pfw1-eqiad      1H  IN CNAME pfw-eqiad
+pfw2-eqiad      1H  IN CNAME pfw-eqiad
+
+pfw-codfw       1H  IN A     208.80.153.195
+pfw1-codfw      1H  IN CNAME pfw-codfw
+pfw2-codfw      1H  IN CNAME pfw-codfw
+
+; Cams
+
+; Service aliases (alphabetical order)
+
+annual          600 IN DYNA     geoip!misc-addrs
+
+apt             300  IN CNAME   install1002
+
+archiva         1H  IN CNAME    meitnerium
+
+benefactorevents 1H IN CNAME    trilogytools1.azurewebsites.net.
+benefactors     600 IN DYNA     geoip!text-addrs
+                1H  IN MX       10 mx1001
+                1H  IN MX       50 mx2001
+                1H  IN TXT      "v=spf1 include:wikimedia.org include:spf.mandrillapp.com -all"
+mandrill._domainkey.benefactors 1H IN TXT "v=DKIM1; k=rsa; p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCrLHiExVd55zd/IQ/J/mRwSRMAocV/hMB3jXwaHH36d9NaVynQFYV8NaWi69c1veUtRzGt7yAioXqLj7Z4TeEUoOLgrKsn8YnckGs9i3B3tVFB+Ch/4mPhXWiNfNdynHWBcPcbJ8kjEQ2U8y78dHZj1YeRXXVvWob2OaKynO8/lQIDAQAB;"
+
+
+cache           600 IN DYNA     geoip!text-addrs
+
+config-master   600 IN DYNA     geoip!misc-addrs
+
+dash.frdev      1H  IN CNAME    frdev-eqiad
+
+dbmonitor1001   600 IN A        208.80.154.82
+dbmonitor1001   600 IN AAAA     2620:0:861:3:208:80:154:82
+dbmonitor2001   600 IN A        208.80.153.52
+dbmonitor2001   600 IN AAAA     2620:0:860:2:208:80:153:52
+dbtree          600 IN DYNA     geoip!misc-addrs
+
+dev             600 IN DYNA     geoip!text-addrs
+doc             600 IN DYNA     geoip!misc-addrs
+docker-registry 600 IN DYNA     geoip!misc-addrs
+docs            600 IN DYNA     geoip!text-addrs
+
+endowment       600 IN DYNA     geoip!misc-addrs
+eventdonations  1H  IN CNAME    contrib-wi-10109-10472-20140728-1682402186.us-east-1.elb.amazonaws.com.
+ldap-corp.eqiad 1H  IN CNAME    dubnium
+ldap-corp.codfw 1H  IN CNAME    pollux
+ldap-labs.eqiad 1H  IN CNAME    seaborgium
+ldap-labs.codfw 1H  IN CNAME    serpens
+
+labs-puppetmaster-eqiad 300 IN CNAME  labcontrol1001
+labtest-puppetmaster-codfw 300 IN CNAME  labtestcontrol2001
+
+frdata          1H  IN CNAME    frdata-eqiad
+
+gerrit          600 IN A        208.80.154.85
+gerrit          600 IN AAAA     2620:0:861:3:208:80:154:85
+git             600 IN DYNA     geoip!misc-addrs
+graphite        600 IN DYNA     geoip!misc-addrs
+graphite-labs   600 IN DYNA     geoip!misc-addrs
+grafana         600 IN DYNA     geoip!misc-addrs
+grafana-admin   600 IN DYNA     geoip!misc-addrs
+grafana-labs         600 IN DYNA     geoip!misc-addrs
+grafana-labs-admin   600 IN DYNA     geoip!misc-addrs
+parsoid-tests        600 IN DYNA     geoip!misc-addrs
+parsoid-rt-tests     600 IN DYNA     geoip!misc-addrs
+parsoid-vd-tests     600 IN DYNA     geoip!misc-addrs
+performance     600 IN DYNA     geoip!misc-addrs
+horizon         600 IN DYNA     geoip!misc-addrs
+
+icinga          5M  IN CNAME    einsteinium
+
+integration     600 IN DYNA     geoip!misc-addrs
+irc             1H  IN CNAME    kraz
+
+ldap-eqiad      1H  IN CNAME    seaborgium
+ldap-codfw      1H  IN CNAME    serpens
+
+phabricator     600 IN DYNA     geoip!misc-addrs
+phabricator     1H  IN MX       10 mx1001
+phabricator     1H  IN MX       50 mx2001
+phabricator     1H  IN TXT      "v=spf1 mx ip4:10.64.32.150 ip6:2620:0:861:103:10:64:32:150 -all"
+
+phabricator-new 600 IN DYNA     geoip!misc-addrs
+
+login           600 IN DYNA     geoip!text-addrs
+
+librenms        1H  IN CNAME    netmon1001
+servermon       600 IN DYNA     geoip!misc-addrs
+
+payments        5M  IN A        208.80.155.5   ; eqiad
+payments-eqiad  1H  IN A        208.80.155.5   ; eqiad
+payments-codfw  1H  IN A        208.80.152.228 ; codfw
+
+payments-listener-eqiad 1H  IN A    208.80.155.12
+payments-listener-codfw 1H  IN A    208.80.152.233
+payments-listener       5M  IN CNAME        payments-listener-eqiad
+
+people          600 IN DYNA     geoip!misc-addrs
+
+piwik           600 IN DYNA     geoip!misc-addrs ; T103577
+
+; policy.wikimedia.org goes to wordpress cluster T110203
+policy          5M  IN A        192.0.66.2
+releases        600 IN DYNA     geoip!misc-addrs
+
+reports.frdev   1H  IN CNAME    frdev-eqiad
+
+rt              600 IN DYNA     geoip!misc-addrs
+rt              1H  IN MX       10 mx1001
+rt              1H  IN MX       50 mx2001
+
+secure          600 IN DYNA     geoip!text-addrs
+
+stream          600 IN DYNA     geoip!misc-addrs
+
+svn             600 IN DYNA     geoip!text-addrs
+
+toolsadmin      600 IN DYNA     geoip!misc-addrs
+
+torrus          600 IN DYNA     geoip!misc-addrs
+
+wiki-mail-eqiad 1H  IN A        208.80.154.91
+                1H  IN AAAA     2620:0:861:3:208:80:154:91
+wiki-mail-codfw 1H  IN A        208.80.153.46
+                1H  IN AAAA     2620:0:860:2:208:80:153:46
+
+url-downloader.eqiad  1H  IN A          208.80.154.80  ; aluminium
+url-downloader.codfw  1H  IN A          208.80.153.50 ; alsafi
+url-downloader        1H  IN CNAME      url-downloader.eqiad
+
+; Wikis (alphabetic order)
+
+advisory         600 IN DYNA     geoip!text-addrs
+affcom           600 IN DYNA     geoip!text-addrs
+auditcom         600 IN DYNA     geoip!text-addrs
+ar               600 IN DYNA     geoip!text-addrs
+bd               600 IN DYNA     geoip!text-addrs
+be               600 IN DYNA     geoip!text-addrs
+board            600 IN DYNA     geoip!text-addrs
+boardgovcom      600 IN DYNA     geoip!text-addrs
+bookshelf        600 IN DYNA     geoip!text-addrs
+br               600 IN DYNA     geoip!text-addrs
+ca               600 IN DYNA     geoip!text-addrs
+ch               600 IN DYNA     geoip!text-addrs
+chair            600 IN DYNA     geoip!text-addrs
+chapcom          600 IN DYNA     geoip!text-addrs
+checkuser        600 IN DYNA     geoip!text-addrs
+cn               600 IN DYNA     geoip!text-addrs
+co               600 IN DYNA     geoip!text-addrs
+collab           600 IN DYNA     geoip!text-addrs
+comcom           600 IN DYNA     geoip!text-addrs
+commons          600 IN DYNA     geoip!text-addrs
+dk               600 IN DYNA     geoip!text-addrs
+ec               600 IN DYNA     geoip!text-addrs
+educacao         600 IN DYNA     geoip!text-addrs
+education        600 IN DYNA     geoip!text-addrs
+ee               600 IN DYNA     geoip!text-addrs
+et               600 IN DYNA     geoip!text-addrs
+exec             600 IN DYNA     geoip!text-addrs
+fdc              600 IN DYNA     geoip!text-addrs
+fi               600 IN DYNA     geoip!text-addrs
+grants           600 IN DYNA     geoip!text-addrs
+hu               600 IN DYNA     geoip!text-addrs
+iegcom           600 IN DYNA     geoip!text-addrs
+il               600 IN DYNA     geoip!text-addrs
+incubator        600 IN DYNA     geoip!text-addrs
+internal         600 IN DYNA     geoip!text-addrs
+it               600 IN DYNA     geoip!text-addrs
+kr               600 IN DYNA     geoip!text-addrs
+langcom          600 IN DYNA     geoip!text-addrs
+legalteam        600 IN DYNA     geoip!text-addrs
+meta             600 IN DYNA     geoip!text-addrs
+mk               600 IN DYNA     geoip!text-addrs
+movementroles    600 IN DYNA     geoip!text-addrs
+mx               600 IN DYNA     geoip!text-addrs
+nl               600 IN DYNA     geoip!text-addrs
+no               600 IN DYNA     geoip!text-addrs
+noboard-chapters 600 IN DYNA     geoip!text-addrs
+nostalgia        600 IN DYNA     geoip!text-addrs
+nz               600 IN DYNA     geoip!text-addrs
+office           600 IN DYNA     geoip!text-addrs
+ombudsmen        600 IN DYNA     geoip!text-addrs
+otrs-wiki        600 IN DYNA     geoip!text-addrs
+outreach         600 IN DYNA     geoip!text-addrs
+pa-us            600 IN DYNA     geoip!text-addrs
+pt               600 IN DYNA     geoip!text-addrs
+pk               600 IN DYNA     geoip!text-addrs
+pl               600 IN DYNA     geoip!text-addrs
+projectcom       600 IN DYNA     geoip!text-addrs
+quality          600 IN DYNA     geoip!text-addrs
+rs               600 IN DYNA     geoip!text-addrs
+ru               600 IN DYNA     geoip!text-addrs
+se               600 IN DYNA     geoip!text-addrs
+searchcom        600 IN DYNA     geoip!text-addrs
+spcom            600 IN DYNA     geoip!text-addrs
+species          600 IN DYNA     geoip!text-addrs
+steward          600 IN DYNA     geoip!text-addrs
+strategy         600 IN DYNA     geoip!text-addrs
+tr               600 IN DYNA     geoip!text-addrs
+transitionteam   600 IN DYNA     geoip!text-addrs
+ua               600 IN DYNA     geoip!text-addrs
+uk               600 IN DYNA     geoip!text-addrs
+usability        600 IN DYNA     geoip!text-addrs
+ve               600 IN DYNA     geoip!text-addrs
+vote             600 IN DYNA     geoip!text-addrs
+wikimania        600 IN DYNA     geoip!text-addrs
+wikimania2005    600 IN DYNA     geoip!text-addrs
+wikimania2006    600 IN DYNA     geoip!text-addrs
+wikimania2007    600 IN DYNA     geoip!text-addrs
+wikimania2008    600 IN DYNA     geoip!text-addrs
+wikimania2009    600 IN DYNA     geoip!text-addrs
+wikimania2010    600 IN DYNA     geoip!text-addrs
+wikimania2011    600 IN DYNA     geoip!text-addrs
+wikimania2012    600 IN DYNA     geoip!text-addrs
+wikimania2013    600 IN DYNA     geoip!text-addrs
+wikimania2014    600 IN DYNA     geoip!text-addrs
+wikimania2015    600 IN DYNA     geoip!text-addrs
+wikimania2016    600 IN DYNA     geoip!text-addrs
+wikimania2017    600 IN DYNA     geoip!text-addrs
+wikimania2018    600 IN DYNA     geoip!text-addrs
+wikimaniateam    600 IN DYNA     geoip!text-addrs
+www              600 IN DYNA     geoip!text-addrs
+zero             600 IN DYNA     geoip!text-addrs
+
+; Other websites (NO wikis!)
+2030             600 IN DYNA     geoip!text-addrs
+analytics        600 IN DYNA     geoip!misc-addrs
+blog             1H  IN CNAME    wikimediablog.wordpress.com.
+bugs             600 IN DYNA     geoip!misc-addrs
+bugzilla         600 IN DYNA     geoip!misc-addrs
+bug-attachment   600 IN DYNA     geoip!text-addrs
+careers          600 IN DYNA     geoip!text-addrs
+civicrm          1H  IN A        208.80.155.11
+civicrm.frdev    1H  IN CNAME    frdev-eqiad
+civicrm-gr.frdev 1H  IN CNAME    frdev-eqiad
+civicrm2-gr.frdev 1H IN CNAME    frdev-eqiad
+coffee           600 IN DYNA     geoip!text-addrs
+cs               600 IN DYNA     geoip!text-addrs
+cz               600 IN DYNA     geoip!text-addrs
+datasets         600 IN DYNA     geoip!misc-addrs
+download         600 IN DYNA     geoip!text-addrs
+etherpad         600 IN DYNA     geoip!misc-addrs
+fundraising      1H  IN CNAME    fundraising-eqiad
+ganglia          1H  IN CNAME    uranium
+hue              600 IN DYNA     geoip!misc-addrs
+iegreview        600 IN DYNA     geoip!misc-addrs
+tendril          5M  IN CNAME    einsteinium
+jobs             600 IN DYNA     geoip!text-addrs
+labs             600 IN DYNA     geoip!text-addrs
+labs-ns0         1H  IN A        208.80.155.117
+labs-ns1         1H  IN A        208.80.154.12
+labtest-ns0      1H  IN A        208.80.153.48
+labs-recursor0   1H  IN A        208.80.155.118
+labs-recursor1   1H  IN A        208.80.154.20
+labtest-recursor0 1H IN A        208.80.153.51
+; deprecated but kept for compatibility, see RT #6769
+labsconsole      600 IN DYNA     geoip!text-addrs
+logstash         600 IN DYNA     geoip!misc-addrs
+metrics          600 IN DYNA     geoip!misc-addrs
+moon             600 IN DYNA     geoip!text-addrs
+noc              600 IN DYNA     geoip!misc-addrs
+nyc              600 IN DYNA     geoip!text-addrs
+old-bugzilla     600 IN DYNA     geoip!text-addrs
+planet           600 IN DYNA     geoip!misc-addrs
+ar.planet        600 IN DYNA     geoip!misc-addrs
+bg.planet        600 IN DYNA     geoip!misc-addrs
+ca.planet        600 IN DYNA     geoip!misc-addrs
+cs.planet        600 IN DYNA     geoip!misc-addrs
+da.planet        600 IN DYNA     geoip!misc-addrs
+de.planet        600 IN DYNA     geoip!misc-addrs
+en.planet        600 IN DYNA     geoip!misc-addrs
+es.planet        600 IN DYNA     geoip!misc-addrs
+fo.planet        600 IN DYNA     geoip!misc-addrs
+fr.planet        600 IN DYNA     geoip!misc-addrs
+gmq.planet       600 IN DYNA     geoip!misc-addrs
+id.planet        600 IN DYNA     geoip!misc-addrs
+is.planet        600 IN DYNA     geoip!misc-addrs
+it.planet        600 IN DYNA     geoip!misc-addrs
+ja.planet        600 IN DYNA     geoip!misc-addrs
+nb.planet        600 IN DYNA     geoip!misc-addrs
+nn.planet        600 IN DYNA     geoip!misc-addrs
+no.planet        600 IN DYNA     geoip!misc-addrs
+pl.planet        600 IN DYNA     geoip!misc-addrs
+pt.planet        600 IN DYNA     geoip!misc-addrs
+ro.planet        600 IN DYNA     geoip!misc-addrs
+ru.planet        600 IN DYNA     geoip!misc-addrs
+sq.planet        600 IN DYNA     geoip!misc-addrs
+sr.planet        600 IN DYNA     geoip!misc-addrs
+sv.planet        600 IN DYNA     geoip!misc-addrs
+uk.planet        600 IN DYNA     geoip!misc-addrs
+zh.planet        600 IN DYNA     geoip!misc-addrs
+puppet           1H  IN CNAME    puppetmaster1001.eqiad.wmnet.
+pivot            600 IN DYNA     geoip!misc-addrs
+racktables       600 IN DYNA     geoip!misc-addrs
+scholarships     600 IN DYNA     geoip!misc-addrs
+transparency     600 IN DYNA     geoip!misc-addrs
+search           600 IN DYNA     geoip!text-addrs
+shop             600 IN DYNA     geoip!text-addrs
+smokeping        600 IN DYNA     geoip!misc-addrs
+store            1H  IN CNAME    c.ssl.shopify.com.
+static-bugzilla  600 IN DYNA     geoip!misc-addrs
+stats            600 IN DYNA     geoip!misc-addrs
+status           1H  IN A        162.209.126.221
+status           1H  IN AAAA     2001:4802:7800:1:be76:4eff:fe21:3782
+techblog         600 IN DYNA     geoip!text-addrs
+ticket           600 IN DYNA     geoip!misc-addrs
+tor-eqiad-1      1H  IN CNAME    radium
+mirrors          1H  IN CNAME    sodium
+yarn             600 IN DYNA     geoip!misc-addrs
+wikitech         1H  IN CNAME    silver
+wikitech-static  1H  IN A        162.209.126.221
+wikitech-static  1H  IN AAAA     2001:4802:7800:1:be76:4eff:fe21:3782
+labtestwikitech  1H  IN CNAME    labtestweb2001
+labtesthorizon   1H  IN DYNA     geoip!misc-addrs
+labtestspice     1H  IN DYNA     geoip!misc-addrs
+labspice         1H  IN DYNA     geoip!misc-addrs
+
+; SNI testing hostname
+pinkunicorn      600 A 208.80.154.42
+                 600 AAAA 2620:0:861:1:208:80:154:42
+
+; puppet records
+_x-puppet-ca._tcp   5M  IN SRV      0 1 8140 puppetmaster1001.eqiad.wmnet.
+_x-puppet._tcp      5M  IN SRV      0 1 8140 puppetmaster1001.eqiad.wmnet.
+
+; Misc
+
+; Google apps
+googlef3fe6c2a164e9650  1H  IN CNAME    google.com.
+
+; Silverpop - mass-email contractor for fundraising (T130414)
+spop1024._domainkey              1H IN TXT  "k=rsa; p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDpnujkAKfZWUN6W07scekor+i8wGvRGq3Ns9bk3nmgWovfbBebFwzHoNv3Oaq9VMf1cdTf53fuQY5NVZQ+hGZXqJ4mkcNJnSC0BZuGC45kUWjyOhB+Pxf0o9AuGM8QCQwm4nnvNqUe/lME7bFTzrtCSrF7sG0UxvwM2AeDEZj5NQIDAQAB"
