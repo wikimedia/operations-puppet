@@ -52,4 +52,38 @@ class role::icinga(
     class { '::icinga':            }
     class { '::icinga::web':       }
     class { '::icinga::naggen':    }
+
+    $partner = hiera('role::icinga::partner')
+    $is_passive = hiera('role::icinga::passive')
+    include rsync::server
+    ferm::service { 'icinga-rsync':
+        proto  => 'tcp',
+        port   => 873,
+        srange => "@resolve(${partner})",
+    }
+    rsync::server::module { 'icinga-tmpfs':
+        read_only => 'yes',
+        path      => '/var/icinga-tmpfs',
+    }
+    rsync::server::module { 'icinga-cache':
+        read_only => 'yes',
+        path      => '/var/cache/icinga',
+    }
+    rsync::server::module { 'icinga-lib':
+        read_only => 'yes',
+        path      => '/var/lib/icinga',
+    }
+    file { '/usr/local/sbin/sync_icinga_state':
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0755',
+        content => template('role/icinga/sync_icinga_state.sh.erb'),
+    }
+    if $is_passive {
+        cron { 'sync-icinga-state':
+            minute  => '*/10',
+            command => '/usr/local/sbin/sync_icinga_state >/dev/null 2>&1',
+        }
+    }
 }
