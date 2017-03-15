@@ -157,3 +157,4 @@ cassandra::permissions_validity_in_ms: 600000
 cassandra::trickle_fsync: false
 cassandra::extra_classpath:
     - /srv/deployment/cassandra/twcs/lib/cassandra-v2.2/TimeWindowCompactionStrategy-2.2.5.jar
+cassandra::client_encryption_enabled: true
