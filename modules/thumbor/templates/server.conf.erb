@@ -175,6 +175,13 @@ POOLCOUNTER_CONFIG_EXPENSIVE = {
     'extensions': ['xcf', 'djvu', 'pdf', 'tiff']
 }
 
+# Thumbnails that fail for a given xkey more than 4 times per hour aren't
+# worth re-attempting that often
+FAILURE_THROTTLING_MEMCACHE = ['127.0.0.1:11212']
+FAILURE_THROTTLING_MAX = 4
+FAILURE_THROTTLING_DURATION = 3600
+FAILURE_THROTTLING_PREFIX = 'thumbor-failure-'
+
 
 ################################### Logging ##################################
 
