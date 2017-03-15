@@ -1,0 +1,28 @@
+; vim: set expandtab:smarttab
+@           1D  IN SOA  ns0.wikimedia.org.  hostmaster.wikimedia.org.   (
+                    <%= File.stat(@file).mtime.strftime('%Y%m%d%H') %>    ; serial
+                    12H     ; refresh
+                    2H      ; retry
+                    2W      ; expiry
+                    1H      ; negative cache TTL
+                    )
+
+; Name servers
+
+            1D  IN NS   ns0.wikimedia.org.
+            1D  IN NS   ns1.wikimedia.org.
+            1D  IN NS   ns2.wikimedia.org.
+
+; Mail exchangers
+
+            1H  IN MX   10  mx1001.wikimedia.org.
+            1H  IN MX   50  mx2001.wikimedia.org.
+
+; Canonical names
+            600 IN DYNA geoip!text-addrs
+
+; Google Webmaster Tools verification record for search management
+            600 IN TXT  "google-site-verification=AMHkgs-4ViEvIJf5znZle-BSE2EPNFqM1nDJGRyn2qk"
+
+; DMARC records http://dmarc.org/ -- policy none (monitor), for now
+_dmarc                  600     IN TXT "v=DMARC1; p=none; sp=none; rua=mailto:dmarc-rua@wikimedia.org; ruf=mailto:dmarc-ruf@wikimedia.org;"
