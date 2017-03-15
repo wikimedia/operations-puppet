@@ -8,6 +8,9 @@ class role::thumbor::mediawiki {
     include ::base::firewall
     include role::statsite
 
+    class { '::thumbor::nutcracker':
+        thumbor_memcached_servers => hiera('thumbor_memcached_servers_nutcracker')
+    }
 
     class { '::thumbor': }
 
@@ -25,5 +28,18 @@ class role::thumbor::mediawiki {
         proto  => 'tcp',
         port   => '8800',
         srange => '$DOMAIN_NETWORKS',
+    }
+
+    class { '::memcached':
+        size => 100,
+        port => 11211,
+    }
+
+    $thumbor_memcached_servers_ferm = join(hiera('thumbor_memcached_servers'), ' ')
+
+    ferm::service { 'memcached_memcached_role':
+        proto => 'tcp',
+        port  => '11211',
+        srange => "(@resolve((${thumbor_memcached_servers_ferm})))",
     }
 }
