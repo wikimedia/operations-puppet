@@ -1,0 +1,273 @@
+; vim: set expandtab:smarttab
+@                       1D      IN SOA  ns0.wikimedia.org.       hostmaster.wikimedia.org.        (
+                                        <%= File.stat(@file).mtime.strftime('%Y%m%d%H') %>    ; serial
+                                        12H             ; refresh
+                                        2H              ; retry
+                                        2W              ; expiry
+                                        1H              ; negative cache TTL
+                                        )
+
+; Name servers
+
+                        1D      IN NS   ns0.wikimedia.org.
+                        1D      IN NS   ns1.wikimedia.org.
+                        1D      IN NS   ns2.wikimedia.org.
+
+; codfw public subnets (2620:0:860:0::/56)
+
+; public1-a-codfw (2620:0:860:1::/64)
+$ORIGIN 1.0.0.0.<%= @zonename %>.
+1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0 1H IN PTR   vrrp-gw-2001.wikimedia.org.
+
+1.0.0.0.0.0.0.0.0.0.0.0.0.0.e.f 1H IN PTR   ae1-2001.cr1-codfw.wikimedia.org.
+2.0.0.0.0.0.0.0.0.0.0.0.0.0.e.f 1H IN PTR   ae1-2001.cr2-codfw.wikimedia.org.
+
+5.0.0.0.3.5.1.0.0.8.0.0.8.0.2.0 1H IN PTR   bast2001.wikimedia.org.
+2.1.0.0.3.5.1.0.0.8.0.0.8.0.2.0 1H IN PTR   acamar.wikimedia.org.
+3.1.0.0.3.5.1.0.0.8.0.0.8.0.2.0 1H IN PTR   baham.wikimedia.org.
+5.1.0.0.3.5.1.0.0.8.0.0.8.0.2.0 1H IN PTR   contint2001.wikimedia.org.
+
+; public1-b-codfw (2620:0:860:2::/64)
+$ORIGIN 2.0.0.0.<%= @zonename %>.
+1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0 1H IN PTR   vrrp-gw-2002.wikimedia.org.
+
+1.0.0.0.0.0.0.0.0.0.0.0.0.0.e.f 1H IN PTR   ae2-2002.cr1-codfw.wikimedia.org.
+2.0.0.0.0.0.0.0.0.0.0.0.0.0.e.f 1H IN PTR   ae2-2002.cr2-codfw.wikimedia.org.
+2.4.0.0.3.5.1.0.0.8.0.0.8.0.2.0 1H IN PTR   achernar.wikimedia.org.
+5.4.0.0.3.5.1.0.0.8.0.0.8.0.2.0 1H IN PTR   mx2001.wikimedia.org.
+6.4.0.0.3.5.1.0.0.8.0.0.8.0.2.0 1H IN PTR   wiki-mail-codfw.wikimedia.org.
+0.5.0.0.3.5.1.0.0.8.0.0.8.0.2.0 1H IN PTR   alsafi.wikimedia.org.
+2.5.0.0.3.5.1.0.0.8.0.0.8.0.2.0 1H IN PTR   dbmonitor2001.wikimedia.org.
+3.5.0.0.3.5.1.0.0.8.0.0.8.0.2.0 1H IN PTR   install2002.wikimedia.org.
+
+; public1-c-codfw (2620:0:860:3::/64)
+$ORIGIN 3.0.0.0.<%= @zonename %>.
+1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0 1H IN PTR   vrrp-gw-2003.wikimedia.org.
+
+1.0.0.0.0.0.0.0.0.0.0.0.0.0.e.f 1H IN PTR   ae3-2003.cr1-codfw.wikimedia.org.
+2.0.0.0.0.0.0.0.0.0.0.0.0.0.e.f 1H IN PTR   ae3-2003.cr2-codfw.wikimedia.org.
+
+4.7.0.0.3.5.1.0.0.8.0.0.8.0.2.0 1H IN PTR   tegmen.wikimedia.org.
+
+; public1-d-codfw (2620:0:860:4::/64)
+$ORIGIN 4.0.0.0.<%= @zonename %>.
+1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0 1H IN PTR   vrrp-gw-2004.wikimedia.org.
+
+1.0.0.0.0.0.0.0.0.0.0.0.0.0.e.f 1H IN PTR   ae4-2004.cr1-codfw.wikimedia.org.
+2.0.0.0.0.0.0.0.0.0.0.0.0.0.e.f 1H IN PTR   ae4-2004.cr2-codfw.wikimedia.org.
+
+
+; codfw private subnets (2620:0:860:100::/56)
+
+; private1-a-codfw (2620:0:860:101::/64)
+$ORIGIN 1.0.1.0.<%= @zonename %>.
+1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0 1H IN PTR   vrrp-gw-2017.codfw.wmnet.
+
+1.0.0.0.0.0.0.0.0.0.0.0.0.0.e.f 1H IN PTR   ae1-2017.cr1-codfw.wikimedia.org.
+2.0.0.0.0.0.0.0.0.0.0.0.0.0.e.f 1H IN PTR   ae1-2017.cr2-codfw.wikimedia.org.
+
+7.2.0.0.0.0.0.0.2.9.1.0.0.1.0.0 1H IN PTR   puppetmaster2001.codfw.wmnet.
+
+2.2.1.0.0.0.0.0.2.9.1.0.0.1.0.0 1H IN PTR   cp2001.codfw.wmnet.
+3.2.1.0.0.0.0.0.2.9.1.0.0.1.0.0 1H IN PTR   cp2002.codfw.wmnet.
+4.2.1.0.0.0.0.0.2.9.1.0.0.1.0.0 1H IN PTR   cp2003.codfw.wmnet.
+5.2.1.0.0.0.0.0.2.9.1.0.0.1.0.0 1H IN PTR   cp2004.codfw.wmnet.
+6.2.1.0.0.0.0.0.2.9.1.0.0.1.0.0 1H IN PTR   cp2005.codfw.wmnet.
+7.2.1.0.0.0.0.0.2.9.1.0.0.1.0.0 1H IN PTR   cp2006.codfw.wmnet.
+0.4.1.0.0.0.0.0.2.9.1.0.0.1.0.0 1H IN PTR   sarin.codfw.wmnet.
+
+
+; private1-b-codfw (2620:0:860:102::/64)
+$ORIGIN 2.0.1.0.<%= @zonename %>.
+1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0 1H IN PTR   vrrp-gw-2018.codfw.wmnet.
+
+1.0.0.0.0.0.0.0.0.0.0.0.0.0.e.f 1H IN PTR   ae2-2018.cr1-codfw.wikimedia.org.
+2.0.0.0.0.0.0.0.0.0.0.0.0.0.e.f 1H IN PTR   ae2-2018.cr2-codfw.wikimedia.org.
+
+2.3.1.0.6.1.0.0.2.9.1.0.0.1.0.0 1H IN PTR   mira.codfw.wmnet.
+3.3.1.0.6.1.0.0.2.9.1.0.0.1.0.0 1H IN PTR   cp2007.codfw.wmnet.
+4.3.1.0.6.1.0.0.2.9.1.0.0.1.0.0 1H IN PTR   cp2008.codfw.wmnet.
+5.3.1.0.6.1.0.0.2.9.1.0.0.1.0.0 1H IN PTR   cp2009.codfw.wmnet.
+6.3.1.0.6.1.0.0.2.9.1.0.0.1.0.0 1H IN PTR   cp2010.codfw.wmnet.
+7.3.1.0.6.1.0.0.2.9.1.0.0.1.0.0 1H IN PTR   cp2011.codfw.wmnet.
+8.3.1.0.6.1.0.0.2.9.1.0.0.1.0.0 1H IN PTR   cp2012.codfw.wmnet.
+
+0.8.1.0.6.1.0.0.2.9.1.0.0.1.0.0 1H IN PTR   planet2001.codfw.wmnet.
+3.8.1.0.6.1.0.0.2.9.1.0.0.1.0.0 1H IN PTR   zosma.codfw.wmnet.
+
+; private1-c-codfw (2620:0:860:103::/64)
+$ORIGIN 3.0.1.0.<%= @zonename %>.
+1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0 1H IN PTR   vrrp-gw-2019.codfw.wmnet.
+
+1.0.0.0.0.0.0.0.0.0.0.0.0.0.e.f 1H IN PTR   ae3-2019.cr1-codfw.wikimedia.org.
+2.0.0.0.0.0.0.0.0.0.0.0.0.0.e.f 1H IN PTR   ae3-2019.cr2-codfw.wikimedia.org.
+
+2.1.1.0.2.3.0.0.2.9.1.0.0.1.0.0 1H IN PTR   cp2013.codfw.wmnet.
+3.1.1.0.2.3.0.0.2.9.1.0.0.1.0.0 1H IN PTR   cp2014.codfw.wmnet.
+4.1.1.0.2.3.0.0.2.9.1.0.0.1.0.0 1H IN PTR   cp2015.codfw.wmnet.
+5.1.1.0.2.3.0.0.2.9.1.0.0.1.0.0 1H IN PTR   cp2016.codfw.wmnet.
+6.1.1.0.2.3.0.0.2.9.1.0.0.1.0.0 1H IN PTR   cp2017.codfw.wmnet.
+7.1.1.0.2.3.0.0.2.9.1.0.0.1.0.0 1H IN PTR   cp2018.codfw.wmnet.
+
+7.4.1.0.2.3.0.0.2.9.1.0.0.1.0.0 1H IN PTR   phab2001.codfw.wmnet.
+9.4.1.0.2.3.0.0.2.9.1.0.0.1.0.0 1H IN PTR   phab2001-vcs.codfw.wmnet.
+
+; private1-d-codfw (2620:0:860:104::/64)
+$ORIGIN 4.0.1.0.<%= @zonename %>.
+1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0 1H IN PTR   vrrp-gw-2020.codfw.wmnet.
+
+1.0.0.0.0.0.0.0.0.0.0.0.0.0.e.f 1H IN PTR   ae4-2020.cr1-codfw.wikimedia.org.
+2.0.0.0.0.0.0.0.0.0.0.0.0.0.e.f 1H IN PTR   ae4-2020.cr2-codfw.wikimedia.org.
+
+3.2.0.0.8.4.0.0.2.9.1.0.0.1.0.0 1H IN PTR   cp2019.codfw.wmnet.
+4.2.0.0.8.4.0.0.2.9.1.0.0.1.0.0 1H IN PTR   cp2020.codfw.wmnet.
+5.2.0.0.8.4.0.0.2.9.1.0.0.1.0.0 1H IN PTR   cp2021.codfw.wmnet.
+6.2.0.0.8.4.0.0.2.9.1.0.0.1.0.0 1H IN PTR   cp2022.codfw.wmnet.
+7.2.0.0.8.4.0.0.2.9.1.0.0.1.0.0 1H IN PTR   cp2023.codfw.wmnet.
+8.2.0.0.8.4.0.0.2.9.1.0.0.1.0.0 1H IN PTR   cp2024.codfw.wmnet.
+9.2.0.0.8.4.0.0.2.9.1.0.0.1.0.0 1H IN PTR   cp2025.codfw.wmnet.
+0.3.0.0.8.4.0.0.2.9.1.0.0.1.0.0 1H IN PTR   cp2026.codfw.wmnet.
+
+5.4.0.0.8.4.0.0.2.9.1.0.0.1.0.0 1H IN PTR   wasat.codfw.wmnet.
+6.6.0.0.8.4.0.0.2.9.1.0.0.1.0.0 1H IN PTR   puppetmaster2002.codfw.wmnet.
+
+; labs-hosts1-a-codfw (2620:0:860:117::/64) - RESERVED
+$ORIGIN 7.1.1.0.<%= @zonename %>.
+
+; labs-support1-a-codfw (2620:0:860:121::/64) - RESERVED
+$ORIGIN 1.2.1.0.<%= @zonename %>.
+
+; labs-hosts1-b-codfw (2620:0:860:118::/64)
+$ORIGIN 8.1.1.0.<%= @zonename %>.
+1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0 1H IN PTR   vrrp-gw-2118.codfw.wmnet.
+1.0.0.0.0.0.0.0.0.0.0.0.0.0.e.f 1H IN PTR   ae2-2118.cr1-codfw.wikimedia.org.
+2.0.0.0.0.0.0.0.0.0.0.0.0.0.e.f 1H IN PTR   ae2-2118.cr2-codfw.wikimedia.org.
+
+; labs-support1-b-codfw (2620:0:860:122::/64)
+$ORIGIN 2.2.1.0.<%= @zonename %>.
+1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0 1H IN PTR   vrrp-gw-2122.codfw.wmnet.
+1.0.0.0.0.0.0.0.0.0.0.0.0.0.e.f 1H IN PTR   ae2-2122.cr1-codfw.wikimedia.org.
+2.0.0.0.0.0.0.0.0.0.0.0.0.0.e.f 1H IN PTR   ae2-2122.cr2-codfw.wikimedia.org.
+
+; labs-hosts1-c-codfw (2620:0:860:119::/64) - RESERVED
+$ORIGIN 9.1.1.0.<%= @zonename %>.
+
+; labs-support1-c-codfw (2620:0:860:123::/64) - RESERVED
+$ORIGIN 3.2.1.0.<%= @zonename %>.
+
+; labs-hosts1-c-codfw (2620:0:860:120::/64) - RESERVED
+$ORIGIN 0.2.1.0.<%= @zonename %>.
+
+; labs-support1-a-codfw (2620:0:860:124::/64) - RESERVED
+$ORIGIN 4.2.1.0.<%= @zonename %>.
+
+; codfw sandbox subnets (2620:0:860:200::/56)
+
+; sandbox1-a-codfw (2620:0:860:201::/64)
+$ORIGIN 1.0.2.0.<%= @zonename %>.
+1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0 1H IN PTR   vrrp-gw-2201.wikimedia.org.
+
+1.0.0.0.0.0.0.0.0.0.0.0.0.0.e.f 1H IN PTR   ae1-2201.cr1-codfw.wikimedia.org.
+2.0.0.0.0.0.0.0.0.0.0.0.0.0.e.f 1H IN PTR   ae1-2201.cr2-codfw.wikimedia.org.
+
+4.4.2.0.2.5.1.0.0.8.0.0.8.0.2.0 1H IN PTR   ripe-atlas-codfw.wikimedia.org.
+
+; sandbox1-b-codfw (2620:0:860:202::/64)
+$ORIGIN 2.0.2.0.<%= @zonename %>.
+
+; sandbox1-c-codfw (2620:0:860:203::/64)
+$ORIGIN 3.0.2.0.<%= @zonename %>.
+
+; sandbox1-d-codfw (2620:0:860:204::/64)
+$ORIGIN 4.0.2.0.<%= @zonename %>.
+
+
+; 2620:0:860:ed1a::0:0/110 (::0:0 - ::3:ffff) LVS Service IPs
+
+; - 2620:0:860:ed1a::0:0/111 (::0:0 - ::1:ffff) LVS high-traffic1 (Text)
+
+$ORIGIN 0.0.0.0.0.0.0.0.0.0.0.0.a.1.d.e.<%= @zonename %>.
+
+1.0.0.0 1H IN PTR   text-lb.codfw.wikimedia.org.
+
+; wrong subnet, but unimportant...
+e.0.0.0 1H IN PTR   ns1.wikimedia.org.
+
+$ORIGIN 1.0.0.0.0.0.0.0.0.0.0.0.a.1.d.e.<%= @zonename %>.
+
+; - 2620:0:860:ed1a::2:0/111 (::2:0 - ::3:ffff) LVS high-traffic2 (Multimedia & Misc)
+
+$ORIGIN 2.0.0.0.0.0.0.0.0.0.0.0.a.1.d.e.<%= @zonename %>.
+
+b.0.0.0                         1H IN PTR   upload-lb.codfw.wikimedia.org.
+d.0.0.0                         1H IN PTR   maps-lb.codfw.wikimedia.org.
+
+$ORIGIN 3.0.0.0.0.0.0.0.0.0.0.0.a.1.d.e.<%= @zonename %>.
+
+d.0.0.0 1H IN PTR  misc-web-lb.codfw.wikimedia.org.
+a.f.0.0 1H IN PTR  git-ssh.codfw.wikimedia.org.
+e.f.0.0 1H IN PTR  dns-rec-lb.codfw.wikimedia.org.
+
+; Neighbor blocks
+
+$ORIGIN e.f.<%= @zonename %>.
+
+; cr1-codfw <--> cr2-codfw (2620:0:860:fe00::/64)
+
+$ORIGIN 0.0.e.f.<%= @zonename %>.
+
+1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0 1H IN PTR   ae0.cr1-codfw.wikimedia.org.
+2.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0 1H IN PTR   ae0.cr2-codfw.wikimedia.org.
+
+; cr1-eqiad <--> cr1-codfw (2620:0:860:fe01::/64)
+
+$ORIGIN 1.0.e.f.<%= @zonename %>.
+1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0 1H IN PTR   xe-4-2-0.cr1-eqiad.wikimedia.org.
+2.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0 1H IN PTR   xe-5-2-1.cr1-codfw.wikimedia.org.
+
+; cr1-eqord <--> cr2-codfw (2620:0:860:fe02::/64)
+
+$ORIGIN 2.0.e.f.<%= @zonename %>.
+1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0 1H IN PTR   xe-0-0-0.cr1-eqord.wikimedia.org.
+2.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0 1H IN PTR   xe-5-2-1.cr2-codfw.wikimedia.org.
+
+; cr1-codfw <--> cr1-eqdfw (2620:0:860:fe03::/64)
+
+$ORIGIN 3.0.e.f.<%= @zonename %>.
+1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0 1H IN PTR   xe-5-0-0.cr1-codfw.wikimedia.org.
+2.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0 1H IN PTR   xe-0-0-0.cr1-eqdfw.wikimedia.org.
+
+; cr2-codfw <--> cr1-eqdfw (2620:0:860:fe04::/64)
+
+$ORIGIN 4.0.e.f.<%= @zonename %>.
+1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0 1H IN PTR   xe-5-0-0.cr2-codfw.wikimedia.org.
+2.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0 1H IN PTR   xe-1-0-0.cr1-eqdfw.wikimedia.org.
+
+; cr1-codfw <--> mr1-codfw (2620:0:860:fe05::/64)
+
+$ORIGIN 5.0.e.f.<%= @zonename %>.
+1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0 1H IN PTR   xe-5-3-3.cr1-codfw.wikimedia.org.
+2.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0 1H IN PTR   ge-0-0-0-401.mr1-codfw.wikimedia.org.
+
+; cr2-codfw <--> mr1-codfw (2620:0:860:fe06::/64)
+
+$ORIGIN 6.0.e.f.<%= @zonename %>.
+1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0 1H IN PTR   xe-5-3-3.cr2-codfw.wikimedia.org.
+2.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0 1H IN PTR   ge-0-0-0-402.mr1-codfw.wikimedia.org.
+
+; cr2-codfw <--> cr2-eqiad (2620:0:860:fe07::/64)
+
+$ORIGIN 7.0.e.f.<%= @zonename %>.
+1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0 1H IN PTR   xe-5-0-1.cr2-codfw.wikimedia.org.
+2.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0 1H IN PTR   xe-3-2-3.cr2-eqiad.wikimedia.org.
+
+; Loopback IPs
+
+$ORIGIN f.f.f.f.<%= @zonename %>.
+
+1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0 1H IN PTR   cr1-codfw.wikimedia.org.
+2.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0 1H IN PTR   cr2-codfw.wikimedia.org.
+3.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0 1H IN PTR   pim-rp.wikimedia.org.
+;4.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0 1H IN PTR   pfw-eqdfw.wikimedia.org.
+5.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0 1H IN PTR   cr1-eqdfw.wikimedia.org.
+6.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0 1H IN PTR   mr1-codfw.wikimedia.org.
