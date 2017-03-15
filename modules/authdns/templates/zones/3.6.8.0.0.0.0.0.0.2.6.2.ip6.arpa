@@ -1,0 +1,138 @@
+; vim: set expandtab:smarttab
+@                       1D      IN SOA  ns0.wikimedia.org.       hostmaster.wikimedia.org.        (
+                                        <%= File.stat(@file).mtime.strftime('%Y%m%d%H') %>    ; serial
+                                        12H             ; refresh
+                                        2H              ; retry
+                                        2W              ; expiry
+                                        1H              ; negative cache TTL
+                                        )
+
+; Name servers
+
+                        1D      IN NS   ns0.wikimedia.org.
+                        1D      IN NS   ns1.wikimedia.org.
+                        1D      IN NS   ns2.wikimedia.org.
+
+; ulsfo public subnets (2620:0:863:0::/56)
+
+; public1-ulsfo (2620:0:863:1::/64)
+$ORIGIN 1.0.0.0.<%= zonename %>.
+
+1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0 1H IN PTR   vrrp-gw-1201.wikimedia.org.
+5.0.0.0.6.2.0.0.5.3.0.0.8.9.1.0 1H IN PTR   bast4001.wikimedia.org.
+1.0.0.0.0.0.0.0.0.0.0.0.0.0.e.f 1H IN PTR   ae1-1201.cr1-ulsfo.wikimedia.org.
+2.0.0.0.0.0.0.0.0.0.0.0.0.0.e.f 1H IN PTR   ae1-1201.cr2-ulsfo.wikimedia.org.
+
+
+; ulsfo private subnets (2620:0:863:100::/56)
+
+; private1-ulsfo (2620:0:863:101::/64)
+$ORIGIN 1.0.1.0.<%= zonename %>.
+
+1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0 1H IN PTR   vrrp-gw-1211.wikimedia.org.
+1.0.1.0.0.0.0.0.8.2.1.0.0.1.0.0 1H IN PTR   cp4001.ulsfo.wmnet.
+2.0.1.0.0.0.0.0.8.2.1.0.0.1.0.0 1H IN PTR   cp4002.ulsfo.wmnet.
+3.0.1.0.0.0.0.0.8.2.1.0.0.1.0.0 1H IN PTR   cp4003.ulsfo.wmnet.
+4.0.1.0.0.0.0.0.8.2.1.0.0.1.0.0 1H IN PTR   cp4004.ulsfo.wmnet.
+5.0.1.0.0.0.0.0.8.2.1.0.0.1.0.0 1H IN PTR   cp4005.ulsfo.wmnet.
+6.0.1.0.0.0.0.0.8.2.1.0.0.1.0.0 1H IN PTR   cp4006.ulsfo.wmnet.
+7.0.1.0.0.0.0.0.8.2.1.0.0.1.0.0 1H IN PTR   cp4007.ulsfo.wmnet.
+8.0.1.0.0.0.0.0.8.2.1.0.0.1.0.0 1H IN PTR   cp4008.ulsfo.wmnet.
+9.0.1.0.0.0.0.0.8.2.1.0.0.1.0.0 1H IN PTR   cp4009.ulsfo.wmnet.
+0.1.1.0.0.0.0.0.8.2.1.0.0.1.0.0 1H IN PTR   cp4010.ulsfo.wmnet.
+1.1.1.0.0.0.0.0.8.2.1.0.0.1.0.0 1H IN PTR   cp4011.ulsfo.wmnet.
+2.1.1.0.0.0.0.0.8.2.1.0.0.1.0.0 1H IN PTR   cp4012.ulsfo.wmnet.
+3.1.1.0.0.0.0.0.8.2.1.0.0.1.0.0 1H IN PTR   cp4013.ulsfo.wmnet.
+4.1.1.0.0.0.0.0.8.2.1.0.0.1.0.0 1H IN PTR   cp4014.ulsfo.wmnet.
+5.1.1.0.0.0.0.0.8.2.1.0.0.1.0.0 1H IN PTR   cp4015.ulsfo.wmnet.
+6.1.1.0.0.0.0.0.8.2.1.0.0.1.0.0 1H IN PTR   cp4016.ulsfo.wmnet.
+7.1.1.0.0.0.0.0.8.2.1.0.0.1.0.0 1H IN PTR   cp4017.ulsfo.wmnet.
+8.1.1.0.0.0.0.0.8.2.1.0.0.1.0.0 1H IN PTR   cp4018.ulsfo.wmnet.
+9.1.1.0.0.0.0.0.8.2.1.0.0.1.0.0 1H IN PTR   cp4019.ulsfo.wmnet.
+0.2.1.0.0.0.0.0.8.2.1.0.0.1.0.0 1H IN PTR   cp4020.ulsfo.wmnet.
+1.0.0.0.0.0.0.0.0.0.0.0.0.0.e.f 1H IN PTR   ae1-1211.cr1-ulsfo.wikimedia.org.
+2.0.0.0.0.0.0.0.0.0.0.0.0.0.e.f 1H IN PTR   ae1-1211.cr2-ulsfo.wikimedia.org.
+
+
+; ulsfo sandbox subnets (2620:0:863:200::/56)
+
+; sandbox1-ulsfo (2620:0:863:201::/64)
+$ORIGIN 1.0.2.0.<%= zonename %>.
+1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0 1H IN PTR   vrrp-gw-1221.wikimedia.org.
+
+1.0.0.0.0.0.0.0.0.0.0.0.0.0.e.f 1H IN PTR   ae1-1221.cr1-ulsfo.wikimedia.org.
+2.0.0.0.0.0.0.0.0.0.0.0.0.0.e.f 1H IN PTR   ae1-1221.cr2-ulsfo.wikimedia.org.
+
+4.4.2.0.6.2.0.0.5.3.0.0.8.9.1.0 1H IN PTR   ripe-atlas-ulsfo.wikimedia.org.
+
+
+; Infrastructure IPs
+
+; cr1-ulsfo <--> cr2-ulsfo (2620:0:863:fe00::/64)
+
+$ORIGIN 0.0.e.f.<%= zonename %>.
+
+1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0 1H IN PTR   ae0.cr1-ulsfo.wikimedia.org.
+2.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0 1H IN PTR   ae0.cr2-ulsfo.wikimedia.org.
+
+; unallocated (2620:0:863:fe01::/64)
+
+$ORIGIN 1.0.e.f.<%= zonename %>.
+
+; cr1-ulsfo <--> cr1-eqord (2620:0:863:fe02::/64)
+
+$ORIGIN 2.0.e.f.<%= zonename %>.
+1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0 1H IN PTR   xe-1-2-0.cr1-ulsfo.wikimedia.org.
+2.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0 1H IN PTR   xe-0-0-1.cr1-eqord.wikimedia.org.
+
+; cr2-ulsfo <--> cr1-codfw (2620:0:863:fe03::/64)
+
+$ORIGIN 3.0.e.f.<%= zonename %>.
+1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0 1H IN PTR   xe-1-3-0.cr2-ulsfo.wikimedia.org.
+2.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0 1H IN PTR   xe-5-0-2.cr1-codfw.wikimedia.org.
+
+; unallocated (2620:0:863:fe04::/64)
+
+$ORIGIN 4.0.e.f.<%= zonename %>.
+
+; cr1-ulsfo <--> mr1-ulsfo (2620:0:863:fe05::/64)
+
+$ORIGIN 5.0.e.f.<%= zonename %>.
+1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0 1H IN PTR   ae1-401.cr1-ulsfo.wikimedia.org.
+2.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0 1H IN PTR   fe-0-0-4-401.mr1-ulsfo.wikimedia.org.
+
+; cr2-ulsfo <--> mr1-ulsfo (2620:0:863:fe06::/64)
+
+$ORIGIN 6.0.e.f.<%= zonename %>.
+1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0 1H IN PTR   ae1-402.cr2-ulsfo.wikimedia.org.
+2.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0 1H IN PTR   fe-0-0-4-402.mr1-ulsfo.wikimedia.org.
+
+; Loopback IPs
+$ORIGIN f.f.f.f.<%= zonename %>.
+
+1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0 1H IN PTR   cr1-ulsfo.wikimedia.org.
+2.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0 1H IN PTR   cr2-ulsfo.wikimedia.org.
+
+6.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0 1H IN PTR   mr1-ulsfo.wikimedia.org.
+
+
+; 2620:0:863:ed1a::0:0/110 (::0:0 - ::3:ffff) LVS Service IPs
+
+; - 2620:0:863:ed1a::0:0/111 (::0:0 - ::1:ffff) LVS high-traffic1 (Text)
+
+$ORIGIN 0.0.0.0.0.0.0.0.0.0.0.0.a.1.d.e.<%= zonename %>.
+
+1.0.0.0                         1H IN PTR   text-lb.ulsfo.wikimedia.org.
+
+$ORIGIN 1.0.0.0.0.0.0.0.0.0.0.0.a.1.d.e.<%= zonename %>.
+
+; - 2620:0:863:ed1a::2:0/111 (::2:0 - ::3:ffff) LVS high-traffic2 (Multimedia & Misc)
+
+$ORIGIN 2.0.0.0.0.0.0.0.0.0.0.0.a.1.d.e.<%= zonename %>.
+
+b.0.0.0                         1H IN PTR   upload-lb.ulsfo.wikimedia.org.
+d.0.0.0                         1H IN PTR   maps-lb.ulsfo.wikimedia.org.
+
+$ORIGIN 3.0.0.0.0.0.0.0.0.0.0.0.a.1.d.e.<%= zonename %>.
+
+d.0.0.0                         1H IN PTR   misc-web-lb.ulsfo.wikimedia.org.

@@ -1,0 +1,167 @@
+; vim: set expandtab:smarttab
+@                       1D      IN SOA  ns0.wikimedia.org.       hostmaster.wikimedia.org.        (
+                                        <%= File.stat(@file).mtime.strftime('%Y%m%d%H') %>    ; serial
+                                        12H             ; refresh
+                                        2H              ; retry
+                                        2W              ; expiry
+                                        1H              ; negative cache TTL
+                                        )
+
+; Name servers
+
+                        1D      IN NS   ns0.wikimedia.org.
+                        1D      IN NS   ns1.wikimedia.org.
+                        1D      IN NS   ns2.wikimedia.org.
+
+
+; esams 2620:0:862::/48
+
+; esams Public services subnet 2620:0:862:1::/64
+
+$ORIGIN 1.0.0.0.<%= zonename %>.
+
+1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0 1H IN PTR   vrrp-gw-100.esams.wikimedia.org.
+
+; Machines
+
+1.2.1.0.4.7.1.0.8.9.1.0.1.9.0.0 1H IN PTR   eeden.wikimedia.org.
+6.0.1.0.4.7.1.0.8.9.1.0.1.9.0.0 1H IN PTR   nescio.wikimedia.org.
+3.1.1.0.4.7.1.0.8.9.1.0.1.9.0.0 1H IN PTR   bast3002.wikimedia.org.
+4.1.1.0.4.7.1.0.8.9.1.0.1.9.0.0 1H IN PTR   multatuli.wikimedia.org.
+2.2.1.0.4.7.1.0.8.9.1.0.1.9.0.0 1H IN PTR   maerlant.wikimedia.org.
+
+1.0.0.0.0.0.0.0.0.0.0.0.0.0.e.f 1H IN PTR   ae1-100.cr1-esams.wikimedia.org.
+2.0.0.0.0.0.0.0.0.0.0.0.0.0.e.f 1H IN PTR   ae1-100.cr2-esams.wikimedia.org.
+
+; private1-esams subnet 2620:0:862:102::/64
+
+$ORIGIN 2.0.1.0.<%= zonename %>.
+
+1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0 1H IN PTR   vrrp-gw-103.esams.wikimedia.org.
+
+1.0.0.0.0.0.0.0.0.0.0.0.0.0.e.f 1H IN PTR   ae1-103.cr1-esams.wikimedia.org.
+2.0.0.0.0.0.0.0.0.0.0.0.0.0.e.f 1H IN PTR   ae1-103.cr2-esams.wikimedia.org.
+
+1.1.0.0.0.0.0.0.0.2.0.0.0.1.0.0 1H IN PTR   lvs3001.esams.wmnet.
+2.1.0.0.0.0.0.0.0.2.0.0.0.1.0.0 1H IN PTR   lvs3002.esams.wmnet.
+3.1.0.0.0.0.0.0.0.2.0.0.0.1.0.0 1H IN PTR   lvs3003.esams.wmnet.
+4.1.0.0.0.0.0.0.0.2.0.0.0.1.0.0 1H IN PTR   lvs3004.esams.wmnet.
+
+3.0.1.0.0.0.0.0.0.2.0.0.0.1.0.0 1H IN PTR   cp3003.esams.wmnet.
+4.0.1.0.0.0.0.0.0.2.0.0.0.1.0.0 1H IN PTR   cp3004.esams.wmnet.
+5.0.1.0.0.0.0.0.0.2.0.0.0.1.0.0 1H IN PTR   cp3005.esams.wmnet.
+6.0.1.0.0.0.0.0.0.2.0.0.0.1.0.0 1H IN PTR   cp3006.esams.wmnet.
+7.0.1.0.0.0.0.0.0.2.0.0.0.1.0.0 1H IN PTR   cp3007.esams.wmnet.
+8.0.1.0.0.0.0.0.0.2.0.0.0.1.0.0 1H IN PTR   cp3008.esams.wmnet.
+9.0.1.0.0.0.0.0.0.2.0.0.0.1.0.0 1H IN PTR   cp3009.esams.wmnet.
+0.1.1.0.0.0.0.0.0.2.0.0.0.1.0.0 1H IN PTR   cp3010.esams.wmnet.
+
+5.6.1.0.0.0.0.0.0.2.0.0.0.1.0.0 1H IN PTR   cp3030.esams.wmnet.
+6.6.1.0.0.0.0.0.0.2.0.0.0.1.0.0 1H IN PTR   cp3031.esams.wmnet.
+7.6.1.0.0.0.0.0.0.2.0.0.0.1.0.0 1H IN PTR   cp3032.esams.wmnet.
+8.6.1.0.0.0.0.0.0.2.0.0.0.1.0.0 1H IN PTR   cp3033.esams.wmnet.
+9.6.1.0.0.0.0.0.0.2.0.0.0.1.0.0 1H IN PTR   cp3034.esams.wmnet.
+0.7.1.0.0.0.0.0.0.2.0.0.0.1.0.0 1H IN PTR   cp3035.esams.wmnet.
+1.7.1.0.0.0.0.0.0.2.0.0.0.1.0.0 1H IN PTR   cp3036.esams.wmnet.
+2.7.1.0.0.0.0.0.0.2.0.0.0.1.0.0 1H IN PTR   cp3037.esams.wmnet.
+3.7.1.0.0.0.0.0.0.2.0.0.0.1.0.0 1H IN PTR   cp3038.esams.wmnet.
+4.7.1.0.0.0.0.0.0.2.0.0.0.1.0.0 1H IN PTR   cp3039.esams.wmnet.
+5.7.1.0.0.0.0.0.0.2.0.0.0.1.0.0 1H IN PTR   cp3040.esams.wmnet.
+6.7.1.0.0.0.0.0.0.2.0.0.0.1.0.0 1H IN PTR   cp3041.esams.wmnet.
+7.7.1.0.0.0.0.0.0.2.0.0.0.1.0.0 1H IN PTR   cp3042.esams.wmnet.
+8.7.1.0.0.0.0.0.0.2.0.0.0.1.0.0 1H IN PTR   cp3043.esams.wmnet.
+9.7.1.0.0.0.0.0.0.2.0.0.0.1.0.0 1H IN PTR   cp3044.esams.wmnet.
+0.8.1.0.0.0.0.0.0.2.0.0.0.1.0.0 1H IN PTR   cp3045.esams.wmnet.
+1.8.1.0.0.0.0.0.0.2.0.0.0.1.0.0 1H IN PTR   cp3046.esams.wmnet.
+2.8.1.0.0.0.0.0.0.2.0.0.0.1.0.0 1H IN PTR   cp3047.esams.wmnet.
+3.8.1.0.0.0.0.0.0.2.0.0.0.1.0.0 1H IN PTR   cp3048.esams.wmnet.
+4.8.1.0.0.0.0.0.0.2.0.0.0.1.0.0 1H IN PTR   cp3049.esams.wmnet.
+
+
+; 2620:0:862:ed1a::0:0/110 (::0:0 - ::3:ffff) LVS Service IPs
+
+; - 2620:0:862:ed1a::0:0/111 (::0:0 - ::1:ffff) LVS high-traffic1 (Text)
+
+$ORIGIN 0.0.0.0.0.0.0.0.0.0.0.0.a.1.d.e.<%= zonename %>.
+
+1.0.0.0                         1H IN PTR   text-lb.esams.wikimedia.org.
+
+; wrong subnet, but unimportant...
+e.0.0.0                         1H IN PTR   ns2.wikimedia.org.
+
+$ORIGIN 1.0.0.0.0.0.0.0.0.0.0.0.a.1.d.e.<%= zonename %>.
+
+; - 2620:0:862:ed1a::2:0/111 (::2:0 - ::3:ffff) LVS high-traffic2 Multimedia & Misc
+
+$ORIGIN 2.0.0.0.0.0.0.0.0.0.0.0.a.1.d.e.<%= zonename %>.
+
+b.0.0.0                         1H IN PTR   upload-lb.esams.wikimedia.org.
+d.0.0.0                         1H IN PTR   maps-lb.esams.wikimedia.org.
+
+$ORIGIN 3.0.0.0.0.0.0.0.0.0.0.0.a.1.d.e.<%= zonename %>.
+
+d.0.0.0                         1H IN PTR   misc-web-lb.esams.wikimedia.org.
+e.f.0.0                         1H IN PTR   dns-rec-lb.esams.wikimedia.org.
+
+; unused (2620:0:862:fe00::/64)
+
+$ORIGIN 0.0.e.f.<%= zonename %>.
+
+; cr1-esams <--> cr2-knams (2620:0:862:fe01::/64)
+
+$ORIGIN 1.0.e.f.<%= zonename %>.
+
+1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0 1H IN PTR   ae1-401.cr1-esams.wikimedia.org.
+2.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0 1H IN PTR   ae1-401.cr2-knams.wikimedia.org.
+
+; cr2-esams <--> cr1-esams (2620:0:862:fe02::/64)
+
+$ORIGIN 2.0.e.f.<%= zonename %>.
+
+1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0 1H IN PTR   ae1-402.cr2-esams.wikimedia.org.
+2.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0 1H IN PTR   ae1-402.cr1-esams.wikimedia.org.
+
+; cr2-esams <--> cr2-knams (2620:0:862:fe03::/64)
+
+$ORIGIN 3.0.e.f.<%= zonename %>.
+
+1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0 1H IN PTR   ae1-403.cr2-esams.wikimedia.org.
+2.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0 1H IN PTR   ae1-403.cr2-knams.wikimedia.org.
+
+; cr1-esams <--> mr1-esams (2620:0:862:fe04::/64)
+
+$ORIGIN 4.0.e.f.<%= zonename %>.
+
+1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0 1H  IN PTR  ae1-404.cr1-esams.wikimedia.org.
+2.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0 1H  IN PTR  ge-0-0-1-404.mr1-esams.wikimedia.org.
+
+; cr2-knams <--> mr1-esams (2620:0:862:fe05::/64)
+
+$ORIGIN 5.0.e.f.<%= zonename %>.
+
+1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0 1H  IN PTR  ae1-405.cr2-knams.wikimedia.org.
+2.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0 1H  IN PTR  ge-0-0-1-405.mr1-esams.wikimedia.org.
+
+; cr1-eqiad <--> cr2-knams (2620:0:862:fe06::/64)
+
+$ORIGIN 6.0.e.f.<%= zonename %>.
+
+1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0 1H IN PTR   xe-4-2-2.cr1-eqiad.wikimedia.org.
+2.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0 1H IN PTR   xe-1-1-0.cr2-knams.wikimedia.org.
+
+; cr2-eqiad <--> cr2-esams (2620:0:862:fe07::/64)
+
+$ORIGIN 7.0.e.f.<%= zonename %>.
+
+1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0 1H IN PTR   xe-4-1-3.cr2-eqiad.wikimedia.org.
+2.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0 1H IN PTR   xe-0-1-3.cr2-esams.wikimedia.org.
+
+; Loopback IPs
+
+$ORIGIN f.f.f.f.<%= zonename %>.
+
+1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0 1H IN PTR   mr1-esams.wikimedia.org.
+
+3.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0 1H IN PTR   cr2-esams.wikimedia.org.
+4.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0 1H IN PTR   cr2-knams.wikimedia.org.
+5.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0 1H IN PTR   cr1-esams.wikimedia.org.
