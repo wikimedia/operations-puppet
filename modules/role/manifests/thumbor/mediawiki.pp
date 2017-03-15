@@ -7,6 +7,7 @@
 class role::thumbor::mediawiki {
     include ::base::firewall
     include role::statsite
+    include ::thumbor::nutcracker
 
 
     class { '::thumbor': }
