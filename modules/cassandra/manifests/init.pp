@@ -490,10 +490,11 @@ class cassandra(
     }
 
     file { '/etc/cassandra-instances.d':
-        ensure => directory,
-        owner  => 'cassandra',
-        group  => 'cassandra',
-        mode   => '0755',
+        ensure  => directory,
+        owner   => 'cassandra',
+        group   => 'cassandra',
+        mode    => '0755',
+        require => Package['cassandra'],
     }
 
     scap::target { 'prometheus/jmx_exporter':
