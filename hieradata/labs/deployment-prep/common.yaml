@@ -88,6 +88,11 @@ lvs::configuration::lvs_service_ips:
   text: {}
   upload: {}
   zotero: {}
+aqs_hosts:
+  - deployment-aqs01.deployment-prep.eqiad.wmflabs
+  - deployment-aqs02.deployment-prep.eqiad.wmflabs
+  - deployment-aqs03.deployment-prep.eqiad.wmflabs
+aqs::cassandra_default_consistency: localOne
 cassandra::listen_address: '%{::ipaddress_eth0}'
 cassandra::rpc_address: '%{::ipaddress_eth0}'
 cassandra::logstash_host: deployment-logstash2.deployment-prep.eqiad.wmflabs
