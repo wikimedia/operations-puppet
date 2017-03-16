@@ -19,8 +19,6 @@ class role::wdqs  {
     }
 
 
-    Class['::wdqs'] -> Class['::wdqs::gui']
-
     # Install services - both blazegraph and the updater
     include ::wdqs
 
