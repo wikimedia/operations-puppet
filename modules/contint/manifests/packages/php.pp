@@ -21,6 +21,8 @@ class contint::packages::php {
 
     if os_version('debian == jessie') {
         package { [
+            # PHP 7.1
+            'php7.1',
             # PHP 7.0 version of packages in mediawiki::packages::php5
             'php7.0-cli',
             'php7.0-common',
@@ -53,7 +55,7 @@ class contint::packages::php {
             # for phan (T132636)
             'php-ast',
             ]:
-            ensure  => latest,
+            ensure  => 'installed',
             require => Apt::Repository['sury-php'],
         }
     }
