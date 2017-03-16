@@ -6,7 +6,7 @@ admin::groups:
 # ES-specific
 # NOTE: cluster_name must be kept in sync with the backend
 # node config in hieradata/role/common/logstash/elasticsearch.yaml
-elasticsearch::version: 2
+elasticsearch::version: 5
 elasticsearch::auto_create_index: true
 elasticsearch::cluster_name: production-logstash-eqiad
 elasticsearch::expected_nodes: 3
@@ -58,3 +58,6 @@ debdeploy::grains:
   debdeploy-logstash:
     value: standard
 
+# install elasticsearch 5.x and kibana 5.x, which are
+# only available in experimental at the moment.
+apt::use_experimental: true
