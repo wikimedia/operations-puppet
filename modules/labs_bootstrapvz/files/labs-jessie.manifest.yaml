@@ -4,9 +4,6 @@ provider:
   name: kvm
 bootstrapper:
   workspace: /target
-image:
-  name: debian-{system.release}-{system.architecture}-{%y}{%m}{%d}
-  description: Debian {system.release} {system.architecture}
 system:
   release: jessie
   architecture: amd64
@@ -134,13 +131,9 @@ packages:
 #  it in a raw image causes it to send spam mails.
 #    - mpt-status
 plugins:
-  root_password:
-    password: test
-  cloud_init:
-    username: admin
-    metadata_sources: ConfigDrive
   puppet:
     assets: /etc/bootstrap-vz/puppet
+    enable_agent: false
   file_copy:
     files:
       -
@@ -153,9 +146,6 @@ plugins:
         dst: /etc/rc.local
         permissions: "755"
         owner: root
-      -
-        src: /etc/bootstrap-vz/cloud.cfg
-        dst: /etc/cloud/cloud.cfg
       -
         src: /etc/ldap.conf
         dst: /etc/ldap.conf
@@ -177,9 +167,6 @@ plugins:
       -
         src: /etc/sudoers
         dst: /etc/sudoers
-      -
-        src: /etc/sudoers.d/ops
-        dst: /etc/sudoers.d/ops
       -
         src: /etc/ssh/sshd_config
         dst: /etc/ssh/sshd_config
@@ -204,8 +191,7 @@ plugins:
     #  file_copy; hence the touches and explicit copies below.
     commands:
       - ['chroot', '{root}', 'passwd', '-ld', 'root']
-      - ['chroot', '{root}', '/bin/sh', '-c', 'echo "#" >> /etc/sudoers']
-      - ['chroot', '{root}', '/bin/sh', '-c', 'touch /etc/sudoers && SUDO_FORCE_REMOVE=yes apt-get --force-yes --assume-yes install sudo-ldap']
+      - ['SUDO_FORCE_REMOVE=yes chroot {root} apt-get --force-yes --assume-yes install sudo-ldap']
       - ['chroot', '{root}', 'rm', '-f', '/etc/ssh/ssh_host*key*']
       - ['chroot', '{root}', 'rm', '-f', '/etc/sudo-ldap.conf']
       - ['chroot', '{root}', 'ln', '-s', '/etc/ldap/ldap.conf', '/etc/sudo-ldap.conf']
@@ -218,6 +204,3 @@ plugins:
     update_interval: 1
     download_interval: 1
     upgrade_interval: 1
-  cloud_init:
-    metadata_sources: Ec2
-    username: admin
