@@ -18,8 +18,7 @@ class kibana (
 ) {
     require_package('kibana')
 
-    # kibana 4
-    file { '/opt/kibana/config/kibana.yml':
+    file { '/etc/kibana/kibana.yml':
         ensure  => file,
         owner   => 'root',
         group   => 'root',
@@ -36,7 +35,13 @@ class kibana (
         enable  => true,
         require => [
             Package['kibana'],
-            File['/opt/kibana/config/kibana.yml'],
+            File['/etc/kibana/kibana.yml'],
         ],
+    }
+
+    # kibana 4.x deployment. With 5.x things are
+    # installed normally and not in /opt
+    file { '/opt/kibana':
+        ensure => absent
     }
 }
