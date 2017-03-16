@@ -29,6 +29,7 @@ class role::logstash::apifeatureusage {
     logstash::conf { 'filter_apifeatureusage':
         source   => 'puppet:///modules/role/logstash/filter-apifeatureusage.conf',
         priority => 55,
+        require  => Logstash::Plugin['logstash-filter-prune'],
     }
     # lint:endignore
 

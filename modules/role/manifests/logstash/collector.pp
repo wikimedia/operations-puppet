@@ -111,9 +111,14 @@ class role::logstash::collector (
 
     ## Input specific processing (20)
 
+    logstash::plugin { 'logstash-filter-multiline':
+        ensure => present,
+    }
+
     logstash::conf { 'filter_syslog':
         source   => 'puppet:///modules/role/logstash/filter-syslog.conf',
         priority => 20,
+        require  => Logstash::Plugin['logstash-filter-multiline'],
     }
 
     logstash::conf { 'filter_udp2log':
@@ -121,9 +126,14 @@ class role::logstash::collector (
         priority => 20,
     }
 
+    logstash::plugin { 'logstash-filter-prune':
+        ensure => present,
+    }
+
     logstash::conf { 'filter_gelf':
         source   => 'puppet:///modules/role/logstash/filter-gelf.conf',
         priority => 20,
+        require  => Logstash::Plugin['logstash-filter-prune'],
     }
 
     logstash::conf { 'filter_logback':
@@ -137,9 +147,14 @@ class role::logstash::collector (
     }
     ## Application specific processing (50)
 
+    logstash::plugin { 'logstash-filter-anonymize':
+        ensure => present,
+    }
+
     logstash::conf { 'filter_mediawiki':
         source   => 'puppet:///modules/role/logstash/filter-mediawiki.conf',
         priority => 50,
+        require  => Logstash::Plugin['logstash-filter-anonymize'],
     }
 
     logstash::conf { 'filter_striker':
@@ -157,6 +172,11 @@ class role::logstash::collector (
     logstash::conf { 'filter_normalize_log_levels':
         source   => 'puppet:///modules/role/logstash/filter-normalize-log-levels.conf',
         priority => 70,
+    }
+
+    logstash::plugin{ 'logstash-filter-de_dot':
+        ensure => present,
+        before => Logstash::Conf['filter_de_dot'],
     }
 
     logstash::conf { 'filter_de_dot':
