@@ -1,5 +1,5 @@
 #!/bin/sh
 
-/usr/bin/rsync -a rsync://<%= @partnerip %>/icinga-tmpfs/status.dat /var/icinga-tmpfs/status.dat
-/usr/bin/rsync -a rsync://<%= @partnerip %>/icinga-cache/objects.cache /var/cache/icinga/objects.cache
-/usr/bin/rsync -a rsync://<%= @partnerip %>/icinga-lib/retention.dat /var/lib/icinga/retention.dat
+/usr/bin/rsync -a rsync://<%= @partner %>/icinga-tmpfs/status.dat /var/icinga-tmpfs/status.dat
+/usr/bin/rsync -a rsync://<%= @partner %>/icinga-cache/objects.cache /var/cache/icinga/objects.cache
+/usr/bin/rsync -a rsync://<%= @partner %>/icinga-lib/retention.dat /var/lib/icinga/retention.dat
