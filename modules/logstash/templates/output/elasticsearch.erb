@@ -4,11 +4,9 @@ output {
     # be tightly coupled by the binary protocol
     elasticsearch {
         flush_size      => <%= @flush_size %>
-        host            => "<%= @host %>"
+        hosts           => ["<%= @host %>:<%= @port %>"]
         idle_flush_time => <%= @idle_flush_time %>
         index           => "<%= @index %>"
-        port            => <%= @port %>
-        protocol        => "http"
 <% if @template %>
         manage_template => true
         template        => "<%= @template %>"
