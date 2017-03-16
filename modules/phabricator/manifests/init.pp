@@ -109,6 +109,28 @@ class phabricator (
 
             ensure => present;
     }
+    $php7_1 = hiera('phabricator_php7_1_enable', false)
+
+    if os_version('debian == jessie') {
+      if $php7_1 {
+        # Enable deb.sury.org PHP packages for jessie only
+        apt::repository { 'sury-php':
+          uri        => 'https://packages.sury.org/php/',
+          dist       => $::lsbdistcodename,
+          components => 'main',
+          source     => false,
+          keyfile    => 'puppet:///modules/contint/sury-php.gpg',
+        }
+
+        package { [
+          # PHP 7.1
+          'php7.1',
+          ]:
+          ensure  => 'installed',
+          require => Apt::Repository['sury-php'],
+        }
+      }
+    }
 
     include ::apache::mod::php5
     include ::apache::mod::rewrite
