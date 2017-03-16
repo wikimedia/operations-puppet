@@ -3,7 +3,6 @@
   "settings" : {
     "number_of_shards" : 1,
     "number_of_replicas" : 2,
-    "index.cache.field.type" : "soft",
     "index.refresh_interval" : "5s",
     "analysis" : {
       "analyzer" : {
@@ -26,19 +25,15 @@
         {
           "string_fields" : {
             "match" : "*",
-            "match_mapping_type" : "string",
+            "match_mapping_type" : "text",
             "mapping" : {
-              "type" : "multi_field",
+              "type" : "text",
+              "index" : true,
+              "omit_norms" : true,
               "fields" : {
-                "{name}" : {
-                  "type" : "string",
-                  "index" : "analyzed",
-                  "omit_norms" : true
-                },
                 "raw" : {
-                  "type" : "string",
-                  "index" : "not_analyzed",
-                  "ignore_above" : 256,
+                  "type" : "keyword",
+                  "index" : true,
                   "doc_values": true
                 }
               }
@@ -49,20 +44,9 @@
           "boolean_to_string" : {
             "match_mapping_type" : "boolean",
             "mapping" : {
-              "type" : "multi_field",
-              "fields" : {
-                "{name}" : {
-                  "type" : "string",
-                  "index" : "analyzed",
-                  "omit_norms" : true
-                },
-                "raw" : {
-                  "type" : "string",
-                  "index" : "not_analyzed",
-                  "ignore_above" : 256,
-                  "doc_values": true
-                }
-              }
+              "type" : "keyword",
+              "index" : true,
+              "doc_values": true
             }
           }
         },
@@ -70,20 +54,9 @@
           "double_to_string" : {
             "match_mapping_type" : "double",
             "mapping" : {
-              "type" : "multi_field",
-              "fields" : {
-                "{name}" : {
-                  "type" : "string",
-                  "index" : "analyzed",
-                  "omit_norms" : true
-                },
-                "raw" : {
-                  "type" : "string",
-                  "index" : "not_analyzed",
-                  "ignore_above" : 256,
-                  "doc_values": true
-                }
-              }
+              "type" : "keyword",
+              "index" : true,
+              "doc_values": true
             }
           }
         },
@@ -91,20 +64,9 @@
           "long_to_string" : {
             "match_mapping_type" : "long",
             "mapping" : {
-              "type" : "multi_field",
-              "fields" : {
-                "{name}" : {
-                  "type" : "string",
-                  "index" : "analyzed",
-                  "omit_norms" : true
-                },
-                "raw" : {
-                  "type" : "string",
-                  "index" : "not_analyzed",
-                  "ignore_above" : 256,
-                  "doc_values": true
-                }
-              }
+              "type" : "keyword",
+              "index" : true,
+              "doc_values": true
             }
           }
         }
@@ -112,12 +74,12 @@
       "properties" : {
         "@timestamp" : {
           "type" : "date",
-          "index" : "not_analyzed",
+          "index" : true,
           "doc_values": true
         },
         "@version" : {
-          "type" : "string",
-          "index" : "not_analyzed",
+          "type" : "keyword",
+          "index" : true,
           "doc_values": true
         },
         "geoip"  : {
@@ -131,32 +93,29 @@
           }
         },
         "host" : {
-          "type" : "string",
-          "index" : "not_analyzed",
+          "type" : "keyword",
+          "index" : true,
           "doc_values": true
         },
         "level" : {
-          "type" : "string",
-          "index" : "not_analyzed",
+          "type" : "keyword",
+          "index" : true,
           "doc_values": true
         },
         "message" : {
-          "type" : "string",
-          "index" : "analyzed",
+          "type" : "text",
+          "index" : true,
           "omit_norms" : true
         },
         "normalized_message" : {
-          "type": "multi_field",
+          "type": "text",
+          "index" : true,
+          "omit_norms" : true,
           "fields": {
             "raw": {
-              "type": "string",
-              "index": "not_analyzed",
+              "type": "keyword",
+              "index": true,
               "doc_values": true
-            },
-            "normalized_message": {
-              "index" : "analyzed",
-              "omit_norms" : true,
-              "type" : "string"
             }
           }
         },
@@ -165,18 +124,18 @@
           "doc_values": true
         },
         "tags" : {
-          "type" : "string",
-          "index" : "not_analyzed",
+          "type" : "keyword",
+          "index" : true,
           "doc_values": true
         },
         "type" : {
-          "type" : "string",
-          "index" : "not_analyzed",
+          "type" : "keyword",
+          "index" : true,
           "doc_values": true
         },
         "udp_sender" : {
-          "type" : "string",
-          "index" : "not_analyzed",
+          "type" : "keyword",
+          "index" : true,
           "doc_values": true
         }
       }

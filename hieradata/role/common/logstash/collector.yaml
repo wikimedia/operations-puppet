@@ -56,4 +56,3 @@ role::kibana::ldap_groups:
 debdeploy::grains:
   debdeploy-logstash:
     value: standard
-
