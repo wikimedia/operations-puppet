@@ -21,15 +21,15 @@
           "match" : "*",
           "match_mapping_type" : "string",
           "mapping" : {
-            "index" : "no"
+            "index" : false
           }
         }
       } ],
       "properties" : {
-        "@timestamp" : { "type" : "date", "index" : "not_analyzed" },
-        "@version" : { "type" : "string", "index" : "not_analyzed" },
-        "feature" : { "type" : "string", "index" : "not_analyzed" },
-        "agent" : { "type" : "string", "index" : "not_analyzed" }
+        "@timestamp" : { "type" : "date", "index" : true },
+        "@version" : { "type" : "keyword", "index" : true },
+        "feature" : { "type" : "keyword", "index" :  true },
+        "agent" : { "type" : "keyword", "index" : true }
       }
     }
   }
