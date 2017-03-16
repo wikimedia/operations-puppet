@@ -19,7 +19,7 @@ class kibana (
     require_package('kibana')
 
     # kibana 4
-    file { '/opt/kibana/config/kibana.yml':
+    file { '/etc/kibana/kibana.yml':
         ensure  => file,
         owner   => 'root',
         group   => 'root',

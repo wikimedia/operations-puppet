@@ -1,5 +1,3 @@
-#!/usr/bin/python
-
 """
 Basic logstash error rate checker.
 
@@ -127,47 +125,49 @@ class CheckService(object):
                 }
             }
         }, "query": {
-            "filtered": {
-                "filter": {
-                    "bool": {
-                        "must": [
-                            {
-                                "range": {
-                                    "@timestamp": {
-                                        "lte": "now",
-                                        "gte": "now-60m"
+            "bool": {
+                "filter": [
+                    {
+                        "bool": {
+                            "must": [
+                                {
+                                    "range": {
+                                        "@timestamp": {
+                                            "lte": "now",
+                                            "gte": "now-60m"
+                                        }
                                     }
                                 }
-                            }
-                        ],
-                        "must_not": [
-                            {"terms": {
-                                "level": [
-                                    "INFO",
-                                    "NOTICE",
-                                    "WARNING"
-                                ]
-                            }}, {
-                                "query": {
-                                    "match": {
-                                        "message": {
-                                            "query": "SlowTimer",
-                                            "type": "phrase"
-                                        }
-                                    }
+                            ],
+                            "must_not": [
+                                {"terms": {
+                                    "level": [
+                                        "INFO",
+                                        "NOTICE",
+                                        "WARNING"
+                                    ]
                                 }}, {
-                                "query": {
-                                    "match": {
-                                        "message": {
-                                            "query": "Invalid host name",
-                                            "type": "phrase"
+                                    "query": {
+                                        "match": {
+                                            "message": {
+                                                "query": "SlowTimer",
+                                                "type": "phrase"
+                                            }
                                         }
-                                    }
-                                }}
-                        ]
-                    }
-                },
-                "query": {
+                                    }}, {
+                                    "query": {
+                                        "match": {
+                                            "message": {
+                                                "query": "Invalid host name",
+                                                "type": "phrase"
+                                            }
+                                        }
+                                    }}
+                            ]
+                        }
+                    },
+                ],
+                "must": {
                     "query_string": {
                         "query": query
                     }
@@ -188,20 +188,22 @@ class CheckService(object):
                 }
             }
         }, "query": {
-            "filtered": {
-                "filter": {
-                    "bool": {
-                        "must": [{
-                            "range": {
-                                "@timestamp": {
-                                    "lte": "now",
-                                    "gte": "now-60m"
+            "bool": {
+                "filter": [
+                    {
+                        "bool": {
+                            "must": [{
+                                "range": {
+                                    "@timestamp": {
+                                        "lte": "now",
+                                        "gte": "now-60m"
+                                    }
                                 }
-                            }
-                        }]
+                            }]
+                        }
                     }
-                },
-                "query": {
+                ],
+                "must": {
                     "query_string": {
                         "query": query
                     }
