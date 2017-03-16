@@ -58,3 +58,6 @@ debdeploy::grains:
   debdeploy-logstash:
     value: standard
 
+# install elasticsearch 5.x and kibana 5.x, which are
+# only available in experimental at the moment.
+apt::use_experimental: true
