@@ -1,0 +1,9 @@
+Code-Review+1: Hashar <hashar@free.fr>
+Code-Review+1: Dzahn <dzahn@wikimedia.org>
+Code-Review+2: Alexandros Kosiaris <akosiaris@wikimedia.org>
+Verified+2: Alexandros Kosiaris <akosiaris@wikimedia.org>
+Submitted-by: Alexandros Kosiaris <akosiaris@wikimedia.org>
+Submitted-at: Thu, 16 Mar 2017 08:56:39 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/342637
+Project: operations/puppet
+Branch: refs/heads/production
