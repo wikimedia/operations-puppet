@@ -15,9 +15,6 @@ elasticsearch::unicast_hosts:
 elasticsearch::auto_create_index: '+logstash-*,-*'
 
 # Logstash specific
-logstash::filter_workers: 1
-logstash::heap_memory_mb: 128
-
 logstash::cluster_hosts:
   - deployment-logstash2.deployment-prep.eqiad.wmflabs
 
