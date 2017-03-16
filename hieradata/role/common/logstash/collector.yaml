@@ -28,7 +28,7 @@ elasticsearch::data_dir: '/var/lib/elasticsearch'
 # TODO: the multiline filter that is used in several places in the
 # current configuration isn't thread safe and can cause crashes or
 # garbled output when used with more than one thread worker.
-logstash::filter_workers: 1
+logstash::pipeline_workers: 1
 logstash::heap_memory_mb: 256
 
 
@@ -57,3 +57,4 @@ role::kibana::ldap_groups:
 debdeploy::grains:
   debdeploy-logstash:
     value: standard
+
