@@ -30,3 +30,7 @@ elasticsearch::data_dir: '/var/lib/elasticsearch'
 debdeploy::grains:
   debdeploy-logstash:
     value: standard
+
+# install elasticsearch 5.x which is only available
+# in experimental at the moment.
+apt::use_experimental: true
