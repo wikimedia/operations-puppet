@@ -1,5 +1,5 @@
 # sets up a tor relay
-class role::tor::relay {
+class profile::tor::relay {
 
     system::role { 'tor::relay':
         description => 'Tor relay'
