@@ -32,7 +32,11 @@ define monitoring::host (
         default => $contact_group,
     }
 
-    # Export the nagios host instance
+    # Define the nagios host instance
+    # The following if guard is there to ensure we only try to set per host
+    # attributes in the case the host exports it's configuration. Since this
+    # definition is also used for non-exported resources as well, this if guard
+    # is required
     if $title == $::hostname {
         $image = $::operatingsystem ? {
             'Ubuntu'  => 'ubuntu',
@@ -42,15 +46,24 @@ define monitoring::host (
         $icon_image      = "vendors/${image}.png"
         $vrml_image      = "vendors/${image}.png"
         $statusmap_image = "vendors/${image}.gd2"
+        # TODO: Make this better by getting all LLDP peers on all physical (only!) interfaces
+        # map() would have been great for this.
+        if $facts['lldppeer_eth0'] {
+            $parents = $facts['lldppeer_eth0']
+        } else {
+            $parents = undef
+        }
     } else {
         $icon_image      = undef
         $vrml_image      = undef
         $statusmap_image = undef
+        $parents = undef
     }
     $host = {
         "${title}" => {
             ensure                => $ensure,
             host_name             => $title,
+            parents               => $parents,
             address               => $nagios_address,
             hostgroups            => $hostgroup,
             check_command         => 'check_ping!500,20%!2000,100%',
