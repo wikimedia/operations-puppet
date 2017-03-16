@@ -11,23 +11,23 @@
 # - $tags: Array of tags to be added to the logs. Default: [$title].
 # - $topic: Kafka topic. Default: $title.
 # - $type: Log type to be passed to Logstash. Default: 'kafka'.
-# - $zk_connect: Zookeeper host and port (and optionally: chroot path).
-#      Format: 'some.zookeeper.host:1234/chroot/path'. For more info, see:
+# - $bootstrap_servers: Kafka servers to boostrap from. This list should be
+#      a string in the form of `host1:port1,host2:port2. For more info, see:
 #      https://www.elastic.co/guide/en/logstash/current/plugins-inputs-kafka.html
 #
 # == Sample usage:
 #
 #   logstash::input::kafka { 'some_topic':
-#       zk_connect => 'some.zookeeper.host:1234/chroot/path',
+#       boostrap_servers => 'kafka1001:9092,kafka1002:9092',
 #   }
 #
 define logstash::input::kafka(
-    $ensure     = present,
-    $priority   = 10,
-    $tags       = [$title],
-    $topic      = $title,
-    $type       = 'kafka',
-    $zk_connect = '',
+    $ensure            = present,
+    $priority          = 10,
+    $tags              = [$title],
+    $topic             = $title,
+    $type              = 'kafka',
+    $bootstrap_servers,
 ) {
     logstash::conf { "input-kafka-${title}":
         ensure   => $ensure,
