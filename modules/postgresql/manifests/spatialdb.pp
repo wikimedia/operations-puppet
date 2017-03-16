@@ -20,6 +20,9 @@ define postgresql::spatialdb(
     $postgis_version = hiera('postgresql::spatialdb::postgis_version', '1.5'),
     ) {
 
+    require ::postgresql::packages
+    require ::postgresql::postgis
+
     # Check if our db exists and store it
     $db_exists = "/usr/bin/psql --tuples-only -c \'SELECT datname FROM pg_catalog.pg_database;\' | /bin/grep \'^ ${name}\'"
     # Check if plgsql is installed
