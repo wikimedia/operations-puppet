@@ -1,9 +1,9 @@
 # sets up a tor relay
-class role::tor::relay {
+class profile::tor::relay {
 
-    system::role { 'tor::relay':
-        description => 'Tor relay'
-    }
+    system::role { 'tor::relay': description => 'Tor relay' }
+
+    interface::add_ip6_mapped { 'main': interface => 'eth0', }
 
     include passwords::tor
     $controlpassword = $passwords::tor::hashed_control_password

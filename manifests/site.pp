@@ -2449,14 +2449,7 @@ node 'pybal-test2003.codfw.wmnet' {
 
 # Tor relay
 node 'radium.wikimedia.org' {
-    role(tor::relay)
-
-    include ::base::firewall
-    include ::standard
-
-    interface::add_ip6_mapped { 'main':
-        interface => 'eth0',
-    }
+    role('tor_relay')
 }
 
 node 'radon.wikimedia.org' {
