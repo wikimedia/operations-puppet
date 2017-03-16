@@ -25,6 +25,7 @@ script
                                        --max-pool <%= @max_pool %>  \
                                        --project admin-monitoring \
                                        --prepend fullstackd \
+                                       --image debian-jessie-fullstack-test \
                                        --flavor m1.small \
                                        --keyfile <%= @keyfile %> \
                                        --statsd statsd.eqiad.wmnet
