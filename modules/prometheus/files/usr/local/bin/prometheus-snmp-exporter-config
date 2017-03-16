@@ -2,8 +2,10 @@
 
 import argparse
 import glob
+import grp
 import logging
 import os
+import pwd
 import shutil
 import sys
 import tempfile
@@ -34,6 +36,9 @@ def main():
             return 1
 
         os.chmod(tmpconfig.name, 0o400)
+        uid = pwd.getpwnam('prometheus').pw_uid
+        gid = grp.getgrnam('root').gr_gid
+        os.chown(tmpconfig.name, uid, gid)
         os.rename(tmpconfig.name, args.config_file)
 
         # Temporary file has been atomically renamed to its final destination.
