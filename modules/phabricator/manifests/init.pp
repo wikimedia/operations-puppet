@@ -110,6 +110,31 @@ class phabricator (
             ensure => present;
     }
 
+    $phab_php_version = hiera('phab_php_version')
+    $phab_php_url = hiera('phab_php_url')
+    $phab_php_repo = hiera('phab_php_repo')
+
+    if os_version('debian > jessie') {
+      if $phab_php_version == 7.1 {
+        # Enable deb.sury.org PHP packages for jessie only
+        apt::repository { $phab_php_repo:
+          uri        => $phab_php_url,
+          dist       => $::lsbdistcodename,
+          components => 'main',
+          source     => false,
+          keyfile    => 'puppet:///modules/contint/${phab_php_repo}.gpg',
+        }
+
+        package { [
+          # PHP Versions
+          'php${phab_php_version}',
+          ]:
+          ensure  => 'installed',
+          require => Apt::Repository[$phab_php_repo],
+        }
+      }
+    }
+
     include ::apache::mod::php5
     include ::apache::mod::rewrite
     include ::apache::mod::headers
