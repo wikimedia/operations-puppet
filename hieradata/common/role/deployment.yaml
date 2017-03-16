@@ -45,6 +45,7 @@ role::deployment::repo_config:
     gitfat_enabled: true
     upstream: https://gerrit.wikimedia.org/r/operations/software/logstash-logback-encoder
   logstash/plugins:
+    gitfat_enabled: true
     upstream: https://gerrit.wikimedia.org/r/operations/software/logstash/plugins
   wikimedia/discovery/analytics:
     upstream: https://gerrit.wikimedia.org/r/wikimedia/discovery/analytics
