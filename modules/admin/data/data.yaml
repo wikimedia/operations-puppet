@@ -1389,8 +1389,9 @@ users:
     gid: 500
     name: yuvipanda
     realname: Yuvi Panda
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDSbKkh+XRHzTRE0fzQnSv8ZsfWgIa9uEhZV5d8Eq9AhIQC3AUkamt9QVnVxXVx/cnUEXqxD8grUcbN9HVf4T9T19zw19JPi4s68eG9Zm6ZSKZNYugLaAjb9QrZa5WBWgBYxTa5ZBtIAn4kWsMqG+d86NJxqLu35FyiiOsD10sVsB2mWvK6flMf7Kuux2dTlI6lqWThHoF/4JPw2Odjn5DrASOhjLXzaLzEhkkwcT+zgWQW1PN/ndSlmL6eT/CRgiOxxL97DE2osmYUXXBqgaXyzBnQGgK/DL03e55Epn6yCEYJ2YcBdjbF8J6Ev82zzvMmNlebKJz44SRRsPuOX3r9 yuvipanda@picard
-    ]
+    ssh_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDSbKkh+XRHzTRE0fzQnSv8ZsfWgIa9uEhZV5d8Eq9AhIQC3AUkamt9QVnVxXVx/cnUEXqxD8grUcbN9HVf4T9T19zw19JPi4s68eG9Zm6ZSKZNYugLaAjb9QrZa5WBWgBYxTa5ZBtIAn4kWsMqG+d86NJxqLu35FyiiOsD10sVsB2mWvK6flMf7Kuux2dTlI6lqWThHoF/4JPw2Odjn5DrASOhjLXzaLzEhkkwcT+zgWQW1PN/ndSlmL6eT/CRgiOxxL97DE2osmYUXXBqgaXyzBnQGgK/DL03e55Epn6yCEYJ2YcBdjbF8J6Ev82zzvMmNlebKJz44SRRsPuOX3r9 yuvipanda@picard
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDb5W/ZKwHHevB0ZGr+yVimNySadaNuJVfZW453U5FSF4nCLj2gvm/gKpEj4bv8MHzOsF5casl6u1T4Mz4gCeU4Q9gbhiMfghiYm7DPxWdR6uDn0vcbb+rtGpcu8XMGfGYsmFLWwL0qs8kgpixviAQ+AYGqCJug4b+6TVOoCKV/Ba5cOXhfx1MAIExwlhTpxtkec+g2/2BzQeZon0/4INzIutXgLGF47n1oosHEWpaehg4NMGjjT8b9w2UdnCWaTNpUsMca+LU2aK0lHVIQ2i5c56Exd8zcPEt/78O3HpQFH256QHkBxcBo9+z+sf87fHyOcgiAd5T3eKI0zLKQM6WT yuvipanda@courage
     uid: 2029
     email: ypandian@wikimedia.org
   haithams:
