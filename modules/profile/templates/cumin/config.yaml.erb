@@ -2,6 +2,9 @@ backend: puppetdb
 transport: clustershell
 log_file: <%= @cumin_log_path %>/cumin.log
 
+environment:
+    SSH_AUTH_SOCK: /run/keyholder/proxy.sock
+
 puppetdb:
     host: <%= @puppetdb_host %>
     port: 443
@@ -9,8 +12,6 @@ puppetdb:
         - SubjectAltNameWarning  # Temporary fix for T158757
 
 clustershell:
-    environment:
-        SSH_AUTH_SOCK: /run/keyholder/proxy.sock
     ssh_options:
         - '-o BatchMode=yes'
         - '-o ConnectTimeout=2'
