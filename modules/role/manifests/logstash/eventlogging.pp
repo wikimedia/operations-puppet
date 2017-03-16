@@ -11,9 +11,9 @@ class role::logstash::eventlogging {
     $kafka_config = kafka_config('analytics')
 
     logstash::input::kafka { $topic:
-        tags       => [$topic, 'kafka'],
-        type       => 'eventlogging',
-        zk_connect => $kafka_config['zookeeper']['url'],
+        tags              => [$topic, 'kafka'],
+        type              => 'eventlogging',
+        bootstrap_servers => $kafka_config['brokers']['string'],
     }
     # lint:ignore:puppet_url_without_modules
     logstash::conf { 'filter_eventlogging':
