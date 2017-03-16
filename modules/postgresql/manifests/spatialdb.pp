@@ -20,12 +20,18 @@ define postgresql::spatialdb(
     $postgis_version = hiera('postgresql::spatialdb::postgis_version', '1.5'),
     ) {
 
+    require ::postgresql::packages
+    require ::postgresql::postgis
+
     # Check if our db exists and store it
     $db_exists = "/usr/bin/psql --tuples-only -c \'SELECT datname FROM pg_catalog.pg_database;\' | /bin/grep \'^ ${name}\'"
     # Check if plgsql is installed
     $plpgsql_exists = "/usr/bin/psql --tuples-only -c \'SELECT lanname FROM pg_catalog.pg_language;\' | /bin/grep \'^ plpgsql\'"
     # Check if postgis is installed
-    $postgis_exists = "/usr/bin/psql --tuples-only -c \"SELECT table_catalog FROM information_schema.tables where table_name=\'geometry_columns\';\" ${name} | /bin/grep \'^ ${name}\'"
+    $postgis_exists_sql = 'SELECT table_catalog FROM information_schema.tables where \table_name=\'geometry_columns\';'
+    $postgis_exists = "/usr/bin/psql --tuples-only -c \"${postgis_exists_sql}\" ${name} | /bin/grep \'^ ${name}\'"
+
+    $postgres_basedir = "/usr/share/postgresql/${pgversion}"
 
     if $ensure == 'present' {
         exec { "create_db-${name}":
@@ -40,13 +46,13 @@ define postgresql::spatialdb(
                 unless  => $plpgsql_exists,
             }
             exec { "create_postgis-${name}":
-                command => "/usr/bin/psql -d ${name} -f /usr/share/postgresql/${pgversion}/contrib/postgis-${postgis_version}/postgis.sql",
+                command => "/usr/bin/psql -d ${name} -f ${postgres_basedir}/contrib/postgis-${postgis_version}/postgis.sql",
                 user    => 'postgres',
                 unless  => $postgis_exists,
             }
             # Create spatial_ref_sys
             exec { "create_spatial_ref_sys-${name}":
-                command     => "/usr/bin/psql -d ${name} -f /usr/share/postgresql/${pgversion}/contrib/postgis-${postgis_version}/spatial_ref_sys.sql",
+                command     => "/usr/bin/psql -d ${name} -f ${postgres_basedir}/contrib/postgis-${postgis_version}/spatial_ref_sys.sql",
                 user        => 'postgres',
                 refreshonly => true,
                 subscribe   => Exec["create_postgis-${name}"],
@@ -58,7 +64,7 @@ define postgresql::spatialdb(
                 subscribe   => Exec["create_spatial_ref_sys-${name}"],
             }
             exec { "create_comments-${name}":
-                command     => "/usr/bin/psql -d ${name} -f /usr/share/postgresql/${pgversion}/contrib/postgis_comments.sql",
+                command     => "/usr/bin/psql -d ${name} -f ${postgres_basedir}/contrib/postgis_comments.sql",
                 user        => 'postgres',
                 refreshonly => true,
                 subscribe   => Exec["create_spatial_ref_sys-${name}"],

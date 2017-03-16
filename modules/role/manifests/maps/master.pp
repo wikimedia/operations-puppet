@@ -82,9 +82,7 @@ class role::maps::master(
     }
 
     # DB setup
-    postgresql::spatialdb { 'gis':
-        require => Class['::postgresql::postgis'],
-    }
+    postgresql::spatialdb { 'gis': }
 
     if $postgres_tile_storage {
         ::postgresql::db { 'tiles':
