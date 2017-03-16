@@ -47,18 +47,10 @@ define monitoring::host (
         $vrml_image      = undef
         $statusmap_image = undef
     }
-    # TODO: Make this better by getting all LLDP peers on all physical (only!) interfaces
-    # map() would have been great for this.
-    if $facts['lldppeer_eth0'] {
-        $parents = $facts['lldppeer_eth0']
-    } else {
-        $parents = undef
-    }
     $host = {
         "${title}" => {
             ensure                => $ensure,
             host_name             => $title,
-            parents               => $parents,
             address               => $nagios_address,
             hostgroups            => $hostgroup,
             check_command         => 'check_ping!500,20%!2000,100%',
