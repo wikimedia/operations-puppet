@@ -10,6 +10,8 @@
 class wdqs::gui(
     $log_aggregator = undef,
     $package_dir = $::wdqs::package_dir,
+    $port = 80,
+    $additional_port = 8888,
 ) {
     ::nginx::site { 'wdqs':
         content => template('wdqs/nginx.erb'),
@@ -17,9 +19,10 @@ class wdqs::gui(
 
     # The directory for operator-controlled nginx flags
     file { '/var/lib/nginx/wdqs/':
-        ensure => directory,
-        owner  => 'root',
-        group  => 'wikidev',
-        mode   => '0775',
+        ensure  => directory,
+        owner   => 'root',
+        group   => 'wikidev',
+        mode    => '0775',
+        require => Nginx::Site['wdqs'],
     }
 }

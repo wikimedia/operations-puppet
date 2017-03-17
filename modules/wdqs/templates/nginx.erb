@@ -8,10 +8,10 @@ log_format logstash
 limit_conn_zone $http_x_client_ip zone=byaddr:10m;
 
 server {
-    listen 80 default_server;
-    listen [::]:80 default_server;
-    listen 8888 default_server;
-    listen [::]:8888 default_server;
+    listen <%= @port %> default_server;
+    listen [::]:<%= @port %> default_server;
+    listen <%= @additional_port %> default_server;
+    listen [::]:<%= @additional_port %> default_server;
 
     add_header X-Served-By <%= @hostname %> always;
 
