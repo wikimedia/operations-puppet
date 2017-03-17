@@ -4,7 +4,7 @@
      set nocompatible " explicitly get out of vi-compatible mode
      call pathogen#infect()
 "    set noexrc " don't use local version of .(g)vimrc, .exrc
-"    set background=dark " we plan to use a dark background
+     set background=dark " we plan to use a dark background
      colorscheme solarized
      set cpoptions=aABceFsmq
      "             |||||||||
