@@ -18,14 +18,12 @@ class contint::packages::javascript {
         'npm'       => '2.15.2',
     }
 
-    if (os_version('ubuntu >= trusty') or os_version('debian >= jessie')) {
-        # Provide 'node' alias for 'nodejs' because Debian/Ubuntu
-        # already has a package called 'node'
-        package { 'nodejs-legacy':
-            ensure => present,
-            # Brings up 'nodejs' from upstream which we then override
-            before => Package['npm'],
-        }
+    # Provide 'node' alias for 'nodejs' because Debian/Ubuntu
+    # already has a package called 'node'
+    package { 'nodejs-legacy':
+        ensure => present,
+        # Brings up 'nodejs' from upstream which we then override
+        before => Package['npm'],
     }
 
     exec { 'pin npm':

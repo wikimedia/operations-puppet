@@ -58,32 +58,17 @@ class contint::packages::php {
         }
     }
 
-    if os_version('ubuntu < trusty') {
-        # Disable APC entirely it gets confused when files changes often
-        file { '/etc/php5/conf.d/apc.ini':
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0444',
-            source  => 'puppet:///modules/contint/disable-apc.ini',
-            require => Package['php-apc'],
-        }
-    }
-
     package { 'libcurl4-gnutls-dev':
         # Conflict with HHVM build dependency libcurl4-openssl-dev.
         # Was For pycurl which now build with openssl just fine.
         ensure =>  absent,
     }
 
-    if os_version('ubuntu >= trusty || debian >= jessie') {
-        exec { '/usr/bin/apt-get -y build-dep hhvm':
-            onlyif => '/usr/bin/apt-get -s build-dep hhvm | /bin/grep -Pq "will be (installed|upgraded)"',
-        }
-        package { ['hhvm-dev']:
-            ensure => present,
-        }
-
-
+    exec { '/usr/bin/apt-get -y build-dep hhvm':
+        onlyif => '/usr/bin/apt-get -s build-dep hhvm | /bin/grep -Pq "will be (installed|upgraded)"',
+    }
+    package { ['hhvm-dev']:
+        ensure => present,
     }
 
 }

@@ -30,12 +30,6 @@ class contint::browsers {
           ensure => link,
           target => '/usr/lib/chromium-browser/chromedriver',
         }
-    } else {
-        $latest_packages = [
-            'chromium-browser',
-            'firefox',
-            'phantomjs',
-        ]
     }
 
     package { $latest_packages:

@@ -17,11 +17,9 @@ class contint::packages::labs {
         include ::mediawiki::packages::php5
     }
 
-    if os_version('ubuntu >= trusty || Debian >= jessie') {
-        # Fonts needed for browser tests screenshots (T71535)
-        include ::mediawiki::packages::fonts
-        include ::phabricator::arcanist
-    }
+    # Fonts needed for browser tests screenshots (T71535)
+    include ::mediawiki::packages::fonts
+    include ::phabricator::arcanist
 
     include ::contint::packages::analytics
     include ::contint::packages::doxygen
