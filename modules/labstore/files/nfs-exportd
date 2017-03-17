@@ -96,7 +96,7 @@ def get_instance_ips(project, observer_pass):
         # Only provide internal IPs!
         ips += [
             str(ip['addr']) for ip in instance.addresses['public']
-            if ip['OS-EXT-IPS:type'] == 'fixed' and is_valid_ipv4(ip)
+            if ip['OS-EXT-IPS:type'] == 'fixed' and is_valid_ipv4(ip['addr'])
         ]
     return ips
 
@@ -117,10 +117,14 @@ def get_projects_with_nfs(mounts_config, observer_pass):
                 continue
         else:
             continue
-        project = Project(name, config['gid'], get_instance_ips(name, observer_pass), mounts)
-        projects.append(project)
-        logging.debug('project %s has %s instances',
-                     name, len(project.instance_ips))
+        ips = get_instance_ips(name, observer_pass)
+        if ips:
+            project = Project(name, config['gid'], ips, mounts)
+            projects.append(project)
+            logging.debug('project %s has %s instances',
+                          name, len(project.instance_ips))
+        else:
+            logging.debug('project %s has no instances; skipping.', name)
 
     # Validate that there are no duplicate gids
     gids = [p.gid for p in projects]
