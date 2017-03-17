@@ -443,8 +443,8 @@ groups:
                  'ALL = (syslog) NOPASSWD: ALL']
   perf-roots:
     gid: 766
-    description: users who have root on memcached, varnish and application servers
-    members: [krinkle]
+    description: users who have root on memcached, varnish, application servers and thumbor
+    members: [krinkle, gilles]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
   aqs-users:
     description: Group of users for the Analytics Query Service
@@ -558,19 +558,6 @@ groups:
                  'ALL = NOPASSWD: /bin/systemctl stop eventlogging-service-eventbus.service',
                  'ALL = NOPASSWD: /bin/systemctl restart eventlogging-service-eventbus.service',
                  'ALL = NOPASSWD: /bin/journalctl *']
-  thumbor-admins:
-    gid: 787
-    description: Admins for Thumbor image scaling
-    members: [gilles]
-    privileges: ['ALL = NOPASSWD: /bin/systemctl mask thumbor@*.service',
-                 'ALL = NOPASSWD: /bin/systemctl unmask thumbor@*.service',
-                 'ALL = NOPASSWD: /bin/systemctl start thumbor@*.service',
-                 'ALL = NOPASSWD: /bin/systemctl stop thumbor@*.service',
-                 'ALL = NOPASSWD: /bin/systemctl restart thumbor@*.service',
-                 'ALL = NOPASSWD: /usr/sbin/service thumbor@* start',
-                 'ALL = NOPASSWD: /usr/sbin/service thumbor@* stop',
-                 'ALL = NOPASSWD: /usr/sbin/service thumbor@* restart',
-                 'ALL = (thumbor) NOPASSWD: ALL']
   gitpuppet:
     gid: 998
     description: Private repo users
