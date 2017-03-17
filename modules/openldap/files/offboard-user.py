@@ -41,13 +41,13 @@ def offboard_ldap(uid, remove_all_groups, turn_volunteer, dry_run):
 changetype: modify
 add: member
 member: {user_dn}
--
+
 """
     REMOVE_GROUP = """dn: {group_name}
 changetype: modify
 delete: member
 member: {user_dn}
--
+
 """
 
     # TODO: add more groups after validating priv. status
@@ -135,7 +135,8 @@ member: {user_dn}
                 if turn_volunteer:
                     if priv_group == 'cn=wmf,ou=groups,dc=wikimedia,dc=org':
                         ldif += REMOVE_GROUP.format(group_name=priv_group, user_dn=user_dn)
-                        ldif += ADD_GROUP.format(group_name=priv_group, user_dn=user_dn)
+                        ldif += ADD_GROUP.format(group_name='cn=nda,ou=groups,dc=wikimedia,dc=org',
+                                                 user_dn=user_dn)
                         print "  ", priv_group, "(converted to nda group)"
                     else:
                         print "  ", priv_group, "(can be retained)"
@@ -152,7 +153,9 @@ member: {user_dn}
             print "LDIF file written to ", uid + ".ldif"
             print "Please review and if all is well, you can effect the change running"
             cmd = 'ldapmodify -h ldap-labs.eqiad.wikimedia.org -p 389 -x'
-            cmd += ' -D "cn=scriptuser,ou=profile,dc=wikimedia,dc=org" -W -f ' + uid + ".ldif"
+            cmd += ' -D "cn=scriptuser,ou=profile,dc=wikimedia,dc=org" -W -f ' + uid + ".ldif\n"
+            cmd += 'To obtain the password run\n'
+            cmd += 'sudo cat /etc/ldap.scriptuser.yaml'
             print cmd
         except IOError, e:
             print "Error:", e
