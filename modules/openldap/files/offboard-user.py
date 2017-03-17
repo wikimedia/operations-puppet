@@ -196,7 +196,7 @@ def confirm_removal(group):
     return choice == "y"
 
 
-def offboard_phabricator(username, remove_all_groups, dry_run):
+def offboard_phabricator(username, remove_all_groups, dry_run, turn_volunteer):
     phab_client = get_phabricator_client()
     user_query = phab_client.user.query(usernames=[username])
 
@@ -234,8 +234,11 @@ def offboard_phabricator(username, remove_all_groups, dry_run):
                     remove_user_from_project(phid_user, i[1], phab_client)
             else:
                 if i[0] in privileged_projects:
-                    if confirm_removal(i[0]):
-                        remove_user_from_project(phid_user, i[1], phab_client)
+                    if turn_volunteer:
+                        print i[0], "is an privileged group, but can be retained"
+                    else:
+                        if confirm_removal(i[0]):
+                            remove_user_from_project(phid_user, i[1], phab_client)
                 else:
                     print i[0], "is an unprivileged group, can be retained"
 
@@ -269,7 +272,8 @@ def main():
         print "Skipping LDAP offboarding, use -l USERNAME to run it at a later point"
 
     if options.phab_username:
-        offboard_phabricator(options.phab_username, options.remove_all_groups, options.dry_run)
+        offboard_phabricator(options.phab_username, options.remove_all_groups, options.dry_run,
+                             options.turn_volunteer)
     else:
         print "Skipping Phabricator offboarding, use -p USERNAME to run it at later point"
 
