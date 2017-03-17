@@ -135,7 +135,7 @@ member: {user_dn}
                 if turn_volunteer:
                     if priv_group == 'cn=wmf,ou=groups,dc=wikimedia,dc=org':
                         ldif += REMOVE_GROUP.format(group_name=priv_group, user_dn=user_dn)
-                        ldif += ADD_GROUP.format(group_name=priv_group, user_dn=user_dn)
+                        ldif += ADD_GROUP.format(group_name='cn=nda,ou=groups,dc=wikimedia,dc=org', user_dn=user_dn)
                         print "  ", priv_group, "(converted to nda group)"
                     else:
                         print "  ", priv_group, "(can be retained)"
