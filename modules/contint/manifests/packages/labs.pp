@@ -71,18 +71,6 @@ class contint::packages::labs {
         ensure => present;
     }
 
-    if os_version('ubuntu >= trusty') {
-        # Work around PIL 1.1.7 expecting libs in /usr/lib T101550
-        file { '/usr/lib/libjpeg.so':
-            ensure => link,
-            target => '/usr/lib/x86_64-linux-gnu/libjpeg.so',
-        }
-        file { '/usr/lib/libz.so':
-            ensure => link,
-            target => '/usr/lib/x86_64-linux-gnu/libz.so',
-        }
-    }
-
     if os_version( 'debian >= jessie') {
         include ::contint::packages::ops
     }
