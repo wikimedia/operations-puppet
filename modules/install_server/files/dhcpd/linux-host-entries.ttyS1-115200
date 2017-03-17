@@ -3664,34 +3664,6 @@ host ms-fe1008 {
     fixed-address ms-fe1008.eqiad.wmnet;
 }
 
-host ms-fe2001 {
-    hardware ethernet 00:0A:F7:72:AA:64;
-    fixed-address ms-fe2001.codfw.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
-}
-
-host ms-fe2002 {
-    hardware ethernet 00:0A:F7:72:A5:D0;
-    fixed-address ms-fe2002.codfw.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
-}
-
-host ms-fe2003 {
-    hardware ethernet 00:0A:F7:72:A5:D8;
-    fixed-address ms-fe2003.codfw.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
-}
-
-host ms-fe2004 {
-    hardware ethernet 00:0A:F7:72:AA:20;
-    fixed-address ms-fe2004.codfw.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
-}
-
 host ms-fe2005 {
     hardware ethernet F4:E9:D4:AE:B5:C0;
     fixed-address ms-fe2005.codfw.wmnet;
