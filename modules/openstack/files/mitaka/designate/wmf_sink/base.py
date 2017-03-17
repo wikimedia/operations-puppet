@@ -16,11 +16,6 @@
 from oslo_config import cfg
 from designate.central import rpcapi as central_rpcapi
 from designate.notification_handler.base import BaseAddressHandler
-from keystoneclient.auth.identity import v3
-from keystoneclient import client
-from keystoneclient import exceptions as keystoneexceptions
-from keystoneclient.v3 import projects
-from keystoneclient import session
 from oslo_log import log as logging
 
 import pipes
@@ -45,8 +40,7 @@ class BaseAddressWMFHandler(BaseAddressHandler):
         LOG.debug('Event data: %s' % data)
         data['domain'] = domain['name']
 
-        project_name = self._resolve_project_name(data['tenant_id'])
-        data['project_name'] = project_name
+        data['project_name'] = data['tenant_id']
 
         event_data = data.copy()
 
@@ -87,31 +81,3 @@ class BaseAddressWMFHandler(BaseAddressHandler):
                         (command, server, out, error))
             return False
         return True
-
-    def _resolve_project_name(self, tenant_id):
-        try:
-            username = cfg.CONF[self.name].keystone_auth_name
-            passwd = cfg.CONF[self.name].keystone_auth_pass
-            project = cfg.CONF[self.name].keystone_auth_project
-            url = cfg.CONF[self.name].keystone_auth_url
-        except KeyError:
-            LOG.debug('Missing a config setting for keystone auth.')
-            return
-
-        try:
-            auth = v3.Password(auth_url=url,
-                               user_id=username,
-                               password=passwd,
-                               project_id=project)
-            sess = session.Session(auth=auth)
-            keystone = client.Client(session=sess, auth_url=url)
-        except keystoneexceptions.AuthorizationFailure:
-            LOG.debug('Keystone client auth failed.')
-            return
-        projectmanager = projects.ProjectManager(keystone)
-        proj = projectmanager.get(tenant_id)
-        if proj:
-            LOG.debug('Resolved project id %s as %s' % (tenant_id, proj.name))
-            return proj.name
-        else:
-            return 'unknown'
