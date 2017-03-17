@@ -157,7 +157,6 @@ define service::uwsgi(
             http-socket => "0.0.0.0:${port}",
             processes   => $no_workers,
             die-on-term => true,
-            log-route     => ['local .*', 'logstash .*'],
             log-encoder   => [
                 # lint:ignore:single_quote_string_with_variables
                 # Add a timestamps to local log messages
