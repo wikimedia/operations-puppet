@@ -3,8 +3,9 @@
 # Provisions WDQS service package
 #
 class wdqs::service(
-    $package_dir=$::wdqs::package_dir,
-    $username=$::wdqs::username,
+    $deploy_user,
+    $package_dir,
+    $username,
     $config_file='RWStore.properties',
 ) {
 
@@ -12,10 +13,11 @@ class wdqs::service(
 
     if $::wdqs::use_git_deploy {
 
-        package { 'wdqs':
-            ensure   => present,
-            provider => 'trebuchet',
-            require  => User[$username],
+        # Deployment
+        scap::target { 'wdqs/wdqs':
+            service_name => 'wdqs-blazegraph',
+            deploy_user  => $deploy_user,
+            manage_user  => true,
         }
 
         $git_deploy_dir = '/srv/deployment/wdqs/wdqs'
