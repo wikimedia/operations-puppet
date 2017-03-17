@@ -121,9 +121,9 @@ ON `testreduce_vd`.* TO 'testreduce'@'10.64.16.151';
 
 -- parsoid testing database from ruthenium (command line access for ssastry)
 CREATE USER 'ssastry'@'10.64.16.151' IDENTIFIED BY '<%= @testreduce_cli_pass %>';
-GRANT SELECT, INSERT, UPDATE, DELETE, ALTER
+GRANT SELECT, INSERT, UPDATE, DELETE, ALTER, DROP
 ON `testreduce_0715`.* TO 'ssastry'@'10.64.16.151';
-GRANT SELECT, INSERT, UPDATE, DELETE, ALTER
+GRANT SELECT, INSERT, UPDATE, DELETE, ALTER, DROP
 ON `testreduce_vd`.* TO 'ssastry'@'10.64.16.151';
 
 -- striker application user. Will connect to DB from californium.
