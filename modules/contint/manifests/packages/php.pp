@@ -5,6 +5,8 @@ class contint::packages::php {
         'php5-dev',  # phpize
         'php5-ldap',  # OpenStackManager/LdapAuthentication T125158
         'php5-gd',
+        # mcrypt is used by fundraising's CiviCRM setup, deprecated in PHP 7
+        'php5-mcrypt',
         'php5-pgsql',
         'php5-sqlite',
         'php5-tidy',
