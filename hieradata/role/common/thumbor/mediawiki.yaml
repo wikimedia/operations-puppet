@@ -3,4 +3,4 @@ debdeploy::grains:
     value: standard
 
 admin::groups:
-    - thumbor-admins
+    - perf-roots
