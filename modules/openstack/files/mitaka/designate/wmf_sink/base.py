@@ -45,8 +45,7 @@ class BaseAddressWMFHandler(BaseAddressHandler):
         LOG.debug('Event data: %s' % data)
         data['domain'] = domain['name']
 
-        project_name = self._resolve_project_name(data['tenant_id'])
-        data['project_name'] = project_name
+        data['project_name'] = data['tenant_id']
 
         event_data = data.copy()
 
@@ -87,31 +86,3 @@ class BaseAddressWMFHandler(BaseAddressHandler):
                         (command, server, out, error))
             return False
         return True
-
-    def _resolve_project_name(self, tenant_id):
-        try:
-            username = cfg.CONF[self.name].keystone_auth_name
-            passwd = cfg.CONF[self.name].keystone_auth_pass
-            project = cfg.CONF[self.name].keystone_auth_project
-            url = cfg.CONF[self.name].keystone_auth_url
-        except KeyError:
-            LOG.debug('Missing a config setting for keystone auth.')
-            return
-
-        try:
-            auth = v3.Password(auth_url=url,
-                               user_id=username,
-                               password=passwd,
-                               project_id=project)
-            sess = session.Session(auth=auth)
-            keystone = client.Client(session=sess, auth_url=url)
-        except keystoneexceptions.AuthorizationFailure:
-            LOG.debug('Keystone client auth failed.')
-            return
-        projectmanager = projects.ProjectManager(keystone)
-        proj = projectmanager.get(tenant_id)
-        if proj:
-            LOG.debug('Resolved project id %s as %s' % (tenant_id, proj.name))
-            return proj.name
-        else:
-            return 'unknown'
