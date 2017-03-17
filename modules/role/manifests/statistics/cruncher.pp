@@ -63,6 +63,10 @@ class role::statistics::cruncher inherits role::statistics::base {
         repository => 'limn-edit-data',
         output_dir => 'metrics',
     }
+    reportupdater::job { 'edit-beta-features':
+        repository => 'limn-edit-data',
+        output_dir => 'metrics/beta-feature-enables',
+    }
     reportupdater::job { 'language':
         repository => 'limn-language-data',
         output_dir => 'metrics/beta-feature-enables',
