@@ -37,7 +37,11 @@ class wdqs(
         managehome => no,
     }
 
-    include ::wdqs::service
+    class { 'wdqs::service':
+        deploy_user => $deploy_user,
+        package_dir => $package_dir,
+        username => $username,
+    }
 
     file { $log_dir:
         ensure  => directory,
@@ -105,13 +109,6 @@ class wdqs(
 
     # WDQS Updater service
     include wdqs::updater
-
-    # Deployment
-    scap::target { 'wdqs/wdqs':
-        service_name => 'wdqs-blazegraph',
-        deploy_user  => $deploy_user,
-        manage_user  => true,
-    }
 
     # GC logs rotation is done by the JVM, but on JVM restart, the logs left by
     # the previous instance are left alone. This cron takes care of cleaning up
