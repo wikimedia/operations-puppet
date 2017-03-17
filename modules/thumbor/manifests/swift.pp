@@ -10,7 +10,7 @@
 #    $swift_account = 'thumbor',
 #    $swift_user = 'thumbor',
 #    $swift_sharded_containers = [],
-#    $swift_host = "http://ms-fe.svc.${::site}.wmnet",
+#    $swift_host = "https://ms-fe.svc.${::site}.wmnet",
 #
 # === Examples
 #
@@ -23,7 +23,7 @@ class thumbor::swift (
     $swift_account = 'mw',
     $swift_user = 'thumbor',
     $swift_sharded_containers = [],
-    $swift_host = "http://ms-fe.svc.${::site}.wmnet",
+    $swift_host = "https://ms-fe.svc.${::site}.wmnet",
 ) {
     file { '/etc/thumbor.d/80-thumbor-swift.conf':
         ensure  => present,
