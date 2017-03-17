@@ -10,6 +10,11 @@ server s1 {
     rxreq
     expect req.url == "/vary-cookie"
     txresp -hdr "Vary: Cookie"
+
+    # Response *with* "Vary: Cookie"
+    rxreq
+    expect req.url == "/vary-cookie"
+    txresp -hdr "Vary: Cookie"
 } -start
 
 varnish v1 -arg "-p cc_command='exec cc -fpic -shared -Wl,-x -L/usr/local/lib/ -o %o %s -lmaxminddb' -p vcc_allow_inline_c=true -p vcc_err_unref=false" -vcl+backend {
@@ -21,13 +26,21 @@ varnish v1 -arg "-p cc_command='exec cc -fpic -shared -Wl,-x -L/usr/local/lib/ -
 } -start
 
 client c1 {
+    # Session cookie, response without "Vary: Cookie"
     txreq -url "/no-vary-cookie" -hdr "Cookie: enwikiSession=42;" -hdr "X-Forwarded-Proto: https"
     rxresp
     expect resp.status == 200
     expect resp.http.X-Cache ~ "miss"
 
+    # Session cookie, response with "Vary: Cookie"
     txreq -url "/vary-cookie" -hdr "Cookie: enwikiSession=42;" -hdr "X-Forwarded-Proto: https"
     rxresp
     expect resp.status == 200
     expect resp.http.X-Cache ~ "pass"
+
+    # Non-Session cookie, response with "Vary: Cookie"
+    txreq -url "/vary-cookie" -hdr "Cookie: WMF-Last-Access=25-Feb-2017;" -hdr "X-Forwarded-Proto: https"
+    rxresp
+    expect resp.status == 200
+    expect resp.http.X-Cache ~ "miss"
 } -run
