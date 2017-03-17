@@ -100,6 +100,7 @@ def get_instance_ips(project, observer_pass):
         ]
     return ips
 
+
 def get_projects_with_nfs(mounts_config, observer_pass):
     """
     Get populated project objects that need NFS exports
@@ -149,6 +150,7 @@ def exportfs():
     logging.info(' '.join(exportfs))
     subprocess.check_call(exportfs)
 
+
 def write_public_exports(public_exports, exports_d_path):
     """ output public export definitions
     :param public_exports: dict of defined exports
@@ -162,6 +164,7 @@ def write_public_exports(public_exports, exports_d_path):
         public_paths.append(path)
     logging.info("found %s public NFS exports" % (len(public_paths)))
     return public_paths
+
 
 def write_project_exports(mounts_config, exports_d_path, observer_pass):
     """ output project export definitions
