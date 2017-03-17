@@ -3,7 +3,7 @@ debdeploy::grains:
     value: standard
 profile::etcd::replication::origin:
   cluster_name: eqiad.wmnet
-  path: /
+  path: /conftool
   servers:
     - conf1001.eqiad.wmnet
     - conf1002.eqiad.wmnet
