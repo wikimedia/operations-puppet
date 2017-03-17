@@ -18,6 +18,7 @@
         missingok
         rotate 7
         compress
+        delaycompress
         notifempty
         nocreate
         copytruncate
