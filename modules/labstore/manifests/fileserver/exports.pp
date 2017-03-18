@@ -40,6 +40,7 @@ class labstore::fileserver::exports {
         mode    => '0444',
         source  => 'puppet:///modules/labstore/nfs-mounts.yaml',
         require => [Package['python3'], Package['python3-yaml']],
+        notify  => Service['nfs-exportd'],
     }
 
     file { '/usr/local/sbin/nfs-manage-binds':
@@ -58,6 +59,7 @@ class labstore::fileserver::exports {
         mode    => '0555',
         source  => 'puppet:///modules/labstore/nfs-exportd',
         require => File['/usr/local/sbin/nfs-manage-binds'],
+        notify  => Service['nfs-exportd'],
     }
 
     file { '/usr/local/sbin/archive-project-volumes':
