@@ -11,6 +11,7 @@ daemonize=1
 scheduler_driver=nova.scheduler.filter_scheduler.FilterScheduler
 wmf_scheduler_hosts_pool=<%= @novaconfig["scheduler_pool"].join(",") %>
 scheduler_default_filters=RetryFilter,AvailabilityZoneFilter,RamFilter,ComputeFilter,ComputeCapabilitiesFilter,ImagePropertiesFilter,ServerGroupAntiAffinityFilter,ServerGroupAffinityFilter,AggregateInstanceExtraSpecsFilter,AvailabilityZoneFilter,SchedulerPoolFilter,DiskFilter
+scheduler_weight_classes=nova.scheduler.weights.metrics
 
 compute_monitors=ComputeDriverCPUMonitor
 
@@ -162,3 +163,7 @@ agent_enabled=True
 
 # Keymap for spice (string value)
 keymap=en-us
+
+[metrics]
+weight_setting=cpu.percent=-1.0
+required=False
