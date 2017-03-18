@@ -115,10 +115,6 @@ private:
       home: true
       project: true
       scratch: true
-  sugarcrm:
-    gid: 50292
-    mounts:
-      project: true
   testlabs:
     gid: 50302
     mounts:
