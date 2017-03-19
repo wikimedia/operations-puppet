@@ -5,17 +5,20 @@ class snapshot::dumps::configs {
     $apachedir = $snapshot::dumps::dirs::apachedir
     $confsdir = $snapshot::dumps::dirs::confsdir
 
+    $enchunkhistory1 = '30303,58141,112065,152180,212624,327599,375779,522388,545343,710090,880349,1113575,1157158,1547206'
+    $enchunkhistory2 = '1773248,2021218,2153807,2427469,2634193,2467421, 2705827,2895677,3679790,3449365,4114387,4596259,6533612'
+
     $config = {
         smallwikis => {
             dblist        => "${apachedir}/dblists/all.dblist",
             skipdblist    => "${dblistsdir}/skip.dblist",
-            keep          => '12',
+            keep          => '10',
             chunksEnabled => '0',
         },
         bigwikis => {
             dblist           => "${dblistsdir}/bigwikis.dblist",
             skipdblist       => "${dblistsdir}/skipnone.dblist",
-            keep             => '10',
+            keep             => '8',
             chunksEnabled    => '1',
             recombineHistory => '0',
             wikis            => {
@@ -100,14 +103,14 @@ class snapshot::dumps::configs {
         hugewikis => {
             dblist           => "${dblistsdir}/hugewikis.dblist",
             skipdblist       => "${dblistsdir}/skipnone.dblist",
-            keep             => '9',
+            keep             => '7',
             chunksEnabled    => '1',
             recombineHistory => '0',
             checkpointTime   => '720',
             wikis => {
                 enwiki => {
                     jobsperbatch          => 'xmlstubsdump=14',
-                    pagesPerChunkHistory  => '30303,58141,112065,152180,212624,327599,375779,522388,545343,710090,880349,1113575,1157158,1547206,1773248,2021218,2153807,2427469,2634193,2467421, 2705827,2895677,3679790,3449365,4114387,4596259,6533612',
+                  pagesPerChunkHistory  => "${enchunkhistory1},${enchunkhistory2}",
                     pagesPerChunkAbstract => '2000000',
                 },
             },
