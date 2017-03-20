@@ -20,3 +20,9 @@ profile::kubernetes::master::admission_controllers:
  - LimitRanger
  - RegistryEnforcer
  - DefaultStorageClass
+profile::kubernetes::master::expose_puppet_certs: true
+profile::kubernetes::master::ssl_cert_path: /etc/kubernetes/ssl/cert.pem
+profile::kubernetes::master::ssl_key_path: /etc/kubernetes/ssl/server.key
+profile::kubernetes::master::authz_mode: ''
+profile::kubernetes::master::host_automounts: []
+profile::kubernetes::master::host_path_prefixes_allowed: []
