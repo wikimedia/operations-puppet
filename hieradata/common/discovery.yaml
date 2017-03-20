@@ -18,3 +18,30 @@ discovery::services:
   appservers-rw:
     lvs: apaches
     active_active: false
+  api-ro:
+    lvs: api
+    active-active: true
+  api-rw:
+    lvs: api
+    active-active: false
+  parsoid:
+    lvs: parsoid
+    active_active: true
+  restbase:
+    lvs: restbase
+    active_active: true
+  graphoid:
+    lvs: graphoid
+    active_active: true
+  mathoid:
+    lvs: mathoid
+    active_active: true
+  mobileapps:
+    lvs: mobileapps
+    active_active: true
+  pdfrender:
+    lvs: pdfrender
+    active_active: true
+  citoid:
+    lvs: citoid
+    active_active: true
