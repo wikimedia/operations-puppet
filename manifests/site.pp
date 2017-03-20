@@ -2380,7 +2380,7 @@ node 'poolcounter1002.eqiad.wmnet' {
     include ::standard
 }
 
-node /^prometheus200[12]\.codfw\.wmnet$/ {
+node /^prometheus200[1234]\.codfw\.wmnet$/ {
     role(prometheus::ops, prometheus::global)
 
     include ::base::firewall
