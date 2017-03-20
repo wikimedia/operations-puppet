@@ -2,7 +2,7 @@
 class openstack::clientlib {
     include ::openstack::observerenv
     include ::openstack
-    include ::openstack::repo
+    require ::openstack::repo
 
     $packages = [
         'python-novaclient',
