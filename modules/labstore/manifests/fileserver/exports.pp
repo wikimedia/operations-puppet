@@ -60,6 +60,19 @@ class labstore::fileserver::exports {
         require => File['/usr/local/sbin/nfs-manage-binds'],
     }
 
+    file { '/etc/exports.bak':
+        ensure  => directory,
+        owner   => 'nfsmanager',
+        group   => 'nfsmanager',
+        require => File['/usr/local/bin/nfs-exportd'],
+    }
+
+    cron { 'archive_export_d':
+        command => '/bin/cp -Rp /etc/exports.d /etc/exports.bak',
+        weekday => 1,
+        require => File['/etc/exports.bak'],
+    }
+
     file { '/usr/local/sbin/archive-project-volumes':
         owner  => 'root',
         group  => 'root',
