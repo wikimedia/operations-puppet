@@ -130,17 +130,17 @@ class role::phabricator::main {
 
     $phab_diffusion_ssh_host = hiera('phabricator_diffusion_ssh_host', 'git-ssh.wikimedia.org')
 
-    $elasticsearch_host = hiera('phabricator_elasticsearch_hostname', 'search.svc.eqiad.wmnet')
+    $elasticsearch_host = hiera('phabricator_elasticsearch_hostname', 'search.svc.codfw.wmnet')
 
     $elasticsearch_port = hiera('phabricator_elasticsearch_port', 9243)
     $elasticsearch_protocol = hiera('phabricator_elasticsearch_protocol', 'https')
-    $elasticsearch_version = hiera('phabricator_elasticsearch_version', '2')
+    $elasticsearch_version = hiera('phabricator_elasticsearch_version', '5')
     $elasticsearch_enabled = hiera('phabricator_elasticsearch_enabled', true)
 
-    $elasticsearch_mirror = hiera('phabricator_elasticsearch_mirror', 'search.svc.codfw.wmnet')
-    $elasticsearch_mirror_version = hiera('phabricator_elasticsearch_mirror_version', '5')
+    $elasticsearch_mirror = hiera('phabricator_elasticsearch_mirror', 'search.svc.eqiad.wmnet')
+    $elasticsearch_mirror_version = hiera('phabricator_elasticsearch_mirror_version', '2')
     $elasticsearch_mirror_read = hiera('phabricator_elasticsearch_mirror_read', false)
-    $elasticsearch_mirror_write = hiera('phabricator_elasticsearch_mirror_write', true)
+    $elasticsearch_mirror_write = hiera('phabricator_elasticsearch_mirror_write', false)
 
     # lint:ignore:arrow_alignment
     class { '::phabricator':
