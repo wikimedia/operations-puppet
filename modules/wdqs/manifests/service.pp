@@ -29,13 +29,13 @@ class wdqs::service(
                 owner   => $::wdqs::username,
                 group   => 'wikidev',
                 mode    => '0775',
-                require => Package['wdqs'],
+                require => Scap::Target['wdqs/wdqs'],
             }
         } else {
             # This is to have file resource on $package_dir in any case
             file { $package_dir:
                 ensure  => present,
-                require => Package['wdqs'],
+                require => Scap::Target['wdqs/wdqs'],
             }
         }
 
