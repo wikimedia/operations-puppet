@@ -60,26 +60,29 @@ class netops::monitoring {
         group          => 'switches',
         alarms         => true,
     }
+    # Note: The parents attribute is used to capture a view of the network
+    # topology. It is not complete on purpose as icinga is not able to
+    # work well with loops
     $switches = {
         # eqiad
-        'asw-a-eqiad'   => { ipv4 => '10.65.0.17',   },
-        'asw2-a5-eqiad' => { ipv4 => '10.65.0.20',   },
-        'asw-b-eqiad'   => { ipv4 => '10.65.0.18',   },
-        'asw-c-eqiad'   => { ipv4 => '10.65.0.23',   },
-        'asw-d-eqiad'   => { ipv4 => '10.65.0.24',   },
-        'asw2-d-eqiad'  => { ipv4 => '10.65.0.27',   },
-        'msw1-eqiad'    => { ipv4 => '10.65.0.10',   },
+        'asw-a-eqiad'   => { ipv4 => '10.65.0.17',   parents => ['cr1-eqiad', 'cr2-eqiad'] },
+        'asw2-a5-eqiad' => { ipv4 => '10.65.0.20',   parents => ['cr1-eqiad', 'cr2-eqiad'] },
+        'asw-b-eqiad'   => { ipv4 => '10.65.0.18',   parents => ['cr1-eqiad', 'cr2-eqiad'] },
+        'asw-c-eqiad'   => { ipv4 => '10.65.0.23',   parents => ['cr1-eqiad', 'cr2-eqiad'] },
+        'asw-d-eqiad'   => { ipv4 => '10.65.0.24',   parents => ['cr1-eqiad', 'cr2-eqiad'] },
+        'asw2-d-eqiad'  => { ipv4 => '10.65.0.27',   parents => ['cr1-eqiad', 'cr2-eqiad'] },
+        'msw1-eqiad'    => { ipv4 => '10.65.0.10',   parents => ['cr1-eqiad', 'cr2-eqiad'] },
         # codfw
-        'asw-a-codfw'   => { ipv4 => '10.193.0.16',  },
-        'asw-b-codfw'   => { ipv4 => '10.193.0.17',  },
-        'asw-c-codfw'   => { ipv4 => '10.193.0.18',  },
-        'asw-d-codfw'   => { ipv4 => '10.193.0.19',  },
-        'msw1-codfw'    => { ipv4 => '10.193.0.3',   },
+        'asw-a-codfw'   => { ipv4 => '10.193.0.16',  parents => ['cr1-codfw', 'cr2-codfw'] },
+        'asw-b-codfw'   => { ipv4 => '10.193.0.17',  parents => ['cr1-codfw', 'cr2-codfw'] },
+        'asw-c-codfw'   => { ipv4 => '10.193.0.18',  parents => ['cr1-codfw', 'cr2-codfw'] },
+        'asw-d-codfw'   => { ipv4 => '10.193.0.19',  parents => ['cr1-codfw', 'cr2-codfw'] },
+        'msw1-codfw'    => { ipv4 => '10.193.0.3',   parents => ['cr1-codfw', 'cr2-codfw'] },
         # esams
-        'asw-esams'     => { ipv4 => '10.21.0.104',  },
-        'csw2-esams'    => { ipv4 => '10.21.0.105',  },
+        'asw-esams'     => { ipv4 => '10.21.0.104',  parents => ['cr1-esams', 'cr2-esams'] },
+        'csw2-esams'    => { ipv4 => '10.21.0.105',  parents => ['asw-esams']  },
         # ulsfo
-        'asw-ulsfo'     => { ipv4 => '10.128.128.6', },
+        'asw-ulsfo'     => { ipv4 => '10.128.128.6', parents => ['cr1-ulsfo', 'cr2-ulsfo'] },
     }
     create_resources(netops::check, $switches, $switches_defaults)
 }

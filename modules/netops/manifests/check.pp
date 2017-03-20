@@ -22,6 +22,10 @@
 # [*bgp*]
 #   Whether to perform BGP checks. Defaults to false.
 #
+# [*parents*]
+#   The parent devices of this device. Accepts either an array or a comma
+#   separate string. Defaults to undef
+#
 # === Examples
 #
 #  netops::check { 'cr1-esams':
@@ -37,11 +41,21 @@ define netops::check(
     $alarms=false,
     $bgp=false,
     $interfaces=false,
+    $parents=undef,
 ) {
+
+    # If we get an array convert it to a comma separated string
+    if $parents and is_array($parents) {
+        $real_parents = join($parents, ',')
+    # Otherwise, pass it as is (undef or string)
+    } else {
+        $real_parents = $parents
+    }
 
     @monitoring::host { $title:
         ip_address => $ipv4,
         group      => $group,
+        parents    => $real_parents,
     }
 
     if $ipv6 {
