@@ -76,7 +76,13 @@ node 'analytics1003.eqiad.wmnet' {
         analytics_cluster::oozie::server::database,
         analytics_cluster::hive::metastore,
         analytics_cluster::hive::server,
-        analytics_cluster::oozie::server)
+        analytics_cluster::oozie::server,
+
+        # analytics1003 also runs various crons that launch
+        # Hadoop jobs.
+        analytics_cluster::refinery,
+        analytics_cluster::refinery::job::project_namespace_map,
+        analytics_cluster::refinery::job::sqoop_mediawiki)
 
     include ::standard
     include ::base::firewall
