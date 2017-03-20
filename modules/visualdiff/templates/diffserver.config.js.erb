@@ -5,41 +5,35 @@
 
 if (typeof module === 'object') {
     module.exports = {
-        server: {
-            host: 'localhost',
-            port: 8002,
-        },
-        opts: {
-            viewportWidth: 1920,
-            viewportHeight: 1080,
+		viewportWidth: 1920,
+		viewportHeight: 1080,
 
-            filePrefix: null,
-            outdir: '/srv/visualdiff/pngs',
-            quiet: true,
+		filePrefix: null,
+		outdir: '/srv/visualdiff/pngs',
+		quiet: true,
 
-            html1: {
-                name: 'php',
-                dumpHTML: false,
-                postprocessorScript: '/srv/visualdiff/lib/php_parser.postprocess.js',
-                injectJQuery: false,
-            },
-            // HTML2 generator options
-            html2: {
-                name: 'parsoid',
-                server: 'http://localhost:8000',
-                dumpHTML: false,
-                postprocessorScript: '/srv/visualdiff/lib/parsoid.postprocess.js',
-                stylesYamlFile: '/srv/visualdiff/lib/parsoid.custom_styles.yaml',
-                injectJQuery: true,
-            },
+		html1: {
+			name: 'php',
+			dumpHTML: false,
+			postprocessorScript: '/srv/visualdiff/lib/php_parser.postprocess.js',
+			injectJQuery: false,
+		},
+		// HTML2 generator options
+		html2: {
+			name: 'parsoid',
+			server: 'http://localhost:8000',
+			dumpHTML: false,
+			postprocessorScript: '/srv/visualdiff/lib/parsoid.postprocess.js',
+			stylesYamlFile: '/srv/visualdiff/lib/parsoid.custom_styles.yaml',
+			injectJQuery: true,
+		},
 
-            // Engine for image diffs, may be resemble or uprightdiff
-            diffEngine: 'uprightdiff',
+		// Engine for image diffs, may be resemble or uprightdiff
+		diffEngine: 'uprightdiff',
 
-            // UprightDiff options
-            uprightDiffSettings: {
-                binary: '/usr/local/bin/uprightdiff'
-            },
-        }
+		// UprightDiff options
+		uprightDiffSettings: {
+			binary: '/usr/local/bin/uprightdiff'
+		},
     };
 }
