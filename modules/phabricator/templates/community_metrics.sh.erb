@@ -149,10 +149,16 @@ tasksclosed=$(echo $result_tasksclosed | cut -d " " -f3)
 tasksopen=$(echo $result_tasksopen | cut -d " " -f3)
 
 epochnow=$(date +%s)
+# regex if we have zero open tasks (can happen for unbreaknow; see T159314):
+regex='^[0-9]+$'
 
 mediantasksopen_unbreaknow_epoch=$(echo $result_mediantasksopen_unbreaknow | cut -d " " -f3 | sed 's/.0000//' | sed 's/.5000//')
-diff_unbreaknow=$((epochnow-mediantasksopen_unbreaknow_epoch))
-mediantasksopen_unbreaknow=$(echo $((diff_unbreaknow/86400)))
+if [[ $mediantasksopen_unbreaknow_epoch =~ $regex ]] ; then
+  diff_unbreaknow=$((epochnow-mediantasksopen_unbreaknow_epoch))
+  mediantasksopen_unbreaknow=$(echo $((diff_unbreaknow/86400)))
+else
+  mediantasksopen_unbreaknow=0
+fi
 
 mediantasksopen_needstriage_epoch=$(echo $result_mediantasksopen_needstriage | cut -d " " -f3 | sed 's/.0000//' | sed 's/.5000//')
 diff_needstriage=$((epochnow-mediantasksopen_needstriage_epoch))
