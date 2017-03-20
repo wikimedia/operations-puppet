@@ -10,6 +10,7 @@ profile::kubernetes::master_hosts:
 - argon.eqiad.wmnet
 - chlorine.eqiad.wmnet
 profile::kubernetes::infra_pod: 'darmstadtium.eqiad.wmnet/pause'
+profile::kubernetes::use_cni: true
 profile::docker::engine::settings:
    iptables: false
    ip-masq: false
