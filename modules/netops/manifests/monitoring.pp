@@ -62,24 +62,24 @@ class netops::monitoring {
     }
     $switches = {
         # eqiad
-        'asw-a-eqiad.mgmt.eqiad.wmnet'   => { ipv4 => '10.65.0.17',   },
-        'asw2-a5-eqiad.mgmt.eqiad.wmnet' => { ipv4 => '10.65.0.20',   },
-        'asw-b-eqiad.mgmt.eqiad.wmnet'   => { ipv4 => '10.65.0.18',   },
-        'asw-c-eqiad.mgmt.eqiad.wmnet'   => { ipv4 => '10.65.0.23',   },
-        'asw-d-eqiad.mgmt.eqiad.wmnet'   => { ipv4 => '10.65.0.24',   },
-        'asw2-d-eqiad.mgmt.eqiad.wmnet'  => { ipv4 => '10.65.0.27',   },
-        'msw1-eqiad.mgmt.eqiad.wmnet'    => { ipv4 => '10.65.0.10',   },
+        'asw-a-eqiad'   => { ipv4 => '10.65.0.17',   },
+        'asw2-a5-eqiad' => { ipv4 => '10.65.0.20',   },
+        'asw-b-eqiad'   => { ipv4 => '10.65.0.18',   },
+        'asw-c-eqiad'   => { ipv4 => '10.65.0.23',   },
+        'asw-d-eqiad'   => { ipv4 => '10.65.0.24',   },
+        'asw2-d-eqiad'  => { ipv4 => '10.65.0.27',   },
+        'msw1-eqiad'    => { ipv4 => '10.65.0.10',   },
         # codfw
-        'asw-a-codfw.mgmt.codfw.wmnet'   => { ipv4 => '10.193.0.16',  },
-        'asw-b-codfw.mgmt.codfw.wmnet'   => { ipv4 => '10.193.0.17',  },
-        'asw-c-codfw.mgmt.codfw.wmnet'   => { ipv4 => '10.193.0.18',  },
-        'asw-d-codfw.mgmt.codfw.wmnet'   => { ipv4 => '10.193.0.19',  },
-        'msw1-codfw.mgmt.codfw.wmnet'    => { ipv4 => '10.193.0.3',   },
+        'asw-a-codfw'   => { ipv4 => '10.193.0.16',  },
+        'asw-b-codfw'   => { ipv4 => '10.193.0.17',  },
+        'asw-c-codfw'   => { ipv4 => '10.193.0.18',  },
+        'asw-d-codfw'   => { ipv4 => '10.193.0.19',  },
+        'msw1-codfw'    => { ipv4 => '10.193.0.3',   },
         # esams
-        'asw-esams.mgmt.esams.wmnet'     => { ipv4 => '10.21.0.104',  },
-        'csw2-esams.mgmt.esams.wmnet'    => { ipv4 => '10.21.0.105',  },
+        'asw-esams'     => { ipv4 => '10.21.0.104',  },
+        'csw2-esams'    => { ipv4 => '10.21.0.105',  },
         # ulsfo
-        'asw-ulsfo.mgmt.ulsfo.wmnet'     => { ipv4 => '10.128.128.6', },
+        'asw-ulsfo'     => { ipv4 => '10.128.128.6', },
     }
     create_resources(netops::check, $switches, $switches_defaults)
 }
