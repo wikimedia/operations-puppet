@@ -7,7 +7,8 @@ define monitoring::host (
     $group         = undef,
     $ensure        = present,
     $critical      = false,
-    $contact_group = hiera('contactgroups', 'admins')
+    $parents       = undef,
+    $contact_group = hiera('contactgroups', 'admins'),
     ) {
 
     $nagios_address = $host_fqdn ? {
@@ -46,24 +47,29 @@ define monitoring::host (
         $icon_image      = "vendors/${image}.png"
         $vrml_image      = "vendors/${image}.png"
         $statusmap_image = "vendors/${image}.gd2"
-        # TODO: Make this better by getting all LLDP peers on all physical (only!) interfaces
-        # map() would have been great for this.
-        if $facts['lldppeer_eth0'] {
-            $parents = $facts['lldppeer_eth0']
+        # Allow overriding the parents of a device. This makes the exposed API
+        # more consistent, even though it's doubtful we will ever use this
+        # functionality in the case of an exported host
+        if $parents {
+            $real_parents = $parents
+        } elsif $facts['lldppeer_eth0'] {
+            # TODO: Make this better by getting all LLDP peers on all physical (only!) interfaces
+            # map() would have been great for this.
+            $real_parents = $facts['lldppeer_eth0']
         } else {
-            $parents = undef
+            $real_parents = undef
         }
     } else {
         $icon_image      = undef
         $vrml_image      = undef
         $statusmap_image = undef
-        $parents = undef
+        $real_parents    = $parents
     }
     $host = {
         "${title}" => {
             ensure                => $ensure,
             host_name             => $title,
-            parents               => $parents,
+            parents               => $real_parents,
             address               => $nagios_address,
             hostgroups            => $hostgroup,
             check_command         => 'check_ping!500,20%!2000,100%',
