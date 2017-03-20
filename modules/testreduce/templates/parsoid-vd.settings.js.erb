@@ -46,7 +46,7 @@ module.exports = {
 
 	// (Optional)
 	generateTitleUrl: function(server, prefix, title) {
-		return server.replace(/\/$/, '/') + prefix + "/" + title;
+		return server.replace(/\/?$/, '/') + prefix + "/" + title;
 	},
 
 	parsoidRTConfig: require('/srv/visualdiff/testreduce/server.visualdiff.js').parsoidRTConfig,
