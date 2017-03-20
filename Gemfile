@@ -9,6 +9,11 @@ gem 'puppetlabs_spec_helper', '< 2.0.0'
 # https://tickets.puppetlabs.com/browse/PUP-3796
 gem 'safe_yaml', '~> 1.0.4'
 
+# https://pryrepl.org/
+#   require 'pry'
+#   binding.pry
+gem 'pry', require: false
+
 gem 'rake', '~> 10.4', '>= 10.4.2'
 gem 'git', '1.3.0'
 gem 'puppet-lint', '2.0.2'
