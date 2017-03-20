@@ -130,17 +130,7 @@ class role::phabricator::main {
 
     $phab_diffusion_ssh_host = hiera('phabricator_diffusion_ssh_host', 'git-ssh.wikimedia.org')
 
-    $elasticsearch_host = hiera('phabricator_elasticsearch_hostname', 'search.svc.eqiad.wmnet')
-
-    $elasticsearch_port = hiera('phabricator_elasticsearch_port', 9243)
-    $elasticsearch_protocol = hiera('phabricator_elasticsearch_protocol', 'https')
-    $elasticsearch_version = hiera('phabricator_elasticsearch_version', '2')
-    $elasticsearch_enabled = hiera('phabricator_elasticsearch_enabled', true)
-
-    $elasticsearch_mirror = hiera('phabricator_elasticsearch_mirror', 'search.svc.codfw.wmnet')
-    $elasticsearch_mirror_version = hiera('phabricator_elasticsearch_mirror_version', '5')
-    $elasticsearch_mirror_read = hiera('phabricator_elasticsearch_mirror_read', false)
-    $elasticsearch_mirror_write = hiera('phabricator_elasticsearch_mirror_write', true)
+    $cluster_search = hiera('phabricator_cluster_search')
 
     # lint:ignore:arrow_alignment
     class { '::phabricator':
@@ -156,42 +146,7 @@ class role::phabricator::main {
                               "${phab_root_dir}/libext/security/src",
                               "${phab_root_dir}/libext/misc/" ],
         settings         => {
-            'cluster.search' => [
-                {
-                    'type' => 'elasticsearch',
-                    'hosts' => [
-                        {
-                            'protocol'  => $elasticsearch_protocol,
-                            'host'      => $elasticsearch_host,
-                            'port'      => $elasticsearch_port,
-                            'path'      => '/phabricator',
-                            'version'   => $elasticsearch_version,
-                            'roles'     => {
-                                'read'  => $elasticsearch_enabled,
-                                'write' => $elasticsearch_enabled,
-                            },
-                        },
-                        {
-                            'protocol'  => $elasticsearch_protocol,
-                            'host'      => $elasticsearch_mirror,
-                            'port'      => $elasticsearch_port,
-                            'path'      => '/phabricator',
-                            'version'   => $elasticsearch_mirror_version,
-                            'roles'     => {
-                                'read'  => $elasticsearch_mirror_read,
-                                'write' => $elasticsearch_mirror_write,
-                            },
-                        },
-                    ],
-                },
-                {
-                    'type' => 'mysql',
-                    'roles' => {
-                        'read' => false,
-                        'write' => true,
-                    }
-                },
-            ],
+            'cluster.search'                         => $cluster_search,
             'darkconsole.enabled'                    => false,
             'differential.allow-self-accept'         => true,
             'phabricator.base-uri'                   => "https://${domain}",
