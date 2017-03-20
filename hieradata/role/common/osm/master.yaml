@@ -1,5 +1,5 @@
 debdeploy::grains:
   debdeploy-osm-master:
     value: standard
-role::osm::master::osm_slave: 'labsdb1007.eqiad.wmnet'
-role::osm::master::osm_slave_v4: '10.64.37.12'
+role::osm::master::osm_slave: 'labsdb1006.eqiad.wmnet'
+role::osm::master::osm_slave_v4: '10.64.37.11'

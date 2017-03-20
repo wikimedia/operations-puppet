@@ -1,4 +1,6 @@
-class role::osm::slave {
+class role::osm::slave (
+    $osm_master = undef,
+) {
     include role::osm::common
     include postgresql::postgis
     include passwords::osm
@@ -13,10 +15,7 @@ class role::osm::slave {
     }
 
     class {'postgresql::slave':
-        # FIXME - top-scope var without namespace ($osm_master), will break in puppet 2.8
-        # lint:ignore:variable_scope
         master_server    => $osm_master,
-        # lint:endignore
         replication_pass => $passwords::osm::replication_pass,
         includes         => 'tuning.conf',
         root_dir         => $role::osm::common::root_dir,
