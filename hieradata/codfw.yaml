@@ -56,6 +56,8 @@ etcd_hosts:
 prometheus_nodes:
   - prometheus2001.codfw.wmnet
   - prometheus2002.codfw.wmnet
+  - prometheus2003.codfw.wmnet
+  - prometheus2004.codfw.wmnet
 
 # Which of our redundant unified cert vendors to use in each DC
 public_tls_unified_cert_vendor: "globalsign"

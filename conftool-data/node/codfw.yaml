@@ -308,6 +308,8 @@ codfw:
   prometheus:
     prometheus2001.codfw.wmnet: [prometheus]
     prometheus2002.codfw.wmnet: [prometheus]
+    prometheus2003.codfw.wmnet: [prometheus]
+    prometheus2004.codfw.wmnet: [prometheus]
   wdqs:
     wdqs2001.codfw.wmnet: [wdqs]
     wdqs2002.codfw.wmnet: [wdqs]
