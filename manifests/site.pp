@@ -2516,7 +2516,7 @@ node 'rutherfordium.eqiad.wmnet' {
 node 'ruthenium.eqiad.wmnet' {
     role(test::system,
         parsoid::testing, parsoid::rt_server, parsoid::rt_client,
-        parsoid::vd_server, parsoid::vd_client)
+        parsoid::vd_server, parsoid::vd_client, parsoid::diffserver)
 }
 
 # cluster management (salt master, cumin master)
