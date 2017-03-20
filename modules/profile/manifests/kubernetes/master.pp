@@ -1,11 +1,13 @@
 class profile::kubernetes::master(
     $etcd_urls=hiera('profile::kubernetes::master::etcd_urls'),
-    $kubenodes=hiera('profile::kubernetes::master::kubenodes'),
+    # List of hosts this is accessible to.
+    # SPECIAL VALUE: use 'all' to have this port be open to the world
+    $accessible_to=hiera('profile::kubernetes::master::accessible_to'),
     $docker_registry=hiera('profile::kubernetes::master::docker_registry'),
     $service_cluster_ip_range=hiera('profile::kubernetes::master::service_cluster_ip_range'),
     $apiserver_count=hiera('profile::kubernetes::master::apiserver_count'),
     $admission_controllers=hiera('profile::kubernetes::master::admission_controllers'),
-    $expose_puppet_certs=hiera('profile::kubernetes::master::use_puppet_certs'),
+    $expose_puppet_certs=hiera('profile::kubernetes::master::expose_puppet_certs'),
     $ssl_cert_path=hiera('profile::kubernetes::master::ssl_cert_path'),
     $ssl_key_path=hiera('profile::kubernetes::master::ssl_cert_path'),
     $authz_mode=hiera('profile::kubernetes::master::authz_mode'),
@@ -38,12 +40,18 @@ class profile::kubernetes::master(
     class { '::k8s::scheduler': use_package => true }
     class { '::k8s::controller': use_package => true }
 
-    $kubenodes_ferm = join($kubenodes, ' ')
+
+    if $accessible_to == 'all' {
+        $accessible_range = undef
+    } else {
+        $accessible_to_ferm = join($accesible_to, ' ')
+        $accessible_range = "(@resolve((${accessible_to_ferm})))"
+    }
 
     ferm::service { 'apiserver-https':
         proto  => 'tcp',
         port   => '6443',
-        srange => "(@resolve((${kubenodes_ferm})))",
+        srange => $accessible_to_range,
     }
 
     diamond::collector { 'Kubernetes':
