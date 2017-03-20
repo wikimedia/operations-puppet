@@ -4,9 +4,6 @@ server {
 
     listen   8001; ## listen for ipv4; this line is default and implied
 
-    root /usr/share/nginx/www;
-    index index.html index.htm;
-
     # parsoid (used for a specific test case below)
     location  /parsoid {
         rewrite /parsoid/(.*) /$1  break;
@@ -28,15 +25,20 @@ server {
 
     listen   8001; ## listen for ipv4; this line is default and implied
 
-    root /usr/share/nginx/www;
-    index index.html index.htm;
-
     # visual-diffing web UI (used for a specific test case above)
-    location  /vd {
-        rewrite /vd/(.*) /$1  break;
+    location  /diff {
         proxy_pass         http://localhost:8012;
         proxy_redirect     off;
         proxy_set_header   Host $host;
+    }
+
+    # Serve the contents of the diff directories
+    location /diffs {
+        # SSS FIXME: This directory location should be hiera-data-ed!
+        # Referenced in 3 separate config files
+        root /srv/visualdiff/pngs;
+        autoindex on;
+        charset utf-8;
     }
 
     # testreduce web UI for visualdiffing
