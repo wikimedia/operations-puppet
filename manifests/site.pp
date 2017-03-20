@@ -1439,13 +1439,12 @@ node 'labsdb1005.eqiad.wmnet' {
 }
 
 node 'labsdb1006.eqiad.wmnet' {
-    role(osm::master)
-    # include role::labs::db::slave
+    $osm_master = 'labsdb1007.eqiad.wmnet'
+    role(osm::slave)
 }
 
 node 'labsdb1007.eqiad.wmnet' {
     role(osm::master)
-    # include role::labs::db::master
 }
 
 node /labstore100[12]\.eqiad\.wmnet/ {
