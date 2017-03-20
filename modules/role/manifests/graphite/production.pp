@@ -35,6 +35,15 @@ class role::graphite::production {
         minute  => fqdn_rand(60),
     }
 
+    # Cleanup eventstreams rdkafka stale data - T160644
+    $eventstreams_rdkafka = "${storage_dir}/whisper/eventstreams/rdkafka"
+    cron { 'graphite-eventstreams':
+        command => "[ -d ${eventstreams_rdkafka} ] && find ${eventstreams_rdkafka} -type f -mtime +15 -delete && find ${eventstreams_rdkafka} -type d -empty -delete",
+        user    => '_graphite',
+        hour    => '9',
+        minute  => fqdn_rand(60),
+    }
+
     $graphite_hosts = [
         'graphite1001.eqiad.wmnet',
         'graphite1003.eqiad.wmnet',
