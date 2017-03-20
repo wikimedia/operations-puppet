@@ -97,6 +97,7 @@ class role::labs::nfs::secondary($monitor = 'eth0') {
         group   => 'root',
     }
 
+    include labstore::monitoring::exports
     include labstore::monitoring::interfaces
     include labstore::monitoring::ldap
     include labstore::monitoring::nfsd
