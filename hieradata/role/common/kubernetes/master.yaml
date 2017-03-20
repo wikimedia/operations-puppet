@@ -7,7 +7,7 @@ profile::kubernetes::master::etcd_urls:
  - https://etcd1002.eqiad.wmnet:2379
  - https://etcd1003.eqiad.wmnet:2379
 profile::kubernetes::master::docker_registry: darmstadtium.eqiad.wmnet
-profile::kubernetes::master::kubenodes:
+profile::kubernetes::master::accessible_to:
  - kubernetes1001.eqiad.wmnet
  - kubernetes1002.eqiad.wmnet
  - kubernetes1003.eqiad.wmnet
