@@ -130,17 +130,17 @@ class role::phabricator::main {
 
     $phab_diffusion_ssh_host = hiera('phabricator_diffusion_ssh_host', 'git-ssh.wikimedia.org')
 
-    $elasticsearch_host = hiera('phabricator_elasticsearch_hostname', 'search.svc.eqiad.wmnet')
+    $elasticsearch_host = hiera('phabricator_elasticsearch_hostname', 'search.svc.codfw.wmnet')
 
     $elasticsearch_port = hiera('phabricator_elasticsearch_port', 9243)
     $elasticsearch_protocol = hiera('phabricator_elasticsearch_protocol', 'https')
-    $elasticsearch_version = hiera('phabricator_elasticsearch_version', '2')
+    $elasticsearch_version = hiera('phabricator_elasticsearch_version', '5')
     $elasticsearch_enabled = hiera('phabricator_elasticsearch_enabled', true)
 
-    $elasticsearch_mirror = hiera('phabricator_elasticsearch_mirror', 'search.svc.codfw.wmnet')
-    $elasticsearch_mirror_version = hiera('phabricator_elasticsearch_mirror_version', '5')
+    $elasticsearch_mirror = hiera('phabricator_elasticsearch_mirror', 'search.svc.eqiad.wmnet')
+    $elasticsearch_mirror_version = hiera('phabricator_elasticsearch_mirror_version', '2')
     $elasticsearch_mirror_read = hiera('phabricator_elasticsearch_mirror_read', false)
-    $elasticsearch_mirror_write = hiera('phabricator_elasticsearch_mirror_write', true)
+    $elasticsearch_mirror_write = hiera('phabricator_elasticsearch_mirror_write', false)
 
     # lint:ignore:arrow_alignment
     class { '::phabricator':
@@ -251,9 +251,10 @@ class role::phabricator::main {
         require         => Package[$deploy_target]
     }
 
+    $dump_file = '/srv/dumps/phabricator_public.dump'
     cron { 'phab_dump':
         ensure  => $dump_rsync_ensure,
-        command => 'rsync -zpt --bwlimit=40000 -4 /srv/dumps/phabricator_public.dump dataset1001.wikimedia.org::other_misc/ >/dev/null 2>&1',
+        command => "rsync -zpt --bwlimit=40000 -4 ${dump_file} dataset1001.wikimedia.org::other_misc/ >/dev/null 2>&1",
         user    => 'root',
         minute  => '10',
         hour    => '4',
@@ -281,7 +282,11 @@ class role::phabricator::main {
             ops-esams   => '*',
             ops-ulsfo   => '*',
             domains     => 'markmonitor.com,wikimedia.org',
-            procurement => 'cdw.com,cyrusone.com,dasher.com,dell.com,globalsign.com,optiv.com,unitedlayer.com,us.ntt.net,wikimedia.org,zayo.com',
+            procurement => join([
+                'cdw.com', 'cyrusone.com', 'dasher.com', 'dell.com',
+                'globalsign.com', 'optiv.com', 'unitedlayer.com', 'us.ntt.net',
+                'wikimedia.org', 'zayo.com'],
+                ','),
         },
         phab_bot                => {
             root_dir    => '/srv/phab/phabricator/',
