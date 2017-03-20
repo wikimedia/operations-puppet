@@ -10,9 +10,10 @@ ui.logo:
   'wordmarkText': 'Phabricator'
 
 ui.footer-items:
-  - {name: 'Content licensed under Creative Commons Attribution-ShareAlike 3.0 (CC-BY-SA) unless otherwise noted; code licensed under GNU General Public License (GPL) or other open source licenses. By using this site, you agree to the Terms of Use and Privacy Policy.'}
+  - {name: 'Content licensed under Creative Commons Attribution-ShareAlike 3.0 (CC-BY-SA) unless otherwise noted; code licensed under GNU General Public License (GPL) or other open source licenses. By using this site, you agree to the Terms of Use, Privacy Policy, and Code of Conduct.'}
   - {href: 'https://www.wikimediafoundation.org/', name: Wikimedia Foundation}
   - {href: 'https://wikimediafoundation.org/wiki/Privacy_policy', name: Privacy Policy}
+  - {href: 'https://www.mediawiki.org/wiki/Code_of_Conduct', name: Code of Conduct}
   - {href: 'https://wikimediafoundation.org/wiki/Terms_of_Use/Phabricator', name: Terms of Use}
   - {href: 'https://wikimediafoundation.org/wiki/Wikimedia:General_disclaimer', name: Disclaimer}
   - {href: 'https://creativecommons.org/licenses/by-sa/3.0/', name: CC-BY-SA}
