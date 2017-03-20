@@ -131,16 +131,18 @@ define service::uwsgi(
             mode    => '0444',
         }
         $local_log_config = {
-            logger => [
+            logger    => [
                 "file:${local_logfile}",
                 "logstash socket:${service::configuration::logstash_host}:${service::configuration::logstash_port}",
-            ]
+            ],
+            log-route => ['local .*', 'logstash .*'],
         }
     } else {
         $local_log_config = {
-            logger => [
+            logger    => [
                 "logstash socket:${service::configuration::logstash_host}:${service::configuration::logstash_port}",
-            ]
+            ],
+            log-route => 'logstash .*',
         }
     }
 
