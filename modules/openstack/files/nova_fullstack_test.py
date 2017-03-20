@@ -460,8 +460,11 @@ def main():
 
         exist = nova_conn.servers.list()
         logging.debug(exist)
-        pexit = map(lambda e: e.human_id.startswith(prepend), exist)
-        if len(filter(bool, pexit)) >= args.max_pool:
+        pexist = map(lambda e: e.human_id.startswith(prepend), exist)
+        pexist_count = len(filter(bool, pexist))
+        stat('instances.count', pexist_count)
+        stat('instances.max', args.max_pool)
+        if pexist_count >= args.max_pool:
             logging.error("max server(s) with prepend {}".format(prepend))
             sys.exit(1)
 
