@@ -72,6 +72,11 @@ binlog_format                  = <%= @binlog_format %>
 expire_logs_days               = 2
 slave_transaction_retries      = 4294967295
 
+# Needed when using ROW based replication and altering the width of a column, if not set, the ALTER will fail
+# https://dev.mysql.com/doc/mysql-replication-excerpt/5.7/en/replication-features-different-data-types.html 
+# T73563#3117924
+slave_type_conversions         = ALL_NON_LOSSY
+
 table_open_cache               = 5000
 table_definition_cache         = 4000
 
