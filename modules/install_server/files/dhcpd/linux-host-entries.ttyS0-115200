@@ -231,6 +231,11 @@ host pybal-test2003 {
     fixed-address pybal-test2003.codfw.wmnet;
 }
 
+host roentgenium {
+    hardware ethernet aa:00:00:d9:85:e2;
+    fixed-address roentgenium.eqiad.wmnet;
+}
+
 host rutherfordium {
     hardware ethernet aa:00:00:94:f7:c2;
     fixed-address rutherfordium.eqiad.wmnet;
@@ -274,8 +279,12 @@ host serpens {
     fixed-address serpens.wikimedia.org;
 }
 
+host tureis {
+    hardware ethernet aa:00:00:45:62:2d;
+    fixed-address tureis.codfw.wmnet;
+}
+
 host zosma {
     hardware ethernet aa:00:00:8c:75:b0;
     fixed-address zosma.codfw.wmnet;
 }
-
