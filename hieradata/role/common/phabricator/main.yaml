@@ -19,13 +19,6 @@ profile::base::domain_search:
   - eqiad.wmnet
   - codfw.wmnet
 
-phabricator_elasticsearch_hostname: 'search.svc.codfw.wmnet'
-phabricator_elasticsearch_port: 9243
-phabricator_elasticsearch_version: 5
-phabricator_elasticsearch_mirror: 'search.svc.eqiad.wmnet'
-phabricator_elasticsearch_mirror_read: false
-phabricator_elasticsearch_mirror_write: false
-
 phabricator_cluster_search:
   - type: 'elasticsearch'
     path: '/phabricator'
@@ -41,8 +34,8 @@ phabricator_cluster_search:
         host: 'search.svc.eqiad.wmnet'
         version: 5
         roles:
-          read: false
-          write: false
+          read: true
+          write: true
   - type: 'mysql'
     roles:
       read: false
