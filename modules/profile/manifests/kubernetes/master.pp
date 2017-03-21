@@ -51,7 +51,7 @@ class profile::kubernetes::master(
     ferm::service { 'apiserver-https':
         proto  => 'tcp',
         port   => '6443',
-        srange => $accessible_to_range,
+        srange => $accessible_range,
     }
 
     diamond::collector { 'Kubernetes':
