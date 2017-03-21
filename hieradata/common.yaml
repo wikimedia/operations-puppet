@@ -307,7 +307,8 @@ dataset_clients_other:
 # Currently this blacklists the following schemas:
 #   * Analytics so we can use it for testing throughput
 #   * CentralNoticeBannerHistory because it can't be inserted into mysql with its array property
-eventlogging_valid_mixed_schema_blacklist: ^Analytics|CentralNoticeBannerHistory$
+#   * ImageMetrics see T141407, these tables are no longer used and yet some cached code is still sending events
+eventlogging_valid_mixed_schema_blacklist: ^(Analytics|CentralNoticeBannerHistory|ImageMetricsLoadingTime|ImageMetricsCorsSupport)$
 # Used to specify writer handler for eventlogging processor producer.
 eventlogging_kafka_producer_scheme: "kafka-confluent://"
 
