@@ -8,6 +8,9 @@
 'use strict';
 
 exports.setup = function(parsoidConfig) {
+	// Enable dev API so that we can run the /_rt/ endpoints
+	parsoidConfig.devAPI = true;
+
 	// Point at WMF's wikis
 	parsoidConfig.loadWMF = true;
 
