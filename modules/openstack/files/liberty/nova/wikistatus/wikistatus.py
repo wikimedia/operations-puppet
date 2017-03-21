@@ -52,7 +52,12 @@ wiki_opts = [
                     default=[],
                     help='Event types to always ignore.'
                     'In the event of a conflict, '
-                    'this overrides the whitelist.')]
+                    'this overrides the whitelist.'),
+    cfg.MultiStrOpt('wiki_project_blacklist',
+                    default=['contintcloud'],
+                    help='Project names to always ignore. Mostly useful for '
+                    'projects that use nodepool to manage many instances'),
+]
 
 
 CONF = cfg.CONF
@@ -98,6 +103,10 @@ class WikiStatus(notifier._Driver):
         instance = payload['instance_id']
         instance_name = payload['display_name']
         project_id = payload['tenant_id']
+
+        if project_id in CONF.wiki_project_blacklist:
+            LOG.debug("Ignoring project %s" % project_id)
+            return
 
         template_param_dict = {}
         for field in self.RawTemplateFields:
