@@ -360,6 +360,12 @@ action.auto_create_index: <%= @auto_create_index %>
 action.destructive_requires_name: true
 
 ##
+# Allow up to <%= @search_shard_count_limit %> shards to be queried at a time. The default
+# 1k is too low to allow mwgrep to operate.
+##
+action.search.shard_count.limit: <%= @search_shard_count_limit %>
+
+##
 # Enable the disk space aware shard allocator
 ##
 cluster.routing.allocation.disk.threshold_enabled: true

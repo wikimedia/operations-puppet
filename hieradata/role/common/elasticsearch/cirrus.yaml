@@ -25,3 +25,7 @@ elasticsearch::awareness_attributes: 'row'
 # once all elasticsearch clusters are upgraded to version 5, we will move
 # elasticsearch to our main repo and remove this configuration
 apt::use_experimental: true
+
+# mwgrep queries one copy of each shard in the cluster, which is currently just
+# over 3k shards. For it to work we need to increase the limit from default 1k
+elasticsearch::search_shard_count_limit: 5000
