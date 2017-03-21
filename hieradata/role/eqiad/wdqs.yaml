@@ -1,2 +1,3 @@
 lvs::realserver::realserver_ips:
     - '10.2.2.32' # wdqs.svc.eqiad.wmnet
+wdqs::blazegraph_options: '-Dhttp.proxyHost=webproxy.eqiad.wmnet -Dhttp.proxyPort=8080 -XX:+ExitOnOutOfMemoryError'
