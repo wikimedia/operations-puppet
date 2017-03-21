@@ -1934,7 +1934,7 @@ node 'ms1002.eqiad.wmnet' {
 }
 
 node /^ms-fe100[1-4]\.eqiad\.wmnet$/ {
-    role(spare::server)
+    role(spare::system)
 }
 
 node /^ms-fe1005\.eqiad\.wmnet$/ {
