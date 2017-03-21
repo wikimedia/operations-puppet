@@ -25,6 +25,16 @@ class profile::gerrit::server(
         }
     }
 
+    # Detect if we're a master or a slave. If we're been given a master host
+    # and it's not us, we're not a master. If we are that host, we are
+    # (obviously). If we're not given any master, assume we're working by
+    # ourselves (safest).
+    $slave = $master_host ? {
+        $::fqdn => false,
+        undef   => false,
+        default => true,
+    }
+
     monitoring::service { 'gerrit_ssh':
         description   => 'SSH access',
         check_command => 'check_ssh_port!29418',
@@ -38,22 +48,24 @@ class profile::gerrit::server(
         port  => '29418',
     }
 
-    ferm::service { 'gerrit_http':
-        proto => 'tcp',
-        port  => 'http',
+    if !$slave {
+        ferm::service { 'gerrit_http':
+            proto => 'tcp',
+            port  => 'http',
+        }
+
+        ferm::service { 'gerrit_https':
+            proto => 'tcp',
+            port  => 'https',
+        }
     }
 
-    ferm::service { 'gerrit_https':
-        proto => 'tcp',
-        port  => 'https',
-    }
-
-    if $bacula != undef {
+    if $bacula != undef and !$slave {
         backup::set { $bacula: }
     }
 
     class { '::gerrit':
-        host        => $host,
-        master_host => $master_host,
+        host  => $host,
+        slave => $slave,
     }
 }

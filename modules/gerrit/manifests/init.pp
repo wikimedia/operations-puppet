@@ -1,13 +1,8 @@
 # Manifest to setup a Gerrit instance
 class gerrit(
     $host,
-    $master_host = $::fqdn,
+    $slave = false,
 ) {
-
-    $slave = $master_host ? {
-        $::fqdn => false,
-        default => true,
-    }
 
     class { '::gerrit::jetty':
         slave => $slave,
