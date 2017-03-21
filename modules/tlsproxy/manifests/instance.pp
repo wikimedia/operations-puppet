@@ -17,7 +17,7 @@ class tlsproxy::instance {
     }
 
     $websocket_support = hiera('cache::websocket_support', false)
-    $lua_support = hiera('cache::lua_support', false)
+    $lua_support = hiera('cache::lua_support', true)
     $nginx_worker_connections = '131072'
     $nginx_ssl_conf = ssl_ciphersuite('nginx', 'compat')
     $nginx_tune_for_media = hiera('cache::tune_for_media', false)
