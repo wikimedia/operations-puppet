@@ -44,7 +44,7 @@ class profile::kubernetes::master(
     if $accessible_to == 'all' {
         $accessible_range = undef
     } else {
-        $accessible_to_ferm = join($accesible_to, ' ')
+        $accessible_to_ferm = join($accessible_to, ' ')
         $accessible_range = "(@resolve((${accessible_to_ferm})))"
     }
 
