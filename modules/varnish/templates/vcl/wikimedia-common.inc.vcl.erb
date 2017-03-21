@@ -283,9 +283,9 @@ sub wm_common_backend_response {
 	// cases later.
 	unset beresp.http.X-CDIS;
 
-	// Hard TTL cap on all fetched objects (default 7d)
-	if (beresp.ttl > <%= @vcl_config.fetch("ttl_cap", "7d") %>) {
-		set beresp.ttl = <%= @vcl_config.fetch("ttl_cap", "7d") %>;
+	// Hard TTL cap on all fetched objects (default 3d)
+	if (beresp.ttl > <%= @vcl_config.fetch("ttl_cap", "3d") %>) {
+		set beresp.ttl = <%= @vcl_config.fetch("ttl_cap", "3d") %>;
 	}
 
 	/* Don't cache private, no-cache, no-store objects */
@@ -300,10 +300,10 @@ sub wm_common_backend_response {
 
 	set beresp.grace = <%= @vcl_config.fetch("grace_sick", "60m") %>;
 
-	if (beresp.ttl < <%= @vcl_config.fetch("keep", "1d") %>) {
+	if (beresp.ttl < <%= @vcl_config.fetch("keep", "3d") %>) {
 		set beresp.keep = beresp.ttl;
 	} else {
-		set beresp.keep = <%= @vcl_config.fetch("keep", "1d") %>;
+		set beresp.keep = <%= @vcl_config.fetch("keep", "3d") %>;
 	}
 
 	// Compress compressible things if the backend didn't already
