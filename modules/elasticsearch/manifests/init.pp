@@ -100,6 +100,7 @@ class elasticsearch(
     $gc_log = true,
     $java_package = 'openjdk-8-jdk',
     $version = 5,
+    $search_shard_count_limit = 1000,
 ) {
 
     # Check arguments
