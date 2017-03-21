@@ -10,6 +10,7 @@
 # - $log_dir: Directory where the logs go
 # - $endpoint: External endpoint name
 # - $blazegraph_heap_size: heapsize for blazegraph
+# - $blazegraph_options: options for Blazegraph statrup script
 class wdqs(
     $use_git_deploy = true,
     $username = 'blazegraph',
@@ -18,6 +19,7 @@ class wdqs(
     $log_dir = '/var/log/wdqs',
     $endpoint = '',
     $blazegraph_heap_size = '16g',
+	$blazegraph_options = '',
 ) {
 
     $deploy_user = 'deploy-service'
