@@ -26,23 +26,22 @@ server {
     listen   8001; ## listen for ipv4; this line is default and implied
 
     # visual-diffing web UI (used for a specific test case above)
-    location  /diff {
+    location /diff {
         proxy_pass         http://localhost:8012;
         proxy_redirect     off;
         proxy_set_header   Host $host;
     }
 
-    # Serve the contents of the diff directories
-    location /diffs {
-        # SSS FIXME: This directory location should be hiera-data-ed!
-        # Referenced in 3 separate config files
-        root /srv/visualdiff/pngs;
-        autoindex on;
+    # Enable serving individual diff images via the diffserver UI
+	# but turn off auto-listing of th directories
+    location /visualdiff {
+        root /srv;
+        autoindex off;
         charset utf-8;
     }
 
     # testreduce web UI for visualdiffing
-    location  / {
+    location / {
         proxy_pass         http://localhost:8010;
         proxy_redirect     off;
         proxy_set_header   Host $host;
