@@ -14,3 +14,25 @@ phabricator::mysql::slave: "m3-slave.eqiad.wmnet"
 
 phabricator_domain: "phabricator-new.wikimedia.org"
 phabricator_altdomain: "phabricator-new.wikimedia.org"
+
+phabricator_cluster_search:
+  - type: 'elasticsearch'
+    path: '/phabricator'
+    port: 9243
+    hosts:
+      - protocol: 'https'
+        host: 'search.svc.codfw.wmnet'
+        version: 5
+        roles:
+          read: true
+          write: true
+      - protocol: 'https'
+        host: 'search.svc.eqiad.wmnet'
+        version: 5
+        roles:
+          read: true
+          write: true
+  - type: 'mysql'
+    roles:
+      read: false
+      write: false
