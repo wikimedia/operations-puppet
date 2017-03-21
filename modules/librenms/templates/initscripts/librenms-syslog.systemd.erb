@@ -1,0 +1,11 @@
+[Unit]
+Description=LibreNMS syslog daemon
+
+[Service]
+Type=notify
+ExecStart=/usr/sbin/rsyslogd -n -f /etc/librenms-rsyslog.conf -i /var/run/librenms-rsyslogd.pid
+StandardOutput=null
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

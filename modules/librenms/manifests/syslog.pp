@@ -28,18 +28,10 @@ class librenms::syslog {
         ],
     }
 
-    file { '/etc/init/librenms-syslog.conf':
-        ensure  => present,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        source  => 'puppet:///modules/librenms/rsyslog-upstart.conf',
-        require => File['/etc/librenms-rsyslog.conf'],
-    }
-
-    service { 'librenms-syslog':
-        ensure    => running,
-        provider  => 'upstart',
-        subscribe => File['/etc/init/librenms-syslog.conf'],
+    base::service_unit { 'librenms-syslog':
+        ensure    => present,
+        upstart   => true,
+        systemd   => true,
+        subscribe => File['/etc/librenms-rsyslog.conf'],
     }
 }
