@@ -5,7 +5,7 @@ class profile::gerrit::server(
     $ipv4 = hiera('gerrit::server::ipv4'),
     $ipv6 = hiera('gerrit::server::ipv6'),
     $host = hiera('gerrit::server::host'),
-    $master_host = hiera('gerrit::server::master_host'),
+    $master_host = hiera('gerrit::server::master_host', $::fqdn),
     $bacula = hiera('gerrit::server::bacula'),
 ) {
 
@@ -25,6 +25,11 @@ class profile::gerrit::server(
         }
     }
 
+    $slave = $master_host ? {
+        $::fqdn => false,
+        default => true,
+    }
+
     monitoring::service { 'gerrit_ssh':
         description   => 'SSH access',
         check_command => 'check_ssh_port!29418',
@@ -38,22 +43,24 @@ class profile::gerrit::server(
         port  => '29418',
     }
 
-    ferm::service { 'gerrit_http':
-        proto => 'tcp',
-        port  => 'http',
+    if !$slave {
+        ferm::service { 'gerrit_http':
+            proto => 'tcp',
+            port  => 'http',
+        }
+
+        ferm::service { 'gerrit_https':
+            proto => 'tcp',
+            port  => 'https',
+        }
     }
 
-    ferm::service { 'gerrit_https':
-        proto => 'tcp',
-        port  => 'https',
-    }
-
-    if $bacula != undef {
+    if $bacula != undef && !$slave {
         backup::set { $bacula: }
     }
 
     class { '::gerrit':
-        host        => $host,
-        master_host => $master_host,
+        host  => $host,
+        slave => $slave,
     }
 }
