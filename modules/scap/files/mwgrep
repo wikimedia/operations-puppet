@@ -117,7 +117,8 @@ if args.title is not None:
 search = {
     'size': args.max_results,
     '_source': ['namespace', 'title'],
-    'query': {'filtered': {'filter': {'bool': {'must': filters}}}},
+    'sort': ['_doc'],
+    'query': {'bool': {'filter':  filters}},
     'stats': ['mwgrep'],
 }
 
