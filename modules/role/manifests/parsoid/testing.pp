@@ -58,7 +58,7 @@ class role::parsoid::testing {
         srange => '$PRODUCTION_NETWORKS',
     }
 
-    # Presented by the @remote links shown on parsoid-tests.wikimedia.org
+    # Presented by the @remote links shown on parsoid-rt-tests.wikimedia.org
     ferm::service { 'parsoid-testing':
         proto  => 'tcp',
         port   => 8142,
