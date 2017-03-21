@@ -1,0 +1,4 @@
+# List of ports for which REJECT the TCP connections
+failoid::tcp_rejected_ports:
+  - 80
+  - 443

@@ -2526,6 +2526,12 @@ node 'rhenium.wikimedia.org' {
     role(pmacct)
 }
 
+# Failoid service (Ganeti VM)
+node 'roentgenium.eqiad.wmnet' {
+    role(failoid)
+}
+
+
 # people.wikimedia.org, for all shell users
 node 'rutherfordium.eqiad.wmnet' {
     role(microsites::peopleweb, backup::host)
@@ -2615,6 +2621,11 @@ node 'thorium.eqiad.wmnet' {
 
     include ::standard
     include ::base::firewall
+}
+
+# Failoid service (Ganeti VM)
+node 'tureis.codfw.wmnet' {
+    role(failoid)
 }
 
 node 'stat1002.eqiad.wmnet' {
