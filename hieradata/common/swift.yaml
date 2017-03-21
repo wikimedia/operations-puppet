@@ -1,9 +1,5 @@
 # used by ferm
 swift::proxyhosts:
-  - ms-fe1001.eqiad.wmnet
-  - ms-fe1002.eqiad.wmnet
-  - ms-fe1003.eqiad.wmnet
-  - ms-fe1004.eqiad.wmnet
   - ms-fe1005.eqiad.wmnet
   - ms-fe1006.eqiad.wmnet
   - ms-fe1007.eqiad.wmnet

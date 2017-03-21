@@ -277,10 +277,6 @@ eqiad:
     elastic1051.eqiad.wmnet: [elasticsearch, elasticsearch-ssl]
     elastic1052.eqiad.wmnet: [elasticsearch, elasticsearch-ssl]
   swift:
-    ms-fe1001.eqiad.wmnet: [swift-fe, nginx]
-    ms-fe1002.eqiad.wmnet: [swift-fe, nginx]
-    ms-fe1003.eqiad.wmnet: [swift-fe, nginx]
-    ms-fe1004.eqiad.wmnet: [swift-fe, nginx]
     ms-fe1005.eqiad.wmnet: [swift-fe, nginx]
     ms-fe1006.eqiad.wmnet: [swift-fe, nginx]
     ms-fe1007.eqiad.wmnet: [swift-fe, nginx]
