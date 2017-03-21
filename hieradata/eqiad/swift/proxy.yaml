@@ -1,9 +1,9 @@
 swift::proxy::proxy_service_host: 'ms-fe.svc.eqiad.wmnet'
 swift::proxy::memcached_servers: [
-  'ms-fe1001.eqiad.wmnet:11211',
-  'ms-fe1002.eqiad.wmnet:11211',
-  'ms-fe1003.eqiad.wmnet:11211',
-  'ms-fe1004.eqiad.wmnet:11211'
+  'ms-fe1005.eqiad.wmnet:11211',
+  'ms-fe1006.eqiad.wmnet:11211',
+  'ms-fe1007.eqiad.wmnet:11211',
+  'ms-fe1008.eqiad.wmnet:11211'
 # no trailing comma!
 ]
 
