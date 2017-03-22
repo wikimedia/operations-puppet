@@ -82,7 +82,7 @@ sub misc_recv_pass {
 
     // don't cache cookie requests, but ignore google analytics cookies and our
     // own global WMF-Last-Access, GeoIP, and CP cookies.
-    set req.http.NC-Cookie = regsuball(req.http.Cookie, "(?i)(^|;\s*)(_ga[-_a-z]*|_utm[-_a-z]*|WMF-Last-Access|GeoIP|CP)=[^;]*", "");
+    set req.http.NC-Cookie = regsuball(req.http.Cookie, "(?i)(^|;\s*)(_ga[-_a-z]*|_utm[-_a-z]*|WMF-Last-Access(-Global)?|GeoIP|CP)=[^;]*", "");
     set req.http.NC-Cookie = regsub(req.http.NC-Cookie, "^;?\s*", "");
     if (req.http.NC-Cookie != "") {
         unset req.http.NC-Cookie;
