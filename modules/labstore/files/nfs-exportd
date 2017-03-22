@@ -92,15 +92,17 @@ def get_instance_ips(project, observer_pass):
             project_domain_name='default'
         ))
     )
-
     ips = []
     try:
         for instance in client.servers.list():
             # Only provide internal IPs!
-            ips += [
-                str(ip['addr']) for ip in instance.addresses['public']
-                if ip['OS-EXT-IPS:type'] == 'fixed' and is_valid_ipv4(ip['addr'])
-            ]
+            if 'public' in instance.addresses:
+                for ip in instance.addresses['public']:
+                    if ip['OS-EXT-IPS:type'] == 'fixed' and is_valid_ipv4(ip['addr']):
+                        ips.append(str(ip['addr']))
+            else:
+                logging.warn('Failed to get instance address for instance %s.%s',
+                             repr(instance), project)
     except keystoneauth1.exceptions.http.Unauthorized:
         logging.warn("Failed to get server list for project %s."
                      "  Maybe the project was deleted." % project)
