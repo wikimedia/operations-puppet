@@ -80,7 +80,6 @@ class authdns(
                 File['/etc/gdnsd/discovery-metafo-resources'],
                 File['/etc/gdnsd/discovery-states'],
                 File['/etc/gdnsd/discovery-map'],
-                Git::Clone['/srv/authdns/git'],
             ],
         # we prepare the config even before the package gets installed, leaving
         # no window where service would be started and answer with REFUSED
@@ -99,7 +98,6 @@ class authdns(
         group   => 'root',
         mode    => '0444',
         content => template("${module_name}/discovery-geo-resources.erb"),
-        require => File['/etc/gdnsd'],
     }
 
     file { '/etc/gdnsd/discovery-metafo-resources':
@@ -108,7 +106,6 @@ class authdns(
         group   => 'root',
         mode    => '0444',
         content => template("${module_name}/discovery-metafo-resources.erb"),
-        require => File['/etc/gdnsd'],
     }
 
     file { '/etc/gdnsd/discovery-states':
@@ -117,7 +114,6 @@ class authdns(
         group   => 'root',
         mode    => '0444',
         content => template("${module_name}/discovery-states.erb"),
-        require => File['/etc/gdnsd'],
     }
 
     file { '/etc/gdnsd/discovery-map':
@@ -126,7 +122,6 @@ class authdns(
         owner  => 'root',
         group  => 'root',
         source => "puppet:///modules/${module_name}/discovery-map",
-        require => File['/etc/gdnsd'],
     }
 
     class { 'confd':
