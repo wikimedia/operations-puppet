@@ -17,6 +17,8 @@
     maxAge = 90 days
     memoryLimit = 2048
     diskLimit = 256m
+[capability]
+    administrateServer = group ldap/ops
 [changeCleanup]
     # Not actually used, but Gerrit complains if unset
     interval = 1 week
