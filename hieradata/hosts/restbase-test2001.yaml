@@ -11,3 +11,4 @@ cassandra::instances:
     rpc_interface: eth0
 
 do_paging: false
+apt::use_experimental: true
