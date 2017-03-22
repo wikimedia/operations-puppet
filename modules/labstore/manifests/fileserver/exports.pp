@@ -62,22 +62,6 @@ class labstore::fileserver::exports {
         notify  => Service['nfs-exportd'],
     }
 
-    file { '/etc/exports.bak':
-        ensure  => directory,
-        owner   => 'nfsmanager',
-        group   => 'nfsmanager',
-        require => File['/usr/local/bin/nfs-exportd'],
-    }
-
-    cron { 'archive_export_d':
-        command => '/bin/cp -Rp /etc/exports.d /etc/exports.bak',
-        user    => 'root',
-        weekday => 1,
-        hour    => 0,
-        minute  => 0,
-        require => File['/etc/exports.bak'],
-    }
-
     file { '/usr/local/sbin/archive-project-volumes':
         owner  => 'root',
         group  => 'root',
