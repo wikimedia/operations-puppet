@@ -18,9 +18,9 @@ disc-geo-<%= svc %> => {
 
 disc-failoid => {
     map => discovery-map,
-    service_types => up,
+    service_types => discovery-state-failoid,
     dcmap => {
-        eqiad => 192.0.2.1,
-        codfw => 192.0.2.2,
+        eqiad => 10.64.32.24,
+        codfw => 10.192.16.25,
     }
 }

@@ -6,3 +6,9 @@ discovery-state-<%= svc %> => {
 }
 
 <% end -%>
+
+discovery-state-failoid => {
+    plugin => static,
+    state => UP,
+    ttl => 10,
+}
