@@ -2477,7 +2477,13 @@ node /^rdb100[1-9]\.eqiad\.wmnet/ {
     include ::base::firewall
 }
 
-node /^rdb200[1-6]\.codfw\.wmnet/ {
+
+node /^rdb2001\.codfw\.wmnet$/ {
+    role(jobqueue_redis::master)
+}
+
+
+node /^rdb200[2-6]\.codfw\.wmnet/ {
     role(jobqueue_redis)
     include ::base::firewall
 }
