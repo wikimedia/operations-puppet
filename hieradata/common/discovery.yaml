@@ -11,6 +11,7 @@ discovery::app_routes:
 
 # confctl-based dynamic global discovery pooling
 discovery::services:
+  # MediaWiki related
   appservers-ro:
     lvs: apaches
     active_active: true
@@ -23,11 +24,31 @@ discovery::services:
   api-rw:
     lvs: api
     active_active: false
+  imagescaler-rw:
+    lvs: rendering
+    active_active: false
+  imagescaler-ro:
+    lvs: rendering
+    active_active: true
+  swift-rw:
+    lvs: swift
+    active_active: false
+  swift-ro:
+    lvs: swift
+    active_active: false
+  # Main microservices
   parsoid:
     lvs: parsoid
     active_active: true
   restbase:
     lvs: restbase
+    active_active: true
+  # Everything else
+  citoid:
+    lvs: citoid
+    active_active: true
+  eventstreams:
+    lvs: eventstreams
     active_active: true
   graphoid:
     lvs: graphoid
@@ -38,9 +59,18 @@ discovery::services:
   mobileapps:
     lvs: mobileapps
     active_active: true
+  ores:
+    lvs: ores
+    active_active: true
   pdfrender:
     lvs: pdfrender
     active_active: true
-  citoid:
-    lvs: citoid
+  trendingedits:
+    lvs: trendingedits
+    active_active: true
+  wdqs:
+    lvs: wdqs
+    active_active: false
+  zotero:
+    lvs: zotero
     active_active: true
