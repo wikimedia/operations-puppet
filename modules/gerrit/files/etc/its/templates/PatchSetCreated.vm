@@ -1,9 +1,9 @@
 #if ( $uploader-username != $author-username )
 Change $change-number had a related patch set uploaded (by $uploader-name; owner: $author-name):
-[$project] $subject
+[$project@$branch] $subject
 #else
 Change $change-number had a related patch set uploaded (by $uploader-name):
-[$project] $subject
+[$project@$branch] $subject
 #end
 
 ${its.formatLink($change-url)}
