@@ -1099,6 +1099,12 @@ node /^ganeti[12]00[0-9]\.(codfw|eqiad)\.wmnet$/ {
     include ::standard
 }
 
+# upcoming gerrit server in codfw (T152525)
+node 'gerrit2001.wikimedia.org' {
+    include ::standard
+    interface::add_ip6_mapped { 'main': }
+}
+
 # Hosts visualization / monitoring of EventLogging event streams
 # and MediaWiki errors.
 node 'hafnium.eqiad.wmnet' {
