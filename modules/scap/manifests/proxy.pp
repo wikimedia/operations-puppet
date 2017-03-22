@@ -10,4 +10,8 @@ class scap::proxy {
         read_only   => 'yes',
         hosts_allow => $::network::constants::mw_appserver_networks;
     }
+
+    class { '::scap::vhost':
+        deployable_networks => $::network::constants::deployable_networks,
+    }
 }
