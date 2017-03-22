@@ -64,4 +64,9 @@ class role::analytics_cluster::refinery {
         # by users in the $$log_dir_group group.
         mode   => '2775',
     }
+
+    logrotate::conf { 'refinery':
+        source  => 'puppet:///modules/role/analytics_cluster/refinery-logrotate.conf',
+        require => File[$log_dir],
+    }
 }
