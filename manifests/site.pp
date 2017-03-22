@@ -1101,6 +1101,7 @@ node /^ganeti[12]00[0-9]\.(codfw|eqiad)\.wmnet$/ {
 
 # upcoming gerrit server in codfw (T152525)
 node 'gerrit2001.wikimedia.org' {
+    role('netmon::migration')
     include ::standard
     interface::add_ip6_mapped { 'main': }
 }
