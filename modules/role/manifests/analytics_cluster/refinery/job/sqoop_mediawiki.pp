@@ -21,9 +21,11 @@ class role::analytics_cluster::refinery::job::sqoop_mediawiki {
     # This is rendered elsewhere by role::analytics_cluster::mysql_password.
     $db_password_file = '/user/hdfs/mysql-analytics-labsdb-client-pw.txt'
     $log_file         = "${::role::analytics_cluster::refinery::log_dir}/sqoop-mediawiki.log"
+    # number of parallel processors to use when sqooping (querying MySQL)
+    $num_processors   = 5
 
     cron { 'refinery-sqoop-mediawiki':
-        command  => "${env} && /usr/bin/python3 ${role::analytics_cluster::refinery::path}/bin/sqoop-mediawiki-tables --job-name sqoop-mediawiki-monthly-$(/bin/date '+%Y-%m') --labs --jdbc-host ${db_host} --output-dir ${$output_directory} --wiki-file  ${wiki_file} --user ${db_user} --password-file ${db_password_file} --timestamp \$(/bin/date '+%Y%m01000000') --snapshot \$(/bin/date '+%Y-%m') >> ${log_file} 2>&1",
+        command  => "${env} && /usr/bin/python3 ${role::analytics_cluster::refinery::path}/bin/sqoop-mediawiki-tables --job-name sqoop-mediawiki-monthly-$(/bin/date '+%Y-%m') --labs --jdbc-host ${db_host} --output-dir ${$output_directory} --wiki-file  ${wiki_file} --user ${db_user} --password-file ${db_password_file} --timestamp \$(/bin/date '+%Y%m01000000') --snapshot \$(/bin/date '+%Y-%m') -k ${num_processors} >> ${log_file} 2>&1",
         user     => 'hdfs',
         minute   => '0',
         hour     => '0',
