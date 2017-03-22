@@ -26,7 +26,6 @@ class role::mediawiki::maintenance {
     include mediawiki::maintenance::purge_checkuser
     include mediawiki::maintenance::purge_securepoll
     include mediawiki::maintenance::jobqueue_stats
-    include mediawiki::maintenance::db_lag_stats
     include mediawiki::maintenance::cirrussearch
     include mediawiki::maintenance::generatecaptcha
     include mediawiki::maintenance::pageassessments
