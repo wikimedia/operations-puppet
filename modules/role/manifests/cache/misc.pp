@@ -132,6 +132,10 @@ class role::cache::misc {
         'wdqs_director' => {
             'backend'  => 'wdqs.svc.eqiad.wmnet',
         },
+        # temporary hack to solve T159574 until we find a better solution 
+        'wdqs_director_ldf' => {
+            'backend'  => 'wdqs1001.eqiad.wmnet',
+        },
         'ores' => {
             'backend'  => 'ores.svc.eqiad.wmnet',
             'be_opts'  => { 'port' => 8081 },
@@ -226,7 +230,15 @@ class role::cache::misc {
             'caching'  => 'pass',
         },
         '^([^.]+\.)?planet\.wikimedia\.org$' => { 'director' => 'planet1001' },
-        'query.wikidata.org'                 => { 'director' => 'wdqs_director' },
+        'query.wikidata.org'                 => {
+            'director' => 'wdqs_director',
+        # temporary hack to solve T159574 until we find a better solution
+            'subpaths' => {
+                '^/bigdata/ldf.*' => {
+                    'director' => 'wdqs_director_ldf',
+                },
+            },
+        },
         'racktables.wikimedia.org'           => { 'director' => 'krypton' },
         'releases.wikimedia.org'             => { 'director' => 'bromine' },
         'rt.wikimedia.org'                   => { 'director' => 'ununpentium' },
