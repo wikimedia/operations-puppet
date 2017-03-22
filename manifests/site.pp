@@ -1184,19 +1184,14 @@ node 'labtestneutron2001.codfw.wmnet' {
     include ::standard
 }
 
-node 'labtestvirt2001.codfw.wmnet' {
+node /^labtestvirt200[12]\.codfw\.wmnet$/ {
     role(labs::openstack::nova::compute)
     include ::standard
 }
 
-node 'labtestnet2001.codfw.wmnet' {
-    role(labs::openstack::nova::api, labs::openstack::nova::network)
+node 'labtestvirt2002.codfw.wmnet' {
+    role(labs::openstack::nova::compute)
     include ::standard
-}
-
-node 'labtestmetal2001.codfw.wmnet' {
-    include ::standard
-    include ::base::firewall
 }
 
 node 'labtestcontrol2001.wikimedia.org' {
