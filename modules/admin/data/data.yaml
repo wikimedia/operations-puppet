@@ -1380,7 +1380,7 @@ users:
     ssh_keys:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDb5W/ZKwHHevB0ZGr+yVimNySadaNuJVfZW453U5FSF4nCLj2gvm/gKpEj4bv8MHzOsF5casl6u1T4Mz4gCeU4Q9gbhiMfghiYm7DPxWdR6uDn0vcbb+rtGpcu8XMGfGYsmFLWwL0qs8kgpixviAQ+AYGqCJug4b+6TVOoCKV/Ba5cOXhfx1MAIExwlhTpxtkec+g2/2BzQeZon0/4INzIutXgLGF47n1oosHEWpaehg4NMGjjT8b9w2UdnCWaTNpUsMca+LU2aK0lHVIQ2i5c56Exd8zcPEt/78O3HpQFH256QHkBxcBo9+z+sf87fHyOcgiAd5T3eKI0zLKQM6WT yuvipanda@courage
     uid: 2029
-    email: ypandian@wikimedia.org
+    email: yuvipanda@gmail.com
   haithams:
     ensure: absent
     gid: 500
