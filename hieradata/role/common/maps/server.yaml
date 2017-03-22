@@ -1,5 +1,4 @@
 cluster: maps
-postgresql::spatialdb::postgis_version: 2.1
 cassandra::cluster_name: maps
 cassandra::data_directory_base: /srv/cassandra
 cassandra::data_file_directories: [/srv/cassandra/data]
