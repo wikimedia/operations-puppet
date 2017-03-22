@@ -1,0 +1,10 @@
+# Note:  This file is managed by Puppet.
+#
+/var/log/refinery/* {
+  size 100M
+  rotate 4
+  missingok
+  notifempty
+  nocreate
+  su root hdfs
+}
