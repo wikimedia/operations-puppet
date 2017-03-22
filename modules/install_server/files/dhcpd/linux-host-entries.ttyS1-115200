@@ -5314,8 +5314,6 @@ host neodymium {
 host netmon1001 {
     hardware ethernet 84:2b:2b:51:91:ff;
     fixed-address netmon1001.wikimedia.org;
-    option pxelinux.pathprefix "precise-installer/";
-    filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host nescio {
