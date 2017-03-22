@@ -56,7 +56,7 @@ groups:
               brion, cscott, csteipp, demon, ebernhardson, esanders, gilles,
               gjg, gwicke, halfak, hashar, hoo, kaldari, kartik, khorn, krinkle,
               maxsem, mattflaschen, marktraceur, milimetric, mlitn, andyrussg,
-              nikerabbit, reedy, ssastry, tomasz,
+              nikerabbit, reedy, ssastry,
               tgr, phuedx, ejegg, twentyafterfour, legoktm, catrope,
               mobrovac, nuria, thcipriani, joal, eevans, mforns, dpatrick, dcausse,
               bsitzmann, mholloway-shell, dduvall, dereckson,
@@ -83,7 +83,7 @@ groups:
   elasticsearch-roots:
     gid: 709
     description: manage elasticsearch nodes
-    members: [ebernhardson, dcausse, tomasz]
+    members: [ebernhardson, dcausse]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
   dataset-admins:
     gid: 710
@@ -112,7 +112,7 @@ groups:
               leila, mattflaschen, milimetric, nettrom, bearloga,
               nuria, ori, otto, yuvipanda,
               mforns, jdlrobson, dr0ptp4kt, tgr, marktraceur, jhernandez, joal,
-              daisy, tomasz, mholloway-shell, madhuvishy, ebernhardson, niedzielski,
+              daisy, mholloway-shell, madhuvishy, ebernhardson, niedzielski,
               neilpquinn-wmf, tbayer, moushira, dbrant, maxsem,
               jminor, etonkovidova, sbisson, addshore, matmarex, elukey,
               nikerabbit, nschaaf, dstrine, joewalsh, mpany, jsamra,
@@ -173,7 +173,7 @@ groups:
   statistics-web-users:
     gid: 724
     description: access for stats.wikimedia.org
-    members: [ezachte, joal, milimetric, tomasz, fdans]
+    members: [ezachte, joal, milimetric, fdans]
   statistics-privatedata-users:
     gid: 725
     description: Access to stat boxes that host private data, including
@@ -195,7 +195,7 @@ groups:
               marktraceur, nuria, leila, gilles,
               dbrant, tgr, dr0ptp4kt, brion, bsitzmann, amire80,
               deskana, dduvall, nettrom, mforns, jkatz, ebernhardson,
-              mlitn, tbayer, joal, tomasz, kartik, nikerabbit, pcoombe,
+              mlitn, tbayer, joal, kartik, nikerabbit, pcoombe,
               neilpquinn-wmf, maxsem, jminor, dpatrick, atgomez, dstrine,
               ladsgroup, ovasileva]
   statistics-admins:
@@ -1130,13 +1130,12 @@ users:
     uid: 2153
     email: christian@quelltextlich.at
   tomasz:
-    ensure: present
+    ensure: absent
     gid: 500
     name: tomasz
     realname: Tomasz Finc
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDYg99M+6cGbfoDwzd7KRFL2zGg8CPZHLqejuCwCijpHjqnMtOBOAjMDpfA8glqpqUL4xW22kgwcUI9H8bkd4X/DazJ0QvTxjJkGPocobfyCkd/yeZ/n5HjaEL/WWeNQZ/OfFW6yiTbWrQttl6+/7QELG2pHXgDqAxaCLEnghRXG+zGbVNkPgJGAZnUoSSPjZj1eZhG10U9I0foUp09qyMTXhWB9c2dbeZyaWJ7LA5I6slKPiVyYQWq+0Kc0zoCpaPGrwkR/sDrzqHBfiwKWR3IJEFn0WhDCE1fHiM31+tQ2YmbVrDCWxoUzdiUWkzbgydlIH88603LoegBLo9xTwrZ tfinc@kumo.local]
+    ssh_keys: []
     uid: 1155
-    email: tomasz@gmail.com
   yurik:
     ensure: absent
     gid: 500
