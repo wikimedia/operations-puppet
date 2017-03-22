@@ -40,7 +40,6 @@ class authdns(
         mode    => '0444',
         content => template("${module_name}/config.erb"),
         require => File['/etc/gdnsd'],
-        notify  => Service['gdnsd'],
     }
     file { '/etc/gdnsd/zones':
         ensure => 'directory',
@@ -77,6 +76,10 @@ class authdns(
         require     => [
                 File['/etc/wikimedia-authdns.conf'],
                 File['/etc/gdnsd/config'],
+                File['/etc/gdnsd/discovery-geo-resources'],
+                File['/etc/gdnsd/discovery-metafo-resources'],
+                File['/etc/gdnsd/discovery-states'],
+                File['/etc/gdnsd/discovery-map'],
                 Git::Clone['/srv/authdns/git'],
             ],
         # we prepare the config even before the package gets installed, leaving
@@ -97,7 +100,6 @@ class authdns(
         mode    => '0444',
         content => template("${module_name}/discovery-geo-resources.erb"),
         require => File['/etc/gdnsd'],
-        notify  => Service['gdnsd'],
     }
 
     file { '/etc/gdnsd/discovery-metafo-resources':
@@ -107,7 +109,6 @@ class authdns(
         mode    => '0444',
         content => template("${module_name}/discovery-metafo-resources.erb"),
         require => File['/etc/gdnsd'],
-        notify  => Service['gdnsd'],
     }
 
     file { '/etc/gdnsd/discovery-states':
@@ -117,7 +118,6 @@ class authdns(
         mode    => '0444',
         content => template("${module_name}/discovery-states.erb"),
         require => File['/etc/gdnsd'],
-        notify  => Service['gdnsd'],
     }
 
     file { '/etc/gdnsd/discovery-map':
