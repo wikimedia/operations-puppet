@@ -15,8 +15,10 @@
     </Directory>
 
     <Location />
-        Order Allow,Deny
-        Allow from All
+        <IfVersion < 2.4>
+            Order Allow,Deny
+            Allow From All
+        </IfVersion>
         AuthName "WMF Labs (use wiki login name not shell) - ops"
         AuthType Basic
         AuthBasicProvider ldap
