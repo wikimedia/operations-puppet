@@ -1,2 +1,3 @@
+gerrit::jetty::db_host: 'm2-master.codfw.wmnet'
 profile::gerrit::server::ipv4: '208.80.153.106'
 profile::gerrit::server::ipv6: '2620:0:860:4:208:80:153:106'
