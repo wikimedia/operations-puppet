@@ -12,3 +12,6 @@ discovery:
     references:
       type: "list"
       default: []
+    ttl:
+      type: "int"
+      default: 300
