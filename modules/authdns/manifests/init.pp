@@ -97,7 +97,7 @@ class authdns(
         mode    => '0444',
         content => template("${module_name}/discovery-geo-resources.erb"),
         require => File['/etc/gdnsd'],
-        notify  => Service['gdnsd'],
+        before  => Service['gdnsd'],
     }
 
     file { '/etc/gdnsd/discovery-metafo-resources':
@@ -107,7 +107,7 @@ class authdns(
         mode    => '0444',
         content => template("${module_name}/discovery-metafo-resources.erb"),
         require => File['/etc/gdnsd'],
-        notify  => Service['gdnsd'],
+        before  => Service['gdnsd'],
     }
 
     file { '/etc/gdnsd/discovery-states':
@@ -117,7 +117,7 @@ class authdns(
         mode    => '0444',
         content => template("${module_name}/discovery-states.erb"),
         require => File['/etc/gdnsd'],
-        notify  => Service['gdnsd'],
+        before  => Service['gdnsd'],
     }
 
     file { '/etc/gdnsd/discovery-map':
@@ -126,6 +126,7 @@ class authdns(
         owner  => 'root',
         group  => 'root',
         source => "puppet:///modules/${module_name}/discovery-map",
+        before => Service['gdnsd'],
     }
 
     class { 'confd':
