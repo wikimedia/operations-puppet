@@ -204,13 +204,13 @@ class role::mariadb::analytics::custom_repl_slave {
         owner  => 'root',
         group  => 'root',
         mode   => '0700',
-        source => 'puppet:///files/mariadb/eventlogging_sync.sh',
+        source => 'puppet:///modules/mariadb/eventlogging_sync.sh',
     }
     file { '/etc/init.d/eventlogging_sync':
         owner   => 'root',
         group   => 'root',
         mode    => '0755',
-        source  => 'puppet:///files/mariadb/eventlogging_sync.init',
+        source  => 'puppet:///modules/mariadb/eventlogging_sync.init',
         require => File['/usr/local/bin/eventlogging_sync.sh'],
         notify  => Service['eventlogging_sync'],
     }
