@@ -19,11 +19,11 @@ class role::analytics_cluster::refinery::job::sqoop_mediawiki {
     $db_password_file = '/user/hdfs/mysql-analytics-research-client-pw.txt'
 
     cron { 'refinery-sqoop-mediawiki':
-        command => "${env} && /usr/bin/python3 ${role::analytics_cluster::refinery::path}/bin/sqoop-mediawiki-tables --job-name sqoop-mediawiki-monthly-$(/bin/date '+%Y-%m') --labs --jdbc-host ${db_host} --output-dir ${$output_directory} --wiki-file  ${wiki_file} --user ${db_user} --password-file ${db_password_file} --timestamp \$(/bin/date '+%Y%m01000000') --snapshot \$(/bin/date '+%Y-%m')",
-        user    => 'hdfs',
-        minute  => '0',
-        hour    => '0',
+        command  => "${env} && /usr/bin/python3 ${role::analytics_cluster::refinery::path}/bin/sqoop-mediawiki-tables --job-name sqoop-mediawiki-monthly-$(/bin/date '+%Y-%m') --labs --jdbc-host ${db_host} --output-dir ${$output_directory} --wiki-file  ${wiki_file} --user ${db_user} --password-file ${db_password_file} --timestamp \$(/bin/date '+%Y%m01000000') --snapshot \$(/bin/date '+%Y-%m')",
+        user     => 'hdfs',
+        minute   => '0',
+        hour     => '0',
         # Start on the second day of every month.
-        day     => '2',
+        monthday => '2',
     }
 }
