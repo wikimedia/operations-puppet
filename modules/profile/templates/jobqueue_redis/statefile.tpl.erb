@@ -1,0 +1,23 @@
+# This file is managed by confd
+# DO NOT edit by hand.
+<%-
+site = scope.lookupvar('::site')
+datacenters = @shards.keys
+datacenters.delete(site)
+
+# Find the shard we're referring to
+@shards[site].each do |name, instance|
+  if instance['host'] == @ip && instance['port'] == @title.to_i
+    shard ||= name
+  end
+end -%>
+{{ $site := json( getv "<%= site %>") }}{{ if $site.pooled }}
+# This redis server is a global master as it's in an active datacenter
+{{ else }}<%-
+datacenters.each do |dc|
+  master = @shards[dc][shard]
+  slaveof = "slaveof #{master['host']} #{master['port']}"
+ -%>
+{{ $site := json( getv "<%= dc %>") }}{{ if $site.pooled }}<%= slaveof %>{{ end }}
+<%- end -%>
+{{ end }}
