@@ -81,9 +81,8 @@ class role::deployment::server(
         group  => $deployment_group,
     }
 
-    apache::site { 'deployment':
-        content => template('role/deployment/apache-vhost.erb'),
-        require => File['/srv/deployment'],
+    class { '::scap::vhost':
+        deployable_networks => $deployable_networks,
     }
 
     $deployment_server = hiera('deployment_server', 'tin.eqiad.wmnet')
