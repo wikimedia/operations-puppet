@@ -107,7 +107,7 @@ PROXY_ENGINE_ENGINES = [
     ('wikimedia_thumbor.engine.imagemagick', ['jpg', 'png']),
 ]
 
-HTTP_LOADER_MAX_BODY_SIZE = 1024*1024*1024  # 1GB
+HTTP_LOADER_MAX_BODY_SIZE = 4*1024*1024*1024  # 4GB
 
 PROXY_LOADER_LOADERS = [
     'wikimedia_thumbor.loader.video',
@@ -131,8 +131,6 @@ VIPS_ENGINE_MIN_PIXELS = 10000000
 CHROMA_SUBSAMPLING = '4:2:0'
 QUALITY_LOW = 40
 DEFAULT_FILTERS_JPEG = 'conditional_sharpen(0.0,0.8,1.0,0.0,0.85)'
-
-HTTP_LOADER_MAX_BODY_SIZE = 1024 * 1024 * 1024  # 1GB
 
 LOADER_EXCERPT_LENGTH = 4096
 
