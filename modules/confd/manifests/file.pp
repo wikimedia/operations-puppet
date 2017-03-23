@@ -27,8 +27,8 @@ define confd::file (
     $ensure     = 'present',
     $prefix     = undef,
     $watch_keys = [],
-    $uid        = undef,
-    $gid        = undef,
+    $uid        = 0,
+    $gid        = 0,
     $mode       = '0444',
     $reload     = undef,
     $check      = undef,
@@ -38,6 +38,8 @@ define confd::file (
 
     include ::confd
 
+    validate_numeric($uid)
+    validate_numeric($gid)
     $safe_name = regsubst($name, '/', '_', 'G')
 
     file { "/etc/confd/templates/${safe_name}.tmpl":
