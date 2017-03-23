@@ -218,7 +218,7 @@ class role::backup::director {
     }
 
     bacula::director::fileset { 'librenms':
-        includes => [ '/var/lib/librenms' ]
+        includes => [ '/var/lib/librenms', '/srv/librenms' ]
     }
 
     bacula::director::fileset { 'torrus':
