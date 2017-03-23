@@ -147,6 +147,11 @@ class role::logstash::collector (
         priority => 50,
     }
 
+    logstash::conf { 'filter_ores':
+        source   => 'puppet:///modules/role/logstash/filter-ores.conf',
+        priority => 50,
+    }
+
     ## Global post-processing (70)
 
     logstash::conf { 'filter_add_normalized_message':
