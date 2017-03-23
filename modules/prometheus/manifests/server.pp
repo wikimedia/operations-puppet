@@ -51,6 +51,8 @@ define prometheus::server (
     $base_path = "/srv/prometheus/${title}",
     $storage_retention = '730h0m0s',
     $storage_encoding = '1',
+    $max_chunks_to_persist = '524288',
+    $memory_chunks = '1048576',
     $global_config_extra = {},
     $scrape_configs_extra = [],
     $rule_files_extra = [],

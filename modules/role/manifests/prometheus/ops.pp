@@ -7,6 +7,8 @@ class role::prometheus::ops {
 
     $targets_path = '/srv/prometheus/ops/targets'
     $storage_retention = hiera('prometheus::server::storage_retention', '2190h0m0s')
+    $max_chunks_to_persist = hiera('prometheus::server::max_chunks_to_persist', '524288')
+    $memory_chunks = hiera('prometheus::server::memory_chunks', '1048576')
 
     $config_extra = {
         # All metrics will get an additional 'site' label when queried by
@@ -268,14 +270,16 @@ class role::prometheus::ops {
     }
 
     prometheus::server { 'ops':
-        storage_encoding     => '2',
-        listen_address       => '127.0.0.1:9900',
-        storage_retention    => $storage_retention,
-        scrape_configs_extra => array_concat(
+        storage_encoding      => '2',
+        listen_address        => '127.0.0.1:9900',
+        storage_retention     => $storage_retention,
+        max_chunks_to_persist => $max_chunks_to_persist,
+        memory_chunks         => $memory_chunks,
+        scrape_configs_extra  => array_concat(
             $mysql_jobs, $varnish_jobs, $memcached_jobs, $hhvm_jobs,
             $apache_jobs, $etcd_jobs, $etcdmirror_jobs
         ),
-        global_config_extra  => $config_extra,
+        global_config_extra   => $config_extra,
     }
 
     prometheus::web { 'ops':
