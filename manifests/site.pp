@@ -64,7 +64,17 @@ node 'analytics1002.eqiad.wmnet' {
 
 # This node hosts Oozie and Hive servers,
 # as well as a MySQL instance that stores
-# meta data associated with those services.
+# meta data associated with those and other
+# Analytics Cluster services.
+#
+# This node is also is a launch pad for various cron based Hadoop jobs.
+# Many ingestion jobs need a starting point.  Oozie is a great
+# Hadoop job scheduler, but it is not better than cron
+# for some jobs that need to be launched at regular time
+# intervals.  Cron is used for those.  These crons
+# do not use local resources, instead, they launch
+# Hadoop jobs that run throughout the cluster.
+#
 node 'analytics1003.eqiad.wmnet' {
     role(analytics_cluster::client,
         analytics_cluster::database::meta,
@@ -87,8 +97,11 @@ node 'analytics1003.eqiad.wmnet' {
         # is a little special and standalone, so we do it here.
         analytics_cluster::hive::site_hdfs,
 
-        # analytics1003 also runs various crons that launch
-        # Hadoop jobs.
+        # Camus crons import data into
+        # from Kafka into HDFS.
+        analytics_cluster::refinery::job::camus,
+
+        # Various crons that launch Hadoop jobs.
         analytics_cluster::refinery,
         analytics_cluster::refinery::job::data_drop,
         analytics_cluster::refinery::job::project_namespace_map,
@@ -115,15 +128,7 @@ node /analytics10(2[89]|3[0-9]|4[0-9]|5[0-7]).eqiad.wmnet/ {
 # cron based Hadoop jobs.
 node 'analytics1027.eqiad.wmnet' {
     role(analytics_cluster::client,
-        analytics_cluster::hue,
-
-
-
-        # Include analytics/refinery deployment target.
-        analytics_cluster::refinery,
-        # Add cron jobs to run Camus to import data into
-        # HDFS from Kafka.
-        analytics_cluster::refinery::job::camus)
+        analytics_cluster::hue)
 
     include ::standard
     include ::base::firewall
