@@ -2479,7 +2479,12 @@ node 'rcs1001.eqiad.wmnet', 'rcs1002.eqiad.wmnet' {
     include ::base::firewall
 }
 
-node /^rdb100[1-9]\.eqiad\.wmnet/ {
+
+node /^rdb1007\.eqiad\.wmnet$/ {
+    role(jobqueue_redis::master)
+}
+
+node /^rdb100[1-68-9]\.eqiad\.wmnet/ {
     role(jobqueue_redis)
     include ::base::firewall
 }
