@@ -1,0 +1,4 @@
+debdeploy::grains:
+  debdeploy-redis-codfw:
+    value: standard
+
