@@ -133,13 +133,13 @@ define service::uwsgi(
         $local_log_config = {
             logger => [
                 "local file:${local_logfile}",
-                "logstash socket:${service::configuration::logstash_host}:${service::configuration::logstash_port}",
+                "logstash socket:${service::configuration::logstash_host}:${service::configuration::logstash_port_logback}",
             ]
         }
     } else {
         $local_log_config = {
             logger => [
-                "logstash socket:${service::configuration::logstash_host}:${service::configuration::logstash_port}",
+                "logstash socket:${service::configuration::logstash_host}:${service::configuration::logstash_port_logback}",
             ]
         }
     }
@@ -169,7 +169,7 @@ define service::uwsgi(
                 join([
                     'json:logstash {"@timestamp":"${strftime:%%Y-%%m-%%dT%%H:%%M:%%S}","type":"',
                     $title,
-                    '","logger_name":"uwsgi","host":"%h","level":"ERROR","message":"${msg}"}'], '')
+                    '","logger_name":"uwsgi","host":"%h","level":"INFO","message":"${msg}"}'], '')
                 #lint:endignore
             ],
     }
