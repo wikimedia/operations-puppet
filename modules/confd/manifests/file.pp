@@ -38,6 +38,8 @@ define confd::file (
 
     include ::confd
 
+    validate_numeric($uid)
+    validate_numeric($gid)
     $safe_name = regsubst($name, '/', '_', 'G')
 
     file { "/etc/confd/templates/${safe_name}.tmpl":
