@@ -27,5 +27,5 @@ define profile::jobqueue_redis::instances($ip, $shards = {}) {
         watch_keys => ['/'],
         content    => template('profile/jobqueue_redis/statefile.tpl.erb'),
     }
-
+    Base::Service_unit['confd'] -> Base::Service_unit["redis-instance-tcp_${title}"]
 }
