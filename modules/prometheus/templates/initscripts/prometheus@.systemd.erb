@@ -3,7 +3,7 @@ Description=prometheus server (instance %i)
 
 [Service]
 User=prometheus
-ExecStart=/usr/bin/prometheus -storage.local.path <%= @metrics_path %> -web.listen-address <%= @listen_address %> -web.external-url <%= @external_url %> -storage.local.retention <%= @storage_retention %> -config.file <%= @base_path %>/prometheus.yml -storage.local.chunk-encoding-version <%= @storage_encoding %>
+ExecStart=/usr/bin/prometheus -storage.local.max-chunks-to-persist <%= @max_chunks_to_persist %> -storage.local.memory-chunks <%= @memory_chunks %> -storage.local.path <%= @metrics_path %> -web.listen-address <%= @listen_address %> -web.external-url <%= @external_url %> -storage.local.retention <%= @storage_retention %> -config.file <%= @base_path %>/prometheus.yml -storage.local.chunk-encoding-version <%= @storage_encoding %>
 Restart=on-failure
 RestartSec=2s
 TimeoutStopSec=10m
