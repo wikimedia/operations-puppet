@@ -1,7 +1,7 @@
 #!/usr/bin/python
 #####################################################################
 # THIS FILE IS MANAGED BY PUPPET
-# puppet:///modules/openstack/mitaka/virtscripts/cold-migrate
+# puppet:///modules/openstack/liberty/virtscripts/cold-migrate
 #####################################################################
 """
  cold-migrate stops an instance, moves it to a new host,
@@ -21,7 +21,6 @@ import time
 import glanceclient
 from keystoneclient.auth.identity import generic
 from keystoneclient import session as keystone_session
-from keystoneclient.v3 import client as keystone_client
 from novaclient import client
 
 
@@ -30,7 +29,7 @@ class NovaInstance(object):
     def __init__(self, session, instance_id):
         self.instance_id = instance_id
         self.session = session
-        self.novaclient = client.Client('2',session=session)
+        self.novaclient = client.Client('2', session=session)
         self.refresh_instance()
 
     # Returns True if the status changed, otherwise False
@@ -46,13 +45,13 @@ class NovaInstance(object):
         #  old-fasioned way.
         print "Needed image is %s" % image.status
         if deactivate:
-            action='deactivate'
+            action = 'deactivate'
             if image.status == 'deactivated':
                 # Nothing to do
                 return False
             print "deactivating image %s" % image_id
         else:
-            action='reactivate'
+            action = 'reactivate'
             if image.status == 'active':
                 # Nothing to do
                 return False
@@ -60,7 +59,7 @@ class NovaInstance(object):
 
         url = "%s/v2/images/%s/actions/%s" % (glanceendpoint, image_id, action)
 
-        resp = requests.post(url, headers = {'X-Auth-Token': token } )
+        resp = requests.post(url, headers={'X-Auth-Token': token})
         if resp:
             return True
         else:
@@ -96,34 +95,26 @@ class NovaInstance(object):
         self.instance.stop()
         self.wait_for_status('SHUTOFF')
 
-        imagedir = "/var/lib/nova/instances/%s" % self.instance_id
+        imagebasedir = "/var/lib/nova/instances"
+        imagedir = "%s/%s" % (imagebasedir, self.instance_id)
 
-        args = [
-            "/usr/bin/rsync",
-            "-S",
-            "-av",
-            "%s.eqiad.wmnet::nova_instance_rsync_controller/%s" %
-            (source,
-             self.instance_id),
-            "/srv/migratetmp"]
+        # ssh to the source host, and rsync from there to the dest
+        #  using the shared nova key.
+        #
+        # Don't bother to rsync the console log.  Nova can't read
+        #  it, and we don't need it.
+        args = ["ssh", "-i", "/root/.ssh/compute-hosts-key",
+                "nova@%s.eqiad.wmnet" % source,
+                "/usr/bin/rsync -S -avz -e \"ssh -o StrictHostKeyChecking=no "
+                "-o UserKnownHostsFile=/dev/null -i "
+                "/var/lib/nova/.ssh/id_rsa\" --progress "
+                "--exclude=console.log "
+                "%s nova@%s.eqiad.wmnet:%s" %
+                (imagedir, destination, imagebasedir)]
         print " ".join(args)
         r = subprocess.call(args)
         if r:
-            print ("rsync from source to local failed.")
-            return(1)
-
-        args = [
-            "rsync",
-            "-S",
-            "-av",
-            "/srv/migratetmp/%s" %
-            self.instance_id,
-            "%s.eqiad.wmnet::nova_instance_rsync_controller/" %
-            destination]
-        print " ".join(args)
-        r = subprocess.call(args)
-        if r:
-            print ("rsync from local to remote failed.")
+            print ("rsync to new host failed.")
             return(1)
 
         print "Instance copied.  Now updating nova db..."
@@ -152,7 +143,8 @@ class NovaInstance(object):
             confirm = ""
             while (confirm != "cleanup"):
                 confirm = raw_input(
-                    "Verify that the instance is healthy, then type 'cleanup' to delete old instance files:  ")
+                    "Verify that the instance is healthy, then type "
+                    "'cleanup' to delete old instance files:  ")
             print "Cleaning up old instance files on %s" % source
             args = ["ssh", "-i", "/root/.ssh/compute-hosts-key",
                     "nova@%s.eqiad.wmnet" % source,
@@ -170,18 +162,12 @@ class NovaInstance(object):
             self.instance_id,
             self.instance._info['OS-EXT-SRV-ATTR:host'],
             self.instance.status)
-        print "Note that you will need to manually clean up /srv/migratetmp."
 
 
 if __name__ == "__main__":
     argparser = argparse.ArgumentParser('cold-migrate',
-                                        description='''Move an instance to a different compute node''',
-                                        epilog='''Note: The target node cannot be specified.  To avoid
-            a particular node, remove it from wmf_scheduler_hosts_pool
-            in nova.conf.
-
-            Note also that this tool is quite specific to the nova 'icehouse'
-            release.  It may not work with later versions.''')
+                                        description="Move an instance to a "
+                                        "different compute node")
     argparser.add_argument(
         '--nova-user',
         help='username for nova auth',
@@ -227,7 +213,6 @@ if __name__ == "__main__":
         project_domain_name='Default',
         project_name='admin')
     session = keystone_session.Session(auth=auth)
-
 
     instance = NovaInstance(session, args.instanceid)
     instance.migrate(args.destination, args.mysql_password)
