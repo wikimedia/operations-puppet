@@ -133,13 +133,13 @@ define service::uwsgi(
         $local_log_config = {
             logger => [
                 "local file:${local_logfile}",
-                "logstash socket:${service::configuration::logstash_host}:${service::configuration::logstash_port}",
+                "logstash socket:${service::configuration::logstash_host}:${service::configuration::logstash_port_logback}",
             ]
         }
     } else {
         $local_log_config = {
             logger => [
-                "logstash socket:${service::configuration::logstash_host}:${service::configuration::logstash_port}",
+                "logstash socket:${service::configuration::logstash_host}:${service::configuration::logstash_port_logback}",
             ]
         }
     }
