@@ -7,6 +7,11 @@ class role::analytics_cluster::hue {
         description => 'Hue (Hadoop User Experience) WebGUI',
     }
 
+    # Include Wikimedia's thirdparty/cloudera apt component
+    # as an apt source on all Hadoop hosts.  This is needed
+    # to install CDH packages from our apt repo mirror.
+    require ::role::analytics_cluster::apt
+
     # Require that all Hue applications
     # have their corresponding clients
     # and configs installed.

@@ -7,6 +7,11 @@ class role::analytics_cluster::client {
         description => 'Client node for interacting with the Analytics Cluster',
     }
 
+    # Include Wikimedia's thirdparty/cloudera apt component
+    # as an apt source on all Hadoop hosts.  This is needed
+    # to install CDH packages from our apt repo mirror.
+    require ::role::analytics_cluster::apt
+
     # Include Hadoop ecosystem client classes.
     require ::role::analytics_cluster::hadoop::client
     require ::role::analytics_cluster::hive::client
