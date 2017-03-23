@@ -124,11 +124,11 @@ class openstack::nova::compute(
     # Check for buggy kernels.  There are a lot of them!
     if os_version('ubuntu >= trusty') and (versioncmp($::kernelrelease, '3.13.0-46') < 0) {
         # see: https://bugs.launchpad.net/ubuntu/+source/linux/+bug/1346917
-        fail('nova-compute not installed on buggy kernels.  Old versions of 3.13 have a KSM bug.  Try installing linux-image-generic-lts-utopic')
+        fail('nova-compute not installed on buggy kernels.  Old versions of 3.13 have a KSM bug.  Try installing linux-image-generic-lts-xenial')
     } elsif $::kernelrelease =~ /^3\.13\..*/ {
-        fail('nova-compute not installed on buggy kernels.  On 3.13 series kernels, instance suspension causes complete system lockup.  Try installing linux-image-generic-lts-utopic')
+        fail('nova-compute not installed on buggy kernels.  On 3.13 series kernels, instance suspension causes complete system lockup.  Try installing linux-image-generic-lts-xenial')
     } elsif $::kernelrelease =~ /^3\.19\..*/ {
-        fail('nova-compute not installed on buggy kernels.  On 3.19 series kernels, instance clocks die after resuming from suspension.  Try installing linux-image-generic-lts-utopic')
+        fail('nova-compute not installed on buggy kernels.  On 3.19 series kernels, instance clocks die after resuming from suspension.  Try installing linux-image-generic-lts-xenial')
     } else {
         package { [
                       'nova-compute',
