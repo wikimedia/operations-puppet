@@ -3,6 +3,7 @@
 #
 define monitoring::host (
     $ip_address    = $::main_ipaddress,
+    $os            = $::operatingsystem,
     $host_fqdn     = undef,
     $group         = undef,
     $ensure        = present,
@@ -39,9 +40,10 @@ define monitoring::host (
     # definition is also used for non-exported resources as well, this if guard
     # is required
     if $title == $::hostname {
-        $image = $::operatingsystem ? {
+        $image = $os ? {
             'Ubuntu'  => 'ubuntu',
             'Debian'  => 'debian',
+            'Junos'   => 'juniper',
             default   => 'linux40'
         }
         $icon_image      = "vendors/${image}.png"
