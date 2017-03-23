@@ -6,7 +6,7 @@
 # will override these and if you override one or the other this _will_ break.
 
 # This is known to support bash3, as well as *mostly* support bash2.05b.  It
-# has been tested with the default shells on MacOS X 10.4 "Tiger", Ubuntu 5.10
+# has been tested with the default shells on macOS 10.4 "Tiger", Ubuntu 5.10
 # "Breezy Badger", Ubuntu 6.06 "Dapper Drake", and Ubuntu 6.10 "Edgy Eft".
 
 # tmux and screen are not supported; even using the tmux hack to get escape
@@ -95,6 +95,12 @@ if [[ "$TERM" != screen && "$ITERM_SHELL_INTEGRATION_INSTALLED" = "" && "$-" == 
 
       # Get the value of the prompt prefix, which will change $?
       \local iterm2_prompt_prefix_value="$(iterm2_prompt_prefix)"
+
+      # Add the mark unless the prompt includes '$(iterm2_prompt_mark)' as a substring.
+      if [[ $ITERM_ORIG_PS1 != *'$(iterm2_prompt_mark)'* ]]
+      then
+        iterm2_prompt_prefix_value="$iterm2_prompt_prefix_value$(iterm2_prompt_mark)"
+      fi
 
       # Reset $? to its saved value, which might be used in $ITERM_ORIG_PS1.
       sh -c "exit $s"
@@ -241,7 +247,7 @@ if [[ "$TERM" != screen && "$ITERM_SHELL_INTEGRATION_INSTALLED" = "" && "$-" == 
   # Usage: iterm2_set_user_var key value
   function iterm2_set_user_var() {
     iterm2_begin_osc
-    printf "1337;SetUserVar=%s=%s" "$1" $(printf "%s" "$2" | base64)
+    printf "1337;SetUserVar=%s=%s" "$1" $(printf "%s" "$2" | base64 | tr -d '\n')
     iterm2_end_osc
   }
 
@@ -261,7 +267,9 @@ if [[ "$TERM" != screen && "$ITERM_SHELL_INTEGRATION_INSTALLED" = "" && "$-" == 
     iterm2_end_osc
 
     iterm2_print_state_data
+  }
 
+  function iterm2_prompt_mark() {
     iterm2_begin_osc
     printf "133;A"
     iterm2_end_osc
@@ -275,7 +283,7 @@ if [[ "$TERM" != screen && "$ITERM_SHELL_INTEGRATION_INSTALLED" = "" && "$-" == 
 
   function iterm2_print_version_number() {
     iterm2_begin_osc
-    printf "1337;ShellIntegrationVersion=2;shell=bash"
+    printf "1337;ShellIntegrationVersion=4;shell=bash"
     iterm2_end_osc
   }
 
@@ -290,3 +298,4 @@ if [[ "$TERM" != screen && "$ITERM_SHELL_INTEGRATION_INSTALLED" = "" && "$-" == 
   iterm2_print_state_data
   iterm2_print_version_number
 fi
+alias imgcat=~/.iterm2/imgcat;alias imgls=~/.iterm2/imgls;alias it2attention=~/.iterm2/it2attention;alias it2check=~/.iterm2/it2check;alias it2copy=~/.iterm2/it2copy;alias it2dl=~/.iterm2/it2dl;alias it2getvar=~/.iterm2/it2getvar;alias it2setcolor=~/.iterm2/it2setcolor;alias it2setkeylabel=~/.iterm2/it2setkeylabel;alias it2ul=~/.iterm2/it2ul;alias it2universion=~/.iterm2/it2universion
