@@ -1,1 +1,7 @@
 swift::storage::statsd_host: 'localhost'
+swift::storage::settings:
+    # Container server
+    container-server.container-replicator.concurrency: 1
+    # Object server
+    object-server.DEFAULT.workers: 100
+    object-server.object-replicator.concurrency: 3
