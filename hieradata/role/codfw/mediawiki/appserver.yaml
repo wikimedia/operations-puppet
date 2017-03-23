@@ -1,4 +1,3 @@
 debdeploy::grains:
   debdeploy-appserver-codfw:
     value: standard
-use_timesyncd: true
