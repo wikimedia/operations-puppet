@@ -78,6 +78,9 @@ node 'analytics1003.eqiad.wmnet' {
         analytics_cluster::hive::server,
         analytics_cluster::oozie::server,
 
+        # Include a weekly cron job to run hdfs balancer.
+        analytics_cluster::hadoop::balancer,
+
         # We need hive-site.xml in HDFS.  This can be included
         # on any node with a Hive client, but we really only
         # want to include it in one place.  analytics1003
@@ -114,8 +117,7 @@ node 'analytics1027.eqiad.wmnet' {
     role(analytics_cluster::client,
         analytics_cluster::hue,
 
-        # Include a weekly cron job to run hdfs balancer.
-        analytics_cluster::hadoop::balancer,
+
 
         # Include analytics/refinery deployment target.
         analytics_cluster::refinery,
