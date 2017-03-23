@@ -132,7 +132,7 @@ define service::uwsgi(
         }
         $local_log_config = {
             logger => [
-                "file:${local_logfile}",
+                "local file:${local_logfile}",
                 "logstash socket:${service::configuration::logstash_host}:${service::configuration::logstash_port}",
             ]
         }
