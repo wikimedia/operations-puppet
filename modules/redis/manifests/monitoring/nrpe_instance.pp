@@ -2,7 +2,7 @@ define redis::monitoring::nrpe_instance($replica_warning=60, $replica_critical=6
     require redis::monitoring::nrpe
     $port = $title
     $cmd = $::redis::monitoring::nrpe::nrpe_command
-    nrpe::monitor_service { "Redis status on port ${port}":
+    nrpe::monitor_service { "redis_status_on_port_${port}":
         ensure        => present,
         description   => "Check health of redis instance on ${port}",
         nrpe_command  => "/usr/bin/sudo ${cmd} ${port} ${replica_warning} ${replica_critical}",
