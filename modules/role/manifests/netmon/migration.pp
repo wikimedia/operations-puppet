@@ -11,12 +11,27 @@ class role::netmon::migration {
 
     include rsync::server
 
-    file { '/srv/netmon1001':
+    file { [ '/srv/netmon1001',
+             '/srv/netmon1001/librenms',
+             '/srv/netmon1001/smokeping',
+             '/srv/netmon1001/torrus' }:
         ensure => 'directory',
     }
 
-    rsync::server::module { 'netmon1001':
-        path        => '/srv/netmon1001',
+    rsync::server::module { 'librenms':
+        path        => '/srv/netmon1001/librenms',
+        read_only   => 'no',
+        hosts_allow => $sourceip,
+    }
+
+    rsync::server::module { 'smokeping':
+        path        => '/srv/netmon1001/smokeping',
+        read_only   => 'no',
+        hosts_allow => $sourceip,
+    }
+
+    rsync::server::module { 'torrus':
+        path        => '/srv/netmon1001/torrus',
         read_only   => 'no',
         hosts_allow => $sourceip,
     }
