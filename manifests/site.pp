@@ -78,9 +78,16 @@ node 'analytics1003.eqiad.wmnet' {
         analytics_cluster::hive::server,
         analytics_cluster::oozie::server,
 
+        # We need hive-site.xml in HDFS.  This can be included
+        # on any node with a Hive client, but we really only
+        # want to include it in one place.  analytics1003
+        # is a little special and standalone, so we do it here.
+        analytics_cluster::hive::site_hdfs,
+
         # analytics1003 also runs various crons that launch
         # Hadoop jobs.
         analytics_cluster::refinery,
+        analytics_cluster::refinery::job::data_drop,
         analytics_cluster::refinery::job::project_namespace_map,
         analytics_cluster::refinery::job::sqoop_mediawiki)
 
@@ -112,19 +119,9 @@ node 'analytics1027.eqiad.wmnet' {
 
         # Include analytics/refinery deployment target.
         analytics_cluster::refinery,
-
         # Add cron jobs to run Camus to import data into
         # HDFS from Kafka.
-        analytics_cluster::refinery::job::camus,
-
-        # Add cron job to delete old data in HDFS
-        analytics_cluster::refinery::job::data_drop,
-
-        # We need hive-site.xml in HDFS.  This can be included
-        # on any node with a Hive client, but we really only
-        # want to include it in one place.  analytics1027
-        # is a little special and standalone, so we do it here.
-        analytics_cluster::hive::site_hdfs)
+        analytics_cluster::refinery::job::camus)
 
     include ::standard
     include ::base::firewall
