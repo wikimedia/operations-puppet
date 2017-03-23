@@ -1,4 +1,6 @@
 class redis::monitoring::nrpe {
+    require_package('libredis-perl')
+
     # TODO: move the source here once we're done with the migration
     file { '/usr/lib/nagios/plugins/check_redis':
         ensure => present,
