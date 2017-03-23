@@ -15,12 +15,19 @@ class role::mariadb::core(
     include passwords::misc::scripts
     include role::mariadb::ferm
 
+    # Semi-sync replication
+    # off: for shard(s) of a single machine, with no slaves
+    # slave: for all slaves
+    # both: for masters (they are slaves and masters at the same time)
     if ($shard == 'es1') {
         $mysql_role = 'standalone'
+        $semi_sync = 'off'
     } elsif $master == true {
         $mysql_role = 'master'
+        $semi_sync = 'both'
     } else {
         $mysql_role = 'slave'
+        $semi_sync = 'slave'
     }
 
     class { 'role::mariadb::groups':
@@ -32,18 +39,6 @@ class role::mariadb::core(
 
     include mariadb::packages_wmf
     include mariadb::service
-
-    # Semi-sync replication
-    # off: for non-primary datacenter and read-only shard(s)
-    # slave: for slaves in the primary datacenter
-    # master: for masters in the primary datacenter
-    if ($::mw_primary != $::site or $shard == 'es1') {
-        $semi_sync = 'off'
-    } elsif ($master) {
-        $semi_sync = 'master'
-    } else {
-        $semi_sync = 'slave'
-    }
 
     # Read only forced on also for the masters of the primary datacenter
     class { 'mariadb::config':
