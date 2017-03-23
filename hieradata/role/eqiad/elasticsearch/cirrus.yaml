@@ -64,3 +64,6 @@ elasticsearch::graylog_hosts:
 
 elasticsearch::https::certificate_name: 'search.svc.eqiad.wmnet'
 profile::base::dns_alt_names:           'search.svc.eqiad.wmnet'
+
+# Allow reindex from eqiad to codfw
+elasticsearch::reindex_remote_whitelist: 'search.svc.codfw.wmnet:9200'
