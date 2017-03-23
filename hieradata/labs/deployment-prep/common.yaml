@@ -264,3 +264,13 @@ scap::sources:
     repository: mediawiki/services/eventstreams/deploy
 prometheus_nodes:
   - deployment-prometheus01.deployment-prep.eqiad.wmflabs
+
+# Beta requires slower replication - T160990
+swift::storage::settings:
+    # Container server
+    container-server.container-replicator.concurrency: 1
+    container-server.container-replicator.interval: 300
+    # Object server
+    object-server.DEFAULT.workers: 12
+    object-server.object-replicator.concurrency: 1
+    object-server.object-replicator.interval: 300

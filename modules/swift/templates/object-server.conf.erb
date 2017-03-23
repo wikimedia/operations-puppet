@@ -2,7 +2,7 @@
 bind_ip = 0.0.0.0
 bind_port = 6000
 devices = /srv/swift-storage/
-workers = 100
+workers = <%= @settings.fetch('object-server.DEFAULT.workers', 100) %>
 <% if @statsd_host -%>
 log_statsd_host = <%= @statsd_host %>
 log_statsd_port = 8125
@@ -29,7 +29,10 @@ allowed_headers = content-disposition,
 	x-content-duration
 
 [object-replicator]
-concurrency = 3
+concurrency = <%= @settings.fetch('object-server.object-replicator.concurrency', 3) %>
+<% if @settings.fetch('object-server.object-replicator.interval') -%>
+interval = <%= @settings.fetch('object-server.object-replicator.interval') %>
+<% end -%>
 
 [object-updater]
 concurrency = 1

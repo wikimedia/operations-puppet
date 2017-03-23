@@ -1,7 +1,21 @@
+# == Class swift::storage
+#
+# [*settings*]
+# Parameters for the Swift servers:
+#
+# container-server.container-replicator.concurrency
+# container-server.container-replicator.interval
+# object-server.DEFAULT.workers
+# object-server.object-replicator.concurrency
+# object-server.object-replicator.interval
+#
+# Default to sane values for Wikimedia production.
+#
 class swift::storage (
     $statsd_host               = undef,
     $statsd_metric_prefix      = undef,
     $statsd_sample_rate_factor = '1',
+    $settings = {},
 ) {
     package {
         [ 'swift-account',
