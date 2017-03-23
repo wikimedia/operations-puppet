@@ -26,6 +26,7 @@ class profile::elasticsearch(
     $certificate_name = hiera('profile::elasticsearch::certificate_name', $::fqdn),
     $recover_after_time = hiera('profile::elasticsearch::recover_after_time', '1s'),
     $recover_after_nodes = hiera('profile::elasticsearch::recover_after_nodes', 1),
+    $reindex_remote_whitelist = hiera('profile::elasticsearch::reindex_remote_whitelist'),
 ) {
     $master_eligible = $::fqdn in $unicast_hosts
 
@@ -93,6 +94,7 @@ class profile::elasticsearch(
         master_eligible            => $master_eligible,
         graylog_hosts              => $graylog_hosts,
         version                    => 5,
+        reindex_remote_whitelist   => $reindex_remote_whitelist,
     }
 
     class { '::elasticsearch::https':

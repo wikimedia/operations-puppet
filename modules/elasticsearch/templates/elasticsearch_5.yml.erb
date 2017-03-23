@@ -432,3 +432,9 @@ thread_pool:
 index.load_fixed_bitset_filters_eagerly: false
 
 <% end -%>
+
+<% if @reindex_remote_whitelist and @reindex_remote_whitelist != '' %>
+##
+# Hosts allowed as data sources for reindexing
+reindex.remote.whitelist: "<%= @reindex_remote_whitelist %>"
+<% end %>
