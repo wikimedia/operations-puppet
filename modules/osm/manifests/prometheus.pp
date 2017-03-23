@@ -16,6 +16,6 @@ class osm::prometheus(
 
     cron { 'osm_sync_lag':
         ensure  => $ensure,
-        command => "/usr/bin/osm_sync_lag ${state_path} >/dev/null 2>&1",
+        command => "/usr/bin/osm_sync_lag ${state_path} ${prometheus_path} >/dev/null 2>&1",
     }
 }
