@@ -1,100 +1,15 @@
 cluster: redis
-redis_shards:
-  eqiad:
-    rdb1-aggr: #rdb1001
-      host: 10.64.32.76
-      port: 6378
-    rdb1-6379:
-      host: 10.64.32.76
-      port: 6379
-    rdb1-6380:
-      host: 10.64.32.76
-      port: 6380
-    rdb1-6381:
-      host: 10.64.32.76
-      port: 6381
-    rdb2-aggr: # rdb1003
-      host: 10.64.0.201
-      port: 6378
-    rdb2-6379:
-      host: 10.64.0.201
-      port: 6379
-    rdb2-6380:
-      host: 10.64.0.201
-      port: 6380
-    rdb2-6381:
-      host: 10.64.0.201
-      port: 6381
-    rdb3-aggr: # rdb1005
-      host: 10.64.0.24
-      port: 6378
-    rdb3-6379:
-      host: 10.64.0.24
-      port: 6379
-    rdb3-6380:
-      host: 10.64.0.24
-      port: 6380
-    rdb3-6381:
-      host: 10.64.0.24
-      port: 6381
-    rdb4-aggr: # rdb1007
-      host: 10.64.32.18
-      port: 6378
-    rdb4-6379:
-      host: 10.64.32.18
-      port: 6379
-    rdb4-6380:
-      host: 10.64.32.18
-      port: 6380
-    rdb4-6381:
-      host: 10.64.32.18
-      port: 6381
-  codfw:
-    rdb1-aggr: #rdb2001
-      host: 10.192.0.119
-      port: 6378
-    rdb1-6379:
-      host: 10.192.0.119
-      port: 6379
-    rdb1-6380:
-      host: 10.192.0.119
-      port: 6380
-    rdb1-6381:
-      host: 10.192.0.119
-      port: 6381
-    rdb2-aggr: # rdb2003
-      host: 10.192.16.122
-      port: 6378
-    rdb2-6379:
-      host: 10.192.16.122
-      port: 6379
-    rdb2-6380:
-      host: 10.192.16.122
-      port: 6380
-    rdb2-6381:
-      host: 10.192.16.122
-      port: 6381
-    rdb3-aggr: # rdb2005
-      host: 10.192.32.133
-      port: 6378
-    rdb3-6379:
-      host: 10.192.32.133
-      port: 6379
-    rdb3-6380:
-      host: 10.192.32.133
-      port: 6380
-    rdb3-6381:
-      host: 10.192.32.133
-      port: 6381
-    rdb4-aggr: # rdb2005 - higher ports
-      host: 10.192.32.133
-      port: 6478
-    rdb4-6379:
-      host: 10.192.32.133
-      port: 6479
-    rdb4-6380:
-      host: 10.192.32.133
-      port: 6480
-    rdb4-6381:
-      host: 10.192.32.133
-      port: 6481
+profile::redis::multidc::category: jobqueue
+profile::redis::multidc::discovery: "appservers-rw"
+profile::redis::multidc::settings:
+  bind: '0.0.0.0'
+  appendonly: true
+  auto_aof_rewrite_min_size: '512mb'
+  client_output_buffer_limit: 'slave 2048mb 512mb 60'
+  dir: '/srv/redis'
+  maxmemory: '8Gb'
+  no_appendfsync_on_rewrite: true
+  save: '""'
+  stop_writes_on_bgsave_error: false
+  slave_read_only: false
+profile::redis::multidc::aof: false
