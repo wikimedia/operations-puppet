@@ -2280,7 +2280,7 @@ node 'nescio.wikimedia.org' {
 # network monitoring tool server
 node 'netmon1001.wikimedia.org' {
     role(rancid::server, librenms, servermon::wmf, torrus, smokeping,
-      network::monitor)
+      network::monitor, backup::host)
     include ::standard
     include ::passwords::network
     include ::base::firewall
