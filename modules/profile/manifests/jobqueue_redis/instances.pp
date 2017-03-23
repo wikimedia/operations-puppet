@@ -25,8 +25,6 @@ define profile::jobqueue_redis::instances($ip, $shards = {}) {
         ensure     => present,
         prefix     => '/discovery/appservers-rw',
         watch_keys => ['/'],
-        uid        => 'root',
-        gid        => 'root',
         content    => template('profile/jobqueue_redis/statefile.tpl.erb'),
     }
 
