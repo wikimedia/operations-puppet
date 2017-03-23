@@ -8,7 +8,7 @@ from keystoneclient.v3 import client as keystone_client
 from novaclient import client as nova_client
 
 
-class clients(object):
+class Clients(object):
     # envfile should be a puppetized environment file like observerenv.sh.
     #
     #  If envfile is not specified, specific creds can be passed in as
@@ -42,7 +42,7 @@ class clients(object):
                 self.username = os.environ.get('OS_USERNAME', None)
 
             if password:
-                self.username = password
+                self.password = password
             else:
                 self.password = os.environ.get('OS_PASSWORD', None)
 
@@ -129,3 +129,7 @@ class clients(object):
     def globalimages(self):
         client = self.glanceclient()
         return [i for i in client.images.list()]
+
+
+# Alias class for back-compat with old consumers
+clients = Clients
