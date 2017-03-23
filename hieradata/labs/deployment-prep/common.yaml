@@ -239,6 +239,7 @@ scap::dsh::groups:
 "profile::elasticsearch::cluster_name": beta-search
 "profile::elasticsearch::graylog_hosts":
   - deployment-logstash2.deployment-prep.eqiad.wmflabs
+"profile::elasticsearch::reindex_remote_whitelist": ''
 role::logstash::collector::statsd_host: labmon1001.eqiad.wmnet
 "redis::shards":
   jobqueue: &labs_shards
