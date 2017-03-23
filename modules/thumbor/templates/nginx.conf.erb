@@ -11,7 +11,7 @@ server {
 
 # Thumbor subprocesses have a timeout of 60s
 # Set by SUBPROCESS_TIMEOUT in the Thumbor configuration
-    keepalive_timeout 90;
+    keepalive_timeout 180;
 
     location / {
         proxy_redirect off;
