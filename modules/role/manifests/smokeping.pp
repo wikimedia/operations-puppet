@@ -11,5 +11,7 @@ class role::smokeping {
         port  => '80',
     }
 
+    backup::set {'smokeping': }
+
 }
 

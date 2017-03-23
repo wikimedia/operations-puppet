@@ -104,4 +104,7 @@ class role::librenms {
         proto => 'tcp',
         port  => '443',
     }
+
+    backup::set {'librenms': }
+
 }

@@ -59,4 +59,7 @@ class role::torrus {
         proto => 'tcp',
         port  => '80',
     }
+
+    backup::set {'torrus': }
+
 }
