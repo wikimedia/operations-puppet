@@ -351,7 +351,7 @@ def main():
     ops.write_execute("START TRANSACTION;")
     ops.write_execute("DELETE FROM meta_p.properties_anon_whitelist;")
     # This is hardcoded for now
-    ops.write_execute("INSERT INTO meta_p.properties_anon_whitelist VALUES ('gadget-%');")
+    ops.write_execute("INSERT INTO meta_p.properties_anon_whitelist VALUES ('gadget-%','language,'skin','variant');")
     ops.write_execute("COMMIT;")
 
 if __name__ == '__main__':
