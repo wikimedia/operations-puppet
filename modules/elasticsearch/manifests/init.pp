@@ -72,6 +72,10 @@
 #        want the API exposed outside of localhost, so using just localhost
 #        is useful in those cases.
 #        Default: true (use all hosts defined in unicast_hosts)
+# - $reindex_remote_whitelist: set to a comma delimited list of allowed remote
+#        host and port combinations (e.g. otherhost:9243, another:9243,
+#        127.0.10.*:9243, localhost:*). Scheme is ignored by the whitelist - only host
+#        and port are used. Defaults to undef, which means no remote reindex can occur.
 #
 # == Sample usage:
 #
@@ -109,6 +113,7 @@ class elasticsearch(
     $version = 5,
     $search_shard_count_limit = 1000,
     $curator_uses_unicast_hosts = true,
+    $reindex_remote_whitelist = undef,
 ) {
 
     # Check arguments
