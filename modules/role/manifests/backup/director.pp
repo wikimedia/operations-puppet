@@ -217,6 +217,18 @@ class role::backup::director {
         includes => [ '/srv/backups/m2' ]
     }
 
+    bacula::director::fileset { 'librenms':
+        includes => [ '/var/lib/librenms' ]
+    }
+
+    bacula::director::fileset { 'torrus':
+        includes => [ '/var/lib/torrus', '/var/cache/torrus' ]
+    }
+
+    bacula::director::fileset { 'smokeping':
+        includes => [ '/var/lib/smokeping', '/var/cache/smokeping' ]
+    }
+
     # The console should be on the director
     class { 'bacula::console':
         director   => $::fqdn,
