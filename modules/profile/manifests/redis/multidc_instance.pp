@@ -1,7 +1,7 @@
-define profile::multidc_redis::instances(
+define profile::redis::multidc_instance(
     $ip,
+    $shards,
     $settings = {},
-    $shards = {},
     $discovery = undef,
     $aof = false,
 ) {
