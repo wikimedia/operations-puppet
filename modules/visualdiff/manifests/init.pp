@@ -3,6 +3,10 @@
 # This module provides a standalone visual diffing service.
 class visualdiff {
 
+    # Fonts included for phantomjs rendering
+    # of indic and other language wiki pages
+    include ::mediawiki::packages::fonts
+
     # build-essential and g++ are required to build uprightdiff
     # They can be skipped once we get a packaged version # from elsewhere.
     $visualdiff_packages = [
