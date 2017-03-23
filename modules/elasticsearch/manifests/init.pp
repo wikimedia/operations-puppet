@@ -65,6 +65,10 @@
 # - $gelf_port: port on which the logs will be sent
 # - $gc_log: set to true to activate garbage collection logs
 #        Default: true
+# - $reindex_remote_whitelist: set to a comma delimited list of allowed remote
+#        host and port combinations (e.g. otherhost:9200, another:9200,
+#        127.0.10.*:9200, localhost:*). Scheme is ignored by the whitelist - only host
+#        and port are used. Defaults to undef, which means no remote reindex can occur.
 #
 # == Sample usage:
 #
@@ -100,6 +104,7 @@ class elasticsearch(
     $gc_log = true,
     $java_package = 'openjdk-8-jdk',
     $version = 5,
+    $reindex_remote_whitelist = undef,
 ) {
 
     # Check arguments
