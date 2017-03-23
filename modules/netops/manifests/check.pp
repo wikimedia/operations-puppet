@@ -26,6 +26,9 @@
 #   The parent devices of this device. Accepts either an array or a comma
 #   separate string. Defaults to undef
 #
+# [*os*]
+#   The operating system of the device. Defaults to undef.
+#
 # === Examples
 #
 #  netops::check { 'cr1-esams':
@@ -42,6 +45,7 @@ define netops::check(
     $bgp=false,
     $interfaces=false,
     $parents=undef,
+    $os=undef,
 ) {
 
     # If we get an array convert it to a comma separated string
@@ -56,6 +60,7 @@ define netops::check(
         ip_address => $ipv4,
         group      => $group,
         parents    => $real_parents,
+        os         => $os,
     }
 
     if $ipv6 {
