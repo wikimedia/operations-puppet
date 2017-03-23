@@ -14,7 +14,7 @@ class standard(
     }
 
     unless $::fqdn in $::standard::ntp::wmf_peers[$::site] {
-        if hiera('use_timesyncd', false) or (os_version('debian >= stretch')) {
+        if (os_version('debian >= jessie')) {
             include ::standard::ntp::timesyncd
         } else {
             include ::standard::ntp::client
