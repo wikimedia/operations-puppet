@@ -53,6 +53,11 @@ sql-mode                       = IGNORE_BAD_TABLE_OPTIONS
 tmp_table_size                 = 64M
 max_heap_table_size            = 64M
 
+# Needed when using ROW based replication and altering the width of a column, if not set, the ALTER will fail
+# https://dev.mysql.com/doc/mysql-replication-excerpt/5.7/en/replication-features-different-data-types.html
+# T73563#3117924
+slave_type_conversions         = ALL_NON_LOSSY
+
 table_open_cache               = 10000
 table_definition_cache         = 50000
 open-files-limit               = 400000
