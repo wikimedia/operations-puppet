@@ -1,4 +1,3 @@
 debdeploy::grains:
   debdeploy-cp-ulsfo-misc:
     value: standard
-use_timesyncd: true
