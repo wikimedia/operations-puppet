@@ -2619,13 +2619,15 @@ node 'thorium.eqiad.wmnet' {
     # - https://datasets.wikimedia.org
     # - https://metrics.wikimedia.org (https://metrics.wmflabs.org/ (Wikimetrics))
     # - https://pivot.wikimedia.org (Imply's Pivot UI for Druid data)
+    # - https://hue.wikimedia.org (Hadoop User Experience GUI)
     #
     # For a complete and up to date list please check the
     # related role/module.
     #
     # This node is not intended for data processing.
     role(statistics::web,
-        analytics_cluster::druid::pivot)
+        analytics_cluster::druid::pivot,
+        analytics_cluster::hue)
 
 
     include ::standard
