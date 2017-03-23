@@ -2,6 +2,7 @@ class profile::jobqueue_redis::master(
     $shards = hiera('redis_shards'),
     $conftool_prefix = hiera('conftool_prefix'),
 ) {
+    include ::passwords::redis
     $ip = $facts['ipaddress_primary']
     $instances = redis_get_instances($ip, $shards)
     $password = $passwords::redis::main_password
