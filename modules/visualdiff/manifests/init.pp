@@ -15,6 +15,14 @@ class visualdiff {
         'g++',
         'libopencv-highgui-dev',
         'libboost-program-options-dev',
+        # Fonts for indic, chinese, japanese scripts
+        # Needed so that phantomjs screenshots of wiki pages
+        # on these language wikis look right.
+        'fonts-nanum-coding',
+        'fonts-indic',
+        'fonts-takao',
+        'fonts-wqy-microhei',
+        'fonts-wqy-zenhei',
     ]
 
     require_package($visualdiff_packages)
