@@ -42,6 +42,7 @@ define netops::check(
     $bgp=false,
     $interfaces=false,
     $parents=undef,
+    $os=undef,
 ) {
 
     # If we get an array convert it to a comma separated string
@@ -56,6 +57,7 @@ define netops::check(
         ip_address => $ipv4,
         group      => $group,
         parents    => $real_parents,
+        os         => $os,
     }
 
     if $ipv6 {
