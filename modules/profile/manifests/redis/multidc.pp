@@ -1,16 +1,24 @@
-class profile::jobqueue_redis::master(
-    $shards = hiera('redis_shards'),
+class profile::redis::multidc(
+    $category = hiera('profile::redis::multidc::category'),
+    $all_shards = hiera('redis::shards'),
     $conftool_prefix = hiera('conftool_prefix'),
+    $settings = hiera('profile::redis::multidc::settings'),
+    $discovery = hiera('profile::redis::multidc::discovery'),
+    $aof = hiera('profile::redis::multidc::aof', false)
 ) {
-    include ::passwords::redis
+    require ::passwords::redis
+    $shards = $all_shards[$category]
     $ip = $facts['ipaddress_primary']
     $instances = redis_get_instances($ip, $shards)
     $password = $passwords::redis::main_password
     $uris = apply_format("localhost:%s/${password}", $instances)
     $redis_ports = join($instances, ' ')
+    $auth_settings = {
+        'masterauth'  => $password,
+        'requirepass' => $password,
+    }
 
-    system::role { 'role::jobqueue_redis::master': }
-
+    system::role { "profile::redis::${category}": }
     # Set up ipsec
     class { 'redis::multidc::ipsec':
         shards => $shards
@@ -26,31 +34,18 @@ class profile::jobqueue_redis::master(
     }
 
     # Now the redis instances. We watch etcd every 5 minutes to fix config
-    # based on the mediawiki master datacenter
+    # based on the active datacenter for the chosen discovery label
     class { 'confd':
         interval => 300,
         prefix   => $conftool_prefix,
     }
 
-    profile::multidc_redis::instances{ $instances:
+    profile::redis::multidc_instance{ $instances:
         ip        => $ip,
         shards    => $shards,
-        discovery => 'appservers-rw',
-        aof       => true,
-        settings  => {
-            bind                        => '0.0.0.0',
-            appendonly                  => true,
-            auto_aof_rewrite_min_size   => '512mb',
-            client_output_buffer_limit  => 'slave 2048mb 512mb 60',
-            dir                         => '/srv/redis',
-            masterauth                  => $passwords::redis::main_password,
-            maxmemory                   => '8Gb',
-            no_appendfsync_on_rewrite   => true,
-            requirepass                 => $passwords::redis::main_password,
-            save                        => '""',
-            stop_writes_on_bgsave_error => false,
-            slave_read_only             => false,
-        },
+        discovery => $discovery,
+        aof       => $aof,
+        settings  => merge($settings, $auth_settings),
     }
 
     # Add monitoring, using nrpe and not remote checks anymore
@@ -60,7 +55,7 @@ class profile::jobqueue_redis::master(
         settings => { instances => join($uris, ', ') }
     }
 
-    ferm::service { 'redis_jobqueue_role':
+    ferm::service { "redis_${category}_role":
         proto   => 'tcp',
         notrack => true,
         port    => inline_template('(<%= @redis_ports %>)'),

@@ -1,0 +1,211 @@
+redis::shards:
+  jobqueue:
+    eqiad:
+      rdb1-aggr: #rdb1001
+        host: 10.64.32.76
+        port: 6378
+      rdb1-6379:
+        host: 10.64.32.76
+        port: 6379
+      rdb1-6380:
+        host: 10.64.32.76
+        port: 6380
+      rdb1-6381:
+        host: 10.64.32.76
+        port: 6381
+      rdb2-aggr: # rdb1003
+        host: 10.64.0.201
+        port: 6378
+      rdb2-6379:
+        host: 10.64.0.201
+        port: 6379
+      rdb2-6380:
+        host: 10.64.0.201
+        port: 6380
+      rdb2-6381:
+        host: 10.64.0.201
+        port: 6381
+      rdb3-aggr: # rdb1005
+        host: 10.64.0.24
+        port: 6378
+      rdb3-6379:
+        host: 10.64.0.24
+        port: 6379
+      rdb3-6380:
+        host: 10.64.0.24
+        port: 6380
+      rdb3-6381:
+        host: 10.64.0.24
+        port: 6381
+      rdb4-aggr: # rdb1007
+        host: 10.64.32.18
+        port: 6378
+      rdb4-6379:
+        host: 10.64.32.18
+        port: 6379
+      rdb4-6380:
+        host: 10.64.32.18
+        port: 6380
+      rdb4-6381:
+        host: 10.64.32.18
+        port: 6381
+    codfw:
+      rdb1-aggr: #rdb2001
+        host: 10.192.0.119
+        port: 6378
+      rdb1-6379:
+        host: 10.192.0.119
+        port: 6379
+      rdb1-6380:
+        host: 10.192.0.119
+        port: 6380
+      rdb1-6381:
+        host: 10.192.0.119
+        port: 6381
+      rdb2-aggr: # rdb2003
+        host: 10.192.16.122
+        port: 6378
+      rdb2-6379:
+        host: 10.192.16.122
+        port: 6379
+      rdb2-6380:
+        host: 10.192.16.122
+        port: 6380
+      rdb2-6381:
+        host: 10.192.16.122
+        port: 6381
+      rdb3-aggr: # rdb2005
+        host: 10.192.32.133
+        port: 6378
+      rdb3-6379:
+        host: 10.192.32.133
+        port: 6379
+      rdb3-6380:
+        host: 10.192.32.133
+        port: 6380
+      rdb3-6381:
+        host: 10.192.32.133
+        port: 6381
+      rdb4-aggr: # rdb2005 - higher ports
+        host: 10.192.32.133
+        port: 6478
+      rdb4-6379:
+        host: 10.192.32.133
+        port: 6479
+      rdb4-6380:
+        host: 10.192.32.133
+        port: 6480
+      rdb4-6381:
+        host: 10.192.32.133
+        port: 6481
+  sessions:
+    eqiad:
+      shard01:
+        host: 10.64.0.180
+        port: 6379
+      shard02:
+        host: 10.64.0.181
+        port: 6379
+      shard03:
+        host: 10.64.0.182
+        port: 6379
+      shard04:
+        host: 10.64.0.183
+        port: 6379
+      shard05:
+        host: 10.64.0.184
+        port: 6379
+      shard06:
+        host: 10.64.0.185
+        port: 6379
+      shard07:
+        host: 10.64.32.161
+        port: 6379
+      shard08:
+        host: 10.64.32.162
+        port: 6379
+      shard09:
+        host: 10.64.32.163
+        port: 6379
+      shard10:
+        host: 10.64.32.164
+        port: 6379
+      shard11:
+        host: 10.64.32.165
+        port: 6379
+      shard12:
+        host: 10.64.32.166
+        port: 6379
+      shard13:
+        host: 10.64.48.101
+        port: 6379
+      shard14:
+        host: 10.64.48.102
+        port: 6379
+      shard15:
+        host: 10.64.48.103
+        port: 6379
+      shard16:
+        host: 10.64.48.104
+        port: 6379
+      shard17:
+        host: 10.64.48.95
+        port: 6379
+      shard18:
+        host: 10.64.48.96
+        port: 6379
+    codfw:
+      shard01:
+        host: 10.192.0.83
+        port: 6379
+      shard02:
+        host: 10.192.0.84
+        port: 6379
+      shard03:
+        host: 10.192.0.85
+        port: 6379
+      shard04:
+        host: 10.192.0.86
+        port: 6379
+      shard05:
+        host: 10.192.16.60
+        port: 6379
+      shard06:
+        host: 10.192.16.61
+        port: 6379
+      shard07:
+        host: 10.192.16.62
+        port: 6379
+      shard08:
+        host: 10.192.16.194
+        port: 6379
+      shard09:
+        host: 10.192.32.159
+        port: 6379
+      shard10:
+        host: 10.192.32.160
+        port: 6379
+      shard11:
+        host: 10.192.32.161
+        port: 6379
+      shard12:
+        host: 10.192.32.162
+        port: 6379
+      shard13:
+        host: 10.192.32.163
+        port: 6379
+      shard14:
+        host: 10.192.48.76
+        port: 6379
+      shard15:
+        host: 10.192.48.77
+        port: 6379
+      shard16:
+        host: 10.192.48.78
+        port: 6379
+      shard17:
+        host: 10.192.48.79
+        port: 6379
+      shard18:
+        host: 10.192.48.80
+        port: 6379
