@@ -17,6 +17,7 @@ class netops::monitoring {
         group          => 'routers',
         alarms         => true,
         interfaces     => true,
+        os             => 'Junos',
     }
     $routers = {
         # eqiad
@@ -59,6 +60,7 @@ class netops::monitoring {
         snmp_community => $passwords::network::snmp_ro_community,
         group          => 'switches',
         alarms         => true,
+        os             => 'Junos',
     }
     # Note: The parents attribute is used to capture a view of the network
     # topology. It is not complete on purpose as icinga is not able to
