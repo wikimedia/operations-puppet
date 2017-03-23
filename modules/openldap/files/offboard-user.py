@@ -203,7 +203,11 @@ def offboard_phabricator(username, remove_all_groups, dry_run, turn_volunteer):
     group_memberships = []
 
     # TODO: add more groups after validating priv. status
-    privileged_projects = ['WMF-NDA', 'Security']
+    privileged_projects = ['WMF-NDA', 'Security', 'acl*operations-team', 'WMF FR',
+                           'acl*communityliaison_policy_admins', 'acl*procurement-review',
+                           'acl*annual_report_policy_admins', 'acl*wmf_siem_policy_admins',
+                           'acl*research_collaborations_policy_admins', 'WMF-SIEM',
+                           'acl*support_and_safety_policy_admins']
 
     if len(user_query) == 0:
         print "Phabricator user", username, "not found"
