@@ -1,47 +1,35 @@
 # filtertags: labs-project-deployment-prep
 class role::jobqueue_redis {
+    warning('This module is deprecated. you should use role::jobqueue_redis::master instead')
     include ::standard
     include ::passwords::redis
 
     system::role { 'role::jobqueue_redis': }
 
     $password = $passwords::redis::main_password
-    $shards = hiera('redis::shards')
+    $instances = [6378, 6379, 6380, 6381]
     $ip = $::main_ipaddress
+    $master = hiera('jobqueue_redis_slaveof', undef)
 
-    if empty(redis_get_instances($ip, $shards)) {
-        # Local slave
+    if $master {
         $slaveof = ipresolve(hiera('jobqueue_redis_slaveof'), 4)
-        # The instances are the same we'd find on its master
-        $instances = redis_get_instances($slaveof, $shards)
         mediawiki::jobqueue_redis { $instances: slaveof => $slaveof}
         # Monitoring
         redis::monitoring::instance { $instances:
             settings => {slaveof => $slaveof}
         }
-    } else {
-        # Local master
-        # Encrypt the replication
-        if os_version('Debian >= jessie') {
-            class { 'redis::multidc::ipsec':
-                shards => $shards
-            }
-        }
-        $instances = redis_get_instances($ip, $shards)
-        # find out the replication topology
-        $slaves_map = redis_add_replica({}, $ip, $shards, $::mw_primary)
-        mediawiki::jobqueue_redis {$instances: map => $slaves_map}
+    }
+    else {
+        mediawiki::jobqueue_redis {$instances: }
         # Monitoring
-        redis::monitoring::instance { $instances: map => $slaves_map}
+        redis::monitoring::instance { $instances: }
+
     }
 
     $uris = apply_format("localhost:%s/${password}", $instances)
     diamond::collector { 'Redis':
         settings => { instances => join($uris, ', ') }
     }
-
-    # Firewall rules
-    include ::ferm::ipsec_allow
 
     $redis_ports = join($instances, ' ')
 
