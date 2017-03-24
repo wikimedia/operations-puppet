@@ -23,7 +23,7 @@ describe 'bacula::client', :type => :class do
         }) \
         .with_content(/Name = "testdirector"/) \
         .with_content(/Password = "testdirectorpass"/) \
-        .with_content(/TLS Certificate = "\/etc\/bacula\/ssl\/server.pem"/) \
+        .with_content(/TLS Certificate = "\/etc\/bacula\/ssl\/cert.pem"/) \
         .with_content(/TLS Key = "\/etc\/bacula\/ssl\/server.key"/) \
         .with_content(/Name = "testhost.example.com-fd"/) \
         .with_content(/FDport = 2000/) \

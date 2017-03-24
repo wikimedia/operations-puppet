@@ -33,7 +33,7 @@ describe 'bacula::storage', :type => :class do
         }) \
         .with_content(/Name = "testdirector"/) \
         .with_content(/Password = "testdirectorpass"/) \
-        .with_content(/TLS Certificate = "\/etc\/bacula\/sd\/ssl\/server.pem"/) \
+        .with_content(/TLS Certificate = "\/etc\/bacula\/sd\/ssl\/cert.pem"/) \
         .with_content(/TLS Key = "\/etc\/bacula\/sd\/ssl\/server.key"/) \
         .with_content(/Name = "testhost.example.com-fd"/) \
         .with_content(/SDport = 9000/) \

@@ -9,7 +9,7 @@ Director {
     TLS Require = yes
     TLS CA Certificate File = "/var/lib/puppet/ssl/certs/ca.pem"
     TLS Verify Peer = no
-    TLS Certificate = "/etc/bacula/sd/ssl/server.pem"
+    TLS Certificate = "/etc/bacula/sd/ssl/cert.pem"
     TLS Key = "/etc/bacula/sd/ssl/server.key"
 }
 
@@ -25,7 +25,7 @@ Storage {
     TLS Require = yes
     TLS CA Certificate File = "/var/lib/puppet/ssl/certs/ca.pem"
     TLS Verify Peer = yes
-    TLS Certificate = "/etc/bacula/sd/ssl/server.pem"
+    TLS Certificate = "/etc/bacula/sd/ssl/cert.pem"
     TLS Key = "/etc/bacula/sd/ssl/server.key"
     # Heartbeat inverval = 0 # in secs
     # SDAddresses = # For director connections
