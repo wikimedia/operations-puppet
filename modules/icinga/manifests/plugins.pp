@@ -105,10 +105,7 @@ class icinga::plugins {
         mode   => '0755',
     }
 
-    class { [
-        '::nagios_common::commands',
-        '::nagios_common::check::redis',
-    ] :
+    class { '::nagios_common::commands':
     }
 
     include ::passwords::nagios::mysql
