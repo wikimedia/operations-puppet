@@ -3351,6 +3351,66 @@ host ms-be1027 {
         fixed-address ms-be1027.eqiad.wmnet;
 }
 
+host ms-be1028 {
+        hardware ethernet E0:07:1B:EF:16:60;
+        fixed-address ms-be1028.eqiad.wmnet;
+}
+
+host ms-be1029 {
+        hardware ethernet E0:07:1B:EF:44:80;
+        fixed-address ms-be1029.eqiad.wmnet;
+}
+
+host ms-be1030 {
+        hardware ethernet E0:07:1B:EF:56:80;
+        fixed-address ms-be1030.eqiad.wmnet;
+}
+
+host ms-be1031 {
+        hardware ethernet E0:07:1B:EF:95:00;
+        fixed-address ms-be1031.eqiad.wmnet;
+}
+
+host ms-be1032 {
+        hardware ethernet E0:07:1B:EF:05:28;
+        fixed-address ms-be1032.eqiad.wmnet;
+}
+
+host ms-be1033 {
+        hardware ethernet E0:07:1B:EF:44:88;
+        fixed-address ms-be1033.eqiad.wmnet;
+}
+
+host ms-be1034 {
+        hardware ethernet E0:07:1B:EF:76:31;
+        fixed-address ms-be1034.eqiad.wmnet;
+}
+
+host ms-be1035 {
+        hardware ethernet E0:07:1B:EF:E4:28;
+        fixed-address ms-be1035.eqiad.wmnet;
+}
+
+host ms-be1036 {
+        hardware ethernet 14:02:ec:3d:57:d8;
+        fixed-address ms-be1036.eqiad.wmnet;
+}
+
+host ms-be1037 {
+        hardware ethernet E0:07:1B:EF:44:40;
+        fixed-address ms-be1037.eqiad.wmnet;
+}
+
+host ms-be1038 {
+        hardware ethernet E0:07:1B:EF:26:E8;
+        fixed-address ms-be1038.eqiad.wmnet;
+}
+
+host ms-be1039 {
+        hardware ethernet E0:07:1B:EF:54:48;
+        fixed-address ms-be1039.eqiad.wmnet;
+}
+
 host ms-be2001 {
     hardware ethernet 90:B1:1C:18:A7:74;
     fixed-address ms-be2001.codfw.wmnet;
