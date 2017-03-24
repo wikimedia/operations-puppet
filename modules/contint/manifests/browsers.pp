@@ -9,11 +9,17 @@ class contint::browsers {
     }
 
     if $::operatingsystem == 'Debian' {
+        if os_version( 'debian == jessie' ) {
+            apt::pin { 'phantomjs':
+                pin      => 'release a=jessie-backports',
+                priority => '1001',
+            }
+        }
         $latest_packages = [
             'chromium',
             'chromedriver',
             'firefox-esr',
-            # phantomjs is not available on Jessie
+            'phantomjs',
         ]
         file { '/usr/local/bin/chromedriver':
           ensure => link,
