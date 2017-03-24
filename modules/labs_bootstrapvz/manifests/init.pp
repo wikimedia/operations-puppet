@@ -34,12 +34,6 @@ class labs_bootstrapvz() {
         require => File["${bootstrap_filepath}/manifests"],
     }
 
-    file { "${bootstrap_filepath}/cloud.cfg":
-        mode    => '0444',
-        source  => 'puppet:///modules/labs_bootstrapvz/cloud.cfg',
-        require => File[$bootstrap_filepath],
-    }
-
     file { "${bootstrap_filepath}/firstscripts/firstboot.sh":
         mode    => '0555',
         source  => 'puppet:///modules/labs_bootstrapvz/firstboot.sh',
