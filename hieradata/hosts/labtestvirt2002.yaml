@@ -1,0 +1,4 @@
+role::labs::openstack::nova::compute::instance_dev: "/dev/sda2"
+debdeploy::grains:
+  debdeploy-labtest:
+    value: standard
