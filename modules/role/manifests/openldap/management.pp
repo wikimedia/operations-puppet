@@ -39,12 +39,11 @@ class role::openldap::management {
     }
 
     cron { 'daily_account_consistency_check':
-        require     => [ File['/usr/local/bin/cross-validate-accounts'], User['accountcheck']] ,
-        command     => '/usr/local/bin/cross-validate-accounts',
-        user        => 'accountcheck',
-        hour        => '4',
-        minute      => '0',
-        environment => 'MAILTO=moritz@wikimedia.org',
+        require => [ File['/usr/local/bin/cross-validate-accounts'], User['accountcheck']] ,
+        command => '/usr/local/bin/cross-validate-accounts',
+        user    => 'accountcheck',
+        hour    => '4',
+        minute  => '0',
     }
 
     class { '::phabricator::bot':
