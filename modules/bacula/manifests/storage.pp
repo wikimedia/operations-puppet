@@ -44,6 +44,22 @@ class bacula::storage(
         require => Package["bacula-sd-${sqlvariant}"],
     }
 
+    file { '/etc/bacula/sd':
+        ensure  => directory,
+        mode    => '0400',
+        owner   => 'bacula',
+        group   => 'bacula',
+        require => Package["bacula-sd-${sqlvariant}"],
+    }
+
+    base::expose_puppet_certs { '/etc/bacula/sd':
+        provide_private => true,
+        provide_keypair => true,
+        user            => 'bacula',
+        group           => 'bacula',
+        require         => File['/etc/bacula/sd'],
+    }
+
     file { '/etc/bacula/sd-devices.d':
         ensure  => directory,
         recurse => true,
