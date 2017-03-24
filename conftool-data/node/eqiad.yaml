@@ -300,6 +300,8 @@ eqiad:
   prometheus:
     prometheus1001.eqiad.wmnet: [prometheus]
     prometheus1002.eqiad.wmnet: [prometheus]
+    prometheus1003.eqiad.wmnet: [prometheus]
+    prometheus1004.eqiad.wmnet: [prometheus]
   wdqs:
     wdqs1001.eqiad.wmnet: [wdqs]
     wdqs1002.eqiad.wmnet: [wdqs]
