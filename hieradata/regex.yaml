@@ -530,6 +530,7 @@ labtest:
     zone: codfw
     scheduler_pool:
       - labtestvirt2001
+      - labtestvirt2002
   keystoneconfig:
     db_name: 'keystone'
     db_user: 'keystone'
