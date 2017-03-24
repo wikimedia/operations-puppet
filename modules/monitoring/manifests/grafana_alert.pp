@@ -21,9 +21,7 @@
 #
 #  # Emit a critical if any grafana alert on the db/webpagetest-alerts
 #  # dashboard is in "alterting" state.
-#  monitoring::grafana_alert { 'db/webpagetest-alerts':
-#    contact_group  => 'performance',
-#  }
+#  monitoring::grafana_alert { 'db/webpagetest-alerts': }
 #
 define monitoring::grafana_alert(
     $dashboard     = $title,
