@@ -20,7 +20,7 @@ define profile::redis::multidc_instance(
         }
     }
 
-    redis::instance { $title:
+    ::redis::instance { $title:
         settings => merge($base_settings, $settings)
     }
 
