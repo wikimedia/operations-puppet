@@ -11,12 +11,12 @@ define profile::redis::multidc_instance(
         $base_settings = {
             appendfilename => "${::hostname}-${title}.aof",
             dbfilename     => "${::hostname}-${title}.rdb",
-            'include'                   => $replica_state_file,
+            'include'      => $replica_state_file,
         }
     } else {
         $base_settings = {
-            dbfilename     => "${::hostname}-${title}.rdb",
-            'include'                   => $replica_state_file,
+            dbfilename => "${::hostname}-${title}.rdb",
+            'include'  => $replica_state_file,
         }
     }
 
