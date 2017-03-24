@@ -33,8 +33,8 @@ describe 'bacula::storage', :type => :class do
         }) \
         .with_content(/Name = "testdirector"/) \
         .with_content(/Password = "testdirectorpass"/) \
-        .with_content(/TLS Certificate = "\/var\/lib\/puppet\/ssl\/certs\/testhost.example.com.pem"/) \
-        .with_content(/TLS Key = "\/var\/lib\/puppet\/ssl\/private_keys\/testhost.example.com.pem"/) \
+        .with_content(/TLS Certificate = "\/etc\/bacula\/ssl\/server.pem"/) \
+        .with_content(/TLS Key = "\/etc\/bacula\/ssl\/server.key"/) \
         .with_content(/Name = "testhost.example.com-fd"/) \
         .with_content(/SDport = 9000/) \
         .with_content(/Maximum Concurrent Jobs = 10/)
