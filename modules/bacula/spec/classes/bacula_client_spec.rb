@@ -14,7 +14,6 @@ describe 'bacula::client', :type => :class do
 
     it { should contain_package('bacula-fd') }
     it { should contain_service('bacula-fd') }
-    it { should contain_exec('concat-bacula-keypair') }
     it 'should generate valid content for /etc/bacula/bacula-fd.conf' do
         should contain_file('/etc/bacula/bacula-fd.conf').with({
             'ensure'  => 'present',
@@ -24,10 +23,10 @@ describe 'bacula::client', :type => :class do
         }) \
         .with_content(/Name = "testdirector"/) \
         .with_content(/Password = "testdirectorpass"/) \
-        .with_content(/TLS Certificate = "\/var\/lib\/puppet\/ssl\/certs\/testhost.example.com.pem"/) \
-        .with_content(/TLS Key = "\/var\/lib\/puppet\/ssl\/private_keys\/testhost.example.com.pem"/) \
+        .with_content(/TLS Certificate = "\/etc\/bacula\/ssl\/server.pem"/) \
+        .with_content(/TLS Key = "\/etc\/bacula\/ssl\/server.key"/) \
         .with_content(/Name = "testhost.example.com-fd"/) \
         .with_content(/FDport = 2000/) \
-        .with_content(/PKI Keypair = "\/var\/lib\/puppet\/ssl\/private_keys\/bacula-keypair-testhost.example.com.pem"/)
+        .with_content(/PKI Keypair = "\/etc\/bacula\/ssl\/server-keypair.pem"/)
     end
 end
