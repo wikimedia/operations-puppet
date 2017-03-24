@@ -70,21 +70,6 @@ class openstack::nova::compute(
             require => File['/var/lib/nova/.ssh'],
         }
 
-        class { '::rsync::server':
-            use_chroot => 'no',
-        }
-        # Support rsyncing instance files between labvirts.
-        @@openstack::nova::instancersync { "${::hostname}instancersync":
-            hostname => $::hostname,
-        }
-        Instancersync <<| |>>
-
-        rsync::server::module { 'nova_instance_rsync_controller':
-            path        => '/var/lib/nova/instances',
-            read_only   => 'no',
-            hosts_allow => [hiera('labs_nova_controller')],
-        }
-
         file { '/etc/libvirt/libvirtd.conf':
             notify  => Service['libvirt-bin'],
             owner   => 'root',
