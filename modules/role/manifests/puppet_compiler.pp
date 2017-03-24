@@ -19,4 +19,12 @@ class role::puppet_compiler {
 
     include ::puppet_compiler
 
+    # Conftool + etcd are needed for the conftool function to work
+    # do not bother with hiera here, for now.
+    class { '::profile::conftool::client':
+        srv_domain => undef,
+        host       => '127.0.0.1',
+        port       => 2379,
+        namespace  => '/conftool/v1',
+    }
 }

@@ -84,18 +84,9 @@ class puppet_compiler(
 
 
     # The conftool parser function needs
-    #   - the conftool module to be included
-    #   - An etcd instance running populated with (fake? synced?) data
+    # An etcd instance running populated with (fake? synced?) data
 
     include ::etcd
-
-    class { '::conftool':
-        use_ssl => false,
-        auth    => false,
-        hosts   => [
-            'http://127.0.0.1:2379',
-        ],
-    }
 
     tidy { "${::puppet_compiler::workdir}/output":
         recurse => true,
