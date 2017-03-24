@@ -44,25 +44,6 @@ class bacula::director(
     File <<| tag == "bacula-client-${::fqdn}" |>>
     File <<| tag == "bacula-storage-${::fqdn}" |>>
 
-    # Puppet manages the permissions of its private key file and they are too
-    # restrictive to allow any other user/group to read it. Copy it, keep it in
-    # sync and set the require permissions for bacula-dir to be able to read it
-    exec { 'bacula_cp_private_key':
-        command => "/bin/cp /var/lib/puppet/ssl/private_keys/${::fqdn}.pem \
- /var/lib/puppet/ssl/private_keys/bacula-${::fqdn}.pem",
-        unless  => "/usr/bin/cmp /var/lib/puppet/ssl/private_keys/${::fqdn}.pem \
- /var/lib/puppet/ssl/private_keys/bacula-${::fqdn}.pem",
-    }
-
-    file { "/var/lib/puppet/ssl/private_keys/bacula-${::fqdn}.pem":
-        ensure  => present,
-        owner   => 'bacula',
-        group   => 'bacula',
-        mode    => '0400',
-        require => Exec['bacula_cp_private_key'],
-        notify  => Service['bacula-director'],
-    }
-
     file { '/etc/bacula/bacula-dir.conf':
         ensure  => present,
         owner   => 'root',

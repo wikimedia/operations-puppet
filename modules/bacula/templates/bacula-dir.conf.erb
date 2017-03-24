@@ -15,8 +15,8 @@ Director {
     TLS Require = yes
     TLS CA Certificate File = "/var/lib/puppet/ssl/certs/ca.pem"
     TLS Verify Peer = no
-    TLS Certificate = "/var/lib/puppet/ssl/certs/<%= @fqdn %>.pem"
-    TLS Key = "/var/lib/puppet/ssl/private_keys/bacula-<%= @fqdn %>.pem"
+    TLS Certificate = "/etc/bacula/ssl/server.pem"
+    TLS Key = "/etc/bacula/ssl/server.key"
     # Heartbeat Interval = 0 #in secs
     # DirAddress =
     # DirSourceAddress =
