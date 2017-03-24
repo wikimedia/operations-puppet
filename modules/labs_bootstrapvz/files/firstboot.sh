@@ -62,6 +62,23 @@ fi
 project=`curl http://169.254.169.254/openstack/latest/meta_data.json/ | sed -r 's/^.*project_id\": \"//'  | sed -r 's/\".*$//g'`
 ip=`curl http://169.254.169.254/1.0/meta-data/local-ipv4 2> /dev/null`
 hostname=`hostname`
+
+# If we're getting ahead of the dnsmasq config, loop until our hostname is
+#  actually ready for us.
+for run in {1..10}
+do
+    if [ "$hostname" != 'localhost' ]
+    then
+        break
+    fi
+
+    echo `date`
+    echo "Waiting for hostname to return the actual hostname."
+    sleep 1
+    /sbin/dhclient -1
+    hostname=`hostname`
+done
+
 # domain is the last two domain sections, e.g. eqiad.wmflabs
 domain=`hostname -d | sed -r 's/.*\.([^.]+\.[^.]+)$/\1/'`
 
@@ -137,6 +154,7 @@ options timeout:5 ndots:2
 EOF
 
 echo "$ip	$fqdn" >> /etc/hosts
+echo $hostname > /etc/hostname
 
 # This is only needed when running bootstrap-vz on
 # a puppetmaster::self instance, and even then
