@@ -21,7 +21,7 @@ class profile::redis::slave(
     $slaveof = ipresolve($master, 4)
 
     profile::redis::instance{ $instances:
-        settings => $settings,
+        settings => merge($auth_settings, $settings),
         slaveof  => $slaveof,
         aof      => true,
     }
