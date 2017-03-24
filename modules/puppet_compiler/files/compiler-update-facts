@@ -17,3 +17,5 @@ ssh $compiler 'sudo tar Jxf puppet-facts-export.tar.xz \
     --directory /var/lib/catalog-differ/puppet \
     && rm puppet-facts-export.tar.xz'
 ssh $compiler 'sudo chown -R jenkins-deploy:wikidev /var/lib/catalog-differ/puppet/yaml'
+ssh $compiler "cd /var/lib/catalog-differ/puppet/yaml/facts && sudo sed -i'' '/trusted:/d' *.yaml"
+ssh $compiler "cd /var/lib/catalog-differ/puppet/yaml/node && sudo sed -i'' '/trusted:/d' *.yaml"
