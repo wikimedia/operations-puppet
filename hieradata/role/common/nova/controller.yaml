@@ -1,7 +1,0 @@
-# Paramiko needs to ssh into these, to support designate
-profile::base::ssh_server_settings:
-  disable_nist_kex: false
-  explicit_macs: false
-debdeploy::grains:
-  debdeploy-nova-control:
-    value: standard
