@@ -7,7 +7,7 @@ class profile::redis::slave(
     $resources = query_resources(
         "fqdn='${master}'",
         'Redis::Instance', false)
-    $password = $resources[0]['parameters']['settings']['password']
+    $password = $resources[0]['parameters']['settings']['requirepass']
     $redis_ports = inline_template("<%= @resources.map{|r| r['title']}.join ' ' -%>")
     $instances = split($redis_ports, ' ')
     $uris = apply_format("localhost:%s/${password}", $instances)
