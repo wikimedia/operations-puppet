@@ -44,6 +44,13 @@ class bacula::client(
         require => Package['bacula-fd'],
     }
 
+    base::expose_puppet_certs { '/etc/bacula':
+        provide_private => true,
+        provide_keypair => true,
+        user            => 'bacula',
+        group           => 'bacula',
+    }
+
     file { '/etc/bacula/bacula-fd.conf':
         ensure  => present,
         owner   => 'root',
@@ -55,17 +62,6 @@ class bacula::client(
                     Package['bacula-fd'],
                     Exec['concat-bacula-keypair'],
                 ],
-    }
-
-    # To avoid reimplementing a PKI infrastructure we use puppet's already well
-    # managed one. Bacula needs the keypair in one single file though hence this
-    # resource
-    exec { 'concat-bacula-keypair':
-        command => "/bin/cat \
- /var/lib/puppet/ssl/private_keys/${::fqdn}.pem \
- /var/lib/puppet/ssl/certs/${::fqdn}.pem > \
- /var/lib/puppet/ssl/private_keys/bacula-keypair-${::fqdn}.pem",
-        creates => "/var/lib/puppet/ssl/private_keys/bacula-keypair-${::fqdn}.pem",
     }
 
     # We export oufself to the director

@@ -1,3 +1,6 @@
 fixtures:
     symlinks:
         bacula: "#{source_dir}"
+        base: "../../../../base"
+        wmflib: "../../../../wmflib"
+        stdlib: "../../../../stdlib"
