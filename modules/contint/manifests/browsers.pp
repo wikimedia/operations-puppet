@@ -13,11 +13,17 @@ class contint::browsers {
             'chromium',
             'chromedriver',
             'firefox-esr',
-            # phantomjs is not available on Jessie
         ]
         file { '/usr/local/bin/chromedriver':
           ensure => link,
           target => '/usr/lib/chromium/chromedriver',
+        }
+
+        if os_version( 'debian == jessie' ) {
+            apt::pin { 'phantomjs':
+                pin      => 'release a=jessie-backports',
+                priority => '1001',
+            }
         }
     } elsif os_version('ubuntu >= trusty') {
         $latest_packages = [
