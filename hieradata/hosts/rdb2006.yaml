@@ -1,1 +1,1 @@
-jobqueue_redis_slaveof: rdb2005.codfw.wmnet
+profile::redis::slave::master: rdb2005.codfw.wmnet
