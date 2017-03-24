@@ -43,7 +43,7 @@ UDebComponents:
 GetInRelease: no
 Suite: precise/current
 Architectures: amd64
-VerifyRelease: FADD8D64B1275EA3
+VerifyRelease: FADD8D64B1275EA3|C208ADDE26C2B797
 ListShellHook: grep-dctrl -e -S '^hp-health|hpssa|hpssacli|hpssaducli|hpacucli$' || [ $? -eq 1 ]
 
 Name: hp-mcp-trusty
@@ -53,7 +53,7 @@ UDebComponents:
 GetInRelease: no
 Suite: trusty/current
 Architectures: amd64
-VerifyRelease: FADD8D64B1275EA3
+VerifyRelease: FADD8D64B1275EA3|C208ADDE26C2B797
 ListShellHook: grep-dctrl -e -S '^hp-health|hpssa|hpssacli|hpssaducli|hpacucli$' || [ $? -eq 1 ]
 
 Name: hp-mcp-jessie
@@ -63,7 +63,7 @@ UDebComponents:
 GetInRelease: no
 Suite: jessie/current
 Architectures: amd64
-VerifyRelease: FADD8D64B1275EA3
+VerifyRelease: FADD8D64B1275EA3|C208ADDE26C2B797
 ListShellHook: grep-dctrl -e -S '^hp-health|hpssa|hpssacli|hpssaducli|hpacucli$' || [ $? -eq 1 ]
 
 Name: cassandra
