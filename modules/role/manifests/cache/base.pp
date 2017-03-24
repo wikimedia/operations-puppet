@@ -19,13 +19,6 @@ class role::cache::base(
         description => "${cache_cluster} Varnish cache server",
     }
 
-    # Ganglia monitoring
-    if $::standard::has_ganglia {
-        class { 'varnish::monitoring::ganglia':
-            varnish_instances => [ '', 'frontend' ],
-        }
-    }
-
     # Only production needs system perf tweaks and NFS client disable
     if $::realm == 'production' {
         include role::cache::perf

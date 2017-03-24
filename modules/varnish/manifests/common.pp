@@ -1,7 +1,7 @@
 class varnish::common {
     require ::varnish::packages
 
-    # Mount /var/lib/ganglia as tmpfs to avoid Linux flushing mlocked
+    # Mount /var/lib/varnish as tmpfs to avoid Linux flushing mlocked
     # shm memory to disk
     mount { '/var/lib/varnish':
         ensure  => mounted,

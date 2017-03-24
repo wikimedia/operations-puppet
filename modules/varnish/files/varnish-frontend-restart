@@ -16,9 +16,8 @@ sleep 15
 
 sleep 5
 
-# Fix VSM files permissions and restart ganglia
+# Fix VSM files permissions
 chmod 644 /var/lib/varnish/*/*.vsm
-/usr/sbin/service ganglia-monitor restart
 
 sleep 5
 
