@@ -1,1 +1,1 @@
-jobqueue_redis_slaveof: rdb1001.eqiad.wmnet
+profile::redis::slave::master: rdb1001.eqiad.wmnet

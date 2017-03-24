@@ -2484,8 +2484,7 @@ node /^rdb100[1357]\.eqiad\.wmnet$/ {
 }
 
 node /^rdb100[24689]\.eqiad\.wmnet/ {
-    role(jobqueue_redis)
-    include ::base::firewall
+    role(jobqueue_redis::slave)
 }
 
 
@@ -2495,7 +2494,7 @@ node /^rdb200[135]\.codfw\.wmnet$/ {
 
 
 node /^rdb200[246]\.codfw\.wmnet/ {
-    role(jobqueue_redis)
+    role(jobqueue_redis::slave)
     include ::base::firewall
 }
 
