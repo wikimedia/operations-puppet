@@ -60,7 +60,6 @@ class bacula::client(
         content => template('bacula/bacula-fd.conf.erb'),
         require => [
                     Package['bacula-fd'],
-                    Exec['concat-bacula-keypair'],
                 ],
     }
 
