@@ -19,12 +19,14 @@ class profile::redis::multidc(
     }
 
     system::role { "profile::redis::${category}": }
-    # Set up ipsec
-    class { 'redis::multidc::ipsec':
-        shards => $shards
-    }
 
-    class { '::ferm::ipsec_allow': }
+    # Set up ipsec
+    if os_version('debian >= jessie') {
+        class { 'redis::multidc::ipsec':
+            shards => $shards
+        }
+        class { '::ferm::ipsec_allow': }
+    }
 
     file { '/etc/redis/replica/':
         ensure => directory,
