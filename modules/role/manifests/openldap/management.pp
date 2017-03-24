@@ -44,7 +44,6 @@ class role::openldap::management {
         user        => 'accountcheck',
         hour        => '4',
         minute      => '0',
-        environment => 'MAILTO=moritz@wikimedia.org',
     }
 
     class { '::phabricator::bot':
