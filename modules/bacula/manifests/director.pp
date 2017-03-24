@@ -41,27 +41,9 @@ class bacula::director(
         require => Package["bacula-director-${sqlvariant}"],
     }
 
+
     File <<| tag == "bacula-client-${::fqdn}" |>>
     File <<| tag == "bacula-storage-${::fqdn}" |>>
-
-    # Puppet manages the permissions of its private key file and they are too
-    # restrictive to allow any other user/group to read it. Copy it, keep it in
-    # sync and set the require permissions for bacula-dir to be able to read it
-    exec { 'bacula_cp_private_key':
-        command => "/bin/cp /var/lib/puppet/ssl/private_keys/${::fqdn}.pem \
- /var/lib/puppet/ssl/private_keys/bacula-${::fqdn}.pem",
-        unless  => "/usr/bin/cmp /var/lib/puppet/ssl/private_keys/${::fqdn}.pem \
- /var/lib/puppet/ssl/private_keys/bacula-${::fqdn}.pem",
-    }
-
-    file { "/var/lib/puppet/ssl/private_keys/bacula-${::fqdn}.pem":
-        ensure  => present,
-        owner   => 'bacula',
-        group   => 'bacula',
-        mode    => '0400',
-        require => Exec['bacula_cp_private_key'],
-        notify  => Service['bacula-director'],
-    }
 
     file { '/etc/bacula/bacula-dir.conf':
         ensure  => present,
@@ -71,6 +53,20 @@ class bacula::director(
         notify  => Service['bacula-director'],
         content => template('bacula/bacula-dir.conf.erb'),
         require => Package["bacula-director-${sqlvariant}"],
+    }
+    file { '/etc/bacula/director':
+        ensure  => directory,
+        mode    => '0400',
+        owner   => 'bacula',
+        group   => 'bacula',
+        require => Package["bacula-director-${sqlvariant}"],
+    }
+
+    base::expose_puppet_certs { '/etc/bacula/director':
+        provide_private => true,
+        user            => 'bacula',
+        group           => 'bacula',
+        require         => File['/etc/bacula/director'],
     }
 
     # We will include this dir and all general options will be here
