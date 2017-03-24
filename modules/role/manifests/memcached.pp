@@ -92,6 +92,9 @@ class role::memcached {
         priority => 40,
     }
 
-    # Include redis for sessions
-    include profile::redis::multidc
+    # Include redis for sessions - only in prod!
+    # TODO: finish refactoring and just include the memcached profile in deployment-prep
+    if $::realm == 'production' {
+        include profile::redis::multidc
+    }
 }
