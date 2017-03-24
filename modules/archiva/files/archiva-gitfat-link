@@ -12,7 +12,7 @@ usage () {
     script_name=$(basename ${0})
     echo "
 ${script_name} <artifact-repository-path> <git-fat-path> [--real-paths]
-  Creates symlinks from all .jars and .wars found in <artifact-repository-path>
+  Creates symlinks from all .jars, .wars and .zips found in <artifact-repository-path>
   to sha1 filenames in <git-fat-path>.
 
   If --real-paths is passed as the last argument, the full absolute
@@ -61,7 +61,7 @@ exitval=0
 # Find all .jar files and symlink them.
 # We sort them so that any jars with identical shas will have the
 # alphanumerically latest jar linked last.
-find $artifact_repository_path -type f \( -name "*.jar" -o -name "*.war" \) | sort | xargs shasum | while read line; do
+find $artifact_repository_path -type f \( -name "*.jar" -o -name "*.war" -o -name "*.zip" \) | sort | xargs shasum | while read line; do
     # get the filenames and their sha1 sums out of the shasum output
     sha1=$(echo ${line} | awk '{print $1}');
     file=$(echo ${line} | awk '{print $2}');
