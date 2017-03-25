@@ -2461,6 +2461,15 @@ users:
     email: shreyaslakhtakia@gmail.com
     expiry_date: 2017-06-30
     expiry_contact: rstallman@wikimedia.org
+  goransm:
+    ensure: present
+    gid: 500
+    name: goransm
+    realname: Goran S. Milovanovic
+    ssh_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC6jc1W0mqEnurNhtYXF9YQpCX3H4h1pQA9jgZXKGTPUczQJ2rRVZKWXxuPfbg0OwZFzVKhTtSi0HO2v0Dy4gOtrDMpxfX51HnsB/Sm+ifngkj5AgSiAylT7P4PNm7F804m7iJF277DDx/+R9JAL59NT0C9nTZ6oKghL37TQr/PdHBRhjZjRzMOjuplwoFh+I9ZtLGQJpqTENKWqqYwxwMdjog/fRf3+tkvB7kxwmZHRiVPBl8BS64JkNmKXX+xQCtR0YMYH8HkfE4GarSnDXSqmhwS6Zx8TY7oVPy0d5H8cZaA2RyoYWzEH4K2rbvllLoZCnto5Elb6ic0BVP7P8Fn goran@goranNET
+    uid: 16664
+    email: goran.s.milovanovic@gmail.com
 ldap_only_users:
   abartov:
     ensure: present
