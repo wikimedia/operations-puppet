@@ -23,11 +23,7 @@ node /^(acamar|achernar)\.wikimedia\.org$/ {
 
 # url-downloaders
 node /^(alsafi|aluminium)\.wikimedia\.org$/ {
-    role(url_downloader)
-
-    interface::add_ip6_mapped { 'main':
-        interface => 'eth0',
-    }
+    role('url_downloader')
 }
 
 # analytics1001 is the Hadoop master node:
