@@ -1,12 +1,11 @@
 # filtertags: labs-project-deployment-prep labs-project-phabricator labs-project-striker
-class role::deployment::server(
+class profile::mediawiki::deployment::server(
     $apache_fqdn = $::fqdn,
     $deployment_group = 'wikidev',
-) {
-
-    include ::standard
+    $deployment_server = hiera('deployment_server', 'tin.eqiad.wmnet')
+    $main_deployment_server = hiera('scap::deployment_server')
     $base_path = '/srv/deployment'
-    include role::deployment::mediawiki
+) {
 
     ## Scap Config ##
     require ::scap
@@ -22,26 +21,19 @@ class role::deployment::server(
     create_resources('scap::source', hiera('scap::sources', {}))
     ## End scap config ###
 
-    include ::deployment::umask_wikidev
+    class {'::deployment::umask_wikidev': }
 
-    class { 'deployment::deployment_server':
+    class { '::deployment::deployment_server':
         deployment_group => $deployment_group,
     }
 
-    include ::apache
-    # Install apache-fast-test
-    include ::apache::helper_scripts
-    include mysql
+    class {'::apache': }
+    class {'::apache::helper_scripts': }
+    class {'::mysql': }
 
     include network::constants
-    $deployable_networks = $::network::constants::deployable_networks
 
-    if $::realm != 'labs' {
-        include role::microsites::releases::upload
-        # backup /home dirs on deployment servers
-        include ::role::backup::host
-        backup::set {'home': }
-    }
+    $deployable_networks = $::network::constants::deployable_networks
 
     # Firewall rules
     ferm::service { 'rsyncd_scap_master':
@@ -49,7 +41,6 @@ class role::deployment::server(
         port   => '873',
         srange => '$MW_APPSERVER_NETWORKS',
     }
-
 
     $deployable_networks_ferm = join($deployable_networks, ' ')
 
@@ -86,7 +77,6 @@ class role::deployment::server(
         require => File['/srv/deployment'],
     }
 
-    $deployment_server = hiera('deployment_server', 'tin.eqiad.wmnet')
     class { '::deployment::redis':
         deployment_server => $deployment_server
     }
@@ -101,7 +91,6 @@ class role::deployment::server(
         cron_ensure       => $deploy_ensure,
     }
 
-    $main_deployment_server = hiera('scap::deployment_server')
     motd::script { 'inactive_warning':
         ensure   => $deploy_ensure,
         priority => 01,
@@ -129,12 +118,8 @@ class role::deployment::server(
     }
     ### End Trebuchet
 
-
     # tig is a ncurses-based git utility which is useful for
     # determining the state of git repos during deployments.
-
     require_package('percona-toolkit', 'tig')
-
-    # Bug T126262
-    require_package('php5-readline')
+    require_package('php5-readline') # bug T126262
 }
