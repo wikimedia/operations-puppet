@@ -1,3 +1,5 @@
 debdeploy::grains:
   debdeploy-urldownloader:
     value: standard
+
+url_downloader_port: '8080'
