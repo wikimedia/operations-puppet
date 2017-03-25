@@ -2747,12 +2747,7 @@ node /^thumbor100[12].eqiad.wmnet/ {
 
 # deployment servers
 node 'tin.eqiad.wmnet', 'mira.codfw.wmnet' {
-    role(deployment::server)
-    include ::base::firewall
-
-    interface::add_ip6_mapped { 'main':
-        interface => 'eth0',
-    }
+    role(deployment_server)
 }
 
 # test system for performance team (T117888)
