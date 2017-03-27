@@ -271,6 +271,7 @@ class druid(
     cron { 'prune_old_druid_indexer_logs':
         command => "/usr/bin/find ${runtime_properties['druid.indexer.logs.directory']} -mtime +${indexer_log_retention_days} -exec /bin/rm {} \\;",
         hour    => 0,
+        minute  => 0,
         user    => 'druid',
     }
 }
