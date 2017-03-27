@@ -8,9 +8,6 @@ connection_type=libvirt
 root_helper=sudo nova-rootwrap /etc/nova/rootwrap.conf
 instance_name_template=i-%08x
 daemonize=1
-scheduler_driver=filter_scheduler.FilterScheduler
-wmf_scheduler_hosts_pool=<%= @novaconfig["scheduler_pool"].join(",") %>
-scheduler_default_filters=RetryFilter,AvailabilityZoneFilter,RamFilter,ComputeFilter,ComputeCapabilitiesFilter,ImagePropertiesFilter,ServerGroupAntiAffinityFilter,ServerGroupAffinityFilter,AggregateInstanceExtraSpecsFilter,AvailabilityZoneFilter,SchedulerPoolFilter,DiskFilter
 
 # Turn off ec2 APIs
 enabled_apis=osapi_compute, metadata
@@ -93,21 +90,68 @@ instance_usage_audit = True
 instance_usage_audit_period = hour
 notify_on_state_change = vm_and_task_state
 
-# Overprovision settings
-
-# Running OOM on a compute host produces weird spontaneous shutdowns.
-#  avoid overcommitting as long as we can afford it.
-ram_allocation_ratio=1.0
-
-# Since our images are copy-on-write we can support some overcommitting here.
-disk_allocation_ratio=1.5
-
-
 # Deprecated, remove in Kilo:
 node_availability_zone=<%= @novaconfig["zone"] %>
 zone_name=<%= @novaconfig["zone"] %>
 # Should be:
 #default_availability_zone = <%= @novaconfig["zone"] %>
+
+
+
+# ==== Scheduling things =====
+
+# On the compute nodes, gather up metrics so we can weigh
+#  candidate hosts by performance (specifically, CPU usage).
+compute_monitors=virt_driver
+
+# For the scheduler, first filter based on available resources.
+#  The filter is binary, either a node has the necessary resources
+#  or it doesn't and is fully excluded.
+scheduler_driver=nova.scheduler.filter_scheduler.FilterScheduler
+
+
+# For the RAM filter:  Only allow scheduling on hosts that have
+#  enough RAM to support a fully active instance.  No overprovisioning
+#  here because RAM overruns lead to spontaneous instance shutdown.
+ram_allocation_ratio=1.0
+
+# For the disk filter: Allow some overprovisioning.  Our instances are
+#  copy-on-write, and most users don't come anywhere close to filling
+#  up their allocated space (in many cases that space isn't even partitioned.)
+disk_allocation_ratio=1.5
+
+# A WMF custom filter: only schedule on nodes that are in the
+#  'scheduler_pool' list.  This lets us pool and depool nodes
+#  via puppet, as needed.
+wmf_scheduler_hosts_pool=<%= @novaconfig["scheduler_pool"].join(",") %>
+
+# Here's the complete list of filters that we use.  Most are fine with default
+#  settings.
+scheduler_default_filters=RetryFilter,AvailabilityZoneFilter,RamFilter,ComputeFilter,ComputeCapabilitiesFilter,ImagePropertiesFilter,Ser
+
+# Now that we have a list of candidate compute nodes (any of which is
+#  technically able to run the new VM), we compare those candidates
+#  to pick the best one.
+#
+# The 'MetricsWeigher' will compare metrics for available nodes and
+#  recommend the best choice.  Which metrics to use in comparison
+#  are determined below, in the 'metrics' config section.
+scheduler_weight_classes=nova.scheduler.weights.metrics.MetricsWeigher
+
+# For now, the MetricsWeigher will recommend only one, very best
+#  candidate
+scheduler_host_subset_size = 1
+
+[METRICS]
+# For scheduling purposes, just pick the compute node with the least busy
+#  CPU numbers.  This could be a much more complicated formula using many
+#  different metrics, but in combination with the filters this seems to be
+#  a pretty good first approximation.
+weight_setting = cpu.percent=-1.0
+
+
+
+
 
 [database]
 # http://docs.sqlalchemy.org/en/latest/core/pooling.html
