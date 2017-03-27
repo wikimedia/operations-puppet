@@ -35,14 +35,6 @@
       type: Integer
     - labelname: infeedIndex
       type: Integer
-  - name: infeedCapabilities
-    oid: 1.3.6.1.4.1.1718.3.2.2.1.4
-    type: string
-    indexes:
-    - labelname: towerIndex
-      type: Integer
-    - labelname: infeedIndex
-      type: Integer
   - name: infeedStatus
     oid: 1.3.6.1.4.1.1718.3.2.2.1.5
     type: gauge
@@ -233,16 +225,6 @@
       type: Integer
   - name: outletName
     oid: 1.3.6.1.4.1.1718.3.2.3.1.3
-    type: string
-    indexes:
-    - labelname: towerIndex
-      type: Integer
-    - labelname: infeedIndex
-      type: Integer
-    - labelname: outletIndex
-      type: Integer
-  - name: outletCapabilities
-    oid: 1.3.6.1.4.1.1718.3.2.3.1.4
     type: string
     indexes:
     - labelname: towerIndex

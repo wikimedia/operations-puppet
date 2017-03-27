@@ -11,7 +11,7 @@ row_pdus = Hash.new{|h,k| h[k] = []}
   title = res["title"]
   next unless site == @site
 
-  row_pdus[row].push(title)
+  row_pdus[row].push("#{title}.mgmt.#{site}.wmnet")
 end
 
 row_pdus.each do |row, pdus|

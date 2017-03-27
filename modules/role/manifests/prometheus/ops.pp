@@ -286,7 +286,7 @@ class role::prometheus::ops {
           { 'source_labels' => ['__param_target'],
             'target_label'  => 'instance',
           },
-          { 'target_label' => ['__address__'],
+          { 'target_label' => '__address__',
             'replacement'  => 'netmon1001.wikimedia.org:9116',
           },
         ],
