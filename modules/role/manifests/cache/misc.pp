@@ -204,7 +204,7 @@ class role::cache::misc {
         'graphite-labs.wikimedia.org'        => { 'director' => 'labmon1001' },
         'graphite.wikimedia.org'             => { 'director' => 'graphite1001' },
         'horizon.wikimedia.org'              => { 'director' => 'californium' },
-        'hue.wikimedia.org'                  => { 'director' => 'analytics1027' },
+        'hue.wikimedia.org'                  => { 'director' => 'thorium' },
         'iegreview.wikimedia.org'            => { 'director' => 'krypton' },
         'integration.wikimedia.org'          => { 'director' => 'contint1001' },
         'labspice.wikimedia.org'             => { 'director' => 'labspice' },
