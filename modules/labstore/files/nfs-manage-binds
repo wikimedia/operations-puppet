@@ -181,7 +181,7 @@ def main():
         srv_device = device_paths.get(project, device_path_default)
         srv = os.path.join(srv_device, 'shared', project)
         exp = os.path.join('/exp/project', project)
-        create_binding(srv, exp, force=args.f, mounts)
+        create_binding(srv, exp, force=args.f, mounts=mounts)
 
 if __name__ == '__main__':
     main()
