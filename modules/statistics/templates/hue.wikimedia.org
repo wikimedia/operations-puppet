@@ -1,0 +1,28 @@
+#####################################################################
+### THIS FILE IS MANAGED BY PUPPET
+#####################################################################
+# vim: filetype=apache
+
+<VirtualHost *:80>
+    ServerName hue.wikimedia.org
+    ServerSignature Off
+
+    # Not used since this VHost will only act as proxy,
+    # but it is needed to avoid error messages in the httpd
+    # logs and logrotate crons.
+    DocumentRoot /var/www
+
+    <Directory />
+        Options FollowSymLinks
+        AllowOverride None
+        Require all denied
+    </Directory>
+
+    CustomLog /var/log/apache2/hue.wikimedia.org-access.log wmf
+    ErrorLog /var/log/apache2/hue.wikimedia.org-error.log
+
+    LogLevel warn
+
+    ProxyPass / http://localhost:8080/
+    ProxyPassReverse / http://localhost:8080/
+</VirtualHost>

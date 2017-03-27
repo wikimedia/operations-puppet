@@ -18,6 +18,8 @@ class role::statistics::web inherits role::statistics::base {
     include ::statistics::sites::yarn
     # Proxy to securely access Pivot (authentication via LDAP)
     include ::statistics::sites::pivot
+    # Proxy to Hue (not authenticated via LDAP, delegated to app)
+    include ::statistics::sites::hue
 
     ferm::service {'statistics-web':
         proto => 'tcp',
