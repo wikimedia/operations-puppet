@@ -45,6 +45,7 @@ discovery::services:
     active_active: true
   search:
     lvs: search
+    active_active: true
   # Everything else
   apertium:
     lvs: apertium
