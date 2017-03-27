@@ -3,6 +3,7 @@
 # while other services should be polled locally
 discovery::app_routes:
   mediawiki: 'eqiad'
+  restbase: "%{::site}"
   aqs: 'eqiad'
 
 # confctl-based dynamic global discovery pooling
