@@ -12,8 +12,8 @@
 # [*registry*] Address of the docker registry.
 #
 class profile::docker::builder(
-    $proxy_address = hiera('profile::docker::builder::proxy_address'),
-    $proxy_port = hiera('profile::docker::builder::proxy_port'),
+    $proxy_address = hiera('profile::docker::builder::proxy_address', undef),
+    $proxy_port = hiera('profile::docker::builder::proxy_port', undef),
     $registry = hiera('docker::registry'),
     ) {
 
