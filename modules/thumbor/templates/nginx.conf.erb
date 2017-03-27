@@ -9,16 +9,18 @@ upstream thumbor {
 server {
     listen <%= @listen_port %>;
 
-# Thumbor subprocesses have a timeout of 60s
-# Set by SUBPROCESS_TIMEOUT in the Thumbor configuration
-    keepalive_timeout 180;
-
     location / {
+        # We want swift to rotate between thumbor instances, not stick to one. This disables
+        # keep-alive client connections.
+        keepalive_timeout 0;
         proxy_redirect off;
         proxy_buffering off;
-        # fallback to the next upstream at most once, and no longer than 30s
-        proxy_next_upstream_timeout 30;
+        # fallback to the next upstream at most once, and no longer than the same as proxy_read_timeout
+        proxy_next_upstream_timeout 180;
         proxy_next_upstream_tries 1;
+        # Maximum pause between read operations. Thumbor stays silent while it processes
+        # images, which means that this should be higher than the Thumbor processing total time limit
+        proxy_read_timeout 180;
         proxy_set_header Host $http_host;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
