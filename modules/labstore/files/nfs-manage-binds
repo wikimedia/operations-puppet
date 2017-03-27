@@ -56,7 +56,7 @@ def bind_mount(src, dst):
         logging.error("bind mount %s %s failed" % (src, dst))
 
 
-def create_binding(target, export, force=False):
+def create_binding(target, export, force=False, create_dirs=False):
         """ manage bind state on disk (with possible inline creations)
         :param target: str
         :param export: str
@@ -67,7 +67,9 @@ def create_binding(target, export, force=False):
 
         if force:
             ensure_dir(target)
-
+            if create_dirs:
+                ensure_dir("%s/home" % target)
+                ensure_dir("%s/project" % target)
         if os.path.exists(target):
             bind_mount(target, export)
         else:
@@ -171,9 +173,11 @@ def main():
 
     for project in sorted(config['private']):
         srv_device = device_paths.get(project, device_path_default)
+        # Flag to create home and project directories for new projects in misc
+        create_dirs = True if 'misc' in srv_device else False
         srv = os.path.join(srv_device, 'shared', project)
         exp = os.path.join('/exp/project', project)
-        create_binding(srv, exp, force=args.f)
+        create_binding(srv, exp, force=args.f, create_dirs)
 
 if __name__ == '__main__':
     main()
