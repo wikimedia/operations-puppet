@@ -68,7 +68,7 @@ services:
       # to restrict to a particular domain, use:
       # cors: restricted.domain.org
       # URL of the outbound proxy to use (complete with protocol)
-      proxy: <%= cvars['proxy'] %>
+      <%= @use_proxy ? '' : '# ' -%>proxy: <%= cvars['proxy'] %>
       # the template used for contacting the MW API
       mwapi_req:
         method: post
