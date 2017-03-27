@@ -85,7 +85,7 @@ discovery::services:
     active_active: true
   wdqs:
     lvs: wdqs
-    active_active: false
+    active_active: true
   zotero:
     lvs: zotero
     active_active: true
