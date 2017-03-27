@@ -61,7 +61,9 @@ exitval=0
 # Find all .jar files and symlink them.
 # We sort them so that any jars with identical shas will have the
 # alphanumerically latest jar linked last.
-find $artifact_repository_path -type f \( -name "*.jar" -o -name "*.war" -o -name "*.zip" \) | sort | xargs shasum | while read line; do
+# The .indexer directory is used by archiva to store its indexes, there is no
+# need to hash the files there.
+find $artifact_repository_path -type f \( -name "*.jar" -o -name "*.war" -o -name "*.zip" ! -path "*/.indexer/*" \) | sort | xargs shasum | while read line; do
     # get the filenames and their sha1 sums out of the shasum output
     sha1=$(echo ${line} | awk '{print $1}');
     file=$(echo ${line} | awk '{print $2}');
