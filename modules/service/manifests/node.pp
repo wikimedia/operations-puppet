@@ -69,6 +69,10 @@
 # [*starter_script*]
 #   The script used for starting the service. Default: src/server.js
 #
+# [*use_proxy*]
+#   Whether the service needs to use the proxy to access external resources.
+#   Default: false
+#
 # [*local_logging*]
 #   Whether to store log entries on the target node as well. Default: true
 #
@@ -158,6 +162,7 @@ define service::node(
     $starter_module  = './src/app.js',
     $entrypoint      = '',
     $starter_script  = 'src/server.js',
+    $use_proxy       = false,
     $local_logging   = true,
     $logging_name    = $title,
     $statsd_prefix   = $title,
