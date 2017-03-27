@@ -266,10 +266,24 @@ class druid(
         content => template('druid/runtime.properties.erb'),
     }
 
-    # Indexing logs are not pruned by Druid.  Install a cron job to do so.
+    # Indexing and request logs are not pruned by Druid.  Install cron jobs to do so.
     $indexer_log_retention_days = 62
     cron { 'prune_old_druid_indexer_logs':
         command => "/usr/bin/find ${runtime_properties['druid.indexer.logs.directory']} -mtime +${indexer_log_retention_days} -exec /bin/rm {} \\;",
+        hour    => 0,
+        minute  => 0,
+        user    => 'druid',
+    }
+    # Request logs are in /var/log/druid, along with daemon logs.  Since daemon logs are managed
+    # by log4j, we don't want to accidentally prune them with this cron job.  There are two
+    # formats of request log fine names, e.g. 2016-07-22T00:00:00.000Z and 2016-09-13.log.
+    # This cron job will prune both by grepping on a matching pattern and piping to xargs rm,
+    # instead of using -exec rm.
+    # NOTE: There should be a way to manage Druid request logs via log4j, just like daemons,
+    # but it is apparently undocumented.
+    $request_log_retention_days = 62
+    cron { 'prune_old_druid_request_logs':
+        command => "/usr/bin/find /var/log/druid -mtime +${request_log_retention_days} | /bin/grep -E '2.*(Z|.log)$' | /usr/bin/xargs /bin/rm",
         hour    => 0,
         minute  => 0,
         user    => 'druid',
