@@ -35,7 +35,7 @@ discovery::services:
     active_active: false
   swift-ro:
     lvs: swift
-    active_active: false
+    active_active: true
   # Main microservices
   parsoid:
     lvs: parsoid
