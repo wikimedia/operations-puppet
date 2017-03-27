@@ -265,4 +265,12 @@ class druid(
     file { '/etc/druid/common.runtime.properties':
         content => template('druid/runtime.properties.erb'),
     }
+
+    # Indexing logs are not pruned by Druid.  Install a cron job to do so.
+    $indexer_log_retention_days = 62
+    cron { 'prune_old_druid_indexer_logs':
+        command => "/usr/bin/find ${runtime_properties['druid.indexer.logs.directory']} -mtime +${indexer_log_retention_days} -exec /bin/rm {} \;",
+        hour    => 0,
+        user    => 'druid',
+    }
 }
