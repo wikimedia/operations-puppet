@@ -136,6 +136,10 @@ private:
       home: true
       project: true
       scratch: true
+  twl:
+    gid: 52777
+    mounts:
+      project: true
   utrs:
     gid: 50318
     mounts:
