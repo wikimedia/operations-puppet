@@ -105,6 +105,7 @@ filters = [
         'max_expand': 10,
         'case_sensitive': True,
         'locale': 'en',
+        'timeout': args.timeout,
     }},
 ]
 
