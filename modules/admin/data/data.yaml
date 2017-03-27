@@ -117,7 +117,7 @@ groups:
               jminor, etonkovidova, sbisson, addshore, matmarex, elukey,
               nikerabbit, nschaaf, dstrine, joewalsh, mpany, jsamra,
               jdittrich, chelsyx, ovasileva, mtizzoni, panisson, paolotti, ciro, debt,
-              samwalton9, zareen, fdans, samtar, mlitn, shrlak, niharika29]
+              samwalton9, zareen, fdans, samtar, mlitn, shrlak, niharika29, goransm]
   ldap-admins:
     gid: 715
     description: ldap admins
@@ -219,7 +219,7 @@ groups:
     description: Gives generic client access to the Analytics (Hadoop) cluster.
         This will grant shell access on Hadoop client nodes (stat1002) and on
         Hadoop NameNodes.
-    members: [debt]
+    members: [debt, goransm]
   analytics-privatedata-users:
     gid: 731
     description: Gives access to the Analytics (Hadoop) cluster as well as private data within.
@@ -548,7 +548,7 @@ groups:
   analytics-wmde-users:
     description: Group of WMDE analytics users
     gid: 784
-    members: [addshore]
+    members: [addshore, goransm]
     privileges: ['ALL = (analytics-wmde) NOPASSWD: ALL']
   eventbus-admins:
     gid: 785
