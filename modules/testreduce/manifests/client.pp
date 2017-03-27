@@ -26,6 +26,5 @@ define testreduce::client(
     }
 
     service { $instance_name:
-        ensure => running,
     }
 }
