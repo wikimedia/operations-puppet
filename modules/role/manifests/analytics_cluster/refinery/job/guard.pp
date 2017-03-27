@@ -9,7 +9,7 @@ class role::analytics_cluster::refinery::job::guard {
 
     cron { 'refinery source guard':
         command     => "${role::analytics_cluster::refinery::source::path}/guard/run_all_guards.sh --rebuild-jar --quiet",
-        environment => 'MAILTO=otto@wikimedia.org',
+        environment => 'MAILTO=analytics-alerts@wikimedia.org',
         user        => $role::analytics_cluster::refinery::source::user,
         hour        => 15,
         minute      => 35,
