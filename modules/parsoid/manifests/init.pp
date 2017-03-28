@@ -40,6 +40,8 @@ class parsoid(
     $deployment    = 'scap3',
     $mwapi_server  = '',
     $mwapi_proxy   = 'http://api.svc.eqiad.wmnet',
+    $discovery     = undef,
+    $discovery_host = 'api-rw.discovery.wmnet',
 ) {
 
     service::node { 'parsoid':
@@ -62,6 +64,15 @@ class parsoid(
         deployment_config => false,
     }
 
+    $confd_template = template('parsoid/confd_snippet.erb')
+    $deployment_vars = $discovery? {
+        undef   => {
+            mwapi_server => $mwapi_server,
+            mwapi_proxy  => $mwapi_proxy,
+        },
+        default => {},
+    }
+
     service::node::config::scap3 { 'parsoid':
         port            => $port,
         starter_module  => 'src/lib/index.js',
@@ -70,9 +81,8 @@ class parsoid(
         heartbeat_to    => 180000,
         statsd_prefix   => $statsd_prefix,
         auto_refresh    => false,
-        deployment_vars => {
-            mwapi_server => $mwapi_server,
-            mwapi_proxy  => $mwapi_proxy,
-        },
+        deployment_vars => $deployment_vars,
+        discovery       => $discovery,
+        confd_template  => $confd_template,
     }
 }
