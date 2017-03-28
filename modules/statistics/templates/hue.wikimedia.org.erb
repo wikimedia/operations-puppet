@@ -23,6 +23,13 @@
 
     LogLevel warn
 
+    # ProxyPreserveHost is needed to avoid CSRF errors like
+    # "Referer checking failed -
+    #   https://hue.wikimedia.org/accounts/[..cut..]/list_oozie_coordinators/
+    #   does not match https://localhost:8888/"
+    # ProxyPassReverse is also special since it matches https responses,
+    # probably due to the secure_proxy_ssl_header=true hue option.
+    ProxyPreserveHost On
     ProxyPass / http://localhost:8888/
-    ProxyPassReverse / http://localhost:8888/
+    ProxyPassReverse / https://localhost:8888/
 </VirtualHost>
