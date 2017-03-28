@@ -40,7 +40,7 @@
 #   Default: false
 #
 class service::configuration(
-    $mwapi_uri     = "http://api.svc.${::mw_primary}.wmnet/w/api.php",
+    $mwapi_uri     = 'http://api-rw.discovery.wmnet/w/api.php',
     $restbase_uri  = 'http://restbase.discovery.wmnet:7231',
     $pdfrender_key = 'secret',
     $http_proxy    = undef,
