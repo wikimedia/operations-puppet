@@ -4,7 +4,17 @@ class role::labs::nfs::secondary($monitor = 'eth0') {
         description => 'NFS secondary share cluster',
     }
 
-    include labstore::fileserver::exports
+    file { '/etc/nfs-mounts.yaml':
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0444',
+        source => 'puppet:///modules/role/nfs/secondary/nfs-mounts.yaml',
+    }
+
+    class { 'labstore::fileserver::exports':
+        require => File['/etc/nfs-mounts.yaml'],
+    }
+
     include labstore::fileserver::secondary
     include labstore::backup_keys
     include role::labs::db::maintain_dbusers

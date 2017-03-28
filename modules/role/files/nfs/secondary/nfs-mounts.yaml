@@ -1,6 +1,19 @@
+# A root must be defined here
+## scratch temporarily moved to labstore1003
+# scratch: '/exp/scratch *(rw,sec=sys,sync,no_subtree_check,root_squash)'
 public:
-  scratch: '/exp/scratch *(rw,sec=sys,sync,no_subtree_check,root_squash)'
   root: '/exp *(ro,fsid=0,sec=sys,sync,subtree_check,root_squash,nocrossmnt)'
+
+
+# devices require a manual addition of a root
+# 'shared' directory to be viable for export
+devices_default: '/srv/misc'
+# project specific devices
+devices:
+    tools: '/srv/maps'
+
+# Project additions to this file will not be active until 'nfs-manage-binds -f'
+# is run on the active server in the cluster post addition.
 private:
   account-creation-assistance:
     gid: 50088

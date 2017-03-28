@@ -34,23 +34,12 @@ class labstore::fileserver::exports {
         require    => User['nfsmanager'],
     }
 
-    file { '/etc/nfs-mounts.yaml':
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        source  => 'puppet:///modules/labstore/nfs-mounts.yaml',
-        require => [Package['python3'], Package['python3-yaml']],
-        notify  => Service['nfs-exportd'],
-    }
-
     file { '/usr/local/sbin/nfs-manage-binds':
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0555',
-        source  => 'puppet:///modules/labstore/nfs-manage-binds',
-        require => File['/etc/nfs-mounts.yaml'],
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => 'puppet:///modules/labstore/nfs-manage-binds',
     }
-
 
     include ::openstack::clientlib
     file { '/usr/local/bin/nfs-exportd':
