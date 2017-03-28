@@ -72,18 +72,6 @@ multi_host=False
 
 dnsmasq_config_file=/etc/dnsmasq-nova.conf
 
-# Settings for wikistatus, the plugin that updates OSM with instance status:
-notification_driver=wikistatus
-notify_on_state_change=vm_state
-
-wiki_host=<%= @wikitechstatusconfig["host"] %>
-wiki_domain=<%= @wikitechstatusconfig["domain"] %>
-wiki_page_prefix=<%= @wikitechstatusconfig["page_prefix"] %>
-wiki_instance_region=<%= @wikitechstatusconfig["region"] %>
-wiki_login=<%= @wikitechstatusconfig["user"] %>
-wiki_password=<%= @wikitechstatusconfig["pass"] %>
-wiki_instance_dns_domain=<%= @wikitechstatusconfig["dns_domain"] %>
-
 # Designate things:
 notification_driver = messagingv2
 
