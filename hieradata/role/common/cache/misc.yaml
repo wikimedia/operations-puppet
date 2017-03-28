@@ -21,11 +21,6 @@ cache::app_def_be_opts:
   first_byte_timeout: '185s'
   max_connections: 100
 cache::app_directors:
-  analytics1027:
-    be_opts:
-      port: 8888
-    backends:
-      eqiad: 'analytics1027.eqiad.wmnet'
   bromine:
     backends:
       eqiad: 'bromine.eqiad.wmnet'
