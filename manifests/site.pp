@@ -1945,10 +1945,6 @@ node 'ms1002.eqiad.wmnet' {
     include ::standard
 }
 
-node /^ms-fe100[1-4]\.eqiad\.wmnet$/ {
-    role(spare::system)
-}
-
 node /^ms-fe1005\.eqiad\.wmnet$/ {
     role(swift::proxy, swift::stats_reporter)
     include ::lvs::realserver
