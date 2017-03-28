@@ -131,11 +131,11 @@ node /aqs100[456789]\.eqiad\.wmnet/ {
 }
 
 node 'auth1001.eqiad.wmnet' {
-    role(yubiauth::server)
+    role('yubiauth_server')
 }
 
 node 'auth2001.codfw.wmnet' {
-    role(yubiauth::server)
+    role('yubiauth_server')
 }
 
 node 'baham.wikimedia.org' {
