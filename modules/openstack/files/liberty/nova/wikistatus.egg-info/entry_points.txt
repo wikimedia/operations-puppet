@@ -1,4 +1,0 @@
-[oslo.messaging.notify.drivers]
-wikistatus = wikistatus.wikistatus:WikiStatus
-
-
