@@ -444,7 +444,7 @@ groups:
                  'ALL = (syslog) NOPASSWD: ALL']
   perf-roots:
     gid: 766
-    description: users who have root on memcached, varnish, application servers and thumbor
+    description: users who have root on memcached, varnish, application servers, thumbor and xhgui servers
     members: [krinkle, gilles]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
   aqs-users:
