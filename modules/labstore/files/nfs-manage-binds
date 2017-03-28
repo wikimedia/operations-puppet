@@ -71,15 +71,16 @@ def create_binding(target, export, force=False, mounts=[]):
                 ensure_dir('%s/home' % target)
             if 'project' in mounts:
                 ensure_dir('%s/project' % target)
+
         if os.path.exists(target):
             bind_mount(target, export)
         else:
             logging.warning("no bind on %s as %s does not exist" % (export, target))
 
 
-def get_binds():
-    """ find all bindmounts under /exp
-    :note: we assume /exp is the root for exported binds
+def get_binds(bind_root):
+    """ find all bindmounts under bind_root
+    :param bind_root: str
     :returns: list
     """
 
@@ -88,7 +89,7 @@ def get_binds():
     mnt_targets = subprocess.check_output(cmd).decode()
     bind_mounts = []
     for mnt in mnt_targets.split():
-        if mnt.startswith('/exp'):
+        if mnt.startswith(bind_root):
             bind_mounts.append(mnt.strip())
     return bind_mounts
 
@@ -100,7 +101,7 @@ def main():
     argparser.add_argument(
         '-f',
         action='store_true',
-        help='New project directories (not /exp directories) need -f to be created.',
+        help='New project directories (not bind_path directories) need -f to be created.',
     )
 
     argparser.add_argument(
@@ -110,14 +111,20 @@ def main():
     )
 
     argparser.add_argument(
-        '-debug',
-        help='Turn on debug logging',
+        '-binds',
+        help='Display active binds (this operation will exit post)',
         action='store_true'
     )
 
     argparser.add_argument(
-        '-binds',
-        help='Display active binds (this operation will exit post)',
+        '-config_path',
+        default='/etc/nfs-mounts.yaml',
+        help='Path to YAML file containing config of which exports to maintain',
+    )
+
+    argparser.add_argument(
+        '-debug',
+        help='Turn on debug logging',
         action='store_true'
     )
 
@@ -135,52 +142,86 @@ def main():
         logging.warning("forcing creation for new project directories")
 
     try:
-        with open('/etc/nfs-mounts.yaml') as f:
+        with open(args.config_path) as f:
             config = yaml.safe_load(f)
     except:
         logging.exception('Could not load projects config file from %s', args.config_path)
         sys.exit(1)
 
-    if args.binds:
-        binds = get_binds()
-        if not binds:
-            sys.exit(1)
-        for b in binds:
-            print(b)
-        sys.exit(0)
+    if 'root' not in config['public']:
+        logging.exception('No export root defined')
+        sys.exit(1)
 
+    public_binds = {}
     srv_root = args.disk_path
     # get dict of path_on_disk:share_name to create in descending order
     public_inverse = {v.split(' ')[0]: k for k, v in config['public'].items()}
     for k in sorted(public_inverse, key=len, reverse=False):
         path = k
         if public_inverse[k] == 'root':
-            exp_root = os.path.join('/', path)
+            exp_root = path
+            logging.info('Export root set to %s' % (exp_root,)
             if not os.path.exists(exp_root):
                 logging.error('The root export path does not exist')
                 sys.exit(1)
             continue
 
+        # process non-root public shares
         base = os.path.basename(path)
         exp = os.path.join(exp_root, base)
         srv = os.path.join(srv_root, base)
-        create_binding(srv, exp, force=args.f)
+        public_binds[srv] = exp
 
-    device_path_default = '/srv/misc'
-    device_paths = {
-        'tools': '/srv/tools',
-        'maps': '/srv/maps',
-    }
+    if args.binds:
+        binds = get_binds(exp_root)
+        if not binds:
+            logging.warning("No binds found at %s", exp_root)
+            sys.exit(1)
+        for b in binds:
+            print(b)
+        sys.exit(0)
+
+    # set up non-project specific binds
+    for ppath, export in public_binds.items():
+        create_binding(ppath, export, force=args.f)
+
+    device_path_default = config['devices_default']
+    device_paths = config['devices']
+
+    devices = list(device_paths.values()) + [device_path_default]
+    logging.debug("devices: %s" % (devices,))
+
+    for d in devices:
+        # Expect device paths to be mount points
+        if not is_mount(d):
+            logging.exception("%s is not a mount point" % d)
+            sys.exit(1)
+
+        # We do not export the root of these devices
+        # Expect a sysadmin has explicitly created a 'shared' dir
+        if not os.path.exists(os.path.join(d, 'shared')):
+            logging.exception("%s has no 'shared' directory" % d)
+            sys.exit(1)
+        else:
+            logging.debug("%s has a shared dir" % d)
 
     for project in sorted(config['private']):
+
         # Find which mounts should be made available for project
         # This is useful to create home and project dirs for new projects
         mount_config = config['private'][project].get('mounts', {})
         mounts = [mount for mount in mount_config.keys() if mount_config[mount]]
-
         srv_device = device_paths.get(project, device_path_default)
+
+        # If /dev/foo is mounted at /srv/foo then a 'shared' directory
+        # needs to be created /manually/ to seed the new device.
+
+        # Exported (via bind mount): /exp/myproject => /srv/foo/shared/myproject
+        # Example subtree (with subtree_check):
+        # * /srv/foo/shared/myproject/project
+        # * /srv/foo/shared/myproject/home
         srv = os.path.join(srv_device, 'shared', project)
-        exp = os.path.join('/exp/project', project)
+        exp = os.path.join(exp_root, 'project', project)
         create_binding(srv, exp, force=args.f, mounts=mounts)
 
 if __name__ == '__main__':
