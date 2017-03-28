@@ -3676,34 +3676,6 @@ host ms-be3004-B {
     fixed-address ms-be3004.esams.wmnet;
 }
 
-host ms-fe1001 {
-    hardware ethernet d4:be:d9:ec:df:a7;
-    fixed-address ms-fe1001.eqiad.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
-}
-
-host ms-fe1002 {
-    hardware ethernet d4:be:d9:ec:d2:27;
-    fixed-address ms-fe1002.eqiad.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
-}
-
-host ms-fe1003 {
-    hardware ethernet d4:be:d9:ec:e0:49;
-    fixed-address ms-fe1003.eqiad.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
-}
-
-host ms-fe1004 {
-    hardware ethernet d4:be:d9:ec:e0:52;
-    fixed-address ms-fe1004.eqiad.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
-}
-
 host ms-fe1005 {
     hardware ethernet F4:E9:D4:AE:F4:E0;
     fixed-address ms-fe1005.eqiad.wmnet;
