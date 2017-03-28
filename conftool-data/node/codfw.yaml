@@ -1,12 +1,5 @@
 codfw:
   appserver:
-    mw2090.codfw.wmnet: [apache2,nginx]
-    mw2091.codfw.wmnet: [apache2,nginx]
-    mw2092.codfw.wmnet: [apache2,nginx]
-    mw2093.codfw.wmnet: [apache2,nginx]
-    mw2094.codfw.wmnet: [apache2,nginx]
-    mw2095.codfw.wmnet: [apache2,nginx]
-    mw2096.codfw.wmnet: [apache2,nginx]
     mw2097.codfw.wmnet: [apache2,nginx]
     mw2098.codfw.wmnet: [apache2,nginx]
     mw2100.codfw.wmnet: [apache2,nginx]
