@@ -1,0 +1,25 @@
+---
+docker::version: 1.12.6-0~debian-jessie
+k8s::apiserver::use_package: true
+k8s::controller::use_package: true
+k8s::kubelet::cluster_dns_ip: 192.168.0.100
+k8s::kubelet::cluster_domain: null
+k8s::kubelet::cni: false
+k8s::kubelet::listen_address: 0.0.0.0
+k8s::kubelet::pod_infra_container_image: null
+k8s::kubelet::tls_cert: /etc/kubernetes/ssl/cert.pem
+k8s::kubelet::tls_key: /etc/kubernetes/ssl/server.key
+k8s::kubelet::use_package: true
+k8s::proxy::use_package: true
+k8s::scheduler::use_package: true
+
+k8s::flannel::etcd_endpoints: https://ci-staging-k8s-master.ci-staging.eqiad.wmflabs:2379
+k8s::kubelet::master_host: ci-staging-k8s-master.ci-staging.eqiad.wmflabs
+k8s::proxy::master_host: ci-staging-k8s-master.ci-staging.eqiad.wmflabs
+
+# Add the following to the project puppet settings or puppetmaster secrets for now
+# k8s_infrastructure_users:
+#   - id: client-infrastructure
+#     name: client-infrastructure
+#     token: [random token]
+#     type: infrastructure-readwrite

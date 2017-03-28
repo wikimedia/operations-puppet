@@ -1,0 +1,20 @@
+---
+docker::registry::web::allow_push_from: []
+docker::registry::web::docker_password_hash: # [htpasswd compat hash] (add to puppetmaster secrets)
+docker::registry::web::docker_username: ci-staging-docker
+docker::registry::web::http_allowed_hosts: []
+docker::registry::web::http_endpoint: true
+docker::registry::web::use_puppet_certs: true
+etcd::cluster_name: ci-staging-k8s-etcd
+etcd::cluster_state: existing # see https://wikitech.wikimedia.org/wiki/Etcd for bootstrapping info
+etcd::host: '%{::fqdn}'
+etcd::peers_list: ci-staging-k8s-master=http://ci-staging-k8s-master.ci-staging.eqiad.wmflabs:2380
+etcd::port: 2739
+etcd::ssl::puppet_cert_name: '%{::fqdn}'
+etcd::use_ssl: true
+k8s::apiserver::authz_mode: AlwaysAllow
+k8s::apiserver::docker_registry: ci-staging-k8s-master.ci-staging.eqiad.wmflabs
+k8s::apiserver::etcd_servers: https://ci-staging-k8s-master.ci-staging.eqiad.wmflabs:2379
+k8s::apiserver::ssl_cert_path: /etc/kubernetes/ssl/cert.pem
+k8s::apiserver::ssl_key_path: /etc/kubernetes/ssl/server.key
+k8s::etcd_hosts: ci-staging-k8s-master.ci-staging.eqiad.wmflabs
