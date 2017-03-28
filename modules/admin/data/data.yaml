@@ -335,7 +335,7 @@ groups:
   maps-admins:
     gid: 753
     description: admin for maps-test cluster
-    members: [maxsem, eevans]
+    members: [maxsem, eevans, pnorman]
     # TODO: Revisit this when moving into production
     privileges: ['ALL = NOPASSWD: /usr/sbin/service cassandra *',
                  'ALL = NOPASSWD: /bin/systemctl mask cassandra.service',
@@ -349,7 +349,7 @@ groups:
   kartotherian-admin:
     description: Group of kartotherian admins
     gid: 754
-    members: [maxsem]
+    members: [maxsem, pnorman]
     privileges: ['ALL = NOPASSWD: /usr/sbin/service kartotherian *',
                  'ALL = NOPASSWD: /bin/systemctl mask kartotherian.service',
                  'ALL = NOPASSWD: /bin/systemctl unmask kartotherian.service',
@@ -377,7 +377,7 @@ groups:
   tilerator-admin:
     description: Group of tilerator admins
     gid: 758
-    members: [maxsem]
+    members: [maxsem, pnorman]
     privileges: ['ALL = NOPASSWD: /usr/sbin/service tilerator *',
                  'ALL = NOPASSWD: /bin/systemctl mask tilerator.service',
                  'ALL = NOPASSWD: /bin/systemctl unmask tilerator.service',
