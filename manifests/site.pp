@@ -124,14 +124,9 @@ node /analytics10(2[89]|3[0-9]|4[0-9]|5[0-7]).eqiad.wmnet/ {
     include ::standard
 }
 
-# analytics1027 hosts hue.wikimedia.org, and is used for launching
-# cron based Hadoop jobs.
+# To be decommissioned in T161597
 node 'analytics1027.eqiad.wmnet' {
-    role(analytics_cluster::client,
-        analytics_cluster::hue)
-
-    include ::standard
-    include ::base::firewall
+    role(spare::system)
 }
 
 # Analytics Query Service

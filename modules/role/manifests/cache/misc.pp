@@ -39,10 +39,6 @@ class role::cache::misc {
     # route requests to.
     #
     $app_directors = {
-        'analytics1027' => { # Hue (Hadoop GUI)
-            'backend'  => 'analytics1027.eqiad.wmnet',
-            'be_opts'  => { 'port' => 8888 },
-        },
         'bromine' => { # ganeti VM for misc. static HTML sites
             'backend'  => 'bromine.eqiad.wmnet',
         },
