@@ -26,5 +26,5 @@ caps.drop all
 seccomp
 private-dev
 
-# Thumbor shouldn't create files bigger than 4GB
-rlimit-fsize 4294967296
+# Thumbor shouldn't create files bigger than 4GB-1 bytes
+rlimit-fsize 4294967295
