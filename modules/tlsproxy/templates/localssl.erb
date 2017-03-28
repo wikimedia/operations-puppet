@@ -11,8 +11,8 @@ server {
 	# Enabling TCP Fast Open is safe for HTTP over TLS. There is no idempotency
 	# concern replaying TLS Client Hello.
 	# https://tools.ietf.org/html/rfc7413#section-6.3.2
-	listen [::]:443 <%= @default_server ? "default_server deferred backlog=16384 reuseport ipv6only=on fastopen=#{@fastopen_pending_max} " : "" %>ssl http2;
-	listen 443 <%= @default_server ? "default_server deferred backlog=16384 reuseport fastopen=#{@fastopen_pending_max} " : "" %>ssl http2;
+	listen [::]:<%= @ssl_port %> <%= @default_server ? "default_server deferred backlog=16384 reuseport ipv6only=on fastopen=#{@fastopen_pending_max} " : "" %>ssl http2;
+	listen <%= @ssl_port %> <%= @default_server ? "default_server deferred backlog=16384 reuseport fastopen=#{@fastopen_pending_max} " : "" %>ssl http2;
 	ssl on;
 	server_name <%= ([@server_name] + @server_aliases).join(" ") %>;
 

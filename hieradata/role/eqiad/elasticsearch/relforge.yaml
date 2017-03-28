@@ -24,6 +24,7 @@ elasticsearch::graylog_hosts:
   - logstash1003.eqiad.wmnet
 
 elasticsearch::https::certificate_name: 'relforge.svc.eqiad.wmnet'
-profile::base::dns_alt_names:            'relforge.svc.eqiad.wmnet'
+elasticsearch::https::server_aliases:   'relforge.discovery.wmnet'
+profile::base::dns_alt_names:           'relforge.svc.eqiad.wmnet'
 
 has_lvs: false
