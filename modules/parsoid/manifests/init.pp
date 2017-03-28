@@ -59,11 +59,20 @@ class parsoid(
         statsd_prefix     => $statsd_prefix,
         auto_refresh      => false,
         deployment        => $deployment,
-        deployment_config => true,
-        deployment_vars   => {
+        deployment_config => false,
+    }
+
+    service::node::config::scap3 { 'parsoid':
+        port            => $port,
+        starter_module  => 'src/lib/index.js',
+        entrypoint      => 'apiServiceWorker',
+        heap_limit      => 800,
+        heartbeat_to    => 180000,
+        statsd_prefix   => $statsd_prefix,
+        auto_refresh    => false,
+        deployment_vars => {
             mwapi_server => $mwapi_server,
             mwapi_proxy  => $mwapi_proxy,
         },
     }
-
 }
