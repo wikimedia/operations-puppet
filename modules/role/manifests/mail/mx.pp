@@ -4,7 +4,7 @@ class role::mail::mx(
         'wikimedia.org'
     ],
     $verp_post_connect_server = 'meta.wikimedia.org',
-    $verp_bounce_post_url = "api.svc.${::mw_primary}.wmnet/w/api.php",
+    $verp_bounce_post_url = 'api-rw.discovery.wmnet/w/api.php',
 ) {
     include network::constants
     include privateexim::aliases::private
