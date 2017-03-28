@@ -97,7 +97,7 @@ class icinga::monitor::toollabs {
     # new instances will block on this for spinup if failing
     monitoring::service { 'tools-checker-nfs-showmount':
         description   => 'showmount succeeds on a labs instance',
-        check_command => "${checker}!/nfs/showmount!OK",
+        check_command => "${checker}!/nfs/secondary_cluster_showmount!OK",
         host          => $test_entry_host,
     }
 

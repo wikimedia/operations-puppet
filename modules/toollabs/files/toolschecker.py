@@ -64,12 +64,12 @@ def dns_private_check():
     return False
 
 
-@check('/nfs/showmount')
+@check('/nfs/secondary_cluster_showmount')
 def showmount_check():
     try:
         with open(os.devnull, 'w') as devnull:
             subprocess.check_call(
-                ['/sbin/showmount', '-e', 'labstore.svc.eqiad.wmnet'],
+                ['/sbin/showmount', '-e', 'nfs-tools-project.svc.eqiad.wmnet'],
                 stderr=devnull)
         return True
     except subprocess.CalledProcessError:

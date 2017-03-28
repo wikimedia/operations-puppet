@@ -22,74 +22,74 @@ class toollabs::checker inherits toollabs {
     }
 
     $checks = {
-        'self'                   => {
-            path                 => '/self'
+        'self'                            => {
+            path                          => '/self'
         },
-        'puppet_catalog'         => {
-            path                 => '/labs-puppetmaster/eqiad',
+        'puppet_catalog'                  => {
+            path                          => '/labs-puppetmaster/eqiad',
         },
-        'labs_private'           => {
-            path                 => '/labs-dns/private',
+        'labs_private'                    => {
+            path                          => '/labs-dns/private',
         },
-        'nfs_showmount'          => {
-            path                 => '/nfs/showmount',
+        'nfs_secondary_cluster_showmount' => {
+            path                          => '/nfs/secondary_cluster_showmount',
         },
-        'ldap'                   => {
-            path                 => '/ldap',
+        'ldap'                            => {
+            path                          => '/ldap',
         },
-        'nfs_home'               => {
-            path                 => '/nfs/home',
+        'nfs_home'                        => {
+            path                          => '/nfs/home',
         },
-        'redis'                  => {
-            path                 => '/redis',
+        'redis'                           => {
+            path                          => '/redis',
         },
-        'labsdb_labsdb1001'      => {
-            path                 => '/labsdb/labsdb1001',
+        'labsdb_labsdb1001'               => {
+            path                          => '/labsdb/labsdb1001',
         },
-        'labsdb_labsdb1003'      => {
-            path                 => '/labsdb/labsdb1003',
+        'labsdb_labsdb1003'               => {
+            path                          => '/labsdb/labsdb1003',
         },
-        'labsdb_labsdb1005'      => {
-            path                 => '/labsdb/labsdb1005',
+        'labsdb_labsdb1005'               => {
+            path                          => '/labsdb/labsdb1005',
         },
-        'labsdb_labsdb1001rw'    => {
-            path                 => '/labsdb/labsdb1001rw',
+        'labsdb_labsdb1001rw'             => {
+            path                          => '/labsdb/labsdb1001rw',
         },
-        'labsdb_labsdb1003rw'    => {
-            path                 => '/labsdb/labsdb1003rw',
+        'labsdb_labsdb1003rw'             => {
+            path                          => '/labsdb/labsdb1003rw',
         },
-        'labsdb_labsdb1004rw'    => {
-            path                 => '/labsdb/labsdb1004rw',
+        'labsdb_labsdb1004rw'             => {
+            path                          => '/labsdb/labsdb1004rw',
         },
-        'toolsdb'                => {
-            path                 => '/toolsdb',
+        'toolsdb'                         => {
+            path                          => '/toolsdb',
         },
-        'dumps'                  => {
-            path                 => '/dumps',
+        'dumps'                           => {
+            path                          => '/dumps',
         },
-        'continuous_job_trusty'  => {
-            path                 => '/continuous/trusty',
+        'continuous_job_trusty'           => {
+            path                          => '/continuous/trusty',
         },
-        'grid_start_trusty'      => {
-            path                 => '/grid/start/trusty',
+        'grid_start_trusty'               => {
+            path                          => '/grid/start/trusty',
         },
-        'cron'                   => {
-            path                 => '/toolscron',
+        'cron'                            => {
+            path                          => '/toolscron',
         },
-        'flannel_etcd'           => {
-            path                 => '/etcd/flannel',
+        'flannel_etcd'                    => {
+            path                          => '/etcd/flannel',
         },
-        'kubernetes_etcd'        => {
-            path                 => '/etcd/k8s',
+        'kubernetes_etcd'                 => {
+            path                          => '/etcd/k8s',
         },
-        'kubernetes_nodes_ready' => {
-            path                 => '/k8s/nodes/ready',
+        'kubernetes_nodes_ready'          => {
+            path                          => '/k8s/nodes/ready',
         },
-        'webservice_kubernetes'  => {
-            path                 => '/webservice/kubernetes',
+        'webservice_kubernetes'           => {
+            path                          => '/webservice/kubernetes',
         },
-        'service_start'          => {
-            path                 => '/service/start',
+        'service_start'                   => {
+            path                          => '/service/start',
         },
     }
 
