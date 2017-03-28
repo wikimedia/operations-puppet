@@ -63,6 +63,13 @@ class base::standard_packages {
         package { 'ntfs-3g': ensure => absent }
     }
 
+    # On Ubuntu, eject is installed via the ubuntu-minimal package
+    # Uninstall in on Debian since it ships a setuid helper and we don't
+    # have servers with installed optical drives
+    if os_version('debian >= jessie') {
+        package { 'eject': ensure => absent }
+    }
+
     # real-hardware specific
     # As of September 2015, mcelog still does not support newer AMD processors.
     # See <http://www.mcelog.org/faq.html#18>.
