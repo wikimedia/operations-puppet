@@ -149,8 +149,6 @@ keystoneconfig:
   auth_host: 208.80.154.92
   admin_project_id: 'admin'
   admin_project_name: 'admin'
-  oath_dbname: 'labswiki'
-  oath_dbhost: 'silver.wikimedia.org'
 
 designateconfig:
   db_host:  'm5-master.eqiad.wmnet'
