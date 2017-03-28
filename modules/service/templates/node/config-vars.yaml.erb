@@ -40,3 +40,6 @@ restbase_uri: <%= cvars['restbase'] %>
 # deployment variables
 <%= scope.function_ordered_yaml([@deployment_vars]) %>
 <% end -%>
+<%- unless @confd_template.empty? -%>
+<%= @confd_template %>
+<%- end -%>

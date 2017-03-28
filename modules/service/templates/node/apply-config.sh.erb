@@ -4,4 +4,10 @@
 
 set -e
 /usr/bin/scap deploy-local -D 'log_json:False' --repo <%= @repo %> --force config_deploy;
-<%- if @auto_refresh %>/usr/bin/scap deploy-local -D 'log_json:False' --repo <%= @repo %> --force restart_service;<%- end -%>
+<%- if @auto_refresh -%>
+<%- if @discovery -%>
+# Sleep a random time between 0 and <%= @max_splay %> seconds to avoid herd effects
+sleep $[ $RANDOM % <%= @max_splay %> ]
+<%- end -%>
+/usr/bin/scap deploy-local -D 'log_json:False' --repo <%= @repo %> --force restart_service;
+<%- end -%>
