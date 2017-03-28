@@ -200,7 +200,7 @@ def print_pending_account_expirys(users):
             delta = expiry - current_date
             if delta.days <= 14:
                 log += "The NDA/MOU for " + i + " will lapse in " + str(delta.days) + " days.\n"
-                log += "  Please get in touch with" + str(attrs['expiry_contact']) + "\n"
+                log += "  Please get in touch with " + str(attrs['expiry_contact']) + "\n"
     return log
 
 
