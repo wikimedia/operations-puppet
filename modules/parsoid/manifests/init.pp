@@ -32,6 +32,10 @@
 #   either mwapi_server or this variable. Do not set both! Default:
 #   'http://api.svc.eqiad.wmnet'
 #
+# [*discovery*]
+# If defined, will use that discovery key to discover if the current datacenter is active
+# for the MediaWiki API, and use HTTP or HTTPS to connect the host ${discovery}.discovery.wmnet
+#
 class parsoid(
     $port          = 8000,
     $settings_file = 'conf/wmf/localsettings.js',
@@ -40,6 +44,7 @@ class parsoid(
     $deployment    = 'scap3',
     $mwapi_server  = '',
     $mwapi_proxy   = 'http://api.svc.eqiad.wmnet',
+    $discovery     = undef,
 ) {
 
     service::node { 'parsoid':
@@ -54,7 +59,19 @@ class parsoid(
         full_config       => 'external',
     }
 
+
     if ($deployment == 'scap3') {
+        $confd_template = template('parsoid/confd_snippet.erb')
+        # TODO: this is not needed in puppet 4
+        if $discovery {
+            $deployment_vars = {}
+        } else {
+            $deployment_vars = {
+                mwapi_server => $mwapi_server,
+                mwapi_proxy  => $mwapi_proxy,
+            }
+        }
+
         service::node::config::scap3 { 'parsoid':
             port            => $port,
             starter_module  => 'src/lib/index.js',
@@ -64,10 +81,9 @@ class parsoid(
             heartbeat_to    => 180000,
             statsd_prefix   => $statsd_prefix,
             auto_refresh    => false,
-            deployment_vars => {
-                mwapi_server => $mwapi_server,
-                mwapi_proxy  => $mwapi_proxy,
-            },
+            deployment_vars => $deployment_vars,
+            discovery       => $discovery,
+            confd_template  => $confd_template,
         }
     } else {
         service::node::config { 'parsoid':
@@ -84,5 +100,4 @@ class parsoid(
             },
         }
     }
-
 }
