@@ -1,20 +1,21 @@
-# = Class: role::yubiauth
+# = Class: profile::yubiauth::server
 #
 # This class configures a Yubi 2FA authentication server
 #
-class role::yubiauth::server {
-    include ::standard
-    include ::base::firewall
-    include ::profile::backup::host
+class profile::yubiauth::server (
+    $auth_servers = hiera('yubiauth_servers'),
+    $auth_server_primary = hiera('yubiauth_server_primary'),
+) {
 
-    include yubiauth::yhsm_daemon
-    include yubiauth::yhsm_yubikey_ksm
+    $auth_servers_ferm = join($auth_servers, ' ')
+
+    include ::base::firewall
+
+    class {'::yubiauth::yhsm_daemon': }
+
+    class {'::yubiauth::yhsm_yubikey_ksm': }
 
     backup::set { 'yubiauth-aeads' : }
-
-    $auth_servers = hiera('yubiauth_servers')
-    $auth_servers_ferm = join($auth_servers, ' ')
-    $auth_server_primary = hiera('yubiauth_server_primary')
 
     if ($::fqdn == $auth_server_primary) {
 
@@ -34,11 +35,6 @@ class role::yubiauth::server {
             user    => 'root',
             minute  => '*/30',
         }
-    }
-
-    system::role { 'role::yubiauth':
-        ensure      => 'present',
-        description => 'Yubi 2FA authentication server',
     }
 
     ferm::service { 'yubikey-validation-server':
