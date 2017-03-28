@@ -27,24 +27,23 @@ class elasticsearch::https (
         validate_string($certificate_name)
     }
 
-    class { [ '::nginx', '::nginx::ssl' ]:
-        ensure => $ensure,
-    }
-
     diamond::collector::nginx { 'elasticsearch':
         ensure => $ensure,
     }
 
-    ::base::expose_puppet_certs { '/etc/nginx':
-        ensure          => $ensure,
-        provide_private => true,
-        require         => Class['nginx'],
+    include ::tlsproxy::nginx_bootstrap
+    tlsproxy::localssl { 'elasticsearch-https':
+        server_name    => $certificate_name,
+        certs          => $certificate_name,
+        certs_active   => $certificate_name,
+        default_server => true,
+        ssl_port       => 9243,
+        do_ocsp        => false,
+        upstream_ports => [ 9200 ],
+        access_log     => true,
     }
 
-    ::nginx::site { 'elasticsearch-ssl-termination':
-        ensure  => $ensure,
-        content => template('elasticsearch/nginx/es-ssl-termination.nginx.conf.erb'),
-    } -> ::monitoring::service { 'elasticsearch-https':
+    ::monitoring::service { 'elasticsearch-https':
         ensure        => $ensure,
         description   => 'Elasticsearch HTTPS',
         check_command => "check_ssl_on_port!${certificate_name}!9243",
