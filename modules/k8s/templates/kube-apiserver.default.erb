@@ -31,6 +31,8 @@ DAEMON_ARGS=" \
 <%- if @authz_mode == 'abac' -%>
 --authorization-mode=ABAC \
 --authorization-policy-file=/etc/kubernetes/abac \
+<%- elsif @authz_mode && @authz_mode != '' -%>
+--authorization-mode=<%= @authz_mode %> \
 <%- end -%>
 <%- if @apiserver_count -%>
 --apiserver-count=<%= @apiserver_count %> \
