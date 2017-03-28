@@ -278,35 +278,19 @@ define service::node(
             onlyif  => "/usr/bin/test -O ${chown_target}",
             require => [User[$deployment_user], Group[$deployment_user]]
         }
-        file { "/etc/${title}/config-vars.yaml":
-            ensure  => present,
-            content => template('service/node/config-vars.yaml.erb'),
-            owner   => $deployment_user,
-            group   => $deployment_user,
-            mode    => '0444',
-            tag     => "${title}::config",
+        service::node::deploy_config { $title:
+            port            => $port,
+            no_workers      => $no_workers,
+            heap_limit      => $heap_limit,
+            heartbeat_to    => $heartbeat_to,
+            repo            => $repo,
+            starter_module  => $starter_module,
+            entrypoint      => $entrypoint,
+            logging_name    => $logging_name,
+            statsd_prefix   => $statsd_prefix,
+            auto_refresh    => $auto_refresh,
+            deployment_vars => $deployment_vars,
         }
-
-        # We need to ensure that the full config gets deployed when we change the
-        # puppet controlled part. If auto_refresh is true, this will also restart
-        # the service.
-        file { "/usr/local/bin/apply-config-${title}":
-            ensure  => present,
-            content => template('service/node/apply-config.sh.erb'),
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0755',
-            before  => Exec["${title} config deploy"],
-        }
-
-        exec { "${title} config deploy":
-                command     => "/usr/local/bin/apply-config-${title}",
-                user        => $deployment_user,
-                group       => $deployment_user,
-                refreshonly => true,
-                subscribe   => File["/etc/${title}/config-vars.yaml"],
-        }
-
     } else {
         file { "/etc/${title}/config.yaml":
             ensure  => present,
