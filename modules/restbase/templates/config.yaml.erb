@@ -1,6 +1,5 @@
 # RESTBase wikimedia config
 <%
-  mw_primary = scope.lookupvar('::mw_primary')
   rl_seeds = @hosts.select do |x|
     # use the item if this host's name is not contained in it and
     # the item's IP doesn't match the host's as we don't want the
@@ -60,7 +59,7 @@ default_project: &default_project
         parsoid:
           host: <%= @parsoid_uri %>
         action:
-          apiUriTemplate: http://api.svc.<%= mw_primary %>.wmnet/w/api.php
+          apiUriTemplate: http://api-rw.discovery.wmnet/w/api.php
           baseUriTemplate: "{{'https://{domain}/api/rest_v1'}}"
         graphoid:
           host: <%= @graphoid_uri %>
@@ -128,7 +127,7 @@ root_spec: &root_spec
       name: http
       options:
         allow:
-          - pattern: http://api.svc.<%= mw_primary %>.wmnet/w/api.php
+          - pattern: http://api-rw.discovery.wmnet/w/api.php
             forward_headers: true
           - pattern: <%= @parsoid_uri %>
             forward_headers: true
