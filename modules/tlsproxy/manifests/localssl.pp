@@ -39,6 +39,10 @@
 #   Boolean. Adds the 'default_server' option to the listen statement.
 #   Exactly one instance should have this set to true.
 #
+# [*ssl_port*]
+#   Integer. Port on which this TLS proxy will listen for incoming connections
+#   to proxy. Defaults to 443.
+#
 # [*do_ocsp*]
 #   Boolean. Sets up OCSP Stapling for this server.  This both enables the
 #   correct configuration directives in the site's nginx config file as well
@@ -56,6 +60,7 @@ define tlsproxy::localssl(
     $server_name    = $::fqdn,
     $server_aliases = [],
     $default_server = false,
+    $ssl_port       = 443,
     $upstream_ports = ['80'],
     $redir_port     = undef,
     $do_ocsp        = false,
