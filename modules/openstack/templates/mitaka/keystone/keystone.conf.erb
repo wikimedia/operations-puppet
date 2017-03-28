@@ -393,10 +393,11 @@ password_whitelist = *:<%=subnet%>
 
 [oath]
 
-dbuser = <%= @keystoneconfig["oath_dbuser"] %>
-dbpass = <%= @keystoneconfig["oath_dbpass"] %>
-dbname = <%= @keystoneconfig["oath_dbname"] %>
-dbhost = <%= @keystoneconfig["oath_dbhost"] %>
+wikitech_host = <%=@labs_osm_host%>
+wikitech_consumer_token = <%= @keystoneconfig["wikitech_consumer_token"] %>
+wikitech_consumer_secret = <%= @keystoneconfig["wikitech_consumer_secret"] %>
+wikitech_access_token = <%= @keystoneconfig["wikitech_access_token"] %>
+wikitech_access_secret = <%= @keystoneconfig["wikitech_access_secret"] %>
 
 [wmfhooks]
 
