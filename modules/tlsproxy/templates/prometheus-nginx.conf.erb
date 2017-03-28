@@ -1,21 +1,16 @@
-# See https://github.com/knyar/nginx-lua-prometheus/
+# See https://github.com/openresty/lua-nginx-module
 
-lua_shared_dict prometheus_metrics 10M;
+lua_shared_dict prometheus_status_codes 10M;
 
-init_by_lua '
-  prometheus = require("prometheus").init("prometheus_metrics")
-  metric_requests = prometheus:counter("nginx_http_requests_total", "Number of HTTP requests", {"host", "status"})
+log_by_lua_block {
+    local global_count = ngx.shared.prometheus_status_codes
 
-  metric_latency = prometheus:histogram("nginx_http_request_duration_seconds", "HTTP request latency", {"host"})
-';
+    local newval, err = global_count:incr(ngx.var.status, 1)
 
-log_by_lua '
-  local host = ngx.var.host:gsub("^www.", "")
-
-  metric_requests:inc(1, {host, ngx.var.status})
-
-  metric_latency:observe(ngx.now() - ngx.req.start_time(), {host})
-';
+    if not newval and err == "not found" then
+        global_count:set(ngx.var.status, 1)
+    end
+}
 
 server {
     listen 9145;
@@ -25,6 +20,22 @@ server {
 <% end -%>
     deny all;
     location /metrics {
-      content_by_lua 'prometheus:collect()';
+        content_by_lua_block {
+            local server_status_codes = ngx.shared.prometheus_status_codes
+            local keys = server_status_codes:get_keys(0)
+
+            table.sort(keys)
+
+            ngx.say("# HELP nginx_http_requests_total Number of HTTP requests")
+            ngx.say("# TYPE nginx_http_requests_total counter")
+
+            for _, key in ipairs(keys) do
+                local label = "nginx_http_requests_total{status=\"" ..  key .. "\"}"
+                local value = server_status_codes:get(key)
+
+                ngx.say(label .. " " .. value)
+            end
+
+        }
     }
 }
