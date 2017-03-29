@@ -127,9 +127,8 @@ scheduler_default_filters=RetryFilter,AvailabilityZoneFilter,RamFilter,ComputeFi
 #  are determined below, in the 'metrics' config section.
 scheduler_weight_classes=nova.scheduler.weights.metrics.MetricsWeigher
 
-# For now, the MetricsWeigher will recommend only one, very best
-#  candidate
-scheduler_host_subset_size = 1
+# Choose from the two best weighted candidates.
+scheduler_host_subset_size = 2
 
 
 [METRICS]
