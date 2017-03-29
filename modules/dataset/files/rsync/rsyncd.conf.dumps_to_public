@@ -33,7 +33,7 @@
 read only = true
 path = /data/xmldatadumps/public
 exclude = **tmp/ **temp/ **bad/ **save/ **other/ **archive/
-hosts allow = sagres.c3sl.ufpr.br odysseus.fi.muni.cz odysseus.linux.cz odysseus.ip6.fi.muni.cz poincare.acc.umu.se wikimedia-mirror.dh.bytemark.co.uk
+hosts allow = sagres.c3sl.ufpr.br odysseus.fi.muni.cz odysseus.linux.cz odysseus.ip6.fi.muni.cz poincare.acc.umu.se wikimedia.bytemark.co.uk
 
 # these are the modules to advertise
 
@@ -44,7 +44,7 @@ path = /data/xmldatadumps/public
 include = /*wik*/
 exclude = **tmp/ **temp/ **bad/ **save/ **other/ **archive/ **not/ /* /*/ /*/*/
 include from = /data/xmldatadumps/public/rsync-inc-last-5.txt
-hosts allow = sagres.c3sl.ufpr.br odysseus.fi.muni.cz odysseus.linux.cz odysseus.ip6.fi.muni.cz poincare.acc.umu.se wikimedia-mirror.dh.bytemark.co.uk
+hosts allow = sagres.c3sl.ufpr.br odysseus.fi.muni.cz odysseus.linux.cz odysseus.ip6.fi.muni.cz poincare.acc.umu.se wikimedia.bytemark.co.uk
 
 [dumpslastfour]
 read only = true
@@ -53,7 +53,7 @@ path = /data/xmldatadumps/public
 include = /*wik*/
 exclude = **tmp/ **temp/ **bad/ **save/ **other/ **archive/ **not/ /* /*/ /*/*/
 include from = /data/xmldatadumps/public/rsync-inc-last-4.txt
-hosts allow = sagres.c3sl.ufpr.br odysseus.fi.muni.cz odysseus.linux.cz odysseus.ip6.fi.muni.cz poincare.acc.umu.se wikimedia-mirror.dh.bytemark.co.uk
+hosts allow = sagres.c3sl.ufpr.br odysseus.fi.muni.cz odysseus.linux.cz odysseus.ip6.fi.muni.cz poincare.acc.umu.se wikimedia.bytemark.co.uk
 
 [dumpslastthree]
 read only = true
@@ -62,7 +62,7 @@ path = /data/xmldatadumps/public
 include = /*wik*/
 exclude = **tmp/ **temp/ **bad/ **save/ **other/ **archive/ **not/ /* /*/ /*/*/
 include from = /data/xmldatadumps/public/rsync-inc-last-3.txt
-hosts allow = sagres.c3sl.ufpr.br odysseus.fi.muni.cz odysseus.linux.cz odysseus.ip6.fi.muni.cz poincare.acc.umu.se wikimedia-mirror.dh.bytemark.co.uk
+hosts allow = sagres.c3sl.ufpr.br odysseus.fi.muni.cz odysseus.linux.cz odysseus.ip6.fi.muni.cz poincare.acc.umu.se wikimedia.bytemark.co.uk
 
 [dumpslasttwo]
 read only = true
@@ -71,7 +71,7 @@ path = /data/xmldatadumps/public
 include = /*wik*/
 exclude = **tmp/ **temp/ **bad/ **save/ **other/ **archive/ **not/ /* /*/ /*/*/
 include from = /data/xmldatadumps/public/rsync-inc-last-2.txt
-hosts allow = sagres.c3sl.ufpr.br odysseus.fi.muni.cz odysseus.linux.cz odysseus.ip6.fi.muni.cz poincare.acc.umu.se wikimedia-mirror.dh.bytemark.co.uk
+hosts allow = sagres.c3sl.ufpr.br odysseus.fi.muni.cz odysseus.linux.cz odysseus.ip6.fi.muni.cz poincare.acc.umu.se wikimedia.bytemark.co.uk
 
 [dumpslastone]
 read only = true
@@ -80,7 +80,7 @@ path = /data/xmldatadumps/public
 include = /*wik*/
 exclude = **tmp/ **temp/ **bad/ **save/ **other/ **archive/ **not/ /* /*/ /*/*/
 include from = /data/xmldatadumps/public/rsync-inc-last-1.txt
-hosts allow = sagres.c3sl.ufpr.br odysseus.fi.muni.cz odysseus.linux.cz odysseus.ip6.fi.muni.cz poincare.acc.umu.se wikimedia-mirror.dh.bytemark.co.uk
+hosts allow = sagres.c3sl.ufpr.br odysseus.fi.muni.cz odysseus.linux.cz odysseus.ip6.fi.muni.cz poincare.acc.umu.se wikimedia.bytemark.co.uk
 
 [dumpmirrorsother]
 read only = true
