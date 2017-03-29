@@ -187,11 +187,11 @@ if ($check eq "slave_sql_lag")
 # This particular check works for the regular table and the
 # pt-heartbeat-wikimedia extension, that includes the shard.
 # For that, --master-server-id or --shard & --datacenter are
-# strongly suggested to be set. In case it is not, the lag
-# from its direct master is reported. If the heartbeat table
-# does not exist, the record for the master is not found or
-# any other errors happens, it failbacks to using
-# Seconds_Behind_Master.
+# strongly suggested to be set. Otherwise, dc will be tried
+# to be autodetected. If it fails, the lag from its direct master
+# is reported. If the heartbeat table does not exist, the record
+# for the master is not found or any other errors happens, it
+# failbacks to using Seconds_Behind_Master.
 # If the server is not a slave, it returns OK. If lag cannot
 # be determined neither by using heartbeat nor seconds behind
 # master, it returns unknown, unless the replication is 
@@ -202,26 +202,37 @@ if ($check eq "slave_sql_lag")
 		printf("%s %s not a slave", $OK, $check);
 		exit($EOK);
 	}
+
 	# pt-heartbeat query, depending on if shard, master_server_id
         # or both are set
-        my @values;
+	my @values;
 	my $query = "SELECT 1 as ok, greatest(0, TIMESTAMPDIFF(MICROSECOND, ts, UTC_TIMESTAMP(6)) - 500000) AS lag FROM heartbeat.heartbeat WHERE 1=1 ";
 	if ($master_server_id ne "") {
-		$query .= "AND server_id = ? ";
+	$query .= "AND server_id = ? ";
 		push @values, $master_server_id;
-    }
+	}
 	if ($shard ne "") {
 		$query .= "AND shard = ? ";
 		push @values, $shard;
 	}
-    if ($datacenter ne "") {
+	if ($datacenter ne "") {
 		$query .= "AND datacenter = ? ";
 		push @values, $datacenter;
 	}
-    my $numparams = @values;
-    if ($numparams == 0) {
-		$query .= "AND server_id = ? ";
-		push @values, $status->{Master_Server_Id};
+	else {
+		# TODO: get the primary datacenter from somewhere
+		$query .= "AND datacenter = ? ";
+		push @values, $datacenter;
+	}
+
+	# if no parameters where set, measure the lag from the master of the local datacenter
+	my $numparams = @values;
+	if ($numparams == 0) {
+		my $filename = '/etc/wikimedia-cluster'
+		open my $fh, '<', $filename or die "error opening $filename: $!";
+		my $host_datacenter = do { local $/; <$fh> };
+		$query .= "AND datacenter = ? ";
+		push @values, $host_datacenter;
 	}
 
 	$query .= "ORDER BY ts DESC LIMIT 1";
@@ -254,8 +265,8 @@ if ($check eq "slave_sql_lag")
 		exit($EOK);
 	}
 
-	# Medium lag? WARN
-	if ($lag < $sql_lag_crit) {
+	# Medium lag or non-primary DC? WARN
+	if ($lag < $sql_lag_crit or $datacenter ne $host_datacenter) {
 		printf("%s %s Replication lag: %.2f seconds\n",
 			$WARN, $check, $lag);
 		exit($EWARN);
