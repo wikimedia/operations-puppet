@@ -10,8 +10,13 @@
     <Directory />
         Options FollowSymLinks
         AllowOverride None
-        Order Allow,Deny
-        Deny from All
+        <IfVersion < 2.4>
+            Order Allow,Deny
+            Deny from All
+        </IfVersion>
+        <IfVersion >= 2.4>
+        Require all granted
+        </IfVersion>
     </Directory>
 
     <Location />
@@ -31,11 +36,6 @@
         # Require ldap-group cn=nda,ou=groups,dc=wikimedia,dc=org
     </Location>
 
-    ErrorLog /var/log/apache2/servermon.wikimedia.org-error.log
-
-    # Possible values include: debug, info, notice, warn, error, crit,
-    # alert, emerg.
-    LogLevel warn
 
     Alias /media/ /usr/lib/python2.7/dist-packages/django/contrib/admin/media/
     ProxyPass /media/ !
@@ -45,6 +45,11 @@
     ProxyPass / http://127.0.0.1:8090/
     ProxyPassReverse / http://127.0.0.1:8090/
 
+    # Possible values include: debug, info, notice, warn, error, crit,
+    # alert, emerg.
+    LogLevel warn
     CustomLog /var/log/apache2/servermon.wikimedia.org-access.log wmf
+    ErrorLog /var/log/apache2/servermon.wikimedia.org-error.log
+
     ServerSignature On
 </VirtualHost>
