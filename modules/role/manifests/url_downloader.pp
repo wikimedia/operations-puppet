@@ -92,11 +92,7 @@ class role::url_downloader {
     }
     $towikimedia = $wikimedia
 
-    if os_version('ubuntu >= trusty') or os_version('debian >= jessie') {
-        $config_content = template('role/url_downloader/squid.conf.erb')
-    } else {
-        $config_content = template('role/squid3/precise_acls_conf.erb', 'role/url_downloader/squid.conf.erb')
-    }
+    $config_content = template('role/url_downloader/squid.conf.erb')
 
     class { 'squid3':
         config_content => $config_content,
