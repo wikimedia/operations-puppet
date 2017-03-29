@@ -72,7 +72,7 @@ define service::node::config::scap3 (
             ensure     => present,
             content    => template('service/node/config-vars.yaml.erb'),
             watch_keys => ["/discovery/${discovery}"],
-            reload     => "/usr/local/apply-config-${title}",
+            reload     => "sudo -u ${deployment_user} -i /usr/local/apply-config-${title}",
             require    => File["/usr/local/bin/apply-config-${title}"],
         }
     } else {
