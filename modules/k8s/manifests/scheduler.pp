@@ -1,16 +1,6 @@
-class k8s::scheduler(
-    $use_package = false,
-) {
-    include ::k8s::users
+class k8s::scheduler {
 
-    if $use_package {
-        require_package('kubernetes-master')
-    } else {
-        file { '/usr/bin/kube-scheduler':
-            ensure => link,
-            target => '/usr/local/bin/kube-scheduler',
-        }
-    }
+    require_package('kubernetes-master')
 
     file { '/etc/default/kube-scheduler':
         ensure  => file,
@@ -20,7 +10,7 @@ class k8s::scheduler(
         content => template('k8s/kube-scheduler.default.erb'),
     }
 
-    base::service_unit { 'kube-scheduler':
-        systemd => true,
+    service { 'kube-scheduler':
+        ensure => running,
     }
 }
