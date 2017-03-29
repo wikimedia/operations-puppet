@@ -3367,22 +3367,22 @@ host ms-be1030 {
 }
 
 host ms-be1031 {
-        hardware ethernet E0:07:1B:EF:95:00;
+        hardware ethernet 94:18:82:80:1E:F4;
         fixed-address ms-be1031.eqiad.wmnet;
 }
 
 host ms-be1032 {
-        hardware ethernet E0:07:1B:EF:05:28;
+        hardware ethernet 94:18:82:80:96:94;
         fixed-address ms-be1032.eqiad.wmnet;
 }
 
 host ms-be1033 {
-        hardware ethernet E0:07:1B:EF:44:88;
+        hardware ethernet 94:18:82:7C:98:B0;
         fixed-address ms-be1033.eqiad.wmnet;
 }
 
 host ms-be1034 {
-        hardware ethernet E0:07:1B:EF:76:31;
+        hardware ethernet E0:07:1B:EF:76:30;
         fixed-address ms-be1034.eqiad.wmnet;
 }
 
