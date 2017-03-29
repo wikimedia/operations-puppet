@@ -16,6 +16,7 @@ class rancid {
         gid        => 'rancid',
         managehome => true,
         system     => true,
+        home       => '/var/lib/rancid',
     }
 
     include ::passwords::rancid
