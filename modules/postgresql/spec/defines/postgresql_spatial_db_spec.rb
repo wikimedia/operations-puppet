@@ -7,7 +7,7 @@ describe 'postgresql::spatialdb', :type => :define do
         }
     }
     context 'with ensure present' do
-        it { should contain_exec('create_db-somedb') }
+        it { should contain_exec('create_postgres_db-somedb') }
         it { should contain_exec('create_plpgsql_lang-somedb') }
         it { should contain_exec('create_postgis-somedb') }
         it { should contain_exec('create_spatial_ref_sys-somedb') }
@@ -23,7 +23,7 @@ describe 'postgresql::spatialdb', :type => :define do
         }
     }
     context 'with ensure absent' do
-        it { should contain_exec('drop_db-somedb') }
+        it { should contain_exec('drop_postgres_db-somedb') }
         it { should contain_exec('drop_plpgsql_lang-somedb') }
     end
 end
