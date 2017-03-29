@@ -45,7 +45,6 @@ define service::node::config::scap3 (
         owner   => 'root',
         group   => 'root',
         mode    => '0755',
-        before  => Exec["${title} config deploy"],
     }
 
     if $discovery {
@@ -72,7 +71,8 @@ define service::node::config::scap3 (
         confd::file { "/etc/${title}/config-vars.yaml":
             ensure     => present,
             watch_keys => ["/discovery/${discovery}"],
-            reload     => "/usr/local/apply-config-${title}"
+            reload     => "/usr/local/apply-config-${title}",
+            require    => File["/usr/local/bin/apply-config-${title}"],
         }
     } else {
         file { "/etc/${title}/config-vars.yaml":
@@ -89,6 +89,7 @@ define service::node::config::scap3 (
             group       => $deployment_user,
             refreshonly => true,
             subscribe   => File["/etc/${title}/config-vars.yaml"],
+            require     => File["/usr/local/bin/apply-config-${title}"]
         }
     }
 }
