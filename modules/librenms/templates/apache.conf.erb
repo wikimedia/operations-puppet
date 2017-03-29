@@ -23,13 +23,7 @@
     <Directory <%= @install_dir %>/html>
         Options Indexes FollowSymLinks MultiViews
         AllowOverride All
-        <IfVersion < 2.4>
-            Order Allow,Deny
-            Allow From All
-        </IfVersion>
-        <IfVersion >= 2.4>
-            Require all granted
-        </IfVersion>
+        Require all granted
     </Directory>
 
     ErrorLog /var/log/apache2/<%= @sitename %>.error.log
