@@ -45,31 +45,44 @@ class parsoid(
     service::node { 'parsoid':
         port              => $port,
         starter_script    => 'src/bin/server.js',
-        # NOTE: this is useful only when deployment == 'git'
-        config            => {
-            localsettings => $settings_file,
-        },
         healthcheck_url   => '/',
         has_spec          => false,
         logging_name      => $logging_name,
-        statsd_prefix     => $statsd_prefix,
         auto_refresh      => false,
         deployment        => $deployment,
         deployment_config => false,
         full_config       => 'external',
     }
 
-    service::node::config::scap3 { 'parsoid':
-        port            => $port,
-        starter_module  => 'src/lib/index.js',
-        entrypoint      => 'apiServiceWorker',
-        heap_limit      => 800,
-        heartbeat_to    => 180000,
-        statsd_prefix   => $statsd_prefix,
-        auto_refresh    => false,
-        deployment_vars => {
-            mwapi_server => $mwapi_server,
-            mwapi_proxy  => $mwapi_proxy,
-        },
+    if ($deployment == 'scap3') {
+        service::node::config::scap3 { 'parsoid':
+            port            => $port,
+            starter_module  => 'src/lib/index.js',
+            entrypoint      => 'apiServiceWorker',
+            logging_name    => $logging_name,
+            heap_limit      => 800,
+            heartbeat_to    => 180000,
+            statsd_prefix   => $statsd_prefix,
+            auto_refresh    => false,
+            deployment_vars => {
+                mwapi_server => $mwapi_server,
+                mwapi_proxy  => $mwapi_proxy,
+            },
+        }
+    } else {
+        service::node::config { 'parsoid':
+            port           => $port,
+            starter_module => 'src/lib/index.js',
+            entrypoint     => 'apiServiceWorker',
+            logging_name   => $logging_name,
+            heap_limit     => 800,
+            heartbeat_to   => 180000,
+            statsd_prefix  => $statsd_prefix,
+            auto_refresh   => false,
+            config         => {
+                localsettings => $settings_file,
+            },
+        }
     }
+
 }
