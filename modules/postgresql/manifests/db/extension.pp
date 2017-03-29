@@ -12,14 +12,14 @@ define postgresql::db::extension (
 
     case $ensure {
         absent: {
-            exec { "drop_${extname}_on_${database}":
+            exec { "drop_extension_${extname}_on_${database}":
                 command => "/usr/bin/psql -d ${database} -c \"DROP EXTENSION ${extname};\"",
                 user    => 'postgres',
                 onlyif  => "${db_exists} && ${extension_exists}",
             }
         }
         default: {
-            exec { "create_${extname}_on_${database}":
+            exec { "create_extension_${extname}_on_${database}":
                 command => "/usr/bin/psql -d ${database} -c \"CREATE EXTENSION ${extname};\"",
                 user    => 'postgres',
                 unless  => "${db_exists} && ${extension_exists}",
