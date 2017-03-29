@@ -71,7 +71,7 @@ define service::node::config::scap3 (
         # more than X servers in a pool from restarting at the same time.
         confd::file { "/etc/${title}/config-vars.yaml":
             ensure     => present,
-            watch_keys => "/discovery/${discovery}",
+            watch_keys => ["/discovery/${discovery}"],
             reload     => "/usr/local/apply-config-${title}"
         }
     } else {
