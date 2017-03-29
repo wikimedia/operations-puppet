@@ -1,6 +1,5 @@
 class k8s::proxy(
     $master_host,
-    $use_package = false,
     $proxy_mode = 'iptables',
     $masquerade_all = true,
 ) {
@@ -8,14 +7,7 @@ class k8s::proxy(
 
     $master_ip = ipresolve($master_host, 4, $::nameservers[0])
 
-    if $use_package {
-        require_package('kubernetes-node')
-    } else {
-        file { '/usr/bin/kube-proxy':
-            ensure => link,
-            target => '/usr/local/bin/kube-proxy',
-        }
-    }
+    require_package('kubernetes-node')
 
     file { '/etc/default/kube-proxy':
         ensure  => file,
@@ -25,9 +17,16 @@ class k8s::proxy(
         content => template('k8s/kube-proxy.default.erb'),
     }
 
+
+    # Split this out into two, since we want to use the systemd unit
+    # file from the deb but from puppet on upstart
     base::service_unit { 'kube-proxy':
-        systemd   => true,
-        upstart   => true,
-        subscribe => File['/etc/kubernetes/kubeconfig'],
+        upstart         => true,
+        subscribe       => File['/etc/kubernetes/kubeconfig'],
+        declare_service => false,
+    }
+
+    service { 'kube-proxy':
+        ensure => running,
     }
 }

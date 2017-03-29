@@ -17,14 +17,13 @@ class profile::kubernetes::master(
     if $expose_puppet_certs {
         base::expose_puppet_certs { '/etc/kubernetes':
             provide_private => true,
-            user            => 'kubernetes',
-            group           => 'kubernetes',
+            user            => 'kube',
+            group           => 'kube',
         }
     }
 
     $etcd_servers = join($etcd_urls, ',')
     class { '::k8s::apiserver':
-        use_package                => true,
         etcd_servers               => $etcd_servers,
         docker_registry            => $docker_registry,
         ssl_cert_path              => $ssl_cert_path,
@@ -37,8 +36,8 @@ class profile::kubernetes::master(
         host_automounts            => $host_automounts,
     }
 
-    class { '::k8s::scheduler': use_package => true }
-    class { '::k8s::controller': use_package => true }
+    class { '::k8s::scheduler': }
+    class { '::k8s::controller': }
 
 
     if $accessible_to == 'all' {
