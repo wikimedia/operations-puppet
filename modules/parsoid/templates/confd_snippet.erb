@@ -1,4 +1,4 @@
-{{ $appservers := json ( getv "/<%= scope.lookupvar('::site') %>" ) }}{{ if $appservers.pooled }}# DC is active in MediaWiki, call it via HTTP
+{{ $appservers := json ( getv "/discovery/<%= @discovery %>/<%= scope.lookupvar('::site') %>" ) }}{{ if $appservers.pooled }}# DC is active in MediaWiki, call it via HTTP
 mwapi_server: ""
 mwapi_proxy: http://<%= @discovery %>.discovery.wmnet
 {{ else }} # DC is inactive in MediaWiki, let's call it via HTTPS
