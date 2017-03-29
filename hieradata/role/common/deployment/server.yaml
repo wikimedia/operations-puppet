@@ -67,6 +67,7 @@ scap::keyholder_agents:
 # by the scap::server class.  Each source listed here
 # will be cloned on the scap deploy server.
 scap::sources:
+  3d2png/deploy: {}
   analytics/refinery:
     repository: analytics/refinery
     scap_repository: analytics/refinery/scap
