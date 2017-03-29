@@ -68,10 +68,15 @@ define service::node::config::scap3 (
         # actually query pybal to be sure the service is depooled before
         # restarting. Since pybal has its depool-threshold, that will prevent
         # more than X servers in a pool from restarting at the same time.
+        $reload = $auto_refresh ? {
+            true    => "/usr/local/apply-config-${title}",
+            default => undef,
+        }
         confd::file { "/etc/${title}/config-vars.yaml":
             ensure     => present,
+            content    => template('service/node/config-vars.yaml.erb'),
             watch_keys => ["/discovery/${discovery}"],
-            reload     => "/usr/local/apply-config-${title}",
+            reload     => $reload,
             require    => File["/usr/local/bin/apply-config-${title}"],
         }
     } else {
