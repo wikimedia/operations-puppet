@@ -131,7 +131,7 @@ class mariadb::config(
         owner  => 'root',
         group  => 'root',
         mode   => '0755',
-        source => 'puppet:///modules/icinga/check_mariadb.pl',
+        source => 'puppet:///modules/mariadb/check_mariadb.pl',
     }
 
     # new script to check the health of a server
