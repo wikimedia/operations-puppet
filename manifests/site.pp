@@ -1964,7 +1964,7 @@ node /^ms-be10(0[0-9]|1[0-5])\.eqiad\.wmnet$/ {
 }
 
 # HP machines have different disk ordering T90922
-node /^ms-be10(1[6-9]|2[0-7])\.eqiad\.wmnet$/ {
+node /^ms-be10(1[6-9]|2[0-9]|3[0-9])\.eqiad\.wmnet$/ {
     role(swift::storage)
 }
 
