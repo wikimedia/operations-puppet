@@ -59,16 +59,10 @@ class role::mariadb::core(
         password => $passwords::misc::scripts::mysql_root_pass,
     }
 
-    $replication_is_critical = ($::mw_primary == $::site)
-    $contact_group = $replication_is_critical ? {
-        true  => 'dba',
-        false => 'admins',
-    }
-
     mariadb::monitor_replication { [ $shard ]:
         multisource   => false,
-        is_critical   => $replication_is_critical,
-        contact_group => $contact_group,
+        is_critical   => true,
+        contact_group => 'admins',
     }
 
     class { 'mariadb::heartbeat':
