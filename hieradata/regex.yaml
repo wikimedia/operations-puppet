@@ -399,7 +399,7 @@ swift_be_eqiad_dell:
 
 # HP machines have different disk ordering T90922
 swift_be_eqiad_hp:
-  __regex: !ruby/regexp /^ms-be10(1[6-9]|2[0-7])\.eqiad\.wmnet$/
+  __regex: !ruby/regexp /^ms-be10(1[6-9]|2[0-9]|3[0-9])\.eqiad\.wmnet$/
   swift_storage_drives: [
         '/dev/sdm', '/dev/sdn', '/dev/sdc', '/dev/sdd',
         '/dev/sde', '/dev/sdf', '/dev/sdg', '/dev/sdh',
