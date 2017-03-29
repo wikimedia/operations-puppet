@@ -235,9 +235,9 @@ host auth2001 {
     fixed-address auth2001.codfw.wmnet;
 }
 
-host backup4001 {
+host frbackup4001 {
     hardware ethernet F0:1F:AF:D8:72:9A;
-    fixed-address backup4001.ulsfo.wmnet;
+    fixed-address frbackup4001.ulsfo.wmnet;
     option pxelinux.pathprefix "precise-installer/";
     filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
