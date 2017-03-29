@@ -18,15 +18,6 @@ class statistics::rsync::mediawiki {
         mode   => '0775',
     }
 
-    # Search request logs. Superseded by a mw->kafka->camus->hdfs
-    # logging pipeline.
-    statistics::rsync_job { 'CirrusSearchUserTesting':
-        ensure         => absent,
-        source         => 'mwlog1001.eqiad.wmnet::udp2log/archive/CirrusSearchUserTesting.*.gz',
-        destination    => "${working_path}/mw-log/archive/CirrusSearchUserTesting",
-        retention_days => $retention_days,
-    }
-
     # Api logs
     statistics::rsync_job { 'mw-api':
         source         => 'mwlog1001.eqiad.wmnet::udp2log/archive/api.log-*.gz',
