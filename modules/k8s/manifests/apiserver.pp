@@ -18,28 +18,18 @@ class k8s::apiserver(
     $host_automounts = [],
     $host_paths_allowed = [],
     $host_path_prefixes_allowed = [],
-    $use_package = false,
     $authz_mode = 'abac',
     $apiserver_count = undef,
 ) {
-    include ::k8s::users
-
     file { '/etc/kubernetes':
         ensure => directory,
-        owner  => 'kubernetes',
-        group  => 'kubernetes',
+        owner  => 'kube',
+        group  => 'kube',
         mode   => '0700',
     }
 
-    if $use_package {
-        require_package('kubernetes-master')
-        require_package('kubernetes-client')
-    } else {
-        file { '/usr/bin/kube-apiserver':
-            ensure => link,
-            target => '/usr/local/bin/kube-apiserver',
-        }
-    }
+    require_package('kubernetes-master')
+    require_package('kubernetes-client')
 
     $host_automounts_string = join($host_automounts, ',')
     $host_paths_allowed_string = join(concat($host_paths_allowed, $host_automounts), ',')
@@ -49,8 +39,8 @@ class k8s::apiserver(
     $users = hiera('k8s_infrastructure_users')
     file { '/etc/kubernetes/infrastructure-users':
         content => template('k8s/infrastructure-users.csv.erb'),
-        owner   => 'kubernetes',
-        group   => 'kubernetes',
+        owner   => 'kube',
+        group   => 'kube',
         mode    => '0400',
     }
 
@@ -63,7 +53,7 @@ class k8s::apiserver(
         notify  => Service['kube-apiserver'],
     }
 
-    base::service_unit { 'kube-apiserver':
-        systemd => true,
+    service { 'kube-apiserver':
+        ensure => running,
     }
 }

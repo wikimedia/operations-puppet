@@ -19,6 +19,5 @@ class role::toollabs::k8s::webproxy {
 
     class { '::k8s::proxy':
         master_host => $master_host,
-        use_package => true,
     }
 }

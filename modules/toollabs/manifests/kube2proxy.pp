@@ -5,8 +5,6 @@ class toollabs::kube2proxy(
     $kube_token='test',
 ) {
 
-    include ::k8s::users
-
     $packages = [
       'python3-pip',
       'python3-redis',
@@ -49,8 +47,8 @@ class toollabs::kube2proxy(
 
     file { '/etc/kube2proxy.yaml':
         content => ordered_yaml($config),
-        owner   => 'kubernetes',
-        group   => 'kubernetes',
+        owner   => 'kube',
+        group   => 'kube',
         mode    => '0440',
     }
 

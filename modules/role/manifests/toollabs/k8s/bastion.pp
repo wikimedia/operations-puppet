@@ -15,7 +15,6 @@ class role::toollabs::k8s::bastion {
 
     class { '::k8s::proxy':
         master_host => $master_host,
-        use_package => true,
     }
 
     require_package('kubernetes-client')
