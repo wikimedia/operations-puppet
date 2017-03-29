@@ -19,7 +19,7 @@ dumps::rsync_clients:
   - wmrsync.crc.nd.edu
   - wikimedia.iconic.vi
   - poincare.acc.umu.se
-  - wikimedia-mirror.dh.bytemark.co.uk
+  - wikimedia.bytemark.co.uk
 dumps::rsync_clients_ipv6:
   - odysseus.ip6.fi.muni.cz
   - poincare.acc.umu.se
