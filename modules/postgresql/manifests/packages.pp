@@ -26,7 +26,6 @@ class postgresql::packages(
         'precise' => '9.1',
         'trusty'  => '9.3',
     },
-    $ensure           = 'present',
 ) {
     package { [
         "postgresql-${pgversion}",
@@ -37,6 +36,6 @@ class postgresql::packages(
         'libdbd-pg-perl',
         'ptop',
     ]:
-        ensure => $ensure,
+        ensure => present,
     }
 }
