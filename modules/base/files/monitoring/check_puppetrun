@@ -10,7 +10,6 @@
 
 require 'optparse'
 require 'safe_yaml'
-require 'json' # TODO: Remove once we are free from precise
 
 PRINT_FAILED_RESOURCES_NO = 3 # Number of failed resources to print. Don't set this high
 
