@@ -16,7 +16,6 @@ class profile::kubernetes::node(
         master_host               => $master_host,
         listen_address            => '0.0.0.0',
         cluster_dns_ip            => '192.168.0.100',
-        use_package               => true,
         cni                       => $use_cni,
         pod_infra_container_image => $infra_pod,
         cluster_domain            => undef,
@@ -25,7 +24,6 @@ class profile::kubernetes::node(
     }
     class { '::k8s::proxy':
         master_host => $master_host,
-        use_package => true,
     }
 
     $master_hosts_ferm = join($master_hosts, ' ')
