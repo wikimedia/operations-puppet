@@ -10,7 +10,6 @@
 
 require 'optparse'
 require 'safe_yaml'
-require 'json' # TODO: Remove once we are free from precise
 
 PRINT_FAILED_RESOURCES_NO = 3 # Number of failed resources to print. Don't set this high
 
@@ -66,10 +65,7 @@ end
 
 if File.exists?(adminlockfile)
        enabled = false
-       # TODO: ruby 1.8 YAML parser sucks. Once we are free, transform into
-       # disabled_message = YAML.load_file(adminlockfile)["disabled_message"]
-       tmp = JSON.parse(File.read(adminlockfile))
-       disabled_message = tmp["disabled_message"]
+       disabled_message = YAML.load_file(adminlockfile)["disabled_message"]
 end
 
 if File.exists?(runlockfile)
