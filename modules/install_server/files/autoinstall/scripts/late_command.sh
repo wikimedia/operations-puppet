@@ -43,7 +43,7 @@ esac
 apt-install lsb-release
 if [ "$(chroot /target /usr/bin/lsb_release --codename --short)" = "jessie" ]; then
 	in-target apt-get -y upgrade
-	apt-install linux-meta
+	apt-install linux-meta-4.9
 fi
 
 # Temporarily pre-provision swift user at a fixed UID on new installs.
