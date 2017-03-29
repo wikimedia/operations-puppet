@@ -51,7 +51,7 @@ MYSQLDUMP="$MYSQLDUMP --dump-slave=2 --include-master-host-port "
 find <%= @local_dump_dir %> -name "*sql.gz" -mtime +15 -exec rm {} \;
 for database in `$MYSQL -B -N -e "select schema_name from information_schema.schemata where schema_name not like '%\_schema'"`
 do
-	NP=$((<%= @processorcount %> * 3 / 4)) # This is guaranteed to return an integer
+	NP=$((<%= @processorcount %> * 3 / 6)) # This is guaranteed to return an integer
 	while [ $(jobs -p | wc -l) -ge $NP ]
 	do
 		sleep 1 # a magic number
