@@ -229,6 +229,10 @@ class role::backup::director {
         includes => [ '/var/lib/smokeping', '/var/cache/smokeping' ]
     }
 
+    bacula::director::fileset { 'rancid':
+        includes => [ '/var/lib/rancid' ]
+    }
+
     # The console should be on the director
     class { 'bacula::console':
         director   => $::fqdn,
