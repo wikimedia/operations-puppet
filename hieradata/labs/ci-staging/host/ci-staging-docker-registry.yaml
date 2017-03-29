@@ -1,0 +1,7 @@
+---
+docker::registry::web::allow_push_from: [] # (add to puppetmaster secrets or horizon)
+docker::registry::web::docker_password_hash: # [htpasswd compat hash] (add to puppetmaster secrets)
+docker::registry::web::docker_username: ci-staging-docker
+docker::registry::web::http_allowed_hosts: [] # (add to puppetmaster secrets or horizon)
+docker::registry::web::http_endpoint: true
+docker::registry::web::use_puppet_certs: true
