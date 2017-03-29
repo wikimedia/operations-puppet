@@ -6,7 +6,7 @@
 Description="Syncronizer for kubernetes-dynamicproxy integration"
 
 [Service]
-User=kubernetes
-Group=kubernetes
+User=kube
+Group=kube
 ExecStart=/usr/local/sbin/kube2proxy --config /etc/kube2proxy.yaml
 Restart=always

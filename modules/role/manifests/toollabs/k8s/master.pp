@@ -15,7 +15,7 @@ class role::toollabs::k8s::master(
     } else {
         $ssl_certificate_name = 'star.tools.wmflabs.org'
         sslcert::certificate { $ssl_certificate_name:
-            before       => Class['::k8s::apiserver'],
+            group        => 'kube',
         }
 
         $ssl_cert_path = "/etc/ssl/localcerts/${ssl_certificate_name}.chained.crt"
