@@ -64,8 +64,8 @@ ip=`curl http://169.254.169.254/1.0/meta-data/local-ipv4 2> /dev/null`
 hostname=`hostname`
 
 # If we're getting ahead of the dnsmasq config, loop until our hostname is
-#  actually ready for us.
-for run in {1..10}
+#  actually ready for us.  Five minutes, total.
+for run in {1..30}
 do
     if [ "$hostname" != 'localhost' ]
     then
@@ -74,7 +74,7 @@ do
 
     echo `date`
     echo "Waiting for hostname to return the actual hostname."
-    sleep 1
+    sleep 10
     /sbin/dhclient -1
     hostname=`hostname`
 done
