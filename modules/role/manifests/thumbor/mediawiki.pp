@@ -26,4 +26,8 @@ class role::thumbor::mediawiki {
         port   => '8800',
         srange => '$DOMAIN_NETWORKS',
     }
+
+    class { '3d2png::deploy':
+        manage_user => true,
+    }
 }

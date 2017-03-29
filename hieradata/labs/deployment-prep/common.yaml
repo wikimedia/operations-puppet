@@ -254,6 +254,7 @@ scap::keyholder_agents:
 # by the role deployment::server.  Each source listed here
 # will be cloned on the scap deploy server.
 scap::sources:
+  3d2png/deploy: {}
 
   phabricator/deployment:
     repository: phabricator/deployment
