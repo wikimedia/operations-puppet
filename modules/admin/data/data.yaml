@@ -2469,6 +2469,7 @@ users:
     realname: Goran S. Milovanovic
     ssh_keys:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC6jc1W0mqEnurNhtYXF9YQpCX3H4h1pQA9jgZXKGTPUczQJ2rRVZKWXxuPfbg0OwZFzVKhTtSi0HO2v0Dy4gOtrDMpxfX51HnsB/Sm+ifngkj5AgSiAylT7P4PNm7F804m7iJF277DDx/+R9JAL59NT0C9nTZ6oKghL37TQr/PdHBRhjZjRzMOjuplwoFh+I9ZtLGQJpqTENKWqqYwxwMdjog/fRf3+tkvB7kxwmZHRiVPBl8BS64JkNmKXX+xQCtR0YMYH8HkfE4GarSnDXSqmhwS6Zx8TY7oVPy0d5H8cZaA2RyoYWzEH4K2rbvllLoZCnto5Elb6ic0BVP7P8Fn goran@goranNET
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDDqwfn3ofrvHW/tLwTlVnQW0J5bD6LXJWRiVnmwILhDZK7JzWxKHDWXylO865AuHPHii6i5A6vFIu9/R72iKtAmd+X+MhIOH3+K7ErqX2S8tIIHghAac96VSNZnlDW/XTuOvFOB8TUhh+SEctlvNes3a9C5Ysxp+VYW7YLRQG+PYs3/A6ifWsPS1dwtGQtysWhkjfGvFNy31VmVVJMng54SH14uxpS+Fc87xRLbpXUVL6Pd7ixKsEfF0z6Rf0V8zS8VmchiJf7Q/EllH7c/6UFZu/fHvVnY653/Miei/6wgdtKrOX5ajai5ZbM6tWbHX4GUz3BncjrrD8Qe6nSJIMz goransm@Ubuntu-1604-xenial-64-minimal
     uid: 16664
     email: goran.milovanovic_ext@wikimedia.de
   pnorman:
