@@ -8,6 +8,11 @@ class role::analytics_cluster::hadoop::client {
     # to install CDH packages from our apt repo mirror.
     require ::role::analytics_cluster::apt
 
+    # Force apt-get update to run before we try to install packages.
+    # CDH Packages are in the thirdparty/cloudera apt component,
+    # and are made available by role::analytics_cluster::apt.
+    Exec['apt-get update'] -> Class['::role::analytics_cluster::hadoop::client']
+
     # Need Java before Hadoop is installed.
     require ::role::analytics_cluster::java
 
