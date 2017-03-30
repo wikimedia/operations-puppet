@@ -91,5 +91,14 @@
     "find_zone_transfer_accepts": "rule:admin",
     "find_zone_transfer_accept": "rule:admin",
     "update_zone_transfer_accept": "rule:admin",
-    "delete_zone_transfer_accept": "rule:admin"
+    "delete_zone_transfer_accept": "rule:admin",
+
+    "create_recordset": "rule:zone_primary_or_admin",
+    "get_recordsets": "",
+    "get_recordset": "",
+    "find_recordsets": "",
+    "find_recordset": "",
+    "update_recordset": "rule:zone_primary_or_admin",
+    "delete_recordset": "rule:zone_primary_or_admin",
+    "count_recordset": ""
 }
