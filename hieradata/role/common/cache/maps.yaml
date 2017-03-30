@@ -23,7 +23,7 @@ cache::app_directors:
   kartotherian:
     backends:
       eqiad: 'kartotherian.svc.eqiad.wmnet'
-      # codfw: 'kartotherian.svc.codfw.wmnet'
+      codfw: 'kartotherian.svc.codfw.wmnet'
 cache::req_handling:
   default:
     director: 'kartotherian'
