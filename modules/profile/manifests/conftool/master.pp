@@ -9,11 +9,6 @@
 class profile::conftool::master(
     $sync_dir = hiera('profile::conftool::master::sync_dir'),
 ) {
-
-    system::role { 'conftool-master':
-        description => 'Conftool master',
-    }
-
     # All the configuration we have for the client is needed by the master
     require ::profile::conftool::client
 
