@@ -2,10 +2,7 @@
 #
 # Packages needed for mediawiki
 class mediawiki::packages {
-    # Precise is still used on CI slaves for PHP 5.3 tests
-    if os_version('ubuntu < trusty') {
-        include ::mediawiki::packages::legacy
-    } elsif os_version('ubuntu == trusty') {
+    if os_version('ubuntu == trusty') {
         include ::mediawiki::packages::php5
     }
 
