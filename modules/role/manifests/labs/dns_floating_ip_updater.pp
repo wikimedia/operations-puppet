@@ -1,13 +1,13 @@
 class role::labs::dns_floating_ip_updater {
-    $keystoneconfig = hiera_hash('keystoneconfig', {})
+    $novaconfig = hiera_hash('novaconfig', {})
     $nova_controller_hostname = hiera('labs_nova_controller')
     $designateconfig = hiera_hash('designateconfig', {})
 
     $config = {
-        'username'                                 => 'novaadmin',
-        'password'                                 => $keystoneconfig['ldap_user_pass'],
-        'nova_api_url'                             => "http://${nova_controller_hostname}:35357/v2.0",
-        'admin_project_name'                       => $keystoneconfig['admin_project_name'],
+        'username'                                 => $novaconfig['observer_user'],
+        'password'                                 => $novaconfig['observer_password'],
+        'nova_api_url'                             => "http://${nova_controller_hostname}:35357/v3",
+        'admin_project_name'                       => $novaconfig['observer_project'],
         'floating_ip_ptr_zone'                     => $designateconfig['floating_ip_ptr_zone'],
         'floating_ip_ptr_fqdn_matching_regex'      => $designateconfig['floating_ip_ptr_fqdn_matching_regex'],
         'floating_ip_ptr_fqdn_replacement_pattern' => $designateconfig['floating_ip_ptr_fqdn_replacement_pattern']
