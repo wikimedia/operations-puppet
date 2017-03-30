@@ -50,21 +50,19 @@ define interface::add_ip6_mapped($interface=undef, $ipv4_address=undef) {
         # first applied at runtime it will execute the token command as well,
         # but any previous macaddr-based address will be flushed.
 
-        if os_version('debian >= jessie || ubuntu >= trusty') {
-            $v6_token_cmd = "/sbin/ip token set ${v6_mapped_lower64} dev ${intf}"
-            $v6_flush_dyn_cmd = "/sbin/ip -6 addr flush dev ${intf} dynamic"
-            $v6_token_check_cmd = "/sbin/ip token get dev ${intf} | grep -qw ${v6_mapped_lower64}"
-            $v6_token_preup_cmd = "set iface[. = '${intf}']/pre-up '${v6_token_cmd}'"
+        $v6_token_cmd = "/sbin/ip token set ${v6_mapped_lower64} dev ${intf}"
+        $v6_flush_dyn_cmd = "/sbin/ip -6 addr flush dev ${intf} dynamic"
+        $v6_token_check_cmd = "/sbin/ip token get dev ${intf} | grep -qw ${v6_mapped_lower64}"
+        $v6_token_preup_cmd = "set iface[. = '${intf}']/pre-up '${v6_token_cmd}'"
 
-            augeas { "${intf}_v6_token":
-                context => '/files/etc/network/interfaces/',
-                changes => $v6_token_preup_cmd,
-            }
+        augeas { "${intf}_v6_token":
+            context => '/files/etc/network/interfaces/',
+            changes => $v6_token_preup_cmd,
+        }
 
-            exec { "${intf}_v6_token":
-                command => "${v6_token_cmd} && ${v6_flush_dyn_cmd}",
-                unless  => $v6_token_check_cmd,
-            }
+        exec { "${intf}_v6_token":
+            command => "${v6_token_cmd} && ${v6_flush_dyn_cmd}",
+            unless  => $v6_token_check_cmd,
         }
     }
 }
