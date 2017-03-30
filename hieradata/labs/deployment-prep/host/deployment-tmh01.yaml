@@ -1,6 +1,3 @@
-mediawiki::jobrunner::runners_basic: 0
-mediawiki::jobrunner::runners_gwt: 0
-mediawiki::jobrunner::runners_translate: 0
-mediawiki::jobrunner::runners_transcode: 2
-mediawiki::jobrunner::runners_transcode_prioritized: 2
-mediawiki::jobrunner::runners_upload: 0
+profile::mediawiki::jobrunner::runners:
+  transcode: 2
+  transcode_prioritized: 2

@@ -1,4 +1,21 @@
 debdeploy::grains:
   debdeploy-jobrunner-eqiad:
     value: standard
-
+profile::mediawiki::jobrunner::queue_servers:
+  - rdb1001.eqiad.wmnet
+  - rdb1001.eqiad.wmnet:6380
+  - rdb1001.eqiad.wmnet:6381
+  - rdb1003.eqiad.wmnet
+  - rdb1003.eqiad.wmnet:6380
+  - rdb1003.eqiad.wmnet:6381
+  - rdb1005.eqiad.wmnet
+  - rdb1005.eqiad.wmnet:6380
+  - rdb1005.eqiad.wmnet:6381
+  - rdb1007.eqiad.wmnet
+  - rdb1007.eqiad.wmnet:6380
+  - rdb1007.eqiad.wmnet:6381
+profile::mediawiki::jobrunner::aggr_servers:
+  - rdb1001.eqiad.wmnet:6378
+  - rdb1003.eqiad.wmnet:6378
+  - rdb1005.eqiad.wmnet:6378
+  - rdb1007.eqiad.wmnet:6378

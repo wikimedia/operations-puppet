@@ -1,4 +1,5 @@
-mediawiki::jobrunner::queue_servers:
+# TODO: extract this information from redis::shards
+profile::mediawiki::jobrunner::queue_servers:
   - rdb2001.codfw.wmnet:6379
   - rdb2001.codfw.wmnet:6380
   - rdb2001.codfw.wmnet:6381
@@ -11,9 +12,7 @@ mediawiki::jobrunner::queue_servers:
   - rdb2005.codfw.wmnet:6479
   - rdb2005.codfw.wmnet:6480
   - rdb2005.codfw.wmnet:6481
-mediawiki::jobrunner::aggr_servers:
+profile::mediawiki::jobrunner::aggr_servers:
   - rdb2001.codfw.wmnet:6378
   - rdb2003.codfw.wmnet:6378
   - rdb2005.codfw.wmnet:6378
-# statsd is still in eqiad
-mediawiki::jobrunner::statsd_server: statsd.eqiad.wmnet:8125
