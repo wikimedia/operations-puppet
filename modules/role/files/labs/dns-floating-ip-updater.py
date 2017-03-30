@@ -4,9 +4,9 @@ import ipaddress
 import re
 import yaml
 
-import keystoneclient.session as keystonesession
-import keystoneclient.auth.identity.v2 as keystoneauth
-import keystoneclient.client as keystoneclient
+from keystoneclient.auth.identity import generic
+from keystoneclient import session as keystone_session
+from keystoneclient.v3 import client as keystone_client
 import novaclient.client as novaclient
 import designateclient.v2.client as designateclient
 
@@ -37,25 +37,27 @@ def print_managed_description_error(action, type, label):
 
 
 def getKeystoneSession(config, project):
-    return keystonesession.Session(auth=keystoneauth.Password(
+    auth = generic.Password(
         auth_url=config['nova_api_url'],
         username=config['username'],
         password=config['password'],
-        tenant_name=project
-    ))
+        user_domain_name='Default',
+        project_domain_name='Default',
+        project_name=project)
 
-keystone_admin_session = getKeystoneSession(config, config['admin_project_name'])
-keystone_client = keystoneclient.Client(
-    session=keystone_admin_session,
-    endpoint=config['nova_api_url']
-)
+    return keystone_session.Session(auth=auth)
+
+
+observer_session = getKeystoneSession(config, config['admin_project_name'])
+keystone_client = keystone_client.Client(
+                  session=observer_session, interface='public', connect_retries=5)
 
 keystone_sessions = {}
 project_main_zone_ids = {}
 public_addrs = {}
 existing_As = []
 # Go through every tenant
-for tenant in keystone_client.tenants.list():
+for tenant in keystone_client.projects.list():
     keystone_sessions[tenant.name] = getKeystoneSession(config, tenant.name)
 
     server_addresses = {}
