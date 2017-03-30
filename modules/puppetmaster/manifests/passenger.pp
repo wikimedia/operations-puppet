@@ -25,8 +25,8 @@ class puppetmaster::passenger(
         ensure => present,
     }
 
-    # Jessie-specific instructions
-    if os_version('Debian >= jessie') {
+    # jessie-specific instructions
+    if os_version('debian >= jessie') {
         # Debian jessie needs the DH params file
         include ::sslcert::dhparam
     }

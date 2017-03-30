@@ -2,7 +2,7 @@
 # Configures a puppetmaster to work as a puppetdb client
 class puppetmaster::puppetdb::client($host, $port=443) {
     # Only 3.5+ puppetmasters can work with our version of puppetdb
-    requires_os('Debian >= jessie')
+    requires_os('debian >= jessie')
 
     require_package('puppetdb-terminus')
 
