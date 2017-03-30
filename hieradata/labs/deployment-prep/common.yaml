@@ -120,8 +120,8 @@ restbase::eventlogging_service_uri: http://deployment-eventlogging04.deployment-
 restbase::pdfrender_uri: http://deployment-pdfrender02.deployment-prep.eqiad.wmflabs:5252
 restbase::citoid_uri: http://deployment-sca02.deployment-prep.eqiad.wmflabs:1970
 restbase::trendingedits_uri: http://deployment-trending01.deployment-prep.eqiad.wmflabs:6699
-"mediawiki::log_aggregator": deployment-fluorine02.deployment-prep.eqiad.wmflabs:8420
-"mediawiki::forward_syslog": deployment-logstash2.deployment-prep.eqiad.wmflabs:10514
+"udp2log_aggregator": deployment-fluorine02.deployment-prep.eqiad.wmflabs:8420
+"logstash_syslog": deployment-logstash2.deployment-prep.eqiad.wmflabs:10514
 mediawiki_memcached_servers:
     - 10.68.23.25:11211:1  # deployment-memc04
     - 10.68.23.49:11211:1  # deployment-memc05

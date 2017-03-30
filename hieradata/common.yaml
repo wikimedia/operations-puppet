@@ -464,3 +464,10 @@ etcd_port: ''
 
 # Conftool global prefix (will be per-dc)
 conftool_prefix: "/conftool/v1"
+
+
+# Logging: logstash, udp2log
+# TODO: setup something to loadbalance the logstash hosts rather than relying
+# on a single node in the cluster.
+logstash_syslog: "logstash1001.eqiad.wmnet:10514"
+udp2log_aggregator: "udplog:8420"
