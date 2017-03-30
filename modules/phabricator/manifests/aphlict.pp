@@ -26,11 +26,11 @@ class phabricator::aphlict(
     File[$node_modules] ~> Service['aphlict']
 
     if $ensure == 'present' {
-        $link = 'link'
         $directory = 'directory'
+        $service_ensure = 'running'
     } else {
-        $link = 'absent'
         $directory = 'absent'
+        $service_ensure = 'stopped'
     }
 
 
@@ -46,34 +46,6 @@ class phabricator::aphlict(
         owner   => $user,
         group   => $group,
         mode    => '0644',
-    }
-
-    if $::initsystem == 'upstart' {
-        # upstart init conf file
-        $init_file = '/etc/init/aphlict.conf'
-        $init_source = 'aphlict-upstart.conf.erb'
-    } else {
-        # systemd service unit
-        $init_file = '/etc/systemd/system/aphlict.service'
-        $init_source = 'aphlict.service.erb'
-    }
-
-    file { '/etc/init.d/aphlict':
-        ensure => $link,
-        target => "${phabdir}/bin/aphlict",
-    }
-
-    file { $init_file:
-        content => template("phabricator/${init_source}"),
-        mode    => '0644',
-        owner   => 'root',
-        group   => 'root',
-    }
-
-    service { 'aphlict':
-        ensure     => running,
-        provider   => $::initsystem,
-        hasrestart => true,
     }
 
     file { '/var/run/aphlict/':
@@ -101,10 +73,23 @@ class phabricator::aphlict(
     }
 
     user { $user:
-        gid    => 'aphlict',
+        gid    => $group,
         shell  => '/bin/false',
         home   => '/var/run/aphlict',
         system => true,
+    }
+
+    base::service_unit { 'aphlict':
+        ensure         => $ensure,
+        systemd        => true,
+        upstart        => true,
+        sysvinit       => false,
+        require        => User[$user],
+        service_params => {
+            ensure     => $service_ensure,
+            provider   => $::initsystem,
+            hasrestart => false,
+        },
     }
 
 }
