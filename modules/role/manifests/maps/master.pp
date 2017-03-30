@@ -32,7 +32,6 @@ class role::maps::master(
         user     => 'kartotherian',
         password => $kartotherian_pass,
         database => 'gis',
-        require  => Postgresql::Spatialdb['gis'],
     }
 
     role::maps::tilerator_user { 'localhost':
@@ -52,19 +51,16 @@ class role::maps::master(
         user     => 'tileratorui',
         password => $tileratorui_pass,
         database => 'gis',
-        require  => Postgresql::Spatialdb['gis'],
     }
     postgresql::user { 'osmimporter':
         user     => 'osmimporter',
         password => $osmimporter_pass,
         database => 'gis',
-        require  => Postgresql::Spatialdb['gis'],
     }
     postgresql::user { 'osmupdater':
         user     => 'osmupdater',
         password => $osmupdater_pass,
         database => 'gis',
-        require  => Postgresql::Spatialdb['gis'],
     }
 
     # Grants
