@@ -26,7 +26,7 @@ define apache::mod_conf(
 
     include ::apache
 
-    $flags = os_version('Debian >= jessie') ? {
+    $flags = os_version('debian >= jessie') ? {
         true    => '-f',
         default => '',
     }

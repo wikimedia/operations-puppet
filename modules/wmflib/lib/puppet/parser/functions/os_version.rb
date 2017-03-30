@@ -13,10 +13,10 @@
 #
 # === Examples
 #
-#  # True if Ubuntu Trusty or newer or Debian Jessie or newer
-#  os_version('ubuntu >= trusty || debian >= Jessie')
+#  # True if Ubuntu Trusty or newer or Debian jessie or newer
+#  os_version('ubuntu >= trusty || debian >= jessie')
 #
-#  # True if exactly Debian Jessie
+#  # True if exactly Debian jessie
 #  os_version('debian jessie')
 #
 require 'puppet/util/package'

@@ -51,7 +51,7 @@ class etcd (
     $use_client_certs = false,
     ) {
     # This module is jessie only for now
-    requires_os('Debian >= jessie')
+    requires_os('debian >= jessie')
 
     # Validation of parameters
     if ($use_client_certs and ! $use_ssl) {
