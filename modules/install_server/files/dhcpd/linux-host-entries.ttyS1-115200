@@ -238,8 +238,6 @@ host auth2001 {
 host backup4001 {
     hardware ethernet F0:1F:AF:D8:72:9A;
     fixed-address backup4001.ulsfo.wmnet;
-    option pxelinux.pathprefix "precise-installer/";
-    filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host baham {

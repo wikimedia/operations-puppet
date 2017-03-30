@@ -19,11 +19,6 @@ chroot /target /bin/sh -c 'echo $(cat /etc/issue.net) auto-installed on $(date).
 # Disable IPv6 privacy extensions before the first boot
 [ -f /target/etc/sysctl.d/10-ipv6-privacy.conf ] && rm -f /target/etc/sysctl.d/10-ipv6-privacy.conf
 
-# Install patched intel ixgbe kernel module (precise only)
-if grep -qs '3\.6' /sys/module/ixgbe/version; then
-	apt-install ixgbe-dkms
-fi
-
 # optimized mkfs for all cache nodes
 # (the crazy PHYS_CORES thing is to get the bnx2x option set before the first boot,
 #  otherwise we'd need a reboot after puppet sets up the same file on the first run)
