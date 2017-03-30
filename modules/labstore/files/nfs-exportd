@@ -26,6 +26,7 @@ import os
 import time
 import logging
 import sys
+import socket
 import subprocess
 
 import keystoneauth1
@@ -33,9 +34,6 @@ from keystoneclient.session import Session as KeystoneSession
 from keystoneclient.auth.identity.v3 import Password as KeystonePassword
 
 from novaclient import client as novaclient
-
-# Volumes that need an entry in exports.d
-VOLUMES_NEEDING_EXPORTS = ['project', 'home', 'tools-home', 'tools-project']
 
 
 def is_valid_ipv4(ip):
@@ -110,26 +108,30 @@ def get_instance_ips(project, observer_pass):
     return ips
 
 
-def get_projects_with_nfs(mounts_config, observer_pass):
-    """
-    Get populated project objects that need NFS exports
-    :param mounts_config: dict
+def get_projects_with_nfs(cluster_projects,
+                          cluster_mounts,
+                          allowed_private,
+                          observer_pass):
+    """ Get populated project objects that need NFS exports
+    :param cluster_projects: dict
+    :param cluster_mounts: dict
     :returns: list
     """
     projects = []
-    for name, config in mounts_config['private'].items():
-        if 'mounts' in config:
-            mounts = [k for k, v in config['mounts'].items()
-                      if k in VOLUMES_NEEDING_EXPORTS and v]
-            if len(mounts) == 0:
-                # Skip project if it has no private mounts
-                logging.debug('skipping exports for %s, no private mounts', name)
-                continue
-        else:
+    for name, mount_list in cluster_mounts.items():
+
+        # do not generate per project exportd output for either public
+        # exports or defined private that are not white listed
+        mounts = [m for m in mount_list if m in allowed_private]
+
+        if len(mounts) == 0:
+            # Skip project if it has no private mounts
+            logging.debug('skipping exports for %s, no private mounts', name)
             continue
+
         ips = get_instance_ips(name, observer_pass)
         if ips:
-            project = Project(name, config['gid'], ips, mounts)
+            project = Project(name, cluster_projects[name], ips, mounts)
             projects.append(project)
             logging.debug('project %s has %s instances',
                           name, len(project.instance_ips))
@@ -175,12 +177,20 @@ def write_public_exports(public_exports, exports_d_path):
     return public_paths
 
 
-def write_project_exports(mounts_config, exports_d_path, observer_pass):
+def write_project_exports(cluster_projects,
+                          cluster_mounts,
+                          allowed_private,
+                          exports_d_path,
+                          observer_pass):
     """ output project export definitions
     :param mounts_config: dict of defined exports
     """
     project_paths = []
-    projects = get_projects_with_nfs(mounts_config, observer_pass)
+    projects = get_projects_with_nfs(cluster_projects,
+                                     cluster_mounts,
+                                     allowed_private,
+                                     observer_pass)
+
     for project in projects:
         logging.debug('writing exports file for %s', project.name)
         path = os.path.join(exports_d_path, '%s.exports' % project.name)
@@ -188,6 +198,16 @@ def write_project_exports(mounts_config, exports_d_path, observer_pass):
             f.write(project.get_exports())
         project_paths.append(path)
     return project_paths
+
+
+def get_cluster(clusters):
+    """:param clusters: dict
+    :returns: str
+    """
+    hostname = socket.gethostname()
+    for cluster, hosts in clusters.items():
+        if hostname in hosts:
+            return cluster
 
 
 def main():
@@ -243,14 +263,21 @@ def main():
             logging.exception('Could not load projects config file from %s', args.config_path)
             sys.exit(1)
 
+        cluster = get_cluster(config['clusters'])
+
         exports_d_path = args.exports_d_path
 
         existing_exports = [
             os.path.join(exports_d_path, filename)
             for filename in os.listdir(exports_d_path)]
 
-        public_paths = write_public_exports(config['public'], exports_d_path)
-        project_paths = write_project_exports(config, exports_d_path, args.observer_pass)
+        public_paths = write_public_exports(config['public'][cluster], exports_d_path)
+
+        project_paths = write_project_exports(config['projects'],
+                                              config['mounts'][cluster],
+                                              config['allowed_private_mounts'],
+                                              exports_d_path,
+                                              args.observer_pass)
 
         # compile list of entries in export_d path that are not defined in current config
         existing_wo_public = list(set(existing_exports) - set(public_paths))
