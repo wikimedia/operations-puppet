@@ -70,7 +70,6 @@ class hhvm(
     $cache_dir      = '/var/cache/hhvm',
     $malloc_arenas  = undef,
     ) {
-    requires_os('ubuntu >= trusty || Debian >= jessie')
 
 
     ## Packages
