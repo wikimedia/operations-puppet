@@ -4,7 +4,6 @@
 #
 class mediawiki::php {
     include ::mediawiki::packages
-    requires_os('ubuntu >= trusty || Debian >= jessie')
 
     $php_module_conf_dir = '/etc/php5/mods-available'
     mediawiki::php_enmod { ['mail']: }
