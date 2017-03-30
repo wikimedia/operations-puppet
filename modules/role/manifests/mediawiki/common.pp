@@ -1,5 +1,6 @@
 class role::mediawiki::common {
     include ::standard
+    include ::profile::mediawiki::scap_proxy
     include ::geoip
     include ::mediawiki
     include ::mediawiki::nutcracker
@@ -40,16 +41,4 @@ class role::mediawiki::common {
         check_command  => 'check_dsh_groups!mediawiki-installation',
         check_interval => 60,
     }
-
-    $scap_proxies = hiera('scap::dsh::scap_proxies',[])
-    if member($scap_proxies, $::fqdn) {
-        include scap::proxy
-
-        ferm::service { 'rsyncd_scap_proxy':
-            proto  => 'tcp',
-            port   => '873',
-            srange => '$MW_APPSERVER_NETWORKS',
-        }
-    }
 }
-
