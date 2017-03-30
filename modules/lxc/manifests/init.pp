@@ -9,8 +9,6 @@
 class lxc(
     $container_root = '/srv/lxc',
 ) {
-    requires_os('Ubuntu >= Trusty || Debian >= Jessie')
-
     package { [
         'bridge-utils',
         'dnsmasq-base',
@@ -50,7 +48,7 @@ class lxc(
       require => Apt::Pin[$backports],
     }
 
-    if os_version('Debian >= Jessie') {
+    if os_version('debian >= jessie') {
         file { '/etc/default/lxc-net':
             ensure  => 'present',
             owner   => 'root',
