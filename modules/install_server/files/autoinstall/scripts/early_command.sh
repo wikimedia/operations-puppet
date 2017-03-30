@@ -3,26 +3,14 @@
 set -e
 
 ## redo network configuration statically
-# at least trusty has ip under /sbin
-if [ -x /sbin/ip -o -x /bin/ip ]; then
-	IP=$(ip address show dev eth0 | egrep '^[[:space:]]+inet ' | cut -d ' ' -f 6 | cut -d '/' -f 1)
-else
-	IP=$(ifconfig | grep "inet addr" | cut -d ' ' -f 12 | sed 's/addr://' | grep -v 127\.0\.0\.1)
-fi
-
-# netcfg backwards-compatible notes:
-# - disable_autoconfig is needed for >= precise
-# - disable_dhcp is supported but deprecated in favor of disable_autoconfig
-#   starting with netcfg 1.101 (wheezy/trusty)
-# - kill-all-dhcp has replaced killall.sh since netcfg 1.86 (>= wheezy/trusty)
+IP=$(ip address show dev eth0 | egrep '^[[:space:]]+inet ' | cut -d ' ' -f 6 | cut -d '/' -f 1)
 
 cat > /tmp/static_net.cfg <<EOF
 d-i netcfg/get_ipaddress string $IP
-d-i netcfg/disable_dhcp boolean true
 d-i netcfg/disable_autoconfig boolean true
 EOF
 debconf-set-selections /tmp/static_net.cfg
-killall.sh || kill-all-dhcp; netcfg
+kill-all-dhcp; netcfg
 
 # install the network-console udeb, providing SSH access to the installer
 # which is useful for debugging (see also network-console settings)
