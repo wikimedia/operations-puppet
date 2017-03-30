@@ -42,7 +42,7 @@ class puppetmaster::puppetdb::database($master) {
         user      => 'puppetdb',
         database  => 'puppetdb',
         password  => $puppetdb_pass,
-        cidr      => "${::main_ipaddress}/32",
+        cidr      => "${::ipaddress_primary}/32",
         pgversion => '9.4',
         master    => $on_master,
     }

@@ -5,8 +5,8 @@ allowed_hosts=<%= @allowed_hosts %>
 # Bind only to the primary (management) IP address and not one of the service addresses
 # An assumption is made here that ipaddress fact will have the management address and not
 # a service address
-<% if scope.lookupvar('::main_ipaddress')  %>
-server_address=<%= scope.lookupvar('::main_ipaddress') %>
+<% if scope.lookupvar('::ipaddress_primary')  %>
+server_address=<%= scope.lookupvar('::ipaddress_primary') %>
 <% end -%>
 
 command[check_ram]=/usr/lib/nagios/plugins/check_ram.sh 20 5 b

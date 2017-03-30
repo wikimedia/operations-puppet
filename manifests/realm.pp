@@ -4,27 +4,7 @@
 
 # Determine the site the server is in
 
-# If our puppetmaster is 3.5+ then use the trusted $facts hash
-if versioncmp($::serverversion, '3.5') >= 0 and $facts {
-    if $facts['ipaddress_eth0'] {
-        $main_ipaddress = $facts['ipaddress_eth0']
-    } elsif $facts['ipaddress_bond0'] {
-        $main_ipaddress = $facts['ipaddress_bond0']
-    } else {
-        $main_ipaddress = $facts['ipaddress']
-    }
-# Otherwise fallback to pre 3.5 behaviour
-} else {
-    if $::ipaddress_eth0 != undef {
-        $main_ipaddress = $::ipaddress_eth0
-    } elsif $::ipaddress_bond0 != undef {
-        $main_ipaddress = $::ipaddress_bond0
-    } else {
-        $main_ipaddress = $::ipaddress
-    }
-}
-
-$site = $main_ipaddress ? {
+$site = $::ipaddress_primary ? {
     /^208\.80\.15[23]\./                      => 'codfw',
     /^208\.80\.15[45]\./                      => 'eqiad',
     /^10\.6[48]\./                            => 'eqiad',
@@ -74,7 +54,7 @@ $app_routes = hiera('discovery::app_routes')
 $mw_primary = $app_routes['mediawiki']
 $aqs_site = $app_routes['aqs']
 
-$network_zone = $main_ipaddress ? {
+$network_zone = $::ipaddress_primary ? {
     /^10./  => 'internal',
     default => 'public'
 }
