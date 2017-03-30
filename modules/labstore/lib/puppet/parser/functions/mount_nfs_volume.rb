@@ -5,7 +5,7 @@
 # Returns true if the mount should be mounted in
 # instance of the project
 #
-# Reads this information from labstore/files/nfs-mounts-config.yaml
+# Reads this information from labstore/files/nfs-mounts.yaml
 # in the openstack module of operations/puppet.git
 module Puppet::Parser::Functions
   @@labs_nfs_config_touched = nil
@@ -18,14 +18,21 @@ module Puppet::Parser::Functions
         @@labs_nfs_config = function_loadyaml([path])
         @@labs_nfs_config_touched = mtime
     end
-    config = @@labs_nfs_config['private']
+
     project = args[0]
     mount = args[1]
-    if config.key?(project) && config[project].key?('mounts') \
-        && config[project]['mounts'].key?(mount)
-      config[project]['mounts'][mount]
-    else
-      false
+
+    clusters = @@labs_nfs_config['clusters']
+
+    clusters.keys.each do |cluster|
+        if !@@labs_nfs_config['mounts'].key?(cluster)
+            next
+        end
+        cmounts = @@labs_nfs_config['mounts'][cluster]
+        if cmounts.key?(project) && cmounts[project].include?(mount)
+            return true
+        end
     end
+    return false
   end
 end
