@@ -4,7 +4,6 @@
 class mediawiki::web {
     tag 'mediawiki', 'mw-apache-config'
 
-    requires_os('ubuntu >= trusty || Debian >= jessie')
     include ::apache
     include ::mediawiki
     include ::mediawiki::users

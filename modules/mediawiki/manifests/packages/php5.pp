@@ -5,7 +5,6 @@
 # configured for HHVM, but a few are still using PHP5 (T86081).
 #
 class mediawiki::packages::php5 {
-    requires_os('ubuntu >= trusty || Debian >= jessie')
 
     # We don't need php-apc on php > 5.3
     package { 'php-apc':
