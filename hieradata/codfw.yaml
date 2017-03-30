@@ -18,7 +18,6 @@ mediawiki_memcached_servers:
   - '10.192.48.79:11211:1 "shard17"'
   - '10.192.48.80:11211:1 "shard18"'
 
-jobrunner_active: false
 ganglia_aggregators: install2002.wikimedia.org:10649
 
 # Default zookeeper cluster to use in codfw.
