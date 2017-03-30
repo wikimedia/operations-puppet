@@ -1,188 +1,216 @@
+# Clusters share storage state
+clusters:
+    primary: ['labstore1001', 'labstore1002']
+    secondary: ['labstore1004', 'labstore1005']
+    # For now server side is not managed
+    # dyanmically.  Needs to be reimaged to Jessie.
+    tertiary: ['labstore1003']
+
+# Devices require a manual addition of a root
+# 'shared' directory to be viable for export on
+# per project resources
+devices:
+  secondary:
+    default: '/srv/misc'
+    projects:
+      tools: '/srv/tools'
+
+projects:
+  account-creation-assistance: 50088
+  bots: 50064
+  catgraph: 50588
+  tools: 50380
+  chasetestproject: 53308
+  contributors: 50408
+  cvn: 50116
+  wikidata-query: 52354
+  dumps: 50124
+  editor-engagement: 50068
+  etytree: 53231
+  fastcci: 50983
+  huggle: 50168
+  maps: 50196
+  maps-team: 52497
+  math: 50398
+  mwoffliner: 52376
+  openstack: 50076
+  osmit: 51933
+  project-proxy: 50254
+  quarry: 52243
+  snuggle: 50470
+  testlabs: 50302
+  tools: 50380
+  toolsbeta: 50610
+  twl: 52777
+  utrs: 50318
+  video: 52318
+  wikidata-dev: 50084
+  wikidata-topicmaps: 51980
+  wikidumpparse: 51824
+  wikisource-tools: 50336
+  wmt: 52488
+
+# A root must be defined here for every cluster
 public:
-  scratch: '/exp/scratch *(rw,sec=sys,sync,no_subtree_check,root_squash)'
-  root: '/exp *(ro,fsid=0,sec=sys,sync,subtree_check,root_squash,nocrossmnt)'
-private:
-  account-creation-assistance:
-    gid: 50088
-    mounts:
-      project: true
-  bots:
-    gid: 50064
-    mounts:
-      dumps: true
-      home: true
-      project: true
-      scratch: true
-  catgraph:
-    gid: 50588
-    mounts:
-      dumps: true
-      home: true
-      project: true
-      scratch: true
-  chasetestproject:
-    gid: 53308
-    mounts:
-      project: true
-  contributors:
-    gid: 50408
-    mounts:
-      dumps: true
-      home: true
-      project: true
-      scratch: true
-  cvn:
-    gid: 50116
-    mounts:
-      project: true
-  wikidata-query:
-    gid: 52354
-    mounts:
-      scratch: true
-      dumps: true
-  dumps:
-    gid: 50124
-    mounts:
-      dumps: true
-      home: true
-      project: true
-      scratch: true
-  editor-engagement:
-    gid: 50068
-    mounts:
-      project: true
-  etytree:
-    gid: 53231
-    mounts:
-      dumps: true
-  fastcci:
-    gid: 50983
-    mounts:
-      dumps: true
-      home: true
-      project: true
-      scratch: true
-  huggle:
-    gid: 50168
-    mounts:
-      dumps: true
-      home: true
-      project: true
-      scratch: true
-  maps:
-    gid: 50196
-    mounts:
-      dumps: true
-      scratch: true
-      maps: true
-  maps-team:
-    gid: 52497
-    mounts:
-      scratch: true
-  math:
-    gid: 50398
-    mounts:
-      project: true
-      scratch: true
-      dumps: true
-  mwoffliner:
-    gid: 52376
-    mounts:
-      scratch: true
-  openstack:
-    gid: 50076
-    mounts:
-      dumps: true
-      home: true
-      project: true
-      scratch: true
-  osmit:
-    gid: 51933
-    mounts:
-      dumps: true
-  project-proxy:
-    gid: 50254
-    mounts:
-      project: true
-  quarry:
-    gid: 52243
-    mounts:
-      project: true
-  snuggle:
-    gid: 50470
-    mounts:
-      dumps: true
-      home: true
-      project: true
-      scratch: true
-  testlabs:
-    gid: 50302
-    mounts:
-      dumps: true
-      home: true
-      project: true
-      scratch: true
-  tools:
-    gid: 50380
-    mounts:
-      dumps: true
-      scratch: true
-      tools-home: true
-      tools-project: true
-  toolsbeta:
-    gid: 50610
-    mounts:
-      dumps: true
-      home: true
-      project: true
-      scratch: true
-  twl:
-    gid: 52777
-    mounts:
-      project: true
-  utrs:
-    gid: 50318
-    mounts:
-      dumps: true
-      home: true
-      project: true
-      scratch: true
-  video:
-    gid: 52318
-    mounts:
-      dumps: true
-      home: true
-      project: true
-      scratch: true
-  wikidata-dev:
-    gid: 50084
-    mounts:
-      dumps: true
-      home: true
-      project: true
-      scratch: true
-  wikidata-topicmaps:
-    gid: 51980
-    mounts:
-      dumps: true
-      home: true
-      project: true
-      scratch: true
-  wikidumpparse:
-    gid: 51824
-    mounts:
-      dumps: true
-      home: true
-      project: true
-      scratch: true
-  wikisource-tools:
-    gid: 50336
-    mounts:
-      dumps: true
-      home: true
-      project: true
-      scratch: true
-  wmt:
-    gid: 52488
-    mounts:
-      project: true
+  secondary:
+    root: '/exp *(ro,fsid=0,sec=sys,sync,subtree_check,root_squash,nocrossmnt)'
+  primary:
+    root: '/exp *(ro,fsid=0,sec=sys,sync,subtree_check,root_squash,nocrossmnt)'
+    #### scratch temporarily moved to labstore1003
+    # scratch: '/exp/scratch *(rw,sec=sys,sync,no_subtree_check,root_squash)'
+
+# Determines what can trigger a per project entry in exports.d/
+# even though we /end up mounting subpaths anyway/
+allowed_private_mounts:
+  - project
+  - home
+  - tools-home
+  - tools-project
+  - maps
+
+# Enabled mounts as read by both server and client side
+
+# Project additions to this file will not be active until 'nfs-manage-binds -f'
+# is run on the active server on the relevant cluster post addition.
+mounts:
+  secondary:
+    account-creation-assistance:
+      - project
+    bots:
+      - project
+      - home
+    catgraph:
+      - project
+      - home
+    chasetestproject:
+      - project
+    contributors:
+      - project
+      - home
+    cvn:
+      - project
+    wikidata-query:
+      - dumps
+    dumps:
+      - project
+      - home
+    editor-engagement:
+      - project
+    fastcci:
+      - project
+      - home
+    huggle:
+      - project
+      - home
+    math:
+      - project
+    openstack:
+      - project
+      - home
+    project-proxy:
+      - project
+    quarry:
+      - project
+    snuggle:
+      - project
+      - home
+    testlabs:
+      - project
+      - home
+    tools:
+      - tools-home
+      - tools-project
+    toolsbeta:
+      - project
+      - scratch
+    twl:
+      - project
+    utrs:
+      - home
+      - project
+    video:
+      - home
+      - project
+    wikidata-dev:
+      - home
+      - project
+    wikidata-topicmaps:
+      - home
+      - project
+    wikidumpparse:
+      - home
+      - project
+    wikisource-tools:
+      - home
+      - project
+    wmt:
+      - project
+  tertiary:
+    bots:
+      - dumps
+      - scratch
+    catgraph:
+      - dumps
+      - scratch
+    contributors:
+      - dumps
+      - scratch
+    wikidata-query:
+      - dumps
+      - scratch
+    dumps:
+      - dumps
+      - scratch
+    etytree:
+      - dumps
+    fastcci:
+      - dumps
+      - scratch
+    huggle:
+      - dumps
+      - scratch
+    maps:
+      - maps
+      - dumps
+      - scratch
+    maps-team:
+      - scratch
+    math:
+      - dumps
+      - scratch
+    mwoffliner:
+      - scratch
+    openstack:
+      - dumps
+      - scratch
+    osmit:
+      - dumps
+    snuggle:
+      - dumps
+      - scratch
+    testlabs:
+      - dumps
+      - scratch
+    tools:
+      - dumps
+      - scratch
+    toolsbeta:
+      - dumps
+    utrs:
+      - dumps
+      - scratch
+    video:
+      - dumps
+      - scratch
+    wikidata-dev:
+      - dumps
+      - scratch
+    wikidata-topicmaps:
+      - dumps
+      - scratch
+    wikidumpparse:
+      - dumps
+      - scratch
+    wikisource-tools:
+      - dumps
+      - scratch
