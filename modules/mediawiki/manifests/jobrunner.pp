@@ -18,7 +18,6 @@ class mediawiki::jobrunner (
     $runners_translate = 0,
 ) {
 
-    requires_os('ubuntu >= trusty || Debian >= jessie')
     include ::passwords::redis
 
     package { 'jobrunner':
