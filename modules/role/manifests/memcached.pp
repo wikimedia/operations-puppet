@@ -17,10 +17,7 @@ class role::memcached {
     # There are different package versions available due to a performance test,
     # most of them are deployed/installed manually.
     # More info: T129963
-    $version = os_version('debian >= jessie || ubuntu >= trusty') ? {
-        true    => hiera('memcached::version', 'present'),
-        default => '1.4.15-0wmf1',
-    }
+    $version = hiera('memcached::version', 'present')
 
     $growth_factor = hiera('memcached::growth_factor', 1.05)
     $extended_options = hiera_array('memcached::extended_options', ['slab_reassign'])
