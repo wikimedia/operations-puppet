@@ -21,18 +21,18 @@ phabricator_cluster_search:
     port: 9243
     hosts:
       - protocol: 'https'
-        host: 'search.svc.eqiad.wmnet'
-        version: 5
-        roles:
-          read: false
-          write: true
-  - type: 'elasticsearch'
-    path: '/phabricator'
-    port: 9243
-    hosts:
-      - protocol: 'https'
         host: 'search.svc.codfw.wmnet'
         version: 5
         roles:
           read: true
           write: true
+      - protocol: 'https'
+        host: 'search.svc.eqiad.wmnet'
+        version: 5
+        roles:
+          read: true
+          write: true
+  - type: 'mysql'
+    roles:
+      read: false
+      write: false

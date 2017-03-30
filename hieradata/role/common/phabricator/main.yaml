@@ -21,22 +21,22 @@ profile::base::domain_search:
 
 phabricator_cluster_search:
   - type: 'elasticsearch'
-    path: '/phabricator'
+    version: 5
+    protocol: 'https'
     port: 9243
+    path: '/phabricator'
     hosts:
-      - protocol: 'https'
-        host: 'search.svc.eqiad.wmnet'
-        version: 5
+      - host: 'search.svc.eqiad.wmnet'
         roles:
           read: true
           write: true
   - type: 'elasticsearch'
-    path: '/phabricator'
+    version: 5
+    protocol: 'https'
     port: 9243
+    path: '/phabricator'
     hosts:
-      - protocol: 'https'
-        host: 'search.svc.codfw.wmnet'
-        version: 5
+      - host: 'search.svc.codfw.wmnet'
         roles:
           read: true
           write: true
