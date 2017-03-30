@@ -146,6 +146,16 @@ class elasticsearch(
         java_package => $java_package,
     }
 
+    # Package defaults this to 0750, which is annoying
+    # for debugging. There are no secrets here so make
+    # visible.
+    file { '/etc/elasticsearch':
+        ensure => directory,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+    }
+
     file { '/etc/elasticsearch/elasticsearch.yml':
         ensure  => file,
         owner   => 'root',
