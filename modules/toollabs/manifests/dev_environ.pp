@@ -24,14 +24,6 @@ class toollabs::dev_environ {
         ]:
             ensure  => latest,
         }
-    } elsif os_version('ubuntu precise') {
-        include ::toollabs::genpp::python_dev_precise
-        package { [
-            'libmariadbclient-dev',
-            'libboost-python1.48-dev',
-        ]:
-            ensure  => latest,
-        }
     } elsif os_version('debian jessie') {
         include ::toollabs::genpp::python_dev_jessie
         include ::phabricator::arcanist # T139738
