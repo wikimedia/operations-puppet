@@ -279,15 +279,13 @@ class elasticsearch(
         ensure => absent,
     }
 
-    # Cluster management tool, trusty only
-    if os_version('ubuntu >= trusty || debian >= jessie') {
-        file { '/usr/local/bin/es-tool':
-            ensure  => file,
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0755',
-            source  => 'puppet:///modules/elasticsearch/es-tool',
-            require => [Package['python-elasticsearch'], Package['python-ipaddr']],
-        }
+    # Cluster management tool
+    file { '/usr/local/bin/es-tool':
+        ensure  => file,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0755',
+        source  => 'puppet:///modules/elasticsearch/es-tool',
+        require => [Package['python-elasticsearch'], Package['python-ipaddr']],
     }
 }
