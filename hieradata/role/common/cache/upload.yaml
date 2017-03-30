@@ -25,11 +25,11 @@ cache::app_directors:
   swift:
     backends:
       eqiad: 'ms-fe.svc.eqiad.wmnet'
-      # codfw: 'ms-fe.svc.codfw.wmnet'
+      codfw: 'ms-fe.svc.codfw.wmnet'
   swift_thumbs:
     backends:
       eqiad: 'ms-fe-thumbs.svc.eqiad.wmnet'
-      # codfw: 'ms-fe-thumbs.svc.codfw.wmnet'
+      codfw: 'ms-fe-thumbs.svc.codfw.wmnet'
 cache::req_handling:
   default:
     director: 'swift'
