@@ -6,7 +6,7 @@ class role::labs::dns_floating_ip_updater {
     $config = {
         'username'                                 => 'novaadmin',
         'password'                                 => $keystoneconfig['ldap_user_pass'],
-        'nova_api_url'                             => "http://${nova_controller_hostname}:35357/v2.0",
+        'nova_api_url'                             => "http://${nova_controller_hostname}:35357/v3",
         'admin_project_name'                       => $keystoneconfig['admin_project_name'],
         'floating_ip_ptr_zone'                     => $designateconfig['floating_ip_ptr_zone'],
         'floating_ip_ptr_fqdn_matching_regex'      => $designateconfig['floating_ip_ptr_fqdn_matching_regex'],
