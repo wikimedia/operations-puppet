@@ -95,6 +95,27 @@ maniphest.custom-field-definitions:
       default: 'None'
       security-bug: 'Software security bug'
       sensitive: 'Other confidential issue'
+  deadline.due:
+    name: "Due Date"
+    instructions: Date that this task is due.
+    type: date
+    copy: true
+    edit: true
+    view: true
+    search: true
+    fulltext: false
+    description: Task due date
+  bug.version:
+    name: "Version"
+    type: text
+    search: true
+    fulltext: true
+
+maniphest.subtypes:
+  - { key: "default", name: "Task" }
+  - { key: "bug", name: "Bug" }
+  - { key: "log", name: "LogSpam" }
+  - { key: "deadline", name: "Deadline" }
 
 # Security/Operations Macro's for enabling
 # as we rollout to RT and bugzilla.
