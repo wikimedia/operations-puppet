@@ -14,8 +14,6 @@ class mediawiki::web::mpm_config($mpm = 'worker', $server_limit = undef, $worker
         }
         'worker': {
             # this can only be used on hhvm servers
-            requires_os('ubuntu >= trusty || debian >= jessie')
-
             $threads_per_child = 25
             $apache_server_limit = $::processorcount
             $max_workers = $threads_per_child * $apache_server_limit

@@ -52,7 +52,5 @@ class mediawiki::packages {
       ensure => absent,
     }
 
-    if os_version('debian >= jessie || ubuntu >= trusty') {
-        require_package('firejail')
-    }
+    require_package('firejail')
 }
