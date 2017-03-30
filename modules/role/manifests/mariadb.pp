@@ -196,6 +196,18 @@ class role::mariadb::analytics {
 }
 
 class role::mariadb::analytics::custom_repl_slave {
+    # Sync eventlogging tables from m4-master.eqiad.wmnet to localhost
+    # using a custom bash 'replication' script, that looks for new records on 'master',
+    # and inserts into 'slave'.
+    $master_host = 'm4-master.eqiad.wmnet'
+    $slave_host  = 'localhost'
+    $database    = 'log'
+
+    # Don't try to 'replicate' tables with no events more recent than this many days ago.
+    $cutoff_days = 90
+
+    # Only 'replicate' this many rows at a time.
+    $batch_size  = 1000
 
     file { '/usr/local/bin/eventlogging_sync.sh':
         ensure => present,
@@ -208,7 +220,7 @@ class role::mariadb::analytics::custom_repl_slave {
         owner   => 'root',
         group   => 'root',
         mode    => '0755',
-        source  => 'puppet:///modules/role/mariadb/eventlogging_sync.init',
+        content => template('role/mariadb/eventlogging_sync.init.erb'),
         require => File['/usr/local/bin/eventlogging_sync.sh'],
         notify  => Service['eventlogging_sync'],
     }
