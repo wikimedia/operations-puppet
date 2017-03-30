@@ -5,7 +5,7 @@
 class contint::package_builder {
 
     # We dont want package builder all over the place. Safeguard.
-    requires_os('Debian == jessie')
+    requires_os('debian == jessie')
 
     # Shell script wrappers to ease package building
     # Package generated via the mirror operations/debs/jenkins-debian-glue.git

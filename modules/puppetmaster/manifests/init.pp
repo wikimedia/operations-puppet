@@ -71,7 +71,7 @@ class puppetmaster(
     }
 
     # Let's use puppet 3.8 on the masters at least
-    if os_version('Debian >= jessie') {
+    if os_version('debian >= jessie') {
         $pinned_pkgs = ['puppet', 'puppetmaster', 'puppetmaster-common',
                         'vim-puppet', 'puppet-el', 'puppetmaster-passenger',
                         'puppet-common']
@@ -100,7 +100,7 @@ class puppetmaster(
         ensure  => present,
     }
 
-    if os_version('Debian >= jessie') {
+    if os_version('debian >= jessie') {
         # Until we use activerecord
         package { 'ruby-activerecord-deprecated-finders':
             ensure => present,
