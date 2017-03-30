@@ -69,7 +69,10 @@ log4j.logger.com.google.gerrit=INFO
 log4j.logger.org.apache.mina=WARN
 log4j.logger.org.apache.sshd.common=WARN
 log4j.logger.org.apache.sshd.server=WARN
+# To be removed when we upgrade to gerrit 2.14.
 log4j.logger.org.apache.sshd.common.keyprovider.AbstractFileKeyPairProvider=INFO
+# Replaces the above
+log4j.logger.org.apache.sshd.common.keyprovider.FileKeyPairProvider=INFO
 log4j.logger.com.google.gerrit.sshd.GerritServerSession=WARN
 
 # Silence non-critical messages from mime-util.
