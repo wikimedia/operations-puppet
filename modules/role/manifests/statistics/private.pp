@@ -10,9 +10,6 @@ class role::statistics::private inherits role::statistics::base {
     # include stuff common to statistics compute nodes
     include ::statistics::compute
 
-    # rsync webrequest logs from logging hosts
-    include ::statistics::rsync::webrequest
-
     # rsync mediawiki logs from logging hosts
     include ::statistics::rsync::mediawiki
 
