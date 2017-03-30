@@ -6,3 +6,4 @@ swift::proxy::memcached_servers: [
   'ms-fe2008.codfw.wmnet:11211'
 # no trailing comma!
 ]
+swift::proxy::rewrite_thumb_server: 'imagescaler-rw.discovery.wmnet'
