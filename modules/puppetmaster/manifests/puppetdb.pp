@@ -2,7 +2,7 @@
 #
 # Sets up a puppetdb instance and the corresponding database server.
 class puppetmaster::puppetdb($master, $port=443, $jetty_port=8080) {
-    requires_os('Debian >= jessie')
+    requires_os('debian >= jessie')
 
     $puppetdb_pass = hiera('puppetdb::password::rw')
 

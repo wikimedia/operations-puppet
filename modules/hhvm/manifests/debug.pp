@@ -6,7 +6,7 @@ class hhvm::debug {
 
     ## Debugging symbols
 
-    $libboost_dbg_package = os_version('Debian >= jessie') ? {
+    $libboost_dbg_package = os_version('debian >= jessie') ? {
         true    => 'libboost1.55-dbg',
         default => 'libboost1.54-dbg',
     }
@@ -42,7 +42,7 @@ class hhvm::debug {
     # - apache2-utils provides `ab`, an HTTP server benchmarking tool.
     # - perf-tools is <https://github.com/brendangregg/perf-tools>.
 
-    $perftools_package = os_version('Debian >= jessie') ? {
+    $perftools_package = os_version('debian >= jessie') ? {
         true    => 'perf-tools-unstable',
         default => 'perf-tools',
     }
@@ -105,7 +105,7 @@ class hhvm::debug {
 
     ## Misc
 
-    if os_version('Ubuntu == trusty') {
+    if os_version('ubuntu == trusty') {
         # Backported fix for pretty-printer bundled with libstdc++6-4.8-dbg.
         # See <https://gcc.gnu.org/bugzilla/show_bug.cgi?id=58962> and
         # <https://bugs.launchpad.net/ubuntu/+source/gcc-4.8/+bug/1256419>.

@@ -128,7 +128,7 @@ class role::lvs::balancer {
         conftool_prefix      => hiera('conftool_prefix'),
     }
 
-    if os_version('Debian >= jessie') {
+    if os_version('debian >= jessie') {
         include ::pybal::monitoring
     }
 

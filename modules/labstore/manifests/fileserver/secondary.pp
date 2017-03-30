@@ -1,6 +1,6 @@
 class labstore::fileserver::secondary {
 
-    requires_os('Debian >= jessie')
+    requires_os('debian >= jessie')
 
     include ::labstore
 
