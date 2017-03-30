@@ -11,6 +11,15 @@ class openstack::nova::conductor {
         require => Class['openstack::repo'];
     }
 
+    # The conductor won't ever check the policy file, but nova-common
+    #  seems to expect it to be here, so install to make apt happy.
+    file { '/etc/nova/policy.json':
+        source  => "puppet:///modules/openstack/${openstack_version}/nova/policy.json",
+        mode    => '0644',
+        owner   => 'root',
+        group   => 'root',
+    }
+
     if $::fqdn == hiera('labs_nova_controller') {
         service { 'nova-conductor':
             ensure    => running,
