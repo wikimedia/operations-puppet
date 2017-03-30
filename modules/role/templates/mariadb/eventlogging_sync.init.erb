@@ -10,7 +10,7 @@
 ### END INIT INFO
 
 dir="/usr/local"
-cmd="/usr/local/bin/eventlogging_sync.sh"
+cmd="/usr/local/bin/eventlogging_sync.sh -D <%= @cutoff_days %> -b <%= @batch_size %> -d <%= @database %> <%= @master_host %> <%= @slave_host %>"
 user="root"
 
 name=`basename $0`
