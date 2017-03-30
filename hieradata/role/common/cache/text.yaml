@@ -61,7 +61,7 @@ cache::app_directors:
       port: 1970
     backends:
       eqiad: 'citoid.svc.eqiad.wmnet'
-      # codfw: 'citoid.svc.codfw.wmnet'
+      codfw: 'citoid.svc.codfw.wmnet'
 cache::req_handling:
   cxserver.wikimedia.org:
     director: 'cxserver_backend'
