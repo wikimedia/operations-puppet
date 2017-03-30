@@ -30,7 +30,6 @@ except OSError:
     pass
 
 releases = collections.OrderedDict([
-    ('precise', 'http://packages.ubuntu.com/precise'),
     ('trusty', 'http://packages.ubuntu.com/trusty'),
     ('jessie', 'https://packages.debian.org/jessie'),
 ])
