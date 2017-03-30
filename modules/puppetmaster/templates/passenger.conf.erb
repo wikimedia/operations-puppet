@@ -6,8 +6,3 @@ PassengerMaxPoolSize <%= scope.lookupvar('::processorcount').to_i * 4 %>
 PassengerPoolIdleTime 1500
 PassengerMaxRequests 2000
 PassengerStatThrottleRate 120
-<% if scope.function_os_version(['debian < jessie || ubuntu < trusty']) %>
-RackAutoDetect Off
-RailsAutoDetect Off
-PassengerUseGlobalQueue on
-<% end %>
