@@ -2,8 +2,6 @@ class profile::configmaster(
     $conftool_prefix = hiera('conftool_prefix'),
     $datacenters = hiera('datacenters'),
 ) {
-    system::role { 'config-master': description => 'Dynamic configuration HTTP host' }
-
     $vhostnames = [
         'config-master.eqiad.wmnet',
         'config-master.codfw.wmnet',
