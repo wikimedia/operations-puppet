@@ -41,5 +41,5 @@ phabricator_cluster_search:
         host: 'search.svc.codfw.wmnet'
         version: 5
         roles:
-          read: false
+          read: true
           write: true
