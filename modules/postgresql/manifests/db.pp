@@ -21,28 +21,23 @@
 #  postgresql::db { 'mydb': }
 #
 define postgresql::db(
-    $ensure    = present,
-    $owner     = 'postgres',
+    $ensure = present,
+    $owner  = 'postgres',
 ) {
     validate_ensure($ensure)
 
-    require ::postgresql::server
-
-    $name_safe = regsubst($title, '[\W_]', '_', 'G')
-
-    $db_sql = "SELECT datname from pg_catalog.pg_database where datname = '${name_safe}'"
-    $db_exists = "/usr/bin/test -n \"\$( /usr/bin/psql -At -c \"${db_sql}\")\""
+    $name_safe = regsubst($name, '[\W_]', '_', 'G')
 
     if $ensure == 'present' {
         exec { "create_postgres_db_${name_safe}":
-            command => "/usr/bin/createdb --owner='${owner}' '${title}'",
-            unless  => $db_exists,
+            command => "/usr/bin/createdb --owner='${owner}' '${name}'",
+            unless  => "/usr/bin/pg_dump --schema-only --dbname='${name}'",
             user    => 'postgres',
         }
     } else {
         exec { "drop_postgres_db_${name_safe}":
-            command => "/usr/bin/dropdb '${title}'",
-            onlyif  => $db_exists,
+            command => "/usr/bin/dropdb '${name}'",
+            onlyif  => "/usr/bin/pg_dump --schema-only --dbname='${name}'",
             user    => 'postgres',
         }
     }

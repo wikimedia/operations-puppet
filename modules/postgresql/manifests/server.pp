@@ -40,19 +40,7 @@ class postgresql::server(
     $root_dir         = '/var/lib/postgresql',
     $use_ssl          = false,
 ) {
-
-    package { [
-        "postgresql-${pgversion}",
-        "postgresql-${pgversion}-debversion",
-        "postgresql-client-${pgversion}",
-        "postgresql-contrib-${pgversion}",
-        'libdbi-perl',
-        'libdbd-pg-perl',
-        'ptop',
-    ]:
-        ensure => $ensure,
-    }
-
+    require ::postgresql::packages
     class { '::postgresql::dirs':
         ensure    => $ensure,
         pgversion => $pgversion,
