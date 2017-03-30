@@ -17,7 +17,6 @@ class mediawiki::jobrunner (
     $port              = 9005,
 ) {
 
-    requires_os('ubuntu >= trusty || Debian >= jessie')
     include ::passwords::redis
 
     package { 'jobrunner':

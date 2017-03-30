@@ -3,8 +3,6 @@
 # Provisions font packages used by MediaWiki.
 #
 class mediawiki::packages::fonts {
-    requires_os('ubuntu >= trusty || Debian >= jessie')
-
     package { [
         'fonts-arabeyes',
         'fonts-arphic-ukai',
