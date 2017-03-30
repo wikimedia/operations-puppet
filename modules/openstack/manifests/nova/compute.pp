@@ -96,6 +96,15 @@ class openstack::nova::compute(
         }
     }
 
+    # nova-compute won't ever check the policy file, but nova-common
+    #  seems to expect it to be here, so install to make apt happy.
+    file { '/etc/nova/policy.json':
+        source => "puppet:///modules/openstack/${openstack_version}/nova/policy.json",
+        mode   => '0644',
+        owner  => 'root',
+        group  => 'root',
+    }
+
     ssh::userkey { 'nova':
         content => secret('ssh/nova/nova.pub'),
     }
