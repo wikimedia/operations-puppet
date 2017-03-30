@@ -146,15 +146,16 @@ role::deployment::mediawiki::key_fingerprint: f0:54:06:fa:17:27:97:a2:cc:69:a0:a
 "hhvm::extra::fcgi":
     hhvm:
         pcre_cache_type: lru
-"mediawiki::jobrunner::queue_servers":
+profile::mediawiki::jobrunner::queue_servers:
     - deployment-redis01.deployment-prep.eqiad.wmflabs
-"mediawiki::jobrunner::aggr_servers":
+profile::mediawiki::jobrunner::aggr_servers:
     - deployment-redis01.deployment-prep.eqiad.wmflabs
-"mediawiki::jobrunner::statsd_server": labmon1001.eqiad.wmnet
-"mediawiki::jobrunner::runners_basic": 5
-"mediawiki::jobrunner::runners_gwt": 1
-"mediawiki::jobrunner::runners_translate": 1
-"mediawiki::jobrunner::runners_upload": 2
+statsd: labmon1001.eqiad.wmnet
+profile::mediawiki::jobrunner::runners:
+  basic: 5
+  gwt: 1
+  translate: 1
+  upload: 2
 "hhvm::base_jit_size": 183500800
 "role::logging::mediawiki::log_directory": /data/project/logs
 "beta::syncsiteresources::user": www-data

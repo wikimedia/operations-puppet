@@ -2,18 +2,14 @@
 class role::mediawiki::videoscaler {
     system::role { 'role::mediawiki::videoscaler': }
 
+    # Parent role
     include ::role::mediawiki::scaler
+
+    # Profiles
     include ::role::prometheus::apache_exporter
     include ::role::prometheus::hhvm_exporter
-    include ::mediawiki::jobrunner
+    include ::profile::mediawiki::jobrunner
     include ::base::firewall
-
-    ferm::service { 'mediawiki-jobrunner-videoscalers':
-        proto   => 'tcp',
-        port    => $::mediawiki::jobrunner::port,
-        notrack => true,
-        srange  => '$DOMAIN_NETWORKS',
-    }
 
     # Change the apache2.conf Timeout setting
     augeas { 'apache timeout':
