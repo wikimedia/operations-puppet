@@ -4,8 +4,8 @@
 
 description "Phabricator notification websocket server"
 
-setuid <%= @user %>
-setgid <%= @group %>
+setuid <%= scope.lookupvar('phabricator::aphlict::user') %>
+setgid <%= scope.lookupvar('phabricator::aphlict::group') %>
 
 start on runlevel [2345]
 stop on runlevel [!2345]
@@ -16,4 +16,4 @@ umask 022
 
 expect stop
 
-exec <%= @aphlict_cmd %>
+exec <%= scope.lookupvar('phabricator::aphlict::aphlict_cmd') %>

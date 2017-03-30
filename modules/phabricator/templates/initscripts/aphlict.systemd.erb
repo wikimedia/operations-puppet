@@ -3,9 +3,9 @@ Description=Aphlict - Phabricator notification service
 After=network.target auditd.service
 
 [Service]
-User=<%= @user %>
-Group=<%= @group %>
-ExecStart=<%= @aphlict_cmd %>
+User=<%= scope.lookupvar('phabricator::aphlict::user') %>
+Group=<%= scope.lookupvar('phabricator::aphlict::group') %>
+ExecStart=<%= scope.lookupvar('phabricator::aphlict::aphlict_cmd') %>
 ExecReload=/bin/kill -HUP $MAINPID
 KillMode=process
 Restart=on-failure
