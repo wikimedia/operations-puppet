@@ -6,6 +6,9 @@
 class mediawiki::jobrunner (
     $queue_servers,
     $aggr_servers      = $queue_servers,
+    $statsd_server     = undef,
+    $port              = 9005,
+    $running           = true,
     $runners_basic     = 0,
     $runners_html      = 0,
     $runners_upload    = 0,
@@ -13,8 +16,6 @@ class mediawiki::jobrunner (
     $runners_transcode = 0,
     $runners_transcode_prioritized = 0,
     $runners_translate = 0,
-    $statsd_server     = undef,
-    $port              = 9005,
 ) {
 
     requires_os('ubuntu >= trusty || Debian >= jessie')
@@ -53,13 +54,12 @@ class mediawiki::jobrunner (
         notify  => Service['jobrunner', 'jobchron'],
     }
 
-    $state = hiera('jobrunner_state', 'running')
     $params = {
-        ensure => $state,
-        enable => $state ? {
-            'stopped' => false,
-            default   => true,
+        ensure => $running ? {
+            true    => 'running',
+            default => 'stopped'
         },
+        enable => $running,
     }
 
     # We declare the service, but override its status with

@@ -1,4 +1,5 @@
-mediawiki::jobrunner::queue_servers:
+# TODO: extract this information from redis::shards
+profile::mediawiki::jobrunner::queue_servers:
   - rdb1001.eqiad.wmnet
   - rdb1001.eqiad.wmnet:6380
   - rdb1001.eqiad.wmnet:6381
@@ -11,9 +12,8 @@ mediawiki::jobrunner::queue_servers:
   - rdb1007.eqiad.wmnet
   - rdb1007.eqiad.wmnet:6380
   - rdb1007.eqiad.wmnet:6381
-mediawiki::jobrunner::aggr_servers:
+profile::mediawiki::jobrunner::aggr_servers:
   - rdb1001.eqiad.wmnet:6378
   - rdb1003.eqiad.wmnet:6378
   - rdb1005.eqiad.wmnet:6378
   - rdb1007.eqiad.wmnet:6378
-mediawiki::jobrunner::statsd_server: statsd.eqiad.wmnet:8125
