@@ -1,8 +1,12 @@
-# Class mediawiki::nutcracker
+# Class profile::mediawiki::nutcracker
 #
 # Configures nutcracker for mediawiki
-class mediawiki::nutcracker {
-    include ::nutcracker::monitoring
+class profile::mediawiki::nutcracker(
+    $memcached_servers = hiera('mediawiki_memcached_servers'),
+    $redis_shards      = hiera('redis::shards'),
+    $datacenters       = hiera('datacenters'),
+) {
+    $redis_servers = $redis_shards['sessions']
     include ::passwords::redis
 
     $pools = {
@@ -16,7 +20,7 @@ class mediawiki::nutcracker {
             server_failure_limit => 3,
             server_retry_timeout => to_milliseconds('30s'),
             timeout              => 250,
-            servers              => hiera('mediawiki_memcached_servers'),
+            servers              => $memcached_servers,
         },
 
         'mc-unix'       => {
@@ -29,7 +33,7 @@ class mediawiki::nutcracker {
             server_failure_limit => 3,
             server_retry_timeout => to_milliseconds('30s'),
             timeout              => 250,
-            servers              => hiera('mediawiki_memcached_servers'),
+            servers              => $memcached_servers,
         },
 
         'redis_eqiad'           =>  {
@@ -43,12 +47,12 @@ class mediawiki::nutcracker {
             server_failure_limit => 3,
             server_retry_timeout => to_milliseconds('30s'),
             timeout              => 1000,
-            server_map           => hiera('mediawiki::redis_servers::eqiad'),
+            server_map           => $redis_servers['eqiad'],
         },
 
     }
 
-    if member(hiera('datacenters', []), 'codfw') {
+    if member($datacenters, 'codfw') {
         $additional_pools = {
             'redis_codfw'           =>  {
                 auto_eject_hosts     => true,
@@ -61,7 +65,7 @@ class mediawiki::nutcracker {
                 server_failure_limit => 3,
                 server_retry_timeout => to_milliseconds('30s'),
                 timeout              => 1000,
-                server_map           => hiera('mediawiki::redis_servers::codfw'),
+                server_map           => $redis_servers['codfw'],
             },
         }
     }
@@ -74,6 +78,23 @@ class mediawiki::nutcracker {
     class { '::nutcracker':
         mbuf_size => '64k',
         pools     => $nutcracker_pools,
+    }
+
+    class { '::nutcracker::monitoring': }
+
+
+    ferm::rule { 'skip_nutcracker_conntrack_out':
+        desc  => 'Skip outgoing connection tracking for Nutcracker',
+        table => 'raw',
+        chain => 'OUTPUT',
+        rule  => 'proto tcp sport (6378:6382 11212) NOTRACK;',
+    }
+
+    ferm::rule { 'skip_nutcracker_conntrack_in':
+        desc  => 'Skip incoming connection tracking for Nutcracker',
+        table => 'raw',
+        chain => 'PREROUTING',
+        rule  => 'proto tcp dport (6378:6382 11212) NOTRACK;',
     }
 
 }

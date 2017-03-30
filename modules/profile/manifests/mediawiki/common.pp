@@ -12,26 +12,10 @@ class profile::mediawiki::common(
         log_aggregator => $log_aggregator,
     }
 
-    class { '::mediawiki::nutcracker':
-    }
-
     class { '::tmpreaper':
     }
 
-    ferm::rule { 'skip_nutcracker_conntrack_out':
-        desc  => 'Skip outgoing connection tracking for Nutcracker',
-        table => 'raw',
-        chain => 'OUTPUT',
-        rule  => 'proto tcp sport (6378:6382 11212) NOTRACK;',
-    }
-
-    ferm::rule { 'skip_nutcracker_conntrack_in':
-        desc  => 'Skip incoming connection tracking for Nutcracker',
-        table => 'raw',
-        chain => 'PREROUTING',
-        rule  => 'proto tcp dport (6378:6382 11212) NOTRACK;',
-    }
-
+    # TODO: move to role::mediawiki::webserver ?
     ferm::service{ 'ssh_pybal':
         proto  => 'tcp',
         port   => '22',

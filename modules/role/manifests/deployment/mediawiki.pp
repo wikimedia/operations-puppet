@@ -8,7 +8,7 @@ class role::deployment::mediawiki(
     # All needed classes for deploying mediawiki
     include ::mediawiki
     include ::mediawiki::packages::php5
-    include ::mediawiki::nutcracker
+    include ::profile::mediawiki::nutcracker
     include scap::master
     include scap::ferm
 
