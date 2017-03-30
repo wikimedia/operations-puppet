@@ -110,21 +110,6 @@ class toollabs (
         mode   => '0750',
     }
 
-    # Trustworthy enough
-    # Only necessary on precise hosts, trusty has its own mariadb package
-    if $::lsbdistcodename == 'precise' {
-        apt::repository { 'mariadb':
-            uri        => 'http://ftp.osuosl.org/pub/mariadb/repo/5.5/ubuntu',
-            dist       => $::lsbdistcodename,
-            components => 'main',
-            source     => false,
-            keyfile    => 'puppet:///modules/toollabs/mariadb.gpg',
-        }
-        file { '/etc/apt/trusted.gpg.d/mariadb.gpg':
-            ensure => absent,
-        }
-    }
-
     # Users can choose their shell accounts names freely, and some
     # choose ones that can be misleading to third parties inter alia
     # when they are used to send and receive mail at
