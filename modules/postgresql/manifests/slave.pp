@@ -41,7 +41,6 @@ class postgresql::slave(
     $root_dir='/var/lib/postgresql',
     $use_ssl=false,
 ) {
-    require ::postgresql::packages
 
     $data_dir = "${root_dir}/${pgversion}/main"
 
