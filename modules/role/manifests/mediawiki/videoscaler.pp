@@ -5,6 +5,9 @@ class role::mediawiki::videoscaler {
     # Parent role
     include ::role::mediawiki::scaler
 
+    $hhvm_threads = floor(0.7 * $facts['processorcount'])
+    $prioritized_runners = floor(0.4 * $hhvm_threads)
+    $runners = $hhvm_threads - $prioritized_runners
     # Profiles
     include ::role::prometheus::apache_exporter
     include ::role::prometheus::hhvm_exporter
