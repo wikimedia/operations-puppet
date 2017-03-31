@@ -29,7 +29,6 @@ class changeprop(
     $purge_host   = '239.128.0.112',
     $purge_port   = 4827,
     $restbase_uri = 'http://restbase.svc.eqiad.wmnet:7231',
-    $ores_uri     = 'http://ores.svc.eqiad.wmnet:8081',
     $ores_uris    = [
         'http://ores.svc.eqiad.wmnet:8081',
         'http://ores.svc.codfw.wmnet:8081',
@@ -51,7 +50,6 @@ class changeprop(
             broker_list  => $broker_list,
             mwapi_uri    => $::service::configuration::mwapi_uri,
             restbase_uri => $restbase_uri,
-            ores_uri     => $ores_uri,
             ores_uris    => $ores_uris,
             purge_host   => $purge_host,
             purge_port   => $purge_port,
