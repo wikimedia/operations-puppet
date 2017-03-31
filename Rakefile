@@ -173,7 +173,7 @@ task :spec do
 
     # Hold a list of modules not passing tests.
     failed_modules = []
-    ignored_modules = ['mysql', 'osm', 'postgresql', 'puppetdbquery', 'stdlib', 'wdqs']
+    ignored_modules = ['mysql', 'osm', 'puppetdbquery', 'stdlib', 'wdqs']
 
     # Invoke rake whenever a module has a Rakefile.
     spec_modules.each do |module_name|
