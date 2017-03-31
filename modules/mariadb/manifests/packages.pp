@@ -1,13 +1,7 @@
-# MariaDB 5.5 debs -- slightly modified .debs from MariaDB.org.
-# Eventually these should probably just be upstream Debian packages by default.
+# MariaDB 5.5 debs
+# These are not used on production (packages_wmf.pp is used instead).
 
 class mariadb::packages {
-
-    apt::repository { 'wikimedia_mariadb':
-        uri        => 'http://apt.wikimedia.org/wikimedia',
-        dist       => 'precise-wikimedia',
-        components => 'mariadb',
-    }
 
     package { [
         'libmariadbclient18',
