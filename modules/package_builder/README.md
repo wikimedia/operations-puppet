@@ -16,13 +16,13 @@ with that class
 After puppet is done you will have 8 pristine cowbuilder environments. Those
 would be:
 
- * precise-amd64
  * trusty-amd64
  * jessie-amd64
+ * stretch-amd64
  * sid-amd64
- * precise-i386
  * trusty-i386
  * jessie-i386
+ * stretch-i386
  * sid-i386
 
 See more below on how to use those
@@ -40,7 +40,7 @@ or if you are developing a package and are in the package directory:
 
     DIST=jessie pdebuild
 
-Feel free to change jessie for precise, trusty or sid
+Feel free to change jessie for the distribution of your choice.
 
 Architectures
 =============
