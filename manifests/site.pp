@@ -1895,7 +1895,7 @@ node /^maps200[2-4]\.codfw\.wmnet/ {
 }
 
 node /^mc10(0[1-9]|1[0-8])\.eqiad\.wmnet/ {
-    role(memcached)
+    role(mediawiki::memcached)
 }
 
 # First of the new memcached/redis hosts
