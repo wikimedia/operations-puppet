@@ -27,7 +27,8 @@ class role::labs::dnsrecursor {
         description => 'Recursive DNS server for Labs instances',
     }
 
-    $keystoneconfig = hiera_hash('keystoneconfig', {})
+    $novaconfig = hiera_hash('novaconfig', {})
+
     $dnsconfig = hiera_hash('labsdnsconfig', {})
     include ::network::constants
     $all_networks = $::network::constants::all_networks
@@ -40,8 +41,7 @@ class role::labs::dnsrecursor {
     }
 
     #  We need to alias some public IPs to their corresponding private IPs.
-    $wikitech_nova_ldap_user_pass = $keystoneconfig['ldap_user_pass']
-    $wikitech_nova_admin_project_name = $keystoneconfig['admin_project_name']
+
     $nova_controller_hostname = hiera('labs_nova_controller')
 
     $listen_addresses = $::realm ? {
@@ -71,11 +71,11 @@ class role::labs::dnsrecursor {
     }
 
     class { '::dnsrecursor::labsaliaser':
-        username           => 'novaadmin',
-        password           => $wikitech_nova_ldap_user_pass,
-        nova_api_url       => "http://${nova_controller_hostname}:35357/v3",
-        alias_file         => $alias_file,
-        admin_project_name => $wikitech_nova_admin_project_name
+        username              => $novaconfig['observer_user'],
+        password              => $novaconfig['observer_password'],
+        nova_api_url          => "http://${nova_controller_hostname}:35357/v3",
+        alias_file            => $alias_file,
+        observer_project_name => $novaconfig['observer_project']
     }
     class { '::dnsrecursor::metalresolver':
         metal_resolver => $metal_resolver,

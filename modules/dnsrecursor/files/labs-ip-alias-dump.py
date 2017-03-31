@@ -44,7 +44,7 @@ def new_session(project):
     return keystone_session.Session(auth=auth)
 
 
-session = new_session(config['admin_project_name'])
+session = new_session(config['observer_project_name'])
 
 keystoneClient = keystone_client.Client(
     session=session, interface='public', connect_retries=5)
