@@ -4,8 +4,7 @@
 #
 # Parameters:
 #   pgversion
-#       Defaults to 9.1 in Ubuntu Precise, 9.3 in Ubuntu Trusty,
-#       and 9.4 in Debian Jessie. Ubuntu Precise may choose 8.4.
+#       Defaults to 9.3 in Ubuntu Trusty and 9.4 in Debian jessie.
 #       FIXME: Just use the unversioned package name and let apt
 #       do the right thing.
 #   ensure
@@ -30,7 +29,6 @@
 class postgresql::server(
     $pgversion        = $::lsbdistcodename ? {
         'jessie'  => '9.4',
-        'precise' => '9.1',
         'trusty'  => '9.3',
     },
     $ensure           = 'present',

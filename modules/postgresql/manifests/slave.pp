@@ -9,7 +9,7 @@
 #   replication_pass
 #       The password the replication user should use
 #   pgversion
-#       Defaults to 9.1. Valid values 8.4, 9.1 in Ubuntu
+#       Defaults to 9.3 in Ubuntu Trusty and 9.4 in Debian jessie.
 #   ensure
 #       Defaults to present
 #   root_dir
@@ -34,7 +34,6 @@ class postgresql::slave(
     $includes=[],
     $pgversion = $::lsbdistcodename ? {
         'jessie'  => '9.4',
-        'precise' => '9.1',
         'trusty'  => '9.3',
     },
     $ensure='present',

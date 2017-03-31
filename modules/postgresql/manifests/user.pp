@@ -33,7 +33,6 @@ define postgresql::user(
     $cidr = '127.0.0.1/32',
     $pgversion = $::lsbdistcodename ? {
         'jessie'  => '9.4',
-        'precise' => '9.1',
         'trusty'  => '9.3',
     },
     $attrs = '',
