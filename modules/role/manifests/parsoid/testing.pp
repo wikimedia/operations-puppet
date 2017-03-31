@@ -52,11 +52,6 @@ class role::parsoid::testing {
         notify  => Service['nginx'],
     }
 
-    logrotate::conf { 'parsoid_testing':
-        ensure => 'present',
-        source => 'puppet:///modules/parsoid/parsoid_testing.logrotate.conf',
-    }
-
     ferm::service { 'nginx-parsoid-testing':
         proto  => 'tcp',
         port   => 8001,
