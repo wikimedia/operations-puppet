@@ -128,8 +128,7 @@ AuthorizedKeysCommandUser ssh-key-ldap-lookup
 <% if @hostname == "iron" then %>
 
 # Use two-factor authentication on iron
-# AuthenticationMethods was introduced in openssh 6.2. Stock precise has only
-# 5.9, but we're already using a trusty backport (so 6.6) there (for T102401)
+# AuthenticationMethods was introduced in OpenSSH 6.2.
 # Members of the yubiauth group will use a second authentication factor based
 # on Yubico OTPs (allowing gradual migration towards 2fa)
 Match Group yubiauth
