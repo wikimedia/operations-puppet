@@ -5,11 +5,13 @@ import yaml
 import argparse
 import itertools
 
-from keystoneclient.session import Session as KeystoneSession
-from keystoneclient.auth.identity.v2 import Password as KeystonePassword
-from keystoneclient.client import Client as KeystoneClient
+from keystoneclient.auth.identity import generic
+from keystoneclient import session as keystone_session
+
+from keystoneclient.v3 import client as keystone_client
 
 from novaclient import client as novaclient
+
 
 argparser = argparse.ArgumentParser()
 argparser.add_argument(
@@ -29,28 +31,32 @@ LUA_LINE_TEMPLATE = '{table}["{key}"] = "{value}" -- {comment}\n'
 args = argparser.parse_args()
 config = yaml.safe_load(args.config_file)
 
-auth = KeystonePassword(
-    auth_url=config['nova_api_url'],
-    username=config['username'],
-    password=config['password'],
-    tenant_name=config['admin_project_name']
-)
-keystoneClient = KeystoneClient(
-    session=KeystoneSession(auth=auth), endpoint=config['nova_api_url'])
+
+def new_session(project):
+    auth = generic.Password(
+        auth_url=config['nova_api_url'],
+        username=config['username'],
+        password=config['password'],
+        user_domain_name='Default',
+        project_domain_name='Default',
+        project_name=project)
+
+    return keystone_session.Session(auth=auth)
+
+
+session = new_session(config['admin_project_name'])
+
+keystoneClient = keystone_client.Client(
+    session=session, interface='public', connect_retries=5)
 
 projects = []
-for tenant in keystoneClient.tenants.list():
+for tenant in keystoneClient.projects.list():
     projects.append(tenant.name)
 
 aliases = {}
 for project in projects:
-    client = novaclient.Client(
-        "1.1",
-        config['username'],
-        config['password'],
-        project,
-        config['nova_api_url']
-    )
+    project_session = new_session(project)
+    client = novaclient.Client('2', session=project_session, connect_retries=5)
 
     for server in client.servers.list():
         serverAddresses = {}
