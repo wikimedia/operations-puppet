@@ -5,14 +5,6 @@ class package_builder::environments(
     $basepath='/var/cache/pbuilder',
 ) {
     # amd64 architecture
-    package_builder::pbuilder_base { 'precise-amd64':
-        distribution => 'precise',
-        components   => 'main universe',
-        architecture => 'amd64',
-        mirror       => 'http://mirrors.wikimedia.org/ubuntu',
-        keyring      => '/usr/share/keyrings/ubuntu-archive-keyring.gpg',
-        basepath     => $basepath,
-    }
     package_builder::pbuilder_base { 'trusty-amd64':
         distribution => 'trusty',
         components   => 'main universe',
@@ -47,14 +39,6 @@ class package_builder::environments(
         basepath           => $basepath,
     }
     # i386 architecture
-    package_builder::pbuilder_base { 'precise-i386':
-        distribution => 'precise',
-        components   => 'main universe',
-        architecture => 'i386',
-        mirror       => 'http://mirrors.wikimedia.org/ubuntu',
-        keyring      => '/usr/share/keyrings/ubuntu-archive-keyring.gpg',
-        basepath     => $basepath,
-    }
     package_builder::pbuilder_base { 'trusty-i386':
         distribution => 'trusty',
         components   => 'main universe',
