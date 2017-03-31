@@ -1055,6 +1055,8 @@ lvs::configuration::lvs_services:
       sites:
         eqiad:
           hostname: ores.svc.eqiad.wmnet
+        codfw:
+          hostname: ores.svc.codfw.wmnet
     monitors:
       ProxyFetch:
         url:
