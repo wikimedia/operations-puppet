@@ -1,0 +1,668 @@
+/* This file is managed by Puppet!
+ *
+ * Copyright (C) 2000-2002 Hybrid Development Team
+ * Copyright (C) 2002-2003 ircd-ratbox development team
+ *
+ * Written by ejb, wcampbel, db, leeh and others
+ * Previously modified for EFNet by Disciple
+ *
+ * $Id: example.efnet.conf 23955 2007-05-14 17:22:36Z leeh $
+ */
+
+/* IMPORTANT NOTES:
+ *
+ * class {} blocks MUST be specified before anything that uses them.  That
+ * means they must be defined before auth {} and before connect {}.
+ *
+ * auth {} blocks MUST be specified in order of precedence.  The first one
+ * that matches a user will be used.  So place spoofs first, then specials,
+ * then general access, then restricted.
+ *
+ * Both shell style (#) and C style comments are supported.
+ *
+ * Files may be included by either:
+ *        .include "filename"
+ *        .include <filename>
+ *
+ * Times/durations are written as:
+ *        12 hours 30 minutes 1 second
+ *
+ * Valid units of time:
+ *        month, week, day, hour, minute, second
+ *
+ * Valid units of size:
+ *        megabyte/mbyte/mb, kilobyte/kbyte/kb, byte
+ *
+ * Sizes and times may be singular or plural.
+ */
+
+ /* serverinfo {}:  Contains information about the server. (OLD M:) */
+serverinfo {
+	/* name: the name of our server */
+	name = "irc.wikimedia.org";
+
+	/* use ts6: whether we want to use the TS6 protocol to other servers
+	 * or not.
+	 */
+	use_ts6 = no;
+
+	/* sid: the unique server id of our server.  This must be three
+	 * characters long.  The first character must be a digit [0-9], the
+	 * remaining two chars may be letters [A-Z] or digits [0-9].
+	 *
+	 * This must be specified even if use_ts6 is set to no.
+	 */
+	sid = "42Y";
+
+	/* description: the description of our server.  '[' and ']' may not
+	 * be used here for compatibility with older servers.
+	 */
+	description = "Wikimedia IRC Server";
+
+	/* network info: the name and description of the network this server
+	 * is on.  Shown in the 005 reply and used with serverhiding.
+	 */
+	network_name = "Wikimedia";
+	network_desc = "Wikimedia RC -> IRC gateway";
+
+	/* hub: allow this server to act as a hub and have multiple servers
+	 * connected to it.
+	 */
+	hub = no;
+
+	/* vhost: the IP to bind to when we connect outward to ipv4 servers.
+	 * This should be an ipv4 IP only.
+	 */
+	#vhost = "192.169.0.1";
+
+	/* vhost6: the IP to bind to when we connect outward to ipv6 servers.
+	 * This should be an ipv6 IP only.
+	 */
+	#vhost6 = "3ffe:80e8:546::2";
+
+	/* default max clients: the default maximum number of clients
+	 * allowed to connect.  This can be changed once ircd has started by
+	 * issuing:
+	 *   /quote set maxclients <limit>
+	 */
+	default_max_clients = 10000;
+};
+
+/* admin {}: contains admin information about the server. (OLD A:) */
+admin {
+	name = "Wikimedia Administrators";
+	description = "Wikimedia Administrator";
+	email = "noc@wikimedia.org";
+};
+
+/* log {}: contains information about logfiles. */
+log {
+	/* logfiles: the logfiles to use for specific activity.  if these
+	 * paths are defined, then ircd will log to them, otherwise it wont.
+	 *
+	 * The confs are, in order:
+	 * - userlog:    user exits
+	 * - fuserlog:   failed user connections
+	 * - operlog:    /oper usage
+	 * - foperlog:   failed /oper usage
+	 * - serverlog:  server connects/disconnects
+	 * - glinelog:   glines
+	 * - klinelog:   klines, etc
+	 * - killlog:    kills
+	 * - operspylog: operspy usage
+	 * - ioerrorlog: IO errors
+	 */
+	fname_userlog = "logs/userlog";
+	#fname_fuserlog = "logs/fuserlog";
+	fname_operlog = "logs/operlog";
+	#fname_foperlog = "logs/foperlog";
+	fname_serverlog = "logs/serverlog";
+	fname_glinelog = "logs/glinelog";
+	#fname_klinelog = "logs/klinelog";
+	fname_killlog = "logs/killlog";
+	fname_operspylog = "logs/operspylog";
+	#fname_ioerrorlog = "logs/ioerror";
+};
+
+/* class {}: contain information about classes for users (OLD Y:) */
+class "users" {
+	/* class name must go above */
+
+	/* ping time: how often a client must reply to a PING from the
+	 * server before they are dropped.
+	 */
+	ping_time = 3 minutes;
+
+	/* number per ident: the number of users per user@host networkwide
+	 * allowed to connect.  Unidented connections are classified as
+	 * the same ident.
+	 */
+	number_per_ident = 30000;
+
+	/* number per ip: the number of local users per host allowed */
+	number_per_ip = 30000;
+
+	/* number per ip global: the number of network wide connections
+	 * per host allowed for a user, including connections to the
+	 * local server.
+	 */
+	number_per_ip_global = 30000;
+
+	/* cidr_bitlen:  Limits numbers of connections from a subnet size
+	 * the following example makes the subnet /64 this is useful
+	 * for IPv6 connections in particular
+	 * Also note that the way ircd-ratbox is written if you have
+	 * compiled support for IPv6, IPv4 cidr bitlens need to be modified
+	 * Basically to get the approriate length add 96 to the IPv4 length
+	 * For example for a /24 do 96+24 = 120
+	 *
+	 */
+	cidr_bitlen = 32;
+
+	/* number_per_cidr:  Number of connections to allow from a subnet of the
+	 * size given in cidr_bitlen.  4 seems to be a good default to me.
+	 */
+	number_per_cidr = 3000;
+
+	/* max number: the maximum number of users allowed in this class */
+	max_number = 10000;
+
+	/* sendq: the amount of data allowed in a clients queue before
+	 * they are dropped.
+	 */
+	sendq = 100 kbytes;
+};
+
+class "restricted" {
+	ping_time = 1 minute 30 seconds;
+	number_per_ip = 100;
+	max_number = 100;
+	sendq = 60kb;
+};
+
+class "opers" {
+	ping_time = 5 minutes;
+	number_per_ip = 0;
+	max_number = 10;
+	sendq = 2 mb;
+};
+
+class "server" {
+	ping_time = 5 minutes;
+
+	/* connectfreq: only used in server classes.  specifies the delay
+	 * between autoconnecting to servers.
+	 */
+	connectfreq = 10 minutes;
+
+	/* max number: the amount of servers to autoconnect to */
+	max_number = 10;
+
+	/* sendq: servers need a higher sendq as they send more data */
+	sendq=15 megabytes;
+};
+
+/* listen {}: contain information about the ports ircd listens on (OLD P:) */
+listen {
+	/* port: the specific port to listen on.  if no host is specified
+	 * before, it will listen on all available IPs.
+	 *
+	 * ports are seperated via a comma, a range may be specified using ".."
+	 */
+
+	/* port: listen on all available IPs, ports 5000, 6665 to 6669 */
+	port = 6664 .. 6669, 8001;
+
+};
+
+# The auth and operator blocks are in the private repo.
+.include "auth.conf"
+.include "operator.conf"
+
+/* The channel block contains options pertaining to channels */
+channel {
+	/* invex: Enable/disable channel mode +I, a n!u@h list of masks
+	 * that can join a +i channel without an invite.
+	 *
+	 * EFNet Note: This MUST be run on efnet.
+	 */
+	use_invex = yes;
+
+	/* except: Enable/disable channel mode +e, a n!u@h list of masks
+	 * that can join a channel through a ban (+b).
+	 *
+	 * EFNet Note: This MUST be run on efnet.
+	 */
+	use_except = yes;
+
+	/* knock: Allows users to request an invite to a channel that
+	 * is locked somehow (+ikl).  If the channel is +p or you are banned
+	 * the knock will not be sent.
+	 */
+	use_knock = yes;
+
+	/* invite ops only: Restrict /invite to ops on channels, rather than
+	 * allowing unopped users to invite people to a -i channel.
+	 */
+	invite_ops_only = yes;
+
+	/* knock delay: The amount of time a user must wait between issuing
+	 * the knock command.
+	 */
+	knock_delay = 1 minute;
+
+	/* knock channel delay: How often a knock to any specific channel
+	 * is permitted, regardless of the user sending the knock.
+	 */
+	knock_delay_channel = 1 minute;
+
+	/* max chans: The maximum number of channels a user can join/be on. */
+	max_chans_per_user = 20000;
+
+	/* quiet on ban: stop banned people talking in channels. */
+	quiet_on_ban = yes;
+
+	/* max bans: maximum number of +b/e/I modes in a channel */
+	/* EFNET approved 100 at 01/08/03 */
+	max_bans = 100;
+
+	/* splitcode: split users, split servers and either no join on split
+	 * or no create on split must be enabled for split checking.
+	 * splitmode will be entered on either split users or split servers
+	 * dropping below the limit.
+	 *
+	 * you may force splitmode to be permanent by /quote set splitmode on
+	 */
+
+	/* split users: when the usercount is lower than this level, consider
+	 * ourselves split.  this must be set for automatic splitmode
+	 */
+	default_split_user_count = 20000;
+
+	/* split servers: when the amount of servers that have acknowledged
+	 * theyve finished bursting is lower than this, consider ourselves
+	 * split.  this must be set for automatic splitmode
+	 */
+	default_split_server_count = 15;
+
+	/* split: no create: disallow users creating channels on split
+	 *
+	 * EFNet Note: This MUST be run on efnet.
+	 */
+	no_create_on_split = yes;
+
+	/* split: no join: disallow users joining channels at all on a split */
+	no_join_on_split = no;
+
+	/* burst topicwho: when bursting topics, also burst the topic setter */
+	/* NOTE: on efnet this will add about 500k-1mb to a burst. */
+	burst_topicwho = yes;
+};
+
+
+/* The general block contains many of the options that were once compiled
+ * in options in config.h.  The general block is read at start time.
+ */
+general {
+	/* hide error messages: defines whether error messages from
+	 * servers are hidden or not.  These can sometimes contain IPs and
+	 * can have an adverse effect on server ip hiding.  Set to:
+	 *   yes:   hide from opers and admin
+	 *   opers: hide from opers only
+	 *   no:    do not hide error messages
+	 */
+	hide_error_messages = opers;
+
+	/* hide spoof ips: hide the real ips of spoofed users */
+	hide_spoof_ips = yes;
+
+	/* default invisible: set clients +i on connect */
+	default_invisible = no;
+
+	/* default operstring: defines the default oper response
+	 * in /whois queries, eg "is an IRC Operator"
+	 */
+	default_operstring = "is an IRC Operator";
+
+	/* default adminstring: defines the default admin response
+	 * in /whois queries, eg "is a Server Administrator"
+	 */
+	default_adminstring = "is a Server Administrator";
+
+	/* tkline_expire_notices: give a notice to opers when a tkline
+	 * expires
+	 */
+	tkline_expire_notices = no;
+
+	/* floodcount: the default value of floodcount that is configurable
+	 * via /quote set floodcount.  This is the amount of lines a user
+	 * may send to any other user/channel in one second.
+	 */
+	default_floodcount = 10;
+
+	/* disable fake channels: disable local users joining fake versions
+	 * of channels, eg #foo^B^B.  Disables bold, mirc colour, reverse,
+	 * underline and hard space.  (ASCII 2, 3, 22, 31, 160 respectively).
+	 */
+	disable_fake_channels = yes;
+
+	/* failed oper notice: send a notice to all opers on the server when
+	 * someone tries to OPER and uses the wrong password, host or ident.
+	 */
+	failed_oper_notice = yes;
+
+	/* dots in ident: the amount of '.' characters permitted in an ident
+	 * reply before the user is rejected.
+	 */
+	dots_in_ident=2;
+
+	/* dot in ipv6: ircd-hybrid-6.0 and earlier will disallow hosts
+	 * without a '.' in them.  this will add one to the end.  only needed
+	 * for older servers.
+	 */
+	dot_in_ip6_addr = no;
+
+	/* min nonwildcard: the minimum non wildcard characters in k/d/g lines
+	 * placed via the server.  klines hand placed are exempt from limits.
+	 * wildcard chars: '.' '*' '?' '@'
+	 */
+	min_nonwildcard = 3;
+
+	/* min nonwildcard simple: the minimum non wildcard characters in
+	 * xlines/resvs placed via the server.
+	 * wildcard chars: '*' '?'
+	 */
+	min_nonwildcard_simple = 3;
+
+	/* max accept: maximum allowed /accept's for +g usermode */
+	max_accept = 200;
+
+	/* max monitor: the maximum amount of nicknames a client may have in
+	 * their monitor (server-side notify) list.
+	 */
+	max_monitor = 80;
+
+	/* nick flood: enable the nickflood control code */
+	anti_nick_flood = yes;
+
+	/* nick flood: the nick changes allowed in the specified period */
+	max_nick_time = 20 seconds;
+	max_nick_changes = 5;
+
+	/* anti spam time: the minimum time a user must be connected before
+	 * custom quit messages are allowed.
+	 */
+	anti_spam_exit_message_time = 5 minutes;
+
+	/* ts delta: the time delta allowed between server clocks before
+	 * a warning is given, or before the link is dropped.  all servers
+	 * should run ntpdate/rdate to keep clocks in sync
+	 */
+	ts_warn_delta = 30 seconds;
+	ts_max_delta = 5 minutes;
+
+	/* client exit: prepend a users quit message with "Client exit: " */
+	client_exit = yes;
+
+	/* dline reason: show the user the dline reason when they connect
+	 * and are dlined.
+	 */
+	dline_with_reason = yes;
+
+	/* kline delay: delay the checking of klines until a specified time.
+	 * Useful if large kline lists are applied often to prevent the
+	 * server eating CPU.
+	 */
+	kline_delay = 5 seconds;
+
+	/* kline reason: show the user the reason why they are k/d/glined
+	 * on exit.  may give away who set k/dline when set via tcm.
+	 */
+	kline_with_reason = yes;
+
+	/* kline reason: make the users quit message on channels this
+	 * reason instead of the oper's reason.
+	 */
+	kline_reason = "Connection closed";
+
+	/* non redundant klines: flag and ignore redundant klines */
+	non_redundant_klines = yes;
+
+	/* warn no nline: warn opers about servers that try to connect but
+	 * we dont have a connect {} block for.  Twits with misconfigured
+	 * servers can get really annoying with this enabled.
+	 */
+	warn_no_nline = yes;
+
+	/* stats e disabled: disable stats e.  useful if server ips are
+	 * exempted and you dont want them listing on irc.
+	 */
+	stats_e_disabled = no;
+
+	/* stats c oper only: make stats c (connect {}) oper only */
+	stats_c_oper_only=no;
+
+	/* stats h oper only: make stats h (hub_mask/leaf_mask) oper only */
+	stats_h_oper_only=no;
+
+	/* stats y oper only: make stats y (class {}) oper only */
+	stats_y_oper_only=no;
+
+	/* stats o oper only: make stats o (opers) oper only */
+	stats_o_oper_only=yes;
+
+	/* stats P oper only: make stats P (ports) oper only
+	 * NOTE: users doing stats P will never be given the ips that the
+	 * server listens on, simply the ports.
+	 */
+	stats_P_oper_only=no;
+
+	/* stats i oper only: make stats i (auth {}) oper only. set to:
+	 *     yes:    show users no auth blocks, made oper only.
+	 *     masked: show users first matching auth block
+	 *     no:     show users all auth blocks.
+	 */
+	stats_i_oper_only=yes;
+
+	/* stats k/K oper only: make stats k/K (klines) oper only.  set to:
+	 *     yes:    show users no auth blocks, made oper only
+	 *     masked: show users first matching auth block
+	 *     no:     show users all auth blocks.
+	 */
+	stats_k_oper_only=yes;
+
+	/* map oper only: make /map oper only */
+	map_oper_only = yes;
+
+	/* operspy admin only: make operspy notices to +Z admin only */
+	operspy_admin_only = no;
+
+	/* caller id wait: time between notifying a +g user that somebody
+	 * is messaging them.
+	 */
+	caller_id_wait = 1 minute;
+
+	/* pace wait simple: time between use of less intensive commands
+	 * (HELP, remote WHOIS, WHOWAS)
+	 */
+	pace_wait_simple = 1 second;
+
+	/* pace wait: time between more intensive commands
+	 * (ADMIN, INFO, LIST, LUSERS, MOTD, STATS, VERSION)
+	 */
+	pace_wait = 10 seconds;
+
+	/* short motd: send clients a notice telling them to read the motd
+	 * instead of forcing a motd to clients who may simply ignore it.
+	 */
+	short_motd = no;
+
+	/* ping cookies: require clients to respond exactly to a ping command,
+	 * can help block certain types of drones and FTP PASV mode spoofing.
+	 */
+	ping_cookie = no;
+
+	/* connect timeout: sets how long we should wait for a connection
+	 * request to succeed
+	 */
+	connect_timeout = 30 seconds;
+
+	/* disable auth: disables identd checking */
+	disable_auth = no;
+
+	/* no oper flood: increase flood limits for opers. */
+	no_oper_flood = yes;
+
+	/* glines: enable glines, network wide temp klines */
+	/*
+	 * EFnet Note: This feature is required for European EFnet servers
+	 *             and is used by several North American servers.  As
+	 *             such, it has been left on by default.  If you
+	 *             do not want your server to participate in G:Lines
+	 *             you should disable this.
+	 */
+	glines = yes;
+
+	/* gline time: the amount of time a gline will remain before expiring */
+	gline_time = 1 day;
+
+	/* gline_min_cidr: If using a CIDR gline, the minimum length the
+	 * mask must be
+	 */
+	gline_min_cidr = 16;
+
+	/* idletime: the maximum amount of time a user may idle before
+	 * they are disconnected
+	 */
+	idletime = 0;
+
+	/* REMOVE ME.  The following line checks you've been reading. */
+
+
+	/* max targets: the maximum amount of targets in a single
+	 * PRIVMSG/NOTICE.  set to 999 NOT 0 for unlimited.
+	 */
+	max_targets = 4;
+
+	/* client flood: maximum number of lines in a clients queue before
+	 * they are dropped for flooding.
+	 */
+	client_flood = 20;
+
+	/* use_whois_actually: send clients requesting a whois a numeric
+	 * giving the real IP of non-spoofed clients to prevent DNS abuse.
+	 */
+	use_whois_actually = yes;
+
+	/* usermodes configurable: a list of usermodes for the options below
+	 *
+	 * +b - bots       - See bot and drone flooding notices
+	 * +c - cconn      - Client connection/quit notices
+	 * +C - cconnext   - Extended client connection/quit notices
+	 * +d - debug      - See debugging notices
+	 * +f - full       - See I: line full notices
+	 * +g - callerid   - Server Side Ignore
+	 * +i - invisible  - Not shown in NAMES or WHO unless you share a
+	 *                   a channel
+	 * +k - skill      - See server generated KILL messages
+	 * +l - locops     - See LOCOPS messages
+	 * +n - nchange    - See client nick changes
+	 * +r - rej        - See rejected client notices
+	 * +s - servnotice - See general server notices
+	 * +u - unauth     - See unauthorised client notices
+	 * +w - wallop     - See server generated WALLOPS
+	 * +x - external   - See remote server connection and split notices
+	 * +y - spy        - See LINKS, STATS, TRACE notices etc.
+	 * +z - operwall   - See oper generated WALLOPS
+	 * +Z - operspy    - See operspy notices
+	 */
+
+	/* oper only umodes: usermodes only opers may set */
+	oper_only_umodes = bots, cconn, debug, full, skill, nchange,
+		rej, spy, external, operwall, locops, unauth;
+
+	/* oper umodes: default usermodes opers get when they /oper */
+	oper_umodes = locops, servnotice, operwall, wallop;
+
+	/* servlink path: path to 'servlink' program used by ircd to handle
+	 * encrypted/compressed server <-> server links.
+	 *
+	 * only define if servlink is not in same directory as ircd itself.
+	 */
+	#servlink_path = "/usr/local/ircd/bin/servlink";
+
+	/* use egd: if your system does not have *random devices yet you
+	 * want to use OpenSSL and encrypted links, enable this.  Beware -
+	 * EGD is *very* CPU intensive when gathering data for its pool
+	 */
+	#use_egd = yes;
+
+	/* egdpool path: path to EGD pool. Not necessary for OpenSSL >= 0.9.7
+	 * which automatically finds the path.
+	 */
+	#egdpool_path = "/var/run/egd-pool";
+
+
+	/* compression level: level of compression for compressed links between
+	 * servers.
+	 *
+	 * values are between: 1 (least compression, fastest)
+	 *                and: 9 (most compression, slowest).
+	 */
+	#compression_level = 6;
+
+	/* burst_away: This enables bursting away messages to servers.
+	 * With this disabled, we will only propogate AWAY messages
+	 * as users send them, but never burst them.  Be warned though
+	 * enabling this could increase the size of a burst significantly
+	 * for a large network, like EFnet.
+	 */
+        /* egdpool path: path to EGD pool. Not necessary for OpenSSL >= 0.9.7
+         * which automatically finds the path.
+         */
+        #egdpool_path = "/var/run/egd-pool";
+
+
+        /* compression level: level of compression for compressed links between
+         * servers.
+         *
+         * values are between: 1 (least compression, fastest)
+         *                and: 9 (most compression, slowest).
+         */
+        #compression_level = 6;
+
+        /* burst_away: This enables bursting away messages to servers.
+         * With this disabled, we will only propogate AWAY messages
+         * as users send them, but never burst them.  Be warned though
+         * enabling this could increase the size of a burst significantly
+         * for a large network, like EFnet.
+         */
+        burst_away = yes;
+
+        /* reject time: the amount of rejections through klines/dlines etc
+         * allowed in the given time before the rejection is cached and
+         * a pseudo temp dline is placed
+         */
+        reject_ban_time = 1 minute;
+        reject_after_count = 3;
+
+        /* reject duration: the amount of time to cache the rejection */
+        reject_duration = 5 minutes;
+
+        /* max_unknown_ip: maximum number of pending connections to the server
+         * that are allowed per IP address
+         */
+        max_unknown_ip = 200;
+};
+
+modules {
+        /* module path: paths to search for modules specified below and
+         * in /modload.
+         */
+        path = "/usr/local/ircd/modules";
+        path = "/usr/local/ircd/modules/autoload";
+
+        /* module: the name of a module to load on startup/rehash */
+        #module = "some_module.so";
+};
+

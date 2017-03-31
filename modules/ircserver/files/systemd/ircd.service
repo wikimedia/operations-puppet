@@ -1,0 +1,10 @@
+[Unit]
+Description=IRCd for Mediawiki RecentChanges feed
+After=network.target
+
+[Service]
+User=irc
+Group=irc
+ExecStart=/usr/bin/ircd -foreground
+[Install]
+WantedBy=multi-user.target
