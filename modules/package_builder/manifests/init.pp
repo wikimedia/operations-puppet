@@ -56,11 +56,6 @@ class package_builder(
         require_package('ubuntu-archive-keyring')
     }
 
-    if os_version('ubuntu < trusty') {
-        # we cannot build debian debootstrap environments on old ubuntu hosts (T111730)
-        fail('package_builder requires ubuntu >= trusty')
-    }
-
     file { '/etc/pbuilderrc':
         ensure  => present,
         owner   => 'root',
