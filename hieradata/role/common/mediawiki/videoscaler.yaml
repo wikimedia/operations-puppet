@@ -3,12 +3,12 @@ admin::groups:
   - deployment
   - perf-roots
 profile::mediawiki::jobrunner::runners:
-  transcode: 6
-  transcode_prioritized: 4
+  transcode: "%{::role::mediawiki::videoscaler::runners}"
+  transcode_prioritized: "%{::role::mediawiki::videoscaler::prioritized_runners}"
 nutcracker::verbosity: "4"
 hhvm::extra::fcgi:
   hhvm:
     server:
       connection_timeout_seconds: 86400
-      thread_count: 15
+      thread_count: "%{role::mediawiki::videoscaler::hhvm_threads}"
   max_execution_time: 86400
