@@ -1,6 +1,6 @@
 profile::mediawiki::jobrunner::runners:
   transcode: 8
-  transcode_prioritized: 12
+  transcode_prioritized: 8
 hhvm::extra::fcgi:
   hhvm:
     server:
