@@ -13,12 +13,6 @@ class package_builder::hooks(
 
     # Note: sid does not have a wikimedia repo and will never do so no hook for
     # it for now
-    package_builder::pbuilder_hook { 'precise':
-        distribution => 'precise',
-        components   => 'main universe non-free thirdparty mariadb',
-        basepath     => $basepath,
-    }
-
     package_builder::pbuilder_hook { 'trusty':
         distribution => 'trusty',
         components   => 'main universe non-free thirdparty',
@@ -31,7 +25,6 @@ class package_builder::hooks(
         basepath     => $basepath,
     }
 
-    File["${basepath}/hooks"] -> Package_builder::Pbuilder_hook['precise']
     File["${basepath}/hooks"] -> Package_builder::Pbuilder_hook['trusty']
     File["${basepath}/hooks"] -> Package_builder::Pbuilder_hook['jessie']
 }
