@@ -1,6 +1,6 @@
 swift::proxy::statsd_host: 'localhost'
 swift::proxy::backend_url_format: 'sitelang'
-swift::proxy::rewrite_thumb_server: 'rendering.svc.eqiad.wmnet'
+swift::proxy::rewrite_thumb_server: 'imagescaler-rw.discovery.wmnet'
 swift::proxy::dispersion_account: 'dispersion'
 swift::proxy::rewrite_account: 'mw_media'
 swift::proxy::shard_container_list: [
