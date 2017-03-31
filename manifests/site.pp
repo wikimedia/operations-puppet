@@ -2436,19 +2436,9 @@ node /^puppetmaster[12]002\.(codfw|eqiad)\.wmnet$/ {
 
 
 # pybal-test200X VMs are used for pybal testing/development
-node /^pybal-test200[12]\.codfw\.wmnet$/ {
+node /^pybal-test200[123]\.codfw\.wmnet$/ {
     role(pybaltest)
     include ::standard
-}
-
-# pybal-test2003 is used for pybal testing/development
-# and for redis multi-instance testing/development
-node 'pybal-test2003.codfw.wmnet' {
-    role(pybaltest)
-    include ::standard
-
-    redis::instance { 6370: }
-    redis::instance { 6371: }
 }
 
 # Tor relay
