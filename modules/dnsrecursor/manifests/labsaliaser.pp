@@ -4,7 +4,7 @@ class dnsrecursor::labsaliaser(
     $nova_api_url,
     $extra_records,
     $alias_file,
-    $admin_project_name,
+    $observer_project_name,
 ) {
 
     require_package(['python-novaclient', 'python-keystoneclient'])
@@ -15,7 +15,7 @@ class dnsrecursor::labsaliaser(
         'output_path'        => $alias_file,
         'nova_api_url'       => $nova_api_url,
         'extra_records'      => $extra_records,
-        'admin_project_name' => $admin_project_name,
+        'observer_project_name' => $observer_project_name,
     }
 
     file { '/etc/labs-dns-alias.yaml':
