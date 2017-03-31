@@ -1,6 +1,7 @@
 # Main microservices
 parsoid: [eqiad, codfw]
 restbase: [eqiad, codfw]
+restbase-async: [eqiad, codfw]
 search: [eqiad, codfw]
 # All the rest
 apertium: [eqiad, codfw]
