@@ -46,19 +46,6 @@ class releases::reprepro {
     class { '::aptrepo::distribution':
         basedir  => $basedir,
         settings => {
-            'precise' => {
-                'Origin'        => 'MediaWiki',
-                'Label'         => 'MediaWiki',
-                'Suite'         => 'precise-mediawiki',
-                'Codename'      => 'precise-mediawiki',
-                'AlsoAcceptFor' => 'precise',
-                'Version'       => '12.04',
-                'Architectures' => 'source amd64 i386',
-                'Components'    => 'main',
-                'Description'   => 'MediaWiki packages for Ubuntu Precise Pangolin',
-                'SignWith'      => 'default',
-                'Log'           => "precise-mediawiki\n  log",
-            },
             'trusty'  => {
                 'Origin'        => 'MediaWiki',
                 'Label'         => 'MediaWiki',
