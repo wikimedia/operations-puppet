@@ -55,6 +55,11 @@ for tenant in keystoneClient.projects.list():
 
 aliases = {}
 for project in projects:
+    # There's nothing useful in 'admin,' and
+    #  the novaobserver isn't a member.
+    if project == 'admin':
+        continue
+
     project_session = new_session(project)
     client = novaclient.Client('2', session=project_session, connect_retries=5)
 
