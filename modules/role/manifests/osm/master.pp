@@ -48,11 +48,6 @@ class role::osm::master(
 
     # Create the spatialdb
     postgresql::spatialdb { 'gis': }
-    # Import planet.osm
-    osm::planet_import { 'gis':
-        input_pbf_file => '/srv/labsdb/planet-latest-osm.pbf',
-        require        => Postgresql::Spatialdb['gis']
-    }
     osm::planet_sync { 'gis':
         pg_password => hiera('osm::postgresql_osmupdater_pass'),
         period      => 'day',
