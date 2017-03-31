@@ -74,4 +74,4 @@ role::eventstreams::rdkafka_config:
   # Send rdkafka stats to statsd once per minute.
   statistics.interval.ms: 60000
 
-changeprop::restbase_uri: http://restbase.svc.codfw.wmnet:7231
+changeprop::restbase_uri: http://restbase-async.discovery.wmnet:7231
