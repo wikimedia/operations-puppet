@@ -18,6 +18,9 @@ class profile::redis::multidc(
         'requirepass' => $password,
     }
 
+    unless $instances {
+        fail("No instances defined in redis::shards[${category}] for ip ${ip}. The redis configuration cannot be performed.")
+    }
     system::role { "profile::redis::${category}": }
 
     # Set up ipsec

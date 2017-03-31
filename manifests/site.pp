@@ -1895,7 +1895,7 @@ node /^maps200[2-4]\.codfw\.wmnet/ {
 }
 
 node /^mc10(0[1-9]|1[0-8])\.eqiad\.wmnet/ {
-    role(memcached)
+    role(mediawiki::memcached)
 }
 
 # First of the new memcached/redis hosts
@@ -1906,7 +1906,7 @@ node 'mc1019.eqiad.wmnet' {
 }
 
 node /^mc20(19|2[0-9]|3[0-6])\.codfw\.wmnet/ {
-    role(memcached)
+    role(mediawiki::memcached)
 }
 
 # archiva.wikimedia.org

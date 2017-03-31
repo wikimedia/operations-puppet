@@ -9,5 +9,4 @@ class role::memcached {
     include base::firewall
     include profile::memcached::instance
     include profile::memcached::memkeys
-    include profile::redis::multidc
 }
