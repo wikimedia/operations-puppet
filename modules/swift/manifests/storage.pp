@@ -34,7 +34,7 @@ class swift::storage (
     rsync::server::module { 'object':
         uid             => 'swift',
         gid             => 'swift',
-        max_connections => '13',
+        max_connections => '20',
         path            => '/srv/swift-storage/',
         read_only       => 'no',
         lock_file       => '/var/lock/object.lock',
