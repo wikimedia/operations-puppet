@@ -5,8 +5,6 @@
 class role::labs::instance_info_dumper {
     require_package('python-requests')
 
-    $novaconfig = hiera_hash('novaconfig', {})
-
     file { '/usr/local/sbin/instance-info-dumper':
         ensure => present,
         source => 'puppet:///modules/role/labs/instance-info-dumper.py',
@@ -16,13 +14,8 @@ class role::labs::instance_info_dumper {
     }
 
     $config = {
-        'credentials' => {
-            'username' => 'novaadmin',
-            'api_key'  => $novaconfig['ldap_user_pass'],
-            'auth_url' => "http://${novaconfig['controller_hostname']}:35357/v2.0",
-        },
-    'enc_host'    => hiera('labs_puppet_master'),
-    'output_path' => '/srv/instance-info.yaml',
+        'enc_host'    => hiera('labs_puppet_master'),
+        'output_path' => '/srv/instance-info.yaml',
     }
 
 

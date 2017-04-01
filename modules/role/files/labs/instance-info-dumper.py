@@ -2,16 +2,16 @@
 """
 Dump info about all instances in all projects to a JSON file
 """
-from novaclient import client as novaclient
 import yaml
 import json
 import requests
 
+import mwopenstackclients
 
-image_name_cache = {}
+all_images = None
 
 
-def get_image_name(client, id):
+def get_image_name(clients, id):
     """
     Find name of an image with given id
 
@@ -22,13 +22,16 @@ def get_image_name(client, id):
 
     Returns name of the image, or None if it can't be found
     """
-    if id not in image_name_cache:
-        try:
-            image_name_cache[id] = client.images.get(id).name
-        except novaclient.exceptions.NotFound:
-            image_name_cache[id] = None
+    global all_images
 
-    return image_name_cache[id]
+    if not all_images:
+        global_images = clients.globalimages()
+        all_images = {image.id: image for image in global_images}
+
+    if id in all_images:
+        return all_images[id].name
+    else:
+        return None
 
 
 def get_enc_info(api_host, project, instance):
@@ -51,12 +54,11 @@ def get_enc_info(api_host, project, instance):
 
 
 def main():
-    with open('/etc/instance-dumper.yaml') as f:
+    with open('/home/andrew/instance-dumper.yaml') as f:
         config = yaml.safe_load(f)
 
-    client = novaclient.Client("2.0", project_id='admin', **config['credentials'])
-
-    servers = client.servers.list(search_opts={'all_tenants': 1})
+    clients = mwopenstackclients.Clients(envfile='/etc/novaobserver.yaml')
+    servers = clients.allinstances()
 
     data = {}
     for s in servers:
@@ -67,7 +69,7 @@ def main():
             'status': s.status,
             'project': s.tenant_id,
             'ips': s.networks['public'],
-            'image': get_image_name(client, s.image['id']),
+            'image': get_image_name(clients, s.image['id']),
         }
         server_info.update(get_enc_info(config['enc_host'], s.tenant_id, s.name))
         if s.tenant_id in data:
