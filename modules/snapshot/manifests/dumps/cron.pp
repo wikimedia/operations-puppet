@@ -39,7 +39,7 @@ class snapshot::dumps::cron(
         command     => "/usr/local/bin/fulldumps.sh 01 14 ${runtype} full > /dev/null",
         minute      => '05',
         hour        => [8, 20],
-        monthday    => '01-14',
+        monthday    => '02-14',
     }
 
     cron { 'partialdumps_rest':
