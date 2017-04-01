@@ -90,7 +90,7 @@ def ldap_query_check():
         conn.start_tls_s()
         conn.simple_bind_s(config['user'], config['password'])
 
-        query = '(cn=testlabs)'
+        query = '(cn=project-testlabs)'
         base = 'ou=groups,dc=wikimedia,dc=org'
         result = conn.search_s(base, ldap.SCOPE_SUBTREE, query)
         if len(result) == 0:
