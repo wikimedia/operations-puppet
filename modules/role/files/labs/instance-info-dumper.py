@@ -54,7 +54,7 @@ def get_enc_info(api_host, project, instance):
 
 
 def main():
-    with open('/home/andrew/instance-dumper.yaml') as f:
+    with open('/etc/instance-dumper.yaml') as f:
         config = yaml.safe_load(f)
 
     clients = mwopenstackclients.Clients(envfile='/etc/novaobserver.yaml')
