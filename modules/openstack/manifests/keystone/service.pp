@@ -21,6 +21,8 @@ class openstack::keystone::service($keystoneconfig, $openstack_version=$::openst
         }
     }
 
+    $labs_osm_host = hiera('labs_osm_host')
+
     include ::network::constants
     $prod_networks = $network::constants::production_networks
     $labs_networks = $network::constants::labs_networks
