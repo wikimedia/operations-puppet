@@ -21,6 +21,10 @@ class snapshot::dumps::configs {
             keep             => '8',
             chunksEnabled    => '1',
             recombineHistory => '0',
+            revsPerJob       => '1500000',
+            retryWait        => '30',
+            maxRetries       => '3',
+            revsMargin       => '100',
             wikis            => {
                 ruwiki => {
                     pagesPerChunkHistory  => '311181,1142420,1627923,3122803',

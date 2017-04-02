@@ -58,6 +58,18 @@ recombineHistory=<%= @config[@configtype]['recombineHistory'] %>
 <% if @config[@configtype].has_key?('checkpointTime') -%>
 checkpointTime=<%= @config[@configtype]['checkpointTime'] %>
 <% end -%>
+<% if @config[@configtype].has_key?('revsPerJob') -%>
+revsPerJob=<%= @config[@configtype]['revsPerJob'] %>
+<% end -%>
+<% if @config[@configtype].has_key?('retryWait') -%>
+retryWait=<%= @config[@configtype]['retryWait'] %>
+<% end -%>
+<% if @config[@configtype].has_key?('maxRetries') -%>
+maxRetries=<%= @config[@configtype]['maxRetries'] %>
+<% end -%>
+<% if @config[@configtype].has_key?('revsMargin') -%>
+revsMargin=<%= @config[@configtype]['revsMargin'] %>
+<% end -%>
 
 [otherformats]
 multistream=1
