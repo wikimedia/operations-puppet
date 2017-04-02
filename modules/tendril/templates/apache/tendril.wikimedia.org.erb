@@ -20,10 +20,6 @@
         AllowOverride All
         # This is only for pre 2.4 apache versions. In apache 2.4 IP based
         # authorization is just another Require and is chained
-        <IfVersion < 2.4>
-            Order Allow,Deny
-            Allow From All
-        </IfVersion>
         AuthName "<%= @auth_name %>"
         AuthType Basic
         AuthBasicProvider ldap

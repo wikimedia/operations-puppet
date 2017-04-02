@@ -6,13 +6,7 @@
     <Directory /srv/deployment>
         Options Indexes FollowSymLinks MultiViews
         AllowOverride None
-        <IfVersion >= 2.4>
-            Require ip <%= Array(@deployable_networks).join(' ') %>
-        </IfVersion>
-        <IfVersion < 2.4>
-            Order allow,deny
-            allow from <%= Array(@deployable_networks).join(' ') %>
-        </IfVersion>
+        Require ip <%= Array(@deployable_networks).join(' ') %>
     </Directory>
 
     LogLevel warn

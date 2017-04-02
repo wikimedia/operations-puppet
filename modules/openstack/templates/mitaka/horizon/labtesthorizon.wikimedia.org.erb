@@ -19,12 +19,6 @@
     WSGIProcessGroup horizon
     Alias /static /usr/share/openstack-dashboard/openstack_dashboard/static/
     <Directory /usr/share/openstack-dashboard/openstack_dashboard/wsgi>
-      <IfVersion >= 2.4>
         Require all granted
-      </IfVersion>
-      <IfVersion < 2.4>
-        Order allow,deny
-        Allow from all
-      </IfVersion>
     </Directory>
 </VirtualHost>
