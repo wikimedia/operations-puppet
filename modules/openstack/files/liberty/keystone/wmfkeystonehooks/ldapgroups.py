@@ -117,10 +117,6 @@ def delete_ldap_project_group(project_id):
 
 
 def sync_ldap_project_group(project_id, keystone_assignments):
-    # These are special users that exist only for nova and
-    #  keystone permissions.  No need to add them to posix groups.
-    exclude_users = set(['novaobserver', 'novaadmin'])
-
     groupname = "project-%s" % project_id.encode('utf-8')
     LOG.info("Syncing keystone project membership with ldap group %s"
              % groupname)
@@ -133,7 +129,8 @@ def sync_ldap_project_group(project_id, keystone_assignments):
     for key in keystone_assignments:
         allusers |= set(keystone_assignments[key])
 
-    allusers -= exclude_users
+    if 'novaobserver' in allusers:
+        allusers.remove('novaobserver')
 
     basedn = cfg.CONF.wmfhooks.ldap_user_base_dn
     members = ["uid=%s,%s" % (user.encode('utf-8'), basedn)
