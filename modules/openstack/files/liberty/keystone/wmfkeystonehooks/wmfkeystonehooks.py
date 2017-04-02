@@ -65,6 +65,9 @@ wmfkeystone_opts = [
     cfg.StrOpt('ldap_user_base_dn',
                default='ou=people,dc=wikimedia,dc=org',
                help='ldap dn for user accounts'),
+    cfg.StrOpt('ldap_project_base_dn',
+               default='ou=projects,dc=wikimedia,dc=org',
+               help='ldap dn for project records'),
     cfg.IntOpt('minimum_gid_number',
                default=40000,
                help='Starting gid number for posix groups'),
@@ -220,6 +223,9 @@ class KeystoneHooks(notifier._Driver):
 
         assignments = self._get_current_assignments(project_id)
         ldapgroups.sync_ldap_project_group(project_id, assignments)
+
+        # Set up default sudoers in ldap
+        ldapgroups.create_sudo_defaults(project_id)
 
     def notify(self, context, message, priority, retry=False):
         event_type = message.get('event_type')
