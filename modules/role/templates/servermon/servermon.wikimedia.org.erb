@@ -10,20 +10,10 @@
     <Directory />
         Options FollowSymLinks
         AllowOverride None
-        <IfVersion < 2.4>
-            Order Allow,Deny
-            Deny from All
-        </IfVersion>
-        <IfVersion >= 2.4>
-            Require all granted
-        </IfVersion>
+        Require all granted
     </Directory>
 
     <Location />
-        <IfVersion < 2.4>
-            Order Allow,Deny
-            Allow From All
-        </IfVersion>
         AuthName "WMF Labs (use wiki login name not shell) - ops"
         AuthType Basic
         AuthBasicProvider ldap

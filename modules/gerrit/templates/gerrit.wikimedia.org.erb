@@ -20,13 +20,7 @@ MaxClients 50
     <Directory /var/www/>
         Options Indexes FollowSymLinks MultiViews
         AllowOverride None
-        <IfVersion >= 2.4>
-          Require all granted
-        </IfVersion>
-        <IfVersion < 2.4>
-          Order allow,deny
-          allow from all
-        </IfVersion>
+        Require all granted
     </Directory>
 
     ErrorLog /var/log/apache2/<%= @host %>.http.error.log
@@ -37,9 +31,7 @@ MaxClients 50
 
     CustomLog /var/log/apache2/<%= @host %>.http.access.log wmf
     ServerSignature Off
-    <IfVersion >= 2.4>
-        IncludeOptional /etc/acme/challenge-apache.conf
-    </IfVersion>
+    IncludeOptional /etc/acme/challenge-apache.conf
     RewriteEngine on
     RewriteCond %{REQUEST_URI} !^/\.well-known/acme-challenge/
     RewriteRule ^/(.*)$ https://<%= @host %>/$1 [L,R=301,NE]
@@ -78,16 +70,10 @@ NameVirtualHost *:443
     <Directory />
         Options FollowSymLinks
         AllowOverride None
-        <IfVersion < 2.4>
-          Order deny,allow
-          deny from env=bad_browser
-        </IfVersion>
-        <IfVersion >= 2.4>
-            <RequireAll>
-              Require all granted
-              Require not env bad_browser
-            </RequireAll>
-        </IfVersion>
+        <RequireAll>
+          Require all granted
+          Require not env bad_browser
+        </RequireAll>
     </Directory>
     <Directory /var/www/>
         Options Indexes FollowSymLinks MultiViews
@@ -99,16 +85,10 @@ NameVirtualHost *:443
     ProxyPreserveHost On
 
     <Proxy *>
-        <IfVersion < 2.4>
-          Order deny,allow
-          deny from env=bad_browser
-        </IfVersion>
-        <IfVersion >= 2.4>
-            <RequireAll>
-              Require all granted
-              Require not env bad_browser
-            </RequireAll>
-        </IfVersion>
+        <RequireAll>
+          Require all granted
+          Require not env bad_browser
+        </RequireAll>
     </Proxy>
 
     AllowEncodedSlashes On

@@ -25,14 +25,7 @@
   DocumentRoot "/usr/share/request-tracker4/html"
 
   <Location />
-    <IfVersion >= 2.4>
-      Require all granted
-    </IfVersion>
-    <IfVersion < 2.4>
-      Order allow,deny
-      Allow from all
-    </IfVersion>
-
+    Require all granted
     SetHandler modperl
     PerlResponseHandler Plack::Handler::Apache2
     PerlSetVar psgi_app /usr/share/request-tracker4/libexec/rt-server
