@@ -41,13 +41,7 @@
         BalancerMember https://<%= workerhash['worker'] %>:8141 ping=1 connectiontimeout=1 retry=500 timeout=900 <%- if workerhash['loadfactor'] -%>loadfactor=<%= workerhash['loadfactor'] %><%- end %>
       <%- end -%>
       <%- end -%>
-      <IfVersion >= 2.4>
-          Require all granted
-      </IfVersion>
-      <IfVersion < 2.4>
-          Order allow,deny
-          allow from all
-      </IfVersion>
+      Require all granted
     </Proxy>
     CustomLog /var/log/apache2/puppetmaster.<%= @server_name %>.log wmf
 </VirtualHost>

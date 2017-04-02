@@ -33,26 +33,10 @@ Alias /icinga /usr/share/icinga/htdocs
         Options ExecCGI
         DirectoryIndex index.html
         AllowOverride None
-	<IfVersion < 2.4>
-        Order Deny,Allow
-        Deny from All
-        Satisfy Any
-	</IfVersion>
-
 
         # We monitor icinga externally allowing access
         # to only the extinfo.cgi file.
         <Files extinfo.cgi>
-	    <IfVersion < 2.4>
-            Deny from All
-            Allow from 81.25.198.18
-            Allow from 38.104.3.42
-            Allow from 4.31.195.94
-            Allow from 38.122.67.74
-            Allow from 85.17.12.81
-            Allow from 85.17.12.83
-	    </IfVersion>
-	    <IfVersion >= 2.4>
             AuthMerging Or
             Require ip 81.25.198.18
             Require ip 38.104.3.42
@@ -60,7 +44,6 @@ Alias /icinga /usr/share/icinga/htdocs
             Require ip 38.122.67.74
             Require ip 85.17.12.81
             Require ip 85.17.12.83
-	    </IfVersion>
         </Files>
         AuthName "WMF Labs (use wiki login name not shell) - nda/ops/wmf"
         AuthType Basic

@@ -39,48 +39,25 @@
       <%- @workers.each do |workerhash| -%>
         <% unless workerhash['offline'] %>BalancerMember https://<%= workerhash['worker'] %>:8141 connectiontimeout=1 retry=500 timeout=900 <%- if workerhash['loadfactor'] -%>loadfactor=<%= workerhash['loadfactor'] %><%- end %><% end %>
       <%- end -%>
-      <IfVersion >= 2.4>
-          Require all granted
-      </IfVersion>
-      <IfVersion < 2.4>
-          Order allow,deny
-          allow from all
-      </IfVersion>
+      Require all granted
     </Proxy>
     <%- else -%>
     RackBaseURI /
 
     <Location />
-        <IfVersion < 2.4>
-            Order Allow,Deny
-            <%- scope.lookupvar('puppetmaster::passenger::allow_from').each do |entry| -%>
-            Allow from <%= entry.gsub(/^\*/, "") %>
-            <%- end -%>
-            <%- scope.lookupvar('puppetmaster::passenger::deny_from').each do |entry| -%>
-            Deny from <%= entry.gsub(/^\*/, "") %>
-            <%- end -%>
-        </IfVersion>
-        <IfVersion >= 2.4>
-            <%- scope.lookupvar('puppetmaster::passenger::allow_from').each do |entry| -%>
-            Require ip <%= entry.gsub(/^\*/, "") %>
-            <%- end -%>
-            <%- scope.lookupvar('puppetmaster::passenger::deny_from').each do |entry| -%>
-            Require not ip <%= entry.gsub(/^\*/, "") %>
-            <%- end -%>
-        </IfVersion>
+        <%- scope.lookupvar('puppetmaster::passenger::allow_from').each do |entry| -%>
+        Require ip <%= entry.gsub(/^\*/, "") %>
+        <%- end -%>
+        <%- scope.lookupvar('puppetmaster::passenger::deny_from').each do |entry| -%>
+        Require not ip <%= entry.gsub(/^\*/, "") %>
+        <%- end -%>
     </Location>
 
     DocumentRoot /usr/share/puppet/rack/puppetmasterd/public
     <Directory /usr/share/puppet/rack/puppetmasterd/>
         Options None
         AllowOverride None
-        <IfVersion >= 2.4>
-            Require all granted
-        </IfVersion>
-        <IfVersion < 2.4>
-            Order allow,deny
-            allow from all
-        </IfVersion>
+        Require all granted
     </Directory>
     <%- end -%>
 
