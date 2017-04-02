@@ -111,6 +111,10 @@ class snapshot::dumps::configs {
             chunksEnabled    => '1',
             recombineHistory => '0',
             checkpointTime   => '720',
+            revsPerJob       => '1500000',
+            retryWait        => '30',
+            maxRetries       => '3',
+            revsMargin       => '100',
             wikis => {
                 enwiki => {
                     jobsperbatch          => 'xmlstubsdump=14',
