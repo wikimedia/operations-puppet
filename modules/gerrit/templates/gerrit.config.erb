@@ -168,6 +168,9 @@
     threads = 8
     batchThreads = 2
     idleTimeout = 864000
+    // TODO: When upgrading to gerrit 2.14 enable eddsa support
+    // https://gerrit-review.googlesource.com/#/c/100998/
+    mac = hmac-sha1, hmac-sha1-96, hmac-sha2-256, hmac-sha2-512
 [theme]
     backgroundColor = fff
     topMenuColor = fff
