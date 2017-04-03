@@ -58,6 +58,11 @@ sub cluster_be_backend_response_early { }
 sub cluster_be_backend_response {
 	call pick_stevedore;
 	
+	// Workaround for T162035, wrong Content-Type on 304 responses from swift
+	if (beresp.status == 304) {
+		unset beresp.http.Content-Type;
+	}
+
 	if (beresp.http.Content-Range) {
 		// Varnish itself doesn't ask for ranges, so this must have been
 		// a passed range request
