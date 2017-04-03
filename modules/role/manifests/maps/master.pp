@@ -132,6 +132,11 @@ class role::maps::master(
         postreplicate_command => 'sudo -u tileratorui /usr/local/bin/notify-tilerator',
     }
 
+    class { 'osm::prometheus':
+        state_path      => '/srv/osmosis/state.txt',
+        prometheus_path => '/var/lib/prometheus/node.d/osm_sync_lag.prom',
+    }
+
     # Cassandra grants
     $cassandra_kartotherian_pass = hiera('maps::cassandra_kartotherian_pass')
     $cassandra_tilerator_pass = hiera('maps::cassandra_tilerator_pass')
