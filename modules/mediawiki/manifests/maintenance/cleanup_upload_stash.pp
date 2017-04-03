@@ -1,5 +1,5 @@
 class mediawiki::maintenance::cleanup_upload_stash( $ensure = present ) {
-    cron { 'cleanup_upload_stash':
+    mediawiki::cron { 'cleanup_upload_stash':
         ensure  => $ensure,
         command => '/usr/local/bin/foreachwiki maintenance/cleanupUploadStash.php > /dev/null',
         user    => $::mediawiki::users::web,
@@ -7,4 +7,3 @@ class mediawiki::maintenance::cleanup_upload_stash( $ensure = present ) {
         minute  => 0,
     }
 }
-

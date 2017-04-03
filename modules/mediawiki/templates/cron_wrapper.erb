@@ -1,0 +1,10 @@
+#!/bin/bash
+# Cronjob: <%= @title %>
+
+DC_ACTIVE=$(cat /etc/mediawiki-active-dc)
+# NO mw cronjobs should run in the inactive DC
+if [ "$DC_ACTIVE" != "true" ]; then
+   exit 0
+fi
+
+<%= @command %>
