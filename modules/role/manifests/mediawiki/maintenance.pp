@@ -5,6 +5,22 @@ class role::mediawiki::maintenance {
 
     include ::mediawiki::packages::php5
 
+    class { '::confd':
+        prefix => hiera('conftool_prefix'),
+        interval => 60,
+    }
+
+    confd::file { '/etc/mediawiki-active-dc':
+        ensure     => present,
+        content    => template('role/mediawiki/mediawiki-active-dc.tpl.erb'),
+        prefix     => '/discovery/appservers-rw',
+        watch_keys => [
+            '/'
+        ],
+        mode       => '0444',
+        check      => 'wc -l < {{ .src }} | grep -q ^1$',
+    }
+
     file { $::mediawiki::scap::mediawiki_staging_dir:
         ensure => link,
         target => '/srv/mediawiki'
