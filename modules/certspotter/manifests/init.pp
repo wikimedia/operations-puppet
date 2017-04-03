@@ -65,7 +65,7 @@ class certspotter(
 
     $cmd = "/usr/bin/certspotter -watchlist ${watchlist} -state_dir ${statedir}"
     cron { 'certspotter':
-        command     => $cmd,
+        command     => "${cmd} >/dev/null 2>&1",
         environment => "MAILTO=${address}",
         user        => 'certspotter',
         minute      => fqdn_rand(30, 'certspotter'),
