@@ -63,7 +63,6 @@ class puppetmaster::puppetdb($master, $port=443, $jetty_port=8080) {
         $db_settings = merge(
             $default_db_settings,
             {
-                'node-ttl'    => '14d',
                 'report-ttl'  => '1d',
                 'gc-interval' => '20',
                 'subname'     => "//${master}:5432/puppetdb?ssl=true",
