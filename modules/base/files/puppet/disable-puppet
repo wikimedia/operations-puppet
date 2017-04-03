@@ -1,0 +1,22 @@
+#!/bin/bash
+#
+# Disable puppet and ensure it's not running before returning
+#
+MESSAGE=${1:-"Disabled by disable-puppet"}
+ATTEMPTS=${2:-30}
+
+# Check if puppet is already disabled, then do not attempt to disable it again;
+# Else, set the reason to $MESSAGE
+test -f /var/lib/puppet/state/agent_disabled.lock || puppet agent --disable "$MESSAGE"
+
+# Wait for puppet to finish running, timeout after $ATTEMPTS * 10 seconds
+for i in $(seq $ATTEMPTS); do
+    if [ ! -f "/var/lib/puppet/state/agent_catalog_run.lock" ]; then
+        # Puppet is not running, exit
+        exit 0
+    fi
+    sleep 10
+done
+
+# If puppet is still running at this point, report an error
+exit 1
