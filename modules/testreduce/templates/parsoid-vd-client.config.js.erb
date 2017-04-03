@@ -58,8 +58,11 @@ if (typeof module === 'object') {
 
 		postJSON: true,
 
-		// Path of the git repo
-		gitRepoPath: '/srv/deployment/parsoid/deploy/src',
+		// The return value of this function is the key for parsoid-vd test runs
+		// You can start new test runs by updating the string this function returns.
+		// Set "gitRepoPath: <directory-here>" if you want to control this automatically
+		// based on when code in a git repo is updated.
+		gitCommitFetch: clientScripts.getTestRunId,
 
 		runTest: clientScripts.generateVisualDiff,
 	};
