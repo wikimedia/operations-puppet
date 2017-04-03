@@ -125,9 +125,9 @@ AuthorizedKeysCommandUser ssh-key-ldap-lookup
 ## Anything below this point must start with a match declaration
 ## or will only apply to the previous Matches above.
 ##
-<% if @hostname == "iron" then %>
+<% if @enable_yubiauth then %>
 
-# Use two-factor authentication on iron
+# Use two-factor authentication
 # AuthenticationMethods was introduced in OpenSSH 6.2.
 # Members of the yubiauth group will use a second authentication factor based
 # on Yubico OTPs (allowing gradual migration towards 2fa)
