@@ -140,6 +140,8 @@ lvs::configuration::lvs_service_ips:
   trendingedits: &ip_block035
     eqiad: 10.2.2.9
     codfw: 10.2.1.9
+  relforge: &ip_block036
+    eqiad: 10.2.2.37
 lvs::configuration::lvs_services:
   text:
     description: "Main wiki platform LVS service, text.%{::site}.wikimedia.org (Varnish)"
@@ -710,6 +712,30 @@ lvs::configuration::lvs_services:
           hostname: search.svc.eqiad.wmnet
         codfw:
           hostname: search.svc.codfw.wmnet
+  relforge-https:
+    description: Elasticsearch Relforge - HTTPS
+    class: low-traffic
+    sites:
+    - eqiad
+    ip: *ip_block036
+    port: 9243
+    bgp: 'yes'
+    depool-threshold: '.5'
+    monitors:
+      ProxyFetch:
+        url:
+        - https://localhost/
+      IdleConnection:
+        timeout-clean-reconnect: 3
+        max-delay: 300
+    conftool:
+      cluster: relforge
+      service: elasticsearch-ssl
+    icinga:
+      check_command: check_https_on_port!9243
+      sites:
+        eqiad:
+          hostname: relforge.svc.eqiad.wmnet
   ocg:
     description: Offline Content Generator (e.g. PDF), ocg.svc.eqiad.wmnet
     class: low-traffic
