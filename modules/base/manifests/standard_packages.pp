@@ -79,4 +79,12 @@ class base::standard_packages {
     # lint:endignore
         require_package('mcelog')
     }
+
+    # Pulled in via tshark above
+    debconf::set { 'wireshark-common/install-setuid':
+        # lint:ignore:quoted_booleans
+        value   => 'false',
+        # lint:endignore
+        require => Package['tshark']
+    }
 }
