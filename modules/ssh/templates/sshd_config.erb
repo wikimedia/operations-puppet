@@ -125,12 +125,19 @@ AuthorizedKeysCommandUser ssh-key-ldap-lookup
 ## Anything below this point must start with a match declaration
 ## or will only apply to the previous Matches above.
 ##
-<% if @hostname == "iron" then %>
+<% if @enable_yubiauth then %>
 
+<<<<<<< HEAD
 # Use two-factor authentication on iron
 # AuthenticationMethods was introduced in OpenSSH 6.2.
+=======
+# Use two-factor authentication
+# AuthenticationMethods was introduced in openssh 6.2. Stock precise has only
+# 5.9, but we're already using a trusty backport (so 6.6) there (for T102401)
+>>>>>>> 3aa6b08579... ssh: avoid hardcoded hostname for yubiauth, add to Hiera
 # Members of the yubiauth group will use a second authentication factor based
 # on Yubico OTPs (allowing gradual migration towards 2fa)
 Match Group yubiauth
       AuthenticationMethods publickey,keyboard-interactive
+<% end %>
 <% end %>
