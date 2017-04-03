@@ -84,6 +84,14 @@ class base::puppet(
         content => template('base/puppet-run.erb'),
     }
 
+    file { '/usr/local/sbin/disable-puppet':
+        ensure => present,
+        mode   => '0550',
+        owner  => 'root',
+        group  => 'root',
+        source => 'puppet:///modules/base/puppet/disable-puppet',
+    }
+
     file { '/usr/local/sbin/run-no-puppet':
         mode   => '0550',
         owner  => 'root',
