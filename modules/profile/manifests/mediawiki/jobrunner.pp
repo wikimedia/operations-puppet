@@ -3,14 +3,13 @@ class profile::mediawiki::jobrunner(
     $queue_servers = hiera('profile::mediawiki::jobrunner::queue_servers'),
     $aggr_servers  = hiera('profile::mediawiki::jobrunner::aggr_servers'),
     $runners = hiera('profile::mediawiki::jobrunner::runners'),
-    $active = hiera('jobrunner_active', true),
 ) {
     # Parameters we don't need to override
     $port = 9005
 
     class { '::mediawiki::jobrunner':
         port                          => $port,
-        running                       => $active,
+        running                       => ($::site == $::mw_primary),
         statsd_server                 => $statsd,
         queue_servers                 => $queue_servers,
         aggr_servers                  => $aggr_servers,

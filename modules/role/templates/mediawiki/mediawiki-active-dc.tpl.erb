@@ -1,0 +1,2 @@
+{{ range gets "/*" }}{{ $val := json .Value }}{{ if $val.pooled }}{{ .Key }}
+{{ end }}{{ end }}
