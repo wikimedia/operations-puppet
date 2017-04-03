@@ -9,6 +9,7 @@ class ssh::server (
     $enable_hba = false,
     $disable_agent_forwarding = true,
     $challenge_response_auth = true,  # Disable all password auth in labs, we don't use 2fa there
+    $enable_yubiauth = false,
 ) {
     package { 'openssh-server':
         ensure => present,
