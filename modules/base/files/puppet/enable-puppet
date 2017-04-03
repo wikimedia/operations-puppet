@@ -1,0 +1,24 @@
+#!/bin/bash
+#
+# Script to enable puppet if disabled by a specific message.
+# If "--force" is specified as a message, enabling will be unconditional
+if [ -z "$1" ]; then
+    echo "A message is required, or --force to force execution."
+    exit 1
+fi
+
+MESSAGE="$1"
+
+# shellcheck disable=SC1091
+. /usr/local/share/bash/puppet-common.sh
+
+# If the lockfile doesn't exist, puppet is already enabled
+test -e "${PUPPET_DISABLEDLOCK}" || exit 0
+
+# If a message is specified, check for it, fail if the message is different
+if [ "$MESSAGE" != "--force" ]; then
+    jq -r '.disabled_message' < "${PUPPET_DISABLEDLOCK}" |
+        grep -Fxq "$MESSAGE" || exit 1
+fi
+
+puppet agent --enable
