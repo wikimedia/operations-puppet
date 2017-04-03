@@ -77,11 +77,42 @@ class base::puppet(
         error('auto_puppetmaster_switching should only be applied on puppet clients; behavior on masters is undefined.')
     }
 
+    file { '/usr/local/share/bash/puppet-common.sh':
+        mode   => '0555',
+        owner  => 'root',
+        group  => 'root',
+        source => 'puppet:///modules/base/puppet/puppet-common.sh',
+    }
+
     file { '/usr/local/sbin/puppet-run':
         mode    => '0555',
         owner   => 'root',
         group   => 'root',
         content => template('base/puppet-run.erb'),
+    }
+
+    file { '/usr/local/sbin/disable-puppet':
+        ensure => present,
+        mode   => '0550',
+        owner  => 'root',
+        group  => 'root',
+        source => 'puppet:///modules/base/puppet/disable-puppet',
+    }
+
+    file { '/usr/local/sbin/enable-puppet':
+        ensure => present,
+        mode   => '0550',
+        owner  => 'root',
+        group  => 'root',
+        source => 'puppet:///modules/base/puppet/enable-puppet',
+    }
+
+    file { '/usr/local/sbin/':
+        ensure => present,
+        mode   => '0550',
+        owner  => 'root',
+        group  => 'root',
+        source => 'puppet:///modules/base/puppet/enable-puppet',
     }
 
     file { '/usr/local/sbin/run-no-puppet':
