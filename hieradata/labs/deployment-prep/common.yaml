@@ -212,12 +212,13 @@ scap::dsh::groups:
 role::logstash::collector::statsd_host: labmon1001.eqiad.wmnet
 "redis::shards":
   jobqueue: &labs_shards
-    shard01:
-      host: 10.68.16.177 # deployment-redis01
-      port: 6379
-    shard02:
-      host: 10.68.16.231 # deployment-redis02
-      port: 6379
+    eqiad:
+      shard01:
+        host: 10.68.16.177 # deployment-redis01
+        port: 6379
+      shard02:
+        host: 10.68.16.231 # deployment-redis02
+        port: 6379
   sessions: *labs_shards
 nfs_mounts:
   project: false
