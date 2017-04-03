@@ -7,7 +7,7 @@ groups:
               johnflewis, marc, jkrauska, akumar, mnoushad, spage, tnegrin, msyed, kleduc,
               manybubbles, haithams, jzerebecki, ashwinpp, ironholds, robla, asherman,
               laner, declerambaul, srijan, junikowski, krenair, springle, jhobs, vbaranetsky,
-              yurik, bsimmers, bcohn, hjiang, tomasz]
+              yurik, bsimmers, bcohn, hjiang, tomasz, csteipp]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past
     members: [siddharth11]
@@ -53,7 +53,7 @@ groups:
     gid: 705
     description: replaces 'mortals' for software deployment
     members: [dr0ptp4kt, anomie, aude, awight, awjrichards, bd808,
-              brion, cscott, csteipp, demon, ebernhardson, esanders, gilles,
+              brion, cscott, demon, ebernhardson, esanders, gilles,
               gjg, gwicke, halfak, hashar, hoo, kaldari, kartik, khorn, krinkle,
               maxsem, mattflaschen, marktraceur, milimetric, mlitn, andyrussg,
               nikerabbit, reedy, ssastry,
@@ -93,7 +93,7 @@ groups:
   releasers-mediawiki:
     gid: 711
     description: people who upload mediawiki releases
-    members: [catrope, csteipp, demon, hashar, reedy, thcipriani]
+    members: [catrope, demon, hashar, reedy, thcipriani]
   releasers-mobile:
     gid: 712
     description: people who upload mobile app releases
@@ -132,7 +132,7 @@ groups:
   contint-users:
     gid: 718
     description: users with accounts on jenkins hosts
-    members: [csteipp]
+    members: []
   contint-admins:
     gid: 719
     description: users with some sudo permissions on jenkins and nodepool hosts
@@ -235,7 +235,7 @@ groups:
               ezachte, mforns, reedy, west1, phuedx, awight,
               joal, jamesur, akosiaris, lpintscher, jkatz, madhuvishy, gpaumier,
               andyrussg, niedzielski, maxsem, hoo, daniel, tbayer, krinkle, tgr,
-              csteipp, smalyshev, ebernhardson, addshore, jminor, chedasaurus, neilpquinn-wmf,
+              smalyshev, ebernhardson, addshore, jminor, chedasaurus, neilpquinn-wmf,
               dcausse, bd808, tjones, mobrovac, jgirault, jdrewniak, ejegg, jdcc, ori,
               bmansurov, atgomez, amire80, kartik, pcoombe, foks, mpany, jsamra,
               jdlrobson, chelsyx, ovasileva, mtizzoni, panisson, paolotti, ciro,
@@ -868,14 +868,12 @@ users:
     ssh_keys: []
     uid: 2152
   csteipp:
-    ensure: present
+    ensure: absent
     gid: 500
     name: csteipp
     realname: Chris Steipp
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDsUn5XTWrJ8ojk6O7kF7kdQS1RrKtjkaMk2QtsdYOOCPo3YbK+70Q3Dy6gVBNOhsRWHeCimzfH2Uv/pVb0wNkrwenmBeD7nQyNICudewEANcnt5YF2znlke3lsW6TGzKUzrXIncdhDh4LWjmpJR/+hnKyGz7uQKXm8xWw9LGk1PEpeHpt+0TH/bUWzWjpYXfbt5W4GbYPwnHo1Pn27pcGwqgsgb8whX9ufDjw5qyLPTVW3AqP4XPRXYDB5Ui7udQeuCk4Omou9CirtC36o4ih2NrZ4CsacHyIMJf09HZo6yLE9EeGM06SO7qYqjYwapKGv6csZGney84udKaCHcdm/
-        Chris Steipp]
+    ssh_keys: []
     uid: 2246
-    email: csteipp@gmail.com
   ebernhardson:
     ensure: present
     gid: 500
