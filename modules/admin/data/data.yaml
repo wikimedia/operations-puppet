@@ -25,7 +25,7 @@ groups:
     description: include everywhere ops folks
     members: &ops_members [filippo, jgreen, bblack, andrew, faidon, rush, oblivian, yuvipanda,
               dzahn, akosiaris, mark, ariel, cmjohnson, otto, robh, tstarling,
-              ori, midom, jmm, jynus, aaron, ema, elukey, gehel, volans, madhuvishy, marostegui]
+              ori, midom, jmm, jynus, aaron, ema, elukey, gehel, volans, madhuvishy, marostegui, ayounsi]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
   parsoid-roots:
     gid: 701
@@ -2481,6 +2481,15 @@ users:
     email: penorman@mac.com
     expiry_date: 2017-05-31
     expiry_contact: hr@wikimedia.org
+  ayounsi:
+    ensure: present
+    gid: 500
+    name: ayounsi
+    realname: Arzhel Younsi
+    ssh_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAweEnau/EYh0Hdyon4KoT/WRnEUBwdh8Cw+1Mvs1wOxSzBqPg2M9U5JADm20WG+SfyeCyrMXlIDjG5SyBTfALKwez4ExonQ5FyGvt8v4ipQRx+U+tdewIu9n2aAdmZia+0pS1ZgbyhkJtwNO8D95axlmeOab46HyQqZs0BVxPPdXM4ysPUgPZpSIyQ3rfFVerrVClLBNxqHvi7ZuyKH1zBAxSURhT60oRRNGI74G0+78nAA1c/cTeY/DbEKsJNpo7VK5slh9XQNUS2/6X4mgYg5IUK3AtaXIDnA6H5HCgghba0pZN4AmVR4dwVmILWeb8HpMInlLowQUQ5jNXM+hnYQ== xionox@laptop
+    uid: 16756
+    email: ayounsi@wikimedia.org
 ldap_only_users:
   abartov:
     ensure: present
