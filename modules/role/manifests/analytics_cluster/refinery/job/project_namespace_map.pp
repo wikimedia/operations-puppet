@@ -17,7 +17,8 @@ class role::analytics_cluster::refinery::job::project_namespace_map {
         command => "${env} && ${role::analytics_cluster::refinery::path}/bin/download-project-namespace-map -x ${output_directory} -s \$(/bin/date '+%Y-%m') >> ${log_file} 2>&1 ",
         user    => 'hdfs',
         minute  => '0',
-        hour    => '12',
-        weekday => '6', # Saturday
+        hour    => '0',
+        # Start on the first day of every month.
+        monthday => '1',
     }
 }
