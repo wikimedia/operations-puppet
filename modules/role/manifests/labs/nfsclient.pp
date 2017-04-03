@@ -1,6 +1,6 @@
 class role::labs::nfsclient(
     $mode = 'hard',
-    $lookupcache = 'none',
+    $lookupcache = 'all',
 ) {
 
     labstore::nfs_mount { 'project-on-labstore-secondary':
