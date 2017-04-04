@@ -23,16 +23,16 @@ cache::app_def_be_opts:
 cache::app_directors:
   appservers:
     backends:
-      eqiad: 'appservers.svc.eqiad.wmnet'
-      # codfw: 'appservers.svc.codfw.wmnet'
+      # eqiad: 'appservers.svc.eqiad.wmnet'
+      codfw: 'appservers.svc.codfw.wmnet'
   api:
     backends:
-      eqiad: 'api.svc.eqiad.wmnet'
-      # codfw: 'api.svc.codfw.wmnet'
+      # eqiad: 'api.svc.eqiad.wmnet'
+      codfw: 'api.svc.codfw.wmnet'
   rendering:
     backends:
-      eqiad: 'rendering.svc.eqiad.wmnet'
-      # codfw: 'rendering.svc.codfw.wmnet'
+      # eqiad: 'rendering.svc.eqiad.wmnet'
+      codfw: 'rendering.svc.codfw.wmnet'
   security_audit:
     backends:
       eqiad: 'appservers.svc.eqiad.wmnet'
