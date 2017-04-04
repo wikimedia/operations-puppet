@@ -9,27 +9,31 @@ class role::mediawiki::maintenance {
         ensure => link,
         target => '/srv/mediawiki'
     }
+    $ensure = $::mw_primary ? {
+        $::site => 'present',
+        default => 'absent',
+    }
 
-    include mediawiki::maintenance::pagetriage
-    include mediawiki::maintenance::translationnotifications
-    include mediawiki::maintenance::updatetranslationstats
-    include mediawiki::maintenance::wikidata
-    include mediawiki::maintenance::echo_mail_batch
-    include mediawiki::maintenance::parsercachepurging
-    include mediawiki::maintenance::cleanup_upload_stash
-    include mediawiki::maintenance::tor_exit_node
-    include mediawiki::maintenance::update_flaggedrev_stats
-    include mediawiki::maintenance::refreshlinks
-    include mediawiki::maintenance::update_special_pages
-    include mediawiki::maintenance::update_article_count
-    include mediawiki::maintenance::purge_abusefilter
-    include mediawiki::maintenance::purge_checkuser
-    include mediawiki::maintenance::purge_securepoll
-    include mediawiki::maintenance::jobqueue_stats
-    include mediawiki::maintenance::cirrussearch
-    include mediawiki::maintenance::generatecaptcha
-    include mediawiki::maintenance::pageassessments
-    include mediawiki::maintenance::uploads
+    class { 'mediawiki::maintenance::pagetriage': ensure => $ensure }
+    class { 'mediawiki::maintenance::translationnotifications': ensure => $ensure }
+    class { 'mediawiki::maintenance::updatetranslationstats': ensure => $ensure }
+    class { 'mediawiki::maintenance::wikidata': ensure => $ensure }
+    class { 'mediawiki::maintenance::echo_mail_batch': ensure => $ensure }
+    class { 'mediawiki::maintenance::parsercachepurging': ensure => $ensure }
+    class { 'mediawiki::maintenance::cleanup_upload_stash': ensure => $ensure }
+    class { 'mediawiki::maintenance::tor_exit_node': ensure => $ensure }
+    class { 'mediawiki::maintenance::update_flaggedrev_stats': ensure => $ensure }
+    class { 'mediawiki::maintenance::refreshlinks': ensure => $ensure }
+    class { 'mediawiki::maintenance::update_special_pages': ensure => $ensure }
+    class { 'mediawiki::maintenance::update_article_count': ensure => $ensure }
+    class { 'mediawiki::maintenance::purge_abusefilter': ensure => $ensure }
+    class { 'mediawiki::maintenance::purge_checkuser': ensure => $ensure }
+    class { 'mediawiki::maintenance::purge_securepoll': ensure => $ensure }
+    class { 'mediawiki::maintenance::jobqueue_stats': ensure => $ensure }
+    class { 'mediawiki::maintenance::cirrussearch': ensure => $ensure }
+    class { 'mediawiki::maintenance::generatecaptcha': ensure => $ensure }
+    class { 'mediawiki::maintenance::pageassessments': ensure => $ensure }
+    class { 'mediawiki::maintenance::uploads': ensure => $ensure }
 
     # Include the cache warmup script; requires node and conftool
     require ::profile::conftool::client
@@ -42,7 +46,7 @@ class role::mediawiki::maintenance {
     backup::set {'home': }
 
     # (T17434) Periodical run of currently disabled special pages
-    include mediawiki::maintenance::updatequerypages
+    class { 'mediawiki::maintenance::updatequerypages': ensure => $ensure }
 
     # Readline support for PHP maintenance scripts (T126262)
     require_package('php5-readline')
