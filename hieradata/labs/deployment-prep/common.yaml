@@ -272,5 +272,9 @@ scap::sources:
   # Public EventStreams service
   eventstreams/deploy:
     repository: mediawiki/services/eventstreams/deploy
+
+  # RESTBase
+  restbase/deploy: {}
+
 prometheus_nodes:
   - deployment-prometheus01.deployment-prep.eqiad.wmflabs
