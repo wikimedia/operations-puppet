@@ -12,6 +12,7 @@ class role::cluster::management {
     include ::role::salt::masters::production
     include ::role::mariadb::client
     include ::role::cumin::master
+    include ::profile::switchdc
     include ::standard
     include ::base::firewall
 }
