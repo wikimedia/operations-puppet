@@ -14,8 +14,8 @@ class profile::conftool::client(
     $host = hiera('etcd_host'),
     $port = hiera('etcd_port'),
     $namespace      = dirname(hiera('conftool_prefix')),
-    $tcpircbot_host = hiera('profile::conftool::client::tcpircbot_host', 'icinga.wikimedia.org'),
-    $tcpircbot_port = hiera('profile::conftool::client::tcpircbot_port', 9200),
+    $tcpircbot_host = hiera('tcpircbot_host', 'icinga.wikimedia.org'),
+    $tcpircbot_port = hiera('tcpircbot_port', 9200),
 ) {
     require_package('python-conftool')
     require ::passwords::etcd
