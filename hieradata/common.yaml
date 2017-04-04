@@ -470,3 +470,6 @@ conftool_prefix: "/conftool/v1"
 # on a single node in the cluster.
 logstash_syslog: "logstash1001.eqiad.wmnet:10514"
 udp2log_aggregator: "udplog:8420"
+
+tcpircbot_host: 'icinga.wikimedia.org'
+tcpircbot_port: 9200

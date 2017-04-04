@@ -5,6 +5,6 @@ pybaltest::hosts:
 # Conftool
 profile::conftool::client::namespace: "/eqiad.wmnet/conftool"
 profile::conftool::master::sync_dir: "/etc/conftool/data"
-profile::conftool::client::tcpircbot_host: ''
-profile::conftool::client::tcpircbot_port: ''
+tcpircbot_host: ''
+tcpircbot_port: ''
 apt::use_experimental: true
