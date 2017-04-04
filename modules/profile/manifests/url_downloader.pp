@@ -65,6 +65,12 @@ class profile::url_downloader (
             $network::constants::all_network_subnets['production']['codfw']['private']['private1-d-codfw']['ipv4'],
             $network::constants::all_network_subnets['production']['codfw']['private']['private1-d-codfw']['ipv6'],
 
+            # Block access to LVS IPs. TODO: This is still incomplete
+            $network::constants::all_network_subnets['production']['codfw']['public']['public1-lvs-codfw']['ipv4'],
+            $network::constants::all_network_subnets['production']['eqiad']['public']['public1-lvs-eqiad']['ipv4'],
+            $network::constants::all_network_subnets['production']['ulsfo']['public']['public1-lvs-ulsfo']['ipv4'],
+            $network::constants::all_network_subnets['production']['esams']['public']['public1-lvs-esams']['ipv4'],
+
             $network::constants::all_network_subnets['production']['esams']['public']['public1-esams']['ipv4'], #TODO: Do we need this ?
             $network::constants::all_network_subnets['production']['esams']['public']['public1-esams']['ipv6'], #TODO: Do we need this ?
 
