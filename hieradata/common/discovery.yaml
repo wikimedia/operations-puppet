@@ -2,7 +2,7 @@
 # MediaWiki should be reached to the master datacenter,
 # while other services should be polled locally
 discovery::app_routes:
-  mediawiki: 'eqiad'
+  mediawiki: 'codfw'
   aqs: 'eqiad'
 
 # confctl-based dynamic global discovery pooling
