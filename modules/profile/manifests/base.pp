@@ -17,7 +17,7 @@ class profile::base(
         use_proxy => $use_apt_proxy,
     }
 
-    file { ['/usr/local/sbin', '/usr/local/share/bash']:
+    file { '/usr/local/sbin':
         ensure => directory,
         owner  => 'root',
         group  => 'root',
