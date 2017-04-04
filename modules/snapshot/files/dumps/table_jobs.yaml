@@ -106,9 +106,11 @@ tables:
     flaggedpages:
       job: flaggedpages
       description: This contains a row for each flagged article containing the stable revision ID, if the lastest edit was flagged, and how long edits have been pending.
+      type: public
     flaggedrevs:
       job: flaggedrevs
       description: This contains a row for each flagged revision containing who flagged it, when it was flagged, reviewer comments, the flag values, and the quality tier those flags fall under.
+      type: public
     wb_items_per_site:
       job: wbitemspersite
       description: For each Wikidata item, this contains rows with the corresponding page name on a given wiki project.
