@@ -59,8 +59,10 @@ sub cluster_be_backend_response {
 	call pick_stevedore;
 	
 	// Workaround for T162035, wrong Content-Type on 304 responses from swift
-	if (beresp.status == 304) {
-		unset beresp.http.Content-Type;
+	if (!beresp.was_304) {
+		set beresp.http.X-Orig-Content-Type = beresp.http.Content-Type;
+	} else if (beresp.http.Content-Type ~ "^text/" && beresp.http.X-Orig-Content-Type) {
+		set beresp.http.Content-Type = beresp.http.X-Orig-Content-Type;
 	}
 
 	if (beresp.http.Content-Range) {
@@ -79,5 +81,6 @@ sub cluster_be_backend_response {
 }
 
 sub cluster_be_deliver {
+	unset resp.http.X-Orig-Content-Type;
 	call upload_common_deliver;
 }
