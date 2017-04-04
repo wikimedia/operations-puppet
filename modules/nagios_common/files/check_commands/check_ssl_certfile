@@ -1,19 +1,36 @@
 #!/bin/bash
-if [ ! -f $1 ]; then
-    echo "Cannot find cert file $1"
+# Icinga plugin to check expiration of a SSL certificate
+# https://phabricator.wikimedia.org/T116332
+#
+
+CERT_FILE=$1 # (full path to cert file)
+WARN_DAYS="30" # (days before expiry to show a WARN)
+CRIT_DAYS="15" # (days before expiry to show a CRIT)
+
+let WARN_SECS=$WARN_DAYS*24*60*60
+let CRIT_SECS=$CRIT_DAYS*24*60*60
+
+SSL=$(which openssl)
+SSL_ARGS="x509 -checkend"
+
+if [ ! -f $CERT_FILE ]; then
+    echo "Cannot find cert file ${CERT_FILE}."
     exit 3
 fi
-openssl x509 -checkend 324000 -noout -in $1
-if [[ $? == 0 ]]; then
-    echo "Cert $1 will not expire for at least 90 days"
+
+if (${SSL} ${SSL_ARGS} ${WARN_SECS} -noout -in ${CERT_FILE}); then
+    echo "Cert ${CERT_FILE} will not expire for at least ${WARN_DAYS} days."
     exit 0
 else
-    openssl x509 -checkend 108000 -noout -in $1
-    if [[ $? == 0 ]]; then
-        echo "Cert $1 will expire in less than 90 days"
+    if (${SSL} ${SSL_ARGS} ${CRIT_SECS} -noout -in ${CERT_FILE}); then
+        echo "Cert ${CERT_FILE} will expire in less than ${WARN_DAYS} days."
         exit 1
     else
-        echo "Cert $1 will expire in less than 30 days"
+        echo "Cert ${CERT_FILE} will expire in less than ${CRIT_DAYS} days."
         exit 2
     fi
 fi
+
+echo "plugin error. please check $0"
+exit 3
+
