@@ -11,6 +11,9 @@ done
 
 shift $((OPTIND-1))
 
+# shellcheck disable=SC1091
+. /usr/local/share/bash/puppet-common.sh
+
 if ! wait_for_puppet 3; then
     echo "Waited 30 seconds and a preceding puppet run is still ongoing, aborting"
     exit 1
