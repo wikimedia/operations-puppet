@@ -145,6 +145,7 @@ class restbase(
         has_spec        => true,
         starter_script  => 'restbase/server.js',
         auto_refresh    => false,
+        deployment      => 'scap3',
     }
 
 }
