@@ -107,6 +107,14 @@ class base::puppet(
         source => 'puppet:///modules/base/puppet/enable-puppet',
     }
 
+    file { '/usr/local/sbin/run-puppet-agent':
+        ensure => present,
+        mode   => '0550',
+        owner  => 'root',
+        group  => 'root',
+        source => 'puppet:///modules/base/puppet/run-puppet-agent',
+    }
+
     file { '/usr/local/sbin/run-no-puppet':
         mode   => '0550',
         owner  => 'root',
