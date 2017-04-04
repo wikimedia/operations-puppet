@@ -107,6 +107,7 @@ scap::sources:
 #    lvs_service: parsoid
   phabricator/deployment:
     repository: phabricator/deployment
+  restbase/deploy: {}
   # This is actually cloned from github at the moment and the repository indicated
   # doesn't exist.
   servermon/servermon:
