@@ -1,0 +1,53 @@
+varnishtest "Unset CT on Not Modified responses: T162035"
+
+server s1 {
+    rxreq
+    txresp -hdr "Content-Type: image/png" -hdr "Last-Modified: Thu, 26 Jun 2008 12:00:01 GMT" -hdr "Cache-Control: max-age=1" -bodylen 5
+
+    rxreq
+    expect req.http.If-Modified-Since == "Thu, 26 Jun 2008 12:00:01 GMT"
+    txresp -status 304 -hdr "Content-Type: text/html" -hdr "Last-Modified: Thu, 26 Jun 2008 12:00:01 GMT" -nolen
+} -start
+
+varnish v1 -arg "-p vcc_err_unref=false" -vcl+backend {
+    backend vtc_backend {
+        .host = "${s1_addr}"; .port = "${s1_port}";
+    }
+
+    include "/usr/share/varnish/tests/wikimedia_upload-backend.vcl";
+} -start
+
+client c1 {
+    txreq -url "/test" -hdr "Host: upload.wikimedia.org"
+    rxresp
+    expect resp.status == 200
+    expect resp.http.X-Cache-Int ~ "miss"
+    expect resp.http.Content-Type == "image/png"
+
+    delay 2
+
+    txreq -url "/test" -hdr "Host: upload.wikimedia.org"
+    rxresp
+    expect resp.status == 200
+    expect resp.http.X-Cache-Int ~ "hit"
+
+    # This assertion passes with or without our VCL workaround (unsetting CT on
+    # 304s). That's because Varnish responds with the unchanged stale object
+    # while revalidating it in the background with a conditional IMS request.
+    expect resp.http.Content-Type == "image/png"
+
+    delay 1
+
+    txreq -url "/test" -hdr "Host: upload.wikimedia.org"
+    rxresp
+    expect resp.status == 200
+    expect resp.http.X-Cache-Int ~ "hit"
+
+    # This fails without our VCL workaround: Varnish updates CT setting it to
+    # text/html.
+    expect resp.http.Content-Type == "image/png"
+
+    # We shouldn't return additional headers
+    expect resp.http.X-Orig-Content-Type == <undef>
+} -run
+
