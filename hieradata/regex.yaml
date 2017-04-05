@@ -531,6 +531,12 @@ labtest:
     scheduler_pool:
       - labtestvirt2001
       - labtestvirt2002
+  wikitechstatusconfig:
+    host: 'labtestwikitech.wikimedia.org'
+    domain: 'labs'
+    page_prefix: 'Nova_Resource:'
+    region: 'codfw'
+    dns_domain: 'codfw.wmflabs'
   keystoneconfig:
     db_name: 'keystone'
     db_user: 'keystone'
