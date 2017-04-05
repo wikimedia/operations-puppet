@@ -4,6 +4,7 @@ class role::labs::openstack::keystone::server {
 
     $nova_controller   = hiera('labs_nova_controller')
     $keystoneconfig    = hiera_hash('keystoneconfig', {})
+    $wikitechstatusconfig = hiera_hash('wikitechstatusconfig', {})
 
     class { 'openstack::keystone::service':
         keystoneconfig => $keystoneconfig,

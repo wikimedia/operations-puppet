@@ -228,6 +228,15 @@ log_dir = /var/log/keystone
 # The Drivers(s) to handle sending notifications. Possible values are
 # messaging, messagingv2, routing, log, test, noop (multi valued)
 notification_driver = wmfkeystonehooks
+
+# Login info for wikitech, for project page updates
+wiki_host=<%= @wikitechstatusconfig["host"] %>
+wiki_domain=<%= @wikitechstatusconfig["domain"] %>
+wiki_page_prefix=<%= @wikitechstatusconfig["page_prefix"] %>
+wiki_instance_region=<%= @wikitechstatusconfig["region"] %>
+wiki_login=<%= @wikitechstatusconfig["user"] %>
+wiki_password=<%= @wikitechstatusconfig["pass"] %>
+wiki_instance_dns_domain=<%= @wikitechstatusconfig["dns_domain"] %>
  
 # AMQP topic used for OpenStack notifications. (list value)
 # Deprecated group/name - [rpc_notifier2]/topics
