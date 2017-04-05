@@ -2496,11 +2496,8 @@ ldap_only_users:
     realname: Asaf Bartov
     email: abartov@wikimedia.org
   adavenport:
-    ensure: present
+    ensure: absent
     realname: Allison Davenport
-    email: adavenport@wikimedia.org
-    expiry_date: 2017-04-04
-    expiry_contact: rstallman@wikimedia.org
   apalmer:
     ensure: present
     realname: Aeryn Palmer
