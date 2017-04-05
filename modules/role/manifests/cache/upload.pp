@@ -48,7 +48,8 @@ class role::cache::upload(
     # upload-frontend case.  All tiers of backend share the same policies.
 
     $be_vcl_config = merge($common_vcl_config, {
-        'pass_random'               => true,
+        'pass_random' => true,
+        'keep'        => '1d', # FIXME: temporary, see T162035
     })
 
     $fe_vcl_config = merge($common_vcl_config, {
