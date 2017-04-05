@@ -16,7 +16,7 @@ class role::elasticsearch::relforge {
       ensure => present,
       proto  => 'tcp',
       port   => '9243',
-      srange => "@resolve(${maintenance_hosts})",
+      srange => "(${maintenance_hosts})",
     }
 
 }
