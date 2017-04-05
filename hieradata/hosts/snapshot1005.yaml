@@ -2,3 +2,8 @@ snapshot::dumps::runtype: hugewikis
 snapshot::dumps::maxjobs: 28
 snapshot::dumps::monitor: false
 snapshot::cron::misc: false
+hhvm::extra::cli:
+  hhvm:
+    enable_gc: true
+    eager_gc: true
+    quarantine: true

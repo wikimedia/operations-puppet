@@ -2,3 +2,8 @@ snapshot::dumps::runtype: regular
 snapshot::dumps::maxjobs: 20
 snapshot::dumps::monitor: true
 snapshot::cron::misc: true
+hhvm::extra::cli:
+  hhvm:
+    enable_gc: true
+    eager_gc: true
+    quarantine: true
