@@ -66,7 +66,7 @@ while getopts "hnvb:d:s:D:" opt; do
 done
 
 # If slave_database was not given, default to using database.
-slave_database=${slave_database:-database}
+slave_database=${slave_database:-$database}
 
 shift $((OPTIND-1))
 
