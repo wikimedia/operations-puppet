@@ -12,8 +12,6 @@
 #    WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
 #    License for the specific language governing permissions and limitations
 #    under the License.
-import ldapgroups
-
 from keystoneclient.auth.identity import generic
 from keystoneclient import session as keystone_session
 from keystone.common import dependency
@@ -34,6 +32,8 @@ from keystone.resource import schema
 from keystone import notifications
 from keystone.i18n import _
 
+import ldapgroups
+import pageeditor
 
 LOG = logging.getLogger('nova.%s' % __name__)
 
@@ -71,14 +71,6 @@ wmfkeystone_opts = [
     cfg.IntOpt('minimum_gid_number',
                default=40000,
                help='Starting gid number for posix groups'),
-    cfg.MultiStrOpt('eventtype_whitelist',
-                    default=['identity.project.deleted', 'identity.project.created'],
-                    help='Event types to always handle.'),
-    cfg.MultiStrOpt('eventtype_blacklist',
-                    default=[],
-                    help='Event types to always ignore.'
-                    'In the event of a conflict, '
-                    'this overrides the whitelist.')
     ]
 
 
@@ -91,7 +83,7 @@ class KeystoneHooks(notifier._Driver):
     """Notifier class which handles extra project creation/deletion bits
     """
     def __init__(self, conf, topics, transport, version=1.0):
-        pass
+        self.page_editor = pageeditor.PageEditor()
 
     def _get_role_dict(self):
         rolelist = self.role_api.list_roles()
@@ -124,6 +116,21 @@ class KeystoneHooks(notifier._Driver):
 
     def _on_project_delete(self, project_id):
         ldapgroups.delete_ldap_project_group(project_id)
+        self.page_editor.edit_page("", project_id, True)
+
+    def _create_project_page(self, project_id):
+        # Create wikitech project page
+        resource_name = project_id
+        template_param_dict = {}
+        template_param_dict['Resource Type'] = 'project'
+        template_param_dict['Project Name'] = project_id
+
+        fields_string = ""
+        for key in template_param_dict:
+            fields_string += "\n|%s=%s" % (key, template_param_dict[key])
+
+        self.page_editor.edit_page(fields_string, resource_name, False,
+                                   template='Nova Resource')
 
     def _on_project_create(self, project_id):
 
@@ -226,6 +233,7 @@ class KeystoneHooks(notifier._Driver):
 
         # Set up default sudoers in ldap
         ldapgroups.create_sudo_defaults(project_id)
+        self._create_project_page(project_id)
 
     def notify(self, context, message, priority, retry=False):
         event_type = message.get('event_type')
@@ -239,14 +247,6 @@ class KeystoneHooks(notifier._Driver):
         if (event_type == 'identity.role_assignment.deleted' or
                 event_type == 'identity.role_assignment.created'):
             self._on_member_update(message['payload']['project'])
-
-        # Eventually this will be used to update project resource pages:
-        if event_type in CONF.wmfhooks.eventtype_blacklist:
-            return
-        if event_type not in CONF.wmfhooks.eventtype_whitelist:
-            return
-
-        return
 
 
 # HACK ALERT
