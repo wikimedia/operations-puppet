@@ -83,6 +83,7 @@ cache::app_directors:
   noc:
     backends:
       eqiad: 'terbium.eqiad.wmnet'
+      codfw: 'wasat.codfw.wmnet'
   planet1001:
     backends:
       eqiad: 'planet1001.eqiad.wmnet'
