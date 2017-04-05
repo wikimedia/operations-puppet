@@ -24,68 +24,95 @@ require 'puppet/util/package'
 module Puppet::Parser::Functions
   os_versions = {
     'Ubuntu' => {
-      'Hardy'    => '8.04',
-      'Intrepid' => '8.10',
-      'Jaunty'   => '9.04',
-      'Karmic'   => '9.10',
-      'Lucid'    => '10.04',
-      'Maverick' => '10.10',
-      'Natty'    => '11.04',
-      'Oneiric'  => '11.10',
-      'Precise'  => '12.04',
-      'Quantal'  => '12.10',
-      'Raring'   => '13.04',
-      'Saucy'    => '13.10',
-      'Trusty'   => '14.04',
-      'Utopic'   => '14.10',
-      'Vivid'    => '15.04',
-      'Wily'     => '15.10',
-      'Xenial'   => '16.04',
-      'Yakkety'  => '16.10',
+      'hardy'    => '8.04',
+      'intrepid' => '8.10',
+      'jaunty'   => '9.04',
+      'karmic'   => '9.10',
+      'lucid'    => '10.04',
+      'maverick' => '10.10',
+      'natty'    => '11.04',
+      'oneiric'  => '11.10',
+      'precise'  => '12.04',
+      'quantal'  => '12.10',
+      'raring'   => '13.04',
+      'saucy'    => '13.10',
+      'trusty'   => '14.04',
+      'utopic'   => '14.10',
+      'vivid'    => '15.04',
+      'wily'     => '15.10',
+      'xenial'   => '16.04',
+      'yakkety'  => '16.10',
+      'zesty'    => '17.04',
     },
     'Debian' => {
-      'Wheezy'  => '7',
-      'Jessie'  => '8',
-      'Stretch' => '9',
-      'Buster'  => '10',
+      'wheezy'  => '7',
+      'jessie'  => '8',
+      'stretch' => '9',
+      'buster'  => '10',
     }
   }
 
-  newfunction(:os_version, :type => :rvalue, :arity => 1) do |args|
-    self_release = lookupvar('lsbdistrelease').capitalize
-    self_id = lookupvar('lsbdistid').capitalize
+  # minimum supported version per OS; a warning will be emitted if a comparison
+  # is made against a version lower than these
+  min_supported_versions = {
+    'Debian' => '8',
+    'Ubuntu' => '14.04',
+  }
 
-    fail(ArgumentError, 'os_version(): string argument required') unless args.first.is_a?(String)
+  newfunction(:os_version, :type => :rvalue, :arity => 1) do |args|
+    self_release = lookupvar('lsbdistrelease')
+    self_id = lookupvar('lsbdistid')
+
+    if self_release.nil? || self_id.nil?
+      fail('os_version(): LSB facts are not set; is lsb-release installed?')
+    end
+
+    unless args.first.is_a?(String)
+      fail(ArgumentError, 'os_version(): string argument required')
+    end
 
     clauses = args.first.split('||').map(&:strip)
-
     clauses.any? do |clause|
-      unless /^(\w+) *([<>=]*) *([\w\.]+)$/ =~ clause
+      unless /^(?<id>\w+) *(?<operator>[<>=]*) *(?<release>[\w\.]+)$/ =~ clause
         fail(ArgumentError, "os_version(): invalid expression '#{clause}'")
       end
-      # for ruby 1.8; replace with named groups with ruby >= 1.9
-      other_id = Regexp.last_match(1)
-      operator = Regexp.last_match(2)
-      other_release = Regexp.last_match(3)
 
-      [other_id, other_release].each(&:capitalize!)
+      # OS names are in caps, distributions in lowercase
+      other_id = id.capitalize
+      other_release = release.downcase
 
-      next unless self_id == other_id
-
+      # if a codename was passed, get the numeric release
       if os_versions[other_id].key?(other_release)
+        other_release = os_versions[other_id][other_release]
         other_was_codename = true
-      end
-
-      other_release = os_versions[other_id][other_release] || other_release
-
-      unless /^[\d.]+$/ =~ other_release
+      elsif /^[\d.]+$/ !~ other_release
         fail(ArgumentError,
              "os_version(): unknown #{other_id} release '#{other_release}'")
       end
 
+      # emit a warning if the release given to compare with is not supported
+      min_version = min_supported_versions[other_id]
+      if Puppet::Util::Package.versioncmp(other_release, min_version) < 0 ||
+        (Puppet::Util::Package.versioncmp(other_release, min_version) == 0 &&
+            (operator == '<=' || operator == '<'))
+        message = "os_version(): obsolete distribution check in #{clause}"
+
+        if defined? Puppet::Pops::PuppetStack.stacktrace
+          stacktrace = Puppet::Pops::PuppetStack.stacktrace()[0]
+          file = stacktrace[0]
+          line = stacktrace[1]
+          message = "#{message} at #{file}:#{line}"
+        end
+
+        warning(message)
+      end
+
+      # skip this clause unless it's matching our operating system
+      next unless self_id == other_id
+
       # special-case Debian point-releases, as e.g. jessie is all of 8.x
-      if other_id == "Debian" && other_was_codename
-        self_release = self_release.split(".")[0]
+      if other_id == 'Debian' && other_was_codename
+        self_release = self_release.split('.')[0]
       end
 
       cmp = Puppet::Util::Package.versioncmp(self_release, other_release)
