@@ -1,3 +1,6 @@
+restbase::seeds:
+  - deployment-restbase01.deployment-prep.eqiad.wmflabs
+  - deployment-restbase02.deployment-prep.eqiad.wmflabs
 cassandra::seeds:
   - deployment-restbase01.deployment-prep.eqiad.wmflabs
   - deployment-restbase02.deployment-prep.eqiad.wmflabs
