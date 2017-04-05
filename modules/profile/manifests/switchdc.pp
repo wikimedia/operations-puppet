@@ -19,6 +19,9 @@ class profile::switchdc(
     $tcpircbot_host = hiera('tcpircbot_host', 'icinga.wikimedia.org'),
     $tcpircbot_port = hiera('tcpircbot_port', 9200),
 ) {
+    # conftool is needed by switchdc
+    require ::profile::conftool::client
+
     include ::service::deploy::common
     include ::passwords::redis
     $redis_password = $passwords::redis::main_password
@@ -26,7 +29,6 @@ class profile::switchdc(
     # Install dependencies
     require_package([
         'cumin',
-        'python-conftool',
         'python-dnspython',
         'python-redis',
         'python-requests',
