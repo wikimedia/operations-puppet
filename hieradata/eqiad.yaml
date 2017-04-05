@@ -136,10 +136,7 @@ wikitech_db_name: 'labswiki'
 
 wikitechstatusconfig:
   host: 'wikitech.wikimedia.org'
-  domain: 'labs'
   page_prefix: 'Nova_Resource:'
-  region: 'eqiad'
-  dns_domain: 'eqiad.wmflabs'
 
 keystoneconfig:
   auth_port: '35357'
