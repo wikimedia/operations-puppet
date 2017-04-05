@@ -5718,11 +5718,6 @@ host restbase2012 {
     fixed-address restbase2012.codfw.wmnet;
 }
 
-host tegmen {
-    hardware ethernet 14:18:77:33:42:F8;
-    fixed-address tegmen.wikimedia.org;
-}
-
 host restbase-dev1001 {
     hardware ethernet 90:B1:1C:06:BF:01;
     fixed-address restbase-dev1001.eqiad.wmnet;
@@ -5891,6 +5886,16 @@ host suhail {
     fixed-address suhail.codfw.wmnet;
     option pxelinux.pathprefix "trusty-installer/";
     filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
+}
+
+host tegmen {
+    hardware ethernet 14:18:77:33:42:F8;
+    fixed-address tegmen.wikimedia.org;
+}
+
+host tempdb2001 {
+    hardware ethernet 14:18:77:5B:2A:5D;
+    fixed-address tempdb2001.codfw.wmnet;
 }
 
 host terbium {
