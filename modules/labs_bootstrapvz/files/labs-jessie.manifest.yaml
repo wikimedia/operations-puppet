@@ -124,8 +124,6 @@ packages:
     - os-prober
     - apt-listchanges
     - wpasupplicant
-    - mlocate
-    - ecryptfs-utils
     - puppet-lint
 # Puppet installs mpt-status right away, but I'm told that installing
 #  it in a raw image causes it to send spam mails.
