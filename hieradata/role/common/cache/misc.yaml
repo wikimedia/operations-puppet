@@ -117,6 +117,7 @@ cache::app_directors:
   wdqs_director:
     backends:
       eqiad: 'wdqs.svc.eqiad.wmnet'
+      codfw: 'wdqs.svc.codfw.wmnet'
   wdqs_director_ldf:
     backends:
       eqiad: 'wdqs1001.eqiad.wmnet'
