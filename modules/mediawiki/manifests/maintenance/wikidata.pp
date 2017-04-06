@@ -11,9 +11,8 @@ class mediawiki::maintenance::wikidata( $ensure = present ) {
         minute  => '*/3',
     }
 
-    # Temporarily disabled, while T159828 is being tested.
     cron { 'wikibase-dispatch-changes-test':
-        ensure  => absent,
+        ensure  => $ensure,
         command => '/usr/local/bin/mwscript extensions/Wikidata/extensions/Wikibase/repo/maintenance/dispatchChanges.php --wiki testwikidatawiki --max-time 900 --batch-size 200 --dispatch-interval 30 >/dev/null 2>&1',
         user    => $::mediawiki::users::web,
         minute  => '*/15',
