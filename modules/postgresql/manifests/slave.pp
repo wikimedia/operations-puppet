@@ -92,4 +92,11 @@ class postgresql::slave(
         source  => 'puppet:///modules/postgresql/check_postgres_replication_lag.py',
         require => Package['python-psycopg2'],
     }
+
+    file { '/usr/bin/prometheus_postgresql_replication_lag':
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0755',
+        source  => 'puppet:///modules/postgresql/prometheus/postgresql_replication_lag.sh',
+    }
 }
