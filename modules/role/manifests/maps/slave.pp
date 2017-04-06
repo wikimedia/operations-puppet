@@ -15,10 +15,16 @@ class role::maps::slave {
     $replication_pass = hiera('postgresql::slave::replication_pass')
     $critical = 1800
     $warning = 300
-    $command = "/usr/lib/nagios/plugins/check_postgres_replication_lag.py \
+    $icinga_command = "/usr/lib/nagios/plugins/check_postgres_replication_lag.py \
 -U replication -P ${replication_pass} -m ${master} -D template1 -C ${critical} -W ${warning}"
     nrpe::monitor_service { 'postgres-rep-lag':
         description  => 'Postgres Replication Lag',
-        nrpe_command => $command,
+        nrpe_command => $icinga_command,
+    }
+
+    $prometheus_command = "/usr/bin/prometheus_postgresql_replication_lag -m ${master} -P ${replication_pass}"
+    cron { 'prometheus-pg-replication-lag':
+        ensure  => $ensure,
+        command => "${prometheus_command} >/dev/null 2>&1",
     }
 }
