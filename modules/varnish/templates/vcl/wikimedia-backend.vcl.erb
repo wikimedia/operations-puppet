@@ -139,7 +139,7 @@ sub vcl_miss {
 sub vcl_pass {
 	call wm_common_pass;
 
-<% if @realm == "production" -%>
+<% if @realm == "production" and @hostname != "cp1008" -%>
 <% if @vcl_config.fetch("pass_random", false) -%>
 	if (req.http.X-Next-Is-Cache) {
 		// pass-traffic should not use consistent hashing, to avoid unecessary
