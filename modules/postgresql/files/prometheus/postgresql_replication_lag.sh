@@ -38,7 +38,7 @@ while getopts "D:hm:O:p:P:U:" opt; do
 done
 
 lag_command="/usr/lib/nagios/plugins/check_postgres_replication_lag.py \
--U replication -P ${pg_password} -m ${pg_master} -D template1"
+-U replication -P ${pg_password} -m ${pg_master} -D template1 --raw"
 
 lag=`${lag_command}`
 
