@@ -81,7 +81,11 @@ transaction-isolation          = REPEATABLE-READ
 # binary log an replication options
 log-bin
 log-slave-updates
+<% if $hostname == tempdb2001 -%>
+sync-binlog                    = 0
+<% else -%>
 sync-binlog                    = 1
+<% end -%>
 binlog-cache-size              = 1M
 max-binlog_size                = 1000M
 binlog-format                  = <%= @binlog_format %>
@@ -136,7 +140,11 @@ default-storage-engine         = InnoDB
 innodb_file_per_table          = 1
 innodb_buffer_pool_size        = <%= (Float(@memorysize.split[0]) * 0.75).round %>G
 innodb_log_file_size           = 2G
+<% if @hostname == tempdb2001 -%>
+innodb_flush_log_at_trx_commit = 0
+<% else -%>
 innodb_flush_log_at_trx_commit = 1
+<% end -%>
 innodb_flush_method            = O_DIRECT
 innodb_thread_concurrency      = 0
 innodb_io_capacity             = 1000
