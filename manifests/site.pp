@@ -662,6 +662,14 @@ node 'db2033.codfw.wmnet' {
     }
 }
 
+# temporary node in codfw to have redundancy #T162290
+node 'tempdb2001.codfw.wmnet' {
+    class { '::role::mariadb::core':
+        shard         => 'x1',
+        binlog_format => 'ROW',
+    }
+}
+
 ## m1 shard
 
 node 'db1016.eqiad.wmnet' {
