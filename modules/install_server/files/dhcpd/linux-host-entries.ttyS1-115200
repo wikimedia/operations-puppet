@@ -20,22 +20,16 @@ host achernar {
 host analytics1001 {
     hardware ethernet F0:1F:AF:E8:AF:06;
     fixed-address analytics1001.eqiad.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host analytics1002 {
     hardware ethernet F0:1F:AF:E8:BC:3F;
     fixed-address analytics1002.eqiad.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host analytics1003 {
     hardware ethernet F0:1F:AF:E7:EF:41;
     fixed-address analytics1003.eqiad.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host analytics1027 {
