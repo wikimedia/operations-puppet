@@ -7,7 +7,7 @@ class role::bastionhost::general {
     include ::bastionhost
     include ::standard
     include ::base::firewall
-    include ::role::backup::host
+    include ::profile::backup::host
 
     # Used by parsoid deployers
     include ::scap::dsh

@@ -6,7 +6,7 @@ class role::statistics::cruncher inherits role::statistics::base {
 
     include ::standard
     include ::base::firewall
-    include role::backup::host
+    include profile::backup::host
     backup::set { 'home' : }
 
     statistics::mysql_credentials { 'research':

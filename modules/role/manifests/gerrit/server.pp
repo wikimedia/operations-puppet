@@ -4,7 +4,5 @@
 class role::gerrit::server {
     include ::standard
     include ::profile::gerrit::server
-    include ::role::backup::host
-
-    system::role { 'role::gerrit::server': description => 'Gerrit server' }
+    include ::profile::backup::host
 }

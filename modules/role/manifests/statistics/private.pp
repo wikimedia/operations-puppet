@@ -4,7 +4,7 @@ class role::statistics::private inherits role::statistics::base {
         description => 'Statistics private data host and general compute node'
     }
 
-    include role::backup::host
+    include profile::backup::host
     backup::set { 'home' : }
 
     # include stuff common to statistics compute nodes
