@@ -1,20 +1,63 @@
 #!/bin/bash
-OPTIND=1
 verbose_opts="--verbose"
+force=""
+attempts=12
 
-while getopts "q" opt; do
-    case "$opt" in
-        q)  verbose_opts=""
+show_help() {
+    cat << EOF
+Usage: ${0##*/} [-qf] [-a ATTEMPTS]
+Will execute a puppet agent run reliably, waiting for any preceding puppet runs
+to complete before starting. This should allow to ensure a coordinated puppet
+run after a change is effective everywhere.
+
+Options:
+    -q --quiet      Will make the puppet run quiet and not output any verbose
+                    difference.
+    -f --force      Will forcibly enable puppet if it's not enabled.
+    -a --attempts N When waiting for a preceding puppet run, wait N*10 seconds
+                    before giving up.
+EOF
+}
+
+
+while :; do
+    case "$1" in
+        -q|--quiet)  verbose_opts=""
+            ;;
+        -f|--force)
+            force="force"
+            ;;
+        -a|--attempts)
+            if [ -n "$2" ]; then
+                attempts=$2
+                shift
+            else
+                show_help
+                exit 1
+            fi
+            ;;
+        -h|--help)
+            show_help
+            exit 0
+            ;;
+        -*)
+            printf "Unkown option: %s" "$1" >&2
+            show_help
+            exit 1
+            ;;
+        *)
+            break
             ;;
     esac
+    shift
 done
-
-shift $((OPTIND-1))
 
 # shellcheck disable=SC1091
 . /usr/local/share/bash/puppet-common.sh
 
-if ! wait_for_puppet 3; then
+test "$force" && puppet agent --enable
+
+if ! wait_for_puppet "$attempts"; then
     echo "Waited 30 seconds and a preceding puppet run is still ongoing, aborting"
     exit 1
 fi
