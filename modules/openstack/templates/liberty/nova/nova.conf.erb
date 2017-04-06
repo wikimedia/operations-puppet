@@ -55,8 +55,9 @@ allow_same_net_traffic=False
 force_dhcp_release=True
 # set the lease time to 24 hours
 dhcp_lease_time=86400
-# timeout expired leases after 48 hours
-fixed_ip_disassociate_timeout=172800
+# timeout expired leases after 3 minutes.  The default for this is 10 minutes,
+#  and for the longest time we had it set to 48 hours for unknown reasons.
+fixed_ip_disassociate_timeout=180
 iscsi_helper=tgtadm
 
 network_api_class=nova.network.api.API
