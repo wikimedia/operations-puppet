@@ -5,7 +5,7 @@
 class role::yubiauth::server {
     include ::standard
     include ::base::firewall
-    include ::role::backup::host
+    include ::profile::backup::host
 
     include yubiauth::yhsm_daemon
     include yubiauth::yhsm_yubikey_ksm

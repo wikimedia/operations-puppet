@@ -7,7 +7,7 @@ class role::bastionhost::opsonly {
     include ::bastionhost
     include ::standard
     include ::base::firewall
-    include ::role::backup::host
+    include ::profile::backup::host
 
     backup::set {'home': }
 

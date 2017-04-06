@@ -44,7 +44,7 @@ class role::etcd::common {
         class { '::etcd::backup':
             cluster_name => $cluster_name,
         }
-        include role::backup::host
+        include profile::backup::host
         backup::set { 'etcd': }
     }
 

@@ -39,7 +39,7 @@ class role::deployment::server(
     if $::realm != 'labs' {
         include role::microsites::releases::upload
         # backup /home dirs on deployment servers
-        include ::role::backup::host
+        include ::profile::backup::host
         backup::set {'home': }
     }
 

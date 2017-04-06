@@ -17,7 +17,7 @@ class role::grafana::base(
     include ::apache::mod::proxy_http
     include ::apache::mod::rewrite
 
-    include ::role::backup::host
+    include ::profile::backup::host
 
     include ::passwords::ldap::production
 
