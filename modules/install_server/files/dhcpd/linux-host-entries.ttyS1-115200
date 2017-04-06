@@ -4461,41 +4461,6 @@ host mw2017 {
     fixed-address mw2017.codfw.wmnet;
 }
 
-host mw2090 {
-    hardware ethernet 90:B1:1C:28:E2:1B;
-    fixed-address mw2090.codfw.wmnet;
-}
-
-host mw2091 {
-    hardware ethernet 90:B1:1C:28:DC:AF;
-    fixed-address mw2091.codfw.wmnet;
-}
-
-host mw2092 {
-    hardware ethernet 90:B1:1C:24:9A:9E;
-    fixed-address mw2092.codfw.wmnet;
-}
-
-host mw2093 {
-    hardware ethernet 90:B1:1C:25:9F:29;
-    fixed-address mw2093.codfw.wmnet;
-}
-
-host mw2094 {
-    hardware ethernet 90:B1:1C:25:91:AA;
-    fixed-address mw2094.codfw.wmnet;
-}
-
-host mw2095 {
-    hardware ethernet 90:B1:1C:25:D8:0E;
-    fixed-address mw2095.codfw.wmnet;
-}
-
-host mw2096 {
-    hardware ethernet 90:B1:1C:25:D8:5E;
-    fixed-address mw2096.codfw.wmnet;
-}
-
 host mw2097 {
     hardware ethernet 90:B1:1C:25:95:57;
     fixed-address mw2097.codfw.wmnet;
