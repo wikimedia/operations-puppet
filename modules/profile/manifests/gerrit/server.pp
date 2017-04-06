@@ -9,8 +9,6 @@ class profile::gerrit::server(
     $bacula = hiera('gerrit::server::bacula'),
 ) {
 
-    system::role { 'role::gerrit::server': description => 'Gerrit server' }
-
     interface::ip { 'role::gerrit::server_ipv4':
         interface => 'eth0',
         address   => $ipv4,
