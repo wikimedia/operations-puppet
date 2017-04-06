@@ -16,3 +16,6 @@ maps::redis_server: redis://maps2001.codfw.wmnet
 tilerator::conf_sources: sources.prod2.yaml
 tilerator::ui::conf_sources: sources.prod2.yaml
 kartotherian::conf_sources: sources.prod2.yaml
+tilerator::keyspace: v5
+tilerator::ui::keyspace: v5
+kartotherian::keyspace: v5

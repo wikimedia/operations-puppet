@@ -66,6 +66,7 @@ class tilerator::ui(
     $cassandra_servers,
     $port           = 6535,
     $conf_sources   = 'sources.prod.yaml',
+    $keyspace       = 'v3',
     $contact_groups = 'admins',
     $statefile_dir  = '/var/run/tileratorui',
     $from_zoom      = 10,
@@ -92,6 +93,7 @@ class tilerator::ui(
         deployment_vars   => {
             entrypoint         => '""',
             conf_sources       => $conf_sources,
+            keyspace           => $keyspace,
             cassandra_user     => $cassandra_tileratorui_user,
             cassandra_password => $cassandra_tileratorui_pass,
             cassandra_servers  => $cassandra_servers,

@@ -25,6 +25,7 @@
 #
 class tilerator(
     $conf_sources      = 'sources.prod.yaml',
+    $keyspace          = 'v3',
     $contact_groups    = 'admins',
     $cassandra_servers = hiera('cassandra::seeds'),
 ) {
@@ -53,6 +54,7 @@ class tilerator(
         deployment_vars   => {
             entrypoint         => '""',
             conf_sources       => $conf_sources,
+            keyspace           => $keyspace,
             cassandra_user     => $cassandra_tilerator_user,
             cassandra_password => $cassandra_tilerator_pass,
             cassandra_servers  => $cassandra_servers,
