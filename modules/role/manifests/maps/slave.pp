@@ -17,8 +17,15 @@ class role::maps::slave {
     $warning = 300
     $command = "/usr/lib/nagios/plugins/check_postgres_replication_lag.py \
 -U replication -P ${replication_pass} -m ${master} -D template1 -C ${critical} -W ${warning}"
+
+    # This check generate a number of alerts, which recover quickly. It looks
+    # like lag suddenly jumps from 0 to a high number (multiple hours) and goes
+    # back to zero quickly. Increasing the number of retries will reduce the
+    # number of false positive while we investigate a better solution. See
+    # T162345 for details.
     nrpe::monitor_service { 'postgres-rep-lag':
         description  => 'Postgres Replication Lag',
         nrpe_command => $command,
+        retries      => 10,
     }
 }
