@@ -48,7 +48,9 @@ def parse_args():
     parser.add_option("-W", "--warn", dest="warn", default="300",
                        help="Warning alert delay in seconds")
     parser.add_option("-C", "--crit", dest="crit", default="1800",
-                       help="Critical alert delay in seconds")
+                      help="Critical alert delay in seconds")
+    parser.add_option("-R", "--raw", action="store_true", dest="raw", default=False,
+                      help="Only outputs the current lag, with no formatting")
     (options, args) = parser.parse_args()
     if not options.master:
         parser.error('master not given')
@@ -152,7 +154,10 @@ def main():
 
     # execute command using options from parse_args
     delay = check_delay(options)
-    nagios_delay(delay, options)
+    if options.raw:
+        print delay
+    else:
+        nagios_delay(delay, options)
 
 
 # call main function
