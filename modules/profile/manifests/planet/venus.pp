@@ -205,8 +205,6 @@ class profile::planet::venus (
     }
 ) {
 
-    system::role { 'role::planet::venus': description => 'Planet (venus) weblog aggregator' }
-
     class {'::planet':
         planet_domain_name => $planet_domain_name,
         planet_languages   => $planet_languages,
