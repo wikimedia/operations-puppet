@@ -49,11 +49,6 @@ class profile::elasticsearch {
         srange  => "@resolve((${elastic_nodes_ferm}))",
     }
 
-    system::role { 'role::elasticsearch::server':
-        ensure      => 'present',
-        description => 'elasticsearch server',
-    }
-
     package { 'elasticsearch/plugins':
         provider => 'trebuchet',
     }
