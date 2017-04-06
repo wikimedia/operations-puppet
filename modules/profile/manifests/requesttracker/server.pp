@@ -2,8 +2,6 @@
 # https://bestpractical.com/request-tracker
 class profile::requesttracker::server {
 
-    system::role { 'requesttracker::server': description => 'RT server' }
-
     interface::add_ip6_mapped { 'main': interface => 'eth0', }
 
     include ::passwords::misc::rt
