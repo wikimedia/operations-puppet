@@ -5,3 +5,6 @@ labspuppetbackend::mysql_db: "labspuppet"
 labspuppetbackend::mysql_username: "labspuppet"
 labspuppetbackend::statsd_host: "labmon1001.eqiad.wmnet"
 labspuppetbackend::statsd_prefix: "labs.puppetbackend"
+
+admin::groups:
+  - cs-roots
