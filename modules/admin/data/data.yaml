@@ -594,6 +594,11 @@ groups:
     members: [gwicke, ppchelko, eevans, mobrovac, jdlrobson, bsitzmann]
     privileges: ['ALL = NOPASSWD: /usr/sbin/service trendingedits *',
                  'ALL = (trendingedits) NOPASSWD: ALL']
+  cs-roots:
+    description: root for cloud services infrastructure
+    gid: 792
+    members: []
+    privileges: ['ALL = (ALL) NOPASSWD: ALL']
 
 users:
   rush:
