@@ -7,7 +7,6 @@ class profile::redis::master(
     $uris = apply_format("localhost:%s/${password}", $instances)
     $redis_ports = join($instances, ' ')
 
-    ::system::role {'profile::redis::master': }
     $auth_settings = {
         'masterauth'  => $password,
         'requirepass' => $password,
