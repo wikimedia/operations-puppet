@@ -2,8 +2,9 @@
 # https://en.wikipedia.org/wiki/Gerrit_%28software%29
 #
 class role::gerrit::server {
-
     include ::standard
     include ::profile::gerrit::server
     include ::role::backup::host
+
+    system::role { 'role::gerrit::server': description => 'Gerrit server' }
 }
