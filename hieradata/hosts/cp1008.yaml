@@ -8,3 +8,37 @@ cache::text::nodes:
     codfw:
       - 'cp1008.wikimedia.org'
 cache::lua_support: true
+cache::app_directors:
+  appservers:
+    backends:
+      eqiad: 'appservers.svc.eqiad.wmnet'
+  api:
+    backends:
+      eqiad: 'api.svc.eqiad.wmnet'
+  rendering:
+    backends:
+      eqiad: 'rendering.svc.eqiad.wmnet'
+  security_audit:
+    backends:
+      eqiad: 'appservers.svc.eqiad.wmnet'
+  appservers_debug:
+    be_opts:
+      max_connections: 20
+    backends:
+      eqiad: 'hassium.eqiad.wmnet'
+  restbase_backend:
+    be_opts:
+      port: 7231
+      max_connections: 5000
+    backends:
+      eqiad: 'restbase.svc.eqiad.wmnet'
+  cxserver_backend:
+    be_opts:
+      port: 8080
+    backends:
+      eqiad: 'cxserver.svc.eqiad.wmnet'
+  citoid_backend:
+    be_opts:
+      port: 1970
+    backends:
+      eqiad: 'citoid.svc.eqiad.wmnet'
