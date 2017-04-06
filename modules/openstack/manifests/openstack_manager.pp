@@ -17,7 +17,7 @@ class openstack::openstack_manager(
     include ::mediawiki::scap
     include ::apache::mod::rewrite
     include ::apache::mod::headers
-    include ::role::backup::host
+    include ::profile::backup::host
     include ::nrpe
 
     include ::openstack::wikitechprivatesettings

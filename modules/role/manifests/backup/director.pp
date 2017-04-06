@@ -1,5 +1,5 @@
 class role::backup::director {
-    include role::backup::host
+    include profile::backup::host
     include role::backup::config
     include passwords::bacula
     require geowiki::params

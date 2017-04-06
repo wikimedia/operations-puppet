@@ -3,7 +3,7 @@
 class role::puppetmaster::frontend {
     include ::base::firewall
 
-    include role::backup::host
+    include profile::backup::host
 
     # Everything below this point belongs in a profile
     backup::set { 'var-lib-puppet-ssl': }

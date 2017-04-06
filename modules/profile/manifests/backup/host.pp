@@ -1,33 +1,35 @@
-class role::backup::host {
-    include role::backup::config
-
-    $pool = $role::backup::config::pool
-
+# Profile class for adding backup functionalities to a host
+class profile::backup::host(
+    $pool     = hiera('profile::backup::pool'),
+    $director = hiera('profile::backup::director'),
+    $days     = hiera('profile::backup::days'),
+){
     class { 'bacula::client':
-        director       => $role::backup::config::director,
+        director       => $director,
         catalog        => 'production',
         file_retention => '60 days',
         job_retention  => '60 days',
     }
 
-
     # This will use uniqueid fact to distribute (hopefully evenly) machines on
     # days of the week
-    $days = $role::backup::config::days
     $day = inline_template('<%= @days[[@uniqueid].pack("H*").unpack("L")[0] % 7] -%>')
 
     $jobdefaults = "Monthly-1st-${day}-${pool}"
 
+    # Realize the various virtual resources that may have been defined
     Bacula::Client::Job <| |> {
         require => Class['bacula::client'],
     }
     File <| tag == 'backup-motd' |>
 
     # If the machine includes ::base::firewall then let director connect to us
+    # TODO The IPv6 IP should be converted into a DNS AAAA resolve once we
+    # enabled the DNS record on the director
     ferm::service { 'bacula-file-demon':
         proto  => 'tcp',
         port   => '9102',
-        srange => "(${role::backup::config::director_ip} ${role::backup::config::director_ip6})",
+        srange => "(@resolve(${director}) 2620:0:861:101:10:64:0:179)",
     }
 }
 

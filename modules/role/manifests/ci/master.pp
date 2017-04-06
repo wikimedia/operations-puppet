@@ -36,7 +36,7 @@ class role::ci::master(
     }
 
     # Backups
-    include ::role::backup::host
+    include ::profile::backup::host
     backup::set {'var-lib-jenkins-config': }
     backup::set { 'contint' : }
 
