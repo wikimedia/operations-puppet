@@ -3,8 +3,6 @@
 # http://wikimediafoundation.org/wiki/Annual_Report
 class profile::microsites::annualreport {
 
-    system::role { 'role::microsites::annualreport': description => 'WMF Annual report server - annual.wikimedia.org' }
-
     include ::annualreport
 
     include ::base::firewall
