@@ -204,6 +204,27 @@ def create_sudo_defaults(project_id):
     except ldap.LDAPError as e:
         LOG.warning("Failed to create project base %s in ldap: %s" % (projectbase, e))
 
+    # this record is empty and arbitrary, but keeps sudo-ldap from
+    #  freaking out and ignoring all groups.
+    groupsdn = "ou=groups,%s" % projectbase
+    groupsentry = {}
+    groupsentry['objectClass'] = ['organizationalunit']
+    modlist = ldap.modlist.addModlist(groupsentry)
+    try:
+        ds.add_s(groupsdn, modlist)
+    except ldap.LDAPError as e:
+        LOG.warning("Failed to create base group entry: %s" % e)
+
+    #  This one too!
+    peopledn = "ou=people,%s" % projectbase
+    peopleentry = {}
+    peopleentry['objectClass'] = ['organizationalunit']
+    modlist = ldap.modlist.addModlist(peopleentry)
+    try:
+        ds.add_s(peopledn, modlist)
+    except ldap.LDAPError as e:
+        LOG.warning("Failed to create base people entry: %s" % e)
+
     sudoerbase = "ou=sudoers,%s" % projectbase
     sudoEntry = {}
     sudoEntry['objectClass'] = ['organizationalunit', 'top']
