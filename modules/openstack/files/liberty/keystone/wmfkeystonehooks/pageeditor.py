@@ -18,6 +18,8 @@ import time
 import mwclient
 import logging
 
+from wmfkeystoneauth import wikitechclient
+
 from oslo_config import cfg
 
 
@@ -39,12 +41,18 @@ wiki_opts = [
     cfg.StrOpt('wiki_instance_dns_domain',
                default='',
                help='Hard-coded domain for wiki page. E.g. pmtpa.wmflabs'),
-    cfg.StrOpt('wiki_login',
-               default='login',
-               help='Account used to edit wiki pages.'),
-    cfg.StrOpt('wiki_password',
-               default='password',
-               help='Password for wiki_login.')]
+    cfg.StrOpt('wiki_consumer_token',
+               default='',
+               help='oauth consumer token for wikitech access'),
+    cfg.StrOpt('wiki_consumer_secret',
+               default='',
+               help='oauth consumer secret for wikitech access'),
+    cfg.StrOpt('wiki_access_token',
+               default='',
+               help='oauth access token for wikitech access'),
+    cfg.StrOpt('wiki_access_secret',
+               default='',
+               help='oauth access secret for wikitech access')]
 
 
 CONF = cfg.CONF
@@ -65,33 +73,15 @@ class PageEditor():
         self.site_lock = threading.Lock()
         self._site = None
 
-    @staticmethod
-    def _wiki_login(host):
-        site = mwclient.Site(("https", host),
-                             retry_timeout=10,
-                             max_retries=3)
-        if site:
-            # Races kills a fair number of these logins, so give it a few tries.
-            for count in reversed(xrange(3)):
-                try:
-                    site.login(CONF.wiki_login, CONF.wiki_password,
-                               domain=CONF.wiki_domain)
-                    return site
-                except mwclient.APIError:
-                    LOG.exception(
-                        "mwclient login failed, %d more tries" % count)
-                    time.sleep(20)
-            raise mwclient.MaximumRetriesExceeded()
-        else:
-            LOG.warning("Unable to reach %s.  We'll keep trying, "
-                        "but pages will be out of sync in the meantime."
-                        % host)
-            return None
-
     def _get_site(self):
         with self.site_lock:
             if self._site is None:
-                self._site = self._wiki_login(self.host)
+                self._site = wikitechclient.WikitechClient(
+                    self.host,
+                    CONF.wiki_consumer_token,
+                    CONF.wiki_consumer_secret,
+                    CONF.wiki_access_token,
+                    CONF.wiki_access_secret)
             return self._site
 
     def edit_page(self, text, resource_name, delete_page=False,
