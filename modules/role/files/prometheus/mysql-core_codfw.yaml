@@ -144,7 +144,6 @@
   - db2033:9104
 - labels:
     shard: x1
-    role: master
+    role: slave
   targets:
-  - db2033:9104
-
+  - tempdb2001:9104
