@@ -7,4 +7,10 @@ class role::elasticsearch::cirrus {
     include ::base::firewall
     include ::role::lvs::realserver
     include ::profile::elasticsearch
+
+    system::role { 'role::elasticsearch::cirrus':
+        ensure      => 'present',
+        description => 'elasticsearch cirrus',
+    }
+
 }
