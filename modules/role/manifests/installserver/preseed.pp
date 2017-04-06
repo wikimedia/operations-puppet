@@ -2,7 +2,7 @@
 class role::installserver::preseed {
 
     include ::standard
-    include ::role::backup::host
+    include ::profile::backup::host
     include install_server::preseed_server
 
     # Backup

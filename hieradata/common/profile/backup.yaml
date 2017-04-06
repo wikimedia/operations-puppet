@@ -1,0 +1,3 @@
+profile::backup::pool: production
+profile::backup::director: helium.eqiad.wmnet
+days: [ Sat, Sun, Mon, Tue, Wed, Thu, Fri ]

@@ -12,7 +12,7 @@ class profile::microsites::static_bugzilla {
         port  => '80',
     }
 
-    include ::role::backup::host
+    include ::profile::backup::host
 
     backup::set { 'bugzilla-static' : }
     backup::set { 'bugzilla-backup' : }

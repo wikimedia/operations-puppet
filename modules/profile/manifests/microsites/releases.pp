@@ -25,7 +25,7 @@ class profile::microsites::releases {
         port  => '80',
     }
 
-    include ::role::backup::host
+    include ::profile::backup::host
     backup::set { 'srv-org-wikimedia': }
 }
 

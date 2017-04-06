@@ -72,7 +72,7 @@ class role::lists::server {
         content  => secret('dkim/lists.wikimedia.org-wikimedia.key'),
     }
 
-    include ::role::backup::host
+    include ::profile::backup::host
     backup::set { 'var-lib-mailman': }
 
     monitoring::service { 'smtp':

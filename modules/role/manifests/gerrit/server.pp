@@ -5,5 +5,5 @@ class role::gerrit::server {
 
     include ::standard
     include ::profile::gerrit::server
-    include ::role::backup::host
+    include ::profile::backup::host
 }
