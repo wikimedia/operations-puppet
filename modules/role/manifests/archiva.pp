@@ -22,7 +22,7 @@ class role::archiva {
 
     # Bacula backups for /var/lib/archiva.
     if $::realm == 'production' {
-        include ::role::backup::host
+        include ::profile::backup::host
         backup::set { 'var-lib-archiva':
             require => Class['::archiva']
         }

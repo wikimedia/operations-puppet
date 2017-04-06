@@ -24,7 +24,7 @@ class role::installserver::tftp {
 
     include ::standard
     include ::base::firewall
-    include ::role::backup::host
+    include ::profile::backup::host
     include install_server::tftp_server
 
     ferm::rule { 'tftp':

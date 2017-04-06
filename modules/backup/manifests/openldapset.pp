@@ -22,7 +22,7 @@ define backup::openldapset(){
     }
     bacula::client::job { 'openldap-backup':
         fileset     => 'openldap',
-        jobdefaults => $role::backup::host::jobdefaults,
+        jobdefaults => $profile::backup::host::jobdefaults,
         extras      => $run_scripts,
     }
 }

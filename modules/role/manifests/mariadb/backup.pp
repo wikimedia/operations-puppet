@@ -1,5 +1,5 @@
 class role::mariadb::backup {
-    include role::backup::host
+    include profile::backup::host
     include passwords::mysql::dump
 
     file { '/srv/backups':
@@ -47,6 +47,6 @@ class role::mariadb::backup {
         method           => 'predump',
         mysql_binary     => '/usr/local/bin/mysql',
         mysqldump_binary => '/usr/local/bin/mysqldump',
-        jobdefaults      => "Weekly-${role::backup::host::day}-${role::backup::host::pool}",
+        jobdefaults      => "Weekly-${profile::backup::host::day}-${role::backup::host::pool}",
     }
 }

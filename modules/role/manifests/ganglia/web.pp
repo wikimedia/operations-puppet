@@ -91,7 +91,7 @@ class role::ganglia::web {
         description   => 'HTTP',
         check_command => 'check_http',
     }
-    include ::role::backup::host
+    include ::profile::backup::host
     backup::set { 'var-lib-ganglia': }
     backup::set { 'srv-ganglia': }
 

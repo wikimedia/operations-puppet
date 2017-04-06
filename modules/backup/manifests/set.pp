@@ -1,5 +1,5 @@
 # backup::set is probably what you want
-define backup::set($jobdefaults=$role::backup::host::jobdefaults) {
+define backup::set($jobdefaults=$profile::backup::host::jobdefaults) {
     if $jobdefaults != undef {
         @bacula::client::job { "${name}-${jobdefaults}":
             fileset     => $name,
