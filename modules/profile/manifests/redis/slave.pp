@@ -12,7 +12,6 @@ class profile::redis::slave(
     $instances = split($redis_ports, ' ')
     $uris = apply_format("localhost:%s/${password}", $instances)
 
-    system::role {'profile::redis::slave': }
     $auth_settings = {
         'masterauth'  => $password,
         'requirepass' => $password,
