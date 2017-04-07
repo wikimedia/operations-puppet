@@ -15,7 +15,7 @@ admin::groups:
   - kartotherian-admin
   - tilerator-admin
 
-cluster: 'maps'
+cluster: 'maps-test'
 
 debdeploy::grains:
   debdeploy-maps-master:
