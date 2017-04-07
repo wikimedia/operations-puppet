@@ -49,6 +49,7 @@ class postgresql::server(
         'libdbi-perl',
         'libdbd-pg-perl',
         'ptop',
+        'check-postgres',
     ]:
         ensure => $ensure,
     }
