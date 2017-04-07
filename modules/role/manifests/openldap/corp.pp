@@ -3,7 +3,7 @@
 # vim: set ts=4 et sw=4:
 class role::openldap::corp {
     include passwords::openldap::corp
-    include profile::backup::host
+    include ::profile::backup::host
     include ::base::firewall
 
     system::role { 'role::openldap::corp':
