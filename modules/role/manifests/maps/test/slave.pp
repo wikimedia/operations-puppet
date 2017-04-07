@@ -1,8 +1,7 @@
 # Sets up a maps server slave
-class role::maps::slave {
+class role::maps::test::slave {
     include ::standard
     include ::base::firewall
-    include ::role::lvs::realserver
 
     include ::profile::maps::apps
     include ::profile::maps::cassandra

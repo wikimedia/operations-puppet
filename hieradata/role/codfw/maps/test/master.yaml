@@ -10,27 +10,31 @@
 #maps::cassandra_tileratorui_pass: some_password
 #maps::cassandra_kartotherian_pass: some_password
 
+profile::maps::osm_master::planet_sync_period: 'minute'
+profile::maps::osm_master::planet_sync_hour:   '*'
+profile::maps::osm_master::planet_sync_minute: '*'
+role::maps::master::postgres_tile_storage: true
+tilerator::ui::storage_id: 'v5'
+
 maps::postgres_slaves:
-  maps2002:
-    ip_address: 10.192.16.179
-  maps2003:
-    ip_address: 10.192.32.146
-  maps2004:
-    ip_address: 10.192.48.57
+  maps-test2002:
+    ip_address: 10.192.0.129
+  maps-test2003:
+    ip_address: 10.192.16.34
+  maps-test2004:
+    ip_address: 10.192.16.35
 
 profile::maps::cassandra::seeds:
-  - '10.192.0.144'
-  - '10.192.16.179'
-  - '10.192.32.146'
-  - '10.192.48.57'
+  - '10.192.0.128'
+  - '10.192.0.129'
+  - '10.192.16.34'
+  - '10.192.16.35'
 profile::maps::cassandra::dc: 'codfw'
-lvs::realserver::realserver_ips:
-  - '10.2.1.13'
 profile::maps::hosts:
-  - 'maps2001.codfw.wmnet'
-  - 'maps2002.codfw.wmnet'
-  - 'maps2003.codfw.wmnet'
-  - 'maps2004.codfw.wmnet'
-profile::maps::apps::redis_server: 'redis://maps2001.codfw.wmnet'
+  - 'maps-test2001.codfw.wmnet'
+  - 'maps-test2002.codfw.wmnet'
+  - 'maps-test2003.codfw.wmnet'
+  - 'maps-test2004.codfw.wmnet'
+profile::maps::apps::redis_server: 'redis://maps-test2001.codfw.wmnet'
 profile::maps::apps::conf_sources: 'sources.prod2.yaml'
-profile::maps::apps::storage_id: 'v3'
+profile::maps::apps::storage_id: 'v5'
