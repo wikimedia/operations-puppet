@@ -3,5 +3,5 @@
 # This class setup a Cumin master server
 #
 class role::cumin::master {
-    include profile::cumin::master
+    include ::profile::cumin::master
 }
