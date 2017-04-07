@@ -1,22 +1,21 @@
-# Defined in the private repo
-#cassandra::super_password: some_password
-#maps::postgresql_tilerator_pass: some_password
-#maps::postgresql_tileratorui_pass: some_password
-#maps::postgresql_kartotherian_pass: some_password
-#maps::postgresql_osmimporter_pass: some_password
-#maps::postgresql_osmupdater_pass: some_password
-#maps::postgresql_replication_pass: some_password
-#maps::cassandra_tilerator_pass: some_password
-#maps::cassandra_tileratorui_pass: some_password
-#maps::cassandra_kartotherian_pass: some_password
+profile::maps::hosts:
+  - 'maps2001.codfw.wmnet'
+  - 'maps2002.codfw.wmnet'
+  - 'maps2003.codfw.wmnet'
+  - 'maps2004.codfw.wmnet'
 
-maps::postgres_slaves:
-  maps-test2002:
-    ip_address: 10.192.0.129
-  maps-test2003:
-    ip_address: 10.192.16.34
-  maps-test2004:
-    ip_address: 10.192.16.35
+profile::maps::apps::redis_server: 'redis://maps2001.codfw.wmnet'
+profile::maps::apps::conf_sources: 'sources.prod2.yaml'
+profile::maps::apps::storage_id: 'v3'
+
+profile::maps::cassandra::dc: 'codfw'
+profile::maps::cassandra::seeds:
+  - '10.192.0.144'
+  - '10.192.16.179'
+  - '10.192.32.146'
+  - '10.192.48.57'
+
+profile::maps::osm_master::slaves:
   maps2002:
     ip_address: 10.192.16.179
   maps2003:
