@@ -9,7 +9,7 @@ class ocg::nagios (
     $url = 'http://localhost:8000/?command=health', # OCG health check URL
 ) {
 
-    include nrpe
+    include ::nrpe
 
     file { '/usr/lib/nagios/plugins/check_ocg_health':
         source  => 'puppet:///modules/ocg/nagios/check_ocg_health',
