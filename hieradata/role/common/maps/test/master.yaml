@@ -10,15 +10,12 @@
 #profile::maps::cassandra::tileratorui_pass: some_password
 #profile::cassandra::single_instance::super_pass: some_password
 
-role::lvs::realserver::pools:
-  kartotherian: {}
-
 admin::groups:
   - maps-admins
   - kartotherian-admin
   - tilerator-admin
 
-cluster: 'maps'
+cluster: 'maps-test'
 
 debdeploy::grains:
   debdeploy-maps-master:
@@ -27,6 +24,3 @@ debdeploy::grains:
 profile::cassandra::single_instance::graphite_host: 'graphite-in.eqiad.wmnet'
 service::configuration::logstash_host: 'logstash1001.eqiad.wmnet'
 service::configuration::statsd_host: 'statsd.eqiad.wmnet'
-
-cassandra::metrics::blacklist:
-  - .*\.metrics\.Table\..*$
