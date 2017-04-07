@@ -20,7 +20,7 @@ Options:
 EOF
 }
 
-while getopts "D:hm:O:p:P:U:" opt; do
+while getopts "hm:p:P:" opt; do
     case "$opt" in
     h)
         usage
@@ -34,13 +34,16 @@ while getopts "D:hm:O:p:P:U:" opt; do
     P)
         pg_password=${OPTARG}
         ;;
+    *)
+        usage
+        exit 1
+        ;;
     esac
 done
 
-lag_command="/usr/lib/nagios/plugins/check_postgres_replication_lag.py \
--U replication -P ${pg_password} -m ${pg_master} -D template1 --raw"
+lag=$("/usr/bin/check_postgres_hot_standby_delay \
+--host=${pg_master},localhost \
+--dbuser=replication --dbpass=${pg_password} -dbname=template1")
 
-lag=`${lag_command}`
-
-echo "postgresql_replication_lag" $lag > $prometheus_path.$$
+echo "postgresql_replication_lag_bytes ${lag}" > $prometheus_path.$$
 mv $prometheus_path.$$ $prometheus_path
