@@ -10,18 +10,15 @@
 #profile::maps::cassandra::tileratorui_pass: some_password
 #profile::cassandra::single_instance::super_pass: some_password
 
-role::lvs::realserver::pools:
-  kartotherian: {}
-
 admin::groups:
   - maps-admins
   - kartotherian-admin
   - tilerator-admin
 
-cluster: 'maps'
+cluster: 'maps-test'
 
 debdeploy::grains:
-  debdeploy-maps-slave:
+  debdeploy-maps-master:
     value: standard
 
 profile::cassandra::single_instance::graphite_host: 'graphite-in.eqiad.wmnet'
@@ -30,3 +27,8 @@ service::configuration::statsd_host: 'statsd.eqiad.wmnet'
 
 cassandra::metrics::blacklist:
   - .*\.metrics\.Table\..*$
+
+profile::redis::master::instances: 6379
+profile::redis::master::settings:
+  bind: "0.0.0.0"
+profile::redis::master::clients: "%{lookup('profile::maps::hosts')}"
