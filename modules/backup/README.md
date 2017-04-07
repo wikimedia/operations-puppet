@@ -17,5 +17,5 @@ and running in WMF backups.
 
 ## Usage ##
 
-include profile::backup::host
+include ::profile::backup::host
 backup::set { 'home': }
