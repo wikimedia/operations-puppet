@@ -1,17 +1,12 @@
-class role::lists::server {
-    include network::constants
-    include ::base::firewall
-    include ::standard
+class profile::lists_server (
+    $outbound_ips = hiera_array('mailman::server_ip'),
+    $list_outbound_ips = hiera_array('mailman::lists_ip'),
+) {
 
-    system::role { 'role::lists::server':
-        description => 'Mailing list server',
-    }
-
-    mailalias { 'root':
-        recipient => 'root@wikimedia.org',
-    }
+    mailalias { 'root': recipient => 'root@wikimedia.org', }
 
     $lists_ip = hiera('mailman::lists_ip')
+    interface::add_ip6_mapped { 'main': interface => 'eth0' },
 
     interface::ip { 'lists.wikimedia.org_v4':
         interface => 'eth0',
@@ -25,9 +20,6 @@ class role::lists::server {
         prefixlen => '128',
     }
 
-    $outbound_ips = hiera_array('mailman::server_ip')
-    $list_outbound_ips = hiera_array('mailman::lists_ip')
-
     letsencrypt::cert::integrated { 'lists':
         subjects   => 'lists.wikimedia.org',
         puppet_svc => 'apache2',
@@ -35,16 +27,12 @@ class role::lists::server {
         key_group  => 'Debian-exim',
     }
 
-    include mailman
-
     class { 'spamassassin':
         required_score   => '4.0',
         use_bayes        => '0',
         bayes_auto_learn => '0',
         trusted_networks => $network::constants::all_networks,
     }
-
-    include privateexim::listserve
 
     class { 'exim4':
         variant => 'heavy',
@@ -56,7 +44,6 @@ class role::lists::server {
             Interface::Ip['lists.wikimedia.org_v6'],
         ],
     }
-    include exim4::ganglia
 
     file { '/etc/exim4/aliases/lists.wikimedia.org':
         owner   => 'root',
@@ -72,7 +59,6 @@ class role::lists::server {
         content  => secret('dkim/lists.wikimedia.org-wikimedia.key'),
     }
 
-    include ::role::backup::host
     backup::set { 'var-lib-mailman': }
 
     monitoring::service { 'smtp':
