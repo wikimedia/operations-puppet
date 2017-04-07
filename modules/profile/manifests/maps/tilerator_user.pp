@@ -6,7 +6,7 @@
 # activate puppet future parser. It might also make sense to expose higher
 # level abstractions in the postgresql module itself.
 #
-define role::maps::tilerator_user (
+define profile::maps::tilerator_user (
     $ip_address,
     $password,
 ) {
