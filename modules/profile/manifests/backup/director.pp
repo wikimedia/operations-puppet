@@ -12,7 +12,7 @@ class profile::backup::director(
     $dbhost = hiera('profile::backup::director::database'),
     $dbpass = hiera('profile::backup::director::dbpass'),
 ){
-    include base::firewall
+    include ::base::firewall
     require geowiki::params
 
     class { 'bacula::director':

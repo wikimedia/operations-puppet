@@ -22,7 +22,7 @@ class role::cache::base(
     # Only production needs system perf tweaks and NFS client disable
     if $::realm == 'production' {
         include role::cache::perf
-        include base::no_nfs_client
+        include ::base::no_nfs_client
     }
 
     # Not ideal factorization to put this here, but works for now
