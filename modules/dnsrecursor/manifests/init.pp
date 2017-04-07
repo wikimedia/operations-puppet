@@ -29,6 +29,16 @@ class dnsrecursor(
         description => 'Recursive DNS server',
     }
 
+    # This is to ensure we get pdns-recursor 4.x on jessie
+    if os_version('debian < stretch') {
+        apt::pin { 'pdns-recursor':
+            package  => 'pdns-recursor',
+            pin      => 'release a=jessie-backports',
+            priority => '1001',
+            before   => Package['pdns-recursor'],
+        }
+    }
+
     package { 'pdns-recursor':
         ensure => 'present',
     }

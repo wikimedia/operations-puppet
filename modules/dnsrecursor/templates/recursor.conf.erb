@@ -1,7 +1,3 @@
-# This file is managed by puppet - don't edit it locally!
-# recursor.conf
-# https://doc.powerdns.com/3/recursor/settings/
-
 <%
     def flatten_ips(ips)
         result = []
@@ -19,42 +15,31 @@
         return result
     end
 -%>
+# --- Functional basics ---
 
-# location of configuration directory (recursor.conf)
 config-dir=/etc/powerdns/
-
 setgid=pdns
 setuid=pdns
-
 daemon=yes
-# THREADS x MAX-MTHREADS < FD's
-threads=2
+socket-dir=/var/run/
+export-etc-hosts=<%= @export_etc_hosts %>
 
-# maximum number of simultaneous MTasker threads
-# This is explicitly lowered to avoid a known bug:
-#  http://blog.powerdns.com/2014/02/06/related-to-recent-dos-attacks-recursor-configuration-file-guidance/
-max-mthreads=512
+# --- Listen IPs, allowed clients, local zones+authdns ---
 
 # local-address	IP addresses to listen on, separated by spaces or commas
 local-address=<%= flatten_ips(@listen_addresses).sort.join(" ") %>
 local-port=53
-
-# available since: 3.6
-#loglevel=1
-log-common-errors=yes
-# suppress logging of questions and answers
-quiet=yes
-# trace	if we should output heaps of logging
-trace=off
-
-# which domains we only accept delegations from
-delegation-only=com,net
 
 # If set, only allow these comma separated netmasks to recurse
 allow-from=127.0.0.0/8, ::1/128, <%= (@allow_from + flatten_ips(@listen_addresses)).join(", ") %>
 
 # Zones for which we forward queries, comma separated domain=ip pairs
 forward-zones=<%= @forward_zones -%>, <%= @additional_forward_zones -%>
+
+# we need ECS to ensure our geoip resolution (e.g. for discovery hostnames) works correctly regardless of which recursor (x-dc) a client uses
+# XXX templatize this!
+# XXX 4.x-only! (do we have trusty recdns anywhere?)
+edns-subnet-whitelist=208.80.154.238/32, 208.80.153.231/32, 91.198.174.239/32
 
 <% if @lua_hooks -%>
 # lua scripts allow extending the resolver
@@ -67,70 +52,47 @@ lua-dns-script=/etc/powerdns/recursorhooks.lua
 auth-zones=<%= @auth_zones -%>
 <% end -%>
 
-# maximum number of entries in the main cache (default 1000000)
-max-cache-entries=<%= @max_cache_entries %>
+# --- Cache Params ---
 
-# maximum number of seconds to keep a negative cached entry in memory
+max-cache-entries=<%= @max_cache_entries %>
 max-negative-ttl=<%= @max_negative_ttl %>
 
-# maximum number of simultaneous TCP clients
+# --- Public-facing things ---
+
+# This prevents pdns from polling a public server to check for sec fixes
+# XXX 4.x-only!
+security-poll-suffix=
+
+# which domains we only accept delegations from
+delegation-only=com,net
+
+# Root hints distributed by Debian
+hint-file=/usr/share/dns/root.hints
+
+# --- Scaling / Limits ---
+
+# For now (4.0.x), we want to keep threads to a more-reasonable value like 4
+# because they're sharing a socket and waking up under thundering-herd
+# behavior.
+# Later (4.1), we can raise threads to 8+ (1/core) and leave the rest of the
+# settings below the same, and the recursor will properly use separate
+# reuseport sockets
+
+# XXX ulimits for systemd unit need adjusting, too (16K-ish for our case)
+threads=4
+pdns-distributes-queries=no
+reuseport=yes
+# XXX for 3.x, should reduce this to threads=2 max-mthreads=512 like before and not include the options above
+
+# TCP tuning/limits
 max-tcp-clients=<%= @max_tcp_clients %>
-
-# TCP sessions per client (IP address)
 max-tcp-per-client=<%= @max_tcp_per_client %>
-
-# Timeout in seconds when talking to TCP clients
 client-tcp-timeout=<%= @client_tcp_timeout %>
 
-# maximum number of packets to store statistics for
-# /usr/bin/rec_control top-remotes
-remotes-ringbuffer-entries=1000
+# --- Logging ---
 
-# where the controlsocket will live
-socket-dir=/var/run/
-
-# loads /etc/host entries on start
-# useful for debugging
-export-etc-hosts=<%= @export_etc_hosts %>
-
-# aaaa-additional-processing	turn on to do AAAA additional processing (slow)
-# aaaa-additional-processing=off
-
-# if we follow RFC 2181 to the letter, an authoritative server can lower the TTL of NS records
-# auth-can-lower-ttl=off
-
-# chroot	switch to chroot jail
-# chroot=
-
-# hint-file	If set, load root hints from this file
-# hint-file=
-
-# no-shuffle	Don't change
-# no-shuffle=off
-
-# query-local-address	Source IP address for sending queries
-# query-local-address=0.0.0.0
-
-# query-local-address6	Source IPv6 address for sending queries
-# query-local-address6=
-
-# serve-rfc1918	If we should be authoritative for RFC 1918 private IP space
-# serve-rfc1918=
-
-# returned when queried for 'server.id' TXT, defaults to hostname
-# server-id=
-
-# If set, only use a single socket for outgoing queries
-# single-socket=off
-
-# soa-minimum-ttl	Don't change
-# soa-minimum-ttl=0
-
-# soa-serial-offset	Don't change
-# soa-serial-offset=0
-
-# spoof-nearmiss-max	If non-zero, assume spoofing after this many near misses
-# spoof-nearmiss-max=20
-
-# version-string	string reported on version.pdns or version.bind
-# version-string=PowerDNS Recursor 3.1 $Id: pdns_recursor.cc 838 2006-05-19 14:35:27Z
+log-common-errors=yes
+# suppress logging of questions and answers
+quiet=yes
+# trace	if we should output heaps of logging
+trace=off
