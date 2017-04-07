@@ -44,6 +44,10 @@ class dnsrecursor(
             priority => '1001',
             before   => Package['pdns-recursor'],
         }
+
+        package { 'pdns-recursor':
+            ensure => 'latest', # temporary during transition!
+        }
     }
     else {
         if os_version('debian') {
@@ -54,10 +58,10 @@ class dnsrecursor(
             # trusty instances (labservices metaldns stuff)
             $pdns_rec_ver = 3
         }
-    }
 
-    package { 'pdns-recursor':
-        ensure => 'present',
+        package { 'pdns-recursor':
+            ensure => 'present',
+        }
     }
 
     file { '/etc/powerdns/recursor.conf':
