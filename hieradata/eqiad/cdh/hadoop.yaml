@@ -37,7 +37,7 @@ cdh::hadoop::net_topology_script_template: 'role/analytics_cluster/hadoop/net-to
 # without having to parse the -Xmx4096m value.  These
 # two should be set to the same megabyte value.
 cdh::hadoop::namenode_heapsize: 4096
-cdh::hadoop::hadoop_namenode_opts: "-Xmx4096m"
+cdh::hadoop::hadoop_namenode_opts: "-Xms4096m -Xmx4096m"
 
 cdh::hadoop::mapreduce_reduce_shuffle_parallelcopies: 10
 cdh::hadoop::mapreduce_task_io_sort_mb: 200
@@ -77,6 +77,9 @@ cdh::hadoop::hadoop_heapsize:                            2048
 # Yarn ApplicationMaster container size and  max heap size (-Xmx)
 cdh::hadoop::yarn_app_mapreduce_am_resource_mb:          4096      # 2 * 2G
 cdh::hadoop::yarn_app_mapreduce_am_command_opts:         -Xmx3276m  # 0.8 * 2 * 2G
+
+# MapReduce History server (running on Hadoop master nodes)
+cdh::hadoop::mapreduce_history_java_opts:                "-Xms1g -Xmx1g"
 
 # Save 8G for OS and other processes.
 # Memory available for use by Hadoop jobs:  64G - 8G == 56G.
