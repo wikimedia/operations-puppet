@@ -1,12 +1,7 @@
 # sets up an Etherpad lite server
-class role::etherpad::server{
-    include ::standard
-    include ::base::firewall
-    include passwords::etherpad_lite
+class profile::etherpad::server{
 
-    system::role { 'etherpad::server':
-        description => 'Etherpad-lite server'
-    }
+    include ::base::firewall
 
     class { '::etherpad':
         etherpad_db_user => $passwords::etherpad_lite::etherpad_db_user,
