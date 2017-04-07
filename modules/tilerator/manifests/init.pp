@@ -24,22 +24,23 @@
 #   List of cassandra server names used by Tilerator
 #
 class tilerator(
+    $cassandra_tilerator_pass,
+    $pgsql_tilerator_pass,
+    $redis_server,
+    $cassandra_servers,
     $conf_sources      = 'sources.prod.yaml',
     $contact_groups    = 'admins',
-    $cassandra_servers = hiera('cassandra::seeds'),
 ) {
 
     validate_array($cassandra_servers)
 
     class { '::tilerator::ui':
         cassandra_servers => $cassandra_servers,
+        conf_sources      => $conf_sources,
     }
 
     $cassandra_tilerator_user = 'tilerator'
-    $cassandra_tilerator_pass = hiera('maps::cassandra_tilerator_pass')
     $pgsql_tilerator_user = 'tilerator'
-    $pgsql_tilerator_pass = hiera('maps::postgresql_tilerator_pass')
-    $redis_server = hiera('maps::redis_server')
 
     # NOTE: The port here is only used for health monitoring. tilerator is a
     # daemon executing tasks from a queue, it does not realy listen to requests.

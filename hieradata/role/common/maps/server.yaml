@@ -1,10 +1,5 @@
-cluster: maps
-cassandra::cluster_name: maps
-cassandra::data_directory_base: /srv/cassandra
-cassandra::data_file_directories: [/srv/cassandra/data]
-cassandra::commitlog_directory: /srv/cassandra/commitlog
-cassandra::saved_caches_directory: /srv/cassandra/saved_caches
-cassandra::metrics::graphite_host: 'graphite-in.eqiad.wmnet'
+cluster: 'maps'
+profile::maps::cassandra::graphite_host: 'graphite-in.codfw.wmnet'
 admin::groups:
   - maps-admins
   - kartotherian-admin
