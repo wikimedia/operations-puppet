@@ -22,11 +22,36 @@ class dnsrecursor(
 
     include ::network::constants
     include ::dnsrecursor::metrics
-    $forward_zones = 'wmnet=208.80.154.238;208.80.153.231;91.198.174.239, 10.in-addr.arpa=208.80.154.238;208.80.153.231;91.198.174.239'
+    $wmf_authdns = [
+        '208.80.154.238',
+        '208.80.153.231',
+        '91.198.174.239',
+    ]
+    $wmf_authdns_semi = join($wmf_authdns, ';')
+    $forward_zones = "wmnet=${wmf_authdns_semi}, 10.in-addr.arpa=${wmf_authdns_semi}'
 
     system::role { 'dnsrecursor':
         ensure      => 'absent',
         description => 'Recursive DNS server',
+    }
+
+    if os_version('debian < stretch') {
+        # jessie, uses backports for v4
+        $pdns_rec_ver = 4
+        apt::pin { 'pdns-recursor':
+            package  => 'pdns-recursor',
+            pin      => 'release a=jessie-backports',
+            priority => '1001',
+            before   => Package['pdns-recursor'],
+        }
+    }
+    elsif os_version('debian') {
+        # stretch and beyond, comes with v4
+        $pdns_rec_ver = 4
+    }
+    else {
+        # trusty instances (labservices metaldns stuff)
+        $pdns_rec_ver = 3
     }
 
     package { 'pdns-recursor':
