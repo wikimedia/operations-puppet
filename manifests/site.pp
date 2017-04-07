@@ -1143,8 +1143,6 @@ node 'hydrogen.wikimedia.org' {
 # irc.wikimedia.org (replaced argon)
 node 'kraz.wikimedia.org' {
     role(mw_rc_irc)
-
-    interface::add_ip6_mapped { 'main': }
 }
 
 # labservices1001 hosts openstack-designate, the labs DNS service.
