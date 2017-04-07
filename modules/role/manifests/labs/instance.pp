@@ -3,7 +3,7 @@ class role::labs::instance {
     include ::standard
     include profile::base::labs
     include sudo
-    include base::instance_upstarts
+    include ::base::instance_upstarts
     include ::openstack::observerenv
 
     sudo::group { 'ops':
