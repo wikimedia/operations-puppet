@@ -64,6 +64,10 @@
 #
 class tilerator::ui(
     $cassandra_servers,
+    $cassandra_pass,
+    $pgsql_pass,
+    $redis_server,
+    $redis_pass,
     $port           = 6535,
     $conf_sources   = 'sources.prod.yaml',
     $contact_groups = 'admins',
@@ -77,11 +81,9 @@ class tilerator::ui(
     $expire_dir     = '/srv/osm_expire/',
 ) {
     $statefile = "${statefile_dir}/expire.state"
-    $cassandra_tileratorui_user = 'tileratorui'
-    $cassandra_tileratorui_pass = hiera('maps::cassandra_tileratorui_pass')
-    $pgsql_tileratorui_user = 'tileratorui'
-    $pgsql_tileratorui_pass = hiera('maps::postgresql_tileratorui_pass')
-    $redis_server = hiera('maps::redis_server')
+    $cassandra_user = 'tileratorui'
+    $pgsql_user = 'tileratorui'
+    $redis_url = "${redis_server}?password=${redis_pass}"
 
     service::node { 'tileratorui':
         port              => $port,
@@ -92,12 +94,12 @@ class tilerator::ui(
         deployment_vars   => {
             entrypoint         => '""',
             conf_sources       => $conf_sources,
-            cassandra_user     => $cassandra_tileratorui_user,
-            cassandra_password => $cassandra_tileratorui_pass,
+            cassandra_user     => $cassandra_user,
+            cassandra_password => $cassandra_pass,
             cassandra_servers  => $cassandra_servers,
-            osmdb_user         => $pgsql_tileratorui_user,
-            osmdb_password     => $pgsql_tileratorui_pass,
-            redis_server       => $redis_server,
+            osmdb_user         => $pgsql_user,
+            osmdb_password     => $pgsql_pass,
+            redis_server       => $redis_url,
             ui_only            => true,
             daemon_only        => false,
         },

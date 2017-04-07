@@ -25,14 +25,14 @@
 #
 class kartotherian(
     $cassandra_servers,
-    $cassandra_kartotherian_pass,
-    $pgsql_kartotherian_pass,
+    $cassandra_pass,
+    $pgsql_pass,
     $conf_sources      = 'sources.prod.yaml',
     $contact_groups    = 'admins',
     $port              = 6533,
     $num_workers       = 'ncpu',
-    $cassandra_kartotherian_user = 'kartotherian',
-    $pgsql_kartotherian_user = 'kartotherian',
+    $cassandra_user = 'kartotherian',
+    $pgsql_user = 'kartotherian',
 ) {
 
     validate_array($cassandra_servers)
@@ -44,14 +44,14 @@ class kartotherian(
         deployment        => 'scap3',
         deployment_config => true,
         deployment_vars   => {
-            geoshapes_user     => $pgsql_kartotherian_user,
-            geoshapes_password => $pgsql_kartotherian_pass,
+            geoshapes_user     => $pgsql_user,
+            geoshapes_password => $pgsql_pass,
             conf_sources       => $conf_sources,
-            cassandra_user     => $cassandra_kartotherian_user,
-            cassandra_password => $cassandra_kartotherian_pass,
+            cassandra_user     => $cassandra_user,
+            cassandra_password => $cassandra_pass,
             cassandra_servers  => $cassandra_servers,
-            osmdb_password     => $pgsql_kartotherian_pass,
-            osmdb_user         => $pgsql_kartotherian_user,
+            osmdb_password     => $pgsql_pass,
+            osmdb_user         => $pgsql_user,
         },
         has_spec          => true,
         healthcheck_url   => '',

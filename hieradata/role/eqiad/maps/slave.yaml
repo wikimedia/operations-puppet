@@ -1,1 +1,23 @@
-postgresql::slave::master_server: maps1001.eqiad.wmnet
+profile::maps::hosts:
+  - 'maps1001.eqiad.wmnet'
+  - 'maps1002.eqiad.wmnet'
+  - 'maps1003.eqiad.wmnet'
+  - 'maps1004.eqiad.wmnet'
+profile::redis::master::clients:
+  - 'maps1001.eqiad.wmnet'
+  - 'maps1002.eqiad.wmnet'
+  - 'maps1003.eqiad.wmnet'
+  - 'maps1004.eqiad.wmnet'
+
+profile::maps::apps::redis_server: 'redis://maps1001.eqiad.wmnet'
+profile::maps::apps::conf_sources: 'sources.prod2.yaml'
+profile::maps::apps::storage_id: 'v3'
+
+profile::cassandra::single_instance::dc: 'eqiad'
+profile::cassandra::single_instance::seeds:
+  - '10.64.0.79'
+  - '10.64.16.42'
+  - '10.64.32.117'
+  - '10.64.48.154'
+
+profile::maps::osm_slave::master: 'maps1001.eqiad.wmnet'

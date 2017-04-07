@@ -3,6 +3,7 @@ class profile::redis::master(
     $settings = hiera('profile::redis::master::settings'),
     $password = hiera('profile::redis::master::password'),
     $aof = hiera('profile::redis::master::aof', false),
+    $clients = hiera('profile::redis::master::clients', [])
 ){
     $uris = apply_format("localhost:%s/${password}", $instances)
     $redis_ports = join($instances, ' ')
@@ -10,6 +11,14 @@ class profile::redis::master(
     $auth_settings = {
         'masterauth'  => $password,
         'requirepass' => $password,
+    }
+
+    validate_array($clients)
+
+    if $clients == [] {
+        $srange = undef
+    } else {
+        $srange = inline_template("@resolve((<%= @clients.join(' ') %>))")
     }
 
     ::profile::redis::instance{ $instances:
@@ -28,5 +37,6 @@ class profile::redis::master(
         proto   => 'tcp',
         notrack => true,
         port    => inline_template('(<%= @redis_ports %>)'),
+        srange  => $srange,
     }
 }
