@@ -18,13 +18,10 @@ class role::puppetmaster::puppetdb (
     # Monitor the Postgresql replication lag
     if $role == 'slave' {
         $pg_password = hiera('puppetdb::password::replication')
-        $critical = 1800
-        $warning = 300
-        $command = "/usr/lib/nagios/plugins/check_postgres_replication_lag.py \
-    -U replication -P ${pg_password} -m ${master} -D template1 -C ${critical} -W ${warning}"
-        nrpe::monitor_service { 'postgres-rep-lag':
-            description  => 'Postgres Replication Lag',
-            nrpe_command => $command,
+        class { 'postgresql::slave::monitoring':
+            pg_master   => $master,
+            pg_user     => 'replication',
+            pg_password => $pg_password,
         }
     }
 
