@@ -27,6 +27,12 @@ setgid=pdns
 setuid=pdns
 
 daemon=yes
+<% if @pdns_rec_ver == '4' -%>
+# can later raise threads to 1/core (and +ulimit) on version 4.1+ w/ proper reuseport
+threads=4
+pdns-distributes-queries=no
+reuseport=yes
+<% else -%>
 # THREADS x MAX-MTHREADS < FD's
 threads=2
 
@@ -34,6 +40,7 @@ threads=2
 # This is explicitly lowered to avoid a known bug:
 #  http://blog.powerdns.com/2014/02/06/related-to-recent-dos-attacks-recursor-configuration-file-guidance/
 max-mthreads=512
+<% end -%>
 
 # local-address	IP addresses to listen on, separated by spaces or commas
 local-address=<%= flatten_ips(@listen_addresses).sort.join(" ") %>
@@ -56,6 +63,10 @@ allow-from=127.0.0.0/8, ::1/128, <%= (@allow_from + flatten_ips(@listen_addresse
 # Zones for which we forward queries, comma separated domain=ip pairs
 forward-zones=<%= @forward_zones -%>, <%= @additional_forward_zones -%>
 
+<% if @pdns_rec_ver == '4' -%>
+# we need ECS to ensure our geoip resolution (e.g. for discovery hostnames) works correctly regardless of which recursor (x-dc) a client uses
+edns-subnet-whitelist=<%= @wmf_authdns.join(', ') %>
+<% end -%>
 <% if @lua_hooks -%>
 # lua scripts allow extending the resolver
 # with custom behavior
@@ -84,7 +95,11 @@ client-tcp-timeout=<%= @client_tcp_timeout %>
 
 # maximum number of packets to store statistics for
 # /usr/bin/rec_control top-remotes
+<% if @pdns_rec_ver == '4' -%>
+stats-ringbuffer-entries=1000
+<% else -%>
 remotes-ringbuffer-entries=1000
+<% end -%>
 
 # where the controlsocket will live
 socket-dir=/var/run/
@@ -93,6 +108,13 @@ socket-dir=/var/run/
 # useful for debugging
 export-etc-hosts=<%= @export_etc_hosts %>
 
+<% if @pdns_rec_ver == '4' -%>
+# This prevents pdns from polling a public server to check for sec fixes
+security-poll-suffix=
+
+# Root hints distributed by Debian w/ 4.x
+hint-file=/usr/share/dns/root.hints
+<% else -%>
 # aaaa-additional-processing	turn on to do AAAA additional processing (slow)
 # aaaa-additional-processing=off
 
@@ -134,3 +156,4 @@ export-etc-hosts=<%= @export_etc_hosts %>
 
 # version-string	string reported on version.pdns or version.bind
 # version-string=PowerDNS Recursor 3.1 $Id: pdns_recursor.cc 838 2006-05-19 14:35:27Z
+<% end -%>
