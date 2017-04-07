@@ -22,11 +22,61 @@ class dnsrecursor(
 
     include ::network::constants
     include ::dnsrecursor::metrics
-    $forward_zones = 'wmnet=208.80.154.238;208.80.153.231;91.198.174.239, 10.in-addr.arpa=208.80.154.238;208.80.153.231;91.198.174.239'
+    $wmf_authdns = [
+        '208.80.154.238',
+        '208.80.153.231',
+        '91.198.174.239',
+    ]
+    $wmf_authdns_semi = join($wmf_authdns, ';')
+    $forward_zones = "wmnet=${wmf_authdns_semi}, 10.in-addr.arpa=${wmf_authdns_semi}"
 
     system::role { 'dnsrecursor':
         ensure      => 'absent',
         description => 'Recursive DNS server',
+    }
+
+    if os_version('debian >= jessie') {
+        $pdns_rec_ver = "4"
+
+        # systemd unit fragment to raise ulimits
+        $sysd_dir = '/etc/systemd/system/pdns-recursor.service.d'
+        $sysd_frag = "${sysd_dir}/ulimits.conf"
+
+        file { $sysd_dir:
+            ensure => directory,
+            mode   => '0555',
+            owner  => 'root',
+            group  => 'root',
+        }
+
+        file { $sysd_frag:
+            ensure => present,
+            mode   => '0444',
+            owner  => 'root',
+            group  => 'root',
+            source => 'puppet:///modules/dnsrecursor/ulimits.conf',
+        }
+
+        exec { "systemd reload for ${sysd_frag}":
+            refreshonly => true,
+            command     => '/bin/systemctl daemon-reload',
+            subscribe   => File[$sysd_frag],
+            before      => Service['pdns-recursor'],
+        }
+
+        if os_version('debian == jessie') {
+            # jessie uses backports for v4
+            apt::pin { 'pdns-recursor':
+                package  => 'pdns-recursor',
+                pin      => 'release a=jessie-backports',
+                priority => '1001',
+                before   => Package['pdns-recursor'],
+            }
+        }
+    }
+    else {
+        # trusty instances (labservices metaldns stuff)
+        $pdns_rec_ver = "3"
     }
 
     package { 'pdns-recursor':
