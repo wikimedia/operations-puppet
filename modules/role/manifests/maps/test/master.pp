@@ -1,8 +1,7 @@
 # Sets up a maps server master
-class role::maps::master {
+class role::maps::test::master {
     include ::standard
     include ::base::firewall
-    include ::role::lvs::realserver
 
     include ::profile::maps::apps
     include ::profile::maps::cassandra
