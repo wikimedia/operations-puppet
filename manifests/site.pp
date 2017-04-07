@@ -1075,8 +1075,7 @@ node 'eventlog2001.codfw.wmnet' {
 
 # virtual machine for mailman list server
 node 'fermium.wikimedia.org' {
-    role(lists::server)
-    interface::add_ip6_mapped { 'main': interface => 'eth0' }
+    role(lists_server)
 }
 
 # ZIM dumps (https://en.wikipedia.org/wiki/ZIM_%28file_format%29)
