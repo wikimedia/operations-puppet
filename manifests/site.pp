@@ -1124,7 +1124,7 @@ node /^(hassaleh|hassium)\.(codfw|eqiad)\.wmnet$/ {
 }
 
 node 'helium.eqiad.wmnet' {
-    role(backup, backup::storage)
+    role(backup)
 
     include ::standard
     interface::add_ip6_mapped { 'main':
@@ -1134,7 +1134,7 @@ node 'helium.eqiad.wmnet' {
 
 # Bacula storage
 node 'heze.codfw.wmnet' {
-    role(backup::storage)
+    role(backup::offsite)
     include ::standard
 }
 

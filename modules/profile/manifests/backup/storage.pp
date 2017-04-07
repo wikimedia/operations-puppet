@@ -1,8 +1,13 @@
-class role::backup::storage() {
-    include role::backup::config
+# Profile class for adding backup director functionalities to a host
+#
+# Note that of hiera key lookups have a name space of profile::backup instead
+# of profile::backup::director. That's cause they are reused in other profile
+# classes in the same hierarchy and is consistent with our code guidelines
+class profile::backup::storage(
+    $director = hiera('profile::backup::director'),
+) {
     include ::base::firewall
-
-    system::role { 'role::backup::storage': description => 'Backup Storage' }
+    include ::standard
 
     mount { '/srv/baculasd1' :
         ensure  => mounted,
@@ -19,7 +24,7 @@ class role::backup::storage() {
     }
 
     class { 'bacula::storage':
-        director           => $role::backup::config::director,
+        director           => $director,
         sd_max_concur_jobs => 5,
         sqlvariant         => 'mysql',
     }
