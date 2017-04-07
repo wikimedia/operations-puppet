@@ -1299,7 +1299,7 @@ node /^(iridium\.eqiad|phab2001\.codfw)\.wmnet$/ {
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
     }
-    role(phabricator::main, backup::host)
+    role(phabricator::main)
     include ::standard
     include ::ganglia
 }
@@ -1479,7 +1479,7 @@ node 'labstore2004.codfw.wmnet' {
 }
 
 node 'lithium.eqiad.wmnet' {
-    role(backup::host, syslog::centralserver)
+    role(syslog::centralserver)
     include ::standard
 }
 
@@ -2265,7 +2265,7 @@ node 'nescio.wikimedia.org' {
 # network monitoring tool server
 node 'netmon1001.wikimedia.org' {
     role(rancid::server, librenms, servermon::wmf, smokeping,
-      network::monitor, backup::host)
+      network::monitor)
     include ::standard
     include ::passwords::network
     include ::base::firewall
@@ -2366,7 +2366,7 @@ node /^planet[12]001\.(eqiad|codfw)\.wmnet$/ {
 
 # LDAP servers relied on by OIT for mail
 node /(dubnium|pollux)\.wikimedia\.org/ {
-    role(openldap::corp, backup::host)
+    role(openldap::corp)
     include ::standard
     backup::openldapset {'openldap_oit':}
 }
@@ -2511,7 +2511,7 @@ node 'roentgenium.eqiad.wmnet' {
 
 # people.wikimedia.org, for all shell users
 node 'rutherfordium.eqiad.wmnet' {
-    role(microsites::peopleweb, backup::host)
+    role(microsites::peopleweb)
 }
 
 # ruthenium is a parsoid regression test server
@@ -2549,7 +2549,7 @@ node /^scb[12]00[123456]\.(eqiad|codfw)\.wmnet$/ {
 
 # Codfw, eqiad ldap servers, aka ldap-$::site
 node /^(seaborgium|serpens)\.wikimedia\.org$/ {
-    role(openldap::labs, backup::host)
+    role(openldap::labs)
     include ::standard
     include ::base::firewall
     backup::openldapset {'openldap_labs':}
@@ -2785,7 +2785,7 @@ node /^wdqs200[1-3]\.codfw\.wmnet$/ {
 }
 
 node 'wezen.codfw.wmnet' {
-    role(backup::host, syslog::centralserver)
+    role(syslog::centralserver)
     include ::standard
 }
 

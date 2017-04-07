@@ -18,6 +18,7 @@ class role::phabricator::main {
     include ::lvs::realserver
     include ::base::firewall
     include ::apache::mod::remoteip
+    include profile::backup::host
 
     # this site's misc-lb caching proxies hostnames
     $cache_misc_nodes = hiera('cache::misc::nodes', [])

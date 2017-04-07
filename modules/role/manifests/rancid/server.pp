@@ -6,6 +6,7 @@ class role::rancid::server {
     }
 
     include ::rancid
+    include profile::backup::host
 
     backup::set { 'rancid': }
 }
