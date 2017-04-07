@@ -1862,27 +1862,27 @@ node 'maerlant.wikimedia.org' {
 }
 
 node 'maps-test2001.codfw.wmnet' {
-    role(maps::server, maps::master)
+    role(maps::test::master)
 }
 
 node /^maps-test200[2-4]\.codfw\.wmnet/ {
-    role(maps::server, maps::slave)
+    role(maps::test::slave)
 }
 
 node 'maps1001.eqiad.wmnet' {
-    role(maps::server, maps::master)
+    role(maps::master)
 }
 
 node /^maps100[2-4]\.eqiad\.wmnet/ {
-    role(maps::server, maps::slave)
+    role(maps::slave)
 }
 
 node 'maps2001.codfw.wmnet' {
-    role(maps::server, maps::master)
+    role(maps::master)
 }
 
 node /^maps200[2-4]\.codfw\.wmnet/ {
-    role(maps::server, maps::slave)
+    role(maps::slave)
 }
 
 node /^mc10(0[1-9]|1[0-8])\.eqiad\.wmnet/ {
