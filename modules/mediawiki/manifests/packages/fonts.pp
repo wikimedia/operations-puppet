@@ -3,7 +3,7 @@
 # Provisions font packages used by MediaWiki.
 #
 class mediawiki::packages::fonts {
-    requires_os('ubuntu >= trusty || Debian >= jessie')
+    requires_os('ubuntu >= trusty || debian >= jessie')
 
     package { [
         'fonts-arabeyes',

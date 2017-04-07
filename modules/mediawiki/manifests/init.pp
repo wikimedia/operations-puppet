@@ -21,7 +21,7 @@ class mediawiki (
     ) {
 
     # Simplicity over support: precise is going out of support in April 2017 anyways
-    requires_os('ubuntu >= trusty || Debian >= jessie')
+    requires_os('ubuntu >= trusty || debian >= jessie')
 
     include ::mediawiki::cgroup
     include ::mediawiki::packages

@@ -3,7 +3,7 @@
 # Configures HHVM to serve MediaWiki in FastCGI mode.
 #
 class mediawiki::hhvm {
-    requires_os('ubuntu >= trusty || Debian >= jessie')
+    requires_os('ubuntu >= trusty || debian >= jessie')
 
     include ::hhvm::admin
     include ::hhvm::monitoring
