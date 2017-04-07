@@ -42,7 +42,7 @@ class role::mediawiki::maintenance {
     }
 
     # backup home directories to bacula, people work on these
-    include backup::host
+    include ::profile::backup::host
     backup::set {'home': }
 
     # (T17434) Periodical run of currently disabled special pages
