@@ -1,14 +1,19 @@
-class role::backup::director {
-    include profile::backup::host
-    include role::backup::config
-    include passwords::bacula
+# Profile class for adding backup director functionalities to a host
+#
+# Note that SOME of hiera key lookups have a name space of profile::backup instead
+# of profile::backup::director. That's cause they are reused in other profile
+# classes in the same hierarchy and is consistent with our code guidelines
+class profile::backup::director(
+    $pool = hiera('profile::backup::pool'),
+    $days = hiera('profile::backup::days'),
+    $offsite_pool = hiera('profile::backup::director::offsite_pool'),
+    $onsite_sd = hiera('profile::backup::director::onsite_sd'),
+    $offsite_sd = hiera('profile::backup::director::offsite_sd'),
+    $dbhost = hiera('profile::backup::director::database'),
+    $dbpass = hiera('profile::backup::director::dbpass'),
+){
+    include base::firewall
     require geowiki::params
-    $pool = $role::backup::config::pool
-    $offsite_pool = $role::backup::config::offsite_pool
-    $onsite_sd = $role::backup::config::onsite_sd
-    $offsite_sd = $role::backup::config::offsite_sd
-
-    system::role { 'role::backup::director': description => 'Backup server' }
 
     class { 'bacula::director':
         sqlvariant          => 'mysql',
@@ -53,19 +58,19 @@ class role::backup::director {
     # One schedule per day of the week.
     # Setting execution times so that it is unlikely jobs will run concurrently
     # with cron.{hourly,daily,monthly} or other cronscripts
-    backup::schedule { $role::backup::config::days:
-        pool    => $pool,
+    backup::schedule { $days:
+        pool => $pool,
     }
-    backup::weeklyschedule { $role::backup::config::days:
-        pool    => $pool,
+    backup::weeklyschedule { $days:
+        pool => $pool,
     }
 
     bacula::director::catalog { 'production':
         dbname     => 'bacula',
         dbuser     => 'bacula',
-        dbhost     => $role::backup::config::database,
+        dbhost     => $dbhost,
         dbport     => '3306',
-        dbpassword => $passwords::bacula::database
+        dbpassword => $dbpass,
     }
 
     # This has been taken straight from old files/backup/disklist-*
@@ -248,5 +253,4 @@ class role::backup::director {
         port   => '9101',
         srange => '$PRODUCTION_NETWORKS',
     }
-
 }
