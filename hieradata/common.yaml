@@ -229,6 +229,7 @@ ganglia_clusters:
     description: "Maps Cluster"
     id: 50
     sites:
+      eqiad: []
       codfw: []
   cache_maps:
     description: "Maps caches"
@@ -281,6 +282,11 @@ ganglia_clusters:
     id: 59
     sites:
       eqiad: []
+  maps-test:
+    description: "Maps Test Cluster"
+    id: 60
+    sites:
+      codfw: []
 puppetmaster: "puppet"
 active_labstore_host: 'labstore1001'
 statistics_servers:

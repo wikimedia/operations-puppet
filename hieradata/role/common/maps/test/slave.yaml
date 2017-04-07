@@ -15,10 +15,10 @@ admin::groups:
   - kartotherian-admin
   - tilerator-admin
 
-cluster: 'maps'
+cluster: 'maps-test'
 
 debdeploy::grains:
-  debdeploy-maps-master:
+  debdeploy-maps-slave:
     value: standard
 
 profile::maps::cassandra::graphite_host: 'graphite-in.eqiad.wmnet'
