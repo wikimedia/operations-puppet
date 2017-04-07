@@ -1,5 +1,5 @@
 class role::mariadb::otrsbackups {
-    include profile::backup::host
+    include ::profile::backup::host
 
     file { '/srv/backups':
         ensure => directory,

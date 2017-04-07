@@ -6,7 +6,7 @@ class role::cache::base(
 ) {
     include ::standard
     require ::profile::conftool::client
-    include nrpe
+    include ::nrpe
     include lvs::configuration
     include network::constants
     include conftool::scripts

@@ -1,5 +1,5 @@
 class role::mariadb::backup {
-    include profile::backup::host
+    include ::profile::backup::host
     include passwords::mysql::dump
 
     file { '/srv/backups':
