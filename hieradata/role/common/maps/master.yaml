@@ -1,10 +1,37 @@
-postgresql::master::pgversion: 9.4
-postgresql::master::root_dir: /srv/postgresql
-postgresql::master::includes:
-  - tuning.conf
-  - logging.conf
-postgresql::master::checkpoint_segments: 768
-postgresql::master::wal_keep_segments: 768
+# the following passwords are defined in private repo:
+#profile::maps::osm_master::kartotherian_pass: some_password
+#profile::maps::osm_master::tilerator_pass: some_password
+#profile::maps::osm_master::tileratorui_pass: some_password
+#profile::maps::osm_master::osmimporter_pass: some_password
+#profile::maps::osm_master::osmupdater_pass: some_password
+#profile::maps::osm_master::replication_pass: some_password
+#profile::maps::cassandra::kartotherian_pass: some_password
+#profile::maps::cassandra::tilerator_pass: some_password
+#profile::maps::cassandra::tileratorui_pass: some_password
+#profile::cassandra::single_instance::super_pass: some_password
+
+role::lvs::realserver::pools:
+  kartotherian: {}
+
+admin::groups:
+  - maps-admins
+  - kartotherian-admin
+  - tilerator-admin
+
+cluster: 'maps'
+
 debdeploy::grains:
   debdeploy-maps-master:
     value: standard
+
+profile::cassandra::single_instance::graphite_host: 'graphite-in.eqiad.wmnet'
+service::configuration::logstash_host: 'logstash1001.eqiad.wmnet'
+service::configuration::statsd_host: 'statsd.eqiad.wmnet'
+
+cassandra::metrics::blacklist:
+  - .*\.metrics\.Table\..*$
+
+profile::redis::master::instances: [6379]
+profile::redis::master::settings:
+  bind: "0.0.0.0"
+profile::redis::master::clients: "%{lookup('profile::maps::hosts')}"
