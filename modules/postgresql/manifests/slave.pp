@@ -82,15 +82,6 @@ class postgresql::slave(
         }
     }
 
-    # TODO: cleanup, should be removed in a subsequent commit
-    package { 'python-psycopg2':
-        ensure => absent,
-    }
-    # Provisioning a script to conduct replication lag checks
-    file { '/usr/lib/nagios/plugins/check_postgres_replication_lag.py':
-        ensure  => absent,
-    }
-
     file { '/usr/bin/prometheus_postgresql_replication_lag':
         owner  => 'root',
         group  => 'root',
