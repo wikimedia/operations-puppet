@@ -14,7 +14,7 @@
 #   Definition[monitor_service]
 #
 # Sample Usage:
-#   include nrpe
+#   include ::nrpe
 #
 class nrpe($allowed_hosts='127.0.0.1') {
     package { [ 'nagios-nrpe-server',

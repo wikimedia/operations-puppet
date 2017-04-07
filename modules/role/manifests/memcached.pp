@@ -7,6 +7,6 @@ class role::memcached {
     include ::standard
     include base::mysterious_sysctl
     include base::firewall
-    include profile::memcached::instance
-    include profile::memcached::memkeys
+    include ::profile::memcached::instance
+    include ::profile::memcached::memkeys
 }
