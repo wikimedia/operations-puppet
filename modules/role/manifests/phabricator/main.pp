@@ -18,7 +18,9 @@ class role::phabricator::main {
     include ::lvs::realserver
     include ::base::firewall
     include ::apache::mod::remoteip
-    include ::profile::backup::host
+    if $::realm != 'labs' {
+      include ::profile::backup::host
+    }
 
     # this site's misc-lb caching proxies hostnames
     $cache_misc_nodes = hiera('cache::misc::nodes', [])
@@ -215,8 +217,10 @@ class role::phabricator::main {
         hour    => '4',
     }
 
-    # Backup repositories
-    backup::set { 'srv-repos': }
+    if $::realm != 'labs' {
+      # Backup repositories
+      backup::set { 'srv-repos': }
+    }
 
     class { 'exim4':
         variant => 'heavy',
