@@ -3,14 +3,14 @@
 #
 # From keystone
 #
- 
+
 # A "shared secret" that can be used to bootstrap Keystone. This "token" does
 # not represent a user, and carries no explicit authorization. To disable in
 # production (highly recommended), remove AdminTokenAuthMiddleware from your
 # paste application pipelines (for example, in keystone-paste.ini). (string
 # value)
 admin_token = <%= @keystoneconfig["admin_token"] %>
- 
+
 # The base public endpoint URL for Keystone that is advertised to clients
 # (NOTE: this does NOT affect how Keystone listens for connections). Defaults
 # to the base host URL of the request. E.g. a request to
@@ -18,7 +18,7 @@ admin_token = <%= @keystoneconfig["admin_token"] %>
 # only need to set this value if the base URL contains a path (e.g. /prefix/v3)
 # or the endpoint should be found on a different server. (string value)
 #public_endpoint = <None>
- 
+
 # The base admin endpoint URL for Keystone that is advertised to clients (NOTE:
 # this does NOT affect how Keystone listens for connections). Defaults to the
 # base host URL of the request. E.g. a request to http://server:35357/v3/users
@@ -26,116 +26,116 @@ admin_token = <%= @keystoneconfig["admin_token"] %>
 # if the base URL contains a path (e.g. /prefix/v3) or the endpoint should be
 # found on a different server. (string value)
 #admin_endpoint = <None>
- 
+
 # Maximum depth of the project hierarchy. WARNING: setting it to a large value
 # may adversely impact performance. (integer value)
 #max_project_tree_depth = 5
- 
+
 # Limit the sizes of user & project ID/names. (integer value)
 #max_param_size = 64
- 
+
 # Similar to max_param_size, but provides an exception for token values.
 # (integer value)
 #max_token_size = 8192
- 
+
 # Similar to the member_role_name option, this represents the default role ID
 # used to associate users with their default projects in the v2 API. This will
 # be used as the explicit role where one is not specified by the v2 API.
 # (string value)
 #member_role_id = 9fe2ff9ee4384b1894a90878d3e92bab
- 
+
 # This is the role name used in combination with the member_role_id option; see
 # that option for more detail. (string value)
 member_role_name = user
- 
+
 # The value passed as the keyword "rounds" to passlib's encrypt method.
 # (integer value)
 # Minimum value: 1000
 # Maximum value: 100000
 #crypt_strength = 10000
- 
+
 # The maximum number of entities that will be returned in a collection, with no
 # limit set by default. This global limit may be then overridden for a specific
 # driver, by specifying a list_limit in the appropriate section (e.g.
 # [assignment]). (integer value)
 #list_limit = <None>
- 
+
 # Set this to false if you want to enable the ability for user, group and
 # project entities to be moved between domains by updating their domain_id.
 # Allowing such movement is not recommended if the scope of a domain admin is
 # being restricted by use of an appropriate policy file (see
 # policy.v3cloudsample as an example). (boolean value)
 #domain_id_immutable = true
- 
+
 # If set to true, strict password length checking is performed for password
 # manipulation. If a password exceeds the maximum length, the operation will
 # fail with an HTTP 403 Forbidden error. If set to false, passwords are
 # automatically truncated to the maximum length. (boolean value)
 #strict_password_check = false
- 
+
 # The HTTP header used to determine the scheme for the original request, even
 # if it was removed by an SSL terminating proxy. Typical value is
 # "HTTP_X_FORWARDED_PROTO". (string value)
 #secure_proxy_ssl_header = <None>
- 
+
 #
 # From keystone.notifications
 #
- 
+
 # Default publisher_id for outgoing notifications (string value)
 #default_publisher_id = <None>
- 
+
 # Define the notification format for Identity Service events. A "basic"
 # notification has information about the resource being operated on. A "cadf"
 # notification has the same information, as well as information about the
 # initiator of the event. (string value)
 # Allowed values: basic, cadf
 #notification_format = basic
- 
+
 #
 # From oslo.log
 #
- 
+
 # Print debugging output (set logging level to DEBUG instead of default INFO
 # level). (boolean value)
 debug = false
- 
+
 # If set to false, will disable INFO logging level, making WARNING the default.
 # (boolean value)
 # This option is deprecated for removal.
 # Its value may be silently ignored in the future.
 verbose = false
- 
+
 # The name of a logging configuration file. This file is appended to any
 # existing logging configuration files. For details about logging configuration
 # files, see the Python logging module documentation. (string value)
 # Deprecated group/name - [DEFAULT]/log_config
 log_config_append = /etc/keystone/logging.conf
- 
+
 # DEPRECATED. A logging.Formatter log message format string which may use any
 # of the available logging.LogRecord attributes. This option is deprecated.
 # Please use logging_context_format_string and logging_default_format_string
 # instead. (string value)
 #log_format = <None>
- 
+
 # Format string for %%(asctime)s in log records. Default: %(default)s . (string
 # value)
 #log_date_format = %Y-%m-%d %H:%M:%S
- 
+
 # (Optional) Name of log file to output to. If no default is set, logging will
 # go to stdout. (string value)
 # Deprecated group/name - [DEFAULT]/logfile
 log_file = keystone.log
- 
+
 # (Optional) The base directory used for relative --log-file paths. (string
 # value)
 # Deprecated group/name - [DEFAULT]/logdir
 log_dir = /var/log/keystone
- 
+
 # Use syslog for logging. Existing syslog format is DEPRECATED and will be
 # changed later to honor RFC5424. (boolean value)
 #use_syslog = false
- 
+
 # (Optional) Enables or disables syslog rfc5424 format for logging. If enabled,
 # prefixes the MSG part of the syslog message with APP-NAME (RFC5424). The
 # format without the APP-NAME is deprecated in Kilo, and will be removed in
@@ -143,123 +143,123 @@ log_dir = /var/log/keystone
 # This option is deprecated for removal.
 # Its value may be silently ignored in the future.
 #use_syslog_rfc_format = true
- 
+
 # Syslog facility to receive log lines. (string value)
 #syslog_log_facility = LOG_USER
- 
+
 # Log output to standard error. (boolean value)
 #use_stderr = true
- 
+
 # Format string to use for log messages with context. (string value)
 #logging_context_format_string = %(asctime)s.%(msecs)03d %(process)d %(levelname)s %(name)s [%(request_id)s %(user_identity)s] %(instance)s%(message)s
- 
+
 # Format string to use for log messages without context. (string value)
 #logging_default_format_string = %(asctime)s.%(msecs)03d %(process)d %(levelname)s %(name)s [-] %(instance)s%(message)s
- 
+
 # Data to append to log format when level is DEBUG. (string value)
 #logging_debug_format_suffix = %(funcName)s %(pathname)s:%(lineno)d
- 
+
 # Prefix each line of exception output with this format. (string value)
 #logging_exception_prefix = %(asctime)s.%(msecs)03d %(process)d ERROR %(name)s %(instance)s
- 
+
 # List of logger=LEVEL pairs. (list value)
 #default_log_levels = amqp=WARN,amqplib=WARN,boto=WARN,qpid=WARN,sqlalchemy=WARN,suds=INFO,oslo.messaging=INFO,iso8601=WARN,requests.packages.urllib3.connectionpool=WARN,urllib3.connectionpool=WARN,websocket=WARN,requests.packages.urllib3.util.retry=WARN,urllib3.util.retry=WARN,keystonemiddleware=WARN,routes.middleware=WARN,stevedore=WARN,taskflow=WARN
- 
+
 # Enables or disables publication of error events. (boolean value)
 #publish_errors = false
- 
+
 # The format for an instance that is passed with the log message. (string
 # value)
 #instance_format = "[instance: %(uuid)s] "
- 
+
 # The format for an instance UUID that is passed with the log message. (string
 # value)
 #instance_uuid_format = "[instance: %(uuid)s] "
- 
+
 # Enables or disables fatal status of deprecations. (boolean value)
 #fatal_deprecations = false
- 
+
 #
 # From oslo.messaging
 #
- 
+
 # Size of RPC connection pool. (integer value)
 # Deprecated group/name - [DEFAULT]/rpc_conn_pool_size
 #rpc_conn_pool_size = 30
- 
+
 # ZeroMQ bind address. Should be a wildcard (*), an ethernet interface, or IP.
 # The "host" option should point or resolve to this address. (string value)
 #rpc_zmq_bind_address = *
- 
+
 # MatchMaker driver. (string value)
 #rpc_zmq_matchmaker = local
- 
+
 # ZeroMQ receiver listening port. (integer value)
 #rpc_zmq_port = 9501
- 
+
 # Number of ZeroMQ contexts, defaults to 1. (integer value)
 #rpc_zmq_contexts = 1
- 
+
 # Maximum number of ingress messages to locally buffer per topic. Default is
 # unlimited. (integer value)
 #rpc_zmq_topic_backlog = <None>
- 
+
 # Directory for holding IPC sockets. (string value)
 #rpc_zmq_ipc_dir = /var/run/openstack
- 
+
 # Name of this node. Must be a valid hostname, FQDN, or IP address. Must match
 # "host" option, if running Nova. (string value)
 #rpc_zmq_host = localhost
- 
+
 # Seconds to wait before a cast expires (TTL). Only supported by impl_zmq.
 # (integer value)
 #rpc_cast_timeout = 30
- 
+
 # Heartbeat frequency. (integer value)
 #matchmaker_heartbeat_freq = 300
- 
+
 # Heartbeat time-to-live. (integer value)
 #matchmaker_heartbeat_ttl = 600
- 
+
 # Size of executor thread pool. (integer value)
 # Deprecated group/name - [DEFAULT]/rpc_thread_pool_size
 #executor_thread_pool_size = 64
- 
+
 # The Drivers(s) to handle sending notifications. Possible values are
 # messaging, messagingv2, routing, log, test, noop (multi valued)
 notification_driver = wmfkeystonehooks
- 
+
 # AMQP topic used for OpenStack notifications. (list value)
 # Deprecated group/name - [rpc_notifier2]/topics
 #notification_topics = notifications
- 
+
 # Seconds to wait for a response from a call. (integer value)
 #rpc_response_timeout = 60
- 
+
 # A URL representing the messaging driver to use and its full configuration. If
 # not set, we fall back to the rpc_backend option and driver specific
 # configuration. (string value)
 #transport_url = <None>
- 
+
 # The messaging driver to use, defaults to rabbit. Other drivers include qpid
 # and zmq. (string value)
 #rpc_backend = rabbit
- 
+
 # The default exchange under which topics are scoped. May be overridden by an
 # exchange name specified in the transport_url option. (string value)
 #control_exchange = keystone
- 
+
 #
 # From oslo.service.service
 #
- 
+
 # Enables or disables logging values of all registered options when starting a
 # service (at DEBUG level). (boolean value)
 #log_options = true
 
 [assignment]
 driver = sql
- 
+
 [sql]
 # the timeout before idle sql connections are reaped
 # idle_timeout = 200
@@ -272,68 +272,68 @@ connection = mysql://<%= @keystoneconfig["db_user"] %>:<%= @keystoneconfig["db_p
 driver = ldap
 
 [cache]
- 
+
 #
 # From keystone
 #
- 
+
 # Prefix for building the configuration dictionary for the cache region. This
 # should not need to be changed unless there is another dogpile.cache region
 # with the same configuration name. (string value)
 #config_prefix = cache.keystone
- 
+
 # Default TTL, in seconds, for any cached item in the dogpile.cache region.
 # This applies to any cached method that doesn't have an explicit cache
 # expiration time defined for it. (integer value)
 #expiration_time = 600
- 
+
 # Dogpile.cache backend module. It is recommended that Memcache with pooling
 # (keystone.cache.memcache_pool) or Redis (dogpile.cache.redis) be used in
 # production deployments.  Small workloads (single process) like devstack can
 # use the dogpile.cache.memory backend. (string value)
 #backend = keystone.common.cache.noop
- 
+
 # Arguments supplied to the backend module. Specify this option once per
 # argument to be passed to the dogpile.cache backend. Example format:
 # "<argname>:<value>". (multi valued)
 #backend_argument =
- 
+
 # Proxy classes to import that will affect the way the dogpile.cache backend
 # functions. See the dogpile.cache documentation on changing-backend-behavior.
 # (list value)
 #proxies =
- 
+
 # Global toggle for all caching using the should_cache_fn mechanism. (boolean
 # value)
 #enabled = false
- 
+
 # Extra debugging from the cache backend (cache keys, get/set/delete/etc
 # calls). This is only really useful if you need to see the specific cache-
 # backend get/set/delete calls with the keys/values.  Typically this should be
 # left set to false. (boolean value)
 #debug_cache_backend = false
- 
+
 # Memcache servers in the format of "host:port". (dogpile.cache.memcache and
 # keystone.cache.memcache_pool backends only). (list value)
 #memcache_servers = localhost:11211
- 
+
 # Number of seconds memcached server is considered dead before it is tried
 # again. (dogpile.cache.memcache and keystone.cache.memcache_pool backends
 # only). (integer value)
 #memcache_dead_retry = 300
- 
+
 # Timeout in seconds for every call to a server. (dogpile.cache.memcache and
 # keystone.cache.memcache_pool backends only). (integer value)
 #memcache_socket_timeout = 3
- 
+
 # Max total number of open connections to every memcached server.
 # (keystone.cache.memcache_pool backend only). (integer value)
 #memcache_pool_maxsize = 10
- 
+
 # Number of seconds a connection to memcached is held unused in the pool before
 # it is closed. (keystone.cache.memcache_pool backend only). (integer value)
 #memcache_pool_unused_timeout = 60
- 
+
 # Number of seconds that an operation will wait to get a memcache client
 # connection. (integer value)
 #memcache_pool_connection_get_timeout = 10
