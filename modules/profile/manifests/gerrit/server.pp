@@ -59,6 +59,8 @@ class profile::gerrit::server(
     }
 
     if $bacula != undef and !$slave {
+        include ::profile::backup::host
+
         backup::set { $bacula: }
     }
 
