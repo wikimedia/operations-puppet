@@ -190,6 +190,6 @@ class openstack::nova::compute(
 
     nrpe::monitor_service { 'check_nova_compute_process':
         description  => 'nova-compute process',
-        nrpe_command => "/usr/lib/nagios/plugins/check_procs -c 1: --ereg-argument-array '^/usr/bin/python /usr/bin/nova-compute'",
+        nrpe_command => "/usr/lib/nagios/plugins/check_procs -c 1:1 --ereg-argument-array '^/usr/bin/python /usr/bin/nova-compute'",
     }
 }
