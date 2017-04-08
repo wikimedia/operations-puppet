@@ -8,6 +8,7 @@ debdeploy::grains:
 gerrit::server::host: 'gerrit.wikimedia.org'
 gerrit::server::master_host: 'cobalt.wikimedia.org'
 gerrit::server::bacula: 'srv-gerrit-git'
+gerrit::server::backup: true
 
 # Assume all production nodes are slaves
 gerrit::jetty::git_dir: '/srv/gerrit/git'

@@ -7,6 +7,7 @@ class profile::gerrit::server(
     $host = hiera('gerrit::server::host'),
     $master_host = hiera('gerrit::server::master_host'),
     $bacula = hiera('gerrit::server::bacula'),
+    $backup = hiera('gerrit::server::backup'),
 ) {
 
     interface::ip { 'role::gerrit::server_ipv4':
@@ -58,8 +59,12 @@ class profile::gerrit::server(
         }
     }
 
-    if $bacula != undef and !$slave {
-        backup::set { $bacula: }
+    if $backup != false {
+        if $bacula != undef and !$slave {
+            include ::profile::backup::host
+
+            backup::set { $bacula: }
+        }
     }
 
     class { '::gerrit':
