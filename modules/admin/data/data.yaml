@@ -578,10 +578,6 @@ groups:
                  'ALL = NOPASSWD: /bin/systemctl restart zookeeper.service',
                  'ALL = NOPASSWD: /bin/systemctl mask zookeeper.service',
                  'ALL = NOPASSWD: /bin/systemctl unmask zookeeper.service']
-  striker-users:
-    description: group of Striker users (T151424)
-    gid: 789
-    members: [bd808]
   pdfrender-admin:
     description: Group of pdfrender admins
     gid: 790
