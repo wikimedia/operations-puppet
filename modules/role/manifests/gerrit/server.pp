@@ -4,5 +4,7 @@
 class role::gerrit::server {
     include ::standard
     include ::profile::gerrit::server
-    include ::profile::backup::host
+    if $::realm != 'labs' {
+      include ::profile::backup::host
+    }
 }

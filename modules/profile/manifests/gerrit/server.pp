@@ -58,7 +58,7 @@ class profile::gerrit::server(
         }
     }
 
-    if $bacula != undef and !$slave {
+    if $::realm != 'labs' and $bacula != undef and !$slave {
         backup::set { $bacula: }
     }
 
