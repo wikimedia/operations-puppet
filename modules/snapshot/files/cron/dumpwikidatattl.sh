@@ -10,7 +10,23 @@
 
 . /usr/local/bin/wikidatadumps-shared.sh
 
-filename=wikidata-$today-all-BETA
+declare -A dumpNameToFlavor
+dumpNameToFlavor=(["all"]="full-dump" ["truthy"]="truthy-dump")
+
+dumpName=$1
+
+if [ -z "$dumpName" ]; then
+	echo "No dump name given."
+	exit 1
+fi
+
+dumpFlavor=${dumpNameToFlavor[$dumpName]}
+if [ -z "$dumpFlavor" ]; then
+	echo "Unknown dump name: $dumpName"
+	exit 1
+fi
+
+filename=wikidata-$today-$dumpName-BETA
 targetFileGzip=$targetDir/$filename.ttl.gz
 targetFileBzip2=$targetDir/$filename.ttl.bz2
 failureFile=/tmp/dumpwikidatattl-failure
@@ -29,7 +45,7 @@ while true; do
 		(
 			set -o pipefail
 			errorLog=/var/log/wikidatadump/dumpwikidatattl-$filename-$i.log
-			php5 $multiversionscript extensions/Wikidata/extensions/Wikibase/repo/maintenance/dumpRdf.php --wiki wikidatawiki --shard $i --sharding-factor $shards --format ttl 2>> $errorLog | gzip > $tempDir/wikidataTTL.$i.gz
+			php5 $multiversionscript extensions/Wikidata/extensions/Wikibase/repo/maintenance/dumpRdf.php --wiki wikidatawiki --shard $i --sharding-factor $shards --format ttl --flavor $dumpFlavor 2>> $errorLog | gzip > $tempDir/wikidataTTL.$i.gz
 			exitCode=$?
 			if [ $exitCode -gt 0 ]; then
 				echo -e "\n\n(`date --iso-8601=minutes`) Process for shard $i failed with exit code $exitCode" >> $errorLog
