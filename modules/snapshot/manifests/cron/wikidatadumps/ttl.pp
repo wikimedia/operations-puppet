@@ -12,9 +12,14 @@ class snapshot::cron::wikidatadumps::ttl(
         require => Class['snapshot::cron::wikidatadumps::common'],
     }
 
+    # Temp: Remove old hook
     cron { 'wikidatattl-dump':
+        ensure  => 'absent',
+    }
+
+    cron { 'wikidatattl-dump-all':
         ensure  => 'present',
-        command => $scriptpath,
+        command => "{$scriptpath} all",
         user    => $user,
         minute  => '0',
         hour    => '23',
