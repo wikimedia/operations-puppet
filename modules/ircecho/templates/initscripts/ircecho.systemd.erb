@@ -1,0 +1,15 @@
+[Unit]
+Description=ircecho
+After=network.target
+
+[Service]
+User=nagios
+Group=nagios
+Type=simple
+PIDFile=/var/log/icinga/ircecho.pid
+EnvironmentFile=-/etc/default/ircecho
+ExecStart=/usr/local/bin/ircecho --infile=${INFILE} $CHANS $NICK $SERVER
+ExecStop=rm /var/log/icinga/ircecho.pid
+
+[Install]
+WantedBy=multi-user.target
