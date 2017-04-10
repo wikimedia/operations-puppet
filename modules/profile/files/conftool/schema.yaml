@@ -15,3 +15,11 @@ discovery:
     ttl:
       type: "int"
       default: 300
+mwconfig:
+  path: "mediawiki-config"
+  tags:
+    - scope
+  schema:
+    val:
+      type: "any"
+      default: null
