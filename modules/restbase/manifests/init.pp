@@ -136,16 +136,40 @@ class restbase(
     $pdfrender_key = $::service::configuration::pdfrender_key
     $local_logfile = "${service::configuration::log_dir}/${title}/main.log"
 
+    $rl_seeds = filter($hosts) |$x|{ $x != $::hostname and $x != $::ipaddress }
+
     service::node { 'restbase':
-        port            => $port,
-        config          => template($config_template),
-        full_config     => true,
-        no_file         => 200000,
-        healthcheck_url => "/${monitor_domain}/v1",
-        has_spec        => true,
-        starter_script  => 'restbase/server.js',
-        auto_refresh    => false,
-        deployment      => 'scap3',
+        port              => $port,
+        no_file           => 200000,
+        healthcheck_url   => "/${monitor_domain}/v1",
+        has_spec          => true,
+        starter_script    => 'restbase/server.js',
+        auto_refresh      => false,
+        deployment        => 'scap3',
+        deployment_config => true,
+        deployment_vars   => {
+            rl_seeds                      => $rl_seeds,
+            seeds                         => $seeds,
+            cassandra_local_dc            => $cassandra_local_dc,
+            cassandra_datacenters         => $cassandra_datacenters,
+            cassandra_user                => $cassandra_user,
+            cassandra_password            => $cassandra_password,
+            cassandra_default_consistency => $cassandra_default_consistency,
+            cassandra_tls                 => $cassandra_tls,
+            parsoid_uri                   => $parsoid_uri,
+            graphoid_uri                  => $graphoid_uri,
+            mathoid_uri                   => $mathoid_uri,
+            mobileapps_uri                => $mobileapps_uri,
+            citoid_uri                    => $citoid_uri,
+            eventlogging_service_uri      => $eventlogging_service_uri,
+            skip_updates                  => $skip_updates,
+            pdfrender_uri                 => $pdfrender_uri,
+            pdfrender_key                 => $pdfrender_key,
+            trendingedits_uri             => $trendingedits_uri,
+            aqs_uri                       => $aqs_uri,
+            salt_key                      => $salt_key,
+            page_size                     => $page_size,
+        },
     }
 
 }
