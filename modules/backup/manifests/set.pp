@@ -1,6 +1,7 @@
-# backup::set is probably what you want
-define backup::set($jobdefaults=$profile::backup::host::jobdefaults) {
-    if $jobdefaults != undef {
+# backup::set is probably what you want.
+define backup::set {
+    if defined(Class['$profile::backup::host::jobdefaults']) {
+        $jobdefaults=$profile::backup::host::jobdefaults
         @bacula::client::job { "${name}-${jobdefaults}":
             fileset     => $name,
             jobdefaults => $jobdefaults,
