@@ -1,0 +1,6 @@
+codfw:
+  - ReadOnly
+eqiad:
+  - ReadOnly
+common:
+  - WMFMasterDatacenter
