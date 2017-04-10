@@ -25,7 +25,7 @@ class ircecho (
     }
 
     file { '/etc/init.d/ircecho':
-        ensure => present,
+        ensure => absent,
         source => 'puppet:///modules/ircecho/ircecho.init',
         owner  => 'root',
         group  => 'root',
@@ -38,14 +38,14 @@ class ircecho (
         mode    => '0755',
     }
 
-    service { 'ircecho':
-        ensure    => running,
-        subscribe => File[
-            '/usr/local/bin/ircecho',
-            '/etc/init.d/ircecho',
-            '/etc/default/ircecho'
-        ],
+    base::service_unit { 'ircecho':
+        ensure         => 'present',
+        systemd        => true,
+        upstart        => false,
+        sysvinit       => false,
+        service_params => {
+            hasrestart => true,
+        },
     }
-
 }
 
