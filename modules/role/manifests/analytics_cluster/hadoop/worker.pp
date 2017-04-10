@@ -121,6 +121,7 @@ class role::analytics_cluster::hadoop::worker {
     # Need a specifc version of python-numpy
     package { ['python-numpy', 'python3-numpy']:
         ensure => '1:1.12.0-2~bpo8+1',
+        before => Package['python3-sklearn'],
     }
 
     require_package(
@@ -142,6 +143,7 @@ class role::analytics_cluster::hadoop::worker {
         'python3-requests',
         'python3-mmh3',
         'python3-sklearn',
+        'python3-sklearn-lib',
         'python3-docopt',
         'libgomp1'
     )
