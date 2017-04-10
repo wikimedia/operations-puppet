@@ -42,8 +42,8 @@ while getopts "hm:p:P:" opt; do
 done
 
 lag="$(/usr/bin/check_postgres_hot_standby_delay \
---host="${pg_master}",localhost \
---dbuser=replication --dbpass="${pg_password}" -dbname=template1)"
+--host="${pg_master}",localhost --dbuser=replication \
+--dbpass="${pg_password}" -dbname=template1 --output=simple)"
 
 echo "postgresql_replication_lag_bytes ${lag}" > ${prometheus_path}.$$
 mv ${prometheus_path}.$$ ${prometheus_path}
