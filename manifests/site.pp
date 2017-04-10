@@ -1838,7 +1838,7 @@ node /^lvs300[1-4]\.esams\.wmnet$/ {
 # ULSFO lvs servers
 node /^lvs400[1-4]\.ulsfo\.wmnet$/ {
     # ns override for all lvs for now, see T103921
-    $nameservers_override = [ '208.80.154.157', '208.80.154.50', '208.80.153.254' ]
+    $nameservers_override = [ '208.80.153.12', '208.80.153.42', '208.80.154.254' ]
 
     role(lvs::balancer)
 
