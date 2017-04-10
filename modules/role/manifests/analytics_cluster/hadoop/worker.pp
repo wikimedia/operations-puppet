@@ -138,8 +138,8 @@ class role::analytics_cluster::hadoop::worker {
         'python3-numpy=1:1.12.0-2~bpo8+1',
         'python3-mmh3',
         'python3-sklearn',
-        'python3-docopt'
-        'libgomp1',
+        'python3-docopt',
+        'libgomp1'
     )
 
     # This allows Hadoop daemons to talk to each other.
