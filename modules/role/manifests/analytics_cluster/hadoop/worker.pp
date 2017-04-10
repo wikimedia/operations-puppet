@@ -117,7 +117,17 @@ class role::analytics_cluster::hadoop::worker {
     # Install packages that are useful for distributed
     # computation in Hadoop, and thus should be available on
     # any Hadoop nodes.
-    require_package(
+    require_package([
+        'python-numpy',
+        'python-pandas',
+        'python-scipy',
+        'python-requests',
+        'python-matplotlib',
+        'python-dateutil',
+        'python-sympy',
+        'python-docopt',
+    ])
+    require_package([
         'python3',
         'python3-tabulate',
         'python3-scipy',
@@ -130,21 +140,11 @@ class role::analytics_cluster::hadoop::worker {
         'python3-numpy=1:1.12.0-2~bpo8+1',
         'python3-mmh3',
         'python3-sklearn',
-        'python3-docopt',
-    )
-    require_package(
-        'python-numpy',
-        'python-pandas',
-        'python-scipy',
-        'python-requests',
-        'python-matplotlib',
-        'python-dateutil',
-        'python-sympy',
-        'python-docopt',
-    )
-    require_package(
+        'python3-docopt'
+    ])
+    require_package([
         'libgomp1',
-    )
+    ])
 
     # This allows Hadoop daemons to talk to each other.
     ferm::service{ 'hadoop-access':
