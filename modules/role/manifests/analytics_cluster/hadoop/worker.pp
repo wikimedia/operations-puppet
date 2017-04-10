@@ -117,8 +117,13 @@ class role::analytics_cluster::hadoop::worker {
     # Install packages that are useful for distributed
     # computation in Hadoop, and thus should be available on
     # any Hadoop nodes.
+
+    # Need a specifc version of python-numpy
+    package { ['python-numpy', 'python3-numpy']:
+        ensure => '1:1.12.0-2~bpo8+1',
+    }
+
     require_package(
-        'python-numpy=1:1.12.0-2~bpo8+1',
         'python-pandas',
         'python-scipy',
         'python-requests',
@@ -135,7 +140,6 @@ class role::analytics_cluster::hadoop::worker {
         'python3-nose',
         'python3-setuptools',
         'python3-requests',
-        'python3-numpy=1:1.12.0-2~bpo8+1',
         'python3-mmh3',
         'python3-sklearn',
         'python3-docopt',
