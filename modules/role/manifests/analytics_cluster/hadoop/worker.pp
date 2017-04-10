@@ -117,13 +117,6 @@ class role::analytics_cluster::hadoop::worker {
     # Install packages that are useful for distributed
     # computation in Hadoop, and thus should be available on
     # any Hadoop nodes.
-
-    # Need a specifc version of python-numpy
-    package { ['python-numpy', 'python3-numpy']:
-        ensure => '1:1.12.0-2~bpo8+1',
-        before => Package['python3-sklearn'],
-    }
-
     require_package(
         'python-pandas',
         'python-scipy',
@@ -142,11 +135,23 @@ class role::analytics_cluster::hadoop::worker {
         'python3-setuptools',
         'python3-requests',
         'python3-mmh3',
-        'python3-sklearn',
-        'python3-sklearn-lib',
         'python3-docopt',
         'libgomp1'
     )
+
+    # Need a specifc version of python-numpy for sklearn.
+    # There are some weird dependency / require_package
+    # issues that force us to use the package resource
+    # directly.
+    package { ['python-numpy', 'python3-numpy']:
+        ensure => '1:1.12.0-2~bpo8+1',
+    }
+    package { ['python3-sklearn','python3-sklearn-lib']:
+        ensure  => 'installed',
+        require => Package['python3-numpy'],
+    }
+
+
 
     # This allows Hadoop daemons to talk to each other.
     ferm::service{ 'hadoop-access':
