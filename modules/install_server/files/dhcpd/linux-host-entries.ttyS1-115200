@@ -241,7 +241,7 @@ host analytics1067 {
 }
 
 host analytics1068 {
-    hardware ethernet ;
+    hardware ethernet 18:66:DA:F8:25:A4;
     fixed-address analytics1068.eqiad.wmnet;
 }
 
