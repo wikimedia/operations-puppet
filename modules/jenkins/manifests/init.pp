@@ -106,6 +106,14 @@ class jenkins(
 
     if $access_log {
         $jenkins_access_log_arg = '--accessLoggerClassName=winstone.accesslog.SimpleAccessLogger --simpleAccessLogger.format=combined --simpleAccessLogger.file=/var/log/jenkins/access.log'
+        file { '/var/log/jenkins/access.log':
+            ensure  => present,
+            replace => false,
+            owner   => 'jenkins',
+            group   => $log_group,
+            mode    => '0640',
+            before  => Service['jenkins'],
+        }
     } else {
         $jenkins_access_log_arg = ''
     }
