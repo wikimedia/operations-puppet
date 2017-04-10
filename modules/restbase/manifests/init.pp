@@ -137,15 +137,20 @@ class restbase(
     $local_logfile = "${service::configuration::log_dir}/${title}/main.log"
 
     service::node { 'restbase':
-        port            => $port,
-        config          => template($config_template),
-        full_config     => true,
-        no_file         => 200000,
-        healthcheck_url => "/${monitor_domain}/v1",
-        has_spec        => true,
-        starter_script  => 'restbase/server.js',
-        auto_refresh    => false,
-        deployment      => 'scap3',
+        port              => $port,
+        no_file           => 200000,
+        healthcheck_url   => "/${monitor_domain}/v1",
+        has_spec          => true,
+        starter_script    => 'restbase/server.js',
+        auto_refresh      => false,
+        deployment        => 'scap3',
+        deployment_config => true,
+        deployment_vars   => {
+            rl_seeds           => inline_template('[<%= @hosts.select { |x| %r{#{@hostname}} !~ x && x != @ipaddress }.map { |x| "\'#{x}\'" }.join(\',\') %>]'),
+            seeds              => inline_template('[<%= Array(@seeds).map { |x| "\'#{x}\'" }.join(\',\') %>]'),
+            cassandra_local_dc => $cassandra_local_dc,
+            #cassandra_datacenters => inline_template(),
+        },
     }
 
 }
