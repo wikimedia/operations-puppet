@@ -137,7 +137,7 @@ class role::analytics_cluster::hadoop::worker {
         'python3-nose',
         'python3-setuptools',
         'python3-requests',
-        'python3-numpy=1:1.12.0-2~bpo8+1',
+        # 'python3-numpy=1:1.12.0-2~bpo8+1',
         'python3-mmh3',
         'python3-sklearn',
         'python3-docopt'
