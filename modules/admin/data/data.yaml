@@ -597,7 +597,7 @@ groups:
   cs-roots:
     description: root for cloud services infrastructure
     gid: 792
-    members: []
+    members: [bd808]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
 
 users:
