@@ -107,13 +107,13 @@ node 'analytics1003.eqiad.wmnet' {
     include ::base::firewall
 }
 
-# analytics1028-analytics1057 are Hadoop worker nodes.
+# analytics1028-analytics1068 are Hadoop worker nodes.
 #
 # NOTE:  If you add, remove or move Hadoop nodes, you should edit
 # modules/role/templates/analytics_cluster/hadoop/net-topology.py.erb
 # to make sure the hostname -> /datacenter/rack/row id is correct.
 # This is used for Hadoop network topology awareness.
-node /analytics10(2[89]|3[0-9]|4[0-9]|5[0-7]).eqiad.wmnet/ {
+node /analytics10(2[89]|3[0-9]|4[0-9]|5[0-9]|6[0-8]).eqiad.wmnet/ {
     role(analytics_cluster::hadoop::worker)
 
     include ::base::firewall
