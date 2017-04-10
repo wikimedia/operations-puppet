@@ -1,0 +1,15 @@
+[Unit]
+Description=ircecho
+After=network.target
+
+[Service]
+User=nobody
+Group=nobody
+Type=simple
+EnvironmentFile=-/etc/default/ircecho
+ExecStart=/usr/local/bin/ircecho --infile=${INFILE} $CHANS $NICK $SERVER
+Restart=always
+RestartSec=10s
+
+[Install]
+WantedBy=multi-user.target
