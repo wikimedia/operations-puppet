@@ -118,8 +118,6 @@ class role::analytics_cluster::hadoop::worker {
     # computation in Hadoop, and thus should be available on
     # any Hadoop nodes.
     require_package(
-        # Need some python packages on Hadoop nodes
-        # in order to run python Hadoop jobs.
         'python3',
         'python3-tabulate',
         'python3-scipy',
@@ -133,6 +131,8 @@ class role::analytics_cluster::hadoop::worker {
         'python3-mmh3',
         'python3-sklearn',
         'python3-docopt',
+    )
+    require_package(
         'python-numpy',
         'python-pandas',
         'python-scipy',
@@ -141,6 +141,8 @@ class role::analytics_cluster::hadoop::worker {
         'python-dateutil',
         'python-sympy',
         'python-docopt',
+    )
+    require_package(
         'libgomp1',
     )
 
