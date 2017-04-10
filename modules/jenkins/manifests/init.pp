@@ -106,6 +106,13 @@ class jenkins(
 
     if $access_log {
         $jenkins_access_log_arg = '--accessLoggerClassName=winstone.accesslog.SimpleAccessLogger --simpleAccessLogger.format=combined --simpleAccessLogger.file=/var/log/jenkins/access.log'
+        systemd::syslog { 'jenkins_access_log':
+            base_dir     => '/var/log',
+            owner        => 'jenkins',
+            group        => $log_group,
+            readable_by  => 'group',
+            log_filename => 'access.log',
+        }
     } else {
         $jenkins_access_log_arg = ''
     }
