@@ -5269,6 +5269,8 @@ host mw2245 {
 host mw2246 {
     hardware ethernet 14:18:77:66:78:1E;
     fixed-address mw2246.codfw.wmnet;
+    option pxelinux.pathprefix "trusty-installer/";
+    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw2247 {
