@@ -5880,8 +5880,6 @@ host stat1003 {
 host stat1004 {
     hardware ethernet 14:18:77:33:4C:E9;
     fixed-address stat1004.eqiad.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host subra {
