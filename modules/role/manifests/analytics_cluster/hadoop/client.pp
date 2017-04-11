@@ -98,43 +98,6 @@ class role::analytics_cluster::hadoop::client {
         }
     }
 
-    # Install packages that are useful for distributed
-    # computation in Hadoop, and thus should be available on
-    # any Hadoop nodes.
-    require_package(
-        'python-pandas',
-        'python-scipy',
-        'python-requests',
-        'python-matplotlib',
-        'python-dateutil',
-        'python-sympy',
-        'python-docopt',
-        'python3',
-        'python3-tabulate',
-        'python3-scipy',
-        'python3-enchant',
-        'python3-tz',
-        'python3-nltk',
-        'python3-nose',
-        'python3-setuptools',
-        'python3-requests',
-        'python3-mmh3',
-        'python3-docopt',
-        'libgomp1'
-    )
-
-    # Need a specifc version of python-numpy for sklearn.
-    # There are some weird dependency / require_package
-    # issues that force us to use the package resource
-    # directly.
-    package { ['python-numpy', 'python3-numpy']:
-        ensure => '1:1.12.0-2~bpo8+1',
-    }
-    package { ['python3-sklearn','python3-sklearn-lib']:
-        ensure  => 'installed',
-        require => Package['python3-numpy'],
-    }
-
     if $::realm == 'labs' {
         # Hadoop directories in labs should be created by puppet.
         # This conditional could be added to each worker,master,standby
