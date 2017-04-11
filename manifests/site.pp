@@ -1501,7 +1501,7 @@ node /lvs100[1-6]\.wikimedia\.org/ {
     #   so they need to use the recursive DNS backends directly
     #   (chromium and hydrogen) with fallback to codfw
     # (doing this for all lvs for now, see T103921)
-    $nameservers_override = [ '208.80.154.157', '208.80.154.50', '208.80.153.254' ]
+    $nameservers_override = [ '208.80.154.50', '208.80.153.254' ]
 
     role(lvs::balancer)
 
@@ -1602,7 +1602,7 @@ node /^lvs10(0[789]|1[012])\.eqiad\.wmnet$/ {
     #   so they need to use the recursive DNS backends directly
     #   (chromium and hydrogen) with fallback to codfw
     # (doing this for all lvs for now, see T103921)
-    $nameservers_override = [ '208.80.154.157', '208.80.154.50', '208.80.153.254' ]
+    $nameservers_override = [ '208.80.154.50', '208.80.153.254' ]
 
     role(lvs::balancer)
 
