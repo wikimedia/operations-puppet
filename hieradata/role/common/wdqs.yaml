@@ -1,5 +1,5 @@
 wdqs::gui::log_aggregator:  'logstash1001.eqiad.wmnet:10514'
-wdqs::updater::options: '-n wdq -- -b 500'
+wdqs::updater::options: '-n wdq -- -b 500 -T 1200'
 wdqs::service::config_file: /etc/wdqs/RWStore.properties
 wdqs::endpoint: 'https://query.wikidata.org'
 admin::groups:
