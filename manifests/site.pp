@@ -1803,7 +1803,7 @@ node /^lvs300[1-4]\.esams\.wmnet$/ {
     #   so they need to use the recursive DNS backends directly
     #   (nescio and maerlant) with fallback to eqiad
     # (doing this for all lvs for now, see T103921)
-    $nameservers_override = [ '91.198.174.106', '91.198.174.122', '208.80.154.254' ]
+    $nameservers_override = [ '91.198.174.106', '208.80.154.254' ]
 
     role(lvs::balancer)
 
