@@ -86,6 +86,13 @@ class role::analytics_cluster::hadoop::client {
     # $cdh::hadoop::gelf_logging_enabled is true.
     include ::role::analytics_cluster::hadoop::logstash
 
+    # Include ores::base class to get dependencies for using ORES in Hadoop.
+    # NOTE: This conditional is temporary, and will be removed once stat1002
+    # is replaced with a Jessie box as part of T159838.
+    if os_version('debian >= jessie') {
+        include ::ores::base
+    }
+
     # If in production AND the current node is a journalnode, then
     # go ahead and include an icinga alert for the JournalNode process.
     if $::realm == 'production' and member($cdh::hadoop::journalnode_hosts, $::fqdn) {
