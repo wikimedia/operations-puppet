@@ -180,8 +180,6 @@ labsldapconfig:
 analytics_cluster_meta_database_backup_rsync_dest: analytics1002.eqiad.wmnet::backup/mysql/analytics-meta
 
 prometheus_nodes:
-    - prometheus1001.eqiad.wmnet
-    - prometheus1002.eqiad.wmnet
     - prometheus1003.eqiad.wmnet
     - prometheus1004.eqiad.wmnet
 
