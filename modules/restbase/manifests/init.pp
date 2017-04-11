@@ -169,6 +169,8 @@ class restbase(
             salt_key                      => $salt_key,
             page_size                     => $page_size,
         },
+        logging_name      => $logging_name,
+        statsd_prefix     => $statsd_prefix,
     }
 
 }
