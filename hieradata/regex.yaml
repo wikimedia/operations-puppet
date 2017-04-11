@@ -198,7 +198,6 @@ cassandra_test_eqiad:
       - .*\.metrics\.Keyspace\..*$
       - .*\.metrics\.Client\..*$
   restbase::logging_name: restbase-test
-  restbase::skip_updates: true
   cassandra::start_rpc: 'true'
   cassandra::target_version: '2.2'
   cassandra::client_encryption_enabled: true
@@ -287,7 +286,6 @@ cassandra_test_codfw:
       - .*\.metrics\.Keyspace\..*$
       - .*\.metrics\.Client\..*$
   restbase::logging_name: restbase-test
-  restbase::skip_updates: true
   cassandra::start_rpc: 'true'
   cassandra::target_version: '2.2'
   cassandra::client_encryption_enabled: true
@@ -362,7 +360,6 @@ restbase_dev_eqiad:
       - .*\.metrics\.Keyspace\..*$
       - .*\.metrics\.Client\..*$
   restbase::logging_name: restbase-dev
-  restbase::skip_updates: true
   cassandra::start_rpc: 'true'
   cassandra::target_version: '2.2'
 

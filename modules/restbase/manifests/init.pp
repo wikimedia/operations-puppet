@@ -15,10 +15,6 @@
 #   Array of cassandra hosts (IP or host names) to contact.
 #   Default: ['localhost']
 #
-# [*cassandra_default_consistency*]
-#   Default cassandra query consistency level. Typically 'one' or
-#   'localQuorum'. Default: 'localQuorum'.
-#
 # [*cassandra_local_dc*]
 #   Which DC should be considered local. Default: 'datacenter1'.
 #
@@ -32,36 +28,14 @@
 # [*port*]
 #   Port where to run the restbase service. Default: 7231
 #
-# [*config_template*]
-#   File to use as the configuration file template. Default: restbase/config.yaml.erb
-#
-# [*skip_updates*]
-#   Whether resource_change events should not be emitted by RESTBase. Default: false
-#
 # [*parsoid_uri*]
 #   URI to reach Parsoid. Default: http://parsoid.svc.eqiad.wmnet:8000
-#
-# [*logstash_host*]
-#   GELF logging host. Default: localhost
-#
-# [*logstash_port*]
-#   GELF logging port. Default: 12201
 #
 # [*logging_name*]
 #   The logging name. Default: restbase
 #
-# [*logging_level*]
-#   The logging level. One of ['trace','debug','info','warn','error','fatal']
-#   Default: 'warn'
-#
 # [*statsd_prefix*]
 #   statsd metric prefix. Default: restbase
-#
-# [*statsd_host*]
-#   statsd host name. Default: localhost
-#
-# [*statsd_port*]
-#   statsd port. Default: 8125
 #
 # [*graphoid_uri*]
 #   graphoid host + port. Default: http://graphoid.svc.eqiad.wmnet:19000
@@ -101,23 +75,15 @@ class restbase(
     $cassandra_user = 'cassandra',
     $cassandra_password = 'cassandra',
     $seeds          = [$::ipaddress],
-    $cassandra_default_consistency = 'localQuorum',
     $cassandra_local_dc = 'datacenter1',
     $cassandra_datacenters = [ 'datacenter1' ],
     $cassandra_tls  = {},
     $port           = 7231,
     $salt_key       = 'secretkey',
     $page_size      = 250,
-    $config_template = 'restbase/config.yaml.erb',
-    $skip_updates   = false,
     $parsoid_uri    = 'http://parsoid.svc.eqiad.wmnet:8000',
-    $logstash_host  = 'localhost',
-    $logstash_port  = 12201,
     $logging_name   = 'restbase',
-    $logging_level  = 'warn',
     $statsd_prefix  = 'restbase',
-    $statsd_host    = 'localhost',
-    $statsd_port    = '8125',
     $graphoid_uri   = 'http://graphoid.svc.eqiad.wmnet:19000',
     $mobileapps_uri = 'http://mobileapps.svc.eqiad.wmnet:8888',
     $mathoid_uri    = 'http://mathoid.svc.eqiad.wmnet:10042',
@@ -146,28 +112,26 @@ class restbase(
         deployment        => 'scap3',
         deployment_config => true,
         deployment_vars   => {
-            ipaddress                     => $::ipaddress,
-            rl_seeds                      => reject(reject($hosts, $::hostname), $::ipaddress),
-            seeds                         => $seeds,
-            cassandra_local_dc            => $cassandra_local_dc,
-            cassandra_datacenters         => $cassandra_datacenters,
-            cassandra_user                => $cassandra_user,
-            cassandra_password            => $cassandra_password,
-            cassandra_default_consistency => $cassandra_default_consistency,
-            cassandra_tls                 => $cassandra_tls,
-            parsoid_uri                   => $parsoid_uri,
-            graphoid_uri                  => $graphoid_uri,
-            mathoid_uri                   => $mathoid_uri,
-            mobileapps_uri                => $mobileapps_uri,
-            citoid_uri                    => $citoid_uri,
-            eventlogging_service_uri      => $eventlogging_service_uri,
-            skip_updates                  => $skip_updates,
-            pdfrender_uri                 => $pdfrender_uri,
-            pdfrender_key                 => $pdfrender_key,
-            trendingedits_uri             => $trendingedits_uri,
-            aqs_uri                       => $aqs_uri,
-            salt_key                      => $salt_key,
-            page_size                     => $page_size,
+            ipaddress                => $::ipaddress,
+            rl_seeds                 => reject(reject($hosts, $::hostname), $::ipaddress),
+            seeds                    => $seeds,
+            cassandra_local_dc       => $cassandra_local_dc,
+            cassandra_datacenters    => $cassandra_datacenters,
+            cassandra_user           => $cassandra_user,
+            cassandra_password       => $cassandra_password,
+            cassandra_tls            => $cassandra_tls,
+            parsoid_uri              => $parsoid_uri,
+            graphoid_uri             => $graphoid_uri,
+            mathoid_uri              => $mathoid_uri,
+            mobileapps_uri           => $mobileapps_uri,
+            citoid_uri               => $citoid_uri,
+            eventlogging_service_uri => $eventlogging_service_uri,
+            pdfrender_uri            => $pdfrender_uri,
+            pdfrender_key            => $pdfrender_key,
+            trendingedits_uri        => $trendingedits_uri,
+            aqs_uri                  => $aqs_uri,
+            salt_key                 => $salt_key,
+            page_size                => $page_size,
         },
         logging_name      => $logging_name,
         statsd_prefix     => $statsd_prefix,
