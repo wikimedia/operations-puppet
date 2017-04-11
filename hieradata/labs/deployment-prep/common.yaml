@@ -108,11 +108,7 @@ cassandra::additional_jvm_opts:
 restbase::hosts:
   - deployment-restbase01.deployment-prep.eqiad.wmflabs
   - deployment-restbase02.deployment-prep.eqiad.wmflabs
-restbase::config_template: restbase/config.labs.yaml.erb
 restbase::parsoid_uri: http://deployment-parsoid09.deployment-prep.eqiad.wmflabs:8000
-restbase::statsd_host: labmon1001.eqiad.wmnet
-restbase::logstash_host: deployment-logstash2.deployment-prep.eqiad.wmflabs
-restbase::cassandra_default_consistency: localQuorum
 restbase::graphoid_uri: http://deployment-sca01.deployment-prep.eqiad.wmflabs:19000
 restbase::mobileapps_uri: http://deployment-mcs01.deployment-prep.eqiad.wmflabs:8888
 restbase::mathoid_uri: http://deployment-mathoid.deployment-prep.eqiad.wmflabs:10042
