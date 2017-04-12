@@ -36,16 +36,6 @@ class icinga(
         ensure => 'present',
     }
 
-    # Setup icinga custom init script
-    # FIXME: This should be provided by the package
-    file { '/etc/init.d/icinga':
-        source  => 'puppet:///modules/icinga/icinga-init.sh',
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0755',
-        require => Package['icinga'],
-    }
-
     file { '/etc/icinga/cgi.cfg':
         source  => 'puppet:///modules/icinga/cgi.cfg',
         owner   => 'icinga',
