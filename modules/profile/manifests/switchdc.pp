@@ -75,7 +75,7 @@ class profile::switchdc(
     }
 
     # Setup stage's configuration directories
-    file { ['/etc/switchdc/stages.d/t05_redis']:
+    file { ['/etc/switchdc/stages.d/t06_redis']:
         ensure  => directory,
         owner   => 'root',
         group   => 'root',
@@ -83,32 +83,32 @@ class profile::switchdc(
         require => File['/etc/switchdc/stages.d'],
     }
 
-    # Install t05_redis configuration
-    file { '/etc/switchdc/stages.d/t05_redis/config.yaml':
+    # Install t06_redis configuration
+    file { '/etc/switchdc/stages.d/t06_redis/config.yaml':
         ensure  => present,
         owner   => 'root',
         group   => 'root',
         mode    => '0640',
-        content => template('profile/switchdc/t05_redis/config.yaml.erb'),
-        require => File['/etc/switchdc/stages.d/t05_redis'],
+        content => template('profile/switchdc/t06_redis/config.yaml.erb'),
+        require => File['/etc/switchdc/stages.d/t06_redis'],
     }
 
-    file { '/etc/switchdc/stages.d/t05_redis/jobqueue.yaml':
+    file { '/etc/switchdc/stages.d/t06_redis/jobqueue.yaml':
         ensure  => present,
         owner   => 'root',
         group   => 'root',
         mode    => '0640',
         content => ordered_yaml($redis_shards['jobqueue']),
-        require => File['/etc/switchdc/stages.d/t05_redis'],
+        require => File['/etc/switchdc/stages.d/t06_redis'],
     }
 
-    file { '/etc/switchdc/stages.d/t05_redis/sessions.yaml':
+    file { '/etc/switchdc/stages.d/t06_redis/sessions.yaml':
         ensure  => present,
         owner   => 'root',
         group   => 'root',
         mode    => '0640',
         content => ordered_yaml($redis_shards['sessions']),
-        require => File['/etc/switchdc/stages.d/t05_redis'],
+        require => File['/etc/switchdc/stages.d/t06_redis'],
     }
 
 }
