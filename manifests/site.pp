@@ -1676,7 +1676,7 @@ node /lvs200[1-6]\.codfw\.wmnet/ {
     #   so they need to use the recursive DNS backends directly
     #   (acamar and achernar) with fallback to eqiad
     # (doing this for all lvs for now, see T103921)
-    $nameservers_override = [ '208.80.153.42', '208.80.154.254' ]
+    $nameservers_override = [ '208.80.153.12', '208.80.153.42', '208.80.154.254' ]
     role(lvs::balancer)
 
     interface::add_ip6_mapped { 'main': interface => 'eth0' }
@@ -1811,7 +1811,7 @@ node /^lvs300[1-4]\.esams\.wmnet$/ {
 # ULSFO lvs servers
 node /^lvs400[1-4]\.ulsfo\.wmnet$/ {
     # ns override for all lvs for now, see T103921
-    $nameservers_override = [ '208.80.153.42', '208.80.154.254' ]
+    $nameservers_override = [ '208.80.153.12', '208.80.153.42', '208.80.154.254' ]
 
     role(lvs::balancer)
 
