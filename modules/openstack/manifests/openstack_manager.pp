@@ -140,7 +140,7 @@ class openstack::openstack_manager(
             user    => 'root',
             hour    => 3,
             minute  => 0,
-            command => 'find /a/backup -type f -mtime +4 -delete',
+            command => 'find /a/backup -type f -mtime +2 -delete',
             require => File['/a/backup'];
         'run-jobs':
             ensure  => present,
