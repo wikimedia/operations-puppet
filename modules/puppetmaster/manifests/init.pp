@@ -72,16 +72,6 @@ class puppetmaster(
 
     # Let's use puppet 3.8 on the masters at least
     if os_version('debian >= jessie') {
-        $pinned_pkgs = ['puppet', 'puppetmaster', 'puppetmaster-common',
-                        'vim-puppet', 'puppet-el', 'puppetmaster-passenger',
-                        'puppet-common']
-        apt::pin { 'puppet':
-            package  => join(sort($pinned_pkgs), ' '),
-            pin      => 'release a=jessie-backports',
-            priority => '1001',
-            before   => Package['puppetmaster-common'],
-        }
-
         # Install the puppetdb-terminus package, needed for puppetdbquery
         require_package('puppetdb-terminus')
     }
