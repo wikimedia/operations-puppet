@@ -3,6 +3,7 @@
 #
 # filtertags: labs-project-monitoring
 class role::prometheus::ops {
+    include ::standard
     include ::base::firewall
 
     $targets_path = '/srv/prometheus/ops/targets'
