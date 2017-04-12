@@ -439,6 +439,7 @@ sub wm_common_xcache_deliver {
 			set req.http.X-CDIS = resp.http.X-CDIS;
 			unset resp.http.X-CDIS;
 		}
+
 		if (!req.http.X-CDIS) {
 			set req.http.X-CDIS = "bug";
 		}
