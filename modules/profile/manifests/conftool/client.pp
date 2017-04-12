@@ -16,6 +16,7 @@ class profile::conftool::client(
     $namespace      = dirname(hiera('conftool_prefix')),
     $tcpircbot_host = hiera('tcpircbot_host', 'icinga.wikimedia.org'),
     $tcpircbot_port = hiera('tcpircbot_port', 9200),
+    $protocol = hiera('profile::conftool::client::protocol', 'https')
 ) {
     require_package('python-conftool')
     require ::passwords::etcd
@@ -24,7 +25,7 @@ class profile::conftool::client(
         srv_domain => $srv_domain,
         host       => $host,
         port       => $port,
-        protocol   => 'https',
+        protocol   => $protocol,
     }
 
     ::etcd::client::config { '/root/.etcdrc':
