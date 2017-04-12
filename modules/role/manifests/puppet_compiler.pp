@@ -26,5 +26,6 @@ class role::puppet_compiler {
         host       => '127.0.0.1',
         port       => 2379,
         namespace  => '/conftool/v1',
+        protocol   => 'http',
     }
 }
