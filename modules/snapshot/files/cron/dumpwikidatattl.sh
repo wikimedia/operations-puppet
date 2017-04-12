@@ -29,7 +29,7 @@ fi
 filename=wikidata-$today-$dumpName-BETA
 targetFileGzip=$targetDir/$filename.ttl.gz
 targetFileBzip2=$targetDir/$filename.ttl.bz2
-failureFile=/tmp/dumpwikidatattl-failure
+failureFile=/tmp/dumpwikidatattl-$dumpName-failure
 mainLogFile=/var/log/wikidatadump/dumpwikidatattl-$filename-main.log
 
 shards=5
@@ -45,7 +45,7 @@ while true; do
 		(
 			set -o pipefail
 			errorLog=/var/log/wikidatadump/dumpwikidatattl-$filename-$i.log
-			php5 $multiversionscript extensions/Wikidata/extensions/Wikibase/repo/maintenance/dumpRdf.php --wiki wikidatawiki --shard $i --sharding-factor $shards --format ttl --flavor $dumpFlavor 2>> $errorLog | gzip > $tempDir/wikidataTTL.$i.gz
+			php5 $multiversionscript extensions/Wikidata/extensions/Wikibase/repo/maintenance/dumpRdf.php --wiki wikidatawiki --shard $i --sharding-factor $shards --format ttl --flavor $dumpFlavor 2>> $errorLog | gzip > $tempDir/wikidataTTL-$dumpName.$i.gz
 			exitCode=$?
 			if [ $exitCode -gt 0 ]; then
 				echo -e "\n\n(`date --iso-8601=minutes`) Process for shard $i failed with exit code $exitCode" >> $errorLog
@@ -63,7 +63,7 @@ while true; do
 	if [ -f $failureFile ]; then
 		# Something went wrong, let's clean up and maybe retry. Leave logs in place.
 		rm -f $failureFile
-		rm -f $tempDir/wikidataTTL.*.gz
+		rm -f $tempDir/wikidataTTL-$dumpName.*.gz
 		let retries++
 		echo "(`date --iso-8601=minutes`) Dumping one or more shards failed. Retrying." >> $mainLogFile
 
@@ -82,7 +82,7 @@ done
 
 i=0
 while [ $i -lt $shards ]; do
-	tempFile=$tempDir/wikidataTTL.$i.gz
+	tempFile=$tempDir/wikidataTTL-$dumpName.$i.gz
 	if [ ! -f $tempFile ]; then
 		echo "$tempFile does not exist. Aborting." >> $mainLogFile
 		exit 1
@@ -92,15 +92,15 @@ while [ $i -lt $shards ]; do
 		echo "File size of $tempFile is only $fileSize. Aborting." >> $mainLogFile
 		exit 1
 	fi
-	cat $tempFile >> $tempDir/wikidataTtl.gz
+	cat $tempFile >> $tempDir/wikidataTtl-$dumpName.gz
 	rm $tempFile
 	let i++
 done
 
-mv $tempDir/wikidataTtl.gz $targetFileGzip
+mv $tempDir/wikidataTtl-$dumpName.gz $targetFileGzip
 
-gzip -dc $targetFileGzip | bzip2 -c > $tempDir/wikidataTtl.bz2
-mv $tempDir/wikidataTtl.bz2 $targetFileBzip2
+gzip -dc $targetFileGzip | bzip2 -c > $tempDir/wikidataTtl-$dumpName.bz2
+mv $tempDir/wikidataTtl-$dumpName.bz2 $targetFileBzip2
 
 pruneOldDirectories
 pruneOldLogs
