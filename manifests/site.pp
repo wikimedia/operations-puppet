@@ -2740,12 +2740,6 @@ node 'ununpentium.wikimedia.org' {
 # Ganglia Web UI
 node 'uranium.wikimedia.org' {
     role(ganglia::web)
-    include ::standard
-    include ::base::firewall
-
-    interface::add_ip6_mapped { 'main':
-        interface => 'eth0',
-    }
 }
 
 node /^labvirt100[0-9].eqiad.wmnet/ {

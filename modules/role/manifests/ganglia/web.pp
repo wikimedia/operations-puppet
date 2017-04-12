@@ -1,7 +1,11 @@
 # A role that includes all the needed stuff to run a ganglia web frontend
 class role::ganglia::web {
+    include ::base::firewall
+    include ::standard
     include role::ganglia::config
     include role::ganglia::views
+
+    interface::add_ip6_mapped { 'main': interface => 'eth0', }
 
     letsencrypt::cert::integrated { 'ganglia':
         subjects   => 'ganglia.wikimedia.org',
