@@ -1253,8 +1253,8 @@ node 'graphite2002.codfw.wmnet' {
     include ::base::firewall
 }
 
-# replaced carbon and install1001 (T132757)
-node 'install1002.wikimedia.org' {
+# replaced carbon and install1001/install2001 (T132757, T84380, T156440)
+node /^install[12]002\.wikimedia\.org$/ {
     role(installserver::tftp,
         installserver::dhcp,
         installserver::http,
@@ -1269,27 +1269,7 @@ node 'install1002.wikimedia.org' {
     }
 
     class { '::ganglia::monitor::aggregator':
-        sites =>  'eqiad',
-    }
-}
-
-# replaced carbon and install2001 (T84380, T156440)
-node 'install2002.wikimedia.org' {
-    role(installserver::tftp,
-        installserver::dhcp,
-        installserver::http,
-        installserver::proxy,
-        installserver::preseed,
-        aptrepo::wikimedia)
-
-    $cluster = 'misc'
-
-    interface::add_ip6_mapped { 'main':
-        interface => 'eth0',
-    }
-
-    class { '::ganglia::monitor::aggregator':
-        sites =>  'codfw',
+        sites => $::site,
     }
 }
 
