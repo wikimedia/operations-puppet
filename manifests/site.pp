@@ -152,7 +152,6 @@ node 'bast1001.wikimedia.org' {
     role(bastionhost::general)
 
     interface::add_ip6_mapped { 'main': interface => 'eth0', }
-    $cluster = 'misc'
 }
 
 # Bastion in Texas
@@ -160,7 +159,6 @@ node 'bast2001.wikimedia.org' {
     role(bastionhost::general)
 
     interface::add_ip6_mapped { 'main': interface => 'eth0', }
-    $cluster = 'misc'
 }
 
 # Bastion in the Netherlands (replaced bast3001)
@@ -1259,8 +1257,6 @@ node /^install[12]002\.wikimedia\.org$/ {
         installserver::preseed,
         aptrepo::wikimedia)
 
-    $cluster = 'misc'
-
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
     }
@@ -1877,7 +1873,6 @@ node /^mc20(19|2[0-9]|3[0-6])\.codfw\.wmnet/ {
 
 # archiva.wikimedia.org
 node 'meitnerium.wikimedia.org' {
-    $cluster = 'misc'
     role(archiva)
     include ::standard
 }
@@ -1898,7 +1893,6 @@ node 'multatuli.wikimedia.org' {
 
 # also see dataset1001
 node 'ms1001.wikimedia.org' {
-    $cluster = 'misc'
 
     role(dataset::secondary, dumps::server)
 
@@ -2143,7 +2137,6 @@ node /^mw22(5[4-9]|60)\.codfw\.wmnet$/ {
 # mw logging host codfw
 node 'mwlog2001.codfw.wmnet' {
     role(xenon)
-    $cluster = 'misc'
 
     include ::base::firewall
     include ::standard
@@ -2156,7 +2149,6 @@ node 'mwlog2001.codfw.wmnet' {
 # mw logging host eqiad
 node 'mwlog1001.eqiad.wmnet' {
     role(xenon)
-    $cluster = 'misc'
 
     include ::base::firewall
     include ::standard
