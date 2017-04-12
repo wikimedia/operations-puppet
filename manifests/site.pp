@@ -2470,7 +2470,6 @@ node /^rdb200[135]\.codfw\.wmnet$/ {
 
 node /^rdb200[246]\.codfw\.wmnet/ {
     role(jobqueue_redis::slave)
-    include ::base::firewall
 }
 
 node /^relforge100[1-2]\.eqiad\.wmnet/ {
