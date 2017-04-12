@@ -6,8 +6,6 @@
 #
 # $planet_http_proxy: since we are on a private IP now we need to proxy to fetch external URLs
 #
-# $planet_active_dc: set to the currently active DC. feed updates are only running here.
-#
 # $planet_languages: translated strings for the UI in various languages
 #                    list all planet languages and translations for index.html.tmpl here.
 #                    configurations, directories and cronjobs are auto-created from this hash.
@@ -16,7 +14,6 @@ class profile::planet::venus (
     $planet_domain_name = hiera('planet_domain_name'),
     $planet_meta_link = 'meta.wikimedia.org/wiki/Planet_Wikimedia',
     $planet_http_proxy = "http://url-downloader.${::site}.wikimedia.org:8080",
-    $planet_active_dc = 'eqiad',
     $planet_languages = {
         ar => {
             'subscribe'     => '&#1575;&#1588;&#1578;&#1585;&#1603;',
@@ -210,7 +207,6 @@ class profile::planet::venus (
         planet_languages   => $planet_languages,
         planet_meta_link   => $planet_meta_link,
         planet_http_proxy  => $planet_http_proxy,
-        planet_active_dc   => $planet_active_dc
     }
 
     # firewalling
