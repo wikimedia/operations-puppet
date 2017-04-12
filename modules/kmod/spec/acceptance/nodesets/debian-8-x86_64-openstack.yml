@@ -1,0 +1,14 @@
+HOSTS:
+  debian-8-x64:
+    default_apply_opts:
+      order: random
+      strict_variables:
+    platform: debian-8-amd64
+    hypervisor : openstack
+    flavor: m1.small
+    image: debian-8-latest
+    user: debian
+CONFIG:
+  type: foss
+  log_level: debug
+  openstack_network: default

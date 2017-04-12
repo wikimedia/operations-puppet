@@ -1,0 +1,16 @@
+HOSTS:
+  ubuntu-1510-x64:
+    default_apply_opts:
+      order: random
+      strict_variables:
+    platform: ubuntu-15.10-amd64
+    hypervisor : docker
+    image: ubuntu:15.10
+    docker_preserve_image: true
+    docker_cmd: '["/sbin/init"]'
+    docker_image_commands:
+      - 'apt-get install -y net-tools wget'
+      - 'locale-gen en_US.UTF-8'
+CONFIG:
+  type: aio
+  log_level: debug

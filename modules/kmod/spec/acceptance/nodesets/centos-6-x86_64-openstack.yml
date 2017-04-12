@@ -1,0 +1,14 @@
+HOSTS:
+  centos-6-x64:
+    default_apply_opts:
+      order: random
+      strict_variables:
+    platform: el-6-x86_64
+    hypervisor : openstack
+    flavor: m1.small
+    image: centos-6-latest
+    user: root
+CONFIG:
+  type: foss
+  log_level: debug
+  openstack_network: default

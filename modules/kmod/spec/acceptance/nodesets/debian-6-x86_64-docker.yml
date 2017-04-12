@@ -1,0 +1,15 @@
+HOSTS:
+  debian-6-x64:
+    default_apply_opts:
+      order: random
+      strict_variables:
+    platform: debian-6-amd64
+    hypervisor : docker
+    image: debian:6
+    docker_preserve_image: true
+    docker_cmd: '["/sbin/init"]'
+    docker_image_commands:
+      - 'apt-get install -y wget'
+CONFIG:
+  type: foss
+  log_level: debug

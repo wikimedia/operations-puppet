@@ -1,0 +1,14 @@
+HOSTS:
+  ubuntu-1410-x64:
+    default_apply_opts:
+      order: random
+      strict_variables:
+    platform: ubuntu-14.10-amd64
+    hypervisor : openstack
+    flavor: m1.small
+    image: ubuntu-1410-latest
+    user: ubuntu
+CONFIG:
+  type: foss
+  log_level: debug
+  openstack_network: default

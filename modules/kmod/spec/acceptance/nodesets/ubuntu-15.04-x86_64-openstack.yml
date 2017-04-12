@@ -1,0 +1,14 @@
+HOSTS:
+  ubuntu-1504-x64:
+    default_apply_opts:
+      order: random
+      strict_variables:
+    platform: ubuntu-15.04-amd64
+    hypervisor : openstack
+    flavor: m1.small
+    image: ubuntu-1504-latest
+    user: ubuntu
+CONFIG:
+  type: foss
+  log_level: debug
+  openstack_network: default
