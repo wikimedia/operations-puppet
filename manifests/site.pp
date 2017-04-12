@@ -2363,8 +2363,6 @@ node /^prometheus200[34]\.codfw\.wmnet$/ {
 node /^prometheus100[34]\.eqiad\.wmnet$/ {
     role(prometheus::ops)
 
-    include ::base::firewall
-    include ::standard
     include ::lvs::realserver
 
     interface::add_ip6_mapped { 'main':
