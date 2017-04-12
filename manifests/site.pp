@@ -2715,7 +2715,6 @@ node /^thumbor100[12].eqiad.wmnet/ {
     role(thumbor::mediawiki)
 
     include ::standard
-    include ::base::firewall
 }
 
 # deployment servers
