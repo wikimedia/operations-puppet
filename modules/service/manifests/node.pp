@@ -190,9 +190,11 @@ define service::node(
             include ::scap::conftool
         }
         'git': {
-            service::deploy::gitclone { $title:
-                repository => $repo,
-                before     => Base::Service_unit[$title],
+            if ! defined(Service::Deploy::Gitclone[$title]) {
+                service::deploy::gitclone { $title:
+                    repository => $repo,
+                    before     => Base::Service_unit[$title],
+                }
             }
         }
         default: {
