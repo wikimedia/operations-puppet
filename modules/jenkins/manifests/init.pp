@@ -95,6 +95,18 @@ class jenkins(
         group  => 'jenkins',
         mode   => '0755',
     }
+    file { '/etc/jenkins':
+        ensure => directory,
+        owner  => 'jenkins',
+        group  => 'jenkins',
+        mode   => '0755',
+    }
+    file { '/etc/jenkins/logging.properties':
+        content => template('jenkins/logging.properties.erb'),
+        owner   => 'jenkins',
+        group   => 'jenkins',
+        mode    => '0755',
+    }
 
     systemd::syslog { 'jenkins':
         base_dir     => '/var/log',
@@ -131,6 +143,7 @@ class jenkins(
         #   https://jenkins.io/blog/2016/05/11/security-update/
         #   https://wiki.jenkins-ci.org/display/SECURITY/Jenkins+Security+Advisory+2016-05-11
         '-Dhudson.model.ParametersAction.keepUndefinedParameters=true',
+        '-Djava.util.logging.config.file=/etc/jenkins/logging.properties',
     ], ' ')
 
     $real_service_ensure = $service_ensure ? {
