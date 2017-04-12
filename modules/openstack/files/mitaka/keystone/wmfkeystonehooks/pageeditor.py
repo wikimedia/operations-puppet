@@ -66,12 +66,13 @@ class PageEditor():
     def _get_site(self):
         with self.site_lock:
             if self._site is None:
-                self._site = wikitechclient.WikitechClient(
+                client = wikitechclient.WikitechClient(
                     self.host,
                     CONF.wiki_consumer_token,
                     CONF.wiki_consumer_secret,
                     CONF.wiki_access_token,
                     CONF.wiki_access_secret)
+                self._site = client.site
             return self._site
 
     def edit_page(self, text, resource_name, delete_page=False,
