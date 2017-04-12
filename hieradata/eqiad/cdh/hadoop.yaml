@@ -69,10 +69,12 @@ cdh::hadoop::mapreduce_reduce_java_opts:                 -Xmx3276m  # 0.8 * 2 * 
 # This setting is used to configure the max heap size for both.
 # The default is 1000m, we increase it to 2048m in production.
 cdh::hadoop::yarn_heapsize:                              2048
+cdh::hadoop::yarn_nodemanager_opts:                      "-Xms2048m"
 
 # Heap size for HDFS datanode.
 # The default is 1000m, we increase it to 2048m in production.
 cdh::hadoop::hadoop_heapsize:                            2048
+cdh::hadoop::hadoop_datanode_opts:                       "-Xms2048m"
 
 # Yarn ApplicationMaster container size and  max heap size (-Xmx)
 cdh::hadoop::yarn_app_mapreduce_am_resource_mb:          4096      # 2 * 2G
