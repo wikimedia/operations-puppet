@@ -49,7 +49,7 @@ cache::app_directors:
       max_connections: 5000
     backends:
       eqiad: 'restbase.svc.eqiad.wmnet'
-      # codfw: 'restbase.svc.codfw.wmnet'
+      codfw: 'restbase.svc.codfw.wmnet'
   cxserver_backend:
     be_opts:
       port: 8080
