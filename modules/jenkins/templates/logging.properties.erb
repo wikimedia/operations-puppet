@@ -1,0 +1,14 @@
+handlers=java.util.logging.ConsoleHandler
+
+# https://docs.oracle.com/javase/7/docs/api/java/util/Formatter.html
+#
+# Time is inserted by syslog. Else one could use: %1$tF %1$tT.%1$tL
+#
+# Arguments from Jenkins:
+#  - %2 is the class/method
+#  - %4 log level
+#  - %5 message
+java.util.logging.SimpleFormatter.format = %4$s: [%2$s] %5$s%n
+
+java.util.logging.ConsoleHandler.level = INFO
+java.util.logging.ConsoleHandler.formatter = java.util.logging.SimpleFormatter
