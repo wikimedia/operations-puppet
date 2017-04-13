@@ -5341,6 +5341,11 @@ host mw2260 {
     fixed-address mw2260.codfw.wmnet;
 }
 
+host naos {
+    hardware ethernet 14:18:77:5B:29:2A;
+    fixed-address naos.codfw.wmnet;
+}
+
 host neodymium {
     hardware ethernet 90:B1:1C:2D:79:8C;
     fixed-address neodymium.eqiad.wmnet;
