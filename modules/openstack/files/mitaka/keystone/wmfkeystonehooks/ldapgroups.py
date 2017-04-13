@@ -71,18 +71,17 @@ def _open_ldap():
 
 
 # ds is presumed to be an already-open ldap connection
-def _all_groups(ds):
-    basedn = cfg.CONF.wmfhooks.ldap_group_base_dn
-    allgroups = ds.search_s(basedn, ldap.SCOPE_ONELEVEL)
-    return allgroups
-
-
-# ds is presumed to be an already-open ldap connection
 def _get_next_gid_number(ds):
+    basedn = cfg.CONF.wmfhooks.ldap_base_dn
+    allrecords = allgroups = ds.search_s(basedn,
+                                         ldap.SCOPE_SUBTREE,
+                                         filterstr='(objectClass=posixGroup)',
+                                         attrlist=['gidNumber'])
+
     highest = cfg.CONF.wmfhooks.minimum_gid_number
-    for group in _all_groups(ds):
-        if 'gidNumber' in group[1]:
-            number = int(group[1]['gidNumber'][0])
+    for record in allrecords:
+        if 'gidNumber' in record[1]:
+            number = int(record[1]['gidNumber'][0])
             if number > highest:
                 highest = number
 
@@ -180,9 +179,9 @@ def sync_ldap_project_group(project_id, keystone_assignments):
             try:
                 ds.add_s(dn, modlist)
                 break
-            except ldap.LDAPError:
-                LOG.warning("Failed to create group, attempt number %s: %s" %
-                            (i, modlist))
+            except ldap.LDAPError as exc:
+                LOG.warning("Failed to create group %s, attempt number %s: %s %s" %
+                            (dn, i, exc, modlist))
 
 
 def create_sudo_defaults(project_id):
