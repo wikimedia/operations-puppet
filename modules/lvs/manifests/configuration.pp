@@ -93,6 +93,8 @@ class lvs::configuration {
         # FIXME: make a Puppet function, or fix facter
         'bgp-nexthop-ipv6' => inline_template("<%= require 'ipaddr'; (IPAddr.new(@v6_ip).mask(64) | IPAddr.new(\"::\" + scope.lookupvar(\"::ipaddress\").gsub('.', ':'))).to_s() %>"),
         'instrumentation' => 'yes',
+        'instrumentation_ipv4' => $::ipaddress_eth0,
+        'instrumentation_ipv6' => $::ipaddress6_eth0,
     }
 
     # NOTE! This hash is referenced in many other manifests
