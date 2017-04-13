@@ -16,7 +16,7 @@ class phabricator::monitoring {
 
         nrpe::monitor_service { 'check_phab_taskmaster':
             description   => 'PHD should be supervising processes',
-            nrpe_command  => '/usr/lib/nagios/plugins/check_procs -c 3:150 -u phd',
+            nrpe_command  => "/usr/lib/nagios/plugins/check_procs -c 1: --ereg-argument-array  'php ./phd-daemon' -u phd",
             contact_group => $phab_contact_groups,
         }
     } else {
