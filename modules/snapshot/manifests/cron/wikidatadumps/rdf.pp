@@ -12,14 +12,15 @@ class snapshot::cron::wikidatadumps::rdf(
         require => Class['snapshot::cron::wikidatadumps::common'],
     }
 
-    cron { 'wikidatattl-dump-all':
+    cron { 'wikidatardf-dumps':
         ensure  => 'present',
-        command => "${scriptpath} all ttl",
+        command => "${scriptpath} all ttl; ${scriptpath} truthy nt",
         user    => $user,
         minute  => '0',
         hour    => '23',
         weekday => '1',
         require => File[$scriptpath],
     }
+
 }
 
