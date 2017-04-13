@@ -481,6 +481,7 @@ labtest:
   labs_puppet_master: &labspuppetmaster "labtestcontrol2001.wikimedia.org"
   labs_keystone_host: &labskeystonehost "labtestcontrol2001.wikimedia.org"
   wikitech_db_name: 'labtestwiki'
+  labs::dns::gridmaster::monitor: false
   labsldapconfig:
     hostname: labtestservices2001.wikimedia.org
     secondary_hostname: labtestservices2001.wikimedia.org
