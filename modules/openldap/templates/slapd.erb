@@ -42,10 +42,13 @@ moduleload  deref
 moduleload  unique
 
 # Maximum number of entries that is returned for a search operation
+# Limit size of individual searches, but allow a paged query to get the whole db
 <% if @size_limit then %>
 sizelimit <%= @size_limit %>
+limits users size.pr=<%= @size_limit %> size.prtotal=unlimited
 <% else %>
 sizelimit 2048
+limits users size.pr=2048 size.prtotal=unlimited
 <% end %>
 
 # 10 minute idle timeout for ill-behaved clients
