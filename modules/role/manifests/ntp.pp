@@ -23,13 +23,14 @@ class role::ntp {
     #   behind them based on current S2 lists (Sept 2014), but
     #   they will need long-term periodic upkeep until we can
     #   switch to per-site pool addrs + "restrict source"
+    # Updated Apr 2017 (correcting only disfunctional ones)
     # These are the pool servers used by the peers above
     $peer_upstreams = {
         'chromium.wikimedia.org' => [
             'ac-ntp1.net.cmu.edu',
             'tock.teljet.net',
             'e.time.steadfast.net',
-            '50.116.55.65',
+            'ntp-3.vt.edu',
         ],
         'hydrogen.wikimedia.org' => [
             'ac-ntp2.net.cmu.edu',
@@ -38,28 +39,28 @@ class role::ntp {
             'ntp3.servman.ca',
         ],
         'acamar.wikimedia.org' => [
-            'ntp3.tamu.edu',
-            'stratum2.ord2.publicntp.net',
-            '72.14.183.239',
-            'jikan.ae7.st',
+            'tick.binary.net',
+            'ntp8.smatwebdesign.com',
+            'tick.ellipse.net',
+            'jarvis.arlen.io',
         ],
         'achernar.wikimedia.org' => [
-            'ntp3.tamu.edu',
-            'stratum2.ord2.publicntp.net',
-            '68.108.190.192',
-            'oxygen.neersighted.com',
+            'tock.binary.net',
+            'ntp9.smatwebdesign.com',
+            'tock.ellipse.net',
+            '72.14.183.239',
         ],
         'nescio.wikimedia.org' => [
             'ntp2.proserve.nl',
             'ntp.systemtid.se',
-            'tick.jpunix.net',
-            'ntp-1.zeroloop.net',
+            'ntp.terwan.nl',
+            'ntp1.linocomm.net',
         ],
         'maerlant.wikimedia.org' => [
-            'ntp2.proserve.nl',
-            'ntp2.stygium.net',
-            'tick.jpunix.net',
-            'ntp2.roethof.net',
+            'ntp1.proserve.nl',
+            'ntp1.polaire.nl',
+            'ntp.syari.net',
+            'time1.bokke.rs',
         ],
     }
 
