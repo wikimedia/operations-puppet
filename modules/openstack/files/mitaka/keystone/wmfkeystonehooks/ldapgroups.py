@@ -72,8 +72,8 @@ def _open_ldap():
 
 # ds is presumed to be an already-open ldap connection
 def _all_groups(ds):
-    basedn = cfg.CONF.wmfhooks.ldap_group_base_dn
-    allgroups = ds.search_s(basedn, ldap.SCOPE_ONELEVEL)
+    basedn = cfg.CONF.wmfhooks.ldap_base_dn
+    allgroups = ds.search_s(basedn, ldap.SCOPE_SUBTREE)
     return allgroups
 
 
@@ -180,9 +180,9 @@ def sync_ldap_project_group(project_id, keystone_assignments):
             try:
                 ds.add_s(dn, modlist)
                 break
-            except ldap.LDAPError:
-                LOG.warning("Failed to create group, attempt number %s: %s" %
-                            (i, modlist))
+            except ldap.LDAPError as exc:
+                LOG.warning("Failed to create group %s, attempt number %s: %s %s" %
+                            (dn, i, exc, modlist))
 
 
 def create_sudo_defaults(project_id):
