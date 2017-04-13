@@ -3,6 +3,7 @@
 class lvs::pybal_configuration (
     $bgp = hiera('lvs::pybal_configuration::bgp', 'yes'),
 ) {
+    $ipv4_address = $facts['ipaddress']
     $pybal = {
         'bgp' => $bgp,
         'bgp-peer-address' => $::hostname ? {
@@ -21,5 +22,6 @@ class lvs::pybal_configuration (
         'bgp-nexthop-ipv4' => $facts['ipaddress'],
         'bgp-nexthop-ipv6' => inline_template("<%= require 'ipaddr'; (IPAddr.new(@ipaddress6).mask(64) | IPAddr.new(\"::\" + @ipaddress.gsub('.', ':'))).to_s() %>"),
         'instrumentation' => 'yes',
+        'instrumentation_ips' => "[ '127.0.0.1', '::1', '${ipv4_address}' ]",
     }
 }
