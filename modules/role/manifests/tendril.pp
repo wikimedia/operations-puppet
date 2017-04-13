@@ -7,9 +7,11 @@ class role::tendril {
 
     system::role { 'role::tendril': description => 'tendril server' }
 
-    monitoring::service { 'https-tendril':
-        description   => 'HTTPS-tendril',
-        check_command => 'check_ssl_http_letsencrypt!tendril.wikimedia.org',
+    if hiera('do_acme', true) {
+        monitoring::service { 'https-tendril':
+            description   => 'HTTPS-tendril',
+            check_command => 'check_ssl_http_letsencrypt!tendril.wikimedia.org',
+        }
     }
 
     class { '::tendril':
