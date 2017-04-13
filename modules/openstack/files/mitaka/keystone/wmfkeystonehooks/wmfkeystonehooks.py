@@ -113,8 +113,9 @@ class KeystoneHooks(notifier._Driver):
     #  and the generic 'identity.projectupdated' comes in the wrong order.  So
     #  we're probably going to wind up getting called several times in quick succession,
     #  possible in overlapping invocations.  Watch out for race conditions!
-    def _on_member_update(self, project_id):
-        assignments = self._get_current_assignments(project_id)
+    def _on_member_update(self, project_id, assignments=None):
+        if not assignments:
+            assignments = self._get_current_assignments(project_id)
         ldapgroups.sync_ldap_project_group(project_id, assignments)
 
     def _on_project_delete(self, project_id):
@@ -247,9 +248,30 @@ class KeystoneHooks(notifier._Driver):
         if event_type == 'identity.project.created':
             self._on_project_create(message['payload']['resource_info'])
 
-        if (event_type == 'identity.role_assignment.deleted' or
-                event_type == 'identity.role_assignment.created'):
-            self._on_member_update(message['payload']['project'])
+        if event_type == 'identity.role_assignment.created':
+            project_id = message['payload']['project']
+            self._on_member_update(project_id)
+
+        if event_type == 'identity.role_assignment.deleted':
+            project_id = message['payload']['project']
+            # This is a weird special case... Keystone is dumb and
+            #  emits the notification /before/ updating the DB, so we have
+            #  to explicitly update our role list.  This is fixed
+            #  in release 'ocata' with https://review.openstack.org/#/c/401332/
+            assignments = self._get_current_assignments(project_id)
+            role = message['payload']['role']
+            user = message['payload']['user']
+            roledict = self._get_role_dict()
+            for name in roledict.keys():
+                if role == roledict[name]:
+                    if user in assignments[name]:
+                        assignments[name].remove(user)
+                        LOG.warning("Keystone bug workaround:  Explicitly "
+                                    "removing %s from role %s, project %s"
+                                    % (user, role, project_id))
+                    break
+
+            self._on_member_update(project_id, assignments)
 
 
 # HACK ALERT
