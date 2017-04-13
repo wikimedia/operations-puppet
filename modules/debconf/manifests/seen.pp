@@ -7,7 +7,7 @@
 # [*title*]
 #   debconf question, e.g. wireshark-common/install-setuid
 
-define debconf::seen($value) {
+define debconf::seen() {
     exec { "set debconf flag seen for ${title}":
         path    => '/usr/bin:/usr/sbin:/bin:/sbin',
         command => "echo fset ${title} seen true | debconf-communicate",
