@@ -154,11 +154,12 @@ class jenkins(
         ],
     }
 
-    # nagios monitoring
-    nrpe::monitor_service { 'jenkins':
-        description   => 'jenkins_service_running',
-        contact_group => 'contint',
-        nrpe_command  => "/usr/lib/nagios/plugins/check_procs -w 1:1 -c 1:1 --ereg-argument-array '^/usr/bin/java .*-jar /usr/share/jenkins/jenkins.war'",
+    if hiera('jenkins::service_monitor', true) {
+        nrpe::monitor_service { 'jenkins':
+            description   => 'jenkins_service_running',
+            contact_group => 'contint',
+            nrpe_command  => "/usr/lib/nagios/plugins/check_procs -w 1:1 -c 1:1 --ereg-argument-array '^/usr/bin/java .*-jar /usr/share/jenkins/jenkins.war'",
+        }
     }
 
     file { '/var/lib/jenkins':

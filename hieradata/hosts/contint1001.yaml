@@ -1,5 +1,6 @@
 # hotspare is contint2001
 jenkins::service_ensure: unmanaged
 jenkins::service_enable: false
+jenkins::service_monitor: true
 zuul::server::service_ensure: running
 zuul::server::service_enable: true
