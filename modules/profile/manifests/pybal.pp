@@ -14,6 +14,7 @@ class profile::pybal(
     # Includes all the common configs.
     include ::lvs::configuration
 
+    $ipv4_address = ipresolve($::fqdn, 4)
 
     # TODO: move bgp-peer-address to a parameter? it will require
     # regex hiera, so maybe not
@@ -32,9 +33,10 @@ class profile::pybal(
             /^lvs400[34]$/  => '198.35.26.193',   # cr2-ulsfo
             default         => '(unspecified)'
             },
-        'bgp-nexthop-ipv4' => $facts['ipaddress'],
-        'bgp-nexthop-ipv6' => inline_template("<%= require 'ipaddr'; (IPAddr.new(@ipaddress6).mask(64) | IPAddr.new(\"::\" + @ipaddress.gsub('.', ':'))).to_s() %>"),
-        'instrumentation' => 'yes',
+        'bgp-nexthop-ipv4'    => $facts['ipaddress'],
+        'bgp-nexthop-ipv6'    => inline_template("<%= require 'ipaddr'; (IPAddr.new(@ipaddress6).mask(64) | IPAddr.new(\"::\" + @ipaddress.gsub('.', ':'))).to_s() %>"),
+        'instrumentation'     => 'yes',
+        'instrumentation_ips' => "[ '127.0.0.1', '::1', '${ipv4_address}' ]",
     }
 
     # Base class, not parametrized
