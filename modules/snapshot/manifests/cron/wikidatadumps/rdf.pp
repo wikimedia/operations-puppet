@@ -21,5 +21,15 @@ class snapshot::cron::wikidatadumps::rdf(
         weekday => '1',
         require => File[$scriptpath],
     }
+
+    cron { 'wikidatant-dump-truthy':
+        ensure  => 'present',
+        command => "${scriptpath} truthy nt",
+        user    => $user,
+        minute  => '0',
+        hour    => '17',
+        weekday => '1',
+        require => File[$scriptpath],
+    }
 }
 
