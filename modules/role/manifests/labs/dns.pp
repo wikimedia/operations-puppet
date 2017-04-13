@@ -128,15 +128,17 @@ class role::labs::dns {
         ip_address => $::ipaddress_eth0,
     }
 
-    monitoring::service { "${auth_soa_name} Auth DNS UDP":
-        host          => $auth_soa_name,
-        description   => 'Check for gridmaster host resolution UDP',
-        check_command => "check_dig!${auth_soa_name}!tools-grid-master.tools.eqiad.wmflabs",
-    }
+    if hiera('labs::dns::gridmaster::monitor', true) {
+        monitoring::service { "${auth_soa_name} Auth DNS UDP":
+            host          => $auth_soa_name,
+            description   => 'Check for gridmaster host resolution UDP',
+            check_command => "check_dig!${auth_soa_name}!tools-grid-master.tools.eqiad.wmflabs",
+        }
 
-    monitoring::service { "${auth_soa_name} Auth DNS TCP":
-        host          => $auth_soa_name,
-        description   => 'Check for gridmaster host resolution TCP',
-        check_command => "check_dig_tcp!${auth_soa_name}!tools-grid-master.tools.eqiad.wmflabs",
+        monitoring::service { "${auth_soa_name} Auth DNS TCP":
+            host          => $auth_soa_name,
+            description   => 'Check for gridmaster host resolution TCP',
+            check_command => "check_dig_tcp!${auth_soa_name}!tools-grid-master.tools.eqiad.wmflabs",
+        }
     }
 }
