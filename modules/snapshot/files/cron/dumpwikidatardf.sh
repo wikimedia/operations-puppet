@@ -12,6 +12,8 @@
 
 declare -A dumpNameToFlavor
 dumpNameToFlavor=(["all"]="full-dump" ["truthy"]="truthy-dump")
+# Sanity check: Minimal size we expect each shard of a certain dump to have
+dumpNameToMinSize=(["all"]=2000000000 ["truthy"]=145000000)
 
 dumpName=$1
 
@@ -95,7 +97,7 @@ while [ $i -lt $shards ]; do
 		exit 1
 	fi
 	fileSize=`stat --printf="%s" $tempFile`
-	if [ $fileSize -lt 1800000000 ]; then
+	if [ $fileSize -lt ${dumpNameToMinSize[$dumpName]} ]; then
 		echo "File size of $tempFile is only $fileSize. Aborting." >> $mainLogFile
 		exit 1
 	fi
