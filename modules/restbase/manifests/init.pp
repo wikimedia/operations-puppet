@@ -63,6 +63,9 @@
 #   Trending edits service URI. Default:
 #   http://trendingedits.svc.eqiad.wmnet:6699
 #
+# [*cxserver_uri*]
+#   CXServer service uri. Default: http://cxserver.discovery.wmnet:8080
+#
 # [*monitor_domain*]
 #   The domain to monitor during the service's operation.
 #   Default: en.wikipedia.org
@@ -94,6 +97,7 @@ class restbase(
     $pdfrender_uri  = 'http://pdfrender.svc.eqiad.wmnet:5252',
     $citoid_uri     = 'http://citoid.svc.eqiad.wmnet:1970',
     $trendingedits_uri = 'http://trendingedits.svc.eqiad.wmnet:6699',
+    $cxserver_uri   = 'http://cxserver.discovery.wmnet:8080',
     $monitor_domain = 'en.wikipedia.org',
     $hosts          = [$::ipaddress],
 ) {
@@ -129,6 +133,7 @@ class restbase(
             pdfrender_uri            => $pdfrender_uri,
             pdfrender_key            => $pdfrender_key,
             trendingedits_uri        => $trendingedits_uri,
+            cxserver_uri             => $cxserver_uri,
             aqs_uri                  => $aqs_uri,
             salt_key                 => $salt_key,
             page_size                => $page_size,
