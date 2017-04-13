@@ -58,7 +58,7 @@ class role::ntp {
         ],
         'maerlant.wikimedia.org' => [
             'ntp1.proserve.nl',
-            'ntp1.polaire.nl',
+            'ntp-de.stygium.net',
             'ntp.syari.net',
             'time1.bokke.rs',
         ],
