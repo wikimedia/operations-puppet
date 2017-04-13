@@ -1,0 +1,8 @@
+Code-Review+1: Dereckson <dereckson@espace-win.org>
+Verified+2: jenkins-bot
+Code-Review+2: Dzahn <dzahn@wikimedia.org>
+Submitted-by: Dzahn <dzahn@wikimedia.org>
+Submitted-at: Thu, 13 Apr 2017 16:06:01 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/347142
+Project: operations/puppet
+Branch: refs/heads/production
