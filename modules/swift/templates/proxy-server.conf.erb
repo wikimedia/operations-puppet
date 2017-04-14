@@ -55,8 +55,10 @@ set access_log_facility = LOG_LOCAL1
 # the auth system turns our login and key into an account / token pair.
 # the account remains valid forever, but the token times out.
 account = <%= @accounts[@rewrite_account]['account_name'] %>
+<% if defined? @rewrite_thumb_server -%>
 # the name of the scaler cluster.
 thumbhost = <%= @rewrite_thumb_server %>
+<%- end -%>
 # upload doesn't like our User-agent (Python-urllib/2.6), otherwise we could call it using urllib2.urlopen()
 user_agent = Mozilla/5.0
 # this list is the containers that should be sharded
