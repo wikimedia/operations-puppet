@@ -14,8 +14,17 @@ declare sql_user='<%= scope.lookupvar('passwords::mysql::phabricator::metrics_us
 declare sql_name='phabricator_maniphest'
 declare sql_pass='<%= scope.lookupvar('passwords::mysql::phabricator::metrics_pass') %>'
 
-#echo "result_activesusers"
-result_activeusers=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -u $sql_user $sql_name << END
+#echo "result_activedifferentialusers"
+result_activedifferentialusers=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -u $sql_user phabricator_differential << END
+
+SELECT COUNT(DISTINCT authorPHID) FROM differential_transaction WHERE
+    FROM_UNIXTIME(dateCreated,'%Y%m')=date_format(NOW() - INTERVAL 1 MONTH,'%Y%m');
+
+END
+)
+
+#echo "result_activemaniphestusers"
+result_activemaniphestusers=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -u $sql_user $sql_name << END
 
 SELECT COUNT(DISTINCT authorPHID) FROM maniphest_transaction WHERE
     FROM_UNIXTIME(dateCreated,'%Y%m')=date_format(NOW() - INTERVAL 1 MONTH,'%Y%m');
@@ -141,7 +150,7 @@ END
 
 accountscreated=$(echo $result_accounts_created | tr -d '\n')
 
-activeusers=$(echo $result_activeusers | cut -d " " -f3)
+activemaniphestusers=$(echo $result_activemaniphestusers | cut -d " " -f3)
 authors=$(echo $result_authors | cut -d " " -f3)
 resolvers=$(echo $result_resolvers | cut -d " " -f3)
 
@@ -184,6 +193,7 @@ mediantasksopen_lowest_epoch=$(echo $result_mediantasksopen_lowest | cut -d " " 
 diff_lowest=$((epochnow-mediantasksopen_lowest_epoch))
 mediantasksopen_lowest=$(echo $((diff_lowest/86400)))
 
+activedifferentialusers=$(echo $result_activedifferentialusers | cut -d " " -f3)
 
 lastmonth=$(date --date="last month" +%Y-%m)
 
@@ -195,7 +205,7 @@ Hi Community Metrics team,
 This is your automatic monthly Phabricator statistics mail.
 
 Accounts created in (${lastmonth}): ${accountscreated}
-Active users (any activity) in (${lastmonth}): ${activeusers}
+Active Maniphest users (any activity) in (${lastmonth}): ${activemaniphestusers}
 Task authors in (${lastmonth}): ${authors}
 Users who have closed tasks in (${lastmonth}): ${resolvers}
 
@@ -216,6 +226,8 @@ Low: ${mediantasksopen_low}
 Lowest: ${mediantasksopen_lowest}
 
 (How long tasks have been open, not how long they have had that priority)
+
+Active Differential users (any activity) in (${lastmonth}): ${activedifferentialusers}
 
 TODO: Numbers which refer to closed tasks might not be correct, as
 described in https://phabricator.wikimedia.org/T1003 .
