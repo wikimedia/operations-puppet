@@ -1,6 +1,12 @@
+# == Class swift::proxy
+#
+# [*wmf_filter_rewrite*]
+#
+# Enable rewriting suitable for Wikimedia thumbnailing infrastructure.
+# (boolean), Default: true
+#
 class swift::proxy (
     $proxy_service_host,
-    $rewrite_thumb_server,
     $shard_container_list,
     $accounts = $swift::params::accounts,
     $credentials = $swift::params::account_keys,
@@ -12,10 +18,12 @@ class swift::proxy (
     $num_workers               = $::processorcount,
     $backend_url_format        = 'sitelang',
     $rewrite_account           = undef,
+    $rewrite_thumb_server      = undef,
     $dispersion_account        = undef,
     $tld                       = 'org',
     $thumborhost               = '',
     $thumbor_wiki_list         = [],
+    $wmf_filter_rewrite        = true,
 ) {
     package {[
         'swift-proxy',

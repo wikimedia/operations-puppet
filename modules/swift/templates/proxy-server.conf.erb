@@ -51,6 +51,7 @@ paste.filter_factory = wmf.cors:filter_factory
 use = egg:swift#proxy_logging
 set access_log_facility = LOG_LOCAL1
 
+<% if @wmf_filter_rewrite -%>
 [filter:rewrite]
 # the auth system turns our login and key into an account / token pair.
 # the account remains valid forever, but the token times out.
@@ -75,3 +76,4 @@ thumbor_wiki_list = <%= @thumbor_wiki_list.join(',') %>
 <%- end -%>
 
 paste.filter_factory = wmf.rewrite:filter_factory
+<%- end -%>
