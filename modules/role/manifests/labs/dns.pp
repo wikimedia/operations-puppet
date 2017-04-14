@@ -128,6 +128,8 @@ class role::labs::dns {
         ip_address => $::ipaddress_eth0,
     }
 
+    # T152024 | TODO/FIXME: move hiera lookup to paramater of a profile class
+    # (along with all other hiera lookups while converting to profile/role)
     if hiera('labs::dns::gridmaster::monitor', true) {
         monitoring::service { "${auth_soa_name} Auth DNS UDP":
             host          => $auth_soa_name,

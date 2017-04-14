@@ -7,6 +7,10 @@ class role::tendril {
 
     system::role { 'role::tendril': description => 'tendril server' }
 
+    # T62183 | TODO/FIXME: remove hiera condition once T150771 is resolved
+    # aware that there should not be a permanent hiera lookup here
+    # should be converted to role/profile anyways (like everything else)
+    # if still needed move hiera lookup to parameters
     if hiera('do_acme', true) {
         monitoring::service { 'https-tendril':
             description   => 'HTTPS-tendril',

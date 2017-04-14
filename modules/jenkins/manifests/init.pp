@@ -167,6 +167,10 @@ class jenkins(
         ],
     }
 
+    # TODO/FIXME: remove hiera condition once T150771 is resolved
+    # and jenkins service is running active/active in both DCs 
+    # aware that there should not be permanent hiera lookups here
+    # should also be converted to profile/role anyways (T162822)
     if hiera('jenkins::service_monitor', true) {
         nrpe::monitor_service { 'jenkins':
             description   => 'jenkins_service_running',
