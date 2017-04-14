@@ -84,9 +84,9 @@ class role::zookeeper::server {
             description   => 'Zookeeper node JVM Heap usage',
             metric        => "${group_prefix}jvm_memory.${::hostname}_${::site}_wmnet_${::zookeeper::jmxtrans::jmx_port}.memory.HeapMemoryUsage_used.upper",
             from          => '60min',
-            warning       => '921',  # 90% of the Heap used
-            critical      => '972',  # 95% of the Heap used
-            percentage    => '90',
+            warning       => '921000000',  # 90% of the Heap used
+            critical      => '972000000',  # 95% of the Heap used
+            percentage    => '60',
             contact_group => 'analytics',
         }
     }
