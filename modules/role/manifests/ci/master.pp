@@ -51,12 +51,13 @@ class role::ci::master(
         hour        => '*',
     }
 
-    nrpe::monitor_service { 'jenkins_zmq_publisher':
-        description   => 'jenkins_zmq_publisher',
-        contact_group => 'contint',
-        nrpe_command  => '/usr/lib/nagios/plugins/check_tcp -H 127.0.0.1 -p 8888 --timeout=2',
+    if hiera('jenkins::service_monitor', true)
+        nrpe::monitor_service { 'jenkins_zmq_publisher':
+            description   => 'jenkins_zmq_publisher',
+            contact_group => 'contint',
+            nrpe_command  => '/usr/lib/nagios/plugins/check_tcp -H 127.0.0.1 -p 8888 --timeout=2',
+        }
     }
-
 
     # Templates for Jenkins plugin Email-ext.  The templates are hosted in
     # the repository integration/jenkins.git, so link to there.
