@@ -82,11 +82,11 @@ class role::zookeeper::server {
         # on a fixed Max Heap size of 1G.
         monitoring::graphite_threshold { 'zookeeper-server-heap-usage':
             description   => 'Zookeeper node JVM Heap usage',
-            metric        => "${group_prefix}jvm_memory.${::hostname}_eqiad_wmnet_${::zookeeper::jmxtrans::jmx_port}.memory.HeapMemoryUsage_used.upper",
+            metric        => "${group_prefix}jvm_memory.${::hostname}_${::site}_wmnet_${::zookeeper::jmxtrans::jmx_port}.memory.HeapMemoryUsage_used.upper",
             from          => '60min',
             warning       => '921',  # 90% of the Heap used
             critical      => '972',  # 95% of the Heap used
-            percentage    => '60',
+            percentage    => '90',
             contact_group => 'analytics',
         }
     }
