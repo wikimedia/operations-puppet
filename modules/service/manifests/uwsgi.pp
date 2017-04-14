@@ -169,8 +169,9 @@ define service::uwsgi(
                 join([
                     'json:logstash {"@timestamp":"${strftime:%%Y-%%m-%%dT%%H:%%M:%%S}","type":"',
                     $title,
-                    '","logger_name":"uwsgi","host":"%h","level":"INFO","message":"${msg}"}'], '')
+                    '","logger_name":"uwsgi","host":"%h","level":"INFO","message":"${msg}"}'], ''),
                 #lint:endignore
+                'gzip'
             ],
     }
     $complete_config = deep_merge($base_config, $local_log_config, $config)
