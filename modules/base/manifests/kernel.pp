@@ -23,6 +23,22 @@ class base::kernel
         }
     }
 
+    # This section is for blacklisting modules per server model.
+    # It was originally started for acpi_pad issues on R320 (T162850)
+    # but is meant to be extended as needed.
+    case $::productname {
+      'PowerEdge R320': {
+        file { '/etc/modprobe.d/blacklist-r320.conf':
+            ensure => present,
+            owner  => 'root',
+            group  => 'root',
+            mode   => '0444',
+            source => 'puppet:///modules/base/kernel/blacklist-r320.conf',
+        }
+      }
+      default: {}
+    }
+
     # By default trusty allows the creation of user namespaces by unprivileged users
     # (Debian defaulted to disallowing these since the feature was introduced for security reasons)
     # Unprivileged user namespaces are not something we need in general (and especially
