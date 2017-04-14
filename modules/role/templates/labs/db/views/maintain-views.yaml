@@ -82,6 +82,7 @@ fullviews:
   - l10n_cache
   - langlinks
   - links
+  - linter
   - localisation
   - localisation_file_hash
   - math
