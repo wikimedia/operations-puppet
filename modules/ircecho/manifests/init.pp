@@ -41,7 +41,7 @@ class ircecho (
         ensure         => 'present',
         systemd        => true,
         upstart        => false,
-        sysvinit       => false,
+        sysvinit       => true,
         service_params => {
             hasrestart => true,
         },
