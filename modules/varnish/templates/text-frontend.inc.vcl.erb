@@ -3,6 +3,7 @@
 include "text-common.inc.vcl";
 include "zero.inc.vcl";
 include "geoip.inc.vcl";
+include "browsersec.inc.vcl";
 
 // Note that analytics.inc.vcl will set an X-Analytics value of proxy=IORG
 // without inspecting whether there's an existing proxy=<proxy> key-
@@ -173,26 +174,22 @@ sub cluster_fe_recv {
 		unset req.http.If-Modified-Since;
 	}
 
-	// The idea here is to occasionally redirect some of our worst clients
-	// (in TLS terms: those using 3DES, the bulk of which are not
-	// forward-secret, and the bulk of which are also IE[78]-XP) to our
-	// wikitech page about browser security, hoping it will prod them
-	// to upgrade.
-	// The X-Conn-Props cipher filter matches roughly 0.2% of traffic.  By
-	// restricting to a UA string matching 'Windows NT' (for now), the
-	// percentage drops a bit more.  We then further restrict to GETs of
-	// wiki pages, avoid the mobile domains JIC, and ignore clients that
-	// already have a cookie meaning we've done this to them once before
-	// during this browser session.  After all the basic conditions are
-	// met, we then only apply the redirect to 2% of matching traffic
-	// randomly.  We may increase that a bit in the future and/or widen the
-	// UA filter, but this is a good starting point.
-	if (req.http.X-Connection-Properties ~ "DES-CBC3"
-	   && req.http.User-Agent ~ "Windows NT" && req.method == "GET"
-	   && req.url ~ "^/wiki/" && req.http.host !~ "\.m\."
-	   && req.http.Cookie !~ "Browser-Security=Awful"
-	   && std.random(0,100) < 2.0) {
-		return (synth(787, "Browser Security Warning Redirect"));
+	// The idea here is to occasionally warn some of our worst clients (in
+	// TLS terms: those using DES-CBC3-SHA, which is not forward-secret,
+	// and the bulk of which are also IE[78]/XP) that their connection
+	// security is awful and point them at our wikitech page for more info.
+	// The X-Conn-Props cipher filter matches < 0.2% of traffic.  We
+	// further restrict to the GET method on /wiki/ URLs which do not
+	// contain colons (e.g. Special:, which is localized on many wikis) in
+	// an attempt to mostly apply this only to article pageview fetches.
+	// We then only apply the synth to 1% of matching traffic randomly.
+	// Note that a magic test URL is also included for viewing
+	// the warning content with modern browsers.
+	if (req.url == "/test-sec-warning"
+	   || (req.http.X-Connection-Properties ~ "C=DES-CBC3-SHA;"
+	   && req.url ~ "^/wiki/" && req.url !~ ":" && req.method == "GET"
+	   && std.random(0,100) < 1.0)) {
+		return (synth(787, "Browser Connection Security Warning"));
 	}
 
 	call text_common_recv;
@@ -304,14 +301,18 @@ sub cluster_fe_err_synth {
 		return (deliver);
 	}
 
-	// Browser sec redirect, with a cookie to prevent repeats in the same session
-	// Note the cookie is is per-site for simplicity
+	// Browser sec warning
+	// Note we're using status 418, which is the teapot code.  Most other
+	// 4xx codes would be inappropriate, and generic ones like 400 would be
+	// confusing to extract from stats because they have other legitimate
+	// causes.  We could also invent a new unique from unused 4xx space,
+	// but I don't think it would be any better than 418 in practice.
 	if (resp.status == 787) {
-		set resp.status = 302;
+		set resp.status = 418;
 		set resp.http.Connection = "keep-alive";
-		set resp.http.Content-Length = "0"; // BZ #62245
-		set resp.http.Set-Cookie = "Browser-Security=Awful; Path=/; secure";
-		set resp.http.Location = "https://wikitech.wikimedia.org/wiki/HTTPS:_Browser_Recommendations";
+		set resp.http.Cache-Control = "max-age=0, must-revalidate, no-cache, no-store";
+		set resp.http.Content-Type = "text/html; charset=utf-8";
+		call browser_sec_synth;
 		return (deliver);
 	}
 }
