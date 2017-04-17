@@ -10,6 +10,12 @@ GRANT ALL PRIVILEGES
     ON `labswiki`.* TO 'wikiadmin'@'10.192.16.132'
     IDENTIFIED BY '<%= @wikiadmin_pass %>';
 
+-- queries from naos
+
+GRANT ALL PRIVILEGES
+    ON `labswiki`.* TO 'wikiadmin'@'10.192.32.22'
+    IDENTIFIED BY '<%= @wikiadmin_pass %>';
+
 -- queries from terbium
 
 GRANT ALL PRIVILEGES
