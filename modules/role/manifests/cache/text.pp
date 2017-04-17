@@ -66,7 +66,7 @@ class role::cache::text(
         app_def_be_opts   => hiera('cache::app_def_be_opts'),
         fe_vcl_config     => $fe_vcl_config,
         be_vcl_config     => $be_vcl_config,
-        fe_extra_vcl      => ['text-common', 'zero', 'normalize_path', 'geoip'],
+        fe_extra_vcl      => ['text-common', 'zero', 'normalize_path', 'geoip', 'browsersec'],
         be_extra_vcl      => ['text-common', 'normalize_path'],
         be_storage        => $text_storage_args,
         fe_cache_be_opts  => $fe_cache_be_opts,
