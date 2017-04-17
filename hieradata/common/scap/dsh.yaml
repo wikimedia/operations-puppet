@@ -14,6 +14,8 @@ scap::dsh::scap_proxies:
 scap::dsh::scap_masters:
   - "tin.eqiad.wmnet"
   - "mira.codfw.wmnet"
+  - "naos.codfw.wmnet"
+
 
 scap::dsh::groups:
   mediawiki-installation:
@@ -27,6 +29,7 @@ scap::dsh::groups:
     hosts:
       - tin.eqiad.wmnet
       - mira.codfw.wmnet
+      - naos.codfw.wmnet
       - terbium.eqiad.wmnet
       - wasat.codfw.wmnet
       - silver.wikimedia.org
