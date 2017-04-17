@@ -116,7 +116,8 @@ class CheckService(object):
         """Return a query that tracks MediaWiki deploy problems."""
         query = ('host:("%(host)s") '
                  'AND ((type:mediawiki '
-                 'AND channel:exception) '
+                 'AND (channel:exception '
+                 'OR channel:error)) '
                  'OR type:hhvm)') % vars(self)
 
         return {"aggs": {
@@ -144,8 +145,7 @@ class CheckService(object):
                             {"terms": {
                                 "level": [
                                     "INFO",
-                                    "NOTICE",
-                                    "WARNING"
+                                    "DEBUG"
                                 ]
                             }}, {
                                 "query": {
