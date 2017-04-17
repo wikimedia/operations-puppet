@@ -23,6 +23,8 @@ class role::tcpircbot($ensure='present') {
                 '2620:0:861:101:10:64:0:196/128',   # deployment eqiad v6: tin
                 '::ffff:10.192.16.132/128',         # deployment codfw v4: mira
                 '2620:0:860:102:10:192:16:132/128', # deployment codfw v6: mira
+                '::ffff:10.192.32.22/128',          # deployment codfw v4: naos
+                '2620:0:860:103:10:192:32:22/128',  # deployment codfw v6: naos
                 '::ffff:10.64.32.13/128',           # maintenance eqiad v4: terbium
                 '2620:0:861:103:10:64:32:13/64',    # maintenance eqiad v6: terbium
                 '::ffff:10.192.48.45/128',          # maintenance codfw v4: wasat
