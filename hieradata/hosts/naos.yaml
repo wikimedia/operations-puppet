@@ -1,0 +1,6 @@
+profile::base::domain_search:
+  - wikimedia.org
+  - codfw.wmnet
+  - eqiad.wmnet
+cluster: misc
+scap::l10nupdate::run_l10nupdate: false
