@@ -84,6 +84,9 @@ cache::app_directors:
     backends:
       eqiad: 'terbium.eqiad.wmnet'
       codfw: 'wasat.codfw.wmnet'
+  dbtree:
+    backends:
+      eqiad: 'terbium.eqiad.wmnet'
   planet1001:
     backends:
       eqiad: 'planet1001.eqiad.wmnet'
@@ -147,7 +150,7 @@ cache::req_handling:
     director: 'thorium'
     caching: 'pass'
   dbtree.wikimedia.org:
-    director: 'noc'
+    director: 'dbtree'
   docker-registry.wikimedia.org:
     director: 'darmstadtium'
   doc.wikimedia.org:
