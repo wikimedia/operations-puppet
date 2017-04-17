@@ -24,13 +24,6 @@ class ircecho (
         mode   => '0755',
     }
 
-    file { '/etc/init.d/ircecho':
-        ensure => absent,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0544',
-    }
-
     file { '/etc/default/ircecho':
         content => template('ircecho/default.erb'),
         owner   => 'root',
