@@ -14,6 +14,13 @@ class role::labs::shinken(
         auth_secret => 'This is insecure, should switch to using private repo',
     }
 
+    #  Allow shinken to run the check_dhcp test as root.  It doesn't
+    #   work as user.
+    sudo::user { 'shinken_sudo_for_dhcp':
+        user       => 'shinken',
+        privileges => ['ALL=(root) NOPASSWD: /usr/lib/nagios/plugins/check_dhcp'],
+    }
+
     # Basic labs instance & infrastructure monitoring
     shinken::config { 'basic-infra-checks':
         source => 'puppet:///modules/shinken/labs/basic-infra-checks.cfg',
