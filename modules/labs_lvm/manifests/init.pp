@@ -11,8 +11,9 @@
 #
 
 class labs_lvm($disk = '/dev/vda') {
+    include ::lvm
 
-    package { ['lvm2', 'parted']:
+    package { 'parted':
         ensure => present,
     }
 
