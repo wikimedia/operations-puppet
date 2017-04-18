@@ -25,8 +25,8 @@ define monitoring::icinga::bad_directory_owner (
 
     nrpe::monitor_service { "${safe_title}_owned":
         description  => "Improperly owned (${uid}:${gid}) files in ${title}",
-        nrpe_command => $filename,
-        retries      => $interval,
-        require      => File[$filename],
+        nrpe_command   => $filename,
+        check_interval => $interval,
+        require        => File[$filename],
     }
 }
