@@ -1,0 +1,9 @@
+Code-Review+1: Chad <chadh@wikimedia.org>
+Verified+2: jenkins-bot
+Code-Review+2: Dzahn <dzahn@wikimedia.org>
+Code-Review+1: Paladox <thomasmulhall410@yahoo.com>
+Submitted-by: Dzahn <dzahn@wikimedia.org>
+Submitted-at: Tue, 18 Apr 2017 20:29:05 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/348690
+Project: operations/puppet
+Branch: refs/heads/production
