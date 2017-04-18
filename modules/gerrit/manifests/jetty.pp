@@ -46,6 +46,8 @@ class gerrit::jetty(
     require_package([
         'openjdk-8-jdk',
         'gerrit',
+        'libbcprov-java',
+        'libbcpkix-java',
         'libmysql-java',
     ])
 
