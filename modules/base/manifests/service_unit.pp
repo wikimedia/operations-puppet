@@ -130,6 +130,13 @@ define base::service_unit (
             group   => 'root',
         }
 
+        if $systemd {
+            file { "/etc/systemd/system/${name}.service":
+                ensure => 'link',
+                target => $path,
+            }
+        }
+
         if $declare_service {
             if $refresh {
                 File[$path] ~> Service[$name]
