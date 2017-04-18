@@ -132,6 +132,7 @@ cache::app_directors:
       port: 8081
     backends:
       eqiad: 'ores.svc.eqiad.wmnet'
+      codfw: 'ores.svc.codfw.wmnet'
 cache::req_handling:
   15.wikipedia.org:
     director: 'bromine'
