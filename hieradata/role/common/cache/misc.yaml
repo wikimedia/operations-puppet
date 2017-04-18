@@ -59,6 +59,7 @@ cache::app_directors:
       port: 8092
     backends:
       eqiad: 'eventstreams.svc.eqiad.wmnet'
+      codfw: 'eventstreams.svc.codfw.wmnet'
   contint1001:
     backends:
       eqiad: 'contint1001.wikimedia.org'
