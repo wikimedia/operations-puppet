@@ -34,7 +34,7 @@ class toollabs (
 
     exec {'ensure-grid-is-on-NFS':
         command => '/bin/false',
-        unless  => "/usr/bin/timeout -k 3s 5s /usr/bin/test -e ${project_path}/herald",
+        unless  => "/usr/bin/timeout -k 5s 30s /usr/bin/test -e ${project_path}/herald",
     }
 
     file { $sysdir:
