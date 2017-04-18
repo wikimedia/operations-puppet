@@ -103,6 +103,35 @@ class openstack::keystone::service($keystoneconfig, $openstack_version=$::openst
                 command => '/usr/bin/keystone-manage token_flush > /dev/null 2>&1',
         }
 
+        # Clean up service user tokens.  These tend to pile up
+        #  quickly, and are never used for Horizon sessions.
+        #  so, don't wait for them to expire, just delete them
+        #  after a few hours.
+        #
+        # Tokens only know when they expire and not when they
+        #  were created.  Since token lifespan is 7.1
+        #  days (613440 seconds), any token that expires
+        #  less than 7 days from now is already at least
+        #  2 hours old.
+        $keystone_db_name = $keystoneconfig['db_name']
+        $keystone_db_user = $keystoneconfig['db_user']
+        $keystone_db_pass = $keystoneconfig['db_pass']
+        $keystone_db_host = $keystoneconfig['db_host']
+        cron {
+            'cleanup_novaobserver_keystone_tokens':
+                ensure  => present,
+                user    => 'root',
+                minute  => 30,
+                command => "/usr/bin/mysql ${keystone_db_name} -h${keystone_db_host} -u${keystone_db_user} -p${keystone_db_pass} -e 'DELETE FROM token WHERE NOW() + INTERVAL 7 day > expires and user_id=\"novaobserver\" LIMIT 10000;'",
+        }
+        cron {
+            'cleanup_novaadmin_keystone_tokens':
+                ensure  => present,
+                user    => 'root',
+                minute  => 40,
+                command => "/usr/bin/mysql ${keystone_db_name} -h${keystone_db_host} -u${keystone_db_user} -p${keystone_db_pass} -e 'DELETE FROM token WHERE NOW() + INTERVAL 7 day > expires and user_id=\"novaadmin\" LIMIT 10000;'",
+        }
+
         monitoring::service { 'keystone-http-35357':
             description   => 'keystone http',
             check_command => 'check_http_on_port!35357',
