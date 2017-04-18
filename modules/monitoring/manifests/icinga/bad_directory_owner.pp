@@ -6,12 +6,12 @@
 # $uid      - User id to check for
 # $gid      - Group id to check for
 # $interval - How often to check (default 10)
-# $timeout  - How long to wait before giving up (default 20s)
+# $timeout  - How long to wait before giving up (default 10s)
 define monitoring::icinga::bad_directory_owner (
     $uid      = 0,
     $gid      = 0,
     $interval = 10,
-    $timeout  = 20,
+    $timeout  = 10,
     ) {
 
     $safe_title = regsubst($title, '\/', '_', 'G')
