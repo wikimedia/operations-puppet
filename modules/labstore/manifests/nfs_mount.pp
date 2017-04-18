@@ -174,7 +174,7 @@ define labstore::nfs_mount(
         # failing to run
         exec { "create-${mount_path}":
             command => "/usr/bin/timeout -k 5s 10s /bin/mkdir ${mount_path}",
-            unless  => "/usr/bin/timeout -k 5s 10s /usr/bin/test -d ${mount_path}",
+            unless  => "/usr/bin/timeout -k 5s 30s /usr/bin/test -d ${mount_path}",
             require => Mount[$mount_path],
         }
 
