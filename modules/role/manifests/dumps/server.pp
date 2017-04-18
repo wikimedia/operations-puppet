@@ -9,9 +9,12 @@ class role::dumps::server {
         check_command => 'check_http'
     }
 
-    monitoring::service { 'https':
-        description   => 'HTTPS',
-        check_command => 'check_ssl_http_letsencrypt!dumps.wikimedia.org',
+    # TODO: move hiera lookup to parameter of a profile class
+    if hiera('do_acme', true) { 
+        monitoring::service { 'https':
+            description   => 'HTTPS',
+            check_command => 'check_ssl_http_letsencrypt!dumps.wikimedia.org',
+        }
     }
 
     # By default the resolve() function in ferm performs only an IPv4/A DNS
