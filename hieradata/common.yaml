@@ -451,7 +451,7 @@ kafka_clusters:
       kafka2003.codfw.wmnet:
         id: 2003
 
-deployment_server: tin.eqiad.wmnet
+deployment_server: naos.codfw.wmnet
 
 install_server: install1002.wikimedia.org
 install_server_failover: install2002.wikimedia.org
