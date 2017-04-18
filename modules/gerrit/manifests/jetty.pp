@@ -105,6 +105,8 @@ class gerrit::jetty(
         require => [File['/var/lib/gerrit2'],Package['gerrit']],
     }
 
+    require_package('libbcprov-java', 'libbcpkix-java')
+
     file { '/var/lib/gerrit2/review_site/lib/mysql-connector-java.jar':
         ensure  => 'link',
         target  => '/usr/share/java/mysql-connector-java.jar',
