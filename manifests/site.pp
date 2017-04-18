@@ -2636,6 +2636,8 @@ node 'stat1004.eqiad.wmnet' {
     role(analytics_cluster::client, analytics_cluster::refinery)
 
     include ::standard
+    # Include a host of useful support packages for doing computation (T163177)
+    include ::statistics::packages
 }
 
 node /^snapshot1001\.eqiad\.wmnet/ {
