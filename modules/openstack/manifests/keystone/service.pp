@@ -100,7 +100,7 @@ class openstack::keystone::service($keystoneconfig, $openstack_version=$::openst
                 ensure  => present,
                 user    => 'root',
                 minute  => 20,
-                command => '/usr/bin/keystone-manage token_flush',
+                command => '/usr/bin/keystone-manage token_flush > /dev/null 2>&1',
         }
 
         monitoring::service { 'keystone-http-35357':
