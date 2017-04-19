@@ -1,0 +1,9 @@
+Verified+2: jenkins-bot
+Code-Review+2: Alexandros Kosiaris <akosiaris@wikimedia.org>
+Code-Review+2: Ema <ema@wikimedia.org>
+Verified+2: Ema <ema@wikimedia.org>
+Submitted-by: Ema <ema@wikimedia.org>
+Submitted-at: Wed, 19 Apr 2017 10:29:51 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/348925
+Project: operations/puppet
+Branch: refs/heads/production
