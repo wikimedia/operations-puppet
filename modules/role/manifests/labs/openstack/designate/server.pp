@@ -33,9 +33,21 @@ class role::labs::openstack::designate::server {
         secondary_pdns_ip => $dns_host_secondary_ip,
     }
 
-    # Poke a firewall hole for the designate api
+    # Open designate API to Labs web UIs and the commandline on labcontrol
     ferm::rule { 'designate-api':
         rule => "saddr (${wikitech_ip} ${horizon_ip} ${controller_ip}) proto tcp dport (9001) ACCEPT;",
+    }
+
+    # Allow labs instances to hit the designate api.
+    #
+    # This is not as permissive as it looks; The wmfkeystoneauth
+    #  plugin (via the password whitelist) only allows 'novaobserver'
+    #  to authenticate from within labs, and the novaobserver is
+    #  limited by the designate policy.json to read-only queries.
+    include network::constants
+    $labs_networks = join($network::constants::labs_networks, ' ')
+    ferm::rule { 'designate-api-for-labs':
+        rule => "saddr (${labs_networks} proto tcp dport (9001) ACCEPT;",
     }
 
     # allow axfr traffic between mdns and pdns on the pdns hosts
