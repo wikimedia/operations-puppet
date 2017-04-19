@@ -35,6 +35,12 @@ class role::labs::novaproxy(
         desc  => 'API for adding / removing proxies from dynamicproxy domainproxy'
     }
 
+    ferm::service { 'dynamicproxy-api-http':
+        port  => '5669',
+        proto => 'tcp',
+        desc  => 'read-only API for viewing proxies from dynamicproxy domainproxy'
+    }
+
     if $::hostname != $active_proxy {
         $redis_replication = {
             "${::hostname}" => $active_proxy
