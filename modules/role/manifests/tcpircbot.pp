@@ -46,6 +46,7 @@ class role::tcpircbot($ensure='present') {
         'eventlog1001.eqiad.wmnet',     # logging eqiad
         'tin.eqiad.wmnet',              # deployment eqiad
         'mira.codfw.wmnet',             # deployment codfw
+        'naos.codfw.wmnet',             # deployment codfw
         'puppetmaster1001.eqiad.wmnet', # puppet eqiad
         'puppetmaster2001.codfw.wmnet', # puppet codfw
         'terbium.eqiad.wmnet',          # maintenance eqiad
