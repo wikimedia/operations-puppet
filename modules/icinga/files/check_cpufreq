@@ -1,0 +1,23 @@
+#!/bin/bash
+# Icinga plugin to check CPU frequency (T163220)
+# usage: check_cpufreq <minimum MHz>
+
+min_mhz=$1
+
+if [ -z "$1" ] ; then echo "usage: $0 <minium MHz>"; exit 3; fi
+
+cpu_freq=$(grep MHz /proc/cpuinfo |head -1|cut -d: -f2|cut -d\. -f1|xargs)
+
+if [ $cpu_freq -ge $min_mhz ] ; then
+    echo "OK. CPU frequency is >= ${min_mhz} MHz ($cpu_freq)"
+    exit 0
+fi
+
+if [ $cpu_freq -lt $min_mhz ] ; then
+    echo "CRIT, CPU frequency is < ${min_mhz} MHz ($cpu_freq)"
+    exit 1
+fi
+
+
+echo "UNKNOWN - please check plugin ($0)"
+exit 3
