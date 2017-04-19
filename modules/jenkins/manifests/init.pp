@@ -59,19 +59,14 @@ class jenkins(
     }
 
     # We want to run Jenkins under Java 7.
-    ensure_packages(['openjdk-7-jre-headless'])
-
-    alternatives::select { 'java':
-        path    => '/usr/lib/jvm/java-7-openjdk-amd64/jre/bin/java',
-        require => Package['openjdk-7-jre-headless'],
-    }
+    ensure_packages(['openjdk-7-jdk'])
 
     # Upgrades are usually done manually by upload the Jenkins
     # package at apt.wikimedia.org then restarting jenkins and
     # double checking everything went fine.
     package { 'jenkins':
         ensure  => present,
-        require => Package['openjdk-7-jre-headless'],
+        require => Package['openjdk-7-jdk'],
     }
 
     file { '/var/lib/jenkins/.daemonrc':
