@@ -171,7 +171,7 @@ class BigBrother(object):
             self.log_event(
                 tool, 'warn',
                 "Too many attempts to restart job '%s'; throttling" % job['name'])
-            job['state'] = 'throttled'
+            job['state'] = 'THROTTLED'
             job['since'] = now
             # Don't try to restart this job again until 24 hours after the
             # first restart that we remember
@@ -180,10 +180,10 @@ class BigBrother(object):
 
         job['restarts'].append(now)
         # Give the new job 90-120 seconds to start before trying again
-        job['state'] = 'starting'
+        job['state'] = 'STARTING'
         job['timeout'] = now + 90 + random.randint(0, 30)
         job['since'] = now
-        self.log_event(tool, 'info', "Restarting job '%s'" % job['name'])
+        self.log_event(tool, 'info', "Restarting job '%s'" % job['jname'])
 
         if not self.dry_run:
             with open(self.watchdb[tool]['logfile'], 'a') as log:
@@ -209,7 +209,7 @@ class BigBrother(object):
                     # leave the current state alone
                     continue
                 # Mark as dead pending verification of state from qstat
-                job['state'] = 'dead'
+                job['state'] = 'DEAD'
 
         # Update the known state of all jobs from qstat data
         xml = ET.fromstring(subprocess.check_output(
@@ -251,23 +251,25 @@ class BigBrother(object):
             print(datetime.datetime.utcnow(), file=sb)
             for tool in self.watchdb:
                 if 'jobs' not in self.watchdb[tool]:
+                    print('%s:-:-:-:-' % tool, file=sb)
                     continue
-                for job in self.watchdb[tool]['jobs']:
+                for job in self.watchdb[tool]['jobs'].values():
                     if 'state' not in job:
+                        print('%s:%s:-:-:-' % (tool, job['jname']), file=sb)
                         continue
-                    if job['state'] == 'dead':
+                    if job['state'] == 'DEAD':
                         self.start_job(tool, job)
-                    elif job['state'] in ['starting', 'throttled']:
+                    elif job['state'] in ['STARTING', 'THROTTLED']:
                         if time.time() >= job.get('timeout', 0):
                             self.log_event(
                                 tool, 'warn',
                                 "job '%s' failed to start" % job['jname'])
                             self.start_job(tool, job)
                     print(
-                        '%s:%s:%s:%d:%d' % (
+                        '%s:%s:%s:%s:%s' % (
                             tool,
                             job['jname'],
-                            job.get('state', 'unknown'),
+                            job.get('state', 'UNKNOWN'),
                             job.get('since', 0),
                             job.get('timeout', 0)
                         ),
