@@ -38,6 +38,15 @@ class role::labs::openstack::designate::server {
         rule => "saddr (${wikitech_ip} ${horizon_ip} ${controller_ip}) proto tcp dport (9001) ACCEPT;",
     }
 
+    # Allow labs instances to hit the designate api.  This is
+    #  not as permissive as it looks since keystone only allows
+    #  novaobserver to authenticate from within labs.
+    include network::constants
+    $labs_networks = join($network::constants::labs_networks, ' ')
+    ferm::rule { 'designate-api-for-labs':
+        rule => "saddr (${labs_networks} proto tcp dport (9001) ACCEPT;",
+    }
+
     # allow axfr traffic between mdns and pdns on the pdns hosts
     ferm::rule { 'mdns-axfr':
         rule => "saddr (${dns_host_ip} ${dns_host_secondary_ip} ) proto tcp dport (5354) ACCEPT;",
