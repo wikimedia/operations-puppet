@@ -84,7 +84,7 @@ class role::icinga(
     if $is_passive {
         cron { 'sync-icinga-state':
             minute  => '*/10',
-            command => '/usr/local/sbin/sync_icinga_state >/dev/null 2>&1',
+            command => '/usr/local/sbin/run-no-puppet /usr/local/sbin/sync_icinga_state >/dev/null 2>&1',
         }
     }
 }
