@@ -74,6 +74,11 @@ class lvs::balancer(
             'net.ipv4.icmp_ratemask'          => 350233, # 1010101100000011001
             # Lower rate limit, as the default of 1000ms is way too large
             'net.ipv4.icmp_ratelimit'         => 200,
+            # Bump the maximal number of ICMP packets sent per second from this
+            # host from 1000 to 3000. Some of our load balancers receive more
+            # than 1000 ICMP echo requests per second as documented in:
+            # https://phabricator.wikimedia.org/T163312#3193182
+            'net.ipv4.icmp_msgs_per_sec'      => 3000,
         },
     }
 
