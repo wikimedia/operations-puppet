@@ -4,6 +4,6 @@
 #
 class jenkins::slave::requisites() {
 
-    ensure_packages(['openjdk-7-jre-headless'])
+    ensure_packages(['openjdk-7-jdk'])
 
 }
