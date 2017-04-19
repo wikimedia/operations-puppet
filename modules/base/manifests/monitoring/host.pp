@@ -136,4 +136,20 @@ class base::monitoring::host(
             nrpe_command => '/usr/local/lib/nagios/plugins/check_systemd_state',
         }
     }
+
+    if $::productname == 'PowerEdge R320' {
+
+        file { '/usr/local/lib/nagios/plugins/check_cpufreq':
+            ensure => present,
+            source => 'puppet:///modules/base/check_cpufreq',
+            owner  => 'root',
+            group  => 'root',
+            mode   => '0555',
+        }
+
+        ::nrpe::monitor_service { 'check_cpufreq':
+            description  => 'CPU frequency',
+            nrpe_command => '/usr/local/lib/nagios/plugins/check_cpufreq 600',
+        }
+    }
 }
