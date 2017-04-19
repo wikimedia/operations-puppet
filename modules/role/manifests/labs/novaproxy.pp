@@ -35,7 +35,7 @@ class role::labs::novaproxy(
         desc  => 'API for adding / removing proxies from dynamicproxy domainproxy'
     }
 
-    ferm::service { 'dynamicproxy-api-http':
+    ferm::service { 'dynamicproxy-api-http-readonly':
         port  => '5669',
         proto => 'tcp',
         desc  => 'read-only API for viewing proxies from dynamicproxy domainproxy'
