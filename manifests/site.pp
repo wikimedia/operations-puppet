@@ -2682,17 +2682,8 @@ node /^thumbor100[12].eqiad.wmnet/ {
 }
 
 # deployment servers
-node 'tin.eqiad.wmnet', 'mira.codfw.wmnet' {
+node 'tin.eqiad.wmnet', 'mira.codfw.wmnet', 'naos.codfw.wmnet' {
     role(deployment::server)
-    include ::base::firewall
-
-    interface::add_ip6_mapped { 'main':
-        interface => 'eth0',
-    }
-}
-
-node 'naos.codfw.wmnet' {
-    role(deployment::server, deployment::migrate)
     include ::base::firewall
 
     interface::add_ip6_mapped { 'main':
