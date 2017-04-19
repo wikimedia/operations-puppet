@@ -8,6 +8,8 @@ $config['rrd_dir']     = "<%= @rrd_dir %>";
 $config['log_file']    = "/var/log/librenms.log";
 $config['user']        = "librenms";
 
+$config['alert']['macros']['rule']['is_main_intf'] = '%ports.ifDescr ~ "^(Cust|Transit|Peering|Core).*"';
+
 $puppet_config = <%= scope.function_phpdump([@config]) %>;
 
 $config = array_merge($config, $puppet_config);
