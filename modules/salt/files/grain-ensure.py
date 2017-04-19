@@ -42,6 +42,7 @@ import argparse
 import salt.client
 import salt.config
 import salt.minion
+import salt.utils.args
 
 
 class SaltLocalCaller(salt.client.Caller):
@@ -77,7 +78,10 @@ def setval(grain, value):
 
 
 def contains(grain, value):
-    return value in get(grain)
+    # Normalize user value the same way salt minion does.
+    # Specially string "true" is yield as a boolean true
+    yamlify_value = salt.utils.args.parse_input([value])[0]
+    return yamlify_value in get(grain)
 
 
 def remove(grain, value):
