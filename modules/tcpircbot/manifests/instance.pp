@@ -68,9 +68,6 @@ define tcpircbot::instance(
     $listen_port = 9200,
 ) {
     include tcpircbot
-    file { "${tcpircbot::dir}/${title}.json":
-        ensure => absent,
-    }
 
     file { "${tcpircbot::dir}/tcpircbot-${title}.json":
         ensure  => present,
@@ -81,16 +78,12 @@ define tcpircbot::instance(
         require => User['tcpircbot'],
     }
 
-    file { "/etc/init.d/tcpircbot-${title}":
-        ensure => absent,
-    }
-
     base::service_unit { "tcpircbot-${title}":
         ensure        => present,
         upstart       => true,
         systemd       => true,
         template_name => 'tcpircbot',
-        subscribe     => File["${tcpircbot::dir}/${title}.json"],
+        subscribe     => File["${tcpircbot::dir}/tcpircbot-${title}.json"],
         require       => [
             Package['python-irclib'],
             File["${tcpircbot::dir}/${title}.json"],
