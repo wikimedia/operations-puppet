@@ -6,7 +6,7 @@ profile::base::domain_search:
   - ulsfo.wmnet
 # Note that our paging infrastructure (AQL as of 20161101) may need an update of it's sender whitelist
 # tegmen is the backup icinga server. All these flags need to be converted accordingly for it to assume the identity of the primary
-role::tcpircbot::ensure: absent
-do_acme: false
+role::tcpircbot::ensure: present
+#do_acme: false
 role::icinga::partner: einsteinium.wikimedia.org
-role::icinga::passive: true
+role::icinga::passive: false
