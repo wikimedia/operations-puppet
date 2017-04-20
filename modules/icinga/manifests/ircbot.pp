@@ -14,6 +14,7 @@ class icinga::ircbot(
             '/var/log/icinga/irc-ores.log'        => '#wikimedia-ai',
             '/var/log/icinga/irc-interactive.log' => '#wikimedia-interactive',
             '/var/log/icinga/irc-performance.log' => '#wikimedia-perf-bots',
+            '/var/log/icinga/irc-fundraising.log' => '#wikimedia-fundraising',
         }
         $ircecho_nick   = 'icinga-wm'
         $ircecho_server = 'chat.freenode.net'
