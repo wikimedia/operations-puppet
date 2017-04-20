@@ -3,7 +3,7 @@ include "upload-common.inc.vcl";
 
 sub pick_stevedore {
 	// Select a storage size class/bin
-        // See T145661 for storage binning rationale
+	// See T145661 for storage binning rationale
 	if (beresp.http.Content-Length !~ "^[0-9]+$") { // even possible on upload?
 		set beresp.storage_hint = "bin1";
 	}
@@ -56,6 +56,13 @@ sub cluster_be_backend_fetch {
 sub cluster_be_backend_response_early { }
 
 sub cluster_be_backend_response {
+	// hit-for-pass objects < 256B size (T145661)
+	if (std.integer(beresp.http.Content-Length, 256) < 256 && beresp.status == 200) {
+		set beresp.http.X-CDIS = "pass";
+		set beresp.uncacheable = true;
+		return (deliver);
+	}
+
 	call pick_stevedore;
 
 	if (beresp.http.Content-Range) {
