@@ -64,13 +64,6 @@ eventlogging_mysql_consumers:
 
 labs_certmanager_hostname: "labservices1001.wikimedia.org"
 
-# This can be used by clients that need to connect to etcd.
-# Unfortunetly it is hardcoded here.
-etcd_hosts:
-    - conf1001.eqiad.wmnet
-    - conf1002.eqiad.wmnet
-    - conf1003.eqiad.wmnet
-
 # Default zookeeper cluster to use in eqiad.
 # The cluster config is in common.yaml in zookeeper_clusters.
 zookeeper_cluster_name: 'main-eqiad'
