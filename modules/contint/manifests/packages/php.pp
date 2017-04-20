@@ -73,4 +73,13 @@ class contint::packages::php {
         ensure => present,
     }
 
+    # Enable mcrypt for PHP CLI.
+    # For most PHP extensions, the deb enables it on install, but not
+    # php-mcrypt on trusty.
+    exec { 'mcrypt':
+        command => '/usr/sbin/php5enmod mcrypt',
+        unless  => '/usr/bin/php -m | /bin/grep -q mcrypt',
+        require => [Package['php5-mcrypt'], Package['php5-cli']],
+    }
+
 }
