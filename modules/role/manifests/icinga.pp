@@ -8,9 +8,7 @@
 # [*ircbot*]
 #   Setup an ircbot using ircecho to support echoing notifications
 #
-class role::icinga(
-    $ircbot = true,
-){
+class role::icinga {
     include facilities
     include lvs::monitor
     include icinga::monitor::checkpaging
@@ -41,21 +39,37 @@ class role::icinga(
 
     interface::add_ip6_mapped { 'main': interface => 'eth0' }
 
-    if $ircbot {
-        include icinga::ircbot
-    }
-
     monitoring::service { 'https':
         description   => 'HTTPS',
         check_command => 'check_ssl_http_letsencrypt!icinga.wikimedia.org',
     }
 
-    class { '::icinga':            }
     class { '::icinga::web':       }
     class { '::icinga::naggen':    }
 
     $partner = hiera('role::icinga::partner')
     $is_passive = hiera('role::icinga::passive')
+
+    $ircbot = $is_passive ? {
+        false => 'absent',
+        true  => 'present',
+    }
+    $enable_notifications = $is_passive ? {
+        false => 0,
+        true  => 1,
+    }
+    $enable_event_handlers = $is_passive ? {
+        false => 0,
+        true  => 1,
+    }
+    class { '::icinga':
+        enable_notifications  => $enable_notifications,
+        enable_event_handlers => $enable_event_handlers,
+    }
+    class { '::icinga::ircbot':
+        present => $ircbot,
+    }
+
     include rsync::server
     ferm::service { 'icinga-rsync':
         proto  => 'tcp',

@@ -5,9 +5,6 @@ profile::base::domain_search:
   - esams.wmnet
   - ulsfo.wmnet
 # Note that our paging infrastructure (AQL as of 20161101) may need an update of it's sender whitelist
-icinga::enable_notifications: 1
-icinga::enable_event_handlers: 1
-icinga::ircbot::ensure: present
 role::tcpircbot::ensure: present
 role::icinga::partner: tegmen.wikimedia.org
 role::icinga::passive: false
