@@ -17,7 +17,7 @@ class ircecho (
     require_package(['python-pyinotify', 'python-irclib'])
 
     file { '/usr/local/bin/ircecho':
-        ensure => present,
+        ensure => 'present',
         source => 'puppet:///modules/ircecho/ircecho',
         owner  => 'root',
         group  => 'root',
@@ -25,6 +25,7 @@ class ircecho (
     }
 
     file { '/etc/default/ircecho':
+        ensure  => 'present',
         content => template('ircecho/default.erb'),
         owner   => 'root',
         mode    => '0755',
