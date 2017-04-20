@@ -70,7 +70,7 @@ class role::icinga {
     ferm::service { 'icinga-rsync':
         proto  => 'tcp',
         port   => 873,
-        srange => "@resolve(${partner})",
+        srange => "(@resolve(${partner}) @resolve(${partner}, AAAA))",
     }
     rsync::server::module { 'icinga-tmpfs':
         read_only => 'yes',
