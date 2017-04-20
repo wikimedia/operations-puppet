@@ -432,6 +432,7 @@ kafka_clusters:
   main-eqiad:
     api_version: 0.9
     zookeeper_cluster_name: main-eqiad
+    delete_topic_enable: true
     brokers:
       kafka1001.eqiad.wmnet:
         id: 1001
@@ -443,6 +444,7 @@ kafka_clusters:
   main-codfw:
     api_version: 0.9
     zookeeper_cluster_name: main-codfw
+    delete_topic_enable: true
     brokers:
       kafka2001.codfw.wmnet:
         id: 2001

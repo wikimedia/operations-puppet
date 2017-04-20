@@ -44,6 +44,9 @@
 # [*auto_create_topics_enable*]
 #    If autocreation of topics is allowed.  Default: true
 #
+# [*delete_topic_enable*]
+#    Whether to enable topic deletion. Default: false
+#
 # [*auto_leader_rebalance_enable*]
 #   If leaders should be auto rebalanced.  Default: true
 #
@@ -191,6 +194,7 @@ class confluent::kafka::broker(
     $zookeeper_session_timeout_ms        = 6000,
 
     $auto_create_topics_enable           = true,
+    $delete_topic_enable                 = false,
     $auto_leader_rebalance_enable        = true,
 
     $num_partitions                      = 1,
