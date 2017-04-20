@@ -74,7 +74,7 @@
 #   Default: 1
 #
 # [*delete_topic_enable*]
-#   Enables topic deletion.  Default: undef (false)
+#   Enables topic deletion.  Default: true
 #
 # [*min_insync_replicas*]
 #   When producing with acks=all, this specifiies the number of replicas that should be in
@@ -242,7 +242,7 @@ class confluent::kafka::broker(
 
     $num_partitions                      = 1,
     $default_replication_factor          = 1,
-    $delete_topic_enable                 = undef,
+    $delete_topic_enable                 = true,
     $offsets_topic_replication_factor    = undef,
     $min_insync_replicas                 = 1,
     $replica_lag_time_max_ms             = undef,
