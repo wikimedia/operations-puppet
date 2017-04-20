@@ -22,7 +22,6 @@ class icinga::event_handlers::raid {
         mode    => '0755',
         require => [
             File['/etc/phabricator_ops-monitoring-bot.conf'],
-            File['/var/lib/nagios/rw/nagios.cmd'],
             Package['icinga'],
         ],
     }
