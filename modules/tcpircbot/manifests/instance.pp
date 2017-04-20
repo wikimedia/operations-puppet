@@ -86,7 +86,6 @@ define tcpircbot::instance(
         subscribe     => File["${tcpircbot::dir}/tcpircbot-${title}.json"],
         require       => [
             Package['python-irclib'],
-            File["${tcpircbot::dir}/${title}.json"],
         ],
     }
 }
