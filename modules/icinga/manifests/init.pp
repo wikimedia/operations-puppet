@@ -151,18 +151,11 @@ class icinga(
     }
 
     # Command folders / files to let icinga web to execute commands
+    # See Debian Bug 571801
     file { '/var/lib/nagios/rw':
-        ensure => directory,
-        owner  => 'icinga',
-        group  => 'nagios',
-        mode   => '0775',
-    }
-
-    file { '/var/lib/nagios/rw/nagios.cmd':
-        ensure => present,
-        owner  => 'icinga',
-        group  => 'www-data',
-        mode   => '0664',
+        owner => 'icinga',
+        group => 'www-data',
+        mode  => '2710', # The sgid bit means new files inherit guid
     }
 
     # ensure icinga can write logs for ircecho, raid_handler etc.
