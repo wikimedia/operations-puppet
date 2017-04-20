@@ -73,4 +73,11 @@ class contint::packages::php {
         ensure => present,
     }
 
+    # enable mcrypt for PHP CLI
+    # FIXME: why is this needed for mcrypt and not other extensions?
+    file { '/etc/php5/cli/conf.d/20-mcrypt.ini':
+        ensure => 'link',
+        target => '/etc/php5/mods-available/mcrypt.ini',
+    }
+
 }
