@@ -488,7 +488,7 @@ node /^db20(36|43|50|57)\.codfw\.wmnet/ {
 
 # s4 (commons) core production dbs on eqiad
 # eqiad master
-node 'db1040.eqiad.wmnet' {
+node 'db1068.eqiad.wmnet' {
     class { '::role::mariadb::core':
         shard         => 's4',
         master        => true,
@@ -496,7 +496,7 @@ node 'db1040.eqiad.wmnet' {
     }
 }
 
-node /^db10(53|56|59|68|81|84|91)\.eqiad\.wmnet/ {
+node /^db10(40|53|56|59|81|84|91)\.eqiad\.wmnet/ {
     class { '::role::mariadb::core':
         shard => 's4',
     }
