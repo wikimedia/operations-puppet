@@ -91,10 +91,15 @@ class role::icinga {
         mode    => '0755',
         content => template('role/icinga/sync_icinga_state.sh.erb'),
     }
-    if $is_passive {
-        cron { 'sync-icinga-state':
-            minute  => '*/10',
-            command => '/usr/local/sbin/run-no-puppet /usr/local/sbin/sync_icinga_state >/dev/null 2>&1',
-        }
+
+    # We absent the cron on active hosts, should only exist on passive ones
+    $cron_presence = $is_passive ? {
+        true  => 'present',
+        false => 'absent',
+    }
+    cron { 'sync-icinga-state':
+        ensure  => $cron_presence,
+        minute  => '*/10',
+        command => '/usr/local/sbin/run-no-puppet /usr/local/sbin/sync_icinga_state >/dev/null 2>&1',
     }
 }
