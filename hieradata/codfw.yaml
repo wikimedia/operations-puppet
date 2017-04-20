@@ -47,11 +47,6 @@ labsldapconfig:
   hostname: ldap-labs.codfw.wikimedia.org
   secondary_hostname: ldap-labs.eqiad.wikimedia.org
 
-etcd_hosts:
-    - conf1001.eqiad.wmnet
-    - conf1002.eqiad.wmnet
-    - conf1003.eqiad.wmnet
-
 prometheus_nodes:
   - prometheus2003.codfw.wmnet
   - prometheus2004.codfw.wmnet
