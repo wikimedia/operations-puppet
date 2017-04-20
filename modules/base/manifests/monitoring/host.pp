@@ -141,7 +141,7 @@ class base::monitoring::host(
 
         file { '/usr/local/lib/nagios/plugins/check_cpufreq':
             ensure => present,
-            source => 'puppet:///modules/base/check_cpufreq',
+            source => 'puppet:///modules/base/monitoring/check_cpufreq',
             owner  => 'root',
             group  => 'root',
             mode   => '0555',
