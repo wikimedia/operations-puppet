@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """
   usage: mwgrep [-h] [--max-results N] [--timeout N] [--user | --module]
-                [--title TITLE] regex
+                [--title TITLE | --etitle REGEX] regex
 
   Grep for Lua or CSS and JS code fragments on (per default) MediaWiki wiki pages
 
@@ -15,7 +15,8 @@
     --timeout N      abort search after this many seconds (default: 30)
     --user           search NS_USER rather than NS_MEDIAWIKI
     --module         search NS_MODULE rather than NS_MEDIAWIKI
-    --title TITLE    restrict search to pages with this title
+    --title TITLE    restrict search to pages with this exact title
+    --etitle REGEX   restrict search to pages with this title pattern
 
   mwgrep will grep the MediaWiki namespace across Wikimedia wikis. specify
   --user to search the user namespace instead. See the lucene documentation
@@ -69,11 +70,6 @@ ap.add_argument(
     help='abort search after this many seconds (default: 30)'
 )
 
-ap.add_argument(
-    '--title',
-    help='Restrict search to pages with this title (sans namespace)'
-)
-
 ns_group = ap.add_mutually_exclusive_group()
 ns_group.add_argument(
     '--user',
@@ -91,6 +87,16 @@ ns_group.add_argument(
     default=NS_MEDIAWIKI,
     dest='ns',
     help='search NS_MODULE rather than NS_MEDIAWIKI'
+)
+
+title_group = ap.add_mutually_exclusive_group()
+title_group.add_argument(
+    '--title',
+    help='restrict search to pages with this exact title (sans namespace)'
+)
+title_group.add_argument(
+    '--etitle',
+    help='restrict search to pages with this title pattern (sans namespace)'
 )
 
 args = ap.parse_args()
@@ -112,6 +118,8 @@ filters = [
 
 if args.title is not None:
     filters.append( {'term': {'title.keyword': args.title}} )
+elif args.etitle is not None:
+    filters.append( {'regexp': {'title.keyword': args.etitle}} )
 elif args.ns == NS_USER or args.ns == NS_MEDIAWIKI:
     filters.append( {'regexp': {'title.keyword': '.*\\.(js|css)'}} )
 
