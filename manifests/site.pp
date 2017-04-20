@@ -404,7 +404,7 @@ node 'db2016.codfw.wmnet' {
     }
 }
 
-node /^db20(34|42|48|55|62|69|70)\.codfw\.wmnet/ {
+node /^db20(34|42|48|55|62|69|70|71)\.codfw\.wmnet/ {
     class { '::role::mariadb::core':
         shard         => 's1',
         binlog_format => 'ROW',
