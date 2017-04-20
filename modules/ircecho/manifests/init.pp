@@ -36,6 +36,7 @@ class ircecho (
         systemd        => true,
         upstart        => false,
         sysvinit       => true,
+        require        => File['/etc/default/ircecho'],
         service_params => {
             hasrestart => true,
         },
