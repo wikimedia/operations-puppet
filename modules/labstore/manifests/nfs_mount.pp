@@ -173,16 +173,17 @@ define labstore::nfs_mount(
         # Puppet will normally get stuck and freeze raising load and effectively
         # failing to run
         exec { "create-${mount_path}":
-            command => "/usr/bin/timeout -k 5s 10s /bin/mkdir ${mount_path}",
-            unless  => "/usr/bin/timeout -k 5s 30s /usr/bin/test -d ${mount_path}",
-            require => Mount[$mount_path],
+            command   => "/usr/bin/timeout -k 5s 10s /bin/mkdir ${mount_path}",
+            unless    => "/usr/bin/timeout -k 5s 30s /usr/bin/test -d ${mount_path}",
+            logoutput => true,
+            require   => Mount[$mount_path],
         }
 
         exec { "ensure-nfs-${name}":
             command   => "/usr/local/sbin/nfs-mount-manager mount ${mount_path}",
             unless    => "/usr/local/sbin/nfs-mount-manager check ${mount_path}",
-            require   => Exec["create-${mount_path}"],
             logoutput => true,
+            require   => Exec["create-${mount_path}"],
         }
 
         if !defined(Diamond::Collector['Nfsiostat']) {
