@@ -56,8 +56,8 @@ sub cluster_be_backend_fetch {
 sub cluster_be_backend_response_early { }
 
 sub cluster_be_backend_response {
-	// hit-for-pass objects < 256B size (T145661)
-	if (std.integer(beresp.http.Content-Length, 256) < 256 && beresp.status == 200) {
+	// hit-for-pass objects < 1024B size (T145661)
+	if (std.integer(beresp.http.Content-Length, 1024) < 1024 && beresp.status == 200) {
 		set beresp.http.X-CDIS = "pass";
 		set beresp.uncacheable = true;
 		return (deliver);
