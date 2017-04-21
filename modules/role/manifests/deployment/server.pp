@@ -8,6 +8,8 @@ class role::deployment::server(
     $base_path = '/srv/deployment'
     include role::deployment::mediawiki
 
+    require ::profile::conftool::client
+
     ## Scap Config ##
     require ::scap
 
