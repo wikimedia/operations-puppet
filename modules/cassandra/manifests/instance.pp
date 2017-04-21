@@ -121,6 +121,15 @@ define cassandra::instance(
         require => File[$config_directory],
     }
 
+    file { "${config_directory}/jvm.options":
+        ensure  => present,
+        content => template("${module_name}/jvm.options-${target_version}.erb"),
+        owner   => 'cassandra',
+        group   => 'cassandra',
+        mode    => '0444',
+        require => File[$config_directory],
+    }
+
     file { "${config_directory}/cassandra.yaml":
         ensure  => present,
         content => template("${module_name}/cassandra.yaml-${target_version}.erb"),
