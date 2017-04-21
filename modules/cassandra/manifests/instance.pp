@@ -234,6 +234,35 @@ define cassandra::instance(
         require => File['/etc/cassandra-instances.d'],
     }
 
+    if ($target_version >= '3.7') {
+        file { "${config_directory}/jvm.options":
+            ensure  => present,
+            content => template("${module_name}/jvm.options-${target_version}.erb"),
+            owner   => 'cassandra',
+            group   => 'cassandra',
+            mode    => '0444',
+            require => File[$config_directory],
+        }
+
+        file { "${config_directory}/hotspot_compiler":
+            ensure  => present,
+            source  => "puppet:///modules/${module_name}/hotspot_compiler",
+            owner   => 'cassandra',
+            group   => 'cassandra',
+            mode    => '0444',
+            require => File[$config_directory],
+        }
+
+        file { "${config_directory}/commitlog_archiving.properties":
+            ensure  => present,
+            source  => "puppet:///modules/${module_name}/commitlog_archiving.properties",
+            owner   => 'cassandra',
+            group   => 'cassandra',
+            mode    => '0444',
+            require => File[$config_directory],
+        }
+    }
+
     base::service_unit { $service_name:
         ensure        => present,
         template_name => 'cassandra',
