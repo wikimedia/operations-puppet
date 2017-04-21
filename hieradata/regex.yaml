@@ -361,7 +361,7 @@ restbase_dev_eqiad:
       - .*\.metrics\.Client\..*$
   restbase::logging_name: restbase-dev
   cassandra::start_rpc: 'true'
-  cassandra::target_version: '2.2'
+  cassandra::target_version: '3.7'
 
 swift_be_codfw_dell:
   __regex: !ruby/regexp /^ms-be20(0[0-9]|1[0-5])\.codfw\.wmnet$/
