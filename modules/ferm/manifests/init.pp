@@ -11,6 +11,23 @@ class ferm {
         source => 'puppet:///modules/base/firewall/nf_conntrack.conf',
     }
 
+    # The nf_conntrack kernel module is usually auto-loaded during ferm startup.
+    # But some additional configuration options for timewait handling are configured
+    # via sysctl settings and if ferm autoloads the kernel module after
+    # systemd-sysctl.service has run, the sysctl settings are not applied
+    # Add the nf_conntrack module via /etc/modules-load.d/ which loads
+    # them before systemd-sysctl.service is executed
+    if os_version('debian >= jessie') {
+        file { '/etc/modules-load.d/conntrack.conf':
+            ensure  => present,
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0444',
+            content => "nf_conntrack\n",
+            require => File['/etc/modprobe.d/nf_conntrack.conf'],
+        }
+    }
+
     package { ['ferm', 'libnet-dns-perl', 'conntrack']:
         ensure  => present,
         require => File['/etc/modprobe.d/nf_conntrack.conf'],
