@@ -12,18 +12,17 @@
     Header set Access-Control-Allow-Origin "*"
   </Directory>
 
-   # Cache json, yaml, csv, and tsv files 1 day
+   # Cache json, yaml, csv, and tsv files 1 hour
    # (could be all files but wanted to be more restrictive to start)
    <IfModule mod_headers.c>
       <FilesMatch "\.(json|yaml|csv|tsv)$">
-         Header set Cache-Control "max-age=86400, public, must-revalidate"
+         Header set Cache-Control "max-age=3600, public, must-revalidate"
      </FilesMatch>
    </IfModule>
 
-   # M86400 -> issue conditional request 1 day after modification
    <IfModule mod_expires.c>
        ExpiresActive On
-       ExpiresDefault M86400
+       ExpiresDefault "modification plus 1 hour"
    </IfModule>
 
   LogLevel warn
