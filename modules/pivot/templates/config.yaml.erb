@@ -173,3 +173,37 @@ dataCubes:
     # * autofill-measures-only - Introspect the datasource, automatically generate measures only
     # * autofill-all - (default) Introspect the datasource, automatically generate dimensions and measures
     introspection: autofill-all
+
+  - name: unique-devices-daily
+    title: Unique Devices Daily
+    description: From beginning of 2016 - Daily resolution
+    clusterName: druid
+    source: unique-devices-daily
+    # The refresh rule describes how often the data cube looks for new data.
+    # Default: 'query'/PT1M (every minute)
+    refreshRule:
+      rule: query
+
+    #defaultTimezone: Etc/UTC
+
+    #defaultDuration: P1D
+
+    #defaultSortMeasure: view_count
+
+    # The names of measures that are selected by default
+    #defaultSelectedMeasures: []
+
+    # The names of dimensions that are pinned by default (in order that they will appear in the pin bar)
+
+    #defaultPinnedDimensions: []
+
+    # How the dataset should be introspected
+    # possible options are:
+    # * none - Do not do any introspection, take what is written in the config as the rule of law.
+    # * no-autofill - Introspect the datasource but do not automatically generate dimensions or measures
+    # * autofill-dimensions-only - Introspect the datasource, automatically generate dimensions only
+    # * autofill-measures-only - Introspect the datasource, automatically generate measures only
+    # * autofill-all - (default) Introspect the datasource, automatically generate dimensions and measures
+    introspection: autofill-all
+
+
