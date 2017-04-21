@@ -1,12 +1,13 @@
 #!/bin/bash
 verbose_opts="--verbose"
 force=""
+failed_only=""
 attempts=12
 enable=""
 
 show_help() {
     cat << EOF
-Usage: ${0##*/} [-q] [-a ATTEMPTS] [-e [MSG]|-f]
+Usage: ${0##*/} [-q] [-a ATTEMPTS] [-e [MSG]|-f] [--failed-only]
 Will execute a puppet agent run reliably, waiting for any preceding puppet runs
 to complete before starting. This should allow to ensure a coordinated puppet
 run after a change is effective everywhere.
@@ -16,6 +17,8 @@ Options:
                     difference.
     -e --enable MSG Will enable puppet if it was disabled with reason MSG.
     -f --force      Will forcibly enable puppet if it's not enabled.
+    --failed-only   Will run puppet only if the last run had failed. Will
+                    silently skip if puppet is disabled and implies -q/--quiet.
     -a --attempts N When waiting for a preceding puppet run, wait N*10 seconds
                     before giving up.
 EOF
@@ -28,6 +31,10 @@ while :; do
             ;;
         -f|--force)
             force=1
+            ;;
+        --failed-only)
+            failed_only=1
+            verbose_opts=""
             ;;
         -a|--attempts)
             if [ -n "$2" ]; then
@@ -69,10 +76,19 @@ done
 test "$force" && puppet agent --enable
 test "$enable" && enable-puppet "$enable"
 
+# Skip hosts where puppet is disabled if --failed-only is set
+test -n "${failed_only}" -a -f "${PUPPET_DISABLEDLOCK}" && exit 0
+
 if ! wait_for_puppet "$attempts"; then
-    SECONDS=$(( $attempts * 10 ))
+    SECONDS=$(( attempts * 10 ))
     echo "Waited ${SECONDS} seconds and a preceding puppet run is still ongoing, aborting"
     exit 1
 fi
+
+# Skip hosts where puppet didn't fail if --failed-only is set
+if [[ -n "${failed_only}" && $(last_run_success) ]]; then
+    exit 0
+fi
+
 puppet agent --onetime --no-daemonize $verbose_opts --no-splay --show_diff \
        --ignorecache --no-usecacheonfailure
