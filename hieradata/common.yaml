@@ -457,7 +457,7 @@ install_server: install1002.wikimedia.org
 install_server_failover: install2002.wikimedia.org
 
 # Etcd client global configuration
-etcd_client_srv_domain: "%{::site}.wmnet"
+etcd_client_srv_domain: "conftool.%{::site}.wmnet"
 etcd_host: ''
 etcd_port: ''
 
