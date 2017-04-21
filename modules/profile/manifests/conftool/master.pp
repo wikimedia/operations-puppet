@@ -8,18 +8,14 @@
 #
 class profile::conftool::master(
     $sync_dir = hiera('profile::conftool::master::sync_dir'),
+    $git_dir  = hiera('profile::conftool::master::git_dir', '/var/lib/git')
 ) {
     # All the configuration we have for the client is needed by the master
     require ::profile::conftool::client
 
-    # We also need to know where the puppet repo is. We cannot require a profile
-    # here because the puppet classes are not well structured. TODO: fix this
-    # and transform the git dir into a parameter
-    require ::puppetmaster::base_repo
-
     file { '/etc/conftool/data':
         ensure => link,
-        target => "${::puppetmaster::base_repo::gitdir}/operations/puppet/conftool-data",
+        target => "${git_dir}/operations/puppet/conftool-data",
         force  => true,
         before => File['/usr/local/bin/conftool-merge'],
     }
