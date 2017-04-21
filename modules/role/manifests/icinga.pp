@@ -99,7 +99,7 @@ class role::icinga {
     }
     cron { 'sync-icinga-state':
         ensure  => $cron_presence,
-        minute  => '*/10',
+        minute  => '33',
         command => '/usr/local/sbin/run-no-puppet /usr/local/sbin/sync_icinga_state >/dev/null 2>&1',
     }
 }
