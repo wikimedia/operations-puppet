@@ -66,11 +66,12 @@ define tcpircbot::instance(
     $ssl         = true,
     $max_clients = 5,
     $listen_port = 9200,
+    $ensure      = 'present',
 ) {
     include tcpircbot
 
     file { "${tcpircbot::dir}/tcpircbot-${title}.json":
-        ensure  => present,
+        ensure  => $ensure,
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
@@ -79,7 +80,7 @@ define tcpircbot::instance(
     }
 
     base::service_unit { "tcpircbot-${title}":
-        ensure        => present,
+        ensure        => $ensure,
         upstart       => true,
         systemd       => true,
         template_name => 'tcpircbot',
