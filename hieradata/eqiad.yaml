@@ -62,7 +62,7 @@ eventlogging_mysql_consumers:
     # - mysql-m4-master-03
 
 
-labs_certmanager_hostname: "labservices1001.wikimedia.org"
+labs_certmanager_hostname: "labservices1002.wikimedia.org"
 
 # Default zookeeper cluster to use in eqiad.
 # The cluster config is in common.yaml in zookeeper_clusters.
