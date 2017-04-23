@@ -98,7 +98,7 @@ function doRequests( dataset, options ) {
 		function ( uri, group ) {
 			var target = options.target || ( group !== 'main' && group !== 'debug' ? group : null ),
 				reqOptions = createOptions( baseOptions, uri, target );
-			console.log( `[${new Date().toISOString()}] Request ${uri} (${group})` );
+			// console.log( `[${new Date().toISOString()}] Request ${uri} (${group})` );
 			return util.fetchUrl( reqOptions );
 		}
 	).then( function ( stats ) {
