@@ -97,7 +97,6 @@ class phabricator (
         'python-phabricator',
         'php5-mysql',
         'php5-gd',
-        'php-apc',
         'php5-mailparse',
         'php5-dev',
         'php5-curl',
@@ -108,6 +107,12 @@ class phabricator (
         'subversion']:
 
             ensure => present;
+    }
+
+    if >= jessie {
+      package { 'php-apcu':
+              ensure => present;
+      }
     }
 
     include ::apache::mod::php5
