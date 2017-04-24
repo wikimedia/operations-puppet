@@ -1884,7 +1884,7 @@ node 'mendelevium.eqiad.wmnet' {
 
 # misc. test server, keep (T156208)
 node 'multatuli.wikimedia.org' {
-    role(test::system)
+    role(test::system, mediawiki::migrate)
 
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
@@ -2719,7 +2719,7 @@ node /^labvirt101[0-4].eqiad.wmnet/ {
 
 # mediawiki maintenance server (like terbium)
 node 'wasat.codfw.wmnet' {
-    role(mariadb::maintenance, mediawiki::maintenance, mediawiki::migrate)
+    role(mariadb::maintenance, mediawiki::maintenance)
     include ::role::noc::site
     include ::ldap::role::client::labs
     include ::base::firewall
