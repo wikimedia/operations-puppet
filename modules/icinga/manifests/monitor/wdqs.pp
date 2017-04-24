@@ -6,7 +6,7 @@ class icinga::monitor::wdqs {
     monitoring::graphite_threshold { 'wdqs-response-time-codfw':
         description   => 'Response time of WDQS codfw',
         host          => 'wdqs.svc.codfw.wmnet',
-        metric        => 'varnish.codfw.backends.be_wdqs_svc_eqiad_wmnet.GET.p99',
+        metric        => 'varnish.codfw.backends.be_wdqs_svc_codfw_wmnet.GET.p99',
         warning       => 120000, # 2 minutes
         critical      => 300000, # 5 minutes
         from          => '10min',
