@@ -6072,8 +6072,6 @@ host tempdb2001 {
 host terbium {
     hardware ethernet 90:B1:1C:25:9D:72;
     fixed-address terbium.eqiad.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host tin {
