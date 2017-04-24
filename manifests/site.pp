@@ -1884,7 +1884,7 @@ node 'mendelevium.eqiad.wmnet' {
 
 # misc. test server, keep (T156208)
 node 'multatuli.wikimedia.org' {
-    role(test::system)
+    role(test::system, mediawiki::migrate)
 
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
