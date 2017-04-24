@@ -3,7 +3,6 @@
 #
 /var/log/cirrusdump/*.log {
     daily
-    notifempty
     dateext
     compress
     delaycompress
