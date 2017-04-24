@@ -5,6 +5,7 @@ Description=%p (Varnish HTTP Accelerator)
 Type=forking
 LimitNOFILE=500000
 LimitMEMLOCK=90000
+LimitRTPRIO=infinity
 PIDFile=%t/%p.pid
 Restart=on-failure
 KillMode=process
