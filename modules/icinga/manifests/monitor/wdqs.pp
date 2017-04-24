@@ -3,7 +3,7 @@ class icinga::monitor::wdqs {
 
     # raise a warning / critical alert if response time was over 2 minutes / 5 minutes
     # more than 5% of the time during the last minute
-    monitoring::graphite_threshold { 'wdqs-response-time':
+    monitoring::graphite_threshold { 'wdqs-response-time-codfw':
         description   => 'Response time of WDQS codfw',
         host          => 'wdqs.svc.codfw.wmnet',
         metric        => 'varnish.codfw.backends.be_wdqs_svc_eqiad_wmnet.GET.p99',
@@ -14,7 +14,7 @@ class icinga::monitor::wdqs {
         contact_group => 'wdqs-admins',
     }
 
-    monitoring::graphite_threshold { 'wdqs-response-time':
+    monitoring::graphite_threshold { 'wdqs-response-time-eqiad':
         description   => 'Response time of WDQS eqiad',
         host          => 'wdqs.svc.eqiad.wmnet',
         metric        => 'varnish.eqiad.backends.be_wdqs_svc_eqiad_wmnet.GET.p99',
