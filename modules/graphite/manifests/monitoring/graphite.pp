@@ -13,6 +13,7 @@ class graphite::monitoring::graphite {
         from            => '5minutes',
         warning         => 25,
         critical        => 100,
+        percentage      => 80,
         nagios_critical => false,
     }
 
@@ -22,6 +23,7 @@ class graphite::monitoring::graphite {
         from            => '5minutes',
         warning         => 25,
         critical        => 100,
+        percentage      => 80,
         nagios_critical => false,
     }
 
@@ -32,6 +34,7 @@ class graphite::monitoring::graphite {
         from            => '10minutes',
         warning         => 1,
         critical        => 8,
+        percentage      => 80,
         nagios_critical => false,
     }
 
@@ -42,6 +45,7 @@ class graphite::monitoring::graphite {
         from            => '10minutes',
         warning         => 1,
         critical        => 8,
+        percentage      => 80,
         nagios_critical => false,
     }
 
@@ -52,6 +56,7 @@ class graphite::monitoring::graphite {
         from            => '1hour',
         warning         => 500,
         critical        => 1000,
+        percentage      => 80,
         nagios_critical => false,
     }
 }
