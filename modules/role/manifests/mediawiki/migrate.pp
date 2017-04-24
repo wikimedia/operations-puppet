@@ -10,7 +10,7 @@ class role::mediawiki::migrate {
 
     include rsync::server
     rsync::server::module { 'terbium-home':
-        path        => '/home',
+        path        => '/srv/terbium-home',
         read_only   => 'no',
         hosts_allow => $sourceip,
     }
