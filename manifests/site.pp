@@ -2719,7 +2719,7 @@ node /^labvirt101[0-4].eqiad.wmnet/ {
 
 # mediawiki maintenance server (like terbium)
 node 'wasat.codfw.wmnet' {
-    role(mariadb::maintenance, mediawiki::maintenance)
+    role(mariadb::maintenance, mediawiki::maintenance, mediawiki::migrate)
     include ::role::noc::site
     include ::ldap::role::client::labs
     include ::base::firewall
