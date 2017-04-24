@@ -108,6 +108,13 @@ class role::deployment::server(
         content  => template('role/deployment/inactive.motd.erb'),
     }
 
+    file { '/var/lock/scap-global-lock':
+        ensure  => $deploy_ensure,
+        owner   => 'root',
+        group   => 'root',
+        content => "Not the active deployment server, use ${main_deployment_server}",
+    }
+
     # Bacula backups (T125527)
     backup::set { 'srv-deployment': }
 
