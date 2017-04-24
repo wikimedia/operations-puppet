@@ -37,9 +37,12 @@ class mediawiki::maintenance::cirrussearch( $ensure = present ) {
         mode   => '0775',
     }
 
+    $log_ownership_user = $::mediawiki::users::web
+    $log_ownership_group = $::mediawiki::users::web
+
     logrotate::conf { 'cirrus-suggest':
-        ensure => $ensure,
-        source => 'puppet:///modules/mediawiki/maintenance/logrotate.d_cirrus-suggest',
+        ensure  => $ensure,
+        content => template('mediawiki/maintenance/logrotate.d_cirrus-suggest.erb'),
     }
 
     file { '/var/log/mediawiki/cirrus-sanitize':
@@ -50,7 +53,7 @@ class mediawiki::maintenance::cirrussearch( $ensure = present ) {
     }
 
     logrotate::conf { 'cirrus-sanitize':
-        ensure => $ensure,
-        source => 'puppet:///modules/mediawiki/maintenance/logrotate.d_cirrus-sanitize',
+        ensure  => $ensure,
+        content => template('mediawiki/maintenance/logrotate.d_cirrus-sanitize.erb'),
     }
 }
