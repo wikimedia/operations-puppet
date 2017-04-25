@@ -18,11 +18,11 @@ class role::openldap::management {
     require_package('python-yaml', 'python-ldap', 'python-phabricator')
 
     file { '/usr/local/bin/cross-validate-accounts':
-        ensure => present,
-        source => 'puppet:///modules/openldap/cross-validate-accounts.py',
-        mode   => '0555',
-        owner  => 'root',
-        group  => 'root',
+        ensure  => present,
+        content => template('openldap/cross-validate-accounts.py.erb'),
+        mode    => '0555',
+        owner   => 'root',
+        group   => 'root',
     }
 
     file { '/usr/local/bin/offboard-user':
