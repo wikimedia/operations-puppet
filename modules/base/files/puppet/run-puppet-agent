@@ -14,7 +14,7 @@ run after a change is effective everywhere.
 Options:
     -q --quiet      Will make the puppet run quiet and not output any verbose
                     difference.
-    -e --enable MSG Will enable puppet if $MSG is present
+    -e --enable MSG Will enable puppet if it was disabled with reason MSG.
     -f --force      Will forcibly enable puppet if it's not enabled.
     -a --attempts N When waiting for a preceding puppet run, wait N*10 seconds
                     before giving up.
