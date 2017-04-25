@@ -915,8 +915,8 @@ node 'eeden.wikimedia.org' {
     include ::standard
 }
 
-# icinga based monitoring host in eqiad
-node 'einsteinium.wikimedia.org' {
+# icinga based monitoring hosts
+node 'einsteinium.wikimedia.org', 'tegmen.wikimedia.org' {
     role(icinga, tendril, tcpircbot, certspotter)
 }
 
@@ -2665,11 +2665,6 @@ node /^snapshot100[5-7]\.eqiad\.wmnet/ {
 node /(subra|suhail)\.codfw\.wmnet/ {
     role(poolcounter::server)
     include ::standard
-}
-
-# icinga based monitoring host in codfw
-node 'tegmen.wikimedia.org' {
-    role(icinga, tendril, tcpircbot, certspotter)
 }
 
 # https://wikitech.wikimedia.org/wiki/Terbium
