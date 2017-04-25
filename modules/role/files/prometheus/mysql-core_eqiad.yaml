@@ -76,7 +76,7 @@
   targets:
   - db1026:9104
   - db1045:9104
-  - db1063:9104
+  - db1049:9104
   - db1070:9104
   - db1071:9104
   - db1082:9104
@@ -86,7 +86,7 @@
     shard: s5
     role: master
   targets:
-  - db1049:9104
+  - db1063:9104
 
 - labels:
     shard: s6
