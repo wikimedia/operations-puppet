@@ -12,7 +12,7 @@ log_statsd_sample_rate_factor = <%= @statsd_sample_rate_factor %>
 <% end -%>
 
 [pipeline:main]
-pipeline = rewrite healthcheck cache container_sync tempurl tempauth cors proxy-logging proxy-server
+pipeline = rewrite healthcheck cache container_sync tempurl ratelimit tempauth cors proxy-logging proxy-server
 
 [app:proxy-server]
 use = egg:swift#proxy
@@ -30,6 +30,17 @@ token_life = 604800
 <% key = @credentials[name] -%>
 <%= "user_#{info['user'].gsub(':', '_')} = #{key} #{info['access']} #{info['auth']}/v1/#{info['account_name']}" %>
 <% end -%>
+
+# https://docs.openstack.org/developer/swift/ratelimit.html
+[filter:ratelimit]
+use = egg:swift#ratelimit
+# accounts limited to 10/s PUT/DELETE to containers
+account_ratelimit = 10
+account_whitelist = AUTH_mw
+log_sleep_time_seconds = 3
+# containers with > 200 objects limited to 50/s PUT/DELETE/POST and listings
+container_ratelimit_200 = 50
+container_listing_ratelimit_200 = 50
 
 [filter:container_sync]
 use = egg:swift#container_sync
