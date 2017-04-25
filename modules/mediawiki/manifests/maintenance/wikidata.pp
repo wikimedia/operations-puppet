@@ -50,11 +50,13 @@ class mediawiki::maintenance::wikidata( $ensure = present ) {
         mode   => '0664',
     }
 
+    $log_ownership_user = $::mediawiki::users::web
+    $log_ownership_group = $::mediawiki::users::web
     file { '/etc/logrotate.d/wikidata':
-        ensure => $ensure,
-        source => 'puppet:///modules/mediawiki/maintenance/logrotate.d_wikidata',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0444',
+        ensure  => $ensure,
+        content => template('mediawiki/maintenance/logrotate.d_wikidata.erb'),
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
     }
 }
