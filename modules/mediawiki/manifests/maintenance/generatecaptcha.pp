@@ -30,9 +30,11 @@ class mediawiki::maintenance::generatecaptcha( $ensure = present ) {
         group  => $::mediawiki::users::web,
     }
 
+    $log_ownership_user = $::mediawiki::users::web
+    $log_ownership_group = $::mediawiki::users::web
     logrotate::conf { 'generate-fancycaptcha':
-        ensure => $ensure,
-        source => 'puppet:///modules/mediawiki/maintenance/logrotate.d_generate-fancycaptcha',
+        ensure  => $ensure,
+        content => template('mediawiki/maintenance/logrotate.d_generate-fancycaptcha.erb'),
     }
 
     cron { 'generatecaptcha':
