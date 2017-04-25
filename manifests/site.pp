@@ -603,7 +603,7 @@ node /^db20(39|46|53|60|67)\.codfw\.wmnet/ {
 
 # s7 (centralauth, meta et al.) core production dbs on eqiad
 # eqiad master
-node 'db1041.eqiad.wmnet' {
+node 'db1062.eqiad.wmnet' {
     class { '::role::mariadb::core':
         shard         => 's7',
         master        => true,
@@ -611,7 +611,7 @@ node 'db1041.eqiad.wmnet' {
     }
 }
 
-node /^db10(28|33|34|39|62|79|86|94)\.eqiad\.wmnet/ {
+node /^db10(28|33|34|39|41|79|86|94)\.eqiad\.wmnet/ {
     class { '::role::mariadb::core':
         shard => 's7',
     }
