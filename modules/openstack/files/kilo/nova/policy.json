@@ -6,7 +6,7 @@
 
     "cells_scheduler_filter:TargetCellFilter": "is_admin:True",
 
-    "compute:create": "rule:admin_or_projectadmin",
+    "compute:create": "is_admin:True",
     "compute:create:attach_network": "rule:admin_or_projectadmin",
     "compute:create:attach_volume": "rule:admin_or_projectadmin",
     "compute:create:forced_host": "rule:admin_or_projectadmin",
