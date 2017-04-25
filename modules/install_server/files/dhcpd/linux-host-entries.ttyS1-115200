@@ -3370,11 +3370,6 @@ host ms1001 {
     fixed-address ms1001.wikimedia.org;
 }
 
-host ms1003 {
-    hardware ethernet 78:2b:cb:0b:04:c0;
-    fixed-address ms1003.eqiad.wmnet;
-}
-
 host ms-be1001 {
     hardware ethernet 90:B1:1C:14:C9:FF;
     fixed-address ms-be1001.eqiad.wmnet;
