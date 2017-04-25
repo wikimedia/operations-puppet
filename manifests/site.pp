@@ -1151,9 +1151,8 @@ node 'kraz.wikimedia.org' {
     role(mw_rc_irc)
 }
 
-# labservices1002 hosts openstack-designate, the labs DNS service,
-#  as well as the labs dns service.
-node 'labservices1002.wikimedia.org' {
+# labservices1001 hosts openstack-designate, the labs DNS service.
+node 'labservices1001.wikimedia.org' {
     role(labs::dns, labs::openstack::designate::server, labs::dnsrecursor,
         labs::dns_floating_ip_updater)
     include ::standard
@@ -1161,9 +1160,7 @@ node 'labservices1002.wikimedia.org' {
     include ::ldap::role::client::labs
 }
 
-# labservices1001 hosts the secondary labs dns service and
-#  is a manual fail-over option for designate.
-node 'labservices1001.wikimedia.org' {
+node 'labservices1002.wikimedia.org' {
     role(labs::dns, labs::openstack::designate::server, labs::dnsrecursor)
     include ::standard
     include ::base::firewall

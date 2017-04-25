@@ -62,7 +62,7 @@ eventlogging_mysql_consumers:
     # - mysql-m4-master-03
 
 
-labs_certmanager_hostname: "labservices1002.wikimedia.org"
+labs_certmanager_hostname: "labservices1001.wikimedia.org"
 
 # Default zookeeper cluster to use in eqiad.
 # The cluster config is in common.yaml in zookeeper_clusters.
@@ -93,11 +93,11 @@ labs_host_ips: '10.64.20.0/24'
 
 # These are the up-and-coming, better dns servers:
 labsdnsconfig:
-  host: 'labs-ns1.wikimedia.org'
-  host_secondary: 'labs-ns0.wikimedia.org'
+  host: 'labs-ns0.wikimedia.org'
+  host_secondary: 'labs-ns1.wikimedia.org'
   dbserver: 'localhost'
-  recursor: 'labs-recursor1.wikimedia.org'
-  recursor_secondary: 'labs-recursor0.wikimedia.org'
+  recursor: 'labs-recursor0.wikimedia.org'
+  recursor_secondary: 'labs-recursor1.wikimedia.org'
 
 novaconfig:
   db_host: 'm5-master.eqiad.wmnet'
