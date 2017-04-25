@@ -66,6 +66,7 @@ define cassandra::instance(
         $instance_id         = $::hostname
         $data_file_directories  = $this_instance['data_file_directories']
         $commitlog_directory    = $this_instance['commitlog_directory']
+        $hints_directory        = $this_instance['hints_directory']
         $heapdump_directory     = $this_instance['heapdump_directory']
         $saved_caches_directory = $this_instance['saved_caches_directory']
     } else {
@@ -77,6 +78,7 @@ define cassandra::instance(
         $instance_id         = "${::hostname}-${instance_name}"
         $data_file_directories  = ["${data_directory_base}/data"]
         $commitlog_directory    = "${data_directory_base}/commitlog"
+        $hints_directory        = "${data_directory_base}/data/hints"
         $heapdump_directory     = $data_directory_base
         $saved_caches_directory = "${data_directory_base}/saved_caches"
     }
