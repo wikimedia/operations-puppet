@@ -19,7 +19,7 @@ class role::openldap::management {
 
     file { '/usr/local/bin/cross-validate-accounts':
         ensure => present,
-        source => 'puppet:///modules/openldap/cross-validate-accounts.py',
+        content => template('openldap/cross-validate-accounts.py.erb'),
         mode   => '0555',
         owner  => 'root',
         group  => 'root',
