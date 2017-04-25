@@ -38,7 +38,13 @@ class role::openldap::management {
         system => true,
     }
 
+    $ensure = $::mw_primary ? {
+        $::site => 'present',
+        default => 'absent',
+    }
+
     cron { 'daily_account_consistency_check':
+        ensure  => $ensure,
         require => [ File['/usr/local/bin/cross-validate-accounts'], User['accountcheck']] ,
         command => '/usr/local/bin/cross-validate-accounts',
         user    => 'accountcheck',
