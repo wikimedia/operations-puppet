@@ -413,7 +413,7 @@ node /^db20(34|42|48|55|62|69|70|71)\.codfw\.wmnet/ {
 
 # s2 (large wikis) core production dbs on eqiad
 # eqiad master
-node 'db1018.eqiad.wmnet' {
+node 'db1054.eqiad.wmnet' {
     class { '::role::mariadb::core':
         shard         => 's2',
         master        => true,
@@ -421,7 +421,7 @@ node 'db1018.eqiad.wmnet' {
     }
 }
 
-node /^db10(21|24|36|54|60|74|76|90)\.eqiad\.wmnet/ {
+node /^db10(18|21|24|36|60|74|76|90)\.eqiad\.wmnet/ {
     class { '::role::mariadb::core':
         shard => 's2',
     }
