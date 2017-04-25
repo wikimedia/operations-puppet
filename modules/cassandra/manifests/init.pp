@@ -73,6 +73,10 @@
 #   Directory where Cassandra should store its commit log.
 #   Default: /var/lib/cassandra/commitlog
 #
+# [*hints_directory*]
+#   Directory where Cassandra stores hints (Cassandra >= 3.0)
+#   Default: /var/lib/cassandra/data/hints
+#
 # [*disk_failure_policy*]
 #   Policy for data disk failure.  Should be one of:
 #   stop_paranoid, die, stop, best_effort, or ignore.
@@ -263,6 +267,7 @@ class cassandra(
     $data_directory_base              = '/var/lib/cassandra',
     $data_file_directories            = ['/var/lib/cassandra/data'],
     $commitlog_directory              = '/var/lib/cassandra/commitlog',
+    $hints_directory                  = '/var/lib/cassandra/data/hints',
     $heapdump_directory               = '/var/lib/cassandra/',
     $disk_failure_policy              = 'stop',
     $row_cache_size_in_mb             = 200,
@@ -314,6 +319,7 @@ class cassandra(
     validate_string($cluster_name)
 
     validate_absolute_path($commitlog_directory)
+    validate_absolute_path($hints_directory)
     validate_absolute_path($saved_caches_directory)
 
     validate_string($endpoint_snitch)
@@ -442,6 +448,7 @@ class cassandra(
                 'data_directory_base'    => $data_directory_base,
                 'data_file_directories'  => $data_file_directories,
                 'commitlog_directory'    => $commitlog_directory,
+                'hints_directory'        => $hints_directory,
                 'heapdump_directory'     => $heapdump_directory,
                 'saved_caches_directory' => $saved_caches_directory,
         }}
