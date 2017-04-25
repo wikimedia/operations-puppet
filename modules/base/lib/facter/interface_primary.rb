@@ -27,16 +27,18 @@ Facter.add('interface_primary') do
   end
 end
 
-Facter.add('ipaddress_primary') do
+Facter.add('ipaddress') do
   confine :kernel => :linux
+  has_weight 100
   setcode do
     intf = Facter.fact('interface_primary').value
     Facter.fact('ipaddress_' + intf).value
   end
 end
 
-Facter.add('ipaddress6_primary') do
+Facter.add('ipaddress6') do
   confine :kernel => :linux
+  has_weight 100
   setcode do
     ip = nil
     intf = Facter.fact('interface_primary').value
