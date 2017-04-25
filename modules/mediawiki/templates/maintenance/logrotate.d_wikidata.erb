@@ -4,6 +4,7 @@
 #####################################################################
 
 /var/log/wikidata/*.log {
+	su <%= @log_ownership_user %> <%= @log_ownership_group %>
 	daily
 	notifempty
 	maxage 180
