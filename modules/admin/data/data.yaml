@@ -2575,6 +2575,10 @@ ldap_only_users:
     ensure: present
     realname: Quim Gil
     email: qgil@wikimedia.org
+  quiddity:
+    ensure: present
+    realname: Nick Wilson
+    email: nwilson@wikimedia.org
   raqstallman:
     ensure: present
     realname: Rachel Stallman
