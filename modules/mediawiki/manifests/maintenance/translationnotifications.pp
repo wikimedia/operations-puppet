@@ -28,12 +28,13 @@ class mediawiki::maintenance::translationnotifications( $ensure = present ) {
         mode   => '0664',
     }
 
+    $log_ownership_user = $::mediawiki::users::web
     file { '/etc/logrotate.d/l10nupdate':
-        ensure => $ensure,
-        source => 'puppet:///modules/mediawiki/maintenance/logrotate.d_translationnotifications',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0444',
+        ensure  => $ensure,
+        content => template('mediawiki/maintenance/logrotate.d_translationnotifications.erb'),
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
     }
 }
 
