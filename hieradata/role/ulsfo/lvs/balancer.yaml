@@ -2,4 +2,4 @@ debdeploy::grains:
   debdeploy-lvs-ulsfo:
     value: standard
 pybal::configuration::config: etcd
-pybal::configuration::config_host: conf1001.eqiad.wmnet
+pybal::configuration::config_host: conf2001.codfw.wmnet
