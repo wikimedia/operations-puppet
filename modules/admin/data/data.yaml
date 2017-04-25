@@ -1346,7 +1346,7 @@ users:
     gid: 500
     name: jmorgan
     realname: Jonathan Morgan
-    ssh_keys: [ssh-dss AAAAB3NzaC1kc3MAAACBANmrKxA/ZR4cjUHMn5FAHjN7cwq6fofqiDt4rgkJjORxYlTt2oBUKojbIMtJJsqzekzZMjU3tkvSOOZ/RUUH5zyZDf/pEprnqiHrrfA5qOl/+1xGSTDkHuGNgvVNdqe1NxyEimxc6eZHBuzmUiF7GX2pOUkgUlTeEhsWnhlv/6qLAAAAFQD7pdZrxClfQt0pV/qgmuHPepZf6wAAAIEAhQDoc0cOqXqwNuvkvOO4FnwlLdiAntMqfP7+GuBaTmXphLmMnynBHGu2+iTAMVs9QyejlBVZX7YshD6HY6c+HErOol36oa4e6y/RZpYDaBeHWq+8y0Wob6czYoY22ycDPEgLFZrYpKJlqiG69t4LuuB3SrKr9n7L+m/ktcJ8+pgAAACABI/xfnabsoHbsIwuynu7VwU4PGcMR6SqCYrQma9F9oJtA89P487HDPM42cAzff0xPzjN5NhBNAF4mibDz1KI+elW5ruYU2nEvtEmrL9xl5vGOjjeXM6ecOo4BbIxa1rUU64LCYUS+UvoNNxGu6Xs4oWIltti9+IXLTNHj4hSztI=
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDgjynrQCEXg2nQMZSAEGiXo8sAtLJMbWFB52ylg+ZqeJuesQ5z0zySj9/pX7xvc5a5HBzOwpT72thhdnoQCV9s52hC98tSQY2YzPlybu3tltM7WNzfoKboMfQ2aZHbi+bcTZEjvzwc+6h5dMZvCwmSUva8fAPfyPvnuV0AegNksbG1PInSyOD4pbfXf9y6QfZcJWyzV+Q+7hFlKmSNT53If06qFRAWW8ZgcMi9k//jC2fpn7P2CHKe4w0oz1yVZUgDLUyBwYECPtsbfw+xcrbFlfyoEmP1yLbolgFo/pZfNd7mGS4MrRhBPMEaMXMm34901/d1kJpztVqO/MTwAjO5
         jmorgan@wikimedia.org]
     uid: 2402
     email: jmorgan@wikimedia.org
