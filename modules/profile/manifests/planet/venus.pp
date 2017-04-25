@@ -171,16 +171,6 @@ class profile::planet::venus (
             'planetarium'   => 'Planetarium',
 
         },
-        sr => {
-            'subscribe'     => 'Prati',
-            'subscriptions' => 'Blogovi',
-            'lastupdated'   => 'Poslednje a&#382;urirano',
-            'alltimesutc'   => 'Sva vremena su u UTC.',
-            'poweredby'     => 'Pokre&#263;e',
-            'wikimedia'     => 'Vikimedija',
-            'planetarium'   => 'Planetarijum',
-
-        },
         uk => {
             'subscribe'     => '&#1055;&#1110;&#1076;&#1087;&#1080;&#1089;&#1072;&#1090;&#1080;&#1089;&#1103;',
             'subscriptions' => '&#1055;&#1110;&#1076;&#1087;&#1080;&#1089;&#1072;&#1083;&#1080;&#1089;&#1103;',
