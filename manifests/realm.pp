@@ -4,15 +4,7 @@
 
 # Determine the site the server is in
 
-if $facts['ipaddress_eth0'] {
-    $main_ipaddress = $facts['ipaddress_eth0']
-} elsif $facts['ipaddress_bond0'] {
-    $main_ipaddress = $facts['ipaddress_bond0']
-} else {
-    $main_ipaddress = $facts['ipaddress']
-}
-
-$site = $main_ipaddress ? {
+$site = $facts['ipaddress'] ? {
     /^208\.80\.15[23]\./                      => 'codfw',
     /^208\.80\.15[45]\./                      => 'eqiad',
     /^10\.6[48]\./                            => 'eqiad',
@@ -62,7 +54,7 @@ $app_routes = hiera('discovery::app_routes')
 $mw_primary = $app_routes['mediawiki']
 $aqs_site = $app_routes['aqs']
 
-$network_zone = $main_ipaddress ? {
+$network_zone = $facts['ipaddress'] ? {
     /^10./  => 'internal',
     default => 'public'
 }
