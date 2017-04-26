@@ -22,6 +22,7 @@ class role::icinga {
     include icinga::monitor::elasticsearch
     include icinga::monitor::wdqs
     include icinga::monitor::performance
+    include icinga::monitor::reading_web
     include icinga::event_handlers::raid
 
     include role::authdns::monitoring
