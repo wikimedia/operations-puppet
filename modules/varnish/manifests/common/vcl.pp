@@ -17,6 +17,9 @@ class varnish::common::vcl {
 
     $errorpage  = {
         title       => 'Wikimedia Error',
+        logo_link   => 'https://www.wikimedia.org',
+        logo_src    => 'https://www.wikimedia.org/static/images/wmf.png',
+        logo_srcset => 'https://www.wikimedia.org/static/images/wmf-2x.png 2x',
         content     => '<p>Our servers are currently under maintenance or experiencing a technical problem. Please <a href="" title="Reload this page" onclick="window.location.reload(false); return false">try again</a> in a few&nbsp;minutes.</p><p>See the error message at the bottom of this page for more&nbsp;information.</p>',
         # Use append instead of footer because we intentionally leave the
         # "div.footer > p > code" stack unclosed.
