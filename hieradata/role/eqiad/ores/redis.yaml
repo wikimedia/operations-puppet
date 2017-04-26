@@ -1,4 +1,4 @@
-ores::redis::client_hosts:
+profile::ores::redis::client_hosts:
   - scb1001.eqiad.wmnet
   - scb1002.eqiad.wmnet
   - scb1003.eqiad.wmnet
