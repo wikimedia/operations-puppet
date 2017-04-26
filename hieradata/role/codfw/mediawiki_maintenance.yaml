@@ -1,4 +1,4 @@
-tendril::maintenance::ensure: absent
+tendril::maintenance::ensure: present
 debdeploy::grains:
   debdeploy-mediawiki-maintenance-codfw:
     value: standard
