@@ -200,6 +200,9 @@ scap::dsh::groups:
 "profile::elasticsearch::recover_after_nodes": 3
 "profile::elasticsearch::bulk_thread_pool_executors": 5
 "profile::elasticsearch::ferm_srange": ''
+"profile::elasticsearch::awareness_attributes": 'none'
+"profile::elasticsearch::rack": ''
+"profile::elasticsearch::row": ''
 "profile::elasticsearch::unicast_hosts":
     - deployment-elastic05.deployment-prep.eqiad.wmflabs
     - deployment-elastic06.deployment-prep.eqiad.wmflabs
