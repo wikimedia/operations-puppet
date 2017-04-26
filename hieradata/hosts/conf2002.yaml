@@ -1,2 +1,0 @@
-# Override here so that replication can happen
-profile::etcd::replication::active: true
