@@ -143,6 +143,7 @@ cassandra::metrics::blacklist:
     - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\..*$
     - .*\.metrics\.Keyspace\..*$
     - .*\.metrics\.Client\..*$
+    - .*\.metrics\.Table\..*$
 
 cassandra::dc: "%{::site}"
 # NOTE: this is cassandra's logical cluster name, not related to cassandra's datacenters (eqiad/codfw)
