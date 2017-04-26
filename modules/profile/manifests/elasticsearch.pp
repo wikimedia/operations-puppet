@@ -19,17 +19,13 @@ class profile::elasticsearch {
     $heap_memory = hiera('profile::elasticsearch::heap_memory')
     $expected_nodes = hiera('profile::elasticsearch::expected_nodes')
     $graylog_hosts = hiera('profile::elasticsearch::graylog_hosts')
-    $rack = hiera('profile::elasticsearch::rack', undef) # FIXME: default to undef does not work as expected
-    $row = hiera('profile::elasticsearch::row', undef)  # FIXME: default to undef does not work as expected
-    $awareness_attributes = hiera('profile::elasticsearch::awareness_attributes', undef)
+    $rack = hiera('profile::elasticsearch::rack')
+    $row = hiera('profile::elasticsearch::row')
+    $awareness_attributes = hiera('profile::elasticsearch::awareness_attributes')
     $bulk_thread_pool_executors = hiera('profile::elasticsearch::bulk_thread_pool_executors', 6)
     $certificate_name = hiera('profile::elasticsearch::certificate_name', $::fqdn)
     $recover_after_time = hiera('profile::elasticsearch::recover_after_time', '1s')
     $recover_after_nodes = hiera('profile::elasticsearch::recover_after_nodes', 1)
-
-    if ($::realm == 'production' and $row == undef) {
-        fail("Don't know row for ${::hostname} and row awareness should be turned on")
-    }
 
     $master_eligible = $::fqdn in $unicast_hosts
 

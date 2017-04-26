@@ -11,3 +11,7 @@ profile::elasticsearch::ferm_srange: '$LABS_NETWORKS'
 
 # T130329
 profile::base::check_disk_options: -w 18% -c 15% -l -e -A -i "/srv/sd[a-b][1-3]" --exclude-type=tracefs
+
+profile::elasticsearch::awareness_attributes: 'none'
+profile::elasticsearch::rack: ''
+profile::elasticsearch::row: ''
