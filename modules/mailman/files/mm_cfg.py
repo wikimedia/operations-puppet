@@ -80,6 +80,13 @@ DEFAULT_SEND_REMINDERS = 0
 # MTA=None   # Misnomer, suppresses alias output on newlist
 MTA = None
 
+# If SpamAssassin has run before the message is received by mailman, reject
+# at least the most egregious spam identified. Further tailoring per list:
+# https://wikitech.wikimedia.org/wiki/Mailman#Spam_scores
+DEFAULT_BOUNCE_MATCHING_HEADERS = """
+X-Spam-Score:[^+]*[+]{6,}
+"""
+
 # Uncomment if you use Postfix virtual domains, but be sure to
 # read /usr/share/doc/mailman/README.POSTFIX first.
 # MTA='Postfix'
