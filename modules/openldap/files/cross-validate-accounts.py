@@ -14,7 +14,7 @@ import sys
 
 
 def get_ldap_group_members(group_name):
-    ldap_conn = ldap.initialize('ldaps://ldap-labs.<%= @site %>.wikimedia.org:636')
+    ldap_conn = ldap.initialize('ldaps://ldap-labs.eqiad.wikimedia.org:636')
     ldap_conn.protocol_version = ldap.VERSION3
 
     members = []
