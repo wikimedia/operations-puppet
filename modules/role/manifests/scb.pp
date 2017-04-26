@@ -3,6 +3,7 @@
 class role::scb {
     include ::profile::ores::worker
     include ::profile::ores::web
+    include ::profile::ores::twemproxy
 
     include role::mobileapps
     include role::mathoid

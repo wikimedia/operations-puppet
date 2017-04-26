@@ -1,0 +1,6 @@
+profile::ores::twemproxy::queue_servers:
+  - 10.192.16.31:6379:1 # oresrdb2001
+  - 10.192.32.21:6379:1 # oresrdb2002
+profile::ores::twemproxy::cache_servers:
+  - 10.192.16.31:6380:1 # oresrdb2001
+  - 10.192.32.21:6380:1 # oresrdb2002
