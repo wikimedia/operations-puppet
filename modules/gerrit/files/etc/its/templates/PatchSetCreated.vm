@@ -1,4 +1,4 @@
-#if ( $uploader-username != $author-username )
+#if ( $uploader-name != $author-name )
 Change $change-number had a related patch set uploaded (by $uploader-name; owner: $author-name):
 [$project@$branch] $subject
 #else
