@@ -4,7 +4,7 @@
 #################################################################################
 
 /var/log/translationnotifications/*.log {
-	su <%= @log_ownership_user %> wikidev
+	su <%= @log_ownership_user %> www-data
 	daily
 	notifempty
 	maxage 180
