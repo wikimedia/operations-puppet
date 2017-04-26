@@ -1,0 +1,18 @@
+# This file is managed by puppet
+# DO NOT edit by hand.
+# This file is not included directly in the redis configuration, but
+# conditionally via <%= @replica_state_file %>
+<%-
+site = scope.lookupvar('::site')
+datacenters = @shards.keys
+datacenters.delete(site)
+
+# Find the shard we're referring to
+shard = nil
+name = @shards[site].select{ |_, instance| instance['host'] == @ip && instance['port'] == @title.to_i }.keys[0]
+
+# WARNING: just 2 datacenters are supported here.
+dc = datacenters[0]
+master = @shards[dc][shard]
+-%>
+slaveof <%= master['host'] %> <%= master['port'] %>

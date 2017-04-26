@@ -25,11 +25,18 @@ define profile::redis::multidc_instance(
     }
 
     if $discovery {
+        file { "${replica_state_file}.inc":
+            ensure   => present,
+            owner    => 'root',
+            group    => 'root',
+            template => template('profile/redis/multidc_statefile.inc.erb'),
+            before   => Confd::File[$replica_state_file]
+        }
         confd::file { $replica_state_file:
             ensure     => present,
             prefix     => "/discovery/${discovery}",
             watch_keys => ['/'],
-            content    => template('profile/jobqueue_redis/statefile.tpl.erb'),
+            content    => template('profile/redis/multidc_statefile.tpl.erb'),
         }
         Base::Service_unit['confd'] -> Base::Service_unit["redis-instance-tcp_${title}"]
 
