@@ -1,0 +1,8 @@
+# This file is managed by confd
+# DO NOT edit by hand.
+{{ $site := json ( getv "/<%= scope.lookupvar('::site') %>" ) }}{{ if $site.pooled }}
+# This redis server is a global master as it's in an active datacenter
+{{ else }}
+# This redis server is a slave
+include <%= @replica_state_file %>.inc
+{{ end }}
