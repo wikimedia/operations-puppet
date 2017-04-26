@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang=en>
+<% if @errorpage['favicon'] %><link rel="shortcut icon" href="<%= @errorpage['favicon'] %>" /><% end %>
 <meta charset=utf-8>
 <title><%= @errorpage['title'] %></title>
 <style>
@@ -17,7 +18,7 @@ code { font-family: sans-serif; }
 .text-muted { color: #777; }
 </style>
 <div class="content" role="main">
-<a href="https://www.wikimedia.org"><img src="https://www.wikimedia.org/static/images/wmf.png" srcset="https://www.wikimedia.org/static/images/wmf-2x.png 2x" alt=Wikimedia width=135 height=135></a>
+<% if @errorpage['logo_link'] %><a href="<%= @errorpage['logo_link'] %>"><% end %><img src="<%= @errorpage['logo_src'] %>" srcset="<%= @errorpage['logo_srcset'] %>" alt="<%= @errorpage['logo_alt'] %>" width=135 height=135><% if @errorpage['logo_link'] %></a><% end %>
 <h1>Error</h1>
 <%= @errorpage['content'] %>
 </div>
