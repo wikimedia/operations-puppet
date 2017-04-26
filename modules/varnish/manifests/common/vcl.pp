@@ -15,11 +15,19 @@ class varnish::common::vcl {
         content => template('varnish/analytics.inc.vcl.erb'),
     }
 
+    $errorpage  = {
+        title       => 'Wikimedia Error',
+        content     => '<p>Our servers are currently under maintenance or experiencing a technical problem. Please <a href="" title="Reload this page" onclick="window.location.reload(false); return false">try again</a> in a few&nbsp;minutes.</p><p>See the error message at the bottom of this page for more&nbsp;information.</p>',
+        # Use append instead of footer because we intentionally leave the
+        # "div.footer > p > code" stack unclosed.
+        # We then let errorpage.incl.vcl concatenate and close the stack.
+        append      => '<div class="footer"><p>If you report this error to the Wikimedia System Administrators, please include the details below.</p><p class="text-muted"><code>',
+    }
     file { '/etc/varnish/errorpage.html':
         owner  => 'root',
         group  => 'root',
         mode   => '0444',
-        source => 'puppet:///modules/varnish/errorpage.html',
+        source => template('mediawiki/errorpage.html.erb'),
     }
 
     # VTC tests
