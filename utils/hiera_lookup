@@ -76,7 +76,7 @@ def get_scope()
 
   # Transform roles in the form puppet expects
   if scope['::roles']
-    scope['_roles'] = Hash[scope['::roles'].split(',').map { |role| [role, true] }]
+    scope['_roles'] = Hash[scope['::roles'].split(',').map { |role| [role.gsub('role::',''), true] }]
     scope.delete('::roles')
   end
   scope

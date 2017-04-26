@@ -1,7 +1,9 @@
 # Setting up ORES Redis database in a replicated way in order to facilitate
 # failover if required
+# Note that the password is looked up at namespace one level up in the hierarchy
+# as it is being reused in another profile class in that namespace
 class profile::ores::redis(
-    $password = hiera('profile::ores::redis::password'),
+    $password = hiera('profile::ores::redis_password'),
     $redis_clients = hiera('profile::ores::redis::client_hosts'),
     $slaveof  = hiera('profile::ores::redis::slaveof', undef),
 ){
