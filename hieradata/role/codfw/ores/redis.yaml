@@ -1,4 +1,4 @@
-ores::redis::client_hosts:
+profile::ores::redis::client_hosts:
   - scb2001.codfw.wmnet
   - scb2002.codfw.wmnet
   - scb2003.codfw.wmnet
