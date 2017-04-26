@@ -1,3 +1,4 @@
+profile::mariadb::maintenance::ensure: absent
 debdeploy::grains:
   debdeploy-mediawiki-maintenance-eqiad:
     value: standard
