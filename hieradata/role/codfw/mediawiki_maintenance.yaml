@@ -1,4 +1,4 @@
-tendril::maintenance::ensure: absent
+profile::mariadb::maintenance::ensure: absent
 debdeploy::grains:
   debdeploy-mediawiki-maintenance-codfw:
     value: standard

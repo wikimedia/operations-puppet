@@ -1,24 +1,10 @@
 # mediawiki maintenance server
 class profile::mediawiki::maintenance {
 
-    # Mediawiki
-    include ::role::mediawiki::common
     include ::mediawiki::packages::php5
-
-    # NOC - https://noc.wikimedia.org/
-    include ::role::noc::site
 
     # Deployment
     include ::scap::scripts
-
-    # MariaDB (Tendril)
-    include ::role::mariadb::maintenance
-
-    # LDAP
-    include ::role::openldap::management
-    include ::ldap::role::client::labs
-
-    include ::base::firewall
 
     interface::add_ip6_mapped { 'main': interface => 'eth0', }
 

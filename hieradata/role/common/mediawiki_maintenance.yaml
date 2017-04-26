@@ -16,3 +16,4 @@ hhvm::extra::cli:
       # Kill queries only after 1 day
       read_timeout: 86400000
 nutcracker::verbosity: "4"
+profile::mariadb::maintenance::ensure: present
