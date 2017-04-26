@@ -5,6 +5,9 @@ cassandra::data_file_directories: [/srv/cassandra/data]
 cassandra::commitlog_directory: /srv/cassandra/commitlog
 cassandra::saved_caches_directory: /srv/cassandra/saved_caches
 cassandra::metrics::graphite_host: 'graphite-in.eqiad.wmnet'
+cassandra::metrics::blacklist:
+    - .*\.metrics\.Table\..*$
+
 admin::groups:
   - maps-admins
   - kartotherian-admin

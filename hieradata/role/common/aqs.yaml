@@ -13,6 +13,9 @@ debdeploy::grains:
 # Cassandra for AQS
 #
 cassandra::metrics::graphite_host: 'graphite-in.eqiad.wmnet'
+cassandra::metrics::blacklist:
+    - .*\.metrics\.Table\..*$
+
 cassandra::start_rpc: 'false'
 
 cassandra::target_version: '2.2'
