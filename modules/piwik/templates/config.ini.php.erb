@@ -2,19 +2,19 @@
 ; file automatically generated or modified by Piwik; you can manually override the default values in global.ini.php by redefining them in this file.
 ; This file is managed by PUPPET.
 [database]
-host = <%= @database_host %>
-username = <%= @database_username %>
-password = <%= @database_password %>
-dbname = <%= @database_name %>
-tables_prefix = <%= @database_table_prefix %>
+host = "<%= @database_host %>"
+username = "<%= @database_username %>"
+password = "<%= @database_password %>"
+dbname = "<%= @database_name %>"
+tables_prefix = "<%= @database_table_prefix %>"
 
 [General]
 <%- @proxy_client_headers.each do |proxy_client_header| -%>
-proxy_client_headers[] = <%= @proxy_client_header %>
+proxy_client_headers[] = "<%= @proxy_client_header %>"
 <%- end -%>
-salt = <%= @password_salt %>
+salt = "<%= @password_salt %>"
 <%- @trusted_hosts.each do |trusted_host| -%>
-trusted_hosts[] = <%= @trusted_host %>
+trusted_hosts[] = "<%= @trusted_host %>"
 <%- end -%>
 ; Disable the Piwik UI showing a maintenance message
 ; This does not disable database updates, please also check 'record_statistics'
@@ -28,8 +28,8 @@ bulk_requests_use_transaction = 0
 record_statistics = 1
 
 [mail]
-username = <%= @admin_username %>
-password = <%= @admin_password %>
+username = "<%= @admin_username %>"
+password = "<%= @admin_password %>"
 
 [Plugins]
 Plugins[] = "CorePluginsAdmin"
