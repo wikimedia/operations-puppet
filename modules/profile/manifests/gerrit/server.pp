@@ -9,18 +9,9 @@ class profile::gerrit::server(
     $bacula = hiera('gerrit::server::bacula'),
 ) {
 
-    interface::ip { 'role::gerrit::server_ipv4':
-        interface => 'eth0',
-        address   => $ipv4,
-        prefixlen => '32',
-    }
-
-    if $ipv6 != undef {
-        interface::ip { 'role::gerrit::server_ipv6':
-            interface => 'eth0',
-            address   => $ipv6,
-            prefixlen => '128',
-        }
+    interface::alias { 'gerrit server':
+        ipv4 => $ipv4,
+        ipv6 => $ipv6,
     }
 
     # Detect if we're a master or a slave. If we're been given a master host
