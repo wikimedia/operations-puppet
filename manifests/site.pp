@@ -16,9 +16,7 @@ node /^(acamar|achernar)\.wikimedia\.org$/ {
     role(dnsrecursor, ntp)
     include ::standard
 
-    interface::add_ip6_mapped { 'main':
-        interface => 'eth0',
-    }
+    interface::add_ip6_mapped { 'main': }
 }
 
 # url-downloaders
@@ -141,9 +139,7 @@ node 'auth2001.codfw.wmnet' {
 node 'baham.wikimedia.org' {
     role(authdns::server)
 
-    interface::add_ip6_mapped { 'main':
-        interface => 'eth0',
-    }
+    interface::add_ip6_mapped { 'main': }
     include ::standard
 }
 
@@ -151,14 +147,14 @@ node 'baham.wikimedia.org' {
 node 'bast1001.wikimedia.org' {
     role(bastionhost::general)
 
-    interface::add_ip6_mapped { 'main': interface => 'eth0', }
+    interface::add_ip6_mapped { 'main': }
 }
 
 # Bastion in Texas
 node 'bast2001.wikimedia.org' {
     role(bastionhost::general)
 
-    interface::add_ip6_mapped { 'main': interface => 'eth0', }
+    interface::add_ip6_mapped { 'main': }
 }
 
 # Bastion in the Netherlands (replaced bast3001)
@@ -167,7 +163,7 @@ node 'bast3002.wikimedia.org' {
         installserver::tftp,
         prometheus::ops)
 
-    interface::add_ip6_mapped { 'main': interface => 'eth0', }
+    interface::add_ip6_mapped { 'main': }
     class { '::ganglia::monitor::aggregator': sites =>  'esams', }
 }
 
@@ -178,7 +174,7 @@ node 'bast4001.wikimedia.org' {
         installserver::tftp,
         prometheus::ops)
 
-    interface::add_ip6_mapped { 'main': interface => 'eth0', }
+    interface::add_ip6_mapped { 'main': }
 
     class { '::ganglia::monitor::aggregator':
         sites =>  'ulsfo',
@@ -215,9 +211,7 @@ node 'chromium.wikimedia.org' {
     role(dnsrecursor, ntp)
     include ::standard
 
-    interface::add_ip6_mapped { 'main':
-        interface => 'eth0',
-    }
+    interface::add_ip6_mapped { 'main': }
 }
 
 # New https://www.mediawiki.org/wiki/Gerrit (T147597)
@@ -253,7 +247,7 @@ node /^(contint1001|contint2001)\.wikimedia\.org$/ {
 
 
     include ::standard
-    interface::add_ip6_mapped { 'main': interface => 'eth0', }
+    interface::add_ip6_mapped { 'main': }
     include ::contint::firewall
 }
 
@@ -365,9 +359,7 @@ node 'dataset1001.wikimedia.org' {
 
     role(dataset::primary, dumps::server)
 
-    interface::add_ip6_mapped { 'eth2':
-        interface => 'eth2',
-    }
+    interface::add_ip6_mapped { 'main': }
 }
 
 # MariaDB 10
@@ -911,9 +903,7 @@ node /^druid100[123].eqiad.wmnet$/ {
 node 'eeden.wikimedia.org' {
     role(authdns::server)
 
-    interface::add_ip6_mapped { 'main':
-        interface => 'eth0',
-    }
+    interface::add_ip6_mapped { 'main': }
     include ::standard
 }
 
@@ -1072,7 +1062,7 @@ node 'eventlog1001.eqiad.wmnet' {
 
     include ::standard
     include ::base::firewall
-    interface::add_ip6_mapped { 'main': interface => 'eth0', }
+    interface::add_ip6_mapped { 'main': }
 }
 
 # EventLogging Analytics does not (yet?) run in codfw.
@@ -1125,9 +1115,7 @@ node 'helium.eqiad.wmnet' {
     role(backup)
 
     include ::standard
-    interface::add_ip6_mapped { 'main':
-        interface => 'eth0',
-    }
+    interface::add_ip6_mapped { 'main': }
 }
 
 # Bacula storage
@@ -1141,9 +1129,7 @@ node 'hydrogen.wikimedia.org' {
     role(dnsrecursor, ntp)
     include ::standard
 
-    interface::add_ip6_mapped { 'main':
-        interface => 'eth0',
-    }
+    interface::add_ip6_mapped { 'main': }
 }
 
 # irc.wikimedia.org (replaced argon)
@@ -1262,9 +1248,7 @@ node /^install[12]002\.wikimedia\.org$/ {
         installserver::preseed,
         aptrepo::wikimedia)
 
-    interface::add_ip6_mapped { 'main':
-        interface => 'eth0',
-    }
+    interface::add_ip6_mapped { 'main': }
 
     class { '::ganglia::monitor::aggregator':
         sites => $::site,
@@ -1273,9 +1257,7 @@ node /^install[12]002\.wikimedia\.org$/ {
 
 # Phabricator
 node /^(iridium\.eqiad|phab1001\.eqiad|phab2001\.codfw)\.wmnet$/ {
-    interface::add_ip6_mapped { 'main':
-        interface => 'eth0',
-    }
+    interface::add_ip6_mapped { 'main': }
     role(phabricator::main)
     include ::standard
     include ::ganglia
@@ -1285,9 +1267,7 @@ node 'iron.wikimedia.org' {
     system::role { 'misc':
         description => 'Experimental Yubico two factor authentication bastion',
     }
-    interface::add_ip6_mapped { 'main':
-        interface => 'eth0',
-    }
+    interface::add_ip6_mapped { 'main': }
     role(bastionhost::twofa, access_new_install)
 }
 
@@ -1483,9 +1463,7 @@ node /lvs100[1-6]\.wikimedia\.org/ {
 
     role(lvs::balancer)
 
-    interface::add_ip6_mapped { 'main':
-        interface => 'eth0',
-    }
+    interface::add_ip6_mapped { 'main': }
 
     include ::lvs::configuration
     $ips = $lvs::configuration::subnet_ips
@@ -1584,9 +1562,7 @@ node /^lvs10(0[789]|1[012])\.eqiad\.wmnet$/ {
 
     role(lvs::balancer)
 
-    interface::add_ip6_mapped { 'main':
-        interface => 'eth0',
-    }
+    interface::add_ip6_mapped { 'main': }
 
     include ::lvs::configuration
     $ips = $lvs::configuration::subnet_ips
@@ -1684,7 +1660,7 @@ node /lvs200[1-6]\.codfw\.wmnet/ {
     $nameservers_override = [ '208.80.153.12', '208.80.153.42', '208.80.154.254' ]
     role(lvs::balancer)
 
-    interface::add_ip6_mapped { 'main': interface => 'eth0' }
+    interface::add_ip6_mapped { 'main': }
 
     include ::lvs::configuration
     $ips = $lvs::configuration::subnet_ips
@@ -1785,9 +1761,7 @@ node /^lvs300[1-4]\.esams\.wmnet$/ {
 
     role(lvs::balancer)
 
-    interface::add_ip6_mapped { 'main':
-        interface => 'eth0',
-    }
+    interface::add_ip6_mapped { 'main': }
 
     include ::lvs::configuration
     $ips = $lvs::configuration::subnet_ips
@@ -1820,9 +1794,7 @@ node /^lvs400[1-4]\.ulsfo\.wmnet$/ {
 
     role(lvs::balancer)
 
-    interface::add_ip6_mapped { 'main':
-        interface => 'eth0',
-    }
+    interface::add_ip6_mapped { 'main': }
 
     lvs::interface_tweaks {
         'eth0': bnx2x => true, txqlen => 10000, rss_pattern => 'eth0-fp-%d';
@@ -1833,9 +1805,7 @@ node 'maerlant.wikimedia.org' {
     role(dnsrecursor, ntp)
     include ::standard
 
-    interface::add_ip6_mapped { 'main':
-        interface => 'eth0',
-    }
+    interface::add_ip6_mapped { 'main': }
 }
 
 node 'maps-test2001.codfw.wmnet' {
@@ -1895,9 +1865,7 @@ node 'mendelevium.eqiad.wmnet' {
 node 'multatuli.wikimedia.org' {
     role(test::system, mediawiki::migrate)
 
-    interface::add_ip6_mapped { 'main':
-        interface => 'eth0',
-    }
+    interface::add_ip6_mapped { 'main': }
 }
 
 # also see dataset1001
@@ -1905,9 +1873,7 @@ node 'ms1001.wikimedia.org' {
 
     role(dataset::secondary, dumps::server)
 
-    interface::add_ip6_mapped { 'main':
-        interface => 'eth0',
-    }
+    interface::add_ip6_mapped { 'main': }
 }
 
 node 'ms1002.eqiad.wmnet' {
@@ -2225,18 +2191,14 @@ node 'neodymium.eqiad.wmnet' {
     role(deployment::salt_masters, debdeploy::master, ipmi::mgmt,
       access_new_install, mgmt::drac_ilo, cluster::management)
 
-    interface::add_ip6_mapped { 'main':
-      interface => 'eth0',
-    }
+    interface::add_ip6_mapped { 'main': }
 }
 
 node 'nescio.wikimedia.org' {
     role(dnsrecursor, ntp)
     include ::standard
 
-    interface::add_ip6_mapped { 'main':
-        interface => 'eth0',
-    }
+    interface::add_ip6_mapped { 'main': }
 }
 
 # network monitoring tool server
@@ -2374,9 +2336,7 @@ node /^prometheus200[34]\.codfw\.wmnet$/ {
     include ::standard
     include ::lvs::realserver
 
-    interface::add_ip6_mapped { 'main':
-        interface => 'eth0',
-    }
+    interface::add_ip6_mapped { 'main': }
 }
 
 node /^prometheus100[34]\.eqiad\.wmnet$/ {
@@ -2384,9 +2344,7 @@ node /^prometheus100[34]\.eqiad\.wmnet$/ {
 
     include ::lvs::realserver
 
-    interface::add_ip6_mapped { 'main':
-        interface => 'eth0',
-    }
+    interface::add_ip6_mapped { 'main': }
 }
 
 node /^puppetmaster[12]001\.(codfw|eqiad)\.wmnet$/ {
@@ -2395,17 +2353,13 @@ node /^puppetmaster[12]001\.(codfw|eqiad)\.wmnet$/ {
         puppetmaster::frontend,
     )
     include ::standard
-    interface::add_ip6_mapped { 'main':
-        interface => 'eth0',
-    }
+    interface::add_ip6_mapped { 'main': }
 }
 
 node /^puppetmaster[12]002\.(codfw|eqiad)\.wmnet$/ {
     role(puppetmaster::backend)
     include ::standard
-    interface::add_ip6_mapped { 'main':
-        interface => 'eth0',
-    }
+    interface::add_ip6_mapped { 'main': }
 }
 
 
@@ -2423,17 +2377,13 @@ node 'radium.wikimedia.org' {
 node 'radon.wikimedia.org' {
     role(authdns::server)
 
-    interface::add_ip6_mapped { 'main':
-        interface => 'eth0',
-    }
+    interface::add_ip6_mapped { 'main': }
     include ::standard
 }
 
 # Live Recent Changes WebSocket stream
 node 'rcs1001.eqiad.wmnet', 'rcs1002.eqiad.wmnet' {
-    interface::add_ip6_mapped { 'main':
-        interface => 'eth0',
-    }
+    interface::add_ip6_mapped { 'main': }
     role(rcstream)
     include ::base::firewall
 }
@@ -2511,9 +2461,7 @@ node 'ruthenium.eqiad.wmnet' {
 node 'sarin.codfw.wmnet' {
     role(cluster::management)
 
-    interface::add_ip6_mapped { 'main':
-      interface => 'eth0',
-    }
+    interface::add_ip6_mapped { 'main': }
 }
 
 # Services 'A'
@@ -2557,9 +2505,7 @@ node /^rhodium.eqiad.wmnet/ {
     role(puppetmaster::backend)
     include ::standard
 
-    interface::add_ip6_mapped { 'main':
-        interface => 'eth0',
-    }
+    interface::add_ip6_mapped { 'main': }
 }
 
 
@@ -2693,9 +2639,7 @@ node 'tin.eqiad.wmnet', 'mira.codfw.wmnet', 'naos.codfw.wmnet' {
     role(deployment::server)
     include ::base::firewall
 
-    interface::add_ip6_mapped { 'main':
-        interface => 'eth0',
-    }
+    interface::add_ip6_mapped { 'main': }
 }
 
 # test system for performance team (T117888)
@@ -2755,7 +2699,7 @@ node /^wtp20(0[1-9]|1[0-9]|2[0-4])\.codfw\.wmnet$/ {
 node 'zosma.codfw.wmnet' {
     role(security::tools)
 
-    interface::add_ip6_mapped { 'main': interface => 'eth0', }
+    interface::add_ip6_mapped { 'main': }
 }
 
 node default {
