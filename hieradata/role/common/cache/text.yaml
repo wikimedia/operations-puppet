@@ -56,18 +56,9 @@ cache::app_directors:
     backends:
       # eqiad: 'cxserver.svc.eqiad.wmnet'
       codfw: 'cxserver.svc.codfw.wmnet'
-  citoid_backend:
-    be_opts:
-      port: 1970
-    backends:
-      # eqiad: 'citoid.svc.eqiad.wmnet'
-      codfw: 'citoid.svc.codfw.wmnet'
 cache::req_handling:
   cxserver.wikimedia.org:
     director: 'cxserver_backend'
-    caching: 'pass'
-  citoid.wikimedia.org:
-    director: 'citoid_backend'
     caching: 'pass'
   default:
     director: 'appservers'

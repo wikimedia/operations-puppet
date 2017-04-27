@@ -63,7 +63,7 @@ sub pass_authorization {
 
 sub text_normalize_path {
 	// Don't decode percent-encoded slashes in paths for REST APIs
-	if (req.url ~ "^/api/rest_v1/" || req.http.host ~ "^(cxserver|citoid)\.wikimedia\.org$") {
+	if (req.url ~ "^/api/rest_v1/" || req.http.host ~ "^cxserver\.wikimedia\.org$") {
 		call normalize_rest_path;
 	} else {
 		call normalize_mediawiki_path;
