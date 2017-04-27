@@ -93,8 +93,8 @@ aqs_hosts:
   - deployment-aqs02.deployment-prep.eqiad.wmflabs
   - deployment-aqs03.deployment-prep.eqiad.wmflabs
 aqs::cassandra_default_consistency: localOne
-cassandra::listen_address: '%{::ipaddress_eth0}'
-cassandra::rpc_address: '%{::ipaddress_eth0}'
+cassandra::listen_address: '%{::ipaddress}'
+cassandra::rpc_address: '%{::ipaddress}'
 cassandra::seeds:
   - deployment-restbase01.deployment-prep.eqiad.wmflabs
   - deployment-restbase02.deployment-prep.eqiad.wmflabs
