@@ -76,8 +76,14 @@ class role::cache::upload(
     # default_ttl=7d
     $common_runtime_params = ['default_ttl=604800']
 
-    # Bumping nuke_limit and lru_interval helps with T145661
-    $be_runtime_params = ['nuke_limit=1000','lru_interval=31']
+    # Experimental settings to handle T145661
+    if hiera('cache::exp_thread_rt', false) {
+        $exp_thread_params = ['exp_thread_rt=true','exp_lck_inherit=true']
+    } else {
+        $exp_thread_params = []
+    }
+    $be_runtime_params = array_concat(['nuke_limit=1000','lru_interval=31'],
+                                      $exp_thread_params)
 
     role::cache::instances { 'upload':
         fe_mem_gb         => ceiling(0.4 * $::memorysize_mb / 1024.0),
