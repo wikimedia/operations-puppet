@@ -1856,18 +1856,12 @@ node /^maps200[2-4]\.codfw\.wmnet/ {
     role(maps::server, maps::slave)
 }
 
-node /^mc10(0[1-9]|1[0-2]|3[1-6])\.eqiad\.wmnet/ {
-    role(mediawiki::memcached)
-}
-
-node /^mc101[3-8]\.eqiad\.wmnet/ {
+node /^mc10(0[1-9]|1[0-8])\.eqiad\.wmnet/ {
     role(spare::system)
 }
 
-# Hosts that will replace mc1001->mc1018.
-# Bug: T137345
-node /^mc10(19|2[0-9]|30)\.eqiad\.wmnet/ {
-    role(memcached)
+node /^mc10(19|2[0-9]|3[0-6])\.eqiad\.wmnet/ {
+    role(mediawiki::memcached)
 }
 
 node /^mc20(19|2[0-9]|3[0-6])\.codfw\.wmnet/ {
