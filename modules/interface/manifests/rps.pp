@@ -10,11 +10,10 @@
 #   If set (to hw-specific value), RSS will be enabled as well
 #   Must contain a single "%d" format character for the queue number
 #   (on bnx2x, this would be "eth0-fp-%d")
-define interface::rps( $rss_pattern='' ) {
+define interface::rps($interface=$name, $rss_pattern='') {
     require interface::rpstools
     require interface::rps::modparams
 
-    $interface = $title
     if $rss_pattern != '' {
         $cmd = "/usr/local/sbin/interface-rps ${interface} ${rss_pattern}"
     }
