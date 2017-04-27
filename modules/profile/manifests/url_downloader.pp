@@ -25,7 +25,7 @@ class profile::url_downloader (
     include network::constants
     include ::base::firewall
 
-    interface::add_ip6_mapped { 'main': interface => 'eth0', }
+    interface::add_ip6_mapped { 'main': }
 
     if $::realm == 'production' {
         $wikimedia = [
