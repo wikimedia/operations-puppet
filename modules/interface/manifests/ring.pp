@@ -12,9 +12,13 @@
 #
 # Note this doesn't check/set at runtime, because at least with
 #  some drivers that restarts the interface and causes some traffic loss
-define interface::ring($setting, $value, $interface='eth0') {
+define interface::ring($interface, $setting, $value) {
     # Set in /etc/network/interfaces
-    interface::setting { $title: interface => $interface, setting => "hardware-dma-ring-${setting}", value => $value }
+    interface::setting { $name:
+        interface => $interface,
+        setting   => "hardware-dma-ring-${setting}",
+        value     => $value,
+    }
 
     # Change setting manually if Augeas made a real change
     exec { "ethtool ${interface} -g ${setting} ${value}":
