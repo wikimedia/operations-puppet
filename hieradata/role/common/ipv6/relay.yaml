@@ -1,3 +1,0 @@
-debdeploy::grains:
-  debdeploy-ipv6relay:
-    value: standard
