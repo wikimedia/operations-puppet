@@ -2116,18 +2116,9 @@ node 'mx1001.wikimedia.org' {
     include ::standard
     interface::add_ip6_mapped { 'main': }
 
-    interface::ip { 'wiki-mail-eqiad.wikimedia.org_v4':
-        interface => 'eth0',
-        address   => '208.80.154.91',
-        prefixlen => '32',
-    }
-
-    interface::ip { 'wiki-mail-eqiad.wikimedia.org_v6':
-        interface => 'eth0',
-        address   => '2620:0:861:3:208:80:154:91',
-        prefixlen => '128',
-        # mark as deprecated = never pick this address unless explicitly asked
-        options   => 'preferred_lft 0',
+    interface::alias { 'wiki-mail-eqiad.wikimedia.org':
+        ipv4 => '208.80.154.91',
+        ipv6 => '2620:0:861:3:208:80:154:91',
     }
 }
 
@@ -2136,18 +2127,9 @@ node 'mx2001.wikimedia.org' {
     include ::standard
     interface::add_ip6_mapped { 'main': }
 
-    interface::ip { 'wiki-mail-codfw.wikimedia.org_v4':
-        interface => 'eth0',
-        address   => '208.80.153.46',
-        prefixlen => '32',
-    }
-
-    interface::ip { 'wiki-mail-codfw.wikimedia.org_v6':
-        interface => 'eth0',
-        address   => '2620:0:860:2:208:80:153:46',
-        prefixlen => '128',
-        # mark as deprecated = never pick this address unless explicitly asked
-        options   => 'preferred_lft 0',
+    interface::alias { 'wiki-mail-codfw.wikimedia.org':
+        ipv4 => '208.80.153.46',
+        ipv6 => '2620:0:860:2:208:80:153:46',
     }
 }
 
