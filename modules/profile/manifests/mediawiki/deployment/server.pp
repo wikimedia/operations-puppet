@@ -7,7 +7,7 @@ class profile::mediawiki::deployment::server(
     $base_path = hiera('base_[ath', '/srv/deployment'),
 ) {
 
-    interface::add_ip6_mapped { 'main': interface => 'eth0', }
+    interface::add_ip6_mapped { 'main': }
 
     ## Scap Config ##
     require ::scap
