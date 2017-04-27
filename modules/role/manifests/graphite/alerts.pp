@@ -56,6 +56,36 @@ class role::graphite::alerts {
         percentage  => 70,
     }
 
+    # Monitor MediaWiki session failures
+    # See https://grafana.wikimedia.org/dashboard/db/edit-count
+    monitoring::graphite_threshold { 'mediawiki_session_loss':
+        description => 'MediaWiki edit session loss (https://grafana.wikimedia.org/dashboard/db/edit-count)',
+        metric      => 'scale(consolidateBy(MediaWiki.edit.failures.session_loss.rate, "max"), 60)',
+        warning     => 10,
+        critical    => 50,
+        from        => '15min',
+        percentage  => 30,
+    }
+
+    monitoring::graphite_threshold { 'mediawiki_session_loss':
+        description => 'MediaWiki edit failuer due to bad token (https://grafana.wikimedia.org/dashboard/db/edit-count)',
+        metric      => 'scale(consolidateBy(MediaWiki.edit.failures.bad_token.rate, "max"), 60)',
+        warning     => 10,
+        critical    => 50,
+        from        => '15min',
+        percentage  => 30,
+    }
+
+    # Monitor MediaWiki CentralAuth bad tokens
+    monitoring::graphite_threshold { 'mediawiki_centralauth_errors':
+        description => 'MediaWiki centralauth errors',
+        metric      => 'sum(MediaWiki.centralauth.centrallogin_errors.*.rate)',
+        warning     => 0.5,
+        critical    => 1,
+        from        => '15min',
+        percentage  => 30,
+    }
+
     # Monitor EventBus 4xx and 5xx HTTP response rate.
     monitoring::graphite_threshold { 'eventbus_http_error_rate':
         description => 'EventBus HTTP Error Rate (4xx + 5xx)',
@@ -67,4 +97,3 @@ class role::graphite::alerts {
         percentage  => 50,
     }
 }
-
