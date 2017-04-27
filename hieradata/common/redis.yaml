@@ -101,40 +101,40 @@ redis::shards:
   sessions:
     eqiad:
       shard01:
-        host: 10.64.0.180
+        host: 10.64.0.80
         port: 6379
       shard02:
-        host: 10.64.0.181
+        host: 10.64.0.81
         port: 6379
       shard03:
-        host: 10.64.0.182
+        host: 10.64.0.82
         port: 6379
       shard04:
-        host: 10.64.0.183
+        host: 10.64.0.83
         port: 6379
       shard05:
-        host: 10.64.0.184
+        host: 10.64.0.84
         port: 6379
       shard06:
-        host: 10.64.0.185
+        host: 10.64.16.107
         port: 6379
       shard07:
-        host: 10.64.32.161
+        host: 10.64.16.108
         port: 6379
       shard08:
-        host: 10.64.32.162
+        host: 10.64.16.109
         port: 6379
       shard09:
-        host: 10.64.32.163
+        host: 10.64.16.110
         port: 6379
       shard10:
-        host: 10.64.32.164
+        host: 10.64.32.208
         port: 6379
       shard11:
-        host: 10.64.32.165
+        host: 10.64.32.209
         port: 6379
       shard12:
-        host: 10.64.32.166
+        host: 10.64.32.210
         port: 6379
       shard13:
         host: 10.64.32.211
