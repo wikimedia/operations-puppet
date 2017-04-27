@@ -508,7 +508,7 @@ labtest:
     quota_floating_ips: '0'
     spice_hostname: 'labtestspice.wikimedia.org'
     libvirt_type: 'kvm'
-    my_ip: "%{::ipaddress_eth0}"
+    my_ip: "%{::ipaddress}"
     network_public_interface: 'eth0'
     network_flat_interface: 'eth1.2102'
     network_flat_tagged_base_interface: 'eth1'
@@ -573,7 +573,7 @@ labtest:
     floating_ip_ptr_fqdn_replacement_pattern: '\1'
   glanceconfig:
     db_host: 'labtestcontrol2001.wikimedia.org'
-    bind_ip: "%{::ipaddress_eth0}"
+    bind_ip: "%{::ipaddress}"
   openstack::horizon::service::webserver_hostname: 'labtesthorizon.wikimedia.org'
   admin::groups:
     - labtest-roots

@@ -339,7 +339,7 @@ novaconfig:
   puppet_db_user: 'puppet'
   quota_floating_ips: '0'
   libvirt_type: 'kvm'
-  my_ip: "%{::ipaddress_eth0}"
+  my_ip: "%{::ipaddress}"
   network_public_interface: 'eth0'
   network_flat_interface: 'eth1.1102'
   network_flat_tagged_base_interface: 'eth1'
@@ -369,7 +369,7 @@ keystoneconfig:
 
 glanceconfig:
   db_host: 'm5-master.eqiad.wmnet'
-  bind_ip: "%{::ipaddress_eth0}"
+  bind_ip: "%{::ipaddress}"
 
 # IPs assigned here MUST be reserved beforehand so they don't collide with labs VMs.
 #  To reserve, on the labs controller run $ sudo nova-manage fixed reserve <ip>
