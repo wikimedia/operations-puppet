@@ -27,7 +27,6 @@
 #     * jmx_port        must be unique per-host
 #     * listen_address  address to use for cassandra clients
 #     * rpc_address     address to use for cassandra cluster traffic
-#     * rpc_interface   if specified, add rpc_address to this interface
 #
 #   Note any other parameter from the "cassandra" class is in scope and
 #   will be inherited here and can be used e.g. in templates.
@@ -54,11 +53,8 @@ define cassandra::instance(
 
     # Add the IP address if not present
     if $rpc_address != $facts['ipaddress'] {
-        $rpc_interface = $facts['interface_primary']
-        interface::ip { "cassandra-${instance_name}_rpc_${rpc_interface}":
-            interface => $rpc_interface,
-            address   => $rpc_address,
-            prefixlen => '32',
+        interface::alias { "cassandra-${instance_name}":
+            ipv4      => $rpc_address,
         }
     }
 
