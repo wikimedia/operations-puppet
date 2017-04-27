@@ -11,18 +11,11 @@ class profile::lists (
 
     mailalias { 'root': recipient => 'root@wikimedia.org' }
 
+    # XXX: needs to be split to v4/v6 variables, like it was pre-14333a539e
     $lists_ip = hiera('mailman::lists_ip')
-
-    interface::ip { 'lists.wikimedia.org_v4':
-        interface => 'eth0',
-        address   => $lists_ip[0],
-        prefixlen => '32',
-    }
-
-    interface::ip { 'lists.wikimedia.org_v6':
-        interface => 'eth0',
-        address   => $lists_ip[1],
-        prefixlen => '128',
+    interface::alias { 'lists.wikimedia.org':
+        ipv4 => $lists_ip[0],
+        ipv6 => $lists_ip[1],
     }
 
     letsencrypt::cert::integrated { 'lists':
