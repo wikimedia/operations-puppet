@@ -66,9 +66,6 @@ cache::req_handling:
   cxserver.wikimedia.org:
     director: 'cxserver_backend'
     caching: 'pass'
-  citoid.wikimedia.org:
-    director: 'citoid_backend'
-    caching: 'pass'
   default:
     director: 'appservers'
     debug_director: 'appservers_debug'
