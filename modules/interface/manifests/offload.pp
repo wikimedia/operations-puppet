@@ -9,9 +9,13 @@
 #   The (abbreviated) offload setting, e.g. 'gro'
 # - $value:
 #   The value (on/off)
-define interface::offload($setting, $value, $interface='eth0')  {
+define interface::offload($interface, $setting, $value)  {
     # Set in /etc/network/interfaces
-    interface::setting { $title: interface => $interface, setting => "offload-${setting}", value => $value }
+    interface::setting { $title:
+        interface => $interface,
+        setting   => "offload-${setting}",
+        value     => $value,
+    }
 
     # And make sure it's always active
     $long_param = $setting ? {
