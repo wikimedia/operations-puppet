@@ -37,8 +37,3 @@ cache::app_directors:
       port: 8080
     backends:
       eqiad: 'cxserver.svc.eqiad.wmnet'
-  citoid_backend:
-    be_opts:
-      port: 1970
-    backends:
-      eqiad: 'citoid.svc.eqiad.wmnet'
