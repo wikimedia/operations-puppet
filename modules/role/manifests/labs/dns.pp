@@ -7,8 +7,8 @@ class role::labs::dns {
     $dnsconfig = hiera_hash('labsdnsconfig', {})
 
     class { '::labs_dns':
-        dns_auth_ipaddress     => $::ipaddress_eth0,
-        dns_auth_query_address => $::ipaddress_eth0,
+        dns_auth_ipaddress     => $facts['ipaddress'],
+        dns_auth_query_address => $facts['ipaddress'],
         dns_auth_soa_name      => $dnsconfig['host'],
         pdns_db_host           => $dnsconfig['dbserver'],
         pdns_db_password       => $dnsconfig['db_pass'],
@@ -125,7 +125,7 @@ class role::labs::dns {
 
     $auth_soa_name = $dnsconfig['host']
     monitoring::host { $auth_soa_name:
-        ip_address => $::ipaddress_eth0,
+        ip_address => $facts['ipaddress'],
     }
 
     # T152024 | TODO/FIXME: move hiera lookup to paramater of a profile class
