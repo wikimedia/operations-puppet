@@ -8,7 +8,7 @@ class profile::redis::multidc(
 ) {
     require ::passwords::redis
     $shards = $all_shards[$category]
-    $ip = $facts['ipaddress_primary']
+    $ip = $facts['ipaddress']
     $instances = redis_get_instances($ip, $shards)
     $password = $passwords::redis::main_password
     $uris = apply_format("localhost:%s/${password}", $instances)
