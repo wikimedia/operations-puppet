@@ -35,9 +35,8 @@ class role::labs::dnsrecursor {
 
     $recursor_ip = ipresolve($dnsconfig['recursor'],4)
 
-    interface::ip { 'role::lab::dnsrecursor':
-        interface => 'eth0',
-        address   => $recursor_ip
+    interface::alias { 'role::lab::dnsrecursor':
+        ipv4 => $recursor_ip,
     }
 
     #  We need to alias some public IPs to their corresponding private IPs.
