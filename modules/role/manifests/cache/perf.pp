@@ -17,7 +17,9 @@ class role::cache::perf {
     }
 
     # RPS/RSS to spread network i/o evenly
-    interface::rps { 'eth0': }
+    interface::rps { 'primary':
+        interface => $facts['interface_primary'],
+    }
 
     # flush vm more steadily in the background. helps avoid large performance
     #   spikes related to flushing out disk write cache.
