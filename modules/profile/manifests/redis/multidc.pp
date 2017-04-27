@@ -18,9 +18,6 @@ class profile::redis::multidc(
         'requirepass' => $password,
     }
 
-    unless $instances {
-        fail("No instances defined in redis::shards[${category}] for ip ${ip}. The redis configuration cannot be performed.")
-    }
     # Set up ipsec
     if os_version('debian >= jessie') {
         class { 'redis::multidc::ipsec':
