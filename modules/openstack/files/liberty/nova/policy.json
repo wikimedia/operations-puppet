@@ -277,7 +277,7 @@
     "os_compute_api:os-floating-ip-dns:discoverable": "rule:admin_or_member",
     "os_compute_api:os-floating-ip-pools": "rule:admin_or_member",
     "os_compute_api:os-floating-ip-pools:discoverable": "rule:admin_or_member",
-    "os_compute_api:os-floating-ips": "rule:admin_or_member",
+    "os_compute_api:os-floating-ips": "",
     "os_compute_api:os-floating-ips:discoverable": "rule:admin_or_member",
     "os_compute_api:os-floating-ips-bulk": "rule:admin_api",
     "os_compute_api:os-floating-ips-bulk:discoverable": "rule:admin_or_member",
