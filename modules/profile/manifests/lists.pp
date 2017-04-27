@@ -13,7 +13,7 @@ class profile::lists (
 
     $lists_ip = hiera('mailman::lists_ip')
 
-    interface::add_ip6_mapped { 'main': interface => 'eth0' }
+    interface::add_ip6_mapped { 'main': }
 
     interface::ip { 'lists.wikimedia.org_v4':
         interface => 'eth0',
